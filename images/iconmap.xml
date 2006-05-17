@@ -1,0 +1,8 @@
+<!DOCTYPE IconMap>
+<IconMap>
+  <IconPath>images/default_icons</IconPath>
+  <Map>
+    <Icon symbol="uparrow">1uparrow.png</Icon>
+    <Icon symbol="downarrow">1downarrow.png</Icon>
+  </Map>
+</IconMap>
