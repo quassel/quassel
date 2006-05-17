@@ -1,5 +1,7 @@
 PROJECT(Quassel)
 
+CMAKE_MINIMUM_REQUIRED(VERSION 2.4.2)
+
 # Select if Quassel should be built in client, server or monolithic mode
 SET(BUILD "mono" CACHE STRING "Defines which Quassel parts are to be built. Can contain 'server', 'client' and/or 'monolithic' (which is the default).")
 SET(BUILD_SERVER )

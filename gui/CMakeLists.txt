@@ -5,5 +5,7 @@ SET(gui_UICS channelwidget.ui identitiesdlg.ui identitieseditdlg.ui networkeditd
 
 QT4_WRAP_UI(_UIC ${gui_UICS})
 QT4_WRAP_CPP(_MOC ${gui_MOCS})
+MESSAGE("uic: ${_UIC}")
+MESSAGE("moc: ${_MOC}")
 
-ADD_LIBRARY(gui ${_UIC} ${_MOC} ${gui_HDRS} ${gui_SRCS})
+ADD_LIBRARY(gui ${gui_HDRS} ${gui_SRCS} ${_MOC} ${_UIC})
