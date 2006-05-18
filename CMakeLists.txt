@@ -1,6 +1,6 @@
 PROJECT(Quassel)
 
-CMAKE_MINIMUM_REQUIRED(VERSION 2.4.2)
+# CMAKE_MINIMUM_REQUIRED(VERSION 2.4.2)
 
 # Select if Quassel should be built in client, server or monolithic mode
 SET(BUILD "mono" CACHE STRING "Defines which Quassel parts are to be built. Can contain 'server', 'client' and/or 'monolithic' (which is the default).")
@@ -36,9 +36,9 @@ INCLUDE(${QT_USE_FILE})
 ADD_DEFINITIONS(${QT_DEFINITIONS})
 
 # Define files
-SET(quassel_SRCS main/main.cpp)
+SET(quassel_mono_SRCS main/main_mono.cpp)
 SET(quassel_RCCS images/icons.qrc)
-SET(quassel_DIRS gui main)
+SET(quassel_DIRS gui core)
 
 # Build correct absolute paths for subdirs to include
 SET(SDIRS "")
@@ -48,9 +48,21 @@ ENDFOREACH(dir)
 INCLUDE_DIRECTORIES(${SDIRS} ${QT_INCLUDES})
 
 ADD_SUBDIRECTORY(gui)
-ADD_SUBDIRECTORY(main)
+ADD_SUBDIRECTORY(core)
 
 QT4_ADD_RESOURCES(_RCCS ${quassel_RCCS})
 
-ADD_EXECUTABLE(quasselbin ${quassel_SRCS} ${_RCCS})
-TARGET_LINK_LIBRARIES(quasselbin main gui ${QT_LIBRARIES})
+IF(BUILD_MONO)
+  ADD_EXECUTABLE(quassel ${quassel_mono_SRCS} ${_RCCS})
+  TARGET_LINK_LIBRARIES(quassel gui core ${QT_LIBRARIES})
+ENDIF(BUILD_MONO)
+
+IF(BUILD_SERVER)
+#  MESSAGE(FATAL_ERROR "Server mode not yet supported.")
+  ADD_EXECUTABLE(quasselserver ${quassel_mono_SRCS} ${_RCCS})
+  TARGET_LINK_LIBRARIES(quasselserver gui core ${QT_LIBRARIES})
+ENDIF(BUILD_SERVER)
+
+IF(BUILD_CLIENT)
+  MESSAGE(FATAL_ERROR "Client mode not yet supported.")
+ENDIF(BUILD_CLIENT)
