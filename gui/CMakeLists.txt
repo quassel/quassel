@@ -5,7 +5,10 @@ SET(gui_UICS channelwidget.ui identitiesdlg.ui identitieseditdlg.ui networkeditd
 
 QT4_WRAP_UI(_UIC ${gui_UICS})
 QT4_WRAP_CPP(_MOC ${gui_MOCS})
-MESSAGE("uic: ${_UIC}")
-MESSAGE("moc: ${_MOC}")
+
+# We need to workaround a dependency bug with out-of-source builds...
+SET_SOURCE_FILES_PROPERTIES(${gui_SRCS} PROPERTIES
+OBJECT_DEPENDS "${_UIC}")
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 
 ADD_LIBRARY(gui ${gui_HDRS} ${gui_SRCS} ${_MOC} ${_UIC})
