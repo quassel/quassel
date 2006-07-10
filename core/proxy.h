@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by The Quassel Team                                *
+ *   Copyright (C) 2005/06 by The Quassel Team                             *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,35 +18,34 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _QUASSEL_H_
-#define _QUASSEL_H_
+#ifndef _PROXY_H_
+#define _PROXY_H_
 
-class Logger;
-class QString;
+#include "core.h"
 
-#include <QHash>
+namespace Proxy {
+  enum { LOAD_IDENTITIES, STORE_IDENTITIES };
+};
 
-
-/**
- * A static class containing global data.
- */
-class Quassel {
+class CoreProxy {
+  Q_OBJECT
 
   public:
-    static void init();
-    static Logger *getLogger();
-    static void setLogger(Logger *);
-
-//    static QIcon *getIcon(QString symbol);
-
-  private:
-    static void initIconMap();
-    
-    static Logger *logger;
-
-//    static QString iconPath;
-    static QHash<QString, QString> iconMap;
+    static VarMap loadIdentities();
+    static void storeIdentities(VarMap);
 
 };
+
+
+class GuiProxy {
+  Q_OBJECT
+
+  public:
+    static VarMap loadIdentities();
+    static void storeIdentities(VarMap);
+
+};
+
+extern QVariant proxyConnect(uint func, QVariant arg = QVariant());
 
 #endif

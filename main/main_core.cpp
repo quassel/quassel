@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by The Quassel Team                                *
+ *   Copyright (C) 2005/06 by The Quassel Team                             *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -17,36 +17,35 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#include <iostream>
 
-#ifndef _QUASSEL_H_
-#define _QUASSEL_H_
+#include <QCoreApplication>
 
-class Logger;
-class QString;
+#include "quassel.h"
+#include "logger.h"
+#include "proxy.h"
 
-#include <QHash>
+int main(int argc, char **argv) {
 
+  Core::init();
+  Quassel::init();
+  Logger *logger = new Logger();
+  Quassel::setLogger(logger);
 
-/**
- * A static class containing global data.
- */
-class Quassel {
+  QCoreApplication app(argc, argv);
 
-  public:
-    static void init();
-    static Logger *getLogger();
-    static void setLogger(Logger *);
+  QCoreApplication::setOrganizationDomain("quassel-irc.org");
+  QCoreApplication::setApplicationName("Quassel IRC");
+  QCoreApplication::setOrganizationName("The Quassel Team");
 
-//    static QIcon *getIcon(QString symbol);
+  return app.exec();
+}
 
-  private:
-    static void initIconMap();
-    
-    static Logger *logger;
+QVariant proxyConnect(uint func, QVariant arg) {
+  switch(func) {
+    case LOAD_IDENTITIES: return (QVariant) CoreProxy::loadIdentities();
+    case STORE_IDENTITIES: CoreProxy::storeIdentities(arg.toMap()); return 0;
 
-//    static QString iconPath;
-    static QHash<QString, QString> iconMap;
-
-};
-
-#endif
+  }
+  return 0;
+}

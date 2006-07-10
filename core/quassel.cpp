@@ -20,8 +20,8 @@
 
 #include "quassel.h"
 #include "logger.h"
+#include "proxy.h"
 
-#include <QIcon>
 #include <QString>
 #include <QDomDocument>
 
@@ -37,6 +37,8 @@ void Quassel::setLogger(Logger *) {
 
 /* not done yet */
 void Quassel::initIconMap() {
+// Do not depend on GUI in core!
+/*
   QDomDocument doc("IconMap");
   QFile file("images/iconmap.xml");
   if(!file.open(QIODevice::ReadOnly)) {
@@ -49,6 +51,7 @@ void Quassel::initIconMap() {
     file.close();
 
   }
+*/
 }
 
 
@@ -58,8 +61,9 @@ void Quassel::initIconMap() {
  * @param symbol Symbol of requested icon
  * @return Pointer to a newly created QIcon
  */
-QIcon *Quassel::getIcon(QString /*symbol*/) {
+//
+//QIcon *Quassel::getIcon(QString /*symbol*/) {
   //if(symbol == "connect"
 
-  return 0;
-}
+//  return 0;
+//}

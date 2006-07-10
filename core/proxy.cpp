@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by The Quassel Team                                *
+ *   Copyright (C) 2005/06 by The Quassel Team                             *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,35 +18,37 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _QUASSEL_H_
-#define _QUASSEL_H_
+#include "proxy.h"
 
-class Logger;
-class QString;
+#include <iostream>
 
-#include <QHash>
+using namespace Proxy;
+
+VarMap CoreProxy::loadIdentities() {
+  return Core::loadIdentities();
+}
+
+void CoreProxy::storeIdentities(VarMap id) {
+  Core::storeIdentities(id);
+}
 
 
-/**
- * A static class containing global data.
- */
-class Quassel {
 
-  public:
-    static void init();
-    static Logger *getLogger();
-    static void setLogger(Logger *);
+VarMap GuiProxy::loadIdentities() {
+  return proxyConnect(LOAD_IDENTITIES).toMap();
+}
 
-//    static QIcon *getIcon(QString symbol);
+void GuiProxy::storeIdentities(VarMap arg) {
+  proxyConnect(STORE_IDENTITIES, arg);
+}
 
-  private:
-    static void initIconMap();
-    
-    static Logger *logger;
+/*
+QVariant proxyConnect(uint func, QVariant arg) {
+  switch(func) {
+    case LOAD_IDENTITIES: return (QVariant) CoreProxy::loadIdentities();
+    case STORE_IDENTITIES: CoreProxy::storeIdentities(arg.toMap()); return 0;
 
-//    static QString iconPath;
-    static QHash<QString, QString> iconMap;
-
-};
-
-#endif
+  }
+  return 0;
+}
+*/

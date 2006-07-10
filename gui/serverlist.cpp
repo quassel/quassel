@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include "serverlist.h"
+#include "proxy.h"
 
 /* NOTE: This dialog holds not only the server list, but also the identities.
  *       This makes perfect sense given the fact that connections are initiated from
@@ -113,9 +114,10 @@ void ServerListDlg::storeNetworks() {
 }
 
 void ServerListDlg::loadIdentities() {
-  QSettings s;
+ //QSettings s;
   //s.beginGroup("Identities");
-  identities = s.value("Network/Identities").toMap();
+  //identities = s.value("Network/Identities").toMap();
+  identities = GuiProxy::loadIdentities();
   while(!identities.contains("Default")) {
     identities = VarMap();
     editIdentities();
@@ -123,8 +125,9 @@ void ServerListDlg::loadIdentities() {
 }
 
 void ServerListDlg::storeIdentities() {
-  QSettings s;
-  s.setValue("Network/Identities", identities);
+  //QSettings s;
+  //s.setValue("Network/Identities", identities);
+  GuiProxy::storeIdentities(identities);
 }
 
 void ServerListDlg::editIdentities() {

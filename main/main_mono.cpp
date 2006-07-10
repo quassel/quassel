@@ -22,8 +22,10 @@
 
 #include <QApplication>
 
+#include "core.h"
 #include "quassel.h"
 #include "logger.h"
+#include "proxy.h"
 
 #include "mainwin.h"
 
@@ -39,7 +41,20 @@ int main(int argc, char **argv) {
   QApplication::setApplicationName("Quassel IRC");
   QApplication::setOrganizationName("The Quassel Team");
 
+  Core::init();
+
   MainWin mainWin;
   mainWin.show();
   return app.exec();
+}
+
+QVariant proxyConnect(uint func, QVariant arg) {
+  using namespace Proxy;
+
+  switch(func) {
+    case LOAD_IDENTITIES: return (QVariant) CoreProxy::loadIdentities();
+    case STORE_IDENTITIES: CoreProxy::storeIdentities(arg.toMap()); return 0;
+
+  }
+  return 0;
 }

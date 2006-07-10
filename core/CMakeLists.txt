@@ -1,5 +1,5 @@
-SET(core_SRCS logger.cpp quassel.cpp)
-SET(core_HDRS quassel.h)
+SET(core_SRCS logger.cpp quassel.cpp proxy.cpp core.cpp)
+SET(core_HDRS quassel.h proxy.h core.h)
 SET(core_MOCS logger.h)
 
 QT4_WRAP_CPP(_MOC ${core_MOCS})

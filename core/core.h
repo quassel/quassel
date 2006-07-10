@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by The Quassel Team                                *
+ *   Copyright (C) 2005/06 by The Quassel Team                             *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,34 +18,23 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _QUASSEL_H_
-#define _QUASSEL_H_
+#ifndef _CORE_H_
+#define _CORE_H_
 
-class Logger;
-class QString;
+#include <QMap>
+#include <QString>
+#include <QVariant>
 
-#include <QHash>
+typedef QMap<QString, QVariant> VarMap;
 
-
-/**
- * A static class containing global data.
- */
-class Quassel {
+class Core {
 
   public:
     static void init();
-    static Logger *getLogger();
-    static void setLogger(Logger *);
-
-//    static QIcon *getIcon(QString symbol);
-
-  private:
-    static void initIconMap();
-    
-    static Logger *logger;
-
-//    static QString iconPath;
-    static QHash<QString, QString> iconMap;
+    static VarMap loadNetworks();
+    static void storeNetworks(VarMap);
+    static VarMap loadIdentities();
+    static void storeIdentities(VarMap);
 
 };
 
