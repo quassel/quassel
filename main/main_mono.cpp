@@ -36,10 +36,10 @@ int main(int argc, char **argv) {
   Logger *logger = new Logger();
   Quassel::setLogger(logger);
 
-  Message *m = new Message("admin");
+  //Message *m = new Message("admin");
   //m->*(m->getCmdHandler())(QStringList(""));
-  (m->*(m->getCmdHandler()))(QStringList());
-  exit(0);
+  //(m->*(m->getCmdHandler()))(QStringList());
+  //exit(0);
   
   QApplication app(argc, argv);
 
