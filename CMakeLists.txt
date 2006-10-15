@@ -27,7 +27,7 @@ ENDIF(NOT BUILD_MONO AND NOT BUILD_CORE AND NOT BUILD_GUI)
 SET(quassel_mono_SRCS main/main_mono.cpp)
 SET(quassel_core_SRCS main/main_core.cpp)
 SET(quassel_RCCS images/icons.qrc)
-SET(quassel_DIRS gui core)
+SET(quassel_DIRS gui core network)
 
 # Build correct absolute paths for subdirs to include
 SET(SDIRS "")
@@ -44,12 +44,13 @@ SET(QT_USE_QTXML true)
 SET(QT_DONT_USE_QTGUI true)   # This is added later if GUI is requested
 INCLUDE(${QT_USE_FILE})
 
+ADD_SUBDIRECTORY(network)
 ADD_SUBDIRECTORY(core)
 QT4_ADD_RESOURCES(_RCCS ${quassel_RCCS})
 
 IF(BUILD_CORE)
   ADD_EXECUTABLE(quasselcore ${quassel_core_SRCS} ${_RCCS})
-  TARGET_LINK_LIBRARIES(quasselcore core ${QT_LIBRARIES})
+  TARGET_LINK_LIBRARIES(quasselcore core network ${QT_LIBRARIES})
 ENDIF(BUILD_CORE)
 
 IF(BUILD_GUI OR BUILD_MONO)  # OK, now we need QtGui!
@@ -62,7 +63,7 @@ IF(BUILD_GUI OR BUILD_MONO)  # OK, now we need QtGui!
   IF(BUILD_MONO)
     ADD_SUBDIRECTORY(gui)
     ADD_EXECUTABLE(quassel ${quassel_mono_SRCS} ${_RCCS})
-    TARGET_LINK_LIBRARIES(quassel gui core ${QT_LIBRARIES})
+    TARGET_LINK_LIBRARIES(quassel gui core network ${QT_LIBRARIES})
   ENDIF(BUILD_MONO)
 
   IF(BUILD_GUI)

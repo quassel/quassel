@@ -1,7 +1,7 @@
 /***************************************************************************
- *   Copyright (C) 2005 by The Quassel Team                                *
+ *   Copyright (C) 2005/06 by The Quassel Team                             *
  *   devel@quassel-irc.org                                                 *
- *                                                                          *
+ *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
@@ -18,49 +18,54 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <iostream>
-
-#include <QApplication>
-
-#include "core.h"
-#include "quassel.h"
-#include "logger.h"
-#include "proxy.h"
-
-#include "mainwin.h"
 #include "messages.h"
+#include <QtDebug>
 
-int main(int argc, char **argv) {
+extern BuiltinCmd builtins[];
 
-  Quassel::init();
-  Logger *logger = new Logger();
-  Quassel::setLogger(logger);
+QHash<QString, CmdType> Message::cmdTypes;
 
-  Message *m = new Message("admin");
-  //m->*(m->getCmdHandler())(QStringList(""));
-  (m->*(m->getCmdHandler()))(QStringList());
-  exit(0);
-  
-  QApplication app(argc, argv);
-
-  QApplication::setOrganizationDomain("quassel-irc.org");
-  QApplication::setApplicationName("Quassel IRC");
-  QApplication::setOrganizationName("The Quassel Team");
-
-  Core::init();
-
-  MainWin mainWin;
-  mainWin.show();
-  return app.exec();
+Message::Message(QString _cmd, QStringList args) {
+  cmd = _cmd; qDebug() << "cmd: " << cmd;
+  params = args;
 }
 
-QVariant proxyConnect(uint func, QVariant arg) {
-  using namespace Proxy;
-
-  switch(func) {
-    case LOAD_IDENTITIES: return (QVariant) CoreProxy::loadIdentities();
-    case STORE_IDENTITIES: CoreProxy::storeIdentities(arg.toMap()); return 0;
-
+void Message::init() {
+  // Register builtin commands
+  for(int i = 0; ; i++) {
+    if(!builtins[i].handler) break;
+    CmdType c;
+    c.cmd = builtins[i].cmd.toLower();
+    c.cmdDescr = builtins[i].cmdDescr;
+    c.args = builtins[i].args;
+    c.argsDescr = builtins[i].argsDescr;
+    c.handler = builtins[i].handler;
+    cmdTypes.insert(c.cmd, c);
   }
+
+}
+
+cmdhandler Message::getCmdHandler() {
+  CmdType c = cmdTypes[cmd];
+  if(c.handler) return c.handler;
+  qDebug() << "No handler defined for " << cmd << "!";
   return 0;
 }
+
+/*
+void Message::parseParams(QString str) {
+  QString left = str.section(':', 0, 0);
+  QString trailing = str.section(':', 1);
+  if(left.size()) {
+    params << left.split(' ', QString::SkipEmptyParts);
+  }
+  if(trailing.size()) {
+    params << trailing;
+  }
+  qDebug() << params;
+
+}
+*/
+void Message::test1(QStringList foo) { qDebug() << "Test 1! " << cmd; };
+
+void Message::test2(QStringList bar) { qDebug() << "Test 2!"; };

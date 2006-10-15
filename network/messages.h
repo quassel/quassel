@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by The Quassel Team                                *
+ *   Copyright (C) 2005/06 by The Quassel Team                             *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,54 +18,68 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "quassel.h"
-#include "logger.h"
-#include "proxy.h"
-#include "messages.h"
+#ifndef _MESSAGES_H_
+#define _MESSAGES_H_
 
+#include <QHash>
 #include <QString>
-#include <QDomDocument>
+#include <QStringList>
 
-void Quassel::init() {
-  //initIconMap();
-  Message::init();
-}
+class Message;
 
-void Quassel::setLogger(Logger *) {
+typedef void (Message::* cmdhandler)(QStringList);
 
+/**
+ * This contains information that depends (solely) on the message type, such as the handler function and help texts.
+ * Most of these are defined at compile time, but more may be added at runtime.
+ */
+struct CmdType {
+  QString cmd;
+  QString cmdDescr;
+  QString args;
+  QString argsDescr;
+  cmdhandler handler;
 
 };
 
-
-/* not done yet */
-void Quassel::initIconMap() {
-// Do not depend on GUI in core!
-/*
-  QDomDocument doc("IconMap");
-  QFile file("images/iconmap.xml");
-  if(!file.open(QIODevice::ReadOnly)) {
-    qDebug() << "Error opening iconMap file!";
-    return;
-  } else if(!doc.setContent(&file)) {
-    file.close();
-    qDebug() << "Error parsing iconMap file!";
-  } else {
-    file.close();
-
-  }
-*/
-}
-
-
 /**
- * Retrieves an icon determined by its symbolic name. The mapping shall later
- * be performed by a theme manager or something like that.
- * @param symbol Symbol of requested icon
- * @return Pointer to a newly created QIcon
- */
-//
-//QIcon *Quassel::getIcon(QString /*symbol*/) {
-  //if(symbol == "connect"
+ *
+*/
+class Message {
+  public:
+    uint type;
+    QString prefix;
+    QString cmd;
+    QStringList params;
 
-//  return 0;
-//}
+    Message(QString cmd, QStringList args = 0);
+
+    virtual ~Message() {};
+
+    static void init();
+    //static registerCmd();
+    //static unregisterCmd();
+
+    cmdhandler getCmdHandler();
+
+    void test1(QStringList);
+    void test2(QStringList);
+
+  protected:
+    static QHash<QString, CmdType> cmdTypes;
+};
+
+
+/** This is only used to have a nice way for defining builtin commands.
+ *  We create an array of these in builtin_cmds.cpp and read this to fill our
+ *  command hash.
+ */
+struct BuiltinCmd {
+  QString cmd;
+  QString cmdDescr;
+  QString args;
+  QString argsDescr;
+  cmdhandler handler;
+};
+
+#endif
