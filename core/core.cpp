@@ -19,11 +19,32 @@
  ***************************************************************************/
 
 #include "core.h"
+#include "server.h"
 
 #include <QSettings>
 
 void Core::init() {
 
+
+}
+
+void Core::run() {
+
+  connect(this, SIGNAL(connectToIrc( const QString&, quint16 )), &server, SLOT(connectToIrc( const QString&, quint16 )));
+  connect(&server, SIGNAL(recvLine(const QString &)), this, SIGNAL(outputLine(const QString &)));
+  //connect(
+  server.start();
+  qDebug() << "Core running...";
+
+  exec();
+}
+
+void Core::connectToIrc( const QString &h, quint16 port) {
+  server.connectToIrc(h, port);
+}
+
+void Core::inputLine(const QString &s) {
+  server.putRawLine( s);
 
 }
 

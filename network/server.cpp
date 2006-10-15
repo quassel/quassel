@@ -17,3 +17,75 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
+#include "server.h"
+
+Server::Server() {
+  socket = new QTcpSocket();
+
+}
+
+Server::~Server() {
+  delete socket;
+}
+
+void Server::run() {
+  connect(socket, SIGNAL(connected()), this, SLOT(socketConnected()));
+  connect(socket, SIGNAL(disconnected()), this, SLOT(socketDisconnected()));
+  connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(socketError(QAbstractSocket::SocketError)));
+  connect(socket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(socketStateChanged(QAbstractSocket::SocketState)));
+  connect(socket, SIGNAL(readyRead()), this, SLOT(socketHasData()));
+
+  stream.setDevice(socket);
+  //connectToIrc("irc.quakenet.org", 6667);
+  exec();
+}
+
+/*
+QAbstractSocket::SocketState TcpConnection::state( ) const {
+  return socket.state();
+}
+*/
+
+void Server::connectToIrc( const QString & host, quint16 port ) {
+  qDebug() << "Connecting...";
+  socket->connectToHost(host, port);
+}
+
+void Server::disconnectFromIrc( ) {
+  socket->disconnectFromHost();
+}
+
+void Server::putRawLine( const QString &s ) {
+  qDebug() << "Raw line: " << s;
+  stream << s << "\r\n" << flush;
+}
+
+void Server::socketHasData( ) {
+  while(socket->canReadLine()) {
+    QString s = stream.readLine();
+    qDebug() << "Read: " << s;
+    emit recvLine(s + "\n");
+  }
+}
+
+void Server::socketError( QAbstractSocket::SocketError err ) {
+  qDebug() << "Socket Error!";
+  //emit error(err);
+}
+
+void Server::socketConnected( ) {
+  qDebug() << "Socket connected!";
+  //emit connected();
+}
+
+void Server::socketDisconnected( ) {
+  qDebug() << "Socket disconnected!";
+  //emit disconnected();
+}
+
+void Server::socketStateChanged(QAbstractSocket::SocketState state) {
+  qDebug() << "Socket state changed: " << state;
+}
+
+

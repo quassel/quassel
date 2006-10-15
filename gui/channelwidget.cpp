@@ -25,9 +25,9 @@
 
 ChannelWidget::ChannelWidget(QWidget *parent) : QWidget(parent) {
   ui.setupUi(this);
-  ui.lineEdit->setText("foobar");
+  //ui.lineEdit->setText("foobar");
 
-  //ui.splitter->
+/*  //ui.splitter->
   ui.textBrowser->setHtml("[17:21] <em>--> Dante has joined #quassel (~hurz@p1af2242.dip.t-dialin.net)</em><br>"
                           "[17:21] <em>--> Sput has joined #quassel (~Sput42@vincent.mindpool.net)</em><br>"
                           "[17:23] &lt;<b>Dante</b>&gt; Das sieht ja soweit schonmal Klasse aus!<br>"
@@ -37,4 +37,19 @@ ChannelWidget::ChannelWidget(QWidget *parent) : QWidget(parent) {
                           );
  ui.listWidget->addItem("@Dante");
  ui.listWidget->addItem("@Sput");
+  */
+  //connect(&core, SIGNAL(outputLine( const QString& )), ui.textBrowser, SLOT(insertPlainText(const QString &)));
+  //connect(ui.lineEdit, SIGNAL(
+  connect(&core, SIGNAL(outputLine( const QString& )), ui.textBrowser, SLOT(insertPlainText(const QString &)));
+  connect(ui.lineEdit, SIGNAL(returnPressed()), this, SLOT(enterPressed()));
+  connect(this, SIGNAL(inputLine( const QString& )), &core, SLOT(inputLine( const QString& )));
+  core.start();
+  core.connectToIrc("irc.quakenet.org");
 }
+
+void ChannelWidget::enterPressed() {
+  emit inputLine(ui.lineEdit->text());
+  ui.lineEdit->clear();
+}
+
+  

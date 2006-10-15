@@ -24,6 +24,9 @@
 #include "channelwidget.h"
 #include "serverlist.h"
 
+#include "core.h"
+#include "server.h"
+
 MainWin::MainWin() : QMainWindow() {
 
   setWindowTitle("Quassel IRC");

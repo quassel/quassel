@@ -41,6 +41,7 @@ FIND_PACKAGE(Qt4 REQUIRED)
 
 # Set needed libraries
 SET(QT_USE_QTXML true)
+SET(QT_USE_QTNETWORK true)
 SET(QT_DONT_USE_QTGUI true)   # This is added later if GUI is requested
 INCLUDE(${QT_USE_FILE})
 

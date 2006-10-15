@@ -25,16 +25,32 @@
 #include <QString>
 #include <QVariant>
 
+#include "server.h"
+
 typedef QMap<QString, QVariant> VarMap;
 
-class Core {
+class Core : public QThread {
+  Q_OBJECT
 
   public:
+
     static void init();
     static VarMap loadNetworks();
     static void storeNetworks(VarMap);
     static VarMap loadIdentities();
     static void storeIdentities(VarMap);
+
+  public slots:
+    void inputLine(const QString &);   // temp
+    void connectToIrc(const QString &, quint16 port = 6667);
+
+  signals:
+    void outputLine(const QString &);  // temp
+    
+  private:
+    void run();
+
+    Server server; // temp
 
 };
 

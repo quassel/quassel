@@ -24,20 +24,75 @@
 #include <QtCore>
 #include <QtNetwork>
 
-class Server {
+#define DEFAULT_PORT 6667
+
+/**
+ * This is a server object, managing a single connection to an IRC server, handling the associated channels and so on.
+ * We have this run in its own thread mainly to not block other server objects or the core if something goes wrong,
+ * e.g. if some scripts starts running wild...
+ */
+
+class Server : public QThread {
+  Q_OBJECT
+
+  public:
+    Server();
+    ~Server();
+
+    void run();
+
+    // serverState state();
+
+  public slots:
+    // void setServerOptions();
+    void connectToIrc(const QString &host, quint16 port = DEFAULT_PORT);
+    void disconnectFromIrc();
+
+    void putRawLine(const QString &input /*, Buffer *source = 0 */);
+
+  signals:
+    //void outputLine(const QString & /*, Buffer *target = 0 */);
+
+    void recvLine(const QString&);
+
+  private slots:
+    void socketHasData();
+    void socketError(QAbstractSocket::SocketError);
+    void socketConnected();
+    void socketDisconnected();
+    void socketStateChanged(QAbstractSocket::SocketState);
+
+  private:
+    QTcpSocket *socket;
+    QTextStream stream;
+
+};
+
+/*
+class TcpConnection : public QThread {
   Q_OBJECT
 
 
+  public:
+    void run();
+    QAbstractSocket::SocketState state() const;
+
+  public slots:
+    void connectToHost(const QString &host, quint16 port = DEFAULT_PORT);
+    void disconnectFromHost();
+    void sendLine(const QString &);
+
+  signals:
+    void recvLine(QString);
+    void error(QAbstractSocket::SocketError);
+    void connected();
+    void disconnected();
+    void stateChanged(QAbstractSocket::SocketState);
 
   private:
-
+    QTcpSocket socket;
+    QTextStream stream;
 };
-
-class Connection : public QThread {
-
-
-
-};
-
+*/
 
 #endif

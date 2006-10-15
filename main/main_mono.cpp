@@ -29,6 +29,7 @@
 
 #include "mainwin.h"
 #include "messages.h"
+#include "server.h"
 
 int main(int argc, char **argv) {
 
@@ -39,8 +40,7 @@ int main(int argc, char **argv) {
   //Message *m = new Message("admin");
   //m->*(m->getCmdHandler())(QStringList(""));
   //(m->*(m->getCmdHandler()))(QStringList());
-  //exit(0);
-  
+
   QApplication app(argc, argv);
 
   QApplication::setOrganizationDomain("quassel-irc.org");

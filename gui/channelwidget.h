@@ -23,14 +23,25 @@
 
 #include "ui_channelwidget.h"
 
+#include "core.h"
+
 class ChannelWidget : public QWidget {
   Q_OBJECT
 
   public:
     ChannelWidget(QWidget *parent = 0);
 
+  signals:
+    void inputLine(const QString &);
+    
+  private slots:
+    void enterPressed();
+
   private:
     Ui::ChannelWidget ui;
+
+    Core core;
+    Server server;
 };
 
 

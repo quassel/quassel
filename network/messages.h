@@ -52,7 +52,7 @@ class Message {
     QString cmd;
     QStringList params;
 
-    Message(QString cmd, QStringList args = 0);
+    Message(QString cmd, QStringList args = QStringList());
 
     virtual ~Message() {};
 
