@@ -29,6 +29,10 @@ Server::~Server() {
   delete socket;
 }
 
+void Server::init() {
+  Message::init(&handleServerMsg, &handleUserMsg);
+}
+
 void Server::run() {
   connect(socket, SIGNAL(connected()), this, SLOT(socketConnected()));
   connect(socket, SIGNAL(disconnected()), this, SLOT(socketDisconnected()));
@@ -88,4 +92,13 @@ void Server::socketStateChanged(QAbstractSocket::SocketState state) {
   qDebug() << "Socket state changed: " << state;
 }
 
+void Server::handleServerMsg(Message *msg) {
+
+
+}
+
+void Server::handleUserMsg(Message *msg) {
+
+
+}
 

@@ -25,9 +25,12 @@
 #include <QString>
 #include <QStringList>
 
+class Server;
+class Buffer;
 class Message;
 
-typedef void (Message::* cmdhandler)(QStringList);
+typedef void (*sendHandlerType)(Message *);        // handler for commands sent by the user
+typedef void (*recvHandlerType)(Message *);              // handler for incoming messages
 
 /**
  * This contains information that depends (solely) on the message type, such as the handler function and help texts.
@@ -38,7 +41,8 @@ struct CmdType {
   QString cmdDescr;
   QString args;
   QString argsDescr;
-  cmdhandler handler;
+  recvHandlerType recvHandler;
+  sendHandlerType sendHandler;
 
 };
 
@@ -56,16 +60,17 @@ class Message {
 
     virtual ~Message() {};
 
-    static void init();
+    static void init(recvHandlerType defaultRevcHandler, sendHandlerType defaultSendHandler);
     //static registerCmd();
     //static unregisterCmd();
 
-    cmdhandler getCmdHandler();
-
-    void test1(QStringList);
-    void test2(QStringList);
+    recvHandlerType getRecvHandler();
+    sendHandlerType getSendHandler();
 
   protected:
+    static recvHandlerType defaultRecvHandler;
+    static sendHandlerType defaultSendHandler;
+
     static QHash<QString, CmdType> cmdTypes;
 };
 
@@ -79,7 +84,8 @@ struct BuiltinCmd {
   QString cmdDescr;
   QString args;
   QString argsDescr;
-  cmdhandler handler;
+  recvHandlerType recvHandler;
+  sendHandlerType sendHandler;
 };
 
 #endif

@@ -24,6 +24,8 @@
 #include <QtCore>
 #include <QtNetwork>
 
+#include "messages.h"
+
 #define DEFAULT_PORT 6667
 
 /**
@@ -38,6 +40,7 @@ class Server : public QThread {
   public:
     Server();
     ~Server();
+    static void init();
 
     void run();
 
@@ -65,6 +68,9 @@ class Server : public QThread {
   private:
     QTcpSocket *socket;
     QTextStream stream;
+
+    static void handleServerMsg(Message *);
+    static void handleUserMsg(Message *);
 
 };
 

@@ -23,6 +23,8 @@
 
 extern BuiltinCmd builtins[];
 
+recvHandlerType Message::defaultRecvHandler;
+sendHandlerType Message::defaultSendHandler;
 QHash<QString, CmdType> Message::cmdTypes;
 
 Message::Message(QString _cmd, QStringList args) {
@@ -30,25 +32,36 @@ Message::Message(QString _cmd, QStringList args) {
   params = args;
 }
 
-void Message::init() {
+void Message::init(recvHandlerType _r, sendHandlerType _s) {
+  defaultRecvHandler = _r;
+  defaultSendHandler = _s;
+
   // Register builtin commands
   for(int i = 0; ; i++) {
-    if(!builtins[i].handler) break;
+    if(builtins[i].cmd.isEmpty()) break;
     CmdType c;
     c.cmd = builtins[i].cmd.toLower();
     c.cmdDescr = builtins[i].cmdDescr;
     c.args = builtins[i].args;
     c.argsDescr = builtins[i].argsDescr;
-    c.handler = builtins[i].handler;
+    c.recvHandler = ( builtins[i].recvHandler ? builtins[i].recvHandler : defaultRecvHandler);
+    c.sendHandler = ( builtins[i].sendHandler ? builtins[i].sendHandler : defaultSendHandler);
     cmdTypes.insert(c.cmd, c);
   }
 
 }
 
-cmdhandler Message::getCmdHandler() {
+recvHandlerType Message::getRecvHandler() {
   CmdType c = cmdTypes[cmd];
-  if(c.handler) return c.handler;
-  qDebug() << "No handler defined for " << cmd << "!";
+  if(c.recvHandler) return c.recvHandler;
+  qDebug() << "No recvHandler defined for " << cmd << "!";
+  return 0;
+}
+
+sendHandlerType Message::getSendHandler() {
+  CmdType c = cmdTypes[cmd];
+  if(c.sendHandler) return c.sendHandler;
+  qDebug() << "No sendHandler defined for " << cmd << "!";
   return 0;
 }
 
@@ -66,6 +79,3 @@ void Message::parseParams(QString str) {
 
 }
 */
-void Message::test1(QStringList foo) { qDebug() << "Test 1! " << cmd; };
-
-void Message::test2(QStringList bar) { qDebug() << "Test 2!"; };
