@@ -24,7 +24,7 @@
 #include <QtCore>
 #include <QtNetwork>
 
-#include "messages.h"
+#include "message.h"
 
 #define DEFAULT_PORT 6667
 
@@ -56,7 +56,8 @@ class Server : public QThread {
   signals:
     //void outputLine(const QString & /*, Buffer *target = 0 */);
 
-    void recvLine(const QString&);
+    void recvRawServerMsg(QString);
+    void recvLine(QString); // temp, should send a message to the GUI
 
   private slots:
     void socketHasData();
@@ -69,10 +70,14 @@ class Server : public QThread {
     QTcpSocket *socket;
     QTextStream stream;
 
-    static void handleServerMsg(Message *);
-    static void handleUserMsg(Message *);
+    void handleServerMsg(Message *);
+    void handleUserMsg(Message *);
+    static inline void dispatchServerMsg(Message *msg) { msg->getServer()->handleServerMsg(msg); }
+    static inline void dispatchUserMsg(Message *msg)   { msg->getServer()->handleUserMsg(msg); }
 
 };
+
+class Buffer {};
 
 /*
 class TcpConnection : public QThread {

@@ -30,7 +30,7 @@ Server::~Server() {
 }
 
 void Server::init() {
-  Message::init(&handleServerMsg, &handleUserMsg);
+  Message::init(&dispatchServerMsg, &dispatchUserMsg);
 }
 
 void Server::run() {
@@ -63,13 +63,17 @@ void Server::disconnectFromIrc( ) {
 void Server::putRawLine( const QString &s ) {
   qDebug() << "Raw line: " << s;
   stream << s << "\r\n" << flush;
+  //Message::createFromServerString(this, s);
 }
 
 void Server::socketHasData( ) {
   while(socket->canReadLine()) {
     QString s = stream.readLine();
     qDebug() << "Read: " << s;
-    emit recvLine(s + "\n");
+    emit recvRawServerMsg(s);
+    Message *msg = Message::createFromServerString(this, s);
+    if(msg) handleServerMsg(msg);
+    delete msg;
   }
 }
 
@@ -93,7 +97,7 @@ void Server::socketStateChanged(QAbstractSocket::SocketState state) {
 }
 
 void Server::handleServerMsg(Message *msg) {
-
+  
 
 }
 

@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "messages.h"
+#include "message.h"
 #include <QtDebug>
 
 extern BuiltinCmd builtins[];
@@ -27,9 +27,27 @@ recvHandlerType Message::defaultRecvHandler;
 sendHandlerType Message::defaultSendHandler;
 QHash<QString, CmdType> Message::cmdTypes;
 
-Message::Message(QString _cmd, QStringList args) {
-  cmd = _cmd; qDebug() << "cmd: " << cmd;
-  params = args;
+Message::Message(Server *srv, Buffer *buf, QString _cmd, QString _prefix, QStringList _params)
+  : server(srv), buffer(buf), cmd(_cmd), prefix(_prefix), params(_params) {
+
+  // Check if it's a registered cmd (or a numeric reply with a custom entry)
+  if(cmdTypes.contains(cmd)) {
+    CmdType c = cmdTypes[cmd];
+    recvHandler = ( c.recvHandler ? c.recvHandler : defaultRecvHandler);
+    sendHandler = ( c.sendHandler ? c.sendHandler : defaultSendHandler);
+    type = - c.type;
+  } else {
+    int t = cmd.toInt();
+    if(t) {
+      type = t;
+      recvHandler = defaultRecvHandler;
+      sendHandler = defaultSendHandler;
+    } else {
+      // Unknown cmd!
+      qWarning() << "Unknown command: " << cmd;
+      type = 0;
+    }
+  }
 }
 
 void Message::init(recvHandlerType _r, sendHandlerType _s) {
@@ -40,7 +58,7 @@ void Message::init(recvHandlerType _r, sendHandlerType _s) {
   for(int i = 0; ; i++) {
     if(builtins[i].cmd.isEmpty()) break;
     CmdType c;
-    c.cmd = builtins[i].cmd.toLower();
+    c.cmd = builtins[i].cmd.toUpper();
     c.cmdDescr = builtins[i].cmdDescr;
     c.args = builtins[i].args;
     c.argsDescr = builtins[i].argsDescr;
@@ -65,17 +83,31 @@ sendHandlerType Message::getSendHandler() {
   return 0;
 }
 
-/*
-void Message::parseParams(QString str) {
-  QString left = str.section(':', 0, 0);
-  QString trailing = str.section(':', 1);
-  if(left.size()) {
+/** This parses a raw string as sent by the server and constructs a message object which is then returned.
+ */
+Message * Message::createFromServerString(Server *srv, QString msg) {
+  if(msg.isEmpty()) {
+    qWarning() << "Received empty message from server!";
+    return 0;
+  }
+  QString prefix;
+  QString cmd;
+  QStringList params;
+  if(msg[0] == ':') {
+    msg.remove(0,1);
+    prefix = msg.section(' ', 0, 0);
+    msg = msg.section(' ', 1);
+  }
+  cmd = msg.section(' ', 0, 0).toUpper();
+  msg = msg.section(' ', 1);
+  QString left = msg.section(':', 0, 0);
+  QString trailing = msg.section(':', 1);
+  if(!left.isEmpty()) {
     params << left.split(' ', QString::SkipEmptyParts);
   }
-  if(trailing.size()) {
+  if(!trailing.isEmpty()) {
     params << trailing;
   }
-  qDebug() << params;
-
+  return new Message(srv, 0, cmd, prefix, params);
+  //qDebug() << "prefix: " << prefix << " cmd: " << cmd << " params: " << params;
 }
-*/

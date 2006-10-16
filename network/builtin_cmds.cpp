@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include <QtGlobal>
-#include "messages.h"
+#include "message.h"
 
 
 /** This macro marks strings as translateable for Qt's linguist tools */

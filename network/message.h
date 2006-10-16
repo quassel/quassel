@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _MESSAGES_H_
-#define _MESSAGES_H_
+#ifndef _MESSAGE_H_
+#define _MESSAGE_H_
 
 #include <QHash>
 #include <QString>
@@ -37,6 +37,7 @@ typedef void (*recvHandlerType)(Message *);              // handler for incoming
  * Most of these are defined at compile time, but more may be added at runtime.
  */
 struct CmdType {
+  int type;
   QString cmd;
   QString cmdDescr;
   QString args;
@@ -51,23 +52,34 @@ struct CmdType {
 */
 class Message {
   public:
-    uint type;
-    QString prefix;
-    QString cmd;
-    QStringList params;
-
-    Message(QString cmd, QStringList args = QStringList());
+    Message(Server *server, Buffer *buffer, QString cmd, QString prefix, QStringList args = QStringList());
 
     virtual ~Message() {};
 
     static void init(recvHandlerType defaultRevcHandler, sendHandlerType defaultSendHandler);
+    static Message * createFromServerString(Server *server, QString srvMsg);
+    //static Message * createFromUserString(Server *server, Buffer *buffer, QString usrMsg);
     //static registerCmd();
     //static unregisterCmd();
 
-    recvHandlerType getRecvHandler();
-    sendHandlerType getSendHandler();
+    inline Server * getServer() { return server; }
+    inline Buffer * getBuffer() { return buffer; }
+    inline int getType() { return type; }
+    inline QString getPrefix() { return prefix; }
+    inline QString getCmd() { return cmd; }
+    inline QStringList getParams() { return params; }
+    inline recvHandlerType getRecvHandler();
+    inline sendHandlerType getSendHandler();
 
   protected:
+    Server *server;
+    Buffer *buffer;
+    int type;
+    QString prefix;
+    QString cmd;
+    QStringList params;
+    recvHandlerType recvHandler;
+    sendHandlerType sendHandler;
     static recvHandlerType defaultRecvHandler;
     static sendHandlerType defaultSendHandler;
 
