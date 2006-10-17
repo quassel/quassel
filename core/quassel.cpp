@@ -21,14 +21,14 @@
 #include "quassel.h"
 #include "logger.h"
 #include "proxy.h"
-#include "messages.h"
 
 #include <QString>
 #include <QDomDocument>
 
 void Quassel::init() {
+  Core::init();
+
   //initIconMap();
-  Message::init();
 }
 
 void Quassel::setLogger(Logger *) {

@@ -22,9 +22,9 @@
 #define _QUASSEL_H_
 
 class Logger;
-class QString;
 
 #include <QHash>
+#include <QString>
 
 
 /**
@@ -46,6 +46,16 @@ class Quassel {
 
 //    static QString iconPath;
     static QHash<QString, QString> iconMap;
+
+};
+
+class Exception {
+  public:
+    Exception(QString msg = "Unknown Exception") : _msg(msg) {};
+    virtual inline QString msg() { return _msg; }
+
+  protected:
+    QString _msg;
 
 };
 

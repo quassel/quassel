@@ -24,6 +24,7 @@
 #include <QtCore>
 #include <QtNetwork>
 
+#include "quassel.h"
 #include "message.h"
 
 #define DEFAULT_PORT 6667
@@ -71,10 +72,19 @@ class Server : public QThread {
     QTextStream stream;
 
     void handleServerMsg(Message *);
-    void handleUserMsg(Message *);
+    QString handleUserMsg(Message *);
     static inline void dispatchServerMsg(Message *msg) { msg->getServer()->handleServerMsg(msg); }
     static inline void dispatchUserMsg(Message *msg)   { msg->getServer()->handleUserMsg(msg); }
 
+    class ParseError : public Exception {
+      public:
+        ParseError(Message *msg);
+    };
+
+    class UnknownCmdError : public Exception {
+      public:
+        UnknownCmdError(Message *msg);
+    };
 };
 
 class Buffer {};

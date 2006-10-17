@@ -18,7 +18,9 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include "quassel.h"
 #include "server.h"
+#include "cmdcodes.h"
 
 Server::Server() {
   socket = new QTcpSocket();
@@ -61,7 +63,7 @@ void Server::disconnectFromIrc( ) {
 }
 
 void Server::putRawLine( const QString &s ) {
-  qDebug() << "Raw line: " << s;
+  qDebug() << "Sent: " << s;
   stream << s << "\r\n" << flush;
   //Message::createFromServerString(this, s);
 }
@@ -72,7 +74,11 @@ void Server::socketHasData( ) {
     qDebug() << "Read: " << s;
     emit recvRawServerMsg(s);
     Message *msg = Message::createFromServerString(this, s);
-    if(msg) handleServerMsg(msg);
+    if(msg) {
+      try { handleServerMsg(msg); } catch(Exception e) {
+        emit recvLine(e.msg() + "\n");
+      }
+    }
     delete msg;
   }
 }
@@ -96,13 +102,50 @@ void Server::socketStateChanged(QAbstractSocket::SocketState state) {
   qDebug() << "Socket state changed: " << state;
 }
 
+/** Handle a message sent by the IRC server that does not have a custom handler. */
 void Server::handleServerMsg(Message *msg) {
-  
+  int cmdCode = msg->getCmdCode();
+  QString prefix = msg->getPrefix();
+  QStringList params = msg->getParams();
+  if(cmdCode < 0) {
+    switch(-cmdCode) {
+      case CMD_PING:
+        // PING <server1> [<server2>]
+        if(params.size() == 1) {
+          putRawLine(QString("PONG :") + params[0]);
+        } else if(params.size() == 2) {
+          putRawLine(QString("PONG ") + params[0] + " :" + params[1]);
+        } else throw ParseError(msg);
+        break;
+
+      default:
+        throw Exception(QString("No handler installed for command: ") + msg->getCmd() + " " + msg->getParams().join(" "));
+    }
+  } else if(msg->getCmdCode() > 0) {
+    switch(msg->getCmdCode()) {
+
+      default:
+        //
+        throw Exception(msg->getCmd() + " " + msg->getParams().join(" "));
+    }
+
+  } else {
+    throw UnknownCmdError(msg);
+  }
+}
+
+QString Server::handleUserMsg(Message *msg) {
+
+  return "";
+}
+
+/* Exception classes for message handling */
+Server::ParseError::ParseError(Message *msg) {
+  _msg = QString("Command Parse Error: ") + msg->getCmd() + msg->getParams().join(" ");
 
 }
 
-void Server::handleUserMsg(Message *msg) {
-
+Server::UnknownCmdError::UnknownCmdError(Message *msg) {
+  _msg = QString("Unknown Command: ") + msg->getCmd();
 
 }
-

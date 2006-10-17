@@ -27,7 +27,6 @@
 
 int main(int argc, char **argv) {
 
-  Core::init();
   Quassel::init();
   Logger *logger = new Logger();
   Quassel::setLogger(logger);

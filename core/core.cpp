@@ -24,18 +24,15 @@
 #include <QSettings>
 
 void Core::init() {
-
+  Server::init();
 
 }
 
 void Core::run() {
 
-  connect(this, SIGNAL(connectToIrc( const QString&, quint16 )), &server, SLOT(connectToIrc( const QString&, quint16 )));
   connect(&server, SIGNAL(recvLine(const QString &)), this, SIGNAL(outputLine(const QString &)));
   //connect(
   server.start();
-  qDebug() << "Core running...";
-
   exec();
 }
 

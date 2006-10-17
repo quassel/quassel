@@ -35,17 +35,17 @@ Message::Message(Server *srv, Buffer *buf, QString _cmd, QString _prefix, QStrin
     CmdType c = cmdTypes[cmd];
     recvHandler = ( c.recvHandler ? c.recvHandler : defaultRecvHandler);
     sendHandler = ( c.sendHandler ? c.sendHandler : defaultSendHandler);
-    type = - c.type;
+    cmdCode = - c.cmdCode; // named commands have a _negative_ code!
   } else {
     int t = cmd.toInt();
     if(t) {
-      type = t;
+      cmdCode = t;
       recvHandler = defaultRecvHandler;
       sendHandler = defaultSendHandler;
     } else {
       // Unknown cmd!
       qWarning() << "Unknown command: " << cmd;
-      type = 0;
+      cmdCode = 0;
     }
   }
 }
@@ -58,6 +58,7 @@ void Message::init(recvHandlerType _r, sendHandlerType _s) {
   for(int i = 0; ; i++) {
     if(builtins[i].cmd.isEmpty()) break;
     CmdType c;
+    c.cmdCode = builtins[i].cmdCode;
     c.cmd = builtins[i].cmd.toUpper();
     c.cmdDescr = builtins[i].cmdDescr;
     c.args = builtins[i].args;

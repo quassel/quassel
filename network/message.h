@@ -37,7 +37,7 @@ typedef void (*recvHandlerType)(Message *);              // handler for incoming
  * Most of these are defined at compile time, but more may be added at runtime.
  */
 struct CmdType {
-  int type;
+  int cmdCode;
   QString cmd;
   QString cmdDescr;
   QString args;
@@ -64,7 +64,7 @@ class Message {
 
     inline Server * getServer() { return server; }
     inline Buffer * getBuffer() { return buffer; }
-    inline int getType() { return type; }
+    inline int getCmdCode() { return cmdCode; }
     inline QString getPrefix() { return prefix; }
     inline QString getCmd() { return cmd; }
     inline QStringList getParams() { return params; }
@@ -74,7 +74,7 @@ class Message {
   protected:
     Server *server;
     Buffer *buffer;
-    int type;
+    int cmdCode;
     QString prefix;
     QString cmd;
     QStringList params;
@@ -92,6 +92,7 @@ class Message {
  *  command hash.
  */
 struct BuiltinCmd {
+  int cmdCode;
   QString cmd;
   QString cmdDescr;
   QString args;

@@ -44,12 +44,10 @@ ChannelWidget::ChannelWidget(QWidget *parent) : QWidget(parent) {
   connect(ui.lineEdit, SIGNAL(returnPressed()), this, SLOT(enterPressed()));
   connect(this, SIGNAL(inputLine( const QString& )), &core, SLOT(inputLine( const QString& )));
   core.start();
-  core.connectToIrc("irc.quakenet.org");
+  core.connectToIrc("irc.quakenet.org", 6668);
 }
 
 void ChannelWidget::enterPressed() {
   emit inputLine(ui.lineEdit->text());
   ui.lineEdit->clear();
 }
-
-  

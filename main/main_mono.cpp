@@ -28,18 +28,12 @@
 #include "proxy.h"
 
 #include "mainwin.h"
-#include "messages.h"
-#include "server.h"
 
 int main(int argc, char **argv) {
 
   Quassel::init();
   Logger *logger = new Logger();
   Quassel::setLogger(logger);
-
-  //Message *m = new Message("admin");
-  //m->*(m->getCmdHandler())(QStringList(""));
-  //(m->*(m->getCmdHandler()))(QStringList());
 
   QApplication app(argc, argv);
 
