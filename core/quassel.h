@@ -29,8 +29,11 @@ class Logger;
 
 /**
  * A static class containing global data.
+ * This is used in both core and GUI modules. Where appropriate, accessors are thread-safe
+ * to account for that fact.
  */
 class Quassel {
+  Q_OBJECT
 
   public:
     static void init();
