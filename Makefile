@@ -19,8 +19,8 @@ default:
 run_cmake:
 	cd build && cmake .. && make
 
-# I need the prepare/restore at my system, because I have to alter the $PATH
-# temporarily. Because it's very system dependent, I didn't include the files.
-# -- kaffeedoktor
 build_windows:
-	win_build.bat
+	cd build && cmake .. -G "MinGW Makefiles" && mingw32-make
+
+clean:
+	rm -rf build/*
