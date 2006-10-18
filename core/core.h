@@ -27,14 +27,12 @@
 
 #include "server.h"
 
-typedef QMap<QString, QVariant> VarMap;
-
 class Core : public QThread {
   Q_OBJECT
 
   public:
 
-    static void init();
+    static Core * init();
     static VarMap loadNetworks();
     static void storeNetworks(VarMap);
     static VarMap loadIdentities();
@@ -53,5 +51,7 @@ class Core : public QThread {
     Server server; // temp
 
 };
+
+extern Core *core;
 
 #endif

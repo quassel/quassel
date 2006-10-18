@@ -22,64 +22,46 @@
 #include "server.h"
 #include "cmdcodes.h"
 
+#include <QMetaObject>
+
 Server::Server() {
-  socket = new QTcpSocket();
 
 }
 
 Server::~Server() {
-  delete socket;
+
 }
 
 void Server::init() {
-  Message::init(&dispatchServerMsg, &dispatchUserMsg);
+  //Message::init(&dispatchServerMsg, &dispatchUserMsg);
 }
 
 void Server::run() {
-  connect(socket, SIGNAL(connected()), this, SLOT(socketConnected()));
-  connect(socket, SIGNAL(disconnected()), this, SLOT(socketDisconnected()));
-  connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(socketError(QAbstractSocket::SocketError)));
-  connect(socket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(socketStateChanged(QAbstractSocket::SocketState)));
-  connect(socket, SIGNAL(readyRead()), this, SLOT(socketHasData()));
+  connect(&socket, SIGNAL(connected()), this, SLOT(socketConnected()));
+  connect(&socket, SIGNAL(disconnected()), this, SLOT(socketDisconnected()));
+  connect(&socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(socketError(QAbstractSocket::SocketError)));
+  connect(&socket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(socketStateChanged(QAbstractSocket::SocketState)));
+  connect(&socket, SIGNAL(readyRead()), this, SLOT(socketHasData()));
 
-  stream.setDevice(socket);
-  //connectToIrc("irc.quakenet.org", 6667);
   exec();
 }
 
-/*
-QAbstractSocket::SocketState TcpConnection::state( ) const {
-  return socket.state();
-}
-*/
-
 void Server::connectToIrc( const QString & host, quint16 port ) {
   qDebug() << "Connecting...";
-  socket->connectToHost(host, port);
+  socket.connectToHost(host, port);
 }
 
 void Server::disconnectFromIrc( ) {
-  socket->disconnectFromHost();
+  socket.disconnectFromHost();
 }
 
-void Server::putRawLine( const QString &s ) {
-  qDebug() << "Sent: " << s;
-  stream << s << "\r\n" << flush;
-  //Message::createFromServerString(this, s);
-}
-
-void Server::socketHasData( ) {
-  while(socket->canReadLine()) {
-    QString s = stream.readLine();
+void Server::socketHasData() {
+  while(socket.canReadLine()) {
+    QString s = socket.readLine().trimmed();
     qDebug() << "Read: " << s;
     emit recvRawServerMsg(s);
-    Message *msg = Message::createFromServerString(this, s);
-    if(msg) {
-      try { handleServerMsg(msg); } catch(Exception e) {
-        emit recvLine(e.msg() + "\n");
-      }
-    }
-    delete msg;
+    //Message *msg = Message::createFromServerString(this, s);
+    handleServerMsg(s);
   }
 }
 
@@ -90,7 +72,8 @@ void Server::socketError( QAbstractSocket::SocketError err ) {
 
 void Server::socketConnected( ) {
   qDebug() << "Socket connected!";
-  //emit connected();
+  putRawLine("NICK :Sput|QuasselDev");
+  putRawLine("USER Sputnick 8 * :Using Quassel IRC (WiP Version)");
 }
 
 void Server::socketDisconnected( ) {
@@ -102,7 +85,78 @@ void Server::socketStateChanged(QAbstractSocket::SocketState state) {
   qDebug() << "Socket state changed: " << state;
 }
 
-/** Handle a message sent by the IRC server that does not have a custom handler. */
+void Server::putRawLine(QString s) {
+  qDebug() << "SentRaw: " << s;
+  s += "\r\n";
+  socket.write(s.toAscii());
+}
+
+void Server::putCmd(QString cmd, QStringList params, QString prefix) {
+  QString m;
+  if(!prefix.isEmpty()) m += ":" + prefix + " ";
+  m += cmd.toUpper();
+  for(int i = 0; i < params.size() - 1; i++) {
+    m += " " + params[i];
+  }
+  if(!params.isEmpty()) m += " :" + params.last();
+  qDebug() << "SentCmd: " << m;
+  m += "\r\n";
+  socket.write(m.toAscii());
+}
+
+/** Handle a raw message string sent by the server. We try to find a suitable handler, otherwise we call a default handler. */
+void Server::handleServerMsg(QString msg) {
+  try {
+    if(msg.isEmpty()) {
+      qWarning() << "Received empty string from server!";
+      return;
+    }
+    // OK, first we split the raw message into its various parts...
+    QString prefix;
+    QString cmd;
+    QStringList params;
+    if(msg[0] == ':') {
+      msg.remove(0,1);
+      prefix = msg.section(' ', 0, 0);
+      msg = msg.section(' ', 1);
+    }
+    cmd = msg.section(' ', 0, 0).toUpper();
+    msg = msg.section(' ', 1);
+    QString left = msg.section(':', 0, 0);
+    QString trailing = msg.section(':', 1);
+    if(!left.isEmpty()) {
+      params << left.split(' ', QString::SkipEmptyParts);
+    }
+    if(!trailing.isEmpty()) {
+      params << trailing;
+    }
+    // Now we try to find a handler for this message. BTW, I do love the Trolltech guys ;-)
+    QString hname = cmd.toLower();
+    hname[0] = hname[0].toUpper();
+    hname = "handle" + hname + "FromServer";
+    if(!QMetaObject::invokeMethod(this, hname.toAscii(), Q_ARG(QString, prefix), Q_ARG(QStringList, params))) {
+      // Ok. Default handler it is.
+      defaultHandlerForServer(cmd, prefix, params);
+    }
+  } catch(Exception e) {
+    emit recvLine(e.msg());
+  }
+}
+
+void Server::defaultHandlerForServer(QString cmd, QString prefix, QStringList params) {
+  uint num = cmd.toUInt();
+  if(num) {
+    recvLine(cmd + " " + params.join(" "));
+  } else {
+    recvLine(QString("Unknown: ") + cmd + " " + params.join(" "));
+  }
+}
+
+void Server::handleUserMsg(QString usrMsg) {
+
+}
+
+/*
 void Server::handleServerMsg(Message *msg) {
   int cmdCode = msg->getCmdCode();
   QString prefix = msg->getPrefix();
@@ -111,11 +165,8 @@ void Server::handleServerMsg(Message *msg) {
     switch(-cmdCode) {
       case CMD_PING:
         // PING <server1> [<server2>]
-        if(params.size() == 1) {
-          putRawLine(QString("PONG :") + params[0]);
-        } else if(params.size() == 2) {
-          putRawLine(QString("PONG ") + params[0] + " :" + params[1]);
-        } else throw ParseError(msg);
+        if(params.size() < 1 || params.size() > 2) throw ParseError(msg);
+        putCmd("PONG", params);
         break;
 
       default:
@@ -133,19 +184,25 @@ void Server::handleServerMsg(Message *msg) {
     throw UnknownCmdError(msg);
   }
 }
+*/
 
-QString Server::handleUserMsg(Message *msg) {
+void Server::handleNoticeFromServer(QString prefix, QStringList params) {
+  recvLine(params.join(" "));
 
-  return "";
+
+}
+
+void Server::handlePingFromServer(QString prefix, QStringList params) {
+  putCmd("PONG", params);
 }
 
 /* Exception classes for message handling */
-Server::ParseError::ParseError(Message *msg) {
-  _msg = QString("Command Parse Error: ") + msg->getCmd() + msg->getParams().join(" ");
+Server::ParseError::ParseError(QString cmd, QString prefix, QStringList params) {
+  _msg = QString("Command Parse Error: ") + cmd + params.join(" ");
 
 }
 
-Server::UnknownCmdError::UnknownCmdError(Message *msg) {
-  _msg = QString("Unknown Command: ") + msg->getCmd();
+Server::UnknownCmdError::UnknownCmdError(QString cmd, QString prefix, QStringList params) {
+  _msg = QString("Unknown Command: ") + cmd;
 
 }

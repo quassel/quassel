@@ -22,7 +22,6 @@
 
 #include <QApplication>
 
-#include "core.h"
 #include "quassel.h"
 #include "guiproxy.h"
 
@@ -34,11 +33,9 @@ int main(int argc, char **argv) {
   QApplication::setApplicationName("Quassel IRC");
   QApplication::setOrganizationName("The Quassel Team");
 
-  Quassel::runMode = Quassel::Monolithic;
+  Quassel::runMode = Quassel::GUIOnly;
   quassel = Quassel::init();
-  core = Core::init();
   guiProxy = GUIProxy::init();
-  // coreProxy = CoreProxy::init();
 
   MainWin mainWin;
   mainWin.show();

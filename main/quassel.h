@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (C) 2005 by The Quassel Team                                *
  *   devel@quassel-irc.org                                                 *
- *                                                                          *
+ *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
@@ -18,43 +18,64 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <iostream>
+#ifndef _QUASSEL_H_
+#define _QUASSEL_H_
 
-#include <QApplication>
+class Quassel;
 
-#include "core.h"
-#include "quassel.h"
-#include "guiproxy.h"
+#include <QtCore>
+//#include <QMutex>
 
-#include "mainwin.h"
+/* Some global stuff */
+typedef QMap<QString, QVariant> VarMap;
+extern Quassel *quassel;
 
-int main(int argc, char **argv) {
-  QApplication app(argc, argv);
-  QApplication::setOrganizationDomain("quassel-irc.org");
-  QApplication::setApplicationName("Quassel IRC");
-  QApplication::setOrganizationName("The Quassel Team");
+/**
+ * A static class containing global data.
+ * This is used in both core and GUI modules. Where appropriate, accessors are thread-safe
+ * to account for that fact.
+ */
+class Quassel : public QObject {
+  Q_OBJECT
 
-  Quassel::runMode = Quassel::Monolithic;
-  quassel = Quassel::init();
-  core = Core::init();
-  guiProxy = GUIProxy::init();
-  // coreProxy = CoreProxy::init();
+  public:
+    static Quassel * init();
+    //static Logger *getLogger();
+    //static void setLogger(Logger *);
 
-  MainWin mainWin;
-  mainWin.show();
-  int exitCode = app.exec();
-  delete guiProxy;
-  delete quassel;
-}
+//    static QIcon *getIcon(QString symbol);
 
-void GUIProxy::send(GUISignal sig, QVariant arg1, QVariant arg2, QVariant arg3) {
+    QVariant getData(QString key);
 
+  public slots:
+    void putData(QString key, const QVariant &data);
 
+  signals:
+    void dataChanged(QString key, const QVariant &data);
 
-}
+  public:
+    enum RunMode { Monolithic, GUIOnly, CoreOnly };
+    static RunMode runMode;
 
-void GUIProxy::recv(CoreSignal sig, QVariant arg1, QVariant arg2, QVariant arg3) {
+  private:
+    static void initIconMap();
+    
+    //static Logger *logger;
 
+//    static QString iconPath;
+    static QHash<QString, QString> iconMap;
+    static QMutex mutex;
+    static QHash<QString, QVariant> data;
+};
 
+class Exception {
+  public:
+    Exception(QString msg = "Unknown Exception") : _msg(msg) {};
+    virtual inline QString msg() { return _msg; }
 
-}
+  protected:
+    QString _msg;
+
+};
+
+#endif

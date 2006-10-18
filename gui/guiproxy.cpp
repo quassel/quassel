@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by The Quassel Team                                *
+ *   Copyright (C) 2005/06 by The Quassel Team                             *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,54 +18,15 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "quassel.h"
-#include "logger.h"
-#include "proxy.h"
+#include "guiproxy.h"
 
-#include <QString>
-#include <QDomDocument>
-
-void Quassel::init() {
-  Core::init();
-
-  //initIconMap();
+GUIProxy * GUIProxy::init() {
+  if(guiProxy) return guiProxy;
+  return new GUIProxy;
 }
 
-void Quassel::setLogger(Logger *) {
-
-
-};
-
-
-/* not done yet */
-void Quassel::initIconMap() {
-// Do not depend on GUI in core!
-/*
-  QDomDocument doc("IconMap");
-  QFile file("images/iconmap.xml");
-  if(!file.open(QIODevice::ReadOnly)) {
-    qDebug() << "Error opening iconMap file!";
-    return;
-  } else if(!doc.setContent(&file)) {
-    file.close();
-    qDebug() << "Error parsing iconMap file!";
-  } else {
-    file.close();
-
-  }
-*/
+void GUIProxy::gsUserInput(QString s) {
+  send(GS_USER_INPUT, s);
 }
 
-
-/**
- * Retrieves an icon determined by its symbolic name. The mapping shall later
- * be performed by a theme manager or something like that.
- * @param symbol Symbol of requested icon
- * @return Pointer to a newly created QIcon
- */
-//
-//QIcon *Quassel::getIcon(QString /*symbol*/) {
-  //if(symbol == "connect"
-
-//  return 0;
-//}
+GUIProxy *guiProxy;

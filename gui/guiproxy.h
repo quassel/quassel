@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by The Quassel Team                                *
+ *   Copyright (C) 2005/06 by The Quassel Team                             *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,48 +18,40 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _QUASSEL_H_
-#define _QUASSEL_H_
+#ifndef _GUIPROXY_H_
+#define _GUIPROXY_H_
 
-class Logger;
+#include "../main/proxy_common.h"
 
-#include <QHash>
-#include <QString>
+#include <QObject>
+#include <QVariant>
 
-
-/**
- * A static class containing global data.
- * This is used in both core and GUI modules. Where appropriate, accessors are thread-safe
- * to account for that fact.
+/** This class is the GUI side of the proxy. The GUI connects its signals and slots to it,
+ *  and the calls are marshalled and sent to (or received and unmarshalled from) the CoreProxy.
+ *  The connection function is defined in main/main_gui.cpp or main/main_mono.cpp.
  */
-class Quassel {
+class GUIProxy : public QObject {
   Q_OBJECT
 
-  public:
-    static void init();
-    static Logger *getLogger();
-    static void setLogger(Logger *);
-
-//    static QIcon *getIcon(QString symbol);
-
   private:
-    static void initIconMap();
-    
-    static Logger *logger;
+    void send(GUISignal, QVariant arg1 = QVariant(), QVariant arg2 = QVariant(), QVariant arg3 = QVariant());
+    void recv(CoreSignal, QVariant arg1 = QVariant(), QVariant arg2 = QVariant(), QVariant arg3 = QVariant());
 
-//    static QString iconPath;
-    static QHash<QString, QString> iconMap;
-
-};
-
-class Exception {
   public:
-    Exception(QString msg = "Unknown Exception") : _msg(msg) {};
-    virtual inline QString msg() { return _msg; }
+    static GUIProxy * init();
 
-  protected:
-    QString _msg;
+  public slots:
+    void gsUserInput(QString);
+
+
+  signals:
+    void psCoreMessage(QString);
+
 
 };
+
+extern GUIProxy *guiProxy;
+
+
 
 #endif

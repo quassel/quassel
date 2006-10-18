@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include "channelwidget.h"
+#include "guiproxy.h"
 
 #include <QtGui>
 #include <iostream>
@@ -40,14 +41,22 @@ ChannelWidget::ChannelWidget(QWidget *parent) : QWidget(parent) {
   */
   //connect(&core, SIGNAL(outputLine( const QString& )), ui.textBrowser, SLOT(insertPlainText(const QString &)));
   //connect(ui.lineEdit, SIGNAL(
-  connect(&core, SIGNAL(outputLine( const QString& )), ui.textBrowser, SLOT(insertPlainText(const QString &)));
+  connect(&core, SIGNAL(outputLine( const QString& )), this, SLOT(lineReceived(const QString &)));
   connect(ui.lineEdit, SIGNAL(returnPressed()), this, SLOT(enterPressed()));
   connect(this, SIGNAL(inputLine( const QString& )), &core, SLOT(inputLine( const QString& )));
+
+  connect(this, SIGNAL(inputLine(QString)), guiProxy, SLOT(gsUserInput(QString)));
+
   core.start();
-  core.connectToIrc("irc.quakenet.org", 6668);
+  core.connectToIrc("irc.moep.net", 6668);
 }
 
 void ChannelWidget::enterPressed() {
   emit inputLine(ui.lineEdit->text());
   ui.lineEdit->clear();
+}
+
+void ChannelWidget::lineReceived(QString s) {
+  ui.textBrowser->insertPlainText(s + "\n");
+  ui.textBrowser->ensureCursorVisible();
 }

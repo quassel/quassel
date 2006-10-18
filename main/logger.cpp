@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (C) 2005 by The Quassel Team                                *
  *   devel@quassel-irc.org                                                 *
- *                                                                          *
+ *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
@@ -18,43 +18,34 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include "quassel.h"
+#include "logger.h"
+
 #include <iostream>
 
-#include <QApplication>
 
-#include "core.h"
-#include "quassel.h"
-#include "guiproxy.h"
 
-#include "mainwin.h"
-
-int main(int argc, char **argv) {
-  QApplication app(argc, argv);
-  QApplication::setOrganizationDomain("quassel-irc.org");
-  QApplication::setApplicationName("Quassel IRC");
-  QApplication::setOrganizationName("The Quassel Team");
-
-  Quassel::runMode = Quassel::Monolithic;
-  quassel = Quassel::init();
-  core = Core::init();
-  guiProxy = GUIProxy::init();
-  // coreProxy = CoreProxy::init();
-
-  MainWin mainWin;
-  mainWin.show();
-  int exitCode = app.exec();
-  delete guiProxy;
-  delete quassel;
+Logger::~Logger() {
+  //qInstallMsgHandler(0);
 }
 
-void GUIProxy::send(GUISignal sig, QVariant arg1, QVariant arg2, QVariant arg3) {
-
-
-
+void messageHandler(QtMsgType type, const char *msg) {
+  switch (type) {
+    case QtDebugMsg:
+      std::cerr << "[DEBUG] " << msg << "\n";
+      break;
+    case QtWarningMsg:
+      std::cerr << "[WARNING] " << msg << "\n";
+      break;
+    case QtCriticalMsg:
+      std::cerr << "[CRITICAL] " << msg << "\n";
+      break;
+    case QtFatalMsg:
+      std::cerr << "[FATAL] " << msg << "\n";
+      abort(); // deliberately core dump
+  }
 }
 
-void GUIProxy::recv(CoreSignal sig, QVariant arg1, QVariant arg2, QVariant arg3) {
-
-
-
+Logger::Logger() {
+  //qInstallMsgHandler(messageHandler);
 }

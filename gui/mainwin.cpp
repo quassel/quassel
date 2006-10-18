@@ -32,11 +32,11 @@ MainWin::MainWin() : QMainWindow() {
   setWindowTitle("Quassel IRC");
   setWindowIcon(QIcon(":/default/tux.png"));
   setWindowIconText("Quassel IRC");
-  workspace = new QWorkspace(this);
-  setCentralWidget(workspace);
+  //workspace = new QWorkspace(this);
+  //setCentralWidget(workspace);
   ChannelWidget *cw = new ChannelWidget(this);
-  workspace->addWindow(cw);
-  //setCentralWidget(cw);
+  //workspace->addWindow(cw);
+  setCentralWidget(cw);
   serverListDlg = new ServerListDlg(this);
   serverListDlg->setVisible(serverListDlg->showOnStartup());
   //showServerList();

@@ -22,29 +22,36 @@
 #include <QCoreApplication>
 
 #include "quassel.h"
-#include "logger.h"
-#include "proxy.h"
+#include "core.h"
 
 int main(int argc, char **argv) {
-
-  Quassel::init();
-  Logger *logger = new Logger();
-  Quassel::setLogger(logger);
-
   QCoreApplication app(argc, argv);
-
   QCoreApplication::setOrganizationDomain("quassel-irc.org");
   QCoreApplication::setApplicationName("Quassel IRC");
   QCoreApplication::setOrganizationName("The Quassel Team");
 
-  return app.exec();
+  Quassel::runMode = Quassel::CoreOnly;
+  quassel = Quassel::init();
+  core = Core::init();
+  //coreProxy = CoreProxy::init();
+
+  //Logger *logger = new Logger();
+  //Quassel::setLogger(logger);
+
+  int exitCode = app.exec();
+  delete quassel;
+  return exitCode;
 }
 
-QVariant proxyConnect(uint func, QVariant arg) {
+Core *core = 0;
+
+//GUIProxy::send(uint func, QVariant arg) {
+  /*
   switch(func) {
     case LOAD_IDENTITIES: return (QVariant) CoreProxy::loadIdentities();
     case STORE_IDENTITIES: CoreProxy::storeIdentities(arg.toMap()); return 0;
 
   }
-  return 0;
-}
+  */
+
+//}

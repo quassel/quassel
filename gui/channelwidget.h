@@ -36,6 +36,7 @@ class ChannelWidget : public QWidget {
     
   private slots:
     void enterPressed();
+    void lineReceived(QString);
 
   private:
     Ui::ChannelWidget ui;

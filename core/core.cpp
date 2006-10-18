@@ -20,12 +20,18 @@
 
 #include "core.h"
 #include "server.h"
+#include "quassel.h"
 
 #include <QSettings>
 
-void Core::init() {
-  Server::init();
-
+Core * Core::init() {
+  if(core) return core;
+  QSettings s;
+  VarMap identities = s.value("Network/Identities").toMap();
+  qDebug() << identities;
+  //VarMap networks   = s.value("Network/
+  quassel->putData("Identities", identities);
+  return new Core();
 }
 
 void Core::run() {
@@ -54,3 +60,5 @@ void Core::storeIdentities(VarMap identities) {
   QSettings s;
   s.setValue("Network/Identities", identities);
 }
+
+Core *core;

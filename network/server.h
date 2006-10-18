@@ -22,12 +22,13 @@
 #define _SERVER_H_
 
 #include <QtCore>
+#include <QTimer>
 #include <QtNetwork>
 
 #include "quassel.h"
-#include "message.h"
 
 #define DEFAULT_PORT 6667
+
 
 /**
  * This is a server object, managing a single connection to an IRC server, handling the associated channels and so on.
@@ -52,7 +53,8 @@ class Server : public QThread {
     void connectToIrc(const QString &host, quint16 port = DEFAULT_PORT);
     void disconnectFromIrc();
 
-    void putRawLine(const QString &input /*, Buffer *source = 0 */);
+    void putRawLine(QString input);
+    void putCmd(QString cmd, QStringList params, QString prefix = 0);
 
   signals:
     //void outputLine(const QString & /*, Buffer *target = 0 */);
@@ -67,53 +69,34 @@ class Server : public QThread {
     void socketDisconnected();
     void socketStateChanged(QAbstractSocket::SocketState);
 
+    /* Message Handlers */
+    /* handleXxxxFromServer(QString prefix, QStringList params); */
+    void handleNoticeFromServer(QString, QStringList);
+    void handlePingFromServer(QString, QStringList);
+
+    void defaultHandlerForServer(QString cmd, QString prefix, QStringList params);
+
   private:
-    QTcpSocket *socket;
+    QTcpSocket socket;
     QTextStream stream;
 
-    void handleServerMsg(Message *);
-    QString handleUserMsg(Message *);
-    static inline void dispatchServerMsg(Message *msg) { msg->getServer()->handleServerMsg(msg); }
-    static inline void dispatchUserMsg(Message *msg)   { msg->getServer()->handleUserMsg(msg); }
+    void handleServerMsg(QString rawMsg);
+    void handleUserMsg(QString usrMsg);
+    //static inline void dispatchServerMsg(Message *msg) { msg->getServer()->handleServerMsg(msg); }
+    //static inline void dispatchUserMsg(Message *msg)   { msg->getServer()->handleUserMsg(msg); }
 
     class ParseError : public Exception {
       public:
-        ParseError(Message *msg);
+        ParseError(QString cmd, QString prefix, QStringList params);
     };
 
     class UnknownCmdError : public Exception {
       public:
-        UnknownCmdError(Message *msg);
+        UnknownCmdError(QString cmd, QString prefix, QStringList params);
     };
 };
 
 class Buffer {};
 
-/*
-class TcpConnection : public QThread {
-  Q_OBJECT
-
-
-  public:
-    void run();
-    QAbstractSocket::SocketState state() const;
-
-  public slots:
-    void connectToHost(const QString &host, quint16 port = DEFAULT_PORT);
-    void disconnectFromHost();
-    void sendLine(const QString &);
-
-  signals:
-    void recvLine(QString);
-    void error(QAbstractSocket::SocketError);
-    void connected();
-    void disconnected();
-    void stateChanged(QAbstractSocket::SocketState);
-
-  private:
-    QTcpSocket socket;
-    QTextStream stream;
-};
-*/
 
 #endif

@@ -117,7 +117,8 @@ void ServerListDlg::loadIdentities() {
  //QSettings s;
   //s.beginGroup("Identities");
   //identities = s.value("Network/Identities").toMap();
-  identities = GuiProxy::loadIdentities();
+  //identities = GuiProxy::loadIdentities();
+  identities = quassel->getData("Identities").toMap();
   while(!identities.contains("Default")) {
     identities = VarMap();
     editIdentities();
@@ -127,7 +128,8 @@ void ServerListDlg::loadIdentities() {
 void ServerListDlg::storeIdentities() {
   //QSettings s;
   //s.setValue("Network/Identities", identities);
-  GuiProxy::storeIdentities(identities);
+  //GuiProxy::storeIdentities(identities);
+  quassel->putData("Identities", identities);
 }
 
 void ServerListDlg::editIdentities() {
