@@ -41,14 +41,16 @@ ChannelWidget::ChannelWidget(QWidget *parent) : QWidget(parent) {
   */
   //connect(&core, SIGNAL(outputLine( const QString& )), ui.textBrowser, SLOT(insertPlainText(const QString &)));
   //connect(ui.lineEdit, SIGNAL(
-  connect(&core, SIGNAL(outputLine( const QString& )), this, SLOT(lineReceived(const QString &)));
+  //connect(&core, SIGNAL(outputLine( const QString& )), this, SLOT(lineReceived(const QString &)));
   connect(ui.lineEdit, SIGNAL(returnPressed()), this, SLOT(enterPressed()));
-  connect(this, SIGNAL(inputLine( const QString& )), &core, SLOT(inputLine( const QString& )));
+  //connect(this, SIGNAL(inputLine( const QString& )), &core, SLOT(inputLine( const QString& )));
 
   connect(this, SIGNAL(inputLine(QString)), guiProxy, SLOT(gsUserInput(QString)));
+  connect(this, SIGNAL(requestConnect(QString, quint16)), guiProxy, SLOT(gsRequestConnect(QString, quint16)));
+  connect(guiProxy, SIGNAL(csCoreMessage(QString)), this, SLOT(lineReceived(QString)));
 
-  core.start();
-  core.connectToIrc("irc.moep.net", 6668);
+  //emit requestConnect("irc.scortum.moep.net", 6668);
+  emit requestConnect("irc.quakenet.org", 6668);
 }
 
 void ChannelWidget::enterPressed() {

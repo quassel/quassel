@@ -21,19 +21,32 @@
 #include "core.h"
 #include "server.h"
 #include "quassel.h"
+#include "coreproxy.h"
 
 #include <QSettings>
 
-Core * Core::init() {
-  if(core) return core;
+Core::Core() {
+  if(core) qFatal("Trying to instantiate more than one Core object!");
+
+  connect(coreProxy, SIGNAL(gsRequestConnect(QString, quint16)), this, SLOT(connectToIrc(QString, quint16)));
+  connect(coreProxy, SIGNAL(gsUserInput(QString)), this, SLOT(inputLine(QString)));
+
+  connect(&server, SIGNAL(recvLine(QString)), coreProxy, SLOT(csCoreMessage(QString)));
+
   QSettings s;
   VarMap identities = s.value("Network/Identities").toMap();
-  qDebug() << identities;
   //VarMap networks   = s.value("Network/
   quassel->putData("Identities", identities);
-  return new Core();
+
+  server.start();
 }
 
+void Core::init() {
+
+
+}
+
+/*
 void Core::run() {
 
   connect(&server, SIGNAL(recvLine(const QString &)), this, SIGNAL(outputLine(const QString &)));
@@ -41,13 +54,15 @@ void Core::run() {
   server.start();
   exec();
 }
+*/
 
-void Core::connectToIrc( const QString &h, quint16 port) {
+void Core::connectToIrc(const QString &h, quint16 port) {
+  qDebug() << "Core: Connecting to " << h << ":" << port;
   server.connectToIrc(h, port);
 }
 
-void Core::inputLine(const QString &s) {
-  server.putRawLine( s);
+void Core::inputLine(QString s) {
+  server.putRawLine(s);
 
 }
 

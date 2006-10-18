@@ -20,13 +20,17 @@
 
 #include "guiproxy.h"
 
-GUIProxy * GUIProxy::init() {
-  if(guiProxy) return guiProxy;
-  return new GUIProxy;
+GUIProxy::GUIProxy() {
+  if(guiProxy) qFatal("Trying to instantiate more than one CoreProxy object!");
+
 }
 
 void GUIProxy::gsUserInput(QString s) {
   send(GS_USER_INPUT, s);
+}
+
+void GUIProxy::gsRequestConnect(QString h, quint16 p) {
+  send(GS_REQUEST_CONNECT, h, p);
 }
 
 GUIProxy *guiProxy;

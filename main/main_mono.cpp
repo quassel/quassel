@@ -25,6 +25,7 @@
 #include "core.h"
 #include "quassel.h"
 #include "guiproxy.h"
+#include "coreproxy.h"
 
 #include "mainwin.h"
 
@@ -35,26 +36,42 @@ int main(int argc, char **argv) {
   QApplication::setOrganizationName("The Quassel Team");
 
   Quassel::runMode = Quassel::Monolithic;
-  quassel = Quassel::init();
-  core = Core::init();
-  guiProxy = GUIProxy::init();
-  // coreProxy = CoreProxy::init();
+  quassel = new Quassel();
+  guiProxy = new GUIProxy();
+  coreProxy = new CoreProxy();
+  core = new Core();
+
+  core->init();
 
   MainWin mainWin;
   mainWin.show();
   int exitCode = app.exec();
+  delete core;
   delete guiProxy;
+  delete coreProxy;
   delete quassel;
+  return exitCode;
 }
 
 void GUIProxy::send(GUISignal sig, QVariant arg1, QVariant arg2, QVariant arg3) {
+  coreProxy->recv(sig, arg1, arg2, arg3);
+}
 
+void CoreProxy::recv(GUISignal sig, QVariant arg1, QVariant arg2, QVariant arg3) {
+  switch(sig) {
+    case GS_USER_INPUT: emit gsUserInput(arg1.toString()); break;
+    case GS_REQUEST_CONNECT: emit gsRequestConnect(arg1.toString(), arg2.toUInt()); break;
+    default: qWarning() << "Unknown signal in CoreProxy::recv: " << sig;
+  }
+}
 
-
+void CoreProxy::send(CoreSignal sig, QVariant arg1, QVariant arg2, QVariant arg3) {
+  guiProxy->recv(sig, arg1, arg2, arg3);
 }
 
 void GUIProxy::recv(CoreSignal sig, QVariant arg1, QVariant arg2, QVariant arg3) {
-
-
-
+  switch(sig) {
+    case CS_CORE_MESSAGE: emit csCoreMessage(arg1.toString()); break;
+    default: qWarning() << "Unknown signal in GUIProxy::recv: " << sig;
+  }
 }

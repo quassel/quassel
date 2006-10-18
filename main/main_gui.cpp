@@ -34,8 +34,8 @@ int main(int argc, char **argv) {
   QApplication::setOrganizationName("The Quassel Team");
 
   Quassel::runMode = Quassel::GUIOnly;
-  quassel = Quassel::init();
-  guiProxy = GUIProxy::init();
+  quassel = new Quassel();
+  guiProxy = new GUIProxy();
 
   MainWin mainWin;
   mainWin.show();

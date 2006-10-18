@@ -21,11 +21,11 @@
 #ifndef _PROXY_COMMON_H_
 #define _PROXY_COMMON_H_
 
-enum GUISignal { GS_USER_INPUT
+enum GUISignal { GS_USER_INPUT, GS_REQUEST_CONNECT,
 
 };
 
-enum CoreSignal { GS_CORE_MESSAGE
+enum CoreSignal { CS_CORE_MESSAGE
 
 };
 

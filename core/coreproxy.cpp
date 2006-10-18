@@ -18,37 +18,16 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "proxy.h"
+#include "coreproxy.h"
+#include <QDebug>
 
-#include <iostream>
+CoreProxy::CoreProxy() {
+  if(coreProxy) qFatal("Trying to instantiate more than one CoreProxy object!");
 
-using namespace Proxy;
-
-VarMap CoreProxy::loadIdentities() {
-  return Core::loadIdentities();
 }
 
-void CoreProxy::storeIdentities(VarMap id) {
-  Core::storeIdentities(id);
+void CoreProxy::csCoreMessage(QString s) {
+  send(CS_CORE_MESSAGE, s);
 }
 
-
-
-VarMap GuiProxy::loadIdentities() {
-  return proxyConnect(LOAD_IDENTITIES).toMap();
-}
-
-void GuiProxy::storeIdentities(VarMap arg) {
-  proxyConnect(STORE_IDENTITIES, arg);
-}
-
-/*
-QVariant proxyConnect(uint func, QVariant arg) {
-  switch(func) {
-    case LOAD_IDENTITIES: return (QVariant) CoreProxy::loadIdentities();
-    case STORE_IDENTITIES: CoreProxy::storeIdentities(arg.toMap()); return 0;
-
-  }
-  return 0;
-}
-*/
+CoreProxy *coreProxy;

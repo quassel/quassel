@@ -23,6 +23,7 @@
 
 #include "quassel.h"
 #include "core.h"
+#include "coreproxy.h"
 
 int main(int argc, char **argv) {
   QCoreApplication app(argc, argv);
@@ -31,14 +32,18 @@ int main(int argc, char **argv) {
   QCoreApplication::setOrganizationName("The Quassel Team");
 
   Quassel::runMode = Quassel::CoreOnly;
-  quassel = Quassel::init();
-  core = Core::init();
-  //coreProxy = CoreProxy::init();
+  quassel = new Quassel();
+  coreProxy = new CoreProxy();
+  core = new Core();
 
   //Logger *logger = new Logger();
   //Quassel::setLogger(logger);
 
+  core->init();
+
   int exitCode = app.exec();
+  delete core;
+  delete coreProxy;
   delete quassel;
   return exitCode;
 }

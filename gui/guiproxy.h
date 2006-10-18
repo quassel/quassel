@@ -21,7 +21,7 @@
 #ifndef _GUIPROXY_H_
 #define _GUIPROXY_H_
 
-#include "../main/proxy_common.h"
+#include "proxy_common.h"
 
 #include <QObject>
 #include <QVariant>
@@ -38,15 +38,17 @@ class GUIProxy : public QObject {
     void recv(CoreSignal, QVariant arg1 = QVariant(), QVariant arg2 = QVariant(), QVariant arg3 = QVariant());
 
   public:
-    static GUIProxy * init();
+    GUIProxy();
 
   public slots:
     void gsUserInput(QString);
+    void gsRequestConnect(QString, quint16);
 
 
   signals:
-    void psCoreMessage(QString);
+    void csCoreMessage(QString);
 
+  friend class CoreProxy;
 
 };
 

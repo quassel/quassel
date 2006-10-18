@@ -28,12 +28,10 @@
 
 extern void messageHandler(QtMsgType type, const char *msg);
 
-Quassel * Quassel::init() {
-  if(quassel) return quassel;
+Quassel::Quassel() {
+  if(quassel) qFatal("Trying to instantiate more than one Quassel object!");
   qInstallMsgHandler(messageHandler);
-  quassel = new Quassel();
   //initIconMap();
-  return quassel;
 }
 
 /*
@@ -95,5 +93,3 @@ void Quassel::initIconMap() {
 
 Quassel *quassel = 0;
 Quassel::RunMode Quassel::runMode;
-QMutex Quassel::mutex;
-QHash<QString, QVariant> Quassel::data;

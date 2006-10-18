@@ -39,7 +39,7 @@ class Quassel : public QObject {
   Q_OBJECT
 
   public:
-    static Quassel * init();
+    Quassel();
     //static Logger *getLogger();
     //static void setLogger(Logger *);
 
@@ -63,9 +63,9 @@ class Quassel : public QObject {
     //static Logger *logger;
 
 //    static QString iconPath;
-    static QHash<QString, QString> iconMap;
-    static QMutex mutex;
-    static QHash<QString, QVariant> data;
+    QHash<QString, QString> iconMap;
+    QMutex mutex;
+    QHash<QString, QVariant> data;
 };
 
 class Exception {

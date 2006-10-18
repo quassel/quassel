@@ -27,26 +27,27 @@
 
 #include "server.h"
 
-class Core : public QThread {
+class Core : public QObject {
   Q_OBJECT
 
   public:
 
-    static Core * init();
-    static VarMap loadNetworks();
-    static void storeNetworks(VarMap);
-    static VarMap loadIdentities();
-    static void storeIdentities(VarMap);
+    Core();
+    void init();
+    VarMap loadNetworks();
+    void storeNetworks(VarMap);
+    VarMap loadIdentities();
+    void storeIdentities(VarMap);
 
   public slots:
-    void inputLine(const QString &);   // temp
+    void inputLine(QString);   // temp
     void connectToIrc(const QString &, quint16 port = 6667);
 
   signals:
     void outputLine(const QString &);  // temp
-    
+
   private:
-    void run();
+    //void run();
 
     Server server; // temp
 

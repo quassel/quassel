@@ -23,8 +23,6 @@
 
 #include "ui_channelwidget.h"
 
-#include "core.h"
-
 class ChannelWidget : public QWidget {
   Q_OBJECT
 
@@ -32,7 +30,8 @@ class ChannelWidget : public QWidget {
     ChannelWidget(QWidget *parent = 0);
 
   signals:
-    void inputLine(const QString &);
+    void requestConnect(QString, quint16);
+    void inputLine(QString);
     
   private slots:
     void enterPressed();
@@ -41,8 +40,6 @@ class ChannelWidget : public QWidget {
   private:
     Ui::ChannelWidget ui;
 
-    Core core;
-    Server server;
 };
 
 

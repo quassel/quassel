@@ -18,34 +18,41 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _PROXY_H_
-#define _PROXY_H_
+#ifndef _COREPROXY_H_
+#define _COREPROXY_H_
 
-#include "core.h"
+#include "proxy_common.h"
 
-namespace Proxy {
-  enum { LOAD_IDENTITIES, STORE_IDENTITIES };
-};
+#include <QObject>
+#include <QVariant>
 
-class CoreProxy {
+/** This class is the Core side of the proxy. The Core connects its signals and slots to it,
+ *  and the calls are marshalled and sent to (or received and unmarshalled from) the GUIProxy.
+ *  The connection functions are defined in main/main_core.cpp or main/main_mono.cpp.
+ */
+class CoreProxy : public QObject {
   Q_OBJECT
 
-  public:
-    static VarMap loadIdentities();
-    static void storeIdentities(VarMap);
-
-};
-
-
-class GuiProxy {
-  Q_OBJECT
+  private:
+    void send(CoreSignal, QVariant arg1 = QVariant(), QVariant arg2 = QVariant(), QVariant arg3 = QVariant());
+    void recv(GUISignal, QVariant arg1 = QVariant(), QVariant arg2 = QVariant(), QVariant arg3 = QVariant());
 
   public:
-    static VarMap loadIdentities();
-    static void storeIdentities(VarMap);
+    CoreProxy();
 
+  public slots:
+    void csCoreMessage(QString);
+
+
+  signals:
+    void gsUserInput(QString);
+    void gsRequestConnect(QString, quint16);
+
+  friend class GUIProxy;
 };
 
-extern QVariant proxyConnect(uint func, QVariant arg = QVariant());
+extern CoreProxy *coreProxy;
+
+
 
 #endif
