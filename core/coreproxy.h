@@ -23,8 +23,9 @@
 
 #include "proxy_common.h"
 
-#include <QObject>
-#include <QVariant>
+#include <QtCore>
+#include <QTcpSocket>
+#include <QTcpServer>
 
 /** This class is the Core side of the proxy. The Core connects its signals and slots to it,
  *  and the calls are marshalled and sent to (or received and unmarshalled from) the GUIProxy.
@@ -33,20 +34,36 @@
 class CoreProxy : public QObject {
   Q_OBJECT
 
-  private:
-    void send(CoreSignal, QVariant arg1 = QVariant(), QVariant arg2 = QVariant(), QVariant arg3 = QVariant());
-    void recv(GUISignal, QVariant arg1 = QVariant(), QVariant arg2 = QVariant(), QVariant arg3 = QVariant());
-
   public:
     CoreProxy();
 
   public slots:
-    void csCoreMessage(QString);
-
+    inline void csCoreMessage(QString s)                           { send(CS_CORE_MESSAGE, s); }
+    inline void csUpdateGlobalData(QString key, QVariant data)     { send(CS_UPDATE_GLOBAL_DATA, key, data); }
 
   signals:
+    void gsPutGlobalData(QString, QVariant);
     void gsUserInput(QString);
     void gsRequestConnect(QString, quint16);
+
+  private:
+    void send(CoreSignal, QVariant arg1 = QVariant(), QVariant arg2 = QVariant(), QVariant arg3 = QVariant());
+    void recv(GUISignal, QVariant arg1 = QVariant(), QVariant arg2 = QVariant(), QVariant arg3 = QVariant());
+    void sendToGUI(CoreSignal, QVariant arg1, QVariant arg2, QVariant arg3);
+
+    void processClientInit(QTcpSocket *socket, const QVariant &v);
+    void processClientUpdate(QTcpSocket *, QString key, QVariant data);
+
+  private slots:
+    void incomingConnection();
+    void clientHasData();
+    void clientDisconnected();
+    void updateGlobalData(QString key);
+
+  private:
+    QTcpServer server;
+    QList<QTcpSocket *> clients;
+    QHash<QTcpSocket *, quint32> blockSizes;
 
   friend class GUIProxy;
 };

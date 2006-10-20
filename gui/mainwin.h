@@ -27,6 +27,7 @@ class QMenu;
 class QWorkspace;
 
 class ServerListDlg;
+class CoreConnectDlg;
 
 class MainWin : public QMainWindow {
   Q_OBJECT
@@ -38,10 +39,11 @@ class MainWin : public QMainWindow {
 
   private slots:
     void showServerList();
-    
+
   private:
     void setupMenus();
-    
+    void syncToCore();
+
     QWorkspace *workspace;
     QToolBar *toolBar;
     QMenu *fileMenu, *editMenu, *ircMenu, *serverMenu, *windowMenu, *helpMenu, *settingsMenu;
@@ -50,6 +52,7 @@ class MainWin : public QMainWindow {
     QAction *identitiesAct, *configAct;
 
     ServerListDlg *serverListDlg;
+    CoreConnectDlg *coreConnectDlg;
 };
 
 #endif

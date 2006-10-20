@@ -20,46 +20,61 @@
 
 #include "quassel.h"
 #include "logger.h"
-//#include "proxy.h"
 #include "core.h"
 
 #include <QString>
+#include <QStringList>
 #include <QDomDocument>
 
 extern void messageHandler(QtMsgType type, const char *msg);
 
-Quassel::Quassel() {
-  if(quassel) qFatal("Trying to instantiate more than one Quassel object!");
+Global::Global() {
+  if(global) qFatal("Trying to instantiate more than one Global object!");
   qInstallMsgHandler(messageHandler);
   //initIconMap();
 }
 
 /*
-void Quassel::setLogger(Logger *) {
+void Global::setLogger(Logger *) {
 
 
 };
 */
 
-QVariant Quassel::getData(QString key) {
+QVariant Global::getData(QString key, QVariant defval) {
+  QVariant d;
   mutex.lock();
-  QVariant d = data[key];
+  if(data.contains(key)) d = data[key];
+  else d = defval;
   mutex.unlock();
-  qDebug() << "getData("<<key<<"): " << d;
+  //qDebug() << "getData("<<key<<"): " << d;
   return d;
 }
 
-void Quassel::putData(QString key, const QVariant &d) {
+QStringList Global::getKeys() {
+  QStringList k;
+  mutex.lock();
+  k = data.keys();
+  mutex.unlock();
+  return k;
+}
+
+void Global::putData(QString key, QVariant d) {
   mutex.lock();
   data[key] = d;
   mutex.unlock();
-  emit dataChanged(key, d);
-  qDebug() << "putData("<<key<<"): " << d;
-  qDebug() << "data: " << data;
+  emit dataPutLocally(key);
+}
+
+void Global::updateData(QString key, QVariant d) {
+  mutex.lock();
+  data[key] = d;
+  mutex.unlock();
+  emit dataUpdatedRemotely(key);
 }
 
 /* not done yet */
-void Quassel::initIconMap() {
+void Global::initIconMap() {
 // Do not depend on GUI in core!
 /*
   QDomDocument doc("IconMap");
@@ -85,11 +100,11 @@ void Quassel::initIconMap() {
  * @return Pointer to a newly created QIcon
  */
 //
-//QIcon *Quassel::getIcon(QString /*symbol*/) {
+//QIcon *Global::getIcon(QString /*symbol*/) {
   //if(symbol == "connect"
 
 //  return 0;
 //}
 
-Quassel *quassel = 0;
-Quassel::RunMode Quassel::runMode;
+Global *global = 0;
+Global::RunMode Global::runMode;

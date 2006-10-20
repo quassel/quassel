@@ -35,3 +35,8 @@ main/quassel.h
 main/main_gui.cpp
 core/coreproxy.cpp
 core/coreproxy.h
+main/util.cpp
+main/util.h
+gui/coreconnectdlg.ui
+gui/coreconnectdlg.cpp
+gui/coreconnectdlg.h

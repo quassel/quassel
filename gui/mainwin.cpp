@@ -20,30 +20,58 @@
 
 #include <QtGui>
 
+#include "quassel.h"
+
 #include "mainwin.h"
 #include "channelwidget.h"
 #include "serverlist.h"
-
-#include "core.h"
-#include "server.h"
+#include "coreconnectdlg.h"
 
 MainWin::MainWin() : QMainWindow() {
 
   setWindowTitle("Quassel IRC");
-  setWindowIcon(QIcon(":/default/tux.png"));
+  setWindowIcon(QIcon(":/qirc-icon.png"));
   setWindowIconText("Quassel IRC");
   //workspace = new QWorkspace(this);
   //setCentralWidget(workspace);
-  ChannelWidget *cw = new ChannelWidget(this);
+  //ChannelWidget *cw = new ChannelWidget(this);
   //workspace->addWindow(cw);
-  setCentralWidget(cw);
+  //setCentralWidget(cw);
+  statusBar()->showMessage(tr("Waiting for core..."));
+  setEnabled(false);
+  show();
+  syncToCore();
+  setEnabled(true);
   serverListDlg = new ServerListDlg(this);
   serverListDlg->setVisible(serverListDlg->showOnStartup());
-  //showServerList();
-
   setupMenus();
-  statusBar()->showMessage(tr("Ready"));
+  //identitiesAct = settingsMenu->addAction(QIcon(":/default/identity.png"), tr("&Identities..."), serverListDlg, SLOT(editIdentities()));
+  //showServerList();
+  ChannelWidget *cw = new ChannelWidget(this);
+  setCentralWidget(cw);
+  //setEnabled(true);
+  statusBar()->showMessage(tr("Ready."));
+}
 
+void MainWin::syncToCore() {
+  if(global->getData("CoreReady").toBool()) return;
+  // ok, apparently we are running as standalone GUI
+  coreConnectDlg = new CoreConnectDlg(this);
+  if(coreConnectDlg->exec() != QDialog::Accepted) {
+    //qApp->quit();
+    exit(1);
+  }
+  VarMap state = coreConnectDlg->getCoreState().toMap()["CoreData"].toMap();
+  delete coreConnectDlg;
+  QString key;
+  foreach(key, state.keys()) {
+    global->updateData(key, state[key]);
+  }
+  if(!global->getData("CoreReady").toBool()) {
+    QMessageBox::critical(this, tr("Fatal Error"), tr("<b>Could not synchronize with Quassel Core!</b><br>Quassel GUI will be aborted."), QMessageBox::Abort);
+    //qApp->quit();
+    exit(1);
+  }
 }
 
 void MainWin::setupMenus() {
@@ -74,7 +102,6 @@ void MainWin::setupMenus() {
   aboutAct = helpMenu->addAction(tr("&About"));
   aboutAct->setEnabled(0);
   aboutQtAct = helpMenu->addAction(tr("About &Qt"), qApp, SLOT(aboutQt()));
-
 
   //toolBar = new QToolBar("Test", this);
   //toolBar->addAction(identitiesAct);

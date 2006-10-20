@@ -33,30 +33,24 @@ Core::Core() {
 
   connect(&server, SIGNAL(recvLine(QString)), coreProxy, SLOT(csCoreMessage(QString)));
 
+  // Read global settings from config file 
   QSettings s;
-  VarMap identities = s.value("Network/Identities").toMap();
-  //VarMap networks   = s.value("Network/
-  quassel->putData("Identities", identities);
+  s.beginGroup("Global");
+  QString key;
+  foreach(key, s.childKeys()) {
+    global->updateData(key, s.value(key));
+  }
+  global->updateData("CoreReady", true);
+  // Now that we are in sync, we can connect signals to automatically store further updates.
+  // I don't think we care if global data changed locally or if it was updated by a client. 
+  connect(global, SIGNAL(dataUpdatedRemotely(QString)), SLOT(globalDataUpdated(QString)));
+  connect(global, SIGNAL(dataPutLocally(QString)), SLOT(globalDataUpdated(QString)));
 
   server.start();
 }
-
-void Core::init() {
-
-
-}
-
-/*
-void Core::run() {
-
-  connect(&server, SIGNAL(recvLine(const QString &)), this, SIGNAL(outputLine(const QString &)));
-  //connect(
-  server.start();
-  exec();
-}
-*/
 
 void Core::connectToIrc(const QString &h, quint16 port) {
+  if(server.isConnected()) return;
   qDebug() << "Core: Connecting to " << h << ":" << port;
   server.connectToIrc(h, port);
 }
@@ -66,14 +60,10 @@ void Core::inputLine(QString s) {
 
 }
 
-VarMap Core::loadIdentities() {
+void Core::globalDataUpdated(QString key) {
+  QVariant data = global->getData(key);
   QSettings s;
-  return s.value("Network/Identities").toMap();
+  s.setValue(QString("Global/")+key, data);
 }
 
-void Core::storeIdentities(VarMap identities) {
-  QSettings s;
-  s.setValue("Network/Identities", identities);
-}
-
-Core *core;
+Core *core = 0;

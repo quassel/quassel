@@ -29,8 +29,9 @@
 
 #define DEFAULT_PORT 6667
 
+/*! \file */
 
-/**
+/*! \class Server
  * This is a server object, managing a single connection to an IRC server, handling the associated channels and so on.
  * We have this run in its own thread mainly to not block other server objects or the core if something goes wrong,
  * e.g. if some scripts starts running wild...
@@ -47,6 +48,7 @@ class Server : public QThread {
     void run();
 
     // serverState state();
+    bool isConnected() { return socket.state() == QAbstractSocket::ConnectedState; }
 
   public slots:
     // void setServerOptions();

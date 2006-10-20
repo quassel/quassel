@@ -18,16 +18,33 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _PROXY_COMMON_H_
-#define _PROXY_COMMON_H_
+#ifndef _CORECONNECTDLG_H
+#define _CORECONNECTDLG_H
 
-enum GUISignal { GS_CLIENT_INIT, GS_USER_INPUT, GS_REQUEST_CONNECT, GS_UPDATE_GLOBAL_DATA,
+#include "coreconnectdlg.h"
+#include "ui_coreconnectdlg.h"
 
+class CoreConnectDlg: public QDialog {
+  Q_OBJECT
+
+  public:
+    CoreConnectDlg(QWidget *);
+    QVariant getCoreState();
+
+  private slots:
+    void hostEditChanged(QString);
+    void hostSelected();
+
+    void coreConnected();
+    void coreConnectionError(QString);
+    void updateProgressBar(quint32 bytes, quint32 avail);
+    void recvCoreState(QVariant);
+
+  private:
+    Ui::CoreConnectDlg ui;
+    QVariant coreState;
+
+    void setStartState();
 };
-
-enum CoreSignal { CS_CORE_STATE, CS_CORE_MESSAGE, CS_UPDATE_GLOBAL_DATA,
-
-};
-
 
 #endif

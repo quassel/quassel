@@ -46,6 +46,9 @@ class Core : public QObject {
   signals:
     void outputLine(const QString &);  // temp
 
+  private slots:
+    void globalDataUpdated(QString);
+
   private:
     //void run();
 

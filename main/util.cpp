@@ -18,16 +18,29 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _PROXY_COMMON_H_
-#define _PROXY_COMMON_H_
+#include "util.h"
 
-enum GUISignal { GS_CLIENT_INIT, GS_USER_INPUT, GS_REQUEST_CONNECT, GS_UPDATE_GLOBAL_DATA,
+#include <QtCore>
 
-};
+void writeDataToDevice(QIODevice *dev, const QVariant &item) {
+  QByteArray block;
+  QDataStream out(&block, QIODevice::WriteOnly);
+  out.setVersion(QDataStream::Qt_4_1);
+  out << (quint32)0 << item;
+  out.device()->seek(0);
+  out << (quint32)(block.size() - sizeof(quint32));
+  dev->write(block);
+}
 
-enum CoreSignal { CS_CORE_STATE, CS_CORE_MESSAGE, CS_UPDATE_GLOBAL_DATA,
+bool readDataFromDevice(QIODevice *dev, quint32 &blockSize, QVariant &item) {
+  QDataStream in(dev);
+  in.setVersion(QDataStream::Qt_4_1);
 
-};
-
-
-#endif
+  if(blockSize == 0) {
+    if(dev->bytesAvailable() < (int)sizeof(quint32)) return false;
+    in >> blockSize;
+  }
+  if(dev->bytesAvailable() < blockSize) return false;
+  in >> item;
+  return true;
+}

@@ -24,15 +24,13 @@
 /* NOTE: This dialog holds not only the server list, but also the identities.
  *       This makes perfect sense given the fact that connections are initiated from
  *       this dialog, and that the dialog exists during the lifetime of the program.
- *       This data is also only used from within the GUI, which means it shouldn't be
- *       part of the global Quassel class (me thinks).
  */
 
 ServerListDlg::ServerListDlg(QWidget *parent) : QDialog(parent) {
   ui.setupUi(this);
 
   QSettings settings;
-  settings.beginGroup("Network");
+  settings.beginGroup("GUI");
   ui.showOnStartup->setChecked(settings.value("ShowServerListOnStartup", true).toBool());
   // create some default entries
   VarMap s1, s2, s3, s4;
@@ -114,22 +112,14 @@ void ServerListDlg::storeNetworks() {
 }
 
 void ServerListDlg::loadIdentities() {
- //QSettings s;
-  //s.beginGroup("Identities");
-  //identities = s.value("Network/Identities").toMap();
-  //identities = GuiProxy::loadIdentities();
-  identities = quassel->getData("Identities").toMap();
+  identities = global->getData("Identities", VarMap()).toMap();
   while(!identities.contains("Default")) {
-    identities = VarMap();
     editIdentities();
   }
 }
 
 void ServerListDlg::storeIdentities() {
-  //QSettings s;
-  //s.setValue("Network/Identities", identities);
-  //GuiProxy::storeIdentities(identities);
-  quassel->putData("Identities", identities);
+  global->putData("Identities", identities);
 }
 
 void ServerListDlg::editIdentities() {
@@ -137,7 +127,7 @@ void ServerListDlg::editIdentities() {
   if(dlg.exec() == QDialog::Accepted) {
     identities = dlg.getIdentities();
     QMap<QString, QString> mapping = dlg.getNameMapping();
-    // add mapping here
+    // add mapping here  <-- well, I don't fucking know anymore what I meant by this back in 2005...
 
     //
     storeIdentities();
@@ -147,7 +137,7 @@ void ServerListDlg::editIdentities() {
 
 void ServerListDlg::on_showOnStartup_stateChanged(int) {
   QSettings s;
-  s.setValue("Network/ShowServerListOnStartup", ui.showOnStartup->isChecked());
+  s.setValue("GUI/ShowServerListOnStartup", ui.showOnStartup->isChecked());
 }
 
 /***************************************************************************/
@@ -177,6 +167,8 @@ VarMap NetworkEditDlg::createDefaultNetwork() {
 
 IdentitiesDlg::IdentitiesDlg(QWidget *parent, VarMap _identities) : QDialog(parent) {
   ui.setupUi(this);
+  connect(global, SIGNAL(dataUpdatedRemotely(QString)), this, SLOT(globalDataUpdated(QString)));
+
   connect(ui.enableAutoAway, SIGNAL(stateChanged(int)), this, SLOT(autoAwayChecked()));
 
   identities = _identities;
@@ -203,6 +195,17 @@ IdentitiesDlg::IdentitiesDlg(QWidget *parent, VarMap _identities) : QDialog(pare
   connect(ui.delNickButton, SIGNAL(clicked()), this, SLOT(delNick()));
   connect(ui.upNickButton, SIGNAL(clicked()), this, SLOT(upNick()));
   connect(ui.downNickButton, SIGNAL(clicked()), this, SLOT(downNick()));
+}
+
+void IdentitiesDlg::globalDataUpdated(QString key) {
+  if(key == "Identities") {
+    if(QMessageBox::warning(this, tr("Data changed remotely!"), tr("<b>Some other GUI client changed the identities data!</b><br>"
+                                                                "Apply updated settings, losing all changes done locally?"),
+                                                                QMessageBox::Apply|QMessageBox::Discard) == QMessageBox::Apply) {
+      identities = global->getData(key).toMap();
+      updateWidgets();
+    }
+  }
 }
 
 VarMap IdentitiesDlg::createDefaultIdentity() {

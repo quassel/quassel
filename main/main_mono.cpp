@@ -35,13 +35,11 @@ int main(int argc, char **argv) {
   QApplication::setApplicationName("Quassel IRC");
   QApplication::setOrganizationName("The Quassel Team");
 
-  Quassel::runMode = Quassel::Monolithic;
-  quassel = new Quassel();
+  Global::runMode = Global::Monolithic;
+  global = new Global();
   guiProxy = new GUIProxy();
   coreProxy = new CoreProxy();
   core = new Core();
-
-  core->init();
 
   MainWin mainWin;
   mainWin.show();
@@ -49,29 +47,27 @@ int main(int argc, char **argv) {
   delete core;
   delete guiProxy;
   delete coreProxy;
-  delete quassel;
+  delete global;
   return exitCode;
+}
+
+void CoreProxy::sendToGUI(CoreSignal sig, QVariant arg1, QVariant arg2, QVariant arg3) {
+  guiProxy->recv(sig, arg1, arg2, arg3);
+}
+
+GUIProxy::GUIProxy() {
+  if(guiProxy) qFatal("Trying to instantiate more than one CoreProxy object!");
 }
 
 void GUIProxy::send(GUISignal sig, QVariant arg1, QVariant arg2, QVariant arg3) {
   coreProxy->recv(sig, arg1, arg2, arg3);
 }
 
-void CoreProxy::recv(GUISignal sig, QVariant arg1, QVariant arg2, QVariant arg3) {
-  switch(sig) {
-    case GS_USER_INPUT: emit gsUserInput(arg1.toString()); break;
-    case GS_REQUEST_CONNECT: emit gsRequestConnect(arg1.toString(), arg2.toUInt()); break;
-    default: qWarning() << "Unknown signal in CoreProxy::recv: " << sig;
-  }
-}
+// Dummy function definitions
+// These are not needed, since we don't have a network connection to the core.
+void GUIProxy::serverHasData() {}
+void GUIProxy::connectToCore(QString, quint16) {}
+void GUIProxy::disconnectFromCore() {}
+void GUIProxy::updateCoreData(QString) {}
+void GUIProxy::serverError(QAbstractSocket::SocketError) {}
 
-void CoreProxy::send(CoreSignal sig, QVariant arg1, QVariant arg2, QVariant arg3) {
-  guiProxy->recv(sig, arg1, arg2, arg3);
-}
-
-void GUIProxy::recv(CoreSignal sig, QVariant arg1, QVariant arg2, QVariant arg3) {
-  switch(sig) {
-    case CS_CORE_MESSAGE: emit csCoreMessage(arg1.toString()); break;
-    default: qWarning() << "Unknown signal in GUIProxy::recv: " << sig;
-  }
-}

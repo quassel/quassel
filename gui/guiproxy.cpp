@@ -18,19 +18,20 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QtDebug>
+
 #include "guiproxy.h"
+#include "util.h"
 
-GUIProxy::GUIProxy() {
-  if(guiProxy) qFatal("Trying to instantiate more than one CoreProxy object!");
-
-}
-
-void GUIProxy::gsUserInput(QString s) {
-  send(GS_USER_INPUT, s);
-}
-
-void GUIProxy::gsRequestConnect(QString h, quint16 p) {
-  send(GS_REQUEST_CONNECT, h, p);
+void GUIProxy::recv(CoreSignal sig, QVariant arg1, QVariant arg2, QVariant arg3) {
+  //qDebug() << "[GUI] Received signal:" << sig <<arg1<<arg2<<arg3;
+  switch(sig) {
+    case CS_CORE_STATE: emit csCoreState(arg1); break;
+    case CS_UPDATE_GLOBAL_DATA: emit csUpdateGlobalData(arg1.toString(), arg2); break;
+    //case CS_GLOBAL_DATA_CHANGED: emit csGlobalDataChanged(arg1.toString()); break;
+    case CS_CORE_MESSAGE: emit csCoreMessage(arg1.toString()); break;
+    default: qWarning() << "Unknown signal in GUIProxy::recv: " << sig;
+  }
 }
 
 GUIProxy *guiProxy;

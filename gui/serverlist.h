@@ -103,6 +103,8 @@ class IdentitiesDlg : public QDialog {
 
     void editIdentities();
 
+    void globalDataUpdated(QString);
+
   private:
     Ui::IdentitiesDlg ui;
     VarMap identities;

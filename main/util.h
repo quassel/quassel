@@ -18,16 +18,27 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _PROXY_COMMON_H_
-#define _PROXY_COMMON_H_
+#ifndef _UTIL_H_
+#define _UTIL_H_
 
-enum GUISignal { GS_CLIENT_INIT, GS_USER_INPUT, GS_REQUEST_CONNECT, GS_UPDATE_GLOBAL_DATA,
+#include <QIODevice>
+#include <QVariant>
 
-};
+/**
+ *  Writes a QVariant to a device. The data item is prefixed with the resulting blocksize,
+ *  so the corresponding function readDataFromDevice() can check if enough data is available
+ *  at the device to reread the item.
+ */
+void writeDataToDevice(QIODevice *, const QVariant &);
 
-enum CoreSignal { CS_CORE_STATE, CS_CORE_MESSAGE, CS_UPDATE_GLOBAL_DATA,
+/** Reads a data item from a device that has previously been written by writeDataToDevice().
+ *  If not enough data bytes are available, the function returns false and the QVariant reference
+ *  remains untouched.
+ */
+bool readDataFromDevice(QIODevice *, quint32 &, QVariant &);
 
-};
+
+
 
 
 #endif

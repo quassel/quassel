@@ -20,10 +20,14 @@
 #include <iostream>
 
 #include <QCoreApplication>
+#include <QtNetwork>
+#include <QtCore>
+#include <QtDebug>
 
 #include "quassel.h"
 #include "core.h"
 #include "coreproxy.h"
+#include "util.h"
 
 int main(int argc, char **argv) {
   QCoreApplication app(argc, argv);
@@ -31,32 +35,22 @@ int main(int argc, char **argv) {
   QCoreApplication::setApplicationName("Quassel IRC");
   QCoreApplication::setOrganizationName("The Quassel Team");
 
-  Quassel::runMode = Quassel::CoreOnly;
-  quassel = new Quassel();
+  Global::runMode = Global::CoreOnly;
+  global = new Global();
   coreProxy = new CoreProxy();
   core = new Core();
 
   //Logger *logger = new Logger();
   //Quassel::setLogger(logger);
 
-  core->init();
-
   int exitCode = app.exec();
   delete core;
   delete coreProxy;
-  delete quassel;
+  delete global;
   return exitCode;
 }
 
-Core *core = 0;
+void CoreProxy::sendToGUI(CoreSignal, QVariant, QVariant, QVariant) {
+  // dummy function, no GUI available!
+}
 
-//GUIProxy::send(uint func, QVariant arg) {
-  /*
-  switch(func) {
-    case LOAD_IDENTITIES: return (QVariant) CoreProxy::loadIdentities();
-    case STORE_IDENTITIES: CoreProxy::storeIdentities(arg.toMap()); return 0;
-
-  }
-  */
-
-//}
