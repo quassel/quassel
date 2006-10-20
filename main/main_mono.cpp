@@ -23,7 +23,7 @@
 #include <QApplication>
 
 #include "core.h"
-#include "quassel.h"
+#include "global.h"
 #include "guiproxy.h"
 #include "coreproxy.h"
 

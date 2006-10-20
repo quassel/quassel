@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include "serverlist.h"
-#include "quassel.h"
+#include "global.h"
 
 /* NOTE: This dialog holds not only the server list, but also the identities.
  *       This makes perfect sense given the fact that connections are initiated from

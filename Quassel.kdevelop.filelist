@@ -6,7 +6,6 @@ core/CMakeLists.txt
 core/core.h
 gui/channelwidget.cpp
 gui/channelwidget.h
-gui/channelwidget.ui
 gui/CMakeLists.txt
 gui/identitiesdlg.ui
 gui/identitieseditdlg.ui
@@ -28,10 +27,6 @@ Doxyfile
 Makefile
 gui/guiproxy.h
 gui/guiproxy.cpp
-main/logger.cpp
-main/logger.h
-main/quassel.cpp
-main/quassel.h
 main/main_gui.cpp
 core/coreproxy.cpp
 core/coreproxy.h
@@ -40,3 +35,9 @@ main/util.h
 gui/coreconnectdlg.ui
 gui/coreconnectdlg.cpp
 gui/coreconnectdlg.h
+main/proxy_common.h
+main/CMakeLists.txt
+images/qirc-icon.png
+main/global.cpp
+main/global.h
+gui/channelwidget-old.ui

@@ -20,7 +20,7 @@
 
 #include <QtGui>
 
-#include "quassel.h"
+#include "global.h"
 
 #include "mainwin.h"
 #include "channelwidget.h"

@@ -24,7 +24,7 @@
 #include <QtCore>
 #include <QtDebug>
 
-#include "quassel.h"
+#include "global.h"
 #include "core.h"
 #include "coreproxy.h"
 #include "util.h"

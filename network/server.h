@@ -25,7 +25,7 @@
 #include <QTimer>
 #include <QtNetwork>
 
-#include "quassel.h"
+#include "global.h"
 
 #define DEFAULT_PORT 6667
 

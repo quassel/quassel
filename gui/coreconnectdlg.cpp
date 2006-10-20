@@ -21,7 +21,7 @@
 #include <QtGui>
 #include "coreconnectdlg.h"
 #include "guiproxy.h"
-#include "quassel.h"
+#include "global.h"
 
 CoreConnectDlg::CoreConnectDlg(QWidget *parent) : QDialog(parent) {
   ui.setupUi(this);

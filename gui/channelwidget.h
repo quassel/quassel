@@ -21,7 +21,7 @@
 #ifndef _CHANNELWIDGET_H_
 #define _CHANNELWIDGET_H_
 
-#include "ui_channelwidget.h"
+#include "ui_channelwidget-old.h"
 
 class ChannelWidget : public QWidget {
   Q_OBJECT

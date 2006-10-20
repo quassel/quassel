@@ -21,7 +21,7 @@
 #include <QDebug>
 
 #include "coreproxy.h"
-#include "quassel.h"
+#include "global.h"
 #include "util.h"
 
 CoreProxy::CoreProxy() {

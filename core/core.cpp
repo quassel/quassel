@@ -20,7 +20,7 @@
 
 #include "core.h"
 #include "server.h"
-#include "quassel.h"
+#include "global.h"
 #include "coreproxy.h"
 
 #include <QSettings>
