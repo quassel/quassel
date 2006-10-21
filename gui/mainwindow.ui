@@ -18,13 +18,13 @@
      <rect>
       <x>60</x>
       <y>80</y>
-      <width>120</width>
+      <width>112</width>
       <height>329</height>
      </rect>
     </property>
     <property name="sizePolicy" >
      <sizepolicy>
-      <hsizetype>7</hsizetype>
+      <hsizetype>5</hsizetype>
       <vsizetype>5</vsizetype>
       <horstretch>0</horstretch>
       <verstretch>0</verstretch>
@@ -224,7 +224,7 @@
   <widget class="QDockWidget" name="dockWidget_2" >
    <property name="sizePolicy" >
     <sizepolicy>
-     <hsizetype>7</hsizetype>
+     <hsizetype>5</hsizetype>
      <vsizetype>5</vsizetype>
      <horstretch>0</horstretch>
      <verstretch>0</verstretch>
