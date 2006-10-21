@@ -321,7 +321,8 @@ void IdentitiesDlg::autoAwayChecked() {
 }
 
 void IdentitiesDlg::nickSelectionChanged() {
-  int curidx = ui.nickList->currentRow();
+  Q_ASSERT(ui.nickList->selectedItems().size() == 1);
+  int curidx = ui.nickList->row(ui.nickList->selectedItems()[0]);
   ui.editNickButton->setEnabled(curidx >= 0);
   ui.delNickButton->setEnabled(curidx >= 0);
   ui.upNickButton->setEnabled(curidx > 0);
@@ -444,11 +445,11 @@ IdentitiesEditDlg::IdentitiesEditDlg(QWidget *parent, VarMap _identities, QMap<Q
 }
 
 void IdentitiesEditDlg::selectionChanged() {
-  int idx = ui.identList->currentRow();
+  Q_ASSERT(ui.identList->selectedItems().size() == 1);
+  int idx = ui.identList->row(ui.identList->selectedItems()[0]);
   ui.duplicateButton->setEnabled(idx >= 0);
   ui.renameButton->setEnabled(idx > 0);
   ui.deleteButton->setEnabled(idx > 0);
-
 }
 
 void IdentitiesEditDlg::addIdentity() {
@@ -534,7 +535,7 @@ NickEditDlg::NickEditDlg(QWidget *parent, QString nick) : QDialog(parent) {
 }
 
 void NickEditDlg::textChanged(QString text) {
-  ui.okButton->setDisabled(text.isEmpty() || text == "");
+  ui.buttonBox->button(QDialogButtonBox::Ok)->setDisabled(text.isEmpty() || text == "");
 }
 
 QString NickEditDlg::getNick() {
@@ -546,7 +547,7 @@ QString NickEditDlg::getNick() {
 RenameIdentityDlg::RenameIdentityDlg(QWidget *parent, QList<QString> _reserved, QString name) : QDialog(parent) {
   ui.setupUi(this);
   reserved = _reserved;
-  //ui.NickEditDlg->setWindowTitle(tr("Edit Identity Name"));  // why does this not work?
+  setWindowTitle(tr("Edit Identity Name"));
   ui.label->setText(tr("Identity:"));
   ui.lineEdit->setText(name);
   connect(ui.lineEdit, SIGNAL(textChanged(QString)), this, SLOT(textChanged(QString)));
@@ -554,8 +555,8 @@ RenameIdentityDlg::RenameIdentityDlg(QWidget *parent, QList<QString> _reserved, 
 }
 
 void RenameIdentityDlg::textChanged(QString text) {
-  if(text.length() == 0) { ui.okButton->setEnabled(0); return; }
-  ui.okButton->setDisabled(reserved.contains(text));
+  if(text.length() == 0) { ui.buttonBox->button(QDialogButtonBox::Ok)->setDisabled(true); return; }
+  ui.buttonBox->button(QDialogButtonBox::Ok)->setDisabled(reserved.contains(text));
 }
 
 QString RenameIdentityDlg::getName() {

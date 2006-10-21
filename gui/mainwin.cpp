@@ -61,6 +61,8 @@ MainWin::MainWin() : QMainWindow() {
   cw->showMaximized();
   //setEnabled(true);
   statusBar()->showMessage(tr("Ready."));
+  //QSystemTrayIcon *systray = new QSystemTrayIcon(QIcon(":/qirc-icon.png"));
+  //systray->showMessage("Quassel", "Started!");
 }
 
 void MainWin::syncToCore() {

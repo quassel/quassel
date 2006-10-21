@@ -39,6 +39,7 @@ ENDFOREACH(dir)
 INCLUDE_DIRECTORIES(${SDIRS})
 
 # We need Qt4 support.
+SET(QT_MIN_VERSION "4.2.0") 
 FIND_PACKAGE(Qt4 REQUIRED)
 
 # Set needed libraries
