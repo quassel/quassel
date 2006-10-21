@@ -17,7 +17,7 @@
     <property name="geometry" >
      <rect>
       <x>60</x>
-      <y>90</y>
+      <y>80</y>
       <width>120</width>
       <height>329</height>
      </rect>
@@ -88,6 +88,16 @@
           </property>
          </item>
         </item>
+        <item>
+         <property name="text" >
+          <string>IrcNet</string>
+         </property>
+         <item>
+          <property name="text" >
+           <string>Status</string>
+          </property>
+         </item>
+        </item>
        </widget>
       </item>
      </layout>
@@ -103,16 +113,6 @@
      <height>28</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuFile" >
-    <property name="title" >
-     <string>Connection</string>
-    </property>
-   </widget>
-   <widget class="QMenu" name="menuOptions" >
-    <property name="title" >
-     <string>Settings</string>
-    </property>
-   </widget>
    <widget class="QMenu" name="menuExtensions" >
     <property name="title" >
      <string>Extensions</string>
@@ -128,6 +128,17 @@
      <string>Views</string>
     </property>
     <addaction name="actionAll_Nets" />
+   </widget>
+   <widget class="QMenu" name="menuOptions" >
+    <property name="title" >
+     <string>Settings</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuFile" >
+    <property name="title" >
+     <string>Connection</string>
+    </property>
+    <addaction name="actionNets" />
    </widget>
    <addaction name="menuFile" />
    <addaction name="menuOptions" />
@@ -286,6 +297,11 @@
   <action name="actionAll_Nets" >
    <property name="text" >
     <string>All Nets</string>
+   </property>
+  </action>
+  <action name="actionNets" >
+   <property name="text" >
+    <string>Nets</string>
    </property>
   </action>
  </widget>
