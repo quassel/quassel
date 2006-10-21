@@ -1,13 +1,19 @@
 <ui version="4.0" >
  <class>ChannelWidget</class>
  <widget class="QWidget" name="ChannelWidget" >
-  <property name="geometry" >
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>723</width>
-    <height>546</height>
-   </rect>
+  <property name="sizePolicy" >
+   <sizepolicy>
+    <hsizetype>3</hsizetype>
+    <vsizetype>3</vsizetype>
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="minimumSize" >
+   <size>
+    <width>200</width>
+    <height>100</height>
+   </size>
   </property>
   <property name="contextMenuPolicy" >
    <enum>Qt::DefaultContextMenu</enum>
@@ -77,7 +83,7 @@
        <sizepolicy>
         <hsizetype>7</hsizetype>
         <vsizetype>5</vsizetype>
-        <horstretch>80</horstretch>
+        <horstretch>4</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
@@ -85,9 +91,9 @@
      <widget class="QTreeWidget" name="nickTree" >
       <property name="sizePolicy" >
        <sizepolicy>
-        <hsizetype>3</hsizetype>
+        <hsizetype>5</hsizetype>
         <vsizetype>5</vsizetype>
-        <horstretch>2</horstretch>
+        <horstretch>1</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>

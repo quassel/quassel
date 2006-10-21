@@ -26,7 +26,7 @@
 
 ChannelWidget::ChannelWidget(QWidget *parent) : QWidget(parent) {
   ui.setupUi(this);
-  ui.inputEdit->grabKeyboard();
+  //ui.inputEdit->grabKeyboard();
   ui.inputEdit->setFocus();
 
 /*  //ui.splitter->
