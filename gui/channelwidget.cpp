@@ -42,7 +42,7 @@ ChannelWidget::ChannelWidget(QWidget *parent) : QWidget(parent) {
   //connect(&core, SIGNAL(outputLine( const QString& )), ui.textBrowser, SLOT(insertPlainText(const QString &)));
   //connect(ui.lineEdit, SIGNAL(
   //connect(&core, SIGNAL(outputLine( const QString& )), this, SLOT(lineReceived(const QString &)));
-  connect(ui.lineEdit, SIGNAL(returnPressed()), this, SLOT(enterPressed()));
+  connect(ui.inputEdit, SIGNAL(returnPressed()), this, SLOT(enterPressed()));
   //connect(this, SIGNAL(inputLine( const QString& )), &core, SLOT(inputLine( const QString& )));
 
   connect(this, SIGNAL(inputLine(QString)), guiProxy, SLOT(gsUserInput(QString)));
@@ -54,11 +54,11 @@ ChannelWidget::ChannelWidget(QWidget *parent) : QWidget(parent) {
 }
 
 void ChannelWidget::enterPressed() {
-  emit inputLine(ui.lineEdit->text());
-  ui.lineEdit->clear();
+  emit inputLine(ui.inputEdit->text());
+  ui.inputEdit->clear();
 }
 
 void ChannelWidget::lineReceived(QString s) {
-  ui.textBrowser->insertPlainText(s + "\n");
-  ui.textBrowser->ensureCursorVisible();
+  ui.chatWidget->insertPlainText(s + "\n");
+  ui.chatWidget->ensureCursorVisible();
 }

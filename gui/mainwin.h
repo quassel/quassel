@@ -36,6 +36,7 @@ class MainWin : public QMainWindow {
     MainWin();
 
   protected:
+    void closeEvent(QCloseEvent *event);
 
   private slots:
     void showServerList();

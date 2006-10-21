@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include <QtGui>
+#include <QtCore>
 
 #include "global.h"
 
@@ -32,6 +33,13 @@ MainWin::MainWin() : QMainWindow() {
   setWindowTitle("Quassel IRC");
   setWindowIcon(QIcon(":/qirc-icon.png"));
   setWindowIconText("Quassel IRC");
+
+  QSettings s;
+  s.beginGroup("Geometry");
+  resize(s.value("MainWinSize", QSize(500, 400)).toSize());
+  move(s.value("MainWinPos", QPoint(50, 50)).toPoint());
+  s.endGroup();
+
   //workspace = new QWorkspace(this);
   //setCentralWidget(workspace);
   //ChannelWidget *cw = new ChannelWidget(this);
@@ -115,3 +123,16 @@ void MainWin::showServerList() {
   serverListDlg->show();
 }
 
+void MainWin::closeEvent(QCloseEvent *event)
+{
+  //if (userReallyWantsToQuit()) {
+    QSettings s;
+    s.beginGroup("Geometry");
+    s.setValue("MainWinSize", size());
+    s.setValue("MainWinPos", pos());
+    s.endGroup();
+    event->accept();
+  //} else {
+    //event->ignore();
+  //}
+}

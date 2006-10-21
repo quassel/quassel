@@ -1,12 +1,12 @@
 <ui version="4.0" >
- <class>ChannelWin</class>
- <widget class="QWidget" name="ChannelWin" >
+ <class>ChannelWidget</class>
+ <widget class="QWidget" name="ChannelWidget" >
   <property name="geometry" >
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>595</width>
-    <height>407</height>
+    <width>723</width>
+    <height>546</height>
    </rect>
   </property>
   <property name="contextMenuPolicy" >
@@ -15,15 +15,15 @@
   <property name="windowTitle" >
    <string>YourNickname #quassel Network: The Topic</string>
   </property>
-  <layout class="QGridLayout" >
+  <layout class="QVBoxLayout" >
    <property name="margin" >
     <number>9</number>
    </property>
    <property name="spacing" >
     <number>6</number>
    </property>
-   <item row="0" column="0" >
-    <layout class="QVBoxLayout" >
+   <item>
+    <layout class="QHBoxLayout" >
      <property name="margin" >
       <number>0</number>
      </property>
@@ -31,193 +31,189 @@
       <number>6</number>
      </property>
      <item>
-      <layout class="QHBoxLayout" >
-       <property name="margin" >
-        <number>0</number>
-       </property>
-       <property name="spacing" >
-        <number>6</number>
-       </property>
-       <item>
-        <widget class="QLineEdit" name="lineEdit_2" />
-       </item>
-       <item>
-        <widget class="QToolButton" name="toolButton" >
-         <property name="windowModality" >
-          <enum>Qt::NonModal</enum>
-         </property>
-         <property name="sizePolicy" >
-          <sizepolicy>
-           <hsizetype>0</hsizetype>
-           <vsizetype>0</vsizetype>
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="layoutDirection" >
-          <enum>Qt::LeftToRight</enum>
-         </property>
-         <property name="text" >
-          <string>...</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
+      <widget class="QLineEdit" name="topicEdit" />
      </item>
      <item>
-      <widget class="QSplitter" name="splitter" >
+      <widget class="QToolButton" name="chanSettingsButton" >
+       <property name="windowModality" >
+        <enum>Qt::NonModal</enum>
+       </property>
        <property name="sizePolicy" >
         <sizepolicy>
-         <hsizetype>7</hsizetype>
-         <vsizetype>5</vsizetype>
+         <hsizetype>0</hsizetype>
+         <vsizetype>0</vsizetype>
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
-       <property name="lineWidth" >
-        <number>1</number>
+       <property name="layoutDirection" >
+        <enum>Qt::LeftToRight</enum>
        </property>
-       <property name="orientation" >
-        <enum>Qt::Horizontal</enum>
+       <property name="text" >
+        <string>...</string>
        </property>
-       <widget class="QTextBrowser" name="textBrowser" >
-        <property name="sizePolicy" >
-         <sizepolicy>
-          <hsizetype>7</hsizetype>
-          <vsizetype>5</vsizetype>
-          <horstretch>80</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QSplitter" name="splitter" >
+     <property name="sizePolicy" >
+      <sizepolicy>
+       <hsizetype>7</hsizetype>
+       <vsizetype>5</vsizetype>
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="lineWidth" >
+      <number>1</number>
+     </property>
+     <property name="orientation" >
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <widget class="QTextBrowser" name="chatWidget" >
+      <property name="sizePolicy" >
+       <sizepolicy>
+        <hsizetype>7</hsizetype>
+        <vsizetype>5</vsizetype>
+        <horstretch>80</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+     </widget>
+     <widget class="QTreeWidget" name="nickTree" >
+      <property name="sizePolicy" >
+       <sizepolicy>
+        <hsizetype>3</hsizetype>
+        <vsizetype>5</vsizetype>
+        <horstretch>2</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="layoutDirection" >
+       <enum>Qt::LeftToRight</enum>
+      </property>
+      <property name="dragEnabled" >
+       <bool>true</bool>
+      </property>
+      <property name="textElideMode" >
+       <enum>Qt::ElideRight</enum>
+      </property>
+      <property name="sortingEnabled" >
+       <bool>false</bool>
+      </property>
+      <property name="animated" >
+       <bool>true</bool>
+      </property>
+      <property name="columnCount" >
+       <number>1</number>
+      </property>
+      <column>
+       <property name="text" >
+        <string>32 Users</string>
+       </property>
+      </column>
+      <item>
+       <property name="text" >
+        <string>@ Operators</string>
+       </property>
+       <item>
+        <property name="text" >
+         <string>New Sub Item</string>
         </property>
-       </widget>
-       <widget class="QTreeWidget" name="treeWidget" >
-        <property name="sizePolicy" >
-         <sizepolicy>
-          <hsizetype>3</hsizetype>
-          <vsizetype>5</vsizetype>
-          <horstretch>2</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
+       </item>
+       <item>
+        <property name="text" >
+         <string>New Item</string>
         </property>
-        <property name="layoutDirection" >
-         <enum>Qt::LeftToRight</enum>
+       </item>
+       <item>
+        <property name="text" >
+         <string>New Item</string>
         </property>
-        <property name="dragEnabled" >
-         <bool>true</bool>
+       </item>
+      </item>
+      <item>
+       <property name="text" >
+        <string>4 Voiced</string>
+       </property>
+       <item>
+        <property name="text" >
+         <string>New Item</string>
         </property>
-        <property name="textElideMode" >
-         <enum>Qt::ElideRight</enum>
+       </item>
+       <item>
+        <property name="text" >
+         <string>New Item</string>
         </property>
-        <property name="columnCount" >
-         <number>1</number>
+       </item>
+       <item>
+        <property name="text" >
+         <string>New Item</string>
         </property>
-        <column>
-         <property name="text" >
-          <string>32 Users</string>
-         </property>
-        </column>
-        <item>
-         <property name="text" >
-          <string>@ Operators</string>
-         </property>
-         <item>
-          <property name="text" >
-           <string>New Item</string>
-          </property>
-         </item>
-         <item>
-          <property name="text" >
-           <string>New Sub Item</string>
-          </property>
-         </item>
-         <item>
-          <property name="text" >
-           <string>New Item</string>
-          </property>
-         </item>
-        </item>
-        <item>
-         <property name="text" >
-          <string>4 Voiced</string>
-         </property>
-         <item>
-          <property name="text" >
-           <string>New Item</string>
-          </property>
-         </item>
-         <item>
-          <property name="text" >
-           <string>New Item</string>
-          </property>
-         </item>
-         <item>
-          <property name="text" >
-           <string>New Item</string>
-          </property>
-         </item>
-        </item>
-        <item>
-         <property name="text" >
-          <string>19 Users</string>
-         </property>
-         <item>
-          <property name="text" >
-           <string>New Sub Item</string>
-          </property>
-         </item>
-         <item>
-          <property name="text" >
-           <string>New Item</string>
-          </property>
-         </item>
-         <item>
-          <property name="text" >
-           <string>New Item</string>
-          </property>
-         </item>
-         <item>
-          <property name="text" >
-           <string>New Item</string>
-          </property>
-         </item>
-        </item>
-       </widget>
+       </item>
+      </item>
+      <item>
+       <property name="text" >
+        <string>19 Users</string>
+       </property>
+       <item>
+        <property name="text" >
+         <string>New Sub Item</string>
+        </property>
+       </item>
+       <item>
+        <property name="text" >
+         <string>New Item</string>
+        </property>
+       </item>
+       <item>
+        <property name="text" >
+         <string>New Item</string>
+        </property>
+       </item>
+       <item>
+        <property name="text" >
+         <string>New Item</string>
+        </property>
+       </item>
+      </item>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" >
+     <property name="margin" >
+      <number>0</number>
+     </property>
+     <property name="spacing" >
+      <number>6</number>
+     </property>
+     <item>
+      <widget class="QComboBox" name="ownNick" >
+       <item>
+        <property name="text" >
+         <string>mainNick</string>
+        </property>
+       </item>
+       <item>
+        <property name="text" >
+         <string>altNick</string>
+        </property>
+       </item>
       </widget>
      </item>
      <item>
-      <layout class="QHBoxLayout" >
-       <property name="margin" >
-        <number>0</number>
-       </property>
-       <property name="spacing" >
-        <number>6</number>
-       </property>
-       <item>
-        <widget class="QComboBox" name="comboBox" >
-         <item>
-          <property name="text" >
-           <string>mainNick</string>
-          </property>
-         </item>
-         <item>
-          <property name="text" >
-           <string>altNick</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLineEdit" name="lineEdit" />
-       </item>
-      </layout>
+      <widget class="QLineEdit" name="inputEdit" />
      </item>
     </layout>
    </item>
   </layout>
  </widget>
  <tabstops>
-  <tabstop>lineEdit_2</tabstop>
-  <tabstop>toolButton</tabstop>
+  <tabstop>topicEdit</tabstop>
+  <tabstop>chanSettingsButton</tabstop>
  </tabstops>
  <resources/>
  <connections/>
