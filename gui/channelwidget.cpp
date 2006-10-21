@@ -26,7 +26,8 @@
 
 ChannelWidget::ChannelWidget(QWidget *parent) : QWidget(parent) {
   ui.setupUi(this);
-  //ui.lineEdit->setText("foobar");
+  ui.inputEdit->grabKeyboard();
+  ui.inputEdit->setFocus();
 
 /*  //ui.splitter->
   ui.textBrowser->setHtml("[17:21] <em>--> Dante has joined #quassel (~hurz@p1af2242.dip.t-dialin.net)</em><br>"
@@ -50,11 +51,13 @@ ChannelWidget::ChannelWidget(QWidget *parent) : QWidget(parent) {
   connect(guiProxy, SIGNAL(csCoreMessage(QString)), this, SLOT(lineReceived(QString)));
 
   //emit requestConnect("irc.scortum.moep.net", 6668);
-  emit requestConnect("irc.quakenet.org", 6668);
+  //emit requestConnect("irc.quakenet.org", 6668);
 }
 
 void ChannelWidget::enterPressed() {
-  emit inputLine(ui.inputEdit->text());
+  QString l = ui.inputEdit->text();
+  if(l == "/c") emit requestConnect("irc.quakenet.org", 6668);
+  else emit inputLine(ui.inputEdit->text());
   ui.inputEdit->clear();
 }
 

@@ -72,7 +72,7 @@ void Server::socketError( QAbstractSocket::SocketError err ) {
 
 void Server::socketConnected( ) {
   qDebug() << "Socket connected!";
-  putRawLine("NICK :Sput|QuasselDev");
+  putRawLine("NICK :QuasselDev");
   putRawLine("USER Sputnick 8 * :Using Quassel IRC (WiP Version)");
 }
 

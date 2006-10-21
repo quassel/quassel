@@ -40,8 +40,8 @@ MainWin::MainWin() : QMainWindow() {
   move(s.value("MainWinPos", QPoint(50, 50)).toPoint());
   s.endGroup();
 
-  //workspace = new QWorkspace(this);
-  //setCentralWidget(workspace);
+  workspace = new QWorkspace(this);
+  setCentralWidget(workspace);
   //ChannelWidget *cw = new ChannelWidget(this);
   //workspace->addWindow(cw);
   //setCentralWidget(cw);
@@ -56,7 +56,9 @@ MainWin::MainWin() : QMainWindow() {
   //identitiesAct = settingsMenu->addAction(QIcon(":/default/identity.png"), tr("&Identities..."), serverListDlg, SLOT(editIdentities()));
   //showServerList();
   ChannelWidget *cw = new ChannelWidget(this);
-  setCentralWidget(cw);
+  //setCentralWidget(cw);
+  workspace->addWindow(cw);
+  cw->showMaximized();
   //setEnabled(true);
   statusBar()->showMessage(tr("Ready."));
 }
