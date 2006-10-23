@@ -42,7 +42,7 @@ class ServerListDlg : public QDialog {
 
   public slots:
     void editIdentities(bool end = false);
-    virtual void reject() { exit(0); }
+    //virtual void reject() { exit(0); }
     virtual void accept();
 
   signals:
