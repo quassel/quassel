@@ -18,46 +18,19 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _CORE_H_
-#define _CORE_H_
+#ifndef _BUFFER_H_
+#define _BUFFER_H_
 
-#include <QMap>
-#include <QString>
-#include <QVariant>
+#include <QtCore>
 
-#include "server.h"
-
-class Core : public QObject {
+class Buffer : public QObject {
   Q_OBJECT
 
-  public:
 
-    Core();
-    //~Core();
 
-  public slots:
-    void inputLine(QString);   // temp
-    void connectToIrc(QStringList);
-
-  signals:
-    void outputLine(const QString &);  // temp
-    void msgFromGUI(QString network, QString channel, QString message);
-    void sendMessage(QString network, QString channel, QString message);
-    void sendStatusMsg(QString, QString);
-
-    void connectToIrc(QString net);
-    void disconnectFromIrc(QString net);
-
-  private slots:
-    void globalDataUpdated(QString);
-    void recvStatusMsgFromServer(QString msg);
-    void recvMessageFromServer(QString buffer, QString msg);
-
-  private:
-    QHash<QString, Server *> servers;
 
 };
 
-extern Core *core;
+
 
 #endif

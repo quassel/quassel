@@ -24,16 +24,12 @@
 
 #include <QMetaObject>
 
-Server::Server() {
+Server::Server(QString net) : network(net) {
 
 }
 
 Server::~Server() {
 
-}
-
-void Server::init() {
-  //Message::init(&dispatchServerMsg, &dispatchUserMsg);
 }
 
 void Server::run() {
@@ -46,19 +42,25 @@ void Server::run() {
   exec();
 }
 
-void Server::connectToIrc( const QString & host, quint16 port ) {
-  qDebug() << "Connecting...";
+void Server::connectToIrc(QString net) {
+  if(net != network) return; // not me!
+  QList<QVariant> servers = global->getData("Networks").toMap()[net].toMap()["Servers"].toList();
+  qDebug() << "Connecting to"<< servers[0].toMap();
+  QString host = servers[0].toMap()["Address"].toString();
+  quint16 port = servers[0].toMap()["Port"].toUInt();
+  sendStatusMsg(QString("Connecting to %1:%2...").arg(host).arg(port));
   socket.connectToHost(host, port);
 }
 
-void Server::disconnectFromIrc( ) {
+void Server::disconnectFromIrc(QString net) {
+  if(net != network) return; // not me!
   socket.disconnectFromHost();
 }
 
 void Server::socketHasData() {
   while(socket.canReadLine()) {
     QString s = socket.readLine().trimmed();
-    qDebug() << "Read: " << s;
+    //qDebug() << "Read: " << s;
     emit recvRawServerMsg(s);
     //Message *msg = Message::createFromServerString(this, s);
     handleServerMsg(s);
@@ -83,6 +85,10 @@ void Server::socketDisconnected( ) {
 
 void Server::socketStateChanged(QAbstractSocket::SocketState state) {
   qDebug() << "Socket state changed: " << state;
+}
+
+void Server::userInput(QString net, QString buf, QString msg) {
+  putRawLine(msg);
 }
 
 void Server::putRawLine(QString s) {
@@ -139,16 +145,16 @@ void Server::handleServerMsg(QString msg) {
       defaultHandlerForServer(cmd, prefix, params);
     }
   } catch(Exception e) {
-    emit recvLine(e.msg());
+    emit sendStatusMsg(e.msg());
   }
 }
 
 void Server::defaultHandlerForServer(QString cmd, QString prefix, QStringList params) {
   uint num = cmd.toUInt();
   if(num) {
-    recvLine(cmd + " " + params.join(" "));
+    emit sendMessage("", cmd + " " + params.join(" "));
   } else {
-    recvLine(QString("Unknown: ") + cmd + " " + params.join(" "));
+    emit sendMessage("", QString("Unknown: ") + cmd + " " + params.join(" "));
   }
 }
 
@@ -156,38 +162,8 @@ void Server::handleUserMsg(QString usrMsg) {
 
 }
 
-/*
-void Server::handleServerMsg(Message *msg) {
-  int cmdCode = msg->getCmdCode();
-  QString prefix = msg->getPrefix();
-  QStringList params = msg->getParams();
-  if(cmdCode < 0) {
-    switch(-cmdCode) {
-      case CMD_PING:
-        // PING <server1> [<server2>]
-        if(params.size() < 1 || params.size() > 2) throw ParseError(msg);
-        putCmd("PONG", params);
-        break;
-
-      default:
-        throw Exception(QString("No handler installed for command: ") + msg->getCmd() + " " + msg->getParams().join(" "));
-    }
-  } else if(msg->getCmdCode() > 0) {
-    switch(msg->getCmdCode()) {
-
-      default:
-        //
-        throw Exception(msg->getCmd() + " " + msg->getParams().join(" "));
-    }
-
-  } else {
-    throw UnknownCmdError(msg);
-  }
-}
-*/
-
 void Server::handleNoticeFromServer(QString prefix, QStringList params) {
-  recvLine(params.join(" "));
+  sendMessage("", params.join(" "));
 
 
 }

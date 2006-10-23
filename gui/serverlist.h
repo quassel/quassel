@@ -25,14 +25,11 @@
 #include <QMap>
 #include <QList>
 #include <QVariant>
+#include "global.h"
 
 #include "ui_serverlistdlg.h"
-#include "ui_identitiesdlg.h"
-#include "ui_identitieseditdlg.h"
-#include "ui_nickeditdlg.h"
 #include "ui_networkeditdlg.h"
-
-typedef QMap<QString, QVariant> VarMap;
+#include "ui_servereditdlg.h"
 
 class ServerListDlg : public QDialog {
   Q_OBJECT
@@ -44,137 +41,74 @@ class ServerListDlg : public QDialog {
     bool showOnStartup();
 
   public slots:
-    void editIdentities();
+    void editIdentities(bool end = false);
+    virtual void reject() { exit(0); }
+    virtual void accept();
+
+  signals:
+    void requestConnect(QStringList networks);
 
   private slots:
     void updateButtons();
     void on_showOnStartup_stateChanged(int);
     void on_addButton_clicked();
+    void on_editButton_clicked();
+    void on_deleteButton_clicked();
 
   private:
     Ui::ServerListDlg ui;
 
-    void loadNetworks();
-    void storeNetworks();
-    void loadIdentities();
-    void storeIdentities();
-
-    VarMap networks;
-    VarMap identities;
+    void updateNetworkTree();
+    //VarMap networks;
+    //VarMap identities;  <-- this is now stored in global
 };
 
 class NetworkEditDlg : public QDialog {
   Q_OBJECT
 
   public:
-    NetworkEditDlg(QWidget *parent, VarMap network, VarMap identities);
+    NetworkEditDlg(QWidget *parent, VarMap network);
 
-  private:
-    Ui::NetworkEditDlg ui;
-
-    VarMap network;
-    VarMap identities;
-
-    VarMap createDefaultNetwork();
-};
-
-class IdentitiesDlg : public QDialog {
-  Q_OBJECT
-
-  public:
-    IdentitiesDlg(QWidget *parent, VarMap identities);
-
-    VarMap getIdentities() { return identities; }
-    QMap<QString, QString> getNameMapping() { return nameMapping; }
-
+    VarMap getNetwork() { return network; }
   public slots:
     virtual void accept();
 
   private slots:
-    void autoAwayChecked();
-    void identityChanged(QString);
-    void nickSelectionChanged();
+    void on_networkName_textChanged(QString);
+    void on_addServer_clicked();
+    void on_editServer_clicked();
+    void on_deleteServer_clicked();
+    void on_upServer_clicked();
+    void on_downServer_clicked();
+    void on_editIdentities_clicked();
 
-    void addNick();
-    void editNick();
-    void delNick();
-    void upNick();
-    void downNick();
-
-    void editIdentities();
-
-    void globalDataUpdated(QString);
-
-  private:
-    Ui::IdentitiesDlg ui;
-    VarMap identities;
-    QMap<QString, QString> nameMapping;
-    QString lastIdentity;
-
-    QString checkValidity();
-    VarMap createDefaultIdentity();
-    QString getCurIdentity();
     void updateWidgets();
-    void updateIdentity(QString);
+    void updateServerButtons();
+  private:
+    Ui::NetworkEditDlg ui;
+
+    VarMap network;
+    //VarMap identities;
+    QString oldName;
+
+    VarMap createDefaultNetwork();
+    QString checkValidity();
 };
 
-class NickEditDlg : public QDialog {
+class ServerEditDlg : public QDialog {
   Q_OBJECT
 
   public:
-    NickEditDlg(QWidget *parent, QString nick = QString());
+    ServerEditDlg(QWidget *parent, VarMap server = VarMap());
 
-    QString getNick();
+    VarMap getServer();
 
   private slots:
-    void textChanged(QString);
+    void on_serverAddress_textChanged();
 
   private:
-    Ui::NickEditDlg ui;
+    Ui::ServerEditDlg ui;
 
 };
 
-class IdentitiesEditDlg : public QDialog {
-  Q_OBJECT
-
-  public:
-    IdentitiesEditDlg(QWidget *parent, VarMap identities, QMap<QString, QString> mapping, VarMap templ);
-
-    VarMap getIdentities() { return identities; }
-    QMap<QString, QString> getMapping() { return mapping; }
-
-  private slots:
-    void selectionChanged();
-
-    void addIdentity();
-    void duplicateIdentity();
-    void renameIdentity();
-    void deleteIdentity();
-
-  private:
-    Ui::IdentitiesEditDlg ui;
-
-    VarMap identities;
-    VarMap identTemplate;
-    QMap<QString, QString> mapping;
-
-    void sortList();
-};
-
-class RenameIdentityDlg : public QDialog {
-  Q_OBJECT
-
-  public:
-    RenameIdentityDlg(QWidget *parent, QList<QString> reserved, QString name = QString());
-
-    QString getName();
-
-  private slots:
-    void textChanged(QString);
-
-  private:
-    Ui::NickEditDlg ui;
-    QList<QString> reserved;
-};
- 
 #endif

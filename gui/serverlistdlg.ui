@@ -1,14 +1,11 @@
 <ui version="4.0" >
- <author></author>
- <comment></comment>
- <exportmacro></exportmacro>
  <class>ServerListDlg</class>
  <widget class="QDialog" name="ServerListDlg" >
   <property name="geometry" >
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>757</width>
+    <width>430</width>
     <height>444</height>
    </rect>
   </property>
@@ -45,13 +42,13 @@
         <bool>false</bool>
        </property>
        <property name="alternatingRowColors" >
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
        <property name="selectionMode" >
         <enum>QAbstractItemView::ExtendedSelection</enum>
        </property>
        <property name="sortingEnabled" >
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
       </widget>
      </item>
@@ -176,7 +173,7 @@
     </layout>
    </item>
   </layout>
-  <widget class="QWidget" name="widget" >
+  <widget class="QWidget" native="1" name="widget" >
    <property name="geometry" >
     <rect>
      <x>9</x>
@@ -186,7 +183,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QWidget" name="widget_2" >
+  <widget class="QWidget" native="1" name="widget_2" >
    <property name="geometry" >
     <rect>
      <x>9</x>
@@ -196,7 +193,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QWidget" name="widget_3" >
+  <widget class="QWidget" native="1" name="widget_3" >
    <property name="geometry" >
     <rect>
      <x>660</x>
@@ -207,7 +204,6 @@
    </property>
   </widget>
  </widget>
- <pixmapfunction></pixmapfunction>
  <resources>
   <include location="../images/icons.qrc" />
  </resources>

@@ -27,7 +27,6 @@
 ChannelWidget::ChannelWidget(QWidget *parent) : QWidget(parent) {
   ui.setupUi(this);
   //ui.inputEdit->grabKeyboard();
-  ui.inputEdit->setFocus();
 
 /*  //ui.splitter->
   ui.textBrowser->setHtml("[17:21] <em>--> Dante has joined #quassel (~hurz@p1af2242.dip.t-dialin.net)</em><br>"
@@ -47,21 +46,21 @@ ChannelWidget::ChannelWidget(QWidget *parent) : QWidget(parent) {
   //connect(this, SIGNAL(inputLine( const QString& )), &core, SLOT(inputLine( const QString& )));
 
   connect(this, SIGNAL(inputLine(QString)), guiProxy, SLOT(gsUserInput(QString)));
-  connect(this, SIGNAL(requestConnect(QString, quint16)), guiProxy, SLOT(gsRequestConnect(QString, quint16)));
-  connect(guiProxy, SIGNAL(csCoreMessage(QString)), this, SLOT(lineReceived(QString)));
-
-  //emit requestConnect("irc.scortum.moep.net", 6668);
-  //emit requestConnect("irc.quakenet.org", 6668);
+  connect(guiProxy, SIGNAL(csSendMessage(QString, QString, QString)), this, SLOT(msgReceived(QString, QString, QString)));
+  connect(guiProxy, SIGNAL(csSendStatusMsg(QString, QString)), this, SLOT(statusMsgReceived(QString, QString)));
+  ui.inputEdit->setFocus();
 }
 
 void ChannelWidget::enterPressed() {
-  QString l = ui.inputEdit->text();
-  if(l == "/c") emit requestConnect("irc.quakenet.org", 6668);
-  else emit inputLine(ui.inputEdit->text());
+  emit inputLine(ui.inputEdit->text());
   ui.inputEdit->clear();
 }
 
-void ChannelWidget::lineReceived(QString s) {
-  ui.chatWidget->insertPlainText(s + "\n");
+void ChannelWidget::msgReceived(QString net, QString chan, QString msg) {
+  ui.chatWidget->insertPlainText(QString("[%1:%2] %3\n").arg(net).arg(chan).arg(msg));
   ui.chatWidget->ensureCursorVisible();
+}
+
+void ChannelWidget::statusMsgReceived(QString net, QString msg) {
+  msgReceived(net, "STATUS", msg);
 }

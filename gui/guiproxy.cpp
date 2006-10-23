@@ -29,7 +29,9 @@ void GUIProxy::recv(CoreSignal sig, QVariant arg1, QVariant arg2, QVariant arg3)
     case CS_CORE_STATE: emit csCoreState(arg1); break;
     case CS_UPDATE_GLOBAL_DATA: emit csUpdateGlobalData(arg1.toString(), arg2); break;
     //case CS_GLOBAL_DATA_CHANGED: emit csGlobalDataChanged(arg1.toString()); break;
-    case CS_CORE_MESSAGE: emit csCoreMessage(arg1.toString()); break;
+    case CS_SEND_MESSAGE: emit csSendMessage(arg1.toString(), arg2.toString(), arg3.toString()); break;
+    case CS_SEND_STATUS_MSG: emit csSendStatusMsg(arg1.toString(), arg2.toString()); break;
+
     default: qWarning() << "Unknown signal in GUIProxy::recv: " << sig;
   }
 }

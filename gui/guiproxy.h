@@ -26,6 +26,7 @@
 #include <QObject>
 #include <QVariant>
 #include <QTcpSocket>
+#include <QStringList>
 
 /** This class is the GUI side of the proxy. The GUI connects its signals and slots to it,
  *  and the calls are marshalled and sent to (or received and unmarshalled from) the CoreProxy.
@@ -39,15 +40,15 @@ class GUIProxy : public QObject {
 
   public slots:
     inline void gsUserInput(QString s)                             { send(GS_USER_INPUT, s); }
-    inline void gsRequestConnect(QString host, quint16 port)       { send(GS_REQUEST_CONNECT, host, port); }
-    //inline void gsPutQuasselData(QString key, QVariant data)       { send(GS_PUT_QUASSEL_DATA, key, data); }
+    inline void gsRequestConnect(QStringList networks)             { send(GS_REQUEST_CONNECT, networks); }
 
     void connectToCore(QString host, quint16 port);
     void disconnectFromCore();
 
   signals:
     void csCoreState(QVariant);
-    void csCoreMessage(QString);
+    void csSendMessage(QString, QString, QString);
+    void csSendStatusMsg(QString, QString);
     void csUpdateGlobalData(QString key, QVariant data);
     void csGlobalDataChanged(QString key);
 

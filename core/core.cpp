@@ -28,12 +28,12 @@
 Core::Core() {
   if(core) qFatal("Trying to instantiate more than one Core object!");
 
-  connect(coreProxy, SIGNAL(gsRequestConnect(QString, quint16)), this, SLOT(connectToIrc(QString, quint16)));
+  connect(coreProxy, SIGNAL(gsRequestConnect(QStringList)), this, SLOT(connectToIrc(QStringList)));
   connect(coreProxy, SIGNAL(gsUserInput(QString)), this, SLOT(inputLine(QString)));
+  connect(this, SIGNAL(sendMessage(QString, QString, QString)), coreProxy, SLOT(csSendMessage(QString, QString, QString)));
+  connect(this, SIGNAL(sendStatusMsg(QString, QString)), coreProxy, SLOT(csSendStatusMsg(QString, QString)));
 
-  connect(&server, SIGNAL(recvLine(QString)), coreProxy, SLOT(csCoreMessage(QString)));
-
-  // Read global settings from config file 
+  // Read global settings from config file
   QSettings s;
   s.beginGroup("Global");
   QString key;
@@ -46,18 +46,6 @@ Core::Core() {
   connect(global, SIGNAL(dataUpdatedRemotely(QString)), SLOT(globalDataUpdated(QString)));
   connect(global, SIGNAL(dataPutLocally(QString)), SLOT(globalDataUpdated(QString)));
 
-  server.start();
-}
-
-void Core::connectToIrc(const QString &h, quint16 port) {
-  if(server.isConnected()) return;
-  qDebug() << "Core: Connecting to " << h << ":" << port;
-  server.connectToIrc(h, port);
-}
-
-void Core::inputLine(QString s) {
-  server.putRawLine(s);
-
 }
 
 void Core::globalDataUpdated(QString key) {
@@ -65,5 +53,45 @@ void Core::globalDataUpdated(QString key) {
   QSettings s;
   s.setValue(QString("Global/")+key, data);
 }
+
+// temp
+void Core::inputLine(QString s) {
+  emit msgFromGUI("", "", s);
+
+}
+
+void Core::connectToIrc(QStringList networks) {
+  foreach(QString net, networks) {
+    if(servers.contains(net)) {
+
+    } else {
+      Server *server = new Server(net);
+      connect(this, SIGNAL(connectToIrc(QString)), server, SLOT(connectToIrc(QString)));
+      connect(this, SIGNAL(disconnectFromIrc(QString)), server, SLOT(disconnectFromIrc(QString)));
+      connect(this, SIGNAL(msgFromGUI(QString, QString, QString)), server, SLOT(userInput(QString, QString, QString)));
+      connect(server, SIGNAL(sendMessage(QString, QString)), this, SLOT(recvMessageFromServer(QString, QString)));
+      connect(server, SIGNAL(sendStatusMsg(QString)), this, SLOT(recvStatusMsgFromServer(QString)));
+      // add error handling
+
+      server->start();
+      servers[net] = server;
+    }
+    emit connectToIrc(net);
+  }
+}
+
+void Core::recvMessageFromServer(QString buf, QString msg) {
+  Q_ASSERT(sender());
+  QString net = qobject_cast<Server*>(sender())->getNetwork();
+  emit sendMessage(net, buf, msg);
+}
+
+void Core::recvStatusMsgFromServer(QString msg) {
+  Q_ASSERT(sender());
+  QString net = qobject_cast<Server*>(sender())->getNetwork();
+  qDebug() << "sent status:"<<msg;
+  emit sendStatusMsg(net, msg);
+}
+
 
 Core *core = 0;

@@ -32,10 +32,11 @@ class ChannelWidget : public QWidget {
   signals:
     void requestConnect(QString, quint16);
     void inputLine(QString);
-    
+
   private slots:
     void enterPressed();
-    void lineReceived(QString);
+    void msgReceived(QString, QString, QString);
+    void statusMsgReceived(QString net, QString msg);
 
   private:
     Ui::ChannelWidget ui;

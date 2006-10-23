@@ -38,13 +38,14 @@ class CoreProxy : public QObject {
     CoreProxy();
 
   public slots:
-    inline void csCoreMessage(QString s)                           { send(CS_CORE_MESSAGE, s); }
-    inline void csUpdateGlobalData(QString key, QVariant data)     { send(CS_UPDATE_GLOBAL_DATA, key, data); }
+    inline void csUpdateGlobalData(QString key, QVariant data)          { send(CS_UPDATE_GLOBAL_DATA, key, data); }
+    inline void csSendMessage(QString net, QString chan, QString msg)   { send(CS_SEND_MESSAGE, net, chan, msg); }
+    inline void csSendStatusMsg(QString net, QString msg)               { send(CS_SEND_STATUS_MSG, net, msg); }
 
   signals:
     void gsPutGlobalData(QString, QVariant);
     void gsUserInput(QString);
-    void gsRequestConnect(QString, quint16);
+    void gsRequestConnect(QStringList networks);
 
   private:
     void send(CoreSignal, QVariant arg1 = QVariant(), QVariant arg2 = QVariant(), QVariant arg3 = QVariant());

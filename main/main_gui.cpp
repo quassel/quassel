@@ -61,9 +61,6 @@ GUIProxy::GUIProxy() {
 
 void GUIProxy::connectToCore(QString host, quint16 port) {
   socket.connectToHost(host, port);
-  //VarMap initmsg;
-  //initmsg["GUIProtocol"] = GUI_PROTOCOL;
-  //send(GS_CLIENT_INIT, QVariant(initmsg));
 }
 
 void GUIProxy::disconnectFromCore() {
@@ -72,6 +69,7 @@ void GUIProxy::disconnectFromCore() {
 
 void GUIProxy::serverError(QAbstractSocket::SocketError) {
   emit coreConnectionError(socket.errorString());
+  //qFatal(QString("Connection error: %1").arg(socket.errorString()).toAscii());
 }
 
 void GUIProxy::serverHasData() {

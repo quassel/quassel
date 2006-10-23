@@ -41,3 +41,7 @@ images/qirc-icon.png
 main/global.cpp
 main/global.h
 gui/channelwidget-old.ui
+gui/identities.cpp
+gui/identities.h
+network/buffer.cpp
+network/buffer.h
