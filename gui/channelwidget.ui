@@ -1,6 +1,14 @@
 <ui version="4.0" >
  <class>ChannelWidget</class>
  <widget class="QWidget" name="ChannelWidget" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>713</width>
+    <height>519</height>
+   </rect>
+  </property>
   <property name="sizePolicy" >
    <sizepolicy>
     <hsizetype>3</hsizetype>
@@ -37,7 +45,14 @@
       <number>6</number>
      </property>
      <item>
-      <widget class="QLineEdit" name="topicEdit" />
+      <widget class="QLineEdit" name="topicEdit" >
+       <property name="focusPolicy" >
+        <enum>Qt::ClickFocus</enum>
+       </property>
+       <property name="readOnly" >
+        <bool>true</bool>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QToolButton" name="chanSettingsButton" >
@@ -86,6 +101,11 @@
         <horstretch>4</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
+      </property>
+      <property name="font" >
+       <font>
+        <family>Monospace</family>
+       </font>
       </property>
      </widget>
      <widget class="QTreeWidget" name="nickTree" >
@@ -218,8 +238,12 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>inputEdit</tabstop>
+  <tabstop>ownNick</tabstop>
+  <tabstop>nickTree</tabstop>
   <tabstop>topicEdit</tabstop>
   <tabstop>chanSettingsButton</tabstop>
+  <tabstop>chatWidget</tabstop>
  </tabstops>
  <resources/>
  <connections/>

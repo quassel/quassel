@@ -36,13 +36,11 @@ class Core : public QObject {
     //~Core();
 
   public slots:
-    void inputLine(QString);   // temp
     void connectToIrc(QStringList);
 
   signals:
-    void outputLine(const QString &);  // temp
     void msgFromGUI(QString network, QString channel, QString message);
-    void sendMessage(QString network, QString channel, QString message);
+    void sendMessage(QString network, QString channel, Message message);
     void sendStatusMsg(QString, QString);
 
     void connectToIrc(QString net);
@@ -51,7 +49,7 @@ class Core : public QObject {
   private slots:
     void globalDataUpdated(QString);
     void recvStatusMsgFromServer(QString msg);
-    void recvMessageFromServer(QString buffer, QString msg);
+    void recvMessageFromServer(QString buffer, Message msg);
 
   private:
     QHash<QString, Server *> servers;

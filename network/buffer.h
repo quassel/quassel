@@ -26,8 +26,23 @@
 class Buffer : public QObject {
   Q_OBJECT
 
+  public:
+    Buffer(QString name);
 
+    QString name() { return _name; }
+    QString topic() { return _topic; }
 
+  public slots:
+    //void setNicks(QStringList nicks);
+    //void addNick(QString nick);
+    //void removeNick(QString nick);
+
+  signals:
+
+  private:
+    QString _name;
+    QString _topic;
+    QStringList nicks;
 
 };
 

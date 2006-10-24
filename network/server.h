@@ -27,12 +27,12 @@
 
 #include "global.h"
 #include "buffer.h"
+#include "message.h"
 
 #define DEFAULT_PORT 6667
 
-/*! \file */
 
-/*! \class Server
+/*!
  * This is a server object, managing a single connection to an IRC server, handling the associated channels and so on.
  * We have this running in its own thread mainly to not block other server objects or the core if something goes wrong,
  * e.g. if some scripts starts running wild...
@@ -63,8 +63,12 @@ class Server : public QThread {
   signals:
     void recvRawServerMsg(QString);
     void sendStatusMsg(QString);
-    void sendMessage(QString buffer, QString msg);
+    void sendMessage(QString buffer, Message msg);
     void disconnected();
+
+    void setTopic(QString network, QString buffer, QString topic);
+    void setNicks(QString network, QString buffer, QStringList nicks);
+
 
   private slots:
     void run();
@@ -75,19 +79,36 @@ class Server : public QThread {
     void socketStateChanged(QAbstractSocket::SocketState);
 
     /* Message Handlers */
-    /* handleXxxxFromServer(QString prefix, QStringList params); */
-    void handleNoticeFromServer(QString, QStringList);
-    void handlePingFromServer(QString, QStringList);
 
-    void defaultHandlerForServer(QString cmd, QString prefix, QStringList params);
+    /* handleUser(QString, Buffer *) */
+    void handleUserJoin(QString, Buffer *);
+    void handleUserQuote(QString, Buffer *);
+    void handleUserSay(QString, Buffer *);
+
+
+    /* handleServer(QString, QStringList); */
+    void handleServerJoin(QString, QStringList);
+    void handleServerNotice(QString, QStringList);
+    void handleServerPing(QString, QStringList);
+    void handleServerPrivmsg(QString, QStringList);
+
+    void handleServer001(QString, QStringList);   // RPL_WELCOME
+    void handleServer331(QString, QStringList);   // RPL_NOTOPIC
+    void handleServer332(QString, QStringList);   // RPL_TOPIC
+
+    void defaultServerHandler(QString cmd, QString prefix, QStringList params);
+    void defaultUserHandler(QString cmd, QString msg, Buffer *buf);
 
   private:
     QString network;
     QTcpSocket socket;
     QHash<QString, Buffer*> buffers;
 
+    QString currentNick;
+    QString currentServer;
+
     void handleServerMsg(QString rawMsg);
-    void handleUserMsg(QString usrMsg);
+    void handleUserMsg(QString buffer, QString usrMsg);
 
     class ParseError : public Exception {
       public:

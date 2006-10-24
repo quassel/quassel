@@ -40,11 +40,8 @@ MainWin::MainWin() : QMainWindow() {
   move(s.value("MainWinPos", QPoint(50, 50)).toPoint());
   s.endGroup();
 
-  workspace = new QWorkspace(this);
-  setCentralWidget(workspace);
-  //ChannelWidget *cw = new ChannelWidget(this);
-  //workspace->addWindow(cw);
-  //setCentralWidget(cw);
+  //workspace = new QWorkspace(this);
+  //setCentralWidget(workspace);
   statusBar()->showMessage(tr("Waiting for core..."));
   setEnabled(false);
   show();
@@ -55,14 +52,12 @@ MainWin::MainWin() : QMainWindow() {
   setupMenus();
   //identitiesAct = settingsMenu->addAction(QIcon(":/default/identity.png"), tr("&Identities..."), serverListDlg, SLOT(editIdentities()));
   //showServerList();
-  ChannelWidget *cw = new ChannelWidget(this);
-  //setCentralWidget(cw);
-  workspace->addWindow(cw);
-  cw->showMaximized();
-  //setEnabled(true);
+  IrcWidget *cw = new IrcWidget(this);
+  setCentralWidget(cw);
+  //workspace->addWindow(cw);
+  //cw->showMaximized();
   statusBar()->showMessage(tr("Ready."));
-  //QSystemTrayIcon *systray = new QSystemTrayIcon(QIcon(":/qirc-icon.png"));
-  //systray->showMessage("Quassel", "Started!");
+  cw->setFocus();
 }
 
 void MainWin::syncToCore() {

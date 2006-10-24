@@ -24,43 +24,111 @@
 #include <QtGui>
 #include <iostream>
 
-ChannelWidget::ChannelWidget(QWidget *parent) : QWidget(parent) {
+ChannelWidget::ChannelWidget(QString netname, QString bufname, QWidget *parent) : QWidget(parent) {
   ui.setupUi(this);
-  //ui.inputEdit->grabKeyboard();
-
-/*  //ui.splitter->
-  ui.textBrowser->setHtml("[17:21] <em>--> Dante has joined #quassel (~hurz@p1af2242.dip.t-dialin.net)</em><br>"
-                          "[17:21] <em>--> Sput has joined #quassel (~Sput42@vincent.mindpool.net)</em><br>"
-                          "[17:23] &lt;<b>Dante</b>&gt; Das sieht ja soweit schonmal Klasse aus!<br>"
-                          "[17:23] &lt;<b>Sput</b>&gt; Find ich auch... schade dass es noch nix tut :p<br>"
-                          "[17:24] &lt;<b>Dante</b>&gt; Das wird sich ja gottseidank bald ändern.<br>"
-                          "[17:24] &lt;<b>Sput</b>&gt; Wollen wir's hoffen :D"
-                          );
- ui.listWidget->addItem("@Dante");
- ui.listWidget->addItem("@Sput");
-  */
-  //connect(&core, SIGNAL(outputLine( const QString& )), ui.textBrowser, SLOT(insertPlainText(const QString &)));
-  //connect(ui.lineEdit, SIGNAL(
-  //connect(&core, SIGNAL(outputLine( const QString& )), this, SLOT(lineReceived(const QString &)));
+  _networkName = netname;
+  _bufferName = bufname;
   connect(ui.inputEdit, SIGNAL(returnPressed()), this, SLOT(enterPressed()));
-  //connect(this, SIGNAL(inputLine( const QString& )), &core, SLOT(inputLine( const QString& )));
+  //ui.inputEdit->setFocus();
 
-  connect(this, SIGNAL(inputLine(QString)), guiProxy, SLOT(gsUserInput(QString)));
-  connect(guiProxy, SIGNAL(csSendMessage(QString, QString, QString)), this, SLOT(msgReceived(QString, QString, QString)));
-  connect(guiProxy, SIGNAL(csSendStatusMsg(QString, QString)), this, SLOT(statusMsgReceived(QString, QString)));
-  ui.inputEdit->setFocus();
+  // Define standard colors
+  stdCol = QColor("black");
+  noticeCol = QColor("darkblue");
+  serverCol = QColor("darkblue");
+  errorCol = QColor("red");
+  joinCol = QColor("green");
+  quitCol = QColor("firebrick");
+  partCol = QColor("firebrick");
+  
 }
 
 void ChannelWidget::enterPressed() {
-  emit inputLine(ui.inputEdit->text());
+  emit sendMessage(networkName(), bufferName(), ui.inputEdit->text());
   ui.inputEdit->clear();
 }
 
-void ChannelWidget::msgReceived(QString net, QString chan, QString msg) {
-  ui.chatWidget->insertPlainText(QString("[%1:%2] %3\n").arg(net).arg(chan).arg(msg));
+void ChannelWidget::recvMessage(Message msg) {
+  QString s;
+  QColor c = stdCol;
+  switch(msg.type) {
+    case Message::Server:
+      c = serverCol; s = msg.msg;
+      break;
+    case Message::Error:
+      c = errorCol; s = msg.msg;
+      break;
+    default:
+      c = stdCol; s = QString("[%1] %2").arg(msg.sender).arg(msg.msg);
+      break;
+  }
+  ui.chatWidget->setTextColor(c);
+  ui.chatWidget->insertPlainText(QString("%1\n").arg(s));
   ui.chatWidget->ensureCursorVisible();
 }
 
-void ChannelWidget::statusMsgReceived(QString net, QString msg) {
-  msgReceived(net, "STATUS", msg);
+void ChannelWidget::recvStatusMsg(QString msg) {
+  ui.chatWidget->insertPlainText(QString("[STATUS] %1").arg(msg));
+  ui.chatWidget->ensureCursorVisible();
 }
+
+void ChannelWidget::setTopic(QString topic) {
+  ui.topicEdit->setText(topic);
+}
+
+void ChannelWidget::setNicks(QStringList nicks) {
+
+
+}
+
+/**********************************************************************************************/
+
+
+IrcWidget::IrcWidget(QWidget *parent) : QWidget(parent) {
+  ui.setupUi(this);
+  ui.tabWidget->removeTab(0);
+
+  connect(guiProxy, SIGNAL(csSendMessage(QString, QString, Message)), this, SLOT(recvMessage(QString, QString, Message)));
+  connect(guiProxy, SIGNAL(csSendStatusMsg(QString, QString)), this, SLOT(recvStatusMsg(QString, QString)));
+  connect(guiProxy, SIGNAL(csSetTopic(QString, QString, QString)), this, SLOT(setTopic(QString, QString, QString)));
+  connect(guiProxy, SIGNAL(csSetNicks(QString, QString, QStringList)), this, SLOT(setNicks(QString, QString, QStringList)));
+  connect(this, SIGNAL(sendMessage( QString, QString, QString )), guiProxy, SLOT(gsUserInput(QString, QString, QString)));
+}
+
+ChannelWidget * IrcWidget::getBuffer(QString net, QString buf) {
+  QString key = net + buf;
+  if(!buffers.contains(key)) {
+    ChannelWidget *cw = new ChannelWidget(net, buf);
+    connect(cw, SIGNAL(sendMessage(QString, QString, QString)), this, SLOT(userInput(QString, QString, QString)));
+    ui.tabWidget->addTab(cw, net+buf);
+    ui.tabWidget->setCurrentWidget(cw);
+    //cw->setFocus();
+    buffers[key] = cw;
+  }
+  return buffers[key];
+}
+
+
+void IrcWidget::recvMessage(QString net, QString buf, Message msg) {
+  ChannelWidget *cw = getBuffer(net, buf);
+  cw->recvMessage(msg);
+}
+
+void IrcWidget::recvStatusMsg(QString net, QString msg) {
+  recvMessage(net, "", QString("[STATUS] %1").arg(msg));
+
+}
+
+void IrcWidget::userInput(QString net, QString buf, QString msg) {
+  emit sendMessage(net, buf, msg);
+}
+
+void IrcWidget::setTopic(QString net, QString buf, QString topic) {
+  ChannelWidget *cw = getBuffer(net, buf);
+  cw->setTopic(topic);
+}
+
+void IrcWidget::setNicks(QString net, QString buf, QStringList nicks) {
+  ChannelWidget *cw = getBuffer(net, buf);
+  cw->setNicks(nicks);
+}
+

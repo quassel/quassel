@@ -22,6 +22,7 @@
 
 #include "guiproxy.h"
 #include "util.h"
+#include "message.h"
 
 void GUIProxy::recv(CoreSignal sig, QVariant arg1, QVariant arg2, QVariant arg3) {
   //qDebug() << "[GUI] Received signal:" << sig <<arg1<<arg2<<arg3;
@@ -29,8 +30,10 @@ void GUIProxy::recv(CoreSignal sig, QVariant arg1, QVariant arg2, QVariant arg3)
     case CS_CORE_STATE: emit csCoreState(arg1); break;
     case CS_UPDATE_GLOBAL_DATA: emit csUpdateGlobalData(arg1.toString(), arg2); break;
     //case CS_GLOBAL_DATA_CHANGED: emit csGlobalDataChanged(arg1.toString()); break;
-    case CS_SEND_MESSAGE: emit csSendMessage(arg1.toString(), arg2.toString(), arg3.toString()); break;
+    case CS_SEND_MESSAGE: emit csSendMessage(arg1.toString(), arg2.toString(), arg3.value<Message>()); break;
     case CS_SEND_STATUS_MSG: emit csSendStatusMsg(arg1.toString(), arg2.toString()); break;
+    case CS_SET_TOPIC: emit csSetTopic(arg1.toString(), arg2.toString(), arg3.toString()); break;
+    case CS_SET_NICKS: emit csSetNicks(arg1.toString(), arg2.toString(), arg3.toStringList()); break;
 
     default: qWarning() << "Unknown signal in GUIProxy::recv: " << sig;
   }

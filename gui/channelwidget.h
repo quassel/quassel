@@ -22,26 +22,62 @@
 #define _CHANNELWIDGET_H_
 
 #include "ui_channelwidget.h"
+#include "ui_ircwidget.h"
+
+#include "message.h"
 
 class ChannelWidget : public QWidget {
   Q_OBJECT
 
   public:
-    ChannelWidget(QWidget *parent = 0);
+    ChannelWidget(QString netname, QString bufname, QWidget *parent = 0);
 
+    QString bufferName() { return _bufferName; }
+    QString networkName() { return _networkName; }
   signals:
-    void requestConnect(QString, quint16);
-    void inputLine(QString);
+    void sendMessage(QString, QString, QString);
+
+  public slots:
+    void recvMessage(Message);
+    void recvStatusMsg(QString msg);
+    void setTopic(QString);
+    void setNicks(QStringList);
 
   private slots:
     void enterPressed();
-    void msgReceived(QString, QString, QString);
-    void statusMsgReceived(QString net, QString msg);
 
   private:
     Ui::ChannelWidget ui;
 
+    QColor stdCol, errorCol, noticeCol, joinCol, quitCol, partCol, serverCol;
+    QString _networkName;
+    QString _bufferName;
 };
 
+/** Temporary widget for displaying a set of ChannelWidgets. */
+class IrcWidget : public QWidget {
+  Q_OBJECT
+
+  public:
+    IrcWidget(QWidget *parent = 0);
+
+  public slots:
+    void recvMessage(QString network, QString buffer, Message message);
+    void recvStatusMsg(QString network, QString message);
+    void setTopic(QString, QString, QString);
+    void setNicks(QString, QString, QStringList);
+
+  signals:
+    void sendMessage(QString network, QString buffer, QString message);
+
+  private slots:
+    void userInput(QString, QString, QString);
+
+  private:
+    Ui::IrcWidget ui;
+    QHash<QString, ChannelWidget *> buffers;
+
+    ChannelWidget * getBuffer(QString net, QString buf);
+};
 
 #endif

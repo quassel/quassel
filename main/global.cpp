@@ -21,9 +21,9 @@
 #include "global.h"
 #include "logger.h"
 #include "core.h"
+#include "message.h"
 
-#include <QString>
-#include <QStringList>
+#include <QtCore>
 #include <QDomDocument>
 
 extern void messageHandler(QtMsgType type, const char *msg);
@@ -31,6 +31,7 @@ extern void messageHandler(QtMsgType type, const char *msg);
 Global::Global() {
   if(global) qFatal("Trying to instantiate more than one Global object!");
   qInstallMsgHandler(messageHandler);
+  qRegisterMetaType<Message>("Message");
   //initIconMap();
 }
 

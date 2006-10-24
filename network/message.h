@@ -21,84 +21,24 @@
 #ifndef _MESSAGE_H_
 #define _MESSAGE_H_
 
-#include <QHash>
-#include <QString>
-#include <QStringList>
+#include <QtCore>
 
-class Server;
-class Buffer;
-class Message;
+struct Message {
 
-typedef void (*sendHandlerType)(Message *);        // handler for commands sent by the user
-typedef void (*recvHandlerType)(Message *);              // handler for incoming messages
+  /** The different types a message can have for display */
+  enum Type { Msg, Notice, Action, Nick, Mode, Join, Part, Quit, Kick, Kill, Server, Info, Error };
+  enum Flags { None = 0, Self = 1, Highlight = 2 };
 
-/**
- * This contains information that depends (solely) on the message type, such as the handler function and help texts.
- * Most of these are defined at compile time, but more may be added at runtime.
- */
-struct CmdType {
-  int cmdCode;
-  QString cmd;
-  QString cmdDescr;
-  QString args;
-  QString argsDescr;
-  recvHandlerType recvHandler;
-  sendHandlerType sendHandler;
+  Type type;
+  Flags flags;
+  QString sender;
+  QString msg;
+
+  Message(QString _msg = "", QString _sender = "", Type _type = Msg, Flags _flags = None)
+  : msg(_msg), sender(_sender), type(_type), flags(_flags) {};
 
 };
 
-/**
- *
-*/
-class Message {
-  public:
-    Message(Server *server, Buffer *buffer, QString cmd, QString prefix, QStringList args = QStringList());
-
-    virtual ~Message() {};
-
-    static void init(recvHandlerType defaultRevcHandler, sendHandlerType defaultSendHandler);
-    static Message * createFromServerString(Server *server, QString srvMsg);
-    //static Message * createFromUserString(Server *server, Buffer *buffer, QString usrMsg);
-    //static registerCmd();
-    //static unregisterCmd();
-
-    inline Server * getServer() { return server; }
-    inline Buffer * getBuffer() { return buffer; }
-    inline int getCmdCode() { return cmdCode; }
-    inline QString getPrefix() { return prefix; }
-    inline QString getCmd() { return cmd; }
-    inline QStringList getParams() { return params; }
-    inline recvHandlerType getRecvHandler();
-    inline sendHandlerType getSendHandler();
-
-  protected:
-    Server *server;
-    Buffer *buffer;
-    int cmdCode;
-    QString prefix;
-    QString cmd;
-    QStringList params;
-    recvHandlerType recvHandler;
-    sendHandlerType sendHandler;
-    static recvHandlerType defaultRecvHandler;
-    static sendHandlerType defaultSendHandler;
-
-    static QHash<QString, CmdType> cmdTypes;
-};
-
-
-/** This is only used to have a nice way for defining builtin commands.
- *  We create an array of these in builtin_cmds.cpp and read this to fill our
- *  command hash.
- */
-struct BuiltinCmd {
-  int cmdCode;
-  QString cmd;
-  QString cmdDescr;
-  QString args;
-  QString argsDescr;
-  recvHandlerType recvHandler;
-  sendHandlerType sendHandler;
-};
+Q_DECLARE_METATYPE(Message)
 
 #endif

@@ -22,6 +22,7 @@
 #define _COREPROXY_H_
 
 #include "proxy_common.h"
+#include "message.h"
 
 #include <QtCore>
 #include <QTcpSocket>
@@ -39,12 +40,14 @@ class CoreProxy : public QObject {
 
   public slots:
     inline void csUpdateGlobalData(QString key, QVariant data)          { send(CS_UPDATE_GLOBAL_DATA, key, data); }
-    inline void csSendMessage(QString net, QString chan, QString msg)   { send(CS_SEND_MESSAGE, net, chan, msg); }
+    inline void csSendMessage(QString net, QString buf, Message msg)    { send(CS_SEND_MESSAGE, net, buf, QVariant::fromValue(msg)); }
     inline void csSendStatusMsg(QString net, QString msg)               { send(CS_SEND_STATUS_MSG, net, msg); }
+    inline void csSetTopic(QString net, QString buf, QString topic)     { send(CS_SET_TOPIC, net, buf, topic); }
+    inline void csSetNicks(QString net, QString buf, QStringList nicks) { send(CS_SET_NICKS, net, buf, nicks); }
 
   signals:
     void gsPutGlobalData(QString, QVariant);
-    void gsUserInput(QString);
+    void gsUserInput(QString, QString, QString);
     void gsRequestConnect(QStringList networks);
 
   private:

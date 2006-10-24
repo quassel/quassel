@@ -1,7 +1,8 @@
 SET(gui_SRCS channelwidget.cpp mainwin.cpp serverlist.cpp identities.cpp coreconnectdlg.cpp guiproxy.cpp)
 SET(gui_HDRS )
 SET(gui_MOCS channelwidget.h mainwin.h serverlist.h identities.h coreconnectdlg.h guiproxy.h)
-SET(gui_UICS channelwidget.ui identitiesdlg.ui identitieseditdlg.ui networkeditdlg.ui nickeditdlg.ui serverlistdlg.ui servereditdlg.ui coreconnectdlg.ui)
+SET(gui_UICS channelwidget.ui identitiesdlg.ui identitieseditdlg.ui networkeditdlg.ui
+             nickeditdlg.ui serverlistdlg.ui servereditdlg.ui coreconnectdlg.ui ircwidget.ui)
 
 QT4_WRAP_UI(_UIC ${gui_UICS})
 QT4_WRAP_CPP(_MOC ${gui_MOCS})

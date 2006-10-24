@@ -122,7 +122,7 @@ void CoreProxy::recv(GUISignal sig, QVariant arg1, QVariant arg2, QVariant arg3)
   //qDebug() << "[CORE] Received signal" << sig << ":" << arg1<<arg2<<arg3;
   switch(sig) {
     case GS_UPDATE_GLOBAL_DATA: emit gsPutGlobalData(arg1.toString(), arg2); break;
-    case GS_USER_INPUT: emit gsUserInput(arg1.toString()); break;
+    case GS_USER_INPUT: emit gsUserInput(arg1.toString(), arg2.toString(), arg3.toString()); break;
     case GS_REQUEST_CONNECT: emit gsRequestConnect(arg1.toStringList()); break;
     default: qWarning() << "Unknown signal in CoreProxy::recv: " << sig;
   }

@@ -29,8 +29,8 @@ Core::Core() {
   if(core) qFatal("Trying to instantiate more than one Core object!");
 
   connect(coreProxy, SIGNAL(gsRequestConnect(QStringList)), this, SLOT(connectToIrc(QStringList)));
-  connect(coreProxy, SIGNAL(gsUserInput(QString)), this, SLOT(inputLine(QString)));
-  connect(this, SIGNAL(sendMessage(QString, QString, QString)), coreProxy, SLOT(csSendMessage(QString, QString, QString)));
+  connect(coreProxy, SIGNAL(gsUserInput(QString, QString, QString)), this, SIGNAL(msgFromGUI(QString, QString, QString)));
+  connect(this, SIGNAL(sendMessage(QString, QString, Message)), coreProxy, SLOT(csSendMessage(QString, QString, Message)));
   connect(this, SIGNAL(sendStatusMsg(QString, QString)), coreProxy, SLOT(csSendStatusMsg(QString, QString)));
 
   // Read global settings from config file
@@ -54,12 +54,6 @@ void Core::globalDataUpdated(QString key) {
   s.setValue(QString("Global/")+key, data);
 }
 
-// temp
-void Core::inputLine(QString s) {
-  emit msgFromGUI("", "", s);
-
-}
-
 void Core::connectToIrc(QStringList networks) {
   foreach(QString net, networks) {
     if(servers.contains(net)) {
@@ -69,8 +63,10 @@ void Core::connectToIrc(QStringList networks) {
       connect(this, SIGNAL(connectToIrc(QString)), server, SLOT(connectToIrc(QString)));
       connect(this, SIGNAL(disconnectFromIrc(QString)), server, SLOT(disconnectFromIrc(QString)));
       connect(this, SIGNAL(msgFromGUI(QString, QString, QString)), server, SLOT(userInput(QString, QString, QString)));
-      connect(server, SIGNAL(sendMessage(QString, QString)), this, SLOT(recvMessageFromServer(QString, QString)));
+      connect(server, SIGNAL(sendMessage(QString, Message)), this, SLOT(recvMessageFromServer(QString, Message)));
       connect(server, SIGNAL(sendStatusMsg(QString)), this, SLOT(recvStatusMsgFromServer(QString)));
+      connect(server, SIGNAL(setTopic(QString, QString, QString)), coreProxy, SLOT(csSetTopic(QString, QString, QString)));
+      connect(server, SIGNAL(setNicks(QString, QString, QStringList)), coreProxy, SLOT(csSetNicks(QString, QString, QStringList)));
       // add error handling
 
       server->start();
@@ -80,7 +76,7 @@ void Core::connectToIrc(QStringList networks) {
   }
 }
 
-void Core::recvMessageFromServer(QString buf, QString msg) {
+void Core::recvMessageFromServer(QString buf, Message msg) {
   Q_ASSERT(sender());
   QString net = qobject_cast<Server*>(sender())->getNetwork();
   emit sendMessage(net, buf, msg);
@@ -89,7 +85,6 @@ void Core::recvMessageFromServer(QString buf, QString msg) {
 void Core::recvStatusMsgFromServer(QString msg) {
   Q_ASSERT(sender());
   QString net = qobject_cast<Server*>(sender())->getNetwork();
-  qDebug() << "sent status:"<<msg;
   emit sendStatusMsg(net, msg);
 }
 

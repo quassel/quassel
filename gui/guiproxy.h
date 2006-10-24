@@ -22,6 +22,7 @@
 #define _GUIPROXY_H_
 
 #include "proxy_common.h"
+#include "message.h"
 
 #include <QObject>
 #include <QVariant>
@@ -39,18 +40,20 @@ class GUIProxy : public QObject {
     GUIProxy();
 
   public slots:
-    inline void gsUserInput(QString s)                             { send(GS_USER_INPUT, s); }
-    inline void gsRequestConnect(QStringList networks)             { send(GS_REQUEST_CONNECT, networks); }
+    inline void gsUserInput(QString net, QString buf, QString msg)    { send(GS_USER_INPUT, net, buf, msg); }
+    inline void gsRequestConnect(QStringList networks)                { send(GS_REQUEST_CONNECT, networks); }
 
     void connectToCore(QString host, quint16 port);
     void disconnectFromCore();
 
   signals:
     void csCoreState(QVariant);
-    void csSendMessage(QString, QString, QString);
+    void csSendMessage(QString, QString, Message);
     void csSendStatusMsg(QString, QString);
     void csUpdateGlobalData(QString key, QVariant data);
     void csGlobalDataChanged(QString key);
+    void csSetTopic(QString, QString, QString);
+    void csSetNicks(QString, QString, QStringList);
 
     void coreConnected();
     void coreDisconnected();
