@@ -32,6 +32,7 @@ Global::Global() {
   if(global) qFatal("Trying to instantiate more than one Global object!");
   qInstallMsgHandler(messageHandler);
   qRegisterMetaType<Message>("Message");
+  qRegisterMetaTypeStreamOperators<Message>("Message");
   //initIconMap();
 }
 

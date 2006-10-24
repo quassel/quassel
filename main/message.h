@@ -39,6 +39,9 @@ struct Message {
 
 };
 
+QDataStream &operator<<(QDataStream &out, const Message &msg);
+QDataStream &operator>>(QDataStream &in, Message &msg);
+
 Q_DECLARE_METATYPE(Message)
 
 #endif
