@@ -44,6 +44,7 @@ class ChannelWidget : public QWidget {
     void setTopic(QString);
     void setNicks(QStringList);
     void addNick(QString nick, VarMap props);
+    void renameNick(QString oldnick, QString newnick);
     void removeNick(QString nick);
     void updateNick(QString nick, VarMap props);
     void setOwnNick(QString nick);
@@ -56,7 +57,8 @@ class ChannelWidget : public QWidget {
   private:
     Ui::ChannelWidget ui;
 
-    QColor stdCol, errorCol, noticeCol, joinCol, quitCol, partCol, serverCol;
+    QString stdCol, errorCol, noticeCol, joinCol, quitCol, partCol, kickCol, serverCol, nickCol;
+    QString CSS;
     QString _networkName;
     QString _bufferName;
     VarMap nicks;
@@ -76,6 +78,7 @@ class IrcWidget : public QWidget {
     void setNicks(QString, QString, QStringList);
     void addNick(QString net, QString nick, VarMap props);
     void removeNick(QString net, QString nick);
+    void renameNick(QString net, QString oldnick, QString newnick);
     void updateNick(QString net, QString nick, VarMap props);
     void setOwnNick(QString net, QString nick);
 
@@ -89,7 +92,7 @@ class IrcWidget : public QWidget {
     Ui::IrcWidget ui;
     QHash<QString, ChannelWidget *> buffers;
     VarMap nicks;
-    QString ownNick;
+    QHash<QString, QString> ownNick;
 
     ChannelWidget * getBuffer(QString net, QString buf);
 };

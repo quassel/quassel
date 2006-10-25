@@ -35,7 +35,7 @@ struct Message {
   QString msg;
   QDateTime timeStamp;
 
-  Message(QString _msg = "", QString _sender = "", Type _type = Msg, Flags _flags = None)
+  Message(Type _type = Msg, QString _msg = "", QString _sender = "", Flags _flags = None)
   : msg(_msg), sender(_sender), type(_type), flags(_flags) { timeStamp = QDateTime::currentDateTime().toUTC(); };
 
 };

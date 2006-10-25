@@ -67,6 +67,7 @@ class Server : public QThread {
     void disconnected();
 
     void nickAdded(QString network, QString nick, VarMap props);
+    void nickRenamed(QString network, QString oldnick, QString newnick);
     void nickRemoved(QString network, QString nick);
     void nickUpdated(QString network, QString nick, VarMap props);
     void modeSet(QString network, QString target, QString mode);
@@ -85,17 +86,21 @@ class Server : public QThread {
 
     /* Message Handlers */
 
-    /* handleUser(QString, Buffer *) */
+    /* void handleUser(QString, Buffer *) */
     void handleUserJoin(QString, Buffer *);
     void handleUserQuote(QString, Buffer *);
     void handleUserSay(QString, Buffer *);
 
 
-    /* handleServer(QString, QStringList); */
+    /* void handleServer(QString, QStringList); */
     void handleServerJoin(QString, QStringList);
+    void handleServerKick(QString, QStringList);
+    void handleServerNick(QString, QStringList);
     void handleServerNotice(QString, QStringList);
+    void handleServerPart(QString, QStringList);
     void handleServerPing(QString, QStringList);
     void handleServerPrivmsg(QString, QStringList);
+    void handleServerQuit(QString, QStringList);
 
     void handleServer001(QString, QStringList);   // RPL_WELCOME
     void handleServer331(QString, QStringList);   // RPL_NOTOPIC
@@ -120,9 +125,7 @@ class Server : public QThread {
     void handleServerMsg(QString rawMsg);
     void handleUserMsg(QString buffer, QString usrMsg);
 
-    QString nickFromMask(QString mask);
-    QString userFromMask(QString mask);
-    QString hostFromMask(QString mask);
+    QString updateNickFromMask(QString mask);
 
     class ParseError : public Exception {
       public:

@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include "util.h"
 #include "global.h"
 #include "server.h"
 #include "cmdcodes.h"
@@ -89,20 +90,21 @@ void Server::socketStateChanged(QAbstractSocket::SocketState state) {
   //qDebug() << "Socket state changed: " << state;
 }
 
-QString Server::nickFromMask(QString mask) {
-  return mask.section('!', 0, 0);
-}
-
-QString Server::userFromMask(QString mask) {
-  QString userhost = mask.section('!', 1);
-  if(userhost.isEmpty()) return QString();
-  return userhost.section('@', 0, 0);
-}
-
-QString Server::hostFromMask(QString mask) {
-  QString userhost = mask.section('!', 1);
-  if(userhost.isEmpty()) return QString();
-  return userhost.section('@', 1);
+QString Server::updateNickFromMask(QString mask) {
+  QString user = userFromMask(mask);
+  QString host = hostFromMask(mask);
+  QString nick = nickFromMask(mask);
+  if(nicks.contains(nick) && !user.isEmpty() && !host.isEmpty()) {
+    VarMap n = nicks[nick].toMap();
+    if(n["User"].toString() != user || n["Host"].toString() != host) {
+      if(!n["User"].toString().isEmpty() || !n["Host"].toString().isEmpty())
+        qWarning(QString("Strange: Hostmask for nick %1 has changed!").arg(nick).toAscii());
+      n["User"] = user; n["Host"] = host;
+      nicks[nick] = n;
+      emit nickUpdated(network, nick, n);
+    }
+  }
+  return nick;
 }
 
 void Server::userInput(QString net, QString buf, QString msg) {
@@ -176,7 +178,7 @@ void Server::handleServerMsg(QString msg) {
       defaultServerHandler(cmd, prefix, params);
     }
   } catch(Exception e) {
-    emit displayMsg("", Message(e.msg(), "", Message::Error));
+    emit displayMsg("", Message(Message::Error, e.msg()));
   }
 }
 
@@ -188,7 +190,7 @@ void Server::defaultServerHandler(QString cmd, QString prefix, QStringList param
     switch(num) {
       // Welcome, status, info messages. Just display these.
       case 2: case 3: case 4: case 5: case 251: case 252: case 253: case 254: case 255: case 372: case 375:
-        emit displayMsg("", Message(params.join(" "), prefix, Message::Server));
+        emit displayMsg("", Message(Message::Server, params.join(" "), prefix));
         break;
       // Ignore these commands.
       case 366: case 376:
@@ -196,11 +198,11 @@ void Server::defaultServerHandler(QString cmd, QString prefix, QStringList param
 
       // Everything else will be marked in red, so we can add them somewhere.
       default:
-        emit displayMsg("", Message(cmd + " " + params.join(" "), prefix, Message::Error));
+        emit displayMsg("", Message(Message::Error, cmd + " " + params.join(" "), prefix));
     }
     //qDebug() << prefix <<":"<<cmd<<params;
   } else {
-    emit displayMsg("", Message(QString("Unknown: ") + cmd + " " + params.join(" "), prefix, Message::Error));
+    emit displayMsg("", Message(Message::Error, QString("Unknown: ") + cmd + " " + params.join(" "), prefix));
     //qDebug() << prefix <<":"<<cmd<<params;
   }
 }
@@ -222,12 +224,12 @@ void Server::handleUserMsg(QString bufname, QString usrMsg) {
       defaultUserHandler(cmd, msg, buffer);
     }
   } catch(Exception e) {
-    emit displayMsg("", Message(e.msg(), "", Message::Error));
+    emit displayMsg("", Message(Message::Error, e.msg()));
   }
 }
 
 void Server::defaultUserHandler(QString cmd, QString msg, Buffer *buf) {
-  emit displayMsg("", Message(QString("Error: %1 %2").arg(cmd).arg(msg), "", Message::Error));
+  emit displayMsg("", Message(Message::Error, QString("Error: %1 %2").arg(cmd).arg(msg)));
 
 }
 
@@ -254,14 +256,14 @@ void Server::handleUserSay(QString msg, Buffer *buf) {
   QStringList params;
   params << buf->name() << msg;
   putCmd("PRIVMSG", params);
-  emit displayMsg(params[0], Message(msg, currentNick, Message::Msg, Message::Self));
+  emit displayMsg(params[0], Message(Message::Msg, msg, currentNick, Message::Self));
 }
 
 /**********************************************************************************/
 
 void Server::handleServerJoin(QString prefix, QStringList params) {
   Q_ASSERT(params.count() == 1);
-  QString nick = nickFromMask(prefix);
+  QString nick = updateNickFromMask(prefix);
   if(nick == currentNick) {
     Q_ASSERT(!buffers.contains(params[0]));  // cannot join a buffer twice!
     Buffer *buf = new Buffer(params[0]);
@@ -280,24 +282,77 @@ void Server::handleServerJoin(QString prefix, QStringList params) {
       VarMap chans;
       chans[params[0]] = VarMap();
       n["Channels"] = chans;
-      n["Nick"] = nick;
       n["User"] = userFromMask(prefix);
       n["Host"] = hostFromMask(prefix);
       nicks[nick] = n;
       emit nickAdded(network, nick, n);
     }
-    QString user = n["User"].toString(); QString host = n["Host"].toString();
-    if(user.isEmpty() || host.isEmpty()) emit displayMsg(params[0], Message(tr("%1 has joined %2").arg(nick).arg(params[0]), "", Message::Join));
-    else emit displayMsg(params[0], Message(tr("%1 (%2@%3) has joined %4").arg(nick).arg(user).arg(host).arg(params[0]), "", Message::Join));
+    emit displayMsg(params[0], Message(Message::Join, params[0], prefix));
   }
 }
 
+void Server::handleServerKick(QString prefix, QStringList params) {
+  QString kicker = updateNickFromMask(prefix);
+  QString nick = params[1];
+  Q_ASSERT(nicks.contains(nick));
+  VarMap n = nicks[nick].toMap();
+  VarMap chans = n["Channels"].toMap();
+  Q_ASSERT(chans.contains(params[0]));
+  chans.remove(params[0]);
+  QString msg = nick;
+  if(params.count() > 2) msg = QString("%1 %2").arg(msg).arg(params[2]);
+  emit displayMsg(params[0], Message(Message::Kick, msg, prefix));
+  if(chans.count() > 0) {
+    n["Channels"] = chans;
+    nicks[nick] = n;
+    emit nickUpdated(network, nick, n);
+  } else {
+    nicks.remove(nick);
+    emit nickRemoved(network, nick);
+  }
+}
 
+void Server::handleServerNick(QString prefix, QStringList params) {
+  QString oldnick = updateNickFromMask(prefix);
+  QString newnick = params[0];
+  QVariant v = nicks.take(oldnick);
+  nicks[newnick] = v;
+  VarMap chans = v.toMap()["Channels"].toMap();
+  foreach(QString c, chans.keys()) {
+    if(oldnick != currentNick) { emit displayMsg(c, Message(Message::Nick, newnick, prefix)); }
+    else { emit displayMsg(c, Message(Message::Nick, newnick, newnick)); }
+  }
+  emit nickRenamed(network, oldnick, newnick);
+  if(oldnick == currentNick) {
+    currentNick == newnick;
+    emit ownNickSet(network, newnick);
+  }
+}
 
 void Server::handleServerNotice(QString prefix, QStringList params) {
-  Message msg(params[1], prefix, Message::Notice);
-  if(prefix == currentServer) emit displayMsg("", Message(params[1], prefix, Message::Server));
-  else emit displayMsg("", Message(params[1], prefix, Message::Notice));
+  //Message msg(Message::Notice, params[1], prefix);
+  if(prefix == currentServer) emit displayMsg("", Message(Message::Server, params[1], prefix));
+  else emit displayMsg("", Message(Message::Notice, params[1], prefix));
+}
+
+void Server::handleServerPart(QString prefix, QStringList params) {
+  QString nick = updateNickFromMask(prefix);
+  Q_ASSERT(nicks.contains(nick));
+  VarMap n = nicks[nick].toMap();
+  VarMap chans = n["Channels"].toMap();
+  Q_ASSERT(chans.contains(params[0]));
+  chans.remove(params[0]);
+  QString msg;
+  if(params.count() > 1) msg = params[1];
+  emit displayMsg(params[0], Message(Message::Part, msg, prefix));
+  if(chans.count() > 0) {
+    n["Channels"] = chans;
+    nicks[nick] = n;
+    emit nickUpdated(network, nick, n);
+  } else {
+    nicks.remove(nick);
+    emit nickRemoved(network, nick);
+  }
 }
 
 void Server::handleServerPing(QString prefix, QStringList params) {
@@ -305,8 +360,20 @@ void Server::handleServerPing(QString prefix, QStringList params) {
 }
 
 void Server::handleServerPrivmsg(QString prefix, QStringList params) {
-  emit displayMsg(params[0], Message(params[1], nickFromMask(prefix), Message::Msg));
+  updateNickFromMask(prefix);
+  emit displayMsg(params[0], Message(Message::Msg, params[1], prefix));
 
+}
+
+void Server::handleServerQuit(QString prefix, QStringList params) {
+  QString nick = updateNickFromMask(prefix);
+  Q_ASSERT(nicks.contains(nick));
+  VarMap chans = nicks[nick].toMap()["Channels"].toMap();
+  foreach(QString c, chans.keys()) {
+    emit displayMsg(c, Message(Message::Quit, params[0], prefix));
+  }
+  nicks.remove(nick);
+  emit nickRemoved(network, nick);
 }
 
 /* RPL_WELCOME */
@@ -314,7 +381,7 @@ void Server::handleServer001(QString prefix, QStringList params) {
   currentServer = prefix;
   currentNick = params[0];
   emit ownNickSet(network, currentNick);
-  emit displayMsg("", Message(params[1], prefix, Message::Server));
+  emit displayMsg("", Message(Message::Server, params[1], prefix));
 }
 
 /* RPL_NOTOPIC */
@@ -325,12 +392,13 @@ void Server::handleServer331(QString prefix, QStringList params) {
 /* RPL_TOPIC */
 void Server::handleServer332(QString prefix, QStringList params) {
   emit topicSet(network, params[0], params[1]);
-  emit displayMsg(params[0], Message(tr("Topic for %1 is \"%2\"").arg(params[0]).arg(params[1]), "", Message::Server));
+  emit displayMsg(params[0], Message(Message::Server, tr("Topic for %1 is \"%2\"").arg(params[0]).arg(params[1])));
 }
 
 /* Topic set by... */
 void Server::handleServer333(QString prefix, QStringList params) {
-  emit displayMsg(params[0], Message(tr("Topic set by %1 on %2").arg(params[1]).arg(QDateTime::fromTime_t(params[2].toUInt()).toString()), "", Message::Server));
+  emit displayMsg(params[0], Message(Message::Server,
+                  tr("Topic set by %1 on %2").arg(params[1]).arg(QDateTime::fromTime_t(params[2].toUInt()).toString())));
 }
 
 /* RPL_NAMREPLY */

@@ -31,7 +31,7 @@
   </property>
   <layout class="QVBoxLayout" >
    <property name="margin" >
-    <number>1</number>
+    <number>9</number>
    </property>
    <property name="spacing" >
     <number>6</number>
@@ -78,138 +78,134 @@
     </layout>
    </item>
    <item>
-    <widget class="QSplitter" name="splitter" >
-     <property name="sizePolicy" >
-      <sizepolicy>
-       <hsizetype>7</hsizetype>
-       <vsizetype>5</vsizetype>
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
+    <layout class="QHBoxLayout" >
+     <property name="margin" >
+      <number>0</number>
      </property>
-     <property name="lineWidth" >
-      <number>1</number>
+     <property name="spacing" >
+      <number>6</number>
      </property>
-     <property name="orientation" >
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <widget class="QTextBrowser" name="chatWidget" >
-      <property name="sizePolicy" >
-       <sizepolicy>
-        <hsizetype>7</hsizetype>
-        <vsizetype>5</vsizetype>
-        <horstretch>4</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="font" >
-       <font>
-        <family>Monospace</family>
-       </font>
-      </property>
-     </widget>
-     <widget class="QTreeWidget" name="nickTree" >
-      <property name="sizePolicy" >
-       <sizepolicy>
-        <hsizetype>5</hsizetype>
-        <vsizetype>5</vsizetype>
-        <horstretch>1</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="layoutDirection" >
-       <enum>Qt::LeftToRight</enum>
-      </property>
-      <property name="dragEnabled" >
-       <bool>true</bool>
-      </property>
-      <property name="textElideMode" >
-       <enum>Qt::ElideRight</enum>
-      </property>
-      <property name="rootIsDecorated" >
-       <bool>true</bool>
-      </property>
-      <property name="sortingEnabled" >
-       <bool>false</bool>
-      </property>
-      <property name="animated" >
-       <bool>false</bool>
-      </property>
-      <property name="columnCount" >
-       <number>1</number>
-      </property>
-      <column>
-       <property name="text" >
-        <string>32 Users</string>
+     <item>
+      <widget class="QTextEdit" name="chatWidget" >
+       <property name="sizePolicy" >
+        <sizepolicy>
+         <hsizetype>7</hsizetype>
+         <vsizetype>7</vsizetype>
+         <horstretch>4</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
        </property>
-      </column>
-      <item>
-       <property name="text" >
-        <string>@ Operators</string>
+       <property name="font" >
+        <font>
+         <family>Monospace</family>
+        </font>
        </property>
-       <item>
-        <property name="text" >
-         <string>New Sub Item</string>
-        </property>
-       </item>
-       <item>
-        <property name="text" >
-         <string>New Item</string>
-        </property>
-       </item>
-       <item>
-        <property name="text" >
-         <string>New Item</string>
-        </property>
-       </item>
-      </item>
-      <item>
-       <property name="text" >
-        <string>4 Voiced</string>
+       <property name="readOnly" >
+        <bool>true</bool>
        </property>
-       <item>
-        <property name="text" >
-         <string>New Item</string>
-        </property>
-       </item>
-       <item>
-        <property name="text" >
-         <string>New Item</string>
-        </property>
-       </item>
-       <item>
-        <property name="text" >
-         <string>New Item</string>
-        </property>
-       </item>
-      </item>
-      <item>
-       <property name="text" >
-        <string>19 Users</string>
+      </widget>
+     </item>
+     <item>
+      <widget class="QTreeWidget" name="nickTree" >
+       <property name="sizePolicy" >
+        <sizepolicy>
+         <hsizetype>5</hsizetype>
+         <vsizetype>5</vsizetype>
+         <horstretch>1</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
        </property>
+       <property name="layoutDirection" >
+        <enum>Qt::LeftToRight</enum>
+       </property>
+       <property name="dragEnabled" >
+        <bool>true</bool>
+       </property>
+       <property name="textElideMode" >
+        <enum>Qt::ElideRight</enum>
+       </property>
+       <property name="sortingEnabled" >
+        <bool>false</bool>
+       </property>
+       <property name="animated" >
+        <bool>false</bool>
+       </property>
+       <property name="columnCount" >
+        <number>1</number>
+       </property>
+       <column>
+        <property name="text" >
+         <string>32 Users</string>
+        </property>
+       </column>
        <item>
         <property name="text" >
-         <string>New Sub Item</string>
+         <string>@ Operators</string>
         </property>
+        <item>
+         <property name="text" >
+          <string>New Sub Item</string>
+         </property>
+        </item>
+        <item>
+         <property name="text" >
+          <string>New Item</string>
+         </property>
+        </item>
+        <item>
+         <property name="text" >
+          <string>New Item</string>
+         </property>
+        </item>
        </item>
        <item>
         <property name="text" >
-         <string>New Item</string>
+         <string>4 Voiced</string>
         </property>
+        <item>
+         <property name="text" >
+          <string>New Item</string>
+         </property>
+        </item>
+        <item>
+         <property name="text" >
+          <string>New Item</string>
+         </property>
+        </item>
+        <item>
+         <property name="text" >
+          <string>New Item</string>
+         </property>
+        </item>
        </item>
        <item>
         <property name="text" >
-         <string>New Item</string>
+         <string>19 Users</string>
         </property>
+        <item>
+         <property name="text" >
+          <string>New Sub Item</string>
+         </property>
+        </item>
+        <item>
+         <property name="text" >
+          <string>New Item</string>
+         </property>
+        </item>
+        <item>
+         <property name="text" >
+          <string>New Item</string>
+         </property>
+        </item>
+        <item>
+         <property name="text" >
+          <string>New Item</string>
+         </property>
+        </item>
        </item>
-       <item>
-        <property name="text" >
-         <string>New Item</string>
-        </property>
-       </item>
-      </item>
-     </widget>
-    </widget>
+      </widget>
+     </item>
+    </layout>
    </item>
    <item>
     <layout class="QHBoxLayout" >
@@ -221,9 +217,16 @@
      </property>
      <item>
       <widget class="QComboBox" name="ownNick" >
-       <property name="sizeAdjustPolicy" >
-        <enum>QComboBox::AdjustToContents</enum>
-       </property>
+       <item>
+        <property name="text" >
+         <string>mainNick</string>
+        </property>
+       </item>
+       <item>
+        <property name="text" >
+         <string>altNick</string>
+        </property>
+       </item>
       </widget>
      </item>
      <item>
@@ -239,7 +242,6 @@
   <tabstop>nickTree</tabstop>
   <tabstop>topicEdit</tabstop>
   <tabstop>chanSettingsButton</tabstop>
-  <tabstop>chatWidget</tabstop>
  </tabstops>
  <resources/>
  <connections/>

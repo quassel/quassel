@@ -48,6 +48,7 @@ class CoreProxy : public QObject {
     inline void csSetNicks(QString net, QString buf, QStringList nicks) { send(CS_SET_NICKS, net, buf, nicks); }
     inline void csNickAdded(QString net, QString nick, VarMap props)    { send(CS_NICK_ADDED, net, nick, props); }
     inline void csNickRemoved(QString net, QString nick)                { send(CS_NICK_REMOVED, net, nick); }
+    inline void csNickRenamed(QString net, QString oldn, QString newn)  { send(CS_NICK_RENAMED, net, oldn, newn); }
     inline void csNickUpdated(QString net, QString nick, VarMap props)  { send(CS_NICK_UPDATED, net, nick, props); }
     inline void csOwnNickSet(QString net, QString nick)                 { send(CS_OWN_NICK_SET, net, nick); }
 

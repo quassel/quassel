@@ -37,6 +37,7 @@ void GUIProxy::recv(CoreSignal sig, QVariant arg1, QVariant arg2, QVariant arg3)
     case CS_SET_NICKS: emit csSetNicks(arg1.toString(), arg2.toString(), arg3.toStringList()); break;
     case CS_NICK_ADDED: emit csNickAdded(arg1.toString(), arg2.toString(), arg3.toMap()); break;
     case CS_NICK_REMOVED: emit csNickRemoved(arg1.toString(), arg2.toString()); break;
+    case CS_NICK_RENAMED: emit csNickRenamed(arg1.toString(), arg2.toString(), arg3.toString()); break;
     case CS_NICK_UPDATED: emit csNickUpdated(arg1.toString(), arg2.toString(), arg3.toMap()); break;
     case CS_OWN_NICK_SET: emit csOwnNickSet(arg1.toString(), arg2.toString()); break;
 

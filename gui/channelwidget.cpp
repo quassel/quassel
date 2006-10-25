@@ -20,6 +20,8 @@
 
 #include "channelwidget.h"
 #include "guiproxy.h"
+#include "global.h"
+#include "util.h"
 
 #include <QtGui>
 #include <iostream>
@@ -40,14 +42,16 @@ ChannelWidget::ChannelWidget(QString netname, QString bufname, QString own, QWid
   //ui.inputEdit->setFocus();
 
   // Define standard colors
-  stdCol = QColor("black");
-  noticeCol = QColor("darkblue");
-  serverCol = QColor("darkblue");
-  errorCol = QColor("red");
-  joinCol = QColor("green");
-  quitCol = QColor("firebrick");
-  partCol = QColor("firebrick");
-  
+  stdCol = "black";
+  noticeCol = "darkblue";
+  serverCol = "darkblue";
+  errorCol = "red";
+  joinCol = "green";
+  quitCol = "firebrick";
+  partCol = "firebrick";
+  kickCol = "firebrick";
+  nickCol = "magenta";
+
 }
 
 void ChannelWidget::enterPressed() {
@@ -56,11 +60,14 @@ void ChannelWidget::enterPressed() {
 }
 
 void ChannelWidget::recvMessage(Message msg) {
-  QString s;
-  QColor c = stdCol;
+  QString s, n;
+  QString c = stdCol;
+  QString user = userFromMask(msg.sender);
+  QString host = hostFromMask(msg.sender);
+  QString nick = nickFromMask(msg.sender);
   switch(msg.type) {
     case Message::Msg:
-      c = stdCol; s = QString("<%1> %2").arg(msg.sender).arg(msg.msg);
+      c = stdCol; n = QString("&lt;%1&gt;").arg(nick); s = msg.msg;
       break;
     case Message::Server:
       c = serverCol; s = msg.msg;
@@ -69,14 +76,51 @@ void ChannelWidget::recvMessage(Message msg) {
       c = errorCol; s = msg.msg;
       break;
     case Message::Join:
-      c = joinCol; s = msg.msg;
+      c = joinCol;
+      s = QString(tr("--&gt; %1 (%2@%3) has joined %4")).arg(nick).arg(user).arg(host).arg(bufferName());
+      break;
+    case Message::Part:
+      c = partCol;
+      s = QString(tr("&lt;-- %1 (%2@%3) has left %4")).arg(nick).arg(user).arg(host).arg(bufferName());
+      if(!msg.msg.isEmpty()) s = QString("%1 (%2)").arg(s).arg(msg.msg);
+      break;
+    case Message::Kick:
+      { c = kickCol;
+        QString victim = msg.msg.section(" ", 0, 0);
+        QString kickmsg = msg.msg.section(" ", 1);
+        s = QString(tr("--&gt; %1 has kicked %2 from %3")).arg(nick).arg(victim).arg(bufferName());
+        if(!kickmsg.isEmpty()) s = QString("%1 (%2)").arg(s).arg(kickmsg);
+      }
+      break;
+    case Message::Quit:
+      c = quitCol;
+      s = QString(tr("&lt;-- %1 (%2@%3) has quit")).arg(nick).arg(user).arg(host);
+      if(!msg.msg.isEmpty()) s = QString("%1 (%2)").arg(s).arg(msg.msg);
+      break;
+    case Message::Nick:
+      c = nickCol;
+      if(nick == msg.msg) s = QString(tr("&lt;-&gt; You are now known as %1")).arg(msg.msg);
+      else s = QString(tr("&lt;-&gt; %1 is now known as %2")).arg(nick).arg(msg.msg);
       break;
     default:
-      c = stdCol; s = QString("[%1] %2").arg(msg.sender).arg(msg.msg);
+      c = stdCol; n = QString("[%1]").arg(msg.sender); s = msg.msg;
       break;
   }
-  ui.chatWidget->setTextColor(c);
-  ui.chatWidget->insertPlainText(QString("[%2] %1\n").arg(s).arg(msg.timeStamp.toLocalTime().toString("hh:mm:ss")));
+  QString html = QString("<table cellspacing=0 cellpadding=0><tr>"
+      "<td width=50><div style=\"color:%2;\">[%1]</div></td>")
+      .arg(msg.timeStamp.toLocalTime().toString("hh:mm:ss")).arg("darkblue");
+  if(!n.isEmpty())
+    html += QString("<td width=100><div align=right style=\"white-space:nowrap;margin-left:6px;color:%2;\">%1</div></td>")
+        .arg(n).arg("mediumseagreen");
+  html += QString("<td><div style=\"margin-left:6px;color:%2;\">%1</div></td>""</tr></table>")
+      .arg(s).arg(c);
+  ui.chatWidget->append(html);
+  //ui.chatWidget->append(QString("<table border=1 cellspacing=0 cellpadding=0><tr><td>%1</td><td width=100 style=border-right-width:1px;><div style=margin-left:8px; margin-right:8px;>%2</div></td><td style=color:firebrick>&nbsp;%3</td></tr></table>")
+      //.arg(msg.timeStamp.toLocalTime().toString("hh:mm:ss")).arg(nick).arg(s));
+  //ui.chatWidget->setTextColor(stdCol);
+  //ui.chatWidget->append(QString("[%1] ").arg(msg.timeStamp.toLocalTime().toString("hh:mm:ss")));
+  //ui.chatWidget->setTextColor(c);
+  //ui.chatWidget->append(s + "\n");
   //ui.chatWidget->insertHtml(QString("<table><tr><td>[12:13]</td><td width=20><div align=right>[nickname]</div></td><td>This is the Message!</td></tr>"
   //    "<tr><td>[12:13]</td><td><div align=right>[nick]</div></td><td>This is the Message!</td></tr>"
   //    "<tr><td>[12:13]</td><td><div align=right>[looongnickname]</div></td><td>This is the Message!</td></tr>"
@@ -106,6 +150,12 @@ void ChannelWidget::addNick(QString nick, VarMap props) {
 
 void ChannelWidget::updateNick(QString nick, VarMap props) {
   nicks[nick] = props;
+  updateNickList();
+}
+
+void ChannelWidget::renameNick(QString oldnick, QString newnick) {
+  QVariant v = nicks.take(oldnick);
+  nicks[newnick] = v;
   updateNickList();
 }
 
@@ -165,6 +215,7 @@ IrcWidget::IrcWidget(QWidget *parent) : QWidget(parent) {
   connect(guiProxy, SIGNAL(csSetNicks(QString, QString, QStringList)), this, SLOT(setNicks(QString, QString, QStringList)));
   connect(guiProxy, SIGNAL(csNickAdded(QString, QString, VarMap)), this, SLOT(addNick(QString, QString, VarMap)));
   connect(guiProxy, SIGNAL(csNickRemoved(QString, QString)), this, SLOT(removeNick(QString, QString)));
+  connect(guiProxy, SIGNAL(csNickRenamed(QString, QString, QString)), this, SLOT(renameNick(QString, QString, QString)));
   connect(guiProxy, SIGNAL(csNickUpdated(QString, QString, VarMap)), this, SLOT(updateNick(QString, QString, VarMap)));
   connect(guiProxy, SIGNAL(csOwnNickSet(QString, QString)), this, SLOT(setOwnNick(QString, QString)));
   connect(this, SIGNAL(sendInput( QString, QString, QString )), guiProxy, SLOT(gsUserInput(QString, QString, QString)));
@@ -173,7 +224,7 @@ IrcWidget::IrcWidget(QWidget *parent) : QWidget(parent) {
 ChannelWidget * IrcWidget::getBuffer(QString net, QString buf) {
   QString key = net + buf;
   if(!buffers.contains(key)) {
-    ChannelWidget *cw = new ChannelWidget(net, buf, ownNick);
+    ChannelWidget *cw = new ChannelWidget(net, buf, ownNick[net]);
     connect(cw, SIGNAL(sendInput(QString, QString, QString)), this, SLOT(userInput(QString, QString, QString)));
     ui.tabWidget->addTab(cw, net+buf);
     ui.tabWidget->setCurrentWidget(cw);
@@ -190,7 +241,7 @@ void IrcWidget::recvMessage(QString net, QString buf, Message msg) {
 }
 
 void IrcWidget::recvStatusMsg(QString net, QString msg) {
-  recvMessage(net, "", QString("[STATUS] %1").arg(msg));
+  recvMessage(net, "", Message(Message::Server, QString("[STATUS] %1").arg(msg)));
 
 }
 
@@ -209,12 +260,28 @@ void IrcWidget::setNicks(QString net, QString buf, QStringList nicks) {
 }
 
 void IrcWidget::addNick(QString net, QString nick, VarMap props) {
-  nicks[net].toMap()[nick] = props;
+  VarMap netnicks = nicks[net].toMap();
+  netnicks[nick] = props;
+  nicks[net] = netnicks;
   VarMap chans = props["Channels"].toMap();
   QStringList c = chans.keys();
   foreach(QString bufname, c) {
     getBuffer(net, bufname)->addNick(nick, props);
   }
+}
+
+void IrcWidget::renameNick(QString net, QString oldnick, QString newnick) {
+  VarMap netnicks = nicks[net].toMap();
+  qDebug() << "renNICK:"<<oldnick<<newnick;
+  Q_ASSERT(netnicks.contains(oldnick));
+  QStringList chans = netnicks[oldnick].toMap()["Channels"].toMap().keys(); qDebug() << "l:" << chans;
+  foreach(QString c, chans) {
+    qDebug() << net << c;
+    getBuffer(net, c)->renameNick(oldnick, newnick);
+  }
+  QVariant v = netnicks.take(oldnick);
+  netnicks[newnick] = v;
+  nicks[net] = netnicks;
 }
 
 void IrcWidget::updateNick(QString net, QString nick, VarMap props) {
@@ -227,7 +294,9 @@ void IrcWidget::updateNick(QString net, QString nick, VarMap props) {
   foreach(QString c, oldchans) {
     if(!newchans.contains(c)) getBuffer(net, c)->removeNick(nick);
   }
-  nicks[net].toMap()[nick] = props;
+  VarMap netnicks = nicks[net].toMap();
+  netnicks[nick] = props;
+  nicks[net] = netnicks;
 }
 
 void IrcWidget::removeNick(QString net, QString nick) {
@@ -235,13 +304,13 @@ void IrcWidget::removeNick(QString net, QString nick) {
   foreach(QString bufname, chans.keys()) {
     getBuffer(net, bufname)->removeNick(nick);
   }
-  qDebug() << nicks;
-  nicks[net].toMap().remove(nick);
-  qDebug() << nicks;
+  VarMap netnicks = nicks[net].toMap();
+  netnicks.remove(nick);
+  nicks[net] = netnicks;
 }
 
 void IrcWidget::setOwnNick(QString net, QString nick) {
-  ownNick = nick;
+  ownNick[net] = nick;
   foreach(ChannelWidget *cw, buffers.values()) {
     if(cw->networkName() == net) cw->setOwnNick(nick);
   }

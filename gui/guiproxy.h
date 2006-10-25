@@ -58,6 +58,7 @@ class GUIProxy : public QObject {
     void csSetNicks(QString, QString, QStringList);
     void csNickAdded(QString, QString, VarMap);
     void csNickRemoved(QString, QString);
+    void csNickRenamed(QString, QString, QString);
     void csNickUpdated(QString, QString, VarMap);
     void csOwnNickSet(QString, QString);
 

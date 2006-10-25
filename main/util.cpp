@@ -22,6 +22,22 @@
 
 #include <QtCore>
 
+QString nickFromMask(QString mask) {
+  return mask.section('!', 0, 0);
+}
+
+QString userFromMask(QString mask) {
+  QString userhost = mask.section('!', 1);
+  if(userhost.isEmpty()) return QString();
+  return userhost.section('@', 0, 0);
+}
+
+QString hostFromMask(QString mask) {
+  QString userhost = mask.section('!', 1);
+  if(userhost.isEmpty()) return QString();
+  return userhost.section('@', 1);
+}
+
 void writeDataToDevice(QIODevice *dev, const QVariant &item) {
   QByteArray block;
   QDataStream out(&block, QIODevice::WriteOnly);

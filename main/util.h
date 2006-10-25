@@ -23,6 +23,11 @@
 
 #include <QIODevice>
 #include <QVariant>
+#include <QString>
+
+QString nickFromMask(QString mask);
+QString userFromMask(QString mask);
+QString hostFromMask(QString mask);
 
 /**
  *  Writes a QVariant to a device. The data item is prefixed with the resulting blocksize,
