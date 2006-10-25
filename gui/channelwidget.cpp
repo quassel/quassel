@@ -110,7 +110,7 @@ void ChannelWidget::recvMessage(Message msg) {
       "<td width=50><div style=\"color:%2;\">[%1]</div></td>")
       .arg(msg.timeStamp.toLocalTime().toString("hh:mm:ss")).arg("darkblue");
   if(!n.isEmpty())
-    html += QString("<td width=100><div align=right style=\"white-space:nowrap;margin-left:6px;color:%2;\">%1</div></td>")
+    html += QString("<td width=150><div align=right style=\"white-space:pre;margin-left:6px;color:%2;\">%1</div></td>")
         .arg(n).arg("mediumseagreen");
   html += QString("<td><div style=\"margin-left:6px;color:%2;\">%1</div></td>""</tr></table>")
       .arg(s).arg(c);
@@ -160,7 +160,7 @@ void ChannelWidget::renameNick(QString oldnick, QString newnick) {
 }
 
 void ChannelWidget::removeNick(QString nick) {
-  nicks[nick].toMap().remove(nick);
+  nicks.remove(nick);
   updateNickList();
 }
 
@@ -301,7 +301,9 @@ void IrcWidget::updateNick(QString net, QString nick, VarMap props) {
 
 void IrcWidget::removeNick(QString net, QString nick) {
   VarMap chans = nicks[net].toMap()[nick].toMap()["Channels"].toMap();
+  qDebug() << "REMOVE" << nick;
   foreach(QString bufname, chans.keys()) {
+    qDebug() << "remove from"<<bufname;
     getBuffer(net, bufname)->removeNick(nick);
   }
   VarMap netnicks = nicks[net].toMap();

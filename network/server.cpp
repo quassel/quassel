@@ -324,7 +324,7 @@ void Server::handleServerNick(QString prefix, QStringList params) {
   }
   emit nickRenamed(network, oldnick, newnick);
   if(oldnick == currentNick) {
-    currentNick == newnick;
+    currentNick = newnick;
     emit ownNickSet(network, newnick);
   }
 }
@@ -380,7 +380,11 @@ void Server::handleServerQuit(QString prefix, QStringList params) {
 void Server::handleServer001(QString prefix, QStringList params) {
   currentServer = prefix;
   currentNick = params[0];
+  VarMap n;
+  n["Channels"] = VarMap();
+  nicks[currentNick] = n;
   emit ownNickSet(network, currentNick);
+  emit nickAdded(network, currentNick, VarMap());
   emit displayMsg("", Message(Message::Server, params[1], prefix));
 }
 
@@ -423,7 +427,6 @@ void Server::handleServer353(QString prefix, QStringList params) {
       c["Mode"] = mode;
       chans[buf] = c;
       n["Channels"] = chans;
-      n["Nick"] = nick;
       nicks[nick] = n;
       emit nickAdded(network, nick, n);
     }
