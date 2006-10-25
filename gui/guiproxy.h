@@ -23,6 +23,7 @@
 
 #include "proxy_common.h"
 #include "message.h"
+#include "global.h"
 
 #include <QObject>
 #include <QVariant>
@@ -48,12 +49,17 @@ class GUIProxy : public QObject {
 
   signals:
     void csCoreState(QVariant);
-    void csSendMessage(QString, QString, Message);
-    void csSendStatusMsg(QString, QString);
+    void csDisplayMsg(QString, QString, Message);
+    void csDisplayStatusMsg(QString, QString);
     void csUpdateGlobalData(QString key, QVariant data);
     void csGlobalDataChanged(QString key);
-    void csSetTopic(QString, QString, QString);
+    void csModeSet(QString, QString, QString);
+    void csTopicSet(QString, QString, QString);
     void csSetNicks(QString, QString, QStringList);
+    void csNickAdded(QString, QString, VarMap);
+    void csNickRemoved(QString, QString);
+    void csNickUpdated(QString, QString, VarMap);
+    void csOwnNickSet(QString, QString);
 
     void coreConnected();
     void coreDisconnected();

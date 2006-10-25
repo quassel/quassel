@@ -18,6 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+/* THIS CODE IS OBSOLETE! */
+
 #ifndef _CMDCODES_H_
 #define _CMDCODES_H_
 

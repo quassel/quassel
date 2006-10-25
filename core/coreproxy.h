@@ -23,6 +23,7 @@
 
 #include "proxy_common.h"
 #include "message.h"
+#include "global.h"
 
 #include <QtCore>
 #include <QTcpSocket>
@@ -40,10 +41,15 @@ class CoreProxy : public QObject {
 
   public slots:
     inline void csUpdateGlobalData(QString key, QVariant data)          { send(CS_UPDATE_GLOBAL_DATA, key, data); }
-    inline void csSendMessage(QString net, QString buf, Message msg)    { send(CS_SEND_MESSAGE, net, buf, QVariant::fromValue(msg)); }
-    inline void csSendStatusMsg(QString net, QString msg)               { send(CS_SEND_STATUS_MSG, net, msg); }
-    inline void csSetTopic(QString net, QString buf, QString topic)     { send(CS_SET_TOPIC, net, buf, topic); }
+    inline void csDisplayMsg(QString net, QString buf, Message msg)     { send(CS_DISPLAY_MSG, net, buf, QVariant::fromValue(msg)); }
+    inline void csDisplayStatusMsg(QString net, QString msg)            { send(CS_DISPLAY_STATUS_MSG, net, msg); }
+    inline void csModeSet(QString net, QString target, QString mode)    { send(CS_MODE_SET, net, target, mode); }
+    inline void csTopicSet(QString net, QString buf, QString topic)     { send(CS_TOPIC_SET, net, buf, topic); }
     inline void csSetNicks(QString net, QString buf, QStringList nicks) { send(CS_SET_NICKS, net, buf, nicks); }
+    inline void csNickAdded(QString net, QString nick, VarMap props)    { send(CS_NICK_ADDED, net, nick, props); }
+    inline void csNickRemoved(QString net, QString nick)                { send(CS_NICK_REMOVED, net, nick); }
+    inline void csNickUpdated(QString net, QString nick, VarMap props)  { send(CS_NICK_UPDATED, net, nick, props); }
+    inline void csOwnNickSet(QString net, QString nick)                 { send(CS_OWN_NICK_SET, net, nick); }
 
   signals:
     void gsPutGlobalData(QString, QVariant);

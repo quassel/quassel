@@ -126,6 +126,9 @@
       <property name="textElideMode" >
        <enum>Qt::ElideRight</enum>
       </property>
+      <property name="rootIsDecorated" >
+       <bool>true</bool>
+      </property>
       <property name="sortingEnabled" >
        <bool>false</bool>
       </property>
@@ -218,16 +221,9 @@
      </property>
      <item>
       <widget class="QComboBox" name="ownNick" >
-       <item>
-        <property name="text" >
-         <string>mainNick</string>
-        </property>
-       </item>
-       <item>
-        <property name="text" >
-         <string>altNick</string>
-        </property>
-       </item>
+       <property name="sizeAdjustPolicy" >
+        <enum>QComboBox::AdjustToContents</enum>
+       </property>
       </widget>
      </item>
      <item>

@@ -30,8 +30,8 @@ Core::Core() {
 
   connect(coreProxy, SIGNAL(gsRequestConnect(QStringList)), this, SLOT(connectToIrc(QStringList)));
   connect(coreProxy, SIGNAL(gsUserInput(QString, QString, QString)), this, SIGNAL(msgFromGUI(QString, QString, QString)));
-  connect(this, SIGNAL(sendMessage(QString, QString, Message)), coreProxy, SLOT(csSendMessage(QString, QString, Message)));
-  connect(this, SIGNAL(sendStatusMsg(QString, QString)), coreProxy, SLOT(csSendStatusMsg(QString, QString)));
+  connect(this, SIGNAL(displayMsg(QString, QString, Message)), coreProxy, SLOT(csDisplayMsg(QString, QString, Message)));
+  connect(this, SIGNAL(displayStatusMsg(QString, QString)), coreProxy, SLOT(csDisplayStatusMsg(QString, QString)));
 
   // Read global settings from config file
   QSettings s;
@@ -63,10 +63,15 @@ void Core::connectToIrc(QStringList networks) {
       connect(this, SIGNAL(connectToIrc(QString)), server, SLOT(connectToIrc(QString)));
       connect(this, SIGNAL(disconnectFromIrc(QString)), server, SLOT(disconnectFromIrc(QString)));
       connect(this, SIGNAL(msgFromGUI(QString, QString, QString)), server, SLOT(userInput(QString, QString, QString)));
-      connect(server, SIGNAL(sendMessage(QString, Message)), this, SLOT(recvMessageFromServer(QString, Message)));
-      connect(server, SIGNAL(sendStatusMsg(QString)), this, SLOT(recvStatusMsgFromServer(QString)));
-      connect(server, SIGNAL(setTopic(QString, QString, QString)), coreProxy, SLOT(csSetTopic(QString, QString, QString)));
+      connect(server, SIGNAL(displayMsg(QString, Message)), this, SLOT(recvMessageFromServer(QString, Message)));
+      connect(server, SIGNAL(displayStatusMsg(QString)), this, SLOT(recvStatusMsgFromServer(QString)));
+      connect(server, SIGNAL(modeSet(QString, QString, QString)), coreProxy, SLOT(csModeSet(QString, QString, QString)));
+      connect(server, SIGNAL(topicSet(QString, QString, QString)), coreProxy, SLOT(csTopicSet(QString, QString, QString)));
       connect(server, SIGNAL(setNicks(QString, QString, QStringList)), coreProxy, SLOT(csSetNicks(QString, QString, QStringList)));
+      connect(server, SIGNAL(nickAdded(QString, QString, VarMap)), coreProxy, SLOT(csNickAdded(QString, QString, VarMap)));
+      connect(server, SIGNAL(nickRemoved(QString, QString)), coreProxy, SLOT(csNickRemoved(QString, QString)));
+      connect(server, SIGNAL(nickUpdated(QString, QString, VarMap)), coreProxy, SLOT(csNickUpdated(QString, QString, VarMap)));
+      connect(server, SIGNAL(ownNickSet(QString, QString)), coreProxy, SLOT(csOwnNickSet(QString, QString)));
       // add error handling
 
       server->start();
@@ -76,16 +81,18 @@ void Core::connectToIrc(QStringList networks) {
   }
 }
 
+// ALL messages coming pass through these functions before going to the GUI.
+// So this is the perfect place for storing the backlog and log stuff.
 void Core::recvMessageFromServer(QString buf, Message msg) {
   Q_ASSERT(sender());
   QString net = qobject_cast<Server*>(sender())->getNetwork();
-  emit sendMessage(net, buf, msg);
+  emit displayMsg(net, buf, msg);
 }
 
 void Core::recvStatusMsgFromServer(QString msg) {
   Q_ASSERT(sender());
   QString net = qobject_cast<Server*>(sender())->getNetwork();
-  emit sendStatusMsg(net, msg);
+  emit displayStatusMsg(net, msg);
 }
 
 

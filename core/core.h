@@ -40,8 +40,8 @@ class Core : public QObject {
 
   signals:
     void msgFromGUI(QString network, QString channel, QString message);
-    void sendMessage(QString network, QString channel, Message message);
-    void sendStatusMsg(QString, QString);
+    void displayMsg(QString network, QString channel, Message message);
+    void displayStatusMsg(QString, QString);
 
     void connectToIrc(QString net);
     void disconnectFromIrc(QString net);

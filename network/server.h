@@ -62,12 +62,17 @@ class Server : public QThread {
 
   signals:
     void recvRawServerMsg(QString);
-    void sendStatusMsg(QString);
-    void sendMessage(QString buffer, Message msg);
+    void displayStatusMsg(QString);
+    void displayMsg(QString buffer, Message msg);
     void disconnected();
 
-    void setTopic(QString network, QString buffer, QString topic);
+    void nickAdded(QString network, QString nick, VarMap props);
+    void nickRemoved(QString network, QString nick);
+    void nickUpdated(QString network, QString nick, VarMap props);
+    void modeSet(QString network, QString target, QString mode);
+    void topicSet(QString network, QString buffer, QString topic);
     void setNicks(QString network, QString buffer, QStringList nicks);
+    void ownNickSet(QString network, QString newNick);
 
 
   private slots:
@@ -95,6 +100,8 @@ class Server : public QThread {
     void handleServer001(QString, QStringList);   // RPL_WELCOME
     void handleServer331(QString, QStringList);   // RPL_NOTOPIC
     void handleServer332(QString, QStringList);   // RPL_TOPIC
+    void handleServer333(QString, QStringList);   // Topic set by...
+    void handleServer353(QString, QStringList);   // RPL_NAMREPLY
 
     void defaultServerHandler(QString cmd, QString prefix, QStringList params);
     void defaultUserHandler(QString cmd, QString msg, Buffer *buf);
@@ -106,9 +113,16 @@ class Server : public QThread {
 
     QString currentNick;
     QString currentServer;
+    VarMap networkSettings;
+    VarMap identity;
+    VarMap nicks;  // stores all known nicks for the server
 
     void handleServerMsg(QString rawMsg);
     void handleUserMsg(QString buffer, QString usrMsg);
+
+    QString nickFromMask(QString mask);
+    QString userFromMask(QString mask);
+    QString hostFromMask(QString mask);
 
     class ParseError : public Exception {
       public:

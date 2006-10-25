@@ -24,27 +24,34 @@
 #include "ui_channelwidget.h"
 #include "ui_ircwidget.h"
 
+#include "global.h"
 #include "message.h"
 
 class ChannelWidget : public QWidget {
   Q_OBJECT
 
   public:
-    ChannelWidget(QString netname, QString bufname, QWidget *parent = 0);
+    ChannelWidget(QString netname, QString bufname, QString ownNick, QWidget *parent = 0);
 
     QString bufferName() { return _bufferName; }
     QString networkName() { return _networkName; }
   signals:
-    void sendMessage(QString, QString, QString);
+    void sendInput(QString, QString, QString);
 
   public slots:
     void recvMessage(Message);
     void recvStatusMsg(QString msg);
     void setTopic(QString);
     void setNicks(QStringList);
+    void addNick(QString nick, VarMap props);
+    void removeNick(QString nick);
+    void updateNick(QString nick, VarMap props);
+    void setOwnNick(QString nick);
+
 
   private slots:
     void enterPressed();
+    void updateNickList();
 
   private:
     Ui::ChannelWidget ui;
@@ -52,6 +59,7 @@ class ChannelWidget : public QWidget {
     QColor stdCol, errorCol, noticeCol, joinCol, quitCol, partCol, serverCol;
     QString _networkName;
     QString _bufferName;
+    VarMap nicks;
 };
 
 /** Temporary widget for displaying a set of ChannelWidgets. */
@@ -66,9 +74,13 @@ class IrcWidget : public QWidget {
     void recvStatusMsg(QString network, QString message);
     void setTopic(QString, QString, QString);
     void setNicks(QString, QString, QStringList);
+    void addNick(QString net, QString nick, VarMap props);
+    void removeNick(QString net, QString nick);
+    void updateNick(QString net, QString nick, VarMap props);
+    void setOwnNick(QString net, QString nick);
 
   signals:
-    void sendMessage(QString network, QString buffer, QString message);
+    void sendInput(QString network, QString buffer, QString message);
 
   private slots:
     void userInput(QString, QString, QString);
@@ -76,6 +88,8 @@ class IrcWidget : public QWidget {
   private:
     Ui::IrcWidget ui;
     QHash<QString, ChannelWidget *> buffers;
+    VarMap nicks;
+    QString ownNick;
 
     ChannelWidget * getBuffer(QString net, QString buf);
 };
