@@ -38,6 +38,10 @@ QString hostFromMask(QString mask) {
   return userhost.section('@', 1);
 }
 
+bool isChannelName(QString str) {
+  return QString("#&!+").contains(str[0]);
+}
+
 void writeDataToDevice(QIODevice *dev, const QVariant &item) {
   QByteArray block;
   QDataStream out(&block, QIODevice::WriteOnly);

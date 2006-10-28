@@ -236,7 +236,7 @@ p, li { white-space: pre-wrap; }
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="inputEdit" >
+      <widget class="ChannelWidgetInput" name="inputEdit" >
        <property name="sizePolicy" >
         <sizepolicy>
          <hsizetype>3</hsizetype>
@@ -251,6 +251,13 @@ p, li { white-space: pre-wrap; }
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ChannelWidgetInput</class>
+   <extends>QLineEdit</extends>
+   <header>channelwidgetinput.h</header>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>inputEdit</tabstop>
   <tabstop>ownNick</tabstop>

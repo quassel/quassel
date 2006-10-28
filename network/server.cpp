@@ -114,7 +114,7 @@ void Server::userInput(QString net, QString buf, QString msg) {
   if(!msg.startsWith('/')) {
     msg = QString("/SAY ") + msg;
   }
-  handleUserMsg(buf, msg);
+  handleUserInput(buf, msg);
 }
 
 void Server::putRawLine(QString s) {
@@ -154,8 +154,14 @@ void Server::handleServerMsg(QString msg) {
     }
     cmd = msg.section(' ', 0, 0).toUpper();
     msg = msg.section(' ', 1);
-    QString left = msg.section(':', 0, 0);
-    QString trailing = msg.section(':', 1);
+    QString left, trailing;
+    // RPL_ISUPPORT (005) can contain colons, so don't treat it like the rest of the commands
+    if(cmd.toUInt() == 5) {
+      left = msg.remove(QString(":are supported by this server"));
+    } else {
+      left = msg.section(':', 0, 0);
+      trailing = msg.section(':', 1);
+    }
     if(!left.isEmpty()) {
       params << left.split(' ', QString::SkipEmptyParts);
     }
@@ -192,6 +198,12 @@ void Server::defaultServerHandler(QString cmd, QString prefix, QStringList param
       case 2: case 3: case 4: case 5: case 251: case 252: case 253: case 254: case 255: case 372: case 375:
         emit displayMsg("", Message(Message::Server, params.join(" "), prefix));
         break;
+      // Server error messages, display them in red. First param will be appended.
+      case 401: case 402: case 403: case 404:
+      { QString p = params.takeFirst();
+        emit displayMsg("", Message(Message::Error, params.join(" ") + " " + p, prefix));
+        break;
+      }
       // Ignore these commands.
       case 366: case 376:
         break;
@@ -207,28 +219,30 @@ void Server::defaultServerHandler(QString cmd, QString prefix, QStringList param
   }
 }
 
-void Server::handleUserMsg(QString bufname, QString usrMsg) {
+void Server::handleUserInput(QString bufname, QString usrMsg) {
   try {
+    /* Looks like we don't need core-side buffers...
     Buffer *buffer = 0;
     if(!bufname.isEmpty()) {
       Q_ASSERT(buffers.contains(bufname));
       buffer = buffers[bufname];
     }
+    */
     QString cmd = usrMsg.section(' ', 0, 0).remove(0, 1).toUpper();
     QString msg = usrMsg.section(' ', 1).trimmed();
     QString hname = cmd.toLower();
     hname[0] = hname[0].toUpper();
     hname = "handleUser" + hname;
-    if(!QMetaObject::invokeMethod(this, hname.toAscii(), Q_ARG(QString, msg), Q_ARG(Buffer*, buffer))) {
+    if(!QMetaObject::invokeMethod(this, hname.toAscii(), Q_ARG(QString, bufname), Q_ARG(QString, msg))) {
         // Ok. Default handler it is.
-      defaultUserHandler(cmd, msg, buffer);
+      defaultUserHandler(bufname, cmd, msg);
     }
   } catch(Exception e) {
     emit displayMsg("", Message(Message::Error, e.msg()));
   }
 }
 
-void Server::defaultUserHandler(QString cmd, QString msg, Buffer *buf) {
+void Server::defaultUserHandler(QString bufname, QString cmd, QString msg) {
   emit displayMsg("", Message(Message::Error, QString("Error: %1 %2").arg(cmd).arg(msg)));
 
 }
@@ -236,27 +250,106 @@ void Server::defaultUserHandler(QString cmd, QString msg, Buffer *buf) {
 /**********************************************************************************/
 
 /*
-void Server::handleUser(QString msg, Buffer *buf) {
+void Server::handleUser(QString bufname, QString msg) {
 
 
 }
 */
 
-void Server::handleUserJoin(QString msg, Buffer *buf) {
-  putCmd("JOIN", QStringList(msg));
-
+void Server::handleUserAway(QString bufname, QString msg) {
+  putCmd("AWAY", QStringList(msg));
 }
 
-void Server::handleUserQuote(QString msg, Buffer *buf) {
+void Server::handleUserDeop(QString bufname, QString msg) {
+  QStringList nicks = msg.split(' ', QString::SkipEmptyParts);
+  QString m = "-"; for(int i = 0; i < nicks.count(); i++) m += 'o';
+  QStringList params;
+  params << bufname << m << nicks;
+  putCmd("MODE", params);
+}
+
+void Server::handleUserDevoice(QString bufname, QString msg) {
+  QStringList nicks = msg.split(' ', QString::SkipEmptyParts);
+  QString m = "-"; for(int i = 0; i < nicks.count(); i++) m += 'v';
+  QStringList params;
+  params << bufname << m << nicks;
+  putCmd("MODE", params);
+}
+
+void Server::handleUserInvite(QString bufname, QString msg) {
+  QStringList params;
+  params << msg << bufname;
+  putCmd("INVITE", params);
+}
+
+void Server::handleUserJoin(QString bufname, QString msg) {
+  putCmd("JOIN", QStringList(msg));
+}
+
+void Server::handleUserKick(QString bufname, QString msg) {
+  QStringList params;
+  params << bufname << msg.split(' ', QString::SkipEmptyParts);
+  putCmd("KICK", params);
+}
+
+void Server::handleUserList(QString bufname, QString msg) {
+  putCmd("LIST", msg.split(' ', QString::SkipEmptyParts));
+}
+
+void Server::handleUserMode(QString bufname, QString msg) {
+  putCmd("MODE", msg.split(' ', QString::SkipEmptyParts));
+}
+
+void Server::handleUserMsg(QString bufname, QString msg) {
+  QString nick = msg.section(" ", 0, 0);
+  msg = msg.section(" ", 1).trimmed();
+  if(nick.isEmpty() || msg.isEmpty()) return;
+  QStringList params;
+  params << nick << msg;
+  putCmd("PRIVMSG", params);
+}
+
+void Server::handleUserNick(QString bufname, QString msg) {
+  QString nick = msg.section(' ', 0, 0);
+  putCmd("NICK", QStringList(nick));
+}
+
+void Server::handleUserOp(QString bufname, QString msg) {
+  QStringList nicks = msg.split(' ', QString::SkipEmptyParts);
+  QString m = "+"; for(int i = 0; i < nicks.count(); i++) m += 'o';
+  QStringList params;
+  params << bufname << m << nicks;
+  putCmd("MODE", params);
+}
+
+void Server::handleUserPart(QString bufname, QString msg) {
+  QStringList params;
+  params << bufname << msg;
+  putCmd("PART", params);
+}
+
+void Server::handleUserQuit(QString bufname, QString msg) {
+  putCmd("QUIT", QStringList(msg));
+}
+
+void Server::handleUserQuote(QString bufname, QString msg) {
   putRawLine(msg);
 }
 
-void Server::handleUserSay(QString msg, Buffer *buf) {
-  if(!buf) return;  // server buffer
+void Server::handleUserSay(QString bufname, QString msg) {
+  if(bufname.isEmpty()) return;  // server buffer
   QStringList params;
-  params << buf->name() << msg;
+  params << bufname << msg;
   putCmd("PRIVMSG", params);
   emit displayMsg(params[0], Message(Message::Msg, msg, currentNick, Message::Self));
+}
+
+void Server::handleUserVoice(QString bufname, QString msg) {
+  QStringList nicks = msg.split(' ', QString::SkipEmptyParts);
+  QString m = "+"; for(int i = 0; i < nicks.count(); i++) m += 'v';
+  QStringList params;
+  params << bufname << m << nicks;
+  putCmd("MODE", params);
 }
 
 /**********************************************************************************/
@@ -265,9 +358,9 @@ void Server::handleServerJoin(QString prefix, QStringList params) {
   Q_ASSERT(params.count() == 1);
   QString nick = updateNickFromMask(prefix);
   if(nick == currentNick) {
-    Q_ASSERT(!buffers.contains(params[0]));  // cannot join a buffer twice!
-    Buffer *buf = new Buffer(params[0]);
-    buffers[params[0]] = buf;
+  //  Q_ASSERT(!buffers.contains(params[0]));  // cannot join a buffer twice!
+  //  Buffer *buf = new Buffer(params[0]);
+  //  buffers[params[0]] = buf;
   } else {
     VarMap n;
     if(nicks.contains(nick)) {
@@ -309,6 +402,40 @@ void Server::handleServerKick(QString prefix, QStringList params) {
   } else {
     nicks.remove(nick);
     emit nickRemoved(network, nick);
+  }
+}
+
+void Server::handleServerMode(QString prefix, QStringList params) {
+  if(isChannelName(params[0])) {
+    // TODO only channel-user modes supported by now
+    QString prefixes = serverSupports["PrefixModes"].toString();
+    QString modes = params[1];
+    int p = 2;
+    int m = 0;
+    bool add = true;
+    while(m < modes.length()) {
+      if(modes[m] == '+') { add = true; m++; continue; }
+      if(modes[m] == '-') { add = false; m++; continue; }
+      if(prefixes.contains(modes[m])) {  // it's a user channel mode
+        Q_ASSERT(params.count() > m && nicks.contains(params[p]));
+        QString nick = params[p++];
+        VarMap n = nicks[nick].toMap(); VarMap clist = n["Channels"].toMap(); VarMap chan = clist[params[0]].toMap();
+        QString mstr = chan["Mode"].toString();
+        add ? mstr += modes[m] : mstr.remove(modes[m]);
+        chan["Mode"] = mstr; clist[params[0]] = chan; n["Channels"] = clist; nicks[nick] = n;
+        emit nickUpdated(network, nick, n);
+        m++;
+      } else {
+        // TODO add more modes
+        m++;
+      }
+    }
+    emit displayMsg(params[0], Message(Message::Mode, params.join(" "), prefix));
+  } else {
+    //Q_ASSERT(nicks.contains(params[0]));
+    //VarMap n = nicks[params[0]].toMap();
+    //QString mode = n["Mode"].toString();
+    emit displayMsg("", Message(Message::Mode, params.join(" ")));
   }
 }
 
@@ -388,6 +515,31 @@ void Server::handleServer001(QString prefix, QStringList params) {
   emit displayMsg("", Message(Message::Server, params[1], prefix));
 }
 
+/* RPL_ISUPPORT */
+void Server::handleServer005(QString prefix, QStringList params) {
+  foreach(QString p, params) {
+    QString key = p.section("=", 0, 0);
+    QString val = p.section("=", 1);
+    serverSupports[key] = val;
+    // handle some special cases
+    if(key == "PREFIX") {
+      VarMap foo; QString modes, prefixes;
+      Q_ASSERT(val.contains(')') && val.startsWith('('));
+      int m = 1, p;
+      for(p = 2; p < val.length(); p++) if(val[p] == ')') break;
+      p++;
+      for(; val[m] != ')'; m++, p++) {
+        Q_ASSERT(p < val.length());
+        foo[QString(val[m])] = QString(val[p]);
+        modes += val[m]; prefixes += val[p];
+      }
+      serverSupports["PrefixModes"] = modes; serverSupports["Prefixes"] = prefixes;
+      serverSupports["ModePrefixMap"] = foo;
+    }
+  }
+}
+
+
 /* RPL_NOTOPIC */
 void Server::handleServer331(QString prefix, QStringList params) {
   emit topicSet(network, params[0], "");
@@ -409,12 +561,16 @@ void Server::handleServer333(QString prefix, QStringList params) {
 void Server::handleServer353(QString prefix, QStringList params) {
   params.removeFirst(); // = or *
   QString buf = params.takeFirst();
+  QString prefixes = serverSupports["Prefixes"].toString();
   foreach(QString nick, params[0].split(' ')) {
-    // TODO: parse more prefix characters! use 005?
-    QString mode = "";
-    if(nick.startsWith('@')) { mode = "o"; nick.remove(0,1); }
-    else if(nick.startsWith('+')) { mode = "v"; nick.remove(0,1); }
-    VarMap c; c["Mode"] = mode;
+    QString mode = "", pfx = "";
+    if(prefixes.contains(nick[0])) {
+      pfx = nick[0];
+      for(int i = 0;; i++)
+        if(prefixes[i] == nick[0]) { mode = serverSupports["PrefixModes"].toString()[i]; break; }
+      nick.remove(0,1);
+    }
+    VarMap c; c["Mode"] = mode; c["Prefix"] = pfx;
     if(nicks.contains(nick)) {
       VarMap n = nicks[nick].toMap();
       VarMap chans = n["Channels"].toMap();

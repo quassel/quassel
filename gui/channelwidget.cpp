@@ -38,8 +38,13 @@ ChannelWidget::ChannelWidget(QString netname, QString bufname, QString own, QWid
     ui.topicEdit->hide();
     ui.chanSettingsButton->hide();
   }
+  connect(ui.nickTree, SIGNAL(itemExpanded(QTreeWidgetItem *)), this, SLOT(itemExpansionChanged(QTreeWidgetItem*)));
+  connect(ui.nickTree, SIGNAL(itemCollapsed(QTreeWidgetItem *)), this, SLOT(itemExpansionChanged(QTreeWidgetItem*)));
   connect(ui.inputEdit, SIGNAL(returnPressed()), this, SLOT(enterPressed()));
-  //ui.inputEdit->setFocus();
+  connect(this, SIGNAL(nickListChanged(QStringList)), ui.inputEdit, SLOT(updateNickList(QStringList)));
+  ui.inputEdit->setFocus();
+
+  opsExpanded = voicedExpanded = usersExpanded = true;
 
   // Define standard colors
   stdCol = "black";
@@ -52,10 +57,15 @@ ChannelWidget::ChannelWidget(QString netname, QString bufname, QString own, QWid
   kickCol = "firebrick";
   nickCol = "magenta";
 
+  completer = 0;
 }
 
 void ChannelWidget::enterPressed() {
-  emit sendInput(networkName(), bufferName(), ui.inputEdit->text());
+  QStringList lines = ui.inputEdit->text().split('\n', QString::SkipEmptyParts);
+  foreach(QString msg, lines) {
+    if(msg.isEmpty()) continue;
+    emit sendInput(networkName(), bufferName(), msg);
+  }
   ui.inputEdit->clear();
 }
 
@@ -77,55 +87,52 @@ void ChannelWidget::recvMessage(Message msg) {
       break;
     case Message::Join:
       c = joinCol;
-      s = QString(tr("--&gt; %1 (%2@%3) has joined %4")).arg(nick).arg(user).arg(host).arg(bufferName());
+      s = QString(tr("--> %1 (%2@%3) has joined %4")).arg(nick).arg(user).arg(host).arg(bufferName());
       break;
     case Message::Part:
       c = partCol;
-      s = QString(tr("&lt;-- %1 (%2@%3) has left %4")).arg(nick).arg(user).arg(host).arg(bufferName());
+      s = QString(tr("<-- %1 (%2@%3) has left %4")).arg(nick).arg(user).arg(host).arg(bufferName());
       if(!msg.msg.isEmpty()) s = QString("%1 (%2)").arg(s).arg(msg.msg);
       break;
     case Message::Kick:
       { c = kickCol;
         QString victim = msg.msg.section(" ", 0, 0);
+        if(victim == ui.ownNick->currentText()) victim = tr("you");
         QString kickmsg = msg.msg.section(" ", 1);
-        s = QString(tr("--&gt; %1 has kicked %2 from %3")).arg(nick).arg(victim).arg(bufferName());
+        s = QString(tr("--> %1 has kicked %2 from %3")).arg(nick).arg(victim).arg(bufferName());
         if(!kickmsg.isEmpty()) s = QString("%1 (%2)").arg(s).arg(kickmsg);
       }
       break;
     case Message::Quit:
       c = quitCol;
-      s = QString(tr("&lt;-- %1 (%2@%3) has quit")).arg(nick).arg(user).arg(host);
+      s = QString(tr("<-- %1 (%2@%3) has quit")).arg(nick).arg(user).arg(host);
       if(!msg.msg.isEmpty()) s = QString("%1 (%2)").arg(s).arg(msg.msg);
       break;
     case Message::Nick:
       c = nickCol;
-      if(nick == msg.msg) s = QString(tr("&lt;-&gt; You are now known as %1")).arg(msg.msg);
-      else s = QString(tr("&lt;-&gt; %1 is now known as %2")).arg(nick).arg(msg.msg);
+      if(nick == msg.msg) s = QString(tr("<-> You are now known as %1")).arg(msg.msg);
+      else s = QString(tr("<-> %1 is now known as %2")).arg(nick).arg(msg.msg);
+      break;
+    case Message::Mode:
+      c = serverCol;
+      if(nick.isEmpty()) s = tr("* User mode: %1").arg(msg.msg);
+      else s = tr("* Mode %1 by %2").arg(msg.msg).arg(nick);
       break;
     default:
       c = stdCol; n = QString("[%1]").arg(msg.sender); s = msg.msg;
       break;
   }
+  s.replace('&', "&amp;"); s.replace('<', "&lt;"); s.replace('>', "&gt;");
   QString html = QString("<table cellspacing=0 cellpadding=0><tr>"
       "<td width=50><div style=\"color:%2;\">[%1]</div></td>")
       .arg(msg.timeStamp.toLocalTime().toString("hh:mm:ss")).arg("darkblue");
   if(!n.isEmpty())
     html += QString("<td width=150><div align=right style=\"white-space:pre;margin-left:6px;color:%2;\">%1</div></td>")
-        .arg(n).arg("mediumseagreen");
-  html += QString("<td><div style=\"margin-left:6px;color:%2;\">%1</div></td>""</tr></table>")
-      .arg(s).arg(c);
+        .arg(n).arg("royalblue");
+  html += QString("<td><div style=\"margin-left:6px;color:%2;\">%1</div></td>""</tr></table>").arg(s).arg(c);
   ui.chatWidget->append(html);
   //ui.chatWidget->append(QString("<table border=1 cellspacing=0 cellpadding=0><tr><td>%1</td><td width=100 style=border-right-width:1px;><div style=margin-left:8px; margin-right:8px;>%2</div></td><td style=color:firebrick>&nbsp;%3</td></tr></table>")
       //.arg(msg.timeStamp.toLocalTime().toString("hh:mm:ss")).arg(nick).arg(s));
-  //ui.chatWidget->setTextColor(stdCol);
-  //ui.chatWidget->append(QString("[%1] ").arg(msg.timeStamp.toLocalTime().toString("hh:mm:ss")));
-  //ui.chatWidget->setTextColor(c);
-  //ui.chatWidget->append(s + "\n");
-  //ui.chatWidget->insertHtml(QString("<table><tr><td>[12:13]</td><td width=20><div align=right>[nickname]</div></td><td>This is the Message!</td></tr>"
-  //    "<tr><td>[12:13]</td><td><div align=right>[nick]</div></td><td>This is the Message!</td></tr>"
-  //    "<tr><td>[12:13]</td><td><div align=right>[looongnickname]</div></td><td>This is the Message!</td></tr>"
-  //    "<tr><td>[12:13]</td><td><div align=right>[nickname]</div></td><td>This is the Message!</td></tr></table>"
-  //                                 ));
   ui.chatWidget->ensureCursorVisible();
 }
 
@@ -146,6 +153,9 @@ void ChannelWidget::setNicks(QStringList nicks) {
 void ChannelWidget::addNick(QString nick, VarMap props) {
   nicks[nick] = props;
   updateNickList();
+  if(completer) delete completer;
+  completer = new QCompleter(nicks.keys());
+  ui.inputEdit->setCompleter(completer);
 }
 
 void ChannelWidget::updateNick(QString nick, VarMap props) {
@@ -189,19 +199,26 @@ void ChannelWidget::updateNickList() {
   if(ops->childCount()) {
     ops->setText(0, tr("%1 Operators").arg(ops->childCount()));
    ui.nickTree->addTopLevelItem(ops);
-    ops->setExpanded(true);
+    ops->setExpanded(opsExpanded);
   } else delete ops;
   if(voiced->childCount()) {
     voiced->setText(0, tr("%1 Voiced").arg(voiced->childCount()));
     ui.nickTree->addTopLevelItem(voiced);
-    voiced->setExpanded(true);
+    voiced->setExpanded(voicedExpanded);
   } else delete voiced;
   if(users->childCount()) {
     users->setText(0, tr("%1 Users").arg(users->childCount()));
     ui.nickTree->addTopLevelItem(users);
-    users->setExpanded(true);
+    users->setExpanded(usersExpanded);
   } else delete users;
 }
+
+void ChannelWidget::itemExpansionChanged(QTreeWidgetItem *item) {
+  if(item->child(0)->text(0).startsWith('@')) opsExpanded = item->isExpanded();
+  else if(item->child(0)->text(0).startsWith('+')) voicedExpanded = item->isExpanded();
+  else usersExpanded = item->isExpanded();
+}
+
 /**********************************************************************************************/
 
 
@@ -228,7 +245,7 @@ ChannelWidget * IrcWidget::getBuffer(QString net, QString buf) {
     connect(cw, SIGNAL(sendInput(QString, QString, QString)), this, SLOT(userInput(QString, QString, QString)));
     ui.tabWidget->addTab(cw, net+buf);
     ui.tabWidget->setCurrentWidget(cw);
-    //cw->setFocus();
+    cw->setFocus();
     buffers[key] = cw;
   }
   return buffers[key];
@@ -301,9 +318,7 @@ void IrcWidget::updateNick(QString net, QString nick, VarMap props) {
 
 void IrcWidget::removeNick(QString net, QString nick) {
   VarMap chans = nicks[net].toMap()[nick].toMap()["Channels"].toMap();
-  qDebug() << "REMOVE" << nick;
   foreach(QString bufname, chans.keys()) {
-    qDebug() << "remove from"<<bufname;
     getBuffer(net, bufname)->removeNick(nick);
   }
   VarMap netnicks = nicks[net].toMap();

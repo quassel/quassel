@@ -18,34 +18,47 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _UTIL_H_
-#define _UTIL_H_
+#include "channelwidgetinput.h"
 
-#include <QIODevice>
-#include <QVariant>
-#include <QString>
+ChannelWidgetInput::ChannelWidgetInput(QWidget *parent) : QLineEdit(parent) {
+  idx = 0;
+  connect(this, SIGNAL(returnPressed()), this, SLOT(enter()));
+}
 
-QString nickFromMask(QString mask);
-QString userFromMask(QString mask);
-QString hostFromMask(QString mask);
+void ChannelWidgetInput::keyPressEvent(QKeyEvent * event) {
+  if(event->key() == Qt::Key_Up) {
+    if(idx > 0) { idx--; setText(history[idx]); }
+    event->accept();
+  } else if(event->key() == Qt::Key_Down) {
+    if(idx < history.count()) idx++;
+    if(idx < history.count()) setText(history[idx]);
+    else setText("");
+    event->accept();
+  } else if(event->key() == Qt::Key_Tab) {
+    // Tabcomplete
+    if(cursorPosition() == text().length()) {
+      
 
-bool isChannelName(QString str);
+    }
+    event->accept();
+  } else {
+    QLineEdit::keyPressEvent(event);
+  }
+}
 
-/**
- *  Writes a QVariant to a device. The data item is prefixed with the resulting blocksize,
- *  so the corresponding function readDataFromDevice() can check if enough data is available
- *  at the device to reread the item.
- */
-void writeDataToDevice(QIODevice *, const QVariant &);
+bool ChannelWidgetInput::event(QEvent *e) {
+  if(e->type() == QEvent::KeyPress) {
+    keyPressEvent(dynamic_cast<QKeyEvent*>(e));
+    return true;
+  }
+  return QLineEdit::event(e);
+}
 
-/** Reads a data item from a device that has previously been written by writeDataToDevice().
- *  If not enough data bytes are available, the function returns false and the QVariant reference
- *  remains untouched.
- */
-bool readDataFromDevice(QIODevice *, quint32 &, QVariant &);
+void ChannelWidgetInput::enter() {
+  history << text();
+  idx = history.count();
+}
 
-
-
-
-
-#endif
+void ChannelWidgetInput::updateNickList(QStringList l) {
+  nickList = l;
+}

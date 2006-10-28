@@ -35,8 +35,10 @@ class ChannelWidget : public QWidget {
 
     QString bufferName() { return _bufferName; }
     QString networkName() { return _networkName; }
+
   signals:
     void sendInput(QString, QString, QString);
+    void nickListChanged(QStringList);
 
   public slots:
     void recvMessage(Message);
@@ -54,6 +56,8 @@ class ChannelWidget : public QWidget {
     void enterPressed();
     void updateNickList();
 
+    void itemExpansionChanged(QTreeWidgetItem *);
+
   private:
     Ui::ChannelWidget ui;
 
@@ -62,6 +66,10 @@ class ChannelWidget : public QWidget {
     QString _networkName;
     QString _bufferName;
     VarMap nicks;
+
+    QCompleter *completer;
+
+    bool opsExpanded, voicedExpanded, usersExpanded;
 };
 
 /** Temporary widget for displaying a set of ChannelWidgets. */

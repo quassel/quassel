@@ -86,15 +86,28 @@ class Server : public QThread {
 
     /* Message Handlers */
 
-    /* void handleUser(QString, Buffer *) */
-    void handleUserJoin(QString, Buffer *);
-    void handleUserQuote(QString, Buffer *);
-    void handleUserSay(QString, Buffer *);
-
+    /* void handleUser(QString, QString); */
+    void handleUserAway(QString, QString);
+    void handleUserDeop(QString, QString);
+    void handleUserDevoice(QString, QString);
+    void handleUserInvite(QString, QString);
+    void handleUserJoin(QString, QString);
+    void handleUserKick(QString, QString);
+    void handleUserList(QString, QString);
+    void handleUserMode(QString, QString);
+    void handleUserMsg(QString, QString);
+    void handleUserNick(QString, QString);
+    void handleUserOp(QString, QString);
+    void handleUserPart(QString, QString);
+    void handleUserQuit(QString, QString);
+    void handleUserQuote(QString, QString);
+    void handleUserSay(QString, QString);
+    void handleUserVoice(QString, QString);
 
     /* void handleServer(QString, QStringList); */
     void handleServerJoin(QString, QStringList);
     void handleServerKick(QString, QStringList);
+    void handleServerMode(QString, QStringList);
     void handleServerNick(QString, QStringList);
     void handleServerNotice(QString, QStringList);
     void handleServerPart(QString, QStringList);
@@ -103,27 +116,29 @@ class Server : public QThread {
     void handleServerQuit(QString, QStringList);
 
     void handleServer001(QString, QStringList);   // RPL_WELCOME
+    void handleServer005(QString, QStringList);   // RPL_ISUPPORT
     void handleServer331(QString, QStringList);   // RPL_NOTOPIC
     void handleServer332(QString, QStringList);   // RPL_TOPIC
     void handleServer333(QString, QStringList);   // Topic set by...
     void handleServer353(QString, QStringList);   // RPL_NAMREPLY
 
     void defaultServerHandler(QString cmd, QString prefix, QStringList params);
-    void defaultUserHandler(QString cmd, QString msg, Buffer *buf);
+    void defaultUserHandler(QString buf, QString cmd, QString msg);
 
   private:
     QString network;
     QTcpSocket socket;
-    QHash<QString, Buffer*> buffers;
+    //QHash<QString, Buffer*> buffers;
 
     QString currentNick;
     QString currentServer;
     VarMap networkSettings;
     VarMap identity;
     VarMap nicks;  // stores all known nicks for the server
+    VarMap serverSupports;  // stores results from RPL_ISUPPORT
 
     void handleServerMsg(QString rawMsg);
-    void handleUserMsg(QString buffer, QString usrMsg);
+    void handleUserInput(QString buffer, QString usrMsg);
 
     QString updateNickFromMask(QString mask);
 

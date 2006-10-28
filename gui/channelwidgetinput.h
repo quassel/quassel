@@ -18,34 +18,33 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _UTIL_H_
-#define _UTIL_H_
+#ifndef _CHANNELWIDGETINPUT_H_
+#define _CHANNELWIDGETINPUT_H_
 
-#include <QIODevice>
-#include <QVariant>
-#include <QString>
+#include <QtCore>
+#include <QtGui>
 
-QString nickFromMask(QString mask);
-QString userFromMask(QString mask);
-QString hostFromMask(QString mask);
+class ChannelWidgetInput : public QLineEdit {
+  Q_OBJECT
 
-bool isChannelName(QString str);
+  public:
+    ChannelWidgetInput(QWidget *parent = 0);
 
-/**
- *  Writes a QVariant to a device. The data item is prefixed with the resulting blocksize,
- *  so the corresponding function readDataFromDevice() can check if enough data is available
- *  at the device to reread the item.
- */
-void writeDataToDevice(QIODevice *, const QVariant &);
+  public slots:
+    void updateNickList(QStringList);
 
-/** Reads a data item from a device that has previously been written by writeDataToDevice().
- *  If not enough data bytes are available, the function returns false and the QVariant reference
- *  remains untouched.
- */
-bool readDataFromDevice(QIODevice *, quint32 &, QVariant &);
+  protected:
+    virtual bool event(QEvent *);
+    virtual void keyPressEvent(QKeyEvent * event);
 
+  private slots:
+    void enter();
 
+  private:
+    qint32 idx;
+    QStringList history;
+    QStringList nickList;
 
-
+};
 
 #endif

@@ -45,3 +45,6 @@ gui/identities.cpp
 gui/identities.h
 network/buffer.cpp
 network/buffer.h
+gui/channelwidgetinput.h
+gui/channelwidgetinput.cpp
+plugins/plugin.h
