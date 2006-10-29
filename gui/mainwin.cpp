@@ -29,6 +29,7 @@
 #include "coreconnectdlg.h"
 
 MainWin::MainWin() : QMainWindow() {
+  ui.setupUi(this);
 
   setWindowTitle("Quassel IRC");
   setWindowIcon(QIcon(":/qirc-icon.png"));
@@ -60,6 +61,11 @@ MainWin::MainWin() : QMainWindow() {
   cw->setFocus();
 }
 
+void MainWin::setupMenus() {
+  connect(ui.actionNetworkList, SIGNAL(activated()), this, SLOT(showServerList()));
+  connect(ui.actionEditIdentities, SIGNAL(activated()), serverListDlg, SLOT(editIdentities()));
+}
+
 void MainWin::syncToCore() {
   if(global->getData("CoreReady").toBool()) return;
   // ok, apparently we are running as standalone GUI
@@ -79,40 +85,6 @@ void MainWin::syncToCore() {
     //qApp->quit();
     exit(1);
   }
-}
-
-void MainWin::setupMenus() {
-  fileMenu = menuBar()->addMenu(tr("&File"));
-  serverListAct = fileMenu->addAction(QIcon(":/default/server.png"), tr("&Server List..."), this, SLOT(showServerList()), tr("F7"));
-  fileMenu->addSeparator();
-  quitAct = fileMenu->addAction(QIcon(":/default/exit.png"), tr("&Quit"), qApp, SLOT(quit()), tr("CTRL+Q"));
-
-  editMenu = menuBar()->addMenu(tr("&Edit"));
-  editMenu->setEnabled(0);
-
-  ircMenu = menuBar()->addMenu(tr("&IRC"));
-  ircMenu->setEnabled(0);
-
-  serverMenu = menuBar()->addMenu(tr("Ser&ver"));
-  serverMenu->setEnabled(0);
-
-  windowMenu = menuBar()->addMenu(tr("&Window"));
-  windowMenu->setEnabled(0);
-
-  settingsMenu = menuBar()->addMenu(tr("&Settings"));
-  identitiesAct = settingsMenu->addAction(QIcon(":/default/identity.png"), tr("&Identities..."), serverListDlg, SLOT(editIdentities()));
-  settingsMenu->addSeparator();
-  configAct = settingsMenu->addAction(QIcon(":/default/configure.png"), tr("&Configure Quassel..."));
-  configAct->setEnabled(0);
-
-  helpMenu = menuBar()->addMenu(tr("&Help"));
-  aboutAct = helpMenu->addAction(tr("&About"));
-  aboutAct->setEnabled(0);
-  aboutQtAct = helpMenu->addAction(tr("About &Qt"), qApp, SLOT(aboutQt()));
-
-  //toolBar = new QToolBar("Test", this);
-  //toolBar->addAction(identitiesAct);
-  //addToolBar(Qt::TopToolBarArea, toolBar);
 }
 
 void MainWin::showServerList() {

@@ -24,6 +24,9 @@
 /** The protocol version we use fo the communication between core and GUI */
 #define GUI_PROTOCOL 1
 
+#define BACKLOG_FORMAT 1
+#define BACKLOG_STRING "QuasselIRC Backlog File"
+
 class Global;
 
 #include <QtCore>
@@ -67,6 +70,7 @@ class Global : public QObject {
   public:
     enum RunMode { Monolithic, GUIOnly, CoreOnly };
     static RunMode runMode;
+    static QString quasselDir;
 
   private:
     static void initIconMap();

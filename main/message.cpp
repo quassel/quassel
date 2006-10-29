@@ -22,16 +22,19 @@
 #include <QDataStream>
 
 QDataStream &operator<<(QDataStream &out, const Message &msg) {
-  out << (quint32)msg.timeStamp.toTime_t() << (quint8)msg.type << (quint8)msg.flags << msg.sender << msg.msg;
+  out << (quint32)msg.timeStamp.toTime_t() << (quint8)msg.type << (quint8)msg.flags << msg.sender.toUtf8() << msg.msg.toUtf8();
   return out;
 }
 
 QDataStream &operator>>(QDataStream &in, Message &msg) {
   quint8 t, f;
   quint32 ts;
-  in >> ts >> t >> f >> msg.sender >> msg.msg;
+  QByteArray s, m;
+  in >> ts >> t >> f >> s >> m;
   msg.type = (Message::Type)t;
   msg.flags = (Message::Flags)f;
   msg.timeStamp = QDateTime::fromTime_t(ts);
+  msg.sender = QString::fromUtf8(s);
+  msg.msg = QString::fromUtf8(m);
   return in;
 }

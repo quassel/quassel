@@ -53,6 +53,15 @@ class Core : public QObject {
 
   private:
     QHash<QString, Server *> servers;
+    QList<Message> backLog;
+    bool backLogEnabled;
+    QDir backLogDir;
+    QFile currentLogFile;
+    QDataStream logStream;
+    QDate currentLogFileDate;
+
+    void initBackLog();
+    void logMessage(Message);
 
 };
 

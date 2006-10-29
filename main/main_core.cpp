@@ -36,6 +36,8 @@ int main(int argc, char **argv) {
   QCoreApplication::setOrganizationName("The Quassel Team");
 
   Global::runMode = Global::CoreOnly;
+  Global::quasselDir = QDir::homePath() + "/.quassel";
+
   global = new Global();
   coreProxy = new CoreProxy();
   core = new Core();

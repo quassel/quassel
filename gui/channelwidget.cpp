@@ -115,8 +115,8 @@ void ChannelWidget::recvMessage(Message msg) {
       break;
     case Message::Mode:
       c = serverCol;
-      if(nick.isEmpty()) s = tr("* User mode: %1").arg(msg.msg);
-      else s = tr("* Mode %1 by %2").arg(msg.msg).arg(nick);
+      if(nick.isEmpty()) s = tr("*** User mode: %1").arg(msg.msg);
+      else s = tr("*** Mode %1 by %2").arg(msg.msg).arg(nick);
       break;
     default:
       c = stdCol; n = QString("[%1]").arg(msg.sender); s = msg.msg;
@@ -129,8 +129,8 @@ void ChannelWidget::recvMessage(Message msg) {
   if(!n.isEmpty())
     html += QString("<td width=150><div align=right style=\"white-space:pre;margin-left:6px;color:%2;\">%1</div></td>")
         .arg(n).arg("royalblue");
-  html += QString("<td><div style=\"margin-left:6px;color:%2;\">%1</div></td>""</tr></table>").arg(s).arg(c);
-  ui.chatWidget->append(html);
+  html += QString("<td><div style=\"white-space:pre-wrap;margin-left:6px;color:%2;\">%1</div></td>""</tr></table>").arg(s).arg(c);
+  ui.chatWidget->append(html); // qDebug() << html;
   //ui.chatWidget->append(QString("<table border=1 cellspacing=0 cellpadding=0><tr><td>%1</td><td width=100 style=border-right-width:1px;><div style=margin-left:8px; margin-right:8px;>%2</div></td><td style=color:firebrick>&nbsp;%3</td></tr></table>")
       //.arg(msg.timeStamp.toLocalTime().toString("hh:mm:ss")).arg(nick).arg(s));
   ui.chatWidget->ensureCursorVisible();

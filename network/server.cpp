@@ -109,7 +109,7 @@ QString Server::updateNickFromMask(QString mask) {
 
 void Server::userInput(QString net, QString buf, QString msg) {
   if(net != network) return; // not me!
-  msg = msg.trimmed(); // remove whitespace from start and end
+  //msg = msg.trimmed(); // remove whitespace from start and end
   if(msg.isEmpty()) return;
   if(!msg.startsWith('/')) {
     msg = QString("/SAY ") + msg;
@@ -131,7 +131,7 @@ void Server::putCmd(QString cmd, QStringList params, QString prefix) {
     m += " " + params[i];
   }
   if(!params.isEmpty()) m += " :" + params.last();
-  qDebug() << "SentCmd: " << m;
+  qDebug() << "Sent: " << m;
   m += "\r\n";
   socket.write(m.toAscii());
 }
@@ -198,10 +198,22 @@ void Server::defaultServerHandler(QString cmd, QString prefix, QStringList param
       case 2: case 3: case 4: case 5: case 251: case 252: case 253: case 254: case 255: case 372: case 375:
         emit displayMsg("", Message(Message::Server, params.join(" "), prefix));
         break;
+      // Server error messages without param, just display them
+      case 409: case 411: case 412: case 422: case 424: case 431: case 445: case 446: case 451: case 462:
+      case 463: case 464: case 465: case 466: case 472: case 481: case 483: case 485: case 491: case 501: case 502:
+        emit displayMsg("", Message(Message::Error, params.join(" "), prefix));
+        break;
       // Server error messages, display them in red. First param will be appended.
-      case 401: case 402: case 403: case 404:
+      case 401: case 402: case 403: case 404: case 406: case 408: case 415: case 421: case 432: case 442:
       { QString p = params.takeFirst();
         emit displayMsg("", Message(Message::Error, params.join(" ") + " " + p, prefix));
+        break;
+      }
+      // Server error messages which will be displayed with a colon between the first param and the rest
+      case 413: case 414: case 423: case 433: case 436: case 441: case 444: case 461:
+      case 467: case 471: case 473: case 474: case 475: case 476: case 477: case 478: case 482:
+      { QString p = params.takeFirst();
+        emit displayMsg("", Message(Message::Error, p + ": " + params.join(" ")));
         break;
       }
       // Ignore these commands.
@@ -229,7 +241,7 @@ void Server::handleUserInput(QString bufname, QString usrMsg) {
     }
     */
     QString cmd = usrMsg.section(' ', 0, 0).remove(0, 1).toUpper();
-    QString msg = usrMsg.section(' ', 1).trimmed();
+    QString msg = usrMsg.section(' ', 1);
     QString hname = cmd.toLower();
     hname[0] = hname[0].toUpper();
     hname = "handleUser" + hname;
@@ -302,7 +314,7 @@ void Server::handleUserMode(QString bufname, QString msg) {
 
 void Server::handleUserMsg(QString bufname, QString msg) {
   QString nick = msg.section(" ", 0, 0);
-  msg = msg.section(" ", 1).trimmed();
+  msg = msg.section(" ", 1);
   if(nick.isEmpty() || msg.isEmpty()) return;
   QStringList params;
   params << nick << msg;
@@ -543,6 +555,7 @@ void Server::handleServer005(QString prefix, QStringList params) {
 /* RPL_NOTOPIC */
 void Server::handleServer331(QString prefix, QStringList params) {
   emit topicSet(network, params[0], "");
+  emit displayMsg(params[0], Message(Message::Server, tr("No topic is set for %1.").arg(params[0])));
 }
 
 /* RPL_TOPIC */

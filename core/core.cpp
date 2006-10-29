@@ -40,6 +40,7 @@ Core::Core() {
   foreach(key, s.childKeys()) {
     global->updateData(key, s.value(key));
   }
+  initBackLog();
   global->updateData("CoreReady", true);
   // Now that we are in sync, we can connect signals to automatically store further updates.
   // I don't think we care if global data changed locally or if it was updated by a client. 
@@ -85,16 +86,89 @@ void Core::connectToIrc(QStringList networks) {
 // ALL messages coming pass through these functions before going to the GUI.
 // So this is the perfect place for storing the backlog and log stuff.
 void Core::recvMessageFromServer(QString buf, Message msg) {
-  Q_ASSERT(sender());
-  QString net = qobject_cast<Server*>(sender())->getNetwork();
-  emit displayMsg(net, buf, msg);
+  Server *s = qobject_cast<Server*>(sender());
+  Q_ASSERT(s);
+  logMessage(msg);
+  emit displayMsg(s->getNetwork(), buf, msg);
 }
 
 void Core::recvStatusMsgFromServer(QString msg) {
-  Q_ASSERT(sender());
-  QString net = qobject_cast<Server*>(sender())->getNetwork();
-  emit displayStatusMsg(net, msg);
+  Server *s = qobject_cast<Server*>(sender());
+  Q_ASSERT(s);
+  emit displayStatusMsg(s->getNetwork(), msg);
 }
 
+// file name scheme: quassel-backlog-2006-29-10.bin
+void Core::initBackLog() {
+  backLogDir = QDir(Global::quasselDir + "/backlog");
+  if(!backLogDir.exists()) {
+    qWarning(QString("Creating backlog directory \"%1\"...").arg(backLogDir.absolutePath()).toAscii());
+    if(!backLogDir.mkpath(backLogDir.absolutePath())) {
+      qWarning(QString("Could not create backlog directory! Disabling logging...").toAscii());
+      backLogEnabled = false;
+      return;
+    }
+  }
+  backLogDir.refresh();
+  //if(!backLogDir.isReadable()) {
+  //  qWarning(QString("Cannot read directory \"%1\". Disabling logging...").arg(backLogDir.absolutePath()).toAscii());
+  //  backLogEnabled = false;
+  //  return;
+  //}
+  QStringList logs = backLogDir.entryList(QStringList("quassel-backlog-*.bin"), QDir::Files|QDir::Readable, QDir::Name);
+  foreach(QString name, logs) {
+    QFile f(backLogDir.absolutePath() + "/" + name);
+    if(!f.open(QIODevice::ReadOnly)) {
+      qWarning(QString("Could not open \"%1\" for reading!").arg(f.fileName()).toAscii());
+      continue;
+    }
+    QDataStream in(&f);
+    in.setVersion(QDataStream::Qt_4_2);
+    QByteArray verstring; quint8 vernum; in >> verstring >> vernum;
+    if(verstring != BACKLOG_STRING) {
+      qWarning(QString("\"%1\" is not a Quassel backlog file!").arg(f.fileName()).toAscii());
+      f.close(); continue;
+    }
+    if(vernum != BACKLOG_FORMAT) {
+      qWarning(QString("\"%1\": Version mismatch!").arg(f.fileName()).toAscii());
+      f.close(); continue;
+    }
+    qDebug() << "Reading backlog from" << f.fileName();
+    currentLogFileDate = QDate::fromString(f.fileName(), QString("'%1/quassel-backlog-'yyyy-MM-dd'.bin'").arg(backLogDir.absolutePath()));
+    if(!currentLogFileDate.isValid()) {
+      qWarning(QString("\"%1\" has an invalid file name!").arg(f.fileName()).toAscii());
+    }
+    while(!in.atEnd()) {
+      Message m;
+      in >> m;
+      backLog.append(m);
+    }
+    f.close();
+  }
+  backLogEnabled = true;
+}
+
+/** Log a core message (emitted via a displayMsg() signal) to the backlog file.
+ * If a file for the current day does not exist, one will be created. Otherwise, messages will be appended.
+ * The file header is the string defined by BACKLOG_STRING, followed by a quint8 specifying the format
+ * version (BACKLOG_FORMAT). The rest is simply serialized Message objects.
+ */
+void Core::logMessage(Message msg) {
+  backLog.append(msg);
+  if(!currentLogFileDate.isValid() || currentLogFileDate < QDate::currentDate()) {
+    if(currentLogFile.isOpen()) currentLogFile.close();
+    currentLogFileDate = QDate::currentDate();
+  }
+  if(!currentLogFile.isOpen()) {
+    currentLogFile.setFileName(backLogDir.absolutePath() + "/" + currentLogFileDate.toString("'quassel-backlog-'yyyy-MM-dd'.bin'"));
+    if(!currentLogFile.open(QIODevice::WriteOnly|QIODevice::Append)) {
+      qWarning(QString("Could not open \"%1\" for writing: %2").arg(currentLogFile.fileName()).arg(currentLogFile.errorString()).toAscii());
+      return;
+    }
+    logStream.setDevice(&currentLogFile); logStream.setVersion(QDataStream::Qt_4_2);
+    if(!currentLogFile.size()) logStream << BACKLOG_STRING << (quint8)BACKLOG_FORMAT;
+  }
+  logStream << msg;
+}
 
 Core *core = 0;

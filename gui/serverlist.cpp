@@ -50,7 +50,6 @@ ServerListDlg::ServerListDlg(QWidget *parent) : QDialog(parent) {
       list << net;
     }
   }
-  qDebug() << "Autoconnect:"<<list;
   if(!list.isEmpty()) emit requestConnect(list);
 }
 

@@ -21,10 +21,8 @@
 #ifndef _MAINWIN_H_
 #define _MAINWIN_H_
 
-#include <QMainWindow>
-
-class QMenu;
-class QWorkspace;
+#include <QtGui>
+#include "gui/ui_mainwin.h"
 
 class ServerListDlg;
 class CoreConnectDlg;
@@ -42,15 +40,12 @@ class MainWin : public QMainWindow {
     void showServerList();
 
   private:
+    Ui::MainWin ui;
+
     void setupMenus();
     void syncToCore();
 
     QWorkspace *workspace;
-    QToolBar *toolBar;
-    QMenu *fileMenu, *editMenu, *ircMenu, *serverMenu, *windowMenu, *helpMenu, *settingsMenu;
-    QAction *quitAct, *serverListAct;
-    QAction *aboutAct, *aboutQtAct;
-    QAction *identitiesAct, *configAct;
 
     ServerListDlg *serverListDlg;
     CoreConnectDlg *coreConnectDlg;

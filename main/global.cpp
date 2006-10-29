@@ -110,3 +110,4 @@ void Global::initIconMap() {
 
 Global *global = 0;
 Global::RunMode Global::runMode;
+QString Global::quasselDir;
