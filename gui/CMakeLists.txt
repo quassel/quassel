@@ -5,7 +5,12 @@ SET(gui_MOCS channelwidget.h channelwidgetinput.h mainwin.h serverlist.h identit
 SET(gui_UICS channelwidget.ui identitiesdlg.ui identitieseditdlg.ui networkeditdlg.ui mainwin.ui
              nickeditdlg.ui serverlistdlg.ui servereditdlg.ui coreconnectdlg.ui ircwidget.ui)
 
-QT4_WRAP_UI(_UIC ${gui_UICS})
+# This prepends ui/ to the UIC names, so we don't have to do this ourselves.
+FOREACH(ui ${gui_UICS})
+  SET(gui_UICS_UI ${gui_UICS_UI} "ui/${ui}")
+ENDFOREACH(ui)
+
+QT4_WRAP_UI(_UIC ${gui_UICS_UI})
 QT4_WRAP_CPP(_MOC ${gui_MOCS})
 
 # We need to work around a dependency bug with out-of-source builds...
