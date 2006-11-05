@@ -20,10 +20,12 @@
 
 #include <iostream>
 
+#include <QtGui>
 #include <QApplication>
 
 #include "global.h"
 #include "guiproxy.h"
+#include "coreconnectdlg.h"
 #include "util.h"
 
 #include "mainwin.h"
@@ -44,6 +46,37 @@ int main(int argc, char **argv) {
   int exitCode = app.exec();
   delete guiProxy;
   delete global;
+}
+
+void MainWin::syncToCore() {
+  Q_ASSERT(!global->getData("CoreReady").toBool());
+  // ok, we are running as standalone GUI
+  coreConnectDlg = new CoreConnectDlg(this);
+  if(coreConnectDlg->exec() != QDialog::Accepted) {
+    //qApp->quit();
+    exit(1);
+  }
+  VarMap state = coreConnectDlg->getCoreState().toMap();
+  delete coreConnectDlg;
+  VarMap data = state["CoreData"].toMap();
+  QString key;
+  foreach(key, data.keys()) {
+    global->updateData(key, data[key]);
+  }
+  if(!global->getData("CoreReady").toBool()) {
+    QMessageBox::critical(this, tr("Fatal Error"), tr("<b>Could not synchronize with Quassel Core!</b><br>Quassel GUI will be aborted."), QMessageBox::Abort);
+    //qApp->quit();
+    exit(1);
+  }
+  foreach(QString net, state["CoreBackLog"].toMap().keys()) {
+    QByteArray logbuf = state["CoreBackLog"].toMap()[net].toByteArray();
+    QDataStream in(&logbuf, QIODevice::ReadOnly); in.setVersion(QDataStream::Qt_4_2);
+    while(!in.atEnd()) {
+      Message msg; in >> msg;
+      coreBackLog[net].append(msg);
+    }
+    qDebug() << net << coreBackLog[net].count();
+  }
 }
 
 GUIProxy::GUIProxy() {

@@ -40,7 +40,6 @@ int main(int argc, char **argv) {
 
   global = new Global();
   coreProxy = new CoreProxy();
-  core = new Core();
 
   //Logger *logger = new Logger();
   //Quassel::setLogger(logger);

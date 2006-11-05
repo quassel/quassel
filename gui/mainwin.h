@@ -24,8 +24,13 @@
 #include <QtGui>
 #include "gui/ui_mainwin.h"
 
+#include "global.h"
+#include "message.h"
+
 class ServerListDlg;
 class CoreConnectDlg;
+class NetworkView;
+class Buffer;
 
 class MainWin : public QMainWindow {
   Q_OBJECT
@@ -36,19 +41,51 @@ class MainWin : public QMainWindow {
   protected:
     void closeEvent(QCloseEvent *event);
 
+  signals:
+    void sendInput(QString network, QString buffer, QString message);
+    void bufferSelected(QString net, QString buffer);
+
   private slots:
+    void userInput(QString, QString, QString);
+    void networkConnected(QString);
+    void networkDisconnected(QString);
+    void recvNetworkState(QString, QVariant);
+    void recvMessage(QString network, Message message);
+    void recvStatusMsg(QString network, QString message);
+    void setTopic(QString, QString, QString);
+    void setNicks(QString, QString, QStringList);
+    void addNick(QString net, QString nick, VarMap props);
+    void removeNick(QString net, QString nick);
+    void renameNick(QString net, QString oldnick, QString newnick);
+    void updateNick(QString net, QString nick, VarMap props);
+    void setOwnNick(QString net, QString nick);
+
     void showServerList();
+
+    void showBuffer(QString net, QString buf);
 
   private:
     Ui::MainWin ui;
 
     void setupMenus();
-    void syncToCore();
+    void syncToCore();  // implemented in main_mono.cpp or main_gui.cpp
+    Buffer * getBuffer(QString net, QString buf);
+    void buffersUpdated();
 
     QWorkspace *workspace;
+    QWidget *widget;
 
     ServerListDlg *serverListDlg;
     CoreConnectDlg *coreConnectDlg;
+
+    QString currentNetwork, currentBuffer;
+    QHash<QString, QHash<QString, Buffer*> > buffers;
+    QHash<QString, QHash<QString, VarMap> > nicks;
+    QHash<QString, bool> connected;
+    QHash<QString, QString> ownNick;
+    QHash<QString, QList<Message> > coreBackLog;
+
+    NetworkView *netView;
 };
 
 #endif

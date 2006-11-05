@@ -41,7 +41,10 @@ class CoreProxy : public QObject {
 
   public slots:
     inline void csUpdateGlobalData(QString key, QVariant data)          { send(CS_UPDATE_GLOBAL_DATA, key, data); }
-    inline void csDisplayMsg(QString net, QString buf, Message msg)     { send(CS_DISPLAY_MSG, net, buf, QVariant::fromValue(msg)); }
+    inline void csServerConnected(QString net)                          { send(CS_SERVER_CONNECTED, net); }
+    inline void csServerDisconnected(QString net)                       { send(CS_SERVER_DISCONNECTED, net); }
+    inline void csServerState(QString net, VarMap data)                 { send(CS_SERVER_STATE, net, data); }
+    inline void csDisplayMsg(QString net, Message msg)                  { send(CS_DISPLAY_MSG, net, QVariant::fromValue(msg)); }
     inline void csDisplayStatusMsg(QString net, QString msg)            { send(CS_DISPLAY_STATUS_MSG, net, msg); }
     inline void csModeSet(QString net, QString target, QString mode)    { send(CS_MODE_SET, net, target, mode); }
     inline void csTopicSet(QString net, QString buf, QString topic)     { send(CS_TOPIC_SET, net, buf, topic); }
@@ -56,6 +59,8 @@ class CoreProxy : public QObject {
     void gsPutGlobalData(QString, QVariant);
     void gsUserInput(QString, QString, QString);
     void gsRequestConnect(QStringList networks);
+
+    void requestServerStates();
 
   private:
     void send(CoreSignal, QVariant arg1 = QVariant(), QVariant arg2 = QVariant(), QVariant arg3 = QVariant());

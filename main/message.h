@@ -26,23 +26,37 @@
 struct Message {
 
   /** The different types a message can have for display */
-  enum Type { Msg, Notice, Action, Nick, Mode, Join, Part, Quit, Kick, Kill, Server, Info, Error };
+  enum Type { Plain, Notice, Action, Nick, Mode, Join, Part, Quit, Kick, Kill, Server, Info, Error };
   enum Flags { None = 0, Self = 1, Highlight = 2 };
 
   Type type;
   Flags flags;
+  QString target;
   QString sender;
-  QString msg;
+  QString text;
   QDateTime timeStamp;
 
-  Message(Type _type = Msg, QString _msg = "", QString _sender = "", Flags _flags = None)
-  : msg(_msg), sender(_sender), type(_type), flags(_flags) { timeStamp = QDateTime::currentDateTime().toUTC(); };
+  Message(QString _target = "", Type _type = Plain, QString _text = "", QString _sender = "", Flags _flags = None)
+  : target(_target), text(_text), sender(_sender), type(_type), flags(_flags) { timeStamp = QDateTime::currentDateTime().toUTC(); }
 
+  static Message plain(QString _target, QString _text, QString _sender = "", Flags _flags = None);
+  static Message notice(QString _target, QString _text, QString _sender = "", Flags _flags = None);
+  static Message action(QString _target, QString _text, QString _sender = "", Flags _flags = None);
+  static Message nick(QString _target, QString _text, QString _sender = "", Flags _flags = None);
+  static Message mode(QString _target, QString _text, QString _sender = "", Flags _flags = None);
+  static Message join(QString _target, QString _text, QString _sender = "", Flags _flags = None);
+  static Message part(QString _target, QString _text, QString _sender = "", Flags _flags = None);
+  static Message quit(QString _target, QString _text, QString _sender = "", Flags _flags = None);
+  static Message kick(QString _target, QString _text, QString _sender = "", Flags _flags = None);
+  static Message kill(QString _target, QString _text, QString _sender = "", Flags _flags = None);
+  static Message server(QString _target, QString _text, QString _sender = "", Flags _flags = None);
+  static Message info(QString _target, QString _text, QString _sender = "", Flags _flags = None);
+  static Message error(QString _target, QString _text, QString _sender = "", Flags _flags = None);
 };
 
 QDataStream &operator<<(QDataStream &out, const Message &msg);
 QDataStream &operator>>(QDataStream &in, Message &msg);
 
-Q_DECLARE_METATYPE(Message)
+Q_DECLARE_METATYPE(Message);
 
 #endif

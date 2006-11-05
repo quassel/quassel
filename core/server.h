@@ -18,8 +18,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#error "obsolete code"
-
 #ifndef _SERVER_H_
 #define _SERVER_H_
 
@@ -28,7 +26,6 @@
 #include <QtNetwork>
 
 #include "global.h"
-#include "buffer.h"
 #include "message.h"
 
 #define DEFAULT_PORT 6667
@@ -53,6 +50,7 @@ class Server : public QThread {
 
   public slots:
     // void setServerOptions();
+    void sendState();
     void connectToIrc(QString net);
     void disconnectFromIrc(QString net);
     void userInput(QString net, QString buffer, QString msg);
@@ -63,10 +61,12 @@ class Server : public QThread {
     //void exitThread();
 
   signals:
+    void serverState(QString net, VarMap data);
     void recvRawServerMsg(QString);
     void displayStatusMsg(QString);
     void displayMsg(Message msg);
-    void disconnected();
+    void connected(QString network);
+    void disconnected(QString network);
 
     void nickAdded(QString network, QString nick, VarMap props);
     void nickRenamed(QString network, QString oldnick, QString newnick);
@@ -104,6 +104,7 @@ class Server : public QThread {
     void handleUserQuit(QString, QString);
     void handleUserQuote(QString, QString);
     void handleUserSay(QString, QString);
+    void handleUserTopic(QString, QString);
     void handleUserVoice(QString, QString);
 
     /* void handleServer(QString, QStringList); */
@@ -116,6 +117,7 @@ class Server : public QThread {
     void handleServerPing(QString, QStringList);
     void handleServerPrivmsg(QString, QStringList);
     void handleServerQuit(QString, QStringList);
+    void handleServerTopic(QString, QStringList);
 
     void handleServer001(QString, QStringList);   // RPL_WELCOME
     void handleServer005(QString, QStringList);   // RPL_ISUPPORT
@@ -132,11 +134,12 @@ class Server : public QThread {
     QTcpSocket socket;
     //QHash<QString, Buffer*> buffers;
 
-    QString currentNick;
+    QString ownNick;
     QString currentServer;
     VarMap networkSettings;
     VarMap identity;
-    VarMap nicks;  // stores all known nicks for the server
+    QHash<QString, VarMap> nicks;  // stores all known nicks for the server
+    QHash<QString, QString> topics; // stores topics for each buffer
     VarMap serverSupports;  // stores results from RPL_ISUPPORT
 
     void handleServerMsg(QString rawMsg);

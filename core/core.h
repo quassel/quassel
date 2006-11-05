@@ -33,35 +33,42 @@ class Core : public QObject {
   public:
 
     Core();
-    //~Core();
+    ~Core();
+    QHash<QString, QList<Message> > getBackLog() { return backLog; };
 
   public slots:
     void connectToIrc(QStringList);
 
   signals:
     void msgFromGUI(QString network, QString channel, QString message);
-    void displayMsg(QString network, QString channel, Message message);
+    void displayMsg(QString network, Message message);
     void displayStatusMsg(QString, QString);
 
     void connectToIrc(QString net);
     void disconnectFromIrc(QString net);
+    void serverStateRequested();
 
   private slots:
+    //void serverStatesRequested();
     void globalDataUpdated(QString);
     void recvStatusMsgFromServer(QString msg);
-    void recvMessageFromServer(QString buffer, Message msg);
+    void recvMessageFromServer(Message msg);
+    void serverDisconnected(QString net);
 
   private:
-    QHash<QString, Server *> servers;
-    QList<Message> backLog;
-    bool backLogEnabled;
     QDir backLogDir;
-    QFile currentLogFile;
-    QDataStream logStream;
-    QDate currentLogFileDate;
+    bool backLogEnabled;
+    QHash<QString, Server *> servers;
+    QHash<QString, QList<Message> > backLog;
+    //QHash<QString, int> netIdx;
+    QHash<QString, QFile *> logFiles;
+    QHash<QString, QDataStream *> logStreams;
+    QHash<QString, QDate> logFileDates;
+    QHash<QString, QDir> logFileDirs;
 
+    //uint getNetIdx(QString net);
     void initBackLog();
-    void logMessage(Message);
+    void logMessage(QString, Message);
 
 };
 

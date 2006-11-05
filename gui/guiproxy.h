@@ -49,7 +49,10 @@ class GUIProxy : public QObject {
 
   signals:
     void csCoreState(QVariant);
-    void csDisplayMsg(QString, QString, Message);
+    void csServerState(QString, QVariant);
+    void csServerConnected(QString);
+    void csServerDisconnected(QString);
+    void csDisplayMsg(QString, Message);
     void csDisplayStatusMsg(QString, QString);
     void csUpdateGlobalData(QString key, QVariant data);
     void csGlobalDataChanged(QString key);

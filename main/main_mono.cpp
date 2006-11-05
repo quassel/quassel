@@ -41,7 +41,6 @@ int main(int argc, char **argv) {
   global = new Global();
   guiProxy = new GUIProxy();
   coreProxy = new CoreProxy();
-  core = new Core();
 
   MainWin mainWin;
   mainWin.show();
@@ -51,6 +50,13 @@ int main(int argc, char **argv) {
   delete coreProxy;
   delete global;
   return exitCode;
+}
+
+void MainWin::syncToCore() {
+  Q_ASSERT(global->getData("CoreReady").toBool());
+  coreBackLog = core->getBackLog();
+  // NOTE: We don't need to request server states, because in the monolithic version there can't be
+  //       any servers connected at this stage...
 }
 
 void CoreProxy::sendToGUI(CoreSignal sig, QVariant arg1, QVariant arg2, QVariant arg3) {

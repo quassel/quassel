@@ -1,0 +1,52 @@
+<ui version="4.0" >
+ <class>NetworkViewWidget</class>
+ <widget class="QWidget" name="NetworkViewWidget" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>151</width>
+    <height>294</height>
+   </rect>
+  </property>
+  <property name="sizePolicy" >
+   <sizepolicy>
+    <hsizetype>5</hsizetype>
+    <vsizetype>1</vsizetype>
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle" >
+   <string>Form</string>
+  </property>
+  <layout class="QHBoxLayout" >
+   <property name="margin" >
+    <number>9</number>
+   </property>
+   <property name="spacing" >
+    <number>6</number>
+   </property>
+   <item>
+    <widget class="QTreeWidget" name="tree" >
+     <property name="sizePolicy" >
+      <sizepolicy>
+       <hsizetype>5</hsizetype>
+       <vsizetype>1</vsizetype>
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="maximumSize" >
+      <size>
+       <width>16777215</width>
+       <height>16777215</height>
+      </size>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

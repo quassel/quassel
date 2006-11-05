@@ -18,8 +18,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "buffer.h"
+/* OBSOLETE */
 
+#include "buffer.h"
+/*
 Buffer::Buffer(QString n) {
   _name = n;
 
@@ -27,3 +29,4 @@ Buffer::Buffer(QString n) {
 
 }
 
+*/

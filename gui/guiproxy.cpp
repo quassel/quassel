@@ -28,9 +28,12 @@ void GUIProxy::recv(CoreSignal sig, QVariant arg1, QVariant arg2, QVariant arg3)
   //qDebug() << "[GUI] Received signal:" << sig <<arg1<<arg2<<arg3;
   switch(sig) {
     case CS_CORE_STATE: emit csCoreState(arg1); break;
+    case CS_SERVER_STATE: emit csServerState(arg1.toString(), arg2.toMap()); break;
+    case CS_SERVER_CONNECTED: emit csServerConnected(arg1.toString()); break;
+    case CS_SERVER_DISCONNECTED: emit csServerDisconnected(arg1.toString()); break;
     case CS_UPDATE_GLOBAL_DATA: emit csUpdateGlobalData(arg1.toString(), arg2); break;
     //case CS_GLOBAL_DATA_CHANGED: emit csGlobalDataChanged(arg1.toString()); break;
-    case CS_DISPLAY_MSG: emit csDisplayMsg(arg1.toString(), arg2.toString(), arg3.value<Message>()); break;
+    case CS_DISPLAY_MSG: emit csDisplayMsg(arg1.toString(), arg2.value<Message>()); break;
     case CS_DISPLAY_STATUS_MSG: emit csDisplayStatusMsg(arg1.toString(), arg2.toString()); break;
     case CS_MODE_SET: emit csModeSet(arg1.toString(), arg2.toString(), arg3.toString()); break;
     case CS_TOPIC_SET: emit csTopicSet(arg1.toString(), arg2.toString(), arg3.toString()); break;

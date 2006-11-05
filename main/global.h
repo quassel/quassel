@@ -24,7 +24,7 @@
 /** The protocol version we use fo the communication between core and GUI */
 #define GUI_PROTOCOL 1
 
-#define BACKLOG_FORMAT 1
+#define BACKLOG_FORMAT 2
 #define BACKLOG_STRING "QuasselIRC Backlog File"
 
 class Global;

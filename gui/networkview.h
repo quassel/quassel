@@ -18,17 +18,60 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _PROXY_COMMON_H_
-#define _PROXY_COMMON_H_
+#ifndef _NETWORKVIEW_H_
+#define _NETWORKVIEW_H_
 
-enum GUISignal { GS_CLIENT_INIT, GS_USER_INPUT, GS_REQUEST_CONNECT, GS_UPDATE_GLOBAL_DATA,
+#include <QtGui>
+#include "ui_networkview.h"
+#include "buffer.h"
+
+typedef QHash<QString, QHash<QString, Buffer*> > BufferHash;
+
+class NetworkViewWidget : public QWidget {
+  Q_OBJECT
+
+  public:
+    NetworkViewWidget(QWidget *parent = 0);
+    QTreeWidget *tree() { return ui.tree; }
+
+    virtual QSize sizeHint () const;
+
+  public slots:
+
+
+  signals:
+    void bufferSelected(QString net, QString buf);
+
+  private slots:
+
+
+  private:
+    Ui::NetworkViewWidget ui;
 
 };
 
-enum CoreSignal { CS_CORE_STATE, CS_SERVER_CONNECTED, CS_SERVER_DISCONNECTED, CS_SERVER_STATE,
-  CS_DISPLAY_MSG, CS_DISPLAY_STATUS_MSG, CS_UPDATE_GLOBAL_DATA,
-  CS_MODE_SET, CS_TOPIC_SET, CS_SET_NICKS, CS_NICK_ADDED, CS_NICK_REMOVED, CS_NICK_RENAMED, CS_NICK_UPDATED,
-  CS_OWN_NICK_SET,
+class NetworkView : public QDockWidget {
+  Q_OBJECT
+
+  public:
+    NetworkView(QString network, QWidget *parent = 0);
+
+  public slots:
+    void buffersUpdated(BufferHash);
+    void selectBuffer(QString net, QString buf);
+
+  signals:
+    void bufferSelected(QString net, QString buf);
+
+  private slots:
+    void itemClicked(QTreeWidgetItem *item);
+
+  private:
+    QString network;
+    QString currentNetwork, currentBuffer;
+    QHash<QString, QHash<QString, Buffer*> > buffers;
+    QHash<QString, QHash<QString, QTreeWidgetItem *> > items;
+    QTreeWidget *tree;
 
 };
 

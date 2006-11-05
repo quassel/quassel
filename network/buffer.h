@@ -18,12 +18,14 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _BUFFER_H_
-#define _BUFFER_H_
+/* THIS CODE IS OBSOLETE, PENDING REMOVAL */
+
+#ifndef _BUFFER_OLD_H_
+#define _BUFFER_OLD_H_
 
 #include <QtCore>
 
-class Buffer : public QObject {
+class Buffer_old : public QObject {
   Q_OBJECT
 
   public:

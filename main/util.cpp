@@ -45,7 +45,7 @@ bool isChannelName(QString str) {
 void writeDataToDevice(QIODevice *dev, const QVariant &item) {
   QByteArray block;
   QDataStream out(&block, QIODevice::WriteOnly);
-  out.setVersion(QDataStream::Qt_4_1);
+  out.setVersion(QDataStream::Qt_4_2);
   out << (quint32)0 << item;
   out.device()->seek(0);
   out << (quint32)(block.size() - sizeof(quint32));
@@ -54,7 +54,7 @@ void writeDataToDevice(QIODevice *dev, const QVariant &item) {
 
 bool readDataFromDevice(QIODevice *dev, quint32 &blockSize, QVariant &item) {
   QDataStream in(dev);
-  in.setVersion(QDataStream::Qt_4_1);
+  in.setVersion(QDataStream::Qt_4_2);
 
   if(blockSize == 0) {
     if(dev->bytesAvailable() < (int)sizeof(quint32)) return false;

@@ -23,9 +23,12 @@
 #include "coreproxy.h"
 #include "global.h"
 #include "util.h"
+#include "core.h"
 
 CoreProxy::CoreProxy() {
   if(coreProxy) qFatal("Trying to instantiate more than one CoreProxy object!");
+  coreProxy = this;
+  core = new Core();
 
   connect(global, SIGNAL(dataPutLocally(QString)), this, SLOT(updateGlobalData(QString)));
   connect(&server, SIGNAL(newConnection()), this, SLOT(incomingConnection()));
@@ -85,11 +88,19 @@ void CoreProxy::processClientInit(QTcpSocket *socket, const QVariant &v) {
     coreData[key] = global->getData(key);
   }
   reply["CoreData"] = coreData;
-  //QVariant payload = QByteArray(1000000, 'a');
-  //reply["payload"] = payload;
+  VarMap bl;
+  QHash<QString, QList<Message> > log = core->getBackLog();
+  foreach(QString net, log.keys()) {
+    QByteArray buf;
+    QDataStream out(&buf, QIODevice::WriteOnly); out.setVersion(QDataStream::Qt_4_2);
+    foreach(Message msg, log[net]) { out << msg; }
+    bl[net] = buf;
+  }
+  reply["CoreBackLog"] = bl;
   QList<QVariant> sigdata;
   sigdata.append(CS_CORE_STATE); sigdata.append(QVariant(reply)); sigdata.append(QVariant()); sigdata.append(QVariant());
   writeDataToDevice(socket, QVariant(sigdata));
+  emit requestServerStates();
 }
 
 void CoreProxy::processClientUpdate(QTcpSocket *socket, QString key, QVariant data) {
