@@ -63,7 +63,7 @@ QWidget * Buffer::showWidget(QWidget *parent) {
   widget->setTopic(topic);
   widget->updateNickList(nicks);
   //widget->renderContents();
-  widget->scrollToEnd();
+  //widget->scrollToEnd();
   connect(widget, SIGNAL(userInput(QString)), this, SLOT(userInput(QString)));
   return qobject_cast<QWidget*>(widget);
 }
@@ -131,6 +131,7 @@ BufferWidget::BufferWidget(QString netname, QString bufname, bool act, QString o
   connect(ui.inputEdit, SIGNAL(returnPressed()), this, SLOT(enterPressed()));
 
   ui.chatWidget->setFocusProxy(ui.inputEdit);
+  ui.chatWidget->setWordWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
 
   opsExpanded = voicedExpanded = usersExpanded = true;
 
@@ -149,9 +150,10 @@ BufferWidget::BufferWidget(QString netname, QString bufname, bool act, QString o
   int i = contents.count() - 100;
   if(i < 0) i = 0;
   for(int j = 0; j < i; j++) contents.removeAt(0);
+  show();
   renderContents();
   updateTitle();
-  show();
+  //show();
 }
 
 void BufferWidget::updateTitle() {
@@ -172,16 +174,22 @@ void BufferWidget::setActive(bool act) {
   if(act != active) {
     active = act;
     renderContents();
+    //scrollToEnd();
   }
 }
 
 void BufferWidget::renderContents() {
   QString html;
+  //html = "<style type=\"text/css\">"
+  //    ".test { background-color:#339933 }"
+  //    "</style>";
   for(int i = 0; i < contents.count(); i++) {
     html += htmlFromMsg(contents[i]);
   }
-  ui.chatWidget->clear();
-  ui.chatWidget->setHtml(html);
+  //ui.chatWidget->clear();
+  hide();
+  ui.chatWidget->setHtml(html); show();
+  //ui.chatWidget->insertHtml("<div />");  // <-- bug that would not reset the scrollbar sizes...
   scrollToEnd();
 }
 
