@@ -55,7 +55,10 @@ void Buffer::scrollToEnd() {
 }
 
 QWidget * Buffer::showWidget(QWidget *parent) {
-  if(widget) return qobject_cast<QWidget*>(widget);
+  if(widget) {
+    widget->scrollToEnd();
+    return qobject_cast<QWidget*>(widget);
+  }
   widget = new BufferWidget(networkName, bufferName, isActive(), ownNick, contents, parent); 
   widget->setTopic(topic);
   widget->updateNickList(nicks);
@@ -185,7 +188,7 @@ void BufferWidget::renderContents() {
 void BufferWidget::scrollToEnd() {
   QScrollBar *sb = ui.chatWidget->verticalScrollBar();
   sb->setValue(sb->maximum());
-  qDebug() << bufferName << "scrolled" << sb->value() << sb->maximum();
+  //qDebug() << bufferName << "scrolled" << sb->value() << sb->maximum();
 }
 
 QString BufferWidget::htmlFromMsg(Message msg) {
