@@ -565,6 +565,14 @@ void Server::handleServer001(QString prefix, QStringList params) {
   emit ownNickSet(network, ownNick);
   emit nickAdded(network, ownNick, VarMap());
   emit displayMsg(Message::server("", params[1], prefix));
+  // send performlist
+  QStringList performList = networkSettings["Perform"].toString().split( "\n" );
+  int count = performList.count();
+  for ( int a = 0; a < count; a++ ) {
+  	if ( !performList[a].isEmpty() ) {
+  		userInput( network, "", performList[a] ); 
+  	}
+  }
 }
 
 /* RPL_ISUPPORT */

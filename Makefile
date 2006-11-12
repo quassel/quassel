@@ -19,8 +19,11 @@ default:
 run_cmake:
 	cd build && cmake .. && make
 
+build_mono_windows:
+	cd build && cmake -DBUILD="mono" .. -G "MinGW Makefiles" && mingw32-make
+	
 build_windows:
-	cd build && cmake .. -G "MinGW Makefiles" && mingw32-make
+	cd build && cmake -DBUILD="core gui" .. -G "MinGW Makefiles" && mingw32-make
 
 clean:
 	rm -rf build/*

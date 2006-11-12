@@ -231,6 +231,8 @@ void NetworkEditDlg::updateWidgets() {
     //if(server["Exclude"].toBool()) item->setCheckState(Qt::Checked);
     ui.serverList->addItem(item);
   }
+  ui.performEdit->clear();
+  ui.performEdit->setText( network["Perform"].toString() );
   updateServerButtons();
 }
 
@@ -258,6 +260,7 @@ void NetworkEditDlg::accept() {
     /*if(ui.networkGroup->currentText() == "<none>") network["Group"] = "";
     else */ network["Group"] = ui.networkGroup->currentText();
     network["AutoConnect"] = ui.enableAutoConnect->isChecked();
+    network["Perform"] = ui.performEdit->toPlainText();
     if(ui.identityList->currentIndex()) network["Identity"] = ui.identityList->currentText();
     else network["Identity"] = "Default";
     QDialog::accept();
