@@ -110,8 +110,8 @@ MainWin::MainWin() : QMainWindow() {
 }
 
 void MainWin::setupMenus() {
-  connect(ui.actionNetworkList, SIGNAL(activated()), this, SLOT(showServerList()));
-  connect(ui.actionEditIdentities, SIGNAL(activated()), serverListDlg, SLOT(editIdentities()));
+  connect(ui.actionNetworkList, SIGNAL(triggered()), this, SLOT(showServerList()));
+  connect(ui.actionEditIdentities, SIGNAL(triggered()), serverListDlg, SLOT(editIdentities()));
 }
 
 void MainWin::showServerList() {
