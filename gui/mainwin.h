@@ -31,7 +31,13 @@ class ServerListDlg;
 class CoreConnectDlg;
 class NetworkView;
 class Buffer;
+class SettingsDlg;
 
+//!\brief The main window and central object of Quassel GUI.
+/** In addition to displaying the main window including standard stuff like a menubar,
+ * dockwidgets and of course the chat window, this class also stores all data it
+ * receives from the core, and it maintains a list of all known nicks.
+ */
 class MainWin : public QMainWindow {
   Q_OBJECT
 
@@ -61,6 +67,7 @@ class MainWin : public QMainWindow {
     void setOwnNick(QString net, QString nick);
 
     void showServerList();
+    void showSettingsDlg();
 
     void showBuffer(QString net, QString buf);
 
@@ -77,6 +84,7 @@ class MainWin : public QMainWindow {
 
     ServerListDlg *serverListDlg;
     CoreConnectDlg *coreConnectDlg;
+    SettingsDlg *settingsDlg;
 
     QString currentNetwork, currentBuffer;
     QHash<QString, QHash<QString, Buffer*> > buffers;

@@ -29,8 +29,15 @@
 #include "global.h"
 #include "message.h"
 
+class ChatWidget;
+class ChatWidgetContents;
 class BufferWidget;
 
+//!\brief Encapsulates the contents of a single channel, query or server status context.
+/** A Buffer maintains a list of existing nicks and their status. New messages can be appended using
+ * displayMsg(). A buffer displays its contents by way of a BufferWidget, which can be shown
+ * (and created on demand) by calling showWidget().
+ */
 class Buffer : public QObject {
   Q_OBJECT
 
@@ -60,6 +67,7 @@ class Buffer : public QObject {
 
     QWidget * showWidget(QWidget *parent = 0);
     void hideWidget();
+    void deleteWidget();
 
     void scrollToEnd();
 
@@ -69,6 +77,8 @@ class Buffer : public QObject {
   private:
     bool active;
     BufferWidget *widget;
+    ChatWidget *chatWidget;
+    ChatWidgetContents *contentsWidget;
     VarMap nicks;
     QString topic;
     QString ownNick;
@@ -77,23 +87,30 @@ class Buffer : public QObject {
     QList<Message> contents;
 };
 
+//!\brief Displays the contents of a Buffer.
+/** A BufferWidget usually includes a topic line, a nicklist, the chat itself, and an input line.
+ * For server buffers or queries, there is of course no nicklist.
+ * The contents of the chat is rendered by a ChatWidget.
+ */
 class BufferWidget : public QWidget {
   Q_OBJECT
 
   public:
-    BufferWidget(QString netname, QString bufname, bool active, QString ownNick, QList<Message> contents, QWidget *parent = 0);
+    BufferWidget(QString netname, QString bufname, bool active, QString ownNick, ChatWidgetContents *contents, Buffer *parentBuffer, QWidget *parent = 0);
+    ~BufferWidget();
 
     void setActive(bool act = true);
+
   signals:
     void userInput(QString);
+
+  protected:
 
   public slots:
     void displayMsg(Message);
     void updateNickList(VarMap nicks);
     void setOwnNick(QString ownNick);
     void setTopic(QString topic);
-    void renderContents();
-    void scrollToEnd();
 
   private slots:
     void enterPressed();
@@ -102,17 +119,14 @@ class BufferWidget : public QWidget {
 
   private:
     Ui::BufferWidget ui;
+    Buffer *parentBuffer;
     bool active;
-    QList<Message> contents;
 
-    QString stdCol, errorCol, noticeCol, joinCol, quitCol, partCol, kickCol, serverCol, nickCol, inactiveCol;
-    QString CSS;
     QString networkName;
     QString bufferName;
 
     bool opsExpanded, voicedExpanded, usersExpanded;
 
-    QString htmlFromMsg(Message);
 };
 
 #endif

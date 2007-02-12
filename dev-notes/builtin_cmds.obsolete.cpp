@@ -18,11 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-/* THIS CODE IS OBSOLETE! */
+#error THIS CODE IS OBSOLETE!
 
-#include <QtGlobal>
-//#include "message.h"
-#include "cmdcodes.h"
+/* We are keeping this for further reference only.
+ * This method of defining server commands sucked, but at least we have a quite complete list
+ * of commands here.
+ */
 
 /** This macro marks strings as translateable for Qt's linguist tools */
 #define _(str) QT_TR_NOOP(str)
@@ -31,10 +32,6 @@
 /** Defines the message codes according to RFCs 1495/281x.
  *  Named commands have a negative enum value.
  */
-
-/** \NOTE: Function handlers _must_ be global functions or static methods! */
-
-/** Set handler addresses to 0 to use the default (server) handler. */
 
 BuiltinCmd builtins[] = {
   { CMD_ADMIN, "admin", _("Get information about the administrator of a server."),

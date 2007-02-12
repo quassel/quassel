@@ -19,19 +19,9 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>29</height>
+     <height>32</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuViews" >
-    <property name="title" >
-     <string>Views</string>
-    </property>
-   </widget>
-   <widget class="QMenu" name="menuHelp" >
-    <property name="title" >
-     <string>Help</string>
-    </property>
-   </widget>
    <widget class="QMenu" name="menuConnection" >
     <property name="title" >
      <string>Connection</string>
@@ -48,15 +38,29 @@
     <addaction name="separator" />
     <addaction name="actionQuit" />
    </widget>
+   <widget class="QMenu" name="menuViews" >
+    <property name="title" >
+     <string>Views</string>
+    </property>
+   </widget>
    <widget class="QMenu" name="menuSettings" >
     <property name="title" >
      <string>Settings</string>
     </property>
+    <addaction name="separator" />
     <addaction name="actionEditIdentities" />
+    <addaction name="separator" />
+    <addaction name="separator" />
+    <addaction name="actionSettingsDlg" />
+   </widget>
+   <widget class="QMenu" name="menuHelp" >
+    <property name="title" >
+     <string>Help</string>
+    </property>
    </widget>
    <addaction name="menuConnection" />
-   <addaction name="menuSettings" />
    <addaction name="menuViews" />
+   <addaction name="menuSettings" />
    <addaction name="menuHelp" />
   </widget>
   <widget class="QStatusBar" name="statusbar" />
@@ -116,6 +120,14 @@
   <action name="actionEditIdentities" >
    <property name="text" >
     <string>Edit Identities...</string>
+   </property>
+  </action>
+  <action name="actionSettingsDlg" >
+   <property name="text" >
+    <string>Configure Quassel...</string>
+   </property>
+   <property name="shortcut" >
+    <string>F7</string>
    </property>
   </action>
  </widget>

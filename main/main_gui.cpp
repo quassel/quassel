@@ -23,6 +23,7 @@
 #include <QtGui>
 #include <QApplication>
 
+#include "style.h"
 #include "global.h"
 #include "guiproxy.h"
 #include "coreconnectdlg.h"
@@ -41,6 +42,8 @@ int main(int argc, char **argv) {
 
   global = new Global();
   guiProxy = new GUIProxy();
+
+  Style::init();
 
   MainWin mainWin;
   int exitCode = app.exec();

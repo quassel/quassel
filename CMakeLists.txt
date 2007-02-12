@@ -24,6 +24,8 @@ IF(NOT BUILD_MONO AND NOT BUILD_CORE AND NOT BUILD_GUI)
   MESSAGE(FATAL_ERROR "\nYou have not selected which parts of Quassel I should build. Aborting.\nRun 'cmake <path> -DBUILD=<part>', where <part> contains one or more of 'core', 'gui' or 'monolithic', or 'all' to build everything.\n")
 ENDIF(NOT BUILD_MONO AND NOT BUILD_CORE AND NOT BUILD_GUI)
 
+SET(CMAKE_BUILD_TYPE Debug)
+
 # Define files
 SET(quassel_mono_SRCS main/main_mono.cpp)
 SET(quassel_core_SRCS main/main_core.cpp)
@@ -36,7 +38,7 @@ SET(SDIRS "")
 FOREACH(dir ${quassel_DIRS})
   SET(SDIRS ${SDIRS} "${CMAKE_CURRENT_SOURCE_DIR}/${dir}")
 ENDFOREACH(dir)
-INCLUDE_DIRECTORIES(${SDIRS})
+INCLUDE_DIRECTORIES(${SDIRS} plugins)
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 
 # We need Qt4 support.

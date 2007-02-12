@@ -20,17 +20,21 @@
 
 #include "buffer.h"
 #include "util.h"
+#include "chatwidget.h"
 
 Buffer::Buffer(QString netname, QString bufname) {
   networkName = netname;
   bufferName = bufname;
 
   widget = 0;
+  chatWidget = 0;
+  contentsWidget = 0;
   active = false;
 }
 
 Buffer::~Buffer() {
   delete widget;
+  delete chatWidget;
 }
 
 void Buffer::setActive(bool a) {
@@ -49,27 +53,40 @@ void Buffer::userInput(QString msg) {
   emit userInput(networkName, bufferName, msg);
 }
 
+/* FIXME do we need this? */
 void Buffer::scrollToEnd() {
   if(!widget) return;
-  widget->scrollToEnd();
+  //widget->scrollToEnd();
 }
 
 QWidget * Buffer::showWidget(QWidget *parent) {
+
   if(widget) {
-    widget->scrollToEnd();
     return qobject_cast<QWidget*>(widget);
   }
-  widget = new BufferWidget(networkName, bufferName, isActive(), ownNick, contents, parent); 
+
+  if(!contentsWidget) {
+    contentsWidget = new ChatWidgetContents(networkName, bufferName, 0);
+    contentsWidget->hide();
+    /* FIXME do we need this? */
+    for(int i = 0; i < contents.count(); i++) {
+      contentsWidget->appendMsg(contents[i]);
+    }
+  }
+  contentsWidget->hide();
+  widget = new BufferWidget(networkName, bufferName, isActive(), ownNick, contentsWidget, this, parent);
   widget->setTopic(topic);
   widget->updateNickList(nicks);
-  //widget->renderContents();
-  //widget->scrollToEnd();
   connect(widget, SIGNAL(userInput(QString)), this, SLOT(userInput(QString)));
   return qobject_cast<QWidget*>(widget);
 }
 
 void Buffer::hideWidget() {
   delete widget;
+  widget = 0;
+}
+
+void Buffer::deleteWidget() {
   widget = 0;
 }
 
@@ -112,12 +129,19 @@ void Buffer::setOwnNick(QString nick) {
 
 /****************************************************************************************/
 
-BufferWidget::BufferWidget(QString netname, QString bufname, bool act, QString own, QList<Message> cont, QWidget *parent) : QWidget(parent) {
+
+
+/****************************************************************************************/
+
+BufferWidget::BufferWidget(QString netname, QString bufname, bool act, QString own, ChatWidgetContents *contents, Buffer *pBuf, QWidget *parent) : QWidget(parent) {
   ui.setupUi(this);
   networkName = netname;
   bufferName = bufname;
   active = act;
-  contents = cont;
+  parentBuffer = pBuf;
+
+  ui.chatWidget->init(netname, bufname, contents);
+
   ui.ownNick->clear();
   ui.ownNick->addItem(own);
   if(bufname.isEmpty()) {
@@ -130,30 +154,15 @@ BufferWidget::BufferWidget(QString netname, QString bufname, bool act, QString o
   connect(ui.nickTree, SIGNAL(itemCollapsed(QTreeWidgetItem *)), this, SLOT(itemExpansionChanged(QTreeWidgetItem*)));
   connect(ui.inputEdit, SIGNAL(returnPressed()), this, SLOT(enterPressed()));
 
-  ui.chatWidget->setFocusProxy(ui.inputEdit);
-  ui.chatWidget->setWordWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
-
   opsExpanded = voicedExpanded = usersExpanded = true;
 
-  // Define standard colors
-  stdCol = "black";
-  inactiveCol = "grey";
-  noticeCol = "darkblue";
-  serverCol = "darkblue";
-  errorCol = "red";
-  joinCol = "green";
-  quitCol = "firebrick";
-  partCol = "firebrick";
-  kickCol = "firebrick";
-  nickCol = "magenta";
-
-  int i = contents.count() - 100;
-  if(i < 0) i = 0;
-  for(int j = 0; j < i; j++) contents.removeAt(0);
-  show();
-  renderContents();
+  ui.chatWidget->setFocusProxy(ui.inputEdit);
   updateTitle();
-  //show();
+}
+
+BufferWidget::~BufferWidget() {
+  ui.chatWidget->takeWidget();   /* remove ownership so the chatwidget contents does not get destroyed */
+  parentBuffer->deleteWidget();  /* make sure the parent buffer knows we are gone */
 }
 
 void BufferWidget::updateTitle() {
@@ -173,100 +182,13 @@ void BufferWidget::enterPressed() {
 void BufferWidget::setActive(bool act) {
   if(act != active) {
     active = act;
-    renderContents();
+    //renderContents();
     //scrollToEnd();
   }
 }
 
-void BufferWidget::renderContents() {
-  QString html;
-  //html = "<style type=\"text/css\">"
-  //    ".test { background-color:#339933 }"
-  //    "</style>";
-  for(int i = 0; i < contents.count(); i++) {
-    html += htmlFromMsg(contents[i]);
-  }
-  //ui.chatWidget->clear();
-  hide();
-  ui.chatWidget->setHtml(html); show();
-  //ui.chatWidget->insertHtml("<div />");  // <-- bug that would not reset the scrollbar sizes...
-  scrollToEnd();
-}
-
-void BufferWidget::scrollToEnd() {
-  QScrollBar *sb = ui.chatWidget->verticalScrollBar();
-  sb->setValue(sb->maximum());
-  //qDebug() << bufferName << "scrolled" << sb->value() << sb->maximum();
-}
-
-QString BufferWidget::htmlFromMsg(Message msg) {
-  QString s, n;
-  QString c = stdCol;
-  QString user = userFromMask(msg.sender);
-  QString host = hostFromMask(msg.sender);
-  QString nick = nickFromMask(msg.sender);
-  switch(msg.type) {
-    case Message::Plain:
-      c = stdCol; n = QString("&lt;%1&gt;").arg(nick); s = msg.text;
-      break;
-    case Message::Server:
-      c = serverCol; s = msg.text;
-      break;
-    case Message::Error:
-      c = errorCol; s = msg.text;
-      break;
-    case Message::Join:
-      c = joinCol;
-      s = QString(tr("--> %1 (%2@%3) has joined %4")).arg(nick).arg(user).arg(host).arg(bufferName);
-      break;
-    case Message::Part:
-      c = partCol;
-      s = QString(tr("<-- %1 (%2@%3) has left %4")).arg(nick).arg(user).arg(host).arg(bufferName);
-      if(!msg.text.isEmpty()) s = QString("%1 (%2)").arg(s).arg(msg.text);
-      break;
-    case Message::Kick:
-      { c = kickCol;
-        QString victim = msg.text.section(" ", 0, 0);
-        if(victim == ui.ownNick->currentText()) victim = tr("you");
-        QString kickmsg = msg.text.section(" ", 1);
-        s = QString(tr("--> %1 has kicked %2 from %3")).arg(nick).arg(victim).arg(bufferName);
-        if(!kickmsg.isEmpty()) s = QString("%1 (%2)").arg(s).arg(kickmsg);
-      }
-      break;
-    case Message::Quit:
-      c = quitCol;
-      s = QString(tr("<-- %1 (%2@%3) has quit")).arg(nick).arg(user).arg(host);
-      if(!msg.text.isEmpty()) s = QString("%1 (%2)").arg(s).arg(msg.text);
-      break;
-    case Message::Nick:
-      c = nickCol;
-      if(nick == msg.text) s = QString(tr("<-> You are now known as %1")).arg(msg.text);
-      else s = QString(tr("<-> %1 is now known as %2")).arg(nick).arg(msg.text);
-      break;
-    case Message::Mode:
-      c = serverCol;
-      if(nick.isEmpty()) s = tr("*** User mode: %1").arg(msg.text);
-      else s = tr("*** Mode %1 by %2").arg(msg.text).arg(nick);
-      break;
-    default:
-      c = stdCol; n = QString("[%1]").arg(msg.sender); s = msg.text;
-      break;
-  }
-  if(!active) c = inactiveCol;
-  s.replace('&', "&amp;"); s.replace('<', "&lt;"); s.replace('>', "&gt;");
-  QString html = QString("<table cellspacing=0 cellpadding=0><tr>"
-      "<td width=50><div style=\"color:%2;\">[%1]</div></td>")
-      .arg(msg.timeStamp.toLocalTime().toString("hh:mm:ss")).arg("darkblue");
-  if(!n.isEmpty())
-    html += QString("<td width=100><div align=right style=\"white-space:pre;margin-left:6px;color:%2;\">%1</div></td>")
-        .arg(n).arg("royalblue");
-  html += QString("<td><div style=\"white-space:pre-wrap;margin-left:6px;color:%2;\">%1</div></td>""</tr></table>").arg(s).arg(c);
-  return html;
-}
-
 void BufferWidget::displayMsg(Message msg) {
-  contents.append(msg);
-  ui.chatWidget->append(htmlFromMsg(msg));
+  ui.chatWidget->appendMsg(msg);
 }
 
 void BufferWidget::setOwnNick(QString nick) {

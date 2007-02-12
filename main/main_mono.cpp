@@ -23,6 +23,7 @@
 #include <QApplication>
 
 #include "core.h"
+#include "style.h"
 #include "global.h"
 #include "guiproxy.h"
 #include "coreproxy.h"
@@ -41,6 +42,8 @@ int main(int argc, char **argv) {
   global = new Global();
   guiProxy = new GUIProxy();
   coreProxy = new CoreProxy();
+
+  Style::init();
 
   MainWin mainWin;
   mainWin.show();

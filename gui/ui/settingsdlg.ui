@@ -1,18 +1,18 @@
 <ui version="4.0" >
- <class>SettingsDialog</class>
- <widget class="QDialog" name="SettingsDialog" >
+ <class>SettingsDlg</class>
+ <widget class="QDialog" name="SettingsDlg" >
   <property name="geometry" >
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>700</width>
-    <height>577</height>
+    <width>848</width>
+    <height>514</height>
    </rect>
   </property>
   <property name="windowTitle" >
-   <string>Settings</string>
+   <string>Dialog</string>
   </property>
-  <layout class="QHBoxLayout" >
+  <layout class="QVBoxLayout" >
    <property name="margin" >
     <number>9</number>
    </property>
@@ -20,44 +20,7 @@
     <number>6</number>
    </property>
    <item>
-    <widget class="QTreeWidget" name="treeWidget" >
-     <property name="sizePolicy" >
-      <sizepolicy>
-       <hsizetype>4</hsizetype>
-       <vsizetype>7</vsizetype>
-       <horstretch>1</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <column>
-      <property name="text" >
-       <string>Settings</string>
-      </property>
-     </column>
-     <item>
-      <property name="text" >
-       <string>General</string>
-      </property>
-     </item>
-     <item>
-      <property name="text" >
-       <string>Appearance</string>
-      </property>
-     </item>
-     <item>
-      <property name="text" >
-       <string>Connection</string>
-      </property>
-     </item>
-     <item>
-      <property name="text" >
-       <string>Plugins</string>
-      </property>
-     </item>
-    </widget>
-   </item>
-   <item>
-    <layout class="QVBoxLayout" >
+    <layout class="QHBoxLayout" >
      <property name="margin" >
       <number>0</number>
      </property>
@@ -65,30 +28,51 @@
       <number>6</number>
      </property>
      <item>
-      <widget class="QStackedWidget" name="stackedWidget" >
+      <widget class="QTreeWidget" name="settingsTree" >
        <property name="sizePolicy" >
         <sizepolicy>
          <hsizetype>5</hsizetype>
-         <vsizetype>5</vsizetype>
-         <horstretch>4</horstretch>
+         <vsizetype>7</vsizetype>
+         <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
-       <widget class="QWidget" name="page" />
-       <widget class="QWidget" name="page_2" />
+       <column>
+        <property name="text" >
+         <string>Settings</string>
+        </property>
+       </column>
       </widget>
      </item>
      <item>
-      <widget class="QDialogButtonBox" name="buttonBox" >
-       <property name="orientation" >
-        <enum>Qt::Horizontal</enum>
+      <widget class="QFrame" name="settingsFrame" >
+       <property name="sizePolicy" >
+        <sizepolicy>
+         <hsizetype>3</hsizetype>
+         <vsizetype>5</vsizetype>
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
        </property>
-       <property name="standardButtons" >
-        <set>QDialogButtonBox::Apply|QDialogButtonBox::Cancel|QDialogButtonBox::NoButton|QDialogButtonBox::Ok|QDialogButtonBox::RestoreDefaults</set>
+       <property name="frameShape" >
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="frameShadow" >
+        <enum>QFrame::Raised</enum>
        </property>
       </widget>
      </item>
     </layout>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="buttonBox" >
+     <property name="orientation" >
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons" >
+      <set>QDialogButtonBox::Apply|QDialogButtonBox::Cancel|QDialogButtonBox::NoButton|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>
@@ -97,7 +81,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>SettingsDialog</receiver>
+   <receiver>SettingsDlg</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel" >
@@ -113,7 +97,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>SettingsDialog</receiver>
+   <receiver>SettingsDlg</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel" >

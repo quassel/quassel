@@ -70,3 +70,7 @@ main/message.h
 gui/ui/bufferwidget.ui
 core/server.cpp
 core/server.h
+gui/chatwidget.cpp
+gui/chatwidget.h
+gui/style.cpp
+gui/style.h

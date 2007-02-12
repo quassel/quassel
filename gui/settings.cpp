@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005/06 by The Quassel Team                             *
+ *   Copyright (C) 2005-07 by The Quassel Team                             *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,36 +18,9 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-/* THIS CODE IS OBSOLETE, PENDING REMOVAL */
+#include "settings.h"
 
-#ifndef _BUFFER_OLD_H_
-#define _BUFFER_OLD_H_
+SettingsDlg::SettingsDlg(QWidget *parent) : QDialog(parent) {
+  ui.setupUi(this);
 
-#include <QtCore>
-
-class Buffer_old : public QObject {
-  Q_OBJECT
-
-  public:
-    Buffer(QString name);
-
-    QString name() { return _name; }
-    QString topic() { return _topic; }
-
-  public slots:
-    //void setNicks(QStringList nicks);
-    //void addNick(QString nick);
-    //void removeNick(QString nick);
-
-  signals:
-
-  private:
-    QString _name;
-    QString _topic;
-    QStringList nicks;
-
-};
-
-
-
-#endif
+}

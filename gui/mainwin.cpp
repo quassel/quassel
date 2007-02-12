@@ -30,6 +30,7 @@
 #include "networkview.h"
 #include "serverlist.h"
 #include "coreconnectdlg.h"
+#include "settings.h"
 
 MainWin::MainWin() : QMainWindow() {
   ui.setupUi(this);
@@ -45,8 +46,8 @@ MainWin::MainWin() : QMainWindow() {
   move(s.value("MainWinPos", QPoint(50, 50)).toPoint());
   s.endGroup();
 
-  workspace = new QWorkspace(this);
-  setCentralWidget(workspace);
+  //workspace = new QWorkspace(this);
+  //setCentralWidget(workspace);
   statusBar()->showMessage(tr("Waiting for core..."));
 
   netView = new NetworkView("", this);
@@ -77,6 +78,8 @@ MainWin::MainWin() : QMainWindow() {
 
   serverListDlg = new ServerListDlg(this);
   serverListDlg->setVisible(serverListDlg->showOnStartup());
+  settingsDlg = new SettingsDlg(this);
+  settingsDlg->setVisible(false);
   setupMenus();
 
   // replay backlog
@@ -112,6 +115,8 @@ MainWin::MainWin() : QMainWindow() {
 void MainWin::setupMenus() {
   connect(ui.actionNetworkList, SIGNAL(triggered()), this, SLOT(showServerList()));
   connect(ui.actionEditIdentities, SIGNAL(triggered()), serverListDlg, SLOT(editIdentities()));
+  connect(ui.actionSettingsDlg, SIGNAL(triggered()), this, SLOT(showSettingsDlg()));
+  ui.actionSettingsDlg->setEnabled(false);
 }
 
 void MainWin::showServerList() {
@@ -119,6 +124,10 @@ void MainWin::showServerList() {
 //    serverListDlg = new ServerListDlg(this);
 //  }
   serverListDlg->show();
+}
+
+void MainWin::showSettingsDlg() {
+  settingsDlg->show();
 }
 
 void MainWin::closeEvent(QCloseEvent *event)
@@ -145,13 +154,14 @@ void MainWin::showBuffer(QString net, QString buf) {
   QWidget *old = widget;
   widget = b->showWidget(this);
   if(widget == old) return;
-  workspace->addWindow(widget);
-  widget->showMaximized();
-  if(old) { old->close(); old->setParent(this); }
-  workspace->setActiveWindow(widget);
-  //widget->setFocus();
+  //workspace->addWindow(widget);
+  //widget->show();
+  setCentralWidget(widget);
+  widget->show();
+  //workspace->setActiveWindow(widget);
+  widget->setFocus();
   //workspace->setFocus();
-  //widget->activateWindow();
+  widget->activateWindow();
   widget->setFocus(Qt::MouseFocusReason);
   focusNextChild();
   //workspace->tile();
@@ -172,7 +182,7 @@ void MainWin::networkDisconnected(QString net) {
     Buffer *b = getBuffer(net, buf);
     b->displayMsg(Message::server(buf, tr("Server disconnected.")));
     b->setActive(false);
-    
+
   }
   connected[net] = false;
 }

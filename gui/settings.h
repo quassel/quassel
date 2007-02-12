@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005/06 by The Quassel Team                             *
+ *   Copyright (C) 2005-07 by The Quassel Team                             *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,5 +18,26 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "message.h"
+#ifndef _SETTINGS_H_
+#define _SETTINGS_H_
 
+#include <QtGui>
+#include "ui_settingsdlg.h"
+
+#include "plugin.h"
+
+class SettingsDlg : public QDialog {
+  Q_OBJECT
+  public:
+    SettingsDlg(QWidget *parent = 0);
+    void registerSettingsPage(SettingsInterface *);
+    void unregisterSettingsPage(SettingsInterface *);
+
+
+  private:
+    Ui::SettingsDlg ui;
+
+
+};
+
+#endif
