@@ -5,15 +5,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>713</width>
-    <height>519</height>
+    <width>787</width>
+    <height>551</height>
    </rect>
   </property>
   <property name="sizePolicy" >
    <sizepolicy>
-    <hsizetype>3</hsizetype>
-    <vsizetype>3</vsizetype>
-    <horstretch>0</horstretch>
+    <hsizetype>7</hsizetype>
+    <vsizetype>7</vsizetype>
+    <horstretch>5</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
@@ -31,7 +31,7 @@
   </property>
   <layout class="QVBoxLayout" >
    <property name="margin" >
-    <number>9</number>
+    <number>0</number>
    </property>
    <property name="spacing" >
     <number>6</number>
@@ -46,6 +46,9 @@
      </property>
      <item>
       <widget class="QLineEdit" name="topicEdit" >
+       <property name="enabled" >
+        <bool>false</bool>
+       </property>
        <property name="focusPolicy" >
         <enum>Qt::ClickFocus</enum>
        </property>
@@ -78,120 +81,66 @@
     </layout>
    </item>
    <item>
-    <widget class="QSplitter" name="splitter" >
-     <property name="orientation" >
-      <enum>Qt::Horizontal</enum>
+    <widget class="QStackedWidget" name="stackedWidget" >
+     <property name="sizePolicy" >
+      <sizepolicy>
+       <hsizetype>7</hsizetype>
+       <vsizetype>5</vsizetype>
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
      </property>
-     <widget class="ChatWidget" native="1" name="chatWidget" >
-      <property name="sizePolicy" >
-       <sizepolicy>
-        <hsizetype>5</hsizetype>
-        <vsizetype>5</vsizetype>
-        <horstretch>6</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-     </widget>
-     <widget class="QTreeWidget" name="nickTree" >
-      <property name="sizePolicy" >
-       <sizepolicy>
-        <hsizetype>5</hsizetype>
-        <vsizetype>5</vsizetype>
-        <horstretch>1</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="layoutDirection" >
-       <enum>Qt::LeftToRight</enum>
-      </property>
-      <property name="dragEnabled" >
-       <bool>true</bool>
-      </property>
-      <property name="textElideMode" >
-       <enum>Qt::ElideRight</enum>
-      </property>
-      <property name="rootIsDecorated" >
-       <bool>true</bool>
-      </property>
-      <property name="sortingEnabled" >
-       <bool>false</bool>
-      </property>
-      <property name="animated" >
-       <bool>false</bool>
-      </property>
-      <property name="columnCount" >
-       <number>1</number>
-      </property>
-      <column>
-       <property name="text" >
-        <string>32 Users</string>
+     <property name="currentIndex" >
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="page" >
+      <layout class="QVBoxLayout" >
+       <property name="margin" >
+        <number>0</number>
        </property>
-      </column>
-      <item>
-       <property name="text" >
-        <string>@ Operators</string>
+       <property name="spacing" >
+        <number>6</number>
        </property>
        <item>
-        <property name="text" >
-         <string>New Sub Item</string>
-        </property>
+        <widget class="QFrame" name="frame" >
+         <property name="frameShape" >
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow" >
+          <enum>QFrame::Plain</enum>
+         </property>
+         <layout class="QVBoxLayout" >
+          <property name="margin" >
+           <number>9</number>
+          </property>
+          <property name="spacing" >
+           <number>6</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="label" >
+            <property name="font" >
+             <font>
+              <family>Trebuchet MS</family>
+             </font>
+            </property>
+            <property name="text" >
+             <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'Trebuchet MS'; font-size:11pt; font-weight:400; font-style:normal; text-decoration:none;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;span style=" font-size:60pt; color:#000055">Quassel IRC&lt;/span>&lt;/p>&lt;/body>&lt;/html></string>
+            </property>
+            <property name="scaledContents" >
+             <bool>true</bool>
+            </property>
+            <property name="alignment" >
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
        </item>
-       <item>
-        <property name="text" >
-         <string>New Item</string>
-        </property>
-       </item>
-       <item>
-        <property name="text" >
-         <string>New Item</string>
-        </property>
-       </item>
-      </item>
-      <item>
-       <property name="text" >
-        <string>4 Voiced</string>
-       </property>
-       <item>
-        <property name="text" >
-         <string>New Item</string>
-        </property>
-       </item>
-       <item>
-        <property name="text" >
-         <string>New Item</string>
-        </property>
-       </item>
-       <item>
-        <property name="text" >
-         <string>New Item</string>
-        </property>
-       </item>
-      </item>
-      <item>
-       <property name="text" >
-        <string>19 Users</string>
-       </property>
-       <item>
-        <property name="text" >
-         <string>New Sub Item</string>
-        </property>
-       </item>
-       <item>
-        <property name="text" >
-         <string>New Item</string>
-        </property>
-       </item>
-       <item>
-        <property name="text" >
-         <string>New Item</string>
-        </property>
-       </item>
-       <item>
-        <property name="text" >
-         <string>New Item</string>
-        </property>
-       </item>
-      </item>
+      </layout>
      </widget>
     </widget>
    </item>
@@ -228,11 +177,6 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>ChatWidget</class>
-   <extends>QWidget</extends>
-   <header>chatwidget.h</header>
-  </customwidget>
-  <customwidget>
    <class>ChannelWidgetInput</class>
    <extends>QLineEdit</extends>
    <header>channelwidgetinput.h</header>
@@ -241,7 +185,6 @@
  <tabstops>
   <tabstop>inputEdit</tabstop>
   <tabstop>ownNick</tabstop>
-  <tabstop>nickTree</tabstop>
   <tabstop>topicEdit</tabstop>
   <tabstop>chanSettingsButton</tabstop>
  </tabstops>

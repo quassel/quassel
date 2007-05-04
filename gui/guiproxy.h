@@ -64,6 +64,7 @@ class GUIProxy : public QObject {
     void csNickRenamed(QString, QString, QString);
     void csNickUpdated(QString, QString, VarMap);
     void csOwnNickSet(QString, QString);
+    void csQueryRequested(QString, QString);
 
     void coreConnected();
     void coreDisconnected();

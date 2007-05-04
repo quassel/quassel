@@ -18,9 +18,29 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "settings.h"
+#include "settingsdlg.h"
 
 SettingsDlg::SettingsDlg(QWidget *parent) : QDialog(parent) {
   ui.setupUi(this);
+
+  currentWidget = 0;
+
+  ui.settingsFrame->setWidgetResizable(true);
+  ui.settingsTree->setRootIsDecorated(false);
+}
+
+void SettingsDlg::registerSettingsPage(SettingsInterface *sp) {
+  QWidget *w = sp->settingsWidget();
+  w->setParent(this);
+  ui.settingsFrame->setWidget(w);
+
+  QTreeWidgetItem *cat;
+  QList<QTreeWidgetItem *> cats = ui.settingsTree->findItems(sp->category(), Qt::MatchExactly);
+  if(!cats.count()) {
+    cat = new QTreeWidgetItem(ui.settingsTree, QStringList(sp->category()));
+    cat->setExpanded(true);
+    cat->setFlags(Qt::ItemIsEnabled);
+  } else cat = cats[0];
+  new QTreeWidgetItem(cat, QStringList(sp->title()));
 
 }

@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _SETTINGS_H_
-#define _SETTINGS_H_
+#ifndef _SETTINGSDLG_H_
+#define _SETTINGSDLG_H_
 
 #include <QtGui>
 #include "ui_settingsdlg.h"
@@ -37,7 +37,21 @@ class SettingsDlg : public QDialog {
   private:
     Ui::SettingsDlg ui;
 
+    QWidget *currentWidget;
 
 };
+
+/*
+class CoreSettingsPage : public QWidget, SettingsInterface {
+  Q_OBJECT
+
+  public:
+
+
+  private:
+    Ui::CoreSettingsPage ui;
+
+};
+*/
 
 #endif

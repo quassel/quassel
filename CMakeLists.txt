@@ -24,7 +24,7 @@ IF(NOT BUILD_MONO AND NOT BUILD_CORE AND NOT BUILD_GUI)
   MESSAGE(FATAL_ERROR "\nYou have not selected which parts of Quassel I should build. Aborting.\nRun 'cmake <path> -DBUILD=<part>', where <part> contains one or more of 'core', 'gui' or 'monolithic', or 'all' to build everything.\n")
 ENDIF(NOT BUILD_MONO AND NOT BUILD_CORE AND NOT BUILD_GUI)
 
-SET(CMAKE_BUILD_TYPE Debug)
+#SET(CMAKE_BUILD_TYPE Debug)
 
 # Define files
 SET(quassel_mono_SRCS main/main_mono.cpp)
@@ -47,6 +47,7 @@ FIND_PACKAGE(Qt4 REQUIRED)
 
 # Set needed libraries
 SET(QT_USE_QTXML true)
+SET(QT_USE_QTSQL true)
 SET(QT_USE_QTNETWORK true)
 SET(QT_DONT_USE_QTGUI true)   # This is added later if GUI is requested
 INCLUDE(${QT_USE_FILE})

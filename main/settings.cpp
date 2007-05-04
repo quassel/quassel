@@ -18,39 +18,46 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _STYLE_H_
-#define _STYLE_H_
-
-#include <QtCore>
-#include <QtGui>
-
-class Style {
-
-  public:
-    static void init();
-
-    struct UrlInfo {
-      int start, end;
-      QUrl url;
-    };
-
-    struct FormattedString {
-      QString text;
-      QList<QTextLayout::FormatRange> formats;
-      QList<UrlInfo> urls;
-    };
-
-    static QString mircToInternal(QString);
-    //static QString internalToMirc(QString);
-    static FormattedString internalToFormatted(QString);
-    static int sepTsSender() { return 10; }
-    static int sepSenderText() { return 10; }
+#include "settings.h"
 
 
-  private:
-    static QHash<QString, QTextCharFormat> formats;
-    static QHash<QString, QColor> colors;
+Settings *settings;
 
-};
 
-#endif
+void Settings::init() {
+  curProfile = QObject::tr("Default");
+}
+/*
+Settings::~Settings() {
+  qDebug() << "destructing";
+
+}
+*/
+
+void Settings::setProfile(const QString &profile) {
+  curProfile = profile;
+}
+
+void Settings::setGuiValue(const QString &key, const QVariant &value) {
+  QSettings s;
+  //s.setValue("GUI/Default/BufferStates/QuakeNet/#quassel/voicedExpanded", true);
+  //QString k = QString("GUI/%1/%2").arg(curProfile).arg(key);
+  s.setValue(QString("GUI/%1/%2").arg(curProfile).arg(key), value);
+}
+
+QVariant Settings::guiValue(const QString &key, const QVariant &defaultValue) {
+  QSettings s;
+  return s.value(QString("GUI/%1/%2").arg(curProfile).arg(key), defaultValue);
+}
+
+void Settings::setCoreValue(const QString &user, const QString &key, const QVariant &value) {
+  QSettings s;
+  s.setValue(QString("Core/%1/%2").arg(user).arg(key), value);
+}
+
+QVariant Settings::coreValue(const QString &user, const QString &key, const QVariant &defaultValue) {
+  QSettings s;
+  return s.value(QString("Core/%1/%2").arg(user).arg(key), defaultValue);
+}
+
+QString Settings::curProfile;

@@ -54,6 +54,7 @@ class CoreProxy : public QObject {
     inline void csNickRenamed(QString net, QString oldn, QString newn)  { send(CS_NICK_RENAMED, net, oldn, newn); }
     inline void csNickUpdated(QString net, QString nick, VarMap props)  { send(CS_NICK_UPDATED, net, nick, props); }
     inline void csOwnNickSet(QString net, QString nick)                 { send(CS_OWN_NICK_SET, net, nick); }
+    inline void csQueryRequested(QString net, QString nick)             { send(CS_QUERY_REQUESTED, net, nick); }
 
   signals:
     void gsPutGlobalData(QString, QVariant);

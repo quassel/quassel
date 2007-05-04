@@ -27,6 +27,8 @@
 #include "global.h"
 #include "guiproxy.h"
 #include "coreproxy.h"
+#include "settings.h"
+#include "chatwidget.h"
 
 #include "mainwin.h"
 
@@ -36,22 +38,29 @@ int main(int argc, char **argv) {
   QApplication::setApplicationName("Quassel IRC");
   QApplication::setOrganizationName("The Quassel Team");
 
+  qRegisterMetaType<LayoutTask>("LayoutTask");
+
   Global::runMode = Global::Monolithic;
   Global::quasselDir = QDir::homePath() + "/.quassel";
 
+  //settings = new Settings();
   global = new Global();
   guiProxy = new GUIProxy();
   coreProxy = new CoreProxy();
 
+  Settings::init();
   Style::init();
 
-  MainWin mainWin;
-  mainWin.show();
+  MainWin *mainWin = new MainWin();
+  mainWin->show();
+  mainWin->init();
   int exitCode = app.exec();
   delete core;
   delete guiProxy;
   delete coreProxy;
   delete global;
+  delete mainWin;
+  //delete settings;
   return exitCode;
 }
 

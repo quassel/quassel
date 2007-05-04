@@ -76,6 +76,7 @@ class Server : public QThread {
     void topicSet(QString network, QString buffer, QString topic);
     void setNicks(QString network, QString buffer, QStringList nicks);
     void ownNickSet(QString network, QString newNick);
+    void queryRequested(QString network, QString nick);
 
 
   private slots:
@@ -101,6 +102,7 @@ class Server : public QThread {
     void handleUserNick(QString, QString);
     void handleUserOp(QString, QString);
     void handleUserPart(QString, QString);
+    void handleUserQuery(QString, QString);
     void handleUserQuit(QString, QString);
     void handleUserQuote(QString, QString);
     void handleUserSay(QString, QString);

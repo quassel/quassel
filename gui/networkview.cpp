@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005/06 by The Quassel Team                             *
+ *   Copyright (C) 2005-07 by The Quassel Team                             *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -24,7 +24,9 @@
 NetworkViewWidget::NetworkViewWidget(QWidget *parent) : QWidget(parent) {
   ui.setupUi(this);
 
+  //setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 }
+
 
 QSize NetworkViewWidget::sizeHint() const {
   return QSize(150,100);
@@ -33,59 +35,107 @@ QSize NetworkViewWidget::sizeHint() const {
 
 /**************************************************************************/
 
-NetworkView::NetworkView(QString net, QWidget *parent) : network(net), QDockWidget(parent) {
-  if(!net.isEmpty()) setWindowTitle(net);
-  else setWindowTitle(tr("All Buffers"));
+NetworkView::NetworkView(QString n, int m, QStringList nets, QWidget *parent) : QDockWidget(parent) {
+  setObjectName(QString("View-"+n)); // should be unique for mainwindow state!
+  name = n; mode = m;
+  setWindowTitle(name);
+  networks = nets;
+  currentBuffer = 0;
   setWidget(new NetworkViewWidget(this));
   tree = qobject_cast<NetworkViewWidget*>(widget())->tree();
-  tree->setSortingEnabled(false);
+  tree->header()->hide();
+  tree->setSortingEnabled(true);
   connect(tree, SIGNAL(itemClicked(QTreeWidgetItem*, int)), this, SLOT(itemClicked(QTreeWidgetItem*)));
 }
 
-void NetworkView::buffersUpdated(BufferHash buffers) {
-  tree->clear(); items.clear();
-  if(network.isEmpty()) {
-    tree->setHeaderLabel(tr("Networks"));
-    foreach(QString net, buffers.keys()) {
-      QTreeWidgetItem *netItem = new QTreeWidgetItem(QStringList(net));
-      foreach(QString buf, buffers[net].keys()) {
-        Buffer *b = buffers[net][buf];
-        QStringList label;
-        if(buf.isEmpty()) label << tr("Status");
-        else label << buf;
-        QTreeWidgetItem *item = new QTreeWidgetItem(netItem, label);
-        items[net][buf] = item;
-        VarMap d;
-        d["Network"] = net;
-        d["Buffer"] = buf;
-        item->setData(0, Qt::UserRole, d);
-        if(!b->isActive()) {
-          item->setForeground(0, QColor("grey"));
-        }
-      }
-      VarMap d;
-      d["Network"] = net; d["Buffer"] = "";
-      netItem->setData(0, Qt::UserRole, d);
-      netItem->setFlags(netItem->flags() & ~Qt::ItemIsSelectable);
-      tree->addTopLevelItem(netItem);
-      netItem->setExpanded(true);
-    }
-    if(items[currentNetwork][currentBuffer]) items[currentNetwork][currentBuffer]->setSelected(true);
+void NetworkView::setBuffers(QList<Buffer *> buffers) {
+  tree->clear(); bufitems.clear(); netitems.clear();
+  foreach(Buffer *b, buffers) {
+    bufferUpdated(b);
   }
+}
+
+void NetworkView::bufferUpdated(Buffer *b) {
+  if(bufitems.contains(b)) {
+    // FIXME this looks ugly
+    QTreeWidgetItem *item = bufitems[b]->parent()->takeChild(bufitems[b]->parent()->indexOfChild(bufitems[b]));
+    delete item;
+    bufitems.remove(b);
+  }
+  if(shouldShow(b)) {
+    QString net = b->networkName();
+    QString buf = b->bufferName();
+    QTreeWidgetItem *item;
+    QStringList label;
+    if(b->bufferType() == Buffer::ServerBuffer) label << tr("Status");
+    else label << buf;
+    if((mode & SomeNets) || ( mode & AllNets)) {
+      if(!netitems.contains(net)) {
+        netitems[net] = new QTreeWidgetItem(tree, QStringList(net));
+        netitems[net]->setFlags(Qt::ItemIsEnabled);
+      }
+      QTreeWidgetItem *ni = netitems[net];
+      ni->setExpanded(true);
+      ni->setFlags(Qt::ItemIsEnabled);
+      item = new QTreeWidgetItem(ni, label);
+    } else {
+      item = new QTreeWidgetItem(label);
+    }
+    //item->setFlags(Qt::ItemIsEnabled);
+    bufitems[b] = item;
+    // TODO Use style engine!
+    if(!b->isActive()) {
+      item->setForeground(0, QColor("grey"));
+    }
+    if(b == currentBuffer) {
+      item->setSelected(true);
+    }
+  }
+  foreach(QString key, netitems.keys()) {
+    if(!netitems[key]->childCount()) {
+      delete netitems[key];
+      QTreeWidgetItem *item = netitems[key]->parent()->takeChild(netitems[key]->parent()->indexOfChild(netitems[key]));
+      delete item;
+      netitems.remove(key);
+    }
+  }
+}
+
+bool NetworkView::shouldShow(Buffer *b) {
+  bool f = false;
+  if((mode & NoActive) && b->isActive()) return false;
+  if((mode & NoInactive) && !b->isActive()) return false;
+  if((mode & NoChannels) && b->bufferType() == Buffer::ChannelBuffer) return false;
+  if((mode & NoQueries) && b->bufferType() == Buffer::QueryBuffer) return false;
+  if((mode & NoServers) && b->bufferType() == Buffer::ServerBuffer) return false;
+  if((mode & SomeNets) && !networks.contains(b->networkName())) return false;
+  return true;
+}
+
+void NetworkView::bufferDestroyed(Buffer *b) {
+
+
 }
 
 void NetworkView::itemClicked(QTreeWidgetItem *item) {
-  if(network.isEmpty()) {
-    VarMap d = item->data(0, Qt::UserRole).toMap();
-    QString net = d["Network"].toString(); QString buf = d["Buffer"].toString();
-    if(!net.isEmpty()) {
-      emit bufferSelected(net, buf);
-      currentNetwork = net; currentBuffer = buf;
-    }
+  Buffer *b = bufitems.key(item);
+  if(b) emit bufferSelected(b);
+  else {
+    b = currentBuffer;
+    if(bufitems.contains(b)) bufitems[b]->setSelected(true);
+    item->setExpanded(!item->isExpanded());
   }
 }
 
-void NetworkView::selectBuffer(QString net, QString buf) {
-  if(items[net][buf]) items[net][buf]->setSelected(true);
-  currentNetwork = net; currentBuffer = buf;
+void NetworkView::selectBuffer(Buffer *b) {
+  QTreeWidgetItem *item = 0;
+  if(bufitems.contains(b)) item = bufitems[b];
+  QList<QTreeWidgetItem *> sel = tree->selectedItems();
+  foreach(QTreeWidgetItem *i, sel) { if(i != item) i->setSelected(false); }
+  if(item) {
+    item->setSelected(true);
+    currentBuffer = b;
+  } else {
+    currentBuffer = 0;
+  }
 }

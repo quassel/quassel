@@ -18,76 +18,51 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _NETWORKVIEW_H_
-#define _NETWORKVIEW_H_
+#ifndef _SETTINGSPAGES_H_
+#define _SETTINGSPAGES_H_
 
+#include <QtCore>
 #include <QtGui>
-#include "ui_networkview.h"
-#include "buffer.h"
 
-typedef QHash<QString, QHash<QString, Buffer*> > BufferHash;
+#include "plugin.h"
+#include "settingsdlg.h"
+#include "ui_buffermgmntsettingspage.h"
+#include "ui_connectionsettingspage.h"
 
-class NetworkViewWidget : public QWidget {
+class BufferManagementSettingsPage : public QWidget, public SettingsInterface {
   Q_OBJECT
 
   public:
-    NetworkViewWidget(QWidget *parent = 0);
+    QString category() { return tr("Buffers"); }
+    QString title() { return tr("Buffer Management"); }
+    QWidget *settingsWidget() { return this; }
 
-    QTreeWidget *tree() { return ui.tree; }
-
-    virtual QSize sizeHint () const;
-
-  signals:
-    void bufferSelected(QString net, QString buf);
-
-  private slots:
+    BufferManagementSettingsPage();
 
 
   private:
-    Ui::NetworkViewWidget ui;
+    Ui::BufferManagementSettingsPage ui;
 
 };
 
-class NetworkView : public QDockWidget {
+class ConnectionSettingsPage : public QWidget, public SettingsInterface {
   Q_OBJECT
 
   public:
-    enum Mode {
-      NoActive = 0x01, NoInactive = 0x02,
-      SomeNets = 0x04, AllNets = 0x08,
-      NoChannels = 0x10, NoQueries = 0x20, NoServers = 0x40
-    };
+    QString category() { return tr("Behavior"); }
+    QString title() { return tr("Connection"); }
+    QWidget *settingsWidget() { return this; }
 
-    NetworkView(QString name, int mode, QStringList nets = QStringList(), QWidget *parent = 0);
-    void setMode(int mode, QStringList nets = QStringList());
-    void setName(QString name);
+    ConnectionSettingsPage();
 
-
-  public slots:
-    void bufferUpdated(Buffer *);
-    void bufferDestroyed(Buffer *);
-    void setBuffers(QList<Buffer *>);
-    void selectBuffer(Buffer *);
-
-  signals:
-    void bufferSelected(Buffer *);
-
-  private slots:
-    void itemClicked(QTreeWidgetItem *item);
 
   private:
-    int mode;
-    QString name;
-    QStringList networks;
-    Buffer *currentBuffer;
-    //QHash<QString, QHash<QString, Buffer*> > buffers;
-    QHash<Buffer *, QTreeWidgetItem *> bufitems;
-    QHash<QString, QTreeWidgetItem *> netitems;
-    //QHash<QString, QHash<QString, QTreeWidgetItem *> > items;
-    QTreeWidget *tree;
+    Ui::ConnectionSettingsPage ui;
 
-    bool shouldShow(Buffer *);
 };
+
+
+
 
 
 #endif

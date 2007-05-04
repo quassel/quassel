@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005/06 by The Quassel Team                             *
+ *   Copyright (C) 2005-07 by The Quassel Team                             *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -24,14 +24,13 @@
 #include <QtCore>
 #include <QtGui>
 
-#include "ui_bufferwidget.h"
-
 #include "global.h"
 #include "message.h"
 
 class ChatWidget;
 class ChatWidgetContents;
 class BufferWidget;
+struct BufferState;
 
 //!\brief Encapsulates the contents of a single channel, query or server status context.
 /** A Buffer maintains a list of existing nicks and their status. New messages can be appended using
@@ -44,18 +43,32 @@ class Buffer : public QObject {
   public:
     Buffer(QString network, QString buffer);
     ~Buffer();
+    static void init();
 
+    enum Type { ServerBuffer, ChannelBuffer, QueryBuffer };
+    Type bufferType() { return type; }
     bool isActive() { return active; }
-  public:
-    QWidget *getWidget();
+
+    QString networkName() { return _networkName; }
+    QString bufferName() { return _bufferName; }
+    QList<Message> *contents() { return &_contents; }
+    VarMap nickList() { return nicks; }
+    QString topic() { return _topic; }
+    QString ownNick() { return _ownNick; }
 
   signals:
     void userInput(QString, QString, QString);
-    void nickListChanged(QStringList);
+    void msgDisplayed(Message);
+    void nickListChanged(VarMap nicks);
+    void topicSet(QString topic);
+    void ownNickSet(QString ownNick);
+    void bufferUpdated(Buffer *);
+    void bufferDestroyed(Buffer *);
 
   public slots:
     void setActive(bool active = true);
     void displayMsg(Message);
+    void prependMessages(QList<Message>); // for backlog
     //void recvStatusMsg(QString msg);
     void setTopic(QString);
     //void setNicks(QStringList);
@@ -65,67 +78,19 @@ class Buffer : public QObject {
     void updateNick(QString nick, VarMap props);
     void setOwnNick(QString nick);
 
-    QWidget * showWidget(QWidget *parent = 0);
-    void hideWidget();
-    void deleteWidget();
-
-    void scrollToEnd();
-
-  private slots:
-    void userInput(QString);
+    void processUserInput(QString);
 
   private:
     bool active;
-    BufferWidget *widget;
-    ChatWidget *chatWidget;
-    ChatWidgetContents *contentsWidget;
+    Type type;
+
     VarMap nicks;
-    QString topic;
-    QString ownNick;
-    QString networkName, bufferName;
+    QString _topic;
+    QString _ownNick;
+    QString _networkName, _bufferName;
+    BufferState *state;
 
-    QList<Message> contents;
-};
-
-//!\brief Displays the contents of a Buffer.
-/** A BufferWidget usually includes a topic line, a nicklist, the chat itself, and an input line.
- * For server buffers or queries, there is of course no nicklist.
- * The contents of the chat is rendered by a ChatWidget.
- */
-class BufferWidget : public QWidget {
-  Q_OBJECT
-
-  public:
-    BufferWidget(QString netname, QString bufname, bool active, QString ownNick, ChatWidgetContents *contents, Buffer *parentBuffer, QWidget *parent = 0);
-    ~BufferWidget();
-
-    void setActive(bool act = true);
-
-  signals:
-    void userInput(QString);
-
-  protected:
-
-  public slots:
-    void displayMsg(Message);
-    void updateNickList(VarMap nicks);
-    void setOwnNick(QString ownNick);
-    void setTopic(QString topic);
-
-  private slots:
-    void enterPressed();
-    void itemExpansionChanged(QTreeWidgetItem *);
-    void updateTitle();
-
-  private:
-    Ui::BufferWidget ui;
-    Buffer *parentBuffer;
-    bool active;
-
-    QString networkName;
-    QString bufferName;
-
-    bool opsExpanded, voicedExpanded, usersExpanded;
+    QList<Message> _contents;
 
 };
 

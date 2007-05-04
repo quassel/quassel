@@ -24,27 +24,115 @@
 #include <QtGui>
 #include <QtCore>
 
-ChatWidget::ChatWidget(QWidget *parent) : QScrollArea(parent) {
+ChatWidget::ChatWidget(QWidget *parent) : QAbstractScrollArea(parent) {
+  scrollTimer = new QTimer(this);
+  scrollTimer->setSingleShot(false);
+  scrollTimer->setInterval(100);
+  setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
+  setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+  setMinimumSize(QSize(400,400));
   setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
   setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-  setAlignment(Qt::AlignLeft | Qt::AlignTop);
-
+  bottomLine = -1;
+  height = 0;
+  ycoords.append(0);
+  pointerPosition = QPoint(0,0);
+  connect(verticalScrollBar(), SIGNAL(actionTriggered(int)), this, SLOT(scrollBarAction(int)));
+  connect(verticalScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(scrollBarValChanged(int)));
 }
 
-void ChatWidget::init(QString netname, QString bufname, ChatWidgetContents *contentsWidget) {
+void ChatWidget::init(QString netname, QString bufname) {
   networkName = netname;
   bufferName = bufname;
-  //setAlignment(Qt::AlignBottom);
-  contents = contentsWidget;
-  setWidget(contents);
-  //setWidgetResizable(true);
-  //contents->setWidth(contents->sizeHint().width());
-  contents->setFocusProxy(this);
-  //contents->show();
-  //setAlignment(Qt::AlignBottom);
+  setBackgroundRole(QPalette::Base);
+  setFont(QFont("Fixed"));
+  tsWidth = 90;
+  senderWidth = 100;
+  computePositions();
+  adjustScrollBar();
+  verticalScrollBar()->setValue(verticalScrollBar()->maximum());
+  //verticalScrollBar()->setPageStep(viewport()->height());
+  //verticalScrollBar()->setSingleStep(20);
+  //verticalScrollBar()->setMinimum(0);
+  //verticalScrollBar()->setMaximum((int)height - verticalScrollBar()->pageStep());
+
+  setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+  setMouseTracking(true);
+  mouseMode = Normal;
+  selectionMode = NoSelection;
+  connect(scrollTimer, SIGNAL(timeout()), this, SLOT(handleScrollTimer()));
 }
 
 ChatWidget::~ChatWidget() {
+  //qDebug() << "destroying chatwidget" << bufferName;
+  foreach(ChatLine *l, lines) {
+    delete l;
+  }
+}
+
+QSize ChatWidget::sizeHint() const {
+  //qDebug() << size();
+  return size();
+}
+
+void ChatWidget::adjustScrollBar() {
+  verticalScrollBar()->setPageStep(viewport()->height());
+  verticalScrollBar()->setSingleStep(20);
+  verticalScrollBar()->setMinimum(0);
+  verticalScrollBar()->setMaximum((int)height - verticalScrollBar()->pageStep());
+  //qDebug() << height << viewport()->height() << verticalScrollBar()->pageStep();
+  //if(bottomLine < 0) {
+  //  verticalScrollBar()->setValue(verticalScrollBar()->maximum());
+  //} else {
+    //int bot = verticalScrollBar()->value() + viewport()->height(); //qDebug() << bottomLine;
+    //verticalScrollBar()->setValue(qMax(0, (int)ycoords[bottomLine+1] - viewport()->height()));
+  //}
+}
+
+void ChatWidget::scrollBarValChanged(int val) {
+  return;
+  if(val >= verticalScrollBar()->maximum()) bottomLine = -1;
+  else {
+    int bot = val + viewport()->height();
+    int line = yToLineIdx(bot);
+    //bottomLine = line;
+  }
+}
+
+void ChatWidget::scrollBarAction(int action) {
+  switch(action) {
+    case QScrollBar::SliderSingleStepAdd:
+      // More elaborate. But what with loooong lines?
+      // verticalScrollBar()->setValue((int)ycoords[yToLineIdx(verticalScrollBar()->value() + viewport()->height()) + 1] - viewport()->height());
+      break;
+    case QScrollBar::SliderSingleStepSub:
+      //verticalScrollBar()->setValue((int)ycoords[yToLineIdx(verticalScrollBar()->value())]);
+      break;
+
+  }
+
+}
+
+void ChatWidget::handleScrollTimer() {
+  if(mouseMode == MarkText || mouseMode == MarkLines) {
+    if(pointerPosition.y() > viewport()->height()) {
+      verticalScrollBar()->setValue(verticalScrollBar()->value() + pointerPosition.y() - viewport()->height());
+      handleMouseMoveEvent(QPoint(pointerPosition.x(), viewport()->height()));
+    } else if(pointerPosition.y() < 0) {
+      verticalScrollBar()->setValue(verticalScrollBar()->value() + pointerPosition.y());
+      handleMouseMoveEvent(QPoint(pointerPosition.x(), 0));
+    }
+  }
+}
+
+void ChatWidget::ensureVisible(int line) {
+  int top = verticalScrollBar()->value();
+  int bot = top + viewport()->height();
+  if(ycoords[line+1] > bot) {
+    verticalScrollBar()->setValue(qMax(0, (int)ycoords[line+1] - viewport()->height()));
+  } else if(ycoords[line] < top) {
+    verticalScrollBar()->setValue((int)ycoords[line]);
+  }
 
 }
 
@@ -52,61 +140,89 @@ void ChatWidget::clear() {
   //contents->clear();
 }
 
-void ChatWidget::appendMsg(Message msg) {
-  contents->appendMsg(msg);
-  //qDebug() << "appending" << msg.text;
+void ChatWidget::prependChatLines(QList<ChatLine *> clist) {
+  QList<qreal> tmpy; tmpy.append(0);
+  qreal h = 0;
+  foreach(ChatLine *l, clist) {
+    h += l->layout(tsWidth, senderWidth, textWidth);
+    tmpy.append(h);
+  }
+  ycoords.removeFirst();
+  for(int i = 0; i < ycoords.count(); i++) ycoords[i] += h;
+  ycoords = tmpy + ycoords;
+  lines = clist + lines;
+  height += h;
+  /* Fix all variables containing line numbers */
+  int i = clist.count();
+  dragStartLine += i;
+  curLine += i;
+  selectionStart += i; selectionEnd += i; selectionEnd += i;
+  //if(bottomLine >= 0) bottomLine += i;
+  adjustScrollBar();
+  //verticalScrollBar()->setPageStep(viewport()->height());
+  //verticalScrollBar()->setSingleStep(20);
+  //verticalScrollBar()->setMaximum((int)height - verticalScrollBar()->pageStep());
+  verticalScrollBar()->setValue(verticalScrollBar()->value() + (int)h);
+  viewport()->update();
+}
 
+void ChatWidget::appendMsg(Message msg) {
+  ChatLine *line = new ChatLine(msg, networkName, bufferName);
+  qreal h = line->layout(tsWidth, senderWidth, textWidth);
+  ycoords.append(h + ycoords[ycoords.count() - 1]);
+  height += h;
+  bool flg = (verticalScrollBar()->value() == verticalScrollBar()->maximum());
+  adjustScrollBar();
+  if(flg) verticalScrollBar()->setValue(verticalScrollBar()->maximum());
+  lines.append(line);
+  viewport()->update();
+}
+
+void ChatWidget::appendMsgList(QList<Message> *list) {
+  foreach(Message msg, *list) {
+   ChatLine *line = new ChatLine(msg, networkName, bufferName);
+    qreal h = line->layout(tsWidth, senderWidth, textWidth);
+    ycoords.append(h + ycoords[ycoords.count() - 1]);
+    height += h;
+    lines.append(line);
+  }
+  bool flg = (verticalScrollBar()->value() == verticalScrollBar()->maximum());
+  adjustScrollBar();
+  if(flg) verticalScrollBar()->setValue(verticalScrollBar()->maximum());
+  viewport()->update();
+}
+
+//!\brief Computes the different x position vars for given tsWidth and senderWidth.
+void ChatWidget::computePositions() {
+  senderX = tsWidth + Style::sepTsSender();
+  textX = senderX + senderWidth + Style::sepSenderText();
+  tsGrabPos = tsWidth + (int)Style::sepTsSender()/2;
+  senderGrabPos = senderX + senderWidth + (int)Style::sepSenderText()/2;
+  textWidth = viewport()->size().width() - textX;
 }
 
 void ChatWidget::resizeEvent(QResizeEvent *event) {
-  //qDebug() << bufferName << isVisible() << event->size();
-  contents->setWidth(event->size().width());
+  //qDebug() << bufferName << isVisible() << event->size() << event->oldSize();
+  /*if(event->oldSize().isValid())*/
+  //contents->setWidth(event->size().width());
   //setAlignment(Qt::AlignBottom);
-  QScrollArea::resizeEvent(event);
-}
-
-/*************************************************************************************/
-
-ChatWidgetContents::ChatWidgetContents(QString net, QString buf, QWidget *parent) : QWidget(parent) {
-  networkName = net;
-  bufferName = buf;
-  layoutTimer = new QTimer(this);
-  layoutTimer->setSingleShot(true);
-  connect(layoutTimer, SIGNAL(timeout()), this, SLOT(triggerLayout()));
-
-  setBackgroundRole(QPalette::Base);
-  setFont(QFont("Fixed"));
-
-  ycoords.append(0);
-  tsWidth = 90;
-  senderWidth = 100;
-  //textWidth = 400;
-  computePositions();
-  //setFixedWidth((int)(tsWidth + senderWidth + textWidth + 20));
-  setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-  setMouseTracking(true);
-  mouseMode = Normal;
-  selectionMode = NoSelection;
-
-  doLayout = false;
-}
-
-ChatWidgetContents::~ChatWidgetContents() {
-  delete layoutTimer;
-  foreach(ChatLine *l, lines) {
-    delete l;
+  if(event->size().width() != event->oldSize().width()) {
+    computePositions();
+    layout();
   }
+  //adjustScrollBar();
+  //qDebug() << viewport()->size() << viewport()->height();
+  //QAbstractScrollArea::resizeEvent(event);
+  //qDebug() << viewport()->size() << viewport()->geometry();
 }
 
-QSize ChatWidgetContents::sizeHint() const {
-  //qDebug() << size();
-  return size();
-}
+void ChatWidget::paintEvent(QPaintEvent *event) {
+  QPainter painter(viewport());
 
-void ChatWidgetContents::paintEvent(QPaintEvent *event) {
-  QPainter painter(this);
-  qreal top = event->rect().top();
-  qreal bot = top + event->rect().height();
+  //qDebug() <<  verticalScrollBar()->value();
+  painter.translate(0, -verticalScrollBar()->value());
+  int top = event->rect().top() + verticalScrollBar()->value();
+  int bot = top + event->rect().height();
   int idx = yToLineIdx(top);
   if(idx < 0) return;
   for(int i = idx; i < lines.count() ; i++) {
@@ -115,68 +231,22 @@ void ChatWidgetContents::paintEvent(QPaintEvent *event) {
   }
 }
 
-void ChatWidgetContents::appendMsg(Message msg) {
-  ChatLine *line = new ChatLine(msg, networkName, bufferName);
-  qreal h = line->layout(tsWidth, senderWidth, textWidth);
-  ycoords.append(h + ycoords[ycoords.count() - 1]);
-  setFixedHeight((int)ycoords[ycoords.count()-1]);
-  lines.append(line);
-  update();
-  return;
-
-}
-
-void ChatWidgetContents::clear() {
-
-
-}
-
-//!\brief Computes the different x position vars for given tsWidth and senderWidth.
-void ChatWidgetContents::computePositions() {
-  senderX = tsWidth + Style::sepTsSender();
-  textX = senderX + senderWidth + Style::sepSenderText();
-  tsGrabPos = tsWidth + (int)Style::sepTsSender()/2;
-  senderGrabPos = senderX + senderWidth + (int)Style::sepSenderText()/2;
-  textWidth = size().width() - textX;
-}
-
-void ChatWidgetContents::setWidth(qreal w) {
-  textWidth = (int)w - (Style::sepTsSender() + Style::sepSenderText()) - tsWidth - senderWidth;
-  setFixedWidth((int)w);
-  layout();
-}
-
-//!\brief Trigger layout (used by layoutTimer only).
-/** This method is triggered by the layoutTimer. Layout the widget if it has been postponed earlier.
- */
-void ChatWidgetContents::triggerLayout() {
-  layout(true);
-}
-
 //!\brief Layout the widget.
-/** The contents of the widget is re-layouted completely. Since this could take a while if the widget
- * is huge, we don't want to trigger the layout procedure too often (causing layout calls to pile up).
- * We use a timer that ensures layouting is only done if the last one has finished.
- */
-void ChatWidgetContents::layout(bool timer) {
-  if(layoutTimer->isActive()) {
-    // Layouting too fast. We set a flag though, so that a final layout is done when the timer runs out.
-    doLayout = true;
-    return;
-  }
-  if(timer && !doLayout) return; // Only check doLayout if we have been triggered by the timer!
+void ChatWidget::layout() {
+  // TODO fix scrollbars
+  //int botLine = yToLineIdx(verticalScrollBar()->value() + 
   qreal y = 0;
   for(int i = 0; i < lines.count(); i++) {
     qreal h = lines[i]->layout(tsWidth, senderWidth, textWidth);
     ycoords[i+1] = h + ycoords[i];
   }
-  setFixedHeight((int)ycoords[ycoords.count()-1]);
-  update();
-  doLayout = false; // Clear previous layout requests
-  layoutTimer->start(50); // Minimum time until we start the next layout
+  height = ycoords[ycoords.count()-1];
+  adjustScrollBar();
+  verticalScrollBar()->setValue(verticalScrollBar()->maximum());
+  viewport()->update();
 }
 
-int ChatWidgetContents::yToLineIdx(qreal y) {
+int ChatWidget::yToLineIdx(qreal y) {
   if(y >= ycoords[ycoords.count()-1]) ycoords.count()-1;
   if(ycoords.count() <= 1) return 0;
   int uidx = 0;
@@ -190,9 +260,11 @@ int ChatWidgetContents::yToLineIdx(qreal y) {
   }
 }
 
-void ChatWidgetContents::mousePressEvent(QMouseEvent *event) {
+void ChatWidget::mousePressEvent(QMouseEvent *event) {
+  if(lines.isEmpty()) return;
+  QPoint pos = event->pos() + QPoint(0, verticalScrollBar()->value());
   if(event->button() == Qt::LeftButton) {
-    dragStartPos = event->pos();
+    dragStartPos = pos;
     dragStartMode = Normal;
     switch(mouseMode) {
       case Normal:
@@ -203,8 +275,8 @@ void ChatWidgetContents::mousePressEvent(QMouseEvent *event) {
           dragStartMode = DragTextSep;
           setCursor(Qt::ClosedHandCursor);
         } else {
-          dragStartLine = yToLineIdx(event->pos().y());
-          dragStartCursor = lines[dragStartLine]->posToCursor(QPointF(event->pos().x(), event->pos().y()-ycoords[dragStartLine]));
+          dragStartLine = yToLineIdx(pos.y());
+          dragStartCursor = lines[dragStartLine]->posToCursor(QPointF(pos.x(), pos.y()-ycoords[dragStartLine]));
         }
         mouseMode = Pressed;
         break;
@@ -212,7 +284,15 @@ void ChatWidgetContents::mousePressEvent(QMouseEvent *event) {
   }
 }
 
-void ChatWidgetContents::mouseReleaseEvent(QMouseEvent *event) {
+void ChatWidget::mouseDoubleClickEvent(QMouseEvent *event) {
+
+
+
+}
+
+void ChatWidget::mouseReleaseEvent(QMouseEvent *event) {
+  //QPoint pos = event->pos() + QPoint(0, verticalScrollBar()->value());
+
   if(event->button() == Qt::LeftButton) {
     dragStartPos = QPoint();
     if(mousePos == OverTsSep || mousePos == OverTextSep) setCursor(Qt::OpenHandCursor);
@@ -250,10 +330,28 @@ void ChatWidgetContents::mouseReleaseEvent(QMouseEvent *event) {
 /** This is called by Qt whenever the mouse moves. Here we have to do most of the mouse handling,
  * such as changing column widths, marking text or initiating drag & drop.
  */
-void ChatWidgetContents::mouseMoveEvent(QMouseEvent *event) {
+void ChatWidget::mouseMoveEvent(QMouseEvent *event) {
+  QPoint pos = event->pos(); pointerPosition = pos;
+  // Scroll if mouse pointer leaves widget while dragging
+  if((mouseMode == MarkText || mouseMode == MarkLines) && (pos.y() > viewport()->height() || pos.y() < 0)) {
+    if(!scrollTimer->isActive()) {
+      scrollTimer->start();
+    }
+  } else {
+    if(scrollTimer->isActive()) {
+      scrollTimer->stop();
+    }
+  }
+  handleMouseMoveEvent(pos);
+}
+
+void ChatWidget::handleMouseMoveEvent(const QPoint &_pos) {
+  // FIXME
+  if(lines.count() <= 0) return;
   // Set some basic properties of the current position
-  int x = event->pos().x();
-  int y = event->pos().y();
+  QPoint pos = _pos + QPoint(0, verticalScrollBar()->value());
+  int x = pos.x();
+  int y = pos.y();
   MousePos oldpos = mousePos;
   if(x >= tsGrabPos - 3 && x <= tsGrabPos + 3) mousePos = OverTsSep;
   else if(x >= senderGrabPos - 3 && x <= senderGrabPos + 3) mousePos = OverTextSep;
@@ -263,14 +361,23 @@ void ChatWidgetContents::mouseMoveEvent(QMouseEvent *event) {
   switch(mouseMode) {
     // No special mode. Set mouse cursor if appropriate.
     case Normal:
-      if(oldpos != mousePos) {
-        if(mousePos == OverTsSep || mousePos == OverTextSep) setCursor(Qt::OpenHandCursor);
-        else setCursor(Qt::ArrowCursor);
+    {
+      //if(oldpos != mousePos) {
+      if(mousePos == OverTsSep || mousePos == OverTextSep) setCursor(Qt::OpenHandCursor);
+      else {
+        int l = yToLineIdx(y);
+        int c = lines[l]->posToCursor(QPointF(x, y - ycoords[l]));
+        if(c >= 0 && lines[l]->isUrl(c)) {
+          setCursor(Qt::PointingHandCursor);
+        } else {
+          setCursor(Qt::ArrowCursor);
+        }
       }
+    }
       break;
     // Left button pressed. Might initiate marking or drag & drop if we moved past the drag distance.
     case Pressed:
-      if(!dragStartPos.isNull() && (dragStartPos - event->pos()).manhattanLength() >= QApplication::startDragDistance()) {
+      if(!dragStartPos.isNull() && (dragStartPos - pos).manhattanLength() >= QApplication::startDragDistance()) {
         // Moving a column separator?
         if(dragStartMode == DragTsSep) mouseMode = DragTsSep;
         else if(dragStartMode == DragTextSep) mouseMode = DragTextSep;
@@ -297,6 +404,7 @@ void ChatWidgetContents::mouseMoveEvent(QMouseEvent *event) {
             mouseMode = Normal;
           // Otherwise, clear the selection and start text marking!
           } else {
+            setCursor(Qt::ArrowCursor);
             clearSelection();
             if(dragStartCursor < 0) { mouseMode = MarkLines; curLine = -1; }
             else mouseMode = MarkText;
@@ -330,36 +438,42 @@ void ChatWidgetContents::mouseMoveEvent(QMouseEvent *event) {
       if(c != curCursor) {
         curCursor = c;
         lines[curLine]->setSelection(ChatLine::Partial, dragStartCursor, c);
-        update();
+        viewport()->update();
       }
     } else {
       mouseMode = MarkLines;
       selectionStart = qMin(curLine, dragStartLine); selectionEnd = qMax(curLine, dragStartLine);
       for(int i = selectionStart; i <= selectionEnd; i++) lines[i]->setSelection(ChatLine::Full);
-      update();
+      viewport()->update();
     }
   } else if(mouseMode == MarkLines) {
     // Line marking
     int l = yToLineIdx(y);
     if(l != curLine) {
       selectionStart = qMin(l, dragStartLine); selectionEnd = qMax(l, dragStartLine);
-      if(curLine >= 0 && curLine < selectionStart) {
-        for(int i = curLine; i < selectionStart; i++) lines[i]->setSelection(ChatLine::None);
-      } else if(curLine > selectionEnd) {
-        for(int i = selectionEnd+1; i <= curLine; i++) lines[i]->setSelection(ChatLine::None);
-      } else if(selectionStart < curLine && l < curLine) {
+      if(curLine < 0) {
+        Q_ASSERT(selectionStart == selectionEnd);
+        lines[l]->setSelection(ChatLine::Full);
+      } else {
+        if(curLine < selectionStart) {
+          for(int i = curLine; i < selectionStart; i++) lines[i]->setSelection(ChatLine::None);
+        } else if(curLine > selectionEnd) {
+          for(int i = selectionEnd+1; i <= curLine; i++) lines[i]->setSelection(ChatLine::None);
+        } else if(selectionStart < curLine && l < curLine) {
           for(int i = selectionStart; i < curLine; i++) lines[i]->setSelection(ChatLine::Full);
-      } else if(curLine < selectionEnd && l > curLine) {
-        for(int i = curLine+1; i <= selectionEnd; i++) lines[i]->setSelection(ChatLine::Full);
+        } else if(curLine < selectionEnd && l > curLine) {
+          for(int i = curLine+1; i <= selectionEnd; i++) lines[i]->setSelection(ChatLine::Full);
+        }
       }
       curLine = l;
-      update();
+      //ensureVisible(l);
+      viewport()->update();
     }
   }
 }
 
 //!\brief Clear current text selection.
-void ChatWidgetContents::clearSelection() {
+void ChatWidget::clearSelection() {
   if(selectionMode == TextSelected) {
     lines[selectionLine]->setSelection(ChatLine::None);
   } else if(selectionMode == LinesSelected) {
@@ -368,11 +482,11 @@ void ChatWidgetContents::clearSelection() {
     }
   }
   selectionMode = NoSelection;
-  update();
+  viewport()->update();
 }
 
 //!\brief Convert current selection to human-readable string.
-QString ChatWidgetContents::selectionToString() {
+QString ChatWidget::selectionToString() {
   //TODO Make selection format configurable!
   if(selectionMode == NoSelection) return "";
   if(selectionMode == LinesSelected) {
@@ -391,7 +505,7 @@ QString ChatWidgetContents::selectionToString() {
 
 //!\brief Construct a ChatLine object from a message.
 /**
- * \param m The message to be layouted and rendered
+ * \param m   The message to be layouted and rendered
  * \param net The network name
  * \param buf The buffer name
  */ 
@@ -425,13 +539,13 @@ void ChatLine::formatMsg(Message msg) {
     case Message::Error:
       s = tr("%De*"); t = tr("%De%1").arg(text); break;
     case Message::Join:
-      s = tr("%Dj-->"); t = tr("%Dj%DN%1%DN %DH(%2@%3)%DH has joined %DC%4%DC").arg(nick, user, host, bufferName); break;
+      s = tr("%Dj-->"); t = tr("%Dj%DN%DU%1%DU%DN %DH(%2@%3)%DH has joined %DC%DU%4%DU%DC").arg(nick, user, host, bufferName); break;
     case Message::Part:
-      s = tr("%Dp<--"); t = tr("%Dp%DN%1%DN %DH(%2@%3)%DH has left %DC%4%DC").arg(nick, user, host, bufferName);
+      s = tr("%Dp<--"); t = tr("%Dp%DN%DU%1%DU%DN %DH(%2@%3)%DH has left %DC%DU%4%DU%DC").arg(nick, user, host, bufferName);
       if(!text.isEmpty()) t = QString("%1 (%2)").arg(t).arg(text);
       break;
     case Message::Quit:
-      s = tr("%Dq<--"); t = tr("%Dq%DN%1%DN %DH(%2@%3)%DH has quit").arg(nick, user, host);
+      s = tr("%Dq<--"); t = tr("%Dq%DN%DU%1%DU%DN %DH(%2@%3)%DH has quit").arg(nick, user, host);
       if(!text.isEmpty()) t = QString("%1 (%2)").arg(t).arg(text);
       break;
     case Message::Kick:
@@ -439,19 +553,19 @@ void ChatLine::formatMsg(Message msg) {
         QString victim = text.section(" ", 0, 0);
         //if(victim == ui.ownNick->currentText()) victim = tr("you");
         QString kickmsg = text.section(" ", 1);
-        t = tr("%Dk%DN%1%DN has kicked %DN%2%DN from %DC%3%DC").arg(nick).arg(victim).arg(bufferName);
+        t = tr("%Dk%DN%DU%1%DU%DN has kicked %DN%DU%2%DU%DN from %DC%DU%3%DU%DC").arg(nick).arg(victim).arg(bufferName);
         if(!kickmsg.isEmpty()) t = QString("%1 (%2)").arg(t).arg(kickmsg);
       }
       break;
     case Message::Nick:
       s = tr("%Dr<->");
-      if(nick == msg.text) t = tr("You are now known as %DN%1%DN").arg(msg.text);
-      else t = tr("%DN%1%DN is now known as %DN%2%DN").arg(nick, msg.text);
+      if(nick == msg.text) t = tr("%DrYou are now known as %DN%1%DN").arg(msg.text);
+      else t = tr("%Dr%DN%1%DN is now known as %DN%DU%2%DU%DN").arg(nick, msg.text);
       break;
     case Message::Mode:
       s = tr("%Dm***");
-      if(nick.isEmpty()) t = tr("User mode: %DM%1%DM").arg(msg.text);
-      else t = tr("Mode %DM%1%DM by %DN%2%DN").arg(msg.text, nick);
+      if(nick.isEmpty()) t = tr("%DmUser mode: %DM%1%DM").arg(msg.text);
+      else t = tr("%DmMode %DM%1%DM by %DN%DU%2%DU%DN").arg(msg.text, nick);
       break;
     default:
       s = tr("%De%1").arg(msg.sender);
@@ -461,42 +575,52 @@ void ChatLine::formatMsg(Message msg) {
   tsFormatted = Style::internalToFormatted(c);
   senderFormatted = Style::internalToFormatted(s);
   textFormatted = Style::internalToFormatted(t);
-  tsLayout.setText(tsFormatted.text); tsLayout.setAdditionalFormats(tsFormatted.formats);
-  tsOption.setWrapMode(QTextOption::NoWrap);
-  tsLayout.setTextOption(tsOption);
-  senderLayout.setText(senderFormatted.text); senderLayout.setAdditionalFormats(senderFormatted.formats);
-  senderOption.setAlignment(Qt::AlignRight); senderOption.setWrapMode(QTextOption::ManualWrap);
-  senderLayout.setTextOption(senderOption);
-  textLayout.setText(textFormatted.text); textLayout.setAdditionalFormats(textFormatted.formats);
-  textOption.setWrapMode(QTextOption::WrapAnywhere); // seems to do what we want, apparently
-  textLayout.setTextOption(textOption);
+  precomputeLine();
 }
 
-//!\brief Return the cursor position for the given coordinate pos.
-/**
- * \param pos The position relative to the ChatLine
- * \return The cursor position, or -2 for timestamp, or -1 for sender
- */
-int ChatLine::posToCursor(QPointF pos) {
-  if(pos.x() < tsWidth + (int)Style::sepTsSender()/2) return -2;
-  qreal textStart = tsWidth + Style::sepTsSender() + senderWidth + Style::sepSenderText();
-  if(pos.x() < textStart) return -1;
-  for(int l = textLayout.lineCount() - 1; l >=0; l--) {
-    QTextLine line = textLayout.lineAt(l);
-    if(pos.y() >= line.position().y()) {
-      int p = line.xToCursor(pos.x() - textStart, QTextLine::CursorOnCharacter);
-      return p;
+QList<ChatLine::FormatRange> ChatLine::calcFormatRanges(const Style::FormattedString &fs, QTextLayout::FormatRange additional) {
+  QList<FormatRange> ranges;
+  QList<QTextLayout::FormatRange> formats = fs.formats;
+  formats.append(additional);
+  int cur = -1;
+  FormatRange range, lastrange;
+  for(int i = 0; i < fs.text.length(); i++) {
+    QTextCharFormat format;
+    foreach(QTextLayout::FormatRange f, formats) {
+      if(i >= f.start && i < f.start + f.length) format.merge(f.format);
+    }
+    if(cur < 0) {
+      range.start = 0; range.length = 1; range.format= format;
+      cur = 0;
+    } else {
+      if(format == range.format) range.length++;
+      else {
+        QFontMetrics metrics(range.format.font());
+        range.height = metrics.lineSpacing();
+        ranges.append(range);
+        range.start = i; range.length = 1; range.format = format;
+        cur++;
+      }
     }
   }
+  if(cur >= 0) {
+    QFontMetrics metrics(range.format.font());
+    range.height = metrics.lineSpacing();
+    ranges.append(range);
+  }
+  return ranges;
 }
 
 void ChatLine::setSelection(SelectionMode mode, int start, int end) {
   selectionMode = mode;
-  tsFormat.clear(); senderFormat.clear(); textFormat.clear();
+  //tsFormat.clear(); senderFormat.clear(); textFormat.clear();
   QPalette pal = QApplication::palette();
   QTextLayout::FormatRange tsSel, senderSel, textSel;
   switch (mode) {
     case None:
+      tsFormat = calcFormatRanges(tsFormatted);
+      senderFormat = calcFormatRanges(senderFormatted);
+      textFormat = calcFormatRanges(textFormatted);
       break;
     case Partial:
       selectionStart = qMin(start, end); selectionEnd = qMax(start, end);
@@ -504,15 +628,23 @@ void ChatLine::setSelection(SelectionMode mode, int start, int end) {
       textSel.format.setBackground(pal.brush(QPalette::Highlight));
       textSel.start = selectionStart;
       textSel.length = selectionEnd - selectionStart;
-      textFormat.append(textSel);
+      //textFormat.append(textSel);
+      textFormat = calcFormatRanges(textFormatted, textSel);
+      foreach(FormatRange fr, textFormat);
       break;
     case Full:
       tsSel.format.setForeground(pal.brush(QPalette::HighlightedText));
-      tsSel.start = 0; tsSel.length = tsLayout.text().length(); tsFormat.append(tsSel);
+      tsSel.format.setBackground(pal.brush(QPalette::Highlight));
+      tsSel.start = 0; tsSel.length = tsFormatted.text.length();
+      tsFormat = calcFormatRanges(tsFormatted, tsSel);
       senderSel.format.setForeground(pal.brush(QPalette::HighlightedText));
-      senderSel.start = 0; senderSel.length = senderLayout.text().length(); senderFormat.append(senderSel);
+      senderSel.format.setBackground(pal.brush(QPalette::Highlight));
+      senderSel.start = 0; senderSel.length = senderFormatted.text.length();
+      senderFormat = calcFormatRanges(senderFormatted, senderSel);
       textSel.format.setForeground(pal.brush(QPalette::HighlightedText));
-      textSel.start = 0; textSel.length = textLayout.text().length(); textFormat.append(textSel);
+      textSel.format.setBackground(pal.brush(QPalette::Highlight));
+      textSel.start = 0; textSel.length = textFormatted.text.length();
+      textFormat = calcFormatRanges(textFormatted, textSel);
       break;
   }
 }
@@ -522,56 +654,273 @@ QDateTime ChatLine::getTimeStamp() {
 }
 
 QString ChatLine::getSender() {
-  return senderLayout.text();
+  return senderFormatted.text;
 }
 
 QString ChatLine::getText() {
-  return textLayout.text();
+  return textFormatted.text;
+}
+
+bool ChatLine::isUrl(int c) {
+  if(c < 0 || c >= charUrlIdx.count()) return false;;
+  return charUrlIdx[c] >= 0;
+}
+
+QUrl ChatLine::getUrl(int c) {
+  if(c < 0 || c >= charUrlIdx.count()) return QUrl();
+  int i = charUrlIdx[c];
+  if(i >= 0) return textFormatted.urls[i].url;
+  else return QUrl();
+}
+
+//!\brief Return the cursor position for the given coordinate pos.
+/**
+ * \param pos The position relative to the ChatLine
+ * \return The cursor position, [or -3 for invalid,] or -2 for timestamp, or -1 for sender
+ */
+int ChatLine::posToCursor(QPointF pos) {
+  if(pos.x() < tsWidth + (int)Style::sepTsSender()/2) return -2;
+  qreal textStart = tsWidth + Style::sepTsSender() + senderWidth + Style::sepSenderText();
+  if(pos.x() < textStart) return -1;
+  int x = (int)(pos.x() - textStart);
+  for(int l = lineLayouts.count() - 1; l >=0; l--) {
+    LineLayout line = lineLayouts[l];
+    if(pos.y() >= line.y) {
+      int offset = charPos[line.start]; x += offset;
+      for(int i = line.start + line.length - 1; i >= line.start; i--) {
+        if((charPos[i] + charPos[i+1])/2 <= x) return i+1; // FIXME: Optimize this!
+      }
+      return line.start;
+    }
+  }
+}
+
+void ChatLine::precomputeLine() {
+  tsFormat = calcFormatRanges(tsFormatted);
+  senderFormat = calcFormatRanges(senderFormatted);
+  textFormat = calcFormatRanges(textFormatted);
+
+  minHeight = 0;
+  foreach(FormatRange fr, tsFormat) minHeight = qMax(minHeight, fr.height);
+  foreach(FormatRange fr, senderFormat) minHeight = qMax(minHeight, fr.height);
+
+  words.clear();
+  charPos.resize(textFormatted.text.length() + 1);
+  charHeights.resize(textFormatted.text.length());
+  charUrlIdx.fill(-1, textFormatted.text.length());
+  for(int i = 0; i < textFormatted.urls.count(); i++) {
+    Style::UrlInfo url = textFormatted.urls[i];
+    for(int j = url.start; j < url.end; j++) charUrlIdx[j] = i;
+  }
+  if(!textFormat.count()) return;
+  int idx = 0; int cnt = 0; int w = 0; int h = 0;
+  QFontMetrics metrics(textFormat[0].format.font());
+  Word wr;
+  wr.start = -1; wr.trailing = -1;
+  for(int i = 0; i < textFormatted.text.length(); ) {
+    charPos[i] = w; charHeights[i] = textFormat[idx].height;
+    w += metrics.charWidth(textFormatted.text, i);
+    if(!textFormatted.text[i].isSpace()) {
+      if(wr.trailing >= 0) {
+        // new word after space
+        words.append(wr);
+        wr.start = -1;
+      }
+      if(wr.start < 0) {
+        wr.start = i; wr.length = 1; wr.trailing = -1; wr.height = textFormat[idx].height;
+      } else {
+        wr.length++; wr.height = qMax(wr.height, textFormat[idx].height);
+      }
+    } else {
+      if(wr.start < 0) {
+        wr.start = i; wr.length = 0; wr.trailing = 1; wr.height = 0;
+      } else {
+        wr.trailing++;
+      }
+    }
+    if(++i < textFormatted.text.length() && ++cnt >= textFormat[idx].length) {
+      cnt = 0; idx++;
+      Q_ASSERT(idx < textFormat.count());
+      metrics = QFontMetrics(textFormat[idx].format.font());
+    }
+  }
+  charPos[textFormatted.text.length()] = w;
+  if(wr.start >= 0) words.append(wr);
 }
 
 qreal ChatLine::layout(qreal tsw, qreal senderw, qreal textw) {
   tsWidth = tsw; senderWidth = senderw; textWidth = textw;
-  QTextLine tl;
-  tsLayout.beginLayout();
-  tl = tsLayout.createLine();
-  tl.setLineWidth(tsWidth);
-  tl.setPosition(QPointF(0, 0));
-  tsLayout.endLayout();
-
-  senderLayout.beginLayout();
-  tl = senderLayout.createLine();
-  tl.setLineWidth(senderWidth);
-  tl.setPosition(QPointF(0, 0));
-  senderLayout.endLayout();
-
-  qreal h = 0;
-  textLayout.beginLayout();
-  while(1) {
-    tl = textLayout.createLine();
-    if(!tl.isValid()) break;
-    tl.setLineWidth(textWidth);
-    tl.setPosition(QPointF(0, h));
-    h += tl.height();
+  if(textw <= 0) return minHeight;
+  lineLayouts.clear(); LineLayout line;
+  int h = 0;
+  int offset = 0; int numWords = 0;
+  line.y = 0;
+  line.start = 0;
+  line.height = minHeight;  // first line needs room for ts and sender
+  for(int i = 0; i < words.count(); i++) {
+    int lastpos = charPos[words[i].start + words[i].length]; // We use charPos[lastchar + 1], 'coz last char needs to fit
+    if(lastpos - offset <= textw) {
+      line.height = qMax(line.height, words[i].height);
+      line.length = words[i].start + words[i].length - line.start;
+      numWords++;
+    } else {
+      // we need to wrap!
+      if(numWords > 0) {
+        // ok, we had some words before, so store the layout and start a new line
+        h += line.height;
+        line.length = words[i-1].start + words[i-1].length - line.start;
+        lineLayouts.append(line);
+        line.y += line.height;
+        line.start = words[i].start;
+        line.height = words[i].height;
+        offset = charPos[words[i].start];
+      }
+      numWords = 1;
+      // check if the word fits into the current line
+      if(lastpos - offset <= textw) {
+        line.length = words[i].length;
+      } else {
+        // we need to break a word in the middle
+        int border = (int)textw + offset; // save some additions
+        line.start = words[i].start;
+        line.length = 1;
+        line.height = charHeights[line.start];
+        int j = line.start + 1;
+        for(int l = 1; l < words[i].length; j++, l++) {
+          if(charPos[j+1] < border) {
+            line.length++;
+            line.height = qMax(line.height, charHeights[j]);
+            continue;
+          } else {
+            h += line.height;
+            lineLayouts.append(line);
+            line.y += line.height;
+            line.start = j;
+            line.height = charHeights[j];
+            line.length = 1;
+            offset = charPos[j];
+            border = (int)textw + offset;
+          }
+        }
+      }
+    }
   }
-  textLayout.endLayout();
+  h += line.height;
+  if(numWords > 0) {
+    lineLayouts.append(line);
+  }
   hght = h;
-  return h;
+  return hght;
 }
 
 //!\brief Draw ChatLine on the given QPainter at the given position.
 void ChatLine::draw(QPainter *p, const QPointF &pos) {
   QPalette pal = QApplication::palette();
+
   if(selectionMode == Full) {
     p->setPen(Qt::NoPen);
     p->setBrush(pal.brush(QPalette::Highlight));
     p->drawRect(QRectF(pos, QSizeF(tsWidth + Style::sepTsSender() + senderWidth + Style::sepSenderText() + textWidth, height())));
   } else if(selectionMode == Partial) {
 
-  }
+  } /*
   p->setClipRect(QRectF(pos, QSizeF(tsWidth, height())));
   tsLayout.draw(p, pos, tsFormat);
   p->setClipRect(QRectF(pos + QPointF(tsWidth + Style::sepTsSender(), 0), QSizeF(senderWidth, height())));
   senderLayout.draw(p, pos + QPointF(tsWidth + Style::sepTsSender(), 0), senderFormat);
   p->setClipping(false);
   textLayout.draw(p, pos + QPointF(tsWidth + Style::sepTsSender() + senderWidth + Style::sepSenderText(), 0), textFormat);
+  */
+  //p->setClipRect(QRectF(pos, QSizeF(tsWidth, 15)));
+  //p->drawRect(QRectF(pos, QSizeF(tsWidth, minHeight)));
+  p->setBackgroundMode(Qt::OpaqueMode);
+  QPointF tp = pos;
+  QRectF rect(pos, QSizeF(tsWidth, minHeight));
+  QRectF brect;
+  foreach(FormatRange fr, tsFormat) {
+    p->setFont(fr.format.font());
+    p->setPen(QPen(fr.format.foreground(), 0)); p->setBackground(fr.format.background());
+    p->drawText(rect, Qt::AlignLeft|Qt::TextSingleLine, tsFormatted.text.mid(fr.start, fr.length), &brect);
+    rect.setLeft(brect.right());
+  }
+  rect = QRectF(pos + QPointF(tsWidth + Style::sepTsSender(), 0), QSizeF(senderWidth, minHeight));
+  for(int i = senderFormat.count() - 1; i >= 0; i--) {
+    FormatRange fr = senderFormat[i];
+    p->setFont(fr.format.font()); p->setPen(QPen(fr.format.foreground(), 0)); p->setBackground(fr.format.background());
+    p->drawText(rect, Qt::AlignRight|Qt::TextSingleLine, senderFormatted.text.mid(fr.start, fr.length), &brect);
+    rect.setRight(brect.left());
+  }
+  QPointF tpos = pos + QPointF(tsWidth + Style::sepTsSender() + senderWidth + Style::sepSenderText(), 0);
+  qreal h = 0; int l = 0;
+  rect = QRectF(tpos + QPointF(0, h), QSizeF(textWidth, lineLayouts[l].height));
+  int offset = 0;
+  foreach(FormatRange fr, textFormat) {
+    if(l >= lineLayouts.count()) break;
+    p->setFont(fr.format.font()); p->setPen(QPen(fr.format.foreground(), 0)); p->setBackground(fr.format.background());
+    int start, end, frend, llend;
+    do {
+      frend = fr.start + fr.length;
+      if(frend <= lineLayouts[l].start) break;
+      llend = lineLayouts[l].start + lineLayouts[l].length;
+      start = qMax(fr.start, lineLayouts[l].start); end = qMin(frend, llend);
+      rect.setLeft(tpos.x() + charPos[start] - offset);
+      p->drawText(rect, Qt::AlignLeft|Qt::TextSingleLine, textFormatted.text.mid(start, end - start), &brect);
+      if(llend <= end) {
+        h += lineLayouts[l].height;
+        l++;
+        if(l < lineLayouts.count()) {
+          rect = QRectF(tpos + QPointF(0, h), QSizeF(textWidth, lineLayouts[l].height));
+          offset = charPos[lineLayouts[l].start];
+        }
+      }
+    } while(end < frend && l < lineLayouts.count());
+  }
+}
+
+/******************************************************************************************************************/
+
+LayoutThread::LayoutThread() : QThread() {
+  mutex.lock();
+  abort = false;
+  mutex.unlock();
+
+}
+
+LayoutThread::~LayoutThread() {
+  mutex.lock();
+  abort = true;
+  mutex.unlock();
+  condition.wakeOne();
+  wait();
+}
+
+void LayoutThread::processTask(LayoutTask task) {
+  if(!isRunning()) start();
+  Q_ASSERT(isRunning());
+  mutex.lock();
+  queue.append(task);
+  condition.wakeOne();
+  mutex.unlock();
+}
+
+void LayoutThread::run() {
+  forever {
+    mutex.lock();
+    if(!queue.count()) {
+      condition.wait(&mutex);
+    }
+    if(abort) {
+      mutex.unlock(); return;
+    }
+    Q_ASSERT(queue.count()); //qDebug() << "process";
+    LayoutTask task = queue.takeFirst();
+    mutex.unlock();
+    foreach(Message msg, task.messages) {
+      //qDebug() << msg.text;
+      ChatLine *line = new ChatLine(msg, task.net, task.buf);
+      task.lines.append(line);
+    }
+    emit taskProcessed(task);
+    //msleep(500);
+  }
 }

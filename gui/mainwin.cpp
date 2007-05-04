@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by The Quassel Team                                *
+ *   Copyright (C) 2005-07 by The Quassel Team                             *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -20,7 +20,9 @@
 
 #include <QtGui>
 #include <QtCore>
+#include <QSqlDatabase>
 
+#include "util.h"
 #include "global.h"
 #include "message.h"
 #include "guiproxy.h"
@@ -30,31 +32,25 @@
 #include "networkview.h"
 #include "serverlist.h"
 #include "coreconnectdlg.h"
-#include "settings.h"
+#include "settingsdlg.h"
+#include "settingspages.h"
+
+LayoutThread *layoutThread;
 
 MainWin::MainWin() : QMainWindow() {
   ui.setupUi(this);
-  widget = 0;
-
+  //widget = 0;
+  qDebug() << "Available DB drivers: " << QSqlDatabase::drivers ();
   setWindowTitle("Quassel IRC");
   setWindowIcon(QIcon(":/qirc-icon.png"));
   setWindowIconText("Quassel IRC");
 
-  QSettings s;
-  s.beginGroup("Geometry");
-  resize(s.value("MainWinSize", QSize(500, 400)).toSize());
-  move(s.value("MainWinPos", QPoint(50, 50)).toPoint());
-  s.endGroup();
-
   //workspace = new QWorkspace(this);
   //setCentralWidget(workspace);
   statusBar()->showMessage(tr("Waiting for core..."));
+}
 
-  netView = new NetworkView("", this);
-  netView->setAllowedAreas(Qt::RightDockWidgetArea|Qt::LeftDockWidgetArea);
-  addDockWidget(Qt::LeftDockWidgetArea, netView);
-  connect(netView, SIGNAL(bufferSelected(QString, QString)), this, SLOT(showBuffer(QString, QString)));
-  connect(this, SIGNAL(bufferSelected(QString, QString)), netView, SLOT(selectBuffer(QString, QString)));
+void MainWin::init() {
 
   connect(guiProxy, SIGNAL(csServerState(QString, QVariant)), this, SLOT(recvNetworkState(QString, QVariant)));
   connect(guiProxy, SIGNAL(csServerConnected(QString)), this, SLOT(networkConnected(QString)));
@@ -70,25 +66,64 @@ MainWin::MainWin() : QMainWindow() {
   connect(guiProxy, SIGNAL(csOwnNickSet(QString, QString)), this, SLOT(setOwnNick(QString, QString)));
   connect(this, SIGNAL(sendInput( QString, QString, QString )), guiProxy, SLOT(gsUserInput(QString, QString, QString)));
 
+  layoutThread = new LayoutThread();
+  layoutThread->start();
+  while(!layoutThread->isRunning()) {};
+  ui.bufferWidget->init();
+
   show();
   syncToCore();
   statusBar()->showMessage(tr("Ready."));
-
-  buffersUpdated();
+  systray = new QSystemTrayIcon(this);
+  systray->setIcon(QIcon(":/qirc-icon.png"));
+  systray->show();
 
   serverListDlg = new ServerListDlg(this);
   serverListDlg->setVisible(serverListDlg->showOnStartup());
-  settingsDlg = new SettingsDlg(this);
-  settingsDlg->setVisible(false);
+
+  setupSettingsDlg();
+
+  //Buffer::init();
   setupMenus();
+  setupViews();
+
+  //bufferWidget = 0;
+
+  QSettings s;
+  s.beginGroup("Geometry");
+  //resize(s.value("MainWinSize", QSize(500, 400)).toSize());
+  //move(s.value("MainWinPos", QPoint(50, 50)).toPoint());
+  if(s.contains("MainWinState")) restoreState(s.value("MainWinState").toByteArray());
+  s.endGroup();
 
   // replay backlog
+  // FIXME do this right
+  QHash<Buffer *, QList<Message> > hash;
+  Buffer *b;
+
   foreach(QString net, coreBackLog.keys()) {
+    //if(net != "MoepNet") continue;
     while(coreBackLog[net].count()) {
-      recvMessage(net, coreBackLog[net].takeFirst());
+      //recvMessage(net, coreBackLog[net].takeFirst());
+      Message msg = coreBackLog[net].takeLast();
+      if(msg.flags & Message::PrivMsg) {
+      // query
+        if(msg.flags & Message::Self) b = getBuffer(net, msg.target);
+        else b = getBuffer(net, nickFromMask(msg.sender));
+      } else {
+        b = getBuffer(net, msg.target);
+      }
+      hash[b].prepend(msg);
+      if(hash[b].count() >= 5) {
+        ui.bufferWidget->prependMessages(b, hash.take(b));
+      }
     }
   }
-  /*
+  foreach(Buffer *buf, hash.keys()) {
+    ui.bufferWidget->prependMessages(buf, hash.take(buf));
+  }
+
+/*
   foreach(QString key, buffers.keys()) {
     foreach(Buffer *b, buffers[key].values()) {
       QWidget *widget = b->showWidget(this);
@@ -96,7 +131,8 @@ MainWin::MainWin() : QMainWindow() {
       widget->show();
     }
   }
-  */
+*/
+
   s.beginGroup("Buffers");
   QString net = s.value("CurrentNetwork", "").toString();
   QString buf = s.value("CurrentBuffer", "").toString();
@@ -112,11 +148,62 @@ MainWin::MainWin() : QMainWindow() {
   }
 }
 
+MainWin::~MainWin() {
+  typedef QHash<QString, Buffer*> BufHash;
+  foreach(BufHash h, buffers.values()) {
+    foreach(Buffer *b, h.values()) {
+      delete b;
+    }
+  }
+}
+
+/* This is implemented in settingspages.cpp */
+/*
+void MainWin::setupSettingsDlg() {
+
+}
+*/
+
 void MainWin::setupMenus() {
   connect(ui.actionNetworkList, SIGNAL(triggered()), this, SLOT(showServerList()));
   connect(ui.actionEditIdentities, SIGNAL(triggered()), serverListDlg, SLOT(editIdentities()));
   connect(ui.actionSettingsDlg, SIGNAL(triggered()), this, SLOT(showSettingsDlg()));
-  ui.actionSettingsDlg->setEnabled(false);
+  //ui.actionSettingsDlg->setEnabled(false);
+  connect(ui.actionAboutQt, SIGNAL(triggered()), QApplication::instance(), SLOT(aboutQt()));
+}
+
+void MainWin::setupViews() {
+  NetworkView *all = new NetworkView(tr("All Buffers"), NetworkView::AllNets);
+  registerNetView(all);
+  addDockWidget(Qt::LeftDockWidgetArea, all);
+  NetworkView *allchans = new NetworkView(tr("All Channels"), NetworkView::AllNets|NetworkView::NoQueries|NetworkView::NoServers);
+  registerNetView(allchans);
+  addDockWidget(Qt::LeftDockWidgetArea, allchans);
+  NetworkView *allqrys = new NetworkView(tr("All Queries"), NetworkView::AllNets|NetworkView::NoChannels|NetworkView::NoServers);
+  registerNetView(allqrys);
+  addDockWidget(Qt::RightDockWidgetArea, allqrys);
+  NetworkView *allnets = new NetworkView(tr("All Networks"), NetworkView::AllNets|NetworkView::NoChannels|NetworkView::NoQueries);
+  registerNetView(allnets);
+  addDockWidget(Qt::RightDockWidgetArea, allnets);
+
+  ui.menuViews->addSeparator();
+}
+
+void MainWin::registerNetView(NetworkView *view) {
+  connect(this, SIGNAL(bufferSelected(Buffer *)), view, SLOT(selectBuffer(Buffer *)));
+  connect(this, SIGNAL(bufferUpdated(Buffer *)), view, SLOT(bufferUpdated(Buffer *)));
+  connect(this, SIGNAL(bufferDestroyed(Buffer *)), view, SLOT(bufferDestroyed(Buffer *)));
+  connect(view, SIGNAL(bufferSelected(Buffer *)), this, SLOT(showBuffer(Buffer *)));
+  QList<Buffer *> bufs;
+  typedef QHash<QString, Buffer *> bufhash;
+  QList<bufhash> foo = buffers.values();
+  foreach(bufhash h, foo) {
+    bufs += h.values();
+  }
+  view->setBuffers(bufs);
+  view->setAllowedAreas(Qt::RightDockWidgetArea|Qt::LeftDockWidgetArea);
+  netViews.append(view);
+  ui.menuViews->addAction(view->toggleViewAction());
 }
 
 void MainWin::showServerList() {
@@ -133,15 +220,18 @@ void MainWin::showSettingsDlg() {
 void MainWin::closeEvent(QCloseEvent *event)
 {
   //if (userReallyWantsToQuit()) {
+    ui.bufferWidget->saveState();
     QSettings s;
     s.beginGroup("Geometry");
     s.setValue("MainWinSize", size());
     s.setValue("MainWinPos", pos());
+    s.setValue("MainWinState", saveState());
     s.endGroup();
     s.beginGroup("Buffers");
     s.setValue("CurrentNetwork", currentNetwork);
     s.setValue("CurrentBuffer", currentBuffer);
     s.endGroup();
+    delete systray;
     event->accept();
   //} else {
     //event->ignore();
@@ -149,23 +239,15 @@ void MainWin::closeEvent(QCloseEvent *event)
 }
 
 void MainWin::showBuffer(QString net, QString buf) {
-  currentBuffer = buf; currentNetwork = net;
-  Buffer *b = getBuffer(net, buf);
-  QWidget *old = widget;
-  widget = b->showWidget(this);
-  if(widget == old) return;
-  //workspace->addWindow(widget);
-  //widget->show();
-  setCentralWidget(widget);
-  widget->show();
-  //workspace->setActiveWindow(widget);
-  widget->setFocus();
-  //workspace->setFocus();
-  widget->activateWindow();
-  widget->setFocus(Qt::MouseFocusReason);
-  focusNextChild();
-  //workspace->tile();
-  emit bufferSelected(net, buf);
+  showBuffer(getBuffer(net, buf));
+}
+
+void MainWin::showBuffer(Buffer *b) {
+  currentBuffer = b->bufferName(); currentNetwork = b->networkName();
+  //emit bufferSelected(b);
+  //qApp->processEvents();
+  ui.bufferWidget->setBuffer(b);
+  emit bufferSelected(b);
 }
 
 void MainWin::networkConnected(QString net) {
@@ -173,7 +255,7 @@ void MainWin::networkConnected(QString net) {
   Buffer *b = getBuffer(net, "");
   b->setActive(true);
   b->displayMsg(Message::server("", tr("Connected.")));
-  buffersUpdated();
+  // TODO buffersUpdated();
 }
 
 void MainWin::networkDisconnected(QString net) {
@@ -192,14 +274,12 @@ Buffer * MainWin::getBuffer(QString net, QString buf) {
     Buffer *b = new Buffer(net, buf);
     b->setOwnNick(ownNick[net]);
     connect(b, SIGNAL(userInput(QString, QString, QString)), this, SLOT(userInput(QString, QString, QString)));
+    connect(b, SIGNAL(bufferUpdated(Buffer *)), this, SIGNAL(bufferUpdated(Buffer *)));
+    connect(b, SIGNAL(bufferDestroyed(Buffer *)), this, SIGNAL(bufferDestroyed(Buffer *)));
     buffers[net][buf] = b;
-    buffersUpdated();
+    emit bufferUpdated(b);
   }
   return buffers[net][buf];
-}
-
-void MainWin::buffersUpdated() {
-  netView->buffersUpdated(buffers);
 }
 
 void MainWin::recvNetworkState(QString net, QVariant state) {
@@ -215,11 +295,17 @@ void MainWin::recvNetworkState(QString net, QVariant state) {
   foreach(QString nick, n.keys()) {
     addNick(net, nick, n[nick].toMap());
   }
-  buffersUpdated();
 }
 
 void MainWin::recvMessage(QString net, Message msg) {
-  Buffer *b = getBuffer(net, msg.target);
+  Buffer *b;
+  if(msg.flags & Message::PrivMsg) {
+  // query
+    if(msg.flags & Message::Self) b = getBuffer(net, msg.target);
+    else b = getBuffer(net, nickFromMask(msg.sender));
+  } else {
+    b = getBuffer(net, msg.target);
+  }
   b->displayMsg(msg);
 }
 
@@ -236,7 +322,6 @@ void MainWin::setTopic(QString net, QString buf, QString topic) {
   if(!connected[net]) return;
   Buffer *b = getBuffer(net, buf);
   b->setTopic(topic);
-  buffersUpdated();
   //if(!b->isActive()) {
   //  b->setActive(true);
   //  buffersUpdated();
@@ -255,7 +340,6 @@ void MainWin::addNick(QString net, QString nick, VarMap props) {
   foreach(QString bufname, c) {
     getBuffer(net, bufname)->addNick(nick, props);
   }
-  buffersUpdated();
 }
 
 void MainWin::renameNick(QString net, QString oldnick, QString newnick) {
@@ -279,7 +363,6 @@ void MainWin::updateNick(QString net, QString nick, VarMap props) {
     if(!newchans.contains(c)) getBuffer(net, c)->removeNick(nick);
   }
   nicks[net][nick] = props;
-  buffersUpdated();
 }
 
 void MainWin::removeNick(QString net, QString nick) {
@@ -289,7 +372,6 @@ void MainWin::removeNick(QString net, QString nick) {
     getBuffer(net, bufname)->removeNick(nick);
   }
   nicks[net].remove(nick);
-  buffersUpdated();
 }
 
 void MainWin::setOwnNick(QString net, QString nick) {

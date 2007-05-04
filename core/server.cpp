@@ -75,7 +75,7 @@ void Server::disconnectFromIrc(QString net) {
 void Server::socketHasData() {
   while(socket.canReadLine()) {
     QString s = socket.readLine().trimmed();
-    qDebug() << "Read" << s;
+    //qDebug() << "Read" << s;
     emit recvRawServerMsg(s);
     //Message *msg = Message::createFromServerString(this, s);
     handleServerMsg(s);
@@ -132,7 +132,7 @@ void Server::userInput(QString net, QString buf, QString msg) {
 }
 
 void Server::putRawLine(QString s) {
-  qDebug() << "SentRaw: " << s;
+//  qDebug() << "SentRaw: " << s;
   s += "\r\n";
   socket.write(s.toAscii());
 }
@@ -145,7 +145,7 @@ void Server::putCmd(QString cmd, QStringList params, QString prefix) {
     m += " " + params[i];
   }
   if(!params.isEmpty()) m += " :" + params.last();
-  qDebug() << "Sent: " << m;
+//  qDebug() << "Sent: " << m;
   m += "\r\n";
   socket.write(m.toAscii());
 }
@@ -354,6 +354,11 @@ void Server::handleUserPart(QString bufname, QString msg) {
   putCmd("PART", params);
 }
 
+void Server::handleUserQuery(QString bufname, QString msg) {
+  QString nick = msg.section(' ', 0, 0);
+  if(!nick.isEmpty()) emit queryRequested(network, nick);
+}
+
 void Server::handleUserQuit(QString bufname, QString msg) {
   putCmd("QUIT", QStringList(msg));
 }
@@ -367,7 +372,11 @@ void Server::handleUserSay(QString bufname, QString msg) {
   QStringList params;
   params << bufname << msg;
   putCmd("PRIVMSG", params);
-  emit displayMsg(Message::plain(params[0], msg, ownNick, Message::Self));
+  if(isChannelName(bufname)) {
+    emit displayMsg(Message::plain(params[0], msg, ownNick, Message::Self));
+  } else {
+    emit displayMsg(Message::plain(params[0], msg, ownNick, Message::Self|Message::PrivMsg));
+  }
 }
 
 void Server::handleUserTopic(QString bufname, QString msg) {
@@ -532,8 +541,16 @@ void Server::handleServerPing(QString prefix, QStringList params) {
 
 void Server::handleServerPrivmsg(QString prefix, QStringList params) {
   updateNickFromMask(prefix);
+  Q_ASSERT(params.count() >= 2);
   if(params.count()<2) emit displayMsg(Message::plain(params[0], "", prefix));
-  else emit displayMsg(Message::plain(params[0], params[1], prefix));
+  else {
+    if(params[0] == ownNick) {
+      emit displayMsg(Message::plain("", params[1], prefix, Message::PrivMsg));
+    } else {
+      Q_ASSERT(isChannelName(params[0]));  // should be channel!
+      emit displayMsg(Message::plain(params[0], params[1], prefix));
+    }
+  }
 }
 
 void Server::handleServerQuit(QString prefix, QStringList params) {
@@ -568,14 +585,15 @@ void Server::handleServer001(QString prefix, QStringList params) {
   // send performlist
   QStringList performList = networkSettings["Perform"].toString().split( "\n" );
   int count = performList.count();
-  for ( int a = 0; a < count; a++ ) {
-  	if ( !performList[a].isEmpty() ) {
-  		userInput( network, "", performList[a] ); 
-  	}
+  for(int a = 0; a < count; a++) {
+    if(!performList[a].isEmpty() ) {
+      userInput(network, "", performList[a]);
+    }
   }
 }
 
 /* RPL_ISUPPORT */
+// TODO Complete 005 handling, also use sensible defaults for non-sent stuff
 void Server::handleServer005(QString prefix, QStringList params) {
   foreach(QString p, params) {
     QString key = p.section("=", 0, 0);
@@ -617,7 +635,7 @@ void Server::handleServer332(QString prefix, QStringList params) {
 /* Topic set by... */
 void Server::handleServer333(QString prefix, QStringList params) {
   emit displayMsg(Message::server(params[0],
-                  tr("Topic set by %1 on %2").arg(params[1]).arg(QDateTime::fromTime_t(params[2].toUInt()).toString())));
+                    tr("Topic set by %1 on %2").arg(params[1]).arg(QDateTime::fromTime_t(params[2].toUInt()).toString())));
 }
 
 /* RPL_NAMREPLY */

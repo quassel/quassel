@@ -21,8 +21,10 @@
 #include "core.h"
 #include "server.h"
 #include "global.h"
+#include "util.h"
 #include "coreproxy.h"
 
+#include <QtSql>
 #include <QSettings>
 
 Core::Core() {
@@ -41,7 +43,7 @@ Core::Core() {
   foreach(key, s.childKeys()) {
     global->updateData(key, s.value(key));
   }
-  initBackLog();
+  initBackLogOld();
   global->updateData("CoreReady", true);
   // Now that we are in sync, we can connect signals to automatically store further updates.
   // I don't think we care if global data changed locally or if it was updated by a client. 
@@ -61,6 +63,7 @@ Core::~Core() {
     if(f->isOpen()) f->close();
     delete f;
   }
+  logDb.close();
 }
 
 void Core::globalDataUpdated(QString key) {
@@ -90,6 +93,7 @@ void Core::connectToIrc(QStringList networks) {
       connect(server, SIGNAL(nickRemoved(QString, QString)), coreProxy, SLOT(csNickRemoved(QString, QString)));
       connect(server, SIGNAL(nickUpdated(QString, QString, VarMap)), coreProxy, SLOT(csNickUpdated(QString, QString, VarMap)));
       connect(server, SIGNAL(ownNickSet(QString, QString)), coreProxy, SLOT(csOwnNickSet(QString, QString)));
+      connect(server, SIGNAL(queryRequested(QString, QString)), coreProxy, SLOT(csQueryRequested(QString, QString)));
       // add error handling
       connect(server, SIGNAL(connected(QString)), coreProxy, SLOT(csServerConnected(QString)));
       connect(server, SIGNAL(disconnected(QString)), this, SLOT(serverDisconnected(QString)));
@@ -112,7 +116,7 @@ void Core::serverDisconnected(QString net) {
 void Core::recvMessageFromServer(Message msg) {
   Server *s = qobject_cast<Server*>(sender());
   Q_ASSERT(s);
-  logMessage(s->getNetwork(), msg);
+  logMessageOld(s->getNetwork(), msg);
   emit displayMsg(s->getNetwork(), msg);
 }
 
@@ -122,8 +126,40 @@ void Core::recvStatusMsgFromServer(QString msg) {
   emit displayStatusMsg(s->getNetwork(), msg);
 }
 
-// file name scheme: quassel-backlog-2006-29-10.bin
 void Core::initBackLog() {
+  QDir backLogDir = QDir(Global::quasselDir);
+  if(!backLogDir.exists()) {
+    qWarning(QString("Creating backlog directory \"%1\"...").arg(backLogDir.absolutePath()).toAscii());
+    if(!backLogDir.mkpath(backLogDir.absolutePath())) {
+      qWarning(QString("Could not create backlog directory! Disabling logging...").toAscii());
+      backLogEnabled = false;
+      return;
+    }
+  }
+  QString backLogFile = Global::quasselDir + "/quassel-backlog.sqlite";
+  logDb = QSqlDatabase::addDatabase("QSQLITE", "backlog");
+  logDb.setDatabaseName(backLogFile);
+  bool ok = logDb.open();
+  if(!ok) {
+    qWarning(tr("Could not open backlog database: %1").arg(logDb.lastError().text()).toAscii());
+    qWarning(tr("Disabling logging...").toAscii());
+  }
+  // TODO store database version
+  QSqlQuery query = logDb.exec("CREATE TABLE IF NOT EXISTS backlog ("
+                         "Time INTEGER, User TEXT, Network TEXT, Buffer TEXT, Message BLOB"
+                         ");");
+  if(query.lastError().isValid()) {
+    qWarning(tr("Could not create backlog table: %1").arg(query.lastError().text()).toAscii());
+    qWarning(tr("Disabling logging...").toAscii());
+    backLogEnabled = false;
+    return;
+  }
+
+  backLogEnabled = true;
+}
+
+// file name scheme: quassel-backlog-2006-29-10.bin
+void Core::initBackLogOld() {
   backLogDir = QDir(Global::quasselDir + "/backlog");
   if(!backLogDir.exists()) {
     qWarning(QString("Creating backlog directory \"%1\"...").arg(backLogDir.absolutePath()).toAscii());
@@ -164,7 +200,7 @@ void Core::initBackLog() {
         qWarning(QString("\"%1\": Version mismatch!").arg(f.fileName()).toAscii());
         f.close(); continue;
       }
-      qDebug() << "Reading backlog from" << f.fileName();
+      //qDebug() << "Reading backlog from" << f.fileName();
       logFileDates[net] = QDate::fromString(f.fileName(),
           QString("'%1/quassel-backlog-'yyyy-MM-dd'.bin'").arg(dir.absolutePath()));
       if(!logFileDates[net].isValid()) {
@@ -181,12 +217,32 @@ void Core::initBackLog() {
   backLogEnabled = true;
 }
 
+void Core::logMessage(QString net, Message msg) {
+  if(!backLogEnabled) return;
+  QString buf;
+  if(msg.flags & Message::PrivMsg) {
+    // query
+    if(msg.flags & Message::Self) buf = msg.target;
+    else buf = nickFromMask(msg.sender);
+  } else {
+    buf = msg.target;
+  }
+  QSqlQuery query = logDb.exec(QString("INSERT INTO backlog Time, User, Network, Buffer, Message "
+                               "VALUES %1, %2, %3, %4, %5;")
+      .arg(msg.timeStamp.toTime_t()).arg("Default").arg(net).arg(buf).arg(msg.text));
+  if(query.lastError().isValid()) {
+    qWarning(tr("Error while logging to database: %1").arg(query.lastError().text()).toAscii());
+  }
+
+}
+
+
 /** Log a core message (emitted via a displayMsg() signal) to the backlog file.
  * If a file for the current day does not exist, one will be created. Otherwise, messages will be appended.
  * The file header is the string defined by BACKLOG_STRING, followed by a quint8 specifying the format
  * version (BACKLOG_FORMAT). The rest is simply serialized Message objects.
  */
-void Core::logMessage(QString net, Message msg) {
+void Core::logMessageOld(QString net, Message msg) {
   backLog[net].append(msg);
   if(!logFileDirs.contains(net)) {
     QDir dir(backLogDir.absolutePath() + "/" + net);

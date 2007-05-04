@@ -63,7 +63,9 @@ Q_DECLARE_INTERFACE(CorePluginInterface,
  */
 class SettingsInterface {
   public:
-    virtual QWidget *settingsWidget(QWidget *parent = 0) = 0;
+    virtual QString category() = 0;
+    virtual QString title() = 0; 
+    virtual QWidget *settingsWidget() = 0;
 
 };
 

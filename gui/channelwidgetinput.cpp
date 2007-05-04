@@ -36,7 +36,7 @@ void ChannelWidgetInput::keyPressEvent(QKeyEvent * event) {
     event->accept();
   } else if(event->key() == Qt::Key_Tab) {
     // Tabcomplete
-    if(cursorPosition() == text().length()) {
+      if(cursorPosition() == text().length()) {
       
 
     }

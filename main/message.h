@@ -27,31 +27,31 @@ struct Message {
 
   /** The different types a message can have for display */
   enum Type { Plain, Notice, Action, Nick, Mode, Join, Part, Quit, Kick, Kill, Server, Info, Error };
-  enum Flags { None = 0, Self = 1, Highlight = 2 };
+  enum Flags { None = 0, Self = 1, PrivMsg = 2, Highlight = 4 };
 
   Type type;
-  Flags flags;
+  quint8 flags;
   QString target;
   QString sender;
   QString text;
   QDateTime timeStamp;
 
-  Message(QString _target = "", Type _type = Plain, QString _text = "", QString _sender = "", Flags _flags = None)
+  Message(QString _target = "", Type _type = Plain, QString _text = "", QString _sender = "", quint8 _flags = None)
   : target(_target), text(_text), sender(_sender), type(_type), flags(_flags) { timeStamp = QDateTime::currentDateTime().toUTC(); }
 
-  static Message plain(QString _target, QString _text, QString _sender = "", Flags _flags = None);
-  static Message notice(QString _target, QString _text, QString _sender = "", Flags _flags = None);
-  static Message action(QString _target, QString _text, QString _sender = "", Flags _flags = None);
-  static Message nick(QString _target, QString _text, QString _sender = "", Flags _flags = None);
-  static Message mode(QString _target, QString _text, QString _sender = "", Flags _flags = None);
-  static Message join(QString _target, QString _text, QString _sender = "", Flags _flags = None);
-  static Message part(QString _target, QString _text, QString _sender = "", Flags _flags = None);
-  static Message quit(QString _target, QString _text, QString _sender = "", Flags _flags = None);
-  static Message kick(QString _target, QString _text, QString _sender = "", Flags _flags = None);
-  static Message kill(QString _target, QString _text, QString _sender = "", Flags _flags = None);
-  static Message server(QString _target, QString _text, QString _sender = "", Flags _flags = None);
-  static Message info(QString _target, QString _text, QString _sender = "", Flags _flags = None);
-  static Message error(QString _target, QString _text, QString _sender = "", Flags _flags = None);
+  static Message plain(QString _target, QString _text, QString _sender = "", quint8 _flags = None);
+  static Message notice(QString _target, QString _text, QString _sender = "", quint8 _flags = None);
+  static Message action(QString _target, QString _text, QString _sender = "", quint8 _flags = None);
+  static Message nick(QString _target, QString _text, QString _sender = "", quint8 _flags = None);
+  static Message mode(QString _target, QString _text, QString _sender = "", quint8 _flags = None);
+  static Message join(QString _target, QString _text, QString _sender = "", quint8 _flags = None);
+  static Message part(QString _target, QString _text, QString _sender = "", quint8 _flags = None);
+  static Message quit(QString _target, QString _text, QString _sender = "", quint8 _flags = None);
+  static Message kick(QString _target, QString _text, QString _sender = "", quint8 _flags = None);
+  static Message kill(QString _target, QString _text, QString _sender = "", quint8 _flags = None);
+  static Message server(QString _target, QString _text, QString _sender = "", quint8 _flags = None);
+  static Message info(QString _target, QString _text, QString _sender = "", quint8 _flags = None);
+  static Message error(QString _target, QString _text, QString _sender = "", quint8 _flags = None);
 };
 
 QDataStream &operator<<(QDataStream &out, const Message &msg);

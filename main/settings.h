@@ -18,39 +18,30 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _STYLE_H_
-#define _STYLE_H_
+#ifndef _SETTINGS_H_
+#define _SETTINGS_H_
 
 #include <QtCore>
-#include <QtGui>
 
-class Style {
+class Settings {
 
   public:
+    //Settings();
+    //~Settings();
     static void init();
+    static void setProfile(const QString &string);
+    static QString profile();
 
-    struct UrlInfo {
-      int start, end;
-      QUrl url;
-    };
-
-    struct FormattedString {
-      QString text;
-      QList<QTextLayout::FormatRange> formats;
-      QList<UrlInfo> urls;
-    };
-
-    static QString mircToInternal(QString);
-    //static QString internalToMirc(QString);
-    static FormattedString internalToFormatted(QString);
-    static int sepTsSender() { return 10; }
-    static int sepSenderText() { return 10; }
-
+    static void setGuiValue(const QString &key, const QVariant &value);
+    static QVariant guiValue (const QString &key, const QVariant &defaultValue = QVariant());
+    static void setCoreValue(const QString &user, const QString &key, const QVariant &value);
+    static QVariant coreValue (const QString &user, const QString& key, const QVariant &defaultValue = QVariant());
 
   private:
-    static QHash<QString, QTextCharFormat> formats;
-    static QHash<QString, QColor> colors;
+    static QString curProfile;
 
 };
+
+//extern Settings *settings;
 
 #endif

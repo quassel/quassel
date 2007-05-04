@@ -40,7 +40,7 @@ void Style::init() {
   colors["15"] = QColor("silver");
 
   QTextCharFormat def;
-  //def.setFont(QFont("Lucida Mono"));
+  def.setFont(QFont("Verdana",9));
   formats["default"] = def;
 
   // %B - 0x02 - bold
@@ -97,15 +97,15 @@ void Style::init() {
   formats["%Dj"] = join;
   // %Dp - part
   QTextCharFormat part;
-  part.setForeground(QBrush("firebrick"));
+  part.setForeground(QBrush("indianred"));
   formats["%Dp"] = part;
   // %Dq - quit
   QTextCharFormat quit;
-  quit.setForeground(QBrush("firebrick"));
+  quit.setForeground(QBrush("indianred"));
   formats["%Dq"] = quit;
   // %Dk - kick
   QTextCharFormat kick;
-  kick.setForeground(QBrush("firebrick"));
+  kick.setForeground(QBrush("indianred"));
   formats["%Dk"] = kick;
   // %Dr - nick rename
   QTextCharFormat nren;
@@ -143,7 +143,11 @@ void Style::init() {
   QTextCharFormat flags;
   flags.setFontWeight(QFont::Bold);
   formats["%DM"] = flags;
-
+  // %DU - clickable URL
+  QTextCharFormat url;
+  url.setFontUnderline(true);
+  url.setAnchor(true);
+  formats["%DU"] = url;
 }
 
 QString Style::mircToInternal(QString mirc) {
@@ -162,10 +166,10 @@ QString Style::mircToInternal(QString mirc) {
  *  describing the formats of the string.
  * \param s string in internal format (% style format codes)
  */ 
-Style::StringFormats Style::internalToFormatted(QString s) {
+Style::FormattedString Style::internalToFormatted(QString s) {
   QHash<QString, int> toggles;
   QString p;
-  StringFormats sf;
+  FormattedString sf;
   QTextLayout::FormatRange rng;
   rng.format = formats["default"]; rng.start = 0; rng.length = -1; sf.formats.append(rng);
   toggles["default"] = sf.formats.count() - 1;
@@ -231,6 +235,16 @@ Style::StringFormats Style::internalToFormatted(QString s) {
         if(s[i] == 'D') i++;
         if(toggles.contains(key)) {
           sf.formats[toggles[key]].length = j - sf.formats[toggles[key]].start;
+          if(key == "%DU") {
+            // URL handling
+            // FIXME check for and handle format codes within URLs
+            QString u = s.mid(i - sf.formats[toggles[key]].length - 2, sf.formats[toggles[key]].length);
+            UrlInfo url;
+            url.start = sf.formats[toggles[key]].start;
+            url.end   = j;
+            url.url = QUrl(u);
+            sf.urls.append(url);
+          }
           toggles.remove(key);
         } else {
           QTextLayout::FormatRange range;

@@ -24,6 +24,7 @@
 #include <QMap>
 #include <QString>
 #include <QVariant>
+#include <QSqlDatabase>
 
 #include "server.h"
 
@@ -66,9 +67,13 @@ class Core : public QObject {
     QHash<QString, QDate> logFileDates;
     QHash<QString, QDir> logFileDirs;
 
+    QSqlDatabase logDb;
+
     //uint getNetIdx(QString net);
     void initBackLog();
+    void initBackLogOld();
     void logMessage(QString, Message);
+    void logMessageOld(QString, Message);
 
 };
 

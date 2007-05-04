@@ -28,6 +28,7 @@
 #include "guiproxy.h"
 #include "coreconnectdlg.h"
 #include "util.h"
+#include "chatwidget.h"
 
 #include "mainwin.h"
 
@@ -36,6 +37,8 @@ int main(int argc, char **argv) {
   QApplication::setOrganizationDomain("quassel-irc.org");
   QApplication::setApplicationName("Quassel IRC");
   QApplication::setOrganizationName("The Quassel Team");
+
+  qRegisterMetaType<LayoutTask>("LayoutTask");
 
   Global::runMode = Global::GUIOnly;
   Global::quasselDir = QDir::homePath() + "/.quassel";
@@ -46,9 +49,11 @@ int main(int argc, char **argv) {
   Style::init();
 
   MainWin mainWin;
+  mainWin.init();
   int exitCode = app.exec();
   delete guiProxy;
   delete global;
+  return exitCode;
 }
 
 void MainWin::syncToCore() {

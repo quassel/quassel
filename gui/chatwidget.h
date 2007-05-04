@@ -23,9 +23,11 @@
 
 #include "style.h"
 #include "message.h"
+#include "buffer.h"
+#include <QtCore>
 #include <QtGui>
 
-class ChatWidgetContents;
+class ChatLine;
 
 //!\brief Scroll area showing part of the chat messages for a given buffer.
 /** The contents of the scroll area, i.e. a widget of type ChatWidgetContents,
@@ -38,62 +40,39 @@ class ChatWidgetContents;
  * Because we use this as a custom widget in Qt Designer, we cannot use a constructor that takes custom
  * parameters. Instead, it is mandatory to call init() before using this widget.
  */
-class ChatWidget : public QScrollArea {
+class ChatWidget : public QAbstractScrollArea {
   Q_OBJECT
 
   public:
     ChatWidget(QWidget *parent = 0);
     ~ChatWidget();
-    void init(QString net, QString buf, ChatWidgetContents *contents);
+    void init(QString net, QString buf);
 
-  public slots:
-    void clear();
-    void appendMsg(Message);
-
-  protected:
-    void resizeEvent(QResizeEvent *event);
-
-  private:
-    QString networkName, bufferName;
-    ChatWidgetContents *contents;
-};
-
-class ChatLine;
-
-//!\brief Renders the complete contents of a Buffer.
-/** Usually, this widget is used within a scroll
- * area. Because Qt's rich-text rendering engine is much too slow for our purposes, we do everything
- * except for the actual glyph painting ourselves. While this makes managing text quite cumbersome
- * (we cannot, for example, use any of Qt's text editing, selecting or layouting features), it is
- * also orders of magnitudes faster than any of the usual methods.
- */
-class ChatWidgetContents : public QWidget {
-  Q_OBJECT
-
-  public:
-    ChatWidgetContents(QString net, QString buf, QWidget *parent = 0);
-    ~ChatWidgetContents();
-    //int heightForWidth(int w) const;
     virtual QSize sizeHint() const;
 
   public slots:
     void clear();
+    void prependChatLines(QList<ChatLine *>);
     void appendMsg(Message);
-    void setWidth(qreal);
+    void appendMsgList(QList<Message> *);
 
   protected:
-    virtual void paintEvent(QPaintEvent *event);
-
-  protected slots:
+    virtual void resizeEvent(QResizeEvent *event);
+    virtual void paintEvent(QPaintEvent * event);
     virtual void mousePressEvent(QMouseEvent *event);
     virtual void mouseReleaseEvent(QMouseEvent *event);
     virtual void mouseMoveEvent(QMouseEvent *event);
+    virtual void mouseDoubleClickEvent(QMouseEvent *event);
 
   private slots:
-    void layout(bool timer = false);
-    void triggerLayout();
+    void layout();
+    void scrollBarAction(int);
+    void scrollBarValChanged(int);
+    void ensureVisible(int line);
+    void handleScrollTimer();
 
   private:
+    QString networkName, bufferName;
     enum SelectionMode { NoSelection, TextSelected, LinesSelected };
     enum MouseMode { Normal, Pressed, DragTsSep, DragTextSep, MarkText, MarkLines };
     enum MousePos { None, OverTsSep, OverTextSep, OverUrl };
@@ -107,12 +86,13 @@ class ChatWidgetContents : public QWidget {
     int curLine;
     SelectionMode selectionMode;
     int selectionStart, selectionEnd, selectionLine;
-    QString networkName, bufferName;
-    QTimer *layoutTimer;
-    bool doLayout;
+
+    int bottomLine, bottomLineOffset;
 
     QList<ChatLine *> lines;
     QList<qreal> ycoords;
+    QTimer *scrollTimer;
+    QPoint pointerPosition;
 
     int senderX;
     int textX;
@@ -123,15 +103,20 @@ class ChatWidgetContents : public QWidget {
     int senderGrabPos;
     void computePositions();
 
-    qreal width;
+    int width;
     qreal height;
     qreal y;
+
+    void adjustScrollBar();
 
     int yToLineIdx(qreal y);
     void clearSelection();
     QString selectionToString();
+    void handleMouseMoveEvent(const QPoint &pos);
+
 };
 
+//FIXME: chatline doku
 //!\brief Containing the layout and providing the rendering of a single message.
 /** A ChatLine takes a Message object,
  * formats it (by turning the various message types into a human-readable form and afterwards pumping it through
@@ -161,22 +146,82 @@ class ChatLine : public QObject {
     QDateTime getTimeStamp();
     QString getSender();
     QString getText();
+
+    bool isUrl(int pos);
+    QUrl getUrl(int pos);
+
+  public slots:
+
   private:
     qreal hght;
     Message msg;
     QString networkName, bufferName;
-    //QString ts, nick, text;
     qreal tsWidth, senderWidth, textWidth;
-    QTextLayout tsLayout;
-    QTextLayout senderLayout;
-    QTextLayout textLayout;
-    QVector<QTextLayout::FormatRange> tsFormat, senderFormat, textFormat;
-    Style::StringFormats tsFormatted, senderFormatted, textFormatted;
+    Style::FormattedString tsFormatted, senderFormatted, textFormatted;
+
+    struct FormatRange {
+      int start;
+      int length;
+      int height;
+      QTextCharFormat format;
+    };
+    struct Word {
+      int start;
+      int length;
+      int trailing;
+      int height;
+    };
+    struct LineLayout {
+      int y;
+      int height;
+      int start;
+      int length;
+    };
+    QVector<int> charPos;
+    QVector<int> charWidths;
+    QVector<int> charHeights;
+    QVector<int> charUrlIdx;
+    QList<FormatRange> tsFormat, senderFormat, textFormat;
+    QList<Word> words;
+    QList<LineLayout> lineLayouts;
+    int minHeight;
 
     SelectionMode selectionMode;
     int selectionStart, selectionEnd;
     void formatMsg(Message);
+    void precomputeLine();
+    QList<FormatRange> calcFormatRanges(const Style::FormattedString &, QTextLayout::FormatRange additional = QTextLayout::FormatRange());
 };
 
+struct LayoutTask {
+  QList<Message> messages;
+  Buffer *buffer;
+  QString net, buf;
+  QList<ChatLine *> lines;
+};
+
+Q_DECLARE_METATYPE(LayoutTask);
+
+class LayoutThread : public QThread {
+  Q_OBJECT
+
+  public:
+    LayoutThread();
+    virtual ~LayoutThread();
+    virtual void run();
+
+  public:
+    void processTask(LayoutTask task);
+
+  signals:
+    void taskProcessed(LayoutTask task);
+
+  private:
+    QList<LayoutTask> queue;
+    QMutex mutex;
+    QWaitCondition condition;
+    bool abort;
+
+};
 
 #endif

@@ -18,39 +18,28 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _STYLE_H_
-#define _STYLE_H_
+#include "mainwin.h"
+#include "settingspages.h"
 
-#include <QtCore>
-#include <QtGui>
+void MainWin::setupSettingsDlg() {
+  settingsDlg = new SettingsDlg(this);
+  settingsDlg->setVisible(false);
 
-class Style {
+  settingsDlg->registerSettingsPage(new BufferManagementSettingsPage());
+  //settingsDlg->registerSettingsPage(new ConnectionSettingsPage());
 
-  public:
-    static void init();
-
-    struct UrlInfo {
-      int start, end;
-      QUrl url;
-    };
-
-    struct FormattedString {
-      QString text;
-      QList<QTextLayout::FormatRange> formats;
-      QList<UrlInfo> urls;
-    };
-
-    static QString mircToInternal(QString);
-    //static QString internalToMirc(QString);
-    static FormattedString internalToFormatted(QString);
-    static int sepTsSender() { return 10; }
-    static int sepSenderText() { return 10; }
+}
 
 
-  private:
-    static QHash<QString, QTextCharFormat> formats;
-    static QHash<QString, QColor> colors;
+BufferManagementSettingsPage::BufferManagementSettingsPage() {
+  ui.setupUi(this);
 
-};
+  ui.tree->headerItem()->setText(0, tr("Buffers"));
+  setEnabled(false);
+}
 
-#endif
+ConnectionSettingsPage::ConnectionSettingsPage() {
+  ui.setupUi(this);
+
+}
+

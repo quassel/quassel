@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by The Quassel Team                                *
+ *   Copyright (C) 2005-07 by The Quassel Team                             *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -26,12 +26,16 @@
 
 #include "global.h"
 #include "message.h"
+#include "chatwidget.h"
 
 class ServerListDlg;
 class CoreConnectDlg;
 class NetworkView;
 class Buffer;
+class BufferWidget;
 class SettingsDlg;
+
+extern LayoutThread *layoutThread;
 
 //!\brief The main window and central object of Quassel GUI.
 /** In addition to displaying the main window including standard stuff like a menubar,
@@ -43,13 +47,20 @@ class MainWin : public QMainWindow {
 
   public:
     MainWin();
+    ~MainWin();
+
+    void init();
+    void registerNetView(NetworkView *);
 
   protected:
     void closeEvent(QCloseEvent *event);
 
   signals:
     void sendInput(QString network, QString buffer, QString message);
-    void bufferSelected(QString net, QString buffer);
+    void bufferSelected(Buffer *);
+    void bufferUpdated(Buffer *);
+    void bufferDestroyed(Buffer *);
+    void backlogReceived(Buffer *, QList<Message>);
 
   private slots:
     void userInput(QString, QString, QString);
@@ -70,17 +81,22 @@ class MainWin : public QMainWindow {
     void showSettingsDlg();
 
     void showBuffer(QString net, QString buf);
+    void showBuffer(Buffer *);
 
   private:
     Ui::MainWin ui;
 
     void setupMenus();
+    void setupViews();
+    void setupSettingsDlg();
     void syncToCore();  // implemented in main_mono.cpp or main_gui.cpp
     Buffer * getBuffer(QString net, QString buf);
-    void buffersUpdated();
+    //void buffersUpdated();
 
-    QWorkspace *workspace;
-    QWidget *widget;
+    QSystemTrayIcon *systray;
+    //QWorkspace *workspace;
+    //QWidget *widget;
+    //BufferWidget *bufferWidget;
 
     ServerListDlg *serverListDlg;
     CoreConnectDlg *coreConnectDlg;
@@ -93,7 +109,7 @@ class MainWin : public QMainWindow {
     QHash<QString, QString> ownNick;
     QHash<QString, QList<Message> > coreBackLog;
 
-    NetworkView *netView;
+    QList<NetworkView *> netViews;
 };
 
 #endif
