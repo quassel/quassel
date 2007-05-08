@@ -915,12 +915,14 @@ void LayoutThread::run() {
     Q_ASSERT(queue.count()); //qDebug() << "process";
     LayoutTask task = queue.takeFirst();
     mutex.unlock();
+	/*
     foreach(Message msg, task.messages) {
       //qDebug() << msg.text;
       ChatLine *line = new ChatLine(msg, task.net, task.buf);
       task.lines.append(line);
     }
     emit taskProcessed(task);
+	*/
     //msleep(500);
   }
 }

@@ -30,9 +30,6 @@ class ChannelWidgetInput : public QLineEdit {
   public:
     ChannelWidgetInput(QWidget *parent = 0);
 
-  public slots:
-    void updateNickList(QStringList);
-
   protected:
     virtual bool event(QEvent *);
     virtual void keyPressEvent(QKeyEvent * event);
@@ -40,11 +37,18 @@ class ChannelWidgetInput : public QLineEdit {
   private slots:
     void enter();
 
+  public slots:
+    void updateNickList(QStringList);
+    
   private:
     qint32 idx;
     QStringList history;
     QStringList nickList;
-
+    
+    bool tabMode;
+    int lastCompletionLength;
+    QStringList tabCompleteList;
+    QStringList::Iterator nextCompletion;
 };
 
 #endif

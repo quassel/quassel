@@ -36,6 +36,7 @@ BufferWidget::BufferWidget(QWidget *parent) : QWidget(parent) {
   //setBaseSize(QSize(600,400));
   //setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
   connect(ui.inputEdit, SIGNAL(returnPressed()), this, SLOT(enterPressed()));
+  connect(this, SIGNAL(nickListUpdated(QStringList)), ui.inputEdit, SLOT(updateNickList(QStringList)));
 
 }
 
@@ -215,6 +216,7 @@ void BufferWidget::updateNickList(VarMap nicks) {
 
 // TODO Use 005
 void BufferWidget::updateNickList(BufferState *state, VarMap nicks) {
+  emit nickListUpdated(nicks.keys());
   QTreeWidget *tree = state->nickTree;
   if(!tree) return;
   tree->clear();

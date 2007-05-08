@@ -19,30 +19,58 @@
  ***************************************************************************/
 
 #include "channelwidgetinput.h"
+#include <QCompleter>
 
 ChannelWidgetInput::ChannelWidgetInput(QWidget *parent) : QLineEdit(parent) {
   idx = 0;
+  tabMode = false;
   connect(this, SIGNAL(returnPressed()), this, SLOT(enter()));
 }
 
 void ChannelWidgetInput::keyPressEvent(QKeyEvent * event) {
-  if(event->key() == Qt::Key_Up) {
-    if(idx > 0) { idx--; setText(history[idx]); }
-    event->accept();
-  } else if(event->key() == Qt::Key_Down) {
-    if(idx < history.count()) idx++;
-    if(idx < history.count()) setText(history[idx]);
-    else setText("");
-    event->accept();
-  } else if(event->key() == Qt::Key_Tab) {
+  if(event->key() == Qt::Key_Tab) {
     // Tabcomplete
-      if(cursorPosition() == text().length()) {
-      
-
+    if(text().length() > 0) {
+      if (not tabMode) {
+        QString tabAbbrev = text().left(cursorPosition()).section(' ',-1,-1);
+        tabCompleteList.clear();
+        foreach(QString nick, nickList) {
+          if(nick.toLower().startsWith(tabAbbrev.toLower())) {
+            tabCompleteList << nick;
+          }
+        }
+        
+        tabCompleteList.sort();
+        lastCompletionLength = tabAbbrev.length();
+        tabMode = true;
+        nextCompletion = tabCompleteList.begin();
+      }
+      if (nextCompletion != tabCompleteList.end()) {
+        for (int i = 0; i < lastCompletionLength; i++) {
+          backspace();
+        }
+        insert(*nextCompletion);
+        lastCompletionLength = nextCompletion->length();
+        nextCompletion++;
+      } else if (tabCompleteList.end() != tabCompleteList.begin()) {
+        nextCompletion = tabCompleteList.begin();
+      }
     }
     event->accept();
+    
   } else {
-    QLineEdit::keyPressEvent(event);
+    tabMode = false;
+    if(event->key() == Qt::Key_Up) {
+      if(idx > 0) { idx--; setText(history[idx]); }
+      event->accept();
+    } else if(event->key() == Qt::Key_Down) {
+      if(idx < history.count()) idx++;
+      if(idx < history.count()) setText(history[idx]);
+      else setText("");
+      event->accept();
+    } else {
+      QLineEdit::keyPressEvent(event);
+    }
   }
 }
 

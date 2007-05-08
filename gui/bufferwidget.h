@@ -50,9 +50,10 @@ class BufferWidget : public QWidget {
   signals:
     void userInput(QString msg);
     void aboutToClose();
-
+  
     void layoutMessages(LayoutTask);
-
+    void nickListUpdated(QStringList l);
+      
   protected:
 
   public slots:
