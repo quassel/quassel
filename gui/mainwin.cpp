@@ -211,6 +211,7 @@ void MainWin::showServerList() {
 //    serverListDlg = new ServerListDlg(this);
 //  }
   serverListDlg->show();
+  serverListDlg->raise();
 }
 
 void MainWin::showSettingsDlg() {

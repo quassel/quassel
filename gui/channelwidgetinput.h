@@ -23,6 +23,7 @@
 
 #include <QtCore>
 #include <QtGui>
+#include "tabcompleter.h"
 
 class ChannelWidgetInput : public QLineEdit {
   Q_OBJECT
@@ -40,15 +41,15 @@ class ChannelWidgetInput : public QLineEdit {
   public slots:
     void updateNickList(QStringList);
     
+  signals:
+    void nickListUpdated(QStringList);
+    
   private:
     qint32 idx;
     QStringList history;
     QStringList nickList;
-    
-    bool tabMode;
-    int lastCompletionLength;
-    QStringList tabCompleteList;
-    QStringList::Iterator nextCompletion;
+
+    TabCompleter *tabComplete;
 };
 
 #endif

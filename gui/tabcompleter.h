@@ -18,55 +18,39 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "channelwidgetinput.h"
+#ifndef _TABCOMPLETER_H_
+#define _TABCOMPLETER_H_
 
-ChannelWidgetInput::ChannelWidgetInput(QWidget *parent) : QLineEdit(parent) {
-  idx = 0;
-  //tabMode = false;
-  connect(this, SIGNAL(returnPressed()), this, SLOT(enter()));
-  TabCompleter *tc = new TabCompleter(this);
-  tabComplete = tc;
-  connect(this, SIGNAL(nickListUpdated(QStringList)), tabComplete, SLOT(updateNickList(QStringList)));
-}
+#include <QtCore>
+#include <QObject>
+#include <QLineEdit>
 
-void ChannelWidgetInput::keyPressEvent(QKeyEvent * event) {
-  if(event->key() == Qt::Key_Tab) {
-    // Tabcomplete
-    if(text().length() > 0) {
-      tabComplete->complete();
-    }
-    event->accept();
+class TabCompleter : public QObject {
+  Q_OBJECT
+  
+  public:
+    TabCompleter(QLineEdit *l, QObject *parent = 0);
+    void disable();
+    void complete();
+  
+  public slots:
+    void updateNickList(QStringList);
+    void updateChannelList(QStringList);
     
-  } else {
-    tabComplete->disable();
-    if(event->key() == Qt::Key_Up) {
-      if(idx > 0) { idx--; setText(history[idx]); }
-      event->accept();
-    } else if(event->key() == Qt::Key_Down) {
-      if(idx < history.count()) idx++;
-      if(idx < history.count()) setText(history[idx]);
-      else setText("");
-      event->accept();
-    } else {
-      QLineEdit::keyPressEvent(event);
-    }
-  }
-}
+  private:
+    QLineEdit *lineEdit;
+    QStringList completionTemplates;
+    QStringList nickList;
+    QStringList channelList;
+    int lastCompletionLength;
+    bool enabled;
+      
 
-bool ChannelWidgetInput::event(QEvent *e) {
-  if(e->type() == QEvent::KeyPress) {
-    keyPressEvent(dynamic_cast<QKeyEvent*>(e));
-    return true;
-  }
-  return QLineEdit::event(e);
-}
+    QStringList completionList;
+    QStringList::Iterator nextCompletion;
+    
+    void buildCompletionList();
+    
+};
 
-void ChannelWidgetInput::enter() {
-  history << text();
-  idx = history.count();
-}
-
-void ChannelWidgetInput::updateNickList(QStringList l) {
-  nickList = l;
-  emit nickListUpdated(l);
-}
+#endif

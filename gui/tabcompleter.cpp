@@ -18,55 +18,56 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "channelwidgetinput.h"
+#include "tabcompleter.h"
 
-ChannelWidgetInput::ChannelWidgetInput(QWidget *parent) : QLineEdit(parent) {
-  idx = 0;
-  //tabMode = false;
-  connect(this, SIGNAL(returnPressed()), this, SLOT(enter()));
-  TabCompleter *tc = new TabCompleter(this);
-  tabComplete = tc;
-  connect(this, SIGNAL(nickListUpdated(QStringList)), tabComplete, SLOT(updateNickList(QStringList)));
+TabCompleter::TabCompleter(QLineEdit *l, QObject *parent) : QObject(parent) {
+  lineEdit = l;
+  enabled = false;
 }
 
-void ChannelWidgetInput::keyPressEvent(QKeyEvent * event) {
-  if(event->key() == Qt::Key_Tab) {
-    // Tabcomplete
-    if(text().length() > 0) {
-      tabComplete->complete();
-    }
-    event->accept();
-    
-  } else {
-    tabComplete->disable();
-    if(event->key() == Qt::Key_Up) {
-      if(idx > 0) { idx--; setText(history[idx]); }
-      event->accept();
-    } else if(event->key() == Qt::Key_Down) {
-      if(idx < history.count()) idx++;
-      if(idx < history.count()) setText(history[idx]);
-      else setText("");
-      event->accept();
-    } else {
-      QLineEdit::keyPressEvent(event);
-    }
-  }
-}
-
-bool ChannelWidgetInput::event(QEvent *e) {
-  if(e->type() == QEvent::KeyPress) {
-    keyPressEvent(dynamic_cast<QKeyEvent*>(e));
-    return true;
-  }
-  return QLineEdit::event(e);
-}
-
-void ChannelWidgetInput::enter() {
-  history << text();
-  idx = history.count();
-}
-
-void ChannelWidgetInput::updateNickList(QStringList l) {
+void TabCompleter::updateNickList(QStringList l) {
   nickList = l;
-  emit nickListUpdated(l);
 }
+
+void TabCompleter::updateChannelList(QStringList l) {
+
+}
+
+void TabCompleter::buildCompletionList() {
+  // this is the first time tab is pressed -> build up the completion list and it's iterator
+  QString tabAbbrev = lineEdit->text().left(lineEdit->cursorPosition()).section(' ',-1,-1);
+  completionList.clear();
+  foreach(QString nick, nickList) {
+    if(nick.toLower().startsWith(tabAbbrev.toLower())) {
+      completionList << nick;
+    }
+  }
+  completionList.sort();
+  nextCompletion = completionList.begin();
+  lastCompletionLength = tabAbbrev.length();
+}
+
+void TabCompleter::complete() {
+  if (not enabled) {
+    buildCompletionList();
+    enabled = true;  
+  }
+  
+  if (nextCompletion != completionList.end()) {
+    // clear previous completion
+    for (int i = 0; i < lastCompletionLength; i++) {
+      lineEdit->backspace();
+    }
+    lineEdit->insert(*nextCompletion + ' ');
+    lastCompletionLength = nextCompletion->length() + 1;
+    nextCompletion++;
+  } else if (completionList.begin() != completionList.end()) {
+    nextCompletion = completionList.begin();
+  }
+  
+}
+
+void TabCompleter::disable() {
+  enabled = false;
+}
+
