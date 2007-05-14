@@ -172,19 +172,21 @@ void Server::handleServerMsg(QString msg) {
     
     // next string without a whitespace is the command
     cmd = msg.section(' ', 0, 0).toUpper();
-    msg = msg.section(' ', 1);
+    msg = msg.mid(cmd.length());
     
     // get the parameters
-    QString left, trailing;
-    left = msg.section(" :", 0, 0);
-    trailing = msg.section(" :", -1, -1);
-    if(!left.isEmpty()) {
-      params << left.split(' ', QString::SkipEmptyParts);
+    QString trailing = "";
+    if(msg.contains(" :")) {
+      trailing = msg.section(" :", 1);
+      msg = msg.section(" :", 0, 0);
+    }
+    if(!msg.isEmpty()) {
+      params << msg.split(' ', QString::SkipEmptyParts);
     }
     if(!trailing.isEmpty()) {
       params << trailing;
     }
-    
+
     // numeric replies have the target as first param (RFC 2812 - 2.4). this is usually our own nick. Remove this!
     uint num = cmd.toUInt();
     if(num > 0) {
