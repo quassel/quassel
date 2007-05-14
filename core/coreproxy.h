@@ -44,22 +44,24 @@ class CoreProxy : public QObject {
     inline void csServerConnected(QString net)                          { send(CS_SERVER_CONNECTED, net); }
     inline void csServerDisconnected(QString net)                       { send(CS_SERVER_DISCONNECTED, net); }
     inline void csServerState(QString net, VarMap data)                 { send(CS_SERVER_STATE, net, data); }
-    inline void csDisplayMsg(QString net, Message msg)                  { send(CS_DISPLAY_MSG, net, QVariant::fromValue(msg)); }
+    inline void csDisplayMsg(Message msg)                               { send(CS_DISPLAY_MSG, QVariant::fromValue(msg)); }
     inline void csDisplayStatusMsg(QString net, QString msg)            { send(CS_DISPLAY_STATUS_MSG, net, msg); }
     inline void csModeSet(QString net, QString target, QString mode)    { send(CS_MODE_SET, net, target, mode); }
     inline void csTopicSet(QString net, QString buf, QString topic)     { send(CS_TOPIC_SET, net, buf, topic); }
-    inline void csSetNicks(QString net, QString buf, QStringList nicks) { send(CS_SET_NICKS, net, buf, nicks); }
     inline void csNickAdded(QString net, QString nick, VarMap props)    { send(CS_NICK_ADDED, net, nick, props); }
     inline void csNickRemoved(QString net, QString nick)                { send(CS_NICK_REMOVED, net, nick); }
     inline void csNickRenamed(QString net, QString oldn, QString newn)  { send(CS_NICK_RENAMED, net, oldn, newn); }
     inline void csNickUpdated(QString net, QString nick, VarMap props)  { send(CS_NICK_UPDATED, net, nick, props); }
     inline void csOwnNickSet(QString net, QString nick)                 { send(CS_OWN_NICK_SET, net, nick); }
     inline void csQueryRequested(QString net, QString nick)             { send(CS_QUERY_REQUESTED, net, nick); }
+    inline void csBacklogData(BufferId id, QList<QVariant> msg, bool done) { send(CS_BACKLOG_DATA, QVariant::fromValue(id), msg, done); }
 
   signals:
     void gsPutGlobalData(QString, QVariant);
-    void gsUserInput(QString, QString, QString);
+    void gsUserInput(BufferId, QString);
     void gsRequestConnect(QStringList networks);
+    void gsImportBacklog();
+    void gsRequestBacklog(BufferId, QVariant, QVariant);
 
     void requestServerStates();
 

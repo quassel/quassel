@@ -22,6 +22,7 @@
 #include "logger.h"
 #include "core.h"
 #include "message.h"
+#include "util.h"
 
 #include <QtCore>
 #include <QDomDocument>
@@ -33,6 +34,9 @@ Global::Global() {
   qInstallMsgHandler(messageHandler);
   qRegisterMetaType<Message>("Message");
   qRegisterMetaTypeStreamOperators<Message>("Message");
+  qRegisterMetaType<BufferId>("BufferId");
+  qRegisterMetaTypeStreamOperators<BufferId>("BufferId");
+
   //initIconMap();
 }
 
@@ -94,6 +98,35 @@ void Global::initIconMap() {
 */
 }
 
+/**************************************************************************************/
+
+
+
+BufferId::BufferId(uint _id, QString _net, QString _buf, uint _gid) : id(_id), gid(_gid), net(_net), buf(_buf) {
+
+
+}
+
+QString BufferId::buffer() {
+  if(isChannelName(buf)) return buf;
+  else return nickFromMask(buf);
+}
+
+QDataStream &operator<<(QDataStream &out, const BufferId &bufferId) {
+  out << bufferId.id << bufferId.gid << bufferId.net.toUtf8() << bufferId.buf.toUtf8();
+}
+
+QDataStream &operator>>(QDataStream &in, BufferId &bufferId) {
+  QByteArray n, b;
+  BufferId i;
+  in >> bufferId.id >> bufferId.gid >> n >> b;
+  bufferId.net = QString::fromUtf8(n);
+  bufferId.buf = QString::fromUtf8(b);
+}
+
+uint qHash(const BufferId &bid) {
+  return qHash(bid.id);
+}
 
 /**
  * Retrieves an icon determined by its symbolic name. The mapping shall later

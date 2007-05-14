@@ -27,6 +27,8 @@
 #include <QSqlDatabase>
 
 #include "server.h"
+#include "backlog.h"
+#include "global.h"
 
 class Core : public QObject {
   Q_OBJECT
@@ -35,45 +37,52 @@ class Core : public QObject {
 
     Core();
     ~Core();
-    QHash<QString, QList<Message> > getBackLog() { return backLog; };
+    QHash<QString, QList<Message> > getBackLog() { return QHash<QString, QList<Message> >()/*backLog*/; }; // FIXME
+    QList<BufferId> getBuffers();
 
   public slots:
     void connectToIrc(QStringList);
+    void sendBacklog(BufferId, QVariant, QVariant);
+    void msgFromGUI(BufferId, QString message);
 
   signals:
-    void msgFromGUI(QString network, QString channel, QString message);
-    void displayMsg(QString network, Message message);
+    void msgFromGUI(QString net, QString buf, QString message);
+    void displayMsg(Message message);
     void displayStatusMsg(QString, QString);
 
     void connectToIrc(QString net);
     void disconnectFromIrc(QString net);
     void serverStateRequested();
 
+    void backlogData(BufferId, QList<QVariant>, bool done);
+
   private slots:
     //void serverStatesRequested();
     void globalDataUpdated(QString);
     void recvStatusMsgFromServer(QString msg);
-    void recvMessageFromServer(Message msg);
+    //void recvMessageFromServer(Message msg);
+    void recvMessageFromServer(Message::Type, QString target, QString text, QString sender = "", quint8 flags = Message::None);
     void serverDisconnected(QString net);
 
   private:
+    Backlog backlog;
     QDir backLogDir;
     bool backLogEnabled;
     QHash<QString, Server *> servers;
-    QHash<QString, QList<Message> > backLog;
+    //QHash<QString, QList<Message> > backLog;
     //QHash<QString, int> netIdx;
-    QHash<QString, QFile *> logFiles;
-    QHash<QString, QDataStream *> logStreams;
-    QHash<QString, QDate> logFileDates;
-    QHash<QString, QDir> logFileDirs;
+    //QHash<QString, QFile *> logFiles;
+    //QHash<QString, QDataStream *> logStreams;
+    //QHash<QString, QDate> logFileDates;
+    //QHash<QString, QDir> logFileDirs;
 
-    QSqlDatabase logDb;
+    //QSqlDatabase logDb;
 
     //uint getNetIdx(QString net);
-    void initBackLog();
-    void initBackLogOld();
-    void logMessage(QString, Message);
-    void logMessageOld(QString, Message);
+    //void initBackLog();
+    //void initBackLogOld();
+    //void logMessage(QString, Message);
+    //void logMessageOld(QString, Message);
 
 };
 

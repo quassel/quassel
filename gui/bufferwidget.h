@@ -51,7 +51,7 @@ class BufferWidget : public QWidget {
     void userInput(QString msg);
     void aboutToClose();
   
-    void layoutMessages(LayoutTask);
+    //void layoutMessages(LayoutTask);
     void nickListUpdated(QStringList l);
       
   protected:
@@ -59,7 +59,7 @@ class BufferWidget : public QWidget {
   public slots:
     void setBuffer(Buffer *);
     void saveState();
-    void prependMessages(Buffer *, QList<Message>);  // for backlog processing
+    //void prependMessages(Buffer *, QList<Message>);  // for backlog processing
 
   protected:
     void resizeEvent ( QResizeEvent * event );
@@ -76,7 +76,7 @@ class BufferWidget : public QWidget {
     void setTopic(QString topic);
     void setActive(bool act = true);
 
-    void messagesLayouted(LayoutTask);
+    //void messagesLayouted(LayoutTask);
 
 
   private:
@@ -92,9 +92,9 @@ class BufferWidget : public QWidget {
     QString networkName;
     QString bufferName;
 
-    LayoutThread *layoutThread;
-    QHash<Buffer *, QList<ChatLine*> > chatLineCache;
-    QHash<Buffer *, QList<Message> > msgCache;
+    //LayoutThread *layoutThread;
+    //QHash<Buffer *, QList<ChatLine*> > chatLineCache;
+    //QHash<Buffer *, QList<Message> > msgCache;
 };
 
 struct BufferState {

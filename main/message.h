@@ -22,6 +22,7 @@
 #define _MESSAGE_H_
 
 #include <QtCore>
+#include "global.h"
 
 struct Message {
 
@@ -29,16 +30,25 @@ struct Message {
   enum Type { Plain, Notice, Action, Nick, Mode, Join, Part, Quit, Kick, Kill, Server, Info, Error };
   enum Flags { None = 0, Self = 1, PrivMsg = 2, Highlight = 4 };
 
+  uint msgId;
   Type type;
   quint8 flags;
   QString target;
   QString sender;
   QString text;
   QDateTime timeStamp;
+  BufferId buffer;
 
-  Message(QString _target = "", Type _type = Plain, QString _text = "", QString _sender = "", quint8 _flags = None)
+  Message(QString _target, Type _type = Plain, QString _text = "", QString _sender = "", quint8 _flags = None)
   : target(_target), text(_text), sender(_sender), type(_type), flags(_flags) { timeStamp = QDateTime::currentDateTime().toUTC(); }
 
+  Message(BufferId _buffer = BufferId(), Type _type = Plain, QString _text = "", QString _sender = "", quint8 _flags = None)
+  : buffer(_buffer), text(_text), sender(_sender), type(_type), flags(_flags) { timeStamp = QDateTime::currentDateTime().toUTC(); }
+
+  Message(QDateTime _ts, BufferId _buffer = BufferId(), Type _type = Plain, QString _text = "", QString _sender = "", quint8 _flags = None)
+  : timeStamp(_ts), buffer(_buffer), text(_text), sender(_sender), type(_type), flags(_flags) {}
+  
+/*
   static Message plain(QString _target, QString _text, QString _sender = "", quint8 _flags = None);
   static Message notice(QString _target, QString _text, QString _sender = "", quint8 _flags = None);
   static Message action(QString _target, QString _text, QString _sender = "", quint8 _flags = None);
@@ -52,6 +62,7 @@ struct Message {
   static Message server(QString _target, QString _text, QString _sender = "", quint8 _flags = None);
   static Message info(QString _target, QString _text, QString _sender = "", quint8 _flags = None);
   static Message error(QString _target, QString _text, QString _sender = "", quint8 _flags = None);
+*/
 };
 
 QDataStream &operator<<(QDataStream &out, const Message &msg);

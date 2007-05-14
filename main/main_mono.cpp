@@ -38,8 +38,6 @@ int main(int argc, char **argv) {
   QApplication::setApplicationName("Quassel IRC");
   QApplication::setOrganizationName("The Quassel Team");
 
-  qRegisterMetaType<LayoutTask>("LayoutTask");
-
   Global::runMode = Global::Monolithic;
   Global::quasselDir = QDir::homePath() + "/.quassel";
 
@@ -66,7 +64,7 @@ int main(int argc, char **argv) {
 
 void MainWin::syncToCore() {
   Q_ASSERT(global->getData("CoreReady").toBool());
-  coreBackLog = core->getBackLog();
+  coreBuffers = core->getBuffers();
   // NOTE: We don't need to request server states, because in the monolithic version there can't be
   //       any servers connected at this stage...
 }

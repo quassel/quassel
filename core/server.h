@@ -65,7 +65,8 @@ class Server : public QThread {
     void serverState(QString net, VarMap data);
     void recvRawServerMsg(QString);
     void displayStatusMsg(QString);
-    void displayMsg(Message msg);
+    //void displayMsg(Message msg);
+    void displayMsg(Message::Type, QString target, QString text, QString sender = "", quint8 flags = Message::None);
     void connected(QString network);
     void disconnected(QString network);
 
@@ -75,7 +76,6 @@ class Server : public QThread {
     void nickUpdated(QString network, QString nick, VarMap props);
     void modeSet(QString network, QString target, QString mode);
     void topicSet(QString network, QString buffer, QString topic);
-    void setNicks(QString network, QString buffer, QStringList nicks);
     void ownNickSet(QString network, QString newNick);
     void queryRequested(QString network, QString nick);
 

@@ -90,7 +90,7 @@ void Server::socketError( QAbstractSocket::SocketError err ) {
 
 void Server::socketConnected( ) {
   emit connected(network);
-  putRawLine(QString("NICK :%1").arg(identity["NickList"].toStringList()[0]));
+  putRawLine(QString("NICK :%1").arg(identity["NickList"].toStringList()[0]));  // FIXME: try more nicks if error occurs
   putRawLine(QString("USER %1 8 * :%2").arg(identity["Ident"].toString()).arg(identity["RealName"].toString()));
 }
 
@@ -201,7 +201,7 @@ void Server::handleServerMsg(QString msg) {
       defaultServerHandler(cmd, prefix, params);
     }
   } catch(Exception e) {
-    emit displayMsg(Message::error("", e.msg()));
+    emit displayMsg(Message::Error, "", e.msg());
   }
 }
 
@@ -213,24 +213,24 @@ void Server::defaultServerHandler(QString cmd, QString prefix, QStringList param
     switch(num) {
       // Welcome, status, info messages. Just display these.
       case 2: case 3: case 4: case 5: case 251: case 252: case 253: case 254: case 255: case 372: case 375:
-        emit displayMsg(Message::server("", params.join(" "), prefix));
+        emit displayMsg(Message::Server, "", params.join(" "), prefix);
         break;
       // Server error messages without param, just display them
       case 409: case 411: case 412: case 422: case 424: case 431: case 445: case 446: case 451: case 462:
       case 463: case 464: case 465: case 466: case 472: case 481: case 483: case 485: case 491: case 501: case 502:
-        emit displayMsg(Message::error("", params.join(" "), prefix));
+        emit displayMsg(Message::Error, "", params.join(" "), prefix);
         break;
       // Server error messages, display them in red. First param will be appended.
       case 401: case 402: case 403: case 404: case 406: case 408: case 415: case 421: case 432: case 442:
       { QString p = params.takeFirst();
-        emit displayMsg(Message::error("", params.join(" ") + " " + p, prefix));
+        emit displayMsg(Message::Error, "", params.join(" ") + " " + p, prefix);
         break;
       }
       // Server error messages which will be displayed with a colon between the first param and the rest
       case 413: case 414: case 423: case 436: case 441: case 444: case 461:
       case 467: case 471: case 473: case 474: case 475: case 476: case 477: case 478: case 482:
       { QString p = params.takeFirst();
-        emit displayMsg(Message::error("", p + ": " + params.join(" ")));
+        emit displayMsg(Message::Error, "", p + ": " + params.join(" "));
         break;
       }
       // Ignore these commands.
@@ -239,11 +239,11 @@ void Server::defaultServerHandler(QString cmd, QString prefix, QStringList param
 
       // Everything else will be marked in red, so we can add them somewhere.
       default:
-        emit displayMsg(Message::error("", cmd + " " + params.join(" "), prefix));
+        emit displayMsg(Message::Error, "", cmd + " " + params.join(" "), prefix);
     }
     //qDebug() << prefix <<":"<<cmd<<params;
   } else {
-    emit displayMsg(Message::error("", QString("Unknown: ") + cmd + " " + params.join(" "), prefix));
+    emit displayMsg(Message::Error, "", QString("Unknown: ") + cmd + " " + params.join(" "), prefix);
     //qDebug() << prefix <<":"<<cmd<<params;
   }
 }
@@ -267,12 +267,12 @@ void Server::handleUserInput(QString bufname, QString usrMsg) {
       defaultUserHandler(bufname, cmd, msg);
     }
   } catch(Exception e) {
-    emit displayMsg(Message::error("", e.msg()));
+    emit displayMsg(Message::Error, "", e.msg());
   }
 }
 
 void Server::defaultUserHandler(QString bufname, QString cmd, QString msg) {
-  emit displayMsg(Message::error("", QString("Error: %1 %2").arg(cmd).arg(msg)));
+  emit displayMsg(Message::Error, "", QString("Error: %1 %2").arg(cmd).arg(msg));
 
 }
 
@@ -343,6 +343,7 @@ void Server::handleUserMode(QString bufname, QString msg) {
   putCmd("MODE", msg.split(' ', QString::SkipEmptyParts));
 }
 
+// TODO: show privmsgs
 void Server::handleUserMsg(QString bufname, QString msg) {
   QString nick = msg.section(" ", 0, 0);
   msg = msg.section(" ", 1);
@@ -371,6 +372,7 @@ void Server::handleUserPart(QString bufname, QString msg) {
   putCmd("PART", params);
 }
 
+// TODO: implement queries
 void Server::handleUserQuery(QString bufname, QString msg) {
   QString nick = msg.section(' ', 0, 0);
   if(!nick.isEmpty()) emit queryRequested(network, nick);
@@ -390,9 +392,9 @@ void Server::handleUserSay(QString bufname, QString msg) {
   params << bufname << msg;
   putCmd("PRIVMSG", params);
   if(isChannelName(bufname)) {
-    emit displayMsg(Message::plain(params[0], msg, ownNick, Message::Self));
+    emit displayMsg(Message::Plain, params[0], msg, ownNick, Message::Self);
   } else {
-    emit displayMsg(Message::plain(params[0], msg, ownNick, Message::Self|Message::PrivMsg));
+    emit displayMsg(Message::Plain, params[0], msg, ownNick, Message::Self|Message::PrivMsg);
   }
 }
 
@@ -441,7 +443,7 @@ void Server::handleServerJoin(QString prefix, QStringList params) {
       nicks[nick] = n;
       emit nickAdded(network, nick, n);
     }
-    emit displayMsg(Message::join(params[0], params[0], prefix));
+    emit displayMsg(Message::Join, params[0], params[0], prefix);
   //}
 }
 
@@ -455,7 +457,7 @@ void Server::handleServerKick(QString prefix, QStringList params) {
   chans.remove(params[0]);
   QString msg = nick;
   if(params.count() > 2) msg = QString("%1 %2").arg(msg).arg(params[2]);
-  emit displayMsg(Message::kick(params[0], msg, prefix));
+  emit displayMsg(Message::Kick, params[0], msg, prefix);
   if(chans.count() > 0) {
     n["Channels"] = chans;
     nicks[nick] = n;
@@ -496,12 +498,12 @@ void Server::handleServerMode(QString prefix, QStringList params) {
         m++;
       }
     }
-    emit displayMsg(Message::mode(params[0], params.join(" "), prefix));
+    emit displayMsg(Message::Mode, params[0], params.join(" "), prefix);
   } else {
     //Q_ASSERT(nicks.contains(params[0]));
     //VarMap n = nicks[params[0]].toMap();
     //QString mode = n["Mode"].toString();
-    emit displayMsg(Message::mode("", params.join(" ")));
+    emit displayMsg(Message::Mode, "", params.join(" "));
   }
 }
 
@@ -512,8 +514,8 @@ void Server::handleServerNick(QString prefix, QStringList params) {
   nicks[newnick] = v;
   VarMap chans = v["Channels"].toMap();
   foreach(QString c, chans.keys()) {
-    if(oldnick != ownNick) { emit displayMsg(Message::nick(c, newnick, prefix)); }
-    else { emit displayMsg(Message::nick(c, newnick, newnick)); }
+    if(oldnick != ownNick) { emit displayMsg(Message::Nick, c, newnick, prefix); }
+    else { emit displayMsg(Message::Nick, c, newnick, newnick); }
   }
   emit nickRenamed(network, oldnick, newnick);
   if(oldnick == ownNick) {
@@ -524,8 +526,8 @@ void Server::handleServerNick(QString prefix, QStringList params) {
 
 void Server::handleServerNotice(QString prefix, QStringList params) {
   //Message msg(Message::Notice, params[1], prefix);
-  if(currentServer.isEmpty() || prefix == currentServer) emit displayMsg(Message::server("", params[1], prefix));
-  else emit displayMsg(Message::notice("", params[1], prefix));
+  if(currentServer.isEmpty() || prefix == currentServer) emit displayMsg(Message::Server, "", params[1], prefix);
+  else emit displayMsg(Message::Notice, "", params[1], prefix);
 }
 
 void Server::handleServerPart(QString prefix, QStringList params) {
@@ -537,7 +539,7 @@ void Server::handleServerPart(QString prefix, QStringList params) {
   chans.remove(params[0]);
   QString msg;
   if(params.count() > 1) msg = params[1];
-  emit displayMsg(Message::part(params[0], msg, prefix));
+  emit displayMsg(Message::Part, params[0], msg, prefix);
   if(chans.count() > 0) {
     n["Channels"] = chans;
     nicks[nick] = n;
@@ -559,13 +561,13 @@ void Server::handleServerPing(QString prefix, QStringList params) {
 void Server::handleServerPrivmsg(QString prefix, QStringList params) {
   updateNickFromMask(prefix);
   Q_ASSERT(params.count() >= 2);
-  if(params.count()<2) emit displayMsg(Message::plain(params[0], "", prefix));
+  if(params.count()<2) emit displayMsg(Message::Plain, params[0], "", prefix);
   else {
     if(params[0] == ownNick) {
-      emit displayMsg(Message::plain("", params[1], prefix, Message::PrivMsg));
+      emit displayMsg(Message::Plain, "", params[1], prefix, Message::PrivMsg);
     } else {
       Q_ASSERT(isChannelName(params[0]));  // should be channel!
-      emit displayMsg(Message::plain(params[0], params[1], prefix));
+      emit displayMsg(Message::Plain, params[0], params[1], prefix);
     }
   }
 }
@@ -575,7 +577,7 @@ void Server::handleServerQuit(QString prefix, QStringList params) {
   Q_ASSERT(nicks.contains(nick));
   VarMap chans = nicks[nick]["Channels"].toMap();
   foreach(QString c, chans.keys()) {
-    emit displayMsg(Message::quit(c, params[0], prefix));
+    emit displayMsg(Message::Quit, c, params[0], prefix);
   }
   nicks.remove(nick);
   emit nickRemoved(network, nick);
@@ -586,7 +588,7 @@ void Server::handleServerTopic(QString prefix, QStringList params) {
   Q_ASSERT(nicks.contains(nick));
   topics[params[0]] = params[1];
   emit topicSet(network, params[0], params[1]);
-  emit displayMsg(Message::server(params[0], tr("%1 has changed topic for %2 to: \"%3\"").arg(nick).arg(params[0]).arg(params[1])));
+  emit displayMsg(Message::Server, params[0], tr("%1 has changed topic for %2 to: \"%3\"").arg(nick).arg(params[0]).arg(params[1]));
 }
 
 /* RPL_WELCOME */
@@ -599,7 +601,7 @@ void Server::handleServer001(QString prefix, QStringList params) {
   nicks[ownNick] = n;
   emit ownNickSet(network, ownNick);
   emit nickAdded(network, ownNick, VarMap());
-  emit displayMsg(Message::server("", params[0], prefix));
+  emit displayMsg(Message::Server, "", params[0], prefix);
   // send performlist
   QStringList performList = networkSettings["Perform"].toString().split( "\n" );
   int count = performList.count();
@@ -641,20 +643,20 @@ void Server::handleServer005(QString prefix, QStringList params) {
 void Server::handleServer331(QString prefix, QStringList params) {
   topics[params[0]] = "";
   emit topicSet(network, params[0], "");
-  emit displayMsg(Message::server(params[0], tr("No topic is set for %1.").arg(params[0])));
+  emit displayMsg(Message::Server, params[0], tr("No topic is set for %1.").arg(params[0]));
 }
 
 /* RPL_TOPIC */
 void Server::handleServer332(QString prefix, QStringList params) {
   topics[params[0]] = params[1];
   emit topicSet(network, params[0], params[1]);
-  emit displayMsg(Message::server(params[0], tr("Topic for %1 is \"%2\"").arg(params[0]).arg(params[1])));
+  emit displayMsg(Message::Server, params[0], tr("Topic for %1 is \"%2\"").arg(params[0]).arg(params[1]));
 }
 
 /* Topic set by... */
 void Server::handleServer333(QString prefix, QStringList params) {
-  emit displayMsg(Message::server(params[0],
-                    tr("Topic set by %1 on %2").arg(params[1]).arg(QDateTime::fromTime_t(params[2].toUInt()).toString())));
+  emit displayMsg(Message::Server, params[0],
+                    tr("Topic set by %1 on %2").arg(params[1]).arg(QDateTime::fromTime_t(params[2].toUInt()).toString()));
 }
 
 /* RPL_NAMREPLY */
@@ -692,7 +694,7 @@ void Server::handleServer353(QString prefix, QStringList params) {
 /* RPL_NICKNAMEINUSER */
 void Server::handleServer433(QString prefix, QStringList params) {
   QString errnick = params[0];
-  emit displayMsg(Message::error("", tr("Nick %1 is already taken").arg(errnick)));
+  emit displayMsg(Message::Error, "", tr("Nick %1 is already taken").arg(errnick));
   // if there is a problem while connecting to the server -> we handle it
   // TODO rely on another source...
   if(currentServer.isEmpty()) {
@@ -701,7 +703,7 @@ void Server::handleServer433(QString prefix, QStringList params) {
     if (desiredNicks.size() > nextNick) {
       putCmd("NICK", QStringList(desiredNicks[nextNick]));
     } else {
-      emit displayMsg(Message::error("", "All nicks in nicklist taken... use: /nick <othernick> to continue"));
+      emit displayMsg(Message::Error, "", "All nicks in nicklist taken... use: /nick <othernick> to continue");
     }
   }
 }

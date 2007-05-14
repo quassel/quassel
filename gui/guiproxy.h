@@ -41,8 +41,10 @@ class GUIProxy : public QObject {
     GUIProxy();
 
   public slots:
-    inline void gsUserInput(QString net, QString buf, QString msg)    { send(GS_USER_INPUT, net, buf, msg); }
+    inline void gsUserInput(BufferId id, QString msg)                 { send(GS_USER_INPUT, QVariant::fromValue(id), msg); }
     inline void gsRequestConnect(QStringList networks)                { send(GS_REQUEST_CONNECT, networks); }
+    inline void gsImportBacklog()                                     { send(GS_IMPORT_BACKLOG); }
+    inline void gsRequestBacklog(BufferId id, QVariant v1, QVariant v2) { send(GS_REQUEST_BACKLOG, QVariant::fromValue(id), v1, v2); }
 
     void connectToCore(QString host, quint16 port);
     void disconnectFromCore();
@@ -52,19 +54,21 @@ class GUIProxy : public QObject {
     void csServerState(QString, QVariant);
     void csServerConnected(QString);
     void csServerDisconnected(QString);
-    void csDisplayMsg(QString, Message);
+    void csDisplayMsg(Message);
     void csDisplayStatusMsg(QString, QString);
     void csUpdateGlobalData(QString key, QVariant data);
     void csGlobalDataChanged(QString key);
     void csModeSet(QString, QString, QString);
     void csTopicSet(QString, QString, QString);
-    void csSetNicks(QString, QString, QStringList);
     void csNickAdded(QString, QString, VarMap);
     void csNickRemoved(QString, QString);
     void csNickRenamed(QString, QString, QString);
     void csNickUpdated(QString, QString, VarMap);
     void csOwnNickSet(QString, QString);
     void csQueryRequested(QString, QString);
+    void csBacklogData(BufferId, QList<QVariant>, bool);
+
+    void csGeneric(int, QVariant, QVariant);
 
     void coreConnected();
     void coreDisconnected();

@@ -24,10 +24,12 @@
 #include <QtCore>
 #include <QtGui>
 
+#include "chatwidget.h"
 #include "global.h"
 #include "message.h"
 
 class ChatWidget;
+class ChatLine;
 class ChatWidgetContents;
 class BufferWidget;
 struct BufferState;
@@ -41,7 +43,8 @@ class Buffer : public QObject {
   Q_OBJECT
 
   public:
-    Buffer(QString network, QString buffer);
+    //Buffer(QString network, QString buffer);
+    Buffer(BufferId);
     ~Buffer();
     static void init();
 
@@ -51,14 +54,17 @@ class Buffer : public QObject {
 
     QString networkName() { return _networkName; }
     QString bufferName() { return _bufferName; }
-    QList<Message> *contents() { return &_contents; }
+    BufferId bufferId() { return id; }
+    QList<ChatLine *> contents() { return lines; }
     VarMap nickList() { return nicks; }
     QString topic() { return _topic; }
     QString ownNick() { return _ownNick; }
 
   signals:
-    void userInput(QString, QString, QString);
-    void msgDisplayed(Message);
+    void userInput(BufferId, QString);
+    //void msgDisplayed(Message);
+    void chatLineAppended(ChatLine *);
+    void chatLinePrepended(ChatLine *);
     void nickListChanged(VarMap nicks);
     void topicSet(QString topic);
     void ownNickSet(QString ownNick);
@@ -67,8 +73,11 @@ class Buffer : public QObject {
 
   public slots:
     void setActive(bool active = true);
-    void displayMsg(Message);
-    void prependMessages(QList<Message>); // for backlog
+    //void displayMsg(Message);
+    //void prependMessages(QList<Message>); // for backlog
+    void appendChatLine(ChatLine *);
+    void prependChatLine(ChatLine *);
+    //void prependChatLines(QList<ChatLine *>);
     //void recvStatusMsg(QString msg);
     void setTopic(QString);
     //void setNicks(QStringList);
@@ -81,6 +90,7 @@ class Buffer : public QObject {
     void processUserInput(QString);
 
   private:
+    BufferId id;
     bool active;
     Type type;
 
@@ -90,7 +100,8 @@ class Buffer : public QObject {
     QString _networkName, _bufferName;
     BufferState *state;
 
-    QList<Message> _contents;
+    //QList<Message> _contents;
+    QList<ChatLine *> lines;
 
 };
 

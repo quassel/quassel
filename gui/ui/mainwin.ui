@@ -14,19 +14,26 @@
   </property>
   <widget class="QWidget" name="centralwidget" >
    <property name="sizePolicy" >
-    <sizepolicy>
-     <hsizetype>7</hsizetype>
-     <vsizetype>7</vsizetype>
+    <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
      <horstretch>0</horstretch>
      <verstretch>0</verstretch>
     </sizepolicy>
    </property>
    <layout class="QVBoxLayout" >
-    <property name="margin" >
-     <number>9</number>
-    </property>
     <property name="spacing" >
      <number>6</number>
+    </property>
+    <property name="leftMargin" >
+     <number>9</number>
+    </property>
+    <property name="topMargin" >
+     <number>9</number>
+    </property>
+    <property name="rightMargin" >
+     <number>9</number>
+    </property>
+    <property name="bottomMargin" >
+     <number>9</number>
     </property>
     <item>
      <widget class="BufferWidget" native="1" name="bufferWidget" />
@@ -82,10 +89,17 @@
     <addaction name="actionAboutQuassel" />
     <addaction name="actionAboutQt" />
    </widget>
+   <widget class="QMenu" name="menuDebug" >
+    <property name="title" >
+     <string>Debug</string>
+    </property>
+    <addaction name="actionImportBacklog" />
+   </widget>
    <addaction name="menuConnection" />
    <addaction name="menuViews" />
    <addaction name="menuSettings" />
    <addaction name="menuHelp" />
+   <addaction name="menuDebug" />
   </widget>
   <widget class="QStatusBar" name="statusbar" />
   <action name="actionNetworkList" >
@@ -170,6 +184,11 @@
   <action name="actionAboutQuassel" >
    <property name="text" >
     <string>About Quassel IRC...</string>
+   </property>
+  </action>
+  <action name="actionImportBacklog" >
+   <property name="text" >
+    <string>Import Backlog</string>
    </property>
   </action>
  </widget>

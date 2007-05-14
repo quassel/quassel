@@ -23,12 +23,21 @@
 #include "chatwidget.h"
 #include "bufferwidget.h"
 
+/*
 Buffer::Buffer(QString netname, QString bufname) {
-  _networkName = netname;
-  _bufferName = bufname;
+  Buffer(BufferId(0, netname, bufname));
 
-  if(bufname.isEmpty()) type = ServerBuffer;
-  else if(isChannelName(bufname)) type = ChannelBuffer;
+
+}
+*/
+
+Buffer::Buffer(BufferId bufid) {
+  id = bufid;
+  _networkName = bufid.network();
+  _bufferName = bufid.buffer();
+
+  if(_bufferName.isEmpty()) type = ServerBuffer;
+  else if(isChannelName(_bufferName)) type = ChannelBuffer;
   else type = QueryBuffer;
 
   active = false;
@@ -65,6 +74,7 @@ void Buffer::setActive(bool a) {
   }
 }
 
+/*
 void Buffer::displayMsg(Message msg) {
   contents()->append(msg);
   emit msgDisplayed(msg);
@@ -73,10 +83,21 @@ void Buffer::displayMsg(Message msg) {
 void Buffer::prependMessages(QList<Message> msgs) {
   _contents = msgs + _contents;
 }
+*/
+
+void Buffer::appendChatLine(ChatLine *line) {
+  lines.append(line);
+  emit chatLineAppended(line);
+}
+
+void Buffer::prependChatLine(ChatLine *line) {
+  lines.prepend(line);
+  emit chatLinePrepended(line);
+}
 
 void Buffer::processUserInput(QString msg) {
   // TODO User Input processing (plugins) -> well, this goes through MainWin into Core for processing... so...
-  emit userInput(networkName(), bufferName(), msg);
+  emit userInput(id, msg);
 }
 
 void Buffer::setTopic(QString t) {

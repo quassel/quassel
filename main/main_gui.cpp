@@ -38,8 +38,6 @@ int main(int argc, char **argv) {
   QApplication::setApplicationName("Quassel IRC");
   QApplication::setOrganizationName("The Quassel Team");
 
-  qRegisterMetaType<LayoutTask>("LayoutTask");
-
   Global::runMode = Global::GUIOnly;
   Global::quasselDir = QDir::homePath() + "/.quassel";
 
@@ -76,6 +74,7 @@ void MainWin::syncToCore() {
     //qApp->quit();
     exit(1);
   }
+  /*
   foreach(QString net, state["CoreBackLog"].toMap().keys()) {
     QByteArray logbuf = state["CoreBackLog"].toMap()[net].toByteArray();
     QDataStream in(&logbuf, QIODevice::ReadOnly); in.setVersion(QDataStream::Qt_4_2);
@@ -85,6 +84,9 @@ void MainWin::syncToCore() {
     }
     qDebug() << net << coreBackLog[net].count();
   }
+  */
+  coreBuffers.clear();
+  foreach(QVariant v, state["CoreBuffers"].toList()) { coreBuffers.append(v.value<BufferId>()); }
 }
 
 GUIProxy::GUIProxy() {

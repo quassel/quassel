@@ -65,9 +65,9 @@ void ChatWidget::init(QString netname, QString bufname) {
 
 ChatWidget::~ChatWidget() {
   //qDebug() << "destroying chatwidget" << bufferName;
-  foreach(ChatLine *l, lines) {
-    delete l;
-  }
+  //foreach(ChatLine *l, lines) {
+  //  delete l;
+  //}
 }
 
 QSize ChatWidget::sizeHint() const {
@@ -140,6 +140,21 @@ void ChatWidget::clear() {
   //contents->clear();
 }
 
+void ChatWidget::prependChatLine(ChatLine *line) {
+  qreal h = line->layout(tsWidth, senderWidth, textWidth);
+  for(int i = 1; i < ycoords.count(); i++) ycoords[i] += h;
+  ycoords.insert(1, h);
+  lines.prepend(line);
+  height += h;
+  // Fix all variables containing line numbers
+  dragStartLine ++;
+  curLine ++;
+  selectionStart ++; selectionEnd ++;
+  adjustScrollBar();
+  verticalScrollBar()->setValue(verticalScrollBar()->value() + (int)h);
+  viewport()->update();
+}
+
 void ChatWidget::prependChatLines(QList<ChatLine *> clist) {
   QList<qreal> tmpy; tmpy.append(0);
   qreal h = 0;
@@ -152,11 +167,11 @@ void ChatWidget::prependChatLines(QList<ChatLine *> clist) {
   ycoords = tmpy + ycoords;
   lines = clist + lines;
   height += h;
-  /* Fix all variables containing line numbers */
+  // Fix all variables containing line numbers
   int i = clist.count();
   dragStartLine += i;
   curLine += i;
-  selectionStart += i; selectionEnd += i; selectionEnd += i;
+  selectionStart += i; selectionEnd += i; //? selectionEnd += i;
   //if(bottomLine >= 0) bottomLine += i;
   adjustScrollBar();
   //verticalScrollBar()->setPageStep(viewport()->height());
@@ -166,8 +181,8 @@ void ChatWidget::prependChatLines(QList<ChatLine *> clist) {
   viewport()->update();
 }
 
-void ChatWidget::appendMsg(Message msg) {
-  ChatLine *line = new ChatLine(msg, networkName, bufferName);
+
+void ChatWidget::appendChatLine(ChatLine *line) {
   qreal h = line->layout(tsWidth, senderWidth, textWidth);
   ycoords.append(h + ycoords[ycoords.count() - 1]);
   height += h;
@@ -178,9 +193,8 @@ void ChatWidget::appendMsg(Message msg) {
   viewport()->update();
 }
 
-void ChatWidget::appendMsgList(QList<Message> *list) {
-  foreach(Message msg, *list) {
-   ChatLine *line = new ChatLine(msg, networkName, bufferName);
+void ChatWidget::appendChatLines(QList<ChatLine *> list) {
+  foreach(ChatLine *line, list) {
     qreal h = line->layout(tsWidth, senderWidth, textWidth);
     ycoords.append(h + ycoords[ycoords.count() - 1]);
     height += h;
@@ -190,6 +204,14 @@ void ChatWidget::appendMsgList(QList<Message> *list) {
   adjustScrollBar();
   if(flg) verticalScrollBar()->setValue(verticalScrollBar()->maximum());
   viewport()->update();
+}
+
+void ChatWidget::setContents(QList<ChatLine *> list) {
+  ycoords.clear();
+  ycoords.append(0);
+  height = 0;
+  lines.clear();
+  appendChatLines(list);
 }
 
 //!\brief Computes the different x position vars for given tsWidth and senderWidth.
@@ -492,13 +514,13 @@ QString ChatWidget::selectionToString() {
   if(selectionMode == LinesSelected) {
     QString result;
     for(int l = selectionStart; l <= selectionEnd; l++) {
-      result += QString("[%1] %2 %3\n").arg(lines[l]->getTimeStamp().toLocalTime().toString("hh:mm:ss"))
-          .arg(lines[l]->getSender()).arg(lines[l]->getText());
+      result += QString("[%1] %2 %3\n").arg(lines[l]->timeStamp().toLocalTime().toString("hh:mm:ss"))
+          .arg(lines[l]->sender()).arg(lines[l]->text());
     }
     return result;
   }
   // selectionMode == TextSelected
-  return lines[selectionLine]->getText().mid(selectionStart, selectionEnd - selectionStart);
+  return lines[selectionLine]->text().mid(selectionStart, selectionEnd - selectionStart);
 }
 
 /************************************************************************************/
@@ -509,14 +531,13 @@ QString ChatWidget::selectionToString() {
  * \param net The network name
  * \param buf The buffer name
  */ 
-ChatLine::ChatLine(Message m, QString net, QString buf) : QObject() {
+ChatLine::ChatLine(Message m) : QObject() {
   hght = 0;
-  networkName = net;
-  bufferName = buf;
+  //networkName = m.buffer.network();
+  //bufferName = m.buffer.buffer();
   msg = m;
   selectionMode = None;
   formatMsg(msg);
-
 }
 
 ChatLine::~ChatLine() {
@@ -528,6 +549,8 @@ void ChatLine::formatMsg(Message msg) {
   QString host = hostFromMask(msg.sender);
   QString nick = nickFromMask(msg.sender);
   QString text = Style::mircToInternal(msg.text);
+  QString networkName = msg.buffer.network();
+  QString bufferName = msg.buffer.buffer();
 
   QString c = tr("%DT[%1]").arg(msg.timeStamp.toLocalTime().toString("hh:mm:ss"));
   QString s, t;
@@ -649,15 +672,23 @@ void ChatLine::setSelection(SelectionMode mode, int start, int end) {
   }
 }
 
-QDateTime ChatLine::getTimeStamp() {
+uint ChatLine::msgId() {
+  return msg.buffer.uid();
+}
+
+BufferId ChatLine::bufferId() {
+  return msg.buffer;
+}
+
+QDateTime ChatLine::timeStamp() {
   return msg.timeStamp;
 }
 
-QString ChatLine::getSender() {
+QString ChatLine::sender() {
   return senderFormatted.text;
 }
 
-QString ChatLine::getText() {
+QString ChatLine::text() {
   return textFormatted.text;
 }
 
@@ -879,50 +910,3 @@ void ChatLine::draw(QPainter *p, const QPointF &pos) {
 
 /******************************************************************************************************************/
 
-LayoutThread::LayoutThread() : QThread() {
-  mutex.lock();
-  abort = false;
-  mutex.unlock();
-
-}
-
-LayoutThread::~LayoutThread() {
-  mutex.lock();
-  abort = true;
-  mutex.unlock();
-  condition.wakeOne();
-  wait();
-}
-
-void LayoutThread::processTask(LayoutTask task) {
-  if(!isRunning()) start();
-  Q_ASSERT(isRunning());
-  mutex.lock();
-  queue.append(task);
-  condition.wakeOne();
-  mutex.unlock();
-}
-
-void LayoutThread::run() {
-  forever {
-    mutex.lock();
-    if(!queue.count()) {
-      condition.wait(&mutex);
-    }
-    if(abort) {
-      mutex.unlock(); return;
-    }
-    Q_ASSERT(queue.count()); //qDebug() << "process";
-    LayoutTask task = queue.takeFirst();
-    mutex.unlock();
-	/*
-    foreach(Message msg, task.messages) {
-      //qDebug() << msg.text;
-      ChatLine *line = new ChatLine(msg, task.net, task.buf);
-      task.lines.append(line);
-    }
-    emit taskProcessed(task);
-	*/
-    //msleep(500);
-  }
-}

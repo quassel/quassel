@@ -93,4 +93,35 @@ class Exception {
 
 };
 
+class BufferId {
+  public:
+    BufferId() { id = gid = 0; } // FIXME
+    BufferId(uint uid, QString net, QString buf, uint gid = 0);
+
+    inline uint uid() { return id; }
+    inline uint groupId() { return gid; }
+    inline QString network() { return net; }
+    QString buffer(); // nickfrommask?
+
+    void setGroupId(uint _gid) { gid = _gid; }
+
+    inline bool operator==(const BufferId &other) const { return id == other.id; }
+  private:
+    uint id;
+    uint gid;
+    QString net;
+    QString buf;
+
+    friend uint qHash(const BufferId &);
+    friend QDataStream &operator<<(QDataStream &out, const BufferId &bufferId);
+    friend QDataStream &operator>>(QDataStream &in, BufferId &bufferId);
+};
+
+QDataStream &operator<<(QDataStream &out, const BufferId &bufferId);
+QDataStream &operator>>(QDataStream &in, BufferId &bufferId);
+
+Q_DECLARE_METATYPE(BufferId);
+
+uint qHash(const BufferId &);
+
 #endif

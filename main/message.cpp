@@ -21,6 +21,7 @@
 #include "message.h"
 #include <QDataStream>
 
+/*
 Message Message::plain(QString _target, QString _text, QString _sender, quint8 _flags) {
   return Message(_target, Plain, _text, _sender, _flags);
 }
@@ -72,10 +73,15 @@ Message Message::info(QString _target, QString _text, QString _sender, quint8 _f
 Message Message::error(QString _target, QString _text, QString _sender, quint8 _flags) {
   return Message(_target, Error, _text, _sender, _flags);
 }
+*/
 
 QDataStream &operator<<(QDataStream &out, const Message &msg) {
+  /*
   out << (quint32)msg.timeStamp.toTime_t() << (quint8)msg.type << (quint8)msg.flags
       << msg.target.toUtf8() << msg.sender.toUtf8() << msg.text.toUtf8();
+  */
+  out << (quint32)msg.timeStamp.toTime_t() << (quint8)msg.type << (quint8)msg.flags
+      << msg.buffer << msg.sender.toUtf8() << msg.text.toUtf8();
   return out;
 }
 
@@ -83,11 +89,12 @@ QDataStream &operator>>(QDataStream &in, Message &msg) {
   quint8 t, f;
   quint32 ts;
   QByteArray s, m, targ;
-  in >> ts >> t >> f >> targ >> s >> m;
+  BufferId buf;
+  in >> ts >> t >> f >> buf >> s >> m;
   msg.type = (Message::Type)t;
   msg.flags = (quint8)f;
   msg.timeStamp = QDateTime::fromTime_t(ts);
-  msg.target = QString::fromUtf8(targ);
+  //msg.target = QString::fromUtf8(targ);
   msg.sender = QString::fromUtf8(s);
   msg.text = QString::fromUtf8(m);
   return in;

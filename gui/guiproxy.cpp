@@ -33,17 +33,17 @@ void GUIProxy::recv(CoreSignal sig, QVariant arg1, QVariant arg2, QVariant arg3)
     case CS_SERVER_DISCONNECTED: emit csServerDisconnected(arg1.toString()); break;
     case CS_UPDATE_GLOBAL_DATA: emit csUpdateGlobalData(arg1.toString(), arg2); break;
     //case CS_GLOBAL_DATA_CHANGED: emit csGlobalDataChanged(arg1.toString()); break;
-    case CS_DISPLAY_MSG: emit csDisplayMsg(arg1.toString(), arg2.value<Message>()); break;
+    case CS_DISPLAY_MSG: emit csDisplayMsg(arg1.value<Message>()); break;
     case CS_DISPLAY_STATUS_MSG: emit csDisplayStatusMsg(arg1.toString(), arg2.toString()); break;
     case CS_MODE_SET: emit csModeSet(arg1.toString(), arg2.toString(), arg3.toString()); break;
     case CS_TOPIC_SET: emit csTopicSet(arg1.toString(), arg2.toString(), arg3.toString()); break;
-    case CS_SET_NICKS: emit csSetNicks(arg1.toString(), arg2.toString(), arg3.toStringList()); break;
     case CS_NICK_ADDED: emit csNickAdded(arg1.toString(), arg2.toString(), arg3.toMap()); break;
     case CS_NICK_REMOVED: emit csNickRemoved(arg1.toString(), arg2.toString()); break;
     case CS_NICK_RENAMED: emit csNickRenamed(arg1.toString(), arg2.toString(), arg3.toString()); break;
     case CS_NICK_UPDATED: emit csNickUpdated(arg1.toString(), arg2.toString(), arg3.toMap()); break;
     case CS_OWN_NICK_SET: emit csOwnNickSet(arg1.toString(), arg2.toString()); break;
     case CS_QUERY_REQUESTED: emit csQueryRequested(arg1.toString(), arg2.toString()); break;
+    case CS_BACKLOG_DATA: emit csBacklogData(arg1.value<BufferId>(), arg2.toList(), arg3.toBool()); break;
 
     default: qWarning() << "Unknown signal in GUIProxy::recv: " << sig;
   }

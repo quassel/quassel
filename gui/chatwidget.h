@@ -52,9 +52,11 @@ class ChatWidget : public QAbstractScrollArea {
 
   public slots:
     void clear();
+    void prependChatLine(ChatLine *);
+    void appendChatLine(ChatLine *);
     void prependChatLines(QList<ChatLine *>);
-    void appendMsg(Message);
-    void appendMsgList(QList<Message> *);
+    void appendChatLines(QList<ChatLine *>);
+    void setContents(QList<ChatLine *>);
 
   protected:
     virtual void resizeEvent(QResizeEvent *event);
@@ -133,7 +135,7 @@ class ChatLine : public QObject {
   Q_OBJECT
 
   public:
-    ChatLine(Message message, QString networkName, QString bufferName);
+    ChatLine(Message message);
     ~ChatLine();
 
     qreal layout(qreal tsWidth, qreal nickWidth, qreal textWidth);
@@ -143,9 +145,11 @@ class ChatLine : public QObject {
 
     enum SelectionMode { None, Partial, Full };
     void setSelection(SelectionMode, int start = 0, int end = 0);
-    QDateTime getTimeStamp();
-    QString getSender();
-    QString getText();
+    QDateTime timeStamp();
+    QString sender();
+    QString text();
+    uint msgId();
+    BufferId bufferId();
 
     bool isUrl(int pos);
     QUrl getUrl(int pos);
@@ -155,7 +159,6 @@ class ChatLine : public QObject {
   private:
     qreal hght;
     Message msg;
-    QString networkName, bufferName;
     qreal tsWidth, senderWidth, textWidth;
     Style::FormattedString tsFormatted, senderFormatted, textFormatted;
 
@@ -193,6 +196,7 @@ class ChatLine : public QObject {
     QList<FormatRange> calcFormatRanges(const Style::FormattedString &, QTextLayout::FormatRange additional = QTextLayout::FormatRange());
 };
 
+/*
 struct LayoutTask {
   QList<Message> messages;
   Buffer *buffer;
@@ -223,5 +227,6 @@ class LayoutThread : public QThread {
     bool abort;
 
 };
+*/
 
 #endif

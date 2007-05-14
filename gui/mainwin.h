@@ -56,32 +56,38 @@ class MainWin : public QMainWindow {
     void closeEvent(QCloseEvent *event);
 
   signals:
-    void sendInput(QString network, QString buffer, QString message);
+    void sendInput(BufferId, QString message);
     void bufferSelected(Buffer *);
     void bufferUpdated(Buffer *);
     void bufferDestroyed(Buffer *);
     void backlogReceived(Buffer *, QList<Message>);
+    void requestBacklog(BufferId, QVariant, QVariant);
+
+    void importOldBacklog();
 
   private slots:
-    void userInput(QString, QString, QString);
+    void userInput(BufferId, QString);
     void networkConnected(QString);
     void networkDisconnected(QString);
     void recvNetworkState(QString, QVariant);
-    void recvMessage(QString network, Message message);
+    void recvMessage(Message message);
     void recvStatusMsg(QString network, QString message);
-    void setTopic(QString, QString, QString);
-    void setNicks(QString, QString, QStringList);
+    void setTopic(QString net, QString buf, QString);
     void addNick(QString net, QString nick, VarMap props);
     void removeNick(QString net, QString nick);
     void renameNick(QString net, QString oldnick, QString newnick);
     void updateNick(QString net, QString nick, VarMap props);
     void setOwnNick(QString net, QString nick);
+    void recvBacklogData(BufferId, QList<QVariant>, bool);
 
     void showServerList();
     void showSettingsDlg();
 
-    void showBuffer(QString net, QString buf);
+    void showBuffer(BufferId);
     void showBuffer(Buffer *);
+
+    void importBacklog();
+    void layoutMsg();
 
   private:
     Ui::MainWin ui;
@@ -90,7 +96,10 @@ class MainWin : public QMainWindow {
     void setupViews();
     void setupSettingsDlg();
     void syncToCore();  // implemented in main_mono.cpp or main_gui.cpp
-    Buffer * getBuffer(QString net, QString buf);
+    //Buffer * getBuffer(QString net, QString buf);
+    Buffer *getBuffer(BufferId);
+    BufferId getStatusBufferId(QString net);
+    BufferId getBufferId(QString net, QString buf);
     //void buffersUpdated();
 
     QSystemTrayIcon *systray;
@@ -102,14 +111,21 @@ class MainWin : public QMainWindow {
     CoreConnectDlg *coreConnectDlg;
     SettingsDlg *settingsDlg;
 
-    QString currentNetwork, currentBuffer;
-    QHash<QString, QHash<QString, Buffer*> > buffers;
+    //QString currentNetwork, currentBuffer;
+    //QHash<QString, QHash<QString, Buffer*> > buffers;
+    uint currentBuffer;
+    QHash<BufferId, Buffer *> buffers;
+    QHash<uint, BufferId> bufferIds;
     QHash<QString, QHash<QString, VarMap> > nicks;
     QHash<QString, bool> connected;
     QHash<QString, QString> ownNick;
-    QHash<QString, QList<Message> > coreBackLog;
+    //QHash<QString, QList<Message> > coreBackLog;
+    QList<BufferId> coreBuffers;
 
     QList<NetworkView *> netViews;
+
+    QTimer *layoutTimer;
+    QList<Message> layoutQueue;
 };
 
 #endif

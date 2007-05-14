@@ -42,8 +42,8 @@ BufferWidget::BufferWidget(QWidget *parent) : QWidget(parent) {
 
 void BufferWidget::init() {
   //layoutThread = new LayoutThread();
-  layoutThread = ::layoutThread;
-  connect(layoutThread, SIGNAL(taskProcessed(LayoutTask)), this, SLOT(messagesLayouted(LayoutTask)));
+  //layoutThread = ::layoutThread;
+  //connect(layoutThread, SIGNAL(taskProcessed(LayoutTask)), this, SLOT(messagesLayouted(LayoutTask)));
   //layoutThread->start();
   //while(!layoutThread->isRunning()) {};
 }
@@ -51,7 +51,7 @@ void BufferWidget::init() {
 BufferWidget::~BufferWidget() {
   //emit aboutToClose();
   //layoutThread->wait(10000);
-  delete layoutThread;
+  //delete layoutThread;
   foreach(BufferState *s, states.values()) {
     delete s;
   }
@@ -89,14 +89,9 @@ void BufferWidget::setBuffer(Buffer *buf) {
     states[buf] = s;
     state = s;
     state->chatWidget->init(networkName, bufferName);
-    // FIXME: layout and cache all incoming messages... maybe do this in buffer?
-    QList<Message> *l = buf->contents();
-    state->chatWidget->appendMsgList(l);
-    if(chatLineCache.contains(buf)) {
-      state->chatWidget->prependChatLines(chatLineCache[buf]);
-      buf->prependMessages(msgCache[buf]);
-    }
-    connect(buf, SIGNAL(msgDisplayed(Message)), state->chatWidget, SLOT(appendMsg(Message)));
+    state->chatWidget->setContents(buf->contents());
+    connect(buf, SIGNAL(chatLineAppended(ChatLine *)), state->chatWidget, SLOT(appendChatLine(ChatLine *)));
+    connect(buf, SIGNAL(chatLinePrepended(ChatLine *)), state->chatWidget, SLOT(prependChatLine(ChatLine *)));
     connect(buf, SIGNAL(topicSet(QString)), this, SLOT(setTopic(QString)));
     connect(buf, SIGNAL(ownNickSet(QString)), this, SLOT(setOwnNick(QString)));
     ui.stackedWidget->addWidget(s->page);
@@ -117,6 +112,7 @@ void BufferWidget::setBuffer(Buffer *buf) {
   updateTitle();
 }
 
+/*
 void BufferWidget::prependMessages(Buffer *buf, QList<Message> messages) {
   LayoutTask task;
   task.messages = messages;
@@ -136,6 +132,7 @@ void BufferWidget::messagesLayouted(LayoutTask task) {
     chatLineCache[task.buffer] = task.lines + chatLineCache[task.buffer];
   }
 }
+*/
 
 void BufferWidget::saveState() {
   foreach(Buffer *buf, states.keys()) {

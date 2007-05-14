@@ -88,6 +88,7 @@ void CoreProxy::processClientInit(QTcpSocket *socket, const QVariant &v) {
     coreData[key] = global->getData(key);
   }
   reply["CoreData"] = coreData;
+  /*
   VarMap bl;
   QHash<QString, QList<Message> > log = core->getBackLog();
   foreach(QString net, log.keys()) {
@@ -97,6 +98,10 @@ void CoreProxy::processClientInit(QTcpSocket *socket, const QVariant &v) {
     bl[net] = buf;
   }
   reply["CoreBackLog"] = bl;
+  */
+  QList<QVariant> bufs;
+  foreach(BufferId id, core->getBuffers()) { bufs.append(QVariant::fromValue(id)); }
+  reply["CoreBuffers"] = bufs;
   QList<QVariant> sigdata;
   sigdata.append(CS_CORE_STATE); sigdata.append(QVariant(reply)); sigdata.append(QVariant()); sigdata.append(QVariant());
   writeDataToDevice(socket, QVariant(sigdata));
@@ -133,8 +138,10 @@ void CoreProxy::recv(GUISignal sig, QVariant arg1, QVariant arg2, QVariant arg3)
   //qDebug() << "[CORE] Received signal" << sig << ":" << arg1<<arg2<<arg3;
   switch(sig) {
     case GS_UPDATE_GLOBAL_DATA: emit gsPutGlobalData(arg1.toString(), arg2); break;
-    case GS_USER_INPUT: emit gsUserInput(arg1.toString(), arg2.toString(), arg3.toString()); break;
+    case GS_USER_INPUT: emit gsUserInput(arg1.value<BufferId>(), arg2.toString()); break;
     case GS_REQUEST_CONNECT: emit gsRequestConnect(arg1.toStringList()); break;
+    case GS_IMPORT_BACKLOG: emit gsImportBacklog(); break;
+    case GS_REQUEST_BACKLOG: emit gsRequestBacklog(arg1.value<BufferId>(), arg2, arg3); break;
     default: qWarning() << "Unknown signal in CoreProxy::recv: " << sig;
   }
 }
