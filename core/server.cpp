@@ -162,18 +162,18 @@ void Server::handleServerMsg(QString msg) {
     QString prefix;
     QString cmd;
     QStringList params;
-    
+
     // check for prefix by checking for a colon as the first char
     if(msg[0] == ':') {
       msg.remove(0,1);
       prefix = msg.section(' ', 0, 0);
       msg = msg.section(' ', 1);
     }
-    
+
     // next string without a whitespace is the command
     cmd = msg.section(' ', 0, 0).toUpper();
     msg = msg.mid(cmd.length());
-    
+
     // get the parameters
     QString trailing = "";
     if(msg.contains(" :")) {
@@ -193,7 +193,7 @@ void Server::handleServerMsg(QString msg) {
       Q_ASSERT(params.count() > 0); // Violation to RFC
       params.removeFirst();
     }
-    
+
     // Now we try to find a handler for this message. BTW, I do love the Trolltech guys ;-)
     QString hname = cmd.toLower();
     hname[0] = hname[0].toUpper();
