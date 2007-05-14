@@ -22,11 +22,13 @@
 
 ChannelWidgetInput::ChannelWidgetInput(QWidget *parent) : QLineEdit(parent) {
   idx = 0;
-  //tabMode = false;
   connect(this, SIGNAL(returnPressed()), this, SLOT(enter()));
-  TabCompleter *tc = new TabCompleter(this);
-  tabComplete = tc;
+  tabComplete = new TabCompleter(this);
   connect(this, SIGNAL(nickListUpdated(QStringList)), tabComplete, SLOT(updateNickList(QStringList)));
+}
+
+ChannelWidgetInput::~ChannelWidgetInput() {
+  delete tabComplete;
 }
 
 void ChannelWidgetInput::keyPressEvent(QKeyEvent * event) {

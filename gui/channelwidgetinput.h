@@ -30,7 +30,8 @@ class ChannelWidgetInput : public QLineEdit {
 
   public:
     ChannelWidgetInput(QWidget *parent = 0);
-
+    ~ChannelWidgetInput();
+    
   protected:
     virtual bool event(QEvent *);
     virtual void keyPressEvent(QKeyEvent * event);

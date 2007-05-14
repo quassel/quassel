@@ -28,6 +28,7 @@
 
 Server::Server(QString net) : network(net) {
 
+
 }
 
 Server::~Server() {
@@ -161,34 +162,36 @@ void Server::handleServerMsg(QString msg) {
     QString prefix;
     QString cmd;
     QStringList params;
+    
+    // check for prefix by checking for a colon as the first char
     if(msg[0] == ':') {
       msg.remove(0,1);
       prefix = msg.section(' ', 0, 0);
       msg = msg.section(' ', 1);
     }
+    
+    // next string without a whitespace is the command
     cmd = msg.section(' ', 0, 0).toUpper();
     msg = msg.section(' ', 1);
+    
+    // get the parameters
     QString left, trailing;
-    // RPL_ISUPPORT (005) can contain colons, so don't treat it like the rest of the commands
-    if(cmd.toUInt() == 5) {
-      left = msg.remove(QString(":are supported by this server"));
-    } else {
-      left = msg.section(':', 0, 0);
-      trailing = msg.section(':', 1);
-    }
+    left = msg.section(" :", 0, 0);
+    trailing = msg.section(" :", -1, -1);
     if(!left.isEmpty()) {
       params << left.split(' ', QString::SkipEmptyParts);
     }
     if(!trailing.isEmpty()) {
       params << trailing;
     }
-    // numeric replies usually have our own nick as first param. Remove this!
-    // BTW, this behavior is not in the RFC.
+    
+    // numeric replies have the target as first param (RFC 2812 - 2.4). this is usually our own nick. Remove this!
     uint num = cmd.toUInt();
-    if(num > 1 && params.count() > 0) {  // 001 sets our nick, so we shouldn't remove anything
-      if(params[0] == ownNick) params.removeFirst();
-      else qWarning((QString("First param NOT nick: %1:%2 %3").arg(prefix).arg(cmd).arg(params.join(" "))).toAscii());
+    if(num > 0) {
+      Q_ASSERT(params.count() > 0); // Violation to RFC
+      params.removeFirst();
     }
+    
     // Now we try to find a handler for this message. BTW, I do love the Trolltech guys ;-)
     QString hname = cmd.toLower();
     hname[0] = hname[0].toUpper();
@@ -224,7 +227,7 @@ void Server::defaultServerHandler(QString cmd, QString prefix, QStringList param
         break;
       }
       // Server error messages which will be displayed with a colon between the first param and the rest
-      case 413: case 414: case 423: case 433: case 436: case 441: case 444: case 461:
+      case 413: case 414: case 423: case 436: case 441: case 444: case 461:
       case 467: case 471: case 473: case 474: case 475: case 476: case 477: case 478: case 482:
       { QString p = params.takeFirst();
         emit displayMsg(Message::error("", p + ": " + params.join(" ")));
@@ -272,6 +275,20 @@ void Server::defaultUserHandler(QString bufname, QString cmd, QString msg) {
   emit displayMsg(Message::error("", QString("Error: %1 %2").arg(cmd).arg(msg)));
 
 }
+
+QStringList Server::providesUserHandlers() {
+  QStringList userHandlers;
+  for(int i=0; i < metaObject()->methodCount(); i++) {
+    QString methodSignature(metaObject()->method(i).signature());
+    if (methodSignature.startsWith("handleUser")) {
+      methodSignature = methodSignature.section('(',0,0);  // chop the attribute list
+      methodSignature = methodSignature.mid(10); // strip "handleUser"
+      userHandlers << methodSignature;
+    }
+  }
+  return userHandlers;
+}
+
 
 /**********************************************************************************/
 
@@ -507,7 +524,7 @@ void Server::handleServerNick(QString prefix, QStringList params) {
 
 void Server::handleServerNotice(QString prefix, QStringList params) {
   //Message msg(Message::Notice, params[1], prefix);
-  if(prefix == currentServer) emit displayMsg(Message::server("", params[1], prefix));
+  if(currentServer.isEmpty() || prefix == currentServer) emit displayMsg(Message::server("", params[1], prefix));
   else emit displayMsg(Message::notice("", params[1], prefix));
 }
 
@@ -574,14 +591,15 @@ void Server::handleServerTopic(QString prefix, QStringList params) {
 
 /* RPL_WELCOME */
 void Server::handleServer001(QString prefix, QStringList params) {
+  // there should be only one param: "Welcome to the Internet Relay Network <nick>!<user>@<host>"
   currentServer = prefix;
-  ownNick = params[0];
+  ownNick = params[0].section(' ', -1, -1).section('!', 0, 0);
   VarMap n;
   n["Channels"] = VarMap();
   nicks[ownNick] = n;
   emit ownNickSet(network, ownNick);
   emit nickAdded(network, ownNick, VarMap());
-  emit displayMsg(Message::server("", params[1], prefix));
+  emit displayMsg(Message::server("", params[0], prefix));
   // send performlist
   QStringList performList = networkSettings["Perform"].toString().split( "\n" );
   int count = performList.count();
@@ -595,6 +613,7 @@ void Server::handleServer001(QString prefix, QStringList params) {
 /* RPL_ISUPPORT */
 // TODO Complete 005 handling, also use sensible defaults for non-sent stuff
 void Server::handleServer005(QString prefix, QStringList params) {
+  params.removeLast();
   foreach(QString p, params) {
     QString key = p.section("=", 0, 0);
     QString val = p.section("=", 1);
@@ -669,6 +688,24 @@ void Server::handleServer353(QString prefix, QStringList params) {
     }
   }
 }
+
+/* RPL_NICKNAMEINUSER */
+void Server::handleServer433(QString prefix, QStringList params) {
+  QString errnick = params[0];
+  emit displayMsg(Message::error("", tr("Nick %1 is already taken").arg(errnick)));
+  // if there is a problem while connecting to the server -> we handle it
+  // TODO rely on another source...
+  if(currentServer.isEmpty()) {
+    QStringList desiredNicks = identity["NickList"].toStringList();
+    int nextNick = desiredNicks.indexOf(errnick) + 1;
+    if (desiredNicks.size() > nextNick) {
+      putCmd("NICK", QStringList(desiredNicks[nextNick]));
+    } else {
+      emit displayMsg(Message::error("", "All nicks in nicklist taken... use: /nick <othernick> to continue"));
+    }
+  }
+}
+
 /***********************************************************************************/
 
 /* Exception classes for message handling */
