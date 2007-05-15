@@ -44,7 +44,7 @@ IdentitiesDlg::IdentitiesDlg(QWidget *parent, QString selected) : QDialog(parent
   }
   updateWidgets();
   lastIdentity = getCurIdentity();
-  connect(ui.identityList, SIGNAL(triggered(QString)), this, SLOT(identityChanged(QString)));
+  connect(ui.identityList, SIGNAL(activated(QString)), this, SLOT(identityChanged(QString)));
   connect(ui.editIdentitiesButton, SIGNAL(clicked()), this, SLOT(editIdentities()));
   connect(ui.nickList, SIGNAL(itemSelectionChanged()), this, SLOT(nickSelectionChanged()));
   connect(ui.addNickButton, SIGNAL(clicked()), this, SLOT(addNick()));

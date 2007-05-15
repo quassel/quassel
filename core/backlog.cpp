@@ -82,8 +82,8 @@ void Backlog::init(QString _user) {
       "Text BLOB"
       ")").arg(tname));
   query.exec(QString("INSERT OR REPLACE INTO %1 (MsgId, SenderId, Text) VALUES (0, '$VERSION$', %2)").arg(tname).arg(DBVERSION));
-  query.exec(QString("CREATE TABLE IF NOT EXISTS 'Senders$%1$' (SenderId INTEGER PRIMARY KEY AUTOINCREMENT, Sender BLOB)").arg(user));
-  query.exec(QString("CREATE TABLE IF NOT EXISTS 'Buffers$%1$' (BufferId INTEGER PRIMARY KEY AUTOINCREMENT, GroupId INTEGER, Network BLOB, Buffer BLOB)").arg(user));
+  query.exec(QString("CREATE TABLE IF NOT EXISTS 'Senders$%1$' (SenderId INTEGER PRIMARY KEY AUTOINCREMENT, Sender TEXT)").arg(user));
+  query.exec(QString("CREATE TABLE IF NOT EXISTS 'Buffers$%1$' (BufferId INTEGER PRIMARY KEY AUTOINCREMENT, GroupId INTEGER, Network TEXT, Buffer TEXT)").arg(user));
   if(query.lastError().isValid()) {
     qWarning(tr("Could not create backlog table: %1").arg(query.lastError().text()).toAscii());
     qWarning(tr("Disabling logging...").toAscii());
@@ -123,13 +123,13 @@ uint Backlog::logMessage(Message msg) {
   bool ok;
   logDb.transaction();
   QSqlQuery query(logDb);
-  QString s = msg.sender; s.replace('\'', "''"); QByteArray bs = s.toUtf8().toHex();
+  QString s = msg.sender; s.replace('\'', "''");
   QString t = msg.text; t.replace('\'', "''");
   // Let's do some space-saving optimizations...
-  query.exec(QString("SELECT SenderId FROM 'Senders$%1$' WHERE Sender == X'%2'").arg(user).arg(bs.constData()));
+  query.exec(QString("SELECT SenderId FROM 'Senders$%1$' WHERE Sender == '%2'").arg(user).arg(s));
   int suid;
   if(!query.first()) {
-    query.exec(QString("INSERT INTO 'Senders$%1$' (SenderId, Sender) VALUES (%2, X'%3')").arg(user).arg(nextSenderId).arg(bs.constData()));
+    query.exec(QString("INSERT INTO 'Senders$%1$' (SenderId, Sender) VALUES (%2, '%3')").arg(user).arg(nextSenderId).arg(s));
     suid = nextSenderId;
   } else suid = query.value(0).toInt();
   query.exec(QString("INSERT INTO 'Backlog$%1$' (MsgId, Time, BufferId, Type, Flags, SenderId, Text) VALUES (%2, %3, %4, %5, %6, %7, X'%8')").arg(user)
@@ -152,19 +152,23 @@ BufferId Backlog::getBufferId(QString net, QString buf) {
   if(!backlogEnabled) {
     return BufferId(0, net, buf);
   }
-  QByteArray n = net.toUtf8().toHex();
-  QByteArray b = buf.toUtf8().toHex();
+  //QByteArray n = net.toUtf8().toHex();
+  //QByteArray b = buf.toUtf8().toHex();
+  bool flg = false;
   logDb.transaction();
   QSqlQuery query(logDb);
   int uid = -1;
-  query.exec(QString("SELECT BufferId FROM 'Buffers$%1$' WHERE Network == X'%2' AND Buffer == X'%3'").arg(user).arg(n.constData()).arg(b.constData()));
+  query.exec(QString("SELECT BufferId FROM 'Buffers$%1$' WHERE Network == '%2' AND Buffer == '%3'").arg(user).arg(net).arg(buf));
   if(!query.first()) {
     // TODO: joined buffers/queries
-    query.exec(QString("INSERT INTO 'Buffers$%1$' (BufferId, GroupId, Network, Buffer) VALUES (%2, %2, X'%3', X'%4')").arg(user).arg(nextBufferId).arg(n.constData()).arg(b.constData()));
+    query.exec(QString("INSERT INTO 'Buffers$%1$' (BufferId, GroupId, Network, Buffer) VALUES (%2, %2, '%3', '%4')").arg(user).arg(nextBufferId).arg(net).arg(buf));
     uid = nextBufferId++;
+    flg = true;
   } else uid = query.value(0).toInt();
   logDb.commit();
-  return BufferId(uid, net, buf, uid);  // FIXME (joined buffers)
+  BufferId id(uid, net, buf, uid);  // FIXME (joined buffers)
+  if(flg) emit bufferIdUpdated(id);
+  return id;  // FIXME (joined buffers)
 }
 
 QList<BufferId> Backlog::requestBuffers(QDateTime since) {
@@ -177,7 +181,7 @@ QList<BufferId> Backlog::requestBuffers(QDateTime since) {
                        "WHERE Time >= %2").arg(user).arg(since.toTime_t()));
   }
   while(query.next()) {
-    result.append(BufferId(query.value(0).toUInt(), QString::fromUtf8(query.value(2).toByteArray()), QString::fromUtf8(query.value(3).toByteArray()), query.value(1).toUInt()));
+    result.append(BufferId(query.value(0).toUInt(), query.value(2).toString(), query.value(3).toString(), query.value(1).toUInt()));
   }
   return result;
 }
@@ -192,7 +196,7 @@ QList<Message> Backlog::requestMsgs(BufferId id, int lastlines, int offset) {
   while(query.next()) {
     if(offset >= 0 && query.value(0).toInt() >= offset) continue;
     Message msg(QDateTime::fromTime_t(query.value(1).toInt()), id, (Message::Type)query.value(2).toUInt(), QString::fromUtf8(query.value(5).toByteArray()),
-                QString::fromUtf8(query.value(4).toByteArray()), query.value(3).toUInt());
+                query.value(4).toString(), query.value(3).toUInt());
     msg.msgId = query.value(0).toUInt();
     result.append(msg);
   }

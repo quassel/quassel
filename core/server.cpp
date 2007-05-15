@@ -420,6 +420,7 @@ void Server::handleUserVoice(QString bufname, QString msg) {
 void Server::handleServerJoin(QString prefix, QStringList params) {
   Q_ASSERT(params.count() == 1);
   QString nick = updateNickFromMask(prefix);
+  emit displayMsg(Message::Join, params[0], params[0], prefix);
   if(nick == ownNick) {
   //  Q_ASSERT(!buffers.contains(params[0]));  // cannot join a buffer twice!
   //  Buffer *buf = new Buffer(params[0]);
@@ -445,7 +446,7 @@ void Server::handleServerJoin(QString prefix, QStringList params) {
       nicks[nick] = n;
       emit nickAdded(network, nick, n);
     }
-    emit displayMsg(Message::Join, params[0], params[0], prefix);
+    //emit displayMsg(Message::Join, params[0], params[0], prefix);
   //}
 }
 

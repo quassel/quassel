@@ -67,6 +67,7 @@ class GUIProxy : public QObject {
     void csOwnNickSet(QString, QString);
     void csQueryRequested(QString, QString);
     void csBacklogData(BufferId, QList<QVariant>, bool);
+    void csUpdateBufferId(BufferId);
 
     void csGeneric(int, QVariant, QVariant);
 

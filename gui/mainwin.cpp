@@ -69,6 +69,7 @@ void MainWin::init() {
   connect(guiProxy, SIGNAL(csNickUpdated(QString, QString, VarMap)), this, SLOT(updateNick(QString, QString, VarMap)));
   connect(guiProxy, SIGNAL(csOwnNickSet(QString, QString)), this, SLOT(setOwnNick(QString, QString)));
   connect(guiProxy, SIGNAL(csBacklogData(BufferId, QList<QVariant>, bool)), this, SLOT(recvBacklogData(BufferId, QList<QVariant>, bool)));
+  connect(guiProxy, SIGNAL(csUpdateBufferId(BufferId)), this, SLOT(updateBufferId(BufferId)));
   connect(this, SIGNAL(sendInput(BufferId, QString)), guiProxy, SLOT(gsUserInput(BufferId, QString)));
   connect(this, SIGNAL(requestBacklog(BufferId, QVariant, QVariant)), guiProxy, SLOT(gsRequestBacklog(BufferId, QVariant, QVariant)));
 
@@ -89,11 +90,8 @@ void MainWin::init() {
 
   setupSettingsDlg();
 
-  //Buffer::init();
   setupMenus();
   setupViews();
-
-  //bufferWidget = 0;
 
   QSettings s;
   s.beginGroup("Geometry");
@@ -101,35 +99,6 @@ void MainWin::init() {
   //move(s.value("MainWinPos", QPoint(50, 50)).toPoint());
   if(s.contains("MainWinState")) restoreState(s.value("MainWinState").toByteArray());
   s.endGroup();
-
-  // replay backlog
-  // FIXME do this right
-  /*
-  QHash<Buffer *, QList<Message> > hash;
-  Buffer *b;
-
-  foreach(QString net, coreBackLog.keys()) {
-    //if(net != "MoepNet") continue;
-    while(coreBackLog[net].count()) {
-      //recvMessage(net, coreBackLog[net].takeFirst());
-      Message msg = coreBackLog[net].takeLast();
-      if(msg.flags & Message::PrivMsg) {
-      // query
-        if(msg.flags & Message::Self) b = getBuffer(net, msg.target);
-        else b = getBuffer(net, nickFromMask(msg.sender));
-      } else {
-        b = getBuffer(net, msg.target);
-      }
-      hash[b].prepend(msg);
-      if(hash[b].count() >= 5) {
-        ui.bufferWidget->prependMessages(b, hash.take(b));
-      }
-    }
-  }
-  foreach(Buffer *buf, hash.keys()) {
-    ui.bufferWidget->prependMessages(buf, hash.take(buf));
-  }
-*/
 
   /* make lookups by id faster */
   foreach(BufferId id, coreBuffers) {
@@ -205,12 +174,6 @@ void MainWin::registerNetView(NetworkView *view) {
   connect(this, SIGNAL(bufferUpdated(Buffer *)), view, SLOT(bufferUpdated(Buffer *)));
   connect(this, SIGNAL(bufferDestroyed(Buffer *)), view, SLOT(bufferDestroyed(Buffer *)));
   connect(view, SIGNAL(bufferSelected(Buffer *)), this, SLOT(showBuffer(Buffer *)));
-  //QList<Buffer *> bufs;
-  //typedef QHash<QString, Buffer *> bufhash;
-  //QList<bufhash> foo = buffers.values();
-  //foreach(bufhash h, foo) {
-  //  bufs += h.values();
-  //}
   view->setBuffers(buffers.values());
   view->setAllowedAreas(Qt::RightDockWidgetArea|Qt::LeftDockWidgetArea);
   netViews.append(view);
@@ -255,7 +218,6 @@ void MainWin::showBuffer(BufferId id) {
 }
 
 void MainWin::showBuffer(Buffer *b) {
-  //currentBuffer = b->bufferName(); currentNetwork = b->networkName();
   currentBuffer = b->bufferId().groupId();
   //emit bufferSelected(b);
   //qApp->processEvents();
@@ -265,9 +227,9 @@ void MainWin::showBuffer(Buffer *b) {
 
 void MainWin::networkConnected(QString net) {
   connected[net] = true;
-  BufferId id = getStatusBufferId(net);
-  Buffer *b = getBuffer(id);
-  b->setActive(true);
+  //BufferId id = getStatusBufferId(net);
+  //Buffer *b = getBuffer(id);
+  //b->setActive(true);
   //b->displayMsg(Message(id, Message::Server, tr("Connected.")));  FIXME
   // TODO buffersUpdated();
 }
@@ -281,6 +243,11 @@ void MainWin::networkDisconnected(QString net) {
     b->setActive(false);
   }
   connected[net] = false;
+}
+
+void MainWin::updateBufferId(BufferId id) {
+  bufferIds[id.uid()] = id;  // make lookups by id faster
+  getBuffer(id);
 }
 
 BufferId MainWin::getBufferId(QString net, QString buf) {

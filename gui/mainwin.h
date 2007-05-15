@@ -79,6 +79,7 @@ class MainWin : public QMainWindow {
     void updateNick(QString net, QString nick, VarMap props);
     void setOwnNick(QString net, QString nick);
     void recvBacklogData(BufferId, QList<QVariant>, bool);
+    void updateBufferId(BufferId);
 
     void showServerList();
     void showSettingsDlg();

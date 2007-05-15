@@ -56,6 +56,8 @@ class Core : public QObject {
 
     void backlogData(BufferId, QList<QVariant>, bool done);
 
+    void bufferIdUpdated(BufferId);
+
   private slots:
     //void serverStatesRequested();
     void globalDataUpdated(QString);

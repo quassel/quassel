@@ -55,6 +55,7 @@ class CoreProxy : public QObject {
     inline void csOwnNickSet(QString net, QString nick)                 { send(CS_OWN_NICK_SET, net, nick); }
     inline void csQueryRequested(QString net, QString nick)             { send(CS_QUERY_REQUESTED, net, nick); }
     inline void csBacklogData(BufferId id, QList<QVariant> msg, bool done) { send(CS_BACKLOG_DATA, QVariant::fromValue(id), msg, done); }
+    inline void csUpdateBufferId(BufferId id)                           { send(CS_UPDATE_BUFFERID, QVariant::fromValue(id)); }
 
   signals:
     void gsPutGlobalData(QString, QVariant);

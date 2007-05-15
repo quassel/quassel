@@ -51,6 +51,9 @@ class Backlog : public QObject {
   public slots:
     void importOldBacklog();
 
+  signals:
+    void bufferIdUpdated(BufferId); // sent also if a new bufferid is created
+
   private:
     QString user;
     bool backlogEnabled;
