@@ -73,6 +73,8 @@ void BufferWidget::setBuffer(Buffer *buf) {
       s->nickTree->headerItem()->setHidden(true);
       s->nickTree->setRootIsDecorated(false);
       s->page = s->splitter;
+      s->ownNick = buf->ownNick();
+      s->topic = buf->topic();
       updateNickList(s, buf->nickList());
       s->splitter->restoreState(s->splitterState);
       connect(buf, SIGNAL(nickListChanged(VarMap)), this, SLOT(updateNickList(VarMap)));
@@ -82,6 +84,8 @@ void BufferWidget::setBuffer(Buffer *buf) {
       s->splitter = 0; s->nickTree = 0;
       s->chatWidget = new ChatWidget(this);
       s->page = s->chatWidget;
+      s->ownNick = buf->ownNick();
+      s->topic = buf->bufferName();
     }
     s->opsExpanded = Settings::guiValue(QString("BufferStates/%1/%2/opsExpanded").arg(buf->networkName()).arg(buf->bufferName()), true).toBool();
     s->voicedExpanded = Settings::guiValue(QString("BufferStates/%1/%2/voicedExpanded").arg(buf->networkName()).arg(buf->bufferName()), true).toBool();
@@ -107,7 +111,7 @@ void BufferWidget::setBuffer(Buffer *buf) {
   state->chatWidget->setFocusProxy(ui.inputEdit);
   ui.inputEdit->setFocus();
   ui.topicEdit->setText(state->topic);
-  ui.ownNick->clear();
+  ui.ownNick->clear();  // TODO add nick history
   ui.ownNick->addItem(state->ownNick);
   updateTitle();
 }
