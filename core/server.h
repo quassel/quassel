@@ -128,7 +128,8 @@ class Server : public QThread {
     void handleServer332(QString, QStringList);   // RPL_TOPIC
     void handleServer333(QString, QStringList);   // Topic set by...
     void handleServer353(QString, QStringList);   // RPL_NAMREPLY
-    void handleServer433(QString, QStringList);  // RPL_NICKNAMEINUSER
+    void handleServer432(QString, QStringList);   // ERR_ERRONEUSNICKNAME
+    void handleServer433(QString, QStringList);   // ERR_NICKNAMEINUSE
 
     void defaultServerHandler(QString cmd, QString prefix, QStringList params);
     void defaultUserHandler(QString buf, QString cmd, QString msg);

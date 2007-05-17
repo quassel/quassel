@@ -218,19 +218,21 @@ void Server::defaultServerHandler(QString cmd, QString prefix, QStringList param
         emit displayMsg(Message::Server, "", params.join(" "), prefix);
         break;
       // Server error messages without param, just display them
-      case 409: case 411: case 412: case 422: case 424: case 431: case 445: case 446: case 451: case 462:
+      case 409: case 411: case 412: case 422: case 424: case 445: case 446: case 451: case 462:
       case 463: case 464: case 465: case 466: case 472: case 481: case 483: case 485: case 491: case 501: case 502:
+      case 431: // ERR_NONICKNAMEGIVEN 
         emit displayMsg(Message::Error, "", params.join(" "), prefix);
         break;
       // Server error messages, display them in red. First param will be appended.
-      case 401: case 402: case 403: case 404: case 406: case 408: case 415: case 421: case 432: case 442:
+      case 401: case 402: case 403: case 404: case 406: case 408: case 415: case 421: case 442:
       { QString p = params.takeFirst();
         emit displayMsg(Message::Error, "", params.join(" ") + " " + p, prefix);
         break;
       }
       // Server error messages which will be displayed with a colon between the first param and the rest
-      case 413: case 414: case 423: case 436: case 441: case 444: case 461:
+      case 413: case 414: case 423: case 441: case 444: case 461:
       case 467: case 471: case 473: case 474: case 475: case 476: case 477: case 478: case 482:
+      case 436: // ERR_NICKCOLLISION
       { QString p = params.takeFirst();
         emit displayMsg(Message::Error, "", p + ": " + params.join(" "));
         break;
@@ -694,8 +696,37 @@ void Server::handleServer353(QString prefix, QStringList params) {
   }
 }
 
-/* RPL_NICKNAMEINUSER */
+/* ERR_ERRONEUSNICKNAME */
+void Server::handleServer432(QString prefix, QStringList params) {
+  if(params.size() < 2) {
+    // handle unreal-ircd bug, where unreal ircd doesnt supply a TARGET in ERR_ERRONEUSNICKNAME during registration phase:
+    // nick @@@
+    // :irc.scortum.moep.net 432  @@@ :Erroneous Nickname: Illegal characters
+    // correct server reply:
+    // :irc.scortum.moep.net 432 * @@@ :Erroneous Nickname: Illegal characters
+    emit displayMsg(Message::Error, "", tr("There is a nickname in your identity's nicklist which contains illegal characters"));
+    emit displayMsg(Message::Error, "", tr("Due to a bug in Unreal IRCd (and maybe other irc-servers too) we're unable to determine the erroneous nick"));
+    emit displayMsg(Message::Error, "", tr("Please use: /nick <othernick> to continue or clean up your nicklist"));
+  } else {
+    QString errnick = params[0];
+    emit displayMsg(Message::Error, "", tr("Nick %1 contains illegal characters").arg(errnick));
+    // if there is a problem while connecting to the server -> we handle it
+    // TODO rely on another source...
+    if(currentServer.isEmpty()) {
+      QStringList desiredNicks = identity["NickList"].toStringList();
+      int nextNick = desiredNicks.indexOf(errnick) + 1;
+      if (desiredNicks.size() > nextNick) {
+        putCmd("NICK", QStringList(desiredNicks[nextNick]));
+      } else {
+        emit displayMsg(Message::Error, "", tr("No free and valid nicks in nicklist found. use: /nick <othernick> to continue"));
+      }
+    }
+  }
+}
+
+/* ERR_NICKNAMEINUSE */
 void Server::handleServer433(QString prefix, QStringList params) {
+  qDebug() << "433:" << params;
   QString errnick = params[0];
   emit displayMsg(Message::Error, "", tr("Nick %1 is already taken").arg(errnick));
   // if there is a problem while connecting to the server -> we handle it
@@ -706,7 +737,7 @@ void Server::handleServer433(QString prefix, QStringList params) {
     if (desiredNicks.size() > nextNick) {
       putCmd("NICK", QStringList(desiredNicks[nextNick]));
     } else {
-      emit displayMsg(Message::Error, "", "All nicks in nicklist taken... use: /nick <othernick> to continue");
+      emit displayMsg(Message::Error, "", tr("No free and valid nicks in nicklist found. use: /nick <othernick> to continue"));
     }
   }
 }
