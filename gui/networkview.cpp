@@ -45,6 +45,9 @@ NetworkView::NetworkView(QString n, int m, QStringList nets, QWidget *parent) : 
   tree = qobject_cast<NetworkViewWidget*>(widget())->tree();
   tree->header()->hide();
   tree->setSortingEnabled(true);
+  tree->setRootIsDecorated(true);
+  tree->setIndentation(10);
+  //tree->setAnimated(true);
   connect(tree, SIGNAL(itemClicked(QTreeWidgetItem*, int)), this, SLOT(itemClicked(QTreeWidgetItem*)));
   connect(tree, SIGNAL(itemDoubleClicked(QTreeWidgetItem*, int)), this, SLOT(itemDoubleClicked(QTreeWidgetItem*)));
   connect(this, SIGNAL(fakeUserInput(BufferId, QString)), guiProxy, SLOT(gsUserInput(BufferId, QString)));
@@ -61,6 +64,11 @@ void NetworkView::setBuffers(QList<Buffer *> buffers) {
 void NetworkView::bufferUpdated(Buffer *b) {
   if(bufitems.contains(b)) {
     // FIXME this looks ugly
+    /*
+      this is actually fugly! :) - EgS
+      if anyone else wonders what this does: it takes the TreeItem related to the buffer out of the parents child list
+      there for we need to know the childs index
+    */
     QTreeWidgetItem *item = bufitems[b]->parent()->takeChild(bufitems[b]->parent()->indexOfChild(bufitems[b]));
     delete item;
     bufitems.remove(b);
@@ -91,7 +99,9 @@ void NetworkView::bufferUpdated(Buffer *b) {
       item->setForeground(0, QColor("grey"));
     }
     if(b == currentBuffer) {
-      item->setSelected(true);
+      // this fixes the multiple simultaneous selections
+      emit bufferSelected(b);
+      //item->setSelected(true);
     }
   }
   foreach(QString key, netitems.keys()) {
@@ -105,7 +115,7 @@ void NetworkView::bufferUpdated(Buffer *b) {
 }
 
 bool NetworkView::shouldShow(Buffer *b) {
-  bool f = false;
+  // bool f = false;
   if((mode & NoActive) && b->isActive()) return false;
   if((mode & NoInactive) && !b->isActive()) return false;
   if((mode & NoChannels) && b->bufferType() == Buffer::ChannelBuffer) return false;
@@ -117,25 +127,24 @@ bool NetworkView::shouldShow(Buffer *b) {
 
 void NetworkView::bufferDestroyed(Buffer *b) {
 
-
 }
 
 void NetworkView::itemClicked(QTreeWidgetItem *item) {
   Buffer *b = bufitems.key(item);
-  if(b) emit bufferSelected(b);
-  else {
-    b = currentBuffer;
-    if(bufitems.contains(b)) bufitems[b]->setSelected(true);
+  if(b) {
+    // there is a buffer associated with the item (aka: status/channel/query)
+    emit bufferSelected(b);
+  } else {
+    // network item
     item->setExpanded(!item->isExpanded());
   }
 }
 
 void NetworkView::itemDoubleClicked(QTreeWidgetItem *item) {
   Buffer *b = bufitems.key(item);
-  if(b) {
-    if(Buffer::ChannelBuffer == b->bufferType()) {
-      emit fakeUserInput(b->bufferId(), QString("/join " + b->bufferName()));
-    }
+  if(b && Buffer::ChannelBuffer == b->bufferType()) {
+    emit fakeUserInput(b->bufferId(), QString("/join " + b->bufferName()));
+    emit bufferSelected(b);
   }
 }
 
