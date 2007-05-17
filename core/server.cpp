@@ -726,7 +726,6 @@ void Server::handleServer432(QString prefix, QStringList params) {
 
 /* ERR_NICKNAMEINUSE */
 void Server::handleServer433(QString prefix, QStringList params) {
-  qDebug() << "433:" << params;
   QString errnick = params[0];
   emit displayMsg(Message::Error, "", tr("Nick %1 is already taken").arg(errnick));
   // if there is a problem while connecting to the server -> we handle it

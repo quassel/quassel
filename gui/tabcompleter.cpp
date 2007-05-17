@@ -23,6 +23,7 @@
 TabCompleter::TabCompleter(QLineEdit *l, QObject *parent) : QObject(parent) {
   lineEdit = l;
   enabled = false;
+  startOfLineSuffix = QString(": "); // TODO make start of line suffix configurable
 }
 
 void TabCompleter::updateNickList(QStringList l) {
@@ -30,7 +31,7 @@ void TabCompleter::updateNickList(QStringList l) {
 }
 
 void TabCompleter::updateChannelList(QStringList l) {
-
+  channelList = l;
 }
 
 void TabCompleter::buildCompletionList() {
@@ -58,10 +59,22 @@ void TabCompleter::complete() {
     for (int i = 0; i < lastCompletionLength; i++) {
       lineEdit->backspace();
     }
-    lineEdit->insert(*nextCompletion + ' ');
-    lastCompletionLength = nextCompletion->length() + 1;
+    
+    // insert completion
+    lineEdit->insert(*nextCompletion);
+    
+    // remember charcount to delete next time and advance to next completion
+    lastCompletionLength = nextCompletion->length();
     nextCompletion++;
-  } else if (completionList.begin() != completionList.end()) {
+    
+    // we're completing the first word of the line
+    if(lineEdit->text().length() == lastCompletionLength) {
+      lineEdit->insert(startOfLineSuffix);
+      lastCompletionLength += 2;
+    }
+
+  // we're at the end of the list -> start over again
+  } else {
     nextCompletion = completionList.begin();
   }
   

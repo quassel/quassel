@@ -38,17 +38,17 @@ class TabCompleter : public QObject {
     void updateChannelList(QStringList);
     
   private:
+    bool enabled;
+    QString startOfLineSuffix;
     QLineEdit *lineEdit;
     QStringList completionTemplates;
-    QStringList nickList;
     QStringList channelList;
-    int lastCompletionLength;
-    bool enabled;
-      
 
+    QStringList nickList;
     QStringList completionList;
     QStringList::Iterator nextCompletion;
-    
+    int lastCompletionLength;
+        
     void buildCompletionList();
     
 };

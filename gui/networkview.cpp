@@ -46,6 +46,9 @@ NetworkView::NetworkView(QString n, int m, QStringList nets, QWidget *parent) : 
   tree->header()->hide();
   tree->setSortingEnabled(true);
   connect(tree, SIGNAL(itemClicked(QTreeWidgetItem*, int)), this, SLOT(itemClicked(QTreeWidgetItem*)));
+  connect(tree, SIGNAL(itemDoubleClicked(QTreeWidgetItem*, int)), this, SLOT(itemDoubleClicked(QTreeWidgetItem*)));
+  connect(this, SIGNAL(fakeUserInput(BufferId, QString)), guiProxy, SLOT(gsUserInput(BufferId, QString)));
+  
 }
 
 void NetworkView::setBuffers(QList<Buffer *> buffers) {
@@ -124,6 +127,15 @@ void NetworkView::itemClicked(QTreeWidgetItem *item) {
     b = currentBuffer;
     if(bufitems.contains(b)) bufitems[b]->setSelected(true);
     item->setExpanded(!item->isExpanded());
+  }
+}
+
+void NetworkView::itemDoubleClicked(QTreeWidgetItem *item) {
+  Buffer *b = bufitems.key(item);
+  if(b) {
+    if(Buffer::ChannelBuffer == b->bufferType()) {
+      emit fakeUserInput(b->bufferId(), QString("/join " + b->bufferName()));
+    }
   }
 }
 

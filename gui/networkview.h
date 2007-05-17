@@ -23,6 +23,7 @@
 
 #include <QtGui>
 #include "ui_networkview.h"
+#include "guiproxy.h"
 #include "buffer.h"
 
 typedef QHash<QString, QHash<QString, Buffer*> > BufferHash;
@@ -71,10 +72,12 @@ class NetworkView : public QDockWidget {
 
   signals:
     void bufferSelected(Buffer *);
-
+    void fakeUserInput(BufferId, QString);
+    
   private slots:
     void itemClicked(QTreeWidgetItem *item);
-
+    void itemDoubleClicked(QTreeWidgetItem *item);
+    
   private:
     int mode;
     QString name;

@@ -32,13 +32,9 @@ ChannelWidgetInput::~ChannelWidgetInput() {
 }
 
 void ChannelWidgetInput::keyPressEvent(QKeyEvent * event) {
-  if(event->key() == Qt::Key_Tab) {
-    // Tabcomplete
-    if(text().length() > 0) {
-      tabComplete->complete();
-    }
+  if(event->key() == Qt::Key_Tab) { // Tabcomplete
+    tabComplete->complete();
     event->accept();
-    
   } else {
     tabComplete->disable();
     if(event->key() == Qt::Key_Up) {
