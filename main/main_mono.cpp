@@ -74,7 +74,7 @@ void CoreProxy::sendToGUI(CoreSignal sig, QVariant arg1, QVariant arg2, QVariant
 }
 
 GUIProxy::GUIProxy() {
-  if(guiProxy) qFatal("Trying to instantiate more than one CoreProxy object!");
+  if(guiProxy) qFatal("Trying to instantiate more than one GUIProxy object!");
 }
 
 void GUIProxy::send(GUISignal sig, QVariant arg1, QVariant arg2, QVariant arg3) {

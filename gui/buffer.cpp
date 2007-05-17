@@ -74,17 +74,6 @@ void Buffer::setActive(bool a) {
   }
 }
 
-/*
-void Buffer::displayMsg(Message msg) {
-  contents()->append(msg);
-  emit msgDisplayed(msg);
-}
-
-void Buffer::prependMessages(QList<Message> msgs) {
-  _contents = msgs + _contents;
-}
-*/
-
 void Buffer::appendChatLine(ChatLine *line) {
   lines.append(line);
   emit chatLineAppended(line);

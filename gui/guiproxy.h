@@ -46,6 +46,8 @@ class GUIProxy : public QObject {
     inline void gsImportBacklog()                                     { send(GS_IMPORT_BACKLOG); }
     inline void gsRequestBacklog(BufferId id, QVariant v1, QVariant v2) { send(GS_REQUEST_BACKLOG, QVariant::fromValue(id), v1, v2); }
 
+    inline void gsGeneric(GUISignal sig, QVariant v1 = QVariant(), QVariant v2 = QVariant(), QVariant v3 = QVariant()) { send(sig, v1, v2, v3); }
+
     void connectToCore(QString host, quint16 port);
     void disconnectFromCore();
 
@@ -69,7 +71,7 @@ class GUIProxy : public QObject {
     void csBacklogData(BufferId, QList<QVariant>, bool);
     void csUpdateBufferId(BufferId);
 
-    void csGeneric(int, QVariant, QVariant);
+    void csGeneric(CoreSignal, QVariant, QVariant, QVariant);
 
     void coreConnected();
     void coreDisconnected();

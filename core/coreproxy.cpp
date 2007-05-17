@@ -142,7 +142,8 @@ void CoreProxy::recv(GUISignal sig, QVariant arg1, QVariant arg2, QVariant arg3)
     case GS_REQUEST_CONNECT: emit gsRequestConnect(arg1.toStringList()); break;
     case GS_IMPORT_BACKLOG: emit gsImportBacklog(); break;
     case GS_REQUEST_BACKLOG: emit gsRequestBacklog(arg1.value<BufferId>(), arg2, arg3); break;
-    default: qWarning() << "Unknown signal in CoreProxy::recv: " << sig;
+    //default: qWarning() << "Unknown signal in CoreProxy::recv: " << sig;
+    default: emit gsGeneric(sig, arg1, arg2, arg3);
   }
 }
 

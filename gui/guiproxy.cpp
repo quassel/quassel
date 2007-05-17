@@ -46,7 +46,8 @@ void GUIProxy::recv(CoreSignal sig, QVariant arg1, QVariant arg2, QVariant arg3)
     case CS_BACKLOG_DATA: emit csBacklogData(arg1.value<BufferId>(), arg2.toList(), arg3.toBool()); break;
     case CS_UPDATE_BUFFERID: emit csUpdateBufferId(arg1.value<BufferId>()); break;
 
-    default: qWarning() << "Unknown signal in GUIProxy::recv: " << sig;
+    //default: qWarning() << "Unknown signal in GUIProxy::recv: " << sig;
+    default: emit csGeneric(sig, arg1, arg2, arg3);
   }
 }
 

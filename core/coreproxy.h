@@ -57,12 +57,16 @@ class CoreProxy : public QObject {
     inline void csBacklogData(BufferId id, QList<QVariant> msg, bool done) { send(CS_BACKLOG_DATA, QVariant::fromValue(id), msg, done); }
     inline void csUpdateBufferId(BufferId id)                           { send(CS_UPDATE_BUFFERID, QVariant::fromValue(id)); }
 
+    inline void csGeneric(CoreSignal sig, QVariant v1 = QVariant(), QVariant v2 = QVariant(), QVariant v3 = QVariant()) { send(sig, v1, v2, v3); }
+
   signals:
     void gsPutGlobalData(QString, QVariant);
     void gsUserInput(BufferId, QString);
     void gsRequestConnect(QStringList networks);
     void gsImportBacklog();
     void gsRequestBacklog(BufferId, QVariant, QVariant);
+
+    void gsGeneric(GUISignal, QVariant, QVariant, QVariant);
 
     void requestServerStates();
 
