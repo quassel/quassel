@@ -111,6 +111,7 @@ class Server : public QThread {
     void handleUserSay(QString, QString);
     void handleUserTopic(QString, QString);
     void handleUserVoice(QString, QString);
+    void handleUserMe(QString, QString);
 
     /* void handleServer(QString, QStringList); */
     void handleServerJoin(QString, QStringList);
@@ -134,6 +135,8 @@ class Server : public QThread {
     void handleServer433(QString, QStringList);   // ERR_NICKNAMEINUSE
 
     void handleCtcpAction(CtcpType, QString, QString, QString);
+    void handleCtcpPing(CtcpType, QString, QString, QString);
+    void handleCtcpVersion(CtcpType, QString, QString, QString);
 
     void defaultServerHandler(QString cmd, QString prefix, QStringList params);
     void defaultUserHandler(QString buf, QString cmd, QString msg);
@@ -155,11 +158,18 @@ class Server : public QThread {
     void handleServerMsg(QString rawMsg);
     void handleUserInput(QString buffer, QString usrMsg);
 
+    // CTCP Stuff
+    QString XDELIM;
     QHash<QString, QString> ctcpMDequoteHash;
+    QHash<QString, QString> ctcpXDelimDequoteHash;    
     QString ctcpDequote(QString);
     QString ctcpXdelimDequote(QString);
     QStringList parseCtcp(CtcpType, QString, QString, QString);    
 
+    QString ctcpPack(QString ctcpTag, QString message);
+    void ctcpQuery(QString bufname, QString ctcpTag, QString message);
+    void ctcpReply(QString bufname, QString ctcpTag, QString message);
+    
     QString updateNickFromMask(QString mask);
 
     class ParseError : public Exception {

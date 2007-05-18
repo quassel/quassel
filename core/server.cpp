@@ -32,6 +32,11 @@ Server::Server(QString net) : network(net) {
   ctcpMDequoteHash[MQUOTE + 'n'] = QString('\n');
   ctcpMDequoteHash[MQUOTE + 'r'] = QString('\r');
   ctcpMDequoteHash[MQUOTE + MQUOTE] = MQUOTE;
+
+  XDELIM = QString('\001');
+  QString XQUOTE = QString('\134');
+  ctcpXDelimDequoteHash[XQUOTE + XQUOTE] = XQUOTE;
+  ctcpXDelimDequoteHash[XQUOTE + QString('a')] = XDELIM;
 }
 
 Server::~Server() {
@@ -299,43 +304,40 @@ QStringList Server::providesUserHandlers() {
 QString Server::ctcpDequote(QString message) {
   QString dequotedMessage;
   QString messagepart;
-  int offset;
-
+  QHash<QString, QString>::iterator ctcpquote;
+  
   // copy dequote Message
   for(int i = 0; i < message.size(); i++) {
     messagepart = message[i];
-    offset = 0;
     if(i+1 < message.size()) {
-      for(QHash<QString, QString>::iterator ctcpquote = ctcpMDequoteHash.begin(); ctcpquote != ctcpMDequoteHash.end(); ++ctcpquote) {
+      for(ctcpquote = ctcpMDequoteHash.begin(); ctcpquote != ctcpMDequoteHash.end(); ++ctcpquote) {
         if(message.mid(i,2) == ctcpquote.key()) {
           dequotedMessage += ctcpquote.value();
-          offset = 1;
+          i++;
+          break;
         }
       }
     }
     dequotedMessage += messagepart;
-    i += offset;
   }
   return dequotedMessage;
 }
 
+
 QString Server::ctcpXdelimDequote(QString message) {
   QString dequotedMessage;
   QString messagepart;
-  QString XQUOTE = QString('\134');
-  QString XQUOTEQUOTED = XQUOTE + QString('\134');
-  QString XDELIM = QString('\001');
-  QString XDELIMQUOTED = XQUOTE + QString('a');
-  
+  QHash<QString, QString>::iterator xdelimquote;
+
   for(int i = 0; i < message.size(); i++) {
     messagepart = message[i];
     if(i+1 < message.size()) {
-      if(message.mid(i,2) == XQUOTEQUOTED) {
-        messagepart = XQUOTE;
-        i++;
-      } else if(message.mid(i,2) == XDELIMQUOTED) {
-        messagepart = XDELIM;
-        i++;
+      for(xdelimquote = ctcpXDelimDequoteHash.begin(); xdelimquote != ctcpXDelimDequoteHash.end(); ++xdelimquote) {
+        if(message.mid(i,2) == xdelimquote.key()) {
+          messagepart = xdelimquote.value();
+          i++;
+          break;
+        }
       }
     }
     dequotedMessage += messagepart;
@@ -351,17 +353,15 @@ QStringList Server::parseCtcp(CtcpType ctcptype, QString prefix, QString target,
   QString dequotedMessage = ctcpDequote(message);
   
   // extract tagged / extended data
-  QString XDELIM = QString('\001');
   while(dequotedMessage.contains(XDELIM)) {
     messages << dequotedMessage.section(XDELIM,0,0);
-    ctcp = dequotedMessage.section(XDELIM,1,1);
+    ctcp = ctcpXdelimDequote(dequotedMessage.section(XDELIM,1,1));
     dequotedMessage = dequotedMessage.section(XDELIM,2,2);
     
     //dispatch the ctcp command
     QString ctcpcmd = ctcp.section(' ', 0, 0);
     QString ctcpparam = ctcp.section(' ', 1);
     
-    // Now we try to find a handler for this message. BTW, I do love the Trolltech guys ;-)
     QString hname = ctcpcmd.toLower();
     hname[0] = hname[0].toUpper();
     hname = "handleCtcp" + hname;
@@ -369,14 +369,27 @@ QStringList Server::parseCtcp(CtcpType ctcptype, QString prefix, QString target,
       // Ok. Default handler it is.
       defaultCtcpHandler(ctcptype, prefix, ctcpcmd, target, ctcpparam);
     }
-
-
   }
   if(!dequotedMessage.isEmpty()) {
     messages << dequotedMessage;
   }
   return messages;
-  
+}
+
+QString Server::ctcpPack(QString ctcpTag, QString message) {
+  return XDELIM + ctcpTag + ' ' + message + XDELIM;
+}
+
+void Server::ctcpQuery(QString bufname, QString ctcpTag, QString message) {
+  QStringList params;
+  params << bufname << ctcpPack(ctcpTag, message);
+  putCmd("PRIVMSG", params); 
+}
+
+void Server::ctcpReply(QString bufname, QString ctcpTag, QString message) {
+  QStringList params;
+  params << bufname << ctcpPack(ctcpTag, message);
+  putCmd("NOTICE", params);
 }
 
 /**********************************************************************************/
@@ -485,6 +498,12 @@ void Server::handleUserSay(QString bufname, QString msg) {
   } else {
     emit displayMsg(Message::Plain, params[0], msg, ownNick, Message::Self|Message::PrivMsg);
   }
+}
+
+void Server::handleUserMe(QString bufname, QString msg) {
+  if(bufname.isEmpty()) return; // server buffer
+  ctcpQuery(bufname, "ACTION", msg);
+  emit displayMsg(Message::Action, bufname, msg, ownNick);
 }
 
 void Server::handleUserTopic(QString bufname, QString msg) {
@@ -845,8 +864,27 @@ void Server::handleCtcpAction(CtcpType ctcptype, QString prefix, QString target,
   emit displayMsg(Message::Action, target, param, prefix);
 }
 
+void Server::handleCtcpPing(CtcpType ctcptype, QString prefix, QString target, QString param) {
+  if(ctcptype == CtcpQuery) {
+    ctcpReply(userFromMask(prefix), "PING", param);
+    emit displayMsg(Message::Plain, "", tr("Received CTCP PING request by %1").arg(prefix));
+  } else {
+    // display ping answer
+  }
+}
+
+void Server::handleCtcpVersion(CtcpType ctcptype, QString prefix, QString target, QString param) {
+  if(ctcptype == CtcpQuery) {
+    // FIXME use real Info about quasel :)
+    ctcpReply(userFromMask(prefix), "VERSION", QString("Quassel:pre Release:*nix"));
+    emit displayMsg(Message::Plain, "", tr("Received CTCP VERSION request by %1").arg(prefix));
+  } else {
+    // TODO display Version answer
+  }
+}
+
 void Server::defaultCtcpHandler(CtcpType ctcptype, QString prefix, QString cmd, QString target, QString param) {
-  emit displayMsg(Message::Error, "", QString("Unknown CTCP: ") + cmd + (" ") + param, prefix);
+  emit displayMsg(Message::Error, "", tr("Received unknown CTCP %1 by %2").arg(cmd).arg(prefix));
 }
 
 
