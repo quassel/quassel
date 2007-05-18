@@ -67,7 +67,7 @@ void NetworkView::bufferUpdated(Buffer *b) {
     /*
       this is actually fugly! :) - EgS
       if anyone else wonders what this does: it takes the TreeItem related to the buffer out of the parents child list
-      there for we need to know the childs index
+      therefore we need to know the childs index
     */
     QTreeWidgetItem *item = bufitems[b]->parent()->takeChild(bufitems[b]->parent()->indexOfChild(bufitems[b]));
     delete item;

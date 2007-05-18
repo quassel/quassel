@@ -27,8 +27,11 @@
 #include <QDateTime>
 
 Server::Server(QString net) : network(net) {
-
-
+  QString MQUOTE = QString('\020');
+  ctcpMDequoteHash[MQUOTE + '0'] = QString('\000');
+  ctcpMDequoteHash[MQUOTE + 'n'] = QString('\n');
+  ctcpMDequoteHash[MQUOTE + 'r'] = QString('\r');
+  ctcpMDequoteHash[MQUOTE + MQUOTE] = MQUOTE;
 }
 
 Server::~Server() {
@@ -293,6 +296,88 @@ QStringList Server::providesUserHandlers() {
   return userHandlers;
 }
 
+QString Server::ctcpDequote(QString message) {
+  QString dequotedMessage;
+  QString messagepart;
+  int offset;
+
+  // copy dequote Message
+  for(int i = 0; i < message.size(); i++) {
+    messagepart = message[i];
+    offset = 0;
+    if(i+1 < message.size()) {
+      for(QHash<QString, QString>::iterator ctcpquote = ctcpMDequoteHash.begin(); ctcpquote != ctcpMDequoteHash.end(); ++ctcpquote) {
+        if(message.mid(i,2) == ctcpquote.key()) {
+          dequotedMessage += ctcpquote.value();
+          offset = 1;
+        }
+      }
+    }
+    dequotedMessage += messagepart;
+    i += offset;
+  }
+  return dequotedMessage;
+}
+
+QString Server::ctcpXdelimDequote(QString message) {
+  QString dequotedMessage;
+  QString messagepart;
+  QString XQUOTE = QString('\134');
+  QString XQUOTEQUOTED = XQUOTE + QString('\134');
+  QString XDELIM = QString('\001');
+  QString XDELIMQUOTED = XQUOTE + QString('a');
+  
+  for(int i = 0; i < message.size(); i++) {
+    messagepart = message[i];
+    if(i+1 < message.size()) {
+      if(message.mid(i,2) == XQUOTEQUOTED) {
+        messagepart = XQUOTE;
+        i++;
+      } else if(message.mid(i,2) == XDELIMQUOTED) {
+        messagepart = XDELIM;
+        i++;
+      }
+    }
+    dequotedMessage += messagepart;
+  }
+  return dequotedMessage;
+}
+
+QStringList Server::parseCtcp(CtcpType ctcptype, QString prefix, QString target, QString message) {
+  QStringList messages;
+  QString ctcp;
+  
+  //lowlevel message dequote
+  QString dequotedMessage = ctcpDequote(message);
+  
+  // extract tagged / extended data
+  QString XDELIM = QString('\001');
+  while(dequotedMessage.contains(XDELIM)) {
+    messages << dequotedMessage.section(XDELIM,0,0);
+    ctcp = dequotedMessage.section(XDELIM,1,1);
+    dequotedMessage = dequotedMessage.section(XDELIM,2,2);
+    
+    //dispatch the ctcp command
+    QString ctcpcmd = ctcp.section(' ', 0, 0);
+    QString ctcpparam = ctcp.section(' ', 1);
+    
+    // Now we try to find a handler for this message. BTW, I do love the Trolltech guys ;-)
+    QString hname = ctcpcmd.toLower();
+    hname[0] = hname[0].toUpper();
+    hname = "handleCtcp" + hname;
+    if(!QMetaObject::invokeMethod(this, hname.toAscii(), Q_ARG(CtcpType, ctcptype), Q_ARG(QString, prefix), Q_ARG(QString, target), Q_ARG(QString, ctcpparam))) {
+      // Ok. Default handler it is.
+      defaultCtcpHandler(ctcptype, prefix, ctcpcmd, target, ctcpparam);
+    }
+
+
+  }
+  if(!dequotedMessage.isEmpty()) {
+    messages << dequotedMessage;
+  }
+  return messages;
+  
+}
 
 /**********************************************************************************/
 
@@ -568,12 +653,23 @@ void Server::handleServerPrivmsg(QString prefix, QStringList params) {
   Q_ASSERT(params.count() >= 2);
   if(params.count()<2) emit displayMsg(Message::Plain, params[0], "", prefix);
   else {
+    // it's possible to pack multiple privmsgs into one param using ctcp
+    QStringList messages = parseCtcp(Server::CtcpQuery, prefix, params[0], params[1]);
     if(params[0].toLower() == ownNick.toLower()) {  // Freenode sends nickname in lower case!
-      emit displayMsg(Message::Plain, "", params[1], prefix, Message::PrivMsg);
+      foreach(QString message, messages) {
+        if(!message.isEmpty()) {
+          emit displayMsg(Message::Plain, "", message, prefix, Message::PrivMsg);
+        }
+      }
+      
     } else {
       //qDebug() << prefix << params;
       Q_ASSERT(isChannelName(params[0]));  // should be channel!
-      emit displayMsg(Message::Plain, params[0], params[1], prefix);
+      foreach(QString message, messages) {
+        if(!message.isEmpty()) {
+          emit displayMsg(Message::Plain, params[0], message, prefix);
+        }
+      }
     }
   }
 }
@@ -741,6 +837,18 @@ void Server::handleServer433(QString prefix, QStringList params) {
     }
   }
 }
+
+/***********************************************************************************/
+// CTCP HANDLER
+
+void Server::handleCtcpAction(CtcpType ctcptype, QString prefix, QString target, QString param) {
+  emit displayMsg(Message::Action, target, param, userFromMask(prefix));
+}
+
+void Server::defaultCtcpHandler(CtcpType ctcptype, QString prefix, QString cmd, QString target, QString param) {
+  emit displayMsg(Message::Error, "", QString("Unknown CTCP: ") + cmd + (" ") + param, prefix);
+}
+
 
 /***********************************************************************************/
 

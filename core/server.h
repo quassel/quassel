@@ -49,6 +49,8 @@ class Server : public QThread {
     QString getNetwork() { return network; }
     QStringList providesUserHandlers();
 
+    enum CtcpType {CtcpQuery, CtcpReply};
+
   public slots:
     // void setServerOptions();
     void sendState();
@@ -131,8 +133,11 @@ class Server : public QThread {
     void handleServer432(QString, QStringList);   // ERR_ERRONEUSNICKNAME
     void handleServer433(QString, QStringList);   // ERR_NICKNAMEINUSE
 
+    void handleCtcpAction(CtcpType, QString, QString, QString);
+
     void defaultServerHandler(QString cmd, QString prefix, QStringList params);
     void defaultUserHandler(QString buf, QString cmd, QString msg);
+    void defaultCtcpHandler(CtcpType ctcptype, QString prefix, QString cmd, QString target, QString param);
 
   private:
     QString network;
@@ -149,6 +154,11 @@ class Server : public QThread {
 
     void handleServerMsg(QString rawMsg);
     void handleUserInput(QString buffer, QString usrMsg);
+
+    QHash<QString, QString> ctcpMDequoteHash;
+    QString ctcpDequote(QString);
+    QString ctcpXdelimDequote(QString);
+    QStringList parseCtcp(CtcpType, QString, QString, QString);    
 
     QString updateNickFromMask(QString mask);
 
