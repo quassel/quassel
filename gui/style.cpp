@@ -40,6 +40,7 @@ void Style::init() {
   colors["15"] = QColor("silver");
 
   QTextCharFormat def;
+  def.setForeground(QBrush("black"));
   def.setFont(QFont("Verdana",9));
   formats["default"] = def;
 
@@ -49,7 +50,7 @@ void Style::init() {
   formats["%B"] = bold;
 
   // %O - 0x0f - plain
-  formats["%O"] = QTextCharFormat();
+  formats["%O"] = def;
 
   // %R - 0x12 - reverse
   // -- - 0x16 - reverse
@@ -220,6 +221,7 @@ Style::FormattedString Style::internalToFormatted(QString s) {
       }
     } else if(s[i] == 'O') {
       foreach(QString key, toggles.keys()) {
+        if(key == "default") continue;
         sf.formats[toggles[key]].length = j - sf.formats[toggles[key]].start;
         toggles.remove(key);
       }
