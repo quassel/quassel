@@ -36,6 +36,9 @@ class Global;
 typedef QMap<QString, QVariant> VarMap;
 extern Global *global;
 
+typedef uint UserId;
+typedef uint MsgId;
+
 /**
  * This class is mostly a globally synchronized data store, meant for storing systemwide settings such
  * as identities or network lists. This class is a singleton, but not static as we'd like to use signals and
