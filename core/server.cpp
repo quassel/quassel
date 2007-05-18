@@ -842,7 +842,7 @@ void Server::handleServer433(QString prefix, QStringList params) {
 // CTCP HANDLER
 
 void Server::handleCtcpAction(CtcpType ctcptype, QString prefix, QString target, QString param) {
-  emit displayMsg(Message::Action, target, param, userFromMask(prefix));
+  emit displayMsg(Message::Action, target, param, prefix);
 }
 
 void Server::defaultCtcpHandler(CtcpType ctcptype, QString prefix, QString cmd, QString target, QString param) {

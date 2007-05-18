@@ -116,6 +116,11 @@ void Style::init() {
   QTextCharFormat mode;
   mode.setForeground(QBrush("steelblue"));
   formats["%Dm"] = mode;
+  // %Da - ctcp action
+  QTextCharFormat action;
+  action.setFontItalic(true);
+  action.setForeground(QBrush("darkmagenta"));
+  formats["%Da"] = action;
 
   // %DT - timestamp
   QTextCharFormat ts;

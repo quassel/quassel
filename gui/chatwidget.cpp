@@ -590,6 +590,10 @@ void ChatLine::formatMsg(Message msg) {
       if(nick.isEmpty()) t = tr("%DmUser mode: %DM%1%DM").arg(msg.text);
       else t = tr("%DmMode %DM%1%DM by %DN%DU%2%DU%DN").arg(msg.text, nick);
       break;
+    case Message::Action:
+      s = tr("%Da-*-");
+      t = tr("%Da%DN%DU%1%DU%DN %2").arg(nick).arg(msg.text);
+      break;
     default:
       s = tr("%De%1").arg(msg.sender);
       t = tr("%De[%1]").arg(msg.text);
