@@ -568,9 +568,10 @@ void Server::handleServerPrivmsg(QString prefix, QStringList params) {
   Q_ASSERT(params.count() >= 2);
   if(params.count()<2) emit displayMsg(Message::Plain, params[0], "", prefix);
   else {
-    if(params[0] == ownNick) {
+    if(params[0].toLower() == ownNick.toLower()) {  // Freenode sends nickname in lower case!
       emit displayMsg(Message::Plain, "", params[1], prefix, Message::PrivMsg);
     } else {
+      //qDebug() << prefix << params;
       Q_ASSERT(isChannelName(params[0]));  // should be channel!
       emit displayMsg(Message::Plain, params[0], params[1], prefix);
     }
