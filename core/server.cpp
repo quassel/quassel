@@ -697,8 +697,10 @@ void Server::handleServerQuit(QString prefix, QStringList params) {
   QString nick = updateNickFromMask(prefix);
   Q_ASSERT(nicks.contains(nick));
   VarMap chans = nicks[nick]["Channels"].toMap();
+  QString msg;
+  if(params.count()) msg = params[0];
   foreach(QString c, chans.keys()) {
-    emit displayMsg(Message::Quit, c, params[0], prefix);
+    emit displayMsg(Message::Quit, c, msg, prefix);
   }
   nicks.remove(nick);
   emit nickRemoved(network, nick);
