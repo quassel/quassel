@@ -24,6 +24,7 @@
 #include <QtCore>
 
 #include "global.h"
+#include "message.h"
 
 class Storage : public QObject {
   Q_OBJECT
@@ -40,7 +41,7 @@ class Storage : public QObject {
      *  For anything like this, the constructor (which is called if and when we actually create an instance
      *  of the storage backend) is the right place.
      */
-    virtual static void init() {};
+    static void init() {};
 
     /* General */
 
@@ -49,11 +50,11 @@ class Storage : public QObject {
      *  prerequisites are in place (e.g. we have an appropriate DB driver etc.).
      * \return True if and only if the storage class can be successfully used.
      */
-    virtual static bool isAvailable() = 0;
+    static bool isAvailable() { return false; }
 
     //! Returns the display name of the storage backend
     /** \return A string that can be used by the GUI to describe the storage backend */
-    virtual static QString displayName() = 0;
+    static QString displayName() { return ""; }
 
     // TODO: Add functions for configuring the backlog handling, i.e. defining auto-cleanup settings etc
 
@@ -139,10 +140,10 @@ class Storage : public QObject {
   public slots:
     //! This is just for importing the old file-based backlog */
     /** This slot needs to be implemented in the storage backends.
-     *  It should first prepare (delete?) the database, then call initBackLogOld().
+     *  It should first prepare (delete?) the database, then call initBackLogOld(UserId id).
      *  If the importing was successful, backLogEnabledOld will be true afterwards.
      */
-    void importOldBacklog() = 0;
+    virtual void importOldBacklog() = 0;
 
   signals:
     //! Sent if a new BufferId is created, or an existing one changed somehow.
@@ -150,8 +151,7 @@ class Storage : public QObject {
 
   protected:
     // Old stuff, just for importing old file-based data
-    void initBackLogOld();
-    void logMessageOld(QString net, Message);
+    void initBackLogOld(UserId id);
 
     bool backLogEnabledOld;
     QDir backLogDir;

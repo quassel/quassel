@@ -43,7 +43,7 @@ void Storage::importOldBacklog() {
 */
 
 // file name scheme: quassel-backlog-2006-29-10.bin
-void Storage::initBackLogOld() {
+void Storage::initBackLogOld(UserId uid) {
   backLogDir = QDir(Global::quasselDir + "/backlog");
   if(!backLogDir.exists()) {
     qWarning(QString("Creating backlog directory \"%1\"...").arg(backLogDir.absolutePath()).toAscii());
@@ -100,9 +100,9 @@ void Storage::initBackLogOld() {
         QString text = QString::fromUtf8(m);
         BufferId id;
         if((f & Message::PrivMsg) && !(f & Message::Self)) {
-          id = getBufferId(net, sender);
+          id = getBufferId(uid, net, sender);
         } else {
-          id = getBufferId(net, target);
+          id = getBufferId(uid, net, target);
         }
         Message msg(QDateTime::fromTime_t(ts), id, (Message::Type)t, text, sender, f);
         //backLog[net].append(m);
@@ -113,46 +113,5 @@ void Storage::initBackLogOld() {
   }
   backLogEnabledOld = true;
 }
-
-
-/** Log a core message (emitted via a displayMsg() signal) to the backlog file.
- * If a file for the current day does not exist, one will be created. Otherwise, messages will be appended.
- * The file header is the string defined by BACKLOG_STRING, followed by a quint8 specifying the format
- * version (BACKLOG_FORMAT). The rest is simply serialized Message objects.
- */
-void Storage::logMessageOld(QString net, Message msg) {
-  backLog[net].append(msg);
-  if(!logFileDirs.contains(net)) {
-    QDir dir(backLogDir.absolutePath() + "/" + net);
-    if(!dir.exists()) {
-      qWarning(QString("Creating backlog directory \"%1\"...").arg(dir.absolutePath()).toAscii());
-      if(!dir.mkpath(dir.absolutePath())) {
-        qWarning(QString("Could not create backlog directory!").toAscii());
-        return;
-      }
-    }
-    logFileDirs[net] = dir;
-    Q_ASSERT(!logFiles.contains(net) && !logStreams.contains(net));
-    if(!logFiles.contains(net)) logFiles[net] = new QFile();
-    if(!logStreams.contains(net)) logStreams[net] = new QDataStream();
-  }
-  if(!logFileDates[net].isValid() || logFileDates[net] < QDate::currentDate()) {
-    if(logFiles[net]->isOpen()) logFiles[net]->close();
-    logFileDates[net] = QDate::currentDate();
-  }
-  if(!logFiles[net]->isOpen()) {
-    logFiles[net]->setFileName(QString("%1/%2").arg(logFileDirs[net].absolutePath())
-        .arg(logFileDates[net].toString("'quassel-backlog-'yyyy-MM-dd'.bin'")));
-    if(!logFiles[net]->open(QIODevice::WriteOnly|QIODevice::Append|QIODevice::Unbuffered)) {
-      qWarning(QString("Could not open \"%1\" for writing: %2")
-          .arg(logFiles[net]->fileName()).arg(logFiles[net]->errorString()).toAscii());
-      return;
-    }
-    logStreams[net]->setDevice(logFiles[net]); logStreams[net]->setVersion(QDataStream::Qt_4_2);
-    if(!logFiles[net]->size()) *logStreams[net] << BACKLOG_STRING << (quint8)BACKLOG_FORMAT;
-  }
-  *logStreams[net] << msg;
-}
-
 
 

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005/06 by The Quassel Team                             *
+ *   Copyright (C) 2005-07 by The Quassel Team                             *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -738,6 +738,7 @@ void Server::handleServer001(QString prefix, QStringList params) {
 /* RPL_ISUPPORT */
 // TODO Complete 005 handling, also use sensible defaults for non-sent stuff
 void Server::handleServer005(QString prefix, QStringList params) {
+  qDebug() << prefix << params;
   params.removeLast();
   foreach(QString p, params) {
     QString key = p.section("=", 0, 0);
