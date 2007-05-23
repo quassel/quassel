@@ -22,6 +22,7 @@
 #define _STORAGE_H_
 
 #include <QtCore>
+#include <QtSql>
 
 #include "global.h"
 #include "message.h"
@@ -68,10 +69,10 @@ class Storage : public QObject {
     virtual UserId addUser(QString user, QString password) = 0;
 
     //! Update a core user's password.
-    /** \param user     The user's name
+    /** \param user     The user's id
      *  \param password The user's new password
      */
-    virtual void updateUser(QString user, QString password) = 0;
+    virtual void updateUser(UserId user, QString password) = 0;
 
     //! Validate a username with a given password.
     /** \param user     The username to validate
@@ -81,9 +82,9 @@ class Storage : public QObject {
     virtual UserId validateUser(QString user, QString password) = 0;
 
     //! Remove a core user from storage.
-    /** \param user     The username to delete
+    /** \param user     The userid to delete
      */
-    virtual void delUser(QString user) = 0;
+    virtual void delUser(UserId user) = 0;
 
     /* Buffer handling */
 
@@ -109,7 +110,7 @@ class Storage : public QObject {
 
     //! Store a Message in the backlog.
     /** \param msg  The message object to be stored
-     *  \return The globally uniqe id for the stored message
+     *  \return The globally unique id for the stored message
      */
     virtual MsgId logMessage(Message msg) = 0;
 
@@ -149,10 +150,13 @@ class Storage : public QObject {
     //! Sent if a new BufferId is created, or an existing one changed somehow.
     void bufferIdUpdated(BufferId);
 
+
   protected:
     // Old stuff, just for importing old file-based data
     void initBackLogOld(UserId id);
 
+    QSqlDatabase logDb;
+      
     bool backLogEnabledOld;
     QDir backLogDir;
     QHash<QString, QList<Message> > backLog;

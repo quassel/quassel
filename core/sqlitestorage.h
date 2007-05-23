@@ -22,6 +22,7 @@
 #define _SQLITESTORAGE_H_
 
 #include <QtCore>
+#include <QCryptographicHash>
 
 #include "global.h"
 #include "storage.h"
@@ -45,9 +46,9 @@ class SqliteStorage : public Storage {
     /* User handling */
 
     virtual UserId addUser(QString user, QString password);
-    virtual void updateUser(QString user, QString password);
+    virtual void updateUser(UserId user, QString password);
     virtual UserId validateUser(QString user, QString password);
-    virtual void delUser(QString user);
+    virtual void delUser(UserId user);
 
     /* Buffer handling */
 
@@ -75,6 +76,19 @@ class SqliteStorage : public Storage {
   protected:
 
   private:
+    void initDb();
+    void createBuffer(UserId user, QString network, QString buffer);
+    QSqlQuery *logMessageQuery;
+    QSqlQuery *addSenderQuery;
+    QSqlQuery *getLastMessageIdQuery;
+    QSqlQuery *requestMsgsQuery;
+    QSqlQuery *requestMsgsOffsetQuery;
+    QSqlQuery *requestMsgsSinceQuery;
+    QSqlQuery *requestMsgsSinceOffsetQuery;
+    QSqlQuery *requestMsgRangeQuery;
+    QSqlQuery *createNetworkQuery;
+    QSqlQuery *createBufferQuery;
+    QSqlQuery *getBufferIdQuery;
 };
 
 
