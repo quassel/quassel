@@ -870,7 +870,7 @@ void Server::handleCtcpAction(CtcpType ctcptype, QString prefix, QString target,
 void Server::handleCtcpPing(CtcpType ctcptype, QString prefix, QString target, QString param) {
   if(ctcptype == CtcpQuery) {
     ctcpReply(nickFromMask(prefix), "PING", param);
-    emit displayMsg(Message::Plain, "", tr("Received CTCP PING request by %1").arg(prefix));
+    emit displayMsg(Message::Server, "", tr("Received CTCP PING request by %1").arg(prefix));
   } else {
     // display ping answer
   }
@@ -880,7 +880,7 @@ void Server::handleCtcpVersion(CtcpType ctcptype, QString prefix, QString target
   if(ctcptype == CtcpQuery) {
     // FIXME use real Info about quassel :)
     ctcpReply(nickFromMask(prefix), "VERSION", QString("Quassel:pre Release:*nix"));
-    emit displayMsg(Message::Plain, "", tr("Received CTCP VERSION request by %1").arg(prefix));
+    emit displayMsg(Message::Server, "", tr("Received CTCP VERSION request by %1").arg(prefix));
   } else {
     // TODO display Version answer
   }

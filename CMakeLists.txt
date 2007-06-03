@@ -42,7 +42,7 @@ INCLUDE_DIRECTORIES(${SDIRS} plugins)
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 
 # We need Qt4 support.
-SET(QT_MIN_VERSION "4.3.0")
+SET(QT_MIN_VERSION "4.3.0")  # 4.3 is required for SSL, crypto and some other stuff
 FIND_PACKAGE(Qt4 REQUIRED)
 
 # Set needed libraries

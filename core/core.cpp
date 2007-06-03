@@ -23,6 +23,7 @@
 #include "global.h"
 #include "util.h"
 #include "coreproxy.h"
+#include "sqlitestorage.h"
 
 #include <QtSql>
 #include <QSettings>
@@ -30,15 +31,24 @@
 Core::Core() {
   if(core) qFatal("Trying to instantiate more than one Core object!");
 
+  if(!SqliteStorage::isAvailable()) {
+    qFatal("Sqlite is currently required! Please make sure your Qt library has sqlite support enabled.");
+  }
+  //SqliteStorage::init();
+  storage = new SqliteStorage();
+  user = storage->validateUser("Default", "password");
+  if(!user) user = storage->addUser("Default", "password");
+  Q_ASSERT(user);
+
   connect(coreProxy, SIGNAL(requestServerStates()), this, SIGNAL(serverStateRequested()));
   connect(coreProxy, SIGNAL(gsRequestConnect(QStringList)), this, SLOT(connectToIrc(QStringList)));
   connect(coreProxy, SIGNAL(gsUserInput(BufferId, QString)), this, SLOT(msgFromGUI(BufferId, QString)));
-  connect(coreProxy, SIGNAL(gsImportBacklog()), &backlog, SLOT(importOldBacklog()));
+  connect(coreProxy, SIGNAL(gsImportBacklog()), storage, SLOT(importOldBacklog()));
   connect(coreProxy, SIGNAL(gsRequestBacklog(BufferId, QVariant, QVariant)), this, SLOT(sendBacklog(BufferId, QVariant, QVariant)));
   connect(this, SIGNAL(displayMsg(Message)), coreProxy, SLOT(csDisplayMsg(Message)));
   connect(this, SIGNAL(displayStatusMsg(QString, QString)), coreProxy, SLOT(csDisplayStatusMsg(QString, QString)));
   connect(this, SIGNAL(backlogData(BufferId, QList<QVariant>, bool)), coreProxy, SLOT(csBacklogData(BufferId, QList<QVariant>, bool)));
-  connect(&backlog, SIGNAL(bufferIdUpdated(BufferId)), coreProxy, SLOT(csUpdateBufferId(BufferId)));
+  connect(storage, SIGNAL(bufferIdUpdated(BufferId)), coreProxy, SLOT(csUpdateBufferId(BufferId)));
   connect(this, SIGNAL(bufferIdUpdated(BufferId)), coreProxy, SLOT(csUpdateBufferId(BufferId)));
   // Read global settings from config file
   QSettings s;
@@ -47,7 +57,7 @@ Core::Core() {
   foreach(key, s.childKeys()) {
     global->updateData(key, s.value(key));
   }
-  backlog.init("Default"); // FIXME
+
   global->updateData("CoreReady", true);
   // Now that we are in sync, we can connect signals to automatically store further updates.
   // I don't think we care if global data changed locally or if it was updated by a client. 
@@ -60,6 +70,7 @@ Core::~Core() {
   //foreach(Server *s, servers) {
   //  delete s;
   //}
+  delete storage;
 }
 
 void Core::globalDataUpdated(QString key) {
@@ -119,22 +130,15 @@ void Core::recvMessageFromServer(Message::Type type, QString target, QString tex
   Q_ASSERT(s);
   BufferId buf;
   if((flags & Message::PrivMsg) && !(flags & Message::Self)) {
-    buf = backlog.getBufferId(s->getNetwork(), nickFromMask(sender));
+    buf = storage->getBufferId(user, s->getNetwork(), nickFromMask(sender));
   } else {
-    buf = backlog.getBufferId(s->getNetwork(), target);
+    buf = storage->getBufferId(user, s->getNetwork(), target);
   }
   Message msg(buf, type, text, sender, flags);
-  msg.msgId = backlog.logMessage(msg);
+  msg.msgId = storage->logMessage(msg); //qDebug() << msg.msgId;
+  Q_ASSERT(msg.msgId);
   emit displayMsg(msg);
 }
-/*
-void Core::recvMessageFromServer(Message msg) {
-  Server *s = qobject_cast<Server*>(sender());
-  Q_ASSERT(s);
-  logMessage(s->getNetwork(), msg);
-  emit displayMsg(s->getNetwork(), msg);
-}
-*/
 
 void Core::recvStatusMsgFromServer(QString msg) {
   Server *s = qobject_cast<Server*>(sender());
@@ -143,7 +147,7 @@ void Core::recvStatusMsgFromServer(QString msg) {
 }
 
 QList<BufferId> Core::getBuffers() {
-  return backlog.requestBuffers();
+  return storage->requestBuffers(user);
 }
 
 void Core::sendBacklog(BufferId id, QVariant v1, QVariant v2) {
@@ -153,7 +157,7 @@ void Core::sendBacklog(BufferId id, QVariant v1, QVariant v2) {
 
 
   } else {
-    msglist = backlog.requestMsgs(id, v1.toInt(), v2.toInt());
+    msglist = storage->requestMsgs(id, v1.toInt(), v2.toInt());
   }
 
   // Send messages out in smaller packages - we don't want to make the signal data too large!

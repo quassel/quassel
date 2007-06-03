@@ -28,6 +28,7 @@
 
 #include "server.h"
 #include "backlog.h"
+#include "storage.h"
 #include "global.h"
 
 class Core : public QObject {
@@ -37,7 +38,6 @@ class Core : public QObject {
 
     Core();
     ~Core();
-    QHash<QString, QList<Message> > getBackLog() { return QHash<QString, QList<Message> >()/*backLog*/; }; // FIXME
     QList<BufferId> getBuffers();
 
   public slots:
@@ -59,32 +59,15 @@ class Core : public QObject {
     void bufferIdUpdated(BufferId);
 
   private slots:
-    //void serverStatesRequested();
     void globalDataUpdated(QString);
     void recvStatusMsgFromServer(QString msg);
-    //void recvMessageFromServer(Message msg);
     void recvMessageFromServer(Message::Type, QString target, QString text, QString sender = "", quint8 flags = Message::None);
     void serverDisconnected(QString net);
 
   private:
-    Backlog backlog;
-    QDir backLogDir;
-    bool backLogEnabled;
+    Storage *storage;
     QHash<QString, Server *> servers;
-    //QHash<QString, QList<Message> > backLog;
-    //QHash<QString, int> netIdx;
-    //QHash<QString, QFile *> logFiles;
-    //QHash<QString, QDataStream *> logStreams;
-    //QHash<QString, QDate> logFileDates;
-    //QHash<QString, QDir> logFileDirs;
-
-    //QSqlDatabase logDb;
-
-    //uint getNetIdx(QString net);
-    //void initBackLog();
-    //void initBackLogOld();
-    //void logMessage(QString, Message);
-    //void logMessageOld(QString, Message);
+    UserId user;
 
 };
 
