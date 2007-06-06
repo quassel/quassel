@@ -167,7 +167,7 @@ void Server::handleServerMsg(QString msg) {
       return;
     }
     // OK, first we split the raw message into its various parts...
-    QString prefix;
+    QString prefix = "";
     QString cmd;
     QStringList params;
 
@@ -738,7 +738,7 @@ void Server::handleServer001(QString prefix, QStringList params) {
 /* RPL_ISUPPORT */
 // TODO Complete 005 handling, also use sensible defaults for non-sent stuff
 void Server::handleServer005(QString prefix, QStringList params) {
-  qDebug() << prefix << params;
+  //qDebug() << prefix << params;
   params.removeLast();
   foreach(QString p, params) {
     QString key = p.section("=", 0, 0);
