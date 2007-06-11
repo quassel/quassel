@@ -59,6 +59,7 @@ class MainWin : public QMainWindow {
     void sendInput(BufferId, QString message);
     void bufferSelected(Buffer *);
     void bufferUpdated(Buffer *);
+    void bufferActivity(uint, Buffer *);
     void bufferDestroyed(Buffer *);
     void backlogReceived(Buffer *, QList<Message>);
     void requestBacklog(BufferId, QVariant, QVariant);

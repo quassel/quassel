@@ -114,6 +114,31 @@ void NetworkView::bufferUpdated(Buffer *b) {
   }
 }
 
+void NetworkView::bufferActivity(uint level, Buffer *b) {
+  QColor c;
+  if(bufitems.contains(b) and b != currentBuffer) {
+    if(level & Highlight) {
+      c = QColor(Qt::red);
+    } else if(level & NewMessage) {
+      c = QColor(Qt::darkYellow);
+    } else if(level & OtherActivity) {
+      c = QColor(Qt::darkGreen);
+    }
+    bufitems[b]->setForeground(0, c);
+  }
+}
+
+void NetworkView::clearActivity(Buffer *b) {
+  QColor c;
+  // it should be sane not to check if b is in bufitems since we just checked before calling this function
+  if(b->isActive()) {
+      c = QColor(Qt::black);
+  } else {
+    c = QColor(Qt::gray);
+  }
+  bufitems[b]->setForeground(0, c);
+}
+
 bool NetworkView::shouldShow(Buffer *b) {
   // bool f = false;
   if((mode & NoActive) && b->isActive()) return false;
@@ -155,6 +180,7 @@ void NetworkView::selectBuffer(Buffer *b) {
   foreach(QTreeWidgetItem *i, sel) { if(i != item) i->setSelected(false); }
   if(item) {
     item->setSelected(true);
+    clearActivity(b);
     currentBuffer = b;
   } else {
     currentBuffer = 0;

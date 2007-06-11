@@ -58,7 +58,12 @@ class NetworkView : public QDockWidget {
       SomeNets = 0x04, AllNets = 0x08,
       NoChannels = 0x10, NoQueries = 0x20, NoServers = 0x40
     };
-
+  
+    enum ActivityLevel {
+      NoActivity = 0x00, OtherActivity = 0x01,
+      NewMessage = 0x02, Highlight = 0x40
+    };
+    
     NetworkView(QString name, int mode, QStringList nets = QStringList(), QWidget *parent = 0);
     void setMode(int mode, QStringList nets = QStringList());
     void setName(QString name);
@@ -66,6 +71,7 @@ class NetworkView : public QDockWidget {
 
   public slots:
     void bufferUpdated(Buffer *);
+    void bufferActivity(uint, Buffer *);
     void bufferDestroyed(Buffer *);
     void setBuffers(QList<Buffer *>);
     void selectBuffer(Buffer *);
@@ -90,6 +96,7 @@ class NetworkView : public QDockWidget {
     QTreeWidget *tree;
 
     bool shouldShow(Buffer *);
+    void clearActivity(Buffer *);
 };
 
 

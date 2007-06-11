@@ -172,6 +172,7 @@ void MainWin::setupViews() {
 void MainWin::registerNetView(NetworkView *view) {
   connect(this, SIGNAL(bufferSelected(Buffer *)), view, SLOT(selectBuffer(Buffer *)));
   connect(this, SIGNAL(bufferUpdated(Buffer *)), view, SLOT(bufferUpdated(Buffer *)));
+  connect(this, SIGNAL(bufferActivity(uint, Buffer *)), view, SLOT(bufferActivity(uint, Buffer *)));
   connect(this, SIGNAL(bufferDestroyed(Buffer *)), view, SLOT(bufferDestroyed(Buffer *)));
   connect(view, SIGNAL(bufferSelected(Buffer *)), this, SLOT(showBuffer(Buffer *)));
   view->setBuffers(buffers.values());
@@ -305,6 +306,16 @@ void MainWin::recvMessage(Message msg) {
   }
   */
   Buffer *b = getBuffer(msg.buffer);
+  
+  uint level = NetworkView::OtherActivity;
+  if(msg.type == Message::Plain or msg.type == Message::Notice){
+    level |= NetworkView::NewMessage;
+  }
+  if(msg.flags & Message::Highlight){
+    level |= NetworkView::Highlight;
+  }
+    
+  emit bufferActivity(level, b);
   //b->displayMsg(msg);
   b->appendChatLine(new ChatLine(msg));
 }
