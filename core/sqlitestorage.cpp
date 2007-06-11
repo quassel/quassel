@@ -265,7 +265,6 @@ void SqliteStorage::createBuffer(UserId user, QString network, QString buffer) {
 
   if(createBufferQuery->lastError().isValid()) {
     if(createBufferQuery->lastError().number() == 19) { // Null Constraint violation 
-      qDebug() << createBufferQuery->lastError().text();
       createNetworkQuery->bindValue(":userid", user);
       createNetworkQuery->bindValue(":networkname", network);
       createNetworkQuery->exec();

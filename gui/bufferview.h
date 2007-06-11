@@ -18,21 +18,21 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _NETWORKVIEW_H_
-#define _NETWORKVIEW_H_
+#ifndef _BUFFERVIEW_H_
+#define _BUFFERVIEW_H_
 
 #include <QtGui>
-#include "ui_networkview.h"
+#include "ui_bufferview.h"
 #include "guiproxy.h"
 #include "buffer.h"
 
 typedef QHash<QString, QHash<QString, Buffer*> > BufferHash;
 
-class NetworkViewWidget : public QWidget {
+class BufferViewWidget : public QWidget {
   Q_OBJECT
 
   public:
-    NetworkViewWidget(QWidget *parent = 0);
+    BufferViewWidget(QWidget *parent = 0);
 
     QTreeWidget *tree() { return ui.tree; }
 
@@ -45,11 +45,11 @@ class NetworkViewWidget : public QWidget {
 
 
   private:
-    Ui::NetworkViewWidget ui;
+    Ui::BufferViewWidget ui;
 
 };
 
-class NetworkView : public QDockWidget {
+class BufferView : public QDockWidget {
   Q_OBJECT
 
   public:
@@ -64,7 +64,7 @@ class NetworkView : public QDockWidget {
       NewMessage = 0x02, Highlight = 0x40
     };
     
-    NetworkView(QString name, int mode, QStringList nets = QStringList(), QWidget *parent = 0);
+    BufferView(QString name, int mode, QStringList nets = QStringList(), QWidget *parent = 0);
     void setMode(int mode, QStringList nets = QStringList());
     void setName(QString name);
 

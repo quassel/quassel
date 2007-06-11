@@ -29,7 +29,7 @@
 
 #include "mainwin.h"
 #include "buffer.h"
-#include "networkview.h"
+#include "bufferview.h"
 #include "serverlist.h"
 #include "coreconnectdlg.h"
 #include "settingsdlg.h"
@@ -153,23 +153,23 @@ void MainWin::setupMenus() {
 }
 
 void MainWin::setupViews() {
-  NetworkView *all = new NetworkView(tr("All Buffers"), NetworkView::AllNets);
-  registerNetView(all);
+  BufferView *all = new BufferView(tr("All Buffers"), BufferView::AllNets);
+  registerBufferView(all);
   addDockWidget(Qt::LeftDockWidgetArea, all);
-  NetworkView *allchans = new NetworkView(tr("All Channels"), NetworkView::AllNets|NetworkView::NoQueries|NetworkView::NoServers);
-  registerNetView(allchans);
+  BufferView *allchans = new BufferView(tr("All Channels"), BufferView::AllNets|BufferView::NoQueries|BufferView::NoServers);
+  registerBufferView(allchans);
   addDockWidget(Qt::LeftDockWidgetArea, allchans);
-  NetworkView *allqrys = new NetworkView(tr("All Queries"), NetworkView::AllNets|NetworkView::NoChannels|NetworkView::NoServers);
-  registerNetView(allqrys);
+  BufferView *allqrys = new BufferView(tr("All Queries"), BufferView::AllNets|BufferView::NoChannels|BufferView::NoServers);
+  registerBufferView(allqrys);
   addDockWidget(Qt::RightDockWidgetArea, allqrys);
-  NetworkView *allnets = new NetworkView(tr("All Networks"), NetworkView::AllNets|NetworkView::NoChannels|NetworkView::NoQueries);
-  registerNetView(allnets);
+  BufferView *allnets = new BufferView(tr("All Networks"), BufferView::AllNets|BufferView::NoChannels|BufferView::NoQueries);
+  registerBufferView(allnets);
   addDockWidget(Qt::RightDockWidgetArea, allnets);
 
   ui.menuViews->addSeparator();
 }
 
-void MainWin::registerNetView(NetworkView *view) {
+void MainWin::registerBufferView(BufferView *view) {
   connect(this, SIGNAL(bufferSelected(Buffer *)), view, SLOT(selectBuffer(Buffer *)));
   connect(this, SIGNAL(bufferUpdated(Buffer *)), view, SLOT(bufferUpdated(Buffer *)));
   connect(this, SIGNAL(bufferActivity(uint, Buffer *)), view, SLOT(bufferActivity(uint, Buffer *)));
@@ -307,12 +307,12 @@ void MainWin::recvMessage(Message msg) {
   */
   Buffer *b = getBuffer(msg.buffer);
   
-  uint level = NetworkView::OtherActivity;
+  uint level = BufferView::OtherActivity;
   if(msg.type == Message::Plain or msg.type == Message::Notice){
-    level |= NetworkView::NewMessage;
+    level |= BufferView::NewMessage;
   }
   if(msg.flags & Message::Highlight){
-    level |= NetworkView::Highlight;
+    level |= BufferView::Highlight;
   }
     
   emit bufferActivity(level, b);

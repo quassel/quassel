@@ -60,9 +60,9 @@ gui/ui/nickeditdlg.ui
 gui/ui/servereditdlg.ui
 gui/ui/serverlistdlg.ui
 gui/ui/settingsdlg.ui
-gui/ui/networkview.ui
-gui/networkview.cpp
-gui/networkview.h
+gui/ui/bufferview.ui
+gui/bufferview.cpp
+gui/bufferview.h
 gui/buffer.cpp
 gui/buffer.h
 main/message.cpp

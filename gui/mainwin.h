@@ -30,7 +30,7 @@
 
 class ServerListDlg;
 class CoreConnectDlg;
-class NetworkView;
+class BufferView;
 class Buffer;
 class BufferWidget;
 class SettingsDlg;
@@ -50,7 +50,7 @@ class MainWin : public QMainWindow {
     ~MainWin();
 
     void init();
-    void registerNetView(NetworkView *);
+    void registerBufferView(BufferView *);
 
   protected:
     void closeEvent(QCloseEvent *event);
@@ -124,7 +124,7 @@ class MainWin : public QMainWindow {
     //QHash<QString, QList<Message> > coreBackLog;
     QList<BufferId> coreBuffers;
 
-    QList<NetworkView *> netViews;
+    QList<BufferView *> netViews;
 
     QTimer *layoutTimer;
     QList<Message> layoutQueue;

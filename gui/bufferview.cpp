@@ -19,30 +19,30 @@
  ***************************************************************************/
 
 #include "global.h"
-#include "networkview.h"
+#include "bufferview.h"
 
-NetworkViewWidget::NetworkViewWidget(QWidget *parent) : QWidget(parent) {
+BufferViewWidget::BufferViewWidget(QWidget *parent) : QWidget(parent) {
   ui.setupUi(this);
 
   //setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 }
 
 
-QSize NetworkViewWidget::sizeHint() const {
+QSize BufferViewWidget::sizeHint() const {
   return QSize(150,100);
 
 }
 
 /**************************************************************************/
 
-NetworkView::NetworkView(QString n, int m, QStringList nets, QWidget *parent) : QDockWidget(parent) {
+BufferView::BufferView(QString n, int m, QStringList nets, QWidget *parent) : QDockWidget(parent) {
   setObjectName(QString("View-"+n)); // should be unique for mainwindow state!
   name = n; mode = m;
   setWindowTitle(name);
   networks = nets;
   currentBuffer = 0;
-  setWidget(new NetworkViewWidget(this));
-  tree = qobject_cast<NetworkViewWidget*>(widget())->tree();
+  setWidget(new BufferViewWidget(this));
+  tree = qobject_cast<BufferViewWidget*>(widget())->tree();
   tree->header()->hide();
   tree->setSortingEnabled(true);
   tree->setRootIsDecorated(true);
@@ -54,14 +54,14 @@ NetworkView::NetworkView(QString n, int m, QStringList nets, QWidget *parent) : 
   
 }
 
-void NetworkView::setBuffers(QList<Buffer *> buffers) {
+void BufferView::setBuffers(QList<Buffer *> buffers) {
   tree->clear(); bufitems.clear(); netitems.clear();
   foreach(Buffer *b, buffers) {
     bufferUpdated(b);
   }
 }
 
-void NetworkView::bufferUpdated(Buffer *b) {
+void BufferView::bufferUpdated(Buffer *b) {
   if(bufitems.contains(b)) {
     // FIXME this looks ugly
     /*
@@ -114,7 +114,7 @@ void NetworkView::bufferUpdated(Buffer *b) {
   }
 }
 
-void NetworkView::bufferActivity(uint level, Buffer *b) {
+void BufferView::bufferActivity(uint level, Buffer *b) {
   QColor c;
   if(bufitems.contains(b) and b != currentBuffer) {
     if(level & Highlight) {
@@ -128,7 +128,7 @@ void NetworkView::bufferActivity(uint level, Buffer *b) {
   }
 }
 
-void NetworkView::clearActivity(Buffer *b) {
+void BufferView::clearActivity(Buffer *b) {
   QColor c;
   // it should be sane not to check if b is in bufitems since we just checked before calling this function
   if(b->isActive()) {
@@ -139,7 +139,7 @@ void NetworkView::clearActivity(Buffer *b) {
   bufitems[b]->setForeground(0, c);
 }
 
-bool NetworkView::shouldShow(Buffer *b) {
+bool BufferView::shouldShow(Buffer *b) {
   // bool f = false;
   if((mode & NoActive) && b->isActive()) return false;
   if((mode & NoInactive) && !b->isActive()) return false;
@@ -150,11 +150,11 @@ bool NetworkView::shouldShow(Buffer *b) {
   return true;
 }
 
-void NetworkView::bufferDestroyed(Buffer *b) {
+void BufferView::bufferDestroyed(Buffer *b) {
 
 }
 
-void NetworkView::itemClicked(QTreeWidgetItem *item) {
+void BufferView::itemClicked(QTreeWidgetItem *item) {
   Buffer *b = bufitems.key(item);
   if(b) {
     // there is a buffer associated with the item (aka: status/channel/query)
@@ -165,7 +165,7 @@ void NetworkView::itemClicked(QTreeWidgetItem *item) {
   }
 }
 
-void NetworkView::itemDoubleClicked(QTreeWidgetItem *item) {
+void BufferView::itemDoubleClicked(QTreeWidgetItem *item) {
   Buffer *b = bufitems.key(item);
   if(b && Buffer::ChannelBuffer == b->bufferType()) {
     emit fakeUserInput(b->bufferId(), QString("/join " + b->bufferName()));
@@ -173,7 +173,7 @@ void NetworkView::itemDoubleClicked(QTreeWidgetItem *item) {
   }
 }
 
-void NetworkView::selectBuffer(Buffer *b) {
+void BufferView::selectBuffer(Buffer *b) {
   QTreeWidgetItem *item = 0;
   if(bufitems.contains(b)) item = bufitems[b];
   QList<QTreeWidgetItem *> sel = tree->selectedItems();

@@ -1,11 +1,11 @@
 SET(gui_SRCS chatwidget.cpp channelwidgetinput.cpp tabcompleter.cpp mainwin.cpp serverlist.cpp buffer.cpp bufferwidget.cpp
-             identities.cpp coreconnectdlg.cpp guiproxy.cpp networkview.cpp style.cpp settingsdlg.cpp settingspages.cpp)
+             identities.cpp coreconnectdlg.cpp guiproxy.cpp bufferview.cpp style.cpp settingsdlg.cpp settingspages.cpp)
 SET(gui_HDRS style.h)
 SET(gui_MOCS chatwidget.h channelwidgetinput.h tabcompleter.h mainwin.h serverlist.h identities.h coreconnectdlg.h
-             guiproxy.h networkview.h buffer.h bufferwidget.h settingsdlg.h settingspages.h)
+             guiproxy.h bufferview.h buffer.h bufferwidget.h settingsdlg.h settingspages.h)
 SET(gui_UICS identitiesdlg.ui identitieseditdlg.ui networkeditdlg.ui mainwin.ui
              nickeditdlg.ui serverlistdlg.ui servereditdlg.ui coreconnectdlg.ui ircwidget.ui
-             networkview.ui bufferwidget.ui settingsdlg.ui
+             bufferview.ui bufferwidget.ui settingsdlg.ui
              buffermgmntsettingspage.ui connectionsettingspage.ui)
 
 # This prepends ui/ to the UIC names, so we don't have to do this ourselves.
