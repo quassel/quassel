@@ -73,7 +73,10 @@ class BufferView : public QTreeView {
 public:
   BufferView(QWidget *parent = 0);
   void init();
+  void setModel(QAbstractItemModel *model);
   void setFilteredModel(QAbstractItemModel *model, BufferViewFilter::Modes mode, QStringList nets);
+  
+  void dragEnterEvent(QDragEnterEvent *);
   
 };
 

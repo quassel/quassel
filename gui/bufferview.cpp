@@ -97,3 +97,12 @@ void BufferView::setFilteredModel(QAbstractItemModel *model, BufferViewFilter::M
   setModel(filter);
 }
 
+void BufferView::setModel(QAbstractItemModel *model) {
+  QTreeView::setModel(model);
+  init();
+}
+
+void BufferView::dragEnterEvent(QDragEnterEvent *event) {
+  // not yet needed... this will be usefull to keep track of the active view when customizing them with drag and drop
+  QTreeView::dragEnterEvent(event);
+}

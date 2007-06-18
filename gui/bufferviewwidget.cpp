@@ -331,6 +331,16 @@ bool BufferTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction action,
   Buffer *sourceBuffer = static_cast<BufferTreeItem *>(networkItem[network]->child(sourcerow))->buffer();
   Buffer *targetBuffer = getBufferByIndex(parent);
   
+  if(sourceBuffer == targetBuffer) // we won't merge with ourself :)
+    return false;
+  
+  
+  if(QMessageBox::warning(static_cast<QWidget *>(QObject::parent()),
+                          tr("Merge Buffers?"),
+                          tr("Do you really want to merge the following Buffers?<br />%1.%2<br />%3.%4").arg(sourceBuffer->networkName()).arg(sourceBuffer->bufferName()).arg(targetBuffer->networkName()).arg(targetBuffer->bufferName()),
+                          QMessageBox::Yes|QMessageBox::No) == QMessageBox::No)
+    return false;
+    
   qDebug() << "merging" << sourceBuffer->bufferName() << "with" << targetBuffer->bufferName();
   bufferItem.remove(getBufferByIndex(parent));
   removeRow(parent.row(), BufferTreeModel::parent(parent));
@@ -398,6 +408,5 @@ BufferViewDock::BufferViewDock(QAbstractItemModel *model, QString viewname, Buff
 
   BufferViewWidget *viewWidget = new BufferViewWidget(this);
   viewWidget->treeView()->setFilteredModel(model, mode, nets);
-  viewWidget->treeView()->init();
   setWidget(viewWidget);
 }

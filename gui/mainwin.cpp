@@ -153,7 +153,7 @@ void MainWin::setupMenus() {
 }
 
 void MainWin::setupViews() {
-  BufferTreeModel *model = new BufferTreeModel();
+  BufferTreeModel *model = new BufferTreeModel(this);
   connect(model, SIGNAL(bufferSelected(Buffer *)), this, SLOT(showBuffer(Buffer *)));
   connect(this, SIGNAL(bufferSelected(Buffer *)), model, SLOT(selectBuffer(Buffer *)));
   connect(this, SIGNAL(bufferUpdated(Buffer *)), model, SLOT(bufferUpdated(Buffer *)));
