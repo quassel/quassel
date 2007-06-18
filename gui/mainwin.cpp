@@ -29,7 +29,7 @@
 
 #include "mainwin.h"
 #include "buffer.h"
-#include "bufferview.h"
+#include "bufferviewwidget.h"
 #include "serverlist.h"
 #include "coreconnectdlg.h"
 #include "settingsdlg.h"
@@ -153,32 +153,41 @@ void MainWin::setupMenus() {
 }
 
 void MainWin::setupViews() {
-  BufferView *all = new BufferView(tr("All Buffers"), BufferView::AllNets);
-  registerBufferView(all);
-  addDockWidget(Qt::LeftDockWidgetArea, all);
-  BufferView *allchans = new BufferView(tr("All Channels"), BufferView::AllNets|BufferView::NoQueries|BufferView::NoServers);
-  registerBufferView(allchans);
-  addDockWidget(Qt::LeftDockWidgetArea, allchans);
-  BufferView *allqrys = new BufferView(tr("All Queries"), BufferView::AllNets|BufferView::NoChannels|BufferView::NoServers);
-  registerBufferView(allqrys);
-  addDockWidget(Qt::RightDockWidgetArea, allqrys);
-  BufferView *allnets = new BufferView(tr("All Networks"), BufferView::AllNets|BufferView::NoChannels|BufferView::NoQueries);
-  registerBufferView(allnets);
-  addDockWidget(Qt::RightDockWidgetArea, allnets);
+  BufferTreeModel *model = new BufferTreeModel();
+  connect(model, SIGNAL(bufferSelected(Buffer *)), this, SLOT(showBuffer(Buffer *)));
+  connect(this, SIGNAL(bufferSelected(Buffer *)), model, SLOT(selectBuffer(Buffer *)));
+  connect(this, SIGNAL(bufferUpdated(Buffer *)), model, SLOT(bufferUpdated(Buffer *)));
+  connect(this, SIGNAL(bufferActivity(Buffer::ActivityLevel, Buffer *)), model, SLOT(bufferActivity(Buffer::ActivityLevel, Buffer *)));
+  
+  BufferViewDock *all = new BufferViewDock(model, tr("All Buffers"), BufferViewFilter::AllNets);
+  registerBufferViewDock(all);
+  
+  BufferViewDock *allchans = new BufferViewDock(model, tr("All Channels"), BufferViewFilter::AllNets|BufferViewFilter::NoQueries|BufferViewFilter::NoServers);
+  registerBufferViewDock(allchans);
+  
+  BufferViewDock *allqrys = new BufferViewDock(model, tr("All Queries"), BufferViewFilter::AllNets|BufferViewFilter::NoChannels|BufferViewFilter::NoServers);
+  registerBufferViewDock(allqrys);
+
+  
+  BufferViewDock *allnets = new BufferViewDock(model, tr("All Networks"), BufferViewFilter::AllNets|BufferViewFilter::NoChannels|BufferViewFilter::NoQueries);
+  registerBufferViewDock(allnets);
+
 
   ui.menuViews->addSeparator();
 }
 
-void MainWin::registerBufferView(BufferView *view) {
+void MainWin::registerBufferViewDock(BufferViewDock *dock) {
+  addDockWidget(Qt::LeftDockWidgetArea, dock);
+  dock->setAllowedAreas(Qt::RightDockWidgetArea|Qt::LeftDockWidgetArea);
+  netViews.append(dock);
+  ui.menuViews->addAction(dock->toggleViewAction());
+  
+  /*
   connect(this, SIGNAL(bufferSelected(Buffer *)), view, SLOT(selectBuffer(Buffer *)));
-  connect(this, SIGNAL(bufferUpdated(Buffer *)), view, SLOT(bufferUpdated(Buffer *)));
-  connect(this, SIGNAL(bufferActivity(uint, Buffer *)), view, SLOT(bufferActivity(uint, Buffer *)));
   connect(this, SIGNAL(bufferDestroyed(Buffer *)), view, SLOT(bufferDestroyed(Buffer *)));
   connect(view, SIGNAL(bufferSelected(Buffer *)), this, SLOT(showBuffer(Buffer *)));
   view->setBuffers(buffers.values());
-  view->setAllowedAreas(Qt::RightDockWidgetArea|Qt::LeftDockWidgetArea);
-  netViews.append(view);
-  ui.menuViews->addAction(view->toggleViewAction());
+   */
 }
 
 void MainWin::showServerList() {
@@ -305,17 +314,19 @@ void MainWin::recvMessage(Message msg) {
     b = getBuffer(net, msg.target);
   }
   */
+  
+
   Buffer *b = getBuffer(msg.buffer);
   
-  uint level = BufferView::OtherActivity;
+  Buffer::ActivityLevel level = Buffer::OtherActivity;
   if(msg.type == Message::Plain or msg.type == Message::Notice){
-    level |= BufferView::NewMessage;
+    level |= Buffer::NewMessage;
   }
   if(msg.flags & Message::Highlight){
-    level |= BufferView::Highlight;
+    level |= Buffer::Highlight;
   }
-    
   emit bufferActivity(level, b);
+
   //b->displayMsg(msg);
   b->appendChatLine(new ChatLine(msg));
 }

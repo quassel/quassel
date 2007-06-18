@@ -67,6 +67,13 @@ void Buffer::init() {
 
 }
 
+QString Buffer::displayName() {
+  if(bufferType() == ServerBuffer)
+    return tr("status");
+  else
+    return bufferName();
+}
+
 void Buffer::setActive(bool a) {
   if(a != active) {
     active = a;

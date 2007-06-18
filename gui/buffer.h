@@ -49,16 +49,27 @@ class Buffer : public QObject {
     static void init();
 
     enum Type { ServerBuffer, ChannelBuffer, QueryBuffer };
+
+    enum Activity {
+      NoActivity = 0x00,
+      OtherActivity = 0x01,
+      NewMessage = 0x02,
+      Highlight = 0x40
+    };
+    Q_DECLARE_FLAGS(ActivityLevel, Activity)
+    
     Type bufferType() { return type; }
     bool isActive() { return active; }
 
     QString networkName() { return _networkName; }
     QString bufferName() { return _bufferName; }
+    QString displayName();
     BufferId bufferId() { return id; }
     QList<ChatLine *> contents() { return lines; }
     VarMap nickList() { return nicks; }
     QString topic() { return _topic; }
     QString ownNick() { return _ownNick; }
+    bool isStatusBuffer() { return bufferType() == ServerBuffer; }
 
   signals:
     void userInput(BufferId, QString);
@@ -104,5 +115,6 @@ class Buffer : public QObject {
     QList<ChatLine *> lines;
 
 };
+Q_DECLARE_OPERATORS_FOR_FLAGS(Buffer::ActivityLevel)    
 
 #endif

@@ -18,171 +18,82 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "global.h"
 #include "bufferview.h"
+#include "bufferviewwidget.h"
 
-BufferViewWidget::BufferViewWidget(QWidget *parent) : QWidget(parent) {
-  ui.setupUi(this);
-
-  //setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
-}
-
-
-QSize BufferViewWidget::sizeHint() const {
-  return QSize(150,100);
-
-}
-
-/**************************************************************************/
-
-BufferView::BufferView(QString n, int m, QStringList nets, QWidget *parent) : QDockWidget(parent) {
-  setObjectName(QString("View-"+n)); // should be unique for mainwindow state!
-  name = n; mode = m;
-  setWindowTitle(name);
+/*****************************************
+* The TreeView showing the Buffers
+*****************************************/
+BufferViewFilter::BufferViewFilter(QAbstractItemModel *model, Modes filtermode, QStringList nets, QObject *parent) : QSortFilterProxyModel(parent) {
+  setSourceModel(model);
+  mode = filtermode;
   networks = nets;
-  currentBuffer = 0;
-  setWidget(new BufferViewWidget(this));
-  tree = qobject_cast<BufferViewWidget*>(widget())->tree();
-  tree->header()->hide();
-  tree->setSortingEnabled(true);
-  tree->setRootIsDecorated(true);
-  tree->setIndentation(10);
-  //tree->setAnimated(true);
-  connect(tree, SIGNAL(itemClicked(QTreeWidgetItem*, int)), this, SLOT(itemClicked(QTreeWidgetItem*)));
-  connect(tree, SIGNAL(itemDoubleClicked(QTreeWidgetItem*, int)), this, SLOT(itemDoubleClicked(QTreeWidgetItem*)));
-  connect(this, SIGNAL(fakeUserInput(BufferId, QString)), guiProxy, SLOT(gsUserInput(BufferId, QString)));
   
+  connect(model, SIGNAL(invalidateFilter()), this, SLOT(invalidateMe()));
+  connect(model, SIGNAL(updateSelection(const QModelIndex &, QItemSelectionModel::SelectionFlags)), this, SLOT(select(const QModelIndex &, QItemSelectionModel::SelectionFlags)));
+    
+  connect(this, SIGNAL(currentChanged(const QModelIndex &, const QModelIndex &)), model, SLOT(changeCurrent(const QModelIndex &, const QModelIndex &)));
+  connect(this, SIGNAL(doubleClicked(const QModelIndex &)), model, SLOT(doubleClickReceived(const QModelIndex &)));
 }
 
-void BufferView::setBuffers(QList<Buffer *> buffers) {
-  tree->clear(); bufitems.clear(); netitems.clear();
-  foreach(Buffer *b, buffers) {
-    bufferUpdated(b);
-  }
+void BufferViewFilter::invalidateMe() {
+  invalidateFilter();
 }
 
-void BufferView::bufferUpdated(Buffer *b) {
-  if(bufitems.contains(b)) {
-    // FIXME this looks ugly
-    /*
-      this is actually fugly! :) - EgS
-      if anyone else wonders what this does: it takes the TreeItem related to the buffer out of the parents child list
-      therefore we need to know the childs index
-    */
-    QTreeWidgetItem *item = bufitems[b]->parent()->takeChild(bufitems[b]->parent()->indexOfChild(bufitems[b]));
-    delete item;
-    bufitems.remove(b);
-  }
-  if(shouldShow(b)) {
-    QString net = b->networkName();
-    QString buf = b->bufferName();
-    QTreeWidgetItem *item;
-    QStringList label;
-    if(b->bufferType() == Buffer::ServerBuffer) label << tr("Status");
-    else label << buf;
-    if((mode & SomeNets) || ( mode & AllNets)) {
-      if(!netitems.contains(net)) {
-        netitems[net] = new QTreeWidgetItem(tree, QStringList(net));
-        netitems[net]->setFlags(Qt::ItemIsEnabled);
-      }
-      QTreeWidgetItem *ni = netitems[net];
-      ni->setExpanded(true);
-      ni->setFlags(Qt::ItemIsEnabled);
-      item = new QTreeWidgetItem(ni, label);
-    } else {
-      item = new QTreeWidgetItem(label);
-    }
-    //item->setFlags(Qt::ItemIsEnabled);
-    bufitems[b] = item;
-    // TODO Use style engine!
-    if(!b->isActive()) {
-      item->setForeground(0, QColor("grey"));
-    }
-    if(b == currentBuffer) {
-      // this fixes the multiple simultaneous selections
-      emit bufferSelected(b);
-      //item->setSelected(true);
-    }
-  }
-  foreach(QString key, netitems.keys()) {
-    if(!netitems[key]->childCount()) {
-      delete netitems[key];
-      QTreeWidgetItem *item = netitems[key]->parent()->takeChild(netitems[key]->parent()->indexOfChild(netitems[key]));
-      delete item;
-      netitems.remove(key);
-    }
-  }
+void BufferViewFilter::select(const QModelIndex &index, QItemSelectionModel::SelectionFlags command) {
+  emit updateSelection(mapFromSource(index), command);
 }
 
-void BufferView::bufferActivity(uint level, Buffer *b) {
-  QColor c;
-  if(bufitems.contains(b) and b != currentBuffer) {
-    if(level & Highlight) {
-      c = QColor(Qt::red);
-    } else if(level & NewMessage) {
-      c = QColor(Qt::darkYellow);
-    } else if(level & OtherActivity) {
-      c = QColor(Qt::darkGreen);
-    }
-    bufitems[b]->setForeground(0, c);
-  }
+void BufferViewFilter::changeCurrent(const QModelIndex &current, const QModelIndex &previous) {
+  emit currentChanged(mapToSource(current), mapToSource(previous));
 }
 
-void BufferView::clearActivity(Buffer *b) {
-  QColor c;
-  // it should be sane not to check if b is in bufitems since we just checked before calling this function
-  if(b->isActive()) {
-      c = QColor(Qt::black);
-  } else {
-    c = QColor(Qt::gray);
-  }
-  bufitems[b]->setForeground(0, c);
+void BufferViewFilter::doubleClickReceived(const QModelIndex &clicked) {
+  emit doubleClicked(mapToSource(clicked));
 }
 
-bool BufferView::shouldShow(Buffer *b) {
-  // bool f = false;
-  if((mode & NoActive) && b->isActive()) return false;
-  if((mode & NoInactive) && !b->isActive()) return false;
-  if((mode & NoChannels) && b->bufferType() == Buffer::ChannelBuffer) return false;
-  if((mode & NoQueries) && b->bufferType() == Buffer::QueryBuffer) return false;
-  if((mode & NoServers) && b->bufferType() == Buffer::ServerBuffer) return false;
-  if((mode & SomeNets) && !networks.contains(b->networkName())) return false;
+bool BufferViewFilter::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const {
+  QModelIndex child = source_parent.child(source_row, 0);
+  if(!child.isValid())
+    return true; // can't imagine this case but true sounds good :)
+  
+  Buffer::Type bufferType = (Buffer::Type) child.data(BufferTreeModel::BufferTypeRole).toInt();
+  if((mode & NoChannels) && bufferType == Buffer::ChannelBuffer) return false;
+  if((mode & NoQueries) && bufferType == Buffer::QueryBuffer) return false;
+  if((mode & NoServers) && bufferType == Buffer::ServerBuffer) return false;
+
+  bool isActive = child.data(BufferTreeModel::BufferActiveRole).toBool();
+  if((mode & NoActive) && isActive) return false;
+  if((mode & NoInactive) && !isActive) return false;
+
+  QString net = child.data(Qt::DisplayRole).toString();
+  if((mode & SomeNets) && !networks.contains(net)) return false;
+    
   return true;
 }
 
-void BufferView::bufferDestroyed(Buffer *b) {
-
+/*****************************************
+* The TreeView showing the Buffers
+*****************************************/
+BufferView::BufferView(QWidget *parent) : QTreeView(parent) {
 }
 
-void BufferView::itemClicked(QTreeWidgetItem *item) {
-  Buffer *b = bufitems.key(item);
-  if(b) {
-    // there is a buffer associated with the item (aka: status/channel/query)
-    emit bufferSelected(b);
-  } else {
-    // network item
-    item->setExpanded(!item->isExpanded());
-  }
+void BufferView::init() {
+  setIndentation(10);
+  header()->hide();
+  header()->hideSection(1);
+  
+  setDragEnabled(true);
+  setAcceptDrops(true);
+  setDropIndicatorShown(true);
+  
+  connect(selectionModel(), SIGNAL(currentChanged(const QModelIndex &, const QModelIndex &)), model(), SLOT(changeCurrent(const QModelIndex &, const QModelIndex &)));
+  connect(this, SIGNAL(doubleClicked(const QModelIndex &)), model(), SLOT(doubleClickReceived(const QModelIndex &)));
+  connect(model(), SIGNAL(updateSelection(const QModelIndex &, QItemSelectionModel::SelectionFlags)), selectionModel(), SLOT(select(const QModelIndex &, QItemSelectionModel::SelectionFlags)));
 }
 
-void BufferView::itemDoubleClicked(QTreeWidgetItem *item) {
-  Buffer *b = bufitems.key(item);
-  if(b && Buffer::ChannelBuffer == b->bufferType()) {
-    emit fakeUserInput(b->bufferId(), QString("/join " + b->bufferName()));
-    emit bufferSelected(b);
-  }
+void BufferView::setFilteredModel(QAbstractItemModel *model, BufferViewFilter::Modes mode, QStringList nets) {
+  BufferViewFilter *filter = new BufferViewFilter(model, mode, nets);
+  setModel(filter);
 }
 
-void BufferView::selectBuffer(Buffer *b) {
-  QTreeWidgetItem *item = 0;
-  if(bufitems.contains(b)) item = bufitems[b];
-  QList<QTreeWidgetItem *> sel = tree->selectedItems();
-  foreach(QTreeWidgetItem *i, sel) { if(i != item) i->setSelected(false); }
-  if(item) {
-    item->setSelected(true);
-    clearActivity(b);
-    currentBuffer = b;
-  } else {
-    currentBuffer = 0;
-  }
-}

@@ -30,7 +30,7 @@
 
 class ServerListDlg;
 class CoreConnectDlg;
-class BufferView;
+class BufferViewDock;
 class Buffer;
 class BufferWidget;
 class SettingsDlg;
@@ -50,7 +50,7 @@ class MainWin : public QMainWindow {
     ~MainWin();
 
     void init();
-    void registerBufferView(BufferView *);
+    void registerBufferViewDock(BufferViewDock *);
 
   protected:
     void closeEvent(QCloseEvent *event);
@@ -59,7 +59,7 @@ class MainWin : public QMainWindow {
     void sendInput(BufferId, QString message);
     void bufferSelected(Buffer *);
     void bufferUpdated(Buffer *);
-    void bufferActivity(uint, Buffer *);
+    void bufferActivity(Buffer::ActivityLevel, Buffer *);
     void bufferDestroyed(Buffer *);
     void backlogReceived(Buffer *, QList<Message>);
     void requestBacklog(BufferId, QVariant, QVariant);
@@ -124,7 +124,7 @@ class MainWin : public QMainWindow {
     //QHash<QString, QList<Message> > coreBackLog;
     QList<BufferId> coreBuffers;
 
-    QList<BufferView *> netViews;
+    QList<BufferViewDock *> netViews;
 
     QTimer *layoutTimer;
     QList<Message> layoutQueue;
