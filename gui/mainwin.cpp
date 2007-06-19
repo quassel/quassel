@@ -153,7 +153,7 @@ void MainWin::setupMenus() {
 }
 
 void MainWin::setupViews() {
-  BufferTreeModel *model = new BufferTreeModel(this);
+  BufferTreeModel *model = new BufferTreeModel(this); // FIXME Where is the delete for that? :p
   connect(model, SIGNAL(bufferSelected(Buffer *)), this, SLOT(showBuffer(Buffer *)));
   connect(this, SIGNAL(bufferSelected(Buffer *)), model, SLOT(selectBuffer(Buffer *)));
   connect(this, SIGNAL(bufferUpdated(Buffer *)), model, SLOT(bufferUpdated(Buffer *)));
@@ -237,10 +237,10 @@ void MainWin::showBuffer(Buffer *b) {
 
 void MainWin::networkConnected(QString net) {
   connected[net] = true;
-  //BufferId id = getStatusBufferId(net);
-  //Buffer *b = getBuffer(id);
-  //b->setActive(true);
-  //b->displayMsg(Message(id, Message::Server, tr("Connected.")));  FIXME
+  BufferId id = getStatusBufferId(net);
+  Buffer *b = getBuffer(id);
+  b->setActive(true);
+  //b->displayMsg(Message(id, Message::Server, tr("Connected.")));
   // TODO buffersUpdated();
 }
 

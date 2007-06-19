@@ -56,8 +56,11 @@ void Core::init() {
   connect(&server, SIGNAL(newConnection()), this, SLOT(incomingConnection()));
   //startListening(); // FIXME
   if(Global::runMode == Global::Monolithic) {  // TODO Make GUI user configurable
-    guiUser = storage->validateUser("Default", "password");
-    if(!guiUser) guiUser = storage->addUser("Default", "password");
+    try {
+      guiUser = storage->validateUser("Default", "password");
+    } catch(Storage::AuthError) {
+      guiUser = storage->addUser("Default", "password");
+    }
     Q_ASSERT(guiUser);
     Global::setGuiUser(guiUser);
     createSession(guiUser);
@@ -253,8 +256,8 @@ void Core::recvProxySignal(CoreSignal sig, QVariant arg1, QVariant arg2, QVarian
 
 CoreSession::CoreSession(UserId uid, Storage *_storage) : user(uid), storage(_storage) {
   coreProxy = new CoreProxy();
-  connect(coreProxy, SIGNAL(send(CoreSignal, QVariant, QVariant, QVariant)), this, SIGNAL(proxySignal(CoreSignal, QVariant, QVariant, QVariant)));
 
+  connect(coreProxy, SIGNAL(send(CoreSignal, QVariant, QVariant, QVariant)), this, SIGNAL(proxySignal(CoreSignal, QVariant, QVariant, QVariant)));
   connect(coreProxy, SIGNAL(requestServerStates()), this, SIGNAL(serverStateRequested()));
   connect(coreProxy, SIGNAL(gsRequestConnect(QStringList)), this, SLOT(connectToIrc(QStringList)));
   connect(coreProxy, SIGNAL(gsUserInput(BufferId, QString)), this, SLOT(msgFromGui(BufferId, QString)));
@@ -267,7 +270,6 @@ CoreSession::CoreSession(UserId uid, Storage *_storage) : user(uid), storage(_st
   connect(storage, SIGNAL(bufferIdUpdated(BufferId)), coreProxy, SLOT(csUpdateBufferId(BufferId)));
   connect(Global::instance(), SIGNAL(dataUpdatedRemotely(UserId, QString)), this, SLOT(globalDataUpdated(UserId, QString)));
   connect(Global::instance(), SIGNAL(dataPutLocally(UserId, QString)), this, SLOT(globalDataUpdated(UserId, QString)));
-
 }
 
 CoreSession::~CoreSession() {
@@ -299,6 +301,10 @@ void CoreSession::connectToIrc(QStringList networks) {
       connect(this, SIGNAL(connectToIrc(QString)), server, SLOT(connectToIrc(QString)));
       connect(this, SIGNAL(disconnectFromIrc(QString)), server, SLOT(disconnectFromIrc(QString)));
       connect(this, SIGNAL(msgFromGui(QString, QString, QString)), server, SLOT(userInput(QString, QString, QString)));
+
+      connect(server, SIGNAL(connected(QString)), this, SLOT(serverConnected(QString)));
+      connect(server, SIGNAL(disconnected(QString)), this, SLOT(serverDisconnected(QString)));
+
       connect(server, SIGNAL(serverState(QString, VarMap)), coreProxy, SLOT(csServerState(QString, VarMap)));
       //connect(server, SIGNAL(displayMsg(Message)), this, SLOT(recvMessageFromServer(Message)));
       connect(server, SIGNAL(displayMsg(Message::Type, QString, QString, QString, quint8)), this, SLOT(recvMessageFromServer(Message::Type, QString, QString, QString, quint8)));
@@ -313,13 +319,17 @@ void CoreSession::connectToIrc(QStringList networks) {
       connect(server, SIGNAL(queryRequested(QString, QString)), coreProxy, SLOT(csQueryRequested(QString, QString)));
       // TODO add error handling
       connect(server, SIGNAL(connected(QString)), coreProxy, SLOT(csServerConnected(QString)));
-      connect(server, SIGNAL(disconnected(QString)), this, SLOT(serverDisconnected(QString)));
+      connect(server, SIGNAL(disconnected(QString)), coreProxy, SLOT(csServerDisconnected(QString)));
 
       server->start();
       servers[net] = server;
     }
     emit connectToIrc(net);
   }
+}
+
+void CoreSession::serverConnected(QString net) {
+  storage->getBufferId(userId(), net); // create status buffer
 }
 
 void CoreSession::serverDisconnected(QString net) {

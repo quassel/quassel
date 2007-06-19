@@ -109,6 +109,7 @@ class CoreSession : public QObject {
     void globalDataUpdated(UserId, QString);
     void recvStatusMsgFromServer(QString msg);
     void recvMessageFromServer(Message::Type, QString target, QString text, QString sender = "", quint8 flags = Message::None);
+    void serverConnected(QString net);
     void serverDisconnected(QString net);
 
   private:
