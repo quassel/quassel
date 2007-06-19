@@ -150,6 +150,9 @@ class Storage : public QObject {
     //! Sent if a new BufferId is created, or an existing one changed somehow.
     void bufferIdUpdated(BufferId);
 
+  public:
+    /* Exceptions */
+    struct AuthError : public Exception {};
 
   protected:
     // Old stuff, just for importing old file-based data

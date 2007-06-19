@@ -40,7 +40,7 @@ LayoutThread *layoutThread;
 MainWin::MainWin() : QMainWindow() {
   ui.setupUi(this);
   //widget = 0;
-  qDebug() << "Available DB drivers: " << QSqlDatabase::drivers ();
+  //qDebug() << "Available DB drivers: " << QSqlDatabase::drivers ();
   setWindowTitle("Quassel IRC");
   //setWindowTitle("Κυασελ Εγαρζη");
   setWindowIcon(QIcon(":/qirc-icon.png"));

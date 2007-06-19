@@ -233,7 +233,8 @@ UserId SqliteStorage::validateUser(QString user, QString password) {
   if(query.first()) {
     return query.value(0).toUInt();
   } else {
-    return 0;
+    throw AuthError();
+    //return 0;
   }
 }
 

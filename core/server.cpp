@@ -26,7 +26,7 @@
 #include <QMetaObject>
 #include <QDateTime>
 
-Server::Server(QString net) : network(net) {
+Server::Server(UserId uid, QString net) : user(uid), network(net) {
   QString MQUOTE = QString('\020');
   ctcpMDequoteHash[MQUOTE + '0'] = QString('\000');
   ctcpMDequoteHash[MQUOTE + 'n'] = QString('\n');
@@ -67,8 +67,8 @@ void Server::sendState() {
 
 void Server::connectToIrc(QString net) {
   if(net != network) return; // not me!
-  networkSettings = global->getData("Networks").toMap()[net].toMap();
-  identity = global->getData("Identities").toMap()[networkSettings["Identity"].toString()].toMap();
+  networkSettings = Global::data(user, "Networks").toMap()[net].toMap();
+  identity = Global::data(user, "Identities").toMap()[networkSettings["Identity"].toString()].toMap();
   QList<QVariant> servers = networkSettings["Servers"].toList();
   QString host = servers[0].toMap()["Address"].toString();
   quint16 port = servers[0].toMap()["Port"].toUInt();

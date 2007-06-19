@@ -22,11 +22,11 @@
 
 IdentitiesDlg::IdentitiesDlg(QWidget *parent, QString selected) : QDialog(parent) {
   ui.setupUi(this);
-  connect(global, SIGNAL(dataUpdatedRemotely(QString)), this, SLOT(globalDataUpdated(QString)));
+  connect(Global::instance(), SIGNAL(dataUpdatedRemotely(UserId, QString)), this, SLOT(globalDataUpdated(UserId, QString)));
 
   connect(ui.enableAutoAway, SIGNAL(stateChanged(int)), this, SLOT(autoAwayChecked()));
 
-  identities = global->getData("Identities").toMap();
+  identities = Global::data("Identities").toMap();
   foreach(QString name, identities.keys()) {
     nameMapping[name] = name;
   }
@@ -55,7 +55,7 @@ IdentitiesDlg::IdentitiesDlg(QWidget *parent, QString selected) : QDialog(parent
 }
 
 /* this needs more work! mapping? */
-void IdentitiesDlg::globalDataUpdated(QString key) {
+void IdentitiesDlg::globalDataUpdated(UserId, QString key) {
   if(key == "Identities") {
     if(QMessageBox::warning(this, tr("Data changed remotely!"), tr("<b>Some other GUI client changed the identities data!</b><br>"
        "Apply updated settings, losing all changes done locally?"),
@@ -236,9 +236,9 @@ void IdentitiesDlg::accept() {
   updateIdentity(getCurIdentity());
   QString result = checkValidity();
   if(result.length() == 0) {
-    global->putData("Identities", identities);
+    Global::putData("Identities", identities);
     // We have to care about renamed identities and update the network list appropriately...
-    VarMap networks = global->getData("Networks").toMap();
+    VarMap networks = Global::data("Networks").toMap();
     foreach(QString netname, networks.keys()) {
       VarMap net = networks[netname].toMap();
       if(nameMapping.contains(net["Identity"].toString())) {
@@ -246,7 +246,7 @@ void IdentitiesDlg::accept() {
       } else net["Identity"] = "Default";
       networks[netname] = net;
     }
-    global->putData("Networks", networks);
+    Global::putData("Networks", networks);
     QDialog::accept();
   } else {
     QMessageBox::warning(this, tr("Invalid Identity!"),

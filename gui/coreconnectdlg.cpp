@@ -74,7 +74,7 @@ void CoreConnectDlg::coreConnected() {
   ui.progressBar->show();
   VarMap initmsg;
   initmsg["GUIProtocol"] = GUI_PROTOCOL;
-  guiProxy->send(GS_CLIENT_INIT, QVariant(initmsg));
+  // FIXME guiProxy->send(GS_CLIENT_INIT, QVariant(initmsg));
 }
 
 void CoreConnectDlg::coreConnectionError(QString err) {

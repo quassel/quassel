@@ -70,29 +70,22 @@ class CoreProxy : public QObject {
 
     void requestServerStates();
 
-  private:
     void send(CoreSignal, QVariant arg1 = QVariant(), QVariant arg2 = QVariant(), QVariant arg3 = QVariant());
-    void recv(GUISignal, QVariant arg1 = QVariant(), QVariant arg2 = QVariant(), QVariant arg3 = QVariant());
-    void sendToGUI(CoreSignal, QVariant arg1, QVariant arg2, QVariant arg3);
 
-    void processClientInit(QTcpSocket *socket, const QVariant &v);
+  public:
+    //void send(CoreSignal, QVariant arg1 = QVariant(), QVariant arg2 = QVariant(), QVariant arg3 = QVariant());
+    void recv(GUISignal, QVariant arg1 = QVariant(), QVariant arg2 = QVariant(), QVariant arg3 = QVariant());
+
+  private:
     void processClientUpdate(QTcpSocket *, QString key, QVariant data);
 
-  private slots:
-    void incomingConnection();
-    void clientHasData();
-    void clientDisconnected();
-    void updateGlobalData(QString key);
 
   private:
-    QTcpServer server;
-    QList<QTcpSocket *> clients;
-    QHash<QTcpSocket *, quint32> blockSizes;
 
   friend class GUIProxy;
 };
 
-extern CoreProxy *coreProxy;
+//extern CoreProxy *coreProxy;
 
 
 

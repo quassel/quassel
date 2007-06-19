@@ -24,6 +24,10 @@ IF(NOT BUILD_MONO AND NOT BUILD_CORE AND NOT BUILD_GUI)
   MESSAGE(FATAL_ERROR "\nYou have not selected which parts of Quassel I should build. Aborting.\nRun 'cmake <path> -DBUILD=<part>', where <part> contains one or more of 'core', 'gui' or 'monolithic', or 'all' to build everything.\n")
 ENDIF(NOT BUILD_MONO AND NOT BUILD_CORE AND NOT BUILD_GUI)
 
+IF(BUILD_CORE OR BUILD_GUI)
+  MESSAGE(FATAL_ERROR "\nBuilding of standalone core or GUI not supported at this time. Please check back later.\n")
+ENDIF(BUILD_CORE OR BUILD_GUI)
+
 SET(CMAKE_BUILD_TYPE Debug)
 
 # Define files

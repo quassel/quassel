@@ -39,12 +39,12 @@ ServerListDlg::ServerListDlg(QWidget *parent) : QDialog(parent) {
 
   settings.endGroup();
   // check if we already have a valid identity
-  if(!global->getData("Identities", VarMap()).toMap().contains("Default")) editIdentities(true);
+  if(!Global::data("Identities", VarMap()).toMap().contains("Default")) editIdentities(true);
   connect(this, SIGNAL(requestConnect(QStringList)), guiProxy, SLOT(gsRequestConnect(QStringList)));
 
   // Autoconnect
   QStringList list;
-  VarMap networks = global->getData("Networks").toMap();
+  VarMap networks = Global::data("Networks").toMap();
   foreach(QString net, networks.keys()) {
     if(networks[net].toMap()["AutoConnect"].toBool()) {
       list << net;
@@ -58,7 +58,7 @@ ServerListDlg::~ServerListDlg() {
 }
 
 void ServerListDlg::updateNetworkTree() {
-  VarMap networks = global->getData("Networks").toMap();
+  VarMap networks = Global::data("Networks").toMap();
   //QStringList headers;
   //headers << "Network" << "Autoconnect";
   ui.networkTree->clear();
@@ -110,23 +110,23 @@ bool ServerListDlg::showOnStartup() {
 void ServerListDlg::on_addButton_clicked() {
   NetworkEditDlg dlg(this, VarMap());
   if(dlg.exec() == QDialog::Accepted) {
-    VarMap networks = global->getData("Networks").toMap();
+    VarMap networks = Global::data("Networks").toMap();
     VarMap net = dlg.getNetwork();
     networks[net["Name"].toString()] = net;
-    global->putData("Networks", networks);
+    Global::putData("Networks", networks);
     updateNetworkTree();
   }
 }
 
 void ServerListDlg::on_editButton_clicked() {
   QString curnet = ui.networkTree->currentItem()->text(0);
-  VarMap networks = global->getData("Networks").toMap();
+  VarMap networks = Global::data("Networks").toMap();
   NetworkEditDlg dlg(this, networks[curnet].toMap());
   if(dlg.exec() == QDialog::Accepted) {
     VarMap net = dlg.getNetwork();
     networks.remove(curnet);
     networks[net["Name"].toString()] = net;
-    global->putData("Networks", networks);
+    Global::putData("Networks", networks);
     updateNetworkTree();
   }
 }
@@ -134,12 +134,12 @@ void ServerListDlg::on_editButton_clicked() {
 void ServerListDlg::on_deleteButton_clicked() {
   if(QMessageBox::warning(this, tr("Remove Network?"), tr("Are you sure you want to delete the selected network(s)?"),
                         QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes) {
-    VarMap networks = global->getData("Networks").toMap();
+    VarMap networks = Global::data("Networks").toMap();
     QList<QTreeWidgetItem *> sel = ui.networkTree->selectedItems();
     foreach(QTreeWidgetItem *item, sel) {
       networks.remove(item->text(0));
     }
-    global->putData("Networks", networks);
+    Global::putData("Networks", networks);
     updateNetworkTree();
   }
 }
@@ -183,14 +183,14 @@ NetworkEditDlg::NetworkEditDlg(QWidget *parent, VarMap _network) : QDialog(paren
 
   connect(ui.serverList, SIGNAL(itemSelectionChanged()), this, SLOT(updateServerButtons()));
 
-  VarMap identities = global->getData("Identities").toMap();
+  VarMap identities = Global::data("Identities").toMap();
 
   ui.identityList->addItem(tr("Default Identity"));
   foreach(QString id, identities.keys()) {
     if(id != "Default") ui.identityList->addItem(id);
   }
   QStringList groups; groups << "";
-  VarMap nets = global->getData("Networks").toMap();
+  VarMap nets = Global::data("Networks").toMap();
   foreach(QString net, nets.keys()) {
     QString gr = nets[net].toMap()["Group"].toString();
     if(!groups.contains(gr) && !gr.isEmpty()) {
@@ -273,7 +273,7 @@ void NetworkEditDlg::accept() {
 
 QString NetworkEditDlg::checkValidity() {
   QString r;
-  VarMap nets = global->getData("Networks").toMap();
+  VarMap nets = Global::data("Networks").toMap();
   if(ui.networkName->text() != oldName && nets.keys().contains(ui.networkName->text())) {
     r += tr(" Network name already exists.");
   }
@@ -338,7 +338,7 @@ void NetworkEditDlg::on_editIdentities_clicked() {
   else id = "Default";
   IdentitiesDlg dlg(this, id);
   if(dlg.exec() == QDialog::Accepted) {
-    VarMap identities = global->getData("Identities").toMap();
+    VarMap identities = Global::data("Identities").toMap();
     ui.identityList->clear();
     ui.identityList->addItem(tr("Default Identity"));
     foreach(QString i, identities.keys()) {

@@ -41,11 +41,12 @@ class Server : public QThread {
   Q_OBJECT
 
   public:
-    Server(QString network);
+    Server(UserId uid, QString network);
     ~Server();
 
+    UserId userId() const { return user; } 
     // serverState state();
-    bool isConnected() { return socket.state() == QAbstractSocket::ConnectedState; }
+    bool isConnected() const { return socket.state() == QAbstractSocket::ConnectedState; }
     QString getNetwork() { return network; }
     QStringList providesUserHandlers();
 
@@ -143,6 +144,7 @@ class Server : public QThread {
     void defaultCtcpHandler(CtcpType ctcptype, QString prefix, QString cmd, QString target, QString param);
 
   private:
+    UserId user;
     QString network;
     QTcpSocket socket;
     //QHash<QString, Buffer*> buffers;

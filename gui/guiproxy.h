@@ -79,8 +79,9 @@ class GUIProxy : public QObject {
 
     void recvPartialItem(quint32 avail, quint32 size);
 
-  public:
     void send(GUISignal, QVariant arg1 = QVariant(), QVariant arg2 = QVariant(), QVariant arg3 = QVariant());
+
+  public slots:
     void recv(CoreSignal, QVariant arg1 = QVariant(), QVariant arg2 = QVariant(), QVariant arg3 = QVariant());
 
   private slots:

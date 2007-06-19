@@ -54,7 +54,7 @@ class IdentitiesDlg : public QDialog {
 
     void editIdentities();
 
-    void globalDataUpdated(QString);
+    void globalDataUpdated(UserId, QString);
 
   private:
     Ui::IdentitiesDlg ui;

@@ -22,7 +22,7 @@
 #define _GLOBAL_H_
 
 /** The protocol version we use fo the communication between core and GUI */
-#define GUI_PROTOCOL 1
+#define GUI_PROTOCOL 2
 
 #define BACKLOG_FORMAT 2
 #define BACKLOG_STRING "QuasselIRC Backlog File"
@@ -34,7 +34,6 @@ class Global;
 
 /* Some global stuff */
 typedef QMap<QString, QVariant> VarMap;
-extern Global *global;
 
 typedef uint UserId;
 typedef uint MsgId;
@@ -53,41 +52,52 @@ class Global : public QObject {
   Q_OBJECT
 
   public:
-    Global();
     //static Logger *getLogger();
     //static void setLogger(Logger *);
 
 //    static QIcon *getIcon(QString symbol);
 
-    QVariant getData(QString key, QVariant defaultValue = QVariant());
-    QStringList getKeys();
+    static Global *instance();
+    static void destroy();
+    static void setGuiUser(UserId);
 
-  public slots:
-    void putData(QString key, QVariant data);      ///< Store data changed locally, will be propagated to all other clients and the core
-    void updateData(QString key, QVariant data);   ///< Update stored data if requested by the core or other clients
+    static QVariant data(QString key, QVariant defaultValue = QVariant());
+    static QVariant data(UserId, QString key, QVariant defaultValue = QVariant());
+    static QStringList keys();
+    static QStringList keys(UserId);
+
+    static void putData(QString key, QVariant data);      ///< Store data changed locally, will be propagated to all other clients and the core
+    static void putData(UserId, QString key, QVariant data);
+
+    static void updateData(QString key, QVariant data);   ///< Update stored data if requested by the core or other clients
+    static void updateData(UserId, QString key, QVariant data);
 
   signals:
-    void dataPutLocally(QString key);
-    void dataUpdatedRemotely(QString key);  // sent by remote update only!
+    void dataPutLocally(UserId, QString key);
+    void dataUpdatedRemotely(UserId, QString key);  // sent by remote update only!
 
   public:
-    enum RunMode { Monolithic, GUIOnly, CoreOnly };
+    enum RunMode { Monolithic, GuiOnly, CoreOnly };
     static RunMode runMode;
     static QString quasselDir;
 
   private:
-    static void initIconMap();
+    Global();
+    ~Global();
+    static Global *instanceptr;
+
+    static UserId guiUser;
+    //static void initIconMap();
 
     //static Logger *logger;
 
 //    static QString iconPath;
-    QHash<QString, QString> iconMap;
-    QMutex mutex;
-    QHash<QString, QVariant> data;
+    //QHash<QString, QString> iconMap;
+    static QMutex mutex;
+    QHash<UserId, QHash<QString, QVariant> > datastore;
 };
 
-class Exception {
-  public:
+struct Exception {
     Exception(QString msg = "Unknown Exception") : _msg(msg) {};
     virtual inline QString msg() { return _msg; }
 
