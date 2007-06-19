@@ -22,6 +22,7 @@
 #include <QtCore>
 #include <QSqlDatabase>
 
+#include "gui.h"
 #include "util.h"
 #include "global.h"
 #include "message.h"
@@ -46,17 +47,13 @@ MainWin::MainWin() : QMainWindow() {
   setWindowIcon(QIcon(":/qirc-icon.png"));
   setWindowIconText("Quassel IRC");
 
-  layoutTimer = new QTimer(this);
-  layoutTimer->setInterval(0);
-  layoutTimer->setSingleShot(false);
-  connect(layoutTimer, SIGNAL(timeout()), this, SLOT(layoutMsg()));
   //workspace = new QWorkspace(this);
   //setCentralWidget(workspace);
   statusBar()->showMessage(tr("Waiting for core..."));
 }
 
 void MainWin::init() {
-
+/*
   connect(guiProxy, SIGNAL(csServerState(QString, QVariant)), this, SLOT(recvNetworkState(QString, QVariant)));
   connect(guiProxy, SIGNAL(csServerConnected(QString)), this, SLOT(networkConnected(QString)));
   connect(guiProxy, SIGNAL(csServerDisconnected(QString)), this, SLOT(networkDisconnected(QString)));
@@ -76,10 +73,11 @@ void MainWin::init() {
   //layoutThread = new LayoutThread();
   //layoutThread->start();
   //while(!layoutThread->isRunning()) {};
+*/
   ui.bufferWidget->init();
 
   show();
-  syncToCore();
+  //syncToCore();
   statusBar()->showMessage(tr("Ready."));
   systray = new QSystemTrayIcon(this);
   systray->setIcon(QIcon(":/qirc-icon.png"));
@@ -99,13 +97,6 @@ void MainWin::init() {
   //move(s.value("MainWinPos", QPoint(50, 50)).toPoint());
   if(s.contains("MainWinState")) restoreState(s.value("MainWinState").toByteArray());
   s.endGroup();
-
-  /* make lookups by id faster */
-  foreach(BufferId id, coreBuffers) {
-    bufferIds[id.uid()] = id;  // make lookups by id faster
-    getBuffer(id);             // create all buffers, so we see them in the network views
-    emit requestBacklog(id, -1, -1);  // TODO: use custom settings for backlog request
-  }
 
   s.beginGroup("Buffers");
   QString net = s.value("CurrentNetwork", "").toString();
@@ -131,7 +122,7 @@ MainWin::~MainWin() {
   //    delete b;
   //  }
   //}
-  foreach(Buffer *buf, buffers.values()) delete buf;
+  //foreach(Buffer *buf, buffers.values()) delete buf;
 }
 
 /* This is implemented in settingspages.cpp */
@@ -149,15 +140,15 @@ void MainWin::setupMenus() {
   connect(ui.actionAboutQt, SIGNAL(triggered()), QApplication::instance(), SLOT(aboutQt()));
   // for debugging
   connect(ui.actionImportBacklog, SIGNAL(triggered()), this, SLOT(importBacklog()));
-  connect(this, SIGNAL(importOldBacklog()), guiProxy, SLOT(gsImportBacklog()));
+  connect(this, SIGNAL(importOldBacklog()), ClientProxy::instance(), SLOT(gsImportBacklog()));
 }
 
 void MainWin::setupViews() {
-  BufferTreeModel *model = new BufferTreeModel(this); // FIXME Where is the delete for that? :p
+  BufferTreeModel *model = Client::bufferModel(); // FIXME Where is the delete for that? :p
   connect(model, SIGNAL(bufferSelected(Buffer *)), this, SLOT(showBuffer(Buffer *)));
-  connect(this, SIGNAL(bufferSelected(Buffer *)), model, SLOT(selectBuffer(Buffer *)));
-  connect(this, SIGNAL(bufferUpdated(Buffer *)), model, SLOT(bufferUpdated(Buffer *)));
-  connect(this, SIGNAL(bufferActivity(Buffer::ActivityLevel, Buffer *)), model, SLOT(bufferActivity(Buffer::ActivityLevel, Buffer *)));
+  //connect(this, SIGNAL(bufferSelected(Buffer *)), model, SLOT(selectBuffer(Buffer *)));
+  //connect(this, SIGNAL(bufferUpdated(Buffer *)), model, SLOT(bufferUpdated(Buffer *)));
+  //connect(this, SIGNAL(bufferActivity(Buffer::ActivityLevel, Buffer *)), model, SLOT(bufferActivity(Buffer::ActivityLevel, Buffer *)));
   
   BufferViewDock *all = new BufferViewDock(model, tr("All Buffers"), BufferViewFilter::AllNets);
   registerBufferViewDock(all);
@@ -224,7 +215,7 @@ void MainWin::closeEvent(QCloseEvent *event)
 }
 
 void MainWin::showBuffer(BufferId id) {
-  showBuffer(getBuffer(id));
+  showBuffer(Client::buffer(id));
 }
 
 void MainWin::showBuffer(Buffer *b) {
@@ -232,191 +223,7 @@ void MainWin::showBuffer(Buffer *b) {
   //emit bufferSelected(b);
   //qApp->processEvents();
   ui.bufferWidget->setBuffer(b);
-  emit bufferSelected(b);
-}
-
-void MainWin::networkConnected(QString net) {
-  connected[net] = true;
-  BufferId id = getStatusBufferId(net);
-  Buffer *b = getBuffer(id);
-  b->setActive(true);
-  //b->displayMsg(Message(id, Message::Server, tr("Connected.")));
-  // TODO buffersUpdated();
-}
-
-void MainWin::networkDisconnected(QString net) {
-  //getBuffer(net, "")->setActive(false);
-  foreach(BufferId id, buffers.keys()) {
-    if(id.network() != net) continue;
-    Buffer *b = getBuffer(id);
-    //b->displayMsg(Message(id, Message::Server, tr("Server disconnected."))); FIXME
-    b->setActive(false);
-  }
-  connected[net] = false;
-}
-
-void MainWin::updateBufferId(BufferId id) {
-  bufferIds[id.uid()] = id;  // make lookups by id faster
-  getBuffer(id);
-}
-
-BufferId MainWin::getBufferId(QString net, QString buf) {
-  foreach(BufferId id, buffers.keys()) {
-    if(id.network() == net && id.buffer() == buf) return id;
-  }
-  Q_ASSERT(false);
-  return BufferId();
-}
-
-BufferId MainWin::getStatusBufferId(QString net) {
-  return getBufferId(net, "");
-}
-
-
-Buffer * MainWin::getBuffer(BufferId id) {
-  if(!buffers.contains(id)) {
-    Buffer *b = new Buffer(id);
-    b->setOwnNick(ownNick[id.network()]);
-    connect(b, SIGNAL(userInput(BufferId, QString)), this, SLOT(userInput(BufferId, QString)));
-    connect(b, SIGNAL(bufferUpdated(Buffer *)), this, SIGNAL(bufferUpdated(Buffer *)));
-    connect(b, SIGNAL(bufferDestroyed(Buffer *)), this, SIGNAL(bufferDestroyed(Buffer *)));
-    buffers[id] = b;
-    emit bufferUpdated(b);
-  }
-  return buffers[id];
-}
-
-void MainWin::recvNetworkState(QString net, QVariant state) {
-  connected[net] = true;
-  setOwnNick(net, state.toMap()["OwnNick"].toString());
-  getBuffer(getStatusBufferId(net))->setActive(true);
-  VarMap t = state.toMap()["Topics"].toMap();
-  VarMap n = state.toMap()["Nicks"].toMap();
-  foreach(QVariant v, t.keys()) {
-    QString buf = v.toString();
-    BufferId id = getBufferId(net, buf);
-    getBuffer(id)->setActive(true);
-    setTopic(net, buf, t[buf].toString());
-  }
-  foreach(QString nick, n.keys()) {
-    addNick(net, nick, n[nick].toMap());
-  }
-}
-
-void MainWin::recvMessage(Message msg) {
-  /*
-  Buffer *b;
-  if(msg.flags & Message::PrivMsg) {
-  // query
-    if(msg.flags & Message::Self) b = getBuffer(net, msg.target);
-    else b = getBuffer(net, nickFromMask(msg.sender));
-  } else {
-    b = getBuffer(net, msg.target);
-  }
-  */
-  
-
-  Buffer *b = getBuffer(msg.buffer);
-  
-  Buffer::ActivityLevel level = Buffer::OtherActivity;
-  if(msg.type == Message::Plain or msg.type == Message::Notice){
-    level |= Buffer::NewMessage;
-  }
-  if(msg.flags & Message::Highlight){
-    level |= Buffer::Highlight;
-  }
-  emit bufferActivity(level, b);
-
-  //b->displayMsg(msg);
-  b->appendChatLine(new ChatLine(msg));
-}
-
-void MainWin::recvStatusMsg(QString net, QString msg) {
-  //recvMessage(net, Message::server("", QString("[STATUS] %1").arg(msg)));
-
-}
-
-void MainWin::recvBacklogData(BufferId id, QList<QVariant> msgs, bool done) {
-  foreach(QVariant v, msgs) {
-    layoutQueue.append(v.value<Message>());
-  }
-  if(!layoutTimer->isActive()) layoutTimer->start();
-}
-
-
-void MainWin::layoutMsg() {
-  if(layoutQueue.count()) {
-    ChatLine *line = new ChatLine(layoutQueue.takeFirst());
-    getBuffer(line->bufferId())->prependChatLine(line);
-  }
-  if(!layoutQueue.count()) layoutTimer->stop();
-}
-
-void MainWin::userInput(BufferId id, QString msg) {
-  emit sendInput(id, msg);
-}
-
-void MainWin::setTopic(QString net, QString buf, QString topic) {
-  BufferId id = getBufferId(net, buf);
-  if(!connected[id.network()]) return;
-  Buffer *b = getBuffer(id);
-  b->setTopic(topic);
-  //if(!b->isActive()) {
-  //  b->setActive(true);
-  //  buffersUpdated();
-  //}
-}
-
-void MainWin::addNick(QString net, QString nick, VarMap props) {
-  if(!connected[net]) return;
-  nicks[net][nick] = props;
-  VarMap chans = props["Channels"].toMap();
-  QStringList c = chans.keys();
-  foreach(QString bufname, c) {
-    getBuffer(getBufferId(net, bufname))->addNick(nick, props);
-  }
-}
-
-void MainWin::renameNick(QString net, QString oldnick, QString newnick) {
-  if(!connected[net]) return;
-  QStringList chans = nicks[net][oldnick]["Channels"].toMap().keys();
-  foreach(QString c, chans) {
-    getBuffer(getBufferId(net, c))->renameNick(oldnick, newnick);
-  }
-  nicks[net][newnick] = nicks[net].take(oldnick);
-}
-
-void MainWin::updateNick(QString net, QString nick, VarMap props) {
-  if(!connected[net]) return;
-  QStringList oldchans = nicks[net][nick]["Channels"].toMap().keys();
-  QStringList newchans = props["Channels"].toMap().keys();
-  foreach(QString c, newchans) {
-    if(oldchans.contains(c)) getBuffer(getBufferId(net, c))->updateNick(nick, props);
-    else getBuffer(getBufferId(net, c))->addNick(nick, props);
-  }
-  foreach(QString c, oldchans) {
-    if(!newchans.contains(c)) getBuffer(getBufferId(net, c))->removeNick(nick);
-  }
-  nicks[net][nick] = props;
-}
-
-void MainWin::removeNick(QString net, QString nick) {
-  if(!connected[net]) return;
-  VarMap chans = nicks[net][nick]["Channels"].toMap();
-  foreach(QString bufname, chans.keys()) {
-    getBuffer(getBufferId(net, bufname))->removeNick(nick);
-  }
-  nicks[net].remove(nick);
-}
-
-void MainWin::setOwnNick(QString net, QString nick) {
-  if(!connected[net]) return;
-  ownNick[net] = nick;
-  foreach(BufferId id, buffers.keys()) {
-    if(id.network() == net) {
-      buffers[id]->setOwnNick(nick);
-    }
-  }
+  //emit bufferSelected(b); // FIXME do we need this?
 }
 
 void MainWin::importBacklog() {

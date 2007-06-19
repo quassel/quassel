@@ -22,6 +22,7 @@
 #include "coreconnectdlg.h"
 #include "guiproxy.h"
 #include "global.h"
+#include "gui.h"
 
 CoreConnectDlg::CoreConnectDlg(QWidget *parent) : QDialog(parent) {
   ui.setupUi(this);
@@ -56,9 +57,9 @@ void CoreConnectDlg::hostSelected() {
   ui.hostName->hide(); ui.hostPort->hide(); ui.hostLabel->hide(); ui.portLabel->hide();
   ui.statusText->setText(tr("Connecting to %1:%2" ).arg(ui.hostName->text()).arg(ui.hostPort->value()));
   ui.buttonBox->button(QDialogButtonBox::Ok)->hide();
-  connect(guiProxy, SIGNAL(coreConnected()), this, SLOT(coreConnected()));
-  connect(guiProxy, SIGNAL(coreConnectionError(QString)), this, SLOT(coreConnectionError(QString)));
-  guiProxy->connectToCore(ui.hostName->text(), ui.hostPort->value());
+  connect(ClientProxy::instance(), SIGNAL(coreConnected()), this, SLOT(coreConnected()));
+  connect(ClientProxy::instance(), SIGNAL(coreConnectionError(QString)), this, SLOT(coreConnectionError(QString)));
+  Client::instance()->connectToCore(ui.hostName->text(), ui.hostPort->value());
 
 }
 
@@ -69,8 +70,8 @@ void CoreConnectDlg::coreConnected() {
   s.setValue("GUI/CoreHost", ui.hostName->text());
   s.setValue("GUI/CorePort", ui.hostPort->value());
   s.setValue("GUI/CoreAutoConnect", ui.autoConnect->isChecked());
-  connect(guiProxy, SIGNAL(recvPartialItem(quint32, quint32)), this, SLOT(updateProgressBar(quint32, quint32)));
-  connect(guiProxy, SIGNAL(csCoreState(QVariant)), this, SLOT(recvCoreState(QVariant)));
+  connect(ClientProxy::instance(), SIGNAL(recvPartialItem(quint32, quint32)), this, SLOT(updateProgressBar(quint32, quint32)));
+  connect(ClientProxy::instance(), SIGNAL(csCoreState(QVariant)), this, SLOT(recvCoreState(QVariant)));
   ui.progressBar->show();
   VarMap initmsg;
   initmsg["GUIProtocol"] = GUI_PROTOCOL;
@@ -79,7 +80,7 @@ void CoreConnectDlg::coreConnected() {
 
 void CoreConnectDlg::coreConnectionError(QString err) {
   QMessageBox::warning(this, tr("Connection Error"), tr("<b>Could not connect to Quassel Core!</b><br>\n") + err, QMessageBox::Retry);
-  disconnect(guiProxy, 0, this, 0);
+  disconnect(ClientProxy::instance(), 0, this, 0);
   ui.autoConnect->setChecked(false);
   setStartState();
 }

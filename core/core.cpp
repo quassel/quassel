@@ -94,7 +94,7 @@ CoreSession *Core::session(UserId uid) {
   else return 0;
 }
 
-CoreSession *Core::guiSession() {
+CoreSession *Core::localSession() {
   Core *core = instance();
   if(core->guiUser && core->sessions.contains(core->guiUser)) return core->sessions[core->guiUser];
   else return 0;
@@ -141,10 +141,10 @@ void Core::clientHasData() {
   while(readDataFromDevice(socket, bsize, item)) {
     if(validClients.contains(socket)) {
       QList<QVariant> sigdata = item.toList();
-      if((GUISignal)sigdata[0].toInt() == GS_UPDATE_GLOBAL_DATA) {
+      if((ClientSignal)sigdata[0].toInt() == GS_UPDATE_GLOBAL_DATA) {
         processClientUpdate(socket, sigdata[1].toString(), sigdata[2]);
       } else {
-        sessions[validClients[socket]]->processSignal((GUISignal)sigdata[0].toInt(), sigdata[1], sigdata[2], sigdata[3]);
+        sessions[validClients[socket]]->processSignal((ClientSignal)sigdata[0].toInt(), sigdata[1], sigdata[2], sigdata[3]);
       }
     } else {
       // we need to auth the client
@@ -280,7 +280,7 @@ UserId CoreSession::userId() {
   return user;
 }
 
-void CoreSession::processSignal(GUISignal sig, QVariant arg1, QVariant arg2, QVariant arg3) {
+void CoreSession::processSignal(ClientSignal sig, QVariant arg1, QVariant arg2, QVariant arg3) {
   coreProxy->recv(sig, arg1, arg2, arg3);
 }
 

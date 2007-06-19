@@ -56,31 +56,32 @@ class MainWin : public QMainWindow {
     void closeEvent(QCloseEvent *event);
 
   signals:
-    void sendInput(BufferId, QString message);
-    void bufferSelected(Buffer *);
-    void bufferUpdated(Buffer *);
-    void bufferActivity(Buffer::ActivityLevel, Buffer *);
-    void bufferDestroyed(Buffer *);
-    void backlogReceived(Buffer *, QList<Message>);
-    void requestBacklog(BufferId, QVariant, QVariant);
+    //void sendInput(BufferId, QString message);
+    //void bufferSelected(Buffer *);
+    //void bufferUpdated(Buffer *);
+    //void bufferActivity(Buffer::ActivityLevel, Buffer *);
+    //void bufferDestroyed(Buffer *);
+    //void backlogReceived(Buffer *, QList<Message>);
+    //void requestBacklog(BufferId, QVariant, QVariant);
 
     void importOldBacklog();
 
   private slots:
-    void userInput(BufferId, QString);
-    void networkConnected(QString);
-    void networkDisconnected(QString);
-    void recvNetworkState(QString, QVariant);
-    void recvMessage(Message message);
-    void recvStatusMsg(QString network, QString message);
-    void setTopic(QString net, QString buf, QString);
-    void addNick(QString net, QString nick, VarMap props);
-    void removeNick(QString net, QString nick);
-    void renameNick(QString net, QString oldnick, QString newnick);
-    void updateNick(QString net, QString nick, VarMap props);
-    void setOwnNick(QString net, QString nick);
-    void recvBacklogData(BufferId, QList<QVariant>, bool);
-    void updateBufferId(BufferId);
+    
+    //void userInput(BufferId, QString);
+    //void networkConnected(QString);
+    //void networkDisconnected(QString);
+    //void recvNetworkState(QString, QVariant);
+    //void recvMessage(Message message);
+    //void recvStatusMsg(QString network, QString message);
+    //void setTopic(QString net, QString buf, QString);
+    //void addNick(QString net, QString nick, VarMap props);
+    //void removeNick(QString net, QString nick);
+    //void renameNick(QString net, QString oldnick, QString newnick);
+    //void updateNick(QString net, QString nick, VarMap props);
+    //void setOwnNick(QString net, QString nick);
+    //void recvBacklogData(BufferId, QList<QVariant>, bool);
+    //void updateBufferId(BufferId);
 
     void showServerList();
     void showSettingsDlg();
@@ -89,7 +90,6 @@ class MainWin : public QMainWindow {
     void showBuffer(Buffer *);
 
     void importBacklog();
-    void layoutMsg();
 
   private:
     Ui::MainWin ui;
@@ -97,7 +97,7 @@ class MainWin : public QMainWindow {
     void setupMenus();
     void setupViews();
     void setupSettingsDlg();
-    void syncToCore();  // implemented in main_mono.cpp or main_gui.cpp
+    //void syncToCore();  // implemented in main_mono.cpp or main_gui.cpp
     //Buffer * getBuffer(QString net, QString buf);
     Buffer *getBuffer(BufferId);
     BufferId getStatusBufferId(QString net);
@@ -116,13 +116,13 @@ class MainWin : public QMainWindow {
     //QString currentNetwork, currentBuffer;
     //QHash<QString, QHash<QString, Buffer*> > buffers;
     uint currentBuffer;
-    QHash<BufferId, Buffer *> buffers;
-    QHash<uint, BufferId> bufferIds;
-    QHash<QString, QHash<QString, VarMap> > nicks;
-    QHash<QString, bool> connected;
-    QHash<QString, QString> ownNick;
+    //QHash<BufferId, Buffer *> buffers;
+    //QHash<uint, BufferId> bufferIds;
+    //QHash<QString, QHash<QString, VarMap> > nicks;
+    //QHash<QString, bool> connected;
+    //QHash<QString, QString> ownNick;
     //QHash<QString, QList<Message> > coreBackLog;
-    QList<BufferId> coreBuffers;
+    //QList<BufferId> coreBuffers;
 
     QList<BufferViewDock *> netViews;
 

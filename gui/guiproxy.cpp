@@ -24,7 +24,24 @@
 #include "util.h"
 #include "message.h"
 
-void GUIProxy::recv(CoreSignal sig, QVariant arg1, QVariant arg2, QVariant arg3) {
+ClientProxy *ClientProxy::instanceptr = 0;
+
+ClientProxy *ClientProxy::instance() {
+  if(instanceptr) return instanceptr;
+  else return instanceptr = new ClientProxy();
+}
+
+void ClientProxy::destroy() {
+  delete instanceptr;
+  instanceptr = 0;
+}
+
+ClientProxy::ClientProxy() {
+
+
+}
+
+void ClientProxy::recv(CoreSignal sig, QVariant arg1, QVariant arg2, QVariant arg3) {
   //qDebug() << "[GUI] Received signal:" << sig <<arg1<<arg2<<arg3;
   switch(sig) {
     case CS_CORE_STATE: emit csCoreState(arg1); break;
@@ -46,9 +63,9 @@ void GUIProxy::recv(CoreSignal sig, QVariant arg1, QVariant arg2, QVariant arg3)
     case CS_BACKLOG_DATA: emit csBacklogData(arg1.value<BufferId>(), arg2.toList(), arg3.toBool()); break;
     case CS_UPDATE_BUFFERID: emit csUpdateBufferId(arg1.value<BufferId>()); break;
 
-    //default: qWarning() << "Unknown signal in GUIProxy::recv: " << sig;
+    //default: qWarning() << "Unknown signal in ClientProxy::recv: " << sig;
     default: emit csGeneric(sig, arg1, arg2, arg3);
   }
 }
 
-GUIProxy *guiProxy;
+//ClientProxy *guiProxy;

@@ -60,7 +60,7 @@ void CoreProxy::send(CoreSignal sig, QVariant arg1, QVariant arg2, QVariant arg3
 }
 */
 
-void CoreProxy::recv(GUISignal sig, QVariant arg1, QVariant arg2, QVariant arg3) {
+void CoreProxy::recv(ClientSignal sig, QVariant arg1, QVariant arg2, QVariant arg3) {
   //qDebug() << "[CORE] Received signal" << sig << ":" << arg1<<arg2<<arg3;
   switch(sig) {
     case GS_UPDATE_GLOBAL_DATA: emit gsPutGlobalData(arg1.toString(), arg2); break;

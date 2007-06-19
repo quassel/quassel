@@ -30,15 +30,12 @@
 #include <QTcpSocket>
 #include <QStringList>
 
-/** This class is the GUI side of the proxy. The GUI connects its signals and slots to it,
- *  and the calls are marshalled and sent to (or received and unmarshalled from) the CoreProxy.
- *  The connection function is defined in main/main_gui.cpp or main/main_mono.cpp.
- */
-class GUIProxy : public QObject {
+class ClientProxy : public QObject {
   Q_OBJECT
 
   public:
-    GUIProxy();
+    static ClientProxy *instance();
+    static void destroy();
 
   public slots:
     inline void gsUserInput(BufferId id, QString msg)                 { send(GS_USER_INPUT, QVariant::fromValue(id), msg); }
@@ -46,10 +43,10 @@ class GUIProxy : public QObject {
     inline void gsImportBacklog()                                     { send(GS_IMPORT_BACKLOG); }
     inline void gsRequestBacklog(BufferId id, QVariant v1, QVariant v2) { send(GS_REQUEST_BACKLOG, QVariant::fromValue(id), v1, v2); }
 
-    inline void gsGeneric(GUISignal sig, QVariant v1 = QVariant(), QVariant v2 = QVariant(), QVariant v3 = QVariant()) { send(sig, v1, v2, v3); }
+    inline void gsGeneric(ClientSignal sig, QVariant v1 = QVariant(), QVariant v2 = QVariant(), QVariant v3 = QVariant()) { send(sig, v1, v2, v3); }
 
-    void connectToCore(QString host, quint16 port);
-    void disconnectFromCore();
+    //void connectToCore(QString host, quint16 port);
+    //void disconnectFromCore();
 
   signals:
     void csCoreState(QVariant);
@@ -73,32 +70,35 @@ class GUIProxy : public QObject {
 
     void csGeneric(CoreSignal, QVariant, QVariant, QVariant);
 
-    void coreConnected();
-    void coreDisconnected();
-    void coreConnectionError(QString errorMsg);
+    //void coreConnected();
+    //void coreDisconnected();
+    //void coreConnectionError(QString errorMsg);
 
-    void recvPartialItem(quint32 avail, quint32 size);
+    //void recvPartialItem(quint32 avail, quint32 size);
 
-    void send(GUISignal, QVariant arg1 = QVariant(), QVariant arg2 = QVariant(), QVariant arg3 = QVariant());
+    void send(ClientSignal, QVariant arg1 = QVariant(), QVariant arg2 = QVariant(), QVariant arg3 = QVariant());
 
   public slots:
     void recv(CoreSignal, QVariant arg1 = QVariant(), QVariant arg2 = QVariant(), QVariant arg3 = QVariant());
 
   private slots:
-    void updateCoreData(QString);
+    //void updateCoreData(QString);
 
-    void serverError(QAbstractSocket::SocketError);
-    void serverHasData();
+    //void serverError(QAbstractSocket::SocketError);
+    //void serverHasData();
 
   private:
-    QTcpSocket socket;
-    quint32 blockSize;
+    ClientProxy();
+    static ClientProxy *instanceptr;
 
-  friend class CoreProxy;
+    //QTcpSocket socket;
+    //quint32 blockSize;
+
+  //friend class CoreProxy;
 
 };
 
-extern GUIProxy *guiProxy;
+//extern ClientProxy *guiProxy;
 
 
 

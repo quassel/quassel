@@ -879,7 +879,8 @@ void Server::handleCtcpPing(CtcpType ctcptype, QString prefix, QString target, Q
 void Server::handleCtcpVersion(CtcpType ctcptype, QString prefix, QString target, QString param) {
   if(ctcptype == CtcpQuery) {
     // FIXME use real Info about quassel :)
-    ctcpReply(nickFromMask(prefix), "VERSION", QString("Quassel:pre Release:*nix"));
+    //ctcpReply(nickFromMask(prefix), "VERSION", QString("Quassel:pre Release:*nix"));
+    ctcpReply(nickFromMask(prefix), "VERSION", QString("Quassel IRC (Pre-Release) - http://www.quassel-irc.org"));
     emit displayMsg(Message::Server, "", tr("Received CTCP VERSION request by %1").arg(prefix));
   } else {
     // TODO display Version answer

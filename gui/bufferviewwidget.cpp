@@ -155,7 +155,7 @@ BufferTreeModel::BufferTreeModel(QObject *parent) : QAbstractItemModel(parent) {
   rootData << "Buffer" << "Network";
   rootItem = new TreeItem(rootData, 0);
   
-  connect(this, SIGNAL(fakeUserInput(BufferId, QString)), guiProxy, SLOT(gsUserInput(BufferId, QString)));
+  connect(this, SIGNAL(fakeUserInput(BufferId, QString)), ClientProxy::instance(), SLOT(gsUserInput(BufferId, QString)));
 }
 
 BufferTreeModel::~BufferTreeModel() {
@@ -291,11 +291,11 @@ QModelIndex BufferTreeModel::getOrCreateBufferItemIndex(Buffer *buffer) {
     TreeItem *networkItem = static_cast<TreeItem*>(networkItemIndex.internalPointer());
 
     int nextRow = networkItem->childCount();
-    
+
     beginInsertRows(networkItemIndex, nextRow, nextRow);
     networkItem->appendChild(new BufferTreeItem(buffer, networkItem));
     endInsertRows();
-                         
+
     bufferItem[buffer] = static_cast<BufferTreeItem *>(networkItem->child(nextRow));
     return index(nextRow, 0, networkItemIndex);
   }
@@ -334,13 +334,14 @@ bool BufferTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction action,
   if(sourceBuffer == targetBuffer) // we won't merge with ourself :)
     return false;
   
-  
+  /*
   if(QMessageBox::warning(static_cast<QWidget *>(QObject::parent()),
                           tr("Merge Buffers?"),
                           tr("Do you really want to merge the following Buffers?<br />%1.%2<br />%3.%4").arg(sourceBuffer->networkName()).arg(sourceBuffer->bufferName()).arg(targetBuffer->networkName()).arg(targetBuffer->bufferName()),
                           QMessageBox::Yes|QMessageBox::No) == QMessageBox::No)
     return false;
-    
+
+  */
   qDebug() << "merging" << sourceBuffer->bufferName() << "with" << targetBuffer->bufferName();
   bufferItem.remove(getBufferByIndex(parent));
   removeRow(parent.row(), BufferTreeModel::parent(parent));

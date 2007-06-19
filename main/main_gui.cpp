@@ -42,7 +42,7 @@ int main(int argc, char **argv) {
   Global::quasselDir = QDir::homePath() + "/.quassel";
 
   global = new Global();
-  guiProxy = new GUIProxy();
+  guiProxy = new GuiProxy();
 
   Style::init();
 
@@ -89,7 +89,9 @@ void MainWin::syncToCore() {
   foreach(QVariant v, state["CoreBuffers"].toList()) { coreBuffers.append(v.value<BufferId>()); }
 }
 
-GUIProxy::GUIProxy() {
+/*
+
+GuiProxy::GuiProxy() {
   if(guiProxy) qFatal("Trying to instantiate more than one CoreProxy object!");
 
   blockSize = 0;
@@ -104,20 +106,20 @@ GUIProxy::GUIProxy() {
 
 }
 
-void GUIProxy::connectToCore(QString host, quint16 port) {
+void GuiProxy::connectToCore(QString host, quint16 port) {
   socket.connectToHost(host, port);
 }
 
-void GUIProxy::disconnectFromCore() {
+void GuiProxy::disconnectFromCore() {
   socket.close();
 }
 
-void GUIProxy::serverError(QAbstractSocket::SocketError) {
+void GuiProxy::serverError(QAbstractSocket::SocketError) {
   emit coreConnectionError(socket.errorString());
   //qFatal(QString("Connection error: %1").arg(socket.errorString()).toAscii());
 }
 
-void GUIProxy::serverHasData() {
+void GuiProxy::serverHasData() {
   QVariant item;
   while(readDataFromDevice(&socket, blockSize, item)) {
     emit recvPartialItem(1,1);
@@ -130,15 +132,17 @@ void GUIProxy::serverHasData() {
     emit recvPartialItem(socket.bytesAvailable(), blockSize);
   }
 }
-
-void GUIProxy::send(GUISignal sig, QVariant arg1, QVariant arg2, QVariant arg3) {
+*/
+/*
+void GuiProxy::send(GuiSignal sig, QVariant arg1, QVariant arg2, QVariant arg3) {
   QList<QVariant> sigdata;
   sigdata.append(sig); sigdata.append(arg1); sigdata.append(arg2); sigdata.append(arg3);
   //qDebug() << "Sending signal: " << sigdata;
   writeDataToDevice(&socket, QVariant(sigdata));
 }
+*/
 
-void GUIProxy::updateCoreData(QString key) {
+void GuiProxy::updateCoreData(QString key) {
   QVariant data = global->getData(key);
   send(GS_UPDATE_GLOBAL_DATA, key, data);
 }

@@ -78,7 +78,7 @@ class BufferView : public QTreeView {
   
     void dragEnterEvent(QDragEnterEvent *);
 
-  protected:
+  protected slots:
     void rowsInserted (const QModelIndex & parent, int start, int end);
 };
 

@@ -40,7 +40,7 @@ class Core : public QObject {
     static void destroy();
 
     static CoreSession * session(UserId);
-    static CoreSession * guiSession();
+    static CoreSession * localSession();
     static CoreSession * createSession(UserId);
 
   private slots:
@@ -84,7 +84,7 @@ class CoreSession : public QObject {
 
   public slots:
     void connectToIrc(QStringList);
-    void processSignal(GUISignal, QVariant, QVariant, QVariant);
+    void processSignal(ClientSignal, QVariant, QVariant, QVariant);
     void sendBacklog(BufferId, QVariant, QVariant);
     void msgFromGui(BufferId, QString message);
     void sendServerStates();

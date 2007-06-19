@@ -22,6 +22,7 @@
 
 #include <QApplication>
 
+#include "gui.h"
 #include "core.h"
 #include "style.h"
 #include "global.h"
@@ -43,31 +44,33 @@ int main(int argc, char **argv) {
 
   //settings = new Settings();
   //global = new Global();
-  guiProxy = new GUIProxy();
+  //guiProxy = new GUIProxy();
   //coreProxy = new CoreProxy();
-  QObject::connect(Core::guiSession(), SIGNAL(proxySignal(CoreSignal, QVariant, QVariant, QVariant)), guiProxy, SLOT(recv(CoreSignal, QVariant, QVariant, QVariant)));
-  QObject::connect(guiProxy, SIGNAL(send(GUISignal, QVariant, QVariant, QVariant)), Core::guiSession(), SLOT(processSignal(GUISignal, QVariant, QVariant, QVariant)));
+  QObject::connect(Core::localSession(), SIGNAL(proxySignal(CoreSignal, QVariant, QVariant, QVariant)), ClientProxy::instance(), SLOT(recv(CoreSignal, QVariant, QVariant, QVariant)));
+  QObject::connect(ClientProxy::instance(), SIGNAL(send(ClientSignal, QVariant, QVariant, QVariant)), Core::localSession(), SLOT(processSignal(ClientSignal, QVariant, QVariant, QVariant)));
 
   Settings::init();
   Style::init();
 
-  MainWin *mainWin = new MainWin();
-  mainWin->show();
-  mainWin->init();
+  //MainWin *mainWin = new MainWin();
+  //mainWin->show();
+  //mainWin->init();
+  Client::instance();
   int exitCode = app.exec();
   //delete core;
+  Client::destroy();
   Core::destroy();
-  delete guiProxy;
+  //delete guiProxy;
   //delete coreProxy;
   //delete global;
-  delete mainWin;
+  //delete mainWin;
   //delete settings;
   return exitCode;
 }
 
-void MainWin::syncToCore() {
+void Client::syncToCore() {
   //Q_ASSERT(Global::data("CoreReady").toBool());
-  coreBuffers = Core::guiSession()->buffers();
+  coreBuffers = Core::localSession()->buffers();
   // NOTE: We don't need to request server states, because in the monolithic version there can't be
   //       any servers connected at this stage...
 }
@@ -78,10 +81,11 @@ void CoreProxy::sendToGUI(CoreSignal sig, QVariant arg1, QVariant arg2, QVariant
 }
 */
 
+/*
 GUIProxy::GUIProxy() {
   if(guiProxy) qFatal("Trying to instantiate more than one GUIProxy object!");
 }
-
+*/
 /*
 void GUIProxy::send(GUISignal sig, QVariant arg1, QVariant arg2, QVariant arg3) {
   coreProxy->recv(sig, arg1, arg2, arg3);
@@ -90,9 +94,10 @@ void GUIProxy::send(GUISignal sig, QVariant arg1, QVariant arg2, QVariant arg3) 
 
 // Dummy function definitions
 // These are not needed, since we don't have a network connection to the core.
+/*
 void GUIProxy::serverHasData() {}
 void GUIProxy::connectToCore(QString, quint16) {}
 void GUIProxy::disconnectFromCore() {}
 void GUIProxy::updateCoreData(QString) {}
 void GUIProxy::serverError(QAbstractSocket::SocketError) {}
-
+*/

@@ -40,7 +40,7 @@ ServerListDlg::ServerListDlg(QWidget *parent) : QDialog(parent) {
   settings.endGroup();
   // check if we already have a valid identity
   if(!Global::data("Identities", VarMap()).toMap().contains("Default")) editIdentities(true);
-  connect(this, SIGNAL(requestConnect(QStringList)), guiProxy, SLOT(gsRequestConnect(QStringList)));
+  connect(this, SIGNAL(requestConnect(QStringList)), ClientProxy::instance(), SLOT(gsRequestConnect(QStringList)));
 
   // Autoconnect
   QStringList list;
