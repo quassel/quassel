@@ -75,6 +75,8 @@ bool BufferViewFilter::filterAcceptsRow(int source_row, const QModelIndex &sourc
 /*****************************************
 * The TreeView showing the Buffers
 *****************************************/
+// Please be carefull when reimplementing methods which are used to inform the view about changes to the data
+// to be on the safe side: call QTreeView's method aswell
 BufferView::BufferView(QWidget *parent) : QTreeView(parent) {
 }
 
@@ -109,4 +111,5 @@ void BufferView::dragEnterEvent(QDragEnterEvent *event) {
 
 void BufferView::rowsInserted(const QModelIndex & parent, int start, int end) {
   if(parent.parent() == QModelIndex()) setExpanded(parent, true);
+  QTreeView::rowsInserted(parent, start, end);
 }
