@@ -22,7 +22,7 @@
 #include "guiproxy.h"
 #include "mainwin.h"
 #include "buffer.h"
-#include "bufferview.h"
+//#include "bufferview.h"
 #include "bufferviewwidget.h"
 #include "util.h"
 
@@ -41,6 +41,7 @@ Client *Client::instance() {
   if(instanceptr) return instanceptr;
   instanceptr = new Client();
   instanceptr->init();
+  return instanceptr;
 }
 
 void Client::destroy() {
@@ -51,8 +52,9 @@ void Client::destroy() {
 Client::Client() {
   clientProxy = ClientProxy::instance();
 
-  mainWin = new MainWin();
-  _bufferModel = new BufferTreeModel(mainWin);  // FIXME
+  //mainWin = new MainWin();
+
+  _bufferModel = new BufferTreeModel(0);  // FIXME
 
   connect(this, SIGNAL(bufferSelected(Buffer *)), _bufferModel, SLOT(selectBuffer(Buffer *)));
   connect(this, SIGNAL(bufferUpdated(Buffer *)), _bufferModel, SLOT(bufferUpdated(Buffer *)));
@@ -72,10 +74,9 @@ void Client::init() {
   connect(&socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(serverError(QAbstractSocket::SocketError)));
 
   connect(Global::instance(), SIGNAL(dataPutLocally(UserId, QString)), this, SLOT(updateCoreData(UserId, QString)));
-  connect(ClientProxy::instance(), SIGNAL(csUpdateGlobalData(QString, QVariant)), this, SLOT(updateLocalData(QString, QVariant)));
+  connect(clientProxy, SIGNAL(csUpdateGlobalData(QString, QVariant)), this, SLOT(updateLocalData(QString, QVariant)));
 
-  connect(ClientProxy::instance(), SIGNAL(send(ClientSignal, QVariant, QVariant, QVariant)), this, SLOT(recvProxySignal(ClientSignal, QVariant, QVariant, QVariant)));
-
+  connect(clientProxy, SIGNAL(send(ClientSignal, QVariant, QVariant, QVariant)), this, SLOT(recvProxySignal(ClientSignal, QVariant, QVariant, QVariant)));
   connect(clientProxy, SIGNAL(csServerState(QString, QVariant)), this, SLOT(recvNetworkState(QString, QVariant)));
   connect(clientProxy, SIGNAL(csServerConnected(QString)), this, SLOT(networkConnected(QString)));
   connect(clientProxy, SIGNAL(csServerDisconnected(QString)), this, SLOT(networkDisconnected(QString)));
@@ -106,15 +107,15 @@ void Client::init() {
     emit requestBacklog(id, -1, -1);  // TODO: use custom settings for backlog request
   }
 
-  //mainWin = new MainWin();
+  mainWin = new MainWin();
   mainWin->init();
 
 }
 
 Client::~Client() {
   delete mainWin;
-  foreach(Buffer *buf, buffers.values()) delete buf;
   delete _bufferModel;
+  foreach(Buffer *buf, buffers.values()) delete buf;
   ClientProxy::destroy();
 
 }

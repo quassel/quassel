@@ -36,8 +36,6 @@
 #include "settingsdlg.h"
 #include "settingspages.h"
 
-LayoutThread *layoutThread;
-
 MainWin::MainWin() : QMainWindow() {
   ui.setupUi(this);
   //widget = 0;
@@ -144,6 +142,7 @@ void MainWin::setupMenus() {
 }
 
 void MainWin::setupViews() {
+  
   BufferTreeModel *model = Client::bufferModel(); // FIXME Where is the delete for that? :p
   connect(model, SIGNAL(bufferSelected(Buffer *)), this, SLOT(showBuffer(Buffer *)));
   //connect(this, SIGNAL(bufferSelected(Buffer *)), model, SLOT(selectBuffer(Buffer *)));

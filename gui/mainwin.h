@@ -35,8 +35,6 @@ class Buffer;
 class BufferWidget;
 class SettingsDlg;
 
-extern LayoutThread *layoutThread;
-
 //!\brief The main window and central object of Quassel GUI.
 /** In addition to displaying the main window including standard stuff like a menubar,
  * dockwidgets and of course the chat window, this class also stores all data it
@@ -99,9 +97,9 @@ class MainWin : public QMainWindow {
     void setupSettingsDlg();
     //void syncToCore();  // implemented in main_mono.cpp or main_gui.cpp
     //Buffer * getBuffer(QString net, QString buf);
-    Buffer *getBuffer(BufferId);
-    BufferId getStatusBufferId(QString net);
-    BufferId getBufferId(QString net, QString buf);
+    //Buffer *getBuffer(BufferId);
+    //BufferId getStatusBufferId(QString net);
+    //BufferId getBufferId(QString net, QString buf);
     //void buffersUpdated();
 
     QSystemTrayIcon *systray;
@@ -126,8 +124,8 @@ class MainWin : public QMainWindow {
 
     QList<BufferViewDock *> netViews;
 
-    QTimer *layoutTimer;
-    QList<Message> layoutQueue;
+    //QTimer *layoutTimer;
+    //QList<Message> layoutQueue;
 };
 
 #endif

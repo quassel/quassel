@@ -92,6 +92,8 @@ void BufferView::init() {
   connect(selectionModel(), SIGNAL(currentChanged(const QModelIndex &, const QModelIndex &)), model(), SLOT(changeCurrent(const QModelIndex &, const QModelIndex &)));
   connect(this, SIGNAL(doubleClicked(const QModelIndex &)), model(), SLOT(doubleClickReceived(const QModelIndex &)));
   connect(model(), SIGNAL(updateSelection(const QModelIndex &, QItemSelectionModel::SelectionFlags)), selectionModel(), SLOT(select(const QModelIndex &, QItemSelectionModel::SelectionFlags)));
+
+  expandAll();
 }
 
 void BufferView::setFilteredModel(QAbstractItemModel *model, BufferViewFilter::Modes mode, QStringList nets) {
@@ -110,6 +112,6 @@ void BufferView::dragEnterEvent(QDragEnterEvent *event) {
 }
 
 void BufferView::rowsInserted(const QModelIndex & parent, int start, int end) {
-  if(parent.parent() == QModelIndex()) setExpanded(parent, true); qDebug() << "expanded";
+  if(parent.parent() == QModelIndex()) setExpanded(parent, true);
   QTreeView::rowsInserted(parent, start, end);
 }

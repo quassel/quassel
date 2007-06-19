@@ -26,7 +26,7 @@
 
 #include "guiproxy.h"
 #include "buffer.h"
-#include "ui_bufferviewwidget.h"
+#include "gui/ui_bufferviewwidget.h"
 #include "bufferview.h"
 
 /*****************************************
