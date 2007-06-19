@@ -70,14 +70,16 @@ Q_DECLARE_OPERATORS_FOR_FLAGS(BufferViewFilter::Modes)
 class BufferView : public QTreeView {
   Q_OBJECT
   
-public:
-  BufferView(QWidget *parent = 0);
-  void init();
-  void setModel(QAbstractItemModel *model);
-  void setFilteredModel(QAbstractItemModel *model, BufferViewFilter::Modes mode, QStringList nets);
+  public:
+    BufferView(QWidget *parent = 0);
+    void init();
+    void setModel(QAbstractItemModel *model);
+    void setFilteredModel(QAbstractItemModel *model, BufferViewFilter::Modes mode, QStringList nets);
   
-  void dragEnterEvent(QDragEnterEvent *);
-  
+    void dragEnterEvent(QDragEnterEvent *);
+
+  protected:
+    void rowsInserted (const QModelIndex & parent, int start, int end);
 };
 
 

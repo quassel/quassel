@@ -106,3 +106,7 @@ void BufferView::dragEnterEvent(QDragEnterEvent *event) {
   // not yet needed... this will be usefull to keep track of the active view when customizing them with drag and drop
   QTreeView::dragEnterEvent(event);
 }
+
+void BufferView::rowsInserted(const QModelIndex & parent, int start, int end) {
+  setExpanded(parent, true);
+}
