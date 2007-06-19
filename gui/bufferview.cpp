@@ -108,5 +108,5 @@ void BufferView::dragEnterEvent(QDragEnterEvent *event) {
 }
 
 void BufferView::rowsInserted(const QModelIndex & parent, int start, int end) {
-  setExpanded(parent, true);
+  if(parent.parent() == QModelIndex()) setExpanded(parent, true);
 }
