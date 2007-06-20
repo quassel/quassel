@@ -21,8 +21,7 @@
 #ifndef _CORECONNECTDLG_H
 #define _CORECONNECTDLG_H
 
-#include "coreconnectdlg.h"
-#include "gui/ui_coreconnectdlg.h"
+#include "ui_coreconnectdlg.h"
 
 class CoreConnectDlg: public QDialog {
   Q_OBJECT

@@ -22,16 +22,14 @@
 
 #include <QApplication>
 
-#include "gui.h"
+#include "client.h"
 #include "core.h"
 #include "style.h"
 #include "global.h"
-#include "guiproxy.h"
+#include "clientproxy.h"
 #include "coreproxy.h"
 #include "settings.h"
 #include "chatwidget.h"
-
-#include "mainwin.h"
 
 int main(int argc, char **argv) {
   QApplication app(argc, argv);

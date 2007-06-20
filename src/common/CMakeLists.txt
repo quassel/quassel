@@ -1,6 +1,6 @@
-SET(main_SRCS global.cpp logger.cpp util.cpp message.cpp settings.cpp)
-SET(main_HDRS util.h message.h settings.h)
-SET(main_MOCS global.h logger.h)
+SET(common_SRCS global.cpp logger.cpp util.cpp message.cpp settings.cpp)
+SET(common_HDRS util.h message.h settings.h)
+SET(common_MOCS global.h logger.h)
 
-QT4_WRAP_CPP(_MOC ${main_MOCS})
-ADD_LIBRARY(main ${_MOC} ${main_SRCS} ${main_HDRS})
+QT4_WRAP_CPP(_MOC ${common_MOCS})
+ADD_LIBRARY(common ${_MOC} ${common_SRCS} ${common_HDRS})

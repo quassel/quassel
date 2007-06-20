@@ -20,9 +20,9 @@
 
 #include <QtGui>
 #include "coreconnectdlg.h"
-#include "guiproxy.h"
+#include "clientproxy.h"
 #include "global.h"
-#include "gui.h"
+#include "client.h"
 
 CoreConnectDlg::CoreConnectDlg(QWidget *parent) : QDialog(parent) {
   ui.setupUi(this);

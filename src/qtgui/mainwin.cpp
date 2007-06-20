@@ -22,11 +22,11 @@
 #include <QtCore>
 #include <QSqlDatabase>
 
-#include "gui.h"
+#include "client.h"
 #include "util.h"
 #include "global.h"
 #include "message.h"
-#include "guiproxy.h"
+#include "clientproxy.h"
 
 #include "mainwin.h"
 #include "buffer.h"

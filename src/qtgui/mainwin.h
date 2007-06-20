@@ -22,7 +22,7 @@
 #define _MAINWIN_H_
 
 #include <QtGui>
-#include "gui/ui_mainwin.h"
+#include "ui_mainwin.h"
 
 #include "global.h"
 #include "message.h"

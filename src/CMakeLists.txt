@@ -31,19 +31,19 @@ ENDIF(BUILD_CORE OR BUILD_GUI)
 SET(CMAKE_BUILD_TYPE Debug)
 
 # Define files
-SET(quassel_mono_SRCS main/main_mono.cpp)
-SET(quassel_core_SRCS main/main_core.cpp)
-SET(quassel_gui_SRCS  main/main_gui.cpp ${common_SRCS})
+SET(quassel_mono_SRCS common/main_mono.cpp)
+SET(quassel_core_SRCS common/main_core.cpp)
+SET(quassel_gui_SRCS  common/main_gui.cpp ${common_SRCS})
 SET(quassel_RCCS images/icons.qrc)
-SET(quassel_DIRS main gui core)
+SET(quassel_DIRS common qtgui core)
 
 # Build correct absolute paths for subdirs to include
 SET(SDIRS "")
 FOREACH(dir ${quassel_DIRS})
   SET(SDIRS ${SDIRS} "${CMAKE_CURRENT_SOURCE_DIR}/${dir}")
 ENDFOREACH(dir)
-INCLUDE_DIRECTORIES(${SDIRS} plugins)
-INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
+INCLUDE_DIRECTORIES(${SDIRS} client plugins)
+#INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 
 # We need Qt4 support.
 SET(QT_MIN_VERSION "4.3.0")  # 4.3 is required for SSL, crypto and some other stuff
@@ -59,7 +59,7 @@ INCLUDE(${QT_USE_FILE})
 # Define subdirs. CMake complains if a directory is added twice, so make sure this
 # does not happen in any combination of the requested targets.
 
-ADD_SUBDIRECTORY(main)
+ADD_SUBDIRECTORY(common)
 IF(BUILD_CORE)
   ADD_SUBDIRECTORY(core)
 ENDIF(BUILD_CORE)
@@ -74,7 +74,7 @@ SET(TARGET_LIST )
 IF(BUILD_CORE)
   ADD_DEFINITIONS(-DBUILD_CORE)
   ADD_EXECUTABLE(quasselcore ${quassel_core_SRCS} ${_RCCS})
-  TARGET_LINK_LIBRARIES(quasselcore core main ${QT_LIBRARIES})
+  TARGET_LINK_LIBRARIES(quasselcore core common ${QT_LIBRARIES})
   SET(TARGET_LIST ${TARGET_LIST} quasselcore)
 ENDIF(BUILD_CORE)
 
@@ -84,19 +84,19 @@ IF(BUILD_GUI OR BUILD_MONO)  # OK, now we need QtGui!
   SET(QT_INCLUDE_DIR "")
   SET(QT_LIBRARIES "")
   INCLUDE(${QT_USE_FILE})
-  ADD_SUBDIRECTORY(gui)
+  ADD_SUBDIRECTORY(qtgui)
 
   IF(BUILD_MONO)
     ADD_DEFINITIONS(-DBUILD_MONO)
     ADD_EXECUTABLE(quassel ${quassel_mono_SRCS} ${_RCCS})
-    TARGET_LINK_LIBRARIES(quassel gui core main ${QT_LIBRARIES})
+    TARGET_LINK_LIBRARIES(quassel qtgui core common ${QT_LIBRARIES})
     SET(TARGET_LIST ${TARGET_LIST} quassel)
   ENDIF(BUILD_MONO)
 
   IF(BUILD_GUI)
     ADD_DEFINITIONS(-DBUILD_GUI)
     ADD_EXECUTABLE(quasselgui ${quassel_gui_SRCS} ${_RCCS})
-    TARGET_LINK_LIBRARIES(quasselgui gui main ${QT_LIBRARIES})
+    TARGET_LINK_LIBRARIES(quasselgui qtgui common ${QT_LIBRARIES})
     SET(TARGET_LIST ${TARGET_LIST} quasselgui)
   ENDIF(BUILD_GUI)
 

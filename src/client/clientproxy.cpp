@@ -20,7 +20,7 @@
 
 #include <QtDebug>
 
-#include "guiproxy.h"
+#include "clientproxy.h"
 #include "util.h"
 #include "message.h"
 

@@ -24,9 +24,9 @@
 #include <QtGui>
 #include <QtCore>
 
-#include "guiproxy.h"
+#include "clientproxy.h"
 #include "buffer.h"
-#include "gui/ui_bufferviewwidget.h"
+#include "ui_bufferviewwidget.h"
 #include "bufferview.h"
 
 /*****************************************

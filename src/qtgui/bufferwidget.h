@@ -21,7 +21,7 @@
 #ifndef _BUFFERWIDGET_H_
 #define _BUFFERWIDGET_H_
 
-#include "gui/ui_bufferwidget.h"
+#include "ui_bufferwidget.h"
 
 #include "global.h"
 #include "message.h"

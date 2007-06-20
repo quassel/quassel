@@ -18,11 +18,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "gui.h"
-#include "guiproxy.h"
+#include "client.h"
+#include "clientproxy.h"
 #include "mainwin.h"
 #include "buffer.h"
-//#include "bufferview.h"
 #include "bufferviewwidget.h"
 #include "util.h"
 
