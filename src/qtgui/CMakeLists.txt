@@ -1,15 +1,12 @@
-SET(qtgui_SRCS chatwidget.cpp channelwidgetinput.cpp tabcompleter.cpp mainwin.cpp serverlist.cpp bufferwidget.cpp
+SET(qtgui_SRCS chatwidget.cpp chatline.cpp channelwidgetinput.cpp tabcompleter.cpp mainwin.cpp serverlist.cpp bufferwidget.cpp
              identities.cpp coreconnectdlg.cpp bufferview.cpp bufferviewwidget.cpp bufferviewfilter.cpp style.cpp settingsdlg.cpp settingspages.cpp)
 SET(qtgui_HDRS style.h)
-SET(qtgui_MOCS chatwidget.h channelwidgetinput.h tabcompleter.h mainwin.h serverlist.h identities.h coreconnectdlg.h
+SET(qtgui_MOCS chatwidget.h chatline.h channelwidgetinput.h tabcompleter.h mainwin.h serverlist.h identities.h coreconnectdlg.h
              bufferview.h bufferwidget.h bufferviewwidget.h bufferviewfilter.h settingsdlg.h settingspages.h)
 SET(qtgui_UICS identitiesdlg.ui identitieseditdlg.ui networkeditdlg.ui mainwin.ui
              nickeditdlg.ui serverlistdlg.ui servereditdlg.ui coreconnectdlg.ui ircwidget.ui
              bufferviewwidget.ui bufferwidget.ui settingsdlg.ui
              buffermgmntsettingspage.ui connectionsettingspage.ui)
-
-SET(client_SRCS ../client/client.cpp ../client/clientproxy.cpp ../client/buffer.cpp ../client/treemodel.cpp ../client/buffertreemodel.cpp)
-SET(client_MOCS ../client/client.h ../client/clientproxy.h ../client/buffer.h ../client/treemodel.h ../client/buffertreemodel.h)
 
 # This prepends ui/ to the UIC names, so we don't have to do this ourselves.
 FOREACH(ui ${qtgui_UICS})
@@ -17,11 +14,11 @@ FOREACH(ui ${qtgui_UICS})
 ENDFOREACH(ui)
 
 QT4_WRAP_UI(_UIC ${qtgui_UICS_UI})
-QT4_WRAP_CPP(_MOC ${qtgui_MOCS} ${client_MOCS})
+QT4_WRAP_CPP(_MOC ${qtgui_MOCS})
 
 # We need to work around a dependency bug with out-of-source builds...
 # Seems to be fixed!
 #SET_SOURCE_FILES_PROPERTIES(${gui_SRCS} PROPERTIES OBJECT_DEPENDS "${_UIC}")
-INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR} client)
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 
-ADD_LIBRARY(qtgui ${qtgui_HDRS} ${qtgui_SRCS} ${client_SRCS} ${_MOC} ${_UIC})
+ADD_LIBRARY(qtgui ${qtgui_HDRS} ${qtgui_SRCS} ${_MOC} ${_UIC})

@@ -21,13 +21,14 @@
 #ifndef _CHATWIDGET_H_
 #define _CHATWIDGET_H_
 
-#include "style.h"
-#include "message.h"
-#include "buffer.h"
-#include <QtCore>
+//#include "style.h"
+//#include "message.h"
+//#include "buffer.h"
+//#include <QtCore>
 #include <QtGui>
 
 class ChatLine;
+class AbstractUiMsg;
 
 //!\brief Scroll area showing part of the chat messages for a given buffer.
 /** The contents of the scroll area, i.e. a widget of type ChatWidgetContents,
@@ -52,6 +53,10 @@ class ChatWidget : public QAbstractScrollArea {
 
   public slots:
     void clear();
+
+    void prependMsg(AbstractUiMsg *);
+    void appendMsg(AbstractUiMsg *);
+
     void prependChatLine(ChatLine *);
     void appendChatLine(ChatLine *);
     void prependChatLines(QList<ChatLine *>);
@@ -117,116 +122,5 @@ class ChatWidget : public QAbstractScrollArea {
     void handleMouseMoveEvent(const QPoint &pos);
 
 };
-
-//FIXME: chatline doku
-//!\brief Containing the layout and providing the rendering of a single message.
-/** A ChatLine takes a Message object,
- * formats it (by turning the various message types into a human-readable form and afterwards pumping it through
- * our Style engine), and stores it as a number of QTextLayouts representing the three fields of a chat line
- * (timestamp, sender and text). These layouts already include any rendering information such as font,
- * color, or selected characters. By calling layout(), they can be quickly layouted to fit a given set of field widths.
- * Afterwards, they can quickly be painted whenever necessary.
- *
- * By separating the complex and slow task of interpreting and formatting Message objects (which happens exactly once
- * per message) from the actual layouting and painting, we gain a lot of speed compared to the standard Qt rendering
- * functions.
- */
-class ChatLine : public QObject {
-  Q_OBJECT
-
-  public:
-    ChatLine(Message message);
-    ~ChatLine();
-
-    qreal layout(qreal tsWidth, qreal nickWidth, qreal textWidth);
-    qreal height() { return hght; }
-    int posToCursor(QPointF pos);
-    void draw(QPainter *p, const QPointF &pos);
-
-    enum SelectionMode { None, Partial, Full };
-    void setSelection(SelectionMode, int start = 0, int end = 0);
-    QDateTime timeStamp();
-    QString sender();
-    QString text();
-    uint msgId();
-    BufferId bufferId();
-
-    bool isUrl(int pos);
-    QUrl getUrl(int pos);
-
-  public slots:
-
-  private:
-    qreal hght;
-    Message msg;
-    qreal tsWidth, senderWidth, textWidth;
-    Style::FormattedString tsFormatted, senderFormatted, textFormatted;
-
-    struct FormatRange {
-      int start;
-      int length;
-      int height;
-      QTextCharFormat format;
-    };
-    struct Word {
-      int start;
-      int length;
-      int trailing;
-      int height;
-    };
-    struct LineLayout {
-      int y;
-      int height;
-      int start;
-      int length;
-    };
-    QVector<int> charPos;
-    QVector<int> charWidths;
-    QVector<int> charHeights;
-    QVector<int> charUrlIdx;
-    QList<FormatRange> tsFormat, senderFormat, textFormat;
-    QList<Word> words;
-    QList<LineLayout> lineLayouts;
-    int minHeight;
-
-    SelectionMode selectionMode;
-    int selectionStart, selectionEnd;
-    void formatMsg(Message);
-    void precomputeLine();
-    QList<FormatRange> calcFormatRanges(const Style::FormattedString &, QTextLayout::FormatRange additional = QTextLayout::FormatRange());
-};
-
-/*
-struct LayoutTask {
-  QList<Message> messages;
-  Buffer *buffer;
-  QString net, buf;
-  QList<ChatLine *> lines;
-};
-
-Q_DECLARE_METATYPE(LayoutTask);
-
-class LayoutThread : public QThread {
-  Q_OBJECT
-
-  public:
-    LayoutThread();
-    virtual ~LayoutThread();
-    virtual void run();
-
-  public:
-    void processTask(LayoutTask task);
-
-  signals:
-    void taskProcessed(LayoutTask task);
-
-  private:
-    QList<LayoutTask> queue;
-    QMutex mutex;
-    QWaitCondition condition;
-    bool abort;
-
-};
-*/
 
 #endif

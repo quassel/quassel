@@ -30,6 +30,7 @@
 
 #include "mainwin.h"
 #include "buffer.h"
+#include "chatline.h"
 #include "serverlist.h"
 #include "coreconnectdlg.h"
 #include "settingsdlg.h"
@@ -50,27 +51,6 @@ MainWin::MainWin() : QMainWindow() {
 }
 
 void MainWin::init() {
-/*
-  connect(guiProxy, SIGNAL(csServerState(QString, QVariant)), this, SLOT(recvNetworkState(QString, QVariant)));
-  connect(guiProxy, SIGNAL(csServerConnected(QString)), this, SLOT(networkConnected(QString)));
-  connect(guiProxy, SIGNAL(csServerDisconnected(QString)), this, SLOT(networkDisconnected(QString)));
-  connect(guiProxy, SIGNAL(csDisplayMsg(Message)), this, SLOT(recvMessage(Message)));
-  connect(guiProxy, SIGNAL(csDisplayStatusMsg(QString, QString)), this, SLOT(recvStatusMsg(QString, QString)));
-  connect(guiProxy, SIGNAL(csTopicSet(QString, QString, QString)), this, SLOT(setTopic(QString, QString, QString)));
-  connect(guiProxy, SIGNAL(csNickAdded(QString, QString, VarMap)), this, SLOT(addNick(QString, QString, VarMap)));
-  connect(guiProxy, SIGNAL(csNickRemoved(QString, QString)), this, SLOT(removeNick(QString, QString)));
-  connect(guiProxy, SIGNAL(csNickRenamed(QString, QString, QString)), this, SLOT(renameNick(QString, QString, QString)));
-  connect(guiProxy, SIGNAL(csNickUpdated(QString, QString, VarMap)), this, SLOT(updateNick(QString, QString, VarMap)));
-  connect(guiProxy, SIGNAL(csOwnNickSet(QString, QString)), this, SLOT(setOwnNick(QString, QString)));
-  connect(guiProxy, SIGNAL(csBacklogData(BufferId, QList<QVariant>, bool)), this, SLOT(recvBacklogData(BufferId, QList<QVariant>, bool)));
-  connect(guiProxy, SIGNAL(csUpdateBufferId(BufferId)), this, SLOT(updateBufferId(BufferId)));
-  connect(this, SIGNAL(sendInput(BufferId, QString)), guiProxy, SLOT(gsUserInput(BufferId, QString)));
-  connect(this, SIGNAL(requestBacklog(BufferId, QVariant, QVariant)), guiProxy, SLOT(gsRequestBacklog(BufferId, QVariant, QVariant)));
-
-  //layoutThread = new LayoutThread();
-  //layoutThread->start();
-  //while(!layoutThread->isRunning()) {};
-*/
   ui.bufferWidget->init();
 
   show();
@@ -177,6 +157,10 @@ void MainWin::registerBufferViewDock(BufferViewDock *dock) {
   connect(view, SIGNAL(bufferSelected(Buffer *)), this, SLOT(showBuffer(Buffer *)));
   view->setBuffers(buffers.values());
    */
+}
+
+AbstractUiMsg *MainWin::layoutMsg(const Message &msg) {
+  return new ChatLine(msg);
 }
 
 void MainWin::showServerList() {

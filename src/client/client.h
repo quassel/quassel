@@ -18,28 +18,26 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _GUI_H_
-#define _GUI_H_
+#ifndef _CLIENT_H_
+#define _CLIENT_H_
 
 #include <QtCore>
-#include <QtGui>
 #include <QtNetwork>
 
-#include "global.h"
+#include "quasselui.h"
 #include "buffer.h"
 #include "message.h"
-#include "clientproxy.h"
-#include "buffertreemodel.h"
-//#include "bufferviewwidget.h"
+#include "proxy_common.h"
 
-class MainWin;
 class ClientProxy;
+class BufferTreeModel;
 
 class Client : public QObject {
   Q_OBJECT
 
   public:
     static Client *instance();
+    static void init(AbstractUi *);
     static void destroy();
 
     static Buffer *buffer(BufferId);
@@ -47,6 +45,8 @@ class Client : public QObject {
     static BufferId bufferId(QString net, QString buf);
 
     static BufferTreeModel *bufferModel();
+
+    static AbstractUiMsg *layoutMsg(const Message &);
 
   signals:
     void sendInput(BufferId, QString message);
@@ -80,7 +80,7 @@ class Client : public QObject {
     void networkConnected(QString);
     void networkDisconnected(QString);
     void recvNetworkState(QString, QVariant);
-    void recvMessage(Message message);
+    void recvMessage(const Message &message);
     void recvStatusMsg(QString network, QString message);
     void setTopic(QString net, QString buf, QString);
     void addNick(QString net, QString nick, VarMap props);
@@ -88,7 +88,7 @@ class Client : public QObject {
     void renameNick(QString net, QString oldnick, QString newnick);
     void updateNick(QString net, QString nick, VarMap props);
     void setOwnNick(QString net, QString nick);
-    void recvBacklogData(BufferId, QList<QVariant>, bool);
+    void recvBacklogData(BufferId, const QList<QVariant> &, bool);
     void updateBufferId(BufferId);
 
     void layoutMsg();
@@ -104,7 +104,7 @@ class Client : public QObject {
     enum ClientMode { LocalCore, RemoteCore };
     static ClientMode clientMode;
 
-    MainWin *mainWin;
+    AbstractUi *mainUi;
     ClientProxy *clientProxy;
     BufferTreeModel *_bufferModel;
 
@@ -119,7 +119,7 @@ class Client : public QObject {
     static QList<BufferId> coreBuffers;
 
     QTimer *layoutTimer;
-    QList<Message> layoutQueue;
+    QList<Buffer *> layoutQueue;
 };
 
 #endif

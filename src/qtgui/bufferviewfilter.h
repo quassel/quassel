@@ -22,6 +22,7 @@
 #define _BUFFERVIEWFILTER_H_
 
 #include <QFlags>
+#include <QSortFilterProxyModel>
 #include "buffer.h"
 #include "buffertreemodel.h"
 

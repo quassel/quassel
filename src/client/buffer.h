@@ -22,16 +22,11 @@
 #define _BUFFER_H_
 
 #include <QtCore>
-#include <QtGui>
 
-#include "chatwidget.h"
 #include "global.h"
 #include "message.h"
+#include "quasselui.h"
 
-class ChatWidget;
-class ChatLine;
-class ChatWidgetContents;
-class BufferWidget;
 struct BufferState;
 
 //!\brief Encapsulates the contents of a single channel, query or server status context.
@@ -43,10 +38,8 @@ class Buffer : public QObject {
   Q_OBJECT
 
   public:
-    //Buffer(QString network, QString buffer);
     Buffer(BufferId);
     ~Buffer();
-    static void init();
 
     enum Type { ServerBuffer, ChannelBuffer, QueryBuffer };
 
@@ -57,39 +50,37 @@ class Buffer : public QObject {
       Highlight = 0x40
     };
     Q_DECLARE_FLAGS(ActivityLevel, Activity)
-    
-    Type bufferType() { return type; }
-    bool isActive() { return active; }
 
-    QString networkName() { return _networkName; }
-    QString bufferName() { return _bufferName; }
-    QString displayName();
-    BufferId bufferId() { return id; }
-    QList<ChatLine *> contents() { return lines; }
-    VarMap nickList() { return nicks; }
-    QString topic() { return _topic; }
-    QString ownNick() { return _ownNick; }
-    bool isStatusBuffer() { return bufferType() == ServerBuffer; }
+    Type bufferType() const;
+    bool isActive() const;
+
+    QString networkName() const;
+    QString bufferName() const;
+    QString displayName() const;
+    BufferId bufferId() const;
+    QList<AbstractUiMsg *> contents() const;
+    VarMap nickList() const;
+    QString topic() const;
+    QString ownNick() const;
+    bool isStatusBuffer() const;
 
   signals:
-    void userInput(BufferId, QString);
-    //void msgDisplayed(Message);
-    void chatLineAppended(ChatLine *);
-    void chatLinePrepended(ChatLine *);
+    void userInput(const BufferId &, QString);
     void nickListChanged(VarMap nicks);
     void topicSet(QString topic);
     void ownNickSet(QString ownNick);
     void bufferUpdated(Buffer *);
     void bufferDestroyed(Buffer *);
 
+    void msgAppended(AbstractUiMsg *);
+    void msgPrepended(AbstractUiMsg *);
+    void layoutQueueEmpty();
+
   public slots:
     void setActive(bool active = true);
-    //void displayMsg(Message);
-    //void prependMessages(QList<Message>); // for backlog
-    void appendChatLine(ChatLine *);
-    void prependChatLine(ChatLine *);
-    //void prependChatLines(QList<ChatLine *>);
-    //void recvStatusMsg(QString msg);
+    void appendMsg(const Message &);
+    void prependMsg(const Message &);
+    bool layoutMsg();
     void setTopic(QString);
     //void setNicks(QStringList);
     void addNick(QString nick, VarMap props);
@@ -111,8 +102,8 @@ class Buffer : public QObject {
     QString _networkName, _bufferName;
     BufferState *state;
 
-    //QList<Message> _contents;
-    QList<ChatLine *> lines;
+    QList<Message> layoutQueue;
+    QList<AbstractUiMsg *> layoutedMsgs;
 
 };
 Q_DECLARE_OPERATORS_FOR_FLAGS(Buffer::ActivityLevel)    

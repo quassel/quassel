@@ -111,14 +111,15 @@ class BufferId {
     BufferId() { id = gid = 0; } // FIXME
     BufferId(uint uid, QString net, QString buf, uint gid = 0);
 
-    inline uint uid() { return id; }
-    inline uint groupId() { return gid; }
-    inline QString network() { return net; }
-    QString buffer(); // nickfrommask?
+    inline uint uid() const { return id; }
+    inline uint groupId() const { return gid; }
+    inline QString network() const { return net; }
+    QString buffer() const; // nickfrommask?
 
     void setGroupId(uint _gid) { gid = _gid; }
 
     inline bool operator==(const BufferId &other) const { return id == other.id; }
+
   private:
     uint id;
     uint gid;

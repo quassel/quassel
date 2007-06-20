@@ -18,10 +18,9 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include "client.h"
 #include "buffer.h"
 #include "util.h"
-#include "chatwidget.h"
-#include "bufferwidget.h"
 
 /*
 Buffer::Buffer(QString netname, QString bufname) {
@@ -62,16 +61,51 @@ Buffer::~Buffer() {
   emit bufferDestroyed(this);
 }
 
-void Buffer::init() {
-
-
+Buffer::Type Buffer::bufferType() const {
+   return type;
 }
 
-QString Buffer::displayName() {
+bool Buffer::isActive() const {
+   return active;
+}
+
+QString Buffer::networkName() const {
+   return _networkName;
+}
+
+QString Buffer::bufferName() const {
+   return _bufferName;
+}
+
+QString Buffer::displayName() const {
   if(bufferType() == ServerBuffer)
-    return tr("status");
+    return tr("Status Buffer");
   else
     return bufferName();
+}
+
+BufferId Buffer::bufferId() const {
+   return id;
+}
+
+QList<AbstractUiMsg *> Buffer::contents() const {
+   return layoutedMsgs;
+}
+
+VarMap Buffer::nickList() const {
+   return nicks;
+}
+
+QString Buffer::topic() const {
+   return _topic;
+}
+
+QString Buffer::ownNick() const {
+   return _ownNick;
+}
+
+bool Buffer::isStatusBuffer() const {
+   return bufferType() == ServerBuffer;
 }
 
 void Buffer::setActive(bool a) {
@@ -81,14 +115,23 @@ void Buffer::setActive(bool a) {
   }
 }
 
-void Buffer::appendChatLine(ChatLine *line) {
-  lines.append(line);
-  emit chatLineAppended(line);
+void Buffer::appendMsg(const Message &msg) {
+  AbstractUiMsg *m = Client::layoutMsg(msg);
+  layoutedMsgs.append(m);
+  emit msgAppended(m);
 }
 
-void Buffer::prependChatLine(ChatLine *line) {
-  lines.prepend(line);
-  emit chatLinePrepended(line);
+void Buffer::prependMsg(const Message &msg) {
+  layoutQueue.append(msg);
+}
+
+bool Buffer::layoutMsg() {
+  if(layoutQueue.count()) {
+    AbstractUiMsg *m = Client::layoutMsg(layoutQueue.takeFirst());
+    layoutedMsgs.prepend(m);
+    emit msgPrepended(m);
+  }
+  return layoutQueue.count();
 }
 
 void Buffer::processUserInput(QString msg) {

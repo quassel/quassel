@@ -136,7 +136,7 @@ BufferId::BufferId(uint _id, QString _net, QString _buf, uint _gid) : id(_id), g
 
 }
 
-QString BufferId::buffer() {
+QString BufferId::buffer() const {
   if(isChannelName(buf)) return buf;
   else return nickFromMask(buf);
 }

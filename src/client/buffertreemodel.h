@@ -22,6 +22,7 @@
 #define _BUFFERTREEMODEL_H_
 
 #include <QtCore>
+#include <QItemSelectionModel> // FIXME Dependency on QtGui
 
 #include "treemodel.h"
 #include "buffer.h"

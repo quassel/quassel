@@ -30,6 +30,7 @@
 #include "coreproxy.h"
 #include "settings.h"
 #include "chatwidget.h"
+#include "mainwin.h"
 
 int main(int argc, char **argv) {
   QApplication app(argc, argv);
@@ -50,14 +51,15 @@ int main(int argc, char **argv) {
   Settings::init();
   Style::init();
 
-  //MainWin *mainWin = new MainWin();
+  MainWin *mainWin = new MainWin();
   //mainWin->show();
-  //mainWin->init();
-  Client::instance();
+  Client::init(mainWin);
+  mainWin->init();
   int exitCode = app.exec();
   //delete core;
   Client::destroy();
   Core::destroy();
+  delete mainWin;
   //delete guiProxy;
   //delete coreProxy;
   //delete global;

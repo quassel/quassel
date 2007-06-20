@@ -20,17 +20,12 @@
 
 #include "bufferwidget.h"
 #include "buffer.h"
+#include "chatline.h"
 #include "chatwidget.h"
 #include "settings.h"
-#include "mainwin.h"
 
 BufferWidget::BufferWidget(QWidget *parent) : QWidget(parent) {
   ui.setupUi(this);
-
-  //layoutThread->start();
-  //connect(this, SIGNAL(aboutToClose()), layoutThread, SLOT(quit()));
-  //connect(this, SIGNAL(layoutMessages(LayoutTask)), layoutThread, SLOT(processTask(LayoutTask)), Qt::QueuedConnection);
-  //layoutThread->start();
 
   curBuf = 0;
   //setBaseSize(QSize(600,400));
@@ -41,17 +36,10 @@ BufferWidget::BufferWidget(QWidget *parent) : QWidget(parent) {
 }
 
 void BufferWidget::init() {
-  //layoutThread = new LayoutThread();
-  //layoutThread = ::layoutThread;
-  //connect(layoutThread, SIGNAL(taskProcessed(LayoutTask)), this, SLOT(messagesLayouted(LayoutTask)));
-  //layoutThread->start();
-  //while(!layoutThread->isRunning()) {};
+
 }
 
 BufferWidget::~BufferWidget() {
-  //emit aboutToClose();
-  //layoutThread->wait(10000);
-  //delete layoutThread;
   foreach(BufferState *s, states.values()) {
     delete s;
   }
@@ -93,9 +81,14 @@ void BufferWidget::setBuffer(Buffer *buf) {
     states[buf] = s;
     state = s;
     state->chatWidget->init(networkName, bufferName);
-    state->chatWidget->setContents(buf->contents());
-    connect(buf, SIGNAL(chatLineAppended(ChatLine *)), state->chatWidget, SLOT(appendChatLine(ChatLine *)));
-    connect(buf, SIGNAL(chatLinePrepended(ChatLine *)), state->chatWidget, SLOT(prependChatLine(ChatLine *)));
+    QList<ChatLine *> lines;
+    QList<AbstractUiMsg *> msgs = buf->contents();
+    foreach(AbstractUiMsg *msg, msgs) {
+      lines.append(dynamic_cast<ChatLine*>(msg));
+    }
+    state->chatWidget->setContents(lines);
+    connect(buf, SIGNAL(msgAppended(AbstractUiMsg *)), state->chatWidget, SLOT(appendMsg(AbstractUiMsg *)));
+    connect(buf, SIGNAL(msgPrepended(AbstractUiMsg *)), state->chatWidget, SLOT(prependMsg(AbstractUiMsg *)));
     connect(buf, SIGNAL(topicSet(QString)), this, SLOT(setTopic(QString)));
     connect(buf, SIGNAL(ownNickSet(QString)), this, SLOT(setOwnNick(QString)));
     ui.stackedWidget->addWidget(s->page);
@@ -115,28 +108,6 @@ void BufferWidget::setBuffer(Buffer *buf) {
   ui.ownNick->addItem(state->ownNick);
   updateTitle();
 }
-
-/*
-void BufferWidget::prependMessages(Buffer *buf, QList<Message> messages) {
-  LayoutTask task;
-  task.messages = messages;
-  task.buffer = buf;
-  task.net = buf->networkName();
-  task.buf = buf->bufferName();
-  //emit layoutMessages(task);
-  layoutThread->processTask(task);
-}
-
-void BufferWidget::messagesLayouted(LayoutTask task) {
-  if(states.contains(task.buffer)) {
-    states[task.buffer]->chatWidget->prependChatLines(task.lines);
-    task.buffer->prependMessages(task.messages);
-  } else {
-    msgCache[task.buffer] = task.messages + msgCache[task.buffer];
-    chatLineCache[task.buffer] = task.lines + chatLineCache[task.buffer];
-  }
-}
-*/
 
 void BufferWidget::saveState() {
   foreach(Buffer *buf, states.keys()) {

@@ -20,8 +20,8 @@
 
 #include "client.h"
 #include "clientproxy.h"
-#include "mainwin.h"
 #include "buffer.h"
+#include "buffertreemodel.h"
 #include "util.h"
 
 Client * Client::instanceptr = 0;
@@ -38,7 +38,6 @@ QList<BufferId> Client::coreBuffers;
 Client *Client::instance() {
   if(instanceptr) return instanceptr;
   instanceptr = new Client();
-  instanceptr->init();
   return instanceptr;
 }
 
@@ -50,8 +49,7 @@ void Client::destroy() {
 Client::Client() {
   clientProxy = ClientProxy::instance();
 
-  //mainWin = new MainWin();
-  _bufferModel = new BufferTreeModel(0);  // FIXME
+  _bufferModel = new BufferTreeModel(this);
 
   connect(this, SIGNAL(bufferSelected(Buffer *)), _bufferModel, SLOT(selectBuffer(Buffer *)));
   connect(this, SIGNAL(bufferUpdated(Buffer *)), _bufferModel, SLOT(bufferUpdated(Buffer *)));
@@ -60,6 +58,11 @@ Client::Client() {
     // TODO: make this configurable (allow monolithic client to connect to remote cores)
   if(Global::runMode == Global::Monolithic) clientMode = LocalCore;
   else clientMode = RemoteCore;
+}
+
+void Client::init(AbstractUi *ui) {
+  instance()->mainUi = ui;
+  instance()->init();
 }
 
 void Client::init() {
@@ -77,7 +80,7 @@ void Client::init() {
   connect(clientProxy, SIGNAL(csServerState(QString, QVariant)), this, SLOT(recvNetworkState(QString, QVariant)));
   connect(clientProxy, SIGNAL(csServerConnected(QString)), this, SLOT(networkConnected(QString)));
   connect(clientProxy, SIGNAL(csServerDisconnected(QString)), this, SLOT(networkDisconnected(QString)));
-  connect(clientProxy, SIGNAL(csDisplayMsg(Message)), this, SLOT(recvMessage(Message)));
+  connect(clientProxy, SIGNAL(csDisplayMsg(Message)), this, SLOT(recvMessage(const Message &)));
   connect(clientProxy, SIGNAL(csDisplayStatusMsg(QString, QString)), this, SLOT(recvStatusMsg(QString, QString)));
   connect(clientProxy, SIGNAL(csTopicSet(QString, QString, QString)), this, SLOT(setTopic(QString, QString, QString)));
   connect(clientProxy, SIGNAL(csNickAdded(QString, QString, VarMap)), this, SLOT(addNick(QString, QString, VarMap)));
@@ -85,7 +88,7 @@ void Client::init() {
   connect(clientProxy, SIGNAL(csNickRenamed(QString, QString, QString)), this, SLOT(renameNick(QString, QString, QString)));
   connect(clientProxy, SIGNAL(csNickUpdated(QString, QString, VarMap)), this, SLOT(updateNick(QString, QString, VarMap)));
   connect(clientProxy, SIGNAL(csOwnNickSet(QString, QString)), this, SLOT(setOwnNick(QString, QString)));
-  connect(clientProxy, SIGNAL(csBacklogData(BufferId, QList<QVariant>, bool)), this, SLOT(recvBacklogData(BufferId, QList<QVariant>, bool)));
+  connect(clientProxy, SIGNAL(csBacklogData(BufferId, const QList<QVariant> &, bool)), this, SLOT(recvBacklogData(BufferId, QList<QVariant>, bool)));
   connect(clientProxy, SIGNAL(csUpdateBufferId(BufferId)), this, SLOT(updateBufferId(BufferId)));
   connect(this, SIGNAL(sendInput(BufferId, QString)), clientProxy, SLOT(gsUserInput(BufferId, QString)));
   connect(this, SIGNAL(requestBacklog(BufferId, QVariant, QVariant)), clientProxy, SLOT(gsRequestBacklog(BufferId, QVariant, QVariant)));
@@ -103,15 +106,11 @@ void Client::init() {
     buffer(id);                // create all buffers, so we see them in the network views
     emit requestBacklog(id, -1, -1);  // TODO: use custom settings for backlog request
   }
-
-  mainWin = new MainWin();
-  mainWin->init();
-
 }
 
 Client::~Client() {
-  delete mainWin;
-  delete _bufferModel;
+  //delete mainUi;
+  //delete _bufferModel;
   foreach(Buffer *buf, buffers.values()) delete buf;
   ClientProxy::destroy();
 
@@ -173,8 +172,6 @@ void Client::serverHasData() {
     emit recvPartialItem(socket.bytesAvailable(), blockSize);
   }
 }
-
-/*******************************************************************************************************************/
 
 void Client::networkConnected(QString net) {
   connected[net] = true;
@@ -244,7 +241,7 @@ void Client::recvNetworkState(QString net, QVariant state) {
   }
 }
 
-void Client::recvMessage(Message msg) {
+void Client::recvMessage(const Message &msg) {
   Buffer *b = buffer(msg.buffer);
 
   Buffer::ActivityLevel level = Buffer::OtherActivity;
@@ -256,8 +253,7 @@ void Client::recvMessage(Message msg) {
   }
   emit bufferActivity(level, b);
 
-  //b->displayMsg(msg);
-  b->appendChatLine(new ChatLine(msg));
+  b->appendMsg(msg);
 }
 
 void Client::recvStatusMsg(QString net, QString msg) {
@@ -265,20 +261,26 @@ void Client::recvStatusMsg(QString net, QString msg) {
 
 }
 
-void Client::recvBacklogData(BufferId id, QList<QVariant> msgs, bool done) {
+void Client::recvBacklogData(BufferId id, const QList<QVariant> &msgs, bool done) {
+  Buffer *b = buffer(id);
   foreach(QVariant v, msgs) {
-    layoutQueue.append(v.value<Message>());
+    Message msg = v.value<Message>();
+    b->prependMsg(msg);
+    if(!layoutQueue.contains(b)) layoutQueue.append(b);
   }
-  if(!layoutTimer->isActive()) layoutTimer->start();
+  if(layoutQueue.count() && !layoutTimer->isActive()) layoutTimer->start();
 }
-
 
 void Client::layoutMsg() {
   if(layoutQueue.count()) {
-    ChatLine *line = new ChatLine(layoutQueue.takeFirst());
-    buffer(line->bufferId())->prependChatLine(line);
+    Buffer *b = layoutQueue.takeFirst();  // TODO make this the current buffer
+    if(b->layoutMsg()) layoutQueue.append(b);  // Buffer has more messages in its queue --> Round Robin
   }
   if(!layoutQueue.count()) layoutTimer->stop();
+}
+
+AbstractUiMsg *Client::layoutMsg(const Message &msg) {
+  return instance()->mainUi->layoutMsg(msg);
 }
 
 void Client::userInput(BufferId id, QString msg) {

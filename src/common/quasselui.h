@@ -18,3 +18,33 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#ifndef _QUASSELUI_H_
+#define _QUASSELUI_H_
+
+#include "message.h"
+
+class AbstractUiMsg {
+
+  public:
+
+    virtual QString sender() const = 0;
+    virtual QString text() const = 0;
+    virtual MsgId msgId() const = 0;
+    virtual BufferId bufferId() const = 0;
+    virtual QDateTime timeStamp() const = 0;
+
+};
+
+
+class AbstractUi {
+
+  public:
+    virtual AbstractUiMsg *layoutMsg(const Message &) = 0;
+
+
+
+};
+
+
+
+#endif
