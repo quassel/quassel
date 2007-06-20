@@ -27,10 +27,12 @@
 #include "global.h"
 #include "message.h"
 #include "chatwidget.h"
+#include "bufferviewfilter.h"
+#include "bufferviewwidget.h"
 
 class ServerListDlg;
 class CoreConnectDlg;
-class BufferViewDock;
+//class BufferViewDock;
 class Buffer;
 class BufferWidget;
 class SettingsDlg;

@@ -18,51 +18,13 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _BUFFERVIEWWIDGET_H_
-#define _BUFFERVIEWWIDGET_H_
+#ifndef _BUFFERVIEW_H_
+#define _BUFFERVIEW_H_
 
 #include <QtGui>
 #include <QFlags>
-#include "buffer.h"
 
-/*****************************************
- * Buffer View Filter
- *****************************************/
-class BufferViewFilter : public QSortFilterProxyModel {
-  Q_OBJECT
-  
-public:
-  enum Mode {
-    NoActive = 0x01,
-    NoInactive = 0x02,
-    SomeNets = 0x04,
-    AllNets = 0x08,
-    NoChannels = 0x10,
-    NoQueries = 0x20,
-    NoServers = 0x40
-  };
-  Q_DECLARE_FLAGS(Modes, Mode)
-
-  BufferViewFilter(QAbstractItemModel *model, Modes mode, QStringList nets, QObject *parent = 0);
-  
-public slots:
-  void invalidateMe();
-  void changeCurrent(const QModelIndex &, const QModelIndex &);
-  void doubleClickReceived(const QModelIndex &);
-  void select(const QModelIndex &, QItemSelectionModel::SelectionFlags);
-  
-signals:
-  void currentChanged(const QModelIndex &, const QModelIndex &);
-  void doubleClicked(const QModelIndex &);
-  void updateSelection(const QModelIndex &, QItemSelectionModel::SelectionFlags);
-  
-private:
-  bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
-
-  Modes mode;
-  QStringList networks;
-};
-Q_DECLARE_OPERATORS_FOR_FLAGS(BufferViewFilter::Modes)    
+#include "bufferviewfilter.h"
 
 /*****************************************
  * The TreeView showing the Buffers

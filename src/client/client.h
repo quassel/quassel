@@ -29,11 +29,11 @@
 #include "buffer.h"
 #include "message.h"
 #include "clientproxy.h"
+#include "buffertreemodel.h"
 //#include "bufferviewwidget.h"
 
 class MainWin;
 class ClientProxy;
-class BufferTreeModel;
 
 class Client : public QObject {
   Q_OBJECT

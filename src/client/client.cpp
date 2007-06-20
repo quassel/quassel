@@ -22,7 +22,6 @@
 #include "clientproxy.h"
 #include "mainwin.h"
 #include "buffer.h"
-#include "bufferviewwidget.h"
 #include "util.h"
 
 Client * Client::instanceptr = 0;
@@ -52,7 +51,6 @@ Client::Client() {
   clientProxy = ClientProxy::instance();
 
   //mainWin = new MainWin();
-
   _bufferModel = new BufferTreeModel(0);  // FIXME
 
   connect(this, SIGNAL(bufferSelected(Buffer *)), _bufferModel, SLOT(selectBuffer(Buffer *)));

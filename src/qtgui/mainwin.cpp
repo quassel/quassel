@@ -30,7 +30,6 @@
 
 #include "mainwin.h"
 #include "buffer.h"
-#include "bufferviewwidget.h"
 #include "serverlist.h"
 #include "coreconnectdlg.h"
 #include "settingsdlg.h"

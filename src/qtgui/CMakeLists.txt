@@ -1,15 +1,15 @@
 SET(qtgui_SRCS chatwidget.cpp channelwidgetinput.cpp tabcompleter.cpp mainwin.cpp serverlist.cpp bufferwidget.cpp
-             identities.cpp coreconnectdlg.cpp bufferview.cpp bufferviewwidget.cpp style.cpp settingsdlg.cpp settingspages.cpp)
+             identities.cpp coreconnectdlg.cpp bufferview.cpp bufferviewwidget.cpp bufferviewfilter.cpp style.cpp settingsdlg.cpp settingspages.cpp)
 SET(qtgui_HDRS style.h)
 SET(qtgui_MOCS chatwidget.h channelwidgetinput.h tabcompleter.h mainwin.h serverlist.h identities.h coreconnectdlg.h
-             bufferview.h bufferwidget.h bufferviewwidget.h settingsdlg.h settingspages.h)
+             bufferview.h bufferwidget.h bufferviewwidget.h bufferviewfilter.h settingsdlg.h settingspages.h)
 SET(qtgui_UICS identitiesdlg.ui identitieseditdlg.ui networkeditdlg.ui mainwin.ui
              nickeditdlg.ui serverlistdlg.ui servereditdlg.ui coreconnectdlg.ui ircwidget.ui
              bufferviewwidget.ui bufferwidget.ui settingsdlg.ui
              buffermgmntsettingspage.ui connectionsettingspage.ui)
 
-SET(client_SRCS ../client/client.cpp ../client/clientproxy.cpp ../client/buffer.cpp)
-SET(client_MOCS ../client/client.h ../client/clientproxy.h ../client/buffer.h)
+SET(client_SRCS ../client/client.cpp ../client/clientproxy.cpp ../client/buffer.cpp ../client/treemodel.cpp ../client/buffertreemodel.cpp)
+SET(client_MOCS ../client/client.h ../client/clientproxy.h ../client/buffer.h ../client/treemodel.h ../client/buffertreemodel.h)
 
 # This prepends ui/ to the UIC names, so we don't have to do this ourselves.
 FOREACH(ui ${qtgui_UICS})
