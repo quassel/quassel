@@ -222,7 +222,7 @@ void MainWin::showBuffer(Buffer *b) {
   //emit bufferSelected(b);
   //qApp->processEvents();
   ui.bufferWidget->setBuffer(b);
-  //emit bufferSelected(b); // FIXME do we need this?
+  //emit bufferSelected(b);
 }
 
 void MainWin::importBacklog() {

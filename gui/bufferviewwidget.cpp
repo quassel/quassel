@@ -154,7 +154,7 @@ BufferTreeModel::BufferTreeModel(QObject *parent) : QAbstractItemModel(parent) {
   QList<QVariant> rootData;
   rootData << "Buffer" << "Network";
   rootItem = new TreeItem(rootData, 0);
-  
+
   connect(this, SIGNAL(fakeUserInput(BufferId, QString)), ClientProxy::instance(), SLOT(gsUserInput(BufferId, QString)));
 }
 
@@ -361,6 +361,7 @@ void BufferTreeModel::changeCurrent(const QModelIndex &current, const QModelInde
     currentBuffer = getBufferByIndex(current);
     bufferActivity(Buffer::NoActivity, currentBuffer);
     emit bufferSelected(currentBuffer);
+    emit updateSelection(current, QItemSelectionModel::ClearAndSelect);
   }
 }
 
