@@ -57,9 +57,13 @@ int main(int argc, char **argv) {
   mainWin->init();
   int exitCode = app.exec();
   //delete core;
+  
+  // the mainWin has to be deleted before the Core
+  // if not Quassel will crash on exit under certain conditions since the gui
+  // still wants to access clientdata
+  delete mainWin;
   Client::destroy();
   Core::destroy();
-  delete mainWin;
   //delete guiProxy;
   //delete coreProxy;
   //delete global;

@@ -128,20 +128,20 @@ void MainWin::setupViews() {
   //connect(this, SIGNAL(bufferUpdated(Buffer *)), model, SLOT(bufferUpdated(Buffer *)));
   //connect(this, SIGNAL(bufferActivity(Buffer::ActivityLevel, Buffer *)), model, SLOT(bufferActivity(Buffer::ActivityLevel, Buffer *)));
   
-  BufferViewDock *all = new BufferViewDock(model, tr("All Buffers"), BufferViewFilter::AllNets);
+  BufferViewDock *all = new BufferViewDock(model, tr("All Buffers"), BufferViewFilter::AllNets, QStringList(), this);
   registerBufferViewDock(all);
   
-  BufferViewDock *allchans = new BufferViewDock(model, tr("All Channels"), BufferViewFilter::AllNets|BufferViewFilter::NoQueries|BufferViewFilter::NoServers);
+  BufferViewDock *allchans = new BufferViewDock(model, tr("All Channels"), BufferViewFilter::AllNets|BufferViewFilter::NoQueries|BufferViewFilter::NoServers, QStringList(), this);
   registerBufferViewDock(allchans);
   
-  BufferViewDock *allqrys = new BufferViewDock(model, tr("All Queries"), BufferViewFilter::AllNets|BufferViewFilter::NoChannels|BufferViewFilter::NoServers);
+  BufferViewDock *allqrys = new BufferViewDock(model, tr("All Queries"), BufferViewFilter::AllNets|BufferViewFilter::NoChannels|BufferViewFilter::NoServers, QStringList(), this);
   registerBufferViewDock(allqrys);
 
   
-  BufferViewDock *allnets = new BufferViewDock(model, tr("All Networks"), BufferViewFilter::AllNets|BufferViewFilter::NoChannels|BufferViewFilter::NoQueries);
+  BufferViewDock *allnets = new BufferViewDock(model, tr("All Networks"), BufferViewFilter::AllNets|BufferViewFilter::NoChannels|BufferViewFilter::NoQueries, QStringList(), this);
   registerBufferViewDock(allnets);
 
-  BufferViewDock *fullCustom = new BufferViewDock(model, tr("Full Custom"), BufferViewFilter::FullCustom|BufferViewFilter::SomeNets);
+  BufferViewDock *fullCustom = new BufferViewDock(model, tr("Full Custom"), BufferViewFilter::FullCustom|BufferViewFilter::SomeNets, QStringList(), this);
   registerBufferViewDock(fullCustom);
 
   ui.menuViews->addSeparator();
