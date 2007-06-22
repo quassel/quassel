@@ -58,7 +58,9 @@ class BufferTreeModel : public TreeModel {
 public:
   enum  myRoles {
     BufferTypeRole = Qt::UserRole,
-    BufferActiveRole
+    BufferActiveRole,
+    BufferNameRole,
+    BufferIdRole
   };
   
   //BufferTreeModel(const QList<QVariant> &, QObject *parent = 0);
@@ -81,6 +83,7 @@ signals:
   void invalidateFilter();
   void fakeUserInput(BufferId, QString);
   void updateSelection(const QModelIndex &, QItemSelectionModel::SelectionFlags);
+  void addBuffer(const uint &, const QString &);
     
 private:
   bool isBufferIndex(const QModelIndex &) const;

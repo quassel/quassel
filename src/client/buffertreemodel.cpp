@@ -69,10 +69,14 @@ QVariant BufferTreeItem::data(int column, int role) const {
       return text(column);
     case Qt::ForegroundRole:
       return foreground(column);
+    case BufferTreeModel::BufferNameRole:
+      return buf->bufferName();
     case BufferTreeModel::BufferTypeRole:
       return buf->bufferType();
     case BufferTreeModel::BufferActiveRole:
       return buf->isActive();
+    case BufferTreeModel::BufferIdRole:
+      return buf->bufferId().uid();
     default:
       return QVariant();
   }
@@ -94,7 +98,8 @@ QList<QVariant >BufferTreeModel::defaultHeader() {
 
 Qt::ItemFlags BufferTreeModel::flags(const QModelIndex &index) const {
   if(!index.isValid())
-    return 0;
+    return Qt::ItemIsDropEnabled;
+    //return 0;
 
   // I think this is pretty ugly..
   if(isBufferIndex(index)) {
@@ -102,7 +107,7 @@ Qt::ItemFlags BufferTreeModel::flags(const QModelIndex &index) const {
     if(buffer->bufferType() == Buffer::QueryBuffer)
       return Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled;
     else
-      return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+      return Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled;
   } else {
     return Qt::ItemIsEnabled | Qt::ItemIsDropEnabled; 
   }
@@ -160,7 +165,8 @@ QModelIndex BufferTreeModel::getOrCreateBufferItemIndex(Buffer *buffer) {
 QStringList BufferTreeModel::mimeTypes() const {
   QStringList types;
   types << "application/Quassel/BufferItem/row"
-    << "application/Quassel/BufferItem/network";
+    << "application/Quassel/BufferItem/network"
+    << "application/Quassel/BufferItem/bufferId";
   return types;
 }
 
@@ -171,25 +177,41 @@ QMimeData *BufferTreeModel::mimeData(const QModelIndexList &indexes) const {
   
   mimeData->setData("application/Quassel/BufferItem/row", QByteArray::number(index.row()));
   mimeData->setData("application/Quassel/BufferItem/network", getBufferByIndex(index)->networkName().toUtf8());
+  mimeData->setData("application/Quassel/BufferItem/bufferId", QByteArray::number(getBufferByIndex(index)->bufferId().uid()));
   return mimeData;
 }
 
 bool BufferTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent) {
+  if(!(data->hasFormat("application/Quassel/BufferItem/row")
+       && data->hasFormat("application/Quassel/BufferItem/network")
+       && data->hasFormat("application/Quassel/BufferItem/bufferId")))
+    return false; // whatever the drop is... it's not a buffer...
+       
   int sourcerow = data->data("application/Quassel/BufferItem/row").toInt();
   QString network = QString::fromUtf8(data->data("application/Quassel/BufferItem/network"));
   
   if(!networkItem.contains(network))
     return false;
 
-  if(!isBufferIndex(parent)) // dropping at a network -> no merging needed
-    return false;
-
+  
   Buffer *sourceBuffer = static_cast<BufferTreeItem *>(networkItem[network]->child(sourcerow))->buffer();
+
+  if(parent == QModelIndex()) { // droping into empty space
+    emit addBuffer(sourceBuffer->bufferId().uid(), network);
+    return true;
+  }
+    
+  if(!isBufferIndex(parent)) { // dropping at a network
+    emit addBuffer(sourceBuffer->bufferId().uid(), network);
+    return true;
+  }
+
+
   Buffer *targetBuffer = getBufferByIndex(parent);
   
   if(sourceBuffer == targetBuffer) // we won't merge with ourself :)
     return false;
-  
+    
   /*
   if(QMessageBox::warning(static_cast<QWidget *>(QObject::parent()),
                           tr("Merge Buffers?"),

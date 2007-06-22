@@ -30,7 +30,7 @@ BufferView::BufferView(QWidget *parent) : QTreeView(parent) {
 
 void BufferView::init() {
   setIndentation(10);
-  header()->hide();
+  //header()->hide();
   header()->hideSection(1);
   expandAll();
   
@@ -38,15 +38,25 @@ void BufferView::init() {
   setAcceptDrops(true);
   setDropIndicatorShown(true);
   
-  connect(selectionModel(), SIGNAL(currentChanged(const QModelIndex &, const QModelIndex &)), model(), SLOT(changeCurrent(const QModelIndex &, const QModelIndex &)));
-  connect(this, SIGNAL(doubleClicked(const QModelIndex &)), model(), SLOT(doubleClickReceived(const QModelIndex &)));
-  connect(model(), SIGNAL(updateSelection(const QModelIndex &, QItemSelectionModel::SelectionFlags)), selectionModel(), SLOT(select(const QModelIndex &, QItemSelectionModel::SelectionFlags)));
+  setSortingEnabled(true);
+  sortByColumn(0, Qt::AscendingOrder);
+  
+  connect(selectionModel(), SIGNAL(currentChanged(const QModelIndex &, const QModelIndex &)),
+          model(), SLOT(changeCurrent(const QModelIndex &, const QModelIndex &)));
+  
+  connect(this, SIGNAL(doubleClicked(const QModelIndex &)),
+          model(), SLOT(doubleClickReceived(const QModelIndex &)));
+  
+  connect(model(), SIGNAL(updateSelection(const QModelIndex &, QItemSelectionModel::SelectionFlags)),
+          selectionModel(), SLOT(select(const QModelIndex &, QItemSelectionModel::SelectionFlags)));
 
 }
 
 void BufferView::setFilteredModel(QAbstractItemModel *model, BufferViewFilter::Modes mode, QStringList nets) {
   BufferViewFilter *filter = new BufferViewFilter(model, mode, nets);
   setModel(filter);
+  connect(this, SIGNAL(dragEnter()), filter, SLOT(enterDrag()));
+  connect(this, SIGNAL(dragLeave()), filter, SLOT(leaveDrag()));
 }
 
 void BufferView::setModel(QAbstractItemModel *model) {
@@ -54,11 +64,19 @@ void BufferView::setModel(QAbstractItemModel *model) {
   init();
 }
 
+// dragEnterEvent and dragLeaveEvent are needed to keep track of the active
+// view when customizing them via drag and drop
 void BufferView::dragEnterEvent(QDragEnterEvent *event) {
-  // not yet needed... this will be usefull to keep track of the active view when customizing them with drag and drop
+  emit dragEnter();
   QTreeView::dragEnterEvent(event);
 }
 
+void BufferView::dragLeaveEvent(QDragLeaveEvent *event) {
+  emit dragLeave();
+  QTreeView::dragLeaveEvent(event);
+}
+
+// ensure that newly inserted network nodes are expanded per default
 void BufferView::rowsInserted(const QModelIndex & parent, int start, int end) {
   if(parent.parent() == QModelIndex()) setExpanded(parent, true);
   QTreeView::rowsInserted(parent, start, end);

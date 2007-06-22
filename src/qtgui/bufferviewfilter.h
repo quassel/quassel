@@ -40,7 +40,8 @@ public:
     AllNets = 0x08,
     NoChannels = 0x10,
     NoQueries = 0x20,
-    NoServers = 0x40
+    NoServers = 0x40,
+    FullCustom = 0x80
   };
   Q_DECLARE_FLAGS(Modes, Mode)
 
@@ -51,6 +52,9 @@ public slots:
   void changeCurrent(const QModelIndex &, const QModelIndex &);
   void doubleClickReceived(const QModelIndex &);
   void select(const QModelIndex &, QItemSelectionModel::SelectionFlags);
+  void enterDrag();
+  void leaveDrag();
+  void addBuffer(const uint &, const QString &);
   
 signals:
   void currentChanged(const QModelIndex &, const QModelIndex &);
@@ -58,10 +62,14 @@ signals:
   void updateSelection(const QModelIndex &, QItemSelectionModel::SelectionFlags);
   
 private:
+  bool filterAcceptBuffer(const QModelIndex &) const;
+  bool filterAcceptNetwork(const QModelIndex &) const;
   bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
+  bool lessThan(const QModelIndex &, const QModelIndex &);
 
   Modes mode;
   QStringList networks;
+  QList<uint> customBuffers;
 };
 Q_DECLARE_OPERATORS_FOR_FLAGS(BufferViewFilter::Modes)    
 

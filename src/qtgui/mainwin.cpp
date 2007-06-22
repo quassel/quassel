@@ -141,6 +141,8 @@ void MainWin::setupViews() {
   BufferViewDock *allnets = new BufferViewDock(model, tr("All Networks"), BufferViewFilter::AllNets|BufferViewFilter::NoChannels|BufferViewFilter::NoQueries);
   registerBufferViewDock(allnets);
 
+  BufferViewDock *fullCustom = new BufferViewDock(model, tr("Full Custom"), BufferViewFilter::FullCustom|BufferViewFilter::SomeNets);
+  registerBufferViewDock(fullCustom);
 
   ui.menuViews->addSeparator();
 }
