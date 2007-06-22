@@ -35,7 +35,7 @@ QSize BufferViewWidget::sizeHint() const {
 /*****************************************
  * Dock and API for the BufferViews
  *****************************************/
-BufferViewDock::BufferViewDock(QAbstractItemModel *model, QString viewname, BufferViewFilter::Modes mode, QStringList nets, QWidget *parent) : QDockWidget(parent) {
+BufferViewDock::BufferViewDock(QAbstractItemModel *model, const QString &viewname, const BufferViewFilter::Modes &mode, const QStringList &nets, QWidget *parent) : QDockWidget(parent) {
   setObjectName(QString("View-" + viewname)); // should be unique for mainwindow state!
   setWindowTitle(viewname);
 

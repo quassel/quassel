@@ -23,7 +23,7 @@
 /*****************************************
 * The Filter for the Tree View
 *****************************************/
-BufferViewFilter::BufferViewFilter(QAbstractItemModel *model, Modes filtermode, QStringList nets, QObject *parent) : QSortFilterProxyModel(parent) {
+BufferViewFilter::BufferViewFilter(QAbstractItemModel *model, const Modes &filtermode, const QStringList &nets) : QSortFilterProxyModel(model) {
   setSourceModel(model);
   setSortRole(BufferTreeModel::BufferNameRole);
   setSortCaseSensitivity(Qt::CaseInsensitive);
@@ -32,18 +32,22 @@ BufferViewFilter::BufferViewFilter(QAbstractItemModel *model, Modes filtermode, 
   networks = nets;
   
   connect(model, SIGNAL(invalidateFilter()), this, SLOT(invalidateMe()));
-  connect(model, SIGNAL(updateSelection(const QModelIndex &, QItemSelectionModel::SelectionFlags)), this, SLOT(select(const QModelIndex &, QItemSelectionModel::SelectionFlags)));
-    
-  connect(this, SIGNAL(currentChanged(const QModelIndex &, const QModelIndex &)), model, SLOT(changeCurrent(const QModelIndex &, const QModelIndex &)));
-  connect(this, SIGNAL(doubleClicked(const QModelIndex &)), model, SLOT(doubleClickReceived(const QModelIndex &)));
+  connect(model, SIGNAL(selectionChanged(const QModelIndex &)),
+          this, SLOT(select(const QModelIndex &)));
+  
+  connect(this, SIGNAL(currentChanged(const QModelIndex &, const QModelIndex &)),
+          model, SLOT(changeCurrent(const QModelIndex &, const QModelIndex &)));
+  
+  connect(this, SIGNAL(doubleClicked(const QModelIndex &)),
+          model, SLOT(doubleClickReceived(const QModelIndex &)));
 }
 
 void BufferViewFilter::invalidateMe() {
   invalidateFilter();
 }
 
-void BufferViewFilter::select(const QModelIndex &index, QItemSelectionModel::SelectionFlags command) {
-  emit updateSelection(mapFromSource(index), command);
+void BufferViewFilter::select(const QModelIndex &index) {
+  emit selectionChanged(mapFromSource(index));
 }
 
 void BufferViewFilter::changeCurrent(const QModelIndex &current, const QModelIndex &previous) {
@@ -54,6 +58,7 @@ void BufferViewFilter::doubleClickReceived(const QModelIndex &clicked) {
   emit doubleClicked(mapToSource(clicked));
 }
 
+/*
 void BufferViewFilter::enterDrag() {
   connect(sourceModel(), SIGNAL(addBuffer(const uint &, const QString &)),
           this, SLOT(addBuffer(const uint &, const QString &)));
@@ -63,6 +68,21 @@ void BufferViewFilter::leaveDrag() {
   disconnect(sourceModel(), SIGNAL(addBuffer(const uint &, const QString &)),
              this, SLOT(addBuffer(const uint &, const QString &)));
 }
+*/
+
+void BufferViewFilter::dropEvent(QDropEvent *event) {
+  const QMimeData *data = event->mimeData();
+  if(!(data->hasFormat("application/Quassel/BufferItem/row")
+       && data->hasFormat("application/Quassel/BufferItem/network")
+       && data->hasFormat("application/Quassel/BufferItem/bufferId")))
+    return; // whatever the drop is... it's not a buffer...
+  
+  event->accept();
+  uint bufferid = data->data("application/Quassel/BufferItem/bufferId").toUInt();
+  QString network = QString::fromUtf8(data->data("application/Quassel/BufferItem/network"));
+  addBuffer(bufferid, network);
+}
+
 
 void BufferViewFilter::addBuffer(const uint &bufferuid, const QString &network) {
   if(!networks.contains(network)) {

@@ -22,7 +22,6 @@
 #define _BUFFERTREEMODEL_H_
 
 #include <QtCore>
-#include <QItemSelectionModel> // FIXME Dependency on QtGui
 
 #include "treemodel.h"
 #include "buffer.h"
@@ -63,7 +62,6 @@ public:
     BufferIdRole
   };
   
-  //BufferTreeModel(const QList<QVariant> &, QObject *parent = 0);
   BufferTreeModel(QObject *parent = 0);
   static QList<QVariant> defaultHeader();
 
@@ -82,8 +80,7 @@ signals:
   void bufferSelected(Buffer *);
   void invalidateFilter();
   void fakeUserInput(BufferId, QString);
-  void updateSelection(const QModelIndex &, QItemSelectionModel::SelectionFlags);
-  void addBuffer(const uint &, const QString &);
+  void selectionChanged(const QModelIndex &);
     
 private:
   bool isBufferIndex(const QModelIndex &) const;

@@ -22,6 +22,7 @@
 #define _BUFFERVIEWFILTER_H_
 
 #include <QFlags>
+#include <QDropEvent>
 #include <QSortFilterProxyModel>
 #include "buffer.h"
 #include "buffertreemodel.h"
@@ -45,28 +46,29 @@ public:
   };
   Q_DECLARE_FLAGS(Modes, Mode)
 
-  BufferViewFilter(QAbstractItemModel *model, Modes mode, QStringList nets, QObject *parent = 0);
+  BufferViewFilter(QAbstractItemModel *model, const Modes &mode, const QStringList &nets);
   
 public slots:
   void invalidateMe();
   void changeCurrent(const QModelIndex &, const QModelIndex &);
   void doubleClickReceived(const QModelIndex &);
-  void select(const QModelIndex &, QItemSelectionModel::SelectionFlags);
-  void enterDrag();
-  void leaveDrag();
-  void addBuffer(const uint &, const QString &);
+  void select(const QModelIndex &);
+  //void enterDrag();
+  //void leaveDrag();
+  void dropEvent(QDropEvent *);
   
 signals:
   void currentChanged(const QModelIndex &, const QModelIndex &);
   void doubleClicked(const QModelIndex &);
-  void updateSelection(const QModelIndex &, QItemSelectionModel::SelectionFlags);
+  void selectionChanged(const QModelIndex &);
   
 private:
   bool filterAcceptBuffer(const QModelIndex &) const;
   bool filterAcceptNetwork(const QModelIndex &) const;
   bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
   bool lessThan(const QModelIndex &, const QModelIndex &);
-
+  void addBuffer(const uint &, const QString &);
+  
   Modes mode;
   QStringList networks;
   QList<uint> customBuffers;

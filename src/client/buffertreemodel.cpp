@@ -86,7 +86,8 @@ QVariant BufferTreeItem::data(int column, int role) const {
  * BufferTreeModel
  *****************************************/
 BufferTreeModel::BufferTreeModel(QObject *parent) : TreeModel(BufferTreeModel::defaultHeader(), parent) {
-  connect(this, SIGNAL(fakeUserInput(BufferId, QString)), ClientProxy::instance(), SLOT(gsUserInput(BufferId, QString)));
+  connect(this, SIGNAL(fakeUserInput(BufferId, QString)),
+          ClientProxy::instance(), SLOT(gsUserInput(BufferId, QString)));
 }
 
 QList<QVariant >BufferTreeModel::defaultHeader() {
@@ -190,24 +191,16 @@ bool BufferTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction action,
   int sourcerow = data->data("application/Quassel/BufferItem/row").toInt();
   QString network = QString::fromUtf8(data->data("application/Quassel/BufferItem/network"));
   
-  if(!networkItem.contains(network))
-    return false;
+  Q_ASSERT(networkItem.contains(network));
 
+  if(parent == QModelIndex()) // can't be a query...
+    return false;
   
   Buffer *sourceBuffer = static_cast<BufferTreeItem *>(networkItem[network]->child(sourcerow))->buffer();
-
-  if(parent == QModelIndex()) { // droping into empty space
-    emit addBuffer(sourceBuffer->bufferId().uid(), network);
-    return true;
-  }
-    
-  if(!isBufferIndex(parent)) { // dropping at a network
-    emit addBuffer(sourceBuffer->bufferId().uid(), network);
-    return true;
-  }
-
-
   Buffer *targetBuffer = getBufferByIndex(parent);
+
+  if(!(sourceBuffer->bufferType() & targetBuffer->bufferType() & Buffer::QueryBuffer)) // only queries can be merged
+    return false;
   
   if(sourceBuffer == targetBuffer) // we won't merge with ourself :)
     return false;
@@ -239,7 +232,7 @@ void BufferTreeModel::changeCurrent(const QModelIndex &current, const QModelInde
     currentBuffer = getBufferByIndex(current);
     bufferActivity(Buffer::NoActivity, currentBuffer);
     emit bufferSelected(currentBuffer);
-    emit updateSelection(current, QItemSelectionModel::ClearAndSelect);
+    emit selectionChanged(current);
   }
 }
 
@@ -250,7 +243,6 @@ void BufferTreeModel::doubleClickReceived(const QModelIndex &clicked) {
     if(!buffer->isStatusBuffer()) 
       emit fakeUserInput(buffer->bufferId(), QString("/join " + buffer->bufferName()));
   }
-    
 }
 
 void BufferTreeModel::bufferActivity(Buffer::ActivityLevel level, Buffer *buffer) {
@@ -263,5 +255,5 @@ void BufferTreeModel::bufferActivity(Buffer::ActivityLevel level, Buffer *buffer
 
 void BufferTreeModel::selectBuffer(Buffer *buffer) {
   QModelIndex index = getOrCreateBufferItemIndex(buffer);
-  emit updateSelection(index, QItemSelectionModel::ClearAndSelect);
+  emit selectionChanged(index);
 }

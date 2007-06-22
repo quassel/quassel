@@ -52,7 +52,7 @@ class BufferViewDock : public QDockWidget {
   Q_OBJECT
 
 public:
-  BufferViewDock(QAbstractItemModel *model, QString name, BufferViewFilter::Modes mode, QStringList nets = QStringList(), QWidget *parent = 0);
+  BufferViewDock(QAbstractItemModel *model, const QString &name, const BufferViewFilter::Modes &mode, const QStringList &nets = QStringList(), QWidget *parent = 0);
 };
 
 
