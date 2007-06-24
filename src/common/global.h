@@ -77,7 +77,7 @@ class Global : public QObject {
     void dataUpdatedRemotely(UserId, QString key);  // sent by remote update only!
 
   public:
-    enum RunMode { Monolithic, GuiOnly, CoreOnly };
+    enum RunMode { Monolithic, ClientOnly, CoreOnly };
     static RunMode runMode;
     static QString quasselDir;
 

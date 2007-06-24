@@ -20,55 +20,69 @@
 
 #include <iostream>
 
-#include <QApplication>
-
-#include "client.h"
-#include "core.h"
-#include "style.h"
 #include "global.h"
-#include "clientproxy.h"
-#include "coreproxy.h"
 #include "settings.h"
-#include "chatwidget.h"
+
+#if defined BUILD_CORE
+#include <QCoreApplication>
+#include "core.h"
+
+#elif defined BUILD_QTGUI
+#include <QApplication>
+#include "style.h"
+#include "client.h"
+#include "clientproxy.h"
 #include "mainwin.h"
 
+#elif defined BUILD_MONO
+#include <QApplication>
+#include "core.h"
+#include "coreproxy.h"
+#include "style.h"
+#include "client.h"
+#include "clientproxy.h"
+#include "mainwin.h"
+
+#else
+#error "Something is wrong - you need to #define a build mode!"
+#endif
+
 int main(int argc, char **argv) {
+#if defined BUILD_CORE
+  Global::runMode = Global::CoreOnly;
+  QCoreApplication app(argc, argv);
+#elif defined BUILD_QTGUI
+  Global::runMode = Global::ClientOnly;
   QApplication app(argc, argv);
+#else
+  Global::runMode = Global::Monolithic;
+  QApplication app(argc, argv);
+#endif
+
   QCoreApplication::setOrganizationDomain("quassel-irc.org");
   QCoreApplication::setApplicationName("Quassel IRC");
   QCoreApplication::setOrganizationName("Quassel IRC Development Team");
 
-  Global::runMode = Global::Monolithic;
   Global::quasselDir = QDir::homePath() + "/.quassel";
 
-  //settings = new Settings();
-  //global = new Global();
-  //guiProxy = new GUIProxy();
-  //coreProxy = new CoreProxy();
+#ifdef BUILD_MONO
   QObject::connect(Core::localSession(), SIGNAL(proxySignal(CoreSignal, QVariant, QVariant, QVariant)), ClientProxy::instance(), SLOT(recv(CoreSignal, QVariant, QVariant, QVariant)));
   QObject::connect(ClientProxy::instance(), SIGNAL(send(ClientSignal, QVariant, QVariant, QVariant)), Core::localSession(), SLOT(processSignal(ClientSignal, QVariant, QVariant, QVariant)));
+#endif
 
   Settings::init();
   Style::init();
 
   MainWin *mainWin = new MainWin();
-  //mainWin->show();
   Client::init(mainWin);
   mainWin->init();
   int exitCode = app.exec();
-  //delete core;
-  
   // the mainWin has to be deleted before the Core
   // if not Quassel will crash on exit under certain conditions since the gui
   // still wants to access clientdata
   delete mainWin;
   Client::destroy();
   Core::destroy();
-  //delete guiProxy;
-  //delete coreProxy;
-  //delete global;
-  //delete mainWin;
-  //delete settings;
   return exitCode;
 }
 
@@ -79,29 +93,3 @@ void Client::syncToCore() {
   //       any servers connected at this stage...
 }
 
-/*
-void CoreProxy::sendToGUI(CoreSignal sig, QVariant arg1, QVariant arg2, QVariant arg3) {
-  guiProxy->recv(sig, arg1, arg2, arg3);
-}
-*/
-
-/*
-GUIProxy::GUIProxy() {
-  if(guiProxy) qFatal("Trying to instantiate more than one GUIProxy object!");
-}
-*/
-/*
-void GUIProxy::send(GUISignal sig, QVariant arg1, QVariant arg2, QVariant arg3) {
-  coreProxy->recv(sig, arg1, arg2, arg3);
-}
-*/
-
-// Dummy function definitions
-// These are not needed, since we don't have a network connection to the core.
-/*
-void GUIProxy::serverHasData() {}
-void GUIProxy::connectToCore(QString, quint16) {}
-void GUIProxy::disconnectFromCore() {}
-void GUIProxy::updateCoreData(QString) {}
-void GUIProxy::serverError(QAbstractSocket::SocketError) {}
-*/
