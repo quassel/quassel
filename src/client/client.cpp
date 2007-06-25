@@ -256,12 +256,12 @@ void Client::recvMessage(const Message &msg) {
   b->appendMsg(msg);
 }
 
-void Client::recvStatusMsg(QString net, QString msg) {
+void Client::recvStatusMsg(QString /*net*/, QString /*msg*/) {
   //recvMessage(net, Message::server("", QString("[STATUS] %1").arg(msg)));
 
 }
 
-void Client::recvBacklogData(BufferId id, const QList<QVariant> &msgs, bool done) {
+void Client::recvBacklogData(BufferId id, const QList<QVariant> &msgs, bool /*done*/) {
   Buffer *b = buffer(id);
   foreach(QVariant v, msgs) {
     Message msg = v.value<Message>();

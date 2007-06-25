@@ -43,7 +43,7 @@ void Core::destroy() {
 }
 
 Core::Core() {
-
+  qDebug() << "core";
 }
 
 void Core::init() {

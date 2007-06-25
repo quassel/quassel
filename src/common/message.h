@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005/06 by The Quassel Team                             *
+ *   Copyright (C) 2005-07 by The Quassel IRC Development Team             *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -31,13 +31,13 @@ struct Message {
   enum Flags { None = 0, Self = 1, PrivMsg = 2, Highlight = 4 };
 
   uint msgId;
+  BufferId buffer;
+  QString target;
+  QString text;
+  QString sender;
   Type type;
   quint8 flags;
-  QString target;
-  QString sender;
-  QString text;
   QDateTime timeStamp;
-  BufferId buffer;
 
   Message(QString _target, Type _type = Plain, QString _text = "", QString _sender = "", quint8 _flags = None)
   : target(_target), text(_text), sender(_sender), type(_type), flags(_flags) { timeStamp = QDateTime::currentDateTime().toUTC(); }
@@ -46,23 +46,8 @@ struct Message {
   : buffer(_buffer), text(_text), sender(_sender), type(_type), flags(_flags) { timeStamp = QDateTime::currentDateTime().toUTC(); }
 
   Message(QDateTime _ts, BufferId _buffer = BufferId(), Type _type = Plain, QString _text = "", QString _sender = "", quint8 _flags = None)
-  : timeStamp(_ts), buffer(_buffer), text(_text), sender(_sender), type(_type), flags(_flags) {}
-  
-/*
-  static Message plain(QString _target, QString _text, QString _sender = "", quint8 _flags = None);
-  static Message notice(QString _target, QString _text, QString _sender = "", quint8 _flags = None);
-  static Message action(QString _target, QString _text, QString _sender = "", quint8 _flags = None);
-  static Message nick(QString _target, QString _text, QString _sender = "", quint8 _flags = None);
-  static Message mode(QString _target, QString _text, QString _sender = "", quint8 _flags = None);
-  static Message join(QString _target, QString _text, QString _sender = "", quint8 _flags = None);
-  static Message part(QString _target, QString _text, QString _sender = "", quint8 _flags = None);
-  static Message quit(QString _target, QString _text, QString _sender = "", quint8 _flags = None);
-  static Message kick(QString _target, QString _text, QString _sender = "", quint8 _flags = None);
-  static Message kill(QString _target, QString _text, QString _sender = "", quint8 _flags = None);
-  static Message server(QString _target, QString _text, QString _sender = "", quint8 _flags = None);
-  static Message info(QString _target, QString _text, QString _sender = "", quint8 _flags = None);
-  static Message error(QString _target, QString _text, QString _sender = "", quint8 _flags = None);
-*/
+  : buffer(_buffer), text(_text), sender(_sender), type(_type), flags(_flags), timeStamp(_ts) {}
+
 };
 
 QDataStream &operator<<(QDataStream &out, const Message &msg);

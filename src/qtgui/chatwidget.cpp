@@ -89,14 +89,15 @@ void ChatWidget::adjustScrollBar() {
   //}
 }
 
-void ChatWidget::scrollBarValChanged(int val) {
-  return;
+void ChatWidget::scrollBarValChanged(int /*val*/) {
+  /*
   if(val >= verticalScrollBar()->maximum()) bottomLine = -1;
   else {
     int bot = val + viewport()->height();
     int line = yToLineIdx(bot);
     //bottomLine = line;
   }
+  */
 }
 
 void ChatWidget::scrollBarAction(int action) {
@@ -269,7 +270,6 @@ void ChatWidget::paintEvent(QPaintEvent *event) {
 void ChatWidget::layout() {
   // TODO fix scrollbars
   //int botLine = yToLineIdx(verticalScrollBar()->value() + 
-  qreal y = 0;
   for(int i = 0; i < lines.count(); i++) {
     qreal h = lines[i]->layout(tsWidth, senderWidth, textWidth);
     ycoords[i+1] = h + ycoords[i];
@@ -281,7 +281,7 @@ void ChatWidget::layout() {
 }
 
 int ChatWidget::yToLineIdx(qreal y) {
-  if(y >= ycoords[ycoords.count()-1]) ycoords.count()-1;
+  if(y >= ycoords[ycoords.count()-1]) return ycoords.count()-1;
   if(ycoords.count() <= 1) return 0;
   int uidx = 0;
   int oidx = ycoords.count() - 1;
@@ -314,11 +314,13 @@ void ChatWidget::mousePressEvent(QMouseEvent *event) {
         }
         mouseMode = Pressed;
         break;
+      default:
+        break;
     }
   }
 }
 
-void ChatWidget::mouseDoubleClickEvent(QMouseEvent *event) {
+void ChatWidget::mouseDoubleClickEvent(QMouseEvent * /*event*/) {
 
 
 
@@ -386,7 +388,7 @@ void ChatWidget::handleMouseMoveEvent(const QPoint &_pos) {
   QPoint pos = _pos + QPoint(0, verticalScrollBar()->value());
   int x = pos.x();
   int y = pos.y();
-  MousePos oldpos = mousePos;
+  //MousePos oldpos = mousePos;
   if(x >= tsGrabPos - 3 && x <= tsGrabPos + 3) mousePos = OverTsSep;
   else if(x >= senderGrabPos - 3 && x <= senderGrabPos + 3) mousePos = OverTextSep;
   else mousePos = None;
@@ -449,6 +451,8 @@ void ChatWidget::handleMouseMoveEvent(const QPoint &_pos) {
     case DragTsSep:
       break;
     case DragTextSep:
+      break;
+    default:
       break;
   }
   // Pass 2: Some mouse modes need work after being set...
@@ -534,9 +538,4 @@ QString ChatWidget::selectionToString() {
   // selectionMode == TextSelected
   return lines[selectionLine]->text().mid(selectionStart, selectionEnd - selectionStart);
 }
-
-/************************************************************************************/
-
-
-/******************************************************************************************************************/
 

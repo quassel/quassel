@@ -64,32 +64,44 @@ int main(int argc, char **argv) {
   QCoreApplication::setOrganizationName("Quassel IRC Development Team");
 
   Global::quasselDir = QDir::homePath() + "/.quassel";
-
+  Core::instance();
 #ifdef BUILD_MONO
   QObject::connect(Core::localSession(), SIGNAL(proxySignal(CoreSignal, QVariant, QVariant, QVariant)), ClientProxy::instance(), SLOT(recv(CoreSignal, QVariant, QVariant, QVariant)));
   QObject::connect(ClientProxy::instance(), SIGNAL(send(ClientSignal, QVariant, QVariant, QVariant)), Core::localSession(), SLOT(processSignal(ClientSignal, QVariant, QVariant, QVariant)));
 #endif
 
   Settings::init();
-  Style::init();
 
+#ifndef BUILD_CORE
+  Style::init();
   MainWin *mainWin = new MainWin();
   Client::init(mainWin);
   mainWin->init();
+#else
+  Core::instance(); // create and init the core object
+#endif
+
   int exitCode = app.exec();
+
+#ifndef BUILD_CORE
   // the mainWin has to be deleted before the Core
   // if not Quassel will crash on exit under certain conditions since the gui
   // still wants to access clientdata
   delete mainWin;
   Client::destroy();
+#endif
+#ifndef BUILD_QTGUI
   Core::destroy();
+#endif
+
   return exitCode;
 }
 
+#ifndef BUILD_CORE
 void Client::syncToCore() {
   //Q_ASSERT(Global::data("CoreReady").toBool());
   coreBuffers = Core::localSession()->buffers();
   // NOTE: We don't need to request server states, because in the monolithic version there can't be
   //       any servers connected at this stage...
 }
-
+#endif

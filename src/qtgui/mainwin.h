@@ -48,7 +48,7 @@ class MainWin : public QMainWindow, public AbstractUi {
 
   public:
     MainWin();
-    ~MainWin();
+    virtual ~MainWin();
 
     void init();
     void registerBufferViewDock(BufferViewDock *);

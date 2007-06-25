@@ -26,7 +26,7 @@
 class AbstractUiMsg {
 
   public:
-
+    virtual ~AbstractUiMsg() {};
     virtual QString sender() const = 0;
     virtual QString text() const = 0;
     virtual MsgId msgId() const = 0;
@@ -39,6 +39,7 @@ class AbstractUiMsg {
 class AbstractUi {
 
   public:
+    virtual ~AbstractUi() {};
     virtual AbstractUiMsg *layoutMsg(const Message &) = 0;
 
 

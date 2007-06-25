@@ -99,6 +99,7 @@ class Global : public QObject {
 
 struct Exception {
     Exception(QString msg = "Unknown Exception") : _msg(msg) {};
+    virtual ~Exception() {}; // make gcc happy
     virtual inline QString msg() { return _msg; }
 
   protected:

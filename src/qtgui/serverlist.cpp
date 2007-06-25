@@ -355,7 +355,7 @@ void NetworkEditDlg::on_editIdentities_clicked() {
 
 /***************************************************************************/
 
-ServerEditDlg::ServerEditDlg(QWidget *parent, VarMap server) {
+ServerEditDlg::ServerEditDlg(QWidget *parent, VarMap server) : QDialog(parent) {
   ui.setupUi(this);
 
   if(!server.isEmpty()) {

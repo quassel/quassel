@@ -223,6 +223,8 @@ int ChatLine::posToCursor(QPointF pos) {
       return line.start;
     }
   }
+  qWarning() << "Should we ever reach this point?";
+  return 0;
 }
 
 void ChatLine::precomputeLine() {
@@ -243,7 +245,7 @@ void ChatLine::precomputeLine() {
     for(int j = url.start; j < url.end; j++) charUrlIdx[j] = i;
   }
   if(!textFormat.count()) return;
-  int idx = 0; int cnt = 0; int w = 0; int h = 0;
+  int idx = 0; int cnt = 0; int w = 0;
   QFontMetrics metrics(textFormat[0].format.font());
   Word wr;
   wr.start = -1; wr.trailing = -1;

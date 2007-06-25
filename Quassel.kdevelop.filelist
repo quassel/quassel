@@ -25,7 +25,6 @@ src/common/logger.cpp
 src/common/logger.h
 src/common/main_core.cpp
 src/common/main_gui.cpp
-src/common/main_mono.cpp
 src/common/message.cpp
 src/common/message.h
 src/common/proxy_common.h
@@ -103,3 +102,4 @@ src/qtgui/ui/settingsdlg.ui
 src/common/build_mono.cpp
 src/common/build_qtgui.cpp
 src/common/build_core.cpp
+src/common/main.cpp

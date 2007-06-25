@@ -19,4 +19,4 @@
  ***************************************************************************/
 
 #define BUILD_MONO
-#include "main_mono.cpp"
+#include "main.cpp"
