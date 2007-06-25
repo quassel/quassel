@@ -281,7 +281,7 @@ void ChatWidget::layout() {
 }
 
 int ChatWidget::yToLineIdx(qreal y) {
-  if(y >= ycoords[ycoords.count()-1]) return ycoords.count()-1;
+  if(y >= ycoords[ycoords.count()-1]) return ycoords.count()-2;
   if(ycoords.count() <= 1) return 0;
   int uidx = 0;
   int oidx = ycoords.count() - 1;

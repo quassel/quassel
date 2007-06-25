@@ -223,7 +223,6 @@ int ChatLine::posToCursor(QPointF pos) {
       return line.start;
     }
   }
-  qWarning() << "Should we ever reach this point?";
   return 0;
 }
 
