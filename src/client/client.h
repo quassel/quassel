@@ -40,6 +40,7 @@ class Client : public QObject {
     static void init(AbstractUi *);
     static void destroy();
 
+    static QList<BufferId> allBufferIds();
     static Buffer *buffer(BufferId);
     static BufferId statusBufferId(QString net);
     static BufferId bufferId(QString net, QString buf);
@@ -47,6 +48,8 @@ class Client : public QObject {
     static BufferTreeModel *bufferModel();
 
     static AbstractUiMsg *layoutMsg(const Message &);
+
+    static bool isConnected();
 
   signals:
     void sendInput(BufferId, QString message);
@@ -57,13 +60,18 @@ class Client : public QObject {
     void bufferDestroyed(Buffer *);
     void backlogReceived(Buffer *, QList<Message>);
     void requestBacklog(BufferId, QVariant, QVariant);
+    void requestNetworkStates();
 
     void recvPartialItem(quint32 avail, quint32 size);
     void coreConnectionError(QString errorMsg);
 
+    void connected();
+    void disconnected();
+
   public slots:
     //void selectBuffer(Buffer *);
-    void connectToCore(QString host, quint16 port);
+    //void connectToLocalCore();
+    void connectToCore(const VarMap &);
     void disconnectFromCore();
 
   private slots:
@@ -100,6 +108,8 @@ class Client : public QObject {
     static Client *instanceptr;
 
     void syncToCore();
+    QVariant connectToLocalCore(QString user, QString passwd);  // defined in main.cpp
+    void disconnectFromLocalCore();                             // defined in main.cpp
 
     enum ClientMode { LocalCore, RemoteCore };
     static ClientMode clientMode;
@@ -111,12 +121,13 @@ class Client : public QObject {
     QTcpSocket socket;
     quint32 blockSize;
 
+    static bool connectedToCore;
     static QHash<BufferId, Buffer *> buffers;
     static QHash<uint, BufferId> bufferIds;
     static QHash<QString, QHash<QString, VarMap> > nicks;
-    static QHash<QString, bool> connected;
+    static QHash<QString, bool> netConnected;
     static QHash<QString, QString> ownNick;
-    static QList<BufferId> coreBuffers;
+    //static QList<BufferId> coreBuffers;
 
     QTimer *layoutTimer;
     QList<Buffer *> layoutQueue;

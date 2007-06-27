@@ -386,7 +386,6 @@ QList<Message> SqliteStorage::requestMsgs(BufferId buffer, int lastmsgs, int off
     msg.msgId = requestMsgsQuery->value(0).toUInt();
     messagelist << msg;
   }
-
   return messagelist;
 }
 

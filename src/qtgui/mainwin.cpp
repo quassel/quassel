@@ -36,27 +36,55 @@
 #include "settingsdlg.h"
 #include "settingspages.h"
 
-MainWin::MainWin() : QMainWindow() {
-  ui.setupUi(this);
+QtGui::QtGui() : AbstractUi() {
+  mainWin = new MainWin(this);
+  connect(mainWin, SIGNAL(connectToCore(const VarMap &)), this, SIGNAL(connectToCore(const VarMap &)));
+  connect(mainWin, SIGNAL(disconnectFromCore()), this, SIGNAL(disconnectFromCore()));
   
-  //widget = 0;
-  //qDebug() << "Available DB drivers: " << QSqlDatabase::drivers ();
+}
+
+QtGui::~QtGui() {
+  delete mainWin;
+}
+
+void QtGui::init() {
+  mainWin->init();
+}
+
+AbstractUiMsg *QtGui::layoutMsg(const Message &msg) {
+  return mainWin->layoutMsg(msg);
+}
+
+void QtGui::connectedToCore() {
+  mainWin->connectedToCore();
+}
+
+void QtGui::disconnectedFromCore() {
+  mainWin->disconnectedFromCore();
+}
+
+MainWin::MainWin(QtGui *_gui, QWidget *parent) : QMainWindow(parent), gui(_gui) {
+  ui.setupUi(this);
   setWindowTitle("Quassel IRC");
   //setWindowTitle("Κυασελ Εγαρζη");
   setWindowIcon(QIcon(":/qirc-icon.png"));
   setWindowIconText("Quassel IRC");
 
-  //workspace = new QWorkspace(this);
-  //setCentralWidget(workspace);
   statusBar()->showMessage(tr("Waiting for core..."));
   
 }
 
 void MainWin::init() {
+  connect(this, SIGNAL(requestBacklog(BufferId, QVariant, QVariant)), ClientProxy::instance(), SLOT(gsRequestBacklog(BufferId, QVariant, QVariant)));
   ui.bufferWidget->init();
 
   show();
-  //syncToCore();
+
+  VarMap connInfo;
+  connInfo["User"] = "Default";
+  connInfo["Password"] = "password";
+  connectToCore(connInfo);
+
   statusBar()->showMessage(tr("Ready."));
   systray = new QSystemTrayIcon(this);
   systray->setIcon(QIcon(":/qirc-icon.png"));
@@ -92,6 +120,7 @@ void MainWin::init() {
     }
   }
   */
+
 }
 
 MainWin::~MainWin() {
@@ -124,7 +153,7 @@ void MainWin::setupMenus() {
 
 void MainWin::setupViews() {
   
-  BufferTreeModel *model = Client::bufferModel(); // FIXME Where is the delete for that? :p
+  BufferTreeModel *model = Client::bufferModel();
   connect(model, SIGNAL(bufferSelected(Buffer *)), this, SLOT(showBuffer(Buffer *)));
   
   addBufferView(tr("All Buffers"), model, BufferViewFilter::AllNets, QStringList());
@@ -151,6 +180,16 @@ void MainWin::addBufferView(const QString &viewname, QAbstractItemModel *model, 
   ui.menuViews->addAction(dock->toggleViewAction());
   
   netViews.append(dock);
+}
+
+void MainWin::connectedToCore() {
+  foreach(BufferId id, Client::allBufferIds()) {
+    emit requestBacklog(id, 100, -1);
+  }
+}
+
+void MainWin::disconnectedFromCore() {
+
 }
 
 AbstractUiMsg *MainWin::layoutMsg(const Message &msg) {

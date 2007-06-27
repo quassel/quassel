@@ -43,6 +43,9 @@ class Core : public QObject {
     static CoreSession * localSession();
     static CoreSession * createSession(UserId);
 
+    static QVariant connectLocalClient(QString user, QString passwd);
+    static QVariant disconnectLocalClient();
+
   private slots:
     void recvProxySignal(CoreSignal, QVariant, QVariant, QVariant);
     bool startListening(uint port = 4242);
@@ -58,6 +61,13 @@ class Core : public QObject {
     void init();
     static Core *instanceptr;
 
+    //! Initiate a session for the user with the given credentials if one does not already exist.
+    /** This function is called during the init process for a new client. If there is no session for the
+     *  given user, one is created.
+     * \param userId The user
+     * \return A QVariant containing the session data, e.g. global data and buffers
+     */
+    QVariant initSession(UserId userId);
     void processClientInit(QTcpSocket *socket, const QVariant &v);
     void processClientUpdate(QTcpSocket *socket, QString key, const QVariant &data);
 

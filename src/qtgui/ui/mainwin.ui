@@ -53,6 +53,15 @@
     <property name="title" >
      <string>Connection</string>
     </property>
+    <widget class="QMenu" name="menuConnectCore" >
+     <property name="title" >
+      <string>Connect to Core</string>
+     </property>
+     <addaction name="actionInternal" />
+    </widget>
+    <addaction name="menuConnectCore" />
+    <addaction name="actionDisconnectCore" />
+    <addaction name="separator" />
     <addaction name="actionNetworkList" />
     <addaction name="actionQuickConnect" />
     <addaction name="separator" />
@@ -95,8 +104,14 @@
     </property>
     <addaction name="actionImportBacklog" />
    </widget>
+   <widget class="QMenu" name="menuCore" >
+    <property name="title" >
+     <string>Core</string>
+    </property>
+   </widget>
    <addaction name="menuConnection" />
    <addaction name="menuViews" />
+   <addaction name="menuCore" />
    <addaction name="menuSettings" />
    <addaction name="menuHelp" />
    <addaction name="menuDebug" />
@@ -189,6 +204,26 @@
   <action name="actionImportBacklog" >
    <property name="text" >
     <string>Import Backlog</string>
+   </property>
+  </action>
+  <action name="actionConnect_to_Core" >
+   <property name="text" >
+    <string>Connect</string>
+   </property>
+  </action>
+  <action name="actionDisconnect_2" >
+   <property name="text" >
+    <string>Disconnect</string>
+   </property>
+  </action>
+  <action name="actionInternal" >
+   <property name="text" >
+    <string>Internal</string>
+   </property>
+  </action>
+  <action name="actionDisconnectCore" >
+   <property name="text" >
+    <string>Disconnect from Core</string>
    </property>
   </action>
  </widget>

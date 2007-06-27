@@ -42,6 +42,7 @@ class ClientProxy : public QObject {
     inline void gsRequestConnect(QStringList networks)                { send(GS_REQUEST_CONNECT, networks); }
     inline void gsImportBacklog()                                     { send(GS_IMPORT_BACKLOG); }
     inline void gsRequestBacklog(BufferId id, QVariant v1, QVariant v2) { send(GS_REQUEST_BACKLOG, QVariant::fromValue(id), v1, v2); }
+    inline void gsRequestNetworkStates()                              { send(GS_REQUEST_NETWORK_STATES); }
 
     inline void gsGeneric(ClientSignal sig, QVariant v1 = QVariant(), QVariant v2 = QVariant(), QVariant v3 = QVariant()) { send(sig, v1, v2, v3); }
 

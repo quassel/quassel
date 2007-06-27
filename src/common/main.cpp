@@ -22,6 +22,7 @@
 
 #include "global.h"
 #include "settings.h"
+#include "quasselui.h"
 
 #if defined BUILD_CORE
 #include <QCoreApplication>
@@ -58,27 +59,28 @@ int main(int argc, char **argv) {
   Global::runMode = Global::Monolithic;
   QApplication app(argc, argv);
 #endif
-
+  //AbstractUi *foo = new AbstractUi();
+  //foo->init();
   QCoreApplication::setOrganizationDomain("quassel-irc.org");
   QCoreApplication::setApplicationName("Quassel IRC");
   QCoreApplication::setOrganizationName("Quassel IRC Development Team");
 
   Global::quasselDir = QDir::homePath() + "/.quassel";
-  Core::instance();
-#ifdef BUILD_MONO
-  QObject::connect(Core::localSession(), SIGNAL(proxySignal(CoreSignal, QVariant, QVariant, QVariant)), ClientProxy::instance(), SLOT(recv(CoreSignal, QVariant, QVariant, QVariant)));
-  QObject::connect(ClientProxy::instance(), SIGNAL(send(ClientSignal, QVariant, QVariant, QVariant)), Core::localSession(), SLOT(processSignal(ClientSignal, QVariant, QVariant, QVariant)));
+#ifndef BUILD_QTGUI
+  Core::instance();  // create and init the core
 #endif
 
   Settings::init();
 
 #ifndef BUILD_CORE
   Style::init();
-  MainWin *mainWin = new MainWin();
-  Client::init(mainWin);
-  mainWin->init();
-#else
-  Core::instance(); // create and init the core object
+  AbstractUi foo;  // This avoids an annoying linker error (bug?) where AbstractUi's vtable is not found.
+                   // Yes, it's fugly. Yes, I'd like an alternative.
+  QtGui *gui = new QtGui();
+  Client::init(gui);
+  gui->init();
+//#else
+//  Core::instance(); // create and init the core object
 #endif
 
   int exitCode = app.exec();
@@ -87,7 +89,7 @@ int main(int argc, char **argv) {
   // the mainWin has to be deleted before the Core
   // if not Quassel will crash on exit under certain conditions since the gui
   // still wants to access clientdata
-  delete mainWin;
+  delete gui;
   Client::destroy();
 #endif
 #ifndef BUILD_QTGUI
@@ -97,11 +99,23 @@ int main(int argc, char **argv) {
   return exitCode;
 }
 
-#ifndef BUILD_CORE
-void Client::syncToCore() {
-  //Q_ASSERT(Global::data("CoreReady").toBool());
-  coreBuffers = Core::localSession()->buffers();
-  // NOTE: We don't need to request server states, because in the monolithic version there can't be
-  //       any servers connected at this stage...
+#ifdef BUILD_QTGUI
+QVariant Client::connectToLocalCore(QString, QString) { return QVariant(); }
+void Client::disconnectFromLocalCore() {}
+#elif defined BUILD_MONO
+
+QVariant Client::connectToLocalCore(QString user, QString passwd) {
+  // TODO catch exceptions
+  QVariant reply = Core::connectLocalClient(user, passwd);
+  QObject::connect(Core::localSession(), SIGNAL(proxySignal(CoreSignal, QVariant, QVariant, QVariant)), ClientProxy::instance(), SLOT(recv(CoreSignal, QVariant, QVariant, QVariant)));
+  QObject::connect(ClientProxy::instance(), SIGNAL(send(ClientSignal, QVariant, QVariant, QVariant)), Core::localSession(), SLOT(processSignal(ClientSignal, QVariant, QVariant, QVariant)));
+  return reply;
 }
+
+void Client::disconnectFromLocalCore() {
+  disconnect(Core::localSession(), 0, ClientProxy::instance(), 0);
+  disconnect(ClientProxy::instance(), 0, Core::localSession(), 0);
+  Core::disconnectLocalClient();
+}
+
 #endif

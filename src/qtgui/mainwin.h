@@ -24,7 +24,6 @@
 #include <QtGui>
 #include "ui_mainwin.h"
 
-#include "quasselui.h"
 //#include "global.h"
 #include "message.h"
 #include "chatwidget.h"
@@ -35,17 +34,32 @@ class ServerListDlg;
 class CoreConnectDlg;
 class Buffer;
 class SettingsDlg;
+class MainWin;
 
-//!\brief The main window and central object of Quassel GUI.
-/** In addition to displaying the main window including standard stuff like a menubar,
- * dockwidgets and of course the chat window, this class also stores all data it
- * receives from the core, and it maintains a list of all known nicks.
- */
-class MainWin : public QMainWindow, public AbstractUi {
+class QtGui : public AbstractUi {
   Q_OBJECT
 
   public:
-    MainWin();
+    QtGui();
+    ~QtGui();
+    void init();
+    AbstractUiMsg *layoutMsg(const Message &);
+
+  protected slots:
+    void connectedToCore();
+    void disconnectedFromCore();
+
+  private:
+    MainWin *mainWin;
+};
+
+
+//!\brief The main window of Quassel's QtGui.
+class MainWin : public QMainWindow {
+  Q_OBJECT
+
+  public:
+    MainWin(QtGui *gui, QWidget *parent = 0);
     virtual ~MainWin();
 
     void init();
@@ -56,7 +70,9 @@ class MainWin : public QMainWindow, public AbstractUi {
   protected:
     void closeEvent(QCloseEvent *event);
 
-    //void importOldBacklog();
+  protected slots:
+    void connectedToCore();
+    void disconnectedFromCore();
 
   private slots:
 
@@ -69,14 +85,20 @@ class MainWin : public QMainWindow, public AbstractUi {
     void importBacklog();
 
   signals:
+    void connectToCore(const VarMap &connInfo);
+    void disconnectFromCore();
+    void requestBacklog(BufferId, QVariant, QVariant);
     void importOldBacklog();
 
   private:
     Ui::MainWin ui;
+    QtGui *gui;
 
     void setupMenus();
     void setupViews();
     void setupSettingsDlg();
+
+    void enableMenus();
 
     QSystemTrayIcon *systray;
 
@@ -88,6 +110,7 @@ class MainWin : public QMainWindow, public AbstractUi {
 
     QList<QDockWidget *> netViews;
 
+    friend class QtGui;
 };
 
 #endif

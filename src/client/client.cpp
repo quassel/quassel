@@ -26,13 +26,14 @@
 
 Client * Client::instanceptr = 0;
 
+bool Client::connectedToCore = false;
 Client::ClientMode Client::clientMode;
 QHash<BufferId, Buffer *> Client::buffers;
 QHash<uint, BufferId> Client::bufferIds;
 QHash<QString, QHash<QString, VarMap> > Client::nicks;
-QHash<QString, bool> Client::connected;
+QHash<QString, bool> Client::netConnected;
 QHash<QString, QString> Client::ownNick;
-QList<BufferId> Client::coreBuffers;
+//QList<BufferId> Client::coreBuffers;
 
 
 Client *Client::instance() {
@@ -58,6 +59,7 @@ Client::Client() {
     // TODO: make this configurable (allow monolithic client to connect to remote cores)
   if(Global::runMode == Global::Monolithic) clientMode = LocalCore;
   else clientMode = RemoteCore;
+  connectedToCore = false;
 }
 
 void Client::init(AbstractUi *ui) {
@@ -92,20 +94,18 @@ void Client::init() {
   connect(clientProxy, SIGNAL(csUpdateBufferId(BufferId)), this, SLOT(updateBufferId(BufferId)));
   connect(this, SIGNAL(sendInput(BufferId, QString)), clientProxy, SLOT(gsUserInput(BufferId, QString)));
   connect(this, SIGNAL(requestBacklog(BufferId, QVariant, QVariant)), clientProxy, SLOT(gsRequestBacklog(BufferId, QVariant, QVariant)));
+  connect(this, SIGNAL(requestNetworkStates()), clientProxy, SLOT(gsRequestNetworkStates()));
 
-  syncToCore();
+  connect(mainUi, SIGNAL(connectToCore(const VarMap &)), this, SLOT(connectToCore(const VarMap &)));
+  connect(mainUi, SIGNAL(disconnectFromCore()), this, SLOT(disconnectFromCore()));
+  connect(this, SIGNAL(connected()), mainUi, SLOT(connectedToCore()));
+  connect(this, SIGNAL(disconnected()), mainUi, SLOT(disconnectedFromCore()));
 
   layoutTimer = new QTimer(this);
   layoutTimer->setInterval(0);
   layoutTimer->setSingleShot(false);
   connect(layoutTimer, SIGNAL(timeout()), this, SLOT(layoutMsg()));
 
-  /* make lookups by id faster */
-  foreach(BufferId id, coreBuffers) {
-    bufferIds[id.uid()] = id;  // make lookups by id faster
-    buffer(id);                // create all buffers, so we see them in the network views
-    emit requestBacklog(id, -1, -1);  // TODO: use custom settings for backlog request
-  }
 }
 
 Client::~Client() {
@@ -120,12 +120,71 @@ BufferTreeModel *Client::bufferModel() {
   return instance()->_bufferModel;
 }
 
+bool Client::isConnected() { return connectedToCore; }
+
+void Client::connectToCore(const VarMap &conn) {
+  // TODO implement SSL
+  if(isConnected()) {
+    qDebug() << "Already connected to core!";
+    return;
+  }
+  if(conn["Host"].toString().isEmpty()) {
+    clientMode = LocalCore;
+    syncToCore();  // TODO send user and pw from conn info
+  } else {
+    clientMode = RemoteCore;
+    socket.connectToHost(conn["Host"].toString(), conn["Port"].toUInt());
+  }
+}
+
+void Client::disconnectFromCore() {
+  if(clientMode == RemoteCore) {
+    socket.close();
+  } else {
+    disconnectFromLocalCore();
+    coreDisconnected();
+  }
+  // TODO clear internal data
+}
+
 void Client::coreConnected() {
+  syncToCore();
 
 }
 
 void Client::coreDisconnected() {
+  connectedToCore = false;
+  emit disconnected();
+}
 
+void Client::syncToCore() {
+  VarMap state;
+  if(clientMode == LocalCore) {
+    state = connectToLocalCore("Default", "password").toMap(); // TODO make this configurable
+  } else {
+
+  }
+
+  VarMap data = state["CoreData"].toMap();
+  foreach(QString key, data.keys()) {
+    Global::updateData(key, data[key]);
+  }
+  //if(!Global::data("CoreReady").toBool()) {
+  //  qFatal("Something is wrong, getting invalid data from core!");
+  //}
+
+  VarMap sessionState = state["SessionState"].toMap();
+  QList<QVariant> coreBuffers = sessionState["Buffers"].toList();
+  /* make lookups by id faster */
+  foreach(QVariant vid, coreBuffers) {
+    BufferId id = vid.value<BufferId>();
+    bufferIds[id.uid()] = id;  // make lookups by id faster
+    buffer(id);                // create all buffers, so we see them in the network views
+    //emit requestBacklog(id, -1, -1);  // TODO: use custom settings for backlog request
+  }
+  connectedToCore = true;
+  emit connected();
+  emit requestNetworkStates();
 }
 
 void Client::updateCoreData(UserId, QString key) {
@@ -144,15 +203,6 @@ void Client::recvProxySignal(ClientSignal sig, QVariant arg1, QVariant arg2, QVa
   sigdata.append(sig); sigdata.append(arg1); sigdata.append(arg2); sigdata.append(arg3);
   //qDebug() << "Sending signal: " << sigdata;
   writeDataToDevice(&socket, QVariant(sigdata));
-}
-
-void Client::connectToCore(QString host, quint16 port) {
-  // TODO implement SSL
-  socket.connectToHost(host, port);
-}
-
-void Client::disconnectFromCore() {
-  socket.close();
 }
 
 void Client::serverError(QAbstractSocket::SocketError) {
@@ -174,7 +224,7 @@ void Client::serverHasData() {
 }
 
 void Client::networkConnected(QString net) {
-  connected[net] = true;
+  netConnected[net] = true;
   BufferId id = statusBufferId(net);
   Buffer *b = buffer(id);
   b->setActive(true);
@@ -189,7 +239,7 @@ void Client::networkDisconnected(QString net) {
     //b->displayMsg(Message(id, Message::Server, tr("Server disconnected."))); FIXME
     b->setActive(false);
   }
-  connected[net] = false;
+  netConnected[net] = false;
 }
 
 void Client::updateBufferId(BufferId id) {
@@ -224,8 +274,12 @@ Buffer * Client::buffer(BufferId id) {
   return buffers[id];
 }
 
+QList<BufferId> Client::allBufferIds() {
+  return buffers.keys();
+}
+
 void Client::recvNetworkState(QString net, QVariant state) {
-  connected[net] = true;
+  netConnected[net] = true;
   setOwnNick(net, state.toMap()["OwnNick"].toString());
   buffer(statusBufferId(net))->setActive(true);
   VarMap t = state.toMap()["Topics"].toMap();
@@ -289,7 +343,7 @@ void Client::userInput(BufferId id, QString msg) {
 
 void Client::setTopic(QString net, QString buf, QString topic) {
   BufferId id = bufferId(net, buf);
-  if(!connected[id.network()]) return;
+  if(!netConnected[id.network()]) return;
   Buffer *b = buffer(id);
   b->setTopic(topic);
   //if(!b->isActive()) {
@@ -299,7 +353,7 @@ void Client::setTopic(QString net, QString buf, QString topic) {
 }
 
 void Client::addNick(QString net, QString nick, VarMap props) {
-  if(!connected[net]) return;
+  if(!netConnected[net]) return;
   nicks[net][nick] = props;
   VarMap chans = props["Channels"].toMap();
   QStringList c = chans.keys();
@@ -309,7 +363,7 @@ void Client::addNick(QString net, QString nick, VarMap props) {
 }
 
 void Client::renameNick(QString net, QString oldnick, QString newnick) {
-  if(!connected[net]) return;
+  if(!netConnected[net]) return;
   QStringList chans = nicks[net][oldnick]["Channels"].toMap().keys();
   foreach(QString c, chans) {
     buffer(bufferId(net, c))->renameNick(oldnick, newnick);
@@ -318,7 +372,7 @@ void Client::renameNick(QString net, QString oldnick, QString newnick) {
 }
 
 void Client::updateNick(QString net, QString nick, VarMap props) {
-  if(!connected[net]) return;
+  if(!netConnected[net]) return;
   QStringList oldchans = nicks[net][nick]["Channels"].toMap().keys();
   QStringList newchans = props["Channels"].toMap().keys();
   foreach(QString c, newchans) {
@@ -332,7 +386,7 @@ void Client::updateNick(QString net, QString nick, VarMap props) {
 }
 
 void Client::removeNick(QString net, QString nick) {
-  if(!connected[net]) return;
+  if(!netConnected[net]) return;
   VarMap chans = nicks[net][nick]["Channels"].toMap();
   foreach(QString bufname, chans.keys()) {
     buffer(bufferId(net, bufname))->removeNick(nick);
@@ -341,7 +395,7 @@ void Client::removeNick(QString net, QString nick) {
 }
 
 void Client::setOwnNick(QString net, QString nick) {
-  if(!connected[net]) return;
+  if(!netConnected[net]) return;
   ownNick[net] = nick;
   foreach(BufferId id, buffers.keys()) {
     if(id.network() == net) {

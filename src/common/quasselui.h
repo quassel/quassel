@@ -21,6 +21,7 @@
 #ifndef _QUASSELUI_H_
 #define _QUASSELUI_H_
 
+#include <QObject>
 #include "message.h"
 
 class AbstractUiMsg {
@@ -36,13 +37,22 @@ class AbstractUiMsg {
 };
 
 
-class AbstractUi {
+class AbstractUi : public QObject {
+  Q_OBJECT
 
   public:
+    static void foo() {};
     virtual ~AbstractUi() {};
-    virtual AbstractUiMsg *layoutMsg(const Message &) = 0;
+    virtual void init() {};  // called after the client is initialized
+    virtual AbstractUiMsg *layoutMsg(const Message &) { return 0; }
 
+  protected slots:
+    virtual void connectedToCore() {}
+    virtual void disconnectedFromCore() {}
 
+  signals:
+    void connectToCore(const VarMap &connInfo);
+    void disconnectFromCore();
 
 };
 

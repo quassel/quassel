@@ -29,6 +29,7 @@ CoreConnectDlg::CoreConnectDlg(QWidget *parent) : QDialog(parent) {
   ui.progressBar->hide();
   coreState = 0;
   QSettings s;
+  /*
   connect(ui.hostName, SIGNAL(textChanged(QString)), this, SLOT(hostEditChanged(QString)));
   connect(ui.buttonBox, SIGNAL(accepted()), this, SLOT(hostSelected()));
 
@@ -39,31 +40,32 @@ CoreConnectDlg::CoreConnectDlg(QWidget *parent) : QDialog(parent) {
   if(s.value("GUI/CoreAutoConnect").toBool()) {
     hostSelected();
   }
+  */
 }
 
-void CoreConnectDlg::setStartState() {
+void CoreConnectDlg::setStartState() { /*
   ui.hostName->show(); ui.hostPort->show(); ui.hostLabel->show(); ui.portLabel->show();
   ui.statusText->setText(tr("Connect to Quassel Core running on:"));
   ui.buttonBox->button(QDialogButtonBox::Ok)->show();
   ui.hostName->setEnabled(true); ui.hostPort->setEnabled(true);
-  ui.hostName->setSelection(0, ui.hostName->text().length());
+  ui.hostName->setSelection(0, ui.hostName->text().length()); */
 }
 
 void CoreConnectDlg::hostEditChanged(QString txt) {
   ui.buttonBox->button(QDialogButtonBox::Ok)->setEnabled(txt.length());
 }
 
-void CoreConnectDlg::hostSelected() {
+void CoreConnectDlg::hostSelected() { /*
   ui.hostName->hide(); ui.hostPort->hide(); ui.hostLabel->hide(); ui.portLabel->hide();
   ui.statusText->setText(tr("Connecting to %1:%2" ).arg(ui.hostName->text()).arg(ui.hostPort->value()));
   ui.buttonBox->button(QDialogButtonBox::Ok)->hide();
   connect(ClientProxy::instance(), SIGNAL(coreConnected()), this, SLOT(coreConnected()));
   connect(ClientProxy::instance(), SIGNAL(coreConnectionError(QString)), this, SLOT(coreConnectionError(QString)));
   Client::instance()->connectToCore(ui.hostName->text(), ui.hostPort->value());
-
+*/
 }
 
-void CoreConnectDlg::coreConnected() {
+void CoreConnectDlg::coreConnected() { /*
   ui.hostLabel->hide(); ui.hostName->hide(); ui.portLabel->hide(); ui.hostPort->hide();
   ui.statusText->setText(tr("Synchronizing..."));
   QSettings s;
@@ -75,7 +77,7 @@ void CoreConnectDlg::coreConnected() {
   ui.progressBar->show();
   VarMap initmsg;
   initmsg["GUIProtocol"] = GUI_PROTOCOL;
-  // FIXME guiProxy->send(GS_CLIENT_INIT, QVariant(initmsg));
+  // FIXME guiProxy->send(GS_CLIENT_INIT, QVariant(initmsg)); */
 }
 
 void CoreConnectDlg::coreConnectionError(QString err) {

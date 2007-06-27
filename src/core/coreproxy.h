@@ -65,6 +65,7 @@ class CoreProxy : public QObject {
     void gsRequestConnect(QStringList networks);
     void gsImportBacklog();
     void gsRequestBacklog(BufferId, QVariant, QVariant);
+    void gsRequestNetworkStates();
 
     void gsGeneric(ClientSignal, QVariant, QVariant, QVariant);
 

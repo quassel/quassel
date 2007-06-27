@@ -43,7 +43,7 @@ void Core::destroy() {
 }
 
 Core::Core() {
-  qDebug() << "core";
+
 }
 
 void Core::init() {
@@ -55,6 +55,8 @@ void Core::init() {
   connect(Global::instance(), SIGNAL(dataPutLocally(UserId, QString)), this, SLOT(updateGlobalData(UserId, QString)));
   connect(&server, SIGNAL(newConnection()), this, SLOT(incomingConnection()));
   //startListening(); // FIXME
+  guiUser = 0;
+  /*
   if(Global::runMode == Global::Monolithic) {  // TODO Make GUI user configurable
     try {
       guiUser = storage->validateUser("Default", "password");
@@ -65,7 +67,7 @@ void Core::init() {
     Global::setGuiUser(guiUser);
     createSession(guiUser);
   } else guiUser = 0;
-
+  */
   // Read global settings from config file
   QSettings s;
   s.beginGroup("Global");
@@ -173,36 +175,53 @@ void Core::clientDisconnected() {
   // TODO remove unneeded sessions - if necessary/possible...
 }
 
+QVariant Core::connectLocalClient(QString user, QString passwd) {
+  UserId uid = instance()->storage->validateUser(user, passwd);
+  QVariant reply = instance()->initSession(uid);
+  instance()->guiUser = uid;
+  Global::setGuiUser(uid);
+  qDebug() << "Local client connected.";
+  return reply;
+}
+
+QVariant Core::disconnectLocalClient() {
+  qDebug() << "Local client disconnected.";
+  instance()->guiUser = 0;
+  Global::setGuiUser(0);
+}
+
 void Core::processClientInit(QTcpSocket *socket, const QVariant &v) {
   VarMap msg = v.toMap();
   if(msg["GUIProtocol"].toUInt() != GUI_PROTOCOL) {
     //qWarning() << "Client version mismatch.";
     throw Exception("GUI client version mismatch");
   }
-  // Auth
+    // Auth
   UserId uid = storage->validateUser(msg["User"].toString(), msg["Password"].toString());  // throws exception if this failed
+  VarMap reply = initSession(uid).toMap();
+  validClients[socket] = uid;
+  QList<QVariant> sigdata;
+  sigdata.append(CS_CORE_STATE); sigdata.append(QVariant(reply)); sigdata.append(QVariant()); sigdata.append(QVariant());
+  writeDataToDevice(socket, QVariant(sigdata));
+}
 
+QVariant Core::initSession(UserId uid) {
   // Find or create session for validated user
   CoreSession *sess;
   if(sessions.contains(uid)) sess = sessions[uid];
   else {
     sess = createSession(uid);
-    validClients[socket] = uid;
+    //validClients[socket] = uid;
   }
   VarMap reply;
   VarMap coreData;
-  // FIXME
   QStringList dataKeys = Global::keys(uid);
-  QString key;
-  foreach(key, dataKeys) {
-    coreData[key] = Global::data(key);
+  foreach(QString key, dataKeys) {
+    coreData[key] = Global::data(uid, key);
   }
   reply["CoreData"] = coreData;
   reply["SessionState"] = sess->sessionState();
-  QList<QVariant> sigdata;
-  sigdata.append(CS_CORE_STATE); sigdata.append(QVariant(reply)); sigdata.append(QVariant()); sigdata.append(QVariant());
-  writeDataToDevice(socket, QVariant(sigdata));
-  sess->sendServerStates();
+  return reply;
 }
 
 void Core::processClientUpdate(QTcpSocket *socket, QString key, const QVariant &data) {
@@ -263,6 +282,7 @@ CoreSession::CoreSession(UserId uid, Storage *_storage) : user(uid), storage(_st
   connect(coreProxy, SIGNAL(gsUserInput(BufferId, QString)), this, SLOT(msgFromGui(BufferId, QString)));
   connect(coreProxy, SIGNAL(gsImportBacklog()), storage, SLOT(importOldBacklog()));
   connect(coreProxy, SIGNAL(gsRequestBacklog(BufferId, QVariant, QVariant)), this, SLOT(sendBacklog(BufferId, QVariant, QVariant)));
+  connect(coreProxy, SIGNAL(gsRequestNetworkStates()), this, SLOT(sendServerStates()));
   connect(this, SIGNAL(displayMsg(Message)), coreProxy, SLOT(csDisplayMsg(Message)));
   connect(this, SIGNAL(displayStatusMsg(QString, QString)), coreProxy, SLOT(csDisplayStatusMsg(QString, QString)));
   connect(this, SIGNAL(backlogData(BufferId, QList<QVariant>, bool)), coreProxy, SLOT(csBacklogData(BufferId, QList<QVariant>, bool)));
