@@ -74,8 +74,6 @@ int main(int argc, char **argv) {
 
 #ifndef BUILD_CORE
   Style::init();
-  AbstractUi foo;  // This avoids an annoying linker error (bug?) where AbstractUi's vtable is not found.
-                   // Yes, it's fugly. Yes, I'd like an alternative.
   QtGui *gui = new QtGui();
   Client::init(gui);
   gui->init();

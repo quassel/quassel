@@ -46,7 +46,7 @@ QString BufferTreeItem::text(int column) const {
   }
 }
 
-QColor BufferTreeItem::foreground(int column) const {
+QColor BufferTreeItem::foreground(int /*column*/) const {
   // for the time beeing we ignore the column :)
   if(activity & Buffer::Highlight) {
     return QColor(Qt::red);
@@ -182,7 +182,7 @@ QMimeData *BufferTreeModel::mimeData(const QModelIndexList &indexes) const {
   return mimeData;
 }
 
-bool BufferTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent) {
+bool BufferTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction /*action*/, int /*row*/, int /*column*/, const QModelIndex &parent) {
   if(!(data->hasFormat("application/Quassel/BufferItem/row")
        && data->hasFormat("application/Quassel/BufferItem/network")
        && data->hasFormat("application/Quassel/BufferItem/bufferId")))
@@ -227,7 +227,7 @@ void BufferTreeModel::bufferUpdated(Buffer *buffer) {
 }
 
 // This Slot indicates that the user has selected a different buffer in the gui
-void BufferTreeModel::changeCurrent(const QModelIndex &current, const QModelIndex &previous) {
+void BufferTreeModel::changeCurrent(const QModelIndex &current, const QModelIndex &/*previous*/) {
   if(isBufferIndex(current)) {
     currentBuffer = getBufferByIndex(current);
     bufferActivity(Buffer::NoActivity, currentBuffer);
