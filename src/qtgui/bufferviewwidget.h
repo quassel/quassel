@@ -38,7 +38,7 @@ class BufferViewWidget : public QWidget {
 public:
   BufferViewWidget(QWidget *parent = 0);
   virtual QSize sizeHint () const;
-  BufferView *treeView() { return ui.treeView; }  
+  BufferView *treeView(){ return ui.treeView; }  
 
 private:
   Ui::BufferViewWidget ui;

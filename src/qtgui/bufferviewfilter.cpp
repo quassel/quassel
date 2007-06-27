@@ -58,43 +58,57 @@ void BufferViewFilter::doubleClickReceived(const QModelIndex &clicked) {
   emit doubleClicked(mapToSource(clicked));
 }
 
-/*
-void BufferViewFilter::enterDrag() {
-  connect(sourceModel(), SIGNAL(addBuffer(const uint &, const QString &)),
-          this, SLOT(addBuffer(const uint &, const QString &)));
-}
-
-void BufferViewFilter::leaveDrag() {
-  disconnect(sourceModel(), SIGNAL(addBuffer(const uint &, const QString &)),
-             this, SLOT(addBuffer(const uint &, const QString &)));
-}
-*/
-
 void BufferViewFilter::dropEvent(QDropEvent *event) {
   const QMimeData *data = event->mimeData();
+  if(!(mode & FullCustom))
+    return; // only custom buffers can be customized... obviously... :)
+  
   if(!(data->hasFormat("application/Quassel/BufferItem/row")
        && data->hasFormat("application/Quassel/BufferItem/network")
        && data->hasFormat("application/Quassel/BufferItem/bufferId")))
     return; // whatever the drop is... it's not a buffer...
   
   event->accept();
-  uint bufferid = data->data("application/Quassel/BufferItem/bufferId").toUInt();
-  QString network = QString::fromUtf8(data->data("application/Quassel/BufferItem/network"));
-  addBuffer(bufferid, network);
+  uint bufferuid = data->data("application/Quassel/BufferItem/bufferId").toUInt();
+  QString networkname = QString::fromUtf8("application/Quassel/BufferItem/network");
+  
+  for(int rowid = 0; rowid < rowCount(); rowid++) {
+    QModelIndex networkindex = index(rowid, 0);
+    if(networkindex.data(Qt::DisplayRole) == networkname) {
+      addBuffer(bufferuid);
+      return;
+    }
+  }
+  beginInsertRows(QModelIndex(), rowCount(), rowCount());
+  addBuffer(bufferuid);
+  endInsertRows();
 }
 
 
-void BufferViewFilter::addBuffer(const uint &bufferuid, const QString &network) {
-  if(!networks.contains(network)) {
-    networks << network;
-  }
-  
+void BufferViewFilter::addBuffer(const uint &bufferuid) {
   if(!customBuffers.contains(bufferuid)) {
     customBuffers << bufferuid;
     invalidateFilter();
   }
+}
+
+void BufferViewFilter::removeBuffer(const QModelIndex &index) {
+  if(!(mode & FullCustom))
+    return; // only custom buffers can be customized... obviously... :)
+  
+  if(index.parent() == QModelIndex())
+    return; // only child elements can be deleted
+  
+  uint bufferuid = index.data(BufferTreeModel::BufferIdRole).toUInt();
+  if(customBuffers.contains(bufferuid)) {
+    beginRemoveRows(index.parent(), index.row(), index.row());
+    customBuffers.removeAt(customBuffers.indexOf(bufferuid));
+    endRemoveRows();
+    invalidateFilter();
+  }
   
 }
+
 
 bool BufferViewFilter::filterAcceptBuffer(const QModelIndex &source_bufferIndex) const {
   Buffer::Type bufferType = (Buffer::Type) source_bufferIndex.data(BufferTreeModel::BufferTypeRole).toInt();
@@ -117,10 +131,21 @@ bool BufferViewFilter::filterAcceptBuffer(const QModelIndex &source_bufferIndex)
 
 bool BufferViewFilter::filterAcceptNetwork(const QModelIndex &source_index) const {
   QString net = source_index.data(Qt::DisplayRole).toString();
-  if((mode & SomeNets) && !networks.contains(net))
+  if((mode & SomeNets) && !networks.contains(net)) {
     return false;
-  else
+  } else if(mode & FullCustom) {
+    // let's check if we got a child that want's to show off
+    int childcount = sourceModel()->rowCount(source_index);
+    for(int rowid = 0; rowid < childcount; rowid++) {
+      QModelIndex child = sourceModel()->index(rowid, 0, source_index);
+      uint bufferuid = child.data(BufferTreeModel::BufferIdRole).toUInt();
+      if(customBuffers.contains(bufferuid))
+        return true;
+    }
+    return false;
+  } else {
     return true;
+  }
 }
 
 bool BufferViewFilter::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const {
@@ -138,6 +163,7 @@ bool BufferViewFilter::filterAcceptsRow(int source_row, const QModelIndex &sourc
 }
 
 bool BufferViewFilter::lessThan(const QModelIndex &left, const QModelIndex &right) {
+  // pretty interesting stuff here, eh?
   return QSortFilterProxyModel::lessThan(left, right);
 }
 

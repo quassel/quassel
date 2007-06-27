@@ -38,6 +38,7 @@
 
 MainWin::MainWin() : QMainWindow() {
   ui.setupUi(this);
+  
   //widget = 0;
   //qDebug() << "Available DB drivers: " << QSqlDatabase::drivers ();
   setWindowTitle("Quassel IRC");
@@ -48,6 +49,7 @@ MainWin::MainWin() : QMainWindow() {
   //workspace = new QWorkspace(this);
   //setCentralWidget(workspace);
   statusBar()->showMessage(tr("Waiting for core..."));
+  
 }
 
 void MainWin::init() {
@@ -124,41 +126,31 @@ void MainWin::setupViews() {
   
   BufferTreeModel *model = Client::bufferModel(); // FIXME Where is the delete for that? :p
   connect(model, SIGNAL(bufferSelected(Buffer *)), this, SLOT(showBuffer(Buffer *)));
-  //connect(this, SIGNAL(bufferSelected(Buffer *)), model, SLOT(selectBuffer(Buffer *)));
-  //connect(this, SIGNAL(bufferUpdated(Buffer *)), model, SLOT(bufferUpdated(Buffer *)));
-  //connect(this, SIGNAL(bufferActivity(Buffer::ActivityLevel, Buffer *)), model, SLOT(bufferActivity(Buffer::ActivityLevel, Buffer *)));
   
-  BufferViewDock *all = new BufferViewDock(model, tr("All Buffers"), BufferViewFilter::AllNets, QStringList(), this);
-  registerBufferViewDock(all);
+  addBufferView(tr("All Buffers"), model, BufferViewFilter::AllNets, QStringList());
+  addBufferView(tr("All Channels"), model, BufferViewFilter::AllNets|BufferViewFilter::NoQueries|BufferViewFilter::NoServers, QStringList());
+  addBufferView(tr("All Queries"), model, BufferViewFilter::AllNets|BufferViewFilter::NoChannels|BufferViewFilter::NoServers, QStringList());
+  addBufferView(tr("All Networks"), model, BufferViewFilter::AllNets|BufferViewFilter::NoChannels|BufferViewFilter::NoQueries, QStringList());
+  addBufferView(tr("Full Custom"), model, BufferViewFilter::FullCustom, QStringList());
   
-  BufferViewDock *allchans = new BufferViewDock(model, tr("All Channels"), BufferViewFilter::AllNets|BufferViewFilter::NoQueries|BufferViewFilter::NoServers, QStringList(), this);
-  registerBufferViewDock(allchans);
-  
-  BufferViewDock *allqrys = new BufferViewDock(model, tr("All Queries"), BufferViewFilter::AllNets|BufferViewFilter::NoChannels|BufferViewFilter::NoServers, QStringList(), this);
-  registerBufferViewDock(allqrys);
-
-  
-  BufferViewDock *allnets = new BufferViewDock(model, tr("All Networks"), BufferViewFilter::AllNets|BufferViewFilter::NoChannels|BufferViewFilter::NoQueries, QStringList(), this);
-  registerBufferViewDock(allnets);
-
-  BufferViewDock *fullCustom = new BufferViewDock(model, tr("Full Custom"), BufferViewFilter::FullCustom|BufferViewFilter::SomeNets, QStringList(), this);
-  registerBufferViewDock(fullCustom);
-
   ui.menuViews->addSeparator();
 }
 
-void MainWin::registerBufferViewDock(BufferViewDock *dock) {
-  addDockWidget(Qt::LeftDockWidgetArea, dock);
+void MainWin::addBufferView(const QString &viewname, QAbstractItemModel *model, const BufferViewFilter::Modes &mode, const QStringList &nets) {
+  QDockWidget *dock = new QDockWidget(viewname, this);
+  dock->setObjectName(QString("ViewDock-" + viewname)); // should be unique for mainwindow state!
   dock->setAllowedAreas(Qt::RightDockWidgetArea|Qt::LeftDockWidgetArea);
-  netViews.append(dock);
+  //dock->setContentsMargins(4,4,4,4);
+
+  //create the view and initialize it's filter
+  BufferView *view = new BufferView(dock);
+  view->setFilteredModel(model, mode, nets);
+  dock->setWidget(view);
+  
+  addDockWidget(Qt::LeftDockWidgetArea, dock);
   ui.menuViews->addAction(dock->toggleViewAction());
   
-  /*
-  connect(this, SIGNAL(bufferSelected(Buffer *)), view, SLOT(selectBuffer(Buffer *)));
-  connect(this, SIGNAL(bufferDestroyed(Buffer *)), view, SLOT(bufferDestroyed(Buffer *)));
-  connect(view, SIGNAL(bufferSelected(Buffer *)), this, SLOT(showBuffer(Buffer *)));
-  view->setBuffers(buffers.values());
-   */
+  netViews.append(dock);
 }
 
 AbstractUiMsg *MainWin::layoutMsg(const Message &msg) {
@@ -206,6 +198,7 @@ void MainWin::showBuffer(Buffer *b) {
   currentBuffer = b->bufferId().groupId();
   //emit bufferSelected(b);
   //qApp->processEvents();
+      
   ui.bufferWidget->setBuffer(b);
   //emit bufferSelected(b);
 }

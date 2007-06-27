@@ -53,9 +53,9 @@ public slots:
   void changeCurrent(const QModelIndex &, const QModelIndex &);
   void doubleClickReceived(const QModelIndex &);
   void select(const QModelIndex &);
-  //void enterDrag();
-  //void leaveDrag();
   void dropEvent(QDropEvent *);
+  void removeBuffer(const QModelIndex &);
+
   
 signals:
   void currentChanged(const QModelIndex &, const QModelIndex &);
@@ -67,7 +67,7 @@ private:
   bool filterAcceptNetwork(const QModelIndex &) const;
   bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
   bool lessThan(const QModelIndex &, const QModelIndex &);
-  void addBuffer(const uint &, const QString &);
+  void addBuffer(const uint &);
   
   Modes mode;
   QStringList networks;

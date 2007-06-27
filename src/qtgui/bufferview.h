@@ -38,20 +38,17 @@ public:
   void setModel(QAbstractItemModel *model);
   void setFilteredModel(QAbstractItemModel *model, BufferViewFilter::Modes mode, QStringList nets);
   
-  //void dragEnterEvent(QDragEnterEvent *);
-  //void dragLeaveEvent(QDragLeaveEvent *);
-  
 public slots:
   void select(const QModelIndex &);
     
 signals:
   void eventDropped(QDropEvent *);
+  void removeBuffer(const QModelIndex &);
   void selectionChanged(const QModelIndex &, QItemSelectionModel::SelectionFlags);
-  //void dragEnter();
-  //void dragLeave();
   
 protected:
   void dropEvent(QDropEvent *);
+  void keyPressEvent(QKeyEvent *);
   void rowsInserted (const QModelIndex & parent, int start, int end);
 };
 

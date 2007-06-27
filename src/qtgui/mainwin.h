@@ -29,13 +29,11 @@
 #include "message.h"
 #include "chatwidget.h"
 #include "bufferviewfilter.h"
-#include "bufferviewwidget.h"
+#include "bufferview.h"
 
 class ServerListDlg;
 class CoreConnectDlg;
-//class BufferViewDock;
 class Buffer;
-class BufferWidget;
 class SettingsDlg;
 
 //!\brief The main window and central object of Quassel GUI.
@@ -51,7 +49,7 @@ class MainWin : public QMainWindow, public AbstractUi {
     virtual ~MainWin();
 
     void init();
-    void registerBufferViewDock(BufferViewDock *);
+    void addBufferView(const QString &, QAbstractItemModel *, const BufferViewFilter::Modes &, const QStringList &);
 
     AbstractUiMsg *layoutMsg(const Message &);
 
@@ -88,7 +86,7 @@ class MainWin : public QMainWindow, public AbstractUi {
 
     uint currentBuffer;
 
-    QList<BufferViewDock *> netViews;
+    QList<QDockWidget *> netViews;
 
 };
 
