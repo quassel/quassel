@@ -23,14 +23,13 @@
 
 #include <QString>
 #include <QVariant>
-#include <QSqlDatabase>
+#include <QTcpServer>
+#include <QTcpSocket>
 
-#include "server.h"
-#include "storage.h"
-#include "global.h"
 #include "coreproxy.h"
 
 class CoreSession;
+class Storage;
 
 class Core : public QObject {
   Q_OBJECT
@@ -79,100 +78,5 @@ class Core : public QObject {
     QHash<QTcpSocket *, UserId> validClients;
     QHash<QTcpSocket *, quint32> blockSizes;
 };
-
-class CoreSession : public QObject {
-  Q_OBJECT
-
-  public:
-    CoreSession(UserId, Storage *);
-    ~CoreSession();
-
-    QList<BufferId> buffers() const;
-    inline UserId userId();
-    QVariant sessionState();
-    CoreProxy *proxy();
-
-  public slots:
-    void connectToIrc(QStringList);
-    void processSignal(ClientSignal, QVariant, QVariant, QVariant);
-    void sendBacklog(BufferId, QVariant, QVariant);
-    void msgFromGui(BufferId, QString message);
-    void sendServerStates();
-
-  signals:
-    void proxySignal(CoreSignal, QVariant arg1 = QVariant(), QVariant arg2 = QVariant(), QVariant arg3 = QVariant());
-
-    void msgFromGui(QString net, QString buf, QString message);
-    void displayMsg(Message message);
-    void displayStatusMsg(QString, QString);
-
-    void connectToIrc(QString net);
-    void disconnectFromIrc(QString net);
-    void serverStateRequested();
-
-    void backlogData(BufferId, QList<QVariant>, bool done);
-
-    void bufferIdUpdated(BufferId);
-
-  private slots:
-    //void recvProxySignal(CoreSignal, QVariant arg1 = QVariant(), QVariant arg2 = QVariant(), QVariant arg3 = QVariant());
-    void globalDataUpdated(UserId, QString);
-    void recvStatusMsgFromServer(QString msg);
-    void recvMessageFromServer(Message::Type, QString target, QString text, QString sender = "", quint8 flags = Message::None);
-    void serverConnected(QString net);
-    void serverDisconnected(QString net);
-
-  private:
-    CoreProxy *coreProxy;
-    Storage *storage;
-    QHash<QString, Server *> servers;
-    UserId user;
-
-};
-
-/*
-class Core : public QObject {
-  Q_OBJECT
-
-  public:
-
-    Core();
-    ~Core();
-    QList<BufferId> getBuffers();
-
-  public slots:
-    void connectToIrc(QStringList);
-    void sendBacklog(BufferId, QVariant, QVariant);
-    void msgFromGUI(BufferId, QString message);
-
-  signals:
-    void msgFromGUI(QString net, QString buf, QString message);
-    void displayMsg(Message message);
-    void displayStatusMsg(QString, QString);
-
-    void connectToIrc(QString net);
-    void disconnectFromIrc(QString net);
-    void serverStateRequested();
-
-    void backlogData(BufferId, QList<QVariant>, bool done);
-
-    void bufferIdUpdated(BufferId);
-
-  private slots:
-    void globalDataUpdated(QString);
-    void recvStatusMsgFromServer(QString msg);
-    void recvMessageFromServer(Message::Type, QString target, QString text, QString sender = "", quint8 flags = Message::None);
-    void serverDisconnected(QString net);
-
-  private:
-    Storage *storage;
-    QHash<QString, Server *> servers;
-    UserId user;
-
-};
-
-*/
-//extern Core *core;
-
 
 #endif

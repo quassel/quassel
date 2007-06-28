@@ -19,9 +19,11 @@
  ***************************************************************************/
 
 #include "client.h"
-#include "clientproxy.h"
+
 #include "buffer.h"
 #include "buffertreemodel.h"
+#include "clientproxy.h"
+#include "quasselui.h"
 #include "util.h"
 
 Client * Client::instanceptr = 0;
@@ -33,8 +35,6 @@ QHash<uint, BufferId> Client::bufferIds;
 QHash<QString, QHash<QString, VarMap> > Client::nicks;
 QHash<QString, bool> Client::netConnected;
 QHash<QString, QString> Client::ownNick;
-//QList<BufferId> Client::coreBuffers;
-
 
 Client *Client::instance() {
   if(instanceptr) return instanceptr;
@@ -180,7 +180,6 @@ void Client::syncToCore() {
     BufferId id = vid.value<BufferId>();
     bufferIds[id.uid()] = id;  // make lookups by id faster
     buffer(id);                // create all buffers, so we see them in the network views
-    //emit requestBacklog(id, -1, -1);  // TODO: use custom settings for backlog request
   }
   connectedToCore = true;
   emit connected();
@@ -403,5 +402,4 @@ void Client::setOwnNick(QString net, QString nick) {
     }
   }
 }
-
 

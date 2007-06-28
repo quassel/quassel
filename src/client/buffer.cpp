@@ -17,18 +17,11 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#include "buffer.h"
 
 #include "client.h"
-#include "buffer.h"
 #include "util.h"
 
-/*
-Buffer::Buffer(QString netname, QString bufname) {
-  Buffer(BufferId(0, netname, bufname));
-
-
-}
-*/
 
 Buffer::Buffer(BufferId bufid) {
   id = bufid;
@@ -172,9 +165,3 @@ void Buffer::setOwnNick(QString nick) {
   _ownNick = nick;
   emit ownNickSet(nick);
 }
-
-/****************************************************************************************/
-
-
-/****************************************************************************************/
-

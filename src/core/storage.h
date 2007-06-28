@@ -22,9 +22,9 @@
 #define _STORAGE_H_
 
 #include <QtCore>
-#include <QtSql>
+#include <QSqlDatabase>
 
-#include "global.h"
+//#include "global.h"
 #include "message.h"
 
 class Storage : public QObject {
@@ -158,7 +158,7 @@ class Storage : public QObject {
     // Old stuff, just for importing old file-based data
     void initBackLogOld(UserId id);
 
-    QSqlDatabase logDb;
+    QSqlDatabase logDb; // FIXME this does not belong in the base class!
       
     bool backLogEnabledOld;
     QDir backLogDir;

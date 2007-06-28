@@ -21,9 +21,9 @@
 #ifndef _CHANNELWIDGETINPUT_H_
 #define _CHANNELWIDGETINPUT_H_
 
-#include <QtCore>
 #include <QtGui>
-#include "tabcompleter.h"
+
+class TabCompleter;
 
 class ChannelWidgetInput : public QLineEdit {
   Q_OBJECT

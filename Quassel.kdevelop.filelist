@@ -1,8 +1,4 @@
 # KDevelop Custom Project File List
-dev-notes
-dev-notes/builtin_cmds.obsolete.cpp
-dev-notes/paulk-mainwindow.ui
-Makefile
 src
 src/client
 src/client/buffer.cpp
@@ -18,13 +14,15 @@ src/client/treemodel.cpp
 src/client/treemodel.h
 src/CMakeLists.txt
 src/common
+src/common/build_core.cpp
+src/common/build_mono.cpp
+src/common/build_qtgui.cpp
 src/common/CMakeLists.txt
 src/common/global.cpp
 src/common/global.h
 src/common/logger.cpp
 src/common/logger.h
-src/common/main_core.cpp
-src/common/main_gui.cpp
+src/common/main.cpp
 src/common/message.cpp
 src/common/message.h
 src/common/proxy_common.h
@@ -34,13 +32,13 @@ src/common/settings.h
 src/common/util.cpp
 src/common/util.h
 src/core
-src/core/backlog.cpp
-src/core/backlog.h
 src/core/CMakeLists.txt
 src/core/core.cpp
 src/core/core.h
 src/core/coreproxy.cpp
 src/core/coreproxy.h
+src/core/coresession.cpp
+src/core/coresession.h
 src/core/server.cpp
 src/core/server.h
 src/core/sqlitestorage.cpp
@@ -54,8 +52,6 @@ src/qtgui/bufferview.cpp
 src/qtgui/bufferviewfilter.cpp
 src/qtgui/bufferviewfilter.h
 src/qtgui/bufferview.h
-src/qtgui/bufferviewwidget.cpp
-src/qtgui/bufferviewwidget.h
 src/qtgui/bufferwidget.cpp
 src/qtgui/bufferwidget.h
 src/qtgui/channelwidgetinput.cpp
@@ -71,6 +67,8 @@ src/qtgui/identities.cpp
 src/qtgui/identities.h
 src/qtgui/mainwin.cpp
 src/qtgui/mainwin.h
+src/qtgui/qtgui.cpp
+src/qtgui/qtgui.h
 src/qtgui/serverlist.cpp
 src/qtgui/serverlist.h
 src/qtgui/settingsdlg.cpp
@@ -99,7 +97,3 @@ src/qtgui/ui/nickeditdlg.ui
 src/qtgui/ui/servereditdlg.ui
 src/qtgui/ui/serverlistdlg.ui
 src/qtgui/ui/settingsdlg.ui
-src/common/build_mono.cpp
-src/common/build_qtgui.cpp
-src/common/build_core.cpp
-src/common/main.cpp

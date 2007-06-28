@@ -25,12 +25,11 @@
 
 #include "treemodel.h"
 #include "buffer.h"
-#include "clientproxy.h"
 
 /*****************************************
  *  Fancy Buffer Items
  *****************************************/
-class BufferTreeItem : public TreeItem{
+class BufferTreeItem : public TreeItem {
   Q_OBJECT
   
 public:

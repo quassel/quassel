@@ -18,17 +18,14 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _GUIPROXY_H_
-#define _GUIPROXY_H_
+#ifndef _CLIENTPROXY_H_
+#define _CLIENTPROXY_H_
+
+#include <QStringList>
 
 #include "proxy_common.h"
 #include "message.h"
 #include "global.h"
-
-#include <QObject>
-#include <QVariant>
-#include <QTcpSocket>
-#include <QStringList>
 
 class ClientProxy : public QObject {
   Q_OBJECT
@@ -45,9 +42,6 @@ class ClientProxy : public QObject {
     inline void gsRequestNetworkStates()                              { send(GS_REQUEST_NETWORK_STATES); }
 
     inline void gsGeneric(ClientSignal sig, QVariant v1 = QVariant(), QVariant v2 = QVariant(), QVariant v3 = QVariant()) { send(sig, v1, v2, v3); }
-
-    //void connectToCore(QString host, quint16 port);
-    //void disconnectFromCore();
 
   signals:
     void csCoreState(QVariant);
@@ -71,36 +65,14 @@ class ClientProxy : public QObject {
 
     void csGeneric(CoreSignal, QVariant, QVariant, QVariant);
 
-    //void coreConnected();
-    //void coreDisconnected();
-    //void coreConnectionError(QString errorMsg);
-
-    //void recvPartialItem(quint32 avail, quint32 size);
-
     void send(ClientSignal, QVariant arg1 = QVariant(), QVariant arg2 = QVariant(), QVariant arg3 = QVariant());
 
   public slots:
     void recv(CoreSignal, QVariant arg1 = QVariant(), QVariant arg2 = QVariant(), QVariant arg3 = QVariant());
 
-  private slots:
-    //void updateCoreData(QString);
-
-    //void serverError(QAbstractSocket::SocketError);
-    //void serverHasData();
-
   private:
     ClientProxy();
     static ClientProxy *instanceptr;
-
-    //QTcpSocket socket;
-    //quint32 blockSize;
-
-  //friend class CoreProxy;
-
 };
-
-//extern ClientProxy *guiProxy;
-
-
 
 #endif

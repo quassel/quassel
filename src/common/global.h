@@ -22,15 +22,17 @@
 #define _GLOBAL_H_
 
 /** The protocol version we use fo the communication between core and GUI */
-#define GUI_PROTOCOL 2
+#define GUI_PROTOCOL 3
 
 #define BACKLOG_FORMAT 2
 #define BACKLOG_STRING "QuasselIRC Backlog File"
 
 class Global;
 
-#include <QtCore>
-//#include <QMutex>
+#include <QHash>
+#include <QMutex>
+#include <QString>
+#include <QVariant>
 
 /* Some global stuff */
 typedef QMap<QString, QVariant> VarMap;

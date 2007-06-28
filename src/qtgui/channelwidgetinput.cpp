@@ -20,6 +20,8 @@
 
 #include "channelwidgetinput.h"
 
+#include "tabcompleter.h"
+
 ChannelWidgetInput::ChannelWidgetInput(QWidget *parent) : QLineEdit(parent) {
   idx = 0;
   connect(this, SIGNAL(returnPressed()), this, SLOT(enter()));

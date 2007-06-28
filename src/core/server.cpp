@@ -17,14 +17,13 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-
-#include "util.h"
-#include "global.h"
 #include "server.h"
-#include "message.h"
 
 #include <QMetaObject>
+#include <QMetaMethod>
 #include <QDateTime>
+
+#include "util.h"
 
 Server::Server(UserId uid, QString net) : user(uid), network(net) {
   QString MQUOTE = QString('\020');

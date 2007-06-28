@@ -20,6 +20,7 @@
 
 #include "sqlitestorage.h"
 
+#include <QtSql>
 
 SqliteStorage::SqliteStorage() {
   // TODO I don't think that this path is failsafe for windows users :) 

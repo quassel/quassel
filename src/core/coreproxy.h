@@ -25,9 +25,10 @@
 #include "message.h"
 #include "global.h"
 
-#include <QtCore>
-#include <QTcpSocket>
-#include <QTcpServer>
+//#include <QtCore>
+#include <QStringList>
+//#include <QTcpSocket>
+//#include <QTcpServer>
 
 /** This class is the Core side of the proxy. The Core connects its signals and slots to it,
  *  and the calls are marshalled and sent to (or received and unmarshalled from) the GuiProxy.
@@ -74,20 +75,10 @@ class CoreProxy : public QObject {
     void send(CoreSignal, QVariant arg1 = QVariant(), QVariant arg2 = QVariant(), QVariant arg3 = QVariant());
 
   public:
-    //void send(CoreSignal, QVariant arg1 = QVariant(), QVariant arg2 = QVariant(), QVariant arg3 = QVariant());
     void recv(ClientSignal, QVariant arg1 = QVariant(), QVariant arg2 = QVariant(), QVariant arg3 = QVariant());
 
-  private:
-    void processClientUpdate(QTcpSocket *, QString key, QVariant data);
 
-
-  private:
-
-  friend class GuiProxy;
 };
-
-//extern CoreProxy *coreProxy;
-
 
 
 #endif

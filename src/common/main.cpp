@@ -18,11 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <iostream>
-
-#include "global.h"
 #include "settings.h"
-#include "quasselui.h"
 
 #if defined BUILD_CORE
 #include <QCoreApplication>
@@ -30,19 +26,19 @@
 
 #elif defined BUILD_QTGUI
 #include <QApplication>
-#include "style.h"
 #include "client.h"
 #include "clientproxy.h"
-#include "mainwin.h"
+#include "qtgui.h"
+#include "style.h"
 
 #elif defined BUILD_MONO
 #include <QApplication>
-#include "core.h"
-#include "coreproxy.h"
-#include "style.h"
 #include "client.h"
 #include "clientproxy.h"
-#include "mainwin.h"
+#include "core.h"
+#include "coresession.h"
+#include "qtgui.h"
+#include "style.h"
 
 #else
 #error "Something is wrong - you need to #define a build mode!"
@@ -59,8 +55,6 @@ int main(int argc, char **argv) {
   Global::runMode = Global::Monolithic;
   QApplication app(argc, argv);
 #endif
-  //AbstractUi *foo = new AbstractUi();
-  //foo->init();
   QCoreApplication::setOrganizationDomain("quassel-irc.org");
   QCoreApplication::setApplicationName("Quassel IRC");
   QCoreApplication::setOrganizationName("Quassel IRC Development Team");
@@ -77,8 +71,6 @@ int main(int argc, char **argv) {
   QtGui *gui = new QtGui();
   Client::init(gui);
   gui->init();
-//#else
-//  Core::instance(); // create and init the core object
 #endif
 
   int exitCode = app.exec();
@@ -100,8 +92,8 @@ int main(int argc, char **argv) {
 #ifdef BUILD_QTGUI
 QVariant Client::connectToLocalCore(QString, QString) { return QVariant(); }
 void Client::disconnectFromLocalCore() {}
-#elif defined BUILD_MONO
 
+#elif defined BUILD_MONO
 QVariant Client::connectToLocalCore(QString user, QString passwd) {
   // TODO catch exceptions
   QVariant reply = Core::connectLocalClient(user, passwd);

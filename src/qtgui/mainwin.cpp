@@ -18,50 +18,16 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QtGui>
-#include <QtCore>
-#include <QSqlDatabase>
-
-#include "client.h"
-#include "util.h"
-#include "global.h"
-#include "message.h"
-#include "clientproxy.h"
-
 #include "mainwin.h"
-#include "buffer.h"
+
+#include "bufferview.h"
 #include "chatline.h"
-#include "serverlist.h"
+#include "client.h"
+#include "clientproxy.h"
 #include "coreconnectdlg.h"
+#include "serverlist.h"
 #include "settingsdlg.h"
 #include "settingspages.h"
-
-QtGui::QtGui() : AbstractUi() {
-  mainWin = new MainWin(this);
-  connect(mainWin, SIGNAL(connectToCore(const VarMap &)), this, SIGNAL(connectToCore(const VarMap &)));
-  connect(mainWin, SIGNAL(disconnectFromCore()), this, SIGNAL(disconnectFromCore()));
-  
-}
-
-QtGui::~QtGui() {
-  delete mainWin;
-}
-
-void QtGui::init() {
-  mainWin->init();
-}
-
-AbstractUiMsg *QtGui::layoutMsg(const Message &msg) {
-  return mainWin->layoutMsg(msg);
-}
-
-void QtGui::connectedToCore() {
-  mainWin->connectedToCore();
-}
-
-void QtGui::disconnectedFromCore() {
-  mainWin->disconnectedFromCore();
-}
 
 MainWin::MainWin(QtGui *_gui, QWidget *parent) : QMainWindow(parent), gui(_gui) {
   ui.setupUi(this);
@@ -109,18 +75,6 @@ void MainWin::init() {
   QString net = s.value("CurrentNetwork", "").toString();
   QString buf = s.value("CurrentBuffer", "").toString();
   s.endGroup();
-  /*
-  if(!net.isEmpty()) {
-    if(buffers.contains(net)) {
-      if(buffers[net].contains(buf)) {
-        showBuffer(net, buf);
-      } else {
-        showBuffer(net, "");
-      }
-    }
-  }
-  */
-
 }
 
 MainWin::~MainWin() {

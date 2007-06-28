@@ -24,8 +24,6 @@
 #include "ui_bufferwidget.h"
 
 #include "global.h"
-#include "message.h"
-#include "chatwidget.h"
 
 class Buffer;
 struct BufferState;

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-07 by The Quassel Team                             *
+ *   Copyright (C) 2005-07 by The Quassel IRC Development Team             *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,28 +18,31 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "bufferviewwidget.h"
+#ifndef _QTGUI_H_
+#define _QTGUI_H_
 
-/*****************************************
- * This Widget Contains the BufferView
- *****************************************/
-BufferViewWidget::BufferViewWidget(QWidget *parent) : QWidget(parent) {
-  ui.setupUi(this);
-}
+#include "quasselui.h"
+class MainWin;
 
-QSize BufferViewWidget::sizeHint() const {
-  return QSize(150,100);
-}
+//! This class encapsulates Quassel's Qt-based GUI.
+/** This is basically a wrapper around MainWin, which is necessary because we cannot derive MainWin
+ *  from both QMainWindow and AbstractUi (because of multiple inheritance of QObject).
+ */
+class QtGui : public AbstractUi {
+  Q_OBJECT
 
+  public:
+    QtGui();
+    ~QtGui();
+    void init();
+    AbstractUiMsg *layoutMsg(const Message &);
 
-/*****************************************
- * Dock and API for the BufferViews
- *****************************************/
-BufferViewDock::BufferViewDock(QAbstractItemModel *model, const QString &viewname, const BufferViewFilter::Modes &mode, const QStringList &nets, QWidget *parent) : QDockWidget(parent) {
-  setObjectName(QString("View-" + viewname)); // should be unique for mainwindow state!
-  setWindowTitle(viewname);
+  protected slots:
+    void connectedToCore();
+    void disconnectedFromCore();
 
-  BufferViewWidget *viewWidget = new BufferViewWidget(this);
-  viewWidget->treeView()->setFilteredModel(model, mode, nets);
-  setWidget(viewWidget);
-}
+  private:
+    MainWin *mainWin;
+};
+
+#endif

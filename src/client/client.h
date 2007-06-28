@@ -21,16 +21,20 @@
 #ifndef _CLIENT_H_
 #define _CLIENT_H_
 
-#include <QtCore>
-#include <QtNetwork>
+#include <QAbstractSocket>
+#include <QTcpSocket>
+#include <QList>
 
-#include "quasselui.h"
 #include "buffer.h"
 #include "message.h"
 #include "proxy_common.h"
 
+class AbstractUi;
 class ClientProxy;
 class BufferTreeModel;
+class QtGui;
+
+class QTimer;
 
 class Client : public QObject {
   Q_OBJECT
@@ -127,7 +131,6 @@ class Client : public QObject {
     static QHash<QString, QHash<QString, VarMap> > nicks;
     static QHash<QString, bool> netConnected;
     static QHash<QString, QString> ownNick;
-    //static QList<BufferId> coreBuffers;
 
     QTimer *layoutTimer;
     QList<Buffer *> layoutQueue;

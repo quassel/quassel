@@ -21,11 +21,13 @@
 #ifndef _SERVER_H_
 #define _SERVER_H_
 
-#include <QtCore>
+#include <QAbstractSocket>
+#include <QString>
+#include <QStringList>
+#include <QTcpSocket>
+#include <QThread>
 #include <QTimer>
-#include <QtNetwork>
 
-#include "global.h"
 #include "message.h"
 
 #define DEFAULT_PORT 6667

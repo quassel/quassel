@@ -17,15 +17,13 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#include <QObject>
+#include <QStringList>
 
 #include "global.h"
 #include "logger.h"
-#include "core.h"
 #include "message.h"
 #include "util.h"
-
-#include <QtCore>
-#include <QDomDocument>
 
 extern void messageHandler(QtMsgType type, const char *msg);
 

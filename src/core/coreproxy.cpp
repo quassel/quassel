@@ -18,47 +18,11 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QDebug>
-
 #include "coreproxy.h"
-#include "global.h"
-#include "util.h"
-#include "core.h"
 
 CoreProxy::CoreProxy() {
-//  connect(global, SIGNAL(dataPutLocally(QString)), this, SLOT(updateGlobalData(QString)));
-//  connect(&server, SIGNAL(newConnection()), this, SLOT(incomingConnection()));
-}
 
-/*
-void CoreProxy::processClientUpdate(QTcpSocket *socket, QString key, QVariant data) {
-  global->updateData(key, data);
-  QList<QVariant> sigdata;
-  sigdata.append(CS_UPDATE_GLOBAL_DATA); sigdata.append(key); sigdata.append(data); sigdata.append(QVariant());
-  QTcpSocket *s;
-  foreach(s, clients) {
-    if(s != socket) writeDataToDevice(s, QVariant(sigdata));
-  }
 }
-
-void CoreProxy::updateGlobalData(QString key) {
-  QVariant data = global->getData(key);
-  emit csUpdateGlobalData(key, data);
-}
-*/
-
-/*
-void CoreProxy::send(CoreSignal sig, QVariant arg1, QVariant arg2, QVariant arg3) {
-
-  QList<QVariant> sigdata;
-  sigdata.append(sig); sigdata.append(arg1); sigdata.append(arg2); sigdata.append(arg3);
-  //qDebug() << "Sending signal: " << sigdata;
-  QTcpSocket *socket;
-  foreach(socket, clients) {
-    writeDataToDevice(socket, QVariant(sigdata));
-  }
-}
-*/
 
 void CoreProxy::recv(ClientSignal sig, QVariant arg1, QVariant arg2, QVariant arg3) {
   //qDebug() << "[CORE] Received signal" << sig << ":" << arg1<<arg2<<arg3;
@@ -73,6 +37,3 @@ void CoreProxy::recv(ClientSignal sig, QVariant arg1, QVariant arg2, QVariant ar
     default: emit gsGeneric(sig, arg1, arg2, arg3);
   }
 }
-
-
-//CoreProxy *coreProxy;

@@ -21,60 +21,6 @@
 #include "message.h"
 #include <QDataStream>
 
-/*
-Message Message::plain(QString _target, QString _text, QString _sender, quint8 _flags) {
-  return Message(_target, Plain, _text, _sender, _flags);
-}
-
-Message Message::notice(QString _target, QString _text, QString _sender, quint8 _flags) {
-  return Message(_target, Notice, _text, _sender, _flags);
-}
-
-Message Message::action(QString _target, QString _text, QString _sender, quint8 _flags) {
-  return Message(_target, Action, _text, _sender, _flags);
-}
-
-Message Message::kick(QString _target, QString _text, QString _sender, quint8 _flags) {
-  return Message(_target, Kick, _text, _sender, _flags);
-}
-
-Message Message::join(QString _target, QString _text, QString _sender, quint8 _flags) {
-  return Message(_target, Join, _text, _sender, _flags);
-}
-
-Message Message::part(QString _target, QString _text, QString _sender, quint8 _flags) {
-  return Message(_target, Part, _text, _sender, _flags);
-}
-
-Message Message::nick(QString _target, QString _text, QString _sender, quint8 _flags) {
-  return Message(_target, Nick, _text, _sender, _flags);
-}
-
-Message Message::mode(QString _target, QString _text, QString _sender, quint8 _flags) {
-  return Message(_target, Mode, _text, _sender, _flags);
-}
-
-Message Message::quit(QString _target, QString _text, QString _sender, quint8 _flags) {
-  return Message(_target, Quit, _text, _sender, _flags);
-}
-
-Message Message::kill(QString _target, QString _text, QString _sender, quint8 _flags) {
-  return Message(_target, Kill, _text, _sender, _flags);
-}
-
-Message Message::server(QString _target, QString _text, QString _sender, quint8 _flags) {
-  return Message(_target, Server, _text, _sender, _flags);
-}
-
-Message Message::info(QString _target, QString _text, QString _sender, quint8 _flags) {
-  return Message(_target, Info, _text, _sender, _flags);
-}
-
-Message Message::error(QString _target, QString _text, QString _sender, quint8 _flags) {
-  return Message(_target, Error, _text, _sender, _flags);
-}
-*/
-
 QDataStream &operator<<(QDataStream &out, const Message &msg) {
   /*
   out << (quint32)msg.timeStamp.toTime_t() << (quint8)msg.type << (quint8)msg.flags

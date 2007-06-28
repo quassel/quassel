@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005/06 by The Quassel Team                             *
+ *   Copyright (C) 2005-07 by The Quassel IRC Development Team             *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -17,41 +17,34 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include <iostream>
 
-#include <QCoreApplication>
-#include <QtNetwork>
-#include <QtCore>
-#include <QtDebug>
+#include "qtgui.h"
 
-#include "global.h"
-#include "core.h"
-#include "coreproxy.h"
-#include "util.h"
+#include "mainwin.h"
 
-int main(int argc, char **argv) {
-  QCoreApplication app(argc, argv);
-  QCoreApplication::setOrganizationDomain("quassel-irc.org");
-  QCoreApplication::setApplicationName("Quassel IRC");
-  QCoreApplication::setOrganizationName("The Quassel Team");
+QtGui::QtGui() : AbstractUi() {
+  mainWin = new MainWin(this);
+  connect(mainWin, SIGNAL(connectToCore(const VarMap &)), this, SIGNAL(connectToCore(const VarMap &)));
+  connect(mainWin, SIGNAL(disconnectFromCore()), this, SIGNAL(disconnectFromCore()));
 
-  Global::runMode = Global::CoreOnly;
-  Global::quasselDir = QDir::homePath() + "/.quassel";
-
-  global = new Global();
-  coreProxy = new CoreProxy();
-
-  //Logger *logger = new Logger();
-  //Quassel::setLogger(logger);
-
-  int exitCode = app.exec();
-  delete core;
-  delete coreProxy;
-  delete global;
-  return exitCode;
 }
 
-void CoreProxy::sendToGUI(CoreSignal, QVariant, QVariant, QVariant) {
-  // dummy function, no GUI available!
+QtGui::~QtGui() {
+  delete mainWin;
 }
 
+void QtGui::init() {
+  mainWin->init();
+}
+
+AbstractUiMsg *QtGui::layoutMsg(const Message &msg) {
+  return mainWin->layoutMsg(msg);
+}
+
+void QtGui::connectedToCore() {
+  mainWin->connectedToCore();
+}
+
+void QtGui::disconnectedFromCore() {
+  mainWin->disconnectedFromCore();
+}

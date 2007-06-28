@@ -21,7 +21,9 @@
 #ifndef _TREEMODEL_H_
 #define _TREEMODEL_H_
 
-#include <QtCore>
+#include <QList>
+#include <QVariant>
+#include <QAbstractItemModel>
 
 /*****************************************
  *  general item used in the Tree Model

@@ -21,18 +21,14 @@
 #ifndef _BUFFER_H_
 #define _BUFFER_H_
 
-#include <QtCore>
-
 #include "global.h"
-#include "message.h"
-#include "quasselui.h"
 
+class AbstractUiMsg;
+class Message;
 struct BufferState;
 
 //!\brief Encapsulates the contents of a single channel, query or server status context.
-/** A Buffer maintains a list of existing nicks and their status. New messages can be appended using
- * displayMsg(). A buffer displays its contents by way of a BufferWidget, which can be shown
- * (and created on demand) by calling showWidget().
+/** A Buffer maintains a list of existing nicks and their status.
  */
 class Buffer : public QObject {
   Q_OBJECT
@@ -106,6 +102,6 @@ class Buffer : public QObject {
     QList<AbstractUiMsg *> layoutedMsgs;
 
 };
-Q_DECLARE_OPERATORS_FOR_FLAGS(Buffer::ActivityLevel)    
+Q_DECLARE_OPERATORS_FOR_FLAGS(Buffer::ActivityLevel)
 
 #endif

@@ -21,38 +21,17 @@
 #ifndef _MAINWIN_H_
 #define _MAINWIN_H_
 
-#include <QtGui>
 #include "ui_mainwin.h"
 
-//#include "global.h"
-#include "message.h"
-#include "chatwidget.h"
+#include "qtgui.h"
 #include "bufferviewfilter.h"
-#include "bufferview.h"
 
 class ServerListDlg;
 class CoreConnectDlg;
 class Buffer;
 class SettingsDlg;
-class MainWin;
-
-class QtGui : public AbstractUi {
-  Q_OBJECT
-
-  public:
-    QtGui();
-    ~QtGui();
-    void init();
-    AbstractUiMsg *layoutMsg(const Message &);
-
-  protected slots:
-    void connectedToCore();
-    void disconnectedFromCore();
-
-  private:
-    MainWin *mainWin;
-};
-
+class QtGui;
+class Message;
 
 //!\brief The main window of Quassel's QtGui.
 class MainWin : public QMainWindow {

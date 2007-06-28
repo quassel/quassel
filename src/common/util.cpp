@@ -20,8 +20,6 @@
 
 #include "util.h"
 
-#include <QtCore>
-
 QString nickFromMask(QString mask) {
   return mask.section('!', 0, 0);
 }

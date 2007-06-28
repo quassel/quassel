@@ -20,7 +20,7 @@
 
 #include <QColor>  // FIXME Dependency on QtGui!
 
-#include "global.h"
+#include "clientproxy.h"
 #include "buffertreemodel.h"
 
 /*****************************************

@@ -21,7 +21,7 @@
 #ifndef _LOGGER_H_
 #define _LOGGER_H_
 
-#include <QtCore>
+#include <QObject>
 
 class Logger : public QObject {
   Q_OBJECT

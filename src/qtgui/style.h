@@ -22,7 +22,8 @@
 #define _STYLE_H_
 
 #include <QtCore>
-#include <QtGui>
+#include <QTextCharFormat>
+#include <QTextLayout>
 
 class Style {
 

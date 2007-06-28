@@ -21,11 +21,12 @@
 #ifndef _SQLITESTORAGE_H_
 #define _SQLITESTORAGE_H_
 
-#include <QtCore>
 #include <QCryptographicHash>
 
 #include "global.h"
 #include "storage.h"
+
+class QSqlQuery;
 
 class SqliteStorage : public Storage {
   Q_OBJECT

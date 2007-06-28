@@ -41,7 +41,6 @@ class AbstractUi : public QObject {
   Q_OBJECT
 
   public:
-//    virtual ~AbstractUi() {};
     virtual void init() {};  // called after the client is initialized
     virtual AbstractUiMsg *layoutMsg(const Message &) = 0;
 

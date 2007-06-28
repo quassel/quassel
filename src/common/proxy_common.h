@@ -33,5 +33,4 @@ enum CoreSignal { CS_CORE_STATE, CS_SERVER_CONNECTED, CS_SERVER_DISCONNECTED, CS
 
 };
 
-
 #endif

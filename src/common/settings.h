@@ -21,7 +21,8 @@
 #ifndef _SETTINGS_H_
 #define _SETTINGS_H_
 
-#include <QtCore>
+#include <QString>
+#include <QVariant>
 
 class Settings {
 
