@@ -19,6 +19,8 @@
  ***************************************************************************/
 
 #include "util.h"
+#include <QDebug>
+#include <QTextCodec>
 
 QString nickFromMask(QString mask) {
   return mask.section('!', 0, 0);
@@ -38,6 +40,38 @@ QString hostFromMask(QString mask) {
 
 bool isChannelName(QString str) {
   return QString("#&!+").contains(str[0]);
+}
+
+QString decodeString(QByteArray input, QString encoding) {
+  // First, we check if it's utf8. It is very improbable to encounter a string that looks like
+  // valid utf8, but in fact is not. This means that if the input string passes as valid utf8, it
+  // is safe to assume that it is.
+  Q_ASSERT(sizeof(const char) == sizeof(quint8));  // just to make sure
+  bool isUtf8 = true;
+  int cnt = 0;
+  for(int i = 0; i < input.size(); i++) {
+    if(cnt) {
+      if((input[i] & 0xc0) != 0x80) { isUtf8 = false; break; }  // Following byte does not start with 10
+      cnt--;
+      continue;
+    }
+    if(!(input[i] & 0x80)) continue; // 7 bit is ok
+    if((input[i] & 0xf8) == 0xf0) { cnt = 3; continue; }
+    if((input[i] & 0xf0) == 0xe0) { cnt = 2; continue; }
+    if((input[i] & 0xe0) == 0xc0) { cnt = 1; continue; }
+    isUtf8 = false; break;  // 8 bit char, but not utf8!
+  }
+  if(isUtf8 && cnt == 0) {
+    QString s = QString::fromUtf8(input);
+    qDebug() << "Detected utf8:" << s;
+    return s;
+  }
+  QTextCodec *codec = QTextCodec::codecForName(encoding.toAscii());
+  if(!codec) {
+    qWarning() << QString("Invalid encoding: %1").arg(encoding);
+    return QString::fromAscii(input);
+  }
+  return codec->toUnicode(input);
 }
 
 void writeDataToDevice(QIODevice *dev, const QVariant &item) {

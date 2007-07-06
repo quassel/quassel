@@ -29,6 +29,15 @@ QString nickFromMask(QString mask);
 QString userFromMask(QString mask);
 QString hostFromMask(QString mask);
 
+//! Take a string and decode it using the specified text codec, recognizing utf8.
+/** This function takes a string and first checks if it is encoded in utf8, in which case it is
+ *  decoded appropriately. Otherwise, the specified text codec is used to transform the string.
+ *  \param input The input string containing encoded data
+ *  \param encoding The text encoding we assume if it's not utf8
+ *  \return The decoded string.
+ */
+QString decodeString(QByteArray input, QString encoding = "ISO-8859-15");
+
 bool isChannelName(QString str);
 
 /**

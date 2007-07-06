@@ -159,7 +159,7 @@ class Server : public QThread {
     QHash<QString, QString> topics; // stores topics for each buffer
     VarMap serverSupports;  // stores results from RPL_ISUPPORT
 
-    void handleServerMsg(QString rawMsg);
+    void handleServerMsg(QByteArray rawMsg);
     void handleUserInput(QString buffer, QString usrMsg);
 
     // CTCP Stuff

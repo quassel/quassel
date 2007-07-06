@@ -82,9 +82,9 @@ void Server::disconnectFromIrc(QString net) {
 
 void Server::socketHasData() {
   while(socket.canReadLine()) {
-    QString s = socket.readLine().trimmed();
+    QByteArray s = socket.readLine().trimmed();
     //qDebug() << "Read" << s;
-    emit recvRawServerMsg(s);
+    //emit recvRawServerMsg(s); // signal not needed, and we should make sure we consider encodings where we need them
     //Message *msg = Message::createFromServerString(this, s);
     handleServerMsg(s);
   }
@@ -158,13 +158,24 @@ void Server::putCmd(QString cmd, QStringList params, QString prefix) {
   socket.write(m.toAscii());
 }
 
-/** Handle a raw message string sent by the server. We try to find a suitable handler, otherwise we call a default handler. */
-void Server::handleServerMsg(QString msg) {
+/*! Handle a raw message string sent by the server. We try to find a suitable handler, otherwise we call a default handler. */
+void Server::handleServerMsg(QByteArray rawmsg) {
   try {
-    if(msg.isEmpty()) {
+    if(rawmsg.isEmpty()) {
       qWarning() << "Received empty string from server!";
       return;
     }
+    // TODO Implement encoding conversion
+    /* At this point, we have a raw message as a byte array. This needs to be converted to a QString somewhere.
+     * Problem is, that at this point we don't know which encoding to use for the various parts of the message.
+     * This is something the command handler needs to take care of (e.g. PRIVMSG needs to first parse for CTCP,
+     * and then convert the raw strings into the correct encoding.
+     * We _can_ safely assume Server encoding for prefix and cmd, but not for the params. Therefore, we need to
+     * change from a QStringList to a QList<QByteArray> in all the handlers, and have the handlers call decodeString
+     * where needed...
+    */
+    QString msg = QString::fromLatin1(rawmsg);
+
     // OK, first we split the raw message into its various parts...
     QString prefix = "";
     QString cmd;
