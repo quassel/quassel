@@ -51,19 +51,20 @@ QString decodeString(QByteArray input, QString encoding) {
   int cnt = 0;
   for(int i = 0; i < input.size(); i++) {
     if(cnt) {
-      if((input[i] & 0xc0) != 0x80) { isUtf8 = false; break; }  // Following byte does not start with 10
+      // We check a part of a multibyte char. These need to be of the form 10yyyyyy.
+      if((input[i] & 0xc0) != 0x80) { isUtf8 = false; break; }
       cnt--;
       continue;
     }
-    if(!(input[i] & 0x80)) continue; // 7 bit is ok
-    if((input[i] & 0xf8) == 0xf0) { cnt = 3; continue; }
-    if((input[i] & 0xf0) == 0xe0) { cnt = 2; continue; }
-    if((input[i] & 0xe0) == 0xc0) { cnt = 1; continue; }
+    if(!(input[i] & 0x80)) continue; // 7 bit is always ok
+    if((input[i] & 0xf8) == 0xf0) { cnt = 3; continue; }  // 4-byte char 11110xxx 10yyyyyy 10zzzzzz 10vvvvvv
+    if((input[i] & 0xf0) == 0xe0) { cnt = 2; continue; }  // 3-byte char 1110xxxx 10yyyyyy 10zzzzzz
+    if((input[i] & 0xe0) == 0xc0) { cnt = 1; continue; }  // 2-byte char 110xxxxx 10yyyyyy
     isUtf8 = false; break;  // 8 bit char, but not utf8!
   }
   if(isUtf8 && cnt == 0) {
     QString s = QString::fromUtf8(input);
-    qDebug() << "Detected utf8:" << s;
+    //qDebug() << "Detected utf8:" << s;
     return s;
   }
   QTextCodec *codec = QTextCodec::codecForName(encoding.toAscii());
