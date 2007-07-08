@@ -40,6 +40,15 @@ class CoreSession : public QObject {
     QList<BufferId> buffers() const;
     UserId userId() const;
     QVariant sessionState();
+
+  public slots:
+    //! Store a piece session-wide data and distribute it to connected clients.
+    void storeSessionData(const QString &key, const QVariant &data);
+
+  public:
+    //! Retrieve a piece of session-wide data.
+    QVariant retrieveSessionData(const QString &key, const QVariant &def = QVariant());
+
     CoreProxy *proxy();
 
   public slots:
@@ -63,6 +72,8 @@ class CoreSession : public QObject {
     void backlogData(BufferId, QList<QVariant>, bool done);
 
     void bufferIdUpdated(BufferId);
+    void sessionDataChanged(const QString &key);
+    void sessionDataChanged(const QString &key, const QVariant &data);
 
   private slots:
     //void recvProxySignal(CoreSignal, QVariant arg1 = QVariant(), QVariant arg2 = QVariant(), QVariant arg3 = QVariant());
@@ -77,6 +88,9 @@ class CoreSession : public QObject {
     Storage *storage;
     QHash<QString, Server *> servers;
     UserId user;
+
+    VarMap sessionData;
+    QMutex mutex;
 
 };
 

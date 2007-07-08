@@ -77,6 +77,8 @@ void Client::init() {
 
   connect(Global::instance(), SIGNAL(dataPutLocally(UserId, QString)), this, SLOT(updateCoreData(UserId, QString)));
   connect(clientProxy, SIGNAL(csUpdateGlobalData(QString, QVariant)), this, SLOT(updateLocalData(QString, QVariant)));
+  connect(this, SIGNAL(sendSessionData(const QString &, const QVariant &)), clientProxy, SLOT(gsSessionDataChanged(const QString &, const QVariant &)));
+  connect(clientProxy, SIGNAL(csSessionDataChanged(const QString &, const QVariant &)), this, SLOT(recvSessionData(const QString &, const QVariant &)));
 
   connect(clientProxy, SIGNAL(send(ClientSignal, QVariant, QVariant, QVariant)), this, SLOT(recvProxySignal(ClientSignal, QVariant, QVariant, QVariant)));
   connect(clientProxy, SIGNAL(csServerState(QString, QVariant)), this, SLOT(recvNetworkState(QString, QVariant)));
@@ -194,6 +196,25 @@ void Client::updateCoreData(UserId, QString key) {
 
 void Client::updateLocalData(QString key, QVariant data) {
   Global::updateData(key, data);
+}
+
+void Client::recvSessionData(const QString &key, const QVariant &data) {
+  sessionData[key] = data;
+  emit sessionDataChanged(key, data);
+  emit sessionDataChanged(key);
+  qDebug() << "stored data in client:" << key;
+}
+
+void Client::storeSessionData(const QString &key, const QVariant &data) {
+  // Not sure if this is a good idea, but we'll try it anyway:
+  // Calling this function only sends a signal to core. Data is stored upon reception of the update signal,
+  // rather than immediately.
+  emit instance()->sendSessionData(key, data);
+}
+
+QVariant Client::retrieveSessionData(const QString &key, const QVariant &def) {
+  if(instance()->sessionData.contains(key)) return instance()->sessionData[key];
+  else return def;
 }
 
 void Client::recvProxySignal(ClientSignal sig, QVariant arg1, QVariant arg2, QVariant arg3) {

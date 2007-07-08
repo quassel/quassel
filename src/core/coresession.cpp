@@ -26,6 +26,14 @@
 CoreSession::CoreSession(UserId uid, Storage *_storage) : user(uid), storage(_storage) {
   coreProxy = new CoreProxy();
 
+  QSettings s;
+  s.beginGroup(QString("SessionData/%1").arg(user));
+  mutex.lock();
+  foreach(QString key, s.allKeys()) {
+    sessionData[key] = s.value(key);
+  }
+  mutex.unlock();
+
   connect(coreProxy, SIGNAL(send(CoreSignal, QVariant, QVariant, QVariant)), this, SIGNAL(proxySignal(CoreSignal, QVariant, QVariant, QVariant)));
   connect(coreProxy, SIGNAL(requestServerStates()), this, SIGNAL(serverStateRequested()));
   connect(coreProxy, SIGNAL(gsRequestConnect(QStringList)), this, SLOT(connectToIrc(QStringList)));
@@ -40,6 +48,8 @@ CoreSession::CoreSession(UserId uid, Storage *_storage) : user(uid), storage(_st
   connect(storage, SIGNAL(bufferIdUpdated(BufferId)), coreProxy, SLOT(csUpdateBufferId(BufferId)));
   connect(Global::instance(), SIGNAL(dataUpdatedRemotely(UserId, QString)), this, SLOT(globalDataUpdated(UserId, QString)));
   connect(Global::instance(), SIGNAL(dataPutLocally(UserId, QString)), this, SLOT(globalDataUpdated(UserId, QString)));
+  connect(this, SIGNAL(sessionDataChanged(const QString &, const QVariant &)), coreProxy, SLOT(csSessionDataChanged(const QString &, const QVariant &)));
+  connect(coreProxy, SIGNAL(gsSessionDataChanged(const QString &, const QVariant &)), this, SLOT(storeSessionData(const QString &, const QVariant &)));
 }
 
 CoreSession::~CoreSession() {
@@ -59,6 +69,27 @@ void CoreSession::globalDataUpdated(UserId uid, QString key) {
   QVariant data = Global::data(userId(), key);
   QSettings s;
   s.setValue(QString("Global/%1/").arg(userId())+key, data);
+}
+
+void CoreSession::storeSessionData(const QString &key, const QVariant &data) {
+  QSettings s;
+  s.beginGroup(QString("SessionData/%1").arg(user));
+  mutex.lock();
+  sessionData[key] = data;
+  s.setValue(key, data);
+  mutex.unlock();
+  s.endGroup();
+  emit sessionDataChanged(key, data);
+  emit sessionDataChanged(key);
+}
+
+QVariant CoreSession::retrieveSessionData(const QString &key, const QVariant &def) {
+  QVariant data;
+  mutex.lock();
+  if(!sessionData.contains(key)) data = def;
+  else data = sessionData[key];
+  mutex.unlock();
+  return data;
 }
 
 void CoreSession::connectToIrc(QStringList networks) {
@@ -147,6 +178,9 @@ QVariant CoreSession::sessionState() {
   QList<QVariant> bufs;
   foreach(BufferId id, storage->requestBuffers(user)) { bufs.append(QVariant::fromValue(id)); }
   v["Buffers"] = bufs;
+  mutex.lock();
+  v["SessionData"] = sessionData;
+  mutex.unlock();
 
   return v;
 }

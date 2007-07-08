@@ -48,6 +48,7 @@ void ClientProxy::recv(CoreSignal sig, QVariant arg1, QVariant arg2, QVariant ar
     case CS_SERVER_DISCONNECTED: emit csServerDisconnected(arg1.toString()); break;
     case CS_UPDATE_GLOBAL_DATA: emit csUpdateGlobalData(arg1.toString(), arg2); break;
     //case CS_GLOBAL_DATA_CHANGED: emit csGlobalDataChanged(arg1.toString()); break;
+    case CS_SESSION_DATA_CHANGED: emit csSessionDataChanged(arg1.toString(), arg2); break;
     case CS_DISPLAY_MSG: emit csDisplayMsg(arg1.value<Message>()); break;
     case CS_DISPLAY_STATUS_MSG: emit csDisplayStatusMsg(arg1.toString(), arg2.toString()); break;
     case CS_MODE_SET: emit csModeSet(arg1.toString(), arg2.toString(), arg3.toString()); break;

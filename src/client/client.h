@@ -55,6 +55,9 @@ class Client : public QObject {
 
     static bool isConnected();
 
+    static void storeSessionData(const QString &key, const QVariant &data);
+    static QVariant retrieveSessionData(const QString &key, const QVariant &def = QVariant());
+
   signals:
     void sendInput(BufferId, QString message);
     void showBuffer(Buffer *);
@@ -72,6 +75,10 @@ class Client : public QObject {
     void connected();
     void disconnected();
 
+    void sessionDataChanged(const QString &key);
+    void sessionDataChanged(const QString &key, const QVariant &data);
+    void sendSessionData(const QString &key, const QVariant &data);
+
   public slots:
     //void selectBuffer(Buffer *);
     //void connectToLocalCore();
@@ -81,6 +88,7 @@ class Client : public QObject {
   private slots:
     void updateCoreData(UserId, QString);
     void updateLocalData(QString, QVariant);
+    void recvSessionData(const QString &key, const QVariant &data);
     void recvProxySignal(ClientSignal sig, QVariant arg1, QVariant arg2, QVariant arg3);
 
     void serverError(QAbstractSocket::SocketError);
@@ -134,6 +142,8 @@ class Client : public QObject {
 
     QTimer *layoutTimer;
     QList<Buffer *> layoutQueue;
+
+    VarMap sessionData;
 };
 
 #endif

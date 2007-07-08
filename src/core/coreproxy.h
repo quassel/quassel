@@ -42,6 +42,7 @@ class CoreProxy : public QObject {
 
   public slots:
     inline void csUpdateGlobalData(QString key, QVariant data)          { send(CS_UPDATE_GLOBAL_DATA, key, data); }
+    inline void csSessionDataChanged(const QString &key, const QVariant &data) { send(CS_SESSION_DATA_CHANGED, key, data); }
     inline void csServerConnected(QString net)                          { send(CS_SERVER_CONNECTED, net); }
     inline void csServerDisconnected(QString net)                       { send(CS_SERVER_DISCONNECTED, net); }
     inline void csServerState(QString net, VarMap data)                 { send(CS_SERVER_STATE, net, data); }
@@ -62,6 +63,7 @@ class CoreProxy : public QObject {
 
   signals:
     void gsPutGlobalData(QString, QVariant);
+    void gsSessionDataChanged(const QString &, const QVariant &);
     void gsUserInput(BufferId, QString);
     void gsRequestConnect(QStringList networks);
     void gsImportBacklog();

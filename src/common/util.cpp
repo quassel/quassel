@@ -56,7 +56,7 @@ QString decodeString(QByteArray input, QString encoding) {
       cnt--;
       continue;
     }
-    if(!(input[i] & 0x80)) continue; // 7 bit is always ok
+    if((input[i] & 0x80) == 0x00) continue; // 7 bit is always ok
     if((input[i] & 0xf8) == 0xf0) { cnt = 3; continue; }  // 4-byte char 11110xxx 10yyyyyy 10zzzzzz 10vvvvvv
     if((input[i] & 0xf0) == 0xe0) { cnt = 2; continue; }  // 3-byte char 1110xxxx 10yyyyyy 10zzzzzz
     if((input[i] & 0xe0) == 0xc0) { cnt = 1; continue; }  // 2-byte char 110xxxxx 10yyyyyy

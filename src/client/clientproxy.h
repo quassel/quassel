@@ -22,6 +22,7 @@
 #define _CLIENTPROXY_H_
 
 #include <QStringList>
+#include <QtDebug>
 
 #include "proxy_common.h"
 #include "message.h"
@@ -35,6 +36,7 @@ class ClientProxy : public QObject {
     static void destroy();
 
   public slots:
+    inline void gsSessionDataChanged(const QString &key, const QVariant &data) { send(GS_SESSION_DATA_CHANGED, key, data); }
     inline void gsUserInput(BufferId id, QString msg)                 { send(GS_USER_INPUT, QVariant::fromValue(id), msg); }
     inline void gsRequestConnect(QStringList networks)                { send(GS_REQUEST_CONNECT, networks); }
     inline void gsImportBacklog()                                     { send(GS_IMPORT_BACKLOG); }
@@ -52,6 +54,7 @@ class ClientProxy : public QObject {
     void csDisplayStatusMsg(QString, QString);
     void csUpdateGlobalData(QString key, QVariant data);
     void csGlobalDataChanged(QString key);
+    void csSessionDataChanged(const QString &key, const QVariant &data);
     void csModeSet(QString, QString, QString);
     void csTopicSet(QString, QString, QString);
     void csNickAdded(QString, QString, VarMap);
