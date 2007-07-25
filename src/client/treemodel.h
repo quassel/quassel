@@ -73,6 +73,8 @@ public:
 
 protected:
   bool removeRow(int row, const QModelIndex &parent = QModelIndex());
+  bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex());
+  void clear();
   
   TreeItem *rootItem;
 };

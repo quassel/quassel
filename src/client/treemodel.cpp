@@ -169,3 +169,16 @@ bool TreeModel::removeRow(int row, const QModelIndex &parent) {
   return true;
 }
 
+bool TreeModel::removeRows(int row, int count, const QModelIndex &parent) {
+  beginRemoveRows(parent, row, row + count - 1);
+  TreeItem *item = static_cast<TreeItem*>(parent.internalPointer());
+  for(int i = row; i < row + count; i++) {
+    item->removeChild(i);
+  }
+  endRemoveRows();
+  return true;
+}
+
+void TreeModel::clear() {
+  removeRows(0, rowCount(), QModelIndex());
+}
