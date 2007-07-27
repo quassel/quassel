@@ -162,6 +162,9 @@ QVariant TreeModel::headerData(int section, Qt::Orientation orientation, int rol
 }
 
 bool TreeModel::removeRow(int row, const QModelIndex &parent) {
+  if(row > rowCount(parent))
+    return false;
+  
   beginRemoveRows(parent, row, row);
   TreeItem *item = static_cast<TreeItem*>(parent.internalPointer());
   item->removeChild(row);
@@ -170,9 +173,17 @@ bool TreeModel::removeRow(int row, const QModelIndex &parent) {
 }
 
 bool TreeModel::removeRows(int row, int count, const QModelIndex &parent) {
+  // check if there is work to be done
+  if(count == 0)
+    return true;
+
+  // out of range check
+  if(row + count - 1 > rowCount(parent) || row < 0 || count < 0) 
+    return false;
+  
   beginRemoveRows(parent, row, row + count - 1);
   TreeItem *item = static_cast<TreeItem*>(parent.internalPointer());
-  for(int i = row; i < row + count; i++) {
+  for(int i = row + count - 1; i >= 0; i--) {
     item->removeChild(i);
   }
   endRemoveRows();
