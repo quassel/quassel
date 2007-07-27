@@ -29,6 +29,7 @@
 #include <QTimer>
 
 #include "message.h"
+#include "serverinfo.h"
 
 #define DEFAULT_PORT 6667
 
@@ -185,6 +186,9 @@ class Server : public QThread {
       public:
         UnknownCmdError(QString cmd, QString prefix, QStringList params);
     };
+    
+    // stuff needed for new separation of server information
+    ServerInfo *serverinfo;
 };
 
 #endif

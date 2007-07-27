@@ -36,10 +36,12 @@ Server::Server(UserId uid, QString net) : user(uid), network(net) {
   QString XQUOTE = QString('\134');
   ctcpXDelimDequoteHash[XQUOTE + XQUOTE] = XQUOTE;
   ctcpXDelimDequoteHash[XQUOTE + QString('a')] = XDELIM;
+  
+  serverinfo = new ServerInfo();
 }
 
 Server::~Server() {
-
+  delete serverinfo;
 }
 
 void Server::run() {
