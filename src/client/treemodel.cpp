@@ -165,8 +165,13 @@ bool TreeModel::removeRow(int row, const QModelIndex &parent) {
   if(row > rowCount(parent))
     return false;
   
+  TreeItem *item;
+  if(!parent.isValid())
+    item = rootItem;
+  else
+    item = static_cast<TreeItem*>(parent.internalPointer());
+  
   beginRemoveRows(parent, row, row);
-  TreeItem *item = static_cast<TreeItem*>(parent.internalPointer());
   item->removeChild(row);
   endRemoveRows();
   return true;
@@ -181,8 +186,14 @@ bool TreeModel::removeRows(int row, int count, const QModelIndex &parent) {
   if(row + count - 1 > rowCount(parent) || row < 0 || count < 0) 
     return false;
   
+  TreeItem *item;
+  if(!parent.isValid())
+    item = rootItem;
+  else
+    item = static_cast<TreeItem*>(parent.internalPointer());
+  
+  
   beginRemoveRows(parent, row, row + count - 1);
-  TreeItem *item = static_cast<TreeItem*>(parent.internalPointer());
   for(int i = row + count - 1; i >= 0; i--) {
     item->removeChild(i);
   }
@@ -191,5 +202,5 @@ bool TreeModel::removeRows(int row, int count, const QModelIndex &parent) {
 }
 
 void TreeModel::clear() {
-  removeRows(0, rowCount(), QModelIndex());
+  removeRows(0, rowCount());
 }
