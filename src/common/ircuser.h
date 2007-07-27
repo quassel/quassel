@@ -30,8 +30,8 @@
 
 #include "global.h"
 
-class IrcUser : public QObject{
-//  Q_OBJECT
+class IrcUser : public QObject {
+  Q_OBJECT
   
 //  Q_PROPERTY(QString user READ user WRITE setUser)
 //  Q_PROPERTY(QString host READ host WRITE setHost)
