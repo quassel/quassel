@@ -27,6 +27,8 @@
 #define BACKLOG_FORMAT 2
 #define BACKLOG_STRING "QuasselIRC Backlog File"
 
+#define DEFAULT_PORT 4242
+
 class Global;
 
 #include <QHash>

@@ -194,6 +194,7 @@ bool TreeModel::removeRows(int row, int count, const QModelIndex &parent) {
   
   
   beginRemoveRows(parent, row, row + count - 1);
+
   for(int i = row + count - 1; i >= 0; i--) {
     item->removeChild(i);
   }

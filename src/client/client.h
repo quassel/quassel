@@ -57,6 +57,7 @@ class Client : public QObject {
 
     static void storeSessionData(const QString &key, const QVariant &data);
     static QVariant retrieveSessionData(const QString &key, const QVariant &def = QVariant());
+    static QStringList sessionDataKeys();
 
   signals:
     void sendInput(BufferId, QString message);
@@ -71,6 +72,8 @@ class Client : public QObject {
 
     void recvPartialItem(quint32 avail, quint32 size);
     void coreConnectionError(QString errorMsg);
+    void coreConnectionMsg(const QString &msg);
+    void coreConnectionProgress(uint part, uint total);
 
     void connected();
     void disconnected();
@@ -134,10 +137,12 @@ class Client : public QObject {
     quint32 blockSize;
 
     static bool connectedToCore;
+    static VarMap coreConnectionInfo;
     static QHash<BufferId, Buffer *> buffers;
     static QHash<uint, BufferId> bufferIds;
     static QHash<QString, QHash<QString, VarMap> > nicks;
     static QHash<QString, bool> netConnected;
+    static QStringList netsAwaitingInit;
     static QHash<QString, QString> ownNick;
 
     QTimer *layoutTimer;

@@ -64,7 +64,7 @@ int main(int argc, char **argv) {
   Core::instance();  // create and init the core
 #endif
 
-  Settings::init();
+  //Settings::init();
 
 #ifndef BUILD_CORE
   Style::init();

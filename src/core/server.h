@@ -31,8 +31,6 @@
 #include "message.h"
 #include "serverinfo.h"
 
-#define DEFAULT_PORT 6667
-
 
 /*!
  * This is a server object, managing a single connection to an IRC server, handling the associated channels and so on.

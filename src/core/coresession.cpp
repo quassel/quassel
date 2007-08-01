@@ -181,7 +181,7 @@ QVariant CoreSession::sessionState() {
   mutex.lock();
   v["SessionData"] = sessionData;
   mutex.unlock();
-
+  v["Networks"] = QVariant(servers.keys());
   return v;
 }
 

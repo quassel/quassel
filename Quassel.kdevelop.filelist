@@ -97,3 +97,7 @@ src/qtgui/ui/nickeditdlg.ui
 src/qtgui/ui/servereditdlg.ui
 src/qtgui/ui/serverlistdlg.ui
 src/qtgui/ui/settingsdlg.ui
+src/client/clientsettings.h
+src/client/clientsettings.cpp
+src/qtgui/guisettings.h
+src/qtgui/guisettings.cpp

@@ -30,10 +30,12 @@ Client * Client::instanceptr = 0;
 
 bool Client::connectedToCore = false;
 Client::ClientMode Client::clientMode;
+VarMap Client::coreConnectionInfo;
 QHash<BufferId, Buffer *> Client::buffers;
 QHash<uint, BufferId> Client::bufferIds;
 QHash<QString, QHash<QString, VarMap> > Client::nicks;
 QHash<QString, bool> Client::netConnected;
+QStringList Client::netsAwaitingInit;
 QHash<QString, QString> Client::ownNick;
 
 Client *Client::instance() {
@@ -126,15 +128,17 @@ bool Client::isConnected() { return connectedToCore; }
 
 void Client::connectToCore(const VarMap &conn) {
   // TODO implement SSL
+  coreConnectionInfo = conn;
   if(isConnected()) {
-    qDebug() << "Already connected to core!";
+    emit coreConnectionError(tr("Already connected to Core!"));
     return;
   }
   if(conn["Host"].toString().isEmpty()) {
     clientMode = LocalCore;
-    syncToCore();  // TODO send user and pw from conn info
+    syncToCore();
   } else {
     clientMode = RemoteCore;
+    emit coreConnectionMsg(tr("Connecting..."));
     socket.connectToHost(conn["Host"].toString(), conn["Port"].toUInt());
   }
 }
@@ -146,7 +150,14 @@ void Client::disconnectFromCore() {
     disconnectFromLocalCore();
     coreDisconnected();
   }
-  // TODO clear internal data
+  /* Clear internal data. Hopefully nothing relies on it at this point. */
+  coreConnectionInfo.clear();
+  sessionData.clear();
+  //foreach(Buffer *buf, buffers.values()) delete buf;
+  qDebug() << "barfoo";
+  _bufferModel->clear();
+  //qDeleteAll(buffers);
+  qDebug() << "foobar";
 }
 
 void Client::coreConnected() {
@@ -162,9 +173,9 @@ void Client::coreDisconnected() {
 void Client::syncToCore() {
   VarMap state;
   if(clientMode == LocalCore) {
-    state = connectToLocalCore("Default", "password").toMap(); // TODO make this configurable
+    state = connectToLocalCore(coreConnectionInfo["User"].toString(), coreConnectionInfo["Password"].toString()).toMap();
   } else {
-
+    // TODO connect to remote cores
   }
 
   VarMap data = state["CoreData"].toMap();
@@ -176,6 +187,10 @@ void Client::syncToCore() {
   //}
 
   VarMap sessionState = state["SessionState"].toMap();
+  VarMap sessData = sessionState["SessionData"].toMap();
+  foreach(QString key, sessData.keys()) {
+    recvSessionData(key, sessData[key]);
+  }
   QList<QVariant> coreBuffers = sessionState["Buffers"].toList();
   /* make lookups by id faster */
   foreach(QVariant vid, coreBuffers) {
@@ -183,9 +198,17 @@ void Client::syncToCore() {
     bufferIds[id.uid()] = id;  // make lookups by id faster
     buffer(id);                // create all buffers, so we see them in the network views
   }
+  netsAwaitingInit = sessionState["Networks"].toStringList();
   connectedToCore = true;
-  emit connected();
-  emit requestNetworkStates();
+  if(netsAwaitingInit.count()) {
+    emit coreConnectionMsg(tr("Requesting network states..."));
+    emit coreConnectionProgress(0, netsAwaitingInit.count());
+    emit requestNetworkStates();
+  }
+  else {
+    emit coreConnectionProgress(1, 1);
+    emit connected();
+  }
 }
 
 void Client::updateCoreData(UserId, QString key) {
@@ -202,7 +225,6 @@ void Client::recvSessionData(const QString &key, const QVariant &data) {
   sessionData[key] = data;
   emit sessionDataChanged(key, data);
   emit sessionDataChanged(key);
-  qDebug() << "stored data in client:" << key;
 }
 
 void Client::storeSessionData(const QString &key, const QVariant &data) {
@@ -215,6 +237,10 @@ void Client::storeSessionData(const QString &key, const QVariant &data) {
 QVariant Client::retrieveSessionData(const QString &key, const QVariant &def) {
   if(instance()->sessionData.contains(key)) return instance()->sessionData[key];
   else return def;
+}
+
+QStringList Client::sessionDataKeys() {
+  return instance()->sessionData.keys();
 }
 
 void Client::recvProxySignal(ClientSignal sig, QVariant arg1, QVariant arg2, QVariant arg3) {
@@ -244,6 +270,7 @@ void Client::serverHasData() {
 }
 
 void Client::networkConnected(QString net) {
+  Q_ASSERT(!netsAwaitingInit.contains(net));
   netConnected[net] = true;
   BufferId id = statusBufferId(net);
   Buffer *b = buffer(id);
@@ -260,6 +287,12 @@ void Client::networkDisconnected(QString net) {
     b->setActive(false);
   }
   netConnected[net] = false;
+  if(netsAwaitingInit.contains(net)) {
+    qDebug() << "Network" << net << "disconnected while not yet initialized!";
+    netsAwaitingInit.removeAll(net);
+    emit coreConnectionProgress(netConnected.count(), netConnected.count() + netsAwaitingInit.count());
+    if(!netsAwaitingInit.count()) emit connected();
+  }
 }
 
 void Client::updateBufferId(BufferId id) {
@@ -299,6 +332,7 @@ QList<BufferId> Client::allBufferIds() {
 }
 
 void Client::recvNetworkState(QString net, QVariant state) {
+  netsAwaitingInit.removeAll(net);
   netConnected[net] = true;
   setOwnNick(net, state.toMap()["OwnNick"].toString());
   buffer(statusBufferId(net))->setActive(true);
@@ -313,6 +347,8 @@ void Client::recvNetworkState(QString net, QVariant state) {
   foreach(QString nick, n.keys()) {
     addNick(net, nick, n[nick].toMap());
   }
+  emit coreConnectionProgress(netConnected.count(), netConnected.count() + netsAwaitingInit.count());
+  if(!netsAwaitingInit.count()) emit connected();
 }
 
 void Client::recvMessage(const Message &msg) {

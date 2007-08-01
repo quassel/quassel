@@ -46,20 +46,14 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>28</height>
+     <height>32</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuConnection" >
     <property name="title" >
      <string>Connection</string>
     </property>
-    <widget class="QMenu" name="menuConnectCore" >
-     <property name="title" >
-      <string>Connect to Core</string>
-     </property>
-     <addaction name="actionInternal" />
-    </widget>
-    <addaction name="menuConnectCore" />
+    <addaction name="actionConnectCore" />
     <addaction name="actionDisconnectCore" />
     <addaction name="separator" />
     <addaction name="actionNetworkList" />
@@ -222,8 +216,19 @@
    </property>
   </action>
   <action name="actionDisconnectCore" >
+   <property name="enabled" >
+    <bool>false</bool>
+   </property>
    <property name="text" >
     <string>Disconnect from Core</string>
+   </property>
+  </action>
+  <action name="actionConnectCore" >
+   <property name="enabled" >
+    <bool>false</bool>
+   </property>
+   <property name="text" >
+    <string>Connect to Core...</string>
    </property>
   </action>
  </widget>

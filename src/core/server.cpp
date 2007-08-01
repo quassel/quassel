@@ -24,6 +24,8 @@
 #include <QDateTime>
 
 #include "util.h"
+#include "core.h"
+#include "coresession.h"
 
 Server::Server(UserId uid, QString net) : user(uid), network(net) {
   QString MQUOTE = QString('\020');
@@ -68,8 +70,11 @@ void Server::sendState() {
 
 void Server::connectToIrc(QString net) {
   if(net != network) return; // not me!
-  networkSettings = Global::data(user, "Networks").toMap()[net].toMap();
-  identity = Global::data(user, "Identities").toMap()[networkSettings["Identity"].toString()].toMap();
+  CoreSession *sess = Core::session(user);
+  //networkSettings = Global::data(user, "Networks").toMap()[net].toMap();
+  networkSettings = sess->retrieveSessionData("Networks").toMap()[net].toMap();
+  //identity = Global::data(user, "Identities").toMap()[networkSettings["Identity"].toString()].toMap();
+  identity = sess->retrieveSessionData("Identities").toMap()[networkSettings["Identity"].toString()].toMap();
   QList<QVariant> servers = networkSettings["Servers"].toList();
   QString host = servers[0].toMap()["Address"].toString();
   quint16 port = servers[0].toMap()["Port"].toUInt();

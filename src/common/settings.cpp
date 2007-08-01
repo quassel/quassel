@@ -19,45 +19,58 @@
  ***************************************************************************/
 
 #include <QSettings>
+#include <QStringList>
+#include <QDebug>
 
 #include "settings.h"
 
-Settings *settings;
+Settings::Settings(QString g) : QObject(), group(g) {
 
-void Settings::init() {
-  curProfile = QObject::tr("Default");
+
 }
-/*
+
 Settings::~Settings() {
-  qDebug() << "destructing";
 
 }
-*/
 
-void Settings::setProfile(const QString &profile) {
-  curProfile = profile;
+void Settings::setGroup(QString g) {
+  group = g;
+
 }
 
-void Settings::setGuiValue(const QString &key, const QVariant &value) {
+QStringList Settings::allLocalKeys() {
   QSettings s;
-  //s.setValue("GUI/Default/BufferStates/QuakeNet/#quassel/voicedExpanded", true);
-  //QString k = QString("GUI/%1/%2").arg(curProfile).arg(key);
-  s.setValue(QString("GUI/%1/%2").arg(curProfile).arg(key), value);
+  s.beginGroup(group);
+  return s.allKeys();
 }
 
-QVariant Settings::guiValue(const QString &key, const QVariant &defaultValue) {
+QStringList Settings::localChildKeys() {
   QSettings s;
-  return s.value(QString("GUI/%1/%2").arg(curProfile).arg(key), defaultValue);
+  s.beginGroup(group);
+  return s.childKeys();
 }
 
-void Settings::setCoreValue(const QString &user, const QString &key, const QVariant &value) {
+QStringList Settings::localChildGroups() {
   QSettings s;
-  s.setValue(QString("Core/%1/%2").arg(user).arg(key), value);
+  s.beginGroup(group);
+  return s.childGroups();
 }
 
-QVariant Settings::coreValue(const QString &user, const QString &key, const QVariant &defaultValue) {
+void Settings::setLocalValue(const QString &key, const QVariant &data) {
   QSettings s;
-  return s.value(QString("Core/%1/%2").arg(user).arg(key), defaultValue);
+  s.beginGroup(group);
+  s.setValue(key, data);
 }
 
-QString Settings::curProfile;
+QVariant Settings::localValue(const QString &key, const QVariant &def) {
+  QSettings s;
+  s.beginGroup(group);
+  return s.value(key, def);
+}
+
+void Settings::removeLocalKey(const QString &key) {
+  QSettings s;
+  s.beginGroup(group);
+  s.remove(key);
+}
+

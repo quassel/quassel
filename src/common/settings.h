@@ -24,25 +24,36 @@
 #include <QString>
 #include <QVariant>
 
-class Settings {
+class Settings : public QObject {
+  Q_OBJECT
 
   public:
-    //Settings();
-    //~Settings();
-    static void init();
-    static void setProfile(const QString &string);
-    static QString profile();
+    virtual ~Settings();
 
-    static void setGuiValue(const QString &key, const QVariant &value);
-    static QVariant guiValue (const QString &key, const QVariant &defaultValue = QVariant());
-    static void setCoreValue(const QString &user, const QString &key, const QVariant &value);
-    static QVariant coreValue (const QString &user, const QString& key, const QVariant &defaultValue = QVariant());
+    static void setGuiValue(QString, QVariant) {};
+    static QVariant guiValue(QString, QVariant = QVariant()) { return QVariant(); }
+  protected:
+    Settings(QString group = "General");
 
-  private:
-    static QString curProfile;
+    void setGroup(QString group);
 
+    virtual QStringList allLocalKeys();
+    virtual QStringList localChildKeys();
+    virtual QStringList localChildGroups();
+    //virtual QStringList allSessionKeys() = 0;
+    virtual QStringList sessionKeys() = 0;
+
+    virtual void setLocalValue(const QString &key, const QVariant &data);
+    virtual QVariant localValue(const QString &key, const QVariant &def = QVariant());
+
+    virtual void setSessionValue(const QString &key, const QVariant &data) = 0;
+    virtual QVariant sessionValue(const QString &key, const QVariant &def = QVariant()) = 0;
+
+    virtual void removeLocalKey(const QString &key);
+
+    QString group;
 };
 
-//extern Settings *settings;
+
 
 #endif

@@ -43,11 +43,11 @@ class Core : public QObject {
     static CoreSession * createSession(UserId);
 
     static QVariant connectLocalClient(QString user, QString passwd);
-    static QVariant disconnectLocalClient();
+    static void disconnectLocalClient();
 
   private slots:
     void recvProxySignal(CoreSignal, QVariant, QVariant, QVariant);
-    bool startListening(uint port = 4242);
+    bool startListening(uint port = DEFAULT_PORT);
     void stopListening();
     void incomingConnection();
     void clientHasData();

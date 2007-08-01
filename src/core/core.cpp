@@ -179,7 +179,7 @@ QVariant Core::connectLocalClient(QString user, QString passwd) {
   return reply;
 }
 
-QVariant Core::disconnectLocalClient() {
+void Core::disconnectLocalClient() {
   qDebug() << "Local client disconnected.";
   instance()->guiUser = 0;
   Global::setGuiUser(0);

@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include "identities.h"
+#include "client.h"
 
 IdentitiesDlg::IdentitiesDlg(QWidget *parent, QString selected) : QDialog(parent) {
   ui.setupUi(this);
@@ -26,7 +27,7 @@ IdentitiesDlg::IdentitiesDlg(QWidget *parent, QString selected) : QDialog(parent
 
   connect(ui.enableAutoAway, SIGNAL(stateChanged(int)), this, SLOT(autoAwayChecked()));
 
-  identities = Global::data("Identities").toMap();
+  identities = Client::retrieveSessionData("Identities").toMap();
   foreach(QString name, identities.keys()) {
     nameMapping[name] = name;
   }
@@ -236,9 +237,9 @@ void IdentitiesDlg::accept() {
   updateIdentity(getCurIdentity());
   QString result = checkValidity();
   if(result.length() == 0) {
-    Global::putData("Identities", identities);
+    Client::storeSessionData("Identities", identities);
     // We have to care about renamed identities and update the network list appropriately...
-    VarMap networks = Global::data("Networks").toMap();
+    VarMap networks = Client::retrieveSessionData("Networks").toMap();
     foreach(QString netname, networks.keys()) {
       VarMap net = networks[netname].toMap();
       if(nameMapping.contains(net["Identity"].toString())) {
@@ -246,7 +247,7 @@ void IdentitiesDlg::accept() {
       } else net["Identity"] = "Default";
       networks[netname] = net;
     }
-    Global::putData("Networks", networks);
+    Client::storeSessionData("Networks", networks);
     QDialog::accept();
   } else {
     QMessageBox::warning(this, tr("Invalid Identity!"),

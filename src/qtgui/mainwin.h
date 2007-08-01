@@ -57,6 +57,8 @@ class MainWin : public QMainWindow {
 
     void showServerList();
     void showSettingsDlg();
+    void showCoreConnectionDlg(bool autoConnect = false);
+    void coreConnectionDlgFinished(int result);
 
     void showBuffer(BufferId);
     void showBuffer(Buffer *);
@@ -86,6 +88,7 @@ class MainWin : public QMainWindow {
     SettingsDlg *settingsDlg;
 
     uint currentBuffer;
+    QString currentProfile;
 
     QList<QDockWidget *> netViews;
 

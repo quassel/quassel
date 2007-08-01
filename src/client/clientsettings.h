@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005/06 by The Quassel Team                             *
+ *   Copyright (C) 2005-07 by The Quassel IRC Development Team             *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,50 +18,44 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _CORECONNECTDLG_H
-#define _CORECONNECTDLG_H
+#ifndef _CLIENTSETTINGS_H_
+#define _CLIENTSETTINGS_H_
 
-#include "ui_coreconnectdlg.h"
-#include "global.h"
+#include "settings.h"
 
-class CoreConnectDlg: public QDialog {
+class ClientSettings : public Settings {
   Q_OBJECT
 
   public:
-    CoreConnectDlg(QWidget *parent, bool doAutoConnect = false);
-    QVariant getCoreState();
+    virtual ~ClientSettings();
 
-    bool willDoInternalAutoConnect();
+  protected:
+    ClientSettings(QString group = "General");
 
-  public slots:
-    void doAutoConnect();
+    //virtual QStringList allSessionKeys() = 0;
+    virtual QStringList sessionKeys();
 
-  private slots:
-    void createAccount();
-    void removeAccount();
-    void accountChanged(const QString & = "");
-    void setAccountEditEnabled(bool);
-    void autoConnectToggled(bool);
-    bool checkInputValid();
-    void hostEditChanged(QString);
-    void hostSelected();
-    void doConnect();
+    virtual void setSessionValue(const QString &key, const QVariant &data);
+    virtual QVariant sessionValue(const QString &key, const QVariant &def = QVariant());
 
-    void coreConnected();
-    void coreConnectionError(QString);
-    //void coreConnectionMsg(const QString &);
-    //void coreConnectionProgress(uint partial, uint total);
-    void updateProgressBar(uint partial, uint total);
-    void recvCoreState(QVariant);
+};
 
-  private:
-    Ui::CoreConnectDlg ui;
-    QVariant coreState;
+class AccountSettings : public ClientSettings {
+  Q_OBJECT
 
-    void cancelConnect();
-    void setStartState();
-    VarMap accountData;
-    QString curacc;
+  public:
+    AccountSettings();
+
+    QStringList knownAccounts();
+    QString lastAccount();
+    void setLastAccount(const QString &account);
+    QString autoConnectAccount();
+    void setAutoConnectAccount(const QString &account);
+
+    void setValue(const QString &account, const QString &key, const QVariant &data);
+    QVariant value(const QString &account, const QString &key, const QVariant &def = QVariant());
+    void removeAccount(const QString &account);
+
 };
 
 #endif

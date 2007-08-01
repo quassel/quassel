@@ -50,6 +50,7 @@ class ServerListDlg : public QDialog {
 
   private slots:
     void updateButtons();
+    void updateNetworkTree();
     void on_showOnStartup_stateChanged(int);
     void on_addButton_clicked();
     void on_editButton_clicked();
@@ -58,7 +59,6 @@ class ServerListDlg : public QDialog {
   private:
     Ui::ServerListDlg ui;
 
-    void updateNetworkTree();
     //VarMap networks;
     //VarMap identities;  <-- this is now stored in global
 };
