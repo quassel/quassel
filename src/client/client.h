@@ -89,8 +89,6 @@ class Client : public QObject {
     void disconnectFromCore();
 
   private slots:
-    void updateCoreData(UserId, QString);
-    void updateLocalData(QString, QVariant);
     void recvSessionData(const QString &key, const QVariant &data);
     void recvProxySignal(ClientSignal sig, QVariant arg1, QVariant arg2, QVariant arg3);
 

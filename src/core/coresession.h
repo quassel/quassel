@@ -76,8 +76,6 @@ class CoreSession : public QObject {
     void sessionDataChanged(const QString &key, const QVariant &data);
 
   private slots:
-    //void recvProxySignal(CoreSignal, QVariant arg1 = QVariant(), QVariant arg2 = QVariant(), QVariant arg3 = QVariant());
-    void globalDataUpdated(UserId, QString);
     void recvStatusMsgFromServer(QString msg);
     void recvMessageFromServer(Message::Type, QString target, QString text, QString sender = "", quint8 flags = Message::None);
     void serverConnected(QString net);

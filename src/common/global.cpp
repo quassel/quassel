@@ -27,85 +27,6 @@
 
 extern void messageHandler(QtMsgType type, const char *msg);
 
-Global *Global::instanceptr = 0;
-
-Global * Global::instance() {
-  if(instanceptr) return instanceptr;
-  return instanceptr = new Global();
-}
-
-void Global::destroy() {
-  delete instanceptr;
-  instanceptr = 0;
-}
-
-Global::Global() {
-  qInstallMsgHandler(messageHandler);
-  qRegisterMetaType<Message>("Message");
-  qRegisterMetaTypeStreamOperators<Message>("Message");
-  qRegisterMetaType<BufferId>("BufferId");
-  qRegisterMetaTypeStreamOperators<BufferId>("BufferId");
-
-  guiUser = 0;
-}
-
-Global::~Global() {
-
-
-}
-
-void Global::setGuiUser(UserId uid) {
-  guiUser = uid;
-}
-
-QVariant Global::data(QString key, QVariant defval) {
-  return data(guiUser, key, defval);
-}
-
-QVariant Global::data(UserId uid, QString key, QVariant defval) {
-  QVariant d;
-  mutex.lock();
-  if(instance()->datastore[uid].contains(key)) d = instance()->datastore[uid][key];
-  else d = defval;
-  mutex.unlock();
-  //qDebug() << "getData("<<key<<"): " << d;
-  return d;
-}
-
-QStringList Global::keys() {
-  return keys(guiUser);
-}
-
-QStringList Global::keys(UserId uid) {
-  QStringList k;
-  mutex.lock();
-  k = instance()->datastore[uid].keys();
-  mutex.unlock();
-  return k;
-}
-
-void Global::putData(QString key, QVariant d) {
-  putData(guiUser, key, d);
-}
-
-void Global::putData(UserId uid, QString key, QVariant d) {
-  mutex.lock();
-  instance()->datastore[uid][key] = d;
-  mutex.unlock();
-  emit instance()->dataPutLocally(uid, key);
-}
-
-void Global::updateData(QString key, QVariant d) {
-  updateData(guiUser, key, d);
-}
-
-void Global::updateData(UserId uid, QString key, QVariant d) {
-  mutex.lock();
-  instance()->datastore[uid][key] = d;
-  mutex.unlock();
-  emit instance()->dataUpdatedRemotely(uid, key);
-}
-
 /* not done yet */
 /*
 void Global::initIconMap() {
@@ -168,7 +89,5 @@ uint qHash(const BufferId &bid) {
 //  return 0;
 //}
 
-QMutex Global::mutex;
 Global::RunMode Global::runMode;
-UserId Global::guiUser;
 QString Global::quasselDir;

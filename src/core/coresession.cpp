@@ -46,8 +46,6 @@ CoreSession::CoreSession(UserId uid, Storage *_storage) : user(uid), storage(_st
   connect(this, SIGNAL(backlogData(BufferId, QList<QVariant>, bool)), coreProxy, SLOT(csBacklogData(BufferId, QList<QVariant>, bool)));
   connect(this, SIGNAL(bufferIdUpdated(BufferId)), coreProxy, SLOT(csUpdateBufferId(BufferId)));
   connect(storage, SIGNAL(bufferIdUpdated(BufferId)), coreProxy, SLOT(csUpdateBufferId(BufferId)));
-  connect(Global::instance(), SIGNAL(dataUpdatedRemotely(UserId, QString)), this, SLOT(globalDataUpdated(UserId, QString)));
-  connect(Global::instance(), SIGNAL(dataPutLocally(UserId, QString)), this, SLOT(globalDataUpdated(UserId, QString)));
   connect(this, SIGNAL(sessionDataChanged(const QString &, const QVariant &)), coreProxy, SLOT(csSessionDataChanged(const QString &, const QVariant &)));
   connect(coreProxy, SIGNAL(gsSessionDataChanged(const QString &, const QVariant &)), this, SLOT(storeSessionData(const QString &, const QVariant &)));
 }
@@ -62,13 +60,6 @@ UserId CoreSession::userId() const {
 
 void CoreSession::processSignal(ClientSignal sig, QVariant arg1, QVariant arg2, QVariant arg3) {
   coreProxy->recv(sig, arg1, arg2, arg3);
-}
-
-void CoreSession::globalDataUpdated(UserId uid, QString key) {
-  Q_ASSERT(uid == userId());
-  QVariant data = Global::data(userId(), key);
-  QSettings s;
-  s.setValue(QString("Global/%1/").arg(userId())+key, data);
 }
 
 void CoreSession::storeSessionData(const QString &key, const QVariant &data) {

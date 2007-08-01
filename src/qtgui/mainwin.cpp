@@ -161,7 +161,7 @@ void MainWin::disconnectedFromCore() {
   ui.actionNetworkList->setEnabled(false);
   ui.bufferWidget->hide();
   ui.actionConnectCore->setEnabled(false); // FIXME
-  qDebug() << "mainwin disconnected";
+  //qDebug() << "mainwin disconnected";
 }
 
 AbstractUiMsg *MainWin::layoutMsg(const Message &msg) {

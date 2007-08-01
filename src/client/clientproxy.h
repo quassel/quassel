@@ -52,8 +52,6 @@ class ClientProxy : public QObject {
     void csServerDisconnected(QString);
     void csDisplayMsg(Message);
     void csDisplayStatusMsg(QString, QString);
-    void csUpdateGlobalData(QString key, QVariant data);
-    void csGlobalDataChanged(QString key);
     void csSessionDataChanged(const QString &key, const QVariant &data);
     void csModeSet(QString, QString, QString);
     void csTopicSet(QString, QString, QString);

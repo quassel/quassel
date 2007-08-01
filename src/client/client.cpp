@@ -77,8 +77,6 @@ void Client::init() {
   connect(&socket, SIGNAL(disconnected()), this, SLOT(coreDisconnected()));
   connect(&socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(serverError(QAbstractSocket::SocketError)));
 
-  connect(Global::instance(), SIGNAL(dataPutLocally(UserId, QString)), this, SLOT(updateCoreData(UserId, QString)));
-  connect(clientProxy, SIGNAL(csUpdateGlobalData(QString, QVariant)), this, SLOT(updateLocalData(QString, QVariant)));
   connect(this, SIGNAL(sendSessionData(const QString &, const QVariant &)), clientProxy, SLOT(gsSessionDataChanged(const QString &, const QVariant &)));
   connect(clientProxy, SIGNAL(csSessionDataChanged(const QString &, const QVariant &)), this, SLOT(recvSessionData(const QString &, const QVariant &)));
 
@@ -178,14 +176,6 @@ void Client::syncToCore() {
     // TODO connect to remote cores
   }
 
-  VarMap data = state["CoreData"].toMap();
-  foreach(QString key, data.keys()) {
-    Global::updateData(key, data[key]);
-  }
-  //if(!Global::data("CoreReady").toBool()) {
-  //  qFatal("Something is wrong, getting invalid data from core!");
-  //}
-
   VarMap sessionState = state["SessionState"].toMap();
   VarMap sessData = sessionState["SessionData"].toMap();
   foreach(QString key, sessData.keys()) {
@@ -209,16 +199,6 @@ void Client::syncToCore() {
     emit coreConnectionProgress(1, 1);
     emit connected();
   }
-}
-
-void Client::updateCoreData(UserId, QString key) {
-  if(clientMode == LocalCore) return;
-  QVariant data = Global::data(key);
-  recvProxySignal(GS_UPDATE_GLOBAL_DATA, key, data, QVariant());
-}
-
-void Client::updateLocalData(QString key, QVariant data) {
-  Global::updateData(key, data);
 }
 
 void Client::recvSessionData(const QString &key, const QVariant &data) {

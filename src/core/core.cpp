@@ -47,7 +47,6 @@ void Core::init() {
   }
   //SqliteStorage::init();
   storage = new SqliteStorage();
-  connect(Global::instance(), SIGNAL(dataPutLocally(UserId, QString)), this, SLOT(updateGlobalData(UserId, QString)));
   connect(&server, SIGNAL(newConnection()), this, SLOT(incomingConnection()));
   //startListening(); // FIXME
   guiUser = 0;
@@ -63,18 +62,6 @@ void Core::init() {
     createSession(guiUser);
   } else guiUser = 0;
   */
-  // Read global settings from config file
-  QSettings s;
-  s.beginGroup("Global");
-  foreach(QString unum, s.childGroups()) {
-    UserId uid = unum.toUInt();
-    s.beginGroup(unum);
-    foreach(QString key, s.childKeys()) {
-      Global::updateData(uid, key, s.value(key));
-    }
-    s.endGroup();
-  }
-  s.endGroup();
 }
 
 Core::~Core() {
@@ -138,11 +125,7 @@ void Core::clientHasData() {
   while(readDataFromDevice(socket, bsize, item)) {
     if(validClients.contains(socket)) {
       QList<QVariant> sigdata = item.toList();
-      if((ClientSignal)sigdata[0].toInt() == GS_UPDATE_GLOBAL_DATA) {
-        processClientUpdate(socket, sigdata[1].toString(), sigdata[2]);
-      } else {
-        sessions[validClients[socket]]->processSignal((ClientSignal)sigdata[0].toInt(), sigdata[1], sigdata[2], sigdata[3]);
-      }
+      sessions[validClients[socket]]->processSignal((ClientSignal)sigdata[0].toInt(), sigdata[1], sigdata[2], sigdata[3]);
     } else {
       // we need to auth the client
       try {
@@ -174,7 +157,6 @@ QVariant Core::connectLocalClient(QString user, QString passwd) {
   UserId uid = instance()->storage->validateUser(user, passwd);
   QVariant reply = instance()->initSession(uid);
   instance()->guiUser = uid;
-  Global::setGuiUser(uid);
   qDebug() << "Local client connected.";
   return reply;
 }
@@ -182,7 +164,6 @@ QVariant Core::connectLocalClient(QString user, QString passwd) {
 void Core::disconnectLocalClient() {
   qDebug() << "Local client disconnected.";
   instance()->guiUser = 0;
-  Global::setGuiUser(0);
 }
 
 void Core::processClientInit(QTcpSocket *socket, const QVariant &v) {
@@ -209,33 +190,8 @@ QVariant Core::initSession(UserId uid) {
     //validClients[socket] = uid;
   }
   VarMap reply;
-  VarMap coreData;
-  QStringList dataKeys = Global::keys(uid);
-  foreach(QString key, dataKeys) {
-    coreData[key] = Global::data(uid, key);
-  }
-  reply["CoreData"] = coreData;
   reply["SessionState"] = sess->sessionState();
   return reply;
-}
-
-void Core::processClientUpdate(QTcpSocket *socket, QString key, const QVariant &data) {
-  UserId uid = validClients[socket];
-  Global::updateData(uid, key, data);
-  QList<QVariant> sigdata;
-  sigdata.append(CS_UPDATE_GLOBAL_DATA); sigdata.append(key); sigdata.append(data); sigdata.append(QVariant());
-  foreach(QTcpSocket *s, validClients.keys()) {
-    if(validClients[s] == uid && s != socket) writeDataToDevice(s, QVariant(sigdata));
-  }
-}
-
-void Core::updateGlobalData(UserId uid, QString key) {
-  QVariant data = Global::data(uid, key);
-  QList<QVariant> sigdata;
-  sigdata.append(CS_UPDATE_GLOBAL_DATA); sigdata.append(key); sigdata.append(data); sigdata.append(QVariant());
-  foreach(QTcpSocket *socket, validClients.keys()) {
-    if(validClients[socket] == uid) writeDataToDevice(socket, QVariant(sigdata));
-  }
 }
 
 void Core::recvProxySignal(CoreSignal sig, QVariant arg1, QVariant arg2, QVariant arg3) {

@@ -52,7 +52,6 @@ class Core : public QObject {
     void incomingConnection();
     void clientHasData();
     void clientDisconnected();
-    void updateGlobalData(UserId, QString);
 
   private:
     Core();
@@ -68,7 +67,6 @@ class Core : public QObject {
      */
     QVariant initSession(UserId userId);
     void processClientInit(QTcpSocket *socket, const QVariant &v);
-    void processClientUpdate(QTcpSocket *socket, QString key, const QVariant &data);
 
     UserId guiUser;
     QHash<UserId, CoreSession *> sessions;

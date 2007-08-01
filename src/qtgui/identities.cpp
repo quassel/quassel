@@ -23,7 +23,7 @@
 
 IdentitiesDlg::IdentitiesDlg(QWidget *parent, QString selected) : QDialog(parent) {
   ui.setupUi(this);
-  connect(Global::instance(), SIGNAL(dataUpdatedRemotely(UserId, QString)), this, SLOT(globalDataUpdated(UserId, QString)));
+  connect(Client::instance(), SIGNAL(sessionDataChanged(const QString &)), this, SLOT(globalDataUpdated(QString)));
 
   connect(ui.enableAutoAway, SIGNAL(stateChanged(int)), this, SLOT(autoAwayChecked()));
 
@@ -56,7 +56,7 @@ IdentitiesDlg::IdentitiesDlg(QWidget *parent, QString selected) : QDialog(parent
 }
 
 /* this needs more work! mapping? */
-void IdentitiesDlg::globalDataUpdated(UserId, QString key) {
+void IdentitiesDlg::globalDataUpdated(QString key) {
   if(key == "Identities") {
     if(QMessageBox::warning(this, tr("Data changed remotely!"), tr("<b>Some other GUI client changed the identities data!</b><br>"
        "Apply updated settings, losing all changes done locally?"),
