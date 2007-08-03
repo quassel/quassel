@@ -29,6 +29,7 @@ class CoreConnectDlg: public QDialog {
 
   public:
     CoreConnectDlg(QWidget *parent, bool doAutoConnect = false);
+    ~CoreConnectDlg();
     QVariant getCoreState();
 
     bool willDoInternalAutoConnect();

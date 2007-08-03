@@ -28,6 +28,8 @@
 CoreConnectDlg::CoreConnectDlg(QWidget *parent, bool /*doAutoConnect*/) : QDialog(parent) {
   ui.setupUi(this); //qDebug() << "new dlg";
 
+  setAttribute(Qt::WA_DeleteOnClose);
+
   coreState = 0;
   if(Global::runMode == Global::Monolithic) {
     connect(ui.internalCore, SIGNAL(toggled(bool)), ui.hostEdit, SLOT(setDisabled(bool)));
@@ -97,6 +99,10 @@ CoreConnectDlg::CoreConnectDlg(QWidget *parent, bool /*doAutoConnect*/) : QDialo
       //}
     }
   }
+}
+
+CoreConnectDlg::~CoreConnectDlg() {
+  //qDebug() << "destroy";
 }
 
 void CoreConnectDlg::setAccountEditEnabled(bool en) {

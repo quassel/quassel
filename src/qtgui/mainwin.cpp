@@ -138,7 +138,7 @@ void MainWin::addBufferView(const QString &viewname, QAbstractItemModel *model, 
   
   addDockWidget(Qt::LeftDockWidgetArea, dock);
   ui.menuViews->addAction(dock->toggleViewAction());
-  
+
   netViews.append(dock);
 }
 
@@ -149,7 +149,7 @@ void MainWin::connectedToCore() {
 
   ui.menuViews->setEnabled(true);
   ui.menuCore->setEnabled(true);
-  ui.actionDisconnectCore->setEnabled(false); // FIXME
+  ui.actionDisconnectCore->setEnabled(true);
   ui.actionNetworkList->setEnabled(true);
   ui.bufferWidget->show();
 }
@@ -160,7 +160,7 @@ void MainWin::disconnectedFromCore() {
   ui.actionDisconnectCore->setEnabled(false);
   ui.actionNetworkList->setEnabled(false);
   ui.bufferWidget->hide();
-  ui.actionConnectCore->setEnabled(false); // FIXME
+  ui.actionConnectCore->setEnabled(true);
   //qDebug() << "mainwin disconnected";
 }
 
@@ -179,7 +179,7 @@ void MainWin::showCoreConnectionDlg(bool autoConnect) {
 
 void MainWin::coreConnectionDlgFinished(int /*code*/) {
 
-  delete coreConnectDlg;
+  coreConnectDlg->close();
 }
 
 
