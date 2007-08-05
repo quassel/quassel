@@ -33,11 +33,13 @@ class SettingsDlg : public QDialog {
     void registerSettingsPage(SettingsInterface *);
     void unregisterSettingsPage(SettingsInterface *);
 
+  private slots:
+    void pageSelected();
+    void buttonClicked(QAbstractButton *);
+    void applyChanges();
 
   private:
     Ui::SettingsDlg ui;
-
-    QWidget *currentWidget;
 
 };
 

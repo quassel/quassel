@@ -23,16 +23,18 @@
 SettingsDlg::SettingsDlg(QWidget *parent) : QDialog(parent) {
   ui.setupUi(this);
 
-  currentWidget = 0;
-
   ui.settingsFrame->setWidgetResizable(true);
+  ui.settingsFrame->setWidget(ui.settingsStack);
   ui.settingsTree->setRootIsDecorated(false);
+
+  connect(ui.settingsTree, SIGNAL(itemSelectionChanged()), this, SLOT(pageSelected()));
+  connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));
 }
 
 void SettingsDlg::registerSettingsPage(SettingsInterface *sp) {
   QWidget *w = sp->settingsWidget();
   w->setParent(this);
-  ui.settingsFrame->setWidget(w);
+  ui.settingsStack->addWidget(w);
 
   QTreeWidgetItem *cat;
   QList<QTreeWidgetItem *> cats = ui.settingsTree->findItems(sp->category(), Qt::MatchExactly);
@@ -41,6 +43,39 @@ void SettingsDlg::registerSettingsPage(SettingsInterface *sp) {
     cat->setExpanded(true);
     cat->setFlags(Qt::ItemIsEnabled);
   } else cat = cats[0];
-  new QTreeWidgetItem(cat, QStringList(sp->title()));
+  QTreeWidgetItem *p = new QTreeWidgetItem(cat, QStringList(sp->title()));
+  p->setData(0, Qt::UserRole, QVariant::fromValue(w));
+}
 
+void SettingsDlg::pageSelected() {
+  QList<QTreeWidgetItem *> items = ui.settingsTree->selectedItems();
+  if(!items.count()) {
+    return;
+  } else {
+    QWidget *sp = items[0]->data(0, Qt::UserRole).value<QWidget *>();
+    Q_ASSERT(sp);
+    ui.settingsStack->setCurrentWidget(sp);
+  }
+}
+
+void SettingsDlg::buttonClicked(QAbstractButton *button) {
+  switch(ui.buttonBox->buttonRole(button)) {
+    case QDialogButtonBox::AcceptRole:
+      applyChanges();
+      accept();
+      break;
+    case QDialogButtonBox::ApplyRole:
+      applyChanges();
+      break;
+    case QDialogButtonBox::RejectRole:
+      reject();
+      break;
+    default:
+      break;
+  }
+}
+
+void SettingsDlg::applyChanges() {
+  SettingsInterface *sp = qobject_cast<SettingsInterface *>(ui.settingsStack->currentWidget());
+  if(sp) sp->applyChanges();
 }

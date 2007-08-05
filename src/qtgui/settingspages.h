@@ -31,6 +31,7 @@
 
 class BufferManagementSettingsPage : public QWidget, public SettingsInterface {
   Q_OBJECT
+  Q_INTERFACES(SettingsInterface)
 
   public:
     QString category() { return tr("Buffers"); }
@@ -38,6 +39,8 @@ class BufferManagementSettingsPage : public QWidget, public SettingsInterface {
     QWidget *settingsWidget() { return this; }
 
     BufferManagementSettingsPage();
+
+    void applyChanges();
 
 
   private:
@@ -47,6 +50,7 @@ class BufferManagementSettingsPage : public QWidget, public SettingsInterface {
 
 class ConnectionSettingsPage : public QWidget, public SettingsInterface {
   Q_OBJECT
+  Q_INTERFACES(SettingsInterface)
 
   public:
     QString category() { return tr("Behavior"); }
@@ -55,6 +59,7 @@ class ConnectionSettingsPage : public QWidget, public SettingsInterface {
 
     ConnectionSettingsPage();
 
+    void applyChanges();
 
   private:
     Ui::ConnectionSettingsPage ui;

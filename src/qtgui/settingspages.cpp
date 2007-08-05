@@ -26,7 +26,7 @@ void MainWin::setupSettingsDlg() {
   settingsDlg->setVisible(false);
 
   settingsDlg->registerSettingsPage(new BufferManagementSettingsPage());
-  //settingsDlg->registerSettingsPage(new ConnectionSettingsPage());
+  settingsDlg->registerSettingsPage(new ConnectionSettingsPage());
 
 }
 
@@ -38,8 +38,17 @@ BufferManagementSettingsPage::BufferManagementSettingsPage() {
   setEnabled(false);
 }
 
+void BufferManagementSettingsPage::applyChanges() {
+
+
+}
+
 ConnectionSettingsPage::ConnectionSettingsPage() {
   ui.setupUi(this);
 
 }
 
+void ConnectionSettingsPage::applyChanges() {
+
+
+}

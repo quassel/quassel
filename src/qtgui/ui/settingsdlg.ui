@@ -5,20 +5,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>808</width>
-    <height>568</height>
+    <width>784</width>
+    <height>558</height>
    </rect>
   </property>
   <property name="windowTitle" >
    <string>Dialog</string>
   </property>
   <layout class="QVBoxLayout" >
-   <property name="margin" >
-    <number>9</number>
-   </property>
-   <property name="spacing" >
-    <number>6</number>
-   </property>
    <item>
     <widget class="QSplitter" name="splitter" >
      <property name="orientation" >
@@ -26,9 +20,7 @@
      </property>
      <widget class="QTreeWidget" name="settingsTree" >
       <property name="sizePolicy" >
-       <sizepolicy>
-        <hsizetype>5</hsizetype>
-        <vsizetype>7</vsizetype>
+       <sizepolicy vsizetype="Expanding" hsizetype="MinimumExpanding" >
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
@@ -41,19 +33,30 @@
      </widget>
      <widget class="QScrollArea" name="settingsFrame" >
       <property name="sizePolicy" >
-       <sizepolicy>
-        <hsizetype>5</hsizetype>
-        <vsizetype>5</vsizetype>
+       <sizepolicy vsizetype="Preferred" hsizetype="MinimumExpanding" >
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
       <property name="frameShape" >
-       <enum>QFrame::StyledPanel</enum>
+       <enum>QFrame::NoFrame</enum>
       </property>
       <property name="frameShadow" >
-       <enum>QFrame::Raised</enum>
+       <enum>QFrame::Plain</enum>
       </property>
+      <layout class="QVBoxLayout" >
+       <item>
+        <widget class="QStackedWidget" name="settingsStack" >
+         <property name="sizePolicy" >
+          <sizepolicy vsizetype="Preferred" hsizetype="MinimumExpanding" >
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <widget class="QWidget" name="page" />
+        </widget>
+       </item>
+      </layout>
      </widget>
     </widget>
    </item>
@@ -74,6 +77,7 @@
    <class>QScrollArea</class>
    <extends>QFrame</extends>
    <header>QScrollArea</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>

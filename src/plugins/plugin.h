@@ -67,6 +67,7 @@ class SettingsInterface {
     virtual QString category() = 0;
     virtual QString title() = 0; 
     virtual QWidget *settingsWidget() = 0;
+    virtual void applyChanges() = 0;
 
 };
 

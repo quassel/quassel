@@ -117,10 +117,10 @@ void MainWin::setupViews() {
   connect(model, SIGNAL(bufferSelected(Buffer *)), this, SLOT(showBuffer(Buffer *)));
 
   addBufferView(tr("All Buffers"), model, BufferViewFilter::AllNets, QStringList());
-  //addBufferView(tr("All Channels"), model, BufferViewFilter::AllNets|BufferViewFilter::NoQueries|BufferViewFilter::NoServers, QStringList());
-  //addBufferView(tr("All Queries"), model, BufferViewFilter::AllNets|BufferViewFilter::NoChannels|BufferViewFilter::NoServers, QStringList());
-  //addBufferView(tr("All Networks"), model, BufferViewFilter::AllNets|BufferViewFilter::NoChannels|BufferViewFilter::NoQueries, QStringList());
-  //addBufferView(tr("Full Custom"), model, BufferViewFilter::FullCustom, QStringList());
+  addBufferView(tr("All Channels"), model, BufferViewFilter::AllNets|BufferViewFilter::NoQueries|BufferViewFilter::NoServers, QStringList());
+  addBufferView(tr("All Queries"), model, BufferViewFilter::AllNets|BufferViewFilter::NoChannels|BufferViewFilter::NoServers, QStringList());
+  addBufferView(tr("All Networks"), model, BufferViewFilter::AllNets|BufferViewFilter::NoChannels|BufferViewFilter::NoQueries, QStringList());
+  addBufferView(tr("Full Custom"), model, BufferViewFilter::FullCustom, QStringList());
   
   ui.menuViews->addSeparator();
 }
