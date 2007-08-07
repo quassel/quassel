@@ -22,6 +22,7 @@
 
 #if defined BUILD_CORE
 #include <QCoreApplication>
+#include <QDir>
 #include "core.h"
 
 #elif defined BUILD_QTGUI
@@ -45,6 +46,11 @@
 #endif
 
 int main(int argc, char **argv) {
+  qRegisterMetaType<Message>("Message");
+  qRegisterMetaType<BufferId>("BufferId");
+  qRegisterMetaTypeStreamOperators<Message>("Message");
+  qRegisterMetaTypeStreamOperators<BufferId>("BufferId");
+
 #if defined BUILD_CORE
   Global::runMode = Global::CoreOnly;
   QCoreApplication app(argc, argv);

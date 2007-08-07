@@ -73,14 +73,15 @@ void Client::init() {
   blockSize = 0;
 
   connect(&socket, SIGNAL(readyRead()), this, SLOT(serverHasData()));
-  connect(&socket, SIGNAL(connected()), this, SLOT(coreConnected()));
-  connect(&socket, SIGNAL(disconnected()), this, SLOT(coreDisconnected()));
+  connect(&socket, SIGNAL(connected()), this, SLOT(coreSocketConnected()));
+  connect(&socket, SIGNAL(disconnected()), this, SLOT(coreSocketDisconnected()));
   connect(&socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(serverError(QAbstractSocket::SocketError)));
 
   connect(this, SIGNAL(sendSessionData(const QString &, const QVariant &)), clientProxy, SLOT(gsSessionDataChanged(const QString &, const QVariant &)));
   connect(clientProxy, SIGNAL(csSessionDataChanged(const QString &, const QVariant &)), this, SLOT(recvSessionData(const QString &, const QVariant &)));
 
   connect(clientProxy, SIGNAL(send(ClientSignal, QVariant, QVariant, QVariant)), this, SLOT(recvProxySignal(ClientSignal, QVariant, QVariant, QVariant)));
+  connect(clientProxy, SIGNAL(csCoreState(QVariant)), this, SLOT(recvCoreState(const QVariant &)));
   connect(clientProxy, SIGNAL(csServerState(QString, QVariant)), this, SLOT(recvNetworkState(QString, QVariant)));
   connect(clientProxy, SIGNAL(csServerConnected(QString)), this, SLOT(networkConnected(QString)));
   connect(clientProxy, SIGNAL(csServerDisconnected(QString)), this, SLOT(networkDisconnected(QString)));
@@ -133,7 +134,8 @@ void Client::connectToCore(const VarMap &conn) {
   }
   if(conn["Host"].toString().isEmpty()) {
     clientMode = LocalCore;
-    syncToCore();
+    QVariant state = connectToLocalCore(coreConnectionInfo["User"].toString(), coreConnectionInfo["Password"].toString());
+    syncToCore(state);
   } else {
     clientMode = RemoteCore;
     emit coreConnectionMsg(tr("Connecting..."));
@@ -146,7 +148,7 @@ void Client::disconnectFromCore() {
     socket.close();
   } else {
     disconnectFromLocalCore();
-    coreDisconnected();
+    coreSocketDisconnected();
   }
   /* Clear internal data. Hopefully nothing relies on it at this point. */
   coreConnectionInfo.clear();
@@ -158,26 +160,28 @@ void Client::disconnectFromCore() {
   qDebug() << "foobar";
 }
 
-void Client::coreConnected() {
-  syncToCore();
-
+void Client::coreSocketConnected() {
+  VarMap clientInit;
+  clientInit["GuiProtocol"] = GUI_PROTOCOL;
+  clientInit["User"] = coreConnectionInfo["User"].toString();
+  clientInit["Password"] = coreConnectionInfo["Password"].toString();
+  writeDataToDevice(&socket, clientInit);
 }
 
-void Client::coreDisconnected() {
+void Client::coreSocketDisconnected() {
   connectedToCore = false;
   emit disconnected();
 }
 
-void Client::syncToCore() {
-  VarMap state;
-  if(clientMode == LocalCore) {
-    state = connectToLocalCore(coreConnectionInfo["User"].toString(), coreConnectionInfo["Password"].toString()).toMap();
-  } else {
-    // TODO connect to remote cores
-  }
+void Client::recvCoreState(const QVariant &state) {
+  syncToCore(state);
 
-  VarMap sessionState = state["SessionState"].toMap();
+}
+
+void Client::syncToCore(const QVariant &coreState) {
+  VarMap sessionState = coreState.toMap()["SessionState"].toMap();
   VarMap sessData = sessionState["SessionData"].toMap();
+
   foreach(QString key, sessData.keys()) {
     recvSessionData(key, sessData[key]);
   }

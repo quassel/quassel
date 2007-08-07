@@ -27,8 +27,7 @@
 
 //#include <QtCore>
 #include <QStringList>
-//#include <QTcpSocket>
-//#include <QTcpServer>
+#include <QDebug>
 
 /** This class is the Core side of the proxy. The Core connects its signals and slots to it,
  *  and the calls are marshalled and sent to (or received and unmarshalled from) the GuiProxy.
@@ -45,7 +44,7 @@ class CoreProxy : public QObject {
     inline void csServerConnected(QString net)                          { send(CS_SERVER_CONNECTED, net); }
     inline void csServerDisconnected(QString net)                       { send(CS_SERVER_DISCONNECTED, net); }
     inline void csServerState(QString net, VarMap data)                 { send(CS_SERVER_STATE, net, data); }
-    inline void csDisplayMsg(Message msg)                               { send(CS_DISPLAY_MSG, QVariant::fromValue(msg)); }
+    inline void csDisplayMsg(Message msg)                               { send(CS_DISPLAY_MSG, QVariant::fromValue(msg));}
     inline void csDisplayStatusMsg(QString net, QString msg)            { send(CS_DISPLAY_STATUS_MSG, net, msg); }
     inline void csModeSet(QString net, QString target, QString mode)    { send(CS_MODE_SET, net, target, mode); }
     inline void csTopicSet(QString net, QString buf, QString topic)     { send(CS_TOPIC_SET, net, buf, topic); }

@@ -48,8 +48,6 @@ void Global::initIconMap() {
 
 /**************************************************************************************/
 
-
-
 BufferId::BufferId(uint _id, QString _net, QString _buf, uint _gid) : id(_id), gid(_gid), net(_net), buf(_buf) {
 
 
@@ -62,14 +60,15 @@ QString BufferId::buffer() const {
 
 QDataStream &operator<<(QDataStream &out, const BufferId &bufferId) {
   out << bufferId.id << bufferId.gid << bufferId.net.toUtf8() << bufferId.buf.toUtf8();
+  return out;
 }
 
 QDataStream &operator>>(QDataStream &in, BufferId &bufferId) {
   QByteArray n, b;
-  BufferId i;
   in >> bufferId.id >> bufferId.gid >> n >> b;
   bufferId.net = QString::fromUtf8(n);
   bufferId.buf = QString::fromUtf8(b);
+  return in;
 }
 
 uint qHash(const BufferId &bid) {

@@ -82,10 +82,11 @@ class CoreSession : public QObject {
     void serverDisconnected(QString net);
 
   private:
+    UserId user;
+
     CoreProxy *coreProxy;
     Storage *storage;
     QHash<QString, Server *> servers;
-    UserId user;
 
     VarMap sessionData;
     QMutex mutex;

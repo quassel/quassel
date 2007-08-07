@@ -48,20 +48,8 @@ void Core::init() {
   //SqliteStorage::init();
   storage = new SqliteStorage();
   connect(&server, SIGNAL(newConnection()), this, SLOT(incomingConnection()));
-  //startListening(); // FIXME
+  startListening(); // FIXME make configurable
   guiUser = 0;
-  /*
-  if(Global::runMode == Global::Monolithic) {  // TODO Make GUI user configurable
-    try {
-      guiUser = storage->validateUser("Default", "password");
-    } catch(Storage::AuthError) {
-      guiUser = storage->addUser("Default", "password");
-    }
-    Q_ASSERT(guiUser);
-    Global::setGuiUser(guiUser);
-    createSession(guiUser);
-  } else guiUser = 0;
-  */
 }
 
 Core::~Core() {
@@ -168,16 +156,16 @@ void Core::disconnectLocalClient() {
 
 void Core::processClientInit(QTcpSocket *socket, const QVariant &v) {
   VarMap msg = v.toMap();
-  if(msg["GUIProtocol"].toUInt() != GUI_PROTOCOL) {
+  if(msg["GuiProtocol"].toUInt() != GUI_PROTOCOL) {
     //qWarning() << "Client version mismatch.";
     throw Exception("GUI client version mismatch");
   }
     // Auth
   UserId uid = storage->validateUser(msg["User"].toString(), msg["Password"].toString());  // throws exception if this failed
-  VarMap reply = initSession(uid).toMap();
+  QVariant reply = initSession(uid);
   validClients[socket] = uid;
   QList<QVariant> sigdata;
-  sigdata.append(CS_CORE_STATE); sigdata.append(QVariant(reply)); sigdata.append(QVariant()); sigdata.append(QVariant());
+  sigdata.append(CS_CORE_STATE); sigdata.append(reply); sigdata.append(QVariant()); sigdata.append(QVariant());
   writeDataToDevice(socket, QVariant(sigdata));
 }
 

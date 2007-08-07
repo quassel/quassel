@@ -31,13 +31,15 @@ CoreConnectDlg::CoreConnectDlg(QWidget *parent, bool /*doAutoConnect*/) : QDialo
   setAttribute(Qt::WA_DeleteOnClose);
 
   coreState = 0;
+  /* We show ui.internalCore in any case, because we might want to run as monolithic client anyway at another time
   if(Global::runMode == Global::Monolithic) {
     connect(ui.internalCore, SIGNAL(toggled(bool)), ui.hostEdit, SLOT(setDisabled(bool)));
     connect(ui.internalCore, SIGNAL(toggled(bool)), ui.port, SLOT(setDisabled(bool)));
     ui.internalCore->setChecked(true);
   } else {
-    ui.internalCore->hide();
+    //ui.internalCore->hide();
   }
+  */
   connect(ui.newAccount, SIGNAL(clicked()), this, SLOT(createAccount()));
   connect(ui.delAccount, SIGNAL(clicked()), this, SLOT(removeAccount()));
   connect(ui.buttonBox1, SIGNAL(accepted()), this, SLOT(doConnect()));
@@ -115,8 +117,7 @@ void CoreConnectDlg::setAccountEditEnabled(bool en) {
   ui.delAccount->setEnabled(en);
   ui.internalCore->setEnabled(en);
   ui.rememberPasswd->setEnabled(en);
-  //ui.autoConnect->setEnabled(en);
-  ui.autoConnect->setEnabled(false); // FIXME temporär
+  ui.autoConnect->setEnabled(en);
   ui.buttonBox1->button(QDialogButtonBox::Ok)->setEnabled(en && checkInputValid());
 }
 
@@ -190,6 +191,7 @@ void CoreConnectDlg::removeAccount() {
 
 bool CoreConnectDlg::willDoInternalAutoConnect() {
   AccountSettings s;
+  if(Global::runMode != Global::Monolithic) return false;
   if(ui.autoConnect->isChecked() && s.autoConnectAccount() == curacc && ui.internalCore->isChecked()) {
     return true;
   }
@@ -209,12 +211,16 @@ void CoreConnectDlg::doConnect() {
   VarMap conninfo;
   ui.stackedWidget->setCurrentIndex(1);
   if(ui.internalCore->isChecked()) {
+    if(Global::runMode != Global::Monolithic) {
+      coreConnectionError(tr("Can't connect to internal core, since we are running as a standalone GUI!"));
+      return;
+    }
     ui.connectionGroupBox->setTitle(tr("Connecting to internal core"));
     ui.connectionProgress->hide();
   } else {
     ui.connectionGroupBox->setTitle(tr("Connecting to %1").arg(ui.hostEdit->text()));
     conninfo["Host"] = ui.hostEdit->text();
-    conninfo["Post"] = ui.port->value();
+    conninfo["Port"] = ui.port->value();
   }
   conninfo["User"] = ui.userEdit->text();
   conninfo["Password"] = ui.passwdEdit->text();

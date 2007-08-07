@@ -29,6 +29,7 @@ ENDIF(NOT BUILD_MONO AND NOT BUILD_CORE AND NOT BUILD_QTGUI)
 #ENDIF(BUILD_CORE OR BUILD_QTGUI)
 
 SET(CMAKE_BUILD_TYPE Debug)
+SET(GCC_WARN "-Wall -Wextra -ansi -Wno-unused-parameter")  # may not be portable!
 
 # Define files
 SET(quassel_mono_SRCS common/build_mono.cpp)
@@ -57,6 +58,8 @@ SET(QT_USE_QTUITOOLS true)
 SET(QT_DONT_USE_QTGUI true)   # This is added later if GUI is requested
 INCLUDE(${QT_USE_FILE})
 
+ADD_DEFINITIONS(${GCC_WARN})
+
 # Define subdirs. CMake complains if a directory is added twice, so make sure this
 # does not happen in any combination of the requested targets.
 
@@ -69,8 +72,6 @@ IF(BUILD_MONO AND NOT BUILD_CORE)
 ENDIF(BUILD_MONO AND NOT BUILD_CORE)
 
 QT4_ADD_RESOURCES(_RCCS ${quassel_RCCS})
-
-ADD_DEFINITIONS(-Wall -Wextra -ansi)  # may not be portable!
 
 SET(TARGET_LIST )
 

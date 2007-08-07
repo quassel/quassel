@@ -101,3 +101,5 @@ src/client/clientsettings.h
 src/client/clientsettings.cpp
 src/qtgui/guisettings.h
 src/qtgui/guisettings.cpp
+src/common/ircuser.h
+src/common/ircuser.cpp

@@ -59,6 +59,9 @@ class Client : public QObject {
     static QVariant retrieveSessionData(const QString &key, const QVariant &def = QVariant());
     static QStringList sessionDataKeys();
 
+    enum ClientMode { LocalCore, RemoteCore };
+    static ClientMode clientMode;
+
   signals:
     void sendInput(BufferId, QString message);
     void showBuffer(Buffer *);
@@ -89,13 +92,14 @@ class Client : public QObject {
     void disconnectFromCore();
 
   private slots:
+    void recvCoreState(const QVariant &state);
     void recvSessionData(const QString &key, const QVariant &data);
     void recvProxySignal(ClientSignal sig, QVariant arg1, QVariant arg2, QVariant arg3);
 
     void serverError(QAbstractSocket::SocketError);
     void serverHasData();
-    void coreConnected();
-    void coreDisconnected();
+    void coreSocketConnected();
+    void coreSocketDisconnected();
 
     void userInput(BufferId, QString);
     void networkConnected(QString);
@@ -120,12 +124,9 @@ class Client : public QObject {
     void init();
     static Client *instanceptr;
 
-    void syncToCore();
+    void syncToCore(const QVariant &coreState);
     QVariant connectToLocalCore(QString user, QString passwd);  // defined in main.cpp
     void disconnectFromLocalCore();                             // defined in main.cpp
-
-    enum ClientMode { LocalCore, RemoteCore };
-    static ClientMode clientMode;
 
     AbstractUi *mainUi;
     ClientProxy *clientProxy;
