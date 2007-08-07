@@ -74,6 +74,12 @@ class Storage : public QObject {
      */
     virtual void updateUser(UserId user, QString password) = 0;
 
+    //! Rename a user
+    /** \param user     The user's id
+     *  \param newName  The user's new name
+     */
+    virtual void renameUser(UserId user, QString newName) = 0;
+
     //! Validate a username with a given password.
     /** \param user     The username to validate
      *  \param password The user's alleged password
@@ -147,8 +153,14 @@ class Storage : public QObject {
     virtual void importOldBacklog() = 0;
 
   signals:
-    //! Sent if a new BufferId is created, or an existing one changed somehow.
+    //! Sent when a new BufferId is created, or an existing one changed somehow.
     void bufferIdUpdated(BufferId);
+    //! Sent when a new user has been added
+    void userAdded(UserId, const QString &username);
+    //! Sent when a user has been renamed
+    void userRenamed(UserId, const QString &newname);
+    //! Sent when a user has been removed
+    void userRemoved(UserId);
 
   public:
     /* Exceptions */

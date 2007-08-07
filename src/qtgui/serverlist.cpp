@@ -40,11 +40,11 @@ ServerListDlg::ServerListDlg(QWidget *parent) : QDialog(parent) {
   connect(Client::instance(), SIGNAL(sessionDataChanged(const QString &)), this, SLOT(updateNetworkTree()));
 
   settings.endGroup();
-  // check if we already have a valid identity
-  //if(!Global::data("Identities", VarMap()).toMap().contains("Default")) editIdentities(true); // FIXME
+
   connect(this, SIGNAL(requestConnect(QStringList)), ClientProxy::instance(), SLOT(gsRequestConnect(QStringList)));
 
   // Autoconnect
+  /* Should not be the client's task... :-P
   QStringList list;
   VarMap networks = Client::retrieveSessionData("Networks").toMap();
   foreach(QString net, networks.keys()) {
@@ -53,6 +53,7 @@ ServerListDlg::ServerListDlg(QWidget *parent) : QDialog(parent) {
     }
   }
   if(!list.isEmpty()) emit requestConnect(list);
+  */
 }
 
 ServerListDlg::~ServerListDlg() {

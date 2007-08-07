@@ -176,7 +176,7 @@ void Client::coreSocketDisconnected() {
 }
 
 void Client::recvCoreState(const QVariant &state) {
-  disconnect(this, SIGNAL(recvPartialItem(quint32, quint32)), this, SIGNAL(coreConnectionProgress(uint, uint)));
+  disconnect(this, SIGNAL(recvPartialItem(uint, uint)), this, SIGNAL(coreConnectionProgress(uint, uint)));
   syncToCore(state);
 
 }

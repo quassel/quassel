@@ -201,13 +201,15 @@ UserId SqliteStorage::addUser(QString user, QString password) {
   query.exec();
   if(query.lastError().isValid() && query.lastError().number() == 19) { // user already exists - sadly 19 seems to be the general constraint violation error...
     return 0;
-  } 
+  }
 
   query.prepare("SELECT userid FROM quasseluser WHERE username = :username");
   query.bindValue(":username", user);
   query.exec();
   query.first();
-  return query.value(0).toUInt();
+  UserId uid = query.value(0).toUInt();
+  emit userAdded(uid, user);
+  return uid;
 }
 
 void SqliteStorage::updateUser(UserId user, QString password) {
@@ -219,6 +221,15 @@ void SqliteStorage::updateUser(UserId user, QString password) {
   query.bindValue(":userid", user);
   query.bindValue(":password", cryptopass);
   query.exec();
+}
+
+void SqliteStorage::renameUser(UserId user, QString newName) {
+  QSqlQuery query(logDb);
+  query.prepare("UPDATE quasseluser SET username = :username WHERE userid = :userid");
+  query.bindValue(":userid", user);
+  query.bindValue(":username", newName);
+  query.exec();
+  emit userRenamed(user, newName);
 }
 
 UserId SqliteStorage::validateUser(QString user, QString password) {
@@ -257,6 +268,7 @@ void SqliteStorage::delUser(UserId user) {
   query.bindValue(":userid", user);
   query.exec();
   // I hate the lack of foreign keys and on delete cascade... :(
+  emit userRemoved(user);
 }
 
 void SqliteStorage::createBuffer(UserId user, QString network, QString buffer) {

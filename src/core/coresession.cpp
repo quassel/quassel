@@ -48,6 +48,17 @@ CoreSession::CoreSession(UserId uid, Storage *_storage) : user(uid), storage(_st
   connect(storage, SIGNAL(bufferIdUpdated(BufferId)), coreProxy, SLOT(csUpdateBufferId(BufferId)));
   connect(this, SIGNAL(sessionDataChanged(const QString &, const QVariant &)), coreProxy, SLOT(csSessionDataChanged(const QString &, const QVariant &)));
   connect(coreProxy, SIGNAL(gsSessionDataChanged(const QString &, const QVariant &)), this, SLOT(storeSessionData(const QString &, const QVariant &)));
+
+  /* Autoconnect. (When) do we actually do this?
+  QStringList list;
+  VarMap networks = retrieveSessionData("Networks").toMap();
+  foreach(QString net, networks.keys()) {
+    if(networks[net].toMap()["AutoConnect"].toBool()) {
+      list << net;
+    }
+  } qDebug() << list;
+  if(list.count()) connectToIrc(list);
+  */
 }
 
 CoreSession::~CoreSession() {

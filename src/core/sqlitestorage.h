@@ -48,6 +48,7 @@ class SqliteStorage : public Storage {
 
     virtual UserId addUser(QString user, QString password);
     virtual void updateUser(UserId user, QString password);
+    virtual void renameUser(UserId user, QString newName);
     virtual UserId validateUser(QString user, QString password);
     virtual void delUser(UserId user);
 
