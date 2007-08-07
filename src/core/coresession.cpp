@@ -173,6 +173,7 @@ QVariant CoreSession::sessionState() {
   v["SessionData"] = sessionData;
   mutex.unlock();
   v["Networks"] = QVariant(servers.keys());
+  v["Payload"] = QByteArray(100000000, 'a');
   return v;
 }
 

@@ -161,6 +161,8 @@ void Client::disconnectFromCore() {
 }
 
 void Client::coreSocketConnected() {
+  connect(this, SIGNAL(recvPartialItem(quint32, quint32)), this, SIGNAL(coreConnectionProgress(uint, uint)));
+  emit coreConnectionMsg(tr("Synchronizing to core..."));
   VarMap clientInit;
   clientInit["GuiProtocol"] = GUI_PROTOCOL;
   clientInit["User"] = coreConnectionInfo["User"].toString();
@@ -174,6 +176,7 @@ void Client::coreSocketDisconnected() {
 }
 
 void Client::recvCoreState(const QVariant &state) {
+  disconnect(this, SIGNAL(recvPartialItem(quint32, quint32)), this, SIGNAL(coreConnectionProgress(uint, uint)));
   syncToCore(state);
 
 }
