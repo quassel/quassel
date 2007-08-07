@@ -161,7 +161,7 @@ void Client::disconnectFromCore() {
 }
 
 void Client::coreSocketConnected() {
-  connect(this, SIGNAL(recvPartialItem(quint32, quint32)), this, SIGNAL(coreConnectionProgress(uint, uint)));
+  connect(this, SIGNAL(recvPartialItem(uint, uint)), this, SIGNAL(coreConnectionProgress(uint, uint)));
   emit coreConnectionMsg(tr("Synchronizing to core..."));
   VarMap clientInit;
   clientInit["GuiProtocol"] = GUI_PROTOCOL;

@@ -73,7 +73,7 @@ class Client : public QObject {
     void requestBacklog(BufferId, QVariant, QVariant);
     void requestNetworkStates();
 
-    void recvPartialItem(quint32 avail, quint32 size);
+    void recvPartialItem(uint avail, uint size);
     void coreConnectionError(QString errorMsg);
     void coreConnectionMsg(const QString &msg);
     void coreConnectionProgress(uint part, uint total);
