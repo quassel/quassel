@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include "settings.h"
+#include <QString>
 
 #if defined BUILD_CORE
 #include <QCoreApplication>
@@ -45,7 +46,19 @@
 #error "Something is wrong - you need to #define a build mode!"
 #endif
 
+#include <signal.h>
+
+//! Signal handler for graceful shutdown.
+void handle_signal(int sig) {
+  qWarning(QString("Caught signal %1 - exiting.").arg(sig).toAscii());
+  QCoreApplication::quit();
+}
+
 int main(int argc, char **argv) {
+  // We catch SIGTERM and SIGINT (caused by Ctrl+C) to graceful shutdown Quassel.
+  signal(SIGTERM, handle_signal);
+  signal(SIGINT, handle_signal);
+
   qRegisterMetaType<Message>("Message");
   qRegisterMetaType<BufferId>("BufferId");
   qRegisterMetaTypeStreamOperators<Message>("Message");

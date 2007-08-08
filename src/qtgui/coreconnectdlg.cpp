@@ -46,6 +46,8 @@ CoreConnectDlg::CoreConnectDlg(QWidget *parent, bool /*doAutoConnect*/) : QDialo
   connect(ui.hostEdit, SIGNAL(textChanged(const QString &)), this, SLOT(checkInputValid()));
   connect(ui.userEdit, SIGNAL(textChanged(const QString &)), this, SLOT(checkInputValid()));
   connect(ui.internalCore, SIGNAL(toggled(bool)), this, SLOT(checkInputValid()));
+  connect(ui.internalCore, SIGNAL(toggled(bool)), ui.hostEdit, SLOT(setDisabled(bool)));
+  connect(ui.internalCore, SIGNAL(toggled(bool)), ui.port, SLOT(setDisabled(bool)));
   connect(ui.accountList, SIGNAL(currentIndexChanged(const QString &)), this, SLOT(accountChanged(const QString &)));
   connect(ui.autoConnect, SIGNAL(clicked(bool)), this, SLOT(autoConnectToggled(bool)));
 
@@ -59,7 +61,7 @@ CoreConnectDlg::CoreConnectDlg(QWidget *parent, bool /*doAutoConnect*/) : QDialo
   curacc = s.lastAccount();
   if(!ui.accountList->count()) {
     //if(doAutoConnect) reject();
-    /*
+    
     setAccountEditEnabled(false);
     QString newacc = QInputDialog::getText(this, tr("Create Account"), tr(
                                            "In order to connect to a Quassel Core, you need to create an account.<br>"
@@ -71,7 +73,7 @@ CoreConnectDlg::CoreConnectDlg(QWidget *parent, bool /*doAutoConnect*/) : QDialo
       ui.internalCore->setChecked(false);
       setAccountEditEnabled(true);
     }
-    */
+    /*
     // FIXME We create a default account here that just connects to the internal core
     curacc = "Default";
     ui.accountList->addItem("Default");
@@ -84,7 +86,7 @@ CoreConnectDlg::CoreConnectDlg(QWidget *parent, bool /*doAutoConnect*/) : QDialo
     ui.accountList->setCurrentIndex(0);
     ui.autoConnect->setChecked(true);
     autoConnectToggled(true);
-
+    */
   } else {
     if(!curacc.isEmpty()) {
       //if(doAutoConnect) { qDebug() << "auto";
