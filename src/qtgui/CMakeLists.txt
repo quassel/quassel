@@ -4,7 +4,7 @@ SET(qtgui_HDRS style.h)
 SET(qtgui_MOCS bufferview.h bufferviewfilter.h bufferwidget.h channelwidgetinput.h chatline.h chatwidget.h coreconnectdlg.h
               guisettings.h identities.h mainwin.h qtgui.h serverlist.h settingsdlg.h settingspages.h tabcompleter.h)
 SET(qtgui_UICS identitiesdlg.ui identitieseditdlg.ui networkeditdlg.ui mainwin.ui
-             nickeditdlg.ui serverlistdlg.ui servereditdlg.ui coreconnectdlg.ui ircwidget.ui
+             nickeditdlg.ui serverlistdlg.ui servereditdlg.ui coreconnectdlg.ui
              bufferviewwidget.ui bufferwidget.ui settingsdlg.ui
              buffermgmntsettingspage.ui connectionsettingspage.ui)
 

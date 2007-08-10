@@ -67,6 +67,7 @@ public:
   virtual Qt::ItemFlags flags(const QModelIndex &index) const;
   
 //  void clearActivity(Buffer *buffer);
+  void clear();  // EgS: check this
   
 public slots:
   void bufferUpdated(Buffer *);    

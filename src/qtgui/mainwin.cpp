@@ -149,6 +149,7 @@ void MainWin::connectedToCore() {
 
   ui.menuViews->setEnabled(true);
   ui.menuCore->setEnabled(true);
+  ui.actionConnectCore->setEnabled(false);
   ui.actionDisconnectCore->setEnabled(true);
   ui.actionNetworkList->setEnabled(true);
   ui.bufferWidget->show();

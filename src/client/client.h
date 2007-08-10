@@ -116,6 +116,8 @@ class Client : public QObject {
     void recvBacklogData(BufferId, const QList<QVariant> &, bool);
     void updateBufferId(BufferId);
 
+    void removeBuffer(Buffer *);
+
     void layoutMsg();
 
   private:

@@ -43,7 +43,6 @@ Buffer::Buffer(BufferId bufid) {
 }
 
 Buffer::~Buffer() {
-  //qDebug() << "destroying buffer";
   //delete widget;
   /*
   QSettings s;

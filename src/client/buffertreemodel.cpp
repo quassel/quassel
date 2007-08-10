@@ -145,13 +145,13 @@ QModelIndex BufferTreeModel::getOrCreateNetworkItemIndex(Buffer *buffer) {
 
 QModelIndex BufferTreeModel::getOrCreateBufferItemIndex(Buffer *buffer) {
   QModelIndex networkItemIndex = getOrCreateNetworkItemIndex(buffer);
-  
+
   if(bufferItem.contains(buffer)) {
     return index(bufferItem[buffer]->row(), 0, networkItemIndex);
   } else {
     // first we determine the parent of the new Item
     TreeItem *networkItem = static_cast<TreeItem*>(networkItemIndex.internalPointer());
-
+    Q_ASSERT(networkItem);
     int nextRow = networkItem->childCount();
 
     beginInsertRows(networkItemIndex, nextRow, nextRow);
@@ -257,3 +257,11 @@ void BufferTreeModel::selectBuffer(Buffer *buffer) {
   QModelIndex index = getOrCreateBufferItemIndex(buffer);
   emit selectionChanged(index);
 }
+
+// EgS: check if this makes sense!
+void BufferTreeModel::clear() {
+  TreeModel::clear();
+  networkItem.clear();
+  bufferItem.clear();
+}
+

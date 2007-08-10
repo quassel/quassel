@@ -90,7 +90,6 @@ src/qtgui/ui/coreconnectdlg.ui
 src/qtgui/ui/coresettingspage.ui
 src/qtgui/ui/identitiesdlg.ui
 src/qtgui/ui/identitieseditdlg.ui
-src/qtgui/ui/ircwidget.ui
 src/qtgui/ui/mainwin.ui
 src/qtgui/ui/networkeditdlg.ui
 src/qtgui/ui/nickeditdlg.ui

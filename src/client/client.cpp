@@ -114,9 +114,9 @@ void Client::init() {
 Client::~Client() {
   //delete mainUi;
   //delete _bufferModel;
-  foreach(Buffer *buf, buffers.values()) delete buf;
+  foreach(Buffer *buf, buffers.values()) delete buf; // this is done by disconnectFromCore()!
   ClientProxy::destroy();
-
+  Q_ASSERT(!buffers.count());
 }
 
 BufferTreeModel *Client::bufferModel() {
@@ -150,14 +150,6 @@ void Client::disconnectFromCore() {
     disconnectFromLocalCore();
     coreSocketDisconnected();
   }
-  /* Clear internal data. Hopefully nothing relies on it at this point. */
-  coreConnectionInfo.clear();
-  sessionData.clear();
-  //foreach(Buffer *buf, buffers.values()) delete buf;
-  qDebug() << "barfoo";
-  _bufferModel->clear();
-  //qDeleteAll(buffers);
-  qDebug() << "foobar";
 }
 
 void Client::coreSocketConnected() {
@@ -173,6 +165,21 @@ void Client::coreSocketConnected() {
 void Client::coreSocketDisconnected() {
   connectedToCore = false;
   emit disconnected();
+  /* Clear internal data. Hopefully nothing relies on it at this point. */
+  _bufferModel->clear();
+  // Buffers, if deleted, send a signal that causes their removal from buffers and bufferIds.
+  // So we cannot simply go through the array in a loop (or use qDeleteAll) for deletion...
+  while(buffers.count()) { delete buffers.take(buffers.keys()[0]); }
+  Q_ASSERT(!buffers.count());   // should be empty now!
+  Q_ASSERT(!bufferIds.count());
+  coreConnectionInfo.clear();
+  sessionData.clear();
+  nicks.clear();
+  netConnected.clear();
+  netsAwaitingInit.clear();
+  ownNick.clear();
+  layoutQueue.clear();
+  layoutTimer->stop();
 }
 
 void Client::recvCoreState(const QVariant &state) {
@@ -308,6 +315,7 @@ Buffer * Client::buffer(BufferId id) {
     connect(b, SIGNAL(userInput(BufferId, QString)), client, SLOT(userInput(BufferId, QString)));
     connect(b, SIGNAL(bufferUpdated(Buffer *)), client, SIGNAL(bufferUpdated(Buffer *)));
     connect(b, SIGNAL(bufferDestroyed(Buffer *)), client, SIGNAL(bufferDestroyed(Buffer *)));
+    connect(b, SIGNAL(bufferDestroyed(Buffer *)), client, SLOT(removeBuffer(Buffer *)));
     buffers[id] = b;
     emit client->bufferUpdated(b);
   }
@@ -316,6 +324,11 @@ Buffer * Client::buffer(BufferId id) {
 
 QList<BufferId> Client::allBufferIds() {
   return buffers.keys();
+}
+
+void Client::removeBuffer(Buffer *b) {
+  buffers.remove(b->bufferId());
+  bufferIds.remove(b->bufferId().uid());
 }
 
 void Client::recvNetworkState(QString net, QVariant state) {
