@@ -34,6 +34,9 @@ class BufferTreeItem : public TreeItem {
   
 public:
   BufferTreeItem(Buffer *, TreeItem *parent = 0);
+
+  virtual uint id() const;
+  
   QVariant data(int column, int role) const;
   Buffer *buffer() const { return buf; }
   void setActivity(const Buffer::ActivityLevel &);
@@ -46,6 +49,21 @@ protected:
   Buffer::ActivityLevel activity;
 };
 
+/*****************************************
+ *  Network Items
+ *****************************************/
+class NetworkTreeItem : public TreeItem {
+  Q_OBJECT
+  
+public:
+  NetworkTreeItem(const QString &, TreeItem *parent = 0);
+
+  virtual uint id() const;
+  
+private:
+  QString net;
+  
+};
 
 /*****************************************
  * BufferTreeModel
@@ -65,9 +83,6 @@ public:
   static QList<QVariant> defaultHeader();
 
   virtual Qt::ItemFlags flags(const QModelIndex &index) const;
-  
-//  void clearActivity(Buffer *buffer);
-  void clear();  // EgS: check this
   
 public slots:
   void bufferUpdated(Buffer *);    
@@ -92,8 +107,6 @@ private:
   QMimeData *mimeData(const QModelIndexList &) const;
   bool dropMimeData(const QMimeData *, Qt::DropAction, int, int, const QModelIndex &);
   
-  QHash<QString, TreeItem*> networkItem;
-  QHash<Buffer *, BufferTreeItem*> bufferItem;
   Buffer *currentBuffer;
 };
 

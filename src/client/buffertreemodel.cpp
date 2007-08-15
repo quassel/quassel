@@ -31,6 +31,10 @@ BufferTreeItem::BufferTreeItem(Buffer *buffer, TreeItem *parent) : TreeItem(pare
   activity = Buffer::NoActivity;
 }
 
+uint BufferTreeItem::id() const {
+  return buf->bufferId().uid();
+}
+
 void BufferTreeItem::setActivity(const Buffer::ActivityLevel &level) {
   activity = level;
 }
@@ -83,6 +87,20 @@ QVariant BufferTreeItem::data(int column, int role) const {
 }
 
 /*****************************************
+*  Network Items
+*****************************************/
+NetworkTreeItem::NetworkTreeItem(const QString &network, TreeItem *parent) : TreeItem(parent) {
+  net = network;
+  itemData << net << "";
+}
+
+uint NetworkTreeItem::id() const {
+  return qHash(net);
+}
+
+
+
+/*****************************************
  * BufferTreeModel
  *****************************************/
 BufferTreeModel::BufferTreeModel(QObject *parent) : TreeModel(BufferTreeModel::defaultHeader(), parent) {
@@ -115,6 +133,7 @@ Qt::ItemFlags BufferTreeModel::flags(const QModelIndex &index) const {
 }
 
 bool BufferTreeModel::isBufferIndex(const QModelIndex &index) const {
+  // not so purdy...
   return parent(index) != QModelIndex();
 }
 
@@ -125,42 +144,37 @@ Buffer *BufferTreeModel::getBufferByIndex(const QModelIndex &index) const {
 
 QModelIndex BufferTreeModel::getOrCreateNetworkItemIndex(Buffer *buffer) {
   QString net = buffer->networkName();
+  TreeItem *networkItem;
   
-  if(networkItem.contains(net)) {
-    return index(networkItem[net]->row(), 0);
-  } else {
-    QList<QVariant> data;
-    data << net << "";
-    
+  if(not(networkItem = rootItem->childById(qHash(net)))) {
     int nextRow = rootItem->childCount();
+    networkItem = new NetworkTreeItem(net, rootItem);
     
     beginInsertRows(QModelIndex(), nextRow, nextRow);
-    rootItem->appendChild(new TreeItem(data, rootItem));
+    rootItem->appendChild(networkItem);
     endInsertRows();
-    
-    networkItem[net] = rootItem->child(nextRow);
-    return index(nextRow, 0);
   }
+
+  Q_ASSERT(networkItem);
+  return index(networkItem->row(), 0);
 }
 
 QModelIndex BufferTreeModel::getOrCreateBufferItemIndex(Buffer *buffer) {
   QModelIndex networkItemIndex = getOrCreateNetworkItemIndex(buffer);
-
-  if(bufferItem.contains(buffer)) {
-    return index(bufferItem[buffer]->row(), 0, networkItemIndex);
-  } else {
-    // first we determine the parent of the new Item
-    TreeItem *networkItem = static_cast<TreeItem*>(networkItemIndex.internalPointer());
-    Q_ASSERT(networkItem);
+  NetworkTreeItem *networkItem = static_cast<NetworkTreeItem*>(networkItemIndex.internalPointer());
+  TreeItem *bufferItem;
+  
+  if(not(bufferItem = networkItem->childById(buffer->bufferId().uid()))) {
     int nextRow = networkItem->childCount();
-
+    bufferItem = new BufferTreeItem(buffer, networkItem);
+    
     beginInsertRows(networkItemIndex, nextRow, nextRow);
-    networkItem->appendChild(new BufferTreeItem(buffer, networkItem));
+    networkItem->appendChild(bufferItem);
     endInsertRows();
-
-    bufferItem[buffer] = static_cast<BufferTreeItem *>(networkItem->child(nextRow));
-    return index(nextRow, 0, networkItemIndex);
   }
+
+  Q_ASSERT(bufferItem);
+  return index(bufferItem->row(), 0, networkItemIndex);
 }
 
 QStringList BufferTreeModel::mimeTypes() const {
@@ -191,12 +205,12 @@ bool BufferTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction /*actio
   int sourcerow = data->data("application/Quassel/BufferItem/row").toInt();
   QString network = QString::fromUtf8(data->data("application/Quassel/BufferItem/network"));
   
-  Q_ASSERT(networkItem.contains(network));
+  Q_ASSERT(rootItem->childById(qHash(network)));
 
   if(parent == QModelIndex()) // can't be a query...
     return false;
   
-  Buffer *sourceBuffer = static_cast<BufferTreeItem *>(networkItem[network]->child(sourcerow))->buffer();
+  Buffer *sourceBuffer = static_cast<BufferTreeItem *>(rootItem->childById(qHash(network))->child(sourcerow))->buffer();
   Buffer *targetBuffer = getBufferByIndex(parent);
 
   if(!(sourceBuffer->bufferType() & targetBuffer->bufferType() & Buffer::QueryBuffer)) // only queries can be merged
@@ -214,7 +228,6 @@ bool BufferTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction /*actio
 
   */
   qDebug() << "merging" << sourceBuffer->bufferName() << "with" << targetBuffer->bufferName();
-  bufferItem.remove(getBufferByIndex(parent));
   removeRow(parent.row(), BufferTreeModel::parent(parent));
   
   return true;
@@ -246,10 +259,11 @@ void BufferTreeModel::doubleClickReceived(const QModelIndex &clicked) {
 }
 
 void BufferTreeModel::bufferActivity(Buffer::ActivityLevel level, Buffer *buffer) {
-  if(bufferItem.contains(buffer) and buffer != currentBuffer)
-    bufferItem[buffer]->setActivity(level);
+  BufferTreeItem *bufferItem = static_cast<BufferTreeItem*>(getOrCreateBufferItemIndex(buffer).internalPointer());
+  if(buffer != currentBuffer)
+    bufferItem->setActivity(level);
   else
-    bufferItem[buffer]->setActivity(Buffer::NoActivity);
+    bufferItem->setActivity(Buffer::NoActivity);
   bufferUpdated(buffer);
 }
 
@@ -258,10 +272,4 @@ void BufferTreeModel::selectBuffer(Buffer *buffer) {
   emit selectionChanged(index);
 }
 
-// EgS: check if this makes sense!
-void BufferTreeModel::clear() {
-  TreeModel::clear();
-  networkItem.clear();
-  bufferItem.clear();
-}
 

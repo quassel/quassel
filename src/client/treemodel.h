@@ -23,6 +23,7 @@
 
 #include <QList>
 #include <QVariant>
+#include <QHash>
 #include <QAbstractItemModel>
 
 /*****************************************
@@ -30,6 +31,7 @@
  *****************************************/
 class TreeItem : public QObject {
   Q_OBJECT
+  Q_PROPERTY(uint id READ id)
   
 public:
   TreeItem(const QList<QVariant> &data, TreeItem *parent = 0);
@@ -39,7 +41,9 @@ public:
   void appendChild(TreeItem *child);
   void removeChild(int row);
                    
-  TreeItem *child(int row);
+  virtual uint id() const;
+  TreeItem *child(int row) const;
+  TreeItem *childById(const uint &) const;
   int childCount() const;
   int columnCount() const;
   virtual QVariant data(int column, int role) const;
@@ -47,7 +51,8 @@ public:
   TreeItem *parent();
     
 protected:
-  QList<TreeItem*> childItems;
+  QList<TreeItem *> childItems;
+  QHash<uint, TreeItem *> childHash; // uint to be compatible to qHash functions
   TreeItem *parentItem;
   QList<QVariant> itemData;
 };
@@ -67,6 +72,7 @@ public:
   virtual Qt::ItemFlags flags(const QModelIndex &index) const;
   QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
   QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
+  QModelIndex indexById(uint id, const QModelIndex &parent = QModelIndex()) const;
   QModelIndex parent(const QModelIndex &index) const;
   int rowCount(const QModelIndex &parent = QModelIndex()) const;
   int columnCount(const QModelIndex &parent = QModelIndex()) const;

@@ -38,16 +38,35 @@ TreeItem::~TreeItem() {
   qDeleteAll(childItems);
 }
 
+uint TreeItem::id() const {
+  return (uint)this;
+}
+
 void TreeItem::appendChild(TreeItem *item) {
   childItems.append(item);
+  childHash[item->id()] = item;
 }
 
 void TreeItem::removeChild(int row) {
+  if(row >= childItems.size())
+    return;
+  TreeItem *treeitem = childItems.value(row);
   childItems.removeAt(row);
+  childHash.remove(childHash.key(treeitem));
 }
 
-TreeItem *TreeItem::child(int row) {
-  return childItems.value(row);
+TreeItem *TreeItem::child(int row) const {
+  if(row < childItems.size())
+    return childItems.value(row);
+  else
+    return 0;
+}
+
+TreeItem *TreeItem::childById(const uint &id) const {
+  if(childHash.contains(id))
+    return childHash.value(id);
+  else
+    return 0;
 }
 
 int TreeItem::childCount() const {
@@ -102,6 +121,21 @@ QModelIndex TreeModel::index(int row, int column, const QModelIndex &parent) con
   TreeItem *childItem = parentItem->child(row);
   if(childItem)
     return createIndex(row, column, childItem);
+  else
+    return QModelIndex();
+}
+
+QModelIndex TreeModel::indexById(uint id, const QModelIndex &parent) const {
+  TreeItem *parentItem; 
+  
+  if(!parent.isValid())
+    parentItem = rootItem;
+  else
+    parentItem = static_cast<TreeItem *>(parent.internalPointer());
+  
+  TreeItem *childItem = parentItem->childById(id);
+  if(childItem)
+    return createIndex(childItem->row(), 0, childItem);
   else
     return QModelIndex();
 }
