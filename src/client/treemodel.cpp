@@ -95,11 +95,17 @@ QVariant TreeItem::data(int column, int role) const {
     return QVariant();
 }
 
+Qt::ItemFlags TreeItem::flags() const {
+  // some sane defaults
+  return Qt::ItemIsSelectable | Qt::ItemIsEnabled;
+}
 
 /*****************************************
  * TreeModel
  *****************************************/
-TreeModel::TreeModel(const QList<QVariant> &data, QObject *parent) : QAbstractItemModel(parent) {
+TreeModel::TreeModel(const QList<QVariant> &data, QObject *parent)
+  : QAbstractItemModel(parent)
+{
   rootItem = new TreeItem(data, 0);
 }
 
@@ -182,10 +188,12 @@ QVariant TreeModel::data(const QModelIndex &index, int role) const {
 }
 
 Qt::ItemFlags TreeModel::flags(const QModelIndex &index) const {
+  TreeItem *item;
   if(!index.isValid())
-    return 0;
+    item = rootItem;
   else
-    return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+    item = static_cast<TreeItem *>(index.internalPointer());
+  return item->flags();
 }
 
 QVariant TreeModel::headerData(int section, Qt::Orientation orientation, int role) const {

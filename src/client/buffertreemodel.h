@@ -1,4 +1,4 @@
-/***************************************************************************
+	/***************************************************************************
  *   Copyright (C) 2005-07 by The Quassel Team                             *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
@@ -36,12 +36,13 @@ public:
   BufferTreeItem(Buffer *, TreeItem *parent = 0);
 
   virtual uint id() const;
-  
   QVariant data(int column, int role) const;
+  virtual Qt::ItemFlags flags() const;
+  
   Buffer *buffer() const { return buf; }
   void setActivity(const Buffer::ActivityLevel &);
   
-protected:
+private:
   QString text(int column) const;
   QColor foreground(int column) const;
   
@@ -59,6 +60,7 @@ public:
   NetworkTreeItem(const QString &, TreeItem *parent = 0);
 
   virtual uint id() const;
+  virtual Qt::ItemFlags flags() const;
   
 private:
   QString net;
@@ -81,8 +83,6 @@ public:
   
   BufferTreeModel(QObject *parent = 0);
   static QList<QVariant> defaultHeader();
-
-  virtual Qt::ItemFlags flags(const QModelIndex &index) const;
   
 public slots:
   void bufferUpdated(Buffer *);    

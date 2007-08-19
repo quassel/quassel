@@ -47,6 +47,7 @@ public:
   int childCount() const;
   int columnCount() const;
   virtual QVariant data(int column, int role) const;
+  virtual Qt::ItemFlags flags() const;
   int row() const;
   TreeItem *parent();
     
@@ -82,7 +83,7 @@ public:
 protected:
   bool removeRow(int row, const QModelIndex &parent = QModelIndex());
   bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex());
-
+  
   TreeItem *rootItem;
 };
 

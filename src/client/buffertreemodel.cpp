@@ -86,6 +86,14 @@ QVariant BufferTreeItem::data(int column, int role) const {
   }
 }
 
+Qt::ItemFlags BufferTreeItem::flags() const {
+  Qt::ItemFlags flags = Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled;
+  if(buf->bufferType() == Buffer::QueryBuffer)
+    flags |= Qt::ItemIsDropEnabled;
+
+  return flags;
+}
+
 /*****************************************
 *  Network Items
 *****************************************/
@@ -98,12 +106,16 @@ uint NetworkTreeItem::id() const {
   return qHash(net);
 }
 
-
+Qt::ItemFlags NetworkTreeItem::flags() const {
+  return Qt::ItemIsEnabled | Qt::ItemIsDropEnabled;
+}
 
 /*****************************************
  * BufferTreeModel
  *****************************************/
-BufferTreeModel::BufferTreeModel(QObject *parent) : TreeModel(BufferTreeModel::defaultHeader(), parent) {
+BufferTreeModel::BufferTreeModel(QObject *parent)
+  : TreeModel(BufferTreeModel::defaultHeader(), parent)
+{
   connect(this, SIGNAL(fakeUserInput(BufferId, QString)),
           ClientProxy::instance(), SLOT(gsUserInput(BufferId, QString)));
 }
@@ -112,24 +124,6 @@ QList<QVariant >BufferTreeModel::defaultHeader() {
   QList<QVariant> data;
   data << tr("Buffer") << tr("Network");
   return data;
-}
-
-
-Qt::ItemFlags BufferTreeModel::flags(const QModelIndex &index) const {
-  if(!index.isValid())
-    return Qt::ItemIsDropEnabled;
-    //return 0;
-
-  // I think this is pretty ugly..
-  if(isBufferIndex(index)) {
-    Buffer *buffer = getBufferByIndex(index);
-    if(buffer->bufferType() == Buffer::QueryBuffer)
-      return Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled;
-    else
-      return Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled;
-  } else {
-    return Qt::ItemIsEnabled | Qt::ItemIsDropEnabled; 
-  }
 }
 
 bool BufferTreeModel::isBufferIndex(const QModelIndex &index) const {
@@ -145,7 +139,7 @@ Buffer *BufferTreeModel::getBufferByIndex(const QModelIndex &index) const {
 QModelIndex BufferTreeModel::getOrCreateNetworkItemIndex(Buffer *buffer) {
   QString net = buffer->networkName();
   TreeItem *networkItem;
-  
+
   if(not(networkItem = rootItem->childById(qHash(net)))) {
     int nextRow = rootItem->childCount();
     networkItem = new NetworkTreeItem(net, rootItem);
@@ -197,11 +191,11 @@ QMimeData *BufferTreeModel::mimeData(const QModelIndexList &indexes) const {
 }
 
 bool BufferTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction /*action*/, int /*row*/, int /*column*/, const QModelIndex &parent) {
-  if(!(data->hasFormat("application/Quassel/BufferItem/row")
-       && data->hasFormat("application/Quassel/BufferItem/network")
-       && data->hasFormat("application/Quassel/BufferItem/bufferId")))
-    return false; // whatever the drop is... it's not a buffer...
-       
+  foreach(QString mimeType, mimeTypes()) {
+    if(!(data->hasFormat(mimeType)))
+      return false; // whatever the drop is... it's not a buffer...
+  }
+  
   int sourcerow = data->data("application/Quassel/BufferItem/row").toInt();
   QString network = QString::fromUtf8(data->data("application/Quassel/BufferItem/network"));
   
@@ -219,14 +213,7 @@ bool BufferTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction /*actio
   if(sourceBuffer == targetBuffer) // we won't merge with ourself :)
     return false;
     
-  /*
-  if(QMessageBox::warning(static_cast<QWidget *>(QObject::parent()),
-                          tr("Merge Buffers?"),
-                          tr("Do you really want to merge the following Buffers?<br />%1.%2<br />%3.%4").arg(sourceBuffer->networkName()).arg(sourceBuffer->bufferName()).arg(targetBuffer->networkName()).arg(targetBuffer->bufferName()),
-                          QMessageBox::Yes|QMessageBox::No) == QMessageBox::No)
-    return false;
-
-  */
+  // TODO: warn user about buffermerge!
   qDebug() << "merging" << sourceBuffer->bufferName() << "with" << targetBuffer->bufferName();
   removeRow(parent.row(), BufferTreeModel::parent(parent));
   
