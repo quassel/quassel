@@ -27,12 +27,12 @@ SettingsDlg::SettingsDlg(QWidget *parent) : QDialog(parent) {
   ui.settingsFrame->setWidget(ui.settingsStack);
   ui.settingsTree->setRootIsDecorated(false);
 
-  connect(ui.settingsTree, SIGNAL(itemSelectionChanged()), this, SLOT(pageSelected()));
+  connect(ui.settingsTree, SIGNAL(itemSelectionChanged()), this, SLOT(itemSelected()));
   connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));
 }
 
-void SettingsDlg::registerSettingsPage(SettingsInterface *sp) {
-  QWidget *w = sp->settingsWidget();
+void SettingsDlg::registerSettingsPage(SettingsPage *sp) {
+  QWidget *w = sp->widget();
   w->setParent(this);
   ui.settingsStack->addWidget(w);
 
@@ -44,17 +44,25 @@ void SettingsDlg::registerSettingsPage(SettingsInterface *sp) {
     cat->setFlags(Qt::ItemIsEnabled);
   } else cat = cats[0];
   QTreeWidgetItem *p = new QTreeWidgetItem(cat, QStringList(sp->title()));
-  p->setData(0, Qt::UserRole, QVariant::fromValue(w));
+  pages[QString("%1$%2").arg(sp->category()).arg(sp->title())] = sp;
 }
 
-void SettingsDlg::pageSelected() {
+void SettingsDlg::selectPage(const QString &cat, const QString &title) {
+  QWidget *w = pages[QString("%1$%2").arg(cat).arg(title)]->widget();
+  Q_ASSERT(w);
+  ui.settingsStack->setCurrentWidget(w);
+}
+
+void SettingsDlg::itemSelected() {
   QList<QTreeWidgetItem *> items = ui.settingsTree->selectedItems();
   if(!items.count()) {
     return;
   } else {
-    QWidget *sp = items[0]->data(0, Qt::UserRole).value<QWidget *>();
-    Q_ASSERT(sp);
-    ui.settingsStack->setCurrentWidget(sp);
+    QTreeWidgetItem *parent = items[0]->parent();
+    if(!parent) return;
+    QString cat = parent->text(0);
+    QString title = items[0]->text(0);
+    selectPage(cat, title);
   }
 }
 
@@ -76,6 +84,6 @@ void SettingsDlg::buttonClicked(QAbstractButton *button) {
 }
 
 void SettingsDlg::applyChanges() {
-  SettingsInterface *sp = qobject_cast<SettingsInterface *>(ui.settingsStack->currentWidget());
-  if(sp) sp->applyChanges();
+  //SettingsInterface *sp = qobject_cast<SettingsInterface *>(ui.settingsStack->currentWidget());
+  //if(sp) sp->applyChanges();
 }

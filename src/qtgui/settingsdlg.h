@@ -24,23 +24,27 @@
 #include <QtGui>
 #include "ui_settingsdlg.h"
 
-#include "plugin.h"
+#include "settingspage.h"
 
 class SettingsDlg : public QDialog {
   Q_OBJECT
   public:
     SettingsDlg(QWidget *parent = 0);
-    void registerSettingsPage(SettingsInterface *);
-    void unregisterSettingsPage(SettingsInterface *);
+    void registerSettingsPage(SettingsPage *);
+    void unregisterSettingsPage(SettingsPage *);
+
+  public slots:
+    void selectPage(const QString &category, const QString &title);
 
   private slots:
-    void pageSelected();
+    void itemSelected();
     void buttonClicked(QAbstractButton *);
     void applyChanges();
 
   private:
     Ui::SettingsDlg ui;
 
+    QHash<QString, SettingsPage *> pages;
 };
 
 /*

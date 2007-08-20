@@ -81,11 +81,9 @@ src/qtgui/tabcompleter.cpp
 src/qtgui/tabcompleter.h
 src/qtgui/ui
 src/qtgui/ui/aboutdlg.ui
-src/qtgui/ui/buffermgmntsettingspage.ui
 src/qtgui/ui/bufferviewwidget.ui
 src/qtgui/ui/bufferwidget.ui
 src/qtgui/ui/channelwidget.ui
-src/qtgui/ui/connectionsettingspage.ui
 src/qtgui/ui/coreconnectdlg.ui
 src/qtgui/ui/coresettingspage.ui
 src/qtgui/ui/identitiesdlg.ui
@@ -102,3 +100,4 @@ src/qtgui/guisettings.h
 src/qtgui/guisettings.cpp
 src/common/ircuser.h
 src/common/ircuser.cpp
+src/qtgui/settingspage.h

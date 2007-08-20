@@ -61,6 +61,7 @@ Q_DECLARE_INTERFACE(CorePluginInterface,
  * the application's settings dialog.
  * This is also used by built-in settings dialogs.
  */
+/*
 class SettingsInterface {
   public:
     virtual ~SettingsInterface() {};
@@ -73,6 +74,7 @@ class SettingsInterface {
 
 Q_DECLARE_INTERFACE(SettingsInterface,
                     "eu.quassel.plugins.SettingsInterface/1.0");
+*/
 
 /** Plugins implementing this interface will be provided with the raw text the users enters.
  * The output they generate is in turn treated like generic user input. Note that the order in

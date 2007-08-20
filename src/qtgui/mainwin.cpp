@@ -27,7 +27,7 @@
 #include "coreconnectdlg.h"
 #include "serverlist.h"
 #include "settingsdlg.h"
-#include "settingspages.h"
+//#include "settingspage.h"
 
 MainWin::MainWin(QtGui *_gui, QWidget *parent) : QMainWindow(parent), gui(_gui) {
   ui.setupUi(this);
@@ -59,7 +59,7 @@ void MainWin::init() {
   serverListDlg = new ServerListDlg(this);
   serverListDlg->setVisible(serverListDlg->showOnStartup());
 
-  setupSettingsDlg();
+  //setupSettingsDlg();
 
   setupMenus();
   setupViews();
@@ -104,7 +104,7 @@ void MainWin::setupMenus() {
   connect(ui.actionNetworkList, SIGNAL(triggered()), this, SLOT(showServerList()));
   connect(ui.actionEditIdentities, SIGNAL(triggered()), serverListDlg, SLOT(editIdentities()));
   connect(ui.actionSettingsDlg, SIGNAL(triggered()), this, SLOT(showSettingsDlg()));
-  //ui.actionSettingsDlg->setEnabled(false);
+  ui.actionSettingsDlg->setEnabled(false);
   connect(ui.actionAboutQt, SIGNAL(triggered()), QApplication::instance(), SLOT(aboutQt()));
   // for debugging
   connect(ui.actionImportBacklog, SIGNAL(triggered()), this, SLOT(importBacklog()));

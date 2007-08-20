@@ -24,14 +24,14 @@
 #include <QtCore>
 #include <QtGui>
 
-#include "plugin.h"
-#include "settingsdlg.h"
+#include "settingspage.h"
 #include "ui_buffermgmntsettingspage.h"
 #include "ui_connectionsettingspage.h"
+#include "ui_usermgmtsettingspage.h"
 
 class BufferManagementSettingsPage : public QWidget, public SettingsInterface {
   Q_OBJECT
-  Q_INTERFACES(SettingsInterface)
+  Q_INTERFACES(SettingsInterface);
 
   public:
     QString category() { return tr("Buffers"); }
@@ -50,7 +50,7 @@ class BufferManagementSettingsPage : public QWidget, public SettingsInterface {
 
 class ConnectionSettingsPage : public QWidget, public SettingsInterface {
   Q_OBJECT
-  Q_INTERFACES(SettingsInterface)
+  Q_INTERFACES(SettingsInterface);
 
   public:
     QString category() { return tr("Behavior"); }
@@ -66,6 +66,23 @@ class ConnectionSettingsPage : public QWidget, public SettingsInterface {
 
 };
 
+class AccountManagementSettingsPage : public QWidget, public SettingsInterface {
+  Q_OBJECT
+  Q_INTERFACES(SettingsInterface);
+
+  public:
+    QString category() { return tr("Administration"); }
+    QString title() { return tr("Account Management"); }
+    QWidget *settingsWidget() { return this; }
+
+    AccountManagementSettingsPage();
+
+    void applyChanges();
+
+  private:
+    Ui::AccountManagementSettingsPage ui;
+
+};
 
 
 

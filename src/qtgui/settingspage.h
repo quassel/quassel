@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-07 by The Quassel Team                             *
+ *   Copyright (C) 2005-07 by The Quassel IRC Development Team             *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,47 +18,26 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "mainwin.h"
-#include "settingspages.h"
+#ifndef _SETTINGSPAGE_H_
+#define _SETTINGSPAGE_H_
 
-void MainWin::setupSettingsDlg() {
-  settingsDlg = new SettingsDlg(this);
-  settingsDlg->setVisible(false);
+//! Interface that needs to be implemented by pages of the settings dialog.
+class SettingsPage {
+  public:
+    virtual ~SettingsPage() {};
+    virtual QString category() = 0;
+    virtual QString title() = 0;
+    virtual QWidget *widget() = 0;
+    virtual void saveSettings() = 0;
+    virtual void loadSettings() = 0;
 
-  settingsDlg->registerSettingsPage(new BufferManagementSettingsPage());
-  settingsDlg->registerSettingsPage(new ConnectionSettingsPage());
-  settingsDlg->registerSettingsPage(new AccountManagementSettingsPage());
+    virtual bool hasChanged() = 0;
 
-}
+  signals:
+    void modified();
 
+};
 
-BufferManagementSettingsPage::BufferManagementSettingsPage() {
-  ui.setupUi(this);
+Q_DECLARE_INTERFACE(SettingsPage, "org.quassel-irc.iface.SettingsPage/1.0");
 
-  ui.tree->headerItem()->setText(0, tr("Buffers"));
-  setEnabled(false);
-}
-
-void BufferManagementSettingsPage::applyChanges() {
-
-
-}
-
-ConnectionSettingsPage::ConnectionSettingsPage() {
-  ui.setupUi(this);
-
-}
-
-void ConnectionSettingsPage::applyChanges() {
-
-
-}
-
-AccountManagementSettingsPage::AccountManagementSettingsPage() {
-  ui.setupUi(this);
-
-}
-
-void AccountManagementSettingsPage::applyChanges() {
-
-}
+#endif
