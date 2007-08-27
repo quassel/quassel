@@ -101,3 +101,14 @@ src/qtgui/guisettings.cpp
 src/common/ircuser.h
 src/common/ircuser.cpp
 src/qtgui/settingspage.h
+src/contrib
+src/contrib/qxt
+src/contrib/qxt/qxtglobal.h
+src/contrib/qxt/qxtpimpl.h
+src/contrib/qxt/qxtrpcpeer.cpp
+src/contrib/qxt/qxtrpcpeer.h
+src/core/serverinfo.cpp
+src/core/serverinfo.h
+src/contrib/qxt/CMakeLists.txt
+src/common/signalproxy.cpp
+src/common/signalproxy.h

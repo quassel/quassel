@@ -1,0 +1,4 @@
+This directory contains some files from the Qt Extension Library Project,
+which can be found at <http://www.libqxt.org/>. We have taken the liberty
+of not copying the whole Qxt source into the Quassel tree, but only the parts
+we need, specifically we are using QxtRPCPeer within Quassel IRC.

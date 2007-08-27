@@ -43,7 +43,7 @@ SET(SDIRS "")
 FOREACH(dir ${quassel_DIRS})
   SET(SDIRS ${SDIRS} "${CMAKE_CURRENT_SOURCE_DIR}/${dir}")
 ENDFOREACH(dir)
-INCLUDE_DIRECTORIES(${SDIRS} plugins)
+INCLUDE_DIRECTORIES(${SDIRS} plugins contrib/qxt)
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR}/qtgui) # so that ui files are found
 
 # We need Qt4 support.
@@ -63,6 +63,7 @@ ADD_DEFINITIONS(${GCC_WARN})
 # Define subdirs. CMake complains if a directory is added twice, so make sure this
 # does not happen in any combination of the requested targets.
 
+ADD_SUBDIRECTORY(contrib/qxt)
 ADD_SUBDIRECTORY(common)
 IF(BUILD_CORE)
   ADD_SUBDIRECTORY(core)
