@@ -25,7 +25,6 @@
 #include <QString>
 #include <QVariant>
 
-//#include "coreproxy.h"
 #include "message.h"
 
 class Server;
@@ -53,7 +52,6 @@ class CoreSession : public QObject {
     //! Retrieve a piece of session-wide data.
     QVariant retrieveSessionData(const QString &key, const QVariant &def = QVariant());
 
-    //CoreProxy *proxy();
     SignalProxy *signalProxy() const;
 
   public slots:
@@ -64,8 +62,6 @@ class CoreSession : public QObject {
     void sendServerStates();
 
   signals:
-    //void proxySignal(CoreSignal, QVariant arg1 = QVariant(), QVariant arg2 = QVariant(), QVariant arg3 = QVariant());
-
     void msgFromGui(QString net, QString buf, QString message);
     void displayMsg(Message message);
     void displayStatusMsg(QString, QString);
@@ -89,14 +85,12 @@ class CoreSession : public QObject {
   private:
     UserId user;
 
-    //CoreProxy *coreProxy;
-    SignalProxy *_signalProxy;
+   SignalProxy *_signalProxy;
     Storage *storage;
     QHash<QString, Server *> servers;
 
     QVariantMap sessionData;
     QMutex mutex;
-
 };
 
 #endif

@@ -35,21 +35,6 @@ CoreSession::CoreSession(UserId uid, Storage *_storage, QObject *parent) : QObje
   }
   mutex.unlock();
 
-  //connect(coreProxy, SIGNAL(send(CoreSignal, QVariant, QVariant, QVariant)), this, SIGNAL(proxySignal(CoreSignal, QVariant, QVariant, QVariant)));
-  //connect(coreProxy, SIGNAL(requestServerStates()), this, SIGNAL(serverStateRequested()));
-  //connect(coreProxy, SIGNAL(gsRequestConnect(QStringList)), this, SLOT(connectToIrc(QStringList)));
-  //connect(coreProxy, SIGNAL(gsUserInput(BufferId, QString)), this, SLOT(msgFromGui(BufferId, QString)));
-  //connect(coreProxy, SIGNAL(gsImportBacklog()), storage, SLOT(importOldBacklog()));
-  //connect(coreProxy, SIGNAL(gsRequestBacklog(BufferId, QVariant, QVariant)), this, SLOT(sendBacklog(BufferId, QVariant, QVariant)));
-  //connect(coreProxy, SIGNAL(gsRequestNetworkStates()), this, SLOT(sendServerStates()));
-  //connect(this, SIGNAL(displayMsg(Message)), coreProxy, SLOT(csDisplayMsg(Message)));
-  //connect(this, SIGNAL(displayStatusMsg(QString, QString)), coreProxy, SLOT(csDisplayStatusMsg(QString, QString)));
-  //connect(this, SIGNAL(backlogData(BufferId, QList<QVariant>, bool)), coreProxy, SLOT(csBacklogData(BufferId, QList<QVariant>, bool)));
-  //connect(this, SIGNAL(bufferIdUpdated(BufferId)), coreProxy, SLOT(csUpdateBufferId(BufferId)));
-  //connect(storage, SIGNAL(bufferIdUpdated(BufferId)), coreProxy, SLOT(csUpdateBufferId(BufferId)));
-  //connect(this, SIGNAL(sessionDataChanged(const QString &, const QVariant &)), coreProxy, SLOT(csSessionDataChanged(const QString &, const QVariant &)));
-  //connect(coreProxy, SIGNAL(gsSessionDataChanged(const QString &, const QVariant &)), this, SLOT(storeSessionData(const QString &, const QVariant &)));
-
   SignalProxy *p = signalProxy();
 
   p->attachSlot(SIGNAL(requestNetworkStates()), this, SIGNAL(serverStateRequested()));
@@ -86,12 +71,6 @@ UserId CoreSession::userId() const {
   return user;
 }
 
-/*
-void CoreSession::processSignal(ClientSignal sig, QVariant arg1, QVariant arg2, QVariant arg3) {
-  coreProxy->recv(sig, arg1, arg2, arg3);
-}
-*/
-
 void CoreSession::storeSessionData(const QString &key, const QVariant &data) {
   QSettings s;
   s.beginGroup(QString("SessionData/%1").arg(user));
@@ -127,22 +106,8 @@ void CoreSession::connectToNetwork(QString network) {
 
       connect(server, SIGNAL(connected(QString)), this, SLOT(serverConnected(QString)));
       connect(server, SIGNAL(disconnected(QString)), this, SLOT(serverDisconnected(QString)));
-
-      //connect(server, SIGNAL(serverState(QString, QVariantMap)), coreProxy, SLOT(csServerState(QString, QVariantMap)));
-      ////connect(server, SIGNAL(displayMsg(Message)), this, SLOT(recvMessageFromServer(Message)));
       connect(server, SIGNAL(displayMsg(Message::Type, QString, QString, QString, quint8)), this, SLOT(recvMessageFromServer(Message::Type, QString, QString, QString, quint8)));
       connect(server, SIGNAL(displayStatusMsg(QString)), this, SLOT(recvStatusMsgFromServer(QString)));
-      //connect(server, SIGNAL(modeSet(QString, QString, QString)), coreProxy, SLOT(csModeSet(QString, QString, QString)));
-      //connect(server, SIGNAL(topicSet(QString, QString, QString)), coreProxy, SLOT(csTopicSet(QString, QString, QString)));
-      //connect(server, SIGNAL(nickAdded(QString, QString, QVariantMap)), coreProxy, SLOT(csNickAdded(QString, QString, QVariantMap)));
-      //connect(server, SIGNAL(nickRenamed(QString, QString, QString)), coreProxy, SLOT(csNickRenamed(QString, QString, QString)));
-      //connect(server, SIGNAL(nickRemoved(QString, QString)), coreProxy, SLOT(csNickRemoved(QString, QString)));
-      //connect(server, SIGNAL(nickUpdated(QString, QString, QVariantMap)), coreProxy, SLOT(csNickUpdated(QString, QString, QVariantMap)));
-      //connect(server, SIGNAL(ownNickSet(QString, QString)), coreProxy, SLOT(csOwnNickSet(QString, QString)));
-      //connect(server, SIGNAL(queryRequested(QString, QString)), coreProxy, SLOT(csQueryRequested(QString, QString)));
-      //// TODO add error handling
-      //connect(server, SIGNAL(connected(QString)), coreProxy, SLOT(csServerConnected(QString)));
-      //connect(server, SIGNAL(disconnected(QString)), coreProxy, SLOT(csServerDisconnected(QString)));
 
       SignalProxy *p = signalProxy();
       p->attachSignal(server, SIGNAL(serverState(QString, QVariantMap)), SIGNAL(networkState(QString, QVariantMap)));
@@ -179,7 +144,6 @@ void CoreSession::serverConnected(QString net) {
 void CoreSession::serverDisconnected(QString net) {
   delete servers[net];
   servers.remove(net);
-  //coreProxy->csServerDisconnected(net);
   signalProxy()->sendSignal(SIGNAL(networkDisconnected(QString)), net);  // FIXME does this work?
 }
 

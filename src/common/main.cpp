@@ -30,14 +30,12 @@
 #elif defined BUILD_QTGUI
 #include <QApplication>
 #include "client.h"
-//#include "clientproxy.h"
 #include "qtgui.h"
 #include "style.h"
 
 #elif defined BUILD_MONO
 #include <QApplication>
 #include "client.h"
-//#include "clientproxy.h"
 #include "core.h"
 #include "coresession.h"
 #include "qtgui.h"

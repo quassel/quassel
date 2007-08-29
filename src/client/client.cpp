@@ -22,7 +22,6 @@
 
 #include "buffer.h"
 #include "buffertreemodel.h"
-//#include "clientproxy.h"
 #include "quasselui.h"
 #include "signalproxy.h"
 #include "util.h"
@@ -51,12 +50,8 @@ void Client::destroy() {
 }
 
 Client::Client() {
-  //clientProxy = ClientProxy::instance();
   _signalProxy = new SignalProxy(SignalProxy::Client, 0, this);
 
-    // TODO: make this configurable (allow monolithic client to connect to remote cores)
-  //if(Global::runMode == Global::Monolithic) clientMode = LocalCore;
-  //else clientMode = RemoteCore;
   connectedToCore = false;
   socket = 0;
 }
@@ -74,33 +69,6 @@ void Client::init() {
   connect(this, SIGNAL(bufferSelected(Buffer *)), _bufferModel, SLOT(selectBuffer(Buffer *)));
   connect(this, SIGNAL(bufferUpdated(Buffer *)), _bufferModel, SLOT(bufferUpdated(Buffer *)));
   connect(this, SIGNAL(bufferActivity(Buffer::ActivityLevel, Buffer *)), _bufferModel, SLOT(bufferActivity(Buffer::ActivityLevel, Buffer *)));
-
-  //connect(&socket, SIGNAL(readyRead()), this, SLOT(serverHasData()));
-  //connect(&socket, SIGNAL(connected()), this, SLOT(coreSocketConnected()));
-  //connect(&socket, SIGNAL(disconnected()), this, SLOT(coreSocketDisconnected()));
-  //connect(&socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(serverError(QAbstractSocket::SocketError)));
-
-  //connect(this, SIGNAL(sendSessionData(const QString &, const QVariant &)), clientProxy, SLOT(gsSessionDataChanged(const QString &, const QVariant &)));
-  //connect(clientProxy, SIGNAL(csSessionDataChanged(const QString &, const QVariant &)), this, SLOT(recvSessionData(const QString &, const QVariant &)));
-
-  //connect(clientProxy, SIGNAL(send(ClientSignal, QVariant, QVariant, QVariant)), this, SLOT(recvProxySignal(ClientSignal, QVariant, QVariant, QVariant)));
-  //connect(clientProxy, SIGNAL(csCoreState(QVariant)), this, SLOT(recvCoreState(const QVariant &)));
-  //connect(clientProxy, SIGNAL(csServerState(QString, QVariant)), this, SLOT(recvNetworkState(QString, QVariant)));
-  //connect(clientProxy, SIGNAL(csServerConnected(QString)), this, SLOT(networkConnected(QString)));
-  //connect(clientProxy, SIGNAL(csServerDisconnected(QString)), this, SLOT(networkDisconnected(QString)));
-  //connect(clientProxy, SIGNAL(csDisplayMsg(Message)), this, SLOT(recvMessage(const Message &)));
-  //connect(clientProxy, SIGNAL(csDisplayStatusMsg(QString, QString)), this, SLOT(recvStatusMsg(QString, QString)));
-  //connect(clientProxy, SIGNAL(csTopicSet(QString, QString, QString)), this, SLOT(setTopic(QString, QString, QString)));
-  //connect(clientProxy, SIGNAL(csNickAdded(QString, QString, QVariantMap)), this, SLOT(addNick(QString, QString, QVariantMap)));
-  //connect(clientProxy, SIGNAL(csNickRemoved(QString, QString)), this, SLOT(removeNick(QString, QString)));
-  //connect(clientProxy, SIGNAL(csNickRenamed(QString, QString, QString)), this, SLOT(renameNick(QString, QString, QString)));
-  //connect(clientProxy, SIGNAL(csNickUpdated(QString, QString, QVariantMap)), this, SLOT(updateNick(QString, QString, QVariantMap)));
-  //connect(clientProxy, SIGNAL(csOwnNickSet(QString, QString)), this, SLOT(setOwnNick(QString, QString)));
-  //connect(clientProxy, SIGNAL(csBacklogData(BufferId, const QList<QVariant> &, bool)), this, SLOT(recvBacklogData(BufferId, QList<QVariant>, bool)));
-  //connect(clientProxy, SIGNAL(csUpdateBufferId(BufferId)), this, SLOT(updateBufferId(BufferId)));
-  //connect(this, SIGNAL(sendInput(BufferId, QString)), clientProxy, SLOT(gsUserInput(BufferId, QString)));
-  //connect(this, SIGNAL(requestBacklog(BufferId, QVariant, QVariant)), clientProxy, SLOT(gsRequestBacklog(BufferId, QVariant, QVariant)));
-  //connect(this, SIGNAL(requestNetworkStates()), clientProxy, SLOT(gsRequestNetworkStates()));
 
   SignalProxy *p = signalProxy();
   p->attachSignal(this, SIGNAL(sendSessionData(const QString &, const QVariant &)), SIGNAL(clientSessionDataChanged(const QString &, const QVariant &)));
@@ -120,7 +88,6 @@ void Client::init() {
   p->attachSlot(SIGNAL(backlogData(BufferId, const QVariantList &, bool)), this, SLOT(recvBacklogData(BufferId, const QVariantList &, bool)));
   p->attachSlot(SIGNAL(bufferIdUpdated(BufferId)), this, SLOT(updateBufferId(BufferId)));
   p->attachSignal(this, SIGNAL(sendInput(BufferId, QString)));
-  //p->attachSignal(this, SIGNAL(requestBacklog(BufferId, QVariant, QVariant)), "requestBacklog");
   p->attachSignal(this, SIGNAL(requestNetworkStates()));
 
   connect(mainUi, SIGNAL(connectToCore(const QVariantMap &)), this, SLOT(connectToCore(const QVariantMap &)));
@@ -136,10 +103,7 @@ void Client::init() {
 }
 
 Client::~Client() {
-  //delete mainUi;
-  //delete _bufferModel;
   foreach(Buffer *buf, buffers.values()) delete buf; // this is done by disconnectFromCore()! FIXME?
-  //ClientProxy::destroy();
   Q_ASSERT(!buffers.count());
 }
 
@@ -296,14 +260,6 @@ QStringList Client::sessionDataKeys() {
   return instance()->sessionData.keys();
 }
 
-void Client::recvProxySignal(ClientSignal sig, QVariant arg1, QVariant arg2, QVariant arg3) {
-  if(clientMode == LocalCore) return;
-  QList<QVariant> sigdata;
-  sigdata.append(sig); sigdata.append(arg1); sigdata.append(arg2); sigdata.append(arg3);
-  //qDebug() << "Sending signal: " << sigdata;
-  writeDataToDevice(socket, QVariant(sigdata));
-}
-
 void Client::coreSocketError(QAbstractSocket::SocketError) {
   emit coreConnectionError(socket->errorString());
 }
@@ -312,9 +268,6 @@ void Client::coreHasData() {
   QVariant item;
   if(readDataFromDevice(socket, blockSize, item)) {
     emit recvPartialItem(1,1);
-    //QList<QVariant> sigdata = item.toList();
-    //Q_ASSERT(sigdata.size() == 4);
-    //ClientProxy::instance()->recv((CoreSignal)sigdata[0].toInt(), sigdata[1], sigdata[2], sigdata[3]);
     recvCoreState(item);
     blockSize = 0;
     return;

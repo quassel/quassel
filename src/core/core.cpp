@@ -33,7 +33,6 @@ Core * Core::instance() {
 }
 
 void Core::destroy() {
-  //instanceptr->deleteLater();
   delete instanceptr;
   instanceptr = 0;
 }
@@ -54,9 +53,6 @@ void Core::init() {
 }
 
 Core::~Core() {
-  //foreach(QTcpSocket *sock, validClients.keys()) {
-  //  delete sock;
-  //}
   qDeleteAll(sessions);
   delete storage;
 }
@@ -78,7 +74,6 @@ CoreSession *Core::createSession(UserId uid) {
   Q_ASSERT(!core->sessions.contains(uid));
   CoreSession *sess = new CoreSession(uid, core->storage);
   core->sessions[uid] = sess;
-  //connect(sess, SIGNAL(proxySignal(CoreSignal, QVariant, QVariant, QVariant)), core, SLOT(recvProxySignal(CoreSignal, QVariant, QVariant, QVariant)));
   return sess;
 }
 
@@ -112,34 +107,26 @@ void Core::clientHasData() {
   quint32 bsize = blockSizes.value(socket);
   QVariant item;
   if(readDataFromDevice(socket, bsize, item)) {
-    /* this is probably obsolete now */
-    if(validClients.contains(socket)) {
-      Q_ASSERT(false);
-      //QList<QVariant> sigdata = item.toList();
-      //sessions[validClients[socket]]->processSignal((ClientSignal)sigdata[0].toInt(), sigdata[1], sigdata[2], sigdata[3]);
-    } else {
-      // we need to auth the client
-      try {
-        processClientInit(socket, item);
-      } catch(Storage::AuthError) {
-        qWarning() << "Authentification error!";  // FIXME
-        socket->close();
-        return;
-      } catch(Exception e) {
-        qWarning() << "Client init error:" << e.msg();
-        socket->close();
-        return;
-      }
+    // we need to auth the client
+    try {
+      processClientInit(socket, item);
+    } catch(Storage::AuthError) {
+      qWarning() << "Authentification error!";  // FIXME
+      socket->close();
+      return;
+    } catch(Exception e) {
+      qWarning() << "Client init error:" << e.msg();
+      socket->close();
+      return;
     }
-    blockSizes[socket] = bsize = 0;  // FIXME blockSizes aufräum0rn!
   }
-  blockSizes[socket] = bsize;
+  blockSizes[socket] = bsize = 0;  // FIXME blockSizes aufräum0rn!
 }
 
+// FIXME: no longer called, since connection handling is now in SignalProxy
 void Core::clientDisconnected() {
   QTcpSocket *socket = dynamic_cast<QTcpSocket*>(sender());
   blockSizes.remove(socket);
-  validClients.remove(socket);
   qDebug() << "Client disconnected.";
   // TODO remove unneeded sessions - if necessary/possible...
 }
@@ -166,9 +153,6 @@ void Core::processClientInit(QTcpSocket *socket, const QVariant &v) {
     // Auth
   UserId uid = storage->validateUser(msg["User"].toString(), msg["Password"].toString());  // throws exception if this failed
   QVariant reply = initSession(uid);
-  validClients[socket] = uid;  // still needed? FIXME
-  //QList<QVariant> sigdata;
-  //sigdata.append(CS_CORE_STATE); sigdata.append(reply); sigdata.append(QVariant()); sigdata.append(QVariant());
   disconnect(socket, 0, this, 0);
   sessions[uid]->addClient(socket);
   writeDataToDevice(socket, reply);
@@ -180,23 +164,8 @@ QVariant Core::initSession(UserId uid) {
   if(sessions.contains(uid)) sess = sessions[uid];
   else {
     sess = createSession(uid);
-    //validClients[socket] = uid;
   }
   QVariantMap reply;
   reply["SessionState"] = sess->sessionState();
   return reply;
 }
-
-/*
-void Core::recvProxySignal(CoreSignal sig, QVariant arg1, QVariant arg2, QVariant arg3) {
-  CoreSession *sess = qobject_cast<CoreSession*>(sender());
-  Q_ASSERT(sess);
-  UserId uid = sess->userId();
-  QList<QVariant> sigdata;
-  sigdata.append(sig); sigdata.append(arg1); sigdata.append(arg2); sigdata.append(arg3);
-  //qDebug() << "Sending signal: " << sigdata;
-  foreach(QTcpSocket *socket, validClients.keys()) {
-    if(validClients[socket] == uid) writeDataToDevice(socket, QVariant(sigdata));
-  }
-}
-*/

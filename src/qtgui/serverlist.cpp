@@ -21,7 +21,6 @@
 #include "serverlist.h"
 #include "identities.h"
 #include "client.h"
-//#include "clientproxy.h"
 #include "signalproxy.h"
 
 /* NOTE: This dialog holds not only the server list, but also the identities.
@@ -42,7 +41,6 @@ ServerListDlg::ServerListDlg(QWidget *parent) : QDialog(parent) {
 
   settings.endGroup();
 
-  //connect(this, SIGNAL(requestConnect(QStringList)), ClientProxy::instance(), SLOT(gsRequestConnect(QStringList)));
   Client::signalProxy()->attachSignal(this, SIGNAL(requestConnect(QString)));
 
   // Autoconnect

@@ -7,8 +7,6 @@ src/client/buffertreemodel.cpp
 src/client/buffertreemodel.h
 src/client/client.cpp
 src/client/client.h
-src/client/clientproxy.cpp
-src/client/clientproxy.h
 src/client/CMakeLists.txt
 src/client/treemodel.cpp
 src/client/treemodel.h
@@ -25,7 +23,6 @@ src/common/logger.h
 src/common/main.cpp
 src/common/message.cpp
 src/common/message.h
-src/common/proxy_common.h
 src/common/quasselui.h
 src/common/settings.cpp
 src/common/settings.h
@@ -35,8 +32,6 @@ src/core
 src/core/CMakeLists.txt
 src/core/core.cpp
 src/core/core.h
-src/core/coreproxy.cpp
-src/core/coreproxy.h
 src/core/coresession.cpp
 src/core/coresession.h
 src/core/server.cpp

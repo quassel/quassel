@@ -20,7 +20,6 @@
 
 #include <QtGui>
 #include "coreconnectdlg.h"
-//#include "clientproxy.h"
 #include "global.h"
 #include "client.h"
 #include "clientsettings.h"

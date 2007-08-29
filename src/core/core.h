@@ -46,7 +46,6 @@ class Core : public QObject {
     static void disconnectLocalClient();
 
   private slots:
-    //void recvProxySignal(CoreSignal, QVariant, QVariant, QVariant);
     bool startListening(uint port = DEFAULT_PORT);
     void stopListening();
     void incomingConnection();
@@ -73,7 +72,6 @@ class Core : public QObject {
     Storage *storage;
 
     QTcpServer server; // TODO: implement SSL
-    QHash<QTcpSocket *, UserId> validClients;
     QHash<QTcpSocket *, quint32> blockSizes;
 };
 

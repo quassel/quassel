@@ -28,10 +28,8 @@
 
 #include "buffer.h"
 #include "message.h"
-#include "proxy_common.h"
 
 class AbstractUi;
-class ClientProxy;
 class BufferTreeModel;
 class QtGui;
 class SignalProxy;
@@ -97,7 +95,6 @@ class Client : public QObject {
   private slots:
     void recvCoreState(const QVariant &state);
     void recvSessionData(const QString &key, const QVariant &data);
-    void recvProxySignal(ClientSignal sig, QVariant arg1, QVariant arg2, QVariant arg3);
 
     void coreSocketError(QAbstractSocket::SocketError);
     void coreHasData();
@@ -135,7 +132,6 @@ class Client : public QObject {
     void disconnectFromLocalCore();                             // defined in main.cpp
 
     AbstractUi *mainUi;
-    //ClientProxy *clientProxy;
     SignalProxy *_signalProxy;
     BufferTreeModel *_bufferModel;
 
