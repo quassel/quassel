@@ -20,8 +20,10 @@
 
 #include <QColor>  // FIXME Dependency on QtGui!
 
-#include "clientproxy.h"
+#include "client.h"
+//#include "clientproxy.h"
 #include "buffertreemodel.h"
+#include "signalproxy.h"
 
 /*****************************************
 *  Fancy Buffer Items
@@ -116,8 +118,9 @@ Qt::ItemFlags NetworkTreeItem::flags() const {
 BufferTreeModel::BufferTreeModel(QObject *parent)
   : TreeModel(BufferTreeModel::defaultHeader(), parent)
 {
-  connect(this, SIGNAL(fakeUserInput(BufferId, QString)),
-          ClientProxy::instance(), SLOT(gsUserInput(BufferId, QString)));
+  //connect(this, SIGNAL(fakeUserInput(BufferId, QString)),
+  //        ClientProxy::instance(), SLOT(gsUserInput(BufferId, QString)));
+  Client::signalProxy()->attachSignal(this, SIGNAL(fakeUserInput(BufferId, QString)), SIGNAL(sendInput(BufferId, QString)));
 }
 
 QList<QVariant >BufferTreeModel::defaultHeader() {

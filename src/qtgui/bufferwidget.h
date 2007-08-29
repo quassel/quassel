@@ -68,8 +68,8 @@ class BufferWidget : public QWidget {
     void updateTitle();
 
     //void displayMsg(Message);
-    void updateNickList(BufferState *state, VarMap nicks);
-    void updateNickList(VarMap nicks);
+    void updateNickList(BufferState *state, QVariantMap nicks);
+    void updateNickList(QVariantMap nicks);
     void setOwnNick(QString ownNick);
     void setTopic(QString topic);
     void setActive(bool act = true);

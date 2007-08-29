@@ -61,7 +61,7 @@ class CoreConnectDlg: public QDialog {
 
     void cancelConnect();
     void setStartState();
-    VarMap accountData;
+    QVariantMap accountData;
     QString curacc;
 };
 

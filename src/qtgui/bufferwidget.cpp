@@ -65,7 +65,7 @@ void BufferWidget::setBuffer(Buffer *buf) {
       s->topic = buf->topic();
       updateNickList(s, buf->nickList());
       s->splitter->restoreState(s->splitterState);
-      connect(buf, SIGNAL(nickListChanged(VarMap)), this, SLOT(updateNickList(VarMap)));
+      connect(buf, SIGNAL(nickListChanged(QVariantMap)), this, SLOT(updateNickList(QVariantMap)));
       connect(s->nickTree, SIGNAL(itemExpanded(QTreeWidgetItem *)), this, SLOT(itemExpansionChanged(QTreeWidgetItem*)));
       connect(s->nickTree, SIGNAL(itemCollapsed(QTreeWidgetItem *)), this, SLOT(itemExpansionChanged(QTreeWidgetItem*)));
     } else {
@@ -180,14 +180,14 @@ void BufferWidget::setTopic(QString topic) {
 }
 
 
-void BufferWidget::updateNickList(VarMap nicks) {
+void BufferWidget::updateNickList(QVariantMap nicks) {
   Buffer *buf = qobject_cast<Buffer*>(sender());
   Q_ASSERT(buf);
   updateNickList(states[buf], nicks);
 }
 
 // TODO Use 005
-void BufferWidget::updateNickList(BufferState *state, VarMap nicks) {
+void BufferWidget::updateNickList(BufferState *state, QVariantMap nicks) {
   emit nickListUpdated(nicks.keys());
   QTreeWidget *tree = state->nickTree;
   if(!tree) return;

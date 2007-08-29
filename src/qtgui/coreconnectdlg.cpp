@@ -20,7 +20,7 @@
 
 #include <QtGui>
 #include "coreconnectdlg.h"
-#include "clientproxy.h"
+//#include "clientproxy.h"
 #include "global.h"
 #include "client.h"
 #include "clientsettings.h"
@@ -126,7 +126,7 @@ void CoreConnectDlg::setAccountEditEnabled(bool en) {
 void CoreConnectDlg::accountChanged(const QString &text) {
   AccountSettings s;
   if(!curacc.isEmpty()) {
-    VarMap oldAcc;
+    QVariantMap oldAcc;
     oldAcc["User"] = ui.userEdit->text();
     oldAcc["Host"] = ui.hostEdit->text();
     oldAcc["Port"] = ui.port->value();
@@ -138,7 +138,7 @@ void CoreConnectDlg::accountChanged(const QString &text) {
   if(!text.isEmpty()) { // empty text: just save stuff
     curacc = text;
     s.setLastAccount(curacc);
-    VarMap newAcc = s.value(curacc, "AccountData").toMap();
+    QVariantMap newAcc = s.value(curacc, "AccountData").toMap();
     ui.userEdit->setText(newAcc["User"].toString());
     ui.hostEdit->setText(newAcc["Host"].toString());
     ui.port->setValue(newAcc["Port"].toInt());
@@ -170,7 +170,7 @@ void CoreConnectDlg::createAccount() {
     QMessageBox::warning(this, tr("Account name already exists!"), tr("An account named '%1' already exists, and account names must be unique!").arg(accname));
     return;
   }
-  VarMap defdata;
+  QVariantMap defdata;
   ui.accountList->addItem(accname);
   ui.accountList->setCurrentIndex(ui.accountList->findText(accname));
   setAccountEditEnabled(true);
@@ -210,9 +210,12 @@ void CoreConnectDlg::doAutoConnect() {
 void CoreConnectDlg::doConnect() {
   accountChanged(); // save current account info
 
-  VarMap conninfo;
+  QVariantMap conninfo;
   ui.stackedWidget->setCurrentIndex(1);
   if(ui.internalCore->isChecked()) {
+    // FIXME
+    coreConnectionError(tr("Can't connect to internal core at the moment [serious breakage due to switch to dynamic signals]. Please check back later."));
+    return;
     if(Global::runMode != Global::Monolithic) {
       coreConnectionError(tr("Can't connect to internal core, since we are running as a standalone GUI!"));
       return;
@@ -278,7 +281,7 @@ void CoreConnectDlg::coreConnected() { /*
   connect(ClientProxy::instance(), SIGNAL(recvPartialItem(quint32, quint32)), this, SLOT(updateProgressBar(quint32, quint32)));
   connect(ClientProxy::instance(), SIGNAL(csCoreState(QVariant)), this, SLOT(recvCoreState(QVariant)));
   ui.progressBar->show();
-  VarMap initmsg;
+  QVariantMap initmsg;
   initmsg["GUIProtocol"] = GUI_PROTOCOL;
   // FIXME guiProxy->send(GS_CLIENT_INIT, QVariant(initmsg)); */
   ui.connectionStatus->setText(tr("Connected to core."));
@@ -289,7 +292,7 @@ void CoreConnectDlg::coreConnectionError(QString err) {
   ui.stackedWidget->setCurrentIndex(0);
   show(); // just in case we started hidden
   QMessageBox::warning(this, tr("Connection Error"), tr("<b>Could not connect to Quassel Core!</b><br>\n") + err, QMessageBox::Retry);
-  disconnect(ClientProxy::instance(), 0, this, 0);
+  //disconnect(ClientProxy::instance(), 0, this, 0); FIXME?
   //ui.autoConnect->setChecked(false);
   setStartState();
 }

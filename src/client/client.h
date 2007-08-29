@@ -24,6 +24,7 @@
 #include <QAbstractSocket>
 #include <QTcpSocket>
 #include <QList>
+#include <QPointer>
 
 #include "buffer.h"
 #include "message.h"
@@ -33,6 +34,7 @@ class AbstractUi;
 class ClientProxy;
 class BufferTreeModel;
 class QtGui;
+class SignalProxy;
 
 class QTimer;
 
@@ -50,6 +52,7 @@ class Client : public QObject {
     static BufferId bufferId(QString net, QString buf);
 
     static BufferTreeModel *bufferModel();
+    static SignalProxy *signalProxy();
 
     static AbstractUiMsg *layoutMsg(const Message &);
 
@@ -88,7 +91,7 @@ class Client : public QObject {
   public slots:
     //void selectBuffer(Buffer *);
     //void connectToLocalCore();
-    void connectToCore(const VarMap &);
+    void connectToCore(const QVariantMap &);
     void disconnectFromCore();
 
   private slots:
@@ -96,10 +99,11 @@ class Client : public QObject {
     void recvSessionData(const QString &key, const QVariant &data);
     void recvProxySignal(ClientSignal sig, QVariant arg1, QVariant arg2, QVariant arg3);
 
-    void serverError(QAbstractSocket::SocketError);
-    void serverHasData();
+    void coreSocketError(QAbstractSocket::SocketError);
+    void coreHasData();
     void coreSocketConnected();
     void coreSocketDisconnected();
+    void coreSocketStateChanged(QAbstractSocket::SocketState);
 
     void userInput(BufferId, QString);
     void networkConnected(QString);
@@ -108,12 +112,12 @@ class Client : public QObject {
     void recvMessage(const Message &message);
     void recvStatusMsg(QString network, QString message);
     void setTopic(QString net, QString buf, QString);
-    void addNick(QString net, QString nick, VarMap props);
+    void addNick(QString net, QString nick, QVariantMap props);
     void removeNick(QString net, QString nick);
     void renameNick(QString net, QString oldnick, QString newnick);
-    void updateNick(QString net, QString nick, VarMap props);
+    void updateNick(QString net, QString nick, QVariantMap props);
     void setOwnNick(QString net, QString nick);
-    void recvBacklogData(BufferId, const QList<QVariant> &, bool);
+    void recvBacklogData(BufferId, QVariantList, bool);
     void updateBufferId(BufferId);
 
     void removeBuffer(Buffer *);
@@ -131,17 +135,18 @@ class Client : public QObject {
     void disconnectFromLocalCore();                             // defined in main.cpp
 
     AbstractUi *mainUi;
-    ClientProxy *clientProxy;
+    //ClientProxy *clientProxy;
+    SignalProxy *_signalProxy;
     BufferTreeModel *_bufferModel;
 
-    QTcpSocket socket;
+    QPointer<QIODevice> socket;
     quint32 blockSize;
 
     static bool connectedToCore;
-    static VarMap coreConnectionInfo;
+    static QVariantMap coreConnectionInfo;
     static QHash<BufferId, Buffer *> buffers;
     static QHash<uint, BufferId> bufferIds;
-    static QHash<QString, QHash<QString, VarMap> > nicks;
+    static QHash<QString, QHash<QString, QVariantMap> > nicks;
     static QHash<QString, bool> netConnected;
     static QStringList netsAwaitingInit;
     static QHash<QString, QString> ownNick;
@@ -149,7 +154,7 @@ class Client : public QObject {
     QTimer *layoutTimer;
     QList<Buffer *> layoutQueue;
 
-    VarMap sessionData;
+    QVariantMap sessionData;
 };
 
 #endif

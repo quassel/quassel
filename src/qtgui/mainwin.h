@@ -66,7 +66,7 @@ class MainWin : public QMainWindow {
     void importBacklog();
 
   signals:
-    void connectToCore(const VarMap &connInfo);
+    void connectToCore(const QVariantMap &connInfo);
     void disconnectFromCore();
     void requestBacklog(BufferId, QVariant, QVariant);
     void importOldBacklog();

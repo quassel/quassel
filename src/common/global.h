@@ -35,7 +35,6 @@
 #include <QVariant>
 
 /* Some global stuff */
-typedef QMap<QString, QVariant> VarMap;
 
 typedef uint UserId;
 typedef uint MsgId;

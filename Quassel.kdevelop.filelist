@@ -112,3 +112,11 @@ src/core/serverinfo.h
 src/contrib/qxt/CMakeLists.txt
 src/common/signalproxy.cpp
 src/common/signalproxy.h
+src/contrib/qxt/qxtboundcfunction.h
+src/contrib/qxt/qxtboundfunctionbase.h
+src/contrib/qxt/qxtboundfunction.h
+src/contrib/qxt/qxtmetaobject.cpp
+src/contrib/qxt/qxtmetaobject.h
+src/contrib/qxt/qxtnullable.h
+src/contrib/qxt/qxtnull.cpp
+src/contrib/qxt/qxtnull.h

@@ -46,7 +46,7 @@ class ServerListDlg : public QDialog {
     virtual void accept();
 
   signals:
-    void requestConnect(QStringList networks);
+    void requestConnect(QString network);
 
   private slots:
     void updateButtons();
@@ -59,17 +59,17 @@ class ServerListDlg : public QDialog {
   private:
     Ui::ServerListDlg ui;
 
-    //VarMap networks;
-    //VarMap identities;  <-- this is now stored in global
+    //QVariantMap networks;
+    //QVariantMap identities;  <-- this is now stored in global
 };
 
 class NetworkEditDlg : public QDialog {
   Q_OBJECT
 
   public:
-    NetworkEditDlg(QWidget *parent, VarMap network);
+    NetworkEditDlg(QWidget *parent, QVariantMap network);
 
-    VarMap getNetwork() { return network; }
+    QVariantMap getNetwork() { return network; }
   public slots:
     virtual void accept();
 
@@ -87,11 +87,11 @@ class NetworkEditDlg : public QDialog {
   private:
     Ui::NetworkEditDlg ui;
 
-    VarMap network;
-    //VarMap identities;
+    QVariantMap network;
+    //QVariantMap identities;
     QString oldName;
 
-    VarMap createDefaultNetwork();
+    QVariantMap createDefaultNetwork();
     QString checkValidity();
 };
 
@@ -99,9 +99,9 @@ class ServerEditDlg : public QDialog {
   Q_OBJECT
 
   public:
-    ServerEditDlg(QWidget *parent, VarMap server = VarMap());
+    ServerEditDlg(QWidget *parent, QVariantMap server = QVariantMap());
 
-    VarMap getServer();
+    QVariantMap getServer();
 
   private slots:
     void on_serverAddress_textChanged();

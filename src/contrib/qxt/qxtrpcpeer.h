@@ -1,31 +1,26 @@
 /****************************************************************************
-**
-** Copyright (C) Qxt Foundation. Some rights reserved.
-**
-** This file is part of the QxtNetwork module of the Qt eXTension library
-**
-** This library is free software; you can redistribute it and/or modify it
-** under the terms of th Common Public License, version 1.0, as published by
-** IBM.
-**
-** This file is provided "AS IS", without WARRANTIES OR CONDITIONS OF ANY
-** KIND, EITHER EXPRESS OR IMPLIED INCLUDING, WITHOUT LIMITATION, ANY
-** WARRANTIES OR CONDITIONS OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY OR
-** FITNESS FOR A PARTICULAR PURPOSE. 
-**
-** You should have received a copy of the CPL along with this file.
-** See the LICENSE file and the cpl1.0.txt file included with the source
-** distribution for more information. If you did not receive a copy of the
-** license, contact the Qxt Foundation.
-** 
-** <http://libqxt.sourceforge.net>  <foundation@libqxt.org>
-**
-*****************************************************************************
-**
-** This file has been modified from its original state to suit the needs of
-** Quassel IRC. We have virtualized some methods.
-**
-*****************************************************************************/
+ **
+ ** Copyright (C) Qxt Foundation. Some rights reserved.
+ **
+ ** This file is part of the QxtNetwork module of the Qt eXTension library
+ **
+ ** This library is free software; you can redistribute it and/or modify it
+ ** under the terms of th Common Public License, version 1.0, as published by
+ ** IBM.
+ **
+ ** This file is provided "AS IS", without WARRANTIES OR CONDITIONS OF ANY
+ ** KIND, EITHER EXPRESS OR IMPLIED INCLUDING, WITHOUT LIMITATION, ANY
+ ** WARRANTIES OR CONDITIONS OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY OR
+ ** FITNESS FOR A PARTICULAR PURPOSE.
+ **
+ ** You should have received a copy of the CPL along with this file.
+ ** See the LICENSE file and the cpl1.0.txt file included with the source
+ ** distribution for more information. If you did not receive a copy of the
+ ** license, contact the Qxt Foundation.
+ **
+ ** <http://libqxt.sourceforge.net>  <foundation@libqxt.org>
+ **
+ ****************************************************************************/
 
 #ifndef QXTRPCPEER
 #define QXTRPCPEER
@@ -38,7 +33,7 @@
 #include <QHostAddress>
 #include <qxtpimpl.h>
 #include <qxtglobal.h>
-
+class QTcpSocket;
 class QxtRPCPeerPrivate;
 /*!
  * \class QxtRPCPeer QxtRPCPeer
@@ -47,49 +42,51 @@ class QxtRPCPeerPrivate;
  *
  * QxtRPCPeer is a tool that encapsulates Qt signals and transmits them over a network connection.
  * The signal is subsequently re-emitted on the receiving end of the connection.
- * 
+ *
  * QxtRPCPeer can operate in peer-to-peer mode (that is, one-to-one) or client-server (that is, one-to-many) mode.
  * In peer or server mode, QxtRPCPeer can listen for and accept incoming connections. In peer or client mode,
  * QxtRPCPeer can connect to a listening peer or server.
- * 
+ *
  * All data types used in attached signals and slots must be declared and registered with QMetaType using
  * Q_DECLARE_METATYPE and qRegisterMetaType, and they must have stream operators registered with qRegisterMetaTypeStreamOperators.
  *
  * The limits on the number of parameters passed to call() and related functions are a restriction of Qt,
  * which limits parameters on a signal or slot to 10.
- */ 
-class QXT_NETWORK_EXPORT QxtRPCPeer : public QObject {
-Q_OBJECT
+ */
+class QXT_NETWORK_EXPORT QxtRPCPeer : public QObject
+{
+    Q_OBJECT
 public:
 
     /*!
      * This enum is used with the \a setRPCType() to describe the role played in a connection. It is also returned by \a rpcType().
      */
-    enum RPCTypes {
-        Server, /**< Listen for clients and accept multiple connections. */
-        Client, /**< Connect to a server. */
-        Peer    /**< Listen for a connection or connect to a peer. */
+    enum RPCTypes
+    {
+        Server,                               /**< Listen for clients and accept multiple connections. */
+        Client,                               /**< Connect to a server. */
+        Peer                                  /**< Listen for a connection or connect to a peer. */
     };
 
     /*!
-    * Creates a QxtRPCPeer object with the given parent. Unless changed later, this object will use Peer mode and QTcpSocket for its I/O device.
-    */
+     * Creates a QxtRPCPeer object with the given parent. Unless changed later, this object will use Peer mode and QTcpSocket for its I/O device.
+     */
     QxtRPCPeer(QObject* parent = 0);
 
     /*!
-    * Creates a QxtRPCPeer object with the given parent and type. Unless changed later, this object will use QTcpSocket for its I/O device.
-    */
+     * Creates a QxtRPCPeer object with the given parent and type. Unless changed later, this object will use QTcpSocket for its I/O device.
+     */
     QxtRPCPeer(RPCTypes type, QObject* parent = 0);
 
     /*!
-    * Creates a QxtRPCPeer object with the given parent and type and connects it to the specified I/O device.
-    * 
-    * Note that the I/O device must already be opened for reading and writing. This constructor cannot be used for Server mode.
-    */
+     * Creates a QxtRPCPeer object with the given parent and type and connects it to the specified I/O device.
+     *
+     * Note that the I/O device must already be opened for reading and writing. This constructor cannot be used for Server mode.
+     */
     QxtRPCPeer(QIODevice* device, RPCTypes type = QxtRPCPeer::Peer, QObject* parent = 0);
 
     /*!
-     * Sets the RPC type. 
+     * Sets the RPC type.
      *
      * Attempting to change the RPC type while listening or connected will be ignored with a warning.
      */
@@ -108,7 +105,7 @@ public:
     void connect(QHostAddress addr, int port = 80);
 
     /*!
-     * Listens on the specified interface on the specified port for connections. 
+     * Listens on the specified interface on the specified port for connections.
      *
      * Attempting to listen while in Client mode or while connected in Peer mode will be ignored with a warning.  In Peer mode, only one connection
      * can be active at a time. Additional incoming connections while connected to a peer will be dropped. When a peer connects, the \a peerConnected()
@@ -133,14 +130,14 @@ public:
      * Stops listening for connections. Any connections still open will remain connected.
      */
     void stopListening();
-        
+
     /*!
      * Returns a list of client IDs for all connected clients.
      */
     QList<quint64> clients() const;
 
     /*!
-     * Attaches the given signal. 
+     * Attaches the given signal.
      *
      * When the attached signal is emitted, it will be transmitted to all connected servers, clients, or peers.
      * If an optional rpcFunction is provided, it will be used in place of the name of the transmitted signal.
@@ -151,10 +148,10 @@ public:
     bool attachSignal(QObject* sender, const char* signal, const QByteArray& rpcFunction = QByteArray());
 
     /*!
-     * Attaches the given slot. 
+     * Attaches the given slot.
      *
-     * When a signal with the name given by rpcFunction is received from the network, the attached slot is executed. 
-     * Use the SLOT() macro to specify the slot, just as you would for QObject::connect(). 
+     * When a signal with the name given by rpcFunction is received from the network, the attached slot is executed.
+     * Use the SLOT() macro to specify the slot, just as you would for QObject::connect().
      *
      * Like QObject::connect(), attachSignal returns false if the connection cannot be established.
      *
@@ -168,11 +165,18 @@ public:
      */
     void detachObject(QObject* obj);
 
+
+    /*!
+     * Returns the current used iodevice (might be asocket or a custom iodevie) in client and peer mode.
+     * returns 0 for server mode
+     */
+    QIODevice * socket();
+
 public slots:
     /*!
-     * Sends the signal fn with the given parameter list to the server or peer. 
+     * Sends the signal fn with the given parameter list to the server or peer.
      *
-     * This function accepts up to 9 QVariant parameters. 
+     * This function accepts up to 9 QVariant parameters.
      *
      * The receiver is not obligated to act upon the signal. If no server or peer is connected, the call is ignored.
      * In particular, this function does nothing in Server mode.
@@ -189,17 +193,17 @@ public slots:
      * is ignored with a warning.
      */
     void callClientList(QList<quint64> ids, QString fn, QVariant p1 = QVariant(), QVariant p2 = QVariant(), QVariant p3 = QVariant(), QVariant p4 = QVariant(),
-              QVariant p5 = QVariant(), QVariant p6 = QVariant(), QVariant p7 = QVariant(), QVariant p8 = QVariant());
+                        QVariant p5 = QVariant(), QVariant p6 = QVariant(), QVariant p7 = QVariant(), QVariant p8 = QVariant());
 
     /*!
      * Sends the signal fn with the given parameter list to the specified client.
      *
-     * This function accepts up to 8 QVariant parameters. 
-     * 
+     * This function accepts up to 8 QVariant parameters.
+     *
      * The receiver is not obligated to act upon the signal. If no client with the given ID is connected, the call will be ignored with a warning.
      */
     void callClient(quint64 id, QString fn, QVariant p1 = QVariant(), QVariant p2 = QVariant(), QVariant p3 = QVariant(), QVariant p4 = QVariant(),
-              QVariant p5 = QVariant(), QVariant p6 = QVariant(), QVariant p7 = QVariant(), QVariant p8 = QVariant());
+                    QVariant p5 = QVariant(), QVariant p6 = QVariant(), QVariant p7 = QVariant(), QVariant p8 = QVariant());
 
     /*!
      * Sends the signal fn with the given parameter list to all connected clients except for the client specified.
@@ -210,12 +214,27 @@ public slots:
      * to all other connected clients.
      */
     void callClientsExcept(quint64 id, QString fn, QVariant p1 = QVariant(), QVariant p2 = QVariant(), QVariant p3 = QVariant(), QVariant p4 = QVariant(),
-              QVariant p5 = QVariant(), QVariant p6 = QVariant(), QVariant p7 = QVariant(), QVariant p8 = QVariant());
+                           QVariant p5 = QVariant(), QVariant p6 = QVariant(), QVariant p7 = QVariant(), QVariant p8 = QVariant());
 
     /*!
      * Detaches all signals and slots for the object that emitted the signal connected to detachSender().
      */
     void detachSender();
+
+    /*!
+     * gives Access to the socket of the client \n
+     * usefull to get information about the client, like adress, port, etc..\n
+     * returns 0 when not in server mode or if the client \p id does not exist.
+     */
+
+    const QTcpSocket * clientSocket(quint64 id) const;
+
+    /*!
+     * returns alist of all clients currently connected \n
+     * returns an empty List when not in server mode
+     */
+
+    QList<quint64> clients();
 
 signals:
     /*!
@@ -224,7 +243,7 @@ signals:
     void peerConnected();
 
     /*!
-     * This signal is emitted after a successful connection from a client. 
+     * This signal is emitted after a successful connection from a client.
      *
      * The given ID is used for disconnectPeer(), callClient(), and related functions.
      */
@@ -275,14 +294,19 @@ protected:
      */
     virtual bool canDeserialize(const QByteArray& buffer) const;
 
-//protected:
-//    void newConnection();
+
+
+    /*!
+     * is called in Server mode when a new connection is available. the default implementation returns a new QTCPSocket
+     * for the \p socketDescriptor
+     */
+    virtual QTcpSocket * incomingConnection ( int socketDescriptor );
+
 
 private:
     QXT_DECLARE_PRIVATE(QxtRPCPeer);
 
 private slots:
-    void newConnection();
     void dataAvailable();
     void disconnectSender();
 };

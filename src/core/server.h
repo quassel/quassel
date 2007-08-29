@@ -66,7 +66,7 @@ class Server : public QThread {
     //void exitThread();
 
   signals:
-    void serverState(QString net, VarMap data);
+    void serverState(QString net, QVariantMap data);
     void recvRawServerMsg(QString);
     void displayStatusMsg(QString);
     //void displayMsg(Message msg);
@@ -74,10 +74,10 @@ class Server : public QThread {
     void connected(QString network);
     void disconnected(QString network);
 
-    void nickAdded(QString network, QString nick, VarMap props);
+    void nickAdded(QString network, QString nick, QVariantMap props);
     void nickRenamed(QString network, QString oldnick, QString newnick);
     void nickRemoved(QString network, QString nick);
-    void nickUpdated(QString network, QString nick, VarMap props);
+    void nickUpdated(QString network, QString nick, QVariantMap props);
     void modeSet(QString network, QString target, QString mode);
     void topicSet(QString network, QString buffer, QString topic);
     void ownNickSet(QString network, QString newNick);
@@ -152,11 +152,11 @@ class Server : public QThread {
 
     QString ownNick;
     QString currentServer;
-    VarMap networkSettings;
-    VarMap identity;
-    QHash<QString, VarMap> nicks;  // stores all known nicks for the server
+    QVariantMap networkSettings;
+    QVariantMap identity;
+    QHash<QString, QVariantMap> nicks;  // stores all known nicks for the server
     QHash<QString, QString> topics; // stores topics for each buffer
-    VarMap serverSupports;  // stores results from RPL_ISUPPORT
+    QVariantMap serverSupports;  // stores results from RPL_ISUPPORT
 
     void handleServerMsg(QByteArray rawMsg);
     void handleUserInput(QString buffer, QString usrMsg);

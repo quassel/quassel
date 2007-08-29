@@ -11,13 +11,13 @@
 ** This file is provided "AS IS", without WARRANTIES OR CONDITIONS OF ANY
 ** KIND, EITHER EXPRESS OR IMPLIED INCLUDING, WITHOUT LIMITATION, ANY
 ** WARRANTIES OR CONDITIONS OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY OR
-** FITNESS FOR A PARTICULAR PURPOSE. 
+** FITNESS FOR A PARTICULAR PURPOSE.
 **
 ** You should have received a copy of the CPL along with this file.
 ** See the LICENSE file and the cpl1.0.txt file included with the source
 ** distribution for more information. If you did not receive a copy of the
 ** license, contact the Qxt Foundation.
-** 
+**
 ** <http://libqxt.sourceforge.net>  <foundation@libqxt.org>
 **
 ****************************************************************************/
@@ -25,7 +25,7 @@
 \class QxtPimpl QxtPimpl
 \ingroup core
 \brief Hide private details of a class
- 
+
 Application code generally doesn't have to be concerned about hiding its
 implementation details, but when writing library code it is important to
 maintain a constant interface, both source and binary. Maintaining a constant
@@ -34,7 +34,7 @@ means moving implementation details into a private class. The PIMPL, or
 d-pointer, idiom is a common method of implementing this separation. QxtPimpl
 offers a convenient way to connect the public and private sides of your class.
 
-\section start Getting Started 
+\section start Getting Started
 Before you declare the public class, you need to make a forward declaration
 of the private class. The private class must have the same name as the public
 class, followed by the word Private. For example, a class named MyTest would
@@ -43,14 +43,14 @@ declare the private class with:
 class MyTestPrivate;
 \endcode
 
-\subsection pub The Public Class 
+\subsection pub The Public Class
 Generally, you shouldn't keep any data members in the public class without a
 good reason. Functions that are part of the public interface should be declared
 in the public class, and functions that need to be available to subclasses (for
-calling or overriding) should be in the protected section of the public class. 
+calling or overriding) should be in the protected section of the public class.
 To connect the private class to the public class, include the
 QXT_DECLARE_PRIVATE macro in the private section of the public class. In the
-example above, the private class is connected as follows: 
+example above, the private class is connected as follows:
 \code
 private:
     QXT_DECLARE_PRIVATE(MyTest);
@@ -58,7 +58,7 @@ private:
 
 Additionally, you must include the QXT_INIT_PRIVATE macro in the public class's
 constructor. Continuing with the MyTest example, your constructor might look
-like this: 
+like this:
 \code
 MyTest::MyTest() {
     // initialization
@@ -66,12 +66,12 @@ MyTest::MyTest() {
 }
 \endcode
 
-\subsection priv The Private Class 
+\subsection priv The Private Class
 As mentioned above, data members should usually be kept in the private class.
 This allows the memory layout of the private class to change without breaking
 binary compatibility for the public class. Functions that exist only as
 implementation details, or functions that need access to private data members,
-should be implemented here. 
+should be implemented here.
 
 To define the private class, inherit from the template QxtPrivate class, and
 include the QXT_DECLARE_PUBLIC macro in its public section. The template
@@ -118,7 +118,7 @@ void MyTestPrivate::doQuux() {
  *
  * This may be put anywhere in the declaration of the private class. The parameter is the name of the public class.
  */
-#define QXT_DECLARE_PUBLIC(PUB) friend class PUB; 
+#define QXT_DECLARE_PUBLIC(PUB) friend class PUB;
 /*! \relates QxtPimpl
  * Initializes resources owned by the private class.
  *
@@ -161,29 +161,56 @@ const PUB& qxt_p();
 
 #ifndef QXT_DOXYGEN_RUN
 template <typename PUB>
-class QxtPrivate {
+class QxtPrivate
+{
 public:
-    virtual ~QxtPrivate() {}
-    inline void QXT_setPublic(PUB* pub) { qxt_p_ptr = pub; }
+    virtual ~QxtPrivate()
+    {}
+    inline void QXT_setPublic(PUB* pub)
+    {
+        qxt_p_ptr = pub;
+    }
 
 protected:
-    inline PUB& qxt_p() { return *qxt_p_ptr; }
-    inline const PUB& qxt_p() const { return *qxt_p_ptr; }
+    inline PUB& qxt_p()
+    {
+        return *qxt_p_ptr;
+    }
+    inline const PUB& qxt_p() const
+    {
+        return *qxt_p_ptr;
+    }
 
 private:
     PUB* qxt_p_ptr;
 };
 
 template <typename PUB, typename PVT>
-class QxtPrivateInterface {
-friend class QxtPrivate<PUB>;
+class QxtPrivateInterface
+{
+    friend class QxtPrivate<PUB>;
 public:
-    QxtPrivateInterface() { pvt = new PVT; }
-    ~QxtPrivateInterface() { delete pvt; }
+    QxtPrivateInterface()
+    {
+        pvt = new PVT;
+    }
+    ~QxtPrivateInterface()
+    {
+        delete pvt;
+    }
 
-    inline void setPublic(PUB* pub) { pvt->QXT_setPublic(pub); }
-    inline PVT& operator()() { return *static_cast<PVT*>(pvt); }
-    inline const PVT& operator()() const { return *static_cast<PVT*>(pvt); }
+    inline void setPublic(PUB* pub)
+    {
+        pvt->QXT_setPublic(pub);
+    }
+    inline PVT& operator()()
+    {
+        return *static_cast<PVT*>(pvt);
+    }
+    inline const PVT& operator()() const
+    {
+        return *static_cast<PVT*>(pvt);
+    }
 private:
     QxtPrivate<PUB>* pvt;
 };

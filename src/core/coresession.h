@@ -25,16 +25,18 @@
 #include <QString>
 #include <QVariant>
 
-#include "coreproxy.h"
+//#include "coreproxy.h"
+#include "message.h"
 
 class Server;
+class SignalProxy;
 class Storage;
 
 class CoreSession : public QObject {
   Q_OBJECT
 
   public:
-    CoreSession(UserId, Storage *);
+    CoreSession(UserId, Storage *, QObject *parent = 0);
     ~CoreSession();
 
     QList<BufferId> buffers() const;
@@ -45,21 +47,24 @@ class CoreSession : public QObject {
     //! Store a piece session-wide data and distribute it to connected clients.
     void storeSessionData(const QString &key, const QVariant &data);
 
+    void addClient(QIODevice *connection);
+
   public:
     //! Retrieve a piece of session-wide data.
     QVariant retrieveSessionData(const QString &key, const QVariant &def = QVariant());
 
-    CoreProxy *proxy();
+    //CoreProxy *proxy();
+    SignalProxy *signalProxy() const;
 
   public slots:
-    void connectToIrc(QStringList);
-    void processSignal(ClientSignal, QVariant, QVariant, QVariant);
+    void connectToNetwork(QString);
+    //void processSignal(ClientSignal, QVariant, QVariant, QVariant);
     void sendBacklog(BufferId, QVariant, QVariant);
     void msgFromGui(BufferId, QString message);
     void sendServerStates();
 
   signals:
-    void proxySignal(CoreSignal, QVariant arg1 = QVariant(), QVariant arg2 = QVariant(), QVariant arg3 = QVariant());
+    //void proxySignal(CoreSignal, QVariant arg1 = QVariant(), QVariant arg2 = QVariant(), QVariant arg3 = QVariant());
 
     void msgFromGui(QString net, QString buf, QString message);
     void displayMsg(Message message);
@@ -69,7 +74,7 @@ class CoreSession : public QObject {
     void disconnectFromIrc(QString net);
     void serverStateRequested();
 
-    void backlogData(BufferId, QList<QVariant>, bool done);
+    void backlogData(BufferId, QVariantList, bool done);
 
     void bufferIdUpdated(BufferId);
     void sessionDataChanged(const QString &key);
@@ -84,11 +89,12 @@ class CoreSession : public QObject {
   private:
     UserId user;
 
-    CoreProxy *coreProxy;
+    //CoreProxy *coreProxy;
+    SignalProxy *_signalProxy;
     Storage *storage;
     QHash<QString, Server *> servers;
 
-    VarMap sessionData;
+    QVariantMap sessionData;
     QMutex mutex;
 
 };

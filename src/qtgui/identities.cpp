@@ -32,7 +32,7 @@ IdentitiesDlg::IdentitiesDlg(QWidget *parent, QString selected) : QDialog(parent
     nameMapping[name] = name;
   }
   if(identities.size() == 0) {
-    VarMap id = createDefaultIdentity();
+    QVariantMap id = createDefaultIdentity();
     id["IdName"] = "Default";
     identities["Default"] = id;
     nameMapping["Default"] = "Default";
@@ -68,8 +68,8 @@ void IdentitiesDlg::globalDataUpdated(QString key) {
   }
 }
 
-VarMap IdentitiesDlg::createDefaultIdentity() {
-  VarMap id;
+QVariantMap IdentitiesDlg::createDefaultIdentity() {
+  QVariantMap id;
   id["RealName"] = "foo";
   id["Ident"] = "";
   id["NickList"] = QStringList();
@@ -98,7 +98,7 @@ QString IdentitiesDlg::getCurIdentity() {
 }
 
 void IdentitiesDlg::updateWidgets() {
-  VarMap id = identities[getCurIdentity()].toMap();
+  QVariantMap id = identities[getCurIdentity()].toMap();
   ui.realNameEdit->setText(id["RealName"].toString());
   ui.identEdit->setText(id["Ident"].toString());
   ui.nickList->clear();
@@ -128,7 +128,7 @@ void IdentitiesDlg::updateWidgets() {
 }
 
 void IdentitiesDlg::updateIdentity(QString idName) {
-  VarMap id;
+  QVariantMap id;
   id["RealName"] = ui.realNameEdit->text();
   id["Ident"] = ui.identEdit->text();
   QStringList nicks;
@@ -239,9 +239,9 @@ void IdentitiesDlg::accept() {
   if(result.length() == 0) {
     Client::storeSessionData("Identities", identities);
     // We have to care about renamed identities and update the network list appropriately...
-    VarMap networks = Client::retrieveSessionData("Networks").toMap();
+    QVariantMap networks = Client::retrieveSessionData("Networks").toMap();
     foreach(QString netname, networks.keys()) {
-      VarMap net = networks[netname].toMap();
+      QVariantMap net = networks[netname].toMap();
       if(nameMapping.contains(net["Identity"].toString())) {
         net["Identity"] = nameMapping[net["Identity"].toString()];
       } else net["Identity"] = "Default";
@@ -260,7 +260,7 @@ QString IdentitiesDlg::checkValidity() {
   QString reason;
   foreach(QString name, identities.keys()) {
     QString r;
-    VarMap id = identities[name].toMap();
+    QVariantMap id = identities[name].toMap();
     if(name == "Default") name = tr("Default Identity");
     if(id["RealName"].toString().isEmpty()) {
       r += tr(" You have not set a real name.");
@@ -297,7 +297,7 @@ void IdentitiesDlg::editIdentities() {
 
 /******************************************************************************/
 
-IdentitiesEditDlg::IdentitiesEditDlg(QWidget *parent, VarMap _identities, QMap<QString, QString> _mapping, VarMap templ, QString selected)
+IdentitiesEditDlg::IdentitiesEditDlg(QWidget *parent, QVariantMap _identities, QMap<QString, QString> _mapping, QVariantMap templ, QString selected)
   : QDialog(parent) {
   ui.setupUi(this);
   identities = _identities;
@@ -331,7 +331,7 @@ IdentitiesEditDlg::IdentitiesEditDlg(QWidget *parent, VarMap _identities, QMap<Q
   void IdentitiesEditDlg::addIdentity() {
     RenameIdentityDlg dlg(this, identities.keys());
     if(dlg.exec() == QDialog::Accepted) {
-      VarMap id = identTemplate;
+      QVariantMap id = identTemplate;
       identities[dlg.getName()] = id;
       Q_ASSERT(!mapping.contains(dlg.getName()));
       mapping[dlg.getName()] = dlg.getName();

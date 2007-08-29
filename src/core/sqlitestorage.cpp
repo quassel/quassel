@@ -109,6 +109,7 @@ SqliteStorage::SqliteStorage() {
 }
 
 SqliteStorage::~SqliteStorage() {
+  //logDb.close();
   delete logMessageQuery;
   delete addSenderQuery;
   delete getLastMessageIdQuery;

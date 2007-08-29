@@ -57,8 +57,8 @@ void Server::run() {
 }
 
 void Server::sendState() {
-  VarMap s;
-  VarMap n, t;
+  QVariantMap s;
+  QVariantMap n, t;
   foreach(QString key, nicks.keys())  { n[key] = nicks[key]; }
   foreach(QString key, topics.keys()) { t[key] = topics[key];}
   s["Nicks"] = n;
@@ -124,7 +124,7 @@ QString Server::updateNickFromMask(QString mask) {
   QString host = hostFromMask(mask);
   QString nick = nickFromMask(mask);
   if(nicks.contains(nick) && !user.isEmpty() && !host.isEmpty()) {
-    VarMap n = nicks[nick];
+    QVariantMap n = nicks[nick];
     if(n["User"].toString() != user || n["Host"].toString() != host) {
       if(!n["User"].toString().isEmpty() || !n["Host"].toString().isEmpty())
         qWarning(QString("Strange: Hostmask for nick %1 has changed!").arg(nick).toAscii());
@@ -551,18 +551,18 @@ void Server::handleServerJoin(QString prefix, QStringList params) {
     topics[params[0]] = "";
     emit topicSet(network, params[0], "");
   } //else {
-    VarMap n;
+    QVariantMap n;
     if(nicks.contains(nick)) {
       n = nicks[nick];
-      VarMap chans = n["Channels"].toMap();
+      QVariantMap chans = n["Channels"].toMap();
       // Q_ASSERT(!chans.keys().contains(params[0])); TODO uncomment
-      chans[params[0]] = VarMap();
+      chans[params[0]] = QVariantMap();
       n["Channels"] = chans;
-      nicks[nick] = n;
+      nicks[nick] = n; qDebug() << network << nick << n;
       emit nickUpdated(network, nick, n);
     } else {
-      VarMap chans;
-      chans[params[0]] = VarMap();
+      QVariantMap chans;
+      chans[params[0]] = QVariantMap();
       n["Channels"] = chans;
       n["User"] = userFromMask(prefix);
       n["Host"] = hostFromMask(prefix);
@@ -577,8 +577,8 @@ void Server::handleServerKick(QString prefix, QStringList params) {
   QString kicker = updateNickFromMask(prefix);
   QString nick = params[1];
   Q_ASSERT(nicks.contains(nick));
-  VarMap n = nicks[nick];
-  VarMap chans = n["Channels"].toMap();
+  QVariantMap n = nicks[nick];
+  QVariantMap chans = n["Channels"].toMap();
   Q_ASSERT(chans.contains(params[0]));
   chans.remove(params[0]);
   QString msg = nick;
@@ -612,7 +612,7 @@ void Server::handleServerMode(QString prefix, QStringList params) {
         Q_ASSERT(params.count() > m);
         QString nick = params[p++];
         if(nicks.contains(nick)) {  // sometimes, a server might try to set a MODE on a nick that is no longer there
-          VarMap n = nicks[nick]; VarMap clist = n["Channels"].toMap(); VarMap chan = clist[params[0]].toMap();
+          QVariantMap n = nicks[nick]; QVariantMap clist = n["Channels"].toMap(); QVariantMap chan = clist[params[0]].toMap();
           QString mstr = chan["Mode"].toString();
           add ? mstr += modes[m] : mstr.remove(modes[m]);
           chan["Mode"] = mstr; clist[params[0]] = chan; n["Channels"] = clist; nicks[nick] = n;
@@ -627,7 +627,7 @@ void Server::handleServerMode(QString prefix, QStringList params) {
     emit displayMsg(Message::Mode, params[0], params.join(" "), prefix);
   } else {
     //Q_ASSERT(nicks.contains(params[0]));
-    //VarMap n = nicks[params[0]].toMap();
+    //QVariantMap n = nicks[params[0]].toMap();
     //QString mode = n["Mode"].toString();
     emit displayMsg(Message::Mode, "", params.join(" "));
   }
@@ -636,9 +636,9 @@ void Server::handleServerMode(QString prefix, QStringList params) {
 void Server::handleServerNick(QString prefix, QStringList params) {
   QString oldnick = updateNickFromMask(prefix);
   QString newnick = params[0];
-  VarMap v = nicks.take(oldnick);
+  QVariantMap v = nicks.take(oldnick);
   nicks[newnick] = v;
-  VarMap chans = v["Channels"].toMap();
+  QVariantMap chans = v["Channels"].toMap();
   foreach(QString c, chans.keys()) {
     if(oldnick != ownNick) { emit displayMsg(Message::Nick, c, newnick, prefix); }
     else { emit displayMsg(Message::Nick, c, newnick, newnick); }
@@ -659,8 +659,8 @@ void Server::handleServerNotice(QString prefix, QStringList params) {
 void Server::handleServerPart(QString prefix, QStringList params) {
   QString nick = updateNickFromMask(prefix);
   Q_ASSERT(nicks.contains(nick));
-  VarMap n = nicks[nick];
-  VarMap chans = n["Channels"].toMap();
+  QVariantMap n = nicks[nick];
+  QVariantMap chans = n["Channels"].toMap();
   Q_ASSERT(chans.contains(params[0]));
   chans.remove(params[0]);
   QString msg;
@@ -713,7 +713,7 @@ void Server::handleServerPrivmsg(QString prefix, QStringList params) {
 void Server::handleServerQuit(QString prefix, QStringList params) {
   QString nick = updateNickFromMask(prefix);
   Q_ASSERT(nicks.contains(nick));
-  VarMap chans = nicks[nick]["Channels"].toMap();
+  QVariantMap chans = nicks[nick]["Channels"].toMap();
   QString msg;
   if(params.count()) msg = params[0];
   foreach(QString c, chans.keys()) {
@@ -736,11 +736,11 @@ void Server::handleServer001(QString prefix, QStringList params) {
   // there should be only one param: "Welcome to the Internet Relay Network <nick>!<user>@<host>"
   currentServer = prefix;
   ownNick = params[0].section(' ', -1, -1).section('!', 0, 0);
-  VarMap n;
-  n["Channels"] = VarMap();
+  QVariantMap n;
+  n["Channels"] = QVariantMap();
   nicks[ownNick] = n;
   emit ownNickSet(network, ownNick);
-  emit nickAdded(network, ownNick, VarMap());
+  emit nickAdded(network, ownNick, QVariantMap());
   emit displayMsg(Message::Server, "", params[0], prefix);
   // send performlist
   QStringList performList = networkSettings["Perform"].toString().split( "\n" );
@@ -763,7 +763,7 @@ void Server::handleServer005(QString prefix, QStringList params) {
     serverSupports[key] = val;
     // handle some special cases
     if(key == "PREFIX") {
-      VarMap foo; QString modes, prefixes;
+      QVariantMap foo; QString modes, prefixes;
       Q_ASSERT(val.contains(')') && val.startsWith('('));
       int m = 1, p;
       for(p = 2; p < val.length(); p++) if(val[p] == ')') break;
@@ -813,16 +813,16 @@ void Server::handleServer353(QString prefix, QStringList params) {
         if(prefixes[i] == nick[0]) { mode = serverSupports["PrefixModes"].toString()[i]; break; }
       nick.remove(0,1);
     }
-    VarMap c; c["Mode"] = mode; c["Prefix"] = pfx;
+    QVariantMap c; c["Mode"] = mode; c["Prefix"] = pfx;
     if(nicks.contains(nick)) {
-      VarMap n = nicks[nick];
-      VarMap chans = n["Channels"].toMap();
+      QVariantMap n = nicks[nick];
+      QVariantMap chans = n["Channels"].toMap();
       chans[buf] = c;
       n["Channels"] = chans;
       nicks[nick] = n;
       emit nickUpdated(network, nick, n);
     } else {
-      VarMap n; VarMap c; VarMap chans;
+      QVariantMap n; QVariantMap c; QVariantMap chans;
       c["Mode"] = mode;
       chans[buf] = c;
       n["Channels"] = chans;

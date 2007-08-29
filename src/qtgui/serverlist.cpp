@@ -21,7 +21,8 @@
 #include "serverlist.h"
 #include "identities.h"
 #include "client.h"
-#include "clientproxy.h"
+//#include "clientproxy.h"
+#include "signalproxy.h"
 
 /* NOTE: This dialog holds not only the server list, but also the identities.
  *       This makes perfect sense given the fact that connections are initiated from
@@ -41,12 +42,13 @@ ServerListDlg::ServerListDlg(QWidget *parent) : QDialog(parent) {
 
   settings.endGroup();
 
-  connect(this, SIGNAL(requestConnect(QStringList)), ClientProxy::instance(), SLOT(gsRequestConnect(QStringList)));
+  //connect(this, SIGNAL(requestConnect(QStringList)), ClientProxy::instance(), SLOT(gsRequestConnect(QStringList)));
+  Client::signalProxy()->attachSignal(this, SIGNAL(requestConnect(QString)));
 
   // Autoconnect
   /* Should not be the client's task... :-P
   QStringList list;
-  VarMap networks = Client::retrieveSessionData("Networks").toMap();
+  QVariantMap networks = Client::retrieveSessionData("Networks").toMap();
   foreach(QString net, networks.keys()) {
     if(networks[net].toMap()["AutoConnect"].toBool()) {
       list << net;
@@ -61,7 +63,7 @@ ServerListDlg::~ServerListDlg() {
 }
 
 void ServerListDlg::updateNetworkTree() {
-  VarMap networks = Client::retrieveSessionData("Networks").toMap();
+  QVariantMap networks = Client::retrieveSessionData("Networks").toMap();
   //QStringList headers;
   //headers << "Network" << "Autoconnect";
   ui.networkTree->clear();
@@ -69,7 +71,7 @@ void ServerListDlg::updateNetworkTree() {
   ui.networkTree->setHeaderLabel("Networks");
   QHash<QString, QTreeWidgetItem *> groups;
   foreach(QString net, networks.keys()) {
-    VarMap s = networks[net].toMap();
+    QVariantMap s = networks[net].toMap();
     QString gr = s["Group"].toString();
     QTreeWidgetItem *item = 0;
     if(gr.isEmpty()) {
@@ -111,10 +113,10 @@ bool ServerListDlg::showOnStartup() {
 }
 
 void ServerListDlg::on_addButton_clicked() {
-  NetworkEditDlg dlg(this, VarMap());
+  NetworkEditDlg dlg(this, QVariantMap());
   if(dlg.exec() == QDialog::Accepted) {
-    VarMap networks = Client::retrieveSessionData("Networks").toMap();
-    VarMap net = dlg.getNetwork();
+    QVariantMap networks = Client::retrieveSessionData("Networks").toMap();
+    QVariantMap net = dlg.getNetwork();
     networks[net["Name"].toString()] = net;
     Client::storeSessionData("Networks", networks);
     updateNetworkTree();
@@ -123,10 +125,10 @@ void ServerListDlg::on_addButton_clicked() {
 
 void ServerListDlg::on_editButton_clicked() {
   QString curnet = ui.networkTree->currentItem()->text(0);
-  VarMap networks = Client::retrieveSessionData("Networks").toMap();
+  QVariantMap networks = Client::retrieveSessionData("Networks").toMap();
   NetworkEditDlg dlg(this, networks[curnet].toMap());
   if(dlg.exec() == QDialog::Accepted) {
-    VarMap net = dlg.getNetwork();
+    QVariantMap net = dlg.getNetwork();
     networks.remove(curnet);
     networks[net["Name"].toString()] = net;
     Client::storeSessionData("Networks", networks);
@@ -137,7 +139,7 @@ void ServerListDlg::on_editButton_clicked() {
 void ServerListDlg::on_deleteButton_clicked() {
   if(QMessageBox::warning(this, tr("Remove Network?"), tr("Are you sure you want to delete the selected network(s)?"),
                         QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes) {
-    VarMap networks = Client::retrieveSessionData("Networks").toMap();
+    QVariantMap networks = Client::retrieveSessionData("Networks").toMap();
     QList<QTreeWidgetItem *> sel = ui.networkTree->selectedItems();
     foreach(QTreeWidgetItem *item, sel) {
       networks.remove(item->text(0));
@@ -173,27 +175,27 @@ void ServerListDlg::accept() {
   foreach(QTreeWidgetItem *item, list) {
     nets << item->text(0);
   }
-  emit requestConnect(nets);
+  emit requestConnect(nets[0]); // FIXME
   QDialog::accept();
 }
 
 /***************************************************************************/
 
-NetworkEditDlg::NetworkEditDlg(QWidget *parent, VarMap _network) : QDialog(parent) {
+NetworkEditDlg::NetworkEditDlg(QWidget *parent, QVariantMap _network) : QDialog(parent) {
   ui.setupUi(this);
   network = _network;
   oldName = network["Name"].toString();
 
   connect(ui.serverList, SIGNAL(itemSelectionChanged()), this, SLOT(updateServerButtons()));
 
-  VarMap identities = Client::retrieveSessionData("Identities").toMap();
+  QVariantMap identities = Client::retrieveSessionData("Identities").toMap();
 
   ui.identityList->addItem(tr("Default Identity"));
   foreach(QString id, identities.keys()) {
     if(id != "Default") ui.identityList->addItem(id);
   }
   QStringList groups; groups << "";
-  VarMap nets = Client::retrieveSessionData("Networks").toMap();
+  QVariantMap nets = Client::retrieveSessionData("Networks").toMap();
   foreach(QString net, nets.keys()) {
     QString gr = nets[net].toMap()["Group"].toString();
     if(!groups.contains(gr) && !gr.isEmpty()) {
@@ -215,8 +217,8 @@ NetworkEditDlg::NetworkEditDlg(QWidget *parent, VarMap _network) : QDialog(paren
   ui.networkName->setFocus();
 }
 
-VarMap NetworkEditDlg::createDefaultNetwork() {
-  VarMap net;
+QVariantMap NetworkEditDlg::createDefaultNetwork() {
+  QVariantMap net;
 
   net["Name"] = QString();
   net["Group"] = QString();
@@ -228,7 +230,7 @@ VarMap NetworkEditDlg::createDefaultNetwork() {
 void NetworkEditDlg::updateWidgets() {
   ui.serverList->clear();
   foreach(QVariant s, network["Servers"].toList()) {
-    VarMap server = s.toMap();
+    QVariantMap server = s.toMap();
     QString entry = QString("%1:%2").arg(server["Address"].toString()).arg(server["Port"].toInt());
     QListWidgetItem *item = new QListWidgetItem(entry);
     //if(server["Exclude"].toBool()) item->setCheckState(Qt::Checked);
@@ -276,7 +278,7 @@ void NetworkEditDlg::accept() {
 
 QString NetworkEditDlg::checkValidity() {
   QString r;
-  VarMap nets = Client::retrieveSessionData("Networks").toMap();
+  QVariantMap nets = Client::retrieveSessionData("Networks").toMap();
   if(ui.networkName->text() != oldName && nets.keys().contains(ui.networkName->text())) {
     r += tr(" Network name already exists.");
   }
@@ -341,7 +343,7 @@ void NetworkEditDlg::on_editIdentities_clicked() {
   else id = "Default";
   IdentitiesDlg dlg(this, id);
   if(dlg.exec() == QDialog::Accepted) {
-    VarMap identities = Client::retrieveSessionData("Identities").toMap();
+    QVariantMap identities = Client::retrieveSessionData("Identities").toMap();
     ui.identityList->clear();
     ui.identityList->addItem(tr("Default Identity"));
     foreach(QString i, identities.keys()) {
@@ -358,7 +360,7 @@ void NetworkEditDlg::on_editIdentities_clicked() {
 
 /***************************************************************************/
 
-ServerEditDlg::ServerEditDlg(QWidget *parent, VarMap server) : QDialog(parent) {
+ServerEditDlg::ServerEditDlg(QWidget *parent, QVariantMap server) : QDialog(parent) {
   ui.setupUi(this);
 
   if(!server.isEmpty()) {
@@ -375,8 +377,8 @@ void ServerEditDlg::on_serverAddress_textChanged() {
   ui.buttonBox->button(QDialogButtonBox::Ok)->setEnabled(!ui.serverAddress->text().isEmpty());
 }
 
-VarMap ServerEditDlg::getServer() {
-  VarMap s;
+QVariantMap ServerEditDlg::getServer() {
+  QVariantMap s;
   s["Address"] = ui.serverAddress->text();
   s["Port"] = ui.serverPort->text();
   return s;

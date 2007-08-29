@@ -55,10 +55,10 @@ class ClientProxy : public QObject {
     void csSessionDataChanged(const QString &key, const QVariant &data);
     void csModeSet(QString, QString, QString);
     void csTopicSet(QString, QString, QString);
-    void csNickAdded(QString, QString, VarMap);
+    void csNickAdded(QString, QString, QVariantMap);
     void csNickRemoved(QString, QString);
     void csNickRenamed(QString, QString, QString);
-    void csNickUpdated(QString, QString, VarMap);
+    void csNickUpdated(QString, QString, QVariantMap);
     void csOwnNickSet(QString, QString);
     void csQueryRequested(QString, QString);
     void csBacklogData(BufferId, QList<QVariant>, bool);

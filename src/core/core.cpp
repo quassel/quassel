@@ -33,6 +33,7 @@ Core * Core::instance() {
 }
 
 void Core::destroy() {
+  //instanceptr->deleteLater();
   delete instanceptr;
   instanceptr = 0;
 }
@@ -53,9 +54,9 @@ void Core::init() {
 }
 
 Core::~Core() {
-  foreach(QTcpSocket *sock, validClients.keys()) {
-    delete sock;
-  }
+  //foreach(QTcpSocket *sock, validClients.keys()) {
+  //  delete sock;
+  //}
   qDeleteAll(sessions);
   delete storage;
 }
@@ -77,7 +78,7 @@ CoreSession *Core::createSession(UserId uid) {
   Q_ASSERT(!core->sessions.contains(uid));
   CoreSession *sess = new CoreSession(uid, core->storage);
   core->sessions[uid] = sess;
-  connect(sess, SIGNAL(proxySignal(CoreSignal, QVariant, QVariant, QVariant)), core, SLOT(recvProxySignal(CoreSignal, QVariant, QVariant, QVariant)));
+  //connect(sess, SIGNAL(proxySignal(CoreSignal, QVariant, QVariant, QVariant)), core, SLOT(recvProxySignal(CoreSignal, QVariant, QVariant, QVariant)));
   return sess;
 }
 
@@ -110,10 +111,12 @@ void Core::clientHasData() {
   Q_ASSERT(socket && blockSizes.contains(socket));
   quint32 bsize = blockSizes.value(socket);
   QVariant item;
-  while(readDataFromDevice(socket, bsize, item)) {
+  if(readDataFromDevice(socket, bsize, item)) {
+    /* this is probably obsolete now */
     if(validClients.contains(socket)) {
-      QList<QVariant> sigdata = item.toList();
-      sessions[validClients[socket]]->processSignal((ClientSignal)sigdata[0].toInt(), sigdata[1], sigdata[2], sigdata[3]);
+      Q_ASSERT(false);
+      //QList<QVariant> sigdata = item.toList();
+      //sessions[validClients[socket]]->processSignal((ClientSignal)sigdata[0].toInt(), sigdata[1], sigdata[2], sigdata[3]);
     } else {
       // we need to auth the client
       try {
@@ -128,7 +131,7 @@ void Core::clientHasData() {
         return;
       }
     }
-    blockSizes[socket] = bsize = 0;
+    blockSizes[socket] = bsize = 0;  // FIXME blockSizes aufräum0rn!
   }
   blockSizes[socket] = bsize;
 }
@@ -155,7 +158,7 @@ void Core::disconnectLocalClient() {
 }
 
 void Core::processClientInit(QTcpSocket *socket, const QVariant &v) {
-  VarMap msg = v.toMap();
+  QVariantMap msg = v.toMap();
   if(msg["GuiProtocol"].toUInt() != GUI_PROTOCOL) {
     //qWarning() << "Client version mismatch.";
     throw Exception("GUI client version mismatch");
@@ -163,10 +166,12 @@ void Core::processClientInit(QTcpSocket *socket, const QVariant &v) {
     // Auth
   UserId uid = storage->validateUser(msg["User"].toString(), msg["Password"].toString());  // throws exception if this failed
   QVariant reply = initSession(uid);
-  validClients[socket] = uid;
-  QList<QVariant> sigdata;
-  sigdata.append(CS_CORE_STATE); sigdata.append(reply); sigdata.append(QVariant()); sigdata.append(QVariant());
-  writeDataToDevice(socket, QVariant(sigdata));
+  validClients[socket] = uid;  // still needed? FIXME
+  //QList<QVariant> sigdata;
+  //sigdata.append(CS_CORE_STATE); sigdata.append(reply); sigdata.append(QVariant()); sigdata.append(QVariant());
+  disconnect(socket, 0, this, 0);
+  sessions[uid]->addClient(socket);
+  writeDataToDevice(socket, reply);
 }
 
 QVariant Core::initSession(UserId uid) {
@@ -177,11 +182,12 @@ QVariant Core::initSession(UserId uid) {
     sess = createSession(uid);
     //validClients[socket] = uid;
   }
-  VarMap reply;
+  QVariantMap reply;
   reply["SessionState"] = sess->sessionState();
   return reply;
 }
 
+/*
 void Core::recvProxySignal(CoreSignal sig, QVariant arg1, QVariant arg2, QVariant arg3) {
   CoreSession *sess = qobject_cast<CoreSession*>(sender());
   Q_ASSERT(sess);
@@ -193,3 +199,4 @@ void Core::recvProxySignal(CoreSignal sig, QVariant arg1, QVariant arg2, QVarian
     if(validClients[socket] == uid) writeDataToDevice(socket, QVariant(sigdata));
   }
 }
+*/

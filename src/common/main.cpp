@@ -25,18 +25,19 @@
 #include <QCoreApplication>
 #include <QDir>
 #include "core.h"
+#include "message.h"
 
 #elif defined BUILD_QTGUI
 #include <QApplication>
 #include "client.h"
-#include "clientproxy.h"
+//#include "clientproxy.h"
 #include "qtgui.h"
 #include "style.h"
 
 #elif defined BUILD_MONO
 #include <QApplication>
 #include "client.h"
-#include "clientproxy.h"
+//#include "clientproxy.h"
 #include "core.h"
 #include "coresession.h"
 #include "qtgui.h"
@@ -59,8 +60,10 @@ int main(int argc, char **argv) {
   signal(SIGTERM, handle_signal);
   signal(SIGINT, handle_signal);
 
+  qRegisterMetaType<QVariant>("QVariant");
   qRegisterMetaType<Message>("Message");
   qRegisterMetaType<BufferId>("BufferId");
+  qRegisterMetaTypeStreamOperators<QVariant>("QVariant");
   qRegisterMetaTypeStreamOperators<Message>("Message");
   qRegisterMetaTypeStreamOperators<BufferId>("BufferId");
 
@@ -115,16 +118,21 @@ void Client::disconnectFromLocalCore() {}
 #elif defined BUILD_MONO
 QVariant Client::connectToLocalCore(QString user, QString passwd) {
   // TODO catch exceptions
+  /*
   QVariant reply = Core::connectLocalClient(user, passwd);
   QObject::connect(Core::localSession(), SIGNAL(proxySignal(CoreSignal, QVariant, QVariant, QVariant)), ClientProxy::instance(), SLOT(recv(CoreSignal, QVariant, QVariant, QVariant)));
   QObject::connect(ClientProxy::instance(), SIGNAL(send(ClientSignal, QVariant, QVariant, QVariant)), Core::localSession(), SLOT(processSignal(ClientSignal, QVariant, QVariant, QVariant)));
   return reply;
+  */
+  return QVariant();
 }
 
 void Client::disconnectFromLocalCore() {
+  /*
   disconnect(Core::localSession(), 0, ClientProxy::instance(), 0);
   disconnect(ClientProxy::instance(), 0, Core::localSession(), 0);
   Core::disconnectLocalClient();
+  */
 }
 
 #endif

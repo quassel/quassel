@@ -49,7 +49,7 @@ class AbstractUi : public QObject {
     virtual void disconnectedFromCore() {}
 
   signals:
-    void connectToCore(const VarMap &connInfo);
+    void connectToCore(const QVariantMap &connInfo);
     void disconnectFromCore();
 
 };

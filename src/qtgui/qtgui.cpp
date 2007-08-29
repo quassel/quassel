@@ -24,7 +24,7 @@
 
 QtGui::QtGui() : AbstractUi() {
   mainWin = new MainWin(this);
-  connect(mainWin, SIGNAL(connectToCore(const VarMap &)), this, SIGNAL(connectToCore(const VarMap &)));
+  connect(mainWin, SIGNAL(connectToCore(const QVariantMap &)), this, SIGNAL(connectToCore(const QVariantMap &)));
   connect(mainWin, SIGNAL(disconnectFromCore()), this, SIGNAL(disconnectFromCore()));
 
 }

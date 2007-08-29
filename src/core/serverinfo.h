@@ -71,8 +71,8 @@ private:
   QString currentServer_;
   QString ownNick_;
   
-  //VarMap networkSettings;
-  //VarMap identity;
+  //QVariantMap networkSettings;
+  //QVariantMap identity;
   
   QHash<QString, IrcUser *> ircUsers_;  // stores all known nicks for the server
   QHash<QString, QString> topics_; // stores topics for each buffer

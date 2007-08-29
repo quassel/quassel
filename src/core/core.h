@@ -26,7 +26,7 @@
 #include <QTcpServer>
 #include <QTcpSocket>
 
-#include "coreproxy.h"
+#include "global.h"
 
 class CoreSession;
 class Storage;
@@ -46,7 +46,7 @@ class Core : public QObject {
     static void disconnectLocalClient();
 
   private slots:
-    void recvProxySignal(CoreSignal, QVariant, QVariant, QVariant);
+    //void recvProxySignal(CoreSignal, QVariant, QVariant, QVariant);
     bool startListening(uint port = DEFAULT_PORT);
     void stopListening();
     void incomingConnection();

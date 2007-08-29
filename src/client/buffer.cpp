@@ -85,7 +85,7 @@ QList<AbstractUiMsg *> Buffer::contents() const {
    return layoutedMsgs;
 }
 
-VarMap Buffer::nickList() const {
+QVariantMap Buffer::nickList() const {
    return nicks;
 }
 
@@ -138,13 +138,13 @@ void Buffer::setTopic(QString t) {
   emit bufferUpdated(this);
 }
 
-void Buffer::addNick(QString nick, VarMap props) {
+void Buffer::addNick(QString nick, QVariantMap props) {
   if(nick == ownNick()) setActive(true);
   nicks[nick] = props;
   emit nickListChanged(nicks);
 }
 
-void Buffer::updateNick(QString nick, VarMap props) {
+void Buffer::updateNick(QString nick, QVariantMap props) {
   nicks[nick] = props;
   emit nickListChanged(nicks);
 }

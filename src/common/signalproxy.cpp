@@ -44,6 +44,7 @@ void SignalProxy::addPeer(QIODevice *dev) {
   Connection conn;
   conn.device = dev;
   conn.peer = new QxtRPCPeer(dev, QxtRPCPeer::Peer, this);
+  connect(conn.peer, SIGNAL(peerDisconnected()), this, SLOT(socketDisconnected()));
 
   foreach(SlotDesc slot, attachedSlots) {
     conn.peer->attachSlot(slot.rpcFunction, slot.recv, slot.slot);
@@ -53,6 +54,20 @@ void SignalProxy::addPeer(QIODevice *dev) {
   }
   peers.append(conn);
 
+}
+
+void SignalProxy::socketDisconnected() {
+  for(int i = 0; i < peers.count(); i++) {
+    Connection conn = peers[i];
+    QAbstractSocket *sock = qobject_cast<QAbstractSocket*>(conn.device);
+    if(!sock) continue;
+    if(sock->state() == QAbstractSocket::UnconnectedState) {
+      peers[i].peer->deleteLater(); peers[i].device->deleteLater();
+      peers.removeAt(i);
+      emit peerDisconnected();
+      i--;
+    }
+  }
 }
 
 void SignalProxy::attachSignal(QObject* sender, const char* signal, const QByteArray& rpcFunction) {
@@ -77,5 +92,11 @@ void SignalProxy::detachObject(QObject* obj) {
   }
   // FIXME: delete attached signal/slot info
 
+}
+
+void SignalProxy::sendSignal(const char *signal, QVariant p1, QVariant p2, QVariant p3, QVariant p4, QVariant p5, QVariant p6, QVariant p7, QVariant p8, QVariant p9) {
+  foreach(Connection conn, peers) {
+    conn.peer->call(signal, p1, p2, p3, p4, p5, p6, p7, p8, p9);
+  }
 }
 

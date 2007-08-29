@@ -35,7 +35,7 @@ class IdentitiesDlg : public QDialog {
   public:
     IdentitiesDlg(QWidget *parent, QString selectedId = QString());
 
-    VarMap getIdentities() { return identities; }
+    QVariantMap getIdentities() { return identities; }
     QMap<QString, QString> getNameMapping() { return nameMapping; }
 
   public slots:
@@ -58,12 +58,12 @@ class IdentitiesDlg : public QDialog {
 
   private:
     Ui::IdentitiesDlg ui;
-    VarMap identities;
+    QVariantMap identities;
     QMap<QString, QString> nameMapping;
     QString lastIdentity;
 
     QString checkValidity();
-    VarMap createDefaultIdentity();
+    QVariantMap createDefaultIdentity();
     QString getCurIdentity();
     void updateWidgets();
     void updateIdentity(QString);
@@ -89,9 +89,9 @@ class IdentitiesEditDlg : public QDialog {
   Q_OBJECT
 
   public:
-    IdentitiesEditDlg(QWidget *parent, VarMap identities, QMap<QString, QString> mapping, VarMap templ, QString selected = QString());
+    IdentitiesEditDlg(QWidget *parent, QVariantMap identities, QMap<QString, QString> mapping, QVariantMap templ, QString selected = QString());
 
-    VarMap getIdentities() { return identities; }
+    QVariantMap getIdentities() { return identities; }
     QMap<QString, QString> getMapping() { return mapping; }
     QString getSelectedIdentity() { return ui.identList->currentItem()->text(); }
 
@@ -108,8 +108,8 @@ class IdentitiesEditDlg : public QDialog {
   private:
     Ui::IdentitiesEditDlg ui;
 
-    VarMap identities;
-    VarMap identTemplate;
+    QVariantMap identities;
+    QVariantMap identTemplate;
     QMap<QString, QString> mapping;
 
     void sortList();

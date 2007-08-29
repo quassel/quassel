@@ -55,14 +55,14 @@ class Buffer : public QObject {
     QString displayName() const;
     BufferId bufferId() const;
     QList<AbstractUiMsg *> contents() const;
-    VarMap nickList() const;
+    QVariantMap nickList() const;
     QString topic() const;
     QString ownNick() const;
     bool isStatusBuffer() const;
 
   signals:
     void userInput(const BufferId &, QString);
-    void nickListChanged(VarMap nicks);
+    void nickListChanged(QVariantMap nicks);
     void topicSet(QString topic);
     void ownNickSet(QString ownNick);
     void bufferUpdated(Buffer *);
@@ -79,10 +79,10 @@ class Buffer : public QObject {
     bool layoutMsg();
     void setTopic(QString);
     //void setNicks(QStringList);
-    void addNick(QString nick, VarMap props);
+    void addNick(QString nick, QVariantMap props);
     void renameNick(QString oldnick, QString newnick);
     void removeNick(QString nick);
-    void updateNick(QString nick, VarMap props);
+    void updateNick(QString nick, QVariantMap props);
     void setOwnNick(QString nick);
 
     void processUserInput(QString);
@@ -92,7 +92,7 @@ class Buffer : public QObject {
     bool active;
     Type type;
 
-    VarMap nicks;
+    QVariantMap nicks;
     QString _topic;
     QString _ownNick;
     QString _networkName, _bufferName;

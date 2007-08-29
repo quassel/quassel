@@ -23,11 +23,12 @@
 #include "bufferview.h"
 #include "chatline.h"
 #include "client.h"
-#include "clientproxy.h"
+//#include "clientproxy.h"
 #include "coreconnectdlg.h"
 #include "serverlist.h"
 #include "settingsdlg.h"
 //#include "settingspage.h"
+#include "signalproxy.h"
 
 MainWin::MainWin(QtGui *_gui, QWidget *parent) : QMainWindow(parent), gui(_gui) {
   ui.setupUi(this);
@@ -41,12 +42,13 @@ MainWin::MainWin(QtGui *_gui, QWidget *parent) : QMainWindow(parent), gui(_gui) 
 }
 
 void MainWin::init() {
-  connect(this, SIGNAL(requestBacklog(BufferId, QVariant, QVariant)), ClientProxy::instance(), SLOT(gsRequestBacklog(BufferId, QVariant, QVariant)));
+  //connect(this, SIGNAL(requestBacklog(BufferId, QVariant, QVariant)), ClientProxy::instance(), SLOT(gsRequestBacklog(BufferId, QVariant, QVariant)));
+  Client::signalProxy()->attachSignal(this, SIGNAL(requestBacklog(BufferId, QVariant, QVariant)));
   ui.bufferWidget->init();
 
   show();
 
-  //VarMap connInfo;
+  //QVariantMap connInfo;
   //connInfo["User"] = "Default";
   //connInfo["Password"] = "password";
   //connectToCore(connInfo);
@@ -108,7 +110,8 @@ void MainWin::setupMenus() {
   connect(ui.actionAboutQt, SIGNAL(triggered()), QApplication::instance(), SLOT(aboutQt()));
   // for debugging
   connect(ui.actionImportBacklog, SIGNAL(triggered()), this, SLOT(importBacklog()));
-  connect(this, SIGNAL(importOldBacklog()), ClientProxy::instance(), SLOT(gsImportBacklog()));
+  //connect(this, SIGNAL(importOldBacklog()), ClientProxy::instance(), SLOT(gsImportBacklog()));
+  Client::signalProxy()->attachSignal(this, SIGNAL(importOldBacklog()));
 }
 
 void MainWin::setupViews() {
