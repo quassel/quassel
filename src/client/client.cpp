@@ -99,7 +99,6 @@ void Client::init() {
   layoutTimer->setInterval(0);
   layoutTimer->setSingleShot(false);
   connect(layoutTimer, SIGNAL(timeout()), this, SLOT(layoutMsg()));
-
 }
 
 Client::~Client() {

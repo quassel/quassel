@@ -76,7 +76,8 @@ void IrcUser::setChannelmode(const QString &channel, const QSet<QString> &channe
 
 QSet<QString> IrcUser::channelmode(const QString &channel) const {
   if(channelmodes_.contains(channel))
-    throw NoSuchChannelException();
+    //throw NoSuchChannelException();
+    Q_ASSERT(false); // FIXME: exception disabled for qtopia testing
   else
     return QSet<QString>();
 }

@@ -1,0 +1,10 @@
+[Translation]
+File=example-nct
+Context=Example
+
+[Desktop Entry]
+Comment[]=An Example Program
+Exec=quasseltest
+Icon=example/Example
+Type=Application
+Name[]=QuasselTest

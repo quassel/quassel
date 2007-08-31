@@ -34,15 +34,14 @@ struct Message {
 
   uint msgId;
   BufferId buffer;
-  QString target;
   QString text;
   QString sender;
   Type type;
   quint8 flags;
   QDateTime timeStamp;
 
-  Message(QString _target, Type _type = Plain, QString _text = "", QString _sender = "", quint8 _flags = None)
-  : target(_target), text(_text), sender(_sender), type(_type), flags(_flags) { timeStamp = QDateTime::currentDateTime().toUTC(); }
+  //Message(QString _target, Type _type = Plain, QString _text = "", QString _sender = "", quint8 _flags = None)
+  //: target(_target), text(_text), sender(_sender), type(_type), flags(_flags) { timeStamp = QDateTime::currentDateTime().toUTC(); }
 
   Message(BufferId _buffer = BufferId(), Type _type = Plain, QString _text = "", QString _sender = "", quint8 _flags = None)
   : buffer(_buffer), text(_text), sender(_sender), type(_type), flags(_flags) { timeStamp = QDateTime::currentDateTime().toUTC(); }

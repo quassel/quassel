@@ -94,6 +94,7 @@ void Core::stopListening() {
 
 void Core::incomingConnection() {
   // TODO implement SSL
+  // TODO While
   QTcpSocket *socket = server.nextPendingConnection();
   connect(socket, SIGNAL(disconnected()), this, SLOT(clientDisconnected()));
   connect(socket, SIGNAL(readyRead()), this, SLOT(clientHasData()));

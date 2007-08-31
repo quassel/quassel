@@ -31,13 +31,13 @@
 
 MainWin::MainWin(QtGui *_gui, QWidget *parent) : QMainWindow(parent), gui(_gui) {
   ui.setupUi(this);
-  //setWindowTitle("Quassel IRC");
-  setWindowTitle(QString::fromUtf8("Κυασελ Εγαρζη"));
+  setWindowTitle("Quassel IRC");
+  //setWindowTitle(QString::fromUtf8("Κυασελ Εγαρζη"));
   setWindowIcon(QIcon(":/qirc-icon.png"));
   setWindowIconText("Quassel IRC");
 
   statusBar()->showMessage(tr("Waiting for core..."));
-  
+
 }
 
 void MainWin::init() {
