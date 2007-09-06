@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-07 by The Quassel Team                             *
+ *   Copyright (C) 2005-07 by The Quassel IRC Development Team             *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,9 +18,33 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include "qtopiagui.h"
 #include "qtopiamainwin.h"
-#include <qtopia/qtopiaapplication.h>
 
-QTOPIA_ADD_APPLICATION("Quassel IRC", QtopiaMainWin)
-QTOPIA_MAIN
+QtopiaGui::QtopiaGui(QtopiaMainWin *mw) : AbstractUi(), mainWin(mw) {
+  connect(mainWin, SIGNAL(connectToCore(const QVariantMap &)), this, SIGNAL(connectToCore(const QVariantMap &)));
+  connect(mainWin, SIGNAL(disconnectFromCore()), this, SIGNAL(disconnectFromCore()));
 
+
+}
+
+QtopiaGui::~QtopiaGui() {
+  delete mainWin;
+
+}
+
+void QtopiaGui::init() {
+
+}
+
+AbstractUiMsg *QtopiaGui::layoutMsg(const Message &msg) {
+  return mainWin->layoutMsg(msg);
+}
+
+void QtopiaGui::connectedToCore() {
+  mainWin->connectedToCore();
+}
+
+void QtopiaGui::disconnectedFromCore() {
+  mainWin->disconnectedFromCore();
+}

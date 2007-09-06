@@ -121,10 +121,11 @@ bool Client::isConnected() {
 void Client::connectToCore(const QVariantMap &conn) {
   // TODO implement SSL
   coreConnectionInfo = conn;
-  if(isConnected() || socket != 0) {
+  if(isConnected()) {
     emit coreConnectionError(tr("Already connected to Core!"));
     return;
   }
+  if(socket != 0) socket->deleteLater();
   if(conn["Host"].toString().isEmpty()) {
     clientMode = LocalCore;
     socket = new QBuffer(this);
@@ -176,6 +177,7 @@ void Client::coreSocketDisconnected() {
   connectedToCore = false;
   emit disconnected();
   socket->deleteLater();
+  blockSize = 0;
 
   /* Clear internal data. Hopefully nothing relies on it at this point. */
   _bufferModel->clear();
@@ -205,6 +207,7 @@ void Client::recvCoreState(const QVariant &state) {
   syncToCore(state);
 }
 
+// TODO: auth errors
 void Client::syncToCore(const QVariant &coreState) {
   if(!coreState.toMap().contains("SessionState")) {
     emit coreConnectionError(tr("Invalid data received from core!"));
@@ -261,6 +264,7 @@ QStringList Client::sessionDataKeys() {
 
 void Client::coreSocketError(QAbstractSocket::SocketError) {
   emit coreConnectionError(socket->errorString());
+  socket->deleteLater();
 }
 
 void Client::coreHasData() {

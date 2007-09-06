@@ -112,7 +112,7 @@ void Core::clientHasData() {
     try {
       processClientInit(socket, item);
     } catch(Storage::AuthError) {
-      qWarning() << "Authentification error!";  // FIXME
+      qWarning() << "Authentification error!";  // FIXME: send auth error to client
       socket->close();
       return;
     } catch(Exception e) {
@@ -156,6 +156,7 @@ void Core::processClientInit(QTcpSocket *socket, const QVariant &v) {
   QVariant reply = initSession(uid);
   disconnect(socket, 0, this, 0);
   sessions[uid]->addClient(socket);
+  qDebug() << "Client initialized successfully.";
   writeDataToDevice(socket, reply);
 }
 

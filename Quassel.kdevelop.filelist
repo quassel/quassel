@@ -115,3 +115,15 @@ src/contrib/qxt/qxtmetaobject.h
 src/contrib/qxt/qxtnullable.h
 src/contrib/qxt/qxtnull.cpp
 src/contrib/qxt/qxtnull.h
+src/qtopia
+src/qtopia/main.cpp
+src/qtopia/qtopiamainwin.h
+src/qtopia/qtopiamainwin.cpp
+src/qtopia/qtopiagui.h
+src/qtopia/qtopiagui.cpp
+src/qtopia/coreconnectdlg.cpp
+src/qtopia/coreconnectdlg.h
+src/qtopia/ui
+src/qtopia/ui/coreconnectdlg.ui
+src/qtopia/ui/coreconnectprogressdlg.ui
+src/qtopia/ui/editcoreacctdlg.ui

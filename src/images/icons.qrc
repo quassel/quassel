@@ -89,6 +89,6 @@
         <file>default/view_split.png</file>
         <file>default/view_top_bottom.png</file>
         <file>default/wizard.png</file>
-	<file>qirc-icon.png</file>
+        <file>qirc-icon.png</file>
     </qresource>
 </RCC>

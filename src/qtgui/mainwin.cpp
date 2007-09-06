@@ -37,7 +37,7 @@ MainWin::MainWin(QtGui *_gui, QWidget *parent) : QMainWindow(parent), gui(_gui) 
   setWindowIconText("Quassel IRC");
 
   statusBar()->showMessage(tr("Waiting for core..."));
-
+  
 }
 
 void MainWin::init() {
