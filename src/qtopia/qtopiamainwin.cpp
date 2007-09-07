@@ -20,10 +20,11 @@
 
 #include "qtopiamainwin.h"
 
+#include "coreconnectdlg.h"
 #include "global.h"
 #include "message.h"
 #include "qtopiagui.h"
-#include "coreconnectdlg.h"
+#include "signalproxy.h"
 
 // This constructor is the first thing to be called for a Qtopia app, so we do the init stuff
 // here (rather than in a main.cpp).
@@ -44,12 +45,19 @@ QtopiaMainWin::QtopiaMainWin(QWidget *parent, Qt::WFlags flags) : QMainWindow(pa
   //Style::init();
   QtopiaGui *gui = new QtopiaGui(this);
   Client::init(gui);
+  init();
   //gui->init();
 
   setWindowTitle("Quassel IRC");
   //setWindowTitle(QString::fromUtf8("Κυασελ Εγαρζη"));
   setWindowIcon(QIcon(":/qirc-icon.png"));
   setWindowIconText("Quassel IRC");
+
+}
+
+// at this point, client is fully initialized
+void QtopiaMainWin::init() {
+  Client::signalProxy()->attachSignal(this, SIGNAL(requestBacklog(BufferId, QVariant, QVariant)));
 
   CoreConnectDlg *dlg = new CoreConnectDlg(this);
   //setCentralWidget(dlg);

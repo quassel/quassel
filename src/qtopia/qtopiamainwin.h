@@ -45,6 +45,7 @@ class QtopiaMainWin : public QMainWindow {
     void requestBacklog(BufferId, QVariant, QVariant);
 
   private:
+    void init();
 
     friend class QtopiaGui;
 };

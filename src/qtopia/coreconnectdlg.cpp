@@ -236,7 +236,7 @@ void CoreConnectProgressDlg::coreConnected() {
 }
 
 void CoreConnectProgressDlg::coreConnectionError(QString err) {
-  QMessageBox::warning(this, tr("Connection Error"), tr("<b>Could not connect to Quassel Core!</b><br>\n") + err, QMessageBox::Retry);
+  QMessageBox::warning(this, tr("Connection Error"), tr("<b>Could not connect to Quassel Core!</b><br>\n") + err, QMessageBox::Ok);
   reject();
 }
 
