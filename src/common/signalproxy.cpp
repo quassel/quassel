@@ -86,12 +86,21 @@ void SignalProxy::attachSlot(const QByteArray& rpcFunction, QObject* recv, const
 }
 
 void SignalProxy::detachObject(QObject* obj) {
-  Q_ASSERT(false); // not done yet
+  //Q_ASSERT(false); // not done yet
   foreach(Connection conn, peers) {
     conn.peer->detachObject(obj);
   }
-  // FIXME: delete attached signal/slot info
-
+  QList<SignalDesc> sigs;
+  foreach(SignalDesc desc, attachedSignals) {
+    if(desc.sender != obj) sigs << desc;
+  }
+  attachedSignals = sigs;
+  QList<SlotDesc> slot;
+  foreach(SlotDesc desc, attachedSlots) {
+    if(desc.recv != obj) slot << desc;
+  }
+  attachedSlots = slot;
+  // FIXME: test this!
 }
 
 void SignalProxy::sendSignal(const char *signal, QVariant p1, QVariant p2, QVariant p3, QVariant p4, QVariant p5, QVariant p6, QVariant p7, QVariant p8, QVariant p9) {
