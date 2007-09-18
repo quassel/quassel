@@ -31,6 +31,7 @@ SignalProxy::SignalProxy(ProxyType _type, QIODevice *dev, QObject *parent) : QOb
 }
 
 SignalProxy::~SignalProxy() {
+  //qDebug() << "peers:" << peers.count();
   foreach(Connection conn, peers) {
     conn.peer->deleteLater(); conn.device->deleteLater();
   }
@@ -71,14 +72,19 @@ void SignalProxy::socketDisconnected() {
 }
 
 void SignalProxy::attachSignal(QObject* sender, const char* signal, const QByteArray& rpcFunction) {
+  disconnect(sender, SIGNAL(destroyed(QObject *)), this, SLOT(detachObject(QObject *)));
+  connect(sender, SIGNAL(destroyed(QObject *)), this, SLOT(detachObject(QObject *)));
+
   foreach(Connection conn, peers) {
     conn.peer->attachSignal(sender, signal, rpcFunction);
   }
   attachedSignals.append(SignalDesc(sender, signal, rpcFunction));
-
 }
 
 void SignalProxy::attachSlot(const QByteArray& rpcFunction, QObject* recv, const char* slot) {
+  disconnect(recv, SIGNAL(destroyed(QObject *)), this, SLOT(detachObject(QObject *)));
+  connect(recv, SIGNAL(destroyed(QObject *)), this, SLOT(detachObject(QObject *)));
+
   foreach(Connection conn, peers) {
     conn.peer->attachSlot(rpcFunction, recv, slot);
   }
