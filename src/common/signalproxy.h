@@ -39,7 +39,8 @@ class SignalProxy : public QObject {
 
   public slots:
     void addPeer(QIODevice *device);
-
+    void detachObject(QObject* obj);
+  
     void sendSignal(const char *signal, QVariant p1 = QVariant(), QVariant p2 = QVariant(), QVariant p3 = QVariant(), QVariant p4 = QVariant(),
               QVariant p5 = QVariant(), QVariant p6 = QVariant(), QVariant p7 = QVariant(), QVariant p8 = QVariant(), QVariant p9 = QVariant());
 
