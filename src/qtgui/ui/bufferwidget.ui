@@ -156,14 +156,15 @@
             <property name="text" >
              <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
 p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'Trebuchet MS'; font-size:11pt; font-weight:400; font-style:normal; text-decoration:none;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;span style=" font-size:60pt; color:#000055" align="center">Quassel IRC&lt;/span>&lt;/p>&lt;/body>&lt;/html></string>
+&lt;/style>&lt;/head>&lt;body style=" font-family:'Trebuchet MS'; font-size:14pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:11pt;">&lt;span style=" font-size:89pt;">Yarrrrr!&lt;/span>&lt;/p>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:49pt;">&lt;span style=" font-size:22pt;">Avast, ye scurvy dogs!&lt;/span>&lt;/p>&lt;/body>&lt;/html></string>
             </property>
             <property name="scaledContents" >
              <bool>true</bool>
             </property>
             <property name="alignment" >
-             <set>Qt::AlignCenter|Qt::AlignHorizontal_Mask|Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter|Qt::AlignVertical_Mask</set>
+             <set>Qt::AlignBottom|Qt::AlignCenter|Qt::AlignHCenter|Qt::AlignTop|Qt::AlignVCenter|Qt::AlignVertical_Mask</set>
             </property>
            </widget>
           </item>
