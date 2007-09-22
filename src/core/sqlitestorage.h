@@ -46,15 +46,17 @@ class SqliteStorage : public Storage {
 
     /* User handling */
 
-    virtual UserId addUser(QString user, QString password);
-    virtual void updateUser(UserId user, QString password);
-    virtual void renameUser(UserId user, QString newName);
-    virtual UserId validateUser(QString user, QString password);
+    virtual UserId addUser(const QString &user, const QString &password);
+    virtual void updateUser(UserId user, const QString &password);
+    virtual void renameUser(UserId user, const QString &newName);
+    virtual UserId validateUser(const QString &user, const QString &password);
     virtual void delUser(UserId user);
 
-    /* Buffer handling */
+    /* Network handling */
+    virtual uint getNetworkId(UserId user, const QString &network);
 
-    virtual BufferId getBufferId(UserId user, QString network, QString buffer = "");
+    /* Buffer handling */
+    virtual BufferId getBufferId(UserId user, const QString &network, const QString &buffer = "");
     virtual QList<BufferId> requestBuffers(UserId user, QDateTime since = QDateTime());
 
     /* Message handling */
@@ -79,7 +81,7 @@ class SqliteStorage : public Storage {
 
   private:
     void initDb();
-    void createBuffer(UserId user, QString network, QString buffer);
+    void createBuffer(UserId user, const QString &network, const QString &buffer);
     QSqlQuery *logMessageQuery;
     QSqlQuery *addSenderQuery;
     QSqlQuery *getLastMessageIdQuery;

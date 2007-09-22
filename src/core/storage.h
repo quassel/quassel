@@ -66,31 +66,40 @@ class Storage : public QObject {
      *  \param password The cleartext password for the new user
      *  \return The new user's UserId
      */
-    virtual UserId addUser(QString user, QString password) = 0;
+    virtual UserId addUser(const QString &user, const QString &password) = 0;
 
     //! Update a core user's password.
     /** \param user     The user's id
      *  \param password The user's new password
      */
-    virtual void updateUser(UserId user, QString password) = 0;
+    virtual void updateUser(UserId user, const QString &password) = 0;
 
     //! Rename a user
     /** \param user     The user's id
      *  \param newName  The user's new name
      */
-    virtual void renameUser(UserId user, QString newName) = 0;
+    virtual void renameUser(UserId user, const QString &newName) = 0;
 
     //! Validate a username with a given password.
     /** \param user     The username to validate
      *  \param password The user's alleged password
      *  \return A valid UserId if the password matches the username; 0 else
      */
-    virtual UserId validateUser(QString user, QString password) = 0;
+    virtual UserId validateUser(const QString &user, const QString &password) = 0;
 
     //! Remove a core user from storage.
     /** \param user     The userid to delete
      */
     virtual void delUser(UserId user) = 0;
+
+    /* Network handling */
+
+    //! Get the unique NetworkId of the network for a user.
+    /** \param user    The core user who owns this buffername
+     *  \param network The network name
+     *  \return The BufferId corresponding to the given network and buffer name, or 0 if not found
+     */
+    virtual uint getNetworkId(UserId user, const QString &network) = 0;
 
     /* Buffer handling */
 
@@ -100,7 +109,7 @@ class Storage : public QObject {
      *  \param buffer  The buffer name (if empty, the net's status buffer is returned)
      *  \return The BufferId corresponding to the given network and buffer name, or 0 if not found
      */
-    virtual BufferId getBufferId(UserId user, QString network, QString buffer = "") = 0;
+    virtual BufferId getBufferId(UserId user, const QString &network, const QString &buffer = "") = 0;
 
     //! Request a list of all buffers known to a user since a certain point in time.
     /** This method is used to get a list of all buffers we have stored a backlog from.

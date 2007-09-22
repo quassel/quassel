@@ -187,11 +187,10 @@ bool SqliteStorage::isAvailable() {
 }
 
 QString SqliteStorage::displayName() {
-  // I think the class name is a good start here
   return QString("SqliteStorage");
 }
 
-UserId SqliteStorage::addUser(QString user, QString password) {
+UserId SqliteStorage::addUser(const QString &user, const QString &password) {
   QByteArray cryptopass = QCryptographicHash::hash(password.toUtf8(), QCryptographicHash::Sha1);
   cryptopass = cryptopass.toHex();
 
@@ -213,7 +212,7 @@ UserId SqliteStorage::addUser(QString user, QString password) {
   return uid;
 }
 
-void SqliteStorage::updateUser(UserId user, QString password) {
+void SqliteStorage::updateUser(UserId user, const QString &password) {
   QByteArray cryptopass = QCryptographicHash::hash(password.toUtf8(), QCryptographicHash::Sha1);
   cryptopass = cryptopass.toHex();
 
@@ -224,7 +223,7 @@ void SqliteStorage::updateUser(UserId user, QString password) {
   query.exec();
 }
 
-void SqliteStorage::renameUser(UserId user, QString newName) {
+void SqliteStorage::renameUser(UserId user, const QString &newName) {
   QSqlQuery query(logDb);
   query.prepare("UPDATE quasseluser SET username = :username WHERE userid = :userid");
   query.bindValue(":userid", user);
@@ -233,7 +232,7 @@ void SqliteStorage::renameUser(UserId user, QString newName) {
   emit userRenamed(user, newName);
 }
 
-UserId SqliteStorage::validateUser(QString user, QString password) {
+UserId SqliteStorage::validateUser(const QString &user, const QString &password) {
   QByteArray cryptopass = QCryptographicHash::hash(password.toUtf8(), QCryptographicHash::Sha1);
   cryptopass = cryptopass.toHex();
 
@@ -272,7 +271,7 @@ void SqliteStorage::delUser(UserId user) {
   emit userRemoved(user);
 }
 
-void SqliteStorage::createBuffer(UserId user, QString network, QString buffer) {
+void SqliteStorage::createBuffer(UserId user, const QString &network, const QString &buffer) {
   createBufferQuery->bindValue(":userid", user);
   createBufferQuery->bindValue(":networkname", network);
   createBufferQuery->bindValue(":buffername", buffer);
@@ -294,7 +293,21 @@ void SqliteStorage::createBuffer(UserId user, QString network, QString buffer) {
   }
 }
 
-BufferId SqliteStorage::getBufferId(UserId user, QString network, QString buffer) {
+uint SqliteStorage::getNetworkId(UserId user, const QString &network) {
+  QSqlQuery query(logDb);
+  query.prepare("SELECT networkid FROM network "
+		"WHERE userid = :userid AND networkname = :networkname");
+  query.bindValue(":userid", user);
+  query.bindValue(":networkname", network);
+  query.exec();
+  
+  if(query.first())
+    return query.value(0).toUInt();
+  else
+    return 0;
+}
+
+BufferId SqliteStorage::getBufferId(UserId user, const QString &network, const QString &buffer) {
   BufferId bufferid;
   getBufferIdQuery->bindValue(":networkname", network);
   getBufferIdQuery->bindValue(":userid", user);
