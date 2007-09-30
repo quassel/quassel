@@ -54,7 +54,7 @@ void writeDataToDevice(QIODevice *, const QVariant &);
 bool readDataFromDevice(QIODevice *, quint32 &, QVariant &);
 
 
-
+uint editingDistance(const QString &s1, const QString &s2);
 
 
 #endif
