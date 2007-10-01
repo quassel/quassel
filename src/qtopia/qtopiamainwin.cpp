@@ -22,6 +22,7 @@
 
 #include "coreconnectdlg.h"
 #include "global.h"
+#include "mainwidget.h"
 #include "message.h"
 #include "qtopiagui.h"
 #include "signalproxy.h"
@@ -49,9 +50,16 @@ QtopiaMainWin::QtopiaMainWin(QWidget *parent, Qt::WFlags flags) : QMainWindow(pa
   //gui->init();
 
   setWindowTitle("Quassel IRC");
-  //setWindowTitle(QString::fromUtf8("Κυασελ Εγαρζη"));
   setWindowIcon(QIcon(":/qirc-icon.png"));
   setWindowIconText("Quassel IRC");
+
+  mainWidget = new MainWidget(this);
+  setCentralWidget(mainWidget);
+
+  QToolBar *toolBar = new QToolBar(this);
+  toolBar->setIconSize(QSize(16, 16));
+  toolBar->addAction(QIcon(":icon/trash"), "Trash");
+  addToolBar(toolBar);
 
 }
 
@@ -84,4 +92,8 @@ void QtopiaMainWin::disconnectedFromCore() {
 AbstractUiMsg *QtopiaMainWin::layoutMsg(const Message &msg) {
   //return new ChatLine(msg);
   return 0;
+}
+
+void QtopiaMainWin::showBuffer(Buffer *b) {
+  mainWidget->setBuffer(b);
 }

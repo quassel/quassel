@@ -59,6 +59,7 @@ CoreConnectDlg::CoreConnectDlg(QWidget *parent, bool /*doAutoConnect*/) : QDialo
   ui.accountList->addItems(s.knownAccounts());
   if(ui.accountList->count()) ui.accountList->item(0)->setSelected(true);
   setWidgetStates();
+  doConnect(); // shortcut for development
 }
 
 CoreConnectDlg::~CoreConnectDlg() {

@@ -558,7 +558,7 @@ void Server::handleServerJoin(QString prefix, QStringList params) {
       // Q_ASSERT(!chans.keys().contains(params[0])); TODO uncomment
       chans[params[0]] = QVariantMap();
       n["Channels"] = chans;
-      nicks[nick] = n; qDebug() << network << nick << n;
+      nicks[nick] = n;
       emit nickUpdated(network, nick, n);
     } else {
       QVariantMap chans;

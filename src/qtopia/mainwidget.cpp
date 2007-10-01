@@ -18,43 +18,30 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _QTOPIAMAINWIN_H_
-#define _QTOPIAMAINWIN_H_
+#include "mainwidget.h"
 
-#include <QtGui>
+#include "buffer.h"
 
-#include "client.h"
-#include "global.h"
+MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
+  ui.setupUi(this);
 
-class MainWidget;
+//  ui.bufferLeft->setIcon(QIcon(":icon/left"));
+//  ui.bufferRight->setIcon(QIcon(":icon/right"));
+  //ui.bufferLeft->setIconSize(QSize(10, 10));
+  //ui.bufferRight->setIconSize(QSize(10, 10));
+  //ui.bufferLeft->setMaximumSize(QSize(10,10));
+  //ui.bufferRight->setMaximumSize(QSize(10,10));
+}
 
-class QtopiaMainWin : public QMainWindow {
-  Q_OBJECT
+MainWidget::~MainWidget() {
 
-  public:
-    QtopiaMainWin(QWidget *parent = 0, Qt::WFlags f = 0);
-    ~QtopiaMainWin();
 
-    AbstractUiMsg *layoutMsg(const Message &);
 
-  protected slots:
-    void connectedToCore();
-    void disconnectedFromCore();
+}
 
-  signals:
-    void connectToCore(const QVariantMap &connInfo);
-    void disconnectFromCore();
-    void requestBacklog(BufferId, QVariant, QVariant);
+void MainWidget::setBuffer(Buffer *b) {
+  //  TODO update topic if changed; handle status buffer display
+  QString title = QString("%1 (%2): \"%3\"").arg(b->displayName()).arg(b->networkName()).arg(b->topic());
+  ui.topicBar->setContents(title);
 
-  private slots:
-    void showBuffer(Buffer *);
-
-  private:
-    void init();
-
-    MainWidget *mainWidget;
-
-    friend class QtopiaGui;
-};
-
-#endif
+}

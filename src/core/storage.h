@@ -24,7 +24,6 @@
 #include <QtCore>
 #include <QSqlDatabase>
 
-//#include "global.h"
 #include "message.h"
 
 class Storage : public QObject {

@@ -25,6 +25,10 @@
 
 
 ChatWidget::ChatWidget(QWidget *parent) : QAbstractScrollArea(parent) {
+  //setAutoFillBackground(false);
+  //QPalette palette;
+  //palette.setColor(backgroundRole(), QColor(0, 0, 0, 50));
+  //setPalette(palette);
   scrollTimer = new QTimer(this);
   scrollTimer->setSingleShot(false);
   scrollTimer->setInterval(100);

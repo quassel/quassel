@@ -126,6 +126,7 @@ QxtRPCPeer::QxtRPCPeer(QIODevice* device, RPCTypes type, QObject* parent) : QObj
     QXT_INIT_PRIVATE(QxtRPCPeer);
     qxt_d().m_rpctype = type;
     qxt_d().m_peer = device;
+    //qDebug() << device->metaObject()->className();
 
     if (qobject_cast<QAbstractSocket *>(device)!=0)
     {
@@ -523,7 +524,8 @@ void QxtRPCPeer::disconnectSender()
     QxtRPCConnection* conn = qxt_d().m_clients.value(sender());
     if (!conn)
     {
-        if (qxt_d().m_peer!= qobject_cast<QAbstractSocket*>(sender()))  // SPUT: why not QTcpSocket*?
+        //qDebug() << qxt_d().m_peer->metaObject()->className();
+        if (qxt_d().m_peer!= qobject_cast<QTcpSocket*>(sender()))
         {
             qWarning() << "QxtRPCPeer: Unrecognized object connected to disconnectSender";
             return;

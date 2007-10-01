@@ -18,43 +18,28 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _QTOPIAMAINWIN_H_
-#define _QTOPIAMAINWIN_H_
+#ifndef _MAINWIDGET_H_
+#define _MAINWIDGET_H_
 
-#include <QtGui>
+#include "ui_mainwidget.h"
 
-#include "client.h"
-#include "global.h"
+class Buffer;
 
-class MainWidget;
-
-class QtopiaMainWin : public QMainWindow {
+class MainWidget : public QWidget {
   Q_OBJECT
 
   public:
-    QtopiaMainWin(QWidget *parent = 0, Qt::WFlags f = 0);
-    ~QtopiaMainWin();
+    MainWidget(QWidget *parent = 0);
+    ~MainWidget();
 
-    AbstractUiMsg *layoutMsg(const Message &);
-
-  protected slots:
-    void connectedToCore();
-    void disconnectedFromCore();
-
-  signals:
-    void connectToCore(const QVariantMap &connInfo);
-    void disconnectFromCore();
-    void requestBacklog(BufferId, QVariant, QVariant);
-
-  private slots:
-    void showBuffer(Buffer *);
+  public slots:
+    void setBuffer(Buffer *);
 
   private:
-    void init();
+    Ui::MainWidget ui;
 
-    MainWidget *mainWidget;
 
-    friend class QtopiaGui;
 };
+
 
 #endif

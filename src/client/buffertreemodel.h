@@ -1,4 +1,4 @@
-	/***************************************************************************
+/***************************************************************************
  *   Copyright (C) 2005-07 by The Quassel Team                             *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
@@ -74,7 +74,7 @@ class BufferTreeModel : public TreeModel {
   Q_OBJECT
   
 public:
-  enum  myRoles {
+  enum myRoles {
     BufferTypeRole = Qt::UserRole,
     BufferActiveRole,
     BufferNameRole,

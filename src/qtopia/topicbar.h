@@ -18,43 +18,43 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _QTOPIAMAINWIN_H_
-#define _QTOPIAMAINWIN_H_
+#ifndef _TOPICBAR_H_
+#define _TOPICBAR_H_
+
+#include <QPushButton>
+#include <QTimeLine>
 
 #include <QtGui>
 
-#include "client.h"
-#include "global.h"
+class QPixmap;
+class QTimer;
 
-class MainWidget;
-
-class QtopiaMainWin : public QMainWindow {
+class TopicBar : public QPushButton {
   Q_OBJECT
 
   public:
-    QtopiaMainWin(QWidget *parent = 0, Qt::WFlags f = 0);
-    ~QtopiaMainWin();
+    TopicBar(QWidget *parent = 0);
+    ~TopicBar();
 
-    AbstractUiMsg *layoutMsg(const Message &);
+  public slots:
+    void setContents(QString text, bool oneshot = true);
 
-  protected slots:
-    void connectedToCore();
-    void disconnectedFromCore();
-
-  signals:
-    void connectToCore(const QVariantMap &connInfo);
-    void disconnectFromCore();
-    void requestBacklog(BufferId, QVariant, QVariant);
+  protected:
+    virtual void paintEvent(QPaintEvent * event);
 
   private slots:
-    void showBuffer(Buffer *);
+    void updateOffset();
 
   private:
-    void init();
-
-    MainWidget *mainWidget;
-
-    friend class QtopiaGui;
+    QTimer *timer;
+    int offset;
+    int fillTextStart, secondTextStart;
+    QString text;
+    QString fillText;
+    QFont topicFont;
+    int frameWidth;
+    bool oneshot;
 };
+
 
 #endif

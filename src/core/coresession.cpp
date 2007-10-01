@@ -50,7 +50,6 @@ CoreSession::CoreSession(UserId uid, Storage *_storage, QObject *parent) : QObje
   p->attachSignal(storage, SIGNAL(bufferIdUpdated(BufferId)));
   p->attachSignal(this, SIGNAL(sessionDataChanged(const QString &, const QVariant &)), SIGNAL(coreSessionDataChanged(const QString &, const QVariant &)));
   p->attachSlot(SIGNAL(clientSessionDataChanged(const QString &, const QVariant &)), this, SLOT(storeSessionData(const QString &, const QVariant &)));
-
   /* Autoconnect. (When) do we actually do this?
   QStringList list;
   QVariantMap networks = retrieveSessionData("Networks").toMap();

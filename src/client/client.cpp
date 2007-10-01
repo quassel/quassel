@@ -196,7 +196,7 @@ void Client::coreSocketDisconnected() {
   layoutTimer->stop();
 }
 
-void Client::coreSocketStateChanged(QAbstractSocket::SocketState state) { qDebug() << state;
+void Client::coreSocketStateChanged(QAbstractSocket::SocketState state) {
   if(state == QAbstractSocket::UnconnectedState) coreSocketDisconnected();
 }
 

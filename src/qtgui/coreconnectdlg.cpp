@@ -60,7 +60,7 @@ CoreConnectDlg::CoreConnectDlg(QWidget *parent, bool /*doAutoConnect*/) : QDialo
   curacc = s.lastAccount();
   if(!ui.accountList->count()) {
     //if(doAutoConnect) reject();
-    
+
     setAccountEditEnabled(false);
     QString newacc = QInputDialog::getText(this, tr("Create Account"), tr(
                                            "In order to connect to a Quassel Core, you need to create an account.<br>"

@@ -127,3 +127,10 @@ src/qtopia/ui
 src/qtopia/ui/coreconnectdlg.ui
 src/qtopia/ui/coreconnectprogressdlg.ui
 src/qtopia/ui/editcoreacctdlg.ui
+src/qtopia/mainwidget.cpp
+src/qtopia/mainwidget.h
+src/qtopia/ui/mainwidget.ui
+qtopia-build
+qtopia-build/Makefile
+src/qtopia/topicbar.cpp
+src/qtopia/topicbar.h

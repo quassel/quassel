@@ -1,4 +1,4 @@
 # Input
-HEADERS += coreconnectdlg.h qtopiagui.h qtopiamainwin.h
-SOURCES += coreconnectdlg.cpp qtopiagui.cpp qtopiamainwin.cpp main.cpp
-FORMS += ui/coreconnectdlg.ui ui/coreconnectprogressdlg.ui ui/editcoreacctdlg.ui
+HEADERS += coreconnectdlg.h mainwidget.h qtopiagui.h qtopiamainwin.h topicbar.h
+SOURCES += coreconnectdlg.cpp mainwidget.cpp qtopiagui.cpp qtopiamainwin.cpp main.cpp topicbar.cpp
+FORMS += ui/coreconnectdlg.ui ui/coreconnectprogressdlg.ui ui/editcoreacctdlg.ui ui/mainwidget.ui
