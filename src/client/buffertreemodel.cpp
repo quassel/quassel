@@ -256,7 +256,6 @@ void BufferTreeModel::bufferActivity(Buffer::ActivityLevel level, Buffer *buffer
 
 void BufferTreeModel::selectBuffer(Buffer *buffer) {
   QModelIndex index = getOrCreateBufferItemIndex(buffer);
-  emit selectionChanged(index);
+  //emit selectionChanged(index);
+  changeCurrent(index, QModelIndex());
 }
-
-
