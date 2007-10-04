@@ -160,10 +160,10 @@ void Style::init() {
  *  describing the formats of the string.
  * \param s string in internal format (% style format codes)
  */ 
-Style::FormattedString Style::internalToFormatted(QString s) {
+Style::StyledString Style::formattedToStyled(QString s) {
   QHash<QString, int> toggles;
   QString p;
-  FormattedString sf;
+  StyledString sf;
   QTextLayout::FormatRange rng;
   rng.format = formats["default"]; rng.start = 0; rng.length = -1; sf.formats.append(rng);
   toggles["default"] = sf.formats.count() - 1;

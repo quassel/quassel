@@ -35,15 +35,13 @@ class Style {
       QUrl url;
     };
 
-    struct FormattedString {
+    struct StyledString {
       QString text;
       QList<QTextLayout::FormatRange> formats;
       QList<UrlInfo> urls;
     };
 
-    static QString mircToInternal(QString);
-    //static QString internalToMirc(QString);
-    static FormattedString internalToFormatted(QString);
+    static StyledString formattedToStyled(QString);
     static int sepTsSender() { return 10; }
     static int sepSenderText() { return 10; }
 

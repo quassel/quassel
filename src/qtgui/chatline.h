@@ -70,7 +70,7 @@ class ChatLine : public QObject, public AbstractUiMsg {
     qreal hght;
     Message msg;
     qreal tsWidth, senderWidth, textWidth;
-    Style::FormattedString tsFormatted, senderFormatted, textFormatted;
+    Style::StyledString styledTimeStamp, styledSender, styledText;
 
     struct FormatRange {
       int start;
@@ -103,7 +103,7 @@ class ChatLine : public QObject, public AbstractUiMsg {
     int selectionStart, selectionEnd;
     void formatMsg(Message);
     void precomputeLine();
-    QList<FormatRange> calcFormatRanges(const Style::FormattedString &, QTextLayout::FormatRange additional = QTextLayout::FormatRange());
+    QList<FormatRange> calcFormatRanges(const Style::StyledString &, QTextLayout::FormatRange additional = QTextLayout::FormatRange());
 };
 
 #endif
