@@ -40,63 +40,10 @@ ChatLine::~ChatLine() {
 }
 
 void ChatLine::formatMsg(Message msg) {
-  QString user = userFromMask(msg.sender());
-  QString host = hostFromMask(msg.sender());
-  QString nick = nickFromMask(msg.sender());
-  QString text = Style::mircToInternal(msg.text());
-  QString networkName = msg.buffer().network();
-  QString bufferName = msg.buffer().buffer();
-
-  QString c = tr("%DT[%1]").arg(msg.timeStamp().toLocalTime().toString("hh:mm:ss"));
-  QString s, t;
-  switch(msg.type()) {
-    case Message::Plain:
-      s = tr("%DS<%1>").arg(nick); t = tr("%D0%1").arg(text); break;
-    case Message::Server:
-      s = tr("%Ds*"); t = tr("%Ds%1").arg(text); break;
-    case Message::Error:
-      s = tr("%De*"); t = tr("%De%1").arg(text); break;
-    case Message::Join:
-      s = tr("%Dj-->"); t = tr("%Dj%DN%DU%1%DU%DN %DH(%2@%3)%DH has joined %DC%DU%4%DU%DC").arg(nick, user, host, bufferName); break;
-    case Message::Part:
-      s = tr("%Dp<--"); t = tr("%Dp%DN%DU%1%DU%DN %DH(%2@%3)%DH has left %DC%DU%4%DU%DC").arg(nick, user, host, bufferName);
-      if(!text.isEmpty()) t = QString("%1 (%2)").arg(t).arg(text);
-      break;
-    case Message::Quit:
-      s = tr("%Dq<--"); t = tr("%Dq%DN%DU%1%DU%DN %DH(%2@%3)%DH has quit").arg(nick, user, host);
-      if(!text.isEmpty()) t = QString("%1 (%2)").arg(t).arg(text);
-      break;
-    case Message::Kick:
-    { s = tr("%Dk<-*");
-    QString victim = text.section(" ", 0, 0);
-        //if(victim == ui.ownNick->currentText()) victim = tr("you");
-    QString kickmsg = text.section(" ", 1);
-    t = tr("%Dk%DN%DU%1%DU%DN has kicked %DN%DU%2%DU%DN from %DC%DU%3%DU%DC").arg(nick).arg(victim).arg(bufferName);
-    if(!kickmsg.isEmpty()) t = QString("%1 (%2)").arg(t).arg(kickmsg);
-    }
-    break;
-    case Message::Nick:
-      s = tr("%Dr<->");
-      if(nick == msg.text()) t = tr("%DrYou are now known as %DN%1%DN").arg(msg.text());
-      else t = tr("%Dr%DN%1%DN is now known as %DN%DU%2%DU%DN").arg(nick, msg.text());
-      break;
-    case Message::Mode:
-      s = tr("%Dm***");
-      if(nick.isEmpty()) t = tr("%DmUser mode: %DM%1%DM").arg(msg.text());
-      else t = tr("%DmMode %DM%1%DM by %DN%DU%2%DU%DN").arg(msg.text(), nick);
-      break;
-    case Message::Action:
-      s = tr("%Da-*-");
-      t = tr("%Da%DN%DU%1%DU%DN %2").arg(nick).arg(msg.text());
-      break;
-    default:
-      s = tr("%De%1").arg(msg.sender());
-      t = tr("%De[%1]").arg(msg.text());
-  }
   QTextOption tsOption, senderOption, textOption;
-  tsFormatted = Style::internalToFormatted(c);
-  senderFormatted = Style::internalToFormatted(s);
-  textFormatted = Style::internalToFormatted(t);
+  tsFormatted = Style::internalToFormatted(msg.formattedTimeStamp());
+  senderFormatted = Style::internalToFormatted(msg.formattedSender());
+  textFormatted = Style::internalToFormatted(msg.formattedText());
   precomputeLine();
 }
 

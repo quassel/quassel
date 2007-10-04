@@ -21,12 +21,14 @@
 #ifndef _MESSAGE_H_
 #define _MESSAGE_H_
 
+#include <QCoreApplication>
 #include <QString>
 #include <QDateTime>
 
 #include "global.h"
 
 class Message {
+  Q_DECLARE_TR_FUNCTIONS(Message);
 
   public:
     /** The different types a message can have for display */
@@ -47,6 +49,12 @@ class Message {
     quint8 flags() const;
     QDateTime timeStamp() const;
 
+    QString formattedTimeStamp();
+    QString formattedSender();
+    QString formattedText();
+
+    void format();
+
   private:
     QDateTime _timeStamp;
     MsgId _msgId;
@@ -55,6 +63,10 @@ class Message {
     QString _sender;
     Type _type;
     quint8 _flags;
+
+    QString _formattedTimeStamp, _formattedSender, _formattedText; // cache
+
+    QString mircToInternal(QString);
 
     friend QDataStream &operator>>(QDataStream &in, Message &msg);
 

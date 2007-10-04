@@ -156,18 +156,6 @@ void Style::init() {
   formats["%DU"] = url;
 }
 
-QString Style::mircToInternal(QString mirc) {
-  mirc.replace('%', "%%");      // escape % just to be sure
-  mirc.replace('\x02', "%B");
-  mirc.replace('\x03', "%C");
-  mirc.replace('\x0f', "%O");
-  mirc.replace('\x12', "%R");
-  mirc.replace('\x16', "%R");
-  mirc.replace('\x1d', "%S");
-  mirc.replace('\x1f', "%U");
-  return mirc;
-}
-
 /** Returns a string stripped of format codes, and a list of FormatRange objects
  *  describing the formats of the string.
  * \param s string in internal format (% style format codes)
