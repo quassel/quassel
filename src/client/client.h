@@ -29,6 +29,7 @@
 #include "buffer.h"
 #include "message.h"
 
+
 class AbstractUi;
 class BufferTreeModel;
 class QtGui;

@@ -26,28 +26,37 @@
 
 #include "global.h"
 
-struct Message {
+class Message {
 
-  /** The different types a message can have for display */
-  enum Type { Plain, Notice, Action, Nick, Mode, Join, Part, Quit, Kick, Kill, Server, Info, Error };
-  enum Flags { None = 0, Self = 1, PrivMsg = 2, Highlight = 4 };
+  public:
+    /** The different types a message can have for display */
+    enum Type { Plain, Notice, Action, Nick, Mode, Join, Part, Quit, Kick, Kill, Server, Info, Error };
+    enum Flags { None = 0, Self = 1, PrivMsg = 2, Highlight = 4 };
 
-  uint msgId;
-  BufferId buffer;
-  QString text;
-  QString sender;
-  Type type;
-  quint8 flags;
-  QDateTime timeStamp;
+    Message(BufferId buffer = BufferId(), Type type = Plain, QString text = "", QString sender = "", quint8 flags = None);
 
-  //Message(QString _target, Type _type = Plain, QString _text = "", QString _sender = "", quint8 _flags = None)
-  //: target(_target), text(_text), sender(_sender), type(_type), flags(_flags) { timeStamp = QDateTime::currentDateTime().toUTC(); }
+    Message(QDateTime ts, BufferId buffer = BufferId(), Type type = Plain, QString text = "", QString sender = "", quint8 flags = None);
 
-  Message(BufferId _buffer = BufferId(), Type _type = Plain, QString _text = "", QString _sender = "", quint8 _flags = None)
-  : buffer(_buffer), text(_text), sender(_sender), type(_type), flags(_flags) { timeStamp = QDateTime::currentDateTime().toUTC(); }
+    MsgId msgId() const;
+    void setMsgId(MsgId id);
 
-  Message(QDateTime _ts, BufferId _buffer = BufferId(), Type _type = Plain, QString _text = "", QString _sender = "", quint8 _flags = None)
-  : buffer(_buffer), text(_text), sender(_sender), type(_type), flags(_flags), timeStamp(_ts) {}
+    BufferId buffer() const;
+    QString text() const;
+    QString sender() const;
+    Type type() const;
+    quint8 flags() const;
+    QDateTime timeStamp() const;
+
+  private:
+    QDateTime _timeStamp;
+    MsgId _msgId;
+    BufferId _buffer;
+    QString _text;
+    QString _sender;
+    Type _type;
+    quint8 _flags;
+
+    friend QDataStream &operator>>(QDataStream &in, Message &msg);
 
 };
 

@@ -40,16 +40,16 @@ ChatLine::~ChatLine() {
 }
 
 void ChatLine::formatMsg(Message msg) {
-  QString user = userFromMask(msg.sender);
-  QString host = hostFromMask(msg.sender);
-  QString nick = nickFromMask(msg.sender);
-  QString text = Style::mircToInternal(msg.text);
-  QString networkName = msg.buffer.network();
-  QString bufferName = msg.buffer.buffer();
+  QString user = userFromMask(msg.sender());
+  QString host = hostFromMask(msg.sender());
+  QString nick = nickFromMask(msg.sender());
+  QString text = Style::mircToInternal(msg.text());
+  QString networkName = msg.buffer().network();
+  QString bufferName = msg.buffer().buffer();
 
-  QString c = tr("%DT[%1]").arg(msg.timeStamp.toLocalTime().toString("hh:mm:ss"));
+  QString c = tr("%DT[%1]").arg(msg.timeStamp().toLocalTime().toString("hh:mm:ss"));
   QString s, t;
-  switch(msg.type) {
+  switch(msg.type()) {
     case Message::Plain:
       s = tr("%DS<%1>").arg(nick); t = tr("%D0%1").arg(text); break;
     case Message::Server:
@@ -77,21 +77,21 @@ void ChatLine::formatMsg(Message msg) {
     break;
     case Message::Nick:
       s = tr("%Dr<->");
-      if(nick == msg.text) t = tr("%DrYou are now known as %DN%1%DN").arg(msg.text);
-      else t = tr("%Dr%DN%1%DN is now known as %DN%DU%2%DU%DN").arg(nick, msg.text);
+      if(nick == msg.text()) t = tr("%DrYou are now known as %DN%1%DN").arg(msg.text());
+      else t = tr("%Dr%DN%1%DN is now known as %DN%DU%2%DU%DN").arg(nick, msg.text());
       break;
     case Message::Mode:
       s = tr("%Dm***");
-      if(nick.isEmpty()) t = tr("%DmUser mode: %DM%1%DM").arg(msg.text);
-      else t = tr("%DmMode %DM%1%DM by %DN%DU%2%DU%DN").arg(msg.text, nick);
+      if(nick.isEmpty()) t = tr("%DmUser mode: %DM%1%DM").arg(msg.text());
+      else t = tr("%DmMode %DM%1%DM by %DN%DU%2%DU%DN").arg(msg.text(), nick);
       break;
     case Message::Action:
       s = tr("%Da-*-");
-      t = tr("%Da%DN%DU%1%DU%DN %2").arg(nick).arg(msg.text);
+      t = tr("%Da%DN%DU%1%DU%DN %2").arg(nick).arg(msg.text());
       break;
     default:
-      s = tr("%De%1").arg(msg.sender);
-      t = tr("%De[%1]").arg(msg.text);
+      s = tr("%De%1").arg(msg.sender());
+      t = tr("%De[%1]").arg(msg.text());
   }
   QTextOption tsOption, senderOption, textOption;
   tsFormatted = Style::internalToFormatted(c);
@@ -172,15 +172,15 @@ void ChatLine::setSelection(SelectionMode mode, int start, int end) {
 }
 
 uint ChatLine::msgId() const {
-  return msg.buffer.uid();
+  return msg.buffer().uid();
 }
 
 BufferId ChatLine::bufferId() const {
-  return msg.buffer;
+  return msg.buffer();
 }
 
 QDateTime ChatLine::timeStamp() const {
-  return msg.timeStamp;
+  return msg.timeStamp();
 }
 
 QString ChatLine::sender() const {

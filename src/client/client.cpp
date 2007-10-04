@@ -369,13 +369,13 @@ void Client::recvNetworkState(QString net, QVariant state) {
 }
 
 void Client::recvMessage(const Message &msg) {
-  Buffer *b = buffer(msg.buffer);
+  Buffer *b = buffer(msg.buffer());
 
   Buffer::ActivityLevel level = Buffer::OtherActivity;
-  if(msg.type == Message::Plain || msg.type == Message::Notice){
+  if(msg.type() == Message::Plain || msg.type() == Message::Notice){
     level |= Buffer::NewMessage;
   }
-  if(msg.flags & Message::Highlight){
+  if(msg.flags() & Message::Highlight){
     level |= Buffer::Highlight;
   }
   emit bufferActivity(level, b);

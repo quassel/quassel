@@ -163,8 +163,8 @@ void CoreSession::recvMessageFromServer(Message::Type type, QString target, QStr
     buf = storage->getBufferId(user, s->getNetwork(), target);
   }
   Message msg(buf, type, text, sender, flags);
-  msg.msgId = storage->logMessage(msg);
-  Q_ASSERT(msg.msgId);
+  msg.setMsgId(storage->logMessage(msg));
+  Q_ASSERT(msg.msgId());
   emit displayMsg(msg);
 }
 

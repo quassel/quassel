@@ -353,18 +353,18 @@ QList<BufferId> SqliteStorage::requestBuffers(UserId user, QDateTime since) {
 }
 
 MsgId SqliteStorage::logMessage(Message msg) {
-  logMessageQuery->bindValue(":time", msg.timeStamp.toTime_t());
-  logMessageQuery->bindValue(":bufferid", msg.buffer.uid());
-  logMessageQuery->bindValue(":type", msg.type);
-  logMessageQuery->bindValue(":flags", msg.flags);
-  logMessageQuery->bindValue(":sender", msg.sender);
-  logMessageQuery->bindValue(":message", msg.text);
+  logMessageQuery->bindValue(":time", msg.timeStamp().toTime_t());
+  logMessageQuery->bindValue(":bufferid", msg.buffer().uid());
+  logMessageQuery->bindValue(":type", msg.type());
+  logMessageQuery->bindValue(":flags", msg.flags());
+  logMessageQuery->bindValue(":sender", msg.sender());
+  logMessageQuery->bindValue(":message", msg.text());
   logMessageQuery->exec();
   
   if(logMessageQuery->lastError().isValid()) {
     // constraint violation - must be NOT NULL constraint - probably the sender is missing...
     if(logMessageQuery->lastError().number() == 19) { 
-      addSenderQuery->bindValue(":sender", msg.sender);
+      addSenderQuery->bindValue(":sender", msg.sender());
       addSenderQuery->exec();
       logMessageQuery->exec();
       Q_ASSERT(!logMessageQuery->lastError().isValid());
@@ -373,16 +373,16 @@ MsgId SqliteStorage::logMessage(Message msg) {
     }
   }
 
-  getLastMessageIdQuery->bindValue(":time", msg.timeStamp.toTime_t());
-  getLastMessageIdQuery->bindValue(":bufferid", msg.buffer.uid());
-  getLastMessageIdQuery->bindValue(":type", msg.type);
-  getLastMessageIdQuery->bindValue(":sender", msg.sender);
+  getLastMessageIdQuery->bindValue(":time", msg.timeStamp().toTime_t());
+  getLastMessageIdQuery->bindValue(":bufferid", msg.buffer().uid());
+  getLastMessageIdQuery->bindValue(":type", msg.type());
+  getLastMessageIdQuery->bindValue(":sender", msg.sender());
   getLastMessageIdQuery->exec();
 
   if(getLastMessageIdQuery->first()) {
     return getLastMessageIdQuery->value(0).toUInt();
   } else { // somethin went wrong... :(
-    qDebug() << getLastMessageIdQuery->lastQuery() << "time/bufferid/type/sender:" << msg.timeStamp.toTime_t() << msg.buffer.uid() << msg.type << msg.sender;
+    qDebug() << getLastMessageIdQuery->lastQuery() << "time/bufferid/type/sender:" << msg.timeStamp().toTime_t() << msg.buffer().uid() << msg.type() << msg.sender();
     Q_ASSERT(false);
     return 0;
   }
@@ -410,7 +410,7 @@ QList<Message> SqliteStorage::requestMsgs(BufferId buffer, int lastmsgs, int off
                 requestMsgsQuery->value(5).toString(),
                 requestMsgsQuery->value(4).toString(),
                 requestMsgsQuery->value(3).toUInt());
-    msg.msgId = requestMsgsQuery->value(0).toUInt();
+    msg.setMsgId(requestMsgsQuery->value(0).toUInt());
     messagelist << msg;
   }
   return messagelist;
@@ -440,7 +440,7 @@ QList<Message> SqliteStorage::requestMsgs(BufferId buffer, QDateTime since, int 
                 requestMsgsSinceQuery->value(5).toString(),
                 requestMsgsSinceQuery->value(4).toString(),
                 requestMsgsSinceQuery->value(3).toUInt());
-    msg.msgId = requestMsgsSinceQuery->value(0).toUInt();
+    msg.setMsgId(requestMsgsSinceQuery->value(0).toUInt());
     messagelist << msg;
   }
 
@@ -462,7 +462,7 @@ QList<Message> SqliteStorage::requestMsgRange(BufferId buffer, int first, int la
                 requestMsgRangeQuery->value(5).toString(),
                 requestMsgRangeQuery->value(4).toString(),
                 requestMsgRangeQuery->value(3).toUInt());
-    msg.msgId = requestMsgRangeQuery->value(0).toUInt();
+    msg.setMsgId(requestMsgRangeQuery->value(0).toUInt());
     messagelist << msg;
   }
 
