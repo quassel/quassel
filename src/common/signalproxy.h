@@ -60,7 +60,7 @@ class SignalProxy : public QObject {
 
     struct SignalDesc {
       QObject *sender;
-      const char *signal;
+      QByteArray signal;
       QByteArray rpcFunction;
 
       SignalDesc(QObject *sndr, const char *sig, const QByteArray &func) : sender(sndr), signal(sig), rpcFunction(func) {}
@@ -69,7 +69,7 @@ class SignalProxy : public QObject {
     struct SlotDesc {
       QByteArray rpcFunction;
       QObject *recv;
-      const char *slot;
+      QByteArray slot;
 
       SlotDesc(const QByteArray& func, QObject* r, const char* s) : rpcFunction(func), recv(r), slot(s) {}
     };
