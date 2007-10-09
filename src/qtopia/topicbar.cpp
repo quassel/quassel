@@ -34,11 +34,13 @@ TopicBar::TopicBar(QWidget *parent) : QPushButton(parent) {
   frameWidth = 3; // so we hardcode a more reasonable framewidth than 7
   setFixedHeight(QFontMetrics(topicFont).height() + 2*frameWidth);
 
+  textWidth = 0;
   fillText = " *** ";
   oneshot = true;
   timer = new QTimer(this);
   timer->setInterval(20);
   connect(timer, SIGNAL(timeout()), this, SLOT(updateOffset()));
+  connect(this, SIGNAL(clicked()), this, SLOT(startScrolling()));
 }
 
 TopicBar::~TopicBar() {
@@ -46,21 +48,33 @@ TopicBar::~TopicBar() {
 
 }
 
-void TopicBar::setContents(QString t, bool _oneshot) {
-  text = t; oneshot = _oneshot;
+void TopicBar::resizeEvent(QResizeEvent *event) {
+  QPushButton::resizeEvent(event);
+  calcTextMetrics();
+}
+
+void TopicBar::calcTextMetrics() {
   int w = width() - 2*frameWidth;
   QRect boundingRect = QFontMetrics(topicFont).boundingRect(text);
-  if(boundingRect.width() <= w) {
+  textWidth = boundingRect.width();
+  if(textWidth <= w) {
     offset = 0; fillTextStart = -1; secondTextStart = -1;
+    displayText = text;
     timer->stop();
   } else {
-    fillTextStart = boundingRect.width();
+    fillTextStart = textWidth;
     boundingRect = QFontMetrics(topicFont).boundingRect(fillText);
     secondTextStart = fillTextStart + boundingRect.width();
-    text = QString("%1%2%1").arg(text).arg(fillText);
+    displayText = QString("%1%2%1").arg(text).arg(fillText);
     offset = 0;
     timer->start();
   }
+}
+
+// TODO catch resizeEvent for scroll settings
+void TopicBar::setContents(QString t, bool _oneshot) {
+  text = t; oneshot = _oneshot;
+  calcTextMetrics();
 }
 
 void TopicBar::paintEvent(QPaintEvent *event) {
@@ -69,7 +83,7 @@ void TopicBar::paintEvent(QPaintEvent *event) {
   QPainter painter(this);
   painter.setFont(topicFont);
   painter.setClipRect(frameWidth, frameWidth, rect().width() - 2*frameWidth, rect().height() - 2*frameWidth);
-  painter.drawText(QPoint(-offset + frameWidth, QFontMetrics(topicFont).ascent() + frameWidth), text);
+  painter.drawText(QPoint(-offset + frameWidth, QFontMetrics(topicFont).ascent() + frameWidth), displayText);
 
 }
 
@@ -80,4 +94,15 @@ void TopicBar::updateOffset() {
     if(oneshot) timer->stop(); // only scroll once!
   }
   update();
+}
+
+void TopicBar::startScrolling() {
+  if(displayText.length() > text.length()) {
+    oneshot = false;
+    timer->start();
+  }
+}
+
+void TopicBar::stopScrolling() {
+  oneshot = true;
 }

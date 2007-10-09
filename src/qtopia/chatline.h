@@ -18,49 +18,27 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _TOPICBAR_H_
-#define _TOPICBAR_H_
+#ifndef _CHATLINE_H_
+#define _CHATLINE_H_
 
-#include <QPushButton>
-#include <QTimeLine>
+#include "quasselui.h"
 
-#include <QtGui>
-
-class QPixmap;
-class QTimer;
-
-class TopicBar : public QPushButton {
-  Q_OBJECT
+class ChatLine : public AbstractUiMsg {
 
   public:
-    TopicBar(QWidget *parent = 0);
-    ~TopicBar();
-
-  public slots:
-    void setContents(QString text, bool oneshot = true);
-    void startScrolling();
-    void stopScrolling();
-
-  protected:
-    virtual void paintEvent(QPaintEvent *event);
-    virtual void resizeEvent (QResizeEvent *event);
-
-  private slots:
-    void updateOffset();
+    ChatLine(Message msg);
+    virtual QString sender() const;
+    virtual QString text() const;
+    virtual MsgId msgId() const;
+    virtual BufferId bufferId() const;
+    virtual QDateTime timeStamp() const;
 
   private:
-    void calcTextMetrics();
+    QString _sender, _text;
+    MsgId _msgId;
+    BufferId _bufferId;
+    QDateTime _timeStamp;
 
-    QTimer *timer;
-    int offset;
-    int fillTextStart, secondTextStart;
-    QString text, displayText;
-    QString fillText;
-    QFont topicFont;
-    int frameWidth;
-    int textWidth;
-    bool oneshot;
 };
-
 
 #endif

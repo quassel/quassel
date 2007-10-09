@@ -20,6 +20,8 @@
 
 #include "qtopiamainwin.h"
 
+#include "buffertreemodel.h"
+#include "chatline.h"
 #include "coreconnectdlg.h"
 #include "global.h"
 #include "mainwidget.h"
@@ -46,8 +48,6 @@ QtopiaMainWin::QtopiaMainWin(QWidget *parent, Qt::WFlags flags) : QMainWindow(pa
   //Style::init();
   QtopiaGui *gui = new QtopiaGui(this);
   Client::init(gui);
-  init();
-  //gui->init();
 
   setWindowTitle("Quassel IRC");
   setWindowIcon(QIcon(":/qirc-icon.png"));
@@ -61,11 +61,15 @@ QtopiaMainWin::QtopiaMainWin(QWidget *parent, Qt::WFlags flags) : QMainWindow(pa
   toolBar->addAction(QIcon(":icon/trash"), "Trash");
   addToolBar(toolBar);
 
+  init();
+  //gui->init();
+
 }
 
 // at this point, client is fully initialized
 void QtopiaMainWin::init() {
   Client::signalProxy()->attachSignal(this, SIGNAL(requestBacklog(BufferId, QVariant, QVariant)));
+  connect(Client::bufferModel(), SIGNAL(bufferSelected(Buffer *)), this, SLOT(showBuffer(Buffer *)));
 
   CoreConnectDlg *dlg = new CoreConnectDlg(this);
   //setCentralWidget(dlg);
@@ -82,6 +86,11 @@ void QtopiaMainWin::connectedToCore() {
   foreach(BufferId id, Client::allBufferIds()) {
     emit requestBacklog(id, 100, -1);
   }
+  // FIXME just for testing: select first available buffer
+  if(Client::allBufferIds().count()) {
+    Buffer *b = Client::buffer(Client::allBufferIds()[0]);
+    Client::bufferModel()->selectBuffer(b);
+  }
 }
 
 void QtopiaMainWin::disconnectedFromCore() {
@@ -90,10 +99,11 @@ void QtopiaMainWin::disconnectedFromCore() {
 }
 
 AbstractUiMsg *QtopiaMainWin::layoutMsg(const Message &msg) {
-  //return new ChatLine(msg);
-  return 0;
+  return new ChatLine(msg);
+  //return 0;
 }
 
 void QtopiaMainWin::showBuffer(Buffer *b) {
   mainWidget->setBuffer(b);
+
 }
