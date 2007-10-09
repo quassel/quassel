@@ -27,7 +27,7 @@
 class AbstractUiMsg {
 
   public:
-    virtual ~AbstractUiMsg() {};
+    //virtual ~AbstractUiMsg() {};
     virtual QString sender() const = 0;
     virtual QString text() const = 0;
     virtual MsgId msgId() const = 0;

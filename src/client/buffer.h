@@ -45,7 +45,7 @@ class Buffer : public QObject {
       NewMessage = 0x02,
       Highlight = 0x40
     };
-    Q_DECLARE_FLAGS(ActivityLevel, Activity)
+    Q_DECLARE_FLAGS(ActivityLevel, Activity);
 
     Type bufferType() const;
     bool isActive() const;

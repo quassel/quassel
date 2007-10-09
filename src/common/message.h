@@ -66,10 +66,10 @@ class Message {
 
     QString _formattedTimeStamp, _formattedSender, _formattedText; // cache
 
+    /** Convert mIRC control codes to our own */
     QString mircToInternal(QString);
 
     friend QDataStream &operator>>(QDataStream &in, Message &msg);
-
 };
 
 QDataStream &operator<<(QDataStream &out, const Message &msg);
