@@ -20,6 +20,7 @@
 
 #include "settings.h"
 #include <QString>
+#include <QTranslator>
 
 #if defined BUILD_CORE
 #include <QCoreApplication>
@@ -75,6 +76,13 @@ int main(int argc, char **argv) {
   Global::runMode = Global::Monolithic;
   QApplication app(argc, argv);
 #endif
+
+/* Just for testing
+  QTranslator translator;
+  translator.load(":i18n/quassel_de");
+  app.installTranslator(&translator);
+*/
+            
   QCoreApplication::setOrganizationDomain("quassel-irc.org");
   QCoreApplication::setApplicationName("Quassel IRC");
   QCoreApplication::setOrganizationName("Quassel IRC Development Team");
