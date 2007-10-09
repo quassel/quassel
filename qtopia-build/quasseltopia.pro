@@ -7,11 +7,16 @@ CONFIG+=debug qtopia_main no_quicklaunch
 INCLUDEPATH+=../src/qtopia ../src/client ../src/common ../src/contrib/qxt
 
 
-# Include .pro from src dirs
-include(../src/contrib/qxt/qxt.pro)
-include(../src/common/common.pro)
-include(../src/qtopia/qtopia.pro)
-include(../src/client/client.pro)
+# Include .pri from src dirs
+include(../src/contrib/qxt/qxt.pri)
+include(../src/common/common.pri)
+include(../src/qtopia/qtopia.pri)
+include(../src/client/client.pri)
+
+# Fix variable names
+SOURCES = $$SRCS
+HEADERS = $$HDRS
+FORMS   = $$FRMS
 
 # SXE permissions required
 #pkg.domain=none
