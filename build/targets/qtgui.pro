@@ -1,2 +1,2 @@
-include(core.pri)
+include(qtgui.pri)
 include(target.pri)

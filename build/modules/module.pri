@@ -1,3 +1,6 @@
+# module.pri
+# This file is included by module project files.
+
 TEMPLATE = lib
 CONFIG += staticlib
 
@@ -18,9 +21,9 @@ MODPATH = $$SRCPATH/$$MODULE  # Path to the module files
 
 # Define build directories
 
-OBJECTS_DIR = $${MODNAME}.tmp
-MOC_DIR = $${MODNAME}.tmp
-UI_DIR = $${MODNAME}.tmp
+OBJECTS_DIR = .$$MODNAME
+MOC_DIR =     .$$MODNAME
+UI_DIR =      .$$MODNAME
 
 # Load module settings (files etc.)
 

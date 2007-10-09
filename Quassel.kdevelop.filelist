@@ -134,3 +134,7 @@ qtopia-build
 qtopia-build/Makefile
 src/qtopia/topicbar.cpp
 src/qtopia/topicbar.h
+src/qtopia/chatline.cpp
+src/qtopia/chatline.h
+src/qtopia/chatwidget.cpp
+src/qtopia/chatwidget.h

@@ -1,6 +1,7 @@
 TEMPLATE = app
+
 SRCPATH = ../../src
-OBJECTS_DIR = $${TARGET}.tmp
+OBJECTS_DIR = .$$TARGET
 
 for(mod, MODULES) {
   INCLUDEPATH *= $$SRCPATH/$$mod
