@@ -309,6 +309,7 @@ uint SqliteStorage::getNetworkId(UserId user, const QString &network) {
 
 BufferId SqliteStorage::getBufferId(UserId user, const QString &network, const QString &buffer) {
   BufferId bufferid;
+  uint networkId = getNetworkId(user, network);
   getBufferIdQuery->bindValue(":networkname", network);
   getBufferIdQuery->bindValue(":userid", user);
   getBufferIdQuery->bindValue(":buffername", buffer);
@@ -318,11 +319,11 @@ BufferId SqliteStorage::getBufferId(UserId user, const QString &network, const Q
     createBuffer(user, network, buffer);
     getBufferIdQuery->exec();
     if(getBufferIdQuery->first()) {
-      bufferid = BufferId(getBufferIdQuery->value(0).toUInt(), network, buffer);
+      bufferid = BufferId(getBufferIdQuery->value(0).toUInt(), networkId, 0, network, buffer);
       emit bufferIdUpdated(bufferid);
     }
   } else {
-    bufferid = BufferId(getBufferIdQuery->value(0).toUInt(), network, buffer);
+    bufferid = BufferId(getBufferIdQuery->value(0).toUInt(), networkId, 0, network, buffer);
   }
 
   Q_ASSERT(!getBufferIdQuery->next());
@@ -347,7 +348,7 @@ QList<BufferId> SqliteStorage::requestBuffers(UserId user, QDateTime since) {
   query.exec();
 
   while(query.next()) {
-    bufferlist << BufferId(query.value(0).toUInt(), query.value(1).toString(), query.value(2).toString());
+    bufferlist << BufferId(query.value(0).toUInt(), getNetworkId(user, query.value(1).toString()), 0, query.value(1).toString(), query.value(2).toString());
   }
   return bufferlist;
 }

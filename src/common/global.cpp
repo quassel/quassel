@@ -47,32 +47,44 @@ void Global::initIconMap() {
 */
 
 /**************************************************************************************/
+BufferId::BufferId()
+  : _id(0),
+    _netid(0),
+    _gid(0),
+    _networkName(QString()),
+    _bufferName(QString()) {
+}
 
-BufferId::BufferId(uint _id, QString _net, QString _buf, uint _gid) : id(_id), gid(_gid), net(_net), buf(_buf) {
-
-
+BufferId::BufferId(uint id, uint networkid, uint gid, QString net, QString buf)
+  : _id(id),
+    _netid(networkid),
+    _gid(gid),
+    _networkName(net),
+    _bufferName(buf) {
 }
 
 QString BufferId::buffer() const {
-  if(isChannelName(buf)) return buf;
-  else return nickFromMask(buf);
+  if(isChannelName(_bufferName))
+    return _bufferName;
+  else
+    return nickFromMask(_bufferName);
 }
 
 QDataStream &operator<<(QDataStream &out, const BufferId &bufferId) {
-  out << bufferId.id << bufferId.gid << bufferId.net.toUtf8() << bufferId.buf.toUtf8();
+  out << bufferId._id << bufferId._netid << bufferId._gid << bufferId._networkName.toUtf8() << bufferId._bufferName.toUtf8();
   return out;
 }
 
 QDataStream &operator>>(QDataStream &in, BufferId &bufferId) {
   QByteArray n, b;
-  in >> bufferId.id >> bufferId.gid >> n >> b;
-  bufferId.net = QString::fromUtf8(n);
-  bufferId.buf = QString::fromUtf8(b);
+  in >> bufferId._id >> bufferId._netid >> bufferId._gid >> n >> b;
+  bufferId._networkName = QString::fromUtf8(n);
+  bufferId._bufferName = QString::fromUtf8(b);
   return in;
 }
 
-uint qHash(const BufferId &bid) {
-  return qHash(bid.id);
+uint qHash(const BufferId &bufferid) {
+  return qHash(bufferid._id);
 }
 
 /**

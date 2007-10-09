@@ -56,28 +56,30 @@ struct Exception {
 };
 
 class BufferId {
-  public:
-    BufferId() { id = gid = 0; } // FIXME
-    BufferId(uint uid, QString net, QString buf, uint gid = 0);
+public:
+  BufferId();
+  BufferId(uint _id, uint _networkid, uint _gid = 0, QString _net = QString(), QString _buf = QString());
+  
+  inline uint uid() const { return _id; }
+  inline uint networkId() const { return _netid; }
+  inline uint groupId() const { return _gid; }
+  inline QString network() const { return _networkName; }
+  QString buffer() const;
+  
+  void setGroupId(uint gid) { _gid = gid; }
+  
+  inline bool operator==(const BufferId &other) const { return _id == other._id; }
 
-    inline uint uid() const { return id; }
-    inline uint groupId() const { return gid; }
-    inline QString network() const { return net; }
-    QString buffer() const; // nickfrommask?
-
-    void setGroupId(uint _gid) { gid = _gid; }
-
-    inline bool operator==(const BufferId &other) const { return id == other.id; }
-
-  private:
-    uint id;
-    uint gid;
-    QString net;
-    QString buf;
-
-    friend uint qHash(const BufferId &);
-    friend QDataStream &operator<<(QDataStream &out, const BufferId &bufferId);
-    friend QDataStream &operator>>(QDataStream &in, BufferId &bufferId);
+private:
+  uint _id;
+  uint _netid;
+  uint _gid;
+  QString _networkName; // WILL BE REMOVED
+  QString _bufferName; // IS this actually needed?
+  
+  friend uint qHash(const BufferId &);
+  friend QDataStream &operator<<(QDataStream &out, const BufferId &bufferId);
+  friend QDataStream &operator>>(QDataStream &in, BufferId &bufferId);
 };
 
 QDataStream &operator<<(QDataStream &out, const BufferId &bufferId);
