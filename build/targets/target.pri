@@ -1,5 +1,7 @@
 TEMPLATE = app
 
+include(../buildconf.pri)
+
 RESOURCES   += ../../i18n/i18n.qrc \
                ../../src/images/icons.qrc
 

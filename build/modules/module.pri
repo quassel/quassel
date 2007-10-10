@@ -1,6 +1,8 @@
 # module.pri
 # This file is included by module project files.
 
+include(../buildconf.pri)
+
 TEMPLATE = lib
 CONFIG += staticlib
 

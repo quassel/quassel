@@ -15,7 +15,8 @@
 
 
 # Set project-wide config options
-CONFIG += qt debug warn_on
+
+#CONFIG = qt warn_on release
 
 TEMPLATE = subdirs
 
