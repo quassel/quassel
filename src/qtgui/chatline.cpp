@@ -235,7 +235,7 @@ qreal ChatLine::layout(qreal tsw, qreal senderw, qreal textw) {
   line.y = 0;
   line.start = 0;
   line.height = minHeight;  // first line needs room for ts and sender
-  for(int i = 0; i < words.count(); i++) {
+  for(uint i = 0; i < (uint)words.count(); i++) {
     int lastpos = charPos[words[i].start + words[i].length]; // We use charPos[lastchar + 1], 'coz last char needs to fit
     if(lastpos - offset <= textw) {
       line.height = qMax(line.height, words[i].height);
