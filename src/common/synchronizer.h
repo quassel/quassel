@@ -23,11 +23,11 @@
 
 class SignalProxy;
 
-#include <QObject>;
-#include <QList>;
-#include <QString>;
-#include <QVariantMap>;
-#include <QMetaMethod>;
+#include <QObject>
+#include <QList>
+#include <QString>
+#include <QVariantMap>
+#include <QMetaMethod>
 #include <QPointer>
 
 class Synchronizer : public QObject {
