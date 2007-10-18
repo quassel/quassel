@@ -24,6 +24,7 @@
 #include "ui_mainwidget.h"
 
 class Buffer;
+class ChatWidget;
 
 class MainWidget : public QWidget {
   Q_OBJECT
@@ -37,6 +38,7 @@ class MainWidget : public QWidget {
 
   private:
     Ui::MainWidget ui;
+    QHash<Buffer *, ChatWidget *> chatWidgets;
 
 
 };

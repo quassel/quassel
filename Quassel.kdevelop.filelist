@@ -23,7 +23,6 @@ src/common/logger.h
 src/common/main.cpp
 src/common/message.cpp
 src/common/message.h
-src/common/quasselui.h
 src/common/settings.cpp
 src/common/settings.h
 src/common/util.cpp
@@ -102,8 +101,6 @@ src/contrib/qxt/qxtglobal.h
 src/contrib/qxt/qxtpimpl.h
 src/contrib/qxt/qxtrpcpeer.cpp
 src/contrib/qxt/qxtrpcpeer.h
-src/core/serverinfo.cpp
-src/core/serverinfo.h
 src/contrib/qxt/CMakeLists.txt
 src/common/signalproxy.cpp
 src/common/signalproxy.h
@@ -138,3 +135,10 @@ src/qtopia/chatline.cpp
 src/qtopia/chatline.h
 src/qtopia/chatwidget.cpp
 src/qtopia/chatwidget.h
+src/qtopia/qtopia.pri
+src/qtgui/qtgui.pri
+src/core/core.pri
+src/contrib/qxt/qxt.pri
+src/common/common.pri
+src/client/client.pri
+src/client/quasselui.h

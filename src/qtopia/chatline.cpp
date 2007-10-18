@@ -18,13 +18,20 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QtCore>
+
 #include "chatline.h"
 
 ChatLine::ChatLine(Message msg) {
-  
+  _text = msg.text();  // FIXME
+  _sender = msg.sender();
+  _timeStamp = msg.timeStamp();
+  _msgId = msg.msgId();
+  _bufferInfo = msg.buffer();
 
-  
-
+  _htmlSender = formattedToHtml(msg.formattedSender());
+  _htmlText = formattedToHtml(msg.formattedText());
+  _htmlTimeStamp = formattedToHtml(msg.formattedTimeStamp());
 }
 
 QString ChatLine::sender() const {
@@ -47,3 +54,20 @@ QDateTime ChatLine::timeStamp() const {
   return _timeStamp;
 }
 
+QString ChatLine::htmlSender() const {
+  return _htmlSender;
+}
+
+QString ChatLine::htmlText() const {
+  return _htmlText;
+}
+
+QString ChatLine::htmlTimeStamp() const {
+  return _htmlTimeStamp;
+}
+
+
+QString ChatLine::formattedToHtml(const QString &f) {
+
+  return f;
+}

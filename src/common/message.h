@@ -54,6 +54,8 @@ class Message {
     QString formattedSender();
     QString formattedText();
 
+    //static QString formattedToHtml(const QString &);
+
     void format();
 
   private:

@@ -98,7 +98,7 @@ void TopicBar::updateOffset() {
 
 void TopicBar::startScrolling() {
   if(displayText.length() > text.length()) {
-    oneshot = false;
+    //oneshot = false;
     timer->start();
   }
 }

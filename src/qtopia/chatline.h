@@ -27,17 +27,23 @@ class ChatLine : public AbstractUiMsg {
 
   public:
     ChatLine(Message msg);
-    virtual QString sender() const;
-    virtual QString text() const;
-    virtual MsgId msgId() const;
-    virtual BufferInfo bufferInfo() const;
-    virtual QDateTime timeStamp() const;
+    QString sender() const;
+    QString text() const;
+    MsgId msgId() const;
+    BufferInfo bufferInfo() const;
+    QDateTime timeStamp() const;
+
+    QString htmlSender() const;
+    QString htmlText() const;
+    QString htmlTimeStamp() const;
 
   private:
-    QString _sender, _text;
+    QString _sender, _text, _htmlSender, _htmlText, _htmlTimeStamp;
     MsgId _msgId;
     BufferInfo _bufferInfo;
     QDateTime _timeStamp;
+
+    QString formattedToHtml(const QString &);
 
 };
 

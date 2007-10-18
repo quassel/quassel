@@ -1,7 +1,8 @@
 qtopia_project(qtopia app)
 
 TARGET=quasseltopia
-CONFIG+=debug qtopia_main no_quicklaunch
+CONFIG+=debug qtopia_main no_quicklaunch no_singleexec no_sxe_test
+QT = core gui network
 
 # Find files
 INCLUDEPATH+=../src/qtopia ../src/client ../src/common ../src/contrib/qxt

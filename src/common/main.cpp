@@ -77,11 +77,11 @@ int main(int argc, char **argv) {
   QApplication app(argc, argv);
 #endif
 
-/* Just for testing
-  QTranslator translator;
-  translator.load(":i18n/quassel_de");
-  app.installTranslator(&translator);
-*/
+  //Just for testing
+  //QTranslator translator;
+  //translator.load(":i18n/quassel_de");
+  //app.installTranslator(&translator);
+
             
   QCoreApplication::setOrganizationDomain("quassel-irc.org");
   QCoreApplication::setApplicationName("Quassel IRC");

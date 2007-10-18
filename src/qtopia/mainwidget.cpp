@@ -21,6 +21,7 @@
 #include "mainwidget.h"
 
 #include "buffer.h"
+#include "chatwidget.h"
 
 MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
   ui.setupUi(this);
@@ -39,9 +40,33 @@ MainWidget::~MainWidget() {
 
 }
 
-void MainWidget::setBuffer(Buffer *b) {
+void MainWidget::setBuffer(Buffer *buf) {
   //  TODO update topic if changed; handle status buffer display
-  QString title = QString("%1 (%2): \"%3\"").arg(b->displayName()).arg(b->networkName()).arg(b->topic());
+  QString title = QString("%1 (%2): \"%3\"").arg(buf->displayName()).arg(buf->networkName()).arg(buf->topic());
   ui.topicBar->setContents(title);
 
+  //ui.chatWidget->setStyleSheet("div { color: #777777; }");
+  //ui.chatWidget->setHtml("<style type=\"text/css\">.foo { color: #777777; } .bar { font-style: italic }</style>"
+  //                       "<div class=\"foo\">foo</div> <div class=\"bar\">bar</div> baz");
+  //ui.chatWidget->moveCursor(QTextCursor::End);
+  //ui.chatWidget->insertHtml("<div class=\"foo\"> brumm</div>");
+
+  ChatWidget *chatWidget;
+  if(!chatWidgets.contains(buf)) {
+    chatWidget = new ChatWidget(this);
+    QList<ChatLine *> lines;
+    QList<AbstractUiMsg *> msgs = buf->contents();
+    foreach(AbstractUiMsg *msg, msgs) {
+      lines.append(dynamic_cast<ChatLine*>(msg));
+    }
+    chatWidget->setContents(lines);
+    connect(buf, SIGNAL(msgAppended(AbstractUiMsg *)), chatWidget, SLOT(appendMsg(AbstractUiMsg *)));
+    connect(buf, SIGNAL(msgPrepended(AbstractUiMsg *)), chatWidget, SLOT(prependMsg(AbstractUiMsg *)));
+    //connect(buf, SIGNAL(topicSet(QString)), this, SLOT(setTopic(QString)));
+    //connect(buf, SIGNAL(ownNickSet(QString)), this, SLOT(setOwnNick(QString)));
+    ui.stack->addWidget(chatWidget);
+    chatWidgets.insert(buf, chatWidget);
+    ui.stack->addWidget(chatWidget);
+  } else chatWidget = chatWidgets[buf];
+  ui.stack->setCurrentWidget(chatWidget);
 }

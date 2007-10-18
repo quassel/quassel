@@ -17,3 +17,50 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
+#include <QDebug>
+#include "chatwidget.h"
+
+ChatWidget::ChatWidget(QWidget *parent) : QTextEdit(parent) {
+
+}
+
+void ChatWidget::setContents(QList<ChatLine *> lines) {
+  clear();
+  appendChatLines(lines);
+
+}
+
+void ChatWidget::prependMsg(AbstractUiMsg *msg) {
+  ChatLine *line = dynamic_cast<ChatLine*>(msg);
+  Q_ASSERT(line);
+  prependChatLine(line);
+}
+
+void ChatWidget::appendMsg(AbstractUiMsg *msg) {
+  ChatLine *line = dynamic_cast<ChatLine*>(msg);
+  Q_ASSERT(line);
+  appendChatLine(line);
+}
+
+void ChatWidget::appendChatLine(ChatLine *line) {
+  append(line->text()); qDebug() << "appending";
+}
+
+void ChatWidget::appendChatLines(QList<ChatLine *> list) {
+  foreach(ChatLine *line, list) {
+    appendChatLine(line);
+  }
+}
+
+void ChatWidget::prependChatLine(ChatLine *line) {
+  QTextCursor cursor = textCursor();
+  moveCursor(QTextCursor::Start);
+  insertHtml(line->text());
+  setTextCursor(cursor);
+}
+
+void ChatWidget::prependChatLines(QList<ChatLine *> list) {
+
+
+}

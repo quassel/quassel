@@ -18,3 +18,32 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#ifndef _CHATWIDGET_H_
+#define _CHATWIDGET_H_
+
+#include <QTextEdit>
+#include "chatline.h"
+#include "quasselui.h"
+
+class ChatWidget : public QTextEdit {
+  Q_OBJECT
+
+  public:
+    ChatWidget(QWidget *parent = 0);
+
+  public slots:
+    void setContents(QList<ChatLine *>);
+    void appendMsg(AbstractUiMsg *);
+    void prependMsg(AbstractUiMsg *);
+    void prependChatLine(ChatLine *);
+    void appendChatLine(ChatLine *);
+    void prependChatLines(QList<ChatLine *>);
+    void appendChatLines(QList<ChatLine *>);
+
+  private:
+
+
+
+};
+
+#endif

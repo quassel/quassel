@@ -153,6 +153,14 @@ QString Message::formattedText() {
   return _formattedText;
 }
 
+/*
+QString Message::formattedToHtml(const QString &f) {
+
+
+  return f;
+}
+*/
+
 QDataStream &operator<<(QDataStream &out, const Message &msg) {
   out << (quint32)msg.timeStamp().toTime_t() << (quint8)msg.type() << (quint8)msg.flags()
       << msg.buffer() << msg.sender().toUtf8() << msg.text().toUtf8();

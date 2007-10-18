@@ -40,22 +40,11 @@
     </widget>
    </item>
    <item>
-    <widget class="QTextEdit" name="chatWidget" >
-     <property name="readOnly" >
-      <bool>true</bool>
+    <widget class="QStackedWidget" name="stack" >
+     <property name="currentIndex" >
+      <number>0</number>
      </property>
-     <property name="html" >
-      <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
-p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'Trebuchet MS'; font-size:14pt; font-weight:400; font-style:normal; text-decoration:none;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:10pt;">&lt;span style=" font-size:6pt;">&amp;lt;Sput&amp;gt; So soll das hier dann mal ungefähr aussehen...&lt;/span>&lt;/p>
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:6pt;">&amp;lt;Foo&amp;gt; aha, na allzuviel Text bekommt man da wahrscheinlich nicht unter.&lt;/p>
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:6pt;">&amp;lt;Sput&amp;gt; Man wird sehen müssen...&lt;/p>
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:6pt;">&amp;lt;Foo&amp;gt; Das ist wohl wahr...&lt;/p>&lt;/body>&lt;/html></string>
-     </property>
-     <property name="textInteractionFlags" >
-      <enum>Qt::NoTextInteraction</enum>
-     </property>
+     <widget class="QWidget" name="page" />
     </widget>
    </item>
    <item>
