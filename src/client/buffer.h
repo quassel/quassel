@@ -21,11 +21,14 @@
 #ifndef _BUFFER_H_
 #define _BUFFER_H_
 
-#include "global.h"
-
 class AbstractUiMsg;
-class Message;
+
 struct BufferState;
+
+#include "message.h"
+#include "bufferinfo.h"
+
+#include <QVariantMap>
 
 //!\brief Encapsulates the contents of a single channel, query or server status context.
 /** A Buffer maintains a list of existing nicks and their status.
@@ -33,73 +36,80 @@ struct BufferState;
 class Buffer : public QObject {
   Q_OBJECT
 
-  public:
-    Buffer(BufferId);
-    ~Buffer();
+public:
+  Buffer(BufferInfo, QObject *parent = 0);
+  ~Buffer();
 
-    enum Type { ServerBuffer, ChannelBuffer, QueryBuffer };
+  enum Type {
+    ServerBuffer,
+    ChannelBuffer,
+    QueryBuffer
+  };
 
-    enum Activity {
-      NoActivity = 0x00,
-      OtherActivity = 0x01,
-      NewMessage = 0x02,
-      Highlight = 0x40
-    };
-    Q_DECLARE_FLAGS(ActivityLevel, Activity);
+  enum Activity {
+    NoActivity = 0x00,
+    OtherActivity = 0x01,
+    NewMessage = 0x02,
+    Highlight = 0x40
+  };
+  Q_DECLARE_FLAGS(ActivityLevel, Activity)
 
-    Type bufferType() const;
-    bool isActive() const;
+  bool isStatusBuffer() const;
+  Type bufferType() const;
+  bool isActive() const;
 
-    QString networkName() const;
-    QString bufferName() const;
-    QString displayName() const;
-    BufferId bufferId() const;
-    QList<AbstractUiMsg *> contents() const;
-    QVariantMap nickList() const;
-    QString topic() const;
-    QString ownNick() const;
-    bool isStatusBuffer() const;
+  BufferInfo bufferInfo() const;
+  void updateBufferInfo(BufferInfo bufferid);
+  
+  uint networkId() const;
+  
+  QString networkName() const;
+  QString bufferName() const;
+  QString displayName() const;
+  
+  QList<AbstractUiMsg *> contents() const;
+  
+  QVariantMap nickList() const;
+  QString topic() const;
+  QString ownNick() const;
 
-  signals:
-    void userInput(const BufferId &, QString);
-    void nickListChanged(QVariantMap nicks);
-    void topicSet(QString topic);
-    void ownNickSet(QString ownNick);
-    void bufferUpdated(Buffer *);
-    void bufferDestroyed(Buffer *);
+signals:
+  void userInput(const BufferInfo &, QString);
+  void nickListChanged(QVariantMap nicks);
+  void topicSet(QString topic);
+  void ownNickSet(QString ownNick);
+  void bufferUpdated(Buffer *);
+  void bufferDestroyed(Buffer *);
 
-    void msgAppended(AbstractUiMsg *);
-    void msgPrepended(AbstractUiMsg *);
-    void layoutQueueEmpty();
+  void msgAppended(AbstractUiMsg *);
+  void msgPrepended(AbstractUiMsg *);
+  void layoutQueueEmpty();
 
-  public slots:
-    void setActive(bool active = true);
-    void appendMsg(const Message &);
-    void prependMsg(const Message &);
-    bool layoutMsg();
-    void setTopic(QString);
-    //void setNicks(QStringList);
-    void addNick(QString nick, QVariantMap props);
-    void renameNick(QString oldnick, QString newnick);
-    void removeNick(QString nick);
-    void updateNick(QString nick, QVariantMap props);
-    void setOwnNick(QString nick);
+public slots:
+  void setActive(bool active = true);
+  void appendMsg(const Message &);
+  void prependMsg(const Message &);
+  bool layoutMsg();
 
-    void processUserInput(QString);
+  // no longer needed
+//   void setTopic(QString);
+//   //void setNicks(QStringList);
+//   void addNick(QString nick, QVariantMap props);
+//   void renameNick(QString oldnick, QString newnick);
+//   void removeNick(QString nick);
+//   void updateNick(QString nick, QVariantMap props);
+//  void setOwnNick(QString nick);
 
-  private:
-    BufferId id;
-    bool active;
-    Type type;
+  void processUserInput(QString);
 
-    QVariantMap nicks;
-    QString _topic;
-    QString _ownNick;
-    QString _networkName, _bufferName;
-    BufferState *state;
+private:
+  BufferInfo _bufferInfo;
+  bool _active;
+  Type _type;
+  BufferState *state;
 
-    QList<Message> layoutQueue;
-    QList<AbstractUiMsg *> layoutedMsgs;
+  QList<Message> layoutQueue;
+  QList<AbstractUiMsg *> layoutedMsgs;
 
 };
 Q_DECLARE_OPERATORS_FOR_FLAGS(Buffer::ActivityLevel)

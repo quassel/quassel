@@ -53,8 +53,8 @@ SqliteStorage::SqliteStorage() {
   createNetworkQuery = new QSqlQuery(logDb);
   createNetworkQuery->prepare("INSERT INTO network (userid, networkname) VALUES (:userid, :networkname)");
 
-  getBufferIdQuery = new QSqlQuery(logDb);
-  getBufferIdQuery->prepare("SELECT bufferid FROM buffer "
+  getBufferInfoQuery = new QSqlQuery(logDb);
+  getBufferInfoQuery->prepare("SELECT bufferid FROM buffer "
                             "JOIN network ON buffer.networkid = network.networkid "
                             "WHERE network.networkname = :networkname AND buffer.userid = :userid AND buffer.buffername = :buffername ");
 
@@ -120,7 +120,7 @@ SqliteStorage::~SqliteStorage() {
   delete requestMsgRangeQuery;
   delete createNetworkQuery;
   delete createBufferQuery;
-  delete getBufferIdQuery;
+  delete getBufferInfoQuery;
   logDb.close();
 }
 
@@ -307,32 +307,32 @@ uint SqliteStorage::getNetworkId(UserId user, const QString &network) {
     return 0;
 }
 
-BufferId SqliteStorage::getBufferId(UserId user, const QString &network, const QString &buffer) {
-  BufferId bufferid;
+BufferInfo SqliteStorage::getBufferInfo(UserId user, const QString &network, const QString &buffer) {
+  BufferInfo bufferid;
   uint networkId = getNetworkId(user, network);
-  getBufferIdQuery->bindValue(":networkname", network);
-  getBufferIdQuery->bindValue(":userid", user);
-  getBufferIdQuery->bindValue(":buffername", buffer);
-  getBufferIdQuery->exec();
+  getBufferInfoQuery->bindValue(":networkname", network);
+  getBufferInfoQuery->bindValue(":userid", user);
+  getBufferInfoQuery->bindValue(":buffername", buffer);
+  getBufferInfoQuery->exec();
 
-  if(!getBufferIdQuery->first()) {
+  if(!getBufferInfoQuery->first()) {
     createBuffer(user, network, buffer);
-    getBufferIdQuery->exec();
-    if(getBufferIdQuery->first()) {
-      bufferid = BufferId(getBufferIdQuery->value(0).toUInt(), networkId, 0, network, buffer);
-      emit bufferIdUpdated(bufferid);
+    getBufferInfoQuery->exec();
+    if(getBufferInfoQuery->first()) {
+      bufferid = BufferInfo(getBufferInfoQuery->value(0).toUInt(), networkId, 0, network, buffer);
+      emit bufferInfoUpdated(bufferid);
     }
   } else {
-    bufferid = BufferId(getBufferIdQuery->value(0).toUInt(), networkId, 0, network, buffer);
+    bufferid = BufferInfo(getBufferInfoQuery->value(0).toUInt(), networkId, 0, network, buffer);
   }
 
-  Q_ASSERT(!getBufferIdQuery->next());
+  Q_ASSERT(!getBufferInfoQuery->next());
 
   return bufferid;
 }
 
-QList<BufferId> SqliteStorage::requestBuffers(UserId user, QDateTime since) {
-  QList<BufferId> bufferlist;
+QList<BufferInfo> SqliteStorage::requestBuffers(UserId user, QDateTime since) {
+  QList<BufferInfo> bufferlist;
   QSqlQuery query(logDb);
   query.prepare("SELECT DISTINCT buffer.bufferid, networkname, buffername FROM buffer "
                 "JOIN network ON buffer.networkid = network.networkid "
@@ -348,7 +348,7 @@ QList<BufferId> SqliteStorage::requestBuffers(UserId user, QDateTime since) {
   query.exec();
 
   while(query.next()) {
-    bufferlist << BufferId(query.value(0).toUInt(), getNetworkId(user, query.value(1).toString()), 0, query.value(1).toString(), query.value(2).toString());
+    bufferlist << BufferInfo(query.value(0).toUInt(), getNetworkId(user, query.value(1).toString()), 0, query.value(1).toString(), query.value(2).toString());
   }
   return bufferlist;
 }
@@ -389,7 +389,7 @@ MsgId SqliteStorage::logMessage(Message msg) {
   }
 }
 
-QList<Message> SqliteStorage::requestMsgs(BufferId buffer, int lastmsgs, int offset) {
+QList<Message> SqliteStorage::requestMsgs(BufferInfo buffer, int lastmsgs, int offset) {
   QList<Message> messagelist;
   // we have to determine the real offset first
   requestMsgsOffsetQuery->bindValue(":bufferid", buffer.uid());
@@ -418,7 +418,7 @@ QList<Message> SqliteStorage::requestMsgs(BufferId buffer, int lastmsgs, int off
 }
 
 
-QList<Message> SqliteStorage::requestMsgs(BufferId buffer, QDateTime since, int offset) {
+QList<Message> SqliteStorage::requestMsgs(BufferInfo buffer, QDateTime since, int offset) {
   QList<Message> messagelist;
   // we have to determine the real offset first
   requestMsgsSinceOffsetQuery->bindValue(":bufferid", buffer.uid());
@@ -449,7 +449,7 @@ QList<Message> SqliteStorage::requestMsgs(BufferId buffer, QDateTime since, int 
 }
 
 
-QList<Message> SqliteStorage::requestMsgRange(BufferId buffer, int first, int last) {
+QList<Message> SqliteStorage::requestMsgRange(BufferInfo buffer, int first, int last) {
   QList<Message> messagelist;
   requestMsgRangeQuery->bindValue(":bufferid", buffer.uid());
   requestMsgRangeQuery->bindValue(":bufferid2", buffer.uid());

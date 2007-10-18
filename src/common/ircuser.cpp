@@ -21,94 +21,161 @@
 #include "ircuser.h"
 #include "util.h"
 
-IrcUser::IrcUser(QObject *parent)
-  : QObject(parent) {
+#include "networkinfo.h"
+#include "signalproxy.h"
+#include "ircchannel.h"
+
+#include <QDebug>
+
+IrcUser::IrcUser(const QString &hostmask, NetworkInfo *networkinfo)
+  : QObject(networkinfo),
+    _initialized(false),
+    _nick(nickFromMask(hostmask)),
+    _user(userFromMask(hostmask)),
+    _host(hostFromMask(hostmask)),
+    networkInfo(networkinfo)
+{
+  setObjectName(QString::number(networkInfo->networkId()) + "/" + IrcUser::hostmask());
 }
 
-IrcUser::IrcUser(const QString &hostmask, QObject *parent) 
-  : QObject(parent),
-    nick_(nickFromMask(hostmask)),
-    user_(userFromMask(hostmask)),
-    host_(hostFromMask(hostmask)) {
-}
-
-IrcUser::~IrcUser() {
-}
-
-void IrcUser::setUser(const QString &user) {
-  user_ = user;
+// ====================
+//  PUBLIC:
+// ====================
+bool IrcUser::initialized() const {
+  return _initialized;
 }
 
 QString IrcUser::user() const {
-  return user_;
-}
-
-void IrcUser::setHost(const QString &host) {
-  host_ = host;
+  return _user;
 }
 
 QString IrcUser::host() const {
-  return host_;
-}
-
-void IrcUser::setNick(const QString &nick) {
-  nick_ = nick;
+  return _host;
 }
 
 QString IrcUser::nick() const {
-  return nick_;
+  return _nick;
 }
 
-void IrcUser::setUsermodes(const QSet<QString> &usermodes) {
-  usermodes_ = usermodes;
+QString IrcUser::hostmask() const {
+  return QString("%1!%2@%3").arg(nick()).arg(user()).arg(host());
 }
 
-QSet<QString> IrcUser::usermodes() const {
-  return usermodes_;
-}
-
-void IrcUser::setChannelmode(const QString &channel, const QSet<QString> &channelmode) {
-  if(channelmodes_.contains(channel))
-    channelmodes_[channel] |= channelmode;
-  else
-    channelmodes_[channel] = channelmode;
-}
-
-QSet<QString> IrcUser::channelmode(const QString &channel) const {
-  if(channelmodes_.contains(channel))
-    //throw NoSuchChannelException();
-    Q_ASSERT(false); // FIXME: exception disabled for qtopia testing
-  else
-    return QSet<QString>();
-}
-
-void IrcUser::updateChannelmode(const QString &channel, const QString &channelmode, bool add) {
-  if(add)
-    addChannelmode(channel, channelmode);
-  else
-    removeChannelmode(channel, channelmode);
-}
-
-void IrcUser::addChannelmode(const QString &channel, const QString &channelmode) {
-  if(!channelmodes_.contains(channel))
-    channelmodes_[channel] = QSet<QString>();
-  channelmodes_[channel] << channelmode;
-}
-
-void IrcUser::removeChannelmode(const QString &channel, const QString &channelmode) {
-  if(channelmodes_.contains(channel))
-    channelmodes_[channel].remove(channelmode);
+QString IrcUser::userModes() const {
+  return _userModes;
 }
 
 QStringList IrcUser::channels() const {
-  return channelmodes_.keys();
+  return _channels.toList();
+}
+
+void IrcUser::updateObjectName() {
+  setObjectName(QString::number(networkInfo->networkId()) + "/" +  hostmask());
+  emit objectNameSet();
+}
+
+// ====================
+//  PUBLIC SLOTS:
+// ====================
+void IrcUser::setUser(const QString &user) {
+  if(!user.isEmpty() && _user != user) {
+    _user = user;
+    emit userSet(user);
+
+    setObjectName(hostmask());
+    emit objectNameSet();
+  }
+}
+
+void IrcUser::setHost(const QString &host) {
+  if(!host.isEmpty() && _host != host) {
+    _host = host;
+    emit hostSet(host);
+    updateObjectName();
+  }
+}
+
+void IrcUser::setNick(const QString &nick) {
+  if(!nick.isEmpty() && nick != _nick) {
+    QString oldnick(_nick);
+    _nick = nick;
+    emit nickSet(nick);
+    updateObjectName();
+  }
+}
+
+void IrcUser::updateHostmask(const QString &mask) {
+  if(mask == hostmask())
+    return;
+
+  QString user = userFromMask(mask);
+  QString host = hostFromMask(mask);
+
+  // we only need to check user and hostmask.
+  // nick can't have changed since we're identifying IrcUsers by nick
+
+  // we don't use setUser and setHost here.
+  // though this is unpretty code duplication this saves us one emit objectNameSet()
+  // the second one would be erroneous
+  
+  if(!user.isEmpty() && _user != user) {
+    _user = user;
+  }
+
+  if(!host.isEmpty() && _host != host) {
+    _host = host;
+  }
+
+  emit hostmaskUpdated(mask);
+  updateObjectName();
 }
 
 void IrcUser::joinChannel(const QString &channel) {
-  if(!channelmodes_.contains(channel))
-    channelmodes_[channel] = QSet<QString>();
+  if(!_channels.contains(channel)) {
+    _channels.insert(channel);
+    networkInfo->newIrcChannel(channel)->join(this);
+    emit channelJoined(channel);
+  }
 }
 
 void IrcUser::partChannel(const QString &channel) {
-  channelmodes_.remove(channel);
+  if(_channels.contains(channel)) {
+    _channels.remove(channel);
+
+    Q_ASSERT(networkInfo->ircChannel(channel));
+    networkInfo->ircChannel(channel)->part(this);
+    
+    emit channelParted(channel);
+  }
 }
+
+void IrcUser::setUserModes(const QString &modes) {
+  _userModes = modes;
+  emit userModesSet(modes);
+}
+
+void IrcUser::addUserMode(const QString &mode) {
+  if(!_userModes.contains(mode)) {
+    _userModes += mode;
+    emit userModeAdded(mode);
+  }
+}
+
+void IrcUser::removeUserMode(const QString &mode) {
+  if(_userModes.contains(mode)) {
+    _userModes.remove(mode);
+    emit userModeRemoved(mode);
+  }
+}
+
+void IrcUser::initSetChannels(const QStringList channels) {
+  foreach(QString channel, channels) {
+    joinChannel(channel);
+  }
+}
+
+void IrcUser::setInitialized() {
+  _initialized = true;
+  emit initDone();
+}
+

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-07 by The Quassel IRC Development Team             *
+ *   Copyright (C) 2005/06 by The Quassel Team                             *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,42 +18,16 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _QUASSELUI_H_
-#define _QUASSELUI_H_
+#include "topicwidget.h"
 
-#include <QObject>
-#include "message.h"
+#include <QDebug>
 
-class AbstractUiMsg {
+TopicWidget::TopicWidget(QWidget *parent)
+  : QWidget(parent)
+{
+  ui.setupUi(this);
+  ui.topicLineEdit->setText("+++ DUMMY TOPIC +++ DUMMY TOPIC +++");
+}
 
-  public:
-    virtual ~AbstractUiMsg() {};
-    virtual QString sender() const = 0;
-    virtual QString text() const = 0;
-    virtual MsgId msgId() const = 0;
-    virtual BufferInfo bufferInfo() const = 0;
-    virtual QDateTime timeStamp() const = 0;
-
-};
-
-
-class AbstractUi : public QObject {
-  Q_OBJECT
-
-  public:
-    virtual void init() {};  // called after the client is initialized
-    virtual AbstractUiMsg *layoutMsg(const Message &) = 0;
-
-  protected slots:
-    virtual void connectedToCore() {}
-    virtual void disconnectedFromCore() {}
-
-  signals:
-    void connectToCore(const QVariantMap &connInfo);
-    void disconnectFromCore();
-
-};
-
-
-
-#endif
+TopicWidget::~TopicWidget() {
+}

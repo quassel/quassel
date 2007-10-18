@@ -34,10 +34,10 @@
 QtopiaMainWin::QtopiaMainWin(QWidget *parent, Qt::WFlags flags) : QMainWindow(parent, flags) {
   qRegisterMetaType<QVariant>("QVariant");
   qRegisterMetaType<Message>("Message");
-  qRegisterMetaType<BufferId>("BufferId");
+  qRegisterMetaType<BufferInfo>("BufferInfo");
   qRegisterMetaTypeStreamOperators<QVariant>("QVariant");
   qRegisterMetaTypeStreamOperators<Message>("Message");
-  qRegisterMetaTypeStreamOperators<BufferId>("BufferId");
+  qRegisterMetaTypeStreamOperators<BufferInfo>("BufferInfo");
 
   Global::runMode = Global::ClientOnly;
 
@@ -68,7 +68,7 @@ QtopiaMainWin::QtopiaMainWin(QWidget *parent, Qt::WFlags flags) : QMainWindow(pa
 
 // at this point, client is fully initialized
 void QtopiaMainWin::init() {
-  Client::signalProxy()->attachSignal(this, SIGNAL(requestBacklog(BufferId, QVariant, QVariant)));
+  Client::signalProxy()->attachSignal(this, SIGNAL(requestBacklog(BufferInfo, QVariant, QVariant)));
   connect(Client::bufferModel(), SIGNAL(bufferSelected(Buffer *)), this, SLOT(showBuffer(Buffer *)));
 
   CoreConnectDlg *dlg = new CoreConnectDlg(this);
@@ -83,12 +83,12 @@ QtopiaMainWin::~QtopiaMainWin() {
 }
 
 void QtopiaMainWin::connectedToCore() {
-  foreach(BufferId id, Client::allBufferIds()) {
+  foreach(BufferInfo id, Client::allBufferInfos()) {
     emit requestBacklog(id, 100, -1);
   }
   // FIXME just for testing: select first available buffer
-  if(Client::allBufferIds().count()) {
-    Buffer *b = Client::buffer(Client::allBufferIds()[0]);
+  if(Client::allBufferInfos().count()) {
+    Buffer *b = Client::buffer(Client::allBufferInfos()[0]);
     Client::bufferModel()->selectBuffer(b);
   }
 }

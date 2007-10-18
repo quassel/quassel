@@ -61,10 +61,10 @@ int main(int argc, char **argv) {
 
   qRegisterMetaType<QVariant>("QVariant");
   qRegisterMetaType<Message>("Message");
-  qRegisterMetaType<BufferId>("BufferId");
+  qRegisterMetaType<BufferInfo>("BufferInfo");
   qRegisterMetaTypeStreamOperators<QVariant>("QVariant");
   qRegisterMetaTypeStreamOperators<Message>("Message");
-  qRegisterMetaTypeStreamOperators<BufferId>("BufferId");
+  qRegisterMetaTypeStreamOperators<BufferInfo>("BufferInfo");
 
 #if defined BUILD_CORE
   Global::runMode = Global::CoreOnly;

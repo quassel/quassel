@@ -29,8 +29,14 @@
 #include <QTimer>
 
 #include "message.h"
-#include "serverinfo.h"
+#include "signalproxy.h"
 
+class NetworkInfo;
+
+class IrcServerHandler;
+class UserInputHandler;
+class CtcpHandler;
+class CoreSession;
 
 /*!
  * This is a server object, managing a single connection to an IRC server, handling the associated channels and so on.
@@ -41,152 +47,83 @@
 class Server : public QThread {
   Q_OBJECT
 
+public:
+  Server(UserId uid, uint networkId, QString network);
+  ~Server();
+
+  UserId userId() const { return _userId; } 
+
+  // serverState state();
+  bool isConnected() const { return socket.state() == QAbstractSocket::ConnectedState; }
+
+  uint networkId() const;
+  QString networkName();  // hasbeen getNetwork()
+
+  NetworkInfo *networkInfo() { return _networkInfo; }
+  IrcServerHandler *ircServerHandler() {return _ircServerHandler; }
+  UserInputHandler *userInputHandler() {return _userInputHandler; }
+  CtcpHandler *ctcpHandler() {return _ctcpHandler; }
+  
+public slots:
+  // void setServerOptions();
+  void connectToIrc(QString net);
+  void disconnectFromIrc(QString net);
+  void userInput(uint netid, QString buffer, QString msg);
+
+  void putRawLine(QString input);
+  void putCmd(QString cmd, QStringList params, QString prefix = 0);
+
+  //void exitThread();
+
+signals:
+  void serverState(QString net, QVariantMap data);
+  void recvRawServerMsg(QString);
+  void displayStatusMsg(QString);
+  //void displayMsg(Message msg);
+  void displayMsg(Message::Type, QString target, QString text, QString sender = "", quint8 flags = Message::None);
+  void connected(uint networkId);
+  void disconnected(uint networkId);
+
+  void synchronizeClients();
+  
+  void queryRequested(QString network, QString nick);
+
+
+private slots:
+  void run();
+  void socketHasData();
+  void socketError(QAbstractSocket::SocketError);
+  void socketConnected();
+  void socketDisconnected();
+  void socketStateChanged(QAbstractSocket::SocketState);
+
+private:
+  UserId _userId;
+  uint _networkId;
+
+  QTcpSocket socket;
+
+  IrcServerHandler *_ircServerHandler;
+  UserInputHandler *_userInputHandler;
+  CtcpHandler *_ctcpHandler;
+
+  NetworkInfo *_networkInfo;
+
+  QVariantMap networkSettings;
+  QVariantMap identity;
+
+  CoreSession *coreSession() const;
+  
+  class ParseError : public Exception {
   public:
-    Server(UserId uid, QString network);
-    ~Server();
+    ParseError(QString cmd, QString prefix, QStringList params);
+  };
 
-    UserId userId() const { return user; } 
-    // serverState state();
-    bool isConnected() const { return socket.state() == QAbstractSocket::ConnectedState; }
-    QString getNetwork() { return network; }
-    QStringList providesUserHandlers();
-
-    enum CtcpType {CtcpQuery, CtcpReply};
-
-  public slots:
-    // void setServerOptions();
-    void sendState();
-    void connectToIrc(QString net);
-    void disconnectFromIrc(QString net);
-    void userInput(QString net, QString buffer, QString msg);
-
-    void putRawLine(QString input);
-    void putCmd(QString cmd, QStringList params, QString prefix = 0);
-
-    //void exitThread();
-
-  signals:
-    void serverState(QString net, QVariantMap data);
-    void recvRawServerMsg(QString);
-    void displayStatusMsg(QString);
-    //void displayMsg(Message msg);
-    void displayMsg(Message::Type, QString target, QString text, QString sender = "", quint8 flags = Message::None);
-    void connected(QString network);
-    void disconnected(QString network);
-
-    void nickAdded(QString network, QString nick, QVariantMap props);
-    void nickRenamed(QString network, QString oldnick, QString newnick);
-    void nickRemoved(QString network, QString nick);
-    void nickUpdated(QString network, QString nick, QVariantMap props);
-    void modeSet(QString network, QString target, QString mode);
-    void topicSet(QString network, QString buffer, QString topic);
-    void ownNickSet(QString network, QString newNick);
-    void queryRequested(QString network, QString nick);
-
-
-  private slots:
-    void run();
-    void socketHasData();
-    void socketError(QAbstractSocket::SocketError);
-    void socketConnected();
-    void socketDisconnected();
-    void socketStateChanged(QAbstractSocket::SocketState);
-
-    /* Message Handlers */
-
-    /* void handleUser(QString, QString); */
-    void handleUserAway(QString, QString);
-    void handleUserDeop(QString, QString);
-    void handleUserDevoice(QString, QString);
-    void handleUserInvite(QString, QString);
-    void handleUserJoin(QString, QString);
-    void handleUserKick(QString, QString);
-    void handleUserList(QString, QString);
-    void handleUserMode(QString, QString);
-    void handleUserMsg(QString, QString);
-    void handleUserNick(QString, QString);
-    void handleUserOp(QString, QString);
-    void handleUserPart(QString, QString);
-    void handleUserQuery(QString, QString);
-    void handleUserQuit(QString, QString);
-    void handleUserQuote(QString, QString);
-    void handleUserSay(QString, QString);
-    void handleUserTopic(QString, QString);
-    void handleUserVoice(QString, QString);
-    void handleUserMe(QString, QString);
-
-    /* void handleServer(QString, QStringList); */
-    void handleServerJoin(QString, QStringList);
-    void handleServerKick(QString, QStringList);
-    void handleServerMode(QString, QStringList);
-    void handleServerNick(QString, QStringList);
-    void handleServerNotice(QString, QStringList);
-    void handleServerPart(QString, QStringList);
-    void handleServerPing(QString, QStringList);
-    void handleServerPrivmsg(QString, QStringList);
-    void handleServerQuit(QString, QStringList);
-    void handleServerTopic(QString, QStringList);
-
-    void handleServer001(QString, QStringList);   // RPL_WELCOME
-    void handleServer005(QString, QStringList);   // RPL_ISUPPORT
-    void handleServer331(QString, QStringList);   // RPL_NOTOPIC
-    void handleServer332(QString, QStringList);   // RPL_TOPIC
-    void handleServer333(QString, QStringList);   // Topic set by...
-    void handleServer353(QString, QStringList);   // RPL_NAMREPLY
-    void handleServer432(QString, QStringList);   // ERR_ERRONEUSNICKNAME
-    void handleServer433(QString, QStringList);   // ERR_NICKNAMEINUSE
-
-    void handleCtcpAction(CtcpType, QString, QString, QString);
-    void handleCtcpPing(CtcpType, QString, QString, QString);
-    void handleCtcpVersion(CtcpType, QString, QString, QString);
-
-    void defaultServerHandler(QString cmd, QString prefix, QStringList params);
-    void defaultUserHandler(QString buf, QString cmd, QString msg);
-    void defaultCtcpHandler(CtcpType ctcptype, QString prefix, QString cmd, QString target, QString param);
-
-  private:
-    UserId user;
-    QString network;
-    QTcpSocket socket;
-    //QHash<QString, Buffer*> buffers;
-
-    QString ownNick;
-    QString currentServer;
-    QVariantMap networkSettings;
-    QVariantMap identity;
-    QHash<QString, QVariantMap> nicks;  // stores all known nicks for the server
-    QHash<QString, QString> topics; // stores topics for each buffer
-    QVariantMap serverSupports;  // stores results from RPL_ISUPPORT
-
-    void handleServerMsg(QByteArray rawMsg);
-    void handleUserInput(QString buffer, QString usrMsg);
-
-    // CTCP Stuff
-    QString XDELIM;
-    QHash<QString, QString> ctcpMDequoteHash;
-    QHash<QString, QString> ctcpXDelimDequoteHash;    
-    QString ctcpDequote(QString);
-    QString ctcpXdelimDequote(QString);
-    QStringList parseCtcp(CtcpType, QString, QString, QString);    
-
-    QString ctcpPack(QString ctcpTag, QString message);
-    void ctcpQuery(QString bufname, QString ctcpTag, QString message);
-    void ctcpReply(QString bufname, QString ctcpTag, QString message);
+  class UnknownCmdError : public Exception {
+  public:
+    UnknownCmdError(QString cmd, QString prefix, QStringList params);
+  };
     
-    QString updateNickFromMask(QString mask);
-
-    class ParseError : public Exception {
-      public:
-        ParseError(QString cmd, QString prefix, QStringList params);
-    };
-
-    class UnknownCmdError : public Exception {
-      public:
-        UnknownCmdError(QString cmd, QString prefix, QStringList params);
-    };
-    
-    // stuff needed for new separation of server information
-    ServerInfo *serverinfo;
 };
 
 #endif

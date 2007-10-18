@@ -19,15 +19,17 @@
  ***************************************************************************/
 
 #include "message.h"
+
 #include "util.h"
+
 #include <QDataStream>
 
-Message::Message(BufferId __buffer, Type __type, QString __text, QString __sender, quint8 __flags)
+Message::Message(BufferInfo __buffer, Type __type, QString __text, QString __sender, quint8 __flags)
   : _buffer(__buffer), _text(__text), _sender(__sender), _type(__type), _flags(__flags) {
   _timeStamp = QDateTime::currentDateTime().toUTC();
 }
 
-Message::Message(QDateTime __ts, BufferId __buffer, Type __type, QString __text, QString __sender, quint8 __flags)
+Message::Message(QDateTime __ts, BufferInfo __buffer, Type __type, QString __text, QString __sender, quint8 __flags)
   : _timeStamp(__ts), _buffer(__buffer), _text(__text), _sender(__sender), _type(__type), _flags(__flags) {
 
 }
@@ -40,7 +42,7 @@ void Message::setMsgId(MsgId _id) {
   _msgId = _id;
 }
 
-BufferId Message::buffer() const {
+BufferInfo Message::buffer() const {
   return _buffer;
 }
 
@@ -161,7 +163,7 @@ QDataStream &operator>>(QDataStream &in, Message &msg) {
   quint8 t, f;
   quint32 ts;
   QByteArray s, m;
-  BufferId buf;
+  BufferInfo buf;
   in >> ts >> t >> f >> buf >> s >> m;
   msg._type = (Message::Type)t;
   msg._flags = (quint8)f;

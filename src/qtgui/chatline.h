@@ -59,7 +59,7 @@ class ChatLine : public QObject, public AbstractUiMsg {
     QString sender() const;
     QString text() const;
     MsgId msgId() const;
-    BufferId bufferId() const;
+    BufferInfo bufferInfo() const;
 
     bool isUrl(int pos) const;
     QUrl getUrl(int pos) const;

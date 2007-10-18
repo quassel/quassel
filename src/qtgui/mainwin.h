@@ -60,7 +60,7 @@ class MainWin : public QMainWindow {
     void showCoreConnectionDlg(bool autoConnect = false);
     void coreConnectionDlgFinished(int result);
 
-    void showBuffer(BufferId);
+    void showBuffer(BufferInfo);
     void showBuffer(Buffer *);
 
     void importBacklog();
@@ -68,7 +68,7 @@ class MainWin : public QMainWindow {
   signals:
     void connectToCore(const QVariantMap &connInfo);
     void disconnectFromCore();
-    void requestBacklog(BufferId, QVariant, QVariant);
+    void requestBacklog(BufferInfo, QVariant, QVariant);
     void importOldBacklog();
 
   private:

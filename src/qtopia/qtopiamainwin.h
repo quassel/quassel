@@ -44,7 +44,7 @@ class QtopiaMainWin : public QMainWindow {
   signals:
     void connectToCore(const QVariantMap &connInfo);
     void disconnectFromCore();
-    void requestBacklog(BufferId, QVariant, QVariant);
+    void requestBacklog(BufferInfo, QVariant, QVariant);
 
   private slots:
     void showBuffer(Buffer *);

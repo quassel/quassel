@@ -18,42 +18,51 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _QUASSELUI_H_
-#define _QUASSELUI_H_
+#include <QString>
+#include <QDataStream>
+#include <QByteArray>
 
-#include <QObject>
-#include "message.h"
+#include "bufferinfo.h"
 
-class AbstractUiMsg {
+#include "util.h"
 
-  public:
-    virtual ~AbstractUiMsg() {};
-    virtual QString sender() const = 0;
-    virtual QString text() const = 0;
-    virtual MsgId msgId() const = 0;
-    virtual BufferInfo bufferInfo() const = 0;
-    virtual QDateTime timeStamp() const = 0;
+BufferInfo::BufferInfo()
+  : _id(0),
+    _netid(0),
+    _gid(0),
+    _networkName(QString()),
+    _bufferName(QString()) {
+}
 
-};
+BufferInfo::BufferInfo(uint id, uint networkid, uint gid, QString net, QString buf)
+  : _id(id),
+    _netid(networkid),
+    _gid(gid),
+    _networkName(net),
+    _bufferName(buf) {
+}
 
+QString BufferInfo::buffer() const {
+  if(isChannelName(_bufferName))
+    return _bufferName;
+  else
+    return nickFromMask(_bufferName);
+}
 
-class AbstractUi : public QObject {
-  Q_OBJECT
+QDataStream &operator<<(QDataStream &out, const BufferInfo &bufferInfo) {
+  out << bufferInfo._id << bufferInfo._netid << bufferInfo._gid << bufferInfo._networkName.toUtf8() << bufferInfo._bufferName.toUtf8();
+  return out;
+}
 
-  public:
-    virtual void init() {};  // called after the client is initialized
-    virtual AbstractUiMsg *layoutMsg(const Message &) = 0;
+QDataStream &operator>>(QDataStream &in, BufferInfo &bufferInfo) {
+  QByteArray n, b;
+  in >> bufferInfo._id >> bufferInfo._netid >> bufferInfo._gid >> n >> b;
+  bufferInfo._networkName = QString::fromUtf8(n);
+  bufferInfo._bufferName = QString::fromUtf8(b);
+  return in;
+}
 
-  protected slots:
-    virtual void connectedToCore() {}
-    virtual void disconnectedFromCore() {}
+uint qHash(const BufferInfo &bufferid) {
+  return qHash(bufferid._id);
+}
 
-  signals:
-    void connectToCore(const QVariantMap &connInfo);
-    void disconnectFromCore();
-
-};
-
-
-
-#endif

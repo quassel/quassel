@@ -55,38 +55,4 @@ struct Exception {
 
 };
 
-class BufferId {
-public:
-  BufferId();
-  BufferId(uint _id, uint _networkid, uint _gid = 0, QString _net = QString(), QString _buf = QString());
-  
-  inline uint uid() const { return _id; }
-  inline uint networkId() const { return _netid; }
-  inline uint groupId() const { return _gid; }
-  inline QString network() const { return _networkName; }
-  QString buffer() const;
-  
-  void setGroupId(uint gid) { _gid = gid; }
-  
-  inline bool operator==(const BufferId &other) const { return _id == other._id; }
-
-private:
-  uint _id;
-  uint _netid;
-  uint _gid;
-  QString _networkName; // WILL BE REMOVED
-  QString _bufferName; // IS this actually needed?
-  
-  friend uint qHash(const BufferId &);
-  friend QDataStream &operator<<(QDataStream &out, const BufferId &bufferId);
-  friend QDataStream &operator>>(QDataStream &in, BufferId &bufferId);
-};
-
-QDataStream &operator<<(QDataStream &out, const BufferId &bufferId);
-QDataStream &operator>>(QDataStream &in, BufferId &bufferId);
-
-Q_DECLARE_METATYPE(BufferId);
-
-uint qHash(const BufferId &);
-
 #endif

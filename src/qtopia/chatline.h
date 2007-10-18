@@ -30,13 +30,13 @@ class ChatLine : public AbstractUiMsg {
     virtual QString sender() const;
     virtual QString text() const;
     virtual MsgId msgId() const;
-    virtual BufferId bufferId() const;
+    virtual BufferInfo bufferInfo() const;
     virtual QDateTime timeStamp() const;
 
   private:
     QString _sender, _text;
     MsgId _msgId;
-    BufferId _bufferId;
+    BufferInfo _bufferInfo;
     QDateTime _timeStamp;
 
 };

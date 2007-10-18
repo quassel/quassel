@@ -17,43 +17,46 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef _BUFFERINFO_H_
+#define _BUFFERINFO_H_
 
-#ifndef _QUASSELUI_H_
-#define _QUASSELUI_H_
+#include <QtCore>
 
-#include <QObject>
-#include "message.h"
+class QString;
+class QDataStream;
 
-class AbstractUiMsg {
+class BufferInfo {
+public:
+  BufferInfo();
+  BufferInfo(uint id, uint networkid, uint gid = 0, QString net = QString(), QString buf = QString());
+  
+  inline uint uid() const { return _id; }
+  inline uint networkId() const { return _netid; }
+  inline uint groupId() const { return _gid; }
+  inline QString network() const { return _networkName; }
+  QString buffer() const;
+  
+  void setGroupId(uint gid) { _gid = gid; }
+  
+  inline bool operator==(const BufferInfo &other) const { return _id == other._id; }
 
-  public:
-    virtual ~AbstractUiMsg() {};
-    virtual QString sender() const = 0;
-    virtual QString text() const = 0;
-    virtual MsgId msgId() const = 0;
-    virtual BufferInfo bufferInfo() const = 0;
-    virtual QDateTime timeStamp() const = 0;
-
+private:
+  uint _id;
+  uint _netid;
+  uint _gid;
+  QString _networkName; // WILL BE REMOVED
+  QString _bufferName;
+  
+  friend uint qHash(const BufferInfo &);
+  friend QDataStream &operator<<(QDataStream &out, const BufferInfo &bufferInfo);
+  friend QDataStream &operator>>(QDataStream &in, BufferInfo &bufferInfo);
 };
 
+QDataStream &operator<<(QDataStream &out, const BufferInfo &bufferInfo);
+QDataStream &operator>>(QDataStream &in, BufferInfo &bufferInfo);
 
-class AbstractUi : public QObject {
-  Q_OBJECT
+Q_DECLARE_METATYPE(BufferInfo);
 
-  public:
-    virtual void init() {};  // called after the client is initialized
-    virtual AbstractUiMsg *layoutMsg(const Message &) = 0;
-
-  protected slots:
-    virtual void connectedToCore() {}
-    virtual void disconnectedFromCore() {}
-
-  signals:
-    void connectToCore(const QVariantMap &connInfo);
-    void disconnectFromCore();
-
-};
-
-
+uint qHash(const BufferInfo &);
 
 #endif

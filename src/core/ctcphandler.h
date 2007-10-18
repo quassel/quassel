@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-07 by The Quassel IRC Development Team             *
+ *   Copyright (C) 2005/06 by The Quassel Team                             *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,42 +18,45 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _QUASSELUI_H_
-#define _QUASSELUI_H_
+#ifndef _CTCPHANDLER_H_
+#define _CTCPHANDLER_H_
 
-#include <QObject>
-#include "message.h"
+#include <QHash>
+#include <QStringList>
 
-class AbstractUiMsg {
+#include "basichandler.h"
 
-  public:
-    virtual ~AbstractUiMsg() {};
-    virtual QString sender() const = 0;
-    virtual QString text() const = 0;
-    virtual MsgId msgId() const = 0;
-    virtual BufferInfo bufferInfo() const = 0;
-    virtual QDateTime timeStamp() const = 0;
-
-};
-
-
-class AbstractUi : public QObject {
+class CtcpHandler : public BasicHandler {
   Q_OBJECT
 
-  public:
-    virtual void init() {};  // called after the client is initialized
-    virtual AbstractUiMsg *layoutMsg(const Message &) = 0;
+public:
+  CtcpHandler(Server *parent = 0);
 
-  protected slots:
-    virtual void connectedToCore() {}
-    virtual void disconnectedFromCore() {}
+  enum CtcpType {CtcpQuery, CtcpReply};
 
-  signals:
-    void connectToCore(const QVariantMap &connInfo);
-    void disconnectFromCore();
+  QStringList parse(CtcpType, QString, QString, QString);    
+
+  QString dequote(QString);
+  QString XdelimDequote(QString);
+
+  QString pack(QString ctcpTag, QString message);
+  void query(QString bufname, QString ctcpTag, QString message);
+  void reply(QString bufname, QString ctcpTag, QString message);
+  
+public slots:
+  void handleAction(CtcpType, QString prefix, QString target, QString param);
+  void handlePing(CtcpType, QString prefix, QString target, QString param);
+  void handleVersion(CtcpType, QString prefix, QString target, QString param);
+
+  void defaultHandler(QString cmd, CtcpType ctcptype, QString prefix, QString target, QString param);
+
+private:
+  QString XDELIM;
+  QHash<QString, QString> ctcpMDequoteHash;
+  QHash<QString, QString> ctcpXDelimDequoteHash;    
+
 
 };
-
 
 
 #endif

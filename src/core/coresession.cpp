@@ -20,12 +20,24 @@
 
 #include "coresession.h"
 #include "server.h"
+
 #include "signalproxy.h"
 #include "storage.h"
+
+#include "synchronizer.h"
+#include "networkinfo.h"
+#include "ircuser.h"
+#include "ircchannel.h"
+
 #include "util.h"
 
-CoreSession::CoreSession(UserId uid, Storage *_storage, QObject *parent) : QObject(parent), user(uid), storage(_storage) {
-  _signalProxy = new SignalProxy(SignalProxy::Server, 0, this);
+
+CoreSession::CoreSession(UserId uid, Storage *_storage, QObject *parent)
+  : QObject(parent),
+    user(uid),
+    _signalProxy(new SignalProxy(SignalProxy::Server, 0, this)),
+    storage(_storage)
+{
 
   QSettings s;
   s.beginGroup(QString("SessionData/%1").arg(user));
@@ -37,17 +49,16 @@ CoreSession::CoreSession(UserId uid, Storage *_storage, QObject *parent) : QObje
 
   SignalProxy *p = signalProxy();
 
-  p->attachSlot(SIGNAL(requestNetworkStates()), this, SIGNAL(serverStateRequested()));
+  p->attachSlot(SIGNAL(requestNetworkStates()), this, SLOT(serverStateRequested()));
   p->attachSlot(SIGNAL(requestConnect(QString)), this, SLOT(connectToNetwork(QString)));
-  p->attachSlot(SIGNAL(sendInput(BufferId, QString)), this, SLOT(msgFromGui(BufferId, QString)));
+  p->attachSlot(SIGNAL(sendInput(BufferInfo, QString)), this, SLOT(msgFromGui(BufferInfo, QString)));
   p->attachSlot(SIGNAL(importOldBacklog()), storage, SLOT(importOldBacklog()));
-  p->attachSlot(SIGNAL(requestBacklog(BufferId, QVariant, QVariant)), this, SLOT(sendBacklog(BufferId, QVariant, QVariant)));
-  p->attachSlot(SIGNAL(requestNetworkStates()), this, SLOT(sendServerStates()));
+  p->attachSlot(SIGNAL(requestBacklog(BufferInfo, QVariant, QVariant)), this, SLOT(sendBacklog(BufferInfo, QVariant, QVariant)));
   p->attachSignal(this, SIGNAL(displayMsg(Message)));
   p->attachSignal(this, SIGNAL(displayStatusMsg(QString, QString)));
-  p->attachSignal(this, SIGNAL(backlogData(BufferId, QVariantList, bool)));
-  p->attachSignal(this, SIGNAL(bufferIdUpdated(BufferId)));
-  p->attachSignal(storage, SIGNAL(bufferIdUpdated(BufferId)));
+  p->attachSignal(this, SIGNAL(backlogData(BufferInfo, QVariantList, bool)));
+  p->attachSignal(this, SIGNAL(bufferInfoUpdated(BufferInfo)));
+  p->attachSignal(storage, SIGNAL(bufferInfoUpdated(BufferInfo)));
   p->attachSignal(this, SIGNAL(sessionDataChanged(const QString &, const QVariant &)), SIGNAL(coreSessionDataChanged(const QString &, const QVariant &)));
   p->attachSlot(SIGNAL(clientSessionDataChanged(const QString &, const QVariant &)), this, SLOT(storeSessionData(const QString &, const QVariant &)));
   /* Autoconnect. (When) do we actually do this?
@@ -63,7 +74,6 @@ CoreSession::CoreSession(UserId uid, Storage *_storage, QObject *parent) : QObje
 }
 
 CoreSession::~CoreSession() {
-
 }
 
 UserId CoreSession::userId() const {
@@ -91,41 +101,36 @@ QVariant CoreSession::retrieveSessionData(const QString &key, const QVariant &de
   return data;
 }
 
+// FIXME switch to NetworkIDs
 void CoreSession::connectToNetwork(QString network) {
-  QStringList networks; networks << network; // FIXME obsolete crap
-  foreach(QString net, networks) {
-    if(servers.contains(net)) {
-
-    } else {
-      Server *server = new Server(userId(), net);
-      connect(this, SIGNAL(serverStateRequested()), server, SLOT(sendState()));
-      connect(this, SIGNAL(connectToIrc(QString)), server, SLOT(connectToIrc(QString)));
-      connect(this, SIGNAL(disconnectFromIrc(QString)), server, SLOT(disconnectFromIrc(QString)));
-      connect(this, SIGNAL(msgFromGui(QString, QString, QString)), server, SLOT(userInput(QString, QString, QString)));
-
-      connect(server, SIGNAL(connected(QString)), this, SLOT(serverConnected(QString)));
-      connect(server, SIGNAL(disconnected(QString)), this, SLOT(serverDisconnected(QString)));
-      connect(server, SIGNAL(displayMsg(Message::Type, QString, QString, QString, quint8)), this, SLOT(recvMessageFromServer(Message::Type, QString, QString, QString, quint8)));
-      connect(server, SIGNAL(displayStatusMsg(QString)), this, SLOT(recvStatusMsgFromServer(QString)));
-
-      SignalProxy *p = signalProxy();
-      p->attachSignal(server, SIGNAL(serverState(QString, QVariantMap)), SIGNAL(networkState(QString, QVariantMap)));
-      p->attachSignal(server, SIGNAL(modeSet(QString, QString, QString)));
-      p->attachSignal(server, SIGNAL(nickAdded(QString, QString, QVariantMap)));
-      p->attachSignal(server, SIGNAL(nickRenamed(QString, QString, QString)));
-      p->attachSignal(server, SIGNAL(nickRemoved(QString, QString)));
-      p->attachSignal(server, SIGNAL(nickUpdated(QString, QString, QVariantMap)));
-      p->attachSignal(server, SIGNAL(ownNickSet(QString, QString)));
-      p->attachSignal(server, SIGNAL(queryRequested(QString, QString)));
-      // TODO add error handling
-      p->attachSignal(server, SIGNAL(connected(QString)), SIGNAL(networkConnected(QString)));
-      p->attachSignal(server, SIGNAL(disconnected(QString)), SIGNAL(networkDisconnected(QString)));
-
-      server->start();
-      servers[net] = server;
-    }
-    emit connectToIrc(net);
+  uint networkid = getNetworkId(network);
+  if(!servers.contains(networkid)) {
+    Server *server = new Server(userId(), networkid, network);
+    attachServer(server);
+    server->start();
+    servers[networkid] = server;
   }
+  emit connectToIrc(network);
+}
+
+void CoreSession::attachServer(Server *server) {
+  connect(this, SIGNAL(connectToIrc(QString)), server, SLOT(connectToIrc(QString)));
+  connect(this, SIGNAL(disconnectFromIrc(QString)), server, SLOT(disconnectFromIrc(QString)));
+  connect(this, SIGNAL(msgFromGui(uint, QString, QString)), server, SLOT(userInput(uint, QString, QString)));
+  
+  connect(server, SIGNAL(connected(uint)), this, SLOT(serverConnected(uint)));
+  connect(server, SIGNAL(disconnected(uint)), this, SLOT(serverDisconnected(uint)));
+  connect(server, SIGNAL(displayMsg(Message::Type, QString, QString, QString, quint8)), this, SLOT(recvMessageFromServer(Message::Type, QString, QString, QString, quint8)));
+  connect(server, SIGNAL(displayStatusMsg(QString)), this, SLOT(recvStatusMsgFromServer(QString)));
+
+  // connect serversignals to proxy
+  signalProxy()->attachSignal(server, SIGNAL(serverState(QString, QVariantMap)), SIGNAL(networkState(QString, QVariantMap)));
+  signalProxy()->attachSignal(server, SIGNAL(connected(uint)), SIGNAL(networkConnected(uint)));
+  signalProxy()->attachSignal(server, SIGNAL(disconnected(uint)), SIGNAL(networkDisconnected(uint)));
+  // TODO add error handling
+}
+
+void CoreSession::serverStateRequested() {
 }
 
 void CoreSession::addClient(QIODevice *device) {
@@ -136,31 +141,29 @@ SignalProxy *CoreSession::signalProxy() const {
   return _signalProxy;
 }
 
-void CoreSession::serverConnected(QString net) {
-  storage->getBufferId(userId(), net); // create status buffer
+void CoreSession::serverConnected(uint networkid) {
+  storage->getBufferInfo(userId(), servers[networkid]->networkName()); // create status buffer
 }
 
-void CoreSession::serverDisconnected(QString net) {
-  delete servers[net];
-  servers.remove(net);
-  signalProxy()->sendSignal(SIGNAL(networkDisconnected(QString)), net);  // FIXME does this work?
+void CoreSession::serverDisconnected(uint networkid) {
+  servers.remove(networkid);
+  delete servers[networkid];
 }
 
-void CoreSession::msgFromGui(BufferId bufid, QString msg) {
-  emit msgFromGui(bufid.network(), bufid.buffer(), msg);
+void CoreSession::msgFromGui(BufferInfo bufid, QString msg) {
+  emit msgFromGui(bufid.networkId(), bufid.buffer(), msg);
 }
 
 // ALL messages coming pass through these functions before going to the GUI.
 // So this is the perfect place for storing the backlog and log stuff.
-
 void CoreSession::recvMessageFromServer(Message::Type type, QString target, QString text, QString sender, quint8 flags) {
   Server *s = qobject_cast<Server*>(this->sender());
   Q_ASSERT(s);
-  BufferId buf;
+  BufferInfo buf;
   if((flags & Message::PrivMsg) && !(flags & Message::Self)) {
-    buf = storage->getBufferId(user, s->getNetwork(), nickFromMask(sender));
+    buf = storage->getBufferInfo(user, s->networkName(), nickFromMask(sender));
   } else {
-    buf = storage->getBufferId(user, s->getNetwork(), target);
+    buf = storage->getBufferInfo(user, s->networkName(), target);
   }
   Message msg(buf, type, text, sender, flags);
   msg.setMsgId(storage->logMessage(msg));
@@ -171,33 +174,41 @@ void CoreSession::recvMessageFromServer(Message::Type type, QString target, QStr
 void CoreSession::recvStatusMsgFromServer(QString msg) {
   Server *s = qobject_cast<Server*>(sender());
   Q_ASSERT(s);
-  emit displayStatusMsg(s->getNetwork(), msg);
+  emit displayStatusMsg(s->networkName(), msg);
 }
 
 
-QList<BufferId> CoreSession::buffers() const {
+uint CoreSession::getNetworkId(const QString &net) const {
+  return storage->getNetworkId(user, net);
+}
+
+QList<BufferInfo> CoreSession::buffers() const {
   return storage->requestBuffers(user);
 }
 
 
 QVariant CoreSession::sessionState() {
   QVariantMap v;
-  QList<QVariant> bufs;
-  foreach(BufferId id, storage->requestBuffers(user)) { bufs.append(QVariant::fromValue(id)); }
+
+  QVariantList bufs;
+  foreach(BufferInfo id, storage->requestBuffers(user))
+    bufs.append(QVariant::fromValue(id));
   v["Buffers"] = bufs;
+
   mutex.lock();
   v["SessionData"] = sessionData;
   mutex.unlock();
-  v["Networks"] = QVariant(servers.keys());
+
+  QVariantList networks;
+  foreach(uint networkid, servers.keys())
+    networks.append(QVariant(networkid));
+  v["Networks"] = QVariant(networks);
+
   // v["Payload"] = QByteArray(100000000, 'a');  // for testing purposes
   return v;
 }
 
-void CoreSession::sendServerStates() {
-  emit serverStateRequested();
-}
-
-void CoreSession::sendBacklog(BufferId id, QVariant v1, QVariant v2) {
+void CoreSession::sendBacklog(BufferInfo id, QVariant v1, QVariant v2) {
   QList<QVariant> log;
   QList<Message> msglist;
   if(v1.type() == QVariant::DateTime) {

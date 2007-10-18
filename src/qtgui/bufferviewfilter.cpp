@@ -65,11 +65,11 @@ void BufferViewFilter::dropEvent(QDropEvent *event) {
   
   if(!(data->hasFormat("application/Quassel/BufferItem/row")
        && data->hasFormat("application/Quassel/BufferItem/network")
-       && data->hasFormat("application/Quassel/BufferItem/bufferId")))
+       && data->hasFormat("application/Quassel/BufferItem/bufferInfo")))
     return; // whatever the drop is... it's not a buffer...
   
   event->accept();
-  uint bufferuid = data->data("application/Quassel/BufferItem/bufferId").toUInt();
+  uint bufferuid = data->data("application/Quassel/BufferItem/bufferInfo").toUInt();
   QString networkname = QString::fromUtf8("application/Quassel/BufferItem/network");
   
   for(int rowid = 0; rowid < rowCount(); rowid++) {
@@ -99,7 +99,7 @@ void BufferViewFilter::removeBuffer(const QModelIndex &index) {
   if(index.parent() == QModelIndex())
     return; // only child elements can be deleted
   
-  uint bufferuid = index.data(BufferTreeModel::BufferIdRole).toUInt();
+  uint bufferuid = index.data(BufferTreeModel::BufferInfoRole).toUInt();
   if(customBuffers.contains(bufferuid)) {
     beginRemoveRows(index.parent(), index.row(), index.row());
     customBuffers.removeAt(customBuffers.indexOf(bufferuid));
@@ -121,7 +121,7 @@ bool BufferViewFilter::filterAcceptBuffer(const QModelIndex &source_bufferIndex)
   if((mode & NoInactive) && !isActive) return false;
 
   if((mode & FullCustom)) {
-    uint bufferuid = source_bufferIndex.data(BufferTreeModel::BufferIdRole).toUInt();
+    uint bufferuid = source_bufferIndex.data(BufferTreeModel::BufferInfoRole).toUInt();
     if(!customBuffers.contains(bufferuid))
       return false;
   }
@@ -138,7 +138,7 @@ bool BufferViewFilter::filterAcceptNetwork(const QModelIndex &source_index) cons
     int childcount = sourceModel()->rowCount(source_index);
     for(int rowid = 0; rowid < childcount; rowid++) {
       QModelIndex child = sourceModel()->index(rowid, 0, source_index);
-      uint bufferuid = child.data(BufferTreeModel::BufferIdRole).toUInt();
+      uint bufferuid = child.data(BufferTreeModel::BufferInfoRole).toUInt();
       if(customBuffers.contains(bufferuid))
         return true;
     }

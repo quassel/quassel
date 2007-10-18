@@ -23,16 +23,18 @@
 #include "util.h"
 
 
-Buffer::Buffer(BufferId bufid) {
-  id = bufid;
-  _networkName = bufid.network();
-  _bufferName = bufid.buffer();
+Buffer::Buffer(BufferInfo bufferid, QObject *parent)
+  : QObject(parent),
+    _bufferInfo(bufferid),
+    _active(false)
+{
+  if(bufferid.buffer().isEmpty())
+    _type = ServerBuffer;
+  else if(isChannelName(bufferid.buffer()))
+    _type = ChannelBuffer;
+  else
+    _type = QueryBuffer;
 
-  if(_bufferName.isEmpty()) type = ServerBuffer;
-  else if(isChannelName(_bufferName)) type = ChannelBuffer;
-  else type = QueryBuffer;
-
-  active = false;
 /*
   QSettings s;
   s.beginGroup(QString("GUI/BufferStates/%1/%2").arg(netname).arg(bufname));
@@ -55,19 +57,32 @@ Buffer::~Buffer() {
 }
 
 Buffer::Type Buffer::bufferType() const {
-   return type;
+  return _type;
 }
 
 bool Buffer::isActive() const {
-   return active;
+  // FIXME determine status by checking for a networkInfo objekt
+  return true;
+}
+
+BufferInfo Buffer::bufferInfo() const {
+   return _bufferInfo;
+}
+
+void Buffer::updateBufferInfo(BufferInfo bufferid) {
+  _bufferInfo = bufferid;
+}
+
+uint Buffer::networkId() const {
+  return bufferInfo().networkId();
 }
 
 QString Buffer::networkName() const {
-   return _networkName;
+  return bufferInfo().network();
 }
 
 QString Buffer::bufferName() const {
-   return _bufferName;
+  return bufferInfo().buffer();
 }
 
 QString Buffer::displayName() const {
@@ -77,24 +92,23 @@ QString Buffer::displayName() const {
     return bufferName();
 }
 
-BufferId Buffer::bufferId() const {
-   return id;
-}
-
 QList<AbstractUiMsg *> Buffer::contents() const {
-   return layoutedMsgs;
+  return layoutedMsgs;
 }
 
 QVariantMap Buffer::nickList() const {
-   return nicks;
+  // FIXME should return a Map or List of IrcUsers in the future
+  return QVariantMap();
 }
 
 QString Buffer::topic() const {
-   return _topic;
+  // FIXME check if we got a networkInfo() object
+  return QString();
 }
 
 QString Buffer::ownNick() const {
-   return _ownNick;
+  // FIXME check if we got a networkInfo() object
+  return QString();
 }
 
 bool Buffer::isStatusBuffer() const {
@@ -102,10 +116,10 @@ bool Buffer::isStatusBuffer() const {
 }
 
 void Buffer::setActive(bool a) {
-  if(a != active) {
-    active = a;
-    emit bufferUpdated(this);
-  }
+//   if(a != active) {
+//     active = a;
+//     emit bufferUpdated(this);
+//  }
 }
 
 void Buffer::appendMsg(const Message &msg) {
@@ -129,39 +143,41 @@ bool Buffer::layoutMsg() {
 
 void Buffer::processUserInput(QString msg) {
   // TODO User Input processing (plugins) -> well, this goes through MainWin into Core for processing... so...
-  emit userInput(id, msg);
+  emit userInput(_bufferInfo, msg);
 }
 
-void Buffer::setTopic(QString t) {
-  _topic = t;
-  emit topicSet(t);
-  emit bufferUpdated(this);
-}
+// no longer needed
+// back reference:
+// void Buffer::setTopic(QString t) {
+//   _topic = t;
+//   emit topicSet(t);
+//   emit bufferUpdated(this);
+// }
 
-void Buffer::addNick(QString nick, QVariantMap props) {
-  if(nick == ownNick()) setActive(true);
-  nicks[nick] = props;
-  emit nickListChanged(nicks);
-}
+// void Buffer::addNick(QString nick, QVariantMap props) {
+//   if(nick == ownNick()) setActive(true);
+//   nicks[nick] = props;
+//   emit nickListChanged(nicks);
+// }
 
-void Buffer::updateNick(QString nick, QVariantMap props) {
-  nicks[nick] = props;
-  emit nickListChanged(nicks);
-}
+// void Buffer::updateNick(QString nick, QVariantMap props) {
+//   nicks[nick] = props;
+//   emit nickListChanged(nicks);
+// }
 
-void Buffer::renameNick(QString oldnick, QString newnick) {
-  QVariant v = nicks.take(oldnick);
-  nicks[newnick] = v;
-  emit nickListChanged(nicks);
-}
+// void Buffer::renameNick(QString oldnick, QString newnick) {
+//   QVariant v = nicks.take(oldnick);
+//   nicks[newnick] = v;
+//   emit nickListChanged(nicks);
+// }
 
-void Buffer::removeNick(QString nick) {
-  if(nick == ownNick()) setActive(false);
-  nicks.remove(nick);
-  emit nickListChanged(nicks);
-}
+// void Buffer::removeNick(QString nick) {
+//   if(nick == ownNick()) setActive(false);
+//   nicks.remove(nick);
+//   emit nickListChanged(nicks);
+// }
 
-void Buffer::setOwnNick(QString nick) {
-  _ownNick = nick;
-  emit ownNickSet(nick);
-}
+// void Buffer::setOwnNick(QString nick) {
+//   _ownNick = nick;
+//   emit ownNickSet(nick);
+// }

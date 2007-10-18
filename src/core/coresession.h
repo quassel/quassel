@@ -34,63 +34,65 @@ class Storage;
 class CoreSession : public QObject {
   Q_OBJECT
 
-  public:
-    CoreSession(UserId, Storage *, QObject *parent = 0);
-    ~CoreSession();
+public:
+  CoreSession(UserId, Storage *, QObject *parent = 0);
+  virtual ~CoreSession();
 
-    QList<BufferId> buffers() const;
-    UserId userId() const;
-    QVariant sessionState();
+  uint getNetworkId(const QString &network) const;
+  QList<BufferInfo> buffers() const;
+  UserId userId() const;
+  QVariant sessionState();
 
-  public slots:
-    //! Store a piece session-wide data and distribute it to connected clients.
-    void storeSessionData(const QString &key, const QVariant &data);
+  //! Retrieve a piece of session-wide data.
+  QVariant retrieveSessionData(const QString &key, const QVariant &def = QVariant());
+  
+  SignalProxy *signalProxy() const;
+				  
+  void attachServer(Server *server);
+				   
+public slots:
+  //! Store a piece session-wide data and distribute it to connected clients.
+  void storeSessionData(const QString &key, const QVariant &data);
 
-    void addClient(QIODevice *connection);
+  void serverStateRequested();
 
-  public:
-    //! Retrieve a piece of session-wide data.
-    QVariant retrieveSessionData(const QString &key, const QVariant &def = QVariant());
+  void addClient(QIODevice *connection);
+  
+  void connectToNetwork(QString);
+  
+  //void processSignal(ClientSignal, QVariant, QVariant, QVariant);
+  void sendBacklog(BufferInfo, QVariant, QVariant);
+  void msgFromGui(BufferInfo, QString message);
+  
+signals:
+  void msgFromGui(uint netid, QString buf, QString message);
+  void displayMsg(Message message);
+  void displayStatusMsg(QString, QString);
+  
+  void connectToIrc(QString net);
+  void disconnectFromIrc(QString net);
 
-    SignalProxy *signalProxy() const;
+  void backlogData(BufferInfo, QVariantList, bool done);
 
-  public slots:
-    void connectToNetwork(QString);
-    //void processSignal(ClientSignal, QVariant, QVariant, QVariant);
-    void sendBacklog(BufferId, QVariant, QVariant);
-    void msgFromGui(BufferId, QString message);
-    void sendServerStates();
+  void bufferInfoUpdated(BufferInfo);
+  void sessionDataChanged(const QString &key);
+  void sessionDataChanged(const QString &key, const QVariant &data);
 
-  signals:
-    void msgFromGui(QString net, QString buf, QString message);
-    void displayMsg(Message message);
-    void displayStatusMsg(QString, QString);
+private slots:
+  void recvStatusMsgFromServer(QString msg);
+  void recvMessageFromServer(Message::Type, QString target, QString text, QString sender = "", quint8 flags = Message::None);
+  void serverConnected(uint networkid);
+  void serverDisconnected(uint networkid);
 
-    void connectToIrc(QString net);
-    void disconnectFromIrc(QString net);
-    void serverStateRequested();
-
-    void backlogData(BufferId, QVariantList, bool done);
-
-    void bufferIdUpdated(BufferId);
-    void sessionDataChanged(const QString &key);
-    void sessionDataChanged(const QString &key, const QVariant &data);
-
-  private slots:
-    void recvStatusMsgFromServer(QString msg);
-    void recvMessageFromServer(Message::Type, QString target, QString text, QString sender = "", quint8 flags = Message::None);
-    void serverConnected(QString net);
-    void serverDisconnected(QString net);
-
-  private:
-    UserId user;
-
-   SignalProxy *_signalProxy;
-    Storage *storage;
-    QHash<QString, Server *> servers;
-
-    QVariantMap sessionData;
-    QMutex mutex;
+private:
+  UserId user;
+  
+  SignalProxy *_signalProxy;
+  Storage *storage;
+  QHash<uint, Server *> servers;
+  
+  QVariantMap sessionData;
+  QMutex mutex;
 };
 
 #endif

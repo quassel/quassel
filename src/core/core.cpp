@@ -25,7 +25,7 @@
 
 Core *Core::instanceptr = 0;
 
-Core * Core::instance() {
+Core *Core::instance() {
   if(instanceptr) return instanceptr;
   instanceptr = new Core();
   instanceptr->init();
@@ -38,7 +38,6 @@ void Core::destroy() {
 }
 
 Core::Core() {
-
 }
 
 void Core::init() {
@@ -121,7 +120,7 @@ void Core::clientHasData() {
       return;
     }
   }
-  blockSizes[socket] = bsize = 0;  // FIXME blockSizes aufrÃ¤um0rn!
+  blockSizes[socket] = bsize = 0;  // FIXME blockSizes aufräum0rn!
 }
 
 // FIXME: no longer called, since connection handling is now in SignalProxy
@@ -163,10 +162,10 @@ void Core::processClientInit(QTcpSocket *socket, const QVariant &v) {
 QVariant Core::initSession(UserId uid) {
   // Find or create session for validated user
   CoreSession *sess;
-  if(sessions.contains(uid)) sess = sessions[uid];
-  else {
+  if(sessions.contains(uid))
+    sess = sessions[uid];
+  else
     sess = createSession(uid);
-  }
   QVariantMap reply;
   reply["SessionState"] = sess->sessionState();
   return reply;

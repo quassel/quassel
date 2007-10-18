@@ -25,6 +25,7 @@
 #include <QString>
 #include <QDateTime>
 
+#include "bufferinfo.h"
 #include "global.h"
 
 class Message {
@@ -35,14 +36,14 @@ class Message {
     enum Type { Plain, Notice, Action, Nick, Mode, Join, Part, Quit, Kick, Kill, Server, Info, Error };
     enum Flags { None = 0, Self = 1, PrivMsg = 2, Highlight = 4 };
 
-    Message(BufferId buffer = BufferId(), Type type = Plain, QString text = "", QString sender = "", quint8 flags = None);
+    Message(BufferInfo buffer = BufferInfo(), Type type = Plain, QString text = "", QString sender = "", quint8 flags = None);
 
-    Message(QDateTime ts, BufferId buffer = BufferId(), Type type = Plain, QString text = "", QString sender = "", quint8 flags = None);
+    Message(QDateTime ts, BufferInfo buffer = BufferInfo(), Type type = Plain, QString text = "", QString sender = "", quint8 flags = None);
 
     MsgId msgId() const;
     void setMsgId(MsgId id);
 
-    BufferId buffer() const;
+    BufferInfo buffer() const;
     QString text() const;
     QString sender() const;
     Type type() const;
@@ -58,7 +59,7 @@ class Message {
   private:
     QDateTime _timeStamp;
     MsgId _msgId;
-    BufferId _buffer;
+    BufferInfo _buffer;
     QString _text;
     QString _sender;
     Type _type;

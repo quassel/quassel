@@ -24,6 +24,7 @@
 #include <QtCore>
 
 #include "treemodel.h"
+class BufferInfo;
 #include "buffer.h"
 
 /*****************************************
@@ -78,7 +79,7 @@ public:
     BufferTypeRole = Qt::UserRole,
     BufferActiveRole,
     BufferNameRole,
-    BufferIdRole
+    BufferInfoRole
   };
   
   BufferTreeModel(QObject *parent = 0);
@@ -94,7 +95,7 @@ public slots:
 signals:
   void bufferSelected(Buffer *);
   void invalidateFilter();
-  void fakeUserInput(BufferId, QString);
+  void fakeUserInput(BufferInfo, QString);
   void selectionChanged(const QModelIndex &);
     
 private:

@@ -39,8 +39,8 @@ MsgId ChatLine::msgId() const {
   return _msgId;
 }
 
-BufferId ChatLine::bufferId() const {
-  return _bufferId;
+BufferInfo ChatLine::bufferInfo() const {
+  return _bufferInfo;
 }
 
 QDateTime ChatLine::timeStamp() const {

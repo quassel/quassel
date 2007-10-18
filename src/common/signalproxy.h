@@ -34,6 +34,7 @@ class SignalProxy : public QObject {
     SignalProxy(ProxyType type, QIODevice *device = 0, QObject *parent = 0);
     ~SignalProxy();
 
+  ProxyType proxyType() const { return type; }
     void attachSignal(QObject* sender, const char* signal, const QByteArray& rpcFunction = QByteArray());
     void attachSlot(const QByteArray& rpcFunction, QObject* recv, const char* slot);
 

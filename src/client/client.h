@@ -26,132 +26,137 @@
 #include <QList>
 #include <QPointer>
 
-#include "buffer.h"
-#include "message.h"
+#include "buffer.h" // needed for activity lvl
+class BufferInfo;
+class Message;
+
+class NetworkInfo;
 
 
 class AbstractUi;
+class AbstractUiMsg;
 class BufferTreeModel;
-class QtGui;
 class SignalProxy;
 
 class QTimer;
 
+
 class Client : public QObject {
   Q_OBJECT
 
-  public:
-    static Client *instance();
-    static void init(AbstractUi *);
-    static void destroy();
+public:
+  static Client *instance();
+  static void destroy();
+  static void init(AbstractUi *);
 
-    static QList<BufferId> allBufferIds();
-    static Buffer *buffer(BufferId);
-    static BufferId statusBufferId(QString net);
-    static BufferId bufferId(QString net, QString buf);
+  static QList<NetworkInfo *> networkInfos();
+  static NetworkInfo *networkInfo(uint networkid);
+  
+  static QList<BufferInfo> allBufferInfos();
+  static QList<Buffer *> buffers();
+  static Buffer *buffer(uint bufferUid);
+  static Buffer *buffer(BufferInfo);
+  static BufferInfo statusBufferInfo(QString net);
+  static BufferInfo bufferInfo(QString net, QString buf);
 
-    static BufferTreeModel *bufferModel();
-    static SignalProxy *signalProxy();
+  static BufferTreeModel *bufferModel();
+  static SignalProxy *signalProxy();
 
-    static AbstractUiMsg *layoutMsg(const Message &);
+  static AbstractUiMsg *layoutMsg(const Message &);
 
-    static bool isConnected();
+  static bool isConnected();
 
-    static void storeSessionData(const QString &key, const QVariant &data);
-    static QVariant retrieveSessionData(const QString &key, const QVariant &def = QVariant());
-    static QStringList sessionDataKeys();
+  static void storeSessionData(const QString &key, const QVariant &data);
+  static QVariant retrieveSessionData(const QString &key, const QVariant &def = QVariant());
+  static QStringList sessionDataKeys();
 
-    enum ClientMode { LocalCore, RemoteCore };
-    static ClientMode clientMode;
+  enum ClientMode { LocalCore, RemoteCore };
 
-  signals:
-    void sendInput(BufferId, QString message);
-    void showBuffer(Buffer *);
-    void bufferSelected(Buffer *);
-    void bufferUpdated(Buffer *);
-    void bufferActivity(Buffer::ActivityLevel, Buffer *);
-    void bufferDestroyed(Buffer *);
-    void backlogReceived(Buffer *, QList<Message>);
-    void requestBacklog(BufferId, QVariant, QVariant);
-    void requestNetworkStates();
+signals:
+  void sendInput(BufferInfo, QString message);
+  void showBuffer(Buffer *);
+  void bufferSelected(Buffer *);
+  void bufferUpdated(Buffer *);
+  void bufferActivity(Buffer::ActivityLevel, Buffer *);
+  void bufferDestroyed(Buffer *);
+  void backlogReceived(Buffer *, QList<Message>);
+  void requestBacklog(BufferInfo, QVariant, QVariant);
+  void requestNetworkStates();
 
-    void recvPartialItem(uint avail, uint size);
-    void coreConnectionError(QString errorMsg);
-    void coreConnectionMsg(const QString &msg);
-    void coreConnectionProgress(uint part, uint total);
+  void recvPartialItem(uint avail, uint size);
+  void coreConnectionError(QString errorMsg);
+  void coreConnectionMsg(const QString &msg);
+  void coreConnectionProgress(uint part, uint total);
 
-    void connected();
-    void disconnected();
+  void connected();
+  void disconnected();
 
-    void sessionDataChanged(const QString &key);
-    void sessionDataChanged(const QString &key, const QVariant &data);
-    void sendSessionData(const QString &key, const QVariant &data);
+  void sessionDataChanged(const QString &key);
+  void sessionDataChanged(const QString &key, const QVariant &data);
+  void sendSessionData(const QString &key, const QVariant &data);
 
-  public slots:
-    //void selectBuffer(Buffer *);
-    //void connectToLocalCore();
-    void connectToCore(const QVariantMap &);
-    void disconnectFromCore();
+public slots:
+  //void selectBuffer(Buffer *);
+  //void connectToLocalCore();
+  void connectToCore(const QVariantMap &);
+  void disconnectFromCore();
 
-  private slots:
-    void recvCoreState(const QVariant &state);
-    void recvSessionData(const QString &key, const QVariant &data);
+private slots:
+  void recvCoreState(const QVariant &state);
+  void recvSessionData(const QString &key, const QVariant &data);
 
-    void coreSocketError(QAbstractSocket::SocketError);
-    void coreHasData();
-    void coreSocketConnected();
-    void coreSocketDisconnected();
-    void coreSocketStateChanged(QAbstractSocket::SocketState);
+  void coreSocketError(QAbstractSocket::SocketError);
+  void coreHasData();
+  void coreSocketConnected();
+  void coreSocketDisconnected();
+  void coreSocketStateChanged(QAbstractSocket::SocketState);
 
-    void userInput(BufferId, QString);
-    void networkConnected(QString);
-    void networkDisconnected(QString);
-    void recvNetworkState(QString, QVariant);
-    void recvMessage(const Message &message);
-    void recvStatusMsg(QString network, QString message);
-    void setTopic(QString net, QString buf, QString);
-    void addNick(QString net, QString nick, QVariantMap props);
-    void removeNick(QString net, QString nick);
-    void renameNick(QString net, QString oldnick, QString newnick);
-    void updateNick(QString net, QString nick, QVariantMap props);
-    void setOwnNick(QString net, QString nick);
-    void recvBacklogData(BufferId, QVariantList, bool);
-    void updateBufferId(BufferId);
+  void userInput(BufferInfo, QString);
 
-    void removeBuffer(Buffer *);
+  void networkConnected(uint);
+  void networkDisconnected(uint);
 
-    void layoutMsg();
+  void updateCoreConnectionProgress();
+  void recvMessage(const Message &message);
+  void recvStatusMsg(QString network, QString message);
+  void recvBacklogData(BufferInfo, QVariantList, bool);
+  void updateBufferInfo(BufferInfo);
 
-  private:
-    Client();
-    ~Client();
-    void init();
-    static Client *instanceptr;
+  void removeBuffer(Buffer *);
 
-    void syncToCore(const QVariant &coreState);
-    QVariant connectToLocalCore(QString user, QString passwd);  // defined in main.cpp
-    void disconnectFromLocalCore();                             // defined in main.cpp
+  void layoutMsg();
 
-    AbstractUi *mainUi;
-    SignalProxy *_signalProxy;
-    BufferTreeModel *_bufferModel;
+private:
+  Client(QObject *parent = 0);
+  virtual ~Client();
+  void init();
+  
+  void syncToCore(const QVariant &coreState);
+  QVariant connectToLocalCore(QString user, QString passwd);  // defined in main.cpp
+  void disconnectFromLocalCore();                             // defined in main.cpp
 
-    QPointer<QIODevice> socket;
-    quint32 blockSize;
+  static QPointer<Client> instanceptr;
+  
+  QPointer<QIODevice> socket;
+  QPointer<SignalProxy> _signalProxy;
+  QPointer<AbstractUi> mainUi;
+  QPointer<BufferTreeModel> _bufferModel;
 
-    static bool connectedToCore;
-    static QVariantMap coreConnectionInfo;
-    static QHash<BufferId, Buffer *> buffers;
-    static QHash<uint, BufferId> bufferIds;
-    static QHash<QString, QHash<QString, QVariantMap> > nicks;
-    static QHash<QString, bool> netConnected;
-    static QStringList netsAwaitingInit;
-    static QHash<QString, QString> ownNick;
+  ClientMode clientMode;
 
-    QTimer *layoutTimer;
-    QList<Buffer *> layoutQueue;
+  quint32 blockSize;
+  bool connectedToCore;
+  
+  QVariantMap coreConnectionInfo;
+  QHash<uint, Buffer *> _buffers;
+  QHash<uint, NetworkInfo*> _networkInfo;
 
-    QVariantMap sessionData;
+  QTimer *layoutTimer;
+  QList<Buffer *> layoutQueue;
+
+  QVariantMap sessionData;
+
+
 };
 
 #endif

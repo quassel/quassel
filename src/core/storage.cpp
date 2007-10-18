@@ -31,7 +31,7 @@ void Storage::importOldBacklog() {
   logDb.exec(QString("DELETE FROM 'Backlog$%1$' WHERE SenderId != '$VERSION$'").arg(user));
   logDb.exec(QString("DELETE FROM 'Senders$%1$'").arg(user));
   logDb.exec(QString("DELETE FROM 'Buffers$%1$'").arg(user));
-  nextMsgId = 1; nextBufferId = 1; nextSenderId = 1;
+  nextMsgId = 1; nextBufferInfo = 1; nextSenderId = 1;
   qDebug() << "Importing old backlog files...";
   initBackLogOld();
   if(!backLogEnabledOld) return;
@@ -98,11 +98,11 @@ void Storage::initBackLogOld(UserId uid) {
         QString target = QString::fromUtf8(targ);
         QString sender = QString::fromUtf8(s);
         QString text = QString::fromUtf8(m);
-        BufferId id;
+        BufferInfo id;
         if((f & Message::PrivMsg) && !(f & Message::Self)) {
-          id = getBufferId(uid, net, sender);
+          id = getBufferInfo(uid, net, sender);
         } else {
-          id = getBufferId(uid, net, target);
+          id = getBufferInfo(uid, net, target);
         }
         Message msg(QDateTime::fromTime_t(ts), id, (Message::Type)t, text, sender, f);
         //backLog[net].append(m);

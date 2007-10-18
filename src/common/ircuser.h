@@ -21,73 +21,102 @@
 #ifndef _IRCUSER_H_
 #define _IRCUSER_H_
 
-#include <QtCore>
-#include <QObject>
-#include <QHash>
 #include <QSet>
 #include <QString>
 #include <QStringList>
+#include <QVariantMap>
 
-#include "global.h"
+class SignalProxy;
+class NetworkInfo;
+class IrcChannel;
 
 class IrcUser : public QObject {
   Q_OBJECT
   
-//  Q_PROPERTY(QString user READ user WRITE setUser)
-//  Q_PROPERTY(QString host READ host WRITE setHost)
-//  Q_PROPERTY(QString nick READ nick WRITE setNick)
-//  Q_PROPERTY(QSet<QString> usermodes READ usermodes WRITE setUsermodes)
-//  Q_PROPERTY(QStringList channels READ channels)
+  Q_PROPERTY(QString user READ user WRITE setUser STORED false)
+  Q_PROPERTY(QString host READ host WRITE setHost STORED false)
+  Q_PROPERTY(QString nick READ nick WRITE setNick STORED false)
+
+  Q_PROPERTY(QStringList channels READ channels STORED false)
+  //  Q_PROPERTY(QStringList usermodes READ usermodes WRITE setUsermodes)
+
   
 public:
-  IrcUser(QObject *parent = 0);
-  IrcUser(const QString &hostmask, QObject *parent = 0);
-  ~IrcUser();
-  
-  void setUser(const QString &user);
+  IrcUser(const QString &hostmask, NetworkInfo *networkInfo);
+
+  bool initialized() const;
+
   QString user() const;
-  
-  void setHost(const QString &host);
   QString host() const;
-  
-  void setNick(const QString &nick);
   QString nick() const;
-  
-  void setUsermodes(const QSet<QString> &usermodes);
-  QSet<QString> usermodes() const;
-  
-  void setChannelmode(const QString &channel, const QSet<QString> &channelmode);
-  QSet<QString> channelmode(const QString &channel) const;
-  
-  void updateChannelmode(const QString &channel, const QString &channelmode, bool add=true);
-  void addChannelmode(const QString &channel, const QString &channelmode);
-  void removeChannelmode(const QString &channel, const QString &channelmode);
+  QString hostmask() const;
+
+  QString userModes() const;
 
   QStringList channels() const;
-  
+    
+  void updateObjectName();
+			 
+public slots:  
+  void setUser(const QString &user);
+  void setHost(const QString &host);
+  void setNick(const QString &nick);
+  void updateHostmask(const QString &mask);
+					  
+  void setUserModes(const QString &modes);
+
   void joinChannel(const QString &channel);
   void partChannel(const QString &channel);
+
+  void addUserMode(const QString &mode);
+  void removeUserMode(const QString &mode);
+
+  // init seters
+  void initSetChannels(const QStringList channels);
   
+  void setInitialized();
+
+signals:
+  void userSet(QString user);
+  void hostSet(QString host);
+  void nickSet(QString newnick);
+  void hostmaskUpdated(QString mask);
+  
+  void channelsSet(QStringList channels);
+  void userModesSet(QString modes);
+  
+  void channelJoined(QString channel);
+  void channelParted(QString channel);
+
+  void userModeAdded(QString mode);
+  void userModeRemoved(QString mode);
+
+  void objectNameSet();
+  
+//   void setUsermodes(const QSet<QString> &usermodes);
+//   QSet<QString> usermodes() const;
+
+  void initDone();
+
 private:
   inline bool operator==(const IrcUser &ircuser2) {
-    return (nick_.toLower() == ircuser2.nick().toLower());
+    return (_nick.toLower() == ircuser2.nick().toLower());
   }
 
   inline bool operator==(const QString &nickname) {
-    return (nick_.toLower() == nickname.toLower());
+    return (_nick.toLower() == nickname.toLower());
   }
+
+  bool _initialized;
+
+  QString _nick;
+  QString _user;
+  QString _host;
+
+  QSet<QString> _channels;
+  QString _userModes;
   
-  QString nick_;
-  QString user_;
-  QString host_;
-  
-  QHash<QString, QSet<QString> > channelmodes_; //keys: channelnames; values: Set of Channelmodes
-  QSet<QString> usermodes_;
+  NetworkInfo *networkInfo;
 };
-
-struct IrcUserException : public Exception {};
-struct NoSuchChannelException : public IrcUserException {};
-struct NoSuchNickException : public IrcUserException {};
-
 
 #endif

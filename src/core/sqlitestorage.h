@@ -23,7 +23,6 @@
 
 #include <QCryptographicHash>
 
-#include "global.h"
 #include "storage.h"
 
 class QSqlQuery;
@@ -56,15 +55,15 @@ class SqliteStorage : public Storage {
     virtual uint getNetworkId(UserId user, const QString &network);
 
     /* Buffer handling */
-    virtual BufferId getBufferId(UserId user, const QString &network, const QString &buffer = "");
-    virtual QList<BufferId> requestBuffers(UserId user, QDateTime since = QDateTime());
+    virtual BufferInfo getBufferInfo(UserId user, const QString &network, const QString &buffer = "");
+    virtual QList<BufferInfo> requestBuffers(UserId user, QDateTime since = QDateTime());
 
     /* Message handling */
 
     virtual MsgId logMessage(Message msg);
-    virtual QList<Message> requestMsgs(BufferId buffer, int lastmsgs = -1, int offset = -1);
-    virtual QList<Message> requestMsgs(BufferId buffer, QDateTime since, int offset = -1);
-    virtual QList<Message> requestMsgRange(BufferId buffer, int first, int last);
+    virtual QList<Message> requestMsgs(BufferInfo buffer, int lastmsgs = -1, int offset = -1);
+    virtual QList<Message> requestMsgs(BufferInfo buffer, QDateTime since, int offset = -1);
+    virtual QList<Message> requestMsgRange(BufferInfo buffer, int first, int last);
 
   public slots:
     //! This is just for importing the old file-based backlog */
@@ -75,7 +74,7 @@ class SqliteStorage : public Storage {
     void importOldBacklog();
 
   signals:
-    void bufferIdUpdated(BufferId);
+    void bufferInfoUpdated(BufferInfo);
 
   protected:
 
@@ -92,7 +91,7 @@ class SqliteStorage : public Storage {
     QSqlQuery *requestMsgRangeQuery;
     QSqlQuery *createNetworkQuery;
     QSqlQuery *createBufferQuery;
-    QSqlQuery *getBufferIdQuery;
+    QSqlQuery *getBufferInfoQuery;
 };
 
 

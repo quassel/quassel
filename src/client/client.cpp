@@ -20,40 +20,32 @@
 
 #include "client.h"
 
-#include "buffer.h"
+#include "networkinfo.h"
+#include "ircuser.h"
+#include "ircchannel.h"
+
+#include "message.h"
+
+#include "bufferinfo.h"
 #include "buffertreemodel.h"
 #include "quasselui.h"
 #include "signalproxy.h"
+#include "synchronizer.h"
 #include "util.h"
 
-Client * Client::instanceptr = 0;
+QPointer<Client> Client::instanceptr = 0;
 
-bool Client::connectedToCore = false;
-Client::ClientMode Client::clientMode;
-QVariantMap Client::coreConnectionInfo;
-QHash<BufferId, Buffer *> Client::buffers;
-QHash<uint, BufferId> Client::bufferIds;
-QHash<QString, QHash<QString, QVariantMap> > Client::nicks;
-QHash<QString, bool> Client::netConnected;
-QStringList Client::netsAwaitingInit;
-QHash<QString, QString> Client::ownNick;
-
+// ==============================
+//  public Static Methods
+// ==============================
 Client *Client::instance() {
-  if(instanceptr) return instanceptr;
-  instanceptr = new Client();
+  if(!instanceptr)
+    instanceptr = new Client();
   return instanceptr;
 }
 
 void Client::destroy() {
   delete instanceptr;
-  instanceptr = 0;
-}
-
-Client::Client() {
-  _signalProxy = new SignalProxy(SignalProxy::Client, 0, this);
-
-  connectedToCore = false;
-  socket = 0;
 }
 
 void Client::init(AbstractUi *ui) {
@@ -61,33 +53,135 @@ void Client::init(AbstractUi *ui) {
   instance()->init();
 }
 
+QList<NetworkInfo *> Client::networkInfos() {
+  return instance()->_networkInfo.values();
+}
+
+NetworkInfo *Client::networkInfo(uint networkid) {
+  if(instance()->_networkInfo.contains(networkid))
+    return instance()->_networkInfo[networkid];
+  else
+    return 0;
+}
+
+QList<BufferInfo> Client::allBufferInfos() {
+  QList<BufferInfo> bufferids;
+  foreach(Buffer *buffer, buffers()) {
+    bufferids << buffer->bufferInfo();
+  }
+  return bufferids;
+}
+
+QList<Buffer *> Client::buffers() {
+  return instance()->_buffers.values();
+}
+
+Buffer *Client::buffer(uint bufferUid) {
+  if(instance()->_buffers.contains(bufferUid))
+    return instance()->_buffers[bufferUid];
+  else
+    return 0;
+}
+
+Buffer *Client::buffer(BufferInfo id) {
+  Buffer *buff = buffer(id.uid());
+  
+  if(!buff) {
+    Client *client = Client::instance();
+    Buffer *buff = new Buffer(id, client);
+
+    connect(buff, SIGNAL(userInput(BufferInfo, QString)),
+	    client, SLOT(userInput(BufferInfo, QString)));
+    connect(buff, SIGNAL(bufferUpdated(Buffer *)),
+	    client, SIGNAL(bufferUpdated(Buffer *)));
+    connect(buff, SIGNAL(bufferDestroyed(Buffer *)),
+	    client, SIGNAL(bufferDestroyed(Buffer *)));
+    connect(buff, SIGNAL(bufferDestroyed(Buffer *)),
+	    client, SLOT(removeBuffer(Buffer *)));
+    
+    client->_buffers[id.uid()] = buff;
+    emit client->bufferUpdated(buff);
+  }
+  
+  return buff;
+}
+
+// FIXME switch to netids!
+// WHEN IS THIS NEEDED ANYHOW!?
+BufferInfo Client::bufferInfo(QString net, QString buf) {
+  foreach(Buffer *buffer_, buffers()) {
+    BufferInfo bufferInfo = buffer_->bufferInfo();
+    if(bufferInfo.network() == net && bufferInfo.buffer() == buf)
+      return bufferInfo;
+  }
+  Q_ASSERT(false);  // should never happen!
+  return BufferInfo();
+}
+
+BufferInfo Client::statusBufferInfo(QString net) {
+  return bufferInfo(net, "");
+}
+
+BufferTreeModel *Client::bufferModel() {
+  return instance()->_bufferModel;
+}
+
+SignalProxy *Client::signalProxy() {
+  return instance()->_signalProxy;
+}
+
+// ==============================
+//  Constructor / Decon
+// ==============================
+Client::Client(QObject *parent)
+  : QObject(parent),
+    socket(0),
+    _signalProxy(new SignalProxy(SignalProxy::Client, 0, this)),
+    mainUi(0),
+    _bufferModel(0),
+    connectedToCore(false)
+{
+}
+
+Client::~Client() {
+// since we're now the parent of buffers this should be no longer needed
+  
+//   foreach(Buffer *buf, buffers.values()) delete buf; // this is done by disconnectFromCore()! FIXME?
+//   Q_ASSERT(!buffers.count());
+}
+
 void Client::init() {
   blockSize = 0;
 
   _bufferModel = new BufferTreeModel(this);
 
-  connect(this, SIGNAL(bufferSelected(Buffer *)), _bufferModel, SLOT(selectBuffer(Buffer *)));
-  connect(this, SIGNAL(bufferUpdated(Buffer *)), _bufferModel, SLOT(bufferUpdated(Buffer *)));
-  connect(this, SIGNAL(bufferActivity(Buffer::ActivityLevel, Buffer *)), _bufferModel, SLOT(bufferActivity(Buffer::ActivityLevel, Buffer *)));
+  connect(this, SIGNAL(bufferSelected(Buffer *)),
+	  _bufferModel, SLOT(selectBuffer(Buffer *)));
+  connect(this, SIGNAL(bufferUpdated(Buffer *)),
+	  _bufferModel, SLOT(bufferUpdated(Buffer *)));
+  connect(this, SIGNAL(bufferActivity(Buffer::ActivityLevel, Buffer *)),
+	  _bufferModel, SLOT(bufferActivity(Buffer::ActivityLevel, Buffer *)));
 
   SignalProxy *p = signalProxy();
-  p->attachSignal(this, SIGNAL(sendSessionData(const QString &, const QVariant &)), SIGNAL(clientSessionDataChanged(const QString &, const QVariant &)));
-  p->attachSlot(SIGNAL(coreSessionDataChanged(const QString &, const QVariant &)), this, SLOT(recvSessionData(const QString &, const QVariant &)));
-  p->attachSlot(SIGNAL(coreState(const QVariant &)), this, SLOT(recvCoreState(const QVariant &)));
-  p->attachSlot(SIGNAL(networkState(QString, QVariant)), this, SLOT(recvNetworkState(QString, QVariant)));
-  p->attachSlot(SIGNAL(networkConnected(QString)), this, SLOT(networkConnected(QString)));
-  p->attachSlot(SIGNAL(networkDisconnected(QString)), this, SLOT(networkDisconnected(QString)));
-  p->attachSlot(SIGNAL(displayMsg(const Message &)), this, SLOT(recvMessage(const Message &)));
-  p->attachSlot(SIGNAL(displayStatusMsg(QString, QString)), this, SLOT(recvStatusMsg(QString, QString)));
-  p->attachSlot(SIGNAL(topicSet(QString, QString, QString)), this, SLOT(setTopic(QString, QString, QString)));
-  p->attachSlot(SIGNAL(nickAdded(QString, QString, QVariantMap)), this, SLOT(addNick(QString, QString, QVariantMap)));
-  p->attachSlot(SIGNAL(nickRemoved(QString, QString)), this, SLOT(removeNick(QString, QString)));
-  p->attachSlot(SIGNAL(nickRenamed(QString, QString, QString)), this, SLOT(renameNick(QString, QString, QString)));
-  p->attachSlot(SIGNAL(nickUpdated(QString, QString, QVariantMap)), this, SLOT(updateNick(QString, QString, QVariantMap)));
-  p->attachSlot(SIGNAL(ownNickSet(QString, QString)), this, SLOT(setOwnNick(QString, QString)));
-  p->attachSlot(SIGNAL(backlogData(BufferId, const QVariantList &, bool)), this, SLOT(recvBacklogData(BufferId, const QVariantList &, bool)));
-  p->attachSlot(SIGNAL(bufferIdUpdated(BufferId)), this, SLOT(updateBufferId(BufferId)));
-  p->attachSignal(this, SIGNAL(sendInput(BufferId, QString)));
+  p->attachSignal(this, SIGNAL(sendSessionData(const QString &, const QVariant &)),
+		  SIGNAL(clientSessionDataChanged(const QString &, const QVariant &)));
+  p->attachSlot(SIGNAL(coreSessionDataChanged(const QString &, const QVariant &)),
+		this, SLOT(recvSessionData(const QString &, const QVariant &)));
+  p->attachSlot(SIGNAL(coreState(const QVariant &)),
+		this, SLOT(recvCoreState(const QVariant &)));
+  p->attachSlot(SIGNAL(networkConnected(uint)),
+		this, SLOT(networkConnected(uint)));
+  p->attachSlot(SIGNAL(networkDisconnected(uint)),
+		this, SLOT(networkDisconnected(uint)));
+  p->attachSlot(SIGNAL(displayMsg(const Message &)),
+		this, SLOT(recvMessage(const Message &)));
+  p->attachSlot(SIGNAL(displayStatusMsg(QString, QString)),
+		this, SLOT(recvStatusMsg(QString, QString)));
+
+
+  p->attachSlot(SIGNAL(backlogData(BufferInfo, const QVariantList &, bool)), this, SLOT(recvBacklogData(BufferInfo, const QVariantList &, bool)));
+  p->attachSlot(SIGNAL(bufferInfoUpdated(BufferInfo)), this, SLOT(updateBufferInfo(BufferInfo)));
+  p->attachSignal(this, SIGNAL(sendInput(BufferInfo, QString)));
   p->attachSignal(this, SIGNAL(requestNetworkStates()));
 
   connect(mainUi, SIGNAL(connectToCore(const QVariantMap &)), this, SLOT(connectToCore(const QVariantMap &)));
@@ -99,33 +193,25 @@ void Client::init() {
   layoutTimer->setInterval(0);
   layoutTimer->setSingleShot(false);
   connect(layoutTimer, SIGNAL(timeout()), this, SLOT(layoutMsg()));
-}
 
-Client::~Client() {
-  foreach(Buffer *buf, buffers.values()) delete buf; // this is done by disconnectFromCore()! FIXME?
-  Q_ASSERT(!buffers.count());
-}
-
-BufferTreeModel *Client::bufferModel() {
-  return instance()->_bufferModel;
-}
-
-SignalProxy *Client::signalProxy() {
-  return instance()->_signalProxy;
 }
 
 bool Client::isConnected() {
-  return connectedToCore;
+  return instance()->connectedToCore;
 }
 
 void Client::connectToCore(const QVariantMap &conn) {
   // TODO implement SSL
   coreConnectionInfo = conn;
+  
   if(isConnected()) {
     emit coreConnectionError(tr("Already connected to Core!"));
     return;
   }
-  if(socket != 0) socket->deleteLater();
+  
+  if(socket != 0)
+    socket->deleteLater();
+  
   if(conn["Host"].toString().isEmpty()) {
     clientMode = LocalCore;
     socket = new QBuffer(this);
@@ -174,24 +260,26 @@ void Client::coreSocketConnected() {
 }
 
 void Client::coreSocketDisconnected() {
-  connectedToCore = false;
+  instance()->connectedToCore = false;
   emit disconnected();
   socket->deleteLater();
   blockSize = 0;
 
   /* Clear internal data. Hopefully nothing relies on it at this point. */
   _bufferModel->clear();
-  // Buffers, if deleted, send a signal that causes their removal from buffers and bufferIds.
+  // Buffers, if deleted, send a signal that causes their removal from buffers and bufferInfos.
   // So we cannot simply go through the array in a loop (or use qDeleteAll) for deletion...
-  while(buffers.count()) { delete buffers.take(buffers.keys()[0]); }
-  Q_ASSERT(!buffers.count());   // should be empty now!
-  Q_ASSERT(!bufferIds.count());
+  while(!_buffers.empty()) {
+    delete _buffers.take(_buffers.keys()[0]);
+  }
+  Q_ASSERT(_buffers.empty());
+
+  while(!_networkInfo.empty()) {
+    delete _networkInfo.take(_networkInfo.keys()[0]);
+  }
+    
   coreConnectionInfo.clear();
   sessionData.clear();
-  nicks.clear();
-  netConnected.clear();
-  netsAwaitingInit.clear();
-  ownNick.clear();
   layoutQueue.clear();
   layoutTimer->stop();
 }
@@ -214,30 +302,84 @@ void Client::syncToCore(const QVariant &coreState) {
     disconnectFromCore();
     return;
   }
-  QVariantMap sessionState = coreState.toMap()["SessionState"].toMap();
-  QVariantMap sessData = sessionState["SessionData"].toMap();
 
-  foreach(QString key, sessData.keys()) {
+  QVariantMap sessionState = coreState.toMap()["SessionState"].toMap();
+
+  // store sessionData
+  QVariantMap sessData = sessionState["SessionData"].toMap();
+  foreach(QString key, sessData.keys())
     recvSessionData(key, sessData[key]);
-  }
-  QList<QVariant> coreBuffers = sessionState["Buffers"].toList();
+
+  // store Buffer details
+  QVariantList coreBuffers = sessionState["Buffers"].toList();
   /* make lookups by id faster */
   foreach(QVariant vid, coreBuffers) {
-    BufferId id = vid.value<BufferId>();
-    bufferIds[id.uid()] = id;  // make lookups by id faster
-    buffer(id);                // create all buffers, so we see them in the network views
+    buffer(vid.value<BufferInfo>()); // create all buffers, so we see them in the network views
   }
-  netsAwaitingInit = sessionState["Networks"].toStringList();
-  connectedToCore = true;
-  if(netsAwaitingInit.count()) {
+
+  // create networkInfo objects
+  QVariantList networkids = sessionState["Networks"].toList();
+  foreach(QVariant networkid, networkids) {
+    networkConnected(networkid.toUInt());
+  }
+  
+  instance()->connectedToCore = true;
+  updateCoreConnectionProgress();
+}
+
+void Client::updateCoreConnectionProgress() {
+  // we'll do this in three steps:
+  // 1.) networks
+  // 2.) channels
+  // 3.) ircusers
+
+  int numNets = networkInfos().count();
+  int numNetsWaiting = 0;
+
+  int numIrcUsers = 0;
+  int numIrcUsersWaiting = 0;
+
+  int numChannels = 0;
+  int numChannelsWaiting = 0;
+
+  foreach(NetworkInfo *net, networkInfos()) {
+    if(not net->initialized())
+      numNetsWaiting++;
+
+    numIrcUsers += net->ircUsers().count();
+    foreach(IrcUser *user, net->ircUsers()) {
+      if(not user->initialized())
+	numIrcUsersWaiting++;
+    }
+
+    numChannels += net->ircChannels().count();
+    foreach(IrcChannel *channel, net->ircChannels()) {
+      if(not channel->initialized())
+	numChannelsWaiting++;
+    }
+
+  }
+
+  if(numNetsWaiting > 0) {
     emit coreConnectionMsg(tr("Requesting network states..."));
-    emit coreConnectionProgress(0, netsAwaitingInit.count());
-    emit requestNetworkStates();
+    emit coreConnectionProgress(numNets - numNetsWaiting, numNets);
+    return;
   }
-  else {
-    emit coreConnectionProgress(1, 1);
-    emit connected();
+
+  if(numIrcUsersWaiting > 0) {
+    emit coreConnectionMsg(tr("Requesting User states..."));
+    emit coreConnectionProgress(numIrcUsers - numIrcUsersWaiting, numIrcUsers);
+    return;
   }
+
+  if(numChannelsWaiting > 0) {
+    emit coreConnectionMsg(tr("Requesting Channel states..."));
+    emit coreConnectionProgress(numChannels - numChannelsWaiting, numChannels);
+    return;
+  }
+
+  emit coreConnectionProgress(1,1);
+  emit connected();
 }
 
 void Client::recvSessionData(const QString &key, const QVariant &data) {
@@ -280,92 +422,42 @@ void Client::coreHasData() {
   }
 }
 
-void Client::networkConnected(QString net) {
-  Q_ASSERT(!netsAwaitingInit.contains(net));
-  netConnected[net] = true;
-  BufferId id = statusBufferId(net);
-  Buffer *b = buffer(id);
-  b->setActive(true);
-  //b->displayMsg(Message(id, Message::Server, tr("Connected.")));
-  // TODO buffersUpdated();
+void Client::networkConnected(uint netid) {
+  // TODO: create statusBuffer / switch to networkids
+  //BufferInfo id = statusBufferInfo(net);
+  //Buffer *b = buffer(id);
+  //b->setActive(true);
+
+  NetworkInfo *netinfo = new NetworkInfo(netid, signalProxy(), this);
+  connect(netinfo, SIGNAL(initDone()), this, SLOT(updateCoreConnectionProgress()));
+  connect(netinfo, SIGNAL(ircUserInitDone()), this, SLOT(updateCoreConnectionProgress()));
+  connect(netinfo, SIGNAL(ircChannelInitDone()), this, SLOT(updateCoreConnectionProgress()));
+  _networkInfo[netid] = netinfo;
 }
 
-void Client::networkDisconnected(QString net) {
-  foreach(BufferId id, buffers.keys()) {
-    if(id.network() != net) continue;
-    Buffer *b = buffer(id);
-    //b->displayMsg(Message(id, Message::Server, tr("Server disconnected."))); FIXME
-    b->setActive(false);
+void Client::networkDisconnected(uint networkid) {
+  foreach(Buffer *buffer, buffers()) {
+    if(buffer->bufferInfo().networkId() != networkid)
+      continue;
+
+    //buffer->displayMsg(Message(bufferid, Message::Server, tr("Server disconnected."))); FIXME
+    buffer->setActive(false);
   }
-  netConnected[net] = false;
-  if(netsAwaitingInit.contains(net)) {
-    qDebug() << "Network" << net << "disconnected while not yet initialized!";
-    netsAwaitingInit.removeAll(net);
-    emit coreConnectionProgress(netConnected.count(), netConnected.count() + netsAwaitingInit.count());
-    if(!netsAwaitingInit.count()) emit connected();
+  
+  Q_ASSERT(networkInfo(networkid));
+  if(!networkInfo(networkid)->initialized()) {
+    qDebug() << "Network" << networkid << "disconnected while not yet initialized!";
+    updateCoreConnectionProgress();
   }
 }
 
-void Client::updateBufferId(BufferId id) {
-  bufferIds[id.uid()] = id;  // make lookups by id faster
-  buffer(id);
+void Client::updateBufferInfo(BufferInfo id) {
+  buffer(id)->updateBufferInfo(id);
 }
 
-BufferId Client::bufferId(QString net, QString buf) {
-  foreach(BufferId id, buffers.keys()) {
-    if(id.network() == net && id.buffer() == buf) return id;
-  }
-  Q_ASSERT(false);  // should never happen!
-  return BufferId();
-}
-
-BufferId Client::statusBufferId(QString net) {
-  return bufferId(net, "");
-}
-
-
-Buffer * Client::buffer(BufferId id) {
-  Client *client = Client::instance();
-  if(!buffers.contains(id)) {
-    Buffer *b = new Buffer(id);
-    b->setOwnNick(ownNick[id.network()]);
-    connect(b, SIGNAL(userInput(BufferId, QString)), client, SLOT(userInput(BufferId, QString)));
-    connect(b, SIGNAL(bufferUpdated(Buffer *)), client, SIGNAL(bufferUpdated(Buffer *)));
-    connect(b, SIGNAL(bufferDestroyed(Buffer *)), client, SIGNAL(bufferDestroyed(Buffer *)));
-    connect(b, SIGNAL(bufferDestroyed(Buffer *)), client, SLOT(removeBuffer(Buffer *)));
-    buffers[id] = b;
-    emit client->bufferUpdated(b);
-  }
-  return buffers[id];
-}
-
-QList<BufferId> Client::allBufferIds() {
-  return buffers.keys();
-}
 
 void Client::removeBuffer(Buffer *b) {
-  buffers.remove(b->bufferId());
-  bufferIds.remove(b->bufferId().uid());
-}
-
-void Client::recvNetworkState(QString net, QVariant state) {
-  netsAwaitingInit.removeAll(net);
-  netConnected[net] = true;
-  setOwnNick(net, state.toMap()["OwnNick"].toString());
-  buffer(statusBufferId(net))->setActive(true);
-  QVariantMap t = state.toMap()["Topics"].toMap();
-  QVariantMap n = state.toMap()["Nicks"].toMap();
-  foreach(QVariant v, t.keys()) {
-    QString buf = v.toString();
-    BufferId id = bufferId(net, buf);
-    buffer(id)->setActive(true);
-    setTopic(net, buf, t[buf].toString());
-  }
-  foreach(QString nick, n.keys()) {
-    addNick(net, nick, n[nick].toMap());
-  }
-  emit coreConnectionProgress(netConnected.count(), netConnected.count() + netsAwaitingInit.count());
-  if(!netsAwaitingInit.count()) emit connected();
+  _buffers.remove(b->bufferInfo().uid());
 }
 
 void Client::recvMessage(const Message &msg) {
@@ -385,10 +477,9 @@ void Client::recvMessage(const Message &msg) {
 
 void Client::recvStatusMsg(QString /*net*/, QString /*msg*/) {
   //recvMessage(net, Message::server("", QString("[STATUS] %1").arg(msg)));
-
 }
 
-void Client::recvBacklogData(BufferId id, QVariantList msgs, bool /*done*/) {
+void Client::recvBacklogData(BufferInfo id, QVariantList msgs, bool /*done*/) {
   Buffer *b = buffer(id);
   foreach(QVariant v, msgs) {
     Message msg = v.value<Message>();
@@ -401,79 +492,19 @@ void Client::recvBacklogData(BufferId id, QVariantList msgs, bool /*done*/) {
 void Client::layoutMsg() {
   if(layoutQueue.count()) {
     Buffer *b = layoutQueue.takeFirst();  // TODO make this the current buffer
-    if(b->layoutMsg()) layoutQueue.append(b);  // Buffer has more messages in its queue --> Round Robin
+    if(b->layoutMsg())
+      layoutQueue.append(b);  // Buffer has more messages in its queue --> Round Robin
   }
-  if(!layoutQueue.count()) layoutTimer->stop();
+  
+  if(!layoutQueue.count())
+    layoutTimer->stop();
 }
 
 AbstractUiMsg *Client::layoutMsg(const Message &msg) {
   return instance()->mainUi->layoutMsg(msg);
 }
 
-void Client::userInput(BufferId id, QString msg) {
+void Client::userInput(BufferInfo id, QString msg) {
   emit sendInput(id, msg);
-}
-
-void Client::setTopic(QString net, QString buf, QString topic) {
-  BufferId id = bufferId(net, buf);
-  if(!netConnected[id.network()]) return;
-  Buffer *b = buffer(id);
-  b->setTopic(topic);
-  //if(!b->isActive()) {
-  //  b->setActive(true);
-  //  buffersUpdated();
-  //}
-}
-
-void Client::addNick(QString net, QString nick, QVariantMap props) {
-  if(!netConnected[net]) return;
-  nicks[net][nick] = props;
-  QVariantMap chans = props["Channels"].toMap();
-  QStringList c = chans.keys();
-  foreach(QString bufname, c) {
-    buffer(bufferId(net, bufname))->addNick(nick, props);
-  }
-}
-
-void Client::renameNick(QString net, QString oldnick, QString newnick) {
-  if(!netConnected[net]) return;
-  QStringList chans = nicks[net][oldnick]["Channels"].toMap().keys();
-  foreach(QString c, chans) {
-    buffer(bufferId(net, c))->renameNick(oldnick, newnick);
-  }
-  nicks[net][newnick] = nicks[net].take(oldnick);
-}
-
-void Client::updateNick(QString net, QString nick, QVariantMap props) {
-  if(!netConnected[net]) return;
-  QStringList oldchans = nicks[net][nick]["Channels"].toMap().keys();
-  QStringList newchans = props["Channels"].toMap().keys();
-  foreach(QString c, newchans) {
-    if(oldchans.contains(c)) buffer(bufferId(net, c))->updateNick(nick, props);
-    else buffer(bufferId(net, c))->addNick(nick, props);
-  }
-  foreach(QString c, oldchans) {
-    if(!newchans.contains(c)) buffer(bufferId(net, c))->removeNick(nick);
-  }
-  nicks[net][nick] = props;
-}
-
-void Client::removeNick(QString net, QString nick) {
-  if(!netConnected[net]) return;
-  QVariantMap chans = nicks[net][nick]["Channels"].toMap();
-  foreach(QString bufname, chans.keys()) {
-    buffer(bufferId(net, bufname))->removeNick(nick);
-  }
-  nicks[net].remove(nick);
-}
-
-void Client::setOwnNick(QString net, QString nick) {
-  if(!netConnected[net]) return;
-  ownNick[net] = nick;
-  foreach(BufferId id, buffers.keys()) {
-    if(id.network() == net) {
-      buffers[id]->setOwnNick(nick);
-    }
-  }
 }
 

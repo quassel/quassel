@@ -20,8 +20,10 @@
 
 #include <QColor>  // FIXME Dependency on QtGui!
 
-#include "client.h"
 #include "buffertreemodel.h"
+
+#include "bufferinfo.h"
+#include "client.h"
 #include "signalproxy.h"
 
 /*****************************************
@@ -33,7 +35,7 @@ BufferTreeItem::BufferTreeItem(Buffer *buffer, TreeItem *parent) : TreeItem(pare
 }
 
 uint BufferTreeItem::id() const {
-  return buf->bufferId().uid();
+  return buf->bufferInfo().uid();
 }
 
 void BufferTreeItem::setActivity(const Buffer::ActivityLevel &level) {
@@ -80,8 +82,8 @@ QVariant BufferTreeItem::data(int column, int role) const {
       return buf->bufferType();
     case BufferTreeModel::BufferActiveRole:
       return buf->isActive();
-    case BufferTreeModel::BufferIdRole:
-      return buf->bufferId().uid();
+    case BufferTreeModel::BufferInfoRole:
+      return buf->bufferInfo().uid();
     default:
       return QVariant();
   }
@@ -117,7 +119,7 @@ Qt::ItemFlags NetworkTreeItem::flags() const {
 BufferTreeModel::BufferTreeModel(QObject *parent)
   : TreeModel(BufferTreeModel::defaultHeader(), parent)
 {
-  Client::signalProxy()->attachSignal(this, SIGNAL(fakeUserInput(BufferId, QString)), SIGNAL(sendInput(BufferId, QString)));
+  Client::signalProxy()->attachSignal(this, SIGNAL(fakeUserInput(BufferInfo, QString)), SIGNAL(sendInput(BufferInfo, QString)));
 }
 
 QList<QVariant >BufferTreeModel::defaultHeader() {
@@ -158,7 +160,7 @@ QModelIndex BufferTreeModel::getOrCreateBufferItemIndex(Buffer *buffer) {
   NetworkTreeItem *networkItem = static_cast<NetworkTreeItem*>(networkItemIndex.internalPointer());
   TreeItem *bufferItem;
   
-  if(not(bufferItem = networkItem->childById(buffer->bufferId().uid()))) {
+  if(not(bufferItem = networkItem->childById(buffer->bufferInfo().uid()))) {
     int nextRow = networkItem->childCount();
     bufferItem = new BufferTreeItem(buffer, networkItem);
     
@@ -175,7 +177,7 @@ QStringList BufferTreeModel::mimeTypes() const {
   QStringList types;
   types << "application/Quassel/BufferItem/row"
     << "application/Quassel/BufferItem/network"
-    << "application/Quassel/BufferItem/bufferId";
+    << "application/Quassel/BufferItem/bufferInfo";
   return types;
 }
 
@@ -186,7 +188,7 @@ QMimeData *BufferTreeModel::mimeData(const QModelIndexList &indexes) const {
   
   mimeData->setData("application/Quassel/BufferItem/row", QByteArray::number(index.row()));
   mimeData->setData("application/Quassel/BufferItem/network", getBufferByIndex(index)->networkName().toUtf8());
-  mimeData->setData("application/Quassel/BufferItem/bufferId", QByteArray::number(getBufferByIndex(index)->bufferId().uid()));
+  mimeData->setData("application/Quassel/BufferItem/bufferInfo", QByteArray::number(getBufferByIndex(index)->bufferInfo().uid()));
   return mimeData;
 }
 
@@ -241,7 +243,7 @@ void BufferTreeModel::doubleClickReceived(const QModelIndex &clicked) {
   if(isBufferIndex(clicked)) {
     Buffer *buffer = getBufferByIndex(clicked);
     if(!buffer->isStatusBuffer()) 
-      emit fakeUserInput(buffer->bufferId(), QString("/join " + buffer->bufferName()));
+      emit fakeUserInput(buffer->bufferInfo(), QString("/join " + buffer->bufferName()));
   }
 }
 

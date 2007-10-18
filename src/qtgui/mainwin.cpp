@@ -29,6 +29,8 @@
 //#include "settingspage.h"
 #include "signalproxy.h"
 
+#include "topicwidget.h"
+
 MainWin::MainWin(QtGui *_gui, QWidget *parent) : QMainWindow(parent), gui(_gui) {
   ui.setupUi(this);
   setWindowTitle("Quassel IRC");
@@ -41,7 +43,7 @@ MainWin::MainWin(QtGui *_gui, QWidget *parent) : QMainWindow(parent), gui(_gui) 
 }
 
 void MainWin::init() {
-  Client::signalProxy()->attachSignal(this, SIGNAL(requestBacklog(BufferId, QVariant, QVariant)));
+  Client::signalProxy()->attachSignal(this, SIGNAL(requestBacklog(BufferInfo, QVariant, QVariant)));
   ui.bufferWidget->init();
 
   show();
@@ -55,9 +57,6 @@ void MainWin::init() {
   systray = new QSystemTrayIcon(this);
   systray->setIcon(QIcon(":/qirc-icon.png"));
   systray->show();
-
-  serverListDlg = new ServerListDlg(this);
-  serverListDlg->setVisible(serverListDlg->showOnStartup());
 
   //setupSettingsDlg();
 
@@ -79,6 +78,29 @@ void MainWin::init() {
   disconnectedFromCore();  // Disable menus and stuff
   showCoreConnectionDlg(true); // autoconnect if appropriate
   //ui.actionConnectCore->activate(QAction::Trigger);
+
+  serverListDlg = new ServerListDlg(this);
+  if(serverListDlg->showOnStartup()) {
+    showServerList();
+  }
+
+  // TESTING
+//   setCorner(Qt::TopLeftCorner, Qt::LeftDockWidgetArea);
+//   setCorner(Qt::BottomLeftCorner, Qt::LeftDockWidgetArea);
+
+//   setCorner(Qt::TopRightCorner, Qt::RightDockWidgetArea);
+//   setCorner(Qt::BottomRightCorner, Qt::RightDockWidgetArea);
+  
+//   QDockWidget *dock = new QDockWidget("Topic Dock", this);
+//   dock->setAllowedAreas(Qt::TopDockWidgetArea | Qt::BottomDockWidgetArea);
+
+//   TopicWidget *topicwidget = new TopicWidget(dock);
+//   dock->setWidget(topicwidget);
+  
+//   addDockWidget(Qt::TopDockWidgetArea, dock);
+
+//   ui.menuViews->addAction(dock->toggleViewAction());
+
 }
 
 MainWin::~MainWin() {
@@ -143,7 +165,7 @@ void MainWin::addBufferView(const QString &viewname, QAbstractItemModel *model, 
 }
 
 void MainWin::connectedToCore() {
-  foreach(BufferId id, Client::allBufferIds()) {
+  foreach(BufferInfo id, Client::allBufferInfos()) {
     emit requestBacklog(id, 100, -1);
   }
 
@@ -217,12 +239,12 @@ void MainWin::closeEvent(QCloseEvent *event)
   //}
 }
 
-void MainWin::showBuffer(BufferId id) {
+void MainWin::showBuffer(BufferInfo id) {
   showBuffer(Client::buffer(id));
 }
 
 void MainWin::showBuffer(Buffer *b) {
-  currentBuffer = b->bufferId().groupId();
+  currentBuffer = b->bufferInfo().groupId();
   //emit bufferSelected(b);
   //qApp->processEvents();
       

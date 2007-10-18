@@ -46,47 +46,6 @@ void Global::initIconMap() {
 }
 */
 
-/**************************************************************************************/
-BufferId::BufferId()
-  : _id(0),
-    _netid(0),
-    _gid(0),
-    _networkName(QString()),
-    _bufferName(QString()) {
-}
-
-BufferId::BufferId(uint id, uint networkid, uint gid, QString net, QString buf)
-  : _id(id),
-    _netid(networkid),
-    _gid(gid),
-    _networkName(net),
-    _bufferName(buf) {
-}
-
-QString BufferId::buffer() const {
-  if(isChannelName(_bufferName))
-    return _bufferName;
-  else
-    return nickFromMask(_bufferName);
-}
-
-QDataStream &operator<<(QDataStream &out, const BufferId &bufferId) {
-  out << bufferId._id << bufferId._netid << bufferId._gid << bufferId._networkName.toUtf8() << bufferId._bufferName.toUtf8();
-  return out;
-}
-
-QDataStream &operator>>(QDataStream &in, BufferId &bufferId) {
-  QByteArray n, b;
-  in >> bufferId._id >> bufferId._netid >> bufferId._gid >> n >> b;
-  bufferId._networkName = QString::fromUtf8(n);
-  bufferId._bufferName = QString::fromUtf8(b);
-  return in;
-}
-
-uint qHash(const BufferId &bufferid) {
-  return qHash(bufferid._id);
-}
-
 /**
  * Retrieves an icon determined by its symbolic name. The mapping shall later
  * be performed by a theme manager or something like that.

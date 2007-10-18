@@ -96,19 +96,19 @@ class Storage : public QObject {
     //! Get the unique NetworkId of the network for a user.
     /** \param user    The core user who owns this buffername
      *  \param network The network name
-     *  \return The BufferId corresponding to the given network and buffer name, or 0 if not found
+     *  \return The BufferInfo corresponding to the given network and buffer name, or 0 if not found
      */
     virtual uint getNetworkId(UserId user, const QString &network) = 0;
 
     /* Buffer handling */
 
-    //! Get the unique BufferId for the given combination of network and buffername for a user.
+    //! Get the unique BufferInfo for the given combination of network and buffername for a user.
     /** \param user    The core user who owns this buffername
      *  \param network The network name
      *  \param buffer  The buffer name (if empty, the net's status buffer is returned)
-     *  \return The BufferId corresponding to the given network and buffer name, or 0 if not found
+     *  \return The BufferInfo corresponding to the given network and buffer name, or 0 if not found
      */
-    virtual BufferId getBufferId(UserId user, const QString &network, const QString &buffer = "") = 0;
+    virtual BufferInfo getBufferInfo(UserId user, const QString &network, const QString &buffer = "") = 0;
 
     //! Request a list of all buffers known to a user since a certain point in time.
     /** This method is used to get a list of all buffers we have stored a backlog from.
@@ -116,9 +116,9 @@ class Storage : public QObject {
      *  since that point in time.
      *  \param user  The user whose buffers we request
      *  \param since If this is defined, older buffers will be ignored
-     *  \return A list of the BufferIds for all buffers as requested
+     *  \return A list of the BufferInfos for all buffers as requested
      */
-    virtual QList<BufferId> requestBuffers(UserId user, QDateTime since = QDateTime()) = 0;
+    virtual QList<BufferInfo> requestBuffers(UserId user, QDateTime since = QDateTime()) = 0;
 
     /* Message handling */
 
@@ -134,7 +134,7 @@ class Storage : public QObject {
      *  \param offset   Do not return (but DO count) messages with MsgId >= offset, if offset >= 0
      *  \return The requested list of messages
      */
-    virtual QList<Message> requestMsgs(BufferId buffer, int lastmsgs = -1, int offset = -1) = 0;
+    virtual QList<Message> requestMsgs(BufferInfo buffer, int lastmsgs = -1, int offset = -1) = 0;
 
     //! Request messages stored in a given buffer since a certain point in time.
     /** \param buffer   The buffer we request messages from
@@ -142,7 +142,7 @@ class Storage : public QObject {
      *  \param offset   Do not return messages with MsgId >= offset, if offset >= 0
      *  \return The requested list of messages
      */
-    virtual QList<Message> requestMsgs(BufferId buffer, QDateTime since, int offset = -1) = 0;
+    virtual QList<Message> requestMsgs(BufferInfo buffer, QDateTime since, int offset = -1) = 0;
 
     //! Request a range of messages stored in a given buffer.
     /** \param buffer   The buffer we request messages from
@@ -150,7 +150,7 @@ class Storage : public QObject {
      *  \param last     Return messages with first <= MsgId <= last
      *  \return The requested list of messages
      */
-    virtual QList<Message> requestMsgRange(BufferId buffer, int first, int last) = 0;
+    virtual QList<Message> requestMsgRange(BufferInfo buffer, int first, int last) = 0;
 
   public slots:
     //! This is just for importing the old file-based backlog */
@@ -161,8 +161,8 @@ class Storage : public QObject {
     virtual void importOldBacklog() = 0;
 
   signals:
-    //! Sent when a new BufferId is created, or an existing one changed somehow.
-    void bufferIdUpdated(BufferId);
+    //! Sent when a new BufferInfo is created, or an existing one changed somehow.
+    void bufferInfoUpdated(BufferInfo);
     //! Sent when a new user has been added
     void userAdded(UserId, const QString &username);
     //! Sent when a user has been renamed

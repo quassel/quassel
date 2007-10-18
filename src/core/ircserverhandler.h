@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-07 by The Quassel IRC Development Team             *
+ *   Copyright (C) 2005/06 by The Quassel Team                             *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,42 +18,43 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _QUASSELUI_H_
-#define _QUASSELUI_H_
+#ifndef _IRCSERVERHANDLER_H_
+#define _IRCSERVERHANDLER_H_
 
-#include <QObject>
-#include "message.h"
+#include "basichandler.h"
 
-class AbstractUiMsg {
-
-  public:
-    virtual ~AbstractUiMsg() {};
-    virtual QString sender() const = 0;
-    virtual QString text() const = 0;
-    virtual MsgId msgId() const = 0;
-    virtual BufferInfo bufferInfo() const = 0;
-    virtual QDateTime timeStamp() const = 0;
-
-};
-
-
-class AbstractUi : public QObject {
+class IrcServerHandler : public BasicHandler {
   Q_OBJECT
 
-  public:
-    virtual void init() {};  // called after the client is initialized
-    virtual AbstractUiMsg *layoutMsg(const Message &) = 0;
+public:
+  IrcServerHandler(Server *parent = 0);
+  ~IrcServerHandler();
 
-  protected slots:
-    virtual void connectedToCore() {}
-    virtual void disconnectedFromCore() {}
+  void handleServerMsg(QByteArray rawMsg);
+  
+public slots:
+  void handleJoin(QString, QStringList);
+  void handleKick(QString, QStringList);
+  void handleMode(QString, QStringList);
+  void handleNick(QString, QStringList);
+  void handleNotice(QString, QStringList);
+  void handlePart(QString, QStringList);
+  void handlePing(QString, QStringList);
+  void handlePrivmsg(QString, QStringList);
+  void handleQuit(QString, QStringList);
+  void handleTopic(QString, QStringList);
 
-  signals:
-    void connectToCore(const QVariantMap &connInfo);
-    void disconnectFromCore();
+  void handle001(QString, QStringList);   // RPL_WELCOME
+  void handle005(QString, QStringList);   // RPL_ISUPPORT
+  void handle331(QString, QStringList);   // RPL_NOTOPIC
+  void handle332(QString, QStringList);   // RPL_TOPIC
+  void handle333(QString, QStringList);   // Topic set by...
+  void handle353(QString, QStringList);   // RPL_NAMREPLY
+  void handle432(QString, QStringList);   // ERR_ERRONEUSNICKNAME
+  void handle433(QString, QStringList);   // ERR_NICKNAMEINUSE
 
+  void defaultHandler(QString cmd, QString prefix, QStringList params);
 };
-
 
 
 #endif

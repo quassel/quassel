@@ -122,7 +122,7 @@ uint ChatLine::msgId() const {
   return msg.buffer().uid();
 }
 
-BufferId ChatLine::bufferId() const {
+BufferInfo ChatLine::bufferInfo() const {
   return msg.buffer();
 }
 
