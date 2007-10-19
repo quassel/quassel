@@ -26,7 +26,7 @@ isEmpty(BUILD) {
 }
 
 contains(BUILD, all) {
-  BUILD += qtgui core mono
+  BUILD += qtclient core mono
 }
 
 contains(BUILD, mono) {
@@ -41,10 +41,10 @@ contains(BUILD, core) {
   BUILD_TARGETS *= core
 }
 
-contains(BUILD, qtgui) {
-  include(targets/qtgui.pri)
+contains(BUILD, qtclient) {
+  include(targets/qtclient.pri)
   BUILD_MODS *= $${MODULES}
-  BUILD_TARGETS *= qtgui
+  BUILD_TARGETS *= qtclient
 }
 
 # Now, we first build all needed modules...
