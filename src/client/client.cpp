@@ -265,7 +265,7 @@ void Client::coreSocketDisconnected() {
   foreach(NetworkInfo *networkinfo, _networkInfo.values()) {
     delete networkinfo;
   }
-  Q_ASSERT(_networkinfo.empty());
+  Q_ASSERT(_networkInfo.empty());
 
   coreConnectionInfo.clear();
   sessionData.clear();
