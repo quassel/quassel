@@ -23,9 +23,9 @@ MODPATH = $$SRCPATH/$$MODULE  # Path to the module files
 
 # Define build directories
 
-OBJECTS_DIR = $$MODNAME
-MOC_DIR =     $$MODNAME
-UI_DIR =      $$MODNAME
+OBJECTS_DIR = .$$MODNAME
+MOC_DIR =     .$$MODNAME
+UI_DIR =      .$$MODNAME
 
 # Load module settings (files etc.)
 
