@@ -144,10 +144,6 @@ Client::Client(QObject *parent)
 }
 
 Client::~Client() {
-// since we're now the parent of buffers this should be no longer needed
-  
-//   foreach(Buffer *buf, buffers.values()) delete buf; // this is done by disconnectFromCore()! FIXME?
-//   Q_ASSERT(!buffers.count());
 }
 
 void Client::init() {
@@ -237,16 +233,9 @@ void Client::connectToCore(const QVariantMap &conn) {
 }
 
 void Client::disconnectFromCore() {
-  if(clientMode == RemoteCore) {
-    socket->close();
-    //QAbstractSocket *sock = qobject_cast<QAbstractSocket*>(socket);
-    //Q_ASSERT(sock);
-    //sock->disconnectFromHost();
-  } else {
-    socket->close();
-    //disconnectFromLocalCore();
+  socket->close();
+  if(clientMode == LocalCore)
     coreSocketDisconnected();
-  }
 }
 
 void Client::coreSocketConnected() {
@@ -267,17 +256,17 @@ void Client::coreSocketDisconnected() {
 
   /* Clear internal data. Hopefully nothing relies on it at this point. */
   _bufferModel->clear();
-  // Buffers, if deleted, send a signal that causes their removal from buffers and bufferInfos.
-  // So we cannot simply go through the array in a loop (or use qDeleteAll) for deletion...
-  while(!_buffers.empty()) {
-    delete _buffers.take(_buffers.keys()[0]);
+
+  foreach(Buffer *buffer, _buffers.values()) {
+    delete buffer;
   }
   Q_ASSERT(_buffers.empty());
 
-  while(!_networkInfo.empty()) {
-    delete _networkInfo.take(_networkInfo.keys()[0]);
+  foreach(NetworkInfo *networkinfo, _networkInfo.values()) {
+    delete networkinfo;
   }
-    
+  Q_ASSERT(_networkinfo.empty());
+
   coreConnectionInfo.clear();
   sessionData.clear();
   layoutQueue.clear();
