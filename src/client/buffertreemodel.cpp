@@ -142,7 +142,7 @@ QModelIndex BufferTreeModel::getOrCreateNetworkItemIndex(Buffer *buffer) {
   QString net = buffer->networkName();
   TreeItem *networkItem;
 
-  if(not(networkItem = rootItem->childById(qHash(net)))) {
+  if(!(networkItem = rootItem->childById(qHash(net)))) {
     int nextRow = rootItem->childCount();
     networkItem = new NetworkTreeItem(net, rootItem);
     
@@ -160,7 +160,7 @@ QModelIndex BufferTreeModel::getOrCreateBufferItemIndex(Buffer *buffer) {
   NetworkTreeItem *networkItem = static_cast<NetworkTreeItem*>(networkItemIndex.internalPointer());
   TreeItem *bufferItem;
   
-  if(not(bufferItem = networkItem->childById(buffer->bufferInfo().uid()))) {
+  if(!(bufferItem = networkItem->childById(buffer->bufferInfo().uid()))) {
     int nextRow = networkItem->childCount();
     bufferItem = new BufferTreeItem(buffer, networkItem);
     

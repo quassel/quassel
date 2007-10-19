@@ -343,18 +343,18 @@ void Client::updateCoreConnectionProgress() {
   int numChannelsWaiting = 0;
 
   foreach(NetworkInfo *net, networkInfos()) {
-    if(not net->initialized())
+    if(! net->initialized())
       numNetsWaiting++;
 
     numIrcUsers += net->ircUsers().count();
     foreach(IrcUser *user, net->ircUsers()) {
-      if(not user->initialized())
+      if(! user->initialized())
 	numIrcUsersWaiting++;
     }
 
     numChannels += net->ircChannels().count();
     foreach(IrcChannel *channel, net->ircChannels()) {
-      if(not channel->initialized())
+      if(! channel->initialized())
 	numChannelsWaiting++;
     }
 

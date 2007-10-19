@@ -49,7 +49,7 @@ void TabCompleter::buildCompletionList() {
 }
 
 void TabCompleter::complete() {
-  if (not enabled) {
+  if (! enabled) {
     buildCompletionList();
     enabled = true;  
   }

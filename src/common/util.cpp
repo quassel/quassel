@@ -102,7 +102,8 @@ bool readDataFromDevice(QIODevice *dev, quint32 &blockSize, QVariant &item) {
 uint editingDistance(const QString &s1, const QString &s2) {
   uint n = s1.size()+1;
   uint m = s2.size()+1;
-  uint matrix[n][m];
+  //uint matrix[n][m];
+  QVector< QVector< uint > >matrix(n,QVector<uint>(m,0));
 
   for(uint i = 0; i < n; i++)
     matrix[i][0] = i;

@@ -89,7 +89,7 @@ int TreeItem::columnCount() const {
 }
 
 QVariant TreeItem::data(int column, int role) const {
-  if(role == Qt::DisplayRole and column < itemData.count())
+  if(role == Qt::DisplayRole && column < itemData.count())
     return itemData[column];
   else
     return QVariant();
