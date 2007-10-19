@@ -1,0 +1,22 @@
+Quassel IRC - Release Notes
+===========================
+
+This is a pre-release version. This means that a lot of stuff is not working
+yet, that copyright notices and licensing information are not always correct,
+and that stuff generelly breaks. We kindly ask you that you don't give out the
+source code or svn account information before the first public release. If you
+know interested persons, please point them to us and we will gladly make the
+source code available to them.
+
+Please don't hesitate to inform us about bugs you encounter (but you probably
+don't need to report obviously missing features such as a working topic bar
+or nicklist, we know that ourselves ;-)).
+
+The Quassel IRC Team can be contacted on Freenode/#quassel (or #quassel.de).
+We always welcome new users in our channels!
+
+The bugtracker can be found at <http://bugs.quassel-irc.org>.
+The dev team can be reached by email: devel@quassel-irc.org
+
+Thanks,
+~ The Quassel IRC Team
