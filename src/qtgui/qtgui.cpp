@@ -18,33 +18,33 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "qtgui.h"
+#include "qtui.h"
 
 #include "mainwin.h"
 
-QtGui::QtGui() : AbstractUi() {
+QtUi::QtUi() : AbstractUi() {
   mainWin = new MainWin(this);
   connect(mainWin, SIGNAL(connectToCore(const QVariantMap &)), this, SIGNAL(connectToCore(const QVariantMap &)));
   connect(mainWin, SIGNAL(disconnectFromCore()), this, SIGNAL(disconnectFromCore()));
 
 }
 
-QtGui::~QtGui() {
+QtUi::~QtUi() {
   delete mainWin;
 }
 
-void QtGui::init() {
+void QtUi::init() {
   mainWin->init();
 }
 
-AbstractUiMsg *QtGui::layoutMsg(const Message &msg) {
+AbstractUiMsg *QtUi::layoutMsg(const Message &msg) {
   return mainWin->layoutMsg(msg);
 }
 
-void QtGui::connectedToCore() {
+void QtUi::connectedToCore() {
   mainWin->connectedToCore();
 }
 
-void QtGui::disconnectedFromCore() {
+void QtUi::disconnectedFromCore() {
   mainWin->disconnectedFromCore();
 }

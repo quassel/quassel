@@ -7,10 +7,8 @@ src/client/buffertreemodel.cpp
 src/client/buffertreemodel.h
 src/client/client.cpp
 src/client/client.h
-src/client/CMakeLists.txt
 src/client/treemodel.cpp
 src/client/treemodel.h
-src/CMakeLists.txt
 src/common
 src/common/build_core.cpp
 src/common/build_mono.cpp
@@ -54,7 +52,6 @@ src/qtgui/chatline.cpp
 src/qtgui/chatline.h
 src/qtgui/chatwidget.cpp
 src/qtgui/chatwidget.h
-src/qtgui/CMakeLists.txt
 src/qtgui/coreconnectdlg.cpp
 src/qtgui/coreconnectdlg.h
 src/qtgui/identities.cpp

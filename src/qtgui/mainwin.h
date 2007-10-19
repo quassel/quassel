@@ -23,22 +23,22 @@
 
 #include "ui_mainwin.h"
 
-#include "qtgui.h"
+#include "qtui.h"
 #include "bufferviewfilter.h"
 
 class ServerListDlg;
 class CoreConnectDlg;
 class Buffer;
 class SettingsDlg;
-class QtGui;
+class QtUi;
 class Message;
 
-//!\brief The main window of Quassel's QtGui.
+//!\brief The main window of Quassel's QtUi.
 class MainWin : public QMainWindow {
   Q_OBJECT
 
   public:
-    MainWin(QtGui *gui, QWidget *parent = 0);
+    MainWin(QtUi *gui, QWidget *parent = 0);
     virtual ~MainWin();
 
     void init();
@@ -73,7 +73,7 @@ class MainWin : public QMainWindow {
 
   private:
     Ui::MainWin ui;
-    QtGui *gui;
+    QtUi *gui;
 
     void setupMenus();
     void setupViews();
@@ -92,7 +92,7 @@ class MainWin : public QMainWindow {
 
     QList<QDockWidget *> netViews;
 
-    friend class QtGui;
+    friend class QtUi;
 };
 
 #endif

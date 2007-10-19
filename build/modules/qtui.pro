@@ -1,3 +1,2 @@
-MODULE = qtgui
+MODULE = qtui
 include(module.pri)
-

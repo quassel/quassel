@@ -28,10 +28,10 @@
 #include "core.h"
 #include "message.h"
 
-#elif defined BUILD_QTGUI
+#elif defined BUILD_QTUI
 #include <QApplication>
 #include "client.h"
-#include "qtgui.h"
+#include "qtui.h"
 #include "style.h"
 
 #elif defined BUILD_MONO
@@ -39,7 +39,7 @@
 #include "client.h"
 #include "core.h"
 #include "coresession.h"
-#include "qtgui.h"
+#include "qtui.h"
 #include "style.h"
 
 #else
@@ -69,7 +69,7 @@ int main(int argc, char **argv) {
 #if defined BUILD_CORE
   Global::runMode = Global::CoreOnly;
   QCoreApplication app(argc, argv);
-#elif defined BUILD_QTGUI
+#elif defined BUILD_QTUI
   Global::runMode = Global::ClientOnly;
   QApplication app(argc, argv);
 #else
@@ -88,7 +88,7 @@ int main(int argc, char **argv) {
   QCoreApplication::setOrganizationName("Quassel IRC Development Team");
 
   Global::quasselDir = QDir::homePath() + "/.quassel";
-#ifndef BUILD_QTGUI
+#ifndef BUILD_QTUI
   Core::instance();  // create and init the core
 #endif
 
@@ -96,7 +96,7 @@ int main(int argc, char **argv) {
 
 #ifndef BUILD_CORE
   Style::init();
-  QtGui *gui = new QtGui();
+  QtUi *gui = new QtUi();
   Client::init(gui);
   gui->init();
 #endif
@@ -110,14 +110,14 @@ int main(int argc, char **argv) {
   delete gui;
   Client::destroy();
 #endif
-#ifndef BUILD_QTGUI
+#ifndef BUILD_QTUI
   Core::destroy();
 #endif
 
   return exitCode;
 }
 
-#ifdef BUILD_QTGUI
+#ifdef BUILD_QTUI
 QVariant Client::connectToLocalCore(QString, QString) { return QVariant(); }
 void Client::disconnectFromLocalCore() {}
 

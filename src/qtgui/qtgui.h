@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _QTGUI_H_
-#define _QTGUI_H_
+#ifndef _QTUI_H_
+#define _QTUI_H_
 
 #include "quasselui.h"
 class MainWin;
@@ -28,12 +28,12 @@ class MainWin;
 /** This is basically a wrapper around MainWin, which is necessary because we cannot derive MainWin
  *  from both QMainWindow and AbstractUi (because of multiple inheritance of QObject).
  */
-class QtGui : public AbstractUi {
+class QtUi : public AbstractUi {
   Q_OBJECT
 
   public:
-    QtGui();
-    ~QtGui();
+    QtUi();
+    ~QtUi();
     void init();
     AbstractUiMsg *layoutMsg(const Message &);
 

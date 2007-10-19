@@ -31,7 +31,7 @@
 
 #include "topicwidget.h"
 
-MainWin::MainWin(QtGui *_gui, QWidget *parent) : QMainWindow(parent), gui(_gui) {
+MainWin::MainWin(QtUi *_gui, QWidget *parent) : QMainWindow(parent), gui(_gui) {
   ui.setupUi(this);
   setWindowTitle("Quassel IRC");
   //setWindowTitle(QString::fromUtf8("Κυασελ Εγαρζη"));
