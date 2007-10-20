@@ -39,7 +39,8 @@ MainWin::MainWin(QtUi *_gui, QWidget *parent) : QMainWindow(parent), gui(_gui) {
   setWindowIconText("Quassel IRC");
 
   statusBar()->showMessage(tr("Waiting for core..."));
-  
+  serverListDlg = new ServerListDlg(this);
+  settingsDlg = new SettingsDlg(this);
 }
 
 void MainWin::init() {
@@ -79,7 +80,6 @@ void MainWin::init() {
   showCoreConnectionDlg(true); // autoconnect if appropriate
   //ui.actionConnectCore->activate(QAction::Trigger);
 
-  serverListDlg = new ServerListDlg(this);
   if(serverListDlg->showOnStartup()) {
     showServerList();
   }
