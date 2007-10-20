@@ -96,7 +96,10 @@ void BufferView::keyPressEvent(QKeyEvent *event) {
 
 // ensure that newly inserted network nodes are expanded per default
 void BufferView::rowsInserted(const QModelIndex & parent, int start, int end) {
-  if(parent == QModelIndex())
-    setExpanded(model()->index(start, 0, parent), true);
   QTreeView::rowsInserted(parent, start, end);
+  if(model()->rowCount(parent) == 1 && parent != QModelIndex()) {
+    // without updating the parent the expand will have no effect... Qt Bug?
+    update(parent); 
+    expand(parent);
+  }
 }
