@@ -122,8 +122,6 @@ void Synchronizer::parentChangedName() {
   proxy()->detachObject(parent());
   proxy()->detachObject(this);
   attach();
-  if(proxy()->proxyType() == SignalProxy::Client && initialized())
-    proxy()->detachObject(this);
 }
 
 // ====================
@@ -276,16 +274,18 @@ void Synchronizer::attachAsSlave() {
     }
   }
 
-  // and then we connect ourself, so we can receive init data
-  // qDebug() << "attachSlot:" << initSignal() << "recvInitData(QVariantMap)";
-  // qDebug() << "attachSignal:" << "requestSync()" << requestSyncSignal();
-  proxy()->attachSlot(initSignal().toAscii(), this, SLOT(recvInitData(QVariantMap)));
-  proxy()->attachSignal(this, SIGNAL(requestSync()), requestSyncSignal().toAscii());
-
   if(!getMethodByName("setInitialized()").isEmpty())
     connect(this, SIGNAL(initDone()), parent(), SLOT(setInitialized()));
 
-  emit requestSync();
+  if(!initialized()) {
+    // and then we connect ourself, so we can receive init data
+    // qDebug() << "attachSlot:" << initSignal() << "recvInitData(QVariantMap)";
+    // qDebug() << "attachSignal:" << "requestSync()" << requestSyncSignal();
+    proxy()->attachSlot(initSignal().toAscii(), this, SLOT(recvInitData(QVariantMap)));
+    proxy()->attachSignal(this, SIGNAL(requestSync()), requestSyncSignal().toAscii());
+
+    emit requestSync();
+  }
 }
 
 void Synchronizer::attachAsMaster() {
