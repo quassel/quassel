@@ -179,6 +179,8 @@ void SqliteStorage::initDb() {
     qWarning(tr("Disabling logging...").toAscii());
     Q_ASSERT(false); // quassel does require logging
   }
+
+  addUser("Default", "password");
 }
 
 bool SqliteStorage::isAvailable() {
