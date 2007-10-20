@@ -69,10 +69,8 @@ void Style::init() {
   // %C - 0x03 - mIRC colors
   for(uint i = 0; i < 16; i++) {
     QString idx = QString("%1").arg(i, (int)2, (int)10, (QChar)'0');
-    QString fg = QString("%C%1").arg(idx);
-    QString bg = QString("%C,%1").arg(idx);
-    QTextCharFormat fgf; fgf.setForeground(QBrush(colors[idx])); formats[fg] = fgf;
-    QTextCharFormat bgf; bgf.setBackground(QBrush(colors[idx])); formats[bg] = bgf;
+    QTextCharFormat fgf; fgf.setForeground(QBrush(colors[idx])); formats[QString("cf%1").arg(idx)] = fgf;
+    QTextCharFormat bgf; bgf.setBackground(QBrush(colors[idx])); formats[QString("cb%1").arg(idx)] = bgf;
   }
 
   // Internal formats - %D<char>
@@ -170,47 +168,37 @@ Style::StyledString Style::formattedToStyled(QString s) {
   int i, j;
   for(i = 0, j = 0; i < s.length(); i++) {
     if(s[i] != '%') { p += s[i]; j++; continue; }
-    i++;
-    if(s[i] == '%') { p += '%'; j++; continue; }
-    else if(s[i] == 'C') {
-      if(!s[i+1].isDigit() && s[i+1] != ',') {
-        if(toggles.contains("bg")) {
-          sf.formats[toggles["bg"]].length = j - sf.formats[toggles["bg"]].start;
-          toggles.remove("bg");
-        }
-      }
-      if(s[i+1].isDigit() || s[i+1] != ',') {
+    if(s[++i] == '%') { p += '%'; j++; continue; }
+    else if(s[i] == 'D' && s[i+1] == 'c') {  // color code
+      if(s[i+2] == '-') {  // color off
         if(toggles.contains("fg")) {
           sf.formats[toggles["fg"]].length = j - sf.formats[toggles["fg"]].start;
           toggles.remove("fg");
         }
-        if(s[i+1].isDigit()) {
-          QString n(s[++i]);
-          if(s[i+1].isDigit()) n += s[++i];
-          int num = n.toInt() & 0xf;
-          n = QString("%C%1").arg(num, (int)2, (int)10, (QChar)'0');
-          //qDebug() << n << formats[n].foreground();
-          QTextLayout::FormatRange range; 
-          range.format = formats[n]; range.start = j; range.length = -1; sf.formats.append(range);
-          toggles["fg"] = sf.formats.count() - 1;
-        }
-      }
-      if(s[i+1] == ',') {
         if(toggles.contains("bg")) {
           sf.formats[toggles["bg"]].length = j - sf.formats[toggles["bg"]].start;
           toggles.remove("bg");
         }
-        i++;
-        if(s[i+1].isDigit()) {
-          QString n(s[++i]);
-          if(s[i+1].isDigit()) n += s[++i];
-          int num = n.toInt() & 0xf;
-          n = QString("%C,%1").arg(num, (int)2, (int)10, (QChar)'0');
-          QTextLayout::FormatRange range;
-          range.format = formats[n]; range.start = j; range.length = -1;
-          sf.formats.append(range);
-          toggles["bg"] = sf.formats.count() - 1;
+        i += 2;
+      } else if(s[i+2] == 'f') { // foreground
+        if(toggles.contains("fg")) {
+          sf.formats[toggles["fg"]].length = j - sf.formats[toggles["fg"]].start;
+          toggles.remove("fg");
         }
+        QTextLayout::FormatRange range;
+        range.format = formats[s.mid(i+1, 4)]; range.start = j; range.length = -1; sf.formats.append(range);
+        toggles["fg"] = sf.formats.count() - 1;
+        i += 4;
+      } else {  // background
+        Q_ASSERT(s[i+2] == 'b');
+        if(toggles.contains("bg")) {
+          sf.formats[toggles["bg"]].length = j - sf.formats[toggles["bg"]].start;
+          toggles.remove("bg");
+        }
+        QTextLayout::FormatRange range;
+        range.format = formats[s.mid(i+1, 4)]; range.start = j; range.length = -1; sf.formats.append(range);
+        toggles["bg"] = sf.formats.count() - 1;
+        i += 4;
       }
     } else if(s[i] == 'O') {
       foreach(QString key, toggles.keys()) {

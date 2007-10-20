@@ -69,12 +69,43 @@ QDateTime Message::timeStamp() const {
 QString Message::mircToInternal(QString mirc) {
   mirc.replace('%', "%%");      // escape % just to be sure
   mirc.replace('\x02', "%B");
-  mirc.replace('\x03', "%C");
   mirc.replace('\x0f', "%O");
   mirc.replace('\x12', "%R");
   mirc.replace('\x16', "%R");
   mirc.replace('\x1d', "%S");
   mirc.replace('\x1f', "%U");
+
+  // Now we bring the color codes (\x03) in a sane format that can be parsed more easily later.
+  // %Dcfxx is foreground, %Dcbxx is background color, where xx is a 2 digit dec number denoting the color code.
+  // %Dc- turns color off.
+  // Note: We use the "mirc standard" as described in <http://www.mirc.co.uk/help/color.txt>.
+  //       This means that we don't accept something like \x03,5 (even though others, like WeeChat, do).
+  int pos = 0;
+  for(;;) {
+    pos = mirc.indexOf('\x03', pos);
+    if(pos < 0) break; // no more mirc color codes
+    QString ins, num;
+    int l = mirc.length();
+    int i = pos + 1;
+    // check for fg color
+    if(i < l && mirc[i].isDigit()) {
+      num = mirc[i++];
+      if(i < l && mirc[i].isDigit()) num.append(mirc[i++]);
+      else num.prepend('0');
+      ins = QString("%Dcf%1").arg(num);
+
+      if(i+1 < l && mirc[i] == ',' && mirc[i+1].isDigit()) {
+        i++;
+        num = mirc[i++];
+        if(i < l && mirc[i].isDigit()) num.append(mirc[i++]);
+        else num.prepend('0');
+        ins += QString("%Dcb%1").arg(num);
+      }
+    } else {
+      ins = "%Dc-";
+    }
+    mirc.replace(pos, i-pos, ins);
+  }
   return mirc;
 }
 
