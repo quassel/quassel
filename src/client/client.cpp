@@ -199,7 +199,6 @@ bool Client::isConnected() {
 void Client::connectToCore(const QVariantMap &conn) {
   // TODO implement SSL
   coreConnectionInfo = conn;
-  
   if(isConnected()) {
     emit coreConnectionError(tr("Already connected to Core!"));
     return;

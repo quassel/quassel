@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include <QDebug>
+#include <QtGui>
 #include "chatwidget.h"
 
 ChatWidget::ChatWidget(QWidget *parent) : QTextEdit(parent) {
@@ -58,6 +59,16 @@ void ChatWidget::prependChatLine(ChatLine *line) {
   moveCursor(QTextCursor::Start);
   insertHtml(line->text());
   setTextCursor(cursor);
+  QTextCharFormat fmt;
+  fmt.setForeground(QBrush("#eeff33"));
+  QFont font("Courier", 8);
+  font.setFixedPitch(true); qDebug() << font.family();
+  fmt.setFont(font);
+  //fmt.setBackground(QBrush("#112233"));
+  QTextCursor crsor(document());
+  crsor.movePosition(QTextCursor::End, QTextCursor::KeepAnchor);
+  crsor.select(QTextCursor::Document);
+  crsor.setCharFormat(fmt);
 }
 
 void ChatWidget::prependChatLines(QList<ChatLine *> list) {

@@ -208,7 +208,6 @@ void CoreConnectDlg::doAutoConnect() {
 
 void CoreConnectDlg::doConnect() {
   accountChanged(); // save current account info
-
   QVariantMap conninfo;
   ui.stackedWidget->setCurrentIndex(1);
   if(ui.internalCore->isChecked()) {

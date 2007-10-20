@@ -68,6 +68,6 @@ QString ChatLine::htmlTimeStamp() const {
 
 
 QString ChatLine::formattedToHtml(const QString &f) {
-  
+   
   return f;
 }
