@@ -196,6 +196,18 @@ bool Client::isConnected() {
   return instance()->connectedToCore;
 }
 
+void Client::fakeInput(uint bufferUid, QString message) {
+  Buffer *buff = buffer(bufferUid);
+  if(!buff)
+    qWarning() << "No Buffer with uid" << bufferUid << "can't send Input" << message;
+  else
+    emit instance()->sendInput(buff->bufferInfo(), message);
+}
+
+void Client::fakeInput(BufferInfo bufferInfo, QString message) {
+  fakeInput(bufferInfo, message);
+}
+
 void Client::connectToCore(const QVariantMap &conn) {
   // TODO implement SSL
   coreConnectionInfo = conn;

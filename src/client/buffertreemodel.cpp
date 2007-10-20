@@ -79,10 +79,10 @@ QVariant BufferTreeItem::data(int column, int role) const {
     case BufferTreeModel::BufferNameRole:
       return buf->bufferName();
     case BufferTreeModel::BufferTypeRole:
-      return buf->bufferType();
+      return int(buf->bufferType());
     case BufferTreeModel::BufferActiveRole:
       return buf->isActive();
-    case BufferTreeModel::BufferInfoRole:
+    case BufferTreeModel::BufferUidRole:
       return buf->bufferInfo().uid();
     default:
       return QVariant();
@@ -235,15 +235,6 @@ void BufferTreeModel::changeCurrent(const QModelIndex &current, const QModelInde
     bufferActivity(Buffer::NoActivity, currentBuffer);
     emit bufferSelected(currentBuffer);
     emit selectionChanged(current);
-  }
-}
-
-// we received a double click on a buffer, so we're going to join it
-void BufferTreeModel::doubleClickReceived(const QModelIndex &clicked) {
-  if(isBufferIndex(clicked)) {
-    Buffer *buffer = getBufferByIndex(clicked);
-    if(!buffer->isStatusBuffer()) 
-      emit fakeUserInput(buffer->bufferInfo(), QString("/join " + buffer->bufferName()));
   }
 }
 

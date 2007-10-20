@@ -18,7 +18,9 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include "client.h"
 #include "bufferview.h"
+#include "buffertreemodel.h"
 
 /*****************************************
 * The TreeView showing the Buffers
@@ -46,15 +48,13 @@ void BufferView::init() {
   connect(selectionModel(), SIGNAL(currentChanged(const QModelIndex &, const QModelIndex &)),
           model(), SLOT(changeCurrent(const QModelIndex &, const QModelIndex &)));
   
-  connect(this, SIGNAL(doubleClicked(const QModelIndex &)),
-          model(), SLOT(doubleClickReceived(const QModelIndex &)));
-  
   connect(model(), SIGNAL(selectionChanged(const QModelIndex &)),
           this, SLOT(select(const QModelIndex &)));
   
   connect(this, SIGNAL(selectionChanged(const QModelIndex &, QItemSelectionModel::SelectionFlags)),
           selectionModel(), SLOT(select(const QModelIndex &, QItemSelectionModel::SelectionFlags)));
 
+  connect(this, SIGNAL(activated(QModelIndex)), this, SLOT(joinChannel(QModelIndex)));
 }
 
 void BufferView::setFilteredModel(QAbstractItemModel *model, BufferViewFilter::Modes mode, QStringList nets) {
@@ -81,6 +81,15 @@ void BufferView::dropEvent(QDropEvent *event) {
   }
   // in the case that the filter did not accept the event or if it's a merge
   QTreeView::dropEvent(event);    
+}
+
+void BufferView::joinChannel(const QModelIndex &index) {
+  Buffer::Type bufferType = (Buffer::Type)index.data(BufferTreeModel::BufferTypeRole).toInt();
+
+  if(bufferType != Buffer::ChannelBuffer)
+    return;
+  
+  Client::fakeInput(index.data(BufferTreeModel::BufferUidRole).toUInt(), QString("/JOIN %1").arg(index.sibling(index.row(), 0).data().toString()));
 }
 
 void BufferView::keyPressEvent(QKeyEvent *event) {

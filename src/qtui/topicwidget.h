@@ -27,11 +27,14 @@
 
 class TopicWidget : public QWidget {
   Q_OBJECT
+  Q_PROPERTY(QString topic READ topic WRITE setTopic STORED false)
 
 public:
   TopicWidget(QWidget *parent = 0);
   virtual ~TopicWidget();
 
+  QString topic() const;
+  void setTopic(const QString &newtopic);
   
 private:
   Ui::TopicWidget ui;

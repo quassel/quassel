@@ -37,9 +37,6 @@ BufferViewFilter::BufferViewFilter(QAbstractItemModel *model, const Modes &filte
   
   connect(this, SIGNAL(currentChanged(const QModelIndex &, const QModelIndex &)),
           model, SLOT(changeCurrent(const QModelIndex &, const QModelIndex &)));
-  
-  connect(this, SIGNAL(doubleClicked(const QModelIndex &)),
-          model, SLOT(doubleClickReceived(const QModelIndex &)));
 }
 
 void BufferViewFilter::invalidateMe() {
@@ -99,7 +96,7 @@ void BufferViewFilter::removeBuffer(const QModelIndex &index) {
   if(index.parent() == QModelIndex())
     return; // only child elements can be deleted
   
-  uint bufferuid = index.data(BufferTreeModel::BufferInfoRole).toUInt();
+  uint bufferuid = index.data(BufferTreeModel::BufferUidRole).toUInt();
   if(customBuffers.contains(bufferuid)) {
     beginRemoveRows(index.parent(), index.row(), index.row());
     customBuffers.removeAt(customBuffers.indexOf(bufferuid));
@@ -121,7 +118,7 @@ bool BufferViewFilter::filterAcceptBuffer(const QModelIndex &source_bufferIndex)
   if((mode & NoInactive) && !isActive) return false;
 
   if((mode & FullCustom)) {
-    uint bufferuid = source_bufferIndex.data(BufferTreeModel::BufferInfoRole).toUInt();
+    uint bufferuid = source_bufferIndex.data(BufferTreeModel::BufferUidRole).toUInt();
     if(!customBuffers.contains(bufferuid))
       return false;
   }
@@ -138,7 +135,7 @@ bool BufferViewFilter::filterAcceptNetwork(const QModelIndex &source_index) cons
     int childcount = sourceModel()->rowCount(source_index);
     for(int rowid = 0; rowid < childcount; rowid++) {
       QModelIndex child = sourceModel()->index(rowid, 0, source_index);
-      uint bufferuid = child.data(BufferTreeModel::BufferInfoRole).toUInt();
+      uint bufferuid = child.data(BufferTreeModel::BufferUidRole).toUInt();
       if(customBuffers.contains(bufferuid))
         return true;
     }

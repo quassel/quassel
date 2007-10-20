@@ -26,7 +26,14 @@ TopicWidget::TopicWidget(QWidget *parent)
   : QWidget(parent)
 {
   ui.setupUi(this);
-  ui.topicLineEdit->setText("+++ DUMMY TOPIC +++ DUMMY TOPIC +++");
+}
+
+QString TopicWidget::topic() const {
+  return ui.topicLineEdit->text();
+}
+
+void TopicWidget::setTopic(const QString &newtopic) {
+  ui.topicLineEdit->setText(newtopic);
 }
 
 TopicWidget::~TopicWidget() {

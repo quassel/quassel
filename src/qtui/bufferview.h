@@ -46,8 +46,9 @@ signals:
   void removeBuffer(const QModelIndex &);
   void selectionChanged(const QModelIndex &, QItemSelectionModel::SelectionFlags);
   
-protected:
+private slots:
   void dropEvent(QDropEvent *);
+  void joinChannel(const QModelIndex &index);
   void keyPressEvent(QKeyEvent *);
   void rowsInserted (const QModelIndex & parent, int start, int end);
 };

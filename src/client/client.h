@@ -66,6 +66,9 @@ public:
 
   static bool isConnected();
 
+  static void fakeInput(uint bufferUid, QString message);
+  static void fakeInput(BufferInfo bufferInfo, QString message);
+  
   static void storeSessionData(const QString &key, const QVariant &data);
   static QVariant retrieveSessionData(const QString &key, const QVariant &def = QVariant());
   static QStringList sessionDataKeys();

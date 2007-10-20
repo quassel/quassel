@@ -79,7 +79,7 @@ public:
     BufferTypeRole = Qt::UserRole,
     BufferActiveRole,
     BufferNameRole,
-    BufferInfoRole
+    BufferUidRole
   };
   
   BufferTreeModel(QObject *parent = 0);
@@ -89,7 +89,6 @@ public slots:
   void bufferUpdated(Buffer *);    
   void changeCurrent(const QModelIndex &, const QModelIndex &);
   void selectBuffer(Buffer *buffer);
-  void doubleClickReceived(const QModelIndex &);
   void bufferActivity(Buffer::ActivityLevel, Buffer *buffer);
   
 signals:
