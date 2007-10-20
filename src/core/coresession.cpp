@@ -106,9 +106,9 @@ void CoreSession::connectToNetwork(QString network) {
   uint networkid = getNetworkId(network);
   if(!servers.contains(networkid)) {
     Server *server = new Server(userId(), networkid, network);
+    servers[networkid] = server;
     attachServer(server);
     server->start();
-    servers[networkid] = server;
   }
   emit connectToIrc(network);
 }
