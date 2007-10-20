@@ -85,10 +85,10 @@ Buffer *Client::buffer(uint bufferUid) {
 
 Buffer *Client::buffer(BufferInfo id) {
   Buffer *buff = buffer(id.uid());
-  
+
   if(!buff) {
     Client *client = Client::instance();
-    Buffer *buff = new Buffer(id, client);
+    buff = new Buffer(id, client);
 
     connect(buff, SIGNAL(userInput(BufferInfo, QString)),
 	    client, SLOT(userInput(BufferInfo, QString)));
@@ -102,7 +102,7 @@ Buffer *Client::buffer(BufferInfo id) {
     client->_buffers[id.uid()] = buff;
     emit client->bufferUpdated(buff);
   }
-  
+  Q_ASSERT(buff);
   return buff;
 }
 
