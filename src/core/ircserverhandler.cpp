@@ -175,6 +175,9 @@ void IrcServerHandler::handleKick(QString prefix, QStringList params) {
 }
 
 void IrcServerHandler::handleMode(QString prefix, QStringList params) {
+  Q_UNUSED(prefix)
+  Q_UNUSED(params)
+    
 //   if(isChannelName(params[0])) {
 //     // TODO only channel-user modes supported by now
 //     QString prefixes = serverSupports["PrefixModes"].toString();
@@ -217,10 +220,11 @@ void IrcServerHandler::handleNick(QString prefix, QStringList params) {
   QString oldnick = ircuser->nick();
 
   foreach(QString channel, ircuser->channels()) {
-    if(networkInfo()->isMyNick(oldnick))
-      emit displayMsg(Message::Nick, channel, newnick, prefix);
-    else
+    if(networkInfo()->isMyNick(oldnick)) {
       emit displayMsg(Message::Nick, channel, newnick, newnick);
+    } else {
+      emit displayMsg(Message::Nick, channel, newnick, prefix);
+    }
   }
   ircuser->setNick(newnick);
 }
@@ -247,6 +251,7 @@ void IrcServerHandler::handlePart(QString prefix, QStringList params) {
 }
 
 void IrcServerHandler::handlePing(QString prefix, QStringList params) {
+  Q_UNUSED(prefix)
   emit putCmd("PONG", params);
 }
 
@@ -326,6 +331,7 @@ void IrcServerHandler::handle001(QString prefix, QStringList params) {
 /* RPL_ISUPPORT */
 // TODO Complete 005 handling, also use sensible defaults for non-sent stuff
 void IrcServerHandler::handle005(QString prefix, QStringList params) {
+  Q_UNUSED(prefix)
   QString rpl_isupport_suffix = params.takeLast();
   if(rpl_isupport_suffix.toLower() != QString("are supported by this server")) {
     qWarning() << "Received invalid RPL_ISUPPORT! Suffix is:" << rpl_isupport_suffix << "Excpected: are supported by this server";
@@ -342,23 +348,27 @@ void IrcServerHandler::handle005(QString prefix, QStringList params) {
 
 /* RPL_NOTOPIC */
 void IrcServerHandler::handle331(QString prefix, QStringList params) {
+  Q_UNUSED(prefix)
   networkInfo()->ircChannel(params[0])->setTopic(QString());
   emit displayMsg(Message::Server, params[0], tr("No topic is set for %1.").arg(params[0]));
 }
 
 /* RPL_TOPIC */
 void IrcServerHandler::handle332(QString prefix, QStringList params) {
+  Q_UNUSED(prefix)
   networkInfo()->ircChannel(params[0])->setTopic(params[1]);
   emit displayMsg(Message::Server, params[0], tr("Topic for %1 is \"%2\"").arg(params[0]).arg(params[1]));
 }
 
 /* Topic set by... */
 void IrcServerHandler::handle333(QString prefix, QStringList params) {
+  Q_UNUSED(prefix)
   emit displayMsg(Message::Server, params[0], tr("Topic set by %1 on %2").arg(params[1]).arg(QDateTime::fromTime_t(params[2].toUInt()).toString()));
 }
 
 /* RPL_NAMREPLY */
 void IrcServerHandler::handle353(QString prefix, QStringList params) {
+  Q_UNUSED(prefix)
   params.removeFirst(); // either "=", "*" or "@" indicating a public, private or secret channel
   QString channelname = params.takeFirst();
 
@@ -380,6 +390,8 @@ void IrcServerHandler::handle353(QString prefix, QStringList params) {
 
 /* ERR_ERRONEUSNICKNAME */
 void IrcServerHandler::handle432(QString prefix, QStringList params) {
+  Q_UNUSED(prefix)
+  Q_UNUSED(params)
 //   if(params.size() < 2) {
 //     // handle unreal-ircd bug, where unreal ircd doesnt supply a TARGET in ERR_ERRONEUSNICKNAME during registration phase:
 //     // nick @@@
@@ -408,6 +420,8 @@ void IrcServerHandler::handle432(QString prefix, QStringList params) {
 
 /* ERR_NICKNAMEINUSE */
 void IrcServerHandler::handle433(QString prefix, QStringList params) {
+  Q_UNUSED(prefix)
+  Q_UNUSED(params)
 //   QString errnick = params[0];
 //   emit displayMsg(Message::Error, "", tr("Nick %1 is already taken").arg(errnick));
 //   // if there is a problem while connecting to the server -> we handle it
