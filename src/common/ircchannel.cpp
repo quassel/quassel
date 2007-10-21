@@ -192,7 +192,11 @@ void IrcChannel::initSetUserModes(const QVariantMap &usermodes) {
 }
 
 void IrcChannel::ircUserDestroyed() {
-  part(qobject_cast<IrcUser *>(sender()));
+  IrcUser *ircUser = qobject_cast<IrcUser *>(sender());
+  // in case this assert triggers we probably need a static_cast
+  // dynamic_casts seem to screw things up when using the destroyed signal
+  Q_ASSERT(ircUser);
+  part(ircUser);
 }
 
 void IrcChannel::setInitialized() {

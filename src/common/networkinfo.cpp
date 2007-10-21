@@ -299,6 +299,7 @@ IrcUser *NetworkInfo::updateNickFromMask(const QString &mask) {
 
 void NetworkInfo::ircUserNickChanged(QString newnick) {
   QString oldnick = _ircUsers.key(qobject_cast<IrcUser*>(sender()));
+
   if(oldnick.isNull())
     return;
   
@@ -310,26 +311,18 @@ void NetworkInfo::ircUserNickChanged(QString newnick) {
 
 void NetworkInfo::ircUserDestroyed() {
   IrcUser *ircuser = qobject_cast<IrcUser *>(sender());
-  QHash<QString, IrcUser*>::iterator i = _ircUsers.begin();
-  while(i != _ircUsers.end()) {
-    if(i.value() == ircuser) {
-      i = _ircUsers.erase(i);
-    } else {
-      i++;
-    }
-  }
+  // in case this assert triggers we probably need a static_cast
+  // dynamic_casts seem to screw things up when using the destroyed signal
+  Q_ASSERT(ircuser);
+  _ircUsers.remove(_ircUsers.key(ircuser);
 }
 
 void NetworkInfo::channelDestroyed() {
   IrcChannel *channel = qobject_cast<IrcChannel *>(sender());
-  QHash<QString, IrcChannel*>::iterator i = _ircChannels.begin();
-  while(i != _ircChannels.end()) {
-    if(i.value() == channel) {
-      i = _ircChannels.erase(i);
-    } else {
-      i++;
-    }
-  }
+  // in case this assert triggers we probably need a static_cast
+  // dynamic_casts seem to screw things up when using the destroyed signal
+  Q_ASSERT(channel);
+  _ircChannels.remove(_ircChannels.key(channel));
 }
 
 void NetworkInfo::setInitialized() {
