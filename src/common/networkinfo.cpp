@@ -314,7 +314,7 @@ void NetworkInfo::ircUserDestroyed() {
   // in case this assert triggers we probably need a static_cast
   // dynamic_casts seem to screw things up when using the destroyed signal
   Q_ASSERT(ircuser);
-  _ircUsers.remove(_ircUsers.key(ircuser);
+  _ircUsers.remove(_ircUsers.key(ircuser));
 }
 
 void NetworkInfo::channelDestroyed() {
