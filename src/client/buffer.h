@@ -38,12 +38,12 @@ class Buffer : public QObject {
 
 public:
   Buffer(BufferInfo, QObject *parent = 0);
-  ~Buffer();
+  virtual ~Buffer();
 
   enum Type {
-    ServerBuffer,
-    ChannelBuffer,
-    QueryBuffer
+    StatusType,
+    ChannelType,
+    QueryType
   };
 
   enum Activity {
@@ -79,7 +79,6 @@ signals:
   void topicSet(QString topic);
   void ownNickSet(QString ownNick);
   void bufferUpdated(Buffer *);
-  void bufferDestroyed(Buffer *);
 
   void msgAppended(AbstractUiMsg *);
   void msgPrepended(AbstractUiMsg *);

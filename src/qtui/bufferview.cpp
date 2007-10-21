@@ -86,7 +86,7 @@ void BufferView::dropEvent(QDropEvent *event) {
 void BufferView::joinChannel(const QModelIndex &index) {
   Buffer::Type bufferType = (Buffer::Type)index.data(BufferTreeModel::BufferTypeRole).toInt();
 
-  if(bufferType != Buffer::ChannelBuffer)
+  if(bufferType != Buffer::ChannelType)
     return;
   
   Client::fakeInput(index.data(BufferTreeModel::BufferUidRole).toUInt(), QString("/JOIN %1").arg(index.sibling(index.row(), 0).data().toString()));

@@ -91,7 +91,7 @@ QVariant BufferTreeItem::data(int column, int role) const {
 
 Qt::ItemFlags BufferTreeItem::flags() const {
   Qt::ItemFlags flags = Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled;
-  if(buf->bufferType() == Buffer::QueryBuffer)
+  if(buf->bufferType() == Buffer::QueryType)
     flags |= Qt::ItemIsDropEnabled;
 
   return flags;
@@ -209,7 +209,7 @@ bool BufferTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction /*actio
   Buffer *sourceBuffer = static_cast<BufferTreeItem *>(rootItem->childById(qHash(network))->child(sourcerow))->buffer();
   Buffer *targetBuffer = getBufferByIndex(parent);
 
-  if(!(sourceBuffer->bufferType() & targetBuffer->bufferType() & Buffer::QueryBuffer)) // only queries can be merged
+  if(!(sourceBuffer->bufferType() & targetBuffer->bufferType() & Buffer::QueryType)) // only queries can be merged
     return false;
   
   if(sourceBuffer == targetBuffer) // we won't merge with ourself :)

@@ -94,11 +94,8 @@ Buffer *Client::buffer(BufferInfo id) {
 	    client, SLOT(userInput(BufferInfo, QString)));
     connect(buff, SIGNAL(bufferUpdated(Buffer *)),
 	    client, SIGNAL(bufferUpdated(Buffer *)));
-    connect(buff, SIGNAL(bufferDestroyed(Buffer *)),
-	    client, SIGNAL(bufferDestroyed(Buffer *)));
-    connect(buff, SIGNAL(bufferDestroyed(Buffer *)),
-	    client, SLOT(removeBuffer(Buffer *)));
-    
+    connect(buff, SIGNAL(destroyed()),
+	    client, SLOT(bufferDestroyed()));
     client->_buffers[id.uid()] = buff;
     emit client->bufferUpdated(buff);
   }
@@ -269,14 +266,12 @@ void Client::coreSocketDisconnected() {
   _bufferModel->clear();
 
   foreach(Buffer *buffer, _buffers.values()) {
-    delete buffer;
+    buffer->deleteLater();
   }
-  Q_ASSERT(_buffers.empty());
 
   foreach(NetworkInfo *networkinfo, _networkInfo.values()) {
-    delete networkinfo;
+    networkinfo->deleteLater();
   }
-  Q_ASSERT(_networkInfo.empty());
 
   coreConnectionInfo.clear();
   sessionData.clear();
@@ -455,9 +450,9 @@ void Client::updateBufferInfo(BufferInfo id) {
   buffer(id)->updateBufferInfo(id);
 }
 
-
-void Client::removeBuffer(Buffer *b) {
-  _buffers.remove(b->bufferInfo().uid());
+void Client::bufferDestroyed() {
+  Buffer *buffer = static_cast<Buffer *>(sender());
+  _buffers.remove(_buffers.key(buffer));
 }
 
 void Client::recvMessage(const Message &msg) {

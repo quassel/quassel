@@ -53,7 +53,7 @@ void BufferWidget::setBuffer(Buffer *buf) {
   } else {
     BufferState *s = new BufferState;
     s->currentLine = Settings::guiValue(QString("BufferStates/%1/%2/currentLine").arg(buf->networkName()).arg(buf->bufferName()), -1).toInt();
-    if(buf->bufferType() == Buffer::ChannelBuffer) {
+    if(buf->bufferType() == Buffer::ChannelType) {
       s->splitterState = Settings::guiValue(QString("BufferStates/%1/%2/splitter").arg(buf->networkName()).arg(buf->bufferName())).toByteArray();
       s->splitter = new QSplitter(this);
       s->chatWidget = new ChatWidget(s->splitter);

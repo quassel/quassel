@@ -31,11 +31,11 @@ Buffer::Buffer(BufferInfo bufferid, QObject *parent)
     _active(false)
 {
   if(bufferid.buffer().isEmpty())
-    _type = ServerBuffer;
+    _type = StatusType;
   else if(isChannelName(bufferid.buffer()))
-    _type = ChannelBuffer;
+    _type = ChannelType;
   else
-    _type = QueryBuffer;
+    _type = QueryType;
 
 /*
   QSettings s;
@@ -55,7 +55,6 @@ Buffer::~Buffer() {
   s.endGroup();
 */
   //delete state;
-  emit bufferDestroyed(this);
 }
 
 Buffer::Type Buffer::bufferType() const {
@@ -88,7 +87,7 @@ QString Buffer::bufferName() const {
 }
 
 QString Buffer::displayName() const {
-  if(bufferType() == ServerBuffer)
+  if(bufferType() == StatusType)
     return tr("Status Buffer");
   else
     return bufferName();
@@ -114,7 +113,7 @@ QString Buffer::ownNick() const {
 }
 
 bool Buffer::isStatusBuffer() const {
-   return bufferType() == ServerBuffer;
+   return bufferType() == StatusType;
 }
 
 void Buffer::setActive(bool a) {

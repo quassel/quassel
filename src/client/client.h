@@ -81,7 +81,6 @@ signals:
   void bufferSelected(Buffer *);
   void bufferUpdated(Buffer *);
   void bufferActivity(Buffer::ActivityLevel, Buffer *);
-  void bufferDestroyed(Buffer *);
   void backlogReceived(Buffer *, QList<Message>);
   void requestBacklog(BufferInfo, QVariant, QVariant);
   void requestNetworkStates();
@@ -125,7 +124,7 @@ private slots:
   void recvBacklogData(BufferInfo, QVariantList, bool);
   void updateBufferInfo(BufferInfo);
 
-  void removeBuffer(Buffer *);
+  void bufferDestroyed();
 
   void layoutMsg();
 
