@@ -31,6 +31,9 @@
 
 #include "topicwidget.h"
 
+#include "selectionmodelsynchronizer.h"
+#include "mappedselectionmodel.h"
+
 MainWin::MainWin(QtUi *_gui, QWidget *parent) : QMainWindow(parent), gui(_gui) {
   ui.setupUi(this);
   setWindowTitle("Quassel IRC");
@@ -156,6 +159,13 @@ void MainWin::addBufferView(const QString &viewname, QAbstractItemModel *model, 
   //create the view and initialize it's filter
   BufferView *view = new BufferView(dock);
   view->setFilteredModel(model, mode, nets);
+
+  MappedSelectionModel *mappedSelectionModel = new MappedSelectionModel(view->model());
+  Client::bufferModel()->selectionModelSynchronizer()->addSelectionModel(mappedSelectionModel);
+  Q_ASSERT(mappedSelectionModel);
+  delete view->selectionModel();
+  view->setSelectionModel(mappedSelectionModel);
+
   dock->setWidget(view);
   
   addDockWidget(Qt::LeftDockWidgetArea, dock);

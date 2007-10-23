@@ -45,15 +45,6 @@ void BufferView::init() {
   setSortingEnabled(true);
   sortByColumn(0, Qt::AscendingOrder);
   
-  connect(selectionModel(), SIGNAL(currentChanged(const QModelIndex &, const QModelIndex &)),
-          model(), SLOT(changeCurrent(const QModelIndex &, const QModelIndex &)));
-  
-  connect(model(), SIGNAL(selectionChanged(const QModelIndex &)),
-          this, SLOT(select(const QModelIndex &)));
-  
-  connect(this, SIGNAL(selectionChanged(const QModelIndex &, QItemSelectionModel::SelectionFlags)),
-          selectionModel(), SLOT(select(const QModelIndex &, QItemSelectionModel::SelectionFlags)));
-
   connect(this, SIGNAL(activated(QModelIndex)), this, SLOT(joinChannel(QModelIndex)));
 }
 
@@ -67,10 +58,7 @@ void BufferView::setFilteredModel(QAbstractItemModel *model, BufferViewFilter::M
 void BufferView::setModel(QAbstractItemModel *model) {
   QTreeView::setModel(model);
   init();
-}
-
-void BufferView::select(const QModelIndex &current) {
-  emit selectionChanged(current, QItemSelectionModel::ClearAndSelect);
+  
 }
 
 void BufferView::dropEvent(QDropEvent *event) {

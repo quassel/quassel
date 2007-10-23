@@ -32,27 +32,10 @@ BufferViewFilter::BufferViewFilter(QAbstractItemModel *model, const Modes &filte
   networks = nets;
   
   connect(model, SIGNAL(invalidateFilter()), this, SLOT(invalidateMe()));
-  connect(model, SIGNAL(selectionChanged(const QModelIndex &)),
-          this, SLOT(select(const QModelIndex &)));
-  
-  connect(this, SIGNAL(currentChanged(const QModelIndex &, const QModelIndex &)),
-          model, SLOT(changeCurrent(const QModelIndex &, const QModelIndex &)));
 }
 
 void BufferViewFilter::invalidateMe() {
   invalidateFilter();
-}
-
-void BufferViewFilter::select(const QModelIndex &index) {
-  emit selectionChanged(mapFromSource(index));
-}
-
-void BufferViewFilter::changeCurrent(const QModelIndex &current, const QModelIndex &previous) {
-  emit currentChanged(mapToSource(current), mapToSource(previous));
-}
-
-void BufferViewFilter::doubleClickReceived(const QModelIndex &clicked) {
-  emit doubleClicked(mapToSource(clicked));
 }
 
 void BufferViewFilter::dropEvent(QDropEvent *event) {

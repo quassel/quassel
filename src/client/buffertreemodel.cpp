@@ -21,6 +21,7 @@
 #include <QColor>  // FIXME Dependency on QtGui!
 
 #include "buffertreemodel.h"
+#include "selectionmodelsynchronizer.h"
 
 #include "bufferinfo.h"
 #include "client.h"
@@ -117,9 +118,11 @@ Qt::ItemFlags NetworkTreeItem::flags() const {
  * BufferTreeModel
  *****************************************/
 BufferTreeModel::BufferTreeModel(QObject *parent)
-  : TreeModel(BufferTreeModel::defaultHeader(), parent)
+  : TreeModel(BufferTreeModel::defaultHeader(), parent),
+    _selectionModelSynchronizer(new SelectionModelSynchronizer(this))
 {
-  Client::signalProxy()->attachSignal(this, SIGNAL(fakeUserInput(BufferInfo, QString)), SIGNAL(sendInput(BufferInfo, QString)));
+  connect(_selectionModelSynchronizer, SIGNAL(setCurrentIndex(QModelIndex, QItemSelectionModel::SelectionFlags)),
+	  this, SLOT(setCurrentIndex(QModelIndex, QItemSelectionModel::SelectionFlags)));
 }
 
 QList<QVariant >BufferTreeModel::defaultHeader() {
@@ -229,12 +232,13 @@ void BufferTreeModel::bufferUpdated(Buffer *buffer) {
 }
 
 // This Slot indicates that the user has selected a different buffer in the gui
-void BufferTreeModel::changeCurrent(const QModelIndex &current, const QModelIndex &/*previous*/) {
-  if(isBufferIndex(current)) {
-    currentBuffer = getBufferByIndex(current);
+void BufferTreeModel::setCurrentIndex(const QModelIndex &index, QItemSelectionModel::SelectionFlags command) {
+  Q_UNUSED(command)
+  if(isBufferIndex(index)) {
+    currentBuffer = getBufferByIndex(index);
     bufferActivity(Buffer::NoActivity, currentBuffer);
     emit bufferSelected(currentBuffer);
-    emit selectionChanged(current);
+    emit selectionChanged(index);
   }
 }
 
@@ -249,6 +253,6 @@ void BufferTreeModel::bufferActivity(Buffer::ActivityLevel level, Buffer *buffer
 
 void BufferTreeModel::selectBuffer(Buffer *buffer) {
   QModelIndex index = getOrCreateBufferItemIndex(buffer);
-  //emit selectionChanged(index);
-  changeCurrent(index, QModelIndex());
+  // SUPER UGLY!
+  setCurrentIndex(index, 0);
 }

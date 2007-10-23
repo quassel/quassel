@@ -18,37 +18,37 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _BUFFERVIEW_H_
-#define _BUFFERVIEW_H_
+#ifndef _SELECTIONMODELSYNCHRONIZER_H_
+#define _SELECTIONMODELSYNCHRONIZER_H_
 
-#include <QtGui>
-#include <QFlags>
+#include <QObject>
+#include <QItemSelectionModel>
 
-#include "bufferviewfilter.h"
+class QAbstractItemModel;
+class MappedSelectionModel;
 
-/*****************************************
- * The TreeView showing the Buffers
- *****************************************/
-class BufferView : public QTreeView {
+class SelectionModelSynchronizer : public QObject {
   Q_OBJECT
-  
+
 public:
-  BufferView(QWidget *parent = 0);
-  void init();
-  void setModel(QAbstractItemModel *model);
-  void setFilteredModel(QAbstractItemModel *model, BufferViewFilter::Modes mode, QStringList nets);
-  
-signals:
-  void eventDropped(QDropEvent *);
-  void removeBuffer(const QModelIndex &);
-  
+  SelectionModelSynchronizer(QAbstractItemModel *parent = 0);
+  virtual ~SelectionModelSynchronizer();
+
+  void addSelectionModel(MappedSelectionModel *model);
+  void removeSelectionModel(MappedSelectionModel *model);
+
+  inline QAbstractItemModel *model() { return _model; }
+
 private slots:
-  void dropEvent(QDropEvent *);
-  void joinChannel(const QModelIndex &index);
-  void keyPressEvent(QKeyEvent *);
-  void rowsInserted (const QModelIndex & parent, int start, int end);
+  void _mappedCurrentChanged(const QModelIndex &current);
+  void _mappedSelectionChanged(const QItemSelection &selected);
+
+signals:
+  void select(const QItemSelection &selection, QItemSelectionModel::SelectionFlags command);
+  void setCurrentIndex(const QModelIndex &index, QItemSelectionModel::SelectionFlags command);
+  
+private:
+  QAbstractItemModel *_model;
 };
 
-
 #endif
-

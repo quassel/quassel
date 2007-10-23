@@ -50,18 +50,9 @@ public:
   
 public slots:
   void invalidateMe();
-  void changeCurrent(const QModelIndex &, const QModelIndex &);
-  void doubleClickReceived(const QModelIndex &);
-  void select(const QModelIndex &);
   void dropEvent(QDropEvent *);
   void removeBuffer(const QModelIndex &);
 
-  
-signals:
-  void currentChanged(const QModelIndex &, const QModelIndex &);
-  void doubleClicked(const QModelIndex &);
-  void selectionChanged(const QModelIndex &);
-  
 private:
   bool filterAcceptBuffer(const QModelIndex &) const;
   bool filterAcceptNetwork(const QModelIndex &) const;

@@ -24,8 +24,13 @@
 #include <QtCore>
 
 #include "treemodel.h"
-class BufferInfo;
 #include "buffer.h"
+
+#include <QItemSelectionModel>
+
+class BufferInfo;
+class SelectionModelSynchronizer;
+
 
 /*****************************************
  *  Fancy Buffer Items
@@ -84,17 +89,18 @@ public:
   
   BufferTreeModel(QObject *parent = 0);
   static QList<QVariant> defaultHeader();
-  
+
+  inline SelectionModelSynchronizer *selectionModelSynchronizer() { return _selectionModelSynchronizer; }
+
 public slots:
-  void bufferUpdated(Buffer *);    
-  void changeCurrent(const QModelIndex &, const QModelIndex &);
+  void bufferUpdated(Buffer *);
+  void setCurrentIndex(const QModelIndex &index, QItemSelectionModel::SelectionFlags command);
   void selectBuffer(Buffer *buffer);
   void bufferActivity(Buffer::ActivityLevel, Buffer *buffer);
   
 signals:
   void bufferSelected(Buffer *);
   void invalidateFilter();
-  void fakeUserInput(BufferInfo, QString);
   void selectionChanged(const QModelIndex &);
     
 private:
@@ -106,7 +112,8 @@ private:
   QStringList mimeTypes() const;
   QMimeData *mimeData(const QModelIndexList &) const;
   bool dropMimeData(const QMimeData *, Qt::DropAction, int, int, const QModelIndex &);
-  
+
+  SelectionModelSynchronizer *_selectionModelSynchronizer;
   Buffer *currentBuffer;
 };
 

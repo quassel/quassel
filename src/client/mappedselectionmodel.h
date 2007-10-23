@@ -18,37 +18,50 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _BUFFERVIEW_H_
-#define _BUFFERVIEW_H_
+#ifndef _MAPPEDSELECTIONMODEL_H_
+#define _MAPPEDSELECTIONMODEL_H_
 
-#include <QtGui>
-#include <QFlags>
+#include <QObject>
+#include <QModelIndex>
+#include <QItemSelection>
+#include <QItemSelectionModel>;
 
-#include "bufferviewfilter.h"
+class QAbstractProxyModel;
 
-/*****************************************
- * The TreeView showing the Buffers
- *****************************************/
-class BufferView : public QTreeView {
+class MappedSelectionModel : public QItemSelectionModel {
   Q_OBJECT
-  
+
 public:
-  BufferView(QWidget *parent = 0);
-  void init();
-  void setModel(QAbstractItemModel *model);
-  void setFilteredModel(QAbstractItemModel *model, BufferViewFilter::Modes mode, QStringList nets);
+  MappedSelectionModel(QAbstractItemModel *model = 0);
+  virtual ~MappedSelectionModel();
+
+  inline bool isProxyModel() const { return _isProxyModel; }
+
+  const QAbstractItemModel *baseModel() const;
+  const QAbstractProxyModel *proxyModel() const;
+  
+  QModelIndex mapFromSource(const QModelIndex &sourceIndex);
+  QItemSelection mapFromSource(const QItemSelection &sourceSelection);
+				    
+  QModelIndex mapToSource(const QModelIndex &proxyIndex);
+  QItemSelection mapToSource(const QItemSelection &proxySelection);
+									
+public slots:
+  void mappedSelect(const QModelIndex &index, QItemSelectionModel::SelectionFlags command);
+  void mappedSelect(const QItemSelection &selection, QItemSelectionModel::SelectionFlags command);
+  void mappedSetCurrentIndex(const QModelIndex &index, QItemSelectionModel::SelectionFlags command);
+
+private slots:
+  void _currentChanged(const QModelIndex &current, const QModelIndex &previous);
+  void _selectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
   
 signals:
-  void eventDropped(QDropEvent *);
-  void removeBuffer(const QModelIndex &);
-  
-private slots:
-  void dropEvent(QDropEvent *);
-  void joinChannel(const QModelIndex &index);
-  void keyPressEvent(QKeyEvent *);
-  void rowsInserted (const QModelIndex & parent, int start, int end);
+  void mappedCurrentChanged(const QModelIndex &current);
+  void mappedSelectionChanged(const QItemSelection &selected);
+
+private:
+  bool _isProxyModel;
+
 };
 
-
 #endif
-
