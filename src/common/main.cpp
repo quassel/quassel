@@ -32,7 +32,6 @@
 #include <QApplication>
 #include "client.h"
 #include "qtui.h"
-#include "style.h"
 
 #elif defined BUILD_MONO
 #include <QApplication>
@@ -40,7 +39,6 @@
 #include "core.h"
 #include "coresession.h"
 #include "qtui.h"
-#include "style.h"
 
 #else
 #error "Something is wrong - you need to #define a build mode!"
@@ -95,7 +93,6 @@ int main(int argc, char **argv) {
   //Settings::init();
 
 #ifndef BUILD_CORE
-  Style::init();
   QtUi *gui = new QtUi();
   Client::init(gui);
   gui->init();
@@ -116,29 +113,3 @@ int main(int argc, char **argv) {
 
   return exitCode;
 }
-
-#ifdef BUILD_QTUI
-QVariant Client::connectToLocalCore(QString, QString) { return QVariant(); }
-void Client::disconnectFromLocalCore() {}
-
-#elif defined BUILD_MONO
-QVariant Client::connectToLocalCore(QString user, QString passwd) {
-  // TODO catch exceptions
-  /*
-  QVariant reply = Core::connectLocalClient(user, passwd);
-  QObject::connect(Core::localSession(), SIGNAL(proxySignal(CoreSignal, QVariant, QVariant, QVariant)), ClientProxy::instance(), SLOT(recv(CoreSignal, QVariant, QVariant, QVariant)));
-  QObject::connect(ClientProxy::instance(), SIGNAL(send(ClientSignal, QVariant, QVariant, QVariant)), Core::localSession(), SLOT(processSignal(ClientSignal, QVariant, QVariant, QVariant)));
-  return reply;
-  */
-  return QVariant();
-}
-
-void Client::disconnectFromLocalCore() {
-  /*
-  disconnect(Core::localSession(), 0, ClientProxy::instance(), 0);
-  disconnect(ClientProxy::instance(), 0, Core::localSession(), 0);
-  Core::disconnectLocalClient();
-  */
-}
-
-#endif

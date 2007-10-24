@@ -21,10 +21,6 @@
 #ifndef _CHATWIDGET_H_
 #define _CHATWIDGET_H_
 
-//#include "style.h"
-//#include "message.h"
-//#include "buffer.h"
-//#include <QtCore>
 #include <QtGui>
 
 class ChatLine;

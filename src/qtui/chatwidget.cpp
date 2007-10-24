@@ -19,9 +19,9 @@
  ***************************************************************************/
 
 #include "util.h"
-#include "style.h"
 #include "chatwidget.h"
 #include "chatline.h"
+#include "qtui.h"
 
 
 ChatWidget::ChatWidget(QWidget *parent) : QAbstractScrollArea(parent) {
@@ -233,10 +233,10 @@ void ChatWidget::setContents(QList<ChatLine *> list) {
 
 //!\brief Computes the different x position vars for given tsWidth and senderWidth.
 void ChatWidget::computePositions() {
-  senderX = tsWidth + Style::sepTsSender();
-  textX = senderX + senderWidth + Style::sepSenderText();
-  tsGrabPos = tsWidth + (int)Style::sepTsSender()/2;
-  senderGrabPos = senderX + senderWidth + (int)Style::sepSenderText()/2;
+  senderX = tsWidth + QtUi::style()->sepTsSender();
+  textX = senderX + senderWidth + QtUi::style()->sepSenderText();
+  tsGrabPos = tsWidth + (int)QtUi::style()->sepTsSender()/2;
+  senderGrabPos = senderX + senderWidth + (int)QtUi::style()->sepSenderText()/2;
   textWidth = viewport()->size().width() - textX;
 }
 
@@ -460,15 +460,15 @@ void ChatWidget::handleMouseMoveEvent(const QPoint &_pos) {
       break;
   }
   // Pass 2: Some mouse modes need work after being set...
-  if(mouseMode == DragTsSep && x < size().width() - Style::sepSenderText() - senderWidth - 10) {
+  if(mouseMode == DragTsSep && x < size().width() - QtUi::style()->sepSenderText() - senderWidth - 10) {
     // Drag first column separator
-    int foo = Style::sepTsSender()/2;
+    int foo = QtUi::style()->sepTsSender()/2;
     tsWidth = qMax(x, foo) - foo;
     computePositions();
     layout();
   } else if(mouseMode == DragTextSep && x < size().width() - 10) {
     // Drag second column separator
-    int foo = tsWidth + Style::sepTsSender() + Style::sepSenderText()/2;
+    int foo = tsWidth + QtUi::style()->sepTsSender() + QtUi::style()->sepSenderText()/2;
     senderWidth = qMax(x, foo) - foo;
     computePositions();
     layout();

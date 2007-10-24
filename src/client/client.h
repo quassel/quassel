@@ -134,8 +134,6 @@ private:
   void init();
   
   void syncToCore(const QVariant &coreState);
-  QVariant connectToLocalCore(QString user, QString passwd);  // defined in main.cpp
-  void disconnectFromLocalCore();                             // defined in main.cpp
 
   static QPointer<Client> instanceptr;
   
