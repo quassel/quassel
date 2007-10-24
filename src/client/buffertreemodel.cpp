@@ -21,7 +21,9 @@
 #include <QColor>  // FIXME Dependency on QtGui!
 
 #include "buffertreemodel.h"
-#include "selectionmodelsynchronizer.h"
+
+#include "mappedselectionmodel.h"
+#include <QAbstractItemView>
 
 #include "bufferinfo.h"
 #include "client.h"
@@ -119,8 +121,15 @@ Qt::ItemFlags NetworkTreeItem::flags() const {
  *****************************************/
 BufferTreeModel::BufferTreeModel(QObject *parent)
   : TreeModel(BufferTreeModel::defaultHeader(), parent),
-    _selectionModelSynchronizer(new SelectionModelSynchronizer(this))
+    _selectionModelSynchronizer(new SelectionModelSynchronizer(this)),
+    _propertyMapper(new ModelPropertyMapper(this))
 {
+  _propertyMapper->setModel(this);
+  delete _propertyMapper->selectionModel();
+  MappedSelectionModel *mappedSelectionModel = new MappedSelectionModel(this);
+  _propertyMapper->setSelectionModel(mappedSelectionModel);
+  synchronizeSelectionModel(mappedSelectionModel);
+  
   connect(_selectionModelSynchronizer, SIGNAL(setCurrentIndex(QModelIndex, QItemSelectionModel::SelectionFlags)),
 	  this, SLOT(setCurrentIndex(QModelIndex, QItemSelectionModel::SelectionFlags)));
 }
@@ -129,6 +138,22 @@ QList<QVariant >BufferTreeModel::defaultHeader() {
   QList<QVariant> data;
   data << tr("Buffer") << tr("Network");
   return data;
+}
+
+void BufferTreeModel::synchronizeSelectionModel(MappedSelectionModel *selectionModel) {
+  selectionModelSynchronizer()->addSelectionModel(selectionModel);
+}
+
+void BufferTreeModel::synchronizeView(QAbstractItemView *view) {
+  MappedSelectionModel *mappedSelectionModel = new MappedSelectionModel(view->model());
+  selectionModelSynchronizer()->addSelectionModel(mappedSelectionModel);
+  Q_ASSERT(mappedSelectionModel);
+  delete view->selectionModel();
+  view->setSelectionModel(mappedSelectionModel);
+}
+
+void BufferTreeModel::mapProperty(int column, int role, QObject *target, const QByteArray &property) {
+  propertyMapper()->addMapping(column, role, target, property);
 }
 
 bool BufferTreeModel::isBufferIndex(const QModelIndex &index) const {

@@ -56,6 +56,7 @@ void BufferView::setFilteredModel(QAbstractItemModel *model, BufferViewFilter::M
 }
 
 void BufferView::setModel(QAbstractItemModel *model) {
+  delete selectionModel();
   QTreeView::setModel(model);
   init();
   

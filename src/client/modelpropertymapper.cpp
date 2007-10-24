@@ -1,0 +1,100 @@
+/***************************************************************************
+ *   Copyright (C) 2005-07 by The Quassel Team                             *
+ *   devel@quassel-irc.org                                                 *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+
+#include "modelpropertymapper.h"
+
+#include <QItemSelectionModel>
+#include <QDebug>
+
+ModelPropertyMapper::ModelPropertyMapper(QObject *parent)
+  : QObject(parent),
+    _model(0),
+    _selectionModel(0)
+{
+}
+
+ModelPropertyMapper::~ModelPropertyMapper() {
+}
+
+void ModelPropertyMapper::setModel(QAbstractItemModel *model) {
+  if(_model)
+    setSelectionModel(new QItemSelectionModel(model));
+  _model = model;
+}
+
+QAbstractItemModel *ModelPropertyMapper::model() const {
+  return _model;
+}
+
+void ModelPropertyMapper::setSelectionModel(QItemSelectionModel *selectionModel) {
+  if(selectionModel->model() != model()) {
+    qWarning() << "cannot set itemSelectionModel" << selectionModel << "which uses different basemodel than" << model();
+    return;
+  }
+  if(_selectionModel)
+    disconnect(_selectionModel, 0, this, 0);
+  _selectionModel = selectionModel;
+  connect(_selectionModel, SIGNAL(currentRowChanged(QModelIndex, QModelIndex)),
+	  this, SLOT(setCurrentRow(QModelIndex, QModelIndex)));
+  
+  setCurrentRow(selectionModel->currentIndex(), QModelIndex());
+}
+
+QItemSelectionModel *ModelPropertyMapper::selectionModel() const {
+  return _selectionModel;
+}
+
+void ModelPropertyMapper::addMapping(int column, int role, QObject *target, const QByteArray &property) {
+  Mapping mapping(column, role, target, property);
+  if(!_mappings.contains(mapping))
+    _mappings.append(mapping);
+}
+
+void ModelPropertyMapper::removeMapping(int column, int role, QObject *target, const QByteArray &property) {
+  if(column == 0 && role == 0 && target == 0 && !property.isNull()) {
+    _mappings.clear();
+    return;
+  }
+  
+  if(column == 0 && role == 0 && !property.isNull()) {
+    QList<Mapping>::iterator iter;
+    for(iter = _mappings.begin(); iter != _mappings.end(); iter++) {
+      if((*iter).target == target)
+	_mappings.erase(iter);
+    }
+    return;
+  }
+  _mappings.removeAll(Mapping(column, role, target, property));
+}
+
+void ModelPropertyMapper::setCurrentRow(const QModelIndex &current, const QModelIndex &previous) {
+  Q_UNUSED(previous)
+  foreach(Mapping mapping, _mappings) {
+    QModelIndex index = current.sibling(current.row(), mapping.column);
+    // qDebug() << mapping.target << mapping.property << index.data(mapping.role);
+    mapping.target->setProperty(mapping.property, index.data(mapping.role));
+  }
+}
+
+
+void ModelPropertyMapper::targetDestroyed() {
+  QObject *obj = static_cast<QObject *>(sender());
+  removeMapping(0, 0, obj, QByteArray());
+}

@@ -86,23 +86,29 @@ void MainWin::init() {
   if(serverListDlg->showOnStartup()) {
     showServerList();
   }
-
+  
+  setDockNestingEnabled(true);
+  
+  
   // TESTING
-//   setCorner(Qt::TopLeftCorner, Qt::LeftDockWidgetArea);
-//   setCorner(Qt::BottomLeftCorner, Qt::LeftDockWidgetArea);
+  setCorner(Qt::TopLeftCorner, Qt::LeftDockWidgetArea);
+  setCorner(Qt::BottomLeftCorner, Qt::LeftDockWidgetArea);
 
-//   setCorner(Qt::TopRightCorner, Qt::RightDockWidgetArea);
-//   setCorner(Qt::BottomRightCorner, Qt::RightDockWidgetArea);
-  
-//   QDockWidget *dock = new QDockWidget("Topic Dock", this);
-//   dock->setAllowedAreas(Qt::TopDockWidgetArea | Qt::BottomDockWidgetArea);
+  setCorner(Qt::TopRightCorner, Qt::RightDockWidgetArea);
+  setCorner(Qt::BottomRightCorner, Qt::RightDockWidgetArea);
 
-//   TopicWidget *topicwidget = new TopicWidget(dock);
-//   dock->setWidget(topicwidget);
-  
-//   addDockWidget(Qt::TopDockWidgetArea, dock);
 
-//   ui.menuViews->addAction(dock->toggleViewAction());
+  QDockWidget *dock = new QDockWidget("Topic Dock", this);
+  dock->setAllowedAreas(Qt::TopDockWidgetArea | Qt::BottomDockWidgetArea);
+
+  TopicWidget *topicwidget = new TopicWidget(dock);
+  dock->setWidget(topicwidget);
+
+  Client::bufferModel()->mapProperty(0, Qt::DisplayRole, topicwidget, "topic");
+
+  addDockWidget(Qt::TopDockWidgetArea, dock);
+
+  ui.menuViews->addAction(dock->toggleViewAction());
 
 }
 
@@ -159,13 +165,7 @@ void MainWin::addBufferView(const QString &viewname, QAbstractItemModel *model, 
   //create the view and initialize it's filter
   BufferView *view = new BufferView(dock);
   view->setFilteredModel(model, mode, nets);
-
-  MappedSelectionModel *mappedSelectionModel = new MappedSelectionModel(view->model());
-  Client::bufferModel()->selectionModelSynchronizer()->addSelectionModel(mappedSelectionModel);
-  Q_ASSERT(mappedSelectionModel);
-  delete view->selectionModel();
-  view->setSelectionModel(mappedSelectionModel);
-
+  Client::bufferModel()->synchronizeView(view);
   dock->setWidget(view);
   
   addDockWidget(Qt::LeftDockWidgetArea, dock);

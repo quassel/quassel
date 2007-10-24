@@ -26,11 +26,16 @@
 #include "treemodel.h"
 #include "buffer.h"
 
+#include <QPointer>
+
 #include <QItemSelectionModel>
 
 class BufferInfo;
-class SelectionModelSynchronizer;
 
+#include "selectionmodelsynchronizer.h"
+#include "modelpropertymapper.h"
+class MappedSelectionModel;
+class QAbstractItemView;
 
 /*****************************************
  *  Fancy Buffer Items
@@ -91,6 +96,11 @@ public:
   static QList<QVariant> defaultHeader();
 
   inline SelectionModelSynchronizer *selectionModelSynchronizer() { return _selectionModelSynchronizer; }
+  inline ModelPropertyMapper *propertyMapper() { return _propertyMapper; }
+
+  void synchronizeSelectionModel(MappedSelectionModel *selectionModel);
+  void synchronizeView(QAbstractItemView *view);
+  void mapProperty(int column, int role, QObject *target, const QByteArray &property);
 
 public slots:
   void bufferUpdated(Buffer *);
@@ -113,7 +123,8 @@ private:
   QMimeData *mimeData(const QModelIndexList &) const;
   bool dropMimeData(const QMimeData *, Qt::DropAction, int, int, const QModelIndex &);
 
-  SelectionModelSynchronizer *_selectionModelSynchronizer;
+  QPointer<SelectionModelSynchronizer> _selectionModelSynchronizer;
+  QPointer<ModelPropertyMapper> _propertyMapper;
   Buffer *currentBuffer;
 };
 

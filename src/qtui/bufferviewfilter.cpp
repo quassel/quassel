@@ -23,13 +23,14 @@
 /*****************************************
 * The Filter for the Tree View
 *****************************************/
-BufferViewFilter::BufferViewFilter(QAbstractItemModel *model, const Modes &filtermode, const QStringList &nets) : QSortFilterProxyModel(model) {
+BufferViewFilter::BufferViewFilter(QAbstractItemModel *model, const Modes &filtermode, const QStringList &nets)
+  : QSortFilterProxyModel(model),
+    mode(filtermode),
+    networks(nets)
+{
   setSourceModel(model);
   setSortRole(BufferTreeModel::BufferNameRole);
   setSortCaseSensitivity(Qt::CaseInsensitive);
-    
-  mode = filtermode;
-  networks = nets;
   
   connect(model, SIGNAL(invalidateFilter()), this, SLOT(invalidateMe()));
 }

@@ -310,17 +310,13 @@ void NetworkInfo::ircUserNickChanged(QString newnick) {
 }
 
 void NetworkInfo::ircUserDestroyed() {
-  IrcUser *ircuser = qobject_cast<IrcUser *>(sender());
-  // in case this assert triggers we probably need a static_cast
-  // dynamic_casts seem to screw things up when using the destroyed signal
+  IrcUser *ircuser = static_cast<IrcUser *>(sender());
   Q_ASSERT(ircuser);
   _ircUsers.remove(_ircUsers.key(ircuser));
 }
 
 void NetworkInfo::channelDestroyed() {
-  IrcChannel *channel = qobject_cast<IrcChannel *>(sender());
-  // in case this assert triggers we probably need a static_cast
-  // dynamic_casts seem to screw things up when using the destroyed signal
+  IrcChannel *channel = static_cast<IrcChannel *>(sender());
   Q_ASSERT(channel);
   _ircChannels.remove(_ircChannels.key(channel));
 }
