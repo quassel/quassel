@@ -20,6 +20,8 @@
 
 #include "signalproxy.h"
 
+#include <QxtRPCPeer>
+
 SignalProxy::SignalProxy(ProxyType _type, QIODevice *dev, QObject *parent) : QObject(parent), type(_type) {
   if(dev) {
     if(type != Client) {

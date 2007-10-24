@@ -1,0 +1,7 @@
+QXTINSTALLDIR = /usr
+include(../../config.pri)
+isEmpty(target.path):  target.path   = $${QXTINSTALLDIR}/lib
+isEmpty(docs.path):    docs.path     = $${QXTINSTALLDIR}/share/doc/libqxt
+isEmpty(include.path): include.path  = $${QXTINSTALLDIR}/include/Qxt
+isEmpty(bin.path):     bin.path      = $${QXTINSTALLDIR}/bin
+include(../qxtbuild.prf)

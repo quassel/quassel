@@ -1,0 +1,21 @@
+CONFIG+=qxt
+
+unix:MOX=$${QXTbin}mox
+win32:MOX=$${QXTbin}mox.exe
+
+
+mox.target  = mox_metaball$${first(QMAKE_EXT_H)}
+mox.output  = mox_metaball$${first(QMAKE_EXT_H)}
+mox.variable_out = HEADERS
+mox.commands = $$MOX $$SOURCES -o mox_metaball$${first(QMAKE_EXT_H)}
+mox.input = SOURCES
+QMAKE_EXTRA_COMPILERS += mox
+
+mox_moc.CONFIG = moc_verify
+mox_moc.dependency_type = TYPE_C
+mox_moc.commands = $$QMAKE_MOC $(DEFINES) $(INCPATH) $$join(QMAKE_COMPILER_DEFINES, " -D", -D) mox_metaball$${first(QMAKE_EXT_H)} -o mox_metaball$${first(QMAKE_EXT_CPP)}
+mox_moc.output = mox_metaball$${first(QMAKE_EXT_CPP)}
+mox_moc.input = HEADERS
+mox_moc.depends = mox_metaball$${first(QMAKE_EXT_H)}
+mox_moc.variable_out = SOURCES
+QMAKE_EXTRA_COMPILERS += mox_moc

@@ -21,8 +21,9 @@
 #ifndef _RPCPEER_H_
 #define _RPCPEER_H_
 
-#include "qxtrpcpeer.h"
 #include <QtCore>
+
+class QxtRPCPeer;
 
 class SignalProxy : public QObject {
   Q_OBJECT

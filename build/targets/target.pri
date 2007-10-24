@@ -15,4 +15,7 @@ for(mod, MODULES) {
   PRE_TARGETDEPS *= ../modules/$$mod
 }
 
+CONTRIB += libqxt
+include(../contrib/contrib.pri)
+
 SOURCES = $$SRCPATH/common/main.cpp

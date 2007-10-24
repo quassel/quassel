@@ -37,6 +37,10 @@ for(qtmod, QT_MOD) {
   QT *= $$qtmod
 }
 
+# Include contrib stuff
+
+include(../contrib/contrib.pri)
+
 # Set includepath for needed Quassel modules
 
 for(dep, DEPMOD) {

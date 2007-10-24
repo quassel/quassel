@@ -1,0 +1,7 @@
+
+#include "QxtSignalWaiter.h"
+#include "QxtTrippleList.h"
+#include "QxtPairList.h"
+#include "QxtEventThread.h"
+#include "QxtCsvModel.h"
+

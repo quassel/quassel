@@ -1,0 +1,31 @@
+[doqsy]
+output=deploy/docs
+templates=doctemplate
+doxygen=doxygen
+
+[doxygen]
+DOXYFILE_ENCODING      = UTF-8
+PROJECT_NAME           = Qt Extension Library
+PROJECT_NUMBER         = 0.4
+INPUT_ENCODING         = UTF-8
+INPUT                  = src
+FILE_PATTERNS          = *
+RECURSIVE              = YES
+EXCLUDE_SYMLINKS       = NO
+EXCLUDE_PATTERNS       = */.svn/* \
+                         */moc_* \
+                         */Makefile \
+                         *.pro \
+                         *.o \
+                         *.p* \
+                         *.s* \
+                         *.*~ \
+                         *_p.h \
+                         *_p.hpp \
+
+ENABLE_PREPROCESSING   = YES
+PREDEFINED             = QXT_DOXYGEN_RUN
+TAGFILES               = doctemplate/qt.tag=http://doc.trolltech.com/latest
+
+GENERATE_HTML          = NO
+GENERATE_LATEX         = NO

@@ -1,0 +1,7 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+	<file alias="calendar.png">images/calendar.png</file>
+	<file alias="tree.png">images/tree.png</file>
+	<file alias="list.png">images/list.png</file>
+</qresource>
+</RCC>

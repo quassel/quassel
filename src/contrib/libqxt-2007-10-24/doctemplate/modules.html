@@ -1,0 +1,27 @@
+<center>
+    <h1>Qxt's Modules</h1>
+</center>
+
+<p>
+Qxt consists of several modules, each of which lives in a separate library.
+</p>
+
+<center>
+    <p>
+        <table width="80%" cellspacing="1px"  id="modulelist">
+            <?=unroll?>
+        </table>
+    </p>
+</center>
+
+
+<p>If you use <a href="http://doc.trolltech.com/latest/qmake-manual.html#qmake">qmake</a> to build your projects, you can tell qmake to link and include a specific module (this example uses core and gui) by adding the following line to your <tt>.pro</tt> file:</p>
+
+<pre>CONFIG  += qxt<br/>QXT     += core gui</pre>
+<p>On Windows, if you do not use <a href="http://doc.trolltech.com/latest/qmake-manual.html#qmake">qmake</a> or the Qxt Integration 
+you have to
+<ol>
+    <li>add {libqxtinstalldir}\include\qxt\QxtCore to your include path</li>
+    <li>add the library QxtCore.lib to your project</li>
+</ol>
+<p>See also <a href="classes.html">Qxt's Classes</a>.</p>

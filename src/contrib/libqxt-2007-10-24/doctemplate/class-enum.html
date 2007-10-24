@@ -1,0 +1,114 @@
+<center>
+    <h1><?=class_name?> Class Reference<br/>
+    <sup><sup>[<a href="<?=module_link?>"><?=module_name?></a> module]</sup></sup>
+        </h1>
+    </center>
+
+
+    <p>
+        <?=desc_short?>
+        <a href="#details">More...</a>
+    </p>
+
+    <pre> #include &lt;<?=class_name?>&gt;</pre>
+
+    <?=inherits?>
+
+    <ul><li><a href="<?=ref?>-members.html">List of all members, including inherited members</a></li></ul>
+
+    <?=sections?>
+
+    <hr />
+
+
+    <a name="details"></a>
+    <h2>Detailed Description</h2>
+
+    <p>
+        <?=desc_detailed?>
+    </p>
+
+
+
+
+
+    <?=impl?>
+
+    <h2>Member Type Documentation</h2>
+
+    <h3 class="fn"><a name="ItemIndexMethod-enum"></a>enum QGraphicsScene::ItemIndexMethod</h3>
+
+
+    <p>This enum describes the indexing algorithms <a href="qgraphicsscene.html">QGraphicsScene</a> provides for managing positional information about items on the scene.</p>
+
+    <p>
+    <table border="1" cellpadding="2" cellspacing="1" width="100%">
+        <tr>
+            <th width="25%">Constant</th>
+            <th width="15%">Value</th>
+            <th width="60%">Description</th>
+        </tr>
+        <tr>
+            <td valign="top">
+                <tt>QGraphicsScene::BspTreeIndex</tt>
+            </td>
+            <td align="center" valign="top">
+                <tt>0</tt>
+            </td>
+            <td valign="top">A Binary Space Partitioning tree is applied. All <a href="qgraphicsscene.html">QGraphicsScene</a>'s item location algorithms are of an order close to logarithmic complexity, by making use of binary search. Adding, moving and removing items is logarithmic. This approach is best for static scenes (i.e&#x2e;, scenes where most items do not move).
+            </td>
+        </tr>
+        <tr>
+            <td valign="top">
+                <tt>
+                    QGraphicsScene::NoIndex
+                </tt>
+            </td>
+            <td align="center" valign="top">
+                <tt>-1</tt>
+            </td>
+            <td valign="top">No index is applied. Item location is of linear complexity, as all items on the scene are searched. Adding, moving and removing items, however, is done in constant time. This approach is ideal for dynamic scenes, where many items are added, moved or removed continuously.
+            </td>
+        </tr>
+    </table>
+</p>
+
+
+
+
+
+
+
+<h2>Property Documentation</h2>
+<h3 class="fn">
+    <a name="backgroundBrush-prop"></a>
+    backgroundBrush : 
+    <a href="qbrush.html">QBrush</a>
+</h3>
+
+<p>This property holds the background brush of the scene.</p>
+<p>Set this property to changes the scene's background to a different color, gradient or texture. The default background brush is <a href="qt.html#BrushStyle-enum">Qt::NoBrush</a>. The background is drawn before (behind) the items.</p>
+
+<span class="comment"> //</span> a blue background scene.setBackgroundBrush(Qt::blue);
+
+<p>Access functions:</p>
+<ul>
+    <li><b>QBrush backgroundBrush () const</b></li>
+    <li><b>void setBackgroundBrush ( const QBrush &amp; <i>brush</i> )</b></li>
+</ul>
+
+
+
+
+
+
+
+<h2>Member Function Documentation</h2>
+
+<h3 class="fn">
+    <a name="QGraphicsScene"></a>
+    QGraphicsScene::QGraphicsScene ( <a href="qobject.html">QObject</a> * <i>parent</i> = 0 )
+</h3>
+
+
+<p>Constructs a <a href="qgraphicsscene.html">QGraphicsScene</a> object. The <i>parent</i> parameter is passed to <a href="qobject.html">QObject</a>'s constructor.</p>

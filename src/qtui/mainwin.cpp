@@ -44,6 +44,7 @@ MainWin::MainWin(QtUi *_gui, QWidget *parent) : QMainWindow(parent), gui(_gui) {
   statusBar()->showMessage(tr("Waiting for core..."));
   serverListDlg = new ServerListDlg(this);
   settingsDlg = new SettingsDlg(this);
+
 }
 
 void MainWin::init() {
