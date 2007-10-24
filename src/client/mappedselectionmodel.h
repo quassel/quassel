@@ -24,7 +24,7 @@
 #include <QObject>
 #include <QModelIndex>
 #include <QItemSelection>
-#include <QItemSelectionModel>;
+#include <QItemSelectionModel>
 
 class QAbstractProxyModel;
 

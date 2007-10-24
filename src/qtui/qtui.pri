@@ -1,12 +1,12 @@
-DEPMOD = common client contrib/qxt
+DEPMOD = uisupport common client contrib/qxt
 QT_MOD = core gui network
 
 SRCS += bufferview.cpp bufferviewfilter.cpp bufferwidget.cpp channelwidgetinput.cpp chatline.cpp \
        chatwidget.cpp coreconnectdlg.cpp \
-       guisettings.cpp identities.cpp mainwin.cpp qtui.cpp serverlist.cpp settingsdlg.cpp style.cpp tabcompleter.cpp topicwidget.cpp
+       guisettings.cpp identities.cpp mainwin.cpp qtui.cpp qtuistyle.cpp serverlist.cpp settingsdlg.cpp style.cpp tabcompleter.cpp topicwidget.cpp
 
 HDRS += bufferview.h bufferviewfilter.h bufferwidget.h channelwidgetinput.h chatline.h chatwidget.h coreconnectdlg.h \
-       guisettings.h identities.h mainwin.h qtui.h serverlist.h settingsdlg.h settingspage.h style.h tabcompleter.h topicwidget.h
+       guisettings.h identities.h mainwin.h qtui.h qtuistyle.h serverlist.h settingsdlg.h settingspage.h style.h tabcompleter.h topicwidget.h
 
 
 FORMNAMES = identitiesdlg.ui identitieseditdlg.ui networkeditdlg.ui mainwin.ui nickeditdlg.ui serverlistdlg.ui \

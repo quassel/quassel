@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include "chatline.h"
+#include "qtui.h"
 
 //!\brief Construct a ChatLine object from a message.
 /**
@@ -41,14 +42,29 @@ ChatLine::~ChatLine() {
 
 void ChatLine::formatMsg(Message msg) {
   QTextOption tsOption, senderOption, textOption;
-  styledTimeStamp = Style::formattedToStyled(msg.formattedTimeStamp());
-  styledSender = Style::formattedToStyled(msg.formattedSender());
-  styledText = Style::formattedToStyled(msg.formattedText());
+  styledTimeStamp = QtUi::style()->styleString(msg.formattedTimeStamp());
+  styledSender = QtUi::style()->styleString(msg.formattedSender());
+  styledText = QtUi::style()->styleString(msg.formattedText());
   precomputeLine();
 }
 
-QList<ChatLine::FormatRange> ChatLine::calcFormatRanges(const Style::StyledString &fs, QTextLayout::FormatRange additional) {
+// This function is almost obsolete, since with the new style engine, we already get a list of formats...
+// We don't know yet if we keep this implementation of ChatLine, so I won't bother making this actually nice.
+// Also, the additional format is ignored for now, which means that you won't see a selection...
+// FIXME TODO
+QList<ChatLine::FormatRange> ChatLine::calcFormatRanges(const UiStyle::StyledString &fs, QTextLayout::FormatRange additional) {
   QList<FormatRange> ranges;
+
+  foreach(QTextLayout::FormatRange f, fs.formats) {
+    FormatRange range;
+    range.start = f.start;
+    range.length = f.length;
+    range.format = f.format;
+    QFontMetrics metrics(range.format.font());
+    range.height = metrics.lineSpacing();
+    ranges.append(range);
+  }
+  /*
   QList<QTextLayout::FormatRange> formats = fs.formats;
   formats.append(additional);
   int cur = -1;
@@ -77,6 +93,7 @@ QList<ChatLine::FormatRange> ChatLine::calcFormatRanges(const Style::StyledStrin
     range.height = metrics.lineSpacing();
     ranges.append(range);
   }
+  */
   return ranges;
 }
 
@@ -156,8 +173,8 @@ QUrl ChatLine::getUrl(int c) const {
  * \return The cursor position, [or -3 for invalid,] or -2 for timestamp, or -1 for sender
  */
 int ChatLine::posToCursor(QPointF pos) {
-  if(pos.x() < tsWidth + (int)Style::sepTsSender()/2) return -2;
-  qreal textStart = tsWidth + Style::sepTsSender() + senderWidth + Style::sepSenderText();
+  if(pos.x() < tsWidth + (int)QtUi::style()->sepTsSender()/2) return -2;
+  qreal textStart = tsWidth + QtUi::style()->sepTsSender() + senderWidth + QtUi::style()->sepSenderText();
   if(pos.x() < textStart) return -1;
   int x = (int)(pos.x() - textStart);
   for(int l = lineLayouts.count() - 1; l >=0; l--) {
@@ -187,7 +204,7 @@ void ChatLine::precomputeLine() {
   charHeights.resize(styledText.text.length());
   charUrlIdx.fill(-1, styledText.text.length());
   for(int i = 0; i < styledText.urls.count(); i++) {
-    Style::UrlInfo url = styledText.urls[i];
+    QtUiStyle::UrlInfo url = styledText.urls[i];
     for(int j = url.start; j < url.end; j++) charUrlIdx[j] = i;
   }
   if(!textFormat.count()) return;
@@ -298,7 +315,7 @@ void ChatLine::draw(QPainter *p, const QPointF &pos) {
   if(selectionMode == Full) {
     p->setPen(Qt::NoPen);
     p->setBrush(pal.brush(QPalette::Highlight));
-    p->drawRect(QRectF(pos, QSizeF(tsWidth + Style::sepTsSender() + senderWidth + Style::sepSenderText() + textWidth, height())));
+    p->drawRect(QRectF(pos, QSizeF(tsWidth + QtUi::style()->sepTsSender() + senderWidth + QtUi::style()->sepSenderText() + textWidth, height())));
   } else if(selectionMode == Partial) {
 
   } /*
@@ -321,14 +338,14 @@ void ChatLine::draw(QPainter *p, const QPointF &pos) {
     p->drawText(rect, Qt::AlignLeft|Qt::TextSingleLine, styledTimeStamp.text.mid(fr.start, fr.length), &brect);
     rect.setLeft(brect.right());
   }
-  rect = QRectF(pos + QPointF(tsWidth + Style::sepTsSender(), 0), QSizeF(senderWidth, minHeight));
+  rect = QRectF(pos + QPointF(tsWidth + QtUi::style()->sepTsSender(), 0), QSizeF(senderWidth, minHeight));
   for(int i = senderFormat.count() - 1; i >= 0; i--) {
     FormatRange fr = senderFormat[i];
     p->setFont(fr.format.font()); p->setPen(QPen(fr.format.foreground(), 0)); p->setBackground(fr.format.background());
     p->drawText(rect, Qt::AlignRight|Qt::TextSingleLine, styledSender.text.mid(fr.start, fr.length), &brect);
     rect.setRight(brect.left());
   }
-  QPointF tpos = pos + QPointF(tsWidth + Style::sepTsSender() + senderWidth + Style::sepSenderText(), 0);
+  QPointF tpos = pos + QPointF(tsWidth + QtUi::style()->sepTsSender() + senderWidth + QtUi::style()->sepSenderText(), 0);
   qreal h = 0; int l = 0;
   rect = QRectF(tpos + QPointF(0, h), QSizeF(textWidth, lineLayouts[l].height));
   int offset = 0;

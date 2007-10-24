@@ -15,7 +15,6 @@ MODNAME = $$basename(MODULE)
 MODPATH_PREFIX = $$dirname(MODULE)
 !isEmpty(MODPATH_PREFIX) {
   MODPATH_PREFIX ~= s,[^/]+,..
-  #sprintf($$MODPATH_PREFIX%1
   SRCPATH = $$MODPATH_PREFIX/$$SRCPATH
 }
 

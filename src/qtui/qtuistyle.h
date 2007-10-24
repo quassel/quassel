@@ -18,36 +18,19 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _QTUI_H_
-#define _QTUI_H_
+#ifndef _QTUISTYLE_H_
+#define _QTUISTYLE_H_
 
-#include "qtuistyle.h"
-#include "quasselui.h"
+#include "uistyle.h"
 
-class MainWin;
-
-//! This class encapsulates Quassel's Qt-based GUI.
-/** This is basically a wrapper around MainWin, which is necessary because we cannot derive MainWin
- *  from both QMainWindow and AbstractUi (because of multiple inheritance of QObject).
- */
-class QtUi : public AbstractUi {
-  Q_OBJECT
+class QtUiStyle : public UiStyle {
 
   public:
-    QtUi();
-    ~QtUi();
-    void init();
-    AbstractUiMsg *layoutMsg(const Message &);
+    QtUiStyle();
+    virtual ~QtUiStyle();
 
-    static QtUiStyle *style();
-
-  protected slots:
-    void connectedToCore();
-    void disconnectedFromCore();
-
-  private:
-    MainWin *mainWin;
-    static QtUiStyle *_style;
+    virtual int sepTsSender() { return 10; }
+    virtual int sepSenderText() { return 10; }
 };
 
 #endif

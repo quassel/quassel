@@ -24,7 +24,7 @@
 #include <QtGui>
 
 #include "util.h"
-#include "style.h"
+#include "uistyle.h"
 #include "quasselui.h"
 
 //FIXME: chatline doku
@@ -70,7 +70,7 @@ class ChatLine : public QObject, public AbstractUiMsg {
     qreal hght;
     Message msg;
     qreal tsWidth, senderWidth, textWidth;
-    Style::StyledString styledTimeStamp, styledSender, styledText;
+    UiStyle::StyledString styledTimeStamp, styledSender, styledText;
 
     struct FormatRange {
       int start;
@@ -103,7 +103,7 @@ class ChatLine : public QObject, public AbstractUiMsg {
     int selectionStart, selectionEnd;
     void formatMsg(Message);
     void precomputeLine();
-    QList<FormatRange> calcFormatRanges(const Style::StyledString &, QTextLayout::FormatRange additional = QTextLayout::FormatRange());
+    QList<FormatRange> calcFormatRanges(const UiStyle::StyledString &, QTextLayout::FormatRange additional = QTextLayout::FormatRange());
 };
 
 #endif

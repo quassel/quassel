@@ -22,19 +22,28 @@
 
 #include "mainwin.h"
 
+QtUiStyle *QtUi::_style;
+
 QtUi::QtUi() : AbstractUi() {
   mainWin = new MainWin(this);
+  _style = new QtUiStyle;
+
   connect(mainWin, SIGNAL(connectToCore(const QVariantMap &)), this, SIGNAL(connectToCore(const QVariantMap &)));
   connect(mainWin, SIGNAL(disconnectFromCore()), this, SIGNAL(disconnectFromCore()));
 
 }
 
 QtUi::~QtUi() {
+  delete _style;
   delete mainWin;
 }
 
 void QtUi::init() {
   mainWin->init();
+}
+
+QtUiStyle *QtUi::style() {
+  return _style;
 }
 
 AbstractUiMsg *QtUi::layoutMsg(const Message &msg) {

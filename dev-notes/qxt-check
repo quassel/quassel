@@ -1,0 +1,4 @@
+CONFIG += QXT
+
+defined(QXTINSTALLDIR):message(you're Qt installation is extended)
+you can also check for  $$[QT_INSTALL_DATA]/mkspecs/features/qxt.prf

@@ -5,7 +5,7 @@ CONFIG+=debug qtopia_main no_quicklaunch no_singleexec no_sxe_test
 QT = core gui network
 
 # Find files
-INCLUDEPATH+=../src/qtopia ../src/client ../src/common ../src/contrib/qxt
+INCLUDEPATH+=../src/qtopia ../src/uisupport ../src/client ../src/common ../src/contrib/qxt
 
 
 # Include .pri from src dirs
@@ -13,6 +13,7 @@ include(../src/contrib/qxt/qxt.pri)
 include(../src/common/common.pri)
 include(../src/qtopia/qtopia.pri)
 include(../src/client/client.pri)
+include(../src/uisupport/uisupport.pri)
 
 # Fix variable names
 SOURCES = $$SRCS
