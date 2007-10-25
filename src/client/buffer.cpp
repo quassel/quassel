@@ -74,6 +74,10 @@ void Buffer::updateBufferInfo(BufferInfo bufferid) {
   _bufferInfo = bufferid;
 }
 
+uint Buffer::uid() const {
+  return bufferInfo().uid();
+}
+
 uint Buffer::networkId() const {
   return bufferInfo().networkId();
 }

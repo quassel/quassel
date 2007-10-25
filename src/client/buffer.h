@@ -60,7 +60,8 @@ public:
 
   BufferInfo bufferInfo() const;
   void updateBufferInfo(BufferInfo bufferid);
-  
+
+  uint uid() const;
   uint networkId() const;
   
   QString networkName() const;

@@ -38,75 +38,34 @@ class LayoutThread;
 class BufferWidget : public QWidget {
   Q_OBJECT
 
-  public:
-    BufferWidget(QWidget *parent = 0);
-    ~BufferWidget();
-    void init();
+public:
+  BufferWidget(QWidget *parent = 0);
+  virtual ~BufferWidget();
+  void init();
 
-    QSize sizeHint() const;
+  QSize sizeHint() const;
 
-  signals:
-    void userInput(QString msg);
-    void aboutToClose();
+signals:
+  void userInput(QString msg);
+  void aboutToClose();
+    
+public slots:
+  void setBuffer(Buffer *);
+  void saveState();
+		  
+private slots:
+  void enterPressed();
+  void setActive(bool act = true);
   
-    //void layoutMessages(LayoutTask);
-    void nickListUpdated(QStringList l);
-      
-  protected:
-
-  public slots:
-    void setBuffer(Buffer *);
-    void saveState();
-    //void prependMessages(Buffer *, QList<Message>);  // for backlog processing
-
-  protected:
-    void resizeEvent ( QResizeEvent * event );
-
-  private slots:
-    void enterPressed();
-    void itemExpansionChanged(QTreeWidgetItem *);
-    void updateTitle();
-
-    //void displayMsg(Message);
-    void updateNickList(BufferState *state, QVariantMap nicks);
-    void updateNickList(QVariantMap nicks);
-    void setOwnNick(QString ownNick);
-    void setTopic(QString topic);
-    void setActive(bool act = true);
-
-    //void messagesLayouted(LayoutTask);
-
-
-  private:
-    Ui::BufferWidget ui;
-    Buffer *curBuf;
-    QHash<Buffer *, BufferState *> states;
-    bool active;
-
-    ChatWidget *chatWidget;
-    QSplitter *splitter;
-    QTreeWidget *nickTree;
-
-    QString networkName;
-    QString bufferName;
-
-    //LayoutThread *layoutThread;
-    //QHash<Buffer *, QList<ChatLine*> > chatLineCache;
-    //QHash<Buffer *, QList<Message> > msgCache;
+  
+private:
+  Ui::BufferWidget ui;
+  QHash<uint, ChatWidget*> _chatWidgets;
+  bool active;
+  
+  QString networkName;
+  QString bufferName;
 };
 
-struct BufferState {
-  ChatWidget *chatWidget;
-  QTreeWidget *nickTree;
-  QSplitter *splitter;
-  QWidget *page;
-  Buffer *buffer;
-  QByteArray splitterState;
-  QString topic, ownNick;
-  QString inputLine;
-  int currentLine;
-  int lineOffset;
-  bool opsExpanded, voicedExpanded, usersExpanded;
-};
 
 #endif
