@@ -46,6 +46,7 @@ public:
   void removeMapping(int column, int role, QObject *target, const QByteArray &property);
 										      
 public slots:
+  void setCurrentIndex(const QModelIndex &current, const QModelIndex &previous);
   void setCurrentRow(const QModelIndex &current, const QModelIndex &previous);
 
 private slots:

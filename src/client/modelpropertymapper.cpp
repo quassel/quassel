@@ -53,6 +53,8 @@ void ModelPropertyMapper::setSelectionModel(QItemSelectionModel *selectionModel)
   _selectionModel = selectionModel;
   connect(_selectionModel, SIGNAL(currentRowChanged(QModelIndex, QModelIndex)),
 	  this, SLOT(setCurrentRow(QModelIndex, QModelIndex)));
+  connect(_selectionModel, SIGNAL(currentChanged(QModelIndex, QModelIndex)),
+	  this, SLOT(setCurrentIndex(QModelIndex, QModelIndex)));
   
   setCurrentRow(selectionModel->currentIndex(), QModelIndex());
 }
@@ -82,6 +84,11 @@ void ModelPropertyMapper::removeMapping(int column, int role, QObject *target, c
     return;
   }
   _mappings.removeAll(Mapping(column, role, target, property));
+}
+
+void ModelPropertyMapper::setCurrentIndex(const QModelIndex &current, const QModelIndex &previous) {
+  if(current.row() == previous.row() && current.parent() != previous.parent())
+    setCurrentRow(current, previous);
 }
 
 void ModelPropertyMapper::setCurrentRow(const QModelIndex &current, const QModelIndex &previous) {
