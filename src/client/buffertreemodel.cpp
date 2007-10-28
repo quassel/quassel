@@ -124,6 +124,7 @@ BufferTreeModel::BufferTreeModel(QObject *parent)
     _selectionModelSynchronizer(new SelectionModelSynchronizer(this)),
     _propertyMapper(new ModelPropertyMapper(this))
 {
+  rootItem->setFlags(rootItem->flags() | Qt::ItemIsDropEnabled);
   _propertyMapper->setModel(this);
   delete _propertyMapper->selectionModel();
   MappedSelectionModel *mappedSelectionModel = new MappedSelectionModel(this);

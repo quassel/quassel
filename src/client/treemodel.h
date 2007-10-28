@@ -48,6 +48,7 @@ public:
   int columnCount() const;
   virtual QVariant data(int column, int role) const;
   virtual Qt::ItemFlags flags() const;
+  virtual void setFlags(Qt::ItemFlags);
   int row() const;
   TreeItem *parent();
     
@@ -56,6 +57,7 @@ protected:
   QHash<uint, TreeItem *> childHash; // uint to be compatible to qHash functions
   TreeItem *parentItem;
   QList<QVariant> itemData;
+  Qt::ItemFlags _flags;
 };
 
 

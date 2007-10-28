@@ -24,9 +24,12 @@
 /*****************************************
  *  Buffer Items stored in the Tree Model
  *****************************************/
-TreeItem::TreeItem(const QList<QVariant> &data, TreeItem *parent) : QObject(parent) {
-  itemData = data;
-  parentItem = parent;
+TreeItem::TreeItem(const QList<QVariant> &data, TreeItem *parent)
+  : QObject(parent),
+    parentItem(parent),
+    itemData(data),
+  _flags(Qt::ItemIsSelectable | Qt::ItemIsEnabled)
+{
 }
 
 TreeItem::TreeItem(TreeItem *parent) {
@@ -97,8 +100,13 @@ QVariant TreeItem::data(int column, int role) const {
 
 Qt::ItemFlags TreeItem::flags() const {
   // some sane defaults
-  return Qt::ItemIsSelectable | Qt::ItemIsEnabled;
+  return _flags;
 }
+
+void TreeItem::setFlags(Qt::ItemFlags flags) {
+  _flags = flags;
+}
+
 
 /*****************************************
  * TreeModel
