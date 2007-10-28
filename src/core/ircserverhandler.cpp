@@ -392,6 +392,10 @@ void IrcServerHandler::handle353(QString prefix, QStringList params) {
 void IrcServerHandler::handle432(QString prefix, QStringList params) {
   Q_UNUSED(prefix)
   Q_UNUSED(params)
+  emit displayMsg(Message::Error, "", tr("Your desired nickname contains illegal characters!"));
+  emit displayMsg(Message::Error, "", tr("Please use /nick <othernick> to continue your IRC-Session!"));
+  // FIXME!
+
 //   if(params.size() < 2) {
 //     // handle unreal-ircd bug, where unreal ircd doesnt supply a TARGET in ERR_ERRONEUSNICKNAME during registration phase:
 //     // nick @@@
@@ -421,9 +425,11 @@ void IrcServerHandler::handle432(QString prefix, QStringList params) {
 /* ERR_NICKNAMEINUSE */
 void IrcServerHandler::handle433(QString prefix, QStringList params) {
   Q_UNUSED(prefix)
-  Q_UNUSED(params)
-//   QString errnick = params[0];
-//   emit displayMsg(Message::Error, "", tr("Nick %1 is already taken").arg(errnick));
+  QString errnick = params[0];
+  emit displayMsg(Message::Error, "", tr("Nick %1 is already taken").arg(errnick));
+  emit displayMsg(Message::Error, "", tr("Please use /nick <othernick> to continue your IRC-Session!"));
+  // FIXME!
+  
 //   // if there is a problem while connecting to the server -> we handle it
 //   // TODO rely on another source...
 //   if(currentServer.isEmpty()) {

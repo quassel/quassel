@@ -100,6 +100,7 @@ void MainWin::init() {
 
 
   QDockWidget *dock = new QDockWidget("Topic Dock", this);
+  dock->setObjectName("TopicDock");
   dock->setAllowedAreas(Qt::TopDockWidgetArea | Qt::BottomDockWidgetArea);
 
   TopicWidget *topicwidget = new TopicWidget(dock);
