@@ -73,7 +73,9 @@ public slots:
   void putRawLine(QString input);
   void putCmd(QString cmd, QStringList params, QString prefix = 0);
 
-  //void exitThread();
+
+private slots:
+  void threadFinished();
 
 signals:
   void serverState(QString net, QVariantMap data);
@@ -94,7 +96,6 @@ private slots:
   void socketHasData();
   void socketError(QAbstractSocket::SocketError);
   void socketConnected();
-  void socketDisconnected();
   void socketStateChanged(QAbstractSocket::SocketState);
 
 private:

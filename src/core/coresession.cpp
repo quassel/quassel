@@ -146,8 +146,9 @@ void CoreSession::serverConnected(uint networkid) {
 }
 
 void CoreSession::serverDisconnected(uint networkid) {
-  servers.remove(networkid);
-  delete servers[networkid];
+  Q_ASSERT(servers.contains(networkid));
+  servers.take(networkid)->deleteLater();
+  Q_ASSERT(!servers.contains(networkid));
 }
 
 void CoreSession::msgFromGui(BufferInfo bufid, QString msg) {

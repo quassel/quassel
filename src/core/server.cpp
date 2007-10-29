@@ -53,10 +53,11 @@ Server::~Server() {
 
 void Server::run() {
   connect(&socket, SIGNAL(connected()), this, SLOT(socketConnected()));
-  connect(&socket, SIGNAL(disconnected()), this, SLOT(socketDisconnected()));
+  connect(&socket, SIGNAL(disconnected()), this, SLOT(quit()));
   connect(&socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(socketError(QAbstractSocket::SocketError)));
   connect(&socket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(socketStateChanged(QAbstractSocket::SocketState)));
   connect(&socket, SIGNAL(readyRead()), this, SLOT(socketHasData()));
+  connect(this, SIGNAL(finished()), this, SLOT(threadFinished()));
 
   exec();
 }
@@ -94,15 +95,17 @@ void Server::socketError( QAbstractSocket::SocketError err ) {
   //qDebug() << "Socket Error!";
 }
 
-void Server::socketConnected( ) {
+void Server::socketConnected() {
   emit connected(networkId());
   putRawLine(QString("NICK :%1").arg(identity["NickList"].toStringList()[0]));  // FIXME: try more nicks if error occurs
   putRawLine(QString("USER %1 8 * :%2").arg(identity["Ident"].toString()).arg(identity["RealName"].toString()));
 }
 
-void Server::socketDisconnected( ) {
+void Server::threadFinished() {
+  // the Socket::disconnected() is connect to this::quit()
+  // so after the event loop is finished we're beeing called
+  // and propagate the disconnect
   emit disconnected(networkId());
-  // propagate to networkInfo, so we can clear up
 }
 
 void Server::socketStateChanged(QAbstractSocket::SocketState state) {
