@@ -42,21 +42,33 @@ public:
   void removeChild(int row);
                    
   virtual uint id() const;
+  
   TreeItem *child(int row) const;
   TreeItem *childById(const uint &) const;
+  
   int childCount() const;
   int columnCount() const;
+  
   virtual QVariant data(int column, int role) const;
-  virtual Qt::ItemFlags flags() const;
-  virtual void setFlags(Qt::ItemFlags);
+    
+  Qt::ItemFlags flags() const;
+  void setFlags(Qt::ItemFlags);
+  
   int row() const;
   TreeItem *parent();
-    
+
+
+private slots:
+  void childDestroyed();
+ 
+  
 protected:
-  QList<TreeItem *> childItems;
-  QHash<uint, TreeItem *> childHash; // uint to be compatible to qHash functions
-  TreeItem *parentItem;
   QList<QVariant> itemData;
+  
+private:
+  QList<TreeItem *> _childItems;
+  QHash<uint, TreeItem *> _childHash; // uint to be compatible to qHash functions
+  TreeItem *_parentItem;
   Qt::ItemFlags _flags;
 };
 

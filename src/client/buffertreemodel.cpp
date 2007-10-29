@@ -32,9 +32,15 @@
 /*****************************************
 *  Fancy Buffer Items
 *****************************************/
-BufferTreeItem::BufferTreeItem(Buffer *buffer, TreeItem *parent) : TreeItem(parent) {
-  buf = buffer;
-  activity = Buffer::NoActivity;
+BufferTreeItem::BufferTreeItem(Buffer *buffer, TreeItem *parent)
+  : TreeItem(parent),
+    buf(buffer),
+    activity(Buffer::NoActivity)
+{
+  Qt::ItemFlags flags = Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled;
+  if(buf->bufferType() == Buffer::QueryType)
+    flags |= Qt::ItemIsDropEnabled;
+  setFlags(flags);
 }
 
 uint BufferTreeItem::id() const {
@@ -48,7 +54,7 @@ void BufferTreeItem::setActivity(const Buffer::ActivityLevel &level) {
 QString BufferTreeItem::text(int column) const {
   switch(column) {
     case 0:
-      return buf->displayName();
+      return buf->name();
     case 1:
       return buf->networkName();
     default:
@@ -56,7 +62,8 @@ QString BufferTreeItem::text(int column) const {
   }
 }
 
-QColor BufferTreeItem::foreground(int /*column*/) const {
+QColor BufferTreeItem::foreground(int column) const {
+  Q_UNUSED(column)
   // for the time beeing we ignore the column :)
   if(activity & Buffer::Highlight) {
     return QColor(Qt::red);
@@ -75,45 +82,48 @@ QColor BufferTreeItem::foreground(int /*column*/) const {
 
 QVariant BufferTreeItem::data(int column, int role) const {
   switch(role) {
-    case Qt::DisplayRole:
-      return text(column);
-    case Qt::ForegroundRole:
-      return foreground(column);
-    case BufferTreeModel::BufferNameRole:
-      return buf->bufferName();
-    case BufferTreeModel::BufferTypeRole:
-      return int(buf->bufferType());
-    case BufferTreeModel::BufferActiveRole:
-      return buf->isActive();
-    case BufferTreeModel::BufferUidRole:
-      return buf->bufferInfo().uid();
-    default:
-      return QVariant();
+  case Qt::DisplayRole:
+    return text(column);
+  case Qt::ForegroundRole:
+    return foreground(column);
+  case BufferTreeModel::BufferTypeRole:
+    return int(buf->bufferType());
+  case BufferTreeModel::BufferActiveRole:
+    return buf->isActive();
+  case BufferTreeModel::BufferUidRole:
+    return buf->bufferInfo().uid();
+  case BufferTreeModel::NetworkIdRole:
+    return buf->bufferInfo().networkId();
+    
+  default:
+    return TreeItem::data(column, role);
   }
-}
-
-Qt::ItemFlags BufferTreeItem::flags() const {
-  Qt::ItemFlags flags = Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled;
-  if(buf->bufferType() == Buffer::QueryType)
-    flags |= Qt::ItemIsDropEnabled;
-
-  return flags;
 }
 
 /*****************************************
 *  Network Items
 *****************************************/
-NetworkTreeItem::NetworkTreeItem(const QString &network, TreeItem *parent) : TreeItem(parent) {
+NetworkTreeItem::NetworkTreeItem(const uint &netid, const QString &network, TreeItem *parent)
+  : TreeItem(parent),
+    _networkId(netid),
+    net(network)
+{
   net = network;
   itemData << net << "";
+  setFlags(Qt::ItemIsEnabled);
+}
+
+QVariant NetworkTreeItem::data(int column, int role) const {
+  switch(role) {
+  case BufferTreeModel::NetworkIdRole:
+    return _networkId;
+  default:
+    return TreeItem::data(column, role);
+  }
 }
 
 uint NetworkTreeItem::id() const {
-  return qHash(net);
-}
-
-Qt::ItemFlags NetworkTreeItem::flags() const {
-  return Qt::ItemIsEnabled | Qt::ItemIsDropEnabled;
+  return _networkId;
 }
 
 /*****************************************
@@ -124,7 +134,7 @@ BufferTreeModel::BufferTreeModel(QObject *parent)
     _selectionModelSynchronizer(new SelectionModelSynchronizer(this)),
     _propertyMapper(new ModelPropertyMapper(this))
 {
-  rootItem->setFlags(rootItem->flags() | Qt::ItemIsDropEnabled);
+  // initialize the Property Mapper
   _propertyMapper->setModel(this);
   delete _propertyMapper->selectionModel();
   MappedSelectionModel *mappedSelectionModel = new MappedSelectionModel(this);
@@ -169,11 +179,12 @@ Buffer *BufferTreeModel::getBufferByIndex(const QModelIndex &index) const {
 
 QModelIndex BufferTreeModel::getOrCreateNetworkItemIndex(Buffer *buffer) {
   QString net = buffer->networkName();
+  uint netId = buffer->networkId();
   TreeItem *networkItem;
 
-  if(!(networkItem = rootItem->childById(qHash(net)))) {
+  if(!(networkItem = rootItem->childById(netId))) {
     int nextRow = rootItem->childCount();
-    networkItem = new NetworkTreeItem(net, rootItem);
+    networkItem = new NetworkTreeItem(netId, net, rootItem);
     
     beginInsertRows(QModelIndex(), nextRow, nextRow);
     rootItem->appendChild(networkItem);
@@ -203,50 +214,92 @@ QModelIndex BufferTreeModel::getOrCreateBufferItemIndex(Buffer *buffer) {
 }
 
 QStringList BufferTreeModel::mimeTypes() const {
+  // mimetypes we accept for drops
   QStringList types;
-  types << "application/Quassel/BufferItem/row"
-    << "application/Quassel/BufferItem/network"
-    << "application/Quassel/BufferItem/bufferInfo";
+  // comma separated list of colon separated pairs of networkid and bufferid
+  // example: 0:1,0:2,1:4
+  types << "application/Quassel/BufferItemList";
   return types;
 }
+
+bool BufferTreeModel::mimeContainsBufferList(const QMimeData *mimeData) {
+  return mimeData->hasFormat("application/Quassel/BufferItemList");
+}
+
+QList< QPair<uint, uint> > BufferTreeModel::mimeDataToBufferList(const QMimeData *mimeData) {
+  QList< QPair<uint, uint> > bufferList;
+
+  if(!mimeContainsBufferList(mimeData))
+    return bufferList;
+
+  QStringList rawBufferList = QString::fromAscii(mimeData->data("application/Quassel/BufferItemList")).split(",");
+  uint networkId, bufferUid;
+  foreach(QString rawBuffer, rawBufferList) {
+    if(!rawBuffer.contains(":"))
+      continue;
+    networkId = rawBuffer.section(":", 0, 0).toUInt();
+    bufferUid = rawBuffer.section(":", 1, 1).toUInt();
+    bufferList.append(qMakePair(networkId, bufferUid));
+  }
+  return bufferList;
+}
+
 
 QMimeData *BufferTreeModel::mimeData(const QModelIndexList &indexes) const {
   QMimeData *mimeData = new QMimeData();
 
-  QModelIndex index = indexes.first();
-  
-  mimeData->setData("application/Quassel/BufferItem/row", QByteArray::number(index.row()));
-  mimeData->setData("application/Quassel/BufferItem/network", getBufferByIndex(index)->networkName().toUtf8());
-  mimeData->setData("application/Quassel/BufferItem/bufferInfo", QByteArray::number(getBufferByIndex(index)->bufferInfo().uid()));
+  QStringList bufferlist;
+  QString netid, uid, bufferid;
+  foreach(QModelIndex index, indexes) {
+    netid = QString::number(index.data(NetworkIdRole).toUInt());
+    uid = QString::number(index.data(BufferUidRole).toUInt());
+    bufferid = QString("%1:%2").arg(netid).arg(uid);
+    if(!bufferlist.contains(bufferid))
+      bufferlist << bufferid;
+  }
+
+  mimeData->setData("application/Quassel/BufferItemList", bufferlist.join(",").toAscii());
+
   return mimeData;
 }
 
-bool BufferTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction /*action*/, int /*row*/, int /*column*/, const QModelIndex &parent) {
-  foreach(QString mimeType, mimeTypes()) {
-    if(!(data->hasFormat(mimeType)))
-      return false; // whatever the drop is... it's not a buffer...
-  }
-  
-  int sourcerow = data->data("application/Quassel/BufferItem/row").toInt();
-  QString network = QString::fromUtf8(data->data("application/Quassel/BufferItem/network"));
-  
-  Q_ASSERT(rootItem->childById(qHash(network)));
+bool BufferTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent) {
+  Q_UNUSED(action)
+  Q_UNUSED(row)
+  Q_UNUSED(column)
 
-  if(parent == QModelIndex()) // can't be a query...
+  if(!mimeContainsBufferList(data))
     return false;
-  
-  Buffer *sourceBuffer = static_cast<BufferTreeItem *>(rootItem->childById(qHash(network))->child(sourcerow))->buffer();
-  Buffer *targetBuffer = getBufferByIndex(parent);
 
-  if(!(sourceBuffer->bufferType() & targetBuffer->bufferType() & Buffer::QueryType)) // only queries can be merged
+  // target must be a query
+  Buffer::Type targetType = (Buffer::Type)parent.data(BufferTreeModel::BufferTypeRole).toInt();
+  if(targetType != Buffer::QueryType)
     return false;
+
+  QList< QPair<uint, uint> > bufferList = mimeDataToBufferList(data);
+
+  // exactly one buffer has to be dropped
+  if(bufferList.count() != 1)
+    return false;
+
+  uint netId = bufferList.first().first;
+  uint bufferId = bufferList.first().second;
+
+  // no self merges (would kill us)
+  if(bufferId == parent.data(BufferUidRole).toInt())
+    return false; 
   
-  if(sourceBuffer == targetBuffer) // we won't merge with ourself :)
+  Q_ASSERT(rootItem->childById(netId));
+  Q_ASSERT(rootItem->childById(netId)->childById(bufferId));
+
+  // source must be a query too
+  Buffer::Type sourceType = (Buffer::Type)rootItem->childById(netId)->childById(bufferId)->data(0, BufferTypeRole).toInt();
+  if(sourceType != Buffer::QueryType)
     return false;
     
   // TODO: warn user about buffermerge!
-  qDebug() << "merging" << sourceBuffer->bufferName() << "with" << targetBuffer->bufferName();
-  removeRow(parent.row(), BufferTreeModel::parent(parent));
+  qDebug() << "merging" << bufferId << parent.data(BufferUidRole).toInt();
+  removeRow(parent.row(), parent.parent());
   
   return true;
 }

@@ -48,7 +48,6 @@ public:
 
   virtual uint id() const;
   QVariant data(int column, int role) const;
-  virtual Qt::ItemFlags flags() const;
   
   Buffer *buffer() const { return buf; }
   void setActivity(const Buffer::ActivityLevel &);
@@ -68,14 +67,14 @@ class NetworkTreeItem : public TreeItem {
   Q_OBJECT
   
 public:
-  NetworkTreeItem(const QString &, TreeItem *parent = 0);
+  NetworkTreeItem(const uint &netid, const QString &, TreeItem *parent = 0);
 
+  virtual QVariant data(int column, int row) const;
   virtual uint id() const;
-  virtual Qt::ItemFlags flags() const;
   
 private:
+  uint _networkId;
   QString net;
-  
 };
 
 /*****************************************
@@ -88,8 +87,8 @@ public:
   enum myRoles {
     BufferTypeRole = Qt::UserRole,
     BufferActiveRole,
-    BufferNameRole,
-    BufferUidRole
+    BufferUidRole,
+    NetworkIdRole
   };
   
   BufferTreeModel(QObject *parent = 0);
@@ -101,6 +100,14 @@ public:
   void synchronizeSelectionModel(MappedSelectionModel *selectionModel);
   void synchronizeView(QAbstractItemView *view);
   void mapProperty(int column, int role, QObject *target, const QByteArray &property);
+
+  static bool mimeContainsBufferList(const QMimeData *mimeData);
+  static QList< QPair<uint, uint> > mimeDataToBufferList(const QMimeData *mimeData);
+  
+  virtual QStringList mimeTypes() const;
+  virtual QMimeData *mimeData(const QModelIndexList &) const;
+  virtual bool dropMimeData(const QMimeData *, Qt::DropAction, int, int, const QModelIndex &);
+
 
 public slots:
   void bufferUpdated(Buffer *);
@@ -118,10 +125,6 @@ private:
   Buffer *getBufferByIndex(const QModelIndex &) const;
   QModelIndex getOrCreateNetworkItemIndex(Buffer *buffer);
   QModelIndex getOrCreateBufferItemIndex(Buffer *buffer);
-
-  QStringList mimeTypes() const;
-  QMimeData *mimeData(const QModelIndexList &) const;
-  bool dropMimeData(const QMimeData *, Qt::DropAction, int, int, const QModelIndex &);
 
   QPointer<SelectionModelSynchronizer> _selectionModelSynchronizer;
   QPointer<ModelPropertyMapper> _propertyMapper;

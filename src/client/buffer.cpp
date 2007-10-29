@@ -86,15 +86,11 @@ QString Buffer::networkName() const {
   return bufferInfo().network();
 }
 
-QString Buffer::bufferName() const {
-  return bufferInfo().buffer();
-}
-
-QString Buffer::displayName() const {
+QString Buffer::name() const {
   if(bufferType() == StatusType)
     return tr("Status Buffer");
   else
-    return bufferName();
+    return bufferInfo().buffer();
 }
 
 QList<AbstractUiMsg *> Buffer::contents() const {

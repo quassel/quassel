@@ -24,6 +24,7 @@
 #include <QFlags>
 #include <QDropEvent>
 #include <QSortFilterProxyModel>
+#include <QSet>
 #include "buffer.h"
 #include "buffertreemodel.h"
 
@@ -46,23 +47,27 @@ public:
   };
   Q_DECLARE_FLAGS(Modes, Mode);
 
-  BufferViewFilter(QAbstractItemModel *model, const Modes &mode, const QStringList &nets);
+  BufferViewFilter(QAbstractItemModel *model, const Modes &mode, const QList<uint> &nets);
+  
+  virtual Qt::ItemFlags flags(const QModelIndex &index) const;
+  virtual bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent);
   
 public slots:
-  void invalidateMe();
-  void dropEvent(QDropEvent *);
   void removeBuffer(const QModelIndex &);
 
+protected:
+  bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
+  bool lessThan(const QModelIndex &, const QModelIndex &) const;
+  
 private:
+  Modes mode;
+  QSet<uint> networks;
+  QSet<uint> buffers;
+
   bool filterAcceptBuffer(const QModelIndex &) const;
   bool filterAcceptNetwork(const QModelIndex &) const;
-  bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
-  bool lessThan(const QModelIndex &, const QModelIndex &);
   void addBuffer(const uint &);
-  
-  Modes mode;
-  QStringList networks;
-  QList<uint> customBuffers;
+
 };
 Q_DECLARE_OPERATORS_FOR_FLAGS(BufferViewFilter::Modes)    
 

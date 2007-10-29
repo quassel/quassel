@@ -42,7 +42,7 @@ class MainWin : public QMainWindow {
     virtual ~MainWin();
 
     void init();
-    void addBufferView(const QString &, QAbstractItemModel *, const BufferViewFilter::Modes &, const QStringList &);
+    void addBufferView(const QString &, QAbstractItemModel *, const BufferViewFilter::Modes &, const QList<uint> &);
 
     AbstractUiMsg *layoutMsg(const Message &);
 

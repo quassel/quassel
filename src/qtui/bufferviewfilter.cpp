@@ -23,52 +23,50 @@
 /*****************************************
 * The Filter for the Tree View
 *****************************************/
-BufferViewFilter::BufferViewFilter(QAbstractItemModel *model, const Modes &filtermode, const QStringList &nets)
+BufferViewFilter::BufferViewFilter(QAbstractItemModel *model, const Modes &filtermode, const QList<uint> &nets)
   : QSortFilterProxyModel(model),
     mode(filtermode),
-    networks(nets)
+    networks(QSet<uint>::fromList(nets))
 {
   setSourceModel(model);
-  setSortRole(BufferTreeModel::BufferNameRole);
   setSortCaseSensitivity(Qt::CaseInsensitive);
   
-  connect(model, SIGNAL(invalidateFilter()), this, SLOT(invalidateMe()));
+  // I have this feeling that this resulted in a fuckup once... no clue though right now and invalidateFilter isn't a slot -.-
+  connect(model, SIGNAL(invalidateFilter()), this, SLOT(invalidate()));
 }
 
-void BufferViewFilter::invalidateMe() {
-  invalidateFilter();
-}
-
-void BufferViewFilter::dropEvent(QDropEvent *event) {
-  const QMimeData *data = event->mimeData();
-  if(!(mode & FullCustom))
-    return; // only custom buffers can be customized... obviously... :)
-  
-  if(!(data->hasFormat("application/Quassel/BufferItem/row")
-       && data->hasFormat("application/Quassel/BufferItem/network")
-       && data->hasFormat("application/Quassel/BufferItem/bufferInfo")))
-    return; // whatever the drop is... it's not a buffer...
-  
-  event->accept();
-  uint bufferuid = data->data("application/Quassel/BufferItem/bufferInfo").toUInt();
-  QString networkname = QString::fromUtf8("application/Quassel/BufferItem/network");
-  
-  for(int rowid = 0; rowid < rowCount(); rowid++) {
-    QModelIndex networkindex = index(rowid, 0);
-    if(networkindex.data(Qt::DisplayRole) == networkname) {
-      addBuffer(bufferuid);
-      return;
-    }
+Qt::ItemFlags BufferViewFilter::flags(const QModelIndex &index) const {
+  Qt::ItemFlags flags = mapToSource(index).flags();
+  if(mode & FullCustom) {
+    if(index == QModelIndex() || index.parent() == QModelIndex())
+      flags |= Qt::ItemIsDropEnabled;
   }
-  beginInsertRows(QModelIndex(), rowCount(), rowCount());
-  addBuffer(bufferuid);
-  endInsertRows();
+  return flags;
 }
 
+bool BufferViewFilter::dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent) {
+  // drops have to occur in the open field
+  if(parent != QModelIndex())
+    return QSortFilterProxyModel::dropMimeData(data, action, row, column, parent);
+
+  if(!BufferTreeModel::mimeContainsBufferList(data))
+    return false;
+
+  QList< QPair<uint, uint> > bufferList = BufferTreeModel::mimeDataToBufferList(data);
+
+  uint netId, bufferId;
+  for(int i = 0; i < bufferList.count(); i++) {
+    netId = bufferList[i].first;
+    bufferId = bufferList[i].second;
+    networks << netId;
+    addBuffer(bufferId);
+  }
+  return true;
+}
 
 void BufferViewFilter::addBuffer(const uint &bufferuid) {
-  if(!customBuffers.contains(bufferuid)) {
-    customBuffers << bufferuid;
+  if(!buffers.contains(bufferuid)) {
+    buffers << bufferuid;
     invalidateFilter();
   }
 }
@@ -79,12 +77,14 @@ void BufferViewFilter::removeBuffer(const QModelIndex &index) {
   
   if(index.parent() == QModelIndex())
     return; // only child elements can be deleted
-  
+
+  bool lastBuffer = (rowCount(index.parent()) == 1);
+  uint netId = index.data(BufferTreeModel::NetworkIdRole).toUInt();
   uint bufferuid = index.data(BufferTreeModel::BufferUidRole).toUInt();
-  if(customBuffers.contains(bufferuid)) {
-    beginRemoveRows(index.parent(), index.row(), index.row());
-    customBuffers.removeAt(customBuffers.indexOf(bufferuid));
-    endRemoveRows();
+  if(buffers.contains(bufferuid)) {
+    buffers.remove(bufferuid);
+    if(lastBuffer)
+      networks.remove(netId);
     invalidateFilter();
   }
   
@@ -93,17 +93,23 @@ void BufferViewFilter::removeBuffer(const QModelIndex &index) {
 
 bool BufferViewFilter::filterAcceptBuffer(const QModelIndex &source_bufferIndex) const {
   Buffer::Type bufferType = (Buffer::Type) source_bufferIndex.data(BufferTreeModel::BufferTypeRole).toInt();
-  if((mode & NoChannels) && bufferType == Buffer::ChannelType) return false;
-  if((mode & NoQueries) && bufferType == Buffer::QueryType) return false;
-  if((mode & NoServers) && bufferType == Buffer::StatusType) return false;
+  
+  if((mode & NoChannels) && bufferType == Buffer::ChannelType)
+    return false;
+  if((mode & NoQueries) && bufferType == Buffer::QueryType)
+    return false;
+  if((mode & NoServers) && bufferType == Buffer::StatusType)
+    return false;
 
   bool isActive = source_bufferIndex.data(BufferTreeModel::BufferActiveRole).toBool();
-  if((mode & NoActive) && isActive) return false;
-  if((mode & NoInactive) && !isActive) return false;
+  if((mode & NoActive) && isActive)
+    return false;
+  if((mode & NoInactive) && !isActive)
+    return false;
 
   if((mode & FullCustom)) {
     uint bufferuid = source_bufferIndex.data(BufferTreeModel::BufferUidRole).toUInt();
-    if(!customBuffers.contains(bufferuid))
+    if(!buffers.contains(bufferuid))
       return false;
   }
     
@@ -111,22 +117,8 @@ bool BufferViewFilter::filterAcceptBuffer(const QModelIndex &source_bufferIndex)
 }
 
 bool BufferViewFilter::filterAcceptNetwork(const QModelIndex &source_index) const {
-  QString net = source_index.data(Qt::DisplayRole).toString();
-  if((mode & SomeNets) && !networks.contains(net)) {
-    return false;
-  } else if(mode & FullCustom) {
-    // let's check if we got a child that want's to show off
-    int childcount = sourceModel()->rowCount(source_index);
-    for(int rowid = 0; rowid < childcount; rowid++) {
-      QModelIndex child = sourceModel()->index(rowid, 0, source_index);
-      uint bufferuid = child.data(BufferTreeModel::BufferUidRole).toUInt();
-      if(customBuffers.contains(bufferuid))
-        return true;
-    }
-    return false;
-  } else {
-    return true;
-  }
+  uint net = source_index.data(BufferTreeModel::NetworkIdRole).toUInt();
+  return !((mode & (SomeNets | FullCustom)) && !networks.contains(net));
 }
 
 bool BufferViewFilter::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const {
@@ -143,8 +135,13 @@ bool BufferViewFilter::filterAcceptsRow(int source_row, const QModelIndex &sourc
     return filterAcceptBuffer(child);
 }
 
-bool BufferViewFilter::lessThan(const QModelIndex &left, const QModelIndex &right) {
-  // pretty interesting stuff here, eh?
-  return QSortFilterProxyModel::lessThan(left, right);
+bool BufferViewFilter::lessThan(const QModelIndex &left, const QModelIndex &right) const {
+  int lefttype = left.data(BufferTreeModel::BufferTypeRole).toInt();
+  int righttype = right.data(BufferTreeModel::BufferTypeRole).toInt();
+
+  if(lefttype != righttype)
+    return lefttype < righttype;
+  else
+    return QSortFilterProxyModel::lessThan(left, right);
 }
 

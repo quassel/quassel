@@ -65,8 +65,7 @@ public:
   uint networkId() const;
   
   QString networkName() const;
-  QString bufferName() const;
-  QString displayName() const;
+  QString name() const;
   
   QList<AbstractUiMsg *> contents() const;
   

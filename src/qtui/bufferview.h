@@ -36,14 +36,12 @@ public:
   BufferView(QWidget *parent = 0);
   void init();
   void setModel(QAbstractItemModel *model);
-  void setFilteredModel(QAbstractItemModel *model, BufferViewFilter::Modes mode, QStringList nets);
+  void setFilteredModel(QAbstractItemModel *model, BufferViewFilter::Modes mode, QList<uint> nets);
   
 signals:
-  void eventDropped(QDropEvent *);
   void removeBuffer(const QModelIndex &);
   
 private slots:
-  void dropEvent(QDropEvent *);
   void joinChannel(const QModelIndex &index);
   void keyPressEvent(QKeyEvent *);
   void rowsInserted (const QModelIndex & parent, int start, int end);

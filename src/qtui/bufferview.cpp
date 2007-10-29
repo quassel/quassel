@@ -44,14 +44,12 @@ void BufferView::init() {
   
   setSortingEnabled(true);
   sortByColumn(0, Qt::AscendingOrder);
-  
   connect(this, SIGNAL(activated(QModelIndex)), this, SLOT(joinChannel(QModelIndex)));
 }
 
-void BufferView::setFilteredModel(QAbstractItemModel *model, BufferViewFilter::Modes mode, QStringList nets) {
+void BufferView::setFilteredModel(QAbstractItemModel *model, BufferViewFilter::Modes mode, QList<uint> nets) {
   BufferViewFilter *filter = new BufferViewFilter(model, mode, nets);
   setModel(filter);
-  connect(this, SIGNAL(eventDropped(QDropEvent *)), filter, SLOT(dropEvent(QDropEvent *)));
   connect(this, SIGNAL(removeBuffer(const QModelIndex &)), filter, SLOT(removeBuffer(const QModelIndex &)));
 }
 
@@ -60,16 +58,6 @@ void BufferView::setModel(QAbstractItemModel *model) {
   QTreeView::setModel(model);
   init();
   
-}
-
-void BufferView::dropEvent(QDropEvent *event) {
-  if(event->source() != this) {
-    // another view(?) or widget is the source. maybe it's a drag 'n drop 
-    // view customization -> we tell our friend the filter:
-    emit eventDropped(event);
-  }
-  // in the case that the filter did not accept the event or if it's a merge
-  QTreeView::dropEvent(event);    
 }
 
 void BufferView::joinChannel(const QModelIndex &index) {
