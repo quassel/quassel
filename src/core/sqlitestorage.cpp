@@ -356,7 +356,7 @@ QList<BufferInfo> SqliteStorage::requestBuffers(UserId user, QDateTime since) {
 }
 
 MsgId SqliteStorage::logMessage(Message msg) {
-  logMessageQuery->bindValue(":time", msg.timeStamp().toTime_t());
+  logMessageQuery->bindValue(":time", msg.timestamp().toTime_t());
   logMessageQuery->bindValue(":bufferid", msg.buffer().uid());
   logMessageQuery->bindValue(":type", msg.type());
   logMessageQuery->bindValue(":flags", msg.flags());
@@ -376,7 +376,7 @@ MsgId SqliteStorage::logMessage(Message msg) {
     }
   }
 
-  getLastMessageIdQuery->bindValue(":time", msg.timeStamp().toTime_t());
+  getLastMessageIdQuery->bindValue(":time", msg.timestamp().toTime_t());
   getLastMessageIdQuery->bindValue(":bufferid", msg.buffer().uid());
   getLastMessageIdQuery->bindValue(":type", msg.type());
   getLastMessageIdQuery->bindValue(":sender", msg.sender());
@@ -385,7 +385,7 @@ MsgId SqliteStorage::logMessage(Message msg) {
   if(getLastMessageIdQuery->first()) {
     return getLastMessageIdQuery->value(0).toUInt();
   } else { // somethin went wrong... :(
-    qDebug() << getLastMessageIdQuery->lastQuery() << "time/bufferid/type/sender:" << msg.timeStamp().toTime_t() << msg.buffer().uid() << msg.type() << msg.sender();
+    qDebug() << getLastMessageIdQuery->lastQuery() << "time/bufferid/type/sender:" << msg.timestamp().toTime_t() << msg.buffer().uid() << msg.type() << msg.sender();
     Q_ASSERT(false);
     return 0;
   }

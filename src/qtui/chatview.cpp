@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-07 by The Quassel IRC Development Team             *
+ *   Copyright (C) 2005-07 by the Quassel IRC Team                         *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,33 +18,70 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _CHATLINE_H_
-#define _CHATLINE_H_
+#include <QGraphicsTextItem>
 
+#include "buffer.h"
+#include "chatline.h"
+#include "chatscene.h"
+#include "chatview.h"
 #include "quasselui.h"
 
-class ChatLine : public AbstractUiMsg {
+ChatView::ChatView(Buffer *buf, QWidget *parent) : QGraphicsView(parent) {
+  _scene = new ChatScene(buf, this);
+  setScene(_scene);
 
-  public:
-    ChatLine(Message msg);
-    QString sender() const;
-    QString text() const;
-    MsgId msgId() const;
-    BufferInfo bufferInfo() const;
-    QDateTime timestamp() const;
+  QGraphicsTextItem *item = scene()->addText(buf->name());
 
-    QString htmlSender() const;
-    QString htmlText() const;
-    QString htmlTimestamp() const;
+}
 
-  private:
-    QString _sender, _text, _htmlSender, _htmlText, _htmlTimestamp;
-    MsgId _msgId;
-    BufferInfo _bufferInfo;
-    QDateTime _timestamp;
 
-    QString formattedToHtml(const QString &);
+ChatView::~ChatView() {
 
-};
+}
 
-#endif
+
+ChatScene *ChatView::scene() const {
+  return _scene;
+}
+
+/*
+void ChatView::clear()
+{
+}
+
+void ChatView::prependMsg(AbstractUiMsg *msg) {
+  ChatLine *line = dynamic_cast<ChatLine*>(msg);
+  Q_ASSERT(line);
+  prependChatLine(line);
+}
+
+void ChatView::prependChatLine(ChatLine *line) {
+  qDebug() << "prepending";
+}
+
+void ChatView::prependChatLines(QList<ChatLine *> clist) {
+
+}
+
+void ChatView::appendMsg(AbstractUiMsg *msg) {
+  ChatLine *line = dynamic_cast<ChatLine*>(msg);
+  Q_ASSERT(line);
+  appendChatLine(line);
+}
+
+void ChatView::appendChatLine(ChatLine *line) {
+  qDebug() << "appending";
+}
+
+
+void ChatView::appendChatLines(QList<ChatLine *> list) {
+  foreach(ChatLine *line, list) {
+    
+  }
+}
+
+void ChatView::setContents(QList<ChatLine *> list) {
+  qDebug() << "setting" << list.count();
+  appendChatLines(list);
+}
+*/

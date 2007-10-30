@@ -20,7 +20,7 @@
 
 #include "util.h"
 #include "chatwidget.h"
-#include "chatline.h"
+#include "chatline-old.h"
 #include "qtui.h"
 
 
@@ -534,7 +534,7 @@ QString ChatWidget::selectionToString() {
   if(selectionMode == LinesSelected) {
     QString result;
     for(int l = selectionStart; l <= selectionEnd; l++) {
-      result += QString("[%1] %2 %3\n").arg(lines[l]->timeStamp().toLocalTime().toString("hh:mm:ss"))
+      result += QString("[%1] %2 %3\n").arg(lines[l]->timestamp().toLocalTime().toString("hh:mm:ss"))
           .arg(lines[l]->sender()).arg(lines[l]->text());
     }
     return result;

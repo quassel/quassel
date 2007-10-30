@@ -20,7 +20,7 @@
 
 #include "bufferwidget.h"
 #include "buffer.h"
-#include "chatline.h"
+#include "chatline-old.h"
 #include "chatwidget.h"
 #include "settings.h"
 
@@ -30,18 +30,40 @@ BufferWidget::BufferWidget(QWidget *parent) : QWidget(parent) {
 }
 
 void BufferWidget::init() {
+
 }
 
 BufferWidget::~BufferWidget() {
+
 }
 
 void BufferWidget::setBuffer(Buffer *buf) {
+  /*
+  ChatView *chatView;
+  if(_chatViews.contains(buf->uid())) {
+    chatView = _chatViews[buf->uid()];
+  } else {
+    chatView = new ChatView(buf, this);
+    ui.stackedWidget->addWidget(chatView);
+    _chatViews[buf->uid()] = chatView;
+  }
+  ui.stackedWidget->setCurrentWidget(chatView);
+  disconnect(this, SIGNAL(userInput(QString)), 0, 0);
+  connect(this, SIGNAL(userInput(QString)), buf, SLOT(processUserInput(QString)));
+  //chatView->setFocusProxy(ui.inputEdit);
+  ui.inputEdit->setFocus();
+  ui.ownNick->clear();  // TODO add nick history
+}
+  */
+  
+  // ui.ownNick->addItem(state->ownNick);
+
   ChatWidget *chatWidget;
   if(_chatWidgets.contains(buf->uid())) {
      chatWidget = _chatWidgets[buf->uid()];
   } else {
     chatWidget = new ChatWidget(this);
-    chatWidget->init(networkName, bufferName);
+    chatWidget->init(buf->networkName(), buf->name());
     QList<ChatLine *> lines;
     QList<AbstractUiMsg *> msgs = buf->contents();
     foreach(AbstractUiMsg *msg, msgs) {
@@ -63,6 +85,7 @@ void BufferWidget::setBuffer(Buffer *buf) {
 }
 
 void BufferWidget::saveState() {
+
 }
 
 QSize BufferWidget::sizeHint() const {

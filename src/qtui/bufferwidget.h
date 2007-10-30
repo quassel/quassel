@@ -23,18 +23,17 @@
 
 #include "ui_bufferwidget.h"
 
+#include "chatview.h"
 #include "global.h"
 
 class Buffer;
-struct BufferState;
+class ChatView;
 class ChatWidget;
 class LayoutThread;
 
-//!\brief Displays the contents of a Buffer.
-/** A BufferWidget usually includes a topic line, a nicklist, the chat itself, and an input line.
- * For server buffers or queries, there is of course no nicklist.
- * The contents of the chat is rendered by a ChatWidget.
- */
+//! Displays the contents of a Buffer.
+/**
+*/
 class BufferWidget : public QWidget {
   Q_OBJECT
 
@@ -48,23 +47,24 @@ public:
 signals:
   void userInput(QString msg);
   void aboutToClose();
-    
+
 public slots:
   void setBuffer(Buffer *);
   void saveState();
-		  
+
 private slots:
   void enterPressed();
   void setActive(bool act = true);
-  
-  
+
+
 private:
   Ui::BufferWidget ui;
-  QHash<uint, ChatWidget*> _chatWidgets;
+  //QHash<BufferId, ChatView*> _chatViews;
+  QHash<BufferId, ChatWidget *> _chatWidgets;
   bool active;
-  
-  QString networkName;
-  QString bufferName;
+
+  QString _networkName;
+  QString _bufferName;
 };
 
 

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-07 by The Quassel IRC Development Team             *
+ *   Copyright (C) 2005-07 by the Quassel IRC Team                         *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,33 +18,42 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _CHATLINE_H_
-#define _CHATLINE_H_
+#ifndef _CHATITEM_H_
+#define _CHATITEM_H_
 
-#include "quasselui.h"
+#include <QGraphicsItem>
+#include <QTextLayout>
+#include <QTextOption>
 
-class ChatLine : public AbstractUiMsg {
+#include "uistyle.h"
+
+class QGraphicsSceneMouseEvent;
+
+class ChatItem : public QGraphicsItem {
 
   public:
-    ChatLine(Message msg);
-    QString sender() const;
-    QString text() const;
-    MsgId msgId() const;
-    BufferInfo bufferInfo() const;
-    QDateTime timestamp() const;
+    ChatItem(QGraphicsItem *parent = 0);
+    virtual ~ChatItem();
 
-    QString htmlSender() const;
-    QString htmlText() const;
-    QString htmlTimestamp() const;
+    virtual QRectF boundingRect() const;
+    virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
+
+    QString text() const;
+    void setText(const UiStyle::StyledText &text);
+
+    QTextOption textOption() const;
+    void setTextOption(const QTextOption &option);
+
+    void setWidth(int width);
+    virtual void layout();
+
+  protected:
+    //void mouseMoveEvent ( QGraphicsSceneMouseEvent * event );
 
   private:
-    QString _sender, _text, _htmlSender, _htmlText, _htmlTimestamp;
-    MsgId _msgId;
-    BufferInfo _bufferInfo;
-    QDateTime _timestamp;
-
-    QString formattedToHtml(const QString &);
-
+    int _width;
+    QTextLayout _layout;
+    QTextOption _textOption;
 };
 
 #endif

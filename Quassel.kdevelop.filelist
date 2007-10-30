@@ -469,8 +469,16 @@ src/qtui/bufferwidget.cpp
 src/qtui/bufferwidget.h
 src/qtui/channelwidgetinput.cpp
 src/qtui/channelwidgetinput.h
+src/qtui/chatitem.cpp
+src/qtui/chatitem.h
+src/qtui/chatline-old.cpp
+src/qtui/chatline-old.h
 src/qtui/chatline.cpp
 src/qtui/chatline.h
+src/qtui/chatscene.cpp
+src/qtui/chatscene.h
+src/qtui/chatview.cpp
+src/qtui/chatview.h
 src/qtui/chatwidget.cpp
 src/qtui/chatwidget.h
 src/qtui/coreconnectdlg.cpp

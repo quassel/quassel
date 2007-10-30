@@ -26,11 +26,11 @@
 
 Message::Message(BufferInfo __buffer, Type __type, QString __text, QString __sender, quint8 __flags)
   : _buffer(__buffer), _text(__text), _sender(__sender), _type(__type), _flags(__flags) {
-  _timeStamp = QDateTime::currentDateTime().toUTC();
+  _timestamp = QDateTime::currentDateTime().toUTC();
 }
 
 Message::Message(QDateTime __ts, BufferInfo __buffer, Type __type, QString __text, QString __sender, quint8 __flags)
-  : _timeStamp(__ts), _buffer(__buffer), _text(__text), _sender(__sender), _type(__type), _flags(__flags) {
+  : _timestamp(__ts), _buffer(__buffer), _text(__text), _sender(__sender), _type(__type), _flags(__flags) {
 
 }
 
@@ -62,8 +62,8 @@ quint8 Message::flags() const {
    return _flags;
 }
 
-QDateTime Message::timeStamp() const {
-  return _timeStamp;
+QDateTime Message::timestamp() const {
+  return _timestamp;
 }
 
 QString Message::mircToInternal(QString mirc) {
@@ -118,7 +118,7 @@ void Message::format() {
   QString networkName = buffer().network();
   QString bufferName = buffer().buffer();
 
-  _formattedTimeStamp = tr("%DT[%1]").arg(timeStamp().toLocalTime().toString("hh:mm:ss"));
+  _formattedTimestamp = tr("%DT[%1]").arg(timestamp().toLocalTime().toString("hh:mm:ss"));
 
   QString s, t;
   switch(type()) {
@@ -169,9 +169,9 @@ void Message::format() {
   _formattedText = t;
 }
 
-QString Message::formattedTimeStamp() {
+QString Message::formattedTimestamp() {
   format();
-  return _formattedTimeStamp;
+  return _formattedTimestamp;
 }
 
 QString Message::formattedSender() {
@@ -193,7 +193,7 @@ QString Message::formattedToHtml(const QString &f) {
 */
 
 QDataStream &operator<<(QDataStream &out, const Message &msg) {
-  out << (quint32)msg.timeStamp().toTime_t() << (quint8)msg.type() << (quint8)msg.flags()
+  out << (quint32)msg.timestamp().toTime_t() << (quint8)msg.type() << (quint8)msg.flags()
       << msg.buffer() << msg.sender().toUtf8() << msg.text().toUtf8();
   return out;
 }
@@ -207,7 +207,7 @@ QDataStream &operator>>(QDataStream &in, Message &msg) {
   msg._type = (Message::Type)t;
   msg._flags = (quint8)f;
   msg._buffer = buf;
-  msg._timeStamp = QDateTime::fromTime_t(ts);
+  msg._timestamp = QDateTime::fromTime_t(ts);
   msg._sender = QString::fromUtf8(s);
   msg._text = QString::fromUtf8(m);
   return in;

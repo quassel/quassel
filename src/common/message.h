@@ -48,9 +48,9 @@ class Message {
     QString sender() const;
     Type type() const;
     quint8 flags() const;
-    QDateTime timeStamp() const;
+    QDateTime timestamp() const;
 
-    QString formattedTimeStamp();
+    QString formattedTimestamp();
     QString formattedSender();
     QString formattedText();
 
@@ -59,7 +59,7 @@ class Message {
     void format();
 
   private:
-    QDateTime _timeStamp;
+    QDateTime _timestamp;
     MsgId _msgId;
     BufferInfo _buffer;
     QString _text;
@@ -67,7 +67,7 @@ class Message {
     Type _type;
     quint8 _flags;
 
-    QString _formattedTimeStamp, _formattedSender, _formattedText; // cache
+    QString _formattedTimestamp, _formattedSender, _formattedText; // cache
 
     /** Convert mIRC control codes to our own */
     QString mircToInternal(QString);

@@ -21,7 +21,7 @@
 #include "mainwin.h"
 
 #include "bufferview.h"
-#include "chatline.h"
+#include "chatline-old.h"
 #include "client.h"
 #include "coreconnectdlg.h"
 #include "serverlist.h"

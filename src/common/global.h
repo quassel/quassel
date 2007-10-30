@@ -38,6 +38,8 @@
 
 typedef uint UserId;
 typedef uint MsgId;
+typedef uint BufferId;
+typedef uint NetworkId;
 
 namespace Global {
   enum RunMode { Monolithic, ClientOnly, CoreOnly };

@@ -25,13 +25,13 @@
 ChatLine::ChatLine(Message msg) {
   _text = msg.text();  // FIXME
   _sender = msg.sender();
-  _timeStamp = msg.timeStamp();
+  _timestamp = msg.timestamp();
   _msgId = msg.msgId();
   _bufferInfo = msg.buffer();
 
   _htmlSender = formattedToHtml(msg.formattedSender());
   _htmlText = formattedToHtml(msg.formattedText());
-  _htmlTimeStamp = formattedToHtml(msg.formattedTimeStamp());
+  _htmlTimestamp = formattedToHtml(msg.formattedTimestamp());
 }
 
 QString ChatLine::sender() const {
@@ -50,8 +50,8 @@ BufferInfo ChatLine::bufferInfo() const {
   return _bufferInfo;
 }
 
-QDateTime ChatLine::timeStamp() const {
-  return _timeStamp;
+QDateTime ChatLine::timestamp() const {
+  return _timestamp;
 }
 
 QString ChatLine::htmlSender() const {
@@ -62,8 +62,8 @@ QString ChatLine::htmlText() const {
   return _htmlText;
 }
 
-QString ChatLine::htmlTimeStamp() const {
-  return _htmlTimeStamp;
+QString ChatLine::htmlTimestamp() const {
+  return _htmlTimestamp;
 }
 
 

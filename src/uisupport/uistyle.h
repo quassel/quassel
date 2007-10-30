@@ -51,13 +51,13 @@ class UiStyle {
       QUrl url;
     };
 
-    struct StyledString {
+    struct StyledText {
       QString text;
       QList<QTextLayout::FormatRange> formats;
       QList<UrlInfo> urls;
     };
 
-    StyledString styleString(QString);
+    StyledText styleString(QString);
 
     void setFormat(FormatType, QTextCharFormat);
     QTextCharFormat format(FormatType) const;

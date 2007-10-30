@@ -32,7 +32,7 @@ class AbstractUiMsg {
     virtual QString text() const = 0;
     virtual MsgId msgId() const = 0;
     virtual BufferInfo bufferInfo() const = 0;
-    virtual QDateTime timeStamp() const = 0;
+    virtual QDateTime timestamp() const = 0;
 
 };
 

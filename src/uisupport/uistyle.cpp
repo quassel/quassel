@@ -104,8 +104,8 @@ QString UiStyle::formatCode(FormatType ftype) const {
   return _formatCodes.key(ftype);
 }
 
-UiStyle::StyledString UiStyle::styleString(QString s) {
-  StyledString result;
+UiStyle::StyledText UiStyle::styleString(QString s) {
+  StyledText result;
   QList<FormatType> fmtList;
   fmtList.append(None);
   QTextLayout::FormatRange curFmtRng;

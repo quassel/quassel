@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-07 by The Quassel IRC Development Team             *
+ *   Copyright (C) 2005-07 by the Quassel IRC Team                         *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,32 +18,36 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _CHATLINE_H_
-#define _CHATLINE_H_
+#ifndef _CHATSCENE_H_
+#define _CHATSCENE_H_
 
-#include "quasselui.h"
+#include <QGraphicsScene>
 
-class ChatLine : public AbstractUiMsg {
+class AbstractUiMsg;
+class Buffer;
+class ChatLine;
+class QGraphicsSceneMouseEvent;
+
+class ChatScene : public QGraphicsScene {
+  Q_OBJECT
 
   public:
-    ChatLine(Message msg);
-    QString sender() const;
-    QString text() const;
-    MsgId msgId() const;
-    BufferInfo bufferInfo() const;
-    QDateTime timestamp() const;
+    ChatScene(Buffer *buffer, QObject *parent);
+    virtual ~ChatScene();
 
-    QString htmlSender() const;
-    QString htmlText() const;
-    QString htmlTimestamp() const;
+    Buffer *buffer() const;
+
+  public slots:
+
+  protected slots:
+    void appendMsg(AbstractUiMsg *msg);
+    void prependMsg(AbstractUiMsg *msg);
+
+    void mousePressEvent ( QGraphicsSceneMouseEvent * mouseEvent );
 
   private:
-    QString _sender, _text, _htmlSender, _htmlText, _htmlTimestamp;
-    MsgId _msgId;
-    BufferInfo _bufferInfo;
-    QDateTime _timestamp;
-
-    QString formattedToHtml(const QString &);
+    Buffer *_buffer;
+    QList<ChatLine*> _lines;
 
 };
 
