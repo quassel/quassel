@@ -81,6 +81,7 @@ class SqliteStorage : public Storage {
   private:
     void initDb();
     void createBuffer(UserId user, const QString &network, const QString &buffer);
+    bool watchQuery(QSqlQuery *query);
     QSqlQuery *logMessageQuery;
     QSqlQuery *addSenderQuery;
     QSqlQuery *getLastMessageIdQuery;

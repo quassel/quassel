@@ -125,6 +125,7 @@ private slots:
   void updateBufferInfo(BufferInfo);
 
   void bufferDestroyed();
+  void networkInfoDestroyed();
 
   void layoutMsg();
 

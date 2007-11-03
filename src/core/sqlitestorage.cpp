@@ -369,10 +369,12 @@ MsgId SqliteStorage::logMessage(Message msg) {
     if(logMessageQuery->lastError().number() == 19) { 
       addSenderQuery->bindValue(":sender", msg.sender());
       addSenderQuery->exec();
+      watchQuery(addSenderQuery);
       logMessageQuery->exec();
-      Q_ASSERT(!logMessageQuery->lastError().isValid());
+      if(!watchQuery(logMessageQuery))
+	return 0;
     } else {
-      qDebug() << "unhandled DB Error in logMessage(): Number:" << logMessageQuery->lastError().number() << "ErrMsg:" << logMessageQuery->lastError().text();
+      watchQuery(logMessageQuery);
     }
   }
 
@@ -503,4 +505,18 @@ void SqliteStorage::importOldBacklog() {
 }
 
 
-
+bool SqliteStorage::watchQuery(QSqlQuery *query) {
+  if(query->lastError().isValid()) {
+    qWarning() << "unhandled Error in QSqlQuery!";
+    qWarning() << "                  last Query:" << query->lastQuery();
+    qWarning() << "              executed Query:" << query->executedQuery();
+    qWarning() << "                bound Values:" << query->boundValues();
+    qWarning() << "                Error Number:" << query->lastError().number();
+    qWarning() << "               Error Message:" << query->lastError().text();
+    qWarning() << "              Driver Message:" << query->lastError().driverText();
+    qWarning() << "                  DB Message:" << query->lastError().databaseText();
+    
+    return false;
+  }
+  return true;
+}

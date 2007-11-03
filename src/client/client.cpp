@@ -133,7 +133,7 @@ SignalProxy *Client::signalProxy() {
 Client::Client(QObject *parent)
   : QObject(parent),
     socket(0),
-    _signalProxy(new SignalProxy(SignalProxy::Client, 0, this)),
+    _signalProxy(new SignalProxy(SignalProxy::Client, this)),
     mainUi(0),
     _bufferModel(0),
     connectedToCore(false)
@@ -233,7 +233,7 @@ void Client::connectToCore(const QVariantMap &conn) {
     connect(sock, SIGNAL(readyRead()), this, SLOT(coreHasData()));
     connect(sock, SIGNAL(connected()), this, SLOT(coreSocketConnected()));
     connect(sock, SIGNAL(disconnected()), this, SLOT(coreSocketDisconnected()));
-    connect(signalProxy(), SIGNAL(peerDisconnected()), this, SLOT(coreSocketDisconnected()));
+    connect(signalProxy(), SIGNAL(disconnected()), this, SLOT(coreSocketDisconnected()));
     //connect(sock, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(coreSocketStateChanged(QAbstractSocket::SocketState)));
     connect(sock, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(coreSocketError(QAbstractSocket::SocketError)));
     sock->connectToHost(conn["Host"].toString(), conn["Port"].toUInt());
@@ -242,8 +242,9 @@ void Client::connectToCore(const QVariantMap &conn) {
 
 void Client::disconnectFromCore() {
   socket->close();
-  if(clientMode == LocalCore)
+  if(clientMode == LocalCore) {
     coreSocketDisconnected();
+  }
 }
 
 void Client::coreSocketConnected() {
@@ -264,14 +265,15 @@ void Client::coreSocketDisconnected() {
 
   /* Clear internal data. Hopefully nothing relies on it at this point. */
   _bufferModel->clear();
-
   foreach(Buffer *buffer, _buffers.values()) {
     buffer->deleteLater();
   }
+  _buffers.clear();
 
   foreach(NetworkInfo *networkinfo, _networkInfo.values()) {
     networkinfo->deleteLater();
   }
+  _networkInfo.clear();
 
   coreConnectionInfo.clear();
   sessionData.clear();
@@ -427,6 +429,7 @@ void Client::networkConnected(uint netid) {
   connect(netinfo, SIGNAL(initDone()), this, SLOT(updateCoreConnectionProgress()));
   connect(netinfo, SIGNAL(ircUserInitDone()), this, SLOT(updateCoreConnectionProgress()));
   connect(netinfo, SIGNAL(ircChannelInitDone()), this, SLOT(updateCoreConnectionProgress()));
+  connect(netinfo, SIGNAL(destroyed()), this, SLOT(networkInfoDestroyed()));
   _networkInfo[netid] = netinfo;
 }
 
@@ -452,7 +455,16 @@ void Client::updateBufferInfo(BufferInfo id) {
 
 void Client::bufferDestroyed() {
   Buffer *buffer = static_cast<Buffer *>(sender());
-  _buffers.remove(_buffers.key(buffer));
+  uint bufferUid = buffer->uid();
+  if(_buffers.contains(bufferUid))
+    _buffers.remove(bufferUid);
+}
+
+void Client::networkInfoDestroyed() {
+  NetworkInfo *netinfo = static_cast<NetworkInfo *>(sender());
+  uint networkId = netinfo->networkId();
+  if(_networkInfo.contains(networkId))
+    _networkInfo.remove(networkId);
 }
 
 void Client::recvMessage(const Message &msg) {

@@ -38,7 +38,7 @@ CoreSession::CoreSession(UserId uid, Storage *_storage, QObject *parent)
     _signalProxy(new SignalProxy(SignalProxy::Server, 0, this)),
     storage(_storage)
 {
-
+  
   QSettings s;
   s.beginGroup(QString("SessionData/%1").arg(user));
   mutex.lock();

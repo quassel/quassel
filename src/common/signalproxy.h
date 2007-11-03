@@ -1,87 +1,127 @@
-/***************************************************************************
- *   Copyright (C) 2005-07 by The Quassel IRC Development Team             *
- *   devel@quassel-irc.org                                                 *
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- *   This program is distributed in the hope that it will be useful,       *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU General Public License for more details.                          *
- *                                                                         *
- *   You should have received a copy of the GNU General Public License     *
- *   along with this program; if not, write to the                         *
- *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
- ***************************************************************************/
+/****************************************************************************
+ **
+ ** Copyright (C) Qxt Foundation. Some rights reserved.
+ **
+ ** This file is part of the QxtNetwork module of the Qt eXTension library
+ **
+ ** This library is free software; you can redistribute it and/or modify it
+ ** under the terms of th Common Public License, version 1.0, as published by
+ ** IBM.
+ **
+ ** This file is provided "AS IS", without WARRANTIES OR CONDITIONS OF ANY
+ ** KIND, EITHER EXPRESS OR IMPLIED INCLUDING, WITHOUT LIMITATION, ANY
+ ** WARRANTIES OR CONDITIONS OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY OR
+ ** FITNESS FOR A PARTICULAR PURPOSE.
+ **
+ ** You should have received a copy of the CPL along with this file.
+ ** See the LICENSE file and the cpl1.0.txt file included with the source
+ ** distribution for more information. If you did not receive a copy of the
+ ** license, contact the Qxt Foundation.
+ **
+ ** <http://libqxt.sourceforge.net>  <foundation@libqxt.org>
+ **
+ ****************************************************************************/
 
-#ifndef _RPCPEER_H_
-#define _RPCPEER_H_
+#ifndef _SIGNALPROXY_H_
+#define _SIGNALPROXY_H_
 
-#include <QtCore>
+#include <QObject>
+#include <QList>
+#include <QHash>
+#include <QVariant>
+#include <QPair>
+#include <QString>
+#include <QByteArray>
 
-class QxtRPCPeer;
+class ClassIntrospector;
 
 class SignalProxy : public QObject {
   Q_OBJECT
 
-  public:
+public:
+  enum RPCTypes {
+    Server,
+    Client,
+    Peer
+  };
 
-    enum ProxyType { Client, Server };
+  SignalProxy(QObject* parent);
+  SignalProxy(RPCTypes type, QObject* parent);
+  SignalProxy(RPCTypes type, QIODevice* device, QObject* parent);
+  virtual ~SignalProxy();
 
-    SignalProxy(ProxyType type, QIODevice *device = 0, QObject *parent = 0);
-    ~SignalProxy();
+  void setRPCType(RPCTypes type);
+  RPCTypes rpcType() const;
 
-  ProxyType proxyType() const { return type; }
-    void attachSignal(QObject* sender, const char* signal, const QByteArray& rpcFunction = QByteArray());
-    void attachSlot(const QByteArray& rpcFunction, QObject* recv, const char* slot);
-
-  public slots:
-    void addPeer(QIODevice *device);
-
-    void sendSignal(const char *signal, QVariant p1 = QVariant(), QVariant p2 = QVariant(), QVariant p3 = QVariant(), QVariant p4 = QVariant(),
-              QVariant p5 = QVariant(), QVariant p6 = QVariant(), QVariant p7 = QVariant(), QVariant p8 = QVariant(), QVariant p9 = QVariant());
+  bool maxPeersReached();
   
-    //void detachSender();
-    void detachObject(QObject *);
+  bool addPeer(QIODevice *iodev);
+  void removePeer(QIODevice *iodev = 0);
 
-  signals:
-    void peerDisconnected();
+  bool attachSignal(QObject* sender, const char* signal, const QByteArray& rpcFunction = QByteArray());
+  bool attachSlot(const QByteArray& rpcFunction, QObject* recv, const char* slot);
 
-  private slots:
-    void socketDisconnected();
+  void detachObject(QObject *obj);
+  void detachSignals(QObject *sender);
+  void detachSlots(QObject *receiver);
+  
+  void call(const char *signal , QVariant p1, QVariant p2, QVariant p3, QVariant p4,
+	    QVariant p5, QVariant p6, QVariant p7, QVariant p8, QVariant p9);
+  void call(const QByteArray &funcName, const QVariantList &params);
 
-  private:
-    struct Connection {
-      QPointer<QxtRPCPeer> peer;
-      QPointer<QIODevice> device;
-    };
+  static void writeDataToDevice(QIODevice *dev, const QVariant &item);
+  static bool readDataFromDevice(QIODevice *dev, quint32 &blockSize, QVariant &item);
+  
+  const QList<int> &argTypes(QObject* obj, int methodId);
+  const QByteArray &methodName(QObject* obj, int methodId);
+  
+  typedef QHash<int, QList<int> > ArgHash;
+  typedef QHash<int, QByteArray> MethodNameHash;
+  struct ClassInfo {
+    ArgHash argTypes;
+    MethodNameHash methodNames;
+    // QHash<int, int> syncMap
+  };
+  
+private slots:
+  void dataAvailable();
+  void detachSender();
+  void removePeerBySender();
 
-    struct SignalDesc {
-      QObject *sender;
-      QByteArray signal;
-      QByteArray rpcFunction;
+signals:
+  void peerRemoved(QIODevice* obj);
+  void connected();
+  void disconnected();
+  
+private:
+  void createClassInfo(QObject *obj);
+  void setArgTypes(QObject* obj, int methodId);
+  void setMethodName(QObject* obj, int methodId);
+  
+  void receivePeerSignal(const QVariant &packedFunc);
 
-      SignalDesc(QObject *sndr, const char *sig, const QByteArray &func) : sender(sndr), signal(sig), rpcFunction(func) {}
-    };
+  void _detachSignals(QObject *sender);
+  void _detachSlots(QObject *receiver);
 
-    struct SlotDesc {
-      QByteArray rpcFunction;
-      QObject *recv;
-      QByteArray slot;
+  // containg a list of argtypes for fast access
+  QHash<QByteArray, ClassInfo*> _classInfo;
+  
+  // we use one introSpector per QObject
+  QHash<QObject*, ClassIntrospector*> _specHash;
 
-      SlotDesc(const QByteArray& func, QObject* r, const char* s) : rpcFunction(func), recv(r), slot(s) {}
-    };
+  // RPC function -> (object, slot ID)
+  typedef QPair<QObject*, int> MethodId;
+  typedef QMultiHash<QByteArray, MethodId> SlotHash;
+  SlotHash _attachedSlots;
+  
 
-    ProxyType type;
-    QList<Connection> peers;
-    QList<SignalDesc> attachedSignals;
-    QList<SlotDesc> attachedSlots;
+  // Hash of used QIODevices
+  QHash<QIODevice*, quint32> _peerByteCount;
 
+  int _rpcType;
+  int _maxClients;
 };
+
 
 
 

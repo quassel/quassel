@@ -286,7 +286,7 @@ bool BufferTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction action,
   uint bufferId = bufferList.first().second;
 
   // no self merges (would kill us)
-  if(bufferId == parent.data(BufferUidRole).toInt())
+  if(bufferId == parent.data(BufferUidRole).toUInt())
     return false; 
   
   Q_ASSERT(rootItem->childById(netId));

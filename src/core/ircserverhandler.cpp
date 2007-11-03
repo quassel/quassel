@@ -257,30 +257,29 @@ void IrcServerHandler::handlePing(QString prefix, QStringList params) {
 
 void IrcServerHandler::handlePrivmsg(QString prefix, QStringList params) {
   networkInfo()->updateNickFromMask(prefix);
-  Q_ASSERT(params.count() >= 2);
   if(params.count()<2)
-    emit displayMsg(Message::Plain, params[0], "", prefix);
-  else {
-    // it's possible to pack multiple privmsgs into one param using ctcp
-    QStringList messages = server->ctcpHandler()->parse(CtcpHandler::CtcpQuery, prefix, params[0], params[1]);
-
-    // are we the target or is it a channel?
-    if(networkInfo()->isMyNick(params[0])) {
-      foreach(QString message, messages) {
-        if(!message.isEmpty()) {
-          emit displayMsg(Message::Plain, "", message, prefix, Message::PrivMsg);
-        }
+    params << QString("");
+  
+  // it's possible to pack multiple privmsgs into one param using ctcp
+  QStringList messages = server->ctcpHandler()->parse(CtcpHandler::CtcpQuery, prefix, params[0], params[1]);
+  
+  // are we the target or is it a channel?
+  if(networkInfo()->isMyNick(params[0])) {
+    foreach(QString message, messages) {
+      if(!message.isEmpty()) {
+	emit displayMsg(Message::Plain, "", message, prefix, Message::PrivMsg);
       }
-   
-    } else {
-      Q_ASSERT(isChannelName(params[0]));  // should be channel!
-      foreach(QString message, messages) {
-        if(!message.isEmpty()) {
-          emit displayMsg(Message::Plain, params[0], message, prefix);
-        }
+    }
+    
+  } else {
+    Q_ASSERT(isChannelName(params[0]));  // should be channel!
+    foreach(QString message, messages) {
+      if(!message.isEmpty()) {
+	emit displayMsg(Message::Plain, params[0], message, prefix);
       }
     }
   }
+
 }
 
 void IrcServerHandler::handleQuit(QString prefix, QStringList params) {

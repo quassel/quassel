@@ -242,7 +242,7 @@ QList<QMetaMethod> Synchronizer::getMethodByName(const QString &methodname) {
 }
 
 void Synchronizer::attach() {
-  if(proxy()->proxyType() == SignalProxy::Server)
+  if(proxy()->rpcType() == SignalProxy::Server)
     attachAsMaster();
   else
     attachAsSlave();
@@ -341,3 +341,5 @@ bool Synchronizer::setInitValue(const QString &property, const QVariant &value) 
   QGenericArgument param = QGenericArgument(paramtype, &value);
   return QMetaObject::invokeMethod(parent(), handlername.toAscii(), param);
 }
+
+
