@@ -26,7 +26,7 @@
 #include "global.h"
 #include "mainwidget.h"
 #include "message.h"
-#include "qtopiagui.h"
+#include "qtopiaui.h"
 #include "signalproxy.h"
 
 // This constructor is the first thing to be called for a Qtopia app, so we do the init stuff

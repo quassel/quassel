@@ -18,9 +18,9 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "qtopiagui.h"
+#include "qtopiaui.h"
 #include "qtopiamainwin.h"
-#include "qtopiastyle.h"
+#include "qtopiauistyle.h"
 
 QtopiaUi::QtopiaUi(QtopiaMainWin *mw) : AbstractUi(), mainWin(mw) {
   _style = new QtopiaUiStyle();

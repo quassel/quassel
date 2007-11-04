@@ -21,7 +21,7 @@
 #include <QtCore>
 
 #include "chatline.h"
-#include "qtopiagui.h"
+#include "qtopiaui.h"
 
 ChatLine::ChatLine(Message msg) {
   //_styledSender = QtopiaUi::style()->styleString(msg.formattedSender());
