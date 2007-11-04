@@ -42,7 +42,7 @@ MainWidget::~MainWidget() {
 
 void MainWidget::setBuffer(Buffer *buf) {
   //  TODO update topic if changed; handle status buffer display
-  QString title = QString("%1 (%2): \"%3\"").arg(buf->displayName()).arg(buf->networkName()).arg(buf->topic());
+  QString title = QString("%1 (%2): \"%3\"").arg(buf->name()).arg(buf->networkName()).arg(buf->topic());
   ui.topicBar->setContents(title);
 
   //ui.chatWidget->setStyleSheet("div { color: #777777; }");

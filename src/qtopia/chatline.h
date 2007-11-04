@@ -22,6 +22,7 @@
 #define _CHATLINE_H_
 
 #include "quasselui.h"
+#include "uistyle.h"
 
 class ChatLine : public AbstractUiMsg {
 
@@ -39,6 +40,7 @@ class ChatLine : public AbstractUiMsg {
 
   private:
     QString _sender, _text, _htmlSender, _htmlText, _htmlTimestamp;
+    UiStyle::StyledText _styledSender, _styledText;
     MsgId _msgId;
     BufferInfo _bufferInfo;
     QDateTime _timestamp;

@@ -24,16 +24,19 @@
 #include "quasselui.h"
 
 class QtopiaMainWin;
+class QtopiaStyle;
 
 //! This class encapsulates Quassel's GUI for Qtopia.
-class QtopiaGui : public AbstractUi {
+class QtopiaUi : public AbstractUi {
   Q_OBJECT
 
   public:
-    QtopiaGui(QtopiaMainWin *mainWin);
-    ~QtopiaGui();
+    QtopiaUi(QtopiaMainWin *mainWin);
+    ~QtopiaUi();
     void init();
     AbstractUiMsg *layoutMsg(const Message &);
+
+    QtopiaStyle *style() const;
 
   protected slots:
     void connectedToCore();
@@ -41,6 +44,7 @@ class QtopiaGui : public AbstractUi {
 
   private:
     QtopiaMainWin *mainWin;
+    QtopiaStyle *_style;
 };
 
 

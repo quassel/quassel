@@ -21,17 +21,16 @@
 #include <QtCore>
 
 #include "chatline.h"
+#include "qtopiagui.h"
 
 ChatLine::ChatLine(Message msg) {
-  _text = msg.text();  // FIXME
-  _sender = msg.sender();
+  //_styledSender = QtopiaUi::style()->styleString(msg.formattedSender());
+  //_styledText = QtopiaUi::style()->styleString(msg.formattedText());
   _timestamp = msg.timestamp();
   _msgId = msg.msgId();
   _bufferInfo = msg.buffer();
 
-  _htmlSender = formattedToHtml(msg.formattedSender());
-  _htmlText = formattedToHtml(msg.formattedText());
-  _htmlTimestamp = formattedToHtml(msg.formattedTimestamp());
+
 }
 
 QString ChatLine::sender() const {

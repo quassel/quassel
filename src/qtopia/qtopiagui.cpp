@@ -20,31 +20,38 @@
 
 #include "qtopiagui.h"
 #include "qtopiamainwin.h"
+#include "qtopiastyle.h"
 
-QtopiaGui::QtopiaGui(QtopiaMainWin *mw) : AbstractUi(), mainWin(mw) {
+QtopiaUi::QtopiaUi(QtopiaMainWin *mw) : AbstractUi(), mainWin(mw) {
+  _style = new QtopiaStyle();
   connect(mainWin, SIGNAL(connectToCore(const QVariantMap &)), this, SIGNAL(connectToCore(const QVariantMap &)));
   connect(mainWin, SIGNAL(disconnectFromCore()), this, SIGNAL(disconnectFromCore()));
 
 
 }
 
-QtopiaGui::~QtopiaGui() {
+QtopiaUi::~QtopiaUi() {
+  delete _style;
   delete mainWin;
 
 }
 
-void QtopiaGui::init() {
+void QtopiaUi::init() {
 
 }
 
-AbstractUiMsg *QtopiaGui::layoutMsg(const Message &msg) {
+QtopiaStyle *QtopiaUi::style() const {
+  return _style;
+}
+
+AbstractUiMsg *QtopiaUi::layoutMsg(const Message &msg) {
   return mainWin->layoutMsg(msg);
 }
 
-void QtopiaGui::connectedToCore() {
+void QtopiaUi::connectedToCore() {
   mainWin->connectedToCore();
 }
 
-void QtopiaGui::disconnectedFromCore() {
+void QtopiaUi::disconnectedFromCore() {
   mainWin->disconnectedFromCore();
 }

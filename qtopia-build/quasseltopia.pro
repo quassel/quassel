@@ -1,15 +1,18 @@
 qtopia_project(qtopia app)
 
-TARGET=quasseltopia
-CONFIG+=debug qtopia_main no_quicklaunch no_singleexec no_sxe_test
+TARGET = quasseltopia
+CONFIG += debug qtopia_main no_quicklaunch no_singleexec no_sxe_test
 QT = core gui network
 
 # Find files
-INCLUDEPATH+=../src/qtopia ../src/uisupport ../src/client ../src/common ../src/contrib/qxt
+INCLUDEPATH += ../src/qtopia ../src/uisupport ../src/client ../src/common
 
+DESTDIR = .
+OBJECTS_DIR = .obj
+MOC_DIR = .moc
+UIC_DIR = .ui
 
 # Include .pri from src dirs
-include(../src/contrib/qxt/qxt.pri)
 include(../src/common/common.pri)
 include(../src/qtopia/qtopia.pri)
 include(../src/client/client.pri)

@@ -46,7 +46,7 @@ QtopiaMainWin::QtopiaMainWin(QWidget *parent, Qt::WFlags flags) : QMainWindow(pa
   QCoreApplication::setOrganizationName("Quassel IRC Development Team");
 
   //Style::init();
-  QtopiaGui *gui = new QtopiaGui(this);
+  QtopiaUi *gui = new QtopiaUi(this);
   Client::init(gui);
 
   setWindowTitle("Quassel IRC");
