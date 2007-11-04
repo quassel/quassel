@@ -23,15 +23,17 @@
 UiStyle::UiStyle() {
   // Default format
   QTextCharFormat def;
-  def.setForeground(QBrush("black"));
+  def.setForeground(QBrush("#000000"));
   def.setFont(QFont("Verdana",9));
 
   _formats = QVector<QTextCharFormat>(NumFormatTypes, def);
 
   // Initialize color codes according to mIRC "standard"
   QStringList colors;
-  colors << "white" << "black" << "navy" << "green" << "red" << "maroon" << "purple" << "orange";
-  colors << "yellow" << "lime" << "teal" << "aqua" << "royalblue" << "fuchsia" << "grey" << "silver";
+  //colors << "white" << "black" << "navy" << "green" << "red" << "maroon" << "purple" << "orange";
+  //colors << "yellow" << "lime" << "teal" << "aqua" << "royalblue" << "fuchsia" << "grey" << "silver";
+  colors << "#ffffff" << "#000000" << "#000080" << "#008000" << "#ff0000" << "#800000" << "#800080" << "#ffa500";
+  colors << "#ffff00" << "#00ff00" << "#008080" << "#00ffff" << "#4169E1" << "#ff00ff" << "#808080" << "#c0c0c0";
 
   // Now initialize the mapping between FormatCodes and FormatTypes...
   _formatCodes["%O"] = None;

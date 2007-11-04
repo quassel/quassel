@@ -55,6 +55,7 @@ void ChatWidget::appendChatLines(QList<ChatLine *> list) {
 }
 
 void ChatWidget::prependChatLine(ChatLine *line) {
+  qDebug() << "prepending"; return;
   QTextCursor cursor = textCursor();
   moveCursor(QTextCursor::Start);
   insertHtml(line->text());

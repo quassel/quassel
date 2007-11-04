@@ -20,7 +20,7 @@
 
 #include "qtopiastyle.h"
 
-QtopiaStyle::QtopiaStyle() : UiStyle() {
+QtopiaUiStyle::QtopiaUiStyle() : UiStyle() {
 
   QTextCharFormat def;
   def.setFont(QFont("Verdana",6));
@@ -29,59 +29,60 @@ QtopiaStyle::QtopiaStyle() : UiStyle() {
   // We need to just set our internal formats; everything else is done by the base class...
 
   // Internal message formats
+
   QTextCharFormat plainMsg;
-  plainMsg.setForeground(QBrush("black"));
+  plainMsg.setForeground(QBrush("#000000"));
   setFormat(PlainMsg, plainMsg);
 
   QTextCharFormat notice;
-  notice.setForeground(QBrush("navy"));
+  notice.setForeground(QBrush("#000080"));
   setFormat(NoticeMsg, notice);
 
   QTextCharFormat server;
-  server.setForeground(QBrush("navy"));
+  server.setForeground(QBrush("#000080"));
   setFormat(ServerMsg, server);
 
   QTextCharFormat error;
-  error.setForeground(QBrush("red"));
+  error.setForeground(QBrush("#ff0000"));
   setFormat(ErrorMsg, error);
 
   QTextCharFormat join;
-  join.setForeground(QBrush("green"));
+  join.setForeground(QBrush("#008000"));
   setFormat(JoinMsg, join);
 
   QTextCharFormat part;
-  part.setForeground(QBrush("indianred"));
+  part.setForeground(QBrush("#cd5c5c"));
   setFormat(PartMsg, part);
 
   QTextCharFormat quit;
-  quit.setForeground(QBrush("indianred"));
+  quit.setForeground(QBrush("#cd5c5c"));
   setFormat(QuitMsg, quit);
 
   QTextCharFormat kick;
-  kick.setForeground(QBrush("indianred"));
+  kick.setForeground(QBrush("#cd5c5c"));
   setFormat(KickMsg, kick);
 
   QTextCharFormat nren;
-  nren.setForeground(QBrush("magenta"));
+  nren.setForeground(QBrush("#6a5acd"));
   setFormat(RenameMsg, nren);
 
   QTextCharFormat mode;
-  mode.setForeground(QBrush("steelblue"));
+  mode.setForeground(QBrush("#4682b4"));
   setFormat(ModeMsg, mode);
 
   QTextCharFormat action;
   action.setFontItalic(true);
-  action.setForeground(QBrush("darkmagenta"));
+  action.setForeground(QBrush("#8b008b"));
   setFormat(ActionMsg, action);
 
   // Internal message element formats
   QTextCharFormat ts;
-  ts.setForeground(QBrush("grey"));
+  ts.setForeground(QBrush("#808080"));
   setFormat(Timestamp, ts);
 
   QTextCharFormat sender;
   sender.setAnchor(true);
-  sender.setForeground(QBrush("navy"));
+  sender.setForeground(QBrush("#000080"));
   setFormat(Sender, sender);
 
   QTextCharFormat nick;
@@ -107,7 +108,6 @@ QtopiaStyle::QtopiaStyle() : UiStyle() {
   url.setAnchor(true);
   setFormat(Url, url);
 
-
 }
 
-QtopiaStyle::~QtopiaStyle() {}
+QtopiaUiStyle::~QtopiaUiStyle() {}

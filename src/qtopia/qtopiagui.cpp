@@ -23,7 +23,7 @@
 #include "qtopiastyle.h"
 
 QtopiaUi::QtopiaUi(QtopiaMainWin *mw) : AbstractUi(), mainWin(mw) {
-  _style = new QtopiaStyle();
+  _style = new QtopiaUiStyle();
   connect(mainWin, SIGNAL(connectToCore(const QVariantMap &)), this, SIGNAL(connectToCore(const QVariantMap &)));
   connect(mainWin, SIGNAL(disconnectFromCore()), this, SIGNAL(disconnectFromCore()));
 
@@ -40,7 +40,7 @@ void QtopiaUi::init() {
 
 }
 
-QtopiaStyle *QtopiaUi::style() const {
+QtopiaUiStyle *QtopiaUi::style() const {
   return _style;
 }
 

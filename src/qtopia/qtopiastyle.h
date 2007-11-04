@@ -23,11 +23,11 @@
 
 #include "uistyle.h"
 
-class QtopiaStyle : public UiStyle {
+class QtopiaUiStyle : public UiStyle {
 
   public:
-    QtopiaStyle();
-    virtual ~QtopiaStyle();
+    QtopiaUiStyle();
+    virtual ~QtopiaUiStyle();
 
 };
 

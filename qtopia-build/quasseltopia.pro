@@ -7,10 +7,10 @@ QT = core gui network
 # Find files
 INCLUDEPATH += ../src/qtopia ../src/uisupport ../src/client ../src/common
 
-DESTDIR = .
-OBJECTS_DIR = .obj
-MOC_DIR = .moc
-UIC_DIR = .ui
+#DESTDIR = .
+#OBJECTS_DIR = .obj
+#MOC_DIR = .moc
+#UIC_DIR = .ui
 
 # Include .pri from src dirs
 include(../src/common/common.pri)
