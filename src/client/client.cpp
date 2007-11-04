@@ -354,7 +354,6 @@ void Client::updateCoreConnectionProgress() {
       if(! channel->initialized())
 	numChannelsWaiting++;
     }
-
   }
 
   if(numNetsWaiting > 0) {
@@ -377,6 +376,12 @@ void Client::updateCoreConnectionProgress() {
 
   emit coreConnectionProgress(1,1);
   emit connected();
+
+  foreach(NetworkInfo *net, networkInfos()) {
+    disconnect(net, 0, this, SLOT(updateCoreConnectionProgress()));
+  }
+  
+  // signalProxy()->dumpProxyStats();
 }
 
 void Client::recvSessionData(const QString &key, const QVariant &data) {

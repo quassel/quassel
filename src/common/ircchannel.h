@@ -77,8 +77,6 @@ public slots:
   // init seters
   void initSetUserModes(const QVariantMap &usermodes);
   
-  void ircUserDestroyed();
-  
   void setInitialized();
 
 signals:
@@ -88,7 +86,10 @@ signals:
   void userModeRemoved(QString nick, QString mode);
 
   void initDone();
-  
+
+private slots:
+   void ircUserDestroyed();
+
 private:
   bool _initialized;
   QString _name;

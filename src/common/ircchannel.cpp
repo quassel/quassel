@@ -107,6 +107,7 @@ void IrcChannel::join(IrcUser *ircuser) {
   if(!_userModes.contains(ircuser) && ircuser) {
     _userModes[ircuser] = QString();
     ircuser->joinChannel(name());
+    connect(ircuser, SIGNAL(destroyed()), this, SLOT(ircUserDestroyed()));
     // no emit here since the join is propagated by IrcUser
   }
 }
@@ -175,10 +176,10 @@ void IrcChannel::removeUserMode(const QString &nick, const QString &mode) {
 // INIT SET USER MODES
 QVariantMap IrcChannel::initUserModes() const {
   QVariantMap usermodes;
-  QHashIterator<IrcUser *, QString> iter(_userModes);
-  while(iter.hasNext()) {
-    iter.next();
+  QHash<IrcUser *, QString>::const_iterator iter = _userModes.constBegin();
+  while(iter != _userModes.constEnd()) {
     usermodes[iter.key()->nick()] = iter.value();
+    iter++;
   }
   return usermodes;
 }
@@ -194,7 +195,7 @@ void IrcChannel::initSetUserModes(const QVariantMap &usermodes) {
 void IrcChannel::ircUserDestroyed() {
   IrcUser *ircUser = static_cast<IrcUser *>(sender());
   Q_ASSERT(ircUser);
-  part(ircUser);
+  _userModes.remove(ircUser);
 }
 
 void IrcChannel::setInitialized() {

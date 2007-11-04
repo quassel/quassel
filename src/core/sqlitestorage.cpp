@@ -56,7 +56,7 @@ SqliteStorage::SqliteStorage() {
   getBufferInfoQuery = new QSqlQuery(logDb);
   getBufferInfoQuery->prepare("SELECT bufferid FROM buffer "
                             "JOIN network ON buffer.networkid = network.networkid "
-                            "WHERE network.networkname = :networkname AND buffer.userid = :userid AND buffer.buffername = :buffername ");
+                            "WHERE network.networkname = :networkname AND buffer.userid = :userid AND lower(buffer.buffername) = lower(:buffername)");
 
   logMessageQuery = new QSqlQuery(logDb);
   logMessageQuery->prepare("INSERT INTO backlog (time, bufferid, type, flags, senderid, message) "
@@ -163,7 +163,7 @@ void SqliteStorage::initDb() {
              "type INTEGER NOT NULL,"
              "flags INTEGER NOT NULL,"
              "senderid INTEGER NOT NULL,"
-             "message TEXT NOT NULL)");
+             "message TEXT)");
   
   logDb.exec("CREATE TABLE coreinfo ("
              "updateid INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
@@ -311,6 +311,7 @@ uint SqliteStorage::getNetworkId(UserId user, const QString &network) {
 
 BufferInfo SqliteStorage::getBufferInfo(UserId user, const QString &network, const QString &buffer) {
   BufferInfo bufferid;
+  // TODO: get rid of this hackaround
   uint networkId = getNetworkId(user, network);
   getBufferInfoQuery->bindValue(":networkname", network);
   getBufferInfoQuery->bindValue(":userid", user);
@@ -319,6 +320,8 @@ BufferInfo SqliteStorage::getBufferInfo(UserId user, const QString &network, con
 
   if(!getBufferInfoQuery->first()) {
     createBuffer(user, network, buffer);
+    // TODO: get rid of this hackaround
+    networkId = getNetworkId(user, network);
     getBufferInfoQuery->exec();
     if(getBufferInfoQuery->first()) {
       bufferid = BufferInfo(getBufferInfoQuery->value(0).toUInt(), networkId, 0, network, buffer);

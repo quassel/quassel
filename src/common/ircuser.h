@@ -43,6 +43,7 @@ class IrcUser : public QObject {
   
 public:
   IrcUser(const QString &hostmask, NetworkInfo *networkInfo);
+  virtual ~IrcUser();
 
   bool initialized() const;
 

@@ -57,8 +57,6 @@ public:
   void setProxyMode(ProxyMode mode);
   ProxyMode proxyMode() const;
 
-  bool maxPeersReached();
-  
   bool addPeer(QIODevice *iodev);
   void removePeer(QIODevice *iodev = 0);
 
@@ -86,6 +84,8 @@ public:
     MethodNameHash methodNames;
     // QHash<int, int> syncMap
   };
+
+  void dumpProxyStats();
   
 private slots:
   void dataAvailable();
@@ -123,7 +123,6 @@ private:
   QHash<QIODevice*, quint32> _peerByteCount;
 
   ProxyMode _proxyMode;
-  int _maxClients;
 };
 
 

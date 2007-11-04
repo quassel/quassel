@@ -38,6 +38,9 @@ IrcUser::IrcUser(const QString &hostmask, NetworkInfo *networkinfo)
   setObjectName(QString::number(networkInfo->networkId()) + "/" + IrcUser::hostmask());
 }
 
+IrcUser::~IrcUser() {
+}
+
 // ====================
 //  PUBLIC:
 // ====================

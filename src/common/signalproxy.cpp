@@ -50,6 +50,8 @@ public:
   int qt_metacall(QMetaObject::Call _c, int _id, void **_a);
 
   void attachSignal(int methodId, const QByteArray &func);
+
+  int sigCount() const;
   
 private:
   SignalProxy* proxy;
@@ -87,6 +89,11 @@ int SignalRelay::qt_metacall(QMetaObject::Call _c, int _id, void **_a) {
   return _id;
 }
 
+int SignalRelay::sigCount() const {
+  // only for debuging purpose
+  return sigNames.count();
+}
+
 void SignalRelay::attachSignal(int methodId, const QByteArray &func) {
   // we ride without safetybelts here... all checking for valid method etc pp has to be done by the caller
   // all connected methodIds are offset by the standard methodCount of QObject
@@ -111,22 +118,19 @@ void SignalRelay::attachSignal(int methodId, const QByteArray &func) {
 // ====================
 SignalProxy::SignalProxy(QObject* parent)
   : QObject(parent),
-    _proxyMode(Client),
-    _maxClients(-1)
+    _proxyMode(Client)
 {
 }
 
 SignalProxy::SignalProxy(ProxyMode mode, QObject* parent)
   : QObject(parent),
-    _proxyMode(mode),
-    _maxClients(-1)
+    _proxyMode(mode)
 {
 }
 
 SignalProxy::SignalProxy(ProxyMode mode, QIODevice* device, QObject* parent)
   : QObject(parent),
-    _proxyMode(mode),
-    _maxClients(-1)
+    _proxyMode(mode)
 {
   addPeer(device);
 } 
@@ -152,17 +156,6 @@ SignalProxy::ProxyMode SignalProxy::proxyMode() const {
   return _proxyMode;
 }
 
-bool SignalProxy::maxPeersReached() {
-  if(_peerByteCount.empty())
-    return false;
-  if(proxyMode() != Server)
-    return true;
-  if(_maxClients == -1)
-    return false;
-
-  return (_maxClients <= _peerByteCount.count());
-}
-
 bool SignalProxy::addPeer(QIODevice* iodev) {
   if(!iodev)
     return false;
@@ -170,8 +163,8 @@ bool SignalProxy::addPeer(QIODevice* iodev) {
   if(_peerByteCount.contains(iodev))
     return true;
 
-  if(maxPeersReached()) {
-    qWarning("SignalProxy: max peer count reached");
+  if(proxyMode() == Client && !_peerByteCount.isEmpty()) {
+    qWarning("SignalProxy: only one peer allowed in client mode!");
     return false;
   }
 
@@ -330,6 +323,7 @@ bool SignalProxy::attachSlot(const QByteArray& sigName, QObject* recv, const cha
 
 void SignalProxy::detachSender() {
   // this is a slot so we can bypass the QueuedConnection
+  // and if someone is forcing direct connection in a multithreaded environment he's just nuts...
   _detachSignals(sender());
   _detachSlots(sender());
 }
@@ -348,16 +342,16 @@ void SignalProxy::detachSignals(QObject* sender) {
 			    Q_ARG(QObject*, sender));
 }
 
-void SignalProxy::_detachSignals(QObject* sender) {
-  if(!_relayHash.contains(sender))
-    return;
-  _relayHash.take(sender)->deleteLater();
-}
-
 void SignalProxy::detachSlots(QObject* receiver) {
   QMetaObject::invokeMethod(this, "_detachSlots",
 			    Qt::QueuedConnection,
 			    Q_ARG(QObject*, receiver));
+}
+
+void SignalProxy::_detachSignals(QObject* sender) {
+  if(!_relayHash.contains(sender))
+    return;
+  _relayHash.take(sender)->deleteLater();
 }
 
 void SignalProxy::_detachSlots(QObject* receiver) {
@@ -369,7 +363,6 @@ void SignalProxy::_detachSlots(QObject* receiver) {
       slotIter++;
   }
 }
-
 
 void SignalProxy::call(const char*  signal, QVariant p1, QVariant p2, QVariant p3, QVariant p4, QVariant p5, QVariant p6, QVariant p7, QVariant p8, QVariant p9) {
   QByteArray func = QMetaObject::normalizedSignature(signal);
@@ -409,16 +402,11 @@ void SignalProxy::receivePeerSignal(const QVariant &packedFunc) {
 }
 
 void SignalProxy::dataAvailable() {
+  // yet again. it's a private slot. no need for checks.
   QIODevice* ioDev = qobject_cast<QIODevice* >(sender());
-  Q_ASSERT(ioDev);
-  if(!_peerByteCount.contains(ioDev)) {
-    qWarning() << "SignalProxy: Unrecognized client object connected to dataAvailable";
-    return;
-  } else {
-    QVariant var;
-    while(readDataFromDevice(ioDev, _peerByteCount[ioDev], var))
-      receivePeerSignal(var);
-  }
+  QVariant var;
+  while(readDataFromDevice(ioDev, _peerByteCount[ioDev], var))
+    receivePeerSignal(var);
 }
 
 void SignalProxy::writeDataToDevice(QIODevice *dev, const QVariant &item) {
@@ -450,4 +438,23 @@ bool SignalProxy::readDataFromDevice(QIODevice *dev, quint32 &blockSize, QVarian
   in >> item;
   blockSize = 0;
   return true;
+}
+
+void SignalProxy::dumpProxyStats() {
+  QString mode;
+  if(proxyMode() == Server)
+    mode = "Server";
+  else
+    mode = "Client";
+
+  int sigCount = 0;
+  foreach(SignalRelay *relay, _relayHash.values())
+    sigCount += relay->sigCount();
+
+  qDebug() << this;
+  qDebug() << "              Proxy Mode:" << mode;
+  qDebug() << "attached sending Objects:" << _relayHash.count();
+  qDebug() << "       Number of Signals:" << sigCount;
+  qDebug() << "          attached Slots:" << _attachedSlots.count();
+  qDebug() << "number of Classes cached:" << _classInfo.count();
 }
