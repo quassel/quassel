@@ -242,7 +242,7 @@ QList<QMetaMethod> Synchronizer::getMethodByName(const QString &methodname) {
 }
 
 void Synchronizer::attach() {
-  if(proxy()->rpcType() == SignalProxy::Server)
+  if(proxy()->proxyMode() == SignalProxy::Server)
     attachAsMaster();
   else
     attachAsSlave();

@@ -1,26 +1,32 @@
-/****************************************************************************
- **
- ** Copyright (C) Qxt Foundation. Some rights reserved.
- **
- ** This file is part of the QxtNetwork module of the Qt eXTension library
- **
- ** This library is free software; you can redistribute it and/or modify it
- ** under the terms of th Common Public License, version 1.0, as published by
- ** IBM.
- **
- ** This file is provided "AS IS", without WARRANTIES OR CONDITIONS OF ANY
- ** KIND, EITHER EXPRESS OR IMPLIED INCLUDING, WITHOUT LIMITATION, ANY
- ** WARRANTIES OR CONDITIONS OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY OR
- ** FITNESS FOR A PARTICULAR PURPOSE.
- **
- ** You should have received a copy of the CPL along with this file.
- ** See the LICENSE file and the cpl1.0.txt file included with the source
- ** distribution for more information. If you did not receive a copy of the
- ** license, contact the Qxt Foundation.
- **
- ** <http://libqxt.sourceforge.net>  <foundation@libqxt.org>
- **
- ****************************************************************************/
+/***************************************************************************
+ *   Copyright (C) 2005-07 by the Quassel IRC Team                         *
+ *   devel@quassel-irc.org                                                 *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************
+ *   SignalProxy has been inspired by QxtRPCPeer, part of libqxt,          *
+ *   the Qt eXTension Library <http://www.libqxt.org>. We would like to    *
+ *   thank Arvid "aep" Picciani and Adam "ahigerd" Higerd for providing    *
+ *   QxtRPCPeer, valuable input and the genius idea to (ab)use Qt's        *
+ *   Meta Object System for transmitting signals over the network.         *
+ *                                                                         *
+ *   To make contribution back into libqxt possible, redistribution and    *
+ *   modification of this file is additionally allowed under the terms of  *
+ *   the Common Public License, version 1.0, as published by IBM.          *
+ ***************************************************************************/
 
 #include "signalproxy.h"
 #include <QObject>
@@ -33,12 +39,14 @@
 #include <QDebug>
 #include <QMetaMethod>
 
-class ClassIntrospector: public QObject {
-// This class MANUALLY implements the necessary parts of QObject.
-// Do NOT add the Q_OBJECT macro. As this class isn't intended
-// for direct use, it doesn't offer any sort of useful meta-object.
+class SignalRelay: public QObject {
+
+/* Q_OBJECT is not necessary or even allowed, because we implement
+   qt_metacall ourselves (and don't use any other features of the meta
+   object system)
+*/
 public:
-  ClassIntrospector(SignalProxy* parent, QObject* source);
+  SignalRelay(SignalProxy* parent, QObject* source);
   int qt_metacall(QMetaObject::Call _c, int _id, void **_a);
 
   void attachSignal(int methodId, const QByteArray &func);
@@ -46,10 +54,10 @@ public:
 private:
   SignalProxy* proxy;
   QObject* caller;
-  QMultiHash<int, QByteArray> rpcFunction;
+  QMultiHash<int, QByteArray> sigNames;
 };
 
-ClassIntrospector::ClassIntrospector(SignalProxy* parent, QObject* source)
+SignalRelay::SignalRelay(SignalProxy* parent, QObject* source)
   : QObject(parent),
     proxy(parent),
     caller(source)
@@ -57,21 +65,21 @@ ClassIntrospector::ClassIntrospector(SignalProxy* parent, QObject* source)
   QObject::connect(source, SIGNAL(destroyed()), parent, SLOT(detachSender()));
 }
 
-int ClassIntrospector::qt_metacall(QMetaObject::Call _c, int _id, void **_a) {
+int SignalRelay::qt_metacall(QMetaObject::Call _c, int _id, void **_a) {
   _id = QObject::qt_metacall(_c, _id, _a);
   if(_id < 0)
     return _id;
   if(_c == QMetaObject::InvokeMetaMethod) {
-    if(rpcFunction.contains(_id)) {
+    if(sigNames.contains(_id)) {
       const QList<int> &argTypes = proxy->argTypes(caller, _id);
       QVariantList params;
       int n = argTypes.size();
       for(int i=0; i<n; i++)
-	params.append(QVariant(argTypes[i], _a[i+1]));
-      QMultiHash<int, QByteArray>::const_iterator funcIter = rpcFunction.constFind(_id);
-      while(funcIter != rpcFunction.constEnd() && funcIter.key() == _id) {
-	proxy->call(funcIter.value(), params);
-	funcIter++;
+        params.append(QVariant(argTypes[i], _a[i+1]));
+      QMultiHash<int, QByteArray>::const_iterator funcIter = sigNames.constFind(_id);
+      while(funcIter != sigNames.constEnd() && funcIter.key() == _id) {
+        proxy->call(funcIter.value(), params);
+        funcIter++;
       }
     }
     _id -= 1;
@@ -79,10 +87,10 @@ int ClassIntrospector::qt_metacall(QMetaObject::Call _c, int _id, void **_a) {
   return _id;
 }
 
-void ClassIntrospector::attachSignal(int methodId, const QByteArray &func) {
+void SignalRelay::attachSignal(int methodId, const QByteArray &func) {
   // we ride without safetybelts here... all checking for valid method etc pp has to be done by the caller
   // all connected methodIds are offset by the standard methodCount of QObject
-  if(!rpcFunction.contains(methodId))
+  if(!sigNames.contains(methodId))
     QMetaObject::connect(caller, methodId, this, QObject::staticMetaObject.methodCount() + methodId);
 
   QByteArray fn;
@@ -91,10 +99,10 @@ void ClassIntrospector::attachSignal(int methodId, const QByteArray &func) {
   } else {
     fn = QByteArray("2") + caller->metaObject()->method(methodId).signature();
   }
-  rpcFunction.insert(methodId, fn);
+  sigNames.insert(methodId, fn);
 }
 // ====================
-// END INTROSPECTOR
+// END SIGNALRELAY
 // ====================
 
 
@@ -103,51 +111,51 @@ void ClassIntrospector::attachSignal(int methodId, const QByteArray &func) {
 // ====================
 SignalProxy::SignalProxy(QObject* parent)
   : QObject(parent),
-    _rpcType(Peer),
+    _proxyMode(Client),
     _maxClients(-1)
 {
 }
 
-SignalProxy::SignalProxy(RPCTypes type, QObject* parent)
+SignalProxy::SignalProxy(ProxyMode mode, QObject* parent)
   : QObject(parent),
-    _rpcType(type),
+    _proxyMode(mode),
     _maxClients(-1)
 {
 }
 
-SignalProxy::SignalProxy(RPCTypes type, QIODevice* device, QObject* parent)
+SignalProxy::SignalProxy(ProxyMode mode, QIODevice* device, QObject* parent)
   : QObject(parent),
-    _rpcType(type),
+    _proxyMode(mode),
     _maxClients(-1)
 {
   addPeer(device);
-}  
+} 
 
 SignalProxy::~SignalProxy() {
-  QList<QObject*> senders = _specHash.keys();
+  QList<QObject*> senders = _relayHash.keys();
   foreach(QObject* sender, senders)
     detachObject(sender);
 }
 
-void SignalProxy::setRPCType(RPCTypes type) {
+void SignalProxy::setProxyMode(ProxyMode mode) {
   foreach(QIODevice* peer, _peerByteCount.keys()) {
     if(peer->isOpen()) {
-      qWarning() << "SignalProxy: Cannot change RPC types while connected";
+      qWarning() << "SignalProxy: Cannot change proxy mode while connected";
       return;
     }
   }
-  _rpcType = type;
+  _proxyMode = mode;
 }
 
 
-SignalProxy::RPCTypes SignalProxy::rpcType() const {
-  return (RPCTypes)(_rpcType);
+SignalProxy::ProxyMode SignalProxy::proxyMode() const {
+  return _proxyMode;
 }
 
 bool SignalProxy::maxPeersReached() {
   if(_peerByteCount.empty())
     return false;
-  if(rpcType() != Server)
+  if(proxyMode() != Server)
     return true;
   if(_maxClients == -1)
     return false;
@@ -163,16 +171,16 @@ bool SignalProxy::addPeer(QIODevice* iodev) {
     return true;
 
   if(maxPeersReached()) {
-    qWarning("SignalProxy: max peercount reached");
+    qWarning("SignalProxy: max peer count reached");
     return false;
   }
-     
+
   if(!iodev->isOpen())
     qWarning("SignalProxy::the device you passed is not open!");
-  
+
   connect(iodev, SIGNAL(disconnected()), this, SLOT(removePeerBySender()));
   connect(iodev, SIGNAL(readyRead()), this, SLOT(dataAvailable()));
-  
+
   QAbstractSocket* sock  = qobject_cast<QAbstractSocket*>(iodev);
   if(sock) {
     connect(sock, SIGNAL(disconnected()), this, SLOT(removePeerBySender()));
@@ -182,7 +190,7 @@ bool SignalProxy::addPeer(QIODevice* iodev) {
 
   if(_peerByteCount.count() == 1)
     emit connected();
-  
+
   return true;
 }
 
@@ -194,22 +202,22 @@ void SignalProxy::removePeerBySender() {
 
 void SignalProxy::removePeer(QIODevice* iodev) {
   if(_peerByteCount.isEmpty()) {
-    qWarning() << "No Peers in use!";
+    qWarning() << "SignalProxy: No peers in use!";
     return;
   }
-     
-  if(_rpcType == Server && !iodev) {
+
+  if(proxyMode() == Server && !iodev) {
     // disconnect all
     QList<QIODevice *> peers = _peerByteCount.keys();
     foreach(QIODevice *peer, peers)
       removePeer(peer);
   }
 
-  if(_rpcType != Server && !iodev)
+  if(proxyMode() != Server && !iodev)
     iodev = _peerByteCount.keys().first();
-  
+
   Q_ASSERT(iodev);
-     
+
   if(!_peerByteCount.contains(iodev)) {
     qWarning() << "SignalProxy: unknown QIODevice" << iodev;
     return;
@@ -278,40 +286,40 @@ void SignalProxy::createClassInfo(QObject *obj) {
     _classInfo[className] = new ClassInfo();
 }
 
-bool SignalProxy::attachSignal(QObject* sender, const char* signal, const QByteArray& rpcFunction) {
+bool SignalProxy::attachSignal(QObject* sender, const char* signal, const QByteArray& sigName) {
   const QMetaObject* meta = sender->metaObject();
   QByteArray sig(meta->normalizedSignature(signal).mid(1));
   int methodId = meta->indexOfMethod(sig.constData());
   if(methodId == -1 || meta->method(methodId).methodType() != QMetaMethod::Signal) {
-    qWarning() << "SignalProxy::attachSignal: No such signal " << signal;
+    qWarning() << "SignalProxy::attachSignal(): No such signal" << signal;
     return false;
   }
 
   createClassInfo(sender);
 
-  ClassIntrospector* spec;
-  if(_specHash.contains(sender))
-    spec = _specHash[sender];
+  SignalRelay* relay;
+  if(_relayHash.contains(sender))
+    relay = _relayHash[sender];
   else
-    spec = _specHash[sender] = new ClassIntrospector(this, sender);
+    relay = _relayHash[sender] = new SignalRelay(this, sender);
 
-  spec->attachSignal(methodId, rpcFunction);
+  relay->attachSignal(methodId, sigName);
 
   return true;
 }
 
 
-bool SignalProxy::attachSlot(const QByteArray& rpcFunction, QObject* recv, const char* slot) {
+bool SignalProxy::attachSlot(const QByteArray& sigName, QObject* recv, const char* slot) {
   const QMetaObject* meta = recv->metaObject();
   int methodId = meta->indexOfMethod(meta->normalizedSignature(slot).mid(1));
   if(methodId == -1 || meta->method(methodId).methodType() == QMetaMethod::Method) {
-    qWarning() << "SignalProxy::attachSlot: No such slot " << slot;
+    qWarning() << "SignalProxy::attachSlot(): No such slot" << slot;
     return false;
   }
 
   createClassInfo(recv);
-  
-  QByteArray funcName = QMetaObject::normalizedSignature(rpcFunction.constData());
+
+  QByteArray funcName = QMetaObject::normalizedSignature(sigName.constData());
   _attachedSlots.insert(funcName, qMakePair(recv, methodId));
 
   QObject::disconnect(recv, SIGNAL(destroyed()), this, SLOT(detachSender()));
@@ -326,7 +334,7 @@ void SignalProxy::detachSender() {
   _detachSlots(sender());
 }
 
-// detachObject/Signals/Slots() can be called as a result of an incomming call
+// detachObject/Signals/Slots() can be called as a result of an incoming call
 // this might destroy our the iterator used for delivery
 // thus we wrap the actual disconnection by using QueuedConnections
 void SignalProxy::detachObject(QObject* obj) {
@@ -341,9 +349,9 @@ void SignalProxy::detachSignals(QObject* sender) {
 }
 
 void SignalProxy::_detachSignals(QObject* sender) {
-  if(!_specHash.contains(sender))
+  if(!_relayHash.contains(sender))
     return;
-  _specHash.take(sender)->deleteLater();
+  _relayHash.take(sender)->deleteLater();
 }
 
 void SignalProxy::detachSlots(QObject* receiver) {
@@ -363,12 +371,11 @@ void SignalProxy::_detachSlots(QObject* receiver) {
 }
 
 
-void SignalProxy::call(const char*  signal , QVariant p1, QVariant p2, QVariant p3, QVariant p4, QVariant p5, QVariant p6, QVariant p7, QVariant p8, QVariant p9) {
-  QByteArray sig=QMetaObject::normalizedSignature(signal);
+void SignalProxy::call(const char*  signal, QVariant p1, QVariant p2, QVariant p3, QVariant p4, QVariant p5, QVariant p6, QVariant p7, QVariant p8, QVariant p9) {
+  QByteArray func = QMetaObject::normalizedSignature(signal);
   QVariantList params;
-  params << p1 << p2 << p3 << p4 << p5
-	 << p6 << p7 << p8 << p9;
-  call(sig, params);
+  params << p1 << p2 << p3 << p4 << p5 << p6 << p7 << p8 << p9;
+  call(func, params);
 }
 
 void SignalProxy::call(const QByteArray &funcName, const QVariantList &params) {
@@ -395,7 +402,7 @@ void SignalProxy::receivePeerSignal(const QVariant &packedFunc) {
       args[i] = QGenericArgument(params[i].typeName(), params[i].constData());
     if(!QMetaObject::invokeMethod(receiver, methodName(receiver, methodId),
 				  args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8])) {
-      qWarning("SignalProxy::receivePeerSignal: invokeMethod for \"%s\" failed ", methodName(receiver, methodId).constData());
+      qWarning("SignalProxy::receivePeerSignal(): invokeMethod for \"%s\" failed ", methodName(receiver, methodId).constData());
     }
     slot++;
   }
@@ -417,7 +424,7 @@ void SignalProxy::dataAvailable() {
 void SignalProxy::writeDataToDevice(QIODevice *dev, const QVariant &item) {
   QAbstractSocket* sock  = qobject_cast<QAbstractSocket*>(dev);
   if(!dev->isOpen() || (sock && sock->state()!=QAbstractSocket::ConnectedState)) {
-    qWarning("can't call on a closed device");
+    qWarning("SignalProxy: Can't call on a closed device");
     return;
   }
   QByteArray block;
@@ -444,5 +451,3 @@ bool SignalProxy::readDataFromDevice(QIODevice *dev, quint32 &blockSize, QVarian
   blockSize = 0;
   return true;
 }
-
-

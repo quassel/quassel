@@ -1,31 +1,36 @@
-/****************************************************************************
- **
- ** Copyright (C) Qxt Foundation. Some rights reserved.
- **
- ** This file is part of the QxtNetwork module of the Qt eXTension library
- **
- ** This library is free software; you can redistribute it and/or modify it
- ** under the terms of th Common Public License, version 1.0, as published by
- ** IBM.
- **
- ** This file is provided "AS IS", without WARRANTIES OR CONDITIONS OF ANY
- ** KIND, EITHER EXPRESS OR IMPLIED INCLUDING, WITHOUT LIMITATION, ANY
- ** WARRANTIES OR CONDITIONS OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY OR
- ** FITNESS FOR A PARTICULAR PURPOSE.
- **
- ** You should have received a copy of the CPL along with this file.
- ** See the LICENSE file and the cpl1.0.txt file included with the source
- ** distribution for more information. If you did not receive a copy of the
- ** license, contact the Qxt Foundation.
- **
- ** <http://libqxt.sourceforge.net>  <foundation@libqxt.org>
- **
- ****************************************************************************/
+/***************************************************************************
+ *   Copyright (C) 2005-07 by the Quassel IRC Team                         *
+ *   devel@quassel-irc.org                                                 *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************
+ *   SignalProxy has been inspired by QxtRPCPeer, part of libqxt,          *
+ *   the Qt eXTension Library <http://www.libqxt.org>. We would like to    *
+ *   thank Arvid "aep" Picciani and Adam "ahigerd" Higerd for providing    *
+ *   QxtRPCPeer, valuable input and the genius idea to (ab)use Qt's        *
+ *   Meta Object System for transmitting signals over the network.         *
+ *                                                                         *
+ *   To make contribution back into libqxt possible, redistribution and    *
+ *   modification of this file is additionally allowed under the terms of  *
+ *   the Common Public License, version 1.0, as published by IBM.          *
+ ***************************************************************************/
 
 #ifndef _SIGNALPROXY_H_
 #define _SIGNALPROXY_H_
 
-#include <QObject>
 #include <QList>
 #include <QHash>
 #include <QVariant>
@@ -33,33 +38,32 @@
 #include <QString>
 #include <QByteArray>
 
-class ClassIntrospector;
+class SignalRelay;
 
 class SignalProxy : public QObject {
   Q_OBJECT
 
 public:
-  enum RPCTypes {
+  enum ProxyMode {
     Server,
-    Client,
-    Peer
+    Client
   };
 
   SignalProxy(QObject* parent);
-  SignalProxy(RPCTypes type, QObject* parent);
-  SignalProxy(RPCTypes type, QIODevice* device, QObject* parent);
+  SignalProxy(ProxyMode mode, QObject* parent);
+  SignalProxy(ProxyMode mode, QIODevice* device, QObject* parent);
   virtual ~SignalProxy();
 
-  void setRPCType(RPCTypes type);
-  RPCTypes rpcType() const;
+  void setProxyMode(ProxyMode mode);
+  ProxyMode proxyMode() const;
 
   bool maxPeersReached();
   
   bool addPeer(QIODevice *iodev);
   void removePeer(QIODevice *iodev = 0);
 
-  bool attachSignal(QObject* sender, const char* signal, const QByteArray& rpcFunction = QByteArray());
-  bool attachSlot(const QByteArray& rpcFunction, QObject* recv, const char* slot);
+  bool attachSignal(QObject* sender, const char* signal, const QByteArray& sigName = QByteArray());
+  bool attachSlot(const QByteArray& sigName, QObject* recv, const char* slot);
 
   void detachObject(QObject *obj);
   void detachSignals(QObject *sender);
@@ -97,7 +101,7 @@ private:
   void createClassInfo(QObject *obj);
   void setArgTypes(QObject* obj, int methodId);
   void setMethodName(QObject* obj, int methodId);
-  
+
   void receivePeerSignal(const QVariant &packedFunc);
 
   void _detachSignals(QObject *sender);
@@ -105,9 +109,9 @@ private:
 
   // containg a list of argtypes for fast access
   QHash<QByteArray, ClassInfo*> _classInfo;
-  
-  // we use one introSpector per QObject
-  QHash<QObject*, ClassIntrospector*> _specHash;
+
+  // we use one SignalRelay per QObject
+  QHash<QObject*, SignalRelay *> _relayHash;
 
   // RPC function -> (object, slot ID)
   typedef QPair<QObject*, int> MethodId;
@@ -118,7 +122,7 @@ private:
   // Hash of used QIODevices
   QHash<QIODevice*, quint32> _peerByteCount;
 
-  int _rpcType;
+  ProxyMode _proxyMode;
   int _maxClients;
 };
 
