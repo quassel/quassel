@@ -85,7 +85,6 @@ int main(int argc, char **argv) {
   QCoreApplication::setApplicationName("Quassel IRC");
   QCoreApplication::setOrganizationName("Quassel IRC Development Team");
 
-  Global::quasselDir = QDir::homePath() + "/.quassel";
 #ifndef BUILD_QTUI
   Core::instance();  // create and init the core
 #endif

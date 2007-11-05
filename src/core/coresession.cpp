@@ -52,7 +52,6 @@ CoreSession::CoreSession(UserId uid, Storage *_storage, QObject *parent)
   p->attachSlot(SIGNAL(requestNetworkStates()), this, SLOT(serverStateRequested()));
   p->attachSlot(SIGNAL(requestConnect(QString)), this, SLOT(connectToNetwork(QString)));
   p->attachSlot(SIGNAL(sendInput(BufferInfo, QString)), this, SLOT(msgFromGui(BufferInfo, QString)));
-  p->attachSlot(SIGNAL(importOldBacklog()), storage, SLOT(importOldBacklog()));
   p->attachSlot(SIGNAL(requestBacklog(BufferInfo, QVariant, QVariant)), this, SLOT(sendBacklog(BufferInfo, QVariant, QVariant)));
   p->attachSignal(this, SIGNAL(displayMsg(Message)));
   p->attachSignal(this, SIGNAL(displayStatusMsg(QString, QString)));

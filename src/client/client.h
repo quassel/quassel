@@ -89,6 +89,8 @@ signals:
   void coreConnectionError(QString errorMsg);
   void coreConnectionMsg(const QString &msg);
   void coreConnectionProgress(uint part, uint total);
+    
+  void showConfigWizard(const QVariantMap &coredata);
 
   void connected();
   void disconnected();
@@ -102,6 +104,8 @@ public slots:
   //void connectToLocalCore();
   void connectToCore(const QVariantMap &);
   void disconnectFromCore();
+    
+  void setCoreConfiguration(const QVariantMap &settings);
 
 private slots:
   void recvCoreState(const QVariant &state);

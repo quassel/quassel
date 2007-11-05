@@ -23,17 +23,135 @@
 #include <QtSql>
 
 SqliteStorage::SqliteStorage() {
-  // TODO I don't think that this path is failsafe for windows users :) 
-  QString backlogFile = Global::quasselDir + "/quassel-storage.sqlite";
-  logDb = QSqlDatabase::addDatabase("QSQLITE");
-  logDb.setDatabaseName(backlogFile);
-  bool ok = logDb.open();
+  logMessageQuery = NULL;
+  addSenderQuery = NULL;
+  getLastMessageIdQuery = NULL;
+  requestMsgsQuery = NULL;
+  requestMsgsOffsetQuery = NULL;
+  requestMsgsSinceQuery = NULL;
+  requestMsgsSinceOffsetQuery = NULL;
+  requestMsgRangeQuery = NULL;
+  createNetworkQuery = NULL;
+  createBufferQuery = NULL;
+  getBufferInfoQuery = NULL;
+}
 
-  if(!ok) {
-    qWarning(tr("Could not open backlog database: %1").arg(logDb.lastError().text()).toAscii());
-    qWarning(tr("Disabling logging...").toAscii());
-    Q_ASSERT(ok);
-    return;
+SqliteStorage::~SqliteStorage() {
+  if (logMessageQuery) delete logMessageQuery;
+  if (addSenderQuery) delete addSenderQuery;
+  if (getLastMessageIdQuery) delete getLastMessageIdQuery;
+  if (requestMsgsQuery) delete requestMsgsQuery;
+  if (requestMsgsOffsetQuery) delete requestMsgsOffsetQuery;
+  if (requestMsgsSinceQuery) delete requestMsgsSinceQuery;
+  if (requestMsgsSinceOffsetQuery) delete requestMsgsSinceOffsetQuery;
+  if (requestMsgRangeQuery) delete requestMsgRangeQuery;
+  if (createNetworkQuery) delete createNetworkQuery;
+  if (createBufferQuery) delete createBufferQuery;
+  if (getBufferInfoQuery) delete getBufferInfoQuery;
+  
+  logDb.close();
+}
+
+bool SqliteStorage::isAvailable() {
+  if(!QSqlDatabase::isDriverAvailable("QSQLITE")) return false;
+  return true;
+}
+
+QString SqliteStorage::displayName() {
+  return QString("SQlite");
+}
+
+bool SqliteStorage::setup(const QVariantMap &settings) {
+  bool ok;
+  // this extra scope is needed to be able to remove the database connection later
+  {
+    logDb = QSqlDatabase::addDatabase("QSQLITE", "quassel_setup");
+    logDb.setDatabaseName(SqliteStorage::backlogFile(true));
+    bool ok = logDb.open();
+    
+    if (!ok) {
+      qWarning(tr("Could not open backlog database: %1").arg(logDb.lastError().text()).toAscii());
+    } else {
+      logDb.exec("CREATE TABLE quasseluser ("
+	             "userid INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
+	             "username TEXT UNIQUE NOT NULL,"
+	             "password BLOB NOT NULL)");
+	  
+      logDb.exec("CREATE TABLE sender ("
+	             "senderid INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
+	             "sender TEXT UNIQUE NOT NULL)");
+	  
+      logDb.exec("CREATE TABLE network ("
+	             "networkid INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
+	             "userid INTEGER NOT NULL,"
+	             "networkname TEXT NOT NULL,"
+	             "UNIQUE (userid, networkname))");
+	  
+      logDb.exec("CREATE TABLE buffergroup ("
+	             "groupid INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
+	             "userid INTEGER NOT NULL,"
+	             "displayname TEXT)");
+	  
+      logDb.exec("CREATE TABLE buffer ("
+	             "bufferid INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
+	             "userid INTEGER NOT NULL,"
+	             "groupid INTEGER,"
+	             "networkid INTEGER NOT NULL,"
+	             "buffername TEXT NOT NULL)");
+	  
+      logDb.exec("CREATE UNIQUE INDEX buffer_idx "
+	             "ON buffer(userid, networkid, buffername)");
+	    
+      logDb.exec("CREATE TABLE backlog ("
+	             "messageid INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
+	             "time INTEGER NOT NULL,"
+	             "bufferid INTEGER NOT NULL,"
+	             "type INTEGER NOT NULL,"
+	             "flags INTEGER NOT NULL,"
+	             "senderid INTEGER NOT NULL,"
+	             "message TEXT)");
+	  
+      logDb.exec("CREATE TABLE coreinfo ("
+	             "updateid INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
+	             "version INTEGER NOT NULL)");
+	  
+      logDb.exec("INSERT INTO coreinfo (version) VALUES (0)");
+      
+      // something fucked up -> no logging possible
+      // FIXME logDb.lastError is reset whenever exec is called
+      if(logDb.lastError().isValid()) { 
+        qWarning(tr("Could not create backlog table: %1").arg(logDb.lastError().text()).toAscii());
+        qWarning(tr("Disabling logging...").toAscii());
+        Q_ASSERT(false); // quassel does require logging
+        ok = false;
+      }
+    
+      logDb.close();
+    }
+  } 
+  
+  QSqlDatabase::removeDatabase("quassel_setup");
+  return ok;
+}
+
+bool SqliteStorage::init(const QVariantMap &settings) {
+  bool ok;
+  // i need the extra scope to be able to remove the database connection
+  {
+    logDb = QSqlDatabase::database("quassel_connection", false);
+    if (!logDb.isValid()) {
+      logDb = QSqlDatabase::addDatabase("QSQLITE", "quassel_connection");
+    }
+    logDb.setDatabaseName(SqliteStorage::backlogFile());
+    ok = logDb.open();
+    if (!ok) {
+      qWarning(tr("Could not open backlog database: %1").arg(logDb.lastError().text()).toAscii());
+    }
+  }
+
+  if (!ok) {
+    //QSqlDatabase::removeDatabase("quassel_connection");
+    return false;
   }
 
   // check if the db schema is up to date
@@ -43,7 +161,8 @@ SqliteStorage::SqliteStorage() {
     //checkVersion(query.value(0));
     qDebug() << "Sqlite is ready. Quassel Schema Version:" << query.value(0).toUInt();
   } else {
-    initDb();
+    qWarning("Sqlite is not ready!");
+    return false;
   }
 
   // we will need those pretty often... so let's speed things up:
@@ -105,91 +224,8 @@ SqliteStorage::SqliteStorage() {
                                 "WHERE (buffer.bufferid = :bufferid OR buffer.groupid = (SELECT groupid FROM buffer WHERE bufferid = :bufferid2)) AND "
                                 "backlog.messageid >= :firstmsg AND backlog.messageid <= :lastmsg "
                                 "ORDER BY messageid DESC ");
-
-}
-
-SqliteStorage::~SqliteStorage() {
-  //logDb.close();
-  delete logMessageQuery;
-  delete addSenderQuery;
-  delete getLastMessageIdQuery;
-  delete requestMsgsQuery;
-  delete requestMsgsOffsetQuery;
-  delete requestMsgsSinceQuery;
-  delete requestMsgsSinceOffsetQuery;
-  delete requestMsgRangeQuery;
-  delete createNetworkQuery;
-  delete createBufferQuery;
-  delete getBufferInfoQuery;
-  logDb.close();
-}
-
-
-void SqliteStorage::initDb() {
-  logDb.exec("CREATE TABLE quasseluser ("
-             "userid INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
-             "username TEXT UNIQUE NOT NULL,"
-             "password BLOB NOT NULL)");
   
-  logDb.exec("CREATE TABLE sender ("
-             "senderid INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
-             "sender TEXT UNIQUE NOT NULL)");
-  
-  logDb.exec("CREATE TABLE network ("
-             "networkid INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
-             "userid INTEGER NOT NULL,"
-             "networkname TEXT NOT NULL,"
-             "UNIQUE (userid, networkname))");
-  
-  logDb.exec("CREATE TABLE buffergroup ("
-             "groupid INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
-             "userid INTEGER NOT NULL,"
-             "displayname TEXT)");
-  
-  logDb.exec("CREATE TABLE buffer ("
-             "bufferid INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
-             "userid INTEGER NOT NULL,"
-             "groupid INTEGER,"
-             "networkid INTEGER NOT NULL,"
-             "buffername TEXT NOT NULL)");
-  
-  logDb.exec("CREATE UNIQUE INDEX buffer_idx "
-             "ON buffer(userid, networkid, buffername)");
-    
-  logDb.exec("CREATE TABLE backlog ("
-             "messageid INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
-             "time INTEGER NOT NULL,"
-             "bufferid INTEGER NOT NULL,"
-             "type INTEGER NOT NULL,"
-             "flags INTEGER NOT NULL,"
-             "senderid INTEGER NOT NULL,"
-             "message TEXT)");
-  
-  logDb.exec("CREATE TABLE coreinfo ("
-             "updateid INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
-             "version INTEGER NOT NULL)");
-  
-  logDb.exec("INSERT INTO coreinfo (version) VALUES (0)");
-
-
-  // something fucked up -> no logging possible
-  // FIXME logDb.lastError is reset whenever exec is called
-  if(logDb.lastError().isValid()) { 
-    qWarning(tr("Could not create backlog table: %1").arg(logDb.lastError().text()).toAscii());
-    qWarning(tr("Disabling logging...").toAscii());
-    Q_ASSERT(false); // quassel does require logging
-  }
-
-  addUser("Default", "password");
-}
-
-bool SqliteStorage::isAvailable() {
-  if(!QSqlDatabase::isDriverAvailable("QSQLITE")) return false;
   return true;
-}
-
-QString SqliteStorage::displayName() {
-  return QString("SqliteStorage");
 }
 
 UserId SqliteStorage::addUser(const QString &user, const QString &password) {
@@ -483,36 +519,24 @@ QList<Message> SqliteStorage::requestMsgRange(BufferInfo buffer, int first, int 
   return messagelist;
 }
 
-void SqliteStorage::importOldBacklog() {
-  QSqlQuery query(logDb);
-  int user;
-  query.prepare("SELECT MIN(userid) FROM quasseluser");
-  query.exec();
-  if(!query.first()) {
-    qDebug() << "create a user first!";
-  } else {
-    user = query.value(0).toUInt();
+QString SqliteStorage::backlogFile(bool createPath) {
+  // kinda ugly, but I currently see no other way to do that
+#ifdef _WINDOWS
+  QString quasselDir = QDir::homePath() + qgetenv("APPDATA") + "\\quassel\\";
+#else
+  QString quasselDir = QDir::homePath() + "/.quassel/";
+#endif
+  
+  if (createPath) {
+    QDir *qDir = new QDir(quasselDir);
+    if (!qDir->exists(quasselDir)) {
+      qDir->mkpath(quasselDir);
+    }
+    delete qDir;
   }
-  query.prepare("DELETE FROM backlog WHERE bufferid IN (SELECT DISTINCT bufferid FROM buffer WHERE userid = :userid");
-  query.bindValue(":userid", user);
-  query.exec();
-  query.prepare("DELETE FROM buffer WHERE userid = :userid");
-  query.bindValue(":userid", user);
-  query.exec();
-  query.prepare("DELETE FROM buffergroup WHERE userid = :userid");
-  query.bindValue(":userid", user);
-  query.exec();
-  query.prepare("DELETE FROM network WHERE userid = :userid");
-  query.bindValue(":userid", user);
-  query.exec();
-  logDb.commit();
-  qDebug() << "All userdata has been deleted";
-  qDebug() << "importing old backlog files...";
-  initBackLogOld(user);
-  logDb.commit();
-  return;
-}
 
+  return quasselDir + "quassel-storage.sqlite";
+}
 
 bool SqliteStorage::watchQuery(QSqlQuery *query) {
   if(query->lastError().isValid()) {

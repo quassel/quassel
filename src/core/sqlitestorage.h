@@ -34,12 +34,12 @@ class SqliteStorage : public Storage {
     SqliteStorage();
     virtual ~SqliteStorage();
 
-    static void init();
-
     /* General */
 
     static bool isAvailable();
     static QString displayName();
+    virtual bool setup(const QVariantMap &settings = QVariantMap());
+    virtual bool init(const QVariantMap &settings = QVariantMap());
 
     // TODO: Add functions for configuring the backlog handling, i.e. defining auto-cleanup settings etc
 
@@ -65,23 +65,19 @@ class SqliteStorage : public Storage {
     virtual QList<Message> requestMsgs(BufferInfo buffer, QDateTime since, int offset = -1);
     virtual QList<Message> requestMsgRange(BufferInfo buffer, int first, int last);
 
-  public slots:
-    //! This is just for importing the old file-based backlog */
-    /** This slot needs to be implemented in the storage backends.
-     *  It should first prepare (delete?) the database, then call initBackLogOld(UserId id).
-     *  If the importing was successful, backLogEnabledOld will be true afterwards.
-     */
-    void importOldBacklog();
-
   signals:
     void bufferInfoUpdated(BufferInfo);
 
   protected:
 
   private:
-    void initDb();
+    static QString backlogFile(bool createPath = false);
+    
     void createBuffer(UserId user, const QString &network, const QString &buffer);
     bool watchQuery(QSqlQuery *query);
+
+    QSqlDatabase logDb;
+
     QSqlQuery *logMessageQuery;
     QSqlQuery *addSenderQuery;
     QSqlQuery *getLastMessageIdQuery;
@@ -94,6 +90,5 @@ class SqliteStorage : public Storage {
     QSqlQuery *createBufferQuery;
     QSqlQuery *getBufferInfoQuery;
 };
-
 
 #endif

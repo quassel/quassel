@@ -33,7 +33,7 @@ class CoreConnectDlg: public QDialog {
     QVariant getCoreState();
 
     bool willDoInternalAutoConnect();
-
+    
   public slots:
     void doAutoConnect();
 
@@ -54,6 +54,8 @@ class CoreConnectDlg: public QDialog {
     //void coreConnectionProgress(uint partial, uint total);
     void updateProgressBar(uint partial, uint total);
     void recvCoreState(QVariant);
+    
+    void showConfigWizard(const QVariantMap &coredata);
 
   private:
     Ui::CoreConnectDlg ui;

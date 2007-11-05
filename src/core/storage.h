@@ -33,16 +33,6 @@ class Storage : public QObject {
     Storage() {};
     virtual ~Storage() {};
 
-    //! Initialize the static parts of the storage class
-    /** This is called by the core before any other method of the storage backend is used.
-     *  This should be used to perform any static initialization that might be necessary.
-     *  DO NOT use this for creating database connection or similar stuff, since init() might be
-     *  called even if the storage backend is never be actually used (because no user selected it).
-     *  For anything like this, the constructor (which is called if and when we actually create an instance
-     *  of the storage backend) is the right place.
-     */
-    static void init() {};
-
     /* General */
 
     //! Check if the storage type is available.
@@ -56,6 +46,19 @@ class Storage : public QObject {
     /** \return A string that can be used by the GUI to describe the storage backend */
     static QString displayName() { return ""; }
 
+    //! Setup the storage provider.
+    /** This prepares the storage provider (e.g. create tables, etc.) for use within Quassel.
+     *  \param settings   Hostname, port, username, password, ...
+     *  \return True if and only if the storage provider was initialized successfully.
+     */
+    virtual bool setup(const QVariantMap &settings = QVariantMap()) { return false; }
+    
+    //! Initialize the storage provider
+    /** \param settings   Hostname, port, username, password, ...  
+     *  \return True if and only if the storage provider was initialized successfully.
+     */
+    virtual bool init(const QVariantMap &settings = QVariantMap()) = 0;
+    
     // TODO: Add functions for configuring the backlog handling, i.e. defining auto-cleanup settings etc
 
     /* User handling */
@@ -152,14 +155,6 @@ class Storage : public QObject {
      */
     virtual QList<Message> requestMsgRange(BufferInfo buffer, int first, int last) = 0;
 
-  public slots:
-    //! This is just for importing the old file-based backlog */
-    /** This slot needs to be implemented in the storage backends.
-     *  It should first prepare (delete?) the database, then call initBackLogOld(UserId id).
-     *  If the importing was successful, backLogEnabledOld will be true afterwards.
-     */
-    virtual void importOldBacklog() = 0;
-
   signals:
     //! Sent when a new BufferInfo is created, or an existing one changed somehow.
     void bufferInfoUpdated(BufferInfo);
@@ -173,21 +168,6 @@ class Storage : public QObject {
   public:
     /* Exceptions */
     struct AuthError : public Exception {};
-
-  protected:
-    // Old stuff, just for importing old file-based data
-    void initBackLogOld(UserId id);
-
-    QSqlDatabase logDb; // FIXME this does not belong in the base class!
-      
-    bool backLogEnabledOld;
-    QDir backLogDir;
-    QHash<QString, QList<Message> > backLog;
-    QHash<QString, QFile *> logFiles;
-    QHash<QString, QDataStream *> logStreams;
-    QHash<QString, QDate> logFileDates;
-    QHash<QString, QDir> logFileDirs;
-
 };
 
 

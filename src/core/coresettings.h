@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by The Quassel Team                                *
+ *   Copyright (C) 2005-07 by The Quassel IRC Development Team             *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,42 +18,31 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _GLOBAL_H_
-#define _GLOBAL_H_
+#ifndef CORESETTINGS_H_
+#define CORESETTINGS_H_
 
-/** The protocol version we use fo the communication between core and GUI */
-#define GUI_PROTOCOL 3
+#include "settings.h"
+#include "global.h"
 
-#define BACKLOG_FORMAT 2
-#define BACKLOG_STRING "QuasselIRC Backlog File"
-
-#define DEFAULT_PORT 4242
-
-#include <QHash>
-#include <QMutex>
-#include <QString>
-#include <QVariant>
-
-/* Some global stuff */
-
-typedef uint UserId;
-typedef uint MsgId;
-typedef uint BufferId;
-typedef uint NetworkId;
-
-namespace Global {
-  enum RunMode { Monolithic, ClientOnly, CoreOnly };
-  extern RunMode runMode;
-}
-
-struct Exception {
-    Exception(QString msg = "Unknown Exception") : _msg(msg) {};
-    virtual ~Exception() {}; // make gcc happy
-    virtual inline QString msg() { return _msg; }
-
-  protected:
-    QString _msg;
-
+class CoreSettings : public Settings {
+  Q_OBJECT
+  
+  public:
+    virtual ~CoreSettings();
+    CoreSettings();
+    
+    void setDatabaseSettings(const QVariant &data);
+    QVariant databaseSettings(const QVariant &def = QVariant());
+    
+    void setPort(const uint &port);
+    uint port(const uint &def = DEFAULT_PORT);
+        
+  private:
+    //virtual QStringList allSessionKeys() = 0;
+    virtual QStringList sessionKeys();
+    
+    virtual void setSessionValue(const QString &key, const QVariant &data);
+    virtual QVariant sessionValue(const QString &key, const QVariant &def = QVariant());
 };
 
-#endif
+#endif /*CORESETTINGS_H_*/

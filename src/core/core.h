@@ -52,12 +52,14 @@ class Core : public QObject {
     void clientHasData();
     void clientDisconnected();
 
+    bool initStorageSqlite(QVariantMap dbSettings, bool setup);
+
   private:
     Core();
     ~Core();
     void init();
     static Core *instanceptr;
-
+    
     //! Initiate a session for the user with the given credentials if one does not already exist.
     /** This function is called during the init process for a new client. If there is no session for the
      *  given user, one is created.
@@ -65,7 +67,10 @@ class Core : public QObject {
      * \return A QVariant containing the session data, e.g. global data and buffers
      */
     QVariant initSession(UserId userId);
-    void processClientInit(QTcpSocket *socket, const QVariant &v);
+    void processClientInit(QTcpSocket *socket, const QVariantMap &msg);
+    void processCoreSetup(QTcpSocket *socket, QVariantMap &msg);
+    
+    QStringList availableStorageProviders();
 
     UserId guiUser;
     QHash<UserId, CoreSession *> sessions;
@@ -73,6 +78,8 @@ class Core : public QObject {
 
     QTcpServer server; // TODO: implement SSL
     QHash<QTcpSocket *, quint32> blockSizes;
+    
+    bool configured;
 };
 
 #endif

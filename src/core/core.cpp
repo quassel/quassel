@@ -20,8 +20,12 @@
 
 #include "core.h"
 #include "coresession.h"
+#include "coresettings.h"
 #include "sqlitestorage.h"
 #include "util.h"
+
+#include <QMetaObject>
+#include <QMetaMethod>
 
 Core *Core::instanceptr = 0;
 
@@ -38,22 +42,54 @@ void Core::destroy() {
 }
 
 Core::Core() {
+  storage = NULL;
 }
 
 void Core::init() {
-  if(!SqliteStorage::isAvailable()) {
+  CoreSettings s;
+  configured = false;
+
+  QVariantMap dbSettings = s.databaseSettings().toMap();
+  QString hname = dbSettings["Type"].toString().toLower();
+  hname[0] = hname[0].toUpper();
+  hname = "initStorage" + hname;
+  if (!QMetaObject::invokeMethod(this, hname.toAscii(), Q_RETURN_ARG(bool, configured),  Q_ARG(QVariantMap, dbSettings), Q_ARG(bool, false))) {
+    qWarning("No database backend configured.");
+  }
+  
+  if (!configured) {
+    qWarning("Core is currently not configured!");
+  }
+    
+  connect(&server, SIGNAL(newConnection()), this, SLOT(incomingConnection()));
+  startListening(s.port());
+  guiUser = 0;
+}
+
+bool Core::initStorageSqlite(QVariantMap dbSettings, bool setup) {
+  if (!SqliteStorage::isAvailable()) {
     qFatal("Sqlite is currently required! Please make sure your Qt library has sqlite support enabled.");
   }
-  //SqliteStorage::init();
+  if (storage) {
+    qDebug() << "Deleting old storage object.";
+    delete storage;
+    storage = NULL;
+  }
+  
   storage = new SqliteStorage();
-  connect(&server, SIGNAL(newConnection()), this, SLOT(incomingConnection()));
-  startListening(); // FIXME make configurable
-  guiUser = 0;
+  if (setup && !storage->setup(dbSettings)) {
+    return false;
+  }
+  
+  return storage->init(dbSettings);
 }
 
 Core::~Core() {
   qDeleteAll(sessions);
-  delete storage;
+  if (storage) {
+    delete storage;
+    storage = NULL;
+  }
 }
 
 CoreSession *Core::session(UserId uid) {
@@ -76,7 +112,6 @@ CoreSession *Core::createSession(UserId uid) {
   return sess;
 }
 
-
 bool Core::startListening(uint port) {
   if(!server.listen(QHostAddress::Any, port)) {
     qWarning(QString(QString("Could not open GUI client port %1: %2").arg(port).arg(server.errorString())).toAscii());
@@ -93,12 +128,18 @@ void Core::stopListening() {
 
 void Core::incomingConnection() {
   // TODO implement SSL
-  // TODO While
-  QTcpSocket *socket = server.nextPendingConnection();
-  connect(socket, SIGNAL(disconnected()), this, SLOT(clientDisconnected()));
-  connect(socket, SIGNAL(readyRead()), this, SLOT(clientHasData()));
-  blockSizes.insert(socket, (quint32)0);
-  qDebug() << "Client connected from " << socket->peerAddress().toString();
+  while (server.hasPendingConnections()) {
+    QTcpSocket *socket = server.nextPendingConnection();
+    connect(socket, SIGNAL(disconnected()), this, SLOT(clientDisconnected()));
+    connect(socket, SIGNAL(readyRead()), this, SLOT(clientHasData()));
+    blockSizes.insert(socket, (quint32)0);
+    qDebug() << "Client connected from " << socket->peerAddress().toString();
+    
+    if (!configured) {
+      server.close();
+      qDebug() << "Closing server for basic setup.";
+    }
+  }
 }
 
 void Core::clientHasData() {
@@ -109,7 +150,15 @@ void Core::clientHasData() {
   if(readDataFromDevice(socket, bsize, item)) {
     // we need to auth the client
     try {
-      processClientInit(socket, item);
+      QVariantMap msg = item.toMap();
+      if (msg["GuiProtocol"].toUInt() != GUI_PROTOCOL) {
+        throw Exception("GUI client version mismatch");
+      }
+      if (configured) {
+        processClientInit(socket, msg);
+      } else {
+        processCoreSetup(socket, msg);
+      }
     } catch(Storage::AuthError) {
       qWarning() << "Authentification error!";  // FIXME: send auth error to client
       socket->close();
@@ -124,10 +173,17 @@ void Core::clientHasData() {
 }
 
 // FIXME: no longer called, since connection handling is now in SignalProxy
+// No, it is called as long as core is not configured. (kaffeedoktor)
 void Core::clientDisconnected() {
   QTcpSocket *socket = dynamic_cast<QTcpSocket*>(sender());
   blockSizes.remove(socket);
   qDebug() << "Client disconnected.";
+  
+  // make server listen again if still not configured
+  if (!configured) {
+    startListening();
+  }
+  
   // TODO remove unneeded sessions - if necessary/possible...
 }
 
@@ -144,19 +200,56 @@ void Core::disconnectLocalClient() {
   instance()->guiUser = 0;
 }
 
-void Core::processClientInit(QTcpSocket *socket, const QVariant &v) {
-  QVariantMap msg = v.toMap();
-  if(msg["GuiProtocol"].toUInt() != GUI_PROTOCOL) {
-    //qWarning() << "Client version mismatch.";
-    throw Exception("GUI client version mismatch");
-  }
-    // Auth
-  UserId uid = storage->validateUser(msg["User"].toString(), msg["Password"].toString());  // throws exception if this failed
-  QVariant reply = initSession(uid);
+void Core::processClientInit(QTcpSocket *socket, const QVariantMap &msg) {
+  // Auth
+  QVariantMap reply;
+  UserId uid = storage->validateUser(msg["User"].toString(), msg["Password"].toString()); // throws exception if this failed
+  reply["StartWizard"] = false;
+  reply["Reply"] = initSession(uid);
   disconnect(socket, 0, this, 0);
   sessions[uid]->addClient(socket);
   qDebug() << "Client initialized successfully.";
   writeDataToDevice(socket, reply);
+}
+
+void Core::processCoreSetup(QTcpSocket *socket, QVariantMap &msg) {
+  if(msg["HasSettings"].toBool()) {
+    QVariantMap auth;
+    auth["User"] = msg["User"];
+    auth["Password"] = msg["Password"];
+    msg.remove("User");
+    msg.remove("Password");
+    qDebug() << "Initializing storage provider" << msg["Type"].toString();
+    QString hname = msg["Type"].toString().toLower();
+    hname[0] = hname[0].toUpper();
+    hname = "initStorage" + hname;
+    if (!QMetaObject::invokeMethod(this, hname.toAscii(), Q_RETURN_ARG(bool, configured),  Q_ARG(QVariantMap, msg), Q_ARG(bool, true))) {
+      qWarning("No database backend configured.");
+    }
+    if (!configured) {
+      // notify client to start wizard again
+      qWarning("Core is currently not configured!");
+      QVariantMap reply;
+      reply["StartWizard"] = true;
+      reply["StorageProviders"] = availableStorageProviders();
+      writeDataToDevice(socket, reply);
+    } else {
+      // write coresettings
+      CoreSettings s;
+      s.setDatabaseSettings(msg);
+      // write admin user to database & make the core listen again to connections
+      storage->addUser(auth["User"].toString(), auth["Password"].toString());
+      startListening();
+      // continue the normal procedure
+      processClientInit(socket, auth);
+    }
+  } else {
+    // notify client to start wizard
+    QVariantMap reply;
+    reply["StartWizard"] = true;
+    reply["StorageProviders"] = availableStorageProviders();
+    writeDataToDevice(socket, reply);
+  }
 }
 
 QVariant Core::initSession(UserId uid) {
@@ -169,4 +262,15 @@ QVariant Core::initSession(UserId uid) {
   QVariantMap reply;
   reply["SessionState"] = sess->sessionState();
   return reply;
+}
+
+QStringList Core::availableStorageProviders() {
+  QStringList storageProviders;
+  if (SqliteStorage::isAvailable()) {
+    storageProviders.append(SqliteStorage::displayName());
+  }
+  // TODO: temporary
+  storageProviders.append("MySQL");
+  
+  return storageProviders;
 }

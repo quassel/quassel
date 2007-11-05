@@ -247,6 +247,10 @@ void Client::disconnectFromCore() {
   }
 }
 
+void Client::setCoreConfiguration(const QVariantMap &settings) {
+  writeDataToDevice(socket, settings);
+}
+
 void Client::coreSocketConnected() {
   connect(this, SIGNAL(recvPartialItem(uint, uint)), this, SIGNAL(coreConnectionProgress(uint, uint)));
   emit coreConnectionMsg(tr("Synchronizing to core..."));
@@ -415,7 +419,14 @@ void Client::coreHasData() {
   QVariant item;
   if(readDataFromDevice(socket, blockSize, item)) {
     emit recvPartialItem(1,1);
-    recvCoreState(item);
+    QVariantMap msg = item.toMap();
+    if (!msg["StartWizard"].toBool()) {
+      recvCoreState(msg["Reply"]);
+    } else {
+      qWarning("Core not configured!");
+      qDebug() << "Available storage providers: " << msg["StorageProviders"].toStringList();
+      emit showConfigWizard(msg);
+    }
     blockSize = 0;
     return;
   }

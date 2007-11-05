@@ -23,6 +23,7 @@
 #include "global.h"
 #include "client.h"
 #include "clientsettings.h"
+#include "configwizard.h"
 
 CoreConnectDlg::CoreConnectDlg(QWidget *parent, bool /*doAutoConnect*/) : QDialog(parent) {
   ui.setupUi(this); //qDebug() << "new dlg";
@@ -54,6 +55,8 @@ CoreConnectDlg::CoreConnectDlg(QWidget *parent, bool /*doAutoConnect*/) : QDialo
   connect(Client::instance(), SIGNAL(coreConnectionProgress(uint, uint)), this, SLOT(updateProgressBar(uint, uint)));
   connect(Client::instance(), SIGNAL(coreConnectionError(QString)), this, SLOT(coreConnectionError(QString)));
   connect(Client::instance(), SIGNAL(connected()), this, SLOT(coreConnected()));
+  
+  connect(Client::instance(), SIGNAL(showConfigWizard(const QVariantMap &)), this, SLOT(showConfigWizard(const QVariantMap &)));
 
   AccountSettings s;
   ui.accountList->addItems(s.knownAccounts());
@@ -309,4 +312,25 @@ void CoreConnectDlg::recvCoreState(QVariant state) {
 
 QVariant CoreConnectDlg::getCoreState() {
   return coreState;
+}
+
+void CoreConnectDlg::showConfigWizard(const QVariantMap &coredata) {
+  QStringList storageProviders = coredata["StorageProviders"].toStringList();
+  ConfigWizard *wizard = new ConfigWizard(storageProviders, this);
+  wizard->exec();
+  QVariantMap reply;
+  reply["GuiProtocol"] = GUI_PROTOCOL;
+  reply["HasSettings"] = true;
+  reply["User"] = wizard->field("adminuser.name").toString();
+  reply["Password"] = wizard->field("adminuser.password").toString();
+  QString sp = storageProviders.value(wizard->field("storage.provider").toInt());
+  reply["Type"] = sp;
+  if (sp.compare("Sqlite", Qt::CaseInsensitive)) {
+    reply["Host"] = wizard->field("storage.host").toString();
+    reply["Port"] = wizard->field("storage.port").toString();
+    reply["Database"] = wizard->field("storage.database").toString();
+    reply["User"] = wizard->field("storage.user").toString();
+    reply["Password"] = wizard->field("storage.password").toString();
+  }
+  Client::instance()->setCoreConfiguration(reply);
 }

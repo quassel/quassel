@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by The Quassel Team                                *
+ *   Copyright (C) 2005-07 by The Quassel IRC Development Team             *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,42 +18,42 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _GLOBAL_H_
-#define _GLOBAL_H_
+#include "coresettings.h"
 
-/** The protocol version we use fo the communication between core and GUI */
-#define GUI_PROTOCOL 3
+#include <QStringList>
 
-#define BACKLOG_FORMAT 2
-#define BACKLOG_STRING "QuasselIRC Backlog File"
-
-#define DEFAULT_PORT 4242
-
-#include <QHash>
-#include <QMutex>
-#include <QString>
-#include <QVariant>
-
-/* Some global stuff */
-
-typedef uint UserId;
-typedef uint MsgId;
-typedef uint BufferId;
-typedef uint NetworkId;
-
-namespace Global {
-  enum RunMode { Monolithic, ClientOnly, CoreOnly };
-  extern RunMode runMode;
+CoreSettings::CoreSettings() : Settings("Core") {
 }
 
-struct Exception {
-    Exception(QString msg = "Unknown Exception") : _msg(msg) {};
-    virtual ~Exception() {}; // make gcc happy
-    virtual inline QString msg() { return _msg; }
+CoreSettings::~CoreSettings() {
+}
 
-  protected:
-    QString _msg;
+void CoreSettings::setDatabaseSettings(const QVariant &data) {
+  setLocalValue("DatabaseSettings", data);
+}
 
-};
+QVariant CoreSettings::databaseSettings(const QVariant &def) {
+  return localValue("DatabaseSettings", def);
+}
 
-#endif
+void CoreSettings::setPort(const uint &port) {
+  setLocalValue("Port", port);
+}
+
+uint CoreSettings::port(const uint &def) {
+  return localValue("Port", def).toUInt();
+}
+
+QStringList CoreSettings::sessionKeys() {
+  Q_ASSERT(false);
+  return QStringList();
+}
+
+void CoreSettings::setSessionValue(const QString &key, const QVariant &data) {
+  Q_ASSERT(false);
+}
+
+QVariant CoreSettings::sessionValue(const QString &key, const QVariant &def) {
+  Q_ASSERT(false);
+  return QVariant();
+}
