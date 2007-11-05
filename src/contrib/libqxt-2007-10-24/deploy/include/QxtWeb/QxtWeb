@@ -1,7 +1,0 @@
-#include "qxthtmltemplate.h"
-
-#include "qxtscgiconnector.h"
-#include "qxtwebcontroller.h"
-
-#include "qxtwebcore.h"
-

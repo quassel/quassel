@@ -43,8 +43,11 @@ QtopiaMainWin::QtopiaMainWin(QWidget *parent, Qt::WFlags flags) : QMainWindow(pa
 
   QCoreApplication::setOrganizationDomain("quassel-irc.org");
   QCoreApplication::setApplicationName("Quassel IRC");
-  QCoreApplication::setOrganizationName("Quassel IRC Development Team");
+  QCoreApplication::setOrganizationName("Quassel IRC Team");
 
+  QSettings s(QSettings::UserScope, "quassel", "quassel");
+  s.setValue("foo", "bar");
+  
   //Style::init();
   QtopiaUi *gui = new QtopiaUi(this);
   Client::init(gui);

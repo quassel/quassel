@@ -48,8 +48,7 @@ contains(BUILD, qtclient) {
 }
 
 # First we build contrib stuff...
-
-SUBDIRS += contrib/libqxt.pro
+# SUBDIRS += contrib/libqxt.pro   # no deps to libqxt at the moment
 
 # Then we build all needed modules...
 for(mod, BUILD_MODS) {

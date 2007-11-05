@@ -1,9 +1,0 @@
-QXTINSTALLDIR = C:\libqxt
-include(../../config.pri)
-isEmpty(target.path):  target.path   = $${QXTINSTALLDIR}/lib
-isEmpty(docs.path):    docs.path     = $${QXTINSTALLDIR}/doc/libqxt
-isEmpty(include.path): include.path  = $${QXTINSTALLDIR}/include/Qxt
-isEmpty(bin.path):     bin.path      = $${QXTINSTALLDIR}/bin
-CONFIG      += dll
-DEFINES     += QXT_WINDOWS
-include(../qxtbuild.prf)

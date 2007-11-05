@@ -1,8 +1,8 @@
 qtopia_project(qtopia app)
 
 TARGET = quasseltopia
-CONFIG += debug qtopia_main no_quicklaunch no_singleexec no_sxe_test
-QT = core gui network
+CONFIG += debug qtopia_main no_quicklaunch no_singleexec
+QT += core gui network
 
 # Find files
 INCLUDEPATH += ../src/qtopia ../src/uisupport ../src/client ../src/common
@@ -24,7 +24,7 @@ HEADERS = $$HDRS
 FORMS   = $$FRMS
 
 # SXE permissions required
-#pkg.domain=none
+#pkg.domain=
 #pkg.name=Quassel IRC
 
 desktop.files=../src/qtopia/quasseltopia.desktop
@@ -47,4 +47,5 @@ pkg.desc=Quassel IRC, a next-gen IRC client
 pkg.version=0.0.1-1
 pkg.maintainer=www.quassel-irc.org
 pkg.license=GPL
-pkg.domain=window
+pkg.domain=docapi,pim,profiles,window,qdl,qds
+
