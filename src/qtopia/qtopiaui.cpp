@@ -22,6 +22,8 @@
 #include "qtopiamainwin.h"
 #include "qtopiauistyle.h"
 
+QtopiaUiStyle *QtopiaUi::_style;
+
 QtopiaUi::QtopiaUi(QtopiaMainWin *mw) : AbstractUi(), mainWin(mw) {
   _style = new QtopiaUiStyle();
   connect(mainWin, SIGNAL(connectToCore(const QVariantMap &)), this, SIGNAL(connectToCore(const QVariantMap &)));
@@ -40,7 +42,7 @@ void QtopiaUi::init() {
 
 }
 
-QtopiaUiStyle *QtopiaUi::style() const {
+QtopiaUiStyle *QtopiaUi::style() {
   return _style;
 }
 

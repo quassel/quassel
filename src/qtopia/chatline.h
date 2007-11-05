@@ -34,9 +34,8 @@ class ChatLine : public AbstractUiMsg {
     BufferInfo bufferInfo() const;
     QDateTime timestamp() const;
 
-    QString htmlSender() const;
-    QString htmlText() const;
-    QString htmlTimestamp() const;
+    UiStyle::StyledText styledSender() const;
+    UiStyle::StyledText styledText() const;
 
   private:
     QString _sender, _text, _htmlSender, _htmlText, _htmlTimestamp;

@@ -23,7 +23,7 @@
 QtopiaUiStyle::QtopiaUiStyle() : UiStyle() {
 
   QTextCharFormat def;
-  def.setFont(QFont("Verdana",6));
+  def.setFont(QFont("Verdana",5));
   setFormat(None, def);
 
   // We need to just set our internal formats; everything else is done by the base class...
@@ -51,15 +51,15 @@ QtopiaUiStyle::QtopiaUiStyle() : UiStyle() {
   setFormat(JoinMsg, join);
 
   QTextCharFormat part;
-  part.setForeground(QBrush("#cd5c5c"));
+  part.setForeground(QBrush("#ff0000"));
   setFormat(PartMsg, part);
 
   QTextCharFormat quit;
-  quit.setForeground(QBrush("#cd5c5c"));
+  quit.setForeground(QBrush("#ff0000"));
   setFormat(QuitMsg, quit);
 
   QTextCharFormat kick;
-  kick.setForeground(QBrush("#cd5c5c"));
+  kick.setForeground(QBrush("#ff0000"));
   setFormat(KickMsg, kick);
 
   QTextCharFormat nren;

@@ -23,7 +23,7 @@
 #include "chatwidget.h"
 
 ChatWidget::ChatWidget(QWidget *parent) : QTextEdit(parent) {
-
+  setStyleSheet("background-color: rgba(255, 255, 255, 60%)");
 }
 
 void ChatWidget::setContents(QList<ChatLine *> lines) {
@@ -45,7 +45,10 @@ void ChatWidget::appendMsg(AbstractUiMsg *msg) {
 }
 
 void ChatWidget::appendChatLine(ChatLine *line) {
-  append(line->text()); qDebug() << "appending";
+  QTextCursor cursor = textCursor();
+  moveCursor(QTextCursor::End);
+  insertChatLine(line);
+  setTextCursor(cursor);
 }
 
 void ChatWidget::appendChatLines(QList<ChatLine *> list) {
@@ -55,24 +58,30 @@ void ChatWidget::appendChatLines(QList<ChatLine *> list) {
 }
 
 void ChatWidget::prependChatLine(ChatLine *line) {
-  qDebug() << "prepending"; return;
   QTextCursor cursor = textCursor();
   moveCursor(QTextCursor::Start);
-  insertHtml(line->text());
+  insertChatLine(line);
   setTextCursor(cursor);
-  QTextCharFormat fmt;
-  fmt.setForeground(QBrush("#eeff33"));
-  QFont font("Courier", 8);
-  font.setFixedPitch(true); qDebug() << font.family();
-  fmt.setFont(font);
-  //fmt.setBackground(QBrush("#112233"));
-  QTextCursor crsor(document());
-  crsor.movePosition(QTextCursor::End, QTextCursor::KeepAnchor);
-  crsor.select(QTextCursor::Document);
-  crsor.setCharFormat(fmt);
 }
 
 void ChatWidget::prependChatLines(QList<ChatLine *> list) {
+  foreach(ChatLine *line, list) {
+    prependChatLine(line);
+  }
+}
 
+void ChatWidget::insertChatLine(ChatLine *line) {
+  insertStyledText(line->styledSender());
+  insertPlainText(" ");
+  insertStyledText(line->styledText());
+  insertPlainText("\n");
+}
 
+void ChatWidget::insertStyledText(const QtopiaUiStyle::StyledText &stext) {
+  QTextCursor cursor = textCursor();
+  foreach(QTextLayout::FormatRange format, stext.formats) {
+    cursor.setCharFormat(format.format);
+    setTextCursor(cursor);
+    insertPlainText(stext.text.mid(format.start, format.length));
+  }
 }

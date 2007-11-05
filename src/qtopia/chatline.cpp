@@ -22,10 +22,11 @@
 
 #include "chatline.h"
 #include "qtopiaui.h"
+#include "qtopiauistyle.h"
 
 ChatLine::ChatLine(Message msg) {
-  //_styledSender = QtopiaUi::style()->styleString(msg.formattedSender());
-  //_styledText = QtopiaUi::style()->styleString(msg.formattedText());
+  _styledSender = QtopiaUi::style()->styleString(msg.formattedSender());
+  _styledText = QtopiaUi::style()->styleString(msg.formattedText());
   _timestamp = msg.timestamp();
   _msgId = msg.msgId();
   _bufferInfo = msg.buffer();
@@ -53,17 +54,14 @@ QDateTime ChatLine::timestamp() const {
   return _timestamp;
 }
 
-QString ChatLine::htmlSender() const {
-  return _htmlSender;
+UiStyle::StyledText ChatLine::styledSender() const {
+  return _styledSender;
 }
 
-QString ChatLine::htmlText() const {
-  return _htmlText;
+UiStyle::StyledText ChatLine::styledText() const {
+  return _styledText;
 }
 
-QString ChatLine::htmlTimestamp() const {
-  return _htmlTimestamp;
-}
 
 
 QString ChatLine::formattedToHtml(const QString &f) {

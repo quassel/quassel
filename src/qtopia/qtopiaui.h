@@ -36,7 +36,7 @@ class QtopiaUi : public AbstractUi {
     void init();
     AbstractUiMsg *layoutMsg(const Message &);
 
-    QtopiaUiStyle *style() const;
+    static QtopiaUiStyle *style();
 
   protected slots:
     void connectedToCore();
@@ -44,7 +44,7 @@ class QtopiaUi : public AbstractUi {
 
   private:
     QtopiaMainWin *mainWin;
-    QtopiaUiStyle *_style;
+    static QtopiaUiStyle *_style;
 };
 
 

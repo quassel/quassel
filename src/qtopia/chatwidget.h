@@ -23,6 +23,7 @@
 
 #include <QTextEdit>
 #include "chatline.h"
+#include "qtopiauistyle.h"
 #include "quasselui.h"
 
 class ChatWidget : public QTextEdit {
@@ -41,6 +42,8 @@ class ChatWidget : public QTextEdit {
     void appendChatLines(QList<ChatLine *>);
 
   private:
+    void insertChatLine(ChatLine *);
+    void insertStyledText(const QtopiaUiStyle::StyledText &);
 
 
 

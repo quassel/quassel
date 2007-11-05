@@ -455,6 +455,10 @@ src/qtopia/qtopiamainwin.cpp
 src/qtopia/qtopiamainwin.h
 src/qtopia/qtopiastyle.cpp
 src/qtopia/qtopiastyle.h
+src/qtopia/qtopiaui.cpp
+src/qtopia/qtopiaui.h
+src/qtopia/qtopiauistyle.cpp
+src/qtopia/qtopiauistyle.h
 src/qtopia/topicbar.cpp
 src/qtopia/topicbar.h
 src/qtopia/ui
