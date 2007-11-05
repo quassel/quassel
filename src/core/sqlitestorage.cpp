@@ -305,8 +305,16 @@ uint SqliteStorage::getNetworkId(UserId user, const QString &network) {
   
   if(query.first())
     return query.value(0).toUInt();
-  else
-    return 0;
+  else {
+    createBuffer(user, network, "");
+    query.exec();
+    if(query.first())
+      return query.value(0).toUInt();
+    else {
+      qWarning() << "NETWORK NOT FOUND:" << network << "for User:" << user;
+      return 0;
+    }
+  }
 }
 
 BufferInfo SqliteStorage::getBufferInfo(UserId user, const QString &network, const QString &buffer) {
@@ -320,8 +328,6 @@ BufferInfo SqliteStorage::getBufferInfo(UserId user, const QString &network, con
 
   if(!getBufferInfoQuery->first()) {
     createBuffer(user, network, buffer);
-    // TODO: get rid of this hackaround
-    networkId = getNetworkId(user, network);
     getBufferInfoQuery->exec();
     if(getBufferInfoQuery->first()) {
       bufferid = BufferInfo(getBufferInfoQuery->value(0).toUInt(), networkId, 0, network, buffer);
