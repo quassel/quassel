@@ -327,7 +327,6 @@ void Client::syncToCore(const QVariant &coreState) {
   instance()->connectedToCore = true;
   updateCoreConnectionProgress();
 
-  emit connected(); // FIXME EgS: moved here from updateCoreConnectionProgress
 }
 
 void Client::updateCoreConnectionProgress() {
@@ -381,7 +380,7 @@ void Client::updateCoreConnectionProgress() {
   }
 
   emit coreConnectionProgress(1,1);
-  //emit connected(); // FIXME EgS: This caused the double backlog... but... we shouldn't be calling this whole function all the time...
+  emit connected(); // FIXME EgS: This caused the double backlog... but... we shouldn't be calling this whole function all the time...
 
   foreach(NetworkInfo *net, networkInfos()) {
     disconnect(net, 0, this, SLOT(updateCoreConnectionProgress()));
@@ -445,9 +444,11 @@ void Client::networkConnected(uint netid) {
 
   // FIXME EgS: do we really need to call updateCoreConnectionProgress whenever a new network is connected?
   NetworkInfo *netinfo = new NetworkInfo(netid, signalProxy(), this);
-  connect(netinfo, SIGNAL(initDone()), this, SLOT(updateCoreConnectionProgress()));
-  connect(netinfo, SIGNAL(ircUserInitDone()), this, SLOT(updateCoreConnectionProgress()));
-  connect(netinfo, SIGNAL(ircChannelInitDone()), this, SLOT(updateCoreConnectionProgress()));
+  if(!isConnected()) {
+    connect(netinfo, SIGNAL(initDone()), this, SLOT(updateCoreConnectionProgress()));
+    connect(netinfo, SIGNAL(ircUserInitDone()), this, SLOT(updateCoreConnectionProgress()));
+    connect(netinfo, SIGNAL(ircChannelInitDone()), this, SLOT(updateCoreConnectionProgress()));
+  }
   connect(netinfo, SIGNAL(destroyed()), this, SLOT(networkInfoDestroyed()));
   _networkInfo[netid] = netinfo;
 }
