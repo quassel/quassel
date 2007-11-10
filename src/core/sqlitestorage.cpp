@@ -67,7 +67,7 @@ bool SqliteStorage::setup(const QVariantMap &settings) {
   {
     logDb = QSqlDatabase::addDatabase("QSQLITE", "quassel_setup");
     logDb.setDatabaseName(SqliteStorage::backlogFile(true));
-    bool ok = logDb.open();
+    ok = logDb.open();
     
     if (!ok) {
       qWarning(tr("Could not open backlog database: %1").arg(logDb.lastError().text()).toAscii());
