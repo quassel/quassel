@@ -32,7 +32,12 @@ BufferViewFilter::BufferViewFilter(QAbstractItemModel *model, const Modes &filte
   setSortCaseSensitivity(Qt::CaseInsensitive);
   
   // I have this feeling that this resulted in a fuckup once... no clue though right now and invalidateFilter isn't a slot -.-
-  connect(model, SIGNAL(invalidateFilter()), this, SLOT(invalidate()));
+  //connect(model, SIGNAL(invalidateFilter()), this, SLOT(invalidate()));
+  connect(model, SIGNAL(invalidateFilter()), this, SLOT(invalidateFilter_()));
+}
+
+void BufferViewFilter::invalidateFilter_() {
+  QSortFilterProxyModel::invalidateFilter();
 }
 
 Qt::ItemFlags BufferViewFilter::flags(const QModelIndex &index) const {
@@ -101,17 +106,17 @@ bool BufferViewFilter::filterAcceptBuffer(const QModelIndex &source_bufferIndex)
   if((mode & NoServers) && bufferType == Buffer::StatusType)
     return false;
 
-  bool isActive = source_bufferIndex.data(BufferTreeModel::BufferActiveRole).toBool();
-  if((mode & NoActive) && isActive)
-    return false;
-  if((mode & NoInactive) && !isActive)
-    return false;
+//   bool isActive = source_bufferIndex.data(BufferTreeModel::BufferActiveRole).toBool();
+//   if((mode & NoActive) && isActive)
+//     return false;
+//   if((mode & NoInactive) && !isActive)
+//     return false;
 
-  if((mode & FullCustom)) {
-    uint bufferuid = source_bufferIndex.data(BufferTreeModel::BufferUidRole).toUInt();
-    if(!buffers.contains(bufferuid))
-      return false;
-  }
+//   if((mode & FullCustom)) {
+//     uint bufferuid = source_bufferIndex.data(BufferTreeModel::BufferUidRole).toUInt();
+//     if(!buffers.contains(bufferuid))
+//       return false;
+//   }
     
   return true;
 }
