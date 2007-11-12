@@ -323,7 +323,7 @@ void Client::syncToCore(const QVariant &coreState) {
   foreach(QVariant networkid, networkids) {
     networkConnected(networkid.toUInt());
   }
-  
+
   instance()->connectedToCore = true;
   updateCoreConnectionProgress();
 

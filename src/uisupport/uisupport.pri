@@ -1,8 +1,8 @@
-DEPMOD = common
-QT_MOD = core gui
+DEPMOD = common client
+QT_MOD = core gui network
 
-SRCS += uistyle.cpp
-HDRS += uistyle.h
+SRCS += bufferview.cpp bufferviewfilter.cpp uistyle.cpp
+HDRS += bufferview.h bufferviewfilter.h uistyle.h
 
 FORMNAMES = 
 

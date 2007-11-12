@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include "client.h"
+#include "buffer.h"
 #include "bufferview.h"
 #include "buffertreemodel.h"
 
@@ -35,13 +36,15 @@ void BufferView::init() {
   header()->hide();
   header()->hideSection(1);
   expandAll();
-  
+
   setAnimated(true);
-  
+
+#ifndef QT_NO_DRAGANDDROP
   setDragEnabled(true);
   setAcceptDrops(true);
   setDropIndicatorShown(true);
-  
+#endif
+
   setSortingEnabled(true);
   sortByColumn(0, Qt::AscendingOrder);
   connect(this, SIGNAL(activated(QModelIndex)), this, SLOT(joinChannel(QModelIndex)));

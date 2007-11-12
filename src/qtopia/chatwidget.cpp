@@ -47,7 +47,10 @@ void ChatWidget::appendMsg(AbstractUiMsg *msg) {
 void ChatWidget::appendChatLine(ChatLine *line) {
   QTextCursor cursor = textCursor();
   moveCursor(QTextCursor::End);
-  insertChatLine(line);
+  if(!document()->isEmpty()) insertPlainText("\n");
+  insertStyledText(line->styledSender());
+  insertPlainText(" ");
+  insertStyledText(line->styledText());
   setTextCursor(cursor);
 }
 
@@ -60,7 +63,11 @@ void ChatWidget::appendChatLines(QList<ChatLine *> list) {
 void ChatWidget::prependChatLine(ChatLine *line) {
   QTextCursor cursor = textCursor();
   moveCursor(QTextCursor::Start);
-  insertChatLine(line);
+  bool flg = document()->isEmpty();
+  insertStyledText(line->styledSender());
+  insertPlainText(" ");
+  insertStyledText(line->styledText());
+  if(!flg) insertPlainText("\n");
   setTextCursor(cursor);
 }
 
@@ -71,10 +78,10 @@ void ChatWidget::prependChatLines(QList<ChatLine *> list) {
 }
 
 void ChatWidget::insertChatLine(ChatLine *line) {
+  if(!document()->isEmpty()) insertPlainText("\n");
   insertStyledText(line->styledSender());
   insertPlainText(" ");
   insertStyledText(line->styledText());
-  insertPlainText("\n");
 }
 
 void ChatWidget::insertStyledText(const QtopiaUiStyle::StyledText &stext) {

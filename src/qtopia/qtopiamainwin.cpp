@@ -90,8 +90,8 @@ void QtopiaMainWin::connectedToCore() {
     emit requestBacklog(id, 100, -1);
   }
   // FIXME just for testing: select first available buffer
-  if(Client::allBufferInfos().count() > 2) {
-    Buffer *b = Client::buffer(Client::allBufferInfos()[2]);
+  if(Client::allBufferInfos().count() > 1) {
+    Buffer *b = Client::buffer(Client::allBufferInfos()[1]);
     Client::bufferModel()->selectBuffer(b);
   }
 }
