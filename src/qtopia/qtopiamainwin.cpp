@@ -21,6 +21,7 @@
 #include "qtopiamainwin.h"
 
 #include "buffertreemodel.h"
+#include "bufferviewwidget.h"
 #include "chatline.h"
 #include "coreconnectdlg.h"
 #include "global.h"
@@ -59,10 +60,16 @@ QtopiaMainWin::QtopiaMainWin(QWidget *parent, Qt::WFlags flags) : QMainWindow(pa
   mainWidget = new MainWidget(this);
   setCentralWidget(mainWidget);
 
-  QToolBar *toolBar = new QToolBar(this);
+  BufferTreeModel *model = Client::bufferModel();
+  connect(model, SIGNAL(bufferSelected(Buffer *)), this, SLOT(showBuffer(Buffer *)));
+
+  toolBar = new QToolBar(this);
   toolBar->setIconSize(QSize(16, 16));
-  toolBar->addAction(QIcon(":icon/trash"), "Trash");
   addToolBar(toolBar);
+
+  bufferViewWidget = new BufferViewWidget(this);
+
+  setupActions();
 
   init();
   //gui->init();
@@ -81,6 +88,12 @@ void QtopiaMainWin::init() {
 }
 
 QtopiaMainWin::~QtopiaMainWin() {
+
+
+}
+
+void QtopiaMainWin::setupActions() {
+  showBuffersAction = toolBar->addAction(QIcon(":icon/options-hide"), "Show Buffers", this, SLOT(showBufferView()));  // FIXME provide real icon
 
 
 }
@@ -110,3 +123,10 @@ void QtopiaMainWin::showBuffer(Buffer *b) {
   mainWidget->setBuffer(b);
 
 }
+
+void QtopiaMainWin::showBufferView() {
+  bufferViewWidget->showMaximized();
+
+}
+
+

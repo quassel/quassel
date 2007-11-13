@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-07 by The Quassel IRC Development Team             *
+ *   Copyright (C) 2005-07 by the Quassel IRC Team                         *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,49 +18,38 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _QTOPIAMAINWIN_H_
-#define _QTOPIAMAINWIN_H_
-
-#include <QtGui>
-
+#include "bufferviewwidget.h"
 #include "client.h"
-#include "global.h"
 
-class BufferViewWidget;
-class MainWidget;
 
-class QtopiaMainWin : public QMainWindow {
-  Q_OBJECT
+BufferViewWidget::BufferViewWidget(QWidget *parent) : QDialog(parent) {
+  ui.setupUi(this);
+  setModal(true);
+  setStyleSheet("background-color: rgba(255, 255, 255, 40%); color: rgb(0, 0, 0); font-size: 5pt;");
+  //ui.tabWidget->tabBar()->setStyleSheet("font-size: 5pt;");
 
-  public:
-    QtopiaMainWin(QWidget *parent = 0, Qt::WFlags f = 0);
-    ~QtopiaMainWin();
+  // get rid of the default tab page designer forces upon us :(
+  QWidget *w = ui.tabWidget->widget(0);
+  ui.tabWidget->removeTab(0);
+  delete w;
 
-    AbstractUiMsg *layoutMsg(const Message &);
+  addPage(tr("Bufs"), BufferViewFilter::AllNets, QList<uint>());
+  addPage(tr("Chans"), BufferViewFilter::AllNets|BufferViewFilter::NoQueries|BufferViewFilter::NoServers, QList<uint>());
+  addPage(tr("Queries"), BufferViewFilter::AllNets|BufferViewFilter::NoChannels|BufferViewFilter::NoServers, QList<uint>());
+  addPage(tr("Nets"), BufferViewFilter::AllNets|BufferViewFilter::NoChannels|BufferViewFilter::NoQueries, QList<uint>());
 
-  protected slots:
-    void connectedToCore();
-    void disconnectedFromCore();
+  connect(Client::bufferModel(), SIGNAL(bufferSelected(Buffer *)), this, SLOT(accept()));
 
-  signals:
-    void connectToCore(const QVariantMap &connInfo);
-    void disconnectFromCore();
-    void requestBacklog(BufferInfo, QVariant, QVariant);
+}
 
-  private slots:
-    void showBuffer(Buffer *);
-    void showBufferView();
+BufferViewWidget::~BufferViewWidget() {
 
-  private:
-    void init();
-    void setupActions();
 
-    MainWidget *mainWidget;
-    QToolBar *toolBar;
-    QAction *showBuffersAction;
-    BufferViewWidget *bufferViewWidget;
+}
 
-    friend class QtopiaUi;
-};
-
-#endif
+void BufferViewWidget::addPage(const QString &title, const BufferViewFilter::Modes &mode, const QList<uint> &nets) {
+  BufferView *view = new BufferView(ui.tabWidget);
+  view->setFilteredModel(Client::bufferModel(), mode, nets);
+  Client::bufferModel()->synchronizeView(view);
+  ui.tabWidget->addTab(view, title);
+}

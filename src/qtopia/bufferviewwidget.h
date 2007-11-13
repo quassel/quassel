@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-07 by The Quassel IRC Development Team             *
+ *   Copyright (C) 2005-07 by the Quassel IRC Team                         *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,49 +18,26 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _QTOPIAMAINWIN_H_
-#define _QTOPIAMAINWIN_H_
+#ifndef _BUFFERVIEWWIDGET_H_
+#define _BUFFERVIEWWIDGET_H_
 
-#include <QtGui>
+#include "ui_bufferviewwidget.h"
 
-#include "client.h"
-#include "global.h"
+#include "bufferview.h"
 
-class BufferViewWidget;
-class MainWidget;
-
-class QtopiaMainWin : public QMainWindow {
+class BufferViewWidget : public QDialog {
   Q_OBJECT
 
+
   public:
-    QtopiaMainWin(QWidget *parent = 0, Qt::WFlags f = 0);
-    ~QtopiaMainWin();
+    BufferViewWidget(QWidget *parent = 0);
+    ~BufferViewWidget();
 
-    AbstractUiMsg *layoutMsg(const Message &);
-
-  protected slots:
-    void connectedToCore();
-    void disconnectedFromCore();
-
-  signals:
-    void connectToCore(const QVariantMap &connInfo);
-    void disconnectFromCore();
-    void requestBacklog(BufferInfo, QVariant, QVariant);
-
-  private slots:
-    void showBuffer(Buffer *);
-    void showBufferView();
 
   private:
-    void init();
-    void setupActions();
+    void addPage(const QString &title, const BufferViewFilter::Modes &mode, const QList<uint> &nets);
+    Ui::BufferViewWidget ui;
 
-    MainWidget *mainWidget;
-    QToolBar *toolBar;
-    QAction *showBuffersAction;
-    BufferViewWidget *bufferViewWidget;
-
-    friend class QtopiaUi;
 };
 
 #endif

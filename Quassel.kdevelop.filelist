@@ -98,6 +98,8 @@ src/core/userinputhandler.h
 src/plugins
 src/plugins/plugin.h
 src/qtopia
+src/qtopia/bufferviewwidget.cpp
+src/qtopia/bufferviewwidget.h
 src/qtopia/chatline.cpp
 src/qtopia/chatline.h
 src/qtopia/chatwidget.cpp
@@ -118,6 +120,7 @@ src/qtopia/topicbar.cpp
 src/qtopia/topicbar.h
 src/qtopia/ui
 src/qtopia/ui/bufferview.ui
+src/qtopia/ui/bufferviewwidget.ui
 src/qtopia/ui/coreconnectdlg.ui
 src/qtopia/ui/coreconnectprogressdlg.ui
 src/qtopia/ui/editcoreacctdlg.ui
