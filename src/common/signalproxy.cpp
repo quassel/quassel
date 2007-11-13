@@ -38,6 +38,9 @@
 #include <QSet>
 #include <QDebug>
 #include <QMetaMethod>
+#include <QMetaProperty>
+#include <QRegExp>
+#include "util.h"
 
 class SignalRelay: public QObject {
 
@@ -51,18 +54,23 @@ public:
 
   void attachSignal(int methodId, const QByteArray &func);
 
+  void setSynchronize(bool);
+  bool synchronize() const;
+  
   int sigCount() const;
   
 private:
   SignalProxy* proxy;
   QObject* caller;
   QMultiHash<int, QByteArray> sigNames;
+  bool _sync;
 };
 
 SignalRelay::SignalRelay(SignalProxy* parent, QObject* source)
   : QObject(parent),
     proxy(parent),
-    caller(source)
+    caller(source),
+    _sync(false)
 {
   QObject::connect(source, SIGNAL(destroyed()), parent, SLOT(detachSender()));
 }
@@ -72,7 +80,7 @@ int SignalRelay::qt_metacall(QMetaObject::Call _c, int _id, void **_a) {
   if(_id < 0)
     return _id;
   if(_c == QMetaObject::InvokeMetaMethod) {
-    if(sigNames.contains(_id)) {
+    if(sigNames.contains(_id) || synchronize()) {
       const QList<int> &argTypes = proxy->argTypes(caller, _id);
       QVariantList params;
       int n = argTypes.size();
@@ -80,13 +88,44 @@ int SignalRelay::qt_metacall(QMetaObject::Call _c, int _id, void **_a) {
         params.append(QVariant(argTypes[i], _a[i+1]));
       QMultiHash<int, QByteArray>::const_iterator funcIter = sigNames.constFind(_id);
       while(funcIter != sigNames.constEnd() && funcIter.key() == _id) {
-        proxy->call(funcIter.value(), params);
+        proxy->dispatchSignal(funcIter.value(), params);
         funcIter++;
+      }
+      if(synchronize() && proxy->syncMap(caller).contains(_id)) {
+	// qDebug() << "__SYNC__ >>>"
+	// 	 << caller->metaObject()->className()
+	// 	 << caller->objectName()
+	// 	 << proxy->methodName(caller, _id)
+	// 	 << params;
+	params.prepend(QVariant(_id));
+	params.prepend(caller->objectName());
+	params.prepend(caller->metaObject()->className());
+	proxy->dispatchSignal((int)SignalProxy::Sync, params);
       }
     }
     _id -= 1;
   }
   return _id;
+}
+
+void SignalRelay::setSynchronize(bool sync) {
+  QHash<int, int>::const_iterator iter = proxy->syncMap(caller).constBegin();
+  if(!_sync && sync) {
+    while(iter != proxy->syncMap(caller).constEnd()) {
+      QMetaObject::connect(caller, iter.key(), this, QObject::staticMetaObject.methodCount() + iter.key());
+      iter++;
+    }
+  } else if (_sync && !sync) {
+    while(iter != proxy->syncMap(caller).constEnd()) {
+      QMetaObject::disconnect(caller, iter.key(), this, QObject::staticMetaObject.methodCount() + iter.key());
+      iter++;
+    }
+  }
+  _sync = sync;
+}
+
+bool SignalRelay::synchronize() const {
+  return _sync;
 }
 
 int SignalRelay::sigCount() const {
@@ -117,21 +156,21 @@ void SignalRelay::attachSignal(int methodId, const QByteArray &func) {
 //  SignalProxy
 // ====================
 SignalProxy::SignalProxy(QObject* parent)
-  : QObject(parent),
-    _proxyMode(Client)
+  : QObject(parent)
 {
+  setProxyMode(Client);
 }
 
 SignalProxy::SignalProxy(ProxyMode mode, QObject* parent)
-  : QObject(parent),
-    _proxyMode(mode)
+  : QObject(parent)
 {
+  setProxyMode(mode);
 }
 
 SignalProxy::SignalProxy(ProxyMode mode, QIODevice* device, QObject* parent)
-  : QObject(parent),
-    _proxyMode(mode)
+  : QObject(parent)
 {
+  setProxyMode(mode);
   addPeer(device);
 } 
 
@@ -149,11 +188,21 @@ void SignalProxy::setProxyMode(ProxyMode mode) {
     }
   }
   _proxyMode = mode;
+  if(mode == Server)
+    initServer();
+  else
+    initClient();
 }
-
 
 SignalProxy::ProxyMode SignalProxy::proxyMode() const {
   return _proxyMode;
+}
+
+void SignalProxy::initServer() {
+}
+
+void SignalProxy::initClient() {
+  attachSlot("__objectRenamed__", this, SLOT(objectRenamed(QByteArray, QString, QString)));
 }
 
 bool SignalProxy::addPeer(QIODevice* iodev) {
@@ -193,6 +242,25 @@ void SignalProxy::removePeerBySender() {
   removePeer(ioDev);
 }
 
+void SignalProxy::objectRenamed(QString oldname, QString newname) {
+  const QMetaObject *meta = sender()->metaObject();
+  const QByteArray className(meta->className());
+  objectRenamed(className, oldname, newname);
+
+  if(proxyMode() == Client)
+    return;
+  
+  QVariantList params;
+  params << className << oldname << newname;
+  dispatchSignal("__objectRenamed__", params);
+}
+
+void SignalProxy::objectRenamed(QByteArray classname, QString oldname, QString newname) {
+  if(_syncSlave.contains(classname) && _syncSlave[classname].contains(oldname))
+    _syncSlave[classname][newname] = _syncSlave[classname].take(oldname);
+}
+
+
 void SignalProxy::removePeer(QIODevice* iodev) {
   if(_peerByteCount.isEmpty()) {
     qWarning() << "SignalProxy: No peers in use!";
@@ -220,7 +288,7 @@ void SignalProxy::removePeer(QIODevice* iodev) {
   while(true) {
     QVariant var;
     if(readDataFromDevice(iodev, _peerByteCount[iodev], var))
-      receivePeerSignal(var);
+      receivePeerSignal(iodev, var);
     else
       break;
   }
@@ -234,49 +302,85 @@ void SignalProxy::removePeer(QIODevice* iodev) {
 }
 
 void SignalProxy::setArgTypes(QObject* obj, int methodId) {
-  QList<QByteArray> p = obj->metaObject()->method(methodId).parameterTypes();
+  const QMetaObject *meta = obj->metaObject();
+  QList<QByteArray> p = meta->method(methodId).parameterTypes();
   QList<int> argTypes;
   int ct = p.count();
   for(int i=0; i<ct; i++)
     argTypes.append(QMetaType::type(p.value(i)));
 
-  const QByteArray &className(obj->metaObject()->className());
-  Q_ASSERT(_classInfo.contains(className));
-  Q_ASSERT(!_classInfo[className]->argTypes.contains(methodId));
-  _classInfo[className]->argTypes[methodId] = argTypes;
+  Q_ASSERT(!_classInfo[meta]->argTypes.contains(methodId));
+  _classInfo[meta]->argTypes[methodId] = argTypes;
 }
 
 const QList<int> &SignalProxy::argTypes(QObject *obj, int methodId) {
-  const QByteArray &className(obj->metaObject()->className());
-  Q_ASSERT(_classInfo.contains(className));
-  if(!_classInfo[className]->argTypes.contains(methodId))
+  Q_ASSERT(_classInfo.contains(obj->metaObject()));
+  if(!_classInfo[obj->metaObject()]->argTypes.contains(methodId))
     setArgTypes(obj, methodId);
-  return _classInfo[className]->argTypes[methodId];
+  return _classInfo[obj->metaObject()]->argTypes[methodId];
 }
 
 void SignalProxy::setMethodName(QObject *obj, int methodId) {
-  const QByteArray &className(obj->metaObject()->className());
-  QByteArray method = obj->metaObject()->method(methodId).signature();
-  method = method.left(method.indexOf('('));
-
-  Q_ASSERT(_classInfo.contains(className));
-  Q_ASSERT(!_classInfo[className]->methodNames.contains(methodId));
-  _classInfo[className]->methodNames[methodId] = method;
+  const QMetaObject *meta = obj->metaObject();
+  QByteArray method(::methodName(meta->method(methodId)));
+  Q_ASSERT(!_classInfo[meta]->methodNames.contains(methodId));
+  _classInfo[meta]->methodNames[methodId] = method;
 }
 
 const QByteArray &SignalProxy::methodName(QObject *obj, int methodId) {
-  QByteArray className(obj->metaObject()->className());
-  Q_ASSERT(_classInfo.contains(className));
-  if(!_classInfo[className]->methodNames.contains(methodId))
+  Q_ASSERT(_classInfo.contains(obj->metaObject()));
+  if(!_classInfo[obj->metaObject()]->methodNames.contains(methodId))
     setMethodName(obj, methodId);
-  return _classInfo[className]->methodNames[methodId];
+  return _classInfo[obj->metaObject()]->methodNames[methodId];
 }
 
 
+void SignalProxy::setSyncMap(QObject *obj) {
+  const QMetaObject *meta = obj->metaObject();
+
+  QHash<int, int> syncMap;
+  
+  QList<int> slotIndexes;
+  for(int i = 0; i < meta->methodCount(); i++) {
+    if(meta->method(i).methodType() == QMetaMethod::Slot)
+      slotIndexes << i;
+  }
+
+  QMetaMethod signal, slot;
+  int matchIdx;
+  for(int signalIdx = 0; signalIdx < meta->methodCount(); signalIdx++) {
+    signal = meta->method(signalIdx);
+    if(signal.methodType() != QMetaMethod::Signal)
+      continue;
+
+    matchIdx = -1;
+    foreach(int slotIdx, slotIndexes) {
+      slot = meta->method(slotIdx);
+      if(methodsMatch(signal, slot)) {
+	matchIdx = slotIdx;
+	break;
+      }
+    }
+    if(matchIdx != -1) {
+      slotIndexes.removeAt(slotIndexes.indexOf(matchIdx));
+      syncMap[signalIdx] = matchIdx;
+    }
+  }
+
+  Q_ASSERT(_classInfo[meta]->syncMap.isEmpty());
+  _classInfo[meta]->syncMap = syncMap;
+}
+
+const QHash<int,int> &SignalProxy::syncMap(QObject *obj) {
+  Q_ASSERT(_classInfo.contains(obj->metaObject()));
+  if(_classInfo[obj->metaObject()]->syncMap.isEmpty())
+    setSyncMap(obj);
+  return _classInfo[obj->metaObject()]->syncMap;
+}
+
 void SignalProxy::createClassInfo(QObject *obj) {
-  QByteArray className(obj->metaObject()->className());
-  if(!_classInfo.contains(className))
-    _classInfo[className] = new ClassInfo();
+  if(!_classInfo.contains(obj->metaObject()))
+    _classInfo[obj->metaObject()] = new ClassInfo();
 }
 
 bool SignalProxy::attachSignal(QObject* sender, const char* signal, const QByteArray& sigName) {
@@ -320,6 +424,62 @@ bool SignalProxy::attachSlot(const QByteArray& sigName, QObject* recv, const cha
   return true;
 }
 
+void SignalProxy::synchronize(QObject *obj) {
+  if(proxyMode() == Server)
+    return synchronizeAsMaster(obj);
+  else
+    return synchronizeAsSlave(obj);
+}
+
+void SignalProxy::synchronizeAsMaster(QObject *sender) {
+  createClassInfo(sender);
+
+  SignalRelay* relay;
+  if(_relayHash.contains(sender))
+    relay = _relayHash[sender];
+  else
+    relay = _relayHash[sender] = new SignalRelay(this, sender);
+
+  relay->setSynchronize(true);
+
+  if(sender->metaObject()->indexOfSignal(QMetaObject::normalizedSignature("renameObject(QString, QString)")) != -1)
+    connect(sender, SIGNAL(renameObject(QString, QString)), this, SLOT(objectRenamed(QString, QString)));
+
+  QByteArray className(sender->metaObject()->className());
+  _syncSlave[className][sender->objectName()] = sender;
+
+  setInitialized(sender);
+}
+
+void SignalProxy::synchronizeAsSlave(QObject *receiver) {
+  QByteArray className(receiver->metaObject()->className());
+  _syncSlave[className][receiver->objectName()] = receiver;
+  
+  createClassInfo(receiver);
+
+  requestInit(receiver);
+}
+
+void SignalProxy::setInitialized(QObject *obj) {
+  QMetaObject::invokeMethod(obj, "setInitialized");
+}
+
+bool SignalProxy::initialized(QObject *obj) {
+  bool init;
+  if(!QMetaObject::invokeMethod(obj, "initialized", Q_RETURN_ARG(bool, init)))
+    init = false;
+  return init;
+}
+
+void SignalProxy::requestInit(QObject *obj) {
+  if(proxyMode() == Server || initialized(obj))
+    return;
+
+  QVariantList params;
+  params << obj->metaObject()->className()
+	 << obj->objectName();
+  dispatchSignal((int)InitRequest, params);
+}
 
 void SignalProxy::detachSender() {
   // this is a slot so we can bypass the QueuedConnection
@@ -364,41 +524,145 @@ void SignalProxy::_detachSlots(QObject* receiver) {
   }
 }
 
-void SignalProxy::call(const char*  signal, QVariant p1, QVariant p2, QVariant p3, QVariant p4, QVariant p5, QVariant p6, QVariant p7, QVariant p8, QVariant p9) {
-  QByteArray func = QMetaObject::normalizedSignature(signal);
-  QVariantList params;
-  params << p1 << p2 << p3 << p4 << p5 << p6 << p7 << p8 << p9;
-  call(func, params);
+void SignalProxy::dispatchSignal(QIODevice *receiver, const QVariant &identifier, const QVariantList &params) {
+  QVariantList packedFunc;
+  packedFunc << identifier;
+  packedFunc << params;
+  writeDataToDevice(receiver, QVariant(packedFunc));
 }
 
-void SignalProxy::call(const QByteArray &funcName, const QVariantList &params) {
+void SignalProxy::dispatchSignal(const QVariant &identifier, const QVariantList &params) {
+  // yes I know we have a little code duplication here... it's for the sake of performance
   QVariantList packedFunc;
-  packedFunc << funcName;
+  packedFunc << identifier;
   packedFunc << params;
   foreach(QIODevice* dev, _peerByteCount.keys())
     writeDataToDevice(dev, QVariant(packedFunc));
 }
 
-void SignalProxy::receivePeerSignal(const QVariant &packedFunc) {
+void SignalProxy::receivePeerSignal(QIODevice *sender, const QVariant &packedFunc) {
   QVariantList params(packedFunc.toList());
-  QByteArray funcName = params.takeFirst().toByteArray();
-  int numParams, methodId;
-  QObject* receiver;
 
+  QVariant call = params.takeFirst();
+  if(call.type() != QVariant::Int)
+    return handleSignal(call.toByteArray(), params);
+
+  switch(call.toInt()) {
+  case Sync:
+    return handleSync(params);
+  case InitRequest:
+    return handleInitRequest(sender, params);
+  case InitData:
+    return handleInitData(sender, params);
+  default:
+    qWarning() << "received undefined CallType" << call.toInt();
+    return;
+  }
+}
+
+void SignalProxy::handleSync(QVariantList params) {
+  if(params.count() < 3) {
+    qWarning() << "received invalid Sync call" << params;
+    return;
+  }
+  
+  QByteArray className =params.takeFirst().toByteArray();
+  QString objectName = params.takeFirst().toString();
+  int signalId = params.takeFirst().toInt();
+
+  if(!_syncSlave.contains(className) || !_syncSlave[className].contains(objectName)) {
+    qWarning() << "no registered receiver:" << className << objectName << "for Sync call" << signalId << params;
+    return;
+  }
+
+  QObject *receiver = _syncSlave[className][objectName];
+  if(!syncMap(receiver).contains(signalId)) {
+    qWarning() << "received Sync Call with invalid SignalId" << className << objectName << signalId;
+  }
+  int slotId = syncMap(receiver)[signalId];
+  if(!invokeSlot(receiver, slotId, params))
+    qWarning("SignalProxy::handleSync(): invokeMethod for \"%s\" failed ", methodName(receiver, slotId).constData());
+}
+
+void SignalProxy::handleInitRequest(QIODevice *sender, const QVariantList &params) {
+  if(params.count() != 2) {
+    qWarning() << "SignalProxy::handleInitRequest() received initRequest with invalid param Count:"
+	       << params;
+    return;
+  }
+  
+  QByteArray className(params[0].toByteArray());
+  QString objectName(params[1].toString());
+
+  if(!_syncSlave.contains(className)) {
+    qWarning() << "SignalProxy::handleInitRequest() received initRequest for unregistered Class:"
+	       << className;
+    return;
+  }
+
+  if(!_syncSlave[className].contains(objectName)) {
+    qWarning() << "SignalProxy::handleInitRequest() received initRequest for unregistered Object:"
+	       << className << objectName;
+    return;
+  }
+
+  QObject *obj = _syncSlave[className][objectName];
+
+  QVariantList params_;
+  params_ << obj->metaObject()->className()
+	  << obj->objectName()
+	  << initData(obj);
+
+  dispatchSignal(sender, (int)InitData, params_);
+}
+
+void SignalProxy::handleInitData(QIODevice *sender, const QVariantList &params) {
+  Q_UNUSED(sender)
+  if(params.count() != 3) {
+    qWarning() << "SignalProxy::handleInitRequest() received initRequest with invalid param Count:"
+	       << params;
+    return;
+  }
+  
+  QByteArray className(params[0].toByteArray());
+  QString objectName(params[1].toString());
+  QVariantMap propertyMap(params[2].toMap());
+
+  if(!_syncSlave.contains(className)) {
+    qWarning() << "SignalProxy::handleInitRequest() received initRequest for unregistered Class:"
+	       << className;
+    return;
+  }
+
+  if(!_syncSlave[className].contains(objectName)) {
+    qWarning() << "SignalProxy::handleInitRequest() received initRequest for unregistered Object:"
+	       << className << objectName;
+    return;
+  }
+
+  QObject *obj = _syncSlave[className][objectName];
+  setInitData(obj, propertyMap);
+}
+
+void SignalProxy::handleSignal(const QByteArray &funcName, const QVariantList &params) {
+  QObject* receiver;
+  int methodId;
   SlotHash::const_iterator slot = _attachedSlots.constFind(funcName);
   while(slot != _attachedSlots.constEnd() && slot.key() == funcName) {
     receiver = (*slot).first;
     methodId = (*slot).second;
-    numParams = argTypes(receiver, methodId).count();
-    QGenericArgument args[9];
-    for(int i = 0; i < numParams; i++)
-      args[i] = QGenericArgument(params[i].typeName(), params[i].constData());
-    if(!QMetaObject::invokeMethod(receiver, methodName(receiver, methodId),
-				  args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8])) {
-      qWarning("SignalProxy::receivePeerSignal(): invokeMethod for \"%s\" failed ", methodName(receiver, methodId).constData());
-    }
+    if(!invokeSlot(receiver, methodId, params))
+      qWarning("SignalProxy::handleSignal(): invokeMethod for \"%s\" failed ", methodName(receiver, methodId).constData());
     slot++;
   }
+}
+
+bool SignalProxy::invokeSlot(QObject *receiver, int methodId, const QVariantList &params) {
+  int numParams = argTypes(receiver, methodId).count();
+  QGenericArgument args[9];
+  for(int i = 0; i < numParams; i++)
+    args[i] = QGenericArgument(params[i].typeName(), params[i].constData());
+  return QMetaObject::invokeMethod(receiver, methodName(receiver, methodId), args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8]);
 }
 
 void SignalProxy::dataAvailable() {
@@ -406,7 +670,7 @@ void SignalProxy::dataAvailable() {
   QIODevice* ioDev = qobject_cast<QIODevice* >(sender());
   QVariant var;
   while(readDataFromDevice(ioDev, _peerByteCount[ioDev], var))
-    receivePeerSignal(var);
+    receivePeerSignal(ioDev, var);
 }
 
 void SignalProxy::writeDataToDevice(QIODevice *dev, const QVariant &item) {
@@ -440,6 +704,99 @@ bool SignalProxy::readDataFromDevice(QIODevice *dev, quint32 &blockSize, QVarian
   return true;
 }
 
+bool SignalProxy::methodsMatch(const QMetaMethod &signal, const QMetaMethod &slot) const {
+  // if we don't even have the same basename it's a sure NO
+  if(methodBaseName(signal) != methodBaseName(slot))
+    return false;
+
+  // are the signatures compatible?
+  if(!QObject::staticMetaObject.checkConnectArgs(signal.signature(), slot.signature()))
+    return false;
+
+  // we take an educated guess if the signals and slots match
+  QString signalsuffix = ::methodName(signal).mid(QString(::methodName(signal)).lastIndexOf(QRegExp("[A-Z]"))).toLower();
+  QString slotprefix = ::methodName(slot).left(QString(::methodName(slot)).indexOf(QRegExp("[A-Z]"))).toLower();
+
+  uint sizediff = qAbs(slotprefix.size() - signalsuffix.size());
+  int ratio = editingDistance(slotprefix, signalsuffix) - sizediff;
+  return (ratio < 2);
+}
+
+QString SignalProxy::methodBaseName(const QMetaMethod &method) {
+  QString methodname = QString(method.signature()).section("(", 0, 0);
+
+  // determine where we have to chop:
+  if(method.methodType() == QMetaMethod::Slot) {
+    // we take evertyhing from the first uppercase char if it's slot
+    methodname = methodname.mid(methodname.indexOf(QRegExp("[A-Z]")));
+  } else {
+    // and if it's a signal we discard everything from the last uppercase char
+    methodname = methodname.left(methodname.lastIndexOf(QRegExp("[A-Z]")));
+  }
+
+  methodname[0] = methodname[0].toUpper();
+
+  return methodname;
+}
+
+QVariantMap SignalProxy::initData(QObject *obj) const {
+  QVariantMap properties;
+
+  const QMetaObject* meta = obj->metaObject();
+
+  // we collect data from properties
+  for(int i = 0; i < meta->propertyCount(); i++) {
+    QMetaProperty prop = meta->property(i);
+    properties[QString(prop.name())] = prop.read(obj);
+  }
+
+  // ...as well as methods, which have names starting with "init"
+  for(int i = 0; i < meta->methodCount(); i++) {
+    QMetaMethod method = meta->method(i);
+    QString methodname(::methodName(method));
+    if(!methodname.startsWith("init") || methodname.startsWith("initSet"))
+      continue;
+
+    QVariant value = QVariant(QVariant::nameToType(method.typeName()));
+    QGenericReturnArgument genericvalue = QGenericReturnArgument(method.typeName(), &value);
+    QMetaObject::invokeMethod(obj, methodname.toAscii(), genericvalue);
+
+    properties[methodBaseName(method)] = value;
+    // qDebug() << ">>> SYNC:" << methodBaseName(method) << value;
+  }
+  
+  // properties["Payload"] = QByteArray(10000000, 'a');  // for testing purposes
+  return properties;
+}
+
+void SignalProxy::setInitData(QObject *obj, const QVariantMap &properties) {
+  if(initialized(obj))
+    return;
+
+  const QMetaObject *meta = obj->metaObject();
+  
+  QVariantMap::const_iterator iterator = properties.constBegin();
+  while(iterator != properties.constEnd()) {
+    QString name = iterator.key();
+    int propertyIndex = meta->indexOfProperty(name.toAscii());
+
+    if(propertyIndex == -1 || !meta->property(propertyIndex).isWritable())
+      setInitValue(obj, name, iterator.value());
+    else
+      obj->setProperty(name.toAscii(), iterator.value());
+    // qDebug() << "<<< SYNC:" << name << iterator.value();
+    iterator++;
+  }
+  setInitialized(obj);
+}
+
+bool SignalProxy::setInitValue(QObject *obj, const QString &property, const QVariant &value) {
+  QString handlername = QString("initSet") + property;
+  handlername[7] = handlername[7].toUpper();
+  QGenericArgument param(value.typeName(), value.constData());
+  return QMetaObject::invokeMethod(obj, handlername.toAscii(), param);
+}
+
 void SignalProxy::dumpProxyStats() {
   QString mode;
   if(proxyMode() == Server)
@@ -451,10 +808,17 @@ void SignalProxy::dumpProxyStats() {
   foreach(SignalRelay *relay, _relayHash.values())
     sigCount += relay->sigCount();
 
+  int slaveCount = 0;
+  foreach(ObjectId oid, _syncSlave.values())
+    slaveCount += oid.count();
+  
   qDebug() << this;
   qDebug() << "              Proxy Mode:" << mode;
   qDebug() << "attached sending Objects:" << _relayHash.count();
-  qDebug() << "       Number of Signals:" << sigCount;
+  qDebug() << "       number of Signals:" << sigCount;
   qDebug() << "          attached Slots:" << _attachedSlots.count();
+  qDebug() << " number of synced Slaves:" << slaveCount;
   qDebug() << "number of Classes cached:" << _classInfo.count();
 }
+
+

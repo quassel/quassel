@@ -24,7 +24,6 @@
 #include "signalproxy.h"
 #include "storage.h"
 
-#include "synchronizer.h"
 #include "networkinfo.h"
 #include "ircuser.h"
 #include "ircchannel.h"

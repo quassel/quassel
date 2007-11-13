@@ -35,7 +35,7 @@ IrcUser::IrcUser(const QString &hostmask, NetworkInfo *networkinfo)
     _host(hostFromMask(hostmask)),
     networkInfo(networkinfo)
 {
-  setObjectName(QString::number(networkInfo->networkId()) + "/" + IrcUser::hostmask());
+  updateObjectName();
 }
 
 IrcUser::~IrcUser() {
@@ -72,11 +72,6 @@ QStringList IrcUser::channels() const {
   return _channels.toList();
 }
 
-void IrcUser::updateObjectName() {
-  setObjectName(QString::number(networkInfo->networkId()) + "/" +  hostmask());
-  emit objectNameSet();
-}
-
 // ====================
 //  PUBLIC SLOTS:
 // ====================
@@ -84,9 +79,6 @@ void IrcUser::setUser(const QString &user) {
   if(!user.isEmpty() && _user != user) {
     _user = user;
     emit userSet(user);
-
-    setObjectName(hostmask());
-    emit objectNameSet();
   }
 }
 
@@ -94,7 +86,6 @@ void IrcUser::setHost(const QString &host) {
   if(!host.isEmpty() && _host != host) {
     _host = host;
     emit hostSet(host);
-    updateObjectName();
   }
 }
 
@@ -102,10 +93,19 @@ void IrcUser::setNick(const QString &nick) {
   if(!nick.isEmpty() && nick != _nick) {
     QString oldnick(_nick);
     _nick = nick;
-    emit nickSet(nick);
     updateObjectName();
+    emit nickSet(nick);
   }
 }
+
+void IrcUser::updateObjectName() {
+  QString oldName(objectName());
+  setObjectName(QString::number(networkInfo->networkId()) + "/" + _nick);
+  if(!oldName.isEmpty()) {
+    emit renameObject(oldName, objectName());
+  }
+}
+
 
 void IrcUser::updateHostmask(const QString &mask) {
   if(mask == hostmask())
@@ -113,24 +113,8 @@ void IrcUser::updateHostmask(const QString &mask) {
 
   QString user = userFromMask(mask);
   QString host = hostFromMask(mask);
-
-  // we only need to check user and hostmask.
-  // nick can't have changed since we're identifying IrcUsers by nick
-
-  // we don't use setUser and setHost here.
-  // though this is unpretty code duplication this saves us one emit objectNameSet()
-  // the second one would be erroneous
-  
-  if(!user.isEmpty() && _user != user) {
-    _user = user;
-  }
-
-  if(!host.isEmpty() && _host != host) {
-    _host = host;
-  }
-
-  emit hostmaskUpdated(mask);
-  updateObjectName();
+  setUser(user);
+  setHost(host);
 }
 
 void IrcUser::joinChannel(const QString &channel) {

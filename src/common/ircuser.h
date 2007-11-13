@@ -56,8 +56,6 @@ public:
 
   QStringList channels() const;
     
-  void updateObjectName();
-			 
 public slots:  
   void setUser(const QString &user);
   void setHost(const QString &host);
@@ -92,13 +90,16 @@ signals:
   void userModeAdded(QString mode);
   void userModeRemoved(QString mode);
 
-  void objectNameSet();
+  void renameObject(QString oldname, QString newname);
   
 //   void setUsermodes(const QSet<QString> &usermodes);
 //   QSet<QString> usermodes() const;
 
   void initDone();
 
+private slots:
+  void updateObjectName();
+  
 private:
   inline bool operator==(const IrcUser &ircuser2) {
     return (_nick.toLower() == ircuser2.nick().toLower());

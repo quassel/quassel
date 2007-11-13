@@ -24,6 +24,7 @@
 #include <QIODevice>
 #include <QVariant>
 #include <QString>
+#include <QMetaMethod>
 
 QString nickFromMask(QString mask);
 QString userFromMask(QString mask);
@@ -56,5 +57,6 @@ bool readDataFromDevice(QIODevice *, quint32 &, QVariant &);
 
 uint editingDistance(const QString &s1, const QString &s2);
 
+QByteArray methodName(const QMetaMethod &method);
 
 #endif

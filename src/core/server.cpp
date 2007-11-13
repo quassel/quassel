@@ -28,7 +28,6 @@
 #include "coresession.h"
 
 #include "networkinfo.h"
-#include "synchronizer.h"
 
 #include "ircserverhandler.h"
 #include "userinputhandler.h"
@@ -40,9 +39,10 @@ Server::Server(UserId uid, uint networkId, QString net)
     _ircServerHandler(new IrcServerHandler(this)),
     _userInputHandler(new UserInputHandler(this)),
     _ctcpHandler(new CtcpHandler(this)),
-    _networkInfo(new NetworkInfo(networkId, coreSession()->signalProxy(), this))
+    _networkInfo(new NetworkInfo(networkId, this))
 {
   networkInfo()->setNetworkName(net);
+  networkInfo()->setProxy(coreSession()->signalProxy());
 }
 
 Server::~Server() {

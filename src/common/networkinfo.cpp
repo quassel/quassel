@@ -20,7 +20,6 @@
 #include "networkinfo.h"
 
 #include "signalproxy.h"
-#include "synchronizer.h"
 #include "ircuser.h"
 #include "ircchannel.h"
 
@@ -31,7 +30,7 @@
 // ====================
 //  Public:
 // ====================
-NetworkInfo::NetworkInfo(const uint &networkid, SignalProxy *proxy, QObject *parent)
+NetworkInfo::NetworkInfo(const uint &networkid, QObject *parent)
   : QObject(parent),
     _networkId(networkid),
     _initialized(false),
@@ -39,10 +38,10 @@ NetworkInfo::NetworkInfo(const uint &networkid, SignalProxy *proxy, QObject *par
     _networkName(QString()),
     _currentServer(QString()),
     _prefixes(QString()),
-    _prefixModes(QString())
+    _prefixModes(QString()),
+    _proxy(NULL)
 {
   setObjectName(QString::number(networkid));
-  _synchronizer = new Synchronizer(this, proxy);
 }
 
 // I think this is unnecessary since IrcUsers have us as their daddy :)
@@ -62,8 +61,13 @@ bool NetworkInfo::initialized() const {
   return _initialized;
 }
 
-Synchronizer *NetworkInfo::synchronizer() {
-  return _synchronizer;
+SignalProxy *NetworkInfo::proxy() const {
+  return _proxy;
+}
+
+void NetworkInfo::setProxy(SignalProxy *proxy) {
+  _proxy = proxy;
+  proxy->synchronize(this);
 }
 
 bool NetworkInfo::isMyNick(const QString &nick) const {
@@ -162,7 +166,11 @@ IrcUser *NetworkInfo::newIrcUser(const QString &hostmask) {
   QString nick(nickFromMask(hostmask));
   if(!_ircUsers.contains(nick)) {
     IrcUser *ircuser = new IrcUser(hostmask, this);
-    new Synchronizer(ircuser, synchronizer()->proxy());
+    // mark IrcUser as already initialized to keep the SignalProxy from requesting initData
+    if(initialized())
+      ircuser->setInitialized();
+    _proxy->synchronize(ircuser);
+    
     connect(ircuser, SIGNAL(nickSet(QString)), this, SLOT(ircUserNickChanged(QString)));
     connect(ircuser, SIGNAL(initDone()), this, SIGNAL(ircUserInitDone()));
     connect(ircuser, SIGNAL(destroyed()), this, SLOT(ircUserDestroyed()));
@@ -186,7 +194,11 @@ QList<IrcUser *> NetworkInfo::ircUsers() const {
 IrcChannel *NetworkInfo::newIrcChannel(const QString &channelname) {
   if(!_ircChannels.contains(channelname)) {
     IrcChannel *channel = new IrcChannel(channelname, this);
-    new Synchronizer(channel, synchronizer()->proxy());
+    // mark IrcUser as already initialized to keep the SignalProxy from requesting initData
+    if(initialized())
+      channel->setInitialized();
+    _proxy->synchronize(channel);
+
     connect(channel, SIGNAL(initDone()), this, SIGNAL(ircChannelInitDone()));
     connect(channel, SIGNAL(destroyed()), this, SLOT(channelDestroyed()));
     _ircChannels[channelname] = channel;

@@ -115,7 +115,6 @@ private slots:
   void coreHasData();
   void coreSocketConnected();
   void coreSocketDisconnected();
-  void coreSocketStateChanged(QAbstractSocket::SocketState);
 
   void userInput(BufferInfo, QString);
 
@@ -128,10 +127,11 @@ private slots:
   void recvBacklogData(BufferInfo, QVariantList, bool);
   void updateBufferInfo(BufferInfo);
 
+  void layoutMsg();
+
+private slots:
   void bufferDestroyed();
   void networkInfoDestroyed();
-
-  void layoutMsg();
 
 private:
   Client(QObject *parent = 0);

@@ -29,7 +29,6 @@
 #include <QPointer>
 
 class SignalProxy;
-class Synchronizer;
 class IrcUser;
 class IrcChannel;
 
@@ -42,13 +41,15 @@ class NetworkInfo : public QObject {
   Q_PROPERTY(QString myNick READ myNick WRITE setMyNick STORED false)
 
 public:
-  NetworkInfo(const uint &networkid, SignalProxy *proxy, QObject *parent = 0);
+  NetworkInfo(const uint &networkid, QObject *parent = 0);
   //  virtual ~NetworkInfo();
 
   uint networkId() const;
   bool initialized() const;
-  Synchronizer *synchronizer();
 
+  SignalProxy *proxy() const;
+  void setProxy(SignalProxy *proxy);
+  
   bool isMyNick(const QString &nick) const;
   bool isMyNick(IrcUser *ircuser) const;
 
@@ -115,7 +116,7 @@ signals:
   void currentServerSet(const QString &currentServer);
   void myNickSet(const QString &mynick);
 
-  void supportAdded(const QString &param, const QString &value = QString());
+  void supportAdded(const QString &param, const QString &value);
   void supportRemoved(const QString &param);
   
   void ircUserAdded(QString hostmask);
@@ -143,8 +144,7 @@ private:
   //QVariantMap networkSettings;
   //QVariantMap identity;
   
-  QPointer<Synchronizer> _synchronizer;
-  
+  QPointer<SignalProxy> _proxy;
   void determinePrefixes();
 };
 

@@ -22,6 +22,8 @@
 #include <QDebug>
 #include <QTextCodec>
 
+class QMetaMethod;
+
 QString nickFromMask(QString mask) {
   return mask.section('!', 0, 0);
 }
@@ -132,4 +134,9 @@ uint editingDistance(const QString &s1, const QString &s2) {
     }
   }
   return matrix[n-1][m-1];
+}
+
+QByteArray methodName(const QMetaMethod &method) {
+  QByteArray sig(method.signature());
+  return sig.left(sig.indexOf("("));
 }

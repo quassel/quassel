@@ -30,7 +30,6 @@
 #include "buffertreemodel.h"
 #include "quasselui.h"
 #include "signalproxy.h"
-#include "synchronizer.h"
 #include "util.h"
 
 QPointer<Client> Client::instanceptr = 0;
@@ -232,9 +231,7 @@ void Client::connectToCore(const QVariantMap &conn) {
     socket = sock;
     connect(sock, SIGNAL(readyRead()), this, SLOT(coreHasData()));
     connect(sock, SIGNAL(connected()), this, SLOT(coreSocketConnected()));
-    connect(sock, SIGNAL(disconnected()), this, SLOT(coreSocketDisconnected()));
     connect(signalProxy(), SIGNAL(disconnected()), this, SLOT(coreSocketDisconnected()));
-    //connect(sock, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(coreSocketStateChanged(QAbstractSocket::SocketState)));
     connect(sock, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(coreSocketError(QAbstractSocket::SocketError)));
     sock->connectToHost(conn["Host"].toString(), conn["Port"].toUInt());
   }
@@ -242,9 +239,6 @@ void Client::connectToCore(const QVariantMap &conn) {
 
 void Client::disconnectFromCore() {
   socket->close();
-  if(clientMode == LocalCore) {
-    coreSocketDisconnected();
-  }
 }
 
 void Client::setCoreConfiguration(const QVariantMap &settings) {
@@ -269,24 +263,30 @@ void Client::coreSocketDisconnected() {
 
   /* Clear internal data. Hopefully nothing relies on it at this point. */
   _bufferModel->clear();
-  foreach(Buffer *buffer, _buffers.values()) {
+
+  QHash<uint, Buffer *>::iterator bufferIter =  _buffers.begin();
+  while(bufferIter != _buffers.end()) {
+    Buffer *buffer = bufferIter.value();
+    disconnect(buffer, SIGNAL(destroyed()), this, 0);
+    bufferIter = _buffers.erase(bufferIter);
     buffer->deleteLater();
   }
-  _buffers.clear();
+  Q_ASSERT(_buffers.isEmpty());
 
-  foreach(NetworkInfo *networkinfo, _networkInfo.values()) {
-    networkinfo->deleteLater();
+
+  QHash<uint, NetworkInfo*>::iterator netIter = _networkInfo.begin();
+  while(netIter != _networkInfo.end()) {
+    NetworkInfo *net = netIter.value();
+    disconnect(net, SIGNAL(destroyed()), this, 0);
+    netIter = _networkInfo.erase(netIter);
+    net->deleteLater();
   }
-  _networkInfo.clear();
-
+  Q_ASSERT(_networkInfo.isEmpty());
+  
   coreConnectionInfo.clear();
   sessionData.clear();
   layoutQueue.clear();
   layoutTimer->stop();
-}
-
-void Client::coreSocketStateChanged(QAbstractSocket::SocketState state) {
-  if(state == QAbstractSocket::UnconnectedState) coreSocketDisconnected();
 }
 
 void Client::recvCoreState(const QVariant &state) {
@@ -380,8 +380,7 @@ void Client::updateCoreConnectionProgress() {
   }
 
   emit coreConnectionProgress(1,1);
-  emit connected(); // FIXME EgS: This caused the double backlog... but... we shouldn't be calling this whole function all the time...
-
+  emit connected();
   foreach(NetworkInfo *net, networkInfos()) {
     disconnect(net, 0, this, SLOT(updateCoreConnectionProgress()));
   }
@@ -442,8 +441,9 @@ void Client::networkConnected(uint netid) {
   //Buffer *b = buffer(id);
   //b->setActive(true);
 
-  // FIXME EgS: do we really need to call updateCoreConnectionProgress whenever a new network is connected?
-  NetworkInfo *netinfo = new NetworkInfo(netid, signalProxy(), this);
+  NetworkInfo *netinfo = new NetworkInfo(netid, this);
+  netinfo->setProxy(signalProxy());
+  
   if(!isConnected()) {
     connect(netinfo, SIGNAL(initDone()), this, SLOT(updateCoreConnectionProgress()));
     connect(netinfo, SIGNAL(ircUserInitDone()), this, SLOT(updateCoreConnectionProgress()));
