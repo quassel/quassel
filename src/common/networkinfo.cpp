@@ -169,7 +169,10 @@ IrcUser *NetworkInfo::newIrcUser(const QString &hostmask) {
     // mark IrcUser as already initialized to keep the SignalProxy from requesting initData
     if(initialized())
       ircuser->setInitialized();
-    _proxy->synchronize(ircuser);
+    if(proxy())
+      proxy()->synchronize(ircuser);
+    else
+      qWarning() << "unable to synchronize new IrcUser" << hostmask << "forgot to call NetworkInfo::setProxy(SignalProxy *)?";
     
     connect(ircuser, SIGNAL(nickSet(QString)), this, SLOT(ircUserNickChanged(QString)));
     connect(ircuser, SIGNAL(initDone()), this, SIGNAL(ircUserInitDone()));
@@ -197,7 +200,11 @@ IrcChannel *NetworkInfo::newIrcChannel(const QString &channelname) {
     // mark IrcUser as already initialized to keep the SignalProxy from requesting initData
     if(initialized())
       channel->setInitialized();
-    _proxy->synchronize(channel);
+
+    if(proxy())
+      proxy()->synchronize(channel);
+    else
+      qWarning() << "unable to synchronize new IrcChannel" << channelname << "forgot to call NetworkInfo::setProxy(SignalProxy *)?";
 
     connect(channel, SIGNAL(initDone()), this, SIGNAL(ircChannelInitDone()));
     connect(channel, SIGNAL(destroyed()), this, SLOT(channelDestroyed()));

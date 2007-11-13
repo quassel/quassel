@@ -16,16 +16,6 @@
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
- ***************************************************************************
- *   SignalProxy has been inspired by QxtRPCPeer, part of libqxt,          *
- *   the Qt eXTension Library <http://www.libqxt.org>. We would like to    *
- *   thank Arvid "aep" Picciani and Adam "ahigerd" Higerd for providing    *
- *   QxtRPCPeer, valuable input and the genius idea to (ab)use Qt's        *
- *   Meta Object System for transmitting signals over the network.         *
- *                                                                         *
- *   To make contribution back into libqxt possible, redistribution and    *
- *   modification of this file is additionally allowed under the terms of  *
- *   the Common Public License, version 1.0, as published by IBM.          *
  ***************************************************************************/
 
 #ifndef _SIGNALPROXY_H_
