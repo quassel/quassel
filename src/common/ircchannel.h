@@ -85,6 +85,9 @@ signals:
   void userModeAdded(QString nick, QString mode);
   void userModeRemoved(QString nick, QString mode);
 
+  void ircUserJoined(IrcUser *ircuser);
+  void ircUserParted(IrcUser *ircuser);
+  
   void initDone();
 
 private slots:

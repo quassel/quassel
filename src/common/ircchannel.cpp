@@ -108,7 +108,9 @@ void IrcChannel::join(IrcUser *ircuser) {
     _userModes[ircuser] = QString();
     ircuser->joinChannel(name());
     connect(ircuser, SIGNAL(destroyed()), this, SLOT(ircUserDestroyed()));
-    // no emit here since the join is propagated by IrcUser
+    // if you wonder why there is no counterpart to ircUserJoined:
+    // the joines are propagted by the ircuser. the signal ircUserJoined is only for convenience
+    emit ircUserJoined(ircuser);
   }
 }
 
@@ -120,7 +122,9 @@ void IrcChannel::part(IrcUser *ircuser) {
   if(isKnownUser(ircuser)) {
     _userModes.remove(ircuser);
     ircuser->partChannel(name());
-    // no emit here since the part is propagated by IrcUser
+    // if you wonder why there is no counterpart to ircUserParted:
+    // the joines are propagted by the ircuser. the signal ircUserParted is only for convenience
+    emit ircUserParted(ircuser);
   }
 }
 
