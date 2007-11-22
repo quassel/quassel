@@ -25,7 +25,6 @@
 #include <QMap>
 #include <QList>
 #include <QVariant>
-#include "global.h"
 
 #include "ui_serverlistdlg.h"
 #include "ui_networkeditdlg.h"

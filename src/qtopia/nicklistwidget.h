@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005/06 by The Quassel Team                             *
+ *   Copyright (C) 2005-07 by the Quassel IRC Team                         *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,52 +18,28 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _CORECONNECTDLG_H
-#define _CORECONNECTDLG_H
+#ifndef _NICKLISTWIDGET_H_
+#define _NICKLISTWIDGET_H_
 
-#include "ui_coreconnectdlg.h"
+#include <QDialog>
 
-class CoreConnectDlg: public QDialog {
+#include "ui_nicklistwidget.h"
+
+class NickModel;
+
+class NickListWidget : public QDialog {
   Q_OBJECT
 
   public:
-    CoreConnectDlg(QWidget *parent, bool doAutoConnect = false);
-    ~CoreConnectDlg();
-    QVariant getCoreState();
+    NickListWidget(QWidget *parent = 0);
+    ~NickListWidget();
 
-    bool willDoInternalAutoConnect();
-    
   public slots:
-    void doAutoConnect();
-
-  private slots:
-    void createAccount();
-    void removeAccount();
-    void accountChanged(const QString & = "");
-    void setAccountEditEnabled(bool);
-    void autoConnectToggled(bool);
-    bool checkInputValid();
-    void hostEditChanged(QString);
-    void hostSelected();
-    void doConnect();
-
-    void coreConnected();
-    void coreConnectionError(QString);
-    //void coreConnectionMsg(const QString &);
-    //void coreConnectionProgress(uint partial, uint total);
-    void updateProgressBar(uint partial, uint total);
-    void recvCoreState(QVariant);
-    
-    void showConfigWizard(const QVariantMap &coredata);
+    void setNickModel(NickModel *model);
 
   private:
-    Ui::CoreConnectDlg ui;
-    QVariant coreState;
+    Ui::NickListWidget ui;
 
-    void cancelConnect();
-    void setStartState();
-    QVariantMap accountData;
-    QString curacc;
 };
 
 #endif

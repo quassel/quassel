@@ -24,10 +24,10 @@
 #include <QtGui>
 
 #include "client.h"
-#include "global.h"
 
 class BufferViewWidget;
 class MainWidget;
+class NickListWidget;
 
 class QtopiaMainWin : public QMainWindow {
   Q_OBJECT
@@ -50,6 +50,7 @@ class QtopiaMainWin : public QMainWindow {
   private slots:
     void showBuffer(Buffer *);
     void showBufferView();
+    void showNickList();
 
   private:
     void init();
@@ -57,8 +58,9 @@ class QtopiaMainWin : public QMainWindow {
 
     MainWidget *mainWidget;
     QToolBar *toolBar;
-    QAction *showBuffersAction;
+    QAction *showBuffersAction, *showNicksAction;
     BufferViewWidget *bufferViewWidget;
+    NickListWidget *nickListWidget;
 
     friend class QtopiaUi;
 };

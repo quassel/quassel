@@ -24,7 +24,6 @@
 #include <QtGui>
 #include <QtCore>
 
-#include "global.h"
 #include "ui_identitiesdlg.h"
 #include "ui_identitieseditdlg.h"
 #include "ui_nickeditdlg.h"

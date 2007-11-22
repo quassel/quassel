@@ -24,7 +24,7 @@
 #include "ui_bufferwidget.h"
 
 #include "chatview.h"
-#include "global.h"
+#include "types.h"
 
 class Buffer;
 class ChatView;

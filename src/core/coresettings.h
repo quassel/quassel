@@ -21,8 +21,8 @@
 #ifndef CORESETTINGS_H_
 #define CORESETTINGS_H_
 
-#include "settings.h"
 #include "global.h"
+#include "settings.h"
 
 class CoreSettings : public Settings {
   Q_OBJECT

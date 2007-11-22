@@ -27,6 +27,7 @@
 #include <QTcpSocket>
 
 #include "global.h"
+#include "types.h"
 
 class CoreSession;
 class Storage;

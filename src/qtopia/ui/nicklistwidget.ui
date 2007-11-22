@@ -1,0 +1,35 @@
+<ui version="4.0" >
+ <class>NickListWidget</class>
+ <widget class="QDialog" name="NickListWidget" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>240</width>
+    <height>286</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Nicks in Channel</string>
+  </property>
+  <layout class="QVBoxLayout" >
+   <property name="leftMargin" >
+    <number>1</number>
+   </property>
+   <property name="topMargin" >
+    <number>1</number>
+   </property>
+   <property name="rightMargin" >
+    <number>1</number>
+   </property>
+   <property name="bottomMargin" >
+    <number>1</number>
+   </property>
+   <item>
+    <widget class="QListView" name="nickView" />
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

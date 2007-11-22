@@ -20,10 +20,10 @@
 
 #include <QtGui>
 #include "coreconnectdlg.h"
-#include "global.h"
 #include "client.h"
 #include "clientsettings.h"
 #include "configwizard.h"
+#include "global.h"
 
 CoreConnectDlg::CoreConnectDlg(QWidget *parent, bool /*doAutoConnect*/) : QDialog(parent) {
   ui.setupUi(this); //qDebug() << "new dlg";

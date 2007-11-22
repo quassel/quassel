@@ -65,12 +65,15 @@ src/common/message.cpp
 src/common/message.h
 src/common/networkinfo.cpp
 src/common/networkinfo.h
+src/common/nickmodel.cpp
+src/common/nickmodel.h
 src/common/settings.cpp
 src/common/settings.h
 src/common/signalproxy.cpp
 src/common/signalproxy.h
 src/common/synchronizer.cpp
 src/common/synchronizer.h
+src/common/types.h
 src/common/util.cpp
 src/common/util.h
 src/core
@@ -109,6 +112,8 @@ src/qtopia/coreconnectdlg.h
 src/qtopia/main.cpp
 src/qtopia/mainwidget.cpp
 src/qtopia/mainwidget.h
+src/qtopia/nicklistwidget.cpp
+src/qtopia/nicklistwidget.h
 src/qtopia/qtopia.pri
 src/qtopia/qtopiamainwin.cpp
 src/qtopia/qtopiamainwin.h
@@ -118,6 +123,7 @@ src/qtopia/qtopiauistyle.cpp
 src/qtopia/qtopiauistyle.h
 src/qtopia/topicbar.cpp
 src/qtopia/topicbar.h
+src/qtopia/types.h
 src/qtopia/ui
 src/qtopia/ui/bufferview.ui
 src/qtopia/ui/bufferviewwidget.ui

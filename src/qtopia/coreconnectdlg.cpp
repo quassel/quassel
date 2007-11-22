@@ -22,9 +22,9 @@
 #include <QSoftMenuBar>
 
 #include "coreconnectdlg.h"
-#include "global.h"
 #include "client.h"
 #include "clientsettings.h"
+#include "global.h"
 
 CoreConnectDlg::CoreConnectDlg(QWidget *parent, bool /*doAutoConnect*/) : QDialog(parent) {
   ui.setupUi(this);

@@ -18,12 +18,9 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 #include <QObject>
-#include <QStringList>
 
 #include "global.h"
 #include "logger.h"
-#include "message.h"
-#include "util.h"
 
 extern void messageHandler(QtMsgType type, const char *msg);
 

@@ -18,42 +18,21 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+// This file needs probably to go away at some point. Not much left anymore.
+
 #ifndef _GLOBAL_H_
 #define _GLOBAL_H_
 
 /** The protocol version we use fo the communication between core and GUI */
 #define GUI_PROTOCOL 3
 
-#define BACKLOG_FORMAT 2
-#define BACKLOG_STRING "QuasselIRC Backlog File"
-
 #define DEFAULT_PORT 4242
 
-#include <QHash>
-#include <QMutex>
-#include <QString>
-#include <QVariant>
-
 /* Some global stuff */
-
-typedef uint UserId;
-typedef uint MsgId;
-typedef uint BufferId;
-typedef uint NetworkId;
 
 namespace Global {
   enum RunMode { Monolithic, ClientOnly, CoreOnly };
   extern RunMode runMode;
 }
-
-struct Exception {
-    Exception(QString msg = "Unknown Exception") : _msg(msg) {};
-    virtual ~Exception() {}; // make gcc happy
-    virtual inline QString msg() { return _msg; }
-
-  protected:
-    QString _msg;
-
-};
 
 #endif

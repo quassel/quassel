@@ -22,6 +22,7 @@
 
 #include "buffertreemodel.h"
 #include "bufferviewwidget.h"
+#include "nicklistwidget.h"
 #include "chatline.h"
 #include "coreconnectdlg.h"
 #include "global.h"
@@ -68,6 +69,7 @@ QtopiaMainWin::QtopiaMainWin(QWidget *parent, Qt::WFlags flags) : QMainWindow(pa
   addToolBar(toolBar);
 
   bufferViewWidget = new BufferViewWidget(this);
+  nickListWidget = new NickListWidget(this);
 
   setupActions();
 
@@ -94,7 +96,7 @@ QtopiaMainWin::~QtopiaMainWin() {
 
 void QtopiaMainWin::setupActions() {
   showBuffersAction = toolBar->addAction(QIcon(":icon/options-hide"), "Show Buffers", this, SLOT(showBufferView()));  // FIXME provide real icon
-
+  showNicksAction = toolBar->addAction(QIcon(":icon/list"), "Show Nicks", this, SLOT(showNickList()));
 
 }
 
@@ -121,12 +123,17 @@ AbstractUiMsg *QtopiaMainWin::layoutMsg(const Message &msg) {
 
 void QtopiaMainWin::showBuffer(Buffer *b) {
   mainWidget->setBuffer(b);
+  //nickListWidget->
 
 }
 
 void QtopiaMainWin::showBufferView() {
   bufferViewWidget->showMaximized();
 
+}
+
+void QtopiaMainWin::showNickList() {
+  nickListWidget->showMaximized();
 }
 
 

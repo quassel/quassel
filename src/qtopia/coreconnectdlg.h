@@ -24,7 +24,6 @@
 #include "ui_coreconnectdlg.h"
 #include "ui_coreconnectprogressdlg.h"
 #include "ui_editcoreacctdlg.h"
-#include "global.h"
 
 class CoreConnectProgressDlg;
 

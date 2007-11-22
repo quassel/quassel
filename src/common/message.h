@@ -21,12 +21,11 @@
 #ifndef _MESSAGE_H_
 #define _MESSAGE_H_
 
-#include <QCoreApplication>
 #include <QString>
 #include <QDateTime>
 
 #include "bufferinfo.h"
-#include "global.h"
+#include "types.h"
 
 class Message {
   Q_DECLARE_TR_FUNCTIONS(Message);

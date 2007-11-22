@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005/06 by The Quassel Team                             *
+ *   Copyright (C) 2005-07 by the Quassel IRC Team                         *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,52 +18,20 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _CORECONNECTDLG_H
-#define _CORECONNECTDLG_H
+#ifndef _NICKMODEL_H_
+#define _NICKMODEL_H_
 
-#include "ui_coreconnectdlg.h"
+#include <QAbstractListModel>
 
-class CoreConnectDlg: public QDialog {
+class NickModel : public QAbstractListModel {
   Q_OBJECT
 
   public:
-    CoreConnectDlg(QWidget *parent, bool doAutoConnect = false);
-    ~CoreConnectDlg();
-    QVariant getCoreState();
-
-    bool willDoInternalAutoConnect();
-    
-  public slots:
-    void doAutoConnect();
-
-  private slots:
-    void createAccount();
-    void removeAccount();
-    void accountChanged(const QString & = "");
-    void setAccountEditEnabled(bool);
-    void autoConnectToggled(bool);
-    bool checkInputValid();
-    void hostEditChanged(QString);
-    void hostSelected();
-    void doConnect();
-
-    void coreConnected();
-    void coreConnectionError(QString);
-    //void coreConnectionMsg(const QString &);
-    //void coreConnectionProgress(uint partial, uint total);
-    void updateProgressBar(uint partial, uint total);
-    void recvCoreState(QVariant);
-    
-    void showConfigWizard(const QVariantMap &coredata);
+    NickModel(QObject *parent = 0);
+    ~NickModel();
 
   private:
-    Ui::CoreConnectDlg ui;
-    QVariant coreState;
 
-    void cancelConnect();
-    void setStartState();
-    QVariantMap accountData;
-    QString curacc;
 };
 
 #endif

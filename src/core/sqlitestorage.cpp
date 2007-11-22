@@ -521,7 +521,7 @@ QList<Message> SqliteStorage::requestMsgRange(BufferInfo buffer, int first, int 
 
 QString SqliteStorage::backlogFile(bool createPath) {
   // kinda ugly, but I currently see no other way to do that
-#ifdef _WINDOWS
+#ifdef Q_OS_WIN32
   QString quasselDir = QDir::homePath() + qgetenv("APPDATA") + "\\quassel\\";
 #else
   QString quasselDir = QDir::homePath() + "/.quassel/";

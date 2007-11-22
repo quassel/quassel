@@ -24,6 +24,7 @@
 
 ChatWidget::ChatWidget(QWidget *parent) : QTextEdit(parent) {
   setStyleSheet("background-color: rgba(255, 255, 255, 60%)");
+  setTextInteractionFlags(Qt::TextBrowserInteraction);
 }
 
 void ChatWidget::setContents(QList<ChatLine *> lines) {

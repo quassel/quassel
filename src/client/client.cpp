@@ -20,14 +20,13 @@
 
 #include "client.h"
 
-#include "networkinfo.h"
-#include "ircuser.h"
-#include "ircchannel.h"
-
-#include "message.h"
-
 #include "bufferinfo.h"
 #include "buffertreemodel.h"
+#include "global.h"
+#include "ircchannel.h"
+#include "ircuser.h"
+#include "message.h"
+#include "networkinfo.h"
 #include "quasselui.h"
 #include "signalproxy.h"
 #include "util.h"
