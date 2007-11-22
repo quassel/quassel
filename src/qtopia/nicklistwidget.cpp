@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include "nicklistwidget.h"
-#include "nickmodel.h"
+#include "nicktreemodel.h"
 
 NickListWidget::NickListWidget(QWidget *parent) : QDialog(parent) {
   ui.setupUi(this);
@@ -34,7 +34,7 @@ NickListWidget::~NickListWidget() {
 
 }
 
-void NickListWidget::setNickModel(NickModel *model) {
+void NickListWidget::setNickModel(NickTreeModel *model) {
   ui.nickView->setModel(model);
 
 }

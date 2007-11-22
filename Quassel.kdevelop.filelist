@@ -40,6 +40,8 @@ src/client/mappedselectionmodel.cpp
 src/client/mappedselectionmodel.h
 src/client/modelpropertymapper.cpp
 src/client/modelpropertymapper.h
+src/client/nicktreemodel.cpp
+src/client/nicktreemodel.h
 src/client/quasselui.h
 src/client/selectionmodelsynchronizer.cpp
 src/client/selectionmodelsynchronizer.h
@@ -131,6 +133,7 @@ src/qtopia/ui/coreconnectdlg.ui
 src/qtopia/ui/coreconnectprogressdlg.ui
 src/qtopia/ui/editcoreacctdlg.ui
 src/qtopia/ui/mainwidget.ui
+src/qtopia/ui/nicklistwidget.ui
 src/qtui
 src/qtui/bufferwidget.cpp
 src/qtui/bufferwidget.h

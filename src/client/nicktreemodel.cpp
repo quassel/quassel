@@ -18,20 +18,16 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _NICKMODEL_H_
-#define _NICKMODEL_H_
+#include "nicktreemodel.h"
 
-#include <QAbstractListModel>
 
-class NickModel : public QAbstractListModel {
-  Q_OBJECT
+NickTreeModel::NickTreeModel(QObject *parent) : TreeModel(QList<QVariant>(), parent) {
+  //QStringList list; list << "test1" << "test2";
+  //setStringList(list);
 
-  public:
-    NickModel(QObject *parent = 0);
-    ~NickModel();
+}
 
-  private:
+NickTreeModel::~NickTreeModel() {
 
-};
 
-#endif
+}
