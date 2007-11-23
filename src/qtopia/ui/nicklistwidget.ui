@@ -26,10 +26,17 @@
     <number>1</number>
    </property>
    <item>
-    <widget class="QListView" name="nickView" />
+    <widget class="NickView" name="nickView" />
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>NickView</class>
+   <extends>QTreeView</extends>
+   <header>nickview.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

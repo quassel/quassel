@@ -22,13 +22,15 @@
 #include "buffer.h"
 
 #include "client.h"
+#include "ircchannel.h"
 #include "util.h"
 
 
 Buffer::Buffer(BufferInfo bufferid, QObject *parent)
   : QObject(parent),
     _bufferInfo(bufferid),
-    _active(false)
+    _active(false),
+    _ircChannel(0)
 {
   if(bufferid.buffer().isEmpty())
     _type = StatusType;
@@ -145,6 +147,21 @@ bool Buffer::layoutMsg() {
 void Buffer::processUserInput(QString msg) {
   // TODO User Input processing (plugins) -> well, this goes through MainWin into Core for processing... so...
   emit userInput(_bufferInfo, msg);
+}
+
+IrcChannel *Buffer::ircChannel() const {
+  return _ircChannel;
+}
+
+void Buffer::setIrcChannel(IrcChannel *ircchan) {
+  if(_ircChannel) {
+    disconnect(_ircChannel, 0, this, 0);
+    // TODO: remove model etc
+  }
+  _ircChannel = ircchan;
+  if(_ircChannel) {
+    connect(_ircChannel, SIGNAL(destroyed()), this, SLOT(setIrcChannel()));
+  }
 }
 
 // no longer needed

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-07 by The Quassel Team                             *
+ *   Copyright (C) 2005-07 by the Quassel IRC Team                         *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -42,20 +42,20 @@ class QAbstractItemView;
  *****************************************/
 class BufferTreeItem : public TreeItem {
   Q_OBJECT
-  
+
 public:
   BufferTreeItem(Buffer *, TreeItem *parent = 0);
 
   virtual uint id() const;
   QVariant data(int column, int role) const;
-  
+
   Buffer *buffer() const { return buf; }
   void setActivity(const Buffer::ActivityLevel &);
-  
+
 private:
   QString text(int column) const;
   QColor foreground(int column) const;
-  
+
   Buffer *buf;
   Buffer::ActivityLevel activity;
 };
@@ -65,13 +65,13 @@ private:
  *****************************************/
 class NetworkTreeItem : public TreeItem {
   Q_OBJECT
-  
+
 public:
   NetworkTreeItem(const uint &netid, const QString &, TreeItem *parent = 0);
 
   virtual QVariant data(int column, int row) const;
   virtual uint id() const;
-  
+
 private:
   uint _networkId;
   QString net;
@@ -82,7 +82,7 @@ private:
  *****************************************/
 class BufferTreeModel : public TreeModel {
   Q_OBJECT
-  
+
 public:
   enum myRoles {
     BufferTypeRole = Qt::UserRole,
@@ -90,7 +90,7 @@ public:
     BufferUidRole,
     NetworkIdRole
   };
-  
+
   BufferTreeModel(QObject *parent = 0);
   static QList<QVariant> defaultHeader();
 
@@ -103,7 +103,7 @@ public:
 
   static bool mimeContainsBufferList(const QMimeData *mimeData);
   static QList< QPair<uint, uint> > mimeDataToBufferList(const QMimeData *mimeData);
-  
+
   virtual QStringList mimeTypes() const;
   virtual QMimeData *mimeData(const QModelIndexList &) const;
   virtual bool dropMimeData(const QMimeData *, Qt::DropAction, int, int, const QModelIndex &);
@@ -114,12 +114,12 @@ public slots:
   void setCurrentIndex(const QModelIndex &index, QItemSelectionModel::SelectionFlags command);
   void selectBuffer(Buffer *buffer);
   void bufferActivity(Buffer::ActivityLevel, Buffer *buffer);
-  
+
 signals:
   void bufferSelected(Buffer *);
   void invalidateFilter();
   void selectionChanged(const QModelIndex &);
-    
+
 private:
   bool isBufferIndex(const QModelIndex &) const;
   Buffer *getBufferByIndex(const QModelIndex &) const;

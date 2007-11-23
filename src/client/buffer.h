@@ -22,6 +22,7 @@
 #define _BUFFER_H_
 
 class AbstractUiMsg;
+class IrcChannel;
 
 struct BufferState;
 
@@ -73,6 +74,13 @@ public:
   QString topic() const;
   QString ownNick() const;
 
+  //! Returns a pointer to the associated IrcChannel object for the buffer.
+  /** A buffer has an IrcChannel object only if it is a channel buffer
+   * (i.e. bufferType() == ChannelType), and if it is active at the moment.
+   * \returns A pointer to the associated IrcChannel object, if the buffer is a channel and online; 0 else.
+   */
+  IrcChannel *ircChannel() const;
+
 signals:
   void userInput(const BufferInfo &, QString);
   void nickListChanged(QVariantMap nicks);
@@ -89,6 +97,7 @@ public slots:
   void appendMsg(const Message &);
   void prependMsg(const Message &);
   bool layoutMsg();
+  void setIrcChannel(IrcChannel *chan = 0);
 
   // no longer needed
 //   void setTopic(QString);
@@ -106,6 +115,7 @@ private:
   bool _active;
   Type _type;
   BufferState *state;
+  IrcChannel *_ircChannel;
 
   QList<Message> layoutQueue;
   QList<AbstractUiMsg *> layoutedMsgs;

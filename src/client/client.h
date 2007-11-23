@@ -51,7 +51,7 @@ public:
 
   static QList<NetworkInfo *> networkInfos();
   static NetworkInfo *networkInfo(uint networkid);
-  
+
   static QList<BufferInfo> allBufferInfos();
   static QList<Buffer *> buffers();
   static Buffer *buffer(uint bufferUid);
@@ -68,7 +68,7 @@ public:
 
   static void fakeInput(uint bufferUid, QString message);
   static void fakeInput(BufferInfo bufferInfo, QString message);
-  
+
   static void storeSessionData(const QString &key, const QVariant &data);
   static QVariant retrieveSessionData(const QString &key, const QVariant &def = QVariant());
   static QStringList sessionDataKeys();
@@ -89,7 +89,7 @@ signals:
   void coreConnectionError(QString errorMsg);
   void coreConnectionMsg(const QString &msg);
   void coreConnectionProgress(uint part, uint total);
-    
+
   void showConfigWizard(const QVariantMap &coredata);
 
   void connected();
@@ -104,7 +104,7 @@ public slots:
   //void connectToLocalCore();
   void connectToCore(const QVariantMap &);
   void disconnectFromCore();
-    
+
   void setCoreConfiguration(const QVariantMap &settings);
 
 private slots:
@@ -132,16 +132,17 @@ private slots:
 private slots:
   void bufferDestroyed();
   void networkInfoDestroyed();
+  void ircChannelAdded(QString);
 
 private:
   Client(QObject *parent = 0);
   virtual ~Client();
   void init();
-  
+
   void syncToCore(const QVariant &coreState);
 
   static QPointer<Client> instanceptr;
-  
+
   QPointer<QIODevice> socket;
   QPointer<SignalProxy> _signalProxy;
   QPointer<AbstractUi> mainUi;
@@ -151,7 +152,7 @@ private:
 
   quint32 blockSize;
   bool connectedToCore;
-  
+
   QVariantMap coreConnectionInfo;
   QHash<uint, Buffer *> _buffers;
   QHash<uint, NetworkInfo*> _networkInfo;

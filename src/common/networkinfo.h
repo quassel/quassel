@@ -42,7 +42,7 @@ class NetworkInfo : public QObject {
 
 public:
   NetworkInfo(const uint &networkid, QObject *parent = 0);
-  //  virtual ~NetworkInfo();
+  //virtual ~NetworkInfo();
 
   uint networkId() const;
   bool initialized() const;

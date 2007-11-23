@@ -40,6 +40,10 @@ IrcChannel::IrcChannel(const QString &channelname, NetworkInfo *networkinfo)
   setObjectName(QString::number(networkInfo->networkId()) + "/" +  channelname);
 }
 
+IrcChannel::~IrcChannel() {
+
+}
+
 // ====================
 //  PUBLIC:
 // ====================

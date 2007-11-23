@@ -32,12 +32,13 @@ class IrcUser;
 
 class IrcChannel : public QObject {
   Q_OBJECT
-  
+
   Q_PROPERTY(QString name READ name STORED false)
   Q_PROPERTY(QString topic READ topic WRITE setTopic STORED false)
 
 public:
   IrcChannel(const QString &channelname, NetworkInfo *networkInfo);
+  ~IrcChannel();
 
   bool isKnownUser(IrcUser *ircuser) const;
   bool isValidChannelUserMode(const QString &mode) const;
@@ -46,9 +47,9 @@ public:
 
   QString name() const;
   QString topic() const;
-  
+
   QList<IrcUser *> ircUsers() const;
-  
+
   QString userMode(IrcUser *ircuser) const;
   QString userMode(const QString &nick) const;
 
@@ -64,10 +65,10 @@ public slots:
 
   void setUserModes(IrcUser *ircuser, const QString &modes);
   void setUserModes(const QString &nick, const QString &modes);
-  
+
   void addUserMode(IrcUser *ircuser, const QString &mode);
   void addUserMode(const QString &nick, const QString &mode);
-  
+
   void removeUserMode(IrcUser *ircuser, const QString &mode);
   void removeUserMode(const QString &nick, const QString &mode);
 
@@ -76,7 +77,7 @@ public slots:
 
   // init seters
   void initSetUserModes(const QVariantMap &usermodes);
-  
+
   void setInitialized();
 
 signals:
@@ -87,7 +88,7 @@ signals:
 
   void ircUserJoined(IrcUser *ircuser);
   void ircUserParted(IrcUser *ircuser);
-  
+
   void initDone();
 
 private slots:
@@ -99,7 +100,7 @@ private:
   QString _topic;
 
   QHash<IrcUser *, QString> _userModes; 
-  
+
   NetworkInfo *networkInfo;
 };
 

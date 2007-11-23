@@ -21,14 +21,44 @@
 #ifndef _NICKTREEMODEL_H_
 #define _NICKTREEMODEL_H_
 
+#include "ircuser.h"
 #include "treemodel.h"
 
+//! Represents a single IrcUser within a NickTreeModel.
+class NickTreeItem : public TreeItem {
+  Q_OBJECT
+
+  public:
+    NickTreeItem(IrcUser *ircuser, TreeItem *parent = 0);
+
+    virtual QVariant data(int column, int row) const;
+
+  private:
+
+};
+
+//! Represents a group of nicks, such as Ops, Voiced etc.
+class NickTreeGroupItem : public TreeItem {
+  Q_OBJECT
+
+  public:
+    NickTreeGroupItem(const QString &title, TreeItem *parent = 0);
+
+    virtual QVariant data(int column, int row) const;
+
+  private:
+
+};
+
+//! Represents the IrcUsers in a given IrcChannel.
 class NickTreeModel : public TreeModel {
   Q_OBJECT
 
   public:
     NickTreeModel(QObject *parent = 0);
     virtual ~NickTreeModel();
+
+    static QList<QVariant> defaultHeader();
 
   private:
 

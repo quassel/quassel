@@ -201,6 +201,8 @@ src/uisupport/bufferview.cpp
 src/uisupport/bufferview.h
 src/uisupport/bufferviewfilter.cpp
 src/uisupport/bufferviewfilter.h
+src/uisupport/nickview.cpp
+src/uisupport/nickview.h
 src/uisupport/uistyle.cpp
 src/uisupport/uistyle.h
 src/uisupport/uisupport.pri

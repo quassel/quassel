@@ -18,22 +18,21 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "nicktreemodel.h"
+#ifndef _NICKVIEW_H_
+#define _NICKVIEW_H_
+
+#include <QTreeView>
+
+class NickView : public QTreeView {
+  Q_OBJECT
+
+  public:
+    NickView(QWidget *parent = 0);
+    virtual ~NickView();
 
 
-NickTreeModel::NickTreeModel(QObject *parent) : TreeModel(defaultHeader(), parent) {
-  //QStringList list; list << "test1" << "test2";
-  //setStringList(list);
-
-}
-
-NickTreeModel::~NickTreeModel() {
 
 
-}
+};
 
-QList<QVariant> NickTreeModel::defaultHeader() {
-  QList<QVariant> data;
-  data << tr("Nick");
-  return data;
-}
+#endif

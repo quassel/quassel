@@ -45,13 +45,13 @@ NetworkInfo::NetworkInfo(const uint &networkid, QObject *parent)
 }
 
 // I think this is unnecessary since IrcUsers have us as their daddy :)
-// NetworkInfo::~NetworkInfo() {
+//NetworkInfo::~NetworkInfo() {
 //   QHashIterator<QString, IrcUser *> ircuser(_ircUsers);
 //   while (ircuser.hasNext()) {
 //     ircuser.next();
 //     delete ircuser.value();
 //   }
-// }
+//}
 
 uint NetworkInfo::networkId() const {
   return _networkId;

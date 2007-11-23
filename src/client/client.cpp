@@ -139,6 +139,7 @@ Client::Client(QObject *parent)
 }
 
 Client::~Client() {
+  
 }
 
 void Client::init() {
@@ -281,7 +282,7 @@ void Client::coreSocketDisconnected() {
     net->deleteLater();
   }
   Q_ASSERT(_networkInfo.isEmpty());
-  
+
   coreConnectionInfo.clear();
   sessionData.clear();
   layoutQueue.clear();
@@ -448,6 +449,7 @@ void Client::networkConnected(uint netid) {
     connect(netinfo, SIGNAL(ircUserInitDone()), this, SLOT(updateCoreConnectionProgress()));
     connect(netinfo, SIGNAL(ircChannelInitDone()), this, SLOT(updateCoreConnectionProgress()));
   }
+  connect(netinfo, SIGNAL(ircChannelAdded(QString)), this, SLOT(ircChannelAdded(QString)));
   connect(netinfo, SIGNAL(destroyed()), this, SLOT(networkInfoDestroyed()));
   _networkInfo[netid] = netinfo;
 }
@@ -460,12 +462,21 @@ void Client::networkDisconnected(uint networkid) {
     //buffer->displayMsg(Message(bufferid, Message::Server, tr("Server disconnected."))); FIXME
     buffer->setActive(false);
   }
-  
+
   Q_ASSERT(networkInfo(networkid));
   if(!networkInfo(networkid)->initialized()) {
     qDebug() << "Network" << networkid << "disconnected while not yet initialized!";
     updateCoreConnectionProgress();
   }
+}
+
+void Client::ircChannelAdded(QString chanName) {
+  NetworkInfo *netInfo = qobject_cast<NetworkInfo*>(sender());
+  Q_ASSERT(netInfo);
+  Buffer *buf = buffer(bufferInfo(netInfo->networkName(), chanName));
+  Q_ASSERT(buf);
+  buf->setIrcChannel(netInfo->ircChannel(chanName));
+
 }
 
 void Client::updateBufferInfo(BufferInfo id) {
