@@ -22,8 +22,11 @@
 #define _NICKTREEMODEL_H_
 
 #include "ircuser.h"
-#include "treemodel.h"
+//#include "treemodel.h"
 
+#include <QAbstractItemModel>
+
+/*
 //! Represents a single IrcUser within a NickTreeModel.
 class NickTreeItem : public TreeItem {
   Q_OBJECT
@@ -31,7 +34,7 @@ class NickTreeItem : public TreeItem {
   public:
     NickTreeItem(IrcUser *ircuser, TreeItem *parent = 0);
 
-    virtual QVariant data(int column, int row) const;
+    //virtual QVariant data(int column, int row) const;
 
   private:
 
@@ -44,23 +47,23 @@ class NickTreeGroupItem : public TreeItem {
   public:
     NickTreeGroupItem(const QString &title, TreeItem *parent = 0);
 
-    virtual QVariant data(int column, int row) const;
+    //virtual QVariant data(int column, int row) const;
 
   private:
 
 };
+*/
 
 //! Represents the IrcUsers in a given IrcChannel.
-class NickTreeModel : public TreeModel {
+class NickModel : public QAbstractItemModel {
   Q_OBJECT
 
   public:
-    NickTreeModel(QObject *parent = 0);
-    virtual ~NickTreeModel();
-
-    static QList<QVariant> defaultHeader();
+    NickModel(IrcChannel *);
+    virtual ~NickModel();
 
   private:
+    
 
 };
 

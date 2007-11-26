@@ -20,20 +20,17 @@
 
 #include "nicktreemodel.h"
 
+#include "ircchannel.h"
 
-NickTreeModel::NickTreeModel(QObject *parent) : TreeModel(defaultHeader(), parent) {
+
+NickModel::NickModel(IrcChannel *channel) : QAbstractItemModel(channel) {
   //QStringList list; list << "test1" << "test2";
   //setStringList(list);
 
 }
 
-NickTreeModel::~NickTreeModel() {
+NickModel::~NickModel() {
 
 
 }
 
-QList<QVariant> NickTreeModel::defaultHeader() {
-  QList<QVariant> data;
-  data << tr("Nick");
-  return data;
-}

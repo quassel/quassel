@@ -26,9 +26,9 @@
 #include <QStringList>
 #include <QVariantMap>
 
-class SignalProxy;
-class NetworkInfo;
 class IrcUser;
+class NetworkInfo;
+class SignalProxy;
 
 class IrcChannel : public QObject {
   Q_OBJECT
@@ -53,8 +53,7 @@ public:
   QString userMode(IrcUser *ircuser) const;
   QString userMode(const QString &nick) const;
 
-
-public slots:  
+public slots:
   void setTopic(const QString &topic);
 
   void join(IrcUser *ircuser);
@@ -83,23 +82,28 @@ public slots:
 signals:
   void topicSet(QString topic);
   void userModesSet(QString nick, QString modes);
+  void userModesSet(IrcUser *ircuser, QString modes);
   void userModeAdded(QString nick, QString mode);
+  void userModeAdded(IrcUser *ircuser, QString mode);
   void userModeRemoved(QString nick, QString mode);
+  void userModeRemoved(IrcUser *ircuser, QString mode);
 
   void ircUserJoined(IrcUser *ircuser);
   void ircUserParted(IrcUser *ircuser);
+  void ircUserNickSet(IrcUser *ircuser, QString nick);
 
   void initDone();
 
 private slots:
    void ircUserDestroyed();
+   void ircUserNickSet(QString nick);
 
 private:
   bool _initialized;
   QString _name;
   QString _topic;
 
-  QHash<IrcUser *, QString> _userModes; 
+  QHash<IrcUser *, QString> _userModes;
 
   NetworkInfo *networkInfo;
 };

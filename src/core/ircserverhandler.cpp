@@ -378,7 +378,7 @@ void IrcServerHandler::handle353(QString prefix, QStringList params) {
       mode = networkInfo()->prefixToMode(nick[0]);
       nick = nick.mid(1);
     }
-    
+
     IrcUser *ircuser = networkInfo()->newIrcUser(nick);
     ircuser->joinChannel(channelname);
 

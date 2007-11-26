@@ -47,5 +47,5 @@ pkg.desc=Quassel IRC, a next-gen IRC client
 pkg.version=0.0.1-1
 pkg.maintainer=www.quassel-irc.org
 pkg.license=GPL
-pkg.domain=docapi,pim,profiles,window,qdl,qds
+pkg.domain=docapi,pim,profiles,window,qdl,qds,doc_write
 

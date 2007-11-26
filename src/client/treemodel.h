@@ -32,39 +32,39 @@
 class TreeItem : public QObject {
   Q_OBJECT
   Q_PROPERTY(uint id READ id)
-  
+
 public:
   TreeItem(const QList<QVariant> &data, TreeItem *parent = 0);
   TreeItem(TreeItem *parent = 0);
   virtual ~TreeItem();
-  
+
   void appendChild(TreeItem *child);
   void removeChild(int row);
-                   
+
   virtual uint id() const;
-  
+
   TreeItem *child(int row) const;
   TreeItem *childById(const uint &) const;
-  
+
   int childCount() const;
   int columnCount() const;
-  
+
   virtual QVariant data(int column, int role) const;
-    
+
   Qt::ItemFlags flags() const;
   void setFlags(Qt::ItemFlags);
-  
+
   int row() const;
   TreeItem *parent();
 
 
 private slots:
   void childDestroyed();
- 
-  
+
+
 protected:
   QList<QVariant> itemData;
-  
+
 private:
   QList<TreeItem *> _childItems;
   QHash<uint, TreeItem *> _childHash; // uint to be compatible to qHash functions
@@ -78,11 +78,11 @@ private:
  *****************************************/
 class TreeModel : public QAbstractItemModel {
   Q_OBJECT
-  
+
 public:
   TreeModel(const QList<QVariant> &, QObject *parent = 0);
   virtual ~TreeModel();
-  
+
   QVariant data(const QModelIndex &index, int role) const;
   virtual Qt::ItemFlags flags(const QModelIndex &index) const;
   QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;

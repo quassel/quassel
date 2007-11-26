@@ -32,7 +32,7 @@ class IrcChannel;
 
 class IrcUser : public QObject {
   Q_OBJECT
-  
+
   Q_PROPERTY(QString user READ user WRITE setUser STORED false)
   Q_PROPERTY(QString host READ host WRITE setHost STORED false)
   Q_PROPERTY(QString nick READ nick WRITE setNick STORED false)
@@ -40,7 +40,7 @@ class IrcUser : public QObject {
   Q_PROPERTY(QStringList channels READ channels STORED false)
   //  Q_PROPERTY(QStringList usermodes READ usermodes WRITE setUsermodes)
 
-  
+
 public:
   IrcUser(const QString &hostmask, NetworkInfo *networkInfo);
   virtual ~IrcUser();
@@ -55,13 +55,13 @@ public:
   QString userModes() const;
 
   QStringList channels() const;
-    
-public slots:  
+
+public slots:
   void setUser(const QString &user);
   void setHost(const QString &host);
   void setNick(const QString &nick);
   void updateHostmask(const QString &mask);
-					  
+
   void setUserModes(const QString &modes);
 
   void joinChannel(const QString &channel);
@@ -72,7 +72,7 @@ public slots:
 
   // init seters
   void initSetChannels(const QStringList channels);
-  
+
   void setInitialized();
 
 signals:

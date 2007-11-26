@@ -21,6 +21,7 @@
 #include "ircchannel.h"
 
 #include "networkinfo.h"
+//#include "nicktreemodel.h"
 #include "signalproxy.h"
 #include "ircuser.h"
 
@@ -111,6 +112,7 @@ void IrcChannel::join(IrcUser *ircuser) {
   if(!_userModes.contains(ircuser) && ircuser) {
     _userModes[ircuser] = QString();
     ircuser->joinChannel(name());
+    connect(ircuser, SIGNAL(nickSet(QString)), this, SLOT(ircUserNickSet(QString)));
     connect(ircuser, SIGNAL(destroyed()), this, SLOT(ircUserDestroyed()));
     // if you wonder why there is no counterpart to ircUserJoined:
     // the joines are propagted by the ircuser. the signal ircUserJoined is only for convenience
@@ -141,6 +143,7 @@ void IrcChannel::setUserModes(IrcUser *ircuser, const QString &modes) {
   if(isKnownUser(ircuser)) {
     _userModes[ircuser] = modes;
     emit userModesSet(ircuser->nick(), modes);
+    emit userModesSet(ircuser, modes);
   }
 }
 
@@ -156,6 +159,7 @@ void IrcChannel::addUserMode(IrcUser *ircuser, const QString &mode) {
   if(!_userModes[ircuser].contains(mode)) {
     _userModes[ircuser] += mode;
     emit userModeAdded(ircuser->nick(), mode);
+    emit userModeAdded(ircuser, mode);
   }
 
 }
@@ -164,15 +168,15 @@ void IrcChannel::addUserMode(const QString &nick, const QString &mode) {
   addUserMode(networkInfo->ircUser(nick), mode);
 }
 
-
 // REMOVE USER MODE
-void IrcChannel::removeUserMode(IrcUser *ircuser, const QString &mode) {
+void IrcChannel::removeUserMode(IrcUser *ircuser, const QString &mode) { qDebug() << "remove mode:" << ircuser->nick() << mode;
   if(!isKnownUser(ircuser) || !isValidChannelUserMode(mode))
     return;
 
   if(_userModes[ircuser].contains(mode)) {
     _userModes[ircuser].remove(mode);
     emit userModeRemoved(ircuser->nick(), mode);
+    emit userModeRemoved(ircuser, mode);
   }
 
 }
@@ -204,6 +208,12 @@ void IrcChannel::ircUserDestroyed() {
   IrcUser *ircUser = static_cast<IrcUser *>(sender());
   Q_ASSERT(ircUser);
   _userModes.remove(ircUser);
+}
+
+void IrcChannel::ircUserNickSet(QString nick) {
+  IrcUser *ircUser = qobject_cast<IrcUser *>(sender());
+  Q_ASSERT(ircUser);
+  emit ircUserNickSet(ircUser, nick);
 }
 
 void IrcChannel::setInitialized() {

@@ -356,8 +356,8 @@ void NetworkInfo::determinePrefixes() {
     _prefixes = PREFIX.section(")", 1);
     _prefixModes = PREFIX.mid(1).section(")", 0, 0);
   } else {
-    QString defaultPrefixes("@%+");
-    QString defaultPrefixModes("ohv");
+    QString defaultPrefixes("~&@%+");
+    QString defaultPrefixModes("qaohv");
 
     // we just assume that in PREFIX are only prefix chars stored
     for(int i = 0; i < defaultPrefixes.size(); i++) {
