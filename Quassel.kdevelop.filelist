@@ -40,8 +40,8 @@ src/client/mappedselectionmodel.cpp
 src/client/mappedselectionmodel.h
 src/client/modelpropertymapper.cpp
 src/client/modelpropertymapper.h
-src/client/nicktreemodel.cpp
-src/client/nicktreemodel.h
+src/client/nickmodel.cpp
+src/client/nickmodel.h
 src/client/quasselui.h
 src/client/selectionmodelsynchronizer.cpp
 src/client/selectionmodelsynchronizer.h
@@ -67,14 +67,10 @@ src/common/message.cpp
 src/common/message.h
 src/common/networkinfo.cpp
 src/common/networkinfo.h
-src/common/nickmodel.cpp
-src/common/nickmodel.h
 src/common/settings.cpp
 src/common/settings.h
 src/common/signalproxy.cpp
 src/common/signalproxy.h
-src/common/synchronizer.cpp
-src/common/synchronizer.h
 src/common/types.h
 src/common/util.cpp
 src/common/util.h
@@ -125,9 +121,7 @@ src/qtopia/qtopiauistyle.cpp
 src/qtopia/qtopiauistyle.h
 src/qtopia/topicbar.cpp
 src/qtopia/topicbar.h
-src/qtopia/types.h
 src/qtopia/ui
-src/qtopia/ui/bufferview.ui
 src/qtopia/ui/bufferviewwidget.ui
 src/qtopia/ui/coreconnectdlg.ui
 src/qtopia/ui/coreconnectprogressdlg.ui

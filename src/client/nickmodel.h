@@ -18,13 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _NICKTREEMODEL_H_
-#define _NICKTREEMODEL_H_
-
-#include "ircuser.h"
-//#include "treemodel.h"
+#ifndef _NICKMODEL_H_
+#define _NICKMODEL_H_
 
 #include <QAbstractItemModel>
+
+class IrcChannel;
 
 /*
 //! Represents a single IrcUser within a NickTreeModel.
