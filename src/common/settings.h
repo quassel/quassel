@@ -23,9 +23,9 @@
 
 #include <QString>
 #include <QVariant>
+#include <QSettings>
 
-class Settings : public QObject {
-  Q_OBJECT
+class Settings : private QSettings {
 
   public:
     virtual ~Settings();
@@ -52,6 +52,7 @@ class Settings : public QObject {
     virtual void removeLocalKey(const QString &key);
 
     QString group;
+
 };
 
 

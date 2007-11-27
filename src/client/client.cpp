@@ -103,10 +103,11 @@ Buffer *Client::buffer(BufferInfo id) {
 
 // FIXME switch to netids!
 // WHEN IS THIS NEEDED ANYHOW!?
+// ...only for finding the Buffer for a channel, I guess...
 BufferInfo Client::bufferInfo(QString net, QString buf) {
   foreach(Buffer *buffer_, buffers()) {
     BufferInfo bufferInfo = buffer_->bufferInfo();
-    if(bufferInfo.network() == net && bufferInfo.buffer() == buf)
+    if(!bufferInfo.network().compare(net, Qt::CaseInsensitive) && !bufferInfo.buffer().compare(buf, Qt::CaseInsensitive))
       return bufferInfo;
   }
   Q_ASSERT(false);  // should never happen!

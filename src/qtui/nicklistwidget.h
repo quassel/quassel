@@ -36,6 +36,7 @@ class NickListWidget : public QWidget {
 
   public slots:
     void setBuffer(Buffer *);
+    void reset();
 
   private:
     Ui::NickListWidget ui;

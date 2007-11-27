@@ -22,7 +22,6 @@
 #include "nickmodel.h"
 
 #include <QHeaderView>
-#include <QSortFilterProxyModel>
 
 NickView::NickView(QWidget *parent) : QTreeView(parent) {
   setGeometry(0, 0, 30, 30);
@@ -47,5 +46,4 @@ NickView::~NickView() {
 void NickView::setModel(NickModel *model) {
   filteredModel->setSourceModel(model);
   expandAll();
-  
 }

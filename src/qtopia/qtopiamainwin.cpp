@@ -31,6 +31,8 @@
 #include "qtopiaui.h"
 #include "signalproxy.h"
 
+#include <Qtopia>
+
 // This constructor is the first thing to be called for a Qtopia app, so we do the init stuff
 // here (rather than in a main.cpp).
 QtopiaMainWin::QtopiaMainWin(QWidget *parent, Qt::WFlags flags) : QMainWindow(parent, flags) {
@@ -47,10 +49,6 @@ QtopiaMainWin::QtopiaMainWin(QWidget *parent, Qt::WFlags flags) : QMainWindow(pa
   QCoreApplication::setApplicationName("Quassel IRC");
   QCoreApplication::setOrganizationName("Quassel IRC Team");
 
-  QSettings s(QSettings::UserScope, "quassel", "quassel");
-  s.setValue("foo", "bar");
-  
-  //Style::init();
   QtopiaUi *gui = new QtopiaUi(this);
   Client::init(gui);
 

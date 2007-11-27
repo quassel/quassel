@@ -25,7 +25,6 @@
 #include "settings.h"
 
 class CoreSettings : public Settings {
-  Q_OBJECT
   
   public:
     virtual ~CoreSettings();

@@ -22,11 +22,33 @@
 #include <QStringList>
 #include <QDebug>
 
+#ifdef Q_WS_QWS
+#include <Qtopia>
+#include <QCoreApplication>
+#endif
+
 #include "settings.h"
 
-Settings::Settings(QString g) : QObject(), group(g) {
+Settings::Settings(QString g) : group(g) {
 
-
+#ifndef Q_WS_QWS
+  QSettings();
+#else
+  // FIXME sandboxDir() is not currently working correctly...
+  //if(Qtopia::sandboxDir().isEmpty()) QSettings();
+  //else QSettings(Qtopia::sandboxDir() + "/etc/QuasselIRC.conf", QSettings::NativeFormat);
+  // ...so we have to use a workaround:
+  /*
+  QString appPath = QCoreApplication::applicationFilePath();
+  if(appPath.startsWith(Qtopia::packagePath())) {
+    QString sandboxPath = appPath.left(Qtopia::packagePath().length() + 32);
+    QSettings(sandboxPath + "/etc/QuasselIRC.conf", QSettings::IniFormat);
+  } else {
+    QSettings();
+  }
+  */
+  QSettings();
+#endif
 }
 
 Settings::~Settings() {
@@ -39,38 +61,41 @@ void Settings::setGroup(QString g) {
 }
 
 QStringList Settings::allLocalKeys() {
-  QSettings s;
-  s.beginGroup(group);
-  return s.allKeys();
+  beginGroup(group);
+  QStringList res = allKeys();
+  endGroup();
+  return res;
 }
 
 QStringList Settings::localChildKeys() {
-  QSettings s;
-  s.beginGroup(group);
-  return s.childKeys();
+  beginGroup(group);
+  QStringList res = childKeys();
+  endGroup();
+  return res;
 }
 
 QStringList Settings::localChildGroups() {
-  QSettings s;
-  s.beginGroup(group);
-  return s.childGroups();
+  beginGroup(group);
+  QStringList res = childGroups();
+  endGroup();
+  return res;
 }
 
 void Settings::setLocalValue(const QString &key, const QVariant &data) {
-  QSettings s;
-  s.beginGroup(group);
-  s.setValue(key, data);
+  beginGroup(group);
+  setValue(key, data);
+  endGroup();
 }
 
 QVariant Settings::localValue(const QString &key, const QVariant &def) {
-  QSettings s;
-  s.beginGroup(group);
-  return s.value(key, def);
+  beginGroup(group);
+  QVariant res = value(key, def);
+  endGroup();
+  return res;
 }
 
 void Settings::removeLocalKey(const QString &key) {
-  QSettings s;
-  s.beginGroup(group);
-  s.remove(key);
+  beginGroup(group);
+  remove(key);
+  endGroup();
 }
-

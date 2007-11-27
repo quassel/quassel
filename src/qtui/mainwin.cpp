@@ -207,6 +207,7 @@ void MainWin::disconnectedFromCore() {
   ui.actionNetworkList->setEnabled(false);
   ui.bufferWidget->hide();
   ui.actionConnectCore->setEnabled(true);
+  nickListWidget->reset();
   statusBar()->showMessage(tr("Not connected to core."));
 }
 

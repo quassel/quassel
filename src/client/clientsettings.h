@@ -24,7 +24,6 @@
 #include "settings.h"
 
 class ClientSettings : public Settings {
-  Q_OBJECT
 
   public:
     virtual ~ClientSettings();
@@ -41,7 +40,6 @@ class ClientSettings : public Settings {
 };
 
 class AccountSettings : public ClientSettings {
-  Q_OBJECT
 
   public:
     AccountSettings();

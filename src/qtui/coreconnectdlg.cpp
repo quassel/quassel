@@ -59,8 +59,8 @@ CoreConnectDlg::CoreConnectDlg(QWidget *parent, bool /*doAutoConnect*/) : QDialo
   connect(Client::instance(), SIGNAL(showConfigWizard(const QVariantMap &)), this, SLOT(showConfigWizard(const QVariantMap &)));
 
   AccountSettings s;
+  QString lastacc = s.lastAccount();
   ui.accountList->addItems(s.knownAccounts());
-  curacc = s.lastAccount();
   if(!ui.accountList->count()) {
     //if(doAutoConnect) reject();
 
@@ -90,7 +90,7 @@ CoreConnectDlg::CoreConnectDlg(QWidget *parent, bool /*doAutoConnect*/) : QDialo
     autoConnectToggled(true);
     */
   } else {
-    if(!curacc.isEmpty()) {
+    if(!lastacc.isEmpty()) {
       //if(doAutoConnect) { qDebug() << "auto";
       //  AccountSettings s;
       //  int idx = ui.accountList->findText(s.autoConnectAccount());
@@ -100,7 +100,7 @@ CoreConnectDlg::CoreConnectDlg(QWidget *parent, bool /*doAutoConnect*/) : QDialo
       //    doConnect();
       //  }
       //} else {
-        int idx = ui.accountList->findText(curacc);
+        int idx = ui.accountList->findText(lastacc);
         ui.accountList->setCurrentIndex(idx);
       //}
     }

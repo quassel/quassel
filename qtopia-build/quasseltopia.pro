@@ -29,12 +29,12 @@ FORMS   = $$FRMS
 
 desktop.files=../src/qtopia/quasseltopia.desktop
 desktop.path=/apps/Applications
-desktop.trtarget=example-nct
+#desktop.trtarget=example-nct
 desktop.hint=nct desktop
 
-#pics.files=pics/*
-#pics.path=/pics/example
-#pics.hint=pics
+pics.files=../src/images/qirc-icon.png
+pics.path=/pics/quasselirc/
+pics.hint=pics
 
 #help.source=help
 #help.files=example.html
@@ -47,5 +47,5 @@ pkg.desc=Quassel IRC, a next-gen IRC client
 pkg.version=0.0.1-1
 pkg.maintainer=www.quassel-irc.org
 pkg.license=GPL
-pkg.domain=docapi,pim,profiles,window,qdl,qds,doc_write
+pkg.domain=window,net
 

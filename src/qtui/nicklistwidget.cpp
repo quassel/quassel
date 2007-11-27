@@ -29,6 +29,10 @@ NickListWidget::NickListWidget(QWidget *parent) : QWidget(parent) {
 }
 
 void NickListWidget::setBuffer(Buffer *buf) {
+  if(!buf) {
+    ui.stackedWidget->setCurrentWidget(ui.emptyPage);
+    return;
+  }
   if(buf->bufferType() != Buffer::ChannelType) {
     ui.stackedWidget->setCurrentWidget(ui.emptyPage);
   } else {
@@ -41,5 +45,12 @@ void NickListWidget::setBuffer(Buffer *buf) {
       ui.stackedWidget->addWidget(view);
       ui.stackedWidget->setCurrentWidget(view);
     }
+  }
+}
+
+void NickListWidget::reset() {
+  foreach(NickView *view, nickViews.values()) {
+    ui.stackedWidget->removeWidget(view);
+    view->deleteLater();
   }
 }
