@@ -23,6 +23,7 @@
 
 class AbstractUiMsg;
 class IrcChannel;
+class NickModel;
 
 struct BufferState;
 
@@ -80,6 +81,7 @@ public:
    * \returns A pointer to the associated IrcChannel object, if the buffer is a channel and online; 0 else.
    */
   IrcChannel *ircChannel() const;
+  NickModel *nickModel() const;
 
 signals:
   void userInput(const BufferInfo &, QString);
@@ -115,7 +117,8 @@ private:
   bool _active;
   Type _type;
   BufferState *state;
-  IrcChannel *_ircChannel;
+  QPointer<IrcChannel> _ircChannel;
+  QPointer<NickModel> _nickModel;
 
   QList<Message> layoutQueue;
   QList<AbstractUiMsg *> layoutedMsgs;

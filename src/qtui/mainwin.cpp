@@ -24,6 +24,7 @@
 #include "chatline-old.h"
 #include "client.h"
 #include "coreconnectdlg.h"
+#include "nicklistwidget.h"
 #include "serverlist.h"
 #include "settingsdlg.h"
 //#include "settingspage.h"
@@ -68,6 +69,18 @@ void MainWin::init() {
   setupMenus();
   setupViews();
 
+  // create nick dock
+  nickDock = new QDockWidget("Nicks", this);
+  nickDock->setObjectName("NickDock");
+  nickDock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
+
+  nickListWidget = new NickListWidget(nickDock);
+  nickDock->setWidget(nickListWidget);
+
+  addDockWidget(Qt::RightDockWidgetArea, nickDock);
+  ui.menuViews->addAction(nickDock->toggleViewAction());
+
+  // restore mainwin state
   QSettings s;
   s.beginGroup("Geometry");
   //resize(s.value("MainWinSize", QSize(500, 400)).toSize());
@@ -139,9 +152,6 @@ void MainWin::setupMenus() {
   connect(ui.actionSettingsDlg, SIGNAL(triggered()), this, SLOT(showSettingsDlg()));
   ui.actionSettingsDlg->setEnabled(false);
   connect(ui.actionAboutQt, SIGNAL(triggered()), QApplication::instance(), SLOT(aboutQt()));
-  // for debugging
-  connect(ui.actionImportBacklog, SIGNAL(triggered()), this, SLOT(importBacklog()));
-  Client::signalProxy()->attachSignal(this, SIGNAL(importOldBacklog()));
 }
 
 void MainWin::setupViews() {
@@ -259,15 +269,9 @@ void MainWin::showBuffer(Buffer *b) {
   currentBuffer = b->bufferInfo().groupId();
   //emit bufferSelected(b);
   //qApp->processEvents();
-      
   ui.bufferWidget->setBuffer(b);
+  nickListWidget->setBuffer(b);
+  //if(b->bufferType() == Buffer::ChannelType) nickDock->show();
+  //else nickDock->hide();
   //emit bufferSelected(b);
-}
-
-void MainWin::importBacklog() {
-  if(QMessageBox::warning(this, "Import old backlog?", "Do you want to import your old file-based backlog into new the backlog database?<br>"
-                                "<b>This will permanently delete the contents of your database!</b>",
-                                QMessageBox::Yes|QMessageBox::No) == QMessageBox::Yes) {
-    emit importOldBacklog();
-  }
 }

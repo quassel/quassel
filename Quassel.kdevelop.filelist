@@ -155,6 +155,8 @@ src/qtui/identities.cpp
 src/qtui/identities.h
 src/qtui/mainwin.cpp
 src/qtui/mainwin.h
+src/qtui/nicklistwidget.cpp
+src/qtui/nicklistwidget.h
 src/qtui/qtui.cpp
 src/qtui/qtui.h
 src/qtui/qtui.pri

@@ -46,7 +46,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>22</height>
+     <height>28</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuConnection" >
@@ -96,7 +96,6 @@
     <property name="title" >
      <string>Debug</string>
     </property>
-    <addaction name="actionImportBacklog" />
    </widget>
    <widget class="QMenu" name="menuCore" >
     <property name="title" >

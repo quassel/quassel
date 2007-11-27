@@ -23,6 +23,7 @@
 
 #include "client.h"
 #include "ircchannel.h"
+#include "nickmodel.h"
 #include "util.h"
 
 
@@ -30,7 +31,7 @@ Buffer::Buffer(BufferInfo bufferid, QObject *parent)
   : QObject(parent),
     _bufferInfo(bufferid),
     _active(false),
-    _ircChannel(0)
+    _ircChannel(0), _nickModel(0)
 {
   if(bufferid.buffer().isEmpty())
     _type = StatusType;
@@ -39,6 +40,7 @@ Buffer::Buffer(BufferInfo bufferid, QObject *parent)
   else
     _type = QueryType;
 
+  _nickModel = new NickModel(0, this);
 /*
   QSettings s;
   s.beginGroup(QString("GUI/BufferStates/%1/%2").arg(netname).arg(bufname));
@@ -149,6 +151,10 @@ void Buffer::processUserInput(QString msg) {
   emit userInput(_bufferInfo, msg);
 }
 
+NickModel *Buffer::nickModel() const {
+  return _nickModel;
+}
+
 IrcChannel *Buffer::ircChannel() const {
   return _ircChannel;
 }
@@ -156,12 +162,12 @@ IrcChannel *Buffer::ircChannel() const {
 void Buffer::setIrcChannel(IrcChannel *ircchan) {
   if(_ircChannel) {
     disconnect(_ircChannel, 0, this, 0);
-    // TODO: remove model etc
   }
   _ircChannel = ircchan;
   if(_ircChannel) {
     connect(_ircChannel, SIGNAL(destroyed()), this, SLOT(setIrcChannel()));
   }
+  _nickModel->setIrcChannel(ircChannel());
 }
 
 // no longer needed

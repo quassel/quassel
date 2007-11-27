@@ -32,6 +32,7 @@ class Buffer;
 class SettingsDlg;
 class QtUi;
 class Message;
+class NickListWidget;
 
 //!\brief The main window of Quassel's QtUi.
 class MainWin : public QMainWindow {
@@ -63,13 +64,10 @@ class MainWin : public QMainWindow {
     void showBuffer(BufferInfo);
     void showBuffer(Buffer *);
 
-    void importBacklog();
-
   signals:
     void connectToCore(const QVariantMap &connInfo);
     void disconnectFromCore();
     void requestBacklog(BufferInfo, QVariant, QVariant);
-    void importOldBacklog();
 
   private:
     Ui::MainWin ui;
@@ -91,6 +89,8 @@ class MainWin : public QMainWindow {
     QString currentProfile;
 
     QList<QDockWidget *> netViews;
+    QDockWidget *nickDock;
+    NickListWidget *nickListWidget;
 
     friend class QtUi;
 };

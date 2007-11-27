@@ -89,15 +89,15 @@ QList<IrcUser *> IrcChannel::ircUsers() const {
   return _userModes.keys();
 }
 
-QString IrcChannel::userMode(IrcUser *ircuser) const {
+QString IrcChannel::userModes(IrcUser *ircuser) const {
   if(_userModes.contains(ircuser))
     return _userModes[ircuser];
   else
     return QString();
 }
 
-QString IrcChannel::userMode(const QString &nick) const {
-  return userMode(networkInfo->ircUser(nick));
+QString IrcChannel::userModes(const QString &nick) const {
+  return userModes(networkInfo->ircUser(nick));
 }
 
 // ====================
@@ -143,7 +143,7 @@ void IrcChannel::setUserModes(IrcUser *ircuser, const QString &modes) {
   if(isKnownUser(ircuser)) {
     _userModes[ircuser] = modes;
     emit userModesSet(ircuser->nick(), modes);
-    emit userModesSet(ircuser, modes);
+    emit ircUserModesSet(ircuser, modes);
   }
 }
 
@@ -155,11 +155,11 @@ void IrcChannel::setUserModes(const QString &nick, const QString &modes) {
 void IrcChannel::addUserMode(IrcUser *ircuser, const QString &mode) {
   if(!isKnownUser(ircuser) || !isValidChannelUserMode(mode))
     return;
-  
+
   if(!_userModes[ircuser].contains(mode)) {
     _userModes[ircuser] += mode;
     emit userModeAdded(ircuser->nick(), mode);
-    emit userModeAdded(ircuser, mode);
+    emit ircUserModeAdded(ircuser, mode);
   }
 
 }
@@ -169,14 +169,14 @@ void IrcChannel::addUserMode(const QString &nick, const QString &mode) {
 }
 
 // REMOVE USER MODE
-void IrcChannel::removeUserMode(IrcUser *ircuser, const QString &mode) { qDebug() << "remove mode:" << ircuser->nick() << mode;
+void IrcChannel::removeUserMode(IrcUser *ircuser, const QString &mode) {
   if(!isKnownUser(ircuser) || !isValidChannelUserMode(mode))
     return;
 
   if(_userModes[ircuser].contains(mode)) {
     _userModes[ircuser].remove(mode);
     emit userModeRemoved(ircuser->nick(), mode);
-    emit userModeRemoved(ircuser, mode);
+    emit ircUserModeRemoved(ircuser, mode);
   }
 
 }

@@ -18,25 +18,28 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _NICKVIEW_H_
-#define _NICKVIEW_H_
+#include "nicklistwidget.h"
 
-#include <QTreeView>
+#include "buffer.h"
+#include "nickview.h"
 
-class NickModel;
+NickListWidget::NickListWidget(QWidget *parent) : QWidget(parent) {
+  ui.setupUi(this);
 
-class NickView : public QTreeView {
-  Q_OBJECT
+}
 
-  public:
-    NickView(QWidget *parent = 0);
-    virtual ~NickView();
-
-  public slots:
-    void setModel(NickModel *model);
-
-
-
-};
-
-#endif
+void NickListWidget::setBuffer(Buffer *buf) {
+  if(buf->bufferType() != Buffer::ChannelType) {
+    ui.stackedWidget->setCurrentWidget(ui.emptyPage);
+  } else {
+    if(nickViews.contains(buf)) {
+      ui.stackedWidget->setCurrentWidget(nickViews.value(buf));
+    } else {
+      NickView *view = new NickView(this);
+      view->setModel(buf->nickModel());
+      nickViews[buf] = view;
+      ui.stackedWidget->addWidget(view);
+      ui.stackedWidget->setCurrentWidget(view);
+    }
+  }
+}

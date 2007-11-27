@@ -50,8 +50,8 @@ public:
 
   QList<IrcUser *> ircUsers() const;
 
-  QString userMode(IrcUser *ircuser) const;
-  QString userMode(const QString &nick) const;
+  QString userModes(IrcUser *ircuser) const;
+  QString userModes(const QString &nick) const;
 
 public slots:
   void setTopic(const QString &topic);
@@ -82,15 +82,18 @@ public slots:
 signals:
   void topicSet(QString topic);
   void userModesSet(QString nick, QString modes);
-  void userModesSet(IrcUser *ircuser, QString modes);
+  //void userModesSet(IrcUser *ircuser, QString modes);
   void userModeAdded(QString nick, QString mode);
-  void userModeAdded(IrcUser *ircuser, QString mode);
+  //void userModeAdded(IrcUser *ircuser, QString mode);
   void userModeRemoved(QString nick, QString mode);
-  void userModeRemoved(IrcUser *ircuser, QString mode);
+  //void userModeRemoved(IrcUser *ircuser, QString mode);
 
   void ircUserJoined(IrcUser *ircuser);
   void ircUserParted(IrcUser *ircuser);
   void ircUserNickSet(IrcUser *ircuser, QString nick);
+  void ircUserModeAdded(IrcUser *ircuser, QString mode);
+  void ircUserModeRemoved(IrcUser *ircuser, QString mode);
+  void ircUserModesSet(IrcUser *ircuser, QString modes);
 
   void initDone();
 

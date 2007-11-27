@@ -22,47 +22,51 @@
 #define _NICKMODEL_H_
 
 #include <QAbstractItemModel>
+#include <QVector>
 
 class IrcChannel;
-
-/*
-//! Represents a single IrcUser within a NickTreeModel.
-class NickTreeItem : public TreeItem {
-  Q_OBJECT
-
-  public:
-    NickTreeItem(IrcUser *ircuser, TreeItem *parent = 0);
-
-    //virtual QVariant data(int column, int row) const;
-
-  private:
-
-};
-
-//! Represents a group of nicks, such as Ops, Voiced etc.
-class NickTreeGroupItem : public TreeItem {
-  Q_OBJECT
-
-  public:
-    NickTreeGroupItem(const QString &title, TreeItem *parent = 0);
-
-    //virtual QVariant data(int column, int row) const;
-
-  private:
-
-};
-*/
+class IrcUser;
 
 //! Represents the IrcUsers in a given IrcChannel.
+/** This model is a wrapper around the nicks/IrcUsers stored in an IrcChannel. It provides a tree with two,
+ *  levels, where the top-level items are the categories (such as Ops, Voiced etc), and the second-level items
+ *  the actual nicks/users. Several roles are provided to access information about a nick.
+ *
+ *  Note that the nicks are not sorted in any way. Use a QSortFilterProxyModel to do that instead.
+ */
 class NickModel : public QAbstractItemModel {
   Q_OBJECT
 
   public:
-    NickModel(IrcChannel *);
+    NickModel(IrcChannel *channel = 0, QObject *parent = 0);
     virtual ~NickModel();
 
+    virtual QModelIndex index(int row, int col, const QModelIndex &parent) const;
+    virtual QModelIndex parent(const QModelIndex &index) const;
+    virtual int rowCount(const QModelIndex &) const;
+    virtual int columnCount(const QModelIndex &) const;
+    virtual QVariant data(const QModelIndex &, int role) const;
+    virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+
+    IrcChannel *ircChannel() const;
+
+    QModelIndex indexOfUser(IrcUser *) const;
+    int categoryFromModes(const QString &modes) const;
+    int categoryFromIndex(const QModelIndex &index) const;
+    int userCategory(IrcUser *) const;
+
+  public slots:
+    void setIrcChannel(IrcChannel *);
+    void addUser(IrcUser *);
+    void removeUser(IrcUser *);
+    void removeUser(const QModelIndex &);
+    void renameUser(IrcUser *);
+    void changeUserModes(IrcUser *);
+
   private:
-    
+
+    IrcChannel *_ircChannel;
+    QVector<QList<IrcUser *> > users;
 
 };
 

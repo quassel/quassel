@@ -19,9 +19,12 @@
  ***************************************************************************/
 
 #include "nickview.h"
+#include "nickmodel.h"
+
 
 NickView::NickView(QWidget *parent) : QTreeView(parent) {
-
+  setGeometry(0, 0, 30, 30);
+  //setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 
 
 }
@@ -31,3 +34,6 @@ NickView::~NickView() {
 
 }
 
+void NickView::setModel(NickModel *model) {
+  QTreeView::setModel(model);
+}
