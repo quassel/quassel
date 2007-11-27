@@ -22,6 +22,7 @@
 #define _NICKMODEL_H_
 
 #include <QAbstractItemModel>
+#include <QSortFilterProxyModel>
 #include <QVector>
 
 class IrcChannel;
@@ -32,12 +33,14 @@ class IrcUser;
  *  levels, where the top-level items are the categories (such as Ops, Voiced etc), and the second-level items
  *  the actual nicks/users. Several roles are provided to access information about a nick.
  *
- *  Note that the nicks are not sorted in any way. Use a QSortFilterProxyModel to do that instead.
+ *  Note that the nicks are not sorted in any way. Use a FilteredNickModel instead.
  */
 class NickModel : public QAbstractItemModel {
   Q_OBJECT
 
   public:
+    enum NickModelRole { SortKeyRole = Qt::UserRole };
+
     NickModel(IrcChannel *channel = 0, QObject *parent = 0);
     virtual ~NickModel();
 
@@ -67,6 +70,18 @@ class NickModel : public QAbstractItemModel {
 
     IrcChannel *_ircChannel;
     QVector<QList<IrcUser *> > users;
+
+};
+
+//! This ProxyModel can be used on top of a NickModel in order to provide a sorted nicklist and to hide unused categories.
+class FilteredNickModel : public QSortFilterProxyModel {
+  Q_OBJECT
+
+  public:
+    FilteredNickModel(QObject *parent = 0);
+
+  protected:
+    virtual bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
 
 };
 

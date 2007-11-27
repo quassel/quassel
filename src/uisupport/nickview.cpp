@@ -21,12 +21,22 @@
 #include "nickview.h"
 #include "nickmodel.h"
 
+#include <QHeaderView>
+#include <QSortFilterProxyModel>
 
 NickView::NickView(QWidget *parent) : QTreeView(parent) {
   setGeometry(0, 0, 30, 30);
   //setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 
+  setIndentation(10);
+  header()->hide();
+  header()->hideSection(1);
+  setAnimated(true);
+  setSortingEnabled(true);
+  sortByColumn(0, Qt::AscendingOrder);
 
+  filteredModel = new FilteredNickModel(this);
+  QTreeView::setModel(filteredModel);
 }
 
 NickView::~NickView() {
@@ -35,5 +45,7 @@ NickView::~NickView() {
 }
 
 void NickView::setModel(NickModel *model) {
-  QTreeView::setModel(model);
+  filteredModel->setSourceModel(model);
+  expandAll();
+  
 }

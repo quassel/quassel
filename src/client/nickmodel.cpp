@@ -140,24 +140,31 @@ QVariant NickModel::data(const QModelIndex &index, int role) const {
   }
   int cat = index.internalId();
   if(!cat) { // top-level item (category)
-    if(role ==  Qt::DisplayRole) {
-      QString title;
-      switch(index.row()) {
-        case 0: title = tr("%n Owner(s)", "", users[index.row()].count()); break;
-        case 1: title = tr("%n Admin(s)", "", users[index.row()].count()); break;
-        case 2: title = tr("%n Operator(s)", "", users[index.row()].count()); break;
-        case 3: title = tr("%n Half-Op(s)", "", users[index.row()].count()); break;
-        case 4: title = tr("%n Voiced", "", users[index.row()].count()); break;
-        case 5: title = tr("%n User(s)", "", users[index.row()].count()); break;
-        default:
-          qDebug() << "invalid model index"; return QVariant();
+    switch(role) {
+      case Qt::DisplayRole: {
+        QString title;
+        switch(index.row()) {
+          case 0: title = tr("%n Owner(s)", "", users[index.row()].count()); break;
+          case 1: title = tr("%n Admin(s)", "", users[index.row()].count()); break;
+          case 2: title = tr("%n Operator(s)", "", users[index.row()].count()); break;
+          case 3: title = tr("%n Half-Op(s)", "", users[index.row()].count()); break;
+          case 4: title = tr("%n Voiced", "", users[index.row()].count()); break;
+          case 5: title = tr("%n User(s)", "", users[index.row()].count()); break;
+          default: qDebug() << "invalid model index"; return QVariant();
+        }
+        return title;
       }
-      return title;
-    } else return QVariant();
+      case SortKeyRole: return index.row();
+      default: return QVariant();
+    }
   } else {
     IrcUser *user = users[cat-1][index.row()];
     switch(role) {
       case Qt::DisplayRole:
+        return user->nick();
+      case Qt::ToolTipRole:
+        return user->hostmask();
+      case SortKeyRole:
         return user->nick();
       default:
         return QVariant();
@@ -223,4 +230,23 @@ void NickModel::changeUserModes(IrcUser *user) {
   }
 }
 
+/******************************************************************************************
+ * FilteredNickModel
+ ******************************************************************************************/
+
+FilteredNickModel::FilteredNickModel(QObject *parent) : QSortFilterProxyModel(parent) {
+  setDynamicSortFilter(true);
+  setSortCaseSensitivity(Qt::CaseInsensitive);
+  setSortRole(NickModel::SortKeyRole);
+
+}
+
+// Hide empty categories
+bool FilteredNickModel::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const {
+  if(!source_parent.isValid()) {
+    QModelIndex index = sourceModel()->index(source_row, 0);
+    return sourceModel()->rowCount(index);
+  }
+  return true;
+}
 

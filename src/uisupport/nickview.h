@@ -24,6 +24,8 @@
 #include <QTreeView>
 
 class NickModel;
+class FilteredNickModel;
+class QSortFilterProxyModel;
 
 class NickView : public QTreeView {
   Q_OBJECT
@@ -35,7 +37,8 @@ class NickView : public QTreeView {
   public slots:
     void setModel(NickModel *model);
 
-
+  private:
+    QSortFilterProxyModel *filteredModel;
 
 };
 

@@ -197,6 +197,7 @@ void MainWin::connectedToCore() {
   ui.actionDisconnectCore->setEnabled(true);
   ui.actionNetworkList->setEnabled(true);
   ui.bufferWidget->show();
+  statusBar()->showMessage(tr("Connected to core."));
 }
 
 void MainWin::disconnectedFromCore() {
@@ -206,7 +207,7 @@ void MainWin::disconnectedFromCore() {
   ui.actionNetworkList->setEnabled(false);
   ui.bufferWidget->hide();
   ui.actionConnectCore->setEnabled(true);
-  //qDebug() << "mainwin disconnected";
+  statusBar()->showMessage(tr("Not connected to core."));
 }
 
 AbstractUiMsg *MainWin::layoutMsg(const Message &msg) {
