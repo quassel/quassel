@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-07 by The Quassel IRC Development Team             *
+ *   Copyright (C) 2005-07 by the Quassel IRC Team                         *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -25,13 +25,8 @@
 
 MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
   ui.setupUi(this);
-
-//  ui.bufferLeft->setIcon(QIcon(":icon/left"));
-//  ui.bufferRight->setIcon(QIcon(":icon/right"));
-  //ui.bufferLeft->setIconSize(QSize(10, 10));
-  //ui.bufferRight->setIconSize(QSize(10, 10));
-  //ui.bufferLeft->setMaximumSize(QSize(10,10));
-  //ui.bufferRight->setMaximumSize(QSize(10,10));
+  connect(ui.inputLine, SIGNAL(returnPressed()), this, SLOT(enterPressed()));
+  currentBuffer = 0;
 }
 
 MainWidget::~MainWidget() {
@@ -66,7 +61,18 @@ void MainWidget::setBuffer(Buffer *buf) {
     //connect(buf, SIGNAL(ownNickSet(QString)), this, SLOT(setOwnNick(QString)));
     ui.stack->addWidget(chatWidget);
     chatWidgets.insert(buf, chatWidget);
-    ui.stack->addWidget(chatWidget);
+    chatWidget->setFocusProxy(ui.inputLine);
   } else chatWidget = chatWidgets[buf];
   ui.stack->setCurrentWidget(chatWidget);
+  ui.inputLine->setFocus();
+  currentBuffer = buf;
+}
+
+void MainWidget::enterPressed() {
+  QStringList lines = ui.inputLine->text().split('\n', QString::SkipEmptyParts);
+  foreach(QString msg, lines) {
+    if(msg.isEmpty()) continue;
+    if(currentBuffer) currentBuffer->processUserInput(msg);
+  }
+  ui.inputLine->clear();
 }

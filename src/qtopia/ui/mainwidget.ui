@@ -5,26 +5,33 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>291</width>
-    <height>358</height>
+    <width>240</width>
+    <height>320</height>
    </rect>
   </property>
   <property name="windowTitle" >
    <string>Form</string>
   </property>
   <layout class="QVBoxLayout" >
-   <property name="margin" >
+   <property name="spacing" >
     <number>0</number>
    </property>
-   <property name="spacing" >
+   <property name="leftMargin" >
+    <number>0</number>
+   </property>
+   <property name="topMargin" >
+    <number>0</number>
+   </property>
+   <property name="rightMargin" >
+    <number>0</number>
+   </property>
+   <property name="bottomMargin" >
     <number>0</number>
    </property>
    <item>
     <widget class="TopicBar" name="topicBar" >
      <property name="sizePolicy" >
-      <sizepolicy>
-       <hsizetype>3</hsizetype>
-       <vsizetype>5</vsizetype>
+      <sizepolicy vsizetype="Preferred" hsizetype="MinimumExpanding" >
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -44,11 +51,32 @@
      <property name="currentIndex" >
       <number>0</number>
      </property>
-     <widget class="QWidget" name="page" />
+     <widget class="QWidget" name="page" >
+      <layout class="QVBoxLayout" >
+       <item>
+        <widget class="QLabel" name="label" >
+         <property name="text" >
+          <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'Trebuchet MS'; font-size:10pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;span style=" font-size:29pt; color:#7fff00;">Quassel IRC&lt;/span>&lt;/p>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:29pt; color:#7fff00;">&lt;span style=" font-size:10pt;">mobile edition&lt;/span>&lt;/p>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:29pt; color:#483d8b;">&lt;span style=" font-size:6pt; color:#fff8dc;">Chat anywhere. Comfortably.&lt;/span>&lt;/p>&lt;/body>&lt;/html></string>
+         </property>
+         <property name="scaledContents" >
+          <bool>true</bool>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </item>
    <item>
-    <widget class="QLineEdit" name="inputLine" />
+    <widget class="InputLine" name="inputLine" />
    </item>
   </layout>
  </widget>
@@ -58,7 +86,16 @@
    <extends>QPushButton</extends>
    <header>topicbar.h</header>
   </customwidget>
+  <customwidget>
+   <class>InputLine</class>
+   <extends>QLineEdit</extends>
+   <header>inputline.h</header>
+  </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>inputLine</tabstop>
+  <tabstop>topicBar</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

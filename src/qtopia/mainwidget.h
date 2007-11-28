@@ -36,10 +36,14 @@ class MainWidget : public QWidget {
   public slots:
     void setBuffer(Buffer *);
 
+  private slots:
+    void enterPressed();
+
   private:
     Ui::MainWidget ui;
     QHash<Buffer *, ChatWidget *> chatWidgets;
 
+    Buffer *currentBuffer;
 
 };
 
