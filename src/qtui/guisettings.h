@@ -24,7 +24,6 @@
 #include "clientsettings.h"
 
 class GuiSettings : public ClientSettings {
-  Q_OBJECT
 
   public:
     GuiSettings();
@@ -33,7 +32,6 @@ class GuiSettings : public ClientSettings {
 };
 
 class GuiProfile : public ClientSettings {
-  Q_OBJECT
 
   public:
     GuiProfile();

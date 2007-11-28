@@ -18,19 +18,19 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _CHANNELWIDGETINPUT_H_
-#define _CHANNELWIDGETINPUT_H_
+#ifndef _INPUTLINE_H_
+#define _INPUTLINE_H_
 
 #include <QtGui>
 
 class TabCompleter;
 
-class ChannelWidgetInput : public QLineEdit {
+class InputLine : public QLineEdit {
   Q_OBJECT
 
   public:
-    ChannelWidgetInput(QWidget *parent = 0);
-    ~ChannelWidgetInput();
+    InputLine(QWidget *parent = 0);
+    ~InputLine();
     
   protected:
     virtual bool event(QEvent *);

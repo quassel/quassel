@@ -18,22 +18,22 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "channelwidgetinput.h"
+#include "inputline.h"
 
 #include "tabcompleter.h"
 
-ChannelWidgetInput::ChannelWidgetInput(QWidget *parent) : QLineEdit(parent) {
+InputLine::InputLine(QWidget *parent) : QLineEdit(parent) {
   idx = 0;
   connect(this, SIGNAL(returnPressed()), this, SLOT(enter()));
   tabComplete = new TabCompleter(this);
   connect(this, SIGNAL(nickListUpdated(QStringList)), tabComplete, SLOT(updateNickList(QStringList)));
 }
 
-ChannelWidgetInput::~ChannelWidgetInput() {
+InputLine::~InputLine() {
   delete tabComplete;
 }
 
-void ChannelWidgetInput::keyPressEvent(QKeyEvent * event) {
+void InputLine::keyPressEvent(QKeyEvent * event) {
   if(event->key() == Qt::Key_Tab) { // Tabcomplete
     tabComplete->complete();
     event->accept();
@@ -53,7 +53,7 @@ void ChannelWidgetInput::keyPressEvent(QKeyEvent * event) {
   }
 }
 
-bool ChannelWidgetInput::event(QEvent *e) {
+bool InputLine::event(QEvent *e) {
   if(e->type() == QEvent::KeyPress) {
     keyPressEvent(dynamic_cast<QKeyEvent*>(e));
     return true;
@@ -61,12 +61,12 @@ bool ChannelWidgetInput::event(QEvent *e) {
   return QLineEdit::event(e);
 }
 
-void ChannelWidgetInput::enter() {
+void InputLine::enter() {
   history << text();
   idx = history.count();
 }
 
-void ChannelWidgetInput::updateNickList(QStringList l) {
+void InputLine::updateNickList(QStringList l) {
   nickList = l;
   emit nickListUpdated(l);
 }
