@@ -34,13 +34,13 @@ void ChatWidget::setContents(QList<ChatLine *> lines) {
 }
 
 void ChatWidget::prependMsg(AbstractUiMsg *msg) {
-  ChatLine *line = dynamic_cast<ChatLine*>(msg);
+  ChatLine *line = static_cast<ChatLine*>(msg);
   Q_ASSERT(line);
   prependChatLine(line);
 }
 
 void ChatWidget::appendMsg(AbstractUiMsg *msg) {
-  ChatLine *line = dynamic_cast<ChatLine*>(msg);
+  ChatLine *line = static_cast<ChatLine*>(msg);
   Q_ASSERT(line);
   appendChatLine(line);
 }
