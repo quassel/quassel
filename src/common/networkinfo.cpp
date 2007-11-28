@@ -183,6 +183,14 @@ IrcUser *NetworkInfo::newIrcUser(const QString &hostmask) {
   return  _ircUsers[nick];
 }
 
+void NetworkInfo::removeIrcUser(QString nick) {
+  IrcUser *ircuser;
+  if((ircuser = ircUser(nick)) != 0) {
+    ircuser->deleteLater();
+    emit ircUserRemoved(nick);
+  }
+}
+
 IrcUser *NetworkInfo::ircUser(const QString &nickname) const {
   if(_ircUsers.contains(nickname))
     return _ircUsers[nickname];
@@ -331,7 +339,9 @@ void NetworkInfo::ircUserNickChanged(QString newnick) {
 void NetworkInfo::ircUserDestroyed() {
   IrcUser *ircuser = static_cast<IrcUser *>(sender());
   Q_ASSERT(ircuser);
-  _ircUsers.remove(_ircUsers.key(ircuser));
+  QString nick = _ircUsers.key(ircuser);
+  _ircUsers.remove(nick);
+  emit ircUserRemoved(nick);
 }
 
 void NetworkInfo::channelDestroyed() {

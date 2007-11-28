@@ -56,7 +56,7 @@ bool IrcChannel::isKnownUser(IrcUser *ircuser) const {
     isknown = false;
   }
   
-  if(!_userModes.contains(ircuser) && ircuser) {
+  if(!_userModes.contains(ircuser)) {
     qWarning() << "Channel" << name() << "received data for unknown User" << ircuser->nick();
     isknown = false;
   }
@@ -207,9 +207,8 @@ void IrcChannel::initSetUserModes(const QVariantMap &usermodes) {
 void IrcChannel::ircUserDestroyed() {
   IrcUser *ircUser = static_cast<IrcUser *>(sender());
   Q_ASSERT(ircUser);
-  emit ircUserParted(ircUser);
-  emit ircUserDestroyed(ircUser);
   _userModes.remove(ircUser);
+  emit ircUserParted(ircUser);
 }
 
 void IrcChannel::ircUserNickSet(QString nick) {

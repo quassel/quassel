@@ -89,6 +89,7 @@ public slots:
   void removeSupport(const QString &param);
 
   inline void addIrcUser(const QString &hostmask) { newIrcUser(hostmask); }
+  void removeIrcUser(QString nick);
   
   //init geters
   QVariantMap initSupports() const;
@@ -122,6 +123,8 @@ signals:
   void ircUserAdded(QString hostmask);
   void ircChannelAdded(QString channelname);
 
+  void ircUserRemoved(QString nick);
+  
   void initDone();
   void ircUserInitDone();
   void ircChannelInitDone();

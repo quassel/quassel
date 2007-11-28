@@ -90,7 +90,6 @@ signals:
 
   void ircUserJoined(IrcUser *ircuser);
   void ircUserParted(IrcUser *ircuser);
-  void ircUserDestroyed(IrcUser *ircuser);
   void ircUserNickSet(IrcUser *ircuser, QString nick);
   void ircUserModeAdded(IrcUser *ircuser, QString mode);
   void ircUserModeRemoved(IrcUser *ircuser, QString mode);
