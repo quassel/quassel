@@ -47,6 +47,9 @@ void InputLine::keyPressEvent(QKeyEvent * event) {
       if(idx < history.count()) setText(history[idx]);
       else setText("");
       event->accept();
+    } else if(event->key() == Qt::Key_Select) {  // for Qtopia
+      emit returnPressed();
+      QLineEdit::keyPressEvent(event);
     } else {
       QLineEdit::keyPressEvent(event);
     }

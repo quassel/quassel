@@ -23,6 +23,7 @@
 QtopiaUiStyle::QtopiaUiStyle() : UiStyle() {
 
   QTextCharFormat def;
+  def.setForeground(QBrush("#000000"));
   def.setFont(QFont("Verdana",5));
   setFormat(None, def);
 

@@ -160,11 +160,11 @@ UiStyle::StyledText UiStyle::styleString(QString s) {
       fmtList.clear(); fmtList.append(None);
       curFmtRng.format = format(None);
       fgCol = bgCol = -1;
-      length = 1;
+      length = 2;
     } else if(s[pos+1] == 'R') { // reverse
       // TODO: implement reverse formatting
 
-      length = 1;
+      length = 2;
     } else { // all others are toggles
       QString code = QString("%") + s[pos+1];
       if(s[pos+1] == 'D') code += s[pos+2];
