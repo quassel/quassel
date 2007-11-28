@@ -313,8 +313,9 @@ void BufferTreeModel::bufferUpdated(Buffer *buffer) {
 // This Slot indicates that the user has selected a different buffer in the gui
 void BufferTreeModel::setCurrentIndex(const QModelIndex &index, QItemSelectionModel::SelectionFlags command) {
   Q_UNUSED(command)
-  if(isBufferIndex(index)) {
-    currentBuffer = getBufferByIndex(index);
+  Buffer *newCurrentBuffer;
+  if(isBufferIndex(index) && currentBuffer != (newCurrentBuffer = getBufferByIndex(index))) {
+    currentBuffer = newCurrentBuffer;
     bufferActivity(Buffer::NoActivity, currentBuffer);
     emit bufferSelected(currentBuffer);
     emit selectionChanged(index);
