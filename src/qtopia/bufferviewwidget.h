@@ -31,8 +31,9 @@ class BufferViewWidget : public QDialog {
 
   public:
     BufferViewWidget(QWidget *parent = 0);
-    ~BufferViewWidget();
+    virtual ~BufferViewWidget();
 
+    virtual void accept();
 
   private:
     void addPage(const QString &title, const BufferViewFilter::Modes &mode, const QList<uint> &nets);

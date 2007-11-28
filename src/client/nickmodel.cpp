@@ -50,6 +50,7 @@ void NickModel::setIrcChannel(IrcChannel *channel) {
   _ircChannel = channel;
   reset();
   if(_ircChannel) {
+    connect(channel, SIGNAL(destroyed()), this, SLOT(setIrcChannel()));
     connect(channel, SIGNAL(ircUserJoined(IrcUser *)), this, SLOT(addUser(IrcUser *)));
     connect(channel, SIGNAL(ircUserParted(IrcUser *)), this, SLOT(removeUser(IrcUser *)));
     connect(channel, SIGNAL(ircUserNickSet(IrcUser *, QString)), this, SLOT(renameUser(IrcUser *)));
@@ -60,7 +61,6 @@ void NickModel::setIrcChannel(IrcChannel *channel) {
       addUser(ircuser);
     }
   }
-
 }
 
 QVariant NickModel::headerData(int section, Qt::Orientation orientation, int role) const {
@@ -194,14 +194,14 @@ int NickModel::categoryFromIndex(const QModelIndex &index) const {
   return index.internalId();
 }
 
-void NickModel::addUser(IrcUser *user) {
+void NickModel::addUser(IrcUser *user) { //qDebug() << "adding" << user->nick();
   int cat = userCategory(user);
   beginInsertRows(createIndex(cat-1, 0, 0), 0, 0);
   users[cat-1].prepend(user);
   endInsertRows();
 }
 
-void NickModel::removeUser(IrcUser *user) {
+void NickModel::removeUser(IrcUser *user) { //qDebug() << "removing" << user->nick();
   // we don't know for sure which category this user was in, so we have to search
   QModelIndex index = indexOfUser(user);
   removeUser(index);
@@ -214,7 +214,7 @@ void NickModel::removeUser(const QModelIndex &index) {
   endRemoveRows();
 }
 
-void NickModel::renameUser(IrcUser *user) {
+void NickModel::renameUser(IrcUser *user) { //qDebug() << "renaming" << user->nick();
   QModelIndex index = indexOfUser(user);
   emit dataChanged(index, index);
 }

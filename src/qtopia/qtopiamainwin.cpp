@@ -79,7 +79,6 @@ QtopiaMainWin::QtopiaMainWin(QWidget *parent, Qt::WFlags flags) : QMainWindow(pa
 // at this point, client is fully initialized
 void QtopiaMainWin::init() {
   Client::signalProxy()->attachSignal(this, SIGNAL(requestBacklog(BufferInfo, QVariant, QVariant)));
-  connect(Client::bufferModel(), SIGNAL(bufferSelected(Buffer *)), this, SLOT(showBuffer(Buffer *)));
 
   CoreConnectDlg *dlg = new CoreConnectDlg(this);
   //setCentralWidget(dlg);
@@ -121,6 +120,7 @@ AbstractUiMsg *QtopiaMainWin::layoutMsg(const Message &msg) {
 
 void QtopiaMainWin::showBuffer(Buffer *b) {
   mainWidget->setBuffer(b);
+  bufferViewWidget->hide();
   //nickListWidget->
 
 }

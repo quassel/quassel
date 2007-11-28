@@ -207,6 +207,8 @@ void IrcChannel::initSetUserModes(const QVariantMap &usermodes) {
 void IrcChannel::ircUserDestroyed() {
   IrcUser *ircUser = static_cast<IrcUser *>(sender());
   Q_ASSERT(ircUser);
+  emit ircUserParted(ircUser);
+  emit ircUserDestroyed(ircUser);
   _userModes.remove(ircUser);
 }
 

@@ -38,16 +38,14 @@ Settings::Settings(QString g) : group(g) {
   //if(Qtopia::sandboxDir().isEmpty()) QSettings();
   //else QSettings(Qtopia::sandboxDir() + "/etc/QuasselIRC.conf", QSettings::NativeFormat);
   // ...so we have to use a workaround:
-  /*
   QString appPath = QCoreApplication::applicationFilePath();
   if(appPath.startsWith(Qtopia::packagePath())) {
     QString sandboxPath = appPath.left(Qtopia::packagePath().length() + 32);
     QSettings(sandboxPath + "/etc/QuasselIRC.conf", QSettings::IniFormat);
+    qDebug() << sandboxPath + "/etc/QuasselIRC.conf";
   } else {
     QSettings();
   }
-  */
-  QSettings();
 #endif
 }
 

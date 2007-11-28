@@ -59,7 +59,7 @@ class NickModel : public QAbstractItemModel {
     int userCategory(IrcUser *) const;
 
   public slots:
-    void setIrcChannel(IrcChannel *);
+    void setIrcChannel(IrcChannel *chan = 0);
     void addUser(IrcUser *);
     void removeUser(IrcUser *);
     void removeUser(const QModelIndex &);

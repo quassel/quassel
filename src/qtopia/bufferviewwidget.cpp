@@ -38,7 +38,7 @@ BufferViewWidget::BufferViewWidget(QWidget *parent) : QDialog(parent) {
   addPage(tr("Queries"), BufferViewFilter::AllNets|BufferViewFilter::NoChannels|BufferViewFilter::NoServers, QList<uint>());
   addPage(tr("Nets"), BufferViewFilter::AllNets|BufferViewFilter::NoChannels|BufferViewFilter::NoQueries, QList<uint>());
 
-  connect(Client::bufferModel(), SIGNAL(bufferSelected(Buffer *)), this, SLOT(accept()));
+  //connect(Client::bufferModel(), SIGNAL(bufferSelected(Buffer *)), this, SLOT(accept()));
 
 }
 
@@ -52,4 +52,11 @@ void BufferViewWidget::addPage(const QString &title, const BufferViewFilter::Mod
   view->setFilteredModel(Client::bufferModel(), mode, nets);
   Client::bufferModel()->synchronizeView(view);
   ui.tabWidget->addTab(view, title);
+}
+
+void BufferViewWidget::accept() {
+  qDebug() << "accepting";
+  QDialog::accept();
+  //hide();
+  qDebug() << "...done.";
 }
