@@ -159,7 +159,7 @@ IrcChannel *Buffer::ircChannel() const {
   return _ircChannel;
 }
 
-void Buffer::setIrcChannel(IrcChannel *ircchan) { return;
+void Buffer::setIrcChannel(IrcChannel *ircchan) {
   if(_ircChannel) {
     disconnect(_ircChannel, 0, this, 0);
   }
