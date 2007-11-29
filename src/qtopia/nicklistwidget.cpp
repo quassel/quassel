@@ -19,11 +19,14 @@
  ***************************************************************************/
 
 #include "nicklistwidget.h"
-//#include "nicktreemodel.h"
+
+#include "buffer.h"
+#include "nickview.h"
 
 NickListWidget::NickListWidget(QWidget *parent) : QDialog(parent) {
   ui.setupUi(this);
-
+  setModal(true);
+  setStyleSheet("background-color: rgba(220, 220, 255, 40%); color: rgb(0, 0, 0); font-size: 5pt;");
 
 
 }
@@ -34,7 +37,29 @@ NickListWidget::~NickListWidget() {
 
 }
 
-void NickListWidget::setNickModel(NickTreeModel *model) {
-  //ui.nickView->setModel(model);
+void NickListWidget::setBuffer(Buffer *buf) {
+  if(!buf) {
+    ui.stackedWidget->setCurrentWidget(ui.emptyPage);
+    return;
+  }
+  if(buf->bufferType() != Buffer::ChannelType) {
+    ui.stackedWidget->setCurrentWidget(ui.emptyPage);
+  } else {
+    if(nickViews.contains(buf)) {
+      ui.stackedWidget->setCurrentWidget(nickViews.value(buf));
+    } else {
+      NickView *view = new NickView(this);
+      view->setModel(buf->nickModel());
+      nickViews[buf] = view;
+      ui.stackedWidget->addWidget(view);
+      ui.stackedWidget->setCurrentWidget(view);
+    }
+  }
+}
 
+void NickListWidget::reset() {
+  foreach(NickView *view, nickViews.values()) {
+    ui.stackedWidget->removeWidget(view);
+    view->deleteLater();
+  }
 }

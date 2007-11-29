@@ -33,14 +33,14 @@ desktop.path=/apps/Applications
 desktop.hint=nct desktop
 
 pics.files=../src/images/qirc-icon.png
-pics.path=/pics/quasselirc/
+pics.path=/pics/quasselirc
 pics.hint=pics
 
 #help.source=help
 #help.files=example.html
 #help.hint=help
 
-INSTALLS+=desktop
+INSTALLS+=desktop pics
 
 pkg.name=QuasselTopia
 pkg.desc=Quassel IRC, a next-gen IRC client

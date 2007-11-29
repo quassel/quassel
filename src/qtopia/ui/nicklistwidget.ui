@@ -6,37 +6,23 @@
     <x>0</x>
     <y>0</y>
     <width>240</width>
-    <height>286</height>
+    <height>285</height>
    </rect>
   </property>
   <property name="windowTitle" >
    <string>Nicks in Channel</string>
   </property>
   <layout class="QVBoxLayout" >
-   <property name="leftMargin" >
-    <number>1</number>
-   </property>
-   <property name="topMargin" >
-    <number>1</number>
-   </property>
-   <property name="rightMargin" >
-    <number>1</number>
-   </property>
-   <property name="bottomMargin" >
-    <number>1</number>
-   </property>
    <item>
-    <widget class="NickView" name="nickView" />
+    <widget class="QStackedWidget" name="stackedWidget" >
+     <property name="currentIndex" >
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="emptyPage" />
+    </widget>
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>NickView</class>
-   <extends>QTreeView</extends>
-   <header>nickview.h</header>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
 </ui>

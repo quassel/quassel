@@ -58,7 +58,7 @@ void InputLine::keyPressEvent(QKeyEvent * event) {
 
 bool InputLine::event(QEvent *e) {
   if(e->type() == QEvent::KeyPress) {
-    keyPressEvent(dynamic_cast<QKeyEvent*>(e));
+    keyPressEvent(static_cast<QKeyEvent*>(e));
     return true;
   }
   return QLineEdit::event(e);

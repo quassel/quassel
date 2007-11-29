@@ -25,7 +25,8 @@
 
 #include "ui_nicklistwidget.h"
 
-class NickTreeModel;
+class Buffer;
+class NickView;
 
 class NickListWidget : public QDialog {
   Q_OBJECT
@@ -35,10 +36,12 @@ class NickListWidget : public QDialog {
     ~NickListWidget();
 
   public slots:
-    void setNickModel(NickTreeModel *model);
+    void setBuffer(Buffer *);
+    void reset();
 
   private:
     Ui::NickListWidget ui;
+    QHash<Buffer *, NickView *> nickViews;
 
 };
 

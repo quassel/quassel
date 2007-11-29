@@ -25,7 +25,7 @@
 BufferViewWidget::BufferViewWidget(QWidget *parent) : QDialog(parent) {
   ui.setupUi(this);
   setModal(true);
-  setStyleSheet("background-color: rgba(255, 255, 255, 40%); color: rgb(0, 0, 0); font-size: 5pt;");
+  setStyleSheet("background-color: rgba(220, 220, 255, 40%); color: rgb(0, 0, 0); font-size: 5pt;");
   //ui.tabWidget->tabBar()->setStyleSheet("font-size: 5pt;");
 
   // get rid of the default tab page designer forces upon us :(

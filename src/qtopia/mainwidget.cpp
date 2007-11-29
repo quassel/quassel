@@ -25,6 +25,7 @@
 
 MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
   ui.setupUi(this);
+  ui.inputLine->hide(); ui.topicBar->hide();
   connect(ui.inputLine, SIGNAL(returnPressed()), this, SLOT(enterPressed()));
   currentBuffer = 0;
 }
@@ -63,6 +64,7 @@ void MainWidget::setBuffer(Buffer *buf) {
     chatWidgets.insert(buf, chatWidget);
     chatWidget->setFocusProxy(ui.inputLine);
   } else chatWidget = chatWidgets[buf];
+  ui.inputLine->show(); ui.topicBar->show();
   ui.stack->setCurrentWidget(chatWidget);
   ui.inputLine->setFocus();
   currentBuffer = buf;

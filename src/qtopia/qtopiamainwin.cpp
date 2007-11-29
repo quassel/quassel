@@ -32,6 +32,9 @@
 #include "signalproxy.h"
 
 #include <Qtopia>
+#include <QSoftMenuBar>
+
+#define DEBUGMODE
 
 // This constructor is the first thing to be called for a Qtopia app, so we do the init stuff
 // here (rather than in a main.cpp).
@@ -91,21 +94,42 @@ QtopiaMainWin::~QtopiaMainWin() {
 
 }
 
+void QtopiaMainWin::closeEvent(QCloseEvent *event) {
+#ifndef DEBUGMODE
+  QMessageBox *box = new QMessageBox(QMessageBox::Question, tr("Quit Quassel IRC?"), tr("Do you really want to quit Quassel IRC?"),
+                                     QMessageBox::Cancel, this);
+  QAbstractButton *quit = box->addButton(tr("Quit"), QMessageBox::AcceptRole);
+  box->exec();
+  if(box->clickedButton() == quit) event->accept();
+  else event->ignore();
+  box->deleteLater();
+#else
+  event->accept();
+#endif
+}
+
 void QtopiaMainWin::setupActions() {
   showBuffersAction = toolBar->addAction(QIcon(":icon/options-hide"), "Show Buffers", this, SLOT(showBufferView()));  // FIXME provide real icon
   showNicksAction = toolBar->addAction(QIcon(":icon/list"), "Show Nicks", this, SLOT(showNickList()));
 
+  QMenu *menu = new QMenu(this);
+  menu->addAction(showBuffersAction);
+  menu->addAction(showNicksAction);
+  QSoftMenuBar::addMenuTo(this, menu);
 }
 
 void QtopiaMainWin::connectedToCore() {
   foreach(BufferInfo id, Client::allBufferInfos()) {
     emit requestBacklog(id, 100, -1);
   }
+
+#ifdef DEBUGMODE
   // FIXME just for testing: select first available buffer
   if(Client::allBufferInfos().count() > 1) {
     Buffer *b = Client::buffer(Client::allBufferInfos()[1]);
     Client::bufferModel()->selectBuffer(b);
   }
+#endif
 }
 
 void QtopiaMainWin::disconnectedFromCore() {
@@ -121,7 +145,7 @@ AbstractUiMsg *QtopiaMainWin::layoutMsg(const Message &msg) {
 void QtopiaMainWin::showBuffer(Buffer *b) {
   mainWidget->setBuffer(b);
   bufferViewWidget->hide();
-  //nickListWidget->
+  nickListWidget->setBuffer(b);
 
 }
 
