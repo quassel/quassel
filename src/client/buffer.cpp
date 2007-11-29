@@ -107,12 +107,12 @@ QVariantMap Buffer::nickList() const {
 }
 
 QString Buffer::topic() const {
-  // FIXME check if we got a networkInfo() object
+  if(ircChannel()) return ircChannel()->topic();
   return QString();
 }
 
 QString Buffer::ownNick() const {
-  // FIXME check if we got a networkInfo() object
+  // FIXME if(ircChannel()) return ircChannel()->ownNick();
   return QString();
 }
 
@@ -165,6 +165,8 @@ void Buffer::setIrcChannel(IrcChannel *ircchan) {
   }
   _ircChannel = ircchan;
   if(_ircChannel) {
+    emit topicSet(_ircChannel->topic());
+    connect(_ircChannel, SIGNAL(topicSet(QString)), this, SIGNAL(topicSet(QString)));
     connect(_ircChannel, SIGNAL(destroyed()), this, SLOT(setIrcChannel()));
   }
   _nickModel->setIrcChannel(ircChannel());
@@ -172,11 +174,6 @@ void Buffer::setIrcChannel(IrcChannel *ircchan) {
 
 // no longer needed
 // back reference:
-// void Buffer::setTopic(QString t) {
-//   _topic = t;
-//   emit topicSet(t);
-//   emit bufferUpdated(this);
-// }
 
 // void Buffer::addNick(QString nick, QVariantMap props) {
 //   if(nick == ownNick()) setActive(true);

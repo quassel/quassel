@@ -34,6 +34,7 @@ class MainWidget : public QWidget {
     ~MainWidget();
 
   public slots:
+    void setTopic(QString topic);
     void setBuffer(Buffer *);
 
   private slots:

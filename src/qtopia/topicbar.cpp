@@ -38,7 +38,7 @@ TopicBar::TopicBar(QWidget *parent) : QPushButton(parent) {
   fillText = " *** ";
   oneshot = true;
   timer = new QTimer(this);
-  timer->setInterval(20);
+  timer->setInterval(25);
   connect(timer, SIGNAL(timeout()), this, SLOT(updateOffset()));
   connect(this, SIGNAL(clicked()), this, SLOT(startScrolling()));
 }
@@ -88,7 +88,7 @@ void TopicBar::paintEvent(QPaintEvent *event) {
 }
 
 void TopicBar::updateOffset() {
-  offset++;
+  offset+=1;
   if(offset >= secondTextStart) {
     offset = 0;
     if(oneshot) timer->stop(); // only scroll once!

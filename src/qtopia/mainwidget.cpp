@@ -58,7 +58,7 @@ void MainWidget::setBuffer(Buffer *buf) {
     chatWidget->setContents(lines);
     connect(buf, SIGNAL(msgAppended(AbstractUiMsg *)), chatWidget, SLOT(appendMsg(AbstractUiMsg *)));
     connect(buf, SIGNAL(msgPrepended(AbstractUiMsg *)), chatWidget, SLOT(prependMsg(AbstractUiMsg *)));
-    //connect(buf, SIGNAL(topicSet(QString)), this, SLOT(setTopic(QString)));
+    connect(buf, SIGNAL(topicSet(QString)), this, SLOT(setTopic(QString)));
     //connect(buf, SIGNAL(ownNickSet(QString)), this, SLOT(setOwnNick(QString)));
     ui.stack->addWidget(chatWidget);
     chatWidgets.insert(buf, chatWidget);
@@ -77,4 +77,13 @@ void MainWidget::enterPressed() {
     if(currentBuffer) currentBuffer->processUserInput(msg);
   }
   ui.inputLine->clear();
+}
+
+// FIXME make this more elegant, we don't need to send a string around...
+void MainWidget::setTopic(QString topic) {
+  Q_UNUSED(topic);
+  if(currentBuffer) {
+    QString title = QString("%1 (%2): \"%3\"").arg(currentBuffer->name()).arg(currentBuffer->networkName()).arg(currentBuffer->topic());
+    ui.topicBar->setContents(title);
+  }
 }

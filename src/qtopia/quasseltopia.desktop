@@ -5,6 +5,6 @@
 [Desktop Entry]
 Comment[]=A Next-Gen IRC Client
 Exec=quasseltopia
-Icon=quasselirc/qirc-icon
+Icon=/pics/quasselirc/qirc-icon.png
 Type=Application
 Name[]=QuasselTopia

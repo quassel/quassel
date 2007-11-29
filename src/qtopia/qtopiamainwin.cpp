@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-07 by The Quassel IRC Development Team             *
+ *   Copyright (C) 2005-07 by the Quassel IRC Team                         *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -83,6 +83,7 @@ QtopiaMainWin::QtopiaMainWin(QWidget *parent, Qt::WFlags flags) : QMainWindow(pa
 void QtopiaMainWin::init() {
   Client::signalProxy()->attachSignal(this, SIGNAL(requestBacklog(BufferInfo, QVariant, QVariant)));
 
+  showMaximized();
   CoreConnectDlg *dlg = new CoreConnectDlg(this);
   //setCentralWidget(dlg);
   dlg->showMaximized();
