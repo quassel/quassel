@@ -12,13 +12,15 @@ seems to be ignored by qmake.
 
 After running make, you will find the binaries in build/targets.
 
-NOTE: As of now, quassel needs the directory $HOME/.quassel to exist prior to first
-      run, otherwise it cannot create its database! This will be changed soon, but
-      for now, you will just need to create this directory.
+make install will probably do something, but it has never been tried and may destroy
+your system or kill a kitten. It's not necessary anyway, since there are no installable
+files other than the binaries. Though this might change in later releases.
 
-The core-side database will be created automatically. A user named 'Default' with
-the password 'password' will be created, so in order to connect to the core, you
-need to enter this information. The core listens on port 4242 for incoming connections.
+On first run of the Quassel core, it will wait for a client to connect and present a
+(preliminary) first-run wizard. This will allow you to create the database and one
+admin user for the core-side storage. Note that Quassel does not support the
+administration of user accounts yet, this includes adding more users, changing passwords
+and so on. This is high on our TODO list, of course.
 
 Please also do read the README file.
 

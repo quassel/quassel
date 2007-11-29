@@ -1,11 +1,11 @@
 /***************************************************************************
- *   Copyright (C) 2005-07 by The Quassel IRC Development Team             *
+ *   Copyright (C) 2005-07 by the Quassel IRC Team                         *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
+ *   (at your option) version 3.                                           *
  *                                                                         *
  *   This program is distributed in the hope that it will be useful,       *
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
@@ -169,7 +169,7 @@ void Core::clientHasData() {
       return;
     }
   }
-  blockSizes[socket] = bsize = 0;  // FIXME blockSizes aufräum0rn!
+  blockSizes[socket] = bsize = 0;  // FIXME blockSizes aufrï¿½um0rn!
 }
 
 // FIXME: no longer called, since connection handling is now in SignalProxy
