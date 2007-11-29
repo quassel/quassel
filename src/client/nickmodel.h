@@ -79,6 +79,13 @@ class FilteredNickModel : public QSortFilterProxyModel {
 
   public:
     FilteredNickModel(QObject *parent = 0);
+    virtual ~FilteredNickModel();
+
+    virtual void setSourceModel(QAbstractItemModel *model);
+
+  private slots:
+    void sourceRowsInserted(const QModelIndex &, int, int);
+    void sourceRowsRemoved(const QModelIndex &, int, int);
 
   protected:
     virtual bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;

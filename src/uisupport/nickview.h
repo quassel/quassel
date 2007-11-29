@@ -34,6 +34,9 @@ class NickView : public QTreeView {
     NickView(QWidget *parent = 0);
     virtual ~NickView();
 
+  protected:
+    void rowsInserted(const QModelIndex &, int, int);
+
   public slots:
     void setModel(NickModel *model);
 

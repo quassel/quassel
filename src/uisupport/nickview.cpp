@@ -22,6 +22,7 @@
 #include "nickmodel.h"
 
 #include <QHeaderView>
+#include <QDebug>
 
 NickView::NickView(QWidget *parent) : QTreeView(parent) {
   setGeometry(0, 0, 30, 30);
@@ -47,3 +48,9 @@ void NickView::setModel(NickModel *model) {
   filteredModel->setSourceModel(model);
   expandAll();
 }
+
+void NickView::rowsInserted(const QModelIndex &index, int start, int end) {
+  QTreeView::rowsInserted(index, start, end);
+  expandAll();  // FIXME We need to do this more intelligently. Maybe a pimped TreeView?
+}
+

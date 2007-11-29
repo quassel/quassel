@@ -194,14 +194,14 @@ int NickModel::categoryFromIndex(const QModelIndex &index) const {
   return index.internalId();
 }
 
-void NickModel::addUser(IrcUser *user) { //qDebug() << "adding" << user->nick();
+void NickModel::addUser(IrcUser *user) {
   int cat = userCategory(user);
   beginInsertRows(createIndex(cat-1, 0, 0), 0, 0);
   users[cat-1].prepend(user);
   endInsertRows();
 }
 
-void NickModel::removeUser(IrcUser *user) { //qDebug() << "removing" << user->nick();
+void NickModel::removeUser(IrcUser *user) {
   // we don't know for sure which category this user was in, so we have to search
   QModelIndex index = indexOfUser(user);
   removeUser(index);
@@ -241,6 +241,16 @@ FilteredNickModel::FilteredNickModel(QObject *parent) : QSortFilterProxyModel(pa
 
 }
 
+FilteredNickModel::~FilteredNickModel() {
+
+}
+
+void FilteredNickModel::setSourceModel(QAbstractItemModel *model) {
+  QSortFilterProxyModel::setSourceModel(model);
+  connect(model, SIGNAL(rowsInserted(const QModelIndex &, int, int)), this, SLOT(sourceRowsInserted(const QModelIndex &, int, int)));
+  connect(model, SIGNAL(rowsRemoved(const QModelIndex &, int, int)), this, SLOT(sourceRowsRemoved(const QModelIndex &, int, int)));
+}
+
 // Hide empty categories
 bool FilteredNickModel::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const {
   if(!source_parent.isValid()) {
@@ -248,5 +258,21 @@ bool FilteredNickModel::filterAcceptsRow(int source_row, const QModelIndex &sour
     return sourceModel()->rowCount(index);
   }
   return true;
+}
+
+void FilteredNickModel::sourceRowsInserted(const QModelIndex &index, int start, int end) {
+  if(!index.isValid()) return;
+  if(sourceModel()->rowCount(index) <= end - start + 1) {
+    // category no longer empty
+    invalidateFilter();
+  }
+}
+
+void FilteredNickModel::sourceRowsRemoved(const QModelIndex &index, int, int) {
+  if(!index.isValid()) return;
+  if(sourceModel()->rowCount(index) == 0) {
+    // category is now empty!
+    invalidateFilter();
+  }
 }
 
