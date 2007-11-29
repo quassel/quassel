@@ -166,7 +166,6 @@ IrcUser *NetworkInfo::newIrcUser(const QString &hostmask) {
   QString nick(nickFromMask(hostmask));
   if(!_ircUsers.contains(nick)) {
     IrcUser *ircuser = new IrcUser(hostmask, this);
-    qDebug() << "new IrcUser()" << ircuser << hostmask;
     // mark IrcUser as already initialized to keep the SignalProxy from requesting initData
     if(initialized())
       ircuser->setInitialized();
@@ -324,13 +323,10 @@ IrcUser *NetworkInfo::updateNickFromMask(const QString &mask) {
   QString nick(nickFromMask(mask));
   IrcUser *ircuser;
   
-  qDebug() << "NetworkInfo::updateNickFromMask()" << mask;
   if(_ircUsers.contains(nick)) {
-    qDebug() << "  is known User";
     ircuser = _ircUsers[nick];
     ircuser->updateHostmask(mask);
   } else {
-    qDebug() << "  is new User";
     ircuser = newIrcUser(mask);
   }
   return ircuser;
@@ -351,7 +347,6 @@ void NetworkInfo::ircUserNickChanged(QString newnick) {
 void NetworkInfo::ircUserDestroyed() {
   IrcUser *ircuser = static_cast<IrcUser *>(sender());
   Q_ASSERT(ircuser);
-  qDebug() << "NetworkInfo::ircUserDestroyed()" << ircuser;
   removeIrcUser(ircuser);
 }
 

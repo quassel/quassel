@@ -597,7 +597,6 @@ void SignalProxy::handleInitRequest(QIODevice *sender, const QVariantList &param
   }
   
   QObject *obj = _syncSlave[className][objectName];
-  qDebug() << "Receive Init Request for" << className << objectName << obj;
 
   QVariantList params_;
   params_ << obj->metaObject()->className()
