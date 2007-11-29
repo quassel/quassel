@@ -106,11 +106,12 @@ public slots:
   // these slots are to keep the hashlists of all users and the
   // channel lists up to date
   void ircUserNickChanged(QString newnick);
+  void setInitialized();
 
+private slots:
   void ircUserDestroyed();
   void channelDestroyed();
-
-  void setInitialized();
+  void removeIrcUser(IrcUser *ircuser);
   
 signals:
   void networkNameSet(const QString &networkName);
@@ -149,6 +150,7 @@ private:
   
   QPointer<SignalProxy> _proxy;
   void determinePrefixes();
+
 };
 
 #endif

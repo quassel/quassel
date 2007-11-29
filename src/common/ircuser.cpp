@@ -39,6 +39,7 @@ IrcUser::IrcUser(const QString &hostmask, NetworkInfo *networkinfo)
 }
 
 IrcUser::~IrcUser() {
+  qDebug() << nick() << "destroyed.";
 }
 
 // ====================

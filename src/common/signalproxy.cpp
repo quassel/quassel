@@ -583,7 +583,7 @@ void SignalProxy::handleInitRequest(QIODevice *sender, const QVariantList &param
   
   QByteArray className(params[0].toByteArray());
   QString objectName(params[1].toString());
-
+  
   if(!_syncSlave.contains(className)) {
     qWarning() << "SignalProxy::handleInitRequest() received initRequest for unregistered Class:"
 	       << className;
@@ -595,8 +595,9 @@ void SignalProxy::handleInitRequest(QIODevice *sender, const QVariantList &param
 	       << className << objectName;
     return;
   }
-
+  
   QObject *obj = _syncSlave[className][objectName];
+  qDebug() << "Receive Init Request for" << className << objectName << obj;
 
   QVariantList params_;
   params_ << obj->metaObject()->className()
