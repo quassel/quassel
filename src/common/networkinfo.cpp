@@ -210,7 +210,8 @@ QList<IrcUser *> NetworkInfo::ircUsers() const {
   return _ircUsers.values();
 }
 
-IrcChannel *NetworkInfo::newIrcChannel(const QString &channelname) {
+IrcChannel *NetworkInfo::newIrcChannel(QString channelname) {
+  channelname = channelname.toLower();
   if(!_ircChannels.contains(channelname)) {
     IrcChannel *channel = new IrcChannel(channelname, this);
     // mark IrcUser as already initialized to keep the SignalProxy from requesting initData
@@ -231,7 +232,8 @@ IrcChannel *NetworkInfo::newIrcChannel(const QString &channelname) {
 }
 
 
-IrcChannel *NetworkInfo::ircChannel(const QString &channelname) {
+IrcChannel *NetworkInfo::ircChannel(QString channelname) {
+  channelname = channelname.toLower();
   if(_ircChannels.contains(channelname))
     return _ircChannels[channelname];
   else

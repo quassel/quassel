@@ -76,8 +76,8 @@ public:
   IrcUser *ircUser(const QString &nickname) const;
   QList<IrcUser *> ircUsers() const;
   
-  IrcChannel *newIrcChannel(const QString &channelname);
-  IrcChannel *ircChannel(const QString &channelname);
+  IrcChannel *newIrcChannel(QString channelname);
+  IrcChannel *ircChannel(QString channelname);
   QList<IrcChannel *> ircChannels() const;
 
 public slots:
