@@ -169,7 +169,11 @@ UiStyle::StyledText UiStyle::styleString(QString s) {
       QString code = QString("%") + s[pos+1];
       if(s[pos+1] == 'D') code += s[pos+2];
       FormatType ftype = formatType(code);
-      Q_ASSERT(ftype != Invalid);
+      if(ftype == Invalid) {
+        qWarning(qPrintable(QString("Invalid format code in string: %1").arg(s)));
+        continue;
+      }
+      //Q_ASSERT(ftype != Invalid);
       length = code.length();
       if(!fmtList.contains(ftype)) {
         // toggle it on

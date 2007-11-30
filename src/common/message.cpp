@@ -149,21 +149,21 @@ void Message::format() {
     break;
     case Message::Nick:
       s = tr("%Dr<->");
-      if(nick == text()) t = tr("%DrYou are now known as %DN%1%DN").arg(text());
-      else t = tr("%Dr%DN%1%DN is now known as %DN%DU%2%DU%DN").arg(nick, text());
+      if(nick == text()) t = tr("%DrYou are now known as %DN%1%DN").arg(txt);
+      else t = tr("%Dr%DN%1%DN is now known as %DN%DU%2%DU%DN").arg(nick, txt);
       break;
     case Message::Mode:
       s = tr("%Dm***");
       if(nick.isEmpty()) t = tr("%DmUser mode: %DM%1%DM").arg(text());
-      else t = tr("%DmMode %DM%1%DM by %DN%DU%2%DU%DN").arg(text(), nick);
+      else t = tr("%DmMode %DM%1%DM by %DN%DU%2%DU%DN").arg(txt, nick);
       break;
     case Message::Action:
       s = tr("%Da-*-");
-      t = tr("%Da%DN%DU%1%DU%DN %2").arg(nick).arg(text());
+      t = tr("%Da%DN%DU%1%DU%DN %2").arg(nick).arg(txt);
       break;
     default:
       s = tr("%De%1").arg(sender());
-      t = tr("%De[%1]").arg(text());
+      t = tr("%De[%1]").arg(txt);
   }
   _formattedSender = s;
   _formattedText = t;
