@@ -336,11 +336,11 @@ IrcUser *NetworkInfo::updateNickFromMask(const QString &mask) {
 
 void NetworkInfo::ircUserNickChanged(QString newnick) {
   QString oldnick = _ircUsers.key(qobject_cast<IrcUser*>(sender()));
-
+  
   if(oldnick.isNull())
     return;
   
-  _ircUsers[newnick] = _ircUsers.take(oldnick);
+  _ircUsers[newnick.toLower()] = _ircUsers.take(oldnick);
   
   if(myNick() == oldnick)
     setMyNick(newnick);
