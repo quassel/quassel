@@ -163,7 +163,7 @@ QString NetworkInfo::support(const QString &param) const {
 }
 
 IrcUser *NetworkInfo::newIrcUser(const QString &hostmask) {
-  QString nick(nickFromMask(hostmask));
+  QString nick(nickFromMask(hostmask).toLower());
   if(!_ircUsers.contains(nick)) {
     IrcUser *ircuser = new IrcUser(hostmask, this);
     // mark IrcUser as already initialized to keep the SignalProxy from requesting initData
@@ -180,7 +180,7 @@ IrcUser *NetworkInfo::newIrcUser(const QString &hostmask) {
     _ircUsers[nick] = ircuser;
     emit ircUserAdded(hostmask);
   }
-  return  _ircUsers[nick];
+  return _ircUsers[nick];
 }
 
 void NetworkInfo::removeIrcUser(IrcUser *ircuser) {
@@ -199,7 +199,8 @@ void NetworkInfo::removeIrcUser(QString nick) {
     removeIrcUser(ircuser);
 }
 
-IrcUser *NetworkInfo::ircUser(const QString &nickname) const {
+IrcUser *NetworkInfo::ircUser(QString nickname) const {
+  nickname = nickname.toLower();
   if(_ircUsers.contains(nickname))
     return _ircUsers[nickname];
   else
@@ -210,9 +211,8 @@ QList<IrcUser *> NetworkInfo::ircUsers() const {
   return _ircUsers.values();
 }
 
-IrcChannel *NetworkInfo::newIrcChannel(QString channelname) {
-  channelname = channelname.toLower();
-  if(!_ircChannels.contains(channelname)) {
+IrcChannel *NetworkInfo::newIrcChannel(const QString &channelname) {
+  if(!_ircChannels.contains(channelname.toLower())) {
     IrcChannel *channel = new IrcChannel(channelname, this);
     // mark IrcUser as already initialized to keep the SignalProxy from requesting initData
     if(initialized())
@@ -225,10 +225,10 @@ IrcChannel *NetworkInfo::newIrcChannel(QString channelname) {
 
     connect(channel, SIGNAL(initDone()), this, SIGNAL(ircChannelInitDone()));
     connect(channel, SIGNAL(destroyed()), this, SLOT(channelDestroyed()));
-    _ircChannels[channelname] = channel;
+    _ircChannels[channelname.toLower()] = channel;
     emit ircChannelAdded(channelname);
   }
-  return _ircChannels[channelname];
+  return _ircChannels[channelname.toLower()];
 }
 
 

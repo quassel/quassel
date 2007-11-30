@@ -70,7 +70,12 @@ QString IrcUser::userModes() const {
 }
 
 QStringList IrcUser::channels() const {
-  return _channels.toList();
+  QStringList chanList;
+  IrcChannel *channel;
+  foreach(channel, _channels) {
+    chanList << channel->name();
+  }
+  return chanList;
 }
 
 // ====================
@@ -118,22 +123,45 @@ void IrcUser::updateHostmask(const QString &mask) {
   setHost(host);
 }
 
-void IrcUser::joinChannel(const QString &channel) {
+void IrcUser::joinChannel(IrcChannel *channel) {
+  Q_ASSERT(channel);
   if(!_channels.contains(channel)) {
+    channel->join(this);
+    connect(channel, SIGNAL(destroyed()), this, SLOT(channelDestroyed()));
     _channels.insert(channel);
-    networkInfo->newIrcChannel(channel)->join(this);
-    emit channelJoined(channel);
+    emit channelJoined(channel->name());
   }
 }
 
-void IrcUser::partChannel(const QString &channel) {
+void IrcUser::joinChannel(const QString &channelname) {
+  joinChannel(networkInfo->newIrcChannel(channelname));
+}
+
+void IrcUser::partChannel(IrcChannel *channel) {
   if(_channels.contains(channel)) {
     _channels.remove(channel);
+    disconnect(channel, 0, this, 0);
+    channel->part(this);
+    emit channelParted(channel->name());
+  }
+}
 
-    Q_ASSERT(networkInfo->ircChannel(channel));
-    networkInfo->ircChannel(channel)->part(this);
-    
-    emit channelParted(channel);
+void IrcUser::partChannel(const QString &channelname) {
+  IrcChannel *channel = networkInfo->ircChannel(channelname);
+  if(channel == 0) {
+    qWarning() << "IrcUser::partChannel(): received part for unknown Channel" << channelname;
+  } else {
+    partChannel(channel);
+  }
+}
+
+void IrcUser::channelDestroyed() {
+  // private slot!
+  IrcChannel *channel = static_cast<IrcChannel*>(sender());
+  Q_ASSERT(channel);
+  if(_channels.contains(channel)) {
+    _channels.remove(channel);
+    disconnect(channel, 0, this, 0);
   }
 }
 

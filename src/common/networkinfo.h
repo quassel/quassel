@@ -73,10 +73,10 @@ public:
   QString support(const QString &param) const;
   
   IrcUser *newIrcUser(const QString &hostmask);
-  IrcUser *ircUser(const QString &nickname) const;
+  IrcUser *ircUser(QString nickname) const;
   QList<IrcUser *> ircUsers() const;
   
-  IrcChannel *newIrcChannel(QString channelname);
+  IrcChannel *newIrcChannel(const QString &channelname);
   IrcChannel *ircChannel(QString channelname);
   QList<IrcChannel *> ircChannels() const;
 

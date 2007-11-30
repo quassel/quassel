@@ -63,9 +63,11 @@ public slots:
   void updateHostmask(const QString &mask);
 
   void setUserModes(const QString &modes);
-
-  void joinChannel(const QString &channel);
-  void partChannel(const QString &channel);
+  
+  void joinChannel(IrcChannel *channel);
+  void joinChannel(const QString &channelname);
+  void partChannel(IrcChannel *channel);
+  void partChannel(const QString &channelname);
 
   void addUserMode(const QString &mode);
   void removeUserMode(const QString &mode);
@@ -81,7 +83,6 @@ signals:
   void nickSet(QString newnick);
   void hostmaskUpdated(QString mask);
   
-  void channelsSet(QStringList channels);
   void userModesSet(QString modes);
   
   void channelJoined(QString channel);
@@ -99,6 +100,7 @@ signals:
 
 private slots:
   void updateObjectName();
+  void channelDestroyed();
   
 private:
   inline bool operator==(const IrcUser &ircuser2) {
@@ -115,7 +117,8 @@ private:
   QString _user;
   QString _host;
 
-  QSet<QString> _channels;
+  // QSet<QString> _channels;
+  QSet<IrcChannel *> _channels;
   QString _userModes;
   
   NetworkInfo *networkInfo;
