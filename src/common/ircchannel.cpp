@@ -112,7 +112,7 @@ void IrcChannel::join(IrcUser *ircuser) {
   if(!_userModes.contains(ircuser) && ircuser) {
     _userModes[ircuser] = QString();
     ircuser->joinChannel(name());
-    qDebug() << "JOIN" << name() << ircuser->nick() << ircUsers().count();
+    //qDebug() << "JOIN" << name() << ircuser->nick() << ircUsers().count();
     connect(ircuser, SIGNAL(nickSet(QString)), this, SLOT(ircUserNickSet(QString)));
     connect(ircuser, SIGNAL(destroyed()), this, SLOT(ircUserDestroyed()));
     // if you wonder why there is no counterpart to ircUserJoined:
@@ -129,7 +129,7 @@ void IrcChannel::part(IrcUser *ircuser) {
   if(isKnownUser(ircuser)) {
     _userModes.remove(ircuser);
     ircuser->partChannel(name());
-    qDebug() << "PART" << name() << ircuser->nick() << ircUsers().count();
+    //qDebug() << "PART" << name() << ircuser->nick() << ircUsers().count();
     // if you wonder why there is no counterpart to ircUserParted:
     // the joines are propagted by the ircuser. the signal ircUserParted is only for convenience
     emit ircUserParted(ircuser);
@@ -211,7 +211,7 @@ void IrcChannel::ircUserDestroyed() {
   Q_ASSERT(ircUser);
   _userModes.remove(ircUser);
   emit ircUserParted(ircUser);
-  qDebug() << "DEST" << name() << ircUsers().count();
+  //qDebug() << "DEST" << name() << ircUsers().count();
 }
 
 void IrcChannel::ircUserNickSet(QString nick) {

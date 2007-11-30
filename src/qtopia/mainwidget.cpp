@@ -37,6 +37,11 @@ MainWidget::~MainWidget() {
 }
 
 void MainWidget::setBuffer(Buffer *buf) {
+  if(!buf) {
+    ui.stack->setCurrentIndex(0);
+    currentBuffer = 0;
+    return;
+  }
   //  TODO update topic if changed; handle status buffer display
   QString title = QString("%1 (%2): \"%3\"").arg(buf->name()).arg(buf->networkName()).arg(buf->topic());
   ui.topicBar->setContents(title);

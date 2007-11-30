@@ -153,7 +153,7 @@ void IrcServerHandler::handleJoin(QString prefix, QStringList params) {
   QString channel = params[0];
   IrcUser *ircuser = networkInfo()->updateNickFromMask(prefix);
   emit displayMsg(Message::Join, channel, channel, prefix);
-  qDebug() << "IrcServerHandler::handleJoin()" << prefix << params;
+  //qDebug() << "IrcServerHandler::handleJoin()" << prefix << params;
   ircuser->joinChannel(channel);
 }
 
@@ -285,7 +285,7 @@ void IrcServerHandler::handlePrivmsg(QString prefix, QStringList params) {
 void IrcServerHandler::handleQuit(QString prefix, QStringList params) {
   IrcUser *ircuser = networkInfo()->updateNickFromMask(prefix);
   Q_ASSERT(ircuser);
-  qDebug() << "IrcServerHandler:handleQuit" << prefix << params;
+  //qDebug() << "IrcServerHandler:handleQuit" << prefix << params;
 
   QString msg;
   if(params.count())

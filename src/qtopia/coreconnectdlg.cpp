@@ -57,9 +57,22 @@ CoreConnectDlg::CoreConnectDlg(QWidget *parent, bool /*doAutoConnect*/) : QDialo
 
   AccountSettings s;
   ui.accountList->addItems(s.knownAccounts());
+  // if empty, create a test account
+  if(!ui.accountList->count()) {
+    QVariantMap accData;
+    accData["User"] = "testuser";
+    accData["Host"] = "apollo.mindpool.net";
+    accData["Port"] = 4242;
+    accData["Password"] = "testuser";
+    s.setValue("Test Account", "AccountData", accData);
+    ui.accountList->addItems(s.knownAccounts());
+  }
+  // end test account
   if(ui.accountList->count()) ui.accountList->item(0)->setSelected(true);
   setWidgetStates();
+#ifdef DEVELMODE
   doConnect(); // shortcut for development
+#endif
 }
 
 CoreConnectDlg::~CoreConnectDlg() {

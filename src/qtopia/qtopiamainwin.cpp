@@ -31,10 +31,10 @@
 #include "qtopiaui.h"
 #include "signalproxy.h"
 
+#include "ui_aboutdlg.h"
+
 #include <Qtopia>
 #include <QSoftMenuBar>
-
-#define DEBUGMODE
 
 // This constructor is the first thing to be called for a Qtopia app, so we do the init stuff
 // here (rather than in a main.cpp).
@@ -67,6 +67,7 @@ QtopiaMainWin::QtopiaMainWin(QWidget *parent, Qt::WFlags flags) : QMainWindow(pa
 
   toolBar = new QToolBar(this);
   toolBar->setIconSize(QSize(16, 16));
+  toolBar->setWindowTitle(tr("Show Toolbar"));
   addToolBar(toolBar);
 
   bufferViewWidget = new BufferViewWidget(this);
@@ -96,7 +97,7 @@ QtopiaMainWin::~QtopiaMainWin() {
 }
 
 void QtopiaMainWin::closeEvent(QCloseEvent *event) {
-#ifndef DEBUGMODE
+#ifndef DEVELMODE
   QMessageBox *box = new QMessageBox(QMessageBox::Question, tr("Quit Quassel IRC?"), tr("Do you really want to quit Quassel IRC?"),
                                      QMessageBox::Cancel, this);
   QAbstractButton *quit = box->addButton(tr("Quit"), QMessageBox::AcceptRole);
@@ -110,12 +111,17 @@ void QtopiaMainWin::closeEvent(QCloseEvent *event) {
 }
 
 void QtopiaMainWin::setupActions() {
-  showBuffersAction = toolBar->addAction(QIcon(":icon/options-hide"), "Show Buffers", this, SLOT(showBufferView()));  // FIXME provide real icon
-  showNicksAction = toolBar->addAction(QIcon(":icon/list"), "Show Nicks", this, SLOT(showNickList()));
+  showBuffersAction = toolBar->addAction(QIcon(":icon/options-hide"), tr("Show Buffers"), this, SLOT(showBufferView()));  // FIXME provide real icon
+  showNicksAction = toolBar->addAction(QIcon(":icon/list"), tr("Show Nicks"), this, SLOT(showNickList()));
 
   QMenu *menu = new QMenu(this);
   menu->addAction(showBuffersAction);
   menu->addAction(showNicksAction);
+  menu->addSeparator();
+  menu->addAction(toolBar->toggleViewAction());
+  menu->addSeparator();
+  menu->addAction(tr("About..."), this, SLOT(showAboutDlg()));
+
   QSoftMenuBar::addMenuTo(this, menu);
 }
 
@@ -124,7 +130,7 @@ void QtopiaMainWin::connectedToCore() {
     emit requestBacklog(id, 100, -1);
   }
 
-#ifdef DEBUGMODE
+#ifdef DEVELMODE
   // FIXME just for testing: select first available buffer
   if(Client::allBufferInfos().count() > 1) {
     Buffer *b = Client::buffer(Client::allBufferInfos()[1]);
@@ -144,19 +150,25 @@ AbstractUiMsg *QtopiaMainWin::layoutMsg(const Message &msg) {
 }
 
 void QtopiaMainWin::showBuffer(Buffer *b) {
-  mainWidget->setBuffer(b);
   bufferViewWidget->hide();
+  mainWidget->setBuffer(b);
   nickListWidget->setBuffer(b);
 
 }
 
 void QtopiaMainWin::showBufferView() {
   bufferViewWidget->showMaximized();
-
 }
 
 void QtopiaMainWin::showNickList() {
   nickListWidget->showMaximized();
 }
 
+void QtopiaMainWin::showAboutDlg() {
+  QDialog *dlg = new QDialog(this);
+  dlg->setAttribute(Qt::WA_DeleteOnClose);
+  Ui::AboutDlg ui;
+  ui.setupUi(dlg);
+  dlg->showMaximized();
+}
 

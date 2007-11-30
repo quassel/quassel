@@ -5,4 +5,8 @@ HDRS += bufferviewwidget.h chatline.h chatwidget.h coreconnectdlg.h mainwidget.h
         qtopiaui.h qtopiamainwin.h qtopiauistyle.h topicbar.h
 SRCS += bufferviewwidget.cpp chatline.cpp chatwidget.cpp coreconnectdlg.cpp main.cpp mainwidget.cpp nicklistwidget.cpp \
         qtopiaui.cpp qtopiamainwin.cpp qtopiauistyle.cpp topicbar.cpp
-FRMS += ui/bufferviewwidget.ui ui/coreconnectdlg.ui ui/coreconnectprogressdlg.ui ui/editcoreacctdlg.ui ui/mainwidget.ui ui/nicklistwidget.ui
+FORMNAMES += aboutdlg.ui bufferviewwidget.ui coreconnectdlg.ui coreconnectprogressdlg.ui editcoreacctdlg.ui mainwidget.ui nicklistwidget.ui
+
+for(ui, FORMNAMES) {
+  FRMS += ui/$${ui}
+}

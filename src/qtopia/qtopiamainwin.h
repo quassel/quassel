@@ -51,6 +51,7 @@ class QtopiaMainWin : public QMainWindow {
     void showBuffer(Buffer *);
     void showBufferView();
     void showNickList();
+    void showAboutDlg();
 
   protected:
     void closeEvent(QCloseEvent *);

@@ -33,11 +33,12 @@ BufferViewWidget::BufferViewWidget(QWidget *parent) : QDialog(parent) {
   ui.tabWidget->removeTab(0);
   delete w;
 
-  addPage(tr("Bufs"), BufferViewFilter::AllNets, QList<uint>());
+  addPage(tr("All"), BufferViewFilter::AllNets, QList<uint>());
   addPage(tr("Chans"), BufferViewFilter::AllNets|BufferViewFilter::NoQueries|BufferViewFilter::NoServers, QList<uint>());
   addPage(tr("Queries"), BufferViewFilter::AllNets|BufferViewFilter::NoChannels|BufferViewFilter::NoServers, QList<uint>());
   addPage(tr("Nets"), BufferViewFilter::AllNets|BufferViewFilter::NoChannels|BufferViewFilter::NoQueries, QList<uint>());
 
+  // this sometimes deadlocks, so we have to hide the dialog from the outside:
   //connect(Client::bufferModel(), SIGNAL(bufferSelected(Buffer *)), this, SLOT(accept()));
 
 }
@@ -55,8 +56,5 @@ void BufferViewWidget::addPage(const QString &title, const BufferViewFilter::Mod
 }
 
 void BufferViewWidget::accept() {
-  qDebug() << "accepting";
   QDialog::accept();
-  //hide();
-  qDebug() << "...done.";
 }
