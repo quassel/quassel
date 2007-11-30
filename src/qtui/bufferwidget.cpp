@@ -59,8 +59,8 @@ void BufferWidget::setBuffer(Buffer *buf) {
   // ui.ownNick->addItem(state->ownNick);
 
   ChatWidget *chatWidget;
-  if(_chatWidgets.contains(buf->uid())) {
-     chatWidget = _chatWidgets[buf->uid()];
+  if(_chatWidgets.contains(buf)) {
+     chatWidget = _chatWidgets[buf];
   } else {
     chatWidget = new ChatWidget(this);
     chatWidget->init(buf->networkName(), buf->name());
@@ -70,9 +70,10 @@ void BufferWidget::setBuffer(Buffer *buf) {
       lines.append(dynamic_cast<ChatLine*>(msg));
     }
     chatWidget->setContents(lines);
+    connect(buf, SIGNAL(destroyed(QObject *)), this, SLOT(bufferDestroyed(QObject *)));
     connect(buf, SIGNAL(msgAppended(AbstractUiMsg *)), chatWidget, SLOT(appendMsg(AbstractUiMsg *)));
     connect(buf, SIGNAL(msgPrepended(AbstractUiMsg *)), chatWidget, SLOT(prependMsg(AbstractUiMsg *)));
-    _chatWidgets[buf->uid()] = chatWidget;
+    _chatWidgets[buf] = chatWidget;
     ui.stackedWidget->addWidget(chatWidget);
   }
   ui.stackedWidget->setCurrentWidget(chatWidget);
@@ -82,6 +83,12 @@ void BufferWidget::setBuffer(Buffer *buf) {
   ui.inputEdit->setFocus();
   ui.ownNick->clear();  // TODO add nick history
   // ui.ownNick->addItem(state->ownNick);
+}
+
+void BufferWidget::bufferDestroyed(QObject *buf) {
+  QWidget *widget = _chatWidgets[(Buffer*)buf];
+  ui.stackedWidget->removeWidget(widget);
+  widget->deleteLater();
 }
 
 void BufferWidget::saveState() {
@@ -108,6 +115,7 @@ void BufferWidget::setActive(bool act) {
     //scrollToEnd();
   }
 }
+
 
 
 /*

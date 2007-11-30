@@ -260,4 +260,5 @@ bool TreeModel::removeRows(int row, int count, const QModelIndex &parent) {
 
 void TreeModel::clear() {
   removeRows(0, rowCount());
+  reset();
 }

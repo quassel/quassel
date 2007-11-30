@@ -39,6 +39,9 @@ class NickListWidget : public QDialog {
     void setBuffer(Buffer *);
     void reset();
 
+  private slots:
+    void bufferDestroyed(QObject *);
+
   private:
     Ui::NickListWidget ui;
     QHash<Buffer *, NickView *> nickViews;

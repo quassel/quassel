@@ -55,12 +55,13 @@ public slots:
 private slots:
   void enterPressed();
   void setActive(bool act = true);
+  void bufferDestroyed(QObject *);
 
 
 private:
   Ui::BufferWidget ui;
   //QHash<BufferId, ChatView*> _chatViews;
-  QHash<BufferId, ChatWidget *> _chatWidgets;
+  QHash<Buffer *, ChatWidget *> _chatWidgets;
   bool active;
 
   QString _networkName;

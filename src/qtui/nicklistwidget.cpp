@@ -44,12 +44,22 @@ void NickListWidget::setBuffer(Buffer *buf) {
       nickViews[buf] = view;
       ui.stackedWidget->addWidget(view);
       ui.stackedWidget->setCurrentWidget(view);
+      connect(buf, SIGNAL(destroyed(QObject *)), this, SLOT(bufferDestroyed(QObject *)));
     }
   }
 }
 
 void NickListWidget::reset() {
   foreach(NickView *view, nickViews.values()) {
+    ui.stackedWidget->removeWidget(view);
+    view->deleteLater();
+  }
+  nickViews.clear();
+}
+
+void NickListWidget::bufferDestroyed(QObject *buf) {
+  if(nickViews.contains((Buffer *)buf)) {
+    NickView *view = nickViews.take((Buffer *)buf);
     ui.stackedWidget->removeWidget(view);
     view->deleteLater();
   }
