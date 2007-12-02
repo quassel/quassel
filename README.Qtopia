@@ -9,12 +9,20 @@ something else. We'll call it QuasselTopia here.
 QuasselTopia has only been tested with the Trolltech Greenphone. We sort of
 rely on its features being available, and we assume a screensize of 240x320.
 Of course, QuasselTopia might well run on other Qtopia-enabled devices as
-well; it's just not tested yet.
+well; it's just not tested yet. We will eventually support general Qtopia
+devices as well.
 
 Note that QuasselTopia is just the client; it can't do IRC by itself. You'll
 need a Quassel core running on some server or PC for the phone to connect to.
 
-Also, in its current state, QuasselTopia cannot do much except for connecting
+For testing purposes we have provided a core on one of our servers. You can
+connect to it for checking out QuasselTopia without having to install your own.
+The core can be reached at <apollo.mindpool.net:4242>, with user 'testuser'
+and password 'testuser'. If you can't connect, please let us know, and we'll
+restart it. You may also connect with a Quassel desktop client to this core.
+The test account will be automatically created on first run.
+
+In its current state, QuasselTopia cannot do much except for connecting
 to a core and displaying the buffers you are in. Oh, and chatting of course.
 But you cannot change any settings, create/edit identities or networks,
 you can't even connect to a network from the Greenphone. So in order to test

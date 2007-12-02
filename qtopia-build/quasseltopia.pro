@@ -30,7 +30,7 @@ FORMS   = $$FRMS
 desktop.files=../src/qtopia/quasseltopia.desktop
 desktop.path=/apps/Applications
 #desktop.trtarget=example-nct
-desktop.hint=nct desktop
+desktop.hint=desktop
 
 pics.files=../src/images/qirc-icon.png
 pics.path=/pics/quasselirc

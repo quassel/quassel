@@ -1,4 +1,0 @@
-To sync the source with a translation file for locale $LOC, run
-> lupdate ../src -ts quassel_$LOC.ts
-
-If you add a new language, don't forget to edit i18n.qrc as well!

@@ -113,6 +113,7 @@ void QtopiaMainWin::closeEvent(QCloseEvent *event) {
 void QtopiaMainWin::setupActions() {
   showBuffersAction = toolBar->addAction(QIcon(":icon/options-hide"), tr("Show Buffers"), this, SLOT(showBufferView()));  // FIXME provide real icon
   showNicksAction = toolBar->addAction(QIcon(":icon/list"), tr("Show Nicks"), this, SLOT(showNickList()));
+  showNicksAction->setEnabled(false);
 
   QMenu *menu = new QMenu(this);
   menu->addAction(showBuffersAction);
@@ -153,6 +154,7 @@ void QtopiaMainWin::showBuffer(Buffer *b) {
   bufferViewWidget->hide();
   mainWidget->setBuffer(b);
   nickListWidget->setBuffer(b);
+  showNicksAction->setEnabled(b && b->bufferType() == Buffer::ChannelType);
 
 }
 

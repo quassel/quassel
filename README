@@ -10,7 +10,7 @@ source code available to them.
 
 Please don't hesitate to inform us about bugs you encounter (but you probably
 don't need to report obviously missing features such as a working topic bar
-or nicklist, we know that ourselves ;-)).
+or nicklist, we know that ourselves ;-)
 
 On first run of the Quassel core, it will wait for a client to connect and present a
 (preliminary) first-run wizard. This will allow you to create the database and one

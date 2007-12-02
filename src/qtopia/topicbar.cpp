@@ -67,7 +67,7 @@ void TopicBar::calcTextMetrics() {
     secondTextStart = fillTextStart + boundingRect.width();
     displayText = QString("%1%2%1").arg(text).arg(fillText);
     offset = 0;
-    timer->start();
+    //timer->start();  // uncomment this to get autoscroll rather than on-demand
   }
 }
 
