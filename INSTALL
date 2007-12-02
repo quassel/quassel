@@ -1,26 +1,34 @@
-These are preliminary instructions, until we get the config more polished.
+These are preliminary instructions, until we get the config more
+polished.
 
-To build Quassel IRC, cd to build/ and run qmake && make. This builds all three
-versions of Quassel. You may choose individual targets by setting qmakes BUILD
-variable:
+Quassel IRC features three binaries: quasselcore, quasselclient, and
+quassel. While quasselcore and quasselclient obviously provide the
+separated core and client functionality, the latter one (quassel) is a
+monolithic version containing both of them for convenience.
+
+To build Quassel IRC, cd to build/ and run qmake && make. This
+builds all three versions of Quassel. You may choose individual
+targets by setting qmakes BUILD variable:
 
 qmake BUILD=<foo>
 
-where <foo> is any combination of qtclient, core, mono or all. Note that in order
-to change this later, you will have to make distclean, otherwise the BUILD setting
-seems to be ignored by qmake.
+where <foo> is any combination of qtclient, core, mono or all. Note
+that in order to change this later, you will have to make distclean,
+otherwise the BUILD setting seems to be ignored by qmake.
 
 After running make, you will find the binaries in build/targets.
 
-make install will probably do something, but it has never been tried and may destroy
-your system or kill a kitten. It's not necessary anyway, since there are no installable
-files other than the binaries. Though this might change in later releases.
+make install will probably do something, but it has never been tried
+and may destroy your system or kill a kitten. It's not necessary
+anyway, since there are no installable files other than the
+binaries. Though this might change in later releases.
 
-On first run of the Quassel core, it will wait for a client to connect and present a
-(preliminary) first-run wizard. This will allow you to create the database and one
-admin user for the core-side storage. Note that Quassel does not support the
-administration of user accounts yet, this includes adding more users, changing passwords
-and so on. This is high on our TODO list, of course.
+On first run of the Quassel core, it will wait for a client to connect
+and present a (preliminary) first-run wizard. This will allow you to
+create the database and one admin user for the core-side storage. Note
+that Quassel does not support the administration of user accounts yet,
+this includes adding more users, changing passwords and so on. This is
+high on our TODO list, of course.
 
 Please also do read the README file.
 
