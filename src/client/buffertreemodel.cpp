@@ -43,7 +43,7 @@ BufferTreeItem::BufferTreeItem(Buffer *buffer, TreeItem *parent)
   setFlags(flags);
 }
 
-uint BufferTreeItem::id() const {
+quint64 BufferTreeItem::id() const {
   return buf->bufferInfo().uid();
 }
 
@@ -122,7 +122,7 @@ QVariant NetworkTreeItem::data(int column, int role) const {
   }
 }
 
-uint NetworkTreeItem::id() const {
+quint64 NetworkTreeItem::id() const {
   return _networkId;
 }
 

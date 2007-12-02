@@ -43,8 +43,8 @@ TreeItem::~TreeItem() {
   qDeleteAll(_childItems);
 }
 
-uint TreeItem::id() const {
-  return (uint)this;
+quint64 TreeItem::id() const {
+  return (quint64)this;
 }
 
 void TreeItem::appendChild(TreeItem *item) {

@@ -41,7 +41,7 @@ public:
   void appendChild(TreeItem *child);
   void removeChild(int row);
 
-  virtual uint id() const;
+  virtual quint64 id() const;
 
   TreeItem *child(int row) const;
   TreeItem *childById(const uint &) const;
@@ -67,7 +67,7 @@ protected:
 
 private:
   QList<TreeItem *> _childItems;
-  QHash<uint, TreeItem *> _childHash; // uint to be compatible to qHash functions
+  QHash<quint64, TreeItem *> _childHash; // uint to be compatible to qHash functions
   TreeItem *_parentItem;
   Qt::ItemFlags _flags;
 };

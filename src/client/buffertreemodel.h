@@ -46,7 +46,7 @@ class BufferTreeItem : public TreeItem {
 public:
   BufferTreeItem(Buffer *, TreeItem *parent = 0);
 
-  virtual uint id() const;
+  virtual quint64 id() const;
   QVariant data(int column, int role) const;
 
   Buffer *buffer() const { return buf; }
@@ -70,7 +70,7 @@ public:
   NetworkTreeItem(const uint &netid, const QString &, TreeItem *parent = 0);
 
   virtual QVariant data(int column, int row) const;
-  virtual uint id() const;
+  virtual quint64 id() const;
 
 private:
   uint _networkId;
