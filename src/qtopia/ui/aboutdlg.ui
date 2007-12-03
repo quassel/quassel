@@ -10,7 +10,7 @@
    </rect>
   </property>
   <property name="windowTitle" >
-   <string>Dialog</string>
+   <string>About</string>
   </property>
   <layout class="QVBoxLayout" >
    <item>

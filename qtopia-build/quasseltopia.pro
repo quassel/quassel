@@ -44,7 +44,7 @@ INSTALLS+=desktop pics
 
 pkg.name=QuasselTopia
 pkg.desc=Quassel IRC, a modern, distributed IRC client
-pkg.version=0.1.0-1
+pkg.version=0.1.0-pre
 pkg.maintainer=www.quassel-irc.org
 pkg.license=GPL
 pkg.domain=window,net
