@@ -1,7 +1,10 @@
+Quassel IRC - Installation Notes
+================================
+
 These are preliminary instructions, until we get the config more
 polished.
 
-Quassel IRC features three binaries: quasselcore, quasselclient, and
+Quassel IRC provides three binaries: quasselcore, quasselclient, and
 quassel. While quasselcore and quasselclient obviously provide the
 separated core and client functionality, the latter one (quassel) is a
 monolithic version containing both of them for convenience.

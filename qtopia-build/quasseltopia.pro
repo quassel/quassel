@@ -1,7 +1,7 @@
 qtopia_project(qtopia app)
 
 TARGET = quasseltopia
-CONFIG += debug qtopia_main no_quicklaunch no_singleexec
+CONFIG += release qtopia_main no_quicklaunch no_singleexec
 QT += core gui network
 
 # Find files
@@ -43,8 +43,8 @@ pics.hint=pics
 INSTALLS+=desktop pics
 
 pkg.name=QuasselTopia
-pkg.desc=Quassel IRC, a next-gen IRC client
-pkg.version=0.0.1-1
+pkg.desc=Quassel IRC, a modern, distributed IRC client
+pkg.version=0.1.0-1
 pkg.maintainer=www.quassel-irc.org
 pkg.license=GPL
 pkg.domain=window,net
