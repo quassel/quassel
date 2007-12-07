@@ -49,19 +49,17 @@ IrcChannel::~IrcChannel() {
 //  PUBLIC:
 // ====================
 bool IrcChannel::isKnownUser(IrcUser *ircuser) const {
-  bool isknown = true;
-
   if(ircuser == 0) {
     qWarning() << "Channel" << name() << "received IrcUser Nullpointer!";
-    isknown = false;
+    return false;
   }
   
   if(!_userModes.contains(ircuser)) {
     qWarning() << "Channel" << name() << "received data for unknown User" << ircuser->nick();
-    isknown = false;
+    return false;
   }
-  
-  return isknown;
+
+  return true;
 }
 
 bool IrcChannel::isValidChannelUserMode(const QString &mode) const {
