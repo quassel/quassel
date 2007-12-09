@@ -167,7 +167,7 @@ bool SqliteStorage::init(const QVariantMap &settings) {
 
   // we will need those pretty often... so let's speed things up:
   createBufferQuery = new QSqlQuery(logDb);
-  createBufferQuery->prepare("INSERT INTO buffer (userid, networkid, buffername) VALUES (:userid, (SELECT networkid FROM network WHERE networkname = :networkname), :buffername)");
+  createBufferQuery->prepare("INSERT INTO buffer (userid, networkid, buffername) VALUES (:userid, (SELECT networkid FROM network WHERE networkname = :networkname AND userid = :userid2), :buffername)");
 
   createNetworkQuery = new QSqlQuery(logDb);
   createNetworkQuery->prepare("INSERT INTO network (userid, networkname) VALUES (:userid, :networkname)");
@@ -175,7 +175,7 @@ bool SqliteStorage::init(const QVariantMap &settings) {
   getBufferInfoQuery = new QSqlQuery(logDb);
   getBufferInfoQuery->prepare("SELECT bufferid FROM buffer "
                             "JOIN network ON buffer.networkid = network.networkid "
-                            "WHERE network.networkname = :networkname AND buffer.userid = :userid AND lower(buffer.buffername) = lower(:buffername)");
+                            "WHERE network.networkname = :networkname AND network.userid = :userid AND buffer.userid = :userid2 AND lower(buffer.buffername) = lower(:buffername)");
 
   logMessageQuery = new QSqlQuery(logDb);
   logMessageQuery->prepare("INSERT INTO backlog (time, bufferid, type, flags, senderid, message) "
@@ -311,6 +311,7 @@ void SqliteStorage::delUser(UserId user) {
 
 void SqliteStorage::createBuffer(UserId user, const QString &network, const QString &buffer) {
   createBufferQuery->bindValue(":userid", user);
+  createBufferQuery->bindValue(":userid2", user);  // Qt can't handle same placeholder twice (maybe sqlites fault)
   createBufferQuery->bindValue(":networkname", network);
   createBufferQuery->bindValue(":buffername", buffer);
   createBufferQuery->exec();
@@ -359,6 +360,7 @@ BufferInfo SqliteStorage::getBufferInfo(UserId user, const QString &network, con
   uint networkId = getNetworkId(user, network);
   getBufferInfoQuery->bindValue(":networkname", network);
   getBufferInfoQuery->bindValue(":userid", user);
+  getBufferInfoQuery->bindValue(":userid2", user); // Qt can't handle same placeholder twice... though I guess it's sqlites fault
   getBufferInfoQuery->bindValue(":buffername", buffer);
   getBufferInfoQuery->exec();
 
