@@ -102,6 +102,10 @@ QVariant CoreSession::retrieveSessionData(const QString &key, const QVariant &de
 // FIXME switch to NetworkIDs
 void CoreSession::connectToNetwork(QString network) {
   uint networkid = getNetworkId(network);
+  if(networkid == 0) {
+    qWarning() << "unable to connect to Network" << network << "(User:" << userId() << "): unable to determine NetworkId";
+    return;
+  }
   if(!servers.contains(networkid)) {
     Server *server = new Server(userId(), networkid, network);
     servers[networkid] = server;
