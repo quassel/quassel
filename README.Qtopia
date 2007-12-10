@@ -16,14 +16,6 @@ Note that QuasselTopia is just the client; it can't do IRC by
 itself. You'll need a Quassel core running on some server or PC for
 the phone to connect to.
 
-For testing purposes we have provided a core on one of our
-servers. You can connect to it for checking out QuasselTopia without
-having to install your own.  The core can be reached at
-<apollo.mindpool.net:4242>, with user 'testuser' and password
-'testuser'. If you can't connect, please let us know, and we'll
-restart it. You may also connect with a Quassel desktop client to this
-core.  The test account will be automatically created on first run.
-
 In its current state, QuasselTopia cannot do much except for
 connecting to a core and displaying the buffers you are in. Oh, and
 chatting of course.  But you cannot change any settings, create/edit
