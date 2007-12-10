@@ -30,10 +30,14 @@ BufferViewFilter::BufferViewFilter(QAbstractItemModel *model, const Modes &filte
 {
   setSourceModel(model);
   setSortCaseSensitivity(Qt::CaseInsensitive);
+
+  // FIXME
+  // ok the following basically sucks. therfore it's commented out. Justice served.
+  // a better solution would use dataChanged()
   
   // I have this feeling that this resulted in a fuckup once... no clue though right now and invalidateFilter isn't a slot -.-
   //connect(model, SIGNAL(invalidateFilter()), this, SLOT(invalidate()));
-  connect(model, SIGNAL(invalidateFilter()), this, SLOT(invalidateFilter_()));
+  // connect(model, SIGNAL(invalidateFilter()), this, SLOT(invalidateFilter_()));
 }
 
 void BufferViewFilter::invalidateFilter_() {
@@ -63,7 +67,9 @@ bool BufferViewFilter::dropMimeData(const QMimeData *data, Qt::DropAction action
   for(int i = 0; i < bufferList.count(); i++) {
     netId = bufferList[i].first;
     bufferId = bufferList[i].second;
-    networks << netId;
+    if(!networks.contains(netId)) {
+      networks << netId;
+    }
     addBuffer(bufferId);
   }
   return true;
@@ -86,10 +92,15 @@ void BufferViewFilter::removeBuffer(const QModelIndex &index) {
   bool lastBuffer = (rowCount(index.parent()) == 1);
   uint netId = index.data(BufferTreeModel::NetworkIdRole).toUInt();
   uint bufferuid = index.data(BufferTreeModel::BufferUidRole).toUInt();
+
   if(buffers.contains(bufferuid)) {
     buffers.remove(bufferuid);
-    if(lastBuffer)
+    
+    if(lastBuffer) {
       networks.remove(netId);
+      Q_ASSERT(!networks.contains(netId));
+    }
+
     invalidateFilter();
   }
   
@@ -112,11 +123,10 @@ bool BufferViewFilter::filterAcceptBuffer(const QModelIndex &source_bufferIndex)
 //   if((mode & NoInactive) && !isActive)
 //     return false;
 
-//   if((mode & FullCustom)) {
-//     uint bufferuid = source_bufferIndex.data(BufferTreeModel::BufferUidRole).toUInt();
-//     if(!buffers.contains(bufferuid))
-//       return false;
-//   }
+  if((mode & FullCustom)) {
+    uint bufferuid = source_bufferIndex.data(BufferTreeModel::BufferUidRole).toUInt();
+    return buffers.contains(bufferuid);
+  }
     
   return true;
 }

@@ -306,7 +306,6 @@ bool BufferTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction action,
 
 void BufferTreeModel::bufferUpdated(Buffer *buffer) {
   QModelIndex itemindex = getOrCreateBufferItemIndex(buffer);
-  emit invalidateFilter();
   emit dataChanged(itemindex, itemindex);
 }
 

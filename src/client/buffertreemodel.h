@@ -117,7 +117,6 @@ public slots:
 
 signals:
   void bufferSelected(Buffer *);
-  void invalidateFilter();
   void selectionChanged(const QModelIndex &);
 
 private:
