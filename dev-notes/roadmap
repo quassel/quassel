@@ -1,0 +1,22 @@
+Unerläßlich:
+============
+chatwidget-state
+settings-dialog
+network-settings in DB speichern
+umstellen auf network-IDs
+buffergroups raus (DB)
+buffertype-feld rein (DB)
+serverlist, identities...
+SQL-querys auslagern, migration-path...
+utf-8
+mode-changes im serverhandler
+BUG: multi-user-join
+core-user-admin, rights-management (ACL)
+BUFFERMODEL
+
+Wichtig:
+========
+shortcuts
+signalproxy threadsafe machen (thread-injection)
+activity-state im core speichern (client-reconnect) -> timestamp (pro buffer) lokal im client speichern
+backlog-administration

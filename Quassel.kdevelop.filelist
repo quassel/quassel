@@ -50,9 +50,6 @@ src/client/treemodel.h
 src/common
 src/common/bufferinfo.cpp
 src/common/bufferinfo.h
-src/common/build_core.cpp
-src/common/build_mono.cpp
-src/common/build_qtgui.cpp
 src/common/common.pri
 src/common/global.cpp
 src/common/global.h
@@ -131,8 +128,6 @@ src/qtopia/ui/nicklistwidget.ui
 src/qtui
 src/qtui/bufferwidget.cpp
 src/qtui/bufferwidget.h
-src/qtui/channelwidgetinput.cpp
-src/qtui/channelwidgetinput.h
 src/qtui/chatitem.cpp
 src/qtui/chatitem.h
 src/qtui/chatline-old.cpp
@@ -169,8 +164,6 @@ src/qtui/settingsdlg.h
 src/qtui/settingspage.h
 src/qtui/settingspages.cpp
 src/qtui/settingspages.h
-src/qtui/tabcompleter.cpp
-src/qtui/tabcompleter.h
 src/qtui/topicwidget.cpp
 src/qtui/topicwidget.h
 src/qtui/ui

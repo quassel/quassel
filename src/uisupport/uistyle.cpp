@@ -112,6 +112,7 @@ UiStyle::StyledText UiStyle::styleString(QString s) {
   fmtList.append(None);
   QTextLayout::FormatRange curFmtRng;
   curFmtRng.format = format(None);
+  curFmtRng.start = 0;
   result.formats.append(curFmtRng);
   int pos = 0; int length;
   int fgCol = -1, bgCol = -1;  // marks current mIRC color
