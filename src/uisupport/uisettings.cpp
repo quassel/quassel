@@ -18,9 +18,17 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "guisettings.h"
+#include "uisettings.h"
 
-GuiSettings::GuiSettings() : ClientSettings("GUI") {
+UiSettings::UiSettings() : ClientSettings("UI") {
 
 
+}
+
+void UiSettings::setValue(const QString &key, const QVariant &data) {
+  setLocalValue(key, data);
+}
+
+QVariant UiSettings::value(const QString &key, const QVariant &def) {
+  return localValue(key, def);
 }

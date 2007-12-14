@@ -22,7 +22,7 @@
 #include "chatwidget.h"
 #include "chatline-old.h"
 #include "qtui.h"
-
+#include "uisettings.h"
 
 ChatWidget::ChatWidget(QWidget *parent) : QAbstractScrollArea(parent) {
   //setAutoFillBackground(false);
@@ -50,8 +50,11 @@ void ChatWidget::init(QString netname, QString bufname) {
   bufferName = bufname;
   setBackgroundRole(QPalette::Base);
   setFont(QFont("Fixed"));
-  tsWidth = 90;
-  senderWidth = 100;
+  UiSettings s;
+  QVariant tsDef = s.value("DefaultTimestampColumnWidth", 90);
+  QVariant senderDef = s.value("DefaultSenderColumnWidth", 100);
+  tsWidth = s.value(QString("%1/%2/TimestampColumnWidth").arg(netname, bufname), tsDef).toInt();
+  senderWidth = s.value(QString("%1/%2/SenderColumnWidth").arg(netname, bufname), senderDef).toInt();
   computePositions();
   adjustScrollBar();
   verticalScrollBar()->setValue(verticalScrollBar()->maximum());
@@ -72,6 +75,11 @@ ChatWidget::~ChatWidget() {
   //foreach(ChatLine *l, lines) {
   //  delete l;
   //}
+  UiSettings s;
+  s.setValue("DefaultTimestampColumnWidth", tsWidth);  // FIXME stupid dirty quicky
+  s.setValue("DefaultSenderColumnWidth", senderWidth);
+  s.setValue(QString("%1/%2/TimestampColumnWidth").arg(networkName, bufferName), tsWidth);
+  s.setValue(QString("%1/%2/SenderColumnWidth").arg(networkName, bufferName), senderWidth);
 }
 
 QSize ChatWidget::sizeHint() const {
