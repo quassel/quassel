@@ -32,7 +32,7 @@ class SettingsDlg : public QDialog {
     SettingsDlg(QWidget *parent = 0);
     void registerSettingsPage(SettingsPage *);
     void unregisterSettingsPage(SettingsPage *);
-
+/*
   public slots:
     void selectPage(const QString &category, const QString &title);
 
@@ -40,7 +40,7 @@ class SettingsDlg : public QDialog {
     void itemSelected();
     void buttonClicked(QAbstractButton *);
     void applyChanges();
-
+*/
   private:
     Ui::SettingsDlg ui;
 

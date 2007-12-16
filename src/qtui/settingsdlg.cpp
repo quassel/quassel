@@ -31,6 +31,7 @@ SettingsDlg::SettingsDlg(QWidget *parent) : QDialog(parent) {
   connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));
 }
 
+/*
 void SettingsDlg::registerSettingsPage(SettingsPage *sp) {
   QWidget *w = sp->widget();
   w->setParent(this);
@@ -87,3 +88,4 @@ void SettingsDlg::applyChanges() {
   //SettingsInterface *sp = qobject_cast<SettingsInterface *>(ui.settingsStack->currentWidget());
   //if(sp) sp->applyChanges();
 }
+*/

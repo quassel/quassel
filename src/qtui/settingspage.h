@@ -21,23 +21,28 @@
 #ifndef _SETTINGSPAGE_H_
 #define _SETTINGSPAGE_H_
 
-//! Interface that needs to be implemented by pages of the settings dialog.
-class SettingsPage {
-  public:
-    virtual ~SettingsPage() {};
-    virtual QString category() = 0;
-    virtual QString title() = 0;
-    virtual QWidget *widget() = 0;
-    virtual void saveSettings() = 0;
-    virtual void loadSettings() = 0;
+#include <QWidget>
 
-    virtual bool hasChanged() = 0;
+//! A SettingsPage is a page in the settings dialog.
+class SettingsPage : public QWidget {
+  Q_OBJECT
+
+  public:
+    SettingsPage(const QString &category, const QString &name, QWidget *parent = 0);
+    virtual ~SettingsPage() {};
+    virtual QString category() const;
+    virtual QString name() const;
+
+    virtual bool hasChanged() const = 0;
+
+  public slots:
+    virtual void save() = 0;
+    virtual void load() = 0;
+    virtual void defaults() = 0;
 
   signals:
-    void modified();
+    void changed(bool hasChanged = true);
 
 };
-
-Q_DECLARE_INTERFACE(SettingsPage, "org.quassel-irc.iface.SettingsPage/1.0");
 
 #endif
