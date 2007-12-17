@@ -322,7 +322,7 @@ void NetworkInfo::initSetChannels(const QStringList &channels) {
 }
 
 IrcUser *NetworkInfo::updateNickFromMask(const QString &mask) {
-  QString nick(nickFromMask(mask));
+  QString nick(nickFromMask(mask).toLower());
   IrcUser *ircuser;
   
   if(_ircUsers.contains(nick)) {
@@ -336,13 +336,13 @@ IrcUser *NetworkInfo::updateNickFromMask(const QString &mask) {
 
 void NetworkInfo::ircUserNickChanged(QString newnick) {
   QString oldnick = _ircUsers.key(qobject_cast<IrcUser*>(sender()));
-  
+
   if(oldnick.isNull())
     return;
+
+  if(newnick.toLower() != oldnick) _ircUsers[newnick.toLower()] = _ircUsers.take(oldnick);
   
-  _ircUsers[newnick.toLower()] = _ircUsers.take(oldnick);
-  
-  if(myNick() == oldnick)
+  if(myNick().toLower() == oldnick)
     setMyNick(newnick);
 }
 
