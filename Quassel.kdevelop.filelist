@@ -186,6 +186,10 @@ src/qtui/ui/settingsdlg.ui
 src/qtui/ui/topicwidget.ui
 src/qtui/ui/usermgmtpage.ui
 src/uisupport
+src/uisupport/action.cpp
+src/uisupport/action.h
+src/uisupport/actioncollection.cpp
+src/uisupport/actioncollection.h
 src/uisupport/bufferview.cpp
 src/uisupport/bufferview.h
 src/uisupport/bufferviewfilter.cpp
@@ -194,6 +198,7 @@ src/uisupport/inputline.cpp
 src/uisupport/inputline.h
 src/uisupport/nickview.cpp
 src/uisupport/nickview.h
+src/uisupport/settingspage.cpp
 src/uisupport/tabcompleter.cpp
 src/uisupport/tabcompleter.h
 src/uisupport/uistyle.cpp

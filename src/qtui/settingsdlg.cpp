@@ -31,11 +31,10 @@ SettingsDlg::SettingsDlg(QWidget *parent) : QDialog(parent) {
   connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));
 }
 
-/*
+
 void SettingsDlg::registerSettingsPage(SettingsPage *sp) {
-  QWidget *w = sp->widget();
-  w->setParent(this);
-  ui.settingsStack->addWidget(w);
+  sp->setParent(this);
+  ui.settingsStack->addWidget(sp);
 
   QTreeWidgetItem *cat;
   QList<QTreeWidgetItem *> cats = ui.settingsTree->findItems(sp->category(), Qt::MatchExactly);
@@ -45,11 +44,11 @@ void SettingsDlg::registerSettingsPage(SettingsPage *sp) {
     cat->setFlags(Qt::ItemIsEnabled);
   } else cat = cats[0];
   QTreeWidgetItem *p = new QTreeWidgetItem(cat, QStringList(sp->title()));
-  pages[QString("%1$%2").arg(sp->category()).arg(sp->title())] = sp;
+  pages[QString("%1$%2").arg(sp->category(), sp->title())] = sp;
 }
 
 void SettingsDlg::selectPage(const QString &cat, const QString &title) {
-  QWidget *w = pages[QString("%1$%2").arg(cat).arg(title)]->widget();
+  QWidget *w = pages[QString("%1$%2").arg(cat, title)];
   Q_ASSERT(w);
   ui.settingsStack->setCurrentWidget(w);
 }
@@ -88,4 +87,4 @@ void SettingsDlg::applyChanges() {
   //SettingsInterface *sp = qobject_cast<SettingsInterface *>(ui.settingsStack->currentWidget());
   //if(sp) sp->applyChanges();
 }
-*/
+

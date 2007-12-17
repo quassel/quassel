@@ -18,46 +18,41 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _SETTINGSDLG_H_
-#define _SETTINGSDLG_H_
+#ifndef _SETTINGSPAGE_H_
+#define _SETTINGSPAGE_H_
 
-#include <QtGui>
-#include "ui_settingsdlg.h"
+#include <QWidget>
 
-#include "settingspage.h"
-
-class SettingsDlg : public QDialog {
+//! A SettingsPage is a page in the settings dialog.
+class SettingsPage : public QWidget {
   Q_OBJECT
+
   public:
-    SettingsDlg(QWidget *parent = 0);
-    void registerSettingsPage(SettingsPage *);
-    void unregisterSettingsPage(SettingsPage *);
+    SettingsPage(const QString &category, const QString &name, QWidget *parent = 0);
+    virtual ~SettingsPage() {};
+    virtual QString category() const;
+    virtual QString title() const;
+
+    virtual bool hasChanged() const = 0;
 
   public slots:
-    void selectPage(const QString &category, const QString &title);
+    virtual void save() = 0;
+    virtual void load() = 0;
+    virtual void defaults() = 0;
 
-  private slots:
-    void itemSelected();
-    void buttonClicked(QAbstractButton *);
-    void applyChanges();
+  protected slots:
+    //! Calling this slot is equivalent to emitting changed(true).
+    void changed();
 
-  private:
-    Ui::SettingsDlg ui;
+  protected:
+    //! This should be called whenever the widget state changes from unchanged to change or the other way round.
+    void changeState(bool hasChanged = true);
 
-    QHash<QString, SettingsPage *> pages;
-};
-
-/*
-class CoreSettingsPage : public QWidget, SettingsInterface {
-  Q_OBJECT
-
-  public:
-
+  signals:
+    void changed(bool hasChanged);
 
   private:
-    Ui::CoreSettingsPage ui;
-
+    QString _category, _title;
 };
-*/
 
 #endif
