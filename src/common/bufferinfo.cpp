@@ -20,6 +20,7 @@
 
 #include <QString>
 #include <QDataStream>
+#include <QDebug>
 #include <QByteArray>
 
 #include "bufferinfo.h"
@@ -47,6 +48,13 @@ QString BufferInfo::buffer() const {
     return _bufferName;
   else
     return nickFromMask(_bufferName);
+}
+
+QDebug operator<<(QDebug dbg, const BufferInfo &b) {
+  dbg.nospace() << "(bufId: " << b.uid() << ", netId: " << b.networkId() << ", groupId: " << b.groupId()
+                << ", net: " << b.network() << ", buf: " << b.buffer() << ")";
+
+  return dbg.space();
 }
 
 QDataStream &operator<<(QDataStream &out, const BufferInfo &bufferInfo) {

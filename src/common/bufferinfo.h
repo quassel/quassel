@@ -54,6 +54,7 @@ private:
 
 QDataStream &operator<<(QDataStream &out, const BufferInfo &bufferInfo);
 QDataStream &operator>>(QDataStream &in, BufferInfo &bufferInfo);
+QDebug operator<<(QDebug dbg, const BufferInfo &b);
 
 Q_DECLARE_METATYPE(BufferInfo);
 
