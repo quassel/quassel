@@ -444,6 +444,7 @@ void Client::networkConnected(uint netid) {
 
   NetworkInfo *netinfo = new NetworkInfo(netid, this);
   netinfo->setProxy(signalProxy());
+  bufferModel()->attachNetworkInfo(netinfo);
   
   if(!isConnected()) {
     connect(netinfo, SIGNAL(initDone()), this, SLOT(updateCoreConnectionProgress()));

@@ -119,7 +119,7 @@ void MainWin::init() {
   TopicWidget *topicwidget = new TopicWidget(dock);
   dock->setWidget(topicwidget);
 
-  Client::bufferModel()->mapProperty(0, Qt::DisplayRole, topicwidget, "topic");
+  Client::bufferModel()->mapProperty(1, Qt::DisplayRole, topicwidget, "topic");
 
   addDockWidget(Qt::TopDockWidgetArea, dock);
 

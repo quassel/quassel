@@ -327,7 +327,6 @@ const QByteArray &SignalProxy::methodName(QObject *obj, int methodId) {
 
 void SignalProxy::setSyncMap(QObject *obj) {
   const QMetaObject *meta = obj->metaObject();
-
   QHash<int, int> syncMap;
   
   QList<int> slotIndexes;
@@ -567,8 +566,17 @@ void SignalProxy::handleSync(QVariantList params) {
 
   QObject *receiver = _syncSlave[className][objectName];
   if(!syncMap(receiver).contains(signalId)) {
-    qWarning() << "received Sync Call with invalid SignalId" << className << objectName << signalId;
-  }
+    const QMetaObject *meta = receiver->metaObject();
+    QString signalName;
+    if(signalId < meta->methodCount())
+      signalName = QString(meta->method(signalId).signature());
+    else
+      signalName = QString::number(signalId);
+    
+    qWarning() << "received Sync Call for Object" << receiver
+	       << "- no matching Slot for Signal:" << signalName;
+    return;
+   }
   int slotId = syncMap(receiver)[signalId];
   if(!invokeSlot(receiver, slotId, params))
     qWarning("SignalProxy::handleSync(): invokeMethod for \"%s\" failed ", methodName(receiver, slotId).constData());
@@ -811,4 +819,14 @@ void SignalProxy::dumpProxyStats() {
   qDebug() << "number of Classes cached:" << _classInfo.count();
 }
 
+void SignalProxy::dumpSyncMap(QObject *object) {
+  const QMetaObject *meta = object->metaObject();
+  qDebug() << "SignalProxy: SyncMap for Class" << meta->className();
 
+  QHash<int, int> syncMap_ = syncMap(object);
+  QHash<int, int>::const_iterator iter = syncMap_.constBegin();
+  while(iter != syncMap_.constEnd()) {
+    qDebug() << iter.key() << meta->method(iter.key()).signature() << "-->" << iter.value() << meta->method(iter.value()).signature();    
+    iter++;
+  }
+}

@@ -22,6 +22,7 @@
 #define _TREEMODEL_H_
 
 #include <QList>
+#include <QStringList>
 #include <QVariant>
 #include <QHash>
 #include <QAbstractItemModel>
@@ -29,47 +30,93 @@
 /*****************************************
  *  general item used in the Tree Model
  *****************************************/
-class TreeItem : public QObject {
+class AbstractTreeItem : public QObject {
   Q_OBJECT
   Q_PROPERTY(uint id READ id)
 
 public:
-  TreeItem(const QList<QVariant> &data, TreeItem *parent = 0);
-  TreeItem(TreeItem *parent = 0);
-  virtual ~TreeItem();
+  AbstractTreeItem(AbstractTreeItem *parent = 0);
+  virtual ~AbstractTreeItem();
 
-  void appendChild(TreeItem *child);
+  void appendChild(int column, AbstractTreeItem *child);
+  void appendChild(AbstractTreeItem *child);
+  
+  void removeChild(int column, int row);
   void removeChild(int row);
 
   virtual quint64 id() const;
 
-  TreeItem *child(int row) const;
-  TreeItem *childById(const uint &) const;
+  AbstractTreeItem *child(int column, int row) const;
+  AbstractTreeItem *child(int row) const;
+  
+  AbstractTreeItem *childById(int column, const uint &id) const;
+  AbstractTreeItem *childById(const uint &id) const;
 
+  int childCount(int column) const;
   int childCount() const;
-  int columnCount() const;
 
-  virtual QVariant data(int column, int role) const;
+  virtual int columnCount() const = 0;
 
-  Qt::ItemFlags flags() const;
-  void setFlags(Qt::ItemFlags);
+  virtual QVariant data(int column, int role) const = 0;
 
+  virtual Qt::ItemFlags flags() const;
+  virtual void setFlags(Qt::ItemFlags);
+
+  int column() const;
   int row() const;
-  TreeItem *parent();
+  AbstractTreeItem *parent();
 
-
+signals:
+  void dataChanged(int column);
+				       
 private slots:
   void childDestroyed();
 
+private:
+  QHash<int, QList<AbstractTreeItem *> > _childItems;
+  QHash<int, QHash<quint64, AbstractTreeItem *> > _childHash; // uint to be compatible to qHash functions
+  AbstractTreeItem *_parentItem;
+  Qt::ItemFlags _flags;
 
-protected:
-  QList<QVariant> itemData;
+  int defaultColumn() const;
+};
+
+
+/*****************************************
+ * SimpleTreeItem
+ *****************************************/
+class SimpleTreeItem : public AbstractTreeItem {
+  Q_OBJECT
+
+public:
+  SimpleTreeItem(const QList<QVariant> &data, AbstractTreeItem *parent = 0);
+  virtual ~SimpleTreeItem();
+  virtual QVariant data(int column, int role) const;
+  virtual int columnCount() const;
 
 private:
-  QList<TreeItem *> _childItems;
-  QHash<quint64, TreeItem *> _childHash; // uint to be compatible to qHash functions
-  TreeItem *_parentItem;
-  Qt::ItemFlags _flags;
+  QList<QVariant> _itemData;
+};
+
+/*****************************************
+ * PropertyMapItem
+ *****************************************/
+class PropertyMapItem : public AbstractTreeItem {
+  Q_OBJECT
+
+public:
+  PropertyMapItem(const QStringList &propertyOrder, AbstractTreeItem *parent = 0);
+  PropertyMapItem(AbstractTreeItem *parent = 0);
+
+  virtual ~PropertyMapItem();
+  
+  virtual QVariant data(int column, int role) const;
+  virtual int columnCount() const;
+  
+  void appendProperty(const QString &property);
+
+private:
+  QStringList _propertyOrder;
 };
 
 
@@ -86,19 +133,28 @@ public:
   QVariant data(const QModelIndex &index, int role) const;
   virtual Qt::ItemFlags flags(const QModelIndex &index) const;
   QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+  
   QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
   QModelIndex indexById(uint id, const QModelIndex &parent = QModelIndex()) const;
+  QModelIndex indexByItem(AbstractTreeItem *item) const;
+
   QModelIndex parent(const QModelIndex &index) const;
+
   int rowCount(const QModelIndex &parent = QModelIndex()) const;
   int columnCount(const QModelIndex &parent = QModelIndex()) const;
 
   virtual void clear();
 
+private slots:
+  void itemDataChanged(int column);
+
 protected:
+  void appendChild(AbstractTreeItem *parent, AbstractTreeItem *child);
+
   bool removeRow(int row, const QModelIndex &parent = QModelIndex());
   bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex());
   
-  TreeItem *rootItem;
+  AbstractTreeItem *rootItem;
 };
 
 #endif

@@ -133,6 +133,8 @@ private:
   void _detachSignals(QObject *sender);
   void _detachSlots(QObject *receiver);
 
+    void dumpSyncMap(QObject *object);
+  
   // containg a list of argtypes for fast access
   QHash<const QMetaObject *, ClassInfo*> _classInfo;
 
@@ -152,7 +154,7 @@ private:
   QHash<QIODevice*, quint32> _peerByteCount;
 
   ProxyMode _proxyMode;
-
+  
   friend class SignalRelay;
 };
 

@@ -33,8 +33,8 @@ BufferView::BufferView(QWidget *parent) : QTreeView(parent) {
 
 void BufferView::init() {
   setIndentation(10);
-  header()->hide();
-  header()->hideSection(1);
+  // header()->hide();
+  // header()->hideSection(1);
   expandAll();
 
   setAnimated(true);

@@ -36,45 +36,80 @@ class BufferInfo;
 #include "modelpropertymapper.h"
 class MappedSelectionModel;
 class QAbstractItemView;
+class NetworkInfo;
+class IrcChannel;
+class IrcUser;
 
 /*****************************************
  *  Fancy Buffer Items
  *****************************************/
-class BufferTreeItem : public TreeItem {
+class BufferTreeItem : public PropertyMapItem {
   Q_OBJECT
+  Q_PROPERTY(QString bufferName READ bufferName)
+  Q_PROPERTY(QString topic READ topic)
+  Q_PROPERTY(int nickCount READ nickCount)
 
 public:
-  BufferTreeItem(Buffer *, TreeItem *parent = 0);
+  BufferTreeItem(Buffer *, AbstractTreeItem *parent = 0);
 
   virtual quint64 id() const;
-  QVariant data(int column, int role) const;
+  virtual QVariant data(int column, int role) const;
 
+  void attachIrcChannel(IrcChannel *ircChannel);
+
+  QString bufferName() const;
+  QString topic() const;
+  int nickCount() const;
+
+  
   Buffer *buffer() const { return buf; }
   void setActivity(const Buffer::ActivityLevel &);
 
+public slots:
+  void setTopic(const QString &topic);
+  void join(IrcUser *ircUser);
+  void part(IrcUser *ircUser);
+  
 private:
-  QString text(int column) const;
   QColor foreground(int column) const;
 
   Buffer *buf;
   Buffer::ActivityLevel activity;
+
+  QPointer<IrcChannel> _ircChannel;
 };
 
 /*****************************************
  *  Network Items
  *****************************************/
-class NetworkTreeItem : public TreeItem {
+class NetworkTreeItem : public PropertyMapItem {
   Q_OBJECT
-
+  Q_PROPERTY(QString networkName READ networkName)
+  Q_PROPERTY(QString currentServer READ currentServer)
+  Q_PROPERTY(int nickCount READ nickCount)
+    
 public:
-  NetworkTreeItem(const uint &netid, const QString &, TreeItem *parent = 0);
+  NetworkTreeItem(const uint &netid, const QString &, AbstractTreeItem *parent = 0);
 
   virtual QVariant data(int column, int row) const;
   virtual quint64 id() const;
 
+  QString networkName() const;
+  QString currentServer() const;
+  int nickCount() const;
+  
+public slots:
+  void setNetworkName(const QString &networkName);
+  void setCurrentServer(const QString &serverName);
+
+  void attachNetworkInfo(NetworkInfo *networkInfo);
+  void attachIrcChannel(const QString &channelName);
+  
 private:
   uint _networkId;
-  QString net;
+  QString _networkName;
+
+  QPointer<NetworkInfo> _networkInfo;
 };
 
 /*****************************************
@@ -88,9 +123,18 @@ public:
     BufferTypeRole = Qt::UserRole,
     BufferActiveRole,
     BufferUidRole,
-    NetworkIdRole
+    NetworkIdRole,
+    ItemTypeRole
   };
 
+  enum itemTypes {
+    AbstractItem,
+    SimpleItem,
+    NetworkItem,
+    BufferItem,
+    NickItem
+  };
+    
   BufferTreeModel(QObject *parent = 0);
   static QList<QVariant> defaultHeader();
 
@@ -108,7 +152,8 @@ public:
   virtual QMimeData *mimeData(const QModelIndexList &) const;
   virtual bool dropMimeData(const QMimeData *, Qt::DropAction, int, int, const QModelIndex &);
 
-
+  void attachNetworkInfo(NetworkInfo *networkInfo);
+						  
 public slots:
   void bufferUpdated(Buffer *);
   void setCurrentIndex(const QModelIndex &index, QItemSelectionModel::SelectionFlags command);
@@ -122,8 +167,14 @@ signals:
 private:
   bool isBufferIndex(const QModelIndex &) const;
   Buffer *getBufferByIndex(const QModelIndex &) const;
-  QModelIndex getOrCreateNetworkItemIndex(Buffer *buffer);
-  QModelIndex getOrCreateBufferItemIndex(Buffer *buffer);
+
+  QModelIndex networkIndex(uint networkId);
+  NetworkTreeItem *network(uint networkId);
+  NetworkTreeItem *newNetwork(uint networkId, const QString &networkName);
+  
+  QModelIndex bufferIndex(BufferInfo bufferInfo);
+  BufferTreeItem *buffer(BufferInfo bufferInfo);
+  BufferTreeItem *newBuffer(BufferInfo bufferInfo);
 
   QPointer<SelectionModelSynchronizer> _selectionModelSynchronizer;
   QPointer<ModelPropertyMapper> _propertyMapper;

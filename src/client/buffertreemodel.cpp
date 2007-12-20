@@ -28,12 +28,15 @@
 #include "bufferinfo.h"
 #include "client.h"
 #include "signalproxy.h"
+#include "networkinfo.h"
+#include "ircchannel.h"
+#include "ircuser.h"
 
 /*****************************************
 *  Fancy Buffer Items
 *****************************************/
-BufferTreeItem::BufferTreeItem(Buffer *buffer, TreeItem *parent)
-  : TreeItem(parent),
+BufferTreeItem::BufferTreeItem(Buffer *buffer, AbstractTreeItem *parent)
+  : PropertyMapItem(QStringList() << "bufferName" << "topic" << "nickCount", parent),
     buf(buffer),
     activity(Buffer::NoActivity)
 {
@@ -49,17 +52,6 @@ quint64 BufferTreeItem::id() const {
 
 void BufferTreeItem::setActivity(const Buffer::ActivityLevel &level) {
   activity = level;
-}
-
-QString BufferTreeItem::text(int column) const {
-  switch(column) {
-    case 0:
-      return buf->name();
-    case 1:
-      return buf->networkName();
-    default:
-      return QString();
-  }
 }
 
 QColor BufferTreeItem::foreground(int column) const {
@@ -79,37 +71,78 @@ QColor BufferTreeItem::foreground(int column) const {
   }
 }
 
-
 QVariant BufferTreeItem::data(int column, int role) const {
   switch(role) {
-  case Qt::DisplayRole:
-    return text(column);
-  case Qt::ForegroundRole:
-    return foreground(column);
-  case BufferTreeModel::BufferTypeRole:
-    return int(buf->bufferType());
-  case BufferTreeModel::BufferActiveRole:
-    return buf->isActive();
   case BufferTreeModel::BufferUidRole:
     return buf->bufferInfo().uid();
   case BufferTreeModel::NetworkIdRole:
     return buf->bufferInfo().networkId();
-    
+  case BufferTreeModel::BufferTypeRole:
+    return int(buf->bufferType());
+  case BufferTreeModel::BufferActiveRole:
+    return buf->isActive();
+  case Qt::ForegroundRole:
+    return foreground(column);
   default:
-    return TreeItem::data(column, role);
+    return PropertyMapItem::data(column, role);
   }
+}
+
+void BufferTreeItem::attachIrcChannel(IrcChannel *ircChannel) {
+  if(!ircChannel)
+    return;
+  
+  _ircChannel = ircChannel;
+
+  connect(ircChannel, SIGNAL(topicSet(QString)),
+	  this, SLOT(setTopic(QString)));
+  connect(ircChannel, SIGNAL(ircUserJoined(IrcUser *)),
+	  this, SLOT(join(IrcUser *)));
+  connect(ircChannel, SIGNAL(ircUserParted(IrcUser *)),
+	  this, SLOT(part(IrcUser *)));
+}
+
+QString BufferTreeItem::bufferName() const {
+  return buf->name();
+}
+
+QString BufferTreeItem::topic() const {
+  if(_ircChannel)
+    return _ircChannel->topic();
+  else
+    return QString();
+}
+
+int BufferTreeItem::nickCount() const {
+  if(_ircChannel)
+    return _ircChannel->ircUsers().count();
+  else
+    return 0;
+}
+
+void BufferTreeItem::setTopic(const QString &topic) {
+  Q_UNUSED(topic);
+  emit dataChanged(1);
+}
+
+void BufferTreeItem::join(IrcUser *ircUser) {
+  Q_UNUSED(ircUser);
+  emit dataChanged(2);
+}
+
+void BufferTreeItem::part(IrcUser *ircUser) {
+  Q_UNUSED(ircUser);
+  emit dataChanged(2);
 }
 
 /*****************************************
 *  Network Items
 *****************************************/
-NetworkTreeItem::NetworkTreeItem(const uint &netid, const QString &network, TreeItem *parent)
-  : TreeItem(parent),
+NetworkTreeItem::NetworkTreeItem(const uint &netid, const QString &network, AbstractTreeItem *parent)
+  : PropertyMapItem(QList<QString>() << "networkName" << "currentServer" << "nickCount", parent),
     _networkId(netid),
-    net(network)
+    _networkName(network)
 {
-  net = network;
-  itemData << net << "";
   setFlags(Qt::ItemIsEnabled);
 }
 
@@ -117,13 +150,83 @@ QVariant NetworkTreeItem::data(int column, int role) const {
   switch(role) {
   case BufferTreeModel::NetworkIdRole:
     return _networkId;
+  case BufferTreeModel::ItemTypeRole:
+    return BufferTreeModel::NetworkItem;
   default:
-    return TreeItem::data(column, role);
+    return PropertyMapItem::data(column, role);
   }
 }
 
 quint64 NetworkTreeItem::id() const {
   return _networkId;
+}
+
+QString NetworkTreeItem::networkName() const {
+  if(_networkInfo)
+    return _networkInfo->networkName();
+  else
+    return _networkName;
+}
+
+QString NetworkTreeItem::currentServer() const {
+  if(_networkInfo)
+    return _networkInfo->currentServer();
+  else
+    return QString();
+}
+
+int NetworkTreeItem::nickCount() const {
+  BufferTreeItem *bufferItem;
+  int count = 0;
+  for(int i = 0; i < childCount(); i++) {
+    bufferItem = qobject_cast<BufferTreeItem *>(child(i));
+    if(!bufferItem)
+      continue;
+    count += bufferItem->nickCount();
+  }
+  return count;
+}
+
+void NetworkTreeItem::attachNetworkInfo(NetworkInfo *networkInfo) {
+  if(!networkInfo)
+    return;
+  
+  _networkInfo = networkInfo;
+
+  connect(networkInfo, SIGNAL(networkNameSet(QString)),
+	  this, SLOT(setNetworkName(QString)));
+  connect(networkInfo, SIGNAL(currentServerSet(QString)),
+	  this, SLOT(setCurrentServer(QString)));
+  connect(networkInfo, SIGNAL(ircChannelAdded(QString)),
+	  this, SLOT(attachIrcChannel(QString)));
+  // FIXME: connect this and that...
+}
+
+void NetworkTreeItem::attachIrcChannel(const QString &channelName) {
+  IrcChannel *ircChannel = _networkInfo->ircChannel(channelName);
+  if(!ircChannel) {
+    qWarning() << "NetworkTreeItem::attachIrcChannel(): unkown Channel" << channelName;
+    return;
+  }
+  
+  BufferTreeItem *bufferItem;
+  for(int i = 0; i < childCount(); i++) {
+    bufferItem = qobject_cast<BufferTreeItem *>(child(i));
+    if(bufferItem->bufferName() == ircChannel->name()) {
+      bufferItem->attachIrcChannel(ircChannel);
+      break;
+    }
+  }
+}
+
+void NetworkTreeItem::setNetworkName(const QString &networkName) {
+  Q_UNUSED(networkName);
+  emit dataChanged(0);
+}
+
+void NetworkTreeItem::setCurrentServer(const QString &serverName) {
+  Q_UNUSED(serverName);
+  emit dataChanged(1);
 }
 
 /*****************************************
@@ -147,7 +250,7 @@ BufferTreeModel::BufferTreeModel(QObject *parent)
 
 QList<QVariant >BufferTreeModel::defaultHeader() {
   QList<QVariant> data;
-  data << tr("Buffer") << tr("Network");
+  data << tr("Buffer") << tr("Topic") << tr("Nick Count");
   return data;
 }
 
@@ -174,43 +277,62 @@ bool BufferTreeModel::isBufferIndex(const QModelIndex &index) const {
 
 Buffer *BufferTreeModel::getBufferByIndex(const QModelIndex &index) const {
   BufferTreeItem *item = static_cast<BufferTreeItem *>(index.internalPointer());
+  // FIXME get rid of this
+  Q_ASSERT(item->buffer() == Client::instance()->buffer(item->id()));
   return item->buffer();
 }
 
-QModelIndex BufferTreeModel::getOrCreateNetworkItemIndex(Buffer *buffer) {
-  QString net = buffer->networkName();
-  uint netId = buffer->networkId();
-  TreeItem *networkItem;
 
-  if(!(networkItem = rootItem->childById(netId))) {
-    int nextRow = rootItem->childCount();
-    networkItem = new NetworkTreeItem(netId, net, rootItem);
-    
-    beginInsertRows(QModelIndex(), nextRow, nextRow);
-    rootItem->appendChild(networkItem);
-    endInsertRows();
+// experimental stuff :)
+QModelIndex BufferTreeModel::networkIndex(uint networkId) {
+  return indexById(networkId);
+}
+
+NetworkTreeItem *BufferTreeModel::network(uint networkId) {
+  return qobject_cast<NetworkTreeItem *>(rootItem->childById(networkId));
+}
+
+NetworkTreeItem *BufferTreeModel::newNetwork(uint networkId, const QString &networkName) {
+  NetworkTreeItem *networkItem = network(networkId);
+
+  if(networkItem == 0) {
+    networkItem = new NetworkTreeItem(networkId, networkName, rootItem);
+    appendChild(rootItem, networkItem);
   }
 
   Q_ASSERT(networkItem);
-  return index(networkItem->row(), 0);
+  return networkItem;
 }
 
-QModelIndex BufferTreeModel::getOrCreateBufferItemIndex(Buffer *buffer) {
-  QModelIndex networkItemIndex = getOrCreateNetworkItemIndex(buffer);
-  NetworkTreeItem *networkItem = static_cast<NetworkTreeItem*>(networkItemIndex.internalPointer());
-  TreeItem *bufferItem;
-  
-  if(!(bufferItem = networkItem->childById(buffer->bufferInfo().uid()))) {
-    int nextRow = networkItem->childCount();
+QModelIndex BufferTreeModel::bufferIndex(BufferInfo bufferInfo) {
+  QModelIndex networkIdx = networkIndex(bufferInfo.networkId());
+  if(!networkIdx.isValid())
+    return QModelIndex();
+  else
+    return indexById(bufferInfo.uid(), networkIdx);
+}
+
+BufferTreeItem *BufferTreeModel::buffer(BufferInfo bufferInfo) {
+  QModelIndex bufferIdx = bufferIndex(bufferInfo);
+  if(bufferIdx.isValid())
+    return static_cast<BufferTreeItem *>(bufferIdx.internalPointer());
+  else
+    return 0;
+}
+
+BufferTreeItem *BufferTreeModel::newBuffer(BufferInfo bufferInfo) {
+  BufferTreeItem *bufferItem = buffer(bufferInfo);
+  if(bufferItem == 0) {
+    NetworkTreeItem *networkItem = newNetwork(bufferInfo.networkId(), bufferInfo.network());
+
+    // FIXME: get rid of the buffer pointer
+    Buffer *buffer = Client::instance()->buffer(bufferInfo.uid());
     bufferItem = new BufferTreeItem(buffer, networkItem);
-    
-    beginInsertRows(networkItemIndex, nextRow, nextRow);
-    networkItem->appendChild(bufferItem);
-    endInsertRows();
+    appendChild(networkItem, bufferItem);
   }
 
   Q_ASSERT(bufferItem);
-  return index(bufferItem->row(), 0, networkItemIndex);
+  return bufferItem;
 }
 
 QStringList BufferTreeModel::mimeTypes() const {
@@ -304,8 +426,18 @@ bool BufferTreeModel::dropMimeData(const QMimeData *data, Qt::DropAction action,
   return true;
 }
 
+void BufferTreeModel::attachNetworkInfo(NetworkInfo *networkInfo) {
+  NetworkTreeItem *networkItem = network(networkInfo->networkId());
+  if(!networkItem) {
+    qWarning() << "BufferTreeModel::attachNetworkInfo(): network is unknown!";
+    return;
+  }
+  networkItem->attachNetworkInfo(networkInfo);
+}
+
 void BufferTreeModel::bufferUpdated(Buffer *buffer) {
-  QModelIndex itemindex = getOrCreateBufferItemIndex(buffer);
+  BufferTreeItem *bufferItem = newBuffer(buffer->bufferInfo());
+  QModelIndex itemindex = indexByItem(bufferItem);
   emit dataChanged(itemindex, itemindex);
 }
 
@@ -321,17 +453,26 @@ void BufferTreeModel::setCurrentIndex(const QModelIndex &index, QItemSelectionMo
   }
 }
 
-void BufferTreeModel::bufferActivity(Buffer::ActivityLevel level, Buffer *buffer) {
-  BufferTreeItem *bufferItem = static_cast<BufferTreeItem*>(getOrCreateBufferItemIndex(buffer).internalPointer());
-  if(buffer != currentBuffer)
+void BufferTreeModel::bufferActivity(Buffer::ActivityLevel level, Buffer *buf) {
+  BufferTreeItem *bufferItem = buffer(buf->bufferInfo());
+  if(!bufferItem) {
+    qWarning() << "BufferTreeModel::bufferActivity(): received Activity Info for uknown Buffer";
+    return;
+  }
+  
+  if(buf != currentBuffer)
     bufferItem->setActivity(level);
   else
     bufferItem->setActivity(Buffer::NoActivity);
-  bufferUpdated(buffer);
+  bufferUpdated(buf);
 }
 
 void BufferTreeModel::selectBuffer(Buffer *buffer) {
-  QModelIndex index = getOrCreateBufferItemIndex(buffer);
+  QModelIndex index = bufferIndex(buffer->bufferInfo());
+  if(!index.isValid()) {
+    qWarning() << "BufferTreeModel::selectBuffer(): unknown Buffer has been selected.";
+    return;
+  }
   // SUPER UGLY!
   setCurrentIndex(index, 0);
 }
