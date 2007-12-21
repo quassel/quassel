@@ -150,7 +150,7 @@ void MainWin::setupMenus() {
   connect(ui.actionNetworkList, SIGNAL(triggered()), this, SLOT(showServerList()));
   connect(ui.actionEditIdentities, SIGNAL(triggered()), serverListDlg, SLOT(editIdentities()));
   connect(ui.actionSettingsDlg, SIGNAL(triggered()), this, SLOT(showSettingsDlg()));
-  ui.actionSettingsDlg->setEnabled(false);
+  //ui.actionSettingsDlg->setEnabled(false);
   connect(ui.actionAboutQt, SIGNAL(triggered()), QApplication::instance(), SLOT(aboutQt()));
 }
 

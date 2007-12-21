@@ -64,6 +64,7 @@ void Core::init() {
   connect(&server, SIGNAL(newConnection()), this, SLOT(incomingConnection()));
   startListening(s.port());
   guiUser = 0;
+
 }
 
 bool Core::initStorageSqlite(QVariantMap dbSettings, bool setup) {
@@ -90,6 +91,34 @@ Core::~Core() {
     delete storage;
     storage = NULL;
   }
+}
+
+void Core::restoreState() {
+  Q_ASSERT(!instance()->sessions.count());
+  CoreSettings s;
+  QList<QVariant> users = s.coreState().toList();
+  if(users.count() > 0) {
+    qDebug() << "Restoring previous core state...";
+    foreach(QVariant v, users) {
+      QVariantMap m = v.toMap();
+      if(m.contains("UserId")) {
+        CoreSession *sess = createSession(m["UserId"].toUInt());
+        sess->restoreState(m["State"]);
+      }
+    }
+  }
+}
+
+void Core::saveState() {
+  CoreSettings s;
+  QList<QVariant> users;
+  foreach(CoreSession *sess, instance()->sessions.values()) {
+    QVariantMap m;
+    m["UserId"] = sess->userId();
+    m["State"] = sess->state();
+    users << m;
+  }
+  s.setCoreState(users);
 }
 
 CoreSession *Core::session(UserId uid) {

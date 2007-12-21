@@ -48,7 +48,7 @@ class Server : public QThread {
   Q_OBJECT
 
 public:
-  Server(UserId uid, uint networkId, QString network);
+  Server(UserId uid, NetworkId networkId, QString network, const QVariant &previousState = QVariant());
   ~Server();
 
   UserId userId() const { return _userId; } 
@@ -56,13 +56,15 @@ public:
   // serverState state();
   bool isConnected() const { return socket.state() == QAbstractSocket::ConnectedState; }
 
-  uint networkId() const;
-  QString networkName();  // hasbeen getNetwork()
+  NetworkId networkId() const;
+  QString networkName() const;  // hasbeen getNetwork()
 
-  NetworkInfo *networkInfo() { return _networkInfo; }
-  IrcServerHandler *ircServerHandler() {return _ircServerHandler; }
-  UserInputHandler *userInputHandler() {return _userInputHandler; }
-  CtcpHandler *ctcpHandler() {return _ctcpHandler; }
+  NetworkInfo *networkInfo() const { return _networkInfo; }
+  IrcServerHandler *ircServerHandler() const { return _ircServerHandler; }
+  UserInputHandler *userInputHandler() const { return _userInputHandler; }
+  CtcpHandler *ctcpHandler() const { return _ctcpHandler; }
+
+  QVariant state(); ///< Return data necessary to restore the server's state upon core restart
   
 public slots:
   // void setServerOptions();
@@ -76,6 +78,7 @@ public slots:
 
 private slots:
   void threadFinished();
+  void sendPerform();
 
 signals:
   void serverState(QString net, QVariantMap data);
@@ -85,6 +88,8 @@ signals:
   void displayMsg(Message::Type, QString target, QString text, QString sender = "", quint8 flags = Message::None);
   void connected(uint networkId);
   void disconnected(uint networkId);
+
+  void connectionInitialized(); ///< Emitted after receipt of 001 to indicate that we can now send data to the IRC server
 
   void synchronizeClients();
   
@@ -100,7 +105,7 @@ private slots:
 
 private:
   UserId _userId;
-  uint _networkId;
+  NetworkId _networkId;
 
   QTcpSocket socket;
 
@@ -112,6 +117,8 @@ private:
 
   QVariantMap networkSettings;
   QVariantMap identity;
+
+  QVariant _previousState;
 
   CoreSession *coreSession() const;
   

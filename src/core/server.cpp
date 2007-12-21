@@ -27,20 +27,23 @@
 #include "core.h"
 #include "coresession.h"
 
+#include "ircuser.h"
 #include "networkinfo.h"
 
 #include "ircserverhandler.h"
 #include "userinputhandler.h"
 #include "ctcphandler.h"
 
-Server::Server(UserId uid, uint networkId, QString net)
+Server::Server(UserId uid, NetworkId networkId, QString net, const QVariant &state)
   : _userId(uid),
     _networkId(networkId),
     _ircServerHandler(new IrcServerHandler(this)),
     _userInputHandler(new UserInputHandler(this)),
     _ctcpHandler(new CtcpHandler(this)),
-    _networkInfo(new NetworkInfo(networkId, this))
+    _networkInfo(new NetworkInfo(networkId, this)),
+    _previousState(state)
 {
+  connect(networkInfo(), SIGNAL(currentServerSet(const QString &)), this, SLOT(sendPerform()));
   networkInfo()->setNetworkName(net);
   networkInfo()->setProxy(coreSession()->signalProxy());
 }
@@ -76,6 +79,34 @@ void Server::connectToIrc(QString net) {
   quint16 port = servers[0].toMap()["Port"].toUInt();
   displayStatusMsg(QString("Connecting to %1:%2...").arg(host).arg(port));
   socket.connectToHost(host, port);
+}
+
+void Server::sendPerform() {
+  // TODO: reimplement perform List!
+  //// send performlist
+  //QStringList performList = networkSettings["Perform"].toString().split( "\n" );
+  //int count = performList.count();
+  //for(int a = 0; a < count; a++) {
+  //  if(!performList[a].isEmpty() ) {
+  //    userInput(network, "", performList[a]);
+  //  }
+  //}
+
+  // rejoin channels we've been in
+  QStringList chans = _previousState.toStringList();
+  if(chans.count() > 0) {
+    qDebug() << "autojoining" << chans;
+    QString list = chans.join(",");
+    putCmd("join", QStringList(list));
+  }
+  // delete _previousState, we won't need it again
+  _previousState = QVariant();
+}
+
+QVariant Server::state() {
+  IrcUser *me = networkInfo()->ircUser(networkInfo()->myNick());
+  if(!me) return QVariant();  // this shouldn't really happen, I guess
+  return me->channels();
 }
 
 void Server::disconnectFromIrc(QString net) {
@@ -143,7 +174,7 @@ uint Server::networkId() const {
   return _networkId;
 }
 
-QString Server::networkName() {
+QString Server::networkName() const {
   return networkInfo()->networkName();
 }
 

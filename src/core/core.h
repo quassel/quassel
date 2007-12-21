@@ -46,6 +46,9 @@ class Core : public QObject {
     static QVariant connectLocalClient(QString user, QString passwd);
     static void disconnectLocalClient();
 
+    static void saveState();
+    static void restoreState();
+
   private slots:
     bool startListening(uint port = DEFAULT_PORT);
     void stopListening();

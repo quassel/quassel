@@ -75,7 +75,7 @@ bool NetworkInfo::isMyNick(const QString &nick) const {
 }
 
 bool NetworkInfo::isMyNick(IrcUser *ircuser) const {
-  return (ircuser->nick().toLower() == myNick());
+  return (ircuser->nick().toLower() == myNick().toLower());
 }
 
 bool NetworkInfo::isChannelName(const QString &channelname) const {

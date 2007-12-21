@@ -38,18 +38,22 @@ public:
   CoreSession(UserId, Storage *, QObject *parent = 0);
   virtual ~CoreSession();
 
-  uint getNetworkId(const QString &network) const;
+  NetworkId getNetworkId(const QString &network) const;
   QList<BufferInfo> buffers() const;
   UserId userId() const;
   QVariant sessionState();
 
   //! Retrieve a piece of session-wide data.
   QVariant retrieveSessionData(const QString &key, const QVariant &def = QVariant());
-  
+
   SignalProxy *signalProxy() const;
-				  
+
   void attachServer(Server *server);
-				   
+
+  //! Return necessary data for restoring the session after restarting the core
+  QVariant state() const;
+  void restoreState(const QVariant &previousState);
+
 public slots:
   //! Store a piece session-wide data and distribute it to connected clients.
   void storeSessionData(const QString &key, const QVariant &data);
@@ -57,18 +61,19 @@ public slots:
   void serverStateRequested();
 
   void addClient(QIODevice *connection);
-  
-  void connectToNetwork(QString);
-  
+
+  void connectToNetwork(QString, const QVariant &previousState = QVariant());
+  //void connectToNetwork(NetworkId);
+
   //void processSignal(ClientSignal, QVariant, QVariant, QVariant);
   void sendBacklog(BufferInfo, QVariant, QVariant);
   void msgFromGui(BufferInfo, QString message);
-  
+
 signals:
   void msgFromGui(uint netid, QString buf, QString message);
   void displayMsg(Message message);
   void displayStatusMsg(QString, QString);
-  
+
   void connectToIrc(QString net);
   void disconnectFromIrc(QString net);
 
@@ -89,7 +94,7 @@ private:
   
   SignalProxy *_signalProxy;
   Storage *storage;
-  QHash<uint, Server *> servers;
+  QHash<NetworkId, Server *> servers;
   
   QVariantMap sessionData;
   QMutex mutex;

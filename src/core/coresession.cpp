@@ -60,6 +60,7 @@ CoreSession::CoreSession(UserId uid, Storage *_storage, QObject *parent)
   p->attachSignal(this, SIGNAL(sessionDataChanged(const QString &, const QVariant &)), SIGNAL(coreSessionDataChanged(const QString &, const QVariant &)));
   p->attachSlot(SIGNAL(clientSessionDataChanged(const QString &, const QVariant &)), this, SLOT(storeSessionData(const QString &, const QVariant &)));
   /* Autoconnect. (When) do we actually do this?
+     --> session restore should be enough!
   QStringList list;
   QVariantMap networks = retrieveSessionData("Networks").toMap();
   foreach(QString net, networks.keys()) {
@@ -69,6 +70,7 @@ CoreSession::CoreSession(UserId uid, Storage *_storage, QObject *parent)
   } qDebug() << list;
   if(list.count()) connectToIrc(list);
   */
+
 }
 
 CoreSession::~CoreSession() {
@@ -77,6 +79,34 @@ CoreSession::~CoreSession() {
 UserId CoreSession::userId() const {
   return user;
 }
+
+QVariant CoreSession::state() const {
+  QVariantMap res;
+  QList<QVariant> conn;
+  foreach(Server *server, servers.values()) {
+    if(server->isConnected()) {
+      QVariantMap m;
+      m["Network"] = server->networkName();
+      m["State"] = server->state();
+      conn << m;
+    }
+  }
+  res["ConnectedServers"] = conn;
+  return res;
+}
+
+void CoreSession::restoreState(const QVariant &previousState) {
+  // Session restore
+  QVariantMap state = previousState.toMap();
+  if(state.contains("ConnectedServers")) {
+    foreach(QVariant v, state["ConnectedServers"].toList()) {
+      QVariantMap m = v.toMap();
+      QString net = m["Network"].toString();
+      if(!net.isEmpty()) connectToNetwork(net, m["State"]);
+    }
+  }
+}
+
 
 void CoreSession::storeSessionData(const QString &key, const QVariant &data) {
   QSettings s;
@@ -100,14 +130,14 @@ QVariant CoreSession::retrieveSessionData(const QString &key, const QVariant &de
 }
 
 // FIXME switch to NetworkIDs
-void CoreSession::connectToNetwork(QString network) {
+void CoreSession::connectToNetwork(QString network, const QVariant &previousState) {
   uint networkid = getNetworkId(network);
   if(networkid == 0) {
     qWarning() << "unable to connect to Network" << network << "(User:" << userId() << "): unable to determine NetworkId";
     return;
   }
   if(!servers.contains(networkid)) {
-    Server *server = new Server(userId(), networkid, network);
+    Server *server = new Server(userId(), networkid, network, previousState);
     servers[networkid] = server;
     attachServer(server);
     server->start();

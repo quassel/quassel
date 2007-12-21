@@ -199,8 +199,11 @@ src/uisupport/inputline.h
 src/uisupport/nickview.cpp
 src/uisupport/nickview.h
 src/uisupport/settingspage.cpp
+src/uisupport/settingspage.h
 src/uisupport/tabcompleter.cpp
 src/uisupport/tabcompleter.h
+src/uisupport/uisettings.cpp
+src/uisupport/uisettings.h
 src/uisupport/uistyle.cpp
 src/uisupport/uistyle.h
 src/uisupport/uisupport.pri

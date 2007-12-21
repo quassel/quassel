@@ -44,6 +44,14 @@ uint CoreSettings::port(const uint &def) {
   return localValue("Port", def).toUInt();
 }
 
+void CoreSettings::setCoreState(const QVariant &data) {
+  setLocalValue("CoreState", data);
+}
+
+QVariant CoreSettings::coreState(const QVariant &def) {
+  return localValue("CoreState", def);
+}
+
 QStringList CoreSettings::sessionKeys() {
   Q_ASSERT(false);
   return QStringList();

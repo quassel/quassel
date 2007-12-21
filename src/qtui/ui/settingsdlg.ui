@@ -48,7 +48,7 @@
        <item>
         <widget class="QStackedWidget" name="settingsStack" >
          <property name="sizePolicy" >
-          <sizepolicy vsizetype="Preferred" hsizetype="MinimumExpanding" >
+          <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>

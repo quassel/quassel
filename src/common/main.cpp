@@ -98,7 +98,17 @@ int main(int argc, char **argv) {
   gui->init();
 #endif
 
+#ifndef BUILD_QTUI
+  if(!QCoreApplication::arguments().contains("--norestore")) {
+    Core::restoreState();
+  }
+#endif
+
   int exitCode = app.exec();
+
+#ifndef BUILD_QTUI
+  Core::saveState();
+#endif
 
 #ifndef BUILD_CORE
   // the mainWin has to be deleted before the Core

@@ -25,21 +25,24 @@
 #include "settings.h"
 
 class CoreSettings : public Settings {
-  
+
   public:
     virtual ~CoreSettings();
     CoreSettings();
-    
+
     void setDatabaseSettings(const QVariant &data);
     QVariant databaseSettings(const QVariant &def = QVariant());
-    
+
     void setPort(const uint &port);
     uint port(const uint &def = DEFAULT_PORT);
-        
+
+    void setCoreState(const QVariant &data);
+    QVariant coreState(const QVariant &def = QVariant());
+
   private:
     //virtual QStringList allSessionKeys() = 0;
     virtual QStringList sessionKeys();
-    
+
     virtual void setSessionValue(const QString &key, const QVariant &data);
     virtual QVariant sessionValue(const QString &key, const QVariant &def = QVariant());
 };

@@ -28,6 +28,8 @@
 #include <QVariantMap>
 #include <QPointer>
 
+#include "types.h"
+
 class SignalProxy;
 class IrcUser;
 class IrcChannel;
@@ -44,7 +46,7 @@ public:
   NetworkInfo(const uint &networkid, QObject *parent = 0);
   //virtual ~NetworkInfo();
 
-  uint networkId() const;
+  NetworkId networkId() const;
   bool initialized() const;
 
   SignalProxy *proxy() const;

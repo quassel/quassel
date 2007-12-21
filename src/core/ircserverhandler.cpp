@@ -316,6 +316,7 @@ void IrcServerHandler::handle001(QString prefix, QStringList params) {
   networkInfo()->setMyNick(nickFromMask(myhostmask));
 
   emit displayMsg(Message::Server, "", params[0], prefix);
+  
 
   // TODO: reimplement perform List!
   //// send performlist
