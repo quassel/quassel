@@ -155,7 +155,13 @@ void AbstractTreeItem::setFlags(Qt::ItemFlags flags) {
 
 void AbstractTreeItem::childDestroyed() {
   AbstractTreeItem *item = static_cast<AbstractTreeItem*>(sender());
-  removeChild(item->column(), item->row());
+
+  if(!item) {
+    qWarning() << "AbstractTreeItem::childDestroyed() received null pointer!";
+    return;
+  }
+  _childItems[item->column()].removeAt(item->row());
+  _childHash[item->column()].remove(_childHash[item->column()].key(item));
 }
   
 /*****************************************
