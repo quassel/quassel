@@ -24,6 +24,7 @@
 #include "ircchannel.h"
 
 #include <QDebug>
+#include <QTextCodec>
 
 #include "util.h"
 
@@ -39,7 +40,9 @@ NetworkInfo::NetworkInfo(const uint &networkid, QObject *parent)
     _currentServer(QString()),
     _prefixes(QString()),
     _prefixModes(QString()),
-    _proxy(NULL)
+    _proxy(0),
+    _codecForEncoding(0),
+    _codecForDecoding(0)
 {
   setObjectName(QString::number(networkid));
 }
@@ -242,6 +245,41 @@ IrcChannel *NetworkInfo::ircChannel(QString channelname) {
 
 QList<IrcChannel *> NetworkInfo::ircChannels() const {
   return _ircChannels.values();
+}
+
+QTextCodec *NetworkInfo::codecForEncoding() const {
+  return _codecForEncoding;
+}
+
+void NetworkInfo::setCodecForEncoding(const QString &name) {
+  setCodecForEncoding(QTextCodec::codecForName(name.toAscii()));
+}
+
+void NetworkInfo::setCodecForEncoding(QTextCodec *codec) {
+  _codecForEncoding = codec;
+}
+
+QTextCodec *NetworkInfo::codecForDecoding() const {
+  return _codecForDecoding;
+}
+
+void NetworkInfo::setCodecForDecoding(const QString &name) {
+  setCodecForDecoding(QTextCodec::codecForName(name.toAscii()));
+}
+
+void NetworkInfo::setCodecForDecoding(QTextCodec *codec) {
+  _codecForDecoding = codec;
+}
+
+QString NetworkInfo::decodeString(const QByteArray &text) const {
+  return ::decodeString(text, _codecForDecoding);
+}
+
+QByteArray NetworkInfo::encodeString(const QString string) const {
+  if(_codecForEncoding) {
+    return _codecForEncoding->fromUnicode(string);
+  }
+  return string.toAscii();
 }
 
 // ====================

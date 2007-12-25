@@ -24,9 +24,11 @@
 //#include "nicktreemodel.h"
 #include "signalproxy.h"
 #include "ircuser.h"
+#include "util.h"
 
 #include <QMapIterator>
 #include <QHashIterator>
+#include <QTextCodec>
 
 #include <QDebug>
 
@@ -96,6 +98,42 @@ QString IrcChannel::userModes(IrcUser *ircuser) const {
 
 QString IrcChannel::userModes(const QString &nick) const {
   return userModes(networkInfo->ircUser(nick));
+}
+
+QTextCodec *IrcChannel::codecForEncoding() const {
+  return _codecForEncoding;
+}
+
+void IrcChannel::setCodecForEncoding(const QString &name) {
+  setCodecForEncoding(QTextCodec::codecForName(name.toAscii()));
+}
+
+void IrcChannel::setCodecForEncoding(QTextCodec *codec) {
+  _codecForEncoding = codec;
+}
+
+QTextCodec *IrcChannel::codecForDecoding() const {
+  return _codecForDecoding;
+}
+
+void IrcChannel::setCodecForDecoding(const QString &name) {
+  setCodecForDecoding(QTextCodec::codecForName(name.toAscii()));
+}
+
+void IrcChannel::setCodecForDecoding(QTextCodec *codec) {
+  _codecForDecoding = codec;
+}
+
+QString IrcChannel::decodeString(const QByteArray &text) const {
+  if(!codecForDecoding()) return networkInfo->decodeString(text);
+  return ::decodeString(text, _codecForDecoding);
+}
+
+QByteArray IrcChannel::encodeString(const QString string) const {
+  if(codecForEncoding()) {
+    return _codecForEncoding->fromUnicode(string);
+  }
+  return networkInfo->encodeString(string);
 }
 
 // ====================

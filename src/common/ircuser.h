@@ -40,7 +40,6 @@ class IrcUser : public QObject {
   Q_PROPERTY(QStringList channels READ channels STORED false)
   //  Q_PROPERTY(QStringList usermodes READ usermodes WRITE setUsermodes)
 
-
 public:
   IrcUser(const QString &hostmask, NetworkInfo *networkInfo);
   virtual ~IrcUser();
@@ -56,6 +55,17 @@ public:
 
   QStringList channels() const;
 
+  // user-specific encodings
+  QTextCodec *codecForEncoding() const;
+  QTextCodec *codecForDecoding() const;
+  void setCodecForEncoding(const QString &codecName);
+  void setCodecForEncoding(QTextCodec *codec);
+  void setCodecForDecoding(const QString &codecName);
+  void setCodecForDecoding(QTextCodec *codec);
+
+  QString decodeString(const QByteArray &text) const;
+  QByteArray encodeString(const QString string) const;
+
 public slots:
   void setUser(const QString &user);
   void setHost(const QString &host);
@@ -63,7 +73,7 @@ public slots:
   void updateHostmask(const QString &mask);
 
   void setUserModes(const QString &modes);
-  
+
   void joinChannel(IrcChannel *channel);
   void joinChannel(const QString &channelname);
   void partChannel(IrcChannel *channel);
@@ -82,9 +92,9 @@ signals:
   void hostSet(QString host);
   void nickSet(QString newnick);
   void hostmaskUpdated(QString mask);
-  
+
   void userModesSet(QString modes);
-  
+
   void channelJoined(QString channel);
   void channelParted(QString channel);
 
@@ -92,7 +102,7 @@ signals:
   void userModeRemoved(QString mode);
 
   void renameObject(QString oldname, QString newname);
-  
+
 //   void setUsermodes(const QSet<QString> &usermodes);
 //   QSet<QString> usermodes() const;
 
@@ -101,7 +111,7 @@ signals:
 private slots:
   void updateObjectName();
   void channelDestroyed();
-  
+
 private:
   inline bool operator==(const IrcUser &ircuser2) {
     return (_nick.toLower() == ircuser2.nick().toLower());
@@ -120,8 +130,11 @@ private:
   // QSet<QString> _channels;
   QSet<IrcChannel *> _channels;
   QString _userModes;
-  
+
   NetworkInfo *networkInfo;
+
+  QTextCodec *_codecForEncoding;
+  QTextCodec *_codecForDecoding;
 };
 
 #endif

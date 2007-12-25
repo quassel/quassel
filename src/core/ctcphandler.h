@@ -34,7 +34,7 @@ public:
 
   enum CtcpType {CtcpQuery, CtcpReply};
 
-  QStringList parse(CtcpType, QString, QString, QString);    
+  QStringList parse(CtcpType, QString prefix, QString target, QString message);
 
   QString dequote(QString);
   QString XdelimDequote(QString);
@@ -42,7 +42,7 @@ public:
   QString pack(QString ctcpTag, QString message);
   void query(QString bufname, QString ctcpTag, QString message);
   void reply(QString bufname, QString ctcpTag, QString message);
-  
+
 public slots:
   void handleAction(CtcpType, QString prefix, QString target, QString param);
   void handlePing(CtcpType, QString prefix, QString target, QString param);
@@ -53,7 +53,7 @@ public slots:
 private:
   QString XDELIM;
   QHash<QString, QString> ctcpMDequoteHash;
-  QHash<QString, QString> ctcpXDelimDequoteHash;    
+  QHash<QString, QString> ctcpXDelimDequoteHash;
 
 
 };

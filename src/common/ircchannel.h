@@ -53,6 +53,16 @@ public:
   QString userModes(IrcUser *ircuser) const;
   QString userModes(const QString &nick) const;
 
+  QTextCodec *codecForEncoding() const;
+  QTextCodec *codecForDecoding() const;
+  void setCodecForEncoding(const QString &codecName);
+  void setCodecForEncoding(QTextCodec *codec);
+  void setCodecForDecoding(const QString &codecName);
+  void setCodecForDecoding(QTextCodec *codec);
+
+  QString decodeString(const QByteArray &text) const;
+  QByteArray encodeString(const QString string) const;
+
 public slots:
   void setTopic(const QString &topic);
 
@@ -109,6 +119,9 @@ private:
   QHash<IrcUser *, QString> _userModes;
 
   NetworkInfo *networkInfo;
+
+  QTextCodec *_codecForEncoding;
+  QTextCodec *_codecForDecoding;
 };
 
 #endif

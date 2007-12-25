@@ -51,7 +51,7 @@ public:
 
   SignalProxy *proxy() const;
   void setProxy(SignalProxy *proxy);
-  
+
   bool isMyNick(const QString &nick) const;
   bool isMyNick(IrcUser *ircuser) const;
 
@@ -61,7 +61,7 @@ public:
   QString prefixToMode(const QCharRef &prefix);
   QString modeToPrefix(const QString &mode);
   QString modeToPrefix(const QCharRef &mode);
-  
+
   QString networkName() const;
   QString currentServer() const;
   QString myNick() const;
@@ -73,14 +73,24 @@ public:
 
   bool supports(const QString &param) const;
   QString support(const QString &param) const;
-  
+
   IrcUser *newIrcUser(const QString &hostmask);
   IrcUser *ircUser(QString nickname) const;
   QList<IrcUser *> ircUsers() const;
-  
+
   IrcChannel *newIrcChannel(const QString &channelname);
   IrcChannel *ircChannel(QString channelname);
   QList<IrcChannel *> ircChannels() const;
+
+  QTextCodec *codecForEncoding() const;
+  QTextCodec *codecForDecoding() const;
+  void setCodecForEncoding(const QString &codecName);
+  void setCodecForEncoding(QTextCodec *codec);
+  void setCodecForDecoding(const QString &codecName);
+  void setCodecForDecoding(QTextCodec *codec);
+
+  QString decodeString(const QByteArray &text) const;
+  QByteArray encodeString(const QString string) const;
 
 public slots:
   void setNetworkName(const QString &networkName);
@@ -152,6 +162,9 @@ private:
   
   QPointer<SignalProxy> _proxy;
   void determinePrefixes();
+
+  QTextCodec *_codecForEncoding;
+  QTextCodec *_codecForDecoding;
 
 };
 

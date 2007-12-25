@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005/06 by the Quassel IRC Team                         *
+ *   Copyright (C) 2005-07 by the Quassel IRC Team                         *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -44,11 +44,11 @@ bool isChannelName(QString str) {
   return QString("#&!+").contains(str[0]);
 }
 
-QString decodeString(QByteArray input, QString encoding) {
+QString decodeString(const QByteArray &input, QTextCodec *codec) {
   // First, we check if it's utf8. It is very improbable to encounter a string that looks like
   // valid utf8, but in fact is not. This means that if the input string passes as valid utf8, it
   // is safe to assume that it is.
-  Q_ASSERT(sizeof(const char) == sizeof(quint8));  // just to make sure
+  // Q_ASSERT(sizeof(const char) == sizeof(quint8));  // In God we trust...
   bool isUtf8 = true;
   int cnt = 0;
   for(int i = 0; i < input.size(); i++) {
@@ -69,14 +69,12 @@ QString decodeString(QByteArray input, QString encoding) {
     //qDebug() << "Detected utf8:" << s;
     return s;
   }
-  QTextCodec *codec = QTextCodec::codecForName(encoding.toAscii());
-  if(!codec) {
-    qWarning() << QString("Invalid encoding: %1").arg(encoding);
-    return QString::fromAscii(input);
-  }
+  //QTextCodec *codec = QTextCodec::codecForName(encoding.toAscii());
+  if(!codec) return QString::fromAscii(input);
   return codec->toUnicode(input);
 }
 
+/* not needed anymore
 void writeDataToDevice(QIODevice *dev, const QVariant &item) {
   QByteArray block;
   QDataStream out(&block, QIODevice::WriteOnly);
@@ -99,7 +97,7 @@ bool readDataFromDevice(QIODevice *dev, quint32 &blockSize, QVariant &item) {
   in >> item;
   return true;
 }
-
+*/
 
 uint editingDistance(const QString &s1, const QString &s2) {
   uint n = s1.size()+1;

@@ -25,6 +25,7 @@
 #include "signalproxy.h"
 #include "ircchannel.h"
 
+#include <QTextCodec>
 #include <QDebug>
 
 IrcUser::IrcUser(const QString &hostmask, NetworkInfo *networkinfo)
@@ -33,7 +34,9 @@ IrcUser::IrcUser(const QString &hostmask, NetworkInfo *networkinfo)
     _nick(nickFromMask(hostmask)),
     _user(userFromMask(hostmask)),
     _host(hostFromMask(hostmask)),
-    networkInfo(networkinfo)
+    networkInfo(networkinfo),
+    _codecForEncoding(0),
+    _codecForDecoding(0)
 {
   updateObjectName();
 }
@@ -76,6 +79,42 @@ QStringList IrcUser::channels() const {
     chanList << channel->name();
   }
   return chanList;
+}
+
+QTextCodec *IrcUser::codecForEncoding() const {
+  return _codecForEncoding;
+}
+
+void IrcUser::setCodecForEncoding(const QString &name) {
+  setCodecForEncoding(QTextCodec::codecForName(name.toAscii()));
+}
+
+void IrcUser::setCodecForEncoding(QTextCodec *codec) {
+  _codecForEncoding = codec;
+}
+
+QTextCodec *IrcUser::codecForDecoding() const {
+  return _codecForDecoding;
+}
+
+void IrcUser::setCodecForDecoding(const QString &name) {
+  setCodecForDecoding(QTextCodec::codecForName(name.toAscii()));
+}
+
+void IrcUser::setCodecForDecoding(QTextCodec *codec) {
+  _codecForDecoding = codec;
+}
+
+QString IrcUser::decodeString(const QByteArray &text) const {
+  if(!codecForDecoding()) return networkInfo->decodeString(text);
+  return ::decodeString(text, codecForDecoding());
+}
+
+QByteArray IrcUser::encodeString(const QString string) const {
+  if(codecForEncoding()) {
+    return codecForEncoding()->fromUnicode(string);
+  }
+  return networkInfo->encodeString(string);
 }
 
 // ====================

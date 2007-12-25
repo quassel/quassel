@@ -161,7 +161,6 @@ src/qtui/serverlist.cpp
 src/qtui/serverlist.h
 src/qtui/settingsdlg.cpp
 src/qtui/settingsdlg.h
-src/qtui/settingspage.h
 src/qtui/settingspages.cpp
 src/qtui/settingspages.h
 src/qtui/topicwidget.cpp

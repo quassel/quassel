@@ -44,6 +44,8 @@ Server::Server(UserId uid, NetworkId networkId, QString net, const QVariant &sta
     _previousState(state)
 {
   connect(networkInfo(), SIGNAL(currentServerSet(const QString &)), this, SLOT(sendPerform()));
+  networkInfo()->setCodecForEncoding("ISO-8859-15"); // FIXME
+  networkInfo()->setCodecForDecoding("ISO-8859-15"); // FIXME
   networkInfo()->setNetworkName(net);
   networkInfo()->setProxy(coreSession()->signalProxy());
 }
@@ -64,6 +66,39 @@ void Server::run() {
 
   exec();
 }
+
+QString Server::serverDecode(const QByteArray &string) const {
+  return networkInfo()->decodeString(string);
+}
+
+QString Server::bufferDecode(const QString &bufferName, const QByteArray &string) const {
+  Q_UNUSED(bufferName);
+  // TODO: Implement buffer-specific encodings
+  return networkInfo()->decodeString(string);
+}
+
+QString Server::userDecode(const QString &userNick, const QByteArray &string) const {
+  IrcUser *user = networkInfo()->ircUser(userNick);
+  if(user) return user->decodeString(string);
+  return networkInfo()->decodeString(string);
+}
+
+QByteArray Server::serverEncode(const QString &string) const {
+  return networkInfo()->encodeString(string);
+}
+
+QByteArray Server::bufferEncode(const QString &bufferName, const QString &string) const {
+  Q_UNUSED(bufferName);
+  // TODO: Implement buffer-specific encodings
+  return networkInfo()->encodeString(string);
+}
+
+QByteArray Server::userEncode(const QString &userNick, const QString &string) const {
+  IrcUser *user = networkInfo()->ircUser(userNick);
+  if(user) return user->encodeString(string);
+  return networkInfo()->encodeString(string);
+}
+
 
 void Server::connectToIrc(QString net) {
   if(net != networkName())

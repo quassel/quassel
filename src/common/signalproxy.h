@@ -72,8 +72,18 @@ public:
   void detachObject(QObject *obj);
   void detachSignals(QObject *sender);
   void detachSlots(QObject *receiver);
-  
+
+  //! Writes a QVariant to a device.
+  /** The data item is prefixed with the resulting blocksize,
+   *  so the corresponding function readDataFromDevice() can check if enough data is available
+   *  at the device to reread the item.
+   */
   static void writeDataToDevice(QIODevice *dev, const QVariant &item);
+
+  //! Reads a data item from a device that has been written by writeDataToDevice().
+  /** If not enough data bytes are available, the function returns false and the QVariant reference
+   *  remains untouched.
+   */
   static bool readDataFromDevice(QIODevice *dev, quint32 &blockSize, QVariant &item);
 
   static QString methodBaseName(const QMetaMethod &method);

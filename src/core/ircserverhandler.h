@@ -31,29 +31,40 @@ public:
   ~IrcServerHandler();
 
   void handleServerMsg(QByteArray rawMsg);
-  
+
+  QString serverDecode(const QByteArray &string);
+  QStringList serverDecode(const QList<QByteArray> &stringlist);
+  QString bufferDecode(const QString &bufferName, const QByteArray &string);
+  QStringList bufferDecode(const QString &bufferName, const QList<QByteArray> &stringlist);
+  QString userDecode(const QString &userNick, const QByteArray &string);
+  QStringList userDecode(const QString &userNick, const QList<QByteArray> &stringlist);
+
+
 public slots:
-  void handleJoin(QString, QStringList);
-  void handleKick(QString, QStringList);
-  void handleMode(QString, QStringList);
-  void handleNick(QString, QStringList);
-  void handleNotice(QString, QStringList);
-  void handlePart(QString, QStringList);
-  void handlePing(QString, QStringList);
-  void handlePrivmsg(QString, QStringList);
-  void handleQuit(QString, QStringList);
-  void handleTopic(QString, QStringList);
+  void handleJoin(QString, QList<QByteArray>);
+  void handleKick(QString, QList<QByteArray>);
+  void handleMode(QString, QList<QByteArray>);
+  void handleNick(QString, QList<QByteArray>);
+  void handleNotice(QString, QList<QByteArray>);
+  void handlePart(QString, QList<QByteArray>);
+  void handlePing(QString, QList<QByteArray>);
+  void handlePrivmsg(QString, QList<QByteArray>);
+  void handleQuit(QString, QList<QByteArray>);
+  void handleTopic(QString, QList<QByteArray>);
 
-  void handle001(QString, QStringList);   // RPL_WELCOME
-  void handle005(QString, QStringList);   // RPL_ISUPPORT
-  void handle331(QString, QStringList);   // RPL_NOTOPIC
-  void handle332(QString, QStringList);   // RPL_TOPIC
-  void handle333(QString, QStringList);   // Topic set by...
-  void handle353(QString, QStringList);   // RPL_NAMREPLY
-  void handle432(QString, QStringList);   // ERR_ERRONEUSNICKNAME
-  void handle433(QString, QStringList);   // ERR_NICKNAMEINUSE
+  void handle001(QString, QList<QByteArray>);   // RPL_WELCOME
+  void handle005(QString, QList<QByteArray>);   // RPL_ISUPPORT
+  void handle331(QString, QList<QByteArray>);   // RPL_NOTOPIC
+  void handle332(QString, QList<QByteArray>);   // RPL_TOPIC
+  void handle333(QString, QList<QByteArray>);   // Topic set by...
+  void handle353(QString, QList<QByteArray>);   // RPL_NAMREPLY
+  void handle432(QString, QList<QByteArray>);   // ERR_ERRONEUSNICKNAME
+  void handle433(QString, QList<QByteArray>);   // ERR_NICKNAMEINUSE
 
-  void defaultHandler(QString cmd, QString prefix, QStringList params);
+  void defaultHandler(QString cmd, QString prefix, QList<QByteArray> params);
+
+  private:
+    Server *server;
 };
 
 

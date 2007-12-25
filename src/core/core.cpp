@@ -21,8 +21,8 @@
 #include "core.h"
 #include "coresession.h"
 #include "coresettings.h"
+#include "signalproxy.h"
 #include "sqlitestorage.h"
-#include "util.h"
 
 #include <QMetaObject>
 #include <QMetaMethod>
@@ -176,7 +176,7 @@ void Core::clientHasData() {
   Q_ASSERT(socket && blockSizes.contains(socket));
   quint32 bsize = blockSizes.value(socket);
   QVariant item;
-  if(readDataFromDevice(socket, bsize, item)) {
+  if(SignalProxy::readDataFromDevice(socket, bsize, item)) {
     // we need to auth the client
     try {
       QVariantMap msg = item.toMap();
@@ -238,7 +238,7 @@ void Core::processClientInit(QTcpSocket *socket, const QVariantMap &msg) {
   disconnect(socket, 0, this, 0);
   sessions[uid]->addClient(socket);
   qDebug() << "Client initialized successfully.";
-  writeDataToDevice(socket, reply);
+  SignalProxy::writeDataToDevice(socket, reply);
 }
 
 void Core::processCoreSetup(QTcpSocket *socket, QVariantMap &msg) {
@@ -261,7 +261,7 @@ void Core::processCoreSetup(QTcpSocket *socket, QVariantMap &msg) {
       QVariantMap reply;
       reply["StartWizard"] = true;
       reply["StorageProviders"] = availableStorageProviders();
-      writeDataToDevice(socket, reply);
+      SignalProxy::writeDataToDevice(socket, reply);
     } else {
       // write coresettings
       CoreSettings s;
@@ -277,7 +277,7 @@ void Core::processCoreSetup(QTcpSocket *socket, QVariantMap &msg) {
     QVariantMap reply;
     reply["StartWizard"] = true;
     reply["StorageProviders"] = availableStorageProviders();
-    writeDataToDevice(socket, reply);
+    SignalProxy::writeDataToDevice(socket, reply);
   }
 }
 

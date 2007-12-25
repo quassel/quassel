@@ -26,34 +26,26 @@
 #include <QString>
 #include <QMetaMethod>
 
+
+// TODO Use versions from NetworkInfo instead
 QString nickFromMask(QString mask);
 QString userFromMask(QString mask);
 QString hostFromMask(QString mask);
+bool isChannelName(QString str);
+
 
 //! Take a string and decode it using the specified text codec, recognizing utf8.
 /** This function takes a string and first checks if it is encoded in utf8, in which case it is
  *  decoded appropriately. Otherwise, the specified text codec is used to transform the string.
  *  \param input The input string containing encoded data
- *  \param encoding The text encoding we assume if it's not utf8
+ *  \param encoding The text codec we use if the input is not utf8
  *  \return The decoded string.
  */
-QString decodeString(QByteArray input, QString encoding = "ISO-8859-15");
+QString decodeString(const QByteArray &input, QTextCodec *codec = 0);
 
-bool isChannelName(QString str);
-
-/**
- *  Writes a QVariant to a device. The data item is prefixed with the resulting blocksize,
- *  so the corresponding function readDataFromDevice() can check if enough data is available
- *  at the device to reread the item.
- */
-void writeDataToDevice(QIODevice *, const QVariant &);
-
-/** Reads a data item from a device that has previously been written by writeDataToDevice().
- *  If not enough data bytes are available, the function returns false and the QVariant reference
- *  remains untouched.
- */
-bool readDataFromDevice(QIODevice *, quint32 &, QVariant &);
-
+// NOTE: We have static copies of these in SignalProxy...
+//void writeDataToDevice(QIODevice *, const QVariant &);
+//bool readDataFromDevice(QIODevice *, quint32 &, QVariant &);
 
 uint editingDistance(const QString &s1, const QString &s2);
 

@@ -243,7 +243,7 @@ void Client::disconnectFromCore() {
 }
 
 void Client::setCoreConfiguration(const QVariantMap &settings) {
-  writeDataToDevice(socket, settings);
+  SignalProxy::writeDataToDevice(socket, settings);
 }
 
 void Client::coreSocketConnected() {
@@ -253,7 +253,7 @@ void Client::coreSocketConnected() {
   clientInit["GuiProtocol"] = GUI_PROTOCOL;
   clientInit["User"] = coreConnectionInfo["User"].toString();
   clientInit["Password"] = coreConnectionInfo["Password"].toString();
-  writeDataToDevice(socket, clientInit);
+  SignalProxy::writeDataToDevice(socket, clientInit);
 }
 
 void Client::coreSocketDisconnected() {
@@ -418,7 +418,7 @@ void Client::coreSocketError(QAbstractSocket::SocketError) {
 
 void Client::coreHasData() {
   QVariant item;
-  if(readDataFromDevice(socket, blockSize, item)) {
+  if(SignalProxy::readDataFromDevice(socket, blockSize, item)) {
     emit recvPartialItem(1,1);
     QVariantMap msg = item.toMap();
     if (!msg["StartWizard"].toBool()) {

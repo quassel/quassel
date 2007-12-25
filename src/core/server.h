@@ -65,7 +65,25 @@ public:
   CtcpHandler *ctcpHandler() const { return _ctcpHandler; }
 
   QVariant state(); ///< Return data necessary to restore the server's state upon core restart
-  
+
+  //! Decode a string using the server (network) decoding.
+  QString serverDecode(const QByteArray &string) const;
+
+  //! Decode a string using a buffer-specific encoding if one is set (and use the server encoding else).
+  QString bufferDecode(const QString &bufferName, const QByteArray &string) const;
+
+  //! Decode a string using a IrcUser specific encoding, if one exists (using the server encoding else).
+  QString userDecode(const QString &userNick, const QByteArray &string) const;
+
+  //! Encode a string using the server (network) encoding.
+  QByteArray serverEncode(const QString &string) const;
+
+  //! Encode a string using the buffer-specific encoding, if set, and use the server encoding else.
+  QByteArray bufferEncode(const QString &bufferName, const QString &string) const;
+
+  //! Encode a string using the user-specific encoding, if set, and use the server encoding else.
+  QByteArray userEncode(const QString &userNick, const QString &string) const;
+
 public slots:
   // void setServerOptions();
   void connectToIrc(QString net);
