@@ -23,8 +23,8 @@
 SettingsDlg::SettingsDlg(QWidget *parent) : QDialog(parent) {
   ui.setupUi(this);
 
-  ui.settingsFrame->setWidgetResizable(true);
-  ui.settingsFrame->setWidget(ui.settingsStack);
+  //ui.settingsFrame->setWidgetResizable(true);
+  //ui.settingsFrame->setWidget(ui.settingsStack);
   ui.settingsTree->setRootIsDecorated(false);
 
   connect(ui.settingsTree, SIGNAL(itemSelectionChanged()), this, SLOT(itemSelected()));
@@ -33,7 +33,7 @@ SettingsDlg::SettingsDlg(QWidget *parent) : QDialog(parent) {
 
 
 void SettingsDlg::registerSettingsPage(SettingsPage *sp) {
-  sp->setParent(this);
+  sp->setParent(ui.settingsStack);
   ui.settingsStack->addWidget(sp);
 
   QTreeWidgetItem *cat;
@@ -43,8 +43,11 @@ void SettingsDlg::registerSettingsPage(SettingsPage *sp) {
     cat->setExpanded(true);
     cat->setFlags(Qt::ItemIsEnabled);
   } else cat = cats[0];
-  QTreeWidgetItem *p = new QTreeWidgetItem(cat, QStringList(sp->title()));
+  new QTreeWidgetItem(cat, QStringList(sp->title()));
   pages[QString("%1$%2").arg(sp->category(), sp->title())] = sp;
+  updateGeometry();
+  // TESTING
+  //selectPage(sp->category(), sp->title());
 }
 
 void SettingsDlg::selectPage(const QString &cat, const QString &title) {
@@ -63,20 +66,27 @@ void SettingsDlg::itemSelected() {
     QString cat = parent->text(0);
     QString title = items[0]->text(0);
     selectPage(cat, title);
+    ui.pageTitle->setText(title);
   }
 }
 
 void SettingsDlg::buttonClicked(QAbstractButton *button) {
-  switch(ui.buttonBox->buttonRole(button)) {
-    case QDialogButtonBox::AcceptRole:
+  switch(ui.buttonBox->standardButton(button)) {
+    case QDialogButtonBox::Ok:
       applyChanges();
       accept();
       break;
-    case QDialogButtonBox::ApplyRole:
+    case QDialogButtonBox::Apply:
       applyChanges();
       break;
-    case QDialogButtonBox::RejectRole:
+    case QDialogButtonBox::Cancel:
       reject();
+      break;
+    case QDialogButtonBox::Reset:
+      reload();
+      break;
+    case QDialogButtonBox::RestoreDefaults:
+      loadDefaults();
       break;
     default:
       break;
@@ -84,7 +94,17 @@ void SettingsDlg::buttonClicked(QAbstractButton *button) {
 }
 
 void SettingsDlg::applyChanges() {
-  //SettingsInterface *sp = qobject_cast<SettingsInterface *>(ui.settingsStack->currentWidget());
-  //if(sp) sp->applyChanges();
+  foreach(SettingsPage *page, pages.values()) {
+    page->save();
+  }
 }
 
+void SettingsDlg::reload() {
+  SettingsPage *page = qobject_cast<SettingsPage *>(ui.settingsStack->currentWidget());
+  if(page) page->load();
+}
+
+void SettingsDlg::loadDefaults() {
+  SettingsPage *page = qobject_cast<SettingsPage *>(ui.settingsStack->currentWidget());
+  if(page) page->defaults();
+}

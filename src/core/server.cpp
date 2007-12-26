@@ -219,9 +219,11 @@ CoreSession *Server::coreSession() const {
 
 /* Exception classes for message handling */
 Server::ParseError::ParseError(QString cmd, QString prefix, QStringList params) {
+  Q_UNUSED(prefix);
   _msg = QString("Command Parse Error: ") + cmd + params.join(" ");
 }
 
 Server::UnknownCmdError::UnknownCmdError(QString cmd, QString prefix, QStringList params) {
-  _msg = QString("Unknown Command: ") + cmd;
+  Q_UNUSED(prefix);
+  _msg = QString("Unknown Command: ") + cmd + params.join(" ");
 }

@@ -20,7 +20,7 @@
 
 #include "uisettings.h"
 
-UiSettings::UiSettings() : ClientSettings("UI") {
+UiSettings::UiSettings(const QString &group) : ClientSettings(group) {
 
 
 }

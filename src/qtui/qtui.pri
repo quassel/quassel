@@ -17,3 +17,11 @@ FORMNAMES = identitiesdlg.ui identitieseditdlg.ui networkeditdlg.ui mainwin.ui n
 for(ui, FORMNAMES) {
   FRMS += ui/$${ui}
 }
+
+# Include settingspages
+include(settingspages/settingspages.pri)
+for(page, SETTINGSPAGES) {
+  SRCS += settingspages/$${page}settingspage.cpp
+  HDRS += settingspages/$${page}settingspage.h
+  FRMS += settingspages/$${page}settingspage.ui
+}

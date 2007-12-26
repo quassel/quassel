@@ -65,15 +65,21 @@ QStringList Settings::allLocalKeys() {
   return res;
 }
 
-QStringList Settings::localChildKeys() {
-  beginGroup(group);
+QStringList Settings::localChildKeys(const QString &rootkey) {
+  QString g;
+  if(rootkey.isEmpty()) g = group;
+  else g = QString("%1/%2").arg(group, rootkey);
+  beginGroup(g);
   QStringList res = childKeys();
   endGroup();
   return res;
 }
 
-QStringList Settings::localChildGroups() {
-  beginGroup(group);
+QStringList Settings::localChildGroups(const QString &rootkey) {
+  QString g;
+  if(rootkey.isEmpty()) g = group;
+  else g = QString("%1/%2").arg(group, rootkey);
+  beginGroup(g);
   QStringList res = childGroups();
   endGroup();
   return res;

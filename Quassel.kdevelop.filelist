@@ -161,8 +161,12 @@ src/qtui/serverlist.cpp
 src/qtui/serverlist.h
 src/qtui/settingsdlg.cpp
 src/qtui/settingsdlg.h
+src/qtui/settingspages
 src/qtui/settingspages.cpp
 src/qtui/settingspages.h
+src/qtui/settingspages/settingspages.pri
+src/qtui/settingspages/sp_uistyle.cpp
+src/qtui/settingspages/sp_uistyle.h
 src/qtui/topicwidget.cpp
 src/qtui/topicwidget.h
 src/qtui/ui
@@ -179,6 +183,7 @@ src/qtui/ui/identitieseditdlg.ui
 src/qtui/ui/mainwin.ui
 src/qtui/ui/networkeditdlg.ui
 src/qtui/ui/nickeditdlg.ui
+src/qtui/ui/nicklistwidget.ui
 src/qtui/ui/servereditdlg.ui
 src/qtui/ui/serverlistdlg.ui
 src/qtui/ui/settingsdlg.ui
@@ -205,4 +210,6 @@ src/uisupport/uisettings.cpp
 src/uisupport/uisettings.h
 src/uisupport/uistyle.cpp
 src/uisupport/uistyle.h
+src/uisupport/uistylesettings.cpp
+src/uisupport/uistylesettings.h
 src/uisupport/uisupport.pri

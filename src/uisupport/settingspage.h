@@ -53,6 +53,7 @@ class SettingsPage : public QWidget {
 
   private:
     QString _category, _title;
+    bool _changed;
 };
 
 #endif

@@ -20,87 +20,87 @@
 
 #include "qtuistyle.h"
 
-QtUiStyle::QtUiStyle() : UiStyle() {
+QtUiStyle::QtUiStyle() : UiStyle("QtUiStyle") {
   // We need to just set our internal formats; everything else is done by the base class...
 
   // Internal message formats
   QTextCharFormat plainMsg;
   plainMsg.setForeground(QBrush("black"));
-  setFormat(PlainMsg, plainMsg);
+  setFormat(PlainMsg, plainMsg, Settings::Default);
 
   QTextCharFormat notice;
   notice.setForeground(QBrush("navy"));
-  setFormat(NoticeMsg, notice);
+  setFormat(NoticeMsg, notice, Settings::Default);
 
   QTextCharFormat server;
   server.setForeground(QBrush("navy"));
-  setFormat(ServerMsg, server);
+  setFormat(ServerMsg, server, Settings::Default);
 
   QTextCharFormat error;
   error.setForeground(QBrush("red"));
-  setFormat(ErrorMsg, error);
+  setFormat(ErrorMsg, error, Settings::Default);
 
   QTextCharFormat join;
   join.setForeground(QBrush("green"));
-  setFormat(JoinMsg, join);
+  setFormat(JoinMsg, join, Settings::Default);
 
   QTextCharFormat part;
   part.setForeground(QBrush("indianred"));
-  setFormat(PartMsg, part);
+  setFormat(PartMsg, part, Settings::Default);
 
   QTextCharFormat quit;
   quit.setForeground(QBrush("indianred"));
-  setFormat(QuitMsg, quit);
+  setFormat(QuitMsg, quit, Settings::Default);
 
   QTextCharFormat kick;
   kick.setForeground(QBrush("indianred"));
-  setFormat(KickMsg, kick);
+  setFormat(KickMsg, kick, Settings::Default);
 
   QTextCharFormat nren;
   nren.setForeground(QBrush("magenta"));
-  setFormat(RenameMsg, nren);
+  setFormat(RenameMsg, nren, Settings::Default);
 
   QTextCharFormat mode;
   mode.setForeground(QBrush("steelblue"));
-  setFormat(ModeMsg, mode);
+  setFormat(ModeMsg, mode, Settings::Default);
 
   QTextCharFormat action;
   action.setFontItalic(true);
   action.setForeground(QBrush("darkmagenta"));
-  setFormat(ActionMsg, action);
+  setFormat(ActionMsg, action, Settings::Default);
 
   // Internal message element formats
   QTextCharFormat ts;
   ts.setForeground(QBrush("grey"));
-  setFormat(Timestamp, ts);
+  setFormat(Timestamp, ts, Settings::Default);
 
   QTextCharFormat sender;
   sender.setAnchor(true);
   sender.setForeground(QBrush("navy"));
-  setFormat(Sender, sender);
+  setFormat(Sender, sender, Settings::Default);
 
   QTextCharFormat nick;
   nick.setAnchor(true);
   nick.setFontWeight(QFont::Bold);
-  setFormat(Nick, nick);
+  setFormat(Nick, nick, Settings::Default);
 
   QTextCharFormat hostmask;
   hostmask.setFontItalic(true);
-  setFormat(Hostmask, hostmask);
+  setFormat(Hostmask, hostmask, Settings::Default);
 
   QTextCharFormat channel;
   channel.setAnchor(true);
   channel.setFontWeight(QFont::Bold);
-  setFormat(ChannelName, channel);
+  setFormat(ChannelName, channel, Settings::Default);
 
   QTextCharFormat flags;
   flags.setFontWeight(QFont::Bold);
-  setFormat(ModeFlags, flags);
+  setFormat(ModeFlags, flags, Settings::Default);
 
   QTextCharFormat url;
   url.setFontUnderline(true);
   url.setAnchor(true);
-  setFormat(Url, url);
+  setFormat(Url, url, Settings::Default);
 
 
 }

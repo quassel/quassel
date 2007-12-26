@@ -40,6 +40,8 @@ class SettingsDlg : public QDialog {
     void itemSelected();
     void buttonClicked(QAbstractButton *);
     void applyChanges();
+    void reload();
+    void loadDefaults();
 
   private:
     Ui::SettingsDlg ui;

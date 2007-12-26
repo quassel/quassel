@@ -1,11 +1,11 @@
 /***************************************************************************
- *   Copyright (C) 2005-07 by the Quassel IRC Team                         *
+ *   Copyright (C) 2005-08 by the Quassel IRC Team                         *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) version 3.                                           *
+ *   (at your option) any later version.                                   *
  *                                                                         *
  *   This program is distributed in the hope that it will be useful,       *
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
@@ -18,33 +18,30 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _UISETTINGS_H_
-#define _UISETTINGS_H_
+#include "uistylesettings.h"
 
-#include "clientsettings.h"
+UiStyleSettings::UiStyleSettings(const QString &group) : ClientSettings(group) {
 
-class UiSettings : public ClientSettings {
+}
 
-  public:
-    UiSettings(const QString &group = "UI");
+void UiStyleSettings::setCustomFormat(UiStyle::FormatType ftype, QTextCharFormat format) {
+  setLocalValue(QString("Format/%1").arg(ftype), format);
+}
 
-    void setValue(const QString &key, const QVariant &data);
-    QVariant value(const QString &key, const QVariant &def = QVariant());
+QTextCharFormat UiStyleSettings::customFormat(UiStyle::FormatType ftype) {
+  return localValue(QString("Format/%1").arg(ftype), QTextFormat()).value<QTextFormat>().toCharFormat();
+}
 
+void UiStyleSettings::removeCustomFormat(UiStyle::FormatType ftype) {
+  removeLocalKey(QString("Format/%1").arg(ftype));
+}
 
-};
+QList<UiStyle::FormatType> UiStyleSettings::availableFormats() {
+  QList<UiStyle::FormatType> formats;
+  QStringList list = localChildKeys("Format");
+  foreach(QString type, list) {
+    formats << (UiStyle::FormatType)type.toInt();
+  }
+  return formats;
+}
 
-/*
-class GuiProfile : public ClientSettings {
-
-  public:
-    GuiProfile();
-
-    static QStringList availableProfiles();
-    static GuiProfile *profile(QString name);
-
-    
-
-};
-*/
-#endif

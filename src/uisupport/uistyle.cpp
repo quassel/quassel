@@ -19,14 +19,21 @@
  ***************************************************************************/
 
 #include "uistyle.h"
+#include "uistylesettings.h"
 
-UiStyle::UiStyle() {
+UiStyle::UiStyle(const QString &settingsKey) : _settingsKey(settingsKey) {
   // Default format
   QTextCharFormat def;
   def.setForeground(QBrush("#000000"));
-  def.setFont(QFont("Verdana",9));
+  def.setFont(QFont("Mono",12));
+  _defaultFormats = QVector<QTextCharFormat>(NumFormatTypes, def);
+  _customFormats = QVector<QTextCharFormat>(NumFormatTypes, QTextFormat().toCharFormat());
 
-  _formats = QVector<QTextCharFormat>(NumFormatTypes, def);
+  // Load saved custom formats
+  UiStyleSettings s(_settingsKey);
+  foreach(FormatType type, s.availableFormats()) {
+    _customFormats[type] = s.customFormat(type);
+  }
 
   // Initialize color codes according to mIRC "standard"
   QStringList colors;
@@ -68,19 +75,19 @@ UiStyle::UiStyle() {
     _formatCodes[QString("%Dcf%1").arg(idx)] = (FormatType)(FgCol00 + i);
     _formatCodes[QString("%Dcb%1").arg(idx)] = (FormatType)(BgCol00 + i);
     QTextCharFormat fgf, bgf;
-    fgf.setForeground(QBrush(QColor(colors[i]))); _formats[FgCol00 + i] = fgf;
-    bgf.setBackground(QBrush(QColor(colors[i]))); _formats[BgCol00 + i] = bgf;
+    fgf.setForeground(QBrush(QColor(colors[i]))); setFormat((FormatType)(FgCol00 + i), fgf, Settings::Default);
+    bgf.setBackground(QBrush(QColor(colors[i]))); setFormat((FormatType)(BgCol00 + i), bgf, Settings::Default);
   }
 
   // Set a few more standard formats
   QTextCharFormat bold; bold.setFontWeight(QFont::Bold);
-  setFormat(Bold, bold);
+  setFormat(Bold, bold, Settings::Default);
 
   QTextCharFormat italic; italic.setFontItalic(true);
-  setFormat(Italic, italic);
+  setFormat(Italic, italic, Settings::Default);
 
   QTextCharFormat underline; underline.setFontUnderline(true);
-  setFormat(Underline, underline);
+  setFormat(Underline, underline, Settings::Default);
 
   // All other formats should be defined in derived classes.
 }
@@ -89,12 +96,24 @@ UiStyle::~ UiStyle() {
   
 }
 
-void UiStyle::setFormat(FormatType ftype, QTextCharFormat fmt) {
-  _formats[ftype] = fmt;
+void UiStyle::setFormat(FormatType ftype, QTextCharFormat fmt, Settings::Mode mode) {
+  if(mode == Settings::Default) {
+    _defaultFormats[ftype] = fmt;
+  } else {
+    UiStyleSettings s(_settingsKey);
+    if(fmt != _defaultFormats[ftype]) {
+      _customFormats[ftype] = fmt;
+      s.setCustomFormat(ftype, fmt);
+    } else {
+      _customFormats[ftype] = QTextFormat().toCharFormat();
+      s.removeCustomFormat(ftype);
+    }
+  }
 }
 
-QTextCharFormat UiStyle::format(FormatType ftype) const {
-  return _formats[ftype];
+QTextCharFormat UiStyle::format(FormatType ftype, Settings::Mode mode) const {
+  if(mode == Settings::Custom && _customFormats[ftype].isValid()) return _customFormats[ftype];
+  else return _defaultFormats[ftype];
 }
 
 UiStyle::FormatType UiStyle::formatType(const QString & code) const {

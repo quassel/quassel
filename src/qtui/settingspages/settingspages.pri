@@ -1,0 +1,1 @@
+SETTINGSPAGES = fonts

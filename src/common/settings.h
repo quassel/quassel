@@ -30,16 +30,19 @@ class Settings : private QSettings {
   public:
     virtual ~Settings();
 
-    static void setGuiValue(QString, QVariant) {};
-    static QVariant guiValue(QString, QVariant = QVariant()) { return QVariant(); }
+    //static void setGuiValue(QString, QVariant) {};
+    //static QVariant guiValue(QString, QVariant = QVariant()) { return QVariant(); }
+
+    enum Mode { Default, Custom };
+
   protected:
     Settings(QString group = "General");
 
     void setGroup(QString group);
 
     virtual QStringList allLocalKeys();
-    virtual QStringList localChildKeys();
-    virtual QStringList localChildGroups();
+    virtual QStringList localChildKeys(const QString &rootkey = QString());
+    virtual QStringList localChildGroups(const QString &rootkey = QString());
     //virtual QStringList allSessionKeys() = 0;
     virtual QStringList sessionKeys() = 0;
 

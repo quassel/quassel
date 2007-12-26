@@ -26,11 +26,12 @@
 #include <QUrl>
 
 #include "message.h"
+#include "settings.h"
 
 class UiStyle {
 
   public:
-    UiStyle();
+    UiStyle(const QString &settingsKey);
     virtual ~UiStyle();
 
     /** This enumerates the possible formats a text element may have. */
@@ -59,8 +60,8 @@ class UiStyle {
 
     StyledText styleString(QString);
 
-    void setFormat(FormatType, QTextCharFormat);
-    QTextCharFormat format(FormatType) const;
+    void setFormat(FormatType, QTextCharFormat, Settings::Mode mode/* = Settings::Custom*/);
+    QTextCharFormat format(FormatType, Settings::Mode mode = Settings::Custom) const;
 
     FormatType formatType(const QString &code) const;
     QString formatCode(FormatType) const;
@@ -71,8 +72,11 @@ class UiStyle {
   private:
     QTextCharFormat mergedFormat(QList<FormatType>);
 
-    QVector<QTextCharFormat> _formats;
+    QVector<QTextCharFormat> _defaultFormats;
+    QVector<QTextCharFormat> _customFormats;
     QHash<QString, FormatType> _formatCodes;
+
+    QString _settingsKey;
 
 };
 

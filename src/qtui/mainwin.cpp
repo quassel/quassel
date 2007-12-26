@@ -27,13 +27,14 @@
 #include "nicklistwidget.h"
 #include "serverlist.h"
 #include "settingsdlg.h"
-//#include "settingspage.h"
 #include "signalproxy.h"
 
 #include "topicwidget.h"
 
 #include "selectionmodelsynchronizer.h"
 #include "mappedselectionmodel.h"
+
+#include "settingspages/fontssettingspage.h"
 
 MainWin::MainWin(QtUi *_gui, QWidget *parent) : QMainWindow(parent), gui(_gui) {
   ui.setupUi(this);
@@ -68,6 +69,7 @@ void MainWin::init() {
 
   setupMenus();
   setupViews();
+  setupSettingsDlg();
 
   // create nick dock
   nickDock = new QDockWidget("Nicks", this);
@@ -125,6 +127,7 @@ void MainWin::init() {
 
   ui.menuViews->addAction(dock->toggleViewAction());
 
+  //showSettingsDlg();
 }
 
 MainWin::~MainWin() {
@@ -184,6 +187,11 @@ void MainWin::addBufferView(const QString &viewname, QAbstractItemModel *model, 
   ui.menuViews->addAction(dock->toggleViewAction());
 
   netViews.append(dock);
+}
+
+void MainWin::setupSettingsDlg() {
+  settingsDlg->registerSettingsPage(new FontsSettingsPage(settingsDlg));
+
 }
 
 void MainWin::connectedToCore() {

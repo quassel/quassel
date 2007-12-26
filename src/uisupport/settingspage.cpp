@@ -23,6 +23,7 @@
 SettingsPage::SettingsPage(const QString &category, const QString &title, QWidget *parent) : QWidget(parent),
      _category(category), _title(title) {
 
+  _changed = false;
 }
 
 QString SettingsPage::category() const {
@@ -34,9 +35,10 @@ QString SettingsPage::title() const {
 }
 
 void SettingsPage::changed() {
+  _changed = true;
   emit changed(true);
 }
 
 void SettingsPage::changeState(bool hasChanged) {
-  emit changed(hasChanged);
+  if(hasChanged != _changed) emit changed(hasChanged);
 }

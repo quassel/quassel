@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>784</width>
-    <height>558</height>
+    <width>742</width>
+    <height>502</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -25,35 +25,56 @@
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
+      <property name="maximumSize" >
+       <size>
+        <width>200</width>
+        <height>16777215</height>
+       </size>
+      </property>
       <column>
        <property name="text" >
         <string>Settings</string>
        </property>
       </column>
      </widget>
-     <widget class="QScrollArea" name="settingsFrame" >
-      <property name="sizePolicy" >
-       <sizepolicy vsizetype="Preferred" hsizetype="MinimumExpanding" >
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="frameShape" >
-       <enum>QFrame::NoFrame</enum>
-      </property>
-      <property name="frameShadow" >
-       <enum>QFrame::Plain</enum>
-      </property>
+     <widget class="QWidget" name="" >
       <layout class="QVBoxLayout" >
        <item>
-        <widget class="QStackedWidget" name="settingsStack" >
-         <property name="sizePolicy" >
-          <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
+        <widget class="QLabel" name="pageTitle" >
+         <property name="font" >
+          <font>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
          </property>
-         <widget class="QWidget" name="page" />
+         <property name="text" >
+          <string>Settings</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="Line" name="line" >
+         <property name="orientation" >
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QScrollArea" name="settingsFrame" >
+         <property name="frameShape" >
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow" >
+          <enum>QFrame::Raised</enum>
+         </property>
+         <layout class="QHBoxLayout" >
+          <item>
+           <widget class="QStackedWidget" name="settingsStack" >
+            <widget class="QWidget" name="page_3" />
+            <widget class="QWidget" name="page_4" />
+           </widget>
+          </item>
+         </layout>
         </widget>
        </item>
       </layout>
@@ -66,7 +87,7 @@
       <enum>Qt::Horizontal</enum>
      </property>
      <property name="standardButtons" >
-      <set>QDialogButtonBox::Apply|QDialogButtonBox::Cancel|QDialogButtonBox::NoButton|QDialogButtonBox::Ok|QDialogButtonBox::Reset</set>
+      <set>QDialogButtonBox::Apply|QDialogButtonBox::Cancel|QDialogButtonBox::NoButton|QDialogButtonBox::Ok|QDialogButtonBox::Reset|QDialogButtonBox::RestoreDefaults</set>
      </property>
     </widget>
    </item>
