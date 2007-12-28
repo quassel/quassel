@@ -29,6 +29,8 @@
 #include <QString>
 #include <QByteArray>
 
+#include <QMutex>
+
 class SignalRelay;
 class QMetaObject;
 
@@ -68,10 +70,11 @@ public:
   void setInitialized(QObject *obj);
   bool initialized(QObject *obj);
   void requestInit(QObject *obj);
-  
+
   void detachObject(QObject *obj);
   void detachSignals(QObject *sender);
   void detachSlots(QObject *receiver);
+  void stopSync(QObject *obj);
 
   //! Writes a QVariant to a device.
   /** The data item is prefixed with the resulting blocksize,
@@ -142,9 +145,13 @@ private:
 
   void _detachSignals(QObject *sender);
   void _detachSlots(QObject *receiver);
+  void _stopSync(QObject *obj);
 
-    void dumpSyncMap(QObject *object);
+  void dumpSyncMap(QObject *object);
   
+  // Hash of used QIODevices
+  QHash<QIODevice*, quint32> _peerByteCount;
+
   // containg a list of argtypes for fast access
   QHash<const QMetaObject *, ClassInfo*> _classInfo;
 
@@ -160,10 +167,13 @@ private:
   typedef QHash<QString, QObject *> ObjectId;
   QHash<QByteArray, ObjectId> _syncSlave;
 
-  // Hash of used QIODevices
-  QHash<QIODevice*, quint32> _peerByteCount;
 
   ProxyMode _proxyMode;
+  
+  // the slaveMutex protects both containers:
+  //  - _syncSlaves for sync and init calls
+  //  - _attachedSlots
+  QMutex slaveMutex;
   
   friend class SignalRelay;
 };

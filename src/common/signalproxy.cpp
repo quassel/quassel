@@ -29,6 +29,7 @@
 #include <QDebug>
 #include <QMetaMethod>
 #include <QMetaProperty>
+#include <QMutexLocker>
 #include <QRegExp>
 #include "util.h"
 
@@ -62,7 +63,7 @@ SignalRelay::SignalRelay(SignalProxy* parent, QObject* source)
     caller(source),
     _sync(false)
 {
-  QObject::connect(source, SIGNAL(destroyed()), parent, SLOT(detachSender()));
+  QObject::connect(source, SIGNAL(destroyed()), parent, SLOT(detachSender()), Qt::DirectConnection);
 }
 
 int SignalRelay::qt_metacall(QMetaObject::Call _c, int _id, void **_a) {
@@ -409,7 +410,7 @@ bool SignalProxy::attachSlot(const QByteArray& sigName, QObject* recv, const cha
   _attachedSlots.insert(funcName, qMakePair(recv, methodId));
 
   QObject::disconnect(recv, SIGNAL(destroyed()), this, SLOT(detachSender()));
-  QObject::connect(recv, SIGNAL(destroyed()), this, SLOT(detachSender()));
+  QObject::connect(recv, SIGNAL(destroyed()), this, SLOT(detachSender()), Qt::DirectConnection);
   return true;
 }
 
@@ -471,30 +472,37 @@ void SignalProxy::requestInit(QObject *obj) {
 }
 
 void SignalProxy::detachSender() {
-  // this is a slot so we can bypass the QueuedConnection
-  // and if someone is forcing direct connection in a multithreaded environment he's just nuts...
-  _detachSignals(sender());
-  _detachSlots(sender());
+  // this is a private slot. the reason for that is, that we enfoce Qt::DirectConnection.
+  // the result is, that we can be sure, that a registered receiver is removed immediately when it's destroyed.
+  // since we're guarding the the internal datastructures with mutexes this means,
+  // that the object destruction is deffered until we're finished delivering our sync/init/whatever request.
+  // all in all: thread safety! *sigh*
+  detachObject(sender());
 }
 
 // detachObject/Signals/Slots() can be called as a result of an incoming call
 // this might destroy our the iterator used for delivery
 // thus we wrap the actual disconnection by using QueuedConnections
 void SignalProxy::detachObject(QObject* obj) {
-  detachSignals(obj);
-  detachSlots(obj);
+  QMutexLocker locker(&slaveMutex);
+  _detachSignals(obj);
+  _detachSlots(obj);
+  _stopSync(obj);
 }
 
 void SignalProxy::detachSignals(QObject* sender) {
-  QMetaObject::invokeMethod(this, "_detachSignals",
-			    Qt::QueuedConnection,
-			    Q_ARG(QObject*, sender));
+  QMutexLocker locker(&slaveMutex);
+  _detachSignals(sender);
 }
 
 void SignalProxy::detachSlots(QObject* receiver) {
-  QMetaObject::invokeMethod(this, "_detachSlots",
-			    Qt::QueuedConnection,
-			    Q_ARG(QObject*, receiver));
+  QMutexLocker locker(&slaveMutex);
+  _detachSlots(receiver);
+}
+
+void SignalProxy::stopSync(QObject* obj) {
+  QMutexLocker locker(&slaveMutex);
+  _stopSync(obj);
 }
 
 void SignalProxy::_detachSignals(QObject* sender) {
@@ -510,6 +518,22 @@ void SignalProxy::_detachSlots(QObject* receiver) {
       slotIter = _attachedSlots.erase(slotIter);
     } else
       slotIter++;
+  }
+}
+
+void SignalProxy::_stopSync(QObject* obj) {
+  if(_relayHash.contains(obj))
+    _relayHash[obj]->setSynchronize(false);
+
+  // we can't use a className here, since it might be effed up, if we receive the call as a result of a decon
+  // gladly the objectName() is still valid. So we have only to iterate over the classes not each instance! *sigh*
+  QHash<QByteArray, ObjectId>::iterator classIter = _syncSlave.begin();
+  while(classIter != _syncSlave.end()) {
+    if(classIter->contains(obj->objectName())) {
+      classIter->remove(obj->objectName());
+      break;
+    }
+    classIter++;
   }
 }
 
@@ -532,6 +556,11 @@ void SignalProxy::dispatchSignal(const QVariant &identifier, const QVariantList 
 void SignalProxy::receivePeerSignal(QIODevice *sender, const QVariant &packedFunc) {
   QVariantList params(packedFunc.toList());
 
+  // well yes we are locking code here and not only data.
+  // otherwise each handler would have to lock the data anyway. this leaves us on the safe side
+  // unable to forget a lock
+  QMutexLocker locker(&slaveMutex);
+  
   QVariant call = params.takeFirst();
   if(call.type() != QVariant::Int)
     return handleSignal(call.toByteArray(), params);
@@ -555,7 +584,7 @@ void SignalProxy::handleSync(QVariantList params) {
     return;
   }
   
-  QByteArray className =params.takeFirst().toByteArray();
+  QByteArray className = params.takeFirst().toByteArray();
   QString objectName = params.takeFirst().toString();
   int signalId = params.takeFirst().toInt();
 
