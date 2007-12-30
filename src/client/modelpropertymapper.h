@@ -48,6 +48,7 @@ public:
 public slots:
   void setCurrentIndex(const QModelIndex &current, const QModelIndex &previous);
   void setCurrentRow(const QModelIndex &current, const QModelIndex &previous);
+  void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
 
 private slots:
   void targetDestroyed();
