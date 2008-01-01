@@ -20,7 +20,7 @@
 
 #include <QColor>  // FIXME Dependency on QtGui!
 
-#include "buffertreemodel.h"
+#include "networkmodel.h"
 
 #include "mappedselectionmodel.h"
 #include <QAbstractItemView>

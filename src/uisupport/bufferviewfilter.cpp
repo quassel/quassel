@@ -20,6 +20,8 @@
 
 #include "bufferviewfilter.h"
 
+#include "networkmodel.h"
+
 /*****************************************
 * The Filter for the Tree View
 *****************************************/

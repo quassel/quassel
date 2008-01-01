@@ -26,7 +26,6 @@
 #include <QSortFilterProxyModel>
 #include <QSet>
 #include "buffer.h"
-#include "buffertreemodel.h"
 
 /*****************************************
  * Buffer View Filter

@@ -20,7 +20,7 @@
 
 #include "qtopiamainwin.h"
 
-#include "buffertreemodel.h"
+#include "networkmodel.h"
 #include "bufferviewwidget.h"
 #include "nicklistwidget.h"
 #include "chatline.h"
@@ -62,7 +62,7 @@ QtopiaMainWin::QtopiaMainWin(QWidget *parent, Qt::WFlags flags) : QMainWindow(pa
   mainWidget = new MainWidget(this);
   setCentralWidget(mainWidget);
 
-  BufferTreeModel *model = Client::bufferModel();
+  NetworkModel *model = Client::networkModel();
   connect(model, SIGNAL(bufferSelected(Buffer *)), this, SLOT(showBuffer(Buffer *)));
 
   toolBar = new QToolBar(this);
@@ -135,7 +135,7 @@ void QtopiaMainWin::connectedToCore() {
   // FIXME just for testing: select first available buffer
   if(Client::allBufferInfos().count() > 1) {
     Buffer *b = Client::buffer(Client::allBufferInfos()[1]);
-    Client::bufferModel()->selectBuffer(b);
+    Client::networkModel()->selectBuffer(b);
   }
 #endif
 }

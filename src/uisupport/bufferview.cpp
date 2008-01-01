@@ -21,7 +21,7 @@
 #include "client.h"
 #include "buffer.h"
 #include "bufferview.h"
-#include "buffertreemodel.h"
+#include "networkmodel.h"
 
 /*****************************************
 * The TreeView showing the Buffers
@@ -64,12 +64,12 @@ void BufferView::setModel(QAbstractItemModel *model) {
 }
 
 void BufferView::joinChannel(const QModelIndex &index) {
-  Buffer::Type bufferType = (Buffer::Type)index.data(BufferTreeModel::BufferTypeRole).toInt();
+  Buffer::Type bufferType = (Buffer::Type)index.data(NetworkModel::BufferTypeRole).toInt();
 
   if(bufferType != Buffer::ChannelType)
     return;
   
-  Client::fakeInput(index.data(BufferTreeModel::BufferUidRole).toUInt(), QString("/JOIN %1").arg(index.sibling(index.row(), 0).data().toString()));
+  Client::fakeInput(index.data(NetworkModel::BufferUidRole).toUInt(), QString("/JOIN %1").arg(index.sibling(index.row(), 0).data().toString()));
 }
 
 void BufferView::keyPressEvent(QKeyEvent *event) {
