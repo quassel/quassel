@@ -46,7 +46,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>28</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuConnection" >
@@ -96,6 +96,7 @@
     <property name="title" >
      <string>Debug</string>
     </property>
+    <addaction name="actionDebug_Console" />
    </widget>
    <widget class="QMenu" name="menuCore" >
     <property name="title" >
@@ -106,8 +107,8 @@
    <addaction name="menuViews" />
    <addaction name="menuCore" />
    <addaction name="menuSettings" />
-   <addaction name="menuHelp" />
    <addaction name="menuDebug" />
+   <addaction name="menuHelp" />
   </widget>
   <widget class="QStatusBar" name="statusbar" />
   <action name="actionNetworkList" >
@@ -228,6 +229,11 @@
    </property>
    <property name="text" >
     <string>Connect to Core...</string>
+   </property>
+  </action>
+  <action name="actionDebug_Console" >
+   <property name="text" >
+    <string>Debug &amp;Console</string>
    </property>
   </action>
  </widget>

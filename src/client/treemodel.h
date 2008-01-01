@@ -68,6 +68,8 @@ public:
 
 signals:
   void dataChanged(int column);
+  void newChild(AbstractTreeItem *);
+  void childDestroyed(int row);
 				       
 private slots:
   void childDestroyed();
@@ -147,6 +149,8 @@ public:
 
 private slots:
   void itemDataChanged(int column);
+  void newChild(AbstractTreeItem *child);
+  void childDestroyed(int row);
 
 protected:
   void appendChild(AbstractTreeItem *parent, AbstractTreeItem *child);

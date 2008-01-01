@@ -118,8 +118,8 @@ BufferInfo Client::statusBufferInfo(QString net) {
   return bufferInfo(net, "");
 }
 
-BufferTreeModel *Client::bufferModel() {
-  return instance()->_bufferModel;
+NetworkModel *Client::networkModel() {
+  return instance()->_networkModel;
 }
 
 SignalProxy *Client::signalProxy() {
@@ -134,7 +134,7 @@ Client::Client(QObject *parent)
     socket(0),
     _signalProxy(new SignalProxy(SignalProxy::Client, this)),
     mainUi(0),
-    _bufferModel(0),
+    _networkModel(0),
     connectedToCore(false)
 {
 }
@@ -146,14 +146,14 @@ Client::~Client() {
 void Client::init() {
   blockSize = 0;
 
-  _bufferModel = new BufferTreeModel(this);
+  _networkModel = new NetworkModel(this);
 
   connect(this, SIGNAL(bufferSelected(Buffer *)),
-	  _bufferModel, SLOT(selectBuffer(Buffer *)));
+	  _networkModel, SLOT(selectBuffer(Buffer *)));
   connect(this, SIGNAL(bufferUpdated(Buffer *)),
-	  _bufferModel, SLOT(bufferUpdated(Buffer *)));
+	  _networkModel, SLOT(bufferUpdated(Buffer *)));
   connect(this, SIGNAL(bufferActivity(Buffer::ActivityLevel, Buffer *)),
-	  _bufferModel, SLOT(bufferActivity(Buffer::ActivityLevel, Buffer *)));
+	  _networkModel, SLOT(bufferActivity(Buffer::ActivityLevel, Buffer *)));
 
   SignalProxy *p = signalProxy();
   p->attachSignal(this, SIGNAL(sendSessionData(const QString &, const QVariant &)),
@@ -263,7 +263,7 @@ void Client::coreSocketDisconnected() {
   blockSize = 0;
 
   /* Clear internal data. Hopefully nothing relies on it at this point. */
-  _bufferModel->clear();
+  _networkModel->clear();
 
   QHash<uint, Buffer *>::iterator bufferIter =  _buffers.begin();
   while(bufferIter != _buffers.end()) {
@@ -444,7 +444,7 @@ void Client::networkConnected(uint netid) {
 
   NetworkInfo *netinfo = new NetworkInfo(netid, this);
   netinfo->setProxy(signalProxy());
-  bufferModel()->attachNetworkInfo(netinfo);
+  networkModel()->attachNetworkInfo(netinfo);
   
   if(!isConnected()) {
     connect(netinfo, SIGNAL(initDone()), this, SLOT(updateCoreConnectionProgress()));

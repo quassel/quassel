@@ -30,12 +30,14 @@
 
 #include "util.h"
 
+#include <QtScript>
 
 CoreSession::CoreSession(UserId uid, Storage *_storage, QObject *parent)
   : QObject(parent),
     user(uid),
     _signalProxy(new SignalProxy(SignalProxy::Server, 0, this)),
-    storage(_storage)
+    storage(_storage),
+    scriptEngine(new QScriptEngine(this))
 {
   
   QSettings s;
@@ -71,6 +73,7 @@ CoreSession::CoreSession(UserId uid, Storage *_storage, QObject *parent)
   if(list.count()) connectToIrc(list);
   */
 
+  initScriptEngine();
 }
 
 CoreSession::~CoreSession() {
@@ -261,3 +264,17 @@ void CoreSession::sendBacklog(BufferInfo id, QVariant v1, QVariant v2) {
   }
   if(log.count() > 0) emit backlogData(id, log, true);
 }
+
+
+void CoreSession::initScriptEngine() {
+  signalProxy()->attachSlot(SIGNAL(scriptRequest(QString)), this, SLOT(scriptRequest(QString)));
+  signalProxy()->attachSignal(this, SIGNAL(scriptResult(QString)));
+  
+  QScriptValue storage_ = scriptEngine->newQObject(storage);
+  scriptEngine->globalObject().setProperty("storage", storage_);
+}
+
+void CoreSession::scriptRequest(QString script) {
+  emit scriptResult(scriptEngine->evaluate(script).toString());
+}
+  

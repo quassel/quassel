@@ -34,6 +34,8 @@ class QtUi;
 class Message;
 class NickListWidget;
 
+class DebugConsole;
+
 //!\brief The main window of Quassel's QtUi.
 class MainWin : public QMainWindow {
   Q_OBJECT
@@ -58,6 +60,7 @@ class MainWin : public QMainWindow {
 
     void showServerList();
     void showSettingsDlg();
+    void showDebugConsole();
     void showCoreConnectionDlg(bool autoConnect = false);
     void coreConnectionDlgFinished(int result);
 
@@ -92,6 +95,7 @@ class MainWin : public QMainWindow {
     QDockWidget *nickDock;
     NickListWidget *nickListWidget;
 
+    DebugConsole *debugConsole;
     friend class QtUi;
 };
 

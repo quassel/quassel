@@ -34,6 +34,7 @@ class SqliteStorage : public Storage {
     SqliteStorage();
     virtual ~SqliteStorage();
 
+  public slots:
     /* General */
 
     static bool isAvailable();

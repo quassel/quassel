@@ -31,6 +31,8 @@ class Server;
 class SignalProxy;
 class Storage;
 
+class QScriptEngine;
+
 class CoreSession : public QObject {
   Q_OBJECT
 
@@ -83,13 +85,19 @@ signals:
   void sessionDataChanged(const QString &key);
   void sessionDataChanged(const QString &key, const QVariant &data);
 
+  void scriptResult(QString result);
+				   
 private slots:
   void recvStatusMsgFromServer(QString msg);
   void recvMessageFromServer(Message::Type, QString target, QString text, QString sender = "", quint8 flags = Message::None);
   void serverConnected(uint networkid);
   void serverDisconnected(uint networkid);
 
+  void scriptRequest(QString script);
+  
 private:
+  void initScriptEngine();
+  
   UserId user;
   
   SignalProxy *_signalProxy;
@@ -98,6 +106,8 @@ private:
   
   QVariantMap sessionData;
   QMutex mutex;
+
+  QScriptEngine *scriptEngine;
 };
 
 #endif

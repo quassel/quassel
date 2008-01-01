@@ -209,9 +209,9 @@ void IrcServerHandler::handleKick(QString prefix, QList<QByteArray> params) {
 }
 
 void IrcServerHandler::handleMode(QString prefix, QList<QByteArray> params) {
-  Q_UNUSED(prefix)
-  Q_UNUSED(params)
-    
+  if(networkInfo()->isChannelName(params[0])) {
+  } else {
+  }
 //   if(isChannelName(params[0])) {
 //     // TODO only channel-user modes supported by now
 //     QString prefixes = serverSupports["PrefixModes"].toString();

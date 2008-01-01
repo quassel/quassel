@@ -33,8 +33,15 @@ AbstractTreeItem::AbstractTreeItem(AbstractTreeItem *parent)
 }
 
 AbstractTreeItem::~AbstractTreeItem() {
+  AbstractTreeItem *child;
   foreach(int key, _childItems.keys()) {
-    qDeleteAll(_childItems[key]);
+    QList<AbstractTreeItem *>::iterator iter = _childItems[key].begin();
+    while(iter != _childItems[key].end()) {
+      child = *iter;
+      iter = _childItems[key].erase(iter);
+      disconnect(child, 0, this, 0);
+      child->deleteLater();
+    }
   }
 }
 
@@ -75,6 +82,7 @@ void AbstractTreeItem::removeChild(int column, int row) {
   AbstractTreeItem *treeitem = _childItems[column].value(row);
   _childItems[column].removeAt(row);
   _childHash[column].remove(_childHash[column].key(treeitem));
+  disconnect(treeitem, 0, this, 0);
   treeitem->deleteLater();
 }
 
@@ -122,10 +130,8 @@ int AbstractTreeItem::column() const {
     return -1;
 
   QHash<int, QList<AbstractTreeItem*> >::const_iterator iter = _parentItem->_childItems.constBegin();
-  int pos;
   while(iter != _parentItem->_childItems.constEnd()) {
-    pos = iter.value().indexOf(const_cast<AbstractTreeItem *>(this));
-    if(pos != -1)
+    if(iter.value().contains(const_cast<AbstractTreeItem *>(this)))
       return iter.key();
     iter++;
   }
@@ -160,8 +166,26 @@ void AbstractTreeItem::childDestroyed() {
     qWarning() << "AbstractTreeItem::childDestroyed() received null pointer!";
     return;
   }
-  _childItems[item->column()].removeAt(item->row());
-  _childHash[item->column()].remove(_childHash[item->column()].key(item));
+
+  QHash<int, QList<AbstractTreeItem*> >::const_iterator iter = _childItems.constBegin();
+  int column, row = -1;
+  while(iter != _childItems.constEnd()) {
+    row = iter.value().indexOf(item);
+    if(row != -1) {
+      column = iter.key();
+      break;
+    }
+    iter++;
+  }
+
+  if(row == -1) {
+    qWarning() << "AbstractTreeItem::childDestroyed(): unknown Child died:" << item << "parent:" << this;
+    return;
+  }
+  
+  _childItems[column].removeAt(row);
+  _childHash[column].remove(_childHash[column].key(item));
+  emit childDestroyed(row);
 }
   
 /*****************************************
@@ -311,10 +335,23 @@ int TreeModel::rowCount(const QModelIndex &parent) const {
 }
 
 int TreeModel::columnCount(const QModelIndex &parent) const {
-  if(parent.isValid())
-    return static_cast<AbstractTreeItem*>(parent.internalPointer())->columnCount();
-  else
-    return rootItem->columnCount();
+  Q_UNUSED(parent)
+  // since there the Qt Views don't draw more columns than the header has columns
+  // we can be lazy and simply return the count of header columns
+  // actually this gives us more freedom cause we don't have to ensure that a rows parent
+  // has equal or more columns than that row
+  
+//   if(parent.isValid()) {
+//     AbstractTreeItem *child;
+//     if(child = static_cast<AbstractTreeItem *>(parent.internalPointer())->child(parent.column(), parent.row()))
+//       return child->columnCount();
+//     else
+//       return static_cast<AbstractTreeItem*>(parent.internalPointer())->columnCount();
+//   } else {
+//     return rootItem->columnCount();
+//   }
+
+  return rootItem->columnCount();
 }
 
 QVariant TreeModel::data(const QModelIndex &index, int role) const {
@@ -355,7 +392,7 @@ void TreeModel::itemDataChanged(int column) {
 
 void TreeModel::appendChild(AbstractTreeItem *parent, AbstractTreeItem *child) {
   if(parent == 0 or child == 0) {
-    qWarning() << "TreeModel::apendChild(parent, child) parent and child have to be valid pointers!" << parent << child;
+    qWarning() << "TreeModel::appendChild(parent, child) parent and child have to be valid pointers!" << parent << child;
     return;
   }
 
@@ -366,8 +403,23 @@ void TreeModel::appendChild(AbstractTreeItem *parent, AbstractTreeItem *child) {
 
   connect(child, SIGNAL(dataChanged(int)),
 	  this, SLOT(itemDataChanged(int)));
+  
+  connect(child, SIGNAL(newChild(AbstractTreeItem *)),
+	  this, SLOT(newChild(AbstractTreeItem *)));
+
+  connect(child, SIGNAL(childDestroyed(int)),
+	  this, SLOT(childDestroyed(int)));
 }
 
+void TreeModel::newChild(AbstractTreeItem *child) {
+  appendChild(static_cast<AbstractTreeItem *>(sender()), child);
+}
+
+void TreeModel::childDestroyed(int row) {
+  QModelIndex parent = indexByItem(static_cast<AbstractTreeItem *>(sender()));
+  beginRemoveRows(parent, row, row);
+  endRemoveRows();
+}
 
 bool TreeModel::removeRow(int row, const QModelIndex &parent) {
   if(row > rowCount(parent))

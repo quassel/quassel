@@ -5,4 +5,4 @@ MODULES = core common
 DEFINES = BUILD_CORE
 
 QT -= gui
-QT += network sql
+QT += network sql script

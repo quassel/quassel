@@ -33,6 +33,7 @@ class Storage : public QObject {
     Storage() {};
     virtual ~Storage() {};
 
+  public slots:
     /* General */
 
     //! Check if the storage type is available.

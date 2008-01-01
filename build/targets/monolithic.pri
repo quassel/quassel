@@ -4,4 +4,4 @@ TARGET  = quassel
 MODULES = core qtui uisupport client common
 DEFINES = BUILD_MONO
 
-QT += network sql
+QT += network sql script

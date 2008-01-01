@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _BUFFERTREEMODEL_H_
-#define _BUFFERTREEMODEL_H_
+#ifndef NETWORKMODEL_H
+#define NETWORKMODEL_H
 
 #include <QtCore>
 
@@ -43,14 +43,14 @@ class IrcUser;
 /*****************************************
  *  Fancy Buffer Items
  *****************************************/
-class BufferTreeItem : public PropertyMapItem {
+class BufferItem : public PropertyMapItem {
   Q_OBJECT
   Q_PROPERTY(QString bufferName READ bufferName)
   Q_PROPERTY(QString topic READ topic)
   Q_PROPERTY(int nickCount READ nickCount)
 
 public:
-  BufferTreeItem(Buffer *, AbstractTreeItem *parent = 0);
+  BufferItem(Buffer *, AbstractTreeItem *parent = 0);
 
   virtual quint64 id() const;
   virtual QVariant data(int column, int role) const;
@@ -82,14 +82,14 @@ private:
 /*****************************************
  *  Network Items
  *****************************************/
-class NetworkTreeItem : public PropertyMapItem {
+class NetworkItem : public PropertyMapItem {
   Q_OBJECT
   Q_PROPERTY(QString networkName READ networkName)
   Q_PROPERTY(QString currentServer READ currentServer)
   Q_PROPERTY(int nickCount READ nickCount)
     
 public:
-  NetworkTreeItem(const uint &netid, const QString &, AbstractTreeItem *parent = 0);
+  NetworkItem(const uint &netid, const QString &, AbstractTreeItem *parent = 0);
 
   virtual QVariant data(int column, int row) const;
   virtual quint64 id() const;
@@ -113,9 +113,30 @@ private:
 };
 
 /*****************************************
- * BufferTreeModel
+*  Irc User Items
+*****************************************/
+class IrcUserItem : public PropertyMapItem {
+  Q_OBJECT
+  Q_PROPERTY(QString nickName READ nickName)
+    
+public:
+  IrcUserItem(IrcUser *ircUser, AbstractTreeItem *parent);
+
+  QString nickName();
+
+private slots:
+  void setNick(QString newNick);
+  void ircUserDestroyed();
+
+private:
+  IrcUser *_ircUser;
+};
+
+
+/*****************************************
+ * NetworkModel
  *****************************************/
-class BufferTreeModel : public TreeModel {
+class NetworkModel : public TreeModel {
   Q_OBJECT
 
 public:
@@ -128,14 +149,14 @@ public:
   };
 
   enum itemTypes {
-    AbstractItem,
-    SimpleItem,
-    NetworkItem,
-    BufferItem,
-    NickItem
+    AbstractItemType,
+    SimpleItemType,
+    NetworkItemType,
+    BufferItemType,
+    NickItemType
   };
     
-  BufferTreeModel(QObject *parent = 0);
+  NetworkModel(QObject *parent = 0);
   static QList<QVariant> defaultHeader();
 
   inline SelectionModelSynchronizer *selectionModelSynchronizer() { return _selectionModelSynchronizer; }
@@ -169,16 +190,16 @@ private:
   Buffer *getBufferByIndex(const QModelIndex &) const;
 
   QModelIndex networkIndex(uint networkId);
-  NetworkTreeItem *network(uint networkId);
-  NetworkTreeItem *newNetwork(uint networkId, const QString &networkName);
+  NetworkItem *network(uint networkId);
+  NetworkItem *newNetwork(uint networkId, const QString &networkName);
   
   QModelIndex bufferIndex(BufferInfo bufferInfo);
-  BufferTreeItem *buffer(BufferInfo bufferInfo);
-  BufferTreeItem *newBuffer(BufferInfo bufferInfo);
+  BufferItem *buffer(BufferInfo bufferInfo);
+  BufferItem *newBuffer(BufferInfo bufferInfo);
 
   QPointer<SelectionModelSynchronizer> _selectionModelSynchronizer;
   QPointer<ModelPropertyMapper> _propertyMapper;
   Buffer *currentBuffer;
 };
 
-#endif
+#endif // NETWORKMODEL_H

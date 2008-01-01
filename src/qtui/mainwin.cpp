@@ -36,6 +36,8 @@
 
 #include "settingspages/fontssettingspage.h"
 
+#include "debugconsole.h"
+
 MainWin::MainWin(QtUi *_gui, QWidget *parent) : QMainWindow(parent), gui(_gui) {
   ui.setupUi(this);
   setWindowTitle("Quassel IRC");
@@ -46,7 +48,7 @@ MainWin::MainWin(QtUi *_gui, QWidget *parent) : QMainWindow(parent), gui(_gui) {
   statusBar()->showMessage(tr("Waiting for core..."));
   serverListDlg = new ServerListDlg(this);
   settingsDlg = new SettingsDlg(this);
-
+  debugConsole = new DebugConsole(this);
 }
 
 void MainWin::init() {
@@ -106,7 +108,8 @@ void MainWin::init() {
   setDockNestingEnabled(true);
   
   
-  // TESTING
+  // new Topic Stuff... should be probably refactored out into a separate method
+  
   setCorner(Qt::TopLeftCorner, Qt::LeftDockWidgetArea);
   setCorner(Qt::BottomLeftCorner, Qt::LeftDockWidgetArea);
 
@@ -121,13 +124,15 @@ void MainWin::init() {
   TopicWidget *topicwidget = new TopicWidget(dock);
   dock->setWidget(topicwidget);
 
-  Client::bufferModel()->mapProperty(1, Qt::DisplayRole, topicwidget, "topic");
+  Client::networkModel()->mapProperty(1, Qt::DisplayRole, topicwidget, "topic");
 
   addDockWidget(Qt::TopDockWidgetArea, dock);
 
   ui.menuViews->addAction(dock->toggleViewAction());
 
   //showSettingsDlg();
+
+
 }
 
 MainWin::~MainWin() {
@@ -153,13 +158,14 @@ void MainWin::setupMenus() {
   connect(ui.actionNetworkList, SIGNAL(triggered()), this, SLOT(showServerList()));
   connect(ui.actionEditIdentities, SIGNAL(triggered()), serverListDlg, SLOT(editIdentities()));
   connect(ui.actionSettingsDlg, SIGNAL(triggered()), this, SLOT(showSettingsDlg()));
+  connect(ui.actionDebug_Console, SIGNAL(triggered()), this, SLOT(showDebugConsole()));
   //ui.actionSettingsDlg->setEnabled(false);
   connect(ui.actionAboutQt, SIGNAL(triggered()), QApplication::instance(), SLOT(aboutQt()));
 }
 
 void MainWin::setupViews() {
   
-  BufferTreeModel *model = Client::bufferModel();
+  NetworkModel *model = Client::networkModel();
   connect(model, SIGNAL(bufferSelected(Buffer *)), this, SLOT(showBuffer(Buffer *)));
 
   addBufferView(tr("All Buffers"), model, BufferViewFilter::AllNets, QList<uint>());
@@ -180,7 +186,7 @@ void MainWin::addBufferView(const QString &viewname, QAbstractItemModel *model, 
   //create the view and initialize it's filter
   BufferView *view = new BufferView(dock);
   view->setFilteredModel(model, mode, nets);
-  Client::bufferModel()->synchronizeView(view);
+  Client::networkModel()->synchronizeView(view);
   dock->setWidget(view);
   
   addDockWidget(Qt::LeftDockWidgetArea, dock);
@@ -248,6 +254,10 @@ void MainWin::showServerList() {
 
 void MainWin::showSettingsDlg() {
   settingsDlg->show();
+}
+
+void MainWin::showDebugConsole() {
+  debugConsole->show();
 }
 
 void MainWin::closeEvent(QCloseEvent *event)

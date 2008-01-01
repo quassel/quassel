@@ -35,7 +35,7 @@ class NetworkInfo;
 
 class AbstractUi;
 class AbstractUiMsg;
-class BufferTreeModel;
+class NetworkModel;
 class SignalProxy;
 
 class QTimer;
@@ -59,7 +59,7 @@ public:
   static BufferInfo statusBufferInfo(QString net);
   static BufferInfo bufferInfo(QString net, QString buf);
 
-  static BufferTreeModel *bufferModel();
+  static NetworkModel *networkModel();
   static SignalProxy *signalProxy();
 
   static AbstractUiMsg *layoutMsg(const Message &);
@@ -146,7 +146,7 @@ private:
   QPointer<QIODevice> socket;
   QPointer<SignalProxy> _signalProxy;
   QPointer<AbstractUi> mainUi;
-  QPointer<BufferTreeModel> _bufferModel;
+  QPointer<NetworkModel> _networkModel;
 
   ClientMode clientMode;
 
