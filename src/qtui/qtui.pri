@@ -25,3 +25,14 @@ for(page, SETTINGSPAGES) {
   HDRS += settingspages/$${page}settingspage.h
   FRMS += settingspages/$${page}settingspage.ui
 }
+
+# Include additional files
+for(src, SP_SRCS) {
+  SRCS += settingspages/$${src}
+}
+for(hdr, SP_HDRS) {
+  HDRS += settingspages/$${hdr}
+}
+for(frm, SP_FRMS) {
+  FRMS += settingspages/$${frm}
+}

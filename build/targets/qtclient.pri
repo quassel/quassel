@@ -5,3 +5,5 @@ MODULES = qtui uisupport client common
 DEFINES = BUILD_QTUI
 
 QT += network script
+
+RESOURCES *= ../../src/icons/icons.qrc

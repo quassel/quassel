@@ -92,16 +92,18 @@ void FontsSettingsPage::save() {
   QTextCharFormat chatFormat = QtUi::style()->format(UiStyle::None);
   chatFormat.setFont(ui.demoChatMessages->font());
   QtUi::style()->setFormat(UiStyle::None, chatFormat, Settings::Custom);
-  if(ui.checkNicks->checkState() == Qt::Checked) {
-    QTextCharFormat nicksFormat = QtUi::style()->format(UiStyle::Sender);
-    nicksFormat.setFont(ui.demoNicks->font());
-    QtUi::style()->setFormat(UiStyle::Sender, nicksFormat, Settings::Custom);
-  }
-  if(ui.checkTimestamp->checkState() == Qt::Checked) {
-    QTextCharFormat timestampFormat = QtUi::style()->format(UiStyle::Timestamp);
-    timestampFormat.setFont(ui.demoTimestamp->font());
-    QtUi::style()->setFormat(UiStyle::Timestamp, timestampFormat, Settings::Custom);
-  }
+
+  //FIXME: actually remove font properties from the formats
+  QTextCharFormat nicksFormat = QtUi::style()->format(UiStyle::Sender);
+  if(ui.checkNicks->checkState() == Qt::Checked) nicksFormat.setFont(ui.demoNicks->font());
+  else nicksFormat.setFont(chatFormat.font());
+  QtUi::style()->setFormat(UiStyle::Sender, nicksFormat, Settings::Custom);
+
+  QTextCharFormat timestampFormat = QtUi::style()->format(UiStyle::Timestamp);
+  if(ui.checkTimestamp->checkState() == Qt::Checked) timestampFormat.setFont(ui.demoTimestamp->font());
+  else timestampFormat.setFont(chatFormat.font());
+  QtUi::style()->setFormat(UiStyle::Timestamp, timestampFormat, Settings::Custom);
+
   changeState(false);
 }
 

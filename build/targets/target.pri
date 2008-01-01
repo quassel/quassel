@@ -2,8 +2,7 @@ TEMPLATE = app
 
 include(../buildconf.pri)
 
-RESOURCES   += ../../i18n/i18n.qrc \
-               ../../src/images/icons.qrc
+RESOURCES   *= ../../i18n/i18n.qrc \
 
 SRCPATH = ../../src
 OBJECTS_DIR = .$$TARGET

@@ -24,6 +24,7 @@
 #include "chatline-old.h"
 #include "client.h"
 #include "coreconnectdlg.h"
+#include "networkmodel.h"
 #include "nicklistwidget.h"
 #include "serverlist.h"
 #include "settingsdlg.h"
@@ -42,7 +43,7 @@ MainWin::MainWin(QtUi *_gui, QWidget *parent) : QMainWindow(parent), gui(_gui) {
   ui.setupUi(this);
   setWindowTitle("Quassel IRC");
   //setWindowTitle(QString::fromUtf8("Κυασελ Εγαρζη"));
-  setWindowIcon(QIcon(":/qirc-icon.png"));
+  setWindowIcon(QIcon(":icons/quassel-icon.png"));
   setWindowIconText("Quassel IRC");
 
   statusBar()->showMessage(tr("Waiting for core..."));
