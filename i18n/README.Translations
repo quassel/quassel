@@ -1,5 +1,3 @@
-NOTE: Translations are not yet used in Quassel, but will be soon!
-
 In order to create or update a translatable file, run the following command
 in the directory i18n/:
 
@@ -13,7 +11,15 @@ system locale. Examples for valid file names:
 quassel_de.ts
 quassel_en_US.ts
 
-You can open these files with the Qt Linguist and add/edit translated strings.
+You can open these XML files with the Qt Linguist and add/edit translated strings.
 
 The *.ts files can and should be kept in sync with the source code by running
 lupdate regularly (existing translations won't be removed).
+
+Qt itself does not use the *.ts files, but a compact binary format (*.qm). In order
+to create these files from new or updated *.ts files, run
+
+lrelease *.ts
+
+In addition, new languages need to be added to i18n/i18n.qrc, since we are using Qt's
+resource system for loading the translations.
