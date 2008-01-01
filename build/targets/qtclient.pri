@@ -6,4 +6,4 @@ DEFINES = BUILD_QTUI
 
 QT += network script
 
-RESOURCES *= ../../src/icons/icons.qrc
+#RESOURCES *= ../../src/icons/icons.qrc
