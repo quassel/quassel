@@ -29,6 +29,30 @@
 // Please be carefull when reimplementing methods which are used to inform the view about changes to the data
 // to be on the safe side: call QTreeView's method aswell
 BufferView::BufferView(QWidget *parent) : QTreeView(parent) {
+  // dirty fast hack:
+  header()->setContextMenuPolicy(Qt::ActionsContextMenu);
+
+  QAction *showBufferAct = new QAction(tr("Buffer"), header());
+  showBufferAct->setCheckable(true);
+  showBufferAct->setChecked(true);
+  showBufferAct->setProperty("column", 0);
+  connect(showBufferAct, SIGNAL(toggled(bool)), this, SLOT(toggleHeader(bool)));
+  header()->addAction(showBufferAct);
+  
+  QAction *showTopicAct = new QAction(tr("Topic"), header());
+  showTopicAct->setCheckable(true);
+  showTopicAct->setChecked(true);
+  showTopicAct->setProperty("column", 1);
+  connect(showTopicAct, SIGNAL(toggled(bool)), this, SLOT(toggleHeader(bool)));
+  header()->addAction(showTopicAct);
+    
+  QAction *showNickAct = new QAction(tr("Nick Count"), header());
+  showNickAct->setCheckable(true);
+  showNickAct->setChecked(true);
+  showNickAct->setProperty("column", 2);
+  connect(showNickAct, SIGNAL(toggled(bool)), this, SLOT(toggleHeader(bool)));
+  header()->addAction(showNickAct);
+  
 }
 
 void BufferView::init() {
@@ -91,4 +115,9 @@ void BufferView::rowsInserted(const QModelIndex & parent, int start, int end) {
     update(parent); 
     expand(parent);
   }
+}
+
+void BufferView::toggleHeader(bool checked) {
+  QAction *action = qobject_cast<QAction *>(sender());
+  header()->setSectionHidden((action->property("column")).toInt(), not checked);
 }

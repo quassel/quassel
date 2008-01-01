@@ -45,6 +45,7 @@ private slots:
   void joinChannel(const QModelIndex &index);
   void keyPressEvent(QKeyEvent *);
   void rowsInserted (const QModelIndex & parent, int start, int end);
+  void toggleHeader(bool checked);
 };
 
 
