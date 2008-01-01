@@ -40,6 +40,8 @@ src/client/mappedselectionmodel.cpp
 src/client/mappedselectionmodel.h
 src/client/modelpropertymapper.cpp
 src/client/modelpropertymapper.h
+src/client/networkmodel.cpp
+src/client/networkmodel.h
 src/client/nickmodel.cpp
 src/client/nickmodel.h
 src/client/quasselui.h
@@ -165,8 +167,6 @@ src/qtui/settingspages
 src/qtui/settingspages.cpp
 src/qtui/settingspages.h
 src/qtui/settingspages/settingspages.pri
-src/qtui/settingspages/sp_uistyle.cpp
-src/qtui/settingspages/sp_uistyle.h
 src/qtui/topicwidget.cpp
 src/qtui/topicwidget.h
 src/qtui/ui
