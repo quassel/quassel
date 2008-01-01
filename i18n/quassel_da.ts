@@ -432,7 +432,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/client/client.cpp" line="372"/>
         <source>Requesting User states...</source>
-        <translation type="unfinished"></translation>
+        <translation>Gendanner session...</translation>
     </message>
     <message>
         <location filename="../src/client/client.cpp" line="378"/>
@@ -884,17 +884,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/identities.cpp" line="288"/>
         <source>Default Identity</source>
-        <translation type="unfinished">Default identitet</translation>
+        <translation>Default identitet</translation>
     </message>
     <message>
         <location filename="../src/qtui/identities.cpp" line="61"/>
         <source>Data changed remotely!</source>
-        <translation type="unfinished">Data blev ændret på fjernværten!</translation>
+        <translation>Data blev ændret på fjernværten!</translation>
     </message>
     <message>
         <location filename="../src/qtui/identities.cpp" line="62"/>
         <source>&lt;b&gt;Some other GUI client changed the identities data!&lt;/b&gt;&lt;br&gt;Apply updated settings, losing all changes done locally?</source>
-        <translation type="unfinished">&lt;b&gt;En anden klient ændrede identitets data!&lt;/b&gt;&lt;br&gt;</translation>
+        <translation>&lt;b&gt;En anden klient ændrede identitets data!&lt;/b&gt;&lt;br&gt;Acceptér ændringerne (de lokale ændringer vil blive tabt)?</translation>
     </message>
     <message>
         <location filename="../src/qtui/identities.cpp" line="253"/>
@@ -907,7 +907,7 @@ p, li { white-space: pre-wrap; }
 
 %1
 Please fill in any missing information.</source>
-        <translation type="unfinished">En eller flere af dine identiteter indeholder ikke al nødvendig information:
+        <translation>En eller flere af dine identiteter indeholder ikke al nødvendig information:
 
 %1
 Tilføj alle manglende informationer.</translation>
@@ -972,32 +972,32 @@ Tilføj alle manglende informationer.</translation>
     <message>
         <location filename="../src/qtui/ui/identitiesdlg.ui" line="297"/>
         <source>&amp;Away</source>
-        <translation type="unfinished">&amp;Væk</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/identitiesdlg.ui" line="423"/>
         <source>Away Reason</source>
-        <translation type="unfinished">Away årsag</translation>
+        <translation>Away årsag</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/identitiesdlg.ui" line="340"/>
         <source>Away Nick</source>
-        <translation type="unfinished">Away øgenavne</translation>
+        <translation>Away øgenavne</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/identitiesdlg.ui" line="349"/>
         <source>Auto Away</source>
-        <translation type="unfinished">Aumatisk away</translation>
+        <translation>Aumatisk away</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/identitiesdlg.ui" line="361"/>
         <source>Enable Auto Away</source>
-        <translation type="unfinished">Aktivér automatisk away</translation>
+        <translation>Aktivér automatisk away</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/identitiesdlg.ui" line="376"/>
         <source>Auto away after</source>
-        <translation type="unfinished">Automatisk away efterr</translation>
+        <translation>Automatisk away efter</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/identitiesdlg.ui" line="386"/>
@@ -1012,17 +1012,17 @@ Tilføj alle manglende informationer.</translation>
     <message>
         <location filename="../src/qtui/ui/identitiesdlg.ui" line="475"/>
         <source>Part Reason</source>
-        <translation type="unfinished">Part årsag</translation>
+        <translation>Part årsag</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/identitiesdlg.ui" line="488"/>
         <source>Quit Reason</source>
-        <translation type="unfinished">Quit årsag</translation>
+        <translation>Quit årsag</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/identitiesdlg.ui" line="498"/>
         <source>Kick Reason</source>
-        <translation type="unfinished">Kick årsag</translation>
+        <translation>Kick årsag</translation>
     </message>
     <message>
         <location filename="../src/qtui/identities.cpp" line="266"/>
@@ -1070,7 +1070,7 @@ Tilføj alle manglende informationer.</translation>
     <message>
         <location filename="../src/qtui/ui/identitieseditdlg.ui" line="13"/>
         <source>Edit Identities</source>
-        <translation>Rediger identitet</translation>
+        <translation>Rediger identiteter</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/identitieseditdlg.ui" line="47"/>
@@ -1178,122 +1178,122 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/mainwin.cpp" line="49"/>
         <source>Waiting for core...</source>
-        <translation type="unfinished">Venter på kernen...</translation>
+        <translation>Venter på kernen...</translation>
     </message>
     <message>
         <location filename="../src/qtui/mainwin.cpp" line="226"/>
         <source>Not connected to core.</source>
-        <translation type="unfinished">Ikke forbundet til kernen.</translation>
+        <translation>Ikke forbundet til kernen.</translation>
     </message>
     <message>
         <location filename="../src/qtui/mainwin.cpp" line="173"/>
         <source>All Channels</source>
-        <translation type="unfinished">Alle kanaler</translation>
+        <translation>Alle kanaler</translation>
     </message>
     <message>
         <location filename="../src/qtui/mainwin.cpp" line="175"/>
         <source>All Networks</source>
-        <translation type="unfinished">Alle netværk</translation>
+        <translation>Alle netværk</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/mainwin.ui" line="54"/>
         <source>Connection</source>
-        <translation type="unfinished">Forbindelse</translation>
+        <translation>Forbindelse</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/mainwin.ui" line="73"/>
         <source>Settings</source>
-        <translation type="unfinished">Indstillinger</translation>
+        <translation>Indstillinger</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/mainwin.ui" line="90"/>
         <source>Help</source>
-        <translation type="unfinished">Hjælp</translation>
+        <translation>Hjælp</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/mainwin.ui" line="97"/>
         <source>Debug</source>
-        <translation type="unfinished">Debug</translation>
+        <translation>Debug</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/mainwin.ui" line="103"/>
         <source>Core</source>
-        <translation type="unfinished">Kerne</translation>
+        <translation>Kerne</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/mainwin.ui" line="116"/>
         <source>&amp;Network List...</source>
-        <translation type="unfinished">&amp;Netværks liste...</translation>
+        <translation>&amp;Netværks liste...</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/mainwin.ui" line="119"/>
         <source>F2</source>
-        <translation type="unfinished">F2</translation>
+        <translation>F2</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/mainwin.ui" line="210"/>
         <source>Disconnect</source>
-        <translation type="unfinished">Afbryd</translation>
+        <translation>Afbryd forbindelsen</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/mainwin.ui" line="169"/>
         <source>Edit Identities...</source>
-        <translation type="unfinished">Ændr identiteter...</translation>
+        <translation>Rediger identiteter...</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/mainwin.ui" line="174"/>
         <source>Configure Quassel...</source>
-        <translation type="unfinished">Konfigurer Quassel...</translation>
+        <translation>Konfigurer Quassel...</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/mainwin.ui" line="177"/>
         <source>F7</source>
-        <translation type="unfinished">F7</translation>
+        <translation>F7</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/mainwin.ui" line="190"/>
         <source>About Qt...</source>
-        <translation type="unfinished">Om Qt...</translation>
+        <translation>Om Qt...</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/mainwin.ui" line="195"/>
         <source>About Quassel IRC...</source>
-        <translation type="unfinished">Om Quassel IRC...</translation>
+        <translation>Om Quassel IRC...</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/mainwin.ui" line="205"/>
         <source>Connect</source>
-        <translation type="unfinished">Forbind</translation>
+        <translation>Forbind</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/mainwin.ui" line="215"/>
         <source>Internal</source>
-        <translation type="unfinished">Interne</translation>
+        <translation>Intern</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/mainwin.ui" line="223"/>
         <source>Disconnect from Core</source>
-        <translation type="unfinished">Afbryd forbindelsen til kernen</translation>
+        <translation>Afbryd forbindelsen til kernen</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/mainwin.ui" line="231"/>
         <source>Connect to Core...</source>
-        <translation type="unfinished">Forbind til kernen...</translation>
+        <translation>Forbind til kernen...</translation>
     </message>
     <message>
         <location filename="../src/qtui/mainwin.cpp" line="172"/>
         <source>All Buffers</source>
-        <translation type="unfinished"></translation>
+        <translation>Alle buffers</translation>
     </message>
     <message>
         <location filename="../src/qtui/mainwin.cpp" line="174"/>
         <source>All Queries</source>
-        <translation type="unfinished"></translation>
+        <translation>Alle forespørgsler</translation>
     </message>
     <message>
         <location filename="../src/qtui/mainwin.cpp" line="176"/>
         <source>Full Custom</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/mainwin.cpp" line="215"/>
@@ -1356,102 +1356,102 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/common/message.cpp" line="121"/>
         <source>%DT[%1]</source>
-        <translation type="unfinished">%DT[%1]</translation>
+        <translation>%DT[%1]</translation>
     </message>
     <message>
         <location filename="../src/common/message.cpp" line="126"/>
         <source>%DS&lt;%1&gt;</source>
-        <translation type="unfinished">%DS&lt;%1&gt;</translation>
+        <translation>%DS&lt;%1&gt;</translation>
     </message>
     <message>
         <location filename="../src/common/message.cpp" line="126"/>
         <source>%D0%1</source>
-        <translation type="unfinished">%D0%1</translation>
+        <translation>%D0%1</translation>
     </message>
     <message>
         <location filename="../src/common/message.cpp" line="128"/>
         <source>%Ds*</source>
-        <translation type="unfinished">%Ds*</translation>
+        <translation>%Ds*</translation>
     </message>
     <message>
         <location filename="../src/common/message.cpp" line="128"/>
         <source>%Ds%1</source>
-        <translation type="unfinished">%Ds%1</translation>
+        <translation>%Ds%1</translation>
     </message>
     <message>
         <location filename="../src/common/message.cpp" line="130"/>
         <source>%De*</source>
-        <translation type="unfinished">%De*</translation>
+        <translation>%De*</translation>
     </message>
     <message>
         <location filename="../src/common/message.cpp" line="165"/>
         <source>%De%1</source>
-        <translation type="unfinished">%De%1</translation>
+        <translation>%De%1</translation>
     </message>
     <message>
         <location filename="../src/common/message.cpp" line="132"/>
         <source>%Dj--&gt;</source>
-        <translation type="unfinished">%Dj--&gt;</translation>
+        <translation>%Dj--&gt;</translation>
     </message>
     <message>
         <location filename="../src/common/message.cpp" line="134"/>
         <source>%Dp&lt;--</source>
-        <translation type="unfinished">%Dp&lt;--</translation>
+        <translation>%Dp&lt;--</translation>
     </message>
     <message>
         <location filename="../src/common/message.cpp" line="134"/>
         <source>%Dp%DN%DU%1%DU%DN %DH(%2@%3)%DH has left %DC%DU%4%DU%DC</source>
-        <translation type="unfinished">%Dp%DN%DU%1%DU%DN %DH(%2@%3)%DH forlod %DC%DU%4%DU%DC</translation>
+        <translation>%Dp%DN%DU%1%DU%DN %DH(%2@%3)%DH forlod %DC%DU%4%DU%DC</translation>
     </message>
     <message>
         <location filename="../src/common/message.cpp" line="138"/>
         <source>%Dq&lt;--</source>
-        <translation type="unfinished">%Dq&lt;--</translation>
+        <translation>%Dq&lt;--</translation>
     </message>
     <message>
         <location filename="../src/common/message.cpp" line="142"/>
         <source>%Dk&lt;-*</source>
-        <translation type="unfinished">%Dk&lt;-*</translation>
+        <translation>%Dk&lt;-*</translation>
     </message>
     <message>
         <location filename="../src/common/message.cpp" line="146"/>
         <source>%Dk%DN%DU%1%DU%DN has kicked %DN%DU%2%DU%DN from %DC%DU%3%DU%DC</source>
-        <translation type="unfinished">%Dk%DN%DU%1%DU%DN blev smidt ud %DN%DU%2%DU%DN fra %DC%DU%3%DU%DC</translation>
+        <translation>%Dk%DN%DU%1%DU%DN smed %DN%DU%2%DU%DN ud fra %DC%DU%3%DU%DC</translation>
     </message>
     <message>
         <location filename="../src/common/message.cpp" line="151"/>
         <source>%Dr&lt;-&gt;</source>
-        <translation type="unfinished">%Dr&lt;-&gt;</translation>
+        <translation>%Dr&lt;-&gt;</translation>
     </message>
     <message>
         <location filename="../src/common/message.cpp" line="152"/>
         <source>%DrYou are now known as %DN%1%DN</source>
-        <translation type="unfinished">%DrDu er nu kendt som %DN%1%DN</translation>
+        <translation>%DrDu er nu kendt som %DN%1%DN</translation>
     </message>
     <message>
         <location filename="../src/common/message.cpp" line="153"/>
         <source>%Dr%DN%1%DN is now known as %DN%DU%2%DU%DN</source>
-        <translation type="unfinished">%Dr%DN%1%DN er nu kendt som %DN%DU%2%DU%DN</translation>
+        <translation>%Dr%DN%1%DN er nu kendt som %DN%DU%2%DU%DN</translation>
     </message>
     <message>
         <location filename="../src/common/message.cpp" line="156"/>
         <source>%Dm***</source>
-        <translation type="unfinished">%Dm***</translation>
+        <translation>%Dm***</translation>
     </message>
     <message>
         <location filename="../src/common/message.cpp" line="161"/>
         <source>%Da-*-</source>
-        <translation type="unfinished">%Da-*-</translation>
+        <translation>%Da-*-</translation>
     </message>
     <message>
         <location filename="../src/common/message.cpp" line="162"/>
         <source>%Da%DN%DU%1%DU%DN %2</source>
-        <translation type="unfinished">%Da%DN%DU%1%DU%DN %2</translation>
+        <translation>%Da%DN%DU%1%DU%DN %2</translation>
     </message>
     <message>
         <location filename="../src/common/message.cpp" line="166"/>
         <source>%De[%1]</source>
-        <translation type="unfinished">%De[%1]</translation>
+        <translation>%De[%1]</translation>
     </message>
     <message>
         <location filename="../src/common/message.cpp" line="132"/>
@@ -1479,97 +1479,97 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/serverlist.cpp" line="346"/>
         <source>Default Identity</source>
-        <translation type="unfinished">Default identitet</translation>
+        <translation>Default identitet</translation>
     </message>
     <message>
         <location filename="../src/qtui/serverlist.cpp" line="271"/>
         <source>Invalid Network Settings!</source>
-        <translation type="unfinished">Ugyldige netværks indstillinger!</translation>
+        <translation>Ugyldige netværks indstillinger!</translation>
     </message>
     <message>
         <location filename="../src/qtui/serverlist.cpp" line="272"/>
         <source>&lt;b&gt;Your network settings are invalid!&lt;/b&gt;&lt;br&gt;%1</source>
-        <translation type="unfinished">&lt;b&gt;Dine netværks indstillinger er ugyldige!&lt;/b&gt;&lt;br&gt;%1</translation>
+        <translation>&lt;b&gt;Dine netværks indstillinger er ugyldige!&lt;/b&gt;&lt;br&gt;%1</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/networkeditdlg.ui" line="13"/>
         <source>Edit Network Settings</source>
-        <translation type="unfinished">Ændr netværks indstillingerne</translation>
+        <translation>Rediger netværks indstillinger</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/networkeditdlg.ui" line="54"/>
         <source>Identity:</source>
-        <translation type="unfinished">Identitet:</translation>
+        <translation>Identitet:</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/networkeditdlg.ui" line="61"/>
         <source>Network:</source>
-        <translation type="unfinished">Netværk:</translation>
+        <translation>Netværk:</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/networkeditdlg.ui" line="68"/>
         <source>Group:</source>
-        <translation type="unfinished">Gruppe:</translation>
+        <translation>Gruppe:</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/networkeditdlg.ui" line="111"/>
         <source>Edit...</source>
-        <translation type="unfinished">Ændr...</translation>
+        <translation>Rediger...</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/networkeditdlg.ui" line="126"/>
         <source>Comment:</source>
-        <translation type="unfinished">Kommentar:</translation>
+        <translation>Kommentar:</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/networkeditdlg.ui" line="135"/>
         <source>Auto-connect on startup</source>
-        <translation type="unfinished">Forbind automatisk ved opstart</translation>
+        <translation>Forbind automatisk ved opstart</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/networkeditdlg.ui" line="152"/>
         <source>Servers</source>
-        <translation type="unfinished">Servere</translation>
+        <translation>Servere</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/networkeditdlg.ui" line="193"/>
         <source>&amp;Add...</source>
-        <translation type="unfinished">&amp;Tilføj...</translation>
+        <translation>&amp;Tilføj...</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/networkeditdlg.ui" line="200"/>
         <source>&amp;Edit...</source>
-        <translation type="unfinished">&amp;Ændr...</translation>
+        <translation>&amp;Rediger...</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/networkeditdlg.ui" line="207"/>
         <source>De&amp;lete</source>
-        <translation type="unfinished">&amp;Slet</translation>
+        <translation>&amp;Slet</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/networkeditdlg.ui" line="214"/>
         <source>Move &amp;Up</source>
-        <translation type="unfinished">Flyt &amp;op</translation>
+        <translation>Flyt &amp;op</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/networkeditdlg.ui" line="221"/>
         <source>Move &amp;Down</source>
-        <translation type="unfinished">Flyt &amp;ned</translation>
+        <translation>Flyt &amp;ned</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/networkeditdlg.ui" line="292"/>
         <source>These commands are executed after connect.</source>
-        <translation type="unfinished">Disse kommandoer er udført efter forbindelsen er oprettet.</translation>
+        <translation>Disse kommandoer er udført efter forbindelsen er oprettet.</translation>
     </message>
     <message>
         <location filename="../src/qtui/serverlist.cpp" line="281"/>
         <source> Network name already exists.</source>
-        <translation type="unfinished"></translation>
+        <translation> Netværksnavn eksisterer allerede.</translation>
     </message>
     <message>
         <location filename="../src/qtui/serverlist.cpp" line="284"/>
         <source> You need to enter at least one server for this network.</source>
-        <translation type="unfinished"></translation>
+        <translation> Du skal mindst tilføje én server til dette netværk.</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/networkeditdlg.ui" line="244"/>
@@ -1720,12 +1720,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/identities.cpp" line="430"/>
         <source>Edit Identity Name</source>
-        <translation type="unfinished">Ændr identitetens navn</translation>
+        <translation>Rediger identitetens navn</translation>
     </message>
     <message>
         <location filename="../src/qtui/identities.cpp" line="431"/>
         <source>Identity:</source>
-        <translation type="unfinished">Identitet:</translation>
+        <translation>Identitet:</translation>
     </message>
 </context>
 <context>
@@ -1791,12 +1791,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/ui/servereditdlg.ui" line="58"/>
         <source>Server address:</source>
-        <translation type="unfinished">Server adresse:</translation>
+        <translation>Server adresse:</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/servereditdlg.ui" line="65"/>
         <source>Port:</source>
-        <translation type="unfinished">Port:</translation>
+        <translation>Port:</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/servereditdlg.ui" line="13"/>
@@ -1809,47 +1809,47 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/serverlist.cpp" line="138"/>
         <source>Remove Network?</source>
-        <translation type="unfinished">Fjern netværk?</translation>
+        <translation>Fjern netværk?</translation>
     </message>
     <message>
         <location filename="../src/qtui/serverlist.cpp" line="138"/>
         <source>Are you sure you want to delete the selected network(s)?</source>
-        <translation type="unfinished">Er du sikker på du vil fjerne de(t) valgte netværk?</translation>
+        <translation>Er du sikker på du vil fjerne de(t) valgte netværk?</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/serverlistdlg.ui" line="13"/>
         <source>Server List</source>
-        <translation type="unfinished">Server liste</translation>
+        <translation>Server liste</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/serverlistdlg.ui" line="66"/>
         <source>&amp;Add...</source>
-        <translation type="unfinished">&amp;Tilføj...</translation>
+        <translation>&amp;Tilføj...</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/serverlistdlg.ui" line="79"/>
         <source>&amp;Edit...</source>
-        <translation type="unfinished">&amp;Ændr...</translation>
+        <translation>&amp;Rediger...</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/serverlistdlg.ui" line="92"/>
         <source>&amp;Delete</source>
-        <translation type="unfinished">&amp;Slet</translation>
+        <translation>&amp;Slet</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/serverlistdlg.ui" line="127"/>
         <source>&amp;Show this dialog on startup</source>
-        <translation type="unfinished">&amp;Vis denne dialog ved opstart</translation>
+        <translation>&amp;Vis denne dialog ved opstart</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/serverlistdlg.ui" line="150"/>
         <source>&amp;Connect</source>
-        <translation type="unfinished">&amp;Forbind</translation>
+        <translation>&amp;Forbind</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/serverlistdlg.ui" line="163"/>
         <source>C&amp;lose</source>
-        <translation type="unfinished">&amp;Luk</translation>
+        <translation>&amp;Luk</translation>
     </message>
 </context>
 <context>
@@ -1857,12 +1857,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/ui/settingsdlg.ui" line="13"/>
         <source>Dialog</source>
-        <translation type="unfinished">Dialog</translation>
+        <translation>Dialog</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/settingsdlg.ui" line="51"/>
         <source>Settings</source>
-        <translation type="unfinished">Indstillinger</translation>
+        <translation>Indstillinger</translation>
     </message>
 </context>
 <context>
@@ -1870,7 +1870,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/core/sqlitestorage.cpp" line="124"/>
         <source>Disabling logging...</source>
-        <translation type="unfinished">Slår logning fra...</translation>
+        <translation>Slår logning fra...</translation>
     </message>
     <message>
         <location filename="../src/core/sqlitestorage.cpp" line="148"/>
@@ -1944,7 +1944,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/ui/topicwidget.ui" line="52"/>
         <source>...</source>
-        <translation type="unfinished">...</translation>
+        <translation>...</translation>
     </message>
 </context>
 </TS>
