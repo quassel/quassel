@@ -76,15 +76,15 @@ int main(int argc, char **argv) {
   QApplication app(argc, argv);
 #endif
 
-  //Just for testing
-  //QTranslator translator;
-  //translator.load(":i18n/quassel_de");
-  //app.installTranslator(&translator);
+  // Set up i18n support
+  QLocale locale = QLocale::system();
+  QTranslator translator;
+  translator.load(QString(":i18n/quassel_%1").arg(locale.name()));
+  app.installTranslator(&translator);
 
-            
   QCoreApplication::setOrganizationDomain("quassel-irc.org");
   QCoreApplication::setApplicationName("Quassel IRC");
-  QCoreApplication::setOrganizationName("Quassel IRC Development Team");
+  QCoreApplication::setOrganizationName("Quassel IRC Development Team");  // FIXME
 
 #ifndef BUILD_QTUI
   Core::instance();  // create and init the core
