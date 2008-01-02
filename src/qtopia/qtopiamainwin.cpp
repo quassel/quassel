@@ -47,6 +47,7 @@ QtopiaMainWin::QtopiaMainWin(QWidget *parent, Qt::WFlags flags) : QMainWindow(pa
   qRegisterMetaTypeStreamOperators<BufferInfo>("BufferInfo");
 
   Global::runMode = Global::ClientOnly;
+  Global::defaultPort = 4242;
 
   QCoreApplication::setOrganizationDomain("quassel-irc.org");
   QCoreApplication::setApplicationName("Quassel IRC");

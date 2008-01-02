@@ -1,4 +1,4 @@
-SETTINGSPAGES = fonts
+SETTINGSPAGES = fonts identities
 
 # Specify additional files here!
 

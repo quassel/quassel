@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS><TS version="1.1" language="de">
+<defaultcodec></defaultcodec>
 <context>
     <name>AboutDlg</name>
     <message>
@@ -1351,7 +1352,7 @@ Networks using this identity will be reset to use the default identity.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
-<context encoding="UTF-8">
+<context>
     <name>MainWidget</name>
     <message>
         <location filename="../src/qtopia/ui/mainwidget.ui" line="13"/>
@@ -1464,7 +1465,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/ui/mainwin.ui" line="209"/>
         <source>Disconnect</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Trennen</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/mainwin.ui" line="142"/>
@@ -1907,9 +1908,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>Server</name>
-</context>
-<context>
     <name>ServerEditDlg</name>
     <message>
         <location filename="../src/qtui/ui/servereditdlg.ui" line="13"/>
@@ -1992,9 +1990,6 @@ p, li { white-space: pre-wrap; }
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
-</context>
-<context>
-    <name>SignalProxy</name>
 </context>
 <context>
     <name>SqliteStorage</name>

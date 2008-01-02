@@ -29,8 +29,6 @@ src
 src/client
 src/client/buffer.cpp
 src/client/buffer.h
-src/client/buffertreemodel.cpp
-src/client/buffertreemodel.h
 src/client/client.cpp
 src/client/client.h
 src/client/client.pri
@@ -166,6 +164,8 @@ src/qtui/settingsdlg.h
 src/qtui/settingspages
 src/qtui/settingspages.cpp
 src/qtui/settingspages.h
+src/qtui/settingspages/identitiessettingspage.cpp
+src/qtui/settingspages/identitiessettingspage.h
 src/qtui/settingspages/settingspages.pri
 src/qtui/topicwidget.cpp
 src/qtui/topicwidget.h

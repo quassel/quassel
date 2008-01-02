@@ -34,7 +34,7 @@ class CoreSettings : public Settings {
     QVariant databaseSettings(const QVariant &def = QVariant());
 
     void setPort(const uint &port);
-    uint port(const uint &def = DEFAULT_PORT);
+    uint port(const uint &def = Global::defaultPort);
 
     void setCoreState(const QVariant &data);
     QVariant coreState(const QVariant &def = QVariant());

@@ -3,8 +3,8 @@ TEMPLATE = app
 include(../buildconf.pri)
 
 RESOURCES   *= ../../i18n/i18n.qrc
-TRANSLATIONS = quassel_de.ts \
-               quassel_da.ts
+TRANSLATIONS = quassel_da.ts \
+               quassel_de.ts
 
 SRCPATH = ../../src
 OBJECTS_DIR = .$$TARGET

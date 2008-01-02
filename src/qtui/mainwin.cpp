@@ -36,6 +36,7 @@
 #include "mappedselectionmodel.h"
 
 #include "settingspages/fontssettingspage.h"
+#include "settingspages/identitiessettingspage.h"
 
 #include "debugconsole.h"
 
@@ -133,7 +134,6 @@ void MainWin::init() {
 
   //showSettingsDlg();
 
-
 }
 
 MainWin::~MainWin() {
@@ -198,6 +198,7 @@ void MainWin::addBufferView(const QString &viewname, QAbstractItemModel *model, 
 
 void MainWin::setupSettingsDlg() {
   settingsDlg->registerSettingsPage(new FontsSettingsPage(settingsDlg));
+  settingsDlg->registerSettingsPage(new IdentitiesSettingsPage(settingsDlg));
 
 }
 

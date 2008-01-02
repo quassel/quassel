@@ -71,7 +71,7 @@ CoreConnectDlg::CoreConnectDlg(QWidget *parent, bool /*doAutoConnect*/) : QDialo
     if(!newacc.isEmpty()) {
       ui.accountList->addItem(newacc);
       ui.hostEdit->setText("localhost");
-      ui.port->setValue(DEFAULT_PORT);
+      ui.port->setValue(Global::defaultPort);
       ui.internalCore->setChecked(false);
       setAccountEditEnabled(true);
     }

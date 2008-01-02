@@ -65,6 +65,7 @@ int main(int argc, char **argv) {
   qRegisterMetaTypeStreamOperators<Message>("Message");
   qRegisterMetaTypeStreamOperators<BufferInfo>("BufferInfo");
 
+
 #if defined BUILD_CORE
   Global::runMode = Global::CoreOnly;
   QCoreApplication app(argc, argv);
@@ -85,6 +86,16 @@ int main(int argc, char **argv) {
   QCoreApplication::setOrganizationDomain("quassel-irc.org");
   QCoreApplication::setApplicationName("Quassel IRC");
   QCoreApplication::setOrganizationName("Quassel IRC Development Team");  // FIXME
+
+  // Check if a non-standard core port is requested
+  QStringList args = QCoreApplication::arguments();
+
+  Global::defaultPort = 4242;
+  int idx;
+  if((idx = args.indexOf("-p")) > 0 && idx < args.count() - 1) {
+    int port = args[idx+1].toInt();
+    if(port >= 1024 && port < 65536) Global::defaultPort = port;
+  }
 
 #ifndef BUILD_QTUI
   Core::instance();  // create and init the core

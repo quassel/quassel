@@ -169,7 +169,7 @@ EditCoreAcctDlg::EditCoreAcctDlg(QString accname, QDialog *parent) : QDialog(par
 
   ui.accountEdit->setText(accountName());
   if(accName.isEmpty()) {
-    ui.port->setValue(DEFAULT_PORT);
+    ui.port->setValue(Global::defaultPort);
     ui.accountEdit->setFocus();
   } else {
     ui.hostEdit->setFocus();

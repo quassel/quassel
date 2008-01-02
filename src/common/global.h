@@ -30,13 +30,14 @@
 /** The protocol version we use fo the communication between core and GUI */
 #define GUI_PROTOCOL 3
 
-#define DEFAULT_PORT 4242
+//#define DEFAULT_PORT 4242
 
 /* Some global stuff */
 
 namespace Global {
   enum RunMode { Monolithic, ClientOnly, CoreOnly };
   extern RunMode runMode;
+  extern unsigned int defaultPort;
 }
 
 #endif

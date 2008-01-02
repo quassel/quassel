@@ -50,7 +50,7 @@ class Core : public QObject {
     static void restoreState();
 
   private slots:
-    bool startListening(uint port = DEFAULT_PORT);
+    bool startListening(uint port = Global::defaultPort);
     void stopListening();
     void incomingConnection();
     void clientHasData();

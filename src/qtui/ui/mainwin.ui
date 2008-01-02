@@ -46,7 +46,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>22</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuConnection" >
@@ -170,6 +170,9 @@
    </property>
   </action>
   <action name="actionSettingsDlg" >
+   <property name="icon" >
+    <iconset resource="../../icons/icons.qrc" >:/16x16/actions/oxygen/16x16/actions/configure.png</iconset>
+   </property>
    <property name="text" >
     <string>Configure Quassel...</string>
    </property>
@@ -244,7 +247,9 @@
    <header>bufferwidget.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../../icons/icons.qrc" />
+ </resources>
  <connections>
   <connection>
    <sender>actionQuit</sender>
