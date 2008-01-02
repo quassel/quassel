@@ -25,7 +25,7 @@
    <enum>Qt::DefaultContextMenu</enum>
   </property>
   <property name="windowTitle" >
-   <string>YourNickname #quassel Network: The Topic</string>
+   <string/>
   </property>
   <layout class="QVBoxLayout" >
    <property name="spacing" >

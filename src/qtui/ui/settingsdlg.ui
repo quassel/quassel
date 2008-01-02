@@ -10,7 +10,7 @@
    </rect>
   </property>
   <property name="windowTitle" >
-   <string>Dialog</string>
+   <string/>
   </property>
   <layout class="QVBoxLayout" >
    <item>
@@ -37,7 +37,7 @@
        </property>
       </column>
      </widget>
-     <widget class="QWidget" name="" >
+     <widget class="QWidget" name="layoutWidget" >
       <layout class="QVBoxLayout" >
        <item>
         <widget class="QLabel" name="pageTitle" >
