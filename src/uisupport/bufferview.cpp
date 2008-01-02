@@ -29,36 +29,11 @@
 // Please be carefull when reimplementing methods which are used to inform the view about changes to the data
 // to be on the safe side: call QTreeView's method aswell
 BufferView::BufferView(QWidget *parent) : QTreeView(parent) {
-  // dirty fast hack:
-  header()->setContextMenuPolicy(Qt::ActionsContextMenu);
-
-  QAction *showBufferAct = new QAction(tr("Buffer"), header());
-  showBufferAct->setCheckable(true);
-  showBufferAct->setChecked(true);
-  showBufferAct->setProperty("column", 0);
-  connect(showBufferAct, SIGNAL(toggled(bool)), this, SLOT(toggleHeader(bool)));
-  header()->addAction(showBufferAct);
-  
-  QAction *showTopicAct = new QAction(tr("Topic"), header());
-  showTopicAct->setCheckable(true);
-  showTopicAct->setChecked(true);
-  showTopicAct->setProperty("column", 1);
-  connect(showTopicAct, SIGNAL(toggled(bool)), this, SLOT(toggleHeader(bool)));
-  header()->addAction(showTopicAct);
-    
-  QAction *showNickAct = new QAction(tr("Nick Count"), header());
-  showNickAct->setCheckable(true);
-  showNickAct->setChecked(true);
-  showNickAct->setProperty("column", 2);
-  connect(showNickAct, SIGNAL(toggled(bool)), this, SLOT(toggleHeader(bool)));
-  header()->addAction(showNickAct);
-  
 }
 
 void BufferView::init() {
   setIndentation(10);
-  // header()->hide();
-  // header()->hideSection(1);
+  header()->setContextMenuPolicy(Qt::ActionsContextMenu);
   expandAll();
 
   setAnimated(true);
@@ -84,6 +59,25 @@ void BufferView::setModel(QAbstractItemModel *model) {
   delete selectionModel();
   QTreeView::setModel(model);
   init();
+
+  // remove old Actions
+  QList<QAction *> oldactions = header()->actions();
+  foreach(QAction *action, oldactions) {
+    header()->removeAction(action);
+    action->deleteLater();
+  }
+
+  QString sectionName;
+  QAction *showSection;
+  for(int i = 0; i < model->columnCount(); i++) {
+    sectionName = (model->headerData(i, Qt::Horizontal, Qt::DisplayRole)).toString();
+    showSection = new QAction(sectionName, header());
+    showSection->setCheckable(true);
+    showSection->setChecked(true);
+    showSection->setProperty("column", i);
+    connect(showSection, SIGNAL(toggled(bool)), this, SLOT(toggleHeader(bool)));
+    header()->addAction(showSection);
+  }
   
 }
 
