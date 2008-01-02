@@ -66,7 +66,7 @@ void ServerListDlg::updateNetworkTree() {
   //headers << "Network" << "Autoconnect";
   ui.networkTree->clear();
   //ui.networkTree->setHeaderLabels(headers);
-  ui.networkTree->setHeaderLabel("Networks");
+  ui.networkTree->setHeaderLabel(tr("Networks"));
   QHash<QString, QTreeWidgetItem *> groups;
   foreach(QString net, networks.keys()) {
     QVariantMap s = networks[net].toMap();
