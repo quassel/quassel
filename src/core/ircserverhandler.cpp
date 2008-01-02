@@ -209,42 +209,46 @@ void IrcServerHandler::handleKick(QString prefix, QList<QByteArray> params) {
 }
 
 void IrcServerHandler::handleMode(QString prefix, QList<QByteArray> params) {
-  if(networkInfo()->isChannelName(params[0])) {
-  } else {
+  if(params.count() < 2) {
+    emit displayMsg(Message::Error, "", tr("Received invalid MODE from %s: %s").arg(prefix).arg(serverDecode(params).join(" ")));
+    return;
   }
-//   if(isChannelName(params[0])) {
-//     // TODO only channel-user modes supported by now
-//     QString prefixes = serverSupports["PrefixModes"].toString();
-//     QString modes = params[1];
-//     int p = 2;
-//     int m = 0;
-//     bool add = true;
-//     while(m < modes.length()) {
-//       if(modes[m] == '+') { add = true; m++; continue; }
-//       if(modes[m] == '-') { add = false; m++; continue; }
-//       if(prefixes.contains(modes[m])) {  // it's a user channel mode
-//         Q_ASSERT(params.count() > m);
-//         QString nick = params[p++];
-//         if(nicks.contains(nick)) {  // sometimes, a server might try to set a MODE on a nick that is no longer there
-//           QVariantMap n = nicks[nick]; QVariantMap clist = n["Channels"].toMap(); QVariantMap chan = clist[params[0]].toMap();
-//           QString mstr = chan["Mode"].toString();
-//           add ? mstr += modes[m] : mstr.remove(modes[m]);
-//           chan["Mode"] = mstr; clist[params[0]] = chan; n["Channels"] = clist; nicks[nick] = n;
-//           emit nickUpdated(network, nick, n);
-//         }
-//         m++;
-//       } else {
-//         // TODO add more modes
-//         m++;
-//       }
-//     }
-//     emit displayMsg(Message::Mode, params[0], params.join(" "), prefix);
-//   } else {
-//     //Q_ASSERT(nicks.contains(params[0]));
-//     //QVariantMap n = nicks[params[0]].toMap();
-//     //QString mode = n["Mode"].toString();
-//     emit displayMsg(Message::Mode, "", params.join(" "));
-//   }
+
+  if(networkInfo()->isChannelName(params[0])) {
+    // Channel Modes
+    emit displayMsg(Message::Mode, serverDecode(params[0]), serverDecode(params).join(" "), prefix);
+
+    IrcChannel *channel = networkInfo()->ircChannel(params.takeFirst());
+    // FIXME: currently the IrcChannels only support PREFIX-Modes for users
+    // This cannot be fixed unless the SignalProxy() doesn't rely on methodIds anymore
+    QString modes = params.takeFirst();
+    bool add = true;
+    int modeIndex = 0;
+    for(int c = 0; c < modes.length(); c++) {
+      if(modes[c] == '+') {
+	add = true;
+	continue;
+      }
+      if(modes[c] == '-') {
+	add = false;
+	continue;
+      }
+
+      // this is the part where we restrict the mode changes to PREFIXES:
+      if(networkInfo()->prefixModes().contains(modes[c]) && modeIndex < params.count()) {
+	IrcUser *ircUser = networkInfo()->ircUser(params[modeIndex]);
+	if(add)
+	  channel->addUserMode(ircUser, QString(modes[c]));
+	else
+	  channel->removeUserMode(ircUser, QString(modes[c]));
+      }
+      modeIndex++;
+    }
+    
+  } else {
+    // pure User Modes
+    emit displayMsg(Message::Mode, "", serverDecode(params).join(" "), prefix);
+  }
 }
 
 void IrcServerHandler::handleNick(QString prefix, QList<QByteArray> params) {

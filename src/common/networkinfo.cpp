@@ -186,6 +186,10 @@ IrcUser *NetworkInfo::newIrcUser(const QString &hostmask) {
   return _ircUsers[nick];
 }
 
+IrcUser *NetworkInfo::newIrcUser(const QByteArray &hostmask) {
+  return newIrcUser(decodeString(hostmask));
+}
+
 void NetworkInfo::removeIrcUser(IrcUser *ircuser) {
   QString nick = _ircUsers.key(ircuser);
   if(nick.isNull())
@@ -208,6 +212,10 @@ IrcUser *NetworkInfo::ircUser(QString nickname) const {
     return _ircUsers[nickname];
   else
     return 0;
+}
+
+IrcUser *NetworkInfo::ircUser(const QByteArray &nickname) const {
+  return ircUser(decodeString(nickname));
 }
 
 QList<IrcUser *> NetworkInfo::ircUsers() const {
@@ -234,6 +242,9 @@ IrcChannel *NetworkInfo::newIrcChannel(const QString &channelname) {
   return _ircChannels[channelname.toLower()];
 }
 
+IrcChannel *NetworkInfo::newIrcChannel(const QByteArray &channelname) {
+  return newIrcChannel(decodeString(channelname));
+}
 
 IrcChannel *NetworkInfo::ircChannel(QString channelname) {
   channelname = channelname.toLower();
@@ -242,6 +253,11 @@ IrcChannel *NetworkInfo::ircChannel(QString channelname) {
   else
     return 0;
 }
+
+IrcChannel *NetworkInfo::ircChannel(const QByteArray &channelname) {
+  return ircChannel(decodeString(channelname));
+}
+
 
 QList<IrcChannel *> NetworkInfo::ircChannels() const {
   return _ircChannels.values();

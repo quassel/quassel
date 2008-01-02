@@ -75,11 +75,16 @@ public:
   QString support(const QString &param) const;
 
   IrcUser *newIrcUser(const QString &hostmask);
+  IrcUser *newIrcUser(const QByteArray &hostmask);
   IrcUser *ircUser(QString nickname) const;
+  IrcUser *ircUser(const QByteArray &nickname) const;
   QList<IrcUser *> ircUsers() const;
 
   IrcChannel *newIrcChannel(const QString &channelname);
+  IrcChannel *newIrcChannel(const QByteArray &channelname);
   IrcChannel *ircChannel(QString channelname);
+  IrcChannel *ircChannel(const QByteArray &channelname);
+  
   QList<IrcChannel *> ircChannels() const;
 
   QTextCodec *codecForEncoding() const;
