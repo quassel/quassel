@@ -76,7 +76,7 @@ void MainWin::init() {
   setupSettingsDlg();
 
   // create nick dock
-  nickDock = new QDockWidget("Nicks", this);
+  nickDock = new QDockWidget(tr("Nicks"), this);
   nickDock->setObjectName("NickDock");
   nickDock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
 
@@ -119,7 +119,7 @@ void MainWin::init() {
   setCorner(Qt::BottomRightCorner, Qt::RightDockWidgetArea);
 
 
-  QDockWidget *dock = new QDockWidget("Topic Dock", this);
+  QDockWidget *dock = new QDockWidget(tr("Topic Dock"), this);
   dock->setObjectName("TopicDock");
   dock->setAllowedAreas(Qt::TopDockWidgetArea | Qt::BottomDockWidgetArea);
 
