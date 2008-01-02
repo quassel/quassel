@@ -14,7 +14,7 @@
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Bitstream Vera Sans&apos;; font-size:11pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Quassel IRC &lt;/span&gt;(pre-release)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished">&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Bitstream Vera Sans&apos;; font-size:11pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Quassel IRC &lt;/span&gt;(pre-release)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Bitstream Vera Sans&apos;; font-size:11pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Quassel IRC &lt;/span&gt;(før udgivelse)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/aboutdlg.ui" line="64"/>
@@ -47,7 +47,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:5pt;&quot;&gt;&lt;span style=&quot; font-size:4pt;&quot;&gt; &lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:5pt;&quot;&gt;&amp;lt;http://quassel-irc.org&amp;gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:5pt;&quot;&gt;&amp;lt;devel@quassel-irc.org&amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Trebuchet MS&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Quassel IRC&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:14pt; font-weight:600;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:400;&quot;&gt;mobile edition&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:5pt;&quot;&gt; &lt;/span&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:5pt;&quot;&gt;(C) 2005-2007 af&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:5pt; font-weight:600;&quot;&gt;Quassel IRC holdet&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:5pt;&quot;&gt;Manuel Nickschas&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:5pt;&quot;&gt;Marcus Eggenberger&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:5pt;&quot;&gt;Marco Genise&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:5pt;&quot;&gt;&lt;span style=&quot; font-size:4pt;&quot;&gt; &lt;/span&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:5pt;&quot;&gt;&amp;lt;http://quassel-irc.org&amp;gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:5pt;&quot;&gt;&amp;lt;devel@quassel-irc.org&amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
@@ -73,7 +73,7 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Trebuchet MS&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Bitstream Vera Sans&apos;; font-size:11pt;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Account Management&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished">&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Trebuchet MS&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Bitstream Vera Sans&apos;; font-size:11pt;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Konto styring&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Trebuchet MS&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Bitstream Vera Sans&apos;; font-size:11pt;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Konto styring&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/usermgmtpage.ui" line="43"/>
@@ -111,7 +111,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/configwizard.cpp" line="66"/>
         <source>Please enter credentials for the admin user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Indtast login-informationer for administrator brugeren.</translation>
     </message>
     <message>
         <location filename="../src/qtui/configwizard.cpp" line="68"/>
@@ -137,7 +137,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/settingspages.h" line="37"/>
         <source>Buffers</source>
-        <translation type="unfinished">Buffere</translation>
+        <translation>Buffere</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages.h" line="38"/>
@@ -155,7 +155,7 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Bitstream Vera Sans&apos;; font-size:11pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Buffer Management&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished">&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Bitstream Vera Sans&apos;; font-size:11pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Buffer styring&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Bitstream Vera Sans&apos;; font-size:11pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Buffer styring&lt;/span&gt;Buffer kontrol&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/buffermgmtpage.ui" line="68"/>
@@ -200,7 +200,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/ui/buffermgmtpage.ui" line="521"/>
         <source>Save as default</source>
-        <translation>Gem som default</translation>
+        <translation>Gem som standard</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/buffermgmtpage.ui" line="361"/>
@@ -306,7 +306,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/ui/bufferviewwidget.ui" line="27"/>
         <source>BufferView</source>
-        <translation type="unfinished"></translation>
+        <translation>Buffer visning</translation>
     </message>
 </context>
 <context>
@@ -348,7 +348,7 @@ p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Trebuchet MS&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:11pt;&quot;&gt;&lt;span style=&quot; font-size:89pt; color:#00008b;&quot;&gt;Quassel IRC&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:49pt;&quot;&gt;&lt;span style=&quot; font-size:22pt;&quot;&gt;Chat comfortably. Anywhere.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Trebuchet MS&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:11pt;&quot;&gt;&lt;span style=&quot; font-size:89pt; color:#00008b;&quot;&gt;Quassel IRC&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:49pt;&quot;&gt;&lt;span style=&quot; font-size:22pt;&quot;&gt;Chat komfortabelt. Hvorsomhelst.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
@@ -427,7 +427,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/client/client.cpp" line="366"/>
         <source>Requesting network states...</source>
-        <translation type="unfinished"></translation>
+        <translation>Finder netværks stadie...</translation>
     </message>
     <message>
         <location filename="../src/client/client.cpp" line="372"/>
@@ -494,7 +494,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/coreconnectdlg.cpp" line="70"/>
         <source>Default</source>
-        <translation>Default</translation>
+        <translation>Standard</translation>
     </message>
     <message>
         <location filename="../src/qtui/coreconnectdlg.cpp" line="169"/>
@@ -701,7 +701,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtopia/ui/coreconnectprogressdlg.ui" line="19"/>
         <source>&lt;b&gt;Connection to core in progress.&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Forbindelse til kernen i gang.&lt;/b&gt;</translation>
     </message>
 </context>
 <context>
@@ -735,7 +735,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/ui/debugconsole.ui" line="13"/>
         <source>Debug Console</source>
-        <translation type="unfinished"></translation>
+        <translation>Debug konsol</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/debugconsole.ui" line="52"/>
@@ -826,12 +826,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/settingspages/fontssettingspage.ui" line="22"/>
         <source>Custom Application Fonts</source>
-        <translation type="unfinished"></translation>
+        <translation>Særlige fonte for Quassel</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/fontssettingspage.ui" line="223"/>
         <source>General:</source>
-        <translation type="unfinished"></translation>
+        <translation>Generelt:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/fontssettingspage.ui" line="312"/>
@@ -851,12 +851,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/settingspages/fontssettingspage.ui" line="120"/>
         <source>Buffer Views:</source>
-        <translation type="unfinished"></translation>
+        <translation>Buffer visning:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/fontssettingspage.ui" line="165"/>
         <source>Nick List:</source>
-        <translation type="unfinished"></translation>
+        <translation>Navne liste:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/fontssettingspage.ui" line="215"/>
@@ -866,12 +866,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/settingspages/fontssettingspage.ui" line="335"/>
         <source>Nicks:</source>
-        <translation type="unfinished"></translation>
+        <translation>Navne:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/fontssettingspage.ui" line="345"/>
         <source>Timestamp:</source>
-        <translation type="unfinished"></translation>
+        <translation>Tidsstempel:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/fontssettingspage.ui" line="365"/>
@@ -884,7 +884,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/identities.cpp" line="288"/>
         <source>Default Identity</source>
-        <translation>Default identitet</translation>
+        <translation>Standard identitet</translation>
     </message>
     <message>
         <location filename="../src/qtui/identities.cpp" line="61"/>
@@ -915,7 +915,7 @@ Tilføj alle manglende informationer.</translation>
     <message>
         <location filename="../src/qtui/identities.cpp" line="272"/>
         <source> You haven&apos;t entered any nicknames.</source>
-        <translation> Du har ikke tilføjet nogle øgenavne.</translation>
+        <translation> Du har ikke tilføjet nogle kaldenavne.</translation>
     </message>
     <message>
         <location filename="../src/qtui/identities.cpp" line="275"/>
@@ -947,7 +947,7 @@ Tilføj alle manglende informationer.</translation>
     <message>
         <location filename="../src/qtui/ui/identitiesdlg.ui" line="120"/>
         <source>Nicknames</source>
-        <translation>Øgenavne</translation>
+        <translation>Kaldenavne</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/identitiesdlg.ui" line="160"/>
@@ -972,7 +972,7 @@ Tilføj alle manglende informationer.</translation>
     <message>
         <location filename="../src/qtui/ui/identitiesdlg.ui" line="297"/>
         <source>&amp;Away</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Away</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/identitiesdlg.ui" line="423"/>
@@ -982,7 +982,7 @@ Tilføj alle manglende informationer.</translation>
     <message>
         <location filename="../src/qtui/ui/identitiesdlg.ui" line="340"/>
         <source>Away Nick</source>
-        <translation>Away øgenavne</translation>
+        <translation>Kaldenavn når du er væk</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/identitiesdlg.ui" line="349"/>
@@ -1017,7 +1017,7 @@ Tilføj alle manglende informationer.</translation>
     <message>
         <location filename="../src/qtui/ui/identitiesdlg.ui" line="488"/>
         <source>Quit Reason</source>
-        <translation>Quit årsag</translation>
+        <translation>Afslut årsag</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/identitiesdlg.ui" line="498"/>
@@ -1027,22 +1027,22 @@ Tilføj alle manglende informationer.</translation>
     <message>
         <location filename="../src/qtui/identities.cpp" line="266"/>
         <source> You have not set a real name.</source>
-        <translation type="unfinished"></translation>
+        <translation> Du skal angive dit rigtige navn.</translation>
     </message>
     <message>
         <location filename="../src/qtui/identities.cpp" line="269"/>
         <source> You have to specify an Ident.</source>
-        <translation type="unfinished"></translation>
+        <translation> Du skal angive en Ident.</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/identitiesdlg.ui" line="78"/>
         <source>&amp;General</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Generelt</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/identitiesdlg.ui" line="416"/>
         <source>Return Message</source>
-        <translation type="unfinished"></translation>
+        <translation>Tilbage besked</translation>
     </message>
 </context>
 <context>
@@ -1050,7 +1050,7 @@ Tilføj alle manglende informationer.</translation>
     <message>
         <location filename="../src/qtui/identities.cpp" line="313"/>
         <source>Default Identity</source>
-        <translation type="unfinished">Default identitet</translation>
+        <translation>Standard identitet</translation>
     </message>
     <message>
         <location filename="../src/qtui/identities.cpp" line="387"/>
@@ -1096,7 +1096,8 @@ Tilføj alle manglende informationer.</translation>
         <location filename="../src/qtui/identities.cpp" line="389"/>
         <source>Do you really want to delete identity &quot;%1&quot;?
 Networks using this identity will be reset to use the default identity.</source>
-        <translation type="unfinished"></translation>
+        <translation>Er du sikker på du vil slette identiteten &quot;%1&quot;?
+Netværk der bruger denne identitet vil blive resat til at bruge standard-identiteten.</translation>
     </message>
 </context>
 <context>
@@ -1104,12 +1105,12 @@ Networks using this identity will be reset to use the default identity.</source>
     <message>
         <location filename="../src/qtui/configwizard.cpp" line="49"/>
         <source>Introduction</source>
-        <translation type="unfinished"></translation>
+        <translation>Introduktion</translation>
     </message>
     <message>
         <location filename="../src/qtui/configwizard.cpp" line="51"/>
         <source>This wizard will guide you through the setup process for your shiny new Quassel IRC Client.</source>
-        <translation type="unfinished"></translation>
+        <translation>Denne guide vil hjælpe dig med at opsætte din shiny nye Quassen IRC klient.</translation>
     </message>
 </context>
 <context>
@@ -1117,37 +1118,37 @@ Networks using this identity will be reset to use the default identity.</source>
     <message>
         <location filename="../src/core/ircserverhandler.cpp" line="343"/>
         <source>%1 has changed topic for %2 to: &quot;%3&quot;</source>
-        <translation type="unfinished">%1 har skiftet emne for %2 til: &quot;%3&quot;</translation>
+        <translation>%1 har skiftet emne for %2 til: &quot;%3&quot;</translation>
     </message>
     <message>
         <location filename="../src/core/ircserverhandler.cpp" line="380"/>
         <source>No topic is set for %1.</source>
-        <translation type="unfinished">Intet emne er sat for %1.</translation>
+        <translation>Intet emne er sat for %1.</translation>
     </message>
     <message>
         <location filename="../src/core/ircserverhandler.cpp" line="389"/>
         <source>Topic for %1 is &quot;%2&quot;</source>
-        <translation type="unfinished">Emne for %1 er &quot;%2&quot;</translation>
+        <translation>Emne for %1 er &quot;%2&quot;</translation>
     </message>
     <message>
         <location filename="../src/core/ircserverhandler.cpp" line="397"/>
         <source>Topic set by %1 on %2</source>
-        <translation type="unfinished">Emne valg af %1 på %2</translation>
+        <translation>Emne valg af %1 på %2</translation>
     </message>
     <message>
         <location filename="../src/core/ircserverhandler.cpp" line="426"/>
         <source>Your desired nickname contains illegal characters!</source>
-        <translation type="unfinished"></translation>
+        <translation>Dit ønskede kaldenavn indeholder ulovlige tegn!</translation>
     </message>
     <message>
         <location filename="../src/core/ircserverhandler.cpp" line="461"/>
         <source>Please use /nick &lt;othernick&gt; to continue your IRC-Session!</source>
-        <translation type="unfinished"></translation>
+        <translation>Brug /nick &lt;nytnavn&gt; for at fortsætte din IRC-session!</translation>
     </message>
     <message>
         <location filename="../src/core/ircserverhandler.cpp" line="460"/>
         <source>Nick %1 is already taken</source>
-        <translation type="unfinished">Øgenavnet %1 er allerede taget</translation>
+        <translation>Kaldenavnet %1 er allerede taget</translation>
     </message>
 </context>
 <context>
@@ -1155,12 +1156,12 @@ Networks using this identity will be reset to use the default identity.</source>
     <message>
         <location filename="../src/qtopia/ui/mainwidget.ui" line="13"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>Formular</translation>
     </message>
     <message>
         <location filename="../src/qtopia/ui/mainwidget.ui" line="56"/>
         <source>background-color: rgba(220, 220, 255, 40%)</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtopia/ui/mainwidget.ui" line="62"/>
@@ -1170,7 +1171,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:29pt; color:#00008b;&quot;&gt;Quassel IRC&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:29pt; color:#7fff00;&quot;&gt;&lt;span style=&quot; font-size:10pt; color:#00008b;&quot;&gt;mobile edition&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:29pt; color:#483d8b;&quot;&gt;&lt;span style=&quot; font-size:6pt; color:#000000;&quot;&gt;Chat comfortably. Anywhere.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Trebuchet MS&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:29pt; color:#00008b;&quot;&gt;Quassel IRC&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:29pt; color:#7fff00;&quot;&gt;&lt;span style=&quot; font-size:10pt; color:#00008b;&quot;&gt;mobil udgave&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:29pt; color:#483d8b;&quot;&gt;&lt;span style=&quot; font-size:6pt; color:#000000;&quot;&gt;Chat komfortabelt. Hvorsomhelst.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
@@ -1298,12 +1299,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/mainwin.cpp" line="215"/>
         <source>Connected to core.</source>
-        <translation type="unfinished"></translation>
+        <translation>Forbundet til kernen.</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/mainwin.ui" line="13"/>
         <source>MainWindow</source>
-        <translation type="unfinished"></translation>
+        <translation>HovedVindue</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/mainwin.ui" line="83"/>
@@ -1313,17 +1314,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/ui/mainwin.ui" line="127"/>
         <source>Quick &amp;Connect...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Hurtig forbind...</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/mainwin.ui" line="143"/>
         <source>Reconnect</source>
-        <translation type="unfinished"></translation>
+        <translation>Gen-forbind</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/mainwin.ui" line="151"/>
         <source>Join Channel...</source>
-        <translation type="unfinished"></translation>
+        <translation>Deltag i kanal...</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/mainwin.ui" line="159"/>
@@ -1333,7 +1334,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/ui/mainwin.ui" line="164"/>
         <source>Quit...</source>
-        <translation type="unfinished"></translation>
+        <translation>Afslut...</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/mainwin.ui" line="185"/>
@@ -1348,7 +1349,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/ui/mainwin.ui" line="236"/>
         <source>Debug &amp;Console</source>
-        <translation type="unfinished"></translation>
+        <translation>Debug &amp;konsol</translation>
     </message>
 </context>
 <context>
@@ -1456,12 +1457,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/common/message.cpp" line="132"/>
         <source>%Dj%DN%DU%1%DU%DN %DH(%2@%3)%DH has joined %DC%DU%4%DU%DC</source>
-        <translation type="unfinished"></translation>
+        <translation>%Dj%DN%DU%1%DU%DN %DH(%2@%3)%DH sluttede sig til %DC%DU%4%DU%DC</translation>
     </message>
     <message>
         <location filename="../src/common/message.cpp" line="138"/>
         <source>%Dq%DN%DU%1%DU%DN %DH(%2@%3)%DH has quit</source>
-        <translation type="unfinished"></translation>
+        <translation>%Dq%DN%DU%1%DU%DN %DH(%2@%3)%DH afsluttede</translation>
     </message>
     <message>
         <location filename="../src/common/message.cpp" line="157"/>
@@ -1479,7 +1480,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/serverlist.cpp" line="346"/>
         <source>Default Identity</source>
-        <translation>Default identitet</translation>
+        <translation>Standard identitet</translation>
     </message>
     <message>
         <location filename="../src/qtui/serverlist.cpp" line="271"/>
@@ -1587,12 +1588,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/client/networkmodel.cpp" line="282"/>
         <source>Topic</source>
-        <translation type="unfinished"></translation>
+        <translation>Emne</translation>
     </message>
     <message>
         <location filename="../src/client/networkmodel.cpp" line="282"/>
         <source>Nick Count</source>
-        <translation type="unfinished"></translation>
+        <translation>Bruger antal</translation>
     </message>
 </context>
 <context>
@@ -1600,12 +1601,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/ui/nickeditdlg.ui" line="21"/>
         <source>Edit Nick</source>
-        <translation type="unfinished">Skift øgenavn</translation>
+        <translation>Skift navn</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/nickeditdlg.ui" line="36"/>
         <source>Nickname:</source>
-        <translation type="unfinished">Øgenavn:</translation>
+        <translation>Kaldenavn:</translation>
     </message>
 </context>
 <context>
@@ -1613,12 +1614,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtopia/ui/nicklistwidget.ui" line="13"/>
         <source>Nicks in Channel</source>
-        <translation type="unfinished"></translation>
+        <translation>Folk i kanalen</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/nicklistwidget.ui" line="19"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>Formular</translation>
     </message>
 </context>
 <context>
@@ -1626,14 +1627,14 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/client/nickmodel.cpp" line="137"/>
         <source>Not in channel</source>
-        <translation type="unfinished"></translation>
+        <translation>Ikke i kanalen</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/client/nickmodel.cpp" line="147"/>
         <source>%n Owner(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n ejer</numerusform>
+            <numerusform>%n ejere</numerusform>
         </translation>
     </message>
     <message numerus="yes">
@@ -1682,22 +1683,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtopia/qtopiamainwin.cpp" line="70"/>
         <source>Show Toolbar</source>
-        <translation type="unfinished"></translation>
+        <translation>Vis værktøjslinje</translation>
     </message>
     <message>
         <location filename="../src/qtopia/qtopiamainwin.cpp" line="101"/>
         <source>Quit Quassel IRC?</source>
-        <translation type="unfinished"></translation>
+        <translation>Afslut Quassel IRC?</translation>
     </message>
     <message>
         <location filename="../src/qtopia/qtopiamainwin.cpp" line="101"/>
         <source>Do you really want to quit Quassel IRC?</source>
-        <translation type="unfinished"></translation>
+        <translation>Vil du virkeligt afslutte Quassel IRC?</translation>
     </message>
     <message>
         <location filename="../src/qtopia/qtopiamainwin.cpp" line="103"/>
         <source>Quit</source>
-        <translation type="unfinished"></translation>
+        <translation>Afslut</translation>
     </message>
     <message>
         <location filename="../src/qtopia/qtopiamainwin.cpp" line="114"/>
@@ -1712,7 +1713,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtopia/qtopiamainwin.cpp" line="124"/>
         <source>About...</source>
-        <translation type="unfinished"></translation>
+        <translation>Om...</translation>
     </message>
 </context>
 <context>
@@ -1801,7 +1802,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/ui/servereditdlg.ui" line="13"/>
         <source>Enter Server Details</source>
-        <translation type="unfinished"></translation>
+        <translation>Indtast server detaljer</translation>
     </message>
 </context>
 <context>
@@ -1898,22 +1899,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/configwizard.cpp" line="121"/>
         <source>Host:</source>
-        <translation type="unfinished"></translation>
+        <translation>Host:</translation>
     </message>
     <message>
         <location filename="../src/qtui/configwizard.cpp" line="125"/>
         <source>Port:</source>
-        <translation type="unfinished"></translation>
+        <translation>Port:</translation>
     </message>
     <message>
         <location filename="../src/qtui/configwizard.cpp" line="131"/>
         <source>Database:</source>
-        <translation type="unfinished"></translation>
+        <translation>Database:</translation>
     </message>
     <message>
         <location filename="../src/qtui/configwizard.cpp" line="135"/>
         <source>User:</source>
-        <translation type="unfinished"></translation>
+        <translation>Bruger:</translation>
     </message>
     <message>
         <location filename="../src/qtui/configwizard.cpp" line="139"/>
@@ -1939,7 +1940,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/ui/topicwidget.ui" line="31"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>Formular</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/topicwidget.ui" line="52"/>
