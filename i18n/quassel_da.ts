@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS><TS version="1.1" language="da_DK">
-<defaultcodec></defaultcodec>
 <context>
     <name>AboutDlg</name>
-    <message>
-        <location filename="../src/qtui/ui/aboutdlg.ui" line="16"/>
-        <source>Dialog</source>
-        <translation>Dialog</translation>
-    </message>
     <message>
         <location filename="../src/qtui/ui/aboutdlg.ui" line="28"/>
         <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
@@ -49,6 +43,11 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:5pt;&quot;&gt;&amp;lt;devel@quassel-irc.org&amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Trebuchet MS&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Quassel IRC&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:14pt; font-weight:600;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:400;&quot;&gt;mobile edition&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:5pt;&quot;&gt; &lt;/span&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:5pt;&quot;&gt;(C) 2005-2007 af&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:5pt; font-weight:600;&quot;&gt;Quassel IRC holdet&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:5pt;&quot;&gt;Manuel Nickschas&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:5pt;&quot;&gt;Marcus Eggenberger&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:5pt;&quot;&gt;Marco Genise&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:5pt;&quot;&gt;&lt;span style=&quot; font-size:4pt;&quot;&gt; &lt;/span&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:5pt;&quot;&gt;&amp;lt;http://quassel-irc.org&amp;gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:5pt;&quot;&gt;&amp;lt;devel@quassel-irc.org&amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
+    <message>
+        <location filename="../src/qtui/ui/aboutdlg.ui" line="16"/>
+        <source>About Quassel</source>
+        <translation>Om Quassel</translation>
+    </message>
 </context>
 <context>
     <name>AccountManagementSettingsPage</name>
@@ -61,11 +60,6 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/qtui/settingspages.h" line="75"/>
         <source>Account Management</source>
         <translation>Konto håndtering</translation>
-    </message>
-    <message>
-        <location filename="../src/qtui/ui/usermgmtpage.ui" line="13"/>
-        <source>Form</source>
-        <translation>Formular</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/usermgmtpage.ui" line="19"/>
@@ -145,12 +139,7 @@ p, li { white-space: pre-wrap; }
         <translation>Buffer håndtering</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/buffermgmtpage.ui" line="13"/>
-        <source>Form</source>
-        <translation>Formular</translation>
-    </message>
-    <message>
-        <location filename="../src/qtui/ui/buffermgmtpage.ui" line="28"/>
+        <location filename="../src/qtui/ui/buffermgmtpage.ui" line="37"/>
         <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Bitstream Vera Sans&apos;; font-size:11pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
@@ -158,94 +147,94 @@ p, li { white-space: pre-wrap; }
         <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Bitstream Vera Sans&apos;; font-size:11pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Buffer styring&lt;/span&gt;Buffer håndtering&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/buffermgmtpage.ui" line="68"/>
+        <location filename="../src/qtui/ui/buffermgmtpage.ui" line="100"/>
         <source>Statistics</source>
         <translation>Statistik</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/buffermgmtpage.ui" line="102"/>
+        <location filename="../src/qtui/ui/buffermgmtpage.ui" line="143"/>
         <source>Defines how many messages the local Quassel client shows for this buffer. This is independent from the central backlog storage in the core.</source>
         <translation>Definerer hvor mange beskeder den lokale Quassel klient kan vise for denne buffer. Dette er uafhængig fra kernens log.</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/buffermgmtpage.ui" line="135"/>
+        <location filename="../src/qtui/ui/buffermgmtpage.ui" line="194"/>
         <source>Show all messages</source>
         <translation>Vis alle beskeder</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/buffermgmtpage.ui" line="158"/>
+        <location filename="../src/qtui/ui/buffermgmtpage.ui" line="224"/>
         <source>Show last</source>
         <translation>Vis sidste</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/buffermgmtpage.ui" line="412"/>
+        <location filename="../src/qtui/ui/buffermgmtpage.ui" line="517"/>
         <source>messages</source>
         <translation>beskeder</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/buffermgmtpage.ui" line="216"/>
+        <location filename="../src/qtui/ui/buffermgmtpage.ui" line="289"/>
         <source>Show messages from the last</source>
         <translation>Vis beskeder fra de sidste</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/buffermgmtpage.ui" line="465"/>
+        <location filename="../src/qtui/ui/buffermgmtpage.ui" line="579"/>
         <source>days</source>
         <translation>dage</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/buffermgmtpage.ui" line="261"/>
+        <location filename="../src/qtui/ui/buffermgmtpage.ui" line="334"/>
         <source>Hide buffer locally</source>
         <translation>Skjul buffer lokalt</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/buffermgmtpage.ui" line="521"/>
+        <location filename="../src/qtui/ui/buffermgmtpage.ui" line="644"/>
         <source>Save as default</source>
         <translation>Gem som standard</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/buffermgmtpage.ui" line="361"/>
+        <location filename="../src/qtui/ui/buffermgmtpage.ui" line="461"/>
         <source>Keep all messages</source>
         <translation>Behold alle beskeder</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/buffermgmtpage.ui" line="384"/>
+        <location filename="../src/qtui/ui/buffermgmtpage.ui" line="491"/>
         <source>Keep last</source>
         <translation>Behold sidste</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/buffermgmtpage.ui" line="442"/>
+        <location filename="../src/qtui/ui/buffermgmtpage.ui" line="556"/>
         <source>Keep messages from the last</source>
         <translation>Behold beskeder fra de sidste</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/buffermgmtpage.ui" line="554"/>
+        <location filename="../src/qtui/ui/buffermgmtpage.ui" line="686"/>
         <source>Delete permanently</source>
         <translation>Slet permanent</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/buffermgmtpage.ui" line="83"/>
+        <location filename="../src/qtui/ui/buffermgmtpage.ui" line="124"/>
         <source>Created: 01.04.2007
 Lines:     1234
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/buffermgmtpage.ui" line="105"/>
+        <location filename="../src/qtui/ui/buffermgmtpage.ui" line="146"/>
         <source>Local Display</source>
         <translation>Lokal visning</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/buffermgmtpage.ui" line="117"/>
+        <location filename="../src/qtui/ui/buffermgmtpage.ui" line="167"/>
         <source>Override default display options</source>
         <translation>Tilsidesæt standard visnings indstillinger</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/buffermgmtpage.ui" line="315"/>
+        <location filename="../src/qtui/ui/buffermgmtpage.ui" line="397"/>
         <source>Backlog Storage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/buffermgmtpage.ui" line="327"/>
+        <location filename="../src/qtui/ui/buffermgmtpage.ui" line="418"/>
         <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Bitstream Vera Sans&apos;; font-size:11pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
@@ -253,22 +242,14 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/buffermgmtpage.ui" line="343"/>
+        <location filename="../src/qtui/ui/buffermgmtpage.ui" line="434"/>
         <source>Override default storage settings</source>
         <translation type="unfinished"></translation>
     </message>
-</context>
-<context>
-    <name>BufferTreeModel</name>
     <message>
-        <location filename="../src/client/buffertreemodel.cpp" line="253"/>
-        <source>Buffer</source>
-        <translation type="obsolete">Buffer</translation>
-    </message>
-    <message>
-        <location filename="../src/client/buffertreemodel.cpp" line="125"/>
-        <source>Network</source>
-        <translation type="obsolete">Netværk</translation>
+        <location filename="../src/qtui/ui/buffermgmtpage.ui" line="75"/>
+        <source>1</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -312,36 +293,6 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>BufferWidget</name>
     <message>
-        <location filename="../src/qtgui/bufferwidget.cpp" line="221"/>
-        <source>%1 Users</source>
-        <translation type="obsolete">%1 personer</translation>
-    </message>
-    <message>
-        <location filename="../src/qtgui/bufferwidget.cpp" line="196"/>
-        <source>1 User</source>
-        <translation type="obsolete">1 person</translation>
-    </message>
-    <message>
-        <location filename="../src/qtgui/bufferwidget.cpp" line="211"/>
-        <source>%1 Operators</source>
-        <translation type="obsolete">%1 operators</translation>
-    </message>
-    <message>
-        <location filename="../src/qtgui/bufferwidget.cpp" line="216"/>
-        <source>%1 Voiced</source>
-        <translation type="obsolete">%1 med voice</translation>
-    </message>
-    <message>
-        <location filename="../src/qtgui/ui/bufferwidget.ui" line="91"/>
-        <source>...</source>
-        <translation type="obsolete">...</translation>
-    </message>
-    <message>
-        <location filename="../src/qtui/ui/bufferwidget.ui" line="28"/>
-        <source>YourNickname #quassel Network: The Topic</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/qtui/ui/bufferwidget.ui" line="106"/>
         <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -354,51 +305,46 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ChannelWidget</name>
     <message>
-        <location filename="../src/qtui/ui/channelwidget.ui" line="74"/>
+        <location filename="../src/qtui/ui/channelwidget.ui" line="88"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/channelwidget.ui" line="157"/>
+        <location filename="../src/qtui/ui/channelwidget.ui" line="165"/>
         <source>@ Operators</source>
         <translation>@ operatører</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/channelwidget.ui" line="30"/>
-        <source>YourNickname #quassel Network: The Topic</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/qtui/ui/channelwidget.ui" line="114"/>
-        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Bitstream Vera Sans Mono&apos;; font-size:8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Nimbus Mono L&apos;;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/qtui/ui/channelwidget.ui" line="152"/>
+        <location filename="../src/qtui/ui/channelwidget.ui" line="160"/>
         <source>32 Users</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/channelwidget.ui" line="201"/>
+        <location filename="../src/qtui/ui/channelwidget.ui" line="209"/>
         <source>New Sub Item</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/channelwidget.ui" line="216"/>
+        <location filename="../src/qtui/ui/channelwidget.ui" line="224"/>
         <source>New Item</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/channelwidget.ui" line="177"/>
+        <location filename="../src/qtui/ui/channelwidget.ui" line="185"/>
         <source>4 Voiced</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/channelwidget.ui" line="197"/>
+        <location filename="../src/qtui/ui/channelwidget.ui" line="205"/>
         <source>19 Users</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/ui/channelwidget.ui" line="124"/>
+        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Bitstream Vera Sans Mono&apos;; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Nimbus Mono L&apos;;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -472,11 +418,6 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/qtui/settingspages.h" line="57"/>
         <source>Connection</source>
         <translation>Forbindelse</translation>
-    </message>
-    <message>
-        <location filename="../src/qtui/ui/connectionpage.ui" line="13"/>
-        <source>Form</source>
-        <translation>Formular</translation>
     </message>
 </context>
 <context>
@@ -574,67 +515,67 @@ p, li { white-space: pre-wrap; }
         <translation>Konto:</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="96"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="108"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="119"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="137"/>
         <source>Host:</source>
         <translation>Vært:</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="129"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="150"/>
         <source>Use internal</source>
         <translation>Brug intern</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="139"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="160"/>
         <source>Port:</source>
         <translation>Port:</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="172"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="193"/>
         <source>User:</source>
         <translation>Bruger:</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="182"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="203"/>
         <source>Password:</source>
         <translation>Kodeord:</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="196"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="217"/>
         <source>Remember</source>
         <translation>Husk</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="236"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="257"/>
         <source>Always use this account</source>
         <translation>Brug altid denne konto</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="275"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="296"/>
         <source>Connecting to...</source>
         <translation>Forbinder til...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="281"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="302"/>
         <source>Connecting...</source>
         <translation>Forbinder...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="300"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="321"/>
         <source>GUI Profile:</source>
         <translation>Brugerflade profil:</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="323"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="344"/>
         <source>New...</source>
         <translation>Ny...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="332"/>
+        <location filename="../src/qtui/ui/coreconnectdlg.ui" line="353"/>
         <source>Always use this profile</source>
         <translation>Brug altid denne profil</translation>
     </message>
@@ -702,14 +643,6 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/qtopia/ui/coreconnectprogressdlg.ui" line="19"/>
         <source>&lt;b&gt;Connection to core in progress.&lt;/b&gt;</source>
         <translation>&lt;b&gt;Forbindelse til kernen i gang.&lt;/b&gt;</translation>
-    </message>
-</context>
-<context>
-    <name>CoreSettingsPage</name>
-    <message>
-        <location filename="../src/qtui/ui/coresettingspage.ui" line="13"/>
-        <source>Form</source>
-        <translation>Formular</translation>
     </message>
 </context>
 <context>
@@ -1417,7 +1350,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/mainwin.cpp" line="172"/>
         <source>All Buffers</source>
-        <translation>Alle buffer</translation>
+        <translation>Alle buffere</translation>
     </message>
     <message>
         <location filename="../src/qtui/mainwin.cpp" line="174"/>
@@ -1759,11 +1692,6 @@ p, li { white-space: pre-wrap; }
         <source>Nicks in Channel</source>
         <translation>Folk i kanalen</translation>
     </message>
-    <message>
-        <location filename="../src/qtui/ui/nicklistwidget.ui" line="19"/>
-        <source>Form</source>
-        <translation>Formular</translation>
-    </message>
 </context>
 <context>
     <name>NickModel</name>
@@ -1791,9 +1719,9 @@ p, li { white-space: pre-wrap; }
     <message numerus="yes">
         <location filename="../src/client/nickmodel.cpp" line="149"/>
         <source>%n Operator(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n operator</numerusform>
+            <numerusform>%n operators</numerusform>
         </translation>
     </message>
     <message numerus="yes">
@@ -1851,7 +1779,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtopia/qtopiamainwin.cpp" line="116"/>
         <source>Show Nicks</source>
-        <translation type="unfinished">Vis navne</translation>
+        <translation>Vis navne</translation>
     </message>
     <message>
         <location filename="../src/qtopia/qtopiamainwin.cpp" line="125"/>
@@ -1870,64 +1798,6 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/qtui/identities.cpp" line="431"/>
         <source>Identity:</source>
         <translation>Identitet:</translation>
-    </message>
-</context>
-<context>
-    <name>Server</name>
-    <message>
-        <location filename="../src/core/server.cpp" line="731"/>
-        <source>%1 has changed topic for %2 to: &quot;%3&quot;</source>
-        <translation type="obsolete">%1 har skiftet emne for %2 til: &quot;%3&quot;</translation>
-    </message>
-    <message>
-        <location filename="../src/core/server.cpp" line="787"/>
-        <source>No topic is set for %1.</source>
-        <translation type="obsolete">Intet emne er sat for %1.</translation>
-    </message>
-    <message>
-        <location filename="../src/core/server.cpp" line="794"/>
-        <source>Topic for %1 is &quot;%2&quot;</source>
-        <translation type="obsolete">Emne for %1 er &quot;%2&quot;</translation>
-    </message>
-    <message>
-        <location filename="../src/core/server.cpp" line="800"/>
-        <source>Topic set by %1 on %2</source>
-        <translation type="obsolete">Emne valg af %1 på %2</translation>
-    </message>
-    <message>
-        <location filename="../src/core/server.cpp" line="843"/>
-        <source>There is a nickname in your identity&apos;s nicklist which contains illegal characters</source>
-        <translation type="obsolete">Der er et øgenavn i din identitets liste, der indeholder ulovlige tegn</translation>
-    </message>
-    <message>
-        <location filename="../src/core/server.cpp" line="844"/>
-        <source>Due to a bug in Unreal IRCd (and maybe other irc-servers too) we&apos;re unable to determine the erroneous nick</source>
-        <translation type="obsolete">På grund af en fej li Unreal IRCd (og muligvis også i andre irc-servere) er det ikke muligt at bestemme det fejlagtige øgenavn</translation>
-    </message>
-    <message>
-        <location filename="../src/core/server.cpp" line="848"/>
-        <source>Nick %1 contains illegal characters</source>
-        <translation type="obsolete">Øgenavnet %1 indeholder ulovlige tegn</translation>
-    </message>
-    <message>
-        <location filename="../src/core/server.cpp" line="866"/>
-        <source>Nick %1 is already taken</source>
-        <translation type="obsolete">Øgenavnet %1 er allerede taget</translation>
-    </message>
-    <message>
-        <location filename="../src/core/server.cpp" line="890"/>
-        <source>Received CTCP PING request by %1</source>
-        <translation type="obsolete">Modtog CTCP PING forespørgsel af %1</translation>
-    </message>
-    <message>
-        <location filename="../src/core/server.cpp" line="901"/>
-        <source>Received CTCP VERSION request by %1</source>
-        <translation type="obsolete">Modtog CTCP VERSION forespørgsel af %1</translation>
-    </message>
-    <message>
-        <location filename="../src/core/server.cpp" line="908"/>
-        <source>Received unknown CTCP %1 by %2</source>
-        <translation type="obsolete">Modtog ukendt CTCP %1 af %2</translation>
     </message>
 </context>
 <context>
@@ -1998,16 +1868,11 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/serverlist.cpp" line="69"/>
         <source>Networks</source>
-        <translation type="unfinished">Netværk</translation>
+        <translation>Netværk</translation>
     </message>
 </context>
 <context>
     <name>SettingsDlg</name>
-    <message>
-        <location filename="../src/qtui/ui/settingsdlg.ui" line="13"/>
-        <source>Dialog</source>
-        <translation>Dialog</translation>
-    </message>
     <message>
         <location filename="../src/qtui/ui/settingsdlg.ui" line="51"/>
         <source>Settings</source>
@@ -2024,12 +1889,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/core/sqlitestorage.cpp" line="148"/>
         <source>Could not open backlog database: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Kunne ikke åbne log-databasen: %1</translation>
     </message>
     <message>
         <location filename="../src/core/sqlitestorage.cpp" line="123"/>
         <source>Could not create backlog table: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Kunne ikke oprette log-tabellen: %1</translation>
     </message>
 </context>
 <context>
@@ -2037,12 +1902,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/configwizard.cpp" line="118"/>
         <source>Setup Storage Provider</source>
-        <translation type="unfinished"></translation>
+        <translation>Opsæt opbevarings udbyder</translation>
     </message>
     <message>
         <location filename="../src/qtui/configwizard.cpp" line="119"/>
         <source>Please enter credentials for the selected storage provider.</source>
-        <translation type="unfinished"></translation>
+        <translation>Indtast login-informationer for den valgte opbevarings udbyder.</translation>
     </message>
     <message>
         <location filename="../src/qtui/configwizard.cpp" line="121"/>
@@ -2075,21 +1940,16 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/configwizard.cpp" line="94"/>
         <source>Select Storage Provider</source>
-        <translation type="unfinished"></translation>
+        <translation>Vælg opbevarings udbyder</translation>
     </message>
     <message>
         <location filename="../src/qtui/configwizard.cpp" line="95"/>
         <source>Please select the storage provider you want to use.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vælg den opbevarings udbyder du ønsker at bruge.</translation>
     </message>
 </context>
 <context>
     <name>TopicWidget</name>
-    <message>
-        <location filename="../src/qtui/ui/topicwidget.ui" line="31"/>
-        <source>Form</source>
-        <translation>Formular</translation>
-    </message>
     <message>
         <location filename="../src/qtui/ui/topicwidget.ui" line="52"/>
         <source>...</source>
