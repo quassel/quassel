@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>484</width>
-    <height>215</height>
+    <width>462</width>
+    <height>249</height>
    </rect>
   </property>
   <property name="sizePolicy" >
@@ -76,7 +76,13 @@
              <string>...</string>
             </property>
             <property name="icon" >
-             <iconset resource="../../images/icons.qrc" >:/default/edit.png</iconset>
+             <iconset resource="../../icons/icons.qrc" >:/22x22/actions/oxygen/22x22/actions/configure.png</iconset>
+            </property>
+            <property name="iconSize" >
+             <size>
+              <width>22</width>
+              <height>22</height>
+             </size>
             </property>
            </widget>
           </item>
@@ -86,7 +92,13 @@
              <string>...</string>
             </property>
             <property name="icon" >
-             <iconset resource="../../images/icons.qrc" >:/default/edit_add.png</iconset>
+             <iconset resource="../../icons/icons.qrc" >:/22x22/actions/oxygen/22x22/actions/list-add.png</iconset>
+            </property>
+            <property name="iconSize" >
+             <size>
+              <width>22</width>
+              <height>22</height>
+             </size>
             </property>
            </widget>
           </item>
@@ -96,7 +108,13 @@
              <string>...</string>
             </property>
             <property name="icon" >
-             <iconset resource="../../images/icons.qrc" >:/default/edit_remove.png</iconset>
+             <iconset resource="../../icons/icons.qrc" >:/22x22/actions/oxygen/22x22/actions/edit-delete.png</iconset>
+            </property>
+            <property name="iconSize" >
+             <size>
+              <width>22</width>
+              <height>22</height>
+             </size>
             </property>
            </widget>
           </item>
@@ -125,6 +143,9 @@
           </item>
           <item row="2" column="3" colspan="4" >
            <widget class="QCheckBox" name="internalCore" >
+            <property name="enabled" >
+             <bool>false</bool>
+            </property>
             <property name="text" >
              <string>Use internal</string>
             </property>
@@ -381,6 +402,7 @@
  </widget>
  <resources>
   <include location="../../images/icons.qrc" />
+  <include location="../../icons/icons.qrc" />
  </resources>
  <connections>
   <connection>
