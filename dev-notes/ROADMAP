@@ -1,25 +1,31 @@
 Preliminary roadmap for Quassel IRC - stuff we need to do before the first public release
 
+Already Done:
+=============
+      chatwidget state
+      make signalproxy threadsafe
+      utf-8 / encodings
+
 Showstoppers:
 =============
-DONE: chatwidget state
 WiP:  settings dialog -> Sput
-      network settings in DB -> ?
+      serverlist, identities... -> Sput
+      mode changes in serverhandler -> EgS
+      BUFFERMODEL -> EgS
+      make wizard more intuitive (account data, two-step auth) -> Sput
+
+Open: network settings in DB -> ?
       switch to network-IDs -> ?
       remove buffergroups (DB) -> ?
       insert buffertype field rein (DB) -> ?
-WiP:  serverlist, identities... -> Sput
       externalize SQL-queries, provide migration path... -> EgS
-DONE: utf-8 / encodings
-WiP:  mode changes in serverhandler -> EgS
-BUG:  multi-user join -> ?
       core-user admin, rights management (ACL) -> Sput?
-WiP:  BUFFERMODEL -> EgS
-      make wizard more intuitive (account data, two-step auth) -> Sput
+
+BUG:  multi-user join -> ?
 
 Important:
 ==========
 WiP:  shortcuts -> Sput
-DONE: make signalproxy threadsafe (thread injection) -> EgS
-      save activity-state in core (client reconnect) -- save per-buffer timestamp locally in client  -> ?
+
+Open: save activity-state in core (client reconnect) -- save per-buffer timestamp locally in client  -> ?
       backlog administration -> ?
