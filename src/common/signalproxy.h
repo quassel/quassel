@@ -93,14 +93,14 @@ public:
   
   const QList<int> &argTypes(QObject *obj, int methodId);
   const QByteArray &methodName(QObject *obj, int methodId);
-  const QHash<int, int> &syncMap(QObject *obj);
+  const QHash<QByteArray, int> &syncMap(QObject *obj);
 
   typedef QHash<int, QList<int> > ArgHash;
   typedef QHash<int, QByteArray> MethodNameHash;
   struct ClassInfo {
     ArgHash argTypes;
     MethodNameHash methodNames;
-    QHash<int, int> syncMap;
+    QHash<QByteArray, int> syncMap;
   };
 
   void dumpProxyStats();

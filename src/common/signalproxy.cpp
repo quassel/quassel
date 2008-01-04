@@ -82,13 +82,17 @@ int SignalRelay::qt_metacall(QMetaObject::Call _c, int _id, void **_a) {
         proxy->dispatchSignal(funcIter.value(), params);
         funcIter++;
       }
-      if(synchronize() && proxy->syncMap(caller).contains(_id)) {
+      
+      // dispatch Sync Signal if necessary
+      QByteArray signature(caller->metaObject()->method(_id).signature());
+      if(synchronize() && proxy->syncMap(caller).contains(signature)) {
 	// qDebug() << "__SYNC__ >>>"
 	// 	 << caller->metaObject()->className()
 	// 	 << caller->objectName()
 	// 	 << proxy->methodName(caller, _id)
 	// 	 << params;
-	params.prepend(QVariant(_id));
+	// params.prepend(QVariant(_id));
+	params.prepend(signature);
 	params.prepend(caller->objectName());
 	params.prepend(caller->metaObject()->className());
 	proxy->dispatchSignal((int)SignalProxy::Sync, params);
@@ -100,16 +104,18 @@ int SignalRelay::qt_metacall(QMetaObject::Call _c, int _id, void **_a) {
 }
 
 void SignalRelay::setSynchronize(bool sync) {
-  QHash<int, int>::const_iterator iter = proxy->syncMap(caller).constBegin();
+  const QMetaObject *meta = caller->metaObject();
   if(!_sync && sync) {
-    while(iter != proxy->syncMap(caller).constEnd()) {
-      QMetaObject::connect(caller, iter.key(), this, QObject::staticMetaObject.methodCount() + iter.key());
-      iter++;
+    // enable Sync
+    for(int i = 0; i < meta->methodCount(); i++ ) {
+      if(proxy->syncMap(caller).contains(meta->method(i).signature()))
+	QMetaObject::connect(caller, i, this, QObject::staticMetaObject.methodCount() + i);
     }
   } else if (_sync && !sync) {
-    while(iter != proxy->syncMap(caller).constEnd()) {
-      QMetaObject::disconnect(caller, iter.key(), this, QObject::staticMetaObject.methodCount() + iter.key());
-      iter++;
+    // disable Sync
+    for(int i = 0; i < meta->methodCount(); i++ ) {
+      if(proxy->syncMap(caller).contains(meta->method(i).signature()))
+	QMetaObject::disconnect(caller, i, this, QObject::staticMetaObject.methodCount() + i);
     }
   }
   _sync = sync;
@@ -329,7 +335,7 @@ const QByteArray &SignalProxy::methodName(QObject *obj, int methodId) {
 
 void SignalProxy::setSyncMap(QObject *obj) {
   const QMetaObject *meta = obj->metaObject();
-  QHash<int, int> syncMap;
+  QHash<QByteArray, int> syncMap;
   
   QList<int> slotIndexes;
   for(int i = 0; i < meta->methodCount(); i++) {
@@ -354,7 +360,7 @@ void SignalProxy::setSyncMap(QObject *obj) {
     }
     if(matchIdx != -1) {
       slotIndexes.removeAt(slotIndexes.indexOf(matchIdx));
-      syncMap[signalIdx] = matchIdx;
+      syncMap[QByteArray(signal.signature())] = matchIdx;
     }
   }
 
@@ -362,7 +368,7 @@ void SignalProxy::setSyncMap(QObject *obj) {
   _classInfo[meta]->syncMap = syncMap;
 }
 
-const QHash<int,int> &SignalProxy::syncMap(QObject *obj) {
+const QHash<QByteArray,int> &SignalProxy::syncMap(QObject *obj) {
   Q_ASSERT(_classInfo.contains(obj->metaObject()));
   if(_classInfo[obj->metaObject()]->syncMap.isEmpty())
     setSyncMap(obj);
@@ -587,28 +593,22 @@ void SignalProxy::handleSync(QVariantList params) {
   
   QByteArray className = params.takeFirst().toByteArray();
   QString objectName = params.takeFirst().toString();
-  int signalId = params.takeFirst().toInt();
+  QByteArray signal = params.takeFirst().toByteArray();
 
   if(!_syncSlave.contains(className) || !_syncSlave[className].contains(objectName)) {
-    qWarning() << "no registered receiver:" << className << objectName << "for Sync call" << signalId << params;
+    qWarning() << QString("no registered receiver for sync call: %s::%s (objectName=\"%s\"). Params are:").arg(QString(className)).arg(QString(signal)).arg(objectName)
+	       << params;
     return;
   }
 
   QObject *receiver = _syncSlave[className][objectName];
-  if(!syncMap(receiver).contains(signalId)) {
-    const QMetaObject *meta = receiver->metaObject();
-    QString signalName;
-    if(signalId < meta->methodCount())
-      signalName = QString(meta->method(signalId).signature());
-    else
-      signalName = QString::number(signalId);
-    
-    qWarning() << "received Sync Call for Object" << receiver
-	       << "- no matching Slot for Signal:" << signalName;
+  if(!syncMap(receiver).contains(signal)) {
+    qWarning() << QString("no matching slot for sync call: %s::%s (objectName=\"%s\"). Params are:").arg(QString(className)).arg(QString(signal)).arg(objectName)
+	       << params;
     return;
   }
 
-  int slotId = syncMap(receiver)[signalId];
+  int slotId = syncMap(receiver)[signal];
   if(!invokeSlot(receiver, slotId, params))
     qWarning("SignalProxy::handleSync(): invokeMethod for \"%s\" failed ", methodName(receiver, slotId).constData());
 }
@@ -854,10 +854,16 @@ void SignalProxy::dumpSyncMap(QObject *object) {
   const QMetaObject *meta = object->metaObject();
   qDebug() << "SignalProxy: SyncMap for Class" << meta->className();
 
-  QHash<int, int> syncMap_ = syncMap(object);
-  QHash<int, int>::const_iterator iter = syncMap_.constBegin();
+  QHash<QByteArray, int> syncMap_ = syncMap(object);
+  QHash<QByteArray, int>::const_iterator iter = syncMap_.constBegin();
   while(iter != syncMap_.constEnd()) {
-    qDebug() << iter.key() << meta->method(iter.key()).signature() << "-->" << iter.value() << meta->method(iter.value()).signature();    
+    qDebug() << iter.key() << "-->" << iter.value() << meta->method(iter.value()).signature();    
     iter++;
   }
+//   QHash<int, int> syncMap_ = syncMap(object);
+//   QHash<int, int>::const_iterator iter = syncMap_.constBegin();
+//   while(iter != syncMap_.constEnd()) {
+//     qDebug() << iter.key() << meta->method(iter.key()).signature() << "-->" << iter.value() << meta->method(iter.value()).signature();    
+//     iter++;
+//   }
 }
