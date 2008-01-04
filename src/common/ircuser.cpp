@@ -136,7 +136,6 @@ void IrcUser::setHost(const QString &host) {
 
 void IrcUser::setNick(const QString &nick) {
   if(!nick.isEmpty() && nick != _nick) {
-    QString oldnick(_nick);
     _nick = nick;
     updateObjectName();
     emit nickSet(nick);
@@ -144,13 +143,13 @@ void IrcUser::setNick(const QString &nick) {
 }
 
 void IrcUser::updateObjectName() {
-  QString oldName(objectName());
-  setObjectName(QString::number(networkInfo->networkId()) + "/" + _nick);
-  if(!oldName.isEmpty()) {
-    emit renameObject(oldName, objectName());
+  QString newName = QString::number(networkInfo->networkId()) + "/" + _nick;
+  QString oldName = objectName();
+  if(oldName != newName) {
+    setObjectName(newName);
+    emit renameObject(oldName, newName);
   }
 }
-
 
 void IrcUser::updateHostmask(const QString &mask) {
   if(mask == hostmask())
@@ -165,9 +164,9 @@ void IrcUser::updateHostmask(const QString &mask) {
 void IrcUser::joinChannel(IrcChannel *channel) {
   Q_ASSERT(channel);
   if(!_channels.contains(channel)) {
+    _channels.insert(channel);
     channel->join(this);
     connect(channel, SIGNAL(destroyed()), this, SLOT(channelDestroyed()));
-    _channels.insert(channel);
     emit channelJoined(channel->name());
   }
 }

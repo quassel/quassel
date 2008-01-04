@@ -247,7 +247,8 @@ void SignalProxy::objectRenamed(QString oldname, QString newname) {
 }
 
 void SignalProxy::objectRenamed(QByteArray classname, QString oldname, QString newname) {
-  if(_syncSlave.contains(classname) && _syncSlave[classname].contains(oldname))
+  QMutexLocker locker(&slaveMutex);
+  if(_syncSlave.contains(classname) && _syncSlave[classname].contains(oldname) && oldname != newname)
     _syncSlave[classname][newname] = _syncSlave[classname].take(oldname);
 }
 
@@ -433,7 +434,7 @@ void SignalProxy::synchronizeAsMaster(QObject *sender) {
   relay->setSynchronize(true);
 
   if(sender->metaObject()->indexOfSignal(QMetaObject::normalizedSignature("renameObject(QString, QString)")) != -1)
-    connect(sender, SIGNAL(renameObject(QString, QString)), this, SLOT(objectRenamed(QString, QString)));
+    connect(sender, SIGNAL(renameObject(QString, QString)), this, SLOT(objectRenamed(QString, QString)), Qt::DirectConnection);
 
   QByteArray className(sender->metaObject()->className());
   _syncSlave[className][sender->objectName()] = sender;
@@ -556,14 +557,14 @@ void SignalProxy::dispatchSignal(const QVariant &identifier, const QVariantList 
 void SignalProxy::receivePeerSignal(QIODevice *sender, const QVariant &packedFunc) {
   QVariantList params(packedFunc.toList());
 
+  QVariant call = params.takeFirst();
+  if(call.type() != QVariant::Int)
+    return handleSignal(call.toByteArray(), params);
+
   // well yes we are locking code here and not only data.
   // otherwise each handler would have to lock the data anyway. this leaves us on the safe side
   // unable to forget a lock
   QMutexLocker locker(&slaveMutex);
-  
-  QVariant call = params.takeFirst();
-  if(call.type() != QVariant::Int)
-    return handleSignal(call.toByteArray(), params);
 
   switch(call.toInt()) {
   case Sync:
@@ -605,7 +606,8 @@ void SignalProxy::handleSync(QVariantList params) {
     qWarning() << "received Sync Call for Object" << receiver
 	       << "- no matching Slot for Signal:" << signalName;
     return;
-   }
+  }
+
   int slotId = syncMap(receiver)[signalId];
   if(!invokeSlot(receiver, slotId, params))
     qWarning("SignalProxy::handleSync(): invokeMethod for \"%s\" failed ", methodName(receiver, slotId).constData());
