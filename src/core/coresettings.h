@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-07 by the Quassel IRC Team                         *
+ *   Copyright (C) 2005-08 by the Quassel IRC Team                         *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef CORESETTINGS_H_
-#define CORESETTINGS_H_
+#ifndef _CORESETTINGS_H_
+#define _CORESETTINGS_H_
 
 #include "global.h"
 #include "settings.h"
@@ -28,7 +28,7 @@ class CoreSettings : public Settings {
 
   public:
     virtual ~CoreSettings();
-    CoreSettings();
+    CoreSettings(const QString group = "Core");
 
     void setDatabaseSettings(const QVariant &data);
     QVariant databaseSettings(const QVariant &def = QVariant());
@@ -39,12 +39,6 @@ class CoreSettings : public Settings {
     void setCoreState(const QVariant &data);
     QVariant coreState(const QVariant &def = QVariant());
 
-  private:
-    //virtual QStringList allSessionKeys() = 0;
-    virtual QStringList sessionKeys();
-
-    virtual void setSessionValue(const QString &key, const QVariant &data);
-    virtual QVariant sessionValue(const QString &key, const QVariant &def = QVariant());
 };
 
 #endif /*CORESETTINGS_H_*/

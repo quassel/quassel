@@ -22,7 +22,7 @@
 
 #include <QStringList>
 
-CoreSettings::CoreSettings() : Settings("Core") {
+CoreSettings::CoreSettings(const QString group) : Settings(group, Global::coreApplicationName) {
 }
 
 CoreSettings::~CoreSettings() {
@@ -50,18 +50,4 @@ void CoreSettings::setCoreState(const QVariant &data) {
 
 QVariant CoreSettings::coreState(const QVariant &def) {
   return localValue("CoreState", def);
-}
-
-QStringList CoreSettings::sessionKeys() {
-  Q_ASSERT(false);
-  return QStringList();
-}
-
-void CoreSettings::setSessionValue(const QString &key, const QVariant &data) {
-  Q_ASSERT(false);
-}
-
-QVariant CoreSettings::sessionValue(const QString &key, const QVariant &def) {
-  Q_ASSERT(false);
-  return QVariant();
 }

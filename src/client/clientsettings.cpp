@@ -20,10 +20,11 @@
 
 #include "client.h"
 #include "clientsettings.h"
+#include "global.h"
 
 #include <QStringList>
 
-ClientSettings::ClientSettings(QString g) : Settings(g) {
+ClientSettings::ClientSettings(QString g) : Settings(g, Global::clientApplicationName) {
 
 
 }

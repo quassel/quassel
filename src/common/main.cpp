@@ -85,7 +85,7 @@ int main(int argc, char **argv) {
 
   QCoreApplication::setOrganizationDomain("quassel-irc.org");
   QCoreApplication::setApplicationName("Quassel IRC");
-  QCoreApplication::setOrganizationName("Quassel IRC Development Team");  // FIXME
+  QCoreApplication::setOrganizationName("Quassel Project");
 
   // Check if a non-standard core port is requested
   QStringList args = QCoreApplication::arguments();  // TODO Build a CLI parser

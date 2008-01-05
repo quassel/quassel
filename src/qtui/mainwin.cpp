@@ -29,8 +29,8 @@
 #include "serverlist.h"
 #include "settingsdlg.h"
 #include "signalproxy.h"
-
 #include "topicwidget.h"
+#include "uisettings.h"
 
 #include "selectionmodelsynchronizer.h"
 #include "mappedselectionmodel.h"
@@ -87,17 +87,8 @@ void MainWin::init() {
   ui.menuViews->addAction(nickDock->toggleViewAction());
 
   // restore mainwin state
-  QSettings s;
-  s.beginGroup("Geometry");
-  //resize(s.value("MainWinSize", QSize(500, 400)).toSize());
-  //move(s.value("MainWinPos", QPoint(50, 50)).toPoint());
-  if(s.contains("MainWinState")) restoreState(s.value("MainWinState").toByteArray());
-  s.endGroup();
-
-  //s.beginGroup("Buffers");
-  //QString net = s.value("CurrentNetwork", "").toString();
-  //QString buf = s.value("CurrentBuffer", "").toString();
-  //s.endGroup();
+  UiSettings s;
+  restoreState(s.value("MainWinState").toByteArray());
 
   disconnectedFromCore();  // Disable menus and stuff
   showCoreConnectionDlg(true); // autoconnect if appropriate
@@ -266,16 +257,10 @@ void MainWin::closeEvent(QCloseEvent *event)
 {
   //if (userReallyWantsToQuit()) {
     ui.bufferWidget->saveState();
-    QSettings s;
-    s.beginGroup("Geometry");
+    UiSettings s;
     s.setValue("MainWinSize", size());
     s.setValue("MainWinPos", pos());
     s.setValue("MainWinState", saveState());
-    s.endGroup();
-    s.beginGroup("Buffers");
-    //s.setValue("CurrentNetwork", currentNetwork);
-    s.setValue("CurrentBuffer", currentBuffer);
-    s.endGroup();
     delete systray;
     event->accept();
   //} else {

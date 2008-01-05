@@ -18,21 +18,22 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QCoreApplication>
 #include <QSettings>
 #include <QStringList>
 #include <QDebug>
 
 #ifdef Q_WS_QWS
 #include <Qtopia>
-#include <QCoreApplication>
 #endif
 
 #include "settings.h"
 
-Settings::Settings(QString g) : group(g) {
+Settings::Settings(QString g, QString applicationName) : QSettings(QCoreApplication::organizationName(), applicationName), group(g) {
 
+/* we need to call the constructor immediately in order to set the path...
 #ifndef Q_WS_QWS
-  QSettings();
+  QSettings(QCoreApplication::organizationName(), applicationName);
 #else
   // FIXME sandboxDir() is not currently working correctly...
   //if(Qtopia::sandboxDir().isEmpty()) QSettings();
@@ -44,9 +45,10 @@ Settings::Settings(QString g) : group(g) {
     QSettings(sandboxPath + "/etc/QuasselIRC.conf", QSettings::IniFormat);
     qDebug() << sandboxPath + "/etc/QuasselIRC.conf";
   } else {
-    QSettings();
+    QSettings(QCoreApplication::organizationName(), applicationName);
   }
 #endif
+*/
 }
 
 Settings::~Settings() {

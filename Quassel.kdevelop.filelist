@@ -89,6 +89,8 @@ src/core/ircserverhandler.cpp
 src/core/ircserverhandler.h
 src/core/server.cpp
 src/core/server.h
+src/core/sessionsettings.cpp
+src/core/sessionsettings.h
 src/core/sqlitestorage.cpp
 src/core/sqlitestorage.h
 src/core/storage.cpp

@@ -33,7 +33,7 @@ ServerListDlg::ServerListDlg(QWidget *parent) : QDialog(parent) {
 
   QSettings settings;
   settings.beginGroup("GUI");
-  ui.showOnStartup->setChecked(settings.value("ShowServerListOnStartup", true).toBool());
+  ui.showOnStartup->setChecked(settings.value("ShowServerListOnStartup", false).toBool());
 
   updateNetworkTree();
   connect(ui.networkTree, SIGNAL(itemSelectionChanged()), this, SLOT(updateButtons()));
@@ -163,8 +163,8 @@ void ServerListDlg::editIdentities(bool end) {
 }
 
 void ServerListDlg::on_showOnStartup_stateChanged(int) {
-  QSettings s;
-  s.setValue("GUI/ShowServerListOnStartup", ui.showOnStartup->isChecked());
+  //QSettings s;
+  //s.setValue("GUI/ShowServerListOnStartup", ui.showOnStartup->isChecked());
 }
 
 void ServerListDlg::accept() {

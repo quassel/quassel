@@ -42,10 +42,55 @@ void Core::destroy() {
 }
 
 Core::Core() {
-  storage = NULL;
+  storage = 0;
 }
 
 void Core::init() {
+
+  // TODO: Remove this again at some point
+  // Check if old core settings need to be migrated in order to make the switch to the
+  // new location less painful.
+  CoreSettings cs;
+  QVariant foo = cs.databaseSettings();
+  if(!foo.isValid()) {
+    // ok, no settings stored yet. check for old ones.
+    QSettings os("Quassel IRC Development Team", "Quassel IRC");
+    QVariant bar = os.value("Core/DatabaseSettings");
+    if(bar.isValid()) {
+      // old settings available -- migrate!
+      qWarning() << "\n\nOld settings detected. Will migrate core settings to the new location...\nNOTE: GUI style settings won't be migrated!\n";
+      QSettings ncs("Quassel Project", "Quassel Core");
+      ncs.setValue("Core/CoreState", os.value("Core/CoreState"));
+      ncs.setValue("Core/DatabaseSettings", os.value("Core/DatabaseSettings"));
+      os.beginGroup("SessionData");
+      foreach(QString group, os.childGroups()) {
+        ncs.setValue(QString("SessionData/%1/Identities").arg(group), os.value(QString("%1/Identities").arg(group)));
+        ncs.setValue(QString("SessionData/%1/Networks").arg(group), os.value(QString("%1/Networks").arg(group)));
+      }
+      os.endGroup();
+
+      QSettings ngs("Quassel Project", "Quassel Client");
+      os.beginGroup("Accounts");
+      foreach(QString key, os.childKeys()) {
+        ngs.setValue(QString("Accounts/%1").arg(key), os.value(key));
+      }
+      foreach(QString group, os.childGroups()) {
+        ngs.setValue(QString("Accounts/%1/AccountData").arg(group), os.value(QString("%1/AccountData").arg(group)));
+      }
+      os.endGroup();
+      os.beginGroup("Geometry");
+      foreach(QString key, os.childKeys()) {
+        ngs.setValue(QString("UI/%1").arg(key), os.value(key));
+      }
+      os.endGroup();
+
+      ncs.sync();
+      ngs.sync();
+      qWarning() << "Migration successfully finished. You may now delete $HOME/.config/Quassel IRC Development Team/ (on Linux).\n\n";
+    }
+  }
+  // END
+
   CoreSettings s;
   configured = false;
 

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-07 by the Quassel IRC Team                         *
+ *   Copyright (C) 2005-08 by the Quassel IRC Team                         *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,41 +18,30 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _SETTINGS_H_
-#define _SETTINGS_H_
+#ifndef _SESSIONSETTINGS_H_
+#define _SESSIONSETTINGS_H_
 
-#include <QString>
-#include <QVariant>
-#include <QSettings>
+#include "coresettings.h"
+#include "types.h"
 
-class Settings : private QSettings {
+#include <QVariantMap>
 
-  public:
-    virtual ~Settings();
+// this class should only be used from CoreSession!
+//! This class stores and retrieves data from permanent storage for the use in SessionData.
+/** \Note Data stored here is not propagated into the actual SessionData!
+ */
+class SessionSettings : public CoreSettings {
 
-    //static void setGuiValue(QString, QVariant) {};
-    //static QVariant guiValue(QString, QVariant = QVariant()) { return QVariant(); }
+  private:
+    explicit SessionSettings(UserId user);
 
-    enum Mode { Default, Custom };
+    QVariantMap sessionData();
+    QVariant sessionValue(const QString &key, const QVariant &def = QVariant());
+    void setSessionValue(const QString &key, const QVariant &value);
 
-  protected:
-    Settings(QString group, QString applicationName);
+    UserId user;
 
-    void setGroup(QString group);
-
-    virtual QStringList allLocalKeys();
-    virtual QStringList localChildKeys(const QString &rootkey = QString());
-    virtual QStringList localChildGroups(const QString &rootkey = QString());
-
-    virtual void setLocalValue(const QString &key, const QVariant &data);
-    virtual QVariant localValue(const QString &key, const QVariant &def = QVariant());
-
-    virtual void removeLocalKey(const QString &key);
-
-    QString group;
-
+    friend class CoreSession;
 };
-
-
 
 #endif

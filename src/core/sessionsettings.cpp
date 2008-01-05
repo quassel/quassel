@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-07 by the Quassel IRC Team                         *
+ *   Copyright (C) 2005-08 by the Quassel IRC Team                         *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,41 +18,28 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _SETTINGS_H_
-#define _SETTINGS_H_
+#include "sessionsettings.h"
 
-#include <QString>
-#include <QVariant>
-#include <QSettings>
+#include <QStringList>
+#include <QDebug>
 
-class Settings : private QSettings {
+SessionSettings::SessionSettings(UserId uid) : CoreSettings("SessionData"), user(uid) {
 
-  public:
-    virtual ~Settings();
+}
 
-    //static void setGuiValue(QString, QVariant) {};
-    //static QVariant guiValue(QString, QVariant = QVariant()) { return QVariant(); }
+QVariantMap SessionSettings::sessionData() {
+  QVariantMap res;
+  foreach(QString key, localChildKeys(QString("%1").arg(user))) {
+    res[key] = localValue(QString("%1/%2").arg(user).arg(key));
+  }
+  return res;
+}
 
-    enum Mode { Default, Custom };
+void SessionSettings::setSessionValue(const QString &key, const QVariant &data) {
+  setLocalValue(QString("%1/%2").arg(user).arg(key), data);
+}
 
-  protected:
-    Settings(QString group, QString applicationName);
+QVariant SessionSettings::sessionValue(const QString &key, const QVariant &def) {
+  return localValue(QString("%1/%2").arg(user).arg(key), def);
+}
 
-    void setGroup(QString group);
-
-    virtual QStringList allLocalKeys();
-    virtual QStringList localChildKeys(const QString &rootkey = QString());
-    virtual QStringList localChildGroups(const QString &rootkey = QString());
-
-    virtual void setLocalValue(const QString &key, const QVariant &data);
-    virtual QVariant localValue(const QString &key, const QVariant &def = QVariant());
-
-    virtual void removeLocalKey(const QString &key);
-
-    QString group;
-
-};
-
-
-
-#endif
