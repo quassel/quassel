@@ -90,6 +90,7 @@ public:
   static QString methodBaseName(const QMetaMethod &method);
   
   const QList<int> &argTypes(QObject *obj, int methodId);
+  bool hasUpdateSignal(QObject *obj);
   const QByteArray &methodName(QObject *obj, int methodId);
   const QHash<QByteArray, int> &syncMap(QObject *obj);
 
@@ -99,6 +100,7 @@ public:
     ArgHash argTypes;
     MethodNameHash methodNames;
     QHash<QByteArray, int> syncMap;
+    bool hasUpdateSignal;
   };
 
   void dumpProxyStats();

@@ -334,6 +334,12 @@ const QList<int> &SignalProxy::argTypes(QObject *obj, int methodId) {
   return _classInfo[obj->metaObject()]->argTypes[methodId];
 }
 
+bool SignalProxy::hasUpdateSignal(QObject *obj) {
+  if(!_classInfo.contains(obj->metaObject()))
+    return false;
+  return _classInfo[obj->metaObject()]->hasUpdateSignal;
+}
+
 void SignalProxy::setMethodName(QObject *obj, int methodId) {
   const QMetaObject *meta = obj->metaObject();
   QByteArray method(::methodName(meta->method(methodId)));
@@ -392,8 +398,12 @@ const QHash<QByteArray,int> &SignalProxy::syncMap(QObject *obj) {
 }
 
 void SignalProxy::createClassInfo(QObject *obj) {
-  if(!_classInfo.contains(obj->metaObject()))
-    _classInfo[obj->metaObject()] = new ClassInfo();
+  if(_classInfo.contains(obj->metaObject()))
+    return;
+
+  ClassInfo *classInfo = new ClassInfo();
+  classInfo->hasUpdateSignal = (obj->metaObject()->indexOfSignal(QMetaObject::normalizedSignature("updatedRemotely()")) != -1);
+  _classInfo[obj->metaObject()] = classInfo;
 }
 
 bool SignalProxy::attachSignal(QObject* sender, const char* signal, const QByteArray& sigName) {
@@ -615,8 +625,12 @@ void SignalProxy::handleSync(QVariantList params) {
   }
 
   int slotId = syncMap(receiver)[signal];
-  if(!invokeSlot(receiver, slotId, params))
+  if(!invokeSlot(receiver, slotId, params)) {
     qWarning("SignalProxy::handleSync(): invokeMethod for \"%s\" failed ", methodName(receiver, slotId).constData());
+    return;
+  }
+  if(hasUpdateSignal(receiver))
+    QMetaObject::invokeMethod(receiver, "updatedRemotely");
 }
 
 void SignalProxy::handleInitRequest(QIODevice *sender, const QVariantList &params) {
