@@ -23,10 +23,12 @@
 
 #include <QString>
 
-typedef uint UserId;    //!< Identifies a core user.
-typedef uint MsgId;     //!< Identifies a message.
-typedef uint BufferId;  //!< Identifies a buffer.
-typedef uint NetworkId; //!< Identifies an IRC Network.
+// FIXME make all ID types quint32 as soon as they all have been replaced
+typedef uint UserId;     //!< Identifies a core user.
+typedef uint MsgId;      //!< Identifies a message.
+typedef uint BufferId;   //!< Identifies a buffer.
+typedef uint NetworkId;  //!< Identifies an IRC Network.
+typedef quint32 IdentityId; //!< Identifies an identity.
 
 //! Base class for exceptions.
 struct Exception {

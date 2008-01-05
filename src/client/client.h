@@ -30,6 +30,7 @@
 class BufferInfo;
 class Message;
 
+class Identity;
 class NetworkInfo;
 
 
@@ -58,6 +59,27 @@ public:
   static Buffer *buffer(BufferInfo);
   static BufferInfo statusBufferInfo(QString net);
   static BufferInfo bufferInfo(QString net, QString buf);
+
+  static QList<IdentityId> identityIds();
+  static const Identity * identity(IdentityId);
+
+  //! Request creation of an identity with the given data.
+  /** The request will be sent to the core, and will be propagated back to all the clients
+   *  with a new valid IdentityId.
+   *  \param identity The identity template for the new identity. It does not need to have a valid ID.
+   */
+  static void createIdentity(const Identity &identity);
+
+  //! Request update of an identity with the given data.
+  /** The request will be sent to the core, and will be propagated back to all the clients.
+   *  \param identity The identity to be updated.
+   */
+  static void updateIdentity(const Identity &identity);
+
+  //! Request removal of the identity with the given ID from the core (and all the clients, of course).
+  /** \param id The ID of the identity to be removed.
+   */
+  static void removeIdentity(IdentityId id);
 
   static NetworkModel *networkModel();
   static SignalProxy *signalProxy();
@@ -94,10 +116,31 @@ signals:
 
   void connected();
   void disconnected();
+  void coreConnectionStateChanged(bool);
 
   void sessionDataChanged(const QString &key);
   void sessionDataChanged(const QString &key, const QVariant &data);
   void sendSessionData(const QString &key, const QVariant &data);
+
+  //! The identity with the given ID has been newly created in core and client.
+  /** \param id The ID of the newly created identity.
+   */
+  void identityCreated(IdentityId id);
+
+  //! The identity with the given ID has been removed.
+  /** Upon emitting this signal, the identity is already gone from the core, and it will
+   *  be deleted from the client immediately afterwards, so connected slots need to clean
+   *  up their stuff.
+   *  \param id The ID of the identity about to be removed.
+   */
+  void identityRemoved(IdentityId id);
+
+  //! Sent to the core when an identity shall be created. Should not be used elsewhere.
+  void requestCreateIdentity(const Identity &);
+  //! Sent to the core when an identity shall be updated. Should not be used elsewhere.
+  void requestUpdateIdentity(const Identity &);
+  //! Sent to the core when an identity shall be removed. Should not be used elsewhere.
+  void requestRemoveIdentity(IdentityId);
 
 public slots:
   //void selectBuffer(Buffer *);
@@ -129,10 +172,11 @@ private slots:
 
   void layoutMsg();
 
-private slots:
   void bufferDestroyed();
   void networkInfoDestroyed();
   void ircChannelAdded(QString);
+  void coreIdentityCreated(const Identity &);
+  void coreIdentityRemoved(IdentityId);
 
 private:
   Client(QObject *parent = 0);
@@ -154,8 +198,9 @@ private:
   bool connectedToCore;
 
   QVariantMap coreConnectionInfo;
-  QHash<uint, Buffer *> _buffers;
-  QHash<uint, NetworkInfo*> _networkInfo;
+  QHash<BufferId, Buffer *> _buffers;
+  QHash<NetworkId, NetworkInfo *> _networkInfo;
+  QHash<IdentityId, Identity *> _identities;
 
   QTimer *layoutTimer;
   QList<Buffer *> layoutQueue;

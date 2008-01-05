@@ -27,6 +27,7 @@
 
 #include "message.h"
 
+class Identity;
 class Server;
 class SignalProxy;
 class Storage;
@@ -71,6 +72,16 @@ public slots:
   void sendBacklog(BufferInfo, QVariant, QVariant);
   void msgFromGui(BufferInfo, QString message);
 
+  //! Create or update an identity and propagate the changes to the clients.
+  /** \param identity The identity to be created/updated.
+   */
+  void createOrUpdateIdentity(const Identity &identity);
+
+  //! Remove identity and propagate that fact to the clients.
+  /** \param identity The identity to be removed.
+   */
+  void removeIdentity(IdentityId identity);
+
 signals:
   void msgFromGui(uint netid, QString buf, QString message);
   void displayMsg(Message message);
@@ -86,7 +97,19 @@ signals:
   void sessionDataChanged(const QString &key, const QVariant &data);
 
   void scriptResult(QString result);
-				   
+
+  //! Identity has been created.
+  /** This signal is propagated to the clients to tell them that the given identity has been created.
+   *  \param identity The new identity.
+   */
+  void identityCreated(const Identity &identity);
+
+  //! Identity has been removed.
+  /** This signal is propagated to the clients to inform them about the removal of the given identity.
+   *  \param identity The identity that has been removed.
+   */
+  void identityRemoved(IdentityId identity);
+
 private slots:
   void recvStatusMsgFromServer(QString msg);
   void recvMessageFromServer(Message::Type, QString target, QString text, QString sender = "", quint8 flags = Message::None);
@@ -108,6 +131,8 @@ private:
   QMutex mutex;
 
   QScriptEngine *scriptEngine;
+
+  QHash<IdentityId, Identity *> _identities;
 };
 
 #endif

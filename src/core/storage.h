@@ -52,7 +52,7 @@ class Storage : public QObject {
      *  \param settings   Hostname, port, username, password, ...
      *  \return True if and only if the storage provider was initialized successfully.
      */
-    virtual bool setup(const QVariantMap &settings = QVariantMap()) { return false; }
+    virtual bool setup(const QVariantMap &settings = QVariantMap()) { Q_UNUSED(settings); return false; }
     
     //! Initialize the storage provider
     /** \param settings   Hostname, port, username, password, ...  

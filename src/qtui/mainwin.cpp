@@ -66,7 +66,7 @@ void MainWin::init() {
 
   statusBar()->showMessage(tr("Not connected to core."));
   systray = new QSystemTrayIcon(this);
-  systray->setIcon(QIcon(":/qirc-icon.png"));
+  systray->setIcon(QIcon(":/icons/quassel-icon.png"));
   systray->show();
 
   //setupSettingsDlg();

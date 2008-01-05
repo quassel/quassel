@@ -39,12 +39,7 @@
 // This constructor is the first thing to be called for a Qtopia app, so we do the init stuff
 // here (rather than in a main.cpp).
 QtopiaMainWin::QtopiaMainWin(QWidget *parent, Qt::WFlags flags) : QMainWindow(parent, flags) {
-  qRegisterMetaType<QVariant>("QVariant");
-  qRegisterMetaType<Message>("Message");
-  qRegisterMetaType<BufferInfo>("BufferInfo");
-  qRegisterMetaTypeStreamOperators<QVariant>("QVariant");
-  qRegisterMetaTypeStreamOperators<Message>("Message");
-  qRegisterMetaTypeStreamOperators<BufferInfo>("BufferInfo");
+  Global::registerMetaTypes();
 
   Global::runMode = Global::ClientOnly;
   Global::defaultPort = 4242;

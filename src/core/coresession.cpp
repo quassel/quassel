@@ -27,6 +27,7 @@
 #include "networkinfo.h"
 #include "ircuser.h"
 #include "ircchannel.h"
+#include "identity.h"
 
 #include "util.h"
 
@@ -39,16 +40,41 @@ CoreSession::CoreSession(UserId uid, Storage *_storage, QObject *parent)
     storage(_storage),
     scriptEngine(new QScriptEngine(this))
 {
-  
-  QSettings s;
-  s.beginGroup(QString("SessionData/%1").arg(user));
+
+  SignalProxy *p = signalProxy();
+
+  QSettings s;  // FIXME don't use QSettings anymore
   mutex.lock();
+  s.beginGroup(QString("SessionData/%1").arg(user));
   foreach(QString key, s.allKeys()) {
     sessionData[key] = s.value(key);
   }
+  s.endGroup();
+  mutex.unlock(); // FIXME remove
+  /* temporarily disabled
+  s.beginGroup(QString("Identities/%1").arg(user));
+  foreach(QString id, s.childKeys()) {
+    Identity *i = new Identity(s.value(id).value<Identity>(), this);
+    if(i->id() < 1) {
+      qDebug() << QString("Invalid identity!");
+      continue;
+    }
+    if(_identities.contains(i->id())) {
+      qDebug() << "Duplicate identity, ignoring!";
+      continue;
+    }
+    qDebug() << "loaded identity" << id;
+    _identities[i->id()] = i;
+  }
+  s.endGroup();
   mutex.unlock();
-
-  SignalProxy *p = signalProxy();
+  if(!_identities.count()) {
+    Identity i(1);
+    i.setToDefaults();
+    //_identities[i->id()] = i;
+    createOrUpdateIdentity(i);
+  }
+  */
 
   p->attachSlot(SIGNAL(requestNetworkStates()), this, SLOT(serverStateRequested()));
   p->attachSlot(SIGNAL(requestConnect(QString)), this, SLOT(connectToNetwork(QString)));
@@ -61,19 +87,18 @@ CoreSession::CoreSession(UserId uid, Storage *_storage, QObject *parent)
   p->attachSignal(storage, SIGNAL(bufferInfoUpdated(BufferInfo)));
   p->attachSignal(this, SIGNAL(sessionDataChanged(const QString &, const QVariant &)), SIGNAL(coreSessionDataChanged(const QString &, const QVariant &)));
   p->attachSlot(SIGNAL(clientSessionDataChanged(const QString &, const QVariant &)), this, SLOT(storeSessionData(const QString &, const QVariant &)));
-  /* Autoconnect. (When) do we actually do this?
-     --> session restore should be enough!
-  QStringList list;
-  QVariantMap networks = retrieveSessionData("Networks").toMap();
-  foreach(QString net, networks.keys()) {
-    if(networks[net].toMap()["AutoConnect"].toBool()) {
-      list << net;
-    }
-  } qDebug() << list;
-  if(list.count()) connectToIrc(list);
-  */
+
+  p->attachSignal(this, SIGNAL(identityCreated(const Identity &)));
+  p->attachSignal(this, SIGNAL(identityRemoved(IdentityId)));
+  p->attachSlot(SIGNAL(createIdentity(const Identity &)), this, SLOT(createOrUpdateIdentity(const Identity &)));
+  p->attachSlot(SIGNAL(updateIdentity(const Identity &)), this, SLOT(createOrUpdateIdentity(const Identity &)));
+  p->attachSlot(SIGNAL(removeIdentity(IdentityId)), this, SLOT(removeIdentity(IdentityId)));
 
   initScriptEngine();
+
+  foreach(Identity *id, _identities.values()) {
+    p->synchronize(id);
+  }
 }
 
 CoreSession::~CoreSession() {
@@ -236,9 +261,13 @@ QVariant CoreSession::sessionState() {
   mutex.unlock();
 
   QVariantList networks;
-  foreach(uint networkid, servers.keys())
+  foreach(NetworkId networkid, servers.keys())
     networks.append(QVariant(networkid));
   v["Networks"] = QVariant(networks);
+
+  QList<QVariant> idlist;
+  foreach(Identity *i, _identities.values()) idlist << QVariant::fromValue<Identity>(*i);
+  v["Identities"] = idlist;
 
   // v["Payload"] = QByteArray(100000000, 'a');  // for testing purposes
   return v;
@@ -277,4 +306,28 @@ void CoreSession::initScriptEngine() {
 void CoreSession::scriptRequest(QString script) {
   emit scriptResult(scriptEngine->evaluate(script).toString());
 }
-  
+
+void CoreSession::createOrUpdateIdentity(const Identity &id) {
+  if(!_identities.contains(id.id())) {
+    // create new
+    _identities[id.id()] = new Identity(id, this);
+    signalProxy()->synchronize(_identities[id.id()]);
+    emit identityCreated(id.id());
+  } else {
+    // update
+    _identities[id.id()]->update(id);
+  }
+  QSettings s;  // FIXME don't use QSettings
+  s.beginGroup(QString("Identities/%1").arg(user));
+  s.setValue(QString::number(id.id()), QVariant::fromValue<Identity>(*_identities[id.id()]));
+  s.endGroup();
+}
+
+void CoreSession::removeIdentity(IdentityId id) {
+  Identity *i = _identities.take(id);
+  if(i) {
+    emit identityRemoved(id);
+    i->deleteLater();
+  }
+}
+

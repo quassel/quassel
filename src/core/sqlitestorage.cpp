@@ -62,6 +62,7 @@ QString SqliteStorage::displayName() {
 }
 
 bool SqliteStorage::setup(const QVariantMap &settings) {
+  Q_UNUSED(settings);
   bool ok;
   // this extra scope is needed to be able to remove the database connection later
   {
@@ -135,6 +136,7 @@ bool SqliteStorage::setup(const QVariantMap &settings) {
 }
 
 bool SqliteStorage::init(const QVariantMap &settings) {
+  Q_UNUSED(settings);
   bool ok;
   // i need the extra scope to be able to remove the database connection
   {

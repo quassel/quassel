@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include "global.h"
+#include "identity.h"
 #include "settings.h"
 #include <QString>
 #include <QTranslator>
@@ -58,13 +59,7 @@ int main(int argc, char **argv) {
   signal(SIGTERM, handle_signal);
   signal(SIGINT, handle_signal);
 
-  qRegisterMetaType<QVariant>("QVariant");
-  qRegisterMetaType<Message>("Message");
-  qRegisterMetaType<BufferInfo>("BufferInfo");
-  qRegisterMetaTypeStreamOperators<QVariant>("QVariant");
-  qRegisterMetaTypeStreamOperators<Message>("Message");
-  qRegisterMetaTypeStreamOperators<BufferInfo>("BufferInfo");
-
+  Global::registerMetaTypes();
 
 #if defined BUILD_CORE
   Global::runMode = Global::CoreOnly;
@@ -79,16 +74,21 @@ int main(int argc, char **argv) {
 
   // Set up i18n support
   QLocale locale = QLocale::system();
-  QTranslator translator;
-  translator.load(QString(":i18n/quassel_%1").arg(locale.name()));
-  app.installTranslator(&translator);
+
+  QTranslator qtTranslator;
+  qtTranslator.load(QString(":i18n/qt_%1").arg(locale.name()));
+  app.installTranslator(&qtTranslator);
+
+  QTranslator quasselTranslator;
+  quasselTranslator.load(QString(":i18n/quassel_%1").arg(locale.name()));
+  app.installTranslator(&quasselTranslator);
 
   QCoreApplication::setOrganizationDomain("quassel-irc.org");
   QCoreApplication::setApplicationName("Quassel IRC");
   QCoreApplication::setOrganizationName("Quassel IRC Development Team");  // FIXME
 
   // Check if a non-standard core port is requested
-  QStringList args = QCoreApplication::arguments();
+  QStringList args = QCoreApplication::arguments();  // TODO Build a CLI parser
 
   Global::defaultPort = 4242;
   int idx;
@@ -110,7 +110,7 @@ int main(int argc, char **argv) {
 #endif
 
 #ifndef BUILD_QTUI
-  if(!QCoreApplication::arguments().contains("--norestore")) {
+  if(args.contains("--norestore")) {
     Core::restoreState();
   }
 #endif

@@ -1,5 +1,27 @@
 # KDevelop Custom Project File List
 build
+build/buildconf.pri
+build/contrib
+build/contrib/contrib.pri
+build/contrib/libqxt-config.pri
+build/contrib/libqxt-version.pri
+build/contrib/libqxt.pro
+build/modules
+build/modules/client.pro
+build/modules/common.pro
+build/modules/core.pro
+build/modules/module.pri
+build/modules/qtui.pro
+build/modules/uisupport.pro
+build/quassel.pro
+build/targets
+build/targets/core.pri
+build/targets/core.pro
+build/targets/monolithic.pri
+build/targets/monolithic.pro
+build/targets/qtclient.pri
+build/targets/qtclient.pro
+build/targets/target.pri
 qtopia-build
 qtopia-build/quasseltopia.pro
 quassel.pro
@@ -31,6 +53,8 @@ src/common/bufferinfo.h
 src/common/common.pri
 src/common/global.cpp
 src/common/global.h
+src/common/identity.cpp
+src/common/identity.h
 src/common/ircchannel.cpp
 src/common/ircchannel.h
 src/common/ircuser.cpp
@@ -170,6 +194,10 @@ src/qtui/ui/settingsdlg.ui
 src/qtui/ui/topicwidget.ui
 src/qtui/ui/usermgmtpage.ui
 src/uisupport
+src/uisupport/action.cpp
+src/uisupport/action.h
+src/uisupport/actioncollection.cpp
+src/uisupport/actioncollection.h
 src/uisupport/bufferview.cpp
 src/uisupport/bufferview.h
 src/uisupport/bufferviewfilter.cpp

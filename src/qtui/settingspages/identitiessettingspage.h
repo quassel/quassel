@@ -38,6 +38,9 @@ class IdentitiesSettingsPage : public SettingsPage {
     void load();
     void defaults();
 
+  private slots:
+    void coreConnectionStateChanged(bool);
+
   private:
     Ui::IdentitiesSettingsPage ui;
 

@@ -23,6 +23,8 @@
 #ifndef _GLOBAL_H_
 #define _GLOBAL_H_
 
+#include <QString>
+
 // Enable some shortcuts and stuff
 //#define DEVELMODE
 
@@ -35,9 +37,16 @@
 /* Some global stuff */
 
 namespace Global {
+  // We need different config (QSettings) files for client and gui, since the core cannot work with GUI types
+  // Set these here. They're used in ClientSettings and CoreSettings.
+  const QString coreApplicationName = "Quassel IRC Core";
+  const QString clientApplicationName = "Quassel IRC Client";
+
   enum RunMode { Monolithic, ClientOnly, CoreOnly };
   extern RunMode runMode;
   extern unsigned int defaultPort;
+
+  void registerMetaTypes();
 }
 
 #endif

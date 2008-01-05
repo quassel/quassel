@@ -18,9 +18,14 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 #include <QObject>
+#include <QMetaType>
 
 #include "global.h"
 #include "logger.h"
+#include "message.h"
+#include "identity.h"
+#include "bufferinfo.h"
+#include "types.h"
 
 extern void messageHandler(QtMsgType type, const char *msg);
 
@@ -55,6 +60,33 @@ void Global::initIconMap() {
 
 //  return 0;
 //}
+
+//! Register our custom types with Qt's Meta Object System.
+/**  This makes them available for QVariant and in signals/slots, among other things.
+ */
+void Global::registerMetaTypes() {
+  // Complex types
+  qRegisterMetaType<QVariant>("QVariant");
+  qRegisterMetaType<Message>("Message");
+  qRegisterMetaType<BufferInfo>("BufferInfo");
+  qRegisterMetaType<Identity>("Identity");
+
+  qRegisterMetaTypeStreamOperators<QVariant>("QVariant");
+  qRegisterMetaTypeStreamOperators<Message>("Message");
+  qRegisterMetaTypeStreamOperators<BufferInfo>("BufferInfo");
+  qRegisterMetaTypeStreamOperators<Identity>("Identity");
+
+  // Basic types (typedefs)
+  // These use the standard stream operators
+  qRegisterMetaType<IdentityId>("IdentityId");
+  qRegisterMetaType<BufferId>("BufferId");
+  qRegisterMetaType<NetworkId>("NetworkId");
+
+  qRegisterMetaTypeStreamOperators<IdentityId>("IdentityId");
+  qRegisterMetaTypeStreamOperators<BufferId>("BufferId");
+  qRegisterMetaTypeStreamOperators<NetworkId>("NetworkId");
+
+}
 
 Global::RunMode Global::runMode;
 uint Global::defaultPort;

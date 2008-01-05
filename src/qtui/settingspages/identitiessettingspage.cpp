@@ -20,16 +20,26 @@
 
 #include "identitiessettingspage.h"
 
+#include "client.h"
+
 IdentitiesSettingsPage::IdentitiesSettingsPage(QWidget *parent)
   : SettingsPage(tr("General"), tr("Identities"), parent) {
 
   ui.setupUi(this);
-
+  setEnabled(false);  // need a core connection!
+  connect(Client::instance(), SIGNAL(coreConnectionStateChanged(bool)), this, SLOT(coreConnectionStateChanged(bool)));
 
 }
 
-bool IdentitiesSettingsPage::hasChanged() const {
+void IdentitiesSettingsPage::coreConnectionStateChanged(bool state) {
+  //this->setEnabled(state);
+  if(state) {
+    load();
+  }
+}
 
+bool IdentitiesSettingsPage::hasChanged() const {
+  return true;
 }
 
 void IdentitiesSettingsPage::save() {
