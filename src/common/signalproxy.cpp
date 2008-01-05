@@ -51,6 +51,8 @@ public:
   int sigCount() const;
   
 private:
+  bool isSyncMethod(int i);
+  
   SignalProxy* proxy;
   QObject* caller;
   QMultiHash<int, QByteArray> sigNames;
@@ -108,17 +110,31 @@ void SignalRelay::setSynchronize(bool sync) {
   if(!_sync && sync) {
     // enable Sync
     for(int i = 0; i < meta->methodCount(); i++ ) {
-      if(proxy->syncMap(caller).contains(meta->method(i).signature()))
+      if(isSyncMethod(i))
 	QMetaObject::connect(caller, i, this, QObject::staticMetaObject.methodCount() + i);
     }
   } else if (_sync && !sync) {
     // disable Sync
     for(int i = 0; i < meta->methodCount(); i++ ) {
-      if(proxy->syncMap(caller).contains(meta->method(i).signature()))
+      if(isSyncMethod(i))
 	QMetaObject::disconnect(caller, i, this, QObject::staticMetaObject.methodCount() + i);
     }
   }
   _sync = sync;
+}
+
+bool SignalRelay::isSyncMethod(int i) {
+  QByteArray signature = caller->metaObject()->method(i).signature();
+  if(!proxy->syncMap(caller).contains(signature))
+    return false;
+  
+  if(proxy->proxyMode() == SignalProxy::Server && !signature.startsWith("request"))
+    return true;
+
+  if(proxy->proxyMode() == SignalProxy::Client && signature.startsWith("request"))
+    return true;
+
+  return false;
 }
 
 bool SignalRelay::synchronize() const {
@@ -422,39 +438,29 @@ bool SignalProxy::attachSlot(const QByteArray& sigName, QObject* recv, const cha
 }
 
 void SignalProxy::synchronize(QObject *obj) {
-  if(proxyMode() == Server)
-    return synchronizeAsMaster(obj);
-  else
-    return synchronizeAsSlave(obj);
-}
+  createClassInfo(obj);
 
-void SignalProxy::synchronizeAsMaster(QObject *sender) {
-  createClassInfo(sender);
-
+  // attaching all the Signals
   SignalRelay* relay;
-  if(_relayHash.contains(sender))
-    relay = _relayHash[sender];
+  if(_relayHash.contains(obj))
+    relay = _relayHash[obj];
   else
-    relay = _relayHash[sender] = new SignalRelay(this, sender);
+    relay = _relayHash[obj] = new SignalRelay(this, obj);
 
   relay->setSynchronize(true);
 
-  if(sender->metaObject()->indexOfSignal(QMetaObject::normalizedSignature("renameObject(QString, QString)")) != -1)
-    connect(sender, SIGNAL(renameObject(QString, QString)), this, SLOT(objectRenamed(QString, QString)), Qt::DirectConnection);
+  // attaching as slave to receive sync Calls
+  QByteArray className(obj->metaObject()->className());
+  _syncSlave[className][obj->objectName()] = obj;
 
-  QByteArray className(sender->metaObject()->className());
-  _syncSlave[className][sender->objectName()] = sender;
+  if(proxyMode() == Server) {
+    if(obj->metaObject()->indexOfSignal(QMetaObject::normalizedSignature("renameObject(QString, QString)")) != -1)
+      connect(obj, SIGNAL(renameObject(QString, QString)), this, SLOT(objectRenamed(QString, QString)), Qt::DirectConnection);
 
-  setInitialized(sender);
-}
-
-void SignalProxy::synchronizeAsSlave(QObject *receiver) {
-  QByteArray className(receiver->metaObject()->className());
-  _syncSlave[className][receiver->objectName()] = receiver;
-  
-  createClassInfo(receiver);
-
-  requestInit(receiver);
+    setInitialized(obj);
+  } else {
+    requestInit(obj);
+  }
 }
 
 void SignalProxy::setInitialized(QObject *obj) {

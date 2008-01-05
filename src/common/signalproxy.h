@@ -64,8 +64,6 @@ public:
   bool attachSlot(const QByteArray& sigName, QObject *recv, const char *slot);
 
   void synchronize(QObject *obj);
-  void synchronizeAsMaster(QObject *obj);
-  void synchronizeAsSlave(QObject *obj);
 
   void setInitialized(QObject *obj);
   bool initialized(QObject *obj);
