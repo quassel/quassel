@@ -1,0 +1,7 @@
+The Quassel.kdevelop file is a copy of my project file for Quassel. You can use this
+as a starting point for your KDevelop project after doing the following:
+
+1) Copy the file into quassel's root directory
+2) Search/Replace all occurrences of PROJECT_ROOT with the absolute path of that directory
+
+Unfortunately, KDevelop does not allow relative paths...
