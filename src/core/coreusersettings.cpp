@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-08 by the Quassel Project                          *
+ *   Copyright (C) 2005-08 by the Quassel IRC Team                         *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,28 +18,29 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "sessionsettings.h"
+#include "coreusersettings.h"
 
-#include <QStringList>
-#include <QDebug>
+CoreUserSettings::CoreUserSettings(UserId uid) : CoreSettings(QString("CoreUser/%1").arg(uid)), user(uid) {
 
-SessionSettings::SessionSettings(UserId uid) : CoreSettings("SessionData"), user(uid) {
 
 }
 
-QVariantMap SessionSettings::sessionData() {
+
+
+
+QVariantMap CoreUserSettings::sessionData() {
   QVariantMap res;
-  foreach(QString key, localChildKeys(QString("%1").arg(user))) {
-    res[key] = localValue(QString("%1/%2").arg(user).arg(key));
+  foreach(QString key, localChildKeys(QString("SessionData"))) {
+    res[key] = localValue(QString("SessionData/%1").arg(key));
   }
   return res;
 }
 
-void SessionSettings::setSessionValue(const QString &key, const QVariant &data) {
-  setLocalValue(QString("%1/%2").arg(user).arg(key), data);
+void CoreUserSettings::setSessionValue(const QString &key, const QVariant &data) {
+  setLocalValue(QString("SessionData/%1").arg(key), data);
 }
 
-QVariant SessionSettings::sessionValue(const QString &key, const QVariant &def) {
-  return localValue(QString("%1/%2").arg(user).arg(key), def);
+QVariant CoreUserSettings::sessionValue(const QString &key, const QVariant &def) {
+  return localValue(QString("SessionData/%1").arg(key), def);
 }
 

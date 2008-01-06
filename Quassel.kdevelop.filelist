@@ -83,6 +83,8 @@ src/core/coresession.cpp
 src/core/coresession.h
 src/core/coresettings.cpp
 src/core/coresettings.h
+src/core/coreusersettings.cpp
+src/core/coreusersettings.h
 src/core/ctcphandler.cpp
 src/core/ctcphandler.h
 src/core/ircserverhandler.cpp

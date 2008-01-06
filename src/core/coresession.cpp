@@ -30,7 +30,7 @@
 #include "identity.h"
 
 #include "util.h"
-#include "sessionsettings.h"
+#include "coreusersettings.h"
 
 #include <QtScript>
 
@@ -44,22 +44,12 @@ CoreSession::CoreSession(UserId uid, Storage *_storage, QObject *parent)
 
   SignalProxy *p = signalProxy();
 
-  SessionSettings s(user);
-  sessionData = s.sessionData(); qDebug() << sessionData;
-  /*
-  QSettings s;  // FIXME don't use QSettings anymore
-  mutex.lock();
-  s.beginGroup(QString("SessionData/%1").arg(user));
-  foreach(QString key, s.allKeys()) { qDebug() << key;
-    sessionData[key] = s.value(key);
-  }
-  s.endGroup();
-  mutex.unlock(); // FIXME remove
-  */
-  /* temporarily disabled
-  s.beginGroup(QString("Identities/%1").arg(user));
-  foreach(QString id, s.childKeys()) {
-    Identity *i = new Identity(s.value(id).value<Identity>(), this);
+  CoreUserSettings s(user);
+  sessionData = s.sessionData();
+/*
+  CoreSettings cs;
+  foreach(QString id, cs.localChildKeys(QString("Identities/%1").arg(user))) {
+    Identity *i = new Identity(cs.localValue(QString("Identities/%1/%2").arg(user).arg(id)).value<Identity>(), this);
     if(i->id() < 1) {
       qDebug() << QString("Invalid identity!");
       continue;
@@ -142,7 +132,7 @@ void CoreSession::restoreState(const QVariant &previousState) {
 
 
 void CoreSession::storeSessionData(const QString &key, const QVariant &data) {
-  SessionSettings s(user);
+  CoreUserSettings s(user);
   mutex.lock();
   s.setSessionValue(key, data);
   sessionData[key] = data;
@@ -320,11 +310,11 @@ void CoreSession::createOrUpdateIdentity(const Identity &id) {
     // update
     _identities[id.id()]->update(id);
   }
-  Q_ASSERT(false); // FIX QSettings first!
-  QSettings s;  // FIXME don't use QSettings
+/*
+  CoreSettings s;
   s.beginGroup(QString("Identities/%1").arg(user));
   s.setValue(QString::number(id.id()), QVariant::fromValue<Identity>(*_identities[id.id()]));
-  s.endGroup();
+  s.endGroup();*/
 }
 
 void CoreSession::removeIdentity(IdentityId id) {

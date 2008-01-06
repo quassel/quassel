@@ -64,8 +64,8 @@ void Core::init() {
       ncs.setValue("Core/DatabaseSettings", os.value("Core/DatabaseSettings"));
       os.beginGroup("SessionData");
       foreach(QString group, os.childGroups()) {
-        ncs.setValue(QString("SessionData/%1/Identities").arg(group), os.value(QString("%1/Identities").arg(group)));
-        ncs.setValue(QString("SessionData/%1/Networks").arg(group), os.value(QString("%1/Networks").arg(group)));
+        ncs.setValue(QString("CoreUser/%1/SessionData/Identities").arg(group), os.value(QString("%1/Identities").arg(group)));
+        ncs.setValue(QString("CoreUser/%1/SessionData/Networks").arg(group), os.value(QString("%1/Networks").arg(group)));
       }
       os.endGroup();
 

@@ -74,6 +74,8 @@ class Identity : public QObject {
     void awayReasonSet(const QString &awayReason);
     void returnMessageSet(const QString &returnMessage);
 
+    void updatedRemotely();
+
   private:
     bool _initialized;
     IdentityId _identityId;

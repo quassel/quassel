@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-08 by the Quassel Project                          *
+ *   Copyright (C) 2005-08 by the Quassel IRC Team                         *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,23 +18,26 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _SESSIONSETTINGS_H_
-#define _SESSIONSETTINGS_H_
+#ifndef _COREUSERSETTINGS_H_
+#define _COREUSERSETTINGS_H_
 
 #include "coresettings.h"
+#include "identity.h"
 #include "types.h"
 
 #include <QVariantMap>
 
-// this class should only be used from CoreSession!
-//! This class stores and retrieves data from permanent storage for the use in SessionData.
-/** \Note Data stored here is not propagated into the actual SessionData!
- */
-class SessionSettings : public CoreSettings {
+class CoreUserSettings : public CoreSettings {
+
+  public:
+    CoreUserSettings(UserId user);
+
+    void setIdentity(const Identity &identity);
+    Identity identity(IdentityId id);
+
 
   private:
-    explicit SessionSettings(UserId user);
-
+    // this stuff should only be accessed by CoreSession!
     QVariantMap sessionData();
     QVariant sessionValue(const QString &key, const QVariant &def = QVariant());
     void setSessionValue(const QString &key, const QVariant &value);
