@@ -56,7 +56,8 @@ class Core : public QObject {
     void clientHasData();
     void clientDisconnected();
 
-    bool initStorageSqlite(QVariantMap dbSettings, bool setup);
+    bool initStorage(QVariantMap dbSettings, bool setup);
+    bool initStorage(QVariantMap dbSettings);
 
   private:
     Core();

@@ -18,78 +18,63 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _SQLITESTORAGE_H_
-#define _SQLITESTORAGE_H_
+#ifndef SQLITESTORAGE_H
+#define SQLITESTORAGE_H
 
-#include <QCryptographicHash>
+#include "abstractsqlstorage.h"
 
-#include "storage.h"
+#include <QSqlDatabase>
 
 class QSqlQuery;
 
-class SqliteStorage : public Storage {
+class SqliteStorage : public AbstractSqlStorage {
   Q_OBJECT
 
-  public:
-    SqliteStorage();
-    virtual ~SqliteStorage();
+public:
+  SqliteStorage(QObject *parent = 0);
+  virtual ~SqliteStorage();
+			  
+public slots:
+  /* General */
+  
+  static bool isAvailable();
+  static QString displayName();
+  virtual QString engineName() ;
+  // TODO: Add functions for configuring the backlog handling, i.e. defining auto-cleanup settings etc
+  
+  /* User handling */
+  
+  virtual UserId addUser(const QString &user, const QString &password);
+  virtual void updateUser(UserId user, const QString &password);
+  virtual void renameUser(UserId user, const QString &newName);
+  virtual UserId validateUser(const QString &user, const QString &password);
+  virtual void delUser(UserId user);
+  
+  /* Network handling */
+  virtual uint getNetworkId(UserId user, const QString &network);
+  
+  /* Buffer handling */
+  virtual BufferInfo getBufferInfo(UserId user, const QString &network, const QString &buffer = "");
+  virtual QList<BufferInfo> requestBuffers(UserId user, QDateTime since = QDateTime());
+  
+  /* Message handling */
+  
+  virtual MsgId logMessage(Message msg);
+  virtual QList<Message> requestMsgs(BufferInfo buffer, int lastmsgs = -1, int offset = -1);
+  virtual QList<Message> requestMsgs(BufferInfo buffer, QDateTime since, int offset = -1);
+  virtual QList<Message> requestMsgRange(BufferInfo buffer, int first, int last);
 
-  public slots:
-    /* General */
-
-    static bool isAvailable();
-    static QString displayName();
-    virtual bool setup(const QVariantMap &settings = QVariantMap());
-    virtual bool init(const QVariantMap &settings = QVariantMap());
-
-    // TODO: Add functions for configuring the backlog handling, i.e. defining auto-cleanup settings etc
-
-    /* User handling */
-
-    virtual UserId addUser(const QString &user, const QString &password);
-    virtual void updateUser(UserId user, const QString &password);
-    virtual void renameUser(UserId user, const QString &newName);
-    virtual UserId validateUser(const QString &user, const QString &password);
-    virtual void delUser(UserId user);
-
-    /* Network handling */
-    virtual uint getNetworkId(UserId user, const QString &network);
-
-    /* Buffer handling */
-    virtual BufferInfo getBufferInfo(UserId user, const QString &network, const QString &buffer = "");
-    virtual QList<BufferInfo> requestBuffers(UserId user, QDateTime since = QDateTime());
-
-    /* Message handling */
-
-    virtual MsgId logMessage(Message msg);
-    virtual QList<Message> requestMsgs(BufferInfo buffer, int lastmsgs = -1, int offset = -1);
-    virtual QList<Message> requestMsgs(BufferInfo buffer, QDateTime since, int offset = -1);
-    virtual QList<Message> requestMsgRange(BufferInfo buffer, int first, int last);
-
-  signals:
-    void bufferInfoUpdated(BufferInfo);
-
-  protected:
-
-  private:
-    static QString backlogFile(bool createPath = false);
-    
-    void createBuffer(UserId user, const QString &network, const QString &buffer);
-    bool watchQuery(QSqlQuery *query);
-
-    QSqlDatabase logDb;
-
-    QSqlQuery *logMessageQuery;
-    QSqlQuery *addSenderQuery;
-    QSqlQuery *getLastMessageIdQuery;
-    QSqlQuery *requestMsgsQuery;
-    QSqlQuery *requestMsgsOffsetQuery;
-    QSqlQuery *requestMsgsSinceQuery;
-    QSqlQuery *requestMsgsSinceOffsetQuery;
-    QSqlQuery *requestMsgRangeQuery;
-    QSqlQuery *createNetworkQuery;
-    QSqlQuery *createBufferQuery;
-    QSqlQuery *getBufferInfoQuery;
+protected:
+  inline virtual QString driverName() { return "QSQLITE"; }
+  inline virtual QString databaseName() { return backlogFile(); }
+  virtual int installedSchemaVersion();
+  
+signals:
+  void bufferInfoUpdated(BufferInfo);
+  
+private:
+  static QString backlogFile();
+  void createBuffer(UserId user, const QString &network, const QString &buffer);
 };
 
 #endif

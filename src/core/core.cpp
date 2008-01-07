@@ -27,6 +27,8 @@
 #include <QMetaObject>
 #include <QMetaMethod>
 
+#include <QCoreApplication>
+
 Core *Core::instanceptr = 0;
 
 Core *Core::instance() {
@@ -41,25 +43,34 @@ void Core::destroy() {
   instanceptr = 0;
 }
 
-Core::Core() {
-  storage = 0;
+Core::Core()
+  : storage(0)
+{
 }
 
 void Core::init() {
-
   // TODO: Remove this again at some point
   // Check if old core settings need to be migrated in order to make the switch to the
   // new location less painful.
   CoreSettings cs;
   QVariant foo = cs.databaseSettings();
+  
   if(!foo.isValid()) {
     // ok, no settings stored yet. check for old ones.
+#ifdef Q_WS_MAC
+    QSettings os("quassel-irc.org", "Quassel IRC", this);
+#else
     QSettings os("Quassel IRC Development Team", "Quassel IRC");
+#endif
     QVariant bar = os.value("Core/DatabaseSettings");
     if(bar.isValid()) {
       // old settings available -- migrate!
       qWarning() << "\n\nOld settings detected. Will migrate core settings to the new location...\nNOTE: GUI style settings won't be migrated!\n";
+#ifdef Q_WS_MAC
+      QSettings ncs("quassel-irc.org", "Quassel Core");
+#else
       QSettings ncs("Quassel Project", "Quassel Core");
+#endif
       ncs.setValue("Core/CoreState", os.value("Core/CoreState"));
       ncs.setValue("Core/DatabaseSettings", os.value("Core/DatabaseSettings"));
       os.beginGroup("SessionData");
@@ -68,8 +79,11 @@ void Core::init() {
         ncs.setValue(QString("CoreUser/%1/SessionData/Networks").arg(group), os.value(QString("%1/Networks").arg(group)));
       }
       os.endGroup();
-
+#ifdef Q_WS_MAC
+      QSettings ngs("quassel-irc.org", "Quassel Client");
+#else
       QSettings ngs("Quassel Project", "Quassel Client");
+#endif
       os.beginGroup("Accounts");
       foreach(QString key, os.childKeys()) {
         ngs.setValue(QString("Accounts/%1").arg(key), os.value(key));
@@ -91,51 +105,48 @@ void Core::init() {
   }
   // END
 
-  CoreSettings s;
   configured = false;
 
-  QVariantMap dbSettings = s.databaseSettings().toMap();
-  QString hname = dbSettings["Type"].toString().toLower();
-  hname[0] = hname[0].toUpper();
-  hname = "initStorage" + hname;
-  if (!QMetaObject::invokeMethod(this, hname.toAscii(), Q_RETURN_ARG(bool, configured),  Q_ARG(QVariantMap, dbSettings), Q_ARG(bool, false))) {
-    qWarning("No database backend configured.");
-  }
-  
-  if (!configured) {
+  if(!(configured = initStorage(cs.databaseSettings().toMap()))) {
     qWarning("Core is currently not configured!");
   }
-    
+  
   connect(&server, SIGNAL(newConnection()), this, SLOT(incomingConnection()));
-  startListening(s.port());
+  startListening(cs.port());
   guiUser = 0;
 
 }
 
-bool Core::initStorageSqlite(QVariantMap dbSettings, bool setup) {
-  if (!SqliteStorage::isAvailable()) {
-    qFatal("Sqlite is currently required! Please make sure your Qt library has sqlite support enabled.");
-  }
-  if (storage) {
+bool Core::initStorage(QVariantMap dbSettings, bool setup) {
+  QString engine = dbSettings["Type"].toString().toLower();
+
+  if(storage) {
     qDebug() << "Deleting old storage object.";
-    delete storage;
-    storage = NULL;
+    storage->deleteLater();
+    storage = 0;
   }
-  
-  storage = new SqliteStorage();
-  if (setup && !storage->setup(dbSettings)) {
-    return false;
+
+  // FIXME register new storageProviders here
+  if(engine == "sqlite" && SqliteStorage::isAvailable()) {
+    storage = new SqliteStorage(this);
+  } else {
+    qWarning() << "Selected StorageBackend is not available:" << dbSettings["Type"].toString();
+    return configured = false;
   }
-  
-  return storage->init(dbSettings);
+
+  if(setup && !storage->setup(dbSettings)) {
+    return configured = false;
+  }
+
+  return configured = storage->init(dbSettings);
+}
+						
+bool Core::initStorage(QVariantMap dbSettings) {
+  return initStorage(dbSettings, false);
 }
 
 Core::~Core() {
   qDeleteAll(sessions);
-  if (storage) {
-    delete storage;
-    storage = NULL;
-  }
 }
 
 void Core::restoreState() {
@@ -243,7 +254,7 @@ void Core::clientHasData() {
       return;
     }
   }
-  blockSizes[socket] = bsize = 0;  // FIXME blockSizes aufrï¿½um0rn!
+  blockSizes[socket] = bsize = 0;  // FIXME blockSizes aufräum0rn!
 }
 
 // FIXME: no longer called, since connection handling is now in SignalProxy
@@ -294,13 +305,8 @@ void Core::processCoreSetup(QTcpSocket *socket, QVariantMap &msg) {
     msg.remove("User");
     msg.remove("Password");
     qDebug() << "Initializing storage provider" << msg["Type"].toString();
-    QString hname = msg["Type"].toString().toLower();
-    hname[0] = hname[0].toUpper();
-    hname = "initStorage" + hname;
-    if (!QMetaObject::invokeMethod(this, hname.toAscii(), Q_RETURN_ARG(bool, configured),  Q_ARG(QVariantMap, msg), Q_ARG(bool, true))) {
-      qWarning("No database backend configured.");
-    }
-    if (!configured) {
+
+    if(!initStorage(msg, true)) {
       // notify client to start wizard again
       qWarning("Core is currently not configured!");
       QVariantMap reply;
@@ -344,7 +350,7 @@ QStringList Core::availableStorageProviders() {
     storageProviders.append(SqliteStorage::displayName());
   }
   // TODO: temporary
-  storageProviders.append("MySQL");
+  // storageProviders.append("MySQL");
   
   return storageProviders;
 }

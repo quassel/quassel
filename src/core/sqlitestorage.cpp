@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-08 by the Quassel Project                          *
+ *   Copyright (C) 2005-07 by the Quassel IRC Team                         *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -20,36 +20,16 @@
 
 #include "sqlitestorage.h"
 
+#include <QCryptographicHash>
+
 #include <QtSql>
 
-SqliteStorage::SqliteStorage() {
-  logMessageQuery = NULL;
-  addSenderQuery = NULL;
-  getLastMessageIdQuery = NULL;
-  requestMsgsQuery = NULL;
-  requestMsgsOffsetQuery = NULL;
-  requestMsgsSinceQuery = NULL;
-  requestMsgsSinceOffsetQuery = NULL;
-  requestMsgRangeQuery = NULL;
-  createNetworkQuery = NULL;
-  createBufferQuery = NULL;
-  getBufferInfoQuery = NULL;
+SqliteStorage::SqliteStorage(QObject *parent)
+  : AbstractSqlStorage(parent)
+{
 }
 
 SqliteStorage::~SqliteStorage() {
-  if (logMessageQuery) delete logMessageQuery;
-  if (addSenderQuery) delete addSenderQuery;
-  if (getLastMessageIdQuery) delete getLastMessageIdQuery;
-  if (requestMsgsQuery) delete requestMsgsQuery;
-  if (requestMsgsOffsetQuery) delete requestMsgsOffsetQuery;
-  if (requestMsgsSinceQuery) delete requestMsgsSinceQuery;
-  if (requestMsgsSinceOffsetQuery) delete requestMsgsSinceOffsetQuery;
-  if (requestMsgRangeQuery) delete requestMsgRangeQuery;
-  if (createNetworkQuery) delete createNetworkQuery;
-  if (createBufferQuery) delete createBufferQuery;
-  if (getBufferInfoQuery) delete getBufferInfoQuery;
-  
-  logDb.close();
 }
 
 bool SqliteStorage::isAvailable() {
@@ -58,184 +38,32 @@ bool SqliteStorage::isAvailable() {
 }
 
 QString SqliteStorage::displayName() {
-  return QString("SQlite");
+  return QString("SQLite");
 }
 
-bool SqliteStorage::setup(const QVariantMap &settings) {
-  Q_UNUSED(settings);
-  bool ok;
-  // this extra scope is needed to be able to remove the database connection later
-  {
-    logDb = QSqlDatabase::addDatabase("QSQLITE", "quassel_setup");
-    logDb.setDatabaseName(SqliteStorage::backlogFile(true));
-    ok = logDb.open();
-    
-    if (!ok) {
-      qWarning(tr("Could not open backlog database: %1").arg(logDb.lastError().text()).toAscii());
-    } else {
-      logDb.exec("CREATE TABLE quasseluser ("
-	             "userid INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
-	             "username TEXT UNIQUE NOT NULL,"
-	             "password BLOB NOT NULL)");
-	  
-      logDb.exec("CREATE TABLE sender ("
-	             "senderid INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
-	             "sender TEXT UNIQUE NOT NULL)");
-	  
-      logDb.exec("CREATE TABLE network ("
-	             "networkid INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
-	             "userid INTEGER NOT NULL,"
-	             "networkname TEXT NOT NULL,"
-	             "UNIQUE (userid, networkname))");
-	  
-      logDb.exec("CREATE TABLE buffergroup ("
-	             "groupid INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
-	             "userid INTEGER NOT NULL,"
-	             "displayname TEXT)");
-	  
-      logDb.exec("CREATE TABLE buffer ("
-	             "bufferid INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
-	             "userid INTEGER NOT NULL,"
-	             "groupid INTEGER,"
-	             "networkid INTEGER NOT NULL,"
-	             "buffername TEXT NOT NULL)");
-	  
-      logDb.exec("CREATE UNIQUE INDEX buffer_idx "
-	             "ON buffer(userid, networkid, buffername)");
-	    
-      logDb.exec("CREATE TABLE backlog ("
-	             "messageid INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
-	             "time INTEGER NOT NULL,"
-	             "bufferid INTEGER NOT NULL,"
-	             "type INTEGER NOT NULL,"
-	             "flags INTEGER NOT NULL,"
-	             "senderid INTEGER NOT NULL,"
-	             "message TEXT)");
-	  
-      logDb.exec("CREATE TABLE coreinfo ("
-	             "updateid INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
-	             "version INTEGER NOT NULL)");
-	  
-      logDb.exec("INSERT INTO coreinfo (version) VALUES (0)");
-      
-      // something fucked up -> no logging possible
-      // FIXME logDb.lastError is reset whenever exec is called
-      if(logDb.lastError().isValid()) { 
-        qWarning(tr("Could not create backlog table: %1").arg(logDb.lastError().text()).toAscii());
-        qWarning(tr("Disabling logging...").toAscii());
-        Q_ASSERT(false); // quassel does require logging
-        ok = false;
-      }
-    
-      logDb.close();
-    }
-  } 
-  
-  QSqlDatabase::removeDatabase("quassel_setup");
-  return ok;
+QString SqliteStorage::engineName() {
+  return SqliteStorage::displayName();
 }
 
-bool SqliteStorage::init(const QVariantMap &settings) {
-  Q_UNUSED(settings);
-  bool ok;
-  // i need the extra scope to be able to remove the database connection
-  {
-    logDb = QSqlDatabase::database("quassel_connection", false);
-    if (!logDb.isValid()) {
-      logDb = QSqlDatabase::addDatabase("QSQLITE", "quassel_connection");
-    }
-    logDb.setDatabaseName(SqliteStorage::backlogFile());
-    ok = logDb.open();
-    if (!ok) {
-      qWarning(tr("Could not open backlog database: %1").arg(logDb.lastError().text()).toAscii());
-    }
-  }
+int SqliteStorage::installedSchemaVersion() {
+  QSqlQuery query = logDb().exec("SELECT value FROM coreinfo WHERE key = 'schemaversion'");
+  if(query.first())
+    return query.value(0).toInt();
 
-  if (!ok) {
-    //QSqlDatabase::removeDatabase("quassel_connection");
-    return false;
-  }
+  // maybe it's really old... (schema version 0)
+  query = logDb().exec("SELECT MAX(version) FROM coreinfo");
+  if(query.first())
+    return query.value(0).toInt();
 
-  // check if the db schema is up to date
-  QSqlQuery query = logDb.exec("SELECT MAX(version) FROM coreinfo");
-  if(query.first()) {
-    // TODO VersionCheck
-    //checkVersion(query.value(0));
-    qDebug() << "Sqlite is ready. Quassel Schema Version:" << query.value(0).toUInt();
-  } else {
-    qWarning("Sqlite is not ready!");
-    return false;
-  }
-
-  // we will need those pretty often... so let's speed things up:
-  createBufferQuery = new QSqlQuery(logDb);
-  createBufferQuery->prepare("INSERT INTO buffer (userid, networkid, buffername) VALUES (:userid, (SELECT networkid FROM network WHERE networkname = :networkname AND userid = :userid2), :buffername)");
-
-  createNetworkQuery = new QSqlQuery(logDb);
-  createNetworkQuery->prepare("INSERT INTO network (userid, networkname) VALUES (:userid, :networkname)");
-
-  getBufferInfoQuery = new QSqlQuery(logDb);
-  getBufferInfoQuery->prepare("SELECT bufferid FROM buffer "
-                            "JOIN network ON buffer.networkid = network.networkid "
-                            "WHERE network.networkname = :networkname AND network.userid = :userid AND buffer.userid = :userid2 AND lower(buffer.buffername) = lower(:buffername)");
-
-  logMessageQuery = new QSqlQuery(logDb);
-  logMessageQuery->prepare("INSERT INTO backlog (time, bufferid, type, flags, senderid, message) "
-                           "VALUES (:time, :bufferid, :type, :flags, (SELECT senderid FROM sender WHERE sender = :sender), :message)");
-
-  addSenderQuery = new QSqlQuery(logDb);
-  addSenderQuery->prepare("INSERT INTO sender (sender) VALUES (:sender)");
-
-  getLastMessageIdQuery = new QSqlQuery(logDb);
-  getLastMessageIdQuery->prepare("SELECT messageid FROM backlog "
-                                 "WHERE time = :time AND bufferid = :bufferid AND type = :type AND senderid = (SELECT senderid FROM sender WHERE sender = :sender)");
-
-  requestMsgsOffsetQuery = new QSqlQuery(logDb);
-  requestMsgsOffsetQuery->prepare("SELECT count(*) FROM backlog WHERE bufferid = :bufferid AND messageid < :messageid");
-
-  requestMsgsQuery = new QSqlQuery(logDb);
-  requestMsgsQuery->prepare("SELECT messageid, time,  type, flags, sender, message, displayname "
-                            "FROM backlog "
-                            "JOIN buffer ON backlog.bufferid = buffer.bufferid "
-                            "JOIN sender ON backlog.senderid = sender.senderid "
-                            "LEFT JOIN buffergroup ON buffer.groupid = buffergroup.groupid "
-                            "WHERE buffer.bufferid = :bufferid OR buffer.groupid = (SELECT groupid FROM buffer WHERE bufferid = :bufferid2) "
-                            "ORDER BY messageid DESC "
-                            "LIMIT :limit OFFSET :offset");
-
-  requestMsgsSinceOffsetQuery = new QSqlQuery(logDb);
-  requestMsgsSinceOffsetQuery->prepare("SELECT count(*) FROM backlog WHERE bufferid = :bufferid AND time >= :since");
-
-  requestMsgsSinceQuery = new QSqlQuery(logDb);
-  requestMsgsSinceQuery->prepare("SELECT messageid, time,  type, flags, sender, message, displayname "
-                                 "FROM backlog "
-                                 "JOIN buffer ON backlog.bufferid = buffer.bufferid "
-                                 "JOIN sender ON backlog.senderid = sender.senderid "
-                                 "LEFT JOIN buffergroup ON buffer.groupid = buffergroup.groupid "
-                                 "WHERE (buffer.bufferid = :bufferid OR buffer.groupid = (SELECT groupid FROM buffer WHERE bufferid = :bufferid2)) AND "
-                                 "backlog.time >= :since "
-                                 "ORDER BY messageid DESC "
-                                 "LIMIT -1 OFFSET :offset");
-
-  requestMsgRangeQuery = new QSqlQuery(logDb);
-  requestMsgRangeQuery->prepare("SELECT messageid, time,  type, flags, sender, message, displayname "
-                                "FROM backlog "
-                                "JOIN buffer ON backlog.bufferid = buffer.bufferid "
-                                "JOIN sender ON backlog.senderid = sender.senderid "
-                                "LEFT JOIN buffergroup ON buffer.groupid = buffergroup.groupid "
-                                "WHERE (buffer.bufferid = :bufferid OR buffer.groupid = (SELECT groupid FROM buffer WHERE bufferid = :bufferid2)) AND "
-                                "backlog.messageid >= :firstmsg AND backlog.messageid <= :lastmsg "
-                                "ORDER BY messageid DESC ");
-  
-  return true;
+  return AbstractSqlStorage::installedSchemaVersion();
 }
 
 UserId SqliteStorage::addUser(const QString &user, const QString &password) {
   QByteArray cryptopass = QCryptographicHash::hash(password.toUtf8(), QCryptographicHash::Sha1);
   cryptopass = cryptopass.toHex();
 
-  QSqlQuery query(logDb);
-  query.prepare("INSERT INTO quasseluser (username, password) VALUES (:username, :password)");
+  QSqlQuery query(logDb());
+  query.prepare(queryString("insert_quasseluser"));
   query.bindValue(":username", user);
   query.bindValue(":password", cryptopass);
   query.exec();
@@ -243,7 +71,7 @@ UserId SqliteStorage::addUser(const QString &user, const QString &password) {
     return 0;
   }
 
-  query.prepare("SELECT userid FROM quasseluser WHERE username = :username");
+  query.prepare(queryString("select_userid"));
   query.bindValue(":username", user);
   query.exec();
   query.first();
@@ -256,16 +84,16 @@ void SqliteStorage::updateUser(UserId user, const QString &password) {
   QByteArray cryptopass = QCryptographicHash::hash(password.toUtf8(), QCryptographicHash::Sha1);
   cryptopass = cryptopass.toHex();
 
-  QSqlQuery query(logDb);
-  query.prepare("UPDATE quasseluser SET password = :password WHERE userid = :userid");
+  QSqlQuery query(logDb());
+  query.prepare(queryString("update_userpassword"));
   query.bindValue(":userid", user);
   query.bindValue(":password", cryptopass);
   query.exec();
 }
 
 void SqliteStorage::renameUser(UserId user, const QString &newName) {
-  QSqlQuery query(logDb);
-  query.prepare("UPDATE quasseluser SET username = :username WHERE userid = :userid");
+  QSqlQuery query(logDb());
+  query.prepare(queryString("update_username"));
   query.bindValue(":userid", user);
   query.bindValue(":username", newName);
   query.exec();
@@ -276,8 +104,8 @@ UserId SqliteStorage::validateUser(const QString &user, const QString &password)
   QByteArray cryptopass = QCryptographicHash::hash(password.toUtf8(), QCryptographicHash::Sha1);
   cryptopass = cryptopass.toHex();
 
-  QSqlQuery query(logDb);
-  query.prepare("SELECT userid FROM quasseluser WHERE username = :username AND password = :password");
+  QSqlQuery query(logDb());
+  query.prepare(queryString("select_authuser"));
   query.bindValue(":username", user);
   query.bindValue(":password", cryptopass);
   query.exec();
@@ -286,25 +114,25 @@ UserId SqliteStorage::validateUser(const QString &user, const QString &password)
     return query.value(0).toUInt();
   } else {
     throw AuthError();
-    //return 0;
+    return 0;
   }
 }
 
 void SqliteStorage::delUser(UserId user) {
-  QSqlQuery query(logDb);
-  query.prepare("DELETE FROM backlog WHERE bufferid IN (SELECT DISTINCT bufferid FROM buffer WHERE userid = :userid");
+  QSqlQuery query(logDb());
+  query.prepare(queryString("delete_backlog_by_uid"));
   query.bindValue(":userid", user);
   query.exec();
-  query.prepare("DELETE FROM buffer WHERE userid = :userid");
+  
+  query.prepare(queryString("delete_buffers_by_uid"));
   query.bindValue(":userid", user);
   query.exec();
-  query.prepare("DELETE FROM buffergroup WHERE userid = :userid");
+  
+  query.prepare(queryString("delete_networks_by_uid"));
   query.bindValue(":userid", user);
   query.exec();
-  query.prepare("DELETE FROM network WHERE userid = :userid");
-  query.bindValue(":userid", user);
-  query.exec();
-  query.prepare("DELETE FROM quasseluser WHERE userid = :userid");
+  
+  query.prepare(queryString("delete_quasseluser"));
   query.bindValue(":userid", user);
   query.exec();
   // I hate the lack of foreign keys and on delete cascade... :(
@@ -312,6 +140,7 @@ void SqliteStorage::delUser(UserId user) {
 }
 
 void SqliteStorage::createBuffer(UserId user, const QString &network, const QString &buffer) {
+  QSqlQuery *createBufferQuery = cachedQuery("insert_buffer");
   createBufferQuery->bindValue(":userid", user);
   createBufferQuery->bindValue(":userid2", user);  // Qt can't handle same placeholder twice (maybe sqlites fault)
   createBufferQuery->bindValue(":networkname", network);
@@ -319,7 +148,8 @@ void SqliteStorage::createBuffer(UserId user, const QString &network, const QStr
   createBufferQuery->exec();
 
   if(createBufferQuery->lastError().isValid()) {
-    if(createBufferQuery->lastError().number() == 19) { // Null Constraint violation 
+    if(createBufferQuery->lastError().number() == 19) { // Null Constraint violation
+      QSqlQuery *createNetworkQuery = cachedQuery("insert_network");
       createNetworkQuery->bindValue(":userid", user);
       createNetworkQuery->bindValue(":networkname", network);
       createNetworkQuery->exec();
@@ -335,7 +165,7 @@ void SqliteStorage::createBuffer(UserId user, const QString &network, const QStr
 }
 
 uint SqliteStorage::getNetworkId(UserId user, const QString &network) {
-  QSqlQuery query(logDb);
+  QSqlQuery query(logDb());
   query.prepare("SELECT networkid FROM network "
 		"WHERE userid = :userid AND networkname = :networkname");
   query.bindValue(":userid", user);
@@ -360,6 +190,8 @@ BufferInfo SqliteStorage::getBufferInfo(UserId user, const QString &network, con
   BufferInfo bufferid;
   // TODO: get rid of this hackaround
   uint networkId = getNetworkId(user, network);
+
+  QSqlQuery *getBufferInfoQuery = cachedQuery("select_bufferByName");
   getBufferInfoQuery->bindValue(":networkname", network);
   getBufferInfoQuery->bindValue(":userid", user);
   getBufferInfoQuery->bindValue(":userid2", user); // Qt can't handle same placeholder twice... though I guess it's sqlites fault
@@ -383,28 +215,26 @@ BufferInfo SqliteStorage::getBufferInfo(UserId user, const QString &network, con
 }
 
 QList<BufferInfo> SqliteStorage::requestBuffers(UserId user, QDateTime since) {
+  uint time = 0;
+  if(since.isValid())
+    time = since.toTime_t();
+  
   QList<BufferInfo> bufferlist;
-  QSqlQuery query(logDb);
-  query.prepare("SELECT DISTINCT buffer.bufferid, networkname, buffername FROM buffer "
-                "JOIN network ON buffer.networkid = network.networkid "
-                "JOIN backlog ON buffer.bufferid = backlog.bufferid "
-                "WHERE buffer.userid = :userid AND time >= :time");
+  QSqlQuery query(logDb());
+  query.prepare(queryString("select_buffers"));
   query.bindValue(":userid", user);
-  if (since.isValid()) {
-    query.bindValue(":time", since.toTime_t());
-  } else {
-    query.bindValue(":time", 0);
-  }
+  query.bindValue(":time", time);
   
   query.exec();
-
+  watchQuery(&query);
   while(query.next()) {
-    bufferlist << BufferInfo(query.value(0).toUInt(), getNetworkId(user, query.value(1).toString()), 0, query.value(1).toString(), query.value(2).toString());
+    bufferlist << BufferInfo(query.value(0).toUInt(), query.value(2).toUInt(), 0, query.value(3).toString(), query.value(1).toString());
   }
   return bufferlist;
 }
 
 MsgId SqliteStorage::logMessage(Message msg) {
+  QSqlQuery *logMessageQuery = cachedQuery("insert_message");
   logMessageQuery->bindValue(":time", msg.timestamp().toTime_t());
   logMessageQuery->bindValue(":bufferid", msg.buffer().uid());
   logMessageQuery->bindValue(":type", msg.type());
@@ -415,7 +245,8 @@ MsgId SqliteStorage::logMessage(Message msg) {
   
   if(logMessageQuery->lastError().isValid()) {
     // constraint violation - must be NOT NULL constraint - probably the sender is missing...
-    if(logMessageQuery->lastError().number() == 19) { 
+    if(logMessageQuery->lastError().number() == 19) {
+      QSqlQuery *addSenderQuery = cachedQuery("insert_sender");
       addSenderQuery->bindValue(":sender", msg.sender());
       addSenderQuery->exec();
       watchQuery(addSenderQuery);
@@ -427,6 +258,7 @@ MsgId SqliteStorage::logMessage(Message msg) {
     }
   }
 
+  QSqlQuery *getLastMessageIdQuery = cachedQuery("select_lastMessage");
   getLastMessageIdQuery->bindValue(":time", msg.timestamp().toTime_t());
   getLastMessageIdQuery->bindValue(":bufferid", msg.buffer().uid());
   getLastMessageIdQuery->bindValue(":type", msg.type());
@@ -445,6 +277,7 @@ MsgId SqliteStorage::logMessage(Message msg) {
 QList<Message> SqliteStorage::requestMsgs(BufferInfo buffer, int lastmsgs, int offset) {
   QList<Message> messagelist;
   // we have to determine the real offset first
+  QSqlQuery *requestMsgsOffsetQuery = cachedQuery("select_messagesOffset");
   requestMsgsOffsetQuery->bindValue(":bufferid", buffer.uid());
   requestMsgsOffsetQuery->bindValue(":messageid", offset);
   requestMsgsOffsetQuery->exec();
@@ -452,6 +285,7 @@ QList<Message> SqliteStorage::requestMsgs(BufferInfo buffer, int lastmsgs, int o
   offset = requestMsgsOffsetQuery->value(0).toUInt();
 
   // now let's select the messages
+  QSqlQuery *requestMsgsQuery = cachedQuery("select_messages");
   requestMsgsQuery->bindValue(":bufferid", buffer.uid());
   requestMsgsQuery->bindValue(":bufferid2", buffer.uid());  // Qt can't handle the same placeholder used twice
   requestMsgsQuery->bindValue(":limit", lastmsgs);
@@ -474,6 +308,7 @@ QList<Message> SqliteStorage::requestMsgs(BufferInfo buffer, int lastmsgs, int o
 QList<Message> SqliteStorage::requestMsgs(BufferInfo buffer, QDateTime since, int offset) {
   QList<Message> messagelist;
   // we have to determine the real offset first
+  QSqlQuery *requestMsgsSinceOffsetQuery = cachedQuery("select_messagesSinceOffset");
   requestMsgsSinceOffsetQuery->bindValue(":bufferid", buffer.uid());
   requestMsgsSinceOffsetQuery->bindValue(":since", since.toTime_t());
   requestMsgsSinceOffsetQuery->exec();
@@ -481,6 +316,7 @@ QList<Message> SqliteStorage::requestMsgs(BufferInfo buffer, QDateTime since, in
   offset = requestMsgsSinceOffsetQuery->value(0).toUInt();  
 
   // now let's select the messages
+  QSqlQuery *requestMsgsSinceQuery = cachedQuery("select_messagesSince");
   requestMsgsSinceQuery->bindValue(":bufferid", buffer.uid());
   requestMsgsSinceQuery->bindValue(":bufferid2", buffer.uid());
   requestMsgsSinceQuery->bindValue(":since", since.toTime_t());
@@ -504,6 +340,7 @@ QList<Message> SqliteStorage::requestMsgs(BufferInfo buffer, QDateTime since, in
 
 QList<Message> SqliteStorage::requestMsgRange(BufferInfo buffer, int first, int last) {
   QList<Message> messagelist;
+  QSqlQuery *requestMsgRangeQuery = cachedQuery("select_messageRange");
   requestMsgRangeQuery->bindValue(":bufferid", buffer.uid());
   requestMsgRangeQuery->bindValue(":bufferid2", buffer.uid());
   requestMsgRangeQuery->bindValue(":firstmsg", first);
@@ -523,37 +360,18 @@ QList<Message> SqliteStorage::requestMsgRange(BufferInfo buffer, int first, int 
   return messagelist;
 }
 
-QString SqliteStorage::backlogFile(bool createPath) {
+QString SqliteStorage::backlogFile() {
   // kinda ugly, but I currently see no other way to do that
 #ifdef Q_OS_WIN32
   QString quasselDir = QDir::homePath() + qgetenv("APPDATA") + "\\quassel\\";
 #else
   QString quasselDir = QDir::homePath() + "/.quassel/";
 #endif
+
+  QDir qDir(quasselDir);
+  if(!qDir.exists(quasselDir))
+    qDir.mkpath(quasselDir);
   
-  if (createPath) {
-    QDir *qDir = new QDir(quasselDir);
-    if (!qDir->exists(quasselDir)) {
-      qDir->mkpath(quasselDir);
-    }
-    delete qDir;
-  }
-
-  return quasselDir + "quassel-storage.sqlite";
+  return quasselDir + "quassel-storage.sqlite";  
 }
 
-bool SqliteStorage::watchQuery(QSqlQuery *query) {
-  if(query->lastError().isValid()) {
-    qWarning() << "unhandled Error in QSqlQuery!";
-    qWarning() << "                  last Query:" << query->lastQuery();
-    qWarning() << "              executed Query:" << query->executedQuery();
-    qWarning() << "                bound Values:" << query->boundValues();
-    qWarning() << "                Error Number:" << query->lastError().number();
-    qWarning() << "               Error Message:" << query->lastError().text();
-    qWarning() << "              Driver Message:" << query->lastError().driverText();
-    qWarning() << "                  DB Message:" << query->lastError().databaseText();
-    
-    return false;
-  }
-  return true;
-}

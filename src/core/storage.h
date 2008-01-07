@@ -22,7 +22,6 @@
 #define _STORAGE_H_
 
 #include <QtCore>
-#include <QSqlDatabase>
 
 #include "message.h"
 
@@ -30,7 +29,7 @@ class Storage : public QObject {
   Q_OBJECT
 
   public:
-    Storage() {};
+    Storage(QObject *parent = 0);
     virtual ~Storage() {};
 
   public slots:

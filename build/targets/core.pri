@@ -6,3 +6,4 @@ DEFINES = BUILD_CORE
 
 QT -= gui
 QT += network sql script
+

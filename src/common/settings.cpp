@@ -29,7 +29,15 @@
 
 #include "settings.h"
 
-Settings::Settings(QString g, QString applicationName) : QSettings(QCoreApplication::organizationName(), applicationName), group(g) {
+Settings::Settings(QString g, QString applicationName)
+
+#ifdef Q_WS_MAC
+  : QSettings(QCoreApplication::organizationDomain(), applicationName),
+#else
+  : QSettings(QCoreApplication::organizationName(), applicationName),
+#endif
+    group(g)
+{
 
 /* we need to call the constructor immediately in order to set the path...
 #ifndef Q_WS_QWS

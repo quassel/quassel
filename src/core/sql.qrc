@@ -1,0 +1,36 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+    <file>./SQL/SQLite/1/delete_backlog_by_uid.sql</file>
+    <file>./SQL/SQLite/1/delete_buffers_by_uid.sql</file>
+    <file>./SQL/SQLite/1/delete_networks_by_uid.sql</file>
+    <file>./SQL/SQLite/1/delete_quasseluser.sql</file>
+    <file>./SQL/SQLite/1/insert_buffer.sql</file>
+    <file>./SQL/SQLite/1/insert_message.sql</file>
+    <file>./SQL/SQLite/1/insert_network.sql</file>
+    <file>./SQL/SQLite/1/insert_quasseluser.sql</file>
+    <file>./SQL/SQLite/1/insert_sender.sql</file>
+    <file>./SQL/SQLite/1/select_authuser.sql</file>
+    <file>./SQL/SQLite/1/select_bufferByName.sql</file>
+    <file>./SQL/SQLite/1/select_buffers.sql</file>
+    <file>./SQL/SQLite/1/select_lastMessage.sql</file>
+    <file>./SQL/SQLite/1/select_messageRange.sql</file>
+    <file>./SQL/SQLite/1/select_messages.sql</file>
+    <file>./SQL/SQLite/1/select_messagesOffset.sql</file>
+    <file>./SQL/SQLite/1/select_messagesSince.sql</file>
+    <file>./SQL/SQLite/1/select_messagesSinceOffset.sql</file>
+    <file>./SQL/SQLite/1/select_userid.sql</file>
+    <file>./SQL/SQLite/1/setup_000_quasseluser.sql</file>
+    <file>./SQL/SQLite/1/setup_010_sender.sql</file>
+    <file>./SQL/SQLite/1/setup_020_network.sql</file>
+    <file>./SQL/SQLite/1/setup_040_buffer.sql</file>
+    <file>./SQL/SQLite/1/setup_050_buffer_idx.sql</file>
+    <file>./SQL/SQLite/1/setup_060_backlog.sql</file>
+    <file>./SQL/SQLite/1/setup_070_coreinfo.sql</file>
+    <file>./SQL/SQLite/1/setup_080_version.sql</file>
+    <file>./SQL/SQLite/1/update_username.sql</file>
+    <file>./SQL/SQLite/1/update_userpassword.sql</file>
+    <file>./SQL/SQLite/1/upgrade_000_drop_coreinfo.sql</file>
+    <file>./SQL/SQLite/1/upgrade_010_create_coreinfo.sql</file>
+    <file>./SQL/SQLite/1/upgrade_020_update_schemaversion.sql</file>
+</qresource>
+</RCC>

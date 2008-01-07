@@ -5,6 +5,7 @@ Already Done:
       chatwidget state
       make signalproxy threadsafe
       utf-8 / encodings
+      externalize SQL-queries, provide migration path...
 
 Showstoppers:
 =============
@@ -18,7 +19,6 @@ Open: network settings in DB -> ?
       switch to network-IDs -> ?
       remove buffergroups (DB) -> ?
       insert buffertype field rein (DB) -> ?
-      externalize SQL-queries, provide migration path... -> EgS
       core-user admin, rights management (ACL) -> Sput?
 
 BUG:  multi-user join -> ?
