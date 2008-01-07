@@ -87,16 +87,3 @@ bool SyncableObject::setInitValue(const QString &property, const QVariant &value
   QGenericArgument param(value.typeName(), value.constData());
   return QMetaObject::invokeMethod(this, handlername.toAscii(), param);
 }
-
-#include <QDebug>
-QDataStream &operator<<(QDataStream &out, SyncableObject object) {
-  out << object.toVariantMap();
-  return out;
-}
-
-QDataStream &operator>>(QDataStream &in, SyncableObject &object) {
-  QVariantMap map;
-  in >> map;
-  object.fromVariantMap(map);
-  return in;
-}

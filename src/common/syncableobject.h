@@ -55,9 +55,4 @@ class SyncableObject : public QObject {
 
 };
 
-QDataStream &operator<<(QDataStream &out, SyncableObject object);
-QDataStream &operator>>(QDataStream &in, SyncableObject &object);
-
-Q_DECLARE_METATYPE(SyncableObject);
-
 #endif
