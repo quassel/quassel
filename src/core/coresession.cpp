@@ -50,7 +50,8 @@ CoreSession::CoreSession(UserId uid, Storage *_storage, QObject *parent)
   foreach(IdentityId id, s.identityIds()) {
     Identity *i = new Identity(s.identity(id), this);
     if(!i->isValid()) {
-      qDebug() << QString("Invalid identity!");
+      qDebug() << QString("Invalid identity! Removing...");
+      s.removeIdentity(id);
       delete i;
       continue;
     }

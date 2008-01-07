@@ -27,8 +27,9 @@
 #include <QStringList>
 
 #include "types.h"
+#include "syncableobject.h"
 
-class Identity : public QObject {
+class Identity : public SyncableObject {
   Q_OBJECT
 
   Q_PROPERTY(IdentityId identityId READ id WRITE setId STORED false);
@@ -158,7 +159,7 @@ class Identity : public QObject {
     friend QDataStream &operator>>(QDataStream &in, Identity &identity);
 };
 
-QDataStream &operator<<(QDataStream &out, const Identity &identity);
+QDataStream &operator<<(QDataStream &out, Identity identity);
 QDataStream &operator>>(QDataStream &in, Identity &identity);
 
 Q_DECLARE_METATYPE(Identity);

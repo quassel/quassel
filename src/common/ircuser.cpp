@@ -29,7 +29,7 @@
 #include <QDebug>
 
 IrcUser::IrcUser(const QString &hostmask, NetworkInfo *networkinfo)
-  : QObject(networkinfo),
+  : SyncableObject(networkinfo),
     _initialized(false),
     _nick(nickFromMask(hostmask)),
     _user(userFromMask(hostmask)),

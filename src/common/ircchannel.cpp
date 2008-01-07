@@ -34,7 +34,7 @@
 
 
 IrcChannel::IrcChannel(const QString &channelname, NetworkInfo *networkinfo) 
-  : QObject(networkinfo),
+  : SyncableObject(networkinfo),
     _initialized(false),
     _name(channelname),
     _topic(QString()),

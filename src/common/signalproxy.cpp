@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include "signalproxy.h"
+
 #include <QObject>
 #include <QIODevice>
 #include <QAbstractSocket>
@@ -31,6 +32,8 @@
 #include <QMetaProperty>
 #include <QMutexLocker>
 #include <QRegExp>
+
+#include "syncableobject.h"
 #include "util.h"
 
 class SignalRelay: public QObject {
@@ -87,7 +90,7 @@ int SignalRelay::qt_metacall(QMetaObject::Call _c, int _id, void **_a) {
       
       // dispatch Sync Signal if necessary
       QByteArray signature(caller->metaObject()->method(_id).signature());
-      if(synchronize() && proxy->syncMap(caller).contains(signature)) {
+      if(synchronize() && proxy->syncMap(qobject_cast<SyncableObject *>(caller)).contains(signature)) {
 	// qDebug() << "__SYNC__ >>>"
 	// 	 << caller->metaObject()->className()
 	// 	 << caller->objectName()
@@ -125,7 +128,7 @@ void SignalRelay::setSynchronize(bool sync) {
 
 bool SignalRelay::isSyncMethod(int i) {
   QByteArray signature = caller->metaObject()->method(i).signature();
-  if(!proxy->syncMap(caller).contains(signature))
+  if(!proxy->syncMap(qobject_cast<SyncableObject *>(caller)).contains(signature))
     return false;
   
   if(proxy->proxyMode() == SignalProxy::Server && !signature.startsWith("request"))
@@ -356,7 +359,7 @@ const QByteArray &SignalProxy::methodName(QObject *obj, int methodId) {
 }
 
 
-void SignalProxy::setSyncMap(QObject *obj) {
+void SignalProxy::setSyncMap(SyncableObject *obj) {
   const QMetaObject *meta = obj->metaObject();
   QHash<QByteArray, int> syncMap;
   
@@ -391,7 +394,7 @@ void SignalProxy::setSyncMap(QObject *obj) {
   _classInfo[meta]->syncMap = syncMap;
 }
 
-const QHash<QByteArray,int> &SignalProxy::syncMap(QObject *obj) {
+const QHash<QByteArray,int> &SignalProxy::syncMap(SyncableObject *obj) {
   Q_ASSERT(_classInfo.contains(obj->metaObject()));
   if(_classInfo[obj->metaObject()]->syncMap.isEmpty())
     setSyncMap(obj);
@@ -448,7 +451,7 @@ bool SignalProxy::attachSlot(const QByteArray& sigName, QObject* recv, const cha
   return true;
 }
 
-void SignalProxy::synchronize(QObject *obj) {
+void SignalProxy::synchronize(SyncableObject *obj) {
   createClassInfo(obj);
 
   // attaching all the Signals
@@ -474,18 +477,18 @@ void SignalProxy::synchronize(QObject *obj) {
   }
 }
 
-void SignalProxy::setInitialized(QObject *obj) {
+void SignalProxy::setInitialized(SyncableObject *obj) {
   QMetaObject::invokeMethod(obj, "setInitialized");
 }
 
-bool SignalProxy::initialized(QObject *obj) {
+bool SignalProxy::initialized(SyncableObject *obj) {
   bool init;
   if(!QMetaObject::invokeMethod(obj, "initialized", Q_RETURN_ARG(bool, init)))
     init = false;
   return init;
 }
 
-void SignalProxy::requestInit(QObject *obj) {
+void SignalProxy::requestInit(SyncableObject *obj) {
   if(proxyMode() == Server || initialized(obj))
     return;
 
@@ -511,7 +514,8 @@ void SignalProxy::detachObject(QObject* obj) {
   QMutexLocker locker(&slaveMutex);
   _detachSignals(obj);
   _detachSlots(obj);
-  _stopSync(obj);
+  SyncableObject *syncobj = qobject_cast<SyncableObject *>(obj);
+  if(syncobj) _stopSync(syncobj);
 }
 
 void SignalProxy::detachSignals(QObject* sender) {
@@ -524,7 +528,7 @@ void SignalProxy::detachSlots(QObject* receiver) {
   _detachSlots(receiver);
 }
 
-void SignalProxy::stopSync(QObject* obj) {
+void SignalProxy::stopSync(SyncableObject* obj) {
   QMutexLocker locker(&slaveMutex);
   _stopSync(obj);
 }
@@ -545,7 +549,7 @@ void SignalProxy::_detachSlots(QObject* receiver) {
   }
 }
 
-void SignalProxy::_stopSync(QObject* obj) {
+void SignalProxy::_stopSync(SyncableObject* obj) {
   if(_relayHash.contains(obj))
     _relayHash[obj]->setSynchronize(false);
 
@@ -618,7 +622,7 @@ void SignalProxy::handleSync(QVariantList params) {
     return;
   }
 
-  QObject *receiver = _syncSlave[className][objectName];
+  SyncableObject *receiver = _syncSlave[className][objectName];
   if(!syncMap(receiver).contains(signal)) {
     qWarning() << QString("no matching slot for sync call: %s::%s (objectName=\"%s\"). Params are:").arg(QString(className)).arg(QString(signal)).arg(objectName)
 	       << params;
@@ -656,7 +660,7 @@ void SignalProxy::handleInitRequest(QIODevice *sender, const QVariantList &param
     return;
   }
   
-  QObject *obj = _syncSlave[className][objectName];
+  SyncableObject *obj = _syncSlave[className][objectName];
 
   QVariantList params_;
   params_ << obj->metaObject()->className()
@@ -690,7 +694,7 @@ void SignalProxy::handleInitData(QIODevice *sender, const QVariantList &params) 
     return;
   }
 
-  QObject *obj = _syncSlave[className][objectName];
+  SyncableObject *obj = _syncSlave[className][objectName];
   setInitData(obj, propertyMap);
 }
 
@@ -789,62 +793,15 @@ QString SignalProxy::methodBaseName(const QMetaMethod &method) {
   return methodname;
 }
 
-QVariantMap SignalProxy::initData(QObject *obj) const {
-  QVariantMap properties;
-
-  const QMetaObject* meta = obj->metaObject();
-
-  // we collect data from properties
-  for(int i = 0; i < meta->propertyCount(); i++) {
-    QMetaProperty prop = meta->property(i);
-    properties[QString(prop.name())] = prop.read(obj);
-  }
-
-  // ...as well as methods, which have names starting with "init"
-  for(int i = 0; i < meta->methodCount(); i++) {
-    QMetaMethod method = meta->method(i);
-    QString methodname(::methodName(method));
-    if(!methodname.startsWith("init") || methodname.startsWith("initSet"))
-      continue;
-
-    QVariant value = QVariant(QVariant::nameToType(method.typeName()));
-    QGenericReturnArgument genericvalue = QGenericReturnArgument(method.typeName(), &value);
-    QMetaObject::invokeMethod(obj, methodname.toAscii(), genericvalue);
-
-    properties[methodBaseName(method)] = value;
-    // qDebug() << ">>> SYNC:" << methodBaseName(method) << value;
-  }
-  
-  // properties["Payload"] = QByteArray(10000000, 'a');  // for testing purposes
-  return properties;
+QVariantMap SignalProxy::initData(SyncableObject *obj) const {
+  return obj->toVariantMap();
 }
 
-void SignalProxy::setInitData(QObject *obj, const QVariantMap &properties) {
+void SignalProxy::setInitData(SyncableObject *obj, const QVariantMap &properties) {
   if(initialized(obj))
     return;
-
-  const QMetaObject *meta = obj->metaObject();
-  
-  QVariantMap::const_iterator iterator = properties.constBegin();
-  while(iterator != properties.constEnd()) {
-    QString name = iterator.key();
-    int propertyIndex = meta->indexOfProperty(name.toAscii());
-
-    if(propertyIndex == -1 || !meta->property(propertyIndex).isWritable())
-      setInitValue(obj, name, iterator.value());
-    else
-      obj->setProperty(name.toAscii(), iterator.value());
-    // qDebug() << "<<< SYNC:" << name << iterator.value();
-    iterator++;
-  }
+  obj->fromVariantMap(properties);
   setInitialized(obj);
-}
-
-bool SignalProxy::setInitValue(QObject *obj, const QString &property, const QVariant &value) {
-  QString handlername = QString("initSet") + property;
-  handlername[7] = handlername[7].toUpper();
-  QGenericArgument param(value.typeName(), value.constData());
-  return QMetaObject::invokeMethod(obj, handlername.toAscii(), param);
 }
 
 void SignalProxy::dumpProxyStats() {
@@ -871,7 +828,7 @@ void SignalProxy::dumpProxyStats() {
   qDebug() << "number of Classes cached:" << _classInfo.count();
 }
 
-void SignalProxy::dumpSyncMap(QObject *object) {
+void SignalProxy::dumpSyncMap(SyncableObject *object) {
   const QMetaObject *meta = object->metaObject();
   qDebug() << "SignalProxy: SyncMap for Class" << meta->className();
 

@@ -26,6 +26,7 @@
 #include "identity.h"
 #include "bufferinfo.h"
 #include "types.h"
+#include "syncableobject.h"
 
 extern void messageHandler(QtMsgType type, const char *msg);
 

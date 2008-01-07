@@ -32,6 +32,7 @@
 #include <QMutex>
 
 class SignalRelay;
+class SyncableObject;
 class QMetaObject;
 
 class SignalProxy : public QObject {
@@ -63,16 +64,16 @@ public:
   bool attachSignal(QObject *sender, const char *signal, const QByteArray& sigName = QByteArray());
   bool attachSlot(const QByteArray& sigName, QObject *recv, const char *slot);
 
-  void synchronize(QObject *obj);
+  void synchronize(SyncableObject *obj);
 
-  void setInitialized(QObject *obj);
-  bool initialized(QObject *obj);
-  void requestInit(QObject *obj);
+  void setInitialized(SyncableObject *obj);
+  bool initialized(SyncableObject *obj);
+  void requestInit(SyncableObject *obj);
 
   void detachObject(QObject *obj);
   void detachSignals(QObject *sender);
   void detachSlots(QObject *receiver);
-  void stopSync(QObject *obj);
+  void stopSync(SyncableObject *obj);
 
   //! Writes a QVariant to a device.
   /** The data item is prefixed with the resulting blocksize,
@@ -92,7 +93,7 @@ public:
   const QList<int> &argTypes(QObject *obj, int methodId);
   bool hasUpdateSignal(QObject *obj);
   const QByteArray &methodName(QObject *obj, int methodId);
-  const QHash<QByteArray, int> &syncMap(QObject *obj);
+  const QHash<QByteArray, int> &syncMap(SyncableObject *obj);
 
   typedef QHash<int, QList<int> > ArgHash;
   typedef QHash<int, QByteArray> MethodNameHash;
@@ -124,7 +125,7 @@ private:
   void createClassInfo(QObject *obj);
   void setArgTypes(QObject *obj, int methodId);
   void setMethodName(QObject *obj, int methodId);
-  void setSyncMap(QObject *obj);
+  void setSyncMap(SyncableObject *obj);
 
   bool methodsMatch(const QMetaMethod &signal, const QMetaMethod &slot) const;
 
@@ -139,16 +140,15 @@ private:
 
   bool invokeSlot(QObject *receiver, int methodId, const QVariantList &params);
 
-  QVariantMap initData(QObject *obj) const;
-  void setInitData(QObject *obj, const QVariantMap &properties);
-  bool setInitValue(QObject *obj, const QString &property, const QVariant &value);
+  QVariantMap initData(SyncableObject *obj) const;
+  void setInitData(SyncableObject *obj, const QVariantMap &properties);
 
   void _detachSignals(QObject *sender);
   void _detachSlots(QObject *receiver);
-  void _stopSync(QObject *obj);
+  void _stopSync(SyncableObject *obj);
 
-  void dumpSyncMap(QObject *object);
-  
+  void dumpSyncMap(SyncableObject *object);
+
   // Hash of used QIODevices
   QHash<QIODevice*, quint32> _peerByteCount;
 
@@ -164,7 +164,7 @@ private:
   SlotHash _attachedSlots;
 
   // slaves for sync
-  typedef QHash<QString, QObject *> ObjectId;
+  typedef QHash<QString, SyncableObject *> ObjectId;
   QHash<QByteArray, ObjectId> _syncSlave;
 
 

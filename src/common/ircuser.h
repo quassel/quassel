@@ -26,11 +26,13 @@
 #include <QStringList>
 #include <QVariantMap>
 
+#include "syncableobject.h"
+
 class SignalProxy;
 class NetworkInfo;
 class IrcChannel;
 
-class IrcUser : public QObject {
+class IrcUser : public SyncableObject {
   Q_OBJECT
 
   Q_PROPERTY(QString user READ user WRITE setUser STORED false)

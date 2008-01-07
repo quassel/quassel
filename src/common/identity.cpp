@@ -23,12 +23,12 @@
 
 #include "identity.h"
 
-Identity::Identity(IdentityId id, QObject *parent) : QObject(parent), _identityId(id) {
+Identity::Identity(IdentityId id, QObject *parent) : SyncableObject(parent), _identityId(id) {
   init();
   setToDefaults();
 }
 
-Identity::Identity(const Identity &other, QObject *parent) : QObject(parent),
+Identity::Identity(const Identity &other, QObject *parent) : SyncableObject(parent),
             _identityId(other.id()),
             _identityName(other.identityName()),
             _realName(other.realName()),
@@ -313,56 +313,17 @@ bool Identity::operator!=(const Identity &other) {
 
 ///////////////////////////////
 
-// we use a hash, so we can easily extend identities without breaking saved ones
-QDataStream &operator<<(QDataStream &out, const Identity &id) {
-  QVariantMap i;
-  i["IdentityId"] = id.id();
-  i["IdentityName"] = id.identityName();
-  i["RealName"] = id.realName();
-  i["Nicks"] = id.nicks();
-  i["AwayNick"] = id.awayNick();
-  i["AwayNickEnabled"] = id.awayNickEnabled();
-  i["AwayReason"] = id.awayReason();
-  i["AwayReasonEnabled"] = id.awayReasonEnabled();
-  i["ReturnMessage"] = id.returnMessage();
-  i["ReturnMessageEnabled"] = id.returnMessageEnabled();
-  i["AutoAwayEnabled"] = id.autoAwayEnabled();
-  i["AutoAwayTime"] = id.autoAwayTime();
-  i["AutoAwayReason"] = id.autoAwayReason();
-  i["AutoAwayReasonEnabled"] = id.autoAwayReasonEnabled();
-  i["AutoReturnMessage"] = id.autoReturnMessage();
-  i["AutoReturnMessageEnabled"] = id.autoReturnMessageEnabled();
-  i["Ident"] = id.ident();
-  i["KickReason"] = id.kickReason();
-  i["PartReason"] = id.partReason();
-  i["QuitReason"] = id.quitReason();
-  out << i;
+QDataStream &operator<<(QDataStream &out, Identity id) {
+  out << id.toVariantMap();
   return out;
 }
+
 
 QDataStream &operator>>(QDataStream &in, Identity &id) {
   QVariantMap i;
   in >> i;
-  id._identityId = i["IdentityId"].toUInt();
-  id.setIdentityName(i["IdentityName"].toString());
-  id.setRealName(i["RealName"].toString());
-  id.setNicks(i["Nicks"].toStringList());
-  id.setAwayNick(i["AwayNick"].toString());
-  id.setAwayNickEnabled(i["AwayNickEnabled"].toBool());
-  id.setAwayReason(i["AwayReason"].toString());
-  id.setAwayReasonEnabled(i["AwayReasonEnabled"].toBool());
-  id.setReturnMessage(i["ReturnMessage"].toString());
-  id.setReturnMessageEnabled(i["ReturnMessageEnabled"].toBool());
-  id.setAutoAwayEnabled(i["AutoAwayEnabled"].toBool());
-  id.setAutoAwayTime(i["AutoAwayTime"].toInt());
-  id.setAutoAwayReason(i["AutoAwayReason"].toString());
-  id.setAutoAwayReasonEnabled(i["AutoAwayReasonEnabled"].toBool());
-  id.setAutoReturnMessage(i["AutoReturnMessage"].toString());
-  id.setAutoReturnMessageEnabled(i["AutoReturnMessageEnabled"].toBool());
-  id.setIdent(i["Ident"].toString());
-  id.setKickReason(i["KickReason"].toString());
-  id.setPartReason(i["PartReason"].toString());
-  id.setQuitReason(i["QuitReason"].toString());
+  id.fromVariantMap(i);
   return in;
 }
+
 

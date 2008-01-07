@@ -29,13 +29,14 @@
 #include <QPointer>
 
 #include "types.h"
+#include "syncableobject.h"
 
 class SignalProxy;
 class IrcUser;
 class IrcChannel;
 
 
-class NetworkInfo : public QObject {
+class NetworkInfo : public SyncableObject {
   Q_OBJECT
 
   Q_PROPERTY(QString networkName READ networkName WRITE setNetworkName STORED false)

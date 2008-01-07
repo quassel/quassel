@@ -32,7 +32,7 @@
 //  Public:
 // ====================
 NetworkInfo::NetworkInfo(const uint &networkid, QObject *parent)
-  : QObject(parent),
+  : SyncableObject(parent),
     _networkId(networkid),
     _initialized(false),
     _myNick(QString()),
