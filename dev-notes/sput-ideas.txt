@@ -1,0 +1,11 @@
+NetworkSettingsPage:
+--------------------
+* Connect-Icons vor dem Network-Eintrag (für aktuellen Zustand)
+* Nur disconnectete Netze können entfernt werden
+
+Architektur:
+------------
+NetworkInfo wird zu Network, ist in Zukunft das Top-Level-Objekt für ein
+Netz. Server wird zu NetworkConnection, als Child von Network.
+Threading? Mal sehen wie das am besten gehen würde...
+
