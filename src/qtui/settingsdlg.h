@@ -33,19 +33,23 @@ class SettingsDlg : public QDialog {
     void registerSettingsPage(SettingsPage *);
     void unregisterSettingsPage(SettingsPage *);
 
+    SettingsPage *currentPage() const;
+
   public slots:
     void selectPage(const QString &category, const QString &title);
 
   private slots:
     void itemSelected();
     void buttonClicked(QAbstractButton *);
-    void applyChanges();
+    bool applyChanges();
     void reload();
     void loadDefaults();
+    void setButtonStates();
 
   private:
     Ui::SettingsDlg ui;
 
+    SettingsPage *_currentPage;
     QHash<QString, SettingsPage *> pages;
 };
 

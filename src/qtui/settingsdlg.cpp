@@ -22,6 +22,7 @@
 
 SettingsDlg::SettingsDlg(QWidget *parent) : QDialog(parent) {
   ui.setupUi(this);
+  _currentPage = 0;
 
   //ui.settingsFrame->setWidgetResizable(true);
   //ui.settingsFrame->setWidget(ui.settingsStack);
@@ -31,10 +32,14 @@ SettingsDlg::SettingsDlg(QWidget *parent) : QDialog(parent) {
   connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));
 }
 
+SettingsPage *SettingsDlg::currentPage() const {
+  return _currentPage;
+}
 
 void SettingsDlg::registerSettingsPage(SettingsPage *sp) {
   sp->setParent(ui.settingsStack);
   ui.settingsStack->addWidget(sp);
+  connect(sp, SIGNAL(changed(bool)), this, SLOT(setButtonStates()));
 
   QTreeWidgetItem *cat;
   QList<QTreeWidgetItem *> cats = ui.settingsTree->findItems(sp->category(), Qt::MatchExactly);
@@ -51,12 +56,17 @@ void SettingsDlg::registerSettingsPage(SettingsPage *sp) {
 }
 
 void SettingsDlg::selectPage(const QString &cat, const QString &title) {
-  QWidget *w = pages[QString("%1$%2").arg(cat, title)];
-  Q_ASSERT(w);
-  ui.settingsStack->setCurrentWidget(w);
+  SettingsPage *sp = pages[QString("%1$%2").arg(cat, title)];
+  Q_ASSERT(sp); // FIXME allow for invalid settings pages
+  ui.settingsStack->setCurrentWidget(sp);
+  _currentPage = sp;
+  setButtonStates();
 }
 
 void SettingsDlg::itemSelected() {
+  // Check if we have changed anything...
+  // TODO
+
   QList<QTreeWidgetItem *> items = ui.settingsTree->selectedItems();
   if(!items.count()) {
     return;
@@ -70,11 +80,17 @@ void SettingsDlg::itemSelected() {
   }
 }
 
+void SettingsDlg::setButtonStates() {
+  SettingsPage *sp = currentPage();
+  ui.buttonBox->button(QDialogButtonBox::Ok)->setEnabled(sp && sp->hasChanged());
+  ui.buttonBox->button(QDialogButtonBox::Apply)->setEnabled(sp && sp->hasChanged());
+  ui.buttonBox->button(QDialogButtonBox::Reset)->setEnabled(sp && sp->hasChanged());
+}
+
 void SettingsDlg::buttonClicked(QAbstractButton *button) {
   switch(ui.buttonBox->standardButton(button)) {
     case QDialogButtonBox::Ok:
-      applyChanges();
-      accept();
+      if(applyChanges()) accept();
       break;
     case QDialogButtonBox::Apply:
       applyChanges();
@@ -93,12 +109,16 @@ void SettingsDlg::buttonClicked(QAbstractButton *button) {
   }
 }
 
-void SettingsDlg::applyChanges() {
-  foreach(SettingsPage *page, pages.values()) {
-    page->save();
+bool SettingsDlg::applyChanges() {
+  if(!currentPage()) return false;
+  if(currentPage()->aboutToSave()) {
+    currentPage()->save();
+    return true;
   }
+  return false;
 }
 
+// TODO add messagebox
 void SettingsDlg::reload() {
   SettingsPage *page = qobject_cast<SettingsPage *>(ui.settingsStack->currentWidget());
   if(page) page->load();

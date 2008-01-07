@@ -22,6 +22,7 @@
 #include "identity.h"
 #include "settings.h"
 #include <QString>
+#include <QTimer>
 #include <QTranslator>
 
 #if defined BUILD_CORE
@@ -106,7 +107,9 @@ int main(int argc, char **argv) {
 #ifndef BUILD_CORE
   QtUi *gui = new QtUi();
   Client::init(gui);
-  gui->init();
+  // init gui only after the event loop has started
+  QTimer::singleShot(0, gui, SLOT(init()));
+  //gui->init();
 #endif
 
 #ifndef BUILD_QTUI

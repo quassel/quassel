@@ -25,8 +25,29 @@ CoreUserSettings::CoreUserSettings(UserId uid) : CoreSettings(QString("CoreUser/
 
 }
 
+void CoreUserSettings::storeIdentity(const Identity &identity) {
+  setLocalValue(QString("Identities/%1").arg(identity.id()), QVariant::fromValue<Identity>(identity));
+}
 
+void CoreUserSettings::removeIdentity(const Identity &identity) {
+  removeLocalKey(QString("Identities/%1").arg(identity.id()));
+}
 
+Identity CoreUserSettings::identity(IdentityId id) {
+  QVariant v = localValue(QString("Identities/%1").arg(id));
+  if(qVariantCanConvert<Identity>(v)) {
+    return v.value<Identity>();
+  }
+  return Identity();
+}
+
+QList<IdentityId> CoreUserSettings::identityIds() {
+  QList<IdentityId> res;
+  foreach(QString id, localChildKeys("Identities")) {
+    res << id.toUInt();
+  }
+  return res;
+}
 
 QVariantMap CoreUserSettings::sessionData() {
   QVariantMap res;

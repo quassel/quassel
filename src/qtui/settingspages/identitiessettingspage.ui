@@ -16,7 +16,14 @@
    <item>
     <layout class="QHBoxLayout" >
      <item>
-      <widget class="QComboBox" name="comboBox" />
+      <widget class="QComboBox" name="identityList" >
+       <property name="insertPolicy" >
+        <enum>QComboBox::InsertAtBottom</enum>
+       </property>
+       <property name="duplicatesEnabled" >
+        <bool>true</bool>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QToolButton" name="addIdentity" >
@@ -34,22 +41,6 @@
        </property>
        <property name="toolButtonStyle" >
         <enum>Qt::ToolButtonIconOnly</enum>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QToolButton" name="renameIdentity" >
-       <property name="text" >
-        <string>...</string>
-       </property>
-       <property name="icon" >
-        <iconset resource="../../icons/icons.qrc" >:/22x22/actions/oxygen/22x22/actions/user-properties.png</iconset>
-       </property>
-       <property name="iconSize" >
-        <size>
-         <width>22</width>
-         <height>22</height>
-        </size>
        </property>
       </widget>
      </item>
@@ -316,30 +307,42 @@
           <number>6</number>
          </property>
          <item row="0" column="1" >
-          <widget class="QLineEdit" name="awayNick" />
+          <widget class="QLineEdit" name="awayNick" >
+           <property name="enabled" >
+            <bool>false</bool>
+           </property>
+          </widget>
          </item>
          <item row="1" column="0" >
-          <widget class="QCheckBox" name="enableAwayReason" >
+          <widget class="QCheckBox" name="awayReasonEnabled" >
            <property name="text" >
             <string>Away Reason</string>
            </property>
           </widget>
          </item>
          <item row="1" column="1" >
-          <widget class="QLineEdit" name="awayReason" />
+          <widget class="QLineEdit" name="awayReason" >
+           <property name="enabled" >
+            <bool>false</bool>
+           </property>
+          </widget>
          </item>
          <item row="2" column="0" >
-          <widget class="QCheckBox" name="enableReturnMessage" >
+          <widget class="QCheckBox" name="returnMessageEnabled" >
            <property name="text" >
             <string>Return Message</string>
            </property>
           </widget>
          </item>
          <item row="2" column="1" >
-          <widget class="QLineEdit" name="returnMessage" />
+          <widget class="QLineEdit" name="returnMessage" >
+           <property name="enabled" >
+            <bool>false</bool>
+           </property>
+          </widget>
          </item>
          <item row="0" column="0" >
-          <widget class="QCheckBox" name="enableAwayNick" >
+          <widget class="QCheckBox" name="awayNickEnabled" >
            <property name="text" >
             <string>Away Nick</string>
            </property>
@@ -348,7 +351,7 @@
         </layout>
        </item>
        <item>
-        <widget class="QGroupBox" name="autoAway" >
+        <widget class="QGroupBox" name="autoAwayEnabled" >
          <property name="title" >
           <string>Auto Away</string>
          </property>
@@ -444,21 +447,21 @@
              <number>6</number>
             </property>
             <item row="1" column="0" >
-             <widget class="QCheckBox" name="enableAutoAwayReturn" >
+             <widget class="QCheckBox" name="autoReturnMessageEnabled" >
               <property name="text" >
                <string>Return Message</string>
               </property>
              </widget>
             </item>
             <item row="0" column="0" >
-             <widget class="QCheckBox" name="enableAutoAwayReason" >
+             <widget class="QCheckBox" name="autoAwayReasonEnabled" >
               <property name="text" >
                <string>Away Reason</string>
               </property>
              </widget>
             </item>
             <item row="1" column="1" >
-             <widget class="QLineEdit" name="autoAwayReturn" />
+             <widget class="QLineEdit" name="autoReturnMessage" />
             </item>
             <item row="0" column="1" >
              <widget class="QLineEdit" name="autoAwayReason" />
@@ -585,5 +588,86 @@
  <resources>
   <include location="../../icons/icons.qrc" />
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>awayNickEnabled</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>awayNick</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>47</x>
+     <y>85</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>185</x>
+     <y>90</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>awayReasonEnabled</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>awayReason</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>57</x>
+     <y>120</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>177</x>
+     <y>123</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>returnMessageEnabled</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>returnMessage</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>85</x>
+     <y>154</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>240</x>
+     <y>160</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>autoAwayReasonEnabled</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>autoAwayReason</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>107</x>
+     <y>262</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>186</x>
+     <y>264</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>autoReturnMessageEnabled</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>autoReturnMessage</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>122</x>
+     <y>292</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>204</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

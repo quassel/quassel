@@ -41,4 +41,4 @@ class CoreSettings : public Settings {
 
 };
 
-#endif /*CORESETTINGS_H_*/
+#endif /*_CORESETTINGS_H_*/

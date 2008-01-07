@@ -4,4 +4,4 @@ SETTINGSPAGES = fonts identities
 
 SP_SRCS = 
 SP_HDRS =
-SP_FRMS =
+SP_FRMS = createidentitydlg.ui saveidentitiesdlg.ui

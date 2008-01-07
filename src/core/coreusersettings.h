@@ -32,9 +32,11 @@ class CoreUserSettings : public CoreSettings {
   public:
     CoreUserSettings(UserId user);
 
-    void setIdentity(const Identity &identity);
-    Identity identity(IdentityId id);
+    void storeIdentity(const Identity &identity);
+    void removeIdentity(const Identity &identity);
 
+    Identity identity(IdentityId id);
+    QList<IdentityId> identityIds();
 
   private:
     // this stuff should only be accessed by CoreSession!

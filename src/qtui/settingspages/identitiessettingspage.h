@@ -21,9 +21,14 @@
 #ifndef _IDENTITIESSETTINGSPAGE_H_
 #define _IDENTITIESSETTINGSPAGE_H_
 
+#include "identity.h"
 #include "settingspage.h"
 
 #include "ui_identitiessettingspage.h"
+#include "ui_createidentitydlg.h"
+#include "ui_saveidentitiesdlg.h"
+
+class QAbstractItemModel;
 
 class IdentitiesSettingsPage : public SettingsPage {
   Q_OBJECT
@@ -31,7 +36,7 @@ class IdentitiesSettingsPage : public SettingsPage {
   public:
     IdentitiesSettingsPage(QWidget *parent = 0);
 
-    bool hasChanged() const;
+    bool aboutToSave();
 
   public slots:
     void save();
@@ -40,9 +45,67 @@ class IdentitiesSettingsPage : public SettingsPage {
 
   private slots:
     void coreConnectionStateChanged(bool);
+    void clientIdentityCreated(IdentityId);
+    void clientIdentityUpdated();
+    void clientIdentityRemoved(IdentityId);
+
+    void on_identityList_currentIndexChanged(int index);
+    void on_identityList_editTextChanged(const QString &);
+
+    void on_addIdentity_clicked();
+    void on_deleteIdentity_clicked();
+
+    void widgetHasChanged();
 
   private:
     Ui::IdentitiesSettingsPage ui;
+
+    QHash<IdentityId, Identity *> identities;
+    IdentityId currentId;
+
+    QList<IdentityId> changedIdentities;  // for setting the widget changed state
+    QList<IdentityId> deletedIdentities;
+
+    void insertIdentity(Identity *identity);
+    void removeIdentity(Identity *identity);
+    void displayIdentity(Identity *, bool dontsave = false);
+    void saveToIdentity(Identity *);
+
+    bool testHasChanged();
+};
+
+class CreateIdentityDlg : public QDialog {
+  Q_OBJECT
+
+  public:
+    CreateIdentityDlg(QAbstractItemModel *model, QWidget *parent = 0);
+
+    QString identityName() const;
+    IdentityId duplicateId() const;
+
+  private slots:
+    void on_identityName_textChanged(const QString &text);
+
+  private:
+    Ui::CreateIdentityDlg ui;
+};
+
+class SaveIdentitiesDlg : public QDialog {
+  Q_OBJECT
+
+  public:
+    SaveIdentitiesDlg(QList<Identity *> toCreate, QList<Identity *> toUpdate, QList<IdentityId> toRemove, QWidget *parent = 0);
+
+  private slots:
+    void clientEvent();
+
+  private:
+    Ui::SaveIdentitiesDlg ui;
+
+    QList<Identity *> toCreate, toUpdate;
+    QList<IdentityId> toRemove;
+
+    int numevents, rcvevents;
 
 };
 

@@ -28,7 +28,6 @@
 // Enable some shortcuts and stuff
 //#define DEVELMODE
 
-
 /** The protocol version we use fo the communication between core and GUI */
 #define GUI_PROTOCOL 4
 

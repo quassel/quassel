@@ -72,10 +72,15 @@ public slots:
   void sendBacklog(BufferInfo, QVariant, QVariant);
   void msgFromGui(BufferInfo, QString message);
 
-  //! Create or update an identity and propagate the changes to the clients.
-  /** \param identity The identity to be created/updated.
+  //! Create an identity and propagate the changes to the clients.
+  /** \param identity The identity to be created.
    */
-  void createOrUpdateIdentity(const Identity &identity);
+  void createIdentity(const Identity &identity);
+
+  //! Update an identity and propagate the changes to the clients.
+  /** \param identity The identity to be updated.
+   */
+  void updateIdentity(const Identity &identity);
 
   //! Remove identity and propagate that fact to the clients.
   /** \param identity The identity to be removed.

@@ -33,7 +33,13 @@ class SettingsPage : public QWidget {
     virtual QString category() const;
     virtual QString title() const;
 
-    virtual bool hasChanged() const = 0;
+    bool hasChanged() const;
+
+    //! Called immediately before save() is called.
+    /** Derived classes should return false if saving is not possible (e.g. the current settings are invalid).
+     *  \return false, if the SettingsPage cannot be saved in its current state.
+     */
+    virtual bool aboutToSave();
 
   public slots:
     virtual void save() = 0;
@@ -41,7 +47,7 @@ class SettingsPage : public QWidget {
     virtual void defaults() = 0;
 
   protected slots:
-    //! Calling this slot is equivalent to emitting changed(true).
+    //! Calling this slot is equivalent to calling changeState(true).
     void changed();
 
   protected:
@@ -49,6 +55,7 @@ class SettingsPage : public QWidget {
     void changeState(bool hasChanged = true);
 
   signals:
+    //! Emitted whenever the widget state changes.
     void changed(bool hasChanged);
 
   private:

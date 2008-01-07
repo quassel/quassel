@@ -253,6 +253,7 @@ void SignalProxy::removePeerBySender() {
   // OK we're brutal here... but since it's a private slot we know what we've got connected to it...
   QIODevice *ioDev = (QIODevice *)(sender());
   removePeer(ioDev);
+  qDebug() << "Client disconnected.";
 }
 
 void SignalProxy::objectRenamed(QString oldname, QString newname) {

@@ -34,11 +34,22 @@ QString SettingsPage::title() const {
   return _title;
 }
 
+bool SettingsPage::hasChanged() const {
+  return _changed;
+}
+
+bool SettingsPage::aboutToSave() {
+  return true;
+}
+
 void SettingsPage::changed() {
-  _changed = true;
-  emit changed(true);
+  changeState(true);
 }
 
 void SettingsPage::changeState(bool hasChanged) {
-  if(hasChanged != _changed) emit changed(hasChanged);
+  if(hasChanged != _changed) {
+    _changed = hasChanged;
+    emit changed(hasChanged);
+  }
 }
+

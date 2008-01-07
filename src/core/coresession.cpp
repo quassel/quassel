@@ -46,30 +46,27 @@ CoreSession::CoreSession(UserId uid, Storage *_storage, QObject *parent)
 
   CoreUserSettings s(user);
   sessionData = s.sessionData();
-/*
-  CoreSettings cs;
-  foreach(QString id, cs.localChildKeys(QString("Identities/%1").arg(user))) {
-    Identity *i = new Identity(cs.localValue(QString("Identities/%1/%2").arg(user).arg(id)).value<Identity>(), this);
-    if(i->id() < 1) {
+#ifdef SPUTDEV
+  foreach(IdentityId id, s.identityIds()) {
+    Identity *i = new Identity(s.identity(id), this);
+    if(!i->isValid()) {
       qDebug() << QString("Invalid identity!");
+      delete i;
       continue;
     }
     if(_identities.contains(i->id())) {
       qDebug() << "Duplicate identity, ignoring!";
+      delete i;
       continue;
     }
-    qDebug() << "loaded identity" << id;
     _identities[i->id()] = i;
   }
-  s.endGroup();
-  mutex.unlock();
   if(!_identities.count()) {
     Identity i(1);
     i.setToDefaults();
-    //_identities[i->id()] = i;
-    createOrUpdateIdentity(i);
+    createIdentity(i);
   }
-  */
+#endif
 
   p->attachSlot(SIGNAL(requestNetworkStates()), this, SLOT(serverStateRequested()));
   p->attachSlot(SIGNAL(requestConnect(QString)), this, SLOT(connectToNetwork(QString)));
@@ -85,8 +82,8 @@ CoreSession::CoreSession(UserId uid, Storage *_storage, QObject *parent)
 
   p->attachSignal(this, SIGNAL(identityCreated(const Identity &)));
   p->attachSignal(this, SIGNAL(identityRemoved(IdentityId)));
-  p->attachSlot(SIGNAL(createIdentity(const Identity &)), this, SLOT(createOrUpdateIdentity(const Identity &)));
-  p->attachSlot(SIGNAL(updateIdentity(const Identity &)), this, SLOT(createOrUpdateIdentity(const Identity &)));
+  p->attachSlot(SIGNAL(createIdentity(const Identity &)), this, SLOT(createIdentity(const Identity &)));
+  p->attachSlot(SIGNAL(updateIdentity(const Identity &)), this, SLOT(updateIdentity(const Identity &)));
   p->attachSlot(SIGNAL(removeIdentity(IdentityId)), this, SLOT(removeIdentity(IdentityId)));
 
   initScriptEngine();
@@ -300,27 +297,39 @@ void CoreSession::scriptRequest(QString script) {
   emit scriptResult(scriptEngine->evaluate(script).toString());
 }
 
-void CoreSession::createOrUpdateIdentity(const Identity &id) {
-  if(!_identities.contains(id.id())) {
-    // create new
-    _identities[id.id()] = new Identity(id, this);
-    signalProxy()->synchronize(_identities[id.id()]);
-    emit identityCreated(id.id());
-  } else {
-    // update
-    _identities[id.id()]->update(id);
+void CoreSession::createIdentity(const Identity &id) {
+  // find free ID
+  int i;
+  for(i = 1; i <= _identities.count(); i++) {
+    if(!_identities.keys().contains(i)) break;
   }
-/*
-  CoreSettings s;
-  s.beginGroup(QString("Identities/%1").arg(user));
-  s.setValue(QString::number(id.id()), QVariant::fromValue<Identity>(*_identities[id.id()]));
-  s.endGroup();*/
+  //qDebug() << "found free id" << i;
+  Identity *newId = new Identity(id, this);
+  newId->setId(i);
+  _identities[i] = newId;
+  signalProxy()->synchronize(newId);
+  CoreUserSettings s(user);
+  s.storeIdentity(*newId);
+  emit identityCreated(i);
+}
+
+void CoreSession::updateIdentity(const Identity &id) {
+  if(!_identities.contains(id.id())) {
+    qWarning() << "Update request for unknown identity received!";
+    return;
+  }
+  _identities[id.id()]->update(id);
+
+  CoreUserSettings s(user);
+  s.storeIdentity(id);
 }
 
 void CoreSession::removeIdentity(IdentityId id) {
   Identity *i = _identities.take(id);
   if(i) {
     emit identityRemoved(id);
+    CoreUserSettings s(user);
+    s.removeIdentity(id);
     i->deleteLater();
   }
 }

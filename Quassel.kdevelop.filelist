@@ -70,6 +70,8 @@ src/common/settings.cpp
 src/common/settings.h
 src/common/signalproxy.cpp
 src/common/signalproxy.h
+src/common/syncableobject.cpp
+src/common/syncableobject.h
 src/common/types.h
 src/common/util.cpp
 src/common/util.h
@@ -91,8 +93,6 @@ src/core/ircserverhandler.cpp
 src/core/ircserverhandler.h
 src/core/server.cpp
 src/core/server.h
-src/core/sessionsettings.cpp
-src/core/sessionsettings.h
 src/core/sqlitestorage.cpp
 src/core/sqlitestorage.h
 src/core/storage.cpp
@@ -172,8 +172,15 @@ src/qtui/settingsdlg.h
 src/qtui/settingspages
 src/qtui/settingspages.cpp
 src/qtui/settingspages.h
+src/qtui/settingspages/createidentitydlg.ui
+src/qtui/settingspages/fontssettingspage.cpp
+src/qtui/settingspages/fontssettingspage.h
+src/qtui/settingspages/fontssettingspage.ui
 src/qtui/settingspages/identitiessettingspage.cpp
 src/qtui/settingspages/identitiessettingspage.h
+src/qtui/settingspages/identitiessettingspage.ui
+src/qtui/settingspages/networkssettingspage.ui
+src/qtui/settingspages/servereditdlg.ui
 src/qtui/settingspages/settingspages.pri
 src/qtui/topicwidget.cpp
 src/qtui/topicwidget.h

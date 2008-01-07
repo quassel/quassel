@@ -123,7 +123,9 @@ void MainWin::init() {
 
   ui.menuViews->addAction(dock->toggleViewAction());
 
-  //showSettingsDlg();
+#ifdef SPUTDEV
+  showSettingsDlg();
+#endif
 
 }
 
@@ -180,7 +182,7 @@ void MainWin::addBufferView(const QString &viewname, QAbstractItemModel *model, 
   view->setFilteredModel(model, mode, nets);
   Client::networkModel()->synchronizeView(view);
   dock->setWidget(view);
-  
+
   addDockWidget(Qt::LeftDockWidgetArea, dock);
   ui.menuViews->addAction(dock->toggleViewAction());
 
@@ -189,8 +191,9 @@ void MainWin::addBufferView(const QString &viewname, QAbstractItemModel *model, 
 
 void MainWin::setupSettingsDlg() {
   settingsDlg->registerSettingsPage(new FontsSettingsPage(settingsDlg));
+#ifdef SPUTDEV
   settingsDlg->registerSettingsPage(new IdentitiesSettingsPage(settingsDlg));
-
+#endif
 }
 
 void MainWin::connectedToCore() {

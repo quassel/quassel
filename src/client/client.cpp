@@ -321,7 +321,7 @@ void Client::coreSocketDisconnected() {
   /* Clear internal data. Hopefully nothing relies on it at this point. */
   _networkModel->clear();
 
-  QHash<uint, Buffer *>::iterator bufferIter =  _buffers.begin();
+  QHash<BufferId, Buffer *>::iterator bufferIter =  _buffers.begin();
   while(bufferIter != _buffers.end()) {
     Buffer *buffer = bufferIter.value();
     disconnect(buffer, SIGNAL(destroyed()), this, 0);
@@ -331,7 +331,7 @@ void Client::coreSocketDisconnected() {
   Q_ASSERT(_buffers.isEmpty());
 
 
-  QHash<uint, NetworkInfo*>::iterator netIter = _networkInfo.begin();
+  QHash<NetworkId, NetworkInfo*>::iterator netIter = _networkInfo.begin();
   while(netIter != _networkInfo.end()) {
     NetworkInfo *net = netIter.value();
     disconnect(net, SIGNAL(destroyed()), this, 0);
@@ -339,6 +339,15 @@ void Client::coreSocketDisconnected() {
     net->deleteLater();
   }
   Q_ASSERT(_networkInfo.isEmpty());
+
+  QHash<IdentityId, Identity*>::iterator idIter = _identities.begin();
+  while(idIter != _identities.end()) {
+    Identity *id = idIter.value();
+    emit identityRemoved(id->id());
+    idIter = _identities.erase(idIter);
+    id->deleteLater();
+  }
+  Q_ASSERT(_identities.isEmpty());
 
   coreConnectionInfo.clear();
   sessionData.clear();
@@ -370,10 +379,11 @@ void Client::syncToCore(const QVariant &coreState) {
 
   // create identities
   foreach(QVariant vid, sessionState["Identities"].toList()) {
-    Identity *id = new Identity(vid.value<Identity>(), this);
-    _identities[id->id()] = id;
-    signalProxy()->synchronize(id);
-    qDebug() << "received identity" << id->identityName();
+    coreIdentityCreated(vid.value<Identity>());
+    //Identity *id = new Identity(vid.value<Identity>(), this);
+    //_identities[id->id()] = id;
+    //signalProxy()->synchronize(id);
+    //qDebug() << "received identity" << id->identityName();
   }
 
   // store Buffer details

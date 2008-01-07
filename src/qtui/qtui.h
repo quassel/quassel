@@ -36,10 +36,13 @@ class QtUi : public AbstractUi {
   public:
     QtUi();
     ~QtUi();
-    void init();
+    //void init();
     AbstractUiMsg *layoutMsg(const Message &);
 
     static QtUiStyle *style();
+
+  public slots:
+    void init();
 
   protected slots:
     void connectedToCore();
