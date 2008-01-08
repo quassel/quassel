@@ -113,7 +113,7 @@ int main(int argc, char **argv) {
 #endif
 
 #ifndef BUILD_QTUI
-  if(args.contains("--norestore")) {
+  if(!args.contains("--norestore")) {
     Core::restoreState();
   }
 #endif
