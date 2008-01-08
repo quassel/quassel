@@ -46,7 +46,7 @@ class SyncableObject : public QObject {
     virtual QVariantMap toVariantMap();
 
     //! Initialize the object's state from a given QVariantMap.
-    /** \see toVarianMap() for important information concerning this method.
+    /** \see toVariantMap() for important information concerning this method.
      */
     virtual void fromVariantMap(const QVariantMap &map);
 

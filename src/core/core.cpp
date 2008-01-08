@@ -140,7 +140,7 @@ bool Core::initStorage(QVariantMap dbSettings, bool setup) {
 
   return configured = storage->init(dbSettings);
 }
-						
+
 bool Core::initStorage(QVariantMap dbSettings) {
   return initStorage(dbSettings, false);
 }
@@ -254,7 +254,7 @@ void Core::clientHasData() {
       return;
     }
   }
-  blockSizes[socket] = bsize = 0;  // FIXME blockSizes aufräum0rn!
+  blockSizes[socket] = bsize = 0;  // FIXME blockSizes aufrï¿½um0rn!
 }
 
 // FIXME: no longer called, since connection handling is now in SignalProxy

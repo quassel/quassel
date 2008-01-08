@@ -387,10 +387,6 @@ void Client::syncToCore(const QVariant &coreState) {
   // create identities
   foreach(QVariant vid, sessionState["Identities"].toList()) {
     coreIdentityCreated(vid.value<Identity>());
-    //Identity *id = new Identity(vid.value<Identity>(), this);
-    //_identities[id->id()] = id;
-    //signalProxy()->synchronize(id);
-    //qDebug() << "received identity" << id->identityName();
   }
 
   // store Buffer details

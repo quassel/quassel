@@ -50,10 +50,10 @@ class IdentitiesSettingsPage : public SettingsPage {
     void clientIdentityRemoved(IdentityId);
 
     void on_identityList_currentIndexChanged(int index);
-    void on_identityList_editTextChanged(const QString &);
 
     void on_addIdentity_clicked();
     void on_deleteIdentity_clicked();
+    void on_renameIdentity_clicked();
 
     void widgetHasChanged();
 
@@ -68,6 +68,7 @@ class IdentitiesSettingsPage : public SettingsPage {
 
     void insertIdentity(Identity *identity);
     void removeIdentity(Identity *identity);
+    void renameIdentity(IdentityId id, const QString &newName);
     void displayIdentity(Identity *, bool dontsave = false);
     void saveToIdentity(Identity *);
 

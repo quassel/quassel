@@ -18,6 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#define SPUTDEV
+
 #include "coresession.h"
 #include "server.h"
 
@@ -50,13 +52,13 @@ CoreSession::CoreSession(UserId uid, Storage *_storage, QObject *parent)
   foreach(IdentityId id, s.identityIds()) {
     Identity *i = new Identity(s.identity(id), this);
     if(!i->isValid()) {
-      qDebug() << QString("Invalid identity! Removing...");
+      qWarning() << QString("Invalid identity! Removing...");
       s.removeIdentity(id);
       delete i;
       continue;
     }
     if(_identities.contains(i->id())) {
-      qDebug() << "Duplicate identity, ignoring!";
+      qWarning() << "Duplicate identity, ignoring!";
       delete i;
       continue;
     }
@@ -65,6 +67,7 @@ CoreSession::CoreSession(UserId uid, Storage *_storage, QObject *parent)
   if(!_identities.count()) {
     Identity i(1);
     i.setToDefaults();
+    i.setIdentityName(tr("Default Identity"));
     createIdentity(i);
   }
 #endif
@@ -297,7 +300,7 @@ void CoreSession::initScriptEngine() {
 void CoreSession::scriptRequest(QString script) {
   emit scriptResult(scriptEngine->evaluate(script).toString());
 }
-
+#include <QDebug>
 void CoreSession::createIdentity(const Identity &id) {
   // find free ID
   int i;
@@ -311,7 +314,7 @@ void CoreSession::createIdentity(const Identity &id) {
   signalProxy()->synchronize(newId);
   CoreUserSettings s(user);
   s.storeIdentity(*newId);
-  emit identityCreated(i);
+  emit identityCreated(*newId);
 }
 
 void CoreSession::updateIdentity(const Identity &id) {

@@ -60,7 +60,7 @@ void Identity::init() {
 }
 
 void Identity::setToDefaults() {
-  setIdentityName(tr("Default Identity"));
+  setIdentityName(tr("<empty>"));
   setRealName(tr("Quassel IRC User"));
   QStringList n;
   n << QString("quassel%1").arg(qrand() & 0xff); // FIXME provide more sensible default nicks
@@ -81,7 +81,6 @@ void Identity::setToDefaults() {
   setKickReason(tr("Kindergarten is elsewhere!"));
   setPartReason(tr("http://quassel-irc.org - Chat comfortably. Anywhere."));
   setQuitReason(tr("http://quassel-irc.org - Chat comfortably. Anywhere."));
-
 }
 
 bool Identity::isValid() const {
@@ -296,8 +295,8 @@ bool Identity::operator==(const Identity &other) {
     QMetaProperty metaProp = metaObject()->property(idx);
     Q_ASSERT(metaProp.isValid());
     QVariant v1 = this->property(metaProp.name());
-    QVariant v2 = other.property(metaProp.name()); //qDebug() << v1 << v2;
-    // QVariant cannot compare custom types, so we need to check for this case
+    QVariant v2 = other.property(metaProp.name()); // qDebug() << v1 << v2;
+    // QVariant cannot compare custom types, so we need to check for this special case
     if(QString(v1.typeName()) == "IdentityId") {
       if(v1.value<IdentityId>() != v2.value<IdentityId>()) return false;
     } else {

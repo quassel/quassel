@@ -180,6 +180,7 @@ src/qtui/settingspages/identitiessettingspage.cpp
 src/qtui/settingspages/identitiessettingspage.h
 src/qtui/settingspages/identitiessettingspage.ui
 src/qtui/settingspages/networkssettingspage.ui
+src/qtui/settingspages/saveidentitiesdlg.ui
 src/qtui/settingspages/servereditdlg.ui
 src/qtui/settingspages/settingspages.pri
 src/qtui/topicwidget.cpp

@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QInputDialog>
 #include <QMessageBox>
 
 #include "identitiessettingspage.h"
@@ -73,7 +74,8 @@ void IdentitiesSettingsPage::save() {
   QList<Identity *> toCreate, toUpdate;
   // we need to remove our temporarily created identities.
   // these are going to be re-added after the core has propagated them back...
-  for(QHash<IdentityId, Identity *>::iterator i = identities.begin(); i != identities.end(); ++i) {
+  QHash<IdentityId, Identity *>::iterator i = identities.begin();
+  while(i != identities.end()) {
     if((*i)->id() < 0) {
       Identity *temp = *i;
       i = identities.erase(i);
@@ -83,6 +85,7 @@ void IdentitiesSettingsPage::save() {
       if(**i != *Client::identity((*i)->id())) {
         toUpdate.append(*i);
       }
+      ++i;
     }
   }
   SaveIdentitiesDlg dlg(toCreate, toUpdate, deletedIdentities, this);
@@ -94,9 +97,10 @@ void IdentitiesSettingsPage::save() {
   foreach(Identity *id, toCreate) {
     id->deleteLater();
   }
+  changedIdentities.clear();
+  deletedIdentities.clear();
   changeState(false);
   setEnabled(true);
-
 }
 
 void IdentitiesSettingsPage::load() {
@@ -128,10 +132,13 @@ bool IdentitiesSettingsPage::testHasChanged() {
   if(currentId < 0) {
     return true; // new identity
   } else {
-    changedIdentities.removeAll(currentId);
-    Identity temp(currentId, this);
-    saveToIdentity(&temp);
-    if(temp != *identities[currentId]) changedIdentities.append(currentId);
+    if(currentId != 0) {
+      changedIdentities.removeAll(currentId);
+      Identity temp(currentId, this);
+      saveToIdentity(&temp);
+      temp.setIdentityName(identities[currentId]->identityName());
+      if(temp != *Client::identity(currentId)) changedIdentities.append(currentId);
+    }
     return changedIdentities.count();
   }
 }
@@ -158,21 +165,23 @@ bool IdentitiesSettingsPage::aboutToSave() {
 
 void IdentitiesSettingsPage::clientIdentityCreated(IdentityId id) {
   insertIdentity(new Identity(*Client::identity(id), this));
+  Identity *i = identities[id];
   connect(Client::identity(id), SIGNAL(updatedRemotely()), this, SLOT(clientIdentityUpdated()));
 }
 
 void IdentitiesSettingsPage::clientIdentityUpdated() {
-  Identity *identity = qobject_cast<Identity *>(sender());
-  if(!identity) {
+  const Identity *clientIdentity = qobject_cast<Identity *>(sender());
+  if(!clientIdentity) {
     qWarning() << "Invalid identity to update!";
     return;
   }
-  if(!identities.contains(identity->id())) {
-    qWarning() << "Unknown identity to update:" << identity->identityName();
+  if(!identities.contains(clientIdentity->id())) {
+    qWarning() << "Unknown identity to update:" << clientIdentity->identityName();
     return;
   }
-  identities[identity->id()]->update(*identity);
-  ui.identityList->setItemText(ui.identityList->findData(identity->id()), identity->identityName());
+  Identity *identity = identities[clientIdentity->id()];
+  if(identity->identityName() != clientIdentity->identityName()) renameIdentity(identity->id(), clientIdentity->identityName());
+  identity->update(*clientIdentity);
   if(identity->id() == currentId) displayIdentity(identity, true);
 }
 
@@ -205,9 +214,16 @@ void IdentitiesSettingsPage::insertIdentity(Identity *identity) {
   }
 }
 
+void IdentitiesSettingsPage::renameIdentity(IdentityId id, const QString &newName) {
+  Identity *identity = identities[id];
+  ui.identityList->setItemText(ui.identityList->findData(identity->id()), newName);
+  identity->setIdentityName(newName);
+}
+
 void IdentitiesSettingsPage::removeIdentity(Identity *id) {
-  ui.identityList->removeItem(ui.identityList->findData(id->id()));
   identities.remove(id->id());
+  ui.identityList->removeItem(ui.identityList->findData(id->id()));
+  changedIdentities.removeAll(id->id());
   id->deleteLater();
   widgetHasChanged();
 }
@@ -220,7 +236,7 @@ void IdentitiesSettingsPage::on_identityList_currentIndexChanged(int index) {
     IdentityId id = ui.identityList->itemData(index).toInt();
     if(identities.contains(id)) displayIdentity(identities[id]);
     ui.deleteIdentity->setEnabled(id != 1); // default identity cannot be deleted
-    //ui.identityList->setEditable(id != 1);  // ...or renamed
+    ui.renameIdentity->setEnabled(id != 1); // ...or renamed
   }
 }
 
@@ -257,7 +273,6 @@ void IdentitiesSettingsPage::displayIdentity(Identity *id, bool dontsave) {
 }
 
 void IdentitiesSettingsPage::saveToIdentity(Identity *id) {
-  id->setIdentityName(ui.identityList->currentText());
   id->setRealName(ui.realName->text());
   QStringList nicks;
   for(int i = 0; i < ui.nicknameList->count(); i++) {
@@ -312,11 +327,20 @@ void IdentitiesSettingsPage::on_deleteIdentity_clicked() {
                                   QMessageBox::Yes|QMessageBox::No, QMessageBox::No);
   if(ret != QMessageBox::Yes) return;
   if(id->id() > 0) deletedIdentities.append(id->id());
+  currentId = 0;
   removeIdentity(id);
 }
 
-void IdentitiesSettingsPage::on_identityList_editTextChanged(const QString &text) {
-  ui.identityList->setItemText(ui.identityList->currentIndex(), text);
+void IdentitiesSettingsPage::on_renameIdentity_clicked() {
+  QString oldName = identities[currentId]->identityName();
+  bool ok = false;
+  QString name = QInputDialog::getText(this, tr("Rename Identity"),
+                                       tr("Please enter a new name for the identity \"%1\":").arg(oldName),
+                                       QLineEdit::Normal, oldName, &ok);
+  if(ok && !name.isEmpty()) {
+    renameIdentity(currentId, name);
+    widgetHasChanged();
+  }
 }
 
 /*****************************************************************************************/
