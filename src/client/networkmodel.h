@@ -28,8 +28,6 @@
 
 #include <QPointer>
 
-#include <QItemSelectionModel>
-
 class BufferInfo;
 
 #include "selectionmodelsynchronizer.h"
@@ -159,13 +157,6 @@ public:
   NetworkModel(QObject *parent = 0);
   static QList<QVariant> defaultHeader();
 
-  inline SelectionModelSynchronizer *selectionModelSynchronizer() { return _selectionModelSynchronizer; }
-  inline ModelPropertyMapper *propertyMapper() { return _propertyMapper; }
-
-  void synchronizeSelectionModel(MappedSelectionModel *selectionModel);
-  void synchronizeView(QAbstractItemView *view);
-  void mapProperty(int column, int role, QObject *target, const QByteArray &property);
-
   static bool mimeContainsBufferList(const QMimeData *mimeData);
   static QList< QPair<uint, uint> > mimeDataToBufferList(const QMimeData *mimeData);
 
@@ -174,32 +165,23 @@ public:
   virtual bool dropMimeData(const QMimeData *, Qt::DropAction, int, int, const QModelIndex &);
 
   void attachNetworkInfo(NetworkInfo *networkInfo);
-						  
-public slots:
-  void bufferUpdated(Buffer *);
-  void setCurrentIndex(const QModelIndex &index, QItemSelectionModel::SelectionFlags command);
-  void selectBuffer(Buffer *buffer);
-  void bufferActivity(Buffer::ActivityLevel, Buffer *buffer);
 
-signals:
-  void bufferSelected(Buffer *);
-  void selectionChanged(const QModelIndex &);
-
-private:
   bool isBufferIndex(const QModelIndex &) const;
   Buffer *getBufferByIndex(const QModelIndex &) const;
+  QModelIndex bufferIndex(BufferInfo bufferInfo);
 
+public slots:
+  void bufferUpdated(Buffer *);
+  void bufferActivity(Buffer::ActivityLevel, Buffer *buffer);
+
+private:
   QModelIndex networkIndex(uint networkId);
   NetworkItem *network(uint networkId);
   NetworkItem *newNetwork(uint networkId, const QString &networkName);
   
-  QModelIndex bufferIndex(BufferInfo bufferInfo);
   BufferItem *buffer(BufferInfo bufferInfo);
   BufferItem *newBuffer(BufferInfo bufferInfo);
 
-  QPointer<SelectionModelSynchronizer> _selectionModelSynchronizer;
-  QPointer<ModelPropertyMapper> _propertyMapper;
-  Buffer *currentBuffer;
 };
 
 #endif // NETWORKMODEL_H

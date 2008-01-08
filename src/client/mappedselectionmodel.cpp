@@ -56,21 +56,11 @@ QModelIndex MappedSelectionModel::mapFromSource(const QModelIndex &sourceIndex) 
     return sourceIndex;
 }
 
-QItemSelection MappedSelectionModel::mapFromSource(const QItemSelection &sourceSelection) {
-  if(isProxyModel()) {
-    QItemSelection mappedSelection;
-    foreach(QItemSelectionRange range, sourceSelection) {
-      QModelIndex topleft = mapFromSource(range.topLeft());
-      QModelIndex bottomright = mapFromSource(range.bottomRight());
-      if(topleft.isValid() && bottomright.isValid())
-	mappedSelection << QItemSelectionRange(topleft, bottomright);
-      else 
-	Q_ASSERT(!topleft.isValid() && !bottomright.isValid());
-    }
-    return mappedSelection;
-  } else {
+QItemSelection MappedSelectionModel::mapSelectionFromSource(const QItemSelection &sourceSelection) {
+  if(isProxyModel())
+    return proxyModel()->mapSelectionFromSource(sourceSelection);
+  else
     return sourceSelection;
-  }
 }
 				    
 QModelIndex MappedSelectionModel::mapToSource(const QModelIndex &proxyIndex) {
@@ -80,16 +70,11 @@ QModelIndex MappedSelectionModel::mapToSource(const QModelIndex &proxyIndex) {
     return proxyIndex;
 }
 
-QItemSelection MappedSelectionModel::mapToSource(const QItemSelection &proxySelection) {
-  if(isProxyModel()) {
-    QItemSelection mappedSelection;
-    foreach(QItemSelectionRange range, proxySelection) {
-      mappedSelection << QItemSelectionRange(mapToSource(range.topLeft()), mapToSource(range.bottomRight()));
-    }
-    return mappedSelection;
-  } else {
+QItemSelection MappedSelectionModel::mapSelectionToSource(const QItemSelection &proxySelection) {
+  if(isProxyModel())
+    return proxyModel()->mapSelectionToSource(proxySelection);
+  else
     return proxySelection;
-  }
 }
 									
 void MappedSelectionModel::mappedSelect(const QModelIndex &index, QItemSelectionModel::SelectionFlags command) {
@@ -99,7 +84,7 @@ void MappedSelectionModel::mappedSelect(const QModelIndex &index, QItemSelection
 }
 
 void MappedSelectionModel::mappedSelect(const QItemSelection &selection, QItemSelectionModel::SelectionFlags command) {
-  QItemSelection mappedSelection = mapFromSource(selection);
+  QItemSelection mappedSelection = mapSelectionFromSource(selection);
   if(mappedSelection != QItemSelectionModel::selection())
     select(mappedSelection, command);  
 }
@@ -124,6 +109,6 @@ void MappedSelectionModel::_currentChanged(const QModelIndex &current, const QMo
 void MappedSelectionModel::_selectionChanged(const QItemSelection &selected, const QItemSelection &deselected) {
   Q_UNUSED(selected)
   Q_UNUSED(deselected)
-  emit mappedSelectionChanged(mapToSource(QItemSelectionModel::selection()));
+  emit mappedSelectionChanged(mapSelectionToSource(QItemSelectionModel::selection()));
 }
   

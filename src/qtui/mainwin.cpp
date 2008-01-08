@@ -25,6 +25,7 @@
 #include "client.h"
 #include "coreconnectdlg.h"
 #include "networkmodel.h"
+#include "buffermodel.h"
 #include "nicklistwidget.h"
 #include "serverlist.h"
 #include "settingsdlg.h"
@@ -117,7 +118,7 @@ void MainWin::init() {
   TopicWidget *topicwidget = new TopicWidget(dock);
   dock->setWidget(topicwidget);
 
-  Client::networkModel()->mapProperty(1, Qt::DisplayRole, topicwidget, "topic");
+  Client::bufferModel()->mapProperty(1, Qt::DisplayRole, topicwidget, "topic");
 
   addDockWidget(Qt::TopDockWidgetArea, dock);
 
@@ -159,7 +160,7 @@ void MainWin::setupMenus() {
 
 void MainWin::setupViews() {
   
-  NetworkModel *model = Client::networkModel();
+  BufferModel *model = Client::bufferModel();
   connect(model, SIGNAL(bufferSelected(Buffer *)), this, SLOT(showBuffer(Buffer *)));
 
   addBufferView(tr("All Buffers"), model, BufferViewFilter::AllNets, QList<uint>());
@@ -167,6 +168,18 @@ void MainWin::setupViews() {
   addBufferView(tr("All Queries"), model, BufferViewFilter::AllNets|BufferViewFilter::NoChannels|BufferViewFilter::NoServers, QList<uint>());
   addBufferView(tr("All Networks"), model, BufferViewFilter::AllNets|BufferViewFilter::NoChannels|BufferViewFilter::NoQueries, QList<uint>());
   addBufferView(tr("Full Custom"), model, BufferViewFilter::FullCustom, QList<uint>());
+
+//   QDockWidget *dock = new QDockWidget("FILTERTEST", this);
+//   dock->setAllowedAreas(Qt::RightDockWidgetArea|Qt::LeftDockWidgetArea);
+//   BufferView *view = new BufferView(dock);
+//   view->setModel(Client::bufferModel());
+//   dock->setWidget(view);
+
+//   addDockWidget(Qt::LeftDockWidgetArea, dock);
+//   ui.menuViews->addAction(dock->toggleViewAction());
+
+//   netViews.append(dock);
+
   
   ui.menuViews->addSeparator();
 }
@@ -180,7 +193,7 @@ void MainWin::addBufferView(const QString &viewname, QAbstractItemModel *model, 
   //create the view and initialize it's filter
   BufferView *view = new BufferView(dock);
   view->setFilteredModel(model, mode, nets);
-  Client::networkModel()->synchronizeView(view);
+  Client::bufferModel()->synchronizeView(view);
   dock->setWidget(view);
 
   addDockWidget(Qt::LeftDockWidgetArea, dock);

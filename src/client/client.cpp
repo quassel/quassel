@@ -28,6 +28,7 @@
 #include "message.h"
 #include "networkinfo.h"
 #include "networkmodel.h"
+#include "buffermodel.h"
 #include "quasselui.h"
 #include "signalproxy.h"
 #include "util.h"
@@ -52,27 +53,28 @@ void Client::init(AbstractUi *ui) {
 }
 
 Client::Client(QObject *parent)
-    : QObject(parent),
+  : QObject(parent),
     socket(0),
     _signalProxy(new SignalProxy(SignalProxy::Client, this)),
     mainUi(0),
     _networkModel(0),
+    _bufferModel(0),
     connectedToCore(false)
 {
-
 }
 
 Client::~Client() {
-
 }
 
 void Client::init() {
   blockSize = 0;
 
   _networkModel = new NetworkModel(this);
+  _bufferModel = new BufferModel(_networkModel);
 
   connect(this, SIGNAL(bufferSelected(Buffer *)),
-          _networkModel, SLOT(selectBuffer(Buffer *)));
+          _bufferModel, SLOT(selectBuffer(Buffer *)));
+  
   connect(this, SIGNAL(bufferUpdated(Buffer *)),
           _networkModel, SLOT(bufferUpdated(Buffer *)));
   connect(this, SIGNAL(bufferActivity(Buffer::ActivityLevel, Buffer *)),
@@ -191,6 +193,11 @@ BufferInfo Client::statusBufferInfo(QString net) {
 NetworkModel *Client::networkModel() {
   return instance()->_networkModel;
 }
+
+BufferModel *Client::bufferModel() {
+  return instance()->_bufferModel;
+}
+
 
 SignalProxy *Client::signalProxy() {
   return instance()->_signalProxy;

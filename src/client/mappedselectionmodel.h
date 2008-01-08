@@ -41,10 +41,10 @@ public:
   const QAbstractProxyModel *proxyModel() const;
   
   QModelIndex mapFromSource(const QModelIndex &sourceIndex);
-  QItemSelection mapFromSource(const QItemSelection &sourceSelection);
+  QItemSelection mapSelectionFromSource(const QItemSelection &sourceSelection);
 				    
   QModelIndex mapToSource(const QModelIndex &proxyIndex);
-  QItemSelection mapToSource(const QItemSelection &proxySelection);
+  QItemSelection mapSelectionToSource(const QItemSelection &proxySelection);
 									
 public slots:
   void mappedSelect(const QModelIndex &index, QItemSelectionModel::SelectionFlags command);

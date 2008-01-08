@@ -18,41 +18,50 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _SELECTIONMODELSYNCHRONIZER_H_
-#define _SELECTIONMODELSYNCHRONIZER_H_
+#ifndef BUFFERMODEL_H
+#define BUFFERMODEL_H
 
-#include <QObject>
+#include <QSortFilterProxyModel>
 #include <QItemSelectionModel>
+#include <QPointer>
 
-class QAbstractItemModel;
+class NetworkModel;
+//class SelectionModelSynchronizer;
+#include "selectionmodelsynchronizer.h"
+//class ModelPropertyMapper;
+#include "modelpropertymapper.h"
 class MappedSelectionModel;
+class QAbstractItemView;
+class Buffer;
 
-class SelectionModelSynchronizer : public QObject {
+class BufferModel : public QSortFilterProxyModel {
   Q_OBJECT
 
 public:
-  SelectionModelSynchronizer(QAbstractItemModel *parent = 0);
-  virtual ~SelectionModelSynchronizer();
+  BufferModel(NetworkModel *parent = 0);
+  virtual ~BufferModel();
 
-  void addSelectionModel(MappedSelectionModel *model);
-  void addRegularSelectionModel(QItemSelectionModel *model);
-  void removeSelectionModel(MappedSelectionModel *model);
+  bool filterAcceptsRow(int sourceRow, const QModelIndex &parent) const;
+  
+  inline SelectionModelSynchronizer *selectionModelSynchronizer() { return _selectionModelSynchronizer; }
+  inline ModelPropertyMapper *propertyMapper() { return _propertyMapper; }
 
-  inline QAbstractItemModel *model() { return _model; }
+  void synchronizeSelectionModel(MappedSelectionModel *selectionModel);
+  void synchronizeView(QAbstractItemView *view);
+  void mapProperty(int column, int role, QObject *target, const QByteArray &property);
 
-private slots:
-  void _mappedCurrentChanged(const QModelIndex &current);
-  void _mappedSelectionChanged(const QItemSelection &selected);
-
-  void _regularCurrentChanged(const QModelIndex &newCurrent, const QModelIndex &oldCurrent);
-  void _regularSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
+public slots:
+  void setCurrentIndex(const QModelIndex &index, QItemSelectionModel::SelectionFlags command);
+  void selectBuffer(Buffer *buffer);
 
 signals:
-  void select(const QItemSelection &selection, QItemSelectionModel::SelectionFlags command);
-  void setCurrentIndex(const QModelIndex &index, QItemSelectionModel::SelectionFlags command);
-  
+  void bufferSelected(Buffer *);
+  void selectionChanged(const QModelIndex &);
+
 private:
-  QAbstractItemModel *_model;
+  QPointer<SelectionModelSynchronizer> _selectionModelSynchronizer;
+  QPointer<ModelPropertyMapper> _propertyMapper;
+  Buffer *currentBuffer;
 };
 
-#endif
+#endif // BUFFERMODEL_H

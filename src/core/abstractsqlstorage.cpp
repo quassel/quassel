@@ -30,6 +30,12 @@ AbstractSqlStorage::AbstractSqlStorage(QObject *parent)
 }
 
 AbstractSqlStorage::~AbstractSqlStorage() {
+  QHash<QPair<QString, int>, QSqlQuery *>::iterator iter = _queryCache.begin();
+  while(iter != _queryCache.end()) {
+    delete *iter;
+    iter = _queryCache.erase(iter);
+  }
+  
   {
     QSqlDatabase db = QSqlDatabase::database("quassel_connection");
     db.commit();
@@ -126,7 +132,6 @@ QSqlQuery *AbstractSqlStorage::cachedQuery(const QString &queryName, int version
     query->prepare(queryString(queryName, version));
     _queryCache[queryId] = query;
   }
-
   return _queryCache[queryId];
 }
 

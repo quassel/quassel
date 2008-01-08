@@ -6,22 +6,22 @@ Already Done:
       make signalproxy threadsafe
       utf-8 / encodings
       externalize SQL-queries, provide migration path...
+      Buffermodel
 
 Showstoppers:
 =============
 WiP:  settings dialog -> Sput
       serverlist, identities... -> Sput
       mode changes in serverhandler -> EgS
-      BUFFERMODEL -> EgS
       make wizard more intuitive (account data, two-step auth) -> Sput
 
 Open: network settings in DB -> ?
-      switch to network-IDs -> ?
+      switch to network-IDs (depends on network settings into db) -> ?
       remove buffergroups (DB) -> ?
       insert buffertype field rein (DB) -> ?
       core-user admin, rights management (ACL) -> Sput?
 
-BUG:  multi-user join -> ?
+BUG:  multi-user join (should be done while switching to network-IDs) -> ?
 
 Important:
 ==========
@@ -29,3 +29,5 @@ WiP:  shortcuts -> Sput
 
 Open: save activity-state in core (client reconnect) -- save per-buffer timestamp locally in client  -> ?
       backlog administration -> ?
+      fix Activity and get rid of QtGui dep in client
+      

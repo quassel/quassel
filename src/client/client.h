@@ -37,6 +37,7 @@ class NetworkInfo;
 class AbstractUi;
 class AbstractUiMsg;
 class NetworkModel;
+class BufferModel;
 class SignalProxy;
 
 class QTimer;
@@ -82,6 +83,7 @@ public:
   static void removeIdentity(IdentityId id);
 
   static NetworkModel *networkModel();
+  static BufferModel *bufferModel();
   static SignalProxy *signalProxy();
 
   static AbstractUiMsg *layoutMsg(const Message &);
@@ -191,6 +193,7 @@ private:
   QPointer<SignalProxy> _signalProxy;
   QPointer<AbstractUi> mainUi;
   QPointer<NetworkModel> _networkModel;
+  QPointer<BufferModel> _bufferModel;
 
   ClientMode clientMode;
 
