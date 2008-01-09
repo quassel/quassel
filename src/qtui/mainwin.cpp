@@ -204,9 +204,8 @@ void MainWin::addBufferView(const QString &viewname, QAbstractItemModel *model, 
 
 void MainWin::setupSettingsDlg() {
   settingsDlg->registerSettingsPage(new FontsSettingsPage(settingsDlg));
-#ifdef SPUTDEV
   settingsDlg->registerSettingsPage(new IdentitiesSettingsPage(settingsDlg));
-#endif
+
 }
 
 void MainWin::connectedToCore() {

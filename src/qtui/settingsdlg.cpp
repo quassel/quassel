@@ -24,13 +24,25 @@ SettingsDlg::SettingsDlg(QWidget *parent) : QDialog(parent) {
   ui.setupUi(this);
   _currentPage = 0;
 
-  //ui.settingsFrame->setWidgetResizable(true);
-  //ui.settingsFrame->setWidget(ui.settingsStack);
+  //recommendedSize = layout()->minimumSize();
+
+  // make the scrollarea behave sanely
+  ui.settingsFrame->setWidgetResizable(true);
+  ui.settingsFrame->setWidget(ui.settingsStack);
+
+  updateGeometry();
+
   ui.settingsTree->setRootIsDecorated(false);
 
   connect(ui.settingsTree, SIGNAL(itemSelectionChanged()), this, SLOT(itemSelected()));
   connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));
 }
+
+/*
+QSize SettingsDlg::sizeHint() const {
+  return recommendedSize;
+}
+*/
 
 SettingsPage *SettingsDlg::currentPage() const {
   return _currentPage;
@@ -39,6 +51,8 @@ SettingsPage *SettingsDlg::currentPage() const {
 void SettingsDlg::registerSettingsPage(SettingsPage *sp) {
   sp->setParent(ui.settingsStack);
   ui.settingsStack->addWidget(sp);
+  //recommendedSize = recommendedSize.expandedTo(sp->sizeHint());
+  //updateGeometry();
   connect(sp, SIGNAL(changed(bool)), this, SLOT(setButtonStates()));
 
   QTreeWidgetItem *cat;
@@ -48,25 +62,42 @@ void SettingsDlg::registerSettingsPage(SettingsPage *sp) {
     cat->setExpanded(true);
     cat->setFlags(Qt::ItemIsEnabled);
   } else cat = cats[0];
-  new QTreeWidgetItem(cat, QStringList(sp->title()));
+  QTreeWidgetItem *item = new QTreeWidgetItem(cat, QStringList(sp->title()));
+  treeItems[sp] = item;
   pages[QString("%1$%2").arg(sp->category(), sp->title())] = sp;
-  updateGeometry();
   // TESTING
-  selectPage(sp->category(), sp->title());
+  //selectPage(sp->category(), sp->title());
 }
 
 void SettingsDlg::selectPage(const QString &cat, const QString &title) {
   SettingsPage *sp = pages[QString("%1$%2").arg(cat, title)];
-  Q_ASSERT(sp); // FIXME allow for invalid settings pages
-  ui.settingsStack->setCurrentWidget(sp);
-  _currentPage = sp;
+  if(!sp) {
+    _currentPage = 0;
+    ui.settingsStack->setCurrentIndex(0);
+    ui.settingsTree->setCurrentItem(0);
+    return;
+  }
+  if(sp != currentPage() && currentPage() != 0 && currentPage()->hasChanged()) {
+    int ret = QMessageBox::warning(this, tr("Save changes"),
+                                  tr("There are unsaved changes on the current configuration page. Would you like to apply your changes now?"),
+                                  QMessageBox::Discard|QMessageBox::Save|QMessageBox::Cancel, QMessageBox::Cancel);
+    if(ret == QMessageBox::Save) {
+      if(!applyChanges()) sp = currentPage();
+    } else if(ret == QMessageBox::Discard) {
+      undoChanges();
+    } else sp = currentPage();
+  }
+  if(sp != currentPage()) {
+    ui.pageTitle->setText(sp->title());
+    ui.settingsStack->setCurrentWidget(sp);
+    ui.settingsStack->setMinimumSize(sp->sizeHint());  // we don't want our page shrinked, use scrollbars instead...
+    _currentPage = sp;
+  }
+  ui.settingsTree->setCurrentItem(treeItems[sp]);
   setButtonStates();
 }
 
 void SettingsDlg::itemSelected() {
-  // Check if we have changed anything...
-  // TODO
-
   QList<QTreeWidgetItem *> items = ui.settingsTree->selectedItems();
   if(!items.count()) {
     return;
@@ -76,7 +107,6 @@ void SettingsDlg::itemSelected() {
     QString cat = parent->text(0);
     QString title = items[0]->text(0);
     selectPage(cat, title);
-    ui.pageTitle->setText(title);
   }
 }
 
@@ -85,6 +115,7 @@ void SettingsDlg::setButtonStates() {
   ui.buttonBox->button(QDialogButtonBox::Ok)->setEnabled(sp && sp->hasChanged());
   ui.buttonBox->button(QDialogButtonBox::Apply)->setEnabled(sp && sp->hasChanged());
   ui.buttonBox->button(QDialogButtonBox::Reset)->setEnabled(sp && sp->hasChanged());
+  ui.buttonBox->button(QDialogButtonBox::RestoreDefaults)->setEnabled(sp && sp->hasDefaults());
 }
 
 void SettingsDlg::buttonClicked(QAbstractButton *button) {
@@ -96,6 +127,7 @@ void SettingsDlg::buttonClicked(QAbstractButton *button) {
       applyChanges();
       break;
     case QDialogButtonBox::Cancel:
+      undoChanges();
       reject();
       break;
     case QDialogButtonBox::Reset:
@@ -118,13 +150,26 @@ bool SettingsDlg::applyChanges() {
   return false;
 }
 
-// TODO add messagebox
+void SettingsDlg::undoChanges() {
+  if(currentPage()) {
+    currentPage()->load();
+  }
+}
+
 void SettingsDlg::reload() {
-  SettingsPage *page = qobject_cast<SettingsPage *>(ui.settingsStack->currentWidget());
-  if(page) page->load();
+  if(!currentPage()) return;
+  int ret = QMessageBox::question(this, tr("Reload Settings"), tr("Do you like to reload the settings, undoing your changes on this page?"),
+                                  QMessageBox::Yes|QMessageBox::No, QMessageBox::No);
+  if(ret == QMessageBox::Yes) {
+    currentPage()->load();
+  }
 }
 
 void SettingsDlg::loadDefaults() {
-  SettingsPage *page = qobject_cast<SettingsPage *>(ui.settingsStack->currentWidget());
-  if(page) page->defaults();
+  if(!currentPage()) return;
+  int ret = QMessageBox::question(this, tr("Restore Defaults"), tr("Do you like to restore the default values for this page?"),
+                                  QMessageBox::RestoreDefaults|QMessageBox::Cancel, QMessageBox::Cancel);
+  if(ret == QMessageBox::Yes) {
+    currentPage()->defaults();
+  }
 }

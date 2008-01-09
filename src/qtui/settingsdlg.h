@@ -35,6 +35,8 @@ class SettingsDlg : public QDialog {
 
     SettingsPage *currentPage() const;
 
+    //QSize sizeHint() const;
+
   public slots:
     void selectPage(const QString &category, const QString &title);
 
@@ -42,6 +44,7 @@ class SettingsDlg : public QDialog {
     void itemSelected();
     void buttonClicked(QAbstractButton *);
     bool applyChanges();
+    void undoChanges();
     void reload();
     void loadDefaults();
     void setButtonStates();
@@ -51,6 +54,9 @@ class SettingsDlg : public QDialog {
 
     SettingsPage *_currentPage;
     QHash<QString, SettingsPage *> pages;
+    QHash<SettingsPage *, QTreeWidgetItem *> treeItems;
+
+    //QSize recommendedSize;
 };
 
 /*

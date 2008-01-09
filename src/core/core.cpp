@@ -162,6 +162,7 @@ void Core::restoreState() {
         sess->restoreState(m["State"]);
       }
     }
+    qDebug() << "...done.";
   }
 }
 

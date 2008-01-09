@@ -21,12 +21,15 @@
 #ifndef _FONTSSETTINGSPAGE_H_
 #define _FONTSSETTINGSPAGE_H_
 
+#include <QHash>
+
 #include "settings.h"
 #include "settingspage.h"
 
 #include "ui_fontssettingspage.h"
 
 class QSignalMapper;
+class QLabel;
 
 class FontsSettingsPage : public SettingsPage {
   Q_OBJECT
@@ -34,7 +37,7 @@ class FontsSettingsPage : public SettingsPage {
   public:
     FontsSettingsPage(QWidget *parent = 0);
 
-    bool hasChanged() const;
+    bool hasDefaults() const;
 
   public slots:
     void save();
@@ -43,8 +46,11 @@ class FontsSettingsPage : public SettingsPage {
 
   private slots:
     void load(Settings::Mode mode);
+    void initLabel(QLabel *label, const QFont &font);
     void setFont(QLabel *label, const QFont &font);
     void chooseFont(QWidget *label);
+
+    void widgetHasChanged();
 
   private:
     Ui::FontsSettingsPage ui;

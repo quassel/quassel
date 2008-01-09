@@ -27,6 +27,7 @@
 #include "ui_identitiessettingspage.h"
 #include "ui_createidentitydlg.h"
 #include "ui_saveidentitiesdlg.h"
+#include "ui_nickeditdlgnew.h"
 
 class QAbstractItemModel;
 
@@ -41,7 +42,6 @@ class IdentitiesSettingsPage : public SettingsPage {
   public slots:
     void save();
     void load();
-    void defaults();
 
   private slots:
     void coreConnectionStateChanged(bool);
@@ -55,7 +55,14 @@ class IdentitiesSettingsPage : public SettingsPage {
     void on_deleteIdentity_clicked();
     void on_renameIdentity_clicked();
 
+    void on_addNick_clicked();
+    void on_deleteNick_clicked();
+    void on_renameNick_clicked();
+    void on_nickUp_clicked();
+    void on_nickDown_clicked();
+
     void widgetHasChanged();
+    void setWidgetStates();
 
   private:
     Ui::IdentitiesSettingsPage ui;
@@ -107,6 +114,25 @@ class SaveIdentitiesDlg : public QDialog {
     QList<IdentityId> toRemove;
 
     int numevents, rcvevents;
+
+};
+
+class NickEditDlgNew : public QDialog {
+  Q_OBJECT
+
+  public:
+    NickEditDlgNew(const QString &oldnick, const QStringList &existing = QStringList(), QWidget *parent = 0);
+
+    QString nick() const;
+
+  private slots:
+    void on_nickEdit_textChanged(const QString &);
+
+  private:
+    Ui::NickEditDlgNew ui;
+
+    QString oldNick;
+    QStringList existing;
 
 };
 

@@ -32,6 +32,7 @@ class SettingsPage : public QWidget {
     virtual ~SettingsPage() {};
     virtual QString category() const;
     virtual QString title() const;
+    virtual bool hasDefaults() const;
 
     bool hasChanged() const;
 
@@ -44,7 +45,7 @@ class SettingsPage : public QWidget {
   public slots:
     virtual void save() = 0;
     virtual void load() = 0;
-    virtual void defaults() = 0;
+    virtual void defaults();
 
   protected slots:
     //! Calling this slot is equivalent to calling changeState(true).

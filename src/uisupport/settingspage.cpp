@@ -34,6 +34,14 @@ QString SettingsPage::title() const {
   return _title;
 }
 
+bool SettingsPage::hasDefaults() const {
+  return false;
+}
+
+void SettingsPage::defaults() {
+
+}
+
 bool SettingsPage::hasChanged() const {
   return _changed;
 }

@@ -18,8 +18,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#define SPUTDEV
-
 #include "coresession.h"
 #include "server.h"
 
@@ -48,7 +46,7 @@ CoreSession::CoreSession(UserId uid, Storage *_storage, QObject *parent)
 
   CoreUserSettings s(user);
   sessionData = s.sessionData();
-#ifdef SPUTDEV
+
   foreach(IdentityId id, s.identityIds()) {
     Identity *i = new Identity(s.identity(id), this);
     if(!i->isValid()) {
@@ -70,7 +68,6 @@ CoreSession::CoreSession(UserId uid, Storage *_storage, QObject *parent)
     i.setIdentityName(tr("Default Identity"));
     createIdentity(i);
   }
-#endif
 
   p->attachSlot(SIGNAL(requestNetworkStates()), this, SLOT(serverStateRequested()));
   p->attachSlot(SIGNAL(requestConnect(QString)), this, SLOT(connectToNetwork(QString)));

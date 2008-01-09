@@ -46,7 +46,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>26</height>
+     <height>24</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuConnection" >
@@ -160,6 +160,9 @@
    </property>
   </action>
   <action name="actionQuit" >
+   <property name="icon" >
+    <iconset resource="../../icons/icons.qrc" >:/22x22/actions/oxygen/22x22/actions/application-exit.png</iconset>
+   </property>
    <property name="text" >
     <string>Quit...</string>
    </property>
@@ -194,6 +197,9 @@
    </property>
   </action>
   <action name="actionAboutQuassel" >
+   <property name="icon" >
+    <iconset resource="../../icons/icons.qrc" >:/icons/quassel-icon.png</iconset>
+   </property>
    <property name="text" >
     <string>About Quassel IRC...</string>
    </property>
@@ -222,6 +228,9 @@
    <property name="enabled" >
     <bool>false</bool>
    </property>
+   <property name="icon" >
+    <iconset resource="../../icons/icons.qrc" >:/22x22/actions/oxygen/22x22/actions/network-disconnect.png</iconset>
+   </property>
    <property name="text" >
     <string>Disconnect from Core</string>
    </property>
@@ -229,6 +238,9 @@
   <action name="actionConnectCore" >
    <property name="enabled" >
     <bool>false</bool>
+   </property>
+   <property name="icon" >
+    <iconset resource="../../icons/icons.qrc" >:/22x22/actions/oxygen/22x22/actions/network-connect.png</iconset>
    </property>
    <property name="text" >
     <string>Connect to Core...</string>

@@ -29,6 +29,8 @@ src
 src/client
 src/client/buffer.cpp
 src/client/buffer.h
+src/client/buffermodel.cpp
+src/client/buffermodel.h
 src/client/client.cpp
 src/client/client.h
 src/client/client.pri
@@ -180,6 +182,8 @@ src/qtui/settingspages/identitiessettingspage.cpp
 src/qtui/settingspages/identitiessettingspage.h
 src/qtui/settingspages/identitiessettingspage.ui
 src/qtui/settingspages/networkssettingspage.ui
+src/qtui/settingspages/nickeditdlg.ui
+src/qtui/settingspages/nickeditdlgnew.ui
 src/qtui/settingspages/saveidentitiesdlg.ui
 src/qtui/settingspages/servereditdlg.ui
 src/qtui/settingspages/settingspages.pri
@@ -194,6 +198,7 @@ src/qtui/ui/channelwidget.ui
 src/qtui/ui/connectionpage.ui
 src/qtui/ui/coreconnectdlg.ui
 src/qtui/ui/coresettingspage.ui
+src/qtui/ui/debugconsole.ui
 src/qtui/ui/identitiesdlg.ui
 src/qtui/ui/identitieseditdlg.ui
 src/qtui/ui/mainwin.ui

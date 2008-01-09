@@ -30,6 +30,7 @@ IdentitiesSettingsPage::IdentitiesSettingsPage(QWidget *parent)
 
   ui.setupUi(this);
   setEnabled(false);  // need a core connection!
+  setWidgetStates();
   connect(Client::instance(), SIGNAL(coreConnectionStateChanged(bool)), this, SLOT(coreConnectionStateChanged(bool)));
   connect(Client::instance(), SIGNAL(identityCreated(IdentityId)), this, SLOT(clientIdentityCreated(IdentityId)));
   connect(Client::instance(), SIGNAL(identityRemoved(IdentityId)), this, SLOT(clientIdentityRemoved(IdentityId)));
@@ -56,6 +57,26 @@ IdentitiesSettingsPage::IdentitiesSettingsPage(QWidget *parent)
   connect(ui.kickReason, SIGNAL(textEdited(const QString &)), this, SLOT(widgetHasChanged()));
   connect(ui.partReason, SIGNAL(textEdited(const QString &)), this, SLOT(widgetHasChanged()));
   connect(ui.quitReason, SIGNAL(textEdited(const QString &)), this, SLOT(widgetHasChanged()));
+
+  connect(ui.nicknameList, SIGNAL(itemSelectionChanged()), this, SLOT(setWidgetStates()));
+
+  // we would need this if we enabled drag and drop in the nicklist...
+  //connect(ui.nicknameList, SIGNAL(rowsInserted(const QModelIndex &, int, int)), this, SLOT(setWidgetStates()));
+  //connect(ui.nicknameList->model(), SIGNAL(rowsInserted(const QModelIndex &, int, int)), this, SLOT(nicklistHasChanged()));
+
+}
+
+void IdentitiesSettingsPage::setWidgetStates() {
+  if(ui.nicknameList->selectedItems().count()) {
+    ui.renameNick->setEnabled(true);
+    ui.nickUp->setEnabled(ui.nicknameList->row(ui.nicknameList->selectedItems()[0]) > 0);
+    ui.nickDown->setEnabled(ui.nicknameList->row(ui.nicknameList->selectedItems()[0]) < ui.nicknameList->count()-1);
+  } else {
+    ui.renameNick->setDisabled(true);
+    ui.nickUp->setDisabled(true);
+    ui.nickDown->setDisabled(true);
+  }
+  ui.deleteNick->setEnabled(ui.nicknameList->count() > 1);
 
 }
 
@@ -118,10 +139,6 @@ void IdentitiesSettingsPage::load() {
   changeState(false);
 }
 
-void IdentitiesSettingsPage::defaults() {
-  // TODO implement bool hasDefaults()
-}
-
 void IdentitiesSettingsPage::widgetHasChanged() {
   bool changed = testHasChanged();
   if(changed != hasChanged()) changeState(changed);
@@ -165,7 +182,6 @@ bool IdentitiesSettingsPage::aboutToSave() {
 
 void IdentitiesSettingsPage::clientIdentityCreated(IdentityId id) {
   insertIdentity(new Identity(*Client::identity(id), this));
-  Identity *i = identities[id];
   connect(Client::identity(id), SIGNAL(updatedRemotely()), this, SLOT(clientIdentityUpdated()));
 }
 
@@ -224,6 +240,7 @@ void IdentitiesSettingsPage::removeIdentity(Identity *id) {
   identities.remove(id->id());
   ui.identityList->removeItem(ui.identityList->findData(id->id()));
   changedIdentities.removeAll(id->id());
+  if(currentId == id->id()) currentId = 0;
   id->deleteLater();
   widgetHasChanged();
 }
@@ -335,10 +352,65 @@ void IdentitiesSettingsPage::on_renameIdentity_clicked() {
   QString oldName = identities[currentId]->identityName();
   bool ok = false;
   QString name = QInputDialog::getText(this, tr("Rename Identity"),
-                                       tr("Please enter a new name for the identity \"%1\":").arg(oldName),
+                                       tr("Please enter a new name for the identity \"%1\"!").arg(oldName),
                                        QLineEdit::Normal, oldName, &ok);
   if(ok && !name.isEmpty()) {
     renameIdentity(currentId, name);
+    widgetHasChanged();
+  }
+}
+
+void IdentitiesSettingsPage::on_addNick_clicked() {
+  QStringList existing;
+  for(int i = 0; i < ui.nicknameList->count(); i++) existing << ui.nicknameList->item(i)->text();
+  NickEditDlgNew dlg(QString(), existing, this);
+  if(dlg.exec() == QDialog::Accepted) {
+    ui.nicknameList->addItem(dlg.nick());
+    ui.nicknameList->setCurrentRow(ui.nicknameList->count()-1);
+    setWidgetStates();
+  }
+}
+
+void IdentitiesSettingsPage::on_deleteNick_clicked() {
+  // no confirmation, since a nickname is really nothing hard to recreate
+  if(ui.nicknameList->selectedItems().count()) {
+    delete ui.nicknameList->selectedItems()[0];
+    ui.nicknameList->setCurrentRow(qMin(ui.nicknameList->currentRow()+1, ui.nicknameList->count()-1));
+    setWidgetStates();
+    widgetHasChanged();
+  }
+}
+
+void IdentitiesSettingsPage::on_renameNick_clicked() {
+  if(!ui.nicknameList->selectedItems().count()) return;
+  QString old = ui.nicknameList->selectedItems()[0]->text();
+  QStringList existing;
+  for(int i = 0; i < ui.nicknameList->count(); i++) existing << ui.nicknameList->item(i)->text();
+  NickEditDlgNew dlg(old, existing, this);
+  if(dlg.exec() == QDialog::Accepted) {
+    ui.nicknameList->selectedItems()[0]->setText(dlg.nick());
+  }
+
+}
+
+void IdentitiesSettingsPage::on_nickUp_clicked() {
+  if(!ui.nicknameList->selectedItems().count()) return;
+  int row = ui.nicknameList->row(ui.nicknameList->selectedItems()[0]);
+  if(row > 0) {
+    ui.nicknameList->insertItem(row-1, ui.nicknameList->takeItem(row));
+    ui.nicknameList->setCurrentRow(row-1);
+    setWidgetStates();
+    widgetHasChanged();
+  }
+}
+
+void IdentitiesSettingsPage::on_nickDown_clicked() {
+  if(!ui.nicknameList->selectedItems().count()) return;
+  int row = ui.nicknameList->row(ui.nicknameList->selectedItems()[0]);
+  if(row < ui.nicknameList->count()-1) {
+    ui.nicknameList->insertItem(row+1, ui.nicknameList->takeItem(row));
+    ui.nicknameList->setCurrentRow(row+1);
+    setWidgetStates();
     widgetHasChanged();
   }
 }
@@ -409,3 +481,34 @@ void SaveIdentitiesDlg::clientEvent() {
   ui.progressBar->setValue(++rcvevents);
   if(rcvevents >= numevents) accept();
 }
+
+/*************************************************************************************************/
+
+NickEditDlgNew::NickEditDlgNew(const QString &old, const QStringList &exist, QWidget *parent)
+  : QDialog(parent), oldNick(old), existing(exist) {
+  ui.setupUi(this);
+
+  // define a regexp for valid nicknames
+  // TODO: add max nicklength according to ISUPPORT
+  QString letter = "A-Za-z";
+  QString special = "\x5b-\x60\x7b-\x7d";
+  QRegExp rx(QString("[%1%2][%1%2\\d-]*").arg(letter, special));
+  ui.nickEdit->setValidator(new QRegExpValidator(rx, ui.nickEdit));
+  if(old.isEmpty()) {
+    // new nick
+    setWindowTitle(tr("Add Nickname"));
+    on_nickEdit_textChanged(""); // disable ok button
+  } else ui.nickEdit->setText(old);
+}
+
+QString NickEditDlgNew::nick() const {
+  return ui.nickEdit->text();
+
+}
+
+void NickEditDlgNew::on_nickEdit_textChanged(const QString &text) {
+  ui.buttonBox->button(QDialogButtonBox::Ok)->setDisabled(text.isEmpty() || existing.contains(text));
+}
+
+
+

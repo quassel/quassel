@@ -18,12 +18,14 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "global.h"
-#include "identity.h"
-#include "settings.h"
+#include <QDateTime>
 #include <QString>
 #include <QTimer>
 #include <QTranslator>
+
+#include "global.h"
+#include "identity.h"
+#include "settings.h"
 
 #if defined BUILD_CORE
 #include <QCoreApplication>
@@ -72,6 +74,8 @@ int main(int argc, char **argv) {
   Global::runMode = Global::Monolithic;
   QApplication app(argc, argv);
 #endif
+
+  qsrand(QDateTime::currentDateTime().toTime_t());
 
   // Set up i18n support
   QLocale locale = QLocale::system();

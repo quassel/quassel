@@ -47,18 +47,24 @@ FontsSettingsPage::FontsSettingsPage(QWidget *parent)
 
   connect(mapper, SIGNAL(mapped(QWidget *)), this, SLOT(chooseFont(QWidget *)));
 
+  connect(ui.customAppFonts, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
+  connect(ui.checkTopic, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
+  connect(ui.checkNickList, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
+  connect(ui.checkBufferView, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
+  connect(ui.checkNicks, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
+  connect(ui.checkTimestamp, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
+
   load();
 
 }
 
-bool FontsSettingsPage::hasChanged() const {
-
-  return false;
+bool FontsSettingsPage::hasDefaults() const {
+  return true;
 }
 
 void FontsSettingsPage::defaults() {
   load(Settings::Default);
-
+  widgetHasChanged();
 }
 
 void FontsSettingsPage::load() {
@@ -68,24 +74,25 @@ void FontsSettingsPage::load() {
 
 void FontsSettingsPage::load(Settings::Mode mode) {
   QTextCharFormat chatFormat = QtUi::style()->format(UiStyle::None, mode);
-  setFont(ui.demoChatMessages, chatFormat.font());
+  initLabel(ui.demoChatMessages, chatFormat.font());
   QTextCharFormat nicksFormat = QtUi::style()->format(UiStyle::Sender, mode);
   if(nicksFormat.hasProperty(QTextFormat::FontFamily)) {
-    setFont(ui.demoNicks, nicksFormat.font());
+    initLabel(ui.demoNicks, nicksFormat.font());
     ui.checkNicks->setChecked(true);
   } else {
-    setFont(ui.demoNicks, chatFormat.font());
+    initLabel(ui.demoNicks, chatFormat.font());
     ui.checkNicks->setChecked(false);
   }
   QTextCharFormat timestampFormat = QtUi::style()->format(UiStyle::Timestamp, mode);
   if(timestampFormat.hasProperty(QTextFormat::FontFamily)) {
-    setFont(ui.demoTimestamp, timestampFormat.font());
+    initLabel(ui.demoTimestamp, timestampFormat.font());
     ui.checkTimestamp->setChecked(true);
   } else {
-    setFont(ui.demoTimestamp, chatFormat.font());
+    initLabel(ui.demoTimestamp, chatFormat.font());
     ui.checkTimestamp->setChecked(false);
   }
 
+  changeState(false);
 }
 
 void FontsSettingsPage::save() {
@@ -107,10 +114,18 @@ void FontsSettingsPage::save() {
   changeState(false);
 }
 
+void FontsSettingsPage::widgetHasChanged() {
+  if(!hasChanged()) changeState(true);
+}
+
+void FontsSettingsPage::initLabel(QLabel *label, const QFont &font) {
+  setFont(label, font);
+}
+
 void FontsSettingsPage::setFont(QLabel *label, const QFont &font) {
-  QFontInfo fontInfo(font);
   label->setFont(font);
-  label->setText(QString("%1 %2").arg(fontInfo.family()).arg(fontInfo.pointSize()));
+  label->setText(QString("%1 %2").arg(font.family()).arg(font.pointSize()));
+  widgetHasChanged();
 }
 
 void FontsSettingsPage::chooseFont(QWidget *widget) {
