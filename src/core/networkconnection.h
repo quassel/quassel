@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _SERVER_H_
-#define _SERVER_H_
+#ifndef _NETWORKCONNECTION_H_
+#define _NETWORKCONNECTION_H_
 
 #include <QAbstractSocket>
 #include <QString>
@@ -31,7 +31,7 @@
 #include "message.h"
 #include "signalproxy.h"
 
-class NetworkInfo;
+class Network;
 
 class IrcServerHandler;
 class UserInputHandler;
@@ -44,22 +44,22 @@ class CoreSession;
  * e.g. if some scripts starts running wild...
  */
 
-class Server : public QThread {
+class NetworkConnection : public QThread {
   Q_OBJECT
 
 public:
-  Server(UserId uid, NetworkId networkId, QString network, const QVariant &previousState = QVariant());
-  ~Server();
+  NetworkConnection(UserId uid, NetworkId networkId, QString network, const QVariant &previousState = QVariant());
+  ~NetworkConnection();
 
   UserId userId() const { return _userId; } 
 
-  // serverState state();
+  // networkState state();
   bool isConnected() const { return socket.state() == QAbstractSocket::ConnectedState; }
 
   NetworkId networkId() const;
   QString networkName() const;  // hasbeen getNetwork()
 
-  NetworkInfo *networkInfo() const { return _networkInfo; }
+  Network *network() const { return _network; }
   IrcServerHandler *ircServerHandler() const { return _ircServerHandler; }
   UserInputHandler *userInputHandler() const { return _userInputHandler; }
   CtcpHandler *ctcpHandler() const { return _ctcpHandler; }
@@ -99,7 +99,7 @@ private slots:
   void sendPerform();
 
 signals:
-  void serverState(QString net, QVariantMap data);
+  void networkState(QString net, QVariantMap data);
   void recvRawServerMsg(QString);
   void displayStatusMsg(QString);
   //void displayMsg(Message msg);
@@ -131,7 +131,7 @@ private:
   UserInputHandler *_userInputHandler;
   CtcpHandler *_ctcpHandler;
 
-  NetworkInfo *_networkInfo;
+  Network *_network;
 
   QVariantMap networkSettings;
   QVariantMap identity;

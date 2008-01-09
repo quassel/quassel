@@ -21,8 +21,8 @@
 
 #include "util.h"
 
-#include "server.h"
-#include "networkinfo.h"
+#include "networkconnection.h"
+#include "network.h"
 #include "ctcphandler.h"
 
 #include "ircuser.h"
@@ -30,7 +30,7 @@
 
 #include <QDebug>
 
-IrcServerHandler::IrcServerHandler(Server *parent)
+IrcServerHandler::IrcServerHandler(NetworkConnection *parent)
   : BasicHandler(parent), server(parent) {
 }
 
@@ -185,15 +185,15 @@ void IrcServerHandler::defaultHandler(QString cmd, QString prefix, QList<QByteAr
 void IrcServerHandler::handleJoin(QString prefix, QList<QByteArray> params) {
   Q_ASSERT(params.count() == 1);
   QString channel = serverDecode(params[0]);
-  IrcUser *ircuser = networkInfo()->updateNickFromMask(prefix);
+  IrcUser *ircuser = network()->updateNickFromMask(prefix);
   emit displayMsg(Message::Join, channel, channel, prefix);
   //qDebug() << "IrcServerHandler::handleJoin()" << prefix << params;
   ircuser->joinChannel(channel);
 }
 
 void IrcServerHandler::handleKick(QString prefix, QList<QByteArray> params) {
-  networkInfo()->updateNickFromMask(prefix);
-  IrcUser *victim = networkInfo()->ircUser(serverDecode(params[1]));
+  network()->updateNickFromMask(prefix);
+  IrcUser *victim = network()->ircUser(serverDecode(params[1]));
   QString channel = serverDecode(params[0]);
   Q_ASSERT(victim);
 
@@ -214,11 +214,11 @@ void IrcServerHandler::handleMode(QString prefix, QList<QByteArray> params) {
     return;
   }
 
-  if(networkInfo()->isChannelName(params[0])) {
+  if(network()->isChannelName(params[0])) {
     // Channel Modes
     emit displayMsg(Message::Mode, serverDecode(params[0]), serverDecode(params).join(" "), prefix);
 
-    IrcChannel *channel = networkInfo()->ircChannel(params.takeFirst());
+    IrcChannel *channel = network()->ircChannel(params.takeFirst());
     // FIXME: currently the IrcChannels only support PREFIX-Modes for users
     // This cannot be fixed unless the SignalProxy() doesn't rely on methodIds anymore
     QString modes = params.takeFirst();
@@ -235,8 +235,8 @@ void IrcServerHandler::handleMode(QString prefix, QList<QByteArray> params) {
       }
 
       // this is the part where we restrict the mode changes to PREFIXES:
-      if(networkInfo()->prefixModes().contains(modes[c]) && modeIndex < params.count()) {
-	IrcUser *ircUser = networkInfo()->ircUser(params[modeIndex]);
+      if(network()->prefixModes().contains(modes[c]) && modeIndex < params.count()) {
+	IrcUser *ircUser = network()->ircUser(params[modeIndex]);
 	if(add)
 	  channel->addUserMode(ircUser, QString(modes[c]));
 	else
@@ -252,13 +252,13 @@ void IrcServerHandler::handleMode(QString prefix, QList<QByteArray> params) {
 }
 
 void IrcServerHandler::handleNick(QString prefix, QList<QByteArray> params) {
-  IrcUser *ircuser = networkInfo()->updateNickFromMask(prefix);
+  IrcUser *ircuser = network()->updateNickFromMask(prefix);
   Q_ASSERT(ircuser);
   QString newnick = serverDecode(params[0]);
   QString oldnick = ircuser->nick();
 
   foreach(QString channel, ircuser->channels()) {
-    if(networkInfo()->isMyNick(oldnick)) {
+    if(network()->isMyNick(oldnick)) {
       emit displayMsg(Message::Nick, channel, newnick, newnick);
     } else {
       emit displayMsg(Message::Nick, channel, newnick, prefix);
@@ -268,14 +268,14 @@ void IrcServerHandler::handleNick(QString prefix, QList<QByteArray> params) {
 }
 
 void IrcServerHandler::handleNotice(QString prefix, QList<QByteArray> params) {
-  if(networkInfo()->currentServer().isEmpty() || networkInfo()->currentServer() == prefix)
+  if(network()->currentServer().isEmpty() || network()->currentServer() == prefix)
     emit displayMsg(Message::Server, "", serverDecode(params[1]), prefix);
   else
     emit displayMsg(Message::Notice, "", userDecode(prefix, params[1]), prefix);
 }
 
 void IrcServerHandler::handlePart(QString prefix, QList<QByteArray> params) {
-  IrcUser *ircuser = networkInfo()->updateNickFromMask(prefix);
+  IrcUser *ircuser = network()->updateNickFromMask(prefix);
   QString channel = serverDecode(params[0]);
   Q_ASSERT(ircuser);
 
@@ -294,7 +294,7 @@ void IrcServerHandler::handlePing(QString prefix, QList<QByteArray> params) {
 }
 
 void IrcServerHandler::handlePrivmsg(QString prefix, QList<QByteArray> params) {
-  IrcUser *ircuser = networkInfo()->updateNickFromMask(prefix);
+  IrcUser *ircuser = network()->updateNickFromMask(prefix);
   Q_ASSERT(ircuser);
   if(params.count() < 2)
     params << QByteArray("");
@@ -302,7 +302,7 @@ void IrcServerHandler::handlePrivmsg(QString prefix, QList<QByteArray> params) {
   QString target = serverDecode(params[0]);
 
   // are we the target or is it a channel?
-  if(networkInfo()->isMyNick(target)) {
+  if(network()->isMyNick(target)) {
     // it's possible to pack multiple privmsgs into one param using ctcp
     QStringList messages = server->ctcpHandler()->parse(CtcpHandler::CtcpQuery, prefix, target, userDecode(ircuser->nick(), params[1]));
     foreach(QString message, messages) {
@@ -323,7 +323,7 @@ void IrcServerHandler::handlePrivmsg(QString prefix, QList<QByteArray> params) {
 }
 
 void IrcServerHandler::handleQuit(QString prefix, QList<QByteArray> params) {
-  IrcUser *ircuser = networkInfo()->updateNickFromMask(prefix);
+  IrcUser *ircuser = network()->updateNickFromMask(prefix);
   Q_ASSERT(ircuser);
 
   QString msg;
@@ -333,16 +333,16 @@ void IrcServerHandler::handleQuit(QString prefix, QList<QByteArray> params) {
   foreach(QString channel, ircuser->channels())
     emit displayMsg(Message::Quit, channel, msg, prefix);
 
-  networkInfo()->removeIrcUser(nickFromMask(prefix));
+  network()->removeIrcUser(nickFromMask(prefix));
 }
 
 void IrcServerHandler::handleTopic(QString prefix, QList<QByteArray> params) {
-  IrcUser *ircuser = networkInfo()->updateNickFromMask(prefix);
+  IrcUser *ircuser = network()->updateNickFromMask(prefix);
   QString channel = serverDecode(params[0]);
   QString topic = bufferDecode(channel, params[1]);
   Q_ASSERT(ircuser);
 
-  networkInfo()->ircChannel(channel)->setTopic(topic);
+  network()->ircChannel(channel)->setTopic(topic);
 
   emit displayMsg(Message::Server, channel, tr("%1 has changed topic for %2 to: \"%3\"").arg(ircuser->nick()).arg(channel).arg(topic));
 }
@@ -352,8 +352,8 @@ void IrcServerHandler::handle001(QString prefix, QList<QByteArray> params) {
   // there should be only one param: "Welcome to the Internet Relay Network <nick>!<user>@<host>"
   QString param = serverDecode(params[0]);
   QString myhostmask = param.section(' ', -1, -1);
-  networkInfo()->setCurrentServer(prefix);
-  networkInfo()->setMyNick(nickFromMask(myhostmask));
+  network()->setCurrentServer(prefix);
+  network()->setMyNick(nickFromMask(myhostmask));
 
   emit displayMsg(Message::Server, "", param, prefix);
 }
@@ -371,7 +371,7 @@ void IrcServerHandler::handle005(QString prefix, QList<QByteArray> params) {
   foreach(QString param, serverDecode(params)) {
     QString key = param.section("=", 0, 0);
     QString value = param.section("=", 1);
-    networkInfo()->addSupport(key, value);
+    network()->addSupport(key, value);
   }
 }
 
@@ -380,7 +380,7 @@ void IrcServerHandler::handle005(QString prefix, QList<QByteArray> params) {
 void IrcServerHandler::handle331(QString prefix, QList<QByteArray> params) {
   Q_UNUSED(prefix);
   QString channel = serverDecode(params[0]);
-  networkInfo()->ircChannel(channel)->setTopic(QString());
+  network()->ircChannel(channel)->setTopic(QString());
   emit displayMsg(Message::Server, channel, tr("No topic is set for %1.").arg(channel));
 }
 
@@ -389,7 +389,7 @@ void IrcServerHandler::handle332(QString prefix, QList<QByteArray> params) {
   Q_UNUSED(prefix);
   QString channel = serverDecode(params[0]);
   QString topic = bufferDecode(channel, params[1]);
-  networkInfo()->ircChannel(channel)->setTopic(topic);
+  network()->ircChannel(channel)->setTopic(topic);
   emit displayMsg(Message::Server, channel, tr("Topic for %1 is \"%2\"").arg(channel, topic));
 }
 
@@ -410,16 +410,16 @@ void IrcServerHandler::handle353(QString prefix, QList<QByteArray> params) {
   foreach(QString nick, serverDecode(params.takeFirst()).split(' ')) {
     QString mode = QString();
 
-    if(networkInfo()->prefixes().contains(nick[0])) {
-      mode = networkInfo()->prefixToMode(nick[0]);
+    if(network()->prefixes().contains(nick[0])) {
+      mode = network()->prefixToMode(nick[0]);
       nick = nick.mid(1);
     }
 
-    IrcUser *ircuser = networkInfo()->newIrcUser(nick);
+    IrcUser *ircuser = network()->newIrcUser(nick);
     ircuser->joinChannel(channelname);
 
     if(!mode.isNull())
-      networkInfo()->ircChannel(channelname)->addUserMode(ircuser, mode);
+      network()->ircChannel(channelname)->addUserMode(ircuser, mode);
   }
 }
 

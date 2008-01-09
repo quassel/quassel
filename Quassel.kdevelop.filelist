@@ -66,6 +66,8 @@ src/common/logger.h
 src/common/main.cpp
 src/common/message.cpp
 src/common/message.h
+src/common/network.cpp
+src/common/network.h
 src/common/networkinfo.cpp
 src/common/networkinfo.h
 src/common/settings.cpp
@@ -78,6 +80,8 @@ src/common/types.h
 src/common/util.cpp
 src/common/util.h
 src/core
+src/core/abstractsqlstorage.cpp
+src/core/abstractsqlstorage.h
 src/core/basichandler.cpp
 src/core/basichandler.h
 src/core/core.cpp
@@ -93,6 +97,8 @@ src/core/ctcphandler.cpp
 src/core/ctcphandler.h
 src/core/ircserverhandler.cpp
 src/core/ircserverhandler.h
+src/core/networkconnection.cpp
+src/core/networkconnection.h
 src/core/server.cpp
 src/core/server.h
 src/core/sqlitestorage.cpp

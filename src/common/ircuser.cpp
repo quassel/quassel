@@ -21,20 +21,20 @@
 #include "ircuser.h"
 #include "util.h"
 
-#include "networkinfo.h"
+#include "network.h"
 #include "signalproxy.h"
 #include "ircchannel.h"
 
 #include <QTextCodec>
 #include <QDebug>
 
-IrcUser::IrcUser(const QString &hostmask, NetworkInfo *networkinfo)
-  : SyncableObject(networkinfo),
+IrcUser::IrcUser(const QString &hostmask, Network *network)
+  : SyncableObject(network),
     _initialized(false),
     _nick(nickFromMask(hostmask)),
     _user(userFromMask(hostmask)),
     _host(hostFromMask(hostmask)),
-    networkInfo(networkinfo),
+    _network(network),
     _codecForEncoding(0),
     _codecForDecoding(0)
 {
@@ -81,6 +81,10 @@ QStringList IrcUser::channels() const {
   return chanList;
 }
 
+Network* IrcUser::network() const {
+  return _network;
+}
+
 QTextCodec *IrcUser::codecForEncoding() const {
   return _codecForEncoding;
 }
@@ -106,7 +110,7 @@ void IrcUser::setCodecForDecoding(QTextCodec *codec) {
 }
 
 QString IrcUser::decodeString(const QByteArray &text) const {
-  if(!codecForDecoding()) return networkInfo->decodeString(text);
+  if(!codecForDecoding()) return network()->decodeString(text);
   return ::decodeString(text, codecForDecoding());
 }
 
@@ -114,7 +118,7 @@ QByteArray IrcUser::encodeString(const QString string) const {
   if(codecForEncoding()) {
     return codecForEncoding()->fromUnicode(string);
   }
-  return networkInfo->encodeString(string);
+  return network()->encodeString(string);
 }
 
 // ====================
@@ -143,7 +147,7 @@ void IrcUser::setNick(const QString &nick) {
 }
 
 void IrcUser::updateObjectName() {
-  QString newName = QString::number(networkInfo->networkId()) + "/" + _nick;
+  QString newName = QString::number(network()->networkId()) + "/" + _nick;
   QString oldName = objectName();
   if(oldName != newName) {
     setObjectName(newName);
@@ -172,7 +176,7 @@ void IrcUser::joinChannel(IrcChannel *channel) {
 }
 
 void IrcUser::joinChannel(const QString &channelname) {
-  joinChannel(networkInfo->newIrcChannel(channelname));
+  joinChannel(network()->newIrcChannel(channelname));
 }
 
 void IrcUser::partChannel(IrcChannel *channel) {
@@ -185,7 +189,7 @@ void IrcUser::partChannel(IrcChannel *channel) {
 }
 
 void IrcUser::partChannel(const QString &channelname) {
-  IrcChannel *channel = networkInfo->ircChannel(channelname);
+  IrcChannel *channel = network()->ircChannel(channelname);
   if(channel == 0) {
     qWarning() << "IrcUser::partChannel(): received part for unknown Channel" << channelname;
   } else {

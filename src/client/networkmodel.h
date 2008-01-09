@@ -34,7 +34,7 @@ class BufferInfo;
 #include "modelpropertymapper.h"
 class MappedSelectionModel;
 class QAbstractItemView;
-class NetworkInfo;
+class Network;
 class IrcChannel;
 class IrcUser;
 
@@ -100,14 +100,14 @@ public slots:
   void setNetworkName(const QString &networkName);
   void setCurrentServer(const QString &serverName);
 
-  void attachNetworkInfo(NetworkInfo *networkInfo);
+  void attachNetwork(Network *network);
   void attachIrcChannel(const QString &channelName);
   
 private:
   uint _networkId;
   QString _networkName;
 
-  QPointer<NetworkInfo> _networkInfo;
+  QPointer<Network> _network;
 };
 
 /*****************************************
@@ -164,7 +164,7 @@ public:
   virtual QMimeData *mimeData(const QModelIndexList &) const;
   virtual bool dropMimeData(const QMimeData *, Qt::DropAction, int, int, const QModelIndex &);
 
-  void attachNetworkInfo(NetworkInfo *networkInfo);
+  void attachNetwork(Network *network);
 
   bool isBufferIndex(const QModelIndex &) const;
   Buffer *getBufferByIndex(const QModelIndex &) const;

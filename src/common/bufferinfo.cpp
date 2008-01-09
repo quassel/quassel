@@ -47,7 +47,7 @@ QString BufferInfo::buffer() const {
   if(isChannelName(_bufferName))
     return _bufferName;
   else
-    return nickFromMask(_bufferName);  // FIXME get rid of global functions and use the NetworkInfo stuff instead!
+    return nickFromMask(_bufferName);  // FIXME get rid of global functions and use the Network stuff instead!
 }
 
 QDebug operator<<(QDebug dbg, const BufferInfo &b) {

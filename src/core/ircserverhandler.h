@@ -27,7 +27,7 @@ class IrcServerHandler : public BasicHandler {
   Q_OBJECT
 
 public:
-  IrcServerHandler(Server *parent = 0);
+  IrcServerHandler(NetworkConnection *parent = 0);
   ~IrcServerHandler();
 
   void handleServerMsg(QByteArray rawMsg);
@@ -64,7 +64,7 @@ public slots:
   void defaultHandler(QString cmd, QString prefix, QList<QByteArray> params);
 
   private:
-    Server *server;
+    NetworkConnection *server;
 };
 
 

@@ -22,7 +22,7 @@
 #include "util.h"
 #include "message.h"
 
-CtcpHandler::CtcpHandler(Server *parent)
+CtcpHandler::CtcpHandler(NetworkConnection *parent)
   : BasicHandler(parent) {
 
   QString MQUOTE = QString('\020');

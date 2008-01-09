@@ -31,7 +31,7 @@ class BufferInfo;
 class Message;
 
 class Identity;
-class NetworkInfo;
+class Network;
 
 
 class AbstractUi;
@@ -51,8 +51,8 @@ public:
   static void destroy();
   static void init(AbstractUi *);
 
-  static QList<NetworkInfo *> networkInfos();
-  static NetworkInfo *networkInfo(uint networkid);
+  static QList<Network *> networks();
+  static Network *network(uint networkid);
 
   static QList<BufferInfo> allBufferInfos();
   static QList<Buffer *> buffers();
@@ -175,7 +175,7 @@ private slots:
   void layoutMsg();
 
   void bufferDestroyed();
-  void networkInfoDestroyed();
+  void networkDestroyed();
   void ircChannelAdded(QString);
   void coreIdentityCreated(const Identity &);
   void coreIdentityRemoved(IdentityId);
@@ -202,7 +202,7 @@ private:
 
   QVariantMap coreConnectionInfo;
   QHash<BufferId, Buffer *> _buffers;
-  QHash<NetworkId, NetworkInfo *> _networkInfo;
+  QHash<NetworkId, Network *> _network;
   QHash<IdentityId, Identity *> _identities;
 
   QTimer *layoutTimer;

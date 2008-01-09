@@ -30,7 +30,7 @@ class CtcpHandler : public BasicHandler {
   Q_OBJECT
 
 public:
-  CtcpHandler(Server *parent = 0);
+  CtcpHandler(NetworkConnection *parent = 0);
 
   enum CtcpType {CtcpQuery, CtcpReply};
 

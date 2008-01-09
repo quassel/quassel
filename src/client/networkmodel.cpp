@@ -27,7 +27,7 @@
 #include "bufferinfo.h"
 #include "client.h"
 #include "signalproxy.h"
-#include "networkinfo.h"
+#include "network.h"
 #include "ircchannel.h"
 #include "ircuser.h"
 
@@ -163,15 +163,15 @@ quint64 NetworkItem::id() const {
 }
 
 QString NetworkItem::networkName() const {
-  if(_networkInfo)
-    return _networkInfo->networkName();
+  if(_network)
+    return _network->networkName();
   else
     return _networkName;
 }
 
 QString NetworkItem::currentServer() const {
-  if(_networkInfo)
-    return _networkInfo->currentServer();
+  if(_network)
+    return _network->currentServer();
   else
     return QString();
 }
@@ -188,23 +188,23 @@ int NetworkItem::nickCount() const {
   return count;
 }
 
-void NetworkItem::attachNetworkInfo(NetworkInfo *networkInfo) {
-  if(!networkInfo)
+void NetworkItem::attachNetwork(Network *network) {
+  if(!network)
     return;
   
-  _networkInfo = networkInfo;
+  _network = network;
 
-  connect(networkInfo, SIGNAL(networkNameSet(QString)),
+  connect(network, SIGNAL(networkNameSet(QString)),
 	  this, SLOT(setNetworkName(QString)));
-  connect(networkInfo, SIGNAL(currentServerSet(QString)),
+  connect(network, SIGNAL(currentServerSet(QString)),
 	  this, SLOT(setCurrentServer(QString)));
-  connect(networkInfo, SIGNAL(ircChannelAdded(QString)),
+  connect(network, SIGNAL(ircChannelAdded(QString)),
 	  this, SLOT(attachIrcChannel(QString)));
   // FIXME: connect this and that...
 }
 
 void NetworkItem::attachIrcChannel(const QString &channelName) {
-  IrcChannel *ircChannel = _networkInfo->ircChannel(channelName);
+  IrcChannel *ircChannel = _network->ircChannel(channelName);
   if(!ircChannel) {
     qWarning() << "NetworkItem::attachIrcChannel(): unkown Channel" << channelName;
     return;
@@ -426,13 +426,13 @@ bool NetworkModel::dropMimeData(const QMimeData *data, Qt::DropAction action, in
   return true;
 }
 
-void NetworkModel::attachNetworkInfo(NetworkInfo *networkInfo) {
-  NetworkItem *networkItem = network(networkInfo->networkId());
+void NetworkModel::attachNetwork(Network *net) {
+  NetworkItem *networkItem = network(net->networkId());
   if(!networkItem) {
-    qWarning() << "NetworkModel::attachNetworkInfo(): network is unknown!";
+    qWarning() << "NetworkModel::attachNetwork(): network is unknown!";
     return;
   }
-  networkItem->attachNetworkInfo(networkInfo);
+  networkItem->attachNetwork(net);
 }
 
 void NetworkModel::bufferUpdated(Buffer *buffer) {

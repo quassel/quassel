@@ -28,14 +28,14 @@
 
 #include "message.h"
 
-class Server;
-class NetworkInfo;
+class NetworkConnection;
+class Network;
 
 class BasicHandler : public QObject {
   Q_OBJECT
 
 public:
-  BasicHandler(Server *parent = 0);
+  BasicHandler(NetworkConnection *parent = 0);
 
   QStringList providesHandlers() const;
 
@@ -51,11 +51,11 @@ protected:
 		      const QGenericArgument &val5 = QGenericArgument(), const QGenericArgument &val6 = QGenericArgument(),
 		      const QGenericArgument &val7 = QGenericArgument(), const QGenericArgument &val8 = QGenericArgument());
 	    
-  Server *server;
+  NetworkConnection *server;
   
 
 protected:
-  NetworkInfo *networkInfo() const;
+  Network *network() const;
 
 };
 #endif

@@ -26,7 +26,7 @@
 #include "ircchannel.h"
 #include "ircuser.h"
 #include "message.h"
-#include "networkinfo.h"
+#include "network.h"
 #include "networkmodel.h"
 #include "buffermodel.h"
 #include "quasselui.h"
@@ -123,13 +123,13 @@ void Client::init() {
 /*** public static methods ***/
 
 
-QList<NetworkInfo *> Client::networkInfos() {
-  return instance()->_networkInfo.values();
+QList<Network *> Client::networks() {
+  return instance()->_network.values();
 }
 
-NetworkInfo *Client::networkInfo(uint networkid) {
-  if(instance()->_networkInfo.contains(networkid))
-    return instance()->_networkInfo[networkid];
+Network *Client::network(uint networkid) {
+  if(instance()->_network.contains(networkid))
+    return instance()->_network[networkid];
   else
     return 0;
 }
@@ -338,14 +338,14 @@ void Client::coreSocketDisconnected() {
   Q_ASSERT(_buffers.isEmpty());
 
 
-  QHash<NetworkId, NetworkInfo*>::iterator netIter = _networkInfo.begin();
-  while(netIter != _networkInfo.end()) {
-    NetworkInfo *net = netIter.value();
+  QHash<NetworkId, Network*>::iterator netIter = _network.begin();
+  while(netIter != _network.end()) {
+    Network *net = netIter.value();
     disconnect(net, SIGNAL(destroyed()), this, 0);
-    netIter = _networkInfo.erase(netIter);
+    netIter = _network.erase(netIter);
     net->deleteLater();
   }
-  Q_ASSERT(_networkInfo.isEmpty());
+  Q_ASSERT(_network.isEmpty());
 
   QHash<IdentityId, Identity*>::iterator idIter = _identities.begin();
   while(idIter != _identities.end()) {
@@ -396,7 +396,7 @@ void Client::syncToCore(const QVariant &coreState) {
     buffer(vid.value<BufferInfo>()); // create all buffers, so we see them in the network views
   }
 
-  // create networkInfo objects
+  // create network objects
   QVariantList networkids = sessionState["Networks"].toList();
   foreach(QVariant networkid, networkids) {
     networkConnected(networkid.toUInt());
@@ -413,7 +413,7 @@ void Client::updateCoreConnectionProgress() {
   // 2.) channels
   // 3.) ircusers
 
-  int numNets = networkInfos().count();
+  int numNets = networks().count();
   int numNetsWaiting = 0;
 
   int numIrcUsers = 0;
@@ -422,7 +422,7 @@ void Client::updateCoreConnectionProgress() {
   int numChannels = 0;
   int numChannelsWaiting = 0;
 
-  foreach(NetworkInfo *net, networkInfos()) {
+  foreach(Network *net, networks()) {
     if(! net->initialized())
       numNetsWaiting++;
 
@@ -460,7 +460,7 @@ void Client::updateCoreConnectionProgress() {
   emit coreConnectionProgress(1,1);
   emit connected();
   emit coreConnectionStateChanged(true);
-  foreach(NetworkInfo *net, networkInfos()) {
+  foreach(Network *net, networks()) {
     disconnect(net, 0, this, SLOT(updateCoreConnectionProgress()));
   }
 
@@ -520,9 +520,9 @@ void Client::networkConnected(uint netid) {
   //Buffer *b = buffer(id);
   //b->setActive(true);
 
-  NetworkInfo *netinfo = new NetworkInfo(netid, this);
+  Network *netinfo = new Network(netid, this);
   netinfo->setProxy(signalProxy());
-  networkModel()->attachNetworkInfo(netinfo);
+  networkModel()->attachNetwork(netinfo);
   
   if(!isConnected()) {
     connect(netinfo, SIGNAL(initDone()), this, SLOT(updateCoreConnectionProgress()));
@@ -530,8 +530,8 @@ void Client::networkConnected(uint netid) {
     connect(netinfo, SIGNAL(ircChannelInitDone()), this, SLOT(updateCoreConnectionProgress()));
   }
   connect(netinfo, SIGNAL(ircChannelAdded(QString)), this, SLOT(ircChannelAdded(QString)));
-  connect(netinfo, SIGNAL(destroyed()), this, SLOT(networkInfoDestroyed()));
-  _networkInfo[netid] = netinfo;
+  connect(netinfo, SIGNAL(destroyed()), this, SLOT(networkDestroyed()));
+  _network[netid] = netinfo;
 }
 
 void Client::networkDisconnected(uint networkid) {
@@ -543,15 +543,15 @@ void Client::networkDisconnected(uint networkid) {
     buffer->setActive(false);
   }
 
-  Q_ASSERT(networkInfo(networkid));
-  if(!networkInfo(networkid)->initialized()) {
+  Q_ASSERT(network(networkid));
+  if(!network(networkid)->initialized()) {
     qDebug() << "Network" << networkid << "disconnected while not yet initialized!";
     updateCoreConnectionProgress();
   }
 }
 
 void Client::ircChannelAdded(QString chanName) {
-  NetworkInfo *netInfo = qobject_cast<NetworkInfo*>(sender());
+  Network *netInfo = qobject_cast<Network*>(sender());
   Q_ASSERT(netInfo);
   Buffer *buf = buffer(bufferInfo(netInfo->networkName(), chanName));
   Q_ASSERT(buf);
@@ -570,11 +570,11 @@ void Client::bufferDestroyed() {
     _buffers.remove(bufferUid);
 }
 
-void Client::networkInfoDestroyed() {
-  NetworkInfo *netinfo = static_cast<NetworkInfo *>(sender());
+void Client::networkDestroyed() {
+  Network *netinfo = static_cast<Network *>(sender());
   uint networkId = netinfo->networkId();
-  if(_networkInfo.contains(networkId))
-    _networkInfo.remove(networkId);
+  if(_network.contains(networkId))
+    _network.remove(networkId);
 }
 
 void Client::recvMessage(const Message &msg) {

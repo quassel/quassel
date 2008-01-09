@@ -27,7 +27,7 @@
 #include <QMetaMethod>
 
 
-// TODO Use versions from NetworkInfo instead
+// TODO Use versions from Network instead
 QString nickFromMask(QString mask);
 QString userFromMask(QString mask);
 QString hostFromMask(QString mask);

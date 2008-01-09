@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _NETWORKINFO_H_
-#define _NETWORKINFO_H_
+#ifndef _NETWORK_H_
+#define _NETWORK_H_
 
 #include <QString>
 #include <QStringList>
@@ -36,7 +36,7 @@ class IrcUser;
 class IrcChannel;
 
 
-class NetworkInfo : public SyncableObject {
+class Network : public SyncableObject {
   Q_OBJECT
 
   Q_PROPERTY(QString networkName READ networkName WRITE setNetworkName STORED false)
@@ -44,8 +44,8 @@ class NetworkInfo : public SyncableObject {
   Q_PROPERTY(QString myNick READ myNick WRITE setMyNick STORED false)
 
 public:
-  NetworkInfo(const uint &networkid, QObject *parent = 0);
-  //virtual ~NetworkInfo();
+  Network(const uint &networkid, QObject *parent = 0);
+  //virtual ~Network();
 
   NetworkId networkId() const;
   bool initialized() const;

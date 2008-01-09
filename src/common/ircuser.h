@@ -29,7 +29,7 @@
 #include "syncableobject.h"
 
 class SignalProxy;
-class NetworkInfo;
+class Network;
 class IrcChannel;
 
 class IrcUser : public SyncableObject {
@@ -43,7 +43,7 @@ class IrcUser : public SyncableObject {
   //  Q_PROPERTY(QStringList usermodes READ usermodes WRITE setUsermodes)
 
 public:
-  IrcUser(const QString &hostmask, NetworkInfo *networkInfo);
+  IrcUser(const QString &hostmask, Network *network);
   virtual ~IrcUser();
 
   bool initialized() const;
@@ -52,6 +52,7 @@ public:
   QString host() const;
   QString nick() const;
   QString hostmask() const;
+  Network *network() const;
 
   QString userModes() const;
 
@@ -133,7 +134,7 @@ private:
   QSet<IrcChannel *> _channels;
   QString _userModes;
 
-  NetworkInfo *networkInfo;
+  Network *_network;
 
   QTextCodec *_codecForEncoding;
   QTextCodec *_codecForDecoding;

@@ -29,7 +29,7 @@
 #include "syncableobject.h"
 
 class IrcUser;
-class NetworkInfo;
+class Network;
 class SignalProxy;
 
 class IrcChannel : public SyncableObject {
@@ -39,7 +39,7 @@ class IrcChannel : public SyncableObject {
   Q_PROPERTY(QString topic READ topic WRITE setTopic STORED false)
 
 public:
-  IrcChannel(const QString &channelname, NetworkInfo *networkInfo);
+  IrcChannel(const QString &channelname, Network *network);
   ~IrcChannel();
 
   bool isKnownUser(IrcUser *ircuser) const;
@@ -120,7 +120,7 @@ private:
 
   QHash<IrcUser *, QString> _userModes;
 
-  NetworkInfo *networkInfo;
+  Network *network;
 
   QTextCodec *_codecForEncoding;
   QTextCodec *_codecForDecoding;

@@ -21,13 +21,13 @@
 
 #include "util.h"
 
-#include "server.h"
-#include "networkinfo.h"
+#include "networkconnection.h"
+#include "network.h"
 #include "ctcphandler.h"
 
 #include <QDebug>
 
-UserInputHandler::UserInputHandler(Server *parent)
+UserInputHandler::UserInputHandler(NetworkConnection *parent)
   : BasicHandler(parent) {
 }
 
@@ -147,16 +147,16 @@ void UserInputHandler::handleSay(QString bufname, QString msg) {
   params << bufname << msg;
   emit putCmd("PRIVMSG", params);
   if(isChannelName(bufname)) {
-    emit displayMsg(Message::Plain, params[0], msg, networkInfo()->myNick(), Message::Self);
+    emit displayMsg(Message::Plain, params[0], msg, network()->myNick(), Message::Self);
   } else {
-    emit displayMsg(Message::Plain, params[0], msg, networkInfo()->myNick(), Message::Self|Message::PrivMsg);
+    emit displayMsg(Message::Plain, params[0], msg, network()->myNick(), Message::Self|Message::PrivMsg);
   }
 }
 
 void UserInputHandler::handleMe(QString bufname, QString msg) {
   if(bufname.isEmpty()) return; // server buffer
   server->ctcpHandler()->query(bufname, "ACTION", msg);
-  emit displayMsg(Message::Action, bufname, msg, networkInfo()->myNick());
+  emit displayMsg(Message::Action, bufname, msg, network()->myNick());
 }
 
 void UserInputHandler::handleTopic(QString bufname, QString msg) {

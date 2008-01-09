@@ -29,7 +29,7 @@ class UserInputHandler : public BasicHandler {
   Q_OBJECT
 
 public:
-  UserInputHandler(Server *parent = 0);
+  UserInputHandler(NetworkConnection *parent = 0);
 
   void handleUserInput(QString buffer, QString msg);
   

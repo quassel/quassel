@@ -21,9 +21,9 @@
 
 #include <QMetaMethod>
 
-#include "server.h"
+#include "networkconnection.h"
 
-BasicHandler::BasicHandler(Server *parent)
+BasicHandler::BasicHandler(NetworkConnection *parent)
   : QObject(parent),
     server(parent) {
   
@@ -72,6 +72,6 @@ void BasicHandler::handle(const QString &member, const QGenericArgument &val0,
 // ====================
 //  protected:
 // ====================
-NetworkInfo *BasicHandler::networkInfo() const {
-  return server->networkInfo();
+Network *BasicHandler::network() const {
+  return server->network();
 }

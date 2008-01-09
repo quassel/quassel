@@ -20,7 +20,7 @@
 
 #include "ircchannel.h"
 
-#include "networkinfo.h"
+#include "network.h"
 //#include "nicktreemodel.h"
 #include "signalproxy.h"
 #include "ircuser.h"
@@ -33,14 +33,14 @@
 #include <QDebug>
 
 
-IrcChannel::IrcChannel(const QString &channelname, NetworkInfo *networkinfo) 
-  : SyncableObject(networkinfo),
+IrcChannel::IrcChannel(const QString &channelname, Network *network) 
+  : SyncableObject(network),
     _initialized(false),
     _name(channelname),
     _topic(QString()),
-    networkInfo(networkinfo)
+    network(network)
 {
-  setObjectName(QString::number(networkInfo->networkId()) + "/" +  channelname);
+  setObjectName(QString::number(network->networkId()) + "/" +  channelname);
 }
 
 IrcChannel::~IrcChannel() {
@@ -97,7 +97,7 @@ QString IrcChannel::userModes(IrcUser *ircuser) const {
 }
 
 QString IrcChannel::userModes(const QString &nick) const {
-  return userModes(networkInfo->ircUser(nick));
+  return userModes(network->ircUser(nick));
 }
 
 QTextCodec *IrcChannel::codecForEncoding() const {
@@ -125,7 +125,7 @@ void IrcChannel::setCodecForDecoding(QTextCodec *codec) {
 }
 
 QString IrcChannel::decodeString(const QByteArray &text) const {
-  if(!codecForDecoding()) return networkInfo->decodeString(text);
+  if(!codecForDecoding()) return network->decodeString(text);
   return ::decodeString(text, _codecForDecoding);
 }
 
@@ -133,7 +133,7 @@ QByteArray IrcChannel::encodeString(const QString string) const {
   if(codecForEncoding()) {
     return _codecForEncoding->fromUnicode(string);
   }
-  return networkInfo->encodeString(string);
+  return network->encodeString(string);
 }
 
 // ====================
@@ -158,7 +158,7 @@ void IrcChannel::join(IrcUser *ircuser) {
 }
 
 void IrcChannel::join(const QString &nick) {
-  join(networkInfo->ircUser(nick));
+  join(network->ircUser(nick));
 }
 
 void IrcChannel::part(IrcUser *ircuser) {
@@ -173,7 +173,7 @@ void IrcChannel::part(IrcUser *ircuser) {
 }
 
 void IrcChannel::part(const QString &nick) {
-  part(networkInfo->ircUser(nick));
+  part(network->ircUser(nick));
 }
 
 // SET USER MODE
@@ -186,7 +186,7 @@ void IrcChannel::setUserModes(IrcUser *ircuser, const QString &modes) {
 }
 
 void IrcChannel::setUserModes(const QString &nick, const QString &modes) {
-  setUserModes(networkInfo->ircUser(nick), modes);
+  setUserModes(network->ircUser(nick), modes);
 }
 
 // ADD USER MODE
@@ -203,7 +203,7 @@ void IrcChannel::addUserMode(IrcUser *ircuser, const QString &mode) {
 }
 
 void IrcChannel::addUserMode(const QString &nick, const QString &mode) {
-  addUserMode(networkInfo->ircUser(nick), mode);
+  addUserMode(network->ircUser(nick), mode);
 }
 
 // REMOVE USER MODE
@@ -220,7 +220,7 @@ void IrcChannel::removeUserMode(IrcUser *ircuser, const QString &mode) {
 }
 
 void IrcChannel::removeUserMode(const QString &nick, const QString &mode) {
-  removeUserMode(networkInfo->ircUser(nick), mode);
+  removeUserMode(network->ircUser(nick), mode);
 }
 
 // INIT SET USER MODES

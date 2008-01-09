@@ -66,7 +66,7 @@ Buffer::Type Buffer::bufferType() const {
 }
 
 bool Buffer::isActive() const {
-  // FIXME determine status by checking for a networkInfo objekt
+  // FIXME determine status by checking for a network objekt
   return true;
 }
 

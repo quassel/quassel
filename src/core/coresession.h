@@ -28,7 +28,7 @@
 #include "message.h"
 
 class Identity;
-class Server;
+class NetworkConnection;
 class SignalProxy;
 class Storage;
 
@@ -51,7 +51,7 @@ public:
 
   SignalProxy *signalProxy() const;
 
-  void attachServer(Server *server);
+  void attachNetworkConnection(NetworkConnection *conn);
 
   //! Return necessary data for restoring the session after restarting the core
   QVariant state() const;
@@ -61,7 +61,7 @@ public slots:
   //! Store a piece session-wide data and distribute it to connected clients.
   void storeSessionData(const QString &key, const QVariant &data);
 
-  void serverStateRequested();
+  void networkStateRequested();
 
   void addClient(QIODevice *connection);
 
@@ -118,8 +118,8 @@ signals:
 private slots:
   void recvStatusMsgFromServer(QString msg);
   void recvMessageFromServer(Message::Type, QString target, QString text, QString sender = "", quint8 flags = Message::None);
-  void serverConnected(uint networkid);
-  void serverDisconnected(uint networkid);
+  void networkConnected(uint networkid);
+  void networkDisconnected(uint networkid);
 
   void scriptRequest(QString script);
   
@@ -130,7 +130,7 @@ private:
   
   SignalProxy *_signalProxy;
   Storage *storage;
-  QHash<NetworkId, Server *> servers;
+  QHash<NetworkId, NetworkConnection *> connections;
   
   QVariantMap sessionData;
   QMutex mutex;

@@ -178,7 +178,7 @@ int NickModel::userCategory(IrcUser *user) const {
 
 int NickModel::categoryFromModes(const QString &modes) const {
   int cat;
-  // we hardcode this even though we have PREFIX in networkinfo... but that wouldn't help with mapping modes to
+  // we hardcode this even though we have PREFIX in network... but that wouldn't help with mapping modes to
   // category strings anyway.
   if(modes.contains('q')) cat = 1;
   else if(modes.contains('a')) cat = 2;

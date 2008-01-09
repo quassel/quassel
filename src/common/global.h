@@ -29,7 +29,7 @@
 //#define DEVELMODE
 
 /** The protocol version we use fo the communication between core and GUI */
-#define GUI_PROTOCOL 4
+#define GUI_PROTOCOL 5
 
 //#define DEFAULT_PORT 4242
 
