@@ -26,7 +26,6 @@
 #include "chatview.h"
 #include "types.h"
 
-class Buffer;
 class ChatView;
 class ChatWidget;
 class LayoutThread;
@@ -37,6 +36,8 @@ class LayoutThread;
 class BufferWidget : public QWidget {
   Q_OBJECT
 
+  Q_PROPERTY(uint currentBuffer READ currentBuffer WRITE setCurrentBuffer)
+    
 public:
   BufferWidget(QWidget *parent = 0);
   virtual ~BufferWidget();
@@ -49,23 +50,18 @@ signals:
   void aboutToClose();
 
 public slots:
-  void setBuffer(Buffer *);
+  BufferId currentBuffer() const;
+  void setCurrentBuffer(BufferId bufferId);
   void saveState();
 
 private slots:
   void enterPressed();
-  void setActive(bool act = true);
-  void bufferDestroyed(QObject *);
-
+  void removeBuffer(BufferId bufferId);
 
 private:
   Ui::BufferWidget ui;
-  //QHash<BufferId, ChatView*> _chatViews;
-  QHash<Buffer *, ChatWidget *> _chatWidgets;
-  bool active;
-
-  QString _networkName;
-  QString _bufferName;
+  QHash<BufferId, ChatWidget *> _chatWidgets;
+  BufferId _currentBuffer;
 };
 
 

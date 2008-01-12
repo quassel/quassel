@@ -48,8 +48,9 @@ class BufferItem : public PropertyMapItem {
   Q_PROPERTY(int nickCount READ nickCount)
 
 public:
-  BufferItem(Buffer *, AbstractTreeItem *parent = 0);
+  BufferItem(BufferInfo bufferInfo, AbstractTreeItem *parent = 0);
 
+  const BufferInfo &bufferInfo() const;
   virtual quint64 id() const;
   virtual QVariant data(int column, int role) const;
 
@@ -59,23 +60,45 @@ public:
   QString topic() const;
   int nickCount() const;
 
+  enum Type {
+    StatusType,
+    ChannelType,
+    QueryType
+  };
   
-  Buffer *buffer() const { return buf; }
-  void setActivity(const Buffer::ActivityLevel &);
+  bool isStatusBuffer() const;
+  Type bufferType() const;
+
+  bool isActive() const;
+  
+  enum Activity {
+    NoActivity = 0x00,
+    OtherActivity = 0x01,
+    NewMessage = 0x02,
+    Highlight = 0x40
+  };
+  Q_DECLARE_FLAGS(ActivityLevel, Activity)
+
+  ActivityLevel activity() const;
+  void setActivity(const ActivityLevel &level);
+  void addActivity(const ActivityLevel &level);
 
 public slots:
   void setTopic(const QString &topic);
   void join(IrcUser *ircUser);
   void part(IrcUser *ircUser);
+
+private slots:
+  void ircChannelDestroyed();
   
 private:
-  QColor foreground(int column) const;
-
-  Buffer *buf;
-  Buffer::ActivityLevel activity;
+  BufferInfo _bufferInfo;
+  ActivityLevel _activity;
+  Type _type;
 
   QPointer<IrcChannel> _ircChannel;
 };
+Q_DECLARE_OPERATORS_FOR_FLAGS(BufferItem::ActivityLevel)
 
 /*****************************************
  *  Network Items
@@ -92,6 +115,8 @@ public:
   virtual QVariant data(int column, int row) const;
   virtual quint64 id() const;
 
+  bool isActive() const;
+  
   QString networkName() const;
   QString currentServer() const;
   int nickCount() const;
@@ -140,8 +165,8 @@ class NetworkModel : public TreeModel {
 public:
   enum myRoles {
     BufferTypeRole = Qt::UserRole,
-    BufferActiveRole,
-    BufferUidRole,
+    ItemActiveRole,
+    BufferIdRole,
     NetworkIdRole,
     ItemTypeRole
   };
@@ -168,11 +193,11 @@ public:
 
   bool isBufferIndex(const QModelIndex &) const;
   Buffer *getBufferByIndex(const QModelIndex &) const;
-  QModelIndex bufferIndex(BufferInfo bufferInfo);
+  QModelIndex bufferIndex(BufferId bufferId);
 
 public slots:
-  void bufferUpdated(Buffer *);
-  void bufferActivity(Buffer::ActivityLevel, Buffer *buffer);
+  void bufferUpdated(BufferInfo bufferInfo);
+  void bufferActivity(BufferItem::ActivityLevel, BufferInfo bufferInfo);
 
 private:
   QModelIndex networkIndex(uint networkId);

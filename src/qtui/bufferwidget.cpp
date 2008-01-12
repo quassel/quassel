@@ -23,9 +23,14 @@
 #include "chatline-old.h"
 #include "chatwidget.h"
 #include "settings.h"
+#include "client.h"
 
-BufferWidget::BufferWidget(QWidget *parent) : QWidget(parent) {
+BufferWidget::BufferWidget(QWidget *parent)
+  : QWidget(parent),
+    _currentBuffer(0)
+{
   ui.setupUi(this);
+  ui.ownNick->clear();  // TODO add nick history
   connect(ui.inputEdit, SIGNAL(returnPressed()), this, SLOT(enterPressed()));
 }
 
@@ -34,65 +39,53 @@ void BufferWidget::init() {
 }
 
 BufferWidget::~BufferWidget() {
-
 }
 
-void BufferWidget::setBuffer(Buffer *buf) {
-  /*
-  ChatView *chatView;
-  if(_chatViews.contains(buf->uid())) {
-    chatView = _chatViews[buf->uid()];
-  } else {
-    chatView = new ChatView(buf, this);
-    ui.stackedWidget->addWidget(chatView);
-    _chatViews[buf->uid()] = chatView;
-  }
-  ui.stackedWidget->setCurrentWidget(chatView);
-  disconnect(this, SIGNAL(userInput(QString)), 0, 0);
-  connect(this, SIGNAL(userInput(QString)), buf, SLOT(processUserInput(QString)));
-  //chatView->setFocusProxy(ui.inputEdit);
-  ui.inputEdit->setFocus();
-  ui.ownNick->clear();  // TODO add nick history
+BufferId BufferWidget::currentBuffer() const {
+  return _currentBuffer;
 }
-  */
-  
-  // ui.ownNick->addItem(state->ownNick);
 
+void BufferWidget::setCurrentBuffer(BufferId bufferId) {
   ChatWidget *chatWidget;
-  if(_chatWidgets.contains(buf)) {
-     chatWidget = _chatWidgets[buf];
+  if(_chatWidgets.contains(bufferId)) {
+     chatWidget = _chatWidgets[bufferId];
   } else {
+    Buffer *buf = Client::buffer(bufferId);
+    if(!buf) {
+      qWarning() << "BufferWidget::setBuffer(BufferId): Can't show unknown Buffer:" << bufferId;
+      return;
+    }
     chatWidget = new ChatWidget(this);
-    chatWidget->init(buf->networkName(), buf->name());
+    chatWidget->init(bufferId);
     QList<ChatLine *> lines;
     QList<AbstractUiMsg *> msgs = buf->contents();
     foreach(AbstractUiMsg *msg, msgs) {
       lines.append(dynamic_cast<ChatLine*>(msg));
     }
     chatWidget->setContents(lines);
-    connect(buf, SIGNAL(destroyed(QObject *)), this, SLOT(bufferDestroyed(QObject *)));
     connect(buf, SIGNAL(msgAppended(AbstractUiMsg *)), chatWidget, SLOT(appendMsg(AbstractUiMsg *)));
     connect(buf, SIGNAL(msgPrepended(AbstractUiMsg *)), chatWidget, SLOT(prependMsg(AbstractUiMsg *)));
-    _chatWidgets[buf] = chatWidget;
+    _chatWidgets[bufferId] = chatWidget;
     ui.stackedWidget->addWidget(chatWidget);
   }
   ui.stackedWidget->setCurrentWidget(chatWidget);
   disconnect(this, SIGNAL(userInput(QString)), 0, 0);
-  connect(this, SIGNAL(userInput(QString)), buf, SLOT(processUserInput(QString)));
+  connect(this, SIGNAL(userInput(QString)), Client::buffer(bufferId), SLOT(processUserInput(QString)));
   chatWidget->setFocusProxy(ui.inputEdit);
   ui.inputEdit->setFocus();
-  ui.ownNick->clear();  // TODO add nick history
-  // ui.ownNick->addItem(state->ownNick);
+
 }
 
-void BufferWidget::bufferDestroyed(QObject *buf) {
-  QWidget *widget = _chatWidgets[(Buffer*)buf];
-  ui.stackedWidget->removeWidget(widget);
-  widget->deleteLater();
+void BufferWidget::removeBuffer(BufferId bufferId) {
+  if(!_chatWidgets.contains(bufferId))
+    return;
+
+  ChatWidget *chatWidget = _chatWidgets.take(bufferId);
+  ui.stackedWidget->removeWidget(chatWidget);
+  chatWidget->deleteLater();
 }
 
 void BufferWidget::saveState() {
-
 }
 
 QSize BufferWidget::sizeHint() const {
@@ -106,14 +99,6 @@ void BufferWidget::enterPressed() {
     emit userInput(msg);
   }
   ui.inputEdit->clear();
-}
-
-void BufferWidget::setActive(bool act) {
-  if(act != active) {
-    active = act;
-    //renderContents();
-    //scrollToEnd();
-  }
 }
 
 

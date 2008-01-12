@@ -20,57 +20,87 @@
 
 #include "tabcompleter.h"
 
-TabCompleter::TabCompleter(QLineEdit *l, QObject *parent) : QObject(parent) {
-  lineEdit = l;
-  enabled = false;
-  startOfLineSuffix = QString(": "); // TODO make start of line suffix configurable
-}
+#include "inputline.h"
+#include "client.h"
+#include "buffermodel.h"
+#include "networkmodel.h"
+#include "network.h"
+#include "ircchannel.h"
+#include "ircuser.h"
 
-void TabCompleter::updateNickList(QStringList l) {
-  nickList = l;
-}
-
-void TabCompleter::updateChannelList(QStringList l) {
-  channelList = l;
+TabCompleter::TabCompleter(InputLine *inputLine_)
+  : QObject(inputLine_),
+    inputLine(inputLine_),
+    enabled(false),
+    nickSuffix(": ")
+{
 }
 
 void TabCompleter::buildCompletionList() {
   // this is the first time tab is pressed -> build up the completion list and it's iterator
-  QString tabAbbrev = lineEdit->text().left(lineEdit->cursorPosition()).section(' ',-1,-1);
+  QModelIndex currentIndex = Client::bufferModel()->currentIndex();
+  if(!currentIndex.data(NetworkModel::BufferIdRole).isValid())
+    return;
+  
+  NetworkId networkId = currentIndex.data(NetworkModel::NetworkIdRole).toUInt();
+  QString channelName = currentIndex.sibling(currentIndex.row(), 0).data().toString();
+
+  Network *network = Client::network(networkId);
+  if(!network)
+    return;
+
+  IrcChannel *channel = network->ircChannel(channelName);
+  if(!channel)
+    return;
+
+  disconnect(this, SLOT(ircUserJoinedOrParted(IrcUser *)));
+  connect(channel, SIGNAL(ircUserJoined(IrcUser *)),
+	  this, SLOT(ircUserJoinedOrParted(IrcUser *)));
+  connect(channel, SIGNAL(ircUserParted(IrcUser *)),
+	  this, SLOT(ircUserJoinedOrParted(IrcUser *)));
+	     
   completionList.clear();
-  foreach(QString nick, nickList) {
-    if(nick.toLower().startsWith(tabAbbrev.toLower())) {
-      completionList << nick;
+  QString tabAbbrev = inputLine->text().left(inputLine->cursorPosition()).section(' ',-1,-1);
+  completionList.clear();
+  foreach(IrcUser *ircUser, channel->ircUsers()) {
+    if(ircUser->nick().toLower().startsWith(tabAbbrev.toLower())) {
+      completionList << ircUser->nick();
     }
   }
   completionList.sort();
   nextCompletion = completionList.begin();
   lastCompletionLength = tabAbbrev.length();
+  
+}
+
+void TabCompleter::ircUserJoinedOrParted(IrcUser *ircUser) {
+  Q_UNUSED(ircUser)
+  buildCompletionList();
 }
 
 void TabCompleter::complete() {
-  if (! enabled) {
+  if(!enabled) {
     buildCompletionList();
-    enabled = true;  
+    enabled = true;
   }
   
   if (nextCompletion != completionList.end()) {
     // clear previous completion
     for (int i = 0; i < lastCompletionLength; i++) {
-      lineEdit->backspace();
+      inputLine->backspace();
     }
     
     // insert completion
-    lineEdit->insert(*nextCompletion);
+    inputLine->insert(*nextCompletion);
     
     // remember charcount to delete next time and advance to next completion
     lastCompletionLength = nextCompletion->length();
     nextCompletion++;
     
     // we're completing the first word of the line
-    if(lineEdit->text().length() == lastCompletionLength) {
-      lineEdit->insert(startOfLineSuffix);
-      lastCompletionLength += 2;
+    if(inputLine->text().length() == lastCompletionLength) {
+      inputLine->insert(nickSuffix);
+      lastCompletionLength += nickSuffix.length();
     }
 
   // we're at the end of the list -> start over again
@@ -80,7 +110,7 @@ void TabCompleter::complete() {
   
 }
 
-void TabCompleter::disable() {
+void TabCompleter::reset() {
   enabled = false;
 }
 

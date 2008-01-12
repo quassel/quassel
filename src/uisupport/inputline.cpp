@@ -22,15 +22,15 @@
 
 #include "tabcompleter.h"
 
-InputLine::InputLine(QWidget *parent) : QLineEdit(parent) {
-  idx = 0;
+InputLine::InputLine(QWidget *parent)
+  : QLineEdit(parent),
+    idx(0)
+{
   connect(this, SIGNAL(returnPressed()), this, SLOT(enter()));
   tabComplete = new TabCompleter(this);
-  connect(this, SIGNAL(nickListUpdated(QStringList)), tabComplete, SLOT(updateNickList(QStringList)));
 }
 
 InputLine::~InputLine() {
-  delete tabComplete;
 }
 
 void InputLine::keyPressEvent(QKeyEvent * event) {
@@ -38,7 +38,7 @@ void InputLine::keyPressEvent(QKeyEvent * event) {
     tabComplete->complete();
     event->accept();
   } else {
-    tabComplete->disable();
+    tabComplete->reset();
     if(event->key() == Qt::Key_Up) {
       if(idx > 0) { idx--; setText(history[idx]); }
       event->accept();

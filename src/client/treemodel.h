@@ -67,7 +67,7 @@ public:
   AbstractTreeItem *parent();
 
 signals:
-  void dataChanged(int column);
+  void dataChanged(int column = -1);
   void newChild(AbstractTreeItem *);
   void childDestroyed(int row);
 				       
@@ -148,7 +148,7 @@ public:
   virtual void clear();
 
 private slots:
-  void itemDataChanged(int column);
+  void itemDataChanged(int column = -1);
   void newChild(AbstractTreeItem *child);
   void childDestroyed(int row);
 

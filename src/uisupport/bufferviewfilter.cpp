@@ -20,6 +20,8 @@
 
 #include "bufferviewfilter.h"
 
+#include <QColor>
+
 #include "networkmodel.h"
 
 /*****************************************
@@ -110,13 +112,13 @@ void BufferViewFilter::removeBuffer(const QModelIndex &index) {
 
 
 bool BufferViewFilter::filterAcceptBuffer(const QModelIndex &source_bufferIndex) const {
-  Buffer::Type bufferType = (Buffer::Type) source_bufferIndex.data(NetworkModel::BufferTypeRole).toInt();
+  BufferItem::Type bufferType = (BufferItem::Type) source_bufferIndex.data(NetworkModel::BufferTypeRole).toInt();
   
-  if((mode & NoChannels) && bufferType == Buffer::ChannelType)
+  if((mode & NoChannels) && bufferType == BufferItem::ChannelType)
     return false;
-  if((mode & NoQueries) && bufferType == Buffer::QueryType)
+  if((mode & NoQueries) && bufferType == BufferItem::QueryType)
     return false;
-  if((mode & NoServers) && bufferType == Buffer::StatusType)
+  if((mode & NoServers) && bufferType == BufferItem::StatusType)
     return false;
 
 //   bool isActive = source_bufferIndex.data(NetworkModel::BufferActiveRole).toBool();
@@ -162,3 +164,17 @@ bool BufferViewFilter::lessThan(const QModelIndex &left, const QModelIndex &righ
     return QSortFilterProxyModel::lessThan(left, right);
 }
 
+QVariant BufferViewFilter::data(const QModelIndex &index, int role) const {
+  if(role == Qt::ForegroundRole)
+    return foreground(index);
+  else
+    return QSortFilterProxyModel::data(index, role);
+}
+
+QVariant BufferViewFilter::foreground(const QModelIndex &index) const {
+  if(!index.data(NetworkModel::ItemActiveRole).toBool())
+    return QColor(Qt::gray);
+
+  // FIXME:: show colors depending on activity level
+  return QColor(Qt::black);
+}

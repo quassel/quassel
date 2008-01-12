@@ -22,30 +22,38 @@
 
 #include "buffer.h"
 #include "nickview.h"
+#include "client.h"
+#include "networkmodel.h"
 
-NickListWidget::NickListWidget(QWidget *parent) : QWidget(parent) {
+NickListWidget::NickListWidget(QWidget *parent)
+  : QWidget(parent),
+    _currentBuffer(0)
+{
   ui.setupUi(this);
-
 }
 
-void NickListWidget::setBuffer(Buffer *buf) {
-  if(!buf) {
+
+BufferId NickListWidget::currentBuffer() const {
+  return _currentBuffer;
+}
+
+void NickListWidget::setCurrentBuffer(BufferId bufferId) {
+  QModelIndex bufferIdx = Client::networkModel()->bufferIndex(bufferId);
+  
+  if(bufferIdx.data(NetworkModel::BufferTypeRole) != BufferItem::ChannelType) {
     ui.stackedWidget->setCurrentWidget(ui.emptyPage);
     return;
   }
-  if(buf->bufferType() != Buffer::ChannelType) {
-    ui.stackedWidget->setCurrentWidget(ui.emptyPage);
+
+  if(nickViews.contains(bufferId)) {
+    ui.stackedWidget->setCurrentWidget(nickViews.value(bufferId));
   } else {
-    if(nickViews.contains(buf)) {
-      ui.stackedWidget->setCurrentWidget(nickViews.value(buf));
-    } else {
-      NickView *view = new NickView(this);
-      view->setModel(buf->nickModel());
-      nickViews[buf] = view;
-      ui.stackedWidget->addWidget(view);
-      ui.stackedWidget->setCurrentWidget(view);
-      connect(buf, SIGNAL(destroyed(QObject *)), this, SLOT(bufferDestroyed(QObject *)));
-    }
+    NickView *view = new NickView(this);
+    view->setModel(Client::networkModel());
+    view->setRootIndex(bufferIdx);
+    nickViews[bufferId] = view;
+    ui.stackedWidget->addWidget(view);
+    ui.stackedWidget->setCurrentWidget(view);
   }
 }
 
@@ -57,10 +65,11 @@ void NickListWidget::reset() {
   nickViews.clear();
 }
 
-void NickListWidget::bufferDestroyed(QObject *buf) {
-  if(nickViews.contains((Buffer *)buf)) {
-    NickView *view = nickViews.take((Buffer *)buf);
-    ui.stackedWidget->removeWidget(view);
-    view->deleteLater();
-  }
+void NickListWidget::removeBuffer(BufferId bufferId) {
+  if(!nickViews.contains(bufferId))
+    return;
+  
+  NickView *view = nickViews.take(bufferId);
+  ui.stackedWidget->removeWidget(view);
+  view->deleteLater();
 }

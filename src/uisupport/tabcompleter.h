@@ -21,36 +21,38 @@
 #ifndef _TABCOMPLETER_H_
 #define _TABCOMPLETER_H_
 
-#include <QtCore>
 #include <QObject>
-#include <QLineEdit>
+#include <QStringList>
+#include <QPointer>
+
+class InputLine;
+class IrcUser;
 
 class TabCompleter : public QObject {
   Q_OBJECT
   
-  public:
-    TabCompleter(QLineEdit *l, QObject *parent = 0);
-    void disable();
-    void complete();
+public:
+  TabCompleter(InputLine *inputLine_);
   
-  public slots:
-    void updateNickList(QStringList);
-    void updateChannelList(QStringList);
-    
-  private:
-    bool enabled;
-    QString startOfLineSuffix;
-    QLineEdit *lineEdit;
-    QStringList completionTemplates;
-    QStringList channelList;
+  void reset();
+  void complete();
 
-    QStringList nickList;
-    QStringList completionList;
-    QStringList::Iterator nextCompletion;
-    int lastCompletionLength;
-        
-    void buildCompletionList();
-    
+private slots:
+  void ircUserJoinedOrParted(IrcUser *ircUser);
+  
+private:
+  QPointer<InputLine> inputLine;
+  bool enabled;
+  QString nickSuffix;
+
+  QStringList completionList;
+  // QStringList completionTemplates;
+  
+  QStringList::Iterator nextCompletion;
+  int lastCompletionLength;
+  
+  void buildCompletionList();
+  
 };
 
 #endif

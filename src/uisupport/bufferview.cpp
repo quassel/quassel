@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include "client.h"
-#include "buffer.h"
+//#include "buffer.h"
 #include "bufferview.h"
 #include "networkmodel.h"
 
@@ -82,9 +82,9 @@ void BufferView::setModel(QAbstractItemModel *model) {
 }
 
 void BufferView::joinChannel(const QModelIndex &index) {
-  Buffer::Type bufferType = (Buffer::Type)index.data(NetworkModel::BufferTypeRole).toInt();
+  BufferItem::Type bufferType = (BufferItem::Type)index.data(NetworkModel::BufferTypeRole).toInt();
 
-  if(bufferType != Buffer::ChannelType)
+  if(bufferType != BufferItem::ChannelType)
     return;
   
   Client::fakeInput(index.data(NetworkModel::BufferUidRole).toUInt(), QString("/JOIN %1").arg(index.sibling(index.row(), 0).data().toString()));

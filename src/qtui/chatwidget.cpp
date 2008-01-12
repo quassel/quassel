@@ -45,16 +45,15 @@ ChatWidget::ChatWidget(QWidget *parent) : QAbstractScrollArea(parent) {
   connect(verticalScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(scrollBarValChanged(int)));
 }
 
-void ChatWidget::init(QString netname, QString bufname) {
-  networkName = netname;
-  bufferName = bufname;
+void ChatWidget::init(BufferId id) {
+  bufferId = id;
   setBackgroundRole(QPalette::Base);
   setFont(QFont("Fixed"));
   UiSettings s;
   QVariant tsDef = s.value("DefaultTimestampColumnWidth", 90);
   QVariant senderDef = s.value("DefaultSenderColumnWidth", 100);
-  tsWidth = s.value(QString("%1/%2/TimestampColumnWidth").arg(netname, bufname), tsDef).toInt();
-  senderWidth = s.value(QString("%1/%2/SenderColumnWidth").arg(netname, bufname), senderDef).toInt();
+  tsWidth = s.value(QString("%1/TimestampColumnWidth").arg(bufferId), tsDef).toInt();
+  senderWidth = s.value(QString("%1/SenderColumnWidth").arg(bufferId), senderDef).toInt();
   computePositions();
   adjustScrollBar();
   verticalScrollBar()->setValue(verticalScrollBar()->maximum());
@@ -78,8 +77,8 @@ ChatWidget::~ChatWidget() {
   UiSettings s;
   s.setValue("DefaultTimestampColumnWidth", tsWidth);  // FIXME stupid dirty quicky
   s.setValue("DefaultSenderColumnWidth", senderWidth);
-  s.setValue(QString("%1/%2/TimestampColumnWidth").arg(networkName, bufferName), tsWidth);
-  s.setValue(QString("%1/%2/SenderColumnWidth").arg(networkName, bufferName), senderWidth);
+  s.setValue(QString("%1/TimestampColumnWidth").arg(bufferId), tsWidth);
+  s.setValue(QString("%1/SenderColumnWidth").arg(bufferId), senderWidth);
 }
 
 QSize ChatWidget::sizeHint() const {

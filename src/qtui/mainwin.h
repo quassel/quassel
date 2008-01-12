@@ -64,9 +64,6 @@ class MainWin : public QMainWindow {
     void showCoreConnectionDlg(bool autoConnect = false);
     void coreConnectionDlgFinished(int result);
 
-    void showBuffer(BufferInfo);
-    void showBuffer(Buffer *);
-
   signals:
     void connectToCore(const QVariantMap &connInfo);
     void disconnectFromCore();

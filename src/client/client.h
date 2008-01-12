@@ -58,8 +58,6 @@ public:
   static QList<Buffer *> buffers();
   static Buffer *buffer(uint bufferUid);
   static Buffer *buffer(BufferInfo);
-  static BufferInfo statusBufferInfo(QString net);
-  static BufferInfo bufferInfo(QString net, QString buf);
 
   static QList<IdentityId> identityIds();
   static const Identity * identity(IdentityId);
@@ -102,9 +100,7 @@ public:
 signals:
   void sendInput(BufferInfo, QString message);
   void showBuffer(Buffer *);
-  void bufferSelected(Buffer *);
-  void bufferUpdated(Buffer *);
-  void bufferActivity(Buffer::ActivityLevel, Buffer *);
+  void bufferUpdated(BufferInfo bufferInfo);
   void backlogReceived(Buffer *, QList<Message>);
   void requestBacklog(BufferInfo, QVariant, QVariant);
   void requestNetworkStates();
@@ -176,7 +172,6 @@ private slots:
 
   void bufferDestroyed();
   void networkDestroyed();
-  void ircChannelAdded(QString);
   void coreIdentityCreated(const Identity &);
   void coreIdentityRemoved(IdentityId);
 

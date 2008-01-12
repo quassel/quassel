@@ -25,7 +25,7 @@
 #include <QDropEvent>
 #include <QSortFilterProxyModel>
 #include <QSet>
-#include "buffer.h"
+// #include "buffer.h"
 
 /*****************************************
  * Buffer View Filter
@@ -50,7 +50,10 @@ public:
   
   virtual Qt::ItemFlags flags(const QModelIndex &index) const;
   virtual bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent);
-  
+
+  QVariant data(const QModelIndex &index, int role) const;
+  QVariant foreground(const QModelIndex &index) const;
+									   
 public slots:
   void removeBuffer(const QModelIndex &);
   void invalidateFilter_();

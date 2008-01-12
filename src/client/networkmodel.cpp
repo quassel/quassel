@@ -18,8 +18,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QColor>  // FIXME Dependency on QtGui!
-
 #include "networkmodel.h"
 
 #include <QAbstractItemView>
@@ -31,59 +29,78 @@
 #include "ircchannel.h"
 #include "ircuser.h"
 
+#include "util.h" // get rid of this (needed for isChannelName)
+
 /*****************************************
 *  Fancy Buffer Items
 *****************************************/
-BufferItem::BufferItem(Buffer *buffer, AbstractTreeItem *parent)
+BufferItem::BufferItem(BufferInfo bufferInfo, AbstractTreeItem *parent)
   : PropertyMapItem(QStringList() << "bufferName" << "topic" << "nickCount", parent),
-    buf(buffer),
-    activity(Buffer::NoActivity)
+    _bufferInfo(bufferInfo),
+    _activity(NoActivity)
 {
+  // determine BufferType
+  if(bufferInfo.buffer().isEmpty())
+    _type = StatusType;
+  else if(isChannelName(bufferInfo.buffer()))
+    _type = ChannelType;
+  else
+    _type = QueryType;
+
   Qt::ItemFlags flags = Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled;
-  if(buf->bufferType() == Buffer::QueryType)
+  if(bufferType() == QueryType)
     flags |= Qt::ItemIsDropEnabled;
   setFlags(flags);
 }
 
+
+const BufferInfo &BufferItem::bufferInfo() const {
+  return _bufferInfo;
+}
+
 quint64 BufferItem::id() const {
-  return buf->bufferInfo().uid();
+  return bufferInfo().uid();
 }
 
-void BufferItem::setActivity(const Buffer::ActivityLevel &level) {
-  activity = level;
+bool BufferItem::isStatusBuffer() const {
+   return bufferType() == StatusType;
 }
 
-QColor BufferItem::foreground(int column) const {
-  Q_UNUSED(column)
-  // for the time beeing we ignore the column :)
-  if(activity & Buffer::Highlight) {
-    return QColor(Qt::red);
-  } else if(activity & Buffer::NewMessage) {
-    return QColor(Qt::darkYellow);
-  } else if(activity & Buffer::OtherActivity) {
-    return QColor(Qt::darkGreen);
-  } else {
-    if(buf->isActive())
-      return QColor(Qt::black);
-    else
-      return QColor(Qt::gray);
-  }
+BufferItem::Type BufferItem::bufferType() const {
+  return _type;
+}
+
+bool BufferItem::isActive() const {
+  if(bufferType() == ChannelType)
+    return _ircChannel;
+  else
+    return true;
+}
+
+BufferItem::ActivityLevel BufferItem::activity() const {
+  return _activity;
+}
+
+void BufferItem::setActivity(const ActivityLevel &level) {
+  _activity = level;
+}
+
+void BufferItem::addActivity(const ActivityLevel &level) {
+  _activity |= level;
 }
 
 QVariant BufferItem::data(int column, int role) const {
   switch(role) {
   case NetworkModel::ItemTypeRole:
     return NetworkModel::BufferItemType;
-  case NetworkModel::BufferUidRole:
-    return buf->bufferInfo().uid();
+  case NetworkModel::BufferIdRole:
+    return bufferInfo().uid();
   case NetworkModel::NetworkIdRole:
-    return buf->bufferInfo().networkId();
+    return bufferInfo().networkId();
   case NetworkModel::BufferTypeRole:
-    return int(buf->bufferType());
-  case NetworkModel::BufferActiveRole:
-    return buf->isActive();
-  case Qt::ForegroundRole:
-    return foreground(column);
+    return int(bufferType());
+  case NetworkModel::ItemActiveRole:
+    return isActive();
   default:
     return PropertyMapItem::data(column, role);
   }
@@ -101,10 +118,25 @@ void BufferItem::attachIrcChannel(IrcChannel *ircChannel) {
 	  this, SLOT(join(IrcUser *)));
   connect(ircChannel, SIGNAL(ircUserParted(IrcUser *)),
 	  this, SLOT(part(IrcUser *)));
+  connect(ircChannel, SIGNAL(destroyed()),
+	  this, SLOT(ircChannelDestroyed()));
+  
+  emit dataChanged();
+}
+
+void BufferItem::ircChannelDestroyed() {
+  emit dataChanged();
+  for(int i = 0; i < childCount(); i++) {
+    emit childDestroyed(i);
+    removeChild(i);
+  }
 }
 
 QString BufferItem::bufferName() const {
-  return buf->name();
+  if(bufferType() == StatusType)
+    return tr("Status Buffer");
+  else
+    return bufferInfo().buffer();
 }
 
 QString BufferItem::topic() const {
@@ -153,6 +185,8 @@ QVariant NetworkItem::data(int column, int role) const {
     return _networkId;
   case NetworkModel::ItemTypeRole:
     return NetworkModel::NetworkItemType;
+  case NetworkModel::ItemActiveRole:
+    return isActive();
   default:
     return PropertyMapItem::data(column, role);
   }
@@ -160,6 +194,10 @@ QVariant NetworkItem::data(int column, int role) const {
 
 quint64 NetworkItem::id() const {
   return _networkId;
+}
+
+bool NetworkItem::isActive() const {
+  return _network;
 }
 
 QString NetworkItem::networkName() const {
@@ -277,9 +315,7 @@ bool NetworkModel::isBufferIndex(const QModelIndex &index) const {
 
 Buffer *NetworkModel::getBufferByIndex(const QModelIndex &index) const {
   BufferItem *item = static_cast<BufferItem *>(index.internalPointer());
-  // FIXME get rid of this
-  Q_ASSERT(item->buffer() == Client::instance()->buffer(item->id()));
-  return item->buffer();
+  return Client::instance()->buffer(item->id());
 }
 
 
@@ -304,16 +340,19 @@ NetworkItem *NetworkModel::newNetwork(uint networkId, const QString &networkName
   return networkItem;
 }
 
-QModelIndex NetworkModel::bufferIndex(BufferInfo bufferInfo) {
-  QModelIndex networkIdx = networkIndex(bufferInfo.networkId());
-  if(!networkIdx.isValid())
-    return QModelIndex();
-  else
-    return indexById(bufferInfo.uid(), networkIdx);
+QModelIndex NetworkModel::bufferIndex(BufferId bufferId) {
+  AbstractTreeItem *netItem, *bufferItem;
+  for(int i = 0; i < rootItem->childCount(); i++) {
+    netItem = rootItem->child(i);
+    if((bufferItem = netItem->childById(bufferId))) {
+      return indexById(bufferItem->id(), networkIndex(netItem->id()));
+    }
+  }
+  return QModelIndex();
 }
 
 BufferItem *NetworkModel::buffer(BufferInfo bufferInfo) {
-  QModelIndex bufferIdx = bufferIndex(bufferInfo);
+  QModelIndex bufferIdx = bufferIndex(bufferInfo.uid());
   if(bufferIdx.isValid())
     return static_cast<BufferItem *>(bufferIdx.internalPointer());
   else
@@ -324,10 +363,7 @@ BufferItem *NetworkModel::newBuffer(BufferInfo bufferInfo) {
   BufferItem *bufferItem = buffer(bufferInfo);
   if(bufferItem == 0) {
     NetworkItem *networkItem = newNetwork(bufferInfo.networkId(), bufferInfo.network());
-
-    // FIXME: get rid of the buffer pointer
-    Buffer *buffer = Client::instance()->buffer(bufferInfo.uid());
-    bufferItem = new BufferItem(buffer, networkItem);
+    bufferItem = new BufferItem(bufferInfo, networkItem);
     appendChild(networkItem, bufferItem);
   }
 
@@ -374,7 +410,7 @@ QMimeData *NetworkModel::mimeData(const QModelIndexList &indexes) const {
   QString netid, uid, bufferid;
   foreach(QModelIndex index, indexes) {
     netid = QString::number(index.data(NetworkIdRole).toUInt());
-    uid = QString::number(index.data(BufferUidRole).toUInt());
+    uid = QString::number(index.data(BufferIdRole).toUInt());
     bufferid = QString("%1:%2").arg(netid).arg(uid);
     if(!bufferlist.contains(bufferid))
       bufferlist << bufferid;
@@ -394,8 +430,8 @@ bool NetworkModel::dropMimeData(const QMimeData *data, Qt::DropAction action, in
     return false;
 
   // target must be a query
-  Buffer::Type targetType = (Buffer::Type)parent.data(NetworkModel::BufferTypeRole).toInt();
-  if(targetType != Buffer::QueryType)
+  BufferItem::Type targetType = (BufferItem::Type)parent.data(NetworkModel::BufferTypeRole).toInt();
+  if(targetType != BufferItem::QueryType)
     return false;
 
   QList< QPair<uint, uint> > bufferList = mimeDataToBufferList(data);
@@ -408,19 +444,19 @@ bool NetworkModel::dropMimeData(const QMimeData *data, Qt::DropAction action, in
   uint bufferId = bufferList.first().second;
 
   // no self merges (would kill us)
-  if(bufferId == parent.data(BufferUidRole).toUInt())
+  if(bufferId == parent.data(BufferIdRole).toUInt())
     return false; 
   
   Q_ASSERT(rootItem->childById(netId));
   Q_ASSERT(rootItem->childById(netId)->childById(bufferId));
 
   // source must be a query too
-  Buffer::Type sourceType = (Buffer::Type)rootItem->childById(netId)->childById(bufferId)->data(0, BufferTypeRole).toInt();
-  if(sourceType != Buffer::QueryType)
+  BufferItem::Type sourceType = (BufferItem::Type)rootItem->childById(netId)->childById(bufferId)->data(0, BufferTypeRole).toInt();
+  if(sourceType != BufferItem::QueryType)
     return false;
     
   // TODO: warn user about buffermerge!
-  qDebug() << "merging" << bufferId << parent.data(BufferUidRole).toInt();
+  qDebug() << "merging" << bufferId << parent.data(BufferIdRole).toInt();
   removeRow(parent.row(), parent.parent());
   
   return true;
@@ -435,19 +471,19 @@ void NetworkModel::attachNetwork(Network *net) {
   networkItem->attachNetwork(net);
 }
 
-void NetworkModel::bufferUpdated(Buffer *buffer) {
-  BufferItem *bufferItem = newBuffer(buffer->bufferInfo());
+void NetworkModel::bufferUpdated(BufferInfo bufferInfo) {
+  BufferItem *bufferItem = newBuffer(bufferInfo);
   QModelIndex itemindex = indexByItem(bufferItem);
   emit dataChanged(itemindex, itemindex);
 }
 
-void NetworkModel::bufferActivity(Buffer::ActivityLevel level, Buffer *buf) {
-  BufferItem *bufferItem = buffer(buf->bufferInfo());
-  if(!bufferItem) {
-    qWarning() << "NetworkModel::bufferActivity(): received Activity Info for uknown Buffer";
-    return;
-  }
-  bufferItem->setActivity(level);
-  bufferUpdated(buf);
+void NetworkModel::bufferActivity(BufferItem::ActivityLevel level, BufferInfo bufferInfo) {
+//   BufferItem *bufferItem = buffer(buf->bufferInfo());
+//   if(!bufferItem) {
+//     qWarning() << "NetworkModel::bufferActivity(): received Activity Info for uknown Buffer";
+//     return;
+//   }
+//   bufferItem->setActivity(level);
+//   bufferUpdated(buf);
 }
 

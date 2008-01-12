@@ -169,6 +169,8 @@ void IrcChannel::part(IrcUser *ircuser) {
     // if you wonder why there is no counterpart to ircUserParted:
     // the joines are propagted by the ircuser. the signal ircUserParted is only for convenience
     emit ircUserParted(ircuser);
+    if(network->isMyNick(ircuser))
+       deleteLater();
   }
 }
 

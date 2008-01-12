@@ -74,22 +74,16 @@ void BufferModel::mapProperty(int column, int role, QObject *target, const QByte
 // This Slot indicates that the user has selected a different buffer in the gui
 void BufferModel::setCurrentIndex(const QModelIndex &index, QItemSelectionModel::SelectionFlags command) {
   Q_UNUSED(command)
-  Buffer *newCurrentBuffer;
-  NetworkModel *networkModel = qobject_cast<NetworkModel *>(parent());
-  if(networkModel->isBufferIndex(mapToSource(index)) && currentBuffer != (newCurrentBuffer = networkModel->getBufferByIndex(mapToSource(index)))) {
+
+  BufferId newCurrentBuffer;
+  if(index.data(NetworkModel::ItemTypeRole) == NetworkModel::BufferItemType && currentBuffer != (newCurrentBuffer = index.data(NetworkModel::BufferIdRole).toUInt())) {
     currentBuffer = newCurrentBuffer;
-    networkModel->bufferActivity(Buffer::NoActivity, currentBuffer);
-    emit bufferSelected(currentBuffer);
+    // FIXME: to something like: index.setData(ActivitRole, NoActivity);
+    // networkModel->bufferActivity(BufferItem::NoActivity, currentBuffer);
     emit selectionChanged(index);
   }
 }
 
-void BufferModel::selectBuffer(Buffer *buffer) {
-  QModelIndex index = (qobject_cast<NetworkModel *>(parent()))->bufferIndex(buffer->bufferInfo());
-  if(!index.isValid()) {
-    qWarning() << "BufferModel::selectBuffer(): unknown Buffer has been selected.";
-    return;
-  }
-  // SUPER UGLY!
-  setCurrentIndex(mapFromSource(index), 0);
+QModelIndex BufferModel::currentIndex() {
+  return propertyMapper()->selectionModel()->currentIndex();
 }

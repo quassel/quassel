@@ -37,11 +37,11 @@ class NickView : public QTreeView {
   protected:
     void rowsInserted(const QModelIndex &, int, int);
 
-  public slots:
-    void setModel(NickModel *model);
+//   public slots:
+//     void setModel(NickModel *model);
 
-  private:
-    QSortFilterProxyModel *filteredModel;
+//   private:
+//     QSortFilterProxyModel *filteredModel;
 
 };
 

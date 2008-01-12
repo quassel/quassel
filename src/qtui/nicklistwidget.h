@@ -22,6 +22,7 @@
 #define _NICKLISTWIDGET_H_
 
 #include "ui_nicklistwidget.h"
+#include "types.h"
 
 #include <QHash>
 
@@ -31,20 +32,24 @@ class NickView;
 class NickListWidget : public QWidget {
   Q_OBJECT
 
-  public:
-    NickListWidget(QWidget *parent = 0);
+  Q_PROPERTY(uint currentBuffer READ currentBuffer WRITE setCurrentBuffer)
 
-  public slots:
-    void setBuffer(Buffer *);
-    void reset();
+public:
+  NickListWidget(QWidget *parent = 0);
 
-  private slots:
-    void bufferDestroyed(QObject *);
-
-  private:
-    Ui::NickListWidget ui;
-    QHash<Buffer *, NickView *> nickViews;
-
+public slots:
+  BufferId currentBuffer() const;
+  void setCurrentBuffer(BufferId bufferId);
+  void reset();
+	      
+private slots:
+  void removeBuffer(BufferId bufferId);
+  
+private:
+  Ui::NickListWidget ui;
+  QHash<BufferId, NickView *> nickViews;
+  BufferId _currentBuffer;
+  
 };
 
 #endif

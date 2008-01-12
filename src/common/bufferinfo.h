@@ -21,6 +21,7 @@
 #define _BUFFERINFO_H_
 
 #include <QtCore>
+#include "types.h"
 
 class QString;
 class QDataStream;
@@ -30,8 +31,8 @@ public:
   BufferInfo();
   BufferInfo(uint id, uint networkid, uint gid = 0, QString net = QString(), QString buf = QString());
   
-  inline uint uid() const { return _id; }
-  inline uint networkId() const { return _netid; }
+  inline BufferId uid() const { return _id; }
+  inline NetworkId networkId() const { return _netid; }
   inline uint groupId() const { return _gid; }
   inline QString network() const { return _networkName; }
   QString buffer() const;

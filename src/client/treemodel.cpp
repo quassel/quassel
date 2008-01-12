@@ -380,14 +380,20 @@ QVariant TreeModel::headerData(int section, Qt::Orientation orientation, int rol
 
 void TreeModel::itemDataChanged(int column) {
   AbstractTreeItem *item = qobject_cast<AbstractTreeItem *>(sender());
-  QModelIndex itemIndex;
+  QModelIndex leftIndex, rightIndex;
 
-  if(item == rootItem) 
-    itemIndex = QModelIndex();
-  else
-    itemIndex = createIndex(item->row(), column, item);
+  if(item == rootItem)
+    return;
 
-  emit dataChanged(itemIndex, itemIndex);
+  if(column == -1) {
+    leftIndex = createIndex(item->row(), 0, item);
+    rightIndex = createIndex(item->row(), item->columnCount(), item);
+  } else {
+    leftIndex = createIndex(item->row(), column, item);
+    rightIndex = leftIndex;
+  }
+
+  emit dataChanged(leftIndex, rightIndex);
 }
 
 void TreeModel::appendChild(AbstractTreeItem *parent, AbstractTreeItem *child) {

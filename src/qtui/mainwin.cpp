@@ -125,6 +125,16 @@ void MainWin::init() {
 
   ui.menuViews->addAction(dock->toggleViewAction());
 
+
+  // attach the BufferWidget to the PropertyMapper
+  Client::bufferModel()->mapProperty(0, NetworkModel::BufferUidRole, ui.bufferWidget, "currentBuffer");
+  connect(Client::networkModel(), SIGNAL(bufferAboutToBeRemoved(BufferId)),
+	  ui.bufferWidget, SLOT(removeBuffer(BufferId)));
+
+  // attach the NickList to the PropertyMapper
+  Client::bufferModel()->mapProperty(0, NetworkModel::BufferUidRole, nickListWidget, "currentBuffer");
+  
+  
 #ifdef SPUTDEV
   showSettingsDlg();
 #endif
@@ -159,9 +169,7 @@ void MainWin::setupMenus() {
 }
 
 void MainWin::setupViews() {
-  
   BufferModel *model = Client::bufferModel();
-  connect(model, SIGNAL(bufferSelected(Buffer *)), this, SLOT(showBuffer(Buffer *)));
 
   addBufferView(tr("All Buffers"), model, BufferViewFilter::AllNets, QList<uint>());
   addBufferView(tr("All Channels"), model, BufferViewFilter::AllNets|BufferViewFilter::NoQueries|BufferViewFilter::NoServers, QList<uint>());
@@ -169,18 +177,6 @@ void MainWin::setupViews() {
   addBufferView(tr("All Networks"), model, BufferViewFilter::AllNets|BufferViewFilter::NoChannels|BufferViewFilter::NoQueries, QList<uint>());
   addBufferView(tr("Full Custom"), model, BufferViewFilter::FullCustom, QList<uint>());
 
-//   QDockWidget *dock = new QDockWidget("FILTERTEST", this);
-//   dock->setAllowedAreas(Qt::RightDockWidgetArea|Qt::LeftDockWidgetArea);
-//   BufferView *view = new BufferView(dock);
-//   view->setModel(Client::bufferModel());
-//   dock->setWidget(view);
-
-//   addDockWidget(Qt::LeftDockWidgetArea, dock);
-//   ui.menuViews->addAction(dock->toggleViewAction());
-
-//   netViews.append(dock);
-
-  
   ui.menuViews->addSeparator();
 }
 
@@ -188,13 +184,14 @@ void MainWin::addBufferView(const QString &viewname, QAbstractItemModel *model, 
   QDockWidget *dock = new QDockWidget(viewname, this);
   dock->setObjectName(QString("ViewDock-" + viewname)); // should be unique for mainwindow state!
   dock->setAllowedAreas(Qt::RightDockWidgetArea|Qt::LeftDockWidgetArea);
-  //dock->setContentsMargins(4,4,4,4);
 
   //create the view and initialize it's filter
   BufferView *view = new BufferView(dock);
+  view->show();
   view->setFilteredModel(model, mode, nets);
   Client::bufferModel()->synchronizeView(view);
   dock->setWidget(view);
+  dock->show();
 
   addDockWidget(Qt::LeftDockWidgetArea, dock);
   ui.menuViews->addAction(dock->toggleViewAction());
@@ -205,7 +202,6 @@ void MainWin::addBufferView(const QString &viewname, QAbstractItemModel *model, 
 void MainWin::setupSettingsDlg() {
   settingsDlg->registerSettingsPage(new FontsSettingsPage(settingsDlg));
   settingsDlg->registerSettingsPage(new IdentitiesSettingsPage(settingsDlg));
-
 }
 
 void MainWin::connectedToCore() {
@@ -283,17 +279,3 @@ void MainWin::closeEvent(QCloseEvent *event)
   //}
 }
 
-void MainWin::showBuffer(BufferInfo id) {
-  showBuffer(Client::buffer(id));
-}
-
-void MainWin::showBuffer(Buffer *b) {
-  currentBuffer = b->bufferInfo().groupId();
-  //emit bufferSelected(b);
-  //qApp->processEvents();
-  ui.bufferWidget->setBuffer(b);
-  nickListWidget->setBuffer(b);
-  //if(b->bufferType() == Buffer::ChannelType) nickDock->show();
-  //else nickDock->hide();
-  //emit bufferSelected(b);
-}

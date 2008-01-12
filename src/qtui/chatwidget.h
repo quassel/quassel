@@ -23,6 +23,8 @@
 
 #include <QtGui>
 
+#include "types.h"
+
 class ChatLine;
 class AbstractUiMsg;
 
@@ -43,7 +45,7 @@ class ChatWidget : public QAbstractScrollArea {
   public:
     ChatWidget(QWidget *parent = 0);
     ~ChatWidget();
-    void init(QString net, QString buf);
+    void init(BufferId id);
 
     virtual QSize sizeHint() const;
 
@@ -75,7 +77,7 @@ class ChatWidget : public QAbstractScrollArea {
     void handleScrollTimer();
 
   private:
-    QString networkName, bufferName;
+    BufferId bufferId;
     enum SelectionMode { NoSelection, TextSelected, LinesSelected };
     enum MouseMode { Normal, Pressed, DragTsSep, DragTextSep, MarkText, MarkLines };
     enum MousePos { None, OverTsSep, OverTextSep, OverUrl };

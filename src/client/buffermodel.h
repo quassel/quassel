@@ -25,10 +25,10 @@
 #include <QItemSelectionModel>
 #include <QPointer>
 
+#include "types.h"
+
 class NetworkModel;
-//class SelectionModelSynchronizer;
 #include "selectionmodelsynchronizer.h"
-//class ModelPropertyMapper;
 #include "modelpropertymapper.h"
 class MappedSelectionModel;
 class QAbstractItemView;
@@ -51,17 +51,16 @@ public:
   void mapProperty(int column, int role, QObject *target, const QByteArray &property);
 
 public slots:
+  QModelIndex currentIndex();
   void setCurrentIndex(const QModelIndex &index, QItemSelectionModel::SelectionFlags command);
-  void selectBuffer(Buffer *buffer);
 
 signals:
-  void bufferSelected(Buffer *);
   void selectionChanged(const QModelIndex &);
 
 private:
   QPointer<SelectionModelSynchronizer> _selectionModelSynchronizer;
   QPointer<ModelPropertyMapper> _propertyMapper;
-  Buffer *currentBuffer;
+  BufferId currentBuffer;
 };
 
 #endif // BUFFERMODEL_H

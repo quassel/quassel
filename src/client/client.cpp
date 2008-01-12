@@ -70,15 +70,10 @@ void Client::init() {
   blockSize = 0;
 
   _networkModel = new NetworkModel(this);
-  _bufferModel = new BufferModel(_networkModel);
+  connect(this, SIGNAL(bufferUpdated(BufferInfo)),
+          _networkModel, SLOT(bufferUpdated(BufferInfo)));
 
-  connect(this, SIGNAL(bufferSelected(Buffer *)),
-          _bufferModel, SLOT(selectBuffer(Buffer *)));
-  
-  connect(this, SIGNAL(bufferUpdated(Buffer *)),
-          _networkModel, SLOT(bufferUpdated(Buffer *)));
-  connect(this, SIGNAL(bufferActivity(Buffer::ActivityLevel, Buffer *)),
-          _networkModel, SLOT(bufferActivity(Buffer::ActivityLevel, Buffer *)));
+  _bufferModel = new BufferModel(_networkModel);
 
   SignalProxy *p = signalProxy();
   p->attachSignal(this, SIGNAL(sendSessionData(const QString &, const QVariant &)),
@@ -162,32 +157,13 @@ Buffer *Client::buffer(BufferInfo id) {
 
     connect(buff, SIGNAL(userInput(BufferInfo, QString)),
 	    client, SLOT(userInput(BufferInfo, QString)));
-    connect(buff, SIGNAL(bufferUpdated(Buffer *)),
-	    client, SIGNAL(bufferUpdated(Buffer *)));
     connect(buff, SIGNAL(destroyed()),
 	    client, SLOT(bufferDestroyed()));
     client->_buffers[id.uid()] = buff;
-    emit client->bufferUpdated(buff);
+    emit client->bufferUpdated(id);
   }
   Q_ASSERT(buff);
   return buff;
-}
-
-// FIXME switch to netids!
-// WHEN IS THIS NEEDED ANYHOW!?
-// ...only for finding the Buffer for a channel, I guess...
-BufferInfo Client::bufferInfo(QString net, QString buf) {
-  foreach(Buffer *buffer_, buffers()) {
-    BufferInfo bufferInfo = buffer_->bufferInfo();
-    if(!bufferInfo.network().compare(net, Qt::CaseInsensitive) && !bufferInfo.buffer().compare(buf, Qt::CaseInsensitive))
-      return bufferInfo;
-  }
-  Q_ASSERT(false);  // should never happen!
-  return BufferInfo();
-}
-
-BufferInfo Client::statusBufferInfo(QString net) {
-  return bufferInfo(net, "");
 }
 
 NetworkModel *Client::networkModel() {
@@ -529,45 +505,38 @@ void Client::networkConnected(uint netid) {
     connect(netinfo, SIGNAL(ircUserInitDone()), this, SLOT(updateCoreConnectionProgress()));
     connect(netinfo, SIGNAL(ircChannelInitDone()), this, SLOT(updateCoreConnectionProgress()));
   }
-  connect(netinfo, SIGNAL(ircChannelAdded(QString)), this, SLOT(ircChannelAdded(QString)));
   connect(netinfo, SIGNAL(destroyed()), this, SLOT(networkDestroyed()));
   _network[netid] = netinfo;
 }
 
 void Client::networkDisconnected(uint networkid) {
-  foreach(Buffer *buffer, buffers()) {
-    if(buffer->bufferInfo().networkId() != networkid)
-      continue;
-
-    //buffer->displayMsg(Message(bufferid, Message::Server, tr("Server disconnected."))); FIXME
-    buffer->setActive(false);
+  if(!_network.contains(networkid)) {
+    qWarning() << "Client::networkDisconnected(uint): unknown Network" << networkid;
+    return;
   }
 
-  Q_ASSERT(network(networkid));
-  if(!network(networkid)->initialized()) {
+  Network *net = _network.take(networkid);
+  if(!net->initialized()) {
     qDebug() << "Network" << networkid << "disconnected while not yet initialized!";
     updateCoreConnectionProgress();
   }
-}
-
-void Client::ircChannelAdded(QString chanName) {
-  Network *netInfo = qobject_cast<Network*>(sender());
-  Q_ASSERT(netInfo);
-  Buffer *buf = buffer(bufferInfo(netInfo->networkName(), chanName));
-  Q_ASSERT(buf);
-  buf->setIrcChannel(netInfo->ircChannel(chanName));
-
+  net->deleteLater();
 }
 
 void Client::updateBufferInfo(BufferInfo id) {
-  buffer(id)->updateBufferInfo(id);
+  emit bufferUpdated(id);
 }
 
 void Client::bufferDestroyed() {
   Buffer *buffer = static_cast<Buffer *>(sender());
-  uint bufferUid = buffer->uid();
-  if(_buffers.contains(bufferUid))
-    _buffers.remove(bufferUid);
+  QHash<BufferId, Buffer *>::iterator iter = _buffers.begin();
+  while(iter != _buffers.end()) {
+    if(iter.value() == buffer) {
+      iter = _buffers.erase(iter);
+      break;
+    }
+    iter++;
+  }
 }
 
 void Client::networkDestroyed() {
@@ -580,14 +549,14 @@ void Client::networkDestroyed() {
 void Client::recvMessage(const Message &msg) {
   Buffer *b = buffer(msg.buffer());
 
-  Buffer::ActivityLevel level = Buffer::OtherActivity;
-  if(msg.type() == Message::Plain || msg.type() == Message::Notice){
-    level |= Buffer::NewMessage;
-  }
-  if(msg.flags() & Message::Highlight){
-    level |= Buffer::Highlight;
-  }
-  emit bufferActivity(level, b);
+//   Buffer::ActivityLevel level = Buffer::OtherActivity;
+//   if(msg.type() == Message::Plain || msg.type() == Message::Notice){
+//     level |= Buffer::NewMessage;
+//   }
+//   if(msg.flags() & Message::Highlight){
+//     level |= Buffer::Highlight;
+//   }
+//   emit bufferActivity(level, b);
 
   b->appendMsg(msg);
 }
