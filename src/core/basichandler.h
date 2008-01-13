@@ -24,6 +24,7 @@
 #include <QObject>
 #include <QString>
 #include <QStringList>
+#include <QHash>
 #include <QGenericArgument>
 
 #include "message.h"
@@ -37,7 +38,7 @@ class BasicHandler : public QObject {
 public:
   BasicHandler(NetworkConnection *parent = 0);
 
-  QStringList providesHandlers() const;
+  QStringList providesHandlers();
 
 signals:
   void displayMsg(Message::Type, QString target, QString text, QString sender = "", quint8 flags = Message::None);
@@ -45,17 +46,20 @@ signals:
   void putRawLine(QString msg);
   
 protected:
-  virtual void handle(const QString &member, const QGenericArgument &val0 = QGenericArgument(0),
-		      const QGenericArgument &val1 = QGenericArgument(), const QGenericArgument &val2 = QGenericArgument(),
-		      const QGenericArgument &val3 = QGenericArgument(), const QGenericArgument &val4 = QGenericArgument(),
-		      const QGenericArgument &val5 = QGenericArgument(), const QGenericArgument &val6 = QGenericArgument(),
-		      const QGenericArgument &val7 = QGenericArgument(), const QGenericArgument &val8 = QGenericArgument());
+  virtual void handle(const QString &member, QGenericArgument val0 = QGenericArgument(0),
+		      QGenericArgument val1 = QGenericArgument(), QGenericArgument val2 = QGenericArgument(),
+		      QGenericArgument val3 = QGenericArgument(), QGenericArgument val4 = QGenericArgument(),
+		      QGenericArgument val5 = QGenericArgument(), QGenericArgument val6 = QGenericArgument(),
+		      QGenericArgument val7 = QGenericArgument(), QGenericArgument val8 = QGenericArgument());
 	    
   NetworkConnection *server;
-  
 
-protected:
   Network *network() const;
 
+private:
+  const QHash<QString, int> &handlerHash();
+  QHash<QString, int> _handlerHash;
+  int defaultHandler;
+  bool initDone;
 };
 #endif

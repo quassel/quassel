@@ -95,7 +95,7 @@ void BufferViewFilter::removeBuffer(const QModelIndex &index) {
 
   bool lastBuffer = (rowCount(index.parent()) == 1);
   uint netId = index.data(NetworkModel::NetworkIdRole).toUInt();
-  uint bufferuid = index.data(NetworkModel::BufferUidRole).toUInt();
+  uint bufferuid = index.data(NetworkModel::BufferIdRole).toUInt();
 
   if(buffers.contains(bufferuid)) {
     buffers.remove(bufferuid);
@@ -128,7 +128,7 @@ bool BufferViewFilter::filterAcceptBuffer(const QModelIndex &source_bufferIndex)
 //     return false;
 
   if((mode & FullCustom)) {
-    uint bufferuid = source_bufferIndex.data(NetworkModel::BufferUidRole).toUInt();
+    uint bufferuid = source_bufferIndex.data(NetworkModel::BufferIdRole).toUInt();
     return buffers.contains(bufferuid);
   }
     

@@ -127,12 +127,12 @@ void MainWin::init() {
 
 
   // attach the BufferWidget to the PropertyMapper
-  Client::bufferModel()->mapProperty(0, NetworkModel::BufferUidRole, ui.bufferWidget, "currentBuffer");
+  Client::bufferModel()->mapProperty(0, NetworkModel::BufferIdRole, ui.bufferWidget, "currentBuffer");
   connect(Client::networkModel(), SIGNAL(bufferAboutToBeRemoved(BufferId)),
 	  ui.bufferWidget, SLOT(removeBuffer(BufferId)));
 
   // attach the NickList to the PropertyMapper
-  Client::bufferModel()->mapProperty(0, NetworkModel::BufferUidRole, nickListWidget, "currentBuffer");
+  Client::bufferModel()->mapProperty(0, NetworkModel::BufferIdRole, nickListWidget, "currentBuffer");
   
   
 #ifdef SPUTDEV

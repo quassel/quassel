@@ -25,8 +25,10 @@
 
 BasicHandler::BasicHandler(NetworkConnection *parent)
   : QObject(parent),
-    server(parent) {
-  
+    server(parent),
+    defaultHandler(-1),
+    initDone(false)
+{
   connect(this, SIGNAL(displayMsg(Message::Type, QString, QString, QString, quint8)),
 	  server, SIGNAL(displayMsg(Message::Type, QString, QString, QString, quint8)));
 
@@ -37,36 +39,57 @@ BasicHandler::BasicHandler(NetworkConnection *parent)
 	  server, SLOT(putRawLine(QString)));
 }
 
-QStringList BasicHandler::providesHandlers() const {
-  QStringList handlers;
-  for(int i=0; i < metaObject()->methodCount(); i++) {
-    QString methodSignature(metaObject()->method(i).signature());
-    if(!methodSignature.startsWith("handle"))
-      continue;
-
-    methodSignature = methodSignature.section('(',0,0);  // chop the attribute list
-    methodSignature = methodSignature.mid(6); // strip "handle"
-    handlers << methodSignature;
-  }
-  return handlers;
+QStringList BasicHandler::providesHandlers() {
+  return handlerHash().keys();
 }
 
+const QHash<QString, int> &BasicHandler::handlerHash() {
+  if(!initDone) {
+    for(int i = metaObject()->methodOffset(); i < metaObject()->methodCount(); i++) {
+      QString methodSignature(metaObject()->method(i).signature());
+      if(methodSignature.startsWith("defaultHandler")) {
+	defaultHandler = i;
+	continue;
+      }
+      
+      if(!methodSignature.startsWith("handle"))
+	continue;
+      
+      methodSignature = methodSignature.section('(',0,0);  // chop the attribute list
+      methodSignature = methodSignature.mid(6); // strip "handle"
+      _handlerHash[methodSignature] = i;
+    }
+    initDone = true;
+  }
+  return _handlerHash;
+}
 
-void BasicHandler::handle(const QString &member, const QGenericArgument &val0,
- 			  const QGenericArgument &val1, const QGenericArgument &val2,
- 			  const QGenericArgument &val3, const QGenericArgument &val4,
- 			  const QGenericArgument &val5, const QGenericArgument &val6,
- 			  const QGenericArgument &val7, const QGenericArgument &val8) {
-
+void BasicHandler::handle(const QString &member, QGenericArgument val0,
+ 			  QGenericArgument val1, QGenericArgument val2,
+ 			  QGenericArgument val3, QGenericArgument val4,
+ 			  QGenericArgument val5, QGenericArgument val6,
+ 			  QGenericArgument val7, QGenericArgument val8) {
   // Now we try to find a handler for this message. BTW, I do love the Trolltech guys ;-)
+  // and now we even have a fast lookup! Thanks thiago!
+
   QString handler = member.toLower();
   handler[0] = handler[0].toUpper();
-  handler = "handle" + handler;
 
-  if(!QMetaObject::invokeMethod(this, handler.toAscii(), val0, val1, val2, val3, val4, val5, val6, val7, val8))
-    // Ok. Default handler it is.
-    QMetaObject::invokeMethod(this, "defaultHandler", Q_ARG(QString, member), val0, val1, val2, val3, val4, val5, val6, val7, val8);
-     
+  if(!handlerHash().contains(handler)) {
+    if(defaultHandler == -1) {
+      qWarning() << QString("No such Handler: %1::handle%2").arg(metaObject()->className(), handler);
+      return;
+    } else {
+      void *param[] = {0, Q_ARG(QString, member).data(), val0.data(), val1.data(), val2.data(), val3.data(), val4.data(),
+		       val5.data(), val6.data(), val7.data(), val8.data(), val8.data()};
+      qt_metacall(QMetaObject::InvokeMetaMethod, defaultHandler, param);
+      return;
+    }
+  }
+
+  void *param[] = {0, val0.data(), val1.data(), val2.data(), val3.data(), val4.data(),
+		   val5.data(), val6.data(), val7.data(), val8.data(), val8.data(), 0};
+  qt_metacall(QMetaObject::InvokeMetaMethod, handlerHash()[handler], param);
 }
 
 // ====================
