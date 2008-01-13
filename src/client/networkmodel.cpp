@@ -240,7 +240,7 @@ void NetworkItem::attachNetwork(Network *network) {
 	  this, SLOT(attachIrcChannel(QString)));
   // FIXME: connect this and that...
 
-  emit dataChanged();
+  //emit dataChanged();
 }
 
 void NetworkItem::attachIrcChannel(const QString &channelName) {
