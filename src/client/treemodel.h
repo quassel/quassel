@@ -64,7 +64,7 @@ public:
 
   int column() const;
   int row() const;
-  AbstractTreeItem *parent();
+  AbstractTreeItem *parent() const;
 
 signals:
   void dataChanged(int column = -1);

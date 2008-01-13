@@ -74,7 +74,7 @@ bool BufferItem::isActive() const {
   if(bufferType() == ChannelType)
     return _ircChannel;
   else
-    return true;
+    return qobject_cast<NetworkItem *>(parent())->isActive();
 }
 
 BufferItem::ActivityLevel BufferItem::activity() const {
@@ -239,6 +239,8 @@ void NetworkItem::attachNetwork(Network *network) {
   connect(network, SIGNAL(ircChannelAdded(QString)),
 	  this, SLOT(attachIrcChannel(QString)));
   // FIXME: connect this and that...
+
+  emit dataChanged();
 }
 
 void NetworkItem::attachIrcChannel(const QString &channelName) {

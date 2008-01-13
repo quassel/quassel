@@ -147,7 +147,7 @@ int AbstractTreeItem::row() const {
     return _parentItem->_childItems[column()].indexOf(const_cast<AbstractTreeItem*>(this));
 }
 
-AbstractTreeItem *AbstractTreeItem::parent() {
+AbstractTreeItem *AbstractTreeItem::parent() const {
   return _parentItem;
 }
 
