@@ -387,7 +387,7 @@ void TreeModel::itemDataChanged(int column) {
 
   if(column == -1) {
     leftIndex = createIndex(item->row(), 0, item);
-    rightIndex = createIndex(item->row(), item->columnCount(), item);
+    rightIndex = createIndex(item->row(), item->columnCount()-1, item);
   } else {
     leftIndex = createIndex(item->row(), column, item);
     rightIndex = leftIndex;
