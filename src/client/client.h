@@ -38,6 +38,7 @@ class AbstractUi;
 class AbstractUiMsg;
 class NetworkModel;
 class BufferModel;
+class NickModel;
 class SignalProxy;
 
 class QTimer;
@@ -82,6 +83,7 @@ public:
 
   static NetworkModel *networkModel();
   static BufferModel *bufferModel();
+  static NickModel *nickModel();
   static SignalProxy *signalProxy();
 
   static AbstractUiMsg *layoutMsg(const Message &);
@@ -189,6 +191,7 @@ private:
   QPointer<AbstractUi> mainUi;
   QPointer<NetworkModel> _networkModel;
   QPointer<BufferModel> _bufferModel;
+  QPointer<NickModel> _nickModel;
 
   ClientMode clientMode;
 

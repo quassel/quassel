@@ -24,6 +24,7 @@
 #include "nickview.h"
 #include "client.h"
 #include "networkmodel.h"
+#include "nickmodel.h"
 
 NickListWidget::NickListWidget(QWidget *parent)
   : QWidget(parent),
@@ -49,8 +50,8 @@ void NickListWidget::setCurrentBuffer(BufferId bufferId) {
     ui.stackedWidget->setCurrentWidget(nickViews.value(bufferId));
   } else {
     NickView *view = new NickView(this);
-    view->setModel(Client::networkModel());
-    view->setRootIndex(bufferIdx);
+    view->setModel(Client::nickModel());
+    view->setRootIndex(Client::nickModel()->mapFromSource(bufferIdx));
     nickViews[bufferId] = view;
     ui.stackedWidget->addWidget(view);
     ui.stackedWidget->setCurrentWidget(view);

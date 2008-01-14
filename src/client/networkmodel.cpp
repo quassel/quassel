@@ -215,15 +215,10 @@ QString NetworkItem::currentServer() const {
 }
 
 int NetworkItem::nickCount() const {
-  BufferItem *bufferItem;
-  int count = 0;
-  for(int i = 0; i < childCount(); i++) {
-    bufferItem = qobject_cast<BufferItem *>(child(i));
-    if(!bufferItem)
-      continue;
-    count += bufferItem->nickCount();
-  }
-  return count;
+  if(_network)
+    return _network->ircUsers().count();
+  else
+    return 0;
 }
 
 void NetworkItem::attachNetwork(Network *network) {
