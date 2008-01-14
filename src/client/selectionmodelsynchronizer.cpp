@@ -80,7 +80,7 @@ void SelectionModelSynchronizer::removeSelectionModel(MappedSelectionModel *mode
 }
 
 void SelectionModelSynchronizer::_mappedCurrentChanged(const QModelIndex &current) {
-  emit setCurrentIndex(current, QItemSelectionModel::ClearAndSelect);
+  emit setCurrentIndex(current, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
 }
 
 void SelectionModelSynchronizer::_mappedSelectionChanged(const QItemSelection &selected) {
@@ -89,7 +89,7 @@ void SelectionModelSynchronizer::_mappedSelectionChanged(const QItemSelection &s
 
 void SelectionModelSynchronizer::_regularCurrentChanged(const QModelIndex &newCurrent, const QModelIndex &oldCurrent) {
   Q_UNUSED(oldCurrent)
-  emit setCurrentIndex(newCurrent, QItemSelectionModel::ClearAndSelect);
+  emit setCurrentIndex(newCurrent, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
 }
 
 void SelectionModelSynchronizer::_regularSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected) {
