@@ -156,6 +156,8 @@ UiStyle::StyledText UiStyle::styleString(QString s) {
         length = 4;
       } else {
         int color = 10 * s[pos+4].digitValue() + s[pos+5].digitValue();
+        //TODO: use 99 as transparent color (re mirc color "standard")
+        color &= 0x0f;
         int *colptr; FormatType coltype;
         if(s[pos+3] == 'f') { // foreground
           colptr = &fgCol; coltype = FgCol00;
