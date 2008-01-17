@@ -88,6 +88,10 @@ public slots:
   void join(IrcUser *ircUser);
   void part(IrcUser *ircUser);
 
+  void addUserToCategory(IrcUser *ircUser);
+  void removeUserFromCategory(IrcUser *ircUser);
+  void userModeChanged(IrcUser *ircUser);
+					 
 private slots:
   void ircChannelDestroyed();
   
@@ -136,6 +140,38 @@ private:
 };
 
 /*****************************************
+*  User Category Items (like @vh etc.)
+*****************************************/
+class UserCategoryItem : public PropertyMapItem {
+  Q_OBJECT
+  Q_PROPERTY(QString categoryId READ categoryId)
+    
+public:
+  UserCategoryItem(int category, AbstractTreeItem *parent);
+
+  QString categoryId();
+  virtual quint64 id() const;
+
+  void addUser(IrcUser *ircUser);
+
+  static int categoryFromModes(const QString &modes);
+
+private slots:
+  void checkNoChilds();
+
+private:
+  int _category;
+
+  struct Category {
+    QChar mode;
+    QString displayString;
+    inline Category(QChar mode_, QString displayString_) : mode(mode_), displayString(displayString_) {};
+  };
+
+  static const QList<Category> categories;
+};
+
+/*****************************************
 *  Irc User Items
 *****************************************/
 class IrcUserItem : public PropertyMapItem {
@@ -146,6 +182,8 @@ public:
   IrcUserItem(IrcUser *ircUser, AbstractTreeItem *parent);
 
   QString nickName();
+  IrcUser *ircUser();
+  virtual quint64 id() const;
 
 private slots:
   void setNick(QString newNick);

@@ -120,6 +120,12 @@ void BufferItem::attachIrcChannel(IrcChannel *ircChannel) {
 	  this, SLOT(part(IrcUser *)));
   connect(ircChannel, SIGNAL(destroyed()),
 	  this, SLOT(ircChannelDestroyed()));
+  connect(ircChannel, SIGNAL(ircUserModesSet(IrcUser *, QString)),
+	  this, SLOT(userModeChanged(IrcUser *)));
+  connect(ircChannel, SIGNAL(ircUserModeAdded(IrcUser *, QString)),
+	  this, SLOT(userModeChanged(IrcUser *)));
+  connect(ircChannel, SIGNAL(ircUserModeRemoved(IrcUser *, QString)),
+	  this, SLOT(userModeChanged(IrcUser *)));
   
   emit dataChanged();
 }
@@ -159,13 +165,46 @@ void BufferItem::setTopic(const QString &topic) {
 }
 
 void BufferItem::join(IrcUser *ircUser) {
-  emit newChild(new IrcUserItem(ircUser, this));
+  if(!ircUser)
+    return;
+
+  addUserToCategory(ircUser);
   emit dataChanged(2);
+}
+
+void BufferItem::addUserToCategory(IrcUser *ircUser) {
+  Q_ASSERT(_ircChannel);
+  
+  UserCategoryItem *categoryItem;
+  int categoryId = UserCategoryItem::categoryFromModes(_ircChannel->userModes(ircUser));
+  if(!(categoryItem = qobject_cast<UserCategoryItem *>(childById(qHash(categoryId))))) {
+    categoryItem = new UserCategoryItem(categoryId, this);
+    emit newChild(categoryItem);
+  }
+  
+  categoryItem->addUser(ircUser);
 }
 
 void BufferItem::part(IrcUser *ircUser) {
   Q_UNUSED(ircUser);
   emit dataChanged(2);
+}
+
+void BufferItem::removeUserFromCategory(IrcUser *ircUser) {
+  UserCategoryItem *categoryItem = 0;
+  IrcUserItem *userItem;
+  for(int i = 0; i < childCount(); i++) {
+    categoryItem = qobject_cast<UserCategoryItem *>(child(i));
+    if(userItem = qobject_cast<IrcUserItem *>(categoryItem->childById((quint64)ircUser))) {
+      userItem->deleteLater();
+      return;
+    }
+  }
+}
+
+void BufferItem::userModeChanged(IrcUser *ircUser) {
+  removeUserFromCategory(ircUser);
+  addUserToCategory(ircUser);
 }
 
 /*****************************************
@@ -266,6 +305,54 @@ void NetworkItem::setCurrentServer(const QString &serverName) {
 }
 
 /*****************************************
+*  User Category Items (like @vh etc.)
+*****************************************/
+// we hardcode this even though we have PREFIX in network... but that wouldn't help with mapping modes to
+// category strings anyway.
+const QList<UserCategoryItem::Category> UserCategoryItem::categories = QList<UserCategoryItem::Category>() << UserCategoryItem::Category('q', "Owners")
+													   << UserCategoryItem::Category('a', "Admins")
+													   << UserCategoryItem::Category('a', "Admins")
+													   << UserCategoryItem::Category('o', "Operators")
+													   << UserCategoryItem::Category('h', "Half-Ops")
+													   << UserCategoryItem::Category('v', "Voiced");
+
+UserCategoryItem::UserCategoryItem(int category, AbstractTreeItem *parent)
+  : PropertyMapItem(QStringList() << "categoryId", parent),
+    _category(category)
+{
+  connect(this, SIGNAL(childDestroyed(int)),
+	  this, SLOT(checkNoChilds()));
+}
+
+QString UserCategoryItem::categoryId() {
+  if(_category < categories.count())
+    return categories[_category].displayString;
+  else
+    return QString("Users");
+}
+
+void UserCategoryItem::checkNoChilds() {
+  if(childCount() == 0)
+    deleteLater();
+}
+
+quint64 UserCategoryItem::id() const {
+  return qHash(_category);
+}
+
+void UserCategoryItem::addUser(IrcUser *ircUser) {
+  emit newChild(new IrcUserItem(ircUser, this));
+}
+
+int UserCategoryItem::categoryFromModes(const QString &modes) {
+  for(int i = 0; i < categories.count(); i++) {
+    if(modes.contains(categories[i].mode))
+      return i;
+  }
+  return categories.count();
+}
+     
+/*****************************************
 *  Irc User Items
 *****************************************/
 IrcUserItem::IrcUserItem(IrcUser *ircUser, AbstractTreeItem *parent)
@@ -283,6 +370,14 @@ QString IrcUserItem::nickName() {
   return _ircUser->nick();
 }
 
+IrcUser *IrcUserItem::ircUser() {
+  return _ircUser;
+}
+
+quint64 IrcUserItem::id() const {
+  return (quint64)_ircUser;
+}
+
 void IrcUserItem::setNick(QString newNick) {
   Q_UNUSED(newNick);
   emit dataChanged(0);
@@ -290,7 +385,6 @@ void IrcUserItem::setNick(QString newNick) {
 void IrcUserItem::ircUserDestroyed() {
   deleteLater();
 }
-
 
 /*****************************************
  * NetworkModel
