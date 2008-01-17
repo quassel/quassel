@@ -97,10 +97,17 @@
         <number>0</number>
        </property>
        <item>
-        <widget class="QComboBox" name="identityList" />
+        <widget class="QComboBox" name="identityList" >
+         <property name="enabled" >
+          <bool>false</bool>
+         </property>
+        </widget>
        </item>
        <item>
         <widget class="QPushButton" name="editIdentities" >
+         <property name="enabled" >
+          <bool>false</bool>
+         </property>
          <property name="sizePolicy" >
           <sizepolicy vsizetype="Fixed" hsizetype="Maximum" >
            <horstretch>0</horstretch>
@@ -279,7 +286,7 @@
          <item>
           <widget class="QTextEdit" name="performEdit" >
            <property name="enabled" >
-            <bool>true</bool>
+            <bool>false</bool>
            </property>
            <property name="lineWrapMode" >
             <enum>QTextEdit::NoWrap</enum>

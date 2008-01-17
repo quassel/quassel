@@ -168,6 +168,9 @@
    </property>
   </action>
   <action name="actionEditIdentities" >
+   <property name="enabled" >
+    <bool>false</bool>
+   </property>
    <property name="text" >
     <string>Edit Identities...</string>
    </property>
@@ -229,7 +232,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset resource="../../icons/icons.qrc" >:/22x22/actions/oxygen/22x22/actions/network-disconnect.png</iconset>
+    <iconset/>
    </property>
    <property name="text" >
     <string>Disconnect from Core</string>
@@ -240,7 +243,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset resource="../../icons/icons.qrc" >:/22x22/actions/oxygen/22x22/actions/network-connect.png</iconset>
+    <iconset/>
    </property>
    <property name="text" >
     <string>Connect to Core...</string>
