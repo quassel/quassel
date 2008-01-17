@@ -11,7 +11,7 @@ HDRS += bufferwidget.h chatline-old.h chatwidget.h configwizard.h \
         topicwidget.h debugconsole.h
 
 FORMNAMES = identitiesdlg.ui identitieseditdlg.ui networkeditdlg.ui mainwin.ui nickeditdlg.ui serverlistdlg.ui \
-            servereditdlg.ui coreconnectdlg.ui bufferviewwidget.ui bufferwidget.ui nicklistwidget.ui settingsdlg.ui \
+            servereditdlg.ui coreaccounteditdlg.ui coreconnectdlg.ui bufferviewwidget.ui bufferwidget.ui nicklistwidget.ui settingsdlg.ui \
             buffermgmtpage.ui connectionpage.ui usermgmtpage.ui topicwidget.ui debugconsole.ui
 
 for(ui, FORMNAMES) {

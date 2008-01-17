@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-08 by the Quassel Project                          *
+ *   Copyright (C) 2005-08 by the Quassel IRC Team                         *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,319 +18,385 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QtGui>
-#include "coreconnectdlg.h"
-#include "client.h"
-#include "clientsettings.h"
-#include "configwizard.h"
-#include "global.h"
+#include <QDebug>
+#include <QMessageBox>
 
-CoreConnectDlg::CoreConnectDlg(QWidget *parent, bool /*doAutoConnect*/) : QDialog(parent) {
-  ui.setupUi(this); //qDebug() << "new dlg";
+#include "coreconnectdlg.h"
+
+#include "clientsettings.h"
+#include "clientsyncer.h"
+
+CoreConnectDlg::CoreConnectDlg(QWidget *parent, bool autoconnect) : QDialog(parent) {
+  ui.setupUi(this);
+
+  clientSyncer = new ClientSyncer(this);
 
   setAttribute(Qt::WA_DeleteOnClose);
 
-  coreState = 0;
-  /* We show ui.internalCore in any case, because we might want to run as monolithic client anyway at another time
-  if(Global::runMode == Global::Monolithic) {
-    connect(ui.internalCore, SIGNAL(toggled(bool)), ui.hostEdit, SLOT(setDisabled(bool)));
-    connect(ui.internalCore, SIGNAL(toggled(bool)), ui.port, SLOT(setDisabled(bool)));
-    ui.internalCore->setChecked(true);
-  } else {
-    //ui.internalCore->hide();
-  }
-  */
-  connect(ui.newAccount, SIGNAL(clicked()), this, SLOT(createAccount()));
-  connect(ui.delAccount, SIGNAL(clicked()), this, SLOT(removeAccount()));
-  connect(ui.buttonBox1, SIGNAL(accepted()), this, SLOT(doConnect()));
-  connect(ui.hostEdit, SIGNAL(textChanged(const QString &)), this, SLOT(checkInputValid()));
-  connect(ui.userEdit, SIGNAL(textChanged(const QString &)), this, SLOT(checkInputValid()));
-  connect(ui.internalCore, SIGNAL(toggled(bool)), this, SLOT(checkInputValid()));
-  connect(ui.internalCore, SIGNAL(toggled(bool)), ui.hostEdit, SLOT(setDisabled(bool)));
-  connect(ui.internalCore, SIGNAL(toggled(bool)), ui.port, SLOT(setDisabled(bool)));
-  connect(ui.accountList, SIGNAL(currentIndexChanged(const QString &)), this, SLOT(accountChanged(const QString &)));
-  connect(ui.autoConnect, SIGNAL(clicked(bool)), this, SLOT(autoConnectToggled(bool)));
+  doingAutoConnect = false;
 
-  connect(Client::instance(), SIGNAL(coreConnectionMsg(const QString &)), ui.connectionStatus, SLOT(setText(const QString &)));
-  connect(Client::instance(), SIGNAL(coreConnectionProgress(uint, uint)), this, SLOT(updateProgressBar(uint, uint)));
-  connect(Client::instance(), SIGNAL(coreConnectionError(QString)), this, SLOT(coreConnectionError(QString)));
-  connect(Client::instance(), SIGNAL(connected()), this, SLOT(coreConnected()));
-  
-  connect(Client::instance(), SIGNAL(showConfigWizard(const QVariantMap &)), this, SLOT(showConfigWizard(const QVariantMap &)));
+  ui.stackedWidget->setCurrentWidget(ui.accountPage);
+  ui.accountButtonBox->setFocus();
 
-  AccountSettings s;
+  CoreAccountSettings s;
   QString lastacc = s.lastAccount();
-  ui.accountList->addItems(s.knownAccounts());
-  if(!ui.accountList->count()) {
-    //if(doAutoConnect) reject();
+  autoConnectAccount = s.autoConnectAccount();
+  accounts = s.retrieveAllAccounts();
+  ui.accountList->addItems(accounts.keys());
+  QList<QListWidgetItem *> l = ui.accountList->findItems(lastacc, Qt::MatchExactly);
+  if(l.count()) ui.accountList->setCurrentItem(l[0]);
+  else ui.accountList->setCurrentRow(0);
 
-    setAccountEditEnabled(false);
-    QString newacc = QInputDialog::getText(this, tr("Create Account"), tr(
-                                           "In order to connect to a Quassel Core, you need to create an account.<br>"
-                                           "Please enter a name for this account now:"), QLineEdit::Normal, tr("Default"));
-    if(!newacc.isEmpty()) {
-      ui.accountList->addItem(newacc);
-      ui.hostEdit->setText("localhost");
-      ui.port->setValue(Global::defaultPort);
-      ui.internalCore->setChecked(false);
-      setAccountEditEnabled(true);
-    }
-    /*
-    // FIXME We create a default account here that just connects to the internal core
-    curacc = "Default";
-    ui.accountList->addItem("Default");
-    ui.internalCore->setChecked(true);
-    ui.userEdit->setText("Default");
-    ui.passwdEdit->setText("password");
-    ui.rememberPasswd->setChecked(true);
-    accountChanged(curacc);
-    ui.passwdEdit->setText("password");
-    ui.accountList->setCurrentIndex(0);
-    ui.autoConnect->setChecked(true);
-    autoConnectToggled(true);
-    */
-  } else {
-    if(!lastacc.isEmpty()) {
-      //if(doAutoConnect) { qDebug() << "auto";
-      //  AccountSettings s;
-      //  int idx = ui.accountList->findText(s.autoConnectAccount());
-      //  if(idx < 0) reject();
-      //  else {
-      //    ui.accountList->setCurrentIndex(idx);
-      //    doConnect();
-      //  }
-      //} else {
-        int idx = ui.accountList->findText(lastacc);
-        ui.accountList->setCurrentIndex(idx);
-      //}
-    }
+  setAccountWidgetStates();
+
+  connect(clientSyncer, SIGNAL(socketStateChanged(QAbstractSocket::SocketState)),this, SLOT(initPhaseSocketState(QAbstractSocket::SocketState)));
+  connect(clientSyncer, SIGNAL(connectionError(const QString &)), this, SLOT(initPhaseError(const QString &)));
+  connect(clientSyncer, SIGNAL(connectionMsg(const QString &)), this, SLOT(initPhaseMsg(const QString &)));
+  connect(clientSyncer, SIGNAL(startLogin()), this, SLOT(startLogin()));
+  connect(clientSyncer, SIGNAL(loginFailed(const QString &)), this, SLOT(loginFailed(const QString &)));
+  connect(clientSyncer, SIGNAL(loginSuccess()), this, SLOT(startSync()));
+  connect(clientSyncer, SIGNAL(sessionProgress(quint32, quint32)), this, SLOT(coreSessionProgress(quint32, quint32)));
+  connect(clientSyncer, SIGNAL(networksProgress(quint32, quint32)), this, SLOT(coreNetworksProgress(quint32, quint32)));
+  connect(clientSyncer, SIGNAL(channelsProgress(quint32, quint32)), this, SLOT(coreChannelsProgress(quint32, quint32)));
+  connect(clientSyncer, SIGNAL(ircUsersProgress(quint32, quint32)), this, SLOT(coreIrcUsersProgress(quint32, quint32)));
+  connect(clientSyncer, SIGNAL(syncFinished()), this, SLOT(accept()));
+
+  connect(ui.user, SIGNAL(textChanged(const QString &)), this, SLOT(setLoginWidgetStates()));
+  connect(ui.password, SIGNAL(textChanged(const QString &)), this, SLOT(setLoginWidgetStates()));
+
+  connect(ui.loginButtonBox, SIGNAL(rejected()), this, SLOT(restartPhaseNull()));
+  connect(ui.syncButtonBox->button(QDialogButtonBox::Abort), SIGNAL(clicked()), this, SLOT(restartPhaseNull()));
+
+  if(autoconnect && ui.accountList->count() && !autoConnectAccount.isEmpty() && autoConnectAccount == ui.accountList->currentItem()->text()) {
+    doingAutoConnect = true;
+    on_accountButtonBox_accepted();
   }
 }
 
 CoreConnectDlg::~CoreConnectDlg() {
-  //qDebug() << "destroy";
-}
-
-void CoreConnectDlg::setAccountEditEnabled(bool en) {
-  ui.accountList->setEnabled(en);
-  ui.hostEdit->setEnabled(en && !ui.internalCore->isChecked());
-  ui.userEdit->setEnabled(en);
-  ui.passwdEdit->setEnabled(en);
-  ui.port->setEnabled(en && !ui.internalCore->isChecked());
-  ui.editAccount->setEnabled(en);
-  ui.delAccount->setEnabled(en);
-  ui.internalCore->setEnabled(en);
-  ui.rememberPasswd->setEnabled(en);
-  ui.autoConnect->setEnabled(en);
-  ui.buttonBox1->button(QDialogButtonBox::Ok)->setEnabled(en && checkInputValid());
-}
-
-void CoreConnectDlg::accountChanged(const QString &text) {
-  AccountSettings s;
-  if(!curacc.isEmpty()) {
-    QVariantMap oldAcc;
-    oldAcc["User"] = ui.userEdit->text();
-    oldAcc["Host"] = ui.hostEdit->text();
-    oldAcc["Port"] = ui.port->value();
-    oldAcc["InternalCore"] = ui.internalCore->isChecked();
-    if(ui.rememberPasswd->isChecked()) oldAcc["Password"] = ui.passwdEdit->text();
-    s.setValue(curacc, "AccountData", oldAcc);
-  }
-  ui.autoConnect->setChecked(false);
-  if(!text.isEmpty()) { // empty text: just save stuff
-    curacc = text;
-    s.setLastAccount(curacc);
-    QVariantMap newAcc = s.value(curacc, "AccountData").toMap();
-    ui.userEdit->setText(newAcc["User"].toString());
-    ui.hostEdit->setText(newAcc["Host"].toString());
-    ui.port->setValue(newAcc["Port"].toInt());
-    ui.internalCore->setChecked(newAcc["InternalCore"].toBool());
-    if(newAcc.contains("Password")) {
-      ui.passwdEdit->setText(newAcc["Password"].toString());
-      ui.rememberPasswd->setChecked(true);
-    } else ui.rememberPasswd->setChecked(false);
-    if(s.autoConnectAccount() == curacc) ui.autoConnect->setChecked(true);
+  if(ui.accountList->selectedItems().count()) {
+    CoreAccountSettings s;
+    s.setLastAccount(ui.accountList->selectedItems()[0]->text());
   }
 }
 
-void CoreConnectDlg::autoConnectToggled(bool autoConnect) {
-  AccountSettings s;
-  if(autoConnect) s.setAutoConnectAccount(curacc);
-  else s.setAutoConnectAccount("");
+
+/****************************************************
+ * Account Management
+ ***************************************************/
+
+void CoreConnectDlg::on_accountList_itemSelectionChanged() {
+  setAccountWidgetStates();
 }
 
-bool CoreConnectDlg::checkInputValid() {
-  bool res = (ui.internalCore->isChecked() || ui.hostEdit->text().count()) && ui.userEdit->text().count();
-  ui.buttonBox1->button(QDialogButtonBox::Ok)->setEnabled(res);
-  return res;
-}
-
-void CoreConnectDlg::createAccount() {
-  QString accname = QInputDialog::getText(this, tr("Create Account"), tr("Please enter a name for the new account:"));
-  if(accname.isEmpty()) return;
-  if(ui.accountList->findText(accname) >= 0) {
-    QMessageBox::warning(this, tr("Account name already exists!"), tr("An account named '%1' already exists, and account names must be unique!").arg(accname));
-    return;
-  }
-  QVariantMap defdata;
-  ui.accountList->addItem(accname);
-  ui.accountList->setCurrentIndex(ui.accountList->findText(accname));
-  setAccountEditEnabled(true);
-}
-
-void CoreConnectDlg::removeAccount() {
-  QString acc = ui.accountList->currentText();
-  int res = QMessageBox::warning(this, tr("Delete account?"), tr("Do you really want to delete the data for the account '%1'?<br>"
-                                                       "Note that this only affects your local account settings and will not remove "
-                                                       "any data from the core.").arg(acc),
-                             QMessageBox::Yes|QMessageBox::No, QMessageBox::No);
-  if(res == QMessageBox::Yes) {
-    AccountSettings s;
-    s.removeAccount(acc);
-    curacc = "";
-    ui.accountList->removeItem(ui.accountList->findText(acc));
-    if(!ui.accountList->count()) setAccountEditEnabled(false);
+void CoreConnectDlg::setAccountWidgetStates() {
+  QList<QListWidgetItem *> selectedItems = ui.accountList->selectedItems();
+  ui.editAccount->setEnabled(selectedItems.count());
+  ui.deleteAccount->setEnabled(selectedItems.count());
+  ui.autoConnect->setEnabled(selectedItems.count());
+  if(selectedItems.count()) {
+    ui.autoConnect->setChecked(selectedItems[0]->text() == autoConnectAccount);
   }
 }
 
-bool CoreConnectDlg::willDoInternalAutoConnect() {
-  AccountSettings s;
-  if(Global::runMode != Global::Monolithic) return false;
-  if(ui.autoConnect->isChecked() && s.autoConnectAccount() == curacc && ui.internalCore->isChecked()) {
-    return true;
-  }
-  return false;
-}
-
-void CoreConnectDlg::doAutoConnect() {
-  AccountSettings s;
-  if(s.autoConnectAccount() == curacc) {
-    doConnect();
-  }
-}
-
-void CoreConnectDlg::doConnect() {
-  accountChanged(); // save current account info
-  QVariantMap conninfo;
-  ui.stackedWidget->setCurrentIndex(1);
-  if(ui.internalCore->isChecked()) {
-    // FIXME
-    coreConnectionError(tr("Can't connect to internal core at the moment [serious breakage due to switch to dynamic signals]. Please check back later."));
-    return;
-    if(Global::runMode != Global::Monolithic) {
-      coreConnectionError(tr("Can't connect to internal core, since we are running as a standalone GUI!"));
-      return;
-    }
-    ui.connectionGroupBox->setTitle(tr("Connecting to internal core"));
-    ui.connectionProgress->hide();
+void CoreConnectDlg::on_autoConnect_clicked(bool state) {
+  if(!state) {
+    autoConnectAccount = QString();
   } else {
-    ui.connectionGroupBox->setTitle(tr("Connecting to %1").arg(ui.hostEdit->text()));
-    conninfo["Host"] = ui.hostEdit->text();
-    conninfo["Port"] = ui.port->value();
+    if(ui.accountList->selectedItems().count()) {
+      autoConnectAccount = ui.accountList->selectedItems()[0]->text();
+    } else {
+      qWarning() << "Checked auto connect without an enabled item!";  // should never happen!
+      autoConnectAccount = QString();
+    }
   }
-  conninfo["User"] = ui.userEdit->text();
-  conninfo["Password"] = ui.passwdEdit->text();
-  ui.profileLabel->hide(); ui.guiProfile->hide();
-  ui.newGuiProfile->hide(); ui.alwaysUseProfile->hide();
-  ui.connectionProgress->show();
-  try {
-    Client::instance()->connectToCore(conninfo);
-  } catch(Exception e) {
-    QString msg;
-    //if(!e.msg().isEmpty()) msg = tr("<br>%1").arg(e.msg()); // FIXME throw more detailed (vulgo: any) error msg
-    coreConnectionError(tr("Invalid user or password. Pleasy try again.%1").arg(msg));
-    //QMessageBox::warning(this, tr("Unknown account"), tr("Invalid user or password. Pleasy try again.%1").arg(msg));
-    //cancelConnect();
-    return;
+  setAccountWidgetStates();
+}
+
+void CoreConnectDlg::on_addAccount_clicked() {
+  QStringList existing;
+  for(int i = 0; i < ui.accountList->count(); i++) existing << ui.accountList->item(i)->text();
+  CoreAccountEditDlg dlg(QString(), QVariantMap(), existing, this);
+  if(dlg.exec() == QDialog::Accepted) {
+    accounts[dlg.accountName()] = dlg.accountData();
+    ui.accountList->addItem(dlg.accountName());
+    ui.accountList->setCurrentItem(ui.accountList->findItems(dlg.accountName(), Qt::MatchExactly)[0]);
   }
 }
 
-void CoreConnectDlg::cancelConnect() {
-  ui.stackedWidget->setCurrentIndex(0);
-}
-
-void CoreConnectDlg::setStartState() { /*
-  ui.hostName->show(); ui.hostPort->show(); ui.hostLabel->show(); ui.portLabel->show();
-  ui.statusText->setText(tr("Connect to Quassel Core running on:"));
-  ui.buttonBox->button(QDialogButtonBox::Ok)->show();
-  ui.hostName->setEnabled(true); ui.hostPort->setEnabled(true);
-  ui.hostName->setSelection(0, ui.hostName->text().length()); */
-  ui.stackedWidget->setCurrentIndex(0);
-}
-
-void CoreConnectDlg::hostEditChanged(QString /*txt*/) {
-  //ui.buttonBox->button(QDialogButtonBox::Ok)->setEnabled(txt.length());
-}
-
-void CoreConnectDlg::hostSelected() { /*
-  ui.hostName->hide(); ui.hostPort->hide(); ui.hostLabel->hide(); ui.portLabel->hide();
-  ui.statusText->setText(tr("Connecting to %1:%2" ).arg(ui.hostName->text()).arg(ui.hostPort->value()));
-  ui.buttonBox->button(QDialogButtonBox::Ok)->hide();
-  connect(ClientProxy::instance(), SIGNAL(coreConnected()), this, SLOT(coreConnected()));
-  connect(ClientProxy::instance(), SIGNAL(coreConnectionError(QString)), this, SLOT(coreConnectionError(QString)));
-  Client::instance()->connectToCore(ui.hostName->text(), ui.hostPort->value());
-*/
-}
-
-void CoreConnectDlg::coreConnected() { /*
-  ui.hostLabel->hide(); ui.hostName->hide(); ui.portLabel->hide(); ui.hostPort->hide();
-  ui.statusText->setText(tr("Synchronizing..."));
-  QSettings s;
-  s.setValue("GUI/CoreHost", ui.hostName->text());
-  s.setValue("GUI/CorePort", ui.hostPort->value());
-  s.setValue("GUI/CoreAutoConnect", ui.autoConnect->isChecked());
-  connect(ClientProxy::instance(), SIGNAL(recvPartialItem(quint32, quint32)), this, SLOT(updateProgressBar(quint32, quint32)));
-  connect(ClientProxy::instance(), SIGNAL(csCoreState(QVariant)), this, SLOT(recvCoreState(QVariant)));
-  ui.progressBar->show();
-  QVariantMap initmsg;
-  initmsg["GUIProtocol"] = GUI_PROTOCOL;
-  // FIXME guiProxy->send(GS_CLIENT_INIT, QVariant(initmsg)); */
-  ui.connectionStatus->setText(tr("Connected to core."));
-  accept();
-}
-
-void CoreConnectDlg::coreConnectionError(QString err) {
-  ui.stackedWidget->setCurrentIndex(0);
-  show(); // just in case we started hidden
-  QMessageBox::warning(this, tr("Connection Error"), tr("<b>Could not connect to Quassel Core!</b><br>\n") + err, QMessageBox::Retry);
-  //disconnect(ClientProxy::instance(), 0, this, 0); FIXME?
-  //ui.autoConnect->setChecked(false);
-  setStartState();
-}
-
-void CoreConnectDlg::updateProgressBar(uint partial, uint total) {
-  ui.connectionProgress->setMaximum(total);
-  ui.connectionProgress->setValue(partial);
-  //qDebug() << "progress:" << partial << total;
-}
-
-void CoreConnectDlg::recvCoreState(QVariant state) {
-  //ui.progressBar->hide();
-  coreState = state;
-  accept();
-}
-
-QVariant CoreConnectDlg::getCoreState() {
-  return coreState;
-}
-
-void CoreConnectDlg::showConfigWizard(const QVariantMap &coredata) {
-  QStringList storageProviders = coredata["StorageProviders"].toStringList();
-  ConfigWizard *wizard = new ConfigWizard(storageProviders, this);
-  wizard->exec();
-  QVariantMap reply;
-  reply["GuiProtocol"] = GUI_PROTOCOL;
-  reply["HasSettings"] = true;
-  reply["User"] = wizard->field("adminuser.name").toString();
-  reply["Password"] = wizard->field("adminuser.password").toString();
-  QString sp = storageProviders.value(wizard->field("storage.provider").toInt());
-  reply["Type"] = sp;
-  if (sp.compare("Sqlite", Qt::CaseInsensitive)) {
-    reply["Host"] = wizard->field("storage.host").toString();
-    reply["Port"] = wizard->field("storage.port").toString();
-    reply["Database"] = wizard->field("storage.database").toString();
-    reply["User"] = wizard->field("storage.user").toString();
-    reply["Password"] = wizard->field("storage.password").toString();
+void CoreConnectDlg::on_editAccount_clicked() {
+  QStringList existing;
+  for(int i = 0; i < ui.accountList->count(); i++) existing << ui.accountList->item(i)->text();
+  QString current = ui.accountList->currentItem()->text();
+  QVariantMap acct = accounts[current];
+  CoreAccountEditDlg dlg(current, acct, existing, this);
+  if(dlg.exec() == QDialog::Accepted) {
+    if(current != dlg.accountName()) {
+      if(autoConnectAccount == current) autoConnectAccount = dlg.accountName();
+      accounts.remove(current);
+      current = dlg.accountName();
+      ui.accountList->currentItem()->setText(current);
+    }
+    accounts[current] = dlg.accountData();
   }
-  Client::instance()->setCoreConfiguration(reply);
+  //ui.accountList->setCurrent
+}
+
+void CoreConnectDlg::on_deleteAccount_clicked() {
+  QString current = ui.accountList->currentItem()->text();
+  int ret = QMessageBox::question(this, tr("Remove Account Settings"),
+                                  tr("Do you really want to remove your local settings for this Quassel Core account?<br>"
+                                  "Note: This will <em>not</em> remove or change any data on the Core itself!"),
+                                  QMessageBox::Yes|QMessageBox::No, QMessageBox::No);
+  if(ret == QMessageBox::Yes) {
+    int idx = ui.accountList->currentRow();
+    delete ui.accountList->item(idx);
+    ui.accountList->setCurrentRow(qMin(idx, ui.accountList->count()));
+    accounts.remove(current);
+  }
+}
+
+void CoreConnectDlg::on_accountList_itemDoubleClicked(QListWidgetItem *item) {
+  Q_UNUSED(item);
+  on_accountButtonBox_accepted();
+}
+
+void CoreConnectDlg::on_accountButtonBox_accepted() {
+  // save accounts
+  CoreAccountSettings s;
+  s.storeAllAccounts(accounts);
+  s.setAutoConnectAccount(autoConnectAccount);
+
+  ui.stackedWidget->setCurrentWidget(ui.loginPage);
+  accountName = ui.accountList->currentItem()->text();
+  account = s.retrieveAccount(accountName);
+  s.setLastAccount(accountName);
+  connectToCore();
+}
+
+/*****************************************************
+ * Connecting to the Core
+ ****************************************************/
+
+/*** Phase One: initializing the core connection ***/
+
+void CoreConnectDlg::connectToCore() {
+  ui.connectIcon->setPixmap(QPixmap::fromImage(QImage(":/22x22/actions/network-disconnect")));
+  ui.connectLabel->setText(tr("Connect to %1").arg(account["Host"].toString()));
+  ui.coreInfoLabel->setText("");
+  ui.loginStack->setCurrentWidget(ui.loginEmptyPage);
+  ui.loginButtonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
+  ui.loginButtonBox->button(QDialogButtonBox::Ok)->setDisabled(true);
+  disconnect(ui.loginButtonBox, 0, this, 0);
+  connect(ui.loginButtonBox, SIGNAL(rejected()), this, SLOT(restartPhaseNull()));
+
+
+  //connect(Client::instance(), SIGNAL(coreConnectionPhaseOne(const QVariantMap &)), this, SLOT(phaseOneFinished
+  clientSyncer->connectToCore(account);
+}
+
+void CoreConnectDlg::initPhaseError(const QString &error) {
+  doingAutoConnect = false;
+  ui.connectIcon->setPixmap(QPixmap::fromImage(QImage(":/22x22/status/dialog-error")));
+  //ui.connectLabel->setBrush(QBrush("red"));
+  ui.connectLabel->setText(tr("<div style=color:red;>Connection to %1 failed!</div>").arg(account["Host"].toString()));
+  ui.coreInfoLabel->setText(error);
+  ui.loginButtonBox->setStandardButtons(QDialogButtonBox::Retry|QDialogButtonBox::Cancel);
+  disconnect(ui.loginButtonBox, 0, this, 0);
+  connect(ui.loginButtonBox, SIGNAL(accepted()), this, SLOT(restartPhaseNull()));
+  connect(ui.loginButtonBox, SIGNAL(rejected()), this, SLOT(reject()));
+}
+
+void CoreConnectDlg::initPhaseMsg(const QString &msg) {
+  ui.coreInfoLabel->setText(msg);
+}
+
+void CoreConnectDlg::initPhaseSocketState(QAbstractSocket::SocketState state) {
+  QString s;
+  QString host = account["Host"].toString();
+  switch(state) {
+    case QAbstractSocket::UnconnectedState: s = tr("Not connected to %1.").arg(host); break;
+    case QAbstractSocket::HostLookupState: s = tr("Looking up %1...").arg(host); break;
+    case QAbstractSocket::ConnectingState: s = tr("Connecting to %1...").arg(host); break;
+    case QAbstractSocket::ConnectedState: s = tr("Connected to %1").arg(host); break;
+    default: s = tr("Unknown connection state to %1"); break;
+  }
+  ui.connectLabel->setText(s);
+}
+
+void CoreConnectDlg::restartPhaseNull() {
+  doingAutoConnect = false;
+  ui.stackedWidget->setCurrentWidget(ui.accountPage);
+  clientSyncer->disconnectFromCore();
+}
+
+/*********************************************************
+ * Phase Two: Login
+ *********************************************************/
+
+void CoreConnectDlg::startLogin() {
+  ui.connectIcon->setPixmap(QPixmap::fromImage(QImage(":/22x22/actions/network-connect")));
+  ui.loginStack->setCurrentWidget(ui.loginCredentialsPage);
+  ui.loginStack->setMinimumSize(ui.loginStack->sizeHint()); ui.loginStack->updateGeometry();
+  ui.loginButtonBox->setStandardButtons(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
+  if(!account["User"].toString().isEmpty()) {
+    ui.user->setText(account["User"].toString());
+    if(account["RememberPasswd"].toBool()) {
+      ui.password->setText(account["Password"].toString());
+      ui.rememberPasswd->setChecked(true);
+    } else {
+      ui.rememberPasswd->setChecked(false);
+      ui.password->setFocus();
+    }
+  } else ui.user->setFocus();
+  disconnect(ui.loginButtonBox, 0, this, 0);
+  connect(ui.loginButtonBox, SIGNAL(accepted()), this, SLOT(doLogin()));
+  connect(ui.loginButtonBox, SIGNAL(rejected()), this, SLOT(restartPhaseNull()));
+  if(doingAutoConnect) doLogin();
+}
+
+void CoreConnectDlg::doLogin() {
+  ui.loginGroup->setTitle(tr("Logging in..."));
+  ui.user->setDisabled(true);
+  ui.password->setDisabled(true);
+  ui.rememberPasswd->setDisabled(true);
+  ui.loginButtonBox->button(QDialogButtonBox::Ok)->setDisabled(true);
+  account["User"] = ui.user->text();
+  account["RememberPasswd"] = ui.rememberPasswd->isChecked();
+  if(ui.rememberPasswd->isChecked()) account["Password"] = ui.password->text();
+  else account.remove("Password");
+  CoreAccountSettings s;
+  s.storeAccount(accountName, account);
+  clientSyncer->loginToCore(account["User"].toString(), account["Password"].toString());
+}
+
+void CoreConnectDlg::setLoginWidgetStates() {
+  ui.loginButtonBox->button(QDialogButtonBox::Ok)->setDisabled(ui.user->text().isEmpty() || ui.password->text().isEmpty());
+}
+
+void CoreConnectDlg::loginFailed(const QString &error) {
+  ui.loginGroup->setTitle(tr("Login"));
+  ui.user->setEnabled(true);
+  ui.password->setEnabled(true);
+  ui.rememberPasswd->setEnabled(true);
+  ui.coreInfoLabel->setText(error);
+  ui.loginButtonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
+  ui.password->setFocus();
+  doingAutoConnect = false;
+}
+
+/************************************************************
+ * Phase Three: Syncing
+ ************************************************************/
+
+void CoreConnectDlg::startSync() {
+  ui.sessionProgress->setRange(0, 1);
+  ui.sessionProgress->setValue(0);
+  ui.networksProgress->setRange(0, 1);
+  ui.networksProgress->setValue(0);
+  ui.channelsProgress->setRange(0, 1);
+  ui.channelsProgress->setValue(0);
+  ui.ircUsersProgress->setRange(0, 1);
+  ui.ircUsersProgress->setValue(0);
+
+  ui.stackedWidget->setCurrentWidget(ui.syncPage);
+  // clean up old page
+  ui.loginGroup->setTitle(tr("Login"));
+  ui.user->setEnabled(true);
+  ui.password->setEnabled(true);
+  ui.rememberPasswd->setEnabled(true);
+  ui.loginButtonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
+}
+
+
+void CoreConnectDlg::coreSessionProgress(quint32 val, quint32 max) {
+  ui.sessionProgress->setRange(0, max);
+  ui.sessionProgress->setValue(val);
+
+}
+
+void CoreConnectDlg::coreNetworksProgress(quint32 val, quint32 max) {
+  if(max == 0) {
+    ui.networksProgress->setFormat("0/0");
+    ui.networksProgress->setRange(0, 1);
+    ui.networksProgress->setValue(1);
+  } else {
+    ui.networksProgress->setFormat("%v/%m");
+    ui.networksProgress->setRange(0, max);
+    ui.networksProgress->setValue(val);
+  }
+}
+
+void CoreConnectDlg::coreChannelsProgress(quint32 val, quint32 max) {
+  if(max == 0) {
+    ui.channelsProgress->setFormat("0/0");
+    ui.channelsProgress->setRange(0, 1);
+    ui.channelsProgress->setValue(1);
+  } else {
+    ui.channelsProgress->setFormat("%v/%m");
+    ui.channelsProgress->setRange(0, max);
+    ui.channelsProgress->setValue(val);
+  }
+}
+
+void CoreConnectDlg::coreIrcUsersProgress(quint32 val, quint32 max) {
+  if(max == 0) {
+    ui.ircUsersProgress->setFormat("0/0");
+    ui.ircUsersProgress->setRange(0, 1);
+    ui.ircUsersProgress->setValue(1);
+  } else {
+    ui.ircUsersProgress->setFormat("%v/%m");
+    ui.ircUsersProgress->setRange(0, max);
+    ui.ircUsersProgress->setValue(val);
+  }
+}
+
+/*****************************************************************************************
+ * CoreAccountEditDlg
+ *****************************************************************************************/
+
+CoreAccountEditDlg::CoreAccountEditDlg(const QString &name, const QVariantMap &acct, const QStringList &_existing, QWidget *parent) : QDialog(parent) {
+  ui.setupUi(this);
+  existing = _existing;
+  account = acct;
+  if(!name.isEmpty()) {
+    existing.removeAll(name);
+    ui.host->setText(acct["Host"].toString());
+    ui.port->setValue(acct["Port"].toUInt());
+    ui.useInternal->setChecked(acct["UseInternal"].toBool());
+    ui.accountName->setText(name);
+  } else {
+    setWindowTitle(tr("Add Core Account"));
+  }
+}
+
+QString CoreAccountEditDlg::accountName() const {
+  return ui.accountName->text();
+}
+
+QVariantMap CoreAccountEditDlg::accountData() {
+  account["Host"] = ui.host->text();
+  account["Port"] = ui.port->value();
+  account["UseInternal"] = ui.useInternal->isChecked();
+  return account;
+}
+
+void CoreAccountEditDlg::setWidgetStates() {
+  bool ok = !accountName().isEmpty() && !existing.contains(accountName()) && (ui.useInternal->isChecked() || !ui.host->text().isEmpty());
+  ui.buttonBox->button(QDialogButtonBox::Ok)->setEnabled(ok);
+}
+
+void CoreAccountEditDlg::on_host_textChanged(const QString &text) {
+  Q_UNUSED(text);
+  setWidgetStates();
+}
+
+void CoreAccountEditDlg::on_accountName_textChanged(const QString &text) {
+  Q_UNUSED(text);
+  setWidgetStates();
+}
+
+void CoreAccountEditDlg::on_useRemote_toggled(bool state) {
+  Q_UNUSED(state);
+  setWidgetStates();
 }

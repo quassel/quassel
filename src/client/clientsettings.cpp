@@ -48,41 +48,56 @@ QVariant ClientSettings::sessionValue(const QString &key, const QVariant &def) {
 
 /***********************************************************************************************/
 
-AccountSettings::AccountSettings() : ClientSettings("Accounts") {
+CoreAccountSettings::CoreAccountSettings() : ClientSettings("CoreAccounts") {
 
 
 }
 
-QStringList AccountSettings::knownAccounts() {
-  return localChildGroups();
+QStringList CoreAccountSettings::knownAccounts() {
+  return localChildKeys("Accounts");
 }
 
-QString AccountSettings::lastAccount() {
+QString CoreAccountSettings::lastAccount() {
   return localValue("LastAccount", "").toString();
 }
 
-void AccountSettings::setLastAccount(const QString &account) {
+void CoreAccountSettings::setLastAccount(const QString &account) {
   setLocalValue("LastAccount", account);
 }
 
-QString AccountSettings::autoConnectAccount() {
+QString CoreAccountSettings::autoConnectAccount() {
   return localValue("AutoConnectAccount", "").toString();
 }
 
-void AccountSettings::setAutoConnectAccount(const QString &account) {
+void CoreAccountSettings::setAutoConnectAccount(const QString &account) {
   setLocalValue("AutoConnectAccount", account);
 }
 
-void AccountSettings::setValue(const QString &account, const QString &key, const QVariant &data) {
-  setLocalValue(QString("%1/%2").arg(account).arg(key), data);
+void CoreAccountSettings::storeAccount(const QString name, const QVariantMap &data) {
+  setLocalValue(QString("Accounts/%2").arg(name), data);
 }
 
-QVariant AccountSettings::value(const QString &account, const QString &key, const QVariant &def) {
-  return localValue(QString("%1/%2").arg(account).arg(key), def);
+QVariantMap CoreAccountSettings::retrieveAccount(const QString &name) {
+  return localValue(QString("Accounts/%2").arg(name), QVariant()).toMap();
 }
 
-void AccountSettings::removeAccount(const QString &account) {
-  removeLocalKey(account);
+void CoreAccountSettings::storeAllAccounts(const QHash<QString, QVariantMap> accounts) {
+  removeLocalKey(QString("Accounts"));
+  foreach(QString name, accounts.keys()) {
+    storeAccount(name, accounts[name]);
+  }
+}
+
+QHash<QString, QVariantMap> CoreAccountSettings::retrieveAllAccounts() {
+  QHash<QString, QVariantMap> accounts;
+  foreach(QString name, knownAccounts()) {
+    accounts[name] = retrieveAccount(name);
+  }
+  return accounts;
+}
+
+void CoreAccountSettings::removeAccount(const QString &account) {
+  removeLocalKey(QString("Accounts/%1").arg(account));
 }
 
 

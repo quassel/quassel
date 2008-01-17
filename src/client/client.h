@@ -38,6 +38,8 @@ class AbstractUi;
 class AbstractUiMsg;
 class NetworkModel;
 class BufferModel;
+class IrcUser;
+class IrcChannel;
 class NickModel;
 class SignalProxy;
 
@@ -53,11 +55,11 @@ public:
   static void init(AbstractUi *);
 
   static QList<Network *> networks();
-  static Network *network(uint networkid);
+  static Network *network(NetworkId networkid);
 
   static QList<BufferInfo> allBufferInfos();
   static QList<Buffer *> buffers();
-  static Buffer *buffer(uint bufferUid);
+  static Buffer *buffer(BufferId bufferUid);
   static Buffer *buffer(BufferInfo);
 
   static QList<IdentityId> identityIds();
@@ -81,6 +83,10 @@ public:
    */
   static void removeIdentity(IdentityId id);
 
+  static void addNetwork(NetworkId id);
+  static void addNetwork(Network *);
+
+
   static NetworkModel *networkModel();
   static BufferModel *bufferModel();
   static NickModel *nickModel();
@@ -89,8 +95,9 @@ public:
   static AbstractUiMsg *layoutMsg(const Message &);
 
   static bool isConnected();
+  static bool isSynced();
 
-  static void fakeInput(uint bufferUid, QString message);
+  static void fakeInput(BufferId bufferUid, QString message);
   static void fakeInput(BufferInfo bufferInfo, QString message);
 
   static void storeSessionData(const QString &key, const QVariant &data);
@@ -106,11 +113,6 @@ signals:
   void backlogReceived(Buffer *, QList<Message>);
   void requestBacklog(BufferInfo, QVariant, QVariant);
   void requestNetworkStates();
-
-  void recvPartialItem(uint avail, uint size);
-  void coreConnectionError(QString errorMsg);
-  void coreConnectionMsg(const QString &msg);
-  void coreConnectionProgress(uint part, uint total);
 
   void showConfigWizard(const QVariantMap &coredata);
 
@@ -144,27 +146,24 @@ signals:
 
 public slots:
   //void selectBuffer(Buffer *);
-  //void connectToLocalCore();
-  void connectToCore(const QVariantMap &);
+
+  void setConnectedToCore(QIODevice *socket);
+  void setSyncedToCore();
   void disconnectFromCore();
 
   void setCoreConfiguration(const QVariantMap &settings);
 
+
 private slots:
-  void recvCoreState(const QVariant &state);
   void recvSessionData(const QString &key, const QVariant &data);
 
-  void coreSocketError(QAbstractSocket::SocketError);
-  void coreHasData();
-  void coreSocketConnected();
-  void coreSocketDisconnected();
+  //void coreSocketError(QAbstractSocket::SocketError);
 
   void userInput(BufferInfo, QString);
 
-  void networkConnected(uint);
-  void networkDisconnected(uint);
+  //void networkConnected(NetworkId);
+  //void networkDisconnected(NetworkId);
 
-  void updateCoreConnectionProgress();
   void recvMessage(const Message &message);
   void recvStatusMsg(QString network, QString message);
   void recvBacklogData(BufferInfo, QVariantList, bool);
@@ -182,7 +181,7 @@ private:
   virtual ~Client();
   void init();
 
-  void syncToCore(const QVariant &coreState);
+  void syncToCore(const QVariantMap &sessionState);
 
   static QPointer<Client> instanceptr;
 
@@ -195,12 +194,10 @@ private:
 
   ClientMode clientMode;
 
-  quint32 blockSize;
-  bool connectedToCore;
+  bool _connectedToCore, _syncedToCore;
 
-  QVariantMap coreConnectionInfo;
   QHash<BufferId, Buffer *> _buffers;
-  QHash<NetworkId, Network *> _network;
+  QHash<NetworkId, Network *> _networks;
   QHash<IdentityId, Identity *> _identities;
 
   QTimer *layoutTimer;
@@ -208,7 +205,7 @@ private:
 
   QVariantMap sessionData;
 
-
+  friend class ClientSyncer;
 };
 
 #endif

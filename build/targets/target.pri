@@ -15,6 +15,7 @@ for(mod, MODULES) {
   LIBS *= -L../modules/$$dirname(mod) -l$$basename(mod)
   PRE_TARGETDEPS *= ../modules/$$mod
 }
+PRE_TARGETDEPS *= ../../version.inc
 
 #CONTRIB += libqxt  # not needed
 #include(../contrib/contrib.pri)

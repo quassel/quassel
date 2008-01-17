@@ -84,9 +84,6 @@ class Identity : public SyncableObject {
     QString partReason() const;
     QString quitReason() const;
 
-    bool initialized() const;
-    void setInitialized();
-
   public slots:
     void setId(IdentityId id);
     void setIdentityName(const QString &name);
@@ -133,10 +130,7 @@ class Identity : public SyncableObject {
     void partReasonSet(const QString &);
     void quitReasonSet(const QString &);
 
-    void updatedRemotely();
-
   private:
-    bool _initialized;
     IdentityId _identityId;
     QString _identityName, _realName;
     QStringList _nicks;

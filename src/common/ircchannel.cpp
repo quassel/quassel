@@ -73,10 +73,6 @@ bool IrcChannel::isValidChannelUserMode(const QString &mode) const {
   return isvalid;
 }
 
-bool IrcChannel::initialized() const {
-  return _initialized;
-}
-
 QString IrcChannel::name() const {
   return _name;
 }
@@ -169,7 +165,7 @@ void IrcChannel::part(IrcUser *ircuser) {
     // if you wonder why there is no counterpart to ircUserParted:
     // the joines are propagted by the ircuser. the signal ircUserParted is only for convenience
     emit ircUserParted(ircuser);
-    if(network->isMyNick(ircuser))
+    if(network->isMe(ircuser))
        deleteLater();
   }
 }
@@ -256,10 +252,5 @@ void IrcChannel::ircUserNickSet(QString nick) {
   IrcUser *ircUser = qobject_cast<IrcUser *>(sender());
   Q_ASSERT(ircUser);
   emit ircUserNickSet(ircUser, nick);
-}
-
-void IrcChannel::setInitialized() {
-  _initialized = true;
-  emit initDone();
 }
 

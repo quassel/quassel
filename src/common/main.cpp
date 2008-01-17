@@ -64,6 +64,8 @@ int main(int argc, char **argv) {
 
   Global::registerMetaTypes();
 
+#include "../../version.inc"
+
 #if defined BUILD_CORE
   Global::runMode = Global::CoreOnly;
   QCoreApplication app(argc, argv);

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by the Quassel Project                             *
+ *   Copyright (C) 2005-08 by the Quassel Project                          *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -28,14 +28,22 @@
 // Enable some shortcuts and stuff
 //#define DEVELMODE
 
-/** The protocol version we use fo the communication between core and GUI */
-#define GUI_PROTOCOL 5
-
-//#define DEFAULT_PORT 4242
-
 /* Some global stuff */
 
 namespace Global {
+
+  extern QString quasselVersion;
+  extern QString quasselDate;
+  extern uint quasselBuild;
+
+  //! Minimum client build number the core needs
+  extern uint clientBuildNeeded;
+  extern QString clientVersionNeeded;
+
+  //! Minimum core build number the client needs
+  extern uint coreBuildNeeded;
+  extern QString coreVersionNeeded;
+
   // We need different config (QSettings) files for client and gui, since the core cannot work with GUI types
   // Set these here. They're used in ClientSettings and CoreSettings.
   const QString coreApplicationName = "Quassel Core";

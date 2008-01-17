@@ -36,6 +36,8 @@ src/client/client.h
 src/client/client.pri
 src/client/clientsettings.cpp
 src/client/clientsettings.h
+src/client/clientsyncer.cpp
+src/client/clientsyncer.h
 src/client/mappedselectionmodel.cpp
 src/client/mappedselectionmodel.h
 src/client/modelpropertymapper.cpp
@@ -68,8 +70,6 @@ src/common/message.cpp
 src/common/message.h
 src/common/network.cpp
 src/common/network.h
-src/common/networkinfo.cpp
-src/common/networkinfo.h
 src/common/settings.cpp
 src/common/settings.h
 src/common/signalproxy.cpp
@@ -99,8 +99,8 @@ src/core/ircserverhandler.cpp
 src/core/ircserverhandler.h
 src/core/networkconnection.cpp
 src/core/networkconnection.h
-src/core/server.cpp
-src/core/server.h
+src/core/sessionthread.cpp
+src/core/sessionthread.h
 src/core/sqlitestorage.cpp
 src/core/sqlitestorage.h
 src/core/storage.cpp
@@ -188,7 +188,6 @@ src/qtui/settingspages/identitiessettingspage.cpp
 src/qtui/settingspages/identitiessettingspage.h
 src/qtui/settingspages/identitiessettingspage.ui
 src/qtui/settingspages/networkssettingspage.ui
-src/qtui/settingspages/nickeditdlg.ui
 src/qtui/settingspages/nickeditdlgnew.ui
 src/qtui/settingspages/saveidentitiesdlg.ui
 src/qtui/settingspages/servereditdlg.ui

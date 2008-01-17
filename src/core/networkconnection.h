@@ -25,46 +25,38 @@
 #include <QString>
 #include <QStringList>
 #include <QTcpSocket>
-#include <QThread>
 #include <QTimer>
 
 #include "message.h"
 #include "signalproxy.h"
 
+class CoreSession;
 class Network;
 
 class IrcServerHandler;
 class UserInputHandler;
 class CtcpHandler;
-class CoreSession;
 
-/*!
- * This is a server object, managing a single connection to an IRC server, handling the associated channels and so on.
- * We have this running in its own thread mainly to not block other server objects or the core if something goes wrong,
- * e.g. if some scripts starts running wild...
- */
-
-class NetworkConnection : public QThread {
+class NetworkConnection : public QObject {
   Q_OBJECT
 
 public:
-  NetworkConnection(UserId uid, NetworkId networkId, QString network, const QVariant &previousState = QVariant());
+  NetworkConnection(Network *network, CoreSession *session, const QVariant &previousState = QVariant());
   ~NetworkConnection();
 
-  UserId userId() const { return _userId; } 
-
-  // networkState state();
-  bool isConnected() const { return socket.state() == QAbstractSocket::ConnectedState; }
-
   NetworkId networkId() const;
-  QString networkName() const;  // hasbeen getNetwork()
+  QString networkName() const;
+  Network *network() const;
+  CoreSession *coreSession() const;
 
-  Network *network() const { return _network; }
-  IrcServerHandler *ircServerHandler() const { return _ircServerHandler; }
-  UserInputHandler *userInputHandler() const { return _userInputHandler; }
-  CtcpHandler *ctcpHandler() const { return _ctcpHandler; }
+  bool isConnected() const;
 
-  QVariant state(); ///< Return data necessary to restore the server's state upon core restart
+  IrcServerHandler *ircServerHandler() const;
+  UserInputHandler *userInputHandler() const;
+  CtcpHandler *ctcpHandler() const;
+
+  //! Return data necessary to restore the connection state upon core restart
+  QVariant state() const;
 
   //! Decode a string using the server (network) decoding.
   QString serverDecode(const QByteArray &string) const;
@@ -86,60 +78,52 @@ public:
 
 public slots:
   // void setServerOptions();
-  void connectToIrc(QString net);
-  void disconnectFromIrc(QString net);
-  void userInput(uint netid, QString buffer, QString msg);
+  void connectToIrc();
+  void disconnectFromIrc();
+  void userInput(QString buffer, QString msg);
 
   void putRawLine(QString input);
   void putCmd(QString cmd, QStringList params, QString prefix = 0);
 
 
 private slots:
-  void threadFinished();
   void sendPerform();
 
 signals:
-  void networkState(QString net, QVariantMap data);
+  // #void networkState(QString net, QVariantMap data);
   void recvRawServerMsg(QString);
   void displayStatusMsg(QString);
   //void displayMsg(Message msg);
   void displayMsg(Message::Type, QString target, QString text, QString sender = "", quint8 flags = Message::None);
-  void connected(uint networkId);
-  void disconnected(uint networkId);
+  void connected(NetworkId networkId);
+  void disconnected(NetworkId networkId);
 
   void connectionInitialized(); ///< Emitted after receipt of 001 to indicate that we can now send data to the IRC server
 
-  void synchronizeClients();
-  
-  void queryRequested(QString network, QString nick);
+  //void queryRequested(QString network, QString nick);
 
 
 private slots:
-  void run();
   void socketHasData();
   void socketError(QAbstractSocket::SocketError);
   void socketConnected();
   void socketStateChanged(QAbstractSocket::SocketState);
 
 private:
-  UserId _userId;
-  NetworkId _networkId;
-
   QTcpSocket socket;
+
+  Network *_network;
+  CoreSession *_coreSession;
 
   IrcServerHandler *_ircServerHandler;
   UserInputHandler *_userInputHandler;
   CtcpHandler *_ctcpHandler;
-
-  Network *_network;
 
   QVariantMap networkSettings;
   QVariantMap identity;
 
   QVariant _previousState;
 
-  CoreSession *coreSession() const;
-  
   class ParseError : public Exception {
   public:
     ParseError(QString cmd, QString prefix, QStringList params);

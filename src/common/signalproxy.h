@@ -67,7 +67,7 @@ public:
   void synchronize(SyncableObject *obj);
 
   void setInitialized(SyncableObject *obj);
-  bool initialized(SyncableObject *obj);
+  bool isInitialized(SyncableObject *obj) const;
   void requestInit(SyncableObject *obj);
 
   void detachObject(QObject *obj);
@@ -89,9 +89,8 @@ public:
   static bool readDataFromDevice(QIODevice *dev, quint32 &blockSize, QVariant &item);
 
   static QString methodBaseName(const QMetaMethod &method);
-  
+
   const QList<int> &argTypes(QObject *obj, int methodId);
-  bool hasUpdateSignal(QObject *obj);
   const QByteArray &methodName(QObject *obj, int methodId);
   const QHash<QByteArray, int> &syncMap(SyncableObject *obj);
 
@@ -101,7 +100,6 @@ public:
     ArgHash argTypes;
     MethodNameHash methodNames;
     QHash<QByteArray, int> syncMap;
-    bool hasUpdateSignal;
   };
 
   void dumpProxyStats();
@@ -117,6 +115,7 @@ signals:
   void peerRemoved(QIODevice *obj);
   void connected();
   void disconnected();
+  void objectInitialized(SyncableObject *);
   
 private:
   void initServer();
@@ -147,7 +146,9 @@ private:
   void _detachSlots(QObject *receiver);
   void _stopSync(SyncableObject *obj);
 
+  public:
   void dumpSyncMap(SyncableObject *object);
+  private:
 
   // Hash of used QIODevices
   QHash<QIODevice*, quint32> _peerByteCount;

@@ -45,8 +45,6 @@ public:
   bool isKnownUser(IrcUser *ircuser) const;
   bool isValidChannelUserMode(const QString &mode) const;
 
-  bool initialized() const;
-
   QString name() const;
   QString topic() const;
 
@@ -89,8 +87,6 @@ public slots:
   // init seters
   void initSetUserModes(const QVariantMap &usermodes);
 
-  void setInitialized();
-
 signals:
   void topicSet(QString topic);
   void userModesSet(QString nick, QString modes);
@@ -106,8 +102,6 @@ signals:
   void ircUserModeAdded(IrcUser *ircuser, QString mode);
   void ircUserModeRemoved(IrcUser *ircuser, QString mode);
   void ircUserModesSet(IrcUser *ircuser, QString modes);
-
-  void initDone();
 
 private slots:
    void ircUserDestroyed();

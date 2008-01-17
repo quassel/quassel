@@ -69,9 +69,6 @@ protected:
   inline virtual QString databaseName() { return backlogFile(); }
   virtual int installedSchemaVersion();
   
-signals:
-  void bufferInfoUpdated(BufferInfo);
-  
 private:
   static QString backlogFile();
   void createBuffer(UserId user, const QString &network, const QString &buffer);

@@ -48,9 +48,6 @@ IrcUser::~IrcUser() {
 // ====================
 //  PUBLIC:
 // ====================
-bool IrcUser::initialized() const {
-  return _initialized;
-}
 
 QString IrcUser::user() const {
   return _user;
@@ -230,10 +227,5 @@ void IrcUser::initSetChannels(const QStringList channels) {
   foreach(QString channel, channels) {
     joinChannel(channel);
   }
-}
-
-void IrcUser::setInitialized() {
-  _initialized = true;
-  emit initDone();
 }
 

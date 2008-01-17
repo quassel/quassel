@@ -91,11 +91,11 @@ int SignalRelay::qt_metacall(QMetaObject::Call _c, int _id, void **_a) {
       // dispatch Sync Signal if necessary
       QByteArray signature(caller->metaObject()->method(_id).signature());
       if(synchronize() && proxy->syncMap(qobject_cast<SyncableObject *>(caller)).contains(signature)) {
-	// qDebug() << "__SYNC__ >>>"
-	// 	 << caller->metaObject()->className()
-	// 	 << caller->objectName()
-	// 	 << proxy->methodName(caller, _id)
-	// 	 << params;
+	 //qDebug() << "__SYNC__ >>>"
+	 //	 << caller->metaObject()->className()
+	 //	 << caller->objectName()
+	 //	 << signature
+	 //	 << params;
 	// params.prepend(QVariant(_id));
 	params.prepend(signature);
 	params.prepend(caller->objectName());
@@ -131,10 +131,10 @@ bool SignalRelay::isSyncMethod(int i) {
   if(!proxy->syncMap(qobject_cast<SyncableObject *>(caller)).contains(signature))
     return false;
   
-  if(proxy->proxyMode() == SignalProxy::Server && !signature.startsWith("request"))
+  if(proxy->proxyMode() == SignalProxy::Server && !signature.contains("Requested"))
     return true;
 
-  if(proxy->proxyMode() == SignalProxy::Client && signature.startsWith("request"))
+  if(proxy->proxyMode() == SignalProxy::Client && signature.contains("Requested"))
     return true;
 
   return false;
@@ -338,12 +338,6 @@ const QList<int> &SignalProxy::argTypes(QObject *obj, int methodId) {
   return _classInfo[obj->metaObject()]->argTypes[methodId];
 }
 
-bool SignalProxy::hasUpdateSignal(QObject *obj) {
-  if(!_classInfo.contains(obj->metaObject()))
-    return false;
-  return _classInfo[obj->metaObject()]->hasUpdateSignal;
-}
-
 void SignalProxy::setMethodName(QObject *obj, int methodId) {
   const QMetaObject *meta = obj->metaObject();
   QByteArray method(::methodName(meta->method(methodId)));
@@ -406,7 +400,6 @@ void SignalProxy::createClassInfo(QObject *obj) {
     return;
 
   ClassInfo *classInfo = new ClassInfo();
-  classInfo->hasUpdateSignal = (obj->metaObject()->indexOfSignal(QMetaObject::normalizedSignature("updatedRemotely()")) != -1);
   _classInfo[obj->metaObject()] = classInfo;
 }
 
@@ -478,18 +471,16 @@ void SignalProxy::synchronize(SyncableObject *obj) {
 }
 
 void SignalProxy::setInitialized(SyncableObject *obj) {
-  QMetaObject::invokeMethod(obj, "setInitialized");
+  obj->setInitialized();
+  emit objectInitialized(obj);
 }
 
-bool SignalProxy::initialized(SyncableObject *obj) {
-  bool init;
-  if(!QMetaObject::invokeMethod(obj, "initialized", Q_RETURN_ARG(bool, init)))
-    init = false;
-  return init;
+bool SignalProxy::isInitialized(SyncableObject *obj) const {
+  return obj->isInitialized();
 }
 
 void SignalProxy::requestInit(SyncableObject *obj) {
-  if(proxyMode() == Server || initialized(obj))
+  if(proxyMode() == Server || isInitialized(obj))
     return;
 
   QVariantList params;
@@ -634,8 +625,7 @@ void SignalProxy::handleSync(QVariantList params) {
     qWarning("SignalProxy::handleSync(): invokeMethod for \"%s\" failed ", methodName(receiver, slotId).constData());
     return;
   }
-  if(hasUpdateSignal(receiver))
-    QMetaObject::invokeMethod(receiver, "updatedRemotely");
+  QMetaObject::invokeMethod(receiver, "updatedRemotely");
 }
 
 void SignalProxy::handleInitRequest(QIODevice *sender, const QVariantList &params) {
@@ -798,7 +788,7 @@ QVariantMap SignalProxy::initData(SyncableObject *obj) const {
 }
 
 void SignalProxy::setInitData(SyncableObject *obj, const QVariantMap &properties) {
-  if(initialized(obj))
+  if(isInitialized(obj))
     return;
   obj->fromVariantMap(properties);
   setInitialized(obj);

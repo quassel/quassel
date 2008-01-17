@@ -26,12 +26,21 @@
 #include "util.h"
 
 SyncableObject::SyncableObject(QObject *parent) : QObject(parent) {
-
+  _initialized = false;
 }
 
 SyncableObject::SyncableObject(const SyncableObject &other, QObject *parent) : QObject(parent) {
-  Q_UNUSED(other);
+  _initialized = other._initialized;
 
+}
+
+bool SyncableObject::isInitialized() const {
+  return _initialized;
+}
+
+void SyncableObject::setInitialized() {
+  _initialized = true;
+  emit initDone();
 }
 
 QVariantMap SyncableObject::toVariantMap() {

@@ -21,16 +21,15 @@
 #ifndef _CORESESSION_H_
 #define _CORESESSION_H_
 
-#include <QObject>
 #include <QString>
 #include <QVariant>
 
 #include "message.h"
 
 class Identity;
-class NetworkConnection;
+class NetworkConnection;  // FIXME get rid of
+class Network;
 class SignalProxy;
-class Storage;
 
 class QScriptEngine;
 
@@ -38,12 +37,15 @@ class CoreSession : public QObject {
   Q_OBJECT
 
 public:
-  CoreSession(UserId, Storage *, QObject *parent = 0);
-  virtual ~CoreSession();
+  CoreSession(UserId, QObject *parent = 0);
+  ~CoreSession();
 
-  NetworkId getNetworkId(const QString &network) const;
   QList<BufferInfo> buffers() const;
-  UserId userId() const;
+  UserId user() const;
+  Network *network(NetworkId) const;
+  NetworkConnection *networkConnection(NetworkId) const;
+  Identity *identity(IdentityId) const;
+
   QVariant sessionState();
 
   //! Retrieve a piece of session-wide data.
@@ -63,14 +65,14 @@ public slots:
 
   void networkStateRequested();
 
-  void addClient(QIODevice *connection);
+  void addClient(QObject *socket);
 
   void connectToNetwork(QString, const QVariant &previousState = QVariant());
-  //void connectToNetwork(NetworkId);
+  void connectToNetwork(NetworkId, const QVariant &previousState = QVariant());
 
   //void processSignal(ClientSignal, QVariant, QVariant, QVariant);
   void sendBacklog(BufferInfo, QVariant, QVariant);
-  void msgFromGui(BufferInfo, QString message);
+  void msgFromClient(BufferInfo, QString message);
 
   //! Create an identity and propagate the changes to the clients.
   /** \param identity The identity to be created.
@@ -88,12 +90,14 @@ public slots:
   void removeIdentity(IdentityId identity);
 
 signals:
-  void msgFromGui(uint netid, QString buf, QString message);
+  void initialized();
+
+  //void msgFromGui(uint netid, QString buf, QString message);
   void displayMsg(Message message);
   void displayStatusMsg(QString, QString);
 
-  void connectToIrc(QString net);
-  void disconnectFromIrc(QString net);
+  //void connectToIrc(QString net);
+  //void disconnectFromIrc(QString net);
 
   void backlogData(BufferInfo, QVariantList, bool done);
 
@@ -121,23 +125,29 @@ private slots:
   void networkConnected(uint networkid);
   void networkDisconnected(uint networkid);
 
+  //! Called when storage updated a BufferInfo.
+  /** This emits bufferInfoUpdated() via SignalProxy, iff it's one of our buffers.
+   *  \param user       The buffer's owner (not necessarily us)
+   *  \param bufferInfo The updated BufferInfo
+   */
+  void updateBufferInfo(UserId user, const BufferInfo &bufferInfo);
+
   void scriptRequest(QString script);
-  
+
 private:
   void initScriptEngine();
-  
-  UserId user;
-  
+
+  UserId _user;
+
   SignalProxy *_signalProxy;
-  Storage *storage;
-  QHash<NetworkId, NetworkConnection *> connections;
-  
+  QHash<NetworkId, NetworkConnection *> _connections;
+  QHash<NetworkId, Network *> _networks;
+  QHash<IdentityId, Identity *> _identities;
+
   QVariantMap sessionData;
-  QMutex mutex;
 
   QScriptEngine *scriptEngine;
 
-  QHash<IdentityId, Identity *> _identities;
 };
 
 #endif

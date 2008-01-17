@@ -27,7 +27,7 @@ class IrcServerHandler : public BasicHandler {
   Q_OBJECT
 
 public:
-  IrcServerHandler(NetworkConnection *parent = 0);
+  IrcServerHandler(NetworkConnection *parent);
   ~IrcServerHandler();
 
   void handleServerMsg(QByteArray rawMsg);

@@ -5,15 +5,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>430</width>
-    <height>444</height>
+    <width>465</width>
+    <height>482</height>
    </rect>
   </property>
   <property name="windowTitle" >
    <string>Server List</string>
   </property>
   <property name="windowIcon" >
-   <iconset resource="../images/icons.qrc" >:/default/server.png</iconset>
+   <iconset/>
   </property>
   <property name="sizeGripEnabled" >
    <bool>false</bool>
@@ -22,19 +22,53 @@
    <bool>false</bool>
   </property>
   <layout class="QVBoxLayout" >
-   <property name="margin" >
-    <number>8</number>
-   </property>
    <property name="spacing" >
     <number>6</number>
    </property>
+   <property name="leftMargin" >
+    <number>8</number>
+   </property>
+   <property name="topMargin" >
+    <number>8</number>
+   </property>
+   <property name="rightMargin" >
+    <number>8</number>
+   </property>
+   <property name="bottomMargin" >
+    <number>8</number>
+   </property>
+   <item>
+    <widget class="QLabel" name="label" >
+     <property name="text" >
+      <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'DejaVu Sans'; font-size:11pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;span style=" font-size:14pt; font-weight:600; color:#ff0000;">Big Fat Warning: &lt;/span>&lt;span style=" font-size:14pt; color:#000000;">The settings in here now need a Core restart in order to take effect! This dialog is doomed and will go away as soon as its replacement is finished.&lt;/span>&lt;/p>&lt;/body>&lt;/html></string>
+     </property>
+     <property name="alignment" >
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+     </property>
+     <property name="wordWrap" >
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
    <item>
     <layout class="QHBoxLayout" >
-     <property name="margin" >
-      <number>0</number>
-     </property>
      <property name="spacing" >
       <number>6</number>
+     </property>
+     <property name="leftMargin" >
+      <number>0</number>
+     </property>
+     <property name="topMargin" >
+      <number>0</number>
+     </property>
+     <property name="rightMargin" >
+      <number>0</number>
+     </property>
+     <property name="bottomMargin" >
+      <number>0</number>
      </property>
      <item>
       <widget class="QTreeWidget" name="networkTree" >
@@ -50,15 +84,29 @@
        <property name="sortingEnabled" >
         <bool>false</bool>
        </property>
+       <column>
+        <property name="text" >
+         <string>1</string>
+        </property>
+       </column>
       </widget>
      </item>
      <item>
       <layout class="QVBoxLayout" >
-       <property name="margin" >
-        <number>0</number>
-       </property>
        <property name="spacing" >
         <number>6</number>
+       </property>
+       <property name="leftMargin" >
+        <number>0</number>
+       </property>
+       <property name="topMargin" >
+        <number>0</number>
+       </property>
+       <property name="rightMargin" >
+        <number>0</number>
+       </property>
+       <property name="bottomMargin" >
+        <number>0</number>
        </property>
        <item>
         <widget class="QPushButton" name="addButton" >
@@ -66,7 +114,7 @@
           <string>&amp;Add...</string>
          </property>
          <property name="icon" >
-          <iconset resource="../images/icons.qrc" >:/default/edit_add.png</iconset>
+          <iconset/>
          </property>
         </widget>
        </item>
@@ -79,7 +127,7 @@
           <string>&amp;Edit...</string>
          </property>
          <property name="icon" >
-          <iconset resource="../images/icons.qrc" >:/default/edit.png</iconset>
+          <iconset/>
          </property>
         </widget>
        </item>
@@ -92,7 +140,7 @@
           <string>&amp;Delete</string>
          </property>
          <property name="icon" >
-          <iconset resource="../images/icons.qrc" >:/default/edit_remove.png</iconset>
+          <iconset/>
          </property>
         </widget>
        </item>
@@ -115,11 +163,20 @@
    </item>
    <item>
     <layout class="QHBoxLayout" >
-     <property name="margin" >
-      <number>0</number>
-     </property>
      <property name="spacing" >
       <number>6</number>
+     </property>
+     <property name="leftMargin" >
+      <number>0</number>
+     </property>
+     <property name="topMargin" >
+      <number>0</number>
+     </property>
+     <property name="rightMargin" >
+      <number>0</number>
+     </property>
+     <property name="bottomMargin" >
+      <number>0</number>
      </property>
      <item>
       <widget class="QCheckBox" name="showOnStartup" >
@@ -150,7 +207,7 @@
         <string>&amp;Connect</string>
        </property>
        <property name="icon" >
-        <iconset resource="../images/icons.qrc" >:/default/connect_creating.png</iconset>
+        <iconset/>
        </property>
        <property name="default" >
         <bool>false</bool>
@@ -163,7 +220,7 @@
         <string>C&amp;lose</string>
        </property>
        <property name="icon" >
-        <iconset resource="../images/icons.qrc" >:/default/button_cancel.png</iconset>
+        <iconset/>
        </property>
        <property name="default" >
         <bool>true</bool>

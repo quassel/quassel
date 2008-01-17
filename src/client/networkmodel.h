@@ -114,7 +114,7 @@ class NetworkItem : public PropertyMapItem {
   Q_PROPERTY(int nickCount READ nickCount)
     
 public:
-  NetworkItem(const uint &netid, const QString &, AbstractTreeItem *parent = 0);
+  NetworkItem(const NetworkId &netid, AbstractTreeItem *parent = 0);
 
   virtual QVariant data(int column, int row) const;
   virtual quint64 id() const;
@@ -133,8 +133,7 @@ public slots:
   void attachIrcChannel(const QString &channelName);
   
 private:
-  uint _networkId;
-  QString _networkName;
+  NetworkId _networkId;
 
   QPointer<Network> _network;
 };
@@ -221,7 +220,7 @@ public:
   static QList<QVariant> defaultHeader();
 
   static bool mimeContainsBufferList(const QMimeData *mimeData);
-  static QList< QPair<uint, uint> > mimeDataToBufferList(const QMimeData *mimeData);
+  static QList< QPair<NetworkId, BufferId> > mimeDataToBufferList(const QMimeData *mimeData);
 
   virtual QStringList mimeTypes() const;
   virtual QMimeData *mimeData(const QModelIndexList &) const;
@@ -230,7 +229,7 @@ public:
   void attachNetwork(Network *network);
 
   bool isBufferIndex(const QModelIndex &) const;
-  Buffer *getBufferByIndex(const QModelIndex &) const;
+  //Buffer *getBufferByIndex(const QModelIndex &) const;
   QModelIndex bufferIndex(BufferId bufferId);
 
 public slots:
@@ -238,12 +237,11 @@ public slots:
   void bufferActivity(BufferItem::ActivityLevel, BufferInfo bufferInfo);
 
 private:
-  QModelIndex networkIndex(uint networkId);
-  NetworkItem *network(uint networkId);
-  NetworkItem *newNetwork(uint networkId, const QString &networkName);
-  
-  BufferItem *buffer(BufferInfo bufferInfo);
-  BufferItem *newBuffer(BufferInfo bufferInfo);
+  QModelIndex networkIndex(NetworkId networkId);
+  NetworkItem *networkItem(NetworkId networkId);
+  NetworkItem *existsNetworkItem(NetworkId networkId);
+  BufferItem *bufferItem(const BufferInfo &bufferInfo);
+  BufferItem *existsBufferItem(const BufferInfo &bufferInfo);
 
 };
 

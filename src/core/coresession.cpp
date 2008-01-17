@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include "core.h"
 #include "coresession.h"
 #include "networkconnection.h"
 
@@ -34,17 +35,15 @@
 
 #include <QtScript>
 
-CoreSession::CoreSession(UserId uid, Storage *_storage, QObject *parent)
-  : QObject(parent),
-    user(uid),
+CoreSession::CoreSession(UserId uid, QObject *parent) : QObject(parent),
+    _user(uid),
     _signalProxy(new SignalProxy(SignalProxy::Server, 0, this)),
-    storage(_storage),
     scriptEngine(new QScriptEngine(this))
 {
 
   SignalProxy *p = signalProxy();
 
-  CoreUserSettings s(user);
+  CoreUserSettings s(user());
   sessionData = s.sessionData();
 
   foreach(IdentityId id, s.identityIds()) {
@@ -69,15 +68,15 @@ CoreSession::CoreSession(UserId uid, Storage *_storage, QObject *parent)
     createIdentity(i);
   }
 
-  p->attachSlot(SIGNAL(requestNetworkStates()), this, SLOT(networkStateRequested()));
+  //p->attachSlot(SIGNAL(requestNetworkStates()), this, SLOT(networkStateRequested()));
   p->attachSlot(SIGNAL(requestConnect(QString)), this, SLOT(connectToNetwork(QString)));
-  p->attachSlot(SIGNAL(sendInput(BufferInfo, QString)), this, SLOT(msgFromGui(BufferInfo, QString)));
+  p->attachSlot(SIGNAL(sendInput(BufferInfo, QString)), this, SLOT(msgFromClient(BufferInfo, QString)));
   p->attachSlot(SIGNAL(requestBacklog(BufferInfo, QVariant, QVariant)), this, SLOT(sendBacklog(BufferInfo, QVariant, QVariant)));
   p->attachSignal(this, SIGNAL(displayMsg(Message)));
   p->attachSignal(this, SIGNAL(displayStatusMsg(QString, QString)));
   p->attachSignal(this, SIGNAL(backlogData(BufferInfo, QVariantList, bool)));
   p->attachSignal(this, SIGNAL(bufferInfoUpdated(BufferInfo)));
-  p->attachSignal(storage, SIGNAL(bufferInfoUpdated(BufferInfo)));
+
   p->attachSignal(this, SIGNAL(sessionDataChanged(const QString &, const QVariant &)), SIGNAL(coreSessionDataChanged(const QString &, const QVariant &)));
   p->attachSlot(SIGNAL(clientSessionDataChanged(const QString &, const QVariant &)), this, SLOT(storeSessionData(const QString &, const QVariant &)));
 
@@ -92,17 +91,56 @@ CoreSession::CoreSession(UserId uid, Storage *_storage, QObject *parent)
   foreach(Identity *id, _identities.values()) {
     p->synchronize(id);
   }
+
+  // Load and init networks.
+  // FIXME For now we use the old info from sessionData...
+
+  QVariantMap networks = retrieveSessionData("Networks").toMap();
+  foreach(QString netname, networks.keys()) {
+    QVariantMap network = networks[netname].toMap();
+    NetworkId netid = Core::networkId(user(), netname);
+    Network *net = new Network(netid, this);
+    connect(net, SIGNAL(connectRequested(NetworkId)), this, SLOT(connectToNetwork(NetworkId)));
+    net->setNetworkName(netname);
+    net->setIdentity(1); // FIXME default identity for now
+    net->setCodecForEncoding("ISO-8859-15"); // FIXME
+    net->setCodecForDecoding("ISO-8859-15"); // FIXME
+    QList<QVariantMap> slist;
+    foreach(QVariant v, network["Servers"].toList()) slist << v.toMap();
+    net->setServerList(slist);
+    net->setProxy(p);
+    _networks[netid] = net;
+    p->synchronize(net);
+  }
+
+  emit initialized();
 }
 
 CoreSession::~CoreSession() {
 }
 
-UserId CoreSession::userId() const {
-  return user;
+UserId CoreSession::user() const {
+  return _user;
 }
 
-QVariant CoreSession::state() const {
+Network *CoreSession::network(NetworkId id) const {
+  if(_networks.contains(id)) return _networks[id];
+  return 0;
+}
+
+NetworkConnection *CoreSession::networkConnection(NetworkId id) const {
+  if(_connections.contains(id)) return _connections[id];
+  return 0;
+}
+
+Identity *CoreSession::identity(IdentityId id) const {
+  if(_identities.contains(id)) return _identities[id];
+  return 0;
+}
+
+QVariant CoreSession::state() const { // FIXME
   QVariantMap res;
+  /*
   QList<QVariant> conn;
   foreach(NetworkConnection *net, connections.values()) {
     if(net->isConnected()) {
@@ -113,11 +151,13 @@ QVariant CoreSession::state() const {
     }
   }
   res["ConnectedServers"] = conn;
+  */
   return res;
 }
 
-void CoreSession::restoreState(const QVariant &previousState) {
+void CoreSession::restoreState(const QVariant &previousState) { // FIXME
   // Session restore
+  /*
   QVariantMap state = previousState.toMap();
   if(state.contains("ConnectedServers")) {
     foreach(QVariant v, state["ConnectedServers"].toList()) {
@@ -126,66 +166,90 @@ void CoreSession::restoreState(const QVariant &previousState) {
       if(!net.isEmpty()) connectToNetwork(net, m["State"]);
     }
   }
+  */
 }
 
 
 void CoreSession::storeSessionData(const QString &key, const QVariant &data) {
-  CoreUserSettings s(user);
-  mutex.lock();
+  CoreUserSettings s(user());
   s.setSessionValue(key, data);
   sessionData[key] = data;
-  mutex.unlock();
   emit sessionDataChanged(key, data);
   emit sessionDataChanged(key);
 }
 
 QVariant CoreSession::retrieveSessionData(const QString &key, const QVariant &def) {
   QVariant data;
-  mutex.lock();
   if(!sessionData.contains(key)) data = def;
   else data = sessionData[key];
-  mutex.unlock();
   return data;
 }
 
-// FIXME switch to NetworkIDs
-void CoreSession::connectToNetwork(QString networkname, const QVariant &previousState) {
-  uint networkid = getNetworkId(networkname);
-  if(networkid == 0) {
-    qWarning() << "unable to connect to Network" << networkname << "(User:" << userId() << "): unable to determine NetworkId";
-    return;
-  }
-  if(!connections.contains(networkid)) {
-    NetworkConnection *connection = new NetworkConnection(userId(), networkid, networkname, previousState);
-    connections[networkid] = connection;
-    attachNetworkConnection(connection);
-    connection->start();
-  }
-  emit connectToIrc(networkname);
+void CoreSession::updateBufferInfo(UserId uid, const BufferInfo &bufinfo) {
+  if(uid == user()) emit bufferInfoUpdated(bufinfo);
 }
 
-void CoreSession::attachNetworkConnection(NetworkConnection *network) {
-  connect(this, SIGNAL(connectToIrc(QString)), network, SLOT(connectToIrc(QString)));
-  connect(this, SIGNAL(disconnectFromIrc(QString)), network, SLOT(disconnectFromIrc(QString)));
-  connect(this, SIGNAL(msgFromGui(uint, QString, QString)), network, SLOT(userInput(uint, QString, QString)));
-  
-  connect(network, SIGNAL(connected(uint)), this, SLOT(networkConnected(uint)));
-  connect(network, SIGNAL(disconnected(uint)), this, SLOT(networkDisconnected(uint)));
-  connect(network, SIGNAL(displayMsg(Message::Type, QString, QString, QString, quint8)), this, SLOT(recvMessageFromServer(Message::Type, QString, QString, QString, quint8)));
-  connect(network, SIGNAL(displayStatusMsg(QString)), this, SLOT(recvStatusMsgFromServer(QString)));
+// FIXME remove
+void CoreSession::connectToNetwork(QString netname, const QVariant &previousState) {
+  Network *net = 0;
+  foreach(Network *n, _networks.values()) {
+    if(n->networkName() == netname) {
+      net = n; break;
+    }
+  }
+  if(!net) {
+    qWarning() << "Connect to unknown network requested, ignoring!";
+    return;
+  }
+  connectToNetwork(net->networkId(), previousState);
+}
 
-  // connect serversignals to proxy
-  signalProxy()->attachSignal(network, SIGNAL(networkState(QString, QVariantMap)), SIGNAL(networkState(QString, QVariantMap)));
-  signalProxy()->attachSignal(network, SIGNAL(connected(uint)), SIGNAL(networkConnected(uint)));
-  signalProxy()->attachSignal(network, SIGNAL(disconnected(uint)), SIGNAL(networkDisconnected(uint)));
+void CoreSession::connectToNetwork(NetworkId id, const QVariant &previousState) {
+  Network *net = network(id);
+  if(!net) {
+    qWarning() << "Connect to unknown network requested! net:" << id << "user:" << user();
+    return;
+  }
+
+  NetworkConnection *conn = networkConnection(id);
+  if(!conn) {
+    conn = new NetworkConnection(net, this, previousState);
+    _connections[id] = conn;
+    attachNetworkConnection(conn);
+    conn->connectToIrc();
+  }
+}
+
+void CoreSession::attachNetworkConnection(NetworkConnection *conn) {
+  //connect(this, SIGNAL(connectToIrc(QString)), network, SLOT(connectToIrc(QString)));
+  //connect(this, SIGNAL(disconnectFromIrc(QString)), network, SLOT(disconnectFromIrc(QString)));
+  //connect(this, SIGNAL(msgFromGui(uint, QString, QString)), network, SLOT(userInput(uint, QString, QString)));
+
+  connect(conn, SIGNAL(connected(NetworkId)), this, SLOT(networkConnected(NetworkId)));
+  connect(conn, SIGNAL(disconnected(NetworkId)), this, SLOT(networkDisconnected(NetworkId)));
+  signalProxy()->attachSignal(conn, SIGNAL(connected(NetworkId)), SIGNAL(networkConnected(NetworkId)));
+  signalProxy()->attachSignal(conn, SIGNAL(disconnected(NetworkId)), SIGNAL(networkDisconnected(NetworkId)));
+
+  connect(conn, SIGNAL(displayMsg(Message::Type, QString, QString, QString, quint8)), this, SLOT(recvMessageFromServer(Message::Type, QString, QString, QString, quint8)));
+  connect(conn, SIGNAL(displayStatusMsg(QString)), this, SLOT(recvStatusMsgFromServer(QString)));
+
   // TODO add error handling
 }
 
 void CoreSession::networkStateRequested() {
 }
 
-void CoreSession::addClient(QIODevice *device) {
-  signalProxy()->addPeer(device);
+void CoreSession::addClient(QObject *dev) { // this is QObject* so we can use it in signal connections
+  QIODevice *device = qobject_cast<QIODevice *>(dev);
+  if(!device) {
+    qWarning() << "Invoking CoreSession::addClient with a QObject that is not a QIODevice!";
+  } else {
+    signalProxy()->addPeer(device);
+    QVariantMap reply;
+    reply["MsgType"] = "SessionInit";
+    reply["SessionState"] = sessionState();
+    SignalProxy::writeDataToDevice(device, reply);
+  }
 }
 
 SignalProxy *CoreSession::signalProxy() const {
@@ -193,17 +257,25 @@ SignalProxy *CoreSession::signalProxy() const {
 }
 
 void CoreSession::networkConnected(uint networkid) {
-  storage->getBufferInfo(userId(), connections[networkid]->networkName()); // create status buffer
+  Core::bufferInfo(user(), networkConnection(networkid)->networkName()); // create status buffer
 }
 
 void CoreSession::networkDisconnected(uint networkid) {
-  Q_ASSERT(connections.contains(networkid));
-  connections.take(networkid)->deleteLater();
-  Q_ASSERT(!connections.contains(networkid));
+  // FIXME
+  // connection should only go away on explicit /part, and handle reconnections etcpp internally otherwise
+  Q_ASSERT(_connections.contains(networkid));
+  _connections.take(networkid)->deleteLater();
+  Q_ASSERT(!_connections.contains(networkid));
 }
 
-void CoreSession::msgFromGui(BufferInfo bufid, QString msg) {
-  emit msgFromGui(bufid.networkId(), bufid.buffer(), msg);
+// FIXME switch to BufferId
+void CoreSession::msgFromClient(BufferInfo bufinfo, QString msg) {
+  NetworkConnection *conn = networkConnection(bufinfo.networkId());
+  if(conn) {
+    conn->userInput(bufinfo.buffer(), msg);
+  } else {
+    qWarning() << "Trying to send to unconnected network!";
+  }
 }
 
 // ALL messages coming pass through these functions before going to the GUI.
@@ -213,12 +285,12 @@ void CoreSession::recvMessageFromServer(Message::Type type, QString target, QStr
   Q_ASSERT(s);
   BufferInfo buf;
   if((flags & Message::PrivMsg) && !(flags & Message::Self)) {
-    buf = storage->getBufferInfo(user, s->networkName(), nickFromMask(sender));
+    buf = Core::bufferInfo(user(), s->networkName(), nickFromMask(sender));
   } else {
-    buf = storage->getBufferInfo(user, s->networkName(), target);
+    buf = Core::bufferInfo(user(), s->networkName(), target);
   }
   Message msg(buf, type, text, sender, flags);
-  msg.setMsgId(storage->logMessage(msg));
+  msg.setMsgId(Core::storeMessage(msg));
   Q_ASSERT(msg.msgId());
   emit displayMsg(msg);
 }
@@ -229,13 +301,8 @@ void CoreSession::recvStatusMsgFromServer(QString msg) {
   emit displayStatusMsg(s->networkName(), msg);
 }
 
-
-uint CoreSession::getNetworkId(const QString &net) const {
-  return storage->getNetworkId(user, net);
-}
-
 QList<BufferInfo> CoreSession::buffers() const {
-  return storage->requestBuffers(user);
+  return Core::requestBuffers(user());
 }
 
 
@@ -243,24 +310,29 @@ QVariant CoreSession::sessionState() {
   QVariantMap v;
 
   QVariantList bufs;
-  foreach(BufferInfo id, storage->requestBuffers(user))
-    bufs.append(QVariant::fromValue(id));
-  v["Buffers"] = bufs;
+  foreach(BufferInfo id, buffers()) bufs << QVariant::fromValue(id);
+  v["BufferInfos"] = bufs;
+  QVariantList networkids;
+  foreach(NetworkId id, _networks.keys()) networkids << QVariant::fromValue(id);
+  v["NetworkIds"] = networkids;
 
-  mutex.lock();
-  v["SessionData"] = sessionData;
-  mutex.unlock();
-
-  QVariantList networks;
-  foreach(NetworkId networkid, connections.keys())
-    networks.append(QVariant(networkid));
-  v["Networks"] = QVariant(networks);
+  quint32 ircusercount = 0;
+  quint32 ircchannelcount = 0;
+  foreach(Network *net, _networks.values()) {
+    ircusercount += net->ircUserCount();
+    ircchannelcount += net->ircChannelCount();
+  }
+  v["IrcUserCount"] = ircusercount;
+  v["IrcChannelCount"] = ircchannelcount;
+  qDebug() << "nets:" << _networks.count() << " chans:" << ircchannelcount << " users:" << ircusercount;
 
   QList<QVariant> idlist;
   foreach(Identity *i, _identities.values()) idlist << QVariant::fromValue<Identity>(*i);
   v["Identities"] = idlist;
 
-  // v["Payload"] = QByteArray(100000000, 'a');  // for testing purposes
+  v["SessionData"] = sessionData;
+
+    //v["Payload"] = QByteArray(100000000, 'a');  // for testing purposes
   return v;
 }
 
@@ -271,7 +343,7 @@ void CoreSession::sendBacklog(BufferInfo id, QVariant v1, QVariant v2) {
 
 
   } else {
-    msglist = storage->requestMsgs(id, v1.toInt(), v2.toInt());
+    msglist = Core::requestMsgs(id, v1.toInt(), v2.toInt());
   }
 
   // Send messages out in smaller packages - we don't want to make the signal data too large!
@@ -289,9 +361,10 @@ void CoreSession::sendBacklog(BufferInfo id, QVariant v1, QVariant v2) {
 void CoreSession::initScriptEngine() {
   signalProxy()->attachSlot(SIGNAL(scriptRequest(QString)), this, SLOT(scriptRequest(QString)));
   signalProxy()->attachSignal(this, SIGNAL(scriptResult(QString)));
-  
-  QScriptValue storage_ = scriptEngine->newQObject(storage);
-  scriptEngine->globalObject().setProperty("storage", storage_);
+
+  // FIXME
+  //QScriptValue storage_ = scriptEngine->newQObject(storage);
+  //scriptEngine->globalObject().setProperty("storage", storage_);
 }
 
 void CoreSession::scriptRequest(QString script) {
@@ -309,7 +382,7 @@ void CoreSession::createIdentity(const Identity &id) {
   newId->setId(i);
   _identities[i] = newId;
   signalProxy()->synchronize(newId);
-  CoreUserSettings s(user);
+  CoreUserSettings s(user());
   s.storeIdentity(*newId);
   emit identityCreated(*newId);
 }
@@ -321,7 +394,7 @@ void CoreSession::updateIdentity(const Identity &id) {
   }
   _identities[id.id()]->update(id);
 
-  CoreUserSettings s(user);
+  CoreUserSettings s(user());
   s.storeIdentity(id);
 }
 
@@ -329,7 +402,7 @@ void CoreSession::removeIdentity(IdentityId id) {
   Identity *i = _identities.take(id);
   if(i) {
     emit identityRemoved(id);
-    CoreUserSettings s(user);
+    CoreUserSettings s(user());
     s.removeIdentity(id);
     i->deleteLater();
   }

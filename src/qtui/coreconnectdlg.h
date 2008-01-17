@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-08 by the Quassel Project                          *
+ *   Copyright (C) 2005-08 by the Quassel IRC Team                         *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,52 +18,96 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _CORECONNECTDLG_H
-#define _CORECONNECTDLG_H
+#ifndef _CORECONNECTDLG_H_
+#define _CORECONNECTDLG_H_
+
+#include <QAbstractSocket>
 
 #include "ui_coreconnectdlg.h"
+#include "ui_coreaccounteditdlg.h"
 
-class CoreConnectDlg: public QDialog {
+class ClientSyncer;
+
+class CoreConnectDlg : public QDialog {
   Q_OBJECT
 
   public:
-    CoreConnectDlg(QWidget *parent, bool doAutoConnect = false);
+    CoreConnectDlg(QWidget *parent = 0, bool = false);
     ~CoreConnectDlg();
-    QVariant getCoreState();
-
-    bool willDoInternalAutoConnect();
-    
-  public slots:
-    void doAutoConnect();
 
   private slots:
-    void createAccount();
-    void removeAccount();
-    void accountChanged(const QString & = "");
-    void setAccountEditEnabled(bool);
-    void autoConnectToggled(bool);
-    bool checkInputValid();
-    void hostEditChanged(QString);
-    void hostSelected();
-    void doConnect();
 
-    void coreConnected();
-    void coreConnectionError(QString);
-    //void coreConnectionMsg(const QString &);
-    //void coreConnectionProgress(uint partial, uint total);
-    void updateProgressBar(uint partial, uint total);
-    void recvCoreState(QVariant);
-    
-    void showConfigWizard(const QVariantMap &coredata);
+    /*** Phase Null: Accounts ***/
+    void restartPhaseNull();
+
+    void on_accountList_itemSelectionChanged();
+    void on_autoConnect_clicked(bool);
+
+    void on_addAccount_clicked();
+    void on_editAccount_clicked();
+    void on_deleteAccount_clicked();
+
+    void on_accountList_itemDoubleClicked(QListWidgetItem *item);
+    void on_accountButtonBox_accepted();
+
+    void setAccountWidgetStates();
+
+    /*** Phase One: Connection ***/
+    void connectToCore();
+
+    void initPhaseError(const QString &error);
+    void initPhaseMsg(const QString &msg);
+    void initPhaseSocketState(QAbstractSocket::SocketState);
+
+    /*** Phase Two: Login ***/
+    void startLogin();
+    void doLogin();
+    void loginFailed(const QString &);
+
+    void setLoginWidgetStates();
+
+    /*** Phase Three: Sync ***/
+    void startSync();
+
+    void coreSessionProgress(quint32, quint32);
+    void coreNetworksProgress(quint32, quint32);
+    void coreChannelsProgress(quint32, quint32);
+    void coreIrcUsersProgress(quint32, quint32);
 
   private:
     Ui::CoreConnectDlg ui;
-    QVariant coreState;
 
-    void cancelConnect();
-    void setStartState();
-    QVariantMap accountData;
-    QString curacc;
+    QString autoConnectAccount;
+    QHash<QString, QVariantMap> accounts;
+    QVariantMap account;
+    QString accountName;
+
+    bool doingAutoConnect;
+
+    ClientSyncer *clientSyncer;
+};
+
+class CoreAccountEditDlg : public QDialog {
+  Q_OBJECT
+
+  public:
+    CoreAccountEditDlg(const QString &name, const QVariantMap &data, const QStringList &existing = QStringList(), QWidget *parent = 0);
+
+    QString accountName() const;
+    QVariantMap accountData();
+
+  private slots:
+    void on_host_textChanged(const QString &);
+    void on_accountName_textChanged(const QString &);
+    void on_useRemote_toggled(bool);
+
+    void setWidgetStates();
+
+  private:
+    Ui::CoreAccountEditDlg ui;
+
+    QStringList existing;
+    QVariantMap account;
 };
 
 #endif

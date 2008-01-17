@@ -113,7 +113,6 @@ UserId SqliteStorage::validateUser(const QString &user, const QString &password)
   if(query.first()) {
     return query.value(0).toUInt();
   } else {
-    throw AuthError();
     return 0;
   }
 }
@@ -203,7 +202,7 @@ BufferInfo SqliteStorage::getBufferInfo(UserId user, const QString &network, con
     getBufferInfoQuery->exec();
     if(getBufferInfoQuery->first()) {
       bufferid = BufferInfo(getBufferInfoQuery->value(0).toUInt(), networkId, 0, network, buffer);
-      emit bufferInfoUpdated(bufferid);
+      emit bufferInfoUpdated(user, bufferid);
     }
   } else {
     bufferid = BufferInfo(getBufferInfoQuery->value(0).toUInt(), networkId, 0, network, buffer);

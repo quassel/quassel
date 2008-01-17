@@ -31,12 +31,11 @@
 // ====================
 //  Public:
 // ====================
-Network::Network(const uint &networkid, QObject *parent)
-  : SyncableObject(parent),
+Network::Network(const NetworkId &networkid, QObject *parent) : SyncableObject(parent),
     _networkId(networkid),
-    _initialized(false),
+    _identity(0),
     _myNick(QString()),
-    _networkName(QString()),
+    _networkName(QString("<not initialized>")),
     _currentServer(QString()),
     _prefixes(QString()),
     _prefixModes(QString()),
@@ -56,12 +55,8 @@ Network::Network(const uint &networkid, QObject *parent)
 //   }
 //}
 
-uint Network::networkId() const {
+NetworkId Network::networkId() const {
   return _networkId;
-}
-
-bool Network::initialized() const {
-  return _initialized;
 }
 
 SignalProxy *Network::proxy() const {
@@ -70,14 +65,14 @@ SignalProxy *Network::proxy() const {
 
 void Network::setProxy(SignalProxy *proxy) {
   _proxy = proxy;
-  proxy->synchronize(this);
+  //proxy->synchronize(this);  // we should to this explicitly from the outside!
 }
 
 bool Network::isMyNick(const QString &nick) const {
   return (myNick().toLower() == nick.toLower());
 }
 
-bool Network::isMyNick(IrcUser *ircuser) const {
+bool Network::isMe(IrcUser *ircuser) const {
   return (ircuser->nick().toLower() == myNick().toLower());
 }
 
@@ -125,6 +120,10 @@ QString Network::myNick() const {
   return _myNick;
 }
 
+IdentityId Network::identity() const {
+  return _identity;
+}
+
 QStringList Network::nicks() const {
   // we don't use _ircUsers.keys() since the keys may be
   // not up to date after a nick change
@@ -137,6 +136,10 @@ QStringList Network::nicks() const {
 
 QStringList Network::channels() const {
   return _ircChannels.keys();
+}
+
+QList<QVariantMap> Network::serverList() const {
+  return _serverList;
 }
 
 QString Network::prefixes() {
@@ -170,18 +173,19 @@ IrcUser *Network::newIrcUser(const QString &hostmask) {
   if(!_ircUsers.contains(nick)) {
     IrcUser *ircuser = new IrcUser(hostmask, this);
     // mark IrcUser as already initialized to keep the SignalProxy from requesting initData
-    if(initialized())
-      ircuser->setInitialized();
+    //if(isInitialized())
+    //  ircuser->setInitialized();
     if(proxy())
       proxy()->synchronize(ircuser);
     else
       qWarning() << "unable to synchronize new IrcUser" << hostmask << "forgot to call Network::setProxy(SignalProxy *)?";
     
     connect(ircuser, SIGNAL(nickSet(QString)), this, SLOT(ircUserNickChanged(QString)));
-    connect(ircuser, SIGNAL(initDone()), this, SIGNAL(ircUserInitDone()));
+    connect(ircuser, SIGNAL(initDone()), this, SLOT(ircUserInitDone()));
     connect(ircuser, SIGNAL(destroyed()), this, SLOT(ircUserDestroyed()));
     _ircUsers[nick] = ircuser;
     emit ircUserAdded(hostmask);
+    emit ircUserAdded(ircuser);
   }
   return _ircUsers[nick];
 }
@@ -196,8 +200,9 @@ void Network::removeIrcUser(IrcUser *ircuser) {
     return;
 
   _ircUsers.remove(nick);
-  ircuser->deleteLater();
   emit ircUserRemoved(nick);
+  emit ircUserRemoved(ircuser);
+  ircuser->deleteLater();
 }
 
 void Network::removeIrcUser(QString nick) {
@@ -222,22 +227,27 @@ QList<IrcUser *> Network::ircUsers() const {
   return _ircUsers.values();
 }
 
+quint32 Network::ircUserCount() const {
+  return _ircUsers.count();
+}
+
 IrcChannel *Network::newIrcChannel(const QString &channelname) {
   if(!_ircChannels.contains(channelname.toLower())) {
     IrcChannel *channel = new IrcChannel(channelname, this);
     // mark IrcUser as already initialized to keep the SignalProxy from requesting initData
-    if(initialized())
-      channel->setInitialized();
+    //if(isInitialized())
+    //  channel->setInitialized();
 
     if(proxy())
       proxy()->synchronize(channel);
     else
       qWarning() << "unable to synchronize new IrcChannel" << channelname << "forgot to call Network::setProxy(SignalProxy *)?";
 
-    connect(channel, SIGNAL(initDone()), this, SIGNAL(ircChannelInitDone()));
+    connect(channel, SIGNAL(initDone()), this, SLOT(ircChannelInitDone()));
     connect(channel, SIGNAL(destroyed()), this, SLOT(channelDestroyed()));
     _ircChannels[channelname.toLower()] = channel;
     emit ircChannelAdded(channelname);
+    emit ircChannelAdded(channel);
   }
   return _ircChannels[channelname.toLower()];
 }
@@ -263,24 +273,30 @@ QList<IrcChannel *> Network::ircChannels() const {
   return _ircChannels.values();
 }
 
-QTextCodec *Network::codecForEncoding() const {
-  return _codecForEncoding;
+quint32 Network::ircChannelCount() const {
+  return _ircChannels.count();
 }
 
-void Network::setCodecForEncoding(const QString &name) {
-  setCodecForEncoding(QTextCodec::codecForName(name.toAscii()));
+QByteArray Network::codecForEncoding() const {
+  if(_codecForEncoding) return _codecForEncoding->name();
+  return QByteArray();
+}
+
+void Network::setCodecForEncoding(const QByteArray &name) {
+  setCodecForEncoding(QTextCodec::codecForName(name));
 }
 
 void Network::setCodecForEncoding(QTextCodec *codec) {
   _codecForEncoding = codec;
 }
 
-QTextCodec *Network::codecForDecoding() const {
-  return _codecForDecoding;
+QByteArray Network::codecForDecoding() const {
+  if(_codecForDecoding) return _codecForDecoding->name();
+  else return QByteArray();
 }
 
-void Network::setCodecForDecoding(const QString &name) {
-  setCodecForDecoding(QTextCodec::codecForName(name.toAscii()));
+void Network::setCodecForDecoding(const QByteArray &name) {
+  setCodecForDecoding(QTextCodec::codecForName(name));
 }
 
 void Network::setCodecForDecoding(QTextCodec *codec) {
@@ -316,6 +332,16 @@ void Network::setMyNick(const QString &nickname) {
   emit myNickSet(nickname);
 }
 
+void Network::setIdentity(IdentityId id) {
+  _identity = id;
+  emit identitySet(id);
+}
+
+void Network::setServerList(const QList<QVariantMap> &serverList) {
+  _serverList = serverList;
+  emit serverListSet(serverList);
+}
+
 void Network::addSupport(const QString &param, const QString &value) {
   if(!_supports.contains(param)) {
     _supports[param] = value;
@@ -340,6 +366,12 @@ QVariantMap Network::initSupports() const {
   return supports;
 }
 
+QVariantList Network::initServerList() const {
+  QList<QVariant> list;
+  foreach(QVariantMap serverdata, serverList()) list << QVariant(serverdata);
+  return list;
+}
+
 QStringList Network::initIrcUsers() const {
   QStringList hostmasks;
   foreach(IrcUser *ircuser, ircUsers()) {
@@ -358,6 +390,12 @@ void Network::initSetSupports(const QVariantMap &supports) {
     iter.next();
     addSupport(iter.key(), iter.value().toString());
   }
+}
+
+void Network::initSetServerList(const QVariantList & serverList) {
+  QList<QVariantMap> slist;
+  foreach(QVariant v, serverList) slist << v.toMap();
+  setServerList(slist);
 }
 
 void Network::initSetIrcUsers(const QStringList &hostmasks) {
@@ -395,9 +433,21 @@ void Network::ircUserNickChanged(QString newnick) {
     return;
 
   if(newnick.toLower() != oldnick) _ircUsers[newnick.toLower()] = _ircUsers.take(oldnick);
-  
+
   if(myNick().toLower() == oldnick)
     setMyNick(newnick);
+}
+
+void Network::ircUserInitDone() {
+  IrcUser *ircuser = static_cast<IrcUser *>(sender());
+  Q_ASSERT(ircuser);
+  emit ircUserInitDone(ircuser);
+}
+
+void Network::ircChannelInitDone() {
+  IrcChannel *ircchannel = static_cast<IrcChannel *>(sender());
+  Q_ASSERT(ircchannel);
+  emit ircChannelInitDone(ircchannel);
 }
 
 void Network::ircUserDestroyed() {
@@ -409,12 +459,14 @@ void Network::ircUserDestroyed() {
 void Network::channelDestroyed() {
   IrcChannel *channel = static_cast<IrcChannel *>(sender());
   Q_ASSERT(channel);
+  emit ircChannelRemoved(sender());
   _ircChannels.remove(_ircChannels.key(channel));
 }
 
-void Network::setInitialized() {
-  _initialized = true;
-  emit initDone();
+void Network::requestConnect() {
+  if(!proxy()) return;
+  if(proxy()->proxyMode() == SignalProxy::Client) emit connectRequested(); // on the client this triggers calling this slot on the core
+  else emit connectRequested(networkId());  // and this is for CoreSession :)
 }
 
 // ====================

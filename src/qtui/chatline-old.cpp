@@ -21,11 +21,9 @@
 #include "chatline-old.h"
 #include "qtui.h"
 
-//!\brief Construct a ChatLine object from a message.
+//! Construct a ChatLine object from a message.
 /**
  * \param m   The message to be layouted and rendered
- * \param net The network name
- * \param buf The buffer name
  */
 ChatLine::ChatLine(Message m) {
   hght = 0;

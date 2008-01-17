@@ -18,18 +18,19 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QMetaObject>
+#include <QMetaMethod>
+#include <QMutexLocker>
+#include <QCoreApplication>
+
 #include "core.h"
 #include "coresession.h"
 #include "coresettings.h"
 #include "signalproxy.h"
 #include "sqlitestorage.h"
 
-#include <QMetaObject>
-#include <QMetaMethod>
-
-#include <QCoreApplication>
-
 Core *Core::instanceptr = 0;
+QMutex Core::mutex;
 
 Core *Core::instance() {
   if(instanceptr) return instanceptr;
@@ -46,71 +47,17 @@ void Core::destroy() {
 Core::Core()
   : storage(0)
 {
+  startTime = QDateTime::currentDateTime();  // for uptime :)
 }
 
 void Core::init() {
-  // TODO: Remove this again at some point
-  // Check if old core settings need to be migrated in order to make the switch to the
-  // new location less painful.
-  CoreSettings cs;
-  QVariant foo = cs.databaseSettings();
-  
-  if(!foo.isValid()) {
-    // ok, no settings stored yet. check for old ones.
-#ifdef Q_WS_MAC
-    QSettings os("quassel-irc.org", "Quassel IRC", this);
-#else
-    QSettings os("Quassel IRC Development Team", "Quassel IRC");
-#endif
-    QVariant bar = os.value("Core/DatabaseSettings");
-    if(bar.isValid()) {
-      // old settings available -- migrate!
-      qWarning() << "\n\nOld settings detected. Will migrate core settings to the new location...\nNOTE: GUI style settings won't be migrated!\n";
-#ifdef Q_WS_MAC
-      QSettings ncs("quassel-irc.org", "Quassel Core");
-#else
-      QSettings ncs("Quassel Project", "Quassel Core");
-#endif
-      ncs.setValue("Core/CoreState", os.value("Core/CoreState"));
-      ncs.setValue("Core/DatabaseSettings", os.value("Core/DatabaseSettings"));
-      os.beginGroup("SessionData");
-      foreach(QString group, os.childGroups()) {
-        ncs.setValue(QString("CoreUser/%1/SessionData/Identities").arg(group), os.value(QString("%1/Identities").arg(group)));
-        ncs.setValue(QString("CoreUser/%1/SessionData/Networks").arg(group), os.value(QString("%1/Networks").arg(group)));
-      }
-      os.endGroup();
-#ifdef Q_WS_MAC
-      QSettings ngs("quassel-irc.org", "Quassel Client");
-#else
-      QSettings ngs("Quassel Project", "Quassel Client");
-#endif
-      os.beginGroup("Accounts");
-      foreach(QString key, os.childKeys()) {
-        ngs.setValue(QString("Accounts/%1").arg(key), os.value(key));
-      }
-      foreach(QString group, os.childGroups()) {
-        ngs.setValue(QString("Accounts/%1/AccountData").arg(group), os.value(QString("%1/AccountData").arg(group)));
-      }
-      os.endGroup();
-      os.beginGroup("Geometry");
-      foreach(QString key, os.childKeys()) {
-        ngs.setValue(QString("UI/%1").arg(key), os.value(key));
-      }
-      os.endGroup();
-
-      ncs.sync();
-      ngs.sync();
-      qWarning() << "Migration successfully finished. You may now delete $HOME/.config/Quassel IRC Development Team/ (on Linux).\n\n";
-    }
-  }
-  // END
-
   configured = false;
 
+  CoreSettings cs;
   if(!(configured = initStorage(cs.databaseSettings().toMap()))) {
     qWarning("Core is currently not configured!");
   }
-  
+
   connect(&server, SIGNAL(newConnection()), this, SLOT(incomingConnection()));
   startListening(cs.port());
   guiUser = 0;
@@ -129,6 +76,7 @@ bool Core::initStorage(QVariantMap dbSettings, bool setup) {
   // FIXME register new storageProviders here
   if(engine == "sqlite" && SqliteStorage::isAvailable()) {
     storage = new SqliteStorage(this);
+    connect(storage, SIGNAL(bufferInfoUpdated(UserId, const BufferInfo &)), this, SIGNAL(bufferInfoUpdated(UserId, const BufferInfo &)));
   } else {
     qWarning() << "Selected StorageBackend is not available:" << dbSettings["Type"].toString();
     return configured = false;
@@ -141,15 +89,14 @@ bool Core::initStorage(QVariantMap dbSettings, bool setup) {
   return configured = storage->init(dbSettings);
 }
 
-bool Core::initStorage(QVariantMap dbSettings) {
-  return initStorage(dbSettings, false);
-}
-
 Core::~Core() {
+  // FIXME properly shutdown the sessions
   qDeleteAll(sessions);
 }
 
 void Core::restoreState() {
+  return;
+  /*
   Q_ASSERT(!instance()->sessions.count());
   CoreSettings s;
   QList<QVariant> users = s.coreState().toList();
@@ -159,44 +106,66 @@ void Core::restoreState() {
       QVariantMap m = v.toMap();
       if(m.contains("UserId")) {
         CoreSession *sess = createSession(m["UserId"].toUInt());
-        sess->restoreState(m["State"]);
+        sess->restoreState(m["State"]);  // FIXME multithreading
       }
     }
     qDebug() << "...done.";
   }
+  */
 }
 
 void Core::saveState() {
+  /*
   CoreSettings s;
   QList<QVariant> users;
   foreach(CoreSession *sess, instance()->sessions.values()) {
     QVariantMap m;
-    m["UserId"] = sess->userId();
+    m["UserId"] = sess->user();  // FIXME multithreading
     m["State"] = sess->state();
     users << m;
   }
   s.setCoreState(users);
+  */
 }
 
-CoreSession *Core::session(UserId uid) {
-  Core *core = instance();
-  if(core->sessions.contains(uid)) return core->sessions[uid];
-  else return 0;
+/*** Storage Access ***/
+
+NetworkId Core::networkId(UserId user, const QString &network) {
+  QMutexLocker locker(&mutex);
+  return instance()->storage->getNetworkId(user, network);
 }
 
-CoreSession *Core::localSession() {
-  Core *core = instance();
-  if(core->guiUser && core->sessions.contains(core->guiUser)) return core->sessions[core->guiUser];
-  else return 0;
+BufferInfo Core::bufferInfo(UserId user, const QString &network, const QString &buffer) {
+  //QMutexLocker locker(&mutex);
+  return instance()->storage->getBufferInfo(user, network, buffer);
 }
 
-CoreSession *Core::createSession(UserId uid) {
-  Core *core = instance();
-  Q_ASSERT(!core->sessions.contains(uid));
-  CoreSession *sess = new CoreSession(uid, core->storage);
-  core->sessions[uid] = sess;
-  return sess;
+MsgId Core::storeMessage(const Message &message) {
+  QMutexLocker locker(&mutex);
+  return instance()->storage->logMessage(message);
 }
+
+QList<Message> Core::requestMsgs(BufferInfo buffer, int lastmsgs, int offset) {
+  QMutexLocker locker(&mutex);
+  return instance()->storage->requestMsgs(buffer, lastmsgs, offset);
+}
+
+QList<Message> Core::requestMsgs(BufferInfo buffer, QDateTime since, int offset) {
+  QMutexLocker locker(&mutex);
+  return instance()->storage->requestMsgs(buffer, since, offset);
+}
+
+QList<Message> Core::requestMsgRange(BufferInfo buffer, int first, int last) {
+  QMutexLocker locker(&mutex);
+  return instance()->storage->requestMsgRange(buffer, first, last);
+}
+
+QList<BufferInfo> Core::requestBuffers(UserId user, QDateTime since) {
+  QMutexLocker locker(&mutex);
+  return instance()->storage->requestBuffers(user, since);
+}
+
+/*** Network Management ***/
 
 bool Core::startListening(uint port) {
   if(!server.listen(QHostAddress::Any, port)) {
@@ -218,9 +187,10 @@ void Core::incomingConnection() {
     QTcpSocket *socket = server.nextPendingConnection();
     connect(socket, SIGNAL(disconnected()), this, SLOT(clientDisconnected()));
     connect(socket, SIGNAL(readyRead()), this, SLOT(clientHasData()));
-    blockSizes.insert(socket, (quint32)0);
-    qDebug() << "Client connected from " << socket->peerAddress().toString();
-    
+    QVariantMap clientInfo;
+    blocksizes.insert(socket, (quint32)0);
+    qDebug() << "Client connected from"  << qPrintable(socket->peerAddress().toString());
+
     if (!configured) {
       server.close();
       qDebug() << "Closing server for basic setup.";
@@ -230,10 +200,73 @@ void Core::incomingConnection() {
 
 void Core::clientHasData() {
   QTcpSocket *socket = dynamic_cast<QTcpSocket*>(sender());
-  Q_ASSERT(socket && blockSizes.contains(socket));
-  quint32 bsize = blockSizes.value(socket);
+  Q_ASSERT(socket && blocksizes.contains(socket));
   QVariant item;
-  if(SignalProxy::readDataFromDevice(socket, bsize, item)) {
+  while(SignalProxy::readDataFromDevice(socket, blocksizes[socket], item)) {
+    QVariantMap msg = item.toMap();
+    if(!msg.contains("MsgType")) {
+      // Client is way too old, does not even use the current init format
+      qWarning() << qPrintable(tr("Antique client trying to connect... refusing."));
+      socket->close();
+      return;
+    }
+    // OK, so we have at least an init message format we can understand
+    if(msg["MsgType"] == "ClientInit") {
+      QVariantMap reply;
+      reply["CoreVersion"] = Global::quasselVersion;
+      reply["CoreDate"] = Global::quasselDate;
+      reply["CoreBuild"] = Global::quasselBuild;
+      // TODO: Make the core info configurable
+      int uptime = startTime.secsTo(QDateTime::currentDateTime());
+      int updays = uptime / 86400; uptime %= 86400;
+      int uphours = uptime / 3600; uptime %= 3600;
+      int upmins = uptime / 60;
+      reply["CoreInfo"] = tr("<b>Quassel Core Version %1 (Build >= %2)</b><br>"
+                             "Up %3d%4h%5m (since %6)").arg(Global::quasselVersion).arg(Global::quasselBuild)
+                             .arg(updays).arg(uphours,2,10,QChar('0')).arg(upmins,2,10,QChar('0')).arg(startTime.toString(Qt::TextDate));
+
+      reply["SupportSsl"] = false;
+      reply["LoginEnabled"] = true;
+      // TODO: check if we are configured, start wizard otherwise
+
+      // Just version information -- check it!
+      if(msg["ClientBuild"].toUInt() < Global::clientBuildNeeded) {
+        reply["MsgType"] = "ClientInitReject";
+        reply["Error"] = tr("<b>Your Quassel Client is too old!</b><br>"
+                            "This core needs at least client version %1 (Build >= %2).<br>"
+                            "Please consider upgrading your client.").arg(Global::quasselVersion).arg(Global::quasselBuild);
+        SignalProxy::writeDataToDevice(socket, reply);
+        qWarning() << qPrintable(tr("Client %1 too old, rejecting.").arg(socket->peerAddress().toString()));
+        socket->close(); return;
+      }
+      clientInfo[socket] = msg; // store for future reference
+      reply["MsgType"] = "ClientInitAck";
+      SignalProxy::writeDataToDevice(socket, reply);
+    } else if(msg["MsgType"] == "ClientLogin") {
+      QVariantMap reply;
+      if(!clientInfo.contains(socket)) {
+        reply["MsgType"] = "ClientLoginReject";
+        reply["Error"] = tr("<b>Client not initialized!</b><br>You need to send an init message before trying to login.");
+        SignalProxy::writeDataToDevice(socket, reply);
+        qWarning() << qPrintable(tr("Client %1 did not send an init message before trying to login, rejecting.").arg(socket->peerAddress().toString()));
+        socket->close(); return;
+      }
+      mutex.lock();
+      UserId uid = storage->validateUser(msg["User"].toString(), msg["Password"].toString());
+      mutex.unlock();
+      if(!uid) {
+        reply["MsgType"] = "ClientLoginReject";
+        reply["Error"] = tr("<b>Invalid username or password!</b><br>The username/password combination you supplied could not be found in the database.");
+        SignalProxy::writeDataToDevice(socket, reply);
+        continue;
+      }
+      reply["MsgType"] = "ClientLoginAck";
+      SignalProxy::writeDataToDevice(socket, reply);
+      qDebug() << qPrintable(tr("Client %1 initialized and authentificated successfully as \"%2\".").arg(socket->peerAddress().toString(), msg["User"].toString()));
+      setupClientSession(socket, uid);
+    }
+    //socket->close(); return;
+    /*
     // we need to auth the client
     try {
       QVariantMap msg = item.toMap();
@@ -253,50 +286,36 @@ void Core::clientHasData() {
       qWarning() << "Client init error:" << e.msg();
       socket->close();
       return;
-    }
+    } */
   }
-  blockSizes[socket] = bsize = 0;  // FIXME blockSizes aufr�um0rn!
 }
 
-// FIXME: no longer called, since connection handling is now in SignalProxy
-// No, it is called as long as core is not configured. (kaffeedoktor)
+// Potentially called during the initialization phase (before handing the connection off to the session)
 void Core::clientDisconnected() {
   QTcpSocket *socket = dynamic_cast<QTcpSocket*>(sender());
-  blockSizes.remove(socket);
-  qDebug() << "Client disconnected.";
-  
-  // make server listen again if still not configured
+  blocksizes.remove(socket);
+  clientInfo.remove(socket);
+  qDebug() << qPrintable(tr("Client %1 disconnected.").arg(socket->peerAddress().toString()));
+  socket->deleteLater();
+  socket = 0;
+
+  // make server listen again if still not configured  FIXME
   if (!configured) {
     startListening();
   }
-  
+
   // TODO remove unneeded sessions - if necessary/possible...
+  // Suggestion: kill sessions if they are not connected to any network and client.
 }
 
-QVariant Core::connectLocalClient(QString user, QString passwd) {
-  UserId uid = instance()->storage->validateUser(user, passwd);
-  QVariant reply = instance()->initSession(uid);
-  instance()->guiUser = uid;
-  qDebug() << "Local client connected.";
-  return reply;
-}
-
-void Core::disconnectLocalClient() {
-  qDebug() << "Local client disconnected.";
-  instance()->guiUser = 0;
-}
-
-void Core::processClientInit(QTcpSocket *socket, const QVariantMap &msg) {
-  // Auth
-  QVariantMap reply;
-  UserId uid = storage->validateUser(msg["User"].toString(), msg["Password"].toString()); // throws exception if this failed
-  reply["StartWizard"] = false;
-  reply["Reply"] = initSession(uid);
-  disconnect(socket, 0, this, 0);
-  sessions[uid]->addClient(socket);
+  
+  //disconnect(socket, 0, this, 0);
+  /*
+  sessions[uid]->addClient(socket);  // FIXME multithreading
   qDebug() << "Client initialized successfully.";
   SignalProxy::writeDataToDevice(socket, reply);
-}
+  */
+
 
 void Core::processCoreSetup(QTcpSocket *socket, QVariantMap &msg) {
   if(msg["HasSettings"].toBool()) {
@@ -322,7 +341,7 @@ void Core::processCoreSetup(QTcpSocket *socket, QVariantMap &msg) {
       storage->addUser(auth["User"].toString(), auth["Password"].toString());
       startListening();
       // continue the normal procedure
-      processClientInit(socket, auth);
+      //processClientInit(socket, auth);
     }
   } else {
     // notify client to start wizard
@@ -333,16 +352,29 @@ void Core::processCoreSetup(QTcpSocket *socket, QVariantMap &msg) {
   }
 }
 
-QVariant Core::initSession(UserId uid) {
+void Core::setupClientSession(QTcpSocket *socket, UserId uid) {
   // Find or create session for validated user
-  CoreSession *sess;
-  if(sessions.contains(uid))
-    sess = sessions[uid];
-  else
-    sess = createSession(uid);
-  QVariantMap reply;
-  reply["SessionState"] = sess->sessionState();
-  return reply;
+  SessionThread *sess;
+  if(sessions.contains(uid)) sess = sessions[uid];
+  else sess = createSession(uid);
+  // Hand over socket, session then sends state itself
+  disconnect(socket, 0, this, 0);
+  if(!sess) {
+    qWarning() << qPrintable(tr("Could not initialize session for client %1!").arg(socket->peerAddress().toString()));
+    socket->close();
+  }
+  sess->addClient(socket);
+}
+
+SessionThread *Core::createSession(UserId uid) {
+  if(sessions.contains(uid)) {
+    qWarning() << "Calling createSession() when a session for the user already exists!";
+    return 0;
+  }
+  SessionThread *sess = new SessionThread(uid, this);
+  sessions[uid] = sess;
+  sess->start();
+  return sess;
 }
 
 QStringList Core::availableStorageProviders() {

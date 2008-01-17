@@ -195,7 +195,7 @@ void BufferItem::removeUserFromCategory(IrcUser *ircUser) {
   IrcUserItem *userItem;
   for(int i = 0; i < childCount(); i++) {
     categoryItem = qobject_cast<UserCategoryItem *>(child(i));
-    if(userItem = qobject_cast<IrcUserItem *>(categoryItem->childById((quint64)ircUser))) {
+    if((userItem = qobject_cast<IrcUserItem *>(categoryItem->childById((quint64)ircUser)))) {
       userItem->deleteLater();
       return;
     }
@@ -210,10 +210,9 @@ void BufferItem::userModeChanged(IrcUser *ircUser) {
 /*****************************************
 *  Network Items
 *****************************************/
-NetworkItem::NetworkItem(const uint &netid, const QString &network, AbstractTreeItem *parent)
+NetworkItem::NetworkItem(const NetworkId &netid, AbstractTreeItem *parent)
   : PropertyMapItem(QList<QString>() << "networkName" << "currentServer" << "nickCount", parent),
-    _networkId(netid),
-    _networkName(network)
+    _networkId(netid)
 {
   setFlags(Qt::ItemIsEnabled);
 }
@@ -243,7 +242,7 @@ QString NetworkItem::networkName() const {
   if(_network)
     return _network->networkName();
   else
-    return _networkName;
+    return QString();
 }
 
 QString NetworkItem::currentServer() const {
@@ -404,31 +403,33 @@ bool NetworkModel::isBufferIndex(const QModelIndex &index) const {
   return index.data(NetworkModel::ItemTypeRole) == NetworkModel::BufferItemType;
 }
 
+/*
 Buffer *NetworkModel::getBufferByIndex(const QModelIndex &index) const {
   BufferItem *item = static_cast<BufferItem *>(index.internalPointer());
   return Client::instance()->buffer(item->id());
 }
+*/
 
 
 // experimental stuff :)
-QModelIndex NetworkModel::networkIndex(uint networkId) {
+QModelIndex NetworkModel::networkIndex(NetworkId networkId) {
   return indexById(networkId);
 }
 
-NetworkItem *NetworkModel::network(uint networkId) {
+NetworkItem *NetworkModel::existsNetworkItem(NetworkId networkId) {
   return qobject_cast<NetworkItem *>(rootItem->childById(networkId));
 }
 
-NetworkItem *NetworkModel::newNetwork(uint networkId, const QString &networkName) {
-  NetworkItem *networkItem = network(networkId);
+NetworkItem *NetworkModel::networkItem(NetworkId networkId) {
+  NetworkItem *netItem = existsNetworkItem(networkId);
 
-  if(networkItem == 0) {
-    networkItem = new NetworkItem(networkId, networkName, rootItem);
-    appendChild(rootItem, networkItem);
+  if(netItem == 0) {
+    netItem = new NetworkItem(networkId, rootItem);
+    appendChild(rootItem, netItem);
   }
 
-  Q_ASSERT(networkItem);
-  return networkItem;
+  Q_ASSERT(netItem);
+  return netItem;
 }
 
 QModelIndex NetworkModel::bufferIndex(BufferId bufferId) {
@@ -442,7 +443,7 @@ QModelIndex NetworkModel::bufferIndex(BufferId bufferId) {
   return QModelIndex();
 }
 
-BufferItem *NetworkModel::buffer(BufferInfo bufferInfo) {
+BufferItem *NetworkModel::existsBufferItem(const BufferInfo &bufferInfo) {
   QModelIndex bufferIdx = bufferIndex(bufferInfo.uid());
   if(bufferIdx.isValid())
     return static_cast<BufferItem *>(bufferIdx.internalPointer());
@@ -450,16 +451,16 @@ BufferItem *NetworkModel::buffer(BufferInfo bufferInfo) {
     return 0;
 }
 
-BufferItem *NetworkModel::newBuffer(BufferInfo bufferInfo) {
-  BufferItem *bufferItem = buffer(bufferInfo);
-  if(bufferItem == 0) {
-    NetworkItem *networkItem = newNetwork(bufferInfo.networkId(), bufferInfo.network());
-    bufferItem = new BufferItem(bufferInfo, networkItem);
-    appendChild(networkItem, bufferItem);
+BufferItem *NetworkModel::bufferItem(const BufferInfo &bufferInfo) {
+  BufferItem *bufItem = existsBufferItem(bufferInfo);
+  if(bufItem == 0) {
+    NetworkItem *netItem = networkItem(bufferInfo.networkId());
+    bufItem = new BufferItem(bufferInfo, netItem);
+    appendChild(netItem, bufItem);
   }
 
-  Q_ASSERT(bufferItem);
-  return bufferItem;
+  Q_ASSERT(bufItem);
+  return bufItem;
 }
 
 QStringList NetworkModel::mimeTypes() const {
@@ -475,19 +476,20 @@ bool NetworkModel::mimeContainsBufferList(const QMimeData *mimeData) {
   return mimeData->hasFormat("application/Quassel/BufferItemList");
 }
 
-QList< QPair<uint, uint> > NetworkModel::mimeDataToBufferList(const QMimeData *mimeData) {
-  QList< QPair<uint, uint> > bufferList;
+QList< QPair<NetworkId, BufferId> > NetworkModel::mimeDataToBufferList(const QMimeData *mimeData) {
+  QList< QPair<NetworkId, BufferId> > bufferList;
 
   if(!mimeContainsBufferList(mimeData))
     return bufferList;
 
   QStringList rawBufferList = QString::fromAscii(mimeData->data("application/Quassel/BufferItemList")).split(",");
-  uint networkId, bufferUid;
+  NetworkId networkId;
+  BufferId bufferUid;
   foreach(QString rawBuffer, rawBufferList) {
     if(!rawBuffer.contains(":"))
       continue;
-    networkId = rawBuffer.section(":", 0, 0).toUInt();
-    bufferUid = rawBuffer.section(":", 1, 1).toUInt();
+    networkId = rawBuffer.section(":", 0, 0).toInt();
+    bufferUid = rawBuffer.section(":", 1, 1).toInt();
     bufferList.append(qMakePair(networkId, bufferUid));
   }
   return bufferList;
@@ -500,8 +502,8 @@ QMimeData *NetworkModel::mimeData(const QModelIndexList &indexes) const {
   QStringList bufferlist;
   QString netid, uid, bufferid;
   foreach(QModelIndex index, indexes) {
-    netid = QString::number(index.data(NetworkIdRole).toUInt());
-    uid = QString::number(index.data(BufferIdRole).toUInt());
+    netid = QString::number(index.data(NetworkIdRole).value<NetworkId>());
+    uid = QString::number(index.data(BufferIdRole).value<BufferId>());
     bufferid = QString("%1:%2").arg(netid).arg(uid);
     if(!bufferlist.contains(bufferid))
       bufferlist << bufferid;
@@ -535,7 +537,7 @@ bool NetworkModel::dropMimeData(const QMimeData *data, Qt::DropAction action, in
   uint bufferId = bufferList.first().second;
 
   // no self merges (would kill us)
-  if(bufferId == parent.data(BufferIdRole).toUInt())
+  if(bufferId == parent.data(BufferIdRole).value<BufferId>())
     return false; 
   
   Q_ASSERT(rootItem->childById(netId));
@@ -547,24 +549,20 @@ bool NetworkModel::dropMimeData(const QMimeData *data, Qt::DropAction action, in
     return false;
     
   // TODO: warn user about buffermerge!
-  qDebug() << "merging" << bufferId << parent.data(BufferIdRole).toInt();
+  qDebug() << "merging" << bufferId << parent.data(BufferIdRole).value<BufferId>();
   removeRow(parent.row(), parent.parent());
   
   return true;
 }
 
 void NetworkModel::attachNetwork(Network *net) {
-  NetworkItem *networkItem = network(net->networkId());
-  if(!networkItem) {
-    qWarning() << "NetworkModel::attachNetwork(): network is unknown!";
-    return;
-  }
-  networkItem->attachNetwork(net);
+  NetworkItem *netItem = networkItem(net->networkId());
+  netItem->attachNetwork(net);
 }
 
 void NetworkModel::bufferUpdated(BufferInfo bufferInfo) {
-  BufferItem *bufferItem = newBuffer(bufferInfo);
-  QModelIndex itemindex = indexByItem(bufferItem);
+  BufferItem *bufItem = bufferItem(bufferInfo);
+  QModelIndex itemindex = indexByItem(bufItem);
   emit dataChanged(itemindex, itemindex);
 }
 

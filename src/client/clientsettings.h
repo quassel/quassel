@@ -39,10 +39,10 @@ class ClientSettings : public Settings {
 
 };
 
-class AccountSettings : public ClientSettings {
+class CoreAccountSettings : public ClientSettings {
 
   public:
-    AccountSettings();
+    CoreAccountSettings();
 
     QStringList knownAccounts();
     QString lastAccount();
@@ -50,8 +50,10 @@ class AccountSettings : public ClientSettings {
     QString autoConnectAccount();
     void setAutoConnectAccount(const QString &account);
 
-    void setValue(const QString &account, const QString &key, const QVariant &data);
-    QVariant value(const QString &account, const QString &key, const QVariant &def = QVariant());
+    void storeAccount(const QString name, const QVariantMap &data);
+    QVariantMap retrieveAccount(const QString &name);
+    void storeAllAccounts(const QHash<QString, QVariantMap> accounts);
+    QHash<QString, QVariantMap> retrieveAllAccounts();
     void removeAccount(const QString &account);
 
 };

@@ -29,25 +29,28 @@
 
 #include "ircuser.h"
 #include "network.h"
+#include "identity.h"
 
 #include "ircserverhandler.h"
 #include "userinputhandler.h"
 #include "ctcphandler.h"
 
-NetworkConnection::NetworkConnection(UserId uid, NetworkId networkId, QString net, const QVariant &state)
-  : _userId(uid),
-    _networkId(networkId),
+NetworkConnection::NetworkConnection(Network *network, CoreSession *session, const QVariant &state) : QObject(network),
+    _network(network),
+    _coreSession(session),
     _ircServerHandler(new IrcServerHandler(this)),
     _userInputHandler(new UserInputHandler(this)),
     _ctcpHandler(new CtcpHandler(this)),
-    _network(new Network(networkId, this)),
     _previousState(state)
 {
-  connect(network(), SIGNAL(currentServerSet(const QString &)), this, SLOT(sendPerform()));
-  network()->setCodecForEncoding("ISO-8859-15"); // FIXME
-  network()->setCodecForDecoding("ISO-8859-15"); // FIXME
-  network()->setNetworkName(net);
-  network()->setProxy(coreSession()->signalProxy());
+  connect(network, SIGNAL(currentServerSet(const QString &)), this, SLOT(sendPerform()));
+
+  connect(&socket, SIGNAL(connected()), this, SLOT(socketConnected()));
+  connect(&socket, SIGNAL(disconnected()), this, SLOT(quit()));
+  connect(&socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(socketError(QAbstractSocket::SocketError)));
+  connect(&socket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(socketStateChanged(QAbstractSocket::SocketState)));
+  connect(&socket, SIGNAL(readyRead()), this, SLOT(socketHasData()));
+
 }
 
 NetworkConnection::~NetworkConnection() {
@@ -56,15 +59,36 @@ NetworkConnection::~NetworkConnection() {
   delete _ctcpHandler;
 }
 
-void NetworkConnection::run() {
-  connect(&socket, SIGNAL(connected()), this, SLOT(socketConnected()));
-  connect(&socket, SIGNAL(disconnected()), this, SLOT(quit()));
-  connect(&socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(socketError(QAbstractSocket::SocketError)));
-  connect(&socket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(socketStateChanged(QAbstractSocket::SocketState)));
-  connect(&socket, SIGNAL(readyRead()), this, SLOT(socketHasData()));
-  connect(this, SIGNAL(finished()), this, SLOT(threadFinished()));
+bool NetworkConnection::isConnected() const {
+  return socket.state() == QAbstractSocket::ConnectedState;
+}
 
-  exec();
+uint NetworkConnection::networkId() const {
+  return network()->networkId();
+}
+
+QString NetworkConnection::networkName() const {
+  return network()->networkName();
+}
+
+Network *NetworkConnection::network() const {
+  return _network;
+}
+
+CoreSession *NetworkConnection::coreSession() const {
+  return _coreSession;
+}
+
+IrcServerHandler *NetworkConnection::ircServerHandler() const {
+  return _ircServerHandler;
+}
+
+UserInputHandler *NetworkConnection::userInputHandler() const {
+  return _userInputHandler;
+}
+
+CtcpHandler *NetworkConnection::ctcpHandler() const {
+  return _ctcpHandler;
 }
 
 QString NetworkConnection::serverDecode(const QByteArray &string) const {
@@ -100,18 +124,21 @@ QByteArray NetworkConnection::userEncode(const QString &userNick, const QString 
 }
 
 
-void NetworkConnection::connectToIrc(QString net) {
-  if(net != networkName())
-    return; // not me!
-  
-  CoreSession *sess = coreSession();
-  networkSettings = sess->retrieveSessionData("Networks").toMap()[net].toMap();
-  identity = sess->retrieveSessionData("Identities").toMap()[networkSettings["Identity"].toString()].toMap();
+void NetworkConnection::connectToIrc() {
+  QList<QVariantMap> serverList = network()->serverList();
+  Identity *identity = coreSession()->identity(network()->identity());
+  if(!serverList.count()) {
+    qWarning() << "Server list empty, ignoring connect request!";
+    return;
+  }
+  if(!identity) {
+    qWarning() << "Invalid identity configures, ignoring connect request!";
+    return;
+  }
 
-  //FIXME this will result in a pretty fuckup if there are no servers in the list
-  QList<QVariant> servers = networkSettings["Servers"].toList();
-  QString host = servers[0].toMap()["Address"].toString();
-  quint16 port = servers[0].toMap()["Port"].toUInt();
+  // TODO implement cycling / random servers
+  QString host = serverList[0]["Address"].toString();
+  quint16 port = serverList[0]["Port"].toUInt();
   displayStatusMsg(QString("Connecting to %1:%2...").arg(host).arg(port));
   socket.connectToHost(host, port);
 }
@@ -138,15 +165,13 @@ void NetworkConnection::sendPerform() {
   _previousState = QVariant();
 }
 
-QVariant NetworkConnection::state() {
+QVariant NetworkConnection::state() const {
   IrcUser *me = network()->ircUser(network()->myNick());
   if(!me) return QVariant();  // this shouldn't really happen, I guess
   return me->channels();
 }
 
-void NetworkConnection::disconnectFromIrc(QString net) {
-  if(net != networkName())
-    return; // not me!
+void NetworkConnection::disconnectFromIrc() {
   socket.disconnectFromHost();
 }
 
@@ -158,29 +183,27 @@ void NetworkConnection::socketHasData() {
 }
 
 void NetworkConnection::socketError( QAbstractSocket::SocketError err ) {
-  //qDebug() << "Socket Error!";
+  qDebug() << "Socket Error!";
 }
 
 void NetworkConnection::socketConnected() {
   emit connected(networkId());
-  putRawLine(QString("NICK :%1").arg(identity["NickList"].toStringList()[0]));  // FIXME: try more nicks if error occurs
-  putRawLine(QString("USER %1 8 * :%2").arg(identity["Ident"].toString()).arg(identity["RealName"].toString()));
-}
-
-void NetworkConnection::threadFinished() {
-  // the Socket::disconnected() is connect to this::quit()
-  // so after the event loop is finished we're beeing called
-  // and propagate the disconnect
-  emit disconnected(networkId());
+  Identity *identity = coreSession()->identity(network()->identity());
+  if(!identity) {
+    qWarning() << "Identity invalid!";
+    disconnectFromIrc();
+    return;
+  }
+  putRawLine(QString("NICK :%1").arg(identity->nicks()[0]));  // FIXME: try more nicks if error occurs
+  putRawLine(QString("USER %1 8 * :%2").arg(identity->ident(), identity->realName()));
 }
 
 void NetworkConnection::socketStateChanged(QAbstractSocket::SocketState state) {
   //qDebug() << "Socket state changed: " << state;
 }
 
-void NetworkConnection::userInput(uint netid, QString buf, QString msg) {
-  if(netid != networkId())
-    return; // not me!
+// FIXME switch to BufferId
+void NetworkConnection::userInput(QString buf, QString msg) {
   userInputHandler()->handleUserInput(buf, msg);
 }
 
@@ -202,19 +225,6 @@ void NetworkConnection::putCmd(QString cmd, QStringList params, QString prefix) 
     msg += " :" + params.last();
 
   putRawLine(msg);
-}
-
-
-uint NetworkConnection::networkId() const {
-  return _networkId;
-}
-
-QString NetworkConnection::networkName() const {
-  return network()->networkName();
-}
-
-CoreSession *NetworkConnection::coreSession() const {
-  return Core::session(userId());
 }
 
 /* Exception classes for message handling */

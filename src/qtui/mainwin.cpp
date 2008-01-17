@@ -129,7 +129,7 @@ void MainWin::init() {
   // attach the BufferWidget to the PropertyMapper
   Client::bufferModel()->mapProperty(0, NetworkModel::BufferIdRole, ui.bufferWidget, "currentBuffer");
   connect(Client::networkModel(), SIGNAL(bufferAboutToBeRemoved(BufferId)),
-	  ui.bufferWidget, SLOT(removeBuffer(BufferId)));
+          ui.bufferWidget, SLOT(removeBuffer(BufferId)));
 
   // attach the NickList to the PropertyMapper
   Client::bufferModel()->mapProperty(0, NetworkModel::BufferIdRole, nickListWidget, "currentBuffer");
@@ -237,14 +237,14 @@ void MainWin::showCoreConnectionDlg(bool autoConnect) {
   coreConnectDlg = new CoreConnectDlg(this, autoConnect);
   connect(coreConnectDlg, SIGNAL(finished(int)), this, SLOT(coreConnectionDlgFinished(int)));
   coreConnectDlg->setModal(true);
-  if(!autoConnect || !coreConnectDlg->willDoInternalAutoConnect())
+  //if(!autoConnect || !coreConnectDlg->willDoInternalAutoConnect())
     coreConnectDlg->show(); // avoid flicker and show dlg only if we do remote connect, which needs a progress bar
-  if(autoConnect) coreConnectDlg->doAutoConnect();
+  //if(autoConnect) coreConnectDlg->doAutoConnect();
 }
 
 void MainWin::coreConnectionDlgFinished(int /*code*/) {
-
   coreConnectDlg->close();
+  //exit(1);
 }
 
 

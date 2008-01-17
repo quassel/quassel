@@ -64,6 +64,7 @@ void Global::initIconMap() {
 
 //! Register our custom types with Qt's Meta Object System.
 /**  This makes them available for QVariant and in signals/slots, among other things.
+ *
  */
 void Global::registerMetaTypes() {
   // Complex types
@@ -82,13 +83,24 @@ void Global::registerMetaTypes() {
   qRegisterMetaType<IdentityId>("IdentityId");
   qRegisterMetaType<BufferId>("BufferId");
   qRegisterMetaType<NetworkId>("NetworkId");
+  qRegisterMetaType<UserId>("UserId");
 
   qRegisterMetaTypeStreamOperators<IdentityId>("IdentityId");
   qRegisterMetaTypeStreamOperators<BufferId>("BufferId");
   qRegisterMetaTypeStreamOperators<NetworkId>("NetworkId");
+  qRegisterMetaTypeStreamOperators<UserId>("UserId");
 
 }
 
+// Static variables
+
+QString Global::quasselVersion;
+QString Global::quasselDate;
+uint Global::quasselBuild;
+uint Global::clientBuildNeeded;
+QString Global::clientVersionNeeded;
+uint Global::coreBuildNeeded;
+QString Global::coreVersionNeeded;
+
 Global::RunMode Global::runMode;
 uint Global::defaultPort;
-

@@ -484,8 +484,8 @@
         <file>oxygen/22x22/actions/media-seek-forward.png</file>
         <file>oxygen/22x22/actions/media-skip-backward.png</file>
         <file>oxygen/22x22/actions/media-skip-forward.png</file>
-        <file>oxygen/22x22/actions/network-connect.png</file>
-        <file>oxygen/22x22/actions/network-disconnect.png</file>
+        <file alias="network-connect">oxygen/22x22/actions/network-connect.png</file>
+        <file alias="network-disconnect">oxygen/22x22/actions/network-disconnect.png</file>
         <file>oxygen/22x22/actions/news-subscribe.png</file>
         <file>oxygen/22x22/actions/news-unsubscribe.png</file>
         <file>oxygen/22x22/actions/object-rotate-left.png</file>
@@ -583,6 +583,16 @@
         <file>oxygen/22x22/actions/zoom-in.png</file>
         <file>oxygen/22x22/actions/zoom-original.png</file>
         <file>oxygen/22x22/actions/zoom-out.png</file>
+    </qresource>
+    <qresource prefix="/22x22/status" >
+        <file alias="dialog-error">oxygen/22x22/status/dialog-error.png</file>
+        <file>oxygen/22x22/status/dialog-information.png</file>
+        <file>oxygen/22x22/status/dialog-password.png</file>
+        <file>oxygen/22x22/status/dialog-warning.png</file>
+        <file>oxygen/22x22/status/script-error.png</file>
+        <file>oxygen/22x22/status/security-high.png</file>
+        <file>oxygen/22x22/status/security-low.png</file>
+        <file>oxygen/22x22/status/security-medium.png</file>
     </qresource>
     <qresource prefix="/icons" >
         <file>quassel-icon.png</file>

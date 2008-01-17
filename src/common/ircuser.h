@@ -46,8 +46,6 @@ public:
   IrcUser(const QString &hostmask, Network *network);
   virtual ~IrcUser();
 
-  bool initialized() const;
-
   QString user() const;
   QString host() const;
   QString nick() const;
@@ -88,8 +86,6 @@ public slots:
   // init seters
   void initSetChannels(const QStringList channels);
 
-  void setInitialized();
-
 signals:
   void userSet(QString user);
   void hostSet(QString host);
@@ -108,8 +104,6 @@ signals:
 
 //   void setUsermodes(const QSet<QString> &usermodes);
 //   QSet<QString> usermodes() const;
-
-  void initDone();
 
 private slots:
   void updateObjectName();

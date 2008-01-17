@@ -157,7 +157,7 @@ class Storage : public QObject {
 
   signals:
     //! Sent when a new BufferInfo is created, or an existing one changed somehow.
-    void bufferInfoUpdated(BufferInfo);
+    void bufferInfoUpdated(UserId user, const BufferInfo &);
     //! Sent when a new user has been added
     void userAdded(UserId, const QString &username);
     //! Sent when a user has been renamed
@@ -166,8 +166,7 @@ class Storage : public QObject {
     void userRemoved(UserId);
 
   public:
-    /* Exceptions */
-    struct AuthError : public Exception {};
+
 };
 
 

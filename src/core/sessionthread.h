@@ -18,53 +18,46 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _SYNCABLEOBJECT_H_
-#define _SYNCABLEOBJECT_H_
+#ifndef _SESSIONTHREAD_H_
+#define _SESSIONTHREAD_H_
 
-#include <QDataStream>
-#include <QMetaType>
-#include <QObject>
-#include <QVariantMap>
+#include <QMutex>
+#include <QThread>
 
-class SyncableObject : public QObject {
+#include "types.h"
+
+class CoreSession;
+class QIODevice;
+
+class SessionThread : public QThread {
   Q_OBJECT
 
   public:
-    SyncableObject(QObject *parent = 0);
-    SyncableObject(const SyncableObject &other, QObject *parent = 0);
+    SessionThread(UserId user, QObject *parent = 0);
+    ~SessionThread();
 
-    //! Stores the object's state into a QVariantMap.
-    /** The default implementation takes dynamic properties as well as getters that have
-     *  names starting with "init" and stores them in a QVariantMap. Override this method in
-     *  derived classes in order to store the object state in a custom form.
-     *  \note  This is used by SignalProxy to transmit the state of the object to clients
-     *         that request the initial object state. Later updates use a different mechanism
-     *         and assume that the state is completely covered by properties and init* getters.
-     *         DO NOT OVERRIDE THIS unless you know exactly what you do!
-     *
-     *  \return The object's state in a QVariantMap
-     */
-    virtual QVariantMap toVariantMap();
+    void run();
 
-    //! Initialize the object's state from a given QVariantMap.
-    /** \see toVariantMap() for important information concerning this method.
-     */
-    virtual void fromVariantMap(const QVariantMap &map);
-
-    virtual bool isInitialized() const;
+    CoreSession *session();
+    UserId user();
 
   public slots:
-    virtual void setInitialized();
+    void addClient(QIODevice *socket);
+
+  private slots:
+    void setSessionInitialized();
 
   signals:
-    void initDone();
-    void updatedRemotely();
+    void initialized();
 
   private:
-    bool setInitValue(const QString &property, const QVariant &value);
+    CoreSession *_session;
+    UserId _user;
+    QList<QIODevice *> clientQueue;
+    bool _sessionInitialized;
 
-    bool _initialized;
-
+    bool isSessionInitialized();
+    void addClientToSession(QIODevice *socket);
 };
 
 #endif

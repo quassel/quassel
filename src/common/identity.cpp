@@ -55,7 +55,6 @@ Identity::Identity(const Identity &other, QObject *parent) : SyncableObject(pare
 }
 
 void Identity::init() {
-  _initialized = false;
   setObjectName(QString::number(id()));
 }
 
@@ -85,14 +84,6 @@ void Identity::setToDefaults() {
 
 bool Identity::isValid() const {
   return (id() > 0);
-}
-
-bool Identity::initialized() const {
-  return _initialized;
-}
-
-void Identity::setInitialized() {
-  _initialized = true;
 }
 
 IdentityId Identity::id() const {
