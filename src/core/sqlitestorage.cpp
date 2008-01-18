@@ -163,7 +163,7 @@ void SqliteStorage::createBuffer(UserId user, const QString &network, const QStr
   }
 }
 
-uint SqliteStorage::getNetworkId(UserId user, const QString &network) {
+NetworkId SqliteStorage::getNetworkId(UserId user, const QString &network) {
   QSqlQuery query(logDb());
   query.prepare("SELECT networkid FROM network "
 		"WHERE userid = :userid AND networkname = :networkname");
@@ -172,12 +172,12 @@ uint SqliteStorage::getNetworkId(UserId user, const QString &network) {
   query.exec();
   
   if(query.first())
-    return query.value(0).toUInt();
+    return query.value(0).value<NetworkId>();
   else {
     createBuffer(user, network, "");
     query.exec();
     if(query.first())
-      return query.value(0).toUInt();
+      return query.value(0).value<NetworkId>();
     else {
       qWarning() << "NETWORK NOT FOUND:" << network << "for User:" << user;
       return 0;
@@ -188,7 +188,7 @@ uint SqliteStorage::getNetworkId(UserId user, const QString &network) {
 BufferInfo SqliteStorage::getBufferInfo(UserId user, const QString &network, const QString &buffer) {
   BufferInfo bufferid;
   // TODO: get rid of this hackaround
-  uint networkId = getNetworkId(user, network);
+  NetworkId networkId = getNetworkId(user, network);
 
   QSqlQuery *getBufferInfoQuery = cachedQuery("select_bufferByName");
   getBufferInfoQuery->bindValue(":networkname", network);
@@ -201,11 +201,11 @@ BufferInfo SqliteStorage::getBufferInfo(UserId user, const QString &network, con
     createBuffer(user, network, buffer);
     getBufferInfoQuery->exec();
     if(getBufferInfoQuery->first()) {
-      bufferid = BufferInfo(getBufferInfoQuery->value(0).toUInt(), networkId, 0, network, buffer);
+      bufferid = BufferInfo(getBufferInfoQuery->value(0).value<BufferId>(), networkId, 0, network, buffer);
       emit bufferInfoUpdated(user, bufferid);
     }
   } else {
-    bufferid = BufferInfo(getBufferInfoQuery->value(0).toUInt(), networkId, 0, network, buffer);
+    bufferid = BufferInfo(getBufferInfoQuery->value(0).value<BufferId>(), networkId, 0, network, buffer);
   }
 
   Q_ASSERT(!getBufferInfoQuery->next());
@@ -227,7 +227,7 @@ QList<BufferInfo> SqliteStorage::requestBuffers(UserId user, QDateTime since) {
   query.exec();
   watchQuery(&query);
   while(query.next()) {
-    bufferlist << BufferInfo(query.value(0).toUInt(), query.value(2).toUInt(), 0, query.value(3).toString(), query.value(1).toString());
+    bufferlist << BufferInfo(query.value(0).value<BufferId>(), query.value(2).value<NetworkId>(), 0, query.value(3).toString(), query.value(1).toString());
   }
   return bufferlist;
 }
@@ -265,7 +265,7 @@ MsgId SqliteStorage::logMessage(Message msg) {
   getLastMessageIdQuery->exec();
 
   if(getLastMessageIdQuery->first()) {
-    return getLastMessageIdQuery->value(0).toUInt();
+    return getLastMessageIdQuery->value(0).value<MsgId>();
   } else { // somethin went wrong... :(
     qDebug() << getLastMessageIdQuery->lastQuery() << "time/bufferid/type/sender:" << msg.timestamp().toTime_t() << msg.buffer().uid() << msg.type() << msg.sender();
     Q_ASSERT(false);
@@ -281,7 +281,7 @@ QList<Message> SqliteStorage::requestMsgs(BufferInfo buffer, int lastmsgs, int o
   requestMsgsOffsetQuery->bindValue(":messageid", offset);
   requestMsgsOffsetQuery->exec();
   requestMsgsOffsetQuery->first();
-  offset = requestMsgsOffsetQuery->value(0).toUInt();
+  offset = requestMsgsOffsetQuery->value(0).toInt();
 
   // now let's select the messages
   QSqlQuery *requestMsgsQuery = cachedQuery("select_messages");
@@ -297,7 +297,7 @@ QList<Message> SqliteStorage::requestMsgs(BufferInfo buffer, int lastmsgs, int o
                 requestMsgsQuery->value(5).toString(),
                 requestMsgsQuery->value(4).toString(),
                 requestMsgsQuery->value(3).toUInt());
-    msg.setMsgId(requestMsgsQuery->value(0).toUInt());
+    msg.setMsgId(requestMsgsQuery->value(0).value<MsgId>());
     messagelist << msg;
   }
   return messagelist;
@@ -312,7 +312,7 @@ QList<Message> SqliteStorage::requestMsgs(BufferInfo buffer, QDateTime since, in
   requestMsgsSinceOffsetQuery->bindValue(":since", since.toTime_t());
   requestMsgsSinceOffsetQuery->exec();
   requestMsgsSinceOffsetQuery->first();
-  offset = requestMsgsSinceOffsetQuery->value(0).toUInt();  
+  offset = requestMsgsSinceOffsetQuery->value(0).toInt();
 
   // now let's select the messages
   QSqlQuery *requestMsgsSinceQuery = cachedQuery("select_messagesSince");
@@ -329,7 +329,7 @@ QList<Message> SqliteStorage::requestMsgs(BufferInfo buffer, QDateTime since, in
                 requestMsgsSinceQuery->value(5).toString(),
                 requestMsgsSinceQuery->value(4).toString(),
                 requestMsgsSinceQuery->value(3).toUInt());
-    msg.setMsgId(requestMsgsSinceQuery->value(0).toUInt());
+    msg.setMsgId(requestMsgsSinceQuery->value(0).value<MsgId>());
     messagelist << msg;
   }
 
@@ -352,7 +352,7 @@ QList<Message> SqliteStorage::requestMsgRange(BufferInfo buffer, int first, int 
                 requestMsgRangeQuery->value(5).toString(),
                 requestMsgRangeQuery->value(4).toString(),
                 requestMsgRangeQuery->value(3).toUInt());
-    msg.setMsgId(requestMsgRangeQuery->value(0).toUInt());
+    msg.setMsgId(requestMsgRangeQuery->value(0).value<MsgId>());
     messagelist << msg;
   }
 

@@ -527,14 +527,14 @@ bool NetworkModel::dropMimeData(const QMimeData *data, Qt::DropAction action, in
   if(targetType != BufferItem::QueryType)
     return false;
 
-  QList< QPair<uint, uint> > bufferList = mimeDataToBufferList(data);
+  QList< QPair<NetworkId, BufferId> > bufferList = mimeDataToBufferList(data);
 
   // exactly one buffer has to be dropped
   if(bufferList.count() != 1)
     return false;
 
-  uint netId = bufferList.first().first;
-  uint bufferId = bufferList.first().second;
+  NetworkId netId = bufferList.first().first;
+  BufferId bufferId = bufferList.first().second;
 
   // no self merges (would kill us)
   if(bufferId == parent.data(BufferIdRole).value<BufferId>())

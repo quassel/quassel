@@ -87,7 +87,7 @@ void BufferView::joinChannel(const QModelIndex &index) {
   if(bufferType != BufferItem::ChannelType)
     return;
   
-  Client::fakeInput(index.data(NetworkModel::BufferIdRole).toUInt(), QString("/JOIN %1").arg(index.sibling(index.row(), 0).data().toString()));
+  Client::fakeInput(index.data(NetworkModel::BufferIdRole).value<BufferId>(), QString("/JOIN %1").arg(index.sibling(index.row(), 0).data().toString()));
 }
 
 void BufferView::keyPressEvent(QKeyEvent *event) {

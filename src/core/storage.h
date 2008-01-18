@@ -101,7 +101,7 @@ class Storage : public QObject {
      *  \param network The network name
      *  \return The BufferInfo corresponding to the given network and buffer name, or 0 if not found
      */
-    virtual uint getNetworkId(UserId user, const QString &network) = 0;
+    virtual NetworkId getNetworkId(UserId user, const QString &network) = 0;
 
     /* Buffer handling */
 

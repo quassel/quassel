@@ -68,15 +68,15 @@ void BufferModel::synchronizeView(QAbstractItemView *view) {
 }
 
 void BufferModel::mapProperty(int column, int role, QObject *target, const QByteArray &property) {
+  qDebug() << property;
   propertyMapper()->addMapping(column, role, target, property);
 }
 
 // This Slot indicates that the user has selected a different buffer in the gui
 void BufferModel::setCurrentIndex(const QModelIndex &index, QItemSelectionModel::SelectionFlags command) {
   Q_UNUSED(command)
-
   BufferId newCurrentBuffer;
-  if(index.data(NetworkModel::ItemTypeRole) == NetworkModel::BufferItemType && currentBuffer != (newCurrentBuffer = index.data(NetworkModel::BufferIdRole).toUInt())) {
+  if(index.data(NetworkModel::ItemTypeRole) == NetworkModel::BufferItemType && currentBuffer != (newCurrentBuffer = index.data(NetworkModel::BufferIdRole).value<BufferId>())) {
     currentBuffer = newCurrentBuffer;
     // FIXME: to something like: index.setData(ActivitRole, NoActivity);
     // networkModel->bufferActivity(BufferItem::NoActivity, currentBuffer);

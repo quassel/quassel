@@ -65,9 +65,10 @@ bool BufferViewFilter::dropMimeData(const QMimeData *data, Qt::DropAction action
   if(!NetworkModel::mimeContainsBufferList(data))
     return false;
 
-  QList< QPair<uint, uint> > bufferList = NetworkModel::mimeDataToBufferList(data);
+  QList< QPair<NetworkId, BufferId> > bufferList = NetworkModel::mimeDataToBufferList(data);
 
-  uint netId, bufferId;
+  NetworkId netId;
+  BufferId bufferId;
   for(int i = 0; i < bufferList.count(); i++) {
     netId = bufferList[i].first;
     bufferId = bufferList[i].second;
@@ -79,7 +80,7 @@ bool BufferViewFilter::dropMimeData(const QMimeData *data, Qt::DropAction action
   return true;
 }
 
-void BufferViewFilter::addBuffer(const uint &bufferuid) {
+void BufferViewFilter::addBuffer(const BufferId &bufferuid) {
   if(!buffers.contains(bufferuid)) {
     buffers << bufferuid;
     invalidateFilter();
@@ -94,8 +95,8 @@ void BufferViewFilter::removeBuffer(const QModelIndex &index) {
     return; // only child elements can be deleted
 
   bool lastBuffer = (rowCount(index.parent()) == 1);
-  uint netId = index.data(NetworkModel::NetworkIdRole).toUInt();
-  uint bufferuid = index.data(NetworkModel::BufferIdRole).toUInt();
+  NetworkId netId = index.data(NetworkModel::NetworkIdRole).value<NetworkId>();
+  BufferId bufferuid = index.data(NetworkModel::BufferIdRole).value<BufferId>();
 
   if(buffers.contains(bufferuid)) {
     buffers.remove(bufferuid);
@@ -128,7 +129,7 @@ bool BufferViewFilter::filterAcceptBuffer(const QModelIndex &source_bufferIndex)
 //     return false;
 
   if((mode & FullCustom)) {
-    uint bufferuid = source_bufferIndex.data(NetworkModel::BufferIdRole).toUInt();
+    BufferId bufferuid = source_bufferIndex.data(NetworkModel::BufferIdRole).value<BufferId>();
     return buffers.contains(bufferuid);
   }
     
@@ -136,7 +137,7 @@ bool BufferViewFilter::filterAcceptBuffer(const QModelIndex &source_bufferIndex)
 }
 
 bool BufferViewFilter::filterAcceptNetwork(const QModelIndex &source_index) const {
-  uint net = source_index.data(NetworkModel::NetworkIdRole).toUInt();
+  NetworkId net = source_index.data(NetworkModel::NetworkIdRole).value<NetworkId>();
   return !((mode & (SomeNets | FullCustom)) && !networks.contains(net));
 }
 

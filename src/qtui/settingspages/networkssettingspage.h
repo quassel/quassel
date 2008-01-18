@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-08 by the Quassel Project                          *
+ *   Copyright (C) 2005-08 by the Quassel IRC Team                         *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,42 +18,29 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-// This file needs probably to go away at some point. Not much left anymore.
+#ifndef _NETWORKSSETTINGSPAGE_H_
+#define _NETWORKSSETTINGSPAGE_H_
 
-#ifndef _GLOBAL_H_
-#define _GLOBAL_H_
+#include "settingspage.h"
 
-#include <QString>
+#include "ui_networkssettingspage.h"
 
-// Enable some shortcuts and stuff
-//#define DEVELMODE
+class NetworksSettingsPage : public SettingsPage {
+  Q_OBJECT
 
-/* Some global stuff */
+  public:
+    NetworksSettingsPage(QWidget *parent = 0);
 
-namespace Global {
+    //bool aboutToSave();
 
-  extern QString quasselVersion;
-  extern QString quasselDate;
-  extern uint quasselBuild;
+  public slots:
+    void save();
+    void load();
 
-  //! Minimum client build number the core needs
-  extern uint clientBuildNeeded;
-  extern QString clientVersionNeeded;
+  private:
+    Ui::NetworksSettingsPage ui;
 
-  //! Minimum core build number the client needs
-  extern uint coreBuildNeeded;
-  extern QString coreVersionNeeded;
 
-  // We need different config (QSettings) files for client and gui, since the core cannot work with GUI types
-  // Set these here. They're used in ClientSettings and CoreSettings.
-  const QString coreApplicationName = "Quassel Core";
-  const QString clientApplicationName = "Quassel Client";
-
-  enum RunMode { Monolithic, ClientOnly, CoreOnly };
-  extern RunMode runMode;
-  extern unsigned int defaultPort;
-
-  void registerMetaTypes();
 };
 
 #endif

@@ -90,7 +90,7 @@ void SettingsDlg::selectPage(const QString &cat, const QString &title) {
   if(sp != currentPage()) {
     ui.pageTitle->setText(sp->title());
     ui.settingsStack->setCurrentWidget(sp);
-    ui.settingsStack->setMinimumSize(sp->sizeHint());  // we don't want our page shrinked, use scrollbars instead...
+    ui.settingsStack->setMinimumSize(sp->minimumSizeHint());  // we don't want our page shrinked, use scrollbars instead...
     _currentPage = sp;
   }
   ui.settingsTree->setCurrentItem(treeItems[sp]);

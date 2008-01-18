@@ -111,4 +111,4 @@ void MappedSelectionModel::_selectionChanged(const QItemSelection &selected, con
   Q_UNUSED(deselected)
   emit mappedSelectionChanged(mapSelectionToSource(QItemSelectionModel::selection()));
 }
-  
+

@@ -32,7 +32,7 @@ class NickView;
 class NickListWidget : public QWidget {
   Q_OBJECT
 
-  Q_PROPERTY(uint currentBuffer READ currentBuffer WRITE setCurrentBuffer)
+  Q_PROPERTY(uint currentBuffer READ currentBuffer WRITE setCurrentBuffer); // FIXME BufferId
 
 public:
   NickListWidget(QWidget *parent = 0);

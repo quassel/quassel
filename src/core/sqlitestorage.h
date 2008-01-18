@@ -51,7 +51,7 @@ public slots:
   virtual void delUser(UserId user);
   
   /* Network handling */
-  virtual uint getNetworkId(UserId user, const QString &network);
+  virtual NetworkId getNetworkId(UserId user, const QString &network);
   
   /* Buffer handling */
   virtual BufferInfo getBufferInfo(UserId user, const QString &network, const QString &buffer = "");

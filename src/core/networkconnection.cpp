@@ -63,7 +63,7 @@ bool NetworkConnection::isConnected() const {
   return socket.state() == QAbstractSocket::ConnectedState;
 }
 
-uint NetworkConnection::networkId() const {
+NetworkId NetworkConnection::networkId() const {
   return network()->networkId();
 }
 

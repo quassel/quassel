@@ -29,7 +29,7 @@ class QDataStream;
 class BufferInfo {
 public:
   BufferInfo();
-  BufferInfo(uint id, uint networkid, uint gid = 0, QString net = QString(), QString buf = QString());
+  BufferInfo(BufferId id, NetworkId networkid, uint gid = 0, QString net = QString(), QString buf = QString());
   
   inline BufferId uid() const { return _id; }
   inline NetworkId networkId() const { return _netid; }
@@ -42,8 +42,8 @@ public:
   inline bool operator==(const BufferInfo &other) const { return _id == other._id; }
 
 private:
-  uint _id;
-  uint _netid;
+  BufferId _id;
+  NetworkId _netid;
   uint _gid;
   QString _networkName; // WILL BE REMOVED
   QString _bufferName;

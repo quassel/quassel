@@ -127,7 +127,7 @@ QList<Network *> Client::networks() {
   return instance()->_networks.values();
 }
 
-Network *Client::network(uint networkid) {
+Network *Client::network(NetworkId networkid) {
   if(instance()->_networks.contains(networkid))
     return instance()->_networks[networkid];
   else
@@ -245,7 +245,7 @@ void Client::coreIdentityRemoved(IdentityId id) {
 
 /***  ***/
 
-void Client::fakeInput(uint bufferUid, QString message) {
+void Client::fakeInput(BufferId bufferUid, QString message) {
   Buffer *buff = buffer(bufferUid);
   if(!buff)
     qWarning() << "No Buffer with uid" << bufferUid << "can't send Input" << message;

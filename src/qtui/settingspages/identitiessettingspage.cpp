@@ -250,7 +250,7 @@ void IdentitiesSettingsPage::on_identityList_currentIndexChanged(int index) {
     //ui.identityList->setEditable(false);
     displayIdentity(0);
   } else {
-    IdentityId id = ui.identityList->itemData(index).toInt();
+    IdentityId id = ui.identityList->itemData(index).value<IdentityId>();
     if(identities.contains(id)) displayIdentity(identities[id]);
     ui.deleteIdentity->setEnabled(id != 1); // default identity cannot be deleted
     ui.renameIdentity->setEnabled(id != 1); // ...or renamed
@@ -431,7 +431,7 @@ QString CreateIdentityDlg::identityName() const {
 IdentityId CreateIdentityDlg::duplicateId() const {
   if(!ui.duplicateIdentity->isChecked()) return 0;
   if(ui.identityList->currentIndex() >= 0) {
-    return ui.identityList->itemData(ui.identityList->currentIndex()).toInt();
+    return ui.identityList->itemData(ui.identityList->currentIndex()).value<IdentityId>();
   }
   return 0;
 }

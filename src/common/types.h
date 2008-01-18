@@ -23,12 +23,29 @@
 
 #include <QString>
 
+/*
+class UnsignedId {
+    quint32 id;
+
+  public:
+    inline UnsignedId(int _id = 0) { id = _id; }
+    inline quint32 toInt() const { return id; }
+    inline bool operator==(const UnsignedId &other) const { return id == other.id; }
+    inline bool operator!=(const UnsignedId &other) const { return id != other.id; }
+};
+
+struct BufferId : public UnsignedId {
+  inline BufferId(int _id = 0) : UnsignedId(_id) {};
+
+};
+*/
+
 // FIXME make all ID types quint32 as soon as they all have been replaced
 typedef uint UserId;     //!< Identifies a core user.
 typedef uint MsgId;      //!< Identifies a message.
 typedef uint BufferId;   //!< Identifies a buffer.
-typedef uint NetworkId;  //!< Identifies an IRC Network.
-// IdentityId must be signed!
+// These must be signed!
+typedef qint32 NetworkId;  //!< Identifies an IRC Network.
 typedef qint32 IdentityId; //!< Identifies an identity.
 
 //! Base class for exceptions.

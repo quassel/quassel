@@ -85,7 +85,7 @@ class MainWin : public QMainWindow {
     CoreConnectDlg *coreConnectDlg;
     SettingsDlg *settingsDlg;
 
-    uint currentBuffer;
+    BufferId currentBuffer;
     QString currentProfile;
 
     QList<QDockWidget *> netViews;

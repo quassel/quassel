@@ -35,7 +35,7 @@ BufferInfo::BufferInfo()
     _bufferName(QString()) {
 }
 
-BufferInfo::BufferInfo(uint id, uint networkid, uint gid, QString net, QString buf)
+BufferInfo::BufferInfo(BufferId id,  NetworkId networkid, uint gid, QString net, QString buf)
   : _id(id),
     _netid(networkid),
     _gid(gid),

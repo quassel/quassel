@@ -39,6 +39,7 @@
 
 #include "settingspages/fontssettingspage.h"
 #include "settingspages/identitiessettingspage.h"
+#include "settingspages/networkssettingspage.h"
 
 #include "debugconsole.h"
 
@@ -202,6 +203,7 @@ void MainWin::addBufferView(const QString &viewname, QAbstractItemModel *model, 
 void MainWin::setupSettingsDlg() {
   settingsDlg->registerSettingsPage(new FontsSettingsPage(settingsDlg));
   settingsDlg->registerSettingsPage(new IdentitiesSettingsPage(settingsDlg));
+  settingsDlg->registerSettingsPage(new NetworksSettingsPage(settingsDlg));
 }
 
 void MainWin::connectedToCore() {

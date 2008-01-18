@@ -26,6 +26,7 @@
 #include <QSortFilterProxyModel>
 #include <QSet>
 // #include "buffer.h"
+#include "types.h"
 
 /*****************************************
  * Buffer View Filter
@@ -69,7 +70,7 @@ private:
 
   bool filterAcceptBuffer(const QModelIndex &) const;
   bool filterAcceptNetwork(const QModelIndex &) const;
-  void addBuffer(const uint &);
+  void addBuffer(const BufferId &);
 
 };
 Q_DECLARE_OPERATORS_FOR_FLAGS(BufferViewFilter::Modes)    
