@@ -27,22 +27,12 @@
  *****************************************/
 AbstractTreeItem::AbstractTreeItem(AbstractTreeItem *parent)
   : QObject(parent),
-    _parentItem(parent),
     _flags(Qt::ItemIsSelectable | Qt::ItemIsEnabled)
 {
 }
 
 AbstractTreeItem::~AbstractTreeItem() {
-  AbstractTreeItem *child;
-  foreach(int key, _childItems.keys()) {
-    QList<AbstractTreeItem *>::iterator iter = _childItems[key].begin();
-    while(iter != _childItems[key].end()) {
-      child = *iter;
-      iter = _childItems[key].erase(iter);
-      disconnect(child, 0, this, 0);
-      child->deleteLater();
-    }
-  }
+  removeAllChilds();
 }
 
 quint64 AbstractTreeItem::id() const {
@@ -52,7 +42,7 @@ quint64 AbstractTreeItem::id() const {
 int AbstractTreeItem::defaultColumn() const {
   // invalid QModelIndexes aka rootNodes get their Childs stuffed into column -1
   // all others to 0
-  if(_parentItem == 0)
+  if(parent() == 0)
     return -1;
   else
     return 0;
@@ -78,16 +68,39 @@ void AbstractTreeItem::removeChild(int column, int row) {
   if(!_childItems.contains(column)
      || _childItems[column].size() <= row)
     return;
+
+  if(column == defaultColumn())
+    emit beginRemoveChilds(row, row);
   
   AbstractTreeItem *treeitem = _childItems[column].value(row);
   _childItems[column].removeAt(row);
   _childHash[column].remove(_childHash[column].key(treeitem));
   disconnect(treeitem, 0, this, 0);
   treeitem->deleteLater();
+
+  if(column == defaultColumn())
+    emit endRemoveChilds();
 }
 
 void AbstractTreeItem::removeChild(int row) {
   removeChild(defaultColumn(), row);
+}
+
+void AbstractTreeItem::removeAllChilds() {
+  emit beginRemoveChilds(0, childCount() - 1);
+
+  AbstractTreeItem *child;
+  foreach(int key, _childItems.keys()) {
+    QList<AbstractTreeItem *>::iterator iter = _childItems[key].begin();
+    while(iter != _childItems[key].end()) {
+      child = *iter;
+      iter = _childItems[key].erase(iter);
+      disconnect(child, 0, this, 0);
+      child->removeAllChilds();
+      child->deleteLater();
+    }
+  }
+  emit endRemoveChilds();
 }
 
 AbstractTreeItem *AbstractTreeItem::child(int column, int row) const {
@@ -126,29 +139,29 @@ int AbstractTreeItem::childCount() const {
 }
 
 int AbstractTreeItem::column() const {
-  if(!_parentItem)
+  if(!parent())
     return -1;
 
-  QHash<int, QList<AbstractTreeItem*> >::const_iterator iter = _parentItem->_childItems.constBegin();
-  while(iter != _parentItem->_childItems.constEnd()) {
+  QHash<int, QList<AbstractTreeItem*> >::const_iterator iter = parent()->_childItems.constBegin();
+  while(iter != parent()->_childItems.constEnd()) {
     if(iter.value().contains(const_cast<AbstractTreeItem *>(this)))
       return iter.key();
     iter++;
   }
 
   // unable to find us o_O
-  return _parentItem->defaultColumn();
+  return parent()->defaultColumn();
 }
 
 int AbstractTreeItem::row() const {
-  if(!_parentItem)
+  if(!parent())
     return -1;
   else
-    return _parentItem->_childItems[column()].indexOf(const_cast<AbstractTreeItem*>(this));
+    return parent()->_childItems[column()].indexOf(const_cast<AbstractTreeItem*>(this));
 }
 
 AbstractTreeItem *AbstractTreeItem::parent() const {
-  return _parentItem;
+  return qobject_cast<AbstractTreeItem *>(QObject::parent());
 }
 
 Qt::ItemFlags AbstractTreeItem::flags() const {
@@ -185,7 +198,8 @@ void AbstractTreeItem::childDestroyed() {
   
   _childItems[column].removeAt(row);
   _childHash[column].remove(_childHash[column].key(item));
-  emit childDestroyed(row);
+  emit beginRemoveChilds(row, row);
+  emit endRemoveChilds();
 }
   
 /*****************************************
@@ -413,18 +427,40 @@ void TreeModel::appendChild(AbstractTreeItem *parent, AbstractTreeItem *child) {
   connect(child, SIGNAL(newChild(AbstractTreeItem *)),
 	  this, SLOT(newChild(AbstractTreeItem *)));
 
-  connect(child, SIGNAL(childDestroyed(int)),
-	  this, SLOT(childDestroyed(int)));
+//   connect(child, SIGNAL(childRemoved(int)),
+// 	  this, SLOT(childRemoved(int)));
+
+  connect(child, SIGNAL(beginRemoveChilds(int, int)),
+	  this, SLOT(beginRemoveChilds(int, int)));
+  
+  connect(child, SIGNAL(endRemoveChilds()),
+	  this, SLOT(endRemoveChilds()));
 }
 
 void TreeModel::newChild(AbstractTreeItem *child) {
   appendChild(static_cast<AbstractTreeItem *>(sender()), child);
 }
 
-void TreeModel::childDestroyed(int row) {
+void TreeModel::beginRemoveChilds(int firstRow, int lastRow) {
+  QModelIndex parent = indexByItem(static_cast<AbstractTreeItem *>(sender()));
+  beginRemoveRows(parent, firstRow, lastRow);
+}
+
+void TreeModel::endRemoveChilds() {
+  endRemoveRows();
+}
+
+void TreeModel::childRemoved(int row) {
   QModelIndex parent = indexByItem(static_cast<AbstractTreeItem *>(sender()));
   beginRemoveRows(parent, row, row);
   endRemoveRows();
+}
+
+void TreeModel::childsRemoved(int firstRow, int lastRow) {
+  QModelIndex parent = indexByItem(static_cast<AbstractTreeItem *>(sender()));
+  beginRemoveRows(parent, firstRow, lastRow);
+  endRemoveRows();
+  
 }
 
 bool TreeModel::removeRow(int row, const QModelIndex &parent) {

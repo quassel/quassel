@@ -132,10 +132,7 @@ void BufferItem::attachIrcChannel(IrcChannel *ircChannel) {
 
 void BufferItem::ircChannelDestroyed() {
   emit dataChanged();
-  for(int i = 0; i < childCount(); i++) {
-    emit childDestroyed(i);
-    removeChild(i);
-  }
+  removeAllChilds();
 }
 
 QString BufferItem::bufferName() const {
@@ -203,6 +200,13 @@ void BufferItem::removeUserFromCategory(IrcUser *ircUser) {
 }
 
 void BufferItem::userModeChanged(IrcUser *ircUser) {
+  Q_ASSERT(_ircChannel);
+    
+  UserCategoryItem *categoryItem;
+  int categoryId = UserCategoryItem::categoryFromModes(_ircChannel->userModes(ircUser));
+  if((categoryItem = qobject_cast<UserCategoryItem *>(childById(qHash(categoryId)))))
+    return; // already in the right category;
+  
   removeUserFromCategory(ircUser);
   addUserToCategory(ircUser);
 }
@@ -319,7 +323,7 @@ UserCategoryItem::UserCategoryItem(int category, AbstractTreeItem *parent)
   : PropertyMapItem(QStringList() << "categoryId", parent),
     _category(category)
 {
-  connect(this, SIGNAL(childDestroyed(int)),
+  connect(this, SIGNAL(childRemoved(int)),
 	  this, SLOT(checkNoChilds()));
 }
 

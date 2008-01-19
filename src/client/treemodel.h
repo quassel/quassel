@@ -43,6 +43,7 @@ public:
   
   void removeChild(int column, int row);
   void removeChild(int row);
+  void removeAllChilds();
 
   virtual quint64 id() const;
 
@@ -69,7 +70,11 @@ public:
 signals:
   void dataChanged(int column = -1);
   void newChild(AbstractTreeItem *);
-  void childDestroyed(int row);
+  void childRemoved(int row);
+  void childsRemoved(int firstRow, int lastRow);
+
+  void beginRemoveChilds(int firstRow, int lastRow);
+  void endRemoveChilds();
 				       
 private slots:
   void childDestroyed();
@@ -77,7 +82,6 @@ private slots:
 private:
   QHash<int, QList<AbstractTreeItem *> > _childItems;
   QHash<int, QHash<quint64, AbstractTreeItem *> > _childHash; // uint to be compatible to qHash functions FIXME test this
-  AbstractTreeItem *_parentItem;
   Qt::ItemFlags _flags;
 
   int defaultColumn() const;
@@ -150,7 +154,12 @@ public:
 private slots:
   void itemDataChanged(int column = -1);
   void newChild(AbstractTreeItem *child);
-  void childDestroyed(int row);
+
+  void beginRemoveChilds(int firstRow, int lastRow);
+  void endRemoveChilds();
+  
+  void childRemoved(int row);
+  void childsRemoved(int firstRow, int lastRow);
 
 protected:
   void appendChild(AbstractTreeItem *parent, AbstractTreeItem *child);
