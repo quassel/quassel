@@ -26,7 +26,7 @@ CoreUserSettings::CoreUserSettings(UserId uid) : CoreSettings(QString("CoreUser/
 }
 
 void CoreUserSettings::storeIdentity(const Identity &identity) {
-  setLocalValue(QString("Identities/%1").arg(identity.id().toInt()), QVariant::fromValue<Identity>(identity));
+  setLocalValue(QString("Identities/%1").arg(identity.id().toInt()), qVariantFromValue(identity));
 }
 
 void CoreUserSettings::removeIdentity(const Identity &identity) {

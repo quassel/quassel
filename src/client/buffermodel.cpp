@@ -75,7 +75,8 @@ void BufferModel::mapProperty(int column, int role, QObject *target, const QByte
 void BufferModel::setCurrentIndex(const QModelIndex &index, QItemSelectionModel::SelectionFlags command) {
   Q_UNUSED(command)
   BufferId newCurrentBuffer;
-  if(index.data(NetworkModel::ItemTypeRole) == NetworkModel::BufferItemType && currentBuffer != (newCurrentBuffer = index.data(NetworkModel::BufferIdRole).value<BufferId>())) {
+  if(index.data(NetworkModel::ItemTypeRole) == NetworkModel::BufferItemType
+     && currentBuffer != (newCurrentBuffer = qVariantValue<BufferId>(index.data(NetworkModel::BufferIdRole)))) {
     currentBuffer = newCurrentBuffer;
     // FIXME: to something like: index.setData(ActivitRole, NoActivity);
     // networkModel->bufferActivity(BufferItem::NoActivity, currentBuffer);

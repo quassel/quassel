@@ -94,9 +94,9 @@ QVariant BufferItem::data(int column, int role) const {
   case NetworkModel::ItemTypeRole:
     return NetworkModel::BufferItemType;
   case NetworkModel::BufferIdRole:
-    return QVariant::fromValue<BufferId>(bufferInfo().uid());
+    return qVariantFromValue(bufferInfo().uid());
   case NetworkModel::NetworkIdRole:
-    return QVariant::fromValue<NetworkId>(bufferInfo().networkId());
+    return qVariantFromValue(bufferInfo().networkId());
   case NetworkModel::BufferTypeRole:
     return int(bufferType());
   case NetworkModel::ItemActiveRole:
@@ -220,7 +220,7 @@ NetworkItem::NetworkItem(const NetworkId &netid, AbstractTreeItem *parent)
 QVariant NetworkItem::data(int column, int role) const {
   switch(role) {
   case NetworkModel::NetworkIdRole:
-    return QVariant::fromValue<NetworkId>(_networkId);
+    return qVariantFromValue(_networkId);
   case NetworkModel::ItemTypeRole:
     return NetworkModel::NetworkItemType;
   case NetworkModel::ItemActiveRole:

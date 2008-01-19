@@ -310,10 +310,10 @@ QVariant CoreSession::sessionState() {
   QVariantMap v;
 
   QVariantList bufs;
-  foreach(BufferInfo id, buffers()) bufs << QVariant::fromValue(id);
+  foreach(BufferInfo id, buffers()) bufs << qVariantFromValue(id);
   v["BufferInfos"] = bufs;
   QVariantList networkids;
-  foreach(NetworkId id, _networks.keys()) networkids << QVariant::fromValue(id);
+  foreach(NetworkId id, _networks.keys()) networkids << qVariantFromValue(id);
   v["NetworkIds"] = networkids;
 
   quint32 ircusercount = 0;
@@ -326,7 +326,7 @@ QVariant CoreSession::sessionState() {
   v["IrcChannelCount"] = ircchannelcount;
 
   QList<QVariant> idlist;
-  foreach(Identity *i, _identities.values()) idlist << QVariant::fromValue<Identity>(*i);
+  foreach(Identity *i, _identities.values()) idlist << qVariantFromValue(*i);
   v["Identities"] = idlist;
 
   v["SessionData"] = sessionData;
@@ -347,7 +347,7 @@ void CoreSession::sendBacklog(BufferInfo id, QVariant v1, QVariant v2) {
 
   // Send messages out in smaller packages - we don't want to make the signal data too large!
   for(int i = 0; i < msglist.count(); i++) {
-    log.append(QVariant::fromValue(msglist[i]));
+    log.append(qVariantFromValue(msglist[i]));
     if(log.count() >= 5) {
       emit backlogData(id, log, i >= msglist.count() - 1);
       log.clear();
