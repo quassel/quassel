@@ -29,8 +29,6 @@
 #include <QString>
 #include <QByteArray>
 
-#include <QMutex>
-
 class SignalRelay;
 class SyncableObject;
 class QMetaObject;
@@ -93,12 +91,14 @@ public:
   const QList<int> &argTypes(QObject *obj, int methodId);
   const QByteArray &methodName(QObject *obj, int methodId);
   const QHash<QByteArray, int> &syncMap(SyncableObject *obj);
+  int updatedRemotelyId(SyncableObject *obj);
 
   typedef QHash<int, QList<int> > ArgHash;
   typedef QHash<int, QByteArray> MethodNameHash;
   struct ClassInfo {
     ArgHash argTypes;
     MethodNameHash methodNames;
+    int updatedRemotelyId; // id of the updatedRemotely() signal - makes things faster
     QHash<QByteArray, int> syncMap;
   };
 
@@ -125,6 +125,7 @@ private:
   void setArgTypes(QObject *obj, int methodId);
   void setMethodName(QObject *obj, int methodId);
   void setSyncMap(SyncableObject *obj);
+  void setUpdatedRemotelyId(QObject *obj);
 
   bool methodsMatch(const QMetaMethod &signal, const QMetaMethod &slot) const;
 
@@ -137,19 +138,15 @@ private:
   void handleInitData(QIODevice *sender, const QVariantList &params);
   void handleSignal(const QByteArray &funcName, const QVariantList &params);
 
-  bool invokeSlot(QObject *receiver, int methodId, const QVariantList &params);
+  bool invokeSlot(QObject *receiver, int methodId, const QVariantList &params = QVariantList());
 
   QVariantMap initData(SyncableObject *obj) const;
   void setInitData(SyncableObject *obj, const QVariantMap &properties);
 
-  void _detachSignals(QObject *sender);
-  void _detachSlots(QObject *receiver);
-  void _stopSync(SyncableObject *obj);
-
-  public:
+public:
   void dumpSyncMap(SyncableObject *object);
-  private:
-
+  
+private:
   // Hash of used QIODevices
   QHash<QIODevice*, quint32> _peerByteCount;
 
@@ -170,11 +167,6 @@ private:
 
 
   ProxyMode _proxyMode;
-  
-  // the slaveMutex protects both containers:
-  //  - _syncSlaves for sync and init calls
-  //  - _attachedSlots
-  QMutex slaveMutex;
   
   friend class SignalRelay;
 };

@@ -30,8 +30,8 @@
 #include <QDebug>
 #include <QMetaMethod>
 #include <QMetaProperty>
-#include <QMutexLocker>
 #include <QRegExp>
+#include <QThread>
 
 #include "syncableobject.h"
 #include "util.h"
@@ -68,7 +68,7 @@ SignalRelay::SignalRelay(SignalProxy* parent, QObject* source)
     caller(source),
     _sync(false)
 {
-  QObject::connect(source, SIGNAL(destroyed()), parent, SLOT(detachSender()), Qt::DirectConnection);
+  QObject::connect(source, SIGNAL(destroyed()), parent, SLOT(detachSender()));
 }
 
 int SignalRelay::qt_metacall(QMetaObject::Call _c, int _id, void **_a) {
@@ -273,7 +273,6 @@ void SignalProxy::objectRenamed(QString oldname, QString newname) {
 }
 
 void SignalProxy::objectRenamed(QByteArray classname, QString oldname, QString newname) {
-  QMutexLocker locker(&slaveMutex);
   if(_syncSlave.contains(classname) && _syncSlave[classname].contains(oldname) && oldname != newname)
     _syncSlave[classname][newname] = _syncSlave[classname].take(oldname);
 }
@@ -395,12 +394,24 @@ const QHash<QByteArray,int> &SignalProxy::syncMap(SyncableObject *obj) {
   return _classInfo[obj->metaObject()]->syncMap;
 }
 
+void SignalProxy::setUpdatedRemotelyId(QObject *obj) {
+  const QMetaObject *meta = obj->metaObject();
+  Q_ASSERT(_classInfo.contains(meta));
+  _classInfo[meta]->updatedRemotelyId = meta->indexOfSignal("updatedRemotely()");
+}
+
+int SignalProxy::updatedRemotelyId(SyncableObject *obj) {
+  Q_ASSERT(_classInfo.contains(obj->metaObject()));
+  return _classInfo[obj->metaObject()]->updatedRemotelyId;
+}
+
 void SignalProxy::createClassInfo(QObject *obj) {
   if(_classInfo.contains(obj->metaObject()))
     return;
 
   ClassInfo *classInfo = new ClassInfo();
   _classInfo[obj->metaObject()] = classInfo;
+  setUpdatedRemotelyId(obj);
 }
 
 bool SignalProxy::attachSignal(QObject* sender, const char* signal, const QByteArray& sigName) {
@@ -440,7 +451,7 @@ bool SignalProxy::attachSlot(const QByteArray& sigName, QObject* recv, const cha
   _attachedSlots.insert(funcName, qMakePair(recv, methodId));
 
   QObject::disconnect(recv, SIGNAL(destroyed()), this, SLOT(detachSender()));
-  QObject::connect(recv, SIGNAL(destroyed()), this, SLOT(detachSender()), Qt::DirectConnection);
+  QObject::connect(recv, SIGNAL(destroyed()), this, SLOT(detachSender()));
   return true;
 }
 
@@ -462,7 +473,7 @@ void SignalProxy::synchronize(SyncableObject *obj) {
 
   if(proxyMode() == Server) {
     if(obj->metaObject()->indexOfSignal(QMetaObject::normalizedSignature("renameObject(QString, QString)")) != -1)
-      connect(obj, SIGNAL(renameObject(QString, QString)), this, SLOT(objectRenamed(QString, QString)), Qt::DirectConnection);
+      connect(obj, SIGNAL(renameObject(QString, QString)), this, SLOT(objectRenamed(QString, QString)));
 
     setInitialized(obj);
   } else {
@@ -490,47 +501,22 @@ void SignalProxy::requestInit(SyncableObject *obj) {
 }
 
 void SignalProxy::detachSender() {
-  // this is a private slot. the reason for that is, that we enfoce Qt::DirectConnection.
-  // the result is, that we can be sure, that a registered receiver is removed immediately when it's destroyed.
-  // since we're guarding the the internal datastructures with mutexes this means,
-  // that the object destruction is deffered until we're finished delivering our sync/init/whatever request.
-  // all in all: thread safety! *sigh*
   detachObject(sender());
 }
 
-// detachObject/Signals/Slots() can be called as a result of an incoming call
-// this might destroy our the iterator used for delivery
-// thus we wrap the actual disconnection by using QueuedConnections
 void SignalProxy::detachObject(QObject* obj) {
-  QMutexLocker locker(&slaveMutex);
-  _detachSignals(obj);
-  _detachSlots(obj);
-  SyncableObject *syncobj = qobject_cast<SyncableObject *>(obj);
-  if(syncobj) _stopSync(syncobj);
+  detachSignals(obj);
+  detachSlots(obj);
+  stopSync(static_cast<SyncableObject *>(obj));
 }
 
 void SignalProxy::detachSignals(QObject* sender) {
-  QMutexLocker locker(&slaveMutex);
-  _detachSignals(sender);
-}
-
-void SignalProxy::detachSlots(QObject* receiver) {
-  QMutexLocker locker(&slaveMutex);
-  _detachSlots(receiver);
-}
-
-void SignalProxy::stopSync(SyncableObject* obj) {
-  QMutexLocker locker(&slaveMutex);
-  _stopSync(obj);
-}
-
-void SignalProxy::_detachSignals(QObject* sender) {
   if(!_relayHash.contains(sender))
     return;
   _relayHash.take(sender)->deleteLater();
 }
 
-void SignalProxy::_detachSlots(QObject* receiver) {
+void SignalProxy::detachSlots(QObject* receiver) {
   SlotHash::iterator slotIter = _attachedSlots.begin();
   while(slotIter != _attachedSlots.end()) {
     if(slotIter.value().first == receiver) {
@@ -540,7 +526,7 @@ void SignalProxy::_detachSlots(QObject* receiver) {
   }
 }
 
-void SignalProxy::_stopSync(SyncableObject* obj) {
+void SignalProxy::stopSync(SyncableObject* obj) {
   if(_relayHash.contains(obj))
     _relayHash[obj]->setSynchronize(false);
 
@@ -578,11 +564,6 @@ void SignalProxy::receivePeerSignal(QIODevice *sender, const QVariant &packedFun
   QVariant call = params.takeFirst();
   if(call.type() != QVariant::Int)
     return handleSignal(call.toByteArray(), params);
-
-  // well yes we are locking code here and not only data.
-  // otherwise each handler would have to lock the data anyway. this leaves us on the safe side
-  // unable to forget a lock
-  QMutexLocker locker(&slaveMutex);
 
   switch(call.toInt()) {
   case Sync:
@@ -625,7 +606,7 @@ void SignalProxy::handleSync(QVariantList params) {
     qWarning("SignalProxy::handleSync(): invokeMethod for \"%s\" failed ", methodName(receiver, slotId).constData());
     return;
   }
-  QMetaObject::invokeMethod(receiver, "updatedRemotely");
+  invokeSlot(receiver, updatedRemotelyId(receiver));
 }
 
 void SignalProxy::handleInitRequest(QIODevice *sender, const QVariantList &params) {
@@ -702,11 +683,38 @@ void SignalProxy::handleSignal(const QByteArray &funcName, const QVariantList &p
 }
 
 bool SignalProxy::invokeSlot(QObject *receiver, int methodId, const QVariantList &params) {
-  int numParams = argTypes(receiver, methodId).count();
-  QGenericArgument args[9];
-  for(int i = 0; i < numParams; i++)
-    args[i] = QGenericArgument(params[i].typeName(), params[i].constData());
-  return QMetaObject::invokeMethod(receiver, methodName(receiver, methodId), args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8]);
+  const QList<int> args = argTypes(receiver, methodId);
+  const int numArgs = args.count();
+
+  if(numArgs < params.count()) {
+      qWarning() << "SignalProxy::invokeSlot(): not enough params to invoke" << methodName(receiver, methodId);
+      return false;
+  }
+  
+  void *_a[numArgs+1];
+  _a[0] = 0;
+  // check for argument compatibility and build params array
+  for(int i = 0; i < numArgs; i++) {
+    if(args[i] != QMetaType::type(params[i].typeName())) {
+      qWarning() << "SignalProxy::invokeSlot(): incompatible param types to invoke" << methodName(receiver, methodId);
+      return false;
+    }
+    _a[i+1] = const_cast<void *>(params[i].constData());
+  }
+
+    
+  Qt::ConnectionType type = QThread::currentThread() == receiver->thread()
+    ? Qt::DirectConnection
+    : Qt::QueuedConnection;
+
+  if (type == Qt::DirectConnection) {
+    return receiver->qt_metacall(QMetaObject::InvokeMetaMethod, methodId, _a) < 0;
+  } else {
+    qWarning() << "Queued Connections are not implemented yet";
+    // not to self: qmetaobject.cpp:990 ff
+    return false;
+  }
+  
 }
 
 void SignalProxy::dataAvailable() {
