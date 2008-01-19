@@ -87,6 +87,9 @@ void AbstractTreeItem::removeChild(int row) {
 }
 
 void AbstractTreeItem::removeAllChilds() {
+  if(childCount() == 0)
+    return;
+
   emit beginRemoveChilds(0, childCount() - 1);
 
   AbstractTreeItem *child;
