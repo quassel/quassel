@@ -27,10 +27,10 @@
 /*****************************************
 * The Filter for the Tree View
 *****************************************/
-BufferViewFilter::BufferViewFilter(QAbstractItemModel *model, const Modes &filtermode, const QList<uint> &nets)
+BufferViewFilter::BufferViewFilter(QAbstractItemModel *model, const Modes &filtermode, const QList<NetworkId> &nets)
   : QSortFilterProxyModel(model),
     mode(filtermode),
-    networks(QSet<uint>::fromList(nets))
+    networks(QSet<NetworkId>::fromList(nets))
 {
   setSourceModel(model);
   setSortCaseSensitivity(Qt::CaseInsensitive);

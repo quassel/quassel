@@ -172,16 +172,16 @@ void MainWin::setupMenus() {
 void MainWin::setupViews() {
   BufferModel *model = Client::bufferModel();
 
-  addBufferView(tr("All Buffers"), model, BufferViewFilter::AllNets, QList<uint>());
-  addBufferView(tr("All Channels"), model, BufferViewFilter::AllNets|BufferViewFilter::NoQueries|BufferViewFilter::NoServers, QList<uint>());
-  addBufferView(tr("All Queries"), model, BufferViewFilter::AllNets|BufferViewFilter::NoChannels|BufferViewFilter::NoServers, QList<uint>());
-  addBufferView(tr("All Networks"), model, BufferViewFilter::AllNets|BufferViewFilter::NoChannels|BufferViewFilter::NoQueries, QList<uint>());
-  addBufferView(tr("Full Custom"), model, BufferViewFilter::FullCustom, QList<uint>());
+  addBufferView(tr("All Buffers"), model, BufferViewFilter::AllNets, QList<NetworkId>());
+  addBufferView(tr("All Channels"), model, BufferViewFilter::AllNets|BufferViewFilter::NoQueries|BufferViewFilter::NoServers, QList<NetworkId>());
+  addBufferView(tr("All Queries"), model, BufferViewFilter::AllNets|BufferViewFilter::NoChannels|BufferViewFilter::NoServers, QList<NetworkId>());
+  addBufferView(tr("All Networks"), model, BufferViewFilter::AllNets|BufferViewFilter::NoChannels|BufferViewFilter::NoQueries, QList<NetworkId>());
+  addBufferView(tr("Full Custom"), model, BufferViewFilter::FullCustom, QList<NetworkId>());
 
   ui.menuViews->addSeparator();
 }
 
-void MainWin::addBufferView(const QString &viewname, QAbstractItemModel *model, const BufferViewFilter::Modes &mode, const QList<uint> &nets) {
+void MainWin::addBufferView(const QString &viewname, QAbstractItemModel *model, const BufferViewFilter::Modes &mode, const QList<NetworkId> &nets) {
   QDockWidget *dock = new QDockWidget(viewname, this);
   dock->setObjectName(QString("ViewDock-" + viewname)); // should be unique for mainwindow state!
   dock->setAllowedAreas(Qt::RightDockWidgetArea|Qt::LeftDockWidgetArea);

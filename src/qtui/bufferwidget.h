@@ -36,7 +36,7 @@ class LayoutThread;
 class BufferWidget : public QWidget {
   Q_OBJECT
 
-  Q_PROPERTY(uint currentBuffer READ currentBuffer WRITE setCurrentBuffer); // FIXME BufferId
+  Q_PROPERTY(BufferId currentBuffer READ currentBuffer WRITE setCurrentBuffer);
 
 public:
   BufferWidget(QWidget *parent = 0);

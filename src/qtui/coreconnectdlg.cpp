@@ -37,6 +37,7 @@ CoreConnectDlg::CoreConnectDlg(QWidget *parent, bool autoconnect) : QDialog(pare
 
   ui.stackedWidget->setCurrentWidget(ui.accountPage);
   ui.accountButtonBox->setFocus();
+  ui.accountButtonBox->button(QDialogButtonBox::Ok)->setDefault(true);
 
   CoreAccountSettings s;
   QString lastacc = s.lastAccount();
@@ -186,6 +187,7 @@ void CoreConnectDlg::connectToCore() {
   ui.coreInfoLabel->setText("");
   ui.loginStack->setCurrentWidget(ui.loginEmptyPage);
   ui.loginButtonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
+  ui.loginButtonBox->button(QDialogButtonBox::Ok)->setDefault(true);
   ui.loginButtonBox->button(QDialogButtonBox::Ok)->setDisabled(true);
   disconnect(ui.loginButtonBox, 0, this, 0);
   connect(ui.loginButtonBox, SIGNAL(rejected()), this, SLOT(restartPhaseNull()));
@@ -202,6 +204,7 @@ void CoreConnectDlg::initPhaseError(const QString &error) {
   ui.connectLabel->setText(tr("<div style=color:red;>Connection to %1 failed!</div>").arg(account["Host"].toString()));
   ui.coreInfoLabel->setText(error);
   ui.loginButtonBox->setStandardButtons(QDialogButtonBox::Retry|QDialogButtonBox::Cancel);
+  ui.loginButtonBox->button(QDialogButtonBox::Retry)->setDefault(true);
   disconnect(ui.loginButtonBox, 0, this, 0);
   connect(ui.loginButtonBox, SIGNAL(accepted()), this, SLOT(restartPhaseNull()));
   connect(ui.loginButtonBox, SIGNAL(rejected()), this, SLOT(reject()));
@@ -239,11 +242,13 @@ void CoreConnectDlg::startLogin() {
   ui.loginStack->setCurrentWidget(ui.loginCredentialsPage);
   ui.loginStack->setMinimumSize(ui.loginStack->sizeHint()); ui.loginStack->updateGeometry();
   ui.loginButtonBox->setStandardButtons(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
+  ui.loginButtonBox->button(QDialogButtonBox::Ok)->setDefault(true);
   if(!account["User"].toString().isEmpty()) {
     ui.user->setText(account["User"].toString());
     if(account["RememberPasswd"].toBool()) {
       ui.password->setText(account["Password"].toString());
       ui.rememberPasswd->setChecked(true);
+      ui.loginButtonBox->setFocus();
     } else {
       ui.rememberPasswd->setChecked(false);
       ui.password->setFocus();

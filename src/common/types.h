@@ -21,32 +21,68 @@
 #ifndef _TYPES_H_
 #define _TYPES_H_
 
+#include <QDebug>
 #include <QString>
+#include <QVariant>
 
-/*
-class UnsignedId {
-    quint32 id;
+class SignedId {
+  protected:
+    qint32 id;
 
   public:
-    inline UnsignedId(int _id = 0) { id = _id; }
-    inline quint32 toInt() const { return id; }
-    inline bool operator==(const UnsignedId &other) const { return id == other.id; }
-    inline bool operator!=(const UnsignedId &other) const { return id != other.id; }
+    inline SignedId(int _id = 0) { id = _id; }
+    inline qint32 toInt() const { return id; }
+
+    inline bool operator==(const SignedId &other) const { return id == other.id; }
+    inline bool operator!=(const SignedId &other) const { return id != other.id; }
+    inline bool operator<(const SignedId &other) const { return id < other.id; }
+    inline bool operator==(int i) const { return id == i; }
+    inline bool operator!=(int i) const { return id != i; }
+    inline bool operator<(int i) const { return id < i; }
+    inline bool operator>(int i) const { return id > i; }
+    inline bool operator<=(int i) const { return id <= i; }
+
+    inline SignedId operator++(int) { id++; return *this; }
+    //inline operator int() const { return toInt(); } // no automatic conversion!
+
+    friend QDataStream &operator>>(QDataStream &in, SignedId &signedId);
 };
 
-struct BufferId : public UnsignedId {
-  inline BufferId(int _id = 0) : UnsignedId(_id) {};
+inline QDataStream &operator<<(QDataStream &out, const SignedId &signedId) { out << signedId.toInt(); return out; }
+inline QDataStream &operator>>(QDataStream &in, SignedId &signedId) { in >> signedId.id; return in; }
+inline QDebug operator<<(QDebug dbg, const SignedId &signedId) { dbg.space() << signedId.toInt(); return dbg; }
+inline uint qHash(const SignedId &id) { return qHash(id.toInt()); }
 
+struct UserId : public SignedId {
+  inline UserId(int _id = 0) : SignedId(_id) {};
+  //inline operator QVariant() const { return QVariant::fromValue<UserId>(*this); }  // no automatic conversion!
 };
-*/
 
-// FIXME make all ID types quint32 as soon as they all have been replaced
-typedef uint UserId;     //!< Identifies a core user.
-typedef uint MsgId;      //!< Identifies a message.
-typedef uint BufferId;   //!< Identifies a buffer.
-// These must be signed!
-typedef qint32 NetworkId;  //!< Identifies an IRC Network.
-typedef qint32 IdentityId; //!< Identifies an identity.
+struct MsgId : public SignedId {
+  inline MsgId(int _id = 0) : SignedId(_id) {};
+  //inline operator QVariant() const { return QVariant::fromValue<MsgId>(*this); }
+};
+
+struct BufferId : public SignedId {
+  inline BufferId(int _id = 0) : SignedId(_id) {};
+  //inline operator QVariant() const { return QVariant::fromValue<BufferId>(*this); }
+};
+
+struct NetworkId : public SignedId {
+  inline NetworkId(int _id = 0) : SignedId(_id) {};
+  //inline operator QVariant() const { return QVariant::fromValue<NetworkId>(*this); }
+};
+
+struct IdentityId : public SignedId {
+  inline IdentityId(int _id = 0) : SignedId(_id) {};
+  //inline operator QVariant() const { return QVariant::fromValue<IdentityId>(*this); }
+};
+
+Q_DECLARE_METATYPE(UserId);
+Q_DECLARE_METATYPE(MsgId);
+Q_DECLARE_METATYPE(BufferId);
+Q_DECLARE_METATYPE(NetworkId);
+Q_DECLARE_METATYPE(IdentityId);
 
 //! Base class for exceptions.
 struct Exception {

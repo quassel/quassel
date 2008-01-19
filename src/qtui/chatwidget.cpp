@@ -52,8 +52,8 @@ void ChatWidget::init(BufferId id) {
   UiSettings s;
   QVariant tsDef = s.value("DefaultTimestampColumnWidth", 90);
   QVariant senderDef = s.value("DefaultSenderColumnWidth", 100);
-  tsWidth = s.value(QString("%1/TimestampColumnWidth").arg(bufferId), tsDef).toInt();
-  senderWidth = s.value(QString("%1/SenderColumnWidth").arg(bufferId), senderDef).toInt();
+  tsWidth = s.value(QString("%1/TimestampColumnWidth").arg(bufferId.toInt()), tsDef).toInt();
+  senderWidth = s.value(QString("%1/SenderColumnWidth").arg(bufferId.toInt()), senderDef).toInt();
   computePositions();
   adjustScrollBar();
   verticalScrollBar()->setValue(verticalScrollBar()->maximum());
@@ -77,8 +77,8 @@ ChatWidget::~ChatWidget() {
   UiSettings s;
   s.setValue("DefaultTimestampColumnWidth", tsWidth);  // FIXME stupid dirty quicky
   s.setValue("DefaultSenderColumnWidth", senderWidth);
-  s.setValue(QString("%1/TimestampColumnWidth").arg(bufferId), tsWidth);
-  s.setValue(QString("%1/SenderColumnWidth").arg(bufferId), senderWidth);
+  s.setValue(QString("%1/TimestampColumnWidth").arg(bufferId.toInt()), tsWidth);
+  s.setValue(QString("%1/SenderColumnWidth").arg(bufferId.toInt()), senderWidth);
 }
 
 QSize ChatWidget::sizeHint() const {

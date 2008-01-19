@@ -24,7 +24,6 @@
 #include <QTranslator>
 
 #include "global.h"
-#include "identity.h"
 #include "settings.h"
 
 #if defined BUILD_CORE

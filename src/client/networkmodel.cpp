@@ -59,7 +59,7 @@ const BufferInfo &BufferItem::bufferInfo() const {
 }
 
 quint64 BufferItem::id() const {
-  return bufferInfo().uid();
+  return bufferInfo().uid().toInt();
 }
 
 bool BufferItem::isStatusBuffer() const {
@@ -94,9 +94,9 @@ QVariant BufferItem::data(int column, int role) const {
   case NetworkModel::ItemTypeRole:
     return NetworkModel::BufferItemType;
   case NetworkModel::BufferIdRole:
-    return bufferInfo().uid();
+    return QVariant::fromValue<BufferId>(bufferInfo().uid());
   case NetworkModel::NetworkIdRole:
-    return bufferInfo().networkId();
+    return QVariant::fromValue<NetworkId>(bufferInfo().networkId());
   case NetworkModel::BufferTypeRole:
     return int(bufferType());
   case NetworkModel::ItemActiveRole:
@@ -220,7 +220,7 @@ NetworkItem::NetworkItem(const NetworkId &netid, AbstractTreeItem *parent)
 QVariant NetworkItem::data(int column, int role) const {
   switch(role) {
   case NetworkModel::NetworkIdRole:
-    return _networkId;
+    return QVariant::fromValue<NetworkId>(_networkId);
   case NetworkModel::ItemTypeRole:
     return NetworkModel::NetworkItemType;
   case NetworkModel::ItemActiveRole:
@@ -231,7 +231,7 @@ QVariant NetworkItem::data(int column, int role) const {
 }
 
 quint64 NetworkItem::id() const {
-  return _networkId;
+  return _networkId.toInt();
 }
 
 bool NetworkItem::isActive() const {
@@ -413,11 +413,11 @@ Buffer *NetworkModel::getBufferByIndex(const QModelIndex &index) const {
 
 // experimental stuff :)
 QModelIndex NetworkModel::networkIndex(NetworkId networkId) {
-  return indexById(networkId);
+  return indexById(networkId.toInt());
 }
 
 NetworkItem *NetworkModel::existsNetworkItem(NetworkId networkId) {
-  return qobject_cast<NetworkItem *>(rootItem->childById(networkId));
+  return qobject_cast<NetworkItem *>(rootItem->childById(networkId.toInt()));
 }
 
 NetworkItem *NetworkModel::networkItem(NetworkId networkId) {
@@ -436,7 +436,7 @@ QModelIndex NetworkModel::bufferIndex(BufferId bufferId) {
   AbstractTreeItem *netItem, *bufferItem;
   for(int i = 0; i < rootItem->childCount(); i++) {
     netItem = rootItem->child(i);
-    if((bufferItem = netItem->childById(bufferId))) {
+    if((bufferItem = netItem->childById(bufferId.toInt()))) {
       return indexById(bufferItem->id(), networkIndex(netItem->id()));
     }
   }
@@ -502,8 +502,8 @@ QMimeData *NetworkModel::mimeData(const QModelIndexList &indexes) const {
   QStringList bufferlist;
   QString netid, uid, bufferid;
   foreach(QModelIndex index, indexes) {
-    netid = QString::number(index.data(NetworkIdRole).value<NetworkId>());
-    uid = QString::number(index.data(BufferIdRole).value<BufferId>());
+    netid = QString::number(index.data(NetworkIdRole).value<NetworkId>().toInt());
+    uid = QString::number(index.data(BufferIdRole).value<BufferId>().toInt());
     bufferid = QString("%1:%2").arg(netid).arg(uid);
     if(!bufferlist.contains(bufferid))
       bufferlist << bufferid;
@@ -540,11 +540,11 @@ bool NetworkModel::dropMimeData(const QMimeData *data, Qt::DropAction action, in
   if(bufferId == parent.data(BufferIdRole).value<BufferId>())
     return false; 
   
-  Q_ASSERT(rootItem->childById(netId));
-  Q_ASSERT(rootItem->childById(netId)->childById(bufferId));
+  Q_ASSERT(rootItem->childById(netId.toInt()));
+  Q_ASSERT(rootItem->childById(netId.toInt())->childById(bufferId.toInt()));
 
   // source must be a query too
-  BufferItem::Type sourceType = (BufferItem::Type)rootItem->childById(netId)->childById(bufferId)->data(0, BufferTypeRole).toInt();
+  BufferItem::Type sourceType = (BufferItem::Type)rootItem->childById(netId.toInt())->childById(bufferId.toInt())->data(0, BufferTypeRole).toInt();
   if(sourceType != BufferItem::QueryType)
     return false;
     

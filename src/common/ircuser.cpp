@@ -144,7 +144,7 @@ void IrcUser::setNick(const QString &nick) {
 }
 
 void IrcUser::updateObjectName() {
-  QString newName = QString::number(network()->networkId()) + "/" + _nick;
+  QString newName = QString::number(network()->networkId().toInt()) + "/" + _nick;
   QString oldName = objectName();
   if(oldName != newName) {
     setObjectName(newName);

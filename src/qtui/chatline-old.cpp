@@ -133,8 +133,8 @@ void ChatLine::setSelection(SelectionMode mode, int start, int end) {
   }
 }
 
-uint ChatLine::msgId() const {
-  return msg.buffer().uid();
+MsgId ChatLine::msgId() const {
+  return msg.msgId();
 }
 
 BufferInfo ChatLine::bufferInfo() const {

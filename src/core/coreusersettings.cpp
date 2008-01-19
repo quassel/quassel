@@ -20,21 +20,21 @@
 
 #include "coreusersettings.h"
 
-CoreUserSettings::CoreUserSettings(UserId uid) : CoreSettings(QString("CoreUser/%1").arg(uid)), user(uid) {
+CoreUserSettings::CoreUserSettings(UserId uid) : CoreSettings(QString("CoreUser/%1").arg(uid.toInt())), user(uid) {
 
 
 }
 
 void CoreUserSettings::storeIdentity(const Identity &identity) {
-  setLocalValue(QString("Identities/%1").arg(identity.id()), QVariant::fromValue<Identity>(identity));
+  setLocalValue(QString("Identities/%1").arg(identity.id().toInt()), QVariant::fromValue<Identity>(identity));
 }
 
 void CoreUserSettings::removeIdentity(const Identity &identity) {
-  removeLocalKey(QString("Identities/%1").arg(identity.id()));
+  removeLocalKey(QString("Identities/%1").arg(identity.id().toInt()));
 }
 
 Identity CoreUserSettings::identity(IdentityId id) {
-  QVariant v = localValue(QString("Identities/%1").arg(id));
+  QVariant v = localValue(QString("Identities/%1").arg(id.toInt()));
   if(qVariantCanConvert<Identity>(v)) {
     return v.value<Identity>();
   }
@@ -44,7 +44,7 @@ Identity CoreUserSettings::identity(IdentityId id) {
 QList<IdentityId> CoreUserSettings::identityIds() {
   QList<IdentityId> res;
   foreach(QString id, localChildKeys("Identities")) {
-    res << id.toUInt();
+    res << id.toInt();
   }
   return res;
 }

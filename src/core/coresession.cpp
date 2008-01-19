@@ -225,8 +225,8 @@ void CoreSession::attachNetworkConnection(NetworkConnection *conn) {
   //connect(this, SIGNAL(disconnectFromIrc(QString)), network, SLOT(disconnectFromIrc(QString)));
   //connect(this, SIGNAL(msgFromGui(uint, QString, QString)), network, SLOT(userInput(uint, QString, QString)));
 
-  connect(conn, SIGNAL(connected(NetworkId)), this, SLOT(networkConnected(NetworkId)));
-  connect(conn, SIGNAL(disconnected(NetworkId)), this, SLOT(networkDisconnected(NetworkId)));
+  //connect(conn, SIGNAL(connected(NetworkId)), this, SLOT(networkConnected(NetworkId)));
+  //connect(conn, SIGNAL(disconnected(NetworkId)), this, SLOT(networkDisconnected(NetworkId)));
   signalProxy()->attachSignal(conn, SIGNAL(connected(NetworkId)), SIGNAL(networkConnected(NetworkId)));
   signalProxy()->attachSignal(conn, SIGNAL(disconnected(NetworkId)), SIGNAL(networkDisconnected(NetworkId)));
 
@@ -291,7 +291,7 @@ void CoreSession::recvMessageFromServer(Message::Type type, QString target, QStr
   }
   Message msg(buf, type, text, sender, flags);
   msg.setMsgId(Core::storeMessage(msg));
-  Q_ASSERT(msg.msgId());
+  Q_ASSERT(msg.msgId() != 0);
   emit displayMsg(msg);
 }
 
@@ -324,7 +324,6 @@ QVariant CoreSession::sessionState() {
   }
   v["IrcUserCount"] = ircusercount;
   v["IrcChannelCount"] = ircchannelcount;
-  qDebug() << "nets:" << _networks.count() << " chans:" << ircchannelcount << " users:" << ircusercount;
 
   QList<QVariant> idlist;
   foreach(Identity *i, _identities.values()) idlist << QVariant::fromValue<Identity>(*i);

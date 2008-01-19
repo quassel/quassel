@@ -254,7 +254,7 @@ void Core::clientHasData() {
       mutex.lock();
       UserId uid = storage->validateUser(msg["User"].toString(), msg["Password"].toString());
       mutex.unlock();
-      if(!uid) {
+      if(uid == 0) {
         reply["MsgType"] = "ClientLoginReject";
         reply["Error"] = tr("<b>Invalid username or password!</b><br>The username/password combination you supplied could not be found in the database.");
         SignalProxy::writeDataToDevice(socket, reply);

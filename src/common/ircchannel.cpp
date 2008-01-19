@@ -40,7 +40,7 @@ IrcChannel::IrcChannel(const QString &channelname, Network *network)
     _topic(QString()),
     network(network)
 {
-  setObjectName(QString::number(network->networkId()) + "/" +  channelname);
+  setObjectName(QString::number(network->networkId().toInt()) + "/" +  channelname);
 }
 
 IrcChannel::~IrcChannel() {

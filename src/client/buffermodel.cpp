@@ -68,7 +68,6 @@ void BufferModel::synchronizeView(QAbstractItemView *view) {
 }
 
 void BufferModel::mapProperty(int column, int role, QObject *target, const QByteArray &property) {
-  qDebug() << property;
   propertyMapper()->addMapping(column, role, target, property);
 }
 

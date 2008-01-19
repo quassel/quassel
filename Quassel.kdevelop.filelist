@@ -192,7 +192,6 @@ src/qtui/settingspages/networkssettingspage.h
 src/qtui/settingspages/networkssettingspage.ui
 src/qtui/settingspages/nickeditdlgnew.ui
 src/qtui/settingspages/saveidentitiesdlg.ui
-src/qtui/settingspages/servereditdlg.ui
 src/qtui/settingspages/settingspages.pri
 src/qtui/topicwidget.cpp
 src/qtui/topicwidget.h

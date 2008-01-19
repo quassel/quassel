@@ -43,7 +43,7 @@ Network::Network(const NetworkId &networkid, QObject *parent) : SyncableObject(p
     _codecForEncoding(0),
     _codecForDecoding(0)
 {
-  setObjectName(QString::number(networkid));
+  setObjectName(QString::number(networkid.toInt()));
 }
 
 // I think this is unnecessary since IrcUsers have us as their daddy :)

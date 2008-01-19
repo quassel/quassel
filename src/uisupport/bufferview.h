@@ -36,7 +36,7 @@ public:
   BufferView(QWidget *parent = 0);
   void init();
   void setModel(QAbstractItemModel *model);
-  void setFilteredModel(QAbstractItemModel *model, BufferViewFilter::Modes mode, QList<uint> nets);
+  void setFilteredModel(QAbstractItemModel *model, BufferViewFilter::Modes mode, QList<NetworkId> nets);
   
 signals:
   void removeBuffer(const QModelIndex &);

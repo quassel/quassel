@@ -49,7 +49,7 @@ void BufferView::init() {
   connect(this, SIGNAL(activated(QModelIndex)), this, SLOT(joinChannel(QModelIndex)));
 }
 
-void BufferView::setFilteredModel(QAbstractItemModel *model, BufferViewFilter::Modes mode, QList<uint> nets) {
+void BufferView::setFilteredModel(QAbstractItemModel *model, BufferViewFilter::Modes mode, QList<NetworkId> nets) {
   BufferViewFilter *filter = new BufferViewFilter(model, mode, nets);
   setModel(filter);
   connect(this, SIGNAL(removeBuffer(const QModelIndex &)), filter, SLOT(removeBuffer(const QModelIndex &)));

@@ -46,7 +46,7 @@ NetworkConnection::NetworkConnection(Network *network, CoreSession *session, con
   connect(network, SIGNAL(currentServerSet(const QString &)), this, SLOT(sendPerform()));
 
   connect(&socket, SIGNAL(connected()), this, SLOT(socketConnected()));
-  connect(&socket, SIGNAL(disconnected()), this, SLOT(quit()));
+  //connect(&socket, SIGNAL(disconnected()), this, SLOT(quit())); FIXME
   connect(&socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(socketError(QAbstractSocket::SocketError)));
   connect(&socket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(socketStateChanged(QAbstractSocket::SocketState)));
   connect(&socket, SIGNAL(readyRead()), this, SLOT(socketHasData()));

@@ -32,7 +32,7 @@
  *****************************************/
 class AbstractTreeItem : public QObject {
   Q_OBJECT
-  Q_PROPERTY(uint id READ id)
+  Q_PROPERTY(quint64 id READ id)
 
 public:
   AbstractTreeItem(AbstractTreeItem *parent = 0);
@@ -49,8 +49,8 @@ public:
   AbstractTreeItem *child(int column, int row) const;
   AbstractTreeItem *child(int row) const;
   
-  AbstractTreeItem *childById(int column, const uint &id) const;
-  AbstractTreeItem *childById(const uint &id) const;
+  AbstractTreeItem *childById(int column, const quint64 &id) const;
+  AbstractTreeItem *childById(const quint64 &id) const;
 
   int childCount(int column) const;
   int childCount() const;
@@ -76,7 +76,7 @@ private slots:
 
 private:
   QHash<int, QList<AbstractTreeItem *> > _childItems;
-  QHash<int, QHash<quint64, AbstractTreeItem *> > _childHash; // uint to be compatible to qHash functions
+  QHash<int, QHash<quint64, AbstractTreeItem *> > _childHash; // uint to be compatible to qHash functions FIXME test this
   AbstractTreeItem *_parentItem;
   Qt::ItemFlags _flags;
 
@@ -137,7 +137,7 @@ public:
   QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
   
   QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
-  QModelIndex indexById(uint id, const QModelIndex &parent = QModelIndex()) const;
+  QModelIndex indexById(quint64 id, const QModelIndex &parent = QModelIndex()) const;
   QModelIndex indexByItem(AbstractTreeItem *item) const;
 
   QModelIndex parent(const QModelIndex &index) const;

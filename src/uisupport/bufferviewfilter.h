@@ -47,7 +47,7 @@ public:
   };
   Q_DECLARE_FLAGS(Modes, Mode);
 
-  BufferViewFilter(QAbstractItemModel *model, const Modes &mode, const QList<uint> &nets);
+  BufferViewFilter(QAbstractItemModel *model, const Modes &mode, const QList<NetworkId> &nets);
   
   virtual Qt::ItemFlags flags(const QModelIndex &index) const;
   virtual bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent);
@@ -65,8 +65,8 @@ protected:
   
 private:
   Modes mode;
-  QSet<uint> networks;
-  QSet<uint> buffers;
+  QSet<NetworkId> networks;
+  QSet<BufferId> buffers;
 
   bool filterAcceptBuffer(const QModelIndex &) const;
   bool filterAcceptNetwork(const QModelIndex &) const;

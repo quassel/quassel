@@ -102,7 +102,7 @@ AbstractTreeItem *AbstractTreeItem::child(int row) const {
   return child(defaultColumn(), row);
 }
 
-AbstractTreeItem *AbstractTreeItem::childById(int column, const uint &id) const {
+AbstractTreeItem *AbstractTreeItem::childById(int column, const quint64 &id) const {
   if(!_childHash.contains(column)
      || !_childHash[column].contains(id))
     return 0;
@@ -110,7 +110,7 @@ AbstractTreeItem *AbstractTreeItem::childById(int column, const uint &id) const 
     return _childHash[column].value(id);
 }
 
-AbstractTreeItem *AbstractTreeItem::childById(const uint &id) const {
+AbstractTreeItem *AbstractTreeItem::childById(const quint64 &id) const {
   return childById(defaultColumn(), id);
 }
 
@@ -282,7 +282,7 @@ QModelIndex TreeModel::index(int row, int column, const QModelIndex &parent) con
     return QModelIndex();
 }
 
-QModelIndex TreeModel::indexById(uint id, const QModelIndex &parent) const {
+QModelIndex TreeModel::indexById(quint64 id, const QModelIndex &parent) const {
   AbstractTreeItem *parentItem; 
   
   if(!parent.isValid())

@@ -55,7 +55,7 @@ Identity::Identity(const Identity &other, QObject *parent) : SyncableObject(pare
 }
 
 void Identity::init() {
-  setObjectName(QString::number(id()));
+  setObjectName(QString::number(id().toInt()));
 }
 
 void Identity::setToDefaults() {
@@ -83,7 +83,7 @@ void Identity::setToDefaults() {
 }
 
 bool Identity::isValid() const {
-  return (id() > 0);
+  return (id().toInt() > 0);
 }
 
 IdentityId Identity::id() const {
@@ -170,7 +170,7 @@ QString Identity::quitReason() const {
 // NOTE: DO NOT USE ON SYNCHRONIZED OBJECTS!
 void Identity::setId(IdentityId _id) {
   _identityId = _id;
-  setObjectName(QString::number(id()));
+  setObjectName(QString::number(id().toInt()));
   //emit idSet(id);
 }
 

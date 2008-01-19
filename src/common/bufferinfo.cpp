@@ -71,6 +71,6 @@ QDataStream &operator>>(QDataStream &in, BufferInfo &bufferInfo) {
 }
 
 uint qHash(const BufferInfo &bufferid) {
-  return qHash(bufferid._id);
+  return qHash(bufferid._id.toInt());
 }
 
