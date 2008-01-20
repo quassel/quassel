@@ -129,6 +129,7 @@ void MainWin::init() {
 
   // attach the BufferWidget to the PropertyMapper
   Client::bufferModel()->mapProperty(0, NetworkModel::BufferIdRole, ui.bufferWidget, "currentBuffer");
+  Client::bufferModel()->mapProperty(0, NetworkModel::NetworkIdRole, ui.bufferWidget, "currentNetwork");
   connect(Client::networkModel(), SIGNAL(bufferAboutToBeRemoved(BufferId)),
           ui.bufferWidget, SLOT(removeBuffer(BufferId)));
 

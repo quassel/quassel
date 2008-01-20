@@ -24,10 +24,12 @@
 #include "chatwidget.h"
 #include "settings.h"
 #include "client.h"
+#include "network.h"
 
 BufferWidget::BufferWidget(QWidget *parent)
   : QWidget(parent),
-    _currentBuffer(0)
+    _currentBuffer(0),
+    _currentNetwork(0)
 {
   ui.setupUi(this);
   ui.ownNick->clear();  // TODO add nick history
@@ -74,6 +76,20 @@ void BufferWidget::setCurrentBuffer(BufferId bufferId) {
   chatWidget->setFocusProxy(ui.inputEdit);
   ui.inputEdit->setFocus();
 
+}
+
+NetworkId BufferWidget::currentNetwork() const {
+  return _currentNetwork;
+}
+
+void BufferWidget::setCurrentNetwork(NetworkId networkId) {
+  Network *net = Client::network(networkId);
+  if(!net)
+    return;
+  _currentNetwork = networkId;
+  
+  ui.ownNick->clear();
+  ui.ownNick->addItem(net->myNick());
 }
 
 void BufferWidget::removeBuffer(BufferId bufferId) {

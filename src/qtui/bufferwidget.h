@@ -37,6 +37,7 @@ class BufferWidget : public QWidget {
   Q_OBJECT
 
   Q_PROPERTY(BufferId currentBuffer READ currentBuffer WRITE setCurrentBuffer);
+  Q_PROPERTY(NetworkId currentNetwork READ currentNetwork WRITE setCurrentNetwork);
 
 public:
   BufferWidget(QWidget *parent = 0);
@@ -52,6 +53,10 @@ signals:
 public slots:
   BufferId currentBuffer() const;
   void setCurrentBuffer(BufferId bufferId);
+
+  NetworkId currentNetwork() const;
+  void setCurrentNetwork(NetworkId networkId);
+
   void saveState();
 
 private slots:
@@ -62,6 +67,7 @@ private:
   Ui::BufferWidget ui;
   QHash<BufferId, ChatWidget *> _chatWidgets;
   BufferId _currentBuffer;
+  NetworkId _currentNetwork;
 };
 
 
