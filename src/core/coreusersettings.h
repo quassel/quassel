@@ -38,6 +38,9 @@ class CoreUserSettings : public CoreSettings {
     Identity identity(IdentityId id);
     QList<IdentityId> identityIds();
 
+    void setSessionState(const QVariant &data);
+    QVariant sessionState(const QVariant &def = QVariant());
+
   private:
     // this stuff should only be accessed by CoreSession!
     QVariantMap sessionData();

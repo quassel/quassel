@@ -37,6 +37,7 @@ Network::Network(const NetworkId &networkid, QObject *parent) : SyncableObject(p
     _myNick(QString()),
     _networkName(QString("<not initialized>")),
     _currentServer(QString()),
+    _connected(false),
     _prefixes(QString()),
     _prefixModes(QString()),
     _proxy(0),
@@ -84,6 +85,10 @@ bool Network::isChannelName(const QString &channelname) const {
     return support("CHANTYPES").contains(channelname[0]);
   else
     return QString("#&!+").contains(channelname[0]);
+}
+
+bool Network::isConnected() const {
+  return _connected;
 }
 
 QString Network::prefixToMode(const QString &prefix) {
@@ -325,6 +330,11 @@ void Network::setNetworkName(const QString &networkName) {
 void Network::setCurrentServer(const QString &currentServer) {
   _currentServer = currentServer;
   emit currentServerSet(currentServer);
+}
+
+void Network::setConnected(bool connected) {
+  _connected = connected;
+  emit connectedSet(connected);
 }
 
 void Network::setMyNick(const QString &nickname) {

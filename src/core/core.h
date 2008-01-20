@@ -139,7 +139,7 @@ class Core : public QObject {
     void init();
     static Core *instanceptr;
 
-    SessionThread *createSession(UserId userId);
+    SessionThread *createSession(UserId userId, bool restoreState = false);
     void setupClientSession(QTcpSocket *socket, UserId uid);
     void processCoreSetup(QTcpSocket *socket, QVariantMap &msg);
 

@@ -95,37 +95,35 @@ Core::~Core() {
 }
 
 void Core::restoreState() {
-  return;
-  /*
-  Q_ASSERT(!instance()->sessions.count());
+  if(instance()->sessions.count()) {
+    qWarning() << qPrintable(tr("Calling restoreState() even though active sessions exist!"));
+    return;
+  }
   CoreSettings s;
-  QList<QVariant> users = s.coreState().toList();
-  if(users.count() > 0) {
+  uint build = s.coreState().toMap()["CoreBuild"].toUInt();
+  if(build < 362) {
+    qWarning() << qPrintable(tr("Core state too old, ignoring..."));
+    return;
+  }
+  QVariantList activeSessions = s.coreState().toMap()["ActiveSessions"].toList();
+  if(activeSessions.count() > 0) {
     qDebug() << "Restoring previous core state...";
-    foreach(QVariant v, users) {
-      QVariantMap m = v.toMap();
-      if(m.contains("UserId")) {
-        CoreSession *sess = createSession(m["UserId"].toUInt());
-        sess->restoreState(m["State"]);  // FIXME multithreading
-      }
+    foreach(QVariant v, activeSessions) {
+      UserId user = v.value<UserId>();
+      instance()->createSession(user, true);
     }
     qDebug() << "...done.";
   }
-  */
 }
 
 void Core::saveState() {
-  /*
   CoreSettings s;
-  QList<QVariant> users;
-  foreach(CoreSession *sess, instance()->sessions.values()) {
-    QVariantMap m;
-    m["UserId"] = sess->user();  // FIXME multithreading
-    m["State"] = sess->state();
-    users << m;
-  }
-  s.setCoreState(users);
-  */
+  QVariantMap state;
+  QVariantList activeSessions;
+  foreach(UserId user, instance()->sessions.keys()) activeSessions << QVariant::fromValue<UserId>(user);
+  state["CoreBuild"] = Global::quasselBuild;
+  state["ActiveSessions"] = activeSessions;
+  s.setCoreState(state);
 }
 
 /*** Storage Access ***/
@@ -308,15 +306,6 @@ void Core::clientDisconnected() {
   // Suggestion: kill sessions if they are not connected to any network and client.
 }
 
-  
-  //disconnect(socket, 0, this, 0);
-  /*
-  sessions[uid]->addClient(socket);  // FIXME multithreading
-  qDebug() << "Client initialized successfully.";
-  SignalProxy::writeDataToDevice(socket, reply);
-  */
-
-
 void Core::processCoreSetup(QTcpSocket *socket, QVariantMap &msg) {
   if(msg["HasSettings"].toBool()) {
     QVariantMap auth;
@@ -366,12 +355,12 @@ void Core::setupClientSession(QTcpSocket *socket, UserId uid) {
   sess->addClient(socket);
 }
 
-SessionThread *Core::createSession(UserId uid) {
+SessionThread *Core::createSession(UserId uid, bool restore) {
   if(sessions.contains(uid)) {
     qWarning() << "Calling createSession() when a session for the user already exists!";
     return 0;
   }
-  SessionThread *sess = new SessionThread(uid, this);
+  SessionThread *sess = new SessionThread(uid, restore, this);
   sessions[uid] = sess;
   sess->start();
   return sess;

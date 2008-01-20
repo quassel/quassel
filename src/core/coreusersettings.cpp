@@ -49,6 +49,14 @@ QList<IdentityId> CoreUserSettings::identityIds() {
   return res;
 }
 
+void CoreUserSettings::setSessionState(const QVariant &data) {
+  setLocalValue("SessionState", data);
+}
+
+QVariant CoreUserSettings::sessionState(const QVariant &def) {
+  return localValue("SessionState", def);
+}
+
 QVariantMap CoreUserSettings::sessionData() {
   QVariantMap res;
   foreach(QString key, localChildKeys(QString("SessionData"))) {

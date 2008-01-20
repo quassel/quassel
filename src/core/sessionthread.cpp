@@ -24,18 +24,18 @@
 
 #include "coresession.h"
 
-SessionThread::SessionThread(UserId uid, QObject *parent) : QThread(parent) {
+SessionThread::SessionThread(UserId uid, bool restoreState, QObject *parent) : QThread(parent) {
     _user = uid;
     _session = 0;
     _sessionInitialized = false;
+    _restoreState = restoreState,
     connect(this, SIGNAL(initialized()), this, SLOT(setSessionInitialized()));
 }
 
 SessionThread::~SessionThread() {
-  // FIXME
+  // shut down thread gracefully
   quit();
   wait();
-  if(session()) _session->deleteLater();
 }
 
 CoreSession *SessionThread::session() {
@@ -76,8 +76,9 @@ void SessionThread::addClientToSession(QIODevice *socket) {
 }
 
 void SessionThread::run() {
-  _session = new CoreSession(user());
+  _session = new CoreSession(user(), _restoreState);
   emit initialized();
   exec();
+  delete _session;
 }
 

@@ -33,7 +33,7 @@ class SessionThread : public QThread {
   Q_OBJECT
 
   public:
-    SessionThread(UserId user, QObject *parent = 0);
+    SessionThread(UserId user, bool restoreState, QObject *parent = 0);
     ~SessionThread();
 
     void run();
@@ -49,12 +49,14 @@ class SessionThread : public QThread {
 
   signals:
     void initialized();
+    void shutdown();
 
   private:
     CoreSession *_session;
     UserId _user;
     QList<QIODevice *> clientQueue;
     bool _sessionInitialized;
+    bool _restoreState;
 
     bool isSessionInitialized();
     void addClientToSession(QIODevice *socket);

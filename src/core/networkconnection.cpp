@@ -183,6 +183,7 @@ void NetworkConnection::socketHasData() {
 }
 
 void NetworkConnection::socketError( QAbstractSocket::SocketError err ) {
+  Q_UNUSED(err);
   qDebug() << "Socket Error!";
 }
 
@@ -199,6 +200,7 @@ void NetworkConnection::socketConnected() {
 }
 
 void NetworkConnection::socketStateChanged(QAbstractSocket::SocketState state) {
+  Q_UNUSED(state);
   //qDebug() << "Socket state changed: " << state;
 }
 

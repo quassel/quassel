@@ -48,7 +48,7 @@ class Network : public SyncableObject {
   Q_PROPERTY(QByteArray codecForEncoding READ codecForEncoding WRITE setCodecForEncoding STORED false)
   Q_PROPERTY(QByteArray codecForDecoding READ codecForDecoding WRITE setCodecForDecoding STORED false)
   Q_PROPERTY(IdentityId identityId READ identity WRITE setIdentity STORED false)
-  // Q_PROPERTY(bool isConnected READ isConnected STORED false)
+  Q_PROPERTY(bool isConnected READ isConnected WRITE setConnected STORED false)
 
 public:
   Network(const NetworkId &networkid, QObject *parent = 0);
@@ -63,6 +63,8 @@ public:
   bool isMe(IrcUser *ircuser) const;
 
   bool isChannelName(const QString &channelname) const;
+
+  bool isConnected() const;
 
   QString prefixToMode(const QString &prefix);
   QString prefixToMode(const QCharRef &prefix);
@@ -108,6 +110,7 @@ public:
 public slots:
   void setNetworkName(const QString &networkName);
   void setCurrentServer(const QString &currentServer);
+  void setConnected(bool isConnected);
   void setMyNick(const QString &mynick);
   void setIdentity(IdentityId);
 
@@ -152,6 +155,7 @@ private slots:
 signals:
   void networkNameSet(const QString &networkName);
   void currentServerSet(const QString &currentServer);
+  void connectedSet(bool isConnected);
   void myNickSet(const QString &mynick);
   void identitySet(IdentityId);
 
@@ -186,6 +190,7 @@ private:
   QString _myNick;
   QString _networkName;
   QString _currentServer;
+  bool _connected;
 
   QString _prefixes;
   QString _prefixModes;

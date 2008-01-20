@@ -35,7 +35,7 @@
 
 #include <QtScript>
 
-CoreSession::CoreSession(UserId uid, QObject *parent) : QObject(parent),
+CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent) : QObject(parent),
     _user(uid),
     _signalProxy(new SignalProxy(SignalProxy::Server, 0, this)),
     scriptEngine(new QScriptEngine(this))
@@ -113,10 +113,14 @@ CoreSession::CoreSession(UserId uid, QObject *parent) : QObject(parent),
     p->synchronize(net);
   }
 
+  // Restore session state
+  if(restoreState) restoreSessionState();
+
   emit initialized();
 }
 
 CoreSession::~CoreSession() {
+  saveSessionState();
 }
 
 UserId CoreSession::user() const {
@@ -138,35 +142,33 @@ Identity *CoreSession::identity(IdentityId id) const {
   return 0;
 }
 
-QVariant CoreSession::state() const { // FIXME
+void CoreSession::saveSessionState() const {
   QVariantMap res;
-  /*
-  QList<QVariant> conn;
-  foreach(NetworkConnection *net, connections.values()) {
-    if(net->isConnected()) {
-      QVariantMap m;
-      m["Network"] = net->networkName();
-      m["State"] = net->state();
-      conn << m;
-    }
+  QVariantList conn;
+  foreach(NetworkConnection *net, _connections.values()) {
+    QVariantMap m;
+    m["NetworkId"] = QVariant::fromValue<NetworkId>(net->networkId());
+    m["State"] = net->state();
+    conn << m;
   }
-  res["ConnectedServers"] = conn;
-  */
-  return res;
+  res["CoreBuild"] = Global::quasselBuild;
+  res["ConnectedNetworks"] = conn;
+  CoreUserSettings s(user());
+  s.setSessionState(res);
 }
 
-void CoreSession::restoreState(const QVariant &previousState) { // FIXME
-  // Session restore
-  /*
-  QVariantMap state = previousState.toMap();
-  if(state.contains("ConnectedServers")) {
-    foreach(QVariant v, state["ConnectedServers"].toList()) {
-      QVariantMap m = v.toMap();
-      QString net = m["Network"].toString();
-      if(!net.isEmpty()) connectToNetwork(net, m["State"]);
-    }
+void CoreSession::restoreSessionState() {
+  CoreUserSettings s(user());
+  uint build = s.sessionState().toMap()["CoreBuild"].toUInt();
+  if(build < 362) {
+    qWarning() << qPrintable(tr("Session state does not exist or is too old!"));
+    return;
   }
-  */
+  QVariantList conn = s.sessionState().toMap()["ConnectedNetworks"].toList();
+  foreach(QVariant v, conn) {
+    NetworkId id = v.toMap()["NetworkId"].value<NetworkId>();
+    if(_networks.keys().contains(id)) connectToNetwork(id, v.toMap()["State"]);
+  }
 }
 
 
@@ -225,8 +227,8 @@ void CoreSession::attachNetworkConnection(NetworkConnection *conn) {
   //connect(this, SIGNAL(disconnectFromIrc(QString)), network, SLOT(disconnectFromIrc(QString)));
   //connect(this, SIGNAL(msgFromGui(uint, QString, QString)), network, SLOT(userInput(uint, QString, QString)));
 
-  //connect(conn, SIGNAL(connected(NetworkId)), this, SLOT(networkConnected(NetworkId)));
-  //connect(conn, SIGNAL(disconnected(NetworkId)), this, SLOT(networkDisconnected(NetworkId)));
+  connect(conn, SIGNAL(connected(NetworkId)), this, SLOT(networkConnected(NetworkId)));
+  connect(conn, SIGNAL(disconnected(NetworkId)), this, SLOT(networkDisconnected(NetworkId)));
   signalProxy()->attachSignal(conn, SIGNAL(connected(NetworkId)), SIGNAL(networkConnected(NetworkId)));
   signalProxy()->attachSignal(conn, SIGNAL(disconnected(NetworkId)), SIGNAL(networkDisconnected(NetworkId)));
 
@@ -256,13 +258,16 @@ SignalProxy *CoreSession::signalProxy() const {
   return _signalProxy;
 }
 
-void CoreSession::networkConnected(uint networkid) {
+void CoreSession::networkConnected(NetworkId networkid) {
+  network(networkid)->setConnected(true);
   Core::bufferInfo(user(), networkConnection(networkid)->networkName()); // create status buffer
 }
 
-void CoreSession::networkDisconnected(uint networkid) {
+void CoreSession::networkDisconnected(NetworkId networkid) {
   // FIXME
   // connection should only go away on explicit /part, and handle reconnections etcpp internally otherwise
+  network(networkid)->setConnected(false);
+
   Q_ASSERT(_connections.contains(networkid));
   _connections.take(networkid)->deleteLater();
   Q_ASSERT(!_connections.contains(networkid));

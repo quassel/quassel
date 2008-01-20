@@ -37,7 +37,7 @@ class CoreSession : public QObject {
   Q_OBJECT
 
 public:
-  CoreSession(UserId, QObject *parent = 0);
+  CoreSession(UserId, bool restoreState, QObject *parent = 0);
   ~CoreSession();
 
   QList<BufferInfo> buffers() const;
@@ -56,8 +56,8 @@ public:
   void attachNetworkConnection(NetworkConnection *conn);
 
   //! Return necessary data for restoring the session after restarting the core
-  QVariant state() const;
-  void restoreState(const QVariant &previousState);
+  void saveSessionState() const;
+  void restoreSessionState();
 
 public slots:
   //! Store a piece session-wide data and distribute it to connected clients.
@@ -122,8 +122,8 @@ signals:
 private slots:
   void recvStatusMsgFromServer(QString msg);
   void recvMessageFromServer(Message::Type, QString target, QString text, QString sender = "", quint8 flags = Message::None);
-  void networkConnected(uint networkid);
-  void networkDisconnected(uint networkid);
+  void networkConnected(NetworkId networkid);
+  void networkDisconnected(NetworkId networkid);
 
   //! Called when storage updated a BufferInfo.
   /** This emits bufferInfoUpdated() via SignalProxy, iff it's one of our buffers.
