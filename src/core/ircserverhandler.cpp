@@ -311,13 +311,15 @@ void IrcServerHandler::handlePrivmsg(QString prefix, QList<QByteArray> params) {
       }
     }
   } else {
-    Q_ASSERT(isChannelName(target));  // should be channel!
-    QStringList messages = server->ctcpHandler()->parse(CtcpHandler::CtcpQuery, prefix, target, bufferDecode(target, params[1]));
-    foreach(QString message, messages) {
-      if(!message.isEmpty()) {
-	emit displayMsg(Message::Plain, target, message, prefix);
-      }
+    // so it's probably a channel..
+    if(!isChannelName(target)) {
+      qWarning() << "received PRIVMSG with target" << target << "which is neither us nor a channel!";
+      return;
     }
+
+    QStringList messages = server->ctcpHandler()->parse(CtcpHandler::CtcpQuery, prefix, target, bufferDecode(target, params[1]));
+    foreach(QString message, messages)
+      emit displayMsg(Message::Plain, target, message, prefix);
   }
 
 }
