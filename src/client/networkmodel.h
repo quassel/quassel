@@ -155,9 +155,6 @@ public:
 
   static int categoryFromModes(const QString &modes);
 
-private slots:
-  void checkNoChilds();
-
 private:
   int _category;
 

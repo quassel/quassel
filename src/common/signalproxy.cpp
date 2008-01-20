@@ -644,7 +644,7 @@ void SignalProxy::handleInitRequest(QIODevice *sender, const QVariantList &param
 void SignalProxy::handleInitData(QIODevice *sender, const QVariantList &params) {
   Q_UNUSED(sender)
   if(params.count() != 3) {
-    qWarning() << "SignalProxy::handleInitRequest() received initRequest with invalid param Count:"
+    qWarning() << "SignalProxy::handleInitData() received initData with invalid param Count:"
 	       << params;
     return;
   }
@@ -654,13 +654,13 @@ void SignalProxy::handleInitData(QIODevice *sender, const QVariantList &params) 
   QVariantMap propertyMap(params[2].toMap());
 
   if(!_syncSlave.contains(className)) {
-    qWarning() << "SignalProxy::handleInitRequest() received initRequest for unregistered Class:"
+    qWarning() << "SignalProxy::handleInitData() received initData for unregistered Class:"
 	       << className;
     return;
   }
 
   if(!_syncSlave[className].contains(objectName)) {
-    qWarning() << "SignalProxy::handleInitRequest() received initRequest for unregistered Object:"
+    qWarning() << "SignalProxy::handleInitData() received initData for unregistered Object:"
 	       << className << objectName;
     return;
   }

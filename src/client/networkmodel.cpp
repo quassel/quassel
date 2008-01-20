@@ -171,19 +171,21 @@ void BufferItem::join(IrcUser *ircUser) {
 
 void BufferItem::addUserToCategory(IrcUser *ircUser) {
   Q_ASSERT(_ircChannel);
-  
+
   UserCategoryItem *categoryItem;
   int categoryId = UserCategoryItem::categoryFromModes(_ircChannel->userModes(ircUser));
   if(!(categoryItem = qobject_cast<UserCategoryItem *>(childById(qHash(categoryId))))) {
     categoryItem = new UserCategoryItem(categoryId, this);
     emit newChild(categoryItem);
   }
-  
   categoryItem->addUser(ircUser);
 }
 
 void BufferItem::part(IrcUser *ircUser) {
-  Q_UNUSED(ircUser);
+  if(!ircUser)
+    return;
+
+  removeUserFromCategory(ircUser);
   emit dataChanged(2);
 }
 
@@ -192,10 +194,9 @@ void BufferItem::removeUserFromCategory(IrcUser *ircUser) {
   IrcUserItem *userItem;
   for(int i = 0; i < childCount(); i++) {
     categoryItem = qobject_cast<UserCategoryItem *>(child(i));
-    if((userItem = qobject_cast<IrcUserItem *>(categoryItem->childById((quint64)ircUser)))) {
-      userItem->deleteLater();
-      return;
-    }
+    categoryItem->removeChildById((quint64)ircUser);
+    if(categoryItem->childCount() == 0)
+      removeChild(i);
   }
 }
 
@@ -323,8 +324,6 @@ UserCategoryItem::UserCategoryItem(int category, AbstractTreeItem *parent)
   : PropertyMapItem(QStringList() << "categoryId", parent),
     _category(category)
 {
-  connect(this, SIGNAL(childRemoved(int)),
-	  this, SLOT(checkNoChilds()));
 }
 
 QString UserCategoryItem::categoryId() {
@@ -332,11 +331,6 @@ QString UserCategoryItem::categoryId() {
     return categories[_category].displayString;
   else
     return QString("Users");
-}
-
-void UserCategoryItem::checkNoChilds() {
-  if(childCount() == 0)
-    deleteLater();
 }
 
 quint64 UserCategoryItem::id() const {
@@ -386,7 +380,8 @@ void IrcUserItem::setNick(QString newNick) {
   emit dataChanged(0);
 }
 void IrcUserItem::ircUserDestroyed() {
-  deleteLater();
+  parent()->removeChildById(id());
+  // deleteLater();
 }
 
 /*****************************************

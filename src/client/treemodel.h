@@ -43,6 +43,10 @@ public:
   
   void removeChild(int column, int row);
   void removeChild(int row);
+
+  void removeChildById(int column, const quint64 &id);
+  void removeChildById(const quint64 &id);
+  
   void removeAllChilds();
 
   virtual quint64 id() const;
@@ -70,8 +74,6 @@ public:
 signals:
   void dataChanged(int column = -1);
   void newChild(AbstractTreeItem *);
-  void childRemoved(int row);
-  void childsRemoved(int firstRow, int lastRow);
 
   void beginRemoveChilds(int firstRow, int lastRow);
   void endRemoveChilds();
@@ -158,9 +160,6 @@ private slots:
   void beginRemoveChilds(int firstRow, int lastRow);
   void endRemoveChilds();
   
-  void childRemoved(int row);
-  void childsRemoved(int firstRow, int lastRow);
-
 protected:
   void appendChild(AbstractTreeItem *parent, AbstractTreeItem *child);
 
