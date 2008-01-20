@@ -337,6 +337,21 @@ const QList<int> &SignalProxy::argTypes(QObject *obj, int methodId) {
   return _classInfo[obj->metaObject()]->argTypes[methodId];
 }
 
+void SignalProxy::setMinArgCount(QObject *obj, int methodId) {
+  const QMetaObject *meta = obj->metaObject();
+  QString signature(meta->method(methodId).signature());
+  int minCount = meta->method(methodId).parameterTypes().count() - signature.count("=");
+  Q_ASSERT(!_classInfo[meta]->minArgCount.contains(methodId));
+  _classInfo[meta]->minArgCount[methodId] = minCount;
+}
+
+const int &SignalProxy::minArgCount(QObject *obj, int methodId) {
+  Q_ASSERT(_classInfo.contains(obj->metaObject()));
+  if(!_classInfo[obj->metaObject()]->minArgCount.contains(methodId))
+    setMinArgCount(obj, methodId);
+  return _classInfo[obj->metaObject()]->minArgCount[methodId];
+}
+
 void SignalProxy::setMethodName(QObject *obj, int methodId) {
   const QMetaObject *meta = obj->metaObject();
   QByteArray method(::methodName(meta->method(methodId)));
@@ -684,9 +699,11 @@ void SignalProxy::handleSignal(const QByteArray &funcName, const QVariantList &p
 
 bool SignalProxy::invokeSlot(QObject *receiver, int methodId, const QVariantList &params) {
   const QList<int> args = argTypes(receiver, methodId);
-  const int numArgs = args.count();
+  const int numArgs = params.count() < args.count()
+    ? params.count()
+    : args.count();
 
-  if(numArgs < params.count()) {
+  if(minArgCount(receiver, methodId) < params.count()) {
       qWarning() << "SignalProxy::invokeSlot(): not enough params to invoke" << methodName(receiver, methodId);
       return false;
   }

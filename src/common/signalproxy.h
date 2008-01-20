@@ -89,6 +89,7 @@ public:
   static QString methodBaseName(const QMetaMethod &method);
 
   const QList<int> &argTypes(QObject *obj, int methodId);
+  const int &minArgCount(QObject *obj, int methodId);
   const QByteArray &methodName(QObject *obj, int methodId);
   const QHash<QByteArray, int> &syncMap(SyncableObject *obj);
   int updatedRemotelyId(SyncableObject *obj);
@@ -97,6 +98,7 @@ public:
   typedef QHash<int, QByteArray> MethodNameHash;
   struct ClassInfo {
     ArgHash argTypes;
+    QHash<int, int> minArgCount;
     MethodNameHash methodNames;
     int updatedRemotelyId; // id of the updatedRemotely() signal - makes things faster
     QHash<QByteArray, int> syncMap;
@@ -123,6 +125,7 @@ private:
   
   void createClassInfo(QObject *obj);
   void setArgTypes(QObject *obj, int methodId);
+  void setMinArgCount(QObject *obj, int methodId);
   void setMethodName(QObject *obj, int methodId);
   void setSyncMap(SyncableObject *obj);
   void setUpdatedRemotelyId(QObject *obj);
