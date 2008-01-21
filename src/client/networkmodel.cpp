@@ -191,7 +191,6 @@ void BufferItem::part(IrcUser *ircUser) {
 
 void BufferItem::removeUserFromCategory(IrcUser *ircUser) {
   UserCategoryItem *categoryItem = 0;
-  IrcUserItem *userItem;
   for(int i = 0; i < childCount(); i++) {
     categoryItem = qobject_cast<UserCategoryItem *>(child(i));
     categoryItem->removeChildById((quint64)ircUser);
@@ -202,10 +201,10 @@ void BufferItem::removeUserFromCategory(IrcUser *ircUser) {
 
 void BufferItem::userModeChanged(IrcUser *ircUser) {
   Q_ASSERT(_ircChannel);
-    
+
   UserCategoryItem *categoryItem;
   int categoryId = UserCategoryItem::categoryFromModes(_ircChannel->userModes(ircUser));
-  if((categoryItem = qobject_cast<UserCategoryItem *>(childById(qHash(categoryId)))))
+  if((categoryItem = qobject_cast<UserCategoryItem *>(childById(qHash(categoryId)))) && categoryItem->childById((quint64)(ircUser)))
     return; // already in the right category;
   
   removeUserFromCategory(ircUser);
