@@ -707,9 +707,10 @@ bool SignalProxy::invokeSlot(QObject *receiver, int methodId, const QVariantList
       qWarning() << "SignalProxy::invokeSlot(): not enough params to invoke" << methodName(receiver, methodId);
       return false;
   }
-  
-  void *_a[numArgs+1];
-  _a[0] = 0;
+
+  void *_a[] = {0, // return type
+		0, 0, 0, 0 , 0, // and 10 args - that's the max size qt can handle with signals and slots
+		0, 0, 0, 0 , 0};
   // check for argument compatibility and build params array
   for(int i = 0; i < numArgs; i++) {
     if(args[i] != QMetaType::type(params[i].typeName())) {
