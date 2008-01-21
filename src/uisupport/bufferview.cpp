@@ -113,5 +113,5 @@ void BufferView::rowsInserted(const QModelIndex & parent, int start, int end) {
 
 void BufferView::toggleHeader(bool checked) {
   QAction *action = qobject_cast<QAction *>(sender());
-  header()->setSectionHidden((action->property("column")).toInt(), not checked);
+  header()->setSectionHidden((action->property("column")).toInt(), !checked);
 }

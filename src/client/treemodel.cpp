@@ -429,7 +429,7 @@ void TreeModel::itemDataChanged(int column) {
 }
 
 void TreeModel::appendChild(AbstractTreeItem *parent, AbstractTreeItem *child) {
-  if(parent == 0 or child == 0) {
+  if(parent == 0 || child == 0) {
     qWarning() << "TreeModel::appendChild(parent, child) parent and child have to be valid pointers!" << parent << child;
     return;
   }
