@@ -817,6 +817,7 @@ void SignalProxy::setInitData(SyncableObject *obj, const QVariantMap &properties
     return;
   obj->fromVariantMap(properties);
   setInitialized(obj);
+  invokeSlot(obj, updatedRemotelyId(obj));
 }
 
 void SignalProxy::dumpProxyStats() {
