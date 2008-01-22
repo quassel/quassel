@@ -35,13 +35,13 @@ ModelPropertyMapper::~ModelPropertyMapper() {
 
 void ModelPropertyMapper::setModel(QAbstractItemModel *model) {
   if(_model) {
-    setSelectionModel(new QItemSelectionModel(model));
     disconnect(_model, SIGNAL(dataChanged(QModelIndex, QModelIndex)),
 	       this, SLOT(dataChanged(QModelIndex, QModelIndex)));
   }
   _model = model;
   connect(_model, SIGNAL(dataChanged(QModelIndex, QModelIndex)),
 	  this, SLOT(dataChanged(QModelIndex, QModelIndex)));
+  setSelectionModel(new QItemSelectionModel(model));
 }
 
 QAbstractItemModel *ModelPropertyMapper::model() const {

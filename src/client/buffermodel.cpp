@@ -27,19 +27,15 @@
 
 BufferModel::BufferModel(NetworkModel *parent)
   : QSortFilterProxyModel(parent),
-    _selectionModelSynchronizer(new SelectionModelSynchronizer(this)),
-    _propertyMapper(new ModelPropertyMapper(this))
+    _selectionModelSynchronizer(this),
+    _propertyMapper(this)
 {
   setSourceModel(parent);
 
   // initialize the Property Mapper
-  _propertyMapper->setModel(this);
-  delete _propertyMapper->selectionModel();
-  MappedSelectionModel *mappedSelectionModel = new MappedSelectionModel(this);
-  _propertyMapper->setSelectionModel(mappedSelectionModel);
-  synchronizeSelectionModel(mappedSelectionModel);
-  
-  connect(_selectionModelSynchronizer, SIGNAL(setCurrentIndex(QModelIndex, QItemSelectionModel::SelectionFlags)),
+  _propertyMapper.setModel(this);
+  _selectionModelSynchronizer.addRegularSelectionModel(_propertyMapper.selectionModel());
+  connect(&_selectionModelSynchronizer, SIGNAL(setCurrentIndex(QModelIndex, QItemSelectionModel::SelectionFlags)),
 	  this, SLOT(setCurrentIndex(QModelIndex, QItemSelectionModel::SelectionFlags)));
 }
 
@@ -47,8 +43,8 @@ BufferModel::~BufferModel() {
 }
 
 bool BufferModel::filterAcceptsRow(int sourceRow, const QModelIndex &parent) const {
-  Q_UNUSED(sourceRow)
-    
+  Q_UNUSED(sourceRow);
+  // hide childs of buffers and everything below
   if(parent.data(NetworkModel::ItemTypeRole) == NetworkModel::BufferItemType)
     return false;
   else
@@ -56,19 +52,19 @@ bool BufferModel::filterAcceptsRow(int sourceRow, const QModelIndex &parent) con
 }
 
 void BufferModel::synchronizeSelectionModel(MappedSelectionModel *selectionModel) {
-  selectionModelSynchronizer()->addSelectionModel(selectionModel);
+  _selectionModelSynchronizer.addSelectionModel(selectionModel);
 }
 
 void BufferModel::synchronizeView(QAbstractItemView *view) {
   MappedSelectionModel *mappedSelectionModel = new MappedSelectionModel(view->model());
-  selectionModelSynchronizer()->addSelectionModel(mappedSelectionModel);
+  _selectionModelSynchronizer.addSelectionModel(mappedSelectionModel);
   Q_ASSERT(mappedSelectionModel);
   delete view->selectionModel();
   view->setSelectionModel(mappedSelectionModel);
 }
 
 void BufferModel::mapProperty(int column, int role, QObject *target, const QByteArray &property) {
-  propertyMapper()->addMapping(column, role, target, property);
+  _propertyMapper.addMapping(column, role, target, property);
 }
 
 // This Slot indicates that the user has selected a different buffer in the gui

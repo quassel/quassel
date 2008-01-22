@@ -26,9 +26,13 @@
 #include "chatview.h"
 #include "types.h"
 
+class Network;
 class ChatView;
 class ChatWidget;
 class LayoutThread;
+
+#include "buffermodel.h"
+#include <QItemSelectionModel>
 
 //! Displays the contents of a Buffer.
 /**
@@ -36,39 +40,47 @@ class LayoutThread;
 class BufferWidget : public QWidget {
   Q_OBJECT
 
-  Q_PROPERTY(BufferId currentBuffer READ currentBuffer WRITE setCurrentBuffer);
-  Q_PROPERTY(NetworkId currentNetwork READ currentNetwork WRITE setCurrentNetwork);
-
 public:
   BufferWidget(QWidget *parent = 0);
   virtual ~BufferWidget();
   void init();
 
-  QSize sizeHint() const;
+  inline BufferModel *model() { return _bufferModel; }
+  void setModel(BufferModel *bufferModel);
 
+  inline QItemSelectionModel *selectionModel() const { return _selectionModel; }
+  void setSelectionModel(QItemSelectionModel *selectionModel);
+
+  Network *currentNetwork() const;
+  
 signals:
-  void userInput(QString msg);
+  void userInput(QString msg) const;
   void aboutToClose();
 
-public slots:
-  BufferId currentBuffer() const;
-  void setCurrentBuffer(BufferId bufferId);
-
-  NetworkId currentNetwork() const;
-  void setCurrentNetwork(NetworkId networkId);
-
-  void saveState();
+protected slots:
+//   virtual void closeEditor(QWidget *editor, QAbstractItemDelegate::EndEditHint hint);
+//   virtual void commitData(QWidget *editor);
+  virtual void currentChanged(const QModelIndex &current, const QModelIndex &previous);
+//   virtual void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
+//   virtual void editorDestroyed(QObject *editor);
+  virtual void rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
+//   virtual void rowsInserted(const QModelIndex &parent, int start, int end);
+//   virtual void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
 
 private slots:
   void enterPressed();
+  void changeNick(const QString &newNick) const;
   void removeBuffer(BufferId bufferId);
+
+  void setCurrentBuffer(BufferId bufferId);
+  void updateNickSelector() const;
 
 private:
   Ui::BufferWidget ui;
   QHash<BufferId, ChatWidget *> _chatWidgets;
-  BufferId _currentBuffer;
-  NetworkId _currentNetwork;
-};
 
+  QPointer<BufferModel> _bufferModel;
+  QPointer<QItemSelectionModel> _selectionModel;
+};
 
 #endif

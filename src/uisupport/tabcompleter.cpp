@@ -37,6 +37,8 @@ TabCompleter::TabCompleter(InputLine *inputLine_)
 }
 
 void TabCompleter::buildCompletionList() {
+  completionList.clear();
+  nextCompletion = completionList.begin();
   // this is the first time tab is pressed -> build up the completion list and it's iterator
   QModelIndex currentIndex = Client::bufferModel()->currentIndex();
   if(!currentIndex.data(NetworkModel::BufferIdRole).isValid())
@@ -70,7 +72,6 @@ void TabCompleter::buildCompletionList() {
   completionList.sort();
   nextCompletion = completionList.begin();
   lastCompletionLength = tabAbbrev.length();
-  
 }
 
 void TabCompleter::ircUserJoinedOrParted(IrcUser *ircUser) {

@@ -105,7 +105,6 @@ void AbstractTreeItem::removeAllChilds() {
     return;
 
   emit beginRemoveChilds(0, childCount() - 1);
-
   AbstractTreeItem *child;
   foreach(int column, _childItems.keys()) {
     QList<AbstractTreeItem *>::iterator iter = _childItems[column].begin();
@@ -289,6 +288,19 @@ TreeModel::TreeModel(const QList<QVariant> &data, QObject *parent)
   : QAbstractItemModel(parent)
 {
   rootItem = new SimpleTreeItem(data, 0);
+
+  connect(rootItem, SIGNAL(dataChanged(int)),
+	  this, SLOT(itemDataChanged(int)));
+  
+  connect(rootItem, SIGNAL(newChild(AbstractTreeItem *)),
+	  this, SLOT(newChild(AbstractTreeItem *)));
+
+  connect(rootItem, SIGNAL(beginRemoveChilds(int, int)),
+	  this, SLOT(beginRemoveChilds(int, int)));
+  
+  connect(rootItem, SIGNAL(endRemoveChilds()),
+	  this, SLOT(endRemoveChilds()));
+
 }
 
 TreeModel::~TreeModel() {
@@ -507,6 +519,5 @@ bool TreeModel::removeRows(int row, int count, const QModelIndex &parent) {
 }
 
 void TreeModel::clear() {
-  removeRows(0, rowCount());
-  reset();
+  rootItem->removeAllChilds();
 }

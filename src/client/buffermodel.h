@@ -43,8 +43,9 @@ public:
 
   bool filterAcceptsRow(int sourceRow, const QModelIndex &parent) const;
   
-  inline SelectionModelSynchronizer *selectionModelSynchronizer() { return _selectionModelSynchronizer; }
-  inline ModelPropertyMapper *propertyMapper() { return _propertyMapper; }
+  inline const SelectionModelSynchronizer *selectionModelSynchronizer() const { return &_selectionModelSynchronizer; }
+  inline const ModelPropertyMapper *propertyMapper() const { return &_propertyMapper; }
+  inline QItemSelectionModel *standardSelectionModel() const { return _propertyMapper.selectionModel(); }
 
   void synchronizeSelectionModel(MappedSelectionModel *selectionModel);
   void synchronizeView(QAbstractItemView *view);
@@ -58,8 +59,8 @@ signals:
   void selectionChanged(const QModelIndex &);
 
 private:
-  QPointer<SelectionModelSynchronizer> _selectionModelSynchronizer;
-  QPointer<ModelPropertyMapper> _propertyMapper;
+  SelectionModelSynchronizer _selectionModelSynchronizer;
+  ModelPropertyMapper _propertyMapper;
   BufferId currentBuffer;
 };
 
