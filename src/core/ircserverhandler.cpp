@@ -21,8 +21,10 @@
 
 #include "util.h"
 
+#include "coresession.h"
 #include "networkconnection.h"
 #include "network.h"
+#include "identity.h"
 #include "ctcphandler.h"
 
 #include "ircuser.h"
@@ -31,7 +33,8 @@
 #include <QDebug>
 
 IrcServerHandler::IrcServerHandler(NetworkConnection *parent)
-  : BasicHandler(parent), server(parent) {
+  : BasicHandler(parent),
+    networkConnection(parent) {
 }
 
 IrcServerHandler::~IrcServerHandler() {
@@ -39,32 +42,32 @@ IrcServerHandler::~IrcServerHandler() {
 }
 
 QString IrcServerHandler::serverDecode(const QByteArray &string) {
-  return server->serverDecode(string);
+  return networkConnection->serverDecode(string);
 }
 
 QStringList IrcServerHandler::serverDecode(const QList<QByteArray> &stringlist) {
   QStringList list;
-  foreach(QByteArray s, stringlist) list << server->serverDecode(s);
+  foreach(QByteArray s, stringlist) list << networkConnection->serverDecode(s);
   return list;
 }
 
 QString IrcServerHandler::bufferDecode(const QString &bufferName, const QByteArray &string) {
-  return server->bufferDecode(bufferName, string);
+  return networkConnection->bufferDecode(bufferName, string);
 }
 
 QStringList IrcServerHandler::bufferDecode(const QString &bufferName, const QList<QByteArray> &stringlist) {
   QStringList list;
-  foreach(QByteArray s, stringlist) list << server->bufferDecode(bufferName, s);
+  foreach(QByteArray s, stringlist) list << networkConnection->bufferDecode(bufferName, s);
   return list;
 }
 
 QString IrcServerHandler::userDecode(const QString &userNick, const QByteArray &string) {
-  return server->userDecode(userNick, string);
+  return networkConnection->userDecode(userNick, string);
 }
 
 QStringList IrcServerHandler::userDecode(const QString &userNick, const QList<QByteArray> &stringlist) {
   QStringList list;
-  foreach(QByteArray s, stringlist) list << server->userDecode(userNick, s);
+  foreach(QByteArray s, stringlist) list << networkConnection->userDecode(userNick, s);
   return list;
 }
 
@@ -304,7 +307,7 @@ void IrcServerHandler::handlePrivmsg(QString prefix, QList<QByteArray> params) {
   // are we the target or is it a channel?
   if(network()->isMyNick(target)) {
     // it's possible to pack multiple privmsgs into one param using ctcp
-    QStringList messages = server->ctcpHandler()->parse(CtcpHandler::CtcpQuery, prefix, target, userDecode(ircuser->nick(), params[1]));
+    QStringList messages = networkConnection->ctcpHandler()->parse(CtcpHandler::CtcpQuery, prefix, target, userDecode(ircuser->nick(), params[1]));
     foreach(QString message, messages) {
       if(!message.isEmpty()) {
 	emit displayMsg(Message::Plain, "", message, prefix, Message::PrivMsg);
@@ -317,7 +320,7 @@ void IrcServerHandler::handlePrivmsg(QString prefix, QList<QByteArray> params) {
       return;
     }
 
-    QStringList messages = server->ctcpHandler()->parse(CtcpHandler::CtcpQuery, prefix, target, bufferDecode(target, params[1]));
+    QStringList messages = networkConnection->ctcpHandler()->parse(CtcpHandler::CtcpQuery, prefix, target, bufferDecode(target, params[1]));
     foreach(QString message, messages)
       emit displayMsg(Message::Plain, target, message, prefix);
   }
@@ -427,57 +430,43 @@ void IrcServerHandler::handle353(QString prefix, QList<QByteArray> params) {
 
 /* ERR_ERRONEUSNICKNAME */
 void IrcServerHandler::handle432(QString prefix, QList<QByteArray> params) {
-  Q_UNUSED(prefix)
-  Q_UNUSED(params)
-  emit displayMsg(Message::Error, "", tr("Your desired nickname contains illegal characters!"));
-  emit displayMsg(Message::Error, "", tr("Please use /nick <othernick> to continue your IRC-Session!"));
-  // FIXME!
+  Q_UNUSED(prefix);
 
-//   if(params.size() < 2) {
-//     // handle unreal-ircd bug, where unreal ircd doesnt supply a TARGET in ERR_ERRONEUSNICKNAME during registration phase:
-//     // nick @@@
-//     // :irc.scortum.moep.net 432  @@@ :Erroneous Nickname: Illegal characters
-//     // correct server reply:
-//     // :irc.scortum.moep.net 432 * @@@ :Erroneous Nickname: Illegal characters
-//     emit displayMsg(Message::Error, "", tr("There is a nickname in your identity's nicklist which contains illegal characters"));
-//     emit displayMsg(Message::Error, "", tr("Due to a bug in Unreal IRCd (and maybe other irc-servers too) we're unable to determine the erroneous nick"));
-//     emit displayMsg(Message::Error, "", tr("Please use: /nick <othernick> to continue or clean up your nicklist"));
-//   } else {
-//     QString errnick = params[0];
-//     emit displayMsg(Message::Error, "", tr("Nick %1 contains illegal characters").arg(errnick));
-//     // if there is a problem while connecting to the server -> we handle it
-//     // TODO rely on another source...
-//     if(currentServer.isEmpty()) {
-//       QStringList desiredNicks = identity["NickList"].toStringList();
-//       int nextNick = desiredNicks.indexOf(errnick) + 1;
-//       if (desiredNicks.size() > nextNick) {
-//         putCmd("NICK", QStringList(desiredNicks[nextNick]));
-//       } else {
-//         emit displayMsg(Message::Error, "", tr("No free and valid nicks in nicklist found. use: /nick <othernick> to continue"));
-//       }
-//     }
-//   }
+  if(params.size() < 2) {
+    // handle unreal-ircd bug, where unreal ircd doesnt supply a TARGET in ERR_ERRONEUSNICKNAME during registration phase:
+    // nick @@@
+    // :irc.scortum.moep.net 432  @@@ :Erroneous Nickname: Illegal characters
+    // correct server reply:
+    // :irc.scortum.moep.net 432 * @@@ :Erroneous Nickname: Illegal characters
+    emit displayMsg(Message::Error, "", tr("There is a nickname in your identity's nicklist which contains illegal characters"));
+    emit displayMsg(Message::Error, "", tr("Due to a bug in Unreal IRCd (and maybe other irc-servers too) we're unable to determine the erroneous nick"));
+    emit displayMsg(Message::Error, "", tr("Please use: /nick <othernick> to continue or clean up your nicklist"));
+  } else {
+    QString errnick = params[0];
+    emit displayMsg(Message::Error, "", tr("Nick %1 contains illegal characters").arg(errnick));
+    handle433(prefix, params);
+  }
 }
 
 /* ERR_NICKNAMEINUSE */
 void IrcServerHandler::handle433(QString prefix, QList<QByteArray> params) {
-  Q_UNUSED(prefix)
-  QString errnick = serverDecode(params[0]);
-  emit displayMsg(Message::Error, "", tr("Nick %1 is already taken").arg(errnick));
-  emit displayMsg(Message::Error, "", tr("Please use /nick <othernick> to continue your IRC-Session!"));
-  // FIXME!
+  Q_UNUSED(prefix);
+
+  // if there is a problem while connecting to the server -> we handle it
+
+  // but only if our connection has not been finished yet...
+  if(!networkConnection->network()->currentServer().isEmpty())
+    return;
   
-//   // if there is a problem while connecting to the server -> we handle it
-//   // TODO rely on another source...
-//   if(currentServer.isEmpty()) {
-//     QStringList desiredNicks = identity["NickList"].toStringList();
-//     int nextNick = desiredNicks.indexOf(errnick) + 1;
-//     if (desiredNicks.size() > nextNick) {
-//       putCmd("NICK", QStringList(desiredNicks[nextNick]));
-//     } else {
-//       emit displayMsg(Message::Error, "", tr("No free and valid nicks in nicklist found. use: /nick <othernick> to continue"));
-//     }
-//   }
+  QString errnick = serverDecode(params[0]);
+  QStringList desiredNicks = networkConnection->coreSession()->identity(networkConnection->network()->identity())->nicks();
+  int nextNick = desiredNicks.indexOf(errnick) + 1;
+  if(desiredNicks.size() > nextNick) {
+    putCmd("NICK", QStringList(desiredNicks[nextNick]));
+  } else {
+    emit displayMsg(Message::Error, "", tr("No free and valid nicks in nicklist found. use: /nick <othernick> to continue"));
+  }
+  
 }
 
 /***********************************************************************************/

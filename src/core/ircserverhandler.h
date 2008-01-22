@@ -64,7 +64,7 @@ public slots:
   void defaultHandler(QString cmd, QString prefix, QList<QByteArray> params);
 
   private:
-    NetworkConnection *server;
+    NetworkConnection *networkConnection;
 };
 
 
