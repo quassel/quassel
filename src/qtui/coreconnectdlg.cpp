@@ -272,7 +272,7 @@ void CoreConnectDlg::doLogin() {
   else account.remove("Password");
   CoreAccountSettings s;
   s.storeAccount(accountName, account);
-  clientSyncer->loginToCore(account["User"].toString(), account["Password"].toString());
+  clientSyncer->loginToCore(ui.user->text(), ui.password->text());
 }
 
 void CoreConnectDlg::setLoginWidgetStates() {
