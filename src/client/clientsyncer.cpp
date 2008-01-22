@@ -238,6 +238,7 @@ void ClientSyncer::syncToCore(const QVariantMap &sessionState) {
     connect(net, SIGNAL(ircChannelRemoved(QObject *)), this, SLOT(ircChannelRemoved(QObject *)));
     Client::addNetwork(net);
   }
+  checkSyncState();
 }
 
 void ClientSyncer::networkInitDone() {
