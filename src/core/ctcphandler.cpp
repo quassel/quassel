@@ -48,7 +48,7 @@ QString CtcpHandler::dequote(QString message) {
     if(i+1 < message.size()) {
       for(ctcpquote = ctcpMDequoteHash.begin(); ctcpquote != ctcpMDequoteHash.end(); ++ctcpquote) {
         if(message.mid(i,2) == ctcpquote.key()) {
-          dequotedMessage += ctcpquote.value();
+          messagepart = ctcpquote.value();
           i++;
           break;
         }
@@ -90,7 +90,8 @@ QStringList CtcpHandler::parse(CtcpType ctcptype, QString prefix, QString target
   
   // extract tagged / extended data
   while(dequotedMessage.contains(XDELIM)) {
-    messages << dequotedMessage.section(XDELIM,0,0);
+    if(dequotedMessage.indexOf(XDELIM) > 0) 
+      messages << dequotedMessage.section(XDELIM,0,0);
     ctcp = XdelimDequote(dequotedMessage.section(XDELIM,1,1));
     dequotedMessage = dequotedMessage.section(XDELIM,2,2);
     
@@ -126,10 +127,12 @@ void CtcpHandler::reply(QString bufname, QString ctcpTag, QString message) {
 // CTCP HANDLER
 //******************************/
 void CtcpHandler::handleAction(CtcpType ctcptype, QString prefix, QString target, QString param) {
+  Q_UNUSED(ctcptype)
   emit displayMsg(Message::Action, target, param, prefix);
 }
 
 void CtcpHandler::handlePing(CtcpType ctcptype, QString prefix, QString target, QString param) {
+  Q_UNUSED(target)
   if(ctcptype == CtcpQuery) {
     reply(nickFromMask(prefix), "PING", param);
     emit displayMsg(Message::Server, "", tr("Received CTCP PING request from %1").arg(prefix));
@@ -139,6 +142,7 @@ void CtcpHandler::handlePing(CtcpType ctcptype, QString prefix, QString target, 
 }
 
 void CtcpHandler::handleVersion(CtcpType ctcptype, QString prefix, QString target, QString param) {
+  Q_UNUSED(target)
   if(ctcptype == CtcpQuery) {
     // FIXME use real Info about quassel :)
     reply(nickFromMask(prefix), "VERSION", QString("Quassel IRC (Pre-Release) - http://www.quassel-irc.org"));
@@ -149,6 +153,9 @@ void CtcpHandler::handleVersion(CtcpType ctcptype, QString prefix, QString targe
 }
 
 void CtcpHandler::defaultHandler(QString cmd, CtcpType ctcptype, QString prefix, QString target, QString param) {
+  Q_UNUSED(ctcptype);
+  Q_UNUSED(target);
+  Q_UNUSED(param);
   emit displayMsg(Message::Error, "", tr("Received unknown CTCP %1 by %2").arg(cmd).arg(prefix));
 }
 
