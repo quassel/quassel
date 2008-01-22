@@ -345,6 +345,7 @@ void ChatLine::draw(QPainter *p, const QPointF &pos) {
   }
   QPointF tpos = pos + QPointF(tsWidth + QtUi::style()->sepTsSender() + senderWidth + QtUi::style()->sepSenderText(), 0);
   qreal h = 0; int l = 0;
+  if(lineLayouts.count() == 0) return; // how can this happen?
   rect = QRectF(tpos + QPointF(0, h), QSizeF(textWidth, lineLayouts[l].height));
   int offset = 0;
   foreach(FormatRange fr, textFormat) {
