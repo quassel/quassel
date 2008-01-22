@@ -175,14 +175,14 @@ void MainWin::setupViews() {
 
   addBufferView(tr("All Buffers"), model, BufferViewFilter::AllNets, QList<NetworkId>());
   addBufferView(tr("All Channels"), model, BufferViewFilter::AllNets|BufferViewFilter::NoQueries|BufferViewFilter::NoServers, QList<NetworkId>());
-  addBufferView(tr("All Queries"), model, BufferViewFilter::AllNets|BufferViewFilter::NoChannels|BufferViewFilter::NoServers, QList<NetworkId>());
-  addBufferView(tr("All Networks"), model, BufferViewFilter::AllNets|BufferViewFilter::NoChannels|BufferViewFilter::NoQueries, QList<NetworkId>());
-  addBufferView(tr("Full Custom"), model, BufferViewFilter::FullCustom, QList<NetworkId>());
+  addBufferView(tr("All Queries"), model, BufferViewFilter::AllNets|BufferViewFilter::NoChannels|BufferViewFilter::NoServers, QList<NetworkId>())->hide();
+  addBufferView(tr("All Networks"), model, BufferViewFilter::AllNets|BufferViewFilter::NoChannels|BufferViewFilter::NoQueries, QList<NetworkId>())->hide();
+  addBufferView(tr("Full Custom"), model, BufferViewFilter::FullCustom, QList<NetworkId>())->hide();
 
   ui.menuViews->addSeparator();
 }
 
-void MainWin::addBufferView(const QString &viewname, QAbstractItemModel *model, const BufferViewFilter::Modes &mode, const QList<NetworkId> &nets) {
+QDockWidget *MainWin::addBufferView(const QString &viewname, QAbstractItemModel *model, const BufferViewFilter::Modes &mode, const QList<NetworkId> &nets) {
   QDockWidget *dock = new QDockWidget(viewname, this);
   dock->setObjectName(QString("ViewDock-" + viewname)); // should be unique for mainwindow state!
   dock->setAllowedAreas(Qt::RightDockWidgetArea|Qt::LeftDockWidgetArea);
@@ -199,9 +199,14 @@ void MainWin::addBufferView(const QString &viewname, QAbstractItemModel *model, 
   ui.menuViews->addAction(dock->toggleViewAction());
 
   netViews.append(dock);
+  return dock;
 }
 
 void MainWin::setupSettingsDlg() {
+#ifdef SPUTDEV
+  connect(settingsDlg, SIGNAL(finished(int)), QApplication::instance(), SLOT(quit()));  // FIXME
+#endif
+
   settingsDlg->registerSettingsPage(new FontsSettingsPage(settingsDlg));
   settingsDlg->registerSettingsPage(new IdentitiesSettingsPage(settingsDlg));
   settingsDlg->registerSettingsPage(new NetworksSettingsPage(settingsDlg));
