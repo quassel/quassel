@@ -247,6 +247,7 @@ bool SimpleTreeItem::setData(int column, const QVariant &value, int role) {
   else
     _itemData[column] = value;
 
+  emit dataChanged(column);
   return true;
 }
 
@@ -284,6 +285,7 @@ bool PropertyMapItem::setData(int column, const QVariant &value, int role) {
   if(column >= columnCount() || role != Qt::DisplayRole)
     return false;
 
+  emit dataChanged(column);
   return setProperty(_propertyOrder[column].toAscii(), value);
 }
 

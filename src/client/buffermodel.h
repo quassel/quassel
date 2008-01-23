@@ -23,16 +23,14 @@
 
 #include <QSortFilterProxyModel>
 #include <QItemSelectionModel>
-#include <QPointer>
 
 #include "types.h"
-
-class NetworkModel;
 #include "selectionmodelsynchronizer.h"
 #include "modelpropertymapper.h"
+
+class NetworkModel;
 class MappedSelectionModel;
 class QAbstractItemView;
-class Buffer;
 
 class BufferModel : public QSortFilterProxyModel {
   Q_OBJECT
@@ -51,17 +49,11 @@ public:
   void synchronizeView(QAbstractItemView *view);
   void mapProperty(int column, int role, QObject *target, const QByteArray &property);
 
-public slots:
   QModelIndex currentIndex();
-  void setCurrentIndex(const QModelIndex &index, QItemSelectionModel::SelectionFlags command);
-
-signals:
-  void selectionChanged(const QModelIndex &);
 
 private:
   SelectionModelSynchronizer _selectionModelSynchronizer;
   ModelPropertyMapper _propertyMapper;
-  BufferId currentBuffer;
 };
 
 #endif // BUFFERMODEL_H
