@@ -232,10 +232,22 @@ SimpleTreeItem::~SimpleTreeItem() {
 }
 
 QVariant SimpleTreeItem::data(int column, int role) const {
-  if(role == Qt::DisplayRole && column < _itemData.count())
-    return _itemData[column];
-  else
+  if(column >= columnCount() || role != Qt::DisplayRole)
     return QVariant();
+  else
+    return _itemData[column];
+}
+
+bool SimpleTreeItem::setData(int column, const QVariant &value, int role) {
+  if(column > columnCount() || role != Qt::DisplayRole)
+    return false;
+
+  if(column == columnCount())
+    _itemData.append(value);
+  else
+    _itemData[column] = value;
+
+  return true;
 }
 
 int SimpleTreeItem::columnCount() const {
@@ -262,13 +274,17 @@ PropertyMapItem::~PropertyMapItem() {
 }
   
 QVariant PropertyMapItem::data(int column, int role) const {
-  if(column >= columnCount())
-    return QVariant();
-
-  if(role != Qt::DisplayRole)
+  if(column >= columnCount() || role != Qt::DisplayRole)
     return QVariant();
 
   return property(_propertyOrder[column].toAscii());
+}
+
+bool PropertyMapItem::setData(int column, const QVariant &value, int role) {
+  if(column >= columnCount() || role != Qt::DisplayRole)
+    return false;
+
+  return setProperty(_propertyOrder[column].toAscii(), value);
 }
 
 int PropertyMapItem::columnCount() const {
@@ -402,8 +418,16 @@ QVariant TreeModel::data(const QModelIndex &index, int role) const {
   if(!index.isValid())
     return QVariant();
 
-  AbstractTreeItem *item = static_cast<AbstractTreeItem*>(index.internalPointer());
+  AbstractTreeItem *item = static_cast<AbstractTreeItem *>(index.internalPointer());
   return item->data(index.column(), role);
+}
+
+bool TreeModel::setData(const QModelIndex &index, const QVariant &value, int role) {
+  if(!index.isValid())
+    return false;
+
+  AbstractTreeItem *item = static_cast<AbstractTreeItem *>(index.internalPointer());
+  return item->setData(index.column(), value, role);
 }
 
 Qt::ItemFlags TreeModel::flags(const QModelIndex &index) const {

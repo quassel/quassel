@@ -63,6 +63,7 @@ public:
   virtual int columnCount() const = 0;
 
   virtual QVariant data(int column, int role) const = 0;
+  virtual bool setData(int column, const QVariant &value, int role) = 0;
 
   virtual Qt::ItemFlags flags() const;
   virtual void setFlags(Qt::ItemFlags);
@@ -99,7 +100,10 @@ class SimpleTreeItem : public AbstractTreeItem {
 public:
   SimpleTreeItem(const QList<QVariant> &data, AbstractTreeItem *parent = 0);
   virtual ~SimpleTreeItem();
+
   virtual QVariant data(int column, int role) const;
+  virtual bool setData(int column, const QVariant &value, int role);
+
   virtual int columnCount() const;
 
 private:
@@ -119,6 +123,8 @@ public:
   virtual ~PropertyMapItem();
   
   virtual QVariant data(int column, int role) const;
+  virtual bool setData(int column, const QVariant &value, int role);
+
   virtual int columnCount() const;
   
   void appendProperty(const QString &property);
@@ -138,7 +144,9 @@ public:
   TreeModel(const QList<QVariant> &, QObject *parent = 0);
   virtual ~TreeModel();
 
-  QVariant data(const QModelIndex &index, int role) const;
+  virtual QVariant data(const QModelIndex &index, int role) const;
+  virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
+
   virtual Qt::ItemFlags flags(const QModelIndex &index) const;
   QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
   
