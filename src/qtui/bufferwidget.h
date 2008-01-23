@@ -51,7 +51,7 @@ public:
   inline QItemSelectionModel *selectionModel() const { return _selectionModel; }
   void setSelectionModel(QItemSelectionModel *selectionModel);
 
-  Network *currentNetwork() const;
+  const Network *currentNetwork() const;
   
 signals:
   void userInput(QString msg) const;

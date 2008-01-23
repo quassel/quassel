@@ -66,7 +66,7 @@ void SettingsDlg::registerSettingsPage(SettingsPage *sp) {
   treeItems[sp] = item;
   pages[QString("%1$%2").arg(sp->category(), sp->title())] = sp;
   // TESTING
-  //selectPage(sp->category(), sp->title());
+  selectPage(sp->category(), sp->title());
 }
 
 void SettingsDlg::selectPage(const QString &cat, const QString &title) {

@@ -368,6 +368,7 @@ void IdentitiesSettingsPage::on_addNick_clicked() {
     ui.nicknameList->addItem(dlg.nick());
     ui.nicknameList->setCurrentRow(ui.nicknameList->count()-1);
     setWidgetStates();
+    widgetHasChanged();
   }
 }
 

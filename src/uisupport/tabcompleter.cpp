@@ -47,7 +47,7 @@ void TabCompleter::buildCompletionList() {
   NetworkId networkId = currentIndex.data(NetworkModel::NetworkIdRole).value<NetworkId>();
   QString channelName = currentIndex.sibling(currentIndex.row(), 0).data().toString();
 
-  Network *network = Client::network(networkId);
+  const Network *network = Client::network(networkId);
   if(!network)
     return;
 

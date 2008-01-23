@@ -37,6 +37,9 @@ class SignalProxy;
 class IrcUser;
 class IrcChannel;
 
+// defined below!
+struct NetworkInfo;
+
 // TODO: ConnectionInfo to propagate and sync the current state of NetworkConnection, encodings etcpp
 
 class Network : public SyncableObject {
@@ -52,7 +55,7 @@ class Network : public SyncableObject {
 
 public:
   Network(const NetworkId &networkid, QObject *parent = 0);
-  //virtual ~Network();
+  // ~Network();
 
   NetworkId networkId() const;
 
@@ -79,6 +82,9 @@ public:
   QStringList channels() const;
   QList<QVariantMap> serverList() const;
 
+  NetworkInfo networkInfo() const;
+  void setNetworkInfo(const NetworkInfo &);
+
   QString prefixes();
   QString prefixModes();
 
@@ -94,8 +100,8 @@ public:
 
   IrcChannel *newIrcChannel(const QString &channelname);
   IrcChannel *newIrcChannel(const QByteArray &channelname);
-  IrcChannel *ircChannel(QString channelname);
-  IrcChannel *ircChannel(const QByteArray &channelname);
+  IrcChannel *ircChannel(QString channelname) const;
+  IrcChannel *ircChannel(const QByteArray &channelname) const;
   QList<IrcChannel *> ircChannels() const;
   quint32 ircChannelCount() const;
 
@@ -201,8 +207,7 @@ private:
 
   QList<QVariantMap> _serverList;
   //QVariantMap networkSettings;
-  //QVariantMap identity;
-  
+
   QPointer<SignalProxy> _proxy;
   void determinePrefixes();
 
@@ -210,5 +215,17 @@ private:
   QTextCodec *_codecForDecoding;
 
 };
+
+//! Stores all editable information about a network (as opposed to runtime state).
+struct NetworkInfo {
+  NetworkId networkId;
+  IdentityId identity;
+  QString networkName;
+  QByteArray codecForEncoding;
+  QByteArray codecForDecoding;
+  QList<QVariantMap> serverList;
+
+};
+
 
 #endif

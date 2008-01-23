@@ -54,13 +54,13 @@ public:
   static void destroy();
   static void init(AbstractUi *);
 
-  static QList<Network *> networks();
-  static Network *network(NetworkId networkid);
-
   static QList<BufferInfo> allBufferInfos();
   static QList<Buffer *> buffers();
   static Buffer *buffer(BufferId bufferUid);
   static Buffer *buffer(BufferInfo);
+
+  static QList<NetworkId> networkIds();
+  static const Network * network(NetworkId);
 
   static QList<IdentityId> identityIds();
   static const Identity * identity(IdentityId);
@@ -143,6 +143,8 @@ signals:
   void requestUpdateIdentity(const Identity &);
   //! Sent to the core when an identity shall be removed. Should not be used elsewhere.
   void requestRemoveIdentity(IdentityId);
+
+  void networkAdded(NetworkId id);
 
 public slots:
   //void selectBuffer(Buffer *);

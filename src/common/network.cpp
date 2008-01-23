@@ -48,13 +48,15 @@ Network::Network(const NetworkId &networkid, QObject *parent) : SyncableObject(p
 }
 
 // I think this is unnecessary since IrcUsers have us as their daddy :)
-//Network::~Network() {
-//   QHashIterator<QString, IrcUser *> ircuser(_ircUsers);
-//   while (ircuser.hasNext()) {
-//     ircuser.next();
-//     delete ircuser.value();
-//   }
-//}
+/*
+Network::~Network() {
+  QHashIterator<QString, IrcUser *> ircuser(_ircUsers);
+  while (ircuser.hasNext()) {
+    ircuser.next();
+    delete ircuser.value();
+  }
+}
+*/
 
 NetworkId Network::networkId() const {
   return _networkId;
@@ -89,6 +91,26 @@ bool Network::isChannelName(const QString &channelname) const {
 
 bool Network::isConnected() const {
   return _connected;
+}
+
+NetworkInfo Network::networkInfo() const {
+  NetworkInfo info;
+  info.networkName = networkName();
+  info.networkId = networkId();
+  info.identity = identity();
+  info.codecForEncoding = codecForEncoding();
+  info.codecForDecoding = codecForDecoding();
+  info.serverList = serverList();
+  return info;
+}
+
+void Network::setNetworkInfo(const NetworkInfo &info) {
+  // we don't set our ID!
+  if(!info.networkName.isEmpty()) setNetworkName(info.networkName);
+  if(info.identity > 0) setIdentity(info.identity);
+  if(!info.codecForEncoding.isEmpty()) setCodecForEncoding(QTextCodec::codecForName(info.codecForEncoding));
+  if(!info.codecForDecoding.isEmpty()) setCodecForDecoding(QTextCodec::codecForName(info.codecForDecoding));
+  if(info.serverList.count()) setServerList(info.serverList);
 }
 
 QString Network::prefixToMode(const QString &prefix) {
@@ -261,7 +283,7 @@ IrcChannel *Network::newIrcChannel(const QByteArray &channelname) {
   return newIrcChannel(decodeString(channelname));
 }
 
-IrcChannel *Network::ircChannel(QString channelname) {
+IrcChannel *Network::ircChannel(QString channelname) const {
   channelname = channelname.toLower();
   if(_ircChannels.contains(channelname))
     return _ircChannels[channelname];
@@ -269,7 +291,7 @@ IrcChannel *Network::ircChannel(QString channelname) {
     return 0;
 }
 
-IrcChannel *Network::ircChannel(const QByteArray &channelname) {
+IrcChannel *Network::ircChannel(const QByteArray &channelname) const {
   return ircChannel(decodeString(channelname));
 }
 
@@ -293,6 +315,7 @@ void Network::setCodecForEncoding(const QByteArray &name) {
 
 void Network::setCodecForEncoding(QTextCodec *codec) {
   _codecForEncoding = codec;
+  emit codecForEncodingSet(codecForEncoding());
 }
 
 QByteArray Network::codecForDecoding() const {
@@ -306,6 +329,7 @@ void Network::setCodecForDecoding(const QByteArray &name) {
 
 void Network::setCodecForDecoding(QTextCodec *codec) {
   _codecForDecoding = codec;
+  emit codecForDecodingSet(codecForDecoding());
 }
 
 QString Network::decodeString(const QByteArray &text) const {

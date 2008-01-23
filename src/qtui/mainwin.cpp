@@ -173,9 +173,9 @@ void MainWin::setupViews() {
 
   addBufferView(tr("All Buffers"), model, BufferViewFilter::AllNets, QList<NetworkId>());
   addBufferView(tr("All Channels"), model, BufferViewFilter::AllNets|BufferViewFilter::NoQueries|BufferViewFilter::NoServers, QList<NetworkId>());
-  addBufferView(tr("All Queries"), model, BufferViewFilter::AllNets|BufferViewFilter::NoChannels|BufferViewFilter::NoServers, QList<NetworkId>())->hide();
-  addBufferView(tr("All Networks"), model, BufferViewFilter::AllNets|BufferViewFilter::NoChannels|BufferViewFilter::NoQueries, QList<NetworkId>())->hide();
-  addBufferView(tr("Full Custom"), model, BufferViewFilter::FullCustom, QList<NetworkId>())->hide();
+  addBufferView(tr("All Queries"), model, BufferViewFilter::AllNets|BufferViewFilter::NoChannels|BufferViewFilter::NoServers, QList<NetworkId>());
+  addBufferView(tr("All Networks"), model, BufferViewFilter::AllNets|BufferViewFilter::NoChannels|BufferViewFilter::NoQueries, QList<NetworkId>());
+  addBufferView(tr("Full Custom"), model, BufferViewFilter::FullCustom, QList<NetworkId>());
 
   ui.menuViews->addSeparator();
 }
@@ -207,7 +207,7 @@ void MainWin::setupSettingsDlg() {
 
   settingsDlg->registerSettingsPage(new FontsSettingsPage(settingsDlg));
   settingsDlg->registerSettingsPage(new IdentitiesSettingsPage(settingsDlg));
-  settingsDlg->registerSettingsPage(new NetworksSettingsPage(settingsDlg));
+  //settingsDlg->registerSettingsPage(new NetworksSettingsPage(settingsDlg));
 }
 
 void MainWin::connectedToCore() {

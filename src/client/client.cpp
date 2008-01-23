@@ -122,18 +122,6 @@ void Client::init() {
 
 /*** public static methods ***/
 
-
-QList<Network *> Client::networks() {
-  return instance()->_networks.values();
-}
-
-Network *Client::network(NetworkId networkid) {
-  if(instance()->_networks.contains(networkid))
-    return instance()->_networks[networkid];
-  else
-    return 0;
-}
-
 QList<BufferInfo> Client::allBufferInfos() {
   QList<BufferInfo> bufferids;
   foreach(Buffer *buffer, buffers()) {
@@ -198,6 +186,17 @@ bool Client::isConnected() {
 
 bool Client::isSynced() {
   return instance()->_syncedToCore;
+}
+
+/*** Network handling ***/
+
+QList<NetworkId> Client::networkIds() {
+  return instance()->_networks.keys();
+}
+
+const Network * Client::network(NetworkId networkid) {
+  if(instance()->_networks.contains(networkid)) return instance()->_networks[networkid];
+  else return 0;
 }
 
 /*** Identity handling ***/
@@ -284,16 +283,6 @@ void Client::disconnectFromCore() {
   // Clear internal data. Hopefully nothing relies on it at this point.
   _networkModel->clear();
 
-  QHash<BufferId, Buffer *>::iterator bufferIter =  _buffers.begin();
-  while(bufferIter != _buffers.end()) {
-    Buffer *buffer = bufferIter.value();
-    disconnect(buffer, SIGNAL(destroyed()), this, 0);
-    bufferIter = _buffers.erase(bufferIter);
-    buffer->deleteLater();
-  }
-  Q_ASSERT(_buffers.isEmpty());
-
-
   QHash<NetworkId, Network*>::iterator netIter = _networks.begin();
   while(netIter != _networks.end()) {
     Network *net = netIter.value();
@@ -302,6 +291,15 @@ void Client::disconnectFromCore() {
     net->deleteLater();
   }
   Q_ASSERT(_networks.isEmpty());
+
+  QHash<BufferId, Buffer *>::iterator bufferIter =  _buffers.begin();
+  while(bufferIter != _buffers.end()) {
+    Buffer *buffer = bufferIter.value();
+    disconnect(buffer, SIGNAL(destroyed()), this, 0);
+    bufferIter = _buffers.erase(bufferIter);
+    buffer->deleteLater();
+  }
+  Q_ASSERT(_buffers.isEmpty());
 
   QHash<IdentityId, Identity*>::iterator idIter = _identities.begin();
   while(idIter != _identities.end()) {
@@ -387,6 +385,7 @@ void Client::addNetwork(Network *net) {
   networkModel()->attachNetwork(net);
   connect(net, SIGNAL(destroyed()), instance(), SLOT(networkDestroyed()));
   instance()->_networks[net->networkId()] = net;
+  emit instance()->networkAdded(net->networkId());
   //if(net->networkId() == 1) net->requestConnect(); // FIXME
 }
 

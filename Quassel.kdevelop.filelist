@@ -178,8 +178,6 @@ src/qtui/serverlist.h
 src/qtui/settingsdlg.cpp
 src/qtui/settingsdlg.h
 src/qtui/settingspages
-src/qtui/settingspages.cpp
-src/qtui/settingspages.h
 src/qtui/settingspages/createidentitydlg.ui
 src/qtui/settingspages/fontssettingspage.cpp
 src/qtui/settingspages/fontssettingspage.h
@@ -197,13 +195,9 @@ src/qtui/topicwidget.cpp
 src/qtui/topicwidget.h
 src/qtui/ui
 src/qtui/ui/aboutdlg.ui
-src/qtui/ui/buffermgmtpage.ui
 src/qtui/ui/bufferviewwidget.ui
 src/qtui/ui/bufferwidget.ui
-src/qtui/ui/channelwidget.ui
-src/qtui/ui/connectionpage.ui
 src/qtui/ui/coreconnectdlg.ui
-src/qtui/ui/coresettingspage.ui
 src/qtui/ui/debugconsole.ui
 src/qtui/ui/identitiesdlg.ui
 src/qtui/ui/identitieseditdlg.ui
@@ -215,7 +209,6 @@ src/qtui/ui/servereditdlg.ui
 src/qtui/ui/serverlistdlg.ui
 src/qtui/ui/settingsdlg.ui
 src/qtui/ui/topicwidget.ui
-src/qtui/ui/usermgmtpage.ui
 src/uisupport
 src/uisupport/action.cpp
 src/uisupport/action.h

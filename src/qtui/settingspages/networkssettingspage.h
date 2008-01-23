@@ -21,9 +21,13 @@
 #ifndef _NETWORKSSETTINGSPAGE_H_
 #define _NETWORKSSETTINGSPAGE_H_
 
-#include "settingspage.h"
+#include <QIcon>
 
+#include "settingspage.h"
 #include "ui_networkssettingspage.h"
+
+#include "network.h"
+#include "types.h"
 
 class NetworksSettingsPage : public SettingsPage {
   Q_OBJECT
@@ -37,9 +41,34 @@ class NetworksSettingsPage : public SettingsPage {
     void save();
     void load();
 
+  private slots:
+    void widgetHasChanged();
+    void setWidgetStates();
+    void coreConnectionStateChanged(bool);
+
+    void displayNetwork(NetworkId, bool dontsave = false);
+
+    void clientNetworkAdded(NetworkId);
+    void clientNetworkUpdated();
+
+    void clientIdentityAdded(IdentityId);
+    void clientIdentityRemoved(IdentityId);
+    void clientIdentityUpdated();
+
+    void on_networkList_itemSelectionChanged();
+
   private:
     Ui::NetworksSettingsPage ui;
 
+    NetworkId currentId;
+    QHash<NetworkId, NetworkInfo> networkInfos;
+
+    QIcon connectedIcon, disconnectedIcon;
+
+    void reset();
+    bool testHasChanged();
+    void insertNetwork(NetworkId);
+    QListWidgetItem *networkItem(NetworkId) const;
 
 };
 

@@ -146,7 +146,7 @@ void BufferWidget::setCurrentBuffer(BufferId bufferId) {
 
 }
 
-Network *BufferWidget::currentNetwork() const {
+const Network *BufferWidget::currentNetwork() const {
   if(!selectionModel())
     return 0;
 
@@ -154,11 +154,11 @@ Network *BufferWidget::currentNetwork() const {
   if(!variant.isValid())
     return 0;
 
-  return Client::network(qVariantValue<NetworkId>(variant));
+  return Client::network(variant.value<NetworkId>());
 }
 
 void BufferWidget::updateNickSelector() const {
-  Network *net = currentNetwork();
+  const Network *net = currentNetwork();
   if(!net)
     return;
 
@@ -181,7 +181,7 @@ void BufferWidget::updateNickSelector() const {
 }
 
 void BufferWidget::changeNick(const QString &newNick) const {
-  Network *net = currentNetwork();
+  const Network *net = currentNetwork();
   if(!net || net->isMyNick(newNick))
     return;
   emit userInput(QString("/nick %1").arg(newNick));
