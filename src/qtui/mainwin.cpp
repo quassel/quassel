@@ -70,6 +70,20 @@ void MainWin::init() {
   statusBar()->showMessage(tr("Not connected to core."));
   systray = new QSystemTrayIcon(this);
   systray->setIcon(QIcon(":/icons/quassel-icon.png"));
+  
+  QString toolTip("left click to minimize the quassel client to tray");
+  systray->setToolTip(toolTip);
+  
+  QMenu *systrayMenu = new QMenu();
+  systrayMenu->addAction(ui.actionAboutQuassel);
+  systrayMenu->addSeparator();
+  systrayMenu->addAction(ui.actionConnectCore);
+  systrayMenu->addAction(ui.actionDisconnectCore);
+  systrayMenu->addSeparator();
+  systrayMenu->addAction(ui.actionQuit);
+  
+  systray->setContextMenu(systrayMenu);
+  
   systray->show();
   connect(systray, SIGNAL(activated( QSystemTrayIcon::ActivationReason )), 
           this, SLOT(systrayActivated( QSystemTrayIcon::ActivationReason )));

@@ -34,6 +34,8 @@ BufferView::BufferView(QWidget *parent) : QTreeView(parent) {
 void BufferView::init() {
   setIndentation(10);
   header()->setContextMenuPolicy(Qt::ActionsContextMenu);
+  hideColumn(1);
+  hideColumn(2);
   expandAll();
 
   setAnimated(true);
@@ -73,7 +75,7 @@ void BufferView::setModel(QAbstractItemModel *model) {
     sectionName = (model->headerData(i, Qt::Horizontal, Qt::DisplayRole)).toString();
     showSection = new QAction(sectionName, header());
     showSection->setCheckable(true);
-    showSection->setChecked(true);
+    showSection->setChecked(!isColumnHidden(i));
     showSection->setProperty("column", i);
     connect(showSection, SIGNAL(toggled(bool)), this, SLOT(toggleHeader(bool)));
     header()->addAction(showSection);

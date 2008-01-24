@@ -34,9 +34,7 @@ NickView::NickView(QWidget *parent) : QTreeView(parent) {
   setAnimated(true);
   setSortingEnabled(true);
   sortByColumn(0, Qt::AscendingOrder);
-
-//   filteredModel = new FilteredNickModel(this);
-//   QTreeView::setModel(filteredModel);
+  expandAll();
 }
 
 NickView::~NickView() {
@@ -44,10 +42,11 @@ NickView::~NickView() {
 
 }
 
-// void NickView::setModel(NickModel *model) {
-//   filteredModel->setSourceModel(model);
-//   expandAll();
-// }
+
+void NickView::setModel(QAbstractItemModel *model) {
+  QTreeView::setModel(model); 
+  expandAll();
+}
 
 void NickView::rowsInserted(const QModelIndex &index, int start, int end) {
   QTreeView::rowsInserted(index, start, end);
