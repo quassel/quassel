@@ -92,6 +92,13 @@ void UserInputHandler::handleList(QString bufname, QString msg) {
   emit putCmd("LIST", msg.split(' ', QString::SkipEmptyParts));
 }
 
+
+void UserInputHandler::handleMe(QString bufname, QString msg) {
+  if(bufname.isEmpty()) return; // server buffer
+  server->ctcpHandler()->query(bufname, "ACTION", msg);
+  emit displayMsg(Message::Action, bufname, msg, network()->myNick());
+}
+
 void UserInputHandler::handleMode(QString bufname, QString msg) {
   emit putCmd("MODE", msg.split(' ', QString::SkipEmptyParts));
 }
@@ -127,7 +134,10 @@ void UserInputHandler::handlePart(QString bufname, QString msg) {
 
 // TODO: implement queries
 void UserInputHandler::handleQuery(QString bufname, QString msg) {
-  QString nick = msg.section(' ', 0, 0);
+  // QString nick = msg.section(' ', 0, 0);
+  
+  handleMsg(bufname, msg);
+  
   // TODO: usenetworkids
 //   if(!nick.isEmpty())
 //     emit queryRequested(network, nick);
@@ -141,6 +151,7 @@ void UserInputHandler::handleQuote(QString bufname, QString msg) {
   emit putRawLine(msg);
 }
 
+
 void UserInputHandler::handleSay(QString bufname, QString msg) {
   if(bufname.isEmpty()) return;  // server buffer
   QStringList params;
@@ -153,11 +164,6 @@ void UserInputHandler::handleSay(QString bufname, QString msg) {
   }
 }
 
-void UserInputHandler::handleMe(QString bufname, QString msg) {
-  if(bufname.isEmpty()) return; // server buffer
-  server->ctcpHandler()->query(bufname, "ACTION", msg);
-  emit displayMsg(Message::Action, bufname, msg, network()->myNick());
-}
 
 void UserInputHandler::handleTopic(QString bufname, QString msg) {
   if(bufname.isEmpty()) return;
@@ -175,9 +181,22 @@ void UserInputHandler::handleVoice(QString bufname, QString msg) {
 }
 
 
+void UserInputHandler::handleWho(QString bufname, QString msg) {
+  emit putCmd("WHO", QStringList(msg));
+}
+
+
+void UserInputHandler::handleWhois(QString bufname, QString msg) {
+  emit putCmd("WHOIS", QStringList(msg));
+}
+
+
+void UserInputHandler::handleWhowas(QString bufname, QString msg) {
+  emit putCmd("WHOWAS", QStringList(msg));
+}
+
 void UserInputHandler::defaultHandler(QString cmd, QString bufname, QString msg) {
   emit displayMsg(Message::Error, "", QString("Error: %1 %2").arg(cmd).arg(msg));
-
 }
 
 

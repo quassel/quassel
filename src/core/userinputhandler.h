@@ -41,6 +41,7 @@ public slots:
   void handleJoin(QString, QString);
   void handleKick(QString, QString);
   void handleList(QString, QString);
+  void handleMe(QString, QString);
   void handleMode(QString, QString);
   void handleMsg(QString, QString);
   void handleNick(QString, QString);
@@ -52,10 +53,11 @@ public slots:
   void handleSay(QString, QString);
   void handleTopic(QString, QString);
   void handleVoice(QString, QString);
-  void handleMe(QString, QString);
+  void handleWho(QString, QString);
+  void handleWhois(QString, QString);
+  void handleWhowas(QString, QString);
 
   void defaultHandler(QString cmd, QString buf, QString msg);
-
 };
 
 
