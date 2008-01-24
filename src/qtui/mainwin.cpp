@@ -71,6 +71,8 @@ void MainWin::init() {
   systray = new QSystemTrayIcon(this);
   systray->setIcon(QIcon(":/icons/quassel-icon.png"));
   systray->show();
+  connect(systray, SIGNAL(activated( QSystemTrayIcon::ActivationReason )), 
+          this, SLOT(systrayActivated( QSystemTrayIcon::ActivationReason )));
 
   //setupSettingsDlg();
 
@@ -277,10 +279,20 @@ void MainWin::closeEvent(QCloseEvent *event)
     s.setValue("MainWinSize", size());
     s.setValue("MainWinPos", pos());
     s.setValue("MainWinState", saveState());
-    delete systray;
     event->accept();
   //} else {
     //event->ignore();
   //}
 }
 
+void MainWin::systrayActivated( QSystemTrayIcon::ActivationReason activationReason) {
+  if (activationReason == QSystemTrayIcon::Trigger) {
+    if (isHidden())
+      show();
+    else
+      hide();
+  }
+  
+  
+  
+}
