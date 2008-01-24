@@ -80,6 +80,7 @@ void TabCompleter::ircUserJoinedOrParted(IrcUser *ircUser) {
 }
 
 void TabCompleter::complete() {
+  return; // FIXME
   if(!enabled) {
     buildCompletionList();
     enabled = true;
