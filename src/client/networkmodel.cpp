@@ -362,7 +362,7 @@ IrcUserItem::IrcUserItem(IrcUser *ircUser, AbstractTreeItem *parent)
 	  this, SLOT(setNick(QString)));
 }
 
-QString IrcUserItem::nickName() {
+QString IrcUserItem::nickName() const {
   return _ircUser->nick();
 }
 
@@ -372,6 +372,13 @@ IrcUser *IrcUserItem::ircUser() {
 
 quint64 IrcUserItem::id() const {
   return (quint64)_ircUser;
+}
+
+QVariant IrcUserItem::data(int column, int role) const {
+  if(role != Qt::ToolTipRole)
+    return PropertyMapItem::data(column, role);
+
+  return "<p><b>" + nickName() + "</b><br />" + _ircUser->hostmask() + "</p>";
 }
 
 void IrcUserItem::setNick(QString newNick) {

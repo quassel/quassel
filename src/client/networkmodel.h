@@ -177,9 +177,12 @@ class IrcUserItem : public PropertyMapItem {
 public:
   IrcUserItem(IrcUser *ircUser, AbstractTreeItem *parent);
 
-  QString nickName();
+  QString nickName() const;
   IrcUser *ircUser();
   virtual quint64 id() const;
+
+  virtual QVariant data(int column, int role) const;
+			    
 
 private slots:
   void setNick(QString newNick);
