@@ -5,7 +5,7 @@
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
+ *   (at your option) version 3.                                           *
  *                                                                         *
  *   This program is distributed in the hope that it will be useful,       *
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
@@ -18,46 +18,52 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "settingspage.h"
+#ifndef _CORECONNECTDLG_H
+#define _CORECONNECTDLG_H
 
-SettingsPage::SettingsPage(const QString &category, const QString &title, QWidget *parent) : QWidget(parent),
-     _category(category), _title(title) {
+#include "ui_coreconnectdlg.h"
 
-  _changed = false;
-}
+class CoreConnectDlg: public QDialog {
+  Q_OBJECT
 
-QString SettingsPage::category() const {
-  return _category;
-}
+  public:
+    CoreConnectDlg(QWidget *parent, bool doAutoConnect = false);
+    ~CoreConnectDlg();
+    QVariant getCoreState();
 
-QString SettingsPage::title() const {
-  return _title;
-}
+    bool willDoInternalAutoConnect();
+    
+  public slots:
+    void doAutoConnect();
 
-bool SettingsPage::hasDefaults() const {
-  return false;
-}
+  private slots:
+    void createAccount();
+    void removeAccount();
+    void accountChanged(const QString & = "");
+    void setAccountEditEnabled(bool);
+    void autoConnectToggled(bool);
+    bool checkInputValid();
+    void hostEditChanged(QString);
+    void hostSelected();
+    void doConnect();
 
-void SettingsPage::defaults() {
+    void coreConnected();
+    void coreConnectionError(QString);
+    //void coreConnectionMsg(const QString &);
+    //void coreConnectionProgress(uint partial, uint total);
+    void updateProgressBar(uint partial, uint total);
+    void recvCoreState(QVariant);
+    
+    void showConfigWizard(const QVariantMap &coredata);
 
-}
+  private:
+    Ui::CoreConnectDlg ui;
+    QVariant coreState;
 
-bool SettingsPage::hasChanged() const {
-  return _changed;
-}
+    void cancelConnect();
+    void setStartState();
+    QVariantMap accountData;
+    QString curacc;
+};
 
-bool SettingsPage::aboutToSave() {
-  return true;
-}
-
-void SettingsPage::changed() {
-  setChangedState(true);
-}
-
-void SettingsPage::setChangedState(bool hasChanged) {
-  if(hasChanged != _changed) {
-    _changed = hasChanged;
-    emit changed(hasChanged);
-  }
-}
-
+#endif

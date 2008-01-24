@@ -1,16 +1,16 @@
 <ui version="4.0" >
- <class>NickEditDlgNew</class>
- <widget class="QDialog" name="NickEditDlgNew" >
+ <class>NetworkEditDlgNew</class>
+ <widget class="QDialog" name="NetworkEditDlgNew" >
   <property name="geometry" >
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>262</width>
+    <width>254</width>
     <height>93</height>
    </rect>
   </property>
   <property name="windowTitle" >
-   <string>Edit Nickname</string>
+   <string>Dialog</string>
   </property>
   <layout class="QVBoxLayout" >
    <item>
@@ -18,22 +18,12 @@
      <item>
       <widget class="QLabel" name="label" >
        <property name="text" >
-        <string>Please enter a valid nickname:</string>
-       </property>
-       <property name="alignment" >
-        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-       </property>
-       <property name="wordWrap" >
-        <bool>true</bool>
+        <string>Please enter a network name:</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="nickEdit" >
-       <property name="whatsThis" >
-        <string>A valid nickname may contain letters from the English alphabet, digits, and the special characters {, }, [, ], \, |, `, ^, _ and -.</string>
-       </property>
-      </widget>
+      <widget class="QLineEdit" name="networkEdit" />
      </item>
      <item>
       <spacer>
@@ -67,7 +57,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>NickEditDlgNew</receiver>
+   <receiver>NetworkEditDlgNew</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel" >
@@ -83,7 +73,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>NickEditDlgNew</receiver>
+   <receiver>NetworkEditDlgNew</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel" >

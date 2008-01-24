@@ -61,7 +61,7 @@ void NetworksSettingsPage::load() {
     clientNetworkAdded(netid);
   }
   ui.networkList->setCurrentRow(0);
-  changeState(false);
+  setChangedState(false);
 }
 
 void NetworksSettingsPage::reset() {
@@ -82,7 +82,7 @@ void NetworksSettingsPage::reset() {
 
 void NetworksSettingsPage::widgetHasChanged() {
   bool changed = testHasChanged();
-  if(changed != hasChanged()) changeState(changed);
+  if(changed != hasChanged()) setChangedState(changed);
 }
 
 bool NetworksSettingsPage::testHasChanged() {
@@ -245,8 +245,41 @@ void NetworksSettingsPage::on_networkList_itemSelectionChanged() {
   setWidgetStates();
 }
 
+void NetworksSettingsPage::on_addNetwork_clicked() {
 
 
+
+}
+
+/**************************************************************************
+ * NetworkEditDlg
+ *************************************************************************/
+
+NetworkEditDlgNew::NetworkEditDlgNew(const QString &old, const QStringList &exist, QWidget *parent) : QDialog(parent), existing(exist) {
+  ui.setupUi(this);
+
+  if(old.isEmpty()) {
+    // new network
+    setWindowTitle(tr("Add Network"));
+    on_networkEdit_textChanged(""); // disable ok button
+  } else ui.networkEdit->setText(old);
+}
+
+QString NetworkEditDlgNew::networkName() const {
+  return ui.networkEdit->text();
+
+}
+
+void NetworkEditDlgNew::on_networkEdit_textChanged(const QString &text) {
+  ui.buttonBox->button(QDialogButtonBox::Ok)->setDisabled(text.isEmpty() || existing.contains(text));
+}
+
+
+/**************************************************************************
+ * ServerEditDlg
+ *************************************************************************/
+
+//ServerEditDlg::
 
 
 

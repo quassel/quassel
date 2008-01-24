@@ -69,7 +69,7 @@ void FontsSettingsPage::defaults() {
 
 void FontsSettingsPage::load() {
   load(Settings::Custom);
-  changeState(false);
+  setChangedState(false);
 }
 
 void FontsSettingsPage::load(Settings::Mode mode) {
@@ -92,7 +92,7 @@ void FontsSettingsPage::load(Settings::Mode mode) {
     ui.checkTimestamp->setChecked(false);
   }
 
-  changeState(false);
+  setChangedState(false);
 }
 
 void FontsSettingsPage::save() {
@@ -111,11 +111,11 @@ void FontsSettingsPage::save() {
   else timestampFormat.setFont(chatFormat.font());
   QtUi::style()->setFormat(UiStyle::Timestamp, timestampFormat, Settings::Custom);
 
-  changeState(false);
+  setChangedState(false);
 }
 
 void FontsSettingsPage::widgetHasChanged() {
-  if(!hasChanged()) changeState(true);
+  if(!hasChanged()) setChangedState(true);
 }
 
 void FontsSettingsPage::initLabel(QLabel *label, const QFont &font) {

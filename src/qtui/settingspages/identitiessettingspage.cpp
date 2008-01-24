@@ -120,7 +120,7 @@ void IdentitiesSettingsPage::save() {
   }
   changedIdentities.clear();
   deletedIdentities.clear();
-  changeState(false);
+  setChangedState(false);
   setEnabled(true);
 }
 
@@ -136,12 +136,12 @@ void IdentitiesSettingsPage::load() {
   foreach(IdentityId id, Client::identityIds()) {
     clientIdentityCreated(id);
   }
-  changeState(false);
+  setChangedState(false);
 }
 
 void IdentitiesSettingsPage::widgetHasChanged() {
   bool changed = testHasChanged();
-  if(changed != hasChanged()) changeState(changed);
+  if(changed != hasChanged()) setChangedState(changed);
 }
 
 bool IdentitiesSettingsPage::testHasChanged() {

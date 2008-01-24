@@ -25,6 +25,7 @@
 
 #include "settingspage.h"
 #include "ui_networkssettingspage.h"
+#include "ui_networkeditdlgnew.h"
 
 #include "network.h"
 #include "types.h"
@@ -56,6 +57,7 @@ class NetworksSettingsPage : public SettingsPage {
     void clientIdentityUpdated();
 
     void on_networkList_itemSelectionChanged();
+    void on_addNetwork_clicked();
 
   private:
     Ui::NetworksSettingsPage ui;
@@ -69,7 +71,39 @@ class NetworksSettingsPage : public SettingsPage {
     bool testHasChanged();
     void insertNetwork(NetworkId);
     QListWidgetItem *networkItem(NetworkId) const;
-
 };
+
+class NetworkEditDlgNew : public QDialog {
+  Q_OBJECT
+
+  public:
+    NetworkEditDlgNew(const QString &old, const QStringList &existing = QStringList(), QWidget *parent = 0);
+
+    QString networkName() const;
+
+  private slots:
+    void on_networkEdit_textChanged(const QString &);
+
+  private:
+    Ui::NetworkEditDlgNew ui;
+
+    QStringList existing;
+};
+
+
+
+class ServerEditDlgNew : public QDialog {
+  Q_OBJECT
+
+  public:
+    ServerEditDlgNew(const QVariantMap &serverData = QVariantMap(), QWidget *parent = 0);
+
+    QVariantMap serverData() const;
+
+  private:
+    QVariantMap _serverData;
+};
+
+
 
 #endif
