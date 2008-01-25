@@ -55,12 +55,15 @@ void TabCompleter::buildCompletionList() {
   if(!channel)
     return;
 
+  // FIXME commented for debugging
+  /*
   disconnect(this, SLOT(ircUserJoinedOrParted(IrcUser *)));
   connect(channel, SIGNAL(ircUserJoined(IrcUser *)),
 	  this, SLOT(ircUserJoinedOrParted(IrcUser *)));
   connect(channel, SIGNAL(ircUserParted(IrcUser *)),
 	  this, SLOT(ircUserJoinedOrParted(IrcUser *)));
-	     
+  */
+
   completionList.clear();
   QString tabAbbrev = inputLine->text().left(inputLine->cursorPosition()).section(' ',-1,-1);
   completionList.clear();
@@ -80,7 +83,6 @@ void TabCompleter::ircUserJoinedOrParted(IrcUser *ircUser) {
 }
 
 void TabCompleter::complete() {
-  return; // FIXME
   if(!enabled) {
     buildCompletionList();
     enabled = true;
