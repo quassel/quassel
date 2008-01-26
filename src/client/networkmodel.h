@@ -182,11 +182,9 @@ public:
   virtual quint64 id() const;
 
   virtual QVariant data(int column, int role) const;
-			    
 
 private slots:
   void setNick(QString newNick);
-  void ircUserDestroyed();
 
 private:
   IrcUser *_ircUser;

@@ -190,6 +190,8 @@ void BufferItem::part(IrcUser *ircUser) {
 }
 
 void BufferItem::removeUserFromCategory(IrcUser *ircUser) {
+  Q_ASSERT(_ircChannel);
+
   UserCategoryItem *categoryItem = 0;
   for(int i = 0; i < childCount(); i++) {
     categoryItem = qobject_cast<UserCategoryItem *>(child(i));
@@ -312,12 +314,13 @@ void NetworkItem::setCurrentServer(const QString &serverName) {
 *****************************************/
 // we hardcode this even though we have PREFIX in network... but that wouldn't help with mapping modes to
 // category strings anyway.
-const QList<UserCategoryItem::Category> UserCategoryItem::categories = QList<UserCategoryItem::Category>() << UserCategoryItem::Category('q', "Owners")
-													   << UserCategoryItem::Category('a', "Admins")
-													   << UserCategoryItem::Category('a', "Admins")
-													   << UserCategoryItem::Category('o', "Operators")
-													   << UserCategoryItem::Category('h', "Half-Ops")
-													   << UserCategoryItem::Category('v', "Voiced");
+const QList<UserCategoryItem::Category> UserCategoryItem::categories = QList<UserCategoryItem::Category>()
+  << UserCategoryItem::Category('q', "Owners")
+  << UserCategoryItem::Category('a', "Admins")
+  << UserCategoryItem::Category('a', "Admins")
+  << UserCategoryItem::Category('o', "Operators")
+  << UserCategoryItem::Category('h', "Half-Ops")
+  << UserCategoryItem::Category('v', "Voiced");
 
 UserCategoryItem::UserCategoryItem(int category, AbstractTreeItem *parent)
   : PropertyMapItem(QStringList() << "categoryId", parent),
@@ -355,8 +358,8 @@ IrcUserItem::IrcUserItem(IrcUser *ircUser, AbstractTreeItem *parent)
   : PropertyMapItem(QStringList() << "nickName", parent),
     _ircUser(ircUser)
 {
-  connect(ircUser, SIGNAL(destroyed()),
-	  this, SLOT(ircUserDestroyed()));
+  // we don't need to handle the ircUser's destroyed signal since it's automatically removed
+  // by the IrcChannel::ircUserParted();
   
   connect(ircUser, SIGNAL(nickSet(QString)),
 	  this, SLOT(setNick(QString)));
@@ -384,10 +387,6 @@ QVariant IrcUserItem::data(int column, int role) const {
 void IrcUserItem::setNick(QString newNick) {
   Q_UNUSED(newNick);
   emit dataChanged(0);
-}
-void IrcUserItem::ircUserDestroyed() {
-  parent()->removeChildById(id());
-  // deleteLater();
 }
 
 /*****************************************
