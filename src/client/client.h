@@ -155,13 +155,12 @@ public slots:
 
   void setCoreConfiguration(const QVariantMap &settings);
 
+  void userInput(BufferInfo, QString);
 
 private slots:
   void recvSessionData(const QString &key, const QVariant &data);
 
   //void coreSocketError(QAbstractSocket::SocketError);
-
-  void userInput(BufferInfo, QString);
 
   //void networkConnected(NetworkId);
   //void networkDisconnected(NetworkId);

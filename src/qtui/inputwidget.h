@@ -18,58 +18,61 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _BUFFERWIDGET_H_
-#define _BUFFERWIDGET_H_
+#ifndef INPUTWIDGET_H
+#define INPUTWIDGET_H
 
-#include "ui_bufferwidget.h"
-
-#include "chatview.h"
-#include "types.h"
-
-class Network;
-class ChatView;
-class ChatWidget;
-
-#include "buffermodel.h"
+#include "ui_inputwidget.h"
+#include <QPointer>
 #include <QItemSelectionModel>
 
-//! Displays the contents of a Buffer.
-/**
-*/
-class BufferWidget : public QWidget {
+#include "buffermodel.h"
+#include "bufferinfo.h"
+
+class Network;
+
+class InputWidget : public QWidget {
   Q_OBJECT
 
 public:
-  BufferWidget(QWidget *parent = 0);
-  virtual ~BufferWidget();
-  void init();
+  InputWidget(QWidget *parent = 0);
+  virtual ~InputWidget();
 
   inline BufferModel *model() { return _bufferModel; }
   void setModel(BufferModel *bufferModel);
 
   inline QItemSelectionModel *selectionModel() const { return _selectionModel; }
   void setSelectionModel(QItemSelectionModel *selectionModel);
-  
+
+  const Network *currentNetwork() const;
+
 protected slots:
 //   virtual void closeEditor(QWidget *editor, QAbstractItemDelegate::EndEditHint hint);
 //   virtual void commitData(QWidget *editor);
   virtual void currentChanged(const QModelIndex &current, const QModelIndex &previous);
 //   virtual void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
 //   virtual void editorDestroyed(QObject *editor);
-  virtual void rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
+//   virtual void rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
 //   virtual void rowsInserted(const QModelIndex &parent, int start, int end);
 //   virtual void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
 
 private slots:
-  void removeBuffer(BufferId bufferId);
-  void setCurrentBuffer(BufferId bufferId);
+  void enterPressed();
+  void changeNick(const QString &newNick) const;
+
+  void updateNickSelector() const;
+
+signals:
+  void userInput(BufferInfo, QString msg) const;
 
 private:
-  Ui::BufferWidget ui;
-  QHash<BufferId, ChatWidget *> _chatWidgets;
+  Ui::InputWidget ui;
 
+  bool validBuffer;
+  BufferInfo currentBufferInfo;
+  
   QPointer<BufferModel> _bufferModel;
   QPointer<QItemSelectionModel> _selectionModel;
+
 };
 
-#endif
+#endif // INPUTWIDGET_H

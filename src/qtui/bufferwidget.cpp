@@ -34,9 +34,6 @@ BufferWidget::BufferWidget(QWidget *parent)
     _selectionModel(0)
 {
   ui.setupUi(this);
-  ui.ownNick->clear();  // TODO add nick history
-  connect(ui.inputEdit, SIGNAL(returnPressed()), this, SLOT(enterPressed()));
-  connect(ui.ownNick, SIGNAL(activated(QString)), this, SLOT(changeNick(QString)));
 }
 
 BufferWidget::~BufferWidget() {
@@ -112,7 +109,6 @@ void BufferWidget::currentChanged(const QModelIndex &current, const QModelIndex 
     return;
   
   setCurrentBuffer(qVariantValue<BufferId>(variant));
-  updateNickSelector();
 }
 
 void BufferWidget::setCurrentBuffer(BufferId bufferId) {
@@ -137,62 +133,9 @@ void BufferWidget::setCurrentBuffer(BufferId bufferId) {
     connect(buf, SIGNAL(msgPrepended(AbstractUiMsg *)), chatWidget, SLOT(prependMsg(AbstractUiMsg *)));
     _chatWidgets[bufferId] = chatWidget;
     ui.stackedWidget->addWidget(chatWidget);
+    chatWidget->setFocusProxy(this);
   }
   ui.stackedWidget->setCurrentWidget(chatWidget);
-  disconnect(this, SIGNAL(userInput(QString)), 0, 0);
-  connect(this, SIGNAL(userInput(QString)), Client::buffer(bufferId), SLOT(processUserInput(QString)));
-  chatWidget->setFocusProxy(ui.inputEdit);
-  ui.inputEdit->setFocus();
-
-}
-
-const Network *BufferWidget::currentNetwork() const {
-  if(!selectionModel())
-    return 0;
-
-  QVariant variant = selectionModel()->currentIndex().data(NetworkModel::NetworkIdRole);
-  if(!variant.isValid())
-    return 0;
-
-  return Client::network(variant.value<NetworkId>());
-}
-
-void BufferWidget::updateNickSelector() const {
-  const Network *net = currentNetwork();
-  if(!net)
-    return;
-
-  const Identity *identity = Client::identity(net->identity());
-  if(!identity) {
-    qWarning() << "BufferWidget::setCurrentNetwork(): can't find Identity for Network" << net->networkId();
-    return;
-  }
-
-  int nickIdx;
-  QStringList nicks = identity->nicks();
-  if((nickIdx = nicks.indexOf(net->myNick())) == -1) {
-    nicks.prepend(net->myNick());
-    nickIdx = 0;
-  }
-  
-  ui.ownNick->clear();
-  ui.ownNick->addItems(nicks);
-  ui.ownNick->setCurrentIndex(nickIdx);
-}
-
-void BufferWidget::changeNick(const QString &newNick) const {
-  const Network *net = currentNetwork();
-  if(!net || net->isMyNick(newNick))
-    return;
-  emit userInput(QString("/nick %1").arg(newNick));
-}
-
-void BufferWidget::enterPressed() {
-  QStringList lines = ui.inputEdit->text().split('\n', QString::SkipEmptyParts);
-  foreach(QString msg, lines) {
-    if(msg.isEmpty()) continue;
-    emit userInput(msg);
-  }
-  ui.inputEdit->clear();
+  setFocus();
 }
 

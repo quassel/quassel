@@ -203,6 +203,7 @@ public:
     ItemActiveRole,
     BufferIdRole,
     NetworkIdRole,
+    BufferInfoRole,
     ItemTypeRole
   };
 

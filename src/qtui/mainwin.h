@@ -26,6 +26,8 @@
 #include "qtui.h"
 #include "bufferviewfilter.h"
 
+#include <QSystemTrayIcon>
+
 class ServerListDlg;
 class CoreConnectDlg;
 class Buffer;
@@ -33,7 +35,6 @@ class SettingsDlg;
 class QtUi;
 class Message;
 class NickListWidget;
-
 class DebugConsole;
 
 //!\brief The main window of Quassel's QtUi.

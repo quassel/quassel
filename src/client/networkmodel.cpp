@@ -97,6 +97,8 @@ QVariant BufferItem::data(int column, int role) const {
     return qVariantFromValue(bufferInfo().uid());
   case NetworkModel::NetworkIdRole:
     return qVariantFromValue(bufferInfo().networkId());
+  case NetworkModel::BufferInfoRole:
+    return qVariantFromValue(bufferInfo());
   case NetworkModel::BufferTypeRole:
     return int(bufferType());
   case NetworkModel::ItemActiveRole:

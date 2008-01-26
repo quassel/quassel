@@ -32,6 +32,8 @@
 #include "settingsdlg.h"
 #include "signalproxy.h"
 #include "topicwidget.h"
+#include "inputwidget.h"
+#include "verticaldocktitle.h"
 #include "uisettings.h"
 
 #include "selectionmodelsynchronizer.h"
@@ -121,7 +123,6 @@ void MainWin::init() {
   
   
   // new Topic Stuff... should be probably refactored out into a separate method
-  
   setCorner(Qt::TopLeftCorner, Qt::LeftDockWidgetArea);
   setCorner(Qt::BottomLeftCorner, Qt::LeftDockWidgetArea);
 
@@ -129,20 +130,55 @@ void MainWin::init() {
   setCorner(Qt::BottomRightCorner, Qt::RightDockWidgetArea);
 
 
-  QDockWidget *dock = new QDockWidget(tr("Topic Dock"), this);
-  dock->setObjectName("TopicDock");
-  dock->setAllowedAreas(Qt::TopDockWidgetArea | Qt::BottomDockWidgetArea);
+  QDockWidget *topicDock = new QDockWidget(tr("Topic"), this);
+  topicDock->setObjectName("TopicDock");
+  topicDock->setAllowedAreas(Qt::TopDockWidgetArea | Qt::BottomDockWidgetArea);
 
-  TopicWidget *topicwidget = new TopicWidget(dock);
-  dock->setWidget(topicwidget);
+  QWidget *oldDockTitle = topicDock->titleBarWidget();
+
+  QWidget *newDockTitle = new VerticalDockTitle(topicDock);
+  topicDock->setFeatures(topicDock->features() | QDockWidget::DockWidgetVerticalTitleBar);
+  topicDock->setTitleBarWidget(newDockTitle);
+  
+  if(oldDockTitle)
+    oldDockTitle->deleteLater();
+  
+
+  TopicWidget *topicwidget = new TopicWidget(topicDock);
+  topicDock->setWidget(topicwidget);
 
   Client::bufferModel()->mapProperty(1, Qt::DisplayRole, topicwidget, "topic");
 
-  addDockWidget(Qt::TopDockWidgetArea, dock);
+  addDockWidget(Qt::TopDockWidgetArea, topicDock);
 
-  ui.menuViews->addAction(dock->toggleViewAction());
+  ui.menuViews->addAction(topicDock->toggleViewAction());
+
+  // NEW INPUT WIDGET -- damn init() needs a cleanup
+  QDockWidget *inputDock = new QDockWidget(tr("Inputline"), this);
+  inputDock->setObjectName("InputDock");
+  inputDock->setAllowedAreas(Qt::TopDockWidgetArea | Qt::BottomDockWidgetArea);
+
+  oldDockTitle = inputDock->titleBarWidget();
+  newDockTitle = new VerticalDockTitle(inputDock);
+  
+  inputDock->setFeatures(inputDock->features() | QDockWidget::DockWidgetVerticalTitleBar);
+  inputDock->setTitleBarWidget(newDockTitle);
+  
+  if(oldDockTitle)
+    oldDockTitle->deleteLater();
+  
+  InputWidget *inputWidget = new InputWidget(inputDock);
+  inputDock->setWidget(inputWidget);
+
+  addDockWidget(Qt::BottomDockWidgetArea, inputDock);
+  ui.menuViews->addAction(inputDock->toggleViewAction());
 
 
+  inputWidget->setModel(Client::bufferModel());
+  inputWidget->setSelectionModel(Client::bufferModel()->standardSelectionModel());
+
+  ui.bufferWidget->setFocusProxy(inputWidget);
+  
   // attach the BufferWidget to the PropertyMapper
   ui.bufferWidget->setModel(Client::bufferModel());
   ui.bufferWidget->setSelectionModel(Client::bufferModel()->standardSelectionModel());

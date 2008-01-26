@@ -124,55 +124,8 @@ p, li { white-space: pre-wrap; }
      </widget>
     </widget>
    </item>
-   <item>
-    <layout class="QHBoxLayout" >
-     <property name="spacing" >
-      <number>6</number>
-     </property>
-     <property name="leftMargin" >
-      <number>0</number>
-     </property>
-     <property name="topMargin" >
-      <number>0</number>
-     </property>
-     <property name="rightMargin" >
-      <number>0</number>
-     </property>
-     <property name="bottomMargin" >
-      <number>0</number>
-     </property>
-     <item>
-      <widget class="QComboBox" name="ownNick" >
-       <property name="sizeAdjustPolicy" >
-        <enum>QComboBox::AdjustToContents</enum>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="InputLine" name="inputEdit" >
-       <property name="sizePolicy" >
-        <sizepolicy vsizetype="Fixed" hsizetype="MinimumExpanding" >
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>InputLine</class>
-   <extends>QLineEdit</extends>
-   <header>inputline.h</header>
-  </customwidget>
- </customwidgets>
- <tabstops>
-  <tabstop>inputEdit</tabstop>
-  <tabstop>ownNick</tabstop>
- </tabstops>
  <resources/>
  <connections/>
 </ui>
