@@ -24,28 +24,32 @@
 #include <QHeaderView>
 #include <QDebug>
 
-NickView::NickView(QWidget *parent) : QTreeView(parent) {
-  setGeometry(0, 0, 30, 30);
-  //setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
-
+NickView::NickView(QWidget *parent)
+  : QTreeView(parent)
+{
   setIndentation(10);
-  header()->hide();
-  header()->hideSection(1);
   setAnimated(true);
+  header()->hide();
   setSortingEnabled(true);
   sortByColumn(0, Qt::AscendingOrder);
-  expandAll();
 }
 
 NickView::~NickView() {
-
-
 }
 
+void NickView::init() {
+  if(!model())
+    return;
+
+  for(int i = 1; i < model()->columnCount(); i++)
+    setColumnHidden(i, true);
+
+  expandAll();
+}
 
 void NickView::setModel(QAbstractItemModel *model) {
-  QTreeView::setModel(model); 
-  expandAll();
+  QTreeView::setModel(model);
+  init();
 }
 
 void NickView::rowsInserted(const QModelIndex &index, int start, int end) {
