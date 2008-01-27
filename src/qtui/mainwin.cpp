@@ -33,7 +33,7 @@
 #include "signalproxy.h"
 #include "topicwidget.h"
 #include "inputwidget.h"
-#include "verticaldocktitle.h"
+#include "verticaldock.h"
 #include "uisettings.h"
 
 #include "selectionmodelsynchronizer.h"
@@ -119,31 +119,18 @@ void MainWin::init() {
     showServerList();
   }
   
+  // DOCK OPTIONS
   setDockNestingEnabled(true);
-  
-  
-  // new Topic Stuff... should be probably refactored out into a separate method
+
   setCorner(Qt::TopLeftCorner, Qt::LeftDockWidgetArea);
   setCorner(Qt::BottomLeftCorner, Qt::LeftDockWidgetArea);
 
   setCorner(Qt::TopRightCorner, Qt::RightDockWidgetArea);
   setCorner(Qt::BottomRightCorner, Qt::RightDockWidgetArea);
 
-
-  QDockWidget *topicDock = new QDockWidget(tr("Topic"), this);
+  // new Topic Stuff... should be probably refactored out into a separate method
+  VerticalDock *topicDock = new VerticalDock(tr("Topic"), this);
   topicDock->setObjectName("TopicDock");
-  topicDock->setAllowedAreas(Qt::TopDockWidgetArea | Qt::BottomDockWidgetArea);
-
-  QWidget *oldDockTitle = topicDock->titleBarWidget();
-
-  QWidget *newDockTitle = new VerticalDockTitle(topicDock);
-  topicDock->setFeatures(topicDock->features() | QDockWidget::DockWidgetVerticalTitleBar);
-  topicDock->setTitleBarWidget(newDockTitle);
-  
-  if(oldDockTitle)
-    oldDockTitle->deleteLater();
-  
-
   TopicWidget *topicwidget = new TopicWidget(topicDock);
   topicDock->setWidget(topicwidget);
 
@@ -154,25 +141,14 @@ void MainWin::init() {
   ui.menuViews->addAction(topicDock->toggleViewAction());
 
   // NEW INPUT WIDGET -- damn init() needs a cleanup
-  QDockWidget *inputDock = new QDockWidget(tr("Inputline"), this);
+  VerticalDock *inputDock = new VerticalDock(tr("Inputline"), this);
   inputDock->setObjectName("InputDock");
-  inputDock->setAllowedAreas(Qt::TopDockWidgetArea | Qt::BottomDockWidgetArea);
-
-  oldDockTitle = inputDock->titleBarWidget();
-  newDockTitle = new VerticalDockTitle(inputDock);
-  
-  inputDock->setFeatures(inputDock->features() | QDockWidget::DockWidgetVerticalTitleBar);
-  inputDock->setTitleBarWidget(newDockTitle);
-  
-  if(oldDockTitle)
-    oldDockTitle->deleteLater();
-  
   InputWidget *inputWidget = new InputWidget(inputDock);
   inputDock->setWidget(inputWidget);
 
   addDockWidget(Qt::BottomDockWidgetArea, inputDock);
-  ui.menuViews->addAction(inputDock->toggleViewAction());
 
+  ui.menuViews->addAction(inputDock->toggleViewAction());
 
   inputWidget->setModel(Client::bufferModel());
   inputWidget->setSelectionModel(Client::bufferModel()->standardSelectionModel());

@@ -21,10 +21,8 @@
 #ifndef VERTICALDOCKTITLE_H
 #define VERTICALDOCKTITLE_H
 
-#include <QWidget>
+#include <QDockWidget>
 #include <QSize>
-
-class QDockWidget;
 
 class VerticalDockTitle : public QWidget {
   Q_OBJECT
@@ -38,6 +36,17 @@ public:
 
 protected:
   virtual void paintEvent(QPaintEvent *event);
+};
+
+class VerticalDock : public QDockWidget {
+  Q_OBJECT
+
+public:
+  VerticalDock(const QString &title, QWidget *parent = 0, Qt::WindowFlags flags = 0);
+  VerticalDock(QWidget *parent = 0, Qt::WindowFlags flags = 0);
+  virtual ~VerticalDock();
+
+  void setDefaultTitleWidget();
 };
 
 

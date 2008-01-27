@@ -4,11 +4,11 @@ QT_MOD = core gui network
 SRCS += bufferwidget.cpp chatline-old.cpp \
         chatwidget.cpp coreconnectdlg.cpp configwizard.cpp \
         guisettings.cpp identities.cpp mainwin.cpp nicklistwidget.cpp qtui.cpp qtuistyle.cpp serverlist.cpp settingsdlg.cpp \
-        topicwidget.cpp debugconsole.cpp inputwidget.cpp
+        topicwidget.cpp debugconsole.cpp inputwidget.cpp verticaldock.cpp
 
 HDRS += bufferwidget.h chatline-old.h chatwidget.h configwizard.h \
         coreconnectdlg.h guisettings.h identities.h mainwin.h nicklistwidget.h qtui.h qtuistyle.h serverlist.h settingsdlg.h \
-        topicwidget.h debugconsole.h inputwidget.h
+        topicwidget.h debugconsole.h inputwidget.h verticaldock.h
 
 FORMNAMES = identitiesdlg.ui identitieseditdlg.ui networkeditdlg.ui mainwin.ui nickeditdlg.ui serverlistdlg.ui \
             servereditdlg.ui coreaccounteditdlg.ui coreconnectdlg.ui bufferviewwidget.ui bufferwidget.ui nicklistwidget.ui settingsdlg.ui \

@@ -18,10 +18,9 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "verticaldocktitle.h"
-#include <QDockWidget>
+#include "verticaldock.h"
+
 #include <QPainter>
-#include <QStyleOption>
 
 #include <QDebug>
 
@@ -34,11 +33,11 @@ VerticalDockTitle::~VerticalDockTitle() {
 }
 
 QSize VerticalDockTitle::sizeHint() const {
-  return QSize(10, 20);
+  return QSize(10, 15);
 }
 
 QSize VerticalDockTitle::minimumSizeHint() const {
-  return QSize(10, 20);
+  return QSize(10, 15);
 }
 
 void VerticalDockTitle::paintEvent(QPaintEvent *event) {
@@ -54,4 +53,35 @@ void VerticalDockTitle::paintEvent(QPaintEvent *event) {
     }
   }
   
+}
+
+
+// ==============================
+//  Vertical Dock
+// ==============================
+VerticalDock::VerticalDock(const QString &title, QWidget *parent, Qt::WindowFlags flags)
+  : QDockWidget(title, parent, flags)
+{
+  setDefaultTitleWidget();
+}
+
+VerticalDock::VerticalDock(QWidget *parent, Qt::WindowFlags flags)
+  : QDockWidget(parent, flags)
+{
+  setDefaultTitleWidget();
+}
+
+VerticalDock::~VerticalDock() {
+}
+
+void VerticalDock::setDefaultTitleWidget() {
+  QWidget *oldDockTitle = titleBarWidget();
+  QWidget *newDockTitle = new VerticalDockTitle(this);
+
+  setAllowedAreas(Qt::TopDockWidgetArea | Qt::BottomDockWidgetArea);
+  setFeatures(features() | QDockWidget::DockWidgetVerticalTitleBar);
+  setTitleBarWidget(newDockTitle);
+  
+  if(oldDockTitle)
+    oldDockTitle->deleteLater();
 }
