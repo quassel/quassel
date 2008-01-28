@@ -18,11 +18,16 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "nickview.h"
-#include "nickmodel.h"
-
 #include <QHeaderView>
 #include <QDebug>
+#include <QMenu>
+
+#include "nickview.h"
+#include "nickmodel.h"
+#include "networkmodel.h"
+#include "types.h"
+#include "client.h"
+
 
 NickView::NickView(QWidget *parent)
   : QTreeView(parent)
@@ -32,6 +37,11 @@ NickView::NickView(QWidget *parent)
   header()->hide();
   setSortingEnabled(true);
   sortByColumn(0, Qt::AscendingOrder);
+
+  setContextMenuPolicy(Qt::CustomContextMenu);
+
+  connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), 
+          this, SLOT(showContextMenu(const QPoint&)));
 }
 
 NickView::~NickView() {
@@ -57,3 +67,19 @@ void NickView::rowsInserted(const QModelIndex &index, int start, int end) {
   expandAll();  // FIXME We need to do this more intelligently. Maybe a pimped TreeView?
 }
 
+void NickView::showContextMenu(const QPoint & pos ) {
+  QModelIndex index = indexAt(pos);
+  QString username = index.sibling(index.row(), 0).data().toString();
+  BufferInfo bufferInfo = index.data(NetworkModel::BufferInfoRole).value<BufferInfo>();
+
+  QMenu nickContextMenu(this);
+  nickContextMenu.addAction(tr("context menu for %1").arg(username));
+  nickContextMenu.addSeparator();
+
+  QAction *whoisAction = nickContextMenu.addAction(tr("WHOIS"));
+  QAction *result = nickContextMenu.exec(QCursor::pos());
+
+  if (result == whoisAction ) {
+    Client::instance()->userInput(bufferInfo, "/WHOIS "+username);
+  }
+}

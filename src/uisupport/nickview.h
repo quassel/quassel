@@ -21,7 +21,12 @@
 #ifndef _NICKVIEW_H_
 #define _NICKVIEW_H_
 
+
 #include <QTreeView>
+
+#include "types.h"
+#include "bufferinfo.h"
+
 
 class NickModel;
 class FilteredNickModel;
@@ -36,11 +41,13 @@ public:
   
 protected:
   void rowsInserted(const QModelIndex &, int, int);
-						  
+  
 public slots:
   void setModel(QAbstractItemModel *model);
   void init();
+  void showContextMenu(const QPoint & pos );
 
 };
+
 
 #endif
