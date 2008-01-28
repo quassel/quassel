@@ -56,6 +56,16 @@ void UserInputHandler::handleAway(QString bufname, QString msg) {
   emit putCmd("AWAY", QStringList(msg));
 }
 
+void UserInputHandler::handleBan(QString bufname, QString msg) {
+  if(!isChannelName(bufname))
+    return;
+  
+  //TODO: find suitable default hostmask if msg gives only nickname 
+  // Example: MODE &oulu +b *!*@*
+  QStringList banMsg(bufname+" +b "+msg);
+  emit putCmd("MODE", banMsg);
+}
+
 void UserInputHandler::handleDeop(QString bufname, QString msg) {
   QStringList nicks = msg.split(' ', QString::SkipEmptyParts);
   QString m = "-"; for(int i = 0; i < nicks.count(); i++) m += 'o';

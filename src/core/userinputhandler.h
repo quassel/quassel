@@ -35,6 +35,7 @@ public:
   
 public slots:
   void handleAway(QString, QString);
+  void handleBan(QString, QString);
   void handleDeop(QString, QString);
   void handleDevoice(QString, QString);
   void handleInvite(QString, QString);
