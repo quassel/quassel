@@ -34,7 +34,7 @@ InputWidget::InputWidget(QWidget *parent)
   ui.setupUi(this);
   connect(ui.inputEdit, SIGNAL(returnPressed()), this, SLOT(enterPressed()));
   connect(ui.ownNick, SIGNAL(activated(QString)), this, SLOT(changeNick(QString)));
-  connect(this, SIGNAL(userInput(BufferInfo, QString)), Client::instance(), SLOT(userInput(BufferInfo, QString)));
+  connect(this, SIGNAL(userInput(BufferInfo, QString)), Client::instance(), SIGNAL(sendInput(BufferInfo, QString)));
   setFocusProxy(ui.inputEdit);
 }
 

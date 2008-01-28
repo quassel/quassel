@@ -116,8 +116,8 @@ class NetworkItem : public PropertyMapItem {
 public:
   NetworkItem(const NetworkId &netid, AbstractTreeItem *parent = 0);
 
-  virtual QVariant data(int column, int row) const;
   virtual quint64 id() const;
+  virtual QVariant data(int column, int row) const;
 
   bool isActive() const;
   
@@ -150,7 +150,8 @@ public:
 
   QString categoryId();
   virtual quint64 id() const;
-
+  virtual QVariant data(int column, int role) const;
+  
   void addUser(IrcUser *ircUser);
 
   static int categoryFromModes(const QString &modes);
@@ -180,9 +181,9 @@ public:
   QString nickName() const;
   IrcUser *ircUser();
   virtual quint64 id() const;
-
   virtual QVariant data(int column, int role) const;
-
+  virtual QString toolTip(int column) const;
+				   
 private slots:
   void setNick(QString newNick);
 
@@ -208,11 +209,10 @@ public:
   };
 
   enum itemTypes {
-    AbstractItemType,
-    SimpleItemType,
     NetworkItemType,
     BufferItemType,
-    NickItemType
+    UserCategoryItemType,
+    IrcUserItemType
   };
     
   NetworkModel(QObject *parent = 0);

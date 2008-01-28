@@ -247,10 +247,18 @@ PropertyMapItem::~PropertyMapItem() {
 }
   
 QVariant PropertyMapItem::data(int column, int role) const {
-  if(column >= columnCount() || role != Qt::DisplayRole)
+  if(column >= columnCount())
     return QVariant();
 
-  return property(_propertyOrder[column].toAscii());
+  switch(role) {
+  case Qt::ToolTipRole:
+    return toolTip(column);
+  case Qt::DisplayRole:
+    return property(_propertyOrder[column].toAscii());
+  default:
+    return QVariant();
+  }
+  
 }
 
 bool PropertyMapItem::setData(int column, const QVariant &value, int role) {

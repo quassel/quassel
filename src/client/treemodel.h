@@ -125,6 +125,7 @@ public:
   virtual QVariant data(int column, int role) const;
   virtual bool setData(int column, const QVariant &value, int role);
 
+  virtual QString toolTip(int column) const { Q_UNUSED(column) return QString(); }
   virtual int columnCount() const;
   
   void appendProperty(const QString &property);

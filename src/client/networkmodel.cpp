@@ -368,6 +368,22 @@ int UserCategoryItem::categoryFromModes(const QString &modes) {
   }
   return categories.count();
 }
+
+QVariant UserCategoryItem::data(int column, int role) const {
+  switch(role) {
+  case NetworkModel::ItemTypeRole:
+    return NetworkModel::UserCategoryItemType;
+  case NetworkModel::BufferIdRole:
+    return parent()->data(column, role);
+  case NetworkModel::NetworkIdRole:
+    return parent()->data(column, role);
+  case NetworkModel::BufferInfoRole:
+    return parent()->data(column, role);
+  default:
+    return PropertyMapItem::data(column, role);
+  }
+}
+
      
 /*****************************************
 *  Irc User Items
@@ -396,9 +412,22 @@ quint64 IrcUserItem::id() const {
 }
 
 QVariant IrcUserItem::data(int column, int role) const {
-  if(role != Qt::ToolTipRole)
+  switch(role) {
+  case NetworkModel::ItemTypeRole:
+    return NetworkModel::IrcUserItemType;
+  case NetworkModel::BufferIdRole:
+    return parent()->data(column, role);
+  case NetworkModel::NetworkIdRole:
+    return parent()->data(column, role);
+  case NetworkModel::BufferInfoRole:
+    return parent()->data(column, role);
+  default:
     return PropertyMapItem::data(column, role);
+  }
+}
 
+QString IrcUserItem::toolTip(int column) const {
+  Q_UNUSED(column);
   return "<p><b>" + nickName() + "</b><br />" + _ircUser->hostmask() + "</p>";
 }
 

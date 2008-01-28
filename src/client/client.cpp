@@ -249,11 +249,7 @@ void Client::fakeInput(BufferId bufferUid, QString message) {
   if(!buff)
     qWarning() << "No Buffer with uid" << bufferUid << "can't send Input" << message;
   else
-    emit instance()->sendInput(buff->bufferInfo(), message);
-}
-
-void Client::fakeInput(BufferInfo bufferInfo, QString message) {
-  fakeInput(bufferInfo, message);
+    instance()->userInput(buff->bufferInfo(), message);
 }
 
 /*** core connection stuff ***/

@@ -98,7 +98,6 @@ public:
   static bool isSynced();
 
   static void fakeInput(BufferId bufferUid, QString message);
-  static void fakeInput(BufferInfo bufferInfo, QString message);
 
   static void storeSessionData(const QString &key, const QVariant &data);
   static QVariant retrieveSessionData(const QString &key, const QVariant &def = QVariant());
