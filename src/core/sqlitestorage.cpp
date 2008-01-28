@@ -146,15 +146,16 @@ void SqliteStorage::createBuffer(UserId user, const QString &network, const QStr
   createBufferQuery->bindValue(":buffername", buffer);
   createBufferQuery->exec();
 
+  watchQuery(createBufferQuery);
   if(createBufferQuery->lastError().isValid()) {
     if(createBufferQuery->lastError().number() == 19) { // Null Constraint violation
       QSqlQuery *createNetworkQuery = cachedQuery("insert_network");
       createNetworkQuery->bindValue(":userid", user.toInt());
       createNetworkQuery->bindValue(":networkname", network);
       createNetworkQuery->exec();
+      Q_ASSERT(watchQuery(createNetworkQuery));
       createBufferQuery->exec();
-      Q_ASSERT(!createNetworkQuery->lastError().isValid());
-      Q_ASSERT(!createBufferQuery->lastError().isValid());
+      Q_ASSERT(watchQuery(createBufferQuery));
     } else {
       // do panic!
       qDebug() << "failed to create Buffer: ErrNo:" << createBufferQuery->lastError().number() << "ErrMsg:" << createBufferQuery->lastError().text();
@@ -191,9 +192,8 @@ BufferInfo SqliteStorage::getBufferInfo(UserId user, const QString &network, con
   NetworkId networkId = getNetworkId(user, network);
 
   QSqlQuery *getBufferInfoQuery = cachedQuery("select_bufferByName");
-  getBufferInfoQuery->bindValue(":networkname", network);
+  getBufferInfoQuery->bindValue(":networkid", networkId.toInt());
   getBufferInfoQuery->bindValue(":userid", user.toInt());
-  getBufferInfoQuery->bindValue(":userid2", user.toInt()); // Qt can't handle same placeholder twice... though I guess it's sqlites fault
   getBufferInfoQuery->bindValue(":buffername", buffer);
   getBufferInfoQuery->exec();
 
