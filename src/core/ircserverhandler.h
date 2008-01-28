@@ -63,8 +63,9 @@ public slots:
 
   void defaultHandler(QString cmd, QString prefix, QList<QByteArray> params);
 
-  private:
-    NetworkConnection *networkConnection;
+private:
+  void tryNextNick(const QString &errnick);
+  NetworkConnection *networkConnection;
 };
 
 

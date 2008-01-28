@@ -444,7 +444,7 @@ void IrcServerHandler::handle432(QString prefix, QList<QByteArray> params) {
   } else {
     QString errnick = params[0];
     emit displayMsg(Message::Error, "", tr("Nick %1 contains illegal characters").arg(errnick));
-    handle433(prefix, params);
+    tryNextNick(errnick);
   }
 }
 
@@ -452,13 +452,18 @@ void IrcServerHandler::handle432(QString prefix, QList<QByteArray> params) {
 void IrcServerHandler::handle433(QString prefix, QList<QByteArray> params) {
   Q_UNUSED(prefix);
 
-  // if there is a problem while connecting to the server -> we handle it
+  QString errnick = serverDecode(params[0]);
+  emit displayMsg(Message::Error, "", tr("Nick already in use: %1").arg(errnick));
 
+  // if there is a problem while connecting to the server -> we handle it
   // but only if our connection has not been finished yet...
   if(!networkConnection->network()->currentServer().isEmpty())
     return;
-  
-  QString errnick = serverDecode(params[0]);
+
+  tryNextNick(errnick);
+}
+
+void IrcServerHandler::tryNextNick(const QString &errnick) {
   QStringList desiredNicks = networkConnection->coreSession()->identity(networkConnection->network()->identity())->nicks();
   int nextNick = desiredNicks.indexOf(errnick) + 1;
   if(desiredNicks.size() > nextNick) {
@@ -466,8 +471,8 @@ void IrcServerHandler::handle433(QString prefix, QList<QByteArray> params) {
   } else {
     emit displayMsg(Message::Error, "", tr("No free and valid nicks in nicklist found. use: /nick <othernick> to continue"));
   }
-  
 }
+
 
 /***********************************************************************************/
 
