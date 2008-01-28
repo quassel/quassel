@@ -90,7 +90,7 @@ void BufferView::joinChannel(const QModelIndex &index) {
 
   BufferInfo bufferInfo = index.data(NetworkModel::BufferInfoRole).value<BufferInfo>();
   
-  Client::userInput(bufferInfo, QString("/JOIN %1").arg(bufferInfo.buffer()));
+  Client::instance()->userInput(bufferInfo, QString("/JOIN %1").arg(bufferInfo.buffer()));
   // Client::fakeInput(index.data(NetworkModel::BufferIdRole).value<BufferId>(), QString("/JOIN %1").arg(index.sibling(index.row(), 0).data().toString()));
 }
 

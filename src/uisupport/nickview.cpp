@@ -73,13 +73,35 @@ void NickView::showContextMenu(const QPoint & pos ) {
   BufferInfo bufferInfo = index.data(NetworkModel::BufferInfoRole).value<BufferInfo>();
 
   QMenu nickContextMenu(this);
-  nickContextMenu.addAction(tr("context menu for %1").arg(username));
-  nickContextMenu.addSeparator();
 
   QAction *whoisAction = nickContextMenu.addAction(tr("WHOIS"));
+  QAction *versionAction = nickContextMenu.addAction(tr("VERSION"));
+  QAction *pingAction = nickContextMenu.addAction(tr("PING"));
+  nickContextMenu.addSeparator();
+  
+  QMenu *modeMenu = nickContextMenu.addMenu(tr("modi"));
+  QAction *opAction = modeMenu->addAction(tr("OP %1").arg(username));
+  QAction *deOpAction = modeMenu->addAction(tr("de-OP %1").arg(username));
+  QAction *voiceAction = modeMenu->addAction(tr("VOICE %1").arg(username));
+  QAction *deVoiceAction = modeMenu->addAction(tr("de-VOICE %1").arg(username));
+  nickContextMenu.addSeparator();
+  
+  QMenu *kickBanMenu = nickContextMenu.addMenu(tr("kick / ban"));
+  QAction *kickAction = kickBanMenu->addAction(tr("KICK %1").arg(username));
+  QAction *kickBanAction = kickBanMenu->addAction(tr("KICK+BAN %1").arg(username));
+  nickContextMenu.addSeparator();
+  
   QAction *result = nickContextMenu.exec(QCursor::pos());
 
-  if (result == whoisAction ) {
-    Client::userInput(bufferInfo, "/WHOIS "+username);
-  }
+  if (result == whoisAction)    { Client::instance()->userInput(bufferInfo, "/WHOIS "+username); }
+  if (result == versionAction)  { Client::instance()->userInput(bufferInfo, "/CTCP "+username+" VERSION"); }
+  if (result == pingAction)     { Client::instance()->userInput(bufferInfo, "/CTCP "+username+" PING"); }
+  
+  if (result == opAction)       { Client::instance()->userInput(bufferInfo, "/OP "+username); }
+  if (result == deOpAction)     { Client::instance()->userInput(bufferInfo, "/DEOP "+username); }
+  if (result == voiceAction)    { Client::instance()->userInput(bufferInfo, "/VOICE "+username); }
+  if (result == deVoiceAction)  { Client::instance()->userInput(bufferInfo, "/DEVOICE "+username); }
+  
+  if (result == kickAction)     { Client::instance()->userInput(bufferInfo, "/KICK "+username); }
+  if (result == kickBanAction)  { Client::instance()->userInput(bufferInfo, "/KICKBAN "+username); }
 }
