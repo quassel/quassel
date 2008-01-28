@@ -35,17 +35,17 @@ class QSortFilterProxyModel;
 class NickView : public QTreeView {
   Q_OBJECT
 
-public:
-  NickView(QWidget *parent = 0);
-  virtual ~NickView();
-  
-protected:
-  void rowsInserted(const QModelIndex &, int, int);
-  
-public slots:
-  void setModel(QAbstractItemModel *model);
-  void init();
-  void showContextMenu(const QPoint & pos );
+  public:
+    NickView(QWidget *parent = 0);
+    virtual ~NickView();
+
+  protected:
+    void rowsInserted(const QModelIndex &, int, int);
+
+  public slots:
+    void setModel(QAbstractItemModel *model);
+    void init();
+    void showContextMenu(const QPoint & pos );
 
 };
 
