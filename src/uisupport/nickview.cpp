@@ -80,6 +80,6 @@ void NickView::showContextMenu(const QPoint & pos ) {
   QAction *result = nickContextMenu.exec(QCursor::pos());
 
   if (result == whoisAction ) {
-    Client::instance()->userInput(bufferInfo, "/WHOIS "+username);
+    Client::userInput(bufferInfo, "/WHOIS "+username);
   }
 }

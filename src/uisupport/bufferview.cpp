@@ -19,7 +19,6 @@
  ***************************************************************************/
 
 #include "client.h"
-//#include "buffer.h"
 #include "bufferview.h"
 #include "networkmodel.h"
 
@@ -84,12 +83,15 @@ void BufferView::setModel(QAbstractItemModel *model) {
 }
 
 void BufferView::joinChannel(const QModelIndex &index) {
-  BufferItem::Type bufferType = (BufferItem::Type)index.data(NetworkModel::BufferTypeRole).toInt();
+  BufferItem::Type bufferType = (BufferItem::Type)index.data(NetworkModel::BufferTypeRole).value<int>();
 
   if(bufferType != BufferItem::ChannelType)
     return;
+
+  BufferInfo bufferInfo = index.data(NetworkModel::BufferInfoRole).value<BufferInfo>();
   
-  Client::fakeInput(index.data(NetworkModel::BufferIdRole).value<BufferId>(), QString("/JOIN %1").arg(index.sibling(index.row(), 0).data().toString()));
+  Client::userInput(bufferInfo, QString("/JOIN %1").arg(bufferInfo.buffer()));
+  // Client::fakeInput(index.data(NetworkModel::BufferIdRole).value<BufferId>(), QString("/JOIN %1").arg(index.sibling(index.row(), 0).data().toString()));
 }
 
 void BufferView::keyPressEvent(QKeyEvent *event) {

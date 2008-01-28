@@ -97,7 +97,7 @@ public:
   static bool isConnected();
   static bool isSynced();
 
-  static void fakeInput(BufferId bufferUid, QString message);
+  static void userInput(BufferInfo bufferInfo, QString message);
 
   static void storeSessionData(const QString &key, const QVariant &data);
   static QVariant retrieveSessionData(const QString &key, const QVariant &def = QVariant());
@@ -153,8 +153,6 @@ public slots:
   void disconnectFromCore();
 
   void setCoreConfiguration(const QVariantMap &settings);
-
-  void userInput(BufferInfo, QString);
 
 private slots:
   void recvSessionData(const QString &key, const QVariant &data);

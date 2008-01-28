@@ -32,8 +32,7 @@ Buffer::Buffer(BufferInfo bufferid, QObject *parent)
 }
 
 BufferInfo Buffer::bufferInfo() const {
-  // still needed to process user input... *sigh*
-  // ... and for the gui *sigh* to request the backlogs *sigh*
+  // still needed by the gui *sigh* to request the backlogs *sigh*
   return _bufferInfo;
 }
 
@@ -58,10 +57,5 @@ bool Buffer::layoutMsg() {
     emit msgPrepended(m);
   }
   return layoutQueue.count();
-}
-
-void Buffer::processUserInput(QString msg) {
-  // TODO User Input processing (plugins) -> well, this goes through MainWin into Core for processing... so...
-  emit userInput(_bufferInfo, msg);
 }
 

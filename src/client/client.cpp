@@ -150,9 +150,6 @@ Buffer *Client::buffer(BufferInfo id) {
   if(!buff) {
     Client *client = Client::instance();
     buff = new Buffer(id, client);
-
-    connect(buff, SIGNAL(userInput(BufferInfo, QString)),
-	    client, SLOT(userInput(BufferInfo, QString)));
     connect(buff, SIGNAL(destroyed()),
 	    client, SLOT(bufferDestroyed()));
     client->_buffers[id.uid()] = buff;
@@ -243,13 +240,8 @@ void Client::coreIdentityRemoved(IdentityId id) {
 }
 
 /***  ***/
-
-void Client::fakeInput(BufferId bufferUid, QString message) {
-  Buffer *buff = buffer(bufferUid);
-  if(!buff)
-    qWarning() << "No Buffer with uid" << bufferUid << "can't send Input" << message;
-  else
-    instance()->userInput(buff->bufferInfo(), message);
+void Client::userInput(BufferInfo bufferInfo, QString message) {
+  emit instance()->sendInput(bufferInfo, message);
 }
 
 /*** core connection stuff ***/
@@ -452,9 +444,5 @@ void Client::layoutMsg() {
 
 AbstractUiMsg *Client::layoutMsg(const Message &msg) {
   return instance()->mainUi->layoutMsg(msg);
-}
-
-void Client::userInput(BufferInfo id, QString msg) {
-  emit sendInput(id, msg);
 }
 

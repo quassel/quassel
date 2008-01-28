@@ -44,8 +44,6 @@ public:
   QList<AbstractUiMsg *> contents() const;
   
 signals:
-  void userInput(const BufferInfo &, QString);
-
   void msgAppended(AbstractUiMsg *);
   void msgPrepended(AbstractUiMsg *);
   void layoutQueueEmpty();
@@ -54,8 +52,6 @@ public slots:
   void appendMsg(const Message &);
   void prependMsg(const Message &);
   bool layoutMsg();
-
-  void processUserInput(QString);
 
 private:
   BufferInfo _bufferInfo;
