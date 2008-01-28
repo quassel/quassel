@@ -27,6 +27,8 @@
 #include <QHash>
 #include <QAbstractItemModel>
 
+#include <QLinkedList> // needed for debug
+
 /*****************************************
  *  general item used in the Tree Model
  *****************************************/
@@ -38,14 +40,14 @@ public:
   AbstractTreeItem(AbstractTreeItem *parent = 0);
   virtual ~AbstractTreeItem();
 
-  void appendChild(int column, AbstractTreeItem *child);
-  void appendChild(AbstractTreeItem *child);
+  bool newChild(int column, AbstractTreeItem *child);
+  bool newChild(AbstractTreeItem *child);
   
-  void removeChild(int column, int row);
-  void removeChild(int row);
+  bool removeChild(int column, int row);
+  bool removeChild(int row);
 
-  void removeChildById(int column, const quint64 &id);
-  void removeChildById(const quint64 &id);
+  bool removeChildById(int column, const quint64 &id);
+  bool removeChildById(const quint64 &id);
   
   void removeAllChilds();
 
@@ -74,17 +76,15 @@ public:
 
 signals:
   void dataChanged(int column = -1);
-  void newChild(AbstractTreeItem *);
 
-  void beginRemoveChilds(int firstRow, int lastRow);
+  void beginAppendChilds(int column, int firstRow, int lastRow);
+  void endAppendChilds();
+  
+  void beginRemoveChilds(int column, int firstRow, int lastRow);
   void endRemoveChilds();
 				       
-private slots:
-  void childDestroyed();
-
 private:
   QHash<int, QList<AbstractTreeItem *> > _childItems;
-  QHash<int, QHash<quint64, AbstractTreeItem *> > _childHash; // uint to be compatible to qHash functions FIXME test this
   Qt::ItemFlags _flags;
 
   int defaultColumn() const;
@@ -152,7 +152,7 @@ public:
   
   QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
   QModelIndex indexById(quint64 id, const QModelIndex &parent = QModelIndex()) const;
-  QModelIndex indexByItem(AbstractTreeItem *item) const;
+  QModelIndex indexByItem(AbstractTreeItem *item, int column = 0) const;
 
   QModelIndex parent(const QModelIndex &index) const;
 
@@ -163,18 +163,30 @@ public:
 
 private slots:
   void itemDataChanged(int column = -1);
-  void newChild(AbstractTreeItem *child);
-
-  void beginRemoveChilds(int firstRow, int lastRow);
+  
+  void beginAppendChilds(int column, int firstRow, int lastRow);
+  void endAppendChilds();
+  
+  void beginRemoveChilds(int column, int firstRow, int lastRow);
   void endRemoveChilds();
   
 protected:
-  void appendChild(AbstractTreeItem *parent, AbstractTreeItem *child);
-
-  bool removeRow(int row, const QModelIndex &parent = QModelIndex());
-  bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex());
-  
   AbstractTreeItem *rootItem;
+
+private:
+  void connectItem(AbstractTreeItem *item);
+  
+  struct ChildStatus {
+    QModelIndex parent;
+    int childCount;
+    int start;
+    int end;
+    inline ChildStatus(QModelIndex parent_, int cc_, int s_, int e_) : parent(parent_), childCount(cc_), start(s_), end(e_) {};
+  };
+  ChildStatus _childStatus;
+  int _aboutToRemoveOrInsert;
+  // QLinkedList<ChildStatus> _childStatus;
+
 };
 
 #endif

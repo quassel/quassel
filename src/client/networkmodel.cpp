@@ -178,14 +178,21 @@ void BufferItem::addUserToCategory(IrcUser *ircUser) {
   int categoryId = UserCategoryItem::categoryFromModes(_ircChannel->userModes(ircUser));
   if(!(categoryItem = qobject_cast<UserCategoryItem *>(childById(qHash(categoryId))))) {
     categoryItem = new UserCategoryItem(categoryId, this);
-    emit newChild(categoryItem);
+    newChild(categoryItem);
   }
   categoryItem->addUser(ircUser);
+
+  int totalusers = 0;
+  for(int i = 0; i < childCount(); i++) {
+    totalusers += child(i)->childCount();
+  }
 }
 
 void BufferItem::part(IrcUser *ircUser) {
-  if(!ircUser)
+  if(!ircUser) {
+    qWarning() << bufferName() << "BufferItem::part(): unknown User" << ircUser;
     return;
+  }
 
   removeUserFromCategory(ircUser);
   emit dataChanged(2);
@@ -194,12 +201,21 @@ void BufferItem::part(IrcUser *ircUser) {
 void BufferItem::removeUserFromCategory(IrcUser *ircUser) {
   Q_ASSERT(_ircChannel);
 
+  bool success = false;
   UserCategoryItem *categoryItem = 0;
   for(int i = 0; i < childCount(); i++) {
     categoryItem = qobject_cast<UserCategoryItem *>(child(i));
-    categoryItem->removeChildById((quint64)ircUser);
-    if(categoryItem->childCount() == 0)
-      removeChild(i);
+    if(success = categoryItem->removeChildById((quint64)ircUser)) {
+      if(categoryItem->childCount() == 0)
+	removeChild(i);
+      break;
+    }
+  }
+  Q_ASSERT(success);
+
+  int totalusers = 0;
+  for(int i = 0; i < childCount(); i++) {
+    totalusers += child(i)->childCount();
   }
 }
 
@@ -342,7 +358,7 @@ quint64 UserCategoryItem::id() const {
 }
 
 void UserCategoryItem::addUser(IrcUser *ircUser) {
-  emit newChild(new IrcUserItem(ircUser, this));
+  newChild(new IrcUserItem(ircUser, this));
 }
 
 int UserCategoryItem::categoryFromModes(const QString &modes) {
@@ -431,7 +447,7 @@ NetworkItem *NetworkModel::networkItem(NetworkId networkId) {
 
   if(netItem == 0) {
     netItem = new NetworkItem(networkId, rootItem);
-    appendChild(rootItem, netItem);
+    rootItem->newChild(netItem);
   }
 
   Q_ASSERT(netItem);
@@ -462,7 +478,7 @@ BufferItem *NetworkModel::bufferItem(const BufferInfo &bufferInfo) {
   if(bufItem == 0) {
     NetworkItem *netItem = networkItem(bufferInfo.networkId());
     bufItem = new BufferItem(bufferInfo, netItem);
-    appendChild(netItem, bufItem);
+    netItem->newChild(bufItem);
   }
 
   Q_ASSERT(bufItem);
