@@ -228,7 +228,7 @@ void BufferItem::removeUserFromCategory(IrcUser *ircUser) {
   }
 
   
-  if(!success || success) {
+  if(!success) {
     qDebug() << "==== Childlist for Item:" << this << id() << bufferName() << "====";
     for(int i = 0; i < childCount(); i++) {
       categoryItem = qobject_cast<UserCategoryItem *>(child(i));
