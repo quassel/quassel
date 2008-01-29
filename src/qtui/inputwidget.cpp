@@ -69,6 +69,8 @@ void InputWidget::currentChanged(const QModelIndex &current, const QModelIndex &
 
   currentBufferInfo  = current.data(NetworkModel::BufferInfoRole).value<BufferInfo>();
   updateNickSelector();
+
+  ui.inputEdit->setEnabled(current.data(NetworkModel::ItemActiveRole).value<bool>());
 }
 
 const Network *InputWidget::currentNetwork() const {

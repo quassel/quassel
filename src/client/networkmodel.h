@@ -132,6 +132,8 @@ public slots:
 
   void attachNetwork(Network *network);
   void attachIrcChannel(const QString &channelName);
+
+  void setActive(bool connected);
   
 private:
   NetworkId _networkId;

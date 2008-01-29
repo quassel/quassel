@@ -283,8 +283,16 @@ quint64 NetworkItem::id() const {
   return _networkId.toInt();
 }
 
+void NetworkItem::setActive(bool connected) {
+  Q_UNUSED(connected);
+  emit dataChanged();
+}
+
 bool NetworkItem::isActive() const {
-  return _network;
+  if(_network)
+    return _network->isConnected();
+  else
+    return false;
 }
 
 QString NetworkItem::networkName() const {
@@ -320,6 +328,9 @@ void NetworkItem::attachNetwork(Network *network) {
 	  this, SLOT(setCurrentServer(QString)));
   connect(network, SIGNAL(ircChannelAdded(QString)),
 	  this, SLOT(attachIrcChannel(QString)));
+  connect(network, SIGNAL(connectedSet(bool)),
+	  this, SLOT(setActive(bool)));
+  
   // FIXME: connect this and that...
 
   emit dataChanged();
