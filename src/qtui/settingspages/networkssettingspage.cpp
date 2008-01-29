@@ -39,7 +39,7 @@ NetworksSettingsPage::NetworksSettingsPage(QWidget *parent) : SettingsPage(tr("G
   setEnabled(false);  // need a core connection!
   setWidgetStates();
   connect(Client::instance(), SIGNAL(coreConnectionStateChanged(bool)), this, SLOT(coreConnectionStateChanged(bool)));
-  connect(Client::instance(), SIGNAL(networkAdded(NetworkId)), this, SLOT(clientNetworkAdded(NetworkId)));
+  connect(Client::instance(), SIGNAL(networkCreated(NetworkId)), this, SLOT(clientNetworkAdded(NetworkId)));
   connect(Client::instance(), SIGNAL(networkRemoved(NetworkId)), this, SLOT(clientNetworkRemoved(NetworkId)));
   connect(Client::instance(), SIGNAL(identityCreated(IdentityId)), this, SLOT(clientIdentityAdded(IdentityId)));
   connect(Client::instance(), SIGNAL(identityRemoved(IdentityId)), this, SLOT(clientIdentityRemoved(IdentityId)));
@@ -252,6 +252,9 @@ void NetworksSettingsPage::clientNetworkUpdated() {
   }
 }
 
+void NetworksSettingsPage::clientNetworkRemoved(NetworkId) {
+
+}
 
 QListWidgetItem *NetworksSettingsPage::insertNetwork(NetworkId id) {
   NetworkInfo info = Client::network(id)->networkInfo();

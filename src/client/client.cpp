@@ -105,13 +105,13 @@ void Client::init() {
   p->attachSignal(this, SIGNAL(requestRemoveIdentity(IdentityId)), SIGNAL(removeIdentity(IdentityId)));
   p->attachSlot(SIGNAL(identityCreated(const Identity &)), this, SLOT(coreIdentityCreated(const Identity &)));
   p->attachSlot(SIGNAL(identityRemoved(IdentityId)), this, SLOT(coreIdentityRemoved(IdentityId)));
-
+/*
   p->attachSignal(this, SIGNAL(requestCreateNetwork(const NetworkInfo &)), SIGNAL(createNetwork(const NetworkInfo &)));
   p->attachSignal(this, SIGNAL(requestUpdateNetwork(const NetworkInfo &)), SIGNAL(updateNetwork(const NetworkInfo &)));
   p->attachSignal(this, SIGNAL(requestRemoveNetwork(NetworkId)), SIGNAL(removeNetwork(NetworkId)));
   p->attachSlot(SIGNAL(networkCreated(const NetworkInfo &)), this, SLOT(coreNetworkCreated(const NetworkInfo &)));
   p->attachSlot(SIGNAL(networkRemoved(NetworkId)), this, SLOT(coreNetworkRemoved(NetworkId)));
-
+*/
   connect(p, SIGNAL(disconnected()), this, SLOT(disconnectFromCore()));
 
   //connect(mainUi, SIGNAL(connectToCore(const QVariantMap &)), this, SLOT(connectToCore(const QVariantMap &)));

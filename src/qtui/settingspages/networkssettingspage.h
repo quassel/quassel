@@ -52,6 +52,7 @@ class NetworksSettingsPage : public SettingsPage {
     void displayNetwork(NetworkId, bool dontsave = false);
 
     void clientNetworkAdded(NetworkId);
+    void clientNetworkRemoved(NetworkId);
     void clientNetworkUpdated();
 
     void clientIdentityAdded(IdentityId);

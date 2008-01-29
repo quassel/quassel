@@ -232,13 +232,13 @@ QDockWidget *MainWin::addBufferView(const QString &viewname, QAbstractItemModel 
 }
 
 void MainWin::setupSettingsDlg() {
-#ifdef SPUTDEV
-  connect(settingsDlg, SIGNAL(finished(int)), QApplication::instance(), SLOT(quit()));  // FIXME
-#endif
 
   settingsDlg->registerSettingsPage(new FontsSettingsPage(settingsDlg));
   settingsDlg->registerSettingsPage(new IdentitiesSettingsPage(settingsDlg));
+#ifdef SPUTDEV
   settingsDlg->registerSettingsPage(new NetworksSettingsPage(settingsDlg));
+  connect(settingsDlg, SIGNAL(finished(int)), QApplication::instance(), SLOT(quit()));  // FIXME
+#endif
 }
 
 void MainWin::connectedToCore() {
