@@ -110,6 +110,7 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent) : QObje
     foreach(QVariant v, network["Servers"].toList()) {
       QVariantMap server;
       server["Host"] = v.toMap()["Address"];
+      server["Address"] = v.toMap()["Address"];
       server["Port"] = v.toMap()["Port"];
       slist << server;
     }
