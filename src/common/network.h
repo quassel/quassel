@@ -150,6 +150,7 @@ public slots:
   void ircUserNickChanged(QString newnick);
 
   void requestConnect();
+  void requestDisconnect();
 
 private slots:
   void ircUserDestroyed();
@@ -188,6 +189,7 @@ signals:
   void ircChannelInitDone(IrcChannel *);
 
   void connectRequested(NetworkId = 0);
+  void disconnectRequested(NetworkId = 0);
 
 private:
   NetworkId _networkId;
@@ -206,6 +208,7 @@ private:
   QHash<QString, QString> _supports;  // stores results from RPL_ISUPPORT
 
   QList<QVariantMap> _serverList;
+  QStringList _perform;
   //QVariantMap networkSettings;
 
   QPointer<SignalProxy> _proxy;
@@ -225,6 +228,8 @@ struct NetworkInfo {
   QByteArray codecForDecoding;
   QList<QVariantMap> serverList;
 
+  bool operator==(const NetworkInfo &other) const;
+  bool operator!=(const NetworkInfo &other) const;
 };
 
 

@@ -19,10 +19,12 @@
  ***************************************************************************/
 
 #include <QHeaderView>
+#include <QMessageBox>
 
 #include "networkssettingspage.h"
 
 #include "client.h"
+#include "global.h"
 #include "identity.h"
 #include "network.h"
 
@@ -42,8 +44,9 @@ NetworksSettingsPage::NetworksSettingsPage(QWidget *parent) : SettingsPage(tr("G
   connect(Client::instance(), SIGNAL(identityCreated(IdentityId)), this, SLOT(clientIdentityAdded(IdentityId)));
   connect(Client::instance(), SIGNAL(identityRemoved(IdentityId)), this, SLOT(clientIdentityRemoved(IdentityId)));
 
-  //connect(ui.networkList, SIGNAL(itemSelectionChanged()), this, SLOT(setWidgetStates()));
-  //connect(ui.serverList, SIGNAL(itemSelectionChanged()), this, SLOT(setWidgetStates()));
+  connect(ui.identityList, SIGNAL(currentIndexChanged(int)), this, SLOT(widgetHasChanged()));
+  //connect(ui., SIGNAL(), this, SLOT(widgetHasChanged()));
+  //connect(ui., SIGNAL(), this, SLOT(widgetHasChanged()));
 
   foreach(IdentityId id, Client::identityIds()) {
     clientIdentityAdded(id);
@@ -51,8 +54,32 @@ NetworksSettingsPage::NetworksSettingsPage(QWidget *parent) : SettingsPage(tr("G
 }
 
 void NetworksSettingsPage::save() {
+  if(currentId != 0) saveToNetworkInfo(networkInfos[currentId]);
 
-
+  // First, remove the temporarily created networks
+  QList<NetworkInfo> toCreate, toUpdate;
+  QList<NetworkId> toRemove;
+  QHash<NetworkId, NetworkInfo>::iterator i = networkInfos.begin();
+  while(i != networkInfos.end()) {
+    if((*i).networkId < 0) {
+      toCreate.append(*i);
+      i = networkInfos.erase(i);
+    } else {
+      if((*i) != Client::network((*i).networkId)->networkInfo()) {
+        toUpdate.append(*i);
+      }
+      ++i;
+    }
+  }
+  foreach(NetworkId id, Client::networkIds()) {
+    if(!networkInfos.contains(id)) toRemove.append(id);
+  }
+  SaveNetworksDlg dlg(toCreate, toUpdate, toRemove, this);
+  int ret = dlg.exec();
+  if(ret == QDialog::Rejected) {
+    // canceled -> reload everything to be safe
+    load();
+  }
 }
 
 void NetworksSettingsPage::load() {
@@ -80,13 +107,25 @@ void NetworksSettingsPage::reset() {
   */
 }
 
+bool NetworksSettingsPage::aboutToSave() {
+
+  return true; // FIXME
+}
+
 void NetworksSettingsPage::widgetHasChanged() {
   bool changed = testHasChanged();
   if(changed != hasChanged()) setChangedState(changed);
 }
 
 bool NetworksSettingsPage::testHasChanged() {
-
+  if(currentId != 0) {
+    saveToNetworkInfo(networkInfos[currentId]);
+  }
+  if(Client::networkIds().count() != networkInfos.count()) return true;
+  foreach(NetworkId id, networkInfos.keys()) {
+    if(id < 0) return true;
+    if(Client::network(id)->networkInfo() != networkInfos[id]) return true;
+  }
   return false;
 }
 
@@ -98,7 +137,7 @@ void NetworksSettingsPage::setWidgetStates() {
     ui.renameNetwork->setEnabled(true);
     ui.deleteNetwork->setEnabled(true);
     ui.connectNow->setEnabled(true);
-    if(Client::network(id)->isConnected()) {
+    if(Client::network(id) && Client::network(id)->isConnected()) {
       ui.connectNow->setIcon(disconnectedIcon);
       ui.connectNow->setText(tr("Disconnect"));
     } else {
@@ -204,6 +243,8 @@ void NetworksSettingsPage::clientNetworkUpdated() {
   QListWidgetItem *item = networkItem(net->networkId());
   if(!item) return;
   item->setText(net->networkName());
+  if(net->isInitialized()) item->setFlags(item->flags() | Qt::ItemIsEnabled);
+  else item->setFlags(item->flags() & ~Qt::ItemIsEnabled);
   if(net->isConnected()) {
     item->setIcon(connectedIcon);
   } else {
@@ -212,43 +253,167 @@ void NetworksSettingsPage::clientNetworkUpdated() {
 }
 
 
-void NetworksSettingsPage::insertNetwork(NetworkId id) {
+QListWidgetItem *NetworksSettingsPage::insertNetwork(NetworkId id) {
   NetworkInfo info = Client::network(id)->networkInfo();
   networkInfos[id] = info;
+  return insertNetwork(info);
+}
+
+QListWidgetItem *NetworksSettingsPage::insertNetwork(const NetworkInfo &info) {
   QListWidgetItem *item = new QListWidgetItem(disconnectedIcon, info.networkName);
-  item->setData(Qt::UserRole, QVariant::fromValue<NetworkId>(id));
+  item->setData(Qt::UserRole, QVariant::fromValue<NetworkId>(info.networkId));
   ui.networkList->addItem(item);
-  if(Client::network(id)->isConnected()) {
+  const Network *net = Client::network(info.networkId);
+  if(net->isInitialized()) item->setFlags(item->flags() | Qt::ItemIsEnabled);
+  else item->setFlags(item->flags() & ~Qt::ItemIsEnabled);
+  if(net && net->isConnected()) {
     item->setIcon(connectedIcon);
   } else {
     item->setIcon(disconnectedIcon);
   }
   widgetHasChanged();
+  return item;
 }
 
 void NetworksSettingsPage::displayNetwork(NetworkId id, bool dontsave) {
+  Q_UNUSED(dontsave);
   NetworkInfo info = networkInfos[id];
+  ui.identityList->setCurrentIndex(ui.identityList->findData(info.identity.toInt()));
   ui.serverList->clear();
   foreach(QVariantMap v, info.serverList) {
-    ui.serverList->addItem(QString("%1:%2").arg(v["Address"].toString()).arg(v["Port"].toUInt()));
+    ui.serverList->addItem(QString("%1:%2").arg(v["Host"].toString()).arg(v["Port"].toUInt()));
   }
-
 }
 
+void NetworksSettingsPage::saveToNetworkInfo(NetworkInfo &info) {
+  info.identity = ui.identityList->itemData(ui.identityList->currentIndex()).toInt();
+}
 /*** Network list ***/
 
 void NetworksSettingsPage::on_networkList_itemSelectionChanged() {
+  if(currentId != 0) {
+    saveToNetworkInfo(networkInfos[currentId]);
+  }
   if(ui.networkList->selectedItems().count()) {
     NetworkId id = ui.networkList->selectedItems()[0]->data(Qt::UserRole).value<NetworkId>();
+    currentId = id;
     displayNetwork(id);
+    ui.serverList->setCurrentRow(0);
+  } else {
+    currentId = 0;
   }
   setWidgetStates();
 }
 
 void NetworksSettingsPage::on_addNetwork_clicked() {
+  QStringList existing;
+  for(int i = 0; i < ui.networkList->count(); i++) existing << ui.networkList->item(i)->text();
+  NetworkEditDlgNew dlg(QString(), existing, this);
+  if(dlg.exec() == QDialog::Accepted) {
+    NetworkId id;
+    for(id = 1; id <= networkInfos.count(); id++) {
+      widgetHasChanged();
+      if(!networkInfos.keys().contains(-id.toInt())) break;
+    }
+    id = -id.toInt();
+    NetworkInfo info;
+    info.networkId = id;
+    info.networkName = dlg.networkName();
+    info.identity = 1;
+    networkInfos[id] = info;
+    QListWidgetItem *item = insertNetwork(info);
+    ui.networkList->setCurrentItem(item);
+    setWidgetStates();
+  }
+}
 
+void NetworksSettingsPage::on_deleteNetwork_clicked() {
+  if(ui.networkList->selectedItems().count()) {
+    NetworkId netid = ui.networkList->selectedItems()[0]->data(Qt::UserRole).value<NetworkId>();
+    int ret = QMessageBox::question(this, tr("Delete Network?"),
+                                    tr("Do you really want to delete the network \"%1\" and all related settings, including the backlog?"
+                                       "<br><br><em>NOTE: Backlog deletion hasn't actually been implemented yet.</em>").arg(networkInfos[netid].networkName),
+                                    QMessageBox::Yes|QMessageBox::No, QMessageBox::No);
+    if(ret == QMessageBox::Yes) {
+      currentId = 0;
+      networkInfos.remove(netid); qDebug() << netid << networkInfos.count();
+      delete ui.networkList->selectedItems()[0];
+      ui.networkList->setCurrentRow(qMin(ui.networkList->currentRow()+1, ui.networkList->count()-1));
+      setWidgetStates();
+      widgetHasChanged();
+    }
+  }
+}
 
+void NetworksSettingsPage::on_renameNetwork_clicked() {
+  if(!ui.networkList->selectedItems().count()) return;
+  QString old = ui.networkList->selectedItems()[0]->text();
+  QStringList existing;
+  for(int i = 0; i < ui.networkList->count(); i++) existing << ui.networkList->item(i)->text();
+  NetworkEditDlgNew dlg(old, existing, this);
+  if(dlg.exec() == QDialog::Accepted) {
+    ui.networkList->selectedItems()[0]->setText(dlg.networkName());
+    NetworkId netid = ui.networkList->selectedItems()[0]->data(Qt::UserRole).value<NetworkId>();
+    networkInfos[netid].networkName = dlg.networkName();
+    widgetHasChanged();
+  }
+}
 
+/*** Server list ***/
+
+void NetworksSettingsPage::on_serverList_itemSelectionChanged() {
+  setWidgetStates();
+}
+
+void NetworksSettingsPage::on_addServer_clicked() {
+  if(currentId == 0) return;
+  ServerEditDlgNew dlg(QVariantMap(), this);
+  if(dlg.exec() == QDialog::Accepted) {
+    networkInfos[currentId].serverList.append(dlg.serverData());
+    displayNetwork(currentId);
+    ui.serverList->setCurrentRow(ui.serverList->count()-1);
+    widgetHasChanged();
+  }
+
+}
+
+void NetworksSettingsPage::on_editServer_clicked() {
+  if(currentId == 0) return;
+  int cur = ui.serverList->currentRow();
+  ServerEditDlgNew dlg(networkInfos[currentId].serverList[cur], this);
+  if(dlg.exec() == QDialog::Accepted) {
+    networkInfos[currentId].serverList[cur] = dlg.serverData();
+    displayNetwork(currentId);
+    ui.serverList->setCurrentRow(cur);
+    widgetHasChanged();
+  }
+}
+
+void NetworksSettingsPage::on_deleteServer_clicked() {
+  if(currentId == 0) return;
+  int cur = ui.serverList->currentRow();
+  networkInfos[currentId].serverList.removeAt(cur);
+  displayNetwork(currentId);
+  ui.serverList->setCurrentRow(qMin(cur, ui.serverList->count()-1));
+  widgetHasChanged();
+}
+
+void NetworksSettingsPage::on_upServer_clicked() {
+  int cur = ui.serverList->currentRow();
+  QVariantMap foo = networkInfos[currentId].serverList.takeAt(cur);
+  networkInfos[currentId].serverList.insert(cur-1, foo);
+  displayNetwork(currentId);
+  ui.serverList->setCurrentRow(cur-1);
+  widgetHasChanged();
+}
+
+void NetworksSettingsPage::on_downServer_clicked() {
+  int cur = ui.serverList->currentRow();
+  QVariantMap foo = networkInfos[currentId].serverList.takeAt(cur);
+  networkInfos[currentId].serverList.insert(cur+1, foo);
+  displayNetwork(currentId);
+  ui.serverList->setCurrentRow(cur+1);
+  widgetHasChanged();
 }
 
 /**************************************************************************
@@ -279,9 +444,39 @@ void NetworkEditDlgNew::on_networkEdit_textChanged(const QString &text) {
  * ServerEditDlg
  *************************************************************************/
 
-//ServerEditDlg::
+ServerEditDlgNew::ServerEditDlgNew(const QVariantMap &serverData, QWidget *parent) : QDialog(parent) {
+  ui.setupUi(this);
+  if(serverData.count()) {
+    ui.host->setText(serverData["Host"].toString());
+    ui.port->setValue(serverData["Port"].toUInt());
+    ui.password->setText(serverData["Password"].toString());
+    ui.useSSL->setChecked(serverData["UseSSL"].toBool());
+  } else {
+    ui.port->setValue(Global::defaultPort);
+  }
+  on_host_textChanged();
+}
 
+QVariantMap ServerEditDlgNew::serverData() const {
+  QVariantMap _serverData;
+  _serverData["Host"] = ui.host->text();
+  _serverData["Port"] = ui.port->value();
+  _serverData["Password"] = ui.password->text();
+  _serverData["UseSSL"] = ui.useSSL->isChecked();
+  return _serverData;
+}
 
+void ServerEditDlgNew::on_host_textChanged() {
+  ui.buttonBox->button(QDialogButtonBox::Ok)->setDisabled(ui.host->text().isEmpty());
+}
 
+/**************************************************************************
+ * SaveNetworksDlg
+ *************************************************************************/
 
+SaveNetworksDlg::SaveNetworksDlg(const QList<NetworkInfo> &toCreate, const QList<NetworkInfo> &toUpdate, const QList<NetworkId> &toRemove, QWidget *parent) : QDialog(parent)
+{
+  ui.setupUi(this);
+
+}
 

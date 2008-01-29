@@ -26,6 +26,8 @@
 #include "settingspage.h"
 #include "ui_networkssettingspage.h"
 #include "ui_networkeditdlgnew.h"
+#include "ui_servereditdlgnew.h"
+#include "ui_saveidentitiesdlg.h"
 
 #include "network.h"
 #include "types.h"
@@ -36,7 +38,7 @@ class NetworksSettingsPage : public SettingsPage {
   public:
     NetworksSettingsPage(QWidget *parent = 0);
 
-    //bool aboutToSave();
+    bool aboutToSave();
 
   public slots:
     void save();
@@ -58,6 +60,15 @@ class NetworksSettingsPage : public SettingsPage {
 
     void on_networkList_itemSelectionChanged();
     void on_addNetwork_clicked();
+    void on_deleteNetwork_clicked();
+    void on_renameNetwork_clicked();
+
+    void on_serverList_itemSelectionChanged();
+    void on_addServer_clicked();
+    void on_deleteServer_clicked();
+    void on_editServer_clicked();
+    void on_upServer_clicked();
+    void on_downServer_clicked();
 
   private:
     Ui::NetworksSettingsPage ui;
@@ -69,8 +80,10 @@ class NetworksSettingsPage : public SettingsPage {
 
     void reset();
     bool testHasChanged();
-    void insertNetwork(NetworkId);
+    QListWidgetItem *insertNetwork(NetworkId);
+    QListWidgetItem *insertNetwork(const NetworkInfo &info);
     QListWidgetItem *networkItem(NetworkId) const;
+    void saveToNetworkInfo(NetworkInfo &);
 };
 
 class NetworkEditDlgNew : public QDialog {
@@ -100,10 +113,22 @@ class ServerEditDlgNew : public QDialog {
 
     QVariantMap serverData() const;
 
+  private slots:
+    void on_host_textChanged();
+
   private:
-    QVariantMap _serverData;
+    Ui::ServerEditDlgNew ui;
 };
 
 
+class SaveNetworksDlg : public QDialog {
+  Q_OBJECT
+
+  public:
+    SaveNetworksDlg(const QList<NetworkInfo> &toCreate, const QList<NetworkInfo> &toUpdate, const QList<NetworkId> &toRemove, QWidget *parent = 0);
+
+  private:
+    Ui::SaveIdentitiesDlg ui;
+};
 
 #endif

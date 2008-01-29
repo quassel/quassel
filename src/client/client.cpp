@@ -106,6 +106,12 @@ void Client::init() {
   p->attachSlot(SIGNAL(identityCreated(const Identity &)), this, SLOT(coreIdentityCreated(const Identity &)));
   p->attachSlot(SIGNAL(identityRemoved(IdentityId)), this, SLOT(coreIdentityRemoved(IdentityId)));
 
+  p->attachSignal(this, SIGNAL(requestCreateNetwork(const NetworkInfo &)), SIGNAL(createNetwork(const NetworkInfo &)));
+  p->attachSignal(this, SIGNAL(requestUpdateNetwork(const NetworkInfo &)), SIGNAL(updateNetwork(const NetworkInfo &)));
+  p->attachSignal(this, SIGNAL(requestRemoveNetwork(NetworkId)), SIGNAL(removeNetwork(NetworkId)));
+  p->attachSlot(SIGNAL(networkCreated(const NetworkInfo &)), this, SLOT(coreNetworkCreated(const NetworkInfo &)));
+  p->attachSlot(SIGNAL(networkRemoved(NetworkId)), this, SLOT(coreNetworkRemoved(NetworkId)));
+
   connect(p, SIGNAL(disconnected()), this, SLOT(disconnectFromCore()));
 
   //connect(mainUi, SIGNAL(connectToCore(const QVariantMap &)), this, SLOT(connectToCore(const QVariantMap &)));
@@ -333,6 +339,13 @@ QStringList Client::sessionDataKeys() {
 
 /*** ***/
 
+// FIXME
+void Client::disconnectFromNetwork(NetworkId id) {
+  if(!instance()->_networks.contains(id)) return;
+  Network *net = instance()->_networks[id];
+  net->requestDisconnect();
+}
+
 /*
 void Client::networkConnected(uint netid) {
   // TODO: create statusBuffer / switch to networkids
@@ -362,19 +375,18 @@ void Client::networkDisconnected(NetworkId networkid) {
 }
 */
 
-void Client::addNetwork(NetworkId netid) {
-  Network *net = new Network(netid, instance());
-  addNetwork(net);
-}
-
 void Client::addNetwork(Network *net) {
   net->setProxy(signalProxy());
   signalProxy()->synchronize(net);
   networkModel()->attachNetwork(net);
   connect(net, SIGNAL(destroyed()), instance(), SLOT(networkDestroyed()));
   instance()->_networks[net->networkId()] = net;
-  emit instance()->networkAdded(net->networkId());
-  //if(net->networkId() == 1) net->requestConnect(); // FIXME
+  emit instance()->networkCreated(net->networkId());
+}
+
+void Client::createNetwork(const NetworkInfo &info) {
+
+
 }
 
 /*** ***/
@@ -396,8 +408,9 @@ void Client::bufferDestroyed() {
 }
 
 void Client::networkDestroyed() {
-  Network *netinfo = static_cast<Network *>(sender());
-  NetworkId networkId = netinfo->networkId();
+  // FIXME this is not gonna work, net is a QObject here already!
+  Network *net = static_cast<Network *>(sender());
+  NetworkId networkId = net->networkId();
   if(_networks.contains(networkId))
     _networks.remove(networkId);
 }

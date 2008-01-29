@@ -350,6 +350,7 @@ void CoreConnectDlg::coreIrcUsersProgress(quint32 val, quint32 max) {
     ui.ircUsersProgress->setRange(0, 1);
     ui.ircUsersProgress->setValue(1);
   } else {
+    if(val % 100) return;
     ui.ircUsersProgress->setFormat("%v/%m");
     ui.ircUsersProgress->setRange(0, max);
     ui.ircUsersProgress->setValue(val);

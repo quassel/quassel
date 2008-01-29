@@ -66,9 +66,12 @@ class MainWin : public QMainWindow {
     void showCoreConnectionDlg(bool autoConnect = false);
     void coreConnectionDlgFinished(int result);
 
+    void disconnectFromNet();
+
   signals:
     void connectToCore(const QVariantMap &connInfo);
     void disconnectFromCore();
+    void disconnectFromNetwork(NetworkId);
     void requestBacklog(BufferInfo, QVariant, QVariant);
 
   private:

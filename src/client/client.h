@@ -42,6 +42,7 @@ class IrcUser;
 class IrcChannel;
 class NickModel;
 class SignalProxy;
+struct NetworkInfo;
 
 class QTimer;
 
@@ -83,9 +84,9 @@ public:
    */
   static void removeIdentity(IdentityId id);
 
-  static void addNetwork(NetworkId id);
-  static void addNetwork(Network *);
-
+  static void createNetwork(const NetworkInfo &info);
+  static void updateNetwork(const NetworkInfo &info);
+  static void removeNetwork(NetworkId id);
 
   static NetworkModel *networkModel();
   static BufferModel *bufferModel();
@@ -102,6 +103,8 @@ public:
   static void storeSessionData(const QString &key, const QVariant &data);
   static QVariant retrieveSessionData(const QString &key, const QVariant &def = QVariant());
   static QStringList sessionDataKeys();
+
+  static void disconnectFromNetwork(NetworkId);
 
   enum ClientMode { LocalCore, RemoteCore };
 
@@ -143,7 +146,12 @@ signals:
   //! Sent to the core when an identity shall be removed. Should not be used elsewhere.
   void requestRemoveIdentity(IdentityId);
 
-  void networkAdded(NetworkId id);
+  void networkCreated(NetworkId id);
+  void networkRemoved(NetworkId id);
+
+  void requestCreateNetwork(const NetworkInfo &info);
+  void requestUpdateNetwork(const NetworkInfo &info);
+  void requestRemoveNetwork(const NetworkInfo &info);
 
 public slots:
   //void selectBuffer(Buffer *);
@@ -179,7 +187,7 @@ private:
   virtual ~Client();
   void init();
 
-  void syncToCore(const QVariantMap &sessionState);
+  static void addNetwork(Network *);
 
   static QPointer<Client> instanceptr;
 

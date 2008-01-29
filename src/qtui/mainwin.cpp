@@ -60,6 +60,7 @@ MainWin::MainWin(QtUi *_gui, QWidget *parent) : QMainWindow(parent), gui(_gui) {
 
 void MainWin::init() {
   Client::signalProxy()->attachSignal(this, SIGNAL(requestBacklog(BufferInfo, QVariant, QVariant)));
+  Client::signalProxy()->attachSignal(this, SIGNAL(disconnectFromNetwork(NetworkId)));
   ui.bufferWidget->init();
 
   show();
@@ -193,7 +194,9 @@ void MainWin::setupMenus() {
   connect(ui.actionEditIdentities, SIGNAL(triggered()), serverListDlg, SLOT(editIdentities()));
   connect(ui.actionSettingsDlg, SIGNAL(triggered()), this, SLOT(showSettingsDlg()));
   connect(ui.actionDebug_Console, SIGNAL(triggered()), this, SLOT(showDebugConsole()));
+  connect(ui.actionDisconnectNet, SIGNAL(triggered()), this, SLOT(disconnectFromNet()));
   connect(ui.actionAboutQt, SIGNAL(triggered()), QApplication::instance(), SLOT(aboutQt()));
+
 }
 
 void MainWin::setupViews() {
@@ -235,7 +238,7 @@ void MainWin::setupSettingsDlg() {
 
   settingsDlg->registerSettingsPage(new FontsSettingsPage(settingsDlg));
   settingsDlg->registerSettingsPage(new IdentitiesSettingsPage(settingsDlg));
-  //settingsDlg->registerSettingsPage(new NetworksSettingsPage(settingsDlg));
+  settingsDlg->registerSettingsPage(new NetworksSettingsPage(settingsDlg));
 }
 
 void MainWin::connectedToCore() {
@@ -318,7 +321,10 @@ void MainWin::systrayActivated( QSystemTrayIcon::ActivationReason activationReas
     else
       hide();
   }
-  
-  
-  
 }
+
+void MainWin::disconnectFromNet() {
+  int i = QInputDialog::getInteger(this, tr("Disconnect from Network"), tr("Enter network id:"));
+  emit disconnectFromNetwork(NetworkId(i));
+}
+

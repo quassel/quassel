@@ -70,6 +70,7 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent) : QObje
 
   //p->attachSlot(SIGNAL(requestNetworkStates()), this, SLOT(networkStateRequested()));
   p->attachSlot(SIGNAL(requestConnect(QString)), this, SLOT(connectToNetwork(QString)));
+  p->attachSlot(SIGNAL(disconnectFromNetwork(NetworkId)), this, SLOT(disconnectFromNetwork(NetworkId))); // FIXME
   p->attachSlot(SIGNAL(sendInput(BufferInfo, QString)), this, SLOT(msgFromClient(BufferInfo, QString)));
   p->attachSlot(SIGNAL(requestBacklog(BufferInfo, QVariant, QVariant)), this, SLOT(sendBacklog(BufferInfo, QVariant, QVariant)));
   p->attachSignal(this, SIGNAL(displayMsg(Message)));
@@ -106,7 +107,12 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent) : QObje
     net->setCodecForEncoding("ISO-8859-15"); // FIXME
     net->setCodecForDecoding("ISO-8859-15"); // FIXME
     QList<QVariantMap> slist;
-    foreach(QVariant v, network["Servers"].toList()) slist << v.toMap();
+    foreach(QVariant v, network["Servers"].toList()) {
+      QVariantMap server;
+      server["Host"] = v.toMap()["Address"];
+      server["Port"] = v.toMap()["Port"];
+      slist << server;
+    }
     net->setServerList(slist);
     net->setProxy(p);
     _networks[netid] = net;
@@ -236,6 +242,10 @@ void CoreSession::attachNetworkConnection(NetworkConnection *conn) {
   connect(conn, SIGNAL(displayStatusMsg(QString)), this, SLOT(recvStatusMsgFromServer(QString)));
 
   // TODO add error handling
+}
+
+void CoreSession::disconnectFromNetwork(NetworkId id) {
+  _connections[id]->disconnectFromIrc();
 }
 
 void CoreSession::networkStateRequested() {

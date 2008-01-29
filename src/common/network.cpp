@@ -503,6 +503,12 @@ void Network::requestConnect() {
   else emit connectRequested(networkId());  // and this is for CoreSession :)
 }
 
+void Network::requestDisconnect() {
+  if(!proxy()) return;
+  if(proxy()->proxyMode() == SignalProxy::Client) emit disconnectRequested(); // on the client this triggers calling this slot on the core
+  else emit disconnectRequested(networkId());  // and this is for CoreSession :)
+}
+
 // ====================
 //  Private:
 // ====================
@@ -540,3 +546,20 @@ void Network::determinePrefixes() {
   }
 }
 
+/************************************************************************
+ * NetworkInfo
+ ************************************************************************/
+
+bool NetworkInfo::operator==(const NetworkInfo &other) const {
+  if(networkId != other.networkId) return false;
+  if(networkName != other.networkName) return false;
+  if(identity != other.identity) return false;
+  if(codecForEncoding != other.codecForEncoding) return false;
+  if(codecForDecoding != other.codecForDecoding) return false;
+  if(serverList != other.serverList) return false;
+  return true;
+}
+
+bool NetworkInfo::operator!=(const NetworkInfo &other) const {
+  return !(*this == other);
+}

@@ -30,10 +30,10 @@
       </widget>
      </item>
      <item row="1" column="0" >
-      <widget class="QLineEdit" name="serverAddress" />
+      <widget class="QLineEdit" name="host" />
      </item>
      <item row="1" column="1" >
-      <widget class="QSpinBox" name="serverPort" >
+      <widget class="QSpinBox" name="port" >
        <property name="minimum" >
         <number>1</number>
        </property>
@@ -57,7 +57,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="serverPassword" >
+      <widget class="QLineEdit" name="password" >
        <property name="enabled" >
         <bool>false</bool>
        </property>

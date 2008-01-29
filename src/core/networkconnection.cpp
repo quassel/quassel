@@ -46,7 +46,7 @@ NetworkConnection::NetworkConnection(Network *network, CoreSession *session, con
   connect(network, SIGNAL(currentServerSet(const QString &)), this, SLOT(sendPerform()));
 
   connect(&socket, SIGNAL(connected()), this, SLOT(socketConnected()));
-  //connect(&socket, SIGNAL(disconnected()), this, SLOT(quit())); FIXME
+  connect(&socket, SIGNAL(disconnected()), this, SLOT(socketDisconnected()));
   connect(&socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(socketError(QAbstractSocket::SocketError)));
   connect(&socket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(socketStateChanged(QAbstractSocket::SocketState)));
   connect(&socket, SIGNAL(readyRead()), this, SLOT(socketHasData()));
@@ -137,7 +137,7 @@ void NetworkConnection::connectToIrc() {
   }
 
   // TODO implement cycling / random servers
-  QString host = serverList[0]["Address"].toString();
+  QString host = serverList[0]["Host"].toString();
   quint16 port = serverList[0]["Port"].toUInt();
   displayStatusMsg(QString("Connecting to %1:%2...").arg(host).arg(port));
   socket.connectToHost(host, port);
@@ -202,6 +202,10 @@ void NetworkConnection::socketConnected() {
 void NetworkConnection::socketStateChanged(QAbstractSocket::SocketState state) {
   Q_UNUSED(state);
   //qDebug() << "Socket state changed: " << state;
+}
+
+void NetworkConnection::socketDisconnected() {
+  emit disconnected(networkId());
 }
 
 // FIXME switch to BufferId

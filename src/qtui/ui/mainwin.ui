@@ -46,7 +46,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>24</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuConnection" >
@@ -97,6 +97,7 @@
      <string>Debug</string>
     </property>
     <addaction name="actionDebug_Console" />
+    <addaction name="actionDisconnectNet" />
    </widget>
    <widget class="QMenu" name="menuCore" >
     <property name="title" >
@@ -252,6 +253,11 @@
   <action name="actionDebug_Console" >
    <property name="text" >
     <string>Debug &amp;Console</string>
+   </property>
+  </action>
+  <action name="actionDisconnectNet" >
+   <property name="text" >
+    <string>Disconnect from Network...</string>
    </property>
   </action>
  </widget>

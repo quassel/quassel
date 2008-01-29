@@ -69,6 +69,7 @@ public slots:
 
   void connectToNetwork(QString, const QVariant &previousState = QVariant());
   void connectToNetwork(NetworkId, const QVariant &previousState = QVariant());
+  void disconnectFromNetwork(NetworkId id);
 
   //void processSignal(ClientSignal, QVariant, QVariant, QVariant);
   void sendBacklog(BufferInfo, QVariant, QVariant);

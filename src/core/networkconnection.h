@@ -107,6 +107,7 @@ private slots:
   void socketHasData();
   void socketError(QAbstractSocket::SocketError);
   void socketConnected();
+  void socketDisconnected();
   void socketStateChanged(QAbstractSocket::SocketState);
 
 private:
