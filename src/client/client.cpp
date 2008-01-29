@@ -404,17 +404,8 @@ void Client::networkDestroyed() {
 
 void Client::recvMessage(const Message &msg) {
   Buffer *b = buffer(msg.buffer());
-
-//   Buffer::ActivityLevel level = Buffer::OtherActivity;
-//   if(msg.type() == Message::Plain || msg.type() == Message::Notice){
-//     level |= Buffer::NewMessage;
-//   }
-//   if(msg.flags() & Message::Highlight){
-//     level |= Buffer::Highlight;
-//   }
-//   emit bufferActivity(level, b);
-
   b->appendMsg(msg);
+  networkModel()->updateBufferActivity(msg);
 }
 
 void Client::recvStatusMsg(QString /*net*/, QString /*msg*/) {
@@ -426,6 +417,7 @@ void Client::recvBacklogData(BufferInfo id, QVariantList msgs, bool /*done*/) {
   foreach(QVariant v, msgs) {
     Message msg = v.value<Message>();
     b->prependMsg(msg);
+    // networkModel()->updateBufferActivity(msg);
     if(!layoutQueue.contains(b)) layoutQueue.append(b);
   }
   if(layoutQueue.count() && !layoutTimer->isActive()) layoutTimer->start();

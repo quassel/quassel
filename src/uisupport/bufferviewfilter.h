@@ -57,7 +57,6 @@ public:
 									   
 public slots:
   void removeBuffer(const QModelIndex &);
-  void invalidateFilter_();
   
 protected:
   bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;

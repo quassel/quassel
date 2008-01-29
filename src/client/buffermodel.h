@@ -51,6 +51,9 @@ public:
 
   QModelIndex currentIndex();
 
+private slots:
+  void currentChanged(const QModelIndex &current, const QModelIndex &previous);
+  
 private:
   SelectionModelSynchronizer _selectionModelSynchronizer;
   ModelPropertyMapper _propertyMapper;

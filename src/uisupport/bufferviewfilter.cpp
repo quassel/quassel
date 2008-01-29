@@ -34,18 +34,6 @@ BufferViewFilter::BufferViewFilter(QAbstractItemModel *model, const Modes &filte
 {
   setSourceModel(model);
   setSortCaseSensitivity(Qt::CaseInsensitive);
-
-  // FIXME
-  // ok the following basically sucks. therfore it's commented out. Justice served.
-  // a better solution would use dataChanged()
-  
-  // I have this feeling that this resulted in a fuckup once... no clue though right now and invalidateFilter isn't a slot -.-
-  //connect(model, SIGNAL(invalidateFilter()), this, SLOT(invalidate()));
-  // connect(model, SIGNAL(invalidateFilter()), this, SLOT(invalidateFilter_()));
-}
-
-void BufferViewFilter::invalidateFilter_() {
-  QSortFilterProxyModel::invalidateFilter();
 }
 
 Qt::ItemFlags BufferViewFilter::flags(const QModelIndex &index) const {
@@ -176,6 +164,17 @@ QVariant BufferViewFilter::foreground(const QModelIndex &index) const {
   if(!index.data(NetworkModel::ItemActiveRole).toBool())
     return QColor(Qt::gray);
 
-  // FIXME:: show colors depending on activity level
+  BufferItem::ActivityLevel activity = (BufferItem::ActivityLevel)index.data(NetworkModel::BufferActivityRole).toInt();
+
+  if(activity & BufferItem::Highlight)
+    return QColor(Qt::magenta);
+  if(activity & BufferItem::NewMessage)
+    return QColor(Qt::green);
+  if(activity & BufferItem::OtherActivity)
+    return QColor(Qt::darkGreen);
+  
   return QColor(Qt::black);
+  
+  // FIXME:: make colors configurable;
+
 }

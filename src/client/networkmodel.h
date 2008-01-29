@@ -53,6 +53,7 @@ public:
   const BufferInfo &bufferInfo() const;
   virtual quint64 id() const;
   virtual QVariant data(int column, int role) const;
+  virtual bool setData(int column, const QVariant &value, int role);
 
   void attachIrcChannel(IrcChannel *ircChannel);
 
@@ -81,7 +82,7 @@ public:
 
   ActivityLevel activity() const;
   void setActivity(const ActivityLevel &level);
-  void addActivity(const ActivityLevel &level);
+  void updateActivity(const ActivityLevel &level);
 
 public slots:
   void setTopic(const QString &topic);
@@ -202,6 +203,7 @@ public:
   enum myRoles {
     BufferTypeRole = Qt::UserRole,
     ItemActiveRole,
+    BufferActivityRole,
     BufferIdRole,
     NetworkIdRole,
     BufferInfoRole,
@@ -233,7 +235,7 @@ public:
 
 public slots:
   void bufferUpdated(BufferInfo bufferInfo);
-  void bufferActivity(BufferItem::ActivityLevel, BufferInfo bufferInfo);
+  void updateBufferActivity(const Message &msg);
 
 private:
   QModelIndex networkIndex(NetworkId networkId);

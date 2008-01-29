@@ -83,10 +83,12 @@ BufferItem::ActivityLevel BufferItem::activity() const {
 
 void BufferItem::setActivity(const ActivityLevel &level) {
   _activity = level;
+  emit dataChanged();
 }
 
-void BufferItem::addActivity(const ActivityLevel &level) {
+void BufferItem::updateActivity(const ActivityLevel &level) {
   _activity |= level;
+  emit dataChanged();
 }
 
 QVariant BufferItem::data(int column, int role) const {
@@ -103,10 +105,23 @@ QVariant BufferItem::data(int column, int role) const {
     return int(bufferType());
   case NetworkModel::ItemActiveRole:
     return isActive();
+  case NetworkModel::BufferActivityRole:
+    return qVariantFromValue((int)activity());
   default:
     return PropertyMapItem::data(column, role);
   }
 }
+
+bool BufferItem::setData(int column, const QVariant &value, int role) {
+  switch(role) {
+  case NetworkModel::BufferActivityRole:
+    setActivity((ActivityLevel)value.toInt());
+  default:
+    return PropertyMapItem::setData(column, value, role);
+  }
+  return true;
+}
+
 
 void BufferItem::attachIrcChannel(IrcChannel *ircChannel) {
   if(!ircChannel)
@@ -617,13 +632,14 @@ void NetworkModel::bufferUpdated(BufferInfo bufferInfo) {
   emit dataChanged(itemindex, itemindex);
 }
 
-void NetworkModel::bufferActivity(BufferItem::ActivityLevel level, BufferInfo bufferInfo) {
-//   BufferItem *bufferItem = buffer(buf->bufferInfo());
-//   if(!bufferItem) {
-//     qWarning() << "NetworkModel::bufferActivity(): received Activity Info for uknown Buffer";
-//     return;
-//   }
-//   bufferItem->setActivity(level);
-//   bufferUpdated(buf);
+void NetworkModel::updateBufferActivity(const Message &msg) {
+  BufferItem::ActivityLevel level = BufferItem::OtherActivity;
+  if(msg.type() == Message::Plain || msg.type() == Message::Notice)
+    level |= BufferItem::NewMessage;
+
+  if(msg.flags() & Message::Highlight)
+    level |= BufferItem::Highlight;
+  
+  bufferItem(msg.buffer())->updateActivity(level);
 }
 
