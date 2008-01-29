@@ -21,3 +21,13 @@ PRE_TARGETDEPS *= ../../version.inc
 #include(../contrib/contrib.pri)
 
 SOURCES = $$SRCPATH/common/main.cpp
+
+# This is really annoying, but for some reason win32 libs are not included by default.
+# Ugly workaround following...
+
+win32 {
+  CONFIG += embed_manifest_exe
+  LIBS *= -luser32 -lgdi32 -lkernel32 -lshell32 -lwsock32 -lwinspool -lcomdlg32 -lole32
+  LIBS *= -ladvapi32 -limm32 -luuid -lwinmm -ldelayimp -lopengl32 -lglu32 -loleaut32 -lws2_32
+}
+
