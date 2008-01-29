@@ -74,6 +74,8 @@ public:
   int row() const;
   AbstractTreeItem *parent() const;
 
+  void dumpChildList();
+  
 signals:
   void dataChanged(int column = -1);
 

@@ -226,6 +226,16 @@ void BufferItem::removeUserFromCategory(IrcUser *ircUser) {
       break;
     }
   }
+
+  
+  if(!success || success) {
+    qDebug() << "==== Childlist for Item:" << this << id() << bufferName() << "====";
+    for(int i = 0; i < childCount(); i++) {
+      categoryItem = qobject_cast<UserCategoryItem *>(child(i));
+      categoryItem->dumpChildList();
+    }
+    qDebug() << "==== End Of Childlist for Item:" << this << id() << bufferName() << "====";
+  }
   Q_ASSERT(success);
 
   int totalusers = 0;

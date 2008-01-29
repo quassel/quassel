@@ -191,6 +191,25 @@ void AbstractTreeItem::setFlags(Qt::ItemFlags flags) {
   _flags = flags;
 }
 
+void AbstractTreeItem::dumpChildList() {
+  AbstractTreeItem *child;
+
+  qDebug() << "==== Childlist for Item:" << this << id() << "====";
+  QHash<int, QList<AbstractTreeItem *> >::iterator columnIter = _childItems.begin();
+  while(columnIter != _childItems.end()) {
+    if(columnIter->count() > 0) {
+      QList<AbstractTreeItem *>::const_iterator childIter = columnIter->constBegin();
+      while(childIter != columnIter->constEnd()) {
+	child = *childIter;
+	qDebug() << "Column:" << columnIter.key() << "Row:" << child->row() << child << child->id() << child->data(0, Qt::DisplayRole);
+	childIter++;
+      }
+    }
+    columnIter++;
+  }
+  qDebug() << "==== End Of Childlist ====";  
+}
+
 /*****************************************
  * SimpleTreeItem
  *****************************************/
