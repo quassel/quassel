@@ -32,9 +32,9 @@ ChatWidget::ChatWidget(QWidget *parent) : QAbstractScrollArea(parent) {
   scrollTimer = new QTimer(this);
   scrollTimer->setSingleShot(false);
   scrollTimer->setInterval(100);
+  // setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
   setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
-  setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-  setMinimumSize(QSize(400,400));
+  setMinimumSize(QSize(20,20));
   setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
   setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
   bottomLine = -1;
@@ -62,7 +62,7 @@ void ChatWidget::init(BufferId id) {
   //verticalScrollBar()->setMinimum(0);
   //verticalScrollBar()->setMaximum((int)height - verticalScrollBar()->pageStep());
 
-  setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+  // setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
   setMouseTracking(true);
   mouseMode = Normal;
   selectionMode = NoSelection;
@@ -81,10 +81,14 @@ ChatWidget::~ChatWidget() {
   s.setValue(QString("%1/SenderColumnWidth").arg(bufferId.toInt()), senderWidth);
 }
 
-QSize ChatWidget::sizeHint() const {
-  //qDebug() << size();
-  return size();
+QSize ChatWidget::minimumSizeHint() const {
+  return QSize(20, 20);
 }
+
+// QSize ChatWidget::sizeHint() const {
+//   //qDebug() << size();
+//   return size();
+// }
 
 void ChatWidget::adjustScrollBar() {
   verticalScrollBar()->setPageStep(viewport()->height());
@@ -252,7 +256,7 @@ void ChatWidget::resizeEvent(QResizeEvent *event) {
   /*if(event->oldSize().isValid())*/
   //contents->setWidth(event->size().width());
   //setAlignment(Qt::AlignBottom);
-  if(event->size().width() != event->oldSize().width()) {
+  if(event->size() != event->oldSize()) {
     computePositions();
     layout();
   }

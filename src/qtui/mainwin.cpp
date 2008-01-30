@@ -21,6 +21,7 @@
 
 #include "mainwin.h"
 
+#include "chatwidget.h"
 #include "bufferview.h"
 #include "chatline-old.h"
 #include "client.h"
@@ -59,6 +60,9 @@ MainWin::MainWin(QtUi *_gui, QWidget *parent) : QMainWindow(parent), gui(_gui) {
 }
 
 void MainWin::init() {
+  UiSettings s;
+  resize(s.value("MainWinSize").toSize());
+
   Client::signalProxy()->attachSignal(this, SIGNAL(requestBacklog(BufferInfo, QVariant, QVariant)));
   Client::signalProxy()->attachSignal(this, SIGNAL(disconnectFromNetwork(NetworkId)));
   ui.bufferWidget->init();
@@ -71,6 +75,7 @@ void MainWin::init() {
   //connectToCore(connInfo);
 
   statusBar()->showMessage(tr("Not connected to core."));
+
   systray = new QSystemTrayIcon(this);
   systray->setIcon(QIcon(":/icons/quassel-icon.png"));
   
@@ -91,25 +96,26 @@ void MainWin::init() {
   connect(systray, SIGNAL(activated( QSystemTrayIcon::ActivationReason )), 
           this, SLOT(systrayActivated( QSystemTrayIcon::ActivationReason )));
 
-  //setupSettingsDlg();
+  // DOCK OPTIONS
+  setDockNestingEnabled(true);
 
+  setCorner(Qt::TopLeftCorner, Qt::LeftDockWidgetArea);
+  setCorner(Qt::BottomLeftCorner, Qt::LeftDockWidgetArea);
+
+  setCorner(Qt::TopRightCorner, Qt::RightDockWidgetArea);
+  setCorner(Qt::BottomRightCorner, Qt::RightDockWidgetArea);
+
+  // setup the docks etc...
   setupMenus();
   setupViews();
+  setupNickWidget();
+  setupChatMonitor();
+  setupInputWidget();
+  setupTopicWidget();
+  
   setupSettingsDlg();
 
-  // create nick dock
-  nickDock = new QDockWidget(tr("Nicks"), this);
-  nickDock->setObjectName("NickDock");
-  nickDock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
-
-  nickListWidget = new NickListWidget(nickDock);
-  nickDock->setWidget(nickListWidget);
-
-  addDockWidget(Qt::RightDockWidgetArea, nickDock);
-  ui.menuViews->addAction(nickDock->toggleViewAction());
-
   // restore mainwin state
-  UiSettings s;
   restoreState(s.value("MainWinState").toByteArray());
 
   disconnectedFromCore();  // Disable menus and stuff
@@ -120,49 +126,10 @@ void MainWin::init() {
     showServerList();
   }
   
-  // DOCK OPTIONS
-  setDockNestingEnabled(true);
-
-  setCorner(Qt::TopLeftCorner, Qt::LeftDockWidgetArea);
-  setCorner(Qt::BottomLeftCorner, Qt::LeftDockWidgetArea);
-
-  setCorner(Qt::TopRightCorner, Qt::RightDockWidgetArea);
-  setCorner(Qt::BottomRightCorner, Qt::RightDockWidgetArea);
-
-  // new Topic Stuff... should be probably refactored out into a separate method
-  VerticalDock *topicDock = new VerticalDock(tr("Topic"), this);
-  topicDock->setObjectName("TopicDock");
-  TopicWidget *topicwidget = new TopicWidget(topicDock);
-  topicDock->setWidget(topicwidget);
-
-  Client::bufferModel()->mapProperty(1, Qt::DisplayRole, topicwidget, "topic");
-
-  addDockWidget(Qt::TopDockWidgetArea, topicDock);
-
-  ui.menuViews->addAction(topicDock->toggleViewAction());
-
-  // NEW INPUT WIDGET -- damn init() needs a cleanup
-  VerticalDock *inputDock = new VerticalDock(tr("Inputline"), this);
-  inputDock->setObjectName("InputDock");
-  InputWidget *inputWidget = new InputWidget(inputDock);
-  inputDock->setWidget(inputWidget);
-
-  addDockWidget(Qt::BottomDockWidgetArea, inputDock);
-
-  ui.menuViews->addAction(inputDock->toggleViewAction());
-
-  inputWidget->setModel(Client::bufferModel());
-  inputWidget->setSelectionModel(Client::bufferModel()->standardSelectionModel());
-
-  ui.bufferWidget->setFocusProxy(inputWidget);
-  
   // attach the BufferWidget to the PropertyMapper
   ui.bufferWidget->setModel(Client::bufferModel());
   ui.bufferWidget->setSelectionModel(Client::bufferModel()->standardSelectionModel());
 
-  // attach the NickList to the PropertyMapper
-  Client::bufferModel()->mapProperty(0, NetworkModel::BufferIdRole, nickListWidget, "currentBuffer");
-  
   
 #ifdef SPUTDEV
   showSettingsDlg();
@@ -239,6 +206,78 @@ void MainWin::setupSettingsDlg() {
   settingsDlg->registerSettingsPage(new NetworksSettingsPage(settingsDlg));
   connect(settingsDlg, SIGNAL(finished(int)), QApplication::instance(), SLOT(quit()));  // FIXME
 #endif
+}
+
+void MainWin::setupNickWidget() {
+  // create nick dock
+  nickDock = new QDockWidget(tr("Nicks"), this);
+  nickDock->setObjectName("NickDock");
+  nickDock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
+
+  nickListWidget = new NickListWidget(nickDock);
+  nickDock->setWidget(nickListWidget);
+
+  addDockWidget(Qt::RightDockWidgetArea, nickDock);
+  ui.menuViews->addAction(nickDock->toggleViewAction());
+
+  Client::bufferModel()->mapProperty(0, NetworkModel::BufferIdRole, nickListWidget, "currentBuffer");
+}
+
+void MainWin::setupChatMonitor() {
+  VerticalDock *dock = new VerticalDock(tr("Chat Monitor"), this);
+  dock->setObjectName("ChatMonitorDock");
+
+  ChatWidget *chatWidget = new ChatWidget(this);
+  chatWidget->show();
+  dock->setWidget(chatWidget);
+  dock->show();
+  
+  Buffer *buf = Client::monitorBuffer();
+  if(!buf)
+    return;
+  
+  chatWidget->init(BufferId(0));
+  QList<ChatLine *> lines;
+  QList<AbstractUiMsg *> msgs = buf->contents();
+  foreach(AbstractUiMsg *msg, msgs) {
+    lines.append(dynamic_cast<ChatLine*>(msg));
+  }
+  chatWidget->setContents(lines);
+  connect(buf, SIGNAL(msgAppended(AbstractUiMsg *)), chatWidget, SLOT(appendMsg(AbstractUiMsg *)));
+  connect(buf, SIGNAL(msgPrepended(AbstractUiMsg *)), chatWidget, SLOT(prependMsg(AbstractUiMsg *)));
+
+  addDockWidget(Qt::TopDockWidgetArea, dock, Qt::Vertical);
+  ui.menuViews->addAction(dock->toggleViewAction());
+}
+
+void MainWin::setupInputWidget() {
+  VerticalDock *dock = new VerticalDock(tr("Inputline"), this);
+  dock->setObjectName("InputDock");
+
+  InputWidget *inputWidget = new InputWidget(dock);
+  dock->setWidget(inputWidget);
+
+  addDockWidget(Qt::BottomDockWidgetArea, dock);
+
+  ui.menuViews->addAction(dock->toggleViewAction());
+
+  inputWidget->setModel(Client::bufferModel());
+  inputWidget->setSelectionModel(Client::bufferModel()->standardSelectionModel());
+
+  ui.bufferWidget->setFocusProxy(inputWidget);
+}
+
+void MainWin::setupTopicWidget() {
+  VerticalDock *dock = new VerticalDock(tr("Topic"), this);
+  dock->setObjectName("TopicDock");
+  TopicWidget *topicwidget = new TopicWidget(dock);
+  dock->setWidget(topicwidget);
+
+  Client::bufferModel()->mapProperty(1, Qt::DisplayRole, topicwidget, "topic");
+
+  addDockWidget(Qt::TopDockWidgetArea, dock);
+
+  ui.menuViews->addAction(dock->toggleViewAction());
 }
 
 void MainWin::connectedToCore() {

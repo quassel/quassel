@@ -59,6 +59,7 @@ public:
   static QList<Buffer *> buffers();
   static Buffer *buffer(BufferId bufferUid);
   static Buffer *buffer(BufferInfo);
+  static Buffer *monitorBuffer();
 
   static QList<NetworkId> networkIds();
   static const Network * network(NetworkId);
@@ -205,6 +206,8 @@ private:
   QHash<BufferId, Buffer *> _buffers;
   QHash<NetworkId, Network *> _networks;
   QHash<IdentityId, Identity *> _identities;
+
+  Buffer *_monitorBuffer;
 
   QTimer *layoutTimer;
   QList<Buffer *> layoutQueue;

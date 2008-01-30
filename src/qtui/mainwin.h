@@ -80,6 +80,11 @@ class MainWin : public QMainWindow {
 
     void setupMenus();
     void setupViews();
+    void setupNickWidget();
+    void setupChatMonitor();
+    void setupInputWidget();
+    void setupTopicWidget();
+  
     void setupSettingsDlg();
 
     void enableMenus();

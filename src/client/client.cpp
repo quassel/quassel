@@ -65,6 +65,7 @@ Client::Client(QObject *parent)
     _connectedToCore(false),
     _syncedToCore(false)
 {
+  _monitorBuffer = new Buffer(BufferInfo(), this);
 }
 
 Client::~Client() {
@@ -163,6 +164,10 @@ Buffer *Client::buffer(BufferInfo id) {
   }
   Q_ASSERT(buff);
   return buff;
+}
+
+Buffer *Client::monitorBuffer() {
+  return instance()->_monitorBuffer;
 }
 
 
@@ -419,6 +424,13 @@ void Client::recvMessage(const Message &msg) {
   Buffer *b = buffer(msg.buffer());
   b->appendMsg(msg);
   networkModel()->updateBufferActivity(msg);
+
+  if(msg.type() == Message::Plain || msg.type() == Message::Notice || msg.type() == Message::Action) {
+    QString sender = msg.buffer().network() + ":" + msg.buffer().buffer() + ":" + msg.sender();
+    Message mmsg = Message(msg.timestamp(), msg.buffer(), msg.type(), msg.text(), sender, msg.flags());
+    monitorBuffer()->appendMsg(mmsg);
+  }
+
 }
 
 void Client::recvStatusMsg(QString /*net*/, QString /*msg*/) {
