@@ -335,10 +335,42 @@ void ChatWidget::mousePressEvent(QMouseEvent *event) {
   }
 }
 
-void ChatWidget::mouseDoubleClickEvent(QMouseEvent * /*event*/) {
+void ChatWidget::mouseDoubleClickEvent(QMouseEvent *event) {
+  // dirty and fast hack to make http:// urls klickable
+  if(lines.isEmpty())
+    return;
 
+  QPoint pos = event->pos() + QPoint(0, verticalScrollBar()->value());
+  int x = pos.x();
+  int y = pos.y();
+  int l = yToLineIdx(y);
+  if(lines.count() <= l)
+    return;
 
+  ChatLine *line = lines[l];
+  QString text = line->text();
+  int cursorAt = qMax(0, line->posToCursor(QPointF(x, y - ycoords[l])) - 1);
 
+  int start = 0;
+  if(cursorAt > 0) {
+    for(int i = cursorAt; i > 0; i--) {
+      if(text[i] == ' ') {
+	start = i + 1;
+	break;
+      }
+    }
+  }
+
+  int end = text.indexOf(" ", start);
+  int len = -1;
+  if(end != -1) {
+    len = end - start;
+  }
+  QString word = text.mid(start, len);
+  if(word.startsWith("http://")) {
+    QDesktopServices::openUrl(QUrl(word));
+  }
+  
 }
 
 void ChatWidget::mouseReleaseEvent(QMouseEvent *event) {
