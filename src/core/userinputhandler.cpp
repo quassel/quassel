@@ -89,7 +89,7 @@ void UserInputHandler::handleInvite(QString bufname, QString msg) {
 }
 
 void UserInputHandler::handleJoin(QString bufname, QString msg) {
-  emit putCmd("JOIN", QStringList(msg));
+  emit putCmd("JOIN", msg.split(" "));
 }
 
 void UserInputHandler::handleKick(QString bufname, QString msg) {
