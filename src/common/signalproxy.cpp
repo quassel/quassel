@@ -80,8 +80,14 @@ int SignalRelay::qt_metacall(QMetaObject::Call _c, int _id, void **_a) {
       const QList<int> &argTypes = proxy->argTypes(caller, _id);
       QVariantList params;
       int n = argTypes.size();
-      for(int i=0; i<n; i++)
-        params.append(QVariant(argTypes[i], _a[i+1]));
+      for(int i=0; i<n; i++) {
+	if(argTypes[i] == 0) {
+	  qWarning() << "SignalRelay::qt_metacall(): received invalid data for argument number" << i << "of signal" << QString("%1::%2").arg(caller->metaObject()->className()).arg(caller->metaObject()->method(_id).signature());
+	  qWarning() << "                            - make sure all your data types are known by the Qt MetaSystem";
+	  return _id;
+	}
+	params.append(QVariant(argTypes[i], _a[i+1]));
+      }
       QMultiHash<int, QByteArray>::const_iterator funcIter = sigNames.constFind(_id);
       while(funcIter != sigNames.constEnd() && funcIter.key() == _id) {
         proxy->dispatchSignal(funcIter.value(), params);
@@ -103,7 +109,7 @@ int SignalRelay::qt_metacall(QMetaObject::Call _c, int _id, void **_a) {
 	proxy->dispatchSignal((int)SignalProxy::Sync, params);
       }
     }
-    _id -= 1;
+    _id -= QObject::staticMetaObject.methodCount();
   }
   return _id;
 }
@@ -703,7 +709,7 @@ bool SignalProxy::invokeSlot(QObject *receiver, int methodId, const QVariantList
     ? params.count()
     : args.count();
 
-  if(minArgCount(receiver, methodId) < params.count()) {
+  if(minArgCount(receiver, methodId) > params.count()) {
       qWarning() << "SignalProxy::invokeSlot(): not enough params to invoke" << methodName(receiver, methodId);
       return false;
   }
@@ -713,6 +719,11 @@ bool SignalProxy::invokeSlot(QObject *receiver, int methodId, const QVariantList
 		0, 0, 0, 0 , 0};
   // check for argument compatibility and build params array
   for(int i = 0; i < numArgs; i++) {
+    if(!params[i].isValid()) {
+      qWarning() << "SignalProxy::invokeSlot(): received invalid data for argument number" << i << "of method" << QString("%1::%2()").arg(receiver->metaObject()->className()).arg(receiver->metaObject()->method(methodId).signature());
+      qWarning() << "                            - make sure all your data types are known by the Qt MetaSystem";
+      return false;
+    }
     if(args[i] != QMetaType::type(params[i].typeName())) {
       qWarning() << "SignalProxy::invokeSlot(): incompatible param types to invoke" << methodName(receiver, methodId);
       return false;
