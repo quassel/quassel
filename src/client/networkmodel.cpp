@@ -143,6 +143,13 @@ void BufferItem::attachIrcChannel(IrcChannel *ircChannel) {
 	  this, SLOT(userModeChanged(IrcUser *)));
   connect(ircChannel, SIGNAL(ircUserModeRemoved(IrcUser *, QString)),
 	  this, SLOT(userModeChanged(IrcUser *)));
+
+  if(!ircChannel->ircUsers().isEmpty()) {
+    qWarning() << "Channel" << ircChannel->name() << "has already users which is quite surprising :)";
+    foreach(IrcUser *ircUser, ircChannel->ircUsers()) {
+      join(ircUser);
+    }
+  }
   
   emit dataChanged();
 }
