@@ -57,6 +57,9 @@ bool AbstractTreeItem::newChild(int column, AbstractTreeItem *item) {
     _childItems[column] = QList<AbstractTreeItem *>();
   }
 
+  // check if a child with that ID is already known
+  Q_ASSERT(childById(item->id()) == 0);
+    
   int newRow = _childItems[column].count();
   emit beginAppendChilds(column, newRow, newRow);
   _childItems[column].append(item);

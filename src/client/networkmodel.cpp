@@ -227,14 +227,13 @@ void BufferItem::removeUserFromCategory(IrcUser *ircUser) {
   UserCategoryItem *categoryItem = 0;
   for(int i = 0; i < childCount(); i++) {
     categoryItem = qobject_cast<UserCategoryItem *>(child(i));
-    if(success = categoryItem->removeChildById((quint64)ircUser)) {
+    if(success = categoryItem->removeUser(ircUser)) {
       if(categoryItem->childCount() == 0)
 	removeChild(i);
       break;
     }
   }
 
-  
   if(!success) {
     qDebug() << "didn't find User:" << ircUser << (quint64)ircUser;
     qDebug() << "==== Childlist for Item:" << this << id() << bufferName() << "====";
@@ -403,6 +402,10 @@ quint64 UserCategoryItem::id() const {
 
 void UserCategoryItem::addUser(IrcUser *ircUser) {
   newChild(new IrcUserItem(ircUser, this));
+}
+
+bool UserCategoryItem::removeUser(IrcUser *ircUser) {
+  return removeChildById((quint64)ircUser);
 }
 
 int UserCategoryItem::categoryFromModes(const QString &modes) {

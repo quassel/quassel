@@ -156,6 +156,7 @@ public:
   virtual QVariant data(int column, int role) const;
   
   void addUser(IrcUser *ircUser);
+  bool removeUser(IrcUser *ircUser);
 
   static int categoryFromModes(const QString &modes);
 
