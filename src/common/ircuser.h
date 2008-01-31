@@ -25,6 +25,7 @@
 #include <QString>
 #include <QStringList>
 #include <QVariantMap>
+#include <QDateTime>
 
 #include "syncableobject.h"
 
@@ -41,6 +42,9 @@ class IrcUser : public SyncableObject {
   Q_PROPERTY(QString realName READ realName WRITE setRealName STORED false)
   Q_PROPERTY(bool away READ isAway WRITE setAway STORED false)
   Q_PROPERTY(QString awayMessage READ awayMessage WRITE setAwayMessage STORED false)
+  Q_PROPERTY(QDateTime idleTime READ idleTime WRITE setIdleTime STORED false)
+  Q_PROPERTY(QString server READ server WRITE setServer STORED false)
+  Q_PROPERTY(QString ircOperator READ ircOperator WRITE setIrcOperator STORED false)
 
   Q_PROPERTY(QStringList channels READ channels STORED false)
   //  Q_PROPERTY(QStringList usermodes READ usermodes WRITE setUsermodes)
@@ -56,6 +60,9 @@ public:
   QString hostmask() const;
   bool isAway() const;
   QString awayMessage() const;
+  QDateTime idleTime() const;
+  QString server() const;
+  QString ircOperator() const;
   Network *network() const;
 
   QString userModes() const;
@@ -80,6 +87,9 @@ public slots:
   void setRealName(const QString &realName);
   void setAway(const bool &away);
   void setAwayMessage(const QString &awayMessage);
+  void setIdleTime(const QDateTime &idleTime);
+  void setServer(const QString &server);
+  void setIrcOperator(const QString &ircOperator);
   void updateHostmask(const QString &mask);
 
   void setUserModes(const QString &modes);
@@ -102,6 +112,9 @@ signals:
   void realNameSet(QString realName);
   void awaySet(bool away);
   void awayMessageSet(QString awayMessage);
+  void idleTimeSet(QDateTime idleTime);
+  void serverSet(QString server);
+  void ircOperatorSet(QString ircOperator);
   void hostmaskUpdated(QString mask);
 
   void userModesSet(QString modes);
@@ -138,7 +151,10 @@ private:
   QString _realName;
   QString _awayMessage;
   bool _away;
-
+  QString _server;
+  QDateTime _idleTime;
+  QString _ircOperator;
+  
   // QSet<QString> _channels;
   QSet<IrcChannel *> _channels;
   QString _userModes;

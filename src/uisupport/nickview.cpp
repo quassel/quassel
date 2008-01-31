@@ -105,15 +105,15 @@ void NickView::showContextMenu(const QPoint & pos ) {
 
   QAction *result = nickContextMenu.exec(QCursor::pos());
 
-  if(result == whoisAction)    { Client::instance()->userInput(bufferInfo, "/WHOIS "+username); }
-  else if(result == versionAction)  { Client::instance()->userInput(bufferInfo, "/CTCP "+username+" VERSION"); }
-  else if(result == pingAction)     { Client::instance()->userInput(bufferInfo, "/CTCP "+username+" PING"); }
+  if(result == whoisAction)         { Client::instance()->userInput(bufferInfo, "/WHOIS " + username + " " + username); }
+  else if(result == versionAction)  { Client::instance()->userInput(bufferInfo, "/CTCP " + username + " VERSION"); }
+  else if(result == pingAction)     { Client::instance()->userInput(bufferInfo, "/CTCP " + username + " PING"); }
 
-  else if(result == opAction)       { Client::instance()->userInput(bufferInfo, "/OP "+username); }
-  else if(result == deOpAction)     { Client::instance()->userInput(bufferInfo, "/DEOP "+username); }
-  else if(result == voiceAction)    { Client::instance()->userInput(bufferInfo, "/VOICE "+username); }
-  else if(result == deVoiceAction)  { Client::instance()->userInput(bufferInfo, "/DEVOICE "+username); }
+  else if(result == opAction)       { Client::instance()->userInput(bufferInfo, "/OP " + username); }
+  else if(result == deOpAction)     { Client::instance()->userInput(bufferInfo, "/DEOP " + username); }
+  else if(result == voiceAction)    { Client::instance()->userInput(bufferInfo, "/VOICE " + username); }
+  else if(result == deVoiceAction)  { Client::instance()->userInput(bufferInfo, "/DEVOICE " + username); }
 
-  else if(result == kickAction)     { Client::instance()->userInput(bufferInfo, "/KICK "+username); }
-  else if(result == kickBanAction)  { Client::instance()->userInput(bufferInfo, "/KICKBAN "+username); }
+  else if(result == kickAction)     { Client::instance()->userInput(bufferInfo, "/KICK " + username); }
+  else if(result == kickBanAction)  { Client::instance()->userInput(bufferInfo, "/KICKBAN " + username); }
 }

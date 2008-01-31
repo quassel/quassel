@@ -479,14 +479,39 @@ QVariant IrcUserItem::data(int column, int role) const {
 
 QString IrcUserItem::toolTip(int column) const {
   Q_UNUSED(column);
-  QString toolTip = "<b>" + nickName() + "</b><br />" + _ircUser->hostmask();
-  if(_ircUser->isAway()) {
-    toolTip += "<br /> away";
-    if(!_ircUser->awayMessage().isEmpty()) { 
-      toolTip += " (" + _ircUser->awayMessage() + ")"; 
+  QStringList toolTip(QString("<b>%1</b>").arg(nickName()));
+  if(_ircUser->isAway()) toolTip[0].append(" is away");
+  if(!_ircUser->awayMessage().isEmpty()) toolTip[0].append(QString(" (%1)").arg(_ircUser->awayMessage()));
+  if(!_ircUser->realName().isEmpty()) toolTip.append(_ircUser->realName());
+  if(!_ircUser->ircOperator().isEmpty()) toolTip.append(_ircUser->ircOperator());
+  toolTip.append(_ircUser->hostmask());
+
+  if(_ircUser->idleTime().isValid()) {
+    QDateTime now = QDateTime::currentDateTime();
+    QDateTime idle = _ircUser->idleTime();
+    int idleTime = idle.secsTo(now);
+
+    QList< QPair<int, QString> > timeUnit;
+    timeUnit.append(qMakePair(365*60*60, tr("year")));
+    timeUnit.append(qMakePair(24*60*60, tr("day")));
+    timeUnit.append(qMakePair(60*60, tr("h")));
+    timeUnit.append(qMakePair(60, tr("min")));
+    timeUnit.append(qMakePair(1, tr("sec")));
+
+    QString idleString(' ');
+    for(int i=0; i < timeUnit.size(); i++) {
+      int n = idleTime / timeUnit[i].first;
+      if(n > 0) {
+        idleString += QString("%1 %2 ").arg(QString::number(n), timeUnit[i].second);
+      }
+      idleTime = idleTime % timeUnit[i].first;
     }
+    toolTip.append(QString("idling since %1").arg(idleString));
   }
-  return "<p>" + toolTip + "</p>";
+
+  if(!_ircUser->server().isEmpty()) toolTip.append(QString("server: %1").arg(_ircUser->server()));
+
+  return QString("<p> %1 </p>").arg(toolTip.join("<br />"));
 }
 
 void IrcUserItem::setNick(QString newNick) {

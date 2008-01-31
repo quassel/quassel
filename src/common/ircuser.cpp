@@ -34,12 +34,17 @@ IrcUser::IrcUser(const QString &hostmask, Network *network)
     _nick(nickFromMask(hostmask)),
     _user(userFromMask(hostmask)),
     _host(hostFromMask(hostmask)),
+    _realName(),
+    _awayMessage(),
+    _away(false),
+    _server(),
+    _idleTime(QDateTime::currentDateTime()),
+    _ircOperator(),
     _network(network),
     _codecForEncoding(0),
     _codecForDecoding(0)
 {
   updateObjectName();
-  _away = false;
 }
 
 IrcUser::~IrcUser() {
@@ -76,6 +81,18 @@ bool IrcUser::isAway() const {
 
 QString IrcUser::awayMessage() const {
   return _awayMessage;
+}
+
+QString IrcUser::server() const {
+  return _server;
+}
+
+QDateTime IrcUser::idleTime() const {
+  return _idleTime;
+}
+
+QString IrcUser::ircOperator() const {
+  return _ircOperator;
 }
 
 QString IrcUser::userModes() const {
@@ -162,6 +179,26 @@ void IrcUser::setAwayMessage(const QString &awayMessage) {
   }
 }
 
+void IrcUser::setIdleTime(const QDateTime &idleTime) {
+  if(idleTime.isValid() && _idleTime != idleTime) {
+    _idleTime = idleTime;
+    emit idleTimeSet(idleTime);
+  }
+}
+
+void IrcUser::setServer(const QString &server) {
+  if(!server.isEmpty() && _server != server) {
+    _server = server;
+    emit serverSet(server);
+  }
+}
+
+void IrcUser::setIrcOperator(const QString &ircOperator) {
+  if(!ircOperator.isEmpty() && _ircOperator != ircOperator) {
+    _ircOperator = ircOperator;
+    emit ircOperatorSet(ircOperator);
+  }
+}
 
 void IrcUser::setHost(const QString &host) {
   if(!host.isEmpty() && _host != host) {

@@ -161,7 +161,6 @@ void UserInputHandler::handleQuote(QString bufname, QString msg) {
   emit putRawLine(msg);
 }
 
-
 void UserInputHandler::handleSay(QString bufname, QString msg) {
   if(bufname.isEmpty()) return;  // server buffer
   QStringList params;
@@ -173,7 +172,6 @@ void UserInputHandler::handleSay(QString bufname, QString msg) {
     emit displayMsg(Message::Plain, params[0], msg, network()->myNick(), Message::Self|Message::PrivMsg);
   }
 }
-
 
 void UserInputHandler::handleTopic(QString bufname, QString msg) {
   if(bufname.isEmpty()) return;
@@ -190,19 +188,17 @@ void UserInputHandler::handleVoice(QString bufname, QString msg) {
   emit putCmd("MODE", params);
 }
 
-
 void UserInputHandler::handleWho(QString bufname, QString msg) {
-  emit putCmd("WHO", QStringList(msg));
+  emit putCmd("WHO", msg.split(' '));
 }
-
 
 void UserInputHandler::handleWhois(QString bufname, QString msg) {
-  emit putCmd("WHOIS", QStringList(msg));
+  qDebug() << "WHOIS" << QStringList(msg);
+  emit putCmd("WHOIS", msg.split(' '));
 }
 
-
 void UserInputHandler::handleWhowas(QString bufname, QString msg) {
-  emit putCmd("WHOWAS", QStringList(msg));
+  emit putCmd("WHOWAS", msg.split(' '));
 }
 
 void UserInputHandler::defaultHandler(QString cmd, QString bufname, QString msg) {
