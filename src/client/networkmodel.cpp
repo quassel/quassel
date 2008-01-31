@@ -415,6 +415,8 @@ int UserCategoryItem::categoryFromModes(const QString &modes) {
 
 QVariant UserCategoryItem::data(int column, int role) const {
   switch(role) {
+  case NetworkModel::ItemActiveRole:
+    return true;
   case NetworkModel::ItemTypeRole:
     return NetworkModel::UserCategoryItemType;
   case NetworkModel::BufferIdRole:
@@ -457,6 +459,8 @@ quint64 IrcUserItem::id() const {
 
 QVariant IrcUserItem::data(int column, int role) const {
   switch(role) {
+  case NetworkModel::ItemActiveRole:
+    return !_ircUser->isAway();
   case NetworkModel::ItemTypeRole:
     return NetworkModel::IrcUserItemType;
   case NetworkModel::BufferIdRole:

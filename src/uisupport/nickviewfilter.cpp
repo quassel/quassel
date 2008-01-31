@@ -18,14 +18,15 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "nickmodel.h"
+#include "nickviewfilter.h"
 
 #include "networkmodel.h"
+#include <QColor>
 
 /******************************************************************************************
- * NickModel
+ * NickViewFilter
  ******************************************************************************************/
-NickModel::NickModel(NetworkModel *parent)
+NickViewFilter::NickViewFilter(NetworkModel *parent)
   : QSortFilterProxyModel(parent)
 {
   setSourceModel(parent);
@@ -33,3 +34,18 @@ NickModel::NickModel(NetworkModel *parent)
   setSortCaseSensitivity(Qt::CaseInsensitive);
 }
 
+QVariant NickViewFilter::data(const QModelIndex &index, int role) const {
+  if(role == Qt::ForegroundRole)
+    return foreground(index);
+  else
+    return QSortFilterProxyModel::data(index, role);
+}
+
+QVariant NickViewFilter::foreground(const QModelIndex &index) const {
+  if(!index.data(NetworkModel::ItemActiveRole).toBool())
+    return QColor(Qt::gray);
+  
+  return QColor(Qt::black);
+  
+  // FIXME:: make colors configurable;
+}

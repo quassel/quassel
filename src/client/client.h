@@ -40,7 +40,6 @@ class NetworkModel;
 class BufferModel;
 class IrcUser;
 class IrcChannel;
-class NickModel;
 class SignalProxy;
 struct NetworkInfo;
 
@@ -91,7 +90,6 @@ public:
 
   static NetworkModel *networkModel();
   static BufferModel *bufferModel();
-  static NickModel *nickModel();
   static SignalProxy *signalProxy();
 
   static AbstractUiMsg *layoutMsg(const Message &);
@@ -197,7 +195,6 @@ private:
   QPointer<AbstractUi> mainUi;
   QPointer<NetworkModel> _networkModel;
   QPointer<BufferModel> _bufferModel;
-  QPointer<NickModel> _nickModel;
 
   ClientMode clientMode;
 

@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef NICKMODEL_H
-#define NICKMODEL_H
+#ifndef NICKVIEWFILTER_H
+#define NICKVIEWFILTER_H
 
 #include <QSortFilterProxyModel>
 
@@ -27,13 +27,13 @@ class NetworkModel;
 
 // This is proxymodel is purely for the sorting right now
 // the old nickmodel is stored for future reference in /devnotes
-
-//! This ProxyModel can be used on top of a NickModel in order to provide a sorted nicklist and to hide unused categories.
-class NickModel : public QSortFilterProxyModel {
+class NickViewFilter : public QSortFilterProxyModel {
   Q_OBJECT
 
-  public:
-    NickModel(NetworkModel *parent = 0);
+public:
+  NickViewFilter(NetworkModel *parent = 0);
+  QVariant data(const QModelIndex &index, int role) const;
+  QVariant foreground(const QModelIndex &index) const;
 };
 
 #endif

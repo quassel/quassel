@@ -29,7 +29,6 @@
 #include "network.h"
 #include "networkmodel.h"
 #include "buffermodel.h"
-#include "nickmodel.h"
 #include "quasselui.h"
 #include "signalproxy.h"
 #include "util.h"
@@ -61,7 +60,6 @@ Client::Client(QObject *parent)
     mainUi(0),
     _networkModel(0),
     _bufferModel(0),
-    _nickModel(0),
     _connectedToCore(false),
     _syncedToCore(false)
 {
@@ -79,7 +77,6 @@ void Client::init() {
           _networkModel, SLOT(bufferUpdated(BufferInfo)));
 
   _bufferModel = new BufferModel(_networkModel);
-  _nickModel = new NickModel(_networkModel);
 
   SignalProxy *p = signalProxy();
   p->attachSignal(this, SIGNAL(sendSessionData(const QString &, const QVariant &)),
@@ -178,11 +175,6 @@ NetworkModel *Client::networkModel() {
 BufferModel *Client::bufferModel() {
   return instance()->_bufferModel;
 }
-
-NickModel *Client::nickModel() {
-  return instance()->_nickModel;
-}
-
 
 SignalProxy *Client::signalProxy() {
   return instance()->_signalProxy;
