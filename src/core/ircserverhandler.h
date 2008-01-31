@@ -54,10 +54,21 @@ public slots:
 
   void handle001(QString, QList<QByteArray>);   // RPL_WELCOME
   void handle005(QString, QList<QByteArray>);   // RPL_ISUPPORT
+  void handle301(QString, QList<QByteArray>);   // RPL_AWAY
+  void handle311(QString, QList<QByteArray>);   // RPL_WHOISUSER
+  void handle312(QString, QList<QByteArray>);   // RPL_WHOISSERVER
+  void handle313(QString, QList<QByteArray>);   // RPL_WHOISOPERATOR
+  void handle314(QString, QList<QByteArray>);   // RPL_WHOWASUSER
+  void handle315(QString, QList<QByteArray>);   // RPL_ENDOFWHO
+  void handle317(QString, QList<QByteArray>);   // RPL_WHOISIDLE
+  void handle318(QString, QList<QByteArray>);   // RPL_ENDOFWHOIS
+  void handle319(QString, QList<QByteArray>);   // RPL_WHOISCHANNELS
   void handle331(QString, QList<QByteArray>);   // RPL_NOTOPIC
   void handle332(QString, QList<QByteArray>);   // RPL_TOPIC
   void handle333(QString, QList<QByteArray>);   // Topic set by...
+  void handle352(QString, QList<QByteArray>);   //  RPL_WHOREPLY
   void handle353(QString, QList<QByteArray>);   // RPL_NAMREPLY
+  void handle369(QString, QList<QByteArray>);   // RPL_ENDOFWHOWAS
   void handle432(QString, QList<QByteArray>);   // ERR_ERRONEUSNICKNAME
   void handle433(QString, QList<QByteArray>);   // ERR_NICKNAMEINUSE
 

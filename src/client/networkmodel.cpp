@@ -472,7 +472,14 @@ QVariant IrcUserItem::data(int column, int role) const {
 
 QString IrcUserItem::toolTip(int column) const {
   Q_UNUSED(column);
-  return "<p><b>" + nickName() + "</b><br />" + _ircUser->hostmask() + "</p>";
+  QString toolTip = "<b>" + nickName() + "</b><br />" + _ircUser->hostmask();
+  if(_ircUser->isAway()) {
+    toolTip += "<br /> away";
+    if(!_ircUser->awayMessage().isEmpty()) { 
+      toolTip += " (" + _ircUser->awayMessage() + ")"; 
+    }
+  }
+  return "<p>" + toolTip + "</p>";
 }
 
 void IrcUserItem::setNick(QString newNick) {

@@ -39,6 +39,7 @@ IrcUser::IrcUser(const QString &hostmask, Network *network)
     _codecForDecoding(0)
 {
   updateObjectName();
+  _away = false;
 }
 
 IrcUser::~IrcUser() {
@@ -61,8 +62,20 @@ QString IrcUser::nick() const {
   return _nick;
 }
 
+QString IrcUser::realName() const {
+  return _realName;
+}
+
 QString IrcUser::hostmask() const {
   return QString("%1!%2@%3").arg(nick()).arg(user()).arg(host());
+}
+
+bool IrcUser::isAway() const {
+  return _away;
+}
+
+QString IrcUser::awayMessage() const {
+  return _awayMessage;
 }
 
 QString IrcUser::userModes() const {
@@ -127,6 +140,28 @@ void IrcUser::setUser(const QString &user) {
     emit userSet(user);
   }
 }
+
+void IrcUser::setRealName(const QString &realName) {
+  if (!realName.isEmpty() && _realName != realName) {
+    _realName = realName;
+    emit realNameSet(realName);
+  }
+}
+
+void IrcUser::setAway(const bool &away) {
+  if(away != _away) {
+    _away = away;
+    emit awaySet(away);
+  }
+}
+
+void IrcUser::setAwayMessage(const QString &awayMessage) {
+  if(!awayMessage.isEmpty() && _awayMessage != awayMessage) {
+    _awayMessage = awayMessage;
+    emit awayMessageSet(awayMessage);
+  }
+}
+
 
 void IrcUser::setHost(const QString &host) {
   if(!host.isEmpty() && _host != host) {

@@ -388,6 +388,72 @@ void IrcServerHandler::handle005(QString prefix, QList<QByteArray> params) {
 }
 
 
+/* 
+WHOIS-Message: 
+   Replies 311 - 313, 317 - 319 are all replies generated in response to a WHOIS message.
+  and 301 (RPL_AWAY)
+              "<nick> :<away message>"
+WHO-Message:
+   Replies 352 and 315 paired are used to answer a WHO message.
+
+WHOWAS-Message:
+   Replies 314 and 369 are responses to a WHOWAS message.
+*/
+
+
+/*   RPL_AWAY - "<nick> :<away message>" */
+void IrcServerHandler::handle301(QString prefix, QList<QByteArray> params) {
+  IrcUser *ircuser = network()->ircUser(serverDecode(params[0]));
+  ircuser->setAwayMessage(serverDecode(params.last()));
+  ircuser->setAway(true);
+  emit displayMsg(Message::Server, "", tr("[Whois] %1").arg(serverDecode(params).join(" ")));
+}
+
+/*  RPL_WHOISUSER - "<nick> <user> <host> * :<real name>" */
+void IrcServerHandler::handle311(QString prefix, QList<QByteArray> params) {
+  IrcUser *ircuser = network()->ircUser(serverDecode(params[0]));
+  ircuser->setUser(serverDecode(params[1]));
+  ircuser->setHost(serverDecode(params[2]));
+  ircuser->setRealName(serverDecode(params.last()));
+  emit displayMsg(Message::Server, "", tr("[Whois] %1 %2 %3 (%4)")
+      .arg(ircuser->nick(), ircuser->user(), ircuser->host(), ircuser->realName()));
+}
+ 
+/*  RPL_WHOISSERVER -  "<nick> <server> :<server info>" */
+void IrcServerHandler::handle312(QString prefix, QList<QByteArray> params) {
+  emit displayMsg(Message::Server, "", tr("[Whois/Whowas] %1").arg(serverDecode(params).join(" ")));
+}
+
+/*  RPL_WHOISOPERATOR - "<nick> :is an IRC operator" */
+void IrcServerHandler::handle313(QString prefix, QList<QByteArray> params) {
+  emit displayMsg(Message::Server, "", tr("[Whois] %1").arg(serverDecode(params).join(" ")));
+}
+
+/*  RPL_WHOWASUSER - "<nick> <user> <host> * :<real name>" */
+void IrcServerHandler::handle314(QString prefix, QList<QByteArray> params) {
+  emit displayMsg(Message::Server, "", tr("[Whowas] %1").arg(serverDecode(params).join(" ")));
+}
+
+/*  RPL_ENDOFWHO: "<name> :End of WHO list" */
+void IrcServerHandler::handle315(QString prefix, QList<QByteArray> params) {
+  emit displayMsg(Message::Server, "", tr("[Who] %1").arg(serverDecode(params).join(" ")));
+}
+
+/*  RPL_WHOISIDLE - "<nick> <integer> :seconds idle" */
+void IrcServerHandler::handle317(QString prefix, QList<QByteArray> params) {
+  emit displayMsg(Message::Server, "", tr("[Whois] %1").arg(serverDecode(params).join(" ")));
+}
+
+/*  RPL_ENDOFWHOIS - "<nick> :End of WHOIS list" */
+void IrcServerHandler::handle318(QString prefix, QList<QByteArray> params) {
+  emit displayMsg(Message::Server, "", tr("[Whois] %1").arg(serverDecode(params).join(" ")));
+}
+
+/*  RPL_WHOISCHANNELS - "<nick> :*( ( "@" / "+" ) <channel> " " )" */
+void IrcServerHandler::handle319(QString prefix, QList<QByteArray> params) {
+  emit displayMsg(Message::Server, "", tr("[Whois] %1").arg(serverDecode(params).join(" ")));
+}
+
 /* RPL_NOTOPIC */
 void IrcServerHandler::handle331(QString prefix, QList<QByteArray> params) {
   Q_UNUSED(prefix);
@@ -413,6 +479,25 @@ void IrcServerHandler::handle333(QString prefix, QList<QByteArray> params) {
       .arg(bufferDecode(channel, params[1]), QDateTime::fromTime_t(bufferDecode(channel, params[2]).toUInt()).toString()));
 }
 
+/*  RPL_WHOREPLY: "<channel> <user> <host> <server> <nick> 
+              ( "H" / "G" > ["*"] [ ( "@" / "+" ) ] :<hopcount> <real name>" */
+void IrcServerHandler::handle352(QString prefix, QList<QByteArray> params) {
+  QString channel = serverDecode(params[0]);
+  IrcUser *ircuser = network()->ircUser(serverDecode(params[4]));
+  ircuser->setUser(serverDecode(params[1]));
+  ircuser->setHost(serverDecode(params[2]));
+
+  bool away = serverDecode(params[5]).startsWith("G") ? true : false;
+  ircuser->setAway(away);
+
+  // TODO: !!
+  QString server = serverDecode(params[3]); 
+  int hopCount =  serverDecode(params.last()).section(" ", 0, 0).toInt(); 
+  ircuser->setRealName(serverDecode(params.last()).section(" ", 1));
+
+  emit displayMsg(Message::Server, "", tr("[Who] %1").arg(serverDecode(params).join(" ")));
+}
+
 /* RPL_NAMREPLY */
 void IrcServerHandler::handle353(QString prefix, QList<QByteArray> params) {
   Q_UNUSED(prefix)
@@ -433,6 +518,11 @@ void IrcServerHandler::handle353(QString prefix, QList<QByteArray> params) {
     if(!mode.isNull())
       network()->ircChannel(channelname)->addUserMode(ircuser, mode);
   }
+}
+
+/*  RPL_ENDOFWHOWAS - "<nick> :End of WHOWAS" */
+void IrcServerHandler::handle369(QString prefix, QList<QByteArray> params) {
+  emit displayMsg(Message::Server, "", tr("[Whowas] %1").arg(serverDecode(params).join(" ")));
 }
 
 /* ERR_ERRONEUSNICKNAME */

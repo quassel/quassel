@@ -38,6 +38,9 @@ class IrcUser : public SyncableObject {
   Q_PROPERTY(QString user READ user WRITE setUser STORED false)
   Q_PROPERTY(QString host READ host WRITE setHost STORED false)
   Q_PROPERTY(QString nick READ nick WRITE setNick STORED false)
+  Q_PROPERTY(QString realName READ realName WRITE setRealName STORED false)
+  Q_PROPERTY(bool away READ isAway WRITE setAway STORED false)
+  Q_PROPERTY(QString awayMessage READ awayMessage WRITE setAwayMessage STORED false)
 
   Q_PROPERTY(QStringList channels READ channels STORED false)
   //  Q_PROPERTY(QStringList usermodes READ usermodes WRITE setUsermodes)
@@ -49,7 +52,10 @@ public:
   QString user() const;
   QString host() const;
   QString nick() const;
+  QString realName() const; 
   QString hostmask() const;
+  bool isAway() const;
+  QString awayMessage() const;
   Network *network() const;
 
   QString userModes() const;
@@ -71,6 +77,9 @@ public slots:
   void setUser(const QString &user);
   void setHost(const QString &host);
   void setNick(const QString &nick);
+  void setRealName(const QString &realName);
+  void setAway(const bool &away);
+  void setAwayMessage(const QString &awayMessage);
   void updateHostmask(const QString &mask);
 
   void setUserModes(const QString &modes);
@@ -90,6 +99,9 @@ signals:
   void userSet(QString user);
   void hostSet(QString host);
   void nickSet(QString newnick);
+  void realNameSet(QString realName);
+  void awaySet(bool away);
+  void awayMessageSet(QString awayMessage);
   void hostmaskUpdated(QString mask);
 
   void userModesSet(QString modes);
@@ -123,6 +135,9 @@ private:
   QString _nick;
   QString _user;
   QString _host;
+  QString _realName;
+  QString _awayMessage;
+  bool _away;
 
   // QSet<QString> _channels;
   QSet<IrcChannel *> _channels;
