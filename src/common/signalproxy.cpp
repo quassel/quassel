@@ -555,7 +555,7 @@ void SignalProxy::stopSync(SyncableObject* obj) {
   // gladly the objectName() is still valid. So we have only to iterate over the classes not each instance! *sigh*
   QHash<QByteArray, ObjectId>::iterator classIter = _syncSlave.begin();
   while(classIter != _syncSlave.end()) {
-    if(classIter->contains(obj->objectName())) {
+    if(classIter->contains(obj->objectName()) && classIter.value()[obj->objectName()] == obj) {
       classIter->remove(obj->objectName());
       break;
     }
