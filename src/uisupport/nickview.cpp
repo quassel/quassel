@@ -23,7 +23,7 @@
 #include <QMenu>
 
 #include "nickview.h"
-#include "nickmodel.h"
+#include "nickviewfilter.h"
 #include "networkmodel.h"
 #include "types.h"
 #include "client.h"
