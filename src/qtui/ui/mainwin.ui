@@ -72,10 +72,6 @@
     <property name="title" >
      <string>Settings</string>
     </property>
-    <addaction name="separator" />
-    <addaction name="actionEditIdentities" />
-    <addaction name="separator" />
-    <addaction name="separator" />
     <addaction name="actionSettingsDlg" />
    </widget>
    <widget class="QMenu" name="menuViews" >
@@ -97,7 +93,6 @@
      <string>Debug</string>
     </property>
     <addaction name="actionDebug_Console" />
-    <addaction name="actionDisconnectNet" />
    </widget>
    <widget class="QMenu" name="menuCore" >
     <property name="title" >

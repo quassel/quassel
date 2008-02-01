@@ -29,7 +29,6 @@
 #include "networkmodel.h"
 #include "buffermodel.h"
 #include "nicklistwidget.h"
-#include "serverlist.h"
 #include "settingsdlg.h"
 #include "signalproxy.h"
 #include "topicwidget.h"
@@ -54,7 +53,6 @@ MainWin::MainWin(QtUi *_gui, QWidget *parent) : QMainWindow(parent), gui(_gui) {
   setWindowIconText("Quassel IRC");
 
   statusBar()->showMessage(tr("Waiting for core..."));
-  serverListDlg = new ServerListDlg(this);
   settingsDlg = new SettingsDlg(this);
   debugConsole = new DebugConsole(this);
 }
@@ -122,10 +120,6 @@ void MainWin::init() {
   showCoreConnectionDlg(true); // autoconnect if appropriate
   //ui.actionConnectCore->activate(QAction::Trigger);
 
-  if(serverListDlg->showOnStartup()) {
-    showServerList();
-  }
-  
   // attach the BufferWidget to the PropertyMapper
   ui.bufferWidget->setModel(Client::bufferModel());
   ui.bufferWidget->setSelectionModel(Client::bufferModel()->standardSelectionModel());
@@ -157,8 +151,7 @@ void MainWin::setupSettingsDlg() {
 void MainWin::setupMenus() {
   connect(ui.actionConnectCore, SIGNAL(triggered()), this, SLOT(showCoreConnectionDlg()));
   connect(ui.actionDisconnectCore, SIGNAL(triggered()), Client::instance(), SLOT(disconnectFromCore()));
-  connect(ui.actionNetworkList, SIGNAL(triggered()), this, SLOT(showServerList()));
-  connect(ui.actionEditIdentities, SIGNAL(triggered()), serverListDlg, SLOT(editIdentities()));
+  //connect(ui.actionNetworkList, SIGNAL(triggered()), this, SLOT(showServerList()));
   connect(ui.actionSettingsDlg, SIGNAL(triggered()), this, SLOT(showSettingsDlg()));
   connect(ui.actionDebug_Console, SIGNAL(triggered()), this, SLOT(showDebugConsole()));
   connect(ui.actionDisconnectNet, SIGNAL(triggered()), this, SLOT(disconnectFromNet()));
@@ -322,15 +315,6 @@ void MainWin::showCoreConnectionDlg(bool autoConnect) {
 void MainWin::coreConnectionDlgFinished(int /*code*/) {
   coreConnectDlg->close();
   //exit(1);
-}
-
-
-void MainWin::showServerList() {
-//  if(!serverListDlg) {
-//    serverListDlg = new ServerListDlg(this);
-//  }
-  serverListDlg->show();
-  serverListDlg->raise();
 }
 
 void MainWin::showSettingsDlg() {

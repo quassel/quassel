@@ -164,6 +164,8 @@ src/qtui/guisettings.cpp
 src/qtui/guisettings.h
 src/qtui/identities.cpp
 src/qtui/identities.h
+src/qtui/inputwidget.cpp
+src/qtui/inputwidget.h
 src/qtui/mainwin.cpp
 src/qtui/mainwin.h
 src/qtui/nicklistwidget.cpp
@@ -211,6 +213,8 @@ src/qtui/ui/servereditdlg.ui
 src/qtui/ui/serverlistdlg.ui
 src/qtui/ui/settingsdlg.ui
 src/qtui/ui/topicwidget.ui
+src/qtui/verticaldock.cpp
+src/qtui/verticaldock.h
 src/uisupport
 src/uisupport/action.cpp
 src/uisupport/action.h
@@ -224,6 +228,8 @@ src/uisupport/inputline.cpp
 src/uisupport/inputline.h
 src/uisupport/nickview.cpp
 src/uisupport/nickview.h
+src/uisupport/nickviewfilter.cpp
+src/uisupport/nickviewfilter.h
 src/uisupport/settingspage.cpp
 src/uisupport/settingspage.h
 src/uisupport/tabcompleter.cpp

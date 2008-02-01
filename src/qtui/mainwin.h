@@ -60,7 +60,6 @@ class MainWin : public QMainWindow {
 
   private slots:
 
-    void showServerList();
     void showSettingsDlg();
     void showDebugConsole();
     void showCoreConnectionDlg(bool autoConnect = false);
@@ -91,7 +90,6 @@ class MainWin : public QMainWindow {
 
     QSystemTrayIcon *systray;
 
-    ServerListDlg *serverListDlg;
     CoreConnectDlg *coreConnectDlg;
     SettingsDlg *settingsDlg;
 
