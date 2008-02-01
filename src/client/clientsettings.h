@@ -31,12 +31,6 @@ class ClientSettings : public Settings {
   protected:
     ClientSettings(QString group = "General");
 
-    //virtual QStringList allSessionKeys() = 0;
-    virtual QStringList sessionKeys();
-
-    virtual void setSessionValue(const QString &key, const QVariant &data);
-    virtual QVariant sessionValue(const QString &key, const QVariant &def = QVariant());
-
 };
 
 class CoreAccountSettings : public ClientSettings {

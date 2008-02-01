@@ -43,9 +43,6 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent) : QObje
 
   SignalProxy *p = signalProxy();
 
-  CoreUserSettings s(user());
-  sessionData = s.sessionData();
-
   p->attachSlot(SIGNAL(requestConnect(QString)), this, SLOT(connectToNetwork(QString)));
   p->attachSlot(SIGNAL(disconnectFromNetwork(NetworkId)), this, SLOT(disconnectFromNetwork(NetworkId))); // FIXME
   p->attachSlot(SIGNAL(sendInput(BufferInfo, QString)), this, SLOT(msgFromClient(BufferInfo, QString)));
@@ -54,9 +51,6 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent) : QObje
   p->attachSignal(this, SIGNAL(displayStatusMsg(QString, QString)));
   p->attachSignal(this, SIGNAL(backlogData(BufferInfo, QVariantList, bool)));
   p->attachSignal(this, SIGNAL(bufferInfoUpdated(BufferInfo)));
-
-  p->attachSignal(this, SIGNAL(sessionDataChanged(const QString &, const QVariant &)), SIGNAL(coreSessionDataChanged(const QString &, const QVariant &)));
-  p->attachSlot(SIGNAL(clientSessionDataChanged(const QString &, const QVariant &)), this, SLOT(storeSessionData(const QString &, const QVariant &)));
 
   p->attachSignal(this, SIGNAL(identityCreated(const Identity &)));
   p->attachSignal(this, SIGNAL(identityRemoved(IdentityId)));
@@ -141,7 +135,7 @@ void CoreSession::loadSettings() {
 
   // FIXME Migrate old settings if available...
   if(!_networks.count()) {
-    QVariantMap networks = retrieveSessionData("Networks").toMap();
+    QVariantMap networks = s.sessionValue("Networks").toMap();
     if(networks.keys().count()) {
       qWarning() << "Migrating your old network settings to the new format!";
       foreach(QString netname, networks.keys()) {
@@ -194,22 +188,6 @@ void CoreSession::restoreSessionState() {
     NetworkId id = v.toMap()["NetworkId"].value<NetworkId>();
     if(_networks.keys().contains(id)) connectToNetwork(id, v.toMap()["State"]);
   }
-}
-
-
-void CoreSession::storeSessionData(const QString &key, const QVariant &data) {
-  CoreUserSettings s(user());
-  s.setSessionValue(key, data);
-  sessionData[key] = data;
-  emit sessionDataChanged(key, data);
-  emit sessionDataChanged(key);
-}
-
-QVariant CoreSession::retrieveSessionData(const QString &key, const QVariant &def) {
-  QVariant data;
-  if(!sessionData.contains(key)) data = def;
-  else data = sessionData[key];
-  return data;
 }
 
 void CoreSession::updateBufferInfo(UserId uid, const BufferInfo &bufinfo) {
@@ -359,9 +337,7 @@ QVariant CoreSession::sessionState() {
   foreach(Identity *i, _identities.values()) idlist << qVariantFromValue(*i);
   v["Identities"] = idlist;
 
-  v["SessionData"] = sessionData;
-
-    //v["Payload"] = QByteArray(100000000, 'a');  // for testing purposes
+  //v["Payload"] = QByteArray(100000000, 'a');  // for testing purposes
   return v;
 }
 

@@ -34,18 +34,6 @@ ClientSettings::~ClientSettings() {
 
 }
 
-QStringList ClientSettings::sessionKeys() {
-  return Client::sessionDataKeys();
-}
-
-void ClientSettings::setSessionValue(const QString &key, const QVariant &data) {
-  Client::storeSessionData(key, data);
-}
-
-QVariant ClientSettings::sessionValue(const QString &key, const QVariant &def) {
-  return Client::retrieveSessionData(key, def);
-}
-
 /***********************************************************************************************/
 
 CoreAccountSettings::CoreAccountSettings() : ClientSettings("CoreAccounts") {

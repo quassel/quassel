@@ -74,7 +74,7 @@ void CoreUserSettings::removeNetworkInfo(NetworkId id) {
   removeLocalKey(QString("Networks/%1").arg(id.toInt()));
 }
 
-
+// FIXME remove as soon as the network data migration is gone
 void CoreUserSettings::setSessionState(const QVariant &data) {
   setLocalValue("SessionState", data);
 }

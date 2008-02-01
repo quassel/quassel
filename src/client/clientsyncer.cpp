@@ -42,7 +42,6 @@ ClientSyncer::~ClientSyncer() {
 
 }
 
-
 void ClientSyncer::coreHasData() {
   QVariant item;
   while(SignalProxy::readDataFromDevice(socket, blockSize, item)) {
@@ -199,10 +198,6 @@ void ClientSyncer::sessionStateReceived(const QVariantMap &state) {
 }
 
 void ClientSyncer::syncToCore(const QVariantMap &sessionState) {
-
-  // store sessionData
-  QVariantMap sessData = sessionState["SessionData"].toMap();
-  foreach(QString key, sessData.keys()) Client::instance()->recvSessionData(key, sessData[key]);
 
   // create identities
   foreach(QVariant vid, sessionState["Identities"].toList()) {

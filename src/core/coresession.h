@@ -27,7 +27,7 @@
 #include "message.h"
 
 class Identity;
-class NetworkConnection;  // FIXME get rid of
+class NetworkConnection;
 class Network;
 struct NetworkInfo;
 class SignalProxy;
@@ -49,9 +49,6 @@ public:
 
   QVariant sessionState();
 
-  //! Retrieve a piece of session-wide data.
-  QVariant retrieveSessionData(const QString &key, const QVariant &def = QVariant());
-
   SignalProxy *signalProxy() const;
 
   void attachNetworkConnection(NetworkConnection *conn);
@@ -61,9 +58,6 @@ public:
   void restoreSessionState();
 
 public slots:
-  //! Store a piece session-wide data and distribute it to connected clients.
-  void storeSessionData(const QString &key, const QVariant &data);
-
   void networkStateRequested();
 
   void addClient(QObject *socket);
@@ -119,8 +113,6 @@ signals:
   void backlogData(BufferInfo, QVariantList, bool done);
 
   void bufferInfoUpdated(BufferInfo);
-  void sessionDataChanged(const QString &key);
-  void sessionDataChanged(const QString &key, const QVariant &data);
 
   void scriptResult(QString result);
 
@@ -164,8 +156,6 @@ private:
   QHash<NetworkId, NetworkConnection *> _connections;
   QHash<NetworkId, Network *> _networks;
   QHash<IdentityId, Identity *> _identities;
-
-  QVariantMap sessionData;
 
   QScriptEngine *scriptEngine;
 

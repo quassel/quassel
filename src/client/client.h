@@ -99,10 +99,6 @@ public:
 
   static void userInput(BufferInfo bufferInfo, QString message);
 
-  static void storeSessionData(const QString &key, const QVariant &data);
-  static QVariant retrieveSessionData(const QString &key, const QVariant &def = QVariant());
-  static QStringList sessionDataKeys();
-
   enum ClientMode { LocalCore, RemoteCore };
 
 signals:
@@ -118,10 +114,6 @@ signals:
   void connected();
   void disconnected();
   void coreConnectionStateChanged(bool);
-
-  void sessionDataChanged(const QString &key);
-  void sessionDataChanged(const QString &key, const QVariant &data);
-  void sendSessionData(const QString &key, const QVariant &data);
 
   //! The identity with the given ID has been newly created in core and client.
   /** \param id The ID of the newly created identity.
@@ -160,8 +152,6 @@ public slots:
   void setCoreConfiguration(const QVariantMap &settings);
 
 private slots:
-  void recvSessionData(const QString &key, const QVariant &data);
-
   //void coreSocketError(QAbstractSocket::SocketError);
 
   //void networkConnected(NetworkId);
@@ -208,8 +198,6 @@ private:
 
   QTimer *layoutTimer;
   QList<Buffer *> layoutQueue;
-
-  QVariantMap sessionData;
 
   friend class ClientSyncer;
 };

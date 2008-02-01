@@ -79,19 +79,9 @@ void Client::init() {
   _bufferModel = new BufferModel(_networkModel);
 
   SignalProxy *p = signalProxy();
-  p->attachSignal(this, SIGNAL(sendSessionData(const QString &, const QVariant &)),
-                  SIGNAL(clientSessionDataChanged(const QString &, const QVariant &)));
-  p->attachSlot(SIGNAL(coreSessionDataChanged(const QString &, const QVariant &)),
-                this, SLOT(recvSessionData(const QString &, const QVariant &)));
-  //p->attachSlot(SIGNAL(networkConnected(uint)),
-  //FIXME              this, SLOT(networkConnected(uint)));
-  //p->attachSlot(SIGNAL(networkDisconnected(uint)),
-  //FIXME              this, SLOT(networkDisconnected(uint)));
-  p->attachSlot(SIGNAL(displayMsg(const Message &)),
-                this, SLOT(recvMessage(const Message &)));
-  p->attachSlot(SIGNAL(displayStatusMsg(QString, QString)),
-                this, SLOT(recvStatusMsg(QString, QString)));
 
+  p->attachSlot(SIGNAL(displayMsg(const Message &)), this, SLOT(recvMessage(const Message &)));
+  p->attachSlot(SIGNAL(displayStatusMsg(QString, QString)), this, SLOT(recvStatusMsg(QString, QString)));
 
   p->attachSlot(SIGNAL(backlogData(BufferInfo, const QVariantList &, bool)), this, SLOT(recvBacklogData(BufferInfo, const QVariantList &, bool)));
   p->attachSlot(SIGNAL(bufferInfoUpdated(BufferInfo)), this, SLOT(updateBufferInfo(BufferInfo)));
@@ -198,35 +188,6 @@ const Network * Client::network(NetworkId networkid) {
   if(instance()->_networks.contains(networkid)) return instance()->_networks[networkid];
   else return 0;
 }
-
-/*
-void Client::networkConnected(uint netid) {
-  // TODO: create statusBuffer / switch to networkids
-  //BufferInfo id = statusBufferInfo(net);
-  //Buffer *b = buffer(id);
-  //b->setActive(true);
-
-  Network *netinfo = new Network(netid, this);
-  netinfo->setProxy(signalProxy());
-  networkModel()->attachNetwork(netinfo);
-  connect(netinfo, SIGNAL(destroyed()), this, SLOT(networkDestroyed()));
-  _networks[netid] = netinfo;
-}
-
-void Client::networkDisconnected(NetworkId networkid) {
-  if(!_networks.contains(networkid)) {
-    qWarning() << "Client::networkDisconnected(uint): unknown Network" << networkid;
-    return;
-}
-
-  Network *net = _networks.take(networkid);
-  if(!net->isInitialized()) {
-    qDebug() << "Network" << networkid << "disconnected while not yet initialized!";
-    updateCoreConnectionProgress();
-}
-  net->deleteLater();
-}
-*/
 
 void Client::createNetwork(const NetworkInfo &info) {
   emit instance()->requestCreateNetwork(info);
@@ -367,7 +328,6 @@ void Client::disconnectFromCore() {
   }
   Q_ASSERT(_identities.isEmpty());
 
-  sessionData.clear();
   layoutQueue.clear();
   layoutTimer->stop();
 }
@@ -375,33 +335,6 @@ void Client::disconnectFromCore() {
 void Client::setCoreConfiguration(const QVariantMap &settings) {
   SignalProxy::writeDataToDevice(socket, settings);
 }
-
-/*** Session data ***/
-
-void Client::recvSessionData(const QString &key, const QVariant &data) {
-  sessionData[key] = data;
-  emit sessionDataChanged(key, data);
-  emit sessionDataChanged(key);
-}
-
-void Client::storeSessionData(const QString &key, const QVariant &data) {
-  // Not sure if this is a good idea, but we'll try it anyway:
-  // Calling this function only sends a signal to core. Data is stored upon reception of the update signal,
-  // rather than immediately.
-  emit instance()->sendSessionData(key, data);
-}
-
-QVariant Client::retrieveSessionData(const QString &key, const QVariant &def) {
-  if(instance()->sessionData.contains(key)) return instance()->sessionData[key];
-  else return def;
-}
-
-QStringList Client::sessionDataKeys() {
-  return instance()->sessionData.keys();
-}
-
-/*** ***/
-
 
 /*** ***/
 
