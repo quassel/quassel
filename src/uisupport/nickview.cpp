@@ -76,9 +76,7 @@ void NickView::showContextMenu(const QPoint & pos ) {
 
   QAction *whoisAction = nickContextMenu.addAction(tr("WHOIS"));
   QAction *versionAction = nickContextMenu.addAction(tr("VERSION"));
-  versionAction->setEnabled(false);
   QAction *pingAction = nickContextMenu.addAction(tr("PING"));
-  pingAction->setEnabled(false);
 
   nickContextMenu.addSeparator();
 
@@ -105,9 +103,9 @@ void NickView::showContextMenu(const QPoint & pos ) {
 
   QAction *result = nickContextMenu.exec(QCursor::pos());
 
-  if(result == whoisAction)         { Client::instance()->userInput(bufferInfo, "/WHOIS " + username + " " + username); }
-  else if(result == versionAction)  { Client::instance()->userInput(bufferInfo, "/CTCP " + username + " VERSION"); }
-  else if(result == pingAction)     { Client::instance()->userInput(bufferInfo, "/CTCP " + username + " PING"); }
+  if(result == whoisAction)         { Client::instance()->userInput(bufferInfo, QString("/WHOIS %1 %1").arg(username)); }
+  else if(result == versionAction)  { Client::instance()->userInput(bufferInfo, QString("/CTCP %1 VERSION").arg(username)); }
+  else if(result == pingAction)     { Client::instance()->userInput(bufferInfo, QString("/CTCP %1 PING ").arg(username)); }
 
   else if(result == opAction)       { Client::instance()->userInput(bufferInfo, "/OP " + username); }
   else if(result == deOpAction)     { Client::instance()->userInput(bufferInfo, "/DEOP " + username); }

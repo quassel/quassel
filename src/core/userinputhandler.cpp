@@ -66,6 +66,24 @@ void UserInputHandler::handleBan(QString bufname, QString msg) {
   emit putCmd("MODE", banMsg);
 }
 
+void UserInputHandler::handleCtcp(QString bufname, QString msg) {
+  QStringList params = msg.split(" ", QString::SkipEmptyParts);
+  if (params.size() != 2) {
+    // qDebug() << "Ctcp-Request-Error: not exactly two parameters ->" << msg;
+    return;
+  }
+  params[1] = params[1].toUpper();
+  QString verboseMessage = tr("sending CTCP-%1-request").arg(params[1]);
+  if(params[1] == "PING") {
+    uint now = QDateTime::currentDateTime().toTime_t();
+    params.append(QString::number(now));
+  } else {
+    params.append("");
+  }
+  server->ctcpHandler()->query(params[0], params[1], params[2]);
+  emit displayMsg(Message::Action, "", verboseMessage, network()->myNick());
+}
+
 void UserInputHandler::handleDeop(QString bufname, QString msg) {
   QStringList nicks = msg.split(' ', QString::SkipEmptyParts);
   QString m = "-"; for(int i = 0; i < nicks.count(); i++) m += 'o';
