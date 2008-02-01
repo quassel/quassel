@@ -25,7 +25,7 @@
         <file>oxygen/16x16/actions/color-picker.png</file>
         <file>oxygen/16x16/actions/configure-shortcuts.png</file>
         <file>oxygen/16x16/actions/configure-toolbars.png</file>
-        <file>oxygen/16x16/actions/configure.png</file>
+        <file alias="configure">oxygen/16x16/actions/configure.png</file>
         <file>oxygen/16x16/actions/contact-new.png</file>
         <file>oxygen/16x16/actions/datashow.png</file>
         <file>oxygen/16x16/actions/datashowchart.png</file>
@@ -191,8 +191,8 @@
         <file>oxygen/16x16/actions/media-seek-forward.png</file>
         <file>oxygen/16x16/actions/media-skip-backward.png</file>
         <file>oxygen/16x16/actions/media-skip-forward.png</file>
-        <file>oxygen/16x16/actions/network-connect.png</file>
-        <file>oxygen/16x16/actions/network-disconnect.png</file>
+        <file alias="network-connect">oxygen/16x16/actions/network-connect.png</file>
+        <file alias="network-disconnect">oxygen/16x16/actions/network-disconnect.png</file>
         <file>oxygen/16x16/actions/news-subscribe.png</file>
         <file>oxygen/16x16/actions/news-unsubscribe.png</file>
         <file>oxygen/16x16/actions/object-rotate-left.png</file>
@@ -318,7 +318,7 @@
         <file>oxygen/22x22/actions/color-picker.png</file>
         <file>oxygen/22x22/actions/configure-shortcuts.png</file>
         <file>oxygen/22x22/actions/configure-toolbars.png</file>
-        <file>oxygen/22x22/actions/configure.png</file>
+        <file alias="configure">oxygen/22x22/actions/configure.png</file>
         <file>oxygen/22x22/actions/contact-new.png</file>
         <file>oxygen/22x22/actions/datashow.png</file>
         <file>oxygen/22x22/actions/datashowchart.png</file>

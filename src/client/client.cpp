@@ -304,6 +304,7 @@ void Client::disconnectFromCore() {
   QHash<NetworkId, Network*>::iterator netIter = _networks.begin();
   while(netIter != _networks.end()) {
     Network *net = netIter.value();
+    emit networkRemoved(net->networkId());
     disconnect(net, SIGNAL(destroyed()), this, 0);
     netIter = _networks.erase(netIter);
     net->deleteLater();

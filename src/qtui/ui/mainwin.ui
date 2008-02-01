@@ -53,14 +53,16 @@
     <property name="title" >
      <string>Connection</string>
     </property>
+    <widget class="QMenu" name="menuNetworks" >
+     <property name="title" >
+      <string>&amp;Networks</string>
+     </property>
+     <addaction name="separator" />
+    </widget>
     <addaction name="actionConnectCore" />
     <addaction name="actionDisconnectCore" />
     <addaction name="separator" />
-    <addaction name="actionNetworkList" />
-    <addaction name="actionQuickConnect" />
-    <addaction name="separator" />
-    <addaction name="actionDisconnect" />
-    <addaction name="actionReconnect" />
+    <addaction name="menuNetworks" />
     <addaction name="separator" />
     <addaction name="actionJoinChannel" />
     <addaction name="separator" />
@@ -259,6 +261,14 @@
   <action name="actionDisconnectNet" >
    <property name="text" >
     <string>Disconnect from Network...</string>
+   </property>
+  </action>
+  <action name="actionEditNetworks" >
+   <property name="enabled" >
+    <bool>false</bool>
+   </property>
+   <property name="text" >
+    <string>&amp;Edit Networks...</string>
    </property>
   </action>
  </widget>

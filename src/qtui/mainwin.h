@@ -62,15 +62,18 @@ class MainWin : public QMainWindow {
 
     void showSettingsDlg();
     void showDebugConsole();
+
     void showCoreConnectionDlg(bool autoConnect = false);
     void coreConnectionDlgFinished(int result);
 
-    void disconnectFromNet();
+    void clientNetworkCreated(NetworkId);
+    void clientNetworkRemoved(NetworkId);
+    void clientNetworkUpdated();
+    void connectOrDisconnectFromNet();
 
   signals:
     void connectToCore(const QVariantMap &connInfo);
     void disconnectFromCore();
-    void disconnectFromNetwork(NetworkId);
     void requestBacklog(BufferInfo, QVariant, QVariant);
 
   private:
@@ -83,7 +86,8 @@ class MainWin : public QMainWindow {
     void setupChatMonitor();
     void setupInputWidget();
     void setupTopicWidget();
-  
+    void setupSystray();
+
     void setupSettingsDlg();
 
     void enableMenus();
@@ -99,6 +103,9 @@ class MainWin : public QMainWindow {
     QList<QDockWidget *> netViews;
     QDockWidget *nickDock;
     NickListWidget *nickListWidget;
+
+    QAction *actionEditNetworks;
+    QList<QAction *> networkActions;
 
     DebugConsole *debugConsole;
     friend class QtUi;

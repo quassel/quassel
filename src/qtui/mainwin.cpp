@@ -48,7 +48,6 @@
 MainWin::MainWin(QtUi *_gui, QWidget *parent) : QMainWindow(parent), gui(_gui) {
   ui.setupUi(this);
   setWindowTitle("Quassel IRC");
-  //setWindowTitle(QString::fromUtf8("Κυασελ Εγαρζη"));
   setWindowIcon(QIcon(":icons/quassel-icon.png"));
   setWindowIconText("Quassel IRC");
 
@@ -62,55 +61,32 @@ void MainWin::init() {
   resize(s.value("MainWinSize").toSize());
 
   Client::signalProxy()->attachSignal(this, SIGNAL(requestBacklog(BufferInfo, QVariant, QVariant)));
-  Client::signalProxy()->attachSignal(this, SIGNAL(disconnectFromNetwork(NetworkId)));
+
+  connect(Client::instance(), SIGNAL(networkCreated(NetworkId)), this, SLOT(clientNetworkCreated(NetworkId)));
+  connect(Client::instance(), SIGNAL(networkRemoved(NetworkId)), this, SLOT(clientNetworkRemoved(NetworkId)));
   ui.bufferWidget->init();
 
   show();
 
-  //QVariantMap connInfo;
-  //connInfo["User"] = "Default";
-  //connInfo["Password"] = "password";
-  //connectToCore(connInfo);
-
   statusBar()->showMessage(tr("Not connected to core."));
-
-  systray = new QSystemTrayIcon(this);
-  systray->setIcon(QIcon(":/icons/quassel-icon.png"));
-  
-  QString toolTip("left click to minimize the quassel client to tray");
-  systray->setToolTip(toolTip);
-  
-  QMenu *systrayMenu = new QMenu();
-  systrayMenu->addAction(ui.actionAboutQuassel);
-  systrayMenu->addSeparator();
-  systrayMenu->addAction(ui.actionConnectCore);
-  systrayMenu->addAction(ui.actionDisconnectCore);
-  systrayMenu->addSeparator();
-  systrayMenu->addAction(ui.actionQuit);
-  
-  systray->setContextMenu(systrayMenu);
-  
-  systray->show();
-  connect(systray, SIGNAL(activated( QSystemTrayIcon::ActivationReason )), 
-          this, SLOT(systrayActivated( QSystemTrayIcon::ActivationReason )));
 
   // DOCK OPTIONS
   setDockNestingEnabled(true);
 
   setCorner(Qt::TopLeftCorner, Qt::LeftDockWidgetArea);
   setCorner(Qt::BottomLeftCorner, Qt::LeftDockWidgetArea);
-
   setCorner(Qt::TopRightCorner, Qt::RightDockWidgetArea);
   setCorner(Qt::BottomRightCorner, Qt::RightDockWidgetArea);
 
-  // setup the docks etc...
+  // setup stuff...
   setupMenus();
   setupViews();
   setupNickWidget();
   setupChatMonitor();
   setupInputWidget();
   setupTopicWidget();
-  
+  setupSystray();
+
   setupSettingsDlg();
 
   // restore mainwin state
@@ -118,13 +94,11 @@ void MainWin::init() {
 
   disconnectedFromCore();  // Disable menus and stuff
   showCoreConnectionDlg(true); // autoconnect if appropriate
-  //ui.actionConnectCore->activate(QAction::Trigger);
 
   // attach the BufferWidget to the PropertyMapper
   ui.bufferWidget->setModel(Client::bufferModel());
   ui.bufferWidget->setSelectionModel(Client::bufferModel()->standardSelectionModel());
 
-  
 #ifdef SPUTDEV
   showSettingsDlg();
 #endif
@@ -132,21 +106,8 @@ void MainWin::init() {
 }
 
 MainWin::~MainWin() {
-  //typedef QHash<QString, Buffer*> BufHash;
-  //foreach(BufHash h, buffers.values()) {
-  //  foreach(Buffer *b, h.values()) {
-  //    delete b;
-  //  }
-  //}
-  //foreach(Buffer *buf, buffers.values()) delete buf;
-}
-
-/* This is implemented in settingspages.cpp */
-/*
-void MainWin::setupSettingsDlg() {
 
 }
-*/
 
 void MainWin::setupMenus() {
   connect(ui.actionConnectCore, SIGNAL(triggered()), this, SLOT(showCoreConnectionDlg()));
@@ -154,9 +115,11 @@ void MainWin::setupMenus() {
   //connect(ui.actionNetworkList, SIGNAL(triggered()), this, SLOT(showServerList()));
   connect(ui.actionSettingsDlg, SIGNAL(triggered()), this, SLOT(showSettingsDlg()));
   connect(ui.actionDebug_Console, SIGNAL(triggered()), this, SLOT(showDebugConsole()));
-  connect(ui.actionDisconnectNet, SIGNAL(triggered()), this, SLOT(disconnectFromNet()));
   connect(ui.actionAboutQt, SIGNAL(triggered()), QApplication::instance(), SLOT(aboutQt()));
 
+  actionEditNetworks = new QAction(QIcon(":/22x22/actions/configure"), tr("Edit &Networks..."), this);
+  actionEditNetworks->setEnabled(false); // FIXME
+  ui.menuNetworks->addAction(actionEditNetworks);
 }
 
 void MainWin::setupViews() {
@@ -225,11 +188,11 @@ void MainWin::setupChatMonitor() {
   chatWidget->show();
   dock->setWidget(chatWidget);
   dock->show();
-  
+
   Buffer *buf = Client::monitorBuffer();
   if(!buf)
     return;
-  
+
   chatWidget->init(BufferId(0));
   QList<ChatLine *> lines;
   QList<AbstractUiMsg *> msgs = buf->contents();
@@ -274,6 +237,28 @@ void MainWin::setupTopicWidget() {
   ui.menuViews->addAction(dock->toggleViewAction());
 }
 
+void MainWin::setupSystray() {
+  systray = new QSystemTrayIcon(this);
+  systray->setIcon(QIcon(":/icons/quassel-icon.png"));
+
+  QString toolTip("left click to minimize the quassel client to tray");
+  systray->setToolTip(toolTip);
+
+  QMenu *systrayMenu = new QMenu(this);
+  systrayMenu->addAction(ui.actionAboutQuassel);
+  systrayMenu->addSeparator();
+  systrayMenu->addAction(ui.actionConnectCore);
+  systrayMenu->addAction(ui.actionDisconnectCore);
+  systrayMenu->addSeparator();
+  systrayMenu->addAction(ui.actionQuit);
+
+  systray->setContextMenu(systrayMenu);
+
+  systray->show();
+  connect(systray, SIGNAL(activated( QSystemTrayIcon::ActivationReason )),
+          this, SLOT(systrayActivated( QSystemTrayIcon::ActivationReason )));
+}
+
 void MainWin::connectedToCore() {
   foreach(BufferInfo id, Client::allBufferInfos()) {
     emit requestBacklog(id, 1000, -1);
@@ -307,9 +292,7 @@ void MainWin::showCoreConnectionDlg(bool autoConnect) {
   coreConnectDlg = new CoreConnectDlg(this, autoConnect);
   connect(coreConnectDlg, SIGNAL(finished(int)), this, SLOT(coreConnectionDlgFinished(int)));
   coreConnectDlg->setModal(true);
-  //if(!autoConnect || !coreConnectDlg->willDoInternalAutoConnect())
-    coreConnectDlg->show(); // avoid flicker and show dlg only if we do remote connect, which needs a progress bar
-  //if(autoConnect) coreConnectDlg->doAutoConnect();
+  coreConnectDlg->show();
 }
 
 void MainWin::coreConnectionDlgFinished(int /*code*/) {
@@ -347,8 +330,63 @@ void MainWin::systrayActivated( QSystemTrayIcon::ActivationReason activationReas
   }
 }
 
-void MainWin::disconnectFromNet() {
-  int i = QInputDialog::getInteger(this, tr("Disconnect from Network"), tr("Enter network id:"));
-  emit disconnectFromNetwork(NetworkId(i));
+void MainWin::clientNetworkCreated(NetworkId id) {
+  const Network *net = Client::network(id);
+  QAction *act = new QAction(net->networkName(), this);
+  act->setData(QVariant::fromValue<NetworkId>(id));
+  connect(net, SIGNAL(updatedRemotely()), this, SLOT(clientNetworkUpdated()));
+  connect(act, SIGNAL(triggered()), this, SLOT(connectOrDisconnectFromNet()));
+  bool inserted = false;
+  for(int i = 0; i < networkActions.count(); i++) {
+    if(net->networkName().localeAwareCompare(networkActions[i]->text()) < 0) {
+      networkActions.insert(i, act);
+      inserted = true;
+      break;
+    }
+  }
+  if(!inserted) networkActions.append(act);
+  ui.menuNetworks->clear();  // why the f*** isn't there a QMenu::insertAction()???
+  foreach(QAction *a, networkActions) ui.menuNetworks->addAction(a);
+  ui.menuNetworks->addSeparator();
+  ui.menuNetworks->addAction(actionEditNetworks);
+
 }
 
+void MainWin::clientNetworkUpdated() {
+  const Network *net = qobject_cast<const Network *>(sender());
+  if(!net) return;
+  foreach(QAction *a, networkActions) {
+    if(a->data().value<NetworkId>() == net->networkId()) {
+      a->setText(net->networkName());
+      if(net->connectionState() == Network::Initialized) {
+        a->setIcon(QIcon(":/16x16/actions/network-connect"));
+        a->setEnabled(true);
+      } else if(net->connectionState() == Network::Disconnected) {
+        a->setIcon(QIcon(":/16x16/actions/network-disconnect"));
+        a->setEnabled(true);
+      } else {
+        a->setIcon(QIcon(":/16x16/actions/gear"));
+        a->setEnabled(false);
+      }
+      return;
+    }
+  }
+}
+
+void MainWin::clientNetworkRemoved(NetworkId id) {
+  foreach(QAction *a, networkActions) {
+    if(a->data().value<NetworkId>() == id) {
+      a->deleteLater();
+      break;
+    }
+  }
+}
+
+void MainWin::connectOrDisconnectFromNet() {
+  QAction *act = qobject_cast<QAction *>(sender());
+  if(!act) return;
+  const Network *net = Client::network(act->data().value<NetworkId>());
+  if(!net) return;
+  if(net->connectionState() == Network::Disconnected) net->requestConnect();
+  else net->requestDisconnect();
+}
