@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>577</width>
-    <height>32</height>
+    <width>558</width>
+    <height>29</height>
    </rect>
   </property>
   <property name="sizePolicy" >
@@ -55,12 +55,12 @@
       <string>...</string>
      </property>
      <property name="icon" >
-      <iconset resource="../../icons/icons.qrc" >:/22x22/actions/oxygen/22x22/actions/configure.png</iconset>
+      <iconset resource="../../icons/icons.qrc" >:/16x16/actions/oxygen/16x16/actions/configure.png</iconset>
      </property>
      <property name="iconSize" >
       <size>
-       <width>22</width>
-       <height>22</height>
+       <width>16</width>
+       <height>16</height>
       </size>
      </property>
     </widget>
