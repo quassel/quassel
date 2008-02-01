@@ -175,6 +175,10 @@ void NetworksSettingsPage::setWidgetStates() {
     ui.upServer->setEnabled(false);
     ui.downServer->setEnabled(false);
   }
+
+  // FIXME disable network creation/deletion because of the storage issue
+  ui.addNetwork->setEnabled(false);
+  ui.deleteNetwork->setEnabled(false);
 }
 
 void NetworksSettingsPage::setItemState(NetworkId id, QListWidgetItem *item) {
