@@ -138,6 +138,9 @@ void CtcpHandler::handlePing(CtcpType ctcptype, QString prefix, QString target, 
     emit displayMsg(Message::Server, "", tr("Received CTCP PING request from %1").arg(prefix));
   } else {
     // display ping answer
+    uint now = QDateTime::currentDateTime().toTime_t();
+    uint then = QDateTime().fromTime_t(param.toInt()).toTime_t();
+    emit displayMsg(Message::Server, "", tr("Received CTCP PING answer from %1 with %2 seconds round trip time").arg(prefix).arg(now-then));
   }
 }
 
@@ -148,7 +151,8 @@ void CtcpHandler::handleVersion(CtcpType ctcptype, QString prefix, QString targe
     reply(nickFromMask(prefix), "VERSION", QString("Quassel IRC (Pre-Release) - http://www.quassel-irc.org"));
     emit displayMsg(Message::Server, "", tr("Received CTCP VERSION request by %1").arg(prefix));
   } else {
-    // TODO display Version answer
+    // display Version answer
+    emit displayMsg(Message::Server, "", tr("Received CTCP VERSION answer from %1: %2").arg(prefix).arg(param));
   }
 }
 
