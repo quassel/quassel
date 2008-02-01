@@ -187,12 +187,15 @@ src/qtui/settingspages/fontssettingspage.ui
 src/qtui/settingspages/identitiessettingspage.cpp
 src/qtui/settingspages/identitiessettingspage.h
 src/qtui/settingspages/identitiessettingspage.ui
+src/qtui/settingspages/networkeditdlg.ui
 src/qtui/settingspages/networkeditdlgnew.ui
 src/qtui/settingspages/networkssettingspage.cpp
 src/qtui/settingspages/networkssettingspage.h
 src/qtui/settingspages/networkssettingspage.ui
+src/qtui/settingspages/nickeditdlg.ui
 src/qtui/settingspages/nickeditdlgnew.ui
 src/qtui/settingspages/saveidentitiesdlg.ui
+src/qtui/settingspages/servereditdlg.ui
 src/qtui/settingspages/servereditdlgnew.ui
 src/qtui/settingspages/settingspages.pri
 src/qtui/topicwidget.cpp

@@ -25,8 +25,8 @@
 
 #include "settingspage.h"
 #include "ui_networkssettingspage.h"
-#include "ui_networkeditdlgnew.h"
-#include "ui_servereditdlgnew.h"
+#include "ui_networkeditdlg.h"
+#include "ui_servereditdlg.h"
 #include "ui_saveidentitiesdlg.h"
 
 #include "network.h"
@@ -92,11 +92,11 @@ class NetworksSettingsPage : public SettingsPage {
     void saveToNetworkInfo(NetworkInfo &);
 };
 
-class NetworkEditDlgNew : public QDialog {
+class NetworkEditDlg : public QDialog {
   Q_OBJECT
 
   public:
-    NetworkEditDlgNew(const QString &old, const QStringList &existing = QStringList(), QWidget *parent = 0);
+    NetworkEditDlg(const QString &old, const QStringList &existing = QStringList(), QWidget *parent = 0);
 
     QString networkName() const;
 
@@ -104,18 +104,18 @@ class NetworkEditDlgNew : public QDialog {
     void on_networkEdit_textChanged(const QString &);
 
   private:
-    Ui::NetworkEditDlgNew ui;
+    Ui::NetworkEditDlg ui;
 
     QStringList existing;
 };
 
 
 
-class ServerEditDlgNew : public QDialog {
+class ServerEditDlg : public QDialog {
   Q_OBJECT
 
   public:
-    ServerEditDlgNew(const QVariant &serverData = QVariant(), QWidget *parent = 0);
+    ServerEditDlg(const QVariant &serverData = QVariant(), QWidget *parent = 0);
 
     QVariant serverData() const;
 
@@ -123,7 +123,7 @@ class ServerEditDlgNew : public QDialog {
     void on_host_textChanged();
 
   private:
-    Ui::ServerEditDlgNew ui;
+    Ui::ServerEditDlg ui;
 };
 
 

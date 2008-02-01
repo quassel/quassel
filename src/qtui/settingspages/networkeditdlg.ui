@@ -1,6 +1,6 @@
 <ui version="4.0" >
- <class>NetworkEditDlgNew</class>
- <widget class="QDialog" name="NetworkEditDlgNew" >
+ <class>NetworkEditDlg</class>
+ <widget class="QDialog" name="NetworkEditDlg" >
   <property name="geometry" >
    <rect>
     <x>0</x>
@@ -57,7 +57,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>NetworkEditDlgNew</receiver>
+   <receiver>NetworkEditDlg</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel" >
@@ -73,7 +73,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>NetworkEditDlgNew</receiver>
+   <receiver>NetworkEditDlg</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel" >

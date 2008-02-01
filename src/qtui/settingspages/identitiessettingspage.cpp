@@ -363,7 +363,7 @@ void IdentitiesSettingsPage::on_renameIdentity_clicked() {
 void IdentitiesSettingsPage::on_addNick_clicked() {
   QStringList existing;
   for(int i = 0; i < ui.nicknameList->count(); i++) existing << ui.nicknameList->item(i)->text();
-  NickEditDlgNew dlg(QString(), existing, this);
+  NickEditDlg dlg(QString(), existing, this);
   if(dlg.exec() == QDialog::Accepted) {
     ui.nicknameList->addItem(dlg.nick());
     ui.nicknameList->setCurrentRow(ui.nicknameList->count()-1);
@@ -387,7 +387,7 @@ void IdentitiesSettingsPage::on_renameNick_clicked() {
   QString old = ui.nicknameList->selectedItems()[0]->text();
   QStringList existing;
   for(int i = 0; i < ui.nicknameList->count(); i++) existing << ui.nicknameList->item(i)->text();
-  NickEditDlgNew dlg(old, existing, this);
+  NickEditDlg dlg(old, existing, this);
   if(dlg.exec() == QDialog::Accepted) {
     ui.nicknameList->selectedItems()[0]->setText(dlg.nick());
   }
@@ -486,7 +486,7 @@ void SaveIdentitiesDlg::clientEvent() {
 
 /*************************************************************************************************/
 
-NickEditDlgNew::NickEditDlgNew(const QString &old, const QStringList &exist, QWidget *parent)
+NickEditDlg::NickEditDlg(const QString &old, const QStringList &exist, QWidget *parent)
   : QDialog(parent), oldNick(old), existing(exist) {
   ui.setupUi(this);
 
@@ -503,12 +503,12 @@ NickEditDlgNew::NickEditDlgNew(const QString &old, const QStringList &exist, QWi
   } else ui.nickEdit->setText(old);
 }
 
-QString NickEditDlgNew::nick() const {
+QString NickEditDlg::nick() const {
   return ui.nickEdit->text();
 
 }
 
-void NickEditDlgNew::on_nickEdit_textChanged(const QString &text) {
+void NickEditDlg::on_nickEdit_textChanged(const QString &text) {
   ui.buttonBox->button(QDialogButtonBox::Ok)->setDisabled(text.isEmpty() || existing.contains(text));
 }
 

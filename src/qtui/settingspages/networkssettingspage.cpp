@@ -391,7 +391,7 @@ void NetworksSettingsPage::on_networkList_itemSelectionChanged() {
 void NetworksSettingsPage::on_addNetwork_clicked() {
   QStringList existing;
   for(int i = 0; i < ui.networkList->count(); i++) existing << ui.networkList->item(i)->text();
-  NetworkEditDlgNew dlg(QString(), existing, this);
+  NetworkEditDlg dlg(QString(), existing, this);
   if(dlg.exec() == QDialog::Accepted) {
     NetworkId id;
     for(id = 1; id <= networkInfos.count(); id++) {
@@ -433,7 +433,7 @@ void NetworksSettingsPage::on_renameNetwork_clicked() {
   QString old = ui.networkList->selectedItems()[0]->text();
   QStringList existing;
   for(int i = 0; i < ui.networkList->count(); i++) existing << ui.networkList->item(i)->text();
-  NetworkEditDlgNew dlg(old, existing, this);
+  NetworkEditDlg dlg(old, existing, this);
   if(dlg.exec() == QDialog::Accepted) {
     ui.networkList->selectedItems()[0]->setText(dlg.networkName());
     NetworkId netid = ui.networkList->selectedItems()[0]->data(Qt::UserRole).value<NetworkId>();
@@ -459,7 +459,7 @@ void NetworksSettingsPage::on_serverList_itemSelectionChanged() {
 
 void NetworksSettingsPage::on_addServer_clicked() {
   if(currentId == 0) return;
-  ServerEditDlgNew dlg(QVariantMap(), this);
+  ServerEditDlg dlg(QVariantMap(), this);
   if(dlg.exec() == QDialog::Accepted) {
     networkInfos[currentId].serverList.append(dlg.serverData());
     displayNetwork(currentId);
@@ -472,7 +472,7 @@ void NetworksSettingsPage::on_addServer_clicked() {
 void NetworksSettingsPage::on_editServer_clicked() {
   if(currentId == 0) return;
   int cur = ui.serverList->currentRow();
-  ServerEditDlgNew dlg(networkInfos[currentId].serverList[cur], this);
+  ServerEditDlg dlg(networkInfos[currentId].serverList[cur], this);
   if(dlg.exec() == QDialog::Accepted) {
     networkInfos[currentId].serverList[cur] = dlg.serverData();
     displayNetwork(currentId);
@@ -512,7 +512,7 @@ void NetworksSettingsPage::on_downServer_clicked() {
  * NetworkEditDlg
  *************************************************************************/
 
-NetworkEditDlgNew::NetworkEditDlgNew(const QString &old, const QStringList &exist, QWidget *parent) : QDialog(parent), existing(exist) {
+NetworkEditDlg::NetworkEditDlg(const QString &old, const QStringList &exist, QWidget *parent) : QDialog(parent), existing(exist) {
   ui.setupUi(this);
 
   if(old.isEmpty()) {
@@ -522,12 +522,12 @@ NetworkEditDlgNew::NetworkEditDlgNew(const QString &old, const QStringList &exis
   } else ui.networkEdit->setText(old);
 }
 
-QString NetworkEditDlgNew::networkName() const {
+QString NetworkEditDlg::networkName() const {
   return ui.networkEdit->text();
 
 }
 
-void NetworkEditDlgNew::on_networkEdit_textChanged(const QString &text) {
+void NetworkEditDlg::on_networkEdit_textChanged(const QString &text) {
   ui.buttonBox->button(QDialogButtonBox::Ok)->setDisabled(text.isEmpty() || existing.contains(text));
 }
 
@@ -536,7 +536,7 @@ void NetworkEditDlgNew::on_networkEdit_textChanged(const QString &text) {
  * ServerEditDlg
  *************************************************************************/
 
-ServerEditDlgNew::ServerEditDlgNew(const QVariant &_serverData, QWidget *parent) : QDialog(parent) {
+ServerEditDlg::ServerEditDlg(const QVariant &_serverData, QWidget *parent) : QDialog(parent) {
   ui.setupUi(this);
   QVariantMap serverData = _serverData.toMap();
   if(serverData.count()) {
@@ -550,7 +550,7 @@ ServerEditDlgNew::ServerEditDlgNew(const QVariant &_serverData, QWidget *parent)
   on_host_textChanged();
 }
 
-QVariant ServerEditDlgNew::serverData() const {
+QVariant ServerEditDlg::serverData() const {
   QVariantMap _serverData;
   _serverData["Host"] = ui.host->text();
   _serverData["Port"] = ui.port->value();
@@ -559,7 +559,7 @@ QVariant ServerEditDlgNew::serverData() const {
   return _serverData;
 }
 
-void ServerEditDlgNew::on_host_textChanged() {
+void ServerEditDlg::on_host_textChanged() {
   ui.buttonBox->button(QDialogButtonBox::Ok)->setDisabled(ui.host->text().isEmpty());
 }
 

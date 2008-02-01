@@ -27,7 +27,7 @@
 #include "ui_identitiessettingspage.h"
 #include "ui_createidentitydlg.h"
 #include "ui_saveidentitiesdlg.h"
-#include "ui_nickeditdlgnew.h"
+#include "ui_nickeditdlg.h"
 
 class QAbstractItemModel;
 
@@ -117,11 +117,11 @@ class SaveIdentitiesDlg : public QDialog {
 
 };
 
-class NickEditDlgNew : public QDialog {
+class NickEditDlg : public QDialog {
   Q_OBJECT
 
   public:
-    NickEditDlgNew(const QString &oldnick, const QStringList &existing = QStringList(), QWidget *parent = 0);
+    NickEditDlg(const QString &oldnick, const QStringList &existing = QStringList(), QWidget *parent = 0);
 
     QString nick() const;
 
@@ -129,7 +129,7 @@ class NickEditDlgNew : public QDialog {
     void on_nickEdit_textChanged(const QString &);
 
   private:
-    Ui::NickEditDlgNew ui;
+    Ui::NickEditDlg ui;
 
     QString oldNick;
     QStringList existing;

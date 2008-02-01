@@ -1,6 +1,6 @@
 <ui version="4.0" >
- <class>ServerEditDlgNew</class>
- <widget class="QDialog" name="ServerEditDlgNew" >
+ <class>ServerEditDlg</class>
+ <widget class="QDialog" name="ServerEditDlg" >
   <property name="geometry" >
    <rect>
     <x>0</x>
@@ -113,7 +113,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>ServerEditDlgNew</receiver>
+   <receiver>ServerEditDlg</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel" >
@@ -129,7 +129,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>ServerEditDlgNew</receiver>
+   <receiver>ServerEditDlg</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel" >
