@@ -36,6 +36,7 @@
 #include "ctcphandler.h"
 
 NetworkConnection::NetworkConnection(Network *network, CoreSession *session, const QVariant &state) : QObject(network),
+    _connectionState(Network::Disconnected),
     _network(network),
     _coreSession(session),
     _ircServerHandler(new IrcServerHandler(this)),
@@ -43,7 +44,7 @@ NetworkConnection::NetworkConnection(Network *network, CoreSession *session, con
     _ctcpHandler(new CtcpHandler(this)),
     _previousState(state)
 {
-  connect(network, SIGNAL(currentServerSet(const QString &)), this, SLOT(sendPerform()));
+  connect(network, SIGNAL(currentServerSet(const QString &)), this, SLOT(networkInitialized()));
 
   connect(&socket, SIGNAL(connected()), this, SLOT(socketConnected()));
   connect(&socket, SIGNAL(disconnected()), this, SLOT(socketDisconnected()));
@@ -54,13 +55,25 @@ NetworkConnection::NetworkConnection(Network *network, CoreSession *session, con
 }
 
 NetworkConnection::~NetworkConnection() {
+  disconnectFromIrc();
   delete _ircServerHandler;
   delete _userInputHandler;
   delete _ctcpHandler;
 }
 
 bool NetworkConnection::isConnected() const {
-  return socket.state() == QAbstractSocket::ConnectedState;
+  // return socket.state() == QAbstractSocket::ConnectedState;
+  return connectionState() == Network::Initialized;
+}
+
+Network::ConnectionState NetworkConnection::connectionState() const {
+  return _connectionState;
+}
+
+void NetworkConnection::setConnectionState(Network::ConnectionState state) {
+  _connectionState = state;
+  network()->setConnectionState(state);
+  emit connectionStateChanged(state);
 }
 
 NetworkId NetworkConnection::networkId() const {
@@ -125,7 +138,7 @@ QByteArray NetworkConnection::userEncode(const QString &userNick, const QString 
 
 
 void NetworkConnection::connectToIrc() {
-  QList<QVariantMap> serverList = network()->serverList();
+  QVariantList serverList = network()->serverList();
   Identity *identity = coreSession()->identity(network()->identity());
   if(!serverList.count()) {
     qWarning() << "Server list empty, ignoring connect request!";
@@ -135,12 +148,29 @@ void NetworkConnection::connectToIrc() {
     qWarning() << "Invalid identity configures, ignoring connect request!";
     return;
   }
-
   // TODO implement cycling / random servers
-  QString host = serverList[0]["Host"].toString();
-  quint16 port = serverList[0]["Port"].toUInt();
+  QString host = serverList[0].toMap()["Host"].toString();
+  quint16 port = serverList[0].toMap()["Port"].toUInt();
   displayStatusMsg(QString("Connecting to %1:%2...").arg(host).arg(port));
   socket.connectToHost(host, port);
+}
+
+void NetworkConnection::networkInitialized() {
+  sendPerform();
+
+    // rejoin channels we've been in
+  QStringList chans = _previousState.toStringList();
+  if(chans.count() > 0) {
+    qDebug() << "autojoining" << chans;
+    QString list = chans.join(",");
+    putCmd("join", QStringList(list));  // FIXME check for 512 byte limit!
+  }
+  // delete _previousState, we won't need it again
+  _previousState = QVariant();
+  // now we are initialized
+  setConnectionState(Network::Initialized);
+  network()->setConnected(true);
+  emit connected(networkId());
 }
 
 void NetworkConnection::sendPerform() {
@@ -154,15 +184,6 @@ void NetworkConnection::sendPerform() {
   //  }
   //}
 
-  // rejoin channels we've been in
-  QStringList chans = _previousState.toStringList();
-  if(chans.count() > 0) {
-    qDebug() << "autojoining" << chans;
-    QString list = chans.join(",");
-    putCmd("join", QStringList(list));
-  }
-  // delete _previousState, we won't need it again
-  _previousState = QVariant();
 }
 
 QVariant NetworkConnection::state() const {
@@ -182,13 +203,15 @@ void NetworkConnection::socketHasData() {
   }
 }
 
-void NetworkConnection::socketError( QAbstractSocket::SocketError err ) {
-  Q_UNUSED(err);
-  qDebug() << "Socket Error!";
+void NetworkConnection::socketError(QAbstractSocket::SocketError) {
+  qDebug() << qPrintable(tr("Could not connect to %1 (%2)").arg(network()->networkName(), socket.errorString()));
+  emit connectionError(socket.errorString());
+  emit displayMsg(Message::Error, "", tr("Connection failure: %1").arg(socket.errorString()));
+  network()->emitConnectionError(socket.errorString());
 }
 
 void NetworkConnection::socketConnected() {
-  emit connected(networkId());
+  //emit connected(networkId());  initialize first!
   Identity *identity = coreSession()->identity(network()->identity());
   if(!identity) {
     qWarning() << "Identity invalid!";
@@ -199,12 +222,30 @@ void NetworkConnection::socketConnected() {
   putRawLine(QString("USER %1 8 * :%2").arg(identity->ident(), identity->realName()));
 }
 
-void NetworkConnection::socketStateChanged(QAbstractSocket::SocketState state) {
-  Q_UNUSED(state);
-  //qDebug() << "Socket state changed: " << state;
+void NetworkConnection::socketStateChanged(QAbstractSocket::SocketState socketState) {
+  Network::ConnectionState state;
+  switch(socketState) {
+    case QAbstractSocket::UnconnectedState:
+      state = Network::Disconnected;
+      break;
+    case QAbstractSocket::HostLookupState:
+    case QAbstractSocket::ConnectingState:
+      state = Network::Connecting;
+      break;
+    case QAbstractSocket::ConnectedState:
+      state = Network::Initializing;
+      break;
+    case QAbstractSocket::ClosingState:
+      state = Network::Disconnecting;
+      break;
+    default:
+      state = Network::Disconnected;
+  }
+  setConnectionState(state);
 }
 
 void NetworkConnection::socketDisconnected() {
+  network()->setConnected(false);
   emit disconnected(networkId());
 }
 

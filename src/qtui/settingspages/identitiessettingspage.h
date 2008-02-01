@@ -102,7 +102,7 @@ class SaveIdentitiesDlg : public QDialog {
   Q_OBJECT
 
   public:
-    SaveIdentitiesDlg(QList<Identity *> toCreate, QList<Identity *> toUpdate, QList<IdentityId> toRemove, QWidget *parent = 0);
+    SaveIdentitiesDlg(const QList<Identity *> &toCreate, const QList<Identity *> &toUpdate, const QList<IdentityId> &toRemove, QWidget *parent = 0);
 
   private slots:
     void clientEvent();
@@ -110,8 +110,8 @@ class SaveIdentitiesDlg : public QDialog {
   private:
     Ui::SaveIdentitiesDlg ui;
 
-    QList<Identity *> toCreate, toUpdate;
-    QList<IdentityId> toRemove;
+    //QList<Identity *> toCreate, toUpdate;
+    //QList<IdentityId> toRemove;
 
     int numevents, rcvevents;
 

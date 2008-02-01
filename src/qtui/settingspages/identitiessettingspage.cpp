@@ -375,7 +375,7 @@ void IdentitiesSettingsPage::on_addNick_clicked() {
 void IdentitiesSettingsPage::on_deleteNick_clicked() {
   // no confirmation, since a nickname is really nothing hard to recreate
   if(ui.nicknameList->selectedItems().count()) {
-    delete ui.nicknameList->selectedItems()[0];
+    delete ui.nicknameList->takeItem(ui.nicknameList->row(ui.nicknameList->selectedItems()[0]));
     ui.nicknameList->setCurrentRow(qMin(ui.nicknameList->currentRow()+1, ui.nicknameList->count()-1));
     setWidgetStates();
     widgetHasChanged();
@@ -444,8 +444,8 @@ void CreateIdentityDlg::on_identityName_textChanged(const QString &text) {
 
 /*********************************************************************************************/
 
-SaveIdentitiesDlg::SaveIdentitiesDlg(QList<Identity *> tocreate, QList<Identity *> toupdate, QList<IdentityId> toremove, QWidget *parent)
-  : QDialog(parent), toCreate(tocreate), toUpdate(toupdate), toRemove(toremove) {
+SaveIdentitiesDlg::SaveIdentitiesDlg(const QList<Identity *> &toCreate, const QList<Identity *> &toUpdate, const QList<IdentityId> &toRemove, QWidget *parent)
+  : QDialog(parent) { //, toCreate(tocreate), toUpdate(toupdate), toRemove(toremove) {
   ui.setupUi(this);
   numevents = toCreate.count() + toUpdate.count() + toRemove.count();
   rcvevents = 0;
@@ -466,6 +466,7 @@ SaveIdentitiesDlg::SaveIdentitiesDlg(QList<Identity *> tocreate, QList<Identity 
         numevents--;
         continue;
       }
+      // FIXME this only checks for one changed item rather than all!
       connect(cid, SIGNAL(updatedRemotely()), this, SLOT(clientEvent()));
       Client::updateIdentity(*id);
     }

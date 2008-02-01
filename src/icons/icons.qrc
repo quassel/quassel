@@ -124,7 +124,7 @@
         <file>oxygen/16x16/actions/games-highscores.png</file>
         <file>oxygen/16x16/actions/games-hint.png</file>
         <file>oxygen/16x16/actions/games-solve.png</file>
-        <file>oxygen/16x16/actions/gear.png</file>
+        <file alias="gear">oxygen/16x16/actions/gear.png</file>
         <file>oxygen/16x16/actions/get-hot-new-stuff.png</file>
         <file>oxygen/16x16/actions/go-bottom.png</file>
         <file>oxygen/16x16/actions/go-down-search.png</file>
@@ -417,7 +417,7 @@
         <file>oxygen/22x22/actions/games-highscores.png</file>
         <file>oxygen/22x22/actions/games-hint.png</file>
         <file>oxygen/22x22/actions/games-solve.png</file>
-        <file>oxygen/22x22/actions/gear.png</file>
+        <file alias="gear">oxygen/22x22/actions/gear.png</file>
         <file>oxygen/22x22/actions/get-hot-new-stuff.png</file>
         <file>oxygen/22x22/actions/go-bottom.png</file>
         <file>oxygen/22x22/actions/go-down-search.png</file>

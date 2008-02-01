@@ -25,14 +25,6 @@ CoreUserSettings::CoreUserSettings(UserId uid) : CoreSettings(QString("CoreUser/
 
 }
 
-void CoreUserSettings::storeIdentity(const Identity &identity) {
-  setLocalValue(QString("Identities/%1").arg(identity.id().toInt()), qVariantFromValue(identity));
-}
-
-void CoreUserSettings::removeIdentity(const Identity &identity) {
-  removeLocalKey(QString("Identities/%1").arg(identity.id().toInt()));
-}
-
 Identity CoreUserSettings::identity(IdentityId id) {
   QVariant v = localValue(QString("Identities/%1").arg(id.toInt()));
   if(qVariantCanConvert<Identity>(v)) {
@@ -48,6 +40,40 @@ QList<IdentityId> CoreUserSettings::identityIds() {
   }
   return res;
 }
+
+void CoreUserSettings::storeIdentity(const Identity &identity) {
+  setLocalValue(QString("Identities/%1").arg(identity.id().toInt()), qVariantFromValue(identity));
+}
+
+void CoreUserSettings::removeIdentity(IdentityId id) {
+  removeLocalKey(QString("Identities/%1").arg(id.toInt()));
+}
+
+
+NetworkInfo CoreUserSettings::networkInfo(NetworkId id) {
+  QVariant v = localValue(QString("Networks/%1").arg(id.toInt()));
+  if(v.canConvert<NetworkInfo>()) {
+    return v.value<NetworkInfo>();
+  }
+  return NetworkInfo();
+}
+
+QList<NetworkId> CoreUserSettings::networkIds() {
+  QList<NetworkId> res;
+  foreach(QString id, localChildKeys("Networks")) {
+    res << id.toInt();
+  }
+  return res;
+}
+
+void CoreUserSettings::storeNetworkInfo(const NetworkInfo &info) {
+  setLocalValue(QString("Networks/%1").arg(info.networkId.toInt()), QVariant::fromValue<NetworkInfo>(info));
+}
+
+void CoreUserSettings::removeNetworkInfo(NetworkId id) {
+  removeLocalKey(QString("Networks/%1").arg(id.toInt()));
+}
+
 
 void CoreUserSettings::setSessionState(const QVariant &data) {
   setLocalValue("SessionState", data);

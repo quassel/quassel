@@ -48,8 +48,11 @@ class NetworksSettingsPage : public SettingsPage {
     void widgetHasChanged();
     void setWidgetStates();
     void coreConnectionStateChanged(bool);
+    void networkConnectionStateChanged(Network::ConnectionState state);
+    void networkConnectionError(const QString &msg);
 
-    void displayNetwork(NetworkId, bool dontsave = false);
+    void displayNetwork(NetworkId);
+    void setItemState(NetworkId, QListWidgetItem *item = 0);
 
     void clientNetworkAdded(NetworkId);
     void clientNetworkRemoved(NetworkId);
@@ -64,6 +67,8 @@ class NetworksSettingsPage : public SettingsPage {
     void on_deleteNetwork_clicked();
     void on_renameNetwork_clicked();
 
+    void on_connectNow_clicked();
+
     void on_serverList_itemSelectionChanged();
     void on_addServer_clicked();
     void on_deleteServer_clicked();
@@ -77,7 +82,7 @@ class NetworksSettingsPage : public SettingsPage {
     NetworkId currentId;
     QHash<NetworkId, NetworkInfo> networkInfos;
 
-    QIcon connectedIcon, disconnectedIcon;
+    QIcon connectedIcon, connectingIcon, disconnectedIcon;
 
     void reset();
     bool testHasChanged();
@@ -110,9 +115,9 @@ class ServerEditDlgNew : public QDialog {
   Q_OBJECT
 
   public:
-    ServerEditDlgNew(const QVariantMap &serverData = QVariantMap(), QWidget *parent = 0);
+    ServerEditDlgNew(const QVariant &serverData = QVariant(), QWidget *parent = 0);
 
-    QVariantMap serverData() const;
+    QVariant serverData() const;
 
   private slots:
     void on_host_textChanged();
@@ -128,8 +133,13 @@ class SaveNetworksDlg : public QDialog {
   public:
     SaveNetworksDlg(const QList<NetworkInfo> &toCreate, const QList<NetworkInfo> &toUpdate, const QList<NetworkId> &toRemove, QWidget *parent = 0);
 
+  private slots:
+    void clientEvent();
+
   private:
     Ui::SaveIdentitiesDlg ui;
+
+    int numevents, rcvevents;
 };
 
 #endif

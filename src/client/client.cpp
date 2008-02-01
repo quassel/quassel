@@ -103,13 +103,13 @@ void Client::init() {
   p->attachSignal(this, SIGNAL(requestRemoveIdentity(IdentityId)), SIGNAL(removeIdentity(IdentityId)));
   p->attachSlot(SIGNAL(identityCreated(const Identity &)), this, SLOT(coreIdentityCreated(const Identity &)));
   p->attachSlot(SIGNAL(identityRemoved(IdentityId)), this, SLOT(coreIdentityRemoved(IdentityId)));
-/*
+
   p->attachSignal(this, SIGNAL(requestCreateNetwork(const NetworkInfo &)), SIGNAL(createNetwork(const NetworkInfo &)));
   p->attachSignal(this, SIGNAL(requestUpdateNetwork(const NetworkInfo &)), SIGNAL(updateNetwork(const NetworkInfo &)));
   p->attachSignal(this, SIGNAL(requestRemoveNetwork(NetworkId)), SIGNAL(removeNetwork(NetworkId)));
-  p->attachSlot(SIGNAL(networkCreated(const NetworkInfo &)), this, SLOT(coreNetworkCreated(const NetworkInfo &)));
+  p->attachSlot(SIGNAL(networkCreated(NetworkId)), this, SLOT(coreNetworkCreated(NetworkId)));
   p->attachSlot(SIGNAL(networkRemoved(NetworkId)), this, SLOT(coreNetworkRemoved(NetworkId)));
-*/
+
   connect(p, SIGNAL(disconnected()), this, SLOT(disconnectFromCore()));
 
   //connect(mainUi, SIGNAL(connectToCore(const QVariantMap &)), this, SLOT(connectToCore(const QVariantMap &)));
@@ -197,6 +197,72 @@ QList<NetworkId> Client::networkIds() {
 const Network * Client::network(NetworkId networkid) {
   if(instance()->_networks.contains(networkid)) return instance()->_networks[networkid];
   else return 0;
+}
+
+/*
+void Client::networkConnected(uint netid) {
+  // TODO: create statusBuffer / switch to networkids
+  //BufferInfo id = statusBufferInfo(net);
+  //Buffer *b = buffer(id);
+  //b->setActive(true);
+
+  Network *netinfo = new Network(netid, this);
+  netinfo->setProxy(signalProxy());
+  networkModel()->attachNetwork(netinfo);
+  connect(netinfo, SIGNAL(destroyed()), this, SLOT(networkDestroyed()));
+  _networks[netid] = netinfo;
+}
+
+void Client::networkDisconnected(NetworkId networkid) {
+  if(!_networks.contains(networkid)) {
+    qWarning() << "Client::networkDisconnected(uint): unknown Network" << networkid;
+    return;
+}
+
+  Network *net = _networks.take(networkid);
+  if(!net->isInitialized()) {
+    qDebug() << "Network" << networkid << "disconnected while not yet initialized!";
+    updateCoreConnectionProgress();
+}
+  net->deleteLater();
+}
+*/
+
+void Client::createNetwork(const NetworkInfo &info) {
+  emit instance()->requestCreateNetwork(info);
+}
+
+void Client::updateNetwork(const NetworkInfo &info) {
+  emit instance()->requestUpdateNetwork(info);
+}
+
+void Client::removeNetwork(NetworkId id) {
+  emit instance()->requestRemoveNetwork(id);
+}
+
+void Client::addNetwork(Network *net) {
+  net->setProxy(signalProxy());
+  signalProxy()->synchronize(net);
+  networkModel()->attachNetwork(net);
+  connect(net, SIGNAL(destroyed()), instance(), SLOT(networkDestroyed()));
+  instance()->_networks[net->networkId()] = net;
+  emit instance()->networkCreated(net->networkId());
+}
+
+void Client::coreNetworkCreated(NetworkId id) {
+  if(_networks.contains(id)) {
+    qWarning() << "Creation of already existing network requested!";
+    return;
+  }
+  Network *net = new Network(id, this);
+  addNetwork(net);
+}
+
+void Client::coreNetworkRemoved(NetworkId id) {
+  if(!_networks.contains(id)) return;
+  Network *net = _networks.take(id);
+  emit networkRemoved(net->networkId());
+  net->deleteLater();
 }
 
 /*** Identity handling ***/
@@ -336,55 +402,6 @@ QStringList Client::sessionDataKeys() {
 
 /*** ***/
 
-// FIXME
-void Client::disconnectFromNetwork(NetworkId id) {
-  if(!instance()->_networks.contains(id)) return;
-  Network *net = instance()->_networks[id];
-  net->requestDisconnect();
-}
-
-/*
-void Client::networkConnected(uint netid) {
-  // TODO: create statusBuffer / switch to networkids
-  //BufferInfo id = statusBufferInfo(net);
-  //Buffer *b = buffer(id);
-  //b->setActive(true);
-
-  Network *netinfo = new Network(netid, this);
-  netinfo->setProxy(signalProxy());
-  networkModel()->attachNetwork(netinfo);
-  connect(netinfo, SIGNAL(destroyed()), this, SLOT(networkDestroyed()));
-  _networks[netid] = netinfo;
-}
-
-void Client::networkDisconnected(NetworkId networkid) {
-  if(!_networks.contains(networkid)) {
-    qWarning() << "Client::networkDisconnected(uint): unknown Network" << networkid;
-    return;
-  }
-
-  Network *net = _networks.take(networkid);
-  if(!net->isInitialized()) {
-    qDebug() << "Network" << networkid << "disconnected while not yet initialized!";
-    updateCoreConnectionProgress();
-  }
-  net->deleteLater();
-}
-*/
-
-void Client::addNetwork(Network *net) {
-  net->setProxy(signalProxy());
-  signalProxy()->synchronize(net);
-  networkModel()->attachNetwork(net);
-  connect(net, SIGNAL(destroyed()), instance(), SLOT(networkDestroyed()));
-  instance()->_networks[net->networkId()] = net;
-  emit instance()->networkCreated(net->networkId());
-}
-
-void Client::createNetwork(const NetworkInfo &info) {
-
-
-}
 
 /*** ***/
 

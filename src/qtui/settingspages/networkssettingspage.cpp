@@ -33,6 +33,7 @@ NetworksSettingsPage::NetworksSettingsPage(QWidget *parent) : SettingsPage(tr("G
   ui.setupUi(this);
 
   connectedIcon = QIcon(":/22x22/actions/network-connect");
+  connectingIcon = QIcon(":/22x22/actions/gear");
   disconnectedIcon = QIcon(":/22x22/actions/network-disconnect");
 
   currentId = 0;
@@ -54,16 +55,24 @@ NetworksSettingsPage::NetworksSettingsPage(QWidget *parent) : SettingsPage(tr("G
 }
 
 void NetworksSettingsPage::save() {
+  setEnabled(false);
   if(currentId != 0) saveToNetworkInfo(networkInfos[currentId]);
 
-  // First, remove the temporarily created networks
   QList<NetworkInfo> toCreate, toUpdate;
   QList<NetworkId> toRemove;
   QHash<NetworkId, NetworkInfo>::iterator i = networkInfos.begin();
   while(i != networkInfos.end()) {
-    if((*i).networkId < 0) {
+    NetworkId id = (*i).networkId;
+    if(id < 0) {
       toCreate.append(*i);
-      i = networkInfos.erase(i);
+      //if(id == currentId) currentId = 0;
+      //QList<QListWidgetItem *> items = ui.networkList->findItems((*i).networkName, Qt::MatchExactly);
+      //if(items.count()) {
+      //  Q_ASSERT(items[0]->data(Qt::UserRole).value<NetworkId>() == id);
+      //  delete items[0];
+      //}
+      //i = networkInfos.erase(i);
+      ++i;
     } else {
       if((*i) != Client::network((*i).networkId)->networkInfo()) {
         toUpdate.append(*i);
@@ -80,6 +89,8 @@ void NetworksSettingsPage::save() {
     // canceled -> reload everything to be safe
     load();
   }
+  setChangedState(false);
+  setEnabled(true);
 }
 
 void NetworksSettingsPage::load() {
@@ -96,20 +107,20 @@ void NetworksSettingsPage::reset() {
   ui.networkList->clear();
   networkInfos.clear();
 
-  /*
-  foreach(Identity *identity, identities.values()) {
-    identity->deleteLater();
-  }
-  identities.clear();
-  deletedIdentities.clear();
-  changedIdentities.clear();
-  ui.identityList->clear();
-  */
 }
 
 bool NetworksSettingsPage::aboutToSave() {
-
-  return true; // FIXME
+  if(currentId != 0) saveToNetworkInfo(networkInfos[currentId]);
+  QList<int> errors;
+  foreach(NetworkInfo info, networkInfos.values()) {
+    if(!info.serverList.count()) errors.append(1);
+  }
+  if(!errors.count()) return true;
+  QString error(tr("<b>The following problems need to be corrected before your changes can be applied:</b><ul>"));
+  if(errors.contains(1)) error += tr("<li>All networks need at least one server defined</li>");
+  error += tr("</ul>");
+  QMessageBox::warning(this, tr("Invalid Network Settings"), error);
+  return false;
 }
 
 void NetworksSettingsPage::widgetHasChanged() {
@@ -136,7 +147,9 @@ void NetworksSettingsPage::setWidgetStates() {
     ui.detailsBox->setEnabled(true);
     ui.renameNetwork->setEnabled(true);
     ui.deleteNetwork->setEnabled(true);
-    ui.connectNow->setEnabled(true);
+    ui.connectNow->setEnabled(id > 0
+        && (Client::network(id)->connectionState() == Network::Initialized
+        || Client::network(id)->connectionState() == Network::Disconnected));
     if(Client::network(id) && Client::network(id)->isConnected()) {
       ui.connectNow->setIcon(disconnectedIcon);
       ui.connectNow->setText(tr("Disconnect"));
@@ -164,6 +177,35 @@ void NetworksSettingsPage::setWidgetStates() {
   }
 }
 
+void NetworksSettingsPage::setItemState(NetworkId id, QListWidgetItem *item) {
+  if(!item) item = networkItem(id);
+  const Network *net = Client::network(id);
+  if(!net || net->isInitialized()) item->setFlags(item->flags() | Qt::ItemIsEnabled);
+  else item->setFlags(item->flags() & ~Qt::ItemIsEnabled);
+  if(net && net->connectionState() == Network::Initialized) {
+    item->setIcon(connectedIcon);
+  } else if(net && net->connectionState() != Network::Disconnected) {
+    item->setIcon(connectingIcon);
+  } else {
+    item->setIcon(disconnectedIcon);
+  }
+  if(net) {
+    // check if we already have another net of this name in the list, and replace it
+    QList<QListWidgetItem *> items = ui.networkList->findItems(net->networkName(), Qt::MatchExactly);
+    if(items.count()) {
+      foreach(QListWidgetItem *i, items) {
+        NetworkId oldid = i->data(Qt::UserRole).value<NetworkId>();
+        if(oldid > 0) continue;  // only locally created nets should be replaced
+        if(oldid == currentId) item->setSelected(true);
+        delete ui.networkList->takeItem(ui.networkList->row(i));
+        networkInfos.remove(oldid);
+        break;
+      }
+    }
+    item->setText(net->networkName());
+  }
+}
+
 void NetworksSettingsPage::coreConnectionStateChanged(bool state) {
   this->setEnabled(state);
   if(state) {
@@ -172,14 +214,6 @@ void NetworksSettingsPage::coreConnectionStateChanged(bool state) {
     // reset
     //currentId = 0;
   }
-}
-
-QListWidgetItem *NetworksSettingsPage::networkItem(NetworkId id) const {
-  for(int i = 0; i < ui.networkList->count(); i++) {
-    QListWidgetItem *item = ui.networkList->item(i);
-    if(item->data(Qt::UserRole).value<NetworkId>() == id) return item;
-  }
-  return 0;
 }
 
 void NetworksSettingsPage::clientIdentityAdded(IdentityId id) {
@@ -221,17 +255,34 @@ void NetworksSettingsPage::clientIdentityUpdated() {
 }
 
 void NetworksSettingsPage::clientIdentityRemoved(IdentityId id) {
-  ui.identityList->removeItem(ui.identityList->findData(id.toInt()));
+  if(currentId != 0) saveToNetworkInfo(networkInfos[currentId]);
+  //ui.identityList->removeItem(ui.identityList->findData(id.toInt()));
   foreach(NetworkInfo info, networkInfos.values()) {
-    if(info.identity == id) info.identity = 1; // set to default
+    qDebug() << info.networkName << info.networkId << info.identity;
+    if(info.identity == id) {
+      if(info.networkId == currentId) ui.identityList->setCurrentIndex(0);
+      info.identity = 1; // set to default
+      networkInfos[info.networkId] = info;
+      if(info.networkId > 0) Client::updateNetwork(info);
+    }
   }
+  ui.identityList->removeItem(ui.identityList->findData(id.toInt()));
   widgetHasChanged();
 }
 
+QListWidgetItem *NetworksSettingsPage::networkItem(NetworkId id) const {
+  for(int i = 0; i < ui.networkList->count(); i++) { 
+    QListWidgetItem *item = ui.networkList->item(i);
+    if(item->data(Qt::UserRole).value<NetworkId>() == id) return item;
+  }
+  return 0;
+}
 
 void NetworksSettingsPage::clientNetworkAdded(NetworkId id) {
   insertNetwork(id);
   connect(Client::network(id), SIGNAL(updatedRemotely()), this, SLOT(clientNetworkUpdated()));
+  connect(Client::network(id), SIGNAL(connectionStateSet(Network::ConnectionState)), this, SLOT(networkConnectionStateChanged(Network::ConnectionState)));
+  connect(Client::network(id), SIGNAL(connectionError(const QString &)), this, SLOT(networkConnectionError(const QString &)));
 }
 
 void NetworksSettingsPage::clientNetworkUpdated() {
@@ -240,19 +291,36 @@ void NetworksSettingsPage::clientNetworkUpdated() {
     qWarning() << "Update request for unknown network received!";
     return;
   }
-  QListWidgetItem *item = networkItem(net->networkId());
-  if(!item) return;
-  item->setText(net->networkName());
-  if(net->isInitialized()) item->setFlags(item->flags() | Qt::ItemIsEnabled);
-  else item->setFlags(item->flags() & ~Qt::ItemIsEnabled);
-  if(net->isConnected()) {
-    item->setIcon(connectedIcon);
-  } else {
-    item->setIcon(disconnectedIcon);
-  }
+  networkInfos[net->networkId()] = net->networkInfo();
+  setItemState(net->networkId());
+  if(net->networkId() == currentId) displayNetwork(net->networkId());
+  setWidgetStates();
+  widgetHasChanged();
 }
 
-void NetworksSettingsPage::clientNetworkRemoved(NetworkId) {
+void NetworksSettingsPage::clientNetworkRemoved(NetworkId id) {
+  if(!networkInfos.contains(id)) return;
+  if(id == currentId) displayNetwork(0);
+  NetworkInfo info = networkInfos.take(id);
+  QList<QListWidgetItem *> items = ui.networkList->findItems(info.networkName, Qt::MatchExactly);
+  if(items.count()) {
+    Q_ASSERT(items[0]->data(Qt::UserRole).value<NetworkId>() == id);
+    delete ui.networkList->takeItem(ui.networkList->row(items[0]));
+  }
+  setWidgetStates();
+  widgetHasChanged();
+}
+
+void NetworksSettingsPage::networkConnectionStateChanged(Network::ConnectionState state) {
+  const Network *net = qobject_cast<const Network *>(sender());
+  if(!net) return;
+  if(net->networkId() == currentId) {
+    ui.connectNow->setEnabled(state == Network::Initialized || state == Network::Disconnected);
+  }
+  setItemState(net->networkId());
+}
+
+void NetworksSettingsPage::networkConnectionError(const QString &) {
 
 }
 
@@ -263,29 +331,41 @@ QListWidgetItem *NetworksSettingsPage::insertNetwork(NetworkId id) {
 }
 
 QListWidgetItem *NetworksSettingsPage::insertNetwork(const NetworkInfo &info) {
-  QListWidgetItem *item = new QListWidgetItem(disconnectedIcon, info.networkName);
-  item->setData(Qt::UserRole, QVariant::fromValue<NetworkId>(info.networkId));
-  ui.networkList->addItem(item);
-  const Network *net = Client::network(info.networkId);
-  if(net->isInitialized()) item->setFlags(item->flags() | Qt::ItemIsEnabled);
-  else item->setFlags(item->flags() & ~Qt::ItemIsEnabled);
-  if(net && net->isConnected()) {
-    item->setIcon(connectedIcon);
-  } else {
-    item->setIcon(disconnectedIcon);
+  QListWidgetItem *item = 0;
+  QList<QListWidgetItem *> items = ui.networkList->findItems(info.networkName, Qt::MatchExactly);
+  if(!items.count()) item = new QListWidgetItem(disconnectedIcon, info.networkName, ui.networkList);
+  else {
+    // we overwrite an existing net if it a) has the same name and b) has a negative ID meaning we created it locally before
+    // -> then we can be sure that this is the core-side replacement for the net we created
+    foreach(QListWidgetItem *i, items) {
+      NetworkId id = i->data(Qt::UserRole).value<NetworkId>();
+      if(id < 0) { item = i; break; }
+    }
+    if(!item) item = new QListWidgetItem(disconnectedIcon, info.networkName, ui.networkList);
   }
+  item->setData(Qt::UserRole, QVariant::fromValue<NetworkId>(info.networkId));
+  setItemState(info.networkId, item);
   widgetHasChanged();
   return item;
 }
 
-void NetworksSettingsPage::displayNetwork(NetworkId id, bool dontsave) {
-  Q_UNUSED(dontsave);
-  NetworkInfo info = networkInfos[id];
-  ui.identityList->setCurrentIndex(ui.identityList->findData(info.identity.toInt()));
-  ui.serverList->clear();
-  foreach(QVariantMap v, info.serverList) {
-    ui.serverList->addItem(QString("%1:%2").arg(v["Host"].toString()).arg(v["Port"].toUInt()));
+void NetworksSettingsPage::displayNetwork(NetworkId id) {
+  if(id != 0) {
+    NetworkInfo info = networkInfos[id];
+    ui.identityList->setCurrentIndex(ui.identityList->findData(info.identity.toInt()));
+    ui.serverList->clear();
+    foreach(QVariant v, info.serverList) {
+      ui.serverList->addItem(QString("%1:%2").arg(v.toMap()["Host"].toString()).arg(v.toMap()["Port"].toUInt()));
+    }
+    setItemState(id);
+  } else {
+    // just clear widgets
+    ui.identityList->setCurrentIndex(-1);
+    ui.serverList->clear();
+    ui.performEdit->clear();
+    setWidgetStates();
   }
+  currentId = id;
 }
 
 void NetworksSettingsPage::saveToNetworkInfo(NetworkInfo &info) {
@@ -339,8 +419,8 @@ void NetworksSettingsPage::on_deleteNetwork_clicked() {
                                     QMessageBox::Yes|QMessageBox::No, QMessageBox::No);
     if(ret == QMessageBox::Yes) {
       currentId = 0;
-      networkInfos.remove(netid); qDebug() << netid << networkInfos.count();
-      delete ui.networkList->selectedItems()[0];
+      networkInfos.remove(netid);
+      delete ui.networkList->takeItem(ui.networkList->row(ui.networkList->selectedItems()[0]));
       ui.networkList->setCurrentRow(qMin(ui.networkList->currentRow()+1, ui.networkList->count()-1));
       setWidgetStates();
       widgetHasChanged();
@@ -360,6 +440,15 @@ void NetworksSettingsPage::on_renameNetwork_clicked() {
     networkInfos[netid].networkName = dlg.networkName();
     widgetHasChanged();
   }
+}
+
+void NetworksSettingsPage::on_connectNow_clicked() {
+  if(!ui.networkList->selectedItems().count()) return;
+  NetworkId id = ui.networkList->selectedItems()[0]->data(Qt::UserRole).value<NetworkId>();
+  const Network *net = Client::network(id);
+  if(!net) return;
+  if(!net->isConnected()) net->requestConnect();
+  else net->requestDisconnect();
 }
 
 /*** Server list ***/
@@ -403,7 +492,7 @@ void NetworksSettingsPage::on_deleteServer_clicked() {
 
 void NetworksSettingsPage::on_upServer_clicked() {
   int cur = ui.serverList->currentRow();
-  QVariantMap foo = networkInfos[currentId].serverList.takeAt(cur);
+  QVariant foo = networkInfos[currentId].serverList.takeAt(cur);
   networkInfos[currentId].serverList.insert(cur-1, foo);
   displayNetwork(currentId);
   ui.serverList->setCurrentRow(cur-1);
@@ -412,7 +501,7 @@ void NetworksSettingsPage::on_upServer_clicked() {
 
 void NetworksSettingsPage::on_downServer_clicked() {
   int cur = ui.serverList->currentRow();
-  QVariantMap foo = networkInfos[currentId].serverList.takeAt(cur);
+  QVariant foo = networkInfos[currentId].serverList.takeAt(cur);
   networkInfos[currentId].serverList.insert(cur+1, foo);
   displayNetwork(currentId);
   ui.serverList->setCurrentRow(cur+1);
@@ -447,8 +536,9 @@ void NetworkEditDlgNew::on_networkEdit_textChanged(const QString &text) {
  * ServerEditDlg
  *************************************************************************/
 
-ServerEditDlgNew::ServerEditDlgNew(const QVariantMap &serverData, QWidget *parent) : QDialog(parent) {
+ServerEditDlgNew::ServerEditDlgNew(const QVariant &_serverData, QWidget *parent) : QDialog(parent) {
   ui.setupUi(this);
+  QVariantMap serverData = _serverData.toMap();
   if(serverData.count()) {
     ui.host->setText(serverData["Host"].toString());
     ui.port->setValue(serverData["Port"].toUInt());
@@ -460,7 +550,7 @@ ServerEditDlgNew::ServerEditDlgNew(const QVariantMap &serverData, QWidget *paren
   on_host_textChanged();
 }
 
-QVariantMap ServerEditDlgNew::serverData() const {
+QVariant ServerEditDlgNew::serverData() const {
   QVariantMap _serverData;
   _serverData["Host"] = ui.host->text();
   _serverData["Port"] = ui.port->value();
@@ -481,5 +571,39 @@ SaveNetworksDlg::SaveNetworksDlg(const QList<NetworkInfo> &toCreate, const QList
 {
   ui.setupUi(this);
 
+  numevents = toCreate.count() + toUpdate.count() + toRemove.count();
+  rcvevents = 0;
+  if(numevents) {
+    ui.progressBar->setMaximum(numevents);
+    ui.progressBar->setValue(0);
+
+    connect(Client::instance(), SIGNAL(networkCreated(NetworkId)), this, SLOT(clientEvent()));
+    connect(Client::instance(), SIGNAL(networkRemoved(NetworkId)), this, SLOT(clientEvent()));
+
+    foreach(NetworkInfo info, toCreate) {
+      Client::createNetwork(info);
+    }
+    foreach(NetworkInfo info, toUpdate) {
+      const Network *net = Client::network(info.networkId);
+      if(!net) {
+        qWarning() << "Invalid client network!";
+        numevents--;
+        continue;
+      }
+      // FIXME this only checks for one changed item rather than all!
+      connect(net, SIGNAL(updatedRemotely()), this, SLOT(clientEvent()));
+      Client::updateNetwork(info);
+    }
+    foreach(NetworkId id, toRemove) {
+      Client::removeNetwork(id);
+    }
+  } else {
+    qWarning() << "Sync dialog called without stuff to change!";
+    accept();
+  }
 }
 
+void SaveNetworksDlg::clientEvent() {
+  ui.progressBar->setValue(++rcvevents);
+  if(rcvevents >= numevents) accept();
+}

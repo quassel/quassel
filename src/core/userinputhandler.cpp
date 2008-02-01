@@ -193,7 +193,6 @@ void UserInputHandler::handleWho(QString bufname, QString msg) {
 }
 
 void UserInputHandler::handleWhois(QString bufname, QString msg) {
-  qDebug() << "WHOIS" << QStringList(msg);
   emit putCmd("WHOIS", msg.split(' '));
 }
 

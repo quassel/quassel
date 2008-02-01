@@ -44,6 +44,7 @@ struct NetworkInfo;
 
 class Network : public SyncableObject {
   Q_OBJECT
+  Q_ENUMS(ConnectionState Network::ConnectionState)
 
   Q_PROPERTY(QString networkName READ networkName WRITE setNetworkName STORED false)
   Q_PROPERTY(QString currentServer READ currentServer WRITE setCurrentServer STORED false)
@@ -52,10 +53,13 @@ class Network : public SyncableObject {
   Q_PROPERTY(QByteArray codecForDecoding READ codecForDecoding WRITE setCodecForDecoding STORED false)
   Q_PROPERTY(IdentityId identityId READ identity WRITE setIdentity STORED false)
   Q_PROPERTY(bool isConnected READ isConnected WRITE setConnected STORED false)
+  Q_PROPERTY(Network::ConnectionState connectionState READ connectionState WRITE setConnectionState STORED false)
 
 public:
+  enum ConnectionState { Disconnected, Connecting, Initializing, Initialized, Disconnecting };
+
   Network(const NetworkId &networkid, QObject *parent = 0);
-  // ~Network();
+  ~Network();
 
   NetworkId networkId() const;
 
@@ -68,6 +72,7 @@ public:
   bool isChannelName(const QString &channelname) const;
 
   bool isConnected() const;
+  Network::ConnectionState connectionState() const;
 
   QString prefixToMode(const QString &prefix);
   QString prefixToMode(const QCharRef &prefix);
@@ -80,7 +85,7 @@ public:
   IdentityId identity() const;
   QStringList nicks() const;
   QStringList channels() const;
-  QList<QVariantMap> serverList() const;
+  QVariantList serverList() const;
 
   NetworkInfo networkInfo() const;
   void setNetworkInfo(const NetworkInfo &);
@@ -117,10 +122,11 @@ public slots:
   void setNetworkName(const QString &networkName);
   void setCurrentServer(const QString &currentServer);
   void setConnected(bool isConnected);
+  void setConnectionState(Network::ConnectionState state);
   void setMyNick(const QString &mynick);
   void setIdentity(IdentityId);
 
-  void setServerList(const QList<QVariantMap> &serverList);
+  void setServerList(const QVariantList &serverList);
 
   void setCodecForEncoding(const QByteArray &codecName);
   void setCodecForDecoding(const QByteArray &codecName);
@@ -149,8 +155,10 @@ public slots:
   // channel lists up to date
   void ircUserNickChanged(QString newnick);
 
-  void requestConnect();
-  void requestDisconnect();
+  void requestConnect() const;
+  void requestDisconnect() const;
+
+  void emitConnectionError(const QString &);
 
 private slots:
   void ircUserDestroyed();
@@ -163,10 +171,12 @@ signals:
   void networkNameSet(const QString &networkName);
   void currentServerSet(const QString &currentServer);
   void connectedSet(bool isConnected);
+  void connectionStateSet(Network::ConnectionState);
+  void connectionError(const QString &errorMsg);
   void myNickSet(const QString &mynick);
   void identitySet(IdentityId);
 
-  void serverListSet(const QList<QVariantMap> &serverList);
+  void serverListSet(QVariantList serverList);
 
   void codecForEncodingSet(const QString &codecName);
   void codecForDecodingSet(const QString &codecName);
@@ -188,8 +198,8 @@ signals:
   void ircUserInitDone(IrcUser *);
   void ircChannelInitDone(IrcChannel *);
 
-  void connectRequested(NetworkId = 0);
-  void disconnectRequested(NetworkId = 0);
+  void connectRequested(NetworkId id = 0) const;
+  void disconnectRequested(NetworkId id = 0) const;
 
 private:
   NetworkId _networkId;
@@ -199,6 +209,7 @@ private:
   QString _networkName;
   QString _currentServer;
   bool _connected;
+  ConnectionState _connectionState;
 
   QString _prefixes;
   QString _prefixModes;
@@ -207,7 +218,7 @@ private:
   QHash<QString, IrcChannel *> _ircChannels; // stores all known channels
   QHash<QString, QString> _supports;  // stores results from RPL_ISUPPORT
 
-  QList<QVariantMap> _serverList;
+  QVariantList _serverList;
   QStringList _perform;
   //QVariantMap networkSettings;
 
@@ -222,15 +233,19 @@ private:
 //! Stores all editable information about a network (as opposed to runtime state).
 struct NetworkInfo {
   NetworkId networkId;
-  IdentityId identity;
   QString networkName;
+  IdentityId identity;
   QByteArray codecForEncoding;
   QByteArray codecForDecoding;
-  QList<QVariantMap> serverList;
+  QVariantList serverList;
 
   bool operator==(const NetworkInfo &other) const;
   bool operator!=(const NetworkInfo &other) const;
 };
 
+QDataStream &operator<<(QDataStream &out, const NetworkInfo &info);
+QDataStream &operator>>(QDataStream &in, NetworkInfo &info);
+
+Q_DECLARE_METATYPE(NetworkInfo);
 
 #endif

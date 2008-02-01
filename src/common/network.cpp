@@ -38,6 +38,7 @@ Network::Network(const NetworkId &networkid, QObject *parent) : SyncableObject(p
     _networkName(QString("<not initialized>")),
     _currentServer(QString()),
     _connected(false),
+    _connectionState(Disconnected),
     _prefixes(QString()),
     _prefixModes(QString()),
     _proxy(0),
@@ -48,15 +49,16 @@ Network::Network(const NetworkId &networkid, QObject *parent) : SyncableObject(p
 }
 
 // I think this is unnecessary since IrcUsers have us as their daddy :)
-/*
+
 Network::~Network() {
-  QHashIterator<QString, IrcUser *> ircuser(_ircUsers);
-  while (ircuser.hasNext()) {
-    ircuser.next();
-    delete ircuser.value();
-  }
+//  QHashIterator<QString, IrcUser *> ircuser(_ircUsers);
+//  while (ircuser.hasNext()) {
+//    ircuser.next();
+//    delete ircuser.value();
+//  }
+//  qDebug() << "Destroying net" << networkName() << networkId();
 }
-*/
+
 
 NetworkId Network::networkId() const {
   return _networkId;
@@ -93,6 +95,10 @@ bool Network::isConnected() const {
   return _connected;
 }
 
+Network::ConnectionState Network::connectionState() const {
+  return _connectionState;
+}
+
 NetworkInfo Network::networkInfo() const {
   NetworkInfo info;
   info.networkName = networkName();
@@ -106,11 +112,13 @@ NetworkInfo Network::networkInfo() const {
 
 void Network::setNetworkInfo(const NetworkInfo &info) {
   // we don't set our ID!
-  if(!info.networkName.isEmpty()) setNetworkName(info.networkName);
-  if(info.identity > 0) setIdentity(info.identity);
-  if(!info.codecForEncoding.isEmpty()) setCodecForEncoding(QTextCodec::codecForName(info.codecForEncoding));
-  if(!info.codecForDecoding.isEmpty()) setCodecForDecoding(QTextCodec::codecForName(info.codecForDecoding));
-  if(info.serverList.count()) setServerList(info.serverList);
+  if(!info.networkName.isEmpty() && info.networkName != networkName()) setNetworkName(info.networkName);
+  if(info.identity > 0 && info.identity != identity()) setIdentity(info.identity);
+  if(!info.codecForEncoding.isEmpty() && info.codecForEncoding != codecForEncoding())
+    setCodecForEncoding(QTextCodec::codecForName(info.codecForEncoding));
+  if(!info.codecForDecoding.isEmpty() && info.codecForDecoding != codecForDecoding())
+    setCodecForDecoding(QTextCodec::codecForName(info.codecForDecoding));
+  if(info.serverList.count()) setServerList(info.serverList); // FIXME compare components
 }
 
 QString Network::prefixToMode(const QString &prefix) {
@@ -165,7 +173,7 @@ QStringList Network::channels() const {
   return _ircChannels.keys();
 }
 
-QList<QVariantMap> Network::serverList() const {
+QVariantList Network::serverList() const {
   return _serverList;
 }
 
@@ -361,6 +369,11 @@ void Network::setConnected(bool connected) {
   emit connectedSet(connected);
 }
 
+void Network::setConnectionState(ConnectionState state) {
+  _connectionState = (ConnectionState)state;
+  emit connectionStateSet(_connectionState);
+}
+
 void Network::setMyNick(const QString &nickname) {
   _myNick = nickname;
   emit myNickSet(nickname);
@@ -371,7 +384,7 @@ void Network::setIdentity(IdentityId id) {
   emit identitySet(id);
 }
 
-void Network::setServerList(const QList<QVariantMap> &serverList) {
+void Network::setServerList(const QVariantList &serverList) {
   _serverList = serverList;
   emit serverListSet(serverList);
 }
@@ -401,9 +414,7 @@ QVariantMap Network::initSupports() const {
 }
 
 QVariantList Network::initServerList() const {
-  QList<QVariant> list;
-  foreach(QVariantMap serverdata, serverList()) list << QVariant(serverdata);
-  return list;
+  return serverList();
 }
 
 QStringList Network::initIrcUsers() const {
@@ -427,9 +438,7 @@ void Network::initSetSupports(const QVariantMap &supports) {
 }
 
 void Network::initSetServerList(const QVariantList & serverList) {
-  QList<QVariantMap> slist;
-  foreach(QVariant v, serverList) slist << v.toMap();
-  setServerList(slist);
+  setServerList(serverList);
 }
 
 void Network::initSetIrcUsers(const QStringList &hostmasks) {
@@ -497,16 +506,32 @@ void Network::channelDestroyed() {
   _ircChannels.remove(_ircChannels.key(channel));
 }
 
-void Network::requestConnect() {
+void Network::requestConnect() const {
   if(!proxy()) return;
   if(proxy()->proxyMode() == SignalProxy::Client) emit connectRequested(); // on the client this triggers calling this slot on the core
-  else emit connectRequested(networkId());  // and this is for CoreSession :)
+  else {
+    if(connectionState() != Disconnected) {
+      qWarning() << "Requesting connect while not being disconnected!";
+      return;
+    }
+    emit connectRequested(networkId());  // and this is for CoreSession :)
+  }
 }
 
-void Network::requestDisconnect() {
+void Network::requestDisconnect() const {
   if(!proxy()) return;
   if(proxy()->proxyMode() == SignalProxy::Client) emit disconnectRequested(); // on the client this triggers calling this slot on the core
-  else emit disconnectRequested(networkId());  // and this is for CoreSession :)
+  else {
+    if(connectionState() == Disconnected) {
+      qWarning() << "Requesting disconnect while not being connected!";
+      return;
+    }
+    emit disconnectRequested(networkId());  // and this is for CoreSession :)
+  }
+}
+
+void Network::emitConnectionError(const QString &errorMsg) {
+  emit connectionError(errorMsg);
 }
 
 // ====================
@@ -562,4 +587,28 @@ bool NetworkInfo::operator==(const NetworkInfo &other) const {
 
 bool NetworkInfo::operator!=(const NetworkInfo &other) const {
   return !(*this == other);
+}
+
+QDataStream &operator<<(QDataStream &out, const NetworkInfo &info) {
+  QVariantMap i;
+  i["NetworkId"] = QVariant::fromValue<NetworkId>(info.networkId);
+  i["NetworkName"] = info.networkName;
+  i["Identity"] = QVariant::fromValue<IdentityId>(info.identity);
+  i["CodecForEncoding"] = info.codecForEncoding;
+  i["CodecForDecoding"] = info.codecForDecoding;
+  i["ServerList"] = info.serverList;
+  out << i;
+  return out;
+}
+
+QDataStream &operator>>(QDataStream &in, NetworkInfo &info) {
+  QVariantMap i;
+  in >> i;
+  info.networkId = i["NetworkId"].value<NetworkId>();
+  info.networkName = i["NetworkName"].toString();
+  info.identity = i["Identity"].value<IdentityId>();
+  info.codecForEncoding = i["CodecForEncoding"].toByteArray();
+  info.codecForDecoding = i["CodecForDecoding"].toByteArray();
+  info.serverList = i["ServerList"].toList();
+  return in;
 }

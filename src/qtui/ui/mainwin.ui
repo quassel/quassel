@@ -113,6 +113,9 @@
   </widget>
   <widget class="QStatusBar" name="statusbar" />
   <action name="actionNetworkList" >
+   <property name="enabled" >
+    <bool>false</bool>
+   </property>
    <property name="text" >
     <string>&amp;Network List...</string>
    </property>
@@ -201,6 +204,9 @@
    </property>
   </action>
   <action name="actionAboutQuassel" >
+   <property name="enabled" >
+    <bool>false</bool>
+   </property>
    <property name="icon" >
     <iconset resource="../../icons/icons.qrc" >:/icons/quassel-icon.png</iconset>
    </property>

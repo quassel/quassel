@@ -202,8 +202,9 @@ void MainWin::setupSettingsDlg() {
 
   settingsDlg->registerSettingsPage(new FontsSettingsPage(settingsDlg));
   settingsDlg->registerSettingsPage(new IdentitiesSettingsPage(settingsDlg));
-#ifdef SPUTDEV
   settingsDlg->registerSettingsPage(new NetworksSettingsPage(settingsDlg));
+
+#ifdef SPUTDEV
   connect(settingsDlg, SIGNAL(finished(int)), QApplication::instance(), SLOT(quit()));  // FIXME
 #endif
 }
@@ -289,7 +290,7 @@ void MainWin::connectedToCore() {
   ui.menuCore->setEnabled(true);
   ui.actionConnectCore->setEnabled(false);
   ui.actionDisconnectCore->setEnabled(true);
-  ui.actionNetworkList->setEnabled(true);
+  //ui.actionNetworkList->setEnabled(true);
   ui.bufferWidget->show();
   statusBar()->showMessage(tr("Connected to core."));
 }
@@ -298,7 +299,7 @@ void MainWin::disconnectedFromCore() {
   ui.menuViews->setEnabled(false);
   ui.menuCore->setEnabled(false);
   ui.actionDisconnectCore->setEnabled(false);
-  ui.actionNetworkList->setEnabled(false);
+  //ui.actionNetworkList->setEnabled(false);
   ui.bufferWidget->hide();
   ui.actionConnectCore->setEnabled(true);
   nickListWidget->reset();

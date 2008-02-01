@@ -29,6 +29,7 @@
 class Identity;
 class NetworkConnection;  // FIXME get rid of
 class Network;
+struct NetworkInfo;
 class SignalProxy;
 
 class QScriptEngine;
@@ -90,6 +91,21 @@ public slots:
    */
   void removeIdentity(IdentityId identity);
 
+  //! Create a network and propagate the changes to the clients.
+  /** \param info The network's settings.
+   */
+  void createNetwork(const NetworkInfo &info, bool useId = false);
+
+  //! Update a network and propagate the changes to the clients.
+  /** \param info The updated network settings.
+   */
+  void updateNetwork(const NetworkInfo &info);
+
+  //! Remove identity and propagate that fact to the clients.
+  /** \param identity The identity to be removed.
+   */
+  void removeNetwork(NetworkId network);
+
 signals:
   void initialized();
 
@@ -120,6 +136,9 @@ signals:
    */
   void identityRemoved(IdentityId identity);
 
+  void networkCreated(NetworkId);
+  void networkRemoved(NetworkId);
+
 private slots:
   void recvStatusMsgFromServer(QString msg);
   void recvMessageFromServer(Message::Type, QString target, QString text, QString sender = "", quint8 flags = Message::None);
@@ -136,6 +155,7 @@ private slots:
   void scriptRequest(QString script);
 
 private:
+  void loadSettings();
   void initScriptEngine();
 
   UserId _user;

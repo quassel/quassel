@@ -115,6 +115,5 @@ void ModelPropertyMapper::dataChanged(const QModelIndex &topLeft, const QModelIn
 }
 
 void ModelPropertyMapper::targetDestroyed() {
-  QObject *obj = static_cast<QObject *>(sender());
-  removeMapping(0, 0, obj, QByteArray());
+  removeMapping(0, 0, sender(), QByteArray());
 }

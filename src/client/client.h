@@ -103,8 +103,6 @@ public:
   static QVariant retrieveSessionData(const QString &key, const QVariant &def = QVariant());
   static QStringList sessionDataKeys();
 
-  static void disconnectFromNetwork(NetworkId);
-
   enum ClientMode { LocalCore, RemoteCore };
 
 signals:
@@ -150,7 +148,7 @@ signals:
 
   void requestCreateNetwork(const NetworkInfo &info);
   void requestUpdateNetwork(const NetworkInfo &info);
-  void requestRemoveNetwork(const NetworkInfo &info);
+  void requestRemoveNetwork(NetworkId);
 
 public slots:
   //void selectBuffer(Buffer *);
@@ -180,6 +178,8 @@ private slots:
   void networkDestroyed();
   void coreIdentityCreated(const Identity &);
   void coreIdentityRemoved(IdentityId);
+  void coreNetworkCreated(NetworkId);
+  void coreNetworkRemoved(NetworkId);
 
 private:
   Client(QObject *parent = 0);

@@ -24,6 +24,7 @@
 #include "logger.h"
 #include "message.h"
 #include "identity.h"
+#include "network.h"
 #include "bufferinfo.h"
 #include "types.h"
 #include "syncableobject.h"
@@ -71,15 +72,17 @@ void Global::registerMetaTypes() {
   qRegisterMetaType<QVariant>("QVariant");
   qRegisterMetaType<Message>("Message");
   qRegisterMetaType<BufferInfo>("BufferInfo");
+  qRegisterMetaType<NetworkInfo>("NetworkInfo");
   qRegisterMetaType<Identity>("Identity");
+  qRegisterMetaType<Network::ConnectionState>("Network::ConnectionState");
 
   qRegisterMetaTypeStreamOperators<QVariant>("QVariant");
   qRegisterMetaTypeStreamOperators<Message>("Message");
   qRegisterMetaTypeStreamOperators<BufferInfo>("BufferInfo");
+  qRegisterMetaTypeStreamOperators<NetworkInfo>("NetworkInfo");
   qRegisterMetaTypeStreamOperators<Identity>("Identity");
+  qRegisterMetaTypeStreamOperators<int>("Network::ConnectionState");
 
-  // Basic types (typedefs)
-  // These use the standard stream operators
   qRegisterMetaType<IdentityId>("IdentityId");
   qRegisterMetaType<BufferId>("BufferId");
   qRegisterMetaType<NetworkId>("NetworkId");

@@ -28,6 +28,7 @@
 #include <QTimer>
 
 #include "message.h"
+#include "network.h"
 #include "signalproxy.h"
 
 class CoreSession;
@@ -50,6 +51,7 @@ public:
   CoreSession *coreSession() const;
 
   bool isConnected() const;
+  Network::ConnectionState connectionState() const;
 
   IrcServerHandler *ircServerHandler() const;
   UserInputHandler *userInputHandler() const;
@@ -95,10 +97,11 @@ signals:
   void displayStatusMsg(QString);
   //void displayMsg(Message msg);
   void displayMsg(Message::Type, QString target, QString text, QString sender = "", quint8 flags = Message::None);
-  void connected(NetworkId networkId);
+  void connected(NetworkId networkId);   ///< Emitted after receipt of 001 to indicate that we can now send data to the IRC server
   void disconnected(NetworkId networkId);
-
+  void connectionStateChanged(Network::ConnectionState);
   void connectionInitialized(); ///< Emitted after receipt of 001 to indicate that we can now send data to the IRC server
+  void connectionError(const QString &errorMsg);
 
   //void queryRequested(QString network, QString nick);
 
@@ -109,9 +112,12 @@ private slots:
   void socketConnected();
   void socketDisconnected();
   void socketStateChanged(QAbstractSocket::SocketState);
+  void setConnectionState(Network::ConnectionState);
+  void networkInitialized();
 
 private:
   QTcpSocket socket;
+  Network::ConnectionState _connectionState;
 
   Network *_network;
   CoreSession *_coreSession;

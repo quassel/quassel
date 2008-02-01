@@ -46,29 +46,6 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent) : QObje
   CoreUserSettings s(user());
   sessionData = s.sessionData();
 
-  foreach(IdentityId id, s.identityIds()) {
-    Identity *i = new Identity(s.identity(id), this);
-    if(!i->isValid()) {
-      qWarning() << QString("Invalid identity! Removing...");
-      s.removeIdentity(id);
-      delete i;
-      continue;
-    }
-    if(_identities.contains(i->id())) {
-      qWarning() << "Duplicate identity, ignoring!";
-      delete i;
-      continue;
-    }
-    _identities[i->id()] = i;
-  }
-  if(!_identities.count()) {
-    Identity i(1);
-    i.setToDefaults();
-    i.setIdentityName(tr("Default Identity"));
-    createIdentity(i);
-  }
-
-  //p->attachSlot(SIGNAL(requestNetworkStates()), this, SLOT(networkStateRequested()));
   p->attachSlot(SIGNAL(requestConnect(QString)), this, SLOT(connectToNetwork(QString)));
   p->attachSlot(SIGNAL(disconnectFromNetwork(NetworkId)), this, SLOT(disconnectFromNetwork(NetworkId))); // FIXME
   p->attachSlot(SIGNAL(sendInput(BufferInfo, QString)), this, SLOT(msgFromClient(BufferInfo, QString)));
@@ -87,38 +64,14 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent) : QObje
   p->attachSlot(SIGNAL(updateIdentity(const Identity &)), this, SLOT(updateIdentity(const Identity &)));
   p->attachSlot(SIGNAL(removeIdentity(IdentityId)), this, SLOT(removeIdentity(IdentityId)));
 
+  p->attachSignal(this, SIGNAL(networkCreated(NetworkId)));
+  p->attachSignal(this, SIGNAL(networkRemoved(NetworkId)));
+  p->attachSlot(SIGNAL(createNetwork(const NetworkInfo &)), this, SLOT(createNetwork(const NetworkInfo &)));
+  p->attachSlot(SIGNAL(updateNetwork(const NetworkInfo &)), this, SLOT(updateNetwork(const NetworkInfo &)));
+  p->attachSlot(SIGNAL(removeNetwork(NetworkId)), this, SLOT(removeNetwork(NetworkId)));
+
+  loadSettings();
   initScriptEngine();
-
-  foreach(Identity *id, _identities.values()) {
-    p->synchronize(id);
-  }
-
-  // Load and init networks.
-  // FIXME For now we use the old info from sessionData...
-
-  QVariantMap networks = retrieveSessionData("Networks").toMap();
-  foreach(QString netname, networks.keys()) {
-    QVariantMap network = networks[netname].toMap();
-    NetworkId netid = Core::networkId(user(), netname);
-    Network *net = new Network(netid, this);
-    connect(net, SIGNAL(connectRequested(NetworkId)), this, SLOT(connectToNetwork(NetworkId)));
-    net->setNetworkName(netname);
-    net->setIdentity(1); // FIXME default identity for now
-    net->setCodecForEncoding("ISO-8859-15"); // FIXME
-    net->setCodecForDecoding("ISO-8859-15"); // FIXME
-    QList<QVariantMap> slist;
-    foreach(QVariant v, network["Servers"].toList()) {
-      QVariantMap server;
-      server["Host"] = v.toMap()["Address"];
-      server["Address"] = v.toMap()["Address"];
-      server["Port"] = v.toMap()["Port"];
-      slist << server;
-    }
-    net->setServerList(slist);
-    net->setProxy(p);
-    _networks[netid] = net;
-    p->synchronize(net);
-  }
 
   // Restore session state
   if(restoreState) restoreSessionState();
@@ -128,6 +81,12 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent) : QObje
 
 CoreSession::~CoreSession() {
   saveSessionState();
+  foreach(NetworkConnection *conn, _connections.values()) {
+    conn->deleteLater();
+  }
+  foreach(Network *net, _networks.values()) {
+    net->deleteLater();
+  }
 }
 
 UserId CoreSession::user() const {
@@ -147,6 +106,65 @@ NetworkConnection *CoreSession::networkConnection(NetworkId id) const {
 Identity *CoreSession::identity(IdentityId id) const {
   if(_identities.contains(id)) return _identities[id];
   return 0;
+}
+
+void CoreSession::loadSettings() {
+  CoreUserSettings s(user());
+
+  foreach(IdentityId id, s.identityIds()) {
+    Identity *i = new Identity(s.identity(id), this);
+    if(!i->isValid()) {
+      qWarning() << QString("Invalid identity! Removing...");
+      s.removeIdentity(id);
+      delete i;
+      continue;
+    }
+    if(_identities.contains(i->id())) {
+      qWarning() << "Duplicate identity, ignoring!";
+      delete i;
+      continue;
+    }
+    _identities[i->id()] = i;
+    signalProxy()->synchronize(i);
+  }
+  if(!_identities.count()) {
+    Identity i(1);
+    i.setToDefaults();
+    i.setIdentityName(tr("Default Identity"));
+    createIdentity(i);
+  }
+
+  foreach(NetworkId id, s.networkIds()) {
+    NetworkInfo info = s.networkInfo(id);
+    createNetwork(info, true);
+  }
+
+  // FIXME Migrate old settings if available...
+  if(!_networks.count()) {
+    QVariantMap networks = retrieveSessionData("Networks").toMap();
+    if(networks.keys().count()) {
+      qWarning() << "Migrating your old network settings to the new format!";
+      foreach(QString netname, networks.keys()) {
+        QVariantMap network = networks[netname].toMap();
+        NetworkId netid = Core::networkId(user(), netname);
+        NetworkInfo info;
+        info.networkId = netid;
+        info.networkName = netname;
+        info.identity = 1;
+        info.codecForEncoding = "ISO-8859-15";
+        info.codecForDecoding = "ISO-8859-15";
+        QVariantList slist;
+        foreach(QVariant v, network["Servers"].toList()) {
+          QVariantMap server;
+          server["Host"] = v.toMap()["Address"];
+          server["Port"] = v.toMap()["Port"];
+          slist << server;
+        }
+        info.serverList = slist;
+        createNetwork(info, true);
+      }
+    }
+  }
 }
 
 void CoreSession::saveSessionState() const {
@@ -225,27 +243,25 @@ void CoreSession::connectToNetwork(NetworkId id, const QVariant &previousState) 
     conn = new NetworkConnection(net, this, previousState);
     _connections[id] = conn;
     attachNetworkConnection(conn);
-    conn->connectToIrc();
   }
+  conn->connectToIrc();
 }
 
 void CoreSession::attachNetworkConnection(NetworkConnection *conn) {
-  //connect(this, SIGNAL(connectToIrc(QString)), network, SLOT(connectToIrc(QString)));
-  //connect(this, SIGNAL(disconnectFromIrc(QString)), network, SLOT(disconnectFromIrc(QString)));
-  //connect(this, SIGNAL(msgFromGui(uint, QString, QString)), network, SLOT(userInput(uint, QString, QString)));
-
   connect(conn, SIGNAL(connected(NetworkId)), this, SLOT(networkConnected(NetworkId)));
   connect(conn, SIGNAL(disconnected(NetworkId)), this, SLOT(networkDisconnected(NetworkId)));
-  signalProxy()->attachSignal(conn, SIGNAL(connected(NetworkId)), SIGNAL(networkConnected(NetworkId)));
-  signalProxy()->attachSignal(conn, SIGNAL(disconnected(NetworkId)), SIGNAL(networkDisconnected(NetworkId)));
+
+  // I guess we don't need these anymore, client-side can just connect the network's signals directly
+  //signalProxy()->attachSignal(conn, SIGNAL(connected(NetworkId)), SIGNAL(networkConnected(NetworkId)));
+  //signalProxy()->attachSignal(conn, SIGNAL(disconnected(NetworkId)), SIGNAL(networkDisconnected(NetworkId)));
 
   connect(conn, SIGNAL(displayMsg(Message::Type, QString, QString, QString, quint8)), this, SLOT(recvMessageFromServer(Message::Type, QString, QString, QString, quint8)));
   connect(conn, SIGNAL(displayStatusMsg(QString)), this, SLOT(recvStatusMsgFromServer(QString)));
 
-  // TODO add error handling
 }
 
 void CoreSession::disconnectFromNetwork(NetworkId id) {
+  if(!_connections.contains(id)) return;
   _connections[id]->disconnectFromIrc();
 }
 
@@ -269,19 +285,17 @@ SignalProxy *CoreSession::signalProxy() const {
   return _signalProxy;
 }
 
+// FIXME we need a sane way for creating buffers!
 void CoreSession::networkConnected(NetworkId networkid) {
-  network(networkid)->setConnected(true);
   Core::bufferInfo(user(), networkConnection(networkid)->networkName()); // create status buffer
 }
 
 void CoreSession::networkDisconnected(NetworkId networkid) {
   // FIXME
   // connection should only go away on explicit /part, and handle reconnections etcpp internally otherwise
-  network(networkid)->setConnected(false);
 
   Q_ASSERT(_connections.contains(networkid));
   _connections.take(networkid)->deleteLater();
-  Q_ASSERT(!_connections.contains(networkid));
 }
 
 // FIXME switch to BufferId
@@ -385,7 +399,9 @@ void CoreSession::initScriptEngine() {
 void CoreSession::scriptRequest(QString script) {
   emit scriptResult(scriptEngine->evaluate(script).toString());
 }
-#include <QDebug>
+
+/*** Identity Handling ***/
+
 void CoreSession::createIdentity(const Identity &id) {
   // find free ID
   int i;
@@ -423,3 +439,47 @@ void CoreSession::removeIdentity(IdentityId id) {
   }
 }
 
+/*** Network Handling ***/
+
+void CoreSession::createNetwork(const NetworkInfo &_info, bool useId) {
+  NetworkInfo info = _info;
+  int id;
+  if(useId && info.networkId > 0) id = info.networkId.toInt();
+  else {
+    for(id = 1; id <= _networks.count(); id++) {
+      if(!_networks.keys().contains(id)) break;
+    }
+    //qDebug() << "found free id" << i;
+    info.networkId = id;
+  }
+  Network *net = new Network(id, this);
+  connect(net, SIGNAL(connectRequested(NetworkId)), this, SLOT(connectToNetwork(NetworkId)));
+  connect(net, SIGNAL(disconnectRequested(NetworkId)), this, SLOT(disconnectFromNetwork(NetworkId)));
+  net->setNetworkInfo(info);
+  net->setProxy(signalProxy());
+  _networks[id] = net;
+  signalProxy()->synchronize(net);
+  CoreUserSettings s(user());
+  s.storeNetworkInfo(info);
+  emit networkCreated(id);
+}
+
+void CoreSession::updateNetwork(const NetworkInfo &info) {
+  if(!_networks.contains(info.networkId)) {
+    qWarning() << "Update request for unknown network received!";
+    return;
+  }
+  _networks[info.networkId]->setNetworkInfo(info);
+  CoreUserSettings s(user());
+  s.storeNetworkInfo(info);
+}
+
+void CoreSession::removeNetwork(NetworkId id) {
+  Network *net = _networks.take(id);
+  if(net) {
+    emit networkRemoved(id);
+    CoreUserSettings s(user());
+    s.removeNetworkInfo(id);
+    net->deleteLater();
+  }
+}
