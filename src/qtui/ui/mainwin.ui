@@ -49,9 +49,9 @@
      <height>25</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuConnection" >
+   <widget class="QMenu" name="menuFile" >
     <property name="title" >
-     <string>Connection</string>
+     <string>&amp;File</string>
     </property>
     <widget class="QMenu" name="menuNetworks" >
      <property name="title" >
@@ -72,36 +72,36 @@
    </widget>
    <widget class="QMenu" name="menuSettings" >
     <property name="title" >
-     <string>Settings</string>
+     <string>&amp;Settings</string>
     </property>
     <addaction name="actionSettingsDlg" />
    </widget>
    <widget class="QMenu" name="menuViews" >
     <property name="title" >
-     <string>Views</string>
+     <string>&amp;Views</string>
     </property>
     <addaction name="actionManageViews" />
     <addaction name="separator" />
    </widget>
    <widget class="QMenu" name="menuHelp" >
     <property name="title" >
-     <string>Help</string>
+     <string>&amp;Help</string>
     </property>
     <addaction name="actionAboutQuassel" />
     <addaction name="actionAboutQt" />
    </widget>
    <widget class="QMenu" name="menuDebug" >
     <property name="title" >
-     <string>Debug</string>
+     <string>&amp;Debug</string>
     </property>
     <addaction name="actionDebug_Console" />
    </widget>
    <widget class="QMenu" name="menuCore" >
     <property name="title" >
-     <string>Core</string>
+     <string>&amp;Core</string>
     </property>
    </widget>
-   <addaction name="menuConnection" />
+   <addaction name="menuFile" />
    <addaction name="menuViews" />
    <addaction name="menuCore" />
    <addaction name="menuSettings" />
