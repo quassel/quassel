@@ -610,14 +610,14 @@ void SignalProxy::handleSync(QVariantList params) {
   QByteArray signal = params.takeFirst().toByteArray();
 
   if(!_syncSlave.contains(className) || !_syncSlave[className].contains(objectName)) {
-    qWarning() << QString("no registered receiver for sync call: %s::%s (objectName=\"%s\"). Params are:").arg(QString(className)).arg(QString(signal)).arg(objectName)
+    qWarning() << QString("no registered receiver for sync call: %1::%2 (objectName=\"%3\"). Params are:").arg(QString(className)).arg(QString(signal)).arg(objectName)
 	       << params;
     return;
   }
 
   SyncableObject *receiver = _syncSlave[className][objectName];
   if(!syncMap(receiver).contains(signal)) {
-    qWarning() << QString("no matching slot for sync call: %s::%s (objectName=\"%s\"). Params are:").arg(QString(className)).arg(QString(signal)).arg(objectName)
+    qWarning() << QString("no matching slot for sync call: %1::%2 (objectName=\"%3\"). Params are:").arg(QString(className)).arg(QString(signal)).arg(objectName)
 	       << params;
     return;
   }
