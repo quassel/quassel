@@ -269,28 +269,30 @@ MsgId SqliteStorage::logMessage(Message msg) {
 QList<Message> SqliteStorage::requestMsgs(BufferInfo buffer, int lastmsgs, int offset) {
   QList<Message> messagelist;
   // we have to determine the real offset first
-  QSqlQuery *requestMsgsOffsetQuery = cachedQuery("select_messagesOffset");
-  requestMsgsOffsetQuery->bindValue(":bufferid", buffer.uid().toInt());
-  requestMsgsOffsetQuery->bindValue(":messageid", offset);
-  requestMsgsOffsetQuery->exec();
-  requestMsgsOffsetQuery->first();
-  offset = requestMsgsOffsetQuery->value(0).toInt();
+  QSqlQuery *offsetQuery = cachedQuery("select_messagesOffset");
+  offsetQuery->bindValue(":bufferid", buffer.uid().toInt());
+  offsetQuery->bindValue(":messageid", offset);
+  offsetQuery->exec();
+  offsetQuery->first();
+  offset = offsetQuery->value(0).toInt();
 
   // now let's select the messages
-  QSqlQuery *requestMsgsQuery = cachedQuery("select_messages");
-  requestMsgsQuery->bindValue(":bufferid", buffer.uid().toInt());
-  requestMsgsQuery->bindValue(":bufferid2", buffer.uid().toInt());  // Qt can't handle the same placeholder used twice
-  requestMsgsQuery->bindValue(":limit", lastmsgs);
-  requestMsgsQuery->bindValue(":offset", offset);
-  requestMsgsQuery->exec();
-  while(requestMsgsQuery->next()) {
-    Message msg(QDateTime::fromTime_t(requestMsgsQuery->value(1).toInt()),
+  QSqlQuery *msgQuery = cachedQuery("select_messages");
+  msgQuery->bindValue(":bufferid", buffer.uid().toInt());
+  msgQuery->bindValue(":limit", lastmsgs);
+  msgQuery->bindValue(":offset", offset);
+  msgQuery->exec();
+  
+  watchQuery(msgQuery);
+  
+  while(msgQuery->next()) {
+    Message msg(QDateTime::fromTime_t(msgQuery->value(1).toInt()),
                 buffer,
-                (Message::Type)requestMsgsQuery->value(2).toUInt(),
-                requestMsgsQuery->value(5).toString(),
-                requestMsgsQuery->value(4).toString(),
-                requestMsgsQuery->value(3).toUInt());
-    msg.setMsgId(requestMsgsQuery->value(0).toInt());
+                (Message::Type)msgQuery->value(2).toUInt(),
+                msgQuery->value(5).toString(),
+                msgQuery->value(4).toString(),
+                msgQuery->value(3).toUInt());
+    msg.setMsgId(msgQuery->value(0).toInt());
     messagelist << msg;
   }
   return messagelist;
@@ -300,29 +302,30 @@ QList<Message> SqliteStorage::requestMsgs(BufferInfo buffer, int lastmsgs, int o
 QList<Message> SqliteStorage::requestMsgs(BufferInfo buffer, QDateTime since, int offset) {
   QList<Message> messagelist;
   // we have to determine the real offset first
-  QSqlQuery *requestMsgsSinceOffsetQuery = cachedQuery("select_messagesSinceOffset");
-  requestMsgsSinceOffsetQuery->bindValue(":bufferid", buffer.uid().toInt());
-  requestMsgsSinceOffsetQuery->bindValue(":since", since.toTime_t());
-  requestMsgsSinceOffsetQuery->exec();
-  requestMsgsSinceOffsetQuery->first();
-  offset = requestMsgsSinceOffsetQuery->value(0).toInt();
+  QSqlQuery *offsetQuery = cachedQuery("select_messagesSinceOffset");
+  offsetQuery->bindValue(":bufferid", buffer.uid().toInt());
+  offsetQuery->bindValue(":since", since.toTime_t());
+  offsetQuery->exec();
+  offsetQuery->first();
+  offset = offsetQuery->value(0).toInt();
 
   // now let's select the messages
-  QSqlQuery *requestMsgsSinceQuery = cachedQuery("select_messagesSince");
-  requestMsgsSinceQuery->bindValue(":bufferid", buffer.uid().toInt());
-  requestMsgsSinceQuery->bindValue(":bufferid2", buffer.uid().toInt());
-  requestMsgsSinceQuery->bindValue(":since", since.toTime_t());
-  requestMsgsSinceQuery->bindValue(":offset", offset);
-  requestMsgsSinceQuery->exec();
+  QSqlQuery *msgQuery = cachedQuery("select_messagesSince");
+  msgQuery->bindValue(":bufferid", buffer.uid().toInt());
+  msgQuery->bindValue(":since", since.toTime_t());
+  msgQuery->bindValue(":offset", offset);
+  msgQuery->exec();
 
-  while(requestMsgsSinceQuery->next()) {
-    Message msg(QDateTime::fromTime_t(requestMsgsSinceQuery->value(1).toInt()),
+  watchQuery(msgQuery);
+  
+  while(msgQuery->next()) {
+    Message msg(QDateTime::fromTime_t(msgQuery->value(1).toInt()),
                 buffer,
-                (Message::Type)requestMsgsSinceQuery->value(2).toUInt(),
-                requestMsgsSinceQuery->value(5).toString(),
-                requestMsgsSinceQuery->value(4).toString(),
-                requestMsgsSinceQuery->value(3).toUInt());
-    msg.setMsgId(requestMsgsSinceQuery->value(0).toInt());
+                (Message::Type)msgQuery->value(2).toUInt(),
+                msgQuery->value(5).toString(),
+                msgQuery->value(4).toString(),
+                msgQuery->value(3).toUInt());
+    msg.setMsgId(msgQuery->value(0).toInt());
     messagelist << msg;
   }
 
@@ -332,20 +335,22 @@ QList<Message> SqliteStorage::requestMsgs(BufferInfo buffer, QDateTime since, in
 
 QList<Message> SqliteStorage::requestMsgRange(BufferInfo buffer, int first, int last) {
   QList<Message> messagelist;
-  QSqlQuery *requestMsgRangeQuery = cachedQuery("select_messageRange");
-  requestMsgRangeQuery->bindValue(":bufferid", buffer.uid().toInt());
-  requestMsgRangeQuery->bindValue(":bufferid2", buffer.uid().toInt());
-  requestMsgRangeQuery->bindValue(":firstmsg", first);
-  requestMsgRangeQuery->bindValue(":lastmsg", last);
+  QSqlQuery *rangeQuery = cachedQuery("select_messageRange");
+  rangeQuery->bindValue(":bufferid", buffer.uid().toInt());
+  rangeQuery->bindValue(":firstmsg", first);
+  rangeQuery->bindValue(":lastmsg", last);
+  rangeQuery->exec();
 
-  while(requestMsgRangeQuery->next()) {
-    Message msg(QDateTime::fromTime_t(requestMsgRangeQuery->value(1).toInt()),
+  watchQuery(rangeQuery);
+  
+  while(rangeQuery->next()) {
+    Message msg(QDateTime::fromTime_t(rangeQuery->value(1).toInt()),
                 buffer,
-                (Message::Type)requestMsgRangeQuery->value(2).toUInt(),
-                requestMsgRangeQuery->value(5).toString(),
-                requestMsgRangeQuery->value(4).toString(),
-                requestMsgRangeQuery->value(3).toUInt());
-    msg.setMsgId(requestMsgRangeQuery->value(0).toInt());
+                (Message::Type)rangeQuery->value(2).toUInt(),
+                rangeQuery->value(5).toString(),
+                rangeQuery->value(4).toString(),
+                rangeQuery->value(3).toUInt());
+    msg.setMsgId(rangeQuery->value(0).toInt());
     messagelist << msg;
   }
 
