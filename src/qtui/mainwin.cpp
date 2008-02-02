@@ -377,9 +377,10 @@ void MainWin::clientNetworkRemoved(NetworkId id) {
   QAction *action;
   while(actionIter != networkActions.end()) {
     action = *actionIter;
-    if(action->data().value<NetworkId>() == id)
+    if(action->data().value<NetworkId>() == id) {
+      action->deleteLater();
       actionIter = networkActions.erase(actionIter);
-    else
+    } else
       actionIter++;
   }
 }
