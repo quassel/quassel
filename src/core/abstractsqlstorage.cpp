@@ -102,6 +102,16 @@ bool AbstractSqlStorage::init(const QVariantMap &settings) {
   return true;
 }
 
+void AbstractSqlStorage::sync() {
+  QHash<QPair<QString, int>, QSqlQuery *>::iterator iter = _queryCache.begin();
+  while(iter != _queryCache.end()) {
+    delete *iter;
+    iter = _queryCache.erase(iter);
+  }
+
+  logDb().commit();
+}
+
 QString AbstractSqlStorage::queryString(const QString &queryName, int version) {
   if(version == 0)
     version = schemaVersion();

@@ -25,6 +25,7 @@
 #include <QMutex>
 #include <QString>
 #include <QVariant>
+#include <QTimer>
 #include <QTcpServer>
 #include <QTcpSocket>
 
@@ -130,6 +131,12 @@ class Core : public QObject {
      */
     static QList<BufferInfo> requestBuffers(UserId user, QDateTime since = QDateTime());
 
+  public slots:
+    //! Make storage data persistent
+    /** \note This method is threadsafe.
+     */
+    void syncStorage();
+  
   signals:
     //! Sent when a BufferInfo is updated in storage.
     void bufferInfoUpdated(UserId user, const BufferInfo &info);
@@ -158,6 +165,7 @@ class Core : public QObject {
     UserId guiUser;
     QHash<UserId, SessionThread *> sessions;
     Storage *storage;
+    QTimer _storageSyncTimer;
 
     QTcpServer server; // TODO: implement SSL
     QHash<QTcpSocket *, quint32> blocksizes;

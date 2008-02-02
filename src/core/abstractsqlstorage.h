@@ -40,6 +40,7 @@ public:
   
 protected:
   bool init(const QVariantMap &settings = QVariantMap());
+  virtual void sync();
   
   QSqlDatabase logDb();
   

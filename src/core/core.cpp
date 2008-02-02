@@ -49,6 +49,10 @@ Core::Core()
   : storage(0)
 {
   startTime = QDateTime::currentDateTime();  // for uptime :)
+
+  connect(&_storageSyncTimer, SIGNAL(timeout()),
+	  this, SLOT(syncStorage()));
+  _storageSyncTimer.start(10 * 60 * 1000); // in msecs
 }
 
 void Core::init() {
@@ -93,6 +97,11 @@ bool Core::initStorage(QVariantMap dbSettings, bool setup) {
 Core::~Core() {
   // FIXME properly shutdown the sessions
   qDeleteAll(sessions);
+}
+
+void Core::syncStorage() {
+  QMutexLocker locker(&mutex);
+  return instance()->storage->sync();
 }
 
 void Core::restoreState() {

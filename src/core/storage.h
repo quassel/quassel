@@ -60,7 +60,14 @@ class Storage : public QObject {
      *  \return True if and only if the storage provider was initialized successfully.
      */
     virtual bool init(const QVariantMap &settings = QVariantMap()) = 0;
-    
+
+  //! Makes temp data persistent
+  /** This Method is periodically called by the Quassel Core to make temporary
+   *  data persistant. This reduces the data loss drastically in the
+   *  unlikely case of a Core crash.
+   */
+    virtual void sync() = 0;
+  
     // TODO: Add functions for configuring the backlog handling, i.e. defining auto-cleanup settings etc
 
     /* User handling */
