@@ -81,7 +81,7 @@ void Global::registerMetaTypes() {
   qRegisterMetaTypeStreamOperators<BufferInfo>("BufferInfo");
   qRegisterMetaTypeStreamOperators<NetworkInfo>("NetworkInfo");
   qRegisterMetaTypeStreamOperators<Identity>("Identity");
-  qRegisterMetaTypeStreamOperators<int>("Network::ConnectionState");
+  qRegisterMetaTypeStreamOperators<qint8>("Network::ConnectionState");
 
   qRegisterMetaType<IdentityId>("IdentityId");
   qRegisterMetaType<BufferId>("BufferId");

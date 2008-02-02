@@ -95,7 +95,8 @@ bool Network::isConnected() const {
   return _connected;
 }
 
-Network::ConnectionState Network::connectionState() const {
+//Network::ConnectionState Network::connectionState() const {
+int Network::connectionState() const {
   return _connectionState;
 }
 
@@ -369,8 +370,11 @@ void Network::setConnected(bool connected) {
   emit connectedSet(connected);
 }
 
-void Network::setConnectionState(ConnectionState state) {
+//void Network::setConnectionState(ConnectionState state) {
+void Network::setConnectionState(int state) {
   _connectionState = (ConnectionState)state;
+  //qDebug() << "netstate" << networkId() << networkName() << state;
+  emit connectionStateSet(state);
   emit connectionStateSet(_connectionState);
 }
 

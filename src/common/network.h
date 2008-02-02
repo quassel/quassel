@@ -53,7 +53,8 @@ class Network : public SyncableObject {
   Q_PROPERTY(QByteArray codecForDecoding READ codecForDecoding WRITE setCodecForDecoding STORED false)
   Q_PROPERTY(IdentityId identityId READ identity WRITE setIdentity STORED false)
   Q_PROPERTY(bool isConnected READ isConnected WRITE setConnected STORED false)
-  Q_PROPERTY(Network::ConnectionState connectionState READ connectionState WRITE setConnectionState STORED false)
+  //Q_PROPERTY(Network::ConnectionState connectionState READ connectionState WRITE setConnectionState STORED false)
+  Q_PROPERTY(int connectionState READ connectionState WRITE setConnectionState STORED false)
 
 public:
   enum ConnectionState { Disconnected, Connecting, Initializing, Initialized, Disconnecting };
@@ -72,7 +73,8 @@ public:
   bool isChannelName(const QString &channelname) const;
 
   bool isConnected() const;
-  Network::ConnectionState connectionState() const;
+  //Network::ConnectionState connectionState() const;
+  int connectionState() const;
 
   QString prefixToMode(const QString &prefix);
   QString prefixToMode(const QCharRef &prefix);
@@ -122,7 +124,8 @@ public slots:
   void setNetworkName(const QString &networkName);
   void setCurrentServer(const QString &currentServer);
   void setConnected(bool isConnected);
-  void setConnectionState(Network::ConnectionState state);
+  //void setConnectionState(Network::ConnectionState state);
+  void setConnectionState(int state);
   void setMyNick(const QString &mynick);
   void setIdentity(IdentityId);
 
@@ -172,6 +175,7 @@ signals:
   void currentServerSet(const QString &currentServer);
   void connectedSet(bool isConnected);
   void connectionStateSet(Network::ConnectionState);
+  void connectionStateSet(int);
   void connectionError(const QString &errorMsg);
   void myNickSet(const QString &mynick);
   void identitySet(IdentityId);

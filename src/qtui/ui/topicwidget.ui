@@ -55,7 +55,7 @@
       <string>...</string>
      </property>
      <property name="icon" >
-      <iconset resource="../../icons/icons.qrc" >:/16x16/actions/oxygen/16x16/actions/configure.png</iconset>
+      <iconset resource="../../icons/icons.qrc" >:/22x22/actions/oxygen/22x22/actions/configure.png</iconset>
      </property>
      <property name="iconSize" >
       <size>
