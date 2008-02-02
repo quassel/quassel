@@ -76,10 +76,10 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent) : QObje
 CoreSession::~CoreSession() {
   saveSessionState();
   foreach(NetworkConnection *conn, _connections.values()) {
-    conn->deleteLater();
+    delete conn;
   }
   foreach(Network *net, _networks.values()) {
-    net->deleteLater();
+    delete net;
   }
 }
 
