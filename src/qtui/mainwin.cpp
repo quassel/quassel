@@ -349,7 +349,6 @@ void MainWin::clientNetworkCreated(NetworkId id) {
   foreach(QAction *a, networkActions) ui.menuNetworks->addAction(a);
   ui.menuNetworks->addSeparator();
   ui.menuNetworks->addAction(actionEditNetworks);
-
 }
 
 void MainWin::clientNetworkUpdated() {
@@ -374,11 +373,14 @@ void MainWin::clientNetworkUpdated() {
 }
 
 void MainWin::clientNetworkRemoved(NetworkId id) {
-  foreach(QAction *a, networkActions) {
-    if(a->data().value<NetworkId>() == id) {
-      a->deleteLater();
-      break;
-    }
+  QList<QAction *>::iterator actionIter = networkActions.begin();;
+  QAction *action;
+  while(actionIter != networkActions.end()) {
+    action = *actionIter;
+    if(action->data().value<NetworkId>() == id)
+      actionIter = networkActions.erase(actionIter);
+    else
+      actionIter++;
   }
 }
 
