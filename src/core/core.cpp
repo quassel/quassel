@@ -28,6 +28,7 @@
 #include "coresettings.h"
 #include "signalproxy.h"
 #include "sqlitestorage.h"
+#include "network.h"
 
 Core *Core::instanceptr = 0;
 QMutex Core::mutex;
@@ -127,15 +128,24 @@ void Core::saveState() {
 }
 
 /*** Storage Access ***/
+bool Core::createNetworkId(UserId user, NetworkInfo &info) {
+  QMutexLocker locker(&mutex);
+  NetworkId networkId = instance()->storage->createNetworkId(user, info);
+  if(!networkId.isValid())
+    return false;
+  
+  info.networkId = networkId;
+  return true;
+}
 
 NetworkId Core::networkId(UserId user, const QString &network) {
   QMutexLocker locker(&mutex);
   return instance()->storage->getNetworkId(user, network);
 }
 
-BufferInfo Core::bufferInfo(UserId user, const QString &network, const QString &buffer) {
+BufferInfo Core::bufferInfo(UserId user, const NetworkId &networkId, const QString &buffer) {
   //QMutexLocker locker(&mutex);
-  return instance()->storage->getBufferInfo(user, network, buffer);
+  return instance()->storage->getBufferInfo(user, networkId, buffer);
 }
 
 MsgId Core::storeMessage(const Message &message) {

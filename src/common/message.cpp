@@ -115,7 +115,6 @@ void Message::format() {
   QString host = hostFromMask(sender());
   QString nick = nickFromMask(sender());
   QString txt = mircToInternal(text());
-  QString networkName = buffer().network();
   QString bufferName = buffer().buffer();
 
   _formattedTimestamp = tr("%DT[%1]").arg(timestamp().toLocalTime().toString("hh:mm:ss"));

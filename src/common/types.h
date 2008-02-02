@@ -32,6 +32,7 @@ class SignedId {
   public:
     inline SignedId(int _id = 0) { id = _id; }
     inline qint32 toInt() const { return id; }
+    inline bool isValid() const { return id > 0; }
 
     inline bool operator==(const SignedId &other) const { return id == other.id; }
     inline bool operator!=(const SignedId &other) const { return id != other.id; }

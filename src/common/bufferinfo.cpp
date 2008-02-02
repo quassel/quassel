@@ -31,16 +31,16 @@ BufferInfo::BufferInfo()
   : _id(0),
     _netid(0),
     _gid(0),
-    _networkName(QString()),
-    _bufferName(QString()) {
+    _bufferName(QString())
+{
 }
 
-BufferInfo::BufferInfo(BufferId id,  NetworkId networkid, uint gid, QString net, QString buf)
+BufferInfo::BufferInfo(BufferId id,  NetworkId networkid, uint gid, QString buf)
   : _id(id),
     _netid(networkid),
     _gid(gid),
-    _networkName(net),
-    _bufferName(buf) {
+    _bufferName(buf)
+{
 }
 
 QString BufferInfo::buffer() const {
@@ -51,22 +51,19 @@ QString BufferInfo::buffer() const {
 }
 
 QDebug operator<<(QDebug dbg, const BufferInfo &b) {
-  dbg.nospace() << "(bufId: " << b.uid() << ", netId: " << b.networkId() << ", groupId: " << b.groupId()
-                << ", net: " << b.network() << ", buf: " << b.buffer() << ")";
-
+  dbg.nospace() << "(bufId: " << b.uid() << ", netId: " << b.networkId() << ", groupId: " << b.groupId() << ", buf: " << b.buffer() << ")";
   return dbg.space();
 }
 
 QDataStream &operator<<(QDataStream &out, const BufferInfo &bufferInfo) {
-  out << bufferInfo._id << bufferInfo._netid << bufferInfo._gid << bufferInfo._networkName.toUtf8() << bufferInfo._bufferName.toUtf8();
+  out << bufferInfo._id << bufferInfo._netid << bufferInfo._gid << bufferInfo._bufferName.toUtf8();
   return out;
 }
 
 QDataStream &operator>>(QDataStream &in, BufferInfo &bufferInfo) {
-  QByteArray n, b;
-  in >> bufferInfo._id >> bufferInfo._netid >> bufferInfo._gid >> n >> b;
-  bufferInfo._networkName = QString::fromUtf8(n);
-  bufferInfo._bufferName = QString::fromUtf8(b);
+  QByteArray buffername;
+  in >> bufferInfo._id >> bufferInfo._netid >> bufferInfo._gid >> buffername;
+  bufferInfo._bufferName = QString::fromUtf8(buffername);
   return in;
 }
 

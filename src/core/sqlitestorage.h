@@ -51,10 +51,10 @@ public slots:
   virtual void delUser(UserId user);
   
   /* Network handling */
-  virtual NetworkId getNetworkId(UserId user, const QString &network);
+  virtual NetworkId createNetworkId(UserId user, const NetworkInfo &info);
   
   /* Buffer handling */
-  virtual BufferInfo getBufferInfo(UserId user, const QString &network, const QString &buffer = "");
+  virtual BufferInfo getBufferInfo(UserId user, const NetworkId &networkId, const QString &buffer = "");
   virtual QList<BufferInfo> requestBuffers(UserId user, QDateTime since = QDateTime());
   
   /* Message handling */
@@ -71,7 +71,8 @@ protected:
   
 private:
   static QString backlogFile();
-  void createBuffer(UserId user, const QString &network, const QString &buffer);
+  NetworkId getNetworkId(UserId user, const QString &network);
+  void createBuffer(UserId user, const NetworkId &networkId, const QString &buffer);
 };
 
 #endif

@@ -37,6 +37,7 @@
 class CoreSession;
 class SessionThread;
 class Storage;
+struct NetworkInfo;
 
 class Core : public QObject {
   Q_OBJECT
@@ -51,6 +52,15 @@ class Core : public QObject {
     /*** Storage access ***/
     // These methods are threadsafe.
 
+    //! Create a NetworkId in the Storage and store it in the given NetworkInfo
+    /** \note This method is thredsafe.
+     *
+     *  \param user        The core user
+     *  \param networkInfo a NetworkInfo definition to store the newly created ID in
+     *  \return true if successfull.
+     */
+    static bool createNetworkId(UserId user, NetworkInfo &info);
+	
     //! Get the NetworkId for a network name.
     /** \note This method is threadsafe.
      *
@@ -63,12 +73,12 @@ class Core : public QObject {
     //! Get the unique BufferInfo for the given combination of network and buffername for a user.
     /** \note This method is threadsafe.
      *
-     *  \param user    The core user who owns this buffername
-     *  \param network The network name
-     *  \param buffer  The buffer name (if empty, the net's status buffer is returned)
+     *  \param user      The core user who owns this buffername
+     *  \param networkId The network id
+     *  \param buffer    The buffer name (if empty, the net's status buffer is returned)
      *  \return The BufferInfo corresponding to the given network and buffer name, or 0 if not found
      */
-    static BufferInfo bufferInfo(UserId user, const QString &network, const QString &buffer = "");
+    static BufferInfo bufferInfo(UserId user, const NetworkId &networkId, const QString &buffer = "");
 
     //! Store a Message in the backlog.
     /** \note This method is threadsafe.

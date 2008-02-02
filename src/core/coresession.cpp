@@ -128,9 +128,10 @@ void CoreSession::loadSettings() {
     createIdentity(i);
   }
 
+  // FIXME switch to a pure DB storage
   foreach(NetworkId id, s.networkIds()) {
     NetworkInfo info = s.networkInfo(id);
-    createNetwork(info, true);
+    createNetwork(info);
   }
 
   // FIXME Migrate old settings if available...
@@ -155,7 +156,7 @@ void CoreSession::loadSettings() {
           slist << server;
         }
         info.serverList = slist;
-        createNetwork(info, true);
+        createNetwork(info);
       }
     }
   }
@@ -265,7 +266,7 @@ SignalProxy *CoreSession::signalProxy() const {
 
 // FIXME we need a sane way for creating buffers!
 void CoreSession::networkConnected(NetworkId networkid) {
-  Core::bufferInfo(user(), networkConnection(networkid)->networkName()); // create status buffer
+  Core::bufferInfo(user(), networkid); // create status buffer
 }
 
 void CoreSession::networkDisconnected(NetworkId networkid) {
@@ -289,15 +290,17 @@ void CoreSession::msgFromClient(BufferInfo bufinfo, QString msg) {
 // ALL messages coming pass through these functions before going to the GUI.
 // So this is the perfect place for storing the backlog and log stuff.
 void CoreSession::recvMessageFromServer(Message::Type type, QString target, QString text, QString sender, quint8 flags) {
-  NetworkConnection *s = qobject_cast<NetworkConnection*>(this->sender());
-  Q_ASSERT(s);
-  BufferInfo buf;
-  if((flags & Message::PrivMsg) && !(flags & Message::Self)) {
-    buf = Core::bufferInfo(user(), s->networkName(), nickFromMask(sender));
-  } else {
-    buf = Core::bufferInfo(user(), s->networkName(), target);
-  }
-  Message msg(buf, type, text, sender, flags);
+  NetworkConnection *netCon = qobject_cast<NetworkConnection*>(this->sender());
+  Q_ASSERT(netCon);
+
+  QString bufferName;
+  if((flags & Message::PrivMsg) && !(flags & Message::Self))
+    bufferName = nickFromMask(sender);
+  else
+    bufferName = target;
+
+  BufferInfo bufferInfo = Core::bufferInfo(user(), netCon->networkId(), bufferName);
+  Message msg(bufferInfo, type, text, sender, flags);
   msg.setMsgId(Core::storeMessage(msg));
   Q_ASSERT(msg.msgId() != 0);
   emit displayMsg(msg);
@@ -417,17 +420,18 @@ void CoreSession::removeIdentity(IdentityId id) {
 
 /*** Network Handling ***/
 
-void CoreSession::createNetwork(const NetworkInfo &_info, bool useId) {
-  NetworkInfo info = _info;
+void CoreSession::createNetwork(const NetworkInfo &info_) {
+  NetworkInfo info = info_;
   int id;
-  if(useId && info.networkId > 0) id = info.networkId.toInt();
-  else {
-    for(id = 1; id <= _networks.count(); id++) {
-      if(!_networks.keys().contains(id)) break;
-    }
-    //qDebug() << "found free id" << i;
-    info.networkId = id;
-  }
+
+  if(!info.networkId.isValid())
+    Core::createNetworkId(user(), info);
+
+  Q_ASSERT(info.networkId.isValid());
+
+  id = info.networkId.toInt();
+  Q_ASSERT(!_networks.contains(id));
+  
   Network *net = new Network(id, this);
   connect(net, SIGNAL(connectRequested(NetworkId)), this, SLOT(connectToNetwork(NetworkId)));
   connect(net, SIGNAL(disconnectRequested(NetworkId)), this, SLOT(disconnectFromNetwork(NetworkId)));

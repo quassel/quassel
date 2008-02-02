@@ -29,12 +29,11 @@ class QDataStream;
 class BufferInfo {
 public:
   BufferInfo();
-  BufferInfo(BufferId id, NetworkId networkid, uint gid = 0, QString net = QString(), QString buf = QString());
+  BufferInfo(BufferId id, NetworkId networkid, uint gid = 0, QString buf = QString());
   
   inline BufferId uid() const { return _id; }
   inline NetworkId networkId() const { return _netid; }
   inline uint groupId() const { return _gid; }
-  inline QString network() const { return _networkName; }
   QString buffer() const;
   
   void setGroupId(uint gid) { _gid = gid; }
@@ -45,7 +44,6 @@ private:
   BufferId _id;
   NetworkId _netid;
   uint _gid;
-  QString _networkName; // WILL BE REMOVED
   QString _bufferName;
   
   friend uint qHash(const BufferInfo &);

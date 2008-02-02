@@ -23,7 +23,9 @@
 
 #include <QtCore>
 
+#include "types.h"
 #include "message.h"
+struct NetworkInfo;
 
 class Storage : public QObject {
   Q_OBJECT
@@ -96,10 +98,17 @@ class Storage : public QObject {
 
     /* Network handling */
 
+    //! Create a new unique Network in the storage backend
+    /** \param user        The core user who owns this network
+     *  \param networkInfo The networkInfo holding the network definition
+     *  \return the NetworkId of the newly created Network. Possibly invalid.
+     */
+    virtual NetworkId createNetworkId(UserId user, const NetworkInfo &info) = 0;
+
     //! Get the unique NetworkId of the network for a user.
-    /** \param user    The core user who owns this buffername
+    /** \param user    The core user who owns this network
      *  \param network The network name
-     *  \return The BufferInfo corresponding to the given network and buffer name, or 0 if not found
+     *  \return The NetworkId corresponding to the given network, or 0 if not found
      */
     virtual NetworkId getNetworkId(UserId user, const QString &network) = 0;
 
@@ -111,7 +120,7 @@ class Storage : public QObject {
      *  \param buffer  The buffer name (if empty, the net's status buffer is returned)
      *  \return The BufferInfo corresponding to the given network and buffer name, or 0 if not found
      */
-    virtual BufferInfo getBufferInfo(UserId user, const QString &network, const QString &buffer = "") = 0;
+    virtual BufferInfo getBufferInfo(UserId user, const NetworkId &networkId, const QString &buffer = "") = 0;
 
     //! Request a list of all buffers known to a user since a certain point in time.
     /** This method is used to get a list of all buffers we have stored a backlog from.

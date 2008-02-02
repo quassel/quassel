@@ -177,7 +177,6 @@ void NetworksSettingsPage::setWidgetStates() {
   }
 
   // FIXME disable network creation/deletion because of the storage issue
-  ui.addNetwork->setEnabled(false);
   ui.deleteNetwork->setEnabled(false);
   ui.renameNetwork->setEnabled(false);
 }

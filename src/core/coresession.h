@@ -88,7 +88,7 @@ public slots:
   //! Create a network and propagate the changes to the clients.
   /** \param info The network's settings.
    */
-  void createNetwork(const NetworkInfo &info, bool useId = false);
+  void createNetwork(const NetworkInfo &info);
 
   //! Update a network and propagate the changes to the clients.
   /** \param info The updated network settings.

@@ -170,7 +170,6 @@ QStringList AbstractSqlStorage::upgradeQueries(int version) {
   QStringList queries;
   QDir dir = QDir(QString(":/SQL/%1/%2/").arg(engineName()).arg(version));
   foreach(QFileInfo fileInfo, dir.entryInfoList(QStringList() << "upgrade*", QDir::NoFilter, QDir::Name)) {
-    qDebug() << queryString(fileInfo.baseName());
     queries << queryString(fileInfo.baseName());
   }
   return queries;
@@ -221,13 +220,13 @@ int AbstractSqlStorage::schemaVersion() {
 bool AbstractSqlStorage::watchQuery(QSqlQuery *query) {
   if(query->lastError().isValid()) {
     qWarning() << "unhandled Error in QSqlQuery!";
-    qWarning() << "                  last Query:" << query->lastQuery();
-    qWarning() << "              executed Query:" << query->executedQuery();
-    qWarning() << "                bound Values:" << query->boundValues();
-    qWarning() << "                Error Number:" << query->lastError().number();
-    qWarning() << "               Error Message:" << query->lastError().text();
-    qWarning() << "              Driver Message:" << query->lastError().driverText();
-    qWarning() << "                  DB Message:" << query->lastError().databaseText();
+    qWarning() << "                  last Query:\n" << query->lastQuery();
+    qWarning() << "              executed Query:\n" << query->executedQuery();
+    qWarning() << "                bound Values:"   << query->boundValues();
+    qWarning() << "                Error Number:"   << query->lastError().number();
+    qWarning() << "               Error Message:"   << query->lastError().text();
+    qWarning() << "              Driver Message:"   << query->lastError().driverText();
+    qWarning() << "                  DB Message:"   << query->lastError().databaseText();
     
     return false;
   }

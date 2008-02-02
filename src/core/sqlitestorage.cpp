@@ -21,8 +21,9 @@
 #include "sqlitestorage.h"
 
 #include <QCryptographicHash>
-
 #include <QtSql>
+
+#include "network.h"
 
 SqliteStorage::SqliteStorage(QObject *parent)
   : AbstractSqlStorage(parent)
@@ -138,29 +139,19 @@ void SqliteStorage::delUser(UserId user) {
   emit userRemoved(user);
 }
 
-void SqliteStorage::createBuffer(UserId user, const QString &network, const QString &buffer) {
-  QSqlQuery *createBufferQuery = cachedQuery("insert_buffer");
-  createBufferQuery->bindValue(":userid", user.toInt());
-  createBufferQuery->bindValue(":userid2", user.toInt());  // Qt can't handle same placeholder twice (maybe sqlites fault)
-  createBufferQuery->bindValue(":networkname", network);
-  createBufferQuery->bindValue(":buffername", buffer);
-  createBufferQuery->exec();
-
-  if(createBufferQuery->lastError().isValid()) {
-    if(createBufferQuery->lastError().number() == 19) { // Null Constraint violation
-      QSqlQuery *createNetworkQuery = cachedQuery("insert_network");
-      createNetworkQuery->bindValue(":userid", user.toInt());
-      createNetworkQuery->bindValue(":networkname", network);
-      createNetworkQuery->exec();
-      Q_ASSERT(watchQuery(createNetworkQuery));
-      createBufferQuery->exec();
-      Q_ASSERT(watchQuery(createBufferQuery));
-    } else {
-      // do panic!
-      qDebug() << "failed to create Buffer: ErrNo:" << createBufferQuery->lastError().number() << "ErrMsg:" << createBufferQuery->lastError().text();
-      Q_ASSERT(false);
-    }
+NetworkId SqliteStorage::createNetworkId(UserId user, const NetworkInfo &info) {
+  NetworkId networkId;
+  QSqlQuery query(logDb());
+  query.prepare(queryString("insert_network"));
+  query.bindValue(":userid", user.toInt());
+  query.bindValue(":networkname", info.networkName);
+  query.exec();
+  
+  networkId = getNetworkId(user, info.networkName);
+  if(!networkId.isValid()) {
+    watchQuery(&query);
   }
+  return networkId;
 }
 
 NetworkId SqliteStorage::getNetworkId(UserId user, const QString &network) {
@@ -173,43 +164,46 @@ NetworkId SqliteStorage::getNetworkId(UserId user, const QString &network) {
   
   if(query.first())
     return query.value(0).toInt();
-  else {
-    createBuffer(user, network, "");
-    query.exec();
-    if(query.first())
-      return query.value(0).toInt();
-    else {
-      qWarning() << "NETWORK NOT FOUND:" << network << "for User:" << user;
-      return 0;
-    }
-  }
+  else
+    return NetworkId();
 }
 
-BufferInfo SqliteStorage::getBufferInfo(UserId user, const QString &network, const QString &buffer) {
-  BufferInfo bufferid;
-  // TODO: get rid of this hackaround
-  NetworkId networkId = getNetworkId(user, network);
+void SqliteStorage::createBuffer(UserId user, const NetworkId &networkId, const QString &buffer) {
+  QSqlQuery *query = cachedQuery("insert_buffer");
+  query->bindValue(":userid", user.toInt());
+  query->bindValue(":networkid", networkId.toInt());
+  query->bindValue(":buffername", buffer);
+  query->exec();
 
-  QSqlQuery *getBufferInfoQuery = cachedQuery("select_bufferByName");
-  getBufferInfoQuery->bindValue(":networkid", networkId.toInt());
-  getBufferInfoQuery->bindValue(":userid", user.toInt());
-  getBufferInfoQuery->bindValue(":buffername", buffer);
-  getBufferInfoQuery->exec();
+  watchQuery(query);
+}
 
-  if(!getBufferInfoQuery->first()) {
-    createBuffer(user, network, buffer);
-    getBufferInfoQuery->exec();
-    if(getBufferInfoQuery->first()) {
-      bufferid = BufferInfo(getBufferInfoQuery->value(0).toInt(), networkId, 0, network, buffer);
-      emit bufferInfoUpdated(user, bufferid);
+BufferInfo SqliteStorage::getBufferInfo(UserId user, const NetworkId &networkId, const QString &buffer) {
+  QSqlQuery *query = cachedQuery("select_bufferByName");
+  query->bindValue(":networkid", networkId.toInt());
+  query->bindValue(":userid", user.toInt());
+  query->bindValue(":buffername", buffer);
+  query->exec();
+
+  if(!query->first()) {
+    createBuffer(user, networkId, buffer);
+    query->exec();
+    if(!query->first()) {
+      watchQuery(query);
+      qWarning() << "unable to create BufferInfo for:" << user << networkId << buffer;
+      return BufferInfo();
     }
-  } else {
-    bufferid = BufferInfo(getBufferInfoQuery->value(0).toInt(), networkId, 0, network, buffer);
   }
 
-  Q_ASSERT(!getBufferInfoQuery->next());
+  BufferInfo bufferInfo = BufferInfo(query->value(0).toInt(), networkId, 0, buffer);
+  if(query->next()) {
+    qWarning() << "SqliteStorage::getBufferInfo(): received more then one Buffer!";
+    qWarning() << "         Query:" << query->lastQuery();
+    qWarning() << "  bound Values:" << query->boundValues();
+    Q_ASSERT(false);
+  }
 
-  return bufferid;
+  return bufferInfo;
 }
 
 QList<BufferInfo> SqliteStorage::requestBuffers(UserId user, QDateTime since) {
@@ -226,7 +220,7 @@ QList<BufferInfo> SqliteStorage::requestBuffers(UserId user, QDateTime since) {
   query.exec();
   watchQuery(&query);
   while(query.next()) {
-    bufferlist << BufferInfo(query.value(0).toInt(), query.value(2).toInt(), 0, query.value(3).toString(), query.value(1).toString());
+    bufferlist << BufferInfo(query.value(0).toInt(), query.value(2).toInt(), 0, query.value(1).toString());
   }
   return bufferlist;
 }

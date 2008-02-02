@@ -369,7 +369,8 @@ void Client::recvMessage(const Message &msg) {
   networkModel()->updateBufferActivity(msg);
 
   if(msg.type() == Message::Plain || msg.type() == Message::Notice || msg.type() == Message::Action) {
-    QString sender = msg.buffer().network() + ":" + msg.buffer().buffer() + ":" + msg.sender();
+    // FIXME: fetch networkName();
+    QString sender = ":" + msg.buffer().buffer() + ":" + msg.sender();
     Message mmsg = Message(msg.timestamp(), msg.buffer(), msg.type(), msg.text(), sender, msg.flags());
     monitorBuffer()->appendMsg(mmsg);
   }
