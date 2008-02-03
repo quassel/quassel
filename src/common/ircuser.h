@@ -45,6 +45,7 @@ class IrcUser : public SyncableObject {
   Q_PROPERTY(QDateTime idleTime READ idleTime WRITE setIdleTime STORED false)
   Q_PROPERTY(QString server READ server WRITE setServer STORED false)
   Q_PROPERTY(QString ircOperator READ ircOperator WRITE setIrcOperator STORED false)
+  Q_PROPERTY(int lastAwayMessage READ lastAwayMessage WRITE setLastAwayMessage STORED false)
 
   Q_PROPERTY(QStringList channels READ channels STORED false)
   //  Q_PROPERTY(QStringList usermodes READ usermodes WRITE setUsermodes)
@@ -63,6 +64,7 @@ public:
   QDateTime idleTime() const;
   QString server() const;
   QString ircOperator() const;
+  int lastAwayMessage() const;
   Network *network() const;
 
   QString userModes() const;
@@ -90,6 +92,7 @@ public slots:
   void setIdleTime(const QDateTime &idleTime);
   void setServer(const QString &server);
   void setIrcOperator(const QString &ircOperator);
+  void setLastAwayMessage(const int &lastAwayMessage);
   void updateHostmask(const QString &mask);
 
   void setUserModes(const QString &modes);
@@ -115,6 +118,7 @@ signals:
   void idleTimeSet(QDateTime idleTime);
   void serverSet(QString server);
   void ircOperatorSet(QString ircOperator);
+  void lastAwayMessageSet(int lastAwayMessage);
   void hostmaskUpdated(QString mask);
 
   void userModesSet(QString modes);
@@ -154,6 +158,7 @@ private:
   QString _server;
   QDateTime _idleTime;
   QString _ircOperator;
+  int _lastAwayMessage;
   
   // QSet<QString> _channels;
   QSet<IrcChannel *> _channels;

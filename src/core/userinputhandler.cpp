@@ -104,6 +104,14 @@ void UserInputHandler::handleInvite(QString bufname, QString msg) {
   emit putCmd("INVITE", params);
 }
 
+void UserInputHandler::handleJ(QString bufname, QString msg) {
+  QStringList params = msg.split(" ");
+  if(params.size() > 0 && !params[0].startsWith("#")) {
+    params[0] = QString("#%1").arg(params[0]);
+  }
+  emit putCmd("JOIN", params);
+}
+
 void UserInputHandler::handleJoin(QString bufname, QString msg) {
   emit putCmd("JOIN", msg.split(" "));
 }

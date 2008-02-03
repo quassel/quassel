@@ -40,6 +40,7 @@ IrcUser::IrcUser(const QString &hostmask, Network *network)
     _server(),
     _idleTime(QDateTime::currentDateTime()),
     _ircOperator(),
+    _lastAwayMessage(0),
     _network(network),
     _codecForEncoding(0),
     _codecForDecoding(0)
@@ -93,6 +94,10 @@ QDateTime IrcUser::idleTime() const {
 
 QString IrcUser::ircOperator() const {
   return _ircOperator;
+}
+
+int IrcUser::lastAwayMessage() const {
+  return _lastAwayMessage;
 }
 
 QString IrcUser::userModes() const {
@@ -197,6 +202,13 @@ void IrcUser::setIrcOperator(const QString &ircOperator) {
   if(!ircOperator.isEmpty() && _ircOperator != ircOperator) {
     _ircOperator = ircOperator;
     emit ircOperatorSet(ircOperator);
+  }
+}
+
+void IrcUser::setLastAwayMessage(const int &lastAwayMessage) {
+  if(lastAwayMessage > _lastAwayMessage) {
+    _lastAwayMessage = lastAwayMessage;
+    emit lastAwayMessageSet(lastAwayMessage);
   }
 }
 

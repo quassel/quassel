@@ -40,6 +40,7 @@ public slots:
   void handleDeop(QString, QString);
   void handleDevoice(QString, QString);
   void handleInvite(QString, QString);
+  void handleJ(QString, QString);
   void handleJoin(QString, QString);
   void handleKick(QString, QString);
   void handleList(QString, QString);

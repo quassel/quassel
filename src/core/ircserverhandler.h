@@ -76,7 +76,7 @@ public slots:
 
 private:
   void tryNextNick(const QString &errnick);
-  bool _whowas;
+  bool _whois;
   NetworkConnection *networkConnection;
 };
 
