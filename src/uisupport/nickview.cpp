@@ -95,7 +95,6 @@ void NickView::showContextMenu(const QPoint & pos ) {
   nickContextMenu.addSeparator();
 
   QAction *queryAction = nickContextMenu.addAction(tr("Query"));
-  queryAction->setEnabled(false);
   QAction *dccChatAction = nickContextMenu.addAction(tr("DCC-Chat"));
   dccChatAction->setEnabled(false);
   QAction *sendFileAction = nickContextMenu.addAction(tr("Send file"));
@@ -114,4 +113,5 @@ void NickView::showContextMenu(const QPoint & pos ) {
 
   else if(result == kickAction)     { Client::instance()->userInput(bufferInfo, "/KICK " + username); }
   else if(result == kickBanAction)  { Client::instance()->userInput(bufferInfo, "/KICKBAN " + username); }
+  else if(result == queryAction)    { Client::instance()->userInput(bufferInfo, "/QUERY " + username); }
 }
