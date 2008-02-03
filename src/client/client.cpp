@@ -356,11 +356,16 @@ void Client::bufferDestroyed() {
 }
 
 void Client::networkDestroyed() {
-  // FIXME this is not gonna work, net is a QObject here already!
   Network *net = static_cast<Network *>(sender());
-  NetworkId networkId = net->networkId();
-  if(_networks.contains(networkId))
-    _networks.remove(networkId);
+  QHash<NetworkId, Network *>::iterator netIter = _networks.begin();
+  while(netIter != _networks.end()) {
+    if(*netIter == net) {
+      netIter = _networks.erase(netIter);
+      break;
+    } else {
+      netIter++;
+    }
+  }
 }
 
 void Client::recvMessage(const Message &msg) {
