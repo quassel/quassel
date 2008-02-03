@@ -153,7 +153,7 @@ NetworkId Core::networkId(UserId user, const QString &network) {
 }
 
 BufferInfo Core::bufferInfo(UserId user, const NetworkId &networkId, const QString &buffer) {
-  //QMutexLocker locker(&mutex);
+  QMutexLocker locker(&mutex);
   return instance()->storage->getBufferInfo(user, networkId, buffer);
 }
 
