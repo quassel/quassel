@@ -81,17 +81,21 @@ QString CtcpHandler::XdelimDequote(QString message) {
   return dequotedMessage;
 }
 
-QStringList CtcpHandler::parse(CtcpType ctcptype, QString prefix, QString target, QString message) {
-  QStringList messages;
+void CtcpHandler::parse(Message::Type messageType, QString prefix, QString target, QString message) {
   QString ctcp;
   
   //lowlevel message dequote
   QString dequotedMessage = dequote(message);
-  
+
+  CtcpType ctcptype = (messageType == Message::Notice)
+    ? CtcpReply
+    : CtcpQuery;
+
   // extract tagged / extended data
   while(dequotedMessage.contains(XDELIM)) {
-    if(dequotedMessage.indexOf(XDELIM) > 0) 
-      messages << dequotedMessage.section(XDELIM,0,0);
+    if(dequotedMessage.indexOf(XDELIM) > 0)
+      emit displayMsg(messageType, target, dequotedMessage.section(XDELIM,0,0), prefix);
+    // messages << dequotedMessage.section(XDELIM,0,0), prefix);
     ctcp = XdelimDequote(dequotedMessage.section(XDELIM,1,1));
     dequotedMessage = dequotedMessage.section(XDELIM,2,2);
     
@@ -101,10 +105,10 @@ QStringList CtcpHandler::parse(CtcpType ctcptype, QString prefix, QString target
 
     handle(ctcpcmd, Q_ARG(CtcpType, ctcptype), Q_ARG(QString, prefix), Q_ARG(QString, target), Q_ARG(QString, ctcpparam));
   }
-  if(!dequotedMessage.isEmpty()) {
-    messages << dequotedMessage;
-  }
-  return messages;
+  
+  if(!dequotedMessage.isEmpty())
+    emit displayMsg(messageType, target, dequotedMessage, prefix);
+
 }
 
 QString CtcpHandler::pack(QString ctcpTag, QString message) {

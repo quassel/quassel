@@ -146,12 +146,14 @@ void UserInputHandler::handleMode(QString bufname, QString msg) {
 // TODO: show privmsgs
 void UserInputHandler::handleMsg(QString bufname, QString msg) {
   Q_UNUSED(bufname)
-  QString nick = msg.section(" ", 0, 0);
-  msg = msg.section(" ", 1);
-  if(nick.isEmpty() || msg.isEmpty()) return;
+  if(!msg.contains(' '))
+    return;
+      
   QStringList params;
-  params << nick << msg;
-  emit putCmd("PRIVMSG", params);
+  params << msg.section(' ', 0, 0);
+  params << msg.section(' ', 1);
+
+  emit putCmd("PRIVMSG", msg.split(' '));
 }
 
 void UserInputHandler::handleNick(QString bufname, QString msg) {
@@ -176,13 +178,14 @@ void UserInputHandler::handlePart(QString bufname, QString msg) {
 
 // TODO: implement queries
 void UserInputHandler::handleQuery(QString bufname, QString msg) {
-  // QString nick = msg.section(' ', 0, 0);
-  
+  Q_UNUSED(bufname)
+  QString target = msg.section(' ', 0, 0);
+  QString message = msg.section(' ', 1);
+  if(message.isEmpty())
+    emit displayMsg(Message::Server, target, "Starting query with " + target, network()->myNick(), Message::Self);
+  else
+    emit displayMsg(Message::Plain, target, message, network()->myNick(), Message::Self);
   handleMsg(bufname, msg);
-  
-  // TODO: usenetworkids
-//   if(!nick.isEmpty())
-//     emit queryRequested(network, nick);
 }
 
 void UserInputHandler::handleQuit(QString bufname, QString msg) {
@@ -200,11 +203,7 @@ void UserInputHandler::handleSay(QString bufname, QString msg) {
   QStringList params;
   params << bufname << msg;
   emit putCmd("PRIVMSG", params);
-  if(isChannelName(bufname)) {
-    emit displayMsg(Message::Plain, params[0], msg, network()->myNick(), Message::Self);
-  } else {
-    emit displayMsg(Message::Plain, params[0], msg, network()->myNick(), Message::Self|Message::PrivMsg);
-  }
+  emit displayMsg(Message::Plain, params[0], msg, network()->myNick(), Message::Self);
 }
 
 void UserInputHandler::handleTopic(QString bufname, QString msg) {

@@ -705,7 +705,8 @@ void NetworkModel::updateBufferActivity(const Message &msg) {
   if(msg.type() == Message::Plain || msg.type() == Message::Notice)
     level |= BufferItem::NewMessage;
 
-  if(msg.flags() & Message::Highlight)
+  const Network *net = Client::network(msg.bufferInfo().networkId());
+  if(net && msg.text().contains(net->myNick()))
     level |= BufferItem::Highlight;
   
   bufferItem(msg.bufferInfo())->updateActivity(level);

@@ -272,10 +272,24 @@ void IrcServerHandler::handleNick(QString prefix, QList<QByteArray> params) {
 }
 
 void IrcServerHandler::handleNotice(QString prefix, QList<QByteArray> params) {
-  if(network()->currentServer().isEmpty() || network()->currentServer() == prefix)
+  if(params.count() < 2) {
+    qWarning() << "IrcServerHandler::handleNotice(): not enoug Parameters:" << prefix << serverDecode(params);
+    return;
+  }
+
+  // check if it's only a Server Message or if it's a regular Notice
+  if(network()->currentServer().isEmpty() || network()->currentServer() == prefix) {
     emit displayMsg(Message::Server, "", serverDecode(params[1]), prefix);
-  else
-    emit displayMsg(Message::Notice, "", userDecode(prefix, params[1]), prefix);
+    return;
+  }
+
+  QString target = serverDecode(params[0]);
+
+  // are we the target?
+  if(network()->isMyNick(target))
+    target = nickFromMask(target);
+
+  networkConnection->ctcpHandler()->parse(Message::Notice, prefix, target, userDecode(prefix, params[1]));
 }
 
 void IrcServerHandler::handlePart(QString prefix, QList<QByteArray> params) {
@@ -305,34 +319,19 @@ void IrcServerHandler::handlePrivmsg(QString prefix, QList<QByteArray> params) {
 
   QString target = serverDecode(params[0]);
 
-  // are we the target or is it a channel?
-  if(network()->isMyNick(target)) {
-    // it's possible to pack multiple privmsgs into one param using ctcp
-    QStringList messages = networkConnection->ctcpHandler()->parse(CtcpHandler::CtcpQuery, prefix, target, userDecode(ircuser->nick(), params[1]));
-    quint8 flags;
-    foreach(QString message, messages) {
-      flags = Message::PrivMsg;
-      if(message.contains(network()->myNick()))
-	flags |= Message::Highlight;
-      emit displayMsg(Message::Plain, "", message, prefix, flags);
-    }
-  } else {
-    // so it's probably a channel..
-    if(!isChannelName(target)) {
-      qWarning() << "received PRIVMSG with target" << target << "which is neither us nor a channel!";
-      return;
-    }
+  // are we the target?
+  if(network()->isMyNick(target))
+    target = nickFromMask(target);
 
-    QStringList messages = networkConnection->ctcpHandler()->parse(CtcpHandler::CtcpQuery, prefix, target, bufferDecode(target, params[1]));
-    quint8 flags;
-    foreach(QString message, messages) {
-      flags = Message::None;
-      if(message.contains(network()->myNick()))
-	flags |= Message::Highlight;
-      emit displayMsg(Message::Plain, target, message, prefix, flags);
-    }
-  }
+  // it's possible to pack multiple privmsgs into one param using ctcp
+  // - > we let the ctcpHandler do the work
+  networkConnection->ctcpHandler()->parse(Message::Plain, prefix, target, userDecode(ircuser->nick(), params[1]));
+//   QStringList messages = 
 
+//   foreach(QString message, messages) {
+//     emit displayMsg(Message::Plain, target, message, prefix);
+//   }
+  
 }
 
 void IrcServerHandler::handleQuit(QString prefix, QList<QByteArray> params) {

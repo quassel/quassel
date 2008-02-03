@@ -292,14 +292,8 @@ void CoreSession::msgFromClient(BufferInfo bufinfo, QString msg) {
 void CoreSession::recvMessageFromServer(Message::Type type, QString target, QString text, QString sender, quint8 flags) {
   NetworkConnection *netCon = qobject_cast<NetworkConnection*>(this->sender());
   Q_ASSERT(netCon);
-
-  QString bufferName;
-  if((flags & Message::PrivMsg) && !(flags & Message::Self))
-    bufferName = nickFromMask(sender);
-  else
-    bufferName = target;
-
-  BufferInfo bufferInfo = Core::bufferInfo(user(), netCon->networkId(), bufferName);
+  
+  BufferInfo bufferInfo = Core::bufferInfo(user(), netCon->networkId(), target);
   Message msg(bufferInfo, type, text, sender, flags);
   msg.setMsgId(Core::storeMessage(msg));
   Q_ASSERT(msg.msgId() != 0);

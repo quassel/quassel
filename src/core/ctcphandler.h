@@ -34,7 +34,7 @@ public:
 
   enum CtcpType {CtcpQuery, CtcpReply};
 
-  QStringList parse(CtcpType, QString prefix, QString target, QString message);
+  void parse(Message::Type, QString prefix, QString target, QString message);
 
   QString dequote(QString);
   QString XdelimDequote(QString);

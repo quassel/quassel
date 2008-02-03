@@ -32,8 +32,28 @@ class Message {
 
 public:
   /** The different types a message can have for display */
-  enum Type { Plain, Notice, Action, Nick, Mode, Join, Part, Quit, Kick, Kill, Server, Info, Error };
-  enum Flags { None = 0, Self = 1, PrivMsg = 2, Highlight = 4 };
+  enum Type {
+    Plain,
+    Notice,
+    Action,
+    Nick,
+    Mode,
+    Join,
+    Part,
+    Quit,
+    Kick,
+    Kill,
+    Server,
+    Info,
+    Error
+  };
+
+  enum Flags {
+    None = 0,
+    Self = 1
+  };
+  Q_DECLARE_FLAGS(MessageFlags, Flags)
+  
 
   Message(BufferInfo bufferInfo = BufferInfo(), Type type = Plain, QString text = "", QString sender = "", quint8 flags = None);
 
@@ -78,5 +98,6 @@ QDataStream &operator<<(QDataStream &out, const Message &msg);
 QDataStream &operator>>(QDataStream &in, Message &msg);
 
 Q_DECLARE_METATYPE(Message);
+Q_DECLARE_OPERATORS_FOR_FLAGS(Message::MessageFlags)
 
 #endif
