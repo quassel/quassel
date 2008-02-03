@@ -123,7 +123,7 @@
             <string>Connect now</string>
            </property>
            <property name="icon" >
-            <iconset resource="../../icons/icons.qrc" >:/16x16/actions/oxygen/16x16/actions/network-connect.png</iconset>
+            <iconset/>
            </property>
           </widget>
          </item>
@@ -134,7 +134,7 @@
      <item>
       <widget class="QGroupBox" name="detailsBox" >
        <property name="sizePolicy" >
-        <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
+        <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
          <horstretch>10</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -208,7 +208,7 @@
                      <string>&amp;Edit...</string>
                     </property>
                     <property name="icon" >
-                     <iconset resource="../../icons/icons.qrc" >:/16x16/actions/oxygen/16x16/actions/configure.png</iconset>
+                     <iconset/>
                     </property>
                    </widget>
                   </item>
@@ -513,13 +513,109 @@
              </widget>
             </item>
             <item>
+             <widget class="QGroupBox" name="autoReconnect" >
+              <property name="enabled" >
+               <bool>false</bool>
+              </property>
+              <property name="title" >
+               <string>Automatic Reconnect</string>
+              </property>
+              <property name="checkable" >
+               <bool>true</bool>
+              </property>
+              <layout class="QVBoxLayout" >
+               <item>
+                <layout class="QHBoxLayout" >
+                 <item>
+                  <layout class="QGridLayout" >
+                   <item row="0" column="0" >
+                    <widget class="QLabel" name="label_7" >
+                     <property name="text" >
+                      <string>Interval:</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="1" >
+                    <widget class="QSpinBox" name="reconnectInterval" >
+                     <property name="suffix" >
+                      <string> s</string>
+                     </property>
+                     <property name="minimum" >
+                      <number>10</number>
+                     </property>
+                     <property name="maximum" >
+                      <number>3600</number>
+                     </property>
+                     <property name="value" >
+                      <number>30</number>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="1" column="0" >
+                    <widget class="QLabel" name="label_8" >
+                     <property name="text" >
+                      <string>Retries:</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="1" column="1" >
+                    <widget class="QSpinBox" name="reconnectRetries" >
+                     <property name="minimum" >
+                      <number>1</number>
+                     </property>
+                     <property name="maximum" >
+                      <number>999</number>
+                     </property>
+                     <property name="value" >
+                      <number>10</number>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="1" column="2" >
+                    <widget class="QCheckBox" name="unlimitedRetries" >
+                     <property name="text" >
+                      <string>Unlimited</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <spacer>
+                   <property name="orientation" >
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                   <property name="sizeHint" >
+                    <size>
+                     <width>40</width>
+                     <height>20</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="rejoinOnReconnect" >
+                 <property name="text" >
+                  <string>Rejoin all channels on reconnect</string>
+                 </property>
+                 <property name="checked" >
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
              <spacer>
               <property name="orientation" >
                <enum>Qt::Vertical</enum>
               </property>
               <property name="sizeHint" >
                <size>
-                <width>375</width>
+                <width>386</width>
                 <height>31</height>
                </size>
               </property>
@@ -547,12 +643,12 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>356</x>
-     <y>181</y>
+     <x>647</x>
+     <y>238</y>
     </hint>
     <hint type="destinationlabel" >
-     <x>470</x>
-     <y>122</y>
+     <x>471</x>
+     <y>176</y>
     </hint>
    </hints>
   </connection>
@@ -563,12 +659,28 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>383</x>
-     <y>181</y>
+     <x>658</x>
+     <y>238</y>
     </hint>
     <hint type="destinationlabel" >
-     <x>445</x>
-     <y>156</y>
+     <x>471</x>
+     <y>209</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>unlimitedRetries</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>reconnectRetries</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>443</x>
+     <y>336</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>390</x>
+     <y>338</y>
     </hint>
    </hints>
   </connection>
