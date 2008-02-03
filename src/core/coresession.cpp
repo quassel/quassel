@@ -281,7 +281,7 @@ void CoreSession::networkDisconnected(NetworkId networkid) {
 void CoreSession::msgFromClient(BufferInfo bufinfo, QString msg) {
   NetworkConnection *conn = networkConnection(bufinfo.networkId());
   if(conn) {
-    conn->userInput(bufinfo.buffer(), msg);
+    conn->userInput(bufinfo.bufferName(), msg);
   } else {
     qWarning() << "Trying to send to unconnected network!";
   }

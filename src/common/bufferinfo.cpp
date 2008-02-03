@@ -28,22 +28,22 @@
 #include "util.h"
 
 BufferInfo::BufferInfo()
-  : _id(0),
+  : _bufferId(0),
     _netid(0),
-    _gid(0),
+    _groupId(0),
     _bufferName(QString())
 {
 }
 
 BufferInfo::BufferInfo(BufferId id,  NetworkId networkid, uint gid, QString buf)
-  : _id(id),
+  : _bufferId(id),
     _netid(networkid),
-    _gid(gid),
+    _groupId(gid),
     _bufferName(buf)
 {
 }
 
-QString BufferInfo::buffer() const {
+QString BufferInfo::bufferName() const {
   if(isChannelName(_bufferName))
     return _bufferName;
   else
@@ -51,23 +51,23 @@ QString BufferInfo::buffer() const {
 }
 
 QDebug operator<<(QDebug dbg, const BufferInfo &b) {
-  dbg.nospace() << "(bufId: " << b.uid() << ", netId: " << b.networkId() << ", groupId: " << b.groupId() << ", buf: " << b.buffer() << ")";
+  dbg.nospace() << "(bufId: " << b.bufferId() << ", netId: " << b.networkId() << ", groupId: " << b.groupId() << ", buf: " << b.bufferName() << ")";
   return dbg.space();
 }
 
 QDataStream &operator<<(QDataStream &out, const BufferInfo &bufferInfo) {
-  out << bufferInfo._id << bufferInfo._netid << bufferInfo._gid << bufferInfo._bufferName.toUtf8();
+  out << bufferInfo._bufferId << bufferInfo._netid << bufferInfo._groupId << bufferInfo._bufferName.toUtf8();
   return out;
 }
 
 QDataStream &operator>>(QDataStream &in, BufferInfo &bufferInfo) {
   QByteArray buffername;
-  in >> bufferInfo._id >> bufferInfo._netid >> bufferInfo._gid >> buffername;
+  in >> bufferInfo._bufferId >> bufferInfo._netid >> bufferInfo._groupId >> buffername;
   bufferInfo._bufferName = QString::fromUtf8(buffername);
   return in;
 }
 
 uint qHash(const BufferInfo &bufferid) {
-  return qHash(bufferid._id.toInt());
+  return qHash(bufferid._bufferId.toInt());
 }
 

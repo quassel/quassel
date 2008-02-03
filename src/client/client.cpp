@@ -130,24 +130,24 @@ QList<Buffer *> Client::buffers() {
 
 
 // FIXME remove
-Buffer *Client::buffer(BufferId bufferUid) {
-  if(instance()->_buffers.contains(bufferUid))
-    return instance()->_buffers[bufferUid];
+Buffer *Client::buffer(BufferId bufferId) {
+  if(instance()->_buffers.contains(bufferId))
+    return instance()->_buffers[bufferId];
   else
     return 0;
 }
 
 // FIXME remove
-Buffer *Client::buffer(BufferInfo id) {
-  Buffer *buff = buffer(id.uid());
+Buffer *Client::buffer(BufferInfo bufferInfo) {
+  Buffer *buff = buffer(bufferInfo.bufferId());
 
   if(!buff) {
     Client *client = Client::instance();
-    buff = new Buffer(id, client);
+    buff = new Buffer(bufferInfo, client);
     connect(buff, SIGNAL(destroyed()),
 	    client, SLOT(bufferDestroyed()));
-    client->_buffers[id.uid()] = buff;
-    emit client->bufferUpdated(id);
+    client->_buffers[bufferInfo.bufferId()] = buff;
+    emit client->bufferUpdated(bufferInfo);
   }
   Q_ASSERT(buff);
   return buff;
@@ -364,14 +364,14 @@ void Client::networkDestroyed() {
 }
 
 void Client::recvMessage(const Message &msg) {
-  Buffer *b = buffer(msg.buffer());
+  Buffer *b = buffer(msg.bufferInfo());
   b->appendMsg(msg);
   networkModel()->updateBufferActivity(msg);
 
   if(msg.type() == Message::Plain || msg.type() == Message::Notice || msg.type() == Message::Action) {
     // FIXME: fetch networkName();
-    QString sender = ":" + msg.buffer().buffer() + ":" + msg.sender();
-    Message mmsg = Message(msg.timestamp(), msg.buffer(), msg.type(), msg.text(), sender, msg.flags());
+    QString sender = ":" + msg.bufferInfo().bufferName() + ":" + msg.sender();
+    Message mmsg = Message(msg.timestamp(), msg.bufferInfo(), msg.type(), msg.text(), sender, msg.flags());
     monitorBuffer()->appendMsg(mmsg);
   }
 

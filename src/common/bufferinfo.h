@@ -31,19 +31,19 @@ public:
   BufferInfo();
   BufferInfo(BufferId id, NetworkId networkid, uint gid = 0, QString buf = QString());
   
-  inline BufferId uid() const { return _id; }
+  inline BufferId bufferId() const { return _bufferId; }
   inline NetworkId networkId() const { return _netid; }
-  inline uint groupId() const { return _gid; }
-  QString buffer() const;
+  inline uint groupId() const { return _groupId; }
+  QString bufferName() const;
   
-  void setGroupId(uint gid) { _gid = gid; }
+  void setGroupId(uint gid) { _groupId = gid; }
   
-  inline bool operator==(const BufferInfo &other) const { return _id == other._id; }
+  inline bool operator==(const BufferInfo &other) const { return _bufferId == other._bufferId; }
 
 private:
-  BufferId _id;
+  BufferId _bufferId;
   NetworkId _netid;
-  uint _gid;
+  uint _groupId;
   QString _bufferName;
   
   friend uint qHash(const BufferInfo &);

@@ -40,9 +40,9 @@ BufferItem::BufferItem(BufferInfo bufferInfo, AbstractTreeItem *parent)
     _activity(NoActivity)
 {
   // determine BufferType
-  if(bufferInfo.buffer().isEmpty())
+  if(bufferInfo.bufferName().isEmpty())
     _type = StatusType;
-  else if(isChannelName(bufferInfo.buffer()))
+  else if(isChannelName(bufferInfo.bufferName()))
     _type = ChannelType;
   else
     _type = QueryType;
@@ -59,7 +59,7 @@ const BufferInfo &BufferItem::bufferInfo() const {
 }
 
 quint64 BufferItem::id() const {
-  return bufferInfo().uid().toInt();
+  return bufferInfo().bufferId().toInt();
 }
 
 bool BufferItem::isStatusBuffer() const {
@@ -96,7 +96,7 @@ QVariant BufferItem::data(int column, int role) const {
   case NetworkModel::ItemTypeRole:
     return NetworkModel::BufferItemType;
   case NetworkModel::BufferIdRole:
-    return qVariantFromValue(bufferInfo().uid());
+    return qVariantFromValue(bufferInfo().bufferId());
   case NetworkModel::NetworkIdRole:
     return qVariantFromValue(bufferInfo().networkId());
   case NetworkModel::BufferInfoRole:
@@ -163,7 +163,7 @@ QString BufferItem::bufferName() const {
   if(bufferType() == StatusType)
     return tr("Status Buffer");
   else
-    return bufferInfo().buffer();
+    return bufferInfo().bufferName();
 }
 
 QString BufferItem::topic() const {
@@ -578,7 +578,7 @@ QModelIndex NetworkModel::bufferIndex(BufferId bufferId) {
 }
 
 BufferItem *NetworkModel::existsBufferItem(const BufferInfo &bufferInfo) {
-  QModelIndex bufferIdx = bufferIndex(bufferInfo.uid());
+  QModelIndex bufferIdx = bufferIndex(bufferInfo.bufferId());
   if(bufferIdx.isValid())
     return static_cast<BufferItem *>(bufferIdx.internalPointer());
   else
@@ -708,6 +708,6 @@ void NetworkModel::updateBufferActivity(const Message &msg) {
   if(msg.flags() & Message::Highlight)
     level |= BufferItem::Highlight;
   
-  bufferItem(msg.buffer())->updateActivity(level);
+  bufferItem(msg.bufferInfo())->updateActivity(level);
 }
 

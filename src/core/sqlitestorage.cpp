@@ -228,7 +228,7 @@ QList<BufferInfo> SqliteStorage::requestBuffers(UserId user, QDateTime since) {
 MsgId SqliteStorage::logMessage(Message msg) {
   QSqlQuery *logMessageQuery = cachedQuery("insert_message");
   logMessageQuery->bindValue(":time", msg.timestamp().toTime_t());
-  logMessageQuery->bindValue(":bufferid", msg.buffer().uid().toInt());
+  logMessageQuery->bindValue(":bufferid", msg.bufferInfo().bufferId().toInt());
   logMessageQuery->bindValue(":type", msg.type());
   logMessageQuery->bindValue(":flags", msg.flags());
   logMessageQuery->bindValue(":sender", msg.sender());
@@ -252,7 +252,7 @@ MsgId SqliteStorage::logMessage(Message msg) {
 
   QSqlQuery *getLastMessageIdQuery = cachedQuery("select_lastMessage");
   getLastMessageIdQuery->bindValue(":time", msg.timestamp().toTime_t());
-  getLastMessageIdQuery->bindValue(":bufferid", msg.buffer().uid().toInt());
+  getLastMessageIdQuery->bindValue(":bufferid", msg.bufferInfo().bufferId().toInt());
   getLastMessageIdQuery->bindValue(":type", msg.type());
   getLastMessageIdQuery->bindValue(":sender", msg.sender());
   getLastMessageIdQuery->exec();
@@ -260,7 +260,7 @@ MsgId SqliteStorage::logMessage(Message msg) {
   if(getLastMessageIdQuery->first()) {
     return getLastMessageIdQuery->value(0).toInt();
   } else { // somethin went wrong... :(
-    qDebug() << getLastMessageIdQuery->lastQuery() << "time/bufferid/type/sender:" << msg.timestamp().toTime_t() << msg.buffer().uid() << msg.type() << msg.sender();
+    qDebug() << getLastMessageIdQuery->lastQuery() << "time/bufferid/type/sender:" << msg.timestamp().toTime_t() << msg.bufferInfo().bufferId() << msg.type() << msg.sender();
     Q_ASSERT(false);
     return 0;
   }
@@ -270,7 +270,7 @@ QList<Message> SqliteStorage::requestMsgs(BufferInfo buffer, int lastmsgs, int o
   QList<Message> messagelist;
   // we have to determine the real offset first
   QSqlQuery *offsetQuery = cachedQuery("select_messagesOffset");
-  offsetQuery->bindValue(":bufferid", buffer.uid().toInt());
+  offsetQuery->bindValue(":bufferid", buffer.bufferId().toInt());
   offsetQuery->bindValue(":messageid", offset);
   offsetQuery->exec();
   offsetQuery->first();
@@ -278,7 +278,7 @@ QList<Message> SqliteStorage::requestMsgs(BufferInfo buffer, int lastmsgs, int o
 
   // now let's select the messages
   QSqlQuery *msgQuery = cachedQuery("select_messages");
-  msgQuery->bindValue(":bufferid", buffer.uid().toInt());
+  msgQuery->bindValue(":bufferid", buffer.bufferId().toInt());
   msgQuery->bindValue(":limit", lastmsgs);
   msgQuery->bindValue(":offset", offset);
   msgQuery->exec();
@@ -303,7 +303,7 @@ QList<Message> SqliteStorage::requestMsgs(BufferInfo buffer, QDateTime since, in
   QList<Message> messagelist;
   // we have to determine the real offset first
   QSqlQuery *offsetQuery = cachedQuery("select_messagesSinceOffset");
-  offsetQuery->bindValue(":bufferid", buffer.uid().toInt());
+  offsetQuery->bindValue(":bufferid", buffer.bufferId().toInt());
   offsetQuery->bindValue(":since", since.toTime_t());
   offsetQuery->exec();
   offsetQuery->first();
@@ -311,7 +311,7 @@ QList<Message> SqliteStorage::requestMsgs(BufferInfo buffer, QDateTime since, in
 
   // now let's select the messages
   QSqlQuery *msgQuery = cachedQuery("select_messagesSince");
-  msgQuery->bindValue(":bufferid", buffer.uid().toInt());
+  msgQuery->bindValue(":bufferid", buffer.bufferId().toInt());
   msgQuery->bindValue(":since", since.toTime_t());
   msgQuery->bindValue(":offset", offset);
   msgQuery->exec();
@@ -336,7 +336,7 @@ QList<Message> SqliteStorage::requestMsgs(BufferInfo buffer, QDateTime since, in
 QList<Message> SqliteStorage::requestMsgRange(BufferInfo buffer, int first, int last) {
   QList<Message> messagelist;
   QSqlQuery *rangeQuery = cachedQuery("select_messageRange");
-  rangeQuery->bindValue(":bufferid", buffer.uid().toInt());
+  rangeQuery->bindValue(":bufferid", buffer.bufferId().toInt());
   rangeQuery->bindValue(":firstmsg", first);
   rangeQuery->bindValue(":lastmsg", last);
   rangeQuery->exec();
