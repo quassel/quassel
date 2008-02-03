@@ -33,6 +33,8 @@ class ClientSettings : public Settings {
 
 };
 
+// TODO accountid, account-specific settings
+
 class CoreAccountSettings : public ClientSettings {
 
   public:

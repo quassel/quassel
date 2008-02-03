@@ -239,9 +239,25 @@ struct NetworkInfo {
   NetworkId networkId;
   QString networkName;
   IdentityId identity;
+
+  bool useCustomEncodings;
   QByteArray codecForEncoding;
   QByteArray codecForDecoding;
+
+  // Server entry: QString "Host", uint "Port", QString "Password", bool "UseSSL"
   QVariantList serverList;
+  bool useRandomServer;
+
+  QStringList perform;
+
+  bool useAutoIdentify;
+  QString autoIdentifyService;
+  QString autoIdentifyPassword;
+
+  bool useAutoReconnect;
+  quint32 autoReconnectInterval;
+  qint16 autoReconnectRetries;  // -1 => Unlimited
+  bool rejoinChannels;
 
   bool operator==(const NetworkInfo &other) const;
   bool operator!=(const NetworkInfo &other) const;
