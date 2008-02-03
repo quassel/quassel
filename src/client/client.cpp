@@ -34,6 +34,7 @@
 #include "util.h"
 
 QPointer<Client> Client::instanceptr = 0;
+AccountId Client::_currentCoreAccount = 0;
 
 /*** Initialization/destruction ***/
 
@@ -71,7 +72,7 @@ Client::~Client() {
 }
 
 void Client::init() {
-
+  _currentCoreAccount = 0;
   _networkModel = new NetworkModel(this);
   connect(this, SIGNAL(bufferUpdated(BufferInfo)),
           _networkModel, SLOT(bufferUpdated(BufferInfo)));
@@ -115,6 +116,14 @@ void Client::init() {
 }
 
 /*** public static methods ***/
+
+AccountId Client::currentCoreAccount() {
+  return _currentCoreAccount;
+}
+
+void Client::setCurrentCoreAccount(AccountId id) {
+  _currentCoreAccount = id;
+}
 
 QList<BufferInfo> Client::allBufferInfos() {
   QList<BufferInfo> bufferids;
@@ -276,10 +285,11 @@ void Client::userInput(BufferInfo bufferInfo, QString message) {
 
 /*** core connection stuff ***/
 
-void Client::setConnectedToCore(QIODevice *sock) {
+void Client::setConnectedToCore(QIODevice *sock, AccountId id) {
   socket = sock;
   signalProxy()->addPeer(socket);
   _connectedToCore = true;
+  setCurrentCoreAccount(id);
 }
 
 void Client::setSyncedToCore() {
@@ -295,6 +305,7 @@ void Client::disconnectFromCore() {
   }
   _connectedToCore = false;
   _syncedToCore = false;
+  setCurrentCoreAccount(0);
   emit disconnected();
   emit coreConnectionStateChanged(false);
 

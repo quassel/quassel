@@ -79,11 +79,16 @@ struct IdentityId : public SignedId {
   //inline operator QVariant() const { return QVariant::fromValue<IdentityId>(*this); }
 };
 
+struct AccountId : public SignedId {
+  inline AccountId(int _id = 0) : SignedId(_id) {};
+};
+
 Q_DECLARE_METATYPE(UserId);
 Q_DECLARE_METATYPE(MsgId);
 Q_DECLARE_METATYPE(BufferId);
 Q_DECLARE_METATYPE(NetworkId);
 Q_DECLARE_METATYPE(IdentityId);
+Q_DECLARE_METATYPE(AccountId);
 
 //! Base class for exceptions.
 struct Exception {

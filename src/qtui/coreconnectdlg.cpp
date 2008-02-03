@@ -40,12 +40,18 @@ CoreConnectDlg::CoreConnectDlg(QWidget *parent, bool autoconnect) : QDialog(pare
   ui.accountButtonBox->button(QDialogButtonBox::Ok)->setDefault(true);
 
   CoreAccountSettings s;
-  QString lastacc = s.lastAccount();
+  AccountId lastacc = s.lastAccount();
   autoConnectAccount = s.autoConnectAccount();
-  accounts = s.retrieveAllAccounts();
-  ui.accountList->addItems(accounts.keys());
-  QList<QListWidgetItem *> l = ui.accountList->findItems(lastacc, Qt::MatchExactly);
-  if(l.count()) ui.accountList->setCurrentItem(l[0]);
+  QListWidgetItem *currentItem = 0;
+  foreach(AccountId id, s.knownAccounts()) {
+    if(!id.isValid()) continue;
+    QVariantMap data = s.retrieveAccountData(id);
+    accounts[id] = data;
+    QListWidgetItem *item = new QListWidgetItem(data["AccountName"].toString(), ui.accountList);
+    item->setData(Qt::UserRole, QVariant::fromValue<AccountId>(id));
+    if(id == lastacc) currentItem = item;
+  }
+  if(currentItem) ui.accountList->setCurrentItem(currentItem);
   else ui.accountList->setCurrentRow(0);
 
   setAccountWidgetStates();
@@ -68,7 +74,8 @@ CoreConnectDlg::CoreConnectDlg(QWidget *parent, bool autoconnect) : QDialog(pare
   connect(ui.loginButtonBox, SIGNAL(rejected()), this, SLOT(restartPhaseNull()));
   connect(ui.syncButtonBox->button(QDialogButtonBox::Abort), SIGNAL(clicked()), this, SLOT(restartPhaseNull()));
 
-  if(autoconnect && ui.accountList->count() && !autoConnectAccount.isEmpty() && autoConnectAccount == ui.accountList->currentItem()->text()) {
+  if(autoconnect && ui.accountList->count() && autoConnectAccount.isValid()
+     && autoConnectAccount == ui.accountList->currentItem()->data(Qt::UserRole).value<AccountId>()) {
     doingAutoConnect = true;
     on_accountButtonBox_accepted();
   }
@@ -77,7 +84,7 @@ CoreConnectDlg::CoreConnectDlg(QWidget *parent, bool autoconnect) : QDialog(pare
 CoreConnectDlg::~CoreConnectDlg() {
   if(ui.accountList->selectedItems().count()) {
     CoreAccountSettings s;
-    s.setLastAccount(ui.accountList->selectedItems()[0]->text());
+    s.setLastAccount(ui.accountList->selectedItems()[0]->data(Qt::UserRole).value<AccountId>());
   }
 }
 
@@ -96,19 +103,20 @@ void CoreConnectDlg::setAccountWidgetStates() {
   ui.deleteAccount->setEnabled(selectedItems.count());
   ui.autoConnect->setEnabled(selectedItems.count());
   if(selectedItems.count()) {
-    ui.autoConnect->setChecked(selectedItems[0]->text() == autoConnectAccount);
+    ui.autoConnect->setChecked(selectedItems[0]->data(Qt::UserRole).value<AccountId>() == autoConnectAccount);
   }
+  ui.accountButtonBox->button(QDialogButtonBox::Ok)->setEnabled(ui.accountList->count());
 }
 
 void CoreConnectDlg::on_autoConnect_clicked(bool state) {
   if(!state) {
-    autoConnectAccount = QString();
+    autoConnectAccount = 0;
   } else {
     if(ui.accountList->selectedItems().count()) {
-      autoConnectAccount = ui.accountList->selectedItems()[0]->text();
+      autoConnectAccount = ui.accountList->selectedItems()[0]->data(Qt::UserRole).value<AccountId>();
     } else {
       qWarning() << "Checked auto connect without an enabled item!";  // should never happen!
-      autoConnectAccount = QString();
+      autoConnectAccount = 0;
     }
   }
   setAccountWidgetStates();
@@ -117,43 +125,50 @@ void CoreConnectDlg::on_autoConnect_clicked(bool state) {
 void CoreConnectDlg::on_addAccount_clicked() {
   QStringList existing;
   for(int i = 0; i < ui.accountList->count(); i++) existing << ui.accountList->item(i)->text();
-  CoreAccountEditDlg dlg(QString(), QVariantMap(), existing, this);
+  CoreAccountEditDlg dlg(0, QVariantMap(), existing, this);
   if(dlg.exec() == QDialog::Accepted) {
-    accounts[dlg.accountName()] = dlg.accountData();
-    ui.accountList->addItem(dlg.accountName());
-    ui.accountList->setCurrentItem(ui.accountList->findItems(dlg.accountName(), Qt::MatchExactly)[0]);
+    // find free ID
+    AccountId id = accounts.count() + 1;
+    for(AccountId i = 1; i <= accounts.count(); i++) {
+      if(!accounts.keys().contains(i)) {
+        id = i;
+        break;
+      }
+    }
+    QVariantMap data = dlg.accountData();
+    data["AccountId"] = QVariant::fromValue<AccountId>(id);
+    accounts[id] = data;
+    QListWidgetItem *item = new QListWidgetItem(data["AccountName"].toString(), ui.accountList);
+    item->setData(Qt::UserRole, QVariant::fromValue<AccountId>(id));
+    ui.accountList->setCurrentItem(item);
   }
 }
 
 void CoreConnectDlg::on_editAccount_clicked() {
   QStringList existing;
   for(int i = 0; i < ui.accountList->count(); i++) existing << ui.accountList->item(i)->text();
-  QString current = ui.accountList->currentItem()->text();
-  QVariantMap acct = accounts[current];
-  CoreAccountEditDlg dlg(current, acct, existing, this);
+  AccountId id = ui.accountList->currentItem()->data(Qt::UserRole).value<AccountId>();
+  QVariantMap acct = accounts[id];
+  CoreAccountEditDlg dlg(id, acct, existing, this);
   if(dlg.exec() == QDialog::Accepted) {
-    if(current != dlg.accountName()) {
-      if(autoConnectAccount == current) autoConnectAccount = dlg.accountName();
-      accounts.remove(current);
-      current = dlg.accountName();
-      ui.accountList->currentItem()->setText(current);
-    }
-    accounts[current] = dlg.accountData();
+    QVariantMap data = dlg.accountData();
+    ui.accountList->currentItem()->setText(data["AccountName"].toString());
+    accounts[id] = data;
   }
-  //ui.accountList->setCurrent
 }
 
 void CoreConnectDlg::on_deleteAccount_clicked() {
-  QString current = ui.accountList->currentItem()->text();
+  AccountId id = ui.accountList->currentItem()->data(Qt::UserRole).value<AccountId>();
   int ret = QMessageBox::question(this, tr("Remove Account Settings"),
                                   tr("Do you really want to remove your local settings for this Quassel Core account?<br>"
                                   "Note: This will <em>not</em> remove or change any data on the Core itself!"),
                                   QMessageBox::Yes|QMessageBox::No, QMessageBox::No);
   if(ret == QMessageBox::Yes) {
     int idx = ui.accountList->currentRow();
-    delete ui.accountList->item(idx);
-    ui.accountList->setCurrentRow(qMin(idx, ui.accountList->count()));
-    accounts.remove(current);
+    delete ui.accountList->takeItem(idx);
+    ui.accountList->setCurrentRow(qMin(idx, ui.accountList->count()-1));
+    accounts[id]["Delete"] = true;  // we only flag this here, actual deletion happens on accept!
+    setAccountWidgetStates();
   }
 }
 
@@ -165,13 +180,20 @@ void CoreConnectDlg::on_accountList_itemDoubleClicked(QListWidgetItem *item) {
 void CoreConnectDlg::on_accountButtonBox_accepted() {
   // save accounts
   CoreAccountSettings s;
-  s.storeAllAccounts(accounts);
+  foreach(QVariantMap acct, accounts.values()) {
+    AccountId id = acct["AccountId"].value<AccountId>();
+    if(acct.contains("Delete")) {
+      s.removeAccount(id);
+    } else {
+      s.storeAccountData(id, acct);
+    }
+  }
   s.setAutoConnectAccount(autoConnectAccount);
 
   ui.stackedWidget->setCurrentWidget(ui.loginPage);
-  accountName = ui.accountList->currentItem()->text();
-  account = s.retrieveAccount(accountName);
-  s.setLastAccount(accountName);
+  account = ui.accountList->currentItem()->data(Qt::UserRole).value<AccountId>();
+  accountData = accounts[account];
+  s.setLastAccount(account);
   connectToCore();
 }
 
@@ -183,7 +205,7 @@ void CoreConnectDlg::on_accountButtonBox_accepted() {
 
 void CoreConnectDlg::connectToCore() {
   ui.connectIcon->setPixmap(QPixmap::fromImage(QImage(":/22x22/actions/network-disconnect")));
-  ui.connectLabel->setText(tr("Connect to %1").arg(account["Host"].toString()));
+  ui.connectLabel->setText(tr("Connect to %1").arg(accountData["Host"].toString()));
   ui.coreInfoLabel->setText("");
   ui.loginStack->setCurrentWidget(ui.loginEmptyPage);
   ui.loginButtonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
@@ -194,14 +216,14 @@ void CoreConnectDlg::connectToCore() {
 
 
   //connect(Client::instance(), SIGNAL(coreConnectionPhaseOne(const QVariantMap &)), this, SLOT(phaseOneFinished
-  clientSyncer->connectToCore(account);
+  clientSyncer->connectToCore(accountData);
 }
 
 void CoreConnectDlg::initPhaseError(const QString &error) {
   doingAutoConnect = false;
   ui.connectIcon->setPixmap(QPixmap::fromImage(QImage(":/22x22/status/dialog-error")));
   //ui.connectLabel->setBrush(QBrush("red"));
-  ui.connectLabel->setText(tr("<div style=color:red;>Connection to %1 failed!</div>").arg(account["Host"].toString()));
+  ui.connectLabel->setText(tr("<div style=color:red;>Connection to %1 failed!</div>").arg(accountData["Host"].toString()));
   ui.coreInfoLabel->setText(error);
   ui.loginButtonBox->setStandardButtons(QDialogButtonBox::Retry|QDialogButtonBox::Cancel);
   ui.loginButtonBox->button(QDialogButtonBox::Retry)->setDefault(true);
@@ -216,7 +238,7 @@ void CoreConnectDlg::initPhaseMsg(const QString &msg) {
 
 void CoreConnectDlg::initPhaseSocketState(QAbstractSocket::SocketState state) {
   QString s;
-  QString host = account["Host"].toString();
+  QString host = accountData["Host"].toString();
   switch(state) {
     case QAbstractSocket::UnconnectedState: s = tr("Not connected to %1.").arg(host); break;
     case QAbstractSocket::HostLookupState: s = tr("Looking up %1...").arg(host); break;
@@ -243,10 +265,10 @@ void CoreConnectDlg::startLogin() {
   ui.loginStack->setMinimumSize(ui.loginStack->sizeHint()); ui.loginStack->updateGeometry();
   ui.loginButtonBox->setStandardButtons(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
   ui.loginButtonBox->button(QDialogButtonBox::Ok)->setDefault(true);
-  if(!account["User"].toString().isEmpty()) {
-    ui.user->setText(account["User"].toString());
-    if(account["RememberPasswd"].toBool()) {
-      ui.password->setText(account["Password"].toString());
+  if(!accountData["User"].toString().isEmpty()) {
+    ui.user->setText(accountData["User"].toString());
+    if(accountData["RememberPasswd"].toBool()) {
+      ui.password->setText(accountData["Password"].toString());
       ui.rememberPasswd->setChecked(true);
       ui.loginButtonBox->setFocus();
     } else {
@@ -266,12 +288,12 @@ void CoreConnectDlg::doLogin() {
   ui.password->setDisabled(true);
   ui.rememberPasswd->setDisabled(true);
   ui.loginButtonBox->button(QDialogButtonBox::Ok)->setDisabled(true);
-  account["User"] = ui.user->text();
-  account["RememberPasswd"] = ui.rememberPasswd->isChecked();
-  if(ui.rememberPasswd->isChecked()) account["Password"] = ui.password->text();
-  else account.remove("Password");
+  accountData["User"] = ui.user->text();
+  accountData["RememberPasswd"] = ui.rememberPasswd->isChecked();
+  if(ui.rememberPasswd->isChecked()) accountData["Password"] = ui.password->text();
+  else accountData.remove("Password");
   CoreAccountSettings s;
-  s.storeAccount(accountName, account);
+  s.storeAccountData(account, accountData);
   clientSyncer->loginToCore(ui.user->text(), ui.password->text());
 }
 
@@ -361,26 +383,23 @@ void CoreConnectDlg::coreIrcUsersProgress(quint32 val, quint32 max) {
  * CoreAccountEditDlg
  *****************************************************************************************/
 
-CoreAccountEditDlg::CoreAccountEditDlg(const QString &name, const QVariantMap &acct, const QStringList &_existing, QWidget *parent) : QDialog(parent) {
+CoreAccountEditDlg::CoreAccountEditDlg(AccountId id, const QVariantMap &acct, const QStringList &_existing, QWidget *parent) : QDialog(parent) {
   ui.setupUi(this);
   existing = _existing;
   account = acct;
-  if(!name.isEmpty()) {
-    existing.removeAll(name);
+  if(id.isValid()) {
+    existing.removeAll(acct["AccountName"].toString());
     ui.host->setText(acct["Host"].toString());
     ui.port->setValue(acct["Port"].toUInt());
     ui.useInternal->setChecked(acct["UseInternal"].toBool());
-    ui.accountName->setText(name);
+    ui.accountName->setText(acct["AccountName"].toString());
   } else {
     setWindowTitle(tr("Add Core Account"));
   }
 }
 
-QString CoreAccountEditDlg::accountName() const {
-  return ui.accountName->text();
-}
-
 QVariantMap CoreAccountEditDlg::accountData() {
+  account["AccountName"] = ui.accountName->text();
   account["Host"] = ui.host->text();
   account["Port"] = ui.port->value();
   account["UseInternal"] = ui.useInternal->isChecked();
@@ -388,7 +407,7 @@ QVariantMap CoreAccountEditDlg::accountData() {
 }
 
 void CoreAccountEditDlg::setWidgetStates() {
-  bool ok = !accountName().isEmpty() && !existing.contains(accountName()) && (ui.useInternal->isChecked() || !ui.host->text().isEmpty());
+  bool ok = !ui.accountName->text().isEmpty() && !existing.contains(ui.accountName->text()) && (ui.useInternal->isChecked() || !ui.host->text().isEmpty());
   ui.buttonBox->button(QDialogButtonBox::Ok)->setEnabled(ok);
 }
 

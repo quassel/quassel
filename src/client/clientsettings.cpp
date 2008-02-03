@@ -36,56 +36,55 @@ ClientSettings::~ClientSettings() {
 
 /***********************************************************************************************/
 
-CoreAccountSettings::CoreAccountSettings() : ClientSettings("CoreAccounts") {
-
+CoreAccountSettings::CoreAccountSettings(const QString &subgroup) : ClientSettings("CoreAccounts") {
+  _subgroup = subgroup;
 
 }
 
-QStringList CoreAccountSettings::knownAccounts() {
-  return localChildKeys("Accounts");
-}
-
-QString CoreAccountSettings::lastAccount() {
-  return localValue("LastAccount", "").toString();
-}
-
-void CoreAccountSettings::setLastAccount(const QString &account) {
-  setLocalValue("LastAccount", account);
-}
-
-QString CoreAccountSettings::autoConnectAccount() {
-  return localValue("AutoConnectAccount", "").toString();
-}
-
-void CoreAccountSettings::setAutoConnectAccount(const QString &account) {
-  setLocalValue("AutoConnectAccount", account);
-}
-
-void CoreAccountSettings::storeAccount(const QString name, const QVariantMap &data) {
-  setLocalValue(QString("Accounts/%2").arg(name), data);
-}
-
-QVariantMap CoreAccountSettings::retrieveAccount(const QString &name) {
-  return localValue(QString("Accounts/%2").arg(name), QVariant()).toMap();
-}
-
-void CoreAccountSettings::storeAllAccounts(const QHash<QString, QVariantMap> accounts) {
-  removeLocalKey(QString("Accounts"));
-  foreach(QString name, accounts.keys()) {
-    storeAccount(name, accounts[name]);
+QList<AccountId> CoreAccountSettings::knownAccounts() {
+  QList<AccountId> ids;
+  foreach(QString key, localChildGroups()) {
+    ids << key.toInt();
   }
+  return ids;
 }
 
-QHash<QString, QVariantMap> CoreAccountSettings::retrieveAllAccounts() {
-  QHash<QString, QVariantMap> accounts;
-  foreach(QString name, knownAccounts()) {
-    accounts[name] = retrieveAccount(name);
-  }
-  return accounts;
+AccountId CoreAccountSettings::lastAccount() {
+  return localValue("LastAccount", 0).toInt();
 }
 
-void CoreAccountSettings::removeAccount(const QString &account) {
-  removeLocalKey(QString("Accounts/%1").arg(account));
+void CoreAccountSettings::setLastAccount(AccountId account) {
+  setLocalValue("LastAccount", account.toInt());
+}
+
+AccountId CoreAccountSettings::autoConnectAccount() {
+  return localValue("AutoConnectAccount", 0).toInt();
+}
+
+void CoreAccountSettings::setAutoConnectAccount(AccountId account) {
+  setLocalValue("AutoConnectAccount", account.toInt());
+}
+
+void CoreAccountSettings::storeAccountData(AccountId id, const QVariantMap &data) {
+  setLocalValue(QString("%1/Connection").arg(id.toInt()), data);
+}
+
+QVariantMap CoreAccountSettings::retrieveAccountData(AccountId id) {
+  return localValue(QString("%1/Connection").arg(id.toInt()), QVariant()).toMap();
+}
+
+void CoreAccountSettings::setAccountValue(const QString &key, const QVariant &value) {
+  if(!Client::currentCoreAccount().isValid()) return;
+  setLocalValue(QString("%1/%2/%3").arg(Client::currentCoreAccount().toInt()).arg(_subgroup).arg(key), value);
+}
+
+QVariant CoreAccountSettings::accountValue(const QString &key, const QVariant &def) {
+  if(!Client::currentCoreAccount().isValid()) return QVariant();
+  return localValue(QString("%1/%2/%3").arg(Client::currentCoreAccount().toInt()).arg(_subgroup).arg(key), def);
+}
+
+void CoreAccountSettings::removeAccount(AccountId id) {
+  removeLocalKey(QString("%1").arg(id.toInt()));
 }
 
 

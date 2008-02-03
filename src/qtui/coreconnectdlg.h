@@ -23,6 +23,8 @@
 
 #include <QAbstractSocket>
 
+#include "types.h"
+
 #include "ui_coreconnectdlg.h"
 #include "ui_coreaccounteditdlg.h"
 
@@ -77,10 +79,10 @@ class CoreConnectDlg : public QDialog {
   private:
     Ui::CoreConnectDlg ui;
 
-    QString autoConnectAccount;
-    QHash<QString, QVariantMap> accounts;
-    QVariantMap account;
-    QString accountName;
+    AccountId autoConnectAccount;
+    QHash<AccountId, QVariantMap> accounts;
+    QVariantMap accountData;
+    AccountId account;
 
     bool doingAutoConnect;
 
@@ -91,9 +93,8 @@ class CoreAccountEditDlg : public QDialog {
   Q_OBJECT
 
   public:
-    CoreAccountEditDlg(const QString &name, const QVariantMap &data, const QStringList &existing = QStringList(), QWidget *parent = 0);
+    CoreAccountEditDlg(AccountId id, const QVariantMap &data, const QStringList &existing = QStringList(), QWidget *parent = 0);
 
-    QString accountName() const;
     QVariantMap accountData();
 
   private slots:

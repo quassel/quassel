@@ -92,6 +92,8 @@ public:
   static BufferModel *bufferModel();
   static SignalProxy *signalProxy();
 
+  static AccountId currentCoreAccount();
+
   static AbstractUiMsg *layoutMsg(const Message &);
 
   static bool isConnected();
@@ -145,8 +147,6 @@ signals:
 public slots:
   //void selectBuffer(Buffer *);
 
-  void setConnectedToCore(QIODevice *socket);
-  void setSyncedToCore();
   void disconnectFromCore();
 
   void setCoreConfiguration(const QVariantMap &settings);
@@ -171,12 +171,17 @@ private slots:
   void coreNetworkCreated(NetworkId);
   void coreNetworkRemoved(NetworkId);
 
+  void setConnectedToCore(QIODevice *socket, AccountId id);
+  void setSyncedToCore();
+
 private:
   Client(QObject *parent = 0);
   virtual ~Client();
   void init();
 
   static void addNetwork(Network *);
+
+  static void setCurrentCoreAccount(AccountId);
 
   static QPointer<Client> instanceptr;
 
@@ -198,6 +203,8 @@ private:
 
   QTimer *layoutTimer;
   QList<Buffer *> layoutQueue;
+
+  static AccountId _currentCoreAccount;
 
   friend class ClientSyncer;
 };

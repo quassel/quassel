@@ -22,6 +22,7 @@
 #define _CLIENTSETTINGS_H_
 
 #include "settings.h"
+#include "types.h"
 
 class ClientSettings : public Settings {
 
@@ -33,25 +34,35 @@ class ClientSettings : public Settings {
 
 };
 
-// TODO accountid, account-specific settings
+// Deriving from CoreAccountSettings:
+// MySettings() : CoreAccountSettings("MyGroup") {};
+// Then use accountValue() / setAccountValue() to retrieve/store data associated to the currently
+// connected account. This is stored in CoreAccounts/$ACCID/MyGroup/$KEY) then.
+//
+// Note that you'll get invalid data (and setting is ignored) if you are not connected to a core!
 
 class CoreAccountSettings : public ClientSettings {
 
   public:
-    CoreAccountSettings();
+    // stores account-specific data in CoreAccounts/$ACCID/$SUBGROUP/$KEY)
+    CoreAccountSettings(const QString &subgroup = "General");
 
-    QStringList knownAccounts();
-    QString lastAccount();
-    void setLastAccount(const QString &account);
-    QString autoConnectAccount();
-    void setAutoConnectAccount(const QString &account);
+    QList<AccountId> knownAccounts();
+    AccountId lastAccount();
+    void setLastAccount(AccountId);
+    AccountId autoConnectAccount();
+    void setAutoConnectAccount(AccountId);
 
-    void storeAccount(const QString name, const QVariantMap &data);
-    QVariantMap retrieveAccount(const QString &name);
-    void storeAllAccounts(const QHash<QString, QVariantMap> accounts);
-    QHash<QString, QVariantMap> retrieveAllAccounts();
-    void removeAccount(const QString &account);
+    void storeAccountData(AccountId id, const QVariantMap &data);
+    QVariantMap retrieveAccountData(AccountId);
+    void removeAccount(AccountId);
 
+  protected:
+    void setAccountValue(const QString &key, const QVariant &data);
+    QVariant accountValue(const QString &key, const QVariant &def = QVariant());
+
+  private:
+    QString _subgroup;
 };
 
 #endif

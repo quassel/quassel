@@ -107,7 +107,6 @@ void ClientSyncer::connectToCore(const QVariantMap &conn) {
   //  emit coreConnectionError(tr("Already connected to Core!"));
   //  return;
   // }
-
   if(socket != 0) {
     socket->deleteLater();
     socket = 0;
@@ -193,7 +192,7 @@ void ClientSyncer::sessionStateReceived(const QVariantMap &state) {
   disconnect(this, SIGNAL(recvPartialItem(quint32, quint32)), this, SIGNAL(sessionProgress(quint32, quint32)));
   disconnect(socket, 0, this, 0);  // rest of communication happens through SignalProxy
   //Client::signalProxy()->addPeer(socket);
-  Client::instance()->setConnectedToCore(socket);
+  Client::instance()->setConnectedToCore(socket, coreConnectionInfo["AccountId"].value<AccountId>());
   syncToCore(state);
 }
 
