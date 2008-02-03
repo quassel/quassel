@@ -25,7 +25,7 @@ UiStyle::UiStyle(const QString &settingsKey) : _settingsKey(settingsKey) {
   // Default format
   QTextCharFormat def;
   def.setForeground(QBrush("#000000"));
-  def.setFont(QFont("Mono",12));
+  def.setFont(QFont("Courier", 10));
   _defaultFormats = QVector<QTextCharFormat>(NumFormatTypes, def);
   _customFormats = QVector<QTextCharFormat>(NumFormatTypes, QTextFormat().toCharFormat());
 

@@ -19,6 +19,7 @@
  ***************************************************************************/
 #include "ctcphandler.h"
 
+#include "global.h"
 #include "util.h"
 #include "message.h"
 
@@ -152,7 +153,8 @@ void CtcpHandler::handleVersion(CtcpType ctcptype, QString prefix, QString targe
   Q_UNUSED(target)
   if(ctcptype == CtcpQuery) {
     // FIXME use real Info about quassel :)
-    reply(nickFromMask(prefix), "VERSION", QString("Quassel IRC (Pre-Release) - http://www.quassel-irc.org"));
+    reply(nickFromMask(prefix), "VERSION", QString("Quassel IRC (v%1 build >= %2) -- http://www.quassel-irc.org")
+        .arg(Global::quasselVersion).arg(Global::quasselBuild));
     emit displayMsg(Message::Server, "", tr("Received CTCP VERSION request by %1").arg(prefix));
   } else {
     // display Version answer
