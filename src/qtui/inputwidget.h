@@ -27,8 +27,8 @@
 
 #include "buffermodel.h"
 #include "bufferinfo.h"
-
-class Network;
+#include "identity.h"
+#include "network.h";
 
 class InputWidget : public QWidget {
   Q_OBJECT
@@ -59,6 +59,8 @@ private slots:
   void enterPressed();
   void changeNick(const QString &newNick) const;
 
+  void setNetwork(const Network *network);
+  void setIdentity(const IdentityId &identityId);
   void updateNickSelector() const;
 
 signals:
@@ -72,6 +74,8 @@ private:
   
   QPointer<BufferModel> _bufferModel;
   QPointer<QItemSelectionModel> _selectionModel;
+  NetworkId _networkId;
+  IdentityId _identityId;
 
 };
 

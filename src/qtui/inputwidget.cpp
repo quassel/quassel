@@ -22,8 +22,6 @@
 
 #include "client.h"
 #include "networkmodel.h"
-#include "network.h"
-#include "identity.h"
 
 InputWidget::InputWidget(QWidget *parent)
   : QWidget(parent),
@@ -68,8 +66,8 @@ void InputWidget::currentChanged(const QModelIndex &current, const QModelIndex &
     return;
 
   currentBufferInfo  = current.data(NetworkModel::BufferInfoRole).value<BufferInfo>();
+  setNetwork(Client::networkModel()->networkByIndex(current));
   updateNickSelector();
-
   ui.inputEdit->setEnabled(current.data(NetworkModel::ItemActiveRole).value<bool>());
 }
 
@@ -77,10 +75,47 @@ const Network *InputWidget::currentNetwork() const {
   if(!validBuffer)
     return 0;
 
-  return Client::network(currentBufferInfo.networkId());
+  return Client::network(_networkId);
+}
+
+void InputWidget::setNetwork(const Network *network) {
+  if(_networkId == network->networkId())
+    return;
+
+  const Network *previousNet = Client::network(_networkId);
+  if(previousNet)
+    disconnect(previousNet, 0, this, 0);
+
+  if(network) {
+    _networkId = network->networkId();
+    connect(network, SIGNAL(myNickSet(QString)),
+	    this, SLOT(updateNickSelector()));
+    connect(network, SIGNAL(identitySet(IdentityId)),
+	    this, SLOT(setIdentity(IdentityId)));
+  }
+  setIdentity(network->identity());
+}
+
+void InputWidget::setIdentity(const IdentityId &identityId) {
+  if(_identityId == identityId)
+    return;
+
+  const Identity *previousIdentity = Client::identity(_identityId);
+  if(previousIdentity)
+    disconnect(previousIdentity, 0, this, 0);
+
+  const Identity *identity = Client::identity(identityId);
+  if(identity) {
+    _identityId = identityId;
+    connect(identity, SIGNAL(nicksSet(QStringList)),
+	    this, SLOT(updateNickSelector()));
+  }
+  updateNickSelector();
 }
 
 void InputWidget::updateNickSelector() const {
+  ui.ownNick->clear();
+
   const Network *net = currentNetwork();
   if(!net)
     return;
@@ -98,7 +133,6 @@ void InputWidget::updateNickSelector() const {
     nickIdx = 0;
   }
   
-  ui.ownNick->clear();
   ui.ownNick->addItems(nicks);
   ui.ownNick->setCurrentIndex(nickIdx);
 }

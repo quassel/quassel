@@ -236,6 +236,8 @@ public:
   //Buffer *getBufferByIndex(const QModelIndex &) const;
   QModelIndex bufferIndex(BufferId bufferId);
 
+  const Network *networkByIndex(const QModelIndex &index) const;
+
 public slots:
   void bufferUpdated(BufferInfo bufferInfo);
   void updateBufferActivity(const Message &msg);

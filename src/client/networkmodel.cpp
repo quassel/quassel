@@ -712,3 +712,11 @@ void NetworkModel::updateBufferActivity(const Message &msg) {
   bufferItem(msg.bufferInfo())->updateActivity(level);
 }
 
+const Network *NetworkModel::networkByIndex(const QModelIndex &index) const {
+  QVariant netVariant = index.data(NetworkIdRole);
+  if(!netVariant.isValid())
+    return 0;
+
+  NetworkId networkId = netVariant.value<NetworkId>();
+  return Client::network(networkId);
+}
