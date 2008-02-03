@@ -24,6 +24,7 @@
 #include <QTranslator>
 
 #include "global.h"
+#include "logger.h"
 #include "settings.h"
 
 #if defined BUILD_CORE
@@ -60,6 +61,8 @@ int main(int argc, char **argv) {
   // We catch SIGTERM and SIGINT (caused by Ctrl+C) to graceful shutdown Quassel.
   signal(SIGTERM, handle_signal);
   signal(SIGINT, handle_signal);
+
+  // Logger logger;
 
   Global::registerMetaTypes();
 

@@ -37,7 +37,7 @@ NetworksSettingsPage::NetworksSettingsPage(QWidget *parent) : SettingsPage(tr("G
   disconnectedIcon = QIcon(":/22x22/actions/network-disconnect");
 
   currentId = 0;
-  setEnabled(false);  // need a core connection!
+  setEnabled(Client::isConnected());  // need a core connection!
   setWidgetStates();
   connect(Client::instance(), SIGNAL(coreConnectionStateChanged(bool)), this, SLOT(coreConnectionStateChanged(bool)));
   connect(Client::instance(), SIGNAL(networkCreated(NetworkId)), this, SLOT(clientNetworkAdded(NetworkId)));

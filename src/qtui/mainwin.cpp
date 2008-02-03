@@ -30,6 +30,7 @@
 #include "buffermodel.h"
 #include "nicklistwidget.h"
 #include "settingsdlg.h"
+#include "settingspagedlg.h"
 #include "signalproxy.h"
 #include "topicwidget.h"
 #include "inputwidget.h"
@@ -118,8 +119,8 @@ void MainWin::setupMenus() {
   connect(ui.actionAboutQt, SIGNAL(triggered()), QApplication::instance(), SLOT(aboutQt()));
 
   actionEditNetworks = new QAction(QIcon(":/22x22/actions/configure"), tr("Edit &Networks..."), this);
-  actionEditNetworks->setEnabled(false); // FIXME
   ui.menuNetworks->addAction(actionEditNetworks);
+  connect(actionEditNetworks, SIGNAL(triggered()), this, SLOT(showNetworkDlg()));
 }
 
 void MainWin::setupViews() {
@@ -328,6 +329,11 @@ void MainWin::systrayActivated( QSystemTrayIcon::ActivationReason activationReas
     else
       hide();
   }
+}
+
+void MainWin::showNetworkDlg() {
+  SettingsPageDlg dlg(new NetworksSettingsPage(this), this);
+  dlg.exec();
 }
 
 void MainWin::clientNetworkCreated(NetworkId id) {

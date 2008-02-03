@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-08 by the Quassel Project                          *
+ *   Copyright (C) 2005-08 by the Quassel IRC Team                         *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,30 +18,22 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _SETTINGSDLG_H_
-#define _SETTINGSDLG_H_
+#ifndef _SETTINGSPAGEDLG_H_
+#define _SETTINGSPAGEDLG_H_
 
 #include <QtGui>
-#include "ui_settingsdlg.h"
+#include "ui_settingspagedlg.h"
 
 #include "settingspage.h"
 
-class SettingsDlg : public QDialog {
+class SettingsPageDlg : public QDialog {
   Q_OBJECT
   public:
-    SettingsDlg(QWidget *parent = 0);
-    void registerSettingsPage(SettingsPage *);
-    void unregisterSettingsPage(SettingsPage *);
+    SettingsPageDlg(SettingsPage * page, QWidget *parent = 0);
 
     SettingsPage *currentPage() const;
 
-    //QSize sizeHint() const;
-
-  public slots:
-    void selectPage(const QString &category, const QString &title);
-
   private slots:
-    void itemSelected();
     void buttonClicked(QAbstractButton *);
     bool applyChanges();
     void undoChanges();
@@ -50,14 +42,10 @@ class SettingsDlg : public QDialog {
     void setButtonStates();
 
   private:
-    Ui::SettingsDlg ui;
+    Ui::SettingsPageDlg ui;
 
     SettingsPage *_currentPage;
-    QHash<QString, SettingsPage *> pages;
-    QHash<SettingsPage *, QTreeWidgetItem *> treeItems;
 
-    //QSize recommendedSize;
 };
-
 
 #endif

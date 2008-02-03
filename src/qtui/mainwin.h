@@ -61,6 +61,7 @@ class MainWin : public QMainWindow {
   private slots:
 
     void showSettingsDlg();
+    void showNetworkDlg();
     void showDebugConsole();
 
     void showCoreConnectionDlg(bool autoConnect = false);

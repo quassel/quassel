@@ -25,7 +25,7 @@
 
 
 Logger::~Logger() {
-  //qInstallMsgHandler(0);
+  qInstallMsgHandler(0);
 }
 
 void messageHandler(QtMsgType type, const char *msg) {
@@ -46,5 +46,5 @@ void messageHandler(QtMsgType type, const char *msg) {
 }
 
 Logger::Logger() {
-  //qInstallMsgHandler(messageHandler);
+  qInstallMsgHandler(messageHandler);
 }

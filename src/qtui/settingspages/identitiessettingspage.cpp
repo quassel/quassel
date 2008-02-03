@@ -29,7 +29,7 @@ IdentitiesSettingsPage::IdentitiesSettingsPage(QWidget *parent)
   : SettingsPage(tr("General"), tr("Identities"), parent) {
 
   ui.setupUi(this);
-  setEnabled(false);  // need a core connection!
+  setEnabled(Client::isConnected());  // need a core connection!
   setWidgetStates();
   connect(Client::instance(), SIGNAL(coreConnectionStateChanged(bool)), this, SLOT(coreConnectionStateChanged(bool)));
   connect(Client::instance(), SIGNAL(identityCreated(IdentityId)), this, SLOT(clientIdentityCreated(IdentityId)));
