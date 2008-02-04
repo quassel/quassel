@@ -60,7 +60,7 @@ const BufferInfo &BufferItem::bufferInfo() const {
 }
 
 quint64 BufferItem::id() const {
-  return bufferInfo().bufferId().toInt();
+  return qHash(bufferInfo().bufferId());
 }
 
 bool BufferItem::isStatusBuffer() const {
@@ -308,7 +308,7 @@ QVariant NetworkItem::data(int column, int role) const {
 }
 
 quint64 NetworkItem::id() const {
-  return _networkId.toInt();
+  return qHash(_networkId);
 }
 
 void NetworkItem::setActive(bool connected) {
@@ -470,7 +470,17 @@ IrcUserItem::IrcUserItem(IrcUser *ircUser, AbstractTreeItem *parent)
 }
 
 QString IrcUserItem::nickName() const {
-  return _ircUser->nick();
+  if(_ircUser)
+    return _ircUser->nick();
+  else
+    return QString();
+}
+
+bool IrcUserItem::isActive() const {
+  if(_ircUser)
+    return !_ircUser->isAway();
+  else
+    return false;
 }
 
 IrcUser *IrcUserItem::ircUser() {
@@ -478,13 +488,13 @@ IrcUser *IrcUserItem::ircUser() {
 }
 
 quint64 IrcUserItem::id() const {
-  return (quint64)_ircUser;
+  return qHash((IrcUser *)_ircUser);
 }
 
 QVariant IrcUserItem::data(int column, int role) const {
   switch(role) {
   case NetworkModel::ItemActiveRole:
-    return !_ircUser->isAway();
+    return isActive();
   case NetworkModel::ItemTypeRole:
     return NetworkModel::IrcUserItemType;
   case NetworkModel::BufferIdRole:

@@ -311,6 +311,17 @@ TreeModel::TreeModel(const QList<QVariant> &data, QObject *parent)
 {
   rootItem = new SimpleTreeItem(data, 0);
   connectItem(rootItem);
+
+  /*
+  connect(this, SIGNAL(rowsAboutToBeInserted(const QModelIndex &, int, int)),
+	  this, SLOT(debug_rowsAboutToBeInserted(const QModelIndex &, int, int)));
+  connect(this, SIGNAL(rowsAboutToBeRemoved(const QModelIndex &, int, int)),
+	  this, SLOT(debug_rowsAboutToBeRemoved(const QModelIndex &, int, int)));
+  connect(this, SIGNAL(rowsInserted(const QModelIndex &, int, int)),
+	  this, SLOT(debug_rowsInserted(const QModelIndex &, int, int)));
+  connect(this, SIGNAL(rowsRemoved(const QModelIndex &, int, int)),
+	  this, SLOT(debug_rowsRemoved(const QModelIndex &, int, int)));
+  */
 }
 
 TreeModel::~TreeModel() {
@@ -540,4 +551,30 @@ void TreeModel::endRemoveChilds() {
 
 void TreeModel::clear() {
   rootItem->removeAllChilds();
+}
+
+void TreeModel::debug_rowsAboutToBeInserted(const QModelIndex &parent, int start, int end) {
+  qDebug() << "debug_rowsAboutToBeInserted" << parent << parent.internalPointer() << parent.data().toString() << rowCount(parent) << start << end;
+}
+
+void TreeModel::debug_rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end) {
+  qDebug() << "debug_rowsAboutToBeRemoved" << parent << parent.internalPointer() << parent.data().toString() << rowCount(parent) << start << end;
+  QModelIndex child;
+  for(int i = start; i <= end; i++) {
+    child = parent.child(i, 0);
+    qDebug() << "    " << child << child.data().toString(); // << static_cast<AbstractTreeItem *>(parent.child(i, 0).internalPointer())->id();
+  }
+}
+
+void TreeModel::debug_rowsInserted(const QModelIndex &parent, int start, int end) {
+  qDebug() << "debug_rowsInserted" << parent << parent.internalPointer() << parent.data().toString() << rowCount(parent) << start << end;
+  QModelIndex child;
+  for(int i = start; i <= end; i++) {
+    child = parent.child(i, 0);
+    qDebug() << "    " << child << child.data().toString(); // << static_cast<AbstractTreeItem *>(parent.child(i, 0).internalPointer())->id();
+  }
+}
+
+void TreeModel::debug_rowsRemoved(const QModelIndex &parent, int start, int end) {
+  qDebug() << "debug_rowsRemoved" << parent << parent.internalPointer() << parent.data().toString() << rowCount(parent) << start << end;
 }

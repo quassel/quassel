@@ -236,6 +236,7 @@ void Network::removeIrcUser(IrcUser *ircuser) {
     return;
 
   _ircUsers.remove(nick);
+  disconnect(ircuser, 0, this, 0);
   emit ircUserRemoved(nick);
   emit ircUserRemoved(ircuser);
   ircuser->deleteLater();

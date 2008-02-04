@@ -49,7 +49,10 @@ IrcUser::IrcUser(const QString &hostmask, Network *network)
 }
 
 IrcUser::~IrcUser() {
-  //qDebug() << nick() << "destroyed.";
+  QList<IrcChannel *> channels = _channels.toList();
+  foreach(IrcChannel *channel, channels) {
+    partChannel(channel);
+  }
 }
 
 // ====================

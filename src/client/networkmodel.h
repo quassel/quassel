@@ -191,6 +191,8 @@ public:
   IrcUserItem(IrcUser *ircUser, AbstractTreeItem *parent);
 
   QString nickName() const;
+  bool isActive() const;
+
   IrcUser *ircUser();
   virtual quint64 id() const;
   virtual QVariant data(int column, int role) const;
@@ -200,7 +202,7 @@ private slots:
   void setNick(QString newNick);
 
 private:
-  IrcUser *_ircUser;
+  QPointer<IrcUser> _ircUser;
 };
 
 

@@ -164,6 +164,7 @@ void IrcChannel::part(IrcUser *ircuser) {
     //qDebug() << "PART" << name() << ircuser->nick() << ircUsers().count();
     // if you wonder why there is no counterpart to ircUserParted:
     // the joines are propagted by the ircuser. the signal ircUserParted is only for convenience
+    disconnect(ircuser, 0, this, 0);
     emit ircUserParted(ircuser);
     if(network->isMe(ircuser))
        deleteLater();
@@ -241,6 +242,7 @@ void IrcChannel::initSetUserModes(const QVariantMap &usermodes) {
 }
 
 void IrcChannel::ircUserDestroyed() {
+  qDebug() << "IrcChannel::ircUserDestroyed()";
   IrcUser *ircUser = static_cast<IrcUser *>(sender());
   Q_ASSERT(ircUser);
   _userModes.remove(ircUser);

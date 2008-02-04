@@ -188,8 +188,12 @@ private:
   };
   ChildStatus _childStatus;
   int _aboutToRemoveOrInsert;
-  // QLinkedList<ChildStatus> _childStatus;
 
+private slots:
+  void debug_rowsAboutToBeInserted(const QModelIndex &parent, int start, int end);
+  void debug_rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
+  void debug_rowsInserted(const QModelIndex &parent, int start, int end);
+  void debug_rowsRemoved(const QModelIndex &parent, int start, int end);
 };
 
 #endif
