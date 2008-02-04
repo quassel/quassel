@@ -164,7 +164,6 @@ public slots:
   void emitConnectionError(const QString &);
 
 private slots:
-  void ircUserDestroyed();
   void channelDestroyed();
   void removeIrcUser(IrcUser *ircuser);
   void ircUserInitDone();

@@ -218,7 +218,6 @@ IrcUser *Network::newIrcUser(const QString &hostmask) {
     
     connect(ircuser, SIGNAL(nickSet(QString)), this, SLOT(ircUserNickChanged(QString)));
     connect(ircuser, SIGNAL(initDone()), this, SLOT(ircUserInitDone()));
-    connect(ircuser, SIGNAL(destroyed()), this, SLOT(ircUserDestroyed()));
     _ircUsers[nick] = ircuser;
     emit ircUserAdded(hostmask);
     emit ircUserAdded(ircuser);
@@ -498,17 +497,11 @@ void Network::ircChannelInitDone() {
   emit ircChannelInitDone(ircchannel);
 }
 
-void Network::ircUserDestroyed() {
-  IrcUser *ircuser = static_cast<IrcUser *>(sender());
-  Q_ASSERT(ircuser);
-  removeIrcUser(ircuser);
-}
-
 void Network::channelDestroyed() {
   IrcChannel *channel = static_cast<IrcChannel *>(sender());
   Q_ASSERT(channel);
-  emit ircChannelRemoved(sender());
   _ircChannels.remove(_ircChannels.key(channel));
+  emit ircChannelRemoved(channel);
 }
 
 void Network::requestConnect() const {
