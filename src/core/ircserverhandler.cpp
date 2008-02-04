@@ -285,9 +285,9 @@ void IrcServerHandler::handleNotice(QString prefix, QList<QByteArray> params) {
 
   QString target = serverDecode(params[0]);
 
-  // are we the target?
+  // kick notices to the server buffer if they are directly addressed to us
   if(network()->isMyNick(target))
-    target = nickFromMask(target);
+    target = QString("");
 
   networkConnection->ctcpHandler()->parse(Message::Notice, prefix, target, userDecode(prefix, params[1]));
 }
