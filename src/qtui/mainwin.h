@@ -52,6 +52,7 @@ class MainWin : public QMainWindow {
 
   protected:
     void closeEvent(QCloseEvent *event);
+    virtual void keyPressEvent(QKeyEvent *event);
 
   protected slots:
     void connectedToCore();
@@ -93,6 +94,7 @@ class MainWin : public QMainWindow {
 
     void enableMenus();
 
+    QHash<int, QModelIndex> _keyboardJump;
     QSystemTrayIcon *systray;
 
     CoreConnectDlg *coreConnectDlg;

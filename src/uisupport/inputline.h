@@ -51,6 +51,9 @@ class InputLine : public QLineEdit {
     QStringList nickList;
 
     TabCompleter *tabComplete;
+
+    int bindModifier;
+    int jumpModifier;
 };
 
 #endif

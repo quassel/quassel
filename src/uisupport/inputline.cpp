@@ -28,12 +28,25 @@ InputLine::InputLine(QWidget *parent)
 {
   connect(this, SIGNAL(returnPressed()), this, SLOT(enter()));
   tabComplete = new TabCompleter(this);
+
+#ifdef Q_WS_MAC
+  bindModifier = Qt::ControlModifier | Qt::AltModifier;
+  jumpModifier = Qt::ControlModifier;
+#else
+  bindModifier = Qt::ControlModifier;
+  jumpModifier = Qt::AltModifier;
+#endif
 }
 
 InputLine::~InputLine() {
 }
 
 void InputLine::keyPressEvent(QKeyEvent * event) {
+  if(event->modifiers() == jumpModifier || event->modifiers() == bindModifier) {
+    event->ignore();
+    return;
+  }
+  
   if(event->key() == Qt::Key_Tab) { // Tabcomplete
     tabComplete->complete();
     event->accept();

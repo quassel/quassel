@@ -399,3 +399,38 @@ void MainWin::connectOrDisconnectFromNet() {
   if(net->connectionState() == Network::Disconnected) net->requestConnect();
   else net->requestDisconnect();
 }
+
+void MainWin::keyPressEvent(QKeyEvent *event) {
+#ifdef Q_WS_MAC
+  int bindModifier = Qt::ControlModifier | Qt::AltModifier;
+  int jumpModifier = Qt::ControlModifier;
+#else
+  int bindModifier = Qt::ControlModifier;
+  int jumpModifier = Qt::AltModifier;
+#endif
+
+  if(Qt::Key_0 <= event->key() && event->key() <= Qt::Key_9) {
+    if(event->modifiers() ==  bindModifier) {
+      QModelIndex bufferIdx = Client::bufferModel()->standardSelectionModel()->currentIndex();
+      NetworkId netId = bufferIdx.data(NetworkModel::NetworkIdRole).value<NetworkId>();
+      const Network *net = Client::network(netId);
+      if(!net)
+	return;
+      QString bufferName = bufferIdx.sibling(bufferIdx.row(), 0).data().toString();
+
+      _keyboardJump[event->key()] = bufferIdx;
+      statusBar()->showMessage(tr("Bound Buffer %1::%2 to Key %3").arg(net->networkName()).arg(bufferName).arg(event->key() - Qt::Key_0), 10000);
+      event->accept();
+    }
+    
+    else if(event->modifiers() == jumpModifier && _keyboardJump.contains(event->key())) {
+      Client::bufferModel()->standardSelectionModel()->setCurrentIndex(_keyboardJump[event->key()], QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+      event->accept();
+    }
+    
+    else {
+      event->ignore();
+    }
+  }
+  event->ignore();
+}
