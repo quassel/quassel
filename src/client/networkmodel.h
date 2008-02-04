@@ -32,6 +32,8 @@ class BufferInfo;
 
 #include "selectionmodelsynchronizer.h"
 #include "modelpropertymapper.h"
+#include "clientsettings.h"
+
 class MappedSelectionModel;
 class QAbstractItemView;
 class Network;
@@ -81,8 +83,12 @@ public:
   Q_DECLARE_FLAGS(ActivityLevel, Activity)
 
   ActivityLevel activity() const;
-  void setActivity(const ActivityLevel &level);
+  bool setActivity(const ActivityLevel &level);
   void updateActivity(const ActivityLevel &level);
+
+  void setLastMsgInsert(QDateTime msgDate);
+  bool setLastSeen();
+  QDateTime lastSeen();
 
 public slots:
   void setTopic(const QString &topic);
@@ -100,6 +106,8 @@ private:
   BufferInfo _bufferInfo;
   ActivityLevel _activity;
   Type _type;
+  QDateTime _lastMsgInsert;
+  QDateTime _lastSeen;
 
   QPointer<IrcChannel> _ircChannel;
 };
@@ -210,7 +218,8 @@ public:
     BufferIdRole,
     NetworkIdRole,
     BufferInfoRole,
-    ItemTypeRole
+    ItemTypeRole,
+    LastSeenRole
   };
 
   enum itemTypes {

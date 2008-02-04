@@ -25,20 +25,15 @@
 #include <QStringList>
 
 ClientSettings::ClientSettings(QString g) : Settings(g, Global::clientApplicationName) {
-
-
 }
 
 ClientSettings::~ClientSettings() {
-
-
 }
 
 /***********************************************************************************************/
 
 CoreAccountSettings::CoreAccountSettings(const QString &subgroup) : ClientSettings("CoreAccounts") {
   _subgroup = subgroup;
-
 }
 
 QList<AccountId> CoreAccountSettings::knownAccounts() {
@@ -87,4 +82,17 @@ void CoreAccountSettings::removeAccount(AccountId id) {
   removeLocalKey(QString("%1").arg(id.toInt()));
 }
 
+/***********************************************************************************************/
 
+BufferSettings::BufferSettings(BufferId bufferId)
+  : CoreAccountSettings(QString("Buffers/%1").arg(bufferId.toInt()))
+{
+}
+
+void BufferSettings::setLastSeen(QDateTime seenDate) {
+  setAccountValue("LastSeen", seenDate);
+}
+
+QDateTime BufferSettings::lastSeen() {
+  return accountValue("LastSeen", QDateTime()).value<QDateTime>();
+}

@@ -405,7 +405,7 @@ void Client::recvBacklogData(BufferInfo id, QVariantList msgs, bool /*done*/) {
   foreach(QVariant v, msgs) {
     Message msg = v.value<Message>();
     b->prependMsg(msg);
-    // networkModel()->updateBufferActivity(msg);
+    networkModel()->updateBufferActivity(msg);
     if(!layoutQueue.contains(b)) layoutQueue.append(b);
   }
   if(layoutQueue.count() && !layoutTimer->isActive()) layoutTimer->start();

@@ -73,5 +73,7 @@ QModelIndex BufferModel::currentIndex() {
 
 void BufferModel::currentChanged(const QModelIndex &current, const QModelIndex &previous) {
   Q_UNUSED(current);
+  setData(current, QDateTime::currentDateTime(), NetworkModel::LastSeenRole);
+  setData(previous, QDateTime::currentDateTime(), NetworkModel::LastSeenRole);
   setData(previous, qVariantFromValue((int)BufferItem::NoActivity), NetworkModel::BufferActivityRole);
 }

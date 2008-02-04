@@ -65,4 +65,12 @@ class CoreAccountSettings : public ClientSettings {
     QString _subgroup;
 };
 
+class BufferSettings : public CoreAccountSettings {
+public:
+  BufferSettings(BufferId bufferId);
+
+  void setLastSeen(QDateTime);
+  QDateTime lastSeen();
+};
+
 #endif

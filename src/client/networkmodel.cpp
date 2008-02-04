@@ -51,8 +51,9 @@ BufferItem::BufferItem(BufferInfo bufferInfo, AbstractTreeItem *parent)
   if(bufferType() == QueryType)
     flags |= Qt::ItemIsDropEnabled;
   setFlags(flags);
-}
 
+  _lastSeen = BufferSettings(bufferInfo.bufferId()).lastSeen();
+}
 
 const BufferInfo &BufferItem::bufferInfo() const {
   return _bufferInfo;
@@ -81,14 +82,17 @@ BufferItem::ActivityLevel BufferItem::activity() const {
   return _activity;
 }
 
-void BufferItem::setActivity(const ActivityLevel &level) {
+bool BufferItem::setActivity(const ActivityLevel &level) {
   _activity = level;
   emit dataChanged();
+  return true;
 }
 
 void BufferItem::updateActivity(const ActivityLevel &level) {
+  ActivityLevel oldActivity = _activity;
   _activity |= level;
-  emit dataChanged();
+  if(oldActivity != _activity)
+    emit dataChanged();
 }
 
 QVariant BufferItem::data(int column, int role) const {
@@ -115,7 +119,9 @@ QVariant BufferItem::data(int column, int role) const {
 bool BufferItem::setData(int column, const QVariant &value, int role) {
   switch(role) {
   case NetworkModel::BufferActivityRole:
-    setActivity((ActivityLevel)value.toInt());
+    return setActivity((ActivityLevel)value.toInt());
+  case NetworkModel::LastSeenRole:
+    return setLastSeen();
   default:
     return PropertyMapItem::setData(column, value, role);
   }
@@ -261,6 +267,21 @@ void BufferItem::userModeChanged(IrcUser *ircUser) {
   
   removeUserFromCategory(ircUser);
   addUserToCategory(ircUser);
+}
+
+void BufferItem::setLastMsgInsert(QDateTime msgDate) {
+  if(msgDate.isValid() && msgDate > _lastMsgInsert)
+    _lastMsgInsert = msgDate;
+}
+
+bool BufferItem::setLastSeen() {
+  _lastSeen = _lastMsgInsert;
+  BufferSettings(bufferInfo().bufferId()).setLastSeen(_lastSeen);
+  return true;
+}
+
+QDateTime BufferItem::lastSeen() {
+  return _lastSeen;
 }
 
 /*****************************************
@@ -701,6 +722,14 @@ void NetworkModel::bufferUpdated(BufferInfo bufferInfo) {
 }
 
 void NetworkModel::updateBufferActivity(const Message &msg) {
+  BufferItem *buff = bufferItem(msg.bufferInfo());
+  Q_ASSERT(buff);
+
+  buff->setLastMsgInsert(msg.timestamp());
+
+  if(buff->lastSeen() >= msg.timestamp())
+    return;
+
   BufferItem::ActivityLevel level = BufferItem::OtherActivity;
   if(msg.type() == Message::Plain || msg.type() == Message::Notice)
     level |= BufferItem::NewMessage;
@@ -708,7 +737,7 @@ void NetworkModel::updateBufferActivity(const Message &msg) {
   const Network *net = Client::network(msg.bufferInfo().networkId());
   if(net && msg.text().contains(net->myNick()))
     level |= BufferItem::Highlight;
-  
+
   bufferItem(msg.bufferInfo())->updateActivity(level);
 }
 
