@@ -94,7 +94,10 @@ class MainWin : public QMainWindow {
 
     void enableMenus();
 
-    QHash<int, QModelIndex> _keyboardJump;
+    void bindKey(int key);
+    void jumpKey(int key);
+
+    QHash<int, BufferId> _keyboardJump;
     QSystemTrayIcon *systray;
 
     CoreConnectDlg *coreConnectDlg;

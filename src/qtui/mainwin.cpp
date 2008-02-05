@@ -66,7 +66,7 @@ void MainWin::init() {
   connect(Client::instance(), SIGNAL(networkCreated(NetworkId)), this, SLOT(clientNetworkCreated(NetworkId)));
   connect(Client::instance(), SIGNAL(networkRemoved(NetworkId)), this, SLOT(clientNetworkRemoved(NetworkId)));
   ui.bufferWidget->init();
-
+  
   show();
 
   statusBar()->showMessage(tr("Not connected to core."));
@@ -420,28 +420,51 @@ void MainWin::keyPressEvent(QKeyEvent *event) {
   int jumpModifier = Qt::AltModifier;
 #endif
 
-  if(Qt::Key_0 <= event->key() && event->key() <= Qt::Key_9) {
-    if(event->modifiers() ==  bindModifier) {
-      QModelIndex bufferIdx = Client::bufferModel()->standardSelectionModel()->currentIndex();
-      NetworkId netId = bufferIdx.data(NetworkModel::NetworkIdRole).value<NetworkId>();
-      const Network *net = Client::network(netId);
-      if(!net)
-	return;
-      QString bufferName = bufferIdx.sibling(bufferIdx.row(), 0).data().toString();
-
-      _keyboardJump[event->key()] = bufferIdx;
-      statusBar()->showMessage(tr("Bound Buffer %1::%2 to Key %3").arg(net->networkName()).arg(bufferName).arg(event->key() - Qt::Key_0), 10000);
-      event->accept();
-    }
-    
-    else if(event->modifiers() == jumpModifier && _keyboardJump.contains(event->key())) {
-      Client::bufferModel()->standardSelectionModel()->setCurrentIndex(_keyboardJump[event->key()], QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
-      event->accept();
-    }
-    
-    else {
-      event->ignore();
-    }
+  if(event->modifiers() ==  bindModifier) {
+    event->accept();
+    return bindKey(event->key());
   }
+  
+  if(event->modifiers() == jumpModifier) {
+    event->accept();
+    return jumpKey(event->key());
+  }
+  
   event->ignore();
+}
+
+void MainWin::bindKey(int key) {
+  if(key < Qt::Key_0 || Qt::Key_9 < key)
+    return;
+  
+  QModelIndex bufferIdx = Client::bufferModel()->standardSelectionModel()->currentIndex();
+  NetworkId netId = bufferIdx.data(NetworkModel::NetworkIdRole).value<NetworkId>();
+  const Network *net = Client::network(netId);
+  if(!net)
+    return;
+  
+  QString bufferName = bufferIdx.sibling(bufferIdx.row(), 0).data().toString();
+  BufferId bufferId = bufferIdx.data(NetworkModel::BufferIdRole).value<BufferId>();
+  
+  _keyboardJump[key] = bufferId;
+  CoreAccountSettings().setJumpKeyMap(_keyboardJump);
+  statusBar()->showMessage(tr("Bound Buffer %1::%2 to Key %3").arg(net->networkName()).arg(bufferName).arg(key - Qt::Key_0), 10000);
+}
+
+void MainWin::jumpKey(int key) {
+  if(key < Qt::Key_0 || Qt::Key_9 < key)
+    return;
+
+  if(_keyboardJump.isEmpty())
+    _keyboardJump = CoreAccountSettings().jumpKeyMap();
+
+  if(!_keyboardJump.contains(key))
+    return;
+
+  QModelIndex source_bufferIdx = Client::networkModel()->bufferIndex(_keyboardJump[key]);
+  QModelIndex bufferIdx = Client::bufferModel()->mapFromSource(source_bufferIdx);
+
+  if(bufferIdx.isValid())
+    Client::bufferModel()->standardSelectionModel()->setCurrentIndex(bufferIdx, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+  
 }

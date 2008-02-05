@@ -57,6 +57,9 @@ class CoreAccountSettings : public ClientSettings {
     QVariantMap retrieveAccountData(AccountId);
     void removeAccount(AccountId);
 
+    void setJumpKeyMap(const QHash<int, BufferId> &keyMap);
+    QHash<int, BufferId> jumpKeyMap();
+
   protected:
     void setAccountValue(const QString &key, const QVariant &data);
     QVariant accountValue(const QString &key, const QVariant &def = QVariant());

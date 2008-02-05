@@ -285,6 +285,9 @@ void BufferItem::setLastMsgInsert(QDateTime msgDate) {
 }
 
 bool BufferItem::setLastSeen() {
+  if(_lastSeen > _lastMsgInsert)
+    return false;
+  
   _lastSeen = _lastMsgInsert;
   BufferSettings(bufferInfo().bufferId()).setLastSeen(_lastSeen);
   return true;
