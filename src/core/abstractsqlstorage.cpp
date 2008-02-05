@@ -180,7 +180,7 @@ QStringList AbstractSqlStorage::upgradeQueries(int version) {
   QStringList queries;
   QDir dir = QDir(QString(":/SQL/%1/%2/").arg(engineName()).arg(version));
   foreach(QFileInfo fileInfo, dir.entryInfoList(QStringList() << "upgrade*", QDir::NoFilter, QDir::Name)) {
-    queries << queryString(fileInfo.baseName());
+    queries << queryString(fileInfo.baseName(), version);
   }
   return queries;
 }
