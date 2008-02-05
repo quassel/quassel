@@ -90,7 +90,7 @@ int SignalRelay::qt_metacall(QMetaObject::Call _c, int _id, void **_a) {
       }
       QMultiHash<int, QByteArray>::const_iterator funcIter = sigNames.constFind(_id);
       while(funcIter != sigNames.constEnd() && funcIter.key() == _id) {
-        proxy->dispatchSignal((int)SignalProxy::RpcCall, QVariantList() << funcIter.value() << params);
+        proxy->dispatchSignal(SignalProxy::RpcCall, QVariantList() << funcIter.value() << params);
         funcIter++;
       }
       
@@ -106,7 +106,7 @@ int SignalRelay::qt_metacall(QMetaObject::Call _c, int _id, void **_a) {
 	params.prepend(signature);
 	params.prepend(caller->objectName());
 	params.prepend(caller->metaObject()->className());
-	proxy->dispatchSignal((int)SignalProxy::Sync, params);
+	proxy->dispatchSignal(SignalProxy::Sync, params);
       }
     }
     _id -= QObject::staticMetaObject.methodCount();
@@ -279,8 +279,8 @@ void SignalProxy::objectRenamed(QString oldname, QString newname) {
     return;
   
   QVariantList params;
-  params << className << oldname << newname;
-  dispatchSignal("__objectRenamed__", params);
+  params << "__objectRenamed__" << className << oldname << newname;
+  dispatchSignal(RpcCall, params);
 }
 
 void SignalProxy::objectRenamed(QByteArray classname, QString oldname, QString newname) {
@@ -523,7 +523,7 @@ void SignalProxy::requestInit(SyncableObject *obj) {
   QVariantList params;
   params << obj->metaObject()->className()
 	 << obj->objectName();
-  dispatchSignal((int)InitRequest, params);
+  dispatchSignal(InitRequest, params);
 }
 
 void SignalProxy::detachSender() {
@@ -568,17 +568,17 @@ void SignalProxy::stopSync(SyncableObject* obj) {
   }
 }
 
-void SignalProxy::dispatchSignal(QIODevice *receiver, const QVariant &identifier, const QVariantList &params) {
+void SignalProxy::dispatchSignal(QIODevice *receiver, const RequestType &requestType, const QVariantList &params) {
   QVariantList packedFunc;
-  packedFunc << identifier;
+  packedFunc << (qint16)requestType;
   packedFunc << params;
   writeDataToDevice(receiver, QVariant(packedFunc));
 }
 
-void SignalProxy::dispatchSignal(const QVariant &identifier, const QVariantList &params) {
+void SignalProxy::dispatchSignal(const RequestType &requestType, const QVariantList &params) {
   // yes I know we have a little code duplication here... it's for the sake of performance
   QVariantList packedFunc;
-  packedFunc << identifier;
+  packedFunc << (qint16)requestType;
   packedFunc << params;
   foreach(QIODevice* dev, _peerByteCount.keys())
     writeDataToDevice(dev, QVariant(packedFunc));
@@ -606,7 +606,7 @@ void SignalProxy::receivePeerSignal(QIODevice *sender, const QVariant &packedFun
   case HeartBeat:
     return;
   default:
-    qWarning() << "SignalProxy::receivePeerSignal(): received undefined CallType" << callType;
+    qWarning() << "SignalProxy::receivePeerSignal(): received undefined CallType" << callType << params;
     return;
   }
 }
@@ -671,7 +671,7 @@ void SignalProxy::handleInitRequest(QIODevice *sender, const QVariantList &param
 	  << obj->objectName()
 	  << initData(obj);
 
-  dispatchSignal(sender, (int)InitData, params_);
+  dispatchSignal(sender, InitData, params_);
 }
 
 void SignalProxy::handleInitData(QIODevice *sender, const QVariantList &params) {
@@ -845,7 +845,7 @@ void SignalProxy::setInitData(SyncableObject *obj, const QVariantMap &properties
 }
 
 void SignalProxy::sendHeartBeat() {
-  dispatchSignal((int)SignalProxy::HeartBeat, QVariantList());
+  dispatchSignal(SignalProxy::HeartBeat, QVariantList());
 }
 
 void SignalProxy::dumpProxyStats() {

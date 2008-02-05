@@ -136,8 +136,8 @@ private:
 
   bool methodsMatch(const QMetaMethod &signal, const QMetaMethod &slot) const;
 
-  void dispatchSignal(QIODevice *receiver, const QVariant &identifier, const QVariantList &params);
-  void dispatchSignal(const QVariant &identifier, const QVariantList &params);
+  void dispatchSignal(QIODevice *receiver, const RequestType &requestType, const QVariantList &params);
+  void dispatchSignal(const RequestType &requestType, const QVariantList &params);
   
   void receivePeerSignal(QIODevice *sender, const QVariant &packedFunc);
   void handleSync(QVariantList params);
