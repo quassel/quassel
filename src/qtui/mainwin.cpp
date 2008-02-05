@@ -254,6 +254,7 @@ void MainWin::setupSystray() {
   systrayMenu->addAction(ui.actionQuit);
 
   systray->setContextMenu(systrayMenu);
+  // systray->setContextMenuPolicy();
 
   systray->show();
   connect(systray, SIGNAL(activated( QSystemTrayIcon::ActivationReason )),
@@ -324,10 +325,20 @@ void MainWin::closeEvent(QCloseEvent *event)
 
 void MainWin::systrayActivated( QSystemTrayIcon::ActivationReason activationReason) {
   if (activationReason == QSystemTrayIcon::Trigger) {
-    if (isHidden())
+    if(isHidden()) {
       show();
-    else
+      if(isMinimized()) {
+        if(isMaximized()) {
+          showMaximized();
+        } else {
+          showNormal();
+        }
+      }
+      raise();
+      activateWindow();
+    } else {
       hide();
+    }
   }
 }
 

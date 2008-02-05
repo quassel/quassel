@@ -380,9 +380,22 @@ void Client::networkDestroyed() {
 }
 
 void Client::recvMessage(const Message &msg) {
-  Buffer *b = buffer(msg.bufferInfo());
-  b->appendMsg(msg);
-  networkModel()->updateBufferActivity(msg);
+  if(msg.type() == Message::Error) {
+    Buffer *b = buffer(msg.bufferInfo().bufferId());
+    if(b) {
+      b->appendMsg(msg);
+      networkModel()->updateBufferActivity(msg);
+    } else {
+      //TODO: display message in the status buffer
+      b = buffer(msg.bufferInfo());
+      b->appendMsg(msg);
+      networkModel()->updateBufferActivity(msg);
+    }
+  } else {
+    Buffer *b = buffer(msg.bufferInfo());
+    b->appendMsg(msg);
+    networkModel()->updateBufferActivity(msg);
+  }
 
   if(msg.type() == Message::Plain || msg.type() == Message::Notice || msg.type() == Message::Action) {
     const Network *net = network(msg.bufferInfo().networkId());
