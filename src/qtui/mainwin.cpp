@@ -245,7 +245,7 @@ void MainWin::setupSystray() {
   QString toolTip("left click to minimize the quassel client to tray");
   systray->setToolTip(toolTip);
 
-  QMenu *systrayMenu = new QMenu(this);
+  systrayMenu = new QMenu(this);
   systrayMenu->addAction(ui.actionAboutQuassel);
   systrayMenu->addSeparator();
   systrayMenu->addAction(ui.actionConnectCore);
@@ -253,8 +253,7 @@ void MainWin::setupSystray() {
   systrayMenu->addSeparator();
   systrayMenu->addAction(ui.actionQuit);
 
-  systray->setContextMenu(systrayMenu);
-  // systray->setContextMenuPolicy();
+//   systray->setContextMenu(systrayMenu);
 
   systray->show();
   connect(systray, SIGNAL(activated( QSystemTrayIcon::ActivationReason )),
@@ -339,6 +338,9 @@ void MainWin::systrayActivated( QSystemTrayIcon::ActivationReason activationReas
     } else {
       hide();
     }
+  }
+  else {
+    systrayMenu->popup(QCursor::pos());
   }
 }
 

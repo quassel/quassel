@@ -155,11 +155,16 @@ void IrcServerHandler::defaultHandler(QString cmd, QString prefix, QList<QByteAr
         emit displayMsg(Message::Error, "", params.join(" "), prefix);
         break;
       // Server error messages, display them in red. First param will be appended.
-      case 401: case 402: case 403: case 404: case 406: case 408: case 415: case 421: case 442:
+      case 401: 
       { QString channelName = params.takeFirst();
-      emit displayMsg(Message::Error, "", params.join(" ") + " " + channelName, prefix);
-      emit displayMsg(Message::Error, channelName, params.join(" ") + " " + channelName, prefix);
-      break;
+        emit displayMsg(Message::Error, "", params.join(" ") + " " + channelName, prefix);
+        emit displayMsg(Message::Error, channelName, params.join(" ") + " " + channelName, prefix);
+        break;
+      }
+      case 402: case 403: case 404: case 406: case 408: case 415: case 421: case 442:
+      { QString channelName = params.takeFirst();
+        emit displayMsg(Message::Error, "", params.join(" ") + " " + channelName, prefix);
+        break;
       }
       // Server error messages which will be displayed with a colon between the first param and the rest
       case 413: case 414: case 423: case 441: case 444: case 461:

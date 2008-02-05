@@ -82,6 +82,8 @@ class MainWin : public QMainWindow {
     Ui::MainWin ui;
     QtUi *gui;
 
+    QMenu *systrayMenu;
+
     void setupMenus();
     void setupViews();
     void setupNickWidget();
