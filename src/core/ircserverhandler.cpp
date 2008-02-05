@@ -321,7 +321,7 @@ void IrcServerHandler::handlePrivmsg(QString prefix, QList<QByteArray> params) {
 
   // are we the target?
   if(network()->isMyNick(target))
-    target = nickFromMask(target);
+    target = nickFromMask(ircuser->nick());
 
   // it's possible to pack multiple privmsgs into one param using ctcp
   // - > we let the ctcpHandler do the work
