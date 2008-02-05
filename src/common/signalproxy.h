@@ -28,6 +28,7 @@
 #include <QPair>
 #include <QString>
 #include <QByteArray>
+#include <QTimer>
 
 class SignalRelay;
 class SyncableObject;
@@ -43,9 +44,11 @@ public:
   };
 
   enum RequestType {
-    Sync = 0,
+    Sync = 1,
+    RpcCall,
     InitRequest,
-    InitData
+    InitData,
+    HeartBeat
   };
 
   SignalProxy(QObject *parent);
@@ -112,6 +115,7 @@ private slots:
   void removePeerBySender();
   void objectRenamed(QString oldname, QString newname);
   void objectRenamed(QByteArray classname, QString oldname, QString newname);
+  void sendHeartBeat();
 
 signals:
   void peerRemoved(QIODevice *obj);
@@ -170,6 +174,7 @@ private:
 
 
   ProxyMode _proxyMode;
+  QTimer _heartBeatTimer;
   
   friend class SignalRelay;
 };

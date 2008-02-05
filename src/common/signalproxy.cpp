@@ -90,7 +90,7 @@ int SignalRelay::qt_metacall(QMetaObject::Call _c, int _id, void **_a) {
       }
       QMultiHash<int, QByteArray>::const_iterator funcIter = sigNames.constFind(_id);
       while(funcIter != sigNames.constEnd() && funcIter.key() == _id) {
-        proxy->dispatchSignal(funcIter.value(), params);
+        proxy->dispatchSignal((int)SignalProxy::RpcCall, QVariantList() << funcIter.value() << params);
         funcIter++;
       }
       
@@ -221,10 +221,15 @@ SignalProxy::ProxyMode SignalProxy::proxyMode() const {
 }
 
 void SignalProxy::initServer() {
+  disconnect(&_heartBeatTimer, 0, this, 0);
+  _heartBeatTimer.stop();
 }
 
 void SignalProxy::initClient() {
   attachSlot("__objectRenamed__", this, SLOT(objectRenamed(QByteArray, QString, QString)));
+  connect(&_heartBeatTimer, SIGNAL(timeout()),
+	  this, SLOT(sendHeartBeat()));
+  _heartBeatTimer.start(60 * 1000); // msecs: one beep per minute
 }
 
 bool SignalProxy::addPeer(QIODevice* iodev) {
@@ -582,19 +587,26 @@ void SignalProxy::dispatchSignal(const QVariant &identifier, const QVariantList 
 void SignalProxy::receivePeerSignal(QIODevice *sender, const QVariant &packedFunc) {
   QVariantList params(packedFunc.toList());
 
-  QVariant call = params.takeFirst();
-  if(call.type() != QVariant::Int)
-    return handleSignal(call.toByteArray(), params);
+  int callType = params.takeFirst().value<int>();
 
-  switch(call.toInt()) {
+  switch(callType) {
+  case RpcCall:
+    if(params.empty()) {
+      qWarning() << "SignalProxy::receivePeerSignal(): received empty RPC-Call";
+      return;
+    } else {
+      return handleSignal(params.takeFirst().toByteArray(), params);
+    }
   case Sync:
     return handleSync(params);
   case InitRequest:
     return handleInitRequest(sender, params);
   case InitData:
     return handleInitData(sender, params);
+  case HeartBeat:
+    return;
   default:
-    qWarning() << "received undefined CallType" << call.toInt();
+    qWarning() << "SignalProxy::receivePeerSignal(): received undefined CallType" << callType;
     return;
   }
 }
@@ -830,6 +842,10 @@ void SignalProxy::setInitData(SyncableObject *obj, const QVariantMap &properties
   obj->fromVariantMap(properties);
   setInitialized(obj);
   invokeSlot(obj, updatedRemotelyId(obj));
+}
+
+void SignalProxy::sendHeartBeat() {
+  dispatchSignal((int)SignalProxy::HeartBeat, QVariantList());
 }
 
 void SignalProxy::dumpProxyStats() {
