@@ -138,7 +138,8 @@ public slots:
   void removeSupport(const QString &param);
 
   inline void addIrcUser(const QString &hostmask) { newIrcUser(hostmask); }
-  void removeIrcUser(QString nick);
+  void removeIrcUser(const QString &nick);
+  void removeIrcChannel(const QString &channel);
   
   //init geters
   QVariantMap initSupports() const;
@@ -166,6 +167,8 @@ public slots:
 private slots:
   void channelDestroyed();
   void removeIrcUser(IrcUser *ircuser);
+  void removeIrcChannel(IrcChannel *ircChannel);
+  void removeChansAndUsers();
   void ircUserInitDone();
   void ircChannelInitDone();
 
@@ -193,6 +196,7 @@ signals:
   void ircChannelAdded(IrcChannel *);
 
   void ircUserRemoved(const QString &nick);
+  void ircChannelRemoved(const QString &channel);
 
   // needed for client sync progress
   void ircUserRemoved(QObject *);

@@ -179,6 +179,13 @@ QString BufferItem::topic() const {
     return QString();
 }
 
+void BufferItem::ircUserDestroyed() {
+  // PRIVATE
+  IrcUser *ircUser = static_cast<IrcUser *>(sender());
+  removeUserFromCategory(ircUser);
+  emit dataChanged(2);
+}
+
 int BufferItem::nickCount() const {
   if(_ircChannel)
     return _ircChannel->ircUsers().count();
@@ -196,6 +203,8 @@ void BufferItem::join(IrcUser *ircUser) {
     return;
 
   addUserToCategory(ircUser);
+  connect(ircUser, SIGNAL(destroyed()),
+	  this, SLOT(ircUserDestroyed()));
   emit dataChanged(2);
 }
 
@@ -222,6 +231,7 @@ void BufferItem::part(IrcUser *ircUser) {
     return;
   }
 
+  disconnect(ircUser, 0, this, 0);
   removeUserFromCategory(ircUser);
   emit dataChanged(2);
 }
@@ -460,7 +470,8 @@ QVariant UserCategoryItem::data(int column, int role) const {
 *****************************************/
 IrcUserItem::IrcUserItem(IrcUser *ircUser, AbstractTreeItem *parent)
   : PropertyMapItem(QStringList() << "nickName", parent),
-    _ircUser(ircUser)
+    _ircUser(ircUser),
+    _id(qHash(ircUser))
 {
   // we don't need to handle the ircUser's destroyed signal since it's automatically removed
   // by the IrcChannel::ircUserParted();
@@ -488,7 +499,7 @@ IrcUser *IrcUserItem::ircUser() {
 }
 
 quint64 IrcUserItem::id() const {
-  return qHash((IrcUser *)_ircUser);
+  return _id;
 }
 
 QVariant IrcUserItem::data(int column, int role) const {

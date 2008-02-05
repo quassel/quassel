@@ -244,8 +244,8 @@ void IrcChannel::ircUserDestroyed() {
   IrcUser *ircUser = static_cast<IrcUser *>(sender());
   Q_ASSERT(ircUser);
   _userModes.remove(ircUser);
-  emit ircUserParted(ircUser);
-  //qDebug() << "DEST" << name() << ircUsers().count();
+  // no further propagation.
+  // this leads only to fuck ups.
 }
 
 void IrcChannel::ircUserNickSet(QString nick) {

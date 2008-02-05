@@ -326,12 +326,6 @@ void IrcServerHandler::handlePrivmsg(QString prefix, QList<QByteArray> params) {
   // it's possible to pack multiple privmsgs into one param using ctcp
   // - > we let the ctcpHandler do the work
   networkConnection->ctcpHandler()->parse(Message::Plain, prefix, target, userDecode(ircuser->nick(), params[1]));
-//   QStringList messages = 
-
-//   foreach(QString message, messages) {
-//     emit displayMsg(Message::Plain, target, message, prefix);
-//   }
-  
 }
 
 void IrcServerHandler::handleQuit(QString prefix, QList<QByteArray> params) {

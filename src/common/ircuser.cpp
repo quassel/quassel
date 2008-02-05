@@ -280,10 +280,8 @@ void IrcUser::partChannel(const QString &channelname) {
 void IrcUser::channelDestroyed() {
   // private slot!
   IrcChannel *channel = static_cast<IrcChannel*>(sender());
-  Q_ASSERT(channel);
   if(_channels.contains(channel)) {
     _channels.remove(channel);
-    disconnect(channel, 0, this, 0);
   }
 }
 

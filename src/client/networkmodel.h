@@ -101,6 +101,7 @@ public slots:
 					 
 private slots:
   void ircChannelDestroyed();
+  void ircUserDestroyed();
   
 private:
   BufferInfo _bufferInfo;
@@ -203,6 +204,7 @@ private slots:
 
 private:
   QPointer<IrcUser> _ircUser;
+  quint64 _id;
 };
 
 

@@ -241,7 +241,18 @@ void Network::removeIrcUser(IrcUser *ircuser) {
   ircuser->deleteLater();
 }
 
-void Network::removeIrcUser(QString nick) {
+void Network::removeChansAndUsers() {
+  QList<IrcUser *> users = ircUsers();
+  foreach(IrcUser *user, users) {
+    removeIrcUser(user);
+  }
+  QList<IrcChannel *> channels = ircChannels();
+  foreach(IrcChannel *channel, channels) {
+    removeIrcChannel(channel);
+  }
+}
+
+void Network::removeIrcUser(const QString &nick) {
   IrcUser *ircuser;
   if((ircuser = ircUser(nick)) != 0)
     removeIrcUser(ircuser);
@@ -367,6 +378,8 @@ void Network::setCurrentServer(const QString &currentServer) {
 
 void Network::setConnected(bool connected) {
   _connected = connected;
+  if(!connected)
+    removeChansAndUsers();
   emit connectedSet(connected);
 }
 
@@ -495,6 +508,24 @@ void Network::ircChannelInitDone() {
   IrcChannel *ircchannel = static_cast<IrcChannel *>(sender());
   Q_ASSERT(ircchannel);
   emit ircChannelInitDone(ircchannel);
+}
+
+void Network::removeIrcChannel(IrcChannel *channel) {
+  QString chanName = _ircChannels.key(channel);
+  if(chanName.isNull())
+    return;
+  
+  _ircChannels.remove(chanName);
+  disconnect(channel, 0, this, 0);
+  emit ircChannelRemoved(chanName);
+  emit ircChannelRemoved(channel);
+  channel->deleteLater();
+}
+
+void Network::removeIrcChannel(const QString &channel) {
+  IrcChannel *chan;
+  if((chan = ircChannel(channel)) != 0)
+    removeIrcChannel(chan);
 }
 
 void Network::channelDestroyed() {
