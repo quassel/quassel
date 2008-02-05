@@ -153,7 +153,7 @@ void UserInputHandler::handleMsg(QString bufname, QString msg) {
   params << msg.section(' ', 0, 0);
   params << msg.section(' ', 1);
 
-  emit putCmd("PRIVMSG", msg.split(' '));
+  emit putCmd("PRIVMSG", params);
 }
 
 void UserInputHandler::handleNick(QString bufname, QString msg) {
