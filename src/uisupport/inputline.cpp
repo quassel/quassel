@@ -42,7 +42,8 @@ InputLine::~InputLine() {
 }
 
 void InputLine::keyPressEvent(QKeyEvent * event) {
-  if(event->modifiers() == jumpModifier || event->modifiers() == bindModifier) {
+  if((event->modifiers() == jumpModifier || event->modifiers() == bindModifier) &&
+     (Qt::Key_0 <= event->key() && event->key() <= Qt::Key_9)) {
     event->ignore();
     return;
   }
