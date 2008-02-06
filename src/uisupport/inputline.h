@@ -28,32 +28,28 @@ class TabCompleter;
 class InputLine : public QLineEdit {
   Q_OBJECT
 
-  public:
-    InputLine(QWidget *parent = 0);
-    ~InputLine();
+public:
+  InputLine(QWidget *parent = 0);
+  ~InputLine();
     
-  protected:
-    virtual bool event(QEvent *);
-    virtual void keyPressEvent(QKeyEvent * event);
+protected:
+  //    virtual bool event(QEvent *);
+  virtual void keyPressEvent(QKeyEvent * event);
+					       
+private slots:
+  void on_returnPressed();
+  void on_textChanged(QString newText);
 
-  private slots:
-    void enter();
+signals:
+  void sendText(QString text);
+  
+private:
+  QStringList history;
+  qint32 idx;
+  TabCompleter *tabCompleter;
 
-  public slots:
-    void updateNickList(QStringList);
-    
-  signals:
-    void nickListUpdated(QStringList);
-    
-  private:
-    qint32 idx;
-    QStringList history;
-    QStringList nickList;
-
-    TabCompleter *tabComplete;
-
-    int bindModifier;
-    int jumpModifier;
+  int bindModifier;
+  int jumpModifier;
 };
 
 #endif

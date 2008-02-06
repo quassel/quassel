@@ -24,11 +24,10 @@
 
 InputLine::InputLine(QWidget *parent)
   : QLineEdit(parent),
-    idx(0)
+    idx(0),
+    tabCompleter(new TabCompleter(this))
 {
-  connect(this, SIGNAL(returnPressed()), this, SLOT(enter()));
-  tabComplete = new TabCompleter(this);
-
+  
 #ifdef Q_WS_MAC
   bindModifier = Qt::ControlModifier | Qt::AltModifier;
   jumpModifier = Qt::ControlModifier;
@@ -36,6 +35,10 @@ InputLine::InputLine(QWidget *parent)
   bindModifier = Qt::ControlModifier;
   jumpModifier = Qt::AltModifier;
 #endif
+
+  connect(this, SIGNAL(returnPressed()), this, SLOT(on_returnPressed()));
+  connect(this, SIGNAL(textChanged(QString)), this, SLOT(on_textChanged(QString)));
+
 }
 
 InputLine::~InputLine() {
@@ -49,10 +52,10 @@ void InputLine::keyPressEvent(QKeyEvent * event) {
   }
   
   if(event->key() == Qt::Key_Tab) { // Tabcomplete
-    tabComplete->complete();
+    tabCompleter->complete();
     event->accept();
   } else {
-    tabComplete->reset();
+    tabCompleter->reset();
     if(event->key() == Qt::Key_Up) {
       if(idx > 0) { idx--; setText(history[idx]); }
       event->accept();
@@ -70,20 +73,20 @@ void InputLine::keyPressEvent(QKeyEvent * event) {
   }
 }
 
-bool InputLine::event(QEvent *e) {
-  if(e->type() == QEvent::KeyPress) {
-    keyPressEvent(static_cast<QKeyEvent*>(e));
-    return true;
-  }
-  return QLineEdit::event(e);
-}
-
-void InputLine::enter() {
+void InputLine::on_returnPressed() {
   history << text();
   idx = history.count();
+  emit sendText(text());
+  clear();
 }
 
-void InputLine::updateNickList(QStringList l) {
-  nickList = l;
-  emit nickListUpdated(l);
+void InputLine::on_textChanged(QString newText) {
+  if(newText.contains('\n')) {
+    clear();
+    QString line = newText.section('\n', 0, 0);
+    QString remainder = newText.section('\n', 1);
+    insert(line);
+    emit returnPressed();
+    insert(remainder);
+  }
 }

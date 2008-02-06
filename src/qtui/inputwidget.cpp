@@ -30,7 +30,7 @@ InputWidget::InputWidget(QWidget *parent)
     _selectionModel(0)
 {
   ui.setupUi(this);
-  connect(ui.inputEdit, SIGNAL(returnPressed()), this, SLOT(enterPressed()));
+  connect(ui.inputEdit, SIGNAL(sendText(QString)), this, SLOT(sendText(QString)));
   connect(ui.ownNick, SIGNAL(activated(QString)), this, SLOT(changeNick(QString)));
   connect(this, SIGNAL(userInput(BufferInfo, QString)), Client::instance(), SIGNAL(sendInput(BufferInfo, QString)));
   setFocusProxy(ui.inputEdit);
@@ -144,12 +144,6 @@ void InputWidget::changeNick(const QString &newNick) const {
   emit userInput(currentBufferInfo, QString("/nick %1").arg(newNick));
 }
 
-void InputWidget::enterPressed() {
-  QStringList lines = ui.inputEdit->text().split('\n', QString::SkipEmptyParts);
-  foreach(QString msg, lines) {
-    if(msg.isEmpty()) continue;
-    emit userInput(currentBufferInfo, msg);
-  }
-  ui.inputEdit->clear();
+void InputWidget::sendText(QString text) {
+  emit userInput(currentBufferInfo, text);
 }
-

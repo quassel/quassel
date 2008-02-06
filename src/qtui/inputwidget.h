@@ -56,7 +56,7 @@ protected slots:
 //   virtual void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
 
 private slots:
-  void enterPressed();
+  void sendText(QString text);
   void changeNick(const QString &newNick) const;
 
   void setNetwork(const Network *network);
