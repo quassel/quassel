@@ -253,11 +253,13 @@ void MainWin::setupSystray() {
   systrayMenu->addSeparator();
   systrayMenu->addAction(ui.actionQuit);
 
-//   systray->setContextMenu(systrayMenu);
+  systray->setContextMenu(systrayMenu);
 
   systray->show();
+  #ifndef Q_WS_MAC
   connect(systray, SIGNAL(activated( QSystemTrayIcon::ActivationReason )),
           this, SLOT(systrayActivated( QSystemTrayIcon::ActivationReason )));
+  #endif
 }
 
 void MainWin::connectedToCore() {
@@ -338,9 +340,6 @@ void MainWin::systrayActivated( QSystemTrayIcon::ActivationReason activationReas
     } else {
       hide();
     }
-  }
-  else {
-    systrayMenu->popup(QCursor::pos());
   }
 }
 
