@@ -81,12 +81,30 @@ void InputLine::on_returnPressed() {
 }
 
 void InputLine::on_textChanged(QString newText) {
-  if(newText.contains('\n')) {
+  QStringList lineSeperators;
+  lineSeperators << QString("\r\n")
+		 << QString('\n')
+		 << QString('\r');
+  
+  QString lineSep;
+  foreach(QString seperator, lineSeperators) {
+    if(newText.contains(seperator)) {
+      lineSep = seperator;
+      break;
+    }
+  }
+
+  if(lineSep.isEmpty())
+    return;
+  
+  if(newText.contains(lineSep)) {
     clear();
-    QString line = newText.section('\n', 0, 0);
-    QString remainder = newText.section('\n', 1);
+    QString line = newText.section(lineSep, 0, 0);
+    QString remainder = newText.section(lineSep, 1);
     insert(line);
     emit returnPressed();
     insert(remainder);
   }
+  
 }
+
