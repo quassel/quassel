@@ -27,6 +27,8 @@ InputLine::InputLine(QWidget *parent)
     idx(0),
     tabCompleter(new TabCompleter(this))
 {
+
+  installEventFilter(tabCompleter);
   
 #ifdef Q_WS_MAC
   bindModifier = Qt::ControlModifier | Qt::AltModifier;
@@ -51,26 +53,21 @@ void InputLine::keyPressEvent(QKeyEvent * event) {
     return;
   }
   
-  if(event->key() == Qt::Key_Tab) { // Tabcomplete
-    tabCompleter->complete();
+  if(event->key() == Qt::Key_Up) {
+    if(idx > 0) { idx--; setText(history[idx]); }
     event->accept();
+  } else if(event->key() == Qt::Key_Down) {
+    if(idx < history.count()) idx++;
+    if(idx < history.count()) setText(history[idx]);
+    else setText("");
+    event->accept();
+  } else if(event->key() == Qt::Key_Select) {  // for Qtopia
+    emit returnPressed();
+    QLineEdit::keyPressEvent(event);
   } else {
-    tabCompleter->reset();
-    if(event->key() == Qt::Key_Up) {
-      if(idx > 0) { idx--; setText(history[idx]); }
-      event->accept();
-    } else if(event->key() == Qt::Key_Down) {
-      if(idx < history.count()) idx++;
-      if(idx < history.count()) setText(history[idx]);
-      else setText("");
-      event->accept();
-    } else if(event->key() == Qt::Key_Select) {  // for Qtopia
-      emit returnPressed();
-      QLineEdit::keyPressEvent(event);
-    } else {
-      QLineEdit::keyPressEvent(event);
-    }
+    QLineEdit::keyPressEvent(event);
   }
+
 }
 
 void InputLine::on_returnPressed() {

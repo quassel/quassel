@@ -37,6 +37,8 @@ public:
   void reset();
   void complete();
 
+  virtual bool eventFilter(QObject *obj, QEvent *event);
+
 private slots:
   void ircUserJoinedOrParted(IrcUser *ircUser);
   

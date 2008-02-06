@@ -118,3 +118,18 @@ void TabCompleter::reset() {
   enabled = false;
 }
 
+bool TabCompleter::eventFilter(QObject *obj, QEvent *event) {
+  if(obj != inputLine || event->type() != QEvent::KeyPress)
+    return QObject::eventFilter(obj, event);
+
+  QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+  
+  if(keyEvent->key() == Qt::Key_Tab) {
+    complete();
+    return true;
+  } else {
+    reset();
+    return false;
+  }
+}
+
