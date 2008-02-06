@@ -1,1 +1,1 @@
-INSERT INTO coreinfo (key, value) VALUES ('schemaversion', '1')
+INSERT INTO coreinfo (key, value) VALUES ('schemaversion', '3')
