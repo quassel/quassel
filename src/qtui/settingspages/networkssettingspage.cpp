@@ -549,7 +549,7 @@ ServerEditDlg::ServerEditDlg(const QVariant &_serverData, QWidget *parent) : QDi
     ui.password->setText(serverData["Password"].toString());
     ui.useSSL->setChecked(serverData["UseSSL"].toBool());
   } else {
-    ui.port->setValue(Global::defaultPort);
+    ui.port->setValue(6667);
   }
   on_host_textChanged();
 }
