@@ -170,7 +170,7 @@ void SettingsDlg::loadDefaults() {
   if(!currentPage()) return;
   int ret = QMessageBox::question(this, tr("Restore Defaults"), tr("Do you like to restore the default values for this page?"),
                                   QMessageBox::RestoreDefaults|QMessageBox::Cancel, QMessageBox::Cancel);
-  if(ret == QMessageBox::Yes) {
+  if(ret == QMessageBox::RestoreDefaults) {
     currentPage()->defaults();
   }
 }
