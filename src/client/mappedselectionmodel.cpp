@@ -93,17 +93,14 @@ void MappedSelectionModel::mappedSetCurrentIndex(const QModelIndex &index, QItem
   QModelIndex mappedIndex = mapFromSource(index);
   if(mappedIndex == currentIndex())
     return;
-
-  if(mappedIndex.isValid())
-    setCurrentIndex(mappedIndex, command);
-  else if(hasSelection())
-    setCurrentIndex(currentIndex(), QItemSelectionModel::Clear);
+  setCurrentIndex(mappedIndex, command);
 }
 
 
 void MappedSelectionModel::_currentChanged(const QModelIndex &current, const QModelIndex &previous) {
   Q_UNUSED(previous)
-  emit mappedCurrentChanged(mapToSource(current));
+  if(current.isValid())
+    emit mappedCurrentChanged(mapToSource(current));
 }
 
 void MappedSelectionModel::_selectionChanged(const QItemSelection &selected, const QItemSelection &deselected) {

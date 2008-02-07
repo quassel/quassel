@@ -34,6 +34,7 @@ TabCompleter::TabCompleter(InputLine *inputLine_)
     enabled(false),
     nickSuffix(": ")
 {
+  inputLine->installEventFilter(this);
 }
 
 void TabCompleter::buildCompletionList() {

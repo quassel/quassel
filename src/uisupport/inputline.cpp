@@ -27,8 +27,6 @@ InputLine::InputLine(QWidget *parent)
     idx(0),
     tabCompleter(new TabCompleter(this))
 {
-
-  installEventFilter(tabCompleter);
   
 #ifdef Q_WS_MAC
   bindModifier = Qt::ControlModifier | Qt::AltModifier;
