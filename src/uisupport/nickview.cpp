@@ -40,8 +40,10 @@ NickView::NickView(QWidget *parent)
 
   setContextMenuPolicy(Qt::CustomContextMenu);
 
-  connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), 
+  connect(this, SIGNAL(customContextMenuRequested(const QPoint&)),
           this, SLOT(showContextMenu(const QPoint&)));
+  connect(this, SIGNAL(activated( const QModelIndex& )),
+          this, SLOT(startQuery( const QModelIndex& )));
 }
 
 NickView::~NickView() {
@@ -67,10 +69,19 @@ void NickView::rowsInserted(const QModelIndex &index, int start, int end) {
   expandAll();  // FIXME We need to do this more intelligently. Maybe a pimped TreeView?
 }
 
+QString NickView::nickFromModelIndex(const QModelIndex & index) {
+  QString nick = index.sibling(index.row(), 0).data().toString();
+  return nick;
+}
+
+BufferInfo NickView::bufferInfoFromModelIndex(const QModelIndex & index) {
+  BufferInfo bufferInfo = index.data(NetworkModel::BufferInfoRole).value<BufferInfo>();
+  return bufferInfo;
+}
+
 void NickView::showContextMenu(const QPoint & pos ) {
   QModelIndex index = indexAt(pos);
-  QString username = index.sibling(index.row(), 0).data().toString();
-  BufferInfo bufferInfo = index.data(NetworkModel::BufferInfoRole).value<BufferInfo>();
+  QString nick = nickFromModelIndex(index);
 
   QMenu nickContextMenu(this);
 
@@ -81,14 +92,14 @@ void NickView::showContextMenu(const QPoint & pos ) {
   nickContextMenu.addSeparator();
 
   QMenu *modeMenu = nickContextMenu.addMenu(tr("Modes"));
-  QAction *opAction = modeMenu->addAction(tr("Op %1").arg(username));
-  QAction *deOpAction = modeMenu->addAction(tr("Deop %1").arg(username));
-  QAction *voiceAction = modeMenu->addAction(tr("Voice %1").arg(username));
-  QAction *deVoiceAction = modeMenu->addAction(tr("Devoice %1").arg(username));
+  QAction *opAction = modeMenu->addAction(tr("Op %1").arg(nick));
+  QAction *deOpAction = modeMenu->addAction(tr("Deop %1").arg(nick));
+  QAction *voiceAction = modeMenu->addAction(tr("Voice %1").arg(nick));
+  QAction *deVoiceAction = modeMenu->addAction(tr("Devoice %1").arg(nick));
 
   QMenu *kickBanMenu = nickContextMenu.addMenu(tr("Kick/Ban"));
-  QAction *kickAction = kickBanMenu->addAction(tr("Kick %1").arg(username));
-  QAction *kickBanAction = kickBanMenu->addAction(tr("Kickban %1").arg(username));
+  QAction *kickAction = kickBanMenu->addAction(tr("Kick %1").arg(nick));
+  QAction *kickBanAction = kickBanMenu->addAction(tr("Kickban %1").arg(nick));
   QAction *ignoreAction = nickContextMenu.addAction(tr("Ignore"));
   ignoreAction->setEnabled(false);
 
@@ -100,18 +111,30 @@ void NickView::showContextMenu(const QPoint & pos ) {
   QAction *sendFileAction = nickContextMenu.addAction(tr("Send file"));
   sendFileAction->setEnabled(false);
 
-  QAction *result = nickContextMenu.exec(QCursor::pos());
+  QAction *action = nickContextMenu.exec(QCursor::pos());
+  BufferInfo bufferInfo = bufferInfoFromModelIndex(index);
 
-  if(result == whoisAction)         { Client::instance()->userInput(bufferInfo, QString("/WHOIS %1 %1").arg(username)); }
-  else if(result == versionAction)  { Client::instance()->userInput(bufferInfo, QString("/CTCP %1 VERSION").arg(username)); }
-  else if(result == pingAction)     { Client::instance()->userInput(bufferInfo, QString("/CTCP %1 PING ").arg(username)); }
+  if(action == whoisAction)         { executeCommand(bufferInfo, QString("/WHOIS %1 %1").arg(nick)); }
+  else if(action == versionAction)  { executeCommand(bufferInfo, QString("/CTCP %1 VERSION").arg(nick)); }
+  else if(action == pingAction)     { executeCommand(bufferInfo, QString("/CTCP %1 PING ").arg(nick)); }
 
-  else if(result == opAction)       { Client::instance()->userInput(bufferInfo, "/OP " + username); }
-  else if(result == deOpAction)     { Client::instance()->userInput(bufferInfo, "/DEOP " + username); }
-  else if(result == voiceAction)    { Client::instance()->userInput(bufferInfo, "/VOICE " + username); }
-  else if(result == deVoiceAction)  { Client::instance()->userInput(bufferInfo, "/DEVOICE " + username); }
+  else if(action == opAction)       { executeCommand(bufferInfo, QString("/OP %1").arg(nick)); }
+  else if(action == deOpAction)     { executeCommand(bufferInfo, QString("/DEOP %1").arg(nick)); }
+  else if(action == voiceAction)    { executeCommand(bufferInfo, QString("/VOICE %1").arg(nick)); }
+  else if(action == deVoiceAction)  { executeCommand(bufferInfo, QString("/DEVOICE %1").arg(nick)); }
 
-  else if(result == kickAction)     { Client::instance()->userInput(bufferInfo, "/KICK " + username); }
-  else if(result == kickBanAction)  { Client::instance()->userInput(bufferInfo, "/KICKBAN " + username); }
-  else if(result == queryAction)    { Client::instance()->userInput(bufferInfo, "/QUERY " + username); }
+  else if(action == kickAction)     { executeCommand(bufferInfo, QString("/KICK %1").arg(nick)); }
+  else if(action == kickBanAction)  { executeCommand(bufferInfo, QString("/KICKBAN %1").arg(nick)); }
+  else if(action == queryAction)    { executeCommand(bufferInfo, QString("/QUERY %1").arg(nick)); }
+
+}
+
+void NickView::startQuery(const QModelIndex & index) {
+  QString nick = nickFromModelIndex(index);
+  BufferInfo bufferInfo = bufferInfoFromModelIndex(index);
+  executeCommand(bufferInfo, QString("/QUERY %1").arg(nick));
+}
+
+void NickView::executeCommand(const BufferInfo & bufferInfo, const QString & command) {
+  Client::instance()->userInput(bufferInfo, command);
 }

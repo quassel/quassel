@@ -45,7 +45,13 @@ class NickView : public QTreeView {
   public slots:
     void setModel(QAbstractItemModel *model);
     void init();
-    void showContextMenu(const QPoint & pos );
+    void showContextMenu(const QPoint & pos);
+    void startQuery(const QModelIndex & modelIndex);
+
+  private:
+    BufferInfo bufferInfoFromModelIndex(const QModelIndex & index);
+    QString nickFromModelIndex(const QModelIndex & index);
+    void executeCommand(const BufferInfo & bufferInfo, const QString & command);
 
 };
 
