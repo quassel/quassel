@@ -60,7 +60,7 @@ MainWin::MainWin(QtUi *_gui, QWidget *parent) : QMainWindow(parent), gui(_gui) {
 }
 
 void MainWin::init() {
-  UiSettings s;
+  QtUiSettings s;
   resize(s.value("MainWinSize").toSize());
 
   Client::signalProxy()->attachSignal(this, SIGNAL(requestBacklog(BufferInfo, QVariant, QVariant)));
