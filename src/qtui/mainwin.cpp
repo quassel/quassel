@@ -21,6 +21,7 @@
 
 #include "mainwin.h"
 
+#include "aboutdlg.h"
 #include "chatwidget.h"
 #include "bufferview.h"
 #include "chatline-old.h"
@@ -104,7 +105,8 @@ void MainWin::init() {
   ui.bufferWidget->setSelectionModel(Client::bufferModel()->standardSelectionModel());
 
 #ifdef SPUTDEV
-  showSettingsDlg();
+  //showSettingsDlg();
+  //showAboutDlg();
 #endif
 
 }
@@ -123,6 +125,7 @@ void MainWin::setupMenus() {
   //connect(ui.actionNetworkList, SIGNAL(triggered()), this, SLOT(showServerList()));
   connect(ui.actionSettingsDlg, SIGNAL(triggered()), this, SLOT(showSettingsDlg()));
   connect(ui.actionDebug_Console, SIGNAL(triggered()), this, SLOT(showDebugConsole()));
+  connect(ui.actionAboutQuassel, SIGNAL(triggered()), this, SLOT(showAboutDlg()));
   connect(ui.actionAboutQt, SIGNAL(triggered()), QApplication::instance(), SLOT(aboutQt()));
 
   actionEditNetworks = new QAction(QIcon(":/22x22/actions/configure"), tr("Edit &Networks..."), this);
@@ -333,6 +336,11 @@ void MainWin::showSettingsDlg() {
 
 void MainWin::showDebugConsole() {
   debugConsole->show();
+}
+
+void MainWin::showAboutDlg() {
+  AboutDlg dlg(this);
+  dlg.exec();
 }
 
 void MainWin::closeEvent(QCloseEvent *event) {

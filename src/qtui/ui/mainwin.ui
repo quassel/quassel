@@ -202,7 +202,7 @@
   </action>
   <action name="actionAboutQuassel" >
    <property name="enabled" >
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="icon" >
     <iconset resource="../../icons/icons.qrc" >:/icons/quassel-icon.png</iconset>

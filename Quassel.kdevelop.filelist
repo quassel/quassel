@@ -138,6 +138,8 @@ src/qtopia/ui/editcoreacctdlg.ui
 src/qtopia/ui/mainwidget.ui
 src/qtopia/ui/nicklistwidget.ui
 src/qtui
+src/qtui/aboutdlg.cpp
+src/qtui/aboutdlg.h
 src/qtui/bufferwidget.cpp
 src/qtui/bufferwidget.h
 src/qtui/chatitem.cpp
