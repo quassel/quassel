@@ -251,7 +251,7 @@ void BufferItem::removeUserFromCategory(IrcUser *ircUser) {
   }
 
   if(!success) {
-    qDebug() << "didn't find User:" << ircUser << (quint64)ircUser;
+    qDebug() << "didn't find User:" << ircUser << qHash(ircUser);
     qDebug() << "==== Childlist for Item:" << this << id() << bufferName() << "====";
     for(int i = 0; i < childCount(); i++) {
       categoryItem = qobject_cast<UserCategoryItem *>(child(i));
@@ -272,7 +272,7 @@ void BufferItem::userModeChanged(IrcUser *ircUser) {
 
   UserCategoryItem *categoryItem;
   int categoryId = UserCategoryItem::categoryFromModes(_ircChannel->userModes(ircUser));
-  if((categoryItem = qobject_cast<UserCategoryItem *>(childById(qHash(categoryId)))) && categoryItem->childById((quint64)(ircUser)))
+  if((categoryItem = qobject_cast<UserCategoryItem *>(childById(qHash(categoryId)))) && categoryItem->childById(qHash(ircUser)))
     return; // already in the right category;
   
   removeUserFromCategory(ircUser);
@@ -439,7 +439,7 @@ void UserCategoryItem::addUser(IrcUser *ircUser) {
 }
 
 bool UserCategoryItem::removeUser(IrcUser *ircUser) {
-  return removeChildById((quint64)ircUser);
+  return removeChildById(qHash(ircUser));
 }
 
 int UserCategoryItem::categoryFromModes(const QString &modes) {

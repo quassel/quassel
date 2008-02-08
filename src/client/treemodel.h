@@ -194,6 +194,9 @@ private slots:
   void debug_rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
   void debug_rowsInserted(const QModelIndex &parent, int start, int end);
   void debug_rowsRemoved(const QModelIndex &parent, int start, int end);
+
+private:
+  QHash<AbstractTreeItem *, QList<AbstractTreeItem *> > _childLists;
 };
 
 #endif
