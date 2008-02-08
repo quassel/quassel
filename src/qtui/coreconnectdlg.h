@@ -29,6 +29,7 @@
 #include "ui_coreaccounteditdlg.h"
 
 class ClientSyncer;
+class CoreConfigWizard;
 
 class CoreConnectDlg : public QDialog {
   Q_OBJECT
@@ -64,12 +65,18 @@ class CoreConnectDlg : public QDialog {
     /*** Phase Two: Login ***/
     void startLogin();
     void doLogin();
+    void doLogin(const QVariantMap &loginData);
     void loginFailed(const QString &);
+    void startCoreConfig(const QVariantList &backends);
+    void configWizardAccepted();
+    void configWizardRejected();
+    void on_launchCoreConfigWizard_clicked();
 
     void setLoginWidgetStates();
 
     /*** Phase Three: Sync ***/
     void startSync();
+    void syncFinished();
 
     void coreSessionProgress(quint32, quint32);
     void coreNetworksProgress(quint32, quint32);
@@ -86,7 +93,10 @@ class CoreConnectDlg : public QDialog {
 
     bool doingAutoConnect;
 
+    QVariantList storageBackends;
+
     ClientSyncer *clientSyncer;
+    CoreConfigWizard *wizard;
 };
 
 class CoreAccountEditDlg : public QDialog {

@@ -28,12 +28,17 @@ CoreSettings::CoreSettings(const QString group) : Settings(group, Global::coreAp
 CoreSettings::~CoreSettings() {
 }
 
-void CoreSettings::setDatabaseSettings(const QVariant &data) {
-  setLocalValue("DatabaseSettings", data);
+void CoreSettings::setStorageSettings(const QVariant &data) {
+  setLocalValue("StorageSettings", data);
 }
 
-QVariant CoreSettings::databaseSettings(const QVariant &def) {
-  return localValue("DatabaseSettings", def);
+QVariant CoreSettings::storageSettings(const QVariant &def) {
+  return localValue("StorageSettings", def);
+}
+
+// FIXME remove
+QVariant CoreSettings::oldDbSettings() {
+  return localValue("DatabaseSettings");
 }
 
 void CoreSettings::setPort(const uint &port) {

@@ -51,6 +51,9 @@ class ClientSyncer : public QObject {
     void loginFailed(const QString &error);
     void loginSuccess();
     void syncFinished();
+    void startCoreSetup(const QVariantList &);
+    void coreSetupSuccess();
+    void coreSetupFailed(const QString &error);
 
 
   public slots:
@@ -78,6 +81,8 @@ class ClientSyncer : public QObject {
 
     void syncToCore(const QVariantMap &sessionState);
     void sessionStateReceived(const QVariantMap &state);
+
+    void doCoreSetup(const QVariant &setupData);
 
   private:
     QPointer<QIODevice> socket;

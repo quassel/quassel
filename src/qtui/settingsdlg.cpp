@@ -113,7 +113,6 @@ void SettingsDlg::itemSelected() {
 
 void SettingsDlg::setButtonStates() {
   SettingsPage *sp = currentPage();
-  ui.buttonBox->button(QDialogButtonBox::Ok)->setEnabled(sp && sp->hasChanged());
   ui.buttonBox->button(QDialogButtonBox::Apply)->setEnabled(sp && sp->hasChanged());
   ui.buttonBox->button(QDialogButtonBox::Reset)->setEnabled(sp && sp->hasChanged());
   ui.buttonBox->button(QDialogButtonBox::RestoreDefaults)->setEnabled(sp && sp->hasDefaults());

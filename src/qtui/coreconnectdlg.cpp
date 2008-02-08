@@ -25,11 +25,13 @@
 
 #include "clientsettings.h"
 #include "clientsyncer.h"
+#include "coreconfigwizard.h"
 
 CoreConnectDlg::CoreConnectDlg(QWidget *parent, bool autoconnect) : QDialog(parent) {
   ui.setupUi(this);
 
   clientSyncer = new ClientSyncer(this);
+  wizard = 0;
 
   setAttribute(Qt::WA_DeleteOnClose);
 
@@ -62,11 +64,12 @@ CoreConnectDlg::CoreConnectDlg(QWidget *parent, bool autoconnect) : QDialog(pare
   connect(clientSyncer, SIGNAL(startLogin()), this, SLOT(startLogin()));
   connect(clientSyncer, SIGNAL(loginFailed(const QString &)), this, SLOT(loginFailed(const QString &)));
   connect(clientSyncer, SIGNAL(loginSuccess()), this, SLOT(startSync()));
+  connect(clientSyncer, SIGNAL(startCoreSetup(const QVariantList &)), this, SLOT(startCoreConfig(const QVariantList &)));
   connect(clientSyncer, SIGNAL(sessionProgress(quint32, quint32)), this, SLOT(coreSessionProgress(quint32, quint32)));
   connect(clientSyncer, SIGNAL(networksProgress(quint32, quint32)), this, SLOT(coreNetworksProgress(quint32, quint32)));
   connect(clientSyncer, SIGNAL(channelsProgress(quint32, quint32)), this, SLOT(coreChannelsProgress(quint32, quint32)));
   connect(clientSyncer, SIGNAL(ircUsersProgress(quint32, quint32)), this, SLOT(coreIrcUsersProgress(quint32, quint32)));
-  connect(clientSyncer, SIGNAL(syncFinished()), this, SLOT(accept()));
+  connect(clientSyncer, SIGNAL(syncFinished()), this, SLOT(syncFinished()));
 
   connect(ui.user, SIGNAL(textChanged(const QString &)), this, SLOT(setLoginWidgetStates()));
   connect(ui.password, SIGNAL(textChanged(const QString &)), this, SLOT(setLoginWidgetStates()));
@@ -283,18 +286,33 @@ void CoreConnectDlg::startLogin() {
 }
 
 void CoreConnectDlg::doLogin() {
+  QVariantMap loginData;
+  loginData["User"] = ui.user->text();
+  loginData["Password"] = ui.password->text();
+  loginData["RememberPasswd"] = ui.rememberPasswd->isChecked();
+  doLogin(loginData);
+}
+
+void CoreConnectDlg::doLogin(const QVariantMap &loginData) {
+  disconnect(ui.loginButtonBox, 0, this, 0);
+  connect(ui.loginButtonBox, SIGNAL(accepted()), this, SLOT(doLogin()));
+  connect(ui.loginButtonBox, SIGNAL(rejected()), this, SLOT(restartPhaseNull()));
+  ui.loginStack->setCurrentWidget(ui.loginCredentialsPage);
   ui.loginGroup->setTitle(tr("Logging in..."));
   ui.user->setDisabled(true);
   ui.password->setDisabled(true);
   ui.rememberPasswd->setDisabled(true);
   ui.loginButtonBox->button(QDialogButtonBox::Ok)->setDisabled(true);
-  accountData["User"] = ui.user->text();
-  accountData["RememberPasswd"] = ui.rememberPasswd->isChecked();
-  if(ui.rememberPasswd->isChecked()) accountData["Password"] = ui.password->text();
+  accountData["User"] = loginData["User"];
+  accountData["RememberPasswd"] = loginData["RememberPasswd"];
+  if(loginData["RememberPasswd"].toBool()) accountData["Password"] = loginData["Password"];
   else accountData.remove("Password");
+  ui.user->setText(loginData["User"].toString());
+  ui.password->setText(loginData["Password"].toString());
+  ui.rememberPasswd->setChecked(loginData["RememberPasswd"].toBool());
   CoreAccountSettings s;
   s.storeAccountData(account, accountData);
-  clientSyncer->loginToCore(ui.user->text(), ui.password->text());
+  clientSyncer->loginToCore(loginData["User"].toString(), loginData["Password"].toString());
 }
 
 void CoreConnectDlg::setLoginWidgetStates() {
@@ -302,6 +320,10 @@ void CoreConnectDlg::setLoginWidgetStates() {
 }
 
 void CoreConnectDlg::loginFailed(const QString &error) {
+  if(wizard) {
+    wizard->reject();
+  }
+  ui.loginStack->setCurrentWidget(ui.loginCredentialsPage);
   ui.loginGroup->setTitle(tr("Login"));
   ui.user->setEnabled(true);
   ui.password->setEnabled(true);
@@ -311,6 +333,42 @@ void CoreConnectDlg::loginFailed(const QString &error) {
   ui.password->setFocus();
   doingAutoConnect = false;
 }
+
+void CoreConnectDlg::startCoreConfig(const QVariantList &backends) {
+  storageBackends = backends;
+  ui.loginStack->setCurrentWidget(ui.coreConfigPage);
+
+  //on_launchCoreConfigWizard_clicked();
+
+}
+
+void CoreConnectDlg::on_launchCoreConfigWizard_clicked() {
+  Q_ASSERT(!wizard);
+  wizard = new CoreConfigWizard(storageBackends, this);
+  connect(wizard, SIGNAL(setupCore(const QVariant &)), clientSyncer, SLOT(doCoreSetup(const QVariant &)));
+  connect(wizard, SIGNAL(loginToCore(const QVariantMap &)), this, SLOT(doLogin(const QVariantMap &)));
+  connect(clientSyncer, SIGNAL(coreSetupSuccess()), wizard, SLOT(coreSetupSuccess()));
+  connect(clientSyncer, SIGNAL(coreSetupFailed(const QString &)), wizard, SLOT(coreSetupFailed(const QString &)));
+  connect(wizard, SIGNAL(accepted()), this, SLOT(configWizardAccepted()));
+  connect(wizard, SIGNAL(rejected()), this, SLOT(configWizardRejected()));
+  connect(clientSyncer, SIGNAL(loginSuccess()), wizard, SLOT(loginSuccess()));
+  connect(clientSyncer, SIGNAL(syncFinished()), wizard, SLOT(syncFinished()));
+  wizard->show();
+}
+
+void CoreConnectDlg::configWizardAccepted() {
+
+  wizard->deleteLater();
+  wizard = 0;
+}
+
+void CoreConnectDlg::configWizardRejected() {
+
+  wizard->deleteLater();
+  wizard = 0;
+  //exit(1); // FIXME
+}
+
 
 /************************************************************
  * Phase Three: Syncing
@@ -334,7 +392,6 @@ void CoreConnectDlg::startSync() {
   ui.rememberPasswd->setEnabled(true);
   ui.loginButtonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
 }
-
 
 void CoreConnectDlg::coreSessionProgress(quint32 val, quint32 max) {
   ui.sessionProgress->setRange(0, max);
@@ -376,6 +433,15 @@ void CoreConnectDlg::coreIrcUsersProgress(quint32 val, quint32 max) {
     ui.ircUsersProgress->setFormat("%v/%m");
     ui.ircUsersProgress->setRange(0, max);
     ui.ircUsersProgress->setValue(val);
+  }
+}
+
+void CoreConnectDlg::syncFinished() {
+  if(!wizard) accept();
+  else {
+    hide();
+    disconnect(wizard, 0, this, 0);
+    connect(wizard, SIGNAL(finished(int)), this, SLOT(accept()));
   }
 }
 

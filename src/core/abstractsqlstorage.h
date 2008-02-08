@@ -34,10 +34,6 @@ public:
   AbstractSqlStorage(QObject *parent = 0);
   virtual ~AbstractSqlStorage();
 
-  //! Returns the name of the storage backend engine
-  /** \return A virtual equivalent of displayName() */
-  virtual QString engineName() { return ""; }
-  
 protected:
   bool init(const QVariantMap &settings = QVariantMap());
   virtual void sync();

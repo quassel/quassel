@@ -59,6 +59,10 @@ void ClientSyncer::coreHasData() {
       emit connectionError(msg["Error"].toString());
       disconnectFromCore();
       return;
+    } else if(msg["MsgType"] == "CoreSetupAck") {
+      emit coreSetupSuccess();
+    } else if(msg["MsgType"] == "CoreSetupReject") {
+      emit coreSetupFailed(msg["Error"].toString());
     } else if(msg["MsgType"] == "ClientLoginReject") {
       emit loginFailed(msg["Error"].toString());
     } else if(msg["MsgType"] == "ClientLoginAck") {
@@ -173,9 +177,19 @@ void ClientSyncer::clientInitAck(const QVariantMap &msg) {
     return;
   }
   emit connectionMsg(msg["CoreInfo"].toString());
-  if(msg["LoginEnabled"].toBool()) {
+  if(!msg["Configured"].toBool()) {
+    // start wizard
+    emit startCoreSetup(msg["StorageBackends"].toList());
+  } else if(msg["LoginEnabled"].toBool()) {
     emit startLogin();
   }
+}
+
+void ClientSyncer::doCoreSetup(const QVariant &setupData) {
+  QVariantMap setup;
+  setup["MsgType"] = "CoreSetupData";
+  setup["SetupData"] = setupData;
+  SignalProxy::writeDataToDevice(socket, setup);
 }
 
 void ClientSyncer::loginToCore(const QString &user, const QString &passwd) {

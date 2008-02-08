@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>511</width>
-    <height>389</height>
+    <width>493</width>
+    <height>331</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -21,7 +21,7 @@
      <item>
       <widget class="QStackedWidget" name="stackedWidget" >
        <property name="currentIndex" >
-        <number>2</number>
+        <number>1</number>
        </property>
        <widget class="QWidget" name="accountPage" >
         <layout class="QVBoxLayout" >
@@ -46,7 +46,7 @@
                  <string>Edit...</string>
                 </property>
                 <property name="icon" >
-                 <iconset resource="../../icons/icons.qrc" >:/16x16/actions/oxygen/16x16/actions/configure.png</iconset>
+                 <iconset/>
                 </property>
                </widget>
               </item>
@@ -257,6 +257,95 @@
                      </widget>
                     </item>
                    </layout>
+                  </item>
+                 </layout>
+                </widget>
+                <widget class="QWidget" name="coreConfigPage" >
+                 <layout class="QVBoxLayout" >
+                  <item>
+                   <spacer>
+                    <property name="orientation" >
+                     <enum>Qt::Vertical</enum>
+                    </property>
+                    <property name="sizeHint" >
+                     <size>
+                      <width>20</width>
+                      <height>71</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                  <item>
+                   <widget class="QGroupBox" name="groupBox_4" >
+                    <property name="title" >
+                     <string>Configure your Quassel Core</string>
+                    </property>
+                    <layout class="QVBoxLayout" >
+                     <item>
+                      <widget class="QLabel" name="label_7" >
+                       <property name="text" >
+                        <string>The Quassel Core you are connected to is not configured yet. You may now launch a configuration wizard that helps you setting up your Core.</string>
+                       </property>
+                       <property name="alignment" >
+                        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+                       </property>
+                       <property name="wordWrap" >
+                        <bool>true</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <spacer>
+                       <property name="orientation" >
+                        <enum>Qt::Vertical</enum>
+                       </property>
+                       <property name="sizeHint" >
+                        <size>
+                         <width>20</width>
+                         <height>40</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                     <item>
+                      <layout class="QHBoxLayout" >
+                       <item>
+                        <spacer>
+                         <property name="orientation" >
+                          <enum>Qt::Horizontal</enum>
+                         </property>
+                         <property name="sizeHint" >
+                          <size>
+                           <width>40</width>
+                           <height>20</height>
+                          </size>
+                         </property>
+                        </spacer>
+                       </item>
+                       <item>
+                        <widget class="QPushButton" name="launchCoreConfigWizard" >
+                         <property name="text" >
+                          <string>Launch Wizard</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <spacer>
+                         <property name="orientation" >
+                          <enum>Qt::Horizontal</enum>
+                         </property>
+                         <property name="sizeHint" >
+                          <size>
+                           <width>40</width>
+                           <height>20</height>
+                          </size>
+                         </property>
+                        </spacer>
+                       </item>
+                      </layout>
+                     </item>
+                    </layout>
+                   </widget>
                   </item>
                  </layout>
                 </widget>

@@ -154,12 +154,12 @@ src/qtui/chatwidget.cpp
 src/qtui/chatwidget.h
 src/qtui/configwizard.cpp
 src/qtui/configwizard.h
+src/qtui/coreconfigwizard.cpp
+src/qtui/coreconfigwizard.h
 src/qtui/coreconnectdlg.cpp
 src/qtui/coreconnectdlg.h
 src/qtui/debugconsole.cpp
 src/qtui/debugconsole.h
-src/qtui/guisettings.cpp
-src/qtui/guisettings.h
 src/qtui/inputwidget.cpp
 src/qtui/inputwidget.h
 src/qtui/mainwin.cpp

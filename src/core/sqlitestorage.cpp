@@ -33,17 +33,19 @@ SqliteStorage::SqliteStorage(QObject *parent)
 SqliteStorage::~SqliteStorage() {
 }
 
-bool SqliteStorage::isAvailable() {
+bool SqliteStorage::isAvailable() const {
   if(!QSqlDatabase::isDriverAvailable("QSQLITE")) return false;
   return true;
 }
 
-QString SqliteStorage::displayName() {
+QString SqliteStorage::displayName() const {
   return QString("SQLite");
 }
 
-QString SqliteStorage::engineName() {
-  return SqliteStorage::displayName();
+QString SqliteStorage::description() const {
+  return tr("SQLite is a file-based database engine that does not require any setup. It is suitable for small and medium-sized "
+            "databases that do not require access via network. Use SQLite if your Quassel Core should store its data on the same machine "
+            "it is running on, and if you only expect a few users to use your core.");
 }
 
 int SqliteStorage::installedSchemaVersion() {

@@ -26,7 +26,7 @@
 class UiSettings : public ClientSettings {
 
   public:
-    UiSettings(const QString &group = "UI");
+    UiSettings(const QString &group = "Ui");
 
     void setValue(const QString &key, const QVariant &data);
     QVariant value(const QString &key, const QVariant &def = QVariant());

@@ -28,7 +28,7 @@
 #include "buffermodel.h"
 #include "bufferinfo.h"
 #include "identity.h"
-#include "network.h";
+#include "network.h"
 
 class InputWidget : public QWidget {
   Q_OBJECT

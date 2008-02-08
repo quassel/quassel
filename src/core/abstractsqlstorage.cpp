@@ -50,7 +50,7 @@ QSqlDatabase AbstractSqlStorage::logDb() {
     return db;
 
   if(!openDb()) {
-    qWarning() << "Unable to Open Database" << engineName();
+    qWarning() << "Unable to Open Database" << displayName();
     qWarning() << " -" << db.lastError().text();
   }
 
@@ -116,9 +116,9 @@ QString AbstractSqlStorage::queryString(const QString &queryName, int version) {
   if(version == 0)
     version = schemaVersion();
     
-  QFileInfo queryInfo(QString(":/SQL/%1/%2/%3.sql").arg(engineName()).arg(version).arg(queryName));
+  QFileInfo queryInfo(QString(":/SQL/%1/%2/%3.sql").arg(displayName()).arg(version).arg(queryName));
   if(!queryInfo.exists() || !queryInfo.isFile() || !queryInfo.isReadable()) {
-    qWarning() << "Unable to read SQL-Query" << queryName << "for Engine" << engineName();
+    qWarning() << "Unable to read SQL-Query" << queryName << "for engine" << displayName();
     return QString();
   }
 
@@ -151,7 +151,7 @@ QSqlQuery *AbstractSqlStorage::cachedQuery(const QString &queryName) {
 
 QStringList AbstractSqlStorage::setupQueries() {
   QStringList queries;
-  QDir dir = QDir(QString(":/SQL/%1/%2/").arg(engineName()).arg(schemaVersion()));
+  QDir dir = QDir(QString(":/SQL/%1/%2/").arg(displayName()).arg(schemaVersion()));
   foreach(QFileInfo fileInfo, dir.entryInfoList(QStringList() << "setup*", QDir::NoFilter, QDir::Name)) {
     queries << queryString(fileInfo.baseName());
   }
@@ -178,7 +178,7 @@ bool AbstractSqlStorage::setup(const QVariantMap &settings) {
 
 QStringList AbstractSqlStorage::upgradeQueries(int version) {
   QStringList queries;
-  QDir dir = QDir(QString(":/SQL/%1/%2/").arg(engineName()).arg(version));
+  QDir dir = QDir(QString(":/SQL/%1/%2/").arg(displayName()).arg(version));
   foreach(QFileInfo fileInfo, dir.entryInfoList(QStringList() << "upgrade*", QDir::NoFilter, QDir::Name)) {
     queries << queryString(fileInfo.baseName(), version);
   }
@@ -212,7 +212,7 @@ int AbstractSqlStorage::schemaVersion() {
 
   int version;
   bool ok;
-  QDir dir = QDir(":/SQL/" + engineName());
+  QDir dir = QDir(":/SQL/" + displayName());
   foreach(QFileInfo fileInfo, dir.entryInfoList()) {
     if(!fileInfo.isDir())
       continue;

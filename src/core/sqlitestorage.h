@@ -33,13 +33,14 @@ class SqliteStorage : public AbstractSqlStorage {
 public:
   SqliteStorage(QObject *parent = 0);
   virtual ~SqliteStorage();
-			  
+
 public slots:
   /* General */
   
-  static bool isAvailable();
-  static QString displayName();
-  virtual QString engineName() ;
+  bool isAvailable() const;
+  QString displayName() const;
+  QString description() const;
+
   // TODO: Add functions for configuring the backlog handling, i.e. defining auto-cleanup settings etc
   
   /* User handling */

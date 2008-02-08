@@ -30,8 +30,10 @@ class CoreSettings : public Settings {
     virtual ~CoreSettings();
     CoreSettings(const QString group = "Core");
 
-    void setDatabaseSettings(const QVariant &data);
-    QVariant databaseSettings(const QVariant &def = QVariant());
+    void setStorageSettings(const QVariant &data);
+    QVariant storageSettings(const QVariant &def = QVariant());
+
+    QVariant oldDbSettings();  // FIXME remove
 
     void setPort(const uint &port);
     uint port(const uint &def = Global::defaultPort);

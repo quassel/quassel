@@ -158,11 +158,13 @@ class Core : public QObject {
 
     SessionThread *createSession(UserId userId, bool restoreState = false);
     void setupClientSession(QTcpSocket *socket, UserId uid);
-    void processCoreSetup(QTcpSocket *socket, QVariantMap &msg);
+    void processClientMessage(QTcpSocket *socket, const QVariantMap &msg);
+    //void processCoreSetup(QTcpSocket *socket, QVariantMap &msg);
+    QString setupCore(const QVariant &setupData);
 
-    QStringList availableStorageProviders();
+    bool registerStorageBackend(Storage *);
+    void unregisterStorageBackend(Storage *);
 
-    UserId guiUser;
     QHash<UserId, SessionThread *> sessions;
     Storage *storage;
     QTimer _storageSyncTimer;
@@ -170,6 +172,8 @@ class Core : public QObject {
     QTcpServer server; // TODO: implement SSL
     QHash<QTcpSocket *, quint32> blocksizes;
     QHash<QTcpSocket *, QVariantMap> clientInfo;
+
+    QHash<QString, Storage *> _storageBackends;
 
     QDateTime startTime;
 

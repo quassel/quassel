@@ -42,32 +42,36 @@ class Storage : public QObject {
      *  prerequisites are in place (e.g. we have an appropriate DB driver etc.).
      * \return True if and only if the storage class can be successfully used.
      */
-    static bool isAvailable() { return false; }
+    virtual bool isAvailable() const = 0;
 
     //! Returns the display name of the storage backend
-    /** \return A string that can be used by the GUI to describe the storage backend */
-    static QString displayName() { return ""; }
+    /** \return A string that can be used by the client to name the storage backend */
+    virtual QString displayName() const = 0;
+
+    //! Returns a description of this storage backend
+    /** \return A string that can be displayed by the client to describe the storage backend */
+    virtual QString description() const = 0;
 
     //! Setup the storage provider.
     /** This prepares the storage provider (e.g. create tables, etc.) for use within Quassel.
      *  \param settings   Hostname, port, username, password, ...
      *  \return True if and only if the storage provider was initialized successfully.
      */
-    virtual bool setup(const QVariantMap &settings = QVariantMap()) { Q_UNUSED(settings); return false; }
-    
+    virtual bool setup(const QVariantMap &settings = QVariantMap()) = 0;
+
     //! Initialize the storage provider
     /** \param settings   Hostname, port, username, password, ...  
      *  \return True if and only if the storage provider was initialized successfully.
      */
     virtual bool init(const QVariantMap &settings = QVariantMap()) = 0;
 
-  //! Makes temp data persistent
-  /** This Method is periodically called by the Quassel Core to make temporary
-   *  data persistant. This reduces the data loss drastically in the
-   *  unlikely case of a Core crash.
-   */
+    //! Makes temp data persistent
+    /** This Method is periodically called by the Quassel Core to make temporary
+    *  data persistant. This reduces the data loss drastically in the
+    *  unlikely case of a Core crash.
+    */
     virtual void sync() = 0;
-  
+
     // TODO: Add functions for configuring the backlog handling, i.e. defining auto-cleanup settings etc
 
     /* User handling */
