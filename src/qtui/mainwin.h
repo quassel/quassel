@@ -52,6 +52,7 @@ class MainWin : public QMainWindow {
 
   protected:
     void closeEvent(QCloseEvent *event);
+    virtual void changeEvent(QEvent *event);
     virtual void keyPressEvent(QKeyEvent *event);
 
   protected slots:
@@ -60,7 +61,6 @@ class MainWin : public QMainWindow {
     void systrayActivated( QSystemTrayIcon::ActivationReason );
 
   private slots:
-
     void showSettingsDlg();
     void showNetworkDlg();
     void showDebugConsole();
@@ -93,6 +93,8 @@ class MainWin : public QMainWindow {
     void setupSystray();
 
     void setupSettingsDlg();
+
+    void toggleVisibility();
 
     void enableMenus();
 

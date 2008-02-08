@@ -36,6 +36,7 @@
 #include "inputwidget.h"
 #include "verticaldock.h"
 #include "uisettings.h"
+#include "qtuisettings.h"
 
 #include "selectionmodelsynchronizer.h"
 #include "mappedselectionmodel.h"
@@ -43,6 +44,7 @@
 #include "settingspages/fontssettingspage.h"
 #include "settingspages/identitiessettingspage.h"
 #include "settingspages/networkssettingspage.h"
+#include "settingspages/generalsettingspage.h"
 
 #include "debugconsole.h"
 
@@ -88,6 +90,7 @@ void MainWin::init() {
   setupTopicWidget();
   setupSystray();
 
+  
   setupSettingsDlg();
 
   // restore mainwin state
@@ -161,7 +164,8 @@ void MainWin::setupSettingsDlg() {
   settingsDlg->registerSettingsPage(new FontsSettingsPage(settingsDlg));
   settingsDlg->registerSettingsPage(new IdentitiesSettingsPage(settingsDlg));
   settingsDlg->registerSettingsPage(new NetworksSettingsPage(settingsDlg));
-
+  settingsDlg->registerSettingsPage(new GeneralSettingsPage(settingsDlg));
+  
 #ifdef SPUTDEV
   connect(settingsDlg, SIGNAL(finished(int)), QApplication::instance(), SLOT(quit()));  // FIXME
 #endif
@@ -256,11 +260,27 @@ void MainWin::setupSystray() {
 
   systray->setContextMenu(systrayMenu);
 
-  systray->show();
+  QtUiSettings s;
+  if(s.value("UseSystemTrayIcon").toBool()) {
+    systray->show();
+  }
+  
   #ifndef Q_WS_MAC
   connect(systray, SIGNAL(activated( QSystemTrayIcon::ActivationReason )),
           this, SLOT(systrayActivated( QSystemTrayIcon::ActivationReason )));
   #endif
+
+}
+
+void MainWin::changeEvent(QEvent *event) {
+  if(event->type() == QEvent::WindowStateChange) {
+    if(windowState() & Qt::WindowMinimized) {
+      QtUiSettings s;
+      if(s.value("UseSystemTrayIcon").toBool() && s.value("MinimizeOnMinimize").toBool()) {
+        toggleVisibility();
+      }
+    }
+  }
 }
 
 void MainWin::connectedToCore() {
@@ -314,33 +334,42 @@ void MainWin::showDebugConsole() {
 
 void MainWin::closeEvent(QCloseEvent *event)
 {
-  //if (userReallyWantsToQuit()) {
-    UiSettings s;
-    s.setValue("MainWinSize", size());
-    s.setValue("MainWinPos", pos());
-    s.setValue("MainWinState", saveState());
+  QtUiSettings s;
+  if(s.value("UseSystemTrayIcon").toBool() && s.value("MinimizeOnClose").toBool()) {
+    toggleVisibility();
+    event->ignore();
+  } else {
     event->accept();
+  }
+  //if (userReallyWantsToQuit()) {
+  s.setValue("MainWinSize", size());
+  s.setValue("MainWinPos", pos());
+  s.setValue("MainWinState", saveState());
   //} else {
-    //event->ignore();
+  //  event->ignore();
   //}
 }
 
 void MainWin::systrayActivated( QSystemTrayIcon::ActivationReason activationReason) {
   if (activationReason == QSystemTrayIcon::Trigger) {
-    if(isHidden()) {
-      show();
-      if(isMinimized()) {
-        if(isMaximized()) {
-          showMaximized();
-        } else {
-          showNormal();
-        }
+    toggleVisibility();
+  }
+}
+
+void MainWin::toggleVisibility() {
+  if(isHidden()) {
+    show();
+    if(isMinimized()) {
+      if(isMaximized()) {
+        showMaximized();
+      } else {
+        showNormal();
       }
-      raise();
-      activateWindow();
-    } else {
-      hide();
     }
+    raise();
+    activateWindow();
+  } else {
+   hide();
   }
 }
 

@@ -2,11 +2,11 @@ DEPMOD = uisupport common client
 QT_MOD = core gui network
 
 SRCS += bufferwidget.cpp chatline-old.cpp chatwidget.cpp coreconfigwizard.cpp coreconnectdlg.cpp configwizard.cpp debugconsole.cpp inputwidget.cpp \
-        mainwin.cpp nicklistwidget.cpp qtui.cpp qtuistyle.cpp settingsdlg.cpp settingspagedlg.cpp \
+        mainwin.cpp nicklistwidget.cpp qtui.cpp qtuisettings.cpp qtuistyle.cpp settingsdlg.cpp settingspagedlg.cpp \
         topicwidget.cpp verticaldock.cpp
 
 HDRS += bufferwidget.h chatline-old.h chatwidget.h coreconfigwizard.h configwizard.h debugconsole.h inputwidget.h \
-        coreconnectdlg.h mainwin.h nicklistwidget.h qtui.h qtuistyle.h settingsdlg.h settingspagedlg.h \
+        coreconnectdlg.h mainwin.h nicklistwidget.h qtui.h qtuisettings.h qtuistyle.h settingsdlg.h settingspagedlg.h \
         topicwidget.h verticaldock.h
 
 FORMNAMES = mainwin.ui coreaccounteditdlg.ui coreconnectdlg.ui bufferviewwidget.ui bufferwidget.ui nicklistwidget.ui settingsdlg.ui \
