@@ -64,14 +64,12 @@ void Core::init() {
 
   CoreSettings cs;
 
-  // TODO migrate old db settings
-
   if(!(configured = initStorage(cs.storageSettings().toMap()))) {
     qWarning("Core is currently not configured!");
 
     // try to migrate old settings
     QVariantMap old = cs.oldDbSettings().toMap();
-    if(old.count() && old["Type"].toString() == "SQlite") {
+    if(old.count() && old["Type"].toString().toUpper() == "SQLITE") {
       QVariantMap newSettings;
       newSettings["Backend"] = "SQLite";
       if((configured = initStorage(newSettings))) {
@@ -106,6 +104,10 @@ void Core::saveState() {
 }
 
 void Core::restoreState() {
+  if(!instance()->configured) {
+    qWarning() << qPrintable(tr("Cannot restore a state for an unconfigured core!"));
+    return;
+  }
   if(instance()->sessions.count()) {
     qWarning() << qPrintable(tr("Calling restoreState() even though active sessions exist!"));
     return;
@@ -401,43 +403,6 @@ void Core::clientDisconnected() {
   // TODO remove unneeded sessions - if necessary/possible...
   // Suggestion: kill sessions if they are not connected to any network and client.
 }
-
-/*
-void Core::processCoreSetup(QTcpSocket *socket, QVariantMap &msg) {
-  if(msg["HasSettings"].toBool()) {
-    QVariantMap auth;
-    auth["User"] = msg["User"];
-    auth["Password"] = msg["Password"];
-    msg.remove("User");
-    msg.remove("Password");
-    qDebug() << "Initializing storage provider" << msg["Type"].toString();
-
-    if(!initStorage(msg, true)) {
-      // notify client to start wizard again
-      qWarning("Core is currently not configured!");
-      QVariantMap reply;
-      reply["StartWizard"] = true;
-      reply["StorageProviders"] = availableStorageProviders();
-      SignalProxy::writeDataToDevice(socket, reply);
-    } else {
-      // write coresettings
-      CoreSettings s;
-      s.setDatabaseSettings(msg);
-      // write admin user to database & make the core listen again to connections
-      storage->addUser(auth["User"].toString(), auth["Password"].toString());
-      startListening();
-      // continue the normal procedure
-      //processClientInit(socket, auth);
-    }
-  } else {
-    // notify client to start wizard
-    QVariantMap reply;
-    reply["StartWizard"] = true;
-    reply["StorageProviders"] = availableStorageProviders();
-    SignalProxy::writeDataToDevice(socket, reply);
-  }
-}
-*/
 
 void Core::setupClientSession(QTcpSocket *socket, UserId uid) {
   // Find or create session for validated user
