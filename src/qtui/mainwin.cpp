@@ -110,7 +110,10 @@ void MainWin::init() {
 }
 
 MainWin::~MainWin() {
-
+  QtUiSettings s;
+  s.setValue("MainWinSize", size());
+  s.setValue("MainWinPos", pos());
+  s.setValue("MainWinState", saveState());
 }
 
 void MainWin::setupMenus() {
@@ -332,8 +335,7 @@ void MainWin::showDebugConsole() {
   debugConsole->show();
 }
 
-void MainWin::closeEvent(QCloseEvent *event)
-{
+void MainWin::closeEvent(QCloseEvent *event) {
   QtUiSettings s;
   if(s.value("UseSystemTrayIcon").toBool() && s.value("MinimizeOnClose").toBool()) {
     toggleVisibility();
@@ -341,13 +343,6 @@ void MainWin::closeEvent(QCloseEvent *event)
   } else {
     event->accept();
   }
-  //if (userReallyWantsToQuit()) {
-  s.setValue("MainWinSize", size());
-  s.setValue("MainWinPos", pos());
-  s.setValue("MainWinState", saveState());
-  //} else {
-  //  event->ignore();
-  //}
 }
 
 void MainWin::systrayActivated( QSystemTrayIcon::ActivationReason activationReason) {
