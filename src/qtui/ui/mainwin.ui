@@ -46,7 +46,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>25</height>
+     <height>27</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile" >
@@ -178,7 +178,7 @@
   </action>
   <action name="actionSettingsDlg" >
    <property name="icon" >
-    <iconset resource="../../icons/icons.qrc" >:/16x16/actions/oxygen/16x16/actions/configure.png</iconset>
+    <iconset/>
    </property>
    <property name="text" >
     <string>Configure Quassel...</string>
@@ -282,22 +282,5 @@
  <resources>
   <include location="../../icons/icons.qrc" />
  </resources>
- <connections>
-  <connection>
-   <sender>actionQuit</sender>
-   <signal>triggered()</signal>
-   <receiver>MainWin</receiver>
-   <slot>close()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>399</x>
-     <y>299</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>
