@@ -417,12 +417,17 @@ void IrcServerHandler::handle301(QString prefix, QList<QByteArray> params) {
   if(_whois) {
     emit displayMsg(Message::Server, "", tr("[Whois] %1 is away: \"%2\"").arg(nickName).arg(awayMessage));
   } else {
-    int now = QDateTime::currentDateTime().toTime_t();
-    int silenceTime = 60;
-    if(ircuser && ircuser->lastAwayMessage() + silenceTime < now) {
+    if(ircuser) {
+      int now = QDateTime::currentDateTime().toTime_t();
+      int silenceTime = 60;
+      if(ircuser->lastAwayMessage() + silenceTime < now) {
+        emit displayMsg(Message::Server, params[0], tr("%1 is away: \"%2\"").arg(nickName).arg(awayMessage));
+      }
+      ircuser->setLastAwayMessage(now);
+    } else {
+      // probably should not happen
       emit displayMsg(Message::Server, params[0], tr("%1 is away: \"%2\"").arg(nickName).arg(awayMessage));
     }
-    ircuser->setLastAwayMessage(now);
   }
 }
 
@@ -537,13 +542,15 @@ void IrcServerHandler::handle352(QString prefix, QList<QByteArray> params) {
   Q_UNUSED(prefix)
   QString channel = serverDecode(params[0]);
   IrcUser *ircuser = network()->ircUser(serverDecode(params[4]));
-  ircuser->setUser(serverDecode(params[1]));
-  ircuser->setHost(serverDecode(params[2]));
+  if(ircuser) {
+    ircuser->setUser(serverDecode(params[1]));
+    ircuser->setHost(serverDecode(params[2]));
 
-  bool away = serverDecode(params[5]).startsWith("G") ? true : false;
-  ircuser->setAway(away);
-  ircuser->setServer(serverDecode(params[3])); 
-  ircuser->setRealName(serverDecode(params.last()).section(" ", 1));
+    bool away = serverDecode(params[5]).startsWith("G") ? true : false;
+    ircuser->setAway(away);
+    ircuser->setServer(serverDecode(params[3])); 
+    ircuser->setRealName(serverDecode(params.last()).section(" ", 1));
+  }
 
   emit displayMsg(Message::Server, "", tr("[Who] %1").arg(serverDecode(params).join(" ")));
 }
