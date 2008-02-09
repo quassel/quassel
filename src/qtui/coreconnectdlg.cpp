@@ -38,8 +38,6 @@ CoreConnectDlg::CoreConnectDlg(QWidget *parent, bool autoconnect) : QDialog(pare
   doingAutoConnect = false;
 
   ui.stackedWidget->setCurrentWidget(ui.accountPage);
-  ui.accountButtonBox->setFocus();
-  ui.accountButtonBox->button(QDialogButtonBox::Ok)->setDefault(true);
 
   CoreAccountSettings s;
   AccountId lastacc = s.lastAccount();
@@ -57,6 +55,9 @@ CoreConnectDlg::CoreConnectDlg(QWidget *parent, bool autoconnect) : QDialog(pare
   else ui.accountList->setCurrentRow(0);
 
   setAccountWidgetStates();
+  ui.accountButtonBox->setFocus();
+  ui.accountButtonBox->button(QDialogButtonBox::Ok)->setDefault(true);
+  ui.accountButtonBox->button(QDialogButtonBox::Ok)->setAutoDefault(true);
 
   connect(clientSyncer, SIGNAL(socketStateChanged(QAbstractSocket::SocketState)),this, SLOT(initPhaseSocketState(QAbstractSocket::SocketState)));
   connect(clientSyncer, SIGNAL(connectionError(const QString &)), this, SLOT(initPhaseError(const QString &)));
