@@ -99,6 +99,7 @@ class ChatLine : public QObject, public AbstractUiMsg {
     QList<LineLayout> lineLayouts;
     int minHeight;
 
+    bool isHighlight;
     SelectionMode selectionMode;
     int selectionStart, selectionEnd;
     void formatMsg(Message);

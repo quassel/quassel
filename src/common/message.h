@@ -50,7 +50,8 @@ public:
 
   enum Flags {
     None = 0,
-    Self = 1
+    Self = 1,
+    Highlight = 2
   };
   Q_DECLARE_FLAGS(MessageFlags, Flags)
   

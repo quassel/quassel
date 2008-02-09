@@ -19,6 +19,8 @@
  ***************************************************************************/
 
 #include "chatline-old.h"
+#include "client.h"
+#include "network.h"
 #include "qtui.h"
 
 //! Construct a ChatLine object from a message.
@@ -31,6 +33,7 @@ ChatLine::ChatLine(Message m) {
   //bufferName = m.buffer.buffer();
   msg = m;
   selectionMode = None;
+  isHighlight = false;
   formatMsg(msg);
 }
 
@@ -39,6 +42,12 @@ ChatLine::~ChatLine() {
 }
 
 void ChatLine::formatMsg(Message msg) {
+  const Network *net = Client::network(msg.bufferInfo().networkId());
+  if(net) {
+    QRegExp nickRegExp("^(.*\\W)?"+net->myNick()+"(\\W.*)?$");
+    if((msg.type() == Message::Plain || msg.type() == Message::Notice || msg.type() == Message::Action) && nickRegExp.exactMatch(msg.text()))
+      isHighlight = true;
+  }
   QTextOption tsOption, senderOption, textOption;
   styledTimeStamp = QtUi::style()->styleString(msg.formattedTimestamp());
   styledSender = QtUi::style()->styleString(msg.formattedSender());
@@ -314,8 +323,15 @@ void ChatLine::draw(QPainter *p, const QPointF &pos) {
     p->setPen(Qt::NoPen);
     p->setBrush(pal.brush(QPalette::Highlight));
     p->drawRect(QRectF(pos, QSizeF(tsWidth + QtUi::style()->sepTsSender() + senderWidth + QtUi::style()->sepSenderText() + textWidth, height())));
-  } else if(selectionMode == Partial) {
+  } else {
+    if(isHighlight) {
+      p->setPen(Qt::NoPen);
+      p->setBrush(pal.brush(QPalette::AlternateBase));
+      p->drawRect(QRectF(pos, QSizeF(tsWidth + QtUi::style()->sepTsSender() + senderWidth + QtUi::style()->sepSenderText() + textWidth, height())));
+    }
+    if(selectionMode == Partial) {
 
+    }
   } /*
   p->setClipRect(QRectF(pos, QSizeF(tsWidth, height())));
   tsLayout.draw(p, pos, tsFormat);
