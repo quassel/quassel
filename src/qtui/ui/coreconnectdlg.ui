@@ -5,9 +5,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>533</width>
-    <height>361</height>
+    <width>496</width>
+    <height>316</height>
    </rect>
+  </property>
+  <property name="sizePolicy" >
+   <sizepolicy vsizetype="Maximum" hsizetype="Preferred" >
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="windowTitle" >
    <string>Connect to Quassel Core</string>
@@ -15,8 +21,14 @@
   <layout class="QHBoxLayout" >
    <item>
     <widget class="QStackedWidget" name="stackedWidget" >
+     <property name="sizePolicy" >
+      <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="currentIndex" >
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="accountPage" >
       <layout class="QVBoxLayout" >
@@ -110,10 +122,31 @@
       <layout class="QVBoxLayout" >
        <item>
         <widget class="QGroupBox" name="groupBox_2" >
+         <property name="sizePolicy" >
+          <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="title" >
           <string>Initializing your connection</string>
          </property>
          <layout class="QVBoxLayout" >
+          <property name="spacing" >
+           <number>0</number>
+          </property>
+          <property name="leftMargin" >
+           <number>4</number>
+          </property>
+          <property name="topMargin" >
+           <number>4</number>
+          </property>
+          <property name="rightMargin" >
+           <number>4</number>
+          </property>
+          <property name="bottomMargin" >
+           <number>4</number>
+          </property>
           <item>
            <layout class="QGridLayout" >
             <item row="0" column="0" >
@@ -154,11 +187,17 @@
             </item>
             <item row="1" column="1" colspan="2" >
              <widget class="QLabel" name="coreInfoLabel" >
+              <property name="sizePolicy" >
+               <sizepolicy vsizetype="Maximum" hsizetype="Preferred" >
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
               <property name="text" >
                <string>Core Info
-might be multiple
-lines
-so reserve some space</string>
+reserve
+some
+space</string>
               </property>
               <property name="alignment" >
                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -172,13 +211,51 @@ so reserve some space</string>
           </item>
           <item>
            <widget class="QStackedWidget" name="loginStack" >
+            <property name="sizePolicy" >
+             <sizepolicy vsizetype="Maximum" hsizetype="Preferred" >
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="currentIndex" >
              <number>0</number>
             </property>
             <widget class="QWidget" name="loginCredentialsPage" >
              <layout class="QVBoxLayout" >
               <item>
+               <spacer>
+                <property name="orientation" >
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeHint" >
+                 <size>
+                  <width>20</width>
+                  <height>40</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <spacer>
+                <property name="orientation" >
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeHint" >
+                 <size>
+                  <width>20</width>
+                  <height>40</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item>
                <widget class="QGroupBox" name="loginGroup" >
+                <property name="sizePolicy" >
+                 <sizepolicy vsizetype="Maximum" hsizetype="Preferred" >
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
                 <property name="title" >
                  <string>Login</string>
                 </property>
@@ -237,25 +314,18 @@ so reserve some space</string>
                 </layout>
                </widget>
               </item>
-              <item>
-               <spacer>
-                <property name="orientation" >
-                 <enum>Qt::Vertical</enum>
-                </property>
-                <property name="sizeHint" >
-                 <size>
-                  <width>20</width>
-                  <height>40</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
              </layout>
             </widget>
             <widget class="QWidget" name="coreConfigPage" >
              <layout class="QVBoxLayout" >
               <item>
                <widget class="QGroupBox" name="groupBox_4" >
+                <property name="sizePolicy" >
+                 <sizepolicy vsizetype="Maximum" hsizetype="Preferred" >
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
                 <property name="title" >
                  <string>Configure your Quassel Core</string>
                 </property>
@@ -491,7 +561,6 @@ so reserve some space</string>
   <tabstop>addAccount</tabstop>
   <tabstop>deleteAccount</tabstop>
   <tabstop>autoConnect</tabstop>
-  <tabstop>loginButtonBox</tabstop>
   <tabstop>user</tabstop>
   <tabstop>password</tabstop>
   <tabstop>rememberPasswd</tabstop>

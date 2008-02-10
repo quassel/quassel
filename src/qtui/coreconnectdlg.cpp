@@ -55,9 +55,9 @@ CoreConnectDlg::CoreConnectDlg(QWidget *parent, bool autoconnect) : QDialog(pare
   else ui.accountList->setCurrentRow(0);
 
   setAccountWidgetStates();
-  ui.accountButtonBox->setFocus();
+  //ui.accountButtonBox->setFocus();
   ui.accountButtonBox->button(QDialogButtonBox::Ok)->setDefault(true);
-  ui.accountButtonBox->button(QDialogButtonBox::Ok)->setAutoDefault(true);
+  //ui.accountButtonBox->button(QDialogButtonBox::Ok)->setAutoDefault(true);
 
   connect(clientSyncer, SIGNAL(socketStateChanged(QAbstractSocket::SocketState)),this, SLOT(initPhaseSocketState(QAbstractSocket::SocketState)));
   connect(clientSyncer, SIGNAL(connectionError(const QString &)), this, SLOT(initPhaseError(const QString &)));
@@ -110,6 +110,7 @@ void CoreConnectDlg::setAccountWidgetStates() {
     ui.autoConnect->setChecked(selectedItems[0]->data(Qt::UserRole).value<AccountId>() == autoConnectAccount);
   }
   ui.accountButtonBox->button(QDialogButtonBox::Ok)->setEnabled(ui.accountList->count());
+  ui.accountButtonBox->button(QDialogButtonBox::Ok)->setDefault(true);
 }
 
 void CoreConnectDlg::on_autoConnect_clicked(bool state) {
@@ -218,8 +219,6 @@ void CoreConnectDlg::connectToCore() {
   disconnect(ui.loginButtonBox, 0, this, 0);
   connect(ui.loginButtonBox, SIGNAL(rejected()), this, SLOT(restartPhaseNull()));
 
-
-  //connect(Client::instance(), SIGNAL(coreConnectionPhaseOne(const QVariantMap &)), this, SLOT(phaseOneFinished
   clientSyncer->connectToCore(accountData);
 }
 
@@ -266,7 +265,7 @@ void CoreConnectDlg::restartPhaseNull() {
 void CoreConnectDlg::startLogin() {
   ui.connectIcon->setPixmap(QPixmap::fromImage(QImage(":/22x22/actions/network-connect")));
   ui.loginStack->setCurrentWidget(ui.loginCredentialsPage);
-  ui.loginStack->setMinimumSize(ui.loginStack->sizeHint()); ui.loginStack->updateGeometry();
+  //ui.loginStack->setMinimumSize(ui.loginStack->sizeHint()); ui.loginStack->updateGeometry();
   ui.loginButtonBox->setStandardButtons(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
   ui.loginButtonBox->button(QDialogButtonBox::Ok)->setDefault(true);
   if(!accountData["User"].toString().isEmpty()) {
