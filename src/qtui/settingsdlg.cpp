@@ -121,7 +121,9 @@ void SettingsDlg::setButtonStates() {
 void SettingsDlg::buttonClicked(QAbstractButton *button) {
   switch(ui.buttonBox->standardButton(button)) {
     case QDialogButtonBox::Ok:
-      if(applyChanges()) accept();
+      if(currentPage() && currentPage()->hasChanged()) {
+        if(applyChanges()) accept();
+      } else accept();
       break;
     case QDialogButtonBox::Apply:
       applyChanges();
