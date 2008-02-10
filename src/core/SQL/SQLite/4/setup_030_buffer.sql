@@ -3,4 +3,6 @@ CREATE TABLE buffer (
 	userid INTEGER NOT NULL,
 	groupid INTEGER,
 	networkid INTEGER NOT NULL,
-	buffername TEXT NOT NULL)
+	buffername TEXT NOT NULL,
+	buffercname TEXT NOT NULL
+)

@@ -175,6 +175,7 @@ void SqliteStorage::createBuffer(UserId user, const NetworkId &networkId, const 
   query->bindValue(":userid", user.toInt());
   query->bindValue(":networkid", networkId.toInt());
   query->bindValue(":buffername", buffer);
+  query->bindValue(":buffercname", buffer.toLower());
   query->exec();
 
   watchQuery(query);
@@ -184,7 +185,7 @@ BufferInfo SqliteStorage::getBufferInfo(UserId user, const NetworkId &networkId,
   QSqlQuery *query = cachedQuery("select_bufferByName");
   query->bindValue(":networkid", networkId.toInt());
   query->bindValue(":userid", user.toInt());
-  query->bindValue(":buffername", buffer);
+  query->bindValue(":buffercname", buffer.toLower());
   query->exec();
 
   if(!query->first()) {
