@@ -40,26 +40,17 @@ public:
   AbstractTreeItem(AbstractTreeItem *parent = 0);
   virtual ~AbstractTreeItem();
 
-  bool newChild(int column, AbstractTreeItem *child);
   bool newChild(AbstractTreeItem *child);
-  
-  bool removeChild(int column, int row);
-  bool removeChild(int row);
 
-  bool removeChildById(int column, const quint64 &id);
+  bool removeChild(int row);
   bool removeChildById(const quint64 &id);
-  
   void removeAllChilds();
 
   virtual quint64 id() const;
 
-  AbstractTreeItem *child(int column, int row) const;
   AbstractTreeItem *child(int row) const;
-  
-  AbstractTreeItem *childById(int column, const quint64 &id) const;
   AbstractTreeItem *childById(const quint64 &id) const;
 
-  int childCount(int column) const;
   int childCount() const;
 
   virtual int columnCount() const = 0;
@@ -70,26 +61,23 @@ public:
   virtual Qt::ItemFlags flags() const;
   virtual void setFlags(Qt::ItemFlags);
 
-  int column() const;
   int row() const;
   AbstractTreeItem *parent() const;
 
   void dumpChildList();
-  
+
 signals:
   void dataChanged(int column = -1);
 
-  void beginAppendChilds(int column, int firstRow, int lastRow);
+  void beginAppendChilds(int firstRow, int lastRow);
   void endAppendChilds();
   
-  void beginRemoveChilds(int column, int firstRow, int lastRow);
+  void beginRemoveChilds(int firstRow, int lastRow);
   void endRemoveChilds();
 				       
 private:
-  QHash<int, QList<AbstractTreeItem *> > _childItems;
+  QList<AbstractTreeItem *> _childItems;
   Qt::ItemFlags _flags;
-
-  int defaultColumn() const;
 };
 
 
@@ -155,7 +143,7 @@ public:
   
   QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
   QModelIndex indexById(quint64 id, const QModelIndex &parent = QModelIndex()) const;
-  QModelIndex indexByItem(AbstractTreeItem *item, int column = 0) const;
+  QModelIndex indexByItem(AbstractTreeItem *item) const;
 
   QModelIndex parent(const QModelIndex &index) const;
 
@@ -167,10 +155,10 @@ public:
 private slots:
   void itemDataChanged(int column = -1);
   
-  void beginAppendChilds(int column, int firstRow, int lastRow);
+  void beginAppendChilds(int firstRow, int lastRow);
   void endAppendChilds();
   
-  void beginRemoveChilds(int column, int firstRow, int lastRow);
+  void beginRemoveChilds(int firstRow, int lastRow);
   void endRemoveChilds();
   
 protected:
