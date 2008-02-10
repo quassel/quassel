@@ -81,7 +81,7 @@ void Client::init() {
 
   SignalProxy *p = signalProxy();
 
-  p->attachSlot(SIGNAL(displayMsg(const Message &)), this, SLOT(recvMessage(Message &)));
+  p->attachSlot(SIGNAL(displayMsg(Message &)), this, SLOT(recvMessage(Message &)));
   p->attachSlot(SIGNAL(displayStatusMsg(QString, QString)), this, SLOT(recvStatusMsg(QString, QString)));
 
   p->attachSlot(SIGNAL(backlogData(BufferInfo, const QVariantList &, bool)), this, SLOT(recvBacklogData(BufferInfo, const QVariantList &, bool)));
