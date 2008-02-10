@@ -159,7 +159,7 @@ private slots:
   //void networkConnected(NetworkId);
   //void networkDisconnected(NetworkId);
 
-  void recvMessage(Message &message);
+  void recvMessage(const Message &message);
   void recvStatusMsg(QString network, QString message);
   void recvBacklogData(BufferInfo, QVariantList, bool);
   void updateBufferInfo(BufferInfo);
