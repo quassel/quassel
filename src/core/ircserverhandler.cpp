@@ -295,7 +295,11 @@ void IrcServerHandler::handleNotice(QString prefix, QList<QByteArray> params) {
   if(network()->isMyNick(target))
     target = QString("");
 
-  networkConnection->ctcpHandler()->parse(Message::Notice, prefix, target, userDecode(prefix, params[1]));
+  QString sender = prefix.contains('!')
+    ? nickFromMask(prefix)
+    : prefix;
+
+  networkConnection->ctcpHandler()->parse(Message::Notice, sender, target, userDecode(prefix, params[1]));
 }
 
 void IrcServerHandler::handlePart(QString prefix, QList<QByteArray> params) {
