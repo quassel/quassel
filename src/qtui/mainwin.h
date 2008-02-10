@@ -53,7 +53,6 @@ class MainWin : public QMainWindow {
   protected:
     void closeEvent(QCloseEvent *event);
     virtual void changeEvent(QEvent *event);
-    virtual void keyPressEvent(QKeyEvent *event);
 
   protected slots:
     void connectedToCore();
@@ -99,14 +98,11 @@ class MainWin : public QMainWindow {
 
     void enableMenus();
 
-    void bindKey(int key);
-    void jumpKey(int key);
-
-    QHash<int, BufferId> _keyboardJump;
     QSystemTrayIcon *systray;
 
     CoreConnectDlg *coreConnectDlg;
     SettingsDlg *settingsDlg;
+    DebugConsole *debugConsole;
 
     BufferId currentBuffer;
     QString currentProfile;
@@ -118,7 +114,6 @@ class MainWin : public QMainWindow {
     QAction *actionEditNetworks;
     QList<QAction *> networkActions;
 
-    DebugConsole *debugConsole;
     friend class QtUi;
 };
 

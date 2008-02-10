@@ -27,30 +27,14 @@ InputLine::InputLine(QWidget *parent)
     idx(0),
     tabCompleter(new TabCompleter(this))
 {
-  
-#ifdef Q_WS_MAC
-  bindModifier = Qt::ControlModifier | Qt::AltModifier;
-  jumpModifier = Qt::ControlModifier;
-#else
-  bindModifier = Qt::ControlModifier;
-  jumpModifier = Qt::AltModifier;
-#endif
-
   connect(this, SIGNAL(returnPressed()), this, SLOT(on_returnPressed()));
   connect(this, SIGNAL(textChanged(QString)), this, SLOT(on_textChanged(QString)));
-
 }
 
 InputLine::~InputLine() {
 }
 
 void InputLine::keyPressEvent(QKeyEvent * event) {
-  if((event->modifiers() == jumpModifier || event->modifiers() == bindModifier) &&
-     (Qt::Key_0 <= event->key() && event->key() <= Qt::Key_9)) {
-    event->ignore();
-    return;
-  }
-  
   if(event->key() == Qt::Key_Up) {
     if(idx > 0) { idx--; setText(history[idx]); }
     event->accept();

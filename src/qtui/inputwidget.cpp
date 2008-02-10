@@ -22,6 +22,7 @@
 
 #include "client.h"
 #include "networkmodel.h"
+#include "jumpkeyhandler.h"
 
 InputWidget::InputWidget(QWidget *parent)
   : QWidget(parent),
@@ -34,6 +35,8 @@ InputWidget::InputWidget(QWidget *parent)
   connect(ui.ownNick, SIGNAL(activated(QString)), this, SLOT(changeNick(QString)));
   connect(this, SIGNAL(userInput(BufferInfo, QString)), Client::instance(), SIGNAL(sendInput(BufferInfo, QString)));
   setFocusProxy(ui.inputEdit);
+
+  ui.inputEdit->installEventFilter(new JumpKeyHandler(this));  
 }
 
 InputWidget::~InputWidget() {

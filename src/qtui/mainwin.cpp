@@ -38,6 +38,7 @@
 #include "verticaldock.h"
 #include "uisettings.h"
 #include "qtuisettings.h"
+#include "jumpkeyhandler.h"
 
 #include "selectionmodelsynchronizer.h"
 #include "mappedselectionmodel.h"
@@ -49,15 +50,20 @@
 
 #include "debugconsole.h"
 
-MainWin::MainWin(QtUi *_gui, QWidget *parent) : QMainWindow(parent), gui(_gui) {
+MainWin::MainWin(QtUi *_gui, QWidget *parent)
+  : QMainWindow(parent),
+    gui(_gui),
+    settingsDlg(new SettingsDlg(this)),
+    debugConsole(new DebugConsole(this))
+{
   ui.setupUi(this);
   setWindowTitle("Quassel IRC");
   setWindowIcon(QIcon(":icons/quassel-icon.png"));
   setWindowIconText("Quassel IRC");
 
   statusBar()->showMessage(tr("Waiting for core..."));
-  settingsDlg = new SettingsDlg(this);
-  debugConsole = new DebugConsole(this);
+
+  installEventFilter(new JumpKeyHandler(this));
 }
 
 void MainWin::init() {
@@ -445,60 +451,3 @@ void MainWin::connectOrDisconnectFromNet() {
   else net->requestDisconnect();
 }
 
-void MainWin::keyPressEvent(QKeyEvent *event) {
-#ifdef Q_WS_MAC
-  int bindModifier = Qt::ControlModifier | Qt::AltModifier;
-  int jumpModifier = Qt::ControlModifier;
-#else
-  int bindModifier = Qt::ControlModifier;
-  int jumpModifier = Qt::AltModifier;
-#endif
-
-  if(event->modifiers() ==  bindModifier) {
-    event->accept();
-    return bindKey(event->key());
-  }
-  
-  if(event->modifiers() == jumpModifier) {
-    event->accept();
-    return jumpKey(event->key());
-  }
-  
-  event->ignore();
-}
-
-void MainWin::bindKey(int key) {
-  if(key < Qt::Key_0 || Qt::Key_9 < key)
-    return;
-  
-  QModelIndex bufferIdx = Client::bufferModel()->standardSelectionModel()->currentIndex();
-  NetworkId netId = bufferIdx.data(NetworkModel::NetworkIdRole).value<NetworkId>();
-  const Network *net = Client::network(netId);
-  if(!net)
-    return;
-  
-  QString bufferName = bufferIdx.sibling(bufferIdx.row(), 0).data().toString();
-  BufferId bufferId = bufferIdx.data(NetworkModel::BufferIdRole).value<BufferId>();
-  
-  _keyboardJump[key] = bufferId;
-  CoreAccountSettings().setJumpKeyMap(_keyboardJump);
-  statusBar()->showMessage(tr("Bound Buffer %1::%2 to Key %3").arg(net->networkName()).arg(bufferName).arg(key - Qt::Key_0), 10000);
-}
-
-void MainWin::jumpKey(int key) {
-  if(key < Qt::Key_0 || Qt::Key_9 < key)
-    return;
-
-  if(_keyboardJump.isEmpty())
-    _keyboardJump = CoreAccountSettings().jumpKeyMap();
-
-  if(!_keyboardJump.contains(key))
-    return;
-
-  QModelIndex source_bufferIdx = Client::networkModel()->bufferIndex(_keyboardJump[key]);
-  QModelIndex bufferIdx = Client::bufferModel()->mapFromSource(source_bufferIdx);
-
-  if(bufferIdx.isValid())
-    Client::bufferModel()->standardSelectionModel()->setCurrentIndex(bufferIdx, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
-  
-}
