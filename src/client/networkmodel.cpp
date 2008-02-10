@@ -758,13 +758,8 @@ void NetworkModel::updateBufferActivity(const Message &msg) {
   if(msg.type() == Message::Plain || msg.type() == Message::Notice)
     level |= BufferItem::NewMessage;
 
-
-  const Network *net = Client::network(msg.bufferInfo().networkId());
-  if(net) {
-    QRegExp nickRegExp("^(.*\\W)?"+net->myNick()+"(\\W.*)?$");
-    if((msg.type() == Message::Plain || msg.type() == Message::Notice || msg.type() == Message::Action) && nickRegExp.exactMatch(msg.text()))
+  if(msg.flags() & Message::Highlight) 
       level |= BufferItem::Highlight;
-  }
 
   bufferItem(msg.bufferInfo())->updateActivity(level);
 }

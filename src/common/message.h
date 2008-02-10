@@ -70,6 +70,8 @@ public:
   inline quint8 flags() const { return _flags; }
   inline QDateTime timestamp() const { return _timestamp; }
 
+  void setFlags(quint8 flags);
+  
   QString formattedTimestamp();
   QString formattedSender();
   QString formattedText();

@@ -42,12 +42,7 @@ ChatLine::~ChatLine() {
 }
 
 void ChatLine::formatMsg(Message msg) {
-  const Network *net = Client::network(msg.bufferInfo().networkId());
-  if(net) {
-    QRegExp nickRegExp("^(.*\\W)?"+net->myNick()+"(\\W.*)?$");
-    if((msg.type() == Message::Plain || msg.type() == Message::Notice || msg.type() == Message::Action) && nickRegExp.exactMatch(msg.text()))
-      isHighlight = true;
-  }
+  isHighlight = msg.flags() & Message::Highlight;
   QTextOption tsOption, senderOption, textOption;
   styledTimeStamp = QtUi::style()->styleString(msg.formattedTimestamp());
   styledSender = QtUi::style()->styleString(msg.formattedSender());

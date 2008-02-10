@@ -103,6 +103,8 @@ public:
 
   enum ClientMode { LocalCore, RemoteCore };
 
+  void checkForHighlight(Message &msg) const;
+  
 signals:
   void sendInput(BufferInfo, QString message);
   void showBuffer(Buffer *);
@@ -157,7 +159,7 @@ private slots:
   //void networkConnected(NetworkId);
   //void networkDisconnected(NetworkId);
 
-  void recvMessage(const Message &message);
+  void recvMessage(Message &message);
   void recvStatusMsg(QString network, QString message);
   void recvBacklogData(BufferInfo, QVariantList, bool);
   void updateBufferInfo(BufferInfo);

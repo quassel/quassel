@@ -44,6 +44,10 @@ Message::Message(QDateTime ts,BufferInfo bufferInfo, Type type, QString text, QS
 {
 }
 
+void Message::setFlags(quint8 flags) {
+  _flags = flags;
+}
+
 QString Message::mircToInternal(QString mirc) {
   mirc.replace('%', "%%");      // escape % just to be sure
   mirc.replace('\x02', "%B");
