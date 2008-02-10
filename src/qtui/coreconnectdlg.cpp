@@ -55,9 +55,8 @@ CoreConnectDlg::CoreConnectDlg(QWidget *parent, bool autoconnect) : QDialog(pare
   else ui.accountList->setCurrentRow(0);
 
   setAccountWidgetStates();
-  //ui.accountButtonBox->setFocus();
-  ui.accountButtonBox->button(QDialogButtonBox::Ok)->setDefault(true);
-  //ui.accountButtonBox->button(QDialogButtonBox::Ok)->setAutoDefault(true);
+
+  ui.accountButtonBox->button(QDialogButtonBox::Ok)->setFocus();
 
   connect(clientSyncer, SIGNAL(socketStateChanged(QAbstractSocket::SocketState)),this, SLOT(initPhaseSocketState(QAbstractSocket::SocketState)));
   connect(clientSyncer, SIGNAL(connectionError(const QString &)), this, SLOT(initPhaseError(const QString &)));
@@ -110,7 +109,8 @@ void CoreConnectDlg::setAccountWidgetStates() {
     ui.autoConnect->setChecked(selectedItems[0]->data(Qt::UserRole).value<AccountId>() == autoConnectAccount);
   }
   ui.accountButtonBox->button(QDialogButtonBox::Ok)->setEnabled(ui.accountList->count());
-  ui.accountButtonBox->button(QDialogButtonBox::Ok)->setDefault(true);
+  //ui.accountButtonBox->button(QDialogButtonBox::Ok)->setDefault(true);
+  //ui.accountButtonBox->button(QDialogButtonBox::Ok)->setFocus();
 }
 
 void CoreConnectDlg::on_autoConnect_clicked(bool state) {
@@ -229,7 +229,8 @@ void CoreConnectDlg::initPhaseError(const QString &error) {
   ui.connectLabel->setText(tr("<div style=color:red;>Connection to %1 failed!</div>").arg(accountData["Host"].toString()));
   ui.coreInfoLabel->setText(error);
   ui.loginButtonBox->setStandardButtons(QDialogButtonBox::Retry|QDialogButtonBox::Cancel);
-  ui.loginButtonBox->button(QDialogButtonBox::Retry)->setDefault(true);
+  //ui.loginButtonBox->button(QDialogButtonBox::Retry)->setDefault(true);
+  ui.loginButtonBox->button(QDialogButtonBox::Retry)->setFocus();
   disconnect(ui.loginButtonBox, 0, this, 0);
   connect(ui.loginButtonBox, SIGNAL(accepted()), this, SLOT(restartPhaseNull()));
   connect(ui.loginButtonBox, SIGNAL(rejected()), this, SLOT(reject()));
@@ -268,12 +269,13 @@ void CoreConnectDlg::startLogin() {
   //ui.loginStack->setMinimumSize(ui.loginStack->sizeHint()); ui.loginStack->updateGeometry();
   ui.loginButtonBox->setStandardButtons(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
   ui.loginButtonBox->button(QDialogButtonBox::Ok)->setDefault(true);
+  ui.loginButtonBox->button(QDialogButtonBox::Ok)->setFocus();
   if(!accountData["User"].toString().isEmpty()) {
     ui.user->setText(accountData["User"].toString());
     if(accountData["RememberPasswd"].toBool()) {
       ui.password->setText(accountData["Password"].toString());
       ui.rememberPasswd->setChecked(true);
-      ui.loginButtonBox->setFocus();
+      ui.loginButtonBox->button(QDialogButtonBox::Ok)->setFocus();
     } else {
       ui.rememberPasswd->setChecked(false);
       ui.password->setFocus();

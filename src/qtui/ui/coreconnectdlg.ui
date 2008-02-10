@@ -28,7 +28,7 @@
       </sizepolicy>
      </property>
      <property name="currentIndex" >
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="accountPage" >
       <layout class="QVBoxLayout" >
@@ -218,7 +218,7 @@ space</string>
              </sizepolicy>
             </property>
             <property name="currentIndex" >
-             <number>0</number>
+             <number>1</number>
             </property>
             <widget class="QWidget" name="loginCredentialsPage" >
              <layout class="QVBoxLayout" >
@@ -555,16 +555,18 @@ space</string>
   </layout>
  </widget>
  <tabstops>
-  <tabstop>accountButtonBox</tabstop>
   <tabstop>accountList</tabstop>
   <tabstop>editAccount</tabstop>
   <tabstop>addAccount</tabstop>
   <tabstop>deleteAccount</tabstop>
   <tabstop>autoConnect</tabstop>
-  <tabstop>user</tabstop>
+  <tabstop>accountButtonBox</tabstop>
   <tabstop>password</tabstop>
+  <tabstop>user</tabstop>
   <tabstop>rememberPasswd</tabstop>
+  <tabstop>loginButtonBox</tabstop>
   <tabstop>syncButtonBox</tabstop>
+  <tabstop>launchCoreConfigWizard</tabstop>
  </tabstops>
  <resources>
   <include location="../../icons/icons.qrc" />
