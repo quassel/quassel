@@ -52,7 +52,10 @@ public slots:
   virtual void delUser(UserId user);
   
   /* Network handling */
-  virtual NetworkId createNetworkId(UserId user, const NetworkInfo &info);
+  virtual NetworkId createNetwork(UserId user, const NetworkInfo &info);
+  virtual bool updateNetwork(UserId user, const NetworkInfo &info);
+  virtual bool removeNetwork(UserId user, const NetworkId &networkId);
+  virtual QList<NetworkInfo> networks(UserId user);
   
   /* Buffer handling */
   virtual BufferInfo getBufferInfo(UserId user, const NetworkId &networkId, const QString &buffer = "");
@@ -72,6 +75,7 @@ protected:
   
 private:
   static QString backlogFile();
+  bool isValidNetwork(UserId user, const NetworkId &networkId);
   NetworkId getNetworkId(UserId user, const QString &network);
   void createBuffer(UserId user, const NetworkId &networkId, const QString &buffer);
 };

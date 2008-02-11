@@ -141,7 +141,7 @@ void SqliteStorage::delUser(UserId user) {
   emit userRemoved(user);
 }
 
-NetworkId SqliteStorage::createNetworkId(UserId user, const NetworkInfo &info) {
+NetworkId SqliteStorage::createNetwork(UserId user, const NetworkInfo &info) {
   NetworkId networkId;
   QSqlQuery query(logDb());
   query.prepare(queryString("insert_network"));
@@ -152,8 +152,185 @@ NetworkId SqliteStorage::createNetworkId(UserId user, const NetworkInfo &info) {
   networkId = getNetworkId(user, info.networkName);
   if(!networkId.isValid()) {
     watchQuery(&query);
+  } else {
+    updateNetwork(user, info);
   }
   return networkId;
+}
+
+bool SqliteStorage::updateNetwork(UserId user, const NetworkInfo &info) {
+  if(!isValidNetwork(user, info.networkId))
+     return false;
+  
+  QSqlQuery updateQuery(logDb());
+  updateQuery.prepare(queryString("update_network"));
+  updateQuery.bindValue(":networkname", info.networkName);
+  updateQuery.bindValue(":identityid", info.identity.toInt());
+  updateQuery.bindValue(":usecustomencoding", info.useCustomEncodings ? 1 : 0);
+  updateQuery.bindValue(":encodingcodec", QString(info.codecForEncoding));
+  updateQuery.bindValue(":decodingcodec", QString(info.codecForDecoding));
+  updateQuery.bindValue(":userandomserver", info.useRandomServer ? 1 : 0);
+  updateQuery.bindValue(":perform", info.perform.join("\n"));
+  updateQuery.bindValue(":useautoidentify", info.useAutoIdentify ? 1 : 0);
+  updateQuery.bindValue(":autoidentifyservice", info.autoIdentifyService);
+  updateQuery.bindValue(":autoidentifypassword", info.autoIdentifyPassword);
+  updateQuery.bindValue(":useautoreconnect", info.useAutoReconnect ? 1 : 0);
+  updateQuery.bindValue(":autoreconnectinterval", info.autoReconnectInterval);
+  updateQuery.bindValue(":autoreconnectretries", info.autoReconnectRetries);
+  updateQuery.bindValue(":rejoinchannels", info.rejoinChannels ? 1 : 0);
+  updateQuery.bindValue(":networkid", info.networkId.toInt());
+  updateQuery.exec();
+  if(!watchQuery(&updateQuery))
+    return false;
+
+  QSqlQuery dropServersQuery(logDb());
+  dropServersQuery.prepare("DELETE FROM ircserver WHERE networkid = :networkid");
+  dropServersQuery.bindValue(":networkid", info.networkId.toInt());
+  dropServersQuery.exec();
+  if(!watchQuery(&dropServersQuery))
+    return false;
+
+  QSqlQuery insertServersQuery(logDb());
+  insertServersQuery.prepare(queryString("insert_server"));
+  foreach(QVariant server_, info.serverList) {
+    QVariantMap server = server_.toMap();
+    insertServersQuery.bindValue(":hostname", server["Host"]);
+    insertServersQuery.bindValue(":port", server["Port"].toInt());
+    insertServersQuery.bindValue(":password", server["Password"]);
+    insertServersQuery.bindValue(":ssl", server["UseSSL"].toBool() ? 1 : 0);
+    insertServersQuery.bindValue(":userid", user.toInt());
+    insertServersQuery.bindValue(":networkid", info.networkId.toInt());
+
+    insertServersQuery.exec();
+    if(!watchQuery(&insertServersQuery))
+      return false;
+  }
+  
+  return true;
+}
+
+bool SqliteStorage::removeNetwork(UserId user, const NetworkId &networkId) {
+  if(!isValidNetwork(user, networkId))
+     return false;
+
+  bool withTransaction = logDb().driver()->hasFeature(QSqlDriver::Transactions);
+  if(withTransaction) {
+    sync();
+    if(!logDb().transaction()) {
+      qWarning() << "SqliteStorage::removeNetwork(): cannot start transaction. continuing with out rollback support!";
+      withTransaction = false;
+    }
+  }
+  
+  QSqlQuery deleteBacklogQuery(logDb());
+  deleteBacklogQuery.prepare(queryString("delete_backlog_for_network"));
+  deleteBacklogQuery.bindValue(":networkid", networkId.toInt());
+  deleteBacklogQuery.exec();
+  if(!watchQuery(&deleteBacklogQuery)) {
+    if(withTransaction)
+      logDb().rollback();
+    return false;
+  }
+  
+  QSqlQuery deleteBuffersQuery(logDb());
+  deleteBuffersQuery.prepare(queryString("delete_buffers_for_network"));
+  deleteBuffersQuery.bindValue(":networkid", networkId.toInt());
+  deleteBuffersQuery.exec();
+  if(!watchQuery(&deleteBuffersQuery)) {
+    if(withTransaction)
+      logDb().rollback();
+    return false;
+  }
+  
+  QSqlQuery deleteServersQuery(logDb());
+  deleteServersQuery.prepare(queryString("delete_ircservers_for_network"));
+  deleteServersQuery.bindValue(":networkid", networkId.toInt());
+  deleteServersQuery.exec();
+  if(!watchQuery(&deleteServersQuery)) {
+    if(withTransaction)
+      logDb().rollback();
+    return false;
+  }
+  
+  QSqlQuery deleteNetworkQuery(logDb());
+  deleteNetworkQuery.prepare(queryString("delete_network"));
+  deleteNetworkQuery.bindValue(":networkid", networkId.toInt());
+  deleteNetworkQuery.exec();
+  if(!watchQuery(&deleteNetworkQuery)) {
+    if(withTransaction)
+      logDb().rollback();
+    return false;
+  }
+
+  logDb().commit();
+  return true;
+}
+
+QList<NetworkInfo> SqliteStorage::networks(UserId user) {
+  QList<NetworkInfo> nets;
+
+  QSqlQuery networksQuery(logDb());
+  networksQuery.prepare(queryString("select_networks_for_user"));
+  networksQuery.bindValue(":userid", user.toInt());
+  
+  QSqlQuery serversQuery(logDb());
+  serversQuery.prepare(queryString("select_servers_for_network"));
+
+  networksQuery.exec();
+  if(!watchQuery(&networksQuery))
+    return nets;
+
+  while(networksQuery.next()) {
+    NetworkInfo net;
+    net.networkId = networksQuery.value(0).toInt();
+    net.networkName = networksQuery.value(1).toString();
+    net.identity = networksQuery.value(2).toInt();
+    net.useCustomEncodings = networksQuery.value(3).toInt() == 1 ? true : false;
+    net.codecForEncoding = networksQuery.value(4).toString().toAscii();
+    net.codecForDecoding = networksQuery.value(5).toString().toAscii();
+    net.useRandomServer = networksQuery.value(6).toInt() == 1 ? true : false;
+    net.perform = networksQuery.value(7).toString().split("\n");
+    net.useAutoIdentify = networksQuery.value(8).toInt() == 1 ? true : false;
+    net.autoIdentifyService = networksQuery.value(9).toString();
+    net.autoIdentifyPassword = networksQuery.value(10).toString();
+    net.useAutoReconnect = networksQuery.value(11).toInt() == 1 ? true : false;
+    net.autoReconnectInterval = networksQuery.value(12).toUInt();
+    net.autoReconnectRetries = networksQuery.value(13).toInt();
+    net.rejoinChannels = networksQuery.value(14).toInt() == 1 ? true : false;
+
+    serversQuery.bindValue(":networkid", net.networkId.toInt());
+    serversQuery.exec();
+    if(!watchQuery(&serversQuery))
+      return nets;
+
+    QVariantList servers;
+    while(serversQuery.next()) {
+      QVariantMap server;
+      server["Host"] = serversQuery.value(0).toString();
+      server["Port"] = serversQuery.value(1).toInt();
+      server["Password"] = serversQuery.value(2).toString();
+      server["UseSSL"] = serversQuery.value(3).toInt() == 1 ? true : false;
+      servers << server;
+    }
+    net.serverList = servers;
+    nets << net;
+  }
+  return nets;
+}
+
+bool SqliteStorage::isValidNetwork(UserId user, const NetworkId &networkId) {
+  QSqlQuery query(logDb());
+  query.prepare(queryString("select_networkExists"));
+  query.bindValue(":userid", user.toInt());
+  query.bindValue(":networkid", networkId.toInt());
+  query.exec();
+
+  watchQuery(&query); // there should not occur any errors
+  if(!query.first())
+    return false;
+  
+  Q_ASSERT(!query.next());
+  return true;
 }
 
 NetworkId SqliteStorage::getNetworkId(UserId user, const QString &network) {

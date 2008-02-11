@@ -25,7 +25,7 @@
 
 #include "types.h"
 #include "message.h"
-struct NetworkInfo;
+#include "network.h"
 
 class Storage : public QObject {
   Q_OBJECT
@@ -109,13 +109,39 @@ class Storage : public QObject {
 
     /* Network handling */
 
-    //! Create a new unique Network in the storage backend
+    //! Create a new Network in the storage backend and return it unique Id
     /** \param user        The core user who owns this network
      *  \param networkInfo The networkInfo holding the network definition
      *  \return the NetworkId of the newly created Network. Possibly invalid.
      */
-    virtual NetworkId createNetworkId(UserId user, const NetworkInfo &info) = 0;
+    virtual NetworkId createNetwork(UserId user, const NetworkInfo &info) = 0;
 
+    //! Apply the changes to NetworkInfo info to the storage engine
+    /** \note This method is thredsafe.
+     *
+     *  \param user        The core user
+     *  \param networkInfo The Updated NetworkInfo
+     *  \return true if successfull.
+     */
+    virtual bool updateNetwork(UserId user, const NetworkInfo &info) = 0;
+
+    //! Permanently remove a Network and all the data associated with it.
+    /** \note This method is thredsafe.
+     *
+     *  \param user        The core user
+     *  \param networkId   The network to delete
+     *  \return true if successfull.
+     */
+    virtual bool removeNetwork(UserId user, const NetworkId &networkId) = 0;
+
+    //! Returns a list of all NetworkInfos for the given UserId user
+    /** \note This method is thredsafe.
+     *
+     *  \param user        The core user
+     *  \return QList<NetworkInfo>.
+     */
+    virtual QList<NetworkInfo> networks(UserId user) = 0;
+  
     //! Get the unique NetworkId of the network for a user.
     /** \param user    The core user who owns this network
      *  \param network The network name

@@ -76,6 +76,8 @@ void Client::init() {
   _networkModel = new NetworkModel(this);
   connect(this, SIGNAL(bufferUpdated(BufferInfo)),
           _networkModel, SLOT(bufferUpdated(BufferInfo)));
+  connect(this, SIGNAL(networkRemoved(NetworkId)),
+	  _networkModel, SLOT(networkRemoved(NetworkId)));
 
   _bufferModel = new BufferModel(_networkModel);
 

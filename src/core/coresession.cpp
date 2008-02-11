@@ -128,37 +128,20 @@ void CoreSession::loadSettings() {
     createIdentity(i);
   }
 
-  // FIXME switch to a pure DB storage
-  foreach(NetworkId id, s.networkIds()) {
-    NetworkInfo info = s.networkInfo(id);
-    createNetwork(info);
+
+  // migration to pure DB storage
+  QList<NetworkId> netIds = s.networkIds();
+  if(!netIds.isEmpty()) {
+    qDebug() << "Migrating Networksettings to DB Storage for User:" << user();
+    foreach(NetworkId id, netIds) {
+      NetworkInfo info = s.networkInfo(id);
+      Core::updateNetwork(user(), info);
+      s.removeNetworkInfo(id);
+    }
   }
 
-  // FIXME Migrate old settings if available...
-  if(!_networks.count()) {
-    QVariantMap networks = s.sessionValue("Networks").toMap();
-    if(networks.keys().count()) {
-      qWarning() << "Migrating your old network settings to the new format!";
-      foreach(QString netname, networks.keys()) {
-        QVariantMap network = networks[netname].toMap();
-        NetworkId netid = Core::networkId(user(), netname);
-        NetworkInfo info;
-        info.networkId = netid;
-        info.networkName = netname;
-        info.identity = 1;
-        info.codecForEncoding = "ISO-8859-15";
-        info.codecForDecoding = "ISO-8859-15";
-        QVariantList slist;
-        foreach(QVariant v, network["Servers"].toList()) {
-          QVariantMap server;
-          server["Host"] = v.toMap()["Address"];
-          server["Port"] = v.toMap()["Port"];
-          slist << server;
-        }
-        info.serverList = slist;
-        createNetwork(info);
-      }
-    }
+  foreach(NetworkInfo info, Core::networks(user())) {
+    createNetwork(info);
   }
 }
 
@@ -419,7 +402,7 @@ void CoreSession::createNetwork(const NetworkInfo &info_) {
   int id;
 
   if(!info.networkId.isValid())
-    Core::createNetworkId(user(), info);
+    Core::createNetwork(user(), info);
 
   Q_ASSERT(info.networkId.isValid());
 
@@ -433,8 +416,6 @@ void CoreSession::createNetwork(const NetworkInfo &info_) {
   net->setProxy(signalProxy());
   _networks[id] = net;
   signalProxy()->synchronize(net);
-  CoreUserSettings s(user());
-  s.storeNetworkInfo(info);
   emit networkCreated(id);
 }
 
@@ -444,16 +425,13 @@ void CoreSession::updateNetwork(const NetworkInfo &info) {
     return;
   }
   _networks[info.networkId]->setNetworkInfo(info);
-  CoreUserSettings s(user());
-  s.storeNetworkInfo(info);
+  Core::updateNetwork(user(), info);
 }
 
 void CoreSession::removeNetwork(NetworkId id) {
   Network *net = _networks.take(id);
-  if(net) {
+  if(net && Core::removeNetwork(user(), id)) {
     emit networkRemoved(id);
-    CoreUserSettings s(user());
-    s.removeNetworkInfo(id);
     net->deleteLater();
   }
 }

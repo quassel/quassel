@@ -254,7 +254,8 @@ public:
 public slots:
   void bufferUpdated(BufferInfo bufferInfo);
   void updateBufferActivity(const Message &msg);
-
+  void networkRemoved(const NetworkId &networkId);
+  
 private:
   QModelIndex networkIndex(NetworkId networkId);
   NetworkItem *networkItem(NetworkId networkId);

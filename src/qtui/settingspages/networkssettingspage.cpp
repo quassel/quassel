@@ -175,10 +175,6 @@ void NetworksSettingsPage::setWidgetStates() {
     ui.upServer->setEnabled(false);
     ui.downServer->setEnabled(false);
   }
-
-  // FIXME disable network creation/deletion because of the storage issue
-  ui.deleteNetwork->setEnabled(false);
-  ui.renameNetwork->setEnabled(false);
 }
 
 void NetworksSettingsPage::setItemState(NetworkId id, QListWidgetItem *item) {
@@ -418,8 +414,7 @@ void NetworksSettingsPage::on_deleteNetwork_clicked() {
   if(ui.networkList->selectedItems().count()) {
     NetworkId netid = ui.networkList->selectedItems()[0]->data(Qt::UserRole).value<NetworkId>();
     int ret = QMessageBox::question(this, tr("Delete Network?"),
-                                    tr("Do you really want to delete the network \"%1\" and all related settings, including the backlog?"
-                                       "<br><br><em>NOTE: Backlog deletion hasn't actually been implemented yet.</em>").arg(networkInfos[netid].networkName),
+                                    tr("Do you really want to delete the network \"%1\" and all related settings, including the backlog?").arg(networkInfos[netid].networkName),
                                     QMessageBox::Yes|QMessageBox::No, QMessageBox::No);
     if(ret == QMessageBox::Yes) {
       currentId = 0;

@@ -592,7 +592,7 @@ Buffer *NetworkModel::getBufferByIndex(const QModelIndex &index) const {
 
 // experimental stuff :)
 QModelIndex NetworkModel::networkIndex(NetworkId networkId) {
-  return indexById(networkId.toInt());
+  return indexById(qHash(networkId));
 }
 
 NetworkItem *NetworkModel::existsNetworkItem(NetworkId networkId) {
@@ -611,12 +611,16 @@ NetworkItem *NetworkModel::networkItem(NetworkId networkId) {
   return netItem;
 }
 
+void NetworkModel::networkRemoved(const NetworkId &networkId) {
+  rootItem->removeChildById(qHash(networkId));
+}
+
 QModelIndex NetworkModel::bufferIndex(BufferId bufferId) {
   AbstractTreeItem *netItem, *bufferItem;
   for(int i = 0; i < rootItem->childCount(); i++) {
     netItem = rootItem->child(i);
-    if((bufferItem = netItem->childById(bufferId.toInt()))) {
-      return indexById(bufferItem->id(), networkIndex(netItem->id()));
+    if((bufferItem = netItem->childById(qHash(bufferId)))) {
+      return indexByItem(bufferItem);
     }
   }
   return QModelIndex();
@@ -719,11 +723,11 @@ bool NetworkModel::dropMimeData(const QMimeData *data, Qt::DropAction action, in
   if(bufferId == parent.data(BufferIdRole).value<BufferId>())
     return false; 
   
-  Q_ASSERT(rootItem->childById(netId.toInt()));
-  Q_ASSERT(rootItem->childById(netId.toInt())->childById(bufferId.toInt()));
+  Q_ASSERT(rootItem->childById(qHash(netId)));
+  Q_ASSERT(rootItem->childById(qHash(netId))->childById(qHash(bufferId)));
 
   // source must be a query too
-  BufferItem::Type sourceType = (BufferItem::Type)rootItem->childById(netId.toInt())->childById(bufferId.toInt())->data(0, BufferTypeRole).toInt();
+  BufferItem::Type sourceType = (BufferItem::Type)rootItem->childById(qHash(netId))->childById(qHash(bufferId))->data(0, BufferTypeRole).toInt();
   if(sourceType != BufferItem::QueryType)
     return false;
     
@@ -772,3 +776,4 @@ const Network *NetworkModel::networkByIndex(const QModelIndex &index) const {
   NetworkId networkId = netVariant.value<NetworkId>();
   return Client::network(networkId);
 }
+

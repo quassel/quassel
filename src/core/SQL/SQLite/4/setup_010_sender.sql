@@ -1,5 +1,0 @@
-CREATE TABLE sender (
-       senderid INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-       sender TEXT UNIQUE NOT NULL)
-
-	  

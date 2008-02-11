@@ -205,14 +205,29 @@ void Core::syncStorage() {
 }
 
 /*** Storage Access ***/
-bool Core::createNetworkId(UserId user, NetworkInfo &info) {
+bool Core::createNetwork(UserId user, NetworkInfo &info) {
   QMutexLocker locker(&mutex);
-  NetworkId networkId = instance()->storage->createNetworkId(user, info);
+  NetworkId networkId = instance()->storage->createNetwork(user, info);
   if(!networkId.isValid())
     return false;
 
   info.networkId = networkId;
   return true;
+}
+
+bool Core::updateNetwork(UserId user, const NetworkInfo &info) {
+  QMutexLocker locker(&mutex);
+  return instance()->storage->updateNetwork(user, info);
+}
+
+bool Core::removeNetwork(UserId user, const NetworkId &networkId) {
+  QMutexLocker locker(&mutex);
+  return instance()->storage->removeNetwork(user, networkId);
+}
+
+QList<NetworkInfo> Core::networks(UserId user) {
+  QMutexLocker locker(&mutex);
+  return instance()->storage->networks(user);
 }
 
 NetworkId Core::networkId(UserId user, const QString &network) {

@@ -53,15 +53,41 @@ class Core : public QObject {
     /*** Storage access ***/
     // These methods are threadsafe.
 
-    //! Create a NetworkId in the Storage and store it in the given NetworkInfo
+    //! Create a Network in the Storage and store it's Id in the given NetworkInfo
     /** \note This method is thredsafe.
      *
      *  \param user        The core user
      *  \param networkInfo a NetworkInfo definition to store the newly created ID in
      *  \return true if successfull.
      */
-    static bool createNetworkId(UserId user, NetworkInfo &info);
+    static bool createNetwork(UserId user, NetworkInfo &info);
 	
+    //! Apply the changes to NetworkInfo info to the storage engine
+    /** \note This method is thredsafe.
+     *
+     *  \param user        The core user
+     *  \param networkInfo The Updated NetworkInfo
+     *  \return true if successfull.
+     */
+    static bool updateNetwork(UserId user, const NetworkInfo &info);
+
+    //! Permanently remove a Network and all the data associated with it.
+    /** \note This method is thredsafe.
+     *
+     *  \param user        The core user
+     *  \param networkId   The network to delete
+     *  \return true if successfull.
+     */
+    static bool removeNetwork(UserId user, const NetworkId &networkId);
+  
+    //! Returns a list of all NetworkInfos for the given UserId user
+    /** \note This method is thredsafe.
+     *
+     *  \param user        The core user
+     *  \return QList<NetworkInfo>.
+     */
+    static QList<NetworkInfo> networks(UserId user);
+
     //! Get the NetworkId for a network name.
     /** \note This method is threadsafe.
      *
