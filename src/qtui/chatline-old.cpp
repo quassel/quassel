@@ -52,12 +52,32 @@ void ChatLine::formatMsg(Message msg) {
 
 // This function is almost obsolete, since with the new style engine, we already get a list of formats...
 // We don't know yet if we keep this implementation of ChatLine, so I won't bother making this actually nice.
-// Also, the additional format is ignored for now, which means that you won't see a selection...
-// FIXME TODO
-QList<ChatLine::FormatRange> ChatLine::calcFormatRanges(const UiStyle::StyledText &fs, QTextLayout::FormatRange additional) {
+QList<ChatLine::FormatRange> ChatLine::calcFormatRanges(UiStyle::StyledText fs, QTextLayout::FormatRange additional) {
   QList<FormatRange> ranges;
 
+  if(additional.length > 0) {
+    for(int i = 0; i < fs.formats.count(); i++) {
+      int oldend = fs.formats[i].start + fs.formats[i].length - 1;
+      int addend = additional.start + additional.length - 1;
+      if(oldend < additional.start) continue;
+      fs.formats[i].length = additional.start - fs.formats[i].start;
+      QTextLayout::FormatRange addfmtrng = fs.formats[i];
+      addfmtrng.format.merge(additional.format);
+      addfmtrng.start = additional.start;
+      addfmtrng.length = qMin(oldend, addend) - additional.start + 1;
+      fs.formats.insert(++i, addfmtrng);
+      if(addend == oldend) break;
+      if(addend < oldend) {
+        QTextLayout::FormatRange restfmtrng = fs.formats[i-1];
+        restfmtrng.start = addend + 1;
+        restfmtrng.length = oldend - addend;
+        fs.formats.insert(++i, restfmtrng);
+        break;
+      }
+    }
+  }
   foreach(QTextLayout::FormatRange f, fs.formats) {
+    if(f.length <= 0) continue;
     FormatRange range;
     range.start = f.start;
     range.length = f.length;
@@ -66,36 +86,6 @@ QList<ChatLine::FormatRange> ChatLine::calcFormatRanges(const UiStyle::StyledTex
     range.height = metrics.lineSpacing();
     ranges.append(range);
   }
-  /*
-  QList<QTextLayout::FormatRange> formats = fs.formats;
-  formats.append(additional);
-  int cur = -1;
-  FormatRange range, lastrange;
-  for(int i = 0; i < fs.text.length(); i++) {
-    QTextCharFormat format;
-    foreach(QTextLayout::FormatRange f, formats) {
-      if(i >= f.start && i < f.start + f.length) format.merge(f.format);
-    }
-    if(cur < 0) {
-      range.start = 0; range.length = 1; range.format= format;
-      cur = 0;
-    } else {
-      if(format == range.format) range.length++;
-      else {
-        QFontMetrics metrics(range.format.font());
-        range.height = metrics.lineSpacing();
-        ranges.append(range);
-        range.start = i; range.length = 1; range.format = format;
-        cur++;
-      }
-    }
-  }
-  if(cur >= 0) {
-    QFontMetrics metrics(range.format.font());
-    range.height = metrics.lineSpacing();
-    ranges.append(range);
-  }
-  */
   return ranges;
 }
 
@@ -116,9 +106,7 @@ void ChatLine::setSelection(SelectionMode mode, int start, int end) {
       textSel.format.setBackground(pal.brush(QPalette::Highlight));
       textSel.start = selectionStart;
       textSel.length = selectionEnd - selectionStart;
-      //textFormat.append(textSel);
       textFormat = calcFormatRanges(styledText, textSel);
-      foreach(FormatRange fr, textFormat);
       break;
     case Full:
       tsSel.format.setForeground(pal.brush(QPalette::HighlightedText));

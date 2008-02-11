@@ -109,8 +109,6 @@ void CoreConnectDlg::setAccountWidgetStates() {
     ui.autoConnect->setChecked(selectedItems[0]->data(Qt::UserRole).value<AccountId>() == autoConnectAccount);
   }
   ui.accountButtonBox->button(QDialogButtonBox::Ok)->setEnabled(ui.accountList->count());
-  //ui.accountButtonBox->button(QDialogButtonBox::Ok)->setDefault(true);
-  //ui.accountButtonBox->button(QDialogButtonBox::Ok)->setFocus();
 }
 
 void CoreConnectDlg::on_autoConnect_clicked(bool state) {
@@ -229,7 +227,6 @@ void CoreConnectDlg::initPhaseError(const QString &error) {
   ui.connectLabel->setText(tr("<div style=color:red;>Connection to %1 failed!</div>").arg(accountData["Host"].toString()));
   ui.coreInfoLabel->setText(error);
   ui.loginButtonBox->setStandardButtons(QDialogButtonBox::Retry|QDialogButtonBox::Cancel);
-  //ui.loginButtonBox->button(QDialogButtonBox::Retry)->setDefault(true);
   ui.loginButtonBox->button(QDialogButtonBox::Retry)->setFocus();
   disconnect(ui.loginButtonBox, 0, this, 0);
   connect(ui.loginButtonBox, SIGNAL(accepted()), this, SLOT(restartPhaseNull()));
