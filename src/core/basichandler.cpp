@@ -29,8 +29,8 @@ BasicHandler::BasicHandler(NetworkConnection *parent)
     defaultHandler(-1),
     initDone(false)
 {
-  connect(this, SIGNAL(displayMsg(Message::Type, QString, QString, QString, quint8)),
-	  server, SIGNAL(displayMsg(Message::Type, QString, QString, QString, quint8)));
+  connect(this, SIGNAL(displayMsg(Message::Type, BufferInfo::Type, QString, QString, QString, quint8)),
+	  server, SIGNAL(displayMsg(Message::Type, BufferInfo::Type, QString, QString, QString, quint8)));
 
   connect(this, SIGNAL(putCmd(QString, QStringList, QString)),
 	  server, SLOT(putCmd(QString, QStringList, QString)));
@@ -97,4 +97,14 @@ void BasicHandler::handle(const QString &member, QGenericArgument val0,
 // ====================
 Network *BasicHandler::network() const {
   return server->network();
+}
+
+BufferInfo::Type BasicHandler::typeByTarget(const QString &target) const {
+  if(target.isEmpty())
+    return BufferInfo::StatusBuffer;
+
+  if(network()->isChannelName(target))
+    return BufferInfo::ChannelBuffer;
+
+  return BufferInfo::QueryBuffer;
 }

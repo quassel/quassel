@@ -28,11 +28,20 @@ class QDataStream;
 
 class BufferInfo {
 public:
+  enum Type {
+    InvalidBuffer = 0x00,
+    StatusBuffer = 0x01,
+    ChannelBuffer = 0x02,
+    QueryBuffer = 0x04,
+    GroupBuffer = 0x08
+  };
+  
   BufferInfo();
-  BufferInfo(BufferId id, NetworkId networkid, uint gid = 0, QString buf = QString());
+  BufferInfo(BufferId id, NetworkId networkid, Type type, uint gid = 0, QString buf = QString());
   
   inline BufferId bufferId() const { return _bufferId; }
   inline NetworkId networkId() const { return _netid; }
+  inline Type type() const { return _type; }
   inline uint groupId() const { return _groupId; }
   QString bufferName() const;
   
@@ -43,6 +52,7 @@ public:
 private:
   BufferId _bufferId;
   NetworkId _netid;
+  Type _type;
   uint _groupId;
   QString _bufferName;
   

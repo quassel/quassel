@@ -1,4 +1,4 @@
-SELECT DISTINCT buffer.bufferid, buffername, network.networkid
+SELECT DISTINCT buffer.bufferid, network.networkid, buffertype, groupid, buffername
 FROM buffer
 JOIN network ON buffer.networkid = network.networkid
 JOIN backlog ON buffer.bufferid = backlog.bufferid

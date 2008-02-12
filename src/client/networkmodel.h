@@ -62,15 +62,9 @@ public:
   QString bufferName() const;
   QString topic() const;
   int nickCount() const;
-
-  enum Type {
-    StatusType,
-    ChannelType,
-    QueryType
-  };
   
   bool isStatusBuffer() const;
-  Type bufferType() const;
+  BufferInfo::Type bufferType() const;
 
   bool isActive() const;
   
@@ -106,7 +100,6 @@ private slots:
 private:
   BufferInfo _bufferInfo;
   ActivityLevel _activity;
-  Type _type;
   QDateTime _lastMsgInsert;
   QDateTime _lastSeen;
 

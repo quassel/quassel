@@ -41,7 +41,7 @@ public:
   QStringList providesHandlers();
 
 signals:
-  void displayMsg(Message::Type, QString target, QString text, QString sender = "", quint8 flags = Message::None);
+  void displayMsg(Message::Type, BufferInfo::Type, QString target, QString text, QString sender = "", quint8 flags = Message::None);
   void putCmd(QString cmd, QStringList params, QString prefix = 0);
   void putRawLine(QString msg);
   
@@ -55,6 +55,7 @@ protected:
   NetworkConnection *server;
 
   Network *network() const;
+  BufferInfo::Type typeByTarget(const QString &target) const;
 
 private:
   const QHash<QString, int> &handlerHash();

@@ -206,7 +206,7 @@ void NetworkConnection::socketHasData() {
 void NetworkConnection::socketError(QAbstractSocket::SocketError) {
   qDebug() << qPrintable(tr("Could not connect to %1 (%2)").arg(network()->networkName(), socket.errorString()));
   emit connectionError(socket.errorString());
-  emit displayMsg(Message::Error, "", tr("Connection failure: %1").arg(socket.errorString()));
+  emit displayMsg(Message::Error, BufferInfo::StatusBuffer, "", tr("Connection failure: %1").arg(socket.errorString()));
   network()->emitConnectionError(socket.errorString());
 }
 
@@ -250,7 +250,7 @@ void NetworkConnection::socketDisconnected() {
 }
 
 // FIXME switch to BufferId
-void NetworkConnection::userInput(QString buf, QString msg) {
+void NetworkConnection::userInput(BufferInfo buf, QString msg) {
   userInputHandler()->handleUserInput(buf, msg);
 }
 

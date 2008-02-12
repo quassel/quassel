@@ -102,10 +102,11 @@ class Core : public QObject {
      *
      *  \param user      The core user who owns this buffername
      *  \param networkId The network id
+     *  \param type      The type of the buffer (StatusBuffer, Channel, etc.)
      *  \param buffer    The buffer name (if empty, the net's status buffer is returned)
      *  \return The BufferInfo corresponding to the given network and buffer name, or 0 if not found
      */
-    static BufferInfo bufferInfo(UserId user, const NetworkId &networkId, const QString &buffer = "");
+    static BufferInfo bufferInfo(UserId user, const NetworkId &networkId, BufferInfo::Type, const QString &buffer = "");
 
     //! Store a Message in the backlog.
     /** \note This method is threadsafe.

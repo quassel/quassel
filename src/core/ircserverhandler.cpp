@@ -130,7 +130,7 @@ void IrcServerHandler::handleServerMsg(QByteArray msg) {
     handle(cmd, Q_ARG(QString, prefix), Q_ARG(QList<QByteArray>, params));
     //handle(cmd, Q_ARG(QString, prefix));
   } catch(Exception e) {
-    emit displayMsg(Message::Error, "", e.msg());
+    emit displayMsg(Message::Error, BufferInfo::StatusBuffer, "", e.msg());
   }
 }
 
@@ -146,24 +146,29 @@ void IrcServerHandler::defaultHandler(QString cmd, QString prefix, QList<QByteAr
     switch(num) {
       // Welcome, status, info messages. Just display these.
       case 2: case 3: case 4: case 5: case 251: case 252: case 253: case 254: case 255: case 372: case 375:
-        emit displayMsg(Message::Server, "", params.join(" "), prefix);
+        emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", params.join(" "), prefix);
         break;
       // Server error messages without param, just display them
       case 409: case 411: case 412: case 422: case 424: case 445: case 446: case 451: case 462:
       case 463: case 464: case 465: case 466: case 472: case 481: case 483: case 485: case 491: case 501: case 502:
       case 431: // ERR_NONICKNAMEGIVEN 
-        emit displayMsg(Message::Error, "", params.join(" "), prefix);
+        emit displayMsg(Message::Error, BufferInfo::StatusBuffer, "", params.join(" "), prefix);
         break;
       // Server error messages, display them in red. First param will be appended.
       case 401: 
-      { QString channelName = params.takeFirst();
-        emit displayMsg(Message::Error, "", params.join(" ") + " " + channelName, prefix);
-        emit displayMsg(Message::Error, channelName, params.join(" ") + " " + channelName, prefix);
+      {
+	// FIXME needs proper redirection
+	QString target = params.takeFirst();
+	BufferInfo::Type bufferType = network()->isChannelName(target)
+	  ? BufferInfo::ChannelBuffer
+	  : BufferInfo::QueryBuffer;
+        emit displayMsg(Message::Error, BufferInfo::StatusBuffer, "", params.join(" ") + " " + target, prefix);
+        emit displayMsg(Message::Error, bufferType, target, params.join(" ") + " " + target, prefix);
         break;
       }
       case 402: case 403: case 404: case 406: case 408: case 415: case 421: case 442:
       { QString channelName = params.takeFirst();
-        emit displayMsg(Message::Error, "", params.join(" ") + " " + channelName, prefix);
+        emit displayMsg(Message::Error, BufferInfo::StatusBuffer, "", params.join(" ") + " " + channelName, prefix);
         break;
       }
       // Server error messages which will be displayed with a colon between the first param and the rest
@@ -171,7 +176,7 @@ void IrcServerHandler::defaultHandler(QString cmd, QString prefix, QList<QByteAr
       case 467: case 471: case 473: case 474: case 475: case 476: case 477: case 478: case 482:
       case 436: // ERR_NICKCOLLISION
       { QString p = params.takeFirst();
-        emit displayMsg(Message::Error, "", p + ": " + params.join(" "));
+        emit displayMsg(Message::Error, BufferInfo::StatusBuffer, "", p + ": " + params.join(" "));
         break;
       }
       // Ignore these commands.
@@ -180,11 +185,11 @@ void IrcServerHandler::defaultHandler(QString cmd, QString prefix, QList<QByteAr
 
       // Everything else will be marked in red, so we can add them somewhere.
       default:
-        emit displayMsg(Message::Error, "", cmd + " " + params.join(" "), prefix);
+        emit displayMsg(Message::Error, BufferInfo::StatusBuffer, "", cmd + " " + params.join(" "), prefix);
     }
     //qDebug() << prefix <<":"<<cmd<<params;
   } else {
-    emit displayMsg(Message::Error, "", QString("Unknown: ") + cmd + " " + params.join(" "), prefix);
+    emit displayMsg(Message::Error, BufferInfo::StatusBuffer, "", QString("Unknown: ") + cmd + " " + params.join(" "), prefix);
     //qDebug() << prefix <<":"<<cmd<<params;
   }
 }
@@ -196,7 +201,7 @@ void IrcServerHandler::handleJoin(QString prefix, QList<QByteArray> params) {
   Q_ASSERT(params.count() == 1);
   QString channel = serverDecode(params[0]);
   IrcUser *ircuser = network()->updateNickFromMask(prefix);
-  emit displayMsg(Message::Join, channel, channel, prefix);
+  emit displayMsg(Message::Join, BufferInfo::ChannelBuffer, channel, channel, prefix);
   //qDebug() << "IrcServerHandler::handleJoin()" << prefix << params;
   ircuser->joinChannel(channel);
 }
@@ -215,18 +220,18 @@ void IrcServerHandler::handleKick(QString prefix, QList<QByteArray> params) {
   else
     msg = victim->nick();
 
-  emit displayMsg(Message::Kick, channel, msg, prefix);
+  emit displayMsg(Message::Kick, BufferInfo::ChannelBuffer, channel, msg, prefix);
 }
 
 void IrcServerHandler::handleMode(QString prefix, QList<QByteArray> params) {
   if(params.count() < 2) {
-    emit displayMsg(Message::Error, "", tr("Received invalid MODE from %s: %s").arg(prefix).arg(serverDecode(params).join(" ")));
+    emit displayMsg(Message::Error, BufferInfo::StatusBuffer, "", tr("Received invalid MODE from %s: %s").arg(prefix).arg(serverDecode(params).join(" ")));
     return;
   }
 
   if(network()->isChannelName(params[0])) {
     // Channel Modes
-    emit displayMsg(Message::Mode, serverDecode(params[0]), serverDecode(params).join(" "), prefix);
+    emit displayMsg(Message::Mode, BufferInfo::ChannelBuffer, serverDecode(params[0]), serverDecode(params).join(" "), prefix);
 
     IrcChannel *channel = network()->ircChannel(params.takeFirst());
     // FIXME: currently the IrcChannels only support PREFIX-Modes for users
@@ -257,7 +262,8 @@ void IrcServerHandler::handleMode(QString prefix, QList<QByteArray> params) {
     
   } else {
     // pure User Modes
-    emit displayMsg(Message::Mode, "", serverDecode(params).join(" "), prefix);
+    // FIXME: redirect
+    emit displayMsg(Message::Mode, BufferInfo::StatusBuffer, "", serverDecode(params).join(" "), prefix);
   }
 }
 
@@ -267,13 +273,13 @@ void IrcServerHandler::handleNick(QString prefix, QList<QByteArray> params) {
   QString newnick = serverDecode(params[0]);
   QString oldnick = ircuser->nick();
 
-  foreach(QString channel, ircuser->channels()) {
-    if(network()->isMyNick(oldnick)) {
-      emit displayMsg(Message::Nick, channel, newnick, newnick);
-    } else {
-      emit displayMsg(Message::Nick, channel, newnick, prefix);
-    }
-  }
+  QString sender = network()->isMyNick(oldnick)
+    ? newnick
+    : prefix;
+
+  foreach(QString channel, ircuser->channels())
+    emit displayMsg(Message::Nick, BufferInfo::ChannelBuffer, channel, newnick, sender);
+  
   ircuser->setNick(newnick);
 }
 
@@ -285,7 +291,7 @@ void IrcServerHandler::handleNotice(QString prefix, QList<QByteArray> params) {
 
   // check if it's only a Server Message or if it's a regular Notice
   if(network()->currentServer().isEmpty() || network()->currentServer() == prefix) {
-    emit displayMsg(Message::Server, "", serverDecode(params[1]), prefix);
+    emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", serverDecode(params[1]), prefix);
     return;
   }
 
@@ -313,7 +319,7 @@ void IrcServerHandler::handlePart(QString prefix, QList<QByteArray> params) {
   if(params.count() > 1)
     msg = userDecode(ircuser->nick(), params[1]);
 
-  emit displayMsg(Message::Part, channel, msg, prefix);
+  emit displayMsg(Message::Part, BufferInfo::ChannelBuffer, channel, msg, prefix);
 }
 
 void IrcServerHandler::handlePing(QString prefix, QList<QByteArray> params) {
@@ -347,7 +353,7 @@ void IrcServerHandler::handleQuit(QString prefix, QList<QByteArray> params) {
     msg = userDecode(ircuser->nick(), params[0]);
 
   foreach(QString channel, ircuser->channels())
-    emit displayMsg(Message::Quit, channel, msg, prefix);
+    emit displayMsg(Message::Quit, BufferInfo::ChannelBuffer, channel, msg, prefix);
 
   network()->removeIrcUser(nickFromMask(prefix));
 }
@@ -360,7 +366,7 @@ void IrcServerHandler::handleTopic(QString prefix, QList<QByteArray> params) {
 
   network()->ircChannel(channel)->setTopic(topic);
 
-  emit displayMsg(Message::Server, channel, tr("%1 has changed topic for %2 to: \"%3\"").arg(ircuser->nick()).arg(channel).arg(topic));
+  emit displayMsg(Message::Server, BufferInfo::ChannelBuffer, channel, tr("%1 has changed topic for %2 to: \"%3\"").arg(ircuser->nick()).arg(channel).arg(topic));
 }
 
 /* RPL_WELCOME */
@@ -371,7 +377,7 @@ void IrcServerHandler::handle001(QString prefix, QList<QByteArray> params) {
   network()->setCurrentServer(prefix);
   network()->setMyNick(nickFromMask(myhostmask));
 
-  emit displayMsg(Message::Server, "", param, prefix);
+  emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", param, prefix);
 }
 
 /* RPL_ISUPPORT */
@@ -418,19 +424,20 @@ void IrcServerHandler::handle301(QString prefix, QList<QByteArray> params) {
     ircuser->setAway(true);
   }
 
+  // FIXME: proper redirection needed
   if(_whois) {
-    emit displayMsg(Message::Server, "", tr("[Whois] %1 is away: \"%2\"").arg(nickName).arg(awayMessage));
+    emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Whois] %1 is away: \"%2\"").arg(nickName).arg(awayMessage));
   } else {
     if(ircuser) {
       int now = QDateTime::currentDateTime().toTime_t();
       int silenceTime = 60;
       if(ircuser->lastAwayMessage() + silenceTime < now) {
-        emit displayMsg(Message::Server, params[0], tr("%1 is away: \"%2\"").arg(nickName).arg(awayMessage));
+        emit displayMsg(Message::Server, BufferInfo::QueryBuffer, params[0], tr("%1 is away: \"%2\"").arg(nickName).arg(awayMessage));
       }
       ircuser->setLastAwayMessage(now);
     } else {
       // probably should not happen
-      emit displayMsg(Message::Server, params[0], tr("%1 is away: \"%2\"").arg(nickName).arg(awayMessage));
+      emit displayMsg(Message::Server, BufferInfo::QueryBuffer, params[0], tr("%1 is away: \"%2\"").arg(nickName).arg(awayMessage));
     }
   }
 }
@@ -445,8 +452,7 @@ void IrcServerHandler::handle311(QString prefix, QList<QByteArray> params) {
     ircuser->setHost(serverDecode(params[2]));
     ircuser->setRealName(serverDecode(params.last()));
   }
-  emit displayMsg(Message::Server, "", tr("[Whois] %1")
-      .arg(serverDecode(params).join(" ")));
+  emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Whois] %1") .arg(serverDecode(params).join(" ")));
 }
  
 /*  RPL_WHOISSERVER -  "<nick> <server> :<server info>" */
@@ -457,9 +463,9 @@ void IrcServerHandler::handle312(QString prefix, QList<QByteArray> params) {
     ircuser->setServer(serverDecode(params[1]));
   }
   if(_whois) {
-    emit displayMsg(Message::Server, "", tr("[Whois] %1").arg(serverDecode(params).join(" ")));
+    emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Whois] %1").arg(serverDecode(params).join(" ")));
   } else {
-    emit displayMsg(Message::Server, "", tr("[Whowas] %1").arg(serverDecode(params).join(" ")));
+    emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Whowas] %1").arg(serverDecode(params).join(" ")));
   }
 }
 
@@ -470,19 +476,19 @@ void IrcServerHandler::handle313(QString prefix, QList<QByteArray> params) {
   if(ircuser) {
     ircuser->setIrcOperator(params.last());
   }
-  emit displayMsg(Message::Server, "", tr("[Whois] %1").arg(serverDecode(params).join(" ")));
+  emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Whois] %1").arg(serverDecode(params).join(" ")));
 }
 
 /*  RPL_WHOWASUSER - "<nick> <user> <host> * :<real name>" */
 void IrcServerHandler::handle314(QString prefix, QList<QByteArray> params) {
   Q_UNUSED(prefix)
-  emit displayMsg(Message::Server, "", tr("[Whowas] %1").arg(serverDecode(params).join(" ")));
+  emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Whowas] %1").arg(serverDecode(params).join(" ")));
 }
 
 /*  RPL_ENDOFWHO: "<name> :End of WHO list" */
 void IrcServerHandler::handle315(QString prefix, QList<QByteArray> params) {
   Q_UNUSED(prefix)
-  emit displayMsg(Message::Server, "", tr("[Who] %1").arg(serverDecode(params).join(" ")));
+  emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Who] %1").arg(serverDecode(params).join(" ")));
 }
 
 /*  RPL_WHOISIDLE - "<nick> <integer> :seconds idle" 
@@ -496,9 +502,9 @@ void IrcServerHandler::handle317(QString prefix, QList<QByteArray> params) {
     int idleSecs = serverDecode(params[1]).toInt();
     idleSecs *= -1;
     ircuser->setIdleTime(now.addSecs(idleSecs));
-    emit displayMsg(Message::Server, "", tr("[Whois] %1 is idling for %2 seconds").arg(ircuser->nick()).arg(ircuser->idleTime().secsTo(now)));
+    emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Whois] %1 is idling for %2 seconds").arg(ircuser->nick()).arg(ircuser->idleTime().secsTo(now)));
   } else {
-    emit displayMsg(Message::Server, "", tr("[Whois] idle message: %1").arg(serverDecode(params).join(" ")));
+    emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Whois] idle message: %1").arg(serverDecode(params).join(" ")));
   }
 }
 
@@ -506,13 +512,13 @@ void IrcServerHandler::handle317(QString prefix, QList<QByteArray> params) {
 void IrcServerHandler::handle318(QString prefix, QList<QByteArray> params) {
   Q_UNUSED(prefix)
   _whois = false;
-  emit displayMsg(Message::Server, "", tr("[Whois] %1").arg(serverDecode(params).join(" ")));
+  emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Whois] %1").arg(serverDecode(params).join(" ")));
 }
 
 /*  RPL_WHOISCHANNELS - "<nick> :*( ( "@" / "+" ) <channel> " " )" */
 void IrcServerHandler::handle319(QString prefix, QList<QByteArray> params) {
   Q_UNUSED(prefix)
-  emit displayMsg(Message::Server, "", tr("[Whois] %1").arg(serverDecode(params).join(" ")));
+  emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Whois] %1").arg(serverDecode(params).join(" ")));
 }
 
 /* RPL_NOTOPIC */
@@ -520,7 +526,7 @@ void IrcServerHandler::handle331(QString prefix, QList<QByteArray> params) {
   Q_UNUSED(prefix);
   QString channel = serverDecode(params[0]);
   network()->ircChannel(channel)->setTopic(QString());
-  emit displayMsg(Message::Server, channel, tr("No topic is set for %1.").arg(channel));
+  emit displayMsg(Message::Server, BufferInfo::ChannelBuffer, channel, tr("No topic is set for %1.").arg(channel));
 }
 
 /* RPL_TOPIC */
@@ -529,15 +535,14 @@ void IrcServerHandler::handle332(QString prefix, QList<QByteArray> params) {
   QString channel = serverDecode(params[0]);
   QString topic = bufferDecode(channel, params[1]);
   network()->ircChannel(channel)->setTopic(topic);
-  emit displayMsg(Message::Server, channel, tr("Topic for %1 is \"%2\"").arg(channel, topic));
+  emit displayMsg(Message::Server, BufferInfo::ChannelBuffer, channel, tr("Topic for %1 is \"%2\"").arg(channel, topic));
 }
 
 /* Topic set by... */
 void IrcServerHandler::handle333(QString prefix, QList<QByteArray> params) {
   Q_UNUSED(prefix);
   QString channel = serverDecode(params[0]);
-  emit displayMsg(Message::Server, channel, tr("Topic set by %1 on %2")
-      .arg(bufferDecode(channel, params[1]), QDateTime::fromTime_t(bufferDecode(channel, params[2]).toUInt()).toString()));
+  emit displayMsg(Message::Server, BufferInfo::ChannelBuffer, channel, tr("Topic set by %1 on %2") .arg(bufferDecode(channel, params[1]), QDateTime::fromTime_t(bufferDecode(channel, params[2]).toUInt()).toString()));
 }
 
 /*  RPL_WHOREPLY: "<channel> <user> <host> <server> <nick> 
@@ -556,7 +561,7 @@ void IrcServerHandler::handle352(QString prefix, QList<QByteArray> params) {
     ircuser->setRealName(serverDecode(params.last()).section(" ", 1));
   }
 
-  emit displayMsg(Message::Server, "", tr("[Who] %1").arg(serverDecode(params).join(" ")));
+  emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Who] %1").arg(serverDecode(params).join(" ")));
 }
 
 /* RPL_NAMREPLY */
@@ -584,7 +589,7 @@ void IrcServerHandler::handle353(QString prefix, QList<QByteArray> params) {
 /*  RPL_ENDOFWHOWAS - "<nick> :End of WHOWAS" */
 void IrcServerHandler::handle369(QString prefix, QList<QByteArray> params) {
   Q_UNUSED(prefix)
-  emit displayMsg(Message::Server, "", tr("[Whowas] %1").arg(serverDecode(params).join(" ")));
+  emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Whowas] %1").arg(serverDecode(params).join(" ")));
 }
 
 /* ERR_ERRONEUSNICKNAME */
@@ -597,12 +602,12 @@ void IrcServerHandler::handle432(QString prefix, QList<QByteArray> params) {
     // :irc.scortum.moep.net 432  @@@ :Erroneous Nickname: Illegal characters
     // correct server reply:
     // :irc.scortum.moep.net 432 * @@@ :Erroneous Nickname: Illegal characters
-    emit displayMsg(Message::Error, "", tr("There is a nickname in your identity's nicklist which contains illegal characters"));
-    emit displayMsg(Message::Error, "", tr("Due to a bug in Unreal IRCd (and maybe other irc-servers too) we're unable to determine the erroneous nick"));
-    emit displayMsg(Message::Error, "", tr("Please use: /nick <othernick> to continue or clean up your nicklist"));
+    emit displayMsg(Message::Error, BufferInfo::StatusBuffer, "", tr("There is a nickname in your identity's nicklist which contains illegal characters"));
+    emit displayMsg(Message::Error, BufferInfo::StatusBuffer, "", tr("Due to a bug in Unreal IRCd (and maybe other irc-servers too) we're unable to determine the erroneous nick"));
+    emit displayMsg(Message::Error, BufferInfo::StatusBuffer, "", tr("Please use: /nick <othernick> to continue or clean up your nicklist"));
   } else {
     QString errnick = params[0];
-    emit displayMsg(Message::Error, "", tr("Nick %1 contains illegal characters").arg(errnick));
+    emit displayMsg(Message::Error, BufferInfo::StatusBuffer, "", tr("Nick %1 contains illegal characters").arg(errnick));
     tryNextNick(errnick);
   }
 }
@@ -612,7 +617,7 @@ void IrcServerHandler::handle433(QString prefix, QList<QByteArray> params) {
   Q_UNUSED(prefix);
 
   QString errnick = serverDecode(params[0]);
-  emit displayMsg(Message::Error, "", tr("Nick already in use: %1").arg(errnick));
+  emit displayMsg(Message::Error, BufferInfo::StatusBuffer, "", tr("Nick already in use: %1").arg(errnick));
 
   // if there is a problem while connecting to the server -> we handle it
   // but only if our connection has not been finished yet...
@@ -628,7 +633,7 @@ void IrcServerHandler::tryNextNick(const QString &errnick) {
   if(desiredNicks.size() > nextNick) {
     putCmd("NICK", QStringList(desiredNicks[nextNick]));
   } else {
-    emit displayMsg(Message::Error, "", tr("No free and valid nicks in nicklist found. use: /nick <othernick> to continue"));
+    emit displayMsg(Message::Error, BufferInfo::StatusBuffer, "", tr("No free and valid nicks in nicklist found. use: /nick <othernick> to continue"));
   }
 }
 

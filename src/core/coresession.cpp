@@ -217,7 +217,8 @@ void CoreSession::attachNetworkConnection(NetworkConnection *conn) {
   //signalProxy()->attachSignal(conn, SIGNAL(connected(NetworkId)), SIGNAL(networkConnected(NetworkId)));
   //signalProxy()->attachSignal(conn, SIGNAL(disconnected(NetworkId)), SIGNAL(networkDisconnected(NetworkId)));
 
-  connect(conn, SIGNAL(displayMsg(Message::Type, QString, QString, QString, quint8)), this, SLOT(recvMessageFromServer(Message::Type, QString, QString, QString, quint8)));
+  connect(conn, SIGNAL(displayMsg(Message::Type, BufferInfo::Type, QString, QString, QString, quint8)),
+	  this, SLOT(recvMessageFromServer(Message::Type, BufferInfo::Type, QString, QString, QString, quint8)));
   connect(conn, SIGNAL(displayStatusMsg(QString)), this, SLOT(recvStatusMsgFromServer(QString)));
 
 }
@@ -249,7 +250,7 @@ SignalProxy *CoreSession::signalProxy() const {
 
 // FIXME we need a sane way for creating buffers!
 void CoreSession::networkConnected(NetworkId networkid) {
-  Core::bufferInfo(user(), networkid); // create status buffer
+  Core::bufferInfo(user(), networkid, BufferInfo::StatusBuffer); // create status buffer
 }
 
 void CoreSession::networkDisconnected(NetworkId networkid) {
@@ -264,7 +265,7 @@ void CoreSession::networkDisconnected(NetworkId networkid) {
 void CoreSession::msgFromClient(BufferInfo bufinfo, QString msg) {
   NetworkConnection *conn = networkConnection(bufinfo.networkId());
   if(conn) {
-    conn->userInput(bufinfo.bufferName(), msg);
+    conn->userInput(bufinfo, msg);
   } else {
     qWarning() << "Trying to send to unconnected network!";
   }
@@ -272,11 +273,11 @@ void CoreSession::msgFromClient(BufferInfo bufinfo, QString msg) {
 
 // ALL messages coming pass through these functions before going to the GUI.
 // So this is the perfect place for storing the backlog and log stuff.
-void CoreSession::recvMessageFromServer(Message::Type type, QString target, QString text, QString sender, quint8 flags) {
+void CoreSession::recvMessageFromServer(Message::Type type, BufferInfo::Type bufferType, QString target, QString text, QString sender, quint8 flags) {
   NetworkConnection *netCon = qobject_cast<NetworkConnection*>(this->sender());
   Q_ASSERT(netCon);
   
-  BufferInfo bufferInfo = Core::bufferInfo(user(), netCon->networkId(), target);
+  BufferInfo bufferInfo = Core::bufferInfo(user(), netCon->networkId(), bufferType, target);
   Message msg(bufferInfo, type, text, sender, flags);
   msg.setMsgId(Core::storeMessage(msg));
   Q_ASSERT(msg.msgId() != 0);

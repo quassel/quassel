@@ -83,9 +83,9 @@ void BufferView::setModel(QAbstractItemModel *model) {
 }
 
 void BufferView::joinChannel(const QModelIndex &index) {
-  BufferItem::Type bufferType = (BufferItem::Type)index.data(NetworkModel::BufferTypeRole).value<int>();
+  BufferInfo::Type bufferType = (BufferInfo::Type)index.data(NetworkModel::BufferTypeRole).value<int>();
 
-  if(bufferType != BufferItem::ChannelType)
+  if(bufferType != BufferInfo::ChannelBuffer)
     return;
 
   BufferInfo bufferInfo = index.data(NetworkModel::BufferInfoRole).value<BufferInfo>();

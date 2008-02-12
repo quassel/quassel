@@ -14,51 +14,69 @@
     <file>./SQL/SQLite/4/upgrade_040_create_buffer_idx.sql</file>
     <file>./SQL/SQLite/4/upgrade_050_create_buffer_cname_idx.sql</file>
     <file>./SQL/SQLite/4/upgrade_999_update_schemaversion.sql</file>
-    <file>./SQL/SQLite/5/delete_backlog_by_uid.sql</file>
-    <file>./SQL/SQLite/5/delete_backlog_for_network.sql</file>
-    <file>./SQL/SQLite/5/delete_buffers_by_uid.sql</file>
-    <file>./SQL/SQLite/5/delete_buffers_for_network.sql</file>
-    <file>./SQL/SQLite/5/delete_ircservers_for_network.sql</file>
-    <file>./SQL/SQLite/5/delete_network.sql</file>
-    <file>./SQL/SQLite/5/delete_networks_by_uid.sql</file>
-    <file>./SQL/SQLite/5/delete_quasseluser.sql</file>
-    <file>./SQL/SQLite/5/insert_buffer.sql</file>
-    <file>./SQL/SQLite/5/insert_message.sql</file>
-    <file>./SQL/SQLite/5/insert_network.sql</file>
-    <file>./SQL/SQLite/5/insert_quasseluser.sql</file>
-    <file>./SQL/SQLite/5/insert_sender.sql</file>
-    <file>./SQL/SQLite/5/insert_server.sql</file>
-    <file>./SQL/SQLite/5/select_authuser.sql</file>
-    <file>./SQL/SQLite/5/select_bufferByName.sql</file>
-    <file>./SQL/SQLite/5/select_buffers.sql</file>
-    <file>./SQL/SQLite/5/select_lastMessage.sql</file>
-    <file>./SQL/SQLite/5/select_messageRange.sql</file>
-    <file>./SQL/SQLite/5/select_messages.sql</file>
-    <file>./SQL/SQLite/5/select_messagesOffset.sql</file>
-    <file>./SQL/SQLite/5/select_messagesSince.sql</file>
-    <file>./SQL/SQLite/5/select_messagesSinceOffset.sql</file>
-    <file>./SQL/SQLite/5/select_networkExists.sql</file>
-    <file>./SQL/SQLite/5/select_networks_for_user.sql</file>
-    <file>./SQL/SQLite/5/select_servers_for_network.sql</file>
-    <file>./SQL/SQLite/5/select_userid.sql</file>
-    <file>./SQL/SQLite/5/setup_000_quasseluser.sql</file>
-    <file>./SQL/SQLite/5/setup_010_sender.sql</file>
-    <file>./SQL/SQLite/5/setup_020_network.sql</file>
-    <file>./SQL/SQLite/5/setup_030_buffer.sql</file>
-    <file>./SQL/SQLite/5/setup_040_buffer_idx.sql</file>
-    <file>./SQL/SQLite/5/setup_050_buffer_cname_idx.sql</file>
-    <file>./SQL/SQLite/5/setup_060_backlog.sql</file>
-    <file>./SQL/SQLite/5/setup_070_coreinfo.sql</file>
-    <file>./SQL/SQLite/5/setup_080_ircservers.sql</file>
-    <file>./SQL/SQLite/5/setup_999_version.sql</file>
-    <file>./SQL/SQLite/5/update_network.sql</file>
-    <file>./SQL/SQLite/5/update_username.sql</file>
-    <file>./SQL/SQLite/5/update_userpassword.sql</file>
     <file>./SQL/SQLite/5/upgrade_000_rename_networktable.sql</file>
     <file>./SQL/SQLite/5/upgrade_010_create_newnetworktable.sql</file>
     <file>./SQL/SQLite/5/upgrade_020_copy_networktable.sql</file>
     <file>./SQL/SQLite/5/upgrade_030_drop_oldnetworktable.sql</file>
     <file>./SQL/SQLite/5/upgrade_180_create_ircservers.sql</file>
     <file>./SQL/SQLite/5/upgrade_999_update_schemaversion.sql</file>
+    <file>./SQL/SQLite/6/delete_backlog_by_uid.sql</file>
+    <file>./SQL/SQLite/6/delete_backlog_for_network.sql</file>
+    <file>./SQL/SQLite/6/delete_buffers_by_uid.sql</file>
+    <file>./SQL/SQLite/6/delete_buffers_for_network.sql</file>
+    <file>./SQL/SQLite/6/delete_ircservers_for_network.sql</file>
+    <file>./SQL/SQLite/6/delete_network.sql</file>
+    <file>./SQL/SQLite/6/delete_networks_by_uid.sql</file>
+    <file>./SQL/SQLite/6/delete_quasseluser.sql</file>
+    <file>./SQL/SQLite/6/insert_buffer.sql</file>
+    <file>./SQL/SQLite/6/insert_message.sql</file>
+    <file>./SQL/SQLite/6/insert_network.sql</file>
+    <file>./SQL/SQLite/6/insert_quasseluser.sql</file>
+    <file>./SQL/SQLite/6/insert_sender.sql</file>
+    <file>./SQL/SQLite/6/insert_server.sql</file>
+    <file>./SQL/SQLite/6/select_authuser.sql</file>
+    <file>./SQL/SQLite/6/select_bufferByName.sql</file>
+    <file>./SQL/SQLite/6/select_buffers.sql</file>
+    <file>./SQL/SQLite/6/select_lastMessage.sql</file>
+    <file>./SQL/SQLite/6/select_messageRange.sql</file>
+    <file>./SQL/SQLite/6/select_messages.sql</file>
+    <file>./SQL/SQLite/6/select_messagesOffset.sql</file>
+    <file>./SQL/SQLite/6/select_messagesSince.sql</file>
+    <file>./SQL/SQLite/6/select_messagesSinceOffset.sql</file>
+    <file>./SQL/SQLite/6/select_networkExists.sql</file>
+    <file>./SQL/SQLite/6/select_networks_for_user.sql</file>
+    <file>./SQL/SQLite/6/select_servers_for_network.sql</file>
+    <file>./SQL/SQLite/6/select_userid.sql</file>
+    <file>./SQL/SQLite/6/setup_000_quasseluser.sql</file>
+    <file>./SQL/SQLite/6/setup_010_sender.sql</file>
+    <file>./SQL/SQLite/6/setup_020_network.sql</file>
+    <file>./SQL/SQLite/6/setup_030_buffer.sql</file>
+    <file>./SQL/SQLite/6/setup_040_buffer_idx.sql</file>
+    <file>./SQL/SQLite/6/setup_050_buffer_cname_idx.sql</file>
+    <file>./SQL/SQLite/6/setup_060_backlog.sql</file>
+    <file>./SQL/SQLite/6/setup_070_coreinfo.sql</file>
+    <file>./SQL/SQLite/6/setup_080_ircservers.sql</file>
+    <file>./SQL/SQLite/6/setup_999_version.sql</file>
+    <file>./SQL/SQLite/6/update_network.sql</file>
+    <file>./SQL/SQLite/6/update_username.sql</file>
+    <file>./SQL/SQLite/6/update_userpassword.sql</file>
+    <file>./SQL/SQLite/6/upgrade_000_alter_buffertable.sql</file>
+    <file>./SQL/SQLite/6/upgrade_010_set_statusbuffertype.sql</file>
+    <file>./SQL/SQLite/6/upgrade_020_set_channelbuffertype.sql</file>
+    <file>./SQL/SQLite/6/upgrade_030_set_querybuffertype.sql</file>
+    <file>./SQL/SQLite/6/upgrade_040_update_msgtype.sql</file>
+    <file>./SQL/SQLite/6/upgrade_050_update_msgtype.sql</file>
+    <file>./SQL/SQLite/6/upgrade_060_update_msgtype.sql</file>
+    <file>./SQL/SQLite/6/upgrade_070_update_msgtype.sql</file>
+    <file>./SQL/SQLite/6/upgrade_080_update_msgtype.sql</file>
+    <file>./SQL/SQLite/6/upgrade_090_update_msgtype.sql</file>
+    <file>./SQL/SQLite/6/upgrade_100_update_msgtype.sql</file>
+    <file>./SQL/SQLite/6/upgrade_110_update_msgtype.sql</file>
+    <file>./SQL/SQLite/6/upgrade_120_update_msgtype.sql</file>
+    <file>./SQL/SQLite/6/upgrade_130_update_msgtype.sql</file>
+    <file>./SQL/SQLite/6/upgrade_140_update_msgtype.sql</file>
+    <file>./SQL/SQLite/6/upgrade_150_update_msgtype.sql</file>
+    <file>./SQL/SQLite/6/upgrade_160_update_msgtype.sql</file>
+    <file>./SQL/SQLite/6/upgrade_999_version.sql</file>
 </qresource>
 </RCC>

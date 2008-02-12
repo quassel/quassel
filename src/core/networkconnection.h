@@ -82,7 +82,7 @@ public slots:
   // void setServerOptions();
   void connectToIrc();
   void disconnectFromIrc();
-  void userInput(QString buffer, QString msg);
+  void userInput(BufferInfo bufferInfo, QString msg);
 
   void putRawLine(QString input);
   void putCmd(QString cmd, QStringList params, QString prefix = 0);
@@ -96,7 +96,7 @@ signals:
   void recvRawServerMsg(QString);
   void displayStatusMsg(QString);
   //void displayMsg(Message msg);
-  void displayMsg(Message::Type, QString target, QString text, QString sender = "", quint8 flags = Message::None);
+  void displayMsg(Message::Type, BufferInfo::Type, QString target, QString text, QString sender = "", quint8 flags = Message::None);
   void connected(NetworkId networkId);   ///< Emitted after receipt of 001 to indicate that we can now send data to the IRC server
   void disconnected(NetworkId networkId);
   void connectionStateChanged(Network::ConnectionState);

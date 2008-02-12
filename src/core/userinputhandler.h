@@ -31,36 +31,36 @@ class UserInputHandler : public BasicHandler {
 public:
   UserInputHandler(NetworkConnection *parent = 0);
 
-  void handleUserInput(QString buffer, QString msg);
+  void handleUserInput(const BufferInfo &bufferInfo, const QString &text);
   
 public slots:
-  void handleAway(QString, QString);
-  void handleBan(QString, QString);
-  void handleCtcp(QString, QString);
-  void handleDeop(QString, QString);
-  void handleDevoice(QString, QString);
-  void handleInvite(QString, QString);
-  void handleJ(QString, QString);
-  void handleJoin(QString, QString);
-  void handleKick(QString, QString);
-  void handleList(QString, QString);
-  void handleMe(QString, QString);
-  void handleMode(QString, QString);
-  void handleMsg(QString, QString);
-  void handleNick(QString, QString);
-  void handleOp(QString, QString);
-  void handlePart(QString, QString);
-  void handleQuery(QString, QString);
-  void handleQuit(QString, QString);
-  void handleQuote(QString, QString);
-  void handleSay(QString, QString);
-  void handleTopic(QString, QString);
-  void handleVoice(QString, QString);
-  void handleWho(QString, QString);
-  void handleWhois(QString, QString);
-  void handleWhowas(QString, QString);
+  void handleAway(const BufferInfo &bufferInfo, const QString &text);
+  void handleBan(const BufferInfo &bufferInfo, const QString &text);
+  void handleCtcp(const BufferInfo &bufferInfo, const QString &text);
+  void handleDeop(const BufferInfo &bufferInfo, const QString &text);
+  void handleDevoice(const BufferInfo &bufferInfo, const QString &text);
+  void handleInvite(const BufferInfo &bufferInfo, const QString &text);
+  void handleJ(const BufferInfo &bufferInfo, const QString &text);
+  void handleJoin(const BufferInfo &bufferInfo, const QString &text);
+  void handleKick(const BufferInfo &bufferInfo, const QString &text);
+  void handleList(const BufferInfo &bufferInfo, const QString &text);
+  void handleMe(const BufferInfo &bufferInfo, const QString &text);
+  void handleMode(const BufferInfo &bufferInfo, const QString &text);
+  void handleMsg(const BufferInfo &bufferInfo, const QString &text);
+  void handleNick(const BufferInfo &bufferInfo, const QString &text);
+  void handleOp(const BufferInfo &bufferInfo, const QString &text);
+  void handlePart(const BufferInfo &bufferInfo, const QString &text);
+  void handleQuery(const BufferInfo &bufferInfo, const QString &text);
+  void handleQuit(const BufferInfo &bufferInfo, const QString &text);
+  void handleQuote(const BufferInfo &bufferInfo, const QString &text);
+  void handleSay(const BufferInfo &bufferInfo, const QString &text);
+  void handleTopic(const BufferInfo &bufferInfo, const QString &text);
+  void handleVoice(const BufferInfo &bufferInfo, const QString &text);
+  void handleWho(const BufferInfo &bufferInfo, const QString &text);
+  void handleWhois(const BufferInfo &bufferInfo, const QString &text);
+  void handleWhowas(const BufferInfo &bufferInfo, const QString &text);
 
-  void defaultHandler(QString cmd, QString buf, QString msg);
+  void defaultHandler(QString cmd, const BufferInfo &bufferInfo, const QString &text);
 };
 
 

@@ -58,7 +58,7 @@ public slots:
   virtual QList<NetworkInfo> networks(UserId user);
   
   /* Buffer handling */
-  virtual BufferInfo getBufferInfo(UserId user, const NetworkId &networkId, const QString &buffer = "");
+  virtual BufferInfo getBufferInfo(UserId user, const NetworkId &networkId, BufferInfo::Type type, const QString &buffer = "");
   virtual QList<BufferInfo> requestBuffers(UserId user, QDateTime since = QDateTime());
   
   /* Message handling */
@@ -77,7 +77,7 @@ private:
   static QString backlogFile();
   bool isValidNetwork(UserId user, const NetworkId &networkId);
   NetworkId getNetworkId(UserId user, const QString &network);
-  void createBuffer(UserId user, const NetworkId &networkId, const QString &buffer);
+  void createBuffer(UserId user, const NetworkId &networkId, BufferInfo::Type type, const QString &buffer);
 };
 
 #endif

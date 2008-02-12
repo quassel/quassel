@@ -347,10 +347,11 @@ NetworkId SqliteStorage::getNetworkId(UserId user, const QString &network) {
     return NetworkId();
 }
 
-void SqliteStorage::createBuffer(UserId user, const NetworkId &networkId, const QString &buffer) {
+void SqliteStorage::createBuffer(UserId user, const NetworkId &networkId, BufferInfo::Type type, const QString &buffer) {
   QSqlQuery *query = cachedQuery("insert_buffer");
   query->bindValue(":userid", user.toInt());
   query->bindValue(":networkid", networkId.toInt());
+  query->bindValue(":buffertype", (int)type);
   query->bindValue(":buffername", buffer);
   query->bindValue(":buffercname", buffer.toLower());
   query->exec();
@@ -358,7 +359,7 @@ void SqliteStorage::createBuffer(UserId user, const NetworkId &networkId, const 
   watchQuery(query);
 }
 
-BufferInfo SqliteStorage::getBufferInfo(UserId user, const NetworkId &networkId, const QString &buffer) {
+BufferInfo SqliteStorage::getBufferInfo(UserId user, const NetworkId &networkId, BufferInfo::Type type, const QString &buffer) {
   QSqlQuery *query = cachedQuery("select_bufferByName");
   query->bindValue(":networkid", networkId.toInt());
   query->bindValue(":userid", user.toInt());
@@ -366,7 +367,7 @@ BufferInfo SqliteStorage::getBufferInfo(UserId user, const NetworkId &networkId,
   query->exec();
 
   if(!query->first()) {
-    createBuffer(user, networkId, buffer);
+    createBuffer(user, networkId, type, buffer);
     query->exec();
     if(!query->first()) {
       watchQuery(query);
@@ -375,7 +376,7 @@ BufferInfo SqliteStorage::getBufferInfo(UserId user, const NetworkId &networkId,
     }
   }
 
-  BufferInfo bufferInfo = BufferInfo(query->value(0).toInt(), networkId, 0, buffer);
+  BufferInfo bufferInfo = BufferInfo(query->value(0).toInt(), networkId, (BufferInfo::Type)query->value(1).toInt(), 0, buffer);
   if(query->next()) {
     qWarning() << "SqliteStorage::getBufferInfo(): received more then one Buffer!";
     qWarning() << "         Query:" << query->lastQuery();
@@ -400,7 +401,7 @@ QList<BufferInfo> SqliteStorage::requestBuffers(UserId user, QDateTime since) {
   query.exec();
   watchQuery(&query);
   while(query.next()) {
-    bufferlist << BufferInfo(query.value(0).toInt(), query.value(2).toInt(), 0, query.value(1).toString());
+    bufferlist << BufferInfo(query.value(0).toInt(), query.value(1).toInt(), (BufferInfo::Type)query.value(2).toInt(), query.value(3).toInt(), query.value(4).toString());
   }
   return bufferlist;
 }

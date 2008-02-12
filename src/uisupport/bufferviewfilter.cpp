@@ -101,13 +101,13 @@ void BufferViewFilter::removeBuffer(const QModelIndex &index) {
 
 
 bool BufferViewFilter::filterAcceptBuffer(const QModelIndex &source_bufferIndex) const {
-  BufferItem::Type bufferType = (BufferItem::Type) source_bufferIndex.data(NetworkModel::BufferTypeRole).toInt();
+  BufferInfo::Type bufferType = (BufferInfo::Type) source_bufferIndex.data(NetworkModel::BufferTypeRole).toInt();
   
-  if((mode & NoChannels) && bufferType == BufferItem::ChannelType)
+  if((mode & NoChannels) && bufferType == BufferInfo::ChannelBuffer)
     return false;
-  if((mode & NoQueries) && bufferType == BufferItem::QueryType)
+  if((mode & NoQueries) && bufferType == BufferInfo::QueryBuffer)
     return false;
-  if((mode & NoServers) && bufferType == BufferItem::StatusType)
+  if((mode & NoServers) && bufferType == BufferInfo::StatusBuffer)
     return false;
 
 //   bool isActive = source_bufferIndex.data(NetworkModel::BufferActiveRole).toBool();

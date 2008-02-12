@@ -31,20 +31,21 @@ UserInputHandler::UserInputHandler(NetworkConnection *parent)
   : BasicHandler(parent) {
 }
 
-void UserInputHandler::handleUserInput(QString bufname, QString msg) {
+void UserInputHandler::handleUserInput(const BufferInfo &bufferInfo, const QString &msg_) {
   try {
-    if(msg.isEmpty())
+    if(msg_.isEmpty())
       return;
     QString cmd;
+    QString msg = msg_;
     if(!msg.startsWith('/')) {
       cmd = QString("SAY");
     } else {
       cmd = msg.section(' ', 0, 0).remove(0, 1).toUpper();
       msg = msg.section(' ', 1);
     }
-    handle(cmd, Q_ARG(QString, bufname), Q_ARG(QString, msg));
+    handle(cmd, Q_ARG(BufferInfo, bufferInfo), Q_ARG(QString, msg));
   } catch(Exception e) {
-    emit displayMsg(Message::Error, "", e.msg());
+    emit displayMsg(Message::Error, bufferInfo.type(), "", e.msg());
   }
 }
 
@@ -52,23 +53,23 @@ void UserInputHandler::handleUserInput(QString bufname, QString msg) {
 //  Public Slots
 // ====================
 
-void UserInputHandler::handleAway(QString bufname, QString msg) {
-  Q_UNUSED(bufname)
+void UserInputHandler::handleAway(const BufferInfo &bufferInfo, const QString &msg) {
+  Q_UNUSED(bufferInfo)
   emit putCmd("AWAY", QStringList(msg));
 }
 
-void UserInputHandler::handleBan(QString bufname, QString msg) {
-  if(!isChannelName(bufname))
+void UserInputHandler::handleBan(const BufferInfo &bufferInfo, const QString &msg) {
+  if(bufferInfo.type() != BufferInfo::ChannelBuffer)
     return;
   
   //TODO: find suitable default hostmask if msg gives only nickname 
   // Example: MODE &oulu +b *!*@*
-  QStringList banMsg(bufname+" +b "+msg);
+  QStringList banMsg(bufferInfo.bufferName()+" +b "+msg);
   emit putCmd("MODE", banMsg);
 }
 
-void UserInputHandler::handleCtcp(QString bufname, QString msg) {
-  Q_UNUSED(bufname)
+void UserInputHandler::handleCtcp(const BufferInfo &bufferInfo, const QString &msg) {
+  Q_UNUSED(bufferInfo)
   QString nick = msg.section(' ', 0, 0);
   QString ctcpTag = msg.section(' ', 1, 1).toUpper();
   if (ctcpTag.isEmpty()) return;
@@ -81,33 +82,33 @@ void UserInputHandler::handleCtcp(QString bufname, QString msg) {
   }
 
   server->ctcpHandler()->query(nick, ctcpTag, message);
-  emit displayMsg(Message::Action, "", verboseMessage, network()->myNick());
+  emit displayMsg(Message::Action, BufferInfo::StatusBuffer, "", verboseMessage, network()->myNick());
 }
 
-void UserInputHandler::handleDeop(QString bufname, QString msg) {
+void UserInputHandler::handleDeop(const BufferInfo &bufferInfo, const QString &msg) {
   QStringList nicks = msg.split(' ', QString::SkipEmptyParts);
   QString m = "-"; for(int i = 0; i < nicks.count(); i++) m += 'o';
   QStringList params;
-  params << bufname << m << nicks;
+  params << bufferInfo.bufferName() << m << nicks;
   emit putCmd("MODE", params);
 }
 
-void UserInputHandler::handleDevoice(QString bufname, QString msg) {
+void UserInputHandler::handleDevoice(const BufferInfo &bufferInfo, const QString &msg) {
   QStringList nicks = msg.split(' ', QString::SkipEmptyParts);
   QString m = "-"; for(int i = 0; i < nicks.count(); i++) m += 'v';
   QStringList params;
-  params << bufname << m << nicks;
+  params << bufferInfo.bufferName() << m << nicks;
   emit putCmd("MODE", params);
 }
 
-void UserInputHandler::handleInvite(QString bufname, QString msg) {
+void UserInputHandler::handleInvite(const BufferInfo &bufferInfo, const QString &msg) {
   QStringList params;
-  params << msg << bufname;
+  params << msg << bufferInfo.bufferName();
   emit putCmd("INVITE", params);
 }
 
-void UserInputHandler::handleJ(QString bufname, QString msg) {
-  Q_UNUSED(bufname)
+void UserInputHandler::handleJ(const BufferInfo &bufferInfo, const QString &msg) {
+  Q_UNUSED(bufferInfo)
   QStringList params = msg.split(" ");
   if(params.size() > 0 && !params[0].startsWith("#")) {
     params[0] = QString("#%1").arg(params[0]);
@@ -115,37 +116,37 @@ void UserInputHandler::handleJ(QString bufname, QString msg) {
   emit putCmd("JOIN", params);
 }
 
-void UserInputHandler::handleJoin(QString bufname, QString msg) {
-  Q_UNUSED(bufname)
+void UserInputHandler::handleJoin(const BufferInfo &bufferInfo, const QString &msg) {
+  Q_UNUSED(bufferInfo)
   emit putCmd("JOIN", msg.split(" "));
 }
 
-void UserInputHandler::handleKick(QString bufname, QString msg) {
+void UserInputHandler::handleKick(const BufferInfo &bufferInfo, const QString &msg) {
   QStringList params;
-  params << bufname << msg.split(' ', QString::SkipEmptyParts);
+  params << bufferInfo.bufferName() << msg.split(' ', QString::SkipEmptyParts);
   emit putCmd("KICK", params);
 }
 
-void UserInputHandler::handleList(QString bufname, QString msg) {
-  Q_UNUSED(bufname)
+void UserInputHandler::handleList(const BufferInfo &bufferInfo, const QString &msg) {
+  Q_UNUSED(bufferInfo)
   emit putCmd("LIST", msg.split(' ', QString::SkipEmptyParts));
 }
 
 
-void UserInputHandler::handleMe(QString bufname, QString msg) {
-  if(bufname.isEmpty()) return; // server buffer
-  server->ctcpHandler()->query(bufname, "ACTION", msg);
-  emit displayMsg(Message::Action, bufname, msg, network()->myNick());
+void UserInputHandler::handleMe(const BufferInfo &bufferInfo, const QString &msg) {
+  if(bufferInfo.bufferName().isEmpty()) return; // server buffer
+  server->ctcpHandler()->query(bufferInfo.bufferName(), "ACTION", msg);
+  emit displayMsg(Message::Action, bufferInfo.type(), bufferInfo.bufferName(), msg, network()->myNick());
 }
 
-void UserInputHandler::handleMode(QString bufname, QString msg) {
-  Q_UNUSED(bufname)
+void UserInputHandler::handleMode(const BufferInfo &bufferInfo, const QString &msg) {
+  Q_UNUSED(bufferInfo)
   emit putCmd("MODE", msg.split(' ', QString::SkipEmptyParts));
 }
 
 // TODO: show privmsgs
-void UserInputHandler::handleMsg(QString bufname, QString msg) {
-  Q_UNUSED(bufname)
+void UserInputHandler::handleMsg(const BufferInfo &bufferInfo, const QString &msg) {
+  Q_UNUSED(bufferInfo)
   if(!msg.contains(' '))
     return;
       
@@ -156,89 +157,89 @@ void UserInputHandler::handleMsg(QString bufname, QString msg) {
   emit putCmd("PRIVMSG", params);
 }
 
-void UserInputHandler::handleNick(QString bufname, QString msg) {
-  Q_UNUSED(bufname)
+void UserInputHandler::handleNick(const BufferInfo &bufferInfo, const QString &msg) {
+  Q_UNUSED(bufferInfo)
   QString nick = msg.section(' ', 0, 0);
   emit putCmd("NICK", QStringList(nick));
 }
 
-void UserInputHandler::handleOp(QString bufname, QString msg) {
+void UserInputHandler::handleOp(const BufferInfo &bufferInfo, const QString &msg) {
   QStringList nicks = msg.split(' ', QString::SkipEmptyParts);
   QString m = "+"; for(int i = 0; i < nicks.count(); i++) m += 'o';
   QStringList params;
-  params << bufname << m << nicks;
+  params << bufferInfo.bufferName() << m << nicks;
   emit putCmd("MODE", params);
 }
 
-void UserInputHandler::handlePart(QString bufname, QString msg) {
+void UserInputHandler::handlePart(const BufferInfo &bufferInfo, const QString &msg) {
   QStringList params;
-  params << bufname << msg;
+  params << bufferInfo.bufferName() << msg;
   emit putCmd("PART", params);
 }
 
 // TODO: implement queries
-void UserInputHandler::handleQuery(QString bufname, QString msg) {
-  Q_UNUSED(bufname)
+void UserInputHandler::handleQuery(const BufferInfo &bufferInfo, const QString &msg) {
+  Q_UNUSED(bufferInfo)
   QString target = msg.section(' ', 0, 0);
   QString message = msg.section(' ', 1);
   if(message.isEmpty())
-    emit displayMsg(Message::Server, target, "Starting query with " + target, network()->myNick(), Message::Self);
+    emit displayMsg(Message::Server, BufferInfo::QueryBuffer, target, "Starting query with " + target, network()->myNick(), Message::Self);
   else
-    emit displayMsg(Message::Plain, target, message, network()->myNick(), Message::Self);
-  handleMsg(bufname, msg);
+    emit displayMsg(Message::Plain, BufferInfo::QueryBuffer, target, message, network()->myNick(), Message::Self);
+  handleMsg(bufferInfo, msg);
 }
 
-void UserInputHandler::handleQuit(QString bufname, QString msg) {
-  Q_UNUSED(bufname)
+void UserInputHandler::handleQuit(const BufferInfo &bufferInfo, const QString &msg) {
+  Q_UNUSED(bufferInfo)
   emit putCmd("QUIT", QStringList(msg));
 }
 
-void UserInputHandler::handleQuote(QString bufname, QString msg) {
-  Q_UNUSED(bufname)
+void UserInputHandler::handleQuote(const BufferInfo &bufferInfo, const QString &msg) {
+  Q_UNUSED(bufferInfo)
   emit putRawLine(msg);
 }
 
-void UserInputHandler::handleSay(QString bufname, QString msg) {
-  if(bufname.isEmpty()) return;  // server buffer
+void UserInputHandler::handleSay(const BufferInfo &bufferInfo, const QString &msg) {
+  if(bufferInfo.bufferName().isEmpty()) return;  // server buffer
   QStringList params;
-  params << bufname << msg;
+  params << bufferInfo.bufferName() << msg;
   emit putCmd("PRIVMSG", params);
-  emit displayMsg(Message::Plain, params[0], msg, network()->myNick(), Message::Self);
+  emit displayMsg(Message::Plain, bufferInfo.type(), params[0], msg, network()->myNick(), Message::Self);
 }
 
-void UserInputHandler::handleTopic(QString bufname, QString msg) {
-  if(bufname.isEmpty()) return;
+void UserInputHandler::handleTopic(const BufferInfo &bufferInfo, const QString &msg) {
+  if(bufferInfo.bufferName().isEmpty()) return;
   QStringList params;
-  params << bufname << msg;
+  params << bufferInfo.bufferName() << msg;
   emit putCmd("TOPIC", params);
 }
 
-void UserInputHandler::handleVoice(QString bufname, QString msg) {
+void UserInputHandler::handleVoice(const BufferInfo &bufferInfo, const QString &msg) {
   QStringList nicks = msg.split(' ', QString::SkipEmptyParts);
   QString m = "+"; for(int i = 0; i < nicks.count(); i++) m += 'v';
   QStringList params;
-  params << bufname << m << nicks;
+  params << bufferInfo.bufferName() << m << nicks;
   emit putCmd("MODE", params);
 }
 
-void UserInputHandler::handleWho(QString bufname, QString msg) {
-  Q_UNUSED(bufname)
+void UserInputHandler::handleWho(const BufferInfo &bufferInfo, const QString &msg) {
+  Q_UNUSED(bufferInfo)
   emit putCmd("WHO", msg.split(' '));
 }
 
-void UserInputHandler::handleWhois(QString bufname, QString msg) {
-  Q_UNUSED(bufname)
+void UserInputHandler::handleWhois(const BufferInfo &bufferInfo, const QString &msg) {
+  Q_UNUSED(bufferInfo)
   emit putCmd("WHOIS", msg.split(' '));
 }
 
-void UserInputHandler::handleWhowas(QString bufname, QString msg) {
-  Q_UNUSED(bufname)
+void UserInputHandler::handleWhowas(const BufferInfo &bufferInfo, const QString &msg) {
+  Q_UNUSED(bufferInfo)
   emit putCmd("WHOWAS", msg.split(' '));
 }
 
-void UserInputHandler::defaultHandler(QString cmd, QString bufname, QString msg) {
-  Q_UNUSED(bufname)
-  emit displayMsg(Message::Error, "", QString("Error: %1 %2").arg(cmd).arg(msg));
+void UserInputHandler::defaultHandler(QString cmd, const BufferInfo &bufferInfo, const QString &msg) {
+  Q_UNUSED(bufferInfo)
+  emit displayMsg(Message::Error, BufferInfo::StatusBuffer, "", QString("Error: %1 %2").arg(cmd).arg(msg));
 }
 
 

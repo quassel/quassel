@@ -133,7 +133,7 @@ signals:
 
 private slots:
   void recvStatusMsgFromServer(QString msg);
-  void recvMessageFromServer(Message::Type, QString target, QString text, QString sender = "", quint8 flags = Message::None);
+  void recvMessageFromServer(Message::Type, BufferInfo::Type, QString target, QString text, QString sender = "", quint8 flags = Message::None);
   void networkConnected(NetworkId networkid);
   void networkDisconnected(NetworkId networkid);
 

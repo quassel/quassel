@@ -4,5 +4,6 @@ CREATE TABLE buffer (
 	groupid INTEGER,
 	networkid INTEGER NOT NULL,
 	buffername TEXT NOT NULL,
-	buffercname TEXT NOT NULL -- CANONICAL BUFFER NAME (lowercase version)
+	buffercname TEXT NOT NULL, -- CANONICAL BUFFER NAME (lowercase version)
+	buffertype INTEGER NOT NULL DEFAULT 0
 )

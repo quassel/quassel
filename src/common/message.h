@@ -33,25 +33,26 @@ class Message {
 public:
   /** The different types a message can have for display */
   enum Type {
-    Plain,
-    Notice,
-    Action,
-    Nick,
-    Mode,
-    Join,
-    Part,
-    Quit,
-    Kick,
-    Kill,
-    Server,
-    Info,
-    Error
+    Plain  = 0x0001,
+    Notice = 0x0002,
+    Action = 0x0004,
+    Nick   = 0x0008,
+    Mode   = 0x0010,
+    Join   = 0x0020,
+    Part   = 0x0040,
+    Quit   = 0x0080,
+    Kick   = 0x0100,
+    Kill   = 0x0200,
+    Server = 0x0400,
+    Info   = 0x0800,
+    Error  = 0x1000
   };
 
   enum Flags {
     None = 0,
     Self = 1,
-    Highlight = 2
+    Highlight = 2,
+    Redirected = 4
   };
   Q_DECLARE_FLAGS(MessageFlags, Flags)
   

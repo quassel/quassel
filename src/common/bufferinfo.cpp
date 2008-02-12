@@ -30,14 +30,16 @@
 BufferInfo::BufferInfo()
   : _bufferId(0),
     _netid(0),
+    _type(InvalidBuffer),
     _groupId(0),
     _bufferName(QString())
 {
 }
 
-BufferInfo::BufferInfo(BufferId id,  NetworkId networkid, uint gid, QString buf)
+BufferInfo::BufferInfo(BufferId id,  NetworkId networkid, Type type, uint gid, QString buf)
   : _bufferId(id),
     _netid(networkid),
+    _type(type),
     _groupId(gid),
     _bufferName(buf)
 {
@@ -56,18 +58,20 @@ QDebug operator<<(QDebug dbg, const BufferInfo &b) {
 }
 
 QDataStream &operator<<(QDataStream &out, const BufferInfo &bufferInfo) {
-  out << bufferInfo._bufferId << bufferInfo._netid << bufferInfo._groupId << bufferInfo._bufferName.toUtf8();
+  out << bufferInfo._bufferId << bufferInfo._netid << (qint16)bufferInfo._type << bufferInfo._groupId << bufferInfo._bufferName.toUtf8();
   return out;
 }
 
 QDataStream &operator>>(QDataStream &in, BufferInfo &bufferInfo) {
   QByteArray buffername;
-  in >> bufferInfo._bufferId >> bufferInfo._netid >> bufferInfo._groupId >> buffername;
+  qint16 bufferType;
+  in >> bufferInfo._bufferId >> bufferInfo._netid >> bufferType >> bufferInfo._groupId >> buffername;
+  bufferInfo._type = (BufferInfo::Type)bufferType;
   bufferInfo._bufferName = QString::fromUtf8(buffername);
   return in;
 }
 
 uint qHash(const BufferInfo &bufferid) {
-  return qHash(bufferid._bufferId.toInt());
+  return qHash(bufferid._bufferId);
 }
 

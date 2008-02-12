@@ -41,7 +41,7 @@ BufferId NickListWidget::currentBuffer() const {
 void NickListWidget::setCurrentBuffer(BufferId bufferId) {
   QModelIndex bufferIdx = Client::networkModel()->bufferIndex(bufferId);
   
-  if(bufferIdx.data(NetworkModel::BufferTypeRole) != BufferItem::ChannelType) {
+  if(bufferIdx.data(NetworkModel::BufferTypeRole) != BufferInfo::ChannelBuffer) {
     ui.stackedWidget->setCurrentWidget(ui.emptyPage);
     return;
   }

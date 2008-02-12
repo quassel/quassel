@@ -22,6 +22,7 @@
 #include "global.h"
 #include "util.h"
 #include "message.h"
+#include "network.h"
 
 CtcpHandler::CtcpHandler(NetworkConnection *parent)
   : BasicHandler(parent) {
@@ -92,10 +93,12 @@ void CtcpHandler::parse(Message::Type messageType, QString prefix, QString targe
     ? CtcpReply
     : CtcpQuery;
 
+  BufferInfo::Type bufferType = typeByTarget(target);
+     
   // extract tagged / extended data
   while(dequotedMessage.contains(XDELIM)) {
     if(dequotedMessage.indexOf(XDELIM) > 0)
-      emit displayMsg(messageType, target, dequotedMessage.section(XDELIM,0,0), prefix);
+      emit displayMsg(messageType, bufferType, target, dequotedMessage.section(XDELIM,0,0), prefix);
     // messages << dequotedMessage.section(XDELIM,0,0), prefix);
     ctcp = XdelimDequote(dequotedMessage.section(XDELIM,1,1));
     dequotedMessage = dequotedMessage.section(XDELIM,2,2);
@@ -108,7 +111,7 @@ void CtcpHandler::parse(Message::Type messageType, QString prefix, QString targe
   }
   
   if(!dequotedMessage.isEmpty())
-    emit displayMsg(messageType, target, dequotedMessage, prefix);
+    emit displayMsg(messageType, bufferType, target, dequotedMessage, prefix);
 
 }
 
@@ -133,19 +136,19 @@ void CtcpHandler::reply(QString bufname, QString ctcpTag, QString message) {
 //******************************/
 void CtcpHandler::handleAction(CtcpType ctcptype, QString prefix, QString target, QString param) {
   Q_UNUSED(ctcptype)
-  emit displayMsg(Message::Action, target, param, prefix);
+  emit displayMsg(Message::Action, typeByTarget(target), target, param, prefix);
 }
 
 void CtcpHandler::handlePing(CtcpType ctcptype, QString prefix, QString target, QString param) {
   Q_UNUSED(target)
   if(ctcptype == CtcpQuery) {
     reply(nickFromMask(prefix), "PING", param);
-    emit displayMsg(Message::Server, "", tr("Received CTCP PING request from %1").arg(prefix));
+    emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("Received CTCP PING request from %1").arg(prefix));
   } else {
     // display ping answer
     uint now = QDateTime::currentDateTime().toTime_t();
     uint then = QDateTime().fromTime_t(param.toInt()).toTime_t();
-    emit displayMsg(Message::Server, "", tr("Received CTCP PING answer from %1 with %2 seconds round trip time").arg(prefix).arg(now-then));
+    emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("Received CTCP PING answer from %1 with %2 seconds round trip time").arg(prefix).arg(now-then));
   }
 }
 
@@ -155,10 +158,10 @@ void CtcpHandler::handleVersion(CtcpType ctcptype, QString prefix, QString targe
     // FIXME use real Info about quassel :)
     reply(nickFromMask(prefix), "VERSION", QString("Quassel IRC (v%1 build >= %2) -- http://www.quassel-irc.org")
         .arg(Global::quasselVersion).arg(Global::quasselBuild));
-    emit displayMsg(Message::Server, "", tr("Received CTCP VERSION request by %1").arg(prefix));
+    emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("Received CTCP VERSION request by %1").arg(prefix));
   } else {
     // display Version answer
-    emit displayMsg(Message::Server, "", tr("Received CTCP VERSION answer from %1: %2").arg(prefix).arg(param));
+    emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("Received CTCP VERSION answer from %1: %2").arg(prefix).arg(param));
   }
 }
 
@@ -166,7 +169,7 @@ void CtcpHandler::defaultHandler(QString cmd, CtcpType ctcptype, QString prefix,
   Q_UNUSED(ctcptype);
   Q_UNUSED(target);
   Q_UNUSED(param);
-  emit displayMsg(Message::Error, "", tr("Received unknown CTCP %1 by %2").arg(cmd).arg(prefix));
+  emit displayMsg(Message::Error, BufferInfo::StatusBuffer, "", tr("Received unknown CTCP %1 by %2").arg(cmd).arg(prefix));
 }
 
 

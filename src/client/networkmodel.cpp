@@ -39,16 +39,8 @@ BufferItem::BufferItem(BufferInfo bufferInfo, AbstractTreeItem *parent)
     _bufferInfo(bufferInfo),
     _activity(NoActivity)
 {
-  // determine BufferType
-  if(bufferInfo.bufferName().isEmpty())
-    _type = StatusType;
-  else if(isChannelName(bufferInfo.bufferName()))
-    _type = ChannelType;
-  else
-    _type = QueryType;
-
   Qt::ItemFlags flags = Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled;
-  if(bufferType() == QueryType)
+  if(bufferType() == BufferInfo::QueryBuffer)
     flags |= Qt::ItemIsDropEnabled;
   setFlags(flags);
 
@@ -64,15 +56,15 @@ quint64 BufferItem::id() const {
 }
 
 bool BufferItem::isStatusBuffer() const {
-   return bufferType() == StatusType;
+  return bufferType() == BufferInfo::StatusBuffer;
 }
 
-BufferItem::Type BufferItem::bufferType() const {
-  return _type;
+BufferInfo::Type BufferItem::bufferType() const {
+  return bufferInfo().type();
 }
 
 bool BufferItem::isActive() const {
-  if(bufferType() == ChannelType)
+  if(bufferType() == BufferInfo::ChannelBuffer)
     return _ircChannel;
   else
     return qobject_cast<NetworkItem *>(parent())->isActive();
@@ -166,7 +158,7 @@ void BufferItem::ircChannelDestroyed() {
 }
 
 QString BufferItem::bufferName() const {
-  if(bufferType() == StatusType)
+  if(bufferType() == BufferInfo::StatusBuffer)
     return tr("Status Buffer");
   else
     return bufferInfo().bufferName();
@@ -705,8 +697,8 @@ bool NetworkModel::dropMimeData(const QMimeData *data, Qt::DropAction action, in
     return false;
 
   // target must be a query
-  BufferItem::Type targetType = (BufferItem::Type)parent.data(NetworkModel::BufferTypeRole).toInt();
-  if(targetType != BufferItem::QueryType)
+  BufferInfo::Type targetType = (BufferInfo::Type)parent.data(NetworkModel::BufferTypeRole).toInt();
+  if(targetType != BufferInfo::QueryBuffer)
     return false;
 
   QList< QPair<NetworkId, BufferId> > bufferList = mimeDataToBufferList(data);
@@ -726,8 +718,8 @@ bool NetworkModel::dropMimeData(const QMimeData *data, Qt::DropAction action, in
   Q_ASSERT(rootItem->childById(qHash(netId))->childById(qHash(bufferId)));
 
   // source must be a query too
-  BufferItem::Type sourceType = (BufferItem::Type)rootItem->childById(qHash(netId))->childById(qHash(bufferId))->data(0, BufferTypeRole).toInt();
-  if(sourceType != BufferItem::QueryType)
+  BufferInfo::Type sourceType = (BufferInfo::Type)rootItem->childById(qHash(netId))->childById(qHash(bufferId))->data(0, BufferTypeRole).toInt();
+  if(sourceType != BufferInfo::QueryBuffer)
     return false;
     
   // TODO: warn user about buffermerge!

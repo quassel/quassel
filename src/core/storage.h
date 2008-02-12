@@ -152,12 +152,13 @@ class Storage : public QObject {
     /* Buffer handling */
 
     //! Get the unique BufferInfo for the given combination of network and buffername for a user.
-    /** \param user    The core user who owns this buffername
-     *  \param network The network name
+    /** \param user      The core user who owns this buffername
+     *  \param networkId The network id
+     *  \param type      The type of the buffer (StatusBuffer, Channel, etc.)
      *  \param buffer  The buffer name (if empty, the net's status buffer is returned)
      *  \return The BufferInfo corresponding to the given network and buffer name, or 0 if not found
      */
-    virtual BufferInfo getBufferInfo(UserId user, const NetworkId &networkId, const QString &buffer = "") = 0;
+    virtual BufferInfo getBufferInfo(UserId user, const NetworkId &networkId, BufferInfo::Type type, const QString &buffer = "") = 0;
 
     //! Request a list of all buffers known to a user since a certain point in time.
     /** This method is used to get a list of all buffers we have stored a backlog from.
