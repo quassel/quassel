@@ -57,6 +57,7 @@ CoreConnectDlg::CoreConnectDlg(QWidget *parent, bool autoconnect) : QDialog(pare
   setAccountWidgetStates();
 
   ui.accountButtonBox->button(QDialogButtonBox::Ok)->setFocus();
+  //ui.accountButtonBox->button(QDialogButtonBox::Ok)->setAutoDefault(true);
 
   connect(clientSyncer, SIGNAL(socketStateChanged(QAbstractSocket::SocketState)),this, SLOT(initPhaseSocketState(QAbstractSocket::SocketState)));
   connect(clientSyncer, SIGNAL(connectionError(const QString &)), this, SLOT(initPhaseError(const QString &)));
