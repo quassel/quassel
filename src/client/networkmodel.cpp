@@ -387,7 +387,7 @@ void NetworkItem::attachIrcChannel(const QString &channelName) {
   BufferItem *bufferItem;
   for(int i = 0; i < childCount(); i++) {
     bufferItem = qobject_cast<BufferItem *>(child(i));
-    if(bufferItem->bufferName() == ircChannel->name()) {
+    if(bufferItem->bufferName().toLower() == ircChannel->name().toLower()) {
       bufferItem->attachIrcChannel(ircChannel);
       break;
     }
@@ -410,12 +410,11 @@ void NetworkItem::setCurrentServer(const QString &serverName) {
 // we hardcode this even though we have PREFIX in network... but that wouldn't help with mapping modes to
 // category strings anyway.
 const QList<UserCategoryItem::Category> UserCategoryItem::categories = QList<UserCategoryItem::Category>()
-  << UserCategoryItem::Category('q', "Owners")
-  << UserCategoryItem::Category('a', "Admins")
-  << UserCategoryItem::Category('a', "Admins")
-  << UserCategoryItem::Category('o', "Operators")
-  << UserCategoryItem::Category('h', "Half-Ops")
-  << UserCategoryItem::Category('v', "Voiced");
+  << UserCategoryItem::Category('q', tr("Owners"))
+  << UserCategoryItem::Category('a', tr("Admins"))
+  << UserCategoryItem::Category('o', tr("Operators"))
+  << UserCategoryItem::Category('h', tr("Half-Ops"))
+  << UserCategoryItem::Category('v', tr("Voiced"));
 
 UserCategoryItem::UserCategoryItem(int category, AbstractTreeItem *parent)
   : PropertyMapItem(QStringList() << "categoryId", parent),
@@ -427,7 +426,7 @@ QString UserCategoryItem::categoryId() {
   if(_category < categories.count())
     return categories[_category].displayString;
   else
-    return QString("Users");
+    return tr("Users");
 }
 
 quint64 UserCategoryItem::id() const {
@@ -551,10 +550,10 @@ QString IrcUserItem::toolTip(int column) const {
       }
       idleTime = idleTime % timeUnit[i].first;
     }
-    toolTip.append(QString("idling since %1").arg(idleString));
+    toolTip.append(tr("idling since %1").arg(idleString));
   }
 
-  if(!_ircUser->server().isEmpty()) toolTip.append(QString("server: %1").arg(_ircUser->server()));
+  if(!_ircUser->server().isEmpty()) toolTip.append(tr("server: %1").arg(_ircUser->server()));
 
   return QString("<p> %1 </p>").arg(toolTip.join("<br />"));
 }
