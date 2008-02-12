@@ -178,7 +178,7 @@ void NetworksSettingsPage::setWidgetStates() {
 }
 
 void NetworksSettingsPage::setItemState(NetworkId id, QListWidgetItem *item) {
-  if(!item) item = networkItem(id);
+  if(!item && !(item = networkItem(id))) return;
   const Network *net = Client::network(id);
   if(!net || net->isInitialized()) item->setFlags(item->flags() | Qt::ItemIsEnabled);
   else item->setFlags(item->flags() & ~Qt::ItemIsEnabled);
@@ -190,19 +190,22 @@ void NetworksSettingsPage::setItemState(NetworkId id, QListWidgetItem *item) {
     item->setIcon(disconnectedIcon);
   }
   if(net) {
+    bool select = false;
     // check if we already have another net of this name in the list, and replace it
     QList<QListWidgetItem *> items = ui.networkList->findItems(net->networkName(), Qt::MatchExactly);
     if(items.count()) {
       foreach(QListWidgetItem *i, items) {
         NetworkId oldid = i->data(Qt::UserRole).value<NetworkId>();
         if(oldid > 0) continue;  // only locally created nets should be replaced
-        if(oldid == currentId) item->setSelected(true);
-        delete ui.networkList->takeItem(ui.networkList->row(i));
+        if(oldid == currentId) select = true;
+        int row = ui.networkList->row(i);
+        if(row >= 0) delete ui.networkList->takeItem(row);
         networkInfos.remove(oldid);
         break;
       }
     }
     item->setText(net->networkName());
+    if(select) item->setSelected(true);
   }
 }
 

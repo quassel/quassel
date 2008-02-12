@@ -173,6 +173,7 @@ private slots:
   void ircChannelInitDone();
 
 signals:
+  void aboutToBeDestroyed();
   void networkNameSet(const QString &networkName);
   void currentServerSet(const QString &currentServer);
   void connectedSet(bool isConnected);

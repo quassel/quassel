@@ -51,6 +51,7 @@ Network::Network(const NetworkId &networkid, QObject *parent) : SyncableObject(p
 // I think this is unnecessary since IrcUsers have us as their daddy :)
 
 Network::~Network() {
+  emit aboutToBeDestroyed();
 //  QHashIterator<QString, IrcUser *> ircuser(_ircUsers);
 //  while (ircuser.hasNext()) {
 //    ircuser.next();

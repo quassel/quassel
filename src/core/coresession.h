@@ -137,6 +137,8 @@ private slots:
   void networkConnected(NetworkId networkid);
   void networkDisconnected(NetworkId networkid);
 
+  void destroyNetwork(NetworkId);
+
   //! Called when storage updated a BufferInfo.
   /** This emits bufferInfoUpdated() via SignalProxy, iff it's one of our buffers.
    *  \param user       The buffer's owner (not necessarily us)
@@ -155,6 +157,7 @@ private:
   SignalProxy *_signalProxy;
   QHash<NetworkId, NetworkConnection *> _connections;
   QHash<NetworkId, Network *> _networks;
+  QHash<NetworkId, Network *> _networksToRemove;
   QHash<IdentityId, Identity *> _identities;
 
   QScriptEngine *scriptEngine;

@@ -430,6 +430,23 @@ void CoreSession::updateNetwork(const NetworkInfo &info) {
 }
 
 void CoreSession::removeNetwork(NetworkId id) {
+  // Make sure the network is disconnected!
+  NetworkConnection *conn = _connections.value(id, 0);
+  if(conn) {
+    if(conn->connectionState() != Network::Disconnected) {
+      connect(conn, SIGNAL(disconnected(NetworkId)), this, SLOT(destroyNetwork(NetworkId)));
+      conn->disconnectFromIrc();
+    } else {
+      _connections.take(id)->deleteLater();  // TODO make this saner
+      destroyNetwork(id);
+    }
+  } else {
+    destroyNetwork(id);
+  }
+}
+
+void CoreSession::destroyNetwork(NetworkId id) {
+  Q_ASSERT(!_connections.contains(id));
   Network *net = _networks.take(id);
   if(net && Core::removeNetwork(user(), id)) {
     emit networkRemoved(id);
