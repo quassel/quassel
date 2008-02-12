@@ -25,6 +25,7 @@
 
 #include "global.h"
 #include "logger.h"
+#include "network.h"
 #include "settings.h"
 
 #if defined BUILD_CORE
@@ -91,6 +92,9 @@ int main(int argc, char **argv) {
   QTranslator quasselTranslator;
   quasselTranslator.load(QString(":i18n/quassel_%1").arg(locale.name()));
   app.installTranslator(&quasselTranslator);
+
+  Network::setDefaultCodecForEncoding("UTF-8");
+  Network::setDefaultCodecForDecoding("ISO-8859-15");
 
   QCoreApplication::setOrganizationDomain("quassel-irc.org");
   QCoreApplication::setApplicationName("Quassel IRC");

@@ -55,6 +55,15 @@ class Network : public SyncableObject {
   Q_PROPERTY(bool isConnected READ isConnected WRITE setConnected STORED false)
   //Q_PROPERTY(Network::ConnectionState connectionState READ connectionState WRITE setConnectionState STORED false)
   Q_PROPERTY(int connectionState READ connectionState WRITE setConnectionState STORED false)
+  Q_PROPERTY(bool useRandomServer READ useRandomServer WRITE setUseRandomServer STORED false)
+  Q_PROPERTY(QStringList perform READ perform WRITE setPerform STORED false)
+  Q_PROPERTY(bool useAutoIdentify READ useAutoIdentify WRITE setUseAutoIdentify STORED false)
+  Q_PROPERTY(QString autoIdentifyService READ autoIdentifyService WRITE setAutoIdentifyService STORED false)
+  Q_PROPERTY(QString autoIdentifyPassword READ autoIdentifyPassword WRITE setAutoIdentifyPassword STORED false)
+  Q_PROPERTY(bool useAutoReconnect READ useAutoReconnect WRITE setUseAutoReconnect STORED false)
+  Q_PROPERTY(quint32 autoReconnectInterval READ autoReconnectInterval WRITE setAutoReconnectInterval STORED false)
+  Q_PROPERTY(qint16 autoReconnectRetries READ autoReconnectRetries WRITE setAutoReconnectRetries STORED false)
+  Q_PROPERTY(bool rejoinChannels READ rejoinChannels WRITE setRejoinChannels STORED false)
 
 public:
   enum ConnectionState { Disconnected, Connecting, Initializing, Initialized, Disconnecting };
@@ -88,6 +97,15 @@ public:
   QStringList nicks() const;
   QStringList channels() const;
   QVariantList serverList() const;
+  bool useRandomServer() const;
+  QStringList perform() const;
+  bool useAutoIdentify() const;
+  QString autoIdentifyService() const;
+  QString autoIdentifyPassword() const;
+  bool useAutoReconnect() const;
+  quint32 autoReconnectInterval() const;
+  qint16 autoReconnectRetries() const;  // -1 => unlimited
+  bool rejoinChannels() const;
 
   NetworkInfo networkInfo() const;
   void setNetworkInfo(const NetworkInfo &);
@@ -120,6 +138,11 @@ public:
   QString decodeString(const QByteArray &text) const;
   QByteArray encodeString(const QString string) const;
 
+  static QByteArray defaultCodecForEncoding();
+  static QByteArray defaultCodecForDecoding();
+  static void setDefaultCodecForEncoding(const QByteArray &name);
+  static void setDefaultCodecForDecoding(const QByteArray &name);
+
 public slots:
   void setNetworkName(const QString &networkName);
   void setCurrentServer(const QString &currentServer);
@@ -130,6 +153,15 @@ public slots:
   void setIdentity(IdentityId);
 
   void setServerList(const QVariantList &serverList);
+  void setUseRandomServer(bool);
+  void setPerform(const QStringList &);
+  void setUseAutoIdentify(bool);
+  void setAutoIdentifyService(const QString &);
+  void setAutoIdentifyPassword(const QString &);
+  void setUseAutoReconnect(bool);
+  void setAutoReconnectInterval(quint32);
+  void setAutoReconnectRetries(qint16);
+  void setRejoinChannels(bool);
 
   void setCodecForEncoding(const QByteArray &codecName);
   void setCodecForDecoding(const QByteArray &codecName);
@@ -184,9 +216,18 @@ signals:
   void identitySet(IdentityId);
 
   void serverListSet(QVariantList serverList);
+  void useRandomServerSet(bool);
+  void performSet(const QStringList &);
+  void useAutoIdentifySet(bool);
+  void autoIdentifyServiceSet(const QString &);
+  void autoIdentifyPasswordSet(const QString &);
+  void useAutoReconnectSet(bool);
+  void autoReconnectIntervalSet(quint32);
+  void autoReconnectRetriesSet(qint16);
+  void rejoinChannelsSet(bool);
 
-  void codecForEncodingSet(const QString &codecName);
-  void codecForDecodingSet(const QString &codecName);
+  void codecForEncodingSet(const QByteArray &codecName);
+  void codecForDecodingSet(const QByteArray &codecName);
 
   void supportAdded(const QString &param, const QString &value);
   void supportRemoved(const QString &param);
@@ -227,8 +268,17 @@ private:
   QHash<QString, QString> _supports;  // stores results from RPL_ISUPPORT
 
   QVariantList _serverList;
+  bool _useRandomServer;
   QStringList _perform;
-  //QVariantMap networkSettings;
+
+  bool _useAutoIdentify;
+  QString _autoIdentifyService;
+  QString _autoIdentifyPassword;
+
+  bool _useAutoReconnect;
+  quint32 _autoReconnectInterval;
+  qint16 _autoReconnectRetries;
+  bool _rejoinChannels;
 
   QPointer<SignalProxy> _proxy;
   void determinePrefixes();
@@ -236,6 +286,8 @@ private:
   QTextCodec *_codecForEncoding;
   QTextCodec *_codecForDecoding;
 
+  static QTextCodec *_defaultCodecForEncoding;
+  static QTextCodec *_defaultCodecForDecoding;
 };
 
 //! Stores all editable information about a network (as opposed to runtime state).

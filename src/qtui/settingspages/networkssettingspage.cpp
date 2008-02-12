@@ -20,6 +20,7 @@
 
 #include <QHeaderView>
 #include <QMessageBox>
+#include <QTextCodec>
 
 #include "networkssettingspage.h"
 
@@ -36,6 +37,13 @@ NetworksSettingsPage::NetworksSettingsPage(QWidget *parent) : SettingsPage(tr("G
   connectingIcon = QIcon(":/22x22/actions/gear");
   disconnectedIcon = QIcon(":/22x22/actions/network-disconnect");
 
+  foreach(int mib, QTextCodec::availableMibs()) {
+    QByteArray codec = QTextCodec::codecForMib(mib)->name();
+    ui.sendEncoding->addItem(codec);
+    ui.recvEncoding->addItem(codec);
+  }
+  ui.sendEncoding->model()->sort(0);
+  ui.recvEncoding->model()->sort(0);
   currentId = 0;
   setEnabled(Client::isConnected());  // need a core connection!
   setWidgetStates();
@@ -46,6 +54,19 @@ NetworksSettingsPage::NetworksSettingsPage(QWidget *parent) : SettingsPage(tr("G
   connect(Client::instance(), SIGNAL(identityRemoved(IdentityId)), this, SLOT(clientIdentityRemoved(IdentityId)));
 
   connect(ui.identityList, SIGNAL(currentIndexChanged(int)), this, SLOT(widgetHasChanged()));
+  connect(ui.randomServer, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
+  connect(ui.performEdit, SIGNAL(textChanged()), this, SLOT(widgetHasChanged()));
+  connect(ui.autoIdentify, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
+  connect(ui.autoIdentifyService, SIGNAL(textEdited(const QString &)), this, SLOT(widgetHasChanged()));
+  connect(ui.autoIdentifyPassword, SIGNAL(textEdited(const QString &)), this, SLOT(widgetHasChanged()));
+  connect(ui.useDefaultEncodings, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
+  connect(ui.sendEncoding, SIGNAL(currentIndexChanged(int)), this, SLOT(widgetHasChanged()));
+  connect(ui.recvEncoding, SIGNAL(currentIndexChanged(int)), this, SLOT(widgetHasChanged()));
+  connect(ui.autoReconnect, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
+  connect(ui.reconnectInterval, SIGNAL(valueChanged(int)), this, SLOT(widgetHasChanged()));
+  connect(ui.reconnectRetries, SIGNAL(valueChanged(int)), this, SLOT(widgetHasChanged()));
+  connect(ui.unlimitedRetries, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
+  connect(ui.rejoinOnReconnect, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
   //connect(ui., SIGNAL(), this, SLOT(widgetHasChanged()));
   //connect(ui., SIGNAL(), this, SLOT(widgetHasChanged()));
 
@@ -361,6 +382,30 @@ void NetworksSettingsPage::displayNetwork(NetworkId id) {
       ui.serverList->addItem(QString("%1:%2").arg(v.toMap()["Host"].toString()).arg(v.toMap()["Port"].toUInt()));
     }
     setItemState(id);
+    ui.randomServer->setChecked(info.useRandomServer);
+    ui.performEdit->setPlainText(info.perform.join("\n"));
+    ui.autoIdentify->setChecked(info.useAutoIdentify);
+    ui.autoIdentifyService->setText(info.autoIdentifyService);
+    ui.autoIdentifyPassword->setText(info.autoIdentifyPassword);
+    if(info.codecForEncoding.isEmpty()) {
+      ui.sendEncoding->setCurrentIndex(ui.sendEncoding->findText(Network::defaultCodecForEncoding()));
+      ui.recvEncoding->setCurrentIndex(ui.recvEncoding->findText(Network::defaultCodecForDecoding()));
+      ui.useDefaultEncodings->setChecked(true);
+    } else {
+      ui.sendEncoding->setCurrentIndex(ui.sendEncoding->findText(info.codecForEncoding));
+      ui.recvEncoding->setCurrentIndex(ui.recvEncoding->findText(info.codecForDecoding));
+      ui.useDefaultEncodings->setChecked(false);
+    }
+    ui.autoReconnect->setChecked(info.useAutoReconnect);
+    ui.reconnectInterval->setValue(info.autoReconnectInterval);
+    if(info.autoReconnectRetries >= 0) {
+      ui.reconnectRetries->setValue(info.autoReconnectRetries);
+      ui.unlimitedRetries->setChecked(false);
+    } else {
+      ui.reconnectRetries->setValue(1);
+      ui.unlimitedRetries->setChecked(true);
+    }
+    ui.rejoinOnReconnect->setChecked(info.rejoinChannels);
   } else {
     // just clear widgets
     ui.identityList->setCurrentIndex(-1);
@@ -373,6 +418,23 @@ void NetworksSettingsPage::displayNetwork(NetworkId id) {
 
 void NetworksSettingsPage::saveToNetworkInfo(NetworkInfo &info) {
   info.identity = ui.identityList->itemData(ui.identityList->currentIndex()).toInt();
+  info.useRandomServer = ui.randomServer->isChecked();
+  info.perform = ui.performEdit->toPlainText().split("\n");
+  info.useAutoIdentify = ui.autoIdentify->isChecked();
+  info.autoIdentifyService = ui.autoIdentifyService->text();
+  info.autoIdentifyPassword = ui.autoIdentifyPassword->text();
+  if(ui.useDefaultEncodings->isChecked()) {
+    info.codecForEncoding.clear();
+    info.codecForDecoding.clear();
+  } else {
+    info.codecForEncoding = ui.sendEncoding->currentText().toLatin1();
+    info.codecForDecoding = ui.recvEncoding->currentText().toLatin1();
+  }
+  info.useAutoReconnect = ui.autoReconnect->isChecked();
+  info.autoReconnectInterval = ui.reconnectInterval->value();
+  if(ui.unlimitedRetries->isChecked()) info.autoReconnectRetries = -1;
+  else info.autoReconnectRetries = ui.reconnectRetries->value();
+  info.rejoinChannels = ui.rejoinOnReconnect->isChecked();
 }
 /*** Network list ***/
 

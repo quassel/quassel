@@ -28,6 +28,9 @@
 
 #include "util.h"
 
+QTextCodec *Network::_defaultCodecForEncoding = 0;
+QTextCodec *Network::_defaultCodecForDecoding = 0;
+
 // ====================
 //  Public:
 // ====================
@@ -109,6 +112,15 @@ NetworkInfo Network::networkInfo() const {
   info.codecForEncoding = codecForEncoding();
   info.codecForDecoding = codecForDecoding();
   info.serverList = serverList();
+  info.useRandomServer = useRandomServer();
+  info.perform = perform();
+  info.useAutoIdentify = useAutoIdentify();
+  info.autoIdentifyService = autoIdentifyService();
+  info.autoIdentifyPassword = autoIdentifyPassword();
+  info.useAutoReconnect = useAutoReconnect();
+  info.autoReconnectInterval = autoReconnectInterval();
+  info.autoReconnectRetries = autoReconnectRetries();
+  info.rejoinChannels = rejoinChannels();
   return info;
 }
 
@@ -116,11 +128,18 @@ void Network::setNetworkInfo(const NetworkInfo &info) {
   // we don't set our ID!
   if(!info.networkName.isEmpty() && info.networkName != networkName()) setNetworkName(info.networkName);
   if(info.identity > 0 && info.identity != identity()) setIdentity(info.identity);
-  if(!info.codecForEncoding.isEmpty() && info.codecForEncoding != codecForEncoding())
-    setCodecForEncoding(QTextCodec::codecForName(info.codecForEncoding));
-  if(!info.codecForDecoding.isEmpty() && info.codecForDecoding != codecForDecoding())
-    setCodecForDecoding(QTextCodec::codecForName(info.codecForDecoding));
+  if(info.codecForEncoding != codecForEncoding()) setCodecForEncoding(QTextCodec::codecForName(info.codecForEncoding));
+  if(info.codecForDecoding != codecForDecoding()) setCodecForDecoding(QTextCodec::codecForName(info.codecForDecoding));
   if(info.serverList.count()) setServerList(info.serverList); // FIXME compare components
+  if(info.useRandomServer != useRandomServer()) setUseRandomServer(info.useRandomServer);
+  if(info.perform != perform()) setPerform(info.perform);
+  if(info.useAutoIdentify != useAutoIdentify()) setUseAutoIdentify(info.useAutoIdentify);
+  if(info.autoIdentifyService != autoIdentifyService()) setAutoIdentifyService(info.autoIdentifyService);
+  if(info.autoIdentifyPassword != autoIdentifyPassword()) setAutoIdentifyPassword(info.autoIdentifyPassword);
+  if(info.useAutoReconnect != useAutoReconnect()) setUseAutoReconnect(info.useAutoReconnect);
+  if(info.autoReconnectInterval != autoReconnectInterval()) setAutoReconnectInterval(info.autoReconnectInterval);
+  if(info.autoReconnectRetries != autoReconnectRetries()) setAutoReconnectRetries(info.autoReconnectRetries);
+  if(info.rejoinChannels != rejoinChannels()) setRejoinChannels(info.rejoinChannels);
 }
 
 QString Network::prefixToMode(const QString &prefix) {
@@ -177,6 +196,42 @@ QStringList Network::channels() const {
 
 QVariantList Network::serverList() const {
   return _serverList;
+}
+
+bool Network::useRandomServer() const {
+  return _useRandomServer;
+}
+
+QStringList Network::perform() const {
+  return _perform;
+}
+
+bool Network::useAutoIdentify() const {
+  return _useAutoIdentify;
+}
+
+QString Network::autoIdentifyService() const {
+  return _autoIdentifyService;
+}
+
+QString Network::autoIdentifyPassword() const {
+  return _autoIdentifyPassword;
+}
+
+bool Network::useAutoReconnect() const {
+  return _useAutoReconnect;
+}
+
+quint32 Network::autoReconnectInterval() const {
+  return _autoReconnectInterval;
+}
+
+qint16 Network::autoReconnectRetries() const {
+  return _autoReconnectRetries;
+}
+
+bool Network::rejoinChannels() const {
+  return _rejoinChannels;
 }
 
 QString Network::prefixes() {
@@ -325,6 +380,24 @@ quint32 Network::ircChannelCount() const {
   return _ircChannels.count();
 }
 
+QByteArray Network::defaultCodecForEncoding() {
+  if(_defaultCodecForEncoding) return _defaultCodecForEncoding->name();
+  return QByteArray();
+}
+
+void Network::setDefaultCodecForEncoding(const QByteArray &name) {
+  _defaultCodecForEncoding = QTextCodec::codecForName(name);
+}
+
+QByteArray Network::defaultCodecForDecoding() {
+  if(_defaultCodecForDecoding) return _defaultCodecForDecoding->name();
+  return QByteArray();
+}
+
+void Network::setDefaultCodecForDecoding(const QByteArray &name) {
+  _defaultCodecForDecoding = QTextCodec::codecForName(name);
+}
+
 QByteArray Network::codecForEncoding() const {
   if(_codecForEncoding) return _codecForEncoding->name();
   return QByteArray();
@@ -354,12 +427,16 @@ void Network::setCodecForDecoding(QTextCodec *codec) {
 }
 
 QString Network::decodeString(const QByteArray &text) const {
-  return ::decodeString(text, _codecForDecoding);
+  if(_codecForDecoding) return ::decodeString(text, _codecForDecoding);
+  else return ::decodeString(text, _defaultCodecForDecoding);
 }
 
 QByteArray Network::encodeString(const QString string) const {
   if(_codecForEncoding) {
     return _codecForEncoding->fromUnicode(string);
+  }
+  if(_defaultCodecForEncoding) {
+    return _defaultCodecForEncoding->fromUnicode(string);
   }
   return string.toAscii();
 }
@@ -405,6 +482,51 @@ void Network::setIdentity(IdentityId id) {
 void Network::setServerList(const QVariantList &serverList) {
   _serverList = serverList;
   emit serverListSet(serverList);
+}
+
+void Network::setUseRandomServer(bool use) {
+  _useRandomServer = use;
+  emit useRandomServerSet(use);
+}
+
+void Network::setPerform(const QStringList &perform) {
+  _perform = perform;
+  emit performSet(perform);
+}
+
+void Network::setUseAutoIdentify(bool use) {
+  _useAutoIdentify = use;
+  emit useAutoIdentifySet(use);
+}
+
+void Network::setAutoIdentifyService(const QString &service) {
+  _autoIdentifyService = service;
+  emit autoIdentifyServiceSet(service);
+}
+
+void Network::setAutoIdentifyPassword(const QString &password) {
+  _autoIdentifyPassword = password;
+  emit autoIdentifyPasswordSet(password);
+}
+
+void Network::setUseAutoReconnect(bool use) {
+  _useAutoReconnect = use;
+  emit useAutoReconnectSet(use);
+}
+
+void Network::setAutoReconnectInterval(quint32 interval) {
+  _autoReconnectInterval = interval;
+  emit autoReconnectIntervalSet(interval);
+}
+
+void Network::setAutoReconnectRetries(qint16 retries) {
+  _autoReconnectRetries = retries;
+  emit autoReconnectRetriesSet(retries);
+}
+
+void Network::setRejoinChannels(bool rejoin) {
+  _rejoinChannels = rejoin;
+  emit rejoinChannelsSet(rejoin);
 }
 
 void Network::addSupport(const QString &param, const QString &value) {
@@ -612,6 +734,15 @@ bool NetworkInfo::operator==(const NetworkInfo &other) const {
   if(codecForEncoding != other.codecForEncoding) return false;
   if(codecForDecoding != other.codecForDecoding) return false;
   if(serverList != other.serverList) return false;
+  if(useRandomServer != other.useRandomServer) return false;
+  if(perform != other.perform) return false;
+  if(useAutoIdentify != other.useAutoIdentify) return false;
+  if(autoIdentifyService != other.autoIdentifyService) return false;
+  if(autoIdentifyPassword != other.autoIdentifyPassword) return false;
+  if(useAutoReconnect != other.useAutoReconnect) return false;
+  if(autoReconnectInterval != other.autoReconnectInterval) return false;
+  if(autoReconnectRetries != other.autoReconnectRetries) return false;
+  if(rejoinChannels != other.rejoinChannels) return false;
   return true;
 }
 
@@ -627,6 +758,15 @@ QDataStream &operator<<(QDataStream &out, const NetworkInfo &info) {
   i["CodecForEncoding"] = info.codecForEncoding;
   i["CodecForDecoding"] = info.codecForDecoding;
   i["ServerList"] = info.serverList;
+  i["UseRandomServer"] = info.useRandomServer;
+  i["Perform"] = info.perform;
+  i["UseAutoIdentify"] = info.useAutoIdentify;
+  i["AutoIdentifyService"] = info.autoIdentifyService;
+  i["AutoIdentifyPassword"] = info.autoIdentifyPassword;
+  i["UseAutoReconnect"] = info.useAutoReconnect;
+  i["AutoReconnectInterval"] = info.autoReconnectInterval;
+  i["AutoReconnectRetries"] = info.autoReconnectRetries;
+  i["RejoinChannels"] = info.rejoinChannels;
   out << i;
   return out;
 }
@@ -640,5 +780,24 @@ QDataStream &operator>>(QDataStream &in, NetworkInfo &info) {
   info.codecForEncoding = i["CodecForEncoding"].toByteArray();
   info.codecForDecoding = i["CodecForDecoding"].toByteArray();
   info.serverList = i["ServerList"].toList();
+  info.useRandomServer = i["UseRandomServer"].toBool();
+  info.perform = i["Perform"].toStringList();
+  info.useAutoIdentify = i["UseAutoIdentify"].toBool();
+  info.autoIdentifyService = i["AutoIdentifyService"].toString();
+  info.autoIdentifyPassword = i["AutoIdentifyPassword"].toString();
+  info.useAutoReconnect = i["UseAutoReconnect"].toBool();
+  info.autoReconnectInterval = i["AutoReconnectInterval"].toUInt();
+  info.autoReconnectRetries = i["AutoReconnectRetries"].toInt();
+  info.rejoinChannels = i["RejoinChannels"].toBool();
   return in;
 }
+
+
+
+
+
+
+
+
+
+

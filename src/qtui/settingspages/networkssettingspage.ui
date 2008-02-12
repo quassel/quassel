@@ -335,7 +335,7 @@
               <item>
                <widget class="QCheckBox" name="randomServer" >
                 <property name="enabled" >
-                 <bool>false</bool>
+                 <bool>true</bool>
                 </property>
                 <property name="text" >
                  <string>Choose random server for connecting</string>
@@ -363,7 +363,7 @@
               <item>
                <widget class="QTextEdit" name="performEdit" >
                 <property name="enabled" >
-                 <bool>false</bool>
+                 <bool>true</bool>
                 </property>
                 <property name="lineWrapMode" >
                  <enum>QTextEdit::NoWrap</enum>
@@ -373,7 +373,7 @@
               <item>
                <widget class="QGroupBox" name="autoIdentify" >
                 <property name="enabled" >
-                 <bool>false</bool>
+                 <bool>true</bool>
                 </property>
                 <property name="title" >
                  <string>Auto Identify</string>
@@ -382,7 +382,7 @@
                  <bool>true</bool>
                 </property>
                 <property name="checked" >
-                 <bool>false</bool>
+                 <bool>true</bool>
                 </property>
                 <layout class="QVBoxLayout" >
                  <item>
@@ -395,7 +395,10 @@
                     </widget>
                    </item>
                    <item row="0" column="1" >
-                    <widget class="QLineEdit" name="autoIdentService" >
+                    <widget class="QLineEdit" name="autoIdentifyService" >
+                     <property name="enabled" >
+                      <bool>true</bool>
+                     </property>
                      <property name="text" >
                       <string>NickServ</string>
                      </property>
@@ -403,13 +406,19 @@
                    </item>
                    <item row="1" column="0" >
                     <widget class="QLabel" name="label_3" >
+                     <property name="enabled" >
+                      <bool>true</bool>
+                     </property>
                      <property name="text" >
                       <string>Password:</string>
                      </property>
                     </widget>
                    </item>
                    <item row="1" column="1" >
-                    <widget class="QLineEdit" name="autoIdentPassword" >
+                    <widget class="QLineEdit" name="autoIdentifyPassword" >
+                     <property name="enabled" >
+                      <bool>true</bool>
+                     </property>
                      <property name="echoMode" >
                       <enum>QLineEdit::PasswordEchoOnEdit</enum>
                      </property>
@@ -431,6 +440,9 @@
            <layout class="QVBoxLayout" >
             <item>
              <widget class="QGroupBox" name="groupBox_3" >
+              <property name="enabled" >
+               <bool>true</bool>
+              </property>
               <property name="title" >
                <string>Network Encoding</string>
               </property>
@@ -457,6 +469,9 @@
                        <verstretch>0</verstretch>
                       </sizepolicy>
                      </property>
+                     <property name="insertPolicy" >
+                      <enum>QComboBox::InsertAlphabetically</enum>
+                     </property>
                     </widget>
                    </item>
                    <item row="1" column="0" >
@@ -476,6 +491,9 @@
                        <horstretch>0</horstretch>
                        <verstretch>0</verstretch>
                       </sizepolicy>
+                     </property>
+                     <property name="insertPolicy" >
+                      <enum>QComboBox::InsertAlphabetically</enum>
                      </property>
                     </widget>
                    </item>
@@ -499,7 +517,7 @@
                <item>
                 <widget class="QCheckBox" name="useDefaultEncodings" >
                  <property name="enabled" >
-                  <bool>false</bool>
+                  <bool>true</bool>
                  </property>
                  <property name="text" >
                   <string>Use defaults</string>
@@ -515,7 +533,7 @@
             <item>
              <widget class="QGroupBox" name="autoReconnect" >
               <property name="enabled" >
-               <bool>false</bool>
+               <bool>true</bool>
               </property>
               <property name="title" >
                <string>Automatic Reconnect</string>

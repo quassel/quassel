@@ -113,6 +113,8 @@ void MainWin::init() {
 #ifdef SPUTDEV
   //showSettingsDlg();
   //showAboutDlg();
+  showNetworkDlg();
+  exit(1);
 #endif
 
 }
