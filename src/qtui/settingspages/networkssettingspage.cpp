@@ -398,13 +398,8 @@ void NetworksSettingsPage::displayNetwork(NetworkId id) {
     }
     ui.autoReconnect->setChecked(info.useAutoReconnect);
     ui.reconnectInterval->setValue(info.autoReconnectInterval);
-    if(info.autoReconnectRetries >= 0) {
-      ui.reconnectRetries->setValue(info.autoReconnectRetries);
-      ui.unlimitedRetries->setChecked(false);
-    } else {
-      ui.reconnectRetries->setValue(1);
-      ui.unlimitedRetries->setChecked(true);
-    }
+    ui.reconnectRetries->setValue(info.autoReconnectRetries);
+    ui.unlimitedRetries->setChecked(info.unlimitedReconnectRetries);
     ui.rejoinOnReconnect->setChecked(info.rejoinChannels);
   } else {
     // just clear widgets
@@ -432,8 +427,8 @@ void NetworksSettingsPage::saveToNetworkInfo(NetworkInfo &info) {
   }
   info.useAutoReconnect = ui.autoReconnect->isChecked();
   info.autoReconnectInterval = ui.reconnectInterval->value();
-  if(ui.unlimitedRetries->isChecked()) info.autoReconnectRetries = -1;
-  else info.autoReconnectRetries = ui.reconnectRetries->value();
+  info.autoReconnectRetries = ui.reconnectRetries->value();
+  info.unlimitedReconnectRetries = ui.unlimitedRetries->isChecked();
   info.rejoinChannels = ui.rejoinOnReconnect->isChecked();
 }
 /*** Network list ***/
@@ -474,6 +469,7 @@ void NetworksSettingsPage::on_addNetwork_clicked() {
     info.useAutoReconnect = true;
     info.autoReconnectInterval = 60;
     info.autoReconnectRetries = 20;
+    info.unlimitedReconnectRetries = false;
     info.useAutoIdentify = false;
     info.autoIdentifyService = "NickServ";
     info.rejoinChannels = true;

@@ -401,6 +401,9 @@ void NetworkItem::setCurrentServer(const QString &serverName) {
 *****************************************/
 // we hardcode this even though we have PREFIX in network... but that wouldn't help with mapping modes to
 // category strings anyway.
+// TODO make this translateable depending on the number of users in a category
+//      -> we can't set the real string here, because tr() needs to get the actual number as second param
+//      -> tr("%n User(s)", n) needs to be used somewhere where we do know the user number n
 const QList<UserCategoryItem::Category> UserCategoryItem::categories = QList<UserCategoryItem::Category>()
   << UserCategoryItem::Category('q', tr("Owners"))
   << UserCategoryItem::Category('a', tr("Admins"))

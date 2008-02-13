@@ -93,6 +93,7 @@ int main(int argc, char **argv) {
   quasselTranslator.load(QString(":i18n/quassel_%1").arg(locale.name()));
   app.installTranslator(&quasselTranslator);
 
+  Network::setDefaultCodecForServer("UTF-8");
   Network::setDefaultCodecForEncoding("UTF-8");
   Network::setDefaultCodecForDecoding("ISO-8859-15");
 

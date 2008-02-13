@@ -28,6 +28,7 @@
 
 #include "util.h"
 
+QTextCodec *Network::_defaultCodecForServer = 0;
 QTextCodec *Network::_defaultCodecForEncoding = 0;
 QTextCodec *Network::_defaultCodecForDecoding = 0;
 
@@ -45,6 +46,13 @@ Network::Network(const NetworkId &networkid, QObject *parent) : SyncableObject(p
     _prefixes(QString()),
     _prefixModes(QString()),
     _proxy(0),
+    _useRandomServer(false),
+    _useAutoIdentify(false),
+    _useAutoReconnect(false),
+    _autoReconnectInterval(60),
+    _autoReconnectRetries(10),
+    _unlimitedReconnectRetries(false),
+    _codecForServer(0),
     _codecForEncoding(0),
     _codecForDecoding(0)
 {
@@ -128,6 +136,7 @@ void Network::setNetworkInfo(const NetworkInfo &info) {
   // we don't set our ID!
   if(!info.networkName.isEmpty() && info.networkName != networkName()) setNetworkName(info.networkName);
   if(info.identity > 0 && info.identity != identity()) setIdentity(info.identity);
+  if(info.codecForServer != codecForServer()) setCodecForServer(QTextCodec::codecForName(info.codecForServer));
   if(info.codecForEncoding != codecForEncoding()) setCodecForEncoding(QTextCodec::codecForName(info.codecForEncoding));
   if(info.codecForDecoding != codecForDecoding()) setCodecForDecoding(QTextCodec::codecForName(info.codecForDecoding));
   if(info.serverList.count()) setServerList(info.serverList); // FIXME compare components
@@ -139,6 +148,7 @@ void Network::setNetworkInfo(const NetworkInfo &info) {
   if(info.useAutoReconnect != useAutoReconnect()) setUseAutoReconnect(info.useAutoReconnect);
   if(info.autoReconnectInterval != autoReconnectInterval()) setAutoReconnectInterval(info.autoReconnectInterval);
   if(info.autoReconnectRetries != autoReconnectRetries()) setAutoReconnectRetries(info.autoReconnectRetries);
+  if(info.unlimitedReconnectRetries != unlimitedReconnectRetries()) setUnlimitedReconnectRetries(info.unlimitedReconnectRetries);
   if(info.rejoinChannels != rejoinChannels()) setRejoinChannels(info.rejoinChannels);
 }
 
@@ -226,8 +236,12 @@ quint32 Network::autoReconnectInterval() const {
   return _autoReconnectInterval;
 }
 
-qint16 Network::autoReconnectRetries() const {
+quint16 Network::autoReconnectRetries() const {
   return _autoReconnectRetries;
+}
+
+bool Network::unlimitedReconnectRetries() const {
+  return _unlimitedReconnectRetries;
 }
 
 bool Network::rejoinChannels() const {
@@ -380,6 +394,15 @@ quint32 Network::ircChannelCount() const {
   return _ircChannels.count();
 }
 
+QByteArray Network::defaultCodecForServer() {
+  if(_defaultCodecForServer) return _defaultCodecForServer->name();
+  return QByteArray();
+}
+
+void Network::setDefaultCodecForServer(const QByteArray &name) {
+  _defaultCodecForServer = QTextCodec::codecForName(name);
+}
+
 QByteArray Network::defaultCodecForEncoding() {
   if(_defaultCodecForEncoding) return _defaultCodecForEncoding->name();
   return QByteArray();
@@ -396,6 +419,20 @@ QByteArray Network::defaultCodecForDecoding() {
 
 void Network::setDefaultCodecForDecoding(const QByteArray &name) {
   _defaultCodecForDecoding = QTextCodec::codecForName(name);
+}
+
+QByteArray Network::codecForServer() const {
+  if(_codecForServer) return _codecForServer->name();
+  return QByteArray();
+}
+
+void Network::setCodecForServer(const QByteArray &name) {
+  setCodecForServer(QTextCodec::codecForName(name));
+}
+
+void Network::setCodecForServer(QTextCodec *codec) {
+  _codecForServer = codec;
+  emit codecForServerSet(codecForServer());
 }
 
 QByteArray Network::codecForEncoding() const {
@@ -426,6 +463,7 @@ void Network::setCodecForDecoding(QTextCodec *codec) {
   emit codecForDecodingSet(codecForDecoding());
 }
 
+// FIXME use server encoding if appropriate
 QString Network::decodeString(const QByteArray &text) const {
   if(_codecForDecoding) return ::decodeString(text, _codecForDecoding);
   else return ::decodeString(text, _defaultCodecForDecoding);
@@ -521,9 +559,14 @@ void Network::setAutoReconnectInterval(quint32 interval) {
   emit autoReconnectIntervalSet(interval);
 }
 
-void Network::setAutoReconnectRetries(qint16 retries) {
+void Network::setAutoReconnectRetries(quint16 retries) {
   _autoReconnectRetries = retries;
   emit autoReconnectRetriesSet(retries);
+}
+
+void Network::setUnlimitedReconnectRetries(bool unlimited) {
+  _unlimitedReconnectRetries = unlimited;
+  emit unlimitedReconnectRetriesSet(unlimited);
 }
 
 void Network::setRejoinChannels(bool rejoin) {
@@ -733,6 +776,7 @@ bool NetworkInfo::operator==(const NetworkInfo &other) const {
   if(networkId != other.networkId) return false;
   if(networkName != other.networkName) return false;
   if(identity != other.identity) return false;
+  if(codecForServer != other.codecForServer) return false;
   if(codecForEncoding != other.codecForEncoding) return false;
   if(codecForDecoding != other.codecForDecoding) return false;
   if(serverList != other.serverList) return false;
@@ -744,6 +788,7 @@ bool NetworkInfo::operator==(const NetworkInfo &other) const {
   if(useAutoReconnect != other.useAutoReconnect) return false;
   if(autoReconnectInterval != other.autoReconnectInterval) return false;
   if(autoReconnectRetries != other.autoReconnectRetries) return false;
+  if(unlimitedReconnectRetries != other.unlimitedReconnectRetries) return false;
   if(rejoinChannels != other.rejoinChannels) return false;
   return true;
 }
@@ -757,6 +802,7 @@ QDataStream &operator<<(QDataStream &out, const NetworkInfo &info) {
   i["NetworkId"] = QVariant::fromValue<NetworkId>(info.networkId);
   i["NetworkName"] = info.networkName;
   i["Identity"] = QVariant::fromValue<IdentityId>(info.identity);
+  i["CodecForServer"] = info.codecForServer;
   i["CodecForEncoding"] = info.codecForEncoding;
   i["CodecForDecoding"] = info.codecForDecoding;
   i["ServerList"] = info.serverList;
@@ -768,6 +814,7 @@ QDataStream &operator<<(QDataStream &out, const NetworkInfo &info) {
   i["UseAutoReconnect"] = info.useAutoReconnect;
   i["AutoReconnectInterval"] = info.autoReconnectInterval;
   i["AutoReconnectRetries"] = info.autoReconnectRetries;
+  i["UnlimitedReconnectRetries"] = info.unlimitedReconnectRetries;
   i["RejoinChannels"] = info.rejoinChannels;
   out << i;
   return out;
@@ -779,6 +826,7 @@ QDataStream &operator>>(QDataStream &in, NetworkInfo &info) {
   info.networkId = i["NetworkId"].value<NetworkId>();
   info.networkName = i["NetworkName"].toString();
   info.identity = i["Identity"].value<IdentityId>();
+  info.codecForServer = i["CodecForServer"].toByteArray();
   info.codecForEncoding = i["CodecForEncoding"].toByteArray();
   info.codecForDecoding = i["CodecForDecoding"].toByteArray();
   info.serverList = i["ServerList"].toList();
@@ -790,6 +838,7 @@ QDataStream &operator>>(QDataStream &in, NetworkInfo &info) {
   info.useAutoReconnect = i["UseAutoReconnect"].toBool();
   info.autoReconnectInterval = i["AutoReconnectInterval"].toUInt();
   info.autoReconnectRetries = i["AutoReconnectRetries"].toInt();
+  info.unlimitedReconnectRetries = i["UnlimitedReconnectRetries"].toBool();
   info.rejoinChannels = i["RejoinChannels"].toBool();
   return in;
 }

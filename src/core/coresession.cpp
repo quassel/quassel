@@ -141,6 +141,7 @@ void CoreSession::loadSettings() {
       info.useAutoReconnect = true;
       info.autoReconnectInterval = 60;
       info.autoReconnectRetries = 20;
+      info.unlimitedReconnectRetries = false;
       info.useAutoIdentify = false;
       info.autoIdentifyService = "NickServ";
       info.rejoinChannels = true;

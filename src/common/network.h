@@ -49,6 +49,7 @@ class Network : public SyncableObject {
   Q_PROPERTY(QString networkName READ networkName WRITE setNetworkName STORED false)
   Q_PROPERTY(QString currentServer READ currentServer WRITE setCurrentServer STORED false)
   Q_PROPERTY(QString myNick READ myNick WRITE setMyNick STORED false)
+  Q_PROPERTY(QByteArray codecForServer READ codecForServer WRITE setCodecForServer STORED false)
   Q_PROPERTY(QByteArray codecForEncoding READ codecForEncoding WRITE setCodecForEncoding STORED false)
   Q_PROPERTY(QByteArray codecForDecoding READ codecForDecoding WRITE setCodecForDecoding STORED false)
   Q_PROPERTY(IdentityId identityId READ identity WRITE setIdentity STORED false)
@@ -62,7 +63,8 @@ class Network : public SyncableObject {
   Q_PROPERTY(QString autoIdentifyPassword READ autoIdentifyPassword WRITE setAutoIdentifyPassword STORED false)
   Q_PROPERTY(bool useAutoReconnect READ useAutoReconnect WRITE setUseAutoReconnect STORED false)
   Q_PROPERTY(quint32 autoReconnectInterval READ autoReconnectInterval WRITE setAutoReconnectInterval STORED false)
-  Q_PROPERTY(qint16 autoReconnectRetries READ autoReconnectRetries WRITE setAutoReconnectRetries STORED false)
+  Q_PROPERTY(quint16 autoReconnectRetries READ autoReconnectRetries WRITE setAutoReconnectRetries STORED false)
+  Q_PROPERTY(bool unlimitedReconnectRetries READ unlimitedReconnectRetries WRITE setUnlimitedReconnectRetries STORED false)
   Q_PROPERTY(bool rejoinChannels READ rejoinChannels WRITE setRejoinChannels STORED false)
 
 public:
@@ -104,7 +106,8 @@ public:
   QString autoIdentifyPassword() const;
   bool useAutoReconnect() const;
   quint32 autoReconnectInterval() const;
-  qint16 autoReconnectRetries() const;  // -1 => unlimited
+  quint16 autoReconnectRetries() const;
+  bool unlimitedReconnectRetries() const;
   bool rejoinChannels() const;
 
   NetworkInfo networkInfo() const;
@@ -130,16 +133,20 @@ public:
   QList<IrcChannel *> ircChannels() const;
   quint32 ircChannelCount() const;
 
+  QByteArray codecForServer() const;
   QByteArray codecForEncoding() const;
   QByteArray codecForDecoding() const;
+  void setCodecForServer(QTextCodec *codec);
   void setCodecForEncoding(QTextCodec *codec);
   void setCodecForDecoding(QTextCodec *codec);
 
   QString decodeString(const QByteArray &text) const;
   QByteArray encodeString(const QString string) const;
 
+  static QByteArray defaultCodecForServer();
   static QByteArray defaultCodecForEncoding();
   static QByteArray defaultCodecForDecoding();
+  static void setDefaultCodecForServer(const QByteArray &name);
   static void setDefaultCodecForEncoding(const QByteArray &name);
   static void setDefaultCodecForDecoding(const QByteArray &name);
 
@@ -160,9 +167,11 @@ public slots:
   void setAutoIdentifyPassword(const QString &);
   void setUseAutoReconnect(bool);
   void setAutoReconnectInterval(quint32);
-  void setAutoReconnectRetries(qint16);
+  void setAutoReconnectRetries(quint16);
+  void setUnlimitedReconnectRetries(bool);
   void setRejoinChannels(bool);
 
+  void setCodecForServer(const QByteArray &codecName);
   void setCodecForEncoding(const QByteArray &codecName);
   void setCodecForDecoding(const QByteArray &codecName);
 
@@ -224,8 +233,10 @@ signals:
   void useAutoReconnectSet(bool);
   void autoReconnectIntervalSet(quint32);
   void autoReconnectRetriesSet(qint16);
+  void unlimitedReconnectRetriesSet(bool);
   void rejoinChannelsSet(bool);
 
+  void codecForServerSet(const QByteArray &codecName);
   void codecForEncodingSet(const QByteArray &codecName);
   void codecForDecodingSet(const QByteArray &codecName);
 
@@ -277,15 +288,18 @@ private:
 
   bool _useAutoReconnect;
   quint32 _autoReconnectInterval;
-  qint16 _autoReconnectRetries;
+  quint16 _autoReconnectRetries;
+  bool _unlimitedReconnectRetries;
   bool _rejoinChannels;
 
   QPointer<SignalProxy> _proxy;
   void determinePrefixes();
 
+  QTextCodec *_codecForServer;
   QTextCodec *_codecForEncoding;
   QTextCodec *_codecForDecoding;
 
+  static QTextCodec *_defaultCodecForServer;
   static QTextCodec *_defaultCodecForEncoding;
   static QTextCodec *_defaultCodecForDecoding;
 };
@@ -296,7 +310,8 @@ struct NetworkInfo {
   QString networkName;
   IdentityId identity;
 
-  bool useCustomEncodings;
+  bool useCustomEncodings; // not used!
+  QByteArray codecForServer;
   QByteArray codecForEncoding;
   QByteArray codecForDecoding;
 
@@ -312,7 +327,8 @@ struct NetworkInfo {
 
   bool useAutoReconnect;
   quint32 autoReconnectInterval;
-  qint16 autoReconnectRetries;  // -1 => Unlimited
+  quint16 autoReconnectRetries;
+  bool unlimitedReconnectRetries;
   bool rejoinChannels;
 
   bool operator==(const NetworkInfo &other) const;
