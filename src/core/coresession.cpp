@@ -135,6 +135,15 @@ void CoreSession::loadSettings() {
     qDebug() << "Migrating Networksettings to DB Storage for User:" << user();
     foreach(NetworkId id, netIds) {
       NetworkInfo info = s.networkInfo(id);
+
+      // default new options
+      info.useRandomServer = false;
+      info.useAutoReconnect = true;
+      info.autoReconnectInterval = 60;
+      info.autoReconnectRetries = 20;
+      info.useAutoIdentify = false;
+      info.rejoinChannels = true;
+
       Core::updateNetwork(user(), info);
       s.removeNetworkInfo(id);
     }
