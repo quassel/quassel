@@ -65,19 +65,19 @@ public:
   //! Decode a string using the server (network) decoding.
   QString serverDecode(const QByteArray &string) const;
 
-  //! Decode a string using a buffer-specific encoding if one is set (and use the server encoding else).
-  QString bufferDecode(const QString &bufferName, const QByteArray &string) const;
+  //! Decode a string using a channel-specific encoding if one is set (and use the standard encoding else).
+  QString channelDecode(const QString &channelName, const QByteArray &string) const;
 
-  //! Decode a string using a IrcUser specific encoding, if one exists (using the server encoding else).
+  //! Decode a string using an IrcUser-specific encoding, if one exists (using the standaed encoding else).
   QString userDecode(const QString &userNick, const QByteArray &string) const;
 
   //! Encode a string using the server (network) encoding.
   QByteArray serverEncode(const QString &string) const;
 
-  //! Encode a string using the buffer-specific encoding, if set, and use the server encoding else.
-  QByteArray bufferEncode(const QString &bufferName, const QString &string) const;
+  //! Encode a string using the channel-specific encoding, if set, and use the standard encoding else.
+  QByteArray channelEncode(const QString &channelName, const QString &string) const;
 
-  //! Encode a string using the user-specific encoding, if set, and use the server encoding else.
+  //! Encode a string using the user-specific encoding, if set, and use the standard encoding else.
   QByteArray userEncode(const QString &userNick, const QString &string) const;
 
 public slots:

@@ -36,6 +36,7 @@ QTextCodec *Network::_defaultCodecForDecoding = 0;
 //  Public:
 // ====================
 Network::Network(const NetworkId &networkid, QObject *parent) : SyncableObject(parent),
+    _proxy(0),
     _networkId(networkid),
     _identity(0),
     _myNick(QString()),
@@ -45,7 +46,6 @@ Network::Network(const NetworkId &networkid, QObject *parent) : SyncableObject(p
     _connectionState(Disconnected),
     _prefixes(QString()),
     _prefixModes(QString()),
-    _proxy(0),
     _useRandomServer(false),
     _useAutoIdentify(false),
     _useAutoReconnect(false),
@@ -296,7 +296,7 @@ IrcUser *Network::newIrcUser(const QString &hostmask) {
 }
 
 IrcUser *Network::newIrcUser(const QByteArray &hostmask) {
-  return newIrcUser(decodeString(hostmask));
+  return newIrcUser(decodeServerString(hostmask));
 }
 
 void Network::removeIrcUser(IrcUser *ircuser) {
@@ -337,7 +337,7 @@ IrcUser *Network::ircUser(QString nickname) const {
 }
 
 IrcUser *Network::ircUser(const QByteArray &nickname) const {
-  return ircUser(decodeString(nickname));
+  return ircUser(decodeServerString(nickname));
 }
 
 QList<IrcUser *> Network::ircUsers() const {
@@ -370,7 +370,7 @@ IrcChannel *Network::newIrcChannel(const QString &channelname) {
 }
 
 IrcChannel *Network::newIrcChannel(const QByteArray &channelname) {
-  return newIrcChannel(decodeString(channelname));
+  return newIrcChannel(decodeServerString(channelname));
 }
 
 IrcChannel *Network::ircChannel(QString channelname) const {
@@ -382,7 +382,7 @@ IrcChannel *Network::ircChannel(QString channelname) const {
 }
 
 IrcChannel *Network::ircChannel(const QByteArray &channelname) const {
-  return ircChannel(decodeString(channelname));
+  return ircChannel(decodeServerString(channelname));
 }
 
 
@@ -469,12 +469,27 @@ QString Network::decodeString(const QByteArray &text) const {
   else return ::decodeString(text, _defaultCodecForDecoding);
 }
 
-QByteArray Network::encodeString(const QString string) const {
+QByteArray Network::encodeString(const QString &string) const {
   if(_codecForEncoding) {
     return _codecForEncoding->fromUnicode(string);
   }
   if(_defaultCodecForEncoding) {
     return _defaultCodecForEncoding->fromUnicode(string);
+  }
+  return string.toAscii();
+}
+
+QString Network::decodeServerString(const QByteArray &text) const {
+  if(_codecForServer) return ::decodeString(text, _codecForServer);
+  else return ::decodeString(text, _defaultCodecForServer);
+}
+
+QByteArray Network::encodeServerString(const QString &string) const {
+  if(_codecForServer) {
+    return _codecForServer->fromUnicode(string);
+  }
+  if(_defaultCodecForServer) {
+    return _defaultCodecForServer->fromUnicode(string);
   }
   return string.toAscii();
 }

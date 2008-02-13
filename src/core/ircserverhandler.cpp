@@ -176,7 +176,7 @@ void IrcServerHandler::handleJoin(QString prefix, QList<QByteArray> params) {
 
 void IrcServerHandler::handleKick(QString prefix, QList<QByteArray> params) {
   network()->updateNickFromMask(prefix);
-  IrcUser *victim = network()->ircUser(serverDecode(params[1]));
+  IrcUser *victim = network()->ircUser(params[1]);
   QString channel = serverDecode(params[0]);
   Q_ASSERT(victim);
 
@@ -184,7 +184,7 @@ void IrcServerHandler::handleKick(QString prefix, QList<QByteArray> params) {
 
   QString msg;
   if(params.count() > 2) // someone got a reason!
-    msg = QString("%1 %2").arg(victim->nick()).arg(bufferDecode(channel, params[2]));
+    msg = QString("%1 %2").arg(victim->nick()).arg(channelDecode(channel, params[2]));
   else
     msg = victim->nick();
 
@@ -197,7 +197,7 @@ void IrcServerHandler::handleMode(QString prefix, QList<QByteArray> params) {
     return;
   }
 
-  if(network()->isChannelName(params[0])) {
+  if(network()->isChannelName(serverDecode(params[0]))) {
     // Channel Modes
     emit displayMsg(Message::Mode, BufferInfo::ChannelBuffer, serverDecode(params[0]), serverDecode(params).join(" "), prefix);
 
@@ -273,7 +273,7 @@ void IrcServerHandler::handleNotice(QString prefix, QList<QByteArray> params) {
     ? nickFromMask(prefix)
     : prefix;
 
-  networkConnection()->ctcpHandler()->parse(Message::Notice, sender, target, userDecode(prefix, params[1]));
+  networkConnection()->ctcpHandler()->parse(Message::Notice, sender, target, userDecode(sender, params[1]));
 }
 
 void IrcServerHandler::handlePart(QString prefix, QList<QByteArray> params) {
@@ -329,7 +329,7 @@ void IrcServerHandler::handleQuit(QString prefix, QList<QByteArray> params) {
 void IrcServerHandler::handleTopic(QString prefix, QList<QByteArray> params) {
   IrcUser *ircuser = network()->updateNickFromMask(prefix);
   QString channel = serverDecode(params[0]);
-  QString topic = bufferDecode(channel, params[1]);
+  QString topic = channelDecode(channel, params[1]);
   Q_ASSERT(ircuser);
 
   network()->ircChannel(channel)->setTopic(topic);
@@ -384,7 +384,7 @@ WHOWAS-Message:
 void IrcServerHandler::handle301(QString prefix, QList<QByteArray> params) {
   Q_UNUSED(prefix);
   QString nickName = serverDecode(params[0]);
-  QString awayMessage = serverDecode(params.last());
+  QString awayMessage = userDecode(nickName, params.last());
 
   IrcUser *ircuser = network()->ircUser(nickName);
   if(ircuser) {
@@ -463,8 +463,9 @@ void IrcServerHandler::handle315(QString prefix, QList<QByteArray> params) {
    (real life: "<nick> <integer> <integer> :seconds idle, signon time) */
    //TODO: parse real life message
 void IrcServerHandler::handle317(QString prefix, QList<QByteArray> params) {
-  Q_UNUSED(prefix)
-  IrcUser *ircuser = network()->ircUser(serverDecode(params[0]));
+  Q_UNUSED(prefix);
+  QString nick = serverDecode(params[0]);
+  IrcUser *ircuser = network()->ircUser(nick);
   if(ircuser) {
     QDateTime now = QDateTime::currentDateTime();
     int idleSecs = serverDecode(params[1]).toInt();
@@ -472,7 +473,7 @@ void IrcServerHandler::handle317(QString prefix, QList<QByteArray> params) {
     ircuser->setIdleTime(now.addSecs(idleSecs));
     emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Whois] %1 is idling for %2 seconds").arg(ircuser->nick()).arg(ircuser->idleTime().secsTo(now)));
   } else {
-    emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Whois] idle message: %1").arg(serverDecode(params).join(" ")));
+    emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Whois] idle message: %1").arg(userDecode(nick, params).join(" ")));
   }
 }
 
@@ -501,7 +502,7 @@ void IrcServerHandler::handle331(QString prefix, QList<QByteArray> params) {
 void IrcServerHandler::handle332(QString prefix, QList<QByteArray> params) {
   Q_UNUSED(prefix);
   QString channel = serverDecode(params[0]);
-  QString topic = bufferDecode(channel, params[1]);
+  QString topic = channelDecode(channel, params[1]);
   network()->ircChannel(channel)->setTopic(topic);
   emit displayMsg(Message::Server, BufferInfo::ChannelBuffer, channel, tr("Topic for %1 is \"%2\"").arg(channel, topic));
 }
@@ -510,7 +511,8 @@ void IrcServerHandler::handle332(QString prefix, QList<QByteArray> params) {
 void IrcServerHandler::handle333(QString prefix, QList<QByteArray> params) {
   Q_UNUSED(prefix);
   QString channel = serverDecode(params[0]);
-  emit displayMsg(Message::Server, BufferInfo::ChannelBuffer, channel, tr("Topic set by %1 on %2") .arg(bufferDecode(channel, params[1]), QDateTime::fromTime_t(bufferDecode(channel, params[2]).toUInt()).toString()));
+  emit displayMsg(Message::Server, BufferInfo::ChannelBuffer, channel,
+                  tr("Topic set by %1 on %2") .arg(serverDecode(params[1]), QDateTime::fromTime_t(channelDecode(channel, params[2]).toUInt()).toString()));
 }
 
 /*  RPL_WHOREPLY: "<channel> <user> <host> <server> <nick> 

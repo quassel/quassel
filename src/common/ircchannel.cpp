@@ -33,12 +33,13 @@
 #include <QDebug>
 
 
-IrcChannel::IrcChannel(const QString &channelname, Network *network) 
-  : SyncableObject(network),
+IrcChannel::IrcChannel(const QString &channelname, Network *network) : SyncableObject(network),
     _initialized(false),
     _name(channelname),
     _topic(QString()),
-    network(network)
+    network(network),
+    _codecForEncoding(0),
+    _codecForDecoding(0)
 {
   setObjectName(QString::number(network->networkId().toInt()) + "/" +  channelname);
 }
@@ -124,7 +125,7 @@ QString IrcChannel::decodeString(const QByteArray &text) const {
   return ::decodeString(text, _codecForDecoding);
 }
 
-QByteArray IrcChannel::encodeString(const QString string) const {
+QByteArray IrcChannel::encodeString(const QString &string) const {
   if(codecForEncoding()) {
     return _codecForEncoding->fromUnicode(string);
   }

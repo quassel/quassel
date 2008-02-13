@@ -61,7 +61,7 @@ public:
   void setCodecForDecoding(QTextCodec *codec);
 
   QString decodeString(const QByteArray &text) const;
-  QByteArray encodeString(const QString string) const;
+  QByteArray encodeString(const QString &string) const;
 
 public slots:
   void setTopic(const QString &topic);

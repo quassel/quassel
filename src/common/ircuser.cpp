@@ -28,8 +28,7 @@
 #include <QTextCodec>
 #include <QDebug>
 
-IrcUser::IrcUser(const QString &hostmask, Network *network)
-  : SyncableObject(network),
+IrcUser::IrcUser(const QString &hostmask, Network *network) : SyncableObject(network),
     _initialized(false),
     _nick(nickFromMask(hostmask)),
     _user(userFromMask(hostmask)),
@@ -145,7 +144,7 @@ QString IrcUser::decodeString(const QByteArray &text) const {
   return ::decodeString(text, codecForDecoding());
 }
 
-QByteArray IrcUser::encodeString(const QString string) const {
+QByteArray IrcUser::encodeString(const QString &string) const {
   if(codecForEncoding()) {
     return codecForEncoding()->fromUnicode(string);
   }

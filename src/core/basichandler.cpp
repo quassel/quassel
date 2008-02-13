@@ -102,13 +102,13 @@ QStringList BasicHandler::serverDecode(const QList<QByteArray> &stringlist) {
   return list;
 }
 
-QString BasicHandler::bufferDecode(const QString &bufferName, const QByteArray &string) {
-  return networkConnection()->bufferDecode(bufferName, string);
+QString BasicHandler::channelDecode(const QString &bufferName, const QByteArray &string) {
+  return networkConnection()->channelDecode(bufferName, string);
 }
 
-QStringList BasicHandler::bufferDecode(const QString &bufferName, const QList<QByteArray> &stringlist) {
+QStringList BasicHandler::channelDecode(const QString &bufferName, const QList<QByteArray> &stringlist) {
   QStringList list;
-  foreach(QByteArray s, stringlist) list << networkConnection()->bufferDecode(bufferName, s);
+  foreach(QByteArray s, stringlist) list << networkConnection()->channelDecode(bufferName, s);
   return list;
 }
 
@@ -134,13 +134,13 @@ QList<QByteArray> BasicHandler::serverEncode(const QStringList &stringlist) {
   return list;
 }
 
-QByteArray BasicHandler::bufferEncode(const QString &bufferName, const QString &string) {
-  return networkConnection()->bufferEncode(bufferName, string);
+QByteArray BasicHandler::channelEncode(const QString &bufferName, const QString &string) {
+  return networkConnection()->channelEncode(bufferName, string);
 }
 
-QList<QByteArray> BasicHandler::bufferEncode(const QString &bufferName, const QStringList &stringlist) {
+QList<QByteArray> BasicHandler::channelEncode(const QString &bufferName, const QStringList &stringlist) {
   QList<QByteArray> list;
-  foreach(QString s, stringlist) list << networkConnection()->bufferEncode(bufferName, s);
+  foreach(QString s, stringlist) list << networkConnection()->channelEncode(bufferName, s);
   return list;
 }
 

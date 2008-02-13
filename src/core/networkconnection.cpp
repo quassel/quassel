@@ -27,6 +27,7 @@
 #include "core.h"
 #include "coresession.h"
 
+#include "ircchannel.h"
 #include "ircuser.h"
 #include "network.h"
 #include "identity.h"
@@ -109,12 +110,14 @@ CtcpHandler *NetworkConnection::ctcpHandler() const {
 }
 
 QString NetworkConnection::serverDecode(const QByteArray &string) const {
-  return network()->decodeString(string);
+  return network()->decodeServerString(string);
 }
 
-QString NetworkConnection::bufferDecode(const QString &bufferName, const QByteArray &string) const {
-  Q_UNUSED(bufferName);
-  // TODO: Implement buffer-specific encodings
+QString NetworkConnection::channelDecode(const QString &bufferName, const QByteArray &string) const {
+  if(!bufferName.isEmpty()) {
+    IrcChannel *channel = network()->ircChannel(bufferName);
+    if(channel) return channel->decodeString(string);
+  }
   return network()->decodeString(string);
 }
 
@@ -125,12 +128,14 @@ QString NetworkConnection::userDecode(const QString &userNick, const QByteArray 
 }
 
 QByteArray NetworkConnection::serverEncode(const QString &string) const {
-  return network()->encodeString(string);
+  return network()->encodeServerString(string);
 }
 
-QByteArray NetworkConnection::bufferEncode(const QString &bufferName, const QString &string) const {
-  Q_UNUSED(bufferName);
-  // TODO: Implement buffer-specific encodings
+QByteArray NetworkConnection::channelEncode(const QString &bufferName, const QString &string) const {
+  if(!bufferName.isEmpty()) {
+    IrcChannel *channel = network()->ircChannel(bufferName);
+    if(channel) return channel->encodeString(string);
+  }
   return network()->encodeString(string);
 }
 

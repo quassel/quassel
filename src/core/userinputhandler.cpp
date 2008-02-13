@@ -63,7 +63,7 @@ void UserInputHandler::handleBan(const BufferInfo &bufferInfo, const QString &ms
   
   //TODO: find suitable default hostmask if msg gives only nickname 
   // Example: MODE &oulu +b *!*@*
-  QByteArray banMsg = serverEncode(bufferInfo.bufferName()) + " +b " + bufferEncode(bufferInfo.bufferName(), msg);
+  QByteArray banMsg = serverEncode(bufferInfo.bufferName()) + " +b " + channelEncode(bufferInfo.bufferName(), msg);
   emit putCmd("MODE", banMsg);
 }
 
@@ -126,7 +126,7 @@ void UserInputHandler::handleKick(const BufferInfo &bufferInfo, const QString &m
   QString reason = msg.section(' ', 1, -1, QString::SectionSkipEmpty).trimmed();
   if(reason.isEmpty()) reason = networkConnection()->identity()->kickReason();
   QList<QByteArray> params;
-  params << serverEncode(bufferInfo.bufferName()) << serverEncode(nick) << bufferEncode(bufferInfo.bufferName(), reason);
+  params << serverEncode(bufferInfo.bufferName()) << serverEncode(nick) << channelEncode(bufferInfo.bufferName(), reason);
   emit putCmd("KICK", params);
 }
 
@@ -138,13 +138,13 @@ void UserInputHandler::handleList(const BufferInfo &bufferInfo, const QString &m
 
 void UserInputHandler::handleMe(const BufferInfo &bufferInfo, const QString &msg) {
   if(bufferInfo.bufferName().isEmpty()) return; // server buffer
-  networkConnection()->ctcpHandler()->query(bufferInfo.bufferName(), "ACTION", bufferEncode(bufferInfo.bufferName(), msg));
+  networkConnection()->ctcpHandler()->query(bufferInfo.bufferName(), "ACTION", channelEncode(bufferInfo.bufferName(), msg));
   emit displayMsg(Message::Action, bufferInfo.type(), bufferInfo.bufferName(), msg, network()->myNick());
 }
 
 void UserInputHandler::handleMode(const BufferInfo &bufferInfo, const QString &msg) {
   Q_UNUSED(bufferInfo)
-  // TODO handle correct encoding for buffer modes (bufferEncode())
+  // TODO handle correct encoding for buffer modes (channelEncode())
   emit putCmd("MODE", serverEncode(msg.split(' ', QString::SkipEmptyParts)));
 }
 
@@ -177,7 +177,7 @@ void UserInputHandler::handleOp(const BufferInfo &bufferInfo, const QString &msg
 
 void UserInputHandler::handlePart(const BufferInfo &bufferInfo, const QString &msg) {
   QList<QByteArray> params;
-  params << serverEncode(bufferInfo.bufferName()) << bufferEncode(bufferInfo.bufferName(), msg);
+  params << serverEncode(bufferInfo.bufferName()) << channelEncode(bufferInfo.bufferName(), msg);
   emit putCmd("PART", params);
 }
 
@@ -206,7 +206,7 @@ void UserInputHandler::handleQuote(const BufferInfo &bufferInfo, const QString &
 void UserInputHandler::handleSay(const BufferInfo &bufferInfo, const QString &msg) {
   if(bufferInfo.bufferName().isEmpty()) return;  // server buffer
   QList<QByteArray> params;
-  params << serverEncode(bufferInfo.bufferName()) << bufferEncode(bufferInfo.bufferName(), msg);
+  params << serverEncode(bufferInfo.bufferName()) << channelEncode(bufferInfo.bufferName(), msg);
   emit putCmd("PRIVMSG", params);
   emit displayMsg(Message::Plain, bufferInfo.type(), bufferInfo.bufferName(), msg, network()->myNick(), Message::Self);
 }
@@ -214,7 +214,7 @@ void UserInputHandler::handleSay(const BufferInfo &bufferInfo, const QString &ms
 void UserInputHandler::handleTopic(const BufferInfo &bufferInfo, const QString &msg) {
   if(bufferInfo.bufferName().isEmpty()) return;
   QList<QByteArray> params;
-  params << serverEncode(bufferInfo.bufferName()) << bufferEncode(bufferInfo.bufferName(), msg);
+  params << serverEncode(bufferInfo.bufferName()) << channelEncode(bufferInfo.bufferName(), msg);
   emit putCmd("TOPIC", params);
 }
 

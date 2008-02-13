@@ -141,7 +141,9 @@ public:
   void setCodecForDecoding(QTextCodec *codec);
 
   QString decodeString(const QByteArray &text) const;
-  QByteArray encodeString(const QString string) const;
+  QByteArray encodeString(const QString &string) const;
+  QString decodeServerString(const QByteArray &text) const;
+  QByteArray encodeServerString(const QString &string) const;
 
   static QByteArray defaultCodecForServer();
   static QByteArray defaultCodecForEncoding();
@@ -262,6 +264,8 @@ signals:
   void disconnectRequested(NetworkId id = 0) const;
 
 private:
+  QPointer<SignalProxy> _proxy;
+
   NetworkId _networkId;
   IdentityId _identity;
 
@@ -292,7 +296,6 @@ private:
   bool _unlimitedReconnectRetries;
   bool _rejoinChannels;
 
-  QPointer<SignalProxy> _proxy;
   void determinePrefixes();
 
   QTextCodec *_codecForServer;

@@ -42,15 +42,15 @@ public:
 
   QString serverDecode(const QByteArray &string);
   QStringList serverDecode(const QList<QByteArray> &stringlist);
-  QString bufferDecode(const QString &bufferName, const QByteArray &string);
-  QStringList bufferDecode(const QString &bufferName, const QList<QByteArray> &stringlist);
+  QString channelDecode(const QString &bufferName, const QByteArray &string);
+  QStringList channelDecode(const QString &bufferName, const QList<QByteArray> &stringlist);
   QString userDecode(const QString &userNick, const QByteArray &string);
   QStringList userDecode(const QString &userNick, const QList<QByteArray> &stringlist);
 
   QByteArray serverEncode(const QString &string);
   QList<QByteArray> serverEncode(const QStringList &stringlist);
-  QByteArray bufferEncode(const QString &bufferName, const QString &string);
-  QList<QByteArray> bufferEncode(const QString &bufferName, const QStringList &stringlist);
+  QByteArray channelEncode(const QString &bufferName, const QString &string);
+  QList<QByteArray> channelEncode(const QString &bufferName, const QStringList &stringlist);
   QByteArray userEncode(const QString &userNick, const QString &string);
   QList<QByteArray> userEncode(const QString &userNick, const QStringList &stringlist);
 
