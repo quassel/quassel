@@ -174,16 +174,9 @@ void NetworkConnection::networkInitialized() {
 }
 
 void NetworkConnection::sendPerform() {
-  // TODO: reimplement perform List!
-  //// send performlist
-  //QStringList performList = networkSettings["Perform"].toString().split( "\n" );
-  //int count = performList.count();
-  //for(int a = 0; a < count; a++) {
-  //  if(!performList[a].isEmpty() ) {
-  //    userInput(network, "", performList[a]);
-  //  }
-  //}
-
+  foreach(QString line, network()->perform()) {
+    if(!line.isEmpty()) userInput(Core::bufferInfo(coreSession()->user(), network()->networkId(), BufferInfo::StatusBuffer), line);
+  }
 }
 
 QVariant NetworkConnection::state() const {
