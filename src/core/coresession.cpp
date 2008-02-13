@@ -142,6 +142,7 @@ void CoreSession::loadSettings() {
       info.autoReconnectInterval = 60;
       info.autoReconnectRetries = 20;
       info.useAutoIdentify = false;
+      info.autoIdentifyService = "NickServ";
       info.rejoinChannels = true;
 
       Core::updateNetwork(user(), info);

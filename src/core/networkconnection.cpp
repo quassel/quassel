@@ -174,8 +174,14 @@ void NetworkConnection::networkInitialized() {
 }
 
 void NetworkConnection::sendPerform() {
+  BufferInfo statusBuf = Core::bufferInfo(coreSession()->user(), network()->networkId(), BufferInfo::StatusBuffer);
+  // do auto identify
+  if(network()->useAutoIdentify() && !network()->autoIdentifyService().isEmpty() && !network()->autoIdentifyPassword().isEmpty()) {
+    userInputHandler()->handleMsg(statusBuf, QString("%1 IDENTIFY %2").arg(network()->autoIdentifyService(), network()->autoIdentifyPassword()));
+  }
+  // send perform list
   foreach(QString line, network()->perform()) {
-    if(!line.isEmpty()) userInput(Core::bufferInfo(coreSession()->user(), network()->networkId(), BufferInfo::StatusBuffer), line);
+    if(!line.isEmpty()) userInput(statusBuf, line);
   }
 }
 

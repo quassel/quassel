@@ -468,6 +468,16 @@ void NetworksSettingsPage::on_addNetwork_clicked() {
     info.networkId = id;
     info.networkName = dlg.networkName();
     info.identity = 1;
+
+    // defaults
+    info.useRandomServer = false;
+    info.useAutoReconnect = true;
+    info.autoReconnectInterval = 60;
+    info.autoReconnectRetries = 20;
+    info.useAutoIdentify = false;
+    info.autoIdentifyService = "NickServ";
+    info.rejoinChannels = true;
+
     networkInfos[id] = info;
     QListWidgetItem *item = insertNetwork(info);
     ui.networkList->setCurrentItem(item);
