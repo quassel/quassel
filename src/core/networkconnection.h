@@ -27,6 +27,7 @@
 #include <QTcpSocket>
 #include <QTimer>
 
+#include "identity.h"
 #include "message.h"
 #include "network.h"
 #include "signalproxy.h"
@@ -48,6 +49,7 @@ public:
   NetworkId networkId() const;
   QString networkName() const;
   Network *network() const;
+  Identity *identity() const;
   CoreSession *coreSession() const;
 
   bool isConnected() const;
@@ -84,8 +86,8 @@ public slots:
   void disconnectFromIrc();
   void userInput(BufferInfo bufferInfo, QString msg);
 
-  void putRawLine(QString input);
-  void putCmd(QString cmd, QStringList params, QString prefix = 0);
+  void putRawLine(QByteArray input);
+  void putCmd(const QString &cmd, const QVariantList &params, const QByteArray &prefix = QByteArray());
 
 
 private slots:
@@ -113,7 +115,7 @@ private slots:
   void socketDisconnected();
   void socketStateChanged(QAbstractSocket::SocketState);
   void setConnectionState(Network::ConnectionState);
-  void networkInitialized();
+  void networkInitialized(const QString &currentServer);
 
 private:
   QTcpSocket socket;
@@ -125,9 +127,6 @@ private:
   IrcServerHandler *_ircServerHandler;
   UserInputHandler *_userInputHandler;
   CtcpHandler *_ctcpHandler;
-
-  QVariantMap networkSettings;
-  QVariantMap identity;
 
   QVariant _previousState;
 

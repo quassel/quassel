@@ -40,27 +40,45 @@ public:
 
   QStringList providesHandlers();
 
+  QString serverDecode(const QByteArray &string);
+  QStringList serverDecode(const QList<QByteArray> &stringlist);
+  QString bufferDecode(const QString &bufferName, const QByteArray &string);
+  QStringList bufferDecode(const QString &bufferName, const QList<QByteArray> &stringlist);
+  QString userDecode(const QString &userNick, const QByteArray &string);
+  QStringList userDecode(const QString &userNick, const QList<QByteArray> &stringlist);
+
+  QByteArray serverEncode(const QString &string);
+  QList<QByteArray> serverEncode(const QStringList &stringlist);
+  QByteArray bufferEncode(const QString &bufferName, const QString &string);
+  QList<QByteArray> bufferEncode(const QString &bufferName, const QStringList &stringlist);
+  QByteArray userEncode(const QString &userNick, const QString &string);
+  QList<QByteArray> userEncode(const QString &userNick, const QStringList &stringlist);
+
 signals:
   void displayMsg(Message::Type, BufferInfo::Type, QString target, QString text, QString sender = "", quint8 flags = Message::None);
-  void putCmd(QString cmd, QStringList params, QString prefix = 0);
-  void putRawLine(QString msg);
-  
-protected:
-  virtual void handle(const QString &member, QGenericArgument val0 = QGenericArgument(0),
-		      QGenericArgument val1 = QGenericArgument(), QGenericArgument val2 = QGenericArgument(),
-		      QGenericArgument val3 = QGenericArgument(), QGenericArgument val4 = QGenericArgument(),
-		      QGenericArgument val5 = QGenericArgument(), QGenericArgument val6 = QGenericArgument(),
-		      QGenericArgument val7 = QGenericArgument(), QGenericArgument val8 = QGenericArgument());
-	    
-  NetworkConnection *server;
+  void putCmd(const QString &cmd, const QVariantList &params, const QByteArray &prefix);
+  void putRawLine(const QByteArray &msg);
 
-  Network *network() const;
+protected:
+  void putCmd(const QString &cmd, const QByteArray &param, const QByteArray &prefix = QByteArray());
+  void putCmd(const QString &cmd, const QList<QByteArray> &params, const QByteArray &prefix = QByteArray());
+
+  virtual void handle(const QString &member, QGenericArgument val0 = QGenericArgument(0),
+                      QGenericArgument val1 = QGenericArgument(), QGenericArgument val2 = QGenericArgument(),
+                      QGenericArgument val3 = QGenericArgument(), QGenericArgument val4 = QGenericArgument(),
+                      QGenericArgument val5 = QGenericArgument(), QGenericArgument val6 = QGenericArgument(),
+                      QGenericArgument val7 = QGenericArgument(), QGenericArgument val8 = QGenericArgument());
+
+
+  Network * network() const;
+  NetworkConnection * networkConnection() const;
   BufferInfo::Type typeByTarget(const QString &target) const;
 
 private:
   const QHash<QString, int> &handlerHash();
   QHash<QString, int> _handlerHash;
   int defaultHandler;
+  NetworkConnection *_networkConnection;
   bool initDone;
 };
 #endif

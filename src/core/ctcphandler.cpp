@@ -119,16 +119,17 @@ QString CtcpHandler::pack(QString ctcpTag, QString message) {
   return XDELIM + ctcpTag + ' ' + message + XDELIM;
 }
 
+// TODO handle encodings correctly!
 void CtcpHandler::query(QString bufname, QString ctcpTag, QString message) {
   QStringList params;
   params << bufname << pack(ctcpTag, message);
-  emit putCmd("PRIVMSG", params); 
+  emit putCmd("PRIVMSG", serverEncode(params));
 }
 
 void CtcpHandler::reply(QString bufname, QString ctcpTag, QString message) {
   QStringList params;
   params << bufname << pack(ctcpTag, message);
-  emit putCmd("NOTICE", params);
+  emit putCmd("NOTICE", serverEncode(params));
 }
 
 //******************************/

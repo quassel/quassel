@@ -32,14 +32,6 @@ public:
 
   void handleServerMsg(QByteArray rawMsg);
 
-  QString serverDecode(const QByteArray &string);
-  QStringList serverDecode(const QList<QByteArray> &stringlist);
-  QString bufferDecode(const QString &bufferName, const QByteArray &string);
-  QStringList bufferDecode(const QString &bufferName, const QList<QByteArray> &stringlist);
-  QString userDecode(const QString &userNick, const QByteArray &string);
-  QStringList userDecode(const QString &userNick, const QList<QByteArray> &stringlist);
-
-
 public slots:
   void handleJoin(QString, QList<QByteArray>);
   void handleKick(QString, QList<QByteArray>);
@@ -77,7 +69,6 @@ public slots:
 private:
   void tryNextNick(const QString &errnick);
   bool _whois;
-  NetworkConnection *networkConnection;
 };
 
 

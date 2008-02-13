@@ -44,7 +44,7 @@ NetworkConnection::NetworkConnection(Network *network, CoreSession *session, con
     _ctcpHandler(new CtcpHandler(this)),
     _previousState(state)
 {
-  connect(network, SIGNAL(currentServerSet(const QString &)), this, SLOT(networkInitialized()));
+  connect(network, SIGNAL(currentServerSet(const QString &)), this, SLOT(networkInitialized(const QString &)));
 
   connect(&socket, SIGNAL(connected()), this, SLOT(socketConnected()));
   connect(&socket, SIGNAL(disconnected()), this, SLOT(socketDisconnected()));
@@ -82,6 +82,10 @@ NetworkId NetworkConnection::networkId() const {
 
 QString NetworkConnection::networkName() const {
   return network()->networkName();
+}
+
+Identity *NetworkConnection::identity() const {
+  return coreSession()->identity(network()->identity());
 }
 
 Network *NetworkConnection::network() const {
@@ -155,15 +159,18 @@ void NetworkConnection::connectToIrc() {
   socket.connectToHost(host, port);
 }
 
-void NetworkConnection::networkInitialized() {
+void NetworkConnection::networkInitialized(const QString &currentServer) {
+  if(currentServer.isEmpty()) return;
+
   sendPerform();
 
     // rejoin channels we've been in
   QStringList chans = _previousState.toStringList();
   if(chans.count() > 0) {
     qDebug() << "autojoining" << chans;
-    QString list = chans.join(",");
-    putCmd("join", QStringList(list));  // FIXME check for 512 byte limit!
+    QVariantList list;
+    foreach(QString chan, chans) list << serverEncode(chan);
+    putCmd("JOIN", list);  // FIXME check for 512 byte limit!
   }
   // delete _previousState, we won't need it again
   _previousState = QVariant();
@@ -217,8 +224,8 @@ void NetworkConnection::socketConnected() {
     disconnectFromIrc();
     return;
   }
-  putRawLine(QString("NICK :%1").arg(identity->nicks()[0]));  // FIXME: try more nicks if error occurs
-  putRawLine(QString("USER %1 8 * :%2").arg(identity->ident(), identity->realName()));
+  putRawLine(serverEncode(QString("NICK :%1").arg(identity->nicks()[0])));  // FIXME: try more nicks if error occurs
+  putRawLine(serverEncode(QString("USER %1 8 * :%2").arg(identity->ident(), identity->realName())));
 }
 
 void NetworkConnection::socketStateChanged(QAbstractSocket::SocketState socketState) {
@@ -253,22 +260,22 @@ void NetworkConnection::userInput(BufferInfo buf, QString msg) {
   userInputHandler()->handleUserInput(buf, msg);
 }
 
-void NetworkConnection::putRawLine(QString s) {
+void NetworkConnection::putRawLine(QByteArray s) {
   s += "\r\n";
-  socket.write(s.toAscii());
+  socket.write(s);
 }
 
-void NetworkConnection::putCmd(QString cmd, QStringList params, QString prefix) {
-  QString msg;
+void NetworkConnection::putCmd(const QString &cmd, const QVariantList &params, const QByteArray &prefix) {
+  QByteArray msg;
   if(!prefix.isEmpty())
     msg += ":" + prefix + " ";
-  msg += cmd.toUpper();
-  
+  msg += cmd.toUpper().toAscii();
+
   for(int i = 0; i < params.size() - 1; i++) {
-    msg += " " + params[i];
+    msg += " " + params[i].toByteArray();
   }
   if(!params.isEmpty())
-    msg += " :" + params.last();
+    msg += " :" + params.last().toByteArray();
 
   putRawLine(msg);
 }

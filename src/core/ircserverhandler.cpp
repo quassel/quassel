@@ -32,44 +32,12 @@
 
 #include <QDebug>
 
-IrcServerHandler::IrcServerHandler(NetworkConnection *parent)
-  : BasicHandler(parent),
-    networkConnection(parent) {
-      _whois = false;
+IrcServerHandler::IrcServerHandler(NetworkConnection *parent) : BasicHandler(parent) {
+  _whois = false;
 }
 
 IrcServerHandler::~IrcServerHandler() {
 
-}
-
-QString IrcServerHandler::serverDecode(const QByteArray &string) {
-  return networkConnection->serverDecode(string);
-}
-
-QStringList IrcServerHandler::serverDecode(const QList<QByteArray> &stringlist) {
-  QStringList list;
-  foreach(QByteArray s, stringlist) list << networkConnection->serverDecode(s);
-  return list;
-}
-
-QString IrcServerHandler::bufferDecode(const QString &bufferName, const QByteArray &string) {
-  return networkConnection->bufferDecode(bufferName, string);
-}
-
-QStringList IrcServerHandler::bufferDecode(const QString &bufferName, const QList<QByteArray> &stringlist) {
-  QStringList list;
-  foreach(QByteArray s, stringlist) list << networkConnection->bufferDecode(bufferName, s);
-  return list;
-}
-
-QString IrcServerHandler::userDecode(const QString &userNick, const QByteArray &string) {
-  return networkConnection->userDecode(userNick, string);
-}
-
-QStringList IrcServerHandler::userDecode(const QString &userNick, const QList<QByteArray> &stringlist) {
-  QStringList list;
-  foreach(QByteArray s, stringlist) list << networkConnection->userDecode(userNick, s);
-  return list;
 }
 
 /*! Handle a raw message string sent by the server. We try to find a suitable handler, otherwise we call a default handler. */
@@ -285,7 +253,7 @@ void IrcServerHandler::handleNick(QString prefix, QList<QByteArray> params) {
 
 void IrcServerHandler::handleNotice(QString prefix, QList<QByteArray> params) {
   if(params.count() < 2) {
-    qWarning() << "IrcServerHandler::handleNotice(): not enoug Parameters:" << prefix << serverDecode(params);
+    qWarning() << "IrcServerHandler::handleNotice(): not enough Parameters:" << prefix << serverDecode(params);
     return;
   }
 
@@ -305,7 +273,7 @@ void IrcServerHandler::handleNotice(QString prefix, QList<QByteArray> params) {
     ? nickFromMask(prefix)
     : prefix;
 
-  networkConnection->ctcpHandler()->parse(Message::Notice, sender, target, userDecode(prefix, params[1]));
+  networkConnection()->ctcpHandler()->parse(Message::Notice, sender, target, userDecode(prefix, params[1]));
 }
 
 void IrcServerHandler::handlePart(QString prefix, QList<QByteArray> params) {
@@ -324,7 +292,7 @@ void IrcServerHandler::handlePart(QString prefix, QList<QByteArray> params) {
 
 void IrcServerHandler::handlePing(QString prefix, QList<QByteArray> params) {
   Q_UNUSED(prefix);
-  emit putCmd("PONG", serverDecode(params));
+  putCmd("PONG", params);
 }
 
 void IrcServerHandler::handlePrivmsg(QString prefix, QList<QByteArray> params) {
@@ -341,7 +309,7 @@ void IrcServerHandler::handlePrivmsg(QString prefix, QList<QByteArray> params) {
 
   // it's possible to pack multiple privmsgs into one param using ctcp
   // - > we let the ctcpHandler do the work
-  networkConnection->ctcpHandler()->parse(Message::Plain, prefix, target, userDecode(ircuser->nick(), params[1]));
+  networkConnection()->ctcpHandler()->parse(Message::Plain, prefix, target, userDecode(ircuser->nick(), params[1]));
 }
 
 void IrcServerHandler::handleQuit(QString prefix, QList<QByteArray> params) {
@@ -621,17 +589,17 @@ void IrcServerHandler::handle433(QString prefix, QList<QByteArray> params) {
 
   // if there is a problem while connecting to the server -> we handle it
   // but only if our connection has not been finished yet...
-  if(!networkConnection->network()->currentServer().isEmpty())
+  if(!network()->currentServer().isEmpty())
     return;
 
   tryNextNick(errnick);
 }
 
 void IrcServerHandler::tryNextNick(const QString &errnick) {
-  QStringList desiredNicks = networkConnection->coreSession()->identity(networkConnection->network()->identity())->nicks();
+  QStringList desiredNicks = networkConnection()->coreSession()->identity(network()->identity())->nicks();
   int nextNick = desiredNicks.indexOf(errnick) + 1;
   if(desiredNicks.size() > nextNick) {
-    putCmd("NICK", QStringList(desiredNicks[nextNick]));
+    putCmd("NICK", serverEncode(desiredNicks[nextNick]));
   } else {
     emit displayMsg(Message::Error, BufferInfo::StatusBuffer, "", tr("No free and valid nicks in nicklist found. use: /nick <othernick> to continue"));
   }

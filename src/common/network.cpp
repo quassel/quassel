@@ -456,8 +456,10 @@ void Network::setCurrentServer(const QString &currentServer) {
 
 void Network::setConnected(bool connected) {
   _connected = connected;
-  if(!connected)
+  if(!connected) {
     removeChansAndUsers();
+    setCurrentServer(QString());
+  }
   emit connectedSet(connected);
 }
 
