@@ -60,6 +60,8 @@ public slots:
   /* Buffer handling */
   virtual BufferInfo getBufferInfo(UserId user, const NetworkId &networkId, BufferInfo::Type type, const QString &buffer = "");
   virtual QList<BufferInfo> requestBuffers(UserId user, QDateTime since = QDateTime());
+  virtual void setBufferLastSeen(UserId user, const BufferId &bufferId, const QDateTime &seenDate);
+  virtual QHash<BufferId, QDateTime> bufferLastSeenDates(UserId user);
   
   /* Message handling */
   

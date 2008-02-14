@@ -265,6 +265,16 @@ QList<BufferInfo> Core::requestBuffers(UserId user, QDateTime since) {
   return instance()->storage->requestBuffers(user, since);
 }
 
+void Core::setBufferLastSeen(UserId user, const BufferId &bufferId, const QDateTime &seenDate) {
+  QMutexLocker locker(&mutex);
+  return instance()->storage->setBufferLastSeen(user, bufferId, seenDate);
+}
+
+QHash<BufferId, QDateTime> Core::bufferLastSeenDates(UserId user) {
+  QMutexLocker locker(&mutex);
+  return instance()->storage->bufferLastSeenDates(user);
+}
+
 /*** Network Management ***/
 
 bool Core::startListening(uint port) {

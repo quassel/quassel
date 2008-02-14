@@ -170,6 +170,21 @@ class Storage : public QObject {
      */
     virtual QList<BufferInfo> requestBuffers(UserId user, QDateTime since = QDateTime()) = 0;
 
+    //! Update the LastSeenDate for a Buffer
+    /** This Method is used to make the LastSeenDate of a Buffer persistent
+     * \param user      The Owner of that Buffer
+     * \param bufferId  The buffer id
+     * \param seenDate  Time the Buffer has been visited the last time
+     */
+    virtual void setBufferLastSeen(UserId user, const BufferId &bufferId, const QDateTime &seenDate) = 0;
+
+    //! Get a Hash of all last seen dates. 
+    /** This Method is called when the Quassel Core is started to restore the lastSeenDates
+     * \param user      The Owner of the buffers
+     */
+    virtual QHash<BufferId, QDateTime> bufferLastSeenDates(UserId user) = 0;
+
+  
     /* Message handling */
 
     //! Store a Message in the backlog.

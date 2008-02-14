@@ -169,6 +169,7 @@ bool SqliteStorage::updateNetwork(UserId user, const NetworkInfo &info) {
   updateQuery.bindValue(":usecustomencoding", info.useCustomEncodings ? 1 : 0);
   updateQuery.bindValue(":encodingcodec", QString(info.codecForEncoding));
   updateQuery.bindValue(":decodingcodec", QString(info.codecForDecoding));
+  updateQuery.bindValue(":servercodec", QString(info.codecForServer));
   updateQuery.bindValue(":userandomserver", info.useRandomServer ? 1 : 0);
   updateQuery.bindValue(":perform", info.perform.join("\n"));
   updateQuery.bindValue(":useautoidentify", info.useAutoIdentify ? 1 : 0);
@@ -177,6 +178,7 @@ bool SqliteStorage::updateNetwork(UserId user, const NetworkInfo &info) {
   updateQuery.bindValue(":useautoreconnect", info.useAutoReconnect ? 1 : 0);
   updateQuery.bindValue(":autoreconnectinterval", info.autoReconnectInterval);
   updateQuery.bindValue(":autoreconnectretries", info.autoReconnectRetries);
+  updateQuery.bindValue(":unlimitedconnectretries", info.unlimitedReconnectRetries ? 1 : 0);
   updateQuery.bindValue(":rejoinchannels", info.rejoinChannels ? 1 : 0);
   updateQuery.bindValue(":networkid", info.networkId.toInt());
   updateQuery.exec();
@@ -285,7 +287,7 @@ QList<NetworkInfo> SqliteStorage::networks(UserId user) {
     net.networkId = networksQuery.value(0).toInt();
     net.networkName = networksQuery.value(1).toString();
     net.identity = networksQuery.value(2).toInt();
-    net.useCustomEncodings = networksQuery.value(3).toInt() == 1 ? true : false;
+    net.codecForServer = networksQuery.value(3).toString().toAscii();
     net.codecForEncoding = networksQuery.value(4).toString().toAscii();
     net.codecForDecoding = networksQuery.value(5).toString().toAscii();
     net.useRandomServer = networksQuery.value(6).toInt() == 1 ? true : false;
@@ -296,7 +298,8 @@ QList<NetworkInfo> SqliteStorage::networks(UserId user) {
     net.useAutoReconnect = networksQuery.value(11).toInt() == 1 ? true : false;
     net.autoReconnectInterval = networksQuery.value(12).toUInt();
     net.autoReconnectRetries = networksQuery.value(13).toInt();
-    net.rejoinChannels = networksQuery.value(14).toInt() == 1 ? true : false;
+    net.unlimitedReconnectRetries = networksQuery.value(14).toInt() == 1 ? true : false;
+    net.rejoinChannels = networksQuery.value(15).toInt() == 1 ? true : false;
 
     serversQuery.bindValue(":networkid", net.networkId.toInt());
     serversQuery.exec();
@@ -404,6 +407,30 @@ QList<BufferInfo> SqliteStorage::requestBuffers(UserId user, QDateTime since) {
     bufferlist << BufferInfo(query.value(0).toInt(), query.value(1).toInt(), (BufferInfo::Type)query.value(2).toInt(), query.value(3).toInt(), query.value(4).toString());
   }
   return bufferlist;
+}
+
+void SqliteStorage::setBufferLastSeen(UserId user, const BufferId &bufferId, const QDateTime &seenDate) {
+  QSqlQuery *query = cachedQuery("update_buffer_lastseen");
+  query->bindValue(":userid", user.toInt());
+  query->bindValue(":bufferid", bufferId.toInt());
+  query->bindValue(":lastseen", seenDate.toTime_t());
+  query->exec();
+  watchQuery(query);
+}
+
+QHash<BufferId, QDateTime> SqliteStorage::bufferLastSeenDates(UserId user) {
+  QHash<BufferId, QDateTime> lastSeenHash;
+  QSqlQuery query(logDb());
+  query.prepare(queryString("select_buffer_lastseen_dates"));
+  query.bindValue(":userid", user.toInt());
+  query.exec();
+  if(!watchQuery(&query))
+    return lastSeenHash;
+
+  while(query.next()) {
+    lastSeenHash[query.value(0).toInt()] = QDateTime::fromTime_t(query.value(1).toUInt());
+  }
+  return lastSeenHash;
 }
 
 MsgId SqliteStorage::logMessage(Message msg) {

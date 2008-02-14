@@ -1,7 +1,7 @@
 UPDATE network SET
 networkname = :networkname,
 identityid = :identityid,
-usecustomencoding = :usecustomencoding,
+servercodec = :servercodec,
 encodingcodec = :encodingcodec,
 decodingcodec = :decodingcodec,
 userandomserver = :userandomserver,
@@ -12,5 +12,6 @@ autoidentifypassword = :autoidentifypassword,
 useautoreconnect = :useautoreconnect,
 autoreconnectinterval = :autoreconnectinterval,
 autoreconnectretries = :autoreconnectretries,
+unlimitedconnectretries = :unlimitedconnectretries,
 rejoinchannels = :rejoinchannels
 WHERE networkid = :networkid
