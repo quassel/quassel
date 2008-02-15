@@ -25,6 +25,7 @@
 
 #include "settingspage.h"
 #include "ui_colorsettingspage.h"
+#include "uistyle.h"
 
 class QSignalMapper;
 class ColorButton;
@@ -41,6 +42,11 @@ class ColorSettingsPage : public SettingsPage {
     void save();
     void load();
     void defaults();
+    void defaultBufferview();
+    void defaultServerActivity();
+    void defaultUserActivity();
+    void defaultMessage();
+    void defaultMircColorCodes();
 
   private slots:
     void widgetHasChanged();
@@ -54,6 +60,7 @@ class ColorSettingsPage : public SettingsPage {
     bool testHasChanged();
     void chatviewPreview();
     void bufferviewPreview();
+    void saveColor(UiStyle::FormatType formatType, const QColor &color);
 };
 
 #endif

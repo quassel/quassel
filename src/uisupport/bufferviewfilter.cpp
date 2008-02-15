@@ -24,6 +24,8 @@
 
 #include "networkmodel.h"
 
+#include "uisettings.h"
+
 /*****************************************
 * The Filter for the Tree View
 *****************************************/
@@ -161,19 +163,26 @@ QVariant BufferViewFilter::data(const QModelIndex &index, int role) const {
 }
 
 QVariant BufferViewFilter::foreground(const QModelIndex &index) const {
+  UiSettings s("QtUi/Colors");
+  QVariant inactiveActivity = s.value("inactiveActivity", QVariant(QColor(Qt::gray)));
+  QVariant noActivity = s.value("noActivity", QVariant(QColor(Qt::black)));
+  QVariant highlightActivity = s.value("highlightActivity", QVariant(QColor(Qt::magenta)));
+  QVariant newMessageActivity = s.value("newMessageActivity", QVariant(QColor(Qt::green)));
+  QVariant otherActivity = s.value("otherActivity", QVariant(QColor(Qt::darkGreen)));
+
   if(!index.data(NetworkModel::ItemActiveRole).toBool())
-    return QColor(Qt::gray);
+    return inactiveActivity.value<QColor>();
 
   BufferItem::ActivityLevel activity = (BufferItem::ActivityLevel)index.data(NetworkModel::BufferActivityRole).toInt();
 
   if(activity & BufferItem::Highlight)
-    return QColor(Qt::magenta);
+    return highlightActivity.value<QColor>();
   if(activity & BufferItem::NewMessage)
-    return QColor(Qt::green);
+    return newMessageActivity.value<QColor>();
   if(activity & BufferItem::OtherActivity)
-    return QColor(Qt::darkGreen);
+    return otherActivity.value<QColor>();
   
-  return QColor(Qt::black);
+  return noActivity.value<QColor>();
   
   // FIXME:: make colors configurable;
 
