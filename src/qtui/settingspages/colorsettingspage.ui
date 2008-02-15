@@ -1,0 +1,939 @@
+<ui version="4.0" >
+ <class>ColorSettingsPage</class>
+ <widget class="QWidget" name="ColorSettingsPage" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>448</width>
+    <height>532</height>
+   </rect>
+  </property>
+  <property name="sizePolicy" >
+   <sizepolicy vsizetype="Maximum" hsizetype="Maximum" >
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle" >
+   <string>Form</string>
+  </property>
+  <layout class="QHBoxLayout" >
+   <item>
+    <widget class="QTabWidget" name="tabWidget" >
+     <property name="currentIndex" >
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="Seite" >
+      <attribute name="title" >
+       <string>Bufferview</string>
+      </attribute>
+      <layout class="QGridLayout" >
+       <item row="0" column="0" >
+        <widget class="QGroupBox" name="groupBox_6" >
+         <property name="title" >
+          <string>Activities:</string>
+         </property>
+         <layout class="QGridLayout" >
+          <item row="0" column="0" >
+           <widget class="QLabel" name="label_42" >
+            <property name="text" >
+             <string>Inactive:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1" >
+           <widget class="ColorButton" name="inactiveActivity" >
+            <property name="text" >
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0" >
+           <widget class="QLabel" name="label_43" >
+            <property name="text" >
+             <string>No Activity:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1" >
+           <widget class="ColorButton" name="noActivity" >
+            <property name="text" >
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0" >
+           <widget class="QLabel" name="label_39" >
+            <property name="text" >
+             <string>Highlight:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1" >
+           <widget class="ColorButton" name="highlightActivity" >
+            <property name="text" >
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0" >
+           <widget class="QLabel" name="label_40" >
+            <property name="text" >
+             <string>New Message:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1" >
+           <widget class="ColorButton" name="newMessageActivity" >
+            <property name="text" >
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0" >
+           <widget class="QLabel" name="label_41" >
+            <property name="text" >
+             <string>Other Activity:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1" >
+           <widget class="ColorButton" name="otherActivity" >
+            <property name="text" >
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="0" >
+           <spacer>
+            <property name="orientation" >
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" >
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="0" column="1" >
+        <widget class="QGroupBox" name="groupBox_7" >
+         <property name="title" >
+          <string>Preview:</string>
+         </property>
+         <layout class="QHBoxLayout" >
+          <item>
+           <widget class="QTreeWidget" name="bufferviewPreview" >
+            <column>
+             <property name="text" >
+              <string>1</string>
+             </property>
+            </column>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="1" column="1" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" >
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="chatview" >
+      <attribute name="title" >
+       <string>Chatview</string>
+      </attribute>
+      <layout class="QVBoxLayout" >
+       <item>
+        <widget class="QTabWidget" name="tabWidget_2" >
+         <property name="sizePolicy" >
+          <sizepolicy vsizetype="Maximum" hsizetype="Expanding" >
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="currentIndex" >
+          <number>0</number>
+         </property>
+         <widget class="QWidget" name="tab" >
+          <attribute name="title" >
+           <string>Server Activity</string>
+          </attribute>
+          <layout class="QGridLayout" >
+           <item row="1" column="0" >
+            <widget class="QLabel" name="label_20" >
+             <property name="text" >
+              <string>Error Message:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1" >
+            <widget class="ColorButton" name="errorMessageFG" >
+             <property name="text" >
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="2" >
+            <widget class="ColorButton" name="errorMessageBG" >
+             <property name="text" >
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0" >
+            <widget class="QLabel" name="label_18" >
+             <property name="text" >
+              <string>Notice Message:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1" >
+            <widget class="ColorButton" name="noticeMessageFG" >
+             <property name="text" >
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="2" >
+            <widget class="ColorButton" name="noticeMessageBG" >
+             <property name="text" >
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0" >
+            <widget class="QLabel" name="label_17" >
+             <property name="text" >
+              <string>Plain Message:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1" >
+            <widget class="ColorButton" name="plainMessageFG" >
+             <property name="text" >
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="2" >
+            <widget class="ColorButton" name="plainMessageBG" >
+             <property name="text" >
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="0" >
+            <widget class="QLabel" name="label_19" >
+             <property name="text" >
+              <string>Server Message:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="1" >
+            <widget class="ColorButton" name="serverMessageFG" >
+             <property name="text" >
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="2" >
+            <widget class="ColorButton" name="serverMessageBG" >
+             <property name="text" >
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1" >
+            <widget class="QLabel" name="label_44" >
+             <property name="text" >
+              <string>Foreground</string>
+             </property>
+             <property name="alignment" >
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="2" >
+            <widget class="QLabel" name="label_45" >
+             <property name="text" >
+              <string>Background</string>
+             </property>
+             <property name="alignment" >
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="1" >
+            <spacer>
+             <property name="orientation" >
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" >
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="tab_2" >
+          <attribute name="title" >
+           <string>User Activity</string>
+          </attribute>
+          <layout class="QGridLayout" >
+           <item row="0" column="1" >
+            <widget class="QLabel" name="label_35" >
+             <property name="text" >
+              <string>Foreground</string>
+             </property>
+             <property name="alignment" >
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="2" >
+            <widget class="QLabel" name="label_36" >
+             <property name="text" >
+              <string>Background</string>
+             </property>
+             <property name="alignment" >
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0" >
+            <widget class="QLabel" name="label_27" >
+             <property name="text" >
+              <string>Action Message:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1" >
+            <widget class="ColorButton" name="actionMessageFG" >
+             <property name="text" >
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="2" >
+            <widget class="ColorButton" name="actionMessageBG" >
+             <property name="text" >
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0" >
+            <widget class="QLabel" name="label_21" >
+             <property name="text" >
+              <string>Join Message:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1" >
+            <widget class="ColorButton" name="joinMessageFG" >
+             <property name="text" >
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="2" >
+            <widget class="ColorButton" name="joinMessageBG" >
+             <property name="text" >
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0" >
+            <widget class="QLabel" name="label_25" >
+             <property name="text" >
+              <string>Kick Message:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1" >
+            <widget class="ColorButton" name="kickMessageFG" >
+             <property name="text" >
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="2" >
+            <widget class="ColorButton" name="kickMessageBG" >
+             <property name="text" >
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="0" >
+            <widget class="QLabel" name="label_26" >
+             <property name="text" >
+              <string>Mode Message:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="1" >
+            <widget class="ColorButton" name="modeMessageFG" >
+             <property name="text" >
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="2" >
+            <widget class="ColorButton" name="modeMessageBG" >
+             <property name="text" >
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="0" >
+            <widget class="QLabel" name="label_22" >
+             <property name="text" >
+              <string>Part Message:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="1" >
+            <widget class="ColorButton" name="partMessageFG" >
+             <property name="text" >
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="2" >
+            <widget class="ColorButton" name="partMessageBG" >
+             <property name="text" >
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="0" >
+            <widget class="QLabel" name="label_23" >
+             <property name="text" >
+              <string>Quit Message:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="1" >
+            <widget class="ColorButton" name="quitMessageFG" >
+             <property name="text" >
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="2" >
+            <widget class="ColorButton" name="quitMessageBG" >
+             <property name="text" >
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="7" column="0" >
+            <widget class="QLabel" name="label_24" >
+             <property name="text" >
+              <string>Rename Message:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="7" column="1" >
+            <widget class="ColorButton" name="renameMessageFG" >
+             <property name="text" >
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="7" column="2" >
+            <widget class="ColorButton" name="renameMessageBG" >
+             <property name="text" >
+              <string/>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="Seite_2" >
+          <attribute name="title" >
+           <string>Message</string>
+          </attribute>
+          <layout class="QGridLayout" >
+           <item row="0" column="1" >
+            <widget class="QLabel" name="label_37" >
+             <property name="text" >
+              <string>Foreground</string>
+             </property>
+             <property name="alignment" >
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="2" >
+            <widget class="QLabel" name="label_38" >
+             <property name="text" >
+              <string>Background</string>
+             </property>
+             <property name="alignment" >
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0" >
+            <widget class="QLabel" name="label_29" >
+             <property name="text" >
+              <string>Timestamp:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1" >
+            <widget class="ColorButton" name="timestampFG" >
+             <property name="text" >
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="2" >
+            <widget class="ColorButton" name="timestampBG" >
+             <property name="text" >
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0" >
+            <widget class="QLabel" name="label_28" >
+             <property name="text" >
+              <string>Sender:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1" >
+            <widget class="ColorButton" name="senderFG" >
+             <property name="text" >
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="2" >
+            <widget class="ColorButton" name="senderBG" >
+             <property name="text" >
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0" >
+            <widget class="QLabel" name="label_30" >
+             <property name="text" >
+              <string>Nick:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1" >
+            <widget class="ColorButton" name="nickFG" >
+             <property name="text" >
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="2" >
+            <widget class="ColorButton" name="nickBG" >
+             <property name="text" >
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="0" >
+            <widget class="QLabel" name="label_31" >
+             <property name="text" >
+              <string>Hostmask:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="1" >
+            <widget class="ColorButton" name="hostmaskFG" >
+             <property name="text" >
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="2" >
+            <widget class="ColorButton" name="hostmaskBG" >
+             <property name="text" >
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="0" >
+            <widget class="QLabel" name="label_32" >
+             <property name="text" >
+              <string>Channelname:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="1" >
+            <widget class="ColorButton" name="channelnameFG" >
+             <property name="text" >
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="2" >
+            <widget class="ColorButton" name="channelnameBG" >
+             <property name="text" >
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="0" >
+            <widget class="QLabel" name="label_33" >
+             <property name="text" >
+              <string>Mode flags:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="1" >
+            <widget class="ColorButton" name="modeFlagsFG" >
+             <property name="text" >
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="2" >
+            <widget class="ColorButton" name="modeFlagsBG" >
+             <property name="text" >
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="7" column="0" >
+            <widget class="QLabel" name="label_34" >
+             <property name="text" >
+              <string>Url:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="7" column="1" >
+            <widget class="ColorButton" name="urlFG" >
+             <property name="text" >
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="7" column="2" >
+            <widget class="ColorButton" name="urlBG" >
+             <property name="text" >
+              <string/>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox_5" >
+         <property name="sizePolicy" >
+          <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="title" >
+          <string>Preview:</string>
+         </property>
+         <layout class="QHBoxLayout" >
+          <item>
+           <widget class="QWidget" native="1" name="chatviewPreview" />
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="Mirc" >
+      <attribute name="title" >
+       <string>Mirc Color Codes</string>
+      </attribute>
+      <layout class="QVBoxLayout" >
+       <item>
+        <widget class="QGroupBox" name="groupBox_3" >
+         <property name="sizePolicy" >
+          <sizepolicy vsizetype="Maximum" hsizetype="Expanding" >
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="title" >
+          <string>Color Codes</string>
+         </property>
+         <layout class="QGridLayout" >
+          <item row="0" column="0" >
+           <widget class="QLabel" name="label_46" >
+            <property name="text" >
+             <string>Color 0:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1" >
+           <widget class="ColorButton" name="color0" >
+            <property name="text" >
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="4" >
+           <widget class="ColorButton" name="color8" >
+            <property name="text" >
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0" >
+           <widget class="QLabel" name="label_47" >
+            <property name="text" >
+             <string>Color 1:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1" >
+           <widget class="ColorButton" name="color1" >
+            <property name="text" >
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="4" >
+           <widget class="ColorButton" name="color9" >
+            <property name="text" >
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0" >
+           <widget class="QLabel" name="label_49" >
+            <property name="text" >
+             <string>Color 2:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1" >
+           <widget class="ColorButton" name="color2" >
+            <property name="text" >
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="4" >
+           <widget class="ColorButton" name="color10" >
+            <property name="text" >
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0" >
+           <widget class="QLabel" name="label_48" >
+            <property name="text" >
+             <string>Color 3:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1" >
+           <widget class="ColorButton" name="color3" >
+            <property name="text" >
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="4" >
+           <widget class="ColorButton" name="color11" >
+            <property name="text" >
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0" >
+           <widget class="QLabel" name="label_50" >
+            <property name="text" >
+             <string>Color 4:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1" >
+           <widget class="ColorButton" name="color4" >
+            <property name="text" >
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="4" >
+           <widget class="ColorButton" name="color12" >
+            <property name="text" >
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="0" >
+           <widget class="QLabel" name="label_53" >
+            <property name="text" >
+             <string>Color 5:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1" >
+           <widget class="ColorButton" name="color5" >
+            <property name="text" >
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="4" >
+           <widget class="ColorButton" name="color13" >
+            <property name="text" >
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="0" >
+           <widget class="QLabel" name="label_51" >
+            <property name="text" >
+             <string>Color 6:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="1" >
+           <widget class="ColorButton" name="color6" >
+            <property name="text" >
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="4" >
+           <widget class="ColorButton" name="color14" >
+            <property name="text" >
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="0" >
+           <widget class="QLabel" name="label_52" >
+            <property name="text" >
+             <string>Color 7:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="1" >
+           <widget class="ColorButton" name="color7" >
+            <property name="text" >
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="4" >
+           <widget class="ColorButton" name="color15" >
+            <property name="text" >
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="3" >
+           <widget class="QLabel" name="label_54" >
+            <property name="text" >
+             <string>Color 8:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="3" >
+           <widget class="QLabel" name="label_55" >
+            <property name="text" >
+             <string>Color 14:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="3" >
+           <widget class="QLabel" name="label_56" >
+            <property name="text" >
+             <string>Color 15:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="3" >
+           <widget class="QLabel" name="label_57" >
+            <property name="text" >
+             <string>Color 13:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="3" >
+           <widget class="QLabel" name="label_58" >
+            <property name="text" >
+             <string>Color 12:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="3" >
+           <widget class="QLabel" name="label_59" >
+            <property name="text" >
+             <string>Color 11:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="3" >
+           <widget class="QLabel" name="label_60" >
+            <property name="text" >
+             <string>Color 10:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="3" >
+           <widget class="QLabel" name="label_61" >
+            <property name="text" >
+             <string>Color 9:</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" >
+          <size>
+           <width>140</width>
+           <height>291</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ColorButton</class>
+   <extends>QPushButton</extends>
+   <header>colorbutton.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

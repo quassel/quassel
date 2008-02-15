@@ -81,6 +81,8 @@ BufferInfo NickView::bufferInfoFromModelIndex(const QModelIndex & index) {
 
 void NickView::showContextMenu(const QPoint & pos ) {
   QModelIndex index = indexAt(pos);
+  if(index.data(NetworkModel::ItemTypeRole) != NetworkModel::IrcUserItemType) return;
+
   QString nick = nickFromModelIndex(index);
 
   QMenu nickContextMenu(this);
@@ -98,8 +100,10 @@ void NickView::showContextMenu(const QPoint & pos ) {
   QAction *deVoiceAction = modeMenu->addAction(tr("Devoice %1").arg(nick));
 
   QMenu *kickBanMenu = nickContextMenu.addMenu(tr("Kick/Ban"));
+  //TODO: add kick message from network identity (kick reason)
   QAction *kickAction = kickBanMenu->addAction(tr("Kick %1").arg(nick));
   QAction *kickBanAction = kickBanMenu->addAction(tr("Kickban %1").arg(nick));
+  kickBanMenu->setEnabled(false);
   QAction *ignoreAction = nickContextMenu.addAction(tr("Ignore"));
   ignoreAction->setEnabled(false);
 

@@ -43,10 +43,12 @@
 #include "selectionmodelsynchronizer.h"
 #include "mappedselectionmodel.h"
 
+#include "settingspages/colorsettingspage.h"
 #include "settingspages/fontssettingspage.h"
+#include "settingspages/generalsettingspage.h"
 #include "settingspages/identitiessettingspage.h"
 #include "settingspages/networkssettingspage.h"
-#include "settingspages/generalsettingspage.h"
+
 
 #include "debugconsole.h"
 
@@ -174,12 +176,16 @@ QDockWidget *MainWin::addBufferView(const QString &viewname, QAbstractItemModel 
 }
 
 void MainWin::setupSettingsDlg() {
-
+  //Category: Appearance
+  settingsDlg->registerSettingsPage(new ColorSettingsPage(settingsDlg));
   settingsDlg->registerSettingsPage(new FontsSettingsPage(settingsDlg));
+  //Category: Behaviour
+  settingsDlg->registerSettingsPage(new GeneralSettingsPage(settingsDlg));
+  //Category: General
   settingsDlg->registerSettingsPage(new IdentitiesSettingsPage(settingsDlg));
   settingsDlg->registerSettingsPage(new NetworksSettingsPage(settingsDlg));
-  settingsDlg->registerSettingsPage(new GeneralSettingsPage(settingsDlg));
-  
+
+
 #ifdef SPUTDEV
   connect(settingsDlg, SIGNAL(finished(int)), QApplication::instance(), SLOT(quit()));  // FIXME
 #endif
@@ -368,19 +374,25 @@ void MainWin::systrayActivated( QSystemTrayIcon::ActivationReason activationReas
 }
 
 void MainWin::toggleVisibility() {
-  if(isHidden()) {
+  if(isHidden() || !isActiveWindow()) {
     show();
-    if(isMinimized()) {
-      if(isMaximized()) {
+    if(isMinimized())
+      if (isMaximized())
         showMaximized();
-      } else {
+      else
         showNormal();
-      }
-    }
+
     raise();
     activateWindow();
   } else {
-   hide();
+    if(systray->isSystemTrayAvailable ()) {
+      hide();
+      if(!systray->isVisible()) {
+        systray->show();
+      }
+    } else {
+      lower();
+    }
   }
 }
 

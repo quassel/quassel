@@ -27,7 +27,14 @@ GeneralSettingsPage::GeneralSettingsPage(QWidget *parent)
   : SettingsPage(tr("Behaviour"), tr("General"), parent) {
   ui.setupUi(this);
 
+#ifdef Q_WS_MAC
+  ui.useSystemTrayIcon->hide();
+#else
+  ui.macOnly->hide();
+#endif
+
   connect(ui.useSystemTrayIcon, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
+  connect(ui.showSystemTrayIcon, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
   connect(ui.minimizeOnMinimize, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
   connect(ui.minimizeOnClose, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
 
@@ -43,6 +50,7 @@ bool GeneralSettingsPage::hasDefaults() const {
 void GeneralSettingsPage::defaults() {
   qDebug() << "defaults in generalsettingspage";
   ui.useSystemTrayIcon->setChecked(true);
+  ui.showSystemTrayIcon->setChecked(true);
   ui.minimizeOnMinimize->setChecked(false);
   ui.minimizeOnClose->setChecked(false);
 
@@ -55,22 +63,23 @@ void GeneralSettingsPage::defaults() {
 
 void GeneralSettingsPage::load() {
   QtUiSettings s;
-  settings["UseSystemTrayIcon"] = s.value("UseSystemTrayIcon");
+  settings["UseSystemTrayIcon"] = s.value("UseSystemTrayIcon", QVariant(true));
   ui.useSystemTrayIcon->setChecked(settings["UseSystemTrayIcon"].toBool());
+  ui.showSystemTrayIcon->setChecked(settings["UseSystemTrayIcon"].toBool());
 
-  settings["MinimizeOnMinimize"] = s.value("MinimizeOnMinimize");
+  settings["MinimizeOnMinimize"] = s.value("MinimizeOnMinimize", QVariant(false));
   ui.minimizeOnMinimize->setChecked(settings["MinimizeOnMinimize"].toBool());
 
-  settings["MinimizeOnClose"] = s.value("MinimizeOnClose");
+  settings["MinimizeOnClose"] = s.value("MinimizeOnClose", QVariant(false));
   ui.minimizeOnClose->setChecked(settings["MinimizeOnClose"].toBool());
 
-  settings["UserMessagesInStatusBuffer"] = s.value("UserMessagesInStatusBuffer");
+  settings["UserMessagesInStatusBuffer"] = s.value("UserMessagesInStatusBuffer", QVariant(true));
   ui.userMessagesInStatusBuffer->setChecked(settings["UserMessagesInStatusBuffer"].toBool());
 
-  settings["UserMessagesInQueryBuffer"] = s.value("UserMessagesInQueryBuffer");
+  settings["UserMessagesInQueryBuffer"] = s.value("UserMessagesInQueryBuffer", QVariant(false));
   ui.userMessagesInQueryBuffer->setChecked(settings["UserMessagesInQueryBuffer"].toBool());
 
-  settings["UserMessagesInCurrentBuffer"] = s.value("UserMessagesInCurrentBuffer");
+  settings["UserMessagesInCurrentBuffer"] = s.value("UserMessagesInCurrentBuffer", QVariant(false));
   ui.userMessagesInCurrentBuffer->setChecked(settings["UserMessagesInCurrentBuffer"].toBool());
 
   setChangedState(false);
@@ -86,6 +95,7 @@ void GeneralSettingsPage::save() {
   s.setValue("UserMessagesInQueryBuffer", ui.userMessagesInQueryBuffer->isChecked());
   s.setValue("UserMessagesInCurrentBuffer", ui.userMessagesInCurrentBuffer->isChecked());
 
+  load();
   setChangedState(false);
 }
 
@@ -95,12 +105,12 @@ void GeneralSettingsPage::widgetHasChanged() {
 }
 
 bool GeneralSettingsPage::testHasChanged() {
-  if(settings["UseSystemTrayIcon"] != ui.useSystemTrayIcon->isChecked()) return true; 
-  if(settings["MinimizeOnMinimize"] != ui.minimizeOnMinimize->isChecked()) return true;
-  if(settings["MinimizeOnClose"] != ui.minimizeOnClose->isChecked()) return true;
-  if(settings["UserMessagesInStatusBuffer"] != ui.userMessagesInStatusBuffer->isChecked()) return true;
-  if(settings["UserMessagesInQueryBuffer"] != ui.userMessagesInQueryBuffer->isChecked()) return true;
-  if(settings["UserMessagesInCurrentBuffer"] != ui.userMessagesInCurrentBuffer->isChecked()) return true;
+  if(settings["UseSystemTrayIcon"].toBool() != ui.useSystemTrayIcon->isChecked()) return true;
+  if(settings["MinimizeOnMinimize"].toBool() != ui.minimizeOnMinimize->isChecked()) return true;
+  if(settings["MinimizeOnClose"].toBool() != ui.minimizeOnClose->isChecked()) return true;
+  if(settings["UserMessagesInStatusBuffer"].toBool() != ui.userMessagesInStatusBuffer->isChecked()) return true;
+  if(settings["UserMessagesInQueryBuffer"].toBool() != ui.userMessagesInQueryBuffer->isChecked()) return true;
+  if(settings["UserMessagesInCurrentBuffer"].toBool() != ui.userMessagesInCurrentBuffer->isChecked()) return true;
 
   return false;
 }

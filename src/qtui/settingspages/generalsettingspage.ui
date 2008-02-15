@@ -40,6 +40,25 @@
     </widget>
    </item>
    <item>
+    <widget class="QGroupBox" name="macOnly" >
+     <property name="title" >
+      <string>Tray icon:</string>
+     </property>
+     <layout class="QHBoxLayout" >
+      <item>
+       <widget class="QCheckBox" name="showSystemTrayIcon" >
+        <property name="text" >
+         <string>Show system tray icon</string>
+        </property>
+        <property name="checked" >
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <widget class="QGroupBox" name="groupBox" >
      <property name="title" >
       <string>Display user related messages:</string>
@@ -47,6 +66,9 @@
      <layout class="QVBoxLayout" >
       <item>
        <widget class="QCheckBox" name="userMessagesInStatusBuffer" >
+        <property name="enabled" >
+         <bool>false</bool>
+        </property>
         <property name="text" >
          <string>in status buffer</string>
         </property>
@@ -57,6 +79,9 @@
       </item>
       <item>
        <widget class="QCheckBox" name="userMessagesInQueryBuffer" >
+        <property name="enabled" >
+         <bool>false</bool>
+        </property>
         <property name="text" >
          <string> in query buffer (if exists)</string>
         </property>
@@ -64,6 +89,9 @@
       </item>
       <item>
        <widget class="QCheckBox" name="userMessagesInCurrentBuffer" >
+        <property name="enabled" >
+         <bool>false</bool>
+        </property>
         <property name="text" >
          <string>in current buffer</string>
         </property>
@@ -79,8 +107,8 @@
      </property>
      <property name="sizeHint" >
       <size>
-       <width>20</width>
-       <height>40</height>
+       <width>457</width>
+       <height>51</height>
       </size>
      </property>
     </spacer>
@@ -88,5 +116,38 @@
   </layout>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>showSystemTrayIcon</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>useSystemTrayIcon</receiver>
+   <slot>setChecked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>237</x>
+     <y>139</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>237</x>
+     <y>49</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>useSystemTrayIcon</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>showSystemTrayIcon</receiver>
+   <slot>setChecked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>237</x>
+     <y>49</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>237</x>
+     <y>139</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

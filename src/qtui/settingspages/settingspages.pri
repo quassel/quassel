@@ -1,6 +1,6 @@
 # Putting $FOO in SETTINGSPAGES automatically includes
 # $FOOsettingspage.cpp, $FOOsettingspage.h and $FOOsettingspage.ui
-SETTINGSPAGES = fonts identities networks general
+SETTINGSPAGES = color fonts general identities networks 
 
 # Specify additional files (e.g. for subdialogs) here!
 SP_SRCS =
