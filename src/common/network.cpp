@@ -117,6 +117,7 @@ NetworkInfo Network::networkInfo() const {
   info.networkName = networkName();
   info.networkId = networkId();
   info.identity = identity();
+  info.codecForServer = codecForServer();
   info.codecForEncoding = codecForEncoding();
   info.codecForDecoding = codecForDecoding();
   info.serverList = serverList();
@@ -128,6 +129,7 @@ NetworkInfo Network::networkInfo() const {
   info.useAutoReconnect = useAutoReconnect();
   info.autoReconnectInterval = autoReconnectInterval();
   info.autoReconnectRetries = autoReconnectRetries();
+  info.unlimitedReconnectRetries = unlimitedReconnectRetries();
   info.rejoinChannels = rejoinChannels();
   return info;
 }
