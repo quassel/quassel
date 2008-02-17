@@ -44,11 +44,13 @@ BufferModel::~BufferModel() {
 
 bool BufferModel::filterAcceptsRow(int sourceRow, const QModelIndex &parent) const {
   Q_UNUSED(sourceRow);
-  // hide childs of buffers and everything below
-  if(parent.data(NetworkModel::ItemTypeRole) == NetworkModel::BufferItemType)
-    return false;
-  else
+  // only networks and buffers are allowed
+  if(!parent.isValid())
     return true;
+  if(parent.data(NetworkModel::ItemTypeRole) == NetworkModel::NetworkItemType)
+    return true;
+
+  return false;
 }
 
 void BufferModel::synchronizeSelectionModel(MappedSelectionModel *selectionModel) {
