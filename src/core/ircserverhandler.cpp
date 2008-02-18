@@ -32,8 +32,10 @@
 
 #include <QDebug>
 
-IrcServerHandler::IrcServerHandler(NetworkConnection *parent) : BasicHandler(parent) {
-  _whois = false;
+IrcServerHandler::IrcServerHandler(NetworkConnection *parent)
+  : BasicHandler(parent),
+    _whois(false)
+{
 }
 
 IrcServerHandler::~IrcServerHandler() {
@@ -123,19 +125,13 @@ void IrcServerHandler::defaultHandler(QString cmd, const QString &prefix, const 
         emit displayMsg(Message::Error, BufferInfo::StatusBuffer, "", params.join(" "), prefix);
         break;
       // Server error messages, display them in red. First param will be appended.
-      case 401: 
-      {
-	// FIXME needs proper redirection
+      case 401: {
 	QString target = params.takeFirst();
-	BufferInfo::Type bufferType = network()->isChannelName(target)
-	  ? BufferInfo::ChannelBuffer
-	  : BufferInfo::QueryBuffer;
-        emit displayMsg(Message::Error, BufferInfo::StatusBuffer, "", params.join(" ") + " " + target, prefix);
-        emit displayMsg(Message::Error, bufferType, target, params.join(" ") + " " + target, prefix);
-        break;
+	displayMsg(Message::Error, target, params.join(" ") + " " + target, prefix, Message::Redirected);
+	break;
       }
-      case 402: case 403: case 404: case 406: case 408: case 415: case 421: case 442:
-      { QString channelName = params.takeFirst();
+      case 402: case 403: case 404: case 406: case 408: case 415: case 421: case 442: {
+	QString channelName = params.takeFirst();
         emit displayMsg(Message::Error, BufferInfo::StatusBuffer, "", params.join(" ") + " " + channelName, prefix);
         break;
       }
@@ -257,13 +253,16 @@ void IrcServerHandler::handleNotice(const QString &prefix, const QList<QByteArra
     return;
   }
 
+  QString target = serverDecode(params[0]);
+
+  
   // check if it's only a Server Message or if it's a regular Notice
   if(network()->currentServer().isEmpty() || network()->currentServer() == prefix) {
     emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", serverDecode(params[1]), prefix);
     return;
   }
 
-  QString target = serverDecode(params[0]);
+
 
   // kick notices to the server buffer if they are directly addressed to us
   if(network()->isMyNick(target))
@@ -273,7 +272,7 @@ void IrcServerHandler::handleNotice(const QString &prefix, const QList<QByteArra
     ? nickFromMask(prefix)
     : prefix;
 
-  networkConnection()->ctcpHandler()->parse(Message::Notice, sender, target, userDecode(sender, params[1]));
+  networkConnection()->ctcpHandler()->parse(Message::Notice, sender, target, params[1]);
 }
 
 void IrcServerHandler::handlePart(const QString &prefix, const QList<QByteArray> &params) {
@@ -316,7 +315,7 @@ void IrcServerHandler::handlePrivmsg(const QString &prefix, const QList<QByteArr
 
   // it's possible to pack multiple privmsgs into one param using ctcp
   // - > we let the ctcpHandler do the work
-  networkConnection()->ctcpHandler()->parse(Message::Plain, prefix, target, userDecode(ircuser->nick(), msg));
+  networkConnection()->ctcpHandler()->parse(Message::Plain, prefix, target, msg);
 }
 
 void IrcServerHandler::handleQuit(const QString &prefix, const QList<QByteArray> &params) {

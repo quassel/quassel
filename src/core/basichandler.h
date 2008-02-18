@@ -60,6 +60,7 @@ signals:
   void putRawLine(const QByteArray &msg);
 
 protected:
+  void displayMsg(Message::Type, QString target, QString text, QString sender = "", quint8 flags = Message::None);
   void putCmd(const QString &cmd, const QByteArray &param, const QByteArray &prefix = QByteArray());
   void putCmd(const QString &cmd, const QList<QByteArray> &params, const QByteArray &prefix = QByteArray());
 

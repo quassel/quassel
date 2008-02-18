@@ -34,28 +34,26 @@ public:
 
   enum CtcpType {CtcpQuery, CtcpReply};
 
-  void parse(Message::Type, QString prefix, QString target, QString message);
+  void parse(Message::Type, const QString &prefix, const QString &target, const QByteArray &message);
 
-  QString dequote(QString);
-  QString XdelimDequote(QString);
+  QByteArray dequote(const QByteArray &);
+  QByteArray xdelimDequote(const QByteArray &);
 
-  QString pack(QString ctcpTag, QString message);
-  void query(QString bufname, QString ctcpTag, QString message);
-  void reply(QString bufname, QString ctcpTag, QString message);
+  QByteArray pack(const QByteArray &ctcpTag, const QByteArray &message);
+  void query(const QString &bufname, const QString &ctcpTag, const QString &message);
+  void reply(const QString &bufname, const QString &ctcpTag, const QString &message);
 
 public slots:
-  void handleAction(CtcpType, QString prefix, QString target, QString param);
-  void handlePing(CtcpType, QString prefix, QString target, QString param);
-  void handleVersion(CtcpType, QString prefix, QString target, QString param);
+  void handleAction(CtcpType, const QString &prefix, const QString &target, const QString &param);
+  void handlePing(CtcpType, const QString &prefix, const QString &target, const QString &param);
+  void handleVersion(CtcpType, const QString &prefix, const QString &target, const QString &param);
 
-  void defaultHandler(QString cmd, CtcpType ctcptype, QString prefix, QString target, QString param);
+  void defaultHandler(const QString &cmd, CtcpType ctcptype, const QString &prefix, const QString &target, const QString &param);
 
 private:
-  QString XDELIM;
-  QHash<QString, QString> ctcpMDequoteHash;
-  QHash<QString, QString> ctcpXDelimDequoteHash;
-
-
+  QByteArray XDELIM;
+  QHash<QByteArray, QByteArray> ctcpMDequoteHash;
+  QHash<QByteArray, QByteArray> ctcpXDelimDequoteHash;
 };
 
 

@@ -21,6 +21,7 @@
 
 #include <QMetaMethod>
 
+#include "util.h"
 #include "networkconnection.h"
 
 BasicHandler::BasicHandler(NetworkConnection *parent)
@@ -186,4 +187,10 @@ void BasicHandler::putCmd(const QString &cmd, const QList<QByteArray> &params, c
   QVariantList list;
   foreach(QByteArray param, params) list << param;
   emit putCmd(cmd, list, prefix);
+}
+
+void BasicHandler::displayMsg(Message::Type msgType, QString target, QString text, QString sender, quint8 flags) {
+  if(target.startsWith('$') || target.startsWith('#'))
+    target = nickFromMask(sender);
+  emit displayMsg(msgType, typeByTarget(target), target, text, sender, flags);
 }
