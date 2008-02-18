@@ -464,6 +464,14 @@ void Client::setBufferLastSeen(BufferId id, const QDateTime &lastSeen) {
 }
 
 void Client::bufferRemoved(BufferId bufferId) {
+  QModelIndex current = bufferModel()->currentIndex();
+  if(current.data(NetworkModel::BufferIdRole).value<BufferId>() == bufferId) {
+    // select the status buffer if the currently displayed buffer is about to be removed
+    QModelIndex newCurrent = current.sibling(0,0);
+    bufferModel()->standardSelectionModel()->setCurrentIndex(newCurrent, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+    bufferModel()->standardSelectionModel()->select(newCurrent, QItemSelectionModel::ClearAndSelect);
+  }
+    
   networkModel()->removeBuffer(bufferId);
   if(_buffers.contains(bufferId)) {
     Buffer *buff = _buffers.take(bufferId);
