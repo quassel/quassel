@@ -190,7 +190,10 @@ void BasicHandler::putCmd(const QString &cmd, const QList<QByteArray> &params, c
 }
 
 void BasicHandler::displayMsg(Message::Type msgType, QString target, QString text, QString sender, quint8 flags) {
-  if(target.startsWith('$') || target.startsWith('#'))
+  IrcChannel *channel = network()->ircChannel(target);
+  if(!channel && (target.startsWith('$') || target.startsWith('#')))
     target = nickFromMask(sender);
+  
+  qDebug() << typeByTarget(target) << target << BufferInfo::ChannelBuffer;
   emit displayMsg(msgType, typeByTarget(target), target, text, sender, flags);
 }

@@ -254,25 +254,12 @@ void IrcServerHandler::handleNotice(const QString &prefix, const QList<QByteArra
   }
 
   QString target = serverDecode(params[0]);
+  if(prefix.isEmpty() || target == "AUTH")
+    target = "";
+  else if(!network()->isChannelName(target))
+    target = nickFromMask(prefix);
 
-  
-  // check if it's only a Server Message or if it's a regular Notice
-  if(network()->currentServer().isEmpty() || network()->currentServer() == prefix) {
-    emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", serverDecode(params[1]), prefix);
-    return;
-  }
-
-
-
-  // kick notices to the server buffer if they are directly addressed to us
-  if(network()->isMyNick(target))
-    target = QString("");
-
-  QString sender = prefix.contains('!')
-    ? nickFromMask(prefix)
-    : prefix;
-
-  networkConnection()->ctcpHandler()->parse(Message::Notice, sender, target, params[1]);
+  networkConnection()->ctcpHandler()->parse(Message::Notice, prefix, target, params[1]);
 }
 
 void IrcServerHandler::handlePart(const QString &prefix, const QList<QByteArray> &params) {
