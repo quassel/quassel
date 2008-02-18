@@ -336,6 +336,21 @@ bool SqliteStorage::isValidNetwork(UserId user, const NetworkId &networkId) {
   return true;
 }
 
+bool SqliteStorage::isValidBuffer(const UserId &user, const BufferId &bufferId) {
+  QSqlQuery query(logDb());
+  query.prepare(queryString("select_bufferExists"));
+  query.bindValue(":userid", user.toInt());
+  query.bindValue(":bufferid", bufferId.toInt());
+  query.exec();
+
+  watchQuery(&query);
+  if(!query.first())
+    return false;
+
+  Q_ASSERT(!query.next());
+  return true;
+}
+
 NetworkId SqliteStorage::getNetworkId(UserId user, const QString &network) {
   QSqlQuery query(logDb());
   query.prepare("SELECT networkid FROM network "
@@ -407,6 +422,27 @@ QList<BufferInfo> SqliteStorage::requestBuffers(UserId user, QDateTime since) {
     bufferlist << BufferInfo(query.value(0).toInt(), query.value(1).toInt(), (BufferInfo::Type)query.value(2).toInt(), query.value(3).toInt(), query.value(4).toString());
   }
   return bufferlist;
+}
+
+bool SqliteStorage::removeBuffer(const UserId &user, const BufferId &bufferId) {
+  if(!isValidBuffer(user, bufferId))
+    return false;
+
+  QSqlQuery delBacklogQuery(logDb());
+  delBacklogQuery.prepare(queryString("delete_backlog_for_buffer"));
+  delBacklogQuery.bindValue(":bufferid", bufferId.toInt());
+  delBacklogQuery.exec();
+  if(!watchQuery(&delBacklogQuery))
+    return false;
+
+  QSqlQuery delBufferQuery(logDb());
+  delBufferQuery.prepare(queryString("delete_buffer_for_bufferid"));
+  delBufferQuery.bindValue(":bufferid", bufferId.toInt());
+  delBufferQuery.exec();
+  if(!watchQuery(&delBufferQuery))
+    return false;
+
+  return true;
 }
 
 void SqliteStorage::setBufferLastSeen(UserId user, const BufferId &bufferId, const QDateTime &seenDate) {

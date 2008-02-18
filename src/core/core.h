@@ -158,8 +158,20 @@ class Core : public QObject {
      */
     static QList<BufferInfo> requestBuffers(UserId user, QDateTime since = QDateTime());
 
+    //! Remove permanently a buffer and it's content from the storage backend
+    /** This call cannot be reverted!
+     *  \note This method is threadsafe.
+     *
+     *  \param user      The user who is the owner of the buffer
+     *  \param bufferId  The bufferId
+     *  \return true if successfull
+     */
+    static bool removeBuffer(const UserId &user, const BufferId &bufferId);
+
     //! Update the LastSeenDate for a Buffer
     /** This Method is used to make the LastSeenDate of a Buffer persistent
+     *  \note This method is threadsafe.
+     *
      * \param user      The Owner of that Buffer
      * \param bufferId  The buffer id
      * \param seenDate  Time the Buffer has been visited the last time
@@ -168,6 +180,8 @@ class Core : public QObject {
 
     //! Get a Hash of all last seen dates. 
     /** This Method is called when the Quassel Core is started to restore the lastSeenDates
+     *  \note This method is threadsafe.
+     *
      * \param user      The Owner of the buffers
      */
     static QHash<BufferId, QDateTime> bufferLastSeenDates(UserId user);

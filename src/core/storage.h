@@ -117,8 +117,7 @@ class Storage : public QObject {
     virtual NetworkId createNetwork(UserId user, const NetworkInfo &info) = 0;
 
     //! Apply the changes to NetworkInfo info to the storage engine
-    /** \note This method is thredsafe.
-     *
+    /**
      *  \param user        The core user
      *  \param networkInfo The Updated NetworkInfo
      *  \return true if successfull.
@@ -170,6 +169,14 @@ class Storage : public QObject {
      */
     virtual QList<BufferInfo> requestBuffers(UserId user, QDateTime since = QDateTime()) = 0;
 
+    //! Remove permanently a buffer and it's content from the storage backend
+    /** This call cannot be reverted!
+     *  \param user      The user who is the owner of the buffer
+     *  \param bufferId  The bufferId
+     *  \return true if successfull
+     */
+    virtual bool removeBuffer(const UserId &user, const BufferId &bufferId) = 0;
+  
     //! Update the LastSeenDate for a Buffer
     /** This Method is used to make the LastSeenDate of a Buffer persistent
      * \param user      The Owner of that Buffer

@@ -265,6 +265,11 @@ QList<BufferInfo> Core::requestBuffers(UserId user, QDateTime since) {
   return instance()->storage->requestBuffers(user, since);
 }
 
+bool Core::removeBuffer(const UserId &user, const BufferId &bufferId) {
+  QMutexLocker locker(&mutex);
+  return instance()->storage->removeBuffer(user, bufferId);
+}
+
 void Core::setBufferLastSeen(UserId user, const BufferId &bufferId, const QDateTime &seenDate) {
   QMutexLocker locker(&mutex);
   return instance()->storage->setBufferLastSeen(user, bufferId, seenDate);

@@ -39,7 +39,9 @@
     <file>./SQL/SQLite/6/upgrade_160_update_msgtype.sql</file>
     <file>./SQL/SQLite/6/upgrade_999_version.sql</file>
     <file>./SQL/SQLite/7/delete_backlog_by_uid.sql</file>
+    <file>./SQL/SQLite/7/delete_backlog_for_buffer.sql</file>
     <file>./SQL/SQLite/7/delete_backlog_for_network.sql</file>
+    <file>./SQL/SQLite/7/delete_buffer_for_bufferid.sql</file>
     <file>./SQL/SQLite/7/delete_buffers_by_uid.sql</file>
     <file>./SQL/SQLite/7/delete_buffers_for_network.sql</file>
     <file>./SQL/SQLite/7/delete_ircservers_for_network.sql</file>
@@ -53,7 +55,9 @@
     <file>./SQL/SQLite/7/insert_sender.sql</file>
     <file>./SQL/SQLite/7/insert_server.sql</file>
     <file>./SQL/SQLite/7/select_authuser.sql</file>
+    <file>./SQL/SQLite/7/select_buffer_lastseen_dates.sql</file>
     <file>./SQL/SQLite/7/select_bufferByName.sql</file>
+    <file>./SQL/SQLite/7/select_bufferExists.sql</file>
     <file>./SQL/SQLite/7/select_buffers.sql</file>
     <file>./SQL/SQLite/7/select_lastMessage.sql</file>
     <file>./SQL/SQLite/7/select_messageRange.sql</file>
@@ -75,6 +79,7 @@
     <file>./SQL/SQLite/7/setup_070_coreinfo.sql</file>
     <file>./SQL/SQLite/7/setup_080_ircservers.sql</file>
     <file>./SQL/SQLite/7/setup_999_version.sql</file>
+    <file>./SQL/SQLite/7/update_buffer_lastseen.sql</file>
     <file>./SQL/SQLite/7/update_network.sql</file>
     <file>./SQL/SQLite/7/update_username.sql</file>
     <file>./SQL/SQLite/7/update_userpassword.sql</file>

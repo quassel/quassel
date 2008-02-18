@@ -60,6 +60,7 @@ public slots:
   /* Buffer handling */
   virtual BufferInfo getBufferInfo(UserId user, const NetworkId &networkId, BufferInfo::Type type, const QString &buffer = "");
   virtual QList<BufferInfo> requestBuffers(UserId user, QDateTime since = QDateTime());
+  virtual bool removeBuffer(const UserId &user, const BufferId &bufferId);
   virtual void setBufferLastSeen(UserId user, const BufferId &bufferId, const QDateTime &seenDate);
   virtual QHash<BufferId, QDateTime> bufferLastSeenDates(UserId user);
   
@@ -78,6 +79,7 @@ protected:
 private:
   static QString backlogFile();
   bool isValidNetwork(UserId user, const NetworkId &networkId);
+  bool isValidBuffer(const UserId &user, const BufferId &bufferId);
   NetworkId getNetworkId(UserId user, const QString &network);
   void createBuffer(UserId user, const NetworkId &networkId, BufferInfo::Type type, const QString &buffer);
 };
