@@ -55,6 +55,7 @@ bool AbstractTreeItem::removeChild(int row) {
   if(childCount() <= row)
     return false;
 
+  child(row)->removeAllChilds();
   emit beginRemoveChilds(row, row);
   AbstractTreeItem *treeitem = _childItems.takeAt(row);
   treeitem->deleteLater();
@@ -82,8 +83,13 @@ void AbstractTreeItem::removeAllChilds() {
   
   AbstractTreeItem *child;
 
-  emit beginRemoveChilds(0, numChilds - 1);
   QList<AbstractTreeItem *>::iterator childIter = _childItems.begin();
+  while(childIter != _childItems.end()) {
+    child = *childIter;
+    child->removeAllChilds();
+  }
+
+  emit beginRemoveChilds(0, numChilds - 1);
   while(childIter != _childItems.end()) {
     child = *childIter;
     childIter = _childItems.erase(childIter);

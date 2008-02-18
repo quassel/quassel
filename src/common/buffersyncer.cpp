@@ -66,5 +66,7 @@ void BufferSyncer::requestRemoveBuffer(BufferId buffer) {
 }
 
 void BufferSyncer::removeBuffer(BufferId buffer) {
+  if(_lastSeen.contains(buffer))
+    _lastSeen.remove(buffer);
   emit bufferRemoved(buffer);
 }
