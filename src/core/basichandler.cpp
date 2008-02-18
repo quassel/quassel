@@ -193,7 +193,6 @@ void BasicHandler::displayMsg(Message::Type msgType, QString target, QString tex
   IrcChannel *channel = network()->ircChannel(target);
   if(!channel && (target.startsWith('$') || target.startsWith('#')))
     target = nickFromMask(sender);
-  
-  qDebug() << typeByTarget(target) << target << BufferInfo::ChannelBuffer;
+
   emit displayMsg(msgType, typeByTarget(target), target, text, sender, flags);
 }
