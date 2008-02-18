@@ -301,7 +301,6 @@ void NetworkConnection::socketDisconnected() {
   if(_autoReconnectCount == 0) emit quitRequested(networkId());
   else {
     setConnectionState(Network::Reconnecting);
-    qDebug() << "trying to reconnect... " << _autoReconnectTimer.interval();
     if(_autoReconnectCount == network()->autoReconnectRetries()) doAutoReconnect(); // first try is immediate
     else _autoReconnectTimer.start();
   }

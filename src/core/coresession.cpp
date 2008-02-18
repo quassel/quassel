@@ -70,9 +70,9 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent) : QObje
   initScriptEngine();
 
   // init BufferSyncer
-  //QHash<BufferId, QDateTime> lastSeenHash = Core::bufferLastSeenDates(user());
-  //foreach(BufferId id, lastSeenHash.keys()) _bufferSyncer->requestSetLastSeen(id, lastSeenHash[id]);
-  // FIXME connect(_bufferSyncer, SIGNAL(lastSeenSet(BufferId, const QDateTime &)), this, SLOT(storeBufferLastSeen(BufferId, const QDateTime &)));
+  QHash<BufferId, QDateTime> lastSeenHash = Core::bufferLastSeenDates(user());
+  foreach(BufferId id, lastSeenHash.keys()) _bufferSyncer->requestSetLastSeen(id, lastSeenHash[id]);
+  connect(_bufferSyncer, SIGNAL(lastSeenSet(BufferId, const QDateTime &)), this, SLOT(storeBufferLastSeen(BufferId, const QDateTime &)));
   p->synchronize(_bufferSyncer);
 
   // Restore session state
