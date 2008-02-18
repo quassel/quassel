@@ -218,7 +218,10 @@ void NetworksSettingsPage::setItemState(NetworkId id, QListWidgetItem *item) {
       foreach(QListWidgetItem *i, items) {
         NetworkId oldid = i->data(Qt::UserRole).value<NetworkId>();
         if(oldid > 0) continue;  // only locally created nets should be replaced
-        if(oldid == currentId) select = true;
+        if(oldid == currentId) {
+          select = true;
+          currentId = 0;
+        }
         int row = ui.networkList->row(i);
         if(row >= 0) {
           qDebug() << "ABOUT TO REMOVE: id=" << oldid << "from row" << row;
