@@ -42,6 +42,11 @@ BufferItem::BufferItem(BufferInfo bufferInfo, AbstractTreeItem *parent)
   Qt::ItemFlags flags = Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled;
   if(bufferType() == BufferInfo::QueryBuffer)
     flags |= Qt::ItemIsDropEnabled;
+
+  if(bufferType() == BufferInfo::StatusBuffer) {
+    NetworkItem *networkItem = qobject_cast<NetworkItem *>(parent);
+    connect(networkItem, SIGNAL(dataChanged()), this, SIGNAL(dataChanged()));
+  }
   setFlags(flags);
 }
 
@@ -221,7 +226,12 @@ void BufferItem::part(IrcUser *ircUser) {
 }
 
 void BufferItem::removeUserFromCategory(IrcUser *ircUser) {
-  Q_ASSERT(_ircChannel);
+  if(!_ircChannel) {
+    // If we parted the channel there might still be some ircUsers connected.
+    // in that case we just ignore the call
+    Q_ASSERT(childCount() == 0);
+    return;
+  }
 
   bool success = false;
   UserCategoryItem *categoryItem = 0;
@@ -311,11 +321,6 @@ quint64 NetworkItem::id() const {
   return qHash(_networkId);
 }
 
-void NetworkItem::setActive(bool connected) {
-  Q_UNUSED(connected);
-  emit dataChanged();
-}
-
 bool NetworkItem::isActive() const {
   if(_network)
     return _network->isConnected();
@@ -357,7 +362,7 @@ void NetworkItem::attachNetwork(Network *network) {
   connect(network, SIGNAL(ircChannelAdded(QString)),
 	  this, SLOT(attachIrcChannel(QString)));
   connect(network, SIGNAL(connectedSet(bool)),
-	  this, SLOT(setActive(bool)));
+	  this, SIGNAL(dataChanged()));
   
   // FIXME: connect this and that...
 

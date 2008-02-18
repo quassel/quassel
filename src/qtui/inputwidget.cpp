@@ -43,7 +43,12 @@ InputWidget::~InputWidget() {
 }
 
 void InputWidget::setModel(BufferModel *bufferModel) {
+  if(_bufferModel) {
+    disconnect(_bufferModel, 0, this, 0);
+  }
   _bufferModel = bufferModel;
+  connect(bufferModel, SIGNAL(dataChanged(QModelIndex, QModelIndex)),
+	  this, SLOT(dataChanged(QModelIndex, QModelIndex)));
 }
 
 void InputWidget::setSelectionModel(QItemSelectionModel *selectionModel) {
@@ -73,6 +78,15 @@ void InputWidget::currentChanged(const QModelIndex &current, const QModelIndex &
   updateNickSelector();
   ui.inputEdit->setEnabled(current.data(NetworkModel::ItemActiveRole).value<bool>());
 }
+
+void InputWidget::dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight) {
+  QItemSelectionRange changedArea(topLeft, bottomRight);
+  QModelIndex currentIndex = Client::bufferModel()->currentIndex();
+  if(changedArea.contains(currentIndex)) {
+    ui.inputEdit->setEnabled(currentIndex.data(NetworkModel::ItemActiveRole).value<bool>());
+  }
+};
+
 
 const Network *InputWidget::currentNetwork() const {
   if(!validBuffer)

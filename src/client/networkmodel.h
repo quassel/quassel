@@ -110,6 +110,7 @@ public:
   NetworkItem(const NetworkId &netid, AbstractTreeItem *parent = 0);
 
   virtual quint64 id() const;
+  inline const NetworkId &networkId() const { return _networkId; }
   virtual QVariant data(int column, int row) const;
 
   bool isActive() const;
@@ -124,8 +125,6 @@ public slots:
 
   void attachNetwork(Network *network);
   void attachIrcChannel(const QString &channelName);
-
-  void setActive(bool connected);
   
 private:
   NetworkId _networkId;

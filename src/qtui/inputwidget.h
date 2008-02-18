@@ -49,7 +49,7 @@ protected slots:
 //   virtual void closeEditor(QWidget *editor, QAbstractItemDelegate::EndEditHint hint);
 //   virtual void commitData(QWidget *editor);
   virtual void currentChanged(const QModelIndex &current, const QModelIndex &previous);
-//   virtual void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
+  virtual void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
 //   virtual void editorDestroyed(QObject *editor);
 //   virtual void rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
 //   virtual void rowsInserted(const QModelIndex &parent, int start, int end);
