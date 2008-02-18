@@ -220,7 +220,14 @@ void NetworksSettingsPage::setItemState(NetworkId id, QListWidgetItem *item) {
         if(oldid > 0) continue;  // only locally created nets should be replaced
         if(oldid == currentId) select = true;
         int row = ui.networkList->row(i);
-        if(row >= 0) delete ui.networkList->takeItem(row);
+        if(row >= 0) {
+          QListWidgetItem *olditem = ui.networkList->takeItem(row);
+          if(!olditem) {
+            qWarning() << "NetworksSettingsPage::setItemState(): Why the heck don't we have an itempointer here?";
+            Q_ASSERT(olditem);  // abort non-gracefully, I need to figure out what's causing this
+          }
+          else delete olditem;
+        }
         networkInfos.remove(oldid);
         break;
       }
