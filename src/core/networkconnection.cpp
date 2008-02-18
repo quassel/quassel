@@ -174,7 +174,7 @@ void NetworkConnection::networkInitialized(const QString &currentServer) {
   if(chans.count() > 0) {
     qDebug() << "autojoining" << chans;
     QVariantList list;
-    foreach(QString chan, chans) list << serverEncode(chan);
+    list << serverEncode(chans.join(",")); // TODO add channel passwords
     putCmd("JOIN", list);  // FIXME check for 512 byte limit!
   }
   // delete _previousState, we won't need it again
