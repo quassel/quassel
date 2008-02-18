@@ -110,11 +110,19 @@ void CtcpHandler::parse(Message::Type messageType, const QString &prefix, const 
     
     ctcp = xdelimDequote(dequotedMessage.mid(xdelimPos + 1, xdelimEndPos - xdelimPos - 1));
     dequotedMessage = dequotedMessage.mid(xdelimEndPos + 1);
-    
+
     //dispatch the ctcp command
-    spacePos = ctcp.indexOf(' ');
     QString ctcpcmd = userDecode(target, ctcp.left(spacePos));
     QString ctcpparam = userDecode(target, ctcp.mid(spacePos + 1));
+
+    spacePos = ctcp.indexOf(' ');
+    if(spacePos != -1) {
+      ctcpcmd = userDecode(target, ctcp.left(spacePos));
+      ctcpparam = userDecode(target, ctcp.mid(spacePos + 1));
+    } else {
+      ctcpcmd = userDecode(target, ctcp);
+      ctcpparam = QString();
+    }
 
     handle(ctcpcmd, Q_ARG(CtcpType, ctcptype), Q_ARG(QString, prefix), Q_ARG(QString, target), Q_ARG(QString, ctcpparam));
   }
