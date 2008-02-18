@@ -81,6 +81,7 @@ class NetworksSettingsPage : public SettingsPage {
 
     NetworkId currentId;
     QHash<NetworkId, NetworkInfo> networkInfos;
+    bool _ignoreWidgetChanges;
 
     QIcon connectedIcon, connectingIcon, disconnectedIcon;
 

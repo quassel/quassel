@@ -32,6 +32,7 @@
 
 NetworksSettingsPage::NetworksSettingsPage(QWidget *parent) : SettingsPage(tr("General"), tr("Networks"), parent) {
   ui.setupUi(this);
+  _ignoreWidgetChanges = false;
 
   connectedIcon = QIcon(":/22x22/actions/network-connect");
   connectingIcon = QIcon(":/22x22/actions/gear");
@@ -145,6 +146,7 @@ bool NetworksSettingsPage::aboutToSave() {
 }
 
 void NetworksSettingsPage::widgetHasChanged() {
+  if(_ignoreWidgetChanges) return;
   bool changed = testHasChanged();
   if(changed != hasChanged()) setChangedState(changed);
 }
@@ -165,18 +167,25 @@ void NetworksSettingsPage::setWidgetStates() {
   // network list
   if(ui.networkList->selectedItems().count()) {
     NetworkId id = ui.networkList->selectedItems()[0]->data(Qt::UserRole).value<NetworkId>();
+    const Network *net = 0;
+    if(id > 0) net = Client::network(id);
     ui.detailsBox->setEnabled(true);
     ui.renameNetwork->setEnabled(true);
     ui.deleteNetwork->setEnabled(true);
-    ui.connectNow->setEnabled(id > 0
-        && (Client::network(id)->connectionState() == Network::Initialized
-        || Client::network(id)->connectionState() == Network::Disconnected));
-    if(Client::network(id) && Client::network(id)->isConnected()) {
-      ui.connectNow->setIcon(disconnectedIcon);
-      ui.connectNow->setText(tr("Disconnect"));
+    ui.connectNow->setEnabled(net);
+    //    && (Client::network(id)->connectionState() == Network::Initialized
+    //    || Client::network(id)->connectionState() == Network::Disconnected));
+    if(net) {
+      if(net->connectionState() == Network::Disconnected) {
+        ui.connectNow->setIcon(connectedIcon);
+        ui.connectNow->setText(tr("Connect"));
+      } else {
+        ui.connectNow->setIcon(disconnectedIcon);
+        ui.connectNow->setText(tr("Disconnect"));
+      }
     } else {
-      ui.connectNow->setIcon(connectedIcon);
-      ui.connectNow->setText(tr("Connect"));
+      ui.connectNow->setIcon(QIcon());
+      ui.connectNow->setText(tr("Apply first!"));
     }
   } else {
     ui.renameNetwork->setEnabled(false);
@@ -386,6 +395,7 @@ QListWidgetItem *NetworksSettingsPage::insertNetwork(const NetworkInfo &info) {
 }
 
 void NetworksSettingsPage::displayNetwork(NetworkId id) {
+  _ignoreWidgetChanges = true;
   if(id != 0) {
     NetworkInfo info = networkInfos[id];
     ui.identityList->setCurrentIndex(ui.identityList->findData(info.identity.toInt()));
@@ -418,8 +428,11 @@ void NetworksSettingsPage::displayNetwork(NetworkId id) {
     ui.identityList->setCurrentIndex(-1);
     ui.serverList->clear();
     ui.performEdit->clear();
+    ui.autoIdentifyService->clear();
+    ui.autoIdentifyPassword->clear();
     setWidgetStates();
   }
+  _ignoreWidgetChanges = false;
   currentId = id;
 }
 
@@ -529,7 +542,7 @@ void NetworksSettingsPage::on_connectNow_clicked() {
   NetworkId id = ui.networkList->selectedItems()[0]->data(Qt::UserRole).value<NetworkId>();
   const Network *net = Client::network(id);
   if(!net) return;
-  if(!net->isConnected()) net->requestConnect();
+  if(net->connectionState() == Network::Disconnected) net->requestConnect();
   else net->requestDisconnect();
 }
 

@@ -43,9 +43,16 @@ NetworkConnection::NetworkConnection(Network *network, CoreSession *session, con
     _ircServerHandler(new IrcServerHandler(this)),
     _userInputHandler(new UserInputHandler(this)),
     _ctcpHandler(new CtcpHandler(this)),
-    _previousState(state)
+    _previousState(state),
+    _autoReconnectCount(0)
 {
+  _autoReconnectTimer.setSingleShot(true);
+  connect(&_autoReconnectTimer, SIGNAL(timeout()), this, SLOT(doAutoReconnect()));
+
   connect(network, SIGNAL(currentServerSet(const QString &)), this, SLOT(networkInitialized(const QString &)));
+  connect(network, SIGNAL(useAutoReconnectSet(bool)), this, SLOT(autoReconnectSettingsChanged()));
+  connect(network, SIGNAL(autoReconnectIntervalSet(quint32)), this, SLOT(autoReconnectSettingsChanged()));
+  connect(network, SIGNAL(autoReconnectRetriesSet(quint16)), this, SLOT(autoReconnectSettingsChanged()));
 
   connect(&socket, SIGNAL(connected()), this, SLOT(socketConnected()));
   connect(&socket, SIGNAL(disconnected()), this, SLOT(socketDisconnected()));
@@ -56,7 +63,8 @@ NetworkConnection::NetworkConnection(Network *network, CoreSession *session, con
 }
 
 NetworkConnection::~NetworkConnection() {
-  disconnectFromIrc();
+  if(connectionState() != Network::Disconnected && connectionState() != Network::Reconnecting)
+    disconnectFromIrc();
   delete _ircServerHandler;
   delete _userInputHandler;
   delete _ctcpHandler;
@@ -145,8 +153,25 @@ QByteArray NetworkConnection::userEncode(const QString &userNick, const QString 
   return network()->encodeString(string);
 }
 
+void NetworkConnection::autoReconnectSettingsChanged() {
+  if(!network()->useAutoReconnect()) {
+    _autoReconnectTimer.stop();
+    _autoReconnectCount = 0;
+  } else {
+    _autoReconnectTimer.setInterval(network()->autoReconnectInterval() * 1000);
+    if(_autoReconnectCount != 0) {
+      if(network()->unlimitedReconnectRetries()) _autoReconnectCount = -1;
+      else _autoReconnectCount = network()->autoReconnectRetries();
+    }
+  }
+}
 
-void NetworkConnection::connectToIrc() {
+void NetworkConnection::connectToIrc(bool reconnecting) {
+  if(!reconnecting && network()->useAutoReconnect() && _autoReconnectCount == 0) {
+    _autoReconnectTimer.setInterval(network()->autoReconnectInterval() * 1000);
+    if(network()->unlimitedReconnectRetries()) _autoReconnectCount = -1;
+    else _autoReconnectCount = network()->autoReconnectRetries();
+  }
   QVariantList serverList = network()->serverList();
   Identity *identity = coreSession()->identity(network()->identity());
   if(!serverList.count()) {
@@ -160,12 +185,17 @@ void NetworkConnection::connectToIrc() {
   // TODO implement cycling / random servers
   QString host = serverList[0].toMap()["Host"].toString();
   quint16 port = serverList[0].toMap()["Port"].toUInt();
-  displayStatusMsg(QString("Connecting to %1:%2...").arg(host).arg(port));
+  displayStatusMsg(tr("Connecting to %1:%2...").arg(host).arg(port));
+  displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("Connecting to %1:%2...").arg(host).arg(port));
   socket.connectToHost(host, port);
 }
 
 void NetworkConnection::networkInitialized(const QString &currentServer) {
   if(currentServer.isEmpty()) return;
+
+  if(network()->useAutoReconnect() && !network()->unlimitedReconnectRetries()) {
+    _autoReconnectCount = network()->autoReconnectRetries(); // reset counter
+  }
 
   sendPerform();
 
@@ -204,6 +234,9 @@ QVariant NetworkConnection::state() const {
 }
 
 void NetworkConnection::disconnectFromIrc() {
+  _autoReconnectTimer.stop();
+  _autoReconnectCount = 0;
+  displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("Disconnecting."));
   if(socket.state() < QAbstractSocket::ConnectedState) {
     setConnectionState(Network::Disconnected);
     socketDisconnected();
@@ -222,6 +255,10 @@ void NetworkConnection::socketError(QAbstractSocket::SocketError) {
   emit connectionError(socket.errorString());
   emit displayMsg(Message::Error, BufferInfo::StatusBuffer, "", tr("Connection failure: %1").arg(socket.errorString()));
   network()->emitConnectionError(socket.errorString());
+  if(socket.state() < QAbstractSocket::ConnectedState) {
+    setConnectionState(Network::Disconnected);
+    socketDisconnected();
+  }
 }
 
 void NetworkConnection::socketConnected() {
@@ -261,6 +298,22 @@ void NetworkConnection::socketStateChanged(QAbstractSocket::SocketState socketSt
 void NetworkConnection::socketDisconnected() {
   network()->setConnected(false);
   emit disconnected(networkId());
+  if(_autoReconnectCount == 0) emit quitRequested(networkId());
+  else {
+    setConnectionState(Network::Reconnecting);
+    qDebug() << "trying to reconnect... " << _autoReconnectTimer.interval();
+    if(_autoReconnectCount == network()->autoReconnectRetries()) doAutoReconnect(); // first try is immediate
+    else _autoReconnectTimer.start();
+  }
+}
+
+void NetworkConnection::doAutoReconnect() {
+  if(connectionState() != Network::Disconnected && connectionState() != Network::Reconnecting) {
+    qWarning() << "NetworkConnection::doAutoReconnect(): Cannot reconnect while not being disconnected!";
+    return;
+  }
+  if(_autoReconnectCount > 0) _autoReconnectCount--;
+  connectToIrc(true);
 }
 
 // FIXME switch to BufferId

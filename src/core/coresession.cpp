@@ -230,7 +230,7 @@ void CoreSession::connectToNetwork(NetworkId id, const QVariant &previousState) 
 
 void CoreSession::attachNetworkConnection(NetworkConnection *conn) {
   connect(conn, SIGNAL(connected(NetworkId)), this, SLOT(networkConnected(NetworkId)));
-  connect(conn, SIGNAL(disconnected(NetworkId)), this, SLOT(networkDisconnected(NetworkId)));
+  connect(conn, SIGNAL(quitRequested(NetworkId)), this, SLOT(networkDisconnected(NetworkId)));
 
   // I guess we don't need these anymore, client-side can just connect the network's signals directly
   //signalProxy()->attachSignal(conn, SIGNAL(connected(NetworkId)), SIGNAL(networkConnected(NetworkId)));
@@ -272,11 +272,8 @@ void CoreSession::networkConnected(NetworkId networkid) {
   Core::bufferInfo(user(), networkid, BufferInfo::StatusBuffer); // create status buffer
 }
 
+// called now only on /quit and requested disconnects, not on normal disconnects!
 void CoreSession::networkDisconnected(NetworkId networkid) {
-  // FIXME
-  // connection should only go away on explicit /part, and handle reconnections etcpp internally otherwise
-
-  //Q_ASSERT(_connections.contains(networkid));
   if(_connections.contains(networkid)) _connections.take(networkid)->deleteLater();
 }
 
@@ -448,7 +445,7 @@ void CoreSession::updateNetwork(const NetworkInfo &info) {
     qWarning() << "Update request for unknown network received!";
     return;
   }
-  _networks[info.networkId]->setNetworkInfo(info); qDebug() << "unlim" << info.unlimitedReconnectRetries << _networks[info.networkId]->unlimitedReconnectRetries();
+  _networks[info.networkId]->setNetworkInfo(info);
   Core::updateNetwork(user(), info);
 }
 

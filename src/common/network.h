@@ -68,7 +68,7 @@ class Network : public SyncableObject {
   Q_PROPERTY(bool rejoinChannels READ rejoinChannels WRITE setRejoinChannels STORED false)
 
 public:
-  enum ConnectionState { Disconnected, Connecting, Initializing, Initialized, Disconnecting };
+  enum ConnectionState { Disconnected, Connecting, Initializing, Initialized, Reconnecting, Disconnecting };
 
   Network(const NetworkId &networkid, QObject *parent = 0);
   ~Network();
@@ -234,7 +234,7 @@ signals:
   void autoIdentifyPasswordSet(const QString &);
   void useAutoReconnectSet(bool);
   void autoReconnectIntervalSet(quint32);
-  void autoReconnectRetriesSet(qint16);
+  void autoReconnectRetriesSet(quint16);
   void unlimitedReconnectRetriesSet(bool);
   void rejoinChannelsSet(bool);
 
@@ -340,6 +340,7 @@ struct NetworkInfo {
 
 QDataStream &operator<<(QDataStream &out, const NetworkInfo &info);
 QDataStream &operator>>(QDataStream &in, NetworkInfo &info);
+QDebug operator<<(QDebug dbg, const NetworkInfo &i);
 
 Q_DECLARE_METATYPE(NetworkInfo);
 

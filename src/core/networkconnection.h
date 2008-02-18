@@ -82,7 +82,7 @@ public:
 
 public slots:
   // void setServerOptions();
-  void connectToIrc();
+  void connectToIrc(bool reconnecting = false);
   void disconnectFromIrc();
   void userInput(BufferInfo bufferInfo, QString msg);
 
@@ -92,6 +92,8 @@ public slots:
 
 private slots:
   void sendPerform();
+  void autoReconnectSettingsChanged();
+  void doAutoReconnect();
 
 signals:
   // #void networkState(QString net, QVariantMap data);
@@ -104,6 +106,8 @@ signals:
   void connectionStateChanged(Network::ConnectionState);
   void connectionInitialized(); ///< Emitted after receipt of 001 to indicate that we can now send data to the IRC server
   void connectionError(const QString &errorMsg);
+
+  void quitRequested(NetworkId networkId);
 
   //void queryRequested(QString network, QString nick);
 
@@ -130,6 +134,9 @@ private:
 
   QVariant _previousState;
 
+  QTimer _autoReconnectTimer;
+  int _autoReconnectCount;
+
   class ParseError : public Exception {
   public:
     ParseError(QString cmd, QString prefix, QStringList params);
@@ -139,7 +146,6 @@ private:
   public:
     UnknownCmdError(QString cmd, QString prefix, QStringList params);
   };
-    
 };
 
 #endif

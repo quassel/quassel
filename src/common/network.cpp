@@ -860,11 +860,16 @@ QDataStream &operator>>(QDataStream &in, NetworkInfo &info) {
   return in;
 }
 
-
-
-
-
-
+QDebug operator<<(QDebug dbg, const NetworkInfo &i) {
+  dbg.nospace() << "(id = " << i.networkId << " name = " << i.networkName << " identity = " << i.identity
+      << " codecForServer = " << i.codecForServer << " codecForEncoding = " << i.codecForEncoding << " codecForDecoding = " << i.codecForDecoding
+      << " serverList = " << i.serverList << " useRandomServer = " << i.useRandomServer << " perform = " << i.perform
+      << " useAutoIdentify = " << i.useAutoIdentify << " autoIdentifyService = " << i.autoIdentifyService << " autoIdentifyPassword = " << i.autoIdentifyPassword
+      << " useAutoReconnect = " << i.useAutoReconnect << " autoReconnectInterval = " << i.autoReconnectInterval
+      << " autoReconnectRetries = " << i.autoReconnectRetries << " unlimitedReconnectRetries = " << i.unlimitedReconnectRetries
+      << " rejoinChannels = " << i.rejoinChannels << ")";
+  return dbg.space();
+}
 
 
 
