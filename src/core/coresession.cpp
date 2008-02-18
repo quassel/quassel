@@ -73,6 +73,8 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent) : QObje
   QHash<BufferId, QDateTime> lastSeenHash = Core::bufferLastSeenDates(user());
   foreach(BufferId id, lastSeenHash.keys()) _bufferSyncer->requestSetLastSeen(id, lastSeenHash[id]);
   connect(_bufferSyncer, SIGNAL(lastSeenSet(BufferId, const QDateTime &)), this, SLOT(storeBufferLastSeen(BufferId, const QDateTime &)));
+  connect(_bufferSyncer, SIGNAL(removeBufferRequested(BufferId)), this, SLOT(removeBufferRequested(BufferId)));
+  connect(this, SIGNAL(bufferRemoved(BufferId)), _bufferSyncer, SLOT(removeBuffer(BufferId)));
   p->synchronize(_bufferSyncer);
 
   // Restore session state
@@ -472,4 +474,29 @@ void CoreSession::destroyNetwork(NetworkId id) {
     emit networkRemoved(id);
     net->deleteLater();
   }
+}
+
+void CoreSession::removeBufferRequested(BufferId bufferId) {
+  BufferInfo bufferInfo = Core::getBufferInfo(user(), bufferId);
+  if(!bufferInfo.isValid()) {
+    qWarning() << "CoreSession::removeBufferRequested(): invalid BufferId:" << bufferId << "for User:" << user();
+    return;
+  }
+  
+  if(bufferInfo.type() == BufferInfo::StatusBuffer) {
+    qWarning() << "CoreSession::removeBufferRequested(): Status Buffers cannot be removed!";
+    return;
+  }
+  
+  if(bufferInfo.type() == BufferInfo::ChannelBuffer) {
+    Network *net = network(bufferInfo.networkId());
+    Q_ASSERT(net);
+    IrcChannel *chan = net->ircChannel(bufferInfo.bufferName());
+    if(chan) {
+      qWarning() << "CoreSession::removeBufferRequested(): Unable to remove Buffer for joined Channel:" << bufferInfo.bufferName();
+      return;
+    }
+  }
+  if(Core::removeBuffer(user(), bufferId))
+    emit bufferRemoved(bufferId);
 }

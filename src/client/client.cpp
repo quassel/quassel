@@ -284,6 +284,7 @@ void Client::setSyncedToCore() {
   Q_ASSERT(!_bufferSyncer);
   _bufferSyncer = new BufferSyncer(this);
   connect(bufferSyncer(), SIGNAL(lastSeenSet(BufferId, const QDateTime &)), this, SLOT(updateLastSeen(BufferId, const QDateTime &)));
+  connect(bufferSyncer(), SIGNAL(bufferRemoved(BufferId)), this, SLOT(bufferRemoved(BufferId)));
   signalProxy()->synchronize(bufferSyncer());
 
   _syncedToCore = true;
@@ -457,4 +458,11 @@ void Client::setBufferLastSeen(BufferId id, const QDateTime &lastSeen) {
   bufferSyncer()->requestSetLastSeen(id, lastSeen);
 }
 
-
+void Client::bufferRemoved(BufferId bufferId) {
+  networkModel()->removeBuffer(bufferId);
+  if(_buffers.contains(bufferId)) {
+    Buffer *buff = _buffers.take(bufferId);
+    disconnect(buff, 0, this, 0);
+    buff->deleteLater();
+  }
+}

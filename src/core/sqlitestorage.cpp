@@ -405,6 +405,24 @@ BufferInfo SqliteStorage::getBufferInfo(UserId user, const NetworkId &networkId,
   return bufferInfo;
 }
 
+BufferInfo SqliteStorage::getBufferInfo(UserId user, const BufferId &bufferId) {
+  QSqlQuery query(logDb());
+  query.prepare(queryString("select_buffer_by_id"));
+  query.bindValue(":userid", user.toInt());
+  query.bindValue(":bufferid", bufferId.toInt());
+  query.exec();
+  if(!watchQuery(&query))
+    return BufferInfo();
+
+  if(!query.first())
+    return BufferInfo();
+
+  BufferInfo bufferInfo(query.value(0).toInt(), query.value(1).toInt(), (BufferInfo::Type)query.value(2).toInt(), 0, query.value(4).toString());
+  Q_ASSERT(!query.next());
+
+  return bufferInfo;
+}
+
 QList<BufferInfo> SqliteStorage::requestBuffers(UserId user, QDateTime since) {
   uint time = 0;
   if(since.isValid())

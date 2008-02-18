@@ -108,6 +108,15 @@ class Core : public QObject {
      */
     static BufferInfo bufferInfo(UserId user, const NetworkId &networkId, BufferInfo::Type, const QString &buffer = "");
 
+    //! Get the unique BufferInfo for a bufferId
+    /** \note This method is threadsafe
+     *  \param user      The core user who owns this buffername
+     *  \param bufferId  The id of the buffer
+     *  \return The BufferInfo corresponding to the given buffer id, or an invalid BufferInfo if not found.
+     */
+    static BufferInfo getBufferInfo(UserId user, const BufferId &bufferId);
+
+  
     //! Store a Message in the backlog.
     /** \note This method is threadsafe.
      *

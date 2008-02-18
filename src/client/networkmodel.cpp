@@ -743,6 +743,17 @@ void NetworkModel::bufferUpdated(BufferInfo bufferInfo) {
   emit dataChanged(itemindex, itemindex);
 }
 
+void NetworkModel::removeBuffer(BufferId bufferId) {
+  const int numNetworks = rootItem->childCount();
+  if(numNetworks == 0)
+    return;
+
+  for(int i = 0; i < numNetworks; i++) {
+    if(rootItem->child(i)->removeChildById(qHash(bufferId)))
+      break;
+  }
+}
+
 /*
 void NetworkModel::updateBufferActivity(const Message &msg) {
   BufferItem *buff = bufferItem(msg.bufferInfo());

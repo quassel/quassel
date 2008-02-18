@@ -236,6 +236,7 @@ public:
 
 public slots:
   void bufferUpdated(BufferInfo bufferInfo);
+  void removeBuffer(BufferId bufferId);
   void setBufferActivity(const BufferInfo &buffer, Buffer::ActivityLevel activity);
   void networkRemoved(const NetworkId &networkId);
   

@@ -60,3 +60,11 @@ void BufferSyncer::requestSetLastSeen(BufferId buffer, const QDateTime &time) {
   if(setLastSeen(buffer, time)) emit setLastSeenRequested(buffer, time);
 }
 
+
+void BufferSyncer::requestRemoveBuffer(BufferId buffer) {
+  emit removeBufferRequested(buffer);
+}
+
+void BufferSyncer::removeBuffer(BufferId buffer) {
+  emit bufferRemoved(buffer);
+}

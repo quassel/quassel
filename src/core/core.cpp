@@ -240,6 +240,11 @@ BufferInfo Core::bufferInfo(UserId user, const NetworkId &networkId, BufferInfo:
   return instance()->storage->getBufferInfo(user, networkId, type, buffer);
 }
 
+BufferInfo Core::getBufferInfo(UserId user, const BufferId &bufferId) {
+  QMutexLocker locker(&mutex);
+  return instance()->storage->getBufferInfo(user, bufferId);
+}
+
 MsgId Core::storeMessage(const Message &message) {
   QMutexLocker locker(&mutex);
   return instance()->storage->logMessage(message);

@@ -59,6 +59,7 @@ public slots:
   
   /* Buffer handling */
   virtual BufferInfo getBufferInfo(UserId user, const NetworkId &networkId, BufferInfo::Type type, const QString &buffer = "");
+  virtual BufferInfo getBufferInfo(UserId user, const BufferId &bufferId);
   virtual QList<BufferInfo> requestBuffers(UserId user, QDateTime since = QDateTime());
   virtual bool removeBuffer(const UserId &user, const BufferId &bufferId);
   virtual void setBufferLastSeen(UserId user, const BufferId &bufferId, const QDateTime &seenDate);

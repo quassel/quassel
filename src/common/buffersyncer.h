@@ -39,10 +39,14 @@ class BufferSyncer : public SyncableObject {
     void initSetLastSeen(const QVariantList &);
 
     void requestSetLastSeen(BufferId buffer, const QDateTime &time);
+    void requestRemoveBuffer(BufferId buffer);
+    void removeBuffer(BufferId buffer);
 
   signals:
     void lastSeenSet(BufferId buffer, const QDateTime &time);
     void setLastSeenRequested(BufferId buffer, const QDateTime &time);
+    void removeBufferRequested(BufferId buffer);
+    void bufferRemoved(BufferId buffer);
 
   private slots:
     bool setLastSeen(BufferId buffer, const QDateTime &time);

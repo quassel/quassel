@@ -101,6 +101,12 @@ public slots:
    */
   void removeNetwork(NetworkId network);
 
+  //! Remove a buffer and it's backlog permanently
+  /** \param bufferId The id of the buffer to be removed.
+   *  emits bufferRemoved(bufferId) on success.
+   */
+  void removeBufferRequested(BufferId bufferId);
+    
 signals:
   void initialized();
 
@@ -131,6 +137,7 @@ signals:
 
   void networkCreated(NetworkId);
   void networkRemoved(NetworkId);
+  void bufferRemoved(BufferId);
 
 private slots:
   void recvStatusMsgFromServer(QString msg);

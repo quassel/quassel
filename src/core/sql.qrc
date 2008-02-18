@@ -55,6 +55,7 @@
     <file>./SQL/SQLite/7/insert_sender.sql</file>
     <file>./SQL/SQLite/7/insert_server.sql</file>
     <file>./SQL/SQLite/7/select_authuser.sql</file>
+    <file>./SQL/SQLite/7/select_buffer_by_id.sql</file>
     <file>./SQL/SQLite/7/select_buffer_lastseen_dates.sql</file>
     <file>./SQL/SQLite/7/select_bufferByName.sql</file>
     <file>./SQL/SQLite/7/select_bufferExists.sql</file>
