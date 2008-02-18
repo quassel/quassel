@@ -46,6 +46,7 @@ private slots:
   void keyPressEvent(QKeyEvent *);
   void rowsInserted (const QModelIndex & parent, int start, int end);
   void toggleHeader(bool checked);
+  void showContextMenu(const QPoint &);
 };
 
 

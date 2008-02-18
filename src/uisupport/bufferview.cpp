@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include "client.h"
+#include "buffersyncer.h"
 #include "bufferview.h"
 #include "networkmodel.h"
 
@@ -28,6 +29,10 @@
 // Please be carefull when reimplementing methods which are used to inform the view about changes to the data
 // to be on the safe side: call QTreeView's method aswell
 BufferView::BufferView(QWidget *parent) : QTreeView(parent) {
+  setContextMenuPolicy(Qt::CustomContextMenu);
+
+  connect(this, SIGNAL(customContextMenuRequested(const QPoint &)),
+          this, SLOT(showContextMenu(const QPoint &)));
 }
 
 void BufferView::init() {
@@ -118,3 +123,26 @@ void BufferView::toggleHeader(bool checked) {
   QAction *action = qobject_cast<QAction *>(sender());
   header()->setSectionHidden((action->property("column")).toInt(), !checked);
 }
+
+void BufferView::showContextMenu(const QPoint &pos) {
+  QModelIndex index = indexAt(pos);
+  if(!index.isValid() || index.data(NetworkModel::ItemTypeRole) != NetworkModel::BufferItemType) return;
+  BufferInfo bufferInfo = index.data(NetworkModel::BufferInfoRole).value<BufferInfo>();
+  if(bufferInfo.type() != BufferInfo::ChannelBuffer && bufferInfo.type() != BufferInfo::QueryBuffer) return;
+  QMenu contextMenu(this);
+  QAction *removeBufferAction = contextMenu.addAction(tr("Delete buffer"));
+  if(bufferInfo.type() == BufferInfo::ChannelBuffer && index.data(NetworkModel::ItemActiveRole).toBool())
+     removeBufferAction->setEnabled(false);
+
+  QAction *result = contextMenu.exec(QCursor::pos());
+  if(result == removeBufferAction) {
+    int res = QMessageBox::question(this, tr("Remove buffer permanently?"),
+                                    tr("Do you want to delete the buffer \"%1\" permanently? This will delete all related data, including all backlog "
+                                       "data, from the core's database!").arg(bufferInfo.bufferName()),
+                                        QMessageBox::Yes|QMessageBox::No, QMessageBox::No);
+    if(res == QMessageBox::Yes) {
+      Client::bufferSyncer()->requestRemoveBuffer(bufferInfo.bufferId());
+    }
+  }
+}
+
