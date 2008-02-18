@@ -84,7 +84,7 @@ void Core::init() {
 }
 
 Core::~Core() {
-  foreach(QTcpSocket *socket, blocksizes.keys()) {
+  foreach(QTcpSocket *socket, blocksizes.keys()) { qDebug() << "disconnecting" << socket << blocksizes.keys();
     socket->disconnectFromHost();  // disconnect local (i.e. non-authed) clients
   }
   qDeleteAll(sessions);
@@ -315,6 +315,7 @@ void Core::clientHasData() {
   while(SignalProxy::readDataFromDevice(socket, blocksizes[socket], item)) {
     QVariantMap msg = item.toMap();
     processClientMessage(socket, msg);
+    if(!blocksizes.contains(socket)) break;  // this socket is no longer ours to handle!
   }
 }
 

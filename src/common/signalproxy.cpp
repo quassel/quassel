@@ -200,6 +200,12 @@ SignalProxy::~SignalProxy() {
   QList<QObject*> senders = _relayHash.keys();
   foreach(QObject* sender, senders)
     detachObject(sender);
+
+  // close peer connections
+  foreach(QIODevice *device, _peerByteCount.keys()) {
+    device->close();
+    delete device;
+  }
 }
 
 void SignalProxy::setProxyMode(ProxyMode mode) {
