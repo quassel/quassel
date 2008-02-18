@@ -103,7 +103,7 @@ void IrcServerHandler::handleServerMsg(QByteArray msg) {
 }
 
 
-void IrcServerHandler::defaultHandler(QString cmd, QString prefix, QList<QByteArray> rawparams) {
+void IrcServerHandler::defaultHandler(QString cmd, const QString &prefix, const QList<QByteArray> &rawparams) {
   // we assume that all this happens in server encoding
   QStringList params;
   foreach(QByteArray r, rawparams) params << serverDecode(r);
@@ -165,7 +165,7 @@ void IrcServerHandler::defaultHandler(QString cmd, QString prefix, QList<QByteAr
 //******************************/
 // IRC SERVER HANDLER
 //******************************/
-void IrcServerHandler::handleJoin(QString prefix, QList<QByteArray> params) {
+void IrcServerHandler::handleJoin(const QString &prefix, const QList<QByteArray> &params) {
   Q_ASSERT(params.count() == 1);
   QString channel = serverDecode(params[0]);
   IrcUser *ircuser = network()->updateNickFromMask(prefix);
@@ -174,7 +174,7 @@ void IrcServerHandler::handleJoin(QString prefix, QList<QByteArray> params) {
   ircuser->joinChannel(channel);
 }
 
-void IrcServerHandler::handleKick(QString prefix, QList<QByteArray> params) {
+void IrcServerHandler::handleKick(const QString &prefix, const QList<QByteArray> &params) {
   network()->updateNickFromMask(prefix);
   IrcUser *victim = network()->ircUser(params[1]);
   QString channel = serverDecode(params[0]);
@@ -191,7 +191,7 @@ void IrcServerHandler::handleKick(QString prefix, QList<QByteArray> params) {
   emit displayMsg(Message::Kick, BufferInfo::ChannelBuffer, channel, msg, prefix);
 }
 
-void IrcServerHandler::handleMode(QString prefix, QList<QByteArray> params) {
+void IrcServerHandler::handleMode(const QString &prefix, const QList<QByteArray> &params) {
   if(params.count() < 2) {
     emit displayMsg(Message::Error, BufferInfo::StatusBuffer, "", tr("Received invalid MODE from %s: %s").arg(prefix).arg(serverDecode(params).join(" ")));
     return;
@@ -201,10 +201,10 @@ void IrcServerHandler::handleMode(QString prefix, QList<QByteArray> params) {
     // Channel Modes
     emit displayMsg(Message::Mode, BufferInfo::ChannelBuffer, serverDecode(params[0]), serverDecode(params).join(" "), prefix);
 
-    IrcChannel *channel = network()->ircChannel(params.takeFirst());
+    IrcChannel *channel = network()->ircChannel(params[0]);
     // FIXME: currently the IrcChannels only support PREFIX-Modes for users
     // This cannot be fixed unless the SignalProxy() doesn't rely on methodIds anymore
-    QString modes = params.takeFirst();
+    QString modes = params[1];
     bool add = true;
     int modeIndex = 0;
     for(int c = 0; c < modes.length(); c++) {
@@ -235,7 +235,7 @@ void IrcServerHandler::handleMode(QString prefix, QList<QByteArray> params) {
   }
 }
 
-void IrcServerHandler::handleNick(QString prefix, QList<QByteArray> params) {
+void IrcServerHandler::handleNick(const QString &prefix, const QList<QByteArray> &params) {
   IrcUser *ircuser = network()->updateNickFromMask(prefix);
   Q_ASSERT(ircuser);
   QString newnick = serverDecode(params[0]);
@@ -251,7 +251,7 @@ void IrcServerHandler::handleNick(QString prefix, QList<QByteArray> params) {
   ircuser->setNick(newnick);
 }
 
-void IrcServerHandler::handleNotice(QString prefix, QList<QByteArray> params) {
+void IrcServerHandler::handleNotice(const QString &prefix, const QList<QByteArray> &params) {
   if(params.count() < 2) {
     qWarning() << "IrcServerHandler::handleNotice(): not enough Parameters:" << prefix << serverDecode(params);
     return;
@@ -276,7 +276,7 @@ void IrcServerHandler::handleNotice(QString prefix, QList<QByteArray> params) {
   networkConnection()->ctcpHandler()->parse(Message::Notice, sender, target, userDecode(sender, params[1]));
 }
 
-void IrcServerHandler::handlePart(QString prefix, QList<QByteArray> params) {
+void IrcServerHandler::handlePart(const QString &prefix, const QList<QByteArray> &params) {
   IrcUser *ircuser = network()->updateNickFromMask(prefix);
   QString channel = serverDecode(params[0]);
   Q_ASSERT(ircuser);
@@ -290,18 +290,25 @@ void IrcServerHandler::handlePart(QString prefix, QList<QByteArray> params) {
   emit displayMsg(Message::Part, BufferInfo::ChannelBuffer, channel, msg, prefix);
 }
 
-void IrcServerHandler::handlePing(QString prefix, QList<QByteArray> params) {
+void IrcServerHandler::handlePing(const QString &prefix, const QList<QByteArray> &params) {
   Q_UNUSED(prefix);
   putCmd("PONG", params);
 }
 
-void IrcServerHandler::handlePrivmsg(QString prefix, QList<QByteArray> params) {
+void IrcServerHandler::handlePrivmsg(const QString &prefix, const QList<QByteArray> &params) {
   IrcUser *ircuser = network()->updateNickFromMask(prefix);
   Q_ASSERT(ircuser);
-  if(params.count() < 2)
-    params << QByteArray("");
 
+  if(params.isEmpty()) {
+    qWarning() << "IrcServerHandler::handlePrivmsg(): received PRIVMSG without target or message from:" << prefix;
+    return;
+  }
+     
   QString target = serverDecode(params[0]);
+
+  QByteArray msg = params.count() < 2
+    ? QByteArray("")
+    : params[1];
 
   // are we the target?
   if(network()->isMyNick(target))
@@ -309,10 +316,10 @@ void IrcServerHandler::handlePrivmsg(QString prefix, QList<QByteArray> params) {
 
   // it's possible to pack multiple privmsgs into one param using ctcp
   // - > we let the ctcpHandler do the work
-  networkConnection()->ctcpHandler()->parse(Message::Plain, prefix, target, userDecode(ircuser->nick(), params[1]));
+  networkConnection()->ctcpHandler()->parse(Message::Plain, prefix, target, userDecode(ircuser->nick(), msg));
 }
 
-void IrcServerHandler::handleQuit(QString prefix, QList<QByteArray> params) {
+void IrcServerHandler::handleQuit(const QString &prefix, const QList<QByteArray> &params) {
   IrcUser *ircuser = network()->updateNickFromMask(prefix);
   Q_ASSERT(ircuser);
 
@@ -326,7 +333,7 @@ void IrcServerHandler::handleQuit(QString prefix, QList<QByteArray> params) {
   network()->removeIrcUser(nickFromMask(prefix));
 }
 
-void IrcServerHandler::handleTopic(QString prefix, QList<QByteArray> params) {
+void IrcServerHandler::handleTopic(const QString &prefix, const QList<QByteArray> &params) {
   IrcUser *ircuser = network()->updateNickFromMask(prefix);
   QString channel = serverDecode(params[0]);
   QString topic = channelDecode(channel, params[1]);
@@ -338,7 +345,7 @@ void IrcServerHandler::handleTopic(QString prefix, QList<QByteArray> params) {
 }
 
 /* RPL_WELCOME */
-void IrcServerHandler::handle001(QString prefix, QList<QByteArray> params) {
+void IrcServerHandler::handle001(const QString &prefix, const QList<QByteArray> &params) {
   // there should be only one param: "Welcome to the Internet Relay Network <nick>!<user>@<host>"
   QString param = serverDecode(params[0]);
   QString myhostmask = param.section(' ', -1, -1);
@@ -350,17 +357,26 @@ void IrcServerHandler::handle001(QString prefix, QList<QByteArray> params) {
 
 /* RPL_ISUPPORT */
 // TODO Complete 005 handling, also use sensible defaults for non-sent stuff
-void IrcServerHandler::handle005(QString prefix, QList<QByteArray> params) {
-  Q_UNUSED(prefix)
-  QString rpl_isupport_suffix = serverDecode(params.takeLast());
-  if(rpl_isupport_suffix.toLower() != QString("are supported by this server")) {
+void IrcServerHandler::handle005(const QString &prefix, const QList<QByteArray> &params) {
+  Q_UNUSED(prefix);
+  const int numParams = params.size();
+  if(numParams < 1) {
+    qWarning() << "IrcServerHandler::handle005(): received RPL_ISUPPORT (005) with too few parameters:" << serverDecode(params);
+    return;
+  }
+    
+  QString rpl_isupport_suffix = serverDecode(params.last());
+  if(!rpl_isupport_suffix.toLower().contains("supported")) {
     qWarning() << "Received invalid RPL_ISUPPORT! Suffix is:" << rpl_isupport_suffix << "Excpected: are supported by this server";
     return;
   }
-  
-  foreach(QString param, serverDecode(params)) {
-    QString key = param.section("=", 0, 0);
-    QString value = param.section("=", 1);
+
+  QString rawSupport;
+  QString key, value;
+  for(int i = 0; i < numParams - 1; i++) {
+    QString rawSupport = serverDecode(params[i]);
+    QString key = rawSupport.section("=", 0, 0);
+    QString value = rawSupport.section("=", 1);
     network()->addSupport(key, value);
   }
 }
@@ -381,7 +397,7 @@ WHOWAS-Message:
 
 
 /*   RPL_AWAY - "<nick> :<away message>" */
-void IrcServerHandler::handle301(QString prefix, QList<QByteArray> params) {
+void IrcServerHandler::handle301(const QString &prefix, const QList<QByteArray> &params) {
   Q_UNUSED(prefix);
   QString nickName = serverDecode(params[0]);
   QString awayMessage = userDecode(nickName, params.last());
@@ -411,7 +427,7 @@ void IrcServerHandler::handle301(QString prefix, QList<QByteArray> params) {
 }
 
 /*  RPL_WHOISUSER - "<nick> <user> <host> * :<real name>" */
-void IrcServerHandler::handle311(QString prefix, QList<QByteArray> params) {
+void IrcServerHandler::handle311(const QString &prefix, const QList<QByteArray> &params) {
   Q_UNUSED(prefix)
   _whois = true;
   IrcUser *ircuser = network()->ircUser(serverDecode(params[0]));
@@ -424,7 +440,7 @@ void IrcServerHandler::handle311(QString prefix, QList<QByteArray> params) {
 }
  
 /*  RPL_WHOISSERVER -  "<nick> <server> :<server info>" */
-void IrcServerHandler::handle312(QString prefix, QList<QByteArray> params) {
+void IrcServerHandler::handle312(const QString &prefix, const QList<QByteArray> &params) {
   Q_UNUSED(prefix)
   IrcUser *ircuser = network()->ircUser(serverDecode(params[0]));
   if(ircuser) {
@@ -438,7 +454,7 @@ void IrcServerHandler::handle312(QString prefix, QList<QByteArray> params) {
 }
 
 /*  RPL_WHOISOPERATOR - "<nick> :is an IRC operator" */
-void IrcServerHandler::handle313(QString prefix, QList<QByteArray> params) {
+void IrcServerHandler::handle313(const QString &prefix, const QList<QByteArray> &params) {
   Q_UNUSED(prefix)
   IrcUser *ircuser = network()->ircUser(serverDecode(params[0]));
   if(ircuser) {
@@ -448,13 +464,13 @@ void IrcServerHandler::handle313(QString prefix, QList<QByteArray> params) {
 }
 
 /*  RPL_WHOWASUSER - "<nick> <user> <host> * :<real name>" */
-void IrcServerHandler::handle314(QString prefix, QList<QByteArray> params) {
+void IrcServerHandler::handle314(const QString &prefix, const QList<QByteArray> &params) {
   Q_UNUSED(prefix)
   emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Whowas] %1").arg(serverDecode(params).join(" ")));
 }
 
 /*  RPL_ENDOFWHO: "<name> :End of WHO list" */
-void IrcServerHandler::handle315(QString prefix, QList<QByteArray> params) {
+void IrcServerHandler::handle315(const QString &prefix, const QList<QByteArray> &params) {
   Q_UNUSED(prefix)
   emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Who] %1").arg(serverDecode(params).join(" ")));
 }
@@ -462,7 +478,7 @@ void IrcServerHandler::handle315(QString prefix, QList<QByteArray> params) {
 /*  RPL_WHOISIDLE - "<nick> <integer> :seconds idle" 
    (real life: "<nick> <integer> <integer> :seconds idle, signon time) */
    //TODO: parse real life message
-void IrcServerHandler::handle317(QString prefix, QList<QByteArray> params) {
+void IrcServerHandler::handle317(const QString &prefix, const QList<QByteArray> &params) {
   Q_UNUSED(prefix);
   QString nick = serverDecode(params[0]);
   IrcUser *ircuser = network()->ircUser(nick);
@@ -478,20 +494,20 @@ void IrcServerHandler::handle317(QString prefix, QList<QByteArray> params) {
 }
 
 /*  RPL_ENDOFWHOIS - "<nick> :End of WHOIS list" */
-void IrcServerHandler::handle318(QString prefix, QList<QByteArray> params) {
+void IrcServerHandler::handle318(const QString &prefix, const QList<QByteArray> &params) {
   Q_UNUSED(prefix)
   _whois = false;
   emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Whois] %1").arg(serverDecode(params).join(" ")));
 }
 
 /*  RPL_WHOISCHANNELS - "<nick> :*( ( "@" / "+" ) <channel> " " )" */
-void IrcServerHandler::handle319(QString prefix, QList<QByteArray> params) {
+void IrcServerHandler::handle319(const QString &prefix, const QList<QByteArray> &params) {
   Q_UNUSED(prefix)
   emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Whois] %1").arg(serverDecode(params).join(" ")));
 }
 
 /* RPL_NOTOPIC */
-void IrcServerHandler::handle331(QString prefix, QList<QByteArray> params) {
+void IrcServerHandler::handle331(const QString &prefix, const QList<QByteArray> &params) {
   Q_UNUSED(prefix);
   QString channel = serverDecode(params[0]);
   network()->ircChannel(channel)->setTopic(QString());
@@ -499,7 +515,7 @@ void IrcServerHandler::handle331(QString prefix, QList<QByteArray> params) {
 }
 
 /* RPL_TOPIC */
-void IrcServerHandler::handle332(QString prefix, QList<QByteArray> params) {
+void IrcServerHandler::handle332(const QString &prefix, const QList<QByteArray> &params) {
   Q_UNUSED(prefix);
   QString channel = serverDecode(params[0]);
   QString topic = channelDecode(channel, params[1]);
@@ -508,7 +524,7 @@ void IrcServerHandler::handle332(QString prefix, QList<QByteArray> params) {
 }
 
 /* Topic set by... */
-void IrcServerHandler::handle333(QString prefix, QList<QByteArray> params) {
+void IrcServerHandler::handle333(const QString &prefix, const QList<QByteArray> &params) {
   Q_UNUSED(prefix);
   QString channel = serverDecode(params[0]);
   emit displayMsg(Message::Server, BufferInfo::ChannelBuffer, channel,
@@ -517,7 +533,7 @@ void IrcServerHandler::handle333(QString prefix, QList<QByteArray> params) {
 
 /*  RPL_WHOREPLY: "<channel> <user> <host> <server> <nick> 
               ( "H" / "G" > ["*"] [ ( "@" / "+" ) ] :<hopcount> <real name>" */
-void IrcServerHandler::handle352(QString prefix, QList<QByteArray> params) {
+void IrcServerHandler::handle352(const QString &prefix, const QList<QByteArray> &params) {
   Q_UNUSED(prefix)
   QString channel = serverDecode(params[0]);
   IrcUser *ircuser = network()->ircUser(serverDecode(params[4]));
@@ -535,12 +551,19 @@ void IrcServerHandler::handle352(QString prefix, QList<QByteArray> params) {
 }
 
 /* RPL_NAMREPLY */
-void IrcServerHandler::handle353(QString prefix, QList<QByteArray> params) {
-  Q_UNUSED(prefix)
-  params.removeFirst(); // either "=", "*" or "@" indicating a public, private or secret channel
-  QString channelname = serverDecode(params.takeFirst());
+void IrcServerHandler::handle353(const QString &prefix, const QList<QByteArray> &params) {
+  Q_UNUSED(prefix);
+  const int numParams = params.count();
+  if(numParams < 2) {
+    qWarning() << "IrcServerHandler::handler353() received not enough params:" << serverDecode(params);
+    return;
+  }
+    
+  // param[0] is either "=", "*" or "@" indicating a public, private or secret channel
+  // we don't use this information at the time beeing
+  QString channelname = serverDecode(params[1]);
 
-  foreach(QString nick, serverDecode(params.takeFirst()).split(' ')) {
+  foreach(QString nick, serverDecode(params[2]).split(' ')) {
     QString mode = QString();
 
     if(network()->prefixes().contains(nick[0])) {
@@ -557,13 +580,13 @@ void IrcServerHandler::handle353(QString prefix, QList<QByteArray> params) {
 }
 
 /*  RPL_ENDOFWHOWAS - "<nick> :End of WHOWAS" */
-void IrcServerHandler::handle369(QString prefix, QList<QByteArray> params) {
+void IrcServerHandler::handle369(const QString &prefix, const QList<QByteArray> &params) {
   Q_UNUSED(prefix)
   emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Whowas] %1").arg(serverDecode(params).join(" ")));
 }
 
 /* ERR_ERRONEUSNICKNAME */
-void IrcServerHandler::handle432(QString prefix, QList<QByteArray> params) {
+void IrcServerHandler::handle432(const QString &prefix, const QList<QByteArray> &params) {
   Q_UNUSED(prefix);
 
   if(params.size() < 2) {
@@ -583,7 +606,7 @@ void IrcServerHandler::handle432(QString prefix, QList<QByteArray> params) {
 }
 
 /* ERR_NICKNAMEINUSE */
-void IrcServerHandler::handle433(QString prefix, QList<QByteArray> params) {
+void IrcServerHandler::handle433(const QString &prefix, const QList<QByteArray> &params) {
   Q_UNUSED(prefix);
 
   QString errnick = serverDecode(params[0]);

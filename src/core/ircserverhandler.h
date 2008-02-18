@@ -33,38 +33,38 @@ public:
   void handleServerMsg(QByteArray rawMsg);
 
 public slots:
-  void handleJoin(QString, QList<QByteArray>);
-  void handleKick(QString, QList<QByteArray>);
-  void handleMode(QString, QList<QByteArray>);
-  void handleNick(QString, QList<QByteArray>);
-  void handleNotice(QString, QList<QByteArray>);
-  void handlePart(QString, QList<QByteArray>);
-  void handlePing(QString, QList<QByteArray>);
-  void handlePrivmsg(QString, QList<QByteArray>);
-  void handleQuit(QString, QList<QByteArray>);
-  void handleTopic(QString, QList<QByteArray>);
+  void handleJoin(const QString &prefix, const QList<QByteArray> &params);
+  void handleKick(const QString &prefix, const QList<QByteArray> &params);
+  void handleMode(const QString &prefix, const QList<QByteArray> &params);
+  void handleNick(const QString &prefix, const QList<QByteArray> &params);
+  void handleNotice(const QString &prefix, const QList<QByteArray> &params);
+  void handlePart(const QString &prefix, const QList<QByteArray> &params);
+  void handlePing(const QString &prefix, const QList<QByteArray> &params);
+  void handlePrivmsg(const QString &prefix, const QList<QByteArray> &params);
+  void handleQuit(const QString &prefix, const QList<QByteArray> &params);
+  void handleTopic(const QString &prefix, const QList<QByteArray> &params);
 
-  void handle001(QString, QList<QByteArray>);   // RPL_WELCOME
-  void handle005(QString, QList<QByteArray>);   // RPL_ISUPPORT
-  void handle301(QString, QList<QByteArray>);   // RPL_AWAY
-  void handle311(QString, QList<QByteArray>);   // RPL_WHOISUSER
-  void handle312(QString, QList<QByteArray>);   // RPL_WHOISSERVER
-  void handle313(QString, QList<QByteArray>);   // RPL_WHOISOPERATOR
-  void handle314(QString, QList<QByteArray>);   // RPL_WHOWASUSER
-  void handle315(QString, QList<QByteArray>);   // RPL_ENDOFWHO
-  void handle317(QString, QList<QByteArray>);   // RPL_WHOISIDLE
-  void handle318(QString, QList<QByteArray>);   // RPL_ENDOFWHOIS
-  void handle319(QString, QList<QByteArray>);   // RPL_WHOISCHANNELS
-  void handle331(QString, QList<QByteArray>);   // RPL_NOTOPIC
-  void handle332(QString, QList<QByteArray>);   // RPL_TOPIC
-  void handle333(QString, QList<QByteArray>);   // Topic set by...
-  void handle352(QString, QList<QByteArray>);   //  RPL_WHOREPLY
-  void handle353(QString, QList<QByteArray>);   // RPL_NAMREPLY
-  void handle369(QString, QList<QByteArray>);   // RPL_ENDOFWHOWAS
-  void handle432(QString, QList<QByteArray>);   // ERR_ERRONEUSNICKNAME
-  void handle433(QString, QList<QByteArray>);   // ERR_NICKNAMEINUSE
+  void handle001(const QString &prefix, const QList<QByteArray> &params);   // RPL_WELCOME
+  void handle005(const QString &prefix, const QList<QByteArray> &params);   // RPL_ISUPPORT
+  void handle301(const QString &prefix, const QList<QByteArray> &params);   // RPL_AWAY
+  void handle311(const QString &prefix, const QList<QByteArray> &params);   // RPL_WHOISUSER
+  void handle312(const QString &prefix, const QList<QByteArray> &params);   // RPL_WHOISSERVER
+  void handle313(const QString &prefix, const QList<QByteArray> &params);   // RPL_WHOISOPERATOR
+  void handle314(const QString &prefix, const QList<QByteArray> &params);   // RPL_WHOWASUSER
+  void handle315(const QString &prefix, const QList<QByteArray> &params);   // RPL_ENDOFWHO
+  void handle317(const QString &prefix, const QList<QByteArray> &params);   // RPL_WHOISIDLE
+  void handle318(const QString &prefix, const QList<QByteArray> &params);   // RPL_ENDOFWHOIS
+  void handle319(const QString &prefix, const QList<QByteArray> &params);   // RPL_WHOISCHANNELS
+  void handle331(const QString &prefix, const QList<QByteArray> &params);   // RPL_NOTOPIC
+  void handle332(const QString &prefix, const QList<QByteArray> &params);   // RPL_TOPIC
+  void handle333(const QString &prefix, const QList<QByteArray> &params);   // Topic set by...
+  void handle352(const QString &prefix, const QList<QByteArray> &params);   //  RPL_WHOREPLY
+  void handle353(const QString &prefix, const QList<QByteArray> &params);   // RPL_NAMREPLY
+  void handle369(const QString &prefix, const QList<QByteArray> &params);   // RPL_ENDOFWHOWAS
+  void handle432(const QString &prefix, const QList<QByteArray> &params);   // ERR_ERRONEUSNICKNAME
+  void handle433(const QString &prefix, const QList<QByteArray> &params);   // ERR_NICKNAMEINUSE
 
-  void defaultHandler(QString cmd, QString prefix, QList<QByteArray> params);
+  void defaultHandler(QString cmd, const QString &prefix, const QList<QByteArray> &params);
 
 private:
   void tryNextNick(const QString &errnick);
