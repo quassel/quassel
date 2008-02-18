@@ -221,7 +221,9 @@ void NetworksSettingsPage::setItemState(NetworkId id, QListWidgetItem *item) {
         if(oldid == currentId) select = true;
         int row = ui.networkList->row(i);
         if(row >= 0) {
+          qDebug() << "ABOUT TO REMOVE: id=" << oldid << "from row" << row;
           QListWidgetItem *olditem = ui.networkList->takeItem(row);
+          qDebug() << "Successfully removed item from list.";
           if(!olditem) {
             qWarning() << "NetworksSettingsPage::setItemState(): Why the heck don't we have an itempointer here?";
             Q_ASSERT(olditem);  // abort non-gracefully, I need to figure out what's causing this
