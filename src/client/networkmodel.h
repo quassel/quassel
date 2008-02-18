@@ -62,23 +62,15 @@ public:
   QString bufferName() const;
   QString topic() const;
   int nickCount() const;
-  
+
   bool isStatusBuffer() const;
   BufferInfo::Type bufferType() const;
 
   bool isActive() const;
-  
-  enum Activity {
-    NoActivity = 0x00,
-    OtherActivity = 0x01,
-    NewMessage = 0x02,
-    Highlight = 0x40
-  };
-  Q_DECLARE_FLAGS(ActivityLevel, Activity)
 
-  ActivityLevel activity() const;
-  bool setActivity(const ActivityLevel &level);
-  void updateActivity(const ActivityLevel &level);
+  inline Buffer::ActivityLevel activityLevel() const { return _activity; }
+  bool setActivityLevel(Buffer::ActivityLevel level);
+  void updateActivityLevel(Buffer::ActivityLevel level);
 
   void setLastMsgInsert(QDateTime msgDate);
   bool setLastSeen();
@@ -92,20 +84,18 @@ public slots:
   void addUserToCategory(IrcUser *ircUser);
   void removeUserFromCategory(IrcUser *ircUser);
   void userModeChanged(IrcUser *ircUser);
-					 
+
 private slots:
   void ircChannelDestroyed();
   void ircUserDestroyed();
-  
+
 private:
   BufferInfo _bufferInfo;
-  ActivityLevel _activity;
-  QDateTime _lastMsgInsert;
-  QDateTime _lastSeen;
+  Buffer::ActivityLevel _activity;
 
   QPointer<IrcChannel> _ircChannel;
 };
-Q_DECLARE_OPERATORS_FOR_FLAGS(BufferItem::ActivityLevel)
+
 
 /*****************************************
  *  Network Items
@@ -215,8 +205,7 @@ public:
     BufferIdRole,
     NetworkIdRole,
     BufferInfoRole,
-    ItemTypeRole,
-    LastSeenRole
+    ItemTypeRole
   };
 
   enum itemTypes {
@@ -225,7 +214,7 @@ public:
     UserCategoryItemType,
     IrcUserItemType
   };
-    
+
   NetworkModel(QObject *parent = 0);
   static QList<QVariant> defaultHeader();
 
@@ -244,9 +233,11 @@ public:
 
   const Network *networkByIndex(const QModelIndex &index) const;
 
+  Buffer::ActivityLevel bufferActivity(const BufferInfo &buffer) const;
+
 public slots:
   void bufferUpdated(BufferInfo bufferInfo);
-  void updateBufferActivity(const Message &msg);
+  void setBufferActivity(const BufferInfo &buffer, Buffer::ActivityLevel activity);
   void networkRemoved(const NetworkId &networkId);
   
 private:

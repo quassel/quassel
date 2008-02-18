@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-08 by the Quassel Project                          *
+ *   Copyright (C) 2005-08 by the Quassel IRC Team                         *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,42 +18,45 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef BUFFERMODEL_H
-#define BUFFERMODEL_H
+#include "buffersyncer.h"
 
-#include <QSortFilterProxyModel>
-#include <QItemSelectionModel>
+BufferSyncer::BufferSyncer(QObject *parent) : SyncableObject(parent) {
 
-#include "types.h"
-#include "selectionmodelsynchronizer.h"
-#include "modelpropertymapper.h"
 
-class NetworkModel;
-class MappedSelectionModel;
-class QAbstractItemView;
+}
 
-class BufferModel : public QSortFilterProxyModel {
-  Q_OBJECT
 
-public:
-  BufferModel(NetworkModel *parent = 0);
-  virtual ~BufferModel();
+QDateTime BufferSyncer::lastSeen(BufferId buffer) const {
+  if(_lastSeen.contains(buffer)) return _lastSeen[buffer];
+  return QDateTime();
+}
 
-  bool filterAcceptsRow(int sourceRow, const QModelIndex &parent) const;
-  
-  inline const SelectionModelSynchronizer *selectionModelSynchronizer() const { return &_selectionModelSynchronizer; }
-  inline const ModelPropertyMapper *propertyMapper() const { return &_propertyMapper; }
-  inline QItemSelectionModel *standardSelectionModel() const { return _propertyMapper.selectionModel(); }
+bool BufferSyncer::setLastSeen(BufferId buffer, const QDateTime &time) {
+  if(_lastSeen[buffer] < time) {
+    _lastSeen[buffer] = time;
+    emit lastSeenSet(buffer, time);
+    return true;
+  }
+  return false;
+}
 
-  void synchronizeSelectionModel(MappedSelectionModel *selectionModel);
-  void synchronizeView(QAbstractItemView *view);
-  void mapProperty(int column, int role, QObject *target, const QByteArray &property);
+QVariantList BufferSyncer::initLastSeen() const {
+  QVariantList list;
+  foreach(BufferId id, _lastSeen.keys()) {
+    list << QVariant::fromValue<BufferId>(id) << _lastSeen[id];
+  }
+  return list;
+}
 
-  QModelIndex currentIndex();
+void BufferSyncer::initSetLastSeen(const QVariantList &list) {
+  _lastSeen.clear();
+  Q_ASSERT(list.count() % 2 == 0);
+  for(int i = 0; i < list.count(); i += 2) {
+    setLastSeen(list[i].value<BufferId>(), list[i+1].toDateTime());
+  }
+}
 
-private:
-  SelectionModelSynchronizer _selectionModelSynchronizer;
-  ModelPropertyMapper _propertyMapper;
-};
+void BufferSyncer::requestSetLastSeen(BufferId buffer, const QDateTime &time) {
+  if(setLastSeen(buffer, time)) emit setLastSeenRequested(buffer, time);
+}
 
-#endif // BUFFERMODEL_H

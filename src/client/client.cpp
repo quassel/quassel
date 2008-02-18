@@ -21,6 +21,7 @@
 #include "client.h"
 
 #include "bufferinfo.h"
+#include "buffersyncer.h"
 #include "global.h"
 #include "identity.h"
 #include "ircchannel.h"
@@ -61,6 +62,7 @@ Client::Client(QObject *parent)
     mainUi(0),
     _networkModel(0),
     _bufferModel(0),
+    _bufferSyncer(0),
     _connectedToCore(false),
     _syncedToCore(false)
 {
@@ -162,23 +164,6 @@ Buffer *Client::buffer(BufferInfo bufferInfo) {
   }
   Q_ASSERT(buff);
   return buff;
-}
-
-Buffer *Client::monitorBuffer() {
-  return instance()->_monitorBuffer;
-}
-
-
-NetworkModel *Client::networkModel() {
-  return instance()->_networkModel;
-}
-
-BufferModel *Client::bufferModel() {
-  return instance()->_bufferModel;
-}
-
-SignalProxy *Client::signalProxy() {
-  return instance()->_signalProxy;
 }
 
 bool Client::isConnected() {
@@ -295,6 +280,12 @@ void Client::setConnectedToCore(QIODevice *sock, AccountId id) {
 }
 
 void Client::setSyncedToCore() {
+    // create buffersyncer
+  Q_ASSERT(!_bufferSyncer);
+  _bufferSyncer = new BufferSyncer(this);
+  connect(bufferSyncer(), SIGNAL(lastSeenSet(BufferId, const QDateTime &)), this, SLOT(updateLastSeen(BufferId, const QDateTime &)));
+  signalProxy()->synchronize(bufferSyncer());
+
   _syncedToCore = true;
   emit connected();
   emit coreConnectionStateChanged(true);
@@ -312,7 +303,18 @@ void Client::disconnectFromCore() {
   emit coreConnectionStateChanged(false);
 
   // Clear internal data. Hopefully nothing relies on it at this point.
+  _bufferSyncer->deleteLater();
+  _bufferSyncer = 0;
   _networkModel->clear();
+
+  QHash<BufferId, Buffer *>::iterator bufferIter =  _buffers.begin();
+  while(bufferIter != _buffers.end()) {
+    Buffer *buffer = bufferIter.value();
+    disconnect(buffer, SIGNAL(destroyed()), this, 0);
+    bufferIter = _buffers.erase(bufferIter);
+    buffer->deleteLater();
+  }
+  Q_ASSERT(_buffers.isEmpty());
 
   QHash<NetworkId, Network*>::iterator netIter = _networks.begin();
   while(netIter != _networks.end()) {
@@ -323,15 +325,6 @@ void Client::disconnectFromCore() {
     net->deleteLater();
   }
   Q_ASSERT(_networks.isEmpty());
-
-  QHash<BufferId, Buffer *>::iterator bufferIter =  _buffers.begin();
-  while(bufferIter != _buffers.end()) {
-    Buffer *buffer = bufferIter.value();
-    disconnect(buffer, SIGNAL(destroyed()), this, 0);
-    bufferIter = _buffers.erase(bufferIter);
-    buffer->deleteLater();
-  }
-  Q_ASSERT(_buffers.isEmpty());
 
   QHash<IdentityId, Identity*>::iterator idIter = _identities.begin();
   while(idIter != _identities.end()) {
@@ -394,11 +387,11 @@ void Client::recvMessage(const Message &message) {
   } else {
     b = buffer(msg.bufferInfo());
   }
-  
+
   checkForHighlight(msg);
   b->appendMsg(msg);
-  networkModel()->updateBufferActivity(msg);
-  
+  //bufferModel()->updateBufferActivity(msg);
+
   if(msg.type() == Message::Plain || msg.type() == Message::Notice || msg.type() == Message::Action) {
     const Network *net = network(msg.bufferInfo().networkId());
     QString networkName = net != 0
@@ -408,7 +401,6 @@ void Client::recvMessage(const Message &message) {
     Message mmsg = Message(msg.timestamp(), msg.bufferInfo(), msg.type(), msg.text(), sender, msg.flags());
     monitorBuffer()->appendMsg(mmsg);
   }
-
 }
 
 void Client::recvStatusMsg(QString /*net*/, QString /*msg*/) {
@@ -421,7 +413,7 @@ void Client::recvBacklogData(BufferInfo id, QVariantList msgs, bool /*done*/) {
     Message msg = v.value<Message>();
     checkForHighlight(msg);
     b->prependMsg(msg);
-    networkModel()->updateBufferActivity(msg);
+    //networkModel()->updateBufferActivity(msg);
     if(!layoutQueue.contains(b)) layoutQueue.append(b);
   }
   if(layoutQueue.count() && !layoutTimer->isActive()) layoutTimer->start();
@@ -442,7 +434,7 @@ AbstractUiMsg *Client::layoutMsg(const Message &msg) {
   return instance()->mainUi->layoutMsg(msg);
 }
 
-void Client::checkForHighlight(Message &msg) const {
+void Client::checkForHighlight(Message &msg) {
   const Network *net = network(msg.bufferInfo().networkId());
   if(net && !net->myNick().isEmpty()) {
     QRegExp nickRegExp("^(.*\\W)?" + QRegExp::escape(net->myNick()) + "(\\W.*)?$");
@@ -450,3 +442,19 @@ void Client::checkForHighlight(Message &msg) const {
       msg.setFlags(msg.flags() | Message::Highlight);
   }
 }
+
+void Client::updateLastSeen(BufferId id, const QDateTime &lastSeen) {
+  Buffer *b = buffer(id);
+  if(!b) {
+    qWarning() << "Client::updateLastSeen(): Unknown buffer" << id;
+    return;
+  }
+  b->setLastSeen(lastSeen);
+}
+
+void Client::setBufferLastSeen(BufferId id, const QDateTime &lastSeen) {
+  if(!bufferSyncer()) return;
+  bufferSyncer()->requestSetLastSeen(id, lastSeen);
+}
+
+

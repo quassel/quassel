@@ -112,9 +112,9 @@ void Message::format() {
     case Message::Error:
       s = tr("%De*"); t = tr("%De%1").arg(txt); break;
     case Message::Join:
-      s = tr("%Dj-->"); t = tr("%Dj%DN%DU%1%DU%DN %DH(%2@%3)%DH has joined %DC%DU%4%DU%DC").arg(nick, user, host, bufferName); break;
+      s = tr("%Dj-->"); t = tr("%Dj%DN%1%DN %DH(%2@%3)%DH has joined %DC%4%DC").arg(nick, user, host, bufferName); break;
     case Message::Part:
-      s = tr("%Dp<--"); t = tr("%Dp%DN%DU%1%DU%DN %DH(%2@%3)%DH has left %DC%DU%4%DU%DC").arg(nick, user, host, bufferName);
+      s = tr("%Dp<--"); t = tr("%Dp%DN%1%DN %DH(%2@%3)%DH has left %DC%4%DC").arg(nick, user, host, bufferName);
       if(!txt.isEmpty()) t = QString("%1 (%2)").arg(t).arg(txt);
       break;
     case Message::Quit:
@@ -126,23 +126,23 @@ void Message::format() {
     QString victim = txt.section(" ", 0, 0);
         //if(victim == ui.ownNick->currentText()) victim = tr("you");
     QString kickmsg = txt.section(" ", 1);
-    t = tr("%Dk%DN%DU%1%DU%DN has kicked %DN%DU%2%DU%DN from %DC%DU%3%DU%DC").arg(nick).arg(victim).arg(bufferName);
+    t = tr("%Dk%DN%1%DN has kicked %DN%2%DN from %DC%3%DC").arg(nick).arg(victim).arg(bufferName);
     if(!kickmsg.isEmpty()) t = QString("%1 (%2)").arg(t).arg(kickmsg);
     }
     break;
     case Message::Nick:
       s = tr("%Dr<->");
       if(nick == text()) t = tr("%DrYou are now known as %DN%1%DN").arg(txt);
-      else t = tr("%Dr%DN%1%DN is now known as %DN%DU%2%DU%DN").arg(nick, txt);
+      else t = tr("%Dr%DN%1%DN is now known as %DN%2%DN").arg(nick, txt);
       break;
     case Message::Mode:
       s = tr("%Dm***");
       if(nick.isEmpty()) t = tr("%DmUser mode: %DM%1%DM").arg(text());
-      else t = tr("%DmMode %DM%1%DM by %DN%DU%2%DU%DN").arg(txt, nick);
+      else t = tr("%DmMode %DM%1%DM by %DN%2%DN").arg(txt, nick);
       break;
     case Message::Action:
       s = tr("%Da-*-");
-      t = tr("%Da%DN%DU%1%DU%DN %2").arg(nick).arg(txt);
+      t = tr("%Da%DN%1%DN %2").arg(nick).arg(txt);
       break;
     default:
       s = tr("%De%1").arg(sender());

@@ -725,7 +725,7 @@ void Network::requestConnect() const {
   if(proxy()->proxyMode() == SignalProxy::Client) emit connectRequested(); // on the client this triggers calling this slot on the core
   else {
     if(connectionState() != Disconnected) {
-      qWarning() << "Requesting connect while not being disconnected!";
+      qWarning() << "Requesting connect while already being connected!";
       return;
     }
     emit connectRequested(networkId());  // and this is for CoreSession :)

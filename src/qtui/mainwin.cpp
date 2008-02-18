@@ -267,7 +267,7 @@ void MainWin::setupSystray() {
   systray = new QSystemTrayIcon(this);
   systray->setIcon(QIcon(":/icons/quassel-icon.png"));
 
-  QString toolTip("left click to minimize the quassel client to tray");
+  QString toolTip("Left click to minimize the Quassel Client to tray");
   systray->setToolTip(toolTip);
 
   systrayMenu = new QMenu(this);
@@ -430,13 +430,13 @@ void MainWin::clientNetworkUpdated() {
       a->setText(net->networkName());
       if(net->connectionState() == Network::Initialized) {
         a->setIcon(QIcon(":/16x16/actions/network-connect"));
-        a->setEnabled(true);
+        //a->setEnabled(true);
       } else if(net->connectionState() == Network::Disconnected) {
         a->setIcon(QIcon(":/16x16/actions/network-disconnect"));
-        a->setEnabled(true);
+        //a->setEnabled(true);
       } else {
         a->setIcon(QIcon(":/16x16/actions/gear"));
-        a->setEnabled(false);
+        //a->setEnabled(false);
       }
       return;
     }

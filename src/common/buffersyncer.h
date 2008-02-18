@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-08 by the Quassel Project                          *
+ *   Copyright (C) 2005-08 by the Quassel IRC Team                         *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,42 +18,37 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef BUFFERMODEL_H
-#define BUFFERMODEL_H
+#ifndef BUFFERSYNCER_H_
+#define BUFFERSYNCER_H_
 
-#include <QSortFilterProxyModel>
-#include <QItemSelectionModel>
+#include <QDateTime>
 
+#include "syncableobject.h"
 #include "types.h"
-#include "selectionmodelsynchronizer.h"
-#include "modelpropertymapper.h"
 
-class NetworkModel;
-class MappedSelectionModel;
-class QAbstractItemView;
-
-class BufferModel : public QSortFilterProxyModel {
+class BufferSyncer : public SyncableObject {
   Q_OBJECT
 
-public:
-  BufferModel(NetworkModel *parent = 0);
-  virtual ~BufferModel();
+  public:
+    explicit BufferSyncer(QObject *parent);
 
-  bool filterAcceptsRow(int sourceRow, const QModelIndex &parent) const;
-  
-  inline const SelectionModelSynchronizer *selectionModelSynchronizer() const { return &_selectionModelSynchronizer; }
-  inline const ModelPropertyMapper *propertyMapper() const { return &_propertyMapper; }
-  inline QItemSelectionModel *standardSelectionModel() const { return _propertyMapper.selectionModel(); }
+    QDateTime lastSeen(BufferId buffer) const;
 
-  void synchronizeSelectionModel(MappedSelectionModel *selectionModel);
-  void synchronizeView(QAbstractItemView *view);
-  void mapProperty(int column, int role, QObject *target, const QByteArray &property);
+  public slots:
+    QVariantList initLastSeen() const;
+    void initSetLastSeen(const QVariantList &);
 
-  QModelIndex currentIndex();
+    void requestSetLastSeen(BufferId buffer, const QDateTime &time);
 
-private:
-  SelectionModelSynchronizer _selectionModelSynchronizer;
-  ModelPropertyMapper _propertyMapper;
+  signals:
+    void lastSeenSet(BufferId buffer, const QDateTime &time);
+    void setLastSeenRequested(BufferId buffer, const QDateTime &time);
+
+  private slots:
+    bool setLastSeen(BufferId buffer, const QDateTime &time);
+
+  private:
+    QMap<BufferId, QDateTime> _lastSeen;
 };
 
-#endif // BUFFERMODEL_H
+#endif

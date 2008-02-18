@@ -282,7 +282,7 @@ void NetworksSettingsPage::clientIdentityRemoved(IdentityId id) {
   if(currentId != 0) saveToNetworkInfo(networkInfos[currentId]);
   //ui.identityList->removeItem(ui.identityList->findData(id.toInt()));
   foreach(NetworkInfo info, networkInfos.values()) {
-    qDebug() << info.networkName << info.networkId << info.identity;
+    //qDebug() << info.networkName << info.networkId << info.identity;
     if(info.identity == id) {
       if(info.networkId == currentId) ui.identityList->setCurrentIndex(0);
       info.identity = 1; // set to default
@@ -327,9 +327,9 @@ void NetworksSettingsPage::clientNetworkRemoved(NetworkId id) {
   if(id == currentId) displayNetwork(0);
   NetworkInfo info = networkInfos.take(id);
   QList<QListWidgetItem *> items = ui.networkList->findItems(info.networkName, Qt::MatchExactly);
-  if(items.count()) {
-    Q_ASSERT(items[0]->data(Qt::UserRole).value<NetworkId>() == id);
-    delete ui.networkList->takeItem(ui.networkList->row(items[0]));
+  foreach(QListWidgetItem *item, items) {
+    if(item->data(Qt::UserRole).value<NetworkId>() == id)
+      delete ui.networkList->takeItem(ui.networkList->row(item));
   }
   setWidgetStates();
   widgetHasChanged();

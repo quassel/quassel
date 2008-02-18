@@ -35,8 +35,6 @@ BufferModel::BufferModel(NetworkModel *parent)
   // initialize the Property Mapper
   _propertyMapper.setModel(this);
   _selectionModelSynchronizer.addRegularSelectionModel(_propertyMapper.selectionModel());
-  connect(_propertyMapper.selectionModel(), SIGNAL(currentChanged(QModelIndex, QModelIndex)),
-	  this, SLOT(currentChanged(QModelIndex, QModelIndex)));
 }
 
 BufferModel::~BufferModel() {
@@ -71,11 +69,4 @@ void BufferModel::mapProperty(int column, int role, QObject *target, const QByte
 
 QModelIndex BufferModel::currentIndex() {
   return propertyMapper()->selectionModel()->currentIndex();
-}
-
-void BufferModel::currentChanged(const QModelIndex &current, const QModelIndex &previous) {
-  Q_UNUSED(current);
-  setData(current, QDateTime::currentDateTime(), NetworkModel::LastSeenRole);
-  setData(previous, QDateTime::currentDateTime(), NetworkModel::LastSeenRole);
-  setData(previous, qVariantFromValue((int)BufferItem::NoActivity), NetworkModel::BufferActivityRole);
 }

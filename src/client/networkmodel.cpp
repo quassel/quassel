@@ -37,14 +37,12 @@
 BufferItem::BufferItem(BufferInfo bufferInfo, AbstractTreeItem *parent)
   : PropertyMapItem(QStringList() << "bufferName" << "topic" << "nickCount", parent),
     _bufferInfo(bufferInfo),
-    _activity(NoActivity)
+    _activity(Buffer::NoActivity)
 {
   Qt::ItemFlags flags = Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled;
   if(bufferType() == BufferInfo::QueryBuffer)
     flags |= Qt::ItemIsDropEnabled;
   setFlags(flags);
-
-  _lastSeen = BufferSettings(bufferInfo.bufferId()).lastSeen();
 }
 
 const BufferInfo &BufferItem::bufferInfo() const {
@@ -70,18 +68,14 @@ bool BufferItem::isActive() const {
     return qobject_cast<NetworkItem *>(parent())->isActive();
 }
 
-BufferItem::ActivityLevel BufferItem::activity() const {
-  return _activity;
-}
-
-bool BufferItem::setActivity(const ActivityLevel &level) {
+bool BufferItem::setActivityLevel(Buffer::ActivityLevel level) {
   _activity = level;
   emit dataChanged();
   return true;
 }
 
-void BufferItem::updateActivity(const ActivityLevel &level) {
-  ActivityLevel oldActivity = _activity;
+void BufferItem::updateActivityLevel(Buffer::ActivityLevel level) {
+  Buffer::ActivityLevel oldActivity = _activity;
   _activity |= level;
   if(oldActivity != _activity)
     emit dataChanged();
@@ -102,7 +96,7 @@ QVariant BufferItem::data(int column, int role) const {
   case NetworkModel::ItemActiveRole:
     return isActive();
   case NetworkModel::BufferActivityRole:
-    return qVariantFromValue((int)activity());
+    return (int)activityLevel();
   default:
     return PropertyMapItem::data(column, role);
   }
@@ -111,9 +105,7 @@ QVariant BufferItem::data(int column, int role) const {
 bool BufferItem::setData(int column, const QVariant &value, int role) {
   switch(role) {
   case NetworkModel::BufferActivityRole:
-    return setActivity((ActivityLevel)value.toInt());
-  case NetworkModel::LastSeenRole:
-    return setLastSeen();
+    return setActivityLevel((Buffer::ActivityLevel)value.toInt());
   default:
     return PropertyMapItem::setData(column, value, role);
   }
@@ -271,11 +263,14 @@ void BufferItem::userModeChanged(IrcUser *ircUser) {
   addUserToCategory(ircUser);
 }
 
+/*
 void BufferItem::setLastMsgInsert(QDateTime msgDate) {
   if(msgDate.isValid() && msgDate > _lastMsgInsert)
     _lastMsgInsert = msgDate;
 }
-
+*/
+/*
+// FIXME emit dataChanged()
 bool BufferItem::setLastSeen() {
   if(_lastSeen > _lastMsgInsert)
     return false;
@@ -288,7 +283,7 @@ bool BufferItem::setLastSeen() {
 QDateTime BufferItem::lastSeen() {
   return _lastSeen;
 }
-
+*/
 /*****************************************
 *  Network Items
 *****************************************/
@@ -743,6 +738,7 @@ void NetworkModel::bufferUpdated(BufferInfo bufferInfo) {
   emit dataChanged(itemindex, itemindex);
 }
 
+/*
 void NetworkModel::updateBufferActivity(const Message &msg) {
   BufferItem *buff = bufferItem(msg.bufferInfo());
   Q_ASSERT(buff);
@@ -760,6 +756,14 @@ void NetworkModel::updateBufferActivity(const Message &msg) {
       level |= BufferItem::Highlight;
 
   bufferItem(msg.bufferInfo())->updateActivity(level);
+}
+*/
+
+void NetworkModel::setBufferActivity(const BufferInfo &info, Buffer::ActivityLevel level) {
+  BufferItem *buff = bufferItem(info);
+  Q_ASSERT(buff);
+
+  buff->setActivityLevel(level);
 }
 
 const Network *NetworkModel::networkByIndex(const QModelIndex &index) const {

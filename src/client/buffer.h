@@ -21,6 +21,8 @@
 #ifndef _BUFFER_H_
 #define _BUFFER_H_
 
+#include <QDateTime>
+
 class AbstractUiMsg;
 class IrcChannel;
 class NickModel;
@@ -30,19 +32,29 @@ struct BufferState;
 #include "message.h"
 #include "bufferinfo.h"
 
-//!\brief Encapsulates the contents of a single channel, query or server status context.
-/** A Buffer maintains a list of existing nicks and their status.
+/// Encapsulates the contents of a single channel, query or server status context.
+/**
  */
 class Buffer : public QObject {
   Q_OBJECT
 
 public:
+  enum Activity {
+    NoActivity = 0x00,
+    OtherActivity = 0x01,
+    NewMessage = 0x02,
+    Highlight = 0x40
+  };
+  Q_DECLARE_FLAGS(ActivityLevel, Activity)
+
   Buffer(BufferInfo, QObject *parent = 0);
 
   BufferInfo bufferInfo() const;
-
   QList<AbstractUiMsg *> contents() const;
-  
+  inline bool isVisible() const { return _isVisible; }
+  inline QDateTime lastSeen() const { return _lastSeen; }
+  inline ActivityLevel activityLevel() const { return _activityLevel; }
+
 signals:
   void msgAppended(AbstractUiMsg *);
   void msgPrepended(AbstractUiMsg *);
@@ -52,13 +64,22 @@ public slots:
   void appendMsg(const Message &);
   void prependMsg(const Message &);
   bool layoutMsg();
+  void setVisible(bool visible);
+  void setLastSeen(const QDateTime &);
+  void setActivityLevel(ActivityLevel level);
 
 private:
   BufferInfo _bufferInfo;
+  bool _isVisible;
+  QDateTime _lastSeen;
+  ActivityLevel _activityLevel;
 
   QList<Message> layoutQueue;
   QList<AbstractUiMsg *> layoutedMsgs;
 
+  void updateActivityLevel(const Message &msg);
 };
+
+Q_DECLARE_OPERATORS_FOR_FLAGS(Buffer::ActivityLevel)
 
 #endif

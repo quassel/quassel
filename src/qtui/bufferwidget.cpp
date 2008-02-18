@@ -31,7 +31,8 @@
 BufferWidget::BufferWidget(QWidget *parent)
   : QWidget(parent),
     _bufferModel(0),
-    _selectionModel(0)
+    _selectionModel(0),
+    _currentBuffer(0)
 {
   ui.setupUi(this);
 }
@@ -95,6 +96,7 @@ void BufferWidget::removeBuffer(BufferId bufferId) {
   if(!_chatWidgets.contains(bufferId))
     return;
 
+  if(Client::buffer(bufferId)) Client::buffer(bufferId)->setVisible(false);
   ChatWidget *chatWidget = _chatWidgets.take(bufferId);
   ui.stackedWidget->removeWidget(chatWidget);
   chatWidget->deleteLater();
@@ -107,20 +109,21 @@ void BufferWidget::currentChanged(const QModelIndex &current, const QModelIndex 
   variant = current.data(NetworkModel::BufferIdRole);
   if(!variant.isValid())
     return;
-  
-  setCurrentBuffer(qVariantValue<BufferId>(variant));
+  setCurrentBuffer(variant.value<BufferId>());
 }
 
 void BufferWidget::setCurrentBuffer(BufferId bufferId) {
-  ChatWidget *chatWidget;
+  ChatWidget *chatWidget = 0;
+  Buffer *buf = Client::buffer(bufferId);
+  if(!buf) {
+    qWarning() << "BufferWidget::setBuffer(BufferId): Can't show unknown Buffer:" << bufferId;
+    return;
+  }
+  Buffer *prevBuffer = Client::buffer(currentBuffer());
+  if(prevBuffer) prevBuffer->setVisible(false);
   if(_chatWidgets.contains(bufferId)) {
      chatWidget = _chatWidgets[bufferId];
   } else {
-    Buffer *buf = Client::buffer(bufferId);
-    if(!buf) {
-      qWarning() << "BufferWidget::setBuffer(BufferId): Can't show unknown Buffer:" << bufferId;
-      return;
-    }
     chatWidget = new ChatWidget(this);
     chatWidget->init(bufferId);
     QList<ChatLine *> lines;
@@ -135,7 +138,9 @@ void BufferWidget::setCurrentBuffer(BufferId bufferId) {
     ui.stackedWidget->addWidget(chatWidget);
     chatWidget->setFocusProxy(this);
   }
+  _currentBuffer = bufferId;
   ui.stackedWidget->setCurrentWidget(chatWidget);
+  buf->setVisible(true);
   setFocus();
 }
 

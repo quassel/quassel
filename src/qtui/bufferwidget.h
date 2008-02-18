@@ -49,6 +49,8 @@ public:
 
   inline QItemSelectionModel *selectionModel() const { return _selectionModel; }
   void setSelectionModel(QItemSelectionModel *selectionModel);
+
+  inline BufferId currentBuffer() const { return _currentBuffer; }
   
 protected slots:
 //   virtual void closeEditor(QWidget *editor, QAbstractItemDelegate::EndEditHint hint);
@@ -70,6 +72,8 @@ private:
 
   QPointer<BufferModel> _bufferModel;
   QPointer<QItemSelectionModel> _selectionModel;
+
+  BufferId _currentBuffer;
 };
 
 #endif

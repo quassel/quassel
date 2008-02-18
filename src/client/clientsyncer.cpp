@@ -172,7 +172,7 @@ void ClientSyncer::clientInitAck(const QVariantMap &msg) {
   // Core has accepted our version info and sent its own. Let's see if we accept it as well...
   if(msg["CoreBuild"].toUInt() < Global::coreBuildNeeded) {
     emit connectionError(tr("<b>The Quassel Core you are trying to connect to is too old!</b><br>"
-        "Need at least a Core Version %1 (Build >= %2) to connect.").arg(Global::quasselVersion).arg(Global::quasselBuild));
+        "Need at least a Core Version %1 (Build >= %2) to connect.").arg(Global::quasselVersion).arg(Global::coreBuildNeeded));
     disconnectFromCore();
     return;
   }

@@ -18,11 +18,14 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QtScript>
+
 #include "core.h"
 #include "coresession.h"
 #include "networkconnection.h"
 
 #include "signalproxy.h"
+#include "buffersyncer.h"
 #include "storage.h"
 
 #include "network.h"
@@ -33,11 +36,10 @@
 #include "util.h"
 #include "coreusersettings.h"
 
-#include <QtScript>
-
 CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent) : QObject(parent),
     _user(uid),
     _signalProxy(new SignalProxy(SignalProxy::Server, 0, this)),
+    _bufferSyncer(new BufferSyncer(this)),
     scriptEngine(new QScriptEngine(this))
 {
 
@@ -66,6 +68,12 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent) : QObje
 
   loadSettings();
   initScriptEngine();
+
+  // init BufferSyncer
+  //QHash<BufferId, QDateTime> lastSeenHash = Core::bufferLastSeenDates(user());
+  //foreach(BufferId id, lastSeenHash.keys()) _bufferSyncer->requestSetLastSeen(id, lastSeenHash[id]);
+  // FIXME connect(_bufferSyncer, SIGNAL(lastSeenSet(BufferId, const QDateTime &)), this, SLOT(storeBufferLastSeen(BufferId, const QDateTime &)));
+  p->synchronize(_bufferSyncer);
 
   // Restore session state
   if(restoreState) restoreSessionState();
@@ -268,8 +276,8 @@ void CoreSession::networkDisconnected(NetworkId networkid) {
   // FIXME
   // connection should only go away on explicit /part, and handle reconnections etcpp internally otherwise
 
-  Q_ASSERT(_connections.contains(networkid));
-  _connections.take(networkid)->deleteLater();
+  //Q_ASSERT(_connections.contains(networkid));
+  if(_connections.contains(networkid)) _connections.take(networkid)->deleteLater();
 }
 
 // FIXME switch to BufferId
@@ -331,6 +339,10 @@ QVariant CoreSession::sessionState() {
 
   //v["Payload"] = QByteArray(100000000, 'a');  // for testing purposes
   return v;
+}
+
+void CoreSession::storeBufferLastSeen(BufferId buffer, const QDateTime &lastSeen) {
+  Core::setBufferLastSeen(user(), buffer, lastSeen);
 }
 
 void CoreSession::sendBacklog(BufferInfo id, QVariant v1, QVariant v2) {
@@ -436,7 +448,7 @@ void CoreSession::updateNetwork(const NetworkInfo &info) {
     qWarning() << "Update request for unknown network received!";
     return;
   }
-  _networks[info.networkId]->setNetworkInfo(info);
+  _networks[info.networkId]->setNetworkInfo(info); qDebug() << "unlim" << info.unlimitedReconnectRetries << _networks[info.networkId]->unlimitedReconnectRetries();
   Core::updateNetwork(user(), info);
 }
 

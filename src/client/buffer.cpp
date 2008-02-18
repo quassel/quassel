@@ -21,14 +21,20 @@
 
 #include "buffer.h"
 
+#include "buffersyncer.h"
 #include "client.h"
+#include "networkmodel.h"
+#include "quasselui.h"
 #include "util.h"
 
 
 Buffer::Buffer(BufferInfo bufferid, QObject *parent)
   : QObject(parent),
-    _bufferInfo(bufferid)
+    _bufferInfo(bufferid),
+    _isVisible(false),
+    _activityLevel(NoActivity)
 {
+
 }
 
 BufferInfo Buffer::bufferInfo() const {
@@ -41,12 +47,14 @@ QList<AbstractUiMsg *> Buffer::contents() const {
 }
 
 void Buffer::appendMsg(const Message &msg) {
+  updateActivityLevel(msg);
   AbstractUiMsg *m = Client::layoutMsg(msg);
   layoutedMsgs.append(m);
   emit msgAppended(m);
 }
 
 void Buffer::prependMsg(const Message &msg) {
+  updateActivityLevel(msg);
   layoutQueue.append(msg);
 }
 
@@ -59,3 +67,33 @@ bool Buffer::layoutMsg() {
   return layoutQueue.count();
 }
 
+void Buffer::setVisible(bool visible) {
+  _isVisible = visible;
+  setActivityLevel(NoActivity);
+  if(!layoutedMsgs.count()) return;
+  setLastSeen(layoutedMsgs.last()->timestamp());
+}
+
+void Buffer::setLastSeen(const QDateTime &seen) {
+  if(seen.isValid() && seen > lastSeen()) { //qDebug() << "setting:" << bufferInfo().bufferName() << seen;
+    _lastSeen = seen;
+    Client::bufferSyncer()->requestSetLastSeen(bufferInfo().bufferId(), seen);
+    setActivityLevel(NoActivity);
+  }
+}
+
+void Buffer::setActivityLevel(ActivityLevel level) {
+  _activityLevel = level;
+  if(bufferInfo().bufferId() > 0) Client::networkModel()->setBufferActivity(bufferInfo(), level);
+}
+
+void Buffer::updateActivityLevel(const Message &msg) {
+  if(isVisible()) return;
+  if(lastSeen().isValid() && lastSeen() >= msg.timestamp()) return;
+
+  ActivityLevel level = activityLevel() | OtherActivity;
+  if(msg.type() == Message::Plain || msg.type() == Message::Notice) level |= NewMessage;
+  if(msg.flags() & Message::Highlight) level |= Highlight;
+
+  if(level != activityLevel()) setActivityLevel(level);
+}

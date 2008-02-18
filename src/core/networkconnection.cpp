@@ -204,7 +204,10 @@ QVariant NetworkConnection::state() const {
 }
 
 void NetworkConnection::disconnectFromIrc() {
-  socket.disconnectFromHost();
+  if(socket.state() < QAbstractSocket::ConnectedState) {
+    setConnectionState(Network::Disconnected);
+    socketDisconnected();
+  } else socket.disconnectFromHost();
 }
 
 void NetworkConnection::socketHasData() {

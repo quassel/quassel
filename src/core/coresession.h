@@ -26,6 +26,7 @@
 
 #include "message.h"
 
+class BufferSyncer;
 class Identity;
 class NetworkConnection;
 class Network;
@@ -146,6 +147,8 @@ private slots:
    */
   void updateBufferInfo(UserId user, const BufferInfo &bufferInfo);
 
+  void storeBufferLastSeen(BufferId buffer, const QDateTime &lastSeen);
+
   void scriptRequest(QString script);
 
 private:
@@ -159,6 +162,8 @@ private:
   QHash<NetworkId, Network *> _networks;
   QHash<NetworkId, Network *> _networksToRemove;
   QHash<IdentityId, Identity *> _identities;
+
+  BufferSyncer *_bufferSyncer;
 
   QScriptEngine *scriptEngine;
 

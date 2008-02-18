@@ -173,13 +173,13 @@ QVariant BufferViewFilter::foreground(const QModelIndex &index) const {
   if(!index.data(NetworkModel::ItemActiveRole).toBool())
     return inactiveActivity.value<QColor>();
 
-  BufferItem::ActivityLevel activity = (BufferItem::ActivityLevel)index.data(NetworkModel::BufferActivityRole).toInt();
+  Buffer::ActivityLevel activity = (Buffer::ActivityLevel)index.data(NetworkModel::BufferActivityRole).toInt();
 
-  if(activity & BufferItem::Highlight)
+  if(activity & Buffer::Highlight)
     return highlightActivity.value<QColor>();
-  if(activity & BufferItem::NewMessage)
+  if(activity & Buffer::NewMessage)
     return newMessageActivity.value<QColor>();
-  if(activity & BufferItem::OtherActivity)
+  if(activity & Buffer::OtherActivity)
     return otherActivity.value<QColor>();
   
   return noActivity.value<QColor>();

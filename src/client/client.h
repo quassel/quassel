@@ -27,6 +27,7 @@
 #include <QPointer>
 
 #include "buffer.h" // needed for activity lvl
+
 class BufferInfo;
 class Message;
 
@@ -38,6 +39,7 @@ class AbstractUi;
 class AbstractUiMsg;
 class NetworkModel;
 class BufferModel;
+class BufferSyncer;
 class IrcUser;
 class IrcChannel;
 class SignalProxy;
@@ -58,7 +60,7 @@ public:
   static QList<Buffer *> buffers();
   static Buffer *buffer(BufferId bufferUid);
   static Buffer *buffer(BufferInfo);
-  static Buffer *monitorBuffer();
+  static inline Buffer *monitorBuffer() { return instance()->_monitorBuffer; }
 
   static QList<NetworkId> networkIds();
   static const Network * network(NetworkId);
@@ -88,9 +90,10 @@ public:
   static void updateNetwork(const NetworkInfo &info);
   static void removeNetwork(NetworkId id);
 
-  static NetworkModel *networkModel();
-  static BufferModel *bufferModel();
-  static SignalProxy *signalProxy();
+  static inline NetworkModel *networkModel() { return instance()->_networkModel; }
+  static inline BufferModel *bufferModel() { return instance()->_bufferModel; }
+  static inline SignalProxy *signalProxy() { return instance()->_signalProxy; }
+  static inline BufferSyncer *bufferSyncer() { return instance()->_bufferSyncer; }
 
   static AccountId currentCoreAccount();
 
@@ -103,8 +106,9 @@ public:
 
   enum ClientMode { LocalCore, RemoteCore };
 
-  void checkForHighlight(Message &msg) const;
-  
+  static void checkForHighlight(Message &msg);
+  static void setBufferLastSeen(BufferId id, const QDateTime &seen); // this is synced to core and other clients
+
 signals:
   void sendInput(BufferInfo, QString message);
   void showBuffer(Buffer *);
@@ -163,6 +167,7 @@ private slots:
   void recvStatusMsg(QString network, QString message);
   void recvBacklogData(BufferInfo, QVariantList, bool);
   void updateBufferInfo(BufferInfo);
+  void updateLastSeen(BufferId id, const QDateTime &lastSeen);
 
   void layoutMsg();
 
@@ -188,10 +193,12 @@ private:
   static QPointer<Client> instanceptr;
 
   QPointer<QIODevice> socket;
-  QPointer<SignalProxy> _signalProxy;
-  QPointer<AbstractUi> mainUi;
-  QPointer<NetworkModel> _networkModel;
-  QPointer<BufferModel> _bufferModel;
+
+  SignalProxy * _signalProxy;
+  AbstractUi * mainUi;
+  NetworkModel * _networkModel;
+  BufferModel * _bufferModel;
+  BufferSyncer * _bufferSyncer;
 
   ClientMode clientMode;
 
