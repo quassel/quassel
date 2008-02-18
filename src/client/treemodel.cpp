@@ -83,13 +83,17 @@ void AbstractTreeItem::removeAllChilds() {
   
   AbstractTreeItem *child;
 
-  QList<AbstractTreeItem *>::iterator childIter = _childItems.begin();
+  QList<AbstractTreeItem *>::iterator childIter;
+
+  childIter = _childItems.begin();
   while(childIter != _childItems.end()) {
     child = *childIter;
     child->removeAllChilds();
+    childIter++;
   }
 
   emit beginRemoveChilds(0, numChilds - 1);
+  childIter = _childItems.begin();
   while(childIter != _childItems.end()) {
     child = *childIter;
     childIter = _childItems.erase(childIter);

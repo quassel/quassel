@@ -280,7 +280,7 @@ void Client::setConnectedToCore(QIODevice *sock, AccountId id) {
 }
 
 void Client::setSyncedToCore() {
-    // create buffersyncer
+  // create buffersyncer
   Q_ASSERT(!_bufferSyncer);
   _bufferSyncer = new BufferSyncer(this);
   connect(bufferSyncer(), SIGNAL(lastSeenSet(BufferId, const QDateTime &)), this, SLOT(updateLastSeen(BufferId, const QDateTime &)));
@@ -293,6 +293,9 @@ void Client::setSyncedToCore() {
 }
 
 void Client::disconnectFromCore() {
+  if(!isConnected())
+    return;
+  
   if(socket) {
     socket->close();
     socket->deleteLater();
@@ -304,8 +307,10 @@ void Client::disconnectFromCore() {
   emit coreConnectionStateChanged(false);
 
   // Clear internal data. Hopefully nothing relies on it at this point.
-  _bufferSyncer->deleteLater();
-  _bufferSyncer = 0;
+  if(_bufferSyncer) {
+    _bufferSyncer->deleteLater();
+    _bufferSyncer = 0;
+  }
   _networkModel->clear();
 
   QHash<BufferId, Buffer *>::iterator bufferIter =  _buffers.begin();
