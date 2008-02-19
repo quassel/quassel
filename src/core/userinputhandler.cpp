@@ -107,18 +107,27 @@ void UserInputHandler::handleInvite(const BufferInfo &bufferInfo, const QString 
 }
 
 void UserInputHandler::handleJ(const BufferInfo &bufferInfo, const QString &msg) {
-  Q_UNUSED(bufferInfo)
-  QStringList params = msg.split(" ");
-  if(params.size() > 0 && !params[0].startsWith("#")) {
-    params[0] = QString("#%1").arg(params[0]);
-  }
-  emit putCmd("JOIN", serverEncode(params));
+  QString trimmed = msg.trimmed();
+  if(trimmed.length() == 0) return;
+  if(trimmed[0].isLetter()) trimmed.prepend("#");
+  handleJoin(bufferInfo, trimmed);
 }
 
 void UserInputHandler::handleJoin(const BufferInfo &bufferInfo, const QString &msg) {
   Q_UNUSED(bufferInfo)
-  QStringList params = msg.split(" ");
-  emit putCmd("JOIN", serverEncode(params));
+  QStringList params = msg.trimmed().split(" ");
+  QStringList chans = params[0].split(",");
+  QStringList keys;
+  if(params.count() > 1) keys = params[1].split(",");
+  emit putCmd("JOIN", serverEncode(params)); // FIXME handle messages longer than 512 bytes!
+  int i = 0;
+  for(; i < keys.count(); i++) {
+    if(i >= chans.count()) break;
+    networkConnection()->addChannelKey(chans[i], keys[i]);
+  }
+  for(; i < chans.count(); i++) {
+    networkConnection()->removeChannelKey(chans[i]);
+  }
 }
 
 void UserInputHandler::handleKick(const BufferInfo &bufferInfo, const QString &msg) {

@@ -37,6 +37,7 @@ class IrcChannel : public SyncableObject {
 
   Q_PROPERTY(QString name READ name STORED false)
   Q_PROPERTY(QString topic READ topic WRITE setTopic STORED false)
+  Q_PROPERTY(QString password READ password WRITE setPassword STORED false)
 
 public:
   IrcChannel(const QString &channelname, Network *network);
@@ -45,16 +46,17 @@ public:
   bool isKnownUser(IrcUser *ircuser) const;
   bool isValidChannelUserMode(const QString &mode) const;
 
-  QString name() const;
-  QString topic() const;
+  inline QString name() const { return _name; }
+  inline QString topic() const { return _topic; }
+  inline QString password() const { return _password; }
 
-  QList<IrcUser *> ircUsers() const;
+  inline QList<IrcUser *> ircUsers() const { return _userModes.keys(); }
 
   QString userModes(IrcUser *ircuser) const;
   QString userModes(const QString &nick) const;
 
-  QTextCodec *codecForEncoding() const;
-  QTextCodec *codecForDecoding() const;
+  inline QTextCodec *codecForEncoding() const { return _codecForEncoding; }
+  inline QTextCodec *codecForDecoding() const { return _codecForDecoding; }
   void setCodecForEncoding(const QString &codecName);
   void setCodecForEncoding(QTextCodec *codec);
   void setCodecForDecoding(const QString &codecName);
@@ -65,6 +67,7 @@ public:
 
 public slots:
   void setTopic(const QString &topic);
+  void setPassword(const QString &password);
 
   void join(IrcUser *ircuser);
   void join(const QString &nick);
@@ -88,7 +91,8 @@ public slots:
   void initSetUserModes(const QVariantMap &usermodes);
 
 signals:
-  void topicSet(QString topic);
+  void topicSet(const QString &topic);
+  void passwordSet(const QString &password);
   void userModesSet(QString nick, QString modes);
   //void userModesSet(IrcUser *ircuser, QString modes);
   void userModeAdded(QString nick, QString mode);
@@ -111,6 +115,7 @@ private:
   bool _initialized;
   QString _name;
   QString _topic;
+  QString _password;
 
   QHash<IrcUser *, QString> _userModes;
 

@@ -43,7 +43,7 @@ class NetworkConnection : public QObject {
   Q_OBJECT
 
 public:
-  NetworkConnection(Network *network, CoreSession *session, const QVariant &previousState = QVariant());
+  NetworkConnection(Network *network, CoreSession *session);
   ~NetworkConnection();
 
   NetworkId networkId() const;
@@ -58,9 +58,6 @@ public:
   IrcServerHandler *ircServerHandler() const;
   UserInputHandler *userInputHandler() const;
   CtcpHandler *ctcpHandler() const;
-
-  //! Return data necessary to restore the connection state upon core restart
-  QVariant state() const;
 
   //! Decode a string using the server (network) decoding.
   QString serverDecode(const QByteArray &string) const;
@@ -80,6 +77,8 @@ public:
   //! Encode a string using the user-specific encoding, if set, and use the standard encoding else.
   QByteArray userEncode(const QString &userNick, const QString &string) const;
 
+  inline QString channelKey(const QString &channel) const { return _channelKeys.value(channel, QString()); }
+
 public slots:
   // void setServerOptions();
   void connectToIrc(bool reconnecting = false);
@@ -89,6 +88,8 @@ public slots:
   void putRawLine(QByteArray input);
   void putCmd(const QString &cmd, const QVariantList &params, const QByteArray &prefix = QByteArray());
 
+  void addChannelKey(const QString &channel, const QString &key);
+  void removeChannelKey(const QString &channel);
 
 private slots:
   void sendPerform();
@@ -133,8 +134,7 @@ private:
   UserInputHandler *_userInputHandler;
   CtcpHandler *_ctcpHandler;
 
-  QVariant _previousState;
-
+  QHash<QString, QString> _channelKeys;
   QTimer _autoReconnectTimer;
   int _autoReconnectCount;
 

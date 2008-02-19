@@ -63,8 +63,8 @@ public slots:
 
   void addClient(QObject *socket);
 
-  void connectToNetwork(QString, const QVariant &previousState = QVariant());
-  void connectToNetwork(NetworkId, const QVariant &previousState = QVariant());
+//  void connectToNetwork(QString, const QVariant &previousState = QVariant());
+  void connectToNetwork(NetworkId);
   void disconnectFromNetwork(NetworkId id);
 
   //void processSignal(ClientSignal, QVariant, QVariant, QVariant);

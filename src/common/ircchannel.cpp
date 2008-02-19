@@ -73,18 +73,6 @@ bool IrcChannel::isValidChannelUserMode(const QString &mode) const {
   return isvalid;
 }
 
-QString IrcChannel::name() const {
-  return _name;
-}
-
-QString IrcChannel::topic() const {
-  return _topic;
-}
-
-QList<IrcUser *> IrcChannel::ircUsers() const {
-  return _userModes.keys();
-}
-
 QString IrcChannel::userModes(IrcUser *ircuser) const {
   if(_userModes.contains(ircuser))
     return _userModes[ircuser];
@@ -96,20 +84,12 @@ QString IrcChannel::userModes(const QString &nick) const {
   return userModes(network->ircUser(nick));
 }
 
-QTextCodec *IrcChannel::codecForEncoding() const {
-  return _codecForEncoding;
-}
-
 void IrcChannel::setCodecForEncoding(const QString &name) {
   setCodecForEncoding(QTextCodec::codecForName(name.toAscii()));
 }
 
 void IrcChannel::setCodecForEncoding(QTextCodec *codec) {
   _codecForEncoding = codec;
-}
-
-QTextCodec *IrcChannel::codecForDecoding() const {
-  return _codecForDecoding;
 }
 
 void IrcChannel::setCodecForDecoding(const QString &name) {
@@ -138,6 +118,11 @@ QByteArray IrcChannel::encodeString(const QString &string) const {
 void IrcChannel::setTopic(const QString &topic) {
   _topic = topic;
   emit topicSet(topic);
+}
+
+void IrcChannel::setPassword(const QString &password) {
+  _password = password;
+  emit passwordSet(password);
 }
 
 void IrcChannel::join(IrcUser *ircuser) {

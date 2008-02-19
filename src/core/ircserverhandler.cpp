@@ -136,7 +136,7 @@ void IrcServerHandler::defaultHandler(QString cmd, const QString &prefix, const 
         break;
       }
       // Server error messages which will be displayed with a colon between the first param and the rest
-      case 413: case 414: case 423: case 441: case 444: case 461:
+      case 413: case 414: case 423: case 441: case 444: case 461:  // FIXME see below for the 47x codes
       case 467: case 471: case 473: case 474: case 475: case 476: case 477: case 478: case 482:
       case 436: // ERR_NICKCOLLISION
       { QString p = params.takeFirst();
@@ -168,6 +168,7 @@ void IrcServerHandler::handleJoin(const QString &prefix, const QList<QByteArray>
   emit displayMsg(Message::Join, BufferInfo::ChannelBuffer, channel, channel, prefix);
   //qDebug() << "IrcServerHandler::handleJoin()" << prefix << params;
   ircuser->joinChannel(channel);
+  if(network()->isMe(ircuser)) network()->addPersistentChannel(channel, networkConnection()->channelKey(channel));
 }
 
 void IrcServerHandler::handleKick(const QString &prefix, const QList<QByteArray> &params) {
@@ -185,6 +186,7 @@ void IrcServerHandler::handleKick(const QString &prefix, const QList<QByteArray>
     msg = victim->nick();
 
   emit displayMsg(Message::Kick, BufferInfo::ChannelBuffer, channel, msg, prefix);
+  //if(network()->isMe(victim)) networkConnection()->setKickedFromChannel(channel);
 }
 
 void IrcServerHandler::handleMode(const QString &prefix, const QList<QByteArray> &params) {
@@ -276,6 +278,7 @@ void IrcServerHandler::handlePart(const QString &prefix, const QList<QByteArray>
     msg = userDecode(ircuser->nick(), params[1]);
 
   emit displayMsg(Message::Part, BufferInfo::ChannelBuffer, channel, msg, prefix);
+  if(network()->isMe(ircuser)) network()->removePersistentChannel(channel);
 }
 
 void IrcServerHandler::handlePing(const QString &prefix, const QList<QByteArray> &params) {
@@ -607,6 +610,13 @@ void IrcServerHandler::handle433(const QString &prefix, const QList<QByteArray> 
 
   tryNextNick(errnick);
 }
+
+/* */
+
+// FIXME networkConnection()->setChannelKey("") for all ERR replies indicating that a JOIN went wrong
+//       mostly, these are codes in the 47x range
+
+/* */
 
 void IrcServerHandler::tryNextNick(const QString &errnick) {
   QStringList desiredNicks = networkConnection()->coreSession()->identity(network()->identity())->nicks();

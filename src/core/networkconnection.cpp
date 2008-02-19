@@ -36,14 +36,13 @@
 #include "userinputhandler.h"
 #include "ctcphandler.h"
 
-NetworkConnection::NetworkConnection(Network *network, CoreSession *session, const QVariant &state) : QObject(network),
+NetworkConnection::NetworkConnection(Network *network, CoreSession *session) : QObject(network),
     _connectionState(Network::Disconnected),
     _network(network),
     _coreSession(session),
     _ircServerHandler(new IrcServerHandler(this)),
     _userInputHandler(new UserInputHandler(this)),
     _ctcpHandler(new CtcpHandler(this)),
-    _previousState(state),
     _autoReconnectCount(0)
 {
   _autoReconnectTimer.setSingleShot(true);
@@ -201,20 +200,11 @@ void NetworkConnection::networkInitialized(const QString &currentServer) {
 
   sendPerform();
 
-    // rejoin channels we've been in
-  QStringList chans = _previousState.toStringList();
-  if(chans.count() > 0) {
-    qDebug() << "autojoining" << chans;
-    QVariantList list;
-    list << serverEncode(chans.join(",")); // TODO add channel passwords
-    putCmd("JOIN", list);  // FIXME check for 512 byte limit!
-  }
-  // delete _previousState, we won't need it again
-  _previousState = QVariant();
   // now we are initialized
   setConnectionState(Network::Initialized);
   network()->setConnected(true);
   emit connected(networkId());
+
 }
 
 void NetworkConnection::sendPerform() {
@@ -227,12 +217,18 @@ void NetworkConnection::sendPerform() {
   foreach(QString line, network()->perform()) {
     if(!line.isEmpty()) userInput(statusBuf, line);
   }
-}
 
-QVariant NetworkConnection::state() const {
-  IrcUser *me = network()->ircUser(network()->myNick());
-  if(!me) return QVariant();  // this shouldn't really happen, I guess
-  return me->channels();
+  // rejoin channels we've been in
+  QStringList channels, keys;
+  foreach(QString chan, network()->persistentChannels().keys()) {
+    QString key = network()->persistentChannels()[chan];
+    if(!key.isEmpty()) {
+      channels.prepend(chan); keys.prepend(key);
+    } else {
+      channels.append(chan);
+    }
+  }
+  userInputHandler()->handleJoin(statusBuf, QString("%1 %2").arg(channels.join(",")).arg(keys.join(",")));
 }
 
 void NetworkConnection::disconnectFromIrc() {
@@ -340,6 +336,15 @@ void NetworkConnection::putCmd(const QString &cmd, const QVariantList &params, c
     msg += " :" + params.last().toByteArray();
 
   putRawLine(msg);
+}
+
+void NetworkConnection::addChannelKey(const QString &channel, const QString &key) {
+  if(key.isEmpty()) removeChannelKey(channel);
+  else _channelKeys[channel] = key;
+}
+
+void NetworkConnection::removeChannelKey(const QString &channel) {
+  _channelKeys.remove(channel);
 }
 
 void NetworkConnection::nickChanged(const QString &newNick, const QString &oldNick) {

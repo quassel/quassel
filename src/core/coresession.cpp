@@ -45,8 +45,7 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent) : QObje
 
   SignalProxy *p = signalProxy();
 
-  p->attachSlot(SIGNAL(requestConnect(QString)), this, SLOT(connectToNetwork(QString)));
-  p->attachSlot(SIGNAL(disconnectFromNetwork(NetworkId)), this, SLOT(disconnectFromNetwork(NetworkId))); // FIXME
+  //p->attachSlot(SIGNAL(disconnectFromNetwork(NetworkId)), this, SLOT(disconnectFromNetwork(NetworkId))); // FIXME
   p->attachSlot(SIGNAL(sendInput(BufferInfo, QString)), this, SLOT(msgFromClient(BufferInfo, QString)));
   p->attachSlot(SIGNAL(requestBacklog(BufferInfo, QVariant, QVariant)), this, SLOT(sendBacklog(BufferInfo, QVariant, QVariant)));
   p->attachSignal(this, SIGNAL(displayMsg(Message)));
@@ -170,10 +169,13 @@ void CoreSession::loadSettings() {
 void CoreSession::saveSessionState() const {
   QVariantMap res;
   QVariantList conn;
-  foreach(NetworkConnection *net, _connections.values()) {
+  foreach(NetworkConnection *nc, _connections.values()) {
+    QHash<QString, QString> persistentChans = nc->network()->persistentChannels();
+    QStringList list;
+    foreach(QString chan, persistentChans.keys()) list << QString("%1/%2").arg(chan).arg(persistentChans.value(chan));
     QVariantMap m;
-    m["NetworkId"] = QVariant::fromValue<NetworkId>(net->networkId());
-    m["State"] = net->state();
+    m["NetworkId"] = QVariant::fromValue<NetworkId>(nc->networkId());
+    m["PersistentChannels"] = list;
     conn << m;
   }
   res["CoreBuild"] = Global::quasselBuild;
@@ -192,7 +194,19 @@ void CoreSession::restoreSessionState() {
   QVariantList conn = s.sessionState().toMap()["ConnectedNetworks"].toList();
   foreach(QVariant v, conn) {
     NetworkId id = v.toMap()["NetworkId"].value<NetworkId>();
-    if(_networks.keys().contains(id)) connectToNetwork(id, v.toMap()["State"]);
+    // TODO remove migration code some time
+    QStringList list = v.toMap()["PersistentChannels"].toStringList();
+    if(!list.count()) {
+      // migrate older state
+      QStringList old = v.toMap()["State"].toStringList();
+      foreach(QString chan, old) list << QString("%1/").arg(chan);
+    }
+    foreach(QString chan, list) {
+      QStringList l = chan.split("/");
+      network(id)->addPersistentChannel(l[0], l[1]);
+    }
+    qDebug() << "User" << user() << "connecting to" << network(id)->networkName();
+    connectToNetwork(id);
   }
 }
 
@@ -201,6 +215,7 @@ void CoreSession::updateBufferInfo(UserId uid, const BufferInfo &bufinfo) {
 }
 
 // FIXME remove
+/*
 void CoreSession::connectToNetwork(QString netname, const QVariant &previousState) {
   Network *net = 0;
   foreach(Network *n, _networks.values()) {
@@ -214,8 +229,9 @@ void CoreSession::connectToNetwork(QString netname, const QVariant &previousStat
   }
   connectToNetwork(net->networkId(), previousState);
 }
+*/
 
-void CoreSession::connectToNetwork(NetworkId id, const QVariant &previousState) {
+void CoreSession::connectToNetwork(NetworkId id) {
   Network *net = network(id);
   if(!net) {
     qWarning() << "Connect to unknown network requested! net:" << id << "user:" << user();
@@ -224,7 +240,7 @@ void CoreSession::connectToNetwork(NetworkId id, const QVariant &previousState) 
 
   NetworkConnection *conn = networkConnection(id);
   if(!conn) {
-    conn = new NetworkConnection(net, this, previousState);
+    conn = new NetworkConnection(net, this);
     _connections[id] = conn;
     attachNetworkConnection(conn);
   }

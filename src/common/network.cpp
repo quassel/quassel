@@ -631,6 +631,14 @@ QStringList Network::initIrcChannels() const {
   return _ircChannels.keys();
 }
 
+QStringList Network::initPersistentChannels() const {
+  QStringList list;
+  foreach(QString chan, _persistentChannels.keys()) {
+    list << QString("%1/%2").arg(chan).arg(_persistentChannels.value(chan));
+  }
+  return list;
+}
+
 void Network::initSetSupports(const QVariantMap &supports) {
   QMapIterator<QString, QVariant> iter(supports);
   while(iter.hasNext()) {
@@ -651,11 +659,37 @@ void Network::initSetIrcUsers(const QStringList &hostmasks) {
   }
 }
 
-void Network::initSetChannels(const QStringList &channels) {
+void Network::initSetIrcChannels(const QStringList &channels) {
+  // FIXME This does not work correctly, "received data for unknown User" triggers
+  //       So we disable this for now
+  return;
+
   if(!_ircChannels.empty())
     return;
   foreach(QString channel, channels)
     newIrcChannel(channel);
+}
+
+void Network::initSetPersistentChannels(const QStringList &channels) {
+  foreach(QString chan, channels) {
+    QStringList l = chan.split("/");
+    _persistentChannels[l[0]] = l[1];
+  }
+}
+
+void Network::addPersistentChannel(const QString &channel, const QString &key) {
+  _persistentChannels[channel.toLower()] = key;
+  emit persistentChannelAdded(channel, key);
+}
+
+void Network::removePersistentChannel(const QString &channel) {
+  _persistentChannels.remove(channel.toLower());
+  emit persistentChannelRemoved(channel);
+}
+
+void Network::setPersistentChannelKey(const QString &channel, const QString &key) {
+  _persistentChannels[channel.toLower()] = key;
+  emit persistentChannelKeySet(channel, key);
 }
 
 IrcUser *Network::updateNickFromMask(const QString &mask) {
