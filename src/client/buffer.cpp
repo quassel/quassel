@@ -75,21 +75,26 @@ void Buffer::setVisible(bool visible) {
 }
 
 void Buffer::setLastSeen(const QDateTime &seen) {
-  if(seen.isValid() && seen > lastSeen()) { //qDebug() << "setting:" << bufferInfo().bufferName() << seen;
+  if(!lastSeen().isValid() || seen.isValid() && seen > lastSeen()) { //qDebug() << "setting:" << bufferInfo().bufferName() << seen;
     _lastSeen = seen;
     Client::bufferSyncer()->requestSetLastSeen(bufferInfo().bufferId(), seen);
+    //qDebug() << "setting lastSeen:" << bufferInfo() << lastSeen();
     setActivityLevel(NoActivity);
   }
 }
 
 void Buffer::setActivityLevel(ActivityLevel level) {
   _activityLevel = level;
-  if(bufferInfo().bufferId() > 0) Client::networkModel()->setBufferActivity(bufferInfo(), level);
+  if(bufferInfo().bufferId() > 0) {
+    Client::networkModel()->setBufferActivity(bufferInfo(), level);
+    //qDebug() << "setting level:" << bufferInfo() << lastSeen() << level;
+  }
 }
 
 void Buffer::updateActivityLevel(const Message &msg) {
   if(isVisible()) return;
   if(lastSeen().isValid() && lastSeen() >= msg.timestamp()) return;
+  //qDebug() << "recv msg" << bufferInfo() << msg.timestamp();
 
   ActivityLevel level = activityLevel() | OtherActivity;
   if(msg.type() == Message::Plain || msg.type() == Message::Notice) level |= NewMessage;
