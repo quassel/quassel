@@ -141,7 +141,7 @@ QString Core::setupCore(const QVariant &setupData_) {
     return tr("Could not setup storage!");
   }
   CoreSettings s;
-  //s.setStorageSettings(msg);
+  s.setStorageSettings(setupData);
   qDebug() << qPrintable(tr("Creating admin user..."));
   mutex.lock();
   storage->addUser(user, password);
