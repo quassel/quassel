@@ -158,6 +158,7 @@ public slots:
   void setCoreConfiguration(const QVariantMap &settings);
 
   void bufferRemoved(BufferId bufferId);
+  void bufferRenamed(BufferId bufferId, const QString &newName);
 
 private slots:
   //void coreSocketError(QAbstractSocket::SocketError);

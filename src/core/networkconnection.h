@@ -94,6 +94,7 @@ private slots:
   void sendPerform();
   void autoReconnectSettingsChanged();
   void doAutoReconnect();
+  void nickChanged(const QString &newNick, const QString &oldNick); // this signal is inteded to rename query buffers in the storage backend
 
 signals:
   // #void networkState(QString net, QVariantMap data);
@@ -110,7 +111,7 @@ signals:
   void quitRequested(NetworkId networkId);
 
   //void queryRequested(QString network, QString nick);
-
+  void nickChanged(const NetworkId &networkId, const QString &newNick, const QString &oldNick); // this signal is inteded to rename query buffers in the storage backend
 
 private slots:
   void socketHasData();

@@ -60,6 +60,8 @@ NetworkConnection::NetworkConnection(Network *network, CoreSession *session, con
   connect(&socket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(socketStateChanged(QAbstractSocket::SocketState)));
   connect(&socket, SIGNAL(readyRead()), this, SLOT(socketHasData()));
 
+  connect(_ircServerHandler, SIGNAL(nickChanged(const QString &, const QString &)),
+	  this, SLOT(nickChanged(const QString &, const QString &)));
 }
 
 NetworkConnection::~NetworkConnection() {
@@ -340,6 +342,10 @@ void NetworkConnection::putCmd(const QString &cmd, const QVariantList &params, c
   putRawLine(msg);
 }
 
+void NetworkConnection::nickChanged(const QString &newNick, const QString &oldNick) {
+  emit nickChanged(_network->networkId(), newNick, oldNick);
+}
+
 /* Exception classes for message handling */
 NetworkConnection::ParseError::ParseError(QString cmd, QString prefix, QStringList params) {
   Q_UNUSED(prefix);
@@ -350,3 +356,4 @@ NetworkConnection::UnknownCmdError::UnknownCmdError(QString cmd, QString prefix,
   Q_UNUSED(prefix);
   _msg = QString("Unknown Command: ") + cmd + params.join(" ");
 }
+

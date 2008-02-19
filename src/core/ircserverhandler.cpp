@@ -241,6 +241,8 @@ void IrcServerHandler::handleNick(const QString &prefix, const QList<QByteArray>
     ? newnick
     : prefix;
 
+
+  emit nickChanged(newnick, oldnick);
   foreach(QString channel, ircuser->channels())
     emit displayMsg(Message::Nick, BufferInfo::ChannelBuffer, channel, newnick, sender);
   

@@ -275,6 +275,11 @@ bool Core::removeBuffer(const UserId &user, const BufferId &bufferId) {
   return instance()->storage->removeBuffer(user, bufferId);
 }
 
+BufferId Core::renameBuffer(const UserId &user, const NetworkId &networkId, const QString &newName, const QString &oldName) {
+  QMutexLocker locker(&mutex);
+  return instance()->storage->renameBuffer(user, networkId, newName, oldName);
+}
+
 void Core::setBufferLastSeen(UserId user, const BufferId &bufferId, const QDateTime &seenDate) {
   QMutexLocker locker(&mutex);
   return instance()->storage->setBufferLastSeen(user, bufferId, seenDate);

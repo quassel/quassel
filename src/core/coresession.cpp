@@ -75,6 +75,7 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent) : QObje
   connect(_bufferSyncer, SIGNAL(lastSeenSet(BufferId, const QDateTime &)), this, SLOT(storeBufferLastSeen(BufferId, const QDateTime &)));
   connect(_bufferSyncer, SIGNAL(removeBufferRequested(BufferId)), this, SLOT(removeBufferRequested(BufferId)));
   connect(this, SIGNAL(bufferRemoved(BufferId)), _bufferSyncer, SLOT(removeBuffer(BufferId)));
+  connect(this, SIGNAL(bufferRenamed(BufferId, QString)), _bufferSyncer, SLOT(renameBuffer(BufferId, QString)));
   p->synchronize(_bufferSyncer);
 
   // Restore session state
@@ -242,6 +243,8 @@ void CoreSession::attachNetworkConnection(NetworkConnection *conn) {
 	  this, SLOT(recvMessageFromServer(Message::Type, BufferInfo::Type, QString, QString, QString, quint8)));
   connect(conn, SIGNAL(displayStatusMsg(QString)), this, SLOT(recvStatusMsgFromServer(QString)));
 
+  connect(conn, SIGNAL(nickChanged(const NetworkId &, const QString &, const QString &)),
+	  this, SLOT(renameBuffer(const NetworkId &, const QString &, const QString &)));
 }
 
 void CoreSession::disconnectFromNetwork(NetworkId id) {
@@ -499,4 +502,11 @@ void CoreSession::removeBufferRequested(BufferId bufferId) {
   }
   if(Core::removeBuffer(user(), bufferId))
     emit bufferRemoved(bufferId);
+}
+
+void CoreSession::renameBuffer(const NetworkId &networkId, const QString &newName, const QString &oldName) {
+  BufferId bufferId = Core::renameBuffer(user(), networkId, newName, oldName);
+  if(bufferId.isValid()) {
+    emit bufferRenamed(bufferId, newName);
+  }
 }

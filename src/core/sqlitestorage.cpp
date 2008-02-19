@@ -463,6 +463,47 @@ bool SqliteStorage::removeBuffer(const UserId &user, const BufferId &bufferId) {
   return true;
 }
 
+BufferId SqliteStorage::renameBuffer(const UserId &user, const NetworkId &networkId, const QString &newName, const QString &oldName) {
+  // check if such a buffer exists...
+  QSqlQuery existsQuery(logDb());
+  existsQuery.prepare(queryString("select_bufferByName"));
+  existsQuery.bindValue(":networkid", networkId.toInt());
+  existsQuery.bindValue(":userid", user.toInt());
+  existsQuery.bindValue(":buffercname", oldName.toLower());
+  existsQuery.exec();
+  if(!watchQuery(&existsQuery))
+    return false;
+
+  if(!existsQuery.first())
+    return false;
+
+  const int bufferid = existsQuery.value(0).toInt();
+
+  Q_ASSERT(!existsQuery.next());
+
+  // ... and if the new name is still free.
+  existsQuery.bindValue(":networkid", networkId.toInt());
+  existsQuery.bindValue(":userid", user.toInt());
+  existsQuery.bindValue(":buffercname", newName.toLower());
+  existsQuery.exec();
+  if(!watchQuery(&existsQuery))
+    return false;
+
+  if(existsQuery.first())
+    return false;
+
+  QSqlQuery renameBufferQuery(logDb());
+  renameBufferQuery.prepare(queryString("update_buffer_name"));
+  renameBufferQuery.bindValue(":buffername", newName);
+  renameBufferQuery.bindValue(":buffercname", newName.toLower());
+  renameBufferQuery.bindValue(":bufferid", bufferid);
+  renameBufferQuery.exec();
+  if(watchQuery(&existsQuery))
+    return BufferId(bufferid);
+  else
+    return BufferId();
+}
+
 void SqliteStorage::setBufferLastSeen(UserId user, const BufferId &bufferId, const QDateTime &seenDate) {
   QSqlQuery *query = cachedQuery("update_buffer_lastseen");
   query->bindValue(":userid", user.toInt());

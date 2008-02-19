@@ -71,3 +71,7 @@ void BufferSyncer::removeBuffer(BufferId buffer) {
     _lastSeen.remove(buffer);
   emit bufferRemoved(buffer);
 }
+
+void BufferSyncer::renameBuffer(BufferId buffer, QString newName) {
+  emit bufferRenamed(buffer, newName);
+}

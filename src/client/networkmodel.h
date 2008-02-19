@@ -45,7 +45,7 @@ class IrcUser;
  *****************************************/
 class BufferItem : public PropertyMapItem {
   Q_OBJECT
-  Q_PROPERTY(QString bufferName READ bufferName)
+  Q_PROPERTY(QString bufferName READ bufferName WRITE setBufferName)
   Q_PROPERTY(QString topic READ topic)
   Q_PROPERTY(int nickCount READ nickCount)
 
@@ -60,6 +60,7 @@ public:
   void attachIrcChannel(IrcChannel *ircChannel);
 
   QString bufferName() const;
+  void setBufferName(const QString &name);
   QString topic() const;
   int nickCount() const;
 
@@ -91,6 +92,7 @@ private slots:
 
 private:
   BufferInfo _bufferInfo;
+  QString _bufferName;
   Buffer::ActivityLevel _activity;
 
   QPointer<IrcChannel> _ircChannel;

@@ -183,6 +183,15 @@ class Storage : public QObject {
      *  \return true if successfull
      */
     virtual bool removeBuffer(const UserId &user, const BufferId &bufferId) = 0;
+
+    //! Rename a Buffer
+    /** \param user      The id of the buffer owner
+     *  \param networkId The id of the network the buffer belongs to
+     *  \param newName   The new name of the buffer
+     *  \param oldName   The previous name of the buffer
+     *  \return the BufferId of the affected buffer or an invalid BufferId if not successfull
+     */
+    virtual BufferId renameBuffer(const UserId &user, const NetworkId &networkId, const QString &newName, const QString &oldName) = 0;
   
     //! Update the LastSeenDate for a Buffer
     /** This Method is used to make the LastSeenDate of a Buffer persistent
@@ -234,6 +243,8 @@ class Storage : public QObject {
   signals:
     //! Sent when a new BufferInfo is created, or an existing one changed somehow.
     void bufferInfoUpdated(UserId user, const BufferInfo &);
+    //! Sent when a Buffer was renamed
+    void bufferRenamed(const QString &newName, const QString &oldName);
     //! Sent when a new user has been added
     void userAdded(UserId, const QString &username);
     //! Sent when a user has been renamed

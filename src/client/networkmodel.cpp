@@ -37,6 +37,7 @@
 BufferItem::BufferItem(BufferInfo bufferInfo, AbstractTreeItem *parent)
   : PropertyMapItem(QStringList() << "bufferName" << "topic" << "nickCount", parent),
     _bufferInfo(bufferInfo),
+    _bufferName(bufferInfo.bufferName()),
     _activity(Buffer::NoActivity)
 {
   Qt::ItemFlags flags = Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled;
@@ -158,7 +159,15 @@ QString BufferItem::bufferName() const {
   if(bufferType() == BufferInfo::StatusBuffer)
     return tr("Status Buffer");
   else
-    return bufferInfo().bufferName();
+    return _bufferName;
+}
+
+void BufferItem::setBufferName(const QString &name) {
+  _bufferName = name;
+  // as long as we need those bufferInfos, we have to update that one aswell.
+  // pretty ugly though :/
+  _bufferInfo = BufferInfo(_bufferInfo.bufferId(), _bufferInfo.networkId(), _bufferInfo.type(), _bufferInfo.groupId(), _bufferInfo.bufferName());
+  emit dataChanged(0);
 }
 
 QString BufferItem::topic() const {

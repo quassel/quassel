@@ -106,7 +106,15 @@ public slots:
    *  emits bufferRemoved(bufferId) on success.
    */
   void removeBufferRequested(BufferId bufferId);
-    
+
+  //! Rename a Buffer for a given network
+  /* \param networkId The id of the network the buffer belongs to
+   * \param newName   The new name of the buffer
+   * \param oldName   The old name of the buffer
+   * emits bufferRenamed(bufferId, newName) on success.
+   */
+  void renameBuffer(const NetworkId &networkId, const QString &newName, const QString &oldName);
+  
 signals:
   void initialized();
 
@@ -138,6 +146,7 @@ signals:
   void networkCreated(NetworkId);
   void networkRemoved(NetworkId);
   void bufferRemoved(BufferId);
+  void bufferRenamed(BufferId, QString);
 
 private slots:
   void recvStatusMsgFromServer(QString msg);

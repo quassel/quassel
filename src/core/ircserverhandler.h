@@ -66,6 +66,9 @@ public slots:
 
   void defaultHandler(QString cmd, const QString &prefix, const QList<QByteArray> &params);
 
+signals:
+  void nickChanged(const QString &newNick, const QString &oldNick); // this signal is inteded to rename query buffers in the storage backend
+  
 private:
   void tryNextNick(const QString &errnick);
   bool _whois;

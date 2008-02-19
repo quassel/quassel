@@ -177,6 +177,16 @@ class Core : public QObject {
      */
     static bool removeBuffer(const UserId &user, const BufferId &bufferId);
 
+    //! Rename a Buffer
+    /** \note This method is threadsafe.
+     *  \param user      The id of the buffer owner
+     *  \param networkId The id of the network the buffer belongs to
+     *  \param newName   The new name of the buffer
+     *  \param oldName   The previous name of the buffer
+     *  \return the BufferId of the affected buffer or an invalid BufferId if not successfull
+     */
+    static BufferId renameBuffer(const UserId &user, const NetworkId &networkId, const QString &newName, const QString &oldName);
+
     //! Update the LastSeenDate for a Buffer
     /** This Method is used to make the LastSeenDate of a Buffer persistent
      *  \note This method is threadsafe.

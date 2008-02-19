@@ -62,6 +62,7 @@ public slots:
   virtual BufferInfo getBufferInfo(UserId user, const BufferId &bufferId);
   virtual QList<BufferInfo> requestBuffers(UserId user, QDateTime since = QDateTime());
   virtual bool removeBuffer(const UserId &user, const BufferId &bufferId);
+  virtual BufferId renameBuffer(const UserId &user, const NetworkId &networkId, const QString &newName, const QString &oldName);
   virtual void setBufferLastSeen(UserId user, const BufferId &bufferId, const QDateTime &seenDate);
   virtual QHash<BufferId, QDateTime> bufferLastSeenDates(UserId user);
   
