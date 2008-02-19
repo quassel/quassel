@@ -647,7 +647,7 @@ ServerEditDlg::ServerEditDlg(const QVariant &_serverData, QWidget *parent) : QDi
 
 QVariant ServerEditDlg::serverData() const {
   QVariantMap _serverData;
-  _serverData["Host"] = ui.host->text();
+  _serverData["Host"] = ui.host->text().trimmed();
   _serverData["Port"] = ui.port->value();
   _serverData["Password"] = ui.password->text();
   _serverData["UseSSL"] = ui.useSSL->isChecked();
@@ -655,7 +655,7 @@ QVariant ServerEditDlg::serverData() const {
 }
 
 void ServerEditDlg::on_host_textChanged() {
-  ui.buttonBox->button(QDialogButtonBox::Ok)->setDisabled(ui.host->text().isEmpty());
+  ui.buttonBox->button(QDialogButtonBox::Ok)->setDisabled(ui.host->text().trimmed().isEmpty());
 }
 
 /**************************************************************************

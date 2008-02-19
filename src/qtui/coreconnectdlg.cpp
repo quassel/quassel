@@ -465,15 +465,15 @@ CoreAccountEditDlg::CoreAccountEditDlg(AccountId id, const QVariantMap &acct, co
 }
 
 QVariantMap CoreAccountEditDlg::accountData() {
-  account["AccountName"] = ui.accountName->text();
-  account["Host"] = ui.host->text();
+  account["AccountName"] = ui.accountName->text().trimmed();
+  account["Host"] = ui.host->text().trimmed();
   account["Port"] = ui.port->value();
   account["UseInternal"] = ui.useInternal->isChecked();
   return account;
 }
 
 void CoreAccountEditDlg::setWidgetStates() {
-  bool ok = !ui.accountName->text().isEmpty() && !existing.contains(ui.accountName->text()) && (ui.useInternal->isChecked() || !ui.host->text().isEmpty());
+  bool ok = !ui.accountName->text().trimmed().isEmpty() && !existing.contains(ui.accountName->text()) && (ui.useInternal->isChecked() || !ui.host->text().isEmpty());
   ui.buttonBox->button(QDialogButtonBox::Ok)->setEnabled(ok);
 }
 
