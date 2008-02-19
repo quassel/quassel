@@ -95,6 +95,7 @@ private slots:
   void sendPerform();
   void autoReconnectSettingsChanged();
   void doAutoReconnect();
+  void sendWho();
   void nickChanged(const QString &newNick, const QString &oldNick); // this signal is inteded to rename query buffers in the storage backend
 
 signals:
@@ -129,6 +130,7 @@ private:
 
   Network *_network;
   CoreSession *_coreSession;
+  BufferInfo _statusBufferInfo;
 
   IrcServerHandler *_ircServerHandler;
   UserInputHandler *_userInputHandler;
@@ -137,6 +139,8 @@ private:
   QHash<QString, QString> _channelKeys;
   QTimer _autoReconnectTimer;
   int _autoReconnectCount;
+
+  QTimer _whoTimer;
 
   class ParseError : public Exception {
   public:

@@ -463,7 +463,9 @@ void IrcServerHandler::handle314(const QString &prefix, const QList<QByteArray> 
 /*  RPL_ENDOFWHO: "<name> :End of WHO list" */
 void IrcServerHandler::handle315(const QString &prefix, const QList<QByteArray> &params) {
   Q_UNUSED(prefix)
-  emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Who] %1").arg(serverDecode(params).join(" ")));
+  // FIXME temporarily made silent
+  Q_UNUSED(params)
+  // emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Who] %1").arg(serverDecode(params).join(" ")));
 }
 
 /*  RPL_WHOISIDLE - "<nick> <integer> :seconds idle" 
@@ -538,7 +540,8 @@ void IrcServerHandler::handle352(const QString &prefix, const QList<QByteArray> 
     ircuser->setRealName(serverDecode(params.last()).section(" ", 1));
   }
 
-  emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Who] %1").arg(serverDecode(params).join(" ")));
+  // FIXME temporarily made silent
+  //emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Who] %1").arg(serverDecode(params).join(" ")));
 }
 
 /* RPL_NAMREPLY */

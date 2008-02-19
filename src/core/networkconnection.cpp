@@ -46,7 +46,13 @@ NetworkConnection::NetworkConnection(Network *network, CoreSession *session) : Q
     _autoReconnectCount(0)
 {
   _autoReconnectTimer.setSingleShot(true);
+
+  // TODO make configurable
+  _whoTimer.setInterval(60 * 1000);
+  _whoTimer.setSingleShot(false);
+
   connect(&_autoReconnectTimer, SIGNAL(timeout()), this, SLOT(doAutoReconnect()));
+  connect(&_whoTimer, SIGNAL(timeout()), this, SLOT(sendWho()));
 
   connect(network, SIGNAL(currentServerSet(const QString &)), this, SLOT(networkInitialized(const QString &)));
   connect(network, SIGNAL(useAutoReconnectSet(bool)), this, SLOT(autoReconnectSettingsChanged()));
@@ -204,7 +210,8 @@ void NetworkConnection::networkInitialized(const QString &currentServer) {
   setConnectionState(Network::Initialized);
   network()->setConnected(true);
   emit connected(networkId());
-
+  sendWho();
+  _whoTimer.start();
 }
 
 void NetworkConnection::sendPerform() {
@@ -294,6 +301,7 @@ void NetworkConnection::socketStateChanged(QAbstractSocket::SocketState socketSt
 }
 
 void NetworkConnection::socketDisconnected() {
+  _whoTimer.stop();
   network()->setConnected(false);
   emit disconnected(networkId());
   if(_autoReconnectCount == 0) emit quitRequested(networkId());
@@ -336,6 +344,12 @@ void NetworkConnection::putCmd(const QString &cmd, const QVariantList &params, c
     msg += " :" + params.last().toByteArray();
 
   putRawLine(msg);
+}
+
+void NetworkConnection::sendWho() {
+  foreach(QString chan, network()->channels()) {
+    putRawLine("WHO " + serverEncode(chan));
+  }
 }
 
 void NetworkConnection::addChannelKey(const QString &channel, const QString &key) {

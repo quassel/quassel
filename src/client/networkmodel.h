@@ -182,9 +182,10 @@ public:
   virtual quint64 id() const;
   virtual QVariant data(int column, int role) const;
   virtual QString toolTip(int column) const;
-				   
+
 private slots:
   void setNick(QString newNick);
+  void setAway(bool);
 
 private:
   QPointer<IrcUser> _ircUser;

@@ -484,6 +484,8 @@ IrcUserItem::IrcUserItem(IrcUser *ircUser, AbstractTreeItem *parent)
   
   connect(ircUser, SIGNAL(nickSet(QString)),
 	  this, SLOT(setNick(QString)));
+  connect(ircUser, SIGNAL(awaySet(bool)),
+          this, SLOT(setAway(bool)));
 }
 
 QString IrcUserItem::nickName() const {
@@ -564,6 +566,11 @@ QString IrcUserItem::toolTip(int column) const {
 
 void IrcUserItem::setNick(QString newNick) {
   Q_UNUSED(newNick);
+  emit dataChanged(0);
+}
+
+void IrcUserItem::setAway(bool away) {
+  Q_UNUSED(away);
   emit dataChanged(0);
 }
 
