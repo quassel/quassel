@@ -32,10 +32,8 @@ QDateTime BufferSyncer::lastSeen(BufferId buffer) const {
 }
 
 bool BufferSyncer::setLastSeen(BufferId buffer, const QDateTime &time) {
-  if(!_lastSeen.contains(buffer))
-    return false;
-  
-  if(_lastSeen[buffer] < time) {
+  if(!time.isValid()) return false;
+  if(!lastSeen(buffer).isValid() || lastSeen(buffer) < time) {
     _lastSeen[buffer] = time;
     emit lastSeenSet(buffer, time);
     return true;

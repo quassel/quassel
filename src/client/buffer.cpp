@@ -74,7 +74,7 @@ void Buffer::setVisible(bool visible) {
   setLastSeen(layoutedMsgs.last()->timestamp());
 }
 
-void Buffer::setLastSeen(const QDateTime &seen) {
+void Buffer::setLastSeen(const QDateTime &seen) { // qDebug() << "want to set lastSeen:" << bufferInfo() << seen << lastSeen();
   if(!lastSeen().isValid() || seen.isValid() && seen > lastSeen()) { //qDebug() << "setting:" << bufferInfo().bufferName() << seen;
     _lastSeen = seen;
     Client::bufferSyncer()->requestSetLastSeen(bufferInfo().bufferId(), seen);
