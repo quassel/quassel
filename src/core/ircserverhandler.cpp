@@ -202,7 +202,7 @@ void IrcServerHandler::handleMode(const QString &prefix, const QList<QByteArray>
     // This cannot be fixed unless the SignalProxy() doesn't rely on methodIds anymore
     QString modes = params[1];
     bool add = true;
-    int modeIndex = 0;
+    int modeIndex = 2;
     for(int c = 0; c < modes.length(); c++) {
       if(modes[c] == '+') {
 	add = true;
