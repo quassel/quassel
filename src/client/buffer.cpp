@@ -54,6 +54,10 @@ void Buffer::appendMsg(const Message &msg) {
 }
 
 void Buffer::prependMsg(const Message &msg) {
+  // check for duplicate first
+  if(contents().count() > 0 && msg.msgId() >= contents().first()->msgId()) {
+    return;
+  }
   updateActivityLevel(msg);
   layoutQueue.append(msg);
 }

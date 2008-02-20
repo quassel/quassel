@@ -176,7 +176,7 @@ QString Message::formattedToHtml(const QString &f) {
 */
 
 QDataStream &operator<<(QDataStream &out, const Message &msg) {
-  out << (quint32)msg.timestamp().toTime_t() << (quint32)msg.type() << (quint8)msg.flags()
+  out << msg.msgId() << (quint32)msg.timestamp().toTime_t() << (quint32)msg.type() << (quint8)msg.flags()
       << msg.bufferInfo() << msg.sender().toUtf8() << msg.text().toUtf8();
   return out;
 }
@@ -187,7 +187,7 @@ QDataStream &operator>>(QDataStream &in, Message &msg) {
   quint32 ts;
   QByteArray s, m;
   BufferInfo buf;
-  in >> ts >> t >> f >> buf >> s >> m;
+  in >> msg._msgId >> ts >> t >> f >> buf >> s >> m;
   msg._type = (Message::Type)t;
   msg._flags = (quint8)f;
   msg._bufferInfo = buf;

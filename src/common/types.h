@@ -37,6 +37,8 @@ class SignedId {
     inline bool operator==(const SignedId &other) const { return id == other.id; }
     inline bool operator!=(const SignedId &other) const { return id != other.id; }
     inline bool operator<(const SignedId &other) const { return id < other.id; }
+    inline bool operator>(const SignedId &other) const { return id > other.id; }
+    inline bool operator>=(const SignedId &other) const { return id >= other.id; }
     inline bool operator==(int i) const { return id == i; }
     inline bool operator!=(int i) const { return id != i; }
     inline bool operator<(int i) const { return id < i; }
