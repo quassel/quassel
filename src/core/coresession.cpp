@@ -205,7 +205,7 @@ void CoreSession::restoreSessionState() {
       QStringList l = chan.split("/");
       network(id)->addPersistentChannel(l[0], l[1]);
     }
-    qDebug() << "User" << user() << "connecting to" << network(id)->networkName();
+    //qDebug() << "User" << user() << "connecting to" << network(id)->networkName();
     connectToNetwork(id);
   }
 }

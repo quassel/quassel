@@ -553,20 +553,9 @@ MsgId SqliteStorage::logMessage(Message msg) {
     }
   }
 
-  QSqlQuery *getLastMessageIdQuery = cachedQuery("select_lastMessage");
-  getLastMessageIdQuery->bindValue(":time", msg.timestamp().toTime_t());
-  getLastMessageIdQuery->bindValue(":bufferid", msg.bufferInfo().bufferId().toInt());
-  getLastMessageIdQuery->bindValue(":type", msg.type());
-  getLastMessageIdQuery->bindValue(":sender", msg.sender());
-  getLastMessageIdQuery->exec();
-
-  if(getLastMessageIdQuery->first()) {
-    return getLastMessageIdQuery->value(0).toInt();
-  } else { // somethin went wrong... :(
-    qDebug() << getLastMessageIdQuery->lastQuery() << "time/bufferid/type/sender:" << msg.timestamp().toTime_t() << msg.bufferInfo().bufferId() << msg.type() << msg.sender();
-    Q_ASSERT(false);
-    return 0;
-  }
+  MsgId msgId = logMessageQuery->lastInsertId().toInt();
+  Q_ASSERT(msgId.isValid());
+  return msgId;
 }
 
 QList<Message> SqliteStorage::requestMsgs(BufferInfo buffer, int lastmsgs, int offset) {

@@ -235,7 +235,8 @@ void NetworkConnection::sendPerform() {
       channels.append(chan);
     }
   }
-  userInputHandler()->handleJoin(statusBuf, QString("%1 %2").arg(channels.join(",")).arg(keys.join(",")));
+  QString joinString = QString("%1 %2").arg(channels.join(",")).arg(keys.join(",")).trimmed();
+  if(!joinString.isEmpty()) userInputHandler()->handleJoin(statusBuf, joinString);
 }
 
 void NetworkConnection::disconnectFromIrc() {
@@ -264,6 +265,8 @@ void NetworkConnection::socketError(QAbstractSocket::SocketError) {
     setConnectionState(Network::Disconnected);
     socketDisconnected();
   }
+  //qDebug() << "exiting...";
+  //exit(1);
 }
 
 void NetworkConnection::socketConnected() {
