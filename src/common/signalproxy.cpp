@@ -593,6 +593,11 @@ void SignalProxy::dispatchSignal(const RequestType &requestType, const QVariantL
 void SignalProxy::receivePeerSignal(QIODevice *sender, const QVariant &packedFunc) {
   QVariantList params(packedFunc.toList());
 
+  if(params.isEmpty()) {
+    qWarning() << "SignalProxy::receivePeerSignal(): received incompatible Data:" << packedFunc;
+    return;
+  }
+  
   int callType = params.takeFirst().value<int>();
 
   switch(callType) {
