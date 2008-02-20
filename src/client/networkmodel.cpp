@@ -282,6 +282,37 @@ void BufferItem::userModeChanged(IrcUser *ircUser) {
   addUserToCategory(ircUser);
 }
 
+QString BufferItem::toolTip(int column) const {
+  Q_UNUSED(column);
+  QStringList toolTip;
+
+  switch(bufferType()) {
+    case BufferInfo::StatusBuffer: {
+      QString netName = Client::network(bufferInfo().networkId())->networkName();
+      toolTip.append(QString("<b>Status buffer from %1</b>").arg(netName));
+      break;
+    }
+    case BufferInfo::ChannelBuffer:
+      toolTip.append(QString("<b>Channel %1</b>").arg(bufferName()));
+      if(isActive()) {
+        toolTip.append(QString("Topic: %1").arg(topic()));
+        toolTip.append(QString("Users: %1").arg(nickCount()));
+      } else {
+        toolTip.append(QString("Not active <br /> Double-click to join"));
+      }
+      break;
+    case BufferInfo::QueryBuffer:
+      toolTip.append(QString("<b>Query with %1</b>").arg(bufferName()));
+      if(topic() != "") toolTip.append(QString("Away Message: %1").arg(topic()));
+      break;
+    default: //this should not happen
+      toolTip.append(QString("%1 - %2").arg(bufferInfo().bufferId().toInt()).arg(bufferName()));
+      break;
+  }
+
+  return QString("<p> %1 </p>").arg(toolTip.join("<br />"));
+}
+
 /*
 void BufferItem::setLastMsgInsert(QDateTime msgDate) {
   if(msgDate.isValid() && msgDate > _lastMsgInsert)
@@ -404,6 +435,18 @@ void NetworkItem::setCurrentServer(const QString &serverName) {
   Q_UNUSED(serverName);
   emit dataChanged(1);
 }
+
+
+QString NetworkItem::toolTip(int column) const {
+  Q_UNUSED(column);
+
+  QStringList toolTip(QString("<b>%1</b>").arg(networkName()));
+  toolTip.append(QString("Server: %1").arg(currentServer()));
+  toolTip.append(QString("Users: %1").arg(nickCount()));
+
+  return QString("<p> %1 </p>").arg(toolTip.join("<br />"));
+}
+
 
 /*****************************************
 *  User Category Items (like @vh etc.)

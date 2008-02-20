@@ -266,9 +266,8 @@ void MainWin::setupTopicWidget() {
 void MainWin::setupSystray() {
   systray = new QSystemTrayIcon(this);
   systray->setIcon(QIcon(":/icons/quassel-icon.png"));
-
-  QString toolTip("Left click to minimize the Quassel Client to tray");
-  systray->setToolTip(toolTip);
+//  systray->setToolTip("left click to minimize the quassel client to tray");
+//  systray->setToolTip(toolTip);
 
   systrayMenu = new QMenu(this);
   systrayMenu->addAction(ui.actionAboutQuassel);
@@ -298,6 +297,7 @@ void MainWin::changeEvent(QEvent *event) {
       QtUiSettings s;
       if(s.value("UseSystemTrayIcon").toBool() && s.value("MinimizeOnMinimize").toBool()) {
         toggleVisibility();
+        event->ignore();
       }
     }
   }
@@ -374,7 +374,7 @@ void MainWin::systrayActivated( QSystemTrayIcon::ActivationReason activationReas
 }
 
 void MainWin::toggleVisibility() {
-  if(isHidden() || !isActiveWindow()) {
+  if(isHidden() /*|| !isActiveWindow()*/) {
     show();
     if(isMinimized())
       if (isMaximized())
@@ -383,9 +383,11 @@ void MainWin::toggleVisibility() {
         showNormal();
 
     raise();
-    activateWindow();
+    setFocus(Qt::ActiveWindowFocusReason);
+    // activateWindow();
   } else {
     if(systray->isSystemTrayAvailable ()) {
+      clearFocus();
       hide();
       if(!systray->isVisible()) {
         systray->show();

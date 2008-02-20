@@ -138,15 +138,18 @@ void BufferView::showContextMenu(const QPoint &pos) {
 
   QMenu *hideEventsMenu = new QMenu(tr("Hide Events"), this);
   QAction *hideJoinAction = hideEventsMenu->addAction(tr("Join Events"));
-  QAction *hidePartAction = hideEventsMenu->addAction(tr("PartEvents"));
-  QAction *hideQuitAction = hideEventsMenu->addAction(tr("QuitEvents"));
+  QAction *hidePartAction = hideEventsMenu->addAction(tr("Part Events"));
+  QAction *hideKillAction = hideEventsMenu->addAction(tr("Kill Events"));
+  QAction *hideQuitAction = hideEventsMenu->addAction(tr("Quit Events"));
   QAction *hideModeAction = hideEventsMenu->addAction(tr("Mode Events"));
   hideJoinAction->setCheckable(true);
   hidePartAction->setCheckable(true);
+  hideKillAction->setCheckable(true);
   hideQuitAction->setCheckable(true);
   hideModeAction->setCheckable(true);
   hideJoinAction->setEnabled(false);
   hidePartAction->setEnabled(false);
+  hideKillAction->setEnabled(false);
   hideQuitAction->setEnabled(false);
   hideModeAction->setEnabled(false);
 
@@ -174,11 +177,17 @@ void BufferView::showContextMenu(const QPoint &pos) {
     contextMenu.addAction(ignoreListAction);
     contextMenu.addAction(whoBufferAction);
 
-    if(bufferInfo.type() == BufferInfo::ChannelBuffer && index.data(NetworkModel::ItemActiveRole).toBool()) {
-       removeBufferAction->setEnabled(false);
-       joinBufferAction->setVisible(false);
+    if(bufferInfo.type() == BufferInfo::ChannelBuffer) {
+      if(index.data(NetworkModel::ItemActiveRole).toBool()) {
+        removeBufferAction->setEnabled(false);
+        removeBufferAction->setToolTip("To delete the buffer, part the channel first.");
+        joinBufferAction->setVisible(false);
+      } else {
+        partBufferAction->setVisible(false);
+      }
     } else {
-       partBufferAction->setVisible(false);
+      joinBufferAction->setVisible(false);
+      partBufferAction->setVisible(false);
     }
   }
 

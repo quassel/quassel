@@ -77,6 +77,8 @@ public:
   bool setLastSeen();
   QDateTime lastSeen();
 
+  virtual QString toolTip(int column) const;
+
 public slots:
   void setTopic(const QString &topic);
   void join(IrcUser *ircUser);
@@ -116,18 +118,20 @@ public:
   virtual QVariant data(int column, int row) const;
 
   bool isActive() const;
-  
+
   QString networkName() const;
   QString currentServer() const;
   int nickCount() const;
-  
+
+  virtual QString toolTip(int column) const;
+
 public slots:
   void setNetworkName(const QString &networkName);
   void setCurrentServer(const QString &serverName);
 
   void attachNetwork(Network *network);
   void attachIrcChannel(const QString &channelName);
-  
+
 private:
   NetworkId _networkId;
 
