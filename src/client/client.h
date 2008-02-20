@@ -93,7 +93,6 @@ public:
   static inline NetworkModel *networkModel() { return instance()->_networkModel; }
   static inline BufferModel *bufferModel() { return instance()->_bufferModel; }
   static inline SignalProxy *signalProxy() { return instance()->_signalProxy; }
-  static inline BufferSyncer *bufferSyncer() { return instance()->_bufferSyncer; }
 
   static AccountId currentCoreAccount();
 
@@ -108,6 +107,7 @@ public:
 
   static void checkForHighlight(Message &msg);
   static void setBufferLastSeen(BufferId id, const QDateTime &seen); // this is synced to core and other clients
+  static void removeBuffer(BufferId id);
 
 signals:
   void sendInput(BufferInfo, QString message);
@@ -190,8 +190,8 @@ private:
   void init();
 
   static void addNetwork(Network *);
-
   static void setCurrentCoreAccount(AccountId);
+  static inline BufferSyncer *bufferSyncer() { return instance()->_bufferSyncer; }
 
   static QPointer<Client> instanceptr;
 

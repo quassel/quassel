@@ -212,7 +212,7 @@ void BufferView::showContextMenu(const QPoint &pos) {
                                        "data, from the core's database!").arg(bufferInfo.bufferName()),
                                         QMessageBox::Yes|QMessageBox::No, QMessageBox::No);
     if(res == QMessageBox::Yes) {
-        Client::bufferSyncer()->requestRemoveBuffer(bufferInfo.bufferId());
+      Client::removeBuffer(bufferInfo.bufferId());
     } 
   } else 
   if(result == whoBufferAction) {

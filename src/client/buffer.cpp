@@ -81,7 +81,7 @@ void Buffer::setVisible(bool visible) {
 void Buffer::setLastSeen(const QDateTime &seen) { // qDebug() << "want to set lastSeen:" << bufferInfo() << seen << lastSeen();
   if(!lastSeen().isValid() || seen.isValid() && seen > lastSeen()) { //qDebug() << "setting:" << bufferInfo().bufferName() << seen;
     _lastSeen = seen;
-    Client::bufferSyncer()->requestSetLastSeen(bufferInfo().bufferId(), seen);
+    Client::setBufferLastSeen(bufferInfo().bufferId(), seen);
     //qDebug() << "setting lastSeen:" << bufferInfo() << lastSeen();
     setActivityLevel(NoActivity);
   }

@@ -464,6 +464,11 @@ void Client::setBufferLastSeen(BufferId id, const QDateTime &lastSeen) {
   bufferSyncer()->requestSetLastSeen(id, lastSeen);
 }
 
+void Client::removeBuffer(BufferId id) {
+  if(!bufferSyncer()) return;
+  bufferSyncer()->requestRemoveBuffer(id);
+}
+
 void Client::bufferRemoved(BufferId bufferId) {
   QModelIndex current = bufferModel()->currentIndex();
   if(current.data(NetworkModel::BufferIdRole).value<BufferId>() == bufferId) {
