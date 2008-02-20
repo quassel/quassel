@@ -28,13 +28,12 @@ TopicWidget::TopicWidget(QWidget *parent)
   ui.setupUi(this);
 }
 
-QString TopicWidget::topic() const {
-  return ui.topicLineEdit->text();
-}
-
 void TopicWidget::setTopic(const QString &newtopic) {
   ui.topicLineEdit->setText(newtopic);
+  ui.topicLineEdit->setCursorPosition(0);
 }
 
-TopicWidget::~TopicWidget() {
+void TopicWidget::on_topicLineEdit_returnPressed() {
+  ui.topicLineEdit->setCursorPosition(0);
+  emit topicChanged(topic());
 }

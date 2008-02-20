@@ -73,6 +73,8 @@ class MainWin : public QMainWindow {
     void clientNetworkUpdated();
     void connectOrDisconnectFromNet();
 
+    void changeTopic(const QString &topic);
+
   signals:
     void connectToCore(const QVariantMap &connInfo);
     void disconnectFromCore();

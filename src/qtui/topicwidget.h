@@ -29,15 +29,20 @@ class TopicWidget : public QWidget {
   Q_OBJECT
   Q_PROPERTY(QString topic READ topic WRITE setTopic STORED false)
 
-public:
-  TopicWidget(QWidget *parent = 0);
-  virtual ~TopicWidget();
+  public:
+    TopicWidget(QWidget *parent = 0);
 
-  QString topic() const;
-  void setTopic(const QString &newtopic);
+    inline QString topic() const { return ui.topicLineEdit->text(); }
+    void setTopic(const QString &newtopic);
+
+  signals:
+    void topicChanged(const QString &text);
+
+  private slots:
+    void on_topicLineEdit_returnPressed();
   
-private:
-  Ui::TopicWidget ui;
+  private:
+    Ui::TopicWidget ui;
 };
 
 

@@ -312,7 +312,7 @@ void IrcServerHandler::handlePrivmsg(const QString &prefix, const QList<QByteArr
 
 void IrcServerHandler::handleQuit(const QString &prefix, const QList<QByteArray> &params) {
   IrcUser *ircuser = network()->updateNickFromMask(prefix);
-  Q_ASSERT(ircuser);
+  if(!ircuser) return;
 
   QString msg;
   if(params.count())
@@ -326,9 +326,10 @@ void IrcServerHandler::handleQuit(const QString &prefix, const QList<QByteArray>
 
 void IrcServerHandler::handleTopic(const QString &prefix, const QList<QByteArray> &params) {
   IrcUser *ircuser = network()->updateNickFromMask(prefix);
+  if(!ircuser) return;
   QString channel = serverDecode(params[0]);
-  QString topic = channelDecode(channel, params[1]);
-  Q_ASSERT(ircuser);
+  QString topic;
+  if(params.count() >= 2) topic = channelDecode(channel, params[1]);
 
   network()->ircChannel(channel)->setTopic(topic);
 

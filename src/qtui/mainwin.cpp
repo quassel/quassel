@@ -254,6 +254,8 @@ void MainWin::setupTopicWidget() {
   VerticalDock *dock = new VerticalDock(tr("Topic"), this);
   dock->setObjectName("TopicDock");
   TopicWidget *topicwidget = new TopicWidget(dock);
+  connect(topicwidget, SIGNAL(topicChanged(const QString &)), this, SLOT(changeTopic(const QString &)));
+
   dock->setWidget(topicwidget);
 
   Client::bufferModel()->mapProperty(1, Qt::DisplayRole, topicwidget, "topic");
@@ -301,6 +303,14 @@ void MainWin::changeEvent(QEvent *event) {
       }
     }
   }
+}
+
+// FIXME this should be made prettier...
+void MainWin::changeTopic(const QString &topic) {
+  BufferId id = ui.bufferWidget->currentBuffer();
+  if(!id.isValid()) return;
+  Buffer *buffer = Client::buffer(id);
+  if(buffer) Client::userInput(buffer->bufferInfo(), QString("/topic %1").arg(topic));
 }
 
 void MainWin::connectedToCore() {
