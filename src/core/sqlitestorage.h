@@ -77,6 +77,8 @@ protected:
   inline virtual QString driverName() { return "QSQLITE"; }
   inline virtual QString databaseName() { return backlogFile(); }
   virtual int installedSchemaVersion();
+
+  virtual bool init(const QVariantMap &settings = QVariantMap()); // only needed for migration
   
 private:
   static QString backlogFile();

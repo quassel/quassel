@@ -35,7 +35,7 @@ public:
   virtual ~AbstractSqlStorage();
 
 protected:
-  bool init(const QVariantMap &settings = QVariantMap());
+  virtual bool init(const QVariantMap &settings = QVariantMap());
   virtual void sync();
   
   QSqlDatabase logDb();

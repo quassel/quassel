@@ -20,7 +20,6 @@
 
 #include "sqlitestorage.h"
 
-#include <QCryptographicHash>
 #include <QtSql>
 
 #include "network.h"
@@ -62,13 +61,10 @@ int SqliteStorage::installedSchemaVersion() {
 }
 
 UserId SqliteStorage::addUser(const QString &user, const QString &password) {
-  QByteArray cryptopass = QCryptographicHash::hash(password.toUtf8(), QCryptographicHash::Sha1);
-  cryptopass = cryptopass.toHex();
-
   QSqlQuery query(logDb());
   query.prepare(queryString("insert_quasseluser"));
   query.bindValue(":username", user);
-  query.bindValue(":password", cryptopass);
+  query.bindValue(":password", cryptedPassword(password));
   query.exec();
   if(query.lastError().isValid() && query.lastError().number() == 19) { // user already exists - sadly 19 seems to be the general constraint violation error...
     return 0;
@@ -84,13 +80,10 @@ UserId SqliteStorage::addUser(const QString &user, const QString &password) {
 }
 
 void SqliteStorage::updateUser(UserId user, const QString &password) {
-  QByteArray cryptopass = QCryptographicHash::hash(password.toUtf8(), QCryptographicHash::Sha1);
-  cryptopass = cryptopass.toHex();
-
   QSqlQuery query(logDb());
   query.prepare(queryString("update_userpassword"));
   query.bindValue(":userid", user.toInt());
-  query.bindValue(":password", cryptopass);
+  query.bindValue(":password", cryptedPassword(password));
   query.exec();
 }
 
@@ -104,13 +97,10 @@ void SqliteStorage::renameUser(UserId user, const QString &newName) {
 }
 
 UserId SqliteStorage::validateUser(const QString &user, const QString &password) {
-  QByteArray cryptopass = QCryptographicHash::hash(password.toUtf8(), QCryptographicHash::Sha1);
-  cryptopass = cryptopass.toHex();
-
   QSqlQuery query(logDb());
   query.prepare(queryString("select_authuser"));
   query.bindValue(":username", user);
-  query.bindValue(":password", cryptopass);
+  query.bindValue(":password", cryptedPassword(password));
   query.exec();
 
   if(query.first()) {
@@ -664,3 +654,50 @@ QString SqliteStorage::backlogFile() {
   return quasselDir + "quassel-storage.sqlite";  
 }
 
+
+// ONLY NEEDED FOR MIGRATION
+bool SqliteStorage::init(const QVariantMap &settings) {
+  if(!AbstractSqlStorage::init(settings))
+    return false;
+
+  QSqlQuery checkMigratedQuery(logDb());
+  checkMigratedQuery.prepare("SELECT DISTINCT typeOf(password) FROM quasseluser");
+  checkMigratedQuery.exec();
+  if(!watchQuery(&checkMigratedQuery))
+    return false;
+
+  if(!checkMigratedQuery.first())
+    return false;
+
+  QString passType = checkMigratedQuery.value(0).toString().toLower();
+  if(passType == "text")
+    return true; // allready migrated
+
+  Q_ASSERT(passType == "blob");
+  
+  QSqlQuery getPasswordsQuery(logDb());
+  getPasswordsQuery.prepare("SELECT userid, password FROM quasseluser");
+  getPasswordsQuery.exec();
+
+  if(!watchQuery(&getPasswordsQuery)) {
+    qWarning() << "unable to migrate to new password format!";
+    return false;
+  }
+
+  QHash<int, QByteArray> passHash;
+  while(getPasswordsQuery.next()) {
+    passHash[getPasswordsQuery.value(0).toInt()] = getPasswordsQuery.value(1).toByteArray();
+  }
+
+  QSqlQuery setPasswordsQuery(logDb());
+  setPasswordsQuery.prepare("UPDATE quasseluser SET password = :password WHERE userid = :userid");
+  foreach(int userId, passHash.keys()) {
+    setPasswordsQuery.bindValue(":password", QString(passHash[userId]));
+    setPasswordsQuery.bindValue(":userid", userId);
+    setPasswordsQuery.exec();
+    watchQuery(&setPasswordsQuery);
+  }
+
+  qDebug() << "successfully migrated passwords!";
+  return true;
+}

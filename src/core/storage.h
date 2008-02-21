@@ -252,8 +252,11 @@ class Storage : public QObject {
     //! Sent when a user has been removed
     void userRemoved(UserId);
 
-  public:
-
+  protected:
+    //! when implementing a storage handler, use this method to crypt user passwords.
+    /**  This guarantees compatibility with other storage handlers and allows easy migration
+     */
+    QString cryptedPassword(const QString &password);
 };
 
 
