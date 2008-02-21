@@ -1,6 +1,8 @@
 Quassel IRC for Qtopia - Release Notes
 ======================================
 
+NOTE: QuasselTopia does currently NOT build!
+
 We provide a Quassel IRC client that can be run on mobile devices running
 Trolltech's Qtopia. The name of this client version has not yet been
 determined; we like QuasselTopia, Quassel IRC Mobile Edition or maybe
