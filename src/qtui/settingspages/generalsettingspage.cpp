@@ -33,6 +33,10 @@ GeneralSettingsPage::GeneralSettingsPage(QWidget *parent)
   ui.macOnly->hide();
 #endif
 
+#ifdef Q_WS_WIN
+  ui.minimizeOnMinimize->hide();
+#endif
+
   connect(ui.useSystemTrayIcon, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
   connect(ui.showSystemTrayIcon, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
   connect(ui.minimizeOnMinimize, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
