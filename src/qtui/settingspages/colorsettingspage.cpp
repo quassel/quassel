@@ -27,23 +27,41 @@
 #include <QColorDialog>
 #include <QPainter>
 
+// #define PHONDEV
+
 ColorSettingsPage::ColorSettingsPage(QWidget *parent)
   : SettingsPage(tr("Appearance"), tr("Color settings"), parent) {
   ui.setupUi(this);
 
   mapper = new QSignalMapper(this);
   //Bufferview tab:
-  connect(ui.inactiveActivity, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.noActivity, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.highlightActivity, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.newMessageActivity, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.otherActivity, SIGNAL(clicked()), mapper, SLOT(map()));
+  connect(ui.inactiveActivityFG, SIGNAL(clicked()), mapper, SLOT(map()));
+  connect(ui.inactiveActivityBG, SIGNAL(clicked()), mapper, SLOT(map()));
+  connect(ui.inactiveActivityUseBG, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
+  connect(ui.noActivityFG, SIGNAL(clicked()), mapper, SLOT(map()));
+  connect(ui.noActivityBG, SIGNAL(clicked()), mapper, SLOT(map()));
+  connect(ui.noActivityUseBG, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
+  connect(ui.highlightActivityFG, SIGNAL(clicked()), mapper, SLOT(map()));
+  connect(ui.highlightActivityBG, SIGNAL(clicked()), mapper, SLOT(map()));
+  connect(ui.highlightActivityUseBG, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
+  connect(ui.newMessageActivityFG, SIGNAL(clicked()), mapper, SLOT(map()));
+  connect(ui.newMessageActivityBG, SIGNAL(clicked()), mapper, SLOT(map()));
+  connect(ui.newMessageActivityUseBG, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
+  connect(ui.otherActivityFG, SIGNAL(clicked()), mapper, SLOT(map()));
+  connect(ui.otherActivityBG, SIGNAL(clicked()), mapper, SLOT(map()));
+  connect(ui.otherActivityUseBG, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
 
-  mapper->setMapping(ui.inactiveActivity, ui.inactiveActivity);
-  mapper->setMapping(ui.noActivity, ui.noActivity);
-  mapper->setMapping(ui.highlightActivity, ui.highlightActivity);
-  mapper->setMapping(ui.newMessageActivity, ui.newMessageActivity);
-  mapper->setMapping(ui.otherActivity, ui.otherActivity);
+  mapper->setMapping(ui.inactiveActivityFG, ui.inactiveActivityFG);
+  mapper->setMapping(ui.inactiveActivityBG, ui.inactiveActivityBG);
+  mapper->setMapping(ui.highlightActivityFG, ui.highlightActivityFG);
+  mapper->setMapping(ui.highlightActivityBG, ui.highlightActivityBG);
+  mapper->setMapping(ui.newMessageActivityFG, ui.newMessageActivityFG);
+  mapper->setMapping(ui.newMessageActivityBG, ui.newMessageActivityBG);
+  mapper->setMapping(ui.noActivityFG, ui.noActivityFG);
+  mapper->setMapping(ui.noActivityBG, ui.noActivityBG);
+  mapper->setMapping(ui.otherActivityFG, ui.otherActivityFG);
+  mapper->setMapping(ui.otherActivityBG, ui.otherActivityBG);
+
 
   //Chatview tab:
   connect(ui.errorMessageFG, SIGNAL(clicked()), mapper, SLOT(map()));
@@ -158,33 +176,57 @@ ColorSettingsPage::ColorSettingsPage(QWidget *parent)
   mapper->setMapping(ui.color14, ui.color14);
   mapper->setMapping(ui.color15, ui.color15);
 
+  //NickView tab:
+  connect(ui.onlineStatusFG, SIGNAL(clicked()), mapper, SLOT(map()));
+  connect(ui.onlineStatusBG, SIGNAL(clicked()), mapper, SLOT(map()));
+  connect(ui.onlineStatusBG, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
+  connect(ui.awayStatusFG, SIGNAL(clicked()), mapper, SLOT(map()));
+  connect(ui.awayStatusBG, SIGNAL(clicked()), mapper, SLOT(map()));
+  connect(ui.awayStatusBG, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
+
+  mapper->setMapping(ui.onlineStatusFG, ui.onlineStatusFG);
+  mapper->setMapping(ui.onlineStatusBG, ui.onlineStatusBG);
+  mapper->setMapping(ui.awayStatusFG, ui.awayStatusFG);
+  mapper->setMapping(ui.awayStatusBG, ui.awayStatusBG);
+
   connect(mapper, SIGNAL(mapped(QWidget *)), this, SLOT(chooseColor(QWidget *)));
 
   //disable unused buttons:
-  ui.errorMessageBG->setEnabled(false);
-  ui.noticeMessageBG->setEnabled(false);
-  ui.plainMessageBG->setEnabled(false);
-  ui.serverMessageBG->setEnabled(false);
-  ui.actionMessageBG->setEnabled(false);
-  ui.joinMessageBG->setEnabled(false);
-  ui.kickMessageBG->setEnabled(false);
-  ui.modeMessageBG->setEnabled(false);
-  ui.partMessageBG->setEnabled(false);
-  ui.quitMessageBG->setEnabled(false);
-  ui.renameMessageBG->setEnabled(false);
+#ifndef PHONDEV
+  ui.inactiveActivityUseBG->setEnabled(false);
+  ui.noActivityUseBG->setEnabled(false);
+  ui.highlightActivityUseBG->setEnabled(false);
+  ui.newMessageActivityUseBG->setEnabled(false);
+  ui.otherActivityUseBG->setEnabled(false);
 
-  ui.timestampBG->setEnabled(false);
-  ui.senderBG->setEnabled(false);
+  ui.errorMessageUseBG->setEnabled(false);
+  ui.noticeMessageUseBG->setEnabled(false);
+  ui.plainMessageUseBG->setEnabled(false);
+  ui.serverMessageUseBG->setEnabled(false);
+  ui.actionMessageUseBG->setEnabled(false);
+  ui.joinMessageUseBG->setEnabled(false);
+  ui.kickMessageUseBG->setEnabled(false);
+  ui.modeMessageUseBG->setEnabled(false);
+  ui.partMessageUseBG->setEnabled(false);
+  ui.quitMessageUseBG->setEnabled(false);
+  ui.renameMessageUseBG->setEnabled(false);
+
+  ui.timestampUseBG->setEnabled(false);
+  ui.senderUseBG->setEnabled(false);
   ui.nickFG->setEnabled(false);
-  ui.nickBG->setEnabled(false);
+  ui.nickUseBG->setEnabled(false);
   ui.hostmaskFG->setEnabled(false);
-  ui.hostmaskBG->setEnabled(false);
+  ui.hostmaskUseBG->setEnabled(false);
   ui.channelnameFG->setEnabled(false);
-  ui.channelnameBG->setEnabled(false);
+  ui.channelnameUseBG->setEnabled(false);
   ui.modeFlagsFG->setEnabled(false);
-  ui.modeFlagsBG->setEnabled(false);
+  ui.modeFlagsUseBG->setEnabled(false);
   ui.urlFG->setEnabled(false);
-  ui.urlBG->setEnabled(false);
+  ui.urlUseBG->setEnabled(false);
+
+  ui.onlineStatusUseBG->setEnabled(false);
+  ui.awayStatusUseBG->setEnabled(false);
+#endif
 }
 
 bool ColorSettingsPage::hasDefaults() const {
@@ -197,14 +239,30 @@ void ColorSettingsPage::defaults() {
   defaultUserActivity();
   defaultMessage();
   defaultMircColorCodes();
+  defaultNickview();
 }
 
 void ColorSettingsPage::defaultBufferview() {
-  ui.inactiveActivity->setColor(QColor(Qt::gray));
-  ui.noActivity->setColor(QColor(Qt::black));
-  ui.highlightActivity->setColor(QColor(Qt::magenta));
-  ui.newMessageActivity->setColor(QColor(Qt::green));
-  ui.otherActivity->setColor(QColor(Qt::darkGreen));
+  ui.inactiveActivityFG->setColor(QColor(Qt::gray));
+  ui.inactiveActivityBG->setColor(QColor(Qt::white));
+  ui.inactiveActivityBG->setEnabled(false);
+  ui.inactiveActivityUseBG->setChecked(false);
+  ui.noActivityFG->setColor(QColor(Qt::black));
+  ui.noActivityBG->setColor(QColor(Qt::white));
+  ui.noActivityBG->setEnabled(false);
+  ui.noActivityUseBG->setChecked(false);
+  ui.highlightActivityFG->setColor(QColor(Qt::magenta));
+  ui.highlightActivityBG->setColor(QColor(Qt::white));
+  ui.highlightActivityBG->setEnabled(false);
+  ui.highlightActivityUseBG->setChecked(false);
+  ui.newMessageActivityFG->setColor(QColor(Qt::green));
+  ui.newMessageActivityBG->setColor(QColor(Qt::white));
+  ui.newMessageActivityBG->setEnabled(false);
+  ui.newMessageActivityUseBG->setChecked(false);
+  ui.otherActivityFG->setColor(QColor(Qt::darkGreen));
+  ui.otherActivityBG->setColor(QColor(Qt::white));
+  ui.otherActivityBG->setEnabled(false);
+  ui.otherActivityUseBG->setChecked(false);
 
   widgetHasChanged();
   bufferviewPreview();
@@ -213,12 +271,20 @@ void ColorSettingsPage::defaultBufferview() {
 void ColorSettingsPage::defaultServerActivity() {
   ui.errorMessageFG->setColor(QtUi::style()->format(UiStyle::ErrorMsg, Settings::Default).foreground().color());
   ui.errorMessageBG->setColor(QColor("white"));
+  ui.errorMessageBG->setEnabled(false);
+  ui.errorMessageUseBG->setChecked(false);
   ui.noticeMessageFG->setColor(QtUi::style()->format(UiStyle::NoticeMsg, Settings::Default).foreground().color());
   ui.noticeMessageBG->setColor(QColor("white"));
+  ui.noticeMessageBG->setEnabled(false);
+  ui.noticeMessageUseBG->setChecked(false);
   ui.plainMessageFG->setColor(QtUi::style()->format(UiStyle::PlainMsg, Settings::Default).foreground().color());
   ui.plainMessageBG->setColor(QColor("white"));
+  ui.plainMessageBG->setEnabled(false);
+  ui.plainMessageUseBG->setChecked(false);
   ui.serverMessageFG->setColor(QtUi::style()->format(UiStyle::ServerMsg, Settings::Default).foreground().color());
   ui.serverMessageBG->setColor(QColor("white"));
+  ui.serverMessageBG->setEnabled(false);
+  ui.serverMessageUseBG->setChecked(false);
 
   widgetHasChanged();
   chatviewPreview();
@@ -227,18 +293,32 @@ void ColorSettingsPage::defaultServerActivity() {
 void ColorSettingsPage::defaultUserActivity() {
   ui.actionMessageFG->setColor(QtUi::style()->format(UiStyle::ActionMsg, Settings::Default).foreground().color());
   ui.actionMessageBG->setColor(QColor("white"));
+  ui.actionMessageBG->setEnabled(false);
+  ui.actionMessageUseBG->setChecked(false);
   ui.joinMessageFG->setColor(QtUi::style()->format(UiStyle::JoinMsg, Settings::Default).foreground().color());
   ui.joinMessageBG->setColor(QColor("white"));
+  ui.joinMessageBG->setEnabled(false);
+  ui.joinMessageUseBG->setChecked(false);
   ui.kickMessageFG->setColor(QtUi::style()->format(UiStyle::KickMsg, Settings::Default).foreground().color());
   ui.kickMessageBG->setColor(QColor("white"));
+  ui.kickMessageBG->setEnabled(false);
+  ui.kickMessageUseBG->setChecked(false);
   ui.modeMessageFG->setColor(QtUi::style()->format(UiStyle::ModeMsg, Settings::Default).foreground().color());
   ui.modeMessageBG->setColor(QColor("white"));
+  ui.modeMessageBG->setEnabled(false);
+  ui.modeMessageUseBG->setChecked(false);
   ui.partMessageFG->setColor(QtUi::style()->format(UiStyle::PartMsg, Settings::Default).foreground().color());
   ui.partMessageBG->setColor(QColor("white"));
+  ui.partMessageBG->setEnabled(false);
+  ui.partMessageUseBG->setChecked(false);
   ui.quitMessageFG->setColor(QtUi::style()->format(UiStyle::QuitMsg, Settings::Default).foreground().color());
   ui.quitMessageBG->setColor(QColor("white"));
+  ui.quitMessageBG->setEnabled(false);
+  ui.quitMessageUseBG->setChecked(false);
   ui.renameMessageFG->setColor(QtUi::style()->format(UiStyle::RenameMsg, Settings::Default).foreground().color());
   ui.renameMessageBG->setColor(QColor("white"));
+  ui.renameMessageBG->setEnabled(false);
+  ui.renameMessageUseBG->setChecked(false);
 
   widgetHasChanged();
   chatviewPreview();
@@ -246,20 +326,33 @@ void ColorSettingsPage::defaultUserActivity() {
 
 void ColorSettingsPage::defaultMessage() {
   ui.timestampFG->setColor(QtUi::style()->format(UiStyle::Timestamp, Settings::Default).foreground().color());
-  ui.senderFG->setColor(QtUi::style()->format(UiStyle::Sender, Settings::Default).foreground().color());
-
   ui.timestampBG->setColor(QColor("white"));
+  ui.timestampBG->setEnabled(false);
+  ui.timestampUseBG->setChecked(false);
+  ui.senderFG->setColor(QtUi::style()->format(UiStyle::Sender, Settings::Default).foreground().color());
   ui.senderBG->setColor(QColor("white"));
+  ui.senderBG->setEnabled(false);
+  ui.senderUseBG->setChecked(false);
   ui.nickFG->setColor(QColor("black"));
   ui.nickBG->setColor(QColor("white"));
+  ui.nickBG->setEnabled(false);
+  ui.nickUseBG->setChecked(false);
   ui.hostmaskFG->setColor(QColor("black"));
   ui.hostmaskBG->setColor(QColor("white"));
+  ui.hostmaskBG->setEnabled(false);
+  ui.hostmaskUseBG->setChecked(false);
   ui.channelnameFG->setColor(QColor("black"));
   ui.channelnameBG->setColor(QColor("white"));
+  ui.channelnameBG->setEnabled(false);
+  ui.channelnameUseBG->setChecked(false);
   ui.modeFlagsFG->setColor(QColor("black"));
   ui.modeFlagsBG->setColor(QColor("white"));
+  ui.modeFlagsBG->setEnabled(false);
+  ui.modeFlagsUseBG->setChecked(false);
   ui.urlFG->setColor(QColor("black"));
   ui.urlBG->setColor(QColor("white"));
+  ui.urlBG->setEnabled(false);
+  ui.urlUseBG->setChecked(false);
 
   widgetHasChanged();
   chatviewPreview();
@@ -286,18 +379,55 @@ void ColorSettingsPage::defaultMircColorCodes() {
   widgetHasChanged();
 }
 
+void ColorSettingsPage::defaultNickview() {
+  ui.onlineStatusFG->setColor(QColor(Qt::black));
+  ui.onlineStatusBG->setColor(QColor("white"));
+  ui.onlineStatusBG->setEnabled(false);
+  ui.onlineStatusUseBG->setChecked(false);
+  ui.awayStatusFG->setColor(QColor(Qt::gray));
+  ui.awayStatusBG->setColor(QColor("white"));
+  ui.awayStatusBG->setEnabled(false);
+  ui.awayStatusUseBG->setChecked(false);
+
+  widgetHasChanged();
+}
+
 void ColorSettingsPage::load() {
   QtUiSettings s("QtUi/Colors");
-  settings["InactiveActivity"] = s.value("inactiveActivity", QVariant(QColor(Qt::gray)));
-  ui.inactiveActivity->setColor(settings["InactiveActivity"].value<QColor>());
-  settings["NoActivity"] = s.value("noActivity", QVariant(QColor(Qt::black)));
-  ui.noActivity->setColor(settings["NoActivity"].value<QColor>());
-  settings["HighlightActivity"] = s.value("highlightActivity", QVariant(QColor(Qt::magenta)));
-  ui.highlightActivity->setColor(settings["HighlightActivity"].value<QColor>());
-  settings["NewMessageActivity"] = s.value("newMessageActivity", QVariant(QColor(Qt::green)));
-  ui.newMessageActivity->setColor(settings["NewMessageActivity"].value<QColor>());
-  settings["OtherActivity"] = s.value("otherActivity", QVariant(QColor(Qt::darkGreen)));
-  ui.otherActivity->setColor(settings["OtherActivity"].value<QColor>());
+  settings["InactiveActivityFG"] = s.value("inactiveActivityFG", QVariant(QColor(Qt::gray)));
+  ui.inactiveActivityFG->setColor(settings["InactiveActivityFG"].value<QColor>());
+  settings["InactiveActivityBG"] = s.value("inactiveActivityBG", QVariant(QColor(Qt::white)));
+  ui.inactiveActivityBG->setColor(settings["InactiveActivityBG"].value<QColor>());
+  settings["InactiveActivityUseBG"] = s.value("inactiveActivityUseBG");
+  ui.inactiveActivityUseBG->setChecked(settings["InactiveActivityUseBG"].toBool());
+
+  settings["NoActivityFG"] = s.value("noActivityFG", QVariant(QColor(Qt::black)));
+  ui.noActivityFG->setColor(settings["NoActivityFG"].value<QColor>());
+  settings["NoActivityBG"] = s.value("noActivityBG", QVariant(QColor(Qt::white)));
+  ui.noActivityBG->setColor(settings["NoActivityBG"].value<QColor>());
+  settings["NoActivityUseBG"] = s.value("noActivityUseBG");
+  ui.noActivityUseBG->setChecked(settings["NoActivityUseBG"].toBool());
+
+  settings["HighlightActivityFG"] = s.value("highlightActivityFG", QVariant(QColor(Qt::magenta)));
+  ui.highlightActivityFG->setColor(settings["HighlightActivityFG"].value<QColor>());
+  settings["HighlightActivityBG"] = s.value("highlightActivityBG", QVariant(QColor(Qt::white)));
+  ui.highlightActivityBG->setColor(settings["HighlightActivityBG"].value<QColor>());
+  settings["HighlightActivityUseBG"] = s.value("highlightActivityUseBG");
+  ui.highlightActivityUseBG->setChecked(settings["HighlightActivityUseBG"].toBool());
+
+  settings["NewMessageActivityFG"] = s.value("newMessageActivityFG", QVariant(QColor(Qt::green)));
+  ui.newMessageActivityFG->setColor(settings["NewMessageActivityFG"].value<QColor>());
+  settings["NewMessageActivityBG"] = s.value("newMessageActivityBG", QVariant(QColor(Qt::white)));
+  ui.newMessageActivityBG->setColor(settings["NewMessageActivityBG"].value<QColor>());
+  settings["NewMessageActivityUseBG"] = s.value("newMessageActivityUseBG");
+  ui.newMessageActivityUseBG->setChecked(settings["NewMessageActivityUseBG"].toBool());
+
+  settings["OtherActivityFG"] = s.value("otherActivityFG", QVariant(QColor(Qt::darkGreen)));
+  ui.otherActivityFG->setColor(settings["OtherActivityFG"].value<QColor>());
+  settings["OtherActivityBG"] = s.value("otherActivityBG", QVariant(QColor(Qt::white)));
+  ui.otherActivityBG->setColor(settings["OtherActivityBG"].value<QColor>());
+  settings["OtherActivityUseBG"] = s.value("otherActivityUseBG");
+  ui.otherActivityUseBG->setChecked(settings["OtherActivityUseBG"].toBool());
 
   ui.actionMessageFG->setColor(QtUi::style()->format(UiStyle::ActionMsg).foreground().color());
   ui.errorMessageFG->setColor(QtUi::style()->format(UiStyle::ErrorMsg).foreground().color());
@@ -379,6 +509,19 @@ void ColorSettingsPage::load() {
   ui.color14->setColor(QtUi::style()->format(UiStyle::FgCol14).foreground().color());
   ui.color15->setColor(QtUi::style()->format(UiStyle::FgCol15).foreground().color());
 
+  settings["OnlineStatusFG"] = s.value("onlineStatusFG", QVariant(QColor(Qt::black)));
+  ui.onlineStatusFG->setColor(settings["OnlineStatusFG"].value<QColor>());
+  settings["OnlineStatusBG"] = s.value("onlineStatusBG", QVariant(QColor(Qt::white)));
+  ui.onlineStatusBG->setColor(settings["OnlineStatusBG"].value<QColor>());
+  settings["OnlineStatusUseBG"] = s.value("onlineStatusUseBG");
+  ui.onlineStatusUseBG->setChecked(settings["OnlineStatusUseBG"].toBool());
+
+  settings["AwayStatusFG"] = s.value("awayStatusFG", QVariant(QColor(Qt::gray)));
+  ui.awayStatusFG->setColor(settings["AwayStatusFG"].value<QColor>());
+  settings["AwayStatusBG"] = s.value("awayStatusBG", QVariant(QColor(Qt::white)));
+  ui.awayStatusBG->setColor(settings["AwayStatusBG"].value<QColor>());
+  settings["AwayStatusUseBG"] = s.value("awayStatusUseBG");
+  ui.awayStatusUseBG->setChecked(settings["AwayStatusUseBG"].toBool());
   setChangedState(false);
 
   bufferviewPreview();
@@ -387,50 +530,77 @@ void ColorSettingsPage::load() {
 
 void ColorSettingsPage::save() {
   QtUiSettings s("QtUi/Colors");
-  s.setValue("inactiveActivity", ui.inactiveActivity->color());
-  s.setValue("noActivity", ui.noActivity->color());
-  s.setValue("highlightActivity", ui.highlightActivity->color());
-  s.setValue("newMessageActivity", ui.newMessageActivity->color());
-  s.setValue("otherActivity", ui.otherActivity->color());
+  s.setValue("noActivityFG", ui.noActivityFG->color());
+  s.setValue("noActivityBG", ui.noActivityBG->color());
+  s.setValue("noActivityUseBG", ui.noActivityUseBG->isChecked());
+  s.setValue("inactiveActivityFG", ui.inactiveActivityFG->color());
+  s.setValue("inactiveActivityBG", ui.inactiveActivityBG->color());
+  s.setValue("inactiveActivityUseBG", ui.inactiveActivityUseBG->isChecked());
+  s.setValue("highlightActivityFG", ui.highlightActivityFG->color());
+  s.setValue("highlightActivityBG", ui.highlightActivityBG->color());
+  s.setValue("highlightActivityUseBG", ui.highlightActivityUseBG->isChecked());
+  s.setValue("newMessageActivityFG", ui.newMessageActivityFG->color());
+  s.setValue("newMessageActivityBG", ui.newMessageActivityBG->color());
+  s.setValue("newMessageActivityUseBG", ui.newMessageActivityUseBG->isChecked());
+  s.setValue("otherActivityFG", ui.otherActivityFG->color());
+  s.setValue("otherActivityBG", ui.otherActivityBG->color());
+  s.setValue("otherActivityUseBG", ui.otherActivityUseBG->isChecked());
 
   saveColor(UiStyle::ErrorMsg, ui.errorMessageFG->color());
   s.setValue("errorMessageBG", ui.errorMessageBG->color());
+  s.setValue("errorMessageUseBG", ui.errorMessageUseBG->isChecked());
   saveColor(UiStyle::NoticeMsg, ui.noticeMessageFG->color());
   s.setValue("noticeMessageBG", ui.noticeMessageBG->color());
+  s.setValue("noticeMessageUseBG", ui.noticeMessageUseBG->isChecked());
   saveColor(UiStyle::PlainMsg, ui.plainMessageFG->color());
   s.setValue("plainMessageBG", ui.plainMessageBG->color());
+  s.setValue("plainMessageUseBG", ui.plainMessageUseBG->isChecked());
   saveColor(UiStyle::ServerMsg, ui.serverMessageFG->color());
   s.setValue("serverMessageBG", ui.serverMessageBG->color());
+  s.setValue("serverMessageUseBG", ui.serverMessageUseBG->isChecked());
   saveColor(UiStyle::ActionMsg, ui.actionMessageFG->color());
   s.setValue("actionMessageBG", ui.actionMessageBG->color());
+  s.setValue("actionMessageUseBG", ui.actionMessageUseBG->isChecked());
   saveColor(UiStyle::JoinMsg, ui.joinMessageFG->color());
   s.setValue("joinMessageBG", ui.joinMessageBG->color());
+  s.setValue("joinMessageUseBG", ui.joinMessageUseBG->isChecked());
   saveColor(UiStyle::KickMsg, ui.kickMessageFG->color());
   s.setValue("kickMessageBG", ui.kickMessageBG->color());
+  s.setValue("kickMessageUseBG", ui.kickMessageUseBG->isChecked());
   saveColor(UiStyle::ModeMsg, ui.modeMessageFG->color());
   s.setValue("modeMessageBG", ui.modeMessageBG->color());
+  s.setValue("modeMessageUseBG", ui.modeMessageUseBG->isChecked());
   saveColor(UiStyle::PartMsg, ui.partMessageFG->color());
   s.setValue("partMessageBG", ui.partMessageBG->color());
+  s.setValue("partMessageUseBG", ui.partMessageUseBG->isChecked());
   saveColor(UiStyle::QuitMsg, ui.quitMessageFG->color());
   s.setValue("quitMessageBG", ui.quitMessageBG->color());
+  s.setValue("quitMessageUseBG", ui.quitMessageUseBG->isChecked());
   saveColor(UiStyle::RenameMsg, ui.renameMessageFG->color());
   s.setValue("renameMessageBG", ui.renameMessageBG->color());
+  s.setValue("renameMessageUseBG", ui.renameMessageUseBG->isChecked());
 
   saveColor(UiStyle::Timestamp, ui.timestampFG->color());
-  saveColor(UiStyle::Sender, ui.senderFG->color());
-
   s.setValue("timestampBG", ui.timestampBG->color());
+  s.setValue("timestampUseBG", ui.timestampUseBG->isChecked());
+  saveColor(UiStyle::Sender, ui.senderFG->color());
   s.setValue("senderBG", ui.senderBG->color());
+  s.setValue("senderUseBG", ui.senderUseBG->isChecked());
   s.setValue("nickFG", ui.nickFG->color());
   s.setValue("nickBG", ui.nickBG->color());
+  s.setValue("nickUseBG", ui.nickUseBG->isChecked());
   s.setValue("hostmaskFG", ui.hostmaskFG->color());
   s.setValue("hostmaskBG", ui.hostmaskBG->color());
+  s.setValue("hostmaskUseBG", ui.hostmaskUseBG->isChecked());
   s.setValue("channelnameFG", ui.channelnameFG->color());
   s.setValue("channelnameBG", ui.channelnameBG->color());
+  s.setValue("channelnameUseBG", ui.channelnameUseBG->isChecked());
   s.setValue("modeFlagsFG", ui.modeFlagsFG->color());
   s.setValue("modeFlagsBG", ui.modeFlagsBG->color());
+  s.setValue("modeFlagsUseBG", ui.modeFlagsUseBG->isChecked());
   s.setValue("urlFG", ui.urlFG->color());
   s.setValue("urlBG", ui.urlBG->color());
+  s.setValue("urlUseBG", ui.urlUseBG->isChecked());
 
   saveColor(UiStyle::FgCol00, ui.color0->color());
   saveColor(UiStyle::FgCol01, ui.color1->color());
@@ -465,6 +635,13 @@ void ColorSettingsPage::save() {
   saveColor(UiStyle::BgCol13, ui.color13->color());
   saveColor(UiStyle::BgCol14, ui.color14->color());
   saveColor(UiStyle::BgCol15, ui.color15->color());
+  
+  s.setValue("onlineStatusFG", ui.onlineStatusFG->color());
+  s.setValue("onlineStatusBG", ui.onlineStatusBG->color());
+  s.setValue("onlineStatusUseBG", ui.onlineStatusUseBG->isChecked());
+  s.setValue("awayStatusFG", ui.awayStatusFG->color());
+  s.setValue("awayStatusBG", ui.awayStatusBG->color());
+  s.setValue("awayStatusUseBG", ui.awayStatusUseBG->isChecked());
 
   load(); //TODO: remove when settings hash map is unnescessary
   setChangedState(false);
@@ -478,15 +655,29 @@ void ColorSettingsPage::saveColor(UiStyle::FormatType formatType, const QColor &
 
 void ColorSettingsPage::widgetHasChanged() {
   bool changed = testHasChanged();
-  if(changed != hasChanged()) setChangedState(changed);
+  if(changed != hasChanged()) {
+    setChangedState(changed);
+  }
+  bufferviewPreview();
+  chatviewPreview();
 }
 
 bool ColorSettingsPage::testHasChanged() {
-  if(settings["InactiveActivity"].value<QColor>() != ui.inactiveActivity->color()) return true;
-  if(settings["NoActivity"].value<QColor>() != ui.noActivity->color()) return true;
-  if(settings["HighlightActivity"].value<QColor>() != ui.highlightActivity->color()) return true;
-  if(settings["NewMessageActivity"].value<QColor>() != ui.newMessageActivity->color()) return true;
-  if(settings["OtherActivity"].value<QColor>() != ui.otherActivity->color()) return true;
+  if(settings["InactiveActivityFG"].value<QColor>() != ui.inactiveActivityFG->color()) return true;
+  if(settings["InactiveActivityBG"].value<QColor>() != ui.inactiveActivityBG->color()) return true;
+  if(settings["InactiveActivityUseBG"].toBool() != ui.inactiveActivityUseBG->isChecked()) return true;
+  if(settings["NoActivityFG"].value<QColor>() != ui.noActivityFG->color()) return true;
+  if(settings["NoActivityBG"].value<QColor>() != ui.noActivityBG->color()) return true;
+  if(settings["NoActivityUseBG"].toBool() != ui.noActivityUseBG->isChecked()) return true;
+  if(settings["HighlightActivityFG"].value<QColor>() != ui.highlightActivityFG->color()) return true;
+  if(settings["HighlightActivityBG"].value<QColor>() != ui.highlightActivityBG->color()) return true;
+  if(settings["HighlightActivityUseBG"].toBool() != ui.highlightActivityUseBG->isChecked()) return true;
+  if(settings["NewMessageActivityFG"].value<QColor>() != ui.newMessageActivityFG->color()) return true;
+  if(settings["NewMessageActivityBG"].value<QColor>() != ui.newMessageActivityBG->color()) return true;
+  if(settings["NewMessageActivityUseBG"].toBool() != ui.newMessageActivityUseBG->isChecked()) return true;
+  if(settings["OtherActivityFG"].value<QColor>() != ui.otherActivityFG->color()) return true;
+  if(settings["OtherActivityBG"].value<QColor>() != ui.otherActivityBG->color()) return true;
+  if(settings["OtherActivityUseBG"].toBool() != ui.otherActivityUseBG->isChecked()) return true;
 
   if(QtUi::style()->format(UiStyle::ErrorMsg).foreground().color() != ui.errorMessageFG->color()) return true;
   if(settings["ErrorMessageBG"].value<QColor>() != ui.errorMessageBG->color()) return true;
@@ -544,6 +735,13 @@ bool ColorSettingsPage::testHasChanged() {
   if(QtUi::style()->format(UiStyle::FgCol14).foreground().color() != ui.color14->color()) return true;
   if(QtUi::style()->format(UiStyle::FgCol15).foreground().color() != ui.color15->color()) return true;
 
+  if(settings["OnlineStatusFG"].value<QColor>() != ui.onlineStatusFG->color()) return true;
+  if(settings["OnlineStatusBG"].value<QColor>() != ui.onlineStatusBG->color()) return true;
+  if(settings["OnlineStatusUseBG"].toBool() != ui.onlineStatusUseBG->isChecked()) return true;
+  if(settings["AwayStatusFG"].value<QColor>() != ui.awayStatusFG->color()) return true;
+  if(settings["AwayStatusBG"].value<QColor>() != ui.awayStatusBG->color()) return true;
+  if(settings["AwayStatusUseBG"].toBool() != ui.awayStatusUseBG->isChecked()) return true;
+
   return false;
 }
 
@@ -555,8 +753,6 @@ void ColorSettingsPage::chooseColor(QWidget *widget) {
     button->setColor(color);
   }
   widgetHasChanged();
-  bufferviewPreview();
-  chatviewPreview();
 }
 
 void ColorSettingsPage::chatviewPreview() {
@@ -570,29 +766,47 @@ void ColorSettingsPage::bufferviewPreview() {
 
   QTreeWidgetItem *topLevelItem = new QTreeWidgetItem((QTreeWidget*)0, QStringList(QString("network")));
   ui.bufferviewPreview->insertTopLevelItem(0, topLevelItem);
+  topLevelItem->setForeground(0, QBrush(ui.noActivityFG->color()));
+  if(ui.noActivityUseBG->isChecked())
+    topLevelItem->setBackground(0, QBrush(ui.noActivityBG->color()));
+
 
   QList<QTreeWidgetItem *> items;
-  items.append(new QTreeWidgetItem((QTreeWidget*)0, QStringList(QString("Status Buffer"))));
+  QTreeWidgetItem *statusBuffer = new QTreeWidgetItem((QTreeWidget*)0, QStringList(QString("Status Buffer")));
+  items.append(statusBuffer);
+  statusBuffer->setForeground(0, QBrush(ui.noActivityFG->color()));
+  if(ui.noActivityUseBG->isChecked())
+    statusBuffer->setBackground(0, QBrush(ui.noActivityBG->color()));
 
-  QTreeWidgetItem *inactive = new QTreeWidgetItem((QTreeWidget*)0, QStringList(QString("#inactive channel")));
-  items.append(inactive);
-  inactive->setForeground(0, QBrush(ui.inactiveActivity->color()));
+  QTreeWidgetItem *inactiveActivity = new QTreeWidgetItem((QTreeWidget*)0, QStringList(QString("#inactive channel")));
+  items.append(inactiveActivity);
+  inactiveActivity->setForeground(0, QBrush(ui.inactiveActivityFG->color()));
+  if(ui.inactiveActivityUseBG->isChecked())
+    inactiveActivity->setBackground(0, QBrush(ui.inactiveActivityBG->color()));
 
   QTreeWidgetItem *noActivity = new QTreeWidgetItem((QTreeWidget*)0, QStringList(QString("#channel with no activity")));
   items.append(noActivity);
-  noActivity->setForeground(0, QBrush(ui.noActivity->color()));
+  noActivity->setForeground(0, QBrush(ui.noActivityFG->color()));
+  if(ui.noActivityUseBG->isChecked())
+    noActivity->setBackground(0, QBrush(ui.noActivityBG->color()));
 
   QTreeWidgetItem *highlightActivity = new QTreeWidgetItem((QTreeWidget*)0, QStringList(QString("#channel with highlight")));
   items.append(highlightActivity);
-  highlightActivity->setForeground(0, QBrush(ui.highlightActivity->color()));
+  highlightActivity->setForeground(0, QBrush(ui.highlightActivityFG->color()));
+  if(ui.highlightActivityUseBG->isChecked())
+    highlightActivity->setBackground(0, QBrush(ui.highlightActivityBG->color()));
 
   QTreeWidgetItem *newMessageActivity = new QTreeWidgetItem((QTreeWidget*)0, QStringList(QString("#channel with new message")));
   items.append(newMessageActivity);
-  newMessageActivity->setForeground(0, QBrush(ui.newMessageActivity->color()));
+  newMessageActivity->setForeground(0, QBrush(ui.newMessageActivityFG->color()));
+  if(ui.newMessageActivityUseBG->isChecked())
+    newMessageActivity->setBackground(0, QBrush(ui.newMessageActivityBG->color()));
 
   QTreeWidgetItem *otherActivity = new QTreeWidgetItem((QTreeWidget*)0, QStringList(QString("#channel with other activity")));
   items.append(otherActivity);
-  otherActivity->setForeground(0, QBrush(ui.otherActivity->color()));
+  otherActivity->setForeground(0, QBrush(ui.otherActivityFG->color()));
+  if(ui.otherActivityUseBG->isChecked())
+    otherActivity->setBackground(0, QBrush(ui.otherActivityBG->color()));
 
   topLevelItem->insertChildren(0, items);
   ui.bufferviewPreview->expandItem(topLevelItem);

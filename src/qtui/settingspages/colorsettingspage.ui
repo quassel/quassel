@@ -24,7 +24,7 @@
      <property name="currentIndex" >
       <number>0</number>
      </property>
-     <widget class="QWidget" name="Seite" >
+     <widget class="QWidget" name="bufferview" >
       <attribute name="title" >
        <string>Bufferview</string>
       </attribute>
@@ -35,77 +35,225 @@
           <string>Activities:</string>
          </property>
          <layout class="QGridLayout" >
-          <item row="0" column="0" >
-           <widget class="QLabel" name="label_42" >
+          <item row="0" column="1" >
+           <widget class="QLabel" name="label" >
             <property name="text" >
-             <string>Inactive:</string>
+             <string>FG</string>
+            </property>
+            <property name="alignment" >
+             <set>Qt::AlignCenter</set>
             </property>
            </widget>
           </item>
-          <item row="0" column="1" >
-           <widget class="ColorButton" name="inactiveActivity" >
+          <item row="0" column="2" >
+           <widget class="QLabel" name="label_2" >
             <property name="text" >
-             <string/>
+             <string>BG</string>
+            </property>
+            <property name="alignment" >
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="3" >
+           <widget class="QLabel" name="label_3" >
+            <property name="text" >
+             <string>Use BG</string>
+            </property>
+            <property name="alignment" >
+             <set>Qt::AlignCenter</set>
             </property>
            </widget>
           </item>
           <item row="1" column="0" >
            <widget class="QLabel" name="label_43" >
             <property name="text" >
-             <string>No Activity:</string>
+             <string>Default:</string>
             </property>
            </widget>
           </item>
           <item row="1" column="1" >
-           <widget class="ColorButton" name="noActivity" >
+           <widget class="ColorButton" name="noActivityFG" >
+            <property name="text" >
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="2" >
+           <widget class="ColorButton" name="noActivityBG" >
+            <property name="enabled" >
+             <bool>false</bool>
+            </property>
+            <property name="text" >
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="3" >
+           <widget class="QCheckBox" name="noActivityUseBG" >
+            <property name="sizePolicy" >
+             <sizepolicy vsizetype="Fixed" hsizetype="Maximum" >
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="text" >
              <string/>
             </property>
            </widget>
           </item>
           <item row="2" column="0" >
-           <widget class="QLabel" name="label_39" >
+           <widget class="QLabel" name="label_42" >
             <property name="text" >
-             <string>Highlight:</string>
+             <string>Inactive:</string>
             </property>
            </widget>
           </item>
           <item row="2" column="1" >
-           <widget class="ColorButton" name="highlightActivity" >
+           <widget class="ColorButton" name="inactiveActivityFG" >
+            <property name="text" >
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="2" >
+           <widget class="ColorButton" name="inactiveActivityBG" >
+            <property name="enabled" >
+             <bool>false</bool>
+            </property>
+            <property name="text" >
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="3" >
+           <widget class="QCheckBox" name="inactiveActivityUseBG" >
+            <property name="sizePolicy" >
+             <sizepolicy vsizetype="Fixed" hsizetype="Maximum" >
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="layoutDirection" >
+             <enum>Qt::LeftToRight</enum>
+            </property>
             <property name="text" >
              <string/>
             </property>
            </widget>
           </item>
           <item row="3" column="0" >
-           <widget class="QLabel" name="label_40" >
+           <widget class="QLabel" name="label_39" >
             <property name="text" >
-             <string>New Message:</string>
+             <string>Highlight:</string>
             </property>
            </widget>
           </item>
           <item row="3" column="1" >
-           <widget class="ColorButton" name="newMessageActivity" >
+           <widget class="ColorButton" name="highlightActivityFG" >
+            <property name="text" >
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="2" >
+           <widget class="ColorButton" name="highlightActivityBG" >
+            <property name="enabled" >
+             <bool>false</bool>
+            </property>
+            <property name="text" >
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="3" >
+           <widget class="QCheckBox" name="highlightActivityUseBG" >
+            <property name="sizePolicy" >
+             <sizepolicy vsizetype="Fixed" hsizetype="Maximum" >
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="text" >
              <string/>
             </property>
            </widget>
           </item>
           <item row="4" column="0" >
-           <widget class="QLabel" name="label_41" >
+           <widget class="QLabel" name="label_40" >
             <property name="text" >
-             <string>Other Activity:</string>
+             <string>New Message:</string>
             </property>
            </widget>
           </item>
           <item row="4" column="1" >
-           <widget class="ColorButton" name="otherActivity" >
+           <widget class="ColorButton" name="newMessageActivityFG" >
+            <property name="text" >
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="2" >
+           <widget class="ColorButton" name="newMessageActivityBG" >
+            <property name="enabled" >
+             <bool>false</bool>
+            </property>
+            <property name="text" >
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="3" >
+           <widget class="QCheckBox" name="newMessageActivityUseBG" >
+            <property name="sizePolicy" >
+             <sizepolicy vsizetype="Fixed" hsizetype="Maximum" >
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="text" >
              <string/>
             </property>
            </widget>
           </item>
           <item row="5" column="0" >
+           <widget class="QLabel" name="label_41" >
+            <property name="text" >
+             <string>Other Activity:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1" >
+           <widget class="ColorButton" name="otherActivityFG" >
+            <property name="text" >
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="2" >
+           <widget class="ColorButton" name="otherActivityBG" >
+            <property name="enabled" >
+             <bool>false</bool>
+            </property>
+            <property name="text" >
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="3" >
+           <widget class="QCheckBox" name="otherActivityUseBG" >
+            <property name="sizePolicy" >
+             <sizepolicy vsizetype="Fixed" hsizetype="Maximum" >
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text" >
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="0" >
            <spacer>
             <property name="orientation" >
              <enum>Qt::Vertical</enum>
@@ -126,7 +274,7 @@
          <property name="title" >
           <string>Preview:</string>
          </property>
-         <layout class="QHBoxLayout" >
+         <layout class="QVBoxLayout" >
           <item>
            <widget class="QTreeWidget" name="bufferviewPreview" >
             <column>
@@ -139,15 +287,15 @@
          </layout>
         </widget>
        </item>
-       <item row="1" column="1" >
+       <item row="1" column="0" colspan="2" >
         <spacer>
          <property name="orientation" >
           <enum>Qt::Vertical</enum>
          </property>
          <property name="sizeHint" >
           <size>
-           <width>20</width>
-           <height>40</height>
+           <width>318</width>
+           <height>171</height>
           </size>
          </property>
         </spacer>
@@ -175,6 +323,36 @@
            <string>Server Activity</string>
           </attribute>
           <layout class="QGridLayout" >
+           <item row="0" column="1" >
+            <widget class="QLabel" name="label_44" >
+             <property name="text" >
+              <string>Foreground</string>
+             </property>
+             <property name="alignment" >
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="2" >
+            <widget class="QLabel" name="label_45" >
+             <property name="text" >
+              <string>Background</string>
+             </property>
+             <property name="alignment" >
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="3" >
+            <widget class="QLabel" name="label_7" >
+             <property name="text" >
+              <string>Use BG</string>
+             </property>
+             <property name="alignment" >
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
            <item row="1" column="0" >
             <widget class="QLabel" name="label_20" >
              <property name="text" >
@@ -191,6 +369,25 @@
            </item>
            <item row="1" column="2" >
             <widget class="ColorButton" name="errorMessageBG" >
+             <property name="enabled" >
+              <bool>false</bool>
+             </property>
+             <property name="text" >
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="3" >
+            <widget class="QCheckBox" name="errorMessageUseBG" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Maximum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="layoutDirection" >
+              <enum>Qt::LeftToRight</enum>
+             </property>
              <property name="text" >
               <string/>
              </property>
@@ -212,6 +409,25 @@
            </item>
            <item row="2" column="2" >
             <widget class="ColorButton" name="noticeMessageBG" >
+             <property name="enabled" >
+              <bool>false</bool>
+             </property>
+             <property name="text" >
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="3" >
+            <widget class="QCheckBox" name="noticeMessageUseBG" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Maximum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="layoutDirection" >
+              <enum>Qt::LeftToRight</enum>
+             </property>
              <property name="text" >
               <string/>
              </property>
@@ -233,6 +449,25 @@
            </item>
            <item row="3" column="2" >
             <widget class="ColorButton" name="plainMessageBG" >
+             <property name="enabled" >
+              <bool>false</bool>
+             </property>
+             <property name="text" >
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="3" >
+            <widget class="QCheckBox" name="plainMessageUseBG" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Maximum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="layoutDirection" >
+              <enum>Qt::LeftToRight</enum>
+             </property>
              <property name="text" >
               <string/>
              </property>
@@ -254,28 +489,27 @@
            </item>
            <item row="4" column="2" >
             <widget class="ColorButton" name="serverMessageBG" >
+             <property name="enabled" >
+              <bool>false</bool>
+             </property>
              <property name="text" >
               <string/>
              </property>
             </widget>
            </item>
-           <item row="0" column="1" >
-            <widget class="QLabel" name="label_44" >
+           <item row="4" column="3" >
+            <widget class="QCheckBox" name="serverMessageUseBG" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Maximum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="layoutDirection" >
+              <enum>Qt::LeftToRight</enum>
+             </property>
              <property name="text" >
-              <string>Foreground</string>
-             </property>
-             <property name="alignment" >
-              <set>Qt::AlignCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="2" >
-            <widget class="QLabel" name="label_45" >
-             <property name="text" >
-              <string>Background</string>
-             </property>
-             <property name="alignment" >
-              <set>Qt::AlignCenter</set>
+              <string/>
              </property>
             </widget>
            </item>
@@ -319,6 +553,16 @@
              </property>
             </widget>
            </item>
+           <item row="0" column="3" >
+            <widget class="QLabel" name="label_8" >
+             <property name="text" >
+              <string>Use BG</string>
+             </property>
+             <property name="alignment" >
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
            <item row="1" column="0" >
             <widget class="QLabel" name="label_27" >
              <property name="text" >
@@ -335,6 +579,25 @@
            </item>
            <item row="1" column="2" >
             <widget class="ColorButton" name="actionMessageBG" >
+             <property name="enabled" >
+              <bool>false</bool>
+             </property>
+             <property name="text" >
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="3" >
+            <widget class="QCheckBox" name="actionMessageUseBG" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Maximum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="layoutDirection" >
+              <enum>Qt::LeftToRight</enum>
+             </property>
              <property name="text" >
               <string/>
              </property>
@@ -356,6 +619,25 @@
            </item>
            <item row="2" column="2" >
             <widget class="ColorButton" name="joinMessageBG" >
+             <property name="enabled" >
+              <bool>false</bool>
+             </property>
+             <property name="text" >
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="3" >
+            <widget class="QCheckBox" name="joinMessageUseBG" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Maximum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="layoutDirection" >
+              <enum>Qt::LeftToRight</enum>
+             </property>
              <property name="text" >
               <string/>
              </property>
@@ -377,6 +659,25 @@
            </item>
            <item row="3" column="2" >
             <widget class="ColorButton" name="kickMessageBG" >
+             <property name="enabled" >
+              <bool>false</bool>
+             </property>
+             <property name="text" >
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="3" >
+            <widget class="QCheckBox" name="kickMessageUseBG" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Maximum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="layoutDirection" >
+              <enum>Qt::LeftToRight</enum>
+             </property>
              <property name="text" >
               <string/>
              </property>
@@ -398,6 +699,25 @@
            </item>
            <item row="4" column="2" >
             <widget class="ColorButton" name="modeMessageBG" >
+             <property name="enabled" >
+              <bool>false</bool>
+             </property>
+             <property name="text" >
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="3" >
+            <widget class="QCheckBox" name="modeMessageUseBG" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Maximum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="layoutDirection" >
+              <enum>Qt::LeftToRight</enum>
+             </property>
              <property name="text" >
               <string/>
              </property>
@@ -419,6 +739,25 @@
            </item>
            <item row="5" column="2" >
             <widget class="ColorButton" name="partMessageBG" >
+             <property name="enabled" >
+              <bool>false</bool>
+             </property>
+             <property name="text" >
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="3" >
+            <widget class="QCheckBox" name="partMessageUseBG" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Maximum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="layoutDirection" >
+              <enum>Qt::LeftToRight</enum>
+             </property>
              <property name="text" >
               <string/>
              </property>
@@ -440,6 +779,25 @@
            </item>
            <item row="6" column="2" >
             <widget class="ColorButton" name="quitMessageBG" >
+             <property name="enabled" >
+              <bool>false</bool>
+             </property>
+             <property name="text" >
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="3" >
+            <widget class="QCheckBox" name="quitMessageUseBG" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Maximum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="layoutDirection" >
+              <enum>Qt::LeftToRight</enum>
+             </property>
              <property name="text" >
               <string/>
              </property>
@@ -461,6 +819,25 @@
            </item>
            <item row="7" column="2" >
             <widget class="ColorButton" name="renameMessageBG" >
+             <property name="enabled" >
+              <bool>false</bool>
+             </property>
+             <property name="text" >
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="7" column="3" >
+            <widget class="QCheckBox" name="renameMessageUseBG" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Maximum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="layoutDirection" >
+              <enum>Qt::LeftToRight</enum>
+             </property>
              <property name="text" >
               <string/>
              </property>
@@ -493,6 +870,16 @@
              </property>
             </widget>
            </item>
+           <item row="0" column="3" >
+            <widget class="QLabel" name="label_9" >
+             <property name="text" >
+              <string>Use BG</string>
+             </property>
+             <property name="alignment" >
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
            <item row="1" column="0" >
             <widget class="QLabel" name="label_29" >
              <property name="text" >
@@ -509,6 +896,25 @@
            </item>
            <item row="1" column="2" >
             <widget class="ColorButton" name="timestampBG" >
+             <property name="enabled" >
+              <bool>false</bool>
+             </property>
+             <property name="text" >
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="3" >
+            <widget class="QCheckBox" name="timestampUseBG" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Maximum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="layoutDirection" >
+              <enum>Qt::LeftToRight</enum>
+             </property>
              <property name="text" >
               <string/>
              </property>
@@ -530,6 +936,25 @@
            </item>
            <item row="2" column="2" >
             <widget class="ColorButton" name="senderBG" >
+             <property name="enabled" >
+              <bool>false</bool>
+             </property>
+             <property name="text" >
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="3" >
+            <widget class="QCheckBox" name="senderUseBG" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Maximum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="layoutDirection" >
+              <enum>Qt::LeftToRight</enum>
+             </property>
              <property name="text" >
               <string/>
              </property>
@@ -551,6 +976,25 @@
            </item>
            <item row="3" column="2" >
             <widget class="ColorButton" name="nickBG" >
+             <property name="enabled" >
+              <bool>false</bool>
+             </property>
+             <property name="text" >
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="3" >
+            <widget class="QCheckBox" name="nickUseBG" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Maximum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="layoutDirection" >
+              <enum>Qt::LeftToRight</enum>
+             </property>
              <property name="text" >
               <string/>
              </property>
@@ -572,6 +1016,25 @@
            </item>
            <item row="4" column="2" >
             <widget class="ColorButton" name="hostmaskBG" >
+             <property name="enabled" >
+              <bool>false</bool>
+             </property>
+             <property name="text" >
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="3" >
+            <widget class="QCheckBox" name="hostmaskUseBG" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Maximum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="layoutDirection" >
+              <enum>Qt::LeftToRight</enum>
+             </property>
              <property name="text" >
               <string/>
              </property>
@@ -593,6 +1056,25 @@
            </item>
            <item row="5" column="2" >
             <widget class="ColorButton" name="channelnameBG" >
+             <property name="enabled" >
+              <bool>false</bool>
+             </property>
+             <property name="text" >
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="3" >
+            <widget class="QCheckBox" name="channelnameUseBG" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Maximum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="layoutDirection" >
+              <enum>Qt::LeftToRight</enum>
+             </property>
              <property name="text" >
               <string/>
              </property>
@@ -614,6 +1096,25 @@
            </item>
            <item row="6" column="2" >
             <widget class="ColorButton" name="modeFlagsBG" >
+             <property name="enabled" >
+              <bool>false</bool>
+             </property>
+             <property name="text" >
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="3" >
+            <widget class="QCheckBox" name="modeFlagsUseBG" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Maximum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="layoutDirection" >
+              <enum>Qt::LeftToRight</enum>
+             </property>
              <property name="text" >
               <string/>
              </property>
@@ -635,6 +1136,25 @@
            </item>
            <item row="7" column="2" >
             <widget class="ColorButton" name="urlBG" >
+             <property name="enabled" >
+              <bool>false</bool>
+             </property>
+             <property name="text" >
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="7" column="3" >
+            <widget class="QCheckBox" name="urlUseBG" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Maximum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="layoutDirection" >
+              <enum>Qt::LeftToRight</enum>
+             </property>
              <property name="text" >
               <string/>
              </property>
@@ -923,6 +1443,173 @@
        </item>
       </layout>
      </widget>
+     <widget class="QWidget" name="nickview" >
+      <attribute name="title" >
+       <string>Nickview</string>
+      </attribute>
+      <layout class="QGridLayout" >
+       <item row="0" column="0" >
+        <widget class="QGroupBox" name="groupBox_8" >
+         <property name="title" >
+          <string>Nick status:</string>
+         </property>
+         <layout class="QGridLayout" >
+          <item row="0" column="1" >
+           <widget class="QLabel" name="label_4" >
+            <property name="text" >
+             <string>FG</string>
+            </property>
+            <property name="alignment" >
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2" >
+           <widget class="QLabel" name="label_5" >
+            <property name="text" >
+             <string>BG</string>
+            </property>
+            <property name="alignment" >
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="3" >
+           <widget class="QLabel" name="label_6" >
+            <property name="text" >
+             <string>Use BG</string>
+            </property>
+            <property name="alignment" >
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0" >
+           <widget class="QLabel" name="label_62" >
+            <property name="text" >
+             <string>Online:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1" >
+           <widget class="ColorButton" name="onlineStatusFG" >
+            <property name="text" >
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="2" >
+           <widget class="ColorButton" name="onlineStatusBG" >
+            <property name="enabled" >
+             <bool>false</bool>
+            </property>
+            <property name="text" >
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="3" >
+           <widget class="QCheckBox" name="onlineStatusUseBG" >
+            <property name="sizePolicy" >
+             <sizepolicy vsizetype="Fixed" hsizetype="Maximum" >
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="layoutDirection" >
+             <enum>Qt::LeftToRight</enum>
+            </property>
+            <property name="text" >
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0" >
+           <widget class="QLabel" name="label_63" >
+            <property name="text" >
+             <string>Away:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1" >
+           <widget class="ColorButton" name="awayStatusFG" >
+            <property name="text" >
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="2" >
+           <widget class="ColorButton" name="awayStatusBG" >
+            <property name="enabled" >
+             <bool>false</bool>
+            </property>
+            <property name="text" >
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="3" >
+           <widget class="QCheckBox" name="awayStatusUseBG" >
+            <property name="sizePolicy" >
+             <sizepolicy vsizetype="Fixed" hsizetype="Maximum" >
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text" >
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0" >
+           <spacer>
+            <property name="orientation" >
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" >
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="0" column="1" >
+        <widget class="QGroupBox" name="groupBox_9" >
+         <property name="title" >
+          <string>Preview:</string>
+         </property>
+         <layout class="QVBoxLayout" >
+          <item>
+           <widget class="QTreeWidget" name="nickviewPreview" >
+            <column>
+             <property name="text" >
+              <string>1</string>
+             </property>
+            </column>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="1" column="0" colspan="2" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" >
+          <size>
+           <width>261</width>
+           <height>151</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </item>
   </layout>
@@ -935,5 +1622,406 @@
   </customwidget>
  </customwidgets>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>inactiveActivityUseBG</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>inactiveActivityBG</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>249</x>
+     <y>111</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>197</x>
+     <y>111</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>noActivityUseBG</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>noActivityBG</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>249</x>
+     <y>147</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>197</x>
+     <y>147</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>highlightActivityUseBG</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>highlightActivityBG</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>249</x>
+     <y>183</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>197</x>
+     <y>183</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>newMessageActivityUseBG</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>newMessageActivityBG</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>249</x>
+     <y>219</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>197</x>
+     <y>219</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>otherActivityUseBG</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>otherActivityBG</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>249</x>
+     <y>255</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>197</x>
+     <y>255</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>onlineStatusUseBG</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>onlineStatusBG</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>202</x>
+     <y>111</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>150</x>
+     <y>111</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>awayStatusUseBG</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>awayStatusBG</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>202</x>
+     <y>147</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>150</x>
+     <y>147</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>errorMessageUseBG</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>errorMessageBG</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>374</x>
+     <y>119</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>280</x>
+     <y>119</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>noticeMessageUseBG</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>noticeMessageBG</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>374</x>
+     <y>155</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>280</x>
+     <y>155</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>plainMessageUseBG</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>plainMessageBG</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>374</x>
+     <y>191</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>280</x>
+     <y>191</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>serverMessageUseBG</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>serverMessageBG</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>374</x>
+     <y>227</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>280</x>
+     <y>227</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionMessageUseBG</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>actionMessageBG</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>376</x>
+     <y>121</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>285</x>
+     <y>121</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>joinMessageUseBG</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>joinMessageBG</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>376</x>
+     <y>157</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>285</x>
+     <y>157</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>kickMessageUseBG</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>kickMessageBG</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>376</x>
+     <y>193</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>285</x>
+     <y>193</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>modeMessageUseBG</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>modeMessageBG</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>376</x>
+     <y>229</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>285</x>
+     <y>229</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>partMessageUseBG</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>partMessageBG</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>376</x>
+     <y>265</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>285</x>
+     <y>265</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>quitMessageUseBG</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>quitMessageBG</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>376</x>
+     <y>301</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>285</x>
+     <y>301</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>renameMessageUseBG</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>renameMessageBG</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>376</x>
+     <y>337</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>285</x>
+     <y>337</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>timestampUseBG</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>timestampBG</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>372</x>
+     <y>121</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>273</x>
+     <y>121</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>senderUseBG</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>senderBG</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>372</x>
+     <y>157</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>273</x>
+     <y>157</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>nickUseBG</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>nickBG</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>372</x>
+     <y>193</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>273</x>
+     <y>193</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>hostmaskUseBG</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>hostmaskBG</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>372</x>
+     <y>229</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>273</x>
+     <y>229</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>channelnameUseBG</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>channelnameBG</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>372</x>
+     <y>265</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>273</x>
+     <y>265</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>modeFlagsUseBG</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>modeFlagsBG</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>372</x>
+     <y>301</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>273</x>
+     <y>301</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>urlUseBG</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>urlBG</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>372</x>
+     <y>337</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>273</x>
+     <y>337</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

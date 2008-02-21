@@ -44,20 +44,25 @@ QColor ColorButton::color() const {
 }
 
 void ColorButton::paintEvent(QPaintEvent *event) {
+  //TODO: work on a good button style solution
   QPushButton::paintEvent(event);
   QPainter painter(this);
   int border = QApplication::style()->pixelMetric(QStyle::PM_ButtonMargin);
-  painter.fillRect(rect().adjusted(border+1, border+1, -border-1, -border-1), QBrush(_color));
+
+  // if twice buttonMargin (+2 px from the adjust) is greater than the button height
+  // then set the border to a third of the button height.
+  if(2*border+2 >= event->rect().height()) border = event->rect().height()/3;
+
+  QBrush brush;
+  if(isEnabled()) {
+    brush = QBrush(_color);
+  } else {
+    brush = QBrush(_color, Qt::Dense4Pattern);
+  }
+  painter.fillRect(rect().adjusted(border+1, border+1, -border-1, -border-1), brush);
   QStyleOptionFrame option;
   option.state = QStyle::State_Sunken;
   option.rect = rect().adjusted(border, border, -border, -border);
-  //TODO: setBackground instead of the fillRect()
-  //painter.setBackground(_color);
-  //painter.setBackgroundMode(Qt::OpaqueMode);
-  //painter.fillRect(QApplication::style()->subElementRect(QStyle::SE_FrameContents, &option), QBrush(_color));
-  //qDebug() << option << QApplication::style()->subElementRect(QStyle::SE_PushButtonContents, &option);
+
   QApplication::style()->drawPrimitive(QStyle::PE_Frame, &option, &painter);
-  //painter.fillRect(QApplication::style()->subElementRect(QStyle::SE_FrameContents, &option), QBrush(_color));
-  //border += QStyle::PM_DefaultFrameWidth;
-  //painter.fillRect(rect().adjusted(border, border, -border, -border), QBrush(_color));
 }

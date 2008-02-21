@@ -21,6 +21,9 @@
 #include "nickviewfilter.h"
 
 #include "networkmodel.h"
+
+#include "uisettings.h"
+
 #include <QColor>
 
 /******************************************************************************************
@@ -42,10 +45,15 @@ QVariant NickViewFilter::data(const QModelIndex &index, int role) const {
 }
 
 QVariant NickViewFilter::foreground(const QModelIndex &index) const {
+  UiSettings s("QtUi/Colors");
+  QVariant onlineStatusFG = s.value("onlineStatusFG", QVariant(QColor(Qt::black)));
+  QVariant awayStatusFG = s.value("awayStatusFG", QVariant(QColor(Qt::gray)));
+
   if(!index.data(NetworkModel::ItemActiveRole).toBool())
-    return QColor(Qt::gray);
+    return awayStatusFG.value<QColor>();
   
-  return QColor(Qt::black);
+  return onlineStatusFG.value<QColor>();
   
   // FIXME:: make colors configurable;
+  // FIXME: use the style interface instead of qsettings
 }

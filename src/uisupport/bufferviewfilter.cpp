@@ -164,11 +164,11 @@ QVariant BufferViewFilter::data(const QModelIndex &index, int role) const {
 
 QVariant BufferViewFilter::foreground(const QModelIndex &index) const {
   UiSettings s("QtUi/Colors");
-  QVariant inactiveActivity = s.value("inactiveActivity", QVariant(QColor(Qt::gray)));
-  QVariant noActivity = s.value("noActivity", QVariant(QColor(Qt::black)));
-  QVariant highlightActivity = s.value("highlightActivity", QVariant(QColor(Qt::magenta)));
-  QVariant newMessageActivity = s.value("newMessageActivity", QVariant(QColor(Qt::green)));
-  QVariant otherActivity = s.value("otherActivity", QVariant(QColor(Qt::darkGreen)));
+  QVariant inactiveActivity = s.value("inactiveActivityFG", QVariant(QColor(Qt::gray)));
+  QVariant noActivity = s.value("noActivityFG", QVariant(QColor(Qt::black)));
+  QVariant highlightActivity = s.value("highlightActivityFG", QVariant(QColor(Qt::magenta)));
+  QVariant newMessageActivity = s.value("newMessageActivityFG", QVariant(QColor(Qt::green)));
+  QVariant otherActivity = s.value("otherActivityFG", QVariant(QColor(Qt::darkGreen)));
 
   if(!index.data(NetworkModel::ItemActiveRole).toBool())
     return inactiveActivity.value<QColor>();
