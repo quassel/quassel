@@ -282,7 +282,7 @@ void MainWin::setupSystray() {
   systray->setContextMenu(systrayMenu);
 
   QtUiSettings s;
-  if(s.value("UseSystemTrayIcon").toBool()) {
+  if(s.value("UseSystemTrayIcon", QVariant(true)).toBool()) {
     systray->show();
   }
   
