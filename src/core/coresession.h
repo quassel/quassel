@@ -63,11 +63,9 @@ public slots:
 
   void addClient(QObject *socket);
 
-//  void connectToNetwork(QString, const QVariant &previousState = QVariant());
   void connectToNetwork(NetworkId);
   void disconnectFromNetwork(NetworkId id);
 
-  //void processSignal(ClientSignal, QVariant, QVariant, QVariant);
   void sendBacklog(BufferInfo, QVariant, QVariant);
   void msgFromClient(BufferInfo, QString message);
 
@@ -114,7 +112,11 @@ public slots:
    * emits bufferRenamed(bufferId, newName) on success.
    */
   void renameBuffer(const NetworkId &networkId, const QString &newName, const QString &oldName);
-  
+
+  void channelJoined(NetworkId id, const QString &channel, const QString &key = QString());
+  void channelParted(NetworkId, const QString &channel);
+  QHash<QString, QString> persistentChannels(NetworkId) const;
+
 signals:
   void initialized();
 

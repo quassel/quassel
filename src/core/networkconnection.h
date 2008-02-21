@@ -77,17 +77,20 @@ public:
   //! Encode a string using the user-specific encoding, if set, and use the standard encoding else.
   QByteArray userEncode(const QString &userNick, const QString &string) const;
 
-  inline QString channelKey(const QString &channel) const { return _channelKeys.value(channel, QString()); }
+  inline QString channelKey(const QString &channel) const { return _channelKeys.value(channel.toLower(), QString()); }
+  inline QStringList persistentChannels() const { return _channelKeys.keys(); }
 
 public slots:
   // void setServerOptions();
   void connectToIrc(bool reconnecting = false);
-  void disconnectFromIrc();
+  void disconnectFromIrc(bool requested = true);
   void userInput(BufferInfo bufferInfo, QString msg);
 
   void putRawLine(QByteArray input);
   void putCmd(const QString &cmd, const QVariantList &params, const QByteArray &prefix = QByteArray());
 
+  void setChannelJoined(const QString &channel);
+  void setChannelParted(const QString &channel);
   void addChannelKey(const QString &channel, const QString &key);
   void removeChannelKey(const QString &channel);
 
@@ -114,6 +117,8 @@ signals:
 
   //void queryRequested(QString network, QString nick);
   void nickChanged(const NetworkId &networkId, const QString &newNick, const QString &oldNick); // this signal is inteded to rename query buffers in the storage backend
+  void channelJoined(NetworkId, const QString &channel, const QString &key = QString());
+  void channelParted(NetworkId, const QString &channel);
 
 private slots:
   void socketHasData();
@@ -136,7 +141,8 @@ private:
   UserInputHandler *_userInputHandler;
   CtcpHandler *_ctcpHandler;
 
-  QHash<QString, QString> _channelKeys;
+  QHash<QString, QString> _channelKeys;  // stores persistent channels and their passwords, if any
+
   QTimer _autoReconnectTimer;
   int _autoReconnectCount;
 

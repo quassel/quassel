@@ -162,20 +162,20 @@ void IrcServerHandler::defaultHandler(QString cmd, const QString &prefix, const 
 // IRC SERVER HANDLER
 //******************************/
 void IrcServerHandler::handleJoin(const QString &prefix, const QList<QByteArray> &params) {
-  Q_ASSERT(params.count() == 1);
+  if(params.count() < 1) return;
   QString channel = serverDecode(params[0]);
   IrcUser *ircuser = network()->updateNickFromMask(prefix);
   emit displayMsg(Message::Join, BufferInfo::ChannelBuffer, channel, channel, prefix);
   //qDebug() << "IrcServerHandler::handleJoin()" << prefix << params;
   ircuser->joinChannel(channel);
-  if(network()->isMe(ircuser)) network()->addPersistentChannel(channel, networkConnection()->channelKey(channel));
+  if(network()->isMe(ircuser)) networkConnection()->setChannelJoined(channel);
 }
 
 void IrcServerHandler::handleKick(const QString &prefix, const QList<QByteArray> &params) {
   network()->updateNickFromMask(prefix);
   IrcUser *victim = network()->ircUser(params[1]);
+  if(!victim) return;
   QString channel = serverDecode(params[0]);
-  Q_ASSERT(victim);
 
   victim->partChannel(channel);
 
@@ -278,7 +278,7 @@ void IrcServerHandler::handlePart(const QString &prefix, const QList<QByteArray>
     msg = userDecode(ircuser->nick(), params[1]);
 
   emit displayMsg(Message::Part, BufferInfo::ChannelBuffer, channel, msg, prefix);
-  if(network()->isMe(ircuser)) network()->removePersistentChannel(channel);
+  if(network()->isMe(ircuser)) networkConnection()->setChannelParted(channel);
 }
 
 void IrcServerHandler::handlePing(const QString &prefix, const QList<QByteArray> &params) {

@@ -133,8 +133,6 @@ public:
   QList<IrcChannel *> ircChannels() const;
   quint32 ircChannelCount() const;
 
-  inline QHash<QString, QString> persistentChannels() const { return _persistentChannels; }
-
   QByteArray codecForServer() const;
   QByteArray codecForEncoding() const;
   QByteArray codecForDecoding() const;
@@ -186,23 +184,17 @@ public slots:
   void removeIrcUser(const QString &nick);
   void removeIrcChannel(const QString &channel);
 
-  void addPersistentChannel(const QString &channel, const QString &key = QString());
-  void removePersistentChannel(const QString &channel);
-  void setPersistentChannelKey(const QString &channel, const QString &key);
-
   //init geters
   QVariantMap initSupports() const;
   QVariantList initServerList() const;
   QStringList initIrcUsers() const;
   QStringList initIrcChannels() const;
-  QStringList initPersistentChannels() const;
   
   //init seters
   void initSetSupports(const QVariantMap &supports);
   void initSetServerList(const QVariantList &serverList);
   void initSetIrcUsers(const QStringList &hostmasks);
   void initSetIrcChannels(const QStringList &channels);
-  void initSetPersistentChannels(const QStringList &channels);
   
   IrcUser *updateNickFromMask(const QString &mask);
 
@@ -261,10 +253,6 @@ signals:
   void ircUserRemoved(const QString &nick);
   void ircChannelRemoved(const QString &channel);
 
-  void persistentChannelAdded(const QString &channel, const QString &key);
-  void persistentChannelRemoved(const QString &channel);
-  void persistentChannelKeySet(const QString &channel, const QString &key);
-
   // needed for client sync progress
   void ircUserRemoved(QObject *);
   void ircChannelRemoved(QObject *);
@@ -293,7 +281,6 @@ private:
   QHash<QString, IrcUser *> _ircUsers;  // stores all known nicks for the server
   QHash<QString, IrcChannel *> _ircChannels; // stores all known channels
   QHash<QString, QString> _supports;  // stores results from RPL_ISUPPORT
-  QHash<QString, QString> _persistentChannels;  // stores persistent channels and their passwords, if any
 
   QVariantList _serverList;
   bool _useRandomServer;

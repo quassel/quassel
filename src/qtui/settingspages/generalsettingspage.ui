@@ -83,7 +83,7 @@
          <bool>false</bool>
         </property>
         <property name="text" >
-         <string> in query buffer (if exists)</string>
+         <string>in query buffer (if exists)</string>
         </property>
        </widget>
       </item>
@@ -105,7 +105,7 @@
      <property name="orientation" >
       <enum>Qt::Vertical</enum>
      </property>
-     <property name="sizeHint" >
+     <property name="sizeHint" stdset="0" >
       <size>
        <width>457</width>
        <height>51</height>

@@ -138,74 +138,20 @@ void CoreSession::loadSettings() {
     createIdentity(i);
   }
 
-
-  // migration to pure DB storage
-  QList<NetworkId> netIds = s.networkIds();
-  if(!netIds.isEmpty()) {
-    qDebug() << "Migrating Networksettings to DB Storage for User:" << user();
-    foreach(NetworkId id, netIds) {
-      NetworkInfo info = s.networkInfo(id);
-
-      // default new options
-      info.useRandomServer = false;
-      info.useAutoReconnect = true;
-      info.autoReconnectInterval = 60;
-      info.autoReconnectRetries = 20;
-      info.unlimitedReconnectRetries = false;
-      info.useAutoIdentify = false;
-      info.autoIdentifyService = "NickServ";
-      info.rejoinChannels = true;
-
-      Core::updateNetwork(user(), info);
-      s.removeNetworkInfo(id);
-    }
-  }
-
   foreach(NetworkInfo info, Core::networks(user())) {
     createNetwork(info);
   }
 }
 
 void CoreSession::saveSessionState() const {
-  QVariantMap res;
-  QVariantList conn;
-  foreach(NetworkConnection *nc, _connections.values()) {
-    QHash<QString, QString> persistentChans = nc->network()->persistentChannels();
-    QStringList list;
-    foreach(QString chan, persistentChans.keys()) list << QString("%1/%2").arg(chan).arg(persistentChans.value(chan));
-    QVariantMap m;
-    m["NetworkId"] = QVariant::fromValue<NetworkId>(nc->networkId());
-    m["PersistentChannels"] = list;
-    conn << m;
-  }
-  res["CoreBuild"] = Global::quasselBuild;
-  res["ConnectedNetworks"] = conn;
-  CoreUserSettings s(user());
-  s.setSessionState(res);
+
 }
 
 void CoreSession::restoreSessionState() {
-  CoreUserSettings s(user());
-  uint build = s.sessionState().toMap()["CoreBuild"].toUInt();
-  if(build < 362) {
-    qWarning() << qPrintable(tr("Session state does not exist or is too old!"));
-    return;
-  }
-  QVariantList conn = s.sessionState().toMap()["ConnectedNetworks"].toList();
-  foreach(QVariant v, conn) {
-    NetworkId id = v.toMap()["NetworkId"].value<NetworkId>();
-    // TODO remove migration code some time
-    QStringList list = v.toMap()["PersistentChannels"].toStringList();
-    if(!list.count()) {
-      // migrate older state
-      QStringList old = v.toMap()["State"].toStringList();
-      foreach(QString chan, old) list << QString("%1/").arg(chan);
-    }
-    foreach(QString chan, list) {
-      QStringList l = chan.split("/");
-      network(id)->addPersistentChannel(l[0], l[1]);
-    }
-    //qDebug() << "User" << user() << "connecting to" << network(id)->networkName();
+  // FIXME db support
+  //QList<NetworkId> nets = Core::connectedNetworks(user());
+  QList<NetworkId> nets;
+  foreach(NetworkId id, nets) {
     connectToNetwork(id);
   }
 }
@@ -213,23 +159,6 @@ void CoreSession::restoreSessionState() {
 void CoreSession::updateBufferInfo(UserId uid, const BufferInfo &bufinfo) {
   if(uid == user()) emit bufferInfoUpdated(bufinfo);
 }
-
-// FIXME remove
-/*
-void CoreSession::connectToNetwork(QString netname, const QVariant &previousState) {
-  Network *net = 0;
-  foreach(Network *n, _networks.values()) {
-    if(n->networkName() == netname) {
-      net = n; break;
-    }
-  }
-  if(!net) {
-    qWarning() << "Connect to unknown network requested, ignoring!";
-    return;
-  }
-  connectToNetwork(net->networkId(), previousState);
-}
-*/
 
 void CoreSession::connectToNetwork(NetworkId id) {
   Network *net = network(id);
@@ -261,6 +190,10 @@ void CoreSession::attachNetworkConnection(NetworkConnection *conn) {
 
   connect(conn, SIGNAL(nickChanged(const NetworkId &, const QString &, const QString &)),
 	  this, SLOT(renameBuffer(const NetworkId &, const QString &, const QString &)));
+  connect(conn, SIGNAL(channelJoined(NetworkId, const QString &, const QString &)),
+          this, SLOT(channelJoined(NetworkId, const QString &, const QString &)));
+  connect(conn, SIGNAL(channelParted(NetworkId, const QString &)),
+          this, SLOT(channelParted(NetworkId, const QString &)));
 }
 
 void CoreSession::disconnectFromNetwork(NetworkId id) {
@@ -291,11 +224,27 @@ SignalProxy *CoreSession::signalProxy() const {
 // FIXME we need a sane way for creating buffers!
 void CoreSession::networkConnected(NetworkId networkid) {
   Core::bufferInfo(user(), networkid, BufferInfo::StatusBuffer); // create status buffer
+  //Core::setNetworkConnected(user(), networkid, true);
 }
 
 // called now only on /quit and requested disconnects, not on normal disconnects!
 void CoreSession::networkDisconnected(NetworkId networkid) {
+  //Core::setNetworkConnected(user(), networkid, false);
   if(_connections.contains(networkid)) _connections.take(networkid)->deleteLater();
+}
+
+void CoreSession::channelJoined(NetworkId id, const QString &channel, const QString &key) {
+  //Core::setChannelPersistent(user(), id, channel, true);
+  //Core::setPersistentChannelKey(user(), id, channel, key);
+}
+
+void CoreSession::channelParted(NetworkId id, const QString &channel) {
+  //Core::setChannelPersistent(user(), id, channel, false);
+}
+
+QHash<QString, QString> CoreSession::persistentChannels(NetworkId id) const {
+  //return Core::persistentChannels(user(), id);
+  return QHash<QString, QString>();
 }
 
 // FIXME switch to BufferId

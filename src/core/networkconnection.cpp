@@ -51,6 +51,11 @@ NetworkConnection::NetworkConnection(Network *network, CoreSession *session) : Q
   _whoTimer.setInterval(60 * 1000);
   _whoTimer.setSingleShot(false);
 
+  QHash<QString, QString> channels = coreSession()->persistentChannels(networkId());
+  foreach(QString chan, channels.keys()) {
+    _channelKeys[chan.toLower()] = channels[chan];
+  }
+
   connect(&_autoReconnectTimer, SIGNAL(timeout()), this, SLOT(doAutoReconnect()));
   connect(&_whoTimer, SIGNAL(timeout()), this, SLOT(sendWho()));
 
@@ -71,7 +76,7 @@ NetworkConnection::NetworkConnection(Network *network, CoreSession *session) : Q
 
 NetworkConnection::~NetworkConnection() {
   if(connectionState() != Network::Disconnected && connectionState() != Network::Reconnecting)
-    disconnectFromIrc();
+    disconnectFromIrc(false); // clean up, but this does not count as requested disconnect!
   delete _ircServerHandler;
   delete _userInputHandler;
   delete _ctcpHandler;
@@ -227,8 +232,8 @@ void NetworkConnection::sendPerform() {
 
   // rejoin channels we've been in
   QStringList channels, keys;
-  foreach(QString chan, network()->persistentChannels().keys()) {
-    QString key = network()->persistentChannels()[chan];
+  foreach(QString chan, persistentChannels()) {
+    QString key = channelKey(chan);
     if(!key.isEmpty()) {
       channels.prepend(chan); keys.prepend(key);
     } else {
@@ -239,9 +244,11 @@ void NetworkConnection::sendPerform() {
   if(!joinString.isEmpty()) userInputHandler()->handleJoin(statusBuf, joinString);
 }
 
-void NetworkConnection::disconnectFromIrc() {
-  _autoReconnectTimer.stop();
-  _autoReconnectCount = 0;
+void NetworkConnection::disconnectFromIrc(bool requested) {
+  if(requested) {
+    _autoReconnectTimer.stop();
+    _autoReconnectCount = 0;
+  }
   displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("Disconnecting."));
   if(socket.state() < QAbstractSocket::ConnectedState) {
     setConnectionState(Network::Disconnected);
@@ -355,17 +362,29 @@ void NetworkConnection::sendWho() {
   }
 }
 
+void NetworkConnection::setChannelJoined(const QString &channel) {
+  emit channelJoined(networkId(), channel, _channelKeys[channel.toLower()]);
+}
+
+void NetworkConnection::setChannelParted(const QString &channel) {
+  removeChannelKey(channel);
+  emit channelParted(networkId(), channel);
+}
+
 void NetworkConnection::addChannelKey(const QString &channel, const QString &key) {
-  if(key.isEmpty()) removeChannelKey(channel);
-  else _channelKeys[channel] = key;
+  if(key.isEmpty()) {
+    removeChannelKey(channel);
+  } else {
+    _channelKeys[channel.toLower()] = key;
+  }
 }
 
 void NetworkConnection::removeChannelKey(const QString &channel) {
-  _channelKeys.remove(channel);
+  _channelKeys.remove(channel.toLower());
 }
 
 void NetworkConnection::nickChanged(const QString &newNick, const QString &oldNick) {
-  emit nickChanged(_network->networkId(), newNick, oldNick);
+  emit nickChanged(networkId(), newNick, oldNick);
 }
 
 /* Exception classes for message handling */

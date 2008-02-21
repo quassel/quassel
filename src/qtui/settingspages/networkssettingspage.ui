@@ -632,6 +632,9 @@
                </item>
                <item>
                 <widget class="QCheckBox" name="rejoinOnReconnect" >
+                 <property name="enabled" >
+                  <bool>false</bool>
+                 </property>
                  <property name="text" >
                   <string>Rejoin all channels on reconnect</string>
                  </property>
