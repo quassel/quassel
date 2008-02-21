@@ -317,7 +317,7 @@ void SignalProxy::removePeer(QIODevice* iodev) {
     qWarning() << "SignalProxy: unknown QIODevice" << iodev;
     return;
   }
-     
+
   // take a last gasp
   while(true) {
     QVariant var;

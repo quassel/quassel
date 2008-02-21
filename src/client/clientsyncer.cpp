@@ -72,23 +72,12 @@ void ClientSyncer::coreHasData() {
       emit loginSuccess();
     } else if(msg["MsgType"] == "SessionInit") {
       sessionStateReceived(msg["SessionState"].toMap());
+      break; // this is definitively the last message we process here!
     } else {
       emit connectionError(tr("<b>Invalid data received from core!</b><br>Disconnecting."));
       disconnectFromCore();
       return;
     }
-    /*
-    if (!msg["StartWizard"].toBool()) {
-    recvCoreState(msg["Reply"]);
-  } else {
-    qWarning("Core not configured!");
-    qDebug() << "Available storage providers: " << msg["StorageProviders"].toStringList();
-    emit showConfigWizard(msg);
-  }
-    blockSize = 0;
-    return;
-  }
-    */
   }
   if(blockSize > 0) {
     emit recvPartialItem(socket->bytesAvailable(), blockSize);
