@@ -56,6 +56,13 @@ public slots:
   virtual bool updateNetwork(UserId user, const NetworkInfo &info);
   virtual bool removeNetwork(UserId user, const NetworkId &networkId);
   virtual QList<NetworkInfo> networks(UserId user);
+  virtual QList<NetworkId> connectedNetworks(UserId user);
+  virtual void setNetworkConnected(UserId user, const NetworkId &networkId, bool isConnected);
+
+  /* persistent channels */
+  virtual QHash<QString, QString> persistentChannels(UserId user, const NetworkId &networkId);
+  virtual void setChannelPersistent(UserId user, const NetworkId &networkId, const QString &channel, bool isJoined);
+  virtual void setPersistentChannelKey(UserId user, const NetworkId &networkId, const QString &channel, const QString &key);
   
   /* Buffer handling */
   virtual BufferInfo getBufferInfo(UserId user, const NetworkId &networkId, BufferInfo::Type type, const QString &buffer = "");

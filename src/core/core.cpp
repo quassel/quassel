@@ -235,6 +235,31 @@ NetworkId Core::networkId(UserId user, const QString &network) {
   return instance()->storage->getNetworkId(user, network);
 }
 
+QList<NetworkId> Core::connectedNetworks(UserId user) {
+  QMutexLocker locker(&mutex);
+  return instance()->storage->connectedNetworks(user);
+}
+
+void Core::setNetworkConnected(UserId user, const NetworkId &networkId, bool isConnected) {
+  QMutexLocker locker(&mutex);
+  return instance()->storage->setNetworkConnected(user, networkId, isConnected);
+}
+
+QHash<QString, QString> Core::persistentChannels(UserId user, const NetworkId &networkId) {
+  QMutexLocker locker(&mutex);
+  return instance()->storage->persistentChannels(user, networkId);
+}
+
+void Core::setChannelPersistent(UserId user, const NetworkId &networkId, const QString &channel, bool isJoined) {
+  QMutexLocker locker(&mutex);
+  return instance()->storage->setChannelPersistent(user, networkId, channel, isJoined);
+}
+
+void Core::setPersistentChannelKey(UserId user, const NetworkId &networkId, const QString &channel, const QString &key) {
+  QMutexLocker locker(&mutex);
+  return instance()->storage->setPersistentChannelKey(user, networkId, channel, key);
+}
+
 BufferInfo Core::bufferInfo(UserId user, const NetworkId &networkId, BufferInfo::Type type, const QString &buffer) {
   QMutexLocker locker(&mutex);
   return instance()->storage->getBufferInfo(user, networkId, type, buffer);

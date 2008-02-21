@@ -97,6 +97,52 @@ class Core : public QObject {
      */
     static NetworkId networkId(UserId user, const QString &network);
 
+    //! Get a list of Networks to restore
+    /** Return a list of networks the user was connected at the time of core shutdown
+     *  \note This method is threadsafe.
+     *
+     *  \param user  The User Id in question
+     */
+    static QList<NetworkId> connectedNetworks(UserId user);
+
+    //! Update the connected state of a network
+    /** \note This method is threadsafe
+     *
+     *  \param user        The Id of the networks owner
+     *  \param networkId   The Id of the network
+     *  \param isConnected whether the network is connected or not
+     */
+    static void setNetworkConnected(UserId user, const NetworkId &networkId, bool isConnected);
+
+    //! Get a hash of channels with their channel keys for a given network
+    /** The keys are channel names and values are passwords (possibly empty)
+     *  \note This method is threadsafe
+     *
+     *  \param user       The id of the networks owner
+     *  \param networkId  The Id of the network
+     */
+    static QHash<QString, QString> persistentChannels(UserId user, const NetworkId &networkId);
+
+    //! Update the connected state of a channel
+    /** \note This method is threadsafe
+     *
+     *  \param user       The Id of the networks owner
+     *  \param networkId  The Id of the network
+     *  \param channel    The name of the channel
+     *  \param isJoined   whether the channel is connected or not
+     */
+    static void setChannelPersistent(UserId user, const NetworkId &networkId, const QString &channel, bool isJoined);
+
+    //! Update the key of a channel
+    /** \note This method is threadsafe
+     *
+     *  \param user       The Id of the networks owner
+     *  \param networkId  The Id of the network
+     *  \param channel    The name of the channel
+     *  \param key        The key of the channel (possibly empty)
+     */
+    static void setPersistentChannelKey(UserId user, const NetworkId &networkId, const QString &channel, const QString &key);
+
     //! Get the unique BufferInfo for the given combination of network and buffername for a user.
     /** \note This method is threadsafe.
      *

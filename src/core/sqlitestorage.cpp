@@ -355,6 +355,70 @@ NetworkId SqliteStorage::getNetworkId(UserId user, const QString &network) {
     return NetworkId();
 }
 
+QList<NetworkId> SqliteStorage::connectedNetworks(UserId user) {
+  QList<NetworkId> connectedNets;
+  QSqlQuery query(logDb());
+  query.prepare(queryString("select_connected_networks"));
+  query.bindValue(":userid", user.toInt());
+  query.exec();
+  watchQuery(&query);
+
+  while(query.next()) {
+    connectedNets << query.value(0).toInt();
+  }
+  
+  return connectedNets;
+}
+
+void SqliteStorage::setNetworkConnected(UserId user, const NetworkId &networkId, bool isConnected) {
+  QSqlQuery query(logDb());
+  query.prepare(queryString("update_network_connected"));
+  query.bindValue(":userid", user.toInt());
+  query.bindValue(":networkid", networkId.toInt());
+  query.bindValue(":connected", isConnected ? 1 : 0);
+  query.exec();
+  watchQuery(&query);
+}
+
+QHash<QString, QString> SqliteStorage::persistentChannels(UserId user, const NetworkId &networkId) {
+  QHash<QString, QString> persistentChans;
+  QSqlQuery query(logDb());
+  query.prepare(queryString("select_persistent_channels"));
+  query.bindValue(":userid", user.toInt());
+  query.bindValue(":networkid", networkId.toInt());
+  query.exec();
+  watchQuery(&query);
+
+  while(query.next()) {
+    persistentChans[query.value(0).toString()] = query.value(1).toString();
+  }
+  
+  return persistentChans;
+}
+
+void SqliteStorage::setChannelPersistent(UserId user, const NetworkId &networkId, const QString &channel, bool isJoined) {
+  QSqlQuery query(logDb());
+  query.prepare(queryString("update_buffer_persistent_channel"));
+  query.bindValue(":userid", user.toInt());
+  query.bindValue(":networkId", networkId.toInt());
+  query.bindValue(":buffercname", channel.toLower());
+  query.bindValue(":joined", isJoined ? 1 : 0);
+  query.exec();
+  watchQuery(&query);
+}
+
+void SqliteStorage::setPersistentChannelKey(UserId user, const NetworkId &networkId, const QString &channel, const QString &key) {
+  QSqlQuery query(logDb());
+  query.prepare(queryString("update_buffer_set_channel_key"));
+  query.bindValue(":userid", user.toInt());
+  query.bindValue(":networkId", networkId.toInt());
+  query.bindValue(":buffercname", channel.toLower());
+  query.bindValue(":key", key);
+  query.exec();
+  watchQuery(&query);
+}
+
+
 void SqliteStorage::createBuffer(UserId user, const NetworkId &networkId, BufferInfo::Type type, const QString &buffer) {
   QSqlQuery *query = cachedQuery("insert_buffer");
   query->bindValue(":userid", user.toInt());

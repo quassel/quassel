@@ -148,6 +148,52 @@ class Storage : public QObject {
      */
     virtual NetworkId getNetworkId(UserId user, const QString &network) = 0;
 
+    //! Get a list of Networks to restore
+    /** Return a list of networks the user was connected at the time of core shutdown
+     *  \note This method is threadsafe.
+     *
+     *  \param user  The User Id in question
+     */
+    virtual QList<NetworkId> connectedNetworks(UserId user) = 0;
+
+    //! Update the connected state of a network
+    /** \note This method is threadsafe
+     *
+     *  \param user        The Id of the networks owner
+     *  \param networkId   The Id of the network
+     *  \param isConnected whether the network is connected or not
+     */
+    virtual void setNetworkConnected(UserId user, const NetworkId &networkId, bool isConnected) = 0;
+
+    //! Get a hash of channels with their channel keys for a given network
+    /** The keys are channel names and values are passwords (possibly empty)
+     *  \note This method is threadsafe
+     *
+     *  \param user       The id of the networks owner
+     *  \param networkId  The Id of the network
+     */
+    virtual QHash<QString, QString> persistentChannels(UserId user, const NetworkId &networkId) = 0;
+
+    //! Update the connected state of a channel
+    /** \note This method is threadsafe
+     *
+     *  \param user       The Id of the networks owner
+     *  \param networkId  The Id of the network
+     *  \param channel    The name of the channel
+     *  \param isJoined   whether the channel is connected or not
+     */
+    virtual void setChannelPersistent(UserId user, const NetworkId &networkId, const QString &channel, bool isJoined) = 0;
+
+    //! Update the key of a channel
+    /** \note This method is threadsafe
+     *
+     *  \param user       The Id of the networks owner
+     *  \param networkId  The Id of the network
+     *  \param channel    The name of the channel
+     *  \param key        The key of the channel (possibly empty)
+     */
+    virtual void setPersistentChannelKey(UserId user, const NetworkId &networkId, const QString &channel, const QString &key) = 0;
+  
     /* Buffer handling */
 
     //! Get the unique BufferInfo for the given combination of network and buffername for a user.

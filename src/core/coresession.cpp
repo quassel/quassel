@@ -148,9 +148,7 @@ void CoreSession::saveSessionState() const {
 }
 
 void CoreSession::restoreSessionState() {
-  // FIXME db support
-  //QList<NetworkId> nets = Core::connectedNetworks(user());
-  QList<NetworkId> nets;
+  QList<NetworkId> nets = Core::connectedNetworks(user());
   foreach(NetworkId id, nets) {
     connectToNetwork(id);
   }
@@ -224,26 +222,26 @@ SignalProxy *CoreSession::signalProxy() const {
 // FIXME we need a sane way for creating buffers!
 void CoreSession::networkConnected(NetworkId networkid) {
   Core::bufferInfo(user(), networkid, BufferInfo::StatusBuffer); // create status buffer
-  //Core::setNetworkConnected(user(), networkid, true);
+  Core::setNetworkConnected(user(), networkid, true);
 }
 
 // called now only on /quit and requested disconnects, not on normal disconnects!
 void CoreSession::networkDisconnected(NetworkId networkid) {
-  //Core::setNetworkConnected(user(), networkid, false);
+  Core::setNetworkConnected(user(), networkid, false);
   if(_connections.contains(networkid)) _connections.take(networkid)->deleteLater();
 }
 
 void CoreSession::channelJoined(NetworkId id, const QString &channel, const QString &key) {
-  //Core::setChannelPersistent(user(), id, channel, true);
-  //Core::setPersistentChannelKey(user(), id, channel, key);
+  Core::setChannelPersistent(user(), id, channel, true);
+  Core::setPersistentChannelKey(user(), id, channel, key);
 }
 
 void CoreSession::channelParted(NetworkId id, const QString &channel) {
-  //Core::setChannelPersistent(user(), id, channel, false);
+  Core::setChannelPersistent(user(), id, channel, false);
 }
 
 QHash<QString, QString> CoreSession::persistentChannels(NetworkId id) const {
-  //return Core::persistentChannels(user(), id);
+  return Core::persistentChannels(user(), id);
   return QHash<QString, QString>();
 }
 

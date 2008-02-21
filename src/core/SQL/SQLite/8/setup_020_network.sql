@@ -16,5 +16,6 @@ CREATE TABLE network (
        autoreconnectretries INTEGER NOT NULL DEFAULT 0,
        unlimitedconnectretries INTEGER NOT NULL DEFAULT 0, -- BOOL
        rejoinchannels INTEGER NOT NULL DEFAULT 0, -- BOOL
+       connected INTEGER NOT NULL DEFAULT 1,
        UNIQUE (userid, networkname)
 )
