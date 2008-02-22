@@ -473,9 +473,7 @@ void Client::bufferRemoved(BufferId bufferId) {
   QModelIndex current = bufferModel()->currentIndex();
   if(current.data(NetworkModel::BufferIdRole).value<BufferId>() == bufferId) {
     // select the status buffer if the currently displayed buffer is about to be removed
-    QModelIndex newCurrent = current.sibling(0,0);
-    bufferModel()->standardSelectionModel()->setCurrentIndex(newCurrent, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
-    bufferModel()->standardSelectionModel()->select(newCurrent, QItemSelectionModel::ClearAndSelect);
+    bufferModel()->setCurrentIndex(current.sibling(0,0));
   }
     
   networkModel()->removeBuffer(bufferId);

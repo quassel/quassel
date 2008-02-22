@@ -96,7 +96,7 @@ const Network *InputWidget::currentNetwork() const {
 }
 
 void InputWidget::setNetwork(const Network *network) {
-  if(_networkId == network->networkId())
+  if(!network || _networkId == network->networkId())
     return;
 
   const Network *previousNet = Client::network(_networkId);

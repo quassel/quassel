@@ -118,6 +118,15 @@ void BufferView::rowsInserted(const QModelIndex & parent, int start, int end) {
     update(parent); 
     expand(parent);
   }
+
+
+  // select newly inserted buffers
+  if(parent.data(NetworkModel::ItemTypeRole) != NetworkModel::NetworkItemType)
+    return;
+
+  QModelIndex newCurrent = parent.child(end, 0);
+  selectionModel()->setCurrentIndex(newCurrent, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+  selectionModel()->select(newCurrent, QItemSelectionModel::ClearAndSelect);
 }
 
 void BufferView::toggleHeader(bool checked) {

@@ -70,3 +70,8 @@ void BufferModel::mapProperty(int column, int role, QObject *target, const QByte
 QModelIndex BufferModel::currentIndex() {
   return propertyMapper()->selectionModel()->currentIndex();
 }
+
+void BufferModel::setCurrentIndex(const QModelIndex &newCurrent) {
+  standardSelectionModel()->setCurrentIndex(newCurrent, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+  standardSelectionModel()->select(newCurrent, QItemSelectionModel::ClearAndSelect);
+}

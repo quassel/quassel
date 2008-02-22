@@ -50,6 +50,7 @@ public:
   void mapProperty(int column, int role, QObject *target, const QByteArray &property);
 
   QModelIndex currentIndex();
+  void setCurrentIndex(const QModelIndex &newCurrent);
 
 private:
   SelectionModelSynchronizer _selectionModelSynchronizer;
