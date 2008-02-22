@@ -731,7 +731,7 @@ bool SqliteStorage::init(const QVariantMap &settings) {
     return false;
 
   if(!checkMigratedQuery.first())
-    return false;
+    return true;		// table is empty -> no work to be done
 
   QString passType = checkMigratedQuery.value(0).toString().toLower();
   if(passType == "text")
