@@ -245,15 +245,17 @@ void NetworkConnection::sendPerform() {
 }
 
 void NetworkConnection::disconnectFromIrc(bool requested) {
-  if(requested) {
-    _autoReconnectTimer.stop();
-    _autoReconnectCount = 0;
-  }
+  _autoReconnectTimer.stop();
+  _autoReconnectCount = 0;
   displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("Disconnecting."));
   if(socket.state() < QAbstractSocket::ConnectedState) {
     setConnectionState(Network::Disconnected);
     socketDisconnected();
   } else socket.disconnectFromHost();
+
+  if(requested) {
+    emit quitRequested(networkId());
+  }
 }
 
 void NetworkConnection::socketHasData() {
@@ -314,8 +316,7 @@ void NetworkConnection::socketDisconnected() {
   _whoTimer.stop();
   network()->setConnected(false);
   emit disconnected(networkId());
-  if(_autoReconnectCount == 0) emit quitRequested(networkId());
-  else {
+  if(_autoReconnectCount != 0) {
     setConnectionState(Network::Reconnecting);
     if(_autoReconnectCount == network()->autoReconnectRetries()) doAutoReconnect(); // first try is immediate
     else _autoReconnectTimer.start();
