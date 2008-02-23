@@ -27,11 +27,10 @@ anyway, since there are no installable files other than the
 binaries. Though this might change in later releases.
 
 On first run of the Quassel core, it will wait for a client to connect
-and present a (preliminary) first-run wizard. This will allow you to
-create the database and one admin user for the core-side storage. Note
-that Quassel does not support the administration of user accounts yet,
-this includes adding more users, changing passwords and so on. This is
-high on our TODO list, of course.
+and present a wizard that will allow you to create the database and one
+admin user for the core-side storage. Note that Quassel does not support
+the administration of user accounts yet, this includes adding more users,
+changing passwords and so on.
 
 Please also do read the README file.
 
