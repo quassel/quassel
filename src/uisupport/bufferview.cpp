@@ -76,7 +76,7 @@ void BufferView::setModel(QAbstractItemModel *model) {
 
   QString sectionName;
   QAction *showSection;
-  for(int i = 0; i < model->columnCount(); i++) {
+  for(int i = 1; i < model->columnCount(); i++) {
     sectionName = (model->headerData(i, Qt::Horizontal, Qt::DisplayRole)).toString();
     showSection = new QAction(sectionName, header());
     showSection->setCheckable(true);
@@ -118,15 +118,6 @@ void BufferView::rowsInserted(const QModelIndex & parent, int start, int end) {
     update(parent); 
     expand(parent);
   }
-
-
-  // select newly inserted buffers
-  if(parent.data(NetworkModel::ItemTypeRole) != NetworkModel::NetworkItemType)
-    return;
-
-  QModelIndex newCurrent = parent.child(end, 0);
-  selectionModel()->setCurrentIndex(newCurrent, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
-  selectionModel()->select(newCurrent, QItemSelectionModel::ClearAndSelect);
 }
 
 void BufferView::toggleHeader(bool checked) {

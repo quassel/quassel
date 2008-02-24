@@ -161,6 +161,10 @@ Buffer *Client::buffer(BufferInfo bufferInfo) {
 	    client, SLOT(bufferDestroyed()));
     client->_buffers[bufferInfo.bufferId()] = buff;
     emit client->bufferUpdated(bufferInfo);
+
+    // I don't like this: but currently there isn't really a prettier way:
+    QModelIndex bufferIdx = networkModel()->bufferIndex(bufferInfo.bufferId());
+    bufferModel()->setCurrentIndex(bufferModel()->mapFromSource(bufferIdx));
   }
   Q_ASSERT(buff);
   return buff;
