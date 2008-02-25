@@ -24,6 +24,8 @@
 #include "networkmodel.h"
 #include "network.h"
 
+#include "uisettings.h"
+
 /*****************************************
 * The TreeView showing the Buffers
 *****************************************/
@@ -222,6 +224,8 @@ void BufferView::showContextMenu(const QPoint &pos) {
 
 void BufferView::wheelEvent(QWheelEvent* event)
 {
+  UiSettings s;
+  if(s.value("MouseWheelChangesBuffers",QVariant(true)).toBool()) {
     int rowDelta = ( event->delta() > 0 ) ? -1 : 1;
     QModelIndex currentIndex = selectionModel()->currentIndex();
     QModelIndex resultingIndex;
@@ -242,5 +246,8 @@ void BufferView::wheelEvent(QWheelEvent* event)
     }
     selectionModel()->setCurrentIndex( resultingIndex, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows );
     selectionModel()->select( resultingIndex, QItemSelectionModel::ClearAndSelect );
+  } else {
+    QAbstractScrollArea::wheelEvent(event);
+  }
 }
 

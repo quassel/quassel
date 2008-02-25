@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>475</width>
-    <height>366</height>
+    <width>448</width>
+    <height>480</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -67,7 +67,7 @@
       <item>
        <widget class="QCheckBox" name="userMessagesInStatusBuffer" >
         <property name="enabled" >
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="text" >
          <string>in status buffer</string>
@@ -80,7 +80,7 @@
       <item>
        <widget class="QCheckBox" name="userMessagesInQueryBuffer" >
         <property name="enabled" >
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="text" >
          <string>in query buffer (if exists)</string>
@@ -90,10 +90,36 @@
       <item>
        <widget class="QCheckBox" name="userMessagesInCurrentBuffer" >
         <property name="enabled" >
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="text" >
          <string>in current buffer</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_2" >
+     <property name="title" >
+      <string>Buffer view:</string>
+     </property>
+     <layout class="QVBoxLayout" >
+      <item>
+       <widget class="QCheckBox" name="displayTopicInTooltip" >
+        <property name="text" >
+         <string>Display topic in tooltip</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="mouseWheelChangesBuffers" >
+        <property name="text" >
+         <string>Mouse wheel changes displayed buffers</string>
+        </property>
+        <property name="checked" >
+         <bool>true</bool>
         </property>
        </widget>
       </item>
@@ -105,10 +131,10 @@
      <property name="orientation" >
       <enum>Qt::Vertical</enum>
      </property>
-     <property name="sizeHint" stdset="0" >
+     <property name="sizeHint" >
       <size>
-       <width>457</width>
-       <height>51</height>
+       <width>20</width>
+       <height>40</height>
       </size>
      </property>
     </spacer>
@@ -116,38 +142,5 @@
   </layout>
  </widget>
  <resources/>
- <connections>
-  <connection>
-   <sender>showSystemTrayIcon</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>useSystemTrayIcon</receiver>
-   <slot>setChecked(bool)</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>237</x>
-     <y>139</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>237</x>
-     <y>49</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>useSystemTrayIcon</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>showSystemTrayIcon</receiver>
-   <slot>setChecked(bool)</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>237</x>
-     <y>49</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>237</x>
-     <y>139</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

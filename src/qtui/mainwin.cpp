@@ -281,7 +281,7 @@ void MainWin::setupSystray() {
 
   systray->setContextMenu(systrayMenu);
 
-  QtUiSettings s;
+  UiSettings s;
   if(s.value("UseSystemTrayIcon", QVariant(true)).toBool()) {
     systray->show();
   }
@@ -296,7 +296,7 @@ void MainWin::setupSystray() {
 void MainWin::changeEvent(QEvent *event) {
   if(event->type() == QEvent::WindowStateChange) {
     if(windowState() & Qt::WindowMinimized) {
-      QtUiSettings s;
+      UiSettings s;
       if(s.value("UseSystemTrayIcon").toBool() && s.value("MinimizeOnMinimize").toBool()) {
         toggleVisibility();
         event->ignore();
@@ -368,7 +368,7 @@ void MainWin::showAboutDlg() {
 }
 
 void MainWin::closeEvent(QCloseEvent *event) {
-  QtUiSettings s;
+  UiSettings s;
   if(s.value("UseSystemTrayIcon").toBool() && s.value("MinimizeOnClose").toBool()) {
     toggleVisibility();
     event->ignore();

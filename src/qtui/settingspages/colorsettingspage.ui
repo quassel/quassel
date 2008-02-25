@@ -74,6 +74,12 @@
           </item>
           <item row="1" column="1" >
            <widget class="ColorButton" name="noActivityFG" >
+            <property name="sizePolicy" >
+             <sizepolicy vsizetype="Maximum" hsizetype="Maximum" >
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="text" >
              <string/>
             </property>
@@ -83,6 +89,12 @@
            <widget class="ColorButton" name="noActivityBG" >
             <property name="enabled" >
              <bool>false</bool>
+            </property>
+            <property name="sizePolicy" >
+             <sizepolicy vsizetype="Maximum" hsizetype="Maximum" >
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
             </property>
             <property name="text" >
              <string/>

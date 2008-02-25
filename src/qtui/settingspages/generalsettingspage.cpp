@@ -21,7 +21,8 @@
 #include "generalsettingspage.h"
 
 #include "qtui.h"
-#include "qtuisettings.h"
+#include "uisettings.h"
+#include "buffersettings.h"
 
 GeneralSettingsPage::GeneralSettingsPage(QWidget *parent)
   : SettingsPage(tr("Behaviour"), tr("General"), parent) {
@@ -45,6 +46,13 @@ GeneralSettingsPage::GeneralSettingsPage(QWidget *parent)
   connect(ui.userMessagesInStatusBuffer, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
   connect(ui.userMessagesInQueryBuffer, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
   connect(ui.userMessagesInCurrentBuffer, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
+
+  connect(ui.displayTopicInTooltip, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
+  connect(ui.mouseWheelChangesBuffers, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
+
+  ui.userMessagesInStatusBuffer->setEnabled(false);
+  ui.userMessagesInQueryBuffer->setEnabled(false);
+  ui.userMessagesInCurrentBuffer->setEnabled(false);
 }
 
 bool GeneralSettingsPage::hasDefaults() const {
@@ -62,42 +70,58 @@ void GeneralSettingsPage::defaults() {
   ui.userMessagesInQueryBuffer->setChecked(false);
   ui.userMessagesInCurrentBuffer->setChecked(false);
 
+  ui.displayTopicInTooltip->setChecked(false);
+  ui.mouseWheelChangesBuffers->setChecked(true);
+
   widgetHasChanged();
 }
 
 void GeneralSettingsPage::load() {
-  QtUiSettings s;
-  settings["UseSystemTrayIcon"] = s.value("UseSystemTrayIcon", QVariant(true));
+  // uiSettings:
+  UiSettings uiSettings("Ui");
+  settings["UseSystemTrayIcon"] = uiSettings.value("UseSystemTrayIcon", QVariant(true));
   ui.useSystemTrayIcon->setChecked(settings["UseSystemTrayIcon"].toBool());
   ui.showSystemTrayIcon->setChecked(settings["UseSystemTrayIcon"].toBool());
 
-  settings["MinimizeOnMinimize"] = s.value("MinimizeOnMinimize", QVariant(false));
+  settings["MinimizeOnMinimize"] = uiSettings.value("MinimizeOnMinimize", QVariant(false));
   ui.minimizeOnMinimize->setChecked(settings["MinimizeOnMinimize"].toBool());
 
-  settings["MinimizeOnClose"] = s.value("MinimizeOnClose", QVariant(false));
+  settings["MinimizeOnClose"] = uiSettings.value("MinimizeOnClose", QVariant(false));
   ui.minimizeOnClose->setChecked(settings["MinimizeOnClose"].toBool());
 
-  settings["UserMessagesInStatusBuffer"] = s.value("UserMessagesInStatusBuffer", QVariant(true));
+  settings["MouseWheelChangesBuffers"] = uiSettings.value("mouseWheelChangesBuffers", QVariant(true));
+  ui.mouseWheelChangesBuffers->setChecked(settings["MouseWheelChangesBuffers"].toBool());
+
+  // bufferSettings:
+  BufferSettings bufferSettings;
+  settings["UserMessagesInStatusBuffer"] = bufferSettings.value("UserMessagesInStatusBuffer", QVariant(true));
   ui.userMessagesInStatusBuffer->setChecked(settings["UserMessagesInStatusBuffer"].toBool());
 
-  settings["UserMessagesInQueryBuffer"] = s.value("UserMessagesInQueryBuffer", QVariant(false));
+  settings["UserMessagesInQueryBuffer"] = bufferSettings.value("UserMessagesInQueryBuffer", QVariant(false));
   ui.userMessagesInQueryBuffer->setChecked(settings["UserMessagesInQueryBuffer"].toBool());
 
-  settings["UserMessagesInCurrentBuffer"] = s.value("UserMessagesInCurrentBuffer", QVariant(false));
+  settings["UserMessagesInCurrentBuffer"] = bufferSettings.value("UserMessagesInCurrentBuffer", QVariant(false));
   ui.userMessagesInCurrentBuffer->setChecked(settings["UserMessagesInCurrentBuffer"].toBool());
+
+  settings["DisplayTopicInTooltip"] = bufferSettings.value("DisplayTopicInTooltip", QVariant(false));
+  ui.displayTopicInTooltip->setChecked(settings["DisplayTopicInTooltip"].toBool());
 
   setChangedState(false);
 }
 
 void GeneralSettingsPage::save() {
-  QtUiSettings s;
-  s.setValue("UseSystemTrayIcon", ui.useSystemTrayIcon->isChecked());
-  s.setValue("MinimizeOnMinimize",  ui.minimizeOnMinimize->isChecked());
-  s.setValue("MinimizeOnClose", ui.minimizeOnClose->isChecked());
+  UiSettings uiSettings("Ui");
+  uiSettings.setValue("UseSystemTrayIcon", ui.useSystemTrayIcon->isChecked());
+  uiSettings.setValue("MinimizeOnMinimize",  ui.minimizeOnMinimize->isChecked());
+  uiSettings.setValue("MinimizeOnClose", ui.minimizeOnClose->isChecked());
+  uiSettings.setValue("MouseWheelChangesBuffers", ui.mouseWheelChangesBuffers->isChecked());
 
-  s.setValue("UserMessagesInStatusBuffer", ui.userMessagesInStatusBuffer->isChecked());
-  s.setValue("UserMessagesInQueryBuffer", ui.userMessagesInQueryBuffer->isChecked());
-  s.setValue("UserMessagesInCurrentBuffer", ui.userMessagesInCurrentBuffer->isChecked());
+  BufferSettings bufferSettings;
+  bufferSettings.setValue("UserMessagesInStatusBuffer", ui.userMessagesInStatusBuffer->isChecked());
+  bufferSettings.setValue("UserMessagesInQueryBuffer", ui.userMessagesInQueryBuffer->isChecked());
+  bufferSettings.setValue("UserMessagesInCurrentBuffer", ui.userMessagesInCurrentBuffer->isChecked());
+
+  bufferSettings.setValue("DisplayTopicInTooltip", ui.displayTopicInTooltip->isChecked());
 
   load();
   setChangedState(false);
@@ -112,9 +136,13 @@ bool GeneralSettingsPage::testHasChanged() {
   if(settings["UseSystemTrayIcon"].toBool() != ui.useSystemTrayIcon->isChecked()) return true;
   if(settings["MinimizeOnMinimize"].toBool() != ui.minimizeOnMinimize->isChecked()) return true;
   if(settings["MinimizeOnClose"].toBool() != ui.minimizeOnClose->isChecked()) return true;
+
   if(settings["UserMessagesInStatusBuffer"].toBool() != ui.userMessagesInStatusBuffer->isChecked()) return true;
   if(settings["UserMessagesInQueryBuffer"].toBool() != ui.userMessagesInQueryBuffer->isChecked()) return true;
   if(settings["UserMessagesInCurrentBuffer"].toBool() != ui.userMessagesInCurrentBuffer->isChecked()) return true;
+
+  if(settings["DisplayTopicInTooltip"].toBool() != ui.displayTopicInTooltip->isChecked()) return true;
+  if(settings["MouseWheelChangesBuffers"].toBool() != ui.mouseWheelChangesBuffers->isChecked()) return true;
 
   return false;
 }

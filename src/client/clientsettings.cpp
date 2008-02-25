@@ -104,20 +104,4 @@ void CoreAccountSettings::removeAccount(AccountId id) {
   removeLocalKey(QString("%1").arg(id.toInt()));
 }
 
-/***********************************************************************************************/
-
-BufferSettings::BufferSettings(BufferId bufferId)
-  : CoreAccountSettings(QString("Buffers/%1").arg(bufferId.toInt()))
-{
-}
-
-void BufferSettings::setLastSeen(QDateTime seenDate) {
-  setAccountValue("LastSeen", seenDate);
-}
-
-QDateTime BufferSettings::lastSeen() {
-  return accountValue("LastSeen", QDateTime()).value<QDateTime>();
-}
-
-/***********************************************************************************************/
 

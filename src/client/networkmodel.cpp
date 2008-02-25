@@ -29,7 +29,11 @@
 #include "ircchannel.h"
 #include "ircuser.h"
 
+#include "buffersettings.h"
+
 #include "util.h" // get rid of this (needed for isChannelName)
+
+// #define PHONDEV
 
 /*****************************************
 *  Fancy Buffer Items
@@ -293,10 +297,22 @@ QString BufferItem::toolTip(int column) const {
       break;
     }
     case BufferInfo::ChannelBuffer:
-      toolTip.append(QString("<b>Channel %1</b>").arg(bufferName()));
+      toolTip.append(QString("<h4>Channel %1</h4>").arg(bufferName()));
       if(isActive()) {
-        toolTip.append(QString("Topic: %1").arg(topic()));
-        toolTip.append(QString("Users: %1").arg(nickCount()));
+        //TODO: add channel modes 
+        toolTip.append(QString("<b>Users:</b> %1").arg(nickCount()));
+
+        BufferSettings s;
+        bool showTopic = s.value("DisplayTopicInTooltip", QVariant(false)).toBool();
+        if(showTopic) {
+          QString _topic = topic();
+          if(_topic != "") {
+            _topic.replace(QString("<"), QString("&lt;"));
+            _topic.replace(QString(">"), QString("&gt;"));
+            toolTip.append(QString("<font size='-2'>&nbsp;</font>"));
+            toolTip.append(QString("<b>Topic:</b> %1").arg(_topic));
+          }
+        }
       } else {
         toolTip.append(QString("Not active <br /> Double-click to join"));
       }
