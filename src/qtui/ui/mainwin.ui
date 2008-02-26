@@ -13,6 +13,14 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget" >
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>27</y>
+     <width>800</width>
+     <height>549</height>
+    </rect>
+   </property>
    <property name="sizePolicy" >
     <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
      <horstretch>0</horstretch>
@@ -23,16 +31,7 @@
     <property name="spacing" >
      <number>6</number>
     </property>
-    <property name="leftMargin" >
-     <number>0</number>
-    </property>
-    <property name="topMargin" >
-     <number>0</number>
-    </property>
-    <property name="rightMargin" >
-     <number>0</number>
-    </property>
-    <property name="bottomMargin" >
+    <property name="margin" >
      <number>0</number>
     </property>
     <item>
@@ -96,19 +95,22 @@
     </property>
     <addaction name="actionDebug_Console" />
    </widget>
-   <widget class="QMenu" name="menuCore" >
-    <property name="title" >
-     <string>&amp;Core</string>
-    </property>
-   </widget>
    <addaction name="menuFile" />
    <addaction name="menuViews" />
-   <addaction name="menuCore" />
    <addaction name="menuSettings" />
    <addaction name="menuDebug" />
    <addaction name="menuHelp" />
   </widget>
-  <widget class="QStatusBar" name="statusbar" />
+  <widget class="QStatusBar" name="statusbar" >
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>576</y>
+     <width>800</width>
+     <height>24</height>
+    </rect>
+   </property>
+  </widget>
   <action name="actionNetworkList" >
    <property name="enabled" >
     <bool>false</bool>
@@ -162,7 +164,8 @@
   </action>
   <action name="actionQuit" >
    <property name="icon" >
-    <iconset resource="../../icons/icons.qrc" >:/22x22/actions/oxygen/22x22/actions/application-exit.png</iconset>
+    <iconset resource="../../icons/icons.qrc" >
+     <normaloff>:/22x22/actions/oxygen/22x22/actions/application-exit.png</normaloff>:/22x22/actions/oxygen/22x22/actions/application-exit.png</iconset>
    </property>
    <property name="text" >
     <string>Quit...</string>
@@ -178,7 +181,9 @@
   </action>
   <action name="actionSettingsDlg" >
    <property name="icon" >
-    <iconset/>
+    <iconset>
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text" >
     <string>Configure Quassel...</string>
@@ -205,7 +210,8 @@
     <bool>true</bool>
    </property>
    <property name="icon" >
-    <iconset resource="../../icons/icons.qrc" >:/icons/quassel-icon.png</iconset>
+    <iconset resource="../../icons/icons.qrc" >
+     <normaloff>:/icons/quassel-icon.png</normaloff>:/icons/quassel-icon.png</iconset>
    </property>
    <property name="text" >
     <string>About Quassel IRC...</string>
@@ -236,7 +242,9 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset/>
+    <iconset>
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text" >
     <string>Disconnect from Core</string>
@@ -247,7 +255,9 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset/>
+    <iconset>
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text" >
     <string>Connect to Core...</string>

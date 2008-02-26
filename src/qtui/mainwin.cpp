@@ -319,7 +319,7 @@ void MainWin::connectedToCore() {
   }
 
   ui.menuViews->setEnabled(true);
-  ui.menuCore->setEnabled(true);
+  //ui.menuCore->setEnabled(true);
   ui.actionConnectCore->setEnabled(false);
   ui.actionDisconnectCore->setEnabled(true);
   //ui.actionNetworkList->setEnabled(true);
@@ -329,7 +329,7 @@ void MainWin::connectedToCore() {
 
 void MainWin::disconnectedFromCore() {
   ui.menuViews->setEnabled(false);
-  ui.menuCore->setEnabled(false);
+  //ui.menuCore->setEnabled(false);
   ui.actionDisconnectCore->setEnabled(false);
   //ui.actionNetworkList->setEnabled(false);
   ui.bufferWidget->hide();

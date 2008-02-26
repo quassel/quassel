@@ -171,8 +171,10 @@ Buffer *Client::buffer(BufferInfo bufferInfo) {
     emit client->bufferUpdated(bufferInfo);
 
     // I don't like this: but currently there isn't really a prettier way:
-    QModelIndex bufferIdx = networkModel()->bufferIndex(bufferInfo.bufferId());
-    bufferModel()->setCurrentIndex(bufferModel()->mapFromSource(bufferIdx));
+    if(isSynced()) {  // this slows down syncing a lot, so disable it during sync
+      QModelIndex bufferIdx = networkModel()->bufferIndex(bufferInfo.bufferId());
+      bufferModel()->setCurrentIndex(bufferModel()->mapFromSource(bufferIdx));
+    }
   }
   Q_ASSERT(buff);
   return buff;
