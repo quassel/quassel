@@ -230,17 +230,13 @@ void NetworksSettingsPage::setItemState(NetworkId id, QListWidgetItem *item) {
         if(oldid == currentId) {
           select = true;
           currentId = 0;
+          ui.networkList->clearSelection();
         }
         int row = ui.networkList->row(i);
         if(row >= 0) {
-          qDebug() << "ABOUT TO REMOVE: id=" << oldid << "from row" << row;
           QListWidgetItem *olditem = ui.networkList->takeItem(row);
-          qDebug() << "Successfully removed item from list.";
-          if(!olditem) {
-            qWarning() << "NetworksSettingsPage::setItemState(): Why the heck don't we have an itempointer here?";
-            Q_ASSERT(olditem);  // abort non-gracefully, I need to figure out what's causing this
-          }
-          else delete olditem;
+          Q_ASSERT(olditem);
+          delete olditem;
         }
         networkInfos.remove(oldid);
         break;
@@ -403,7 +399,7 @@ void NetworksSettingsPage::displayNetwork(NetworkId id) {
     foreach(QVariant v, info.serverList) {
       ui.serverList->addItem(QString("%1:%2").arg(v.toMap()["Host"].toString()).arg(v.toMap()["Port"].toUInt()));
     }
-    setItemState(id);
+    //setItemState(id);
     ui.randomServer->setChecked(info.useRandomServer);
     ui.performEdit->setPlainText(info.perform.join("\n"));
     ui.autoIdentify->setChecked(info.useAutoIdentify);
