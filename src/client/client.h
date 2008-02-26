@@ -193,6 +193,8 @@ private:
   static void setCurrentCoreAccount(AccountId);
   static inline BufferSyncer *bufferSyncer() { return instance()->_bufferSyncer; }
 
+  Buffer *statusBuffer(const NetworkId &networkid) const;
+
   static QPointer<Client> instanceptr;
 
   QPointer<QIODevice> socket;
@@ -208,6 +210,7 @@ private:
   bool _connectedToCore, _syncedToCore;
 
   QHash<BufferId, Buffer *> _buffers;
+  QHash<NetworkId, Buffer *> _statusBuffers; // fast lookup
   QHash<NetworkId, Network *> _networks;
   QHash<IdentityId, Identity *> _identities;
 

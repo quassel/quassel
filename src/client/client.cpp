@@ -33,6 +33,7 @@
 #include "quasselui.h"
 #include "signalproxy.h"
 #include "util.h"
+#include "buffersettings.h"
 
 QPointer<Client> Client::instanceptr = 0;
 AccountId Client::_currentCoreAccount = 0;
@@ -142,7 +143,13 @@ QList<Buffer *> Client::buffers() {
 }
 
 
-// FIXME remove
+Buffer *Client::statusBuffer(const NetworkId &networkId) const {
+  if(_statusBuffers.contains(networkId))
+    return _statusBuffers[networkId];
+  else
+    return 0;
+}
+
 Buffer *Client::buffer(BufferId bufferId) {
   if(instance()->_buffers.contains(bufferId))
     return instance()->_buffers[bufferId];
@@ -150,16 +157,17 @@ Buffer *Client::buffer(BufferId bufferId) {
     return 0;
 }
 
-// FIXME remove
 Buffer *Client::buffer(BufferInfo bufferInfo) {
   Buffer *buff = buffer(bufferInfo.bufferId());
 
   if(!buff) {
     Client *client = Client::instance();
     buff = new Buffer(bufferInfo, client);
-    connect(buff, SIGNAL(destroyed()),
-	    client, SLOT(bufferDestroyed()));
+    connect(buff, SIGNAL(destroyed()), client, SLOT(bufferDestroyed()));
     client->_buffers[bufferInfo.bufferId()] = buff;
+    if(bufferInfo.type() == BufferInfo::StatusBuffer)
+      client->_statusBuffers[bufferInfo.networkId()] = buff;
+
     emit client->bufferUpdated(bufferInfo);
 
     // I don't like this: but currently there isn't really a prettier way:
@@ -327,6 +335,8 @@ void Client::disconnectFromCore() {
   }
   Q_ASSERT(_buffers.isEmpty());
 
+  _statusBuffers.clear();
+
   QHash<NetworkId, Network*>::iterator netIter = _networks.begin();
   while(netIter != _networks.end()) {
     Network *net = netIter.value();
@@ -370,6 +380,15 @@ void Client::bufferDestroyed() {
     }
     iter++;
   }
+
+  QHash<NetworkId, Buffer *>::iterator statusIter = _statusBuffers.begin();
+  while(statusIter != _statusBuffers.end()) {
+    if(statusIter.value() == buffer) {
+      statusIter = _statusBuffers.erase(statusIter);
+      break;
+    }
+    statusIter++;
+  }
 }
 
 void Client::networkDestroyed() {
@@ -388,19 +407,55 @@ void Client::networkDestroyed() {
 void Client::recvMessage(const Message &message) {
   Message msg = message;
   Buffer *b;
-  
-  if(msg.type() == Message::Error) {
-    b = buffer(msg.bufferInfo().bufferId());
-    if(!b) {
-      // FIXME: if buffer doesn't exist, forward the message to the status or current buffer
-      b = buffer(msg.bufferInfo());
-    }
-  } else {
-    b = buffer(msg.bufferInfo());
-  }
 
   checkForHighlight(msg);
-  b->appendMsg(msg);
+
+  if(msg.flags() & Message::Redirected) {
+    BufferSettings bufferSettings;
+    bool inStatus = bufferSettings.value("UserMessagesInStatusBuffer", QVariant(true)).toBool();
+    bool inQuery = bufferSettings.value("UserMessagesInQueryBuffer", QVariant(false)).toBool();
+    bool inCurrent = bufferSettings.value("UserMessagesInCurrentBuffer", QVariant(false)).toBool();
+
+    if(inStatus) {
+      b = statusBuffer(msg.bufferInfo().networkId());
+      if(b) {
+	b->appendMsg(msg);
+      } else if(!inQuery && !inCurrent) {	// make sure the message get's shown somewhere
+	b = buffer(msg.bufferInfo());
+	b->appendMsg(msg);
+      }
+    }
+
+    if(inQuery) {
+      b = buffer(msg.bufferInfo().bufferId());
+      if(b) {
+	b->appendMsg(msg);
+      } else if(!inStatus && !inCurrent) {	// make sure the message get's shown somewhere
+	b = statusBuffer(msg.bufferInfo().networkId());
+	if(!b)
+	  b = buffer(msg.bufferInfo()); // seems like we have to create the buffer anyways... 
+	b->appendMsg(msg);
+      }
+    }
+
+    if(inCurrent) {
+      BufferId currentId = bufferModel()->currentIndex().data(NetworkModel::BufferIdRole).value<BufferId>();
+      b = buffer(currentId);
+      if(b && currentId != msg.bufferInfo().bufferId() && !inQuery) {
+	b->appendMsg(msg);
+      } else if(!inStatus && !inQuery) {	// make sure the message get's shown somewhere
+	b = statusBuffer(msg.bufferInfo().networkId());
+	if(!b)
+	  b = buffer(msg.bufferInfo()); // seems like we have to create the buffer anyways... 
+	b->appendMsg(msg);
+      }
+    }
+  } else {
+    // the regular case: we can deliver where it was supposed to go
+    b = buffer(msg.bufferInfo());
+    b->appendMsg(msg);
+  }
+  
   //bufferModel()->updateBufferActivity(msg);
 
   if(msg.type() == Message::Plain || msg.type() == Message::Notice || msg.type() == Message::Action) {
@@ -420,6 +475,11 @@ void Client::recvStatusMsg(QString /*net*/, QString /*msg*/) {
 
 void Client::recvBacklogData(BufferInfo id, QVariantList msgs, bool /*done*/) {
   Buffer *b = buffer(id);
+  if(!b) {
+    qWarning() << "Client::recvBacklogData(): received Backlog for unknown Buffer:" << id;
+    return;
+  }
+    
   foreach(QVariant v, msgs) {
     Message msg = v.value<Message>();
     checkForHighlight(msg);

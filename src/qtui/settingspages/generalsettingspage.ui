@@ -61,7 +61,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox" >
      <property name="title" >
-      <string>Display user related messages:</string>
+      <string>Display user related messages and private Notices:</string>
      </property>
      <layout class="QVBoxLayout" >
       <item>

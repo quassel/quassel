@@ -50,9 +50,9 @@ GeneralSettingsPage::GeneralSettingsPage(QWidget *parent)
   connect(ui.displayTopicInTooltip, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
   connect(ui.mouseWheelChangesBuffers, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
 
-  ui.userMessagesInStatusBuffer->setEnabled(false);
-  ui.userMessagesInQueryBuffer->setEnabled(false);
-  ui.userMessagesInCurrentBuffer->setEnabled(false);
+//   ui.userMessagesInStatusBuffer->setEnabled(false);
+//   ui.userMessagesInQueryBuffer->setEnabled(false);
+//   ui.userMessagesInCurrentBuffer->setEnabled(false);
 }
 
 bool GeneralSettingsPage::hasDefaults() const {
