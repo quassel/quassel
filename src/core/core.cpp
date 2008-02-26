@@ -65,7 +65,7 @@ void Core::init() {
   CoreSettings cs;
 
   if(!(configured = initStorage(cs.storageSettings().toMap()))) {
-    qWarning("Core is currently not configured!");
+    qWarning("Core is currently not configured! Please connect with a Quassel Client for basic setup.");
 
     // try to migrate old settings
     QVariantMap old = cs.oldDbSettings().toMap();
@@ -105,7 +105,7 @@ void Core::saveState() {
 
 void Core::restoreState() {
   if(!instance()->configured) {
-    qWarning() << qPrintable(tr("Cannot restore a state for an unconfigured core!"));
+    // qWarning() << qPrintable(tr("Cannot restore a state for an unconfigured core!"));
     return;
   }
   if(instance()->sessions.count()) {
@@ -377,7 +377,7 @@ void Core::processClientMessage(QTcpSocket *socket, const QVariantMap &msg) {
     int updays = uptime / 86400; uptime %= 86400;
     int uphours = uptime / 3600; uptime %= 3600;
     int upmins = uptime / 60;
-    reply["CoreInfo"] = tr("<b>Quassel Core Version %1 (Build >= %2)</b><br>"
+    reply["CoreInfo"] = tr("<b>Quassel Core Version %1 (Build &ge; %2)</b><br>"
                             "Up %3d%4h%5m (since %6)").arg(Global::quasselVersion).arg(Global::quasselBuild)
                             .arg(updays).arg(uphours,2,10,QChar('0')).arg(upmins,2,10,QChar('0')).arg(startTime.toString(Qt::TextDate));
 
