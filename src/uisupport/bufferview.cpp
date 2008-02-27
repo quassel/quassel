@@ -115,13 +115,34 @@ void BufferView::keyPressEvent(QKeyEvent *event) {
 // ensure that newly inserted network nodes are expanded per default
 void BufferView::rowsInserted(const QModelIndex & parent, int start, int end) {
   QTreeView::rowsInserted(parent, start, end);
-  if(model()->rowCount(parent) == 1 && parent != QModelIndex()) {
+  if(model()->rowCount(parent) == 1 && parent.data(NetworkModel::ItemTypeRole) == NetworkModel::NetworkItemType && parent.data(NetworkModel::ItemActiveRole) == true) {
     // without updating the parent the expand will have no effect... Qt Bug?
     update(parent); 
     expand(parent);
   }
 }
 
+void BufferView::dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight) {
+  QTreeView::dataChanged(topLeft, bottomRight);
+  
+  // determine how many items have been changed and if any of them is a networkitem
+  // which just swichted from active to inactive or vice versa
+  if(topLeft.data(NetworkModel::ItemTypeRole) != NetworkModel::NetworkItemType)
+    return;
+
+  for(int i = topLeft.row(); i <= bottomRight.row(); i++) {
+    QModelIndex networkIdx = topLeft.sibling(topLeft.row(), 0);
+    if(model()->rowCount(networkIdx) == 0)
+      continue;
+
+    bool isActive = networkIdx.data(NetworkModel::ItemActiveRole).toBool();
+    if(isExpanded(networkIdx) != isActive) {
+      setExpanded(networkIdx, isActive);
+    }
+  }
+}
+
+			     
 void BufferView::toggleHeader(bool checked) {
   QAction *action = qobject_cast<QAction *>(sender());
   header()->setSectionHidden((action->property("column")).toInt(), !checked);
@@ -251,3 +272,15 @@ void BufferView::wheelEvent(QWheelEvent* event)
   }
 }
 
+
+QSize BufferView::sizeHint() const {
+  if(!model())
+    return QTreeView::sizeHint();
+  
+  int columnSize = 0;
+  for(int i = 0; i < model()->columnCount(); i++) {
+    if(!isColumnHidden(i))
+      columnSize += sizeHintForColumn(i);
+  }
+  return QSize(columnSize, 50);
+}

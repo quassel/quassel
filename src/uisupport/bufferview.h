@@ -40,14 +40,19 @@ public:
   
 signals:
   void removeBuffer(const QModelIndex &);
-  
+
+protected:
+  virtual void keyPressEvent(QKeyEvent *);
+  virtual void rowsInserted (const QModelIndex & parent, int start, int end);
+  virtual void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
+  virtual void wheelEvent(QWheelEvent *);
+  virtual QSize sizeHint() const;
+
 private slots:
   void joinChannel(const QModelIndex &index);
-  void keyPressEvent(QKeyEvent *);
-  void rowsInserted (const QModelIndex & parent, int start, int end);
   void toggleHeader(bool checked);
   void showContextMenu(const QPoint &);
-  void wheelEvent(QWheelEvent *);
+
 };
 
 

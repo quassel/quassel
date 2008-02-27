@@ -40,7 +40,8 @@ class NickView : public QTreeView {
     virtual ~NickView();
 
   protected:
-    void rowsInserted(const QModelIndex &, int, int);
+    virtual void rowsInserted(const QModelIndex &, int, int);
+    virtual QSize sizeHint() const;
 
   public slots:
     void setModel(QAbstractItemModel *model);
