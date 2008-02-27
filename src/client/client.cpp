@@ -536,18 +536,31 @@ void Client::removeBuffer(BufferId id) {
 }
 
 void Client::bufferRemoved(BufferId bufferId) {
+  // first remove the buffer from has. this prohibits further lastSeenUpdates
+  Buffer *buff = 0;
+  if(_buffers.contains(bufferId)) {
+    buff = _buffers.take(bufferId);
+    disconnect(buff, 0, this, 0);
+  }
+
+  // then we select a sane buffer (status buffer)
+  /* we have to manually select a buffer because otherwise inconsitent changes
+   * to the model might occur:
+   * the result of a buffer removal triggers a change in the selection model.
+   * the newly selected buffer might be a channel that hasn't been selected yet
+   * and a new nickview would be created (which never heard of the "rowsAboutToBeRemoved").
+   * this new view (and/or) its sort filter will then only receive a "rowsRemoved" signal.
+   */
   QModelIndex current = bufferModel()->currentIndex();
   if(current.data(NetworkModel::BufferIdRole).value<BufferId>() == bufferId) {
-    // select the status buffer if the currently displayed buffer is about to be removed
     bufferModel()->setCurrentIndex(current.sibling(0,0));
   }
-    
+
+  // and remove it from the model
   networkModel()->removeBuffer(bufferId);
-  if(_buffers.contains(bufferId)) {
-    Buffer *buff = _buffers.take(bufferId);
-    disconnect(buff, 0, this, 0);
+
+  if(buff)
     buff->deleteLater();
-  }
 }
 
 void Client::bufferRenamed(BufferId bufferId, const QString &newName) {
