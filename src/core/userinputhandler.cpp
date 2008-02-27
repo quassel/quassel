@@ -147,7 +147,7 @@ void UserInputHandler::handleList(const BufferInfo &bufferInfo, const QString &m
 
 void UserInputHandler::handleMe(const BufferInfo &bufferInfo, const QString &msg) {
   if(bufferInfo.bufferName().isEmpty()) return; // server buffer
-  networkConnection()->ctcpHandler()->query(bufferInfo.bufferName(), "ACTION", channelEncode(bufferInfo.bufferName(), msg));
+  networkConnection()->ctcpHandler()->query(bufferInfo.bufferName(), "ACTION", msg);
   emit displayMsg(Message::Action, bufferInfo.type(), bufferInfo.bufferName(), msg, network()->myNick());
 }
 
