@@ -146,11 +146,12 @@ void NickView::executeCommand(const BufferInfo & bufferInfo, const QString & com
 QSize NickView::sizeHint() const {
   if(!model())
     return QTreeView::sizeHint();
-  
+
   int columnSize = 0;
   for(int i = 0; i < model()->columnCount(); i++) {
     if(!isColumnHidden(i))
       columnSize += sizeHintForColumn(i);
   }
+
   return QSize(columnSize, 50);
 }

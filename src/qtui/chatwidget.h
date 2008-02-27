@@ -48,7 +48,7 @@ class ChatWidget : public QAbstractScrollArea {
     void init(BufferId id);
 
     virtual QSize minimumSizeHint() const;
-  //    virtual QSize sizeHint() const;
+    virtual QSize sizeHint() const;
 
   public slots:
     void clear();

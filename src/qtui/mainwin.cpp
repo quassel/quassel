@@ -70,7 +70,10 @@ MainWin::MainWin(QtUi *_gui, QWidget *parent)
 
 void MainWin::init() {
   QtUiSettings s;
-  resize(s.value("MainWinSize").toSize());
+  if(s.value("MainWinSize").isValid())
+    resize(s.value("MainWinSize").toSize());
+  else
+    resize(QSize(800, 500));
 
   Client::signalProxy()->attachSignal(this, SIGNAL(requestBacklog(BufferInfo, QVariant, QVariant)));
 
@@ -94,9 +97,9 @@ void MainWin::init() {
   setupMenus();
   setupViews();
   setupNickWidget();
+  setupTopicWidget();
   setupChatMonitor();
   setupInputWidget();
-  setupTopicWidget();
   setupSystray();
 
   
@@ -169,6 +172,7 @@ QDockWidget *MainWin::addBufferView(const QString &viewname, QAbstractItemModel 
   dock->show();
 
   addDockWidget(Qt::LeftDockWidgetArea, dock);
+
   ui.menuViews->addAction(dock->toggleViewAction());
 
   netViews.append(dock);
@@ -201,6 +205,7 @@ void MainWin::setupNickWidget() {
   nickDock->setWidget(nickListWidget);
 
   addDockWidget(Qt::RightDockWidgetArea, nickDock);
+
   ui.menuViews->addAction(nickDock->toggleViewAction());
 
   Client::bufferModel()->mapProperty(0, NetworkModel::BufferIdRole, nickListWidget, "currentBuffer");

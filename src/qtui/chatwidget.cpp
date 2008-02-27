@@ -85,6 +85,10 @@ QSize ChatWidget::minimumSizeHint() const {
   return QSize(20, 20);
 }
 
+QSize ChatWidget::sizeHint() const {
+  return QSize(400, 100);
+}
+
 // QSize ChatWidget::sizeHint() const {
 //   //qDebug() << size();
 //   return size();

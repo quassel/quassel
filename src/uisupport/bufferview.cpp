@@ -136,9 +136,8 @@ void BufferView::dataChanged(const QModelIndex &topLeft, const QModelIndex &bott
       continue;
 
     bool isActive = networkIdx.data(NetworkModel::ItemActiveRole).toBool();
-    if(isExpanded(networkIdx) != isActive) {
+    if(isExpanded(networkIdx) != isActive)
       setExpanded(networkIdx, isActive);
-    }
   }
 }
 
@@ -276,7 +275,10 @@ void BufferView::wheelEvent(QWheelEvent* event)
 QSize BufferView::sizeHint() const {
   if(!model())
     return QTreeView::sizeHint();
-  
+
+  if(model()->rowCount() == 0)
+    return QSize(120, 50);
+
   int columnSize = 0;
   for(int i = 0; i < model()->columnCount(); i++) {
     if(!isColumnHidden(i))

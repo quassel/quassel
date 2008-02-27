@@ -41,7 +41,10 @@ public slots:
   BufferId currentBuffer() const;
   void setCurrentBuffer(BufferId bufferId);
   void reset();
-	      
+
+protected:
+  virtual QSize sizeHint() const;
+
 private slots:
   void removeBuffer(BufferId bufferId);
   

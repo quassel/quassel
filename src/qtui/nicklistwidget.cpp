@@ -75,3 +75,11 @@ void NickListWidget::removeBuffer(BufferId bufferId) {
   ui.stackedWidget->removeWidget(view);
   view->deleteLater();
 }
+
+QSize NickListWidget::sizeHint() const {
+  QWidget *currentWidget = ui.stackedWidget->currentWidget();
+  if(!currentWidget || currentWidget == ui.emptyPage)
+    return QSize(100, height());
+  else
+    return currentWidget->sizeHint();
+}
