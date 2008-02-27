@@ -46,7 +46,8 @@ NetworkConnection::NetworkConnection(Network *network, CoreSession *session) : Q
     _autoReconnectCount(0)
 {
   _autoReconnectTimer.setSingleShot(true);
-
+ _previousConnectionAttemptFailed = false;
+ _lastUsedServerlistIndex = 0;
   // TODO make configurable
   _whoTimer.setInterval(60 * 1000);
   _whoTimer.setSingleShot(false);
@@ -194,9 +195,20 @@ void NetworkConnection::connectToIrc(bool reconnecting) {
     qWarning() << "Invalid identity configures, ignoring connect request!";
     return;
   }
-  // TODO implement cycling / random servers
-  QString host = serverList[0].toMap()["Host"].toString();
-  quint16 port = serverList[0].toMap()["Port"].toUInt();
+  // use a random server?
+  if(network()->useRandomServer()) {
+    _lastUsedServerlistIndex = qrand() % serverList.size();
+  } else if(_previousConnectionAttemptFailed) {
+    // cycle to next server if previous connection attempt failed
+    displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("Connection failed. Cycling to next Server"));
+    if(++_lastUsedServerlistIndex == serverList.size()) {
+      _lastUsedServerlistIndex = 0;
+    }
+  }
+  _previousConnectionAttemptFailed = false;
+  
+  QString host = serverList[_lastUsedServerlistIndex].toMap()["Host"].toString();
+  quint16 port = serverList[_lastUsedServerlistIndex].toMap()["Port"].toUInt();
   displayStatusMsg(tr("Connecting to %1:%2...").arg(host).arg(port));
   displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("Connecting to %1:%2...").arg(host).arg(port));
   socket.connectToHost(host, port);
@@ -266,6 +278,7 @@ void NetworkConnection::socketHasData() {
 }
 
 void NetworkConnection::socketError(QAbstractSocket::SocketError) {
+  _previousConnectionAttemptFailed = true;
   qDebug() << qPrintable(tr("Could not connect to %1 (%2)").arg(network()->networkName(), socket.errorString()));
   emit connectionError(socket.errorString());
   emit displayMsg(Message::Error, BufferInfo::StatusBuffer, "", tr("Connection failure: %1").arg(socket.errorString()));
@@ -274,6 +287,8 @@ void NetworkConnection::socketError(QAbstractSocket::SocketError) {
     setConnectionState(Network::Disconnected);
     socketDisconnected();
   }
+  // mark last connection attempt as failed
+  
   //qDebug() << "exiting...";
   //exit(1);
 }

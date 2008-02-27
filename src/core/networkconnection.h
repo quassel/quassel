@@ -148,6 +148,9 @@ private:
 
   QTimer _whoTimer;
 
+  bool _previousConnectionAttemptFailed;
+  int _lastUsedServerlistIndex;
+  
   class ParseError : public Exception {
   public:
     ParseError(QString cmd, QString prefix, QStringList params);
