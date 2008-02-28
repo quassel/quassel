@@ -62,6 +62,8 @@ public:
   static Buffer *buffer(BufferInfo);
   static inline Buffer *monitorBuffer() { return instance()->_monitorBuffer; }
 
+  Buffer *statusBuffer(const NetworkId &networkid) const;
+
   static QList<NetworkId> networkIds();
   static const Network * network(NetworkId);
 
@@ -192,8 +194,6 @@ private:
   static void addNetwork(Network *);
   static void setCurrentCoreAccount(AccountId);
   static inline BufferSyncer *bufferSyncer() { return instance()->_bufferSyncer; }
-
-  Buffer *statusBuffer(const NetworkId &networkid) const;
 
   static QPointer<Client> instanceptr;
 

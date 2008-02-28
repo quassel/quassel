@@ -153,6 +153,7 @@ void BufferView::showContextMenu(const QPoint &pos) {
   QMenu contextMenu(this);
   QAction *connectNetAction = new QAction(tr("Connect"), this);
   QAction *disconnectNetAction = new QAction(tr("Disconnect"), this);
+  QAction *joinChannelAction = new QAction(tr("Join Channel"), this);
 
   QAction *joinBufferAction = new QAction(tr("Join"), this);
   QAction *partBufferAction = new QAction(tr("Part"), this);
@@ -182,6 +183,8 @@ void BufferView::showContextMenu(const QPoint &pos) {
   if(index.data(NetworkModel::ItemTypeRole) == NetworkModel::NetworkItemType) {
     if(index.data(NetworkModel::ItemActiveRole).toBool()) {
       contextMenu.addAction(disconnectNetAction);
+      contextMenu.addSeparator();
+      contextMenu.addAction(joinChannelAction);
     } else {
       contextMenu.addAction(connectNetAction);
     }
@@ -204,6 +207,7 @@ void BufferView::showContextMenu(const QPoint &pos) {
         removeBufferAction->setEnabled(false);
         removeBufferAction->setToolTip("To delete the buffer, part the channel first.");
         joinBufferAction->setVisible(false);
+        whoBufferAction->setVisible(false);
       } else {
         partBufferAction->setVisible(false);
       }
@@ -221,6 +225,18 @@ void BufferView::showContextMenu(const QPoint &pos) {
       network->requestConnect();
     else 
       network->requestDisconnect();
+  } else
+  if(result == joinChannelAction) {
+    bool ok;
+    QString channelName = QInputDialog::getText(this, tr("Join Channel"), 
+                                                tr("Input channel name:"),QLineEdit::Normal,
+                                                QDir::home().dirName(), &ok);
+    if (ok && !channelName.isEmpty()) {
+      const Buffer *statusbuffer = Client::instance()->statusBuffer(index.data(NetworkModel::NetworkIdRole).value<NetworkId>());
+      if(statusbuffer) {
+        Client::instance()->userInput(statusbuffer->bufferInfo(), QString("/J %1").arg(channelName));
+      }
+    }
   } else
   if(result == joinBufferAction) {
     Client::instance()->userInput(bufferInfo, QString("/JOIN %1").arg(channelname));
