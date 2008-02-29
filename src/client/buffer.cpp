@@ -96,9 +96,14 @@ void Buffer::setActivityLevel(ActivityLevel level) {
 }
 
 void Buffer::updateActivityLevel(const Message &msg) {
-  if(isVisible()) return;
-  if(lastSeen().isValid() && lastSeen() >= msg.timestamp()) return;
-  //qDebug() << "recv msg" << bufferInfo() << msg.timestamp();
+  if(isVisible())
+    return;
+
+  if(msg.flags() & Message::Self)	// don't update activity for our own messages
+    return;
+
+  if(lastSeen().isValid() && lastSeen() >= msg.timestamp())
+    return;
 
   ActivityLevel level = activityLevel() | OtherActivity;
   if(msg.type() == Message::Plain || msg.type() == Message::Notice) level |= NewMessage;
