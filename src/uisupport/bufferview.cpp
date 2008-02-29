@@ -232,9 +232,9 @@ void BufferView::showContextMenu(const QPoint &pos) {
                                                 tr("Input channel name:"),QLineEdit::Normal,
                                                 QDir::home().dirName(), &ok);
     if (ok && !channelName.isEmpty()) {
-      const Buffer *statusbuffer = Client::instance()->statusBuffer(index.data(NetworkModel::NetworkIdRole).value<NetworkId>());
-      if(statusbuffer) {
-        Client::instance()->userInput(statusbuffer->bufferInfo(), QString("/J %1").arg(channelName));
+      BufferInfo bufferInfo = index.child(0,0).data(NetworkModel::BufferInfoRole).value<BufferInfo>();
+      if(bufferInfo.isValid()) {
+        Client::instance()->userInput(bufferInfo, QString("/J %1").arg(channelName));
       }
     }
   } else
