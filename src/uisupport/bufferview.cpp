@@ -258,33 +258,31 @@ void BufferView::showContextMenu(const QPoint &pos) {
   }
 }
 
-void BufferView::wheelEvent(QWheelEvent* event)
-{
-  UiSettings s;
-  if(s.value("MouseWheelChangesBuffers",QVariant(true)).toBool()) {
-    int rowDelta = ( event->delta() > 0 ) ? -1 : 1;
-    QModelIndex currentIndex = selectionModel()->currentIndex();
-    QModelIndex resultingIndex;
-    if( model()->hasIndex(  currentIndex.row() + rowDelta, currentIndex.column(), currentIndex.parent() ) )
+void BufferView::wheelEvent(QWheelEvent* event) {
+  if(UiSettings().value("MouseWheelChangesBuffers", QVariant(true)).toBool() == (bool)(event->modifiers() & Qt::AltModifier))
+    return QTreeView::wheelEvent(event);
+
+  int rowDelta = ( event->delta() > 0 ) ? -1 : 1;
+  QModelIndex currentIndex = selectionModel()->currentIndex();
+  QModelIndex resultingIndex;
+  if( model()->hasIndex(  currentIndex.row() + rowDelta, currentIndex.column(), currentIndex.parent() ) )
     {
-        resultingIndex = currentIndex.sibling( currentIndex.row() + rowDelta, currentIndex.column() );
+      resultingIndex = currentIndex.sibling( currentIndex.row() + rowDelta, currentIndex.column() );
     }
     else //if we scroll into a the parent node...
-    {
+      {
         QModelIndex parent = currentIndex.parent();
         QModelIndex aunt = parent.sibling( parent.row() + rowDelta, parent.column() );
         if( rowDelta == -1 )
-            resultingIndex = aunt.child( model()->rowCount( aunt ) - 1, 0 );
+	  resultingIndex = aunt.child( model()->rowCount( aunt ) - 1, 0 );
         else
-            resultingIndex = aunt.child( 0, 0 );
+	  resultingIndex = aunt.child( 0, 0 );
         if( !resultingIndex.isValid() )
-            return;
-    }
-    selectionModel()->setCurrentIndex( resultingIndex, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows );
-    selectionModel()->select( resultingIndex, QItemSelectionModel::ClearAndSelect );
-  } else {
-    QAbstractScrollArea::wheelEvent(event);
-  }
+	  return;
+      }
+  selectionModel()->setCurrentIndex( resultingIndex, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows );
+  selectionModel()->select( resultingIndex, QItemSelectionModel::ClearAndSelect );
+  
 }
 
 
