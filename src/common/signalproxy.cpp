@@ -311,7 +311,7 @@ void SignalProxy::removePeerBySender() {
 void SignalProxy::objectRenamed(const QString &newname, const QString &oldname) {
   const QMetaObject *meta = sender()->metaObject();
   const QByteArray className(meta->className());
-  objectRenamed(className, oldname, newname);
+  objectRenamed(className, newname, oldname);
 
   if(proxyMode() == Client)
     return;
