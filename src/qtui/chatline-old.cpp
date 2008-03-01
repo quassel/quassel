@@ -309,7 +309,7 @@ void ChatLine::draw(QPainter *p, const QPointF &pos) {
   } else {
     if(isHighlight) {
       p->setPen(Qt::NoPen);
-      p->setBrush(pal.brush(QPalette::AlternateBase));
+      p->setBrush(QColor("lightcoral") /*pal.brush(QPalette::AlternateBase) */);
       p->drawRect(QRectF(pos, QSizeF(tsWidth + QtUi::style()->sepTsSender() + senderWidth + QtUi::style()->sepSenderText() + textWidth, height())));
     }
     if(selectionMode == Partial) {
