@@ -290,6 +290,7 @@ IrcUser *Network::newIrcUser(const QString &hostmask) {
     
     connect(ircuser, SIGNAL(nickSet(QString)), this, SLOT(ircUserNickChanged(QString)));
     connect(ircuser, SIGNAL(initDone()), this, SLOT(ircUserInitDone()));
+    connect(ircuser, SIGNAL(destroyed()), this, SLOT(ircUserDestroyed()));
     _ircUsers[nick] = ircuser;
     emit ircUserAdded(hostmask);
     emit ircUserAdded(ircuser);

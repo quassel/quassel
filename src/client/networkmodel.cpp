@@ -131,8 +131,8 @@ void BufferItem::attachIrcChannel(IrcChannel *ircChannel) {
 
   connect(ircChannel, SIGNAL(topicSet(QString)),
 	  this, SLOT(setTopic(QString)));
-  connect(ircChannel, SIGNAL(ircUserJoined(IrcUser *)),
-	  this, SLOT(join(IrcUser *)));
+  connect(ircChannel, SIGNAL(ircUsersJoined(QList<IrcUser *>)),
+	  this, SLOT(join(QList<IrcUser *>)));
   connect(ircChannel, SIGNAL(ircUserParted(IrcUser *)),
 	  this, SLOT(part(IrcUser *)));
   connect(ircChannel, SIGNAL(destroyed()),
@@ -146,9 +146,7 @@ void BufferItem::attachIrcChannel(IrcChannel *ircChannel) {
 
   if(!ircChannel->ircUsers().isEmpty()) {
     qWarning() << "Channel" << ircChannel->name() << "has already users which is quite surprising :)";
-    foreach(IrcUser *ircUser, ircChannel->ircUsers()) {
-      join(ircUser);
-    }
+    join(ircChannel->ircUsers());
   }
   
   emit dataChanged();
@@ -200,30 +198,41 @@ void BufferItem::setTopic(const QString &topic) {
   emit dataChanged(1);
 }
 
-void BufferItem::join(IrcUser *ircUser) {
-  if(!ircUser)
-    return;
+void BufferItem::join(const QList<IrcUser *> &ircUsers) {
+  addUsersToCategory(ircUsers);
 
-  addUserToCategory(ircUser);
-  connect(ircUser, SIGNAL(destroyed()),
-	  this, SLOT(ircUserDestroyed()));
+  foreach(IrcUser *ircUser, ircUsers) {
+    if(!ircUser)
+      continue;
+    connect(ircUser, SIGNAL(destroyed()), this, SLOT(ircUserDestroyed()));
+  }
+  
   emit dataChanged(2);
 }
 
 void BufferItem::addUserToCategory(IrcUser *ircUser) {
+  addUsersToCategory(QList<IrcUser *>() << ircUser);
+}
+
+void BufferItem::addUsersToCategory(const QList<IrcUser *> &ircUsers) {
   Q_ASSERT(_ircChannel);
 
-  UserCategoryItem *categoryItem;
-  int categoryId = UserCategoryItem::categoryFromModes(_ircChannel->userModes(ircUser));
-  if(!(categoryItem = qobject_cast<UserCategoryItem *>(childById(qHash(categoryId))))) {
-    categoryItem = new UserCategoryItem(categoryId, this);
-    newChild(categoryItem);
+  QHash<UserCategoryItem *, QList<IrcUser *> > categories;
+  foreach(IrcUser *ircUser, ircUsers) {
+    UserCategoryItem *categoryItem;
+    int categoryId = UserCategoryItem::categoryFromModes(_ircChannel->userModes(ircUser));
+    if(!(categoryItem = qobject_cast<UserCategoryItem *>(childById(qHash(categoryId))))) {
+      categoryItem = new UserCategoryItem(categoryId, this);
+      categories[categoryItem] = QList<IrcUser *>();
+      newChild(categoryItem);
+    }
+    categories[categoryItem] << ircUser;
   }
-  categoryItem->addUser(ircUser);
 
-  int totalusers = 0;
-  for(int i = 0; i < childCount(); i++) {
-    totalusers += child(i)->childCount();
+  QHash<UserCategoryItem *, QList<IrcUser *> >::const_iterator catIter = categories.constBegin();
+  while(catIter != categories.constEnd()) {
+    catIter.key()->addUsers(catIter.value());
+    catIter++;
   }
 }
 
@@ -267,11 +276,6 @@ void BufferItem::removeUserFromCategory(IrcUser *ircUser) {
     qDebug() << "==== End Of Childlist for Item:" << this << id() << bufferName() << "====";
   }
   Q_ASSERT(success);
-
-  int totalusers = 0;
-  for(int i = 0; i < childCount(); i++) {
-    totalusers += child(i)->childCount();
-  }
 }
 
 void BufferItem::userModeChanged(IrcUser *ircUser) {
@@ -496,8 +500,11 @@ quint64 UserCategoryItem::id() const {
   return qHash(_category);
 }
 
-void UserCategoryItem::addUser(IrcUser *ircUser) {
-  newChild(new IrcUserItem(ircUser, this));
+void UserCategoryItem::addUsers(const QList<IrcUser *> &ircUsers) {
+  QList<AbstractTreeItem *> userItems;
+  foreach(IrcUser *ircUser, ircUsers)
+    userItems << new IrcUserItem(ircUser, this);
+  newChilds(userItems);
 }
 
 bool UserCategoryItem::removeUser(IrcUser *ircUser) {

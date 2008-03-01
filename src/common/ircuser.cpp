@@ -243,9 +243,8 @@ void IrcUser::joinChannel(IrcChannel *channel) {
   Q_ASSERT(channel);
   if(!_channels.contains(channel)) {
     _channels.insert(channel);
-    channel->join(this);
+    channel->joinIrcUsers(this);
     connect(channel, SIGNAL(destroyed()), this, SLOT(channelDestroyed()));
-    emit channelJoined(channel->name());
   }
 }
 
@@ -259,7 +258,7 @@ void IrcUser::partChannel(IrcChannel *channel) {
     disconnect(channel, 0, this, 0);
     channel->part(this);
     emit channelParted(channel->name());
-    if(_channels.isEmpty())
+    if(_channels.isEmpty() && network()->isMe(this))
       deleteLater();
   }
 }
@@ -278,6 +277,8 @@ void IrcUser::channelDestroyed() {
   IrcChannel *channel = static_cast<IrcChannel*>(sender());
   if(_channels.contains(channel)) {
     _channels.remove(channel);
+    if(_channels.isEmpty())
+      deleteLater();
   }
 }
 

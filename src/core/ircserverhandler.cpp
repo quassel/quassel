@@ -558,6 +558,15 @@ void IrcServerHandler::handle353(const QString &prefix, const QList<QByteArray> 
   // we don't use this information at the time beeing
   QString channelname = serverDecode(params[1]);
 
+  IrcChannel *channel = network()->ircChannel(channelname);
+  if(!channel) {
+    qWarning() << "IrcServerHandler::handle353(): received unknown target channel:" << channelname;
+    return;
+  }
+
+  QStringList nicks;
+  QStringList modes;
+  
   foreach(QString nick, serverDecode(params[2]).split(' ')) {
     QString mode = QString();
 
@@ -566,12 +575,11 @@ void IrcServerHandler::handle353(const QString &prefix, const QList<QByteArray> 
       nick = nick.mid(1);
     }
 
-    IrcUser *ircuser = network()->newIrcUser(nick);
-    ircuser->joinChannel(channelname);
-
-    if(!mode.isNull())
-      network()->ircChannel(channelname)->addUserMode(ircuser, mode);
+    nicks << nick;
+    modes << mode;
   }
+  
+  channel->joinIrcUsers(nicks, modes);
 }
 
 /*  RPL_ENDOFWHOWAS - "<nick> :End of WHOWAS" */

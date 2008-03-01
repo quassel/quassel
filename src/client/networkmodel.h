@@ -81,10 +81,11 @@ public:
 
 public slots:
   void setTopic(const QString &topic);
-  void join(IrcUser *ircUser);
+  void join(const QList<IrcUser *> &ircUsers);
   void part(IrcUser *ircUser);
 
   void addUserToCategory(IrcUser *ircUser);
+  void addUsersToCategory(const QList<IrcUser *> &ircUser);
   void removeUserFromCategory(IrcUser *ircUser);
   void userModeChanged(IrcUser *ircUser);
 
@@ -152,7 +153,7 @@ public:
   virtual quint64 id() const;
   virtual QVariant data(int column, int role) const;
   
-  void addUser(IrcUser *ircUser);
+  void addUsers(const QList<IrcUser *> &ircUser);
   bool removeUser(IrcUser *ircUser);
 
   static int categoryFromModes(const QString &modes);

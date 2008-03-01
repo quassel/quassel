@@ -181,6 +181,7 @@ public slots:
   void removeSupport(const QString &param);
 
   inline void addIrcUser(const QString &hostmask) { newIrcUser(hostmask); }
+  inline void addIrcChannel(const QString &channel) { newIrcChannel(channel); }
   void removeIrcUser(const QString &nick);
   void removeIrcChannel(const QString &channel);
 

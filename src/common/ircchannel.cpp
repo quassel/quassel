@@ -125,21 +125,62 @@ void IrcChannel::setPassword(const QString &password) {
   emit passwordSet(password);
 }
 
-void IrcChannel::join(IrcUser *ircuser) {
-  if(!_userModes.contains(ircuser) && ircuser) {
-    _userModes[ircuser] = QString();
+void IrcChannel::joinIrcUsers(const QList<IrcUser *> &users, const QStringList &modes) {
+  if(users.isEmpty())
+    return;
+
+  if(users.count() != modes.count()) {
+    qWarning() << "IrcChannel::addUsers(): number of nicks does not match number of modes!";
+    return;
+  }
+
+  QStringList newNicks;
+  QStringList newModes;
+  QList<IrcUser *> newUsers;
+
+  IrcUser *ircuser;
+  for(int i = 0; i < users.count(); i++) {
+    ircuser = users[i];
+    if(!ircuser || _userModes.contains(ircuser))
+      continue;
+
+    _userModes[ircuser] = modes[i];
     ircuser->joinChannel(this);
     //qDebug() << "JOIN" << name() << ircuser->nick() << ircUsers().count();
     connect(ircuser, SIGNAL(nickSet(QString)), this, SLOT(ircUserNickSet(QString)));
     connect(ircuser, SIGNAL(destroyed()), this, SLOT(ircUserDestroyed()));
     // if you wonder why there is no counterpart to ircUserJoined:
     // the joines are propagted by the ircuser. the signal ircUserJoined is only for convenience
-    emit ircUserJoined(ircuser);
+
+    newNicks << ircuser->nick();
+    newModes << modes[i];
+    newUsers << ircuser;
   }
+
+  if(newNicks.isEmpty())
+    return;
+  
+  emit ircUsersJoined(newUsers);
+  emit ircUsersJoined(newNicks, newModes);
 }
 
-void IrcChannel::join(const QString &nick) {
-  join(network->ircUser(nick));
+void IrcChannel::joinIrcUsers(const QStringList &nicks, const QStringList &modes) {
+  QList<IrcUser *> users;
+  foreach(QString nick, nicks)
+    users << network->newIrcUser(nick);
+  joinIrcUsers(users, modes);
+}
+		      
+void IrcChannel::joinIrcUsers(IrcUser *ircuser) {
+  QList <IrcUser *> users;
+  users << ircuser;
+  QStringList modes;
+  modes << QString();
+  joinIrcUsers(users, modes);
+}
+
+void IrcChannel::joinIrcUsers(const QString &nick) {
+  joinIrcUsers(network->newIrcUser(nick));
 }
 
 void IrcChannel::part(IrcUser *ircuser) {

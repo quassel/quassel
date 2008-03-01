@@ -123,7 +123,7 @@ signals:
 
   void userModesSet(QString modes);
 
-  void channelJoined(QString channel);
+  // void channelJoined(QString channel);
   void channelParted(QString channel);
 
   void userModeAdded(QString mode);

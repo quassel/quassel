@@ -41,6 +41,7 @@ public:
   virtual ~AbstractTreeItem();
 
   bool newChild(AbstractTreeItem *child);
+  bool newChilds(const QList<AbstractTreeItem *> &items);
 
   bool removeChild(int row);
   bool removeChildById(const quint64 &id);

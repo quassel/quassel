@@ -69,8 +69,10 @@ public slots:
   void setTopic(const QString &topic);
   void setPassword(const QString &password);
 
-  void join(IrcUser *ircuser);
-  void join(const QString &nick);
+  void joinIrcUsers(const QList<IrcUser *> &users, const QStringList &modes);
+  void joinIrcUsers(const QStringList &nicks, const QStringList &modes);
+  void joinIrcUsers(IrcUser *ircuser);
+  void joinIrcUsers(const QString &nick);
 
   void part(IrcUser *ircuser);
   void part(const QString &nick);
@@ -100,7 +102,8 @@ signals:
   void userModeRemoved(QString nick, QString mode);
   //void userModeRemoved(IrcUser *ircuser, QString mode);
 
-  void ircUserJoined(IrcUser *ircuser);
+  void ircUsersJoined(QList<IrcUser *> ircusers);
+  void ircUsersJoined(QStringList nicks, QStringList modes);
   void ircUserParted(IrcUser *ircuser);
   void ircUserNickSet(IrcUser *ircuser, QString nick);
   void ircUserModeAdded(IrcUser *ircuser, QString mode);

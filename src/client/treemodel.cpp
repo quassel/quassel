@@ -51,6 +51,35 @@ bool AbstractTreeItem::newChild(AbstractTreeItem *item) {
   return true;
 }
 
+bool AbstractTreeItem::newChilds(const QList<AbstractTreeItem *> &items) {
+  if(items.isEmpty())
+    return false;
+  
+  QList<AbstractTreeItem *>::const_iterator itemIter = items.constBegin();
+  AbstractTreeItem *item;
+  while(itemIter != items.constEnd()) {
+    item = *itemIter;
+    if(childById(item->id()) != 0) {
+      qWarning() << "AbstractTreeItem::newChilds(): received child that is already attached" << item << item->id();
+      return false;
+    }
+    itemIter++;
+  }
+
+  int nextRow = childCount();
+  int lastRow = nextRow + items.count() - 1;
+
+  emit beginAppendChilds(nextRow, lastRow);
+  itemIter = items.constBegin();
+  while(itemIter != items.constEnd()) {
+    _childItems.append(*itemIter);
+    itemIter++;
+  }
+  emit endAppendChilds();
+
+  return true;
+}
+
 bool AbstractTreeItem::removeChild(int row) {
   if(childCount() <= row)
     return false;
