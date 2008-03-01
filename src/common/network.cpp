@@ -301,6 +301,21 @@ IrcUser *Network::newIrcUser(const QByteArray &hostmask) {
   return newIrcUser(decodeServerString(hostmask));
 }
 
+void Network::ircUserDestroyed() {
+  IrcUser *ircUser = static_cast<IrcUser *>(sender());
+  if(!ircUser)
+    return;
+
+  QHash<QString, IrcUser *>::iterator ircUserIter = _ircUsers.begin();
+  while(ircUserIter != _ircUsers.end()) {
+    if(ircUser == *ircUserIter) {
+      ircUserIter = _ircUsers.erase(ircUserIter);
+      break;
+    }
+    ircUserIter++;
+  }
+}
+
 void Network::removeIrcUser(IrcUser *ircuser) {
   QString nick = _ircUsers.key(ircuser);
   if(nick.isNull())
@@ -313,6 +328,12 @@ void Network::removeIrcUser(IrcUser *ircuser) {
   ircuser->deleteLater();
 }
 
+void Network::removeIrcUser(const QString &nick) {
+  IrcUser *ircuser;
+  if((ircuser = ircUser(nick)) != 0)
+    removeIrcUser(ircuser);
+}
+
 void Network::removeChansAndUsers() {
   QList<IrcUser *> users = ircUsers();
   foreach(IrcUser *user, users) {
@@ -322,12 +343,6 @@ void Network::removeChansAndUsers() {
   foreach(IrcChannel *channel, channels) {
     removeIrcChannel(channel);
   }
-}
-
-void Network::removeIrcUser(const QString &nick) {
-  IrcUser *ircuser;
-  if((ircuser = ircUser(nick)) != 0)
-    removeIrcUser(ircuser);
 }
 
 IrcUser *Network::ircUser(QString nickname) const {

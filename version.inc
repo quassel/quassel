@@ -3,16 +3,16 @@
 
 { using namespace Global;
 
-  quasselVersion = "0.2.0-alpha2";
+  quasselVersion = "0.2.0-alpha3-pre";
   quasselDate = "2008-03-01";
-  quasselBuild = 603;
+  quasselBuild = 605;
 
   //! Minimum client build number the core needs
-  clientBuildNeeded = 563;
+  clientBuildNeeded = 605;
   clientVersionNeeded = quasselVersion;
 
   //! Minimum core build number the client needs
-  coreBuildNeeded = 563;
+  coreBuildNeeded = 605;
   coreVersionNeeded = quasselVersion;
 
 }

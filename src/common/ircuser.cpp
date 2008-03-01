@@ -226,12 +226,7 @@ void IrcUser::setNick(const QString &nick) {
 }
 
 void IrcUser::updateObjectName() {
-  QString newName = QString::number(network()->networkId().toInt()) + "/" + _nick;
-  QString oldName = objectName();
-  if(oldName != newName) {
-    setObjectName(newName);
-    emit renameObject(oldName, newName);
-  }
+  renameObject(QString::number(network()->networkId().toInt()) + "/" + _nick);
 }
 
 void IrcUser::updateHostmask(const QString &mask) {
@@ -264,6 +259,8 @@ void IrcUser::partChannel(IrcChannel *channel) {
     disconnect(channel, 0, this, 0);
     channel->part(this);
     emit channelParted(channel->name());
+    if(_channels.isEmpty())
+      deleteLater();
   }
 }
 

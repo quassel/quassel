@@ -269,38 +269,9 @@ bool SignalProxy::addPeer(QIODevice* iodev) {
   return true;
 }
 
-void SignalProxy::removePeerBySender() {
-  // OK we're brutal here... but since it's a private slot we know what we've got connected to it...
-  QIODevice *ioDev = (QIODevice *)(sender());
-  removePeer(ioDev);
-  qDebug() << "Client disconnected.";
-}
-
-void SignalProxy::objectRenamed(QString oldname, QString newname) {
-  const QMetaObject *meta = sender()->metaObject();
-  const QByteArray className(meta->className());
-  objectRenamed(className, oldname, newname);
-
-  if(proxyMode() == Client)
-    return;
-  
-  QVariantList params;
-  params << "__objectRenamed__" << className << oldname << newname;
-  dispatchSignal(RpcCall, params);
-}
-
-void SignalProxy::objectRenamed(QByteArray classname, QString oldname, QString newname) {
-  if(_syncSlave.contains(classname) && _syncSlave[classname].contains(oldname) && oldname != newname) {
-    SyncableObject *obj = _syncSlave[classname][newname] = _syncSlave[classname].take(oldname);
-    if(!obj->isInitialized())
-      requestInit(obj);
-  }
-}
-
-
 void SignalProxy::removePeer(QIODevice* iodev) {
   if(_peerByteCount.isEmpty()) {
-    qWarning() << "SignalProxy: No peers in use!";
+    qWarning() << "SignalProxy::removePeer(): No peers in use!";
     return;
   }
 
@@ -321,14 +292,6 @@ void SignalProxy::removePeer(QIODevice* iodev) {
     return;
   }
 
-  // take a last gasp
-  while(true) {
-    QVariant var;
-    if(readDataFromDevice(iodev, _peerByteCount[iodev], var))
-      receivePeerSignal(iodev, var);
-    else
-      break;
-  }
   _peerByteCount.remove(iodev);
 
   disconnect(iodev, 0, this, 0);
@@ -336,6 +299,33 @@ void SignalProxy::removePeer(QIODevice* iodev) {
 
   if(_peerByteCount.isEmpty())
     emit disconnected();
+}
+
+void SignalProxy::removePeerBySender() {
+  // OK we're brutal here... but since it's a private slot we know what we've got connected to it...
+  QIODevice *ioDev = (QIODevice *)(sender());
+  removePeer(ioDev);
+  qDebug() << "Client disconnected.";
+}
+
+void SignalProxy::objectRenamed(const QString &newname, const QString &oldname) {
+  const QMetaObject *meta = sender()->metaObject();
+  const QByteArray className(meta->className());
+  objectRenamed(className, oldname, newname);
+
+  if(proxyMode() == Client)
+    return;
+  
+  QVariantList params;
+  params << "__objectRenamed__" << className << newname << oldname;
+  dispatchSignal(RpcCall, params);
+}
+
+void SignalProxy::objectRenamed(const QByteArray &classname, const QString &newname, const QString &oldname) {
+  if(_syncSlave.contains(classname) && _syncSlave[classname].contains(oldname) && oldname != newname) {
+    SyncableObject *obj = _syncSlave[classname][newname] = _syncSlave[classname].take(oldname);
+    requestInit(obj);
+  }
 }
 
 void SignalProxy::setArgTypes(QObject* obj, int methodId) {
@@ -507,9 +497,7 @@ void SignalProxy::synchronize(SyncableObject *obj) {
   _syncSlave[className][obj->objectName()] = obj;
 
   if(proxyMode() == Server) {
-    if(obj->metaObject()->indexOfSignal(QMetaObject::normalizedSignature("renameObject(QString, QString)")) != -1)
-      connect(obj, SIGNAL(renameObject(QString, QString)), this, SLOT(objectRenamed(QString, QString)));
-
+    connect(obj, SIGNAL(objectRenamed(QString, QString)), this, SLOT(objectRenamed(QString, QString)));
     setInitialized(obj);
   } else {
     requestInit(obj);

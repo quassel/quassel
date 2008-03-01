@@ -113,8 +113,8 @@ private slots:
   void dataAvailable();
   void detachSender();
   void removePeerBySender();
-  void objectRenamed(QString oldname, QString newname);
-  void objectRenamed(QByteArray classname, QString oldname, QString newname);
+  void objectRenamed(const QString &newname, const QString &oldname);
+  void objectRenamed(const QByteArray &classname, const QString &newname, const QString &oldname);
   void sendHeartBeat();
 
 signals:

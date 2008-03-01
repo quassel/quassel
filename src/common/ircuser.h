@@ -129,8 +129,6 @@ signals:
   void userModeAdded(QString mode);
   void userModeRemoved(QString mode);
 
-  void renameObject(QString oldname, QString newname);
-
 //   void setUsermodes(const QSet<QString> &usermodes);
 //   QSet<QString> usermodes() const;
 

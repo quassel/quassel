@@ -29,41 +29,45 @@
 class SyncableObject : public QObject {
   Q_OBJECT
 
-  public:
-    SyncableObject(QObject *parent = 0);
-    SyncableObject(const SyncableObject &other, QObject *parent = 0);
+public:
+  SyncableObject(QObject *parent = 0);
+  SyncableObject(const SyncableObject &other, QObject *parent = 0);
 
-    //! Stores the object's state into a QVariantMap.
-    /** The default implementation takes dynamic properties as well as getters that have
-     *  names starting with "init" and stores them in a QVariantMap. Override this method in
-     *  derived classes in order to store the object state in a custom form.
-     *  \note  This is used by SignalProxy to transmit the state of the object to clients
-     *         that request the initial object state. Later updates use a different mechanism
-     *         and assume that the state is completely covered by properties and init* getters.
-     *         DO NOT OVERRIDE THIS unless you know exactly what you do!
-     *
-     *  \return The object's state in a QVariantMap
-     */
-    virtual QVariantMap toVariantMap();
+  //! Stores the object's state into a QVariantMap.
+  /** The default implementation takes dynamic properties as well as getters that have
+   *  names starting with "init" and stores them in a QVariantMap. Override this method in
+   *  derived classes in order to store the object state in a custom form.
+   *  \note  This is used by SignalProxy to transmit the state of the object to clients
+   *         that request the initial object state. Later updates use a different mechanism
+   *         and assume that the state is completely covered by properties and init* getters.
+   *         DO NOT OVERRIDE THIS unless you know exactly what you do!
+   *
+   *  \return The object's state in a QVariantMap
+   */
+  virtual QVariantMap toVariantMap();
+  
+  //! Initialize the object's state from a given QVariantMap.
+  /** \see toVariantMap() for important information concerning this method.
+   */
+  virtual void fromVariantMap(const QVariantMap &map);
 
-    //! Initialize the object's state from a given QVariantMap.
-    /** \see toVariantMap() for important information concerning this method.
-     */
-    virtual void fromVariantMap(const QVariantMap &map);
+  virtual bool isInitialized() const;
 
-    virtual bool isInitialized() const;
+public slots:
+  virtual void setInitialized();
 
-  public slots:
-    virtual void setInitialized();
+protected:
+  void renameObject(const QString &newName);
+  
+signals:
+  void initDone();
+  void updatedRemotely();
+  void objectRenamed(QString newName, QString oldName);
 
-  signals:
-    void initDone();
-    void updatedRemotely();
-
-  private:
-    bool setInitValue(const QString &property, const QVariant &value);
-
-    bool _initialized;
+private:
+  bool setInitValue(const QString &property, const QVariant &value);
+  
+  bool _initialized;
 
 };
 

@@ -96,3 +96,11 @@ bool SyncableObject::setInitValue(const QString &property, const QVariant &value
   QGenericArgument param(value.typeName(), value.constData());
   return QMetaObject::invokeMethod(this, handlername.toAscii(), param);
 }
+
+void SyncableObject::renameObject(const QString &newName) {
+  const QString oldName = objectName();
+  if(oldName != newName) {
+    setObjectName(newName);
+    emit objectRenamed(newName, oldName);
+  }
+}
