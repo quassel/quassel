@@ -107,6 +107,8 @@ void Message::format() {
   switch(type()) {
     case Message::Plain:
       s = tr("%DS<%1>").arg(nick); t = tr("%D0%1").arg(txt); break;
+    case Message::Notice:
+      s = tr("%Dn*"); t = tr("%Dn%1").arg(txt); break;
     case Message::Server:
       s = tr("%Ds*"); t = tr("%Ds%1").arg(txt); break;
     case Message::Error:
