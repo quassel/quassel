@@ -511,7 +511,7 @@ void Client::checkForHighlight(Message &msg) {
   const Network *net = network(msg.bufferInfo().networkId());
   if(net && !net->myNick().isEmpty()) {
     QRegExp nickRegExp("^(.*\\W)?" + QRegExp::escape(net->myNick()) + "(\\W.*)?$");
-    if((msg.type() & (Message::Plain | Message::Notice | Message::Action)) && nickRegExp.exactMatch(msg.text()))
+    if((msg.type() & (Message::Plain | Message::Notice | Message::Action)) && !(msg.flags() & Message::Self) && nickRegExp.exactMatch(msg.text()))
       msg.setFlags(msg.flags() | Message::Highlight);
   }
 }
