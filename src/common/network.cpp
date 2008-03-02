@@ -639,7 +639,13 @@ QStringList Network::initIrcUsers() const {
 }
 
 QStringList Network::initIrcChannels() const {
-  return _ircChannels.keys();
+  QStringList channels;
+  QHash<QString, IrcChannel *>::const_iterator iter = _ircChannels.constBegin();
+  while(iter != _ircChannels.constEnd()) {
+    channels << iter.value()->name();
+    iter++;
+  }
+  return channels;
 }
 
 void Network::initSetSupports(const QVariantMap &supports) {
