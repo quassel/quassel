@@ -260,11 +260,15 @@ QVariantMap IrcChannel::initUserModes() const {
 }
 
 void IrcChannel::initSetUserModes(const QVariantMap &usermodes) {
-  QMapIterator<QString, QVariant> iter(usermodes);
-  while(iter.hasNext()) {
-    iter.next();
-    setUserModes(iter.key(), iter.value().toString());
+  QList<IrcUser *> users;
+  QStringList modes;
+  QVariantMap::const_iterator iter = usermodes.constBegin();
+  while(iter != usermodes.constEnd()) {
+    users << network->newIrcUser(iter.key());
+    modes << iter.value().toString();
+    iter++;
   }
+  joinIrcUsers(users, modes);
 }
 
 void IrcChannel::ircUserDestroyed() {

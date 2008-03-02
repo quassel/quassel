@@ -300,10 +300,3 @@ void IrcUser::removeUserMode(const QString &mode) {
     emit userModeRemoved(mode);
   }
 }
-
-void IrcUser::initSetChannels(const QStringList channels) {
-  foreach(QString channel, channels) {
-    joinChannel(channel);
-  }
-}
-

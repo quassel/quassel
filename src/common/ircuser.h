@@ -105,9 +105,6 @@ public slots:
   void addUserMode(const QString &mode);
   void removeUserMode(const QString &mode);
 
-  // init seters
-  void initSetChannels(const QStringList channels);
-
 signals:
   void userSet(QString user);
   void hostSet(QString host);

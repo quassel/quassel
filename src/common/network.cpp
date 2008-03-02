@@ -280,9 +280,7 @@ IrcUser *Network::newIrcUser(const QString &hostmask) {
   QString nick(nickFromMask(hostmask).toLower());
   if(!_ircUsers.contains(nick)) {
     IrcUser *ircuser = new IrcUser(hostmask, this);
-    // mark IrcUser as already initialized to keep the SignalProxy from requesting initData
-    //if(isInitialized())
-    //  ircuser->setInitialized();
+
     if(proxy())
       proxy()->synchronize(ircuser);
     else
@@ -369,9 +367,6 @@ quint32 Network::ircUserCount() const {
 IrcChannel *Network::newIrcChannel(const QString &channelname) {
   if(!_ircChannels.contains(channelname.toLower())) {
     IrcChannel *channel = new IrcChannel(channelname, this);
-    // mark IrcUser as already initialized to keep the SignalProxy from requesting initData
-    //if(isInitialized())
-    //  channel->setInitialized();
 
     if(proxy())
       proxy()->synchronize(channel);
@@ -668,10 +663,6 @@ void Network::initSetIrcUsers(const QStringList &hostmasks) {
 }
 
 void Network::initSetIrcChannels(const QStringList &channels) {
-  // FIXME This does not work correctly, "received data for unknown User" triggers
-  //       So we disable this for now
-  return;
-
   if(!_ircChannels.empty())
     return;
   foreach(QString channel, channels)
