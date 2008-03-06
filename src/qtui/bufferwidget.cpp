@@ -48,8 +48,11 @@ void BufferWidget::setModel(BufferModel *bufferModel) {
     disconnect(_bufferModel, 0, this, 0);
   }
   _bufferModel = bufferModel;
-  connect(bufferModel, SIGNAL(rowsAboutToBeRemoved(QModelIndex, int, int)),
-	  this, SLOT(rowsAboutToBeRemoved(QModelIndex, int, int)));
+
+  if(bufferModel) {
+    connect(bufferModel, SIGNAL(rowsAboutToBeRemoved(QModelIndex, int, int)),
+	    this, SLOT(rowsAboutToBeRemoved(QModelIndex, int, int)));
+  }
 }
 
 void BufferWidget::setSelectionModel(QItemSelectionModel *selectionModel) {
@@ -57,8 +60,11 @@ void BufferWidget::setSelectionModel(QItemSelectionModel *selectionModel) {
     disconnect(_selectionModel, 0, this, 0);
   }
   _selectionModel = selectionModel;
-  connect(selectionModel, SIGNAL(currentChanged(QModelIndex, QModelIndex)),
-	  this, SLOT(currentChanged(QModelIndex, QModelIndex)));
+
+  if(selectionModel) {
+    connect(selectionModel, SIGNAL(currentChanged(QModelIndex, QModelIndex)),
+	    this, SLOT(currentChanged(QModelIndex, QModelIndex)));
+  }
 }
 
 void BufferWidget::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end) {

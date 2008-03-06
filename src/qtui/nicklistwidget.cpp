@@ -28,15 +28,61 @@
 
 NickListWidget::NickListWidget(QWidget *parent)
   : QWidget(parent),
-    _currentBuffer(0)
+    _bufferModel(0),
+    _selectionModel(0)
 {
   ui.setupUi(this);
 }
 
+void NickListWidget::setModel(BufferModel *bufferModel) {
+  if(_bufferModel) {
+    disconnect(_bufferModel, 0, this, 0);
+  }
+  
+  _bufferModel = bufferModel;
 
-BufferId NickListWidget::currentBuffer() const {
-  return _currentBuffer;
+  if(bufferModel) {
+    connect(bufferModel, SIGNAL(rowsAboutToBeRemoved(QModelIndex, int, int)),
+	    this, SLOT(rowsAboutToBeRemoved(QModelIndex, int, int)));
+  }
 }
+
+void NickListWidget::setSelectionModel(QItemSelectionModel *selectionModel) {
+  if(_selectionModel) {
+    disconnect(_selectionModel, 0, this, 0);
+  }
+
+  _selectionModel = selectionModel;
+
+  if(selectionModel) {
+    connect(selectionModel, SIGNAL(currentChanged(QModelIndex, QModelIndex)),
+	    this, SLOT(currentChanged(QModelIndex, QModelIndex)));
+  }
+}
+
+
+void NickListWidget::reset() {
+  NickView *nickView;
+  QHash<BufferId, NickView *>::iterator iter = nickViews.begin();
+  while(iter != nickViews.end()) {
+    nickView = *iter;
+    iter = nickViews.erase(iter);
+    ui.stackedWidget->removeWidget(nickView);
+    nickView->deleteLater();
+  }
+}
+
+
+void NickListWidget::currentChanged(const QModelIndex &current, const QModelIndex &previous) {
+  Q_UNUSED(previous);
+  QVariant variant;
+
+  variant = current.data(NetworkModel::BufferIdRole);
+  if(!variant.isValid())
+    return;
+  setCurrentBuffer(variant.value<BufferId>());
+}
+
 
 void NickListWidget::setCurrentBuffer(BufferId bufferId) {
   QModelIndex bufferIdx = Client::networkModel()->bufferIndex(bufferId);
@@ -50,21 +96,36 @@ void NickListWidget::setCurrentBuffer(BufferId bufferId) {
     ui.stackedWidget->setCurrentWidget(nickViews.value(bufferId));
   } else {
     NickView *view = new NickView(this);
-    NickViewFilter *filter = new NickViewFilter(Client::networkModel());
+    NickViewFilter *filter = new NickViewFilter(bufferId, Client::networkModel());
+    filter->setObjectName("Buffer " + QString::number(bufferId.toInt()));
     view->setModel(filter);
     view->setRootIndex(filter->mapFromSource(bufferIdx));
+    view->expandAll();
     nickViews[bufferId] = view;
     ui.stackedWidget->addWidget(view);
     ui.stackedWidget->setCurrentWidget(view);
   }
 }
 
-void NickListWidget::reset() {
-  foreach(NickView *view, nickViews.values()) {
-    ui.stackedWidget->removeWidget(view);
-    view->deleteLater();
+
+void NickListWidget::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end) {
+  Q_ASSERT(model());
+  if(!parent.isValid()) {
+    // ok this means that whole networks are about to be removed
+    // we can't determine which buffers are affect, so we hope that all nets are removed
+    // this is the most common case (for example disconnecting from the core or terminating the clint)
+    reset();
+  } else {
+    // check if there are explicitly buffers removed
+    for(int i = start; i <= end; i++) {
+      QVariant variant = parent.child(i,0).data(NetworkModel::BufferIdRole);
+      if(!variant.isValid())
+	continue;
+
+      BufferId bufferId = qVariantValue<BufferId>(variant);
+      removeBuffer(bufferId);
+    }
   }
-  nickViews.clear();
 }
 
 void NickListWidget::removeBuffer(BufferId bufferId) {

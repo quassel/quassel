@@ -35,25 +35,30 @@ class QSortFilterProxyModel;
 class NickView : public QTreeView {
   Q_OBJECT
 
-  public:
-    NickView(QWidget *parent = 0);
-    virtual ~NickView();
+public:
+  NickView(QWidget *parent = 0);
+  virtual ~NickView();
 
-  protected:
-    virtual void rowsInserted(const QModelIndex &, int, int);
-    virtual QSize sizeHint() const;
+protected:
+  virtual void rowsInserted(const QModelIndex &parent, int start, int end);
+  virtual void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
+  virtual void rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
+  virtual QSize sizeHint() const;
 
-  public slots:
-    void setModel(QAbstractItemModel *model);
-    void init();
-    void showContextMenu(const QPoint & pos);
-    void startQuery(const QModelIndex & modelIndex);
-
-  private:
-    BufferInfo bufferInfoFromModelIndex(const QModelIndex & index);
-    QString nickFromModelIndex(const QModelIndex & index);
-    void executeCommand(const BufferInfo & bufferInfo, const QString & command);
-
+public slots:
+  void setModel(QAbstractItemModel *model);
+  void init();
+  void showContextMenu(const QPoint & pos);
+  void startQuery(const QModelIndex & modelIndex);
+  
+private:
+  QSize _sizeHint;
+  
+  void updateSizeHint();
+  BufferInfo bufferInfoFromModelIndex(const QModelIndex & index);
+  QString nickFromModelIndex(const QModelIndex & index);
+  void executeCommand(const BufferInfo & bufferInfo, const QString & command);
+  
 };
 
 

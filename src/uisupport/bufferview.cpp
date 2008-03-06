@@ -287,6 +287,8 @@ void BufferView::wheelEvent(QWheelEvent* event) {
 
 
 QSize BufferView::sizeHint() const {
+  return QSize(120, 50);
+  
   if(!model())
     return QTreeView::sizeHint();
 

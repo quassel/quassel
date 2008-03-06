@@ -26,33 +26,52 @@
 
 #include <QHash>
 
+#include <QPointer>
+#include <QItemSelectionModel>
+
+#include "buffermodel.h"
+
 class Buffer;
 class NickView;
 
 class NickListWidget : public QWidget {
   Q_OBJECT
 
-  Q_PROPERTY(BufferId currentBuffer READ currentBuffer WRITE setCurrentBuffer); // FIXME BufferId
-
 public:
   NickListWidget(QWidget *parent = 0);
 
+  inline BufferModel *model() { return _bufferModel; }
+  void setModel(BufferModel *bufferModel);
+
+  inline QItemSelectionModel *selectionModel() const { return _selectionModel; }
+  void setSelectionModel(QItemSelectionModel *selectionModel);
+
 public slots:
-  BufferId currentBuffer() const;
-  void setCurrentBuffer(BufferId bufferId);
   void reset();
 
 protected:
   virtual QSize sizeHint() const;
 
+protected slots:
+//   virtual void closeEditor(QWidget *editor, QAbstractItemDelegate::EndEditHint hint);
+//   virtual void commitData(QWidget *editor);
+  virtual void currentChanged(const QModelIndex &current, const QModelIndex &previous);
+//   virtual void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
+//   virtual void editorDestroyed(QObject *editor);
+  virtual void rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
+//   virtual void rowsInserted(const QModelIndex &parent, int start, int end);
+//   virtual void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
+
 private slots:
   void removeBuffer(BufferId bufferId);
+  void setCurrentBuffer(BufferId bufferId);
   
 private:
   Ui::NickListWidget ui;
   QHash<BufferId, NickView *> nickViews;
-  BufferId _currentBuffer;
-  
+
+  QPointer<BufferModel> _bufferModel;
+  QPointer<QItemSelectionModel> _selectionModel;
 };
 
 #endif

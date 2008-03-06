@@ -22,6 +22,7 @@
 #define NICKVIEWFILTER_H
 
 #include <QSortFilterProxyModel>
+#include "types.h"
 
 class NetworkModel;
 
@@ -31,9 +32,15 @@ class NickViewFilter : public QSortFilterProxyModel {
   Q_OBJECT
 
 public:
-  NickViewFilter(NetworkModel *parent = 0);
+  NickViewFilter(const BufferId &bufferId, NetworkModel *parent = 0);
   QVariant data(const QModelIndex &index, int role) const;
   QVariant foreground(const QModelIndex &index) const;
+
+protected:
+  virtual bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
+
+private:
+  BufferId _bufferId;
 };
 
 #endif

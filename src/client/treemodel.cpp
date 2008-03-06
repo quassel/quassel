@@ -528,7 +528,7 @@ void TreeModel::clear() {
 }
 
 void TreeModel::debug_rowsAboutToBeInserted(const QModelIndex &parent, int start, int end) {
-  // qDebug() << "debug_rowsAboutToBeInserted" << parent << parent.internalPointer() << parent.data().toString() << rowCount(parent) << start << end;
+  qDebug() << "debug_rowsAboutToBeInserted" << parent << parent.internalPointer() << parent.data().toString() << rowCount(parent) << start << end;
 }
 
 void TreeModel::debug_rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end) {
@@ -566,5 +566,5 @@ void TreeModel::debug_rowsInserted(const QModelIndex &parent, int start, int end
 }
 
 void TreeModel::debug_rowsRemoved(const QModelIndex &parent, int start, int end) {
-  // qDebug() << "debug_rowsRemoved" << parent << parent.internalPointer() << parent.data().toString() << rowCount(parent) << start << end;
+  qDebug() << "debug_rowsRemoved" << parent << parent.internalPointer() << parent.data().toString() << rowCount(parent) << start << end;
 }

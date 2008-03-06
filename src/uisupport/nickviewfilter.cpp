@@ -29,8 +29,9 @@
 /******************************************************************************************
  * NickViewFilter
  ******************************************************************************************/
-NickViewFilter::NickViewFilter(NetworkModel *parent)
-  : QSortFilterProxyModel(parent)
+NickViewFilter::NickViewFilter(const BufferId &bufferId, NetworkModel *parent)
+  : QSortFilterProxyModel(parent),
+    _bufferId(bufferId)
 {
   setSourceModel(parent);
   setDynamicSortFilter(true);
@@ -42,6 +43,12 @@ QVariant NickViewFilter::data(const QModelIndex &index, int role) const {
     return foreground(index);
   else
     return QSortFilterProxyModel::data(index, role);
+//   else {
+//     QVariant d = 
+//     if(role == 0)
+//       qDebug() << index << role << d;
+//     return d;
+//   }
 }
 
 QVariant NickViewFilter::foreground(const QModelIndex &index) const {
@@ -56,4 +63,10 @@ QVariant NickViewFilter::foreground(const QModelIndex &index) const {
   
   // FIXME:: make colors configurable;
   // FIXME: use the style interface instead of qsettings
+}
+
+
+bool NickViewFilter::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const {
+  QModelIndex source_child = source_parent.child(source_row, 0);
+  return (sourceModel()->data(source_child, NetworkModel::BufferIdRole).value<BufferId>() == _bufferId);
 }

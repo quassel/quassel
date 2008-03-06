@@ -30,7 +30,8 @@
 
 
 NickView::NickView(QWidget *parent)
-  : QTreeView(parent)
+  : QTreeView(parent),
+    _sizeHint(QTreeView::sizeHint())
 {
   setIndentation(10);
   setAnimated(true);
@@ -41,7 +42,7 @@ NickView::NickView(QWidget *parent)
   setContextMenuPolicy(Qt::CustomContextMenu);
 
   connect(this, SIGNAL(customContextMenuRequested(const QPoint&)),
-          this, SLOT(showContextMenu(const QPoint&)));
+	  this, SLOT(showContextMenu(const QPoint&)));
   connect(this, SIGNAL(activated( const QModelIndex& )),
           this, SLOT(startQuery( const QModelIndex& )));
 }
@@ -57,6 +58,7 @@ void NickView::init() {
     setColumnHidden(i, true);
 
   expandAll();
+  updateSizeHint();
 }
 
 void NickView::setModel(QAbstractItemModel *model) {
@@ -64,9 +66,21 @@ void NickView::setModel(QAbstractItemModel *model) {
   init();
 }
 
-void NickView::rowsInserted(const QModelIndex &index, int start, int end) {
-  QTreeView::rowsInserted(index, start, end);
-  expandAll();  // FIXME We need to do this more intelligently. Maybe a pimped TreeView?
+void NickView::rowsInserted(const QModelIndex &parent, int start, int end) {
+  QTreeView::rowsInserted(parent, start, end);
+  if(model()->data(parent, NetworkModel::ItemTypeRole) == NetworkModel::UserCategoryItemType && !isExpanded(parent))
+    expand(parent);
+  updateSizeHint();
+}
+
+void NickView::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end) {
+  QTreeView::rowsAboutToBeRemoved(parent, start, end);
+  updateSizeHint();
+}
+
+void NickView::dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight) {
+  QTreeView::dataChanged(topLeft, bottomRight);
+  updateSizeHint();
 }
 
 QString NickView::nickFromModelIndex(const QModelIndex & index) {
@@ -143,9 +157,9 @@ void NickView::executeCommand(const BufferInfo & bufferInfo, const QString & com
   Client::instance()->userInput(bufferInfo, command);
 }
 
-QSize NickView::sizeHint() const {
+void NickView::updateSizeHint() {
   if(!model())
-    return QTreeView::sizeHint();
+    return;
 
   int columnSize = 0;
   for(int i = 0; i < model()->columnCount(); i++) {
@@ -153,5 +167,9 @@ QSize NickView::sizeHint() const {
       columnSize += sizeHintForColumn(i);
   }
 
-  return QSize(columnSize, 50);
+  _sizeHint = QSize(columnSize, 50);
+}
+
+QSize NickView::sizeHint() const {
+  return _sizeHint;
 }

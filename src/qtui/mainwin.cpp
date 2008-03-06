@@ -111,7 +111,7 @@ void MainWin::init() {
   disconnectedFromCore();  // Disable menus and stuff
   showCoreConnectionDlg(true); // autoconnect if appropriate
 
-  // attach the BufferWidget to the PropertyMapper
+  // attach the BufferWidget to the BufferModel and the default selection
   ui.bufferWidget->setModel(Client::bufferModel());
   ui.bufferWidget->setSelectionModel(Client::bufferModel()->standardSelectionModel());
 
@@ -207,6 +207,10 @@ void MainWin::setupNickWidget() {
   addDockWidget(Qt::RightDockWidgetArea, nickDock);
 
   ui.menuViews->addAction(nickDock->toggleViewAction());
+
+  // attach the NickListWidget to the BufferModel and the default selection
+  nickListWidget->setModel(Client::bufferModel());
+  nickListWidget->setSelectionModel(Client::bufferModel()->standardSelectionModel());
 
   Client::bufferModel()->mapProperty(0, NetworkModel::BufferIdRole, nickListWidget, "currentBuffer");
 }
