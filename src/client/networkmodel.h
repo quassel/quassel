@@ -52,7 +52,7 @@ class BufferItem : public PropertyMapItem {
 public:
   BufferItem(BufferInfo bufferInfo, AbstractTreeItem *parent = 0);
 
-  const BufferInfo &bufferInfo() const;
+  inline const BufferInfo &bufferInfo() const { return _bufferInfo; }
   virtual quint64 id() const;
   virtual QVariant data(int column, int role) const;
   virtual bool setData(int column, const QVariant &value, int role);
@@ -60,12 +60,14 @@ public:
   void attachIrcChannel(IrcChannel *ircChannel);
 
   QString bufferName() const;
+  inline BufferId bufferId() const { return _bufferInfo.bufferId(); }
+  inline BufferInfo::Type bufferType() const { return _bufferInfo.type(); }
+
   void setBufferName(const QString &name);
   QString topic() const;
   int nickCount() const;
 
-  bool isStatusBuffer() const;
-  BufferInfo::Type bufferType() const;
+  // bool isStatusBuffer() const;
 
   bool isActive() const;
 
@@ -115,11 +117,11 @@ public:
   NetworkItem(const NetworkId &netid, AbstractTreeItem *parent = 0);
 
   virtual quint64 id() const;
-  inline const NetworkId &networkId() const { return _networkId; }
   virtual QVariant data(int column, int row) const;
 
   bool isActive() const;
 
+  inline const NetworkId &networkId() const { return _networkId; }
   QString networkName() const;
   QString currentServer() const;
   int nickCount() const;

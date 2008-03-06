@@ -46,9 +46,6 @@ public:
   inline QItemSelectionModel *selectionModel() const { return _selectionModel; }
   void setSelectionModel(QItemSelectionModel *selectionModel);
 
-public slots:
-  void reset();
-
 protected:
   virtual QSize sizeHint() const;
 
@@ -64,7 +61,6 @@ protected slots:
 
 private slots:
   void removeBuffer(BufferId bufferId);
-  void setCurrentBuffer(BufferId bufferId);
   
 private:
   Ui::NickListWidget ui;

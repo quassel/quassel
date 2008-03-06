@@ -109,16 +109,18 @@ void BufferWidget::removeBuffer(BufferId bufferId) {
 }
 
 void BufferWidget::currentChanged(const QModelIndex &current, const QModelIndex &previous) {
-  Q_UNUSED(previous);
-  QVariant variant;
-
-  variant = current.data(NetworkModel::BufferIdRole);
-  if(!variant.isValid())
-    return;
-  setCurrentBuffer(variant.value<BufferId>());
+  BufferId newBufferId = current.data(NetworkModel::BufferIdRole).value<BufferId>();
+  BufferId oldBufferId = previous.data(NetworkModel::BufferIdRole).value<BufferId>();
+  if(newBufferId != oldBufferId)
+    setCurrentBuffer(newBufferId);
 }
 
 void BufferWidget::setCurrentBuffer(BufferId bufferId) {
+  if(!bufferId.isValid()) {
+    ui.stackedWidget->setCurrentWidget(ui.page);
+    return;
+  }
+  
   ChatWidget *chatWidget = 0;
   Buffer *buf = Client::buffer(bufferId);
   if(!buf) {

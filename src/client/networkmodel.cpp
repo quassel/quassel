@@ -55,21 +55,13 @@ BufferItem::BufferItem(BufferInfo bufferInfo, AbstractTreeItem *parent)
   setFlags(flags);
 }
 
-const BufferInfo &BufferItem::bufferInfo() const {
-  return _bufferInfo;
-}
-
 quint64 BufferItem::id() const {
   return qHash(bufferInfo().bufferId());
 }
 
-bool BufferItem::isStatusBuffer() const {
-  return bufferType() == BufferInfo::StatusBuffer;
-}
-
-BufferInfo::Type BufferItem::bufferType() const {
-  return bufferInfo().type();
-}
+// bool BufferItem::isStatusBuffer() const {
+//   return bufferType() == BufferInfo::StatusBuffer;
+// }
 
 bool BufferItem::isActive() const {
   if(bufferType() == BufferInfo::ChannelBuffer)
@@ -423,8 +415,6 @@ void NetworkItem::attachNetwork(Network *network) {
 	  this, SLOT(attachIrcChannel(QString)));
   connect(network, SIGNAL(connectedSet(bool)),
 	  this, SIGNAL(dataChanged()));
-  
-  // FIXME: connect this and that...
 
   emit dataChanged();
 }
