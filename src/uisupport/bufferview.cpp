@@ -26,6 +26,8 @@
 
 #include "uisettings.h"
 
+#include "global.h"
+
 /*****************************************
 * The TreeView showing the Buffers
 *****************************************/
@@ -115,9 +117,10 @@ void BufferView::keyPressEvent(QKeyEvent *event) {
 // ensure that newly inserted network nodes are expanded per default
 void BufferView::rowsInserted(const QModelIndex & parent, int start, int end) {
   QTreeView::rowsInserted(parent, start, end);
-  if(model()->rowCount(parent) == 1 && parent.data(NetworkModel::ItemTypeRole) == NetworkModel::NetworkItemType && parent.data(NetworkModel::ItemActiveRole) == true) {
+  if(model()->rowCount(parent) == 1 && parent.data(NetworkModel::ItemTypeRole) == NetworkModel::NetworkItemType
+     && (Global::SPUTDEV || parent.data(NetworkModel::ItemActiveRole) == true)) {
     // without updating the parent the expand will have no effect... Qt Bug?
-    update(parent); 
+    update(parent);
     expand(parent);
   }
 }
@@ -136,12 +139,16 @@ void BufferView::dataChanged(const QModelIndex &topLeft, const QModelIndex &bott
       continue;
 
     bool isActive = networkIdx.data(NetworkModel::ItemActiveRole).toBool();
-    if(isExpanded(networkIdx) != isActive)
-      setExpanded(networkIdx, isActive);
+    if(Global::SPUTDEV) {
+      if(isExpanded(networkIdx) != isActive) setExpanded(networkIdx, true);
+    } else {
+      if(isExpanded(networkIdx) != isActive)
+        setExpanded(networkIdx, isActive);
+    }
   }
 }
 
-			     
+
 void BufferView::toggleHeader(bool checked) {
   QAction *action = qobject_cast<QAction *>(sender());
   header()->setSectionHidden((action->property("column")).toInt(), !checked);

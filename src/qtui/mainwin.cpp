@@ -17,13 +17,12 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-//#define SPUTDEV
-
 #include "mainwin.h"
 
 #include "aboutdlg.h"
 #include "chatwidget.h"
 #include "bufferview.h"
+#include "chatline.h"
 #include "chatline-old.h"
 #include "client.h"
 #include "coreconnectdlg.h"
@@ -51,6 +50,7 @@
 
 
 #include "debugconsole.h"
+#include "global.h"
 
 MainWin::MainWin(QtUi *_gui, QWidget *parent)
   : QMainWindow(parent),
@@ -115,12 +115,12 @@ void MainWin::init() {
   ui.bufferWidget->setModel(Client::bufferModel());
   ui.bufferWidget->setSelectionModel(Client::bufferModel()->standardSelectionModel());
 
-#ifdef SPUTDEV
-  //showSettingsDlg();
-  //showAboutDlg();
-  showNetworkDlg();
-  exit(1);
-#endif
+  if(Global::SPUTDEV) {
+    //showSettingsDlg();
+    //showAboutDlg();
+    //showNetworkDlg();
+    //exit(1);
+  }
 
 }
 
@@ -188,11 +188,6 @@ void MainWin::setupSettingsDlg() {
   //Category: General
   settingsDlg->registerSettingsPage(new IdentitiesSettingsPage(settingsDlg));
   settingsDlg->registerSettingsPage(new NetworksSettingsPage(settingsDlg));
-
-
-#ifdef SPUTDEV
-  connect(settingsDlg, SIGNAL(finished(int)), QApplication::instance(), SLOT(quit()));  // FIXME
-#endif
 }
 
 void MainWin::setupNickWidget() {
@@ -229,10 +224,10 @@ void MainWin::setupChatMonitor() {
     return;
 
   chatWidget->init(BufferId(0));
-  QList<ChatLine *> lines;
+  QList<ChatLineOld *> lines;
   QList<AbstractUiMsg *> msgs = buf->contents();
   foreach(AbstractUiMsg *msg, msgs) {
-    lines.append(dynamic_cast<ChatLine*>(msg));
+    lines.append(dynamic_cast<ChatLineOld*>(msg));
   }
   chatWidget->setContents(lines);
   connect(buf, SIGNAL(msgAppended(AbstractUiMsg *)), chatWidget, SLOT(appendMsg(AbstractUiMsg *)));
@@ -294,11 +289,11 @@ void MainWin::setupSystray() {
   if(s.value("UseSystemTrayIcon", QVariant(true)).toBool()) {
     systray->show();
   }
-  
-  #ifndef Q_WS_MAC
+
+#ifndef Q_WS_MAC
   connect(systray, SIGNAL(activated( QSystemTrayIcon::ActivationReason )),
           this, SLOT(systrayActivated( QSystemTrayIcon::ActivationReason )));
-  #endif
+#endif
 
 }
 
@@ -348,7 +343,8 @@ void MainWin::disconnectedFromCore() {
 }
 
 AbstractUiMsg *MainWin::layoutMsg(const Message &msg) {
-  return new ChatLine(msg);
+  if(Global::SPUTDEV) return new ChatLine(msg);
+  return new ChatLineOld(msg);
 }
 
 void MainWin::showCoreConnectionDlg(bool autoConnect) {

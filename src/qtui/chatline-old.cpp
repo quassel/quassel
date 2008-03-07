@@ -23,11 +23,11 @@
 #include "network.h"
 #include "qtui.h"
 
-//! Construct a ChatLine object from a message.
+//! Construct a ChatLineOld object from a message.
 /**
  * \param m   The message to be layouted and rendered
  */
-ChatLine::ChatLine(Message m) {
+ChatLineOld::ChatLineOld(Message m) {
   hght = 0;
   //networkName = m.buffer.network();
   //bufferName = m.buffer.buffer();
@@ -37,11 +37,11 @@ ChatLine::ChatLine(Message m) {
   formatMsg(msg);
 }
 
-ChatLine::~ChatLine() {
+ChatLineOld::~ChatLineOld() {
 
 }
 
-void ChatLine::formatMsg(Message msg) {
+void ChatLineOld::formatMsg(Message msg) {
   isHighlight = msg.flags() & Message::Highlight;
   QTextOption tsOption, senderOption, textOption;
   styledTimeStamp = QtUi::style()->styleString(msg.formattedTimestamp());
@@ -51,8 +51,8 @@ void ChatLine::formatMsg(Message msg) {
 }
 
 // This function is almost obsolete, since with the new style engine, we already get a list of formats...
-// We don't know yet if we keep this implementation of ChatLine, so I won't bother making this actually nice.
-QList<ChatLine::FormatRange> ChatLine::calcFormatRanges(UiStyle::StyledText fs, QTextLayout::FormatRange additional) {
+// We don't know yet if we keep this implementation of ChatLineOld, so I won't bother making this actually nice.
+QList<ChatLineOld::FormatRange> ChatLineOld::calcFormatRanges(UiStyle::StyledText fs, QTextLayout::FormatRange additional) {
   QList<FormatRange> ranges;
 
   if(additional.length > 0) {
@@ -89,7 +89,7 @@ QList<ChatLine::FormatRange> ChatLine::calcFormatRanges(UiStyle::StyledText fs, 
   return ranges;
 }
 
-void ChatLine::setSelection(SelectionMode mode, int start, int end) {
+void ChatLineOld::setSelection(SelectionMode mode, int start, int end) {
   selectionMode = mode;
   //tsFormat.clear(); senderFormat.clear(); textFormat.clear();
   QPalette pal = QApplication::palette();
@@ -125,32 +125,32 @@ void ChatLine::setSelection(SelectionMode mode, int start, int end) {
   }
 }
 
-MsgId ChatLine::msgId() const {
+MsgId ChatLineOld::msgId() const {
   return msg.msgId();
 }
 
-BufferInfo ChatLine::bufferInfo() const {
+BufferInfo ChatLineOld::bufferInfo() const {
   return msg.bufferInfo();
 }
 
-QDateTime ChatLine::timestamp() const {
+QDateTime ChatLineOld::timestamp() const {
   return msg.timestamp();
 }
 
-QString ChatLine::sender() const {
+QString ChatLineOld::sender() const {
   return styledSender.text;
 }
 
-QString ChatLine::text() const {
+QString ChatLineOld::text() const {
   return styledText.text;
 }
 
-bool ChatLine::isUrl(int c) const {
+bool ChatLineOld::isUrl(int c) const {
   if(c < 0 || c >= charUrlIdx.count()) return false;;
   return charUrlIdx[c] >= 0;
 }
 
-QUrl ChatLine::getUrl(int c) const {
+QUrl ChatLineOld::getUrl(int c) const {
   if(c < 0 || c >= charUrlIdx.count()) return QUrl();
   int i = charUrlIdx[c];
   if(i >= 0) return styledText.urls[i].url;
@@ -159,10 +159,10 @@ QUrl ChatLine::getUrl(int c) const {
 
 //!\brief Return the cursor position for the given coordinate pos.
 /**
- * \param pos The position relative to the ChatLine
+ * \param pos The position relative to the ChatLineOld
  * \return The cursor position, [or -3 for invalid,] or -2 for timestamp, or -1 for sender
  */
-int ChatLine::posToCursor(QPointF pos) {
+int ChatLineOld::posToCursor(QPointF pos) {
   if(pos.x() < tsWidth + (int)QtUi::style()->sepTsSender()/2) return -2;
   qreal textStart = tsWidth + QtUi::style()->sepTsSender() + senderWidth + QtUi::style()->sepSenderText();
   if(pos.x() < textStart) return -1;
@@ -180,7 +180,7 @@ int ChatLine::posToCursor(QPointF pos) {
   return 0;
 }
 
-void ChatLine::precomputeLine() {
+void ChatLineOld::precomputeLine() {
   tsFormat = calcFormatRanges(styledTimeStamp);
   senderFormat = calcFormatRanges(styledSender);
   textFormat = calcFormatRanges(styledText);
@@ -233,7 +233,7 @@ void ChatLine::precomputeLine() {
   if(wr.start >= 0) words.append(wr);
 }
 
-qreal ChatLine::layout(qreal tsw, qreal senderw, qreal textw) {
+qreal ChatLineOld::layout(qreal tsw, qreal senderw, qreal textw) {
   tsWidth = tsw; senderWidth = senderw; textWidth = textw;
   if(textw <= 0) return minHeight;
   lineLayouts.clear(); LineLayout line;
@@ -298,8 +298,8 @@ qreal ChatLine::layout(qreal tsw, qreal senderw, qreal textw) {
   return hght;
 }
 
-//!\brief Draw ChatLine on the given QPainter at the given position.
-void ChatLine::draw(QPainter *p, const QPointF &pos) {
+//!\brief Draw ChatLineOld on the given QPainter at the given position.
+void ChatLineOld::draw(QPainter *p, const QPointF &pos) {
   QPalette pal = QApplication::palette();
 
   if(selectionMode == Full) {

@@ -28,6 +28,17 @@
 #include "uistyle.h"
 
 class ChatItem;
+class ChatLineData;
+
+/* Concept Ideas
+* Probably makes sense to have ChatLineData be the AbstractUiMsg instead, if it turns out that creating ChatLineData
+is the expensive part... In that case, we could have a QHash<MsgId, ChatLineData*> in the Client, and ChatLine just
+gets a data pointer. This would allow us to share most data between AbstractUiMsgs, and ChatLines themselves could
+be pretty cheap - that'd be a clean solution for having a monitor buffer, highlight buffer etcpp.
+
+* ItemLayoutData
+
+*/
 
 class ChatLine : public QGraphicsItem, public AbstractUiMsg {
 
@@ -53,11 +64,38 @@ class ChatLine : public QGraphicsItem, public AbstractUiMsg {
 
   private:
     UiStyle::StyledText _styledTimestamp, _styledText, _styledSender;
+
     QDateTime _timestamp;
     MsgId _msgId;
 
     ChatItem *_tsItem, *_senderItem, *_textItem;
     int _tsColWidth, _senderColWidth, _textColWidth;
 };
+
+//! This contains the data of a ChatLine, i.e. mainly the styled message contents.
+/** By separating ChatLine and ChatLineData, ChatLine itself is very small and we can reuse the
+ *  same contents in several ChatLine objects without duplicating data.
+ */
+class ChatLineData {
+
+  public:
+    ChatLineData(const Message &msg);
+
+    inline UiStyle::StyledText styledSender() const { return _styledSender; }
+    inline UiStyle::StyledText styledTimestamp() const { return _styledTimestamp; }
+    inline UiStyle::StyledText styledText() const { return _styledText; }
+
+    inline QString sender() const { return _styledSender.text; }
+    inline QString text() const { return _styledText.text; }
+    inline QDateTime timestamp() const { return _timestamp; }
+    inline MsgId msgId() const { return _msgId; }
+
+  private:
+    UiStyle::StyledText _styledSender, _styledText, _styledTimestamp;
+    QDateTime _timestamp;
+    MsgId _msgId;
+
+};
+
 
 #endif

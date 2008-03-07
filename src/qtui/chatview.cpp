@@ -30,7 +30,7 @@ ChatView::ChatView(Buffer *buf, QWidget *parent) : QGraphicsView(parent) {
   _scene = new ChatScene(buf, this);
   setScene(_scene);
 
-  QGraphicsTextItem *item = scene()->addText(buf->name());
+  QGraphicsTextItem *item = scene()->addText(buf->bufferInfo().bufferName());
 
 }
 
@@ -44,7 +44,7 @@ ChatScene *ChatView::scene() const {
   return _scene;
 }
 
-/*
+
 void ChatView::clear()
 {
 }
@@ -56,7 +56,7 @@ void ChatView::prependMsg(AbstractUiMsg *msg) {
 }
 
 void ChatView::prependChatLine(ChatLine *line) {
-  qDebug() << "prepending";
+  //qDebug() << "prepending";
 }
 
 void ChatView::prependChatLines(QList<ChatLine *> clist) {
@@ -70,7 +70,7 @@ void ChatView::appendMsg(AbstractUiMsg *msg) {
 }
 
 void ChatView::appendChatLine(ChatLine *line) {
-  qDebug() << "appending";
+  //qDebug() << "appending";
 }
 
 
@@ -84,4 +84,4 @@ void ChatView::setContents(QList<ChatLine *> list) {
   qDebug() << "setting" << list.count();
   appendChatLines(list);
 }
-*/
+

@@ -71,7 +71,7 @@ void ChatWidget::init(BufferId id) {
 
 ChatWidget::~ChatWidget() {
   //qDebug() << "destroying chatwidget" << bufferName;
-  //foreach(ChatLine *l, lines) {
+  //foreach(ChatLineOld *l, lines) {
   //  delete l;
   //}
   UiSettings s;
@@ -161,12 +161,12 @@ void ChatWidget::clear() {
 }
 
 void ChatWidget::prependMsg(AbstractUiMsg *msg) {
-  ChatLine *line = dynamic_cast<ChatLine*>(msg);
+  ChatLineOld *line = dynamic_cast<ChatLineOld*>(msg);
   Q_ASSERT(line);
   prependChatLine(line);
 }
 
-void ChatWidget::prependChatLine(ChatLine *line) {
+void ChatWidget::prependChatLine(ChatLineOld *line) {
   qreal h = line->layout(tsWidth, senderWidth, textWidth);
   for(int i = 1; i < ycoords.count(); i++) ycoords[i] += h;
   ycoords.insert(1, h);
@@ -181,10 +181,10 @@ void ChatWidget::prependChatLine(ChatLine *line) {
   viewport()->update();
 }
 
-void ChatWidget::prependChatLines(QList<ChatLine *> clist) {
+void ChatWidget::prependChatLines(QList<ChatLineOld *> clist) {
   QList<qreal> tmpy; tmpy.append(0);
   qreal h = 0;
-  foreach(ChatLine *l, clist) {
+  foreach(ChatLineOld *l, clist) {
     h += l->layout(tsWidth, senderWidth, textWidth);
     tmpy.append(h);
   }
@@ -208,12 +208,12 @@ void ChatWidget::prependChatLines(QList<ChatLine *> clist) {
 }
 
 void ChatWidget::appendMsg(AbstractUiMsg *msg) {
-  ChatLine *line = dynamic_cast<ChatLine*>(msg);
+  ChatLineOld *line = dynamic_cast<ChatLineOld*>(msg);
   Q_ASSERT(line);
   appendChatLine(line);
 }
 
-void ChatWidget::appendChatLine(ChatLine *line) {
+void ChatWidget::appendChatLine(ChatLineOld *line) {
   qreal h = line->layout(tsWidth, senderWidth, textWidth);
   ycoords.append(h + ycoords[ycoords.count() - 1]);
   height += h;
@@ -225,8 +225,8 @@ void ChatWidget::appendChatLine(ChatLine *line) {
 }
 
 
-void ChatWidget::appendChatLines(QList<ChatLine *> list) {
-  foreach(ChatLine *line, list) {
+void ChatWidget::appendChatLines(QList<ChatLineOld *> list) {
+  foreach(ChatLineOld *line, list) {
     qreal h = line->layout(tsWidth, senderWidth, textWidth);
     ycoords.append(h + ycoords[ycoords.count() - 1]);
     height += h;
@@ -238,7 +238,7 @@ void ChatWidget::appendChatLines(QList<ChatLine *> list) {
   viewport()->update();
 }
 
-void ChatWidget::setContents(QList<ChatLine *> list) {
+void ChatWidget::setContents(QList<ChatLineOld *> list) {
   ycoords.clear();
   ycoords.append(0);
   height = 0;
@@ -351,7 +351,7 @@ void ChatWidget::mouseDoubleClickEvent(QMouseEvent *event) {
   if(lines.count() <= l)
     return;
 
-  ChatLine *line = lines[l];
+  ChatLineOld *line = lines[l];
   QString text = line->text();
   int cursorAt = qMax(0, line->posToCursor(QPointF(x, y - ycoords[l])) - 1);
 
@@ -526,13 +526,13 @@ void ChatWidget::handleMouseMoveEvent(const QPoint &_pos) {
     if(curLine == dragStartLine && c >= 0) {
       if(c != curCursor) {
         curCursor = c;
-        lines[curLine]->setSelection(ChatLine::Partial, dragStartCursor, c);
+        lines[curLine]->setSelection(ChatLineOld::Partial, dragStartCursor, c);
         viewport()->update();
       }
     } else {
       mouseMode = MarkLines;
       selectionStart = qMin(curLine, dragStartLine); selectionEnd = qMax(curLine, dragStartLine);
-      for(int i = selectionStart; i <= selectionEnd; i++) lines[i]->setSelection(ChatLine::Full);
+      for(int i = selectionStart; i <= selectionEnd; i++) lines[i]->setSelection(ChatLineOld::Full);
       viewport()->update();
     }
   } else if(mouseMode == MarkLines) {
@@ -542,16 +542,16 @@ void ChatWidget::handleMouseMoveEvent(const QPoint &_pos) {
       selectionStart = qMin(l, dragStartLine); selectionEnd = qMax(l, dragStartLine);
       if(curLine < 0) {
         Q_ASSERT(selectionStart == selectionEnd);
-        lines[l]->setSelection(ChatLine::Full);
+        lines[l]->setSelection(ChatLineOld::Full);
       } else {
         if(curLine < selectionStart) {
-          for(int i = curLine; i < selectionStart; i++) lines[i]->setSelection(ChatLine::None);
+          for(int i = curLine; i < selectionStart; i++) lines[i]->setSelection(ChatLineOld::None);
         } else if(curLine > selectionEnd) {
-          for(int i = selectionEnd+1; i <= curLine; i++) lines[i]->setSelection(ChatLine::None);
+          for(int i = selectionEnd+1; i <= curLine; i++) lines[i]->setSelection(ChatLineOld::None);
         } else if(selectionStart < curLine && l < curLine) {
-          for(int i = selectionStart; i < curLine; i++) lines[i]->setSelection(ChatLine::Full);
+          for(int i = selectionStart; i < curLine; i++) lines[i]->setSelection(ChatLineOld::Full);
         } else if(curLine < selectionEnd && l > curLine) {
-          for(int i = curLine+1; i <= selectionEnd; i++) lines[i]->setSelection(ChatLine::Full);
+          for(int i = curLine+1; i <= selectionEnd; i++) lines[i]->setSelection(ChatLineOld::Full);
         }
       }
       curLine = l;
@@ -564,10 +564,10 @@ void ChatWidget::handleMouseMoveEvent(const QPoint &_pos) {
 //!\brief Clear current text selection.
 void ChatWidget::clearSelection() {
   if(selectionMode == TextSelected) {
-    lines[selectionLine]->setSelection(ChatLine::None);
+    lines[selectionLine]->setSelection(ChatLineOld::None);
   } else if(selectionMode == LinesSelected) {
     for(int i = selectionStart; i <= selectionEnd; i++) {
-      lines[i]->setSelection(ChatLine::None);
+      lines[i]->setSelection(ChatLineOld::None);
     }
   }
   selectionMode = NoSelection;

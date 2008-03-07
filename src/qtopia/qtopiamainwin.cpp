@@ -142,7 +142,7 @@ void QtopiaMainWin::disconnectedFromCore() {
 }
 
 AbstractUiMsg *QtopiaMainWin::layoutMsg(const Message &msg) {
-  return new ChatLine(msg);
+  return new ChatLineOld(msg);
   //return 0;
 }
 

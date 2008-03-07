@@ -20,6 +20,7 @@
 
 #include "bufferwidget.h"
 #include "buffer.h"
+#include "chatline.h"
 #include "chatline-old.h"
 #include "chatwidget.h"
 #include "settings.h"
@@ -27,6 +28,8 @@
 #include "identity.h"
 #include "network.h"
 #include "networkmodel.h"
+
+#include "global.h"
 
 BufferWidget::BufferWidget(QWidget *parent)
   : QWidget(parent),
@@ -51,7 +54,7 @@ void BufferWidget::setModel(BufferModel *bufferModel) {
 
   if(bufferModel) {
     connect(bufferModel, SIGNAL(rowsAboutToBeRemoved(QModelIndex, int, int)),
-	    this, SLOT(rowsAboutToBeRemoved(QModelIndex, int, int)));
+            this, SLOT(rowsAboutToBeRemoved(QModelIndex, int, int)));
   }
 }
 
@@ -63,7 +66,7 @@ void BufferWidget::setSelectionModel(QItemSelectionModel *selectionModel) {
 
   if(selectionModel) {
     connect(selectionModel, SIGNAL(currentChanged(QModelIndex, QModelIndex)),
-	    this, SLOT(currentChanged(QModelIndex, QModelIndex)));
+            this, SLOT(currentChanged(QModelIndex, QModelIndex)));
   }
 }
 
@@ -90,7 +93,7 @@ void BufferWidget::rowsAboutToBeRemoved(const QModelIndex &parent, int start, in
     for(int i = start; i <= end; i++) {
       QVariant variant = parent.child(i,0).data(NetworkModel::BufferIdRole);
       if(!variant.isValid())
-	continue;
+        continue;
       
       BufferId bufferId = qVariantValue<BufferId>(variant);
       removeBuffer(bufferId);
@@ -122,6 +125,7 @@ void BufferWidget::setCurrentBuffer(BufferId bufferId) {
   }
   
   ChatWidget *chatWidget = 0;
+  ChatView *chatView = 0;
   Buffer *buf = Client::buffer(bufferId);
   if(!buf) {
     qWarning() << "BufferWidget::setBuffer(BufferId): Can't show unknown Buffer:" << bufferId;
@@ -129,25 +133,47 @@ void BufferWidget::setCurrentBuffer(BufferId bufferId) {
   }
   Buffer *prevBuffer = Client::buffer(currentBuffer());
   if(prevBuffer) prevBuffer->setVisible(false);
-  if(_chatWidgets.contains(bufferId)) {
-     chatWidget = _chatWidgets[bufferId];
-  } else {
-    chatWidget = new ChatWidget(this);
-    chatWidget->init(bufferId);
-    QList<ChatLine *> lines;
-    QList<AbstractUiMsg *> msgs = buf->contents();
-    foreach(AbstractUiMsg *msg, msgs) {
-      lines.append(dynamic_cast<ChatLine*>(msg));
+  if(Global::SPUTDEV) {
+    if(_chatViews.contains(bufferId)) {
+      chatView = _chatViews[bufferId];
+    } else {
+      chatView = new ChatView(buf, this);
+      //chatView->init(bufferId);
+      QList<ChatLine *> lines;
+      QList<AbstractUiMsg *> msgs = buf->contents();
+      foreach(AbstractUiMsg *msg, msgs) {
+        lines.append(dynamic_cast<ChatLine *>(msg));
+      }
+      chatView->setContents(lines);
+      connect(buf, SIGNAL(msgAppended(AbstractUiMsg *)), chatView, SLOT(appendMsg(AbstractUiMsg *)));
+      connect(buf, SIGNAL(msgPrepended(AbstractUiMsg *)), chatView, SLOT(prependMsg(AbstractUiMsg *)));
+      _chatViews[bufferId] = chatView;
+      ui.stackedWidget->addWidget(chatView);
+      chatView->setFocusProxy(this);
     }
-    chatWidget->setContents(lines);
-    connect(buf, SIGNAL(msgAppended(AbstractUiMsg *)), chatWidget, SLOT(appendMsg(AbstractUiMsg *)));
-    connect(buf, SIGNAL(msgPrepended(AbstractUiMsg *)), chatWidget, SLOT(prependMsg(AbstractUiMsg *)));
-    _chatWidgets[bufferId] = chatWidget;
-    ui.stackedWidget->addWidget(chatWidget);
-    chatWidget->setFocusProxy(this);
+    _currentBuffer = bufferId;
+    ui.stackedWidget->setCurrentWidget(chatView);
+  } else {
+    if(_chatWidgets.contains(bufferId)) {
+      chatWidget = _chatWidgets[bufferId];
+    } else {
+      chatWidget = new ChatWidget(this);
+      chatWidget->init(bufferId);
+      QList<ChatLineOld *> lines;
+      QList<AbstractUiMsg *> msgs = buf->contents();
+      foreach(AbstractUiMsg *msg, msgs) {
+        lines.append(dynamic_cast<ChatLineOld*>(msg));
+      }
+      chatWidget->setContents(lines);
+      connect(buf, SIGNAL(msgAppended(AbstractUiMsg *)), chatWidget, SLOT(appendMsg(AbstractUiMsg *)));
+      connect(buf, SIGNAL(msgPrepended(AbstractUiMsg *)), chatWidget, SLOT(prependMsg(AbstractUiMsg *)));
+      _chatWidgets[bufferId] = chatWidget;
+      ui.stackedWidget->addWidget(chatWidget);
+      chatWidget->setFocusProxy(this);
+    }
+    _currentBuffer = bufferId;
+    ui.stackedWidget->setCurrentWidget(chatWidget);
   }
-  _currentBuffer = bufferId;
-  ui.stackedWidget->setCurrentWidget(chatWidget);
   buf->setVisible(true);
   setFocus();
 }

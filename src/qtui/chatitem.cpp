@@ -91,7 +91,9 @@ void ChatItem::layout() {
   }
   _layout.endLayout();
   update();
-}
+}    QDateTime _timestamp;
+    MsgId _msgId;
+
 
 QRectF ChatItem::boundingRect() const {
   return _layout.boundingRect();

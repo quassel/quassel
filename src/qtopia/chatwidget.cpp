@@ -27,25 +27,25 @@ ChatWidget::ChatWidget(QWidget *parent) : QTextEdit(parent) {
   setTextInteractionFlags(Qt::TextBrowserInteraction);
 }
 
-void ChatWidget::setContents(QList<ChatLine *> lines) {
+void ChatWidget::setContents(QList<ChatLineOld *> lines) {
   clear();
   appendChatLines(lines);
 
 }
 
 void ChatWidget::prependMsg(AbstractUiMsg *msg) {
-  ChatLine *line = static_cast<ChatLine*>(msg);
+  ChatLineOld *line = static_cast<ChatLineOld*>(msg);
   Q_ASSERT(line);
   prependChatLine(line);
 }
 
 void ChatWidget::appendMsg(AbstractUiMsg *msg) {
-  ChatLine *line = static_cast<ChatLine*>(msg);
+  ChatLineOld *line = static_cast<ChatLineOld*>(msg);
   Q_ASSERT(line);
   appendChatLine(line);
 }
 
-void ChatWidget::appendChatLine(ChatLine *line) {
+void ChatWidget::appendChatLine(ChatLineOld *line) {
   QTextCursor cursor = textCursor();
   moveCursor(QTextCursor::End);
   if(!document()->isEmpty()) insertPlainText("\n");
@@ -55,13 +55,13 @@ void ChatWidget::appendChatLine(ChatLine *line) {
   setTextCursor(cursor);
 }
 
-void ChatWidget::appendChatLines(QList<ChatLine *> list) {
-  foreach(ChatLine *line, list) {
+void ChatWidget::appendChatLines(QList<ChatLineOld *> list) {
+  foreach(ChatLineOld *line, list) {
     appendChatLine(line);
   }
 }
 
-void ChatWidget::prependChatLine(ChatLine *line) {
+void ChatWidget::prependChatLine(ChatLineOld *line) {
   QTextCursor cursor = textCursor();
   moveCursor(QTextCursor::Start);
   bool flg = document()->isEmpty();
@@ -72,13 +72,13 @@ void ChatWidget::prependChatLine(ChatLine *line) {
   setTextCursor(cursor);
 }
 
-void ChatWidget::prependChatLines(QList<ChatLine *> list) {
-  foreach(ChatLine *line, list) {
+void ChatWidget::prependChatLines(QList<ChatLineOld *> list) {
+  foreach(ChatLineOld *line, list) {
     prependChatLine(line);
   }
 }
 
-void ChatWidget::insertChatLine(ChatLine *line) {
+void ChatWidget::insertChatLine(ChatLineOld *line) {
   if(!document()->isEmpty()) insertPlainText("\n");
   insertStyledText(line->styledSender());
   insertPlainText(" ");

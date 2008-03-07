@@ -55,10 +55,10 @@ void MainWidget::setBuffer(Buffer *buf) {
   ChatWidget *chatWidget;
   if(!chatWidgets.contains(buf)) {
     chatWidget = new ChatWidget(this);
-    QList<ChatLine *> lines;
+    QList<ChatLineOld *> lines;
     QList<AbstractUiMsg *> msgs = buf->contents();
     foreach(AbstractUiMsg *msg, msgs) {
-      lines.append((ChatLine*)(msg));
+      lines.append((ChatLineOld*)(msg));
     }
     chatWidget->setContents(lines);
     connect(buf, SIGNAL(msgAppended(AbstractUiMsg *)), chatWidget, SLOT(appendMsg(AbstractUiMsg *)));

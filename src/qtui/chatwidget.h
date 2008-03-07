@@ -25,7 +25,7 @@
 
 #include "types.h"
 
-class ChatLine;
+class ChatLineOld;
 class AbstractUiMsg;
 
 //!\brief Scroll area showing part of the chat messages for a given buffer.
@@ -56,11 +56,11 @@ class ChatWidget : public QAbstractScrollArea {
     void prependMsg(AbstractUiMsg *);
     void appendMsg(AbstractUiMsg *);
 
-    void prependChatLine(ChatLine *);
-    void appendChatLine(ChatLine *);
-    void prependChatLines(QList<ChatLine *>);
-    void appendChatLines(QList<ChatLine *>);
-    void setContents(QList<ChatLine *>);
+    void prependChatLine(ChatLineOld *);
+    void appendChatLine(ChatLineOld *);
+    void prependChatLines(QList<ChatLineOld *>);
+    void appendChatLines(QList<ChatLineOld *>);
+    void setContents(QList<ChatLineOld *>);
 
   protected:
     virtual void resizeEvent(QResizeEvent *event);
@@ -95,7 +95,7 @@ class ChatWidget : public QAbstractScrollArea {
 
     int bottomLine, bottomLineOffset;
 
-    QList<ChatLine *> lines;
+    QList<ChatLineOld *> lines;
     QList<qreal> ycoords;
     QTimer *scrollTimer;
     QPoint pointerPosition;

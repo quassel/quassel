@@ -109,3 +109,5 @@ QString Global::coreVersionNeeded;
 
 Global::RunMode Global::runMode;
 uint Global::defaultPort;
+
+bool Global::SPUTDEV;

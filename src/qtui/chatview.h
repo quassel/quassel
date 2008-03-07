@@ -38,7 +38,7 @@ class ChatView : public QGraphicsView {
     ChatScene *scene() const;
 
   public slots:
-/*
+
     void clear();
 
     void prependMsg(AbstractUiMsg *);
@@ -50,7 +50,7 @@ class ChatView : public QGraphicsView {
     void appendChatLines(QList<ChatLine *>);
 
     void setContents(QList<ChatLine *>);
-*/
+
   private:
     ChatScene *_scene;
 };

@@ -67,7 +67,7 @@ void SettingsDlg::registerSettingsPage(SettingsPage *sp) {
   pages[QString("%1$%2").arg(sp->category(), sp->title())] = sp;
   sp->load();
   // TESTING
-  selectPage(sp->category(), sp->title());
+  // selectPage(sp->category(), sp->title());
 }
 
 void SettingsDlg::selectPage(const QString &cat, const QString &title) {

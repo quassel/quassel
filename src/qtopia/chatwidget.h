@@ -33,16 +33,16 @@ class ChatWidget : public QTextEdit {
     ChatWidget(QWidget *parent = 0);
 
   public slots:
-    void setContents(QList<ChatLine *>);
+    void setContents(QList<ChatLineOld *>);
     void appendMsg(AbstractUiMsg *);
     void prependMsg(AbstractUiMsg *);
-    void prependChatLine(ChatLine *);
-    void appendChatLine(ChatLine *);
-    void prependChatLines(QList<ChatLine *>);
-    void appendChatLines(QList<ChatLine *>);
+    void prependChatLine(ChatLineOld *);
+    void appendChatLine(ChatLineOld *);
+    void prependChatLines(QList<ChatLineOld *>);
+    void appendChatLines(QList<ChatLineOld *>);
 
   private:
-    void insertChatLine(ChatLine *);
+    void insertChatLine(ChatLineOld *);
     void insertStyledText(const QtopiaUiStyle::StyledText &);
 
 

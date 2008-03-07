@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _CHATLINE_H_
-#define _CHATLINE_H_
+#ifndef _CHATLINE_OLD_H_
+#define _CHATLINE_OLD_H_
 
 #include <QtGui>
 
@@ -29,7 +29,7 @@
 
 //FIXME: chatline doku
 //!\brief Containing the layout and providing the rendering of a single message.
-/** A ChatLine takes a Message object,
+/** A ChatLineOld takes a Message object,
  * formats it (by turning the various message types into a human-readable form and afterwards pumping it through
  * our Style engine), and stores it as a number of QTextLayouts representing the three fields of a chat line
  * (timestamp, sender and text). These layouts already include any rendering information such as font,
@@ -40,12 +40,12 @@
  * per message) from the actual layouting and painting, we gain a lot of speed compared to the standard Qt rendering
  * functions.
  */
-class ChatLine : public QObject, public AbstractUiMsg {
+class ChatLineOld : public QObject, public AbstractUiMsg {
   Q_OBJECT
 
   public:
-    ChatLine(Message message);
-    virtual ~ChatLine();
+    ChatLineOld(Message message);
+    virtual ~ChatLineOld();
 
     qreal layout(qreal tsWidth, qreal nickWidth, qreal textWidth);
     qreal height() const { return hght; }

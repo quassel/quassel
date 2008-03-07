@@ -69,6 +69,7 @@ private slots:
 private:
   Ui::BufferWidget ui;
   QHash<BufferId, ChatWidget *> _chatWidgets;
+  QHash<BufferId, ChatView *> _chatViews;
 
   QPointer<BufferModel> _bufferModel;
   QPointer<QItemSelectionModel> _selectionModel;
