@@ -88,12 +88,14 @@ void Global::registerMetaTypes() {
   qRegisterMetaType<NetworkId>("NetworkId");
   qRegisterMetaType<UserId>("UserId");
   qRegisterMetaType<AccountId>("AccountId");
+  qRegisterMetaType<MsgId>("MsgId");
 
   qRegisterMetaTypeStreamOperators<IdentityId>("IdentityId");
   qRegisterMetaTypeStreamOperators<BufferId>("BufferId");
   qRegisterMetaTypeStreamOperators<NetworkId>("NetworkId");
   qRegisterMetaTypeStreamOperators<UserId>("UserId");
   qRegisterMetaTypeStreamOperators<AccountId>("AccountId");
+  qRegisterMetaTypeStreamOperators<MsgId>("MsgId");
 
 }
 
