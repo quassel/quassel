@@ -78,6 +78,9 @@ UiStyle::UiStyle(const QString &settingsKey) : _settingsKey(settingsKey) {
     QTextCharFormat fgf, bgf;
     fgf.setForeground(QBrush(QColor(colors[i]))); setFormat((FormatType)(FgCol00 + i), fgf, Settings::Default);
     bgf.setBackground(QBrush(QColor(colors[i]))); setFormat((FormatType)(BgCol00 + i), bgf, Settings::Default);
+    //FIXME fix the havoc caused by ColorSettingsPage
+    setFormat((FormatType)(FgCol00 + i), fgf, Settings::Custom);
+    setFormat((FormatType)(BgCol00 + i), bgf, Settings::Custom);
   }
 
   // Set a few more standard formats

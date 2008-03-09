@@ -602,6 +602,7 @@ void ColorSettingsPage::save() {
   s.setValue("urlBG", ui.urlBG->color());
   s.setValue("urlUseBG", ui.urlUseBG->isChecked());
 
+  /* This ain't working!
   saveColor(UiStyle::FgCol00, ui.color0->color());
   saveColor(UiStyle::FgCol01, ui.color1->color());
   saveColor(UiStyle::FgCol02, ui.color2->color());
@@ -635,7 +636,8 @@ void ColorSettingsPage::save() {
   saveColor(UiStyle::BgCol13, ui.color13->color());
   saveColor(UiStyle::BgCol14, ui.color14->color());
   saveColor(UiStyle::BgCol15, ui.color15->color());
-  
+*/
+
   s.setValue("onlineStatusFG", ui.onlineStatusFG->color());
   s.setValue("onlineStatusBG", ui.onlineStatusBG->color());
   s.setValue("onlineStatusUseBG", ui.onlineStatusUseBG->isChecked());
