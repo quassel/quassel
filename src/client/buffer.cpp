@@ -75,13 +75,16 @@ void Buffer::setVisible(bool visible) {
   _isVisible = visible;
   setActivityLevel(NoActivity);
   if(!layoutedMsgs.count()) return;
-  setLastSeen(layoutedMsgs.last()->timestamp());
+  setLastSeenMsg(layoutedMsgs.last()->msgId());
 }
 
-void Buffer::setLastSeen(const QDateTime &seen) { // qDebug() << "want to set lastSeen:" << bufferInfo() << seen << lastSeen();
-  if(!lastSeen().isValid() || seen.isValid() && seen > lastSeen()) { //qDebug() << "setting:" << bufferInfo().bufferName() << seen;
-    _lastSeen = seen;
-    Client::setBufferLastSeen(bufferInfo().bufferId(), seen);
+void Buffer::setLastSeenMsg(const MsgId &msgId) {
+  // qDebug() << "want to set lastSeen:" << bufferInfo() << seen << lastSeen();
+  const MsgId oldLastSeen = lastSeenMsg();
+  if(!oldLastSeen.isValid() || msgId.isValid() && msgId > oldLastSeen) {
+    //qDebug() << "setting:" << bufferInfo().bufferName() << seen;
+    _lastSeenMsg = msgId;
+    Client::setBufferLastSeenMsg(bufferInfo().bufferId(), msgId);
     //qDebug() << "setting lastSeen:" << bufferInfo() << lastSeen();
     setActivityLevel(NoActivity);
   }
@@ -102,7 +105,7 @@ void Buffer::updateActivityLevel(const Message &msg) {
   if(msg.flags() & Message::Self)	// don't update activity for our own messages
     return;
 
-  if(lastSeen().isValid() && lastSeen() >= msg.timestamp())
+  if(lastSeenMsg().isValid() && lastSeenMsg() >= msg.msgId())
     return;
 
   ActivityLevel level = activityLevel() | OtherActivity;

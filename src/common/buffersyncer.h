@@ -21,40 +21,39 @@
 #ifndef BUFFERSYNCER_H_
 #define BUFFERSYNCER_H_
 
-#include <QDateTime>
-
 #include "syncableobject.h"
 #include "types.h"
 
 class BufferSyncer : public SyncableObject {
   Q_OBJECT
 
-  public:
-    explicit BufferSyncer(QObject *parent);
+public:
+  explicit BufferSyncer(QObject *parent);
 
-    QDateTime lastSeen(BufferId buffer) const;
+  MsgId lastSeenMsg(BufferId buffer) const;
 
-  public slots:
-    QVariantList initLastSeen() const;
-    void initSetLastSeen(const QVariantList &);
+public slots:
+  QVariantList initLastSeenMsg() const;
+  void initSetLastSeenMsg(const QVariantList &);
 
-    void requestSetLastSeen(BufferId buffer, const QDateTime &time);
-    void requestRemoveBuffer(BufferId buffer);
-    void removeBuffer(BufferId buffer);
-    void renameBuffer(BufferId buffer, QString newName);
+  void requestSetLastSeenMsg(BufferId buffer, const MsgId &msgId);
+  void requestRemoveBuffer(BufferId buffer);
+  void removeBuffer(BufferId buffer);
+  void renameBuffer(BufferId buffer, QString newName);
 
-  signals:
-    void lastSeenSet(BufferId buffer, const QDateTime &time);
-    void setLastSeenRequested(BufferId buffer, const QDateTime &time);
-    void removeBufferRequested(BufferId buffer);
-    void bufferRemoved(BufferId buffer);
-    void bufferRenamed(BufferId buffer, QString newName);
+signals:
+  void lastSeenMsgSet(BufferId buffer, const MsgId &msgId);
+  void setLastSeenMsgRequested(BufferId buffer, const MsgId &msgId);
+  void removeBufferRequested(BufferId buffer);
+  void bufferRemoved(BufferId buffer);
+  void bufferRenamed(BufferId buffer, QString newName);
 
-  private slots:
-    bool setLastSeen(BufferId buffer, const QDateTime &time);
+private slots:
+  bool setLastSeenMsg(BufferId buffer, const MsgId &msgId);
 
-  private:
-    QMap<BufferId, QDateTime> _lastSeen;
+private:
+  QHash<BufferId, MsgId> _lastSeenMsg;
+
 };
 
 #endif

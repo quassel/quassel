@@ -165,7 +165,7 @@ private slots:
    */
   void updateBufferInfo(UserId user, const BufferInfo &bufferInfo);
 
-  void storeBufferLastSeen(BufferId buffer, const QDateTime &lastSeen);
+  void storeBufferLastSeenMsg(BufferId buffer, const MsgId &msgId);
 
   void scriptRequest(QString script);
 

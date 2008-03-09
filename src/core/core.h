@@ -239,17 +239,17 @@ class Core : public QObject {
      *
      * \param user      The Owner of that Buffer
      * \param bufferId  The buffer id
-     * \param seenDate  Time the Buffer has been visited the last time
+     * \param MsgId     The Message id of the message that has been just seen
      */
-    static void setBufferLastSeen(UserId user, const BufferId &bufferId, const QDateTime &seenDate);
+    static void setBufferLastSeenMsg(UserId user, const BufferId &bufferId, const MsgId &msgId);
 
-    //! Get a Hash of all last seen dates. 
-    /** This Method is called when the Quassel Core is started to restore the lastSeenDates
+    //! Get a Hash of all last seen message ids
+    /** This Method is called when the Quassel Core is started to restore the lastSeenMsgIds
      *  \note This method is threadsafe.
      *
      * \param user      The Owner of the buffers
      */
-    static QHash<BufferId, QDateTime> bufferLastSeenDates(UserId user);
+    static QHash<BufferId, MsgId> bufferLastSeenMsgIds(UserId user);
 
   public slots:
     //! Make storage data persistent

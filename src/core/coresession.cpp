@@ -69,9 +69,11 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent) : QObje
   initScriptEngine();
 
   // init BufferSyncer
-  QHash<BufferId, QDateTime> lastSeenHash = Core::bufferLastSeenDates(user());
-  foreach(BufferId id, lastSeenHash.keys()) _bufferSyncer->requestSetLastSeen(id, lastSeenHash[id]);
-  connect(_bufferSyncer, SIGNAL(lastSeenSet(BufferId, const QDateTime &)), this, SLOT(storeBufferLastSeen(BufferId, const QDateTime &)));
+  QHash<BufferId, MsgId> lastSeenHash = Core::bufferLastSeenMsgIds(user());
+  foreach(BufferId id, lastSeenHash.keys())
+    _bufferSyncer->requestSetLastSeenMsg(id, lastSeenHash[id]);
+  
+  connect(_bufferSyncer, SIGNAL(lastSeenMsgSet(BufferId, MsgId)), this, SLOT(storeBufferLastSeenMsg(BufferId, MsgId)));
   connect(_bufferSyncer, SIGNAL(removeBufferRequested(BufferId)), this, SLOT(removeBufferRequested(BufferId)));
   connect(this, SIGNAL(bufferRemoved(BufferId)), _bufferSyncer, SLOT(removeBuffer(BufferId)));
   connect(this, SIGNAL(bufferRenamed(BufferId, QString)), _bufferSyncer, SLOT(renameBuffer(BufferId, QString)));
@@ -306,8 +308,8 @@ QVariant CoreSession::sessionState() {
   return v;
 }
 
-void CoreSession::storeBufferLastSeen(BufferId buffer, const QDateTime &lastSeen) {
-  Core::setBufferLastSeen(user(), buffer, lastSeen);
+void CoreSession::storeBufferLastSeenMsg(BufferId buffer, const MsgId &msgId) {
+  Core::setBufferLastSeenMsg(user(), buffer, msgId);
 }
 
 void CoreSession::sendBacklog(BufferInfo id, QVariant v1, QVariant v2) {

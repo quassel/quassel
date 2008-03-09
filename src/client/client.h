@@ -106,7 +106,7 @@ public:
   enum ClientMode { LocalCore, RemoteCore };
 
   static void checkForHighlight(Message &msg);
-  static void setBufferLastSeen(BufferId id, const QDateTime &seen); // this is synced to core and other clients
+  static void setBufferLastSeenMsg(BufferId id, const MsgId &msgId); // this is synced to core and other clients
   static void removeBuffer(BufferId id);
 
 signals:
@@ -170,7 +170,7 @@ private slots:
   void recvStatusMsg(QString network, QString message);
   void recvBacklogData(BufferInfo, QVariantList, bool);
   void updateBufferInfo(BufferInfo);
-  void updateLastSeen(BufferId id, const QDateTime &lastSeen);
+  void updateLastSeenMsg(BufferId id, const MsgId &msgId);
 
   void layoutMsg();
 

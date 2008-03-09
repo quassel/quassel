@@ -305,14 +305,14 @@ BufferId Core::renameBuffer(const UserId &user, const NetworkId &networkId, cons
   return instance()->storage->renameBuffer(user, networkId, newName, oldName);
 }
 
-void Core::setBufferLastSeen(UserId user, const BufferId &bufferId, const QDateTime &seenDate) {
+void Core::setBufferLastSeenMsg(UserId user, const BufferId &bufferId, const MsgId &msgId) {
   QMutexLocker locker(&mutex);
-  return instance()->storage->setBufferLastSeen(user, bufferId, seenDate);
+  return instance()->storage->setBufferLastSeenMsg(user, bufferId, msgId);
 }
 
-QHash<BufferId, QDateTime> Core::bufferLastSeenDates(UserId user) {
+QHash<BufferId, MsgId> Core::bufferLastSeenMsgIds(UserId user) {
   QMutexLocker locker(&mutex);
-  return instance()->storage->bufferLastSeenDates(user);
+  return instance()->storage->bufferLastSeenMsgIds(user);
 }
 
 /*** Network Management ***/

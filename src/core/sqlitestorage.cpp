@@ -558,26 +558,26 @@ BufferId SqliteStorage::renameBuffer(const UserId &user, const NetworkId &networ
     return BufferId();
 }
 
-void SqliteStorage::setBufferLastSeen(UserId user, const BufferId &bufferId, const QDateTime &seenDate) {
+void SqliteStorage::setBufferLastSeenMsg(UserId user, const BufferId &bufferId, const MsgId &msgId) {
   QSqlQuery *query = cachedQuery("update_buffer_lastseen");
   query->bindValue(":userid", user.toInt());
   query->bindValue(":bufferid", bufferId.toInt());
-  query->bindValue(":lastseen", seenDate.toTime_t());
+  query->bindValue(":lastseenmsgid", msgId.toInt());
   query->exec();
   watchQuery(query);
 }
 
-QHash<BufferId, QDateTime> SqliteStorage::bufferLastSeenDates(UserId user) {
-  QHash<BufferId, QDateTime> lastSeenHash;
+QHash<BufferId, MsgId> SqliteStorage::bufferLastSeenMsgIds(UserId user) {
+  QHash<BufferId, MsgId> lastSeenHash;
   QSqlQuery query(logDb());
-  query.prepare(queryString("select_buffer_lastseen_dates"));
+  query.prepare(queryString("select_buffer_lastseen_messages"));
   query.bindValue(":userid", user.toInt());
   query.exec();
   if(!watchQuery(&query))
     return lastSeenHash;
 
   while(query.next()) {
-    lastSeenHash[query.value(0).toInt()] = QDateTime::fromTime_t(query.value(1).toUInt());
+    lastSeenHash[query.value(0).toInt()] = query.value(1).toInt();
   }
   return lastSeenHash;
 }

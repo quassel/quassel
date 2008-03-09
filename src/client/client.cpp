@@ -297,7 +297,7 @@ void Client::setSyncedToCore() {
   // create buffersyncer
   Q_ASSERT(!_bufferSyncer);
   _bufferSyncer = new BufferSyncer(this);
-  connect(bufferSyncer(), SIGNAL(lastSeenSet(BufferId, const QDateTime &)), this, SLOT(updateLastSeen(BufferId, const QDateTime &)));
+  connect(bufferSyncer(), SIGNAL(lastSeenMsgSet(BufferId, MsgId)), this, SLOT(updateLastSeenMsg(BufferId, MsgId)));
   connect(bufferSyncer(), SIGNAL(bufferRemoved(BufferId)), this, SLOT(bufferRemoved(BufferId)));
   connect(bufferSyncer(), SIGNAL(bufferRenamed(BufferId, QString)), this, SLOT(bufferRenamed(BufferId, QString)));
   signalProxy()->synchronize(bufferSyncer());
@@ -516,18 +516,19 @@ void Client::checkForHighlight(Message &msg) {
   }
 }
 
-void Client::updateLastSeen(BufferId id, const QDateTime &lastSeen) {
+void Client::updateLastSeenMsg(BufferId id, const MsgId &msgId) {
   Buffer *b = buffer(id);
   if(!b) {
     qWarning() << "Client::updateLastSeen(): Unknown buffer" << id;
     return;
   }
-  b->setLastSeen(lastSeen);
+  b->setLastSeenMsg(msgId);
 }
 
-void Client::setBufferLastSeen(BufferId id, const QDateTime &lastSeen) {
-  if(!bufferSyncer()) return;
-  bufferSyncer()->requestSetLastSeen(id, lastSeen);
+void Client::setBufferLastSeenMsg(BufferId id, const MsgId &msgId) {
+  if(!bufferSyncer())
+    return;
+  bufferSyncer()->requestSetLastSeenMsg(id, msgId);
 }
 
 void Client::removeBuffer(BufferId id) {

@@ -52,7 +52,7 @@ public:
   BufferInfo bufferInfo() const;
   QList<AbstractUiMsg *> contents() const;
   inline bool isVisible() const { return _isVisible; }
-  inline QDateTime lastSeen() const { return _lastSeen; }
+  inline MsgId lastSeenMsg() const { return _lastSeenMsg; }
   inline ActivityLevel activityLevel() const { return _activityLevel; }
 
 signals:
@@ -65,13 +65,13 @@ public slots:
   void prependMsg(const Message &);
   bool layoutMsg();
   void setVisible(bool visible);
-  void setLastSeen(const QDateTime &);
+  void setLastSeenMsg(const MsgId &msgId);
   void setActivityLevel(ActivityLevel level);
 
 private:
   BufferInfo _bufferInfo;
   bool _isVisible;
-  QDateTime _lastSeen;
+  MsgId _lastSeenMsg;
   ActivityLevel _activityLevel;
 
   QList<Message> layoutQueue;

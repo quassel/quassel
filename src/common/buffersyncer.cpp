@@ -20,45 +20,53 @@
 
 #include "buffersyncer.h"
 
-BufferSyncer::BufferSyncer(QObject *parent) : SyncableObject(parent) {
-
-
+BufferSyncer::BufferSyncer(QObject *parent)
+  : SyncableObject(parent)
+{
 }
 
 
-QDateTime BufferSyncer::lastSeen(BufferId buffer) const {
-  if(_lastSeen.contains(buffer)) return _lastSeen[buffer];
-  return QDateTime();
+MsgId BufferSyncer::lastSeenMsg(BufferId buffer) const {
+  if(_lastSeenMsg.contains(buffer))
+    return _lastSeenMsg[buffer];
+  return MsgId();
 }
 
-bool BufferSyncer::setLastSeen(BufferId buffer, const QDateTime &time) {
-  if(!time.isValid()) return false;
-  if(!lastSeen(buffer).isValid() || lastSeen(buffer) < time) {
-    _lastSeen[buffer] = time;
-    emit lastSeenSet(buffer, time);
+bool BufferSyncer::setLastSeenMsg(BufferId buffer, const MsgId &msgId) {
+  if(!msgId.isValid())
+    return false;
+
+  const MsgId oldLastSeenMsg = lastSeenMsg(buffer);
+  if(!oldLastSeenMsg.isValid() || oldLastSeenMsg < msgId) {
+    _lastSeenMsg[buffer] = msgId;
+    emit lastSeenMsgSet(buffer, msgId);
     return true;
   }
   return false;
 }
 
-QVariantList BufferSyncer::initLastSeen() const {
+QVariantList BufferSyncer::initLastSeenMsg() const {
   QVariantList list;
-  foreach(BufferId id, _lastSeen.keys()) {
-    list << QVariant::fromValue<BufferId>(id) << _lastSeen[id];
+  QHash<BufferId, MsgId>::const_iterator iter = _lastSeenMsg.constBegin();
+  while(iter != _lastSeenMsg.constEnd()) {
+    list << QVariant::fromValue<BufferId>(iter.key())
+	 << QVariant::fromValue<MsgId>(iter.value());
+    iter++;
   }
   return list;
 }
 
-void BufferSyncer::initSetLastSeen(const QVariantList &list) {
-  _lastSeen.clear();
+void BufferSyncer::initSetLastSeenMsg(const QVariantList &list) {
+  _lastSeenMsg.clear();
   Q_ASSERT(list.count() % 2 == 0);
   for(int i = 0; i < list.count(); i += 2) {
-    setLastSeen(list[i].value<BufferId>(), list[i+1].toDateTime());
+    setLastSeenMsg(list[i].value<BufferId>(), list[i+1].value<MsgId>());
   }
 }
 
-void BufferSyncer::requestSetLastSeen(BufferId buffer, const QDateTime &time) {
-  if(setLastSeen(buffer, time)) emit setLastSeenRequested(buffer, time);
+void BufferSyncer::requestSetLastSeenMsg(BufferId buffer, const MsgId &msgId) {
+  if(setLastSeenMsg(buffer, msgId))
+    emit setLastSeenMsgRequested(buffer, msgId);
 }
 
 
@@ -67,8 +75,8 @@ void BufferSyncer::requestRemoveBuffer(BufferId buffer) {
 }
 
 void BufferSyncer::removeBuffer(BufferId buffer) {
-  if(_lastSeen.contains(buffer))
-    _lastSeen.remove(buffer);
+  if(_lastSeenMsg.contains(buffer))
+    _lastSeenMsg.remove(buffer);
   emit bufferRemoved(buffer);
 }
 
