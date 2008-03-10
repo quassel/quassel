@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>558</width>
-    <height>29</height>
+    <width>458</width>
+    <height>28</height>
    </rect>
   </property>
   <property name="sizePolicy" >
@@ -32,19 +32,22 @@
   </property>
   <layout class="QHBoxLayout" >
    <property name="leftMargin" >
-    <number>0</number>
+    <number>2</number>
    </property>
    <property name="topMargin" >
-    <number>0</number>
+    <number>2</number>
    </property>
    <property name="rightMargin" >
-    <number>0</number>
+    <number>2</number>
    </property>
    <property name="bottomMargin" >
-    <number>0</number>
+    <number>2</number>
    </property>
    <item>
     <widget class="QLineEdit" name="topicLineEdit" />
+   </item>
+   <item>
+    <widget class="TopicButton" native="1" name="topicButton" />
    </item>
    <item>
     <widget class="QToolButton" name="topicEditButton" >
@@ -55,7 +58,7 @@
       <string>...</string>
      </property>
      <property name="icon" >
-      <iconset resource="../../icons/icons.qrc" >:/22x22/actions/oxygen/22x22/actions/configure.png</iconset>
+      <iconset/>
      </property>
      <property name="iconSize" >
       <size>
@@ -67,6 +70,14 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>TopicButton</class>
+   <extends>QWidget</extends>
+   <header location="global" >topicbutton.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="../../icons/icons.qrc" />
  </resources>

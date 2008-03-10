@@ -18,54 +18,29 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "topicwidget.h"
+#ifndef TOPICBUTTON_H
+#define TOPICBUTTON_H
 
-#include <QDebug>
+#include <QSize>
+#include <QAbstractButton>
 
-TopicWidget::TopicWidget(QWidget *parent)
-  : QWidget(parent)
-{
-  ui.setupUi(this);
-  ui.topicLineEdit->hide();
-  ui.topicLineEdit->installEventFilter(this);
-  ui.topicButton->show();
-}
+#include "uistyle.h"
 
-void TopicWidget::setTopic(const QString &newtopic) {
-  ui.topicButton->setAndStyleText(newtopic);
-  ui.topicLineEdit->setText(newtopic);
-  switchPlain();
-}
+class TopicButton : public QAbstractButton {
+  Q_OBJECT
 
-void TopicWidget::on_topicLineEdit_returnPressed() {
-  switchPlain();
-  emit topicChanged(topic());
-}
+public:
+  TopicButton(QWidget *parent = 0);
 
-void TopicWidget::on_topicButton_clicked() {
-  switchEditable();
-}
+  void setAndStyleText(const QString &text);
 
-void TopicWidget::switchEditable() {
-  ui.topicButton->hide();
-  ui.topicLineEdit->show();
-}
+protected:
+  virtual void paintEvent(QPaintEvent *event);
+  virtual inline QSize sizeHint() const { return _sizeHint; }
 
-void TopicWidget::switchPlain() {
-  ui.topicLineEdit->hide();
-  ui.topicButton->show();
-}
+private:
+  UiStyle::StyledText styledText;
+  QSize _sizeHint;
+};
 
-bool TopicWidget::eventFilter(QObject *obj, QEvent *event) {
-  if(event->type() != QEvent::KeyPress)
-    return QObject::eventFilter(obj, event);
-
-  QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
-
-  if(keyEvent->key() == Qt::Key_Escape) {
-    switchPlain();
-    return true;
-  }
-  
-  return false;
-}
+#endif

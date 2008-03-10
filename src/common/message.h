@@ -79,6 +79,9 @@ public:
 
   //static QString formattedToHtml(const QString &);
 
+  /** Convert mIRC control codes to our own */
+  static QString mircToInternal(QString);
+
   void format();
 
 private:
@@ -92,8 +95,6 @@ private:
 
   QString _formattedTimestamp, _formattedSender, _formattedText; // cache
 
-  /** Convert mIRC control codes to our own */
-  QString mircToInternal(QString);
 
   friend QDataStream &operator>>(QDataStream &in, Message &msg);
 };

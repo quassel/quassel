@@ -18,54 +18,53 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "topicwidget.h"
+#include "topicbutton.h"
+
 
 #include <QDebug>
 
-TopicWidget::TopicWidget(QWidget *parent)
-  : QWidget(parent)
+#include <QApplication>
+#include <QPainter>
+#include <QHBoxLayout>
+#include <QFont>
+#include <QFontMetrics>
+
+#include "qtui.h"
+#include "message.h"
+
+TopicButton::TopicButton(QWidget *parent)
+  : QAbstractButton(parent),
+    _sizeHint(QSize())
 {
-  ui.setupUi(this);
-  ui.topicLineEdit->hide();
-  ui.topicLineEdit->installEventFilter(this);
-  ui.topicButton->show();
 }
 
-void TopicWidget::setTopic(const QString &newtopic) {
-  ui.topicButton->setAndStyleText(newtopic);
-  ui.topicLineEdit->setText(newtopic);
-  switchPlain();
-}
+void TopicButton::paintEvent(QPaintEvent *event) {
+  Q_UNUSED(event);
 
-void TopicWidget::on_topicLineEdit_returnPressed() {
-  switchPlain();
-  emit topicChanged(topic());
-}
+  QPainter painter(this);
+  QFontMetrics metrics(qApp->font());
 
-void TopicWidget::on_topicButton_clicked() {
-  switchEditable();
-}
-
-void TopicWidget::switchEditable() {
-  ui.topicButton->hide();
-  ui.topicLineEdit->show();
-}
-
-void TopicWidget::switchPlain() {
-  ui.topicLineEdit->hide();
-  ui.topicButton->show();
-}
-
-bool TopicWidget::eventFilter(QObject *obj, QEvent *event) {
-  if(event->type() != QEvent::KeyPress)
-    return QObject::eventFilter(obj, event);
-
-  QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
-
-  if(keyEvent->key() == Qt::Key_Escape) {
-    switchPlain();
-    return true;
+  QPoint topLeft = rect().topLeft();
+  int height = sizeHint().height();
+  int width = 0;
+  QRect drawRect;
+  QString textPart;
+  foreach(QTextLayout::FormatRange fr, styledText.formats) {
+    textPart = styledText.text.mid(fr.start, fr.length);
+    width = metrics.width(textPart);
+    drawRect = QRect(topLeft, QPoint(topLeft.x() + width, topLeft.y() + height));
+    // qDebug() << drawRect << textPart << width << fr.format.background();
+    painter.setPen(QPen(fr.format.foreground(), 0));
+    painter.setBackground(fr.format.background()); // no clue why this doesnt work properly o_O
+    painter.drawText(drawRect, Qt::AlignLeft|Qt::TextSingleLine, textPart);
+    topLeft.setX(topLeft.x() + width);
   }
+}
+
+void TopicButton::setAndStyleText(const QString &text) {
+  styledText = QtUi::style()->styleString(Message::mircToInternal(text));
+  setText(styledText.text);
   
-  return false;
+  QFontMetrics metrics(qApp->font());
+  _sizeHint = metrics.boundingRect(styledText.text).size();
 }
