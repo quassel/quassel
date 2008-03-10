@@ -49,6 +49,7 @@ void TopicWidget::on_topicButton_clicked() {
 void TopicWidget::switchEditable() {
   ui.topicButton->hide();
   ui.topicLineEdit->show();
+  ui.topicLineEdit->setFocus();
 }
 
 void TopicWidget::switchPlain() {
