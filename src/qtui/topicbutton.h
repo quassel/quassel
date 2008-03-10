@@ -36,7 +36,6 @@ public:
 
 protected:
   virtual void paintEvent(QPaintEvent *event);
-  virtual inline QSize sizeHint() const { return _sizeHint; }
 
 private:
   UiStyle::StyledText styledText;

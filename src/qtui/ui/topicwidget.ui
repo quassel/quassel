@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>458</width>
-    <height>28</height>
+    <width>515</width>
+    <height>44</height>
    </rect>
   </property>
   <property name="sizePolicy" >
@@ -31,23 +31,21 @@
    <string>Form</string>
   </property>
   <layout class="QHBoxLayout" >
-   <property name="leftMargin" >
-    <number>2</number>
-   </property>
-   <property name="topMargin" >
-    <number>2</number>
-   </property>
-   <property name="rightMargin" >
-    <number>2</number>
-   </property>
-   <property name="bottomMargin" >
+   <property name="margin" >
     <number>2</number>
    </property>
    <item>
     <widget class="QLineEdit" name="topicLineEdit" />
    </item>
    <item>
-    <widget class="TopicButton" native="1" name="topicButton" />
+    <widget class="TopicButton" native="1" name="topicButton" >
+     <property name="sizePolicy" >
+      <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="QToolButton" name="topicEditButton" >
@@ -58,7 +56,9 @@
       <string>...</string>
      </property>
      <property name="icon" >
-      <iconset/>
+      <iconset>
+       <normaloff/>
+      </iconset>
      </property>
      <property name="iconSize" >
       <size>

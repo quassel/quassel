@@ -33,8 +33,7 @@
 #include "message.h"
 
 TopicButton::TopicButton(QWidget *parent)
-  : QAbstractButton(parent),
-    _sizeHint(QSize())
+  : QAbstractButton(parent)
 {
 }
 
@@ -42,29 +41,27 @@ void TopicButton::paintEvent(QPaintEvent *event) {
   Q_UNUSED(event);
 
   QPainter painter(this);
-  QFontMetrics metrics(qApp->font());
+  painter.setBackgroundMode(Qt::OpaqueMode);
 
-  QPoint topLeft = rect().topLeft();
-  int height = sizeHint().height();
-  int width = 0;
-  QRect drawRect;
+  QRect drawRect = rect();
+  QRect brect;
   QString textPart;
   foreach(QTextLayout::FormatRange fr, styledText.formats) {
     textPart = styledText.text.mid(fr.start, fr.length);
-    width = metrics.width(textPart);
-    drawRect = QRect(topLeft, QPoint(topLeft.x() + width, topLeft.y() + height));
-    // qDebug() << drawRect << textPart << width << fr.format.background();
+    painter.setFont(fr.format.font());
     painter.setPen(QPen(fr.format.foreground(), 0));
-    painter.setBackground(fr.format.background()); // no clue why this doesnt work properly o_O
-    painter.drawText(drawRect, Qt::AlignLeft|Qt::TextSingleLine, textPart);
-    topLeft.setX(topLeft.x() + width);
+    painter.setBackground(fr.format.background());
+    painter.drawText(drawRect, Qt::AlignLeft|Qt::TextSingleLine, textPart, &brect);
+    drawRect.setLeft(brect.right());
   }
 }
 
 void TopicButton::setAndStyleText(const QString &text) {
   styledText = QtUi::style()->styleString(Message::mircToInternal(text));
   setText(styledText.text);
-  
-  QFontMetrics metrics(qApp->font());
-  _sizeHint = metrics.boundingRect(styledText.text).size();
+  int height = 1;
+  foreach(QTextLayout::FormatRange fr, styledText.formats) {
+    height = qMax(height, QFontMetrics(fr.format.font()).height());
+  }
+  setFixedHeight(height);
 }
