@@ -32,6 +32,10 @@ TopicWidget::TopicWidget(QWidget *parent)
 }
 
 void TopicWidget::setTopic(const QString &newtopic) {
+  if(_topic == newtopic)
+    return;
+  
+  _topic = newtopic;
   ui.topicButton->setAndStyleText(newtopic);
   ui.topicLineEdit->setText(newtopic);
   switchPlain();
@@ -65,6 +69,7 @@ bool TopicWidget::eventFilter(QObject *obj, QEvent *event) {
 
   if(keyEvent->key() == Qt::Key_Escape) {
     switchPlain();
+    ui.topicLineEdit->setText(_topic);
     return true;
   }
   

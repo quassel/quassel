@@ -57,8 +57,11 @@ void TopicButton::paintEvent(QPaintEvent *event) {
 }
 
 void TopicButton::setAndStyleText(const QString &text) {
+  if(QAbstractButton::text() == text)
+    return;
+  setText(text); // this triggers a repaint event
+
   styledText = QtUi::style()->styleString(Message::mircToInternal(text));
-  setText(styledText.text);
   int height = 1;
   foreach(QTextLayout::FormatRange fr, styledText.formats) {
     height = qMax(height, QFontMetrics(fr.format.font()).height());
