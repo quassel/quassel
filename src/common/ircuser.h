@@ -48,7 +48,7 @@ class IrcUser : public SyncableObject {
   Q_PROPERTY(int lastAwayMessage READ lastAwayMessage WRITE setLastAwayMessage STORED false)
 
   Q_PROPERTY(QStringList channels READ channels STORED false)
-  //  Q_PROPERTY(QStringList usermodes READ usermodes WRITE setUsermodes)
+  Q_PROPERTY(QString userModes READ userModes WRITE setUserModes)
 
 public:
   IrcUser(const QString &hostmask, Network *network);
@@ -102,8 +102,8 @@ public slots:
   void partChannel(IrcChannel *channel);
   void partChannel(const QString &channelname);
 
-  void addUserMode(const QString &mode);
-  void removeUserMode(const QString &mode);
+  void addUserModes(const QString &modes);
+  void removeUserModes(const QString &modes);
 
 signals:
   void userSet(QString user);
@@ -123,11 +123,8 @@ signals:
   // void channelJoined(QString channel);
   void channelParted(QString channel);
 
-  void userModeAdded(QString mode);
-  void userModeRemoved(QString mode);
-
-//   void setUsermodes(const QSet<QString> &usermodes);
-//   QSet<QString> usermodes() const;
+  void userModesAdded(QString modes);
+  void userModesRemoved(QString modes);
 
 private slots:
   void updateObjectName();

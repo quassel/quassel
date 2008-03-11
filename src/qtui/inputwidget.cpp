@@ -20,9 +20,11 @@
 
 #include "inputwidget.h"
 
+#include "ircuser.h"
 #include "client.h"
 #include "networkmodel.h"
 #include "jumpkeyhandler.h"
+
 
 InputWidget::InputWidget(QWidget *parent)
   : QWidget(parent),
@@ -36,6 +38,7 @@ InputWidget::InputWidget(QWidget *parent)
   connect(this, SIGNAL(userInput(BufferInfo, QString)), Client::instance(), SIGNAL(sendInput(BufferInfo, QString)));
   setFocusProxy(ui.inputEdit);
 
+  ui.ownNick->installEventFilter(new MouseWheelFilter(this));
   ui.inputEdit->installEventFilter(new JumpKeyHandler(this));  
 }
 
@@ -100,15 +103,21 @@ void InputWidget::setNetwork(const Network *network) {
     return;
 
   const Network *previousNet = Client::network(_networkId);
-  if(previousNet)
+  if(previousNet) {
     disconnect(previousNet, 0, this, 0);
+    if(previousNet->me())
+      disconnect(previousNet->me(), 0, this, 0);
+  }
 
   if(network) {
     _networkId = network->networkId();
-    connect(network, SIGNAL(myNickSet(QString)),
-	    this, SLOT(updateNickSelector()));
-    connect(network, SIGNAL(identitySet(IdentityId)),
-	    this, SLOT(setIdentity(IdentityId)));
+    connect(network, SIGNAL(identitySet(IdentityId)), this, SLOT(setIdentity(IdentityId)));
+    if(network->me()) {
+      connect(network->me(), SIGNAL(nickSet(QString)), this, SLOT(updateNickSelector()));
+      connect(network->me(), SIGNAL(userModesSet(QString)), this, SLOT(updateNickSelector()));
+      connect(network->me(), SIGNAL(userModesAdded(QString)), this, SLOT(updateNickSelector()));
+      connect(network->me(), SIGNAL(userModesRemoved(QString)), this, SLOT(updateNickSelector()));
+    }
   }
   setIdentity(network->identity());
 }
@@ -149,7 +158,10 @@ void InputWidget::updateNickSelector() const {
     nicks.prepend(net->myNick());
     nickIdx = 0;
   }
-  
+
+  if(net->me() && nickIdx < nicks.count())
+    nicks[nickIdx] = net->myNick() + QString(" (%1)").arg(net->me()->userModes());
+      
   ui.ownNick->addItems(nicks);
   ui.ownNick->setCurrentIndex(nickIdx);
 }
@@ -163,4 +175,18 @@ void InputWidget::changeNick(const QString &newNick) const {
 
 void InputWidget::sendText(QString text) {
   emit userInput(currentBufferInfo, text);
+}
+
+
+// MOUSE WHEEL FILTER
+MouseWheelFilter::MouseWheelFilter(QObject *parent)
+  : QObject(parent)
+{
+}
+
+bool MouseWheelFilter::eventFilter(QObject *obj, QEvent *event) {
+  if(event->type() != QEvent::Wheel)
+    return QObject::eventFilter(obj, event);
+  else
+    return true;
 }

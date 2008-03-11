@@ -95,6 +95,7 @@ public:
   QString networkName() const;
   QString currentServer() const;
   QString myNick() const;
+  inline IrcUser *me() const { return ircUser(myNick()); }
   IdentityId identity() const;
   QStringList nicks() const;
   QStringList channels() const;

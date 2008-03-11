@@ -228,6 +228,30 @@ void IrcServerHandler::handleMode(const QString &prefix, const QList<QByteArray>
     
   } else {
     // pure User Modes
+    IrcUser *ircUser = network()->newIrcUser(params[0]);
+    QString modeString(serverDecode(params[1]));
+    QString addModes;
+    QString removeModes;
+    bool add = false;
+    for(int c = 0; c < modeString.count(); c++) {
+      if(modeString[c] == '+') {
+	add = true;
+	continue;
+      }
+      if(modeString[c] == '-') {
+	add = false;
+	continue;
+      }
+      if(add)
+	addModes += modeString[c];
+      else
+	removeModes += modeString[c];
+    }
+    if(!addModes.isEmpty())
+      ircUser->addUserModes(addModes);
+    if(!removeModes.isEmpty())
+      ircUser->removeUserModes(removeModes);
+    
     // FIXME: redirect
     emit displayMsg(Message::Mode, BufferInfo::StatusBuffer, "", serverDecode(params).join(" "), prefix);
   }

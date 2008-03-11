@@ -79,4 +79,13 @@ private:
 
 };
 
+
+class MouseWheelFilter : public QObject {
+  Q_OBJECT
+
+public:
+  MouseWheelFilter(QObject *parent = 0);
+  virtual bool eventFilter(QObject *obj, QEvent *event);
+};
+
 #endif // INPUTWIDGET_H

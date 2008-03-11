@@ -287,16 +287,24 @@ void IrcUser::setUserModes(const QString &modes) {
   emit userModesSet(modes);
 }
 
-void IrcUser::addUserMode(const QString &mode) {
-  if(!_userModes.contains(mode)) {
-    _userModes += mode;
-    emit userModeAdded(mode);
+void IrcUser::addUserModes(const QString &modes) {
+  if(modes.isEmpty())
+    return;
+
+  for(int i = 0; i < modes.count(); i++) {
+    if(!_userModes.contains(modes[i]))
+      _userModes += modes[i];
   }
+
+  emit userModesAdded(modes);
 }
 
-void IrcUser::removeUserMode(const QString &mode) {
-  if(_userModes.contains(mode)) {
-    _userModes.remove(mode);
-    emit userModeRemoved(mode);
+void IrcUser::removeUserModes(const QString &modes) {
+  if(modes.isEmpty())
+    return;
+
+  for(int i = 0; i < modes.count(); i++) {
+    _userModes.remove(modes[i]);
   }
+  emit userModesRemoved(modes);
 }
