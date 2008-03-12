@@ -32,7 +32,6 @@ public:
   TopicWidget(QWidget *parent = 0);
 
   void setTopic(const QString &newtopic);
-  void setTopicForIndex(const QModelIndex &index);
 
   virtual bool eventFilter(QObject *obj, QEvent *event);
 

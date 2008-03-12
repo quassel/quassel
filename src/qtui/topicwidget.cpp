@@ -33,21 +33,16 @@ TopicWidget::TopicWidget(QWidget *parent)
 
 void TopicWidget::currentChanged(const QModelIndex &current, const QModelIndex &previous) {
   Q_UNUSED(previous);
-  setTopicForIndex(current);
+  setTopic(current.sibling(current.row(), 1).data().toString());
 }
 
 void TopicWidget::dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight) {
   QItemSelectionRange changedArea(topLeft, bottomRight);
-  QModelIndex currentIndex = selectionModel()->currentIndex();
-  if(changedArea.contains(currentIndex))
-    setTopicForIndex(currentIndex);
+  QModelIndex currentTopicIndex = selectionModel()->currentIndex().sibling(selectionModel()->currentIndex().row(), 1);
+  if(changedArea.contains(currentTopicIndex))
+    setTopic(currentTopicIndex.data().toString());
 };
 
-void TopicWidget::setTopicForIndex(const QModelIndex &index) {
-  QModelIndex topicIndex = index.sibling(index.row(), 1);
-  setTopic(topicIndex.data().toString());
-}
-				   
 void TopicWidget::setTopic(const QString &newtopic) {
   if(_topic == newtopic)
     return;
