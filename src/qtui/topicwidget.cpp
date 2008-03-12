@@ -23,7 +23,7 @@
 #include <QDebug>
 
 TopicWidget::TopicWidget(QWidget *parent)
-  : QWidget(parent)
+  : AbstractItemView(parent)
 {
   ui.setupUi(this);
   ui.topicLineEdit->hide();
@@ -31,6 +31,23 @@ TopicWidget::TopicWidget(QWidget *parent)
   ui.topicButton->show();
 }
 
+void TopicWidget::currentChanged(const QModelIndex &current, const QModelIndex &previous) {
+  Q_UNUSED(previous);
+  setTopicForIndex(current);
+}
+
+void TopicWidget::dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight) {
+  QItemSelectionRange changedArea(topLeft, bottomRight);
+  QModelIndex currentIndex = selectionModel()->currentIndex();
+  if(changedArea.contains(currentIndex))
+    setTopicForIndex(currentIndex);
+};
+
+void TopicWidget::setTopicForIndex(const QModelIndex &index) {
+  QModelIndex topicIndex = index.sibling(index.row(), 1);
+  setTopic(topicIndex.data().toString());
+}
+				   
 void TopicWidget::setTopic(const QString &newtopic) {
   if(_topic == newtopic)
     return;
@@ -42,8 +59,8 @@ void TopicWidget::setTopic(const QString &newtopic) {
 }
 
 void TopicWidget::on_topicLineEdit_returnPressed() {
+  emit topicChanged(ui.topicLineEdit->text());
   switchPlain();
-  emit topicChanged(topic());
 }
 
 void TopicWidget::on_topicButton_clicked() {
@@ -59,9 +76,16 @@ void TopicWidget::switchEditable() {
 void TopicWidget::switchPlain() {
   ui.topicLineEdit->hide();
   ui.topicButton->show();
+  ui.topicLineEdit->setText(_topic);
 }
 
+// filter for the input widget to switch back to normal mode
 bool TopicWidget::eventFilter(QObject *obj, QEvent *event) {
+  if(event->type() == QEvent::FocusOut) {
+    switchPlain();
+    return true;
+  }
+
   if(event->type() != QEvent::KeyPress)
     return QObject::eventFilter(obj, event);
 
@@ -69,7 +93,6 @@ bool TopicWidget::eventFilter(QObject *obj, QEvent *event) {
 
   if(keyEvent->key() == Qt::Key_Escape) {
     switchPlain();
-    ui.topicLineEdit->setText(_topic);
     return true;
   }
   

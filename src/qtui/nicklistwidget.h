@@ -22,42 +22,29 @@
 #define _NICKLISTWIDGET_H_
 
 #include "ui_nicklistwidget.h"
+#include "abstractitemview.h"
+
 #include "types.h"
 
 #include <QHash>
-
-#include <QPointer>
-#include <QItemSelectionModel>
 
 #include "buffermodel.h"
 
 class Buffer;
 class NickView;
 
-class NickListWidget : public QWidget {
+class NickListWidget : public AbstractItemView {
   Q_OBJECT
 
 public:
   NickListWidget(QWidget *parent = 0);
 
-  inline BufferModel *model() { return _bufferModel; }
-  void setModel(BufferModel *bufferModel);
-
-  inline QItemSelectionModel *selectionModel() const { return _selectionModel; }
-  void setSelectionModel(QItemSelectionModel *selectionModel);
-
 protected:
   virtual QSize sizeHint() const;
 
 protected slots:
-//   virtual void closeEditor(QWidget *editor, QAbstractItemDelegate::EndEditHint hint);
-//   virtual void commitData(QWidget *editor);
   virtual void currentChanged(const QModelIndex &current, const QModelIndex &previous);
-//   virtual void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
-//   virtual void editorDestroyed(QObject *editor);
   virtual void rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
-//   virtual void rowsInserted(const QModelIndex &parent, int start, int end);
-//   virtual void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
 
 private slots:
   void removeBuffer(BufferId bufferId);
@@ -65,9 +52,6 @@ private slots:
 private:
   Ui::NickListWidget ui;
   QHash<BufferId, NickView *> nickViews;
-
-  QPointer<BufferModel> _bufferModel;
-  QPointer<QItemSelectionModel> _selectionModel;
 };
 
 #endif

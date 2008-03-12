@@ -18,48 +18,42 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _BUFFERWIDGET_H_
-#define _BUFFERWIDGET_H_
+#ifndef ABSTRACTITEMVIEW_H
+#define ABSTRACTITEMVIEW_H
 
-#include "ui_bufferwidget.h"
+#include <QWidget>
+#include <QAbstractItemModel>
+#include <QItemSelectionModel>
+#include <QModelIndex>
+#include <QItemSelection>
+#include <QAbstractItemDelegate>
+#include <QPointer>
 
-#include "abstractitemview.h"
-#include "chatview.h"
-#include "types.h"
-
-class Network;
-class ChatView;
-class ChatWidget;
-
-#include "buffermodel.h"
-
-//! Displays the contents of a Buffer.
-/**
-*/
-class BufferWidget : public AbstractItemView {
+class AbstractItemView : public QWidget {
   Q_OBJECT
 
 public:
-  BufferWidget(QWidget *parent = 0);
-  virtual ~BufferWidget();
-  void init();
+  AbstractItemView(QWidget *parent = 0);
 
-  inline BufferId currentBuffer() const { return _currentBuffer; }
-  
+  inline QAbstractItemModel *model() { return _model; }
+  void setModel(QAbstractItemModel *model);
+
+  inline QItemSelectionModel *selectionModel() const { return _selectionModel; }
+  void setSelectionModel(QItemSelectionModel *selectionModel);
+
 protected slots:
-  virtual void currentChanged(const QModelIndex &current, const QModelIndex &previous);
-  virtual void rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
+  virtual void closeEditor(QWidget *, QAbstractItemDelegate::EndEditHint) {};
+  virtual void commitData(QWidget *) {};
+  virtual void currentChanged(const QModelIndex &, const QModelIndex &) {};
+  virtual void dataChanged(const QModelIndex &, const QModelIndex &) {};
+  virtual void editorDestroyed(QObject *) {};
+  virtual void rowsAboutToBeRemoved(const QModelIndex &, int, int) {};
+  virtual void rowsInserted(const QModelIndex &, int, int) {};
+  virtual void selectionChanged(const QItemSelection &, const QItemSelection &) {};
 
-private slots:
-  void removeBuffer(BufferId bufferId);
-  void setCurrentBuffer(BufferId bufferId);
-
-private:
-  Ui::BufferWidget ui;
-  QHash<BufferId, ChatWidget *> _chatWidgets;
-  QHash<BufferId, ChatView *> _chatViews;
-
-  BufferId _currentBuffer;
+protected:
+  QPointer<QAbstractItemModel> _model;
+  QPointer<QItemSelectionModel> _selectionModel;
 };
 
-#endif
+#endif // ABSTRACTITEMVIEW_H

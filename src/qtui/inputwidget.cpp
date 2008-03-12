@@ -27,10 +27,8 @@
 
 
 InputWidget::InputWidget(QWidget *parent)
-  : QWidget(parent),
-    validBuffer(false),
-    _bufferModel(0),
-    _selectionModel(0)
+  : AbstractItemView(parent),
+    validBuffer(false)
 {
   ui.setupUi(this);
   connect(ui.inputEdit, SIGNAL(sendText(QString)), this, SLOT(sendText(QString)));
@@ -43,24 +41,6 @@ InputWidget::InputWidget(QWidget *parent)
 }
 
 InputWidget::~InputWidget() {
-}
-
-void InputWidget::setModel(BufferModel *bufferModel) {
-  if(_bufferModel) {
-    disconnect(_bufferModel, 0, this, 0);
-  }
-  _bufferModel = bufferModel;
-  connect(bufferModel, SIGNAL(dataChanged(QModelIndex, QModelIndex)),
-	  this, SLOT(dataChanged(QModelIndex, QModelIndex)));
-}
-
-void InputWidget::setSelectionModel(QItemSelectionModel *selectionModel) {
-  if(_selectionModel) {
-    disconnect(_selectionModel, 0, this, 0);
-  }
-  _selectionModel = selectionModel;
-  connect(selectionModel, SIGNAL(currentChanged(QModelIndex, QModelIndex)),
-	  this, SLOT(currentChanged(QModelIndex, QModelIndex)));
 }
 
 void InputWidget::currentChanged(const QModelIndex &current, const QModelIndex &previous) {
@@ -84,7 +64,7 @@ void InputWidget::currentChanged(const QModelIndex &current, const QModelIndex &
 
 void InputWidget::dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight) {
   QItemSelectionRange changedArea(topLeft, bottomRight);
-  QModelIndex currentIndex = Client::bufferModel()->currentIndex();
+  QModelIndex currentIndex = selectionModel()->currentIndex();
   if(changedArea.contains(currentIndex)) {
     ui.inputEdit->setEnabled(currentIndex.data(NetworkModel::ItemActiveRole).value<bool>());
   }

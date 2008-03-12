@@ -35,6 +35,7 @@
 TopicButton::TopicButton(QWidget *parent)
   : QAbstractButton(parent)
 {
+  setFixedHeight(QFontMetrics(qApp->font()).height());
 }
 
 void TopicButton::paintEvent(QPaintEvent *event) {
@@ -59,6 +60,7 @@ void TopicButton::paintEvent(QPaintEvent *event) {
 void TopicButton::setAndStyleText(const QString &text) {
   if(QAbstractButton::text() == text)
     return;
+
   setText(text); // this triggers a repaint event
 
   styledText = QtUi::style()->styleString(Message::mircToInternal(text));
@@ -66,5 +68,10 @@ void TopicButton::setAndStyleText(const QString &text) {
   foreach(QTextLayout::FormatRange fr, styledText.formats) {
     height = qMax(height, QFontMetrics(fr.format.font()).height());
   }
+
+  // ensure the button is editable (height != 1) if there is no text to show
+  if(text.isEmpty())
+    height = QFontMetrics(qApp->font()).height();
+  
   setFixedHeight(height);
 }

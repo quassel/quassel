@@ -21,25 +21,28 @@
 #ifndef _TOPICWIDGET_H_
 #define _TOPICWIDGET_H_
 
-#include <QWidget>
+#include "abstractitemview.h"
 
 #include "ui_topicwidget.h"
 
-class TopicWidget : public QWidget {
+class TopicWidget : public AbstractItemView {
   Q_OBJECT
-  Q_PROPERTY(QString topic READ topic WRITE setTopic STORED false)
 
 public:
   TopicWidget(QWidget *parent = 0);
 
-  inline QString topic() const { return ui.topicLineEdit->text(); }
   void setTopic(const QString &newtopic);
+  void setTopicForIndex(const QModelIndex &index);
 
   virtual bool eventFilter(QObject *obj, QEvent *event);
 
 signals:
   void topicChanged(const QString &text);
-					
+
+protected slots:
+  virtual void currentChanged(const QModelIndex &current, const QModelIndex &previous);
+  virtual void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
+
 private slots:
   void on_topicLineEdit_returnPressed();
   void on_topicButton_clicked();

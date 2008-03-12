@@ -28,13 +28,10 @@
 BufferModel::BufferModel(NetworkModel *parent)
   : QSortFilterProxyModel(parent),
     _selectionModelSynchronizer(this),
-    _propertyMapper(this)
+    _standardSelectionModel(this)
 {
   setSourceModel(parent);
-
-  // initialize the Property Mapper
-  _propertyMapper.setModel(this);
-  _selectionModelSynchronizer.addRegularSelectionModel(_propertyMapper.selectionModel());
+  _selectionModelSynchronizer.addRegularSelectionModel(standardSelectionModel());
 }
 
 BufferModel::~BufferModel() {
@@ -63,15 +60,11 @@ void BufferModel::synchronizeView(QAbstractItemView *view) {
   view->setSelectionModel(mappedSelectionModel);
 }
 
-void BufferModel::mapProperty(int column, int role, QObject *target, const QByteArray &property) {
-  _propertyMapper.addMapping(column, role, target, property);
-}
-
 QModelIndex BufferModel::currentIndex() {
-  return propertyMapper()->selectionModel()->currentIndex();
+  return standardSelectionModel()->currentIndex();
 }
 
 void BufferModel::setCurrentIndex(const QModelIndex &newCurrent) {
-  standardSelectionModel()->setCurrentIndex(newCurrent, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
-  standardSelectionModel()->select(newCurrent, QItemSelectionModel::ClearAndSelect);
+  _standardSelectionModel.setCurrentIndex(newCurrent, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+  _standardSelectionModel.select(newCurrent, QItemSelectionModel::ClearAndSelect);
 }

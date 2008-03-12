@@ -28,37 +28,9 @@
 #include "nickviewfilter.h"
 
 NickListWidget::NickListWidget(QWidget *parent)
-  : QWidget(parent),
-    _bufferModel(0),
-    _selectionModel(0)
+  : AbstractItemView(parent)
 {
   ui.setupUi(this);
-}
-
-void NickListWidget::setModel(BufferModel *bufferModel) {
-  if(_bufferModel) {
-    disconnect(_bufferModel, 0, this, 0);
-  }
-  
-  _bufferModel = bufferModel;
-
-  if(bufferModel) {
-    connect(bufferModel, SIGNAL(rowsAboutToBeRemoved(QModelIndex, int, int)),
-	    this, SLOT(rowsAboutToBeRemoved(QModelIndex, int, int)));
-  }
-}
-
-void NickListWidget::setSelectionModel(QItemSelectionModel *selectionModel) {
-  if(_selectionModel) {
-    disconnect(_selectionModel, 0, this, 0);
-  }
-
-  _selectionModel = selectionModel;
-
-  if(selectionModel) {
-    connect(selectionModel, SIGNAL(currentChanged(QModelIndex, QModelIndex)),
-	    this, SLOT(currentChanged(QModelIndex, QModelIndex)));
-  }
 }
 
 void NickListWidget::currentChanged(const QModelIndex &current, const QModelIndex &previous) {

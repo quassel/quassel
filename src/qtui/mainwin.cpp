@@ -114,7 +114,7 @@ void MainWin::init() {
   // attach the BufferWidget to the BufferModel and the default selection
   ui.bufferWidget->setModel(Client::bufferModel());
   ui.bufferWidget->setSelectionModel(Client::bufferModel()->standardSelectionModel());
-
+  
   if(Global::SPUTDEV) {
     //showSettingsDlg();
     //showAboutDlg();
@@ -206,8 +206,6 @@ void MainWin::setupNickWidget() {
   // attach the NickListWidget to the BufferModel and the default selection
   nickListWidget->setModel(Client::bufferModel());
   nickListWidget->setSelectionModel(Client::bufferModel()->standardSelectionModel());
-
-  Client::bufferModel()->mapProperty(0, NetworkModel::BufferIdRole, nickListWidget, "currentBuffer");
 }
 
 void MainWin::setupChatMonitor() {
@@ -262,7 +260,8 @@ void MainWin::setupTopicWidget() {
 
   dock->setWidget(topicwidget);
 
-  Client::bufferModel()->mapProperty(1, Qt::DisplayRole, topicwidget, "topic");
+  topicwidget->setModel(Client::bufferModel());
+  topicwidget->setSelectionModel(Client::bufferModel()->standardSelectionModel());
 
   addDockWidget(Qt::TopDockWidgetArea, dock);
 

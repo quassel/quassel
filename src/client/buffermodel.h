@@ -26,7 +26,6 @@
 
 #include "types.h"
 #include "selectionmodelsynchronizer.h"
-#include "modelpropertymapper.h"
 
 class NetworkModel;
 class MappedSelectionModel;
@@ -42,19 +41,17 @@ public:
   bool filterAcceptsRow(int sourceRow, const QModelIndex &parent) const;
   
   inline const SelectionModelSynchronizer *selectionModelSynchronizer() const { return &_selectionModelSynchronizer; }
-  inline const ModelPropertyMapper *propertyMapper() const { return &_propertyMapper; }
-  inline QItemSelectionModel *standardSelectionModel() const { return _propertyMapper.selectionModel(); }
-
+  inline QItemSelectionModel *standardSelectionModel() const { return const_cast<QItemSelectionModel *>(&_standardSelectionModel); }
+  
   void synchronizeSelectionModel(MappedSelectionModel *selectionModel);
   void synchronizeView(QAbstractItemView *view);
-  void mapProperty(int column, int role, QObject *target, const QByteArray &property);
 
   QModelIndex currentIndex();
   void setCurrentIndex(const QModelIndex &newCurrent);
 
 private:
   SelectionModelSynchronizer _selectionModelSynchronizer;
-  ModelPropertyMapper _propertyMapper;
+  QItemSelectionModel _standardSelectionModel;
 };
 
 #endif // BUFFERMODEL_H

@@ -22,38 +22,25 @@
 #define INPUTWIDGET_H
 
 #include "ui_inputwidget.h"
-#include <QPointer>
-#include <QItemSelectionModel>
 
+#include "abstractitemview.h"
 #include "buffermodel.h"
 #include "bufferinfo.h"
 #include "identity.h"
 #include "network.h"
 
-class InputWidget : public QWidget {
+class InputWidget : public AbstractItemView {
   Q_OBJECT
 
 public:
   InputWidget(QWidget *parent = 0);
   virtual ~InputWidget();
 
-  inline BufferModel *model() { return _bufferModel; }
-  void setModel(BufferModel *bufferModel);
-
-  inline QItemSelectionModel *selectionModel() const { return _selectionModel; }
-  void setSelectionModel(QItemSelectionModel *selectionModel);
-
   const Network *currentNetwork() const;
 
 protected slots:
-//   virtual void closeEditor(QWidget *editor, QAbstractItemDelegate::EndEditHint hint);
-//   virtual void commitData(QWidget *editor);
   virtual void currentChanged(const QModelIndex &current, const QModelIndex &previous);
   virtual void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
-//   virtual void editorDestroyed(QObject *editor);
-//   virtual void rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
-//   virtual void rowsInserted(const QModelIndex &parent, int start, int end);
-//   virtual void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
 
 private slots:
   void sendText(QString text);
@@ -72,8 +59,6 @@ private:
   bool validBuffer;
   BufferInfo currentBufferInfo;
   
-  QPointer<BufferModel> _bufferModel;
-  QPointer<QItemSelectionModel> _selectionModel;
   NetworkId _networkId;
   IdentityId _identityId;
 

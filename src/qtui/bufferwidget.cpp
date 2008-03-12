@@ -32,9 +32,7 @@
 #include "global.h"
 
 BufferWidget::BufferWidget(QWidget *parent)
-  : QWidget(parent),
-    _bufferModel(0),
-    _selectionModel(0),
+  : AbstractItemView(parent),
     _currentBuffer(0)
 {
   ui.setupUi(this);
@@ -44,30 +42,6 @@ BufferWidget::~BufferWidget() {
 }
 
 void BufferWidget::init() {
-}
-
-void BufferWidget::setModel(BufferModel *bufferModel) {
-  if(_bufferModel) {
-    disconnect(_bufferModel, 0, this, 0);
-  }
-  _bufferModel = bufferModel;
-
-  if(bufferModel) {
-    connect(bufferModel, SIGNAL(rowsAboutToBeRemoved(QModelIndex, int, int)),
-            this, SLOT(rowsAboutToBeRemoved(QModelIndex, int, int)));
-  }
-}
-
-void BufferWidget::setSelectionModel(QItemSelectionModel *selectionModel) {
-  if(_selectionModel) {
-    disconnect(_selectionModel, 0, this, 0);
-  }
-  _selectionModel = selectionModel;
-
-  if(selectionModel) {
-    connect(selectionModel, SIGNAL(currentChanged(QModelIndex, QModelIndex)),
-            this, SLOT(currentChanged(QModelIndex, QModelIndex)));
-  }
 }
 
 void BufferWidget::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end) {

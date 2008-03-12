@@ -18,48 +18,38 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _BUFFERWIDGET_H_
-#define _BUFFERWIDGET_H_
-
-#include "ui_bufferwidget.h"
-
 #include "abstractitemview.h"
-#include "chatview.h"
-#include "types.h"
 
-class Network;
-class ChatView;
-class ChatWidget;
+AbstractItemView::AbstractItemView(QWidget *parent)
+  : QWidget(parent),
+    _model(0),
+    _selectionModel(0)
+{
+}
 
-#include "buffermodel.h"
+void AbstractItemView::setModel(QAbstractItemModel *model) {
+  if(_model) {
+    disconnect(_model, 0, this, 0);
+  }
+  _model = model;
+  connect(model, SIGNAL(dataChanged(QModelIndex, QModelIndex)),
+	  this, SLOT(dataChanged(QModelIndex, QModelIndex)));
+  connect(model, SIGNAL(rowsAboutToBeRemoved(QModelIndex, int, int)),
+	  this, SLOT(rowsAboutToBeRemoved(QModelIndex, int, int)));
+  connect(model, SIGNAL(rowsInserted(QModelIndex, int, int)),
+	  this, SLOT(rowsInserted(QModelIndex, int, int)));
+}
 
-//! Displays the contents of a Buffer.
-/**
-*/
-class BufferWidget : public AbstractItemView {
-  Q_OBJECT
 
-public:
-  BufferWidget(QWidget *parent = 0);
-  virtual ~BufferWidget();
-  void init();
 
-  inline BufferId currentBuffer() const { return _currentBuffer; }
-  
-protected slots:
-  virtual void currentChanged(const QModelIndex &current, const QModelIndex &previous);
-  virtual void rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
+void AbstractItemView::setSelectionModel(QItemSelectionModel *selectionModel) {
+  if(_selectionModel) {
+    disconnect(_selectionModel, 0, this, 0);
+  }
+  _selectionModel = selectionModel;
+  connect(selectionModel, SIGNAL(currentChanged(QModelIndex, QModelIndex)),
+	  this, SLOT(currentChanged(QModelIndex, QModelIndex)));
+  connect(selectionModel, SIGNAL(selectionChanged(QItemSelection, QItemSelection)),
+	  this, SLOT(selectionChanged(QItemSelection, QItemSelection)));
+}
 
-private slots:
-  void removeBuffer(BufferId bufferId);
-  void setCurrentBuffer(BufferId bufferId);
-
-private:
-  Ui::BufferWidget ui;
-  QHash<BufferId, ChatWidget *> _chatWidgets;
-  QHash<BufferId, ChatView *> _chatViews;
-
-  BufferId _currentBuffer;
-};
-
-#endif
