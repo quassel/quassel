@@ -614,6 +614,9 @@ QString IrcUserItem::toolTip(int column) const {
     }
     toolTip.append(tr("idling since %1").arg(idleString));
   }
+  if(_ircUser->loginTime().isValid()) {
+    toolTip.append(tr("login time: %1").arg(_ircUser->loginTime().toString()));
+  }
 
   if(!_ircUser->server().isEmpty()) toolTip.append(tr("server: %1").arg(_ircUser->server()));
 

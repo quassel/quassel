@@ -505,7 +505,13 @@ void IrcServerHandler::handle317(const QString &prefix, const QList<QByteArray> 
     int idleSecs = serverDecode(params[1]).toInt();
     idleSecs *= -1;
     ircuser->setIdleTime(now.addSecs(idleSecs));
-    emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Whois] %1 is idling for %2 seconds").arg(ircuser->nick()).arg(ircuser->idleTime().secsTo(now)));
+    if(params.size()>3) {
+      int loginTime = serverDecode(params[2]).toInt();
+      ircuser->setLoginTime(QDateTime::fromTime_t(loginTime));
+      emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Whois] %1 is logged in since %2 seconds").arg(ircuser->nick()).arg(ircuser->loginTime().toString()));
+    }
+    emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Whois] %1 is idling for %2").arg(ircuser->nick()).arg(ircuser->idleTime().secsTo(now)));
+    
   } else {
     emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Whois] idle message: %1").arg(userDecode(nick, params).join(" ")));
   }

@@ -43,6 +43,7 @@ class IrcUser : public SyncableObject {
   Q_PROPERTY(bool away READ isAway WRITE setAway STORED false)
   Q_PROPERTY(QString awayMessage READ awayMessage WRITE setAwayMessage STORED false)
   Q_PROPERTY(QDateTime idleTime READ idleTime WRITE setIdleTime STORED false)
+  Q_PROPERTY(QDateTime loginTime READ loginTime WRITE setLoginTime STORED false)
   Q_PROPERTY(QString server READ server WRITE setServer STORED false)
   Q_PROPERTY(QString ircOperator READ ircOperator WRITE setIrcOperator STORED false)
   Q_PROPERTY(int lastAwayMessage READ lastAwayMessage WRITE setLastAwayMessage STORED false)
@@ -61,7 +62,8 @@ public:
   QString hostmask() const;
   bool isAway() const;
   QString awayMessage() const;
-  QDateTime idleTime() const;
+  QDateTime idleTime();
+  QDateTime loginTime() const;
   QString server() const;
   QString ircOperator() const;
   int lastAwayMessage() const;
@@ -90,6 +92,7 @@ public slots:
   void setAway(const bool &away);
   void setAwayMessage(const QString &awayMessage);
   void setIdleTime(const QDateTime &idleTime);
+  void setLoginTime(const QDateTime &loginTime);
   void setServer(const QString &server);
   void setIrcOperator(const QString &ircOperator);
   void setLastAwayMessage(const int &lastAwayMessage);
@@ -113,6 +116,7 @@ signals:
   void awaySet(bool away);
   void awayMessageSet(QString awayMessage);
   void idleTimeSet(QDateTime idleTime);
+  void loginTimeSet(QDateTime loginTime);
   void serverSet(QString server);
   void ircOperatorSet(QString ircOperator);
   void lastAwayMessageSet(int lastAwayMessage);
@@ -149,6 +153,8 @@ private:
   bool _away;
   QString _server;
   QDateTime _idleTime;
+  QDateTime _idleTimeSet;
+  QDateTime _loginTime;
   QString _ircOperator;
   int _lastAwayMessage;
   

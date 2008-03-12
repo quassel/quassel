@@ -37,7 +37,7 @@ IrcUser::IrcUser(const QString &hostmask, Network *network) : SyncableObject(net
     _awayMessage(),
     _away(false),
     _server(),
-    _idleTime(QDateTime::currentDateTime()),
+    // _idleTime(QDateTime::currentDateTime()),
     _ircOperator(),
     _lastAwayMessage(0),
     _network(network),
@@ -86,8 +86,14 @@ QString IrcUser::server() const {
   return _server;
 }
 
-QDateTime IrcUser::idleTime() const {
+QDateTime IrcUser::idleTime() {
+  if(QDateTime::currentDateTime().toTime_t() - _idleTimeSet.toTime_t() > 1200)
+    _idleTime = QDateTime();
   return _idleTime;
+}
+
+QDateTime IrcUser::loginTime() const {
+  return _loginTime;
 }
 
 QString IrcUser::ircOperator() const {
@@ -185,7 +191,15 @@ void IrcUser::setAwayMessage(const QString &awayMessage) {
 void IrcUser::setIdleTime(const QDateTime &idleTime) {
   if(idleTime.isValid() && _idleTime != idleTime) {
     _idleTime = idleTime;
+    _idleTimeSet = QDateTime::currentDateTime();
     emit idleTimeSet(idleTime);
+  }
+}
+
+void IrcUser::setLoginTime(const QDateTime &loginTime) {
+  if(loginTime.isValid() && _loginTime != loginTime) {
+    _loginTime = loginTime;
+    emit loginTimeSet(loginTime);
   }
 }
 
