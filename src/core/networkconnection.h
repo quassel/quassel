@@ -24,8 +24,14 @@
 #include <QAbstractSocket>
 #include <QString>
 #include <QStringList>
-#include <QTcpSocket>
 #include <QTimer>
+
+#ifndef QT_NO_OPENSSL
+# include <QSslSocket>
+# include <QSslError>
+#else
+# include <QTcpSocket>
+#endif
 
 #include "identity.h"
 #include "message.h"
@@ -120,17 +126,30 @@ signals:
   void channelJoined(NetworkId, const QString &channel, const QString &key = QString());
   void channelParted(NetworkId, const QString &channel);
 
+  void sslErrors(const QVariant &errorData);
+
 private slots:
   void socketHasData();
   void socketError(QAbstractSocket::SocketError);
   void socketConnected();
+  void socketInitialized();
   void socketDisconnected();
   void socketStateChanged(QAbstractSocket::SocketState);
   void setConnectionState(Network::ConnectionState);
   void networkInitialized(const QString &currentServer);
 
+#ifndef QT_NO_OPENSSL
+  void socketEncrypted();
+  void sslErrors(const QList<QSslError> &errors);
+#endif
+
 private:
+#ifndef QT_NO_OPENSSL
+  QSslSocket socket;
+#else
   QTcpSocket socket;
+#endif
+
   Network::ConnectionState _connectionState;
 
   Network *_network;

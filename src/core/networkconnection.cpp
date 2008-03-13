@@ -65,7 +65,12 @@ NetworkConnection::NetworkConnection(Network *network, CoreSession *session) : Q
   connect(network, SIGNAL(autoReconnectIntervalSet(quint32)), this, SLOT(autoReconnectSettingsChanged()));
   connect(network, SIGNAL(autoReconnectRetriesSet(quint16)), this, SLOT(autoReconnectSettingsChanged()));
 
+#ifndef QT_NO_OPENSSL
+  connect(&socket, SIGNAL(encrypted()), this, SLOT(socketEncrypted()));
+  connect(&socket, SIGNAL(sslErrors(const QList<QSslError> &)), this, SLOT(sslErrors(const QList<QSslError> &)));
+#endif
   connect(&socket, SIGNAL(connected()), this, SLOT(socketConnected()));
+
   connect(&socket, SIGNAL(disconnected()), this, SLOT(socketDisconnected()));
   connect(&socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(socketError(QAbstractSocket::SocketError)));
   connect(&socket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(socketStateChanged(QAbstractSocket::SocketState)));
@@ -73,6 +78,8 @@ NetworkConnection::NetworkConnection(Network *network, CoreSession *session) : Q
 
   connect(_ircServerHandler, SIGNAL(nickChanged(const QString &, const QString &)),
 	  this, SLOT(nickChanged(const QString &, const QString &)));
+
+  network->proxy()->attachSignal(this, SIGNAL(sslErrors(const QVariant &)));
 }
 
 NetworkConnection::~NetworkConnection() {
@@ -206,7 +213,7 @@ void NetworkConnection::connectToIrc(bool reconnecting) {
     }
   }
   _previousConnectionAttemptFailed = false;
-  
+
   QString host = serverList[_lastUsedServerlistIndex].toMap()["Host"].toString();
   quint16 port = serverList[_lastUsedServerlistIndex].toMap()["Port"].toUInt();
   displayStatusMsg(tr("Connecting to %1:%2...").arg(host).arg(port));
@@ -293,7 +300,46 @@ void NetworkConnection::socketError(QAbstractSocket::SocketError) {
   //exit(1);
 }
 
+#ifndef QT_NO_OPENSSL
+
+void NetworkConnection::sslErrors(const QList<QSslError> &errors) {
+  socket.ignoreSslErrors();
+  /* TODO errorhandling
+  QVariantMap errmsg;
+  QVariantList errnums;
+  foreach(QSslError err, errors) errnums << err.error();
+  errmsg["SslErrors"] = errnums;
+  errmsg["SslCert"] = socket.peerCertificate().toPem();
+  errmsg["PeerAddress"] = socket.peerAddress().toString();
+  errmsg["PeerPort"] = socket.peerPort();
+  errmsg["PeerName"] = socket.peerName();
+  emit sslErrors(errmsg);
+  disconnectFromIrc();
+  */
+}
+
+void NetworkConnection::socketEncrypted() {
+  //qDebug() << "encrypted!";
+  socketInitialized();
+}
+
+#endif  // QT_NO_OPENSSL
+
 void NetworkConnection::socketConnected() {
+#ifdef QT_NO_OPENSSL
+  socketInitialized();
+  return;
+#else
+  if(!network()->serverList()[_lastUsedServerlistIndex].toMap()["UseSSL"].toBool()) {
+    socketInitialized();
+    return;
+  }
+  //qDebug() << "starting handshake";
+  socket.startClientEncryption();
+#endif
+}
+
+void NetworkConnection::socketInitialized() {
   //emit connected(networkId());  initialize first!
   Identity *identity = coreSession()->identity(network()->identity());
   if(!identity) {

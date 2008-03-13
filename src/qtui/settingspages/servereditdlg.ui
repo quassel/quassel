@@ -6,7 +6,7 @@
     <x>0</x>
     <y>0</y>
     <width>264</width>
-    <height>159</height>
+    <height>167</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -71,13 +71,14 @@
    <item>
     <widget class="QCheckBox" name="useSSL" >
      <property name="enabled" >
-      <bool>false</bool>
+      <bool>true</bool>
      </property>
      <property name="text" >
       <string>Use SSL</string>
      </property>
      <property name="icon" >
-      <iconset resource="../../icons/icons.qrc" >:/16x16/actions/oxygen/16x16/actions/document-encrypt.png</iconset>
+      <iconset resource="../../icons/icons.qrc" >
+       <normaloff>:/16x16/actions/oxygen/16x16/actions/document-encrypt.png</normaloff>:/16x16/actions/oxygen/16x16/actions/document-encrypt.png</iconset>
      </property>
     </widget>
    </item>
@@ -86,7 +87,7 @@
      <property name="orientation" >
       <enum>Qt::Vertical</enum>
      </property>
-     <property name="sizeHint" >
+     <property name="sizeHint" stdset="0" >
       <size>
        <width>20</width>
        <height>40</height>
@@ -100,7 +101,7 @@
       <enum>Qt::Horizontal</enum>
      </property>
      <property name="standardButtons" >
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::NoButton|QDialogButtonBox::Ok</set>
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
      </property>
     </widget>
    </item>
