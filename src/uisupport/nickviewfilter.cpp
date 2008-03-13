@@ -67,6 +67,10 @@ QVariant NickViewFilter::foreground(const QModelIndex &index) const {
 
 
 bool NickViewFilter::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const {
+  // root node, networkindexes, the bufferindex of the buffer this filter is active for and it's childs are accepted
+  if(!source_parent.isValid())
+    return true;
+
   QModelIndex source_child = source_parent.child(source_row, 0);
   return (sourceModel()->data(source_child, NetworkModel::BufferIdRole).value<BufferId>() == _bufferId);
 }
