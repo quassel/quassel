@@ -25,6 +25,7 @@
 #include "nickview.h"
 #include "nickviewfilter.h"
 #include "networkmodel.h"
+#include "buffermodel.h"
 #include "types.h"
 #include "client.h"
 
@@ -149,8 +150,25 @@ void NickView::showContextMenu(const QPoint & pos ) {
 
 void NickView::startQuery(const QModelIndex & index) {
   QString nick = nickFromModelIndex(index);
-  BufferInfo bufferInfo = bufferInfoFromModelIndex(index);
-  executeCommand(bufferInfo, QString("/QUERY %1").arg(nick));
+  bool activated = false;
+
+  if(QSortFilterProxyModel *nickviewFilter = qobject_cast<QSortFilterProxyModel *>(model())) {
+    // rootIndex() is the channel, parent() is the corresponding network
+    QModelIndex networkIndex = rootIndex().parent(); 
+    QModelIndex source_networkIndex = nickviewFilter->mapToSource(networkIndex);
+    for(int i = 0; i < Client::networkModel()->rowCount(source_networkIndex); i++) {
+      QModelIndex childIndex = source_networkIndex.child( i, 0);
+      if(nick.toLower() == childIndex.data().toString().toLower()) {
+        QModelIndex queryIndex = Client::bufferModel()->mapFromSource(childIndex);
+        Client::bufferModel()->setCurrentIndex(queryIndex);
+        activated = true;
+      }
+    }
+  }
+  if(!activated) {
+    BufferInfo bufferInfo = bufferInfoFromModelIndex(index);
+    executeCommand(bufferInfo, QString("/QUERY %1").arg(nick));
+  }
 }
 
 void NickView::executeCommand(const BufferInfo & bufferInfo, const QString & command) {

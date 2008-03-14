@@ -586,7 +586,7 @@ QVariant IrcUserItem::data(int column, int role) const {
 QString IrcUserItem::toolTip(int column) const {
   Q_UNUSED(column);
   QStringList toolTip(QString("<b>%1</b>").arg(nickName()));
-  if(_ircUser->userModes() != "") toolTip[0].append(QString("(%1)").arg(_ircUser->userModes()));
+  if(_ircUser->userModes() != "") toolTip[0].append(QString(" (%1)").arg(_ircUser->userModes()));
   if(_ircUser->isAway()) toolTip[0].append(" is away");
   if(!_ircUser->awayMessage().isEmpty()) toolTip[0].append(QString(" (%1)").arg(_ircUser->awayMessage()));
   if(!_ircUser->realName().isEmpty()) toolTip.append(_ircUser->realName());
