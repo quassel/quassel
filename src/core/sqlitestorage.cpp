@@ -612,11 +612,16 @@ MsgId SqliteStorage::logMessage(Message msg) {
   return msgId;
 }
 
-QList<Message> SqliteStorage::requestMsgs(BufferInfo buffer, int lastmsgs, int offset) {
+QList<Message> SqliteStorage::requestMsgs(UserId user, BufferId bufferId, int lastmsgs, int offset) {
   QList<Message> messagelist;
+
+  BufferInfo bufferInfo = getBufferInfo(user, bufferId);
+  if(!bufferInfo.isValid())
+    return messagelist;
+
   // we have to determine the real offset first
   QSqlQuery *offsetQuery = cachedQuery("select_messagesOffset");
-  offsetQuery->bindValue(":bufferid", buffer.bufferId().toInt());
+  offsetQuery->bindValue(":bufferid", bufferId.toInt());
   offsetQuery->bindValue(":messageid", offset);
   offsetQuery->exec();
   offsetQuery->first();
@@ -624,7 +629,7 @@ QList<Message> SqliteStorage::requestMsgs(BufferInfo buffer, int lastmsgs, int o
 
   // now let's select the messages
   QSqlQuery *msgQuery = cachedQuery("select_messages");
-  msgQuery->bindValue(":bufferid", buffer.bufferId().toInt());
+  msgQuery->bindValue(":bufferid", bufferId.toInt());
   msgQuery->bindValue(":limit", lastmsgs);
   msgQuery->bindValue(":offset", offset);
   msgQuery->exec();
@@ -633,7 +638,7 @@ QList<Message> SqliteStorage::requestMsgs(BufferInfo buffer, int lastmsgs, int o
   
   while(msgQuery->next()) {
     Message msg(QDateTime::fromTime_t(msgQuery->value(1).toInt()),
-                buffer,
+                bufferInfo,
                 (Message::Type)msgQuery->value(2).toUInt(),
                 msgQuery->value(5).toString(),
                 msgQuery->value(4).toString(),
@@ -645,11 +650,16 @@ QList<Message> SqliteStorage::requestMsgs(BufferInfo buffer, int lastmsgs, int o
 }
 
 
-QList<Message> SqliteStorage::requestMsgs(BufferInfo buffer, QDateTime since, int offset) {
+QList<Message> SqliteStorage::requestMsgs(UserId user, BufferId bufferId, QDateTime since, int offset) {
   QList<Message> messagelist;
+
+  BufferInfo bufferInfo = getBufferInfo(user, bufferId);
+  if(!bufferInfo.isValid())
+    return messagelist;
+
   // we have to determine the real offset first
   QSqlQuery *offsetQuery = cachedQuery("select_messagesSinceOffset");
-  offsetQuery->bindValue(":bufferid", buffer.bufferId().toInt());
+  offsetQuery->bindValue(":bufferid", bufferId.toInt());
   offsetQuery->bindValue(":since", since.toTime_t());
   offsetQuery->exec();
   offsetQuery->first();
@@ -657,7 +667,7 @@ QList<Message> SqliteStorage::requestMsgs(BufferInfo buffer, QDateTime since, in
 
   // now let's select the messages
   QSqlQuery *msgQuery = cachedQuery("select_messagesSince");
-  msgQuery->bindValue(":bufferid", buffer.bufferId().toInt());
+  msgQuery->bindValue(":bufferid", bufferId.toInt());
   msgQuery->bindValue(":since", since.toTime_t());
   msgQuery->bindValue(":offset", offset);
   msgQuery->exec();
@@ -666,7 +676,7 @@ QList<Message> SqliteStorage::requestMsgs(BufferInfo buffer, QDateTime since, in
   
   while(msgQuery->next()) {
     Message msg(QDateTime::fromTime_t(msgQuery->value(1).toInt()),
-                buffer,
+                bufferInfo,
                 (Message::Type)msgQuery->value(2).toUInt(),
                 msgQuery->value(5).toString(),
                 msgQuery->value(4).toString(),
@@ -679,10 +689,15 @@ QList<Message> SqliteStorage::requestMsgs(BufferInfo buffer, QDateTime since, in
 }
 
 
-QList<Message> SqliteStorage::requestMsgRange(BufferInfo buffer, int first, int last) {
+QList<Message> SqliteStorage::requestMsgRange(UserId user, BufferId bufferId, int first, int last) {
   QList<Message> messagelist;
+
+  BufferInfo bufferInfo = getBufferInfo(user, bufferId);
+  if(!bufferInfo.isValid())
+    return messagelist;
+
   QSqlQuery *rangeQuery = cachedQuery("select_messageRange");
-  rangeQuery->bindValue(":bufferid", buffer.bufferId().toInt());
+  rangeQuery->bindValue(":bufferid", bufferId.toInt());
   rangeQuery->bindValue(":firstmsg", first);
   rangeQuery->bindValue(":lastmsg", last);
   rangeQuery->exec();
@@ -691,7 +706,7 @@ QList<Message> SqliteStorage::requestMsgRange(BufferInfo buffer, int first, int 
   
   while(rangeQuery->next()) {
     Message msg(QDateTime::fromTime_t(rangeQuery->value(1).toInt()),
-                buffer,
+                bufferInfo,
                 (Message::Type)rangeQuery->value(2).toUInt(),
                 rangeQuery->value(5).toString(),
                 rangeQuery->value(4).toString(),

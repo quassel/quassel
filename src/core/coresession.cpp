@@ -26,6 +26,7 @@
 
 #include "signalproxy.h"
 #include "buffersyncer.h"
+#include "corebacklogmanager.h"
 #include "storage.h"
 
 #include "network.h"
@@ -36,10 +37,12 @@
 #include "util.h"
 #include "coreusersettings.h"
 
-CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent) : QObject(parent),
+CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
+  : QObject(parent),
     _user(uid),
     _signalProxy(new SignalProxy(SignalProxy::Server, 0, this)),
     _bufferSyncer(new BufferSyncer(this)),
+    _backlogManager(new CoreBacklogManager(this)),
     scriptEngine(new QScriptEngine(this))
 {
 
@@ -47,10 +50,8 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent) : QObje
 
   //p->attachSlot(SIGNAL(disconnectFromNetwork(NetworkId)), this, SLOT(disconnectFromNetwork(NetworkId))); // FIXME
   p->attachSlot(SIGNAL(sendInput(BufferInfo, QString)), this, SLOT(msgFromClient(BufferInfo, QString)));
-  p->attachSlot(SIGNAL(requestBacklog(BufferInfo, QVariant, QVariant)), this, SLOT(sendBacklog(BufferInfo, QVariant, QVariant)));
   p->attachSignal(this, SIGNAL(displayMsg(Message)));
   p->attachSignal(this, SIGNAL(displayStatusMsg(QString, QString)));
-  p->attachSignal(this, SIGNAL(backlogData(BufferInfo, QVariantList, bool)));
   p->attachSignal(this, SIGNAL(bufferInfoUpdated(BufferInfo)));
 
   p->attachSignal(this, SIGNAL(identityCreated(const Identity &)));
@@ -79,6 +80,10 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent) : QObje
   connect(this, SIGNAL(bufferRenamed(BufferId, QString)), _bufferSyncer, SLOT(renameBuffer(BufferId, QString)));
   p->synchronize(_bufferSyncer);
 
+
+  // init BacklogManager;
+  p->synchronize(_backlogManager);
+    
   // Restore session state
   if(restoreState) restoreSessionState();
 
@@ -311,28 +316,6 @@ QVariant CoreSession::sessionState() {
 void CoreSession::storeBufferLastSeenMsg(BufferId buffer, const MsgId &msgId) {
   Core::setBufferLastSeenMsg(user(), buffer, msgId);
 }
-
-void CoreSession::sendBacklog(BufferInfo id, QVariant v1, QVariant v2) {
-  QList<QVariant> log;
-  QList<Message> msglist;
-  if(v1.type() == QVariant::DateTime) {
-
-
-  } else {
-    msglist = Core::requestMsgs(id, v1.toInt(), v2.toInt());
-  }
-
-  // Send messages out in smaller packages - we don't want to make the signal data too large!
-  for(int i = 0; i < msglist.count(); i++) {
-    log.append(qVariantFromValue(msglist[i]));
-    if(log.count() >= 5) {
-      emit backlogData(id, log, i >= msglist.count() - 1);
-      log.clear();
-    }
-  }
-  if(log.count() > 0) emit backlogData(id, log, true);
-}
-
 
 void CoreSession::initScriptEngine() {
   signalProxy()->attachSlot(SIGNAL(scriptRequest(QString)), this, SLOT(scriptRequest(QString)));

@@ -40,6 +40,7 @@ class AbstractUiMsg;
 class NetworkModel;
 class BufferModel;
 class BufferSyncer;
+class ClientBacklogManager;
 class IrcUser;
 class IrcChannel;
 class SignalProxy;
@@ -93,6 +94,8 @@ public:
   static inline NetworkModel *networkModel() { return instance()->_networkModel; }
   static inline BufferModel *bufferModel() { return instance()->_bufferModel; }
   static inline SignalProxy *signalProxy() { return instance()->_signalProxy; }
+
+  static inline ClientBacklogManager *backlogManager() { return instance()->_backlogManager; }
 
   static AccountId currentCoreAccount();
 
@@ -168,7 +171,7 @@ private slots:
 
   void recvMessage(const Message &message);
   void recvStatusMsg(QString network, QString message);
-  void recvBacklogData(BufferInfo, QVariantList, bool);
+  void receiveBacklog(BufferId bufferId, const QVariantList &msgs);
   void updateBufferInfo(BufferInfo);
   void updateLastSeenMsg(BufferId id, const MsgId &msgId);
 
@@ -204,6 +207,7 @@ private:
   NetworkModel * _networkModel;
   BufferModel * _bufferModel;
   BufferSyncer * _bufferSyncer;
+  ClientBacklogManager *_backlogManager;
 
   ClientMode clientMode;
 

@@ -92,19 +92,23 @@ public:
   static QString methodBaseName(const QMetaMethod &method);
 
   const QList<int> &argTypes(QObject *obj, int methodId);
+  const int &returnType(QObject *obj, int methodId);
   const int &minArgCount(QObject *obj, int methodId);
   const QByteArray &methodName(QObject *obj, int methodId);
   const QHash<QByteArray, int> &syncMap(SyncableObject *obj);
+  const QHash<int, int> &receiveMap(SyncableObject *obj);
   int updatedRemotelyId(SyncableObject *obj);
 
   typedef QHash<int, QList<int> > ArgHash;
   typedef QHash<int, QByteArray> MethodNameHash;
   struct ClassInfo {
     ArgHash argTypes;
+    QHash<int, int> returnType;
     QHash<int, int> minArgCount;
     MethodNameHash methodNames;
     int updatedRemotelyId; // id of the updatedRemotely() signal - makes things faster
     QHash<QByteArray, int> syncMap;
+    QHash<int, int> receiveMap;
   };
 
   void dumpProxyStats();
@@ -127,12 +131,15 @@ private:
   void initServer();
   void initClient();
   
+  const QMetaObject *metaObject(QObject *obj);
   void createClassInfo(QObject *obj);
   void setArgTypes(QObject *obj, int methodId);
+  void setReturnType(QObject *obj, int methodId);
   void setMinArgCount(QObject *obj, int methodId);
   void setMethodName(QObject *obj, int methodId);
   void setSyncMap(SyncableObject *obj);
-  void setUpdatedRemotelyId(QObject *obj);
+  void setReceiveMap(SyncableObject *obj);
+  void setUpdatedRemotelyId(SyncableObject *obj);
 
   bool methodsMatch(const QMetaMethod &signal, const QMetaMethod &slot) const;
 
@@ -140,11 +147,12 @@ private:
   void dispatchSignal(const RequestType &requestType, const QVariantList &params);
   
   void receivePeerSignal(QIODevice *sender, const QVariant &packedFunc);
-  void handleSync(QVariantList params);
+  void handleSync(QIODevice *sender, QVariantList params);
   void handleInitRequest(QIODevice *sender, const QVariantList &params);
   void handleInitData(QIODevice *sender, const QVariantList &params);
   void handleSignal(const QByteArray &funcName, const QVariantList &params);
 
+  bool invokeSlot(QObject *receiver, int methodId, const QVariantList &params, QVariant &returnValue);
   bool invokeSlot(QObject *receiver, int methodId, const QVariantList &params = QVariantList());
 
   QVariantMap initData(SyncableObject *obj) const;

@@ -268,7 +268,7 @@ class Storage : public QObject {
      *  \param offset   Do not return (but DO count) messages with MsgId >= offset, if offset >= 0
      *  \return The requested list of messages
      */
-    virtual QList<Message> requestMsgs(BufferInfo buffer, int lastmsgs = -1, int offset = -1) = 0;
+    virtual QList<Message> requestMsgs(UserId user, BufferId buffer, int lastmsgs = -1, int offset = -1) = 0;
 
     //! Request messages stored in a given buffer since a certain point in time.
     /** \param buffer   The buffer we request messages from
@@ -276,7 +276,7 @@ class Storage : public QObject {
      *  \param offset   Do not return messages with MsgId >= offset, if offset >= 0
      *  \return The requested list of messages
      */
-    virtual QList<Message> requestMsgs(BufferInfo buffer, QDateTime since, int offset = -1) = 0;
+    virtual QList<Message> requestMsgs(UserId user, BufferId buffer, QDateTime since, int offset = -1) = 0;
 
     //! Request a range of messages stored in a given buffer.
     /** \param buffer   The buffer we request messages from
@@ -284,7 +284,7 @@ class Storage : public QObject {
      *  \param last     Return messages with first <= MsgId <= last
      *  \return The requested list of messages
      */
-    virtual QList<Message> requestMsgRange(BufferInfo buffer, int first, int last) = 0;
+    virtual QList<Message> requestMsgRange(UserId user, BufferId buffer, int first, int last) = 0;
 
   signals:
     //! Sent when a new BufferInfo is created, or an existing one changed somehow.

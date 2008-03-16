@@ -53,6 +53,8 @@ public:
 
   virtual bool isInitialized() const;
 
+  virtual const QMetaObject *syncMetaObject() const { return metaObject(); };
+
 public slots:
   virtual void setInitialized();
 

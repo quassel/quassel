@@ -275,19 +275,19 @@ MsgId Core::storeMessage(const Message &message) {
   return instance()->storage->logMessage(message);
 }
 
-QList<Message> Core::requestMsgs(BufferInfo buffer, int lastmsgs, int offset) {
+QList<Message> Core::requestMsgs(UserId user, BufferId buffer, int lastmsgs, int offset) {
   QMutexLocker locker(&mutex);
-  return instance()->storage->requestMsgs(buffer, lastmsgs, offset);
+  return instance()->storage->requestMsgs(user, buffer, lastmsgs, offset);
 }
 
-QList<Message> Core::requestMsgs(BufferInfo buffer, QDateTime since, int offset) {
+QList<Message> Core::requestMsgs(UserId user, BufferId buffer, QDateTime since, int offset) {
   QMutexLocker locker(&mutex);
-  return instance()->storage->requestMsgs(buffer, since, offset);
+  return instance()->storage->requestMsgs(user, buffer, since, offset);
 }
 
-QList<Message> Core::requestMsgRange(BufferInfo buffer, int first, int last) {
+QList<Message> Core::requestMsgRange(UserId user, BufferId buffer, int first, int last) {
   QMutexLocker locker(&mutex);
-  return instance()->storage->requestMsgRange(buffer, first, last);
+  return instance()->storage->requestMsgRange(user, buffer, first, last);
 }
 
 QList<BufferInfo> Core::requestBuffers(UserId user, QDateTime since) {

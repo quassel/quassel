@@ -27,6 +27,7 @@
 #include "message.h"
 
 class BufferSyncer;
+class CoreBacklogManager;
 class Identity;
 class NetworkConnection;
 class Network;
@@ -66,7 +67,6 @@ public slots:
   void connectToNetwork(NetworkId);
   void disconnectFromNetwork(NetworkId id);
 
-  void sendBacklog(BufferInfo, QVariant, QVariant);
   void msgFromClient(BufferInfo, QString message);
 
   //! Create an identity and propagate the changes to the clients.
@@ -127,8 +127,6 @@ signals:
   //void connectToIrc(QString net);
   //void disconnectFromIrc(QString net);
 
-  void backlogData(BufferInfo, QVariantList, bool done);
-
   void bufferInfoUpdated(BufferInfo);
 
   void scriptResult(QString result);
@@ -182,6 +180,7 @@ private:
   QHash<IdentityId, Identity *> _identities;
 
   BufferSyncer *_bufferSyncer;
+  CoreBacklogManager *_backlogManager;
 
   QScriptEngine *scriptEngine;
 

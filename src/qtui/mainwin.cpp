@@ -25,6 +25,7 @@
 #include "chatline.h"
 #include "chatline-old.h"
 #include "client.h"
+#include "clientbacklogmanager.h"
 #include "coreconnectdlg.h"
 #include "networkmodel.h"
 #include "buffermodel.h"
@@ -318,7 +319,8 @@ void MainWin::changeTopic(const QString &topic) {
 
 void MainWin::connectedToCore() {
   foreach(BufferInfo id, Client::allBufferInfos()) {
-    emit requestBacklog(id, 1000, -1);
+    // emit requestBacklog(id, 1000, -1);
+    Client::backlogManager()->requestBacklog(id.bufferId(), 1000, -1);
   }
 
   ui.menuViews->setEnabled(true);

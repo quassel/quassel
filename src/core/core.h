@@ -179,7 +179,7 @@ class Core : public QObject {
      *  \param offset   Do not return (but DO count) messages with MsgId >= offset, if offset >= 0
      *  \return The requested list of messages
      */
-    static QList<Message> requestMsgs(BufferInfo buffer, int lastmsgs = -1, int offset = -1);
+    static QList<Message> requestMsgs(UserId user, BufferId buffer, int lastmsgs = -1, int offset = -1);
 
     //! Request messages stored in a given buffer since a certain point in time.
     /** \note This method is threadsafe.
@@ -189,7 +189,7 @@ class Core : public QObject {
      *  \param offset   Do not return messages with MsgId >= offset, if offset >= 0
      *  \return The requested list of messages
      */
-    static QList<Message> requestMsgs(BufferInfo buffer, QDateTime since, int offset = -1);
+    static QList<Message> requestMsgs(UserId user, BufferId buffer, QDateTime since, int offset = -1);
 
     //! Request a range of messages stored in a given buffer.
     /** \note This method is threadsafe.
@@ -199,7 +199,7 @@ class Core : public QObject {
      *  \param last     Return messages with first <= MsgId <= last
      *  \return The requested list of messages
      */
-    static QList<Message> requestMsgRange(BufferInfo buffer, int first, int last);
+    static QList<Message> requestMsgRange(UserId user, BufferId buffer, int first, int last);
 
     //! Request a list of all buffers known to a user since a certain point in time.
     /** This method is used to get a list of all buffers we have stored a backlog from.

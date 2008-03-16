@@ -22,6 +22,7 @@
 
 #include "bufferinfo.h"
 #include "buffersyncer.h"
+#include "clientbacklogmanager.h"
 #include "global.h"
 #include "identity.h"
 #include "ircchannel.h"
@@ -64,10 +65,13 @@ Client::Client(QObject *parent)
     _networkModel(0),
     _bufferModel(0),
     _bufferSyncer(0),
+    _backlogManager(new ClientBacklogManager(this)),
     _connectedToCore(false),
     _syncedToCore(false)
 {
   _monitorBuffer = new Buffer(BufferInfo(), this);
+  connect(_backlogManager, SIGNAL(backlog(BufferId, const QVariantList &)),
+	  this, SLOT(receiveBacklog(BufferId, const QVariantList &)));
 }
 
 Client::~Client() {
@@ -89,7 +93,6 @@ void Client::init() {
   p->attachSlot(SIGNAL(displayMsg(const Message &)), this, SLOT(recvMessage(const Message &)));
   p->attachSlot(SIGNAL(displayStatusMsg(QString, QString)), this, SLOT(recvStatusMsg(QString, QString)));
 
-  p->attachSlot(SIGNAL(backlogData(BufferInfo, const QVariantList &, bool)), this, SLOT(recvBacklogData(BufferInfo, const QVariantList &, bool)));
   p->attachSlot(SIGNAL(bufferInfoUpdated(BufferInfo)), this, SLOT(updateBufferInfo(BufferInfo)));
   p->attachSignal(this, SIGNAL(sendInput(BufferInfo, QString)));
   p->attachSignal(this, SIGNAL(requestNetworkStates()));
@@ -302,6 +305,9 @@ void Client::setSyncedToCore() {
   connect(bufferSyncer(), SIGNAL(bufferRenamed(BufferId, QString)), this, SLOT(bufferRenamed(BufferId, QString)));
   signalProxy()->synchronize(bufferSyncer());
 
+  // attach backlog manager
+  signalProxy()->synchronize(backlogManager());
+  
   _syncedToCore = true;
   emit connected();
   emit coreConnectionStateChanged(true);
@@ -475,31 +481,46 @@ void Client::recvStatusMsg(QString /*net*/, QString /*msg*/) {
   //recvMessage(net, Message::server("", QString("[STATUS] %1").arg(msg)));
 }
 
-void Client::recvBacklogData(BufferInfo id, QVariantList msgs, bool /*done*/) {
-  Buffer *b = buffer(id);
-  if(!b) {
-    qWarning() << "Client::recvBacklogData(): received Backlog for unknown Buffer:" << id;
+void Client::receiveBacklog(BufferId bufferId, const QVariantList &msgs) {
+  Buffer *buffer_ = buffer(bufferId);
+  if(!buffer_) {
+    qWarning() << "Client::recvBacklogData(): received Backlog for unknown Buffer:" << bufferId;
     return;
   }
-    
-  foreach(QVariant v, msgs) {
-    Message msg = v.value<Message>();
-    checkForHighlight(msg);
-    b->prependMsg(msg);
-    //networkModel()->updateBufferActivity(msg);
-    if(!layoutQueue.contains(b)) layoutQueue.append(b);
+
+  if(msgs.isEmpty())
+    return; // no work to be done...
+  
+  QVariantList::const_iterator msgIter = msgs.constBegin();
+  QVariantList::const_iterator msgIterEnd = msgs.constEnd();
+  Message msg;
+  while(msgIter != msgIterEnd) {
+    msg = (*msgIter).value<Message>();
+    buffer_->prependMsg(msg);
+    msgIter++;
   }
-  if(layoutQueue.count() && !layoutTimer->isActive()) layoutTimer->start();
+
+  if(!layoutQueue.contains(buffer_))
+    layoutQueue.append(buffer_);
+
+  if(!layoutTimer->isActive()) {
+    layoutTimer->start();
+  }
 }
 
 void Client::layoutMsg() {
-  if(layoutQueue.count()) {
-    Buffer *b = layoutQueue.takeFirst();  // TODO make this the current buffer
-    if(b->layoutMsg())
-      layoutQueue.append(b);  // Buffer has more messages in its queue --> Round Robin
+  if(layoutQueue.isEmpty()) {
+    layoutTimer->stop();
+    return;
   }
   
-  if(!layoutQueue.count())
+  Buffer *buffer = layoutQueue.takeFirst();
+  if(buffer->layoutMsg()) {
+    layoutQueue.append(buffer);  // Buffer has more messages in its queue --> Round Robin
+    return;
+  } 
+
+  if(layoutQueue.isEmpty())
     layoutTimer->stop();
 }
 

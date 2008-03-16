@@ -76,9 +76,9 @@ public slots:
   /* Message handling */
   
   virtual MsgId logMessage(Message msg);
-  virtual QList<Message> requestMsgs(BufferInfo buffer, int lastmsgs = -1, int offset = -1);
-  virtual QList<Message> requestMsgs(BufferInfo buffer, QDateTime since, int offset = -1);
-  virtual QList<Message> requestMsgRange(BufferInfo buffer, int first, int last);
+  virtual QList<Message> requestMsgs(UserId user, BufferId bufferId, int lastmsgs = -1, int offset = -1);
+  virtual QList<Message> requestMsgs(UserId user, BufferId bufferId, QDateTime since, int offset = -1);
+  virtual QList<Message> requestMsgRange(UserId user, BufferId bufferId, int first, int last);
 
 protected:
   inline virtual QString driverName() { return "QSQLITE"; }
