@@ -50,6 +50,8 @@ private slots:
   void setIdentity(const IdentityId &identityId);
   void updateNickSelector() const;
 
+  BufferInfo currentBufferInfo() const;
+
 signals:
   void userInput(BufferInfo, QString msg) const;
 
@@ -57,7 +59,6 @@ private:
   Ui::InputWidget ui;
 
   bool validBuffer;
-  BufferInfo currentBufferInfo;
   
   NetworkId _networkId;
   IdentityId _identityId;

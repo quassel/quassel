@@ -160,7 +160,7 @@ void BufferItem::setBufferName(const QString &name) {
   _bufferName = name;
   // as long as we need those bufferInfos, we have to update that one aswell.
   // pretty ugly though :/
-  _bufferInfo = BufferInfo(_bufferInfo.bufferId(), _bufferInfo.networkId(), _bufferInfo.type(), _bufferInfo.groupId(), _bufferInfo.bufferName());
+  _bufferInfo = BufferInfo(_bufferInfo.bufferId(), _bufferInfo.networkId(), _bufferInfo.type(), _bufferInfo.groupId(), name);
   emit dataChanged(0);
 }
 

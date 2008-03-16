@@ -44,19 +44,9 @@ InputWidget::~InputWidget() {
 }
 
 void InputWidget::currentChanged(const QModelIndex &current, const QModelIndex &previous) {
-  Q_UNUSED(previous);
-
-  validBuffer = current.isValid();
-
-  if(!validBuffer)
-    return;
-  
-  QVariant variant;
-  variant = current.data(NetworkModel::BufferInfoRole);
-  if(!variant.isValid())
+  if(current.data(NetworkModel::BufferInfoRole) == previous.data(NetworkModel::BufferInfoRole))
     return;
 
-  currentBufferInfo  = current.data(NetworkModel::BufferInfoRole).value<BufferInfo>();
   setNetwork(Client::networkModel()->networkByIndex(current));
   updateNickSelector();
   ui.inputEdit->setEnabled(current.data(NetworkModel::ItemActiveRole).value<bool>());
@@ -77,6 +67,10 @@ const Network *InputWidget::currentNetwork() const {
 
   return Client::network(_networkId);
 }
+
+BufferInfo InputWidget::currentBufferInfo() const {
+  return selectionModel()->currentIndex().data(NetworkModel::BufferInfoRole).value<BufferInfo>();
+};
 
 void InputWidget::setNetwork(const Network *network) {
   if(!network || _networkId == network->networkId())
@@ -150,11 +144,11 @@ void InputWidget::changeNick(const QString &newNick) const {
   const Network *net = currentNetwork();
   if(!net || net->isMyNick(newNick))
     return;
-  emit userInput(currentBufferInfo, QString("/nick %1").arg(newNick));
+  emit userInput(currentBufferInfo(), QString("/nick %1").arg(newNick));
 }
 
 void InputWidget::sendText(QString text) {
-  emit userInput(currentBufferInfo, text);
+  emit userInput(currentBufferInfo(), text);
 }
 
 
