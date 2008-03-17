@@ -57,8 +57,6 @@ signals:
 
 private:
   Ui::InputWidget ui;
-
-  bool validBuffer;
   
   NetworkId _networkId;
   IdentityId _identityId;

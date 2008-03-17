@@ -28,7 +28,7 @@
 
 InputWidget::InputWidget(QWidget *parent)
   : AbstractItemView(parent),
-    validBuffer(false)
+    _networkId(0)
 {
   ui.setupUi(this);
   connect(ui.inputEdit, SIGNAL(sendText(QString)), this, SLOT(sendText(QString)));
@@ -62,9 +62,6 @@ void InputWidget::dataChanged(const QModelIndex &topLeft, const QModelIndex &bot
 
 
 const Network *InputWidget::currentNetwork() const {
-  if(!validBuffer)
-    return 0;
-
   return Client::network(_networkId);
 }
 
