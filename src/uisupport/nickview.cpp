@@ -29,10 +29,15 @@
 #include "types.h"
 #include "client.h"
 
+struct LazySizeHint {
+  LazySizeHint() : size(QSize()), needsUpdate(true) {};
+  QSize size;
+  bool needsUpdate;
+};
 
 NickView::NickView(QWidget *parent)
   : QTreeView(parent),
-    _sizeHint(QTreeView::sizeHint())
+    _sizeHint(new LazySizeHint())
 {
   setIndentation(10);
   setAnimated(true);
@@ -49,6 +54,8 @@ NickView::NickView(QWidget *parent)
 }
 
 NickView::~NickView() {
+  delete _sizeHint;
+  _sizeHint = 0;
 }
 
 void NickView::init() {
@@ -59,7 +66,7 @@ void NickView::init() {
     setColumnHidden(i, true);
 
   expandAll();
-  updateSizeHint();
+  _sizeHint->needsUpdate = true;
 }
 
 void NickView::setModel(QAbstractItemModel *model) {
@@ -71,17 +78,17 @@ void NickView::rowsInserted(const QModelIndex &parent, int start, int end) {
   QTreeView::rowsInserted(parent, start, end);
   if(model()->data(parent, NetworkModel::ItemTypeRole) == NetworkModel::UserCategoryItemType && !isExpanded(parent))
     expand(parent);
-  updateSizeHint();
+  _sizeHint->needsUpdate = true;
 }
 
 void NickView::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end) {
   QTreeView::rowsAboutToBeRemoved(parent, start, end);
-  updateSizeHint();
+  _sizeHint->needsUpdate = true;
 }
 
 void NickView::dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight) {
   QTreeView::dataChanged(topLeft, bottomRight);
-  updateSizeHint();
+  _sizeHint->needsUpdate = true;
 }
 
 QString NickView::nickFromModelIndex(const QModelIndex & index) {
@@ -175,19 +182,16 @@ void NickView::executeCommand(const BufferInfo & bufferInfo, const QString & com
   Client::instance()->userInput(bufferInfo, command);
 }
 
-void NickView::updateSizeHint() {
-  if(!model())
-    return;
-
-  int columnSize = 0;
-  for(int i = 0; i < model()->columnCount(); i++) {
-    if(!isColumnHidden(i))
-      columnSize += sizeHintForColumn(i);
-  }
-
-  _sizeHint = QSize(columnSize, 50);
-}
-
 QSize NickView::sizeHint() const {
-  return _sizeHint;
+  Q_CHECK_PTR(_sizeHint);
+  if(_sizeHint->needsUpdate && model()) {;
+    int columnSize = 0;
+    for(int i = 0; i < model()->columnCount(); i++) {
+      if(!isColumnHidden(i))
+	columnSize += sizeHintForColumn(i);
+    }
+    _sizeHint->size = QSize(columnSize, 50);
+    _sizeHint->needsUpdate = false;
+  }
+  return _sizeHint->size;
 }

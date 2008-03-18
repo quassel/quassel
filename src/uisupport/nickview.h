@@ -29,6 +29,7 @@
 
 
 class NickModel;
+class LazySizeHint;
 class FilteredNickModel;
 class QSortFilterProxyModel;
 
@@ -52,9 +53,8 @@ public slots:
   void startQuery(const QModelIndex & modelIndex);
   
 private:
-  QSize _sizeHint;
-  
-  void updateSizeHint();
+  LazySizeHint *_sizeHint;
+
   BufferInfo bufferInfoFromModelIndex(const QModelIndex & index);
   QString nickFromModelIndex(const QModelIndex & index);
   void executeCommand(const BufferInfo & bufferInfo, const QString & command);
