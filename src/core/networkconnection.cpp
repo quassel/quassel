@@ -347,6 +347,10 @@ void NetworkConnection::socketInitialized() {
     disconnectFromIrc();
     return;
   }
+  QString passwd = network()->serverList()[_lastUsedServerlistIndex].toMap()["Password"].toString();
+  if(!passwd.isEmpty()) {
+    putRawLine(serverEncode(QString("PASS %1").arg(passwd)));
+  }
   putRawLine(serverEncode(QString("NICK :%1").arg(identity->nicks()[0])));  // FIXME: try more nicks if error occurs
   putRawLine(serverEncode(QString("USER %1 8 * :%2").arg(identity->ident(), identity->realName())));
 }
