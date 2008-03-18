@@ -23,8 +23,15 @@
 #include "chatline-old.h"
 #include "qtui.h"
 #include "uisettings.h"
+#include "client.h"
+#include "buffer.h"
+#include "clientbacklogmanager.h"
 
-ChatWidget::ChatWidget(QWidget *parent) : QAbstractScrollArea(parent) {
+ChatWidget::ChatWidget(QWidget *parent)
+  : QAbstractScrollArea(parent),
+    lastBacklogOffset(0),
+    lastBacklogSize(0)
+{
   //setAutoFillBackground(false);
   //QPalette palette;
   //palette.setColor(backgroundRole(), QColor(0, 0, 0, 50));
@@ -67,6 +74,9 @@ void ChatWidget::init(BufferId id) {
   mouseMode = Normal;
   selectionMode = NoSelection;
   connect(scrollTimer, SIGNAL(timeout()), this, SLOT(handleScrollTimer()));
+
+  if(bufferId.isValid())
+    connect(verticalScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(viewportChanged(int)));
 }
 
 ChatWidget::~ChatWidget() {
@@ -590,3 +600,26 @@ QString ChatWidget::selectionToString() {
   return lines[selectionLine]->text().mid(selectionStart, selectionEnd - selectionStart);
 }
 
+void ChatWidget::viewportChanged(int newPos) {
+  const int REQUEST_COUNT = 50;
+  QAbstractSlider *vbar = verticalScrollBar();
+  if(!vbar)
+    return;
+
+  int relativePos = 100;
+  if(vbar->maximum() - vbar->minimum() != 0)
+    relativePos = (newPos - vbar->minimum()) * 100 / (vbar->maximum() - vbar->minimum());
+
+  if(relativePos < 20) {
+    Buffer *buffer = Client::buffer(bufferId);
+    Q_CHECK_PTR(buffer);
+    if(buffer->contents().isEmpty())
+      return;
+    MsgId msgId = buffer->contents().first()->msgId();
+    if(!lastBacklogOffset.isValid() || msgId < lastBacklogOffset && lastBacklogSize + REQUEST_COUNT <= buffer->contents().count()) {
+      Client::backlogManager()->requestBacklog(bufferId, REQUEST_COUNT, msgId.toInt());
+      lastBacklogOffset = msgId;
+      lastBacklogSize = buffer->contents().size();
+    }
+  }
+}

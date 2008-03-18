@@ -76,6 +76,7 @@ class ChatWidget : public QAbstractScrollArea {
     void scrollBarValChanged(int);
     void ensureVisible(int line);
     void handleScrollTimer();
+    void viewportChanged(int newPos);
 
   private:
     BufferId bufferId;
@@ -120,6 +121,8 @@ class ChatWidget : public QAbstractScrollArea {
     QString selectionToString();
     void handleMouseMoveEvent(const QPoint &pos);
 
+    MsgId lastBacklogOffset;
+    int lastBacklogSize;
 };
 
 #endif

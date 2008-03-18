@@ -1,3 +1,3 @@
 SELECT count(*)
 FROM backlog
-WHERE bufferid = :bufferid AND messageid < :messageid
+WHERE bufferid = :bufferid AND messageid >= :messageid

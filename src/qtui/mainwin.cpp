@@ -319,8 +319,7 @@ void MainWin::changeTopic(const QString &topic) {
 
 void MainWin::connectedToCore() {
   foreach(BufferInfo id, Client::allBufferInfos()) {
-    // emit requestBacklog(id, 1000, -1);
-    Client::backlogManager()->requestBacklog(id.bufferId(), 1000, -1);
+    Client::backlogManager()->requestBacklog(id.bufferId(), 500, -1);
   }
 
   ui.menuViews->setEnabled(true);

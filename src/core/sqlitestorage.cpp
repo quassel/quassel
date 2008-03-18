@@ -619,13 +619,17 @@ QList<Message> SqliteStorage::requestMsgs(UserId user, BufferId bufferId, int la
   if(!bufferInfo.isValid())
     return messagelist;
 
-  // we have to determine the real offset first
-  QSqlQuery *offsetQuery = cachedQuery("select_messagesOffset");
-  offsetQuery->bindValue(":bufferid", bufferId.toInt());
-  offsetQuery->bindValue(":messageid", offset);
-  offsetQuery->exec();
-  offsetQuery->first();
-  offset = offsetQuery->value(0).toInt();
+  if(offset == -1) {
+    offset = 0;
+  } else {
+    // we have to determine the real offset first
+    QSqlQuery *offsetQuery = cachedQuery("select_messagesOffset");
+    offsetQuery->bindValue(":bufferid", bufferId.toInt());
+    offsetQuery->bindValue(":messageid", offset);
+    offsetQuery->exec();
+    offsetQuery->first();
+    offset = offsetQuery->value(0).toInt();
+  }
 
   // now let's select the messages
   QSqlQuery *msgQuery = cachedQuery("select_messages");
