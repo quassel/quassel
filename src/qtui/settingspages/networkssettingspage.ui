@@ -165,6 +165,10 @@
           <property name="enabled" >
            <bool>true</bool>
           </property>
+          <property name="toolTip" >
+           <string>This specifies how control messages, nicks and servernames are encoded.
+Unless you *really* know what you do, leave this as ISO-8859-1!</string>
+          </property>
           <property name="currentIndex" >
            <number>0</number>
           </property>
@@ -454,24 +458,24 @@
            <attribute name="title" >
             <string>Advanced</string>
            </attribute>
-           <layout class="QVBoxLayout" >
+           <layout class="QVBoxLayout" name="verticalLayout_2" >
             <item>
              <widget class="QGroupBox" name="groupBox_3" >
               <property name="enabled" >
                <bool>true</bool>
               </property>
               <property name="title" >
-               <string>Network Encoding</string>
+               <string>Encodings</string>
               </property>
-              <layout class="QVBoxLayout" >
+              <layout class="QVBoxLayout" name="verticalLayout" >
                <item>
-                <layout class="QHBoxLayout" >
+                <layout class="QHBoxLayout" name="horizontalLayout" >
                  <item>
                   <layout class="QGridLayout" >
                    <item row="0" column="0" >
                     <widget class="QLabel" name="label_4" >
                      <property name="text" >
-                      <string>Sending:</string>
+                      <string>Send messages in:</string>
                      </property>
                     </widget>
                    </item>
@@ -493,8 +497,11 @@
                    </item>
                    <item row="1" column="0" >
                     <widget class="QLabel" name="label_5" >
+                     <property name="toolTip" >
+                      <string>Incoming messages encoded in Utf8 will always be treated as such. This setting defines the encoding for messages that are not Utf8.</string>
+                     </property>
                      <property name="text" >
-                      <string>Receiving:</string>
+                      <string>Receive fallback:</string>
                      </property>
                     </widget>
                    </item>
@@ -514,6 +521,24 @@
                      </property>
                     </widget>
                    </item>
+                   <item row="2" column="0" >
+                    <widget class="QLabel" name="label_9" >
+                     <property name="toolTip" >
+                      <string>This specifies how control messages, nicks and servernames are encoded.
+Unless you *really* know what you do, leave this as ISO-8859-1!</string>
+                     </property>
+                     <property name="text" >
+                      <string>Server encoding:</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="2" column="1" >
+                    <widget class="QComboBox" name="serverEncoding" >
+                     <property name="enabled" >
+                      <bool>false</bool>
+                     </property>
+                    </widget>
+                   </item>
                   </layout>
                  </item>
                  <item>
@@ -523,8 +548,8 @@
                    </property>
                    <property name="sizeHint" stdset="0" >
                     <size>
-                     <width>40</width>
-                     <height>20</height>
+                     <width>58</width>
+                     <height>61</height>
                     </size>
                    </property>
                   </spacer>
@@ -681,8 +706,8 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>647</x>
-     <y>238</y>
+     <x>659</x>
+     <y>262</y>
     </hint>
     <hint type="destinationlabel" >
      <x>471</x>
@@ -697,8 +722,8 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>658</x>
-     <y>238</y>
+     <x>659</x>
+     <y>262</y>
     </hint>
     <hint type="destinationlabel" >
      <x>471</x>
@@ -713,12 +738,28 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>443</x>
-     <y>336</y>
+     <x>512</x>
+     <y>373</y>
     </hint>
     <hint type="destinationlabel" >
-     <x>390</x>
-     <y>338</y>
+     <x>420</x>
+     <y>377</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>useDefaultEncodings</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>serverEncoding</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>396</x>
+     <y>251</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>456</x>
+     <y>230</y>
     </hint>
    </hints>
   </connection>

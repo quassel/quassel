@@ -42,9 +42,11 @@ NetworksSettingsPage::NetworksSettingsPage(QWidget *parent) : SettingsPage(tr("G
     QByteArray codec = QTextCodec::codecForMib(mib)->name();
     ui.sendEncoding->addItem(codec);
     ui.recvEncoding->addItem(codec);
+    ui.serverEncoding->addItem(codec);
   }
   ui.sendEncoding->model()->sort(0);
   ui.recvEncoding->model()->sort(0);
+  ui.serverEncoding->model()->sort(0);
   currentId = 0;
   setEnabled(Client::isConnected());  // need a core connection!
   setWidgetStates();
@@ -63,6 +65,7 @@ NetworksSettingsPage::NetworksSettingsPage(QWidget *parent) : SettingsPage(tr("G
   connect(ui.useDefaultEncodings, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
   connect(ui.sendEncoding, SIGNAL(currentIndexChanged(int)), this, SLOT(widgetHasChanged()));
   connect(ui.recvEncoding, SIGNAL(currentIndexChanged(int)), this, SLOT(widgetHasChanged()));
+  connect(ui.serverEncoding, SIGNAL(currentIndexChanged(int)), this, SLOT(widgetHasChanged()));
   connect(ui.autoReconnect, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
   connect(ui.reconnectInterval, SIGNAL(valueChanged(int)), this, SLOT(widgetHasChanged()));
   connect(ui.reconnectRetries, SIGNAL(valueChanged(int)), this, SLOT(widgetHasChanged()));
@@ -425,10 +428,12 @@ void NetworksSettingsPage::displayNetwork(NetworkId id) {
     if(info.codecForEncoding.isEmpty()) {
       ui.sendEncoding->setCurrentIndex(ui.sendEncoding->findText(Network::defaultCodecForEncoding()));
       ui.recvEncoding->setCurrentIndex(ui.recvEncoding->findText(Network::defaultCodecForDecoding()));
+      ui.serverEncoding->setCurrentIndex(ui.serverEncoding->findText(Network::defaultCodecForServer()));
       ui.useDefaultEncodings->setChecked(true);
     } else {
       ui.sendEncoding->setCurrentIndex(ui.sendEncoding->findText(info.codecForEncoding));
       ui.recvEncoding->setCurrentIndex(ui.recvEncoding->findText(info.codecForDecoding));
+      ui.serverEncoding->setCurrentIndex(ui.serverEncoding->findText(info.codecForServer));
       ui.useDefaultEncodings->setChecked(false);
     }
     ui.autoReconnect->setChecked(info.useAutoReconnect);
@@ -459,9 +464,11 @@ void NetworksSettingsPage::saveToNetworkInfo(NetworkInfo &info) {
   if(ui.useDefaultEncodings->isChecked()) {
     info.codecForEncoding.clear();
     info.codecForDecoding.clear();
+    info.codecForServer.clear();
   } else {
     info.codecForEncoding = ui.sendEncoding->currentText().toLatin1();
     info.codecForDecoding = ui.recvEncoding->currentText().toLatin1();
+    info.codecForServer = ui.serverEncoding->currentText().toLatin1();
   }
   info.useAutoReconnect = ui.autoReconnect->isChecked();
   info.autoReconnectInterval = ui.reconnectInterval->value();
