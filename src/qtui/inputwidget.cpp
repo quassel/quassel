@@ -36,6 +36,7 @@ InputWidget::InputWidget(QWidget *parent)
   connect(this, SIGNAL(userInput(BufferInfo, QString)), Client::instance(), SIGNAL(sendInput(BufferInfo, QString)));
   setFocusProxy(ui.inputEdit);
 
+  ui.ownNick->setSizeAdjustPolicy(QComboBox::AdjustToContents);
   ui.ownNick->installEventFilter(new MouseWheelFilter(this));
   ui.inputEdit->installEventFilter(new JumpKeyHandler(this));  
 }
