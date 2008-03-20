@@ -130,6 +130,13 @@ QString UiStyle::formatCode(FormatType ftype) const {
 }
 
 UiStyle::StyledText UiStyle::styleString(QString s) {
+  // FIXME
+  // The following two lines fix garbled fonts for me. I have no effing clue how or why.
+  // Without comparing s to something (anything), invalid formats with negative lengths are created...
+  // This smells like a gcc/Qt error or something, but maybe it's my fault somehow.
+  bool flg = (s == "foo");
+  Q_UNUSED(flg);
+
   StyledText result;
   QList<FormatType> fmtList;
   fmtList.append(None);
@@ -137,7 +144,7 @@ UiStyle::StyledText UiStyle::styleString(QString s) {
   curFmtRng.format = format(None);
   curFmtRng.start = 0;
   result.formats.append(curFmtRng);
-  int pos = 0; int length;
+  int pos = 0; int length = 0;
   int fgCol = -1, bgCol = -1;  // marks current mIRC color
   for(;;) {
     pos = s.indexOf('%', pos);
