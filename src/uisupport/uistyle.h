@@ -58,7 +58,7 @@ class UiStyle {
       QList<UrlInfo> urls;
     };
 
-    StyledText styleString(QString);
+    StyledText styleString(const QString &);
 
     void setFormat(FormatType, QTextCharFormat, Settings::Mode mode/* = Settings::Custom*/);
     QTextCharFormat format(FormatType, Settings::Mode mode = Settings::Custom) const;

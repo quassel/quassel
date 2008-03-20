@@ -129,13 +129,9 @@ QString UiStyle::formatCode(FormatType ftype) const {
   return _formatCodes.key(ftype);
 }
 
-UiStyle::StyledText UiStyle::styleString(QString s) {
-  // FIXME
-  // The following two lines fix garbled fonts for me. I have no effing clue how or why.
-  // Without comparing s to something (anything), invalid formats with negative lengths are created...
-  // This smells like a gcc/Qt error or something, but maybe it's my fault somehow.
-  bool flg = (s == "foo");
-  Q_UNUSED(flg);
+UiStyle::StyledText UiStyle::styleString(const QString &_s) {
+  QString s = _s;  // we can't use call-by-value since this seems to maybe screw up Qt's implicit sharing somehow
+                   // at least invalid formats are created if we do that
 
   StyledText result;
   QList<FormatType> fmtList;
