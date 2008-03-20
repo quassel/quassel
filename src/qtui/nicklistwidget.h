@@ -38,6 +38,14 @@ class NickListWidget : public AbstractItemView {
 
 public:
   NickListWidget(QWidget *parent = 0);
+  ~NickListWidget();
+  void setShowDockAction(QAction *action);
+  QAction *showDockAction() const;
+  QAction *showNickListAction() const;
+
+public slots:
+  void changedVisibility(bool visible);
+  void showWidget(bool visible);
 
 protected:
   virtual QSize sizeHint() const;
@@ -52,6 +60,8 @@ private slots:
 private:
   Ui::NickListWidget ui;
   QHash<BufferId, NickView *> nickViews;
+  QAction *_showNickListAction;
+  QPointer<QAction> _showDockAction;
 };
 
 #endif

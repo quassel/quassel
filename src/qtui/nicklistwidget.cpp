@@ -26,11 +26,58 @@
 #include "networkmodel.h"
 #include "buffermodel.h"
 #include "nickviewfilter.h"
+#include "qtuisettings.h"
 
 NickListWidget::NickListWidget(QWidget *parent)
-  : AbstractItemView(parent)
+  : AbstractItemView(parent),
+    _showNickListAction(new QAction(tr("Nicks"), this)),
+    _showDockAction(0)
 {
+  _showNickListAction->setCheckable(true);
+  QtUiSettings s;
+  _showNickListAction->setChecked(s.value("ShowNickListAction", QVariant(true)).toBool());
   ui.setupUi(this);
+  connect(_showNickListAction, SIGNAL(toggled(bool)), this, SLOT(showWidget(bool)));
+}
+
+NickListWidget::~NickListWidget() {
+  QtUiSettings s;
+  s.setValue("ShowNickListAction", showNickListAction()->isChecked());
+}
+
+void NickListWidget::setShowDockAction(QAction *action) {
+  _showDockAction = action;
+}
+
+QAction *NickListWidget::showDockAction() const {
+  return _showDockAction;
+}
+
+QAction *NickListWidget::showNickListAction() const {
+  return _showNickListAction;
+}
+
+void NickListWidget::showWidget(bool visible) {
+  if(!selectionModel())
+    return;
+
+  QModelIndex currentIndex = selectionModel()->currentIndex();
+  if(currentIndex.data(NetworkModel::BufferTypeRole) == BufferInfo::ChannelBuffer && showDockAction()) {
+    if(visible  != showDockAction()->isChecked()) {
+      // show or hide
+      showDockAction()->trigger();
+    }
+  }
+}
+
+void NickListWidget::changedVisibility(bool visible) {
+  if(!selectionModel())
+    return;
+
+  QModelIndex currentIndex = selectionModel()->currentIndex();
+  if(currentIndex.data(NetworkModel::BufferTypeRole) == BufferInfo::ChannelBuffer && !visible) {
+    showNickListAction()->setChecked(false);
+  }
 }
 
 void NickListWidget::currentChanged(const QModelIndex &current, const QModelIndex &previous) {
@@ -40,7 +87,17 @@ void NickListWidget::currentChanged(const QModelIndex &current, const QModelInde
 
   if(bufferType != BufferInfo::ChannelBuffer) {
     ui.stackedWidget->setCurrentWidget(ui.emptyPage);
+    if(showDockAction() && showDockAction()->isChecked()) {
+      // hide
+      showDockAction()->trigger();
+    }
     return;
+  } else {
+    if(showNickListAction()->isChecked())
+      if(showDockAction()&& !showDockAction()->isChecked()) {
+        // show
+        showDockAction()->trigger();
+      }
   }
 
   if(newBufferId == oldBufferId)

@@ -27,6 +27,7 @@
 #include "bufferviewfilter.h"
 
 #include <QSystemTrayIcon>
+#include <QTimer>
 
 class ServerListDlg;
 class CoreConnectDlg;
@@ -49,6 +50,12 @@ class MainWin : public QMainWindow {
     QDockWidget *addBufferView(const QString &, QAbstractItemModel *, const BufferViewFilter::Modes &, const QList<NetworkId> &);
 
     AbstractUiMsg *layoutMsg(const Message &);
+    void displayTrayIconMessage(const QString &title, const QString &message);
+
+    virtual bool event(QEvent *event);
+
+  public slots:
+    void setTrayIconActivity(bool active = false);
 
   protected:
     void closeEvent(QCloseEvent *event);
@@ -60,6 +67,7 @@ class MainWin : public QMainWindow {
     void systrayActivated( QSystemTrayIcon::ActivationReason );
 
   private slots:
+    void receiveMessage(const Message &msg);
     void showSettingsDlg();
     void showNetworkDlg();
     void showAboutDlg();
@@ -74,6 +82,7 @@ class MainWin : public QMainWindow {
     void connectOrDisconnectFromNet();
 
     void changeTopic(const QString &topic);
+    void makeTrayIconBlink();
 
   signals:
     void connectToCore(const QVariantMap &connInfo);
@@ -101,6 +110,10 @@ class MainWin : public QMainWindow {
     void enableMenus();
 
     QSystemTrayIcon *systray;
+    QIcon activeTrayIcon;
+    QIcon inactiveTrayIcon;
+    bool trayIconActive;
+    QTimer *timer;
 
     CoreConnectDlg *coreConnectDlg;
     SettingsDlg *settingsDlg;

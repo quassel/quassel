@@ -33,7 +33,6 @@
 
 #include "util.h" // get rid of this (needed for isChannelName)
 
-// #define PHONDEV
 
 /*****************************************
 *  Fancy Buffer Items

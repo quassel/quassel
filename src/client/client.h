@@ -119,6 +119,7 @@ signals:
   void backlogReceived(Buffer *, QList<Message>);
   void requestBacklog(BufferInfo, QVariant, QVariant);
   void requestNetworkStates();
+  void messageReceived(const Message &msg);
 
   void showConfigWizard(const QVariantMap &coredata);
 

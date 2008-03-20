@@ -475,6 +475,8 @@ void Client::recvMessage(const Message &message) {
     Message mmsg = Message(msg.timestamp(), msg.bufferInfo(), msg.type(), msg.text(), sender, msg.flags());
     monitorBuffer()->appendMsg(mmsg);
   }
+
+  emit messageReceived(msg);
 }
 
 void Client::recvStatusMsg(QString /*net*/, QString /*msg*/) {

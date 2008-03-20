@@ -596,5 +596,6 @@
     </qresource>
     <qresource prefix="/icons" >
         <file>quassel-icon.png</file>
+        <file>quassel-icon-active.png</file>
     </qresource>
 </RCC>

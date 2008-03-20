@@ -5,7 +5,7 @@
 
   quasselVersion = "0.2.0-alpha4-pre";
   quasselDate = "2008-03-18";
-  quasselBuild = 647;
+  quasselBuild = 649;
 
   //! Minimum client build number the core needs
   clientBuildNeeded = 642;

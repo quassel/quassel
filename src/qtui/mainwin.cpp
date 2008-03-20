@@ -56,12 +56,16 @@
 MainWin::MainWin(QtUi *_gui, QWidget *parent)
   : QMainWindow(parent),
     gui(_gui),
+    activeTrayIcon(":/icons/quassel-icon-active.png"),
+    inactiveTrayIcon(":/icons/quassel-icon.png"),
+    trayIconActive(false),
+    timer(new QTimer(this)),
     settingsDlg(new SettingsDlg(this)),
     debugConsole(new DebugConsole(this))
 {
   ui.setupUi(this);
   setWindowTitle("Quassel IRC");
-  setWindowIcon(QIcon(":icons/quassel-icon.png"));
+  setWindowIcon(inactiveTrayIcon);
   setWindowIconText("Quassel IRC");
 
   statusBar()->showMessage(tr("Waiting for core..."));
@@ -81,7 +85,7 @@ void MainWin::init() {
   connect(Client::instance(), SIGNAL(networkCreated(NetworkId)), this, SLOT(clientNetworkCreated(NetworkId)));
   connect(Client::instance(), SIGNAL(networkRemoved(NetworkId)), this, SLOT(clientNetworkRemoved(NetworkId)));
   ui.bufferWidget->init();
-  
+
   show();
 
   statusBar()->showMessage(tr("Not connected to core."));
@@ -103,7 +107,6 @@ void MainWin::init() {
   setupInputWidget();
   setupSystray();
 
-  
   setupSettingsDlg();
 
   // restore mainwin state
@@ -200,9 +203,11 @@ void MainWin::setupNickWidget() {
   nickListWidget = new NickListWidget(nickDock);
   nickDock->setWidget(nickListWidget);
 
+  nickListWidget->setShowDockAction(nickDock->toggleViewAction());
+  connect(nickDock->toggleViewAction(), SIGNAL(toggled(bool)), nickListWidget, SLOT(changedVisibility(bool)));
   addDockWidget(Qt::RightDockWidgetArea, nickDock);
 
-  ui.menuViews->addAction(nickDock->toggleViewAction());
+  ui.menuViews->addAction(nickListWidget->showNickListAction());
 
   // attach the NickListWidget to the BufferModel and the default selection
   nickListWidget->setModel(Client::bufferModel());
@@ -270,8 +275,11 @@ void MainWin::setupTopicWidget() {
 }
 
 void MainWin::setupSystray() {
+  connect(timer, SIGNAL(timeout()), this, SLOT(makeTrayIconBlink()));
+  connect(Client::instance(), SIGNAL(messageReceived(const Message &)), this, SLOT(receiveMessage(const Message &)));
+
   systray = new QSystemTrayIcon(this);
-  systray->setIcon(QIcon(":/icons/quassel-icon.png"));
+  systray->setIcon(inactiveTrayIcon);
 //  systray->setToolTip("left click to minimize the quassel client to tray");
 //  systray->setToolTip(toolTip);
 
@@ -398,8 +406,9 @@ void MainWin::toggleVisibility() {
         showNormal();
 
     raise();
-    setFocus(Qt::ActiveWindowFocusReason);
-    // activateWindow();
+    activateWindow();
+    // setFocus(); //Qt::ActiveWindowFocusReason
+
   } else {
     if(systray->isSystemTrayAvailable ()) {
       clearFocus();
@@ -412,6 +421,57 @@ void MainWin::toggleVisibility() {
     }
   }
 }
+
+void MainWin::receiveMessage(const Message &msg) {
+  if(QApplication::activeWindow() != 0)
+    return;
+
+  if(msg.flags() & Message::Highlight || msg.bufferInfo().type() == BufferInfo::QueryBuffer) {
+    QString title = msg.bufferInfo().bufferName();;
+    if(msg.bufferInfo().type() != BufferInfo::QueryBuffer) {
+      QString sender = msg.sender();
+      int i = sender.indexOf("!");
+      if(i != -1)
+        sender = sender.left(i);
+      title += QString(" - %1").arg(sender);
+    }
+    QString text = QtUi::style()->styleString(Message::mircToInternal(msg.text())).text;
+    displayTrayIconMessage(title, text);
+    QApplication::alert(this);
+    setTrayIconActivity(true);
+  }
+}
+
+bool MainWin::event(QEvent *event) {
+  if(event->type() == QEvent::WindowActivate)
+    setTrayIconActivity(false);
+  return QMainWindow::event(event);
+}
+
+void MainWin::displayTrayIconMessage(const QString &title, const QString &message) {
+  systray->showMessage(title, message);
+}
+
+void MainWin::setTrayIconActivity(bool active) {
+  if(active) {
+    if(!timer->isActive())
+      timer->start(500);
+  } else {
+    timer->stop();
+    systray->setIcon(inactiveTrayIcon);
+  }
+}
+
+void MainWin::makeTrayIconBlink() {
+  if(trayIconActive) {
+    systray->setIcon(inactiveTrayIcon);
+    trayIconActive = false;
+  } else {
+    systray->setIcon(activeTrayIcon);
+    trayIconActive = true;
+  }
+}
+
 
 void MainWin::showNetworkDlg() {
   SettingsPageDlg dlg(new NetworksSettingsPage(this), this);
