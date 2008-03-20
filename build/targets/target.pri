@@ -10,6 +10,12 @@ SRCPATH = ../../src
 OBJECTS_DIR = .$$TARGET
 RCC_DIR     = .$$TARGET
 
+linux-g++:static {
+  # We put libs in contrib/libs that should be linked statically, especially libstdc++.a
+  LIBS *= -L../contrib/libs
+  QMAKE_LFLAGS *= -static-libgcc
+}
+
 for(mod, MODULES) {
   INCLUDEPATH *= $$SRCPATH/$$mod
   LIBS *= -L../modules/$$dirname(mod) -l$$basename(mod)
