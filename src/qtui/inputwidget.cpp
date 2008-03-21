@@ -24,6 +24,7 @@
 #include "client.h"
 #include "networkmodel.h"
 #include "jumpkeyhandler.h"
+#include "qtuisettings.h"
 
 
 InputWidget::InputWidget(QWidget *parent)
@@ -38,7 +39,13 @@ InputWidget::InputWidget(QWidget *parent)
 
   ui.ownNick->setSizeAdjustPolicy(QComboBox::AdjustToContents);
   ui.ownNick->installEventFilter(new MouseWheelFilter(this));
-  ui.inputEdit->installEventFilter(new JumpKeyHandler(this));  
+  ui.inputEdit->installEventFilter(new JumpKeyHandler(this));
+
+  QtUiSettings s;
+  bool useInputLineFont = s.value("UseInputLineFont", QVariant(false)).toBool();
+  if(useInputLineFont) {
+    ui.inputEdit->setFont(s.value("InputLineFont").value<QFont>());
+  }
 }
 
 InputWidget::~InputWidget() {

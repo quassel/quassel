@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>475</width>
-    <height>366</height>
+    <width>588</width>
+    <height>558</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -18,13 +18,13 @@
      <item>
       <widget class="QGroupBox" name="customAppFonts" >
        <property name="enabled" >
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="title" >
         <string>Custom Application Fonts</string>
        </property>
        <property name="checkable" >
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
        <property name="checked" >
         <bool>false</bool>
@@ -32,15 +32,11 @@
        <layout class="QVBoxLayout" >
         <item>
          <layout class="QGridLayout" >
-          <item row="0" column="0" >
-           <widget class="QLabel" name="label" >
-            <property name="text" >
-             <string>General:</string>
-            </property>
-           </widget>
-          </item>
           <item row="0" column="1" >
            <widget class="QLabel" name="demoGeneral" >
+            <property name="enabled" >
+             <bool>false</bool>
+            </property>
             <property name="sizePolicy" >
              <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
               <horstretch>0</horstretch>
@@ -63,6 +59,9 @@
           </item>
           <item row="0" column="2" >
            <widget class="QPushButton" name="chooseGeneral" >
+            <property name="enabled" >
+             <bool>false</bool>
+            </property>
             <property name="sizePolicy" >
              <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
               <horstretch>0</horstretch>
@@ -76,6 +75,9 @@
           </item>
           <item row="1" column="0" >
            <widget class="QCheckBox" name="checkTopic" >
+            <property name="enabled" >
+             <bool>false</bool>
+            </property>
             <property name="text" >
              <string>Topic:</string>
             </property>
@@ -83,6 +85,9 @@
           </item>
           <item row="1" column="1" >
            <widget class="QLabel" name="demoTopic" >
+            <property name="enabled" >
+             <bool>false</bool>
+            </property>
             <property name="sizePolicy" >
              <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
               <horstretch>0</horstretch>
@@ -105,6 +110,9 @@
           </item>
           <item row="1" column="2" >
            <widget class="QPushButton" name="chooseTopic" >
+            <property name="enabled" >
+             <bool>false</bool>
+            </property>
             <property name="sizePolicy" >
              <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
               <horstretch>0</horstretch>
@@ -118,16 +126,22 @@
           </item>
           <item row="2" column="0" >
            <widget class="QCheckBox" name="checkBufferView" >
+            <property name="enabled" >
+             <bool>false</bool>
+            </property>
             <property name="text" >
              <string>Buffer Views:</string>
             </property>
             <property name="checked" >
-             <bool>true</bool>
+             <bool>false</bool>
             </property>
            </widget>
           </item>
           <item row="2" column="1" >
            <widget class="QLabel" name="demoBufferView" >
+            <property name="enabled" >
+             <bool>false</bool>
+            </property>
             <property name="sizePolicy" >
              <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
               <horstretch>0</horstretch>
@@ -150,6 +164,9 @@
           </item>
           <item row="2" column="2" >
            <widget class="QPushButton" name="chooseBufferView" >
+            <property name="enabled" >
+             <bool>false</bool>
+            </property>
             <property name="sizePolicy" >
              <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
               <horstretch>0</horstretch>
@@ -163,16 +180,22 @@
           </item>
           <item row="3" column="0" >
            <widget class="QCheckBox" name="checkNickList" >
+            <property name="enabled" >
+             <bool>false</bool>
+            </property>
             <property name="text" >
              <string>Nick List:</string>
             </property>
             <property name="checked" >
-             <bool>true</bool>
+             <bool>false</bool>
             </property>
            </widget>
           </item>
           <item row="3" column="1" >
            <widget class="QLabel" name="demoNickList" >
+            <property name="enabled" >
+             <bool>false</bool>
+            </property>
             <property name="sizePolicy" >
              <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
               <horstretch>0</horstretch>
@@ -195,6 +218,9 @@
           </item>
           <item row="3" column="2" >
            <widget class="QPushButton" name="chooseNickList" >
+            <property name="enabled" >
+             <bool>false</bool>
+            </property>
             <property name="sizePolicy" >
              <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
               <horstretch>0</horstretch>
@@ -203,6 +229,58 @@
             </property>
             <property name="text" >
              <string>Choose...</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0" >
+           <widget class="QCheckBox" name="checkInputLine" >
+            <property name="text" >
+             <string>Inputline:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1" >
+           <widget class="QLabel" name="demoInputLine" >
+            <property name="enabled" >
+             <bool>false</bool>
+            </property>
+            <property name="frameShape" >
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow" >
+             <enum>QFrame::Sunken</enum>
+            </property>
+            <property name="text" >
+             <string>Font</string>
+            </property>
+            <property name="alignment" >
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="2" >
+           <widget class="QPushButton" name="chooseInputLine" >
+            <property name="enabled" >
+             <bool>false</bool>
+            </property>
+            <property name="sizePolicy" >
+             <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text" >
+             <string>Choose...</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0" >
+           <widget class="QLabel" name="generalApp" >
+            <property name="enabled" >
+             <bool>false</bool>
+            </property>
+            <property name="text" >
+             <string>General:</string>
             </property>
            </widget>
           </item>
@@ -397,12 +475,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>46</x>
-     <y>292</y>
+     <x>74</x>
+     <y>349</y>
     </hint>
     <hint type="destinationlabel" >
-     <x>183</x>
-     <y>290</y>
+     <x>310</x>
+     <y>349</y>
     </hint>
    </hints>
   </connection>
@@ -413,12 +491,44 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>96</x>
-     <y>288</y>
+     <x>124</x>
+     <y>349</y>
     </hint>
     <hint type="destinationlabel" >
-     <x>452</x>
-     <y>293</y>
+     <x>559</x>
+     <y>356</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkNicks</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>demoNicks</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>68</x>
+     <y>317</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>338</x>
+     <y>317</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkNicks</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>chooseNicks</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>117</x>
+     <y>317</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>559</x>
+     <y>324</y>
     </hint>
    </hints>
   </connection>
@@ -445,12 +555,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>86</x>
-     <y>113</y>
+     <x>114</x>
+     <y>135</y>
     </hint>
     <hint type="destinationlabel" >
-     <x>451</x>
-     <y>118</y>
+     <x>559</x>
+     <y>142</y>
     </hint>
    </hints>
   </connection>
@@ -477,12 +587,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>78</x>
-     <y>145</y>
+     <x>106</x>
+     <y>167</y>
     </hint>
     <hint type="destinationlabel" >
-     <x>455</x>
-     <y>151</y>
+     <x>559</x>
+     <y>174</y>
     </hint>
    </hints>
   </connection>
@@ -493,8 +603,8 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>34</x>
-     <y>81</y>
+     <x>62</x>
+     <y>103</y>
     </hint>
     <hint type="destinationlabel" >
      <x>190</x>
@@ -509,44 +619,44 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>101</x>
-     <y>81</y>
+     <x>129</x>
+     <y>103</y>
     </hint>
     <hint type="destinationlabel" >
-     <x>451</x>
-     <y>82</y>
+     <x>559</x>
+     <y>110</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>checkNicks</sender>
+   <sender>checkInputLine</sender>
    <signal>toggled(bool)</signal>
-   <receiver>demoNicks</receiver>
+   <receiver>demoInputLine</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>40</x>
-     <y>255</y>
+     <x>82</x>
+     <y>194</y>
     </hint>
     <hint type="destinationlabel" >
-     <x>211</x>
-     <y>257</y>
+     <x>221</x>
+     <y>197</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>checkNicks</sender>
+   <sender>checkInputLine</sender>
    <signal>toggled(bool)</signal>
-   <receiver>chooseNicks</receiver>
+   <receiver>chooseInputLine</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>89</x>
-     <y>257</y>
+     <x>83</x>
+     <y>185</y>
     </hint>
     <hint type="destinationlabel" >
-     <x>447</x>
-     <y>258</y>
+     <x>506</x>
+     <y>194</y>
     </hint>
    </hints>
   </connection>

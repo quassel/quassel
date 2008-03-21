@@ -21,6 +21,7 @@
 #include "fontssettingspage.h"
 
 #include "qtui.h"
+#include "qtuisettings.h"
 
 #include <QFontDialog>
 
@@ -31,26 +32,29 @@ FontsSettingsPage::FontsSettingsPage(QWidget *parent)
   mapper = new QSignalMapper(this);
   connect(ui.chooseGeneral, SIGNAL(clicked()), mapper, SLOT(map()));
   connect(ui.chooseTopic, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.chooseNickList, SIGNAL(clicked()), mapper, SLOT(map()));
   connect(ui.chooseBufferView, SIGNAL(clicked()), mapper, SLOT(map()));
+  connect(ui.chooseNickList, SIGNAL(clicked()), mapper, SLOT(map()));
+  connect(ui.chooseInputLine, SIGNAL(clicked()), mapper, SLOT(map()));
   connect(ui.chooseChatMessages, SIGNAL(clicked()), mapper, SLOT(map()));
   connect(ui.chooseNicks, SIGNAL(clicked()), mapper, SLOT(map()));
   connect(ui.chooseTimestamp, SIGNAL(clicked()), mapper, SLOT(map()));
 
   mapper->setMapping(ui.chooseGeneral, ui.demoGeneral);
   mapper->setMapping(ui.chooseTopic, ui.demoTopic);
-  mapper->setMapping(ui.chooseNickList, ui.demoNickList);
   mapper->setMapping(ui.chooseBufferView, ui.demoBufferView);
+  mapper->setMapping(ui.chooseNickList, ui.demoNickList);
+  mapper->setMapping(ui.chooseInputLine, ui.demoInputLine);
   mapper->setMapping(ui.chooseChatMessages, ui.demoChatMessages);
   mapper->setMapping(ui.chooseNicks, ui.demoNicks);
   mapper->setMapping(ui.chooseTimestamp, ui.demoTimestamp);
 
   connect(mapper, SIGNAL(mapped(QWidget *)), this, SLOT(chooseFont(QWidget *)));
-
-  connect(ui.customAppFonts, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
+  
+  //connect(ui.customAppFonts, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
   connect(ui.checkTopic, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
-  connect(ui.checkNickList, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
   connect(ui.checkBufferView, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
+  connect(ui.checkNickList, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
+  connect(ui.checkInputLine, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
   connect(ui.checkNicks, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
   connect(ui.checkTimestamp, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
 
@@ -73,6 +77,17 @@ void FontsSettingsPage::load() {
 }
 
 void FontsSettingsPage::load(Settings::Mode mode) {
+  QtUiSettings s;
+  bool useInputLineFont = s.value("UseInputLineFont", QVariant(false)).toBool();
+  QFont inputLineFont;
+  if(useInputLineFont) {
+    ui.checkInputLine->setChecked(true);
+    inputLineFont = s.value("InputLineFont").value<QFont>();
+  } else {
+    inputLineFont = qApp->font();
+  }
+  initLabel(ui.demoInputLine, inputLineFont);
+  
   QTextCharFormat chatFormat = QtUi::style()->format(UiStyle::None, mode);
   initLabel(ui.demoChatMessages, chatFormat.font());
   QTextCharFormat nicksFormat = QtUi::style()->format(UiStyle::Sender, mode);
@@ -96,6 +111,10 @@ void FontsSettingsPage::load(Settings::Mode mode) {
 }
 
 void FontsSettingsPage::save() {
+  QtUiSettings s;
+  s.setValue("UseInputLineFont", (ui.checkInputLine->checkState() == Qt::Checked));
+  s.setValue("InputLineFont", ui.demoInputLine->font());
+  
   QTextCharFormat chatFormat = QtUi::style()->format(UiStyle::None);
   chatFormat.setFont(ui.demoChatMessages->font());
   QtUi::style()->setFormat(UiStyle::None, chatFormat, Settings::Custom);
