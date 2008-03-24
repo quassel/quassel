@@ -20,6 +20,8 @@
 
 #include <QMetaProperty>
 
+#include <QDebug>
+
 #include "syncableobject.h"
 
 #include "signalproxy.h"
@@ -58,10 +60,15 @@ QVariantMap SyncableObject::toVariantMap() {
   for(int i = 0; i < meta->methodCount(); i++) {
     QMetaMethod method = meta->method(i);
     QString methodname(::methodName(method));
-    if(!methodname.startsWith("init") || methodname.startsWith("initSet"))
+    if(!methodname.startsWith("init") || methodname.startsWith("initSet") || methodname.startsWith("initDone"))
       continue;
 
-    QVariant value = QVariant(QVariant::nameToType(method.typeName()));
+    QVariant::Type variantType = QVariant::nameToType(method.typeName());
+    if(variantType == QVariant::Invalid && !QByteArray(method.typeName()).isEmpty()) {
+      qWarning() << "SyncableObject::toVariantMap(): cannot fetch init data for:" << this << method.signature() << "- Returntype is unknown to Qt's MetaSystem:" << QByteArray(method.typeName());
+      continue;
+    }
+    QVariant value = QVariant(variantType);
     QGenericReturnArgument genericvalue = QGenericReturnArgument(method.typeName(), &value);
     QMetaObject::invokeMethod(this, methodname.toAscii(), genericvalue);
 

@@ -951,12 +951,19 @@ QString SignalProxy::methodBaseName(const QMetaMethod &method) {
   QString methodname = QString(method.signature()).section("(", 0, 0);
 
   // determine where we have to chop:
+  int upperCharPos;
   if(method.methodType() == QMetaMethod::Slot) {
     // we take evertyhing from the first uppercase char if it's slot
-    methodname = methodname.mid(methodname.indexOf(QRegExp("[A-Z]")));
+    upperCharPos = methodname.indexOf(QRegExp("[A-Z]"));
+    if(upperCharPos == -1)
+      return QString();
+    methodname = methodname.mid(upperCharPos);
   } else {
     // and if it's a signal we discard everything from the last uppercase char
-    methodname = methodname.left(methodname.lastIndexOf(QRegExp("[A-Z]")));
+    upperCharPos = methodname.lastIndexOf(QRegExp("[A-Z]"));
+    if(upperCharPos == -1)
+      return QString();
+    methodname = methodname.left(upperCharPos);
   }
 
   methodname[0] = methodname[0].toUpper();
