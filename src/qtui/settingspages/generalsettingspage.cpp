@@ -43,6 +43,9 @@ GeneralSettingsPage::GeneralSettingsPage(QWidget *parent)
   connect(ui.minimizeOnMinimize, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
   connect(ui.minimizeOnClose, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
 
+  connect(ui.animateTrayIcon, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
+  connect(ui.displayPopupMessages, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
+
   connect(ui.userMessagesInStatusBuffer, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
   connect(ui.userMessagesInQueryBuffer, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
   connect(ui.userMessagesInCurrentBuffer, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
@@ -56,11 +59,13 @@ bool GeneralSettingsPage::hasDefaults() const {
 }
 
 void GeneralSettingsPage::defaults() {
-  qDebug() << "defaults in generalsettingspage";
   ui.useSystemTrayIcon->setChecked(true);
   ui.showSystemTrayIcon->setChecked(true);
   ui.minimizeOnMinimize->setChecked(false);
   ui.minimizeOnClose->setChecked(false);
+
+  ui.animateTrayIcon->setChecked(true);
+  ui.displayPopupMessages->setChecked(true);
 
   ui.userMessagesInStatusBuffer->setChecked(true);
   ui.userMessagesInQueryBuffer->setChecked(false);
@@ -88,6 +93,12 @@ void GeneralSettingsPage::load() {
   settings["MouseWheelChangesBuffers"] = uiSettings.value("MouseWheelChangesBuffers", QVariant(true));
   ui.mouseWheelChangesBuffers->setChecked(settings["MouseWheelChangesBuffers"].toBool());
 
+  settings["AnimateTrayIcon"] = uiSettings.value("AnimateTrayIcon", QVariant(true));
+  ui.animateTrayIcon->setChecked(settings["AnimateTrayIcon"].toBool());
+
+  settings["DisplayPopupMessages"] = uiSettings.value("DisplayPopupMessages", QVariant(true));
+  ui.displayPopupMessages->setChecked(settings["DisplayPopupMessages"].toBool());
+
   // bufferSettings:
   BufferSettings bufferSettings;
   settings["UserMessagesInStatusBuffer"] = bufferSettings.value("UserMessagesInStatusBuffer", QVariant(true));
@@ -112,6 +123,9 @@ void GeneralSettingsPage::save() {
   uiSettings.setValue("MinimizeOnClose", ui.minimizeOnClose->isChecked());
   uiSettings.setValue("MouseWheelChangesBuffers", ui.mouseWheelChangesBuffers->isChecked());
 
+  uiSettings.setValue("AnimateTrayIcon", ui.animateTrayIcon->isChecked());
+  uiSettings.setValue("DisplayPopupMessages", ui.displayPopupMessages->isChecked());
+
   BufferSettings bufferSettings;
   bufferSettings.setValue("UserMessagesInStatusBuffer", ui.userMessagesInStatusBuffer->isChecked());
   bufferSettings.setValue("UserMessagesInQueryBuffer", ui.userMessagesInQueryBuffer->isChecked());
@@ -132,6 +146,9 @@ bool GeneralSettingsPage::testHasChanged() {
   if(settings["UseSystemTrayIcon"].toBool() != ui.useSystemTrayIcon->isChecked()) return true;
   if(settings["MinimizeOnMinimize"].toBool() != ui.minimizeOnMinimize->isChecked()) return true;
   if(settings["MinimizeOnClose"].toBool() != ui.minimizeOnClose->isChecked()) return true;
+
+  if(settings["AnimateTrayIcon"].toBool() != ui.animateTrayIcon->isChecked()) return true;
+  if(settings["DisplayPopupMessages"].toBool() != ui.displayPopupMessages->isChecked()) return true;
 
   if(settings["UserMessagesInStatusBuffer"].toBool() != ui.userMessagesInStatusBuffer->isChecked()) return true;
   if(settings["UserMessagesInQueryBuffer"].toBool() != ui.userMessagesInQueryBuffer->isChecked()) return true;

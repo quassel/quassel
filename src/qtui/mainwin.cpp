@@ -430,9 +430,17 @@ void MainWin::receiveMessage(const Message &msg) {
       title += QString(" - %1").arg(sender);
     }
     QString text = QtUi::style()->styleString(Message::mircToInternal(msg.text())).text;
-    displayTrayIconMessage(title, text);
-    QApplication::alert(this);
-    setTrayIconActivity(true);
+
+    UiSettings uiSettings;
+
+    if(uiSettings.value("DisplayPopupMessages", QVariant(true)).toBool()) {
+      displayTrayIconMessage(title, text);
+    }
+
+    if(uiSettings.value("AnimateTrayIcon", QVariant(true)).toBool()) {
+      QApplication::alert(this);
+      setTrayIconActivity(true);
+    }
   }
 }
 

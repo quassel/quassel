@@ -6,7 +6,7 @@
     <x>0</x>
     <y>0</y>
     <width>448</width>
-    <height>480</height>
+    <height>488</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -49,6 +49,35 @@
        <widget class="QCheckBox" name="showSystemTrayIcon" >
         <property name="text" >
          <string>Show system tray icon</string>
+        </property>
+        <property name="checked" >
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_3" >
+     <property name="title" >
+      <string>User Notification:</string>
+     </property>
+     <layout class="QGridLayout" >
+      <item row="0" column="0" >
+       <widget class="QCheckBox" name="animateTrayIcon" >
+        <property name="text" >
+         <string>Animate tray icon</string>
+        </property>
+        <property name="checked" >
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" >
+       <widget class="QCheckBox" name="displayPopupMessages" >
+        <property name="text" >
+         <string>Display pop-up messages</string>
         </property>
         <property name="checked" >
          <bool>true</bool>
