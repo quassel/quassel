@@ -27,8 +27,7 @@
 #include "buffer.h"
 #include "clientbacklogmanager.h"
 
-ChatWidget::ChatWidget(QWidget *parent)
-  : QAbstractScrollArea(parent),
+ChatWidget::ChatWidget(BufferId bufid, QWidget *parent) : QAbstractScrollArea(parent), AbstractChatView(),
     lastBacklogOffset(0),
     lastBacklogSize(0)
 {
@@ -50,6 +49,8 @@ ChatWidget::ChatWidget(QWidget *parent)
   pointerPosition = QPoint(0,0);
   connect(verticalScrollBar(), SIGNAL(actionTriggered(int)), this, SLOT(scrollBarAction(int)));
   connect(verticalScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(scrollBarValChanged(int)));
+
+  init(bufid);
 }
 
 void ChatWidget::init(BufferId id) {
@@ -248,12 +249,14 @@ void ChatWidget::appendChatLines(QList<ChatLineOld *> list) {
   viewport()->update();
 }
 
-void ChatWidget::setContents(QList<ChatLineOld *> list) {
+void ChatWidget::setContents(const QList<AbstractUiMsg *> &list) {
   ycoords.clear();
   ycoords.append(0);
   height = 0;
   lines.clear();
-  appendChatLines(list);
+  QList<ChatLineOld *> cl;
+  foreach(AbstractUiMsg *msg, list) cl << dynamic_cast<ChatLineOld *>(msg);
+  appendChatLines(cl);
 }
 
 //!\brief Computes the different x position vars for given tsWidth and senderWidth.

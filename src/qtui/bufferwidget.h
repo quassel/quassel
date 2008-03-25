@@ -18,48 +18,30 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _BUFFERWIDGET_H_
-#define _BUFFERWIDGET_H_
+#ifndef BUFFERWIDGET_H_
+#define BUFFERWIDGET_H_
 
 #include "ui_bufferwidget.h"
 
-#include "abstractitemview.h"
-#include "chatview.h"
-#include "types.h"
+#include "abstractbuffercontainer.h"
 
-class Network;
-class ChatView;
-class ChatWidget;
-
-#include "buffermodel.h"
-
-//! Displays the contents of a Buffer.
-/**
-*/
-class BufferWidget : public AbstractItemView {
+class BufferWidget : public AbstractBufferContainer {
   Q_OBJECT
 
-public:
-  BufferWidget(QWidget *parent = 0);
-  virtual ~BufferWidget();
-  void init();
+  public:
+    BufferWidget(QWidget *parent);
+    virtual ~BufferWidget();
 
-  inline BufferId currentBuffer() const { return _currentBuffer; }
-  
-protected slots:
-  virtual void currentChanged(const QModelIndex &current, const QModelIndex &previous);
-  virtual void rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
+  protected:
+    virtual AbstractChatView *createChatView(BufferId);
+    virtual void removeChatView(AbstractChatView *view);
 
-private slots:
-  void removeBuffer(BufferId bufferId);
-  void setCurrentBuffer(BufferId bufferId);
+  protected slots:
+    virtual void showChatView(AbstractChatView *view);
 
-private:
-  Ui::BufferWidget ui;
-  QHash<BufferId, ChatWidget *> _chatWidgets;
-  QHash<BufferId, ChatView *> _chatViews;
+  private:
+    Ui::BufferWidget ui;
 
-  BufferId _currentBuffer;
 };
 
 #endif

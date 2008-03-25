@@ -26,7 +26,7 @@
 #include "chatview.h"
 #include "quasselui.h"
 
-ChatView::ChatView(Buffer *buf, QWidget *parent) : QGraphicsView(parent) {
+ChatView::ChatView(Buffer *buf, QWidget *parent) : QGraphicsView(parent), AbstractChatView() {
   _scene = new ChatScene(buf, this);
   setScene(_scene);
 
@@ -80,8 +80,8 @@ void ChatView::appendChatLines(QList<ChatLine *> list) {
   }
 }
 
-void ChatView::setContents(QList<ChatLine *> list) {
+void ChatView::setContents(const QList<AbstractUiMsg *> &list) {
   qDebug() << "setting" << list.count();
-  appendChatLines(list);
+  //appendChatLines(list);
 }
 

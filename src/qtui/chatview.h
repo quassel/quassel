@@ -23,12 +23,14 @@
 
 #include <QGraphicsView>
 
+#include "abstractbuffercontainer.h"
+
 class AbstractUiMsg;
 class Buffer;
 class ChatLine;
 class ChatScene;
 
-class ChatView : public QGraphicsView {
+class ChatView : public QGraphicsView, public AbstractChatView {
   Q_OBJECT
 
   public:
@@ -49,7 +51,7 @@ class ChatView : public QGraphicsView {
     void prependChatLines(QList<ChatLine *>);
     void appendChatLines(QList<ChatLine *>);
 
-    void setContents(QList<ChatLine *>);
+    void setContents(const QList<AbstractUiMsg *> &);
 
   private:
     ChatScene *_scene;

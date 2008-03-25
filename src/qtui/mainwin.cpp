@@ -84,7 +84,7 @@ void MainWin::init() {
 
   connect(Client::instance(), SIGNAL(networkCreated(NetworkId)), this, SLOT(clientNetworkCreated(NetworkId)));
   connect(Client::instance(), SIGNAL(networkRemoved(NetworkId)), this, SLOT(clientNetworkRemoved(NetworkId)));
-  ui.bufferWidget->init();
+  //ui.bufferWidget->init();
 
   show();
 
@@ -218,7 +218,7 @@ void MainWin::setupChatMonitor() {
   VerticalDock *dock = new VerticalDock(tr("Chat Monitor"), this);
   dock->setObjectName("ChatMonitorDock");
 
-  ChatWidget *chatWidget = new ChatWidget(this);
+  ChatWidget *chatWidget = new ChatWidget(0, this);
   chatWidget->show();
   dock->setWidget(chatWidget);
   dock->show();
@@ -227,13 +227,7 @@ void MainWin::setupChatMonitor() {
   if(!buf)
     return;
 
-  chatWidget->init(BufferId(0));
-  QList<ChatLineOld *> lines;
-  QList<AbstractUiMsg *> msgs = buf->contents();
-  foreach(AbstractUiMsg *msg, msgs) {
-    lines.append(dynamic_cast<ChatLineOld*>(msg));
-  }
-  chatWidget->setContents(lines);
+  chatWidget->setContents(buf->contents());
   connect(buf, SIGNAL(msgAppended(AbstractUiMsg *)), chatWidget, SLOT(appendMsg(AbstractUiMsg *)));
   connect(buf, SIGNAL(msgPrepended(AbstractUiMsg *)), chatWidget, SLOT(prependMsg(AbstractUiMsg *)));
 

@@ -23,6 +23,7 @@
 
 #include <QtGui>
 
+#include "abstractbuffercontainer.h"
 #include "types.h"
 
 class ChatLineOld;
@@ -39,11 +40,11 @@ class AbstractUiMsg;
  * Because we use this as a custom widget in Qt Designer, we cannot use a constructor that takes custom
  * parameters. Instead, it is mandatory to call init() before using this widget.
  */
-class ChatWidget : public QAbstractScrollArea {
+class ChatWidget : public QAbstractScrollArea, public AbstractChatView {
   Q_OBJECT
 
   public:
-    ChatWidget(QWidget *parent = 0);
+    ChatWidget(BufferId, QWidget *parent = 0);
     ~ChatWidget();
     void init(BufferId id);
 
@@ -60,7 +61,7 @@ class ChatWidget : public QAbstractScrollArea {
     void appendChatLine(ChatLineOld *);
     void prependChatLines(QList<ChatLineOld *>);
     void appendChatLines(QList<ChatLineOld *>);
-    void setContents(QList<ChatLineOld *>);
+    void setContents(const QList<AbstractUiMsg *> &);
 
   protected:
     virtual void resizeEvent(QResizeEvent *event);

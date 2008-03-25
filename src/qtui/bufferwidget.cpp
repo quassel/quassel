@@ -19,136 +19,42 @@
  ***************************************************************************/
 
 #include "bufferwidget.h"
-#include "buffer.h"
 #include "chatline.h"
 #include "chatline-old.h"
+#include "chatview.h"
 #include "chatwidget.h"
 #include "settings.h"
 #include "client.h"
-#include "identity.h"
-#include "network.h"
-#include "networkmodel.h"
 
 #include "global.h"
 
-BufferWidget::BufferWidget(QWidget *parent)
-  : AbstractItemView(parent),
-    _currentBuffer(0)
-{
+BufferWidget::BufferWidget(QWidget *parent) : AbstractBufferContainer(parent) {
   ui.setupUi(this);
 }
 
 BufferWidget::~BufferWidget() {
+
 }
 
-void BufferWidget::init() {
-}
-
-void BufferWidget::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end) {
-  Q_ASSERT(model());
-  if(!parent.isValid()) {
-    // ok this means that whole networks are about to be removed
-    // we can't determine which buffers are affect, so we hope that all nets are removed
-    // this is the most common case (for example disconnecting from the core or terminating the clint)
-    if(model()->rowCount(parent) != end - start + 1)
-      return;
-
-    ChatWidget *chatWidget;
-    QHash<BufferId, ChatWidget *>::iterator iter = _chatWidgets.begin();
-    while(iter != _chatWidgets.end()) {
-      chatWidget = *iter;
-      iter = _chatWidgets.erase(iter);
-      ui.stackedWidget->removeWidget(chatWidget);
-      chatWidget->deleteLater();
-    }
-    
-  } else {
-    // check if there are explicitly buffers removed
-    for(int i = start; i <= end; i++) {
-      QVariant variant = parent.child(i,0).data(NetworkModel::BufferIdRole);
-      if(!variant.isValid())
-        continue;
-      
-      BufferId bufferId = qVariantValue<BufferId>(variant);
-      removeBuffer(bufferId);
-    }
-  }
-}
-
-void BufferWidget::removeBuffer(BufferId bufferId) {
-  if(!_chatWidgets.contains(bufferId))
-    return;
-
-  if(Client::buffer(bufferId)) Client::buffer(bufferId)->setVisible(false);
-  ChatWidget *chatWidget = _chatWidgets.take(bufferId);
-  ui.stackedWidget->removeWidget(chatWidget);
-  chatWidget->deleteLater();
-}
-
-void BufferWidget::currentChanged(const QModelIndex &current, const QModelIndex &previous) {
-  BufferId newBufferId = current.data(NetworkModel::BufferIdRole).value<BufferId>();
-  BufferId oldBufferId = previous.data(NetworkModel::BufferIdRole).value<BufferId>();
-  if(newBufferId != oldBufferId)
-    setCurrentBuffer(newBufferId);
-}
-
-void BufferWidget::setCurrentBuffer(BufferId bufferId) {
-  if(!bufferId.isValid()) {
-    ui.stackedWidget->setCurrentWidget(ui.page);
-    return;
-  }
-  
-  ChatWidget *chatWidget = 0;
-  ChatView *chatView = 0;
-  Buffer *buf = Client::buffer(bufferId);
-  if(!buf) {
-    qWarning() << "BufferWidget::setBuffer(BufferId): Can't show unknown Buffer:" << bufferId;
-    return;
-  }
-  Buffer *prevBuffer = Client::buffer(currentBuffer());
-  if(prevBuffer) prevBuffer->setVisible(false);
+AbstractChatView *BufferWidget::createChatView(BufferId id) {
+  AbstractChatView *chatView;
   if(Global::SPUTDEV) {
-    if(_chatViews.contains(bufferId)) {
-      chatView = _chatViews[bufferId];
-    } else {
-      chatView = new ChatView(buf, this);
-      //chatView->init(bufferId);
-      QList<ChatLine *> lines;
-      QList<AbstractUiMsg *> msgs = buf->contents();
-      foreach(AbstractUiMsg *msg, msgs) {
-        lines.append(dynamic_cast<ChatLine *>(msg));
-      }
-      chatView->setContents(lines);
-      connect(buf, SIGNAL(msgAppended(AbstractUiMsg *)), chatView, SLOT(appendMsg(AbstractUiMsg *)));
-      connect(buf, SIGNAL(msgPrepended(AbstractUiMsg *)), chatView, SLOT(prependMsg(AbstractUiMsg *)));
-      _chatViews[bufferId] = chatView;
-      ui.stackedWidget->addWidget(chatView);
-      chatView->setFocusProxy(this);
-    }
-    _currentBuffer = bufferId;
-    ui.stackedWidget->setCurrentWidget(chatView);
+    chatView = new ChatView(Client::buffer(id), this);
   } else {
-    if(_chatWidgets.contains(bufferId)) {
-      chatWidget = _chatWidgets[bufferId];
-    } else {
-      chatWidget = new ChatWidget(this);
-      chatWidget->init(bufferId);
-      QList<ChatLineOld *> lines;
-      QList<AbstractUiMsg *> msgs = buf->contents();
-      foreach(AbstractUiMsg *msg, msgs) {
-        lines.append(dynamic_cast<ChatLineOld*>(msg));
-      }
-      chatWidget->setContents(lines);
-      connect(buf, SIGNAL(msgAppended(AbstractUiMsg *)), chatWidget, SLOT(appendMsg(AbstractUiMsg *)));
-      connect(buf, SIGNAL(msgPrepended(AbstractUiMsg *)), chatWidget, SLOT(prependMsg(AbstractUiMsg *)));
-      _chatWidgets[bufferId] = chatWidget;
-      ui.stackedWidget->addWidget(chatWidget);
-      chatWidget->setFocusProxy(this);
-    }
-    _currentBuffer = bufferId;
-    ui.stackedWidget->setCurrentWidget(chatWidget);
+    chatView = new ChatWidget(id, this);
   }
-  buf->setVisible(true);
-  setFocus();
+  ui.stackedWidget->addWidget(dynamic_cast<QWidget *>(chatView));
+  dynamic_cast<QWidget *>(chatView)->setFocusProxy(this);
+  return chatView;
+}
+
+void BufferWidget::removeChatView(AbstractChatView *view) {
+  ui.stackedWidget->removeWidget(dynamic_cast<QWidget *>(view));
+  dynamic_cast<QWidget *>(view)->deleteLater();
+}
+
+void BufferWidget::showChatView(AbstractChatView *view) {
+  if(!view) ui.stackedWidget->setCurrentWidget(ui.page);
+  else ui.stackedWidget->setCurrentWidget(dynamic_cast<QWidget *>(view));
 }
 

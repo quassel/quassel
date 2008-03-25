@@ -234,16 +234,20 @@ void BufferView::showContextMenu(const QPoint &pos) {
       network->requestDisconnect();
   } else
   if(result == joinChannelAction) {
+    // FIXME no QInputDialog in Qtopia
+#ifndef Q_WS_QWS
     bool ok;
     QString channelName = QInputDialog::getText(this, tr("Join Channel"), 
                                                 tr("Input channel name:"),QLineEdit::Normal,
                                                 QDir::home().dirName(), &ok);
+
     if (ok && !channelName.isEmpty()) {
       BufferInfo bufferInfo = index.child(0,0).data(NetworkModel::BufferInfoRole).value<BufferInfo>();
       if(bufferInfo.isValid()) {
         Client::instance()->userInput(bufferInfo, QString("/J %1").arg(channelName));
       }
     }
+#endif
   } else
   if(result == joinBufferAction) {
     Client::instance()->userInput(bufferInfo, QString("/JOIN %1").arg(channelname));
