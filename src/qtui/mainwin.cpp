@@ -56,6 +56,7 @@
 MainWin::MainWin(QtUi *_gui, QWidget *parent)
   : QMainWindow(parent),
     gui(_gui),
+    systray(new QSystemTrayIcon(this)),
     activeTrayIcon(":/icons/quassel-icon-active.png"),
     inactiveTrayIcon(":/icons/quassel-icon.png"),
     trayIconActive(false),
@@ -272,7 +273,6 @@ void MainWin::setupSystray() {
   connect(timer, SIGNAL(timeout()), this, SLOT(makeTrayIconBlink()));
   connect(Client::instance(), SIGNAL(messageReceived(const Message &)), this, SLOT(receiveMessage(const Message &)));
 
-  systray = new QSystemTrayIcon(this);
   systray->setIcon(inactiveTrayIcon);
 //  systray->setToolTip("left click to minimize the quassel client to tray");
 //  systray->setToolTip(toolTip);
