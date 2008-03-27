@@ -509,6 +509,7 @@ void Client::receiveBacklog(BufferId bufferId, const QVariantList &msgs) {
   Message msg;
   while(msgIter != msgIterEnd) {
     msg = (*msgIter).value<Message>();
+    checkForHighlight(msg);
     buffer_->prependMsg(msg);
     msgIter++;
   }
