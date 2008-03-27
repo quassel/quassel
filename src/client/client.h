@@ -41,6 +41,7 @@ class NetworkModel;
 class BufferModel;
 class BufferSyncer;
 class ClientBacklogManager;
+class BufferViewManager;
 class IrcUser;
 class IrcChannel;
 class SignalProxy;
@@ -96,7 +97,8 @@ public:
   static inline SignalProxy *signalProxy() { return instance()->_signalProxy; }
 
   static inline ClientBacklogManager *backlogManager() { return instance()->_backlogManager; }
-
+  static inline BufferViewManager *bufferViewManager() { return instance()->_bufferViewManager; }
+  
   static AccountId currentCoreAccount();
 
   static AbstractUiMsg *layoutMsg(const Message &);
@@ -209,6 +211,7 @@ private:
   BufferModel * _bufferModel;
   BufferSyncer * _bufferSyncer;
   ClientBacklogManager *_backlogManager;
+  BufferViewManager *_bufferViewManager;
 
   ClientMode clientMode;
 

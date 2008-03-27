@@ -18,47 +18,43 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _SETTINGSDLG_H_
-#define _SETTINGSDLG_H_
+#include "bufferviewconfig.h"
 
-#include <QtGui>
-#include "ui_settingsdlg.h"
+BufferViewConfig::BufferViewConfig(int bufferViewId, QObject *parent)
+  : SyncableObject(parent),
+    _bufferViewId(bufferViewId)
+{
+  setObjectName(QString::number(bufferViewId));
+}
 
-#include "settingspage.h"
+void BufferViewConfig::setBufferViewName(const QString &bufferViewName) {
+  if(_bufferViewName == bufferViewName)
+    return;
 
-class SettingsDlg : public QDialog {
-  Q_OBJECT
-  public:
-    SettingsDlg(QWidget *parent = 0);
-    void registerSettingsPage(SettingsPage *);
-    void unregisterSettingsPage(SettingsPage *);
+  _bufferViewName = bufferViewName;
+  emit bufferViewNameSet(bufferViewName);
+}
 
-    SettingsPage *currentPage() const;
+void BufferViewConfig::setNetworkId(const NetworkId &networkId) {
+  if(_networkId == networkId)
+    return;
 
-    //QSize sizeHint() const;
+  _networkId = networkId;
+  emit networkIdSet(networkId);
+}
 
-  public slots:
-    void selectPage(const QString &category, const QString &title);
+void BufferViewConfig::setAddNewBuffersAutomatically(bool addNewBuffersAutomatically) {
+  if(_addNewBuffersAutomatically == addNewBuffersAutomatically)
+    return;
 
-  private slots:
-    void itemSelected();
-    void buttonClicked(QAbstractButton *);
-    bool applyChanges();
-    void undoChanges();
-    void reload();
-    void loadDefaults();
-    void setButtonStates();
+  _addNewBuffersAutomatically = addNewBuffersAutomatically;
+  emit addNewBuffersAutomaticallySet(addNewBuffersAutomatically);
+}
 
-  private:
-    Ui::SettingsDlg ui;
+void BufferViewConfig::setSortAlphabetically(bool sortAlphabetically) {
+  if(_sortAlphabetically == sortAlphabetically)
+    return;
 
-    SettingsPage *_currentPage;
-    QHash<QString, SettingsPage *> pages;
-    QHash<SettingsPage *, QTreeWidgetItem *> treeItems;
-    QHash<SettingsPage *, bool> pageIsLoaded;
-
-    //QSize recommendedSize;
-};
-
-
-#endif
+  _sortAlphabetically = sortAlphabetically;
+  emit sortAlphabeticallySet(sortAlphabetically);
+}

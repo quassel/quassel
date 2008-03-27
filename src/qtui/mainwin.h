@@ -123,7 +123,6 @@ class MainWin : public QMainWindow {
     QString currentProfile;
 
     QList<QDockWidget *> netViews;
-    QDockWidget *nickDock;
     NickListWidget *nickListWidget;
 
     QAction *actionEditNetworks;

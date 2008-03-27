@@ -1,0 +1,163 @@
+<ui version="4.0" >
+ <class>BufferViewSettingsPage</class>
+ <widget class="QWidget" name="BufferViewSettingsPage" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>507</width>
+    <height>485</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Form</string>
+  </property>
+  <layout class="QHBoxLayout" >
+   <item>
+    <layout class="QVBoxLayout" >
+     <item>
+      <widget class="QListWidget" name="bufferViewList" />
+     </item>
+     <item>
+      <widget class="QPushButton" name="renameBufferView" >
+       <property name="sizePolicy" >
+        <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text" >
+        <string>Re&amp;name...</string>
+       </property>
+       <property name="icon" >
+        <iconset resource="../../icons/icons.qrc" >:/16x16/actions/oxygen/16x16/actions/edit-rename.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="addBufferView" >
+       <property name="sizePolicy" >
+        <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text" >
+        <string>&amp;Add...</string>
+       </property>
+       <property name="icon" >
+        <iconset resource="../../icons/icons.qrc" >:/16x16/actions/oxygen/16x16/actions/list-add.png</iconset>
+       </property>
+       <property name="iconSize" >
+        <size>
+         <width>16</width>
+         <height>16</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="deleteBufferView" >
+       <property name="sizePolicy" >
+        <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text" >
+        <string>De&amp;lete</string>
+       </property>
+       <property name="icon" >
+        <iconset resource="../../icons/icons.qrc" >:/16x16/actions/oxygen/16x16/actions/edit-delete.png</iconset>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox" >
+     <property name="title" >
+      <string>Buffer View  Settings</string>
+     </property>
+     <layout class="QVBoxLayout" >
+      <item>
+       <layout class="QHBoxLayout" >
+        <item>
+         <widget class="QLabel" name="label" >
+          <property name="text" >
+           <string>Show only Buffers from:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="comboBox" />
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="groupBox_2" >
+        <property name="title" >
+         <string>Restrict Buffers to:</string>
+        </property>
+        <layout class="QVBoxLayout" >
+         <item>
+          <widget class="QCheckBox" name="checkBox" >
+           <property name="text" >
+            <string>Status Buffers</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="checkBox_2" >
+           <property name="text" >
+            <string>Channel Buffers</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="checkBox_3" >
+           <property name="text" >
+            <string>Query Buffers</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="checkBox_4" >
+        <property name="text" >
+         <string>Add new Buffers automatically</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="checkBox_5" >
+        <property name="text" >
+         <string>Sort Buffers alphabetically</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer>
+        <property name="orientation" >
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" >
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="../../icons/icons.qrc" />
+ </resources>
+ <connections/>
+</ui>

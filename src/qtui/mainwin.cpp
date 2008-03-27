@@ -30,6 +30,7 @@
 #include "networkmodel.h"
 #include "buffermodel.h"
 #include "nicklistwidget.h"
+#include "nicklistdock.h"
 #include "settingsdlg.h"
 #include "settingspagedlg.h"
 #include "signalproxy.h"
@@ -43,6 +44,7 @@
 #include "selectionmodelsynchronizer.h"
 #include "mappedselectionmodel.h"
 
+#include "settingspages/bufferviewsettingspage.h"
 #include "settingspages/colorsettingspage.h"
 #include "settingspages/fontssettingspage.h"
 #include "settingspages/generalsettingspage.h"
@@ -193,22 +195,21 @@ void MainWin::setupSettingsDlg() {
   //Category: General
   settingsDlg->registerSettingsPage(new IdentitiesSettingsPage(settingsDlg));
   settingsDlg->registerSettingsPage(new NetworksSettingsPage(settingsDlg));
+  // settingsDlg->registerSettingsPage(new BufferViewSettingsPage(settingsDlg));
 }
 
 void MainWin::setupNickWidget() {
   // create nick dock
-  nickDock = new QDockWidget(tr("Nicks"), this);
+  NickListDock *nickDock = new NickListDock(tr("Nicks"), this);
   nickDock->setObjectName("NickDock");
   nickDock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
 
   nickListWidget = new NickListWidget(nickDock);
   nickDock->setWidget(nickListWidget);
 
-  nickListWidget->setShowDockAction(nickDock->toggleViewAction());
-  connect(nickDock->toggleViewAction(), SIGNAL(toggled(bool)), nickListWidget, SLOT(changedVisibility(bool)));
   addDockWidget(Qt::RightDockWidgetArea, nickDock);
-
-  ui.menuViews->addAction(nickListWidget->showNickListAction());
+  ui.menuViews->addAction(nickDock->toggleViewAction());
+  connect(nickDock->toggleViewAction(), SIGNAL(triggered(bool)), nickListWidget, SLOT(showWidget(bool)));
 
   // attach the NickListWidget to the BufferModel and the default selection
   nickListWidget->setModel(Client::bufferModel());

@@ -18,47 +18,21 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _SETTINGSDLG_H_
-#define _SETTINGSDLG_H_
+#include "bufferviewconfig.h"
 
-#include <QtGui>
-#include "ui_settingsdlg.h"
+#ifndef COREBUFFERVIEWCONFIG_H
+#define COREBUFFERVIEWCONFIG_H
 
-#include "settingspage.h"
-
-class SettingsDlg : public QDialog {
+class CoreBufferViewConfig : public BufferViewConfig {
   Q_OBJECT
-  public:
-    SettingsDlg(QWidget *parent = 0);
-    void registerSettingsPage(SettingsPage *);
-    void unregisterSettingsPage(SettingsPage *);
 
-    SettingsPage *currentPage() const;
+public:
+  CoreBufferViewConfig(int bufferViewId, QObject *parent = 0);
 
-    //QSize sizeHint() const;
+  virtual const QMetaObject *syncMetaObject() const { return &BufferViewConfig::staticMetaObject; }
 
-  public slots:
-    void selectPage(const QString &category, const QString &title);
-
-  private slots:
-    void itemSelected();
-    void buttonClicked(QAbstractButton *);
-    bool applyChanges();
-    void undoChanges();
-    void reload();
-    void loadDefaults();
-    void setButtonStates();
-
-  private:
-    Ui::SettingsDlg ui;
-
-    SettingsPage *_currentPage;
-    QHash<QString, SettingsPage *> pages;
-    QHash<SettingsPage *, QTreeWidgetItem *> treeItems;
-    QHash<SettingsPage *, bool> pageIsLoaded;
-
-    //QSize recommendedSize;
+public slots:
+  virtual void requestSetBufferViewName(const QString &bufferViewName);
 };
 
-
-#endif
+#endif // COREBUFFERVIEWCONFIG_H

@@ -18,47 +18,19 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _SETTINGSDLG_H_
-#define _SETTINGSDLG_H_
+#ifndef NICKLISTDOCK_H
+#define NICKLISTDOCK_H
 
-#include <QtGui>
-#include "ui_settingsdlg.h"
+#include <QDockWidget>
 
-#include "settingspage.h"
-
-class SettingsDlg : public QDialog {
+class NickListDock : public QDockWidget {
   Q_OBJECT
-  public:
-    SettingsDlg(QWidget *parent = 0);
-    void registerSettingsPage(SettingsPage *);
-    void unregisterSettingsPage(SettingsPage *);
 
-    SettingsPage *currentPage() const;
-
-    //QSize sizeHint() const;
-
-  public slots:
-    void selectPage(const QString &category, const QString &title);
-
-  private slots:
-    void itemSelected();
-    void buttonClicked(QAbstractButton *);
-    bool applyChanges();
-    void undoChanges();
-    void reload();
-    void loadDefaults();
-    void setButtonStates();
-
-  private:
-    Ui::SettingsDlg ui;
-
-    SettingsPage *_currentPage;
-    QHash<QString, SettingsPage *> pages;
-    QHash<SettingsPage *, QTreeWidgetItem *> treeItems;
-    QHash<SettingsPage *, bool> pageIsLoaded;
-
-    //QSize recommendedSize;
+public:
+  NickListDock(const QString &title, QWidget *parent = 0);
+  ~NickListDock();
+  
+  virtual bool eventFilter(QObject *watched, QEvent *event);
 };
 
-
-#endif
+#endif //NICKLISTDOCK_H

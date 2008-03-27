@@ -28,33 +28,20 @@
 #include "nickviewfilter.h"
 #include "qtuisettings.h"
 
+#include <QDockWidget>
+
 NickListWidget::NickListWidget(QWidget *parent)
-  : AbstractItemView(parent),
-    _showNickListAction(new QAction(tr("Nicks"), this)),
-    _showDockAction(0)
+  : AbstractItemView(parent)
 {
-  _showNickListAction->setCheckable(true);
-  QtUiSettings s;
-  _showNickListAction->setChecked(s.value("ShowNickListAction", QVariant(true)).toBool());
   ui.setupUi(this);
-  connect(_showNickListAction, SIGNAL(toggled(bool)), this, SLOT(showWidget(bool)));
 }
 
-NickListWidget::~NickListWidget() {
-  QtUiSettings s;
-  s.setValue("ShowNickListAction", showNickListAction()->isChecked());
-}
-
-void NickListWidget::setShowDockAction(QAction *action) {
-  _showDockAction = action;
-}
-
-QAction *NickListWidget::showDockAction() const {
-  return _showDockAction;
-}
-
-QAction *NickListWidget::showNickListAction() const {
-  return _showNickListAction;
+QDockWidget *NickListWidget::dock() const {
+  QDockWidget *dock = qobject_cast<QDockWidget *>(parent());
+  if(dock)
+    return dock;
+  else
+    return 0;
 }
 
 void NickListWidget::showWidget(bool visible) {
@@ -62,21 +49,15 @@ void NickListWidget::showWidget(bool visible) {
     return;
 
   QModelIndex currentIndex = selectionModel()->currentIndex();
-  if(currentIndex.data(NetworkModel::BufferTypeRole) == BufferInfo::ChannelBuffer && showDockAction()) {
-    if(visible  != showDockAction()->isChecked()) {
-      // show or hide
-      showDockAction()->trigger();
-    }
-  }
-}
+  if(currentIndex.data(NetworkModel::BufferTypeRole) == BufferInfo::ChannelBuffer) {
+    QDockWidget *dock_ = dock();
+    if(!dock_)
+      return;
 
-void NickListWidget::changedVisibility(bool visible) {
-  if(!selectionModel())
-    return;
-
-  QModelIndex currentIndex = selectionModel()->currentIndex();
-  if(currentIndex.data(NetworkModel::BufferTypeRole) == BufferInfo::ChannelBuffer && !visible) {
-    showNickListAction()->setChecked(false);
+    if(visible)
+      dock_->show();
+    else
+      dock_->close();
   }
 }
 
@@ -85,19 +66,19 @@ void NickListWidget::currentChanged(const QModelIndex &current, const QModelInde
   BufferId newBufferId = current.data(NetworkModel::BufferIdRole).value<BufferId>();
   BufferId oldBufferId = previous.data(NetworkModel::BufferIdRole).value<BufferId>();
 
+
   if(bufferType != BufferInfo::ChannelBuffer) {
     ui.stackedWidget->setCurrentWidget(ui.emptyPage);
-    if(showDockAction() && showDockAction()->isChecked()) {
-      // hide
-      showDockAction()->trigger();
+    QDockWidget *dock_ = dock();
+    if(dock_) {
+      dock_->close();
     }
     return;
   } else {
-    if(showNickListAction()->isChecked())
-      if(showDockAction()&& !showDockAction()->isChecked()) {
-        // show
-        showDockAction()->trigger();
-      }
+    QDockWidget *dock_ = dock();
+    if(dock_ && dock_->toggleViewAction()->isChecked()) {
+      dock_->show();
+    }
   }
 
   if(newBufferId == oldBufferId)

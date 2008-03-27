@@ -18,47 +18,47 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _SETTINGSDLG_H_
-#define _SETTINGSDLG_H_
+#ifndef BUFFERVIEWMANAGER_H
+#define BUFFERVIEWMANAGER_H
 
-#include <QtGui>
-#include "ui_settingsdlg.h"
+#include "syncableobject.h"
 
-#include "settingspage.h"
+#include <QList>
+#include <QHash>
 
-class SettingsDlg : public QDialog {
+class BufferViewConfig;
+class SignalProxy;
+
+class BufferViewManager : public SyncableObject {
   Q_OBJECT
-  public:
-    SettingsDlg(QWidget *parent = 0);
-    void registerSettingsPage(SettingsPage *);
-    void unregisterSettingsPage(SettingsPage *);
 
-    SettingsPage *currentPage() const;
+public:
+  BufferViewManager(SignalProxy *proxy, QObject *parent = 0);
 
-    //QSize sizeHint() const;
+  inline QList<BufferViewConfig *> bufferViewConfigs() const { return _bufferViewConfigs.values(); }
+  BufferViewConfig *bufferViewConfig(int bufferViewId) const;
 
-  public slots:
-    void selectPage(const QString &category, const QString &title);
+public slots:
+  void addBufferViewConfig(BufferViewConfig *config);
+  void addBufferViewConfig(int bufferViewConfigId);
+  inline void newBufferViewConfig(int bufferViewConfigId)  { addBufferViewConfig(bufferViewConfigId); }
 
-  private slots:
-    void itemSelected();
-    void buttonClicked(QAbstractButton *);
-    bool applyChanges();
-    void undoChanges();
-    void reload();
-    void loadDefaults();
-    void setButtonStates();
+  QVariantList initBufferViewIds() const;
+  void initSetBufferViewIds(const QVariantList bufferViewIds);
 
-  private:
-    Ui::SettingsDlg ui;
+  virtual inline void requestCreateBufferView(const QString &bufferViewName) { emit createBufferViewRequested(bufferViewName); }
 
-    SettingsPage *_currentPage;
-    QHash<QString, SettingsPage *> pages;
-    QHash<SettingsPage *, QTreeWidgetItem *> treeItems;
-    QHash<SettingsPage *, bool> pageIsLoaded;
+signals:
+  void bufferViewConfigAdded(int bufferViewConfigId);
+  void createBufferViewRequested(const QString &bufferViewName);
 
-    //QSize recommendedSize;
+protected:
+  typedef QHash<int, BufferViewConfig *> BufferViewConfigHash;
+  inline const BufferViewConfigHash &bufferViewConfigHash() { return _bufferViewConfigs; }
+
+private:
+  BufferViewConfigHash _bufferViewConfigs;
+  SignalProxy *_proxy;
 };
 
-
-#endif
+#endif // BUFFERVIEWMANAGER_H

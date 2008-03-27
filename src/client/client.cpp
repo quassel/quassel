@@ -23,6 +23,7 @@
 #include "bufferinfo.h"
 #include "buffersyncer.h"
 #include "clientbacklogmanager.h"
+#include "bufferviewmanager.h"
 #include "global.h"
 #include "identity.h"
 #include "ircchannel.h"
@@ -66,6 +67,7 @@ Client::Client(QObject *parent)
     _bufferModel(0),
     _bufferSyncer(0),
     _backlogManager(new ClientBacklogManager(this)),
+    _bufferViewManager(0),
     _connectedToCore(false),
     _syncedToCore(false)
 {
@@ -307,6 +309,9 @@ void Client::setSyncedToCore() {
 
   // attach backlog manager
   signalProxy()->synchronize(backlogManager());
+
+  // create a new BufferViewManager
+  _bufferViewManager = new BufferViewManager(signalProxy(), this);
   
   _syncedToCore = true;
   emit connected();
@@ -332,6 +337,12 @@ void Client::disconnectFromCore() {
     _bufferSyncer->deleteLater();
     _bufferSyncer = 0;
   }
+
+  if(_bufferViewManager) {
+    _bufferViewManager->deleteLater();
+    _bufferViewManager = 0;
+  }
+  
   _networkModel->clear();
 
   QHash<BufferId, Buffer *>::iterator bufferIter =  _buffers.begin();

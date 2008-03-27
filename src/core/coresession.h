@@ -28,6 +28,7 @@
 
 class BufferSyncer;
 class CoreBacklogManager;
+class CoreBufferViewManager;
 class Identity;
 class NetworkConnection;
 class Network;
@@ -181,6 +182,7 @@ private:
 
   BufferSyncer *_bufferSyncer;
   CoreBacklogManager *_backlogManager;
+  CoreBufferViewManager *_bufferViewManager;
 
   QScriptEngine *scriptEngine;
 

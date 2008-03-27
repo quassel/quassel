@@ -27,6 +27,7 @@
 #include "signalproxy.h"
 #include "buffersyncer.h"
 #include "corebacklogmanager.h"
+#include "corebufferviewmanager.h"
 #include "storage.h"
 
 #include "network.h"
@@ -43,6 +44,7 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
     _signalProxy(new SignalProxy(SignalProxy::Server, 0, this)),
     _bufferSyncer(new BufferSyncer(this)),
     _backlogManager(new CoreBacklogManager(this)),
+    _bufferViewManager(new CoreBufferViewManager(_signalProxy, this)),
     scriptEngine(new QScriptEngine(this))
 {
 

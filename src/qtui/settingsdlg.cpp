@@ -65,7 +65,7 @@ void SettingsDlg::registerSettingsPage(SettingsPage *sp) {
   QTreeWidgetItem *item = new QTreeWidgetItem(cat, QStringList(sp->title()));
   treeItems[sp] = item;
   pages[QString("%1$%2").arg(sp->category(), sp->title())] = sp;
-  sp->load();
+  pageIsLoaded[sp] = false;
   // TESTING
   // selectPage(sp->category(), sp->title());
 }
@@ -77,6 +77,10 @@ void SettingsDlg::selectPage(const QString &cat, const QString &title) {
     ui.settingsStack->setCurrentIndex(0);
     ui.settingsTree->setCurrentItem(0);
     return;
+  }
+  if(!pageIsLoaded[sp]) {
+    sp->load();
+    pageIsLoaded[sp] = true;
   }
   if(sp != currentPage() && currentPage() != 0 && currentPage()->hasChanged()) {
     int ret = QMessageBox::warning(this, tr("Save changes"),

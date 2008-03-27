@@ -18,47 +18,40 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _SETTINGSDLG_H_
-#define _SETTINGSDLG_H_
+#include "nicklistdock.h"
+#include "qtuisettings.h"
 
-#include <QtGui>
-#include "ui_settingsdlg.h"
+#include <QAction>
+#include <QDebug>
+#include <QEvent>
+#include <QAbstractButton>
 
-#include "settingspage.h"
+NickListDock::NickListDock(const QString &title, QWidget *parent)
+  : QDockWidget(title, parent)
+{
+  QAction *toggleView = toggleViewAction();
+  disconnect(toggleView, SIGNAL(triggered(bool)), this, 0);
 
-class SettingsDlg : public QDialog {
-  Q_OBJECT
-  public:
-    SettingsDlg(QWidget *parent = 0);
-    void registerSettingsPage(SettingsPage *);
-    void unregisterSettingsPage(SettingsPage *);
+  foreach(QAbstractButton *button, findChildren<QAbstractButton *>()) {
+    if(disconnect(button, SIGNAL(clicked()), this, SLOT(close())))
+      connect(button, SIGNAL(clicked()), toggleView, SLOT(trigger()));
+  }
 
-    SettingsPage *currentPage() const;
+  installEventFilter(this);
 
-    //QSize sizeHint() const;
+  toggleView->setChecked(QtUiSettings().value("ShowNickList", QVariant(true)).toBool());
+}
 
-  public slots:
-    void selectPage(const QString &category, const QString &title);
+NickListDock::~NickListDock() {
+  QtUiSettings().setValue("ShowNickList", toggleViewAction()->isChecked());
+}
 
-  private slots:
-    void itemSelected();
-    void buttonClicked(QAbstractButton *);
-    bool applyChanges();
-    void undoChanges();
-    void reload();
-    void loadDefaults();
-    void setButtonStates();
+bool NickListDock::eventFilter(QObject *watched, QEvent *event) {
+  Q_UNUSED(watched)
+  if(event->type() != QEvent::Hide && event->type() != QEvent::Show)
+    return false;
 
-  private:
-    Ui::SettingsDlg ui;
+  emit visibilityChanged(event->type() == QEvent::Show);
 
-    SettingsPage *_currentPage;
-    QHash<QString, SettingsPage *> pages;
-    QHash<SettingsPage *, QTreeWidgetItem *> treeItems;
-    QHash<SettingsPage *, bool> pageIsLoaded;
-
-    //QSize recommendedSize;
-};
-
-
-#endif
+  return true;
+}
