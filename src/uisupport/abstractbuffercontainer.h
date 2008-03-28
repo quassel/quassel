@@ -73,7 +73,7 @@ class AbstractBufferContainer : public AbstractItemView {
 class AbstractChatView {
 
   public:
-    virtual ~AbstractChatView() = 0;
+    virtual ~AbstractChatView() {};
     virtual void appendMsg(AbstractUiMsg *msg) = 0;
     virtual void prependMsg(AbstractUiMsg *msg) = 0;
     virtual void setContents(const QList<AbstractUiMsg *> &contents) = 0;
