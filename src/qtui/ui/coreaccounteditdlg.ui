@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>395</width>
-    <height>242</height>
+    <width>514</width>
+    <height>534</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -122,20 +122,107 @@
          </layout>
         </item>
         <item>
-         <spacer>
-          <property name="orientation" >
-           <enum>Qt::Vertical</enum>
+         <widget class="QGroupBox" name="useProxy" >
+          <property name="title" >
+           <string>Use a proxy:</string>
           </property>
-          <property name="sizeHint" >
-           <size>
-            <width>20</width>
-            <height>40</height>
-           </size>
+          <property name="checkable" >
+           <bool>true</bool>
           </property>
-         </spacer>
+          <property name="checked" >
+           <bool>false</bool>
+          </property>
+          <layout class="QGridLayout" >
+           <item row="0" column="0" colspan="2" >
+            <widget class="QLabel" name="label_5" >
+             <property name="text" >
+              <string>Proxy Type:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="2" >
+            <widget class="QComboBox" name="proxyType" >
+             <item>
+              <property name="text" >
+               <string>Socks 5</string>
+              </property>
+             </item>
+             <item>
+              <property name="text" >
+               <string>HTTP</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="1" column="0" colspan="2" >
+            <widget class="QLabel" name="label_6" >
+             <property name="text" >
+              <string>Proxy Host:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="2" >
+            <widget class="QLabel" name="label_7" >
+             <property name="text" >
+              <string>Proxy Port:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0" colspan="2" >
+            <widget class="QLineEdit" name="proxyHost" >
+             <property name="text" >
+              <string>localhost</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="2" >
+            <widget class="QSpinBox" name="proxyPort" >
+             <property name="maximum" >
+              <number>10000</number>
+             </property>
+             <property name="value" >
+              <number>8080</number>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0" >
+            <widget class="QLabel" name="label_8" >
+             <property name="text" >
+              <string>Proxy Username:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1" colspan="2" >
+            <widget class="QLineEdit" name="proxyUser" />
+           </item>
+           <item row="4" column="0" >
+            <widget class="QLabel" name="label_9" >
+             <property name="text" >
+              <string>Proxy Password:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="1" colspan="2" >
+            <widget class="QLineEdit" name="proxyPassword" />
+           </item>
+          </layout>
+         </widget>
         </item>
        </layout>
       </widget>
+     </item>
+     <item>
+      <spacer>
+       <property name="orientation" >
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" >
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
      </item>
      <item>
       <widget class="QDialogButtonBox" name="buttonBox" >
@@ -162,8 +249,8 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>263</x>
-     <y>230</y>
+     <x>275</x>
+     <y>521</y>
     </hint>
     <hint type="destinationlabel" >
      <x>157</x>
@@ -178,8 +265,8 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>331</x>
-     <y>230</y>
+     <x>343</x>
+     <y>521</y>
     </hint>
     <hint type="destinationlabel" >
      <x>286</x>
@@ -194,8 +281,8 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>30</x>
-     <y>79</y>
+     <x>63</x>
+     <y>100</y>
     </hint>
     <hint type="destinationlabel" >
      <x>92</x>
@@ -210,11 +297,11 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>39</x>
-     <y>78</y>
+     <x>63</x>
+     <y>100</y>
     </hint>
     <hint type="destinationlabel" >
-     <x>331</x>
+     <x>400</x>
      <y>144</y>
     </hint>
    </hints>
@@ -226,8 +313,8 @@
    <slot>setFocus()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>26</x>
-     <y>113</y>
+     <x>59</x>
+     <y>126</y>
     </hint>
     <hint type="destinationlabel" >
      <x>184</x>

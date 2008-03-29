@@ -195,7 +195,7 @@ void MainWin::setupSettingsDlg() {
   //Category: General
   settingsDlg->registerSettingsPage(new IdentitiesSettingsPage(settingsDlg));
   settingsDlg->registerSettingsPage(new NetworksSettingsPage(settingsDlg));
-  // settingsDlg->registerSettingsPage(new BufferViewSettingsPage(settingsDlg));
+  settingsDlg->registerSettingsPage(new BufferViewSettingsPage(settingsDlg));
 }
 
 void MainWin::setupNickWidget() {

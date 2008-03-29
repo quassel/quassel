@@ -20,6 +20,7 @@
 
 #include <QDebug>
 #include <QMessageBox>
+#include <QNetworkProxy>
 
 #include "coreconnectdlg.h"
 
@@ -454,11 +455,26 @@ CoreAccountEditDlg::CoreAccountEditDlg(AccountId id, const QVariantMap &acct, co
   existing = _existing;
   account = acct;
   if(id.isValid()) {
+    // add new settings
+    if(!acct.contains("useProxy")) {
+      account["useProxy"] = false;
+      account["proxyHost"] = "localhost";
+      account["proxyPort"] = 8080;
+      account["proxyType"] = QNetworkProxy::Socks5Proxy;
+      account["proxyUser"] = "";
+      account["proxyPassword"] = "";
+    }
     existing.removeAll(acct["AccountName"].toString());
     ui.host->setText(acct["Host"].toString());
     ui.port->setValue(acct["Port"].toUInt());
     ui.useInternal->setChecked(acct["UseInternal"].toBool());
     ui.accountName->setText(acct["AccountName"].toString());
+    ui.useProxy->setChecked(account["useProxy"].toBool());
+    ui.proxyHost->setText(account["proxyHost"].toString());
+    ui.proxyPort->setValue(account["proxyPort"].toUInt());
+    ui.proxyType->setCurrentIndex(account["proxyType"].toInt() == QNetworkProxy::Socks5Proxy ? 0 : 1);
+    ui.proxyHost->setText(account["proxyUser"].toString());
+    ui.proxyHost->setText(account["proxyPassword"].toString());
   } else {
     setWindowTitle(tr("Add Core Account"));
   }
@@ -469,6 +485,12 @@ QVariantMap CoreAccountEditDlg::accountData() {
   account["Host"] = ui.host->text().trimmed();
   account["Port"] = ui.port->value();
   account["UseInternal"] = ui.useInternal->isChecked();
+  account["useProxy"] = ui.useProxy->isChecked();
+  account["proxyHost"] = ui.proxyHost->text().trimmed();
+  account["proxyPort"] = ui.proxyPort->value();
+  account["proxyType"] = ui.proxyType->currentIndex() == 0 ? QNetworkProxy::Socks5Proxy : QNetworkProxy::HttpProxy;
+  account["proxyUser"] = ui.proxyUser->text().trimmed();
+  account["proxyPassword"] = ui.proxyPassword->text().trimmed();
   return account;
 }
 

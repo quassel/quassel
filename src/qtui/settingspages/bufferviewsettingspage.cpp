@@ -33,11 +33,33 @@ BufferViewSettingsPage::BufferViewSettingsPage(QWidget *parent)
   connect(Client::instance(), SIGNAL(coreConnectionStateChanged(bool)), this, SLOT(coreConnectionStateChanged(bool)));
 }
 
+BufferViewSettingsPage::~BufferViewSettingsPage() {
+  reset();
+}
+
 void BufferViewSettingsPage::reset() {
-  // currentId = 0;
   ui.bufferViewList->clear();
   _viewToListPos.clear();
   _listPosToView.clear();
+
+  QHash<BufferViewConfig *, BufferViewConfig *>::iterator changedConfigIter = _changedBufferViews.begin();
+  QHash<BufferViewConfig *, BufferViewConfig *>::iterator changedConfigIterEnd = _changedBufferViews.end();
+  BufferViewConfig *config;
+  while(changedConfigIter != changedConfigIterEnd) {
+    config = (*changedConfigIter);
+    changedConfigIter = _changedBufferViews.erase(changedConfigIter);
+    config->deleteLater();
+  }
+
+  QList<BufferViewConfig *>::iterator newConfigIter = _newBufferViews.begin();
+  QList<BufferViewConfig *>::iterator newConfigIterEnd = _newBufferViews.end();
+  while(newConfigIter != newConfigIterEnd) {
+    config = *newConfigIter;
+    newConfigIter = _newBufferViews.erase(newConfigIter);
+    config->deleteLater();
+  }
+
+  setChangedState(false);
 }
 
 void BufferViewSettingsPage::load() {
@@ -80,7 +102,10 @@ void BufferViewSettingsPage::addBufferView(int bufferViewId) {
 void BufferViewSettingsPage::newBufferView(const QString &bufferViewName) {
   // id's of newly created bufferviews are negative (-1, -2... -n)
   int fakeId = -1 * (_newBufferViews.count() + 1);
-  addBufferView(new BufferViewConfig(fakeId));
+  BufferViewConfig *config = new BufferViewConfig(fakeId);
+  config->setBufferViewName(bufferViewName);
+  _newBufferViews << config;
+  addBufferView(config);
 }
       
 int BufferViewSettingsPage::listPos(BufferViewConfig *config) {
@@ -122,6 +147,7 @@ void BufferViewSettingsPage::on_addBufferView_clicked() {
   BufferViewEditDlg dlg(QString(), existing, this);
   if(dlg.exec() == QDialog::Accepted) {
     newBufferView(dlg.bufferViewName());
+    changed();
   }
 }
 
@@ -142,18 +168,27 @@ void BufferViewSettingsPage::on_renameBufferView_clicked() {
   }
 
   BufferViewEditDlg dlg(config->bufferViewName(), existing, this);
-  if(dlg.exec() != QDialog::Accepted)
-    return;
-  
-  BufferViewConfig *changedConfig;
-  if(!_changedBufferViews.contains(config)) {
-    _changedBufferViews[config] = new BufferViewConfig(-1);
-    _changedBufferViews[config]->fromVariantMap(config->toVariantMap());
+  if(dlg.exec() == QDialog::Accepted) {
+    BufferViewConfig *changedConfig = cloneConfig(config);
+    changedConfig->setBufferViewName(dlg.bufferViewName());
+    changed();
   }
-  
-  changedConfig = _changedBufferViews[config];
-  changedConfig->setBufferViewName(dlg.bufferViewName());
-  changed();
+}
+
+BufferViewConfig *BufferViewSettingsPage::cloneConfig(BufferViewConfig *config) {
+  if(_changedBufferViews.contains(config))
+    return _changedBufferViews[config];
+
+  BufferViewConfig *changedConfig = new BufferViewConfig(-1, this);
+  changedConfig->fromVariantMap(config->toVariantMap());
+  return changedConfig;
+}
+
+BufferViewConfig *BufferViewSettingsPage::configForDisplay(BufferViewConfig *config) {
+  if(_changedBufferViews.contains(config))
+    return _changedBufferViews[config];
+  else
+    return config;
 }
 
 

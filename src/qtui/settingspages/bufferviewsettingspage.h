@@ -32,6 +32,7 @@ class BufferViewSettingsPage : public SettingsPage {
 
 public:
   BufferViewSettingsPage(QWidget *parent = 0);
+  ~BufferViewSettingsPage();
 
 public slots:
   void save();
@@ -64,6 +65,8 @@ private:
 
   int listPos(BufferViewConfig *config);
   int bufferViewId(int listPos);
+  BufferViewConfig *cloneConfig(BufferViewConfig *config);
+  BufferViewConfig *configForDisplay(BufferViewConfig *config);
 };
 
 

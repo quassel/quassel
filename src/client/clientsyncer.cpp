@@ -20,6 +20,8 @@
 
 #include "clientsyncer.h"
 
+#include <QNetworkProxy>
+
 #include "client.h"
 #include "global.h"
 #include "identity.h"
@@ -119,6 +121,10 @@ void ClientSyncer::connectToCore(const QVariantMap &conn) {
     //emit coreConnectionMsg(tr("Connecting..."));
     Q_ASSERT(!socket);
     QTcpSocket *sock = new QTcpSocket(Client::instance());
+    if(conn.contains("useProxy") && conn["useProxy"].toBool()) {
+      QNetworkProxy proxy((QNetworkProxy::ProxyType)conn["proxyType"].toInt(), conn["proxyHost"].toString(), conn["proxyPort"].toUInt(), conn["proxyUser"].toString(), conn["proxyPassword"].toString());
+      sock->setProxy(proxy);
+    }
     socket = sock;
     connect(sock, SIGNAL(readyRead()), this, SLOT(coreHasData()));
     connect(sock, SIGNAL(connected()), this, SLOT(coreSocketConnected()));
