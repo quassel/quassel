@@ -21,6 +21,7 @@
 #ifndef _UTIL_H_
 #define _UTIL_H_
 
+#include <QDir>
 #include <QIODevice>
 #include <QVariant>
 #include <QString>
@@ -50,5 +51,7 @@ QString decodeString(const QByteArray &input, QTextCodec *codec = 0);
 uint editingDistance(const QString &s1, const QString &s2);
 
 QByteArray methodName(const QMetaMethod &method);
+
+QDir quasselDir();
 
 #endif

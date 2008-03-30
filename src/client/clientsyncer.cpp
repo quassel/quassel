@@ -87,6 +87,7 @@ void ClientSyncer::coreHasData() {
 }
 
 void ClientSyncer::coreSocketError(QAbstractSocket::SocketError) {
+  qDebug() << "coreSocketError" << socket << socket->errorString();
   emit connectionError(socket->errorString());
   socket->deleteLater();
 }
@@ -120,7 +121,13 @@ void ClientSyncer::connectToCore(const QVariantMap &conn) {
     //clientMode = RemoteCore;
     //emit coreConnectionMsg(tr("Connecting..."));
     Q_ASSERT(!socket);
+
+#ifndef QT_NO_OPENSSL
+    QSslSocket *sock = new QSslSocket(Client::instance());
+#else
     QTcpSocket *sock = new QTcpSocket(Client::instance());
+#endif
+
     if(conn.contains("useProxy") && conn["useProxy"].toBool()) {
       QNetworkProxy proxy((QNetworkProxy::ProxyType)conn["proxyType"].toInt(), conn["proxyHost"].toString(), conn["proxyPort"].toUInt(), conn["proxyUser"].toString(), conn["proxyPassword"].toString());
       sock->setProxy(proxy);
@@ -145,7 +152,8 @@ void ClientSyncer::coreSocketConnected() {
   clientInit["ClientVersion"] = Global::quasselVersion;
   clientInit["ClientDate"] = Global::quasselDate;
   clientInit["ClientBuild"] = Global::quasselBuild; // this is a minimum, since we probably won't update for every commit
-  clientInit["UseSsl"] = false;  // FIXME implement SSL
+  clientInit["UseSsl"] = coreConnectionInfo["useSsl"];
+  
   SignalProxy::writeDataToDevice(socket, clientInit);
 }
 
@@ -172,6 +180,27 @@ void ClientSyncer::clientInitAck(const QVariantMap &msg) {
     return;
   }
   emit connectionMsg(msg["CoreInfo"].toString());
+  if(coreConnectionInfo["useSsl"].toBool()) {
+    if(msg["SupportSsl"].toBool()) {
+      QSslSocket *sslSocket = qobject_cast<QSslSocket *>(socket);
+      if(sslSocket) {
+	connect(sslSocket, SIGNAL(sslErrors(const QList<QSslError> &)), this, SLOT(sslErrors(const QList<QSslError> &)));
+	sslSocket->startClientEncryption();
+	emit encrypted(true);
+      } else {
+	emit connectionError(tr("<b>This client is built without SSL Support!</b><br />Disable the usage of SSL in the account settings."));
+	emit encrypted(false);
+	disconnectFromCore();
+	return;
+      }
+    } else {
+      emit connectionError(tr("<b>The Quassel Core you are trying to connect to does not support SSL!</b><br />If you want to connect anyways, disable the usage of SSL in the account settings."));
+      emit encrypted(false);
+      disconnectFromCore();
+      return;
+    }
+  }
+
   if(!msg["Configured"].toBool()) {
     // start wizard
     emit startCoreSetup(msg["StorageBackends"].toList());
@@ -330,3 +359,12 @@ void ClientSyncer::checkSyncState() {
   }
 }
 
+void ClientSyncer::sslErrors(const QList<QSslError> &errors) {
+  qDebug() << "SSL Errors:";
+  foreach(QSslError err, errors)
+    qDebug() << "  " << err;
+
+  QSslSocket *socket = qobject_cast<QSslSocket *>(sender());
+  if(socket)
+    socket->ignoreSslErrors();
+}

@@ -104,10 +104,7 @@
            </widget>
           </item>
           <item row="3" column="1" colspan="2" >
-           <widget class="QCheckBox" name="useSSL" >
-            <property name="enabled" >
-             <bool>false</bool>
-            </property>
+           <widget class="QCheckBox" name="useSsl" >
             <property name="text" >
              <string>Use secure connection (SSL)</string>
             </property>

@@ -138,3 +138,18 @@ QByteArray methodName(const QMetaMethod &method) {
   QByteArray sig(method.signature());
   return sig.left(sig.indexOf("("));
 }
+
+QDir quasselDir() {
+  // kinda ugly, but I currently see no other way to do that
+#ifdef Q_OS_WIN32
+  QString quasselDir = QDir::homePath() + qgetenv("APPDATA") + "/quassel/";
+#else
+  QString quasselDir = QDir::homePath() + "/.quassel/";
+#endif
+
+  QDir qDir(quasselDir);
+  if(!qDir.exists(quasselDir))
+    qDir.mkpath(quasselDir);
+
+  return qDir;
+}

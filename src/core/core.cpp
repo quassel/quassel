@@ -30,6 +30,8 @@
 #include "sqlitestorage.h"
 #include "network.h"
 
+#include "util.h"
+
 Core *Core::instanceptr = 0;
 QMutex Core::mutex;
 
@@ -337,6 +339,8 @@ void Core::incomingConnection() {
     QTcpSocket *socket = server.nextPendingConnection();
     connect(socket, SIGNAL(disconnected()), this, SLOT(clientDisconnected()));
     connect(socket, SIGNAL(readyRead()), this, SLOT(clientHasData()));
+    connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(socketError(QAbstractSocket::SocketError)));
+    
     QVariantMap clientInfo;
     blocksizes.insert(socket, (quint32)0);
     qDebug() << "Client connected from"  << qPrintable(socket->peerAddress().toString());
@@ -381,7 +385,12 @@ void Core::processClientMessage(QTcpSocket *socket, const QVariantMap &msg) {
                             "Up %3d%4h%5m (since %6)").arg(Global::quasselVersion).arg(Global::quasselBuild)
                             .arg(updays).arg(uphours,2,10,QChar('0')).arg(upmins,2,10,QChar('0')).arg(startTime.toString(Qt::TextDate));
 
-    reply["SupportSsl"] = false;
+    SslServer *sslServer = qobject_cast<SslServer *>(&server);
+    QSslSocket *sslSocket = qobject_cast<QSslSocket *>(socket);
+    bool supportSsl = (bool)sslServer && (bool)sslSocket && sslServer->certIsValid();
+    reply["SupportSsl"] = supportSsl;
+    // switch to ssl after client has been informed about our capabilities (see below)
+
     reply["LoginEnabled"] = true;
 
     // Just version information -- check it!
@@ -412,6 +421,15 @@ void Core::processClientMessage(QTcpSocket *socket, const QVariantMap &msg) {
     clientInfo[socket] = msg; // store for future reference
     reply["MsgType"] = "ClientInitAck";
     SignalProxy::writeDataToDevice(socket, reply);
+
+    // after we told the client that we are ssl capable we switch to ssl mode
+    if(supportSsl && msg["UseSsl"].toBool()) {
+      qDebug() << "Starting TLS for Client:"  << qPrintable(socket->peerAddress().toString());
+      connect(sslSocket, SIGNAL(sslErrors(const QList<QSslError> &)), this, SLOT(sslErrors(const QList<QSslError> &)));
+      sslSocket->startServerEncryption();
+    }
+    
+
   } else {
     // for the rest, we need an initialized connection
     if(!clientInfo.contains(socket)) {
@@ -495,4 +513,17 @@ SessionThread *Core::createSession(UserId uid, bool restore) {
   sessions[uid] = sess;
   sess->start();
   return sess;
+}
+
+void Core::sslErrors(const QList<QSslError> &errors) {
+  Q_UNUSED(errors);
+  QSslSocket *socket = qobject_cast<QSslSocket *>(sender());
+  if(socket)
+    socket->ignoreSslErrors();
+}
+
+void Core::socketError(QAbstractSocket::SocketError err) {
+  QAbstractSocket *socket = qobject_cast<QAbstractSocket *>(sender());
+  if(socket && err != QAbstractSocket::RemoteHostClosedError)
+    qDebug() << "Core::socketError()" << socket << err << socket->errorString();
 }

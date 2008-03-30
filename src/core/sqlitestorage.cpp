@@ -24,6 +24,8 @@
 
 #include "network.h"
 
+#include "util.h"
+
 SqliteStorage::SqliteStorage(QObject *parent)
   : AbstractSqlStorage(parent)
 {
@@ -723,18 +725,7 @@ QList<Message> SqliteStorage::requestMsgRange(UserId user, BufferId bufferId, in
 }
 
 QString SqliteStorage::backlogFile() {
-  // kinda ugly, but I currently see no other way to do that
-#ifdef Q_OS_WIN32
-  QString quasselDir = QDir::homePath() + qgetenv("APPDATA") + "\\quassel\\";
-#else
-  QString quasselDir = QDir::homePath() + "/.quassel/";
-#endif
-
-  QDir qDir(quasselDir);
-  if(!qDir.exists(quasselDir))
-    qDir.mkpath(quasselDir);
-  
-  return quasselDir + "quassel-storage.sqlite";  
+  return quasselDir().absolutePath() + "/quassel-storage.sqlite";  
 }
 
 

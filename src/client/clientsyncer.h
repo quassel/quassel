@@ -24,6 +24,7 @@
 #include <QPointer>
 #include <QString>
 #include <QTcpSocket>
+#include <QSslSocket>
 #include <QVariantMap>
 
 class IrcUser;
@@ -55,6 +56,7 @@ class ClientSyncer : public QObject {
     void coreSetupSuccess();
     void coreSetupFailed(const QString &error);
 
+    void encrypted(bool);
 
   public slots:
     void connectToCore(const QVariantMap &);
@@ -83,7 +85,8 @@ class ClientSyncer : public QObject {
     void sessionStateReceived(const QVariantMap &state);
 
     void doCoreSetup(const QVariant &setupData);
-
+    void sslErrors(const QList<QSslError> &errors);
+  
   private:
     QPointer<QIODevice> socket;
     quint32 blockSize;

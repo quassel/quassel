@@ -26,13 +26,14 @@
 #include <QString>
 #include <QVariant>
 #include <QTimer>
-#include <QTcpServer>
 #include <QTcpSocket>
+#include <QSslSocket>
 
 #include "bufferinfo.h"
 #include "message.h"
 #include "global.h"
 #include "sessionthread.h"
+#include "sslserver.h"
 #include "types.h"
 
 class CoreSession;
@@ -270,6 +271,9 @@ class Core : public QObject {
 
     bool initStorage(QVariantMap dbSettings, bool setup = false);
 
+    void sslErrors(const QList<QSslError> &errors);
+    void socketError(QAbstractSocket::SocketError);
+
   private:
     Core();
     ~Core();
@@ -289,7 +293,12 @@ class Core : public QObject {
     Storage *storage;
     QTimer _storageSyncTimer;
 
-    QTcpServer server; // TODO: implement SSL
+#ifndef QT_NO_OPENSSL  
+    SslServer server;
+#else
+    QTcpServer server;
+#endif  
+
     QHash<QTcpSocket *, quint32> blocksizes;
     QHash<QTcpSocket *, QVariantMap> clientInfo;
 

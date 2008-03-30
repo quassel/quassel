@@ -28,7 +28,7 @@
       </sizepolicy>
      </property>
      <property name="currentIndex" >
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="accountPage" >
       <layout class="QVBoxLayout" >
@@ -204,6 +204,16 @@ space</string>
               </property>
               <property name="wordWrap" >
                <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="3" >
+             <widget class="QLabel" name="secureConnection" >
+              <property name="text" >
+               <string/>
+              </property>
+              <property name="pixmap" >
+               <pixmap resource="../../icons/icons.qrc" >:/22x22/actions/oxygen/22x22/actions/document-encrypt.png</pixmap>
               </property>
              </widget>
             </item>

@@ -63,6 +63,7 @@ CoreConnectDlg::CoreConnectDlg(QWidget *parent, bool autoconnect) : QDialog(pare
   connect(clientSyncer, SIGNAL(socketStateChanged(QAbstractSocket::SocketState)),this, SLOT(initPhaseSocketState(QAbstractSocket::SocketState)));
   connect(clientSyncer, SIGNAL(connectionError(const QString &)), this, SLOT(initPhaseError(const QString &)));
   connect(clientSyncer, SIGNAL(connectionMsg(const QString &)), this, SLOT(initPhaseMsg(const QString &)));
+  connect(clientSyncer, SIGNAL(encrypted(bool)), this, SLOT(encrypted(bool)));
   connect(clientSyncer, SIGNAL(startLogin()), this, SLOT(startLogin()));
   connect(clientSyncer, SIGNAL(loginFailed(const QString &)), this, SLOT(loginFailed(const QString &)));
   connect(clientSyncer, SIGNAL(loginSuccess()), this, SLOT(startSync()));
@@ -209,6 +210,7 @@ void CoreConnectDlg::on_accountButtonBox_accepted() {
 /*** Phase One: initializing the core connection ***/
 
 void CoreConnectDlg::connectToCore() {
+  ui.secureConnection->hide();
   ui.connectIcon->setPixmap(QPixmap::fromImage(QImage(":/22x22/actions/network-disconnect")));
   ui.connectLabel->setText(tr("Connect to %1").arg(accountData["Host"].toString()));
   ui.coreInfoLabel->setText("");
@@ -224,6 +226,7 @@ void CoreConnectDlg::connectToCore() {
 
 void CoreConnectDlg::initPhaseError(const QString &error) {
   doingAutoConnect = false;
+  ui.secureConnection->hide();
   ui.connectIcon->setPixmap(QPixmap::fromImage(QImage(":/22x22/status/dialog-error")));
   //ui.connectLabel->setBrush(QBrush("red"));
   ui.connectLabel->setText(tr("<div style=color:red;>Connection to %1 failed!</div>").arg(accountData["Host"].toString()));
@@ -237,6 +240,13 @@ void CoreConnectDlg::initPhaseError(const QString &error) {
 
 void CoreConnectDlg::initPhaseMsg(const QString &msg) {
   ui.coreInfoLabel->setText(msg);
+}
+
+void CoreConnectDlg::encrypted(bool useSsl) {
+  if(useSsl)
+    ui.secureConnection->show();
+  else
+    ui.secureConnection->hide();
 }
 
 void CoreConnectDlg::initPhaseSocketState(QAbstractSocket::SocketState state) {
@@ -469,6 +479,7 @@ CoreAccountEditDlg::CoreAccountEditDlg(AccountId id, const QVariantMap &acct, co
     ui.port->setValue(acct["Port"].toUInt());
     ui.useInternal->setChecked(acct["UseInternal"].toBool());
     ui.accountName->setText(acct["AccountName"].toString());
+    ui.useSsl->setChecked(account["useSsl"].toBool());
     ui.useProxy->setChecked(account["useProxy"].toBool());
     ui.proxyHost->setText(account["proxyHost"].toString());
     ui.proxyPort->setValue(account["proxyPort"].toUInt());
@@ -485,6 +496,7 @@ QVariantMap CoreAccountEditDlg::accountData() {
   account["Host"] = ui.host->text().trimmed();
   account["Port"] = ui.port->value();
   account["UseInternal"] = ui.useInternal->isChecked();
+  account["useSsl"] = ui.useSsl->isChecked();
   account["useProxy"] = ui.useProxy->isChecked();
   account["proxyHost"] = ui.proxyHost->text().trimmed();
   account["proxyPort"] = ui.proxyPort->value();
