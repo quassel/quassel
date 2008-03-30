@@ -109,8 +109,12 @@ void Buffer::updateActivityLevel(const Message &msg) {
     return;
 
   ActivityLevel level = activityLevel() | OtherActivity;
-  if(msg.type() == Message::Plain || msg.type() == Message::Notice) level |= NewMessage;
-  if(msg.flags() & Message::Highlight) level |= Highlight;
+  if(msg.type() & (Message::Plain | Message::Notice | Message::Action))
+    level |= NewMessage;
+  
+  if(msg.flags() & Message::Highlight)
+    level |= Highlight;
 
-  if(level != activityLevel()) setActivityLevel(level);
+  if(level != activityLevel())
+    setActivityLevel(level);
 }
