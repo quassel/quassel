@@ -26,7 +26,7 @@
 #include <QStyleFactory>
 
 AppearanceSettingsPage::AppearanceSettingsPage(QWidget *parent)
-  : SettingsPage(tr("General"), tr("Appearance"), parent) {
+  : SettingsPage(tr("Appearance"), tr("General"), parent) {
   ui.setupUi(this);
   initStyleComboBox();
 

@@ -198,10 +198,10 @@ void MainWin::setupSettingsDlg() {
   //Category: Appearance
   settingsDlg->registerSettingsPage(new ColorSettingsPage(settingsDlg));
   settingsDlg->registerSettingsPage(new FontsSettingsPage(settingsDlg));
+  settingsDlg->registerSettingsPage(new AppearanceSettingsPage(settingsDlg)); //General
   //Category: Behaviour
   settingsDlg->registerSettingsPage(new GeneralSettingsPage(settingsDlg));
   //Category: General
-  settingsDlg->registerSettingsPage(new AppearanceSettingsPage(settingsDlg));
   settingsDlg->registerSettingsPage(new IdentitiesSettingsPage(settingsDlg));
   settingsDlg->registerSettingsPage(new NetworksSettingsPage(settingsDlg));
   // settingsDlg->registerSettingsPage(new BufferViewSettingsPage(settingsDlg));
