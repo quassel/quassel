@@ -156,18 +156,6 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox_4" >
-     <property name="title" >
-      <string>Client style:</string>
-     </property>
-     <layout class="QHBoxLayout" >
-      <item>
-       <widget class="QComboBox" name="styleComboBox" />
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
     <spacer>
      <property name="orientation" >
       <enum>Qt::Vertical</enum>

@@ -45,6 +45,7 @@
 #include "selectionmodelsynchronizer.h"
 #include "mappedselectionmodel.h"
 
+#include "settingspages/appearancesettingspage.h"
 #include "settingspages/bufferviewsettingspage.h"
 #include "settingspages/colorsettingspage.h"
 #include "settingspages/fontssettingspage.h"
@@ -75,7 +76,7 @@ MainWin::MainWin(QtUi *_gui, QWidget *parent)
   statusBar()->showMessage(tr("Waiting for core..."));
 
   installEventFilter(new JumpKeyHandler(this));
-  
+
   UiSettings uiSettings;
   QString style = uiSettings.value("Style", QString("")).toString();
   if(style != "") {
@@ -200,6 +201,7 @@ void MainWin::setupSettingsDlg() {
   //Category: Behaviour
   settingsDlg->registerSettingsPage(new GeneralSettingsPage(settingsDlg));
   //Category: General
+  settingsDlg->registerSettingsPage(new AppearanceSettingsPage(settingsDlg));
   settingsDlg->registerSettingsPage(new IdentitiesSettingsPage(settingsDlg));
   settingsDlg->registerSettingsPage(new NetworksSettingsPage(settingsDlg));
   // settingsDlg->registerSettingsPage(new BufferViewSettingsPage(settingsDlg));
