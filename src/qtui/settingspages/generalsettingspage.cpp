@@ -24,9 +24,12 @@
 #include "uisettings.h"
 #include "buffersettings.h"
 
+#include <QStyleFactory>
+
 GeneralSettingsPage::GeneralSettingsPage(QWidget *parent)
   : SettingsPage(tr("Behaviour"), tr("General"), parent) {
   ui.setupUi(this);
+  initStyleComboBox();
 
 #ifdef Q_WS_MAC
   ui.useSystemTrayIcon->hide();
@@ -52,6 +55,16 @@ GeneralSettingsPage::GeneralSettingsPage(QWidget *parent)
 
   connect(ui.displayTopicInTooltip, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
   connect(ui.mouseWheelChangesBuffers, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
+
+  connect(ui.styleComboBox, SIGNAL(currentIndexChanged(QString)), this, SLOT(widgetHasChanged())); 
+}
+
+void GeneralSettingsPage::initStyleComboBox() {
+  QStringList styleList = QStyleFactory::keys();
+  ui.styleComboBox->addItem("<default>");
+  foreach(QString style, styleList) {
+    ui.styleComboBox->addItem(style);
+  }
 }
 
 bool GeneralSettingsPage::hasDefaults() const {
@@ -73,6 +86,8 @@ void GeneralSettingsPage::defaults() {
 
   ui.displayTopicInTooltip->setChecked(false);
   ui.mouseWheelChangesBuffers->setChecked(true);
+
+  ui.styleComboBox->setCurrentIndex(0);
 
   widgetHasChanged();
 }
@@ -98,6 +113,14 @@ void GeneralSettingsPage::load() {
 
   settings["DisplayPopupMessages"] = uiSettings.value("DisplayPopupMessages", QVariant(true));
   ui.displayPopupMessages->setChecked(settings["DisplayPopupMessages"].toBool());
+
+  settings["Style"] = uiSettings.value("Style", QString(""));
+  if(settings["Style"].toString() == "") {
+    ui.styleComboBox->setCurrentIndex(0);
+  } else {
+    ui.styleComboBox->setCurrentIndex(ui.styleComboBox->findText(settings["Style"].toString(), Qt::MatchExactly));
+    QApplication::setStyle(settings["Style"].toString());
+  }
 
   // bufferSettings:
   BufferSettings bufferSettings;
@@ -125,6 +148,12 @@ void GeneralSettingsPage::save() {
 
   uiSettings.setValue("AnimateTrayIcon", ui.animateTrayIcon->isChecked());
   uiSettings.setValue("DisplayPopupMessages", ui.displayPopupMessages->isChecked());
+
+  if(ui.styleComboBox->currentIndex() < 1) {
+    uiSettings.setValue("Style", QString(""));
+  } else {
+    uiSettings.setValue("Style", ui.styleComboBox->currentText());
+  }
 
   BufferSettings bufferSettings;
   bufferSettings.setValue("UserMessagesInStatusBuffer", ui.userMessagesInStatusBuffer->isChecked());
@@ -156,6 +185,8 @@ bool GeneralSettingsPage::testHasChanged() {
 
   if(settings["DisplayTopicInTooltip"].toBool() != ui.displayTopicInTooltip->isChecked()) return true;
   if(settings["MouseWheelChangesBuffers"].toBool() != ui.mouseWheelChangesBuffers->isChecked()) return true;
+
+  if(settings["Style"].toString() != ui.styleComboBox->currentText()) return true;
 
   return false;
 }

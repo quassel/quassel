@@ -47,6 +47,7 @@ class GeneralSettingsPage : public SettingsPage {
     QHash<QString, QVariant> settings;
 
     bool testHasChanged();
+    void initStyleComboBox();
 };
 
 #endif

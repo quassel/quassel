@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>448</width>
-    <height>488</height>
+    <width>453</width>
+    <height>632</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -151,6 +151,18 @@
          <bool>true</bool>
         </property>
        </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_4" >
+     <property name="title" >
+      <string>Client style:</string>
+     </property>
+     <layout class="QHBoxLayout" >
+      <item>
+       <widget class="QComboBox" name="styleComboBox" />
       </item>
      </layout>
     </widget>

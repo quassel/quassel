@@ -40,6 +40,8 @@
 #include "qtuisettings.h"
 #include "jumpkeyhandler.h"
 
+#include "uisettings.h"
+
 #include "selectionmodelsynchronizer.h"
 #include "mappedselectionmodel.h"
 
@@ -73,6 +75,12 @@ MainWin::MainWin(QtUi *_gui, QWidget *parent)
   statusBar()->showMessage(tr("Waiting for core..."));
 
   installEventFilter(new JumpKeyHandler(this));
+  
+  UiSettings uiSettings;
+  QString style = uiSettings.value("Style", QString("")).toString();
+  if(style != "") {
+    QApplication::setStyle(style);
+  }
 }
 
 void MainWin::init() {
