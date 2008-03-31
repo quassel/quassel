@@ -23,12 +23,12 @@
 
 #include "ui_nicklistwidget.h"
 #include "abstractitemview.h"
+#include "buffermodel.h"
 
 #include "types.h"
 
 #include <QHash>
-
-#include "buffermodel.h"
+#include <QDockWidget>
 
 class Buffer;
 class NickView;
@@ -58,6 +58,20 @@ private:
   QHash<BufferId, NickView *> nickViews;
 
   QDockWidget *dock() const;
+};
+
+
+// ==============================
+//  NickList Dock
+// ==============================
+class NickListDock : public QDockWidget {
+  Q_OBJECT
+
+public:
+  NickListDock(const QString &title, QWidget *parent = 0);
+  ~NickListDock();
+
+  virtual bool event(QEvent *event);
 };
 
 #endif

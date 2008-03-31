@@ -30,7 +30,6 @@
 #include "networkmodel.h"
 #include "buffermodel.h"
 #include "nicklistwidget.h"
-#include "nicklistdock.h"
 #include "settingsdlg.h"
 #include "settingspagedlg.h"
 #include "signalproxy.h"

@@ -28,7 +28,10 @@
 #include "nickviewfilter.h"
 #include "qtuisettings.h"
 
-#include <QDockWidget>
+#include <QAction>
+#include <QDebug>
+#include <QEvent>
+#include <QAbstractButton>
 
 NickListWidget::NickListWidget(QWidget *parent)
   : AbstractItemView(parent)
@@ -151,4 +154,37 @@ QSize NickListWidget::sizeHint() const {
     return QSize(100, height());
   else
     return currentWidget->sizeHint();
+}
+
+
+// ==============================
+//  NickList Dock
+// ==============================
+NickListDock::NickListDock(const QString &title, QWidget *parent)
+  : QDockWidget(title, parent)
+{
+  QAction *toggleView = toggleViewAction();
+  disconnect(toggleView, SIGNAL(triggered(bool)), this, 0);
+  toggleView->setChecked(QtUiSettings().value("ShowNickList", QVariant(true)).toBool());
+
+  // reconnecting the closebuttons clicked signal to the action
+  foreach(QAbstractButton *button, findChildren<QAbstractButton *>()) {
+    if(disconnect(button, SIGNAL(clicked()), this, SLOT(close())))
+      connect(button, SIGNAL(clicked()), toggleView, SLOT(trigger()));
+  }
+}
+
+NickListDock::~NickListDock() {
+  QtUiSettings().setValue("ShowNickList", toggleViewAction()->isChecked());
+}
+
+bool NickListDock::event(QEvent *event) {
+  switch (event->type()) {
+  case QEvent::Hide:
+  case QEvent::Show:
+    emit visibilityChanged(event->type() == QEvent::Show);
+    return QWidget::event(event);
+  default:
+    return QDockWidget::event(event);
+  }
 }
