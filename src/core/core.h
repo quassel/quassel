@@ -26,14 +26,19 @@
 #include <QString>
 #include <QVariant>
 #include <QTimer>
-#include <QTcpSocket>
+
+#ifndef QT_NO_OPENSSL
 #include <QSslSocket>
+#include "sslserver.h"
+#else
+#include <QTcpSocket>
+#include <QTcpServer>
+#endif
 
 #include "bufferinfo.h"
 #include "message.h"
 #include "global.h"
 #include "sessionthread.h"
-#include "sslserver.h"
 #include "types.h"
 
 class CoreSession;
@@ -271,7 +276,9 @@ class Core : public QObject {
 
     bool initStorage(QVariantMap dbSettings, bool setup = false);
 
+#ifndef QT_NO_OPENSSL
     void sslErrors(const QList<QSslError> &errors);
+#endif
     void socketError(QAbstractSocket::SocketError);
 
   private:

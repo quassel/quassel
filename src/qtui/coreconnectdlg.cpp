@@ -459,7 +459,6 @@ void CoreConnectDlg::syncFinished() {
 /*****************************************************************************************
  * CoreAccountEditDlg
  *****************************************************************************************/
-
 CoreAccountEditDlg::CoreAccountEditDlg(AccountId id, const QVariantMap &acct, const QStringList &_existing, QWidget *parent) : QDialog(parent) {
   ui.setupUi(this);
   existing = _existing;
@@ -479,7 +478,12 @@ CoreAccountEditDlg::CoreAccountEditDlg(AccountId id, const QVariantMap &acct, co
     ui.port->setValue(acct["Port"].toUInt());
     ui.useInternal->setChecked(acct["UseInternal"].toBool());
     ui.accountName->setText(acct["AccountName"].toString());
+#ifndef QT_NO_OPENSSL
     ui.useSsl->setChecked(account["useSsl"].toBool());
+#else
+    ui.useSsl->setChecked(false);
+    ui.useSsl->setEnabled(false);
+#endif
     ui.useProxy->setChecked(account["useProxy"].toBool());
     ui.proxyHost->setText(account["proxyHost"].toString());
     ui.proxyPort->setValue(account["proxyPort"].toUInt());

@@ -31,17 +31,16 @@
 #include "signalproxy.h"
 
 
-ClientSyncer::ClientSyncer(QObject *parent) : QObject(parent) {
+ClientSyncer::ClientSyncer(QObject *parent)
+  : QObject(parent)
+{
   socket = 0;
   blockSize = 0;
 
   connect(Client::signalProxy(), SIGNAL(disconnected()), this, SLOT(coreSocketDisconnected()));
-
 }
 
 ClientSyncer::~ClientSyncer() {
-
-
 }
 
 void ClientSyncer::coreHasData() {
@@ -125,6 +124,11 @@ void ClientSyncer::connectToCore(const QVariantMap &conn) {
 #ifndef QT_NO_OPENSSL
     QSslSocket *sock = new QSslSocket(Client::instance());
 #else
+    if(conn["useSsl"].toBool()) {
+	emit connectionError(tr("<b>This client is built without SSL Support!</b><br />Disable the usage of SSL in the account settings."));
+	emit encrypted(false);
+	return;
+    }
     QTcpSocket *sock = new QTcpSocket(Client::instance());
 #endif
 
@@ -180,19 +184,15 @@ void ClientSyncer::clientInitAck(const QVariantMap &msg) {
     return;
   }
   emit connectionMsg(msg["CoreInfo"].toString());
+
+#ifndef QT_NO_OPENSSL
   if(coreConnectionInfo["useSsl"].toBool()) {
     if(msg["SupportSsl"].toBool()) {
       QSslSocket *sslSocket = qobject_cast<QSslSocket *>(socket);
-      if(sslSocket) {
-	connect(sslSocket, SIGNAL(sslErrors(const QList<QSslError> &)), this, SLOT(sslErrors(const QList<QSslError> &)));
-	sslSocket->startClientEncryption();
-	emit encrypted(true);
-      } else {
-	emit connectionError(tr("<b>This client is built without SSL Support!</b><br />Disable the usage of SSL in the account settings."));
-	emit encrypted(false);
-	disconnectFromCore();
-	return;
-      }
+      Q_ASSERT(sslSocket);
+      connect(sslSocket, SIGNAL(sslErrors(const QList<QSslError> &)), this, SLOT(sslErrors(const QList<QSslError> &)));
+      sslSocket->startClientEncryption();
+      emit encrypted(true);
     } else {
       emit connectionError(tr("<b>The Quassel Core you are trying to connect to does not support SSL!</b><br />If you want to connect anyways, disable the usage of SSL in the account settings."));
       emit encrypted(false);
@@ -200,6 +200,7 @@ void ClientSyncer::clientInitAck(const QVariantMap &msg) {
       return;
     }
   }
+#endif
 
   if(!msg["Configured"].toBool()) {
     // start wizard
@@ -359,6 +360,7 @@ void ClientSyncer::checkSyncState() {
   }
 }
 
+#ifndef QT_NO_OPENSSL
 void ClientSyncer::sslErrors(const QList<QSslError> &errors) {
   qDebug() << "SSL Errors:";
   foreach(QSslError err, errors)
@@ -368,3 +370,4 @@ void ClientSyncer::sslErrors(const QList<QSslError> &errors) {
   if(socket)
     socket->ignoreSslErrors();
 }
+#endif

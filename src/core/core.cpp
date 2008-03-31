@@ -334,7 +334,6 @@ void Core::stopListening() {
 }
 
 void Core::incomingConnection() {
-  // TODO implement SSL
   while(server.hasPendingConnections()) {
     QTcpSocket *socket = server.nextPendingConnection();
     connect(socket, SIGNAL(disconnected()), this, SLOT(clientDisconnected()));
@@ -385,9 +384,14 @@ void Core::processClientMessage(QTcpSocket *socket, const QVariantMap &msg) {
                             "Up %3d%4h%5m (since %6)").arg(Global::quasselVersion).arg(Global::quasselBuild)
                             .arg(updays).arg(uphours,2,10,QChar('0')).arg(upmins,2,10,QChar('0')).arg(startTime.toString(Qt::TextDate));
 
+#ifndef QT_NO_OPENSSL
     SslServer *sslServer = qobject_cast<SslServer *>(&server);
     QSslSocket *sslSocket = qobject_cast<QSslSocket *>(socket);
     bool supportSsl = (bool)sslServer && (bool)sslSocket && sslServer->certIsValid();
+#else
+    bool supportSsl = false;
+#endif
+    
     reply["SupportSsl"] = supportSsl;
     // switch to ssl after client has been informed about our capabilities (see below)
 
@@ -422,13 +426,14 @@ void Core::processClientMessage(QTcpSocket *socket, const QVariantMap &msg) {
     reply["MsgType"] = "ClientInitAck";
     SignalProxy::writeDataToDevice(socket, reply);
 
+#ifndef QT_NO_OPENSSL
     // after we told the client that we are ssl capable we switch to ssl mode
     if(supportSsl && msg["UseSsl"].toBool()) {
       qDebug() << "Starting TLS for Client:"  << qPrintable(socket->peerAddress().toString());
       connect(sslSocket, SIGNAL(sslErrors(const QList<QSslError> &)), this, SLOT(sslErrors(const QList<QSslError> &)));
       sslSocket->startServerEncryption();
     }
-    
+#endif
 
   } else {
     // for the rest, we need an initialized connection
@@ -515,12 +520,14 @@ SessionThread *Core::createSession(UserId uid, bool restore) {
   return sess;
 }
 
+#ifndef QT_NO_OPENSSL
 void Core::sslErrors(const QList<QSslError> &errors) {
   Q_UNUSED(errors);
   QSslSocket *socket = qobject_cast<QSslSocket *>(sender());
   if(socket)
     socket->ignoreSslErrors();
 }
+#endif
 
 void Core::socketError(QAbstractSocket::SocketError err) {
   QAbstractSocket *socket = qobject_cast<QAbstractSocket *>(sender());

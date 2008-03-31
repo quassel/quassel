@@ -23,9 +23,13 @@
 
 #include <QPointer>
 #include <QString>
-#include <QTcpSocket>
-#include <QSslSocket>
 #include <QVariantMap>
+
+#ifndef QT_NO_OPENSSL
+#include <QSslSocket>
+#else
+#include <QTcpSocket>
+#endif
 
 class IrcUser;
 class IrcChannel;
@@ -85,7 +89,9 @@ class ClientSyncer : public QObject {
     void sessionStateReceived(const QVariantMap &state);
 
     void doCoreSetup(const QVariant &setupData);
+#ifndef QT_NO_OPENSSL
     void sslErrors(const QList<QSslError> &errors);
+#endif
   
   private:
     QPointer<QIODevice> socket;

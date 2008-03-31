@@ -18,6 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#ifndef QT_NO_OPENSSL
+
 #ifndef SSLSERVER_H
 #define SSLSERVER_H
 
@@ -50,3 +52,5 @@ private:
 };
 
 #endif //SSLSERVER_H
+
+#endif QT_NO_OPENSSL

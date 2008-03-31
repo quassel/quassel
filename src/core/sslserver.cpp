@@ -18,6 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#ifndef QT_NO_OPENSSL
+
 #include "sslserver.h"
 
 #include <QSslSocket>
@@ -66,3 +68,5 @@ void SslServer::incomingConnection(int socketDescriptor) {
     delete serverSocket;
   }
 }
+
+#endif // QT_NO_OPENSSL
