@@ -21,8 +21,7 @@
 #include "logger.h"
 
 #include <iostream>
-
-
+#include <stdlib.h>
 
 Logger::~Logger() {
   qInstallMsgHandler(0);
