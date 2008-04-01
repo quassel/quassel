@@ -53,4 +53,4 @@ private:
 
 #endif //SSLSERVER_H
 
-#endif QT_NO_OPENSSL
+#endif //QT_NO_OPENSSL
