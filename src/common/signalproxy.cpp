@@ -312,9 +312,9 @@ void SignalProxy::removePeer(QIODevice* iodev) {
 
 void SignalProxy::removePeerBySender() {
   // OK we're brutal here... but since it's a private slot we know what we've got connected to it...
+  // this Slot is not triggered by destroyed, so the object is still alive and can be used!
   QIODevice *ioDev = (QIODevice *)(sender());
   removePeer(ioDev);
-  qDebug() << "Client disconnected.";
 }
 
 void SignalProxy::objectRenamed(const QString &newname, const QString &oldname) {

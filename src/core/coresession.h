@@ -150,6 +150,8 @@ signals:
   void bufferRenamed(BufferId, QString);
 
 private slots:
+  void removeClient(QIODevice *dev);
+
   void recvStatusMsgFromServer(QString msg);
   void recvMessageFromServer(Message::Type, BufferInfo::Type, QString target, QString text, QString sender = "", quint8 flags = Message::None);
   void networkConnected(NetworkId networkid);

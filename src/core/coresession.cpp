@@ -49,7 +49,8 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
 {
 
   SignalProxy *p = signalProxy();
-
+  connect(p, SIGNAL(peerRemoved(QIODevice *)), this, SLOT(removeClient(QIODevice *)));
+  
   //p->attachSlot(SIGNAL(disconnectFromNetwork(NetworkId)), this, SLOT(disconnectFromNetwork(NetworkId))); // FIXME
   p->attachSlot(SIGNAL(sendInput(BufferInfo, QString)), this, SLOT(msgFromClient(BufferInfo, QString)));
   p->attachSignal(this, SIGNAL(displayMsg(Message)));
@@ -222,6 +223,17 @@ void CoreSession::addClient(QObject *dev) { // this is QObject* so we can use it
     reply["SessionState"] = sessionState();
     SignalProxy::writeDataToDevice(device, reply);
   }
+}
+
+void CoreSession::removeClient(QIODevice *iodev) {
+  // no checks for validity check - privateslot...
+  QTcpSocket *socket = qobject_cast<QTcpSocket *>(iodev);
+  if(socket)
+    qDebug() << qPrintable(tr("Client %1 disconnected (UserId: %2).").arg(socket->peerAddress().toString()).arg(user().toInt()));
+  else
+    qDebug() << "Local client disconnedted.";
+  disconnect(socket, 0, this, 0);
+  socket->deleteLater();
 }
 
 SignalProxy *CoreSession::signalProxy() const {
