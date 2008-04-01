@@ -212,15 +212,12 @@ class Storage : public QObject {
      */
     virtual BufferInfo getBufferInfo(UserId user, const BufferId &bufferId) = 0;
 
-    //! Request a list of all buffers known to a user since a certain point in time.
+    //! Request a list of all buffers known to a user.
     /** This method is used to get a list of all buffers we have stored a backlog from.
-     *  Optionally, a QDateTime can be given, so that only buffers are listed that where active
-     *  since that point in time.
      *  \param user  The user whose buffers we request
-     *  \param since If this is defined, older buffers will be ignored
      *  \return A list of the BufferInfos for all buffers as requested
      */
-    virtual QList<BufferInfo> requestBuffers(UserId user, QDateTime since = QDateTime()) = 0;
+    virtual QList<BufferInfo> requestBuffers(UserId user) = 0;
 
     //! Remove permanently a buffer and it's content from the storage backend
     /** This call cannot be reverted!

@@ -207,17 +207,14 @@ class Core : public QObject {
      */
     static QList<Message> requestMsgRange(UserId user, BufferId buffer, int first, int last);
 
-    //! Request a list of all buffers known to a user since a certain point in time.
+    //! Request a list of all buffers known to a user.
     /** This method is used to get a list of all buffers we have stored a backlog from.
-     *  Optionally, a QDateTime can be given, so that only buffers are listed that were active
-     *  since that point in time.
      *  \note This method is threadsafe.
      *
      *  \param user  The user whose buffers we request
-     *  \param since If this is defined, older buffers will be ignored
      *  \return A list of the BufferInfos for all buffers as requested
      */
-    static QList<BufferInfo> requestBuffers(UserId user, QDateTime since = QDateTime());
+    static QList<BufferInfo> requestBuffers(UserId user);
 
     //! Remove permanently a buffer and it's content from the storage backend
     /** This call cannot be reverted!

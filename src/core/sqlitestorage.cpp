@@ -479,16 +479,11 @@ BufferInfo SqliteStorage::getBufferInfo(UserId user, const BufferId &bufferId) {
   return bufferInfo;
 }
 
-QList<BufferInfo> SqliteStorage::requestBuffers(UserId user, QDateTime since) {
-  uint time = 0;
-  if(since.isValid())
-    time = since.toTime_t();
-  
+QList<BufferInfo> SqliteStorage::requestBuffers(UserId user) {
   QList<BufferInfo> bufferlist;
   QSqlQuery query(logDb());
   query.prepare(queryString("select_buffers"));
   query.bindValue(":userid", user.toInt());
-  query.bindValue(":time", time);
   
   query.exec();
   watchQuery(&query);

@@ -292,9 +292,9 @@ QList<Message> Core::requestMsgRange(UserId user, BufferId buffer, int first, in
   return instance()->storage->requestMsgRange(user, buffer, first, last);
 }
 
-QList<BufferInfo> Core::requestBuffers(UserId user, QDateTime since) {
+QList<BufferInfo> Core::requestBuffers(UserId user) {
   QMutexLocker locker(&mutex);
-  return instance()->storage->requestBuffers(user, since);
+  return instance()->storage->requestBuffers(user);
 }
 
 bool Core::removeBuffer(const UserId &user, const BufferId &bufferId) {
