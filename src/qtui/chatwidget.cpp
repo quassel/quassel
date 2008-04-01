@@ -384,7 +384,8 @@ void ChatWidget::mouseDoubleClickEvent(QMouseEvent *event) {
     len = end - start;
   }
   QString word = text.mid(start, len);
-  if(word.startsWith("http://")) {
+  QRegExp regex("^(h|f)t{1,2}ps?:\\/\\/");
+  if(regex.indexIn(word) != -1) {
     QDesktopServices::openUrl(QUrl(word));
   }
   
