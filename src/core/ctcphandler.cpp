@@ -107,9 +107,14 @@ void CtcpHandler::parse(Message::Type messageType, const QString &prefix, const 
       displayMsg(messageType, target, userDecode(target, dequotedMessage.left(xdelimPos)), prefix, flags);
 
     xdelimEndPos = dequotedMessage.indexOf(XDELIM, xdelimPos + 1);
-    
-    ctcp = xdelimDequote(dequotedMessage.mid(xdelimPos + 1, xdelimEndPos - xdelimPos - 1));
-    dequotedMessage = dequotedMessage.mid(xdelimEndPos + 1);
+    if(xdelimEndPos == -1) {
+      // no matching end delimiter found...
+      dequotedMessage = dequotedMessage.mid(xdelimPos + 1);
+      break;
+    } else {
+      ctcp = xdelimDequote(dequotedMessage.mid(xdelimPos + 1, xdelimEndPos - xdelimPos - 1));
+      dequotedMessage = dequotedMessage.mid(xdelimEndPos + 1);
+    }
 
     //dispatch the ctcp command
     QString ctcpcmd = userDecode(target, ctcp.left(spacePos));
@@ -172,7 +177,6 @@ void CtcpHandler::handlePing(CtcpType ctcptype, const QString &prefix, const QSt
 void CtcpHandler::handleVersion(CtcpType ctcptype, const QString &prefix, const QString &target, const QString &param) {
   Q_UNUSED(target)
   if(ctcptype == CtcpQuery) {
-    // FIXME use real Info about quassel :)
     reply(nickFromMask(prefix), "VERSION", QString("Quassel IRC (v%1 build >= %2) -- http://www.quassel-irc.org")
         .arg(Global::quasselVersion).arg(Global::quasselBuild));
     emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("Received CTCP VERSION request by %1").arg(prefix));
