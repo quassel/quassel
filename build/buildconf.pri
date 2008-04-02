@@ -7,6 +7,6 @@ release {
   CONFIG *= debug
 }
 
-win32 { 
+win32:static { 
   CONFIG = release warn_on uic resources qt windows static
 }
