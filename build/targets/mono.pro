@@ -1,4 +1,4 @@
-include(monolithic.pri)
+include(mono.pri)
 include(target.pri)
 
 RESOURCES *= ../../src/icons/icons.qrc

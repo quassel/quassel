@@ -13,49 +13,42 @@
 #
 # NOTE: To change the build configuration, you have to run 'make distclean' first!
 
-
-# Set project-wide config options
-
-#CONFIG = qt warn_on release
-
 TEMPLATE = subdirs
 
+TARGETS = qtclient core mono
+
 # Check build configuration
-isEmpty(BUILD) {
-  BUILD = all  # build everything by default
-}
+isEmpty(BUILD): BUILD = all  # build everything by default
+contains(BUILD, all): BUILD = $${TARGETS}
 
-contains(BUILD, all) {
-  BUILD += qtclient core mono
-}
-
-contains(BUILD, mono) {
-  include(targets/monolithic.pri)
+# Find modules and targets to build
+for(target, TARGETS): contains(BUILD, $$target) {
+  include(targets/$${target}.pri)
   BUILD_MODS *= $${MODULES}
-  BUILD_TARGETS *= monolithic
+  BUILD_TARGETS *= $$target
 }
 
-contains(BUILD, core) {
-  include(targets/core.pri)
-  BUILD_MODS *= $${MODULES}
-  BUILD_TARGETS *= core
-}
-
-contains(BUILD, qtclient) {
-  include(targets/qtclient.pri)
-  BUILD_MODS *= $${MODULES}
-  BUILD_TARGETS *= qtclient
-}
-
-# First we build contrib stuff...
-# SUBDIRS += contrib/libqxt.pro   # no deps to libqxt at the moment
-
-# Then we build all needed modules...
+# Now add modules and their deps
 for(mod, BUILD_MODS) {
-  SUBDIRS += modules/$${mod}.pro
+  include(../src/$${mod}/$${mod}.pri)
+  SUBDIRS += mod_$${mod}
+  eval(mod_$${mod}.file = modules/$${mod}.pro)
+  eval(mod_$${mod}.makefile = Makefile.mod_$${mod})  # This prevents distclean from removing our Makefile -_-
+  for(dep, DEPMOD): eval(mod_$${mod}.depends += mod_$${dep})
+  export(mod_$${mod}.file)
+  export(mod_$${mod}.makefile)
+  export(mod_$${mod}.depends)
 }
 
-# ... followed by the binaries.
+# Same with targets
 for(target, BUILD_TARGETS) {
-  SUBDIRS += targets/$${target}.pro
+  include(targets/$${target}.pri)
+  SUBDIRS += $${target}
+  eval($${target}.file = targets/$${target}.pro)
+  eval($${target}.makefile = Makefile.target_$${target})
+  for(mod, MODULES): eval($${target}.depends += mod_$${mod})
+  export($${target}.file)
+  export($${target}.makefile)
+  export($${target}.depends)
 }
+

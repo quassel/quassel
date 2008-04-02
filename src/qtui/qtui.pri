@@ -1,4 +1,4 @@
-DEPMOD = uisupport common client
+DEPMOD = client common uisupport
 QT_MOD = core gui network
 
 SRCS += aboutdlg.cpp bufferwidget.cpp chatitem.cpp chatline.cpp chatline-old.cpp chatscene.cpp chatview.cpp chatwidget.cpp \

@@ -1,5 +1,6 @@
 DEPMOD =
 QT_MOD = network
+
 SRCS += backlogmanager.cpp bufferinfo.cpp buffersyncer.cpp bufferviewconfig.cpp bufferviewmanager.cpp global.cpp identity.cpp \
         logger.cpp message.cpp settings.cpp signalproxy.cpp syncableobject.cpp \
         util.cpp network.cpp ircuser.cpp ircchannel.cpp
