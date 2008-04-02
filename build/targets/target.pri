@@ -36,7 +36,7 @@ win32:static {
   CONFIG += embed_manifest_exe
   LIBS *= -luser32 -lgdi32 -lkernel32 -lshell32 -lwsock32 -lwinspool -lcomdlg32 -lole32
   LIBS *= -ladvapi32 -limm32 -luuid -lwinmm -ldelayimp -lopengl32 -lglu32 -loleaut32 -lws2_32
-  LIBS *= -llibeay32MT -lssleay32MT
+  LIBS *= -llibeay32MD -lssleay32MD
   QMAKE_LFLAGS_WINDOWS += /nodefaultlib:"libcmt.lib"
 
 }
