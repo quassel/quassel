@@ -50,6 +50,7 @@
 #include "settingspages/colorsettingspage.h"
 #include "settingspages/fontssettingspage.h"
 #include "settingspages/generalsettingspage.h"
+#include "settingspages/highlightsettingspage.h"
 #include "settingspages/identitiessettingspage.h"
 #include "settingspages/networkssettingspage.h"
 
@@ -201,6 +202,7 @@ void MainWin::setupSettingsDlg() {
   settingsDlg->registerSettingsPage(new AppearanceSettingsPage(settingsDlg)); //General
   //Category: Behaviour
   settingsDlg->registerSettingsPage(new GeneralSettingsPage(settingsDlg));
+  settingsDlg->registerSettingsPage(new HighlightSettingsPage(settingsDlg));
   //Category: General
   settingsDlg->registerSettingsPage(new IdentitiesSettingsPage(settingsDlg));
   settingsDlg->registerSettingsPage(new NetworksSettingsPage(settingsDlg));

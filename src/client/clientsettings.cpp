@@ -98,10 +98,30 @@ QHash<int, BufferId> CoreAccountSettings::jumpKeyMap() {
   }
   return keyMap;
 }
-  
 
 void CoreAccountSettings::removeAccount(AccountId id) {
   removeLocalKey(QString("%1").arg(id.toInt()));
 }
 
 
+/***********************************************************************************************/
+// NotificationSettings:
+
+NotificationSettings::NotificationSettings() : ClientSettings("Notification") {
+}
+
+void NotificationSettings::setHighlightList(const QVariantList &highlightList) {
+  setLocalValue("highlightList", highlightList);
+}
+
+QVariantList NotificationSettings::highlightList() {
+  return localValue("highlightList").toList();
+}
+
+void NotificationSettings::setHighlightCurrentNick(const bool &highlightCurrentNick) {
+  setLocalValue("highlightCurrentNick", highlightCurrentNick);
+}
+
+bool NotificationSettings::highlightCurrentNick() {
+  return localValue("highlightCurrentNick", true).toBool();
+}

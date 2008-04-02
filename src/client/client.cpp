@@ -543,11 +543,36 @@ AbstractUiMsg *Client::layoutMsg(const Message &msg) {
 }
 
 void Client::checkForHighlight(Message &msg) {
+  NotificationSettings notificationSettings;
   const Network *net = network(msg.bufferInfo().networkId());
   if(net && !net->myNick().isEmpty()) {
-    QRegExp nickRegExp("^(.*\\W)?" + QRegExp::escape(net->myNick()) + "(\\W.*)?$");
-    if((msg.type() & (Message::Plain | Message::Notice | Message::Action)) && !(msg.flags() & Message::Self) && nickRegExp.exactMatch(msg.text()))
-      msg.setFlags(msg.flags() | Message::Highlight);
+    if(notificationSettings.highlightCurrentNick()) {
+      QRegExp nickRegExp("^(.*\\W)?" + QRegExp::escape(net->myNick()) + "(\\W.*)?$");
+      if((msg.type() & (Message::Plain | Message::Notice | Message::Action))
+          && !(msg.flags() & Message::Self)
+          && nickRegExp.exactMatch(msg.text())) {
+            msg.setFlags(msg.flags() | Message::Highlight);
+            return;
+      }
+    }
+    foreach(QVariant highlight, notificationSettings.highlightList()) {
+      QVariantMap highlightRule = highlight.toMap();
+      if(!highlightRule["enable"].toBool())
+        continue;
+      QString name = highlightRule["name"].toString();
+      QRegExp userRegExp;
+      if(highlightRule["regex"].toBool()) {
+        userRegExp = QRegExp(name);
+      } else {
+        userRegExp = QRegExp("^(.*\\W)?" + QRegExp::escape(name) + "(\\W.*)?$");
+      }
+      if((msg.type() & (Message::Plain | Message::Notice | Message::Action))
+          && !(msg.flags() & Message::Self)
+          && userRegExp.exactMatch(msg.text())) {
+        msg.setFlags(msg.flags() | Message::Highlight);
+        return;
+      }
+    }
   }
 }
 

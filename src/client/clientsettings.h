@@ -68,4 +68,16 @@ class CoreAccountSettings : public ClientSettings {
     QString _subgroup;
 };
 
+class NotificationSettings : public ClientSettings {
+
+  public:
+    NotificationSettings();
+
+    void setHighlightList(const QVariantList &highlightList);
+    QVariantList highlightList();
+
+    void setHighlightCurrentNick(const bool &highlightCurrentNick);
+    bool highlightCurrentNick();
+
+};
 #endif

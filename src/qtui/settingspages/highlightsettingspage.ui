@@ -1,0 +1,88 @@
+<ui version="4.0" >
+ <class>HighlightSettingsPage</class>
+ <widget class="QWidget" name="HighlightSettingsPage" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>438</width>
+    <height>404</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" >
+   <item>
+    <widget class="QGroupBox" name="groupBox" >
+     <property name="title" >
+      <string>Highlight list</string>
+     </property>
+     <layout class="QGridLayout" >
+      <item rowspan="3" row="0" column="0" >
+       <widget class="QTableWidget" name="highlightTable" >
+        <property name="styleSheet" >
+         <string/>
+        </property>
+        <column>
+         <property name="text" >
+          <string>RexEx</string>
+         </property>
+        </column>
+        <column>
+         <property name="text" >
+          <string>Highlight</string>
+         </property>
+        </column>
+        <column>
+         <property name="text" >
+          <string>Enable</string>
+         </property>
+        </column>
+       </widget>
+      </item>
+      <item row="0" column="1" >
+       <widget class="QPushButton" name="add" >
+        <property name="text" >
+         <string>Add</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1" >
+       <widget class="QPushButton" name="remove" >
+        <property name="text" >
+         <string>Remove</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1" >
+       <spacer>
+        <property name="orientation" >
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" >
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="highlightCurrentNick" >
+     <property name="text" >
+      <string>Highlight current nick</string>
+     </property>
+     <property name="checked" >
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
