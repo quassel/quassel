@@ -71,13 +71,19 @@ class CoreAccountSettings : public ClientSettings {
 class NotificationSettings : public ClientSettings {
 
   public:
+    enum HighlightNickType {
+      NoNick = 0x00,
+      CurrentNick= 0x01,
+      AllNicks = 0x02
+    };
+
     NotificationSettings();
 
     void setHighlightList(const QVariantList &highlightList);
     QVariantList highlightList();
 
-    void setHighlightCurrentNick(const bool &highlightCurrentNick);
-    bool highlightCurrentNick();
+    void setHighlightNick(HighlightNickType);
+    HighlightNickType highlightNick();
 
 };
 #endif

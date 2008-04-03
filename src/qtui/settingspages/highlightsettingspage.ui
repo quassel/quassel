@@ -21,17 +21,25 @@
      <layout class="QGridLayout" >
       <item rowspan="3" row="0" column="0" >
        <widget class="QTableWidget" name="highlightTable" >
+        <property name="toolTip" >
+         <string/>
+        </property>
         <property name="styleSheet" >
          <string/>
         </property>
         <column>
          <property name="text" >
-          <string>RexEx</string>
+          <string>Highlight</string>
          </property>
         </column>
         <column>
          <property name="text" >
-          <string>Highlight</string>
+          <string>RegEx</string>
+         </property>
+        </column>
+        <column>
+         <property name="text" >
+          <string>CS</string>
          </property>
         </column>
         <column>
@@ -72,13 +80,36 @@
     </widget>
    </item>
    <item>
-    <widget class="QCheckBox" name="highlightCurrentNick" >
-     <property name="text" >
-      <string>Highlight current nick</string>
+    <widget class="QGroupBox" name="groupBox_2" >
+     <property name="title" >
+      <string>Highlight nicks</string>
      </property>
-     <property name="checked" >
-      <bool>true</bool>
-     </property>
+     <layout class="QVBoxLayout" >
+      <item>
+       <widget class="QRadioButton" name="highlightAllNicks" >
+        <property name="text" >
+         <string>All nicks from identity</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="highlightCurrentNick" >
+        <property name="text" >
+         <string>Current nick</string>
+        </property>
+        <property name="checked" >
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="highlightNoNick" >
+        <property name="text" >
+         <string>None</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
   </layout>

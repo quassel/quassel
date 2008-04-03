@@ -118,10 +118,10 @@ QVariantList NotificationSettings::highlightList() {
   return localValue("highlightList").toList();
 }
 
-void NotificationSettings::setHighlightCurrentNick(const bool &highlightCurrentNick) {
-  setLocalValue("highlightCurrentNick", highlightCurrentNick);
+void NotificationSettings::setHighlightNick(NotificationSettings::HighlightNickType highlightNickType) {
+  setLocalValue("highlightNick", highlightNickType);
 }
 
-bool NotificationSettings::highlightCurrentNick() {
-  return localValue("highlightCurrentNick", true).toBool();
+NotificationSettings::HighlightNickType NotificationSettings::highlightNick() {
+  return (NotificationSettings::HighlightNickType) localValue("highlightNick", CurrentNick).toInt();
 }

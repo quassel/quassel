@@ -546,25 +546,33 @@ void Client::checkForHighlight(Message &msg) {
   NotificationSettings notificationSettings;
   const Network *net = network(msg.bufferInfo().networkId());
   if(net && !net->myNick().isEmpty()) {
-    if(notificationSettings.highlightCurrentNick()) {
-      QRegExp nickRegExp("^(.*\\W)?" + QRegExp::escape(net->myNick()) + "(\\W.*)?$");
+    QStringList nickList;
+    if(notificationSettings.highlightNick() == NotificationSettings::CurrentNick) {
+      nickList << net->myNick();
+    } else if(notificationSettings.highlightNick() == NotificationSettings::AllNicks) {
+      nickList = identity(net->identity())->nicks();
+    }
+    foreach(QString nickname, nickList) {
+      QRegExp nickRegExp("^(.*\\W)?" + QRegExp::escape(nickname) + "(\\W.*)?$");
       if((msg.type() & (Message::Plain | Message::Notice | Message::Action))
           && !(msg.flags() & Message::Self)
           && nickRegExp.exactMatch(msg.text())) {
-            msg.setFlags(msg.flags() | Message::Highlight);
-            return;
+        msg.setFlags(msg.flags() | Message::Highlight);
+        return;
       }
     }
+
     foreach(QVariant highlight, notificationSettings.highlightList()) {
       QVariantMap highlightRule = highlight.toMap();
       if(!highlightRule["enable"].toBool())
         continue;
+      Qt::CaseSensitivity caseSensitivity = highlightRule["cs"].toBool() ? Qt::CaseSensitive : Qt::CaseInsensitive;
       QString name = highlightRule["name"].toString();
       QRegExp userRegExp;
       if(highlightRule["regex"].toBool()) {
-        userRegExp = QRegExp(name);
+        userRegExp = QRegExp(name, caseSensitivity);
       } else {
-        userRegExp = QRegExp("^(.*\\W)?" + QRegExp::escape(name) + "(\\W.*)?$");
+        userRegExp = QRegExp("^(.*\\W)?" + QRegExp::escape(name) + "(\\W.*)?$", caseSensitivity);
       }
       if((msg.type() & (Message::Plain | Message::Notice | Message::Action))
           && !(msg.flags() & Message::Self)

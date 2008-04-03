@@ -31,18 +31,26 @@ HighlightSettingsPage::HighlightSettingsPage(QWidget *parent)
   ui.setupUi(this);
   ui.highlightTable->verticalHeader()->hide();
   ui.highlightTable->setShowGrid(false);
-  ui.highlightTable->setColumnWidth( 0, 50 );
-  ui.highlightTable->setColumnWidth( 2, 50 );
-  ui.highlightTable->horizontalHeader()->setResizeMode(0, QHeaderView::Fixed); 
-  ui.highlightTable->horizontalHeader()->setResizeMode(1, QHeaderView::Stretch);
-  ui.highlightTable->horizontalHeader()->setResizeMode(2, QHeaderView::Fixed); 
+
+  ui.highlightTable->horizontalHeaderItem(HighlightSettingsPage::RegExColumn)->setToolTip("<b>RegEx</b>: This option determines if the highlight rule should be interpreted as a <b>regular expression</b> or just as a keyword.");
+  ui.highlightTable->horizontalHeaderItem(HighlightSettingsPage::RegExColumn)->setWhatsThis("<b>RegEx</b>: This option determines if the highlight rule should be interpreted as a <b>regular expression</b> or just as a keyword.");
+
+  ui.highlightTable->horizontalHeaderItem(HighlightSettingsPage::CsColumn)->setToolTip("<b>CS</b>: This option determines if the highlight rule should be interpreted <b>case sensitive</b>.");
+  ui.highlightTable->horizontalHeaderItem(HighlightSettingsPage::CsColumn)->setWhatsThis("<b>CS</b>: This option determines if the highlight rule should be interpreted <b>case sensitive</b>.");
+
+  ui.highlightTable->horizontalHeader()->setResizeMode(HighlightSettingsPage::NameColumn, QHeaderView::Stretch);
+  ui.highlightTable->horizontalHeader()->setResizeMode(HighlightSettingsPage::RegExColumn, QHeaderView::ResizeToContents); 
+  ui.highlightTable->horizontalHeader()->setResizeMode(HighlightSettingsPage::CsColumn, QHeaderView::ResizeToContents); 
+  ui.highlightTable->horizontalHeader()->setResizeMode(HighlightSettingsPage::EnableColumn, QHeaderView::ResizeToContents); 
 
   connect(ui.add, SIGNAL(clicked(bool)), this, SLOT(addNewRow()));
   connect(ui.remove, SIGNAL(clicked(bool)), this, SLOT(removeSelectedRows()));
   //TODO: search for a better signal (one that emits everytime a selection has been changed for one item)
   connect(ui.highlightTable, SIGNAL(itemClicked(QTableWidgetItem *)), this, SLOT(selectRow(QTableWidgetItem *)));
 
+  connect(ui.highlightAllNicks, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
   connect(ui.highlightCurrentNick, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
+  connect(ui.highlightNoNick, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
   connect(ui.add, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
   connect(ui.remove, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
   connect(ui.highlightTable, SIGNAL(itemChanged(QTableWidgetItem *)), this, SLOT(tableChanged(QTableWidgetItem *)));
@@ -59,15 +67,25 @@ void HighlightSettingsPage::defaults() {
   widgetHasChanged();
 }
 
-void HighlightSettingsPage::addNewRow(bool regex, QString name, bool enable) {
+void HighlightSettingsPage::addNewRow(QString name, bool regex, bool cs, bool enable) {
   ui.highlightTable->setRowCount(ui.highlightTable->rowCount()+1);
+
+  QTableWidgetItem *nameItem = new QTableWidgetItem(name);
+
   QTableWidgetItem *regexItem = new QTableWidgetItem("");
   if(regex)
     regexItem->setCheckState(Qt::Checked);
   else
     regexItem->setCheckState(Qt::Unchecked);
   regexItem->setFlags(Qt::ItemIsUserCheckable|Qt::ItemIsEnabled|Qt::ItemIsSelectable);
-  QTableWidgetItem *nameItem = new QTableWidgetItem(name);
+
+  QTableWidgetItem *csItem = new QTableWidgetItem("");
+  if(cs)
+    csItem->setCheckState(Qt::Checked);
+  else
+    csItem->setCheckState(Qt::Unchecked);
+  csItem->setFlags(Qt::ItemIsUserCheckable|Qt::ItemIsEnabled|Qt::ItemIsSelectable);
+
   QTableWidgetItem *enableItem = new QTableWidgetItem("");
   if(enable)
     enableItem->setCheckState(Qt::Checked);
@@ -76,13 +94,15 @@ void HighlightSettingsPage::addNewRow(bool regex, QString name, bool enable) {
   enableItem->setFlags(Qt::ItemIsUserCheckable|Qt::ItemIsEnabled|Qt::ItemIsSelectable);
 
   int lastRow = ui.highlightTable->rowCount()-1;
-  ui.highlightTable->setItem(lastRow, 0, regexItem);
-  ui.highlightTable->setItem(lastRow, 1, nameItem);
-  ui.highlightTable->setItem(lastRow, 2, enableItem);
+  ui.highlightTable->setItem(lastRow, HighlightSettingsPage::NameColumn, nameItem);
+  ui.highlightTable->setItem(lastRow, HighlightSettingsPage::RegExColumn, regexItem);
+  ui.highlightTable->setItem(lastRow, HighlightSettingsPage::CsColumn, csItem);
+  ui.highlightTable->setItem(lastRow, HighlightSettingsPage::EnableColumn, enableItem);
 
   QVariantMap highlightRule;
-  highlightRule["regex"] = regex;
   highlightRule["name"] = name;
+  highlightRule["regex"] = regex;
+  highlightRule["cs"] = cs;
   highlightRule["enable"] = enable;
 
   highlightList.append(highlightRule);
@@ -108,7 +128,7 @@ void HighlightSettingsPage::removeSelectedRows() {
 void HighlightSettingsPage::selectRow(QTableWidgetItem *item) {
   int row = item->row();
   bool selected = item->isSelected();
-  ui.highlightTable->setRangeSelected(QTableWidgetSelectionRange(row, 0, row, 2), selected);
+  ui.highlightTable->setRangeSelected(QTableWidgetSelectionRange(row, 0, row, HighlightSettingsPage::ColumnCount-1), selected);
 }
 
 void HighlightSettingsPage::emptyTable() {
@@ -132,15 +152,18 @@ void HighlightSettingsPage::tableChanged(QTableWidgetItem *item) {
 
   switch(item->column())
   {
-    case 0:
-      highlightRule["regex"] = (item->checkState() == Qt::Checked);
-      break;
-    case 1:
-      if(item->text() == "") 
+    case HighlightSettingsPage::NameColumn:
+      if(item->text() == "")
         item->setText(tr("this shouldn't be empty"));
       highlightRule["name"] = item->text();
       break;
-    case 2:
+    case HighlightSettingsPage::RegExColumn:
+      highlightRule["regex"] = (item->checkState() == Qt::Checked);
+      break;
+    case HighlightSettingsPage::CsColumn:
+      highlightRule["cs"] = (item->checkState() == Qt::Checked);
+      break;
+    case HighlightSettingsPage::EnableColumn:
       highlightRule["enable"] = (item->checkState() == Qt::Checked);
       break;
   }
@@ -155,14 +178,26 @@ void HighlightSettingsPage::load() {
 
   foreach(QVariant highlight, notificationSettings.highlightList()) {
     QVariantMap highlightRule = highlight.toMap();
-    bool regex = highlightRule["regex"].toBool();
     QString name = highlightRule["name"].toString();
+    bool regex = highlightRule["regex"].toBool();
+    bool cs = highlightRule["cs"].toBool();
     bool enable = highlightRule["enable"].toBool();
 
-    addNewRow(regex, name, enable);
+    addNewRow(name, regex, cs, enable);
   }
 
-  ui.highlightCurrentNick->setChecked(notificationSettings.highlightCurrentNick());
+  switch(notificationSettings.highlightNick())
+  {
+    case NotificationSettings::NoNick:
+      ui.highlightNoNick->setChecked(true);
+      break;
+    case NotificationSettings::CurrentNick:
+      ui.highlightCurrentNick->setChecked(true);
+      break;
+    case NotificationSettings::AllNicks:
+      ui.highlightAllNicks->setChecked(true);
+      break;
+  }
 
   setChangedState(false);
 }
@@ -170,7 +205,16 @@ void HighlightSettingsPage::load() {
 void HighlightSettingsPage::save() {
   NotificationSettings notificationSettings;
   notificationSettings.setHighlightList(highlightList);
-  notificationSettings.setHighlightCurrentNick(ui.highlightCurrentNick->isChecked());
+
+  NotificationSettings::HighlightNickType highlightNickType;
+  if(ui.highlightNoNick->isChecked()) 
+    highlightNickType = NotificationSettings::NoNick;
+  if(ui.highlightCurrentNick->isChecked()) 
+    highlightNickType = NotificationSettings::CurrentNick;
+  if(ui.highlightAllNicks->isChecked()) 
+    highlightNickType = NotificationSettings::AllNicks;
+
+  notificationSettings.setHighlightNick(highlightNickType);
 
   load();
   setChangedState(false);
@@ -184,7 +228,16 @@ void HighlightSettingsPage::widgetHasChanged() {
 bool HighlightSettingsPage::testHasChanged() {
   NotificationSettings notificationSettings;
 
-  if(notificationSettings.highlightCurrentNick() != ui.highlightCurrentNick->isChecked()) return true;
+  NotificationSettings::HighlightNickType highlightNickType;
+  if(ui.highlightNoNick->isChecked()) 
+    highlightNickType = NotificationSettings::NoNick;
+  if(ui.highlightCurrentNick->isChecked()) 
+    highlightNickType = NotificationSettings::CurrentNick;
+  if(ui.highlightAllNicks->isChecked()) 
+    highlightNickType = NotificationSettings::AllNicks;
+
+  if(notificationSettings.highlightNick() != highlightNickType) return true;
+
   if(notificationSettings.highlightList() != highlightList) return true;
 
   return true;

@@ -42,7 +42,7 @@ class HighlightSettingsPage : public SettingsPage {
 
   private slots:
     void widgetHasChanged();
-    void addNewRow(bool regex = false, QString name = tr("highlight rule"), bool enable = true);
+    void addNewRow(QString name = tr("highlight rule"), bool regex = false, bool cs = true, bool enable = true);
     void removeSelectedRows();
     void selectRow(QTableWidgetItem *item);
     void tableChanged(QTableWidgetItem *item);
@@ -54,6 +54,13 @@ class HighlightSettingsPage : public SettingsPage {
     //    regex:  bool
     //    name:   QString
     //    enable: bool
+    enum column {
+      NameColumn = 0,
+      RegExColumn = 1,
+      CsColumn = 2,
+      EnableColumn = 3,
+      ColumnCount = 4
+    };
 
     void emptyTable();
 
