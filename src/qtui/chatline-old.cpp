@@ -29,8 +29,7 @@
  */
 ChatLineOld::ChatLineOld(Message m) {
   hght = 0;
-  //networkName = m.buffer.network();
-  //bufferName = m.buffer.buffer();
+
   msg = m;
   selectionMode = None;
   isHighlight = false;
@@ -50,9 +49,17 @@ void ChatLineOld::formatMsg(Message msg) {
   precomputeLine();
 }
 
+QList<ChatLineOld::FormatRange> ChatLineOld::calcFormatRanges(const UiStyle::StyledText &fs) {
+  QTextLayout::FormatRange additional;
+  additional.start = additional.length = 0;
+  return calcFormatRanges(fs, additional);
+}
+
 // This function is almost obsolete, since with the new style engine, we already get a list of formats...
 // We don't know yet if we keep this implementation of ChatLineOld, so I won't bother making this actually nice.
-QList<ChatLineOld::FormatRange> ChatLineOld::calcFormatRanges(UiStyle::StyledText fs, QTextLayout::FormatRange additional) {
+QList<ChatLineOld::FormatRange> ChatLineOld::calcFormatRanges(const UiStyle::StyledText &_fs,
+     const QTextLayout::FormatRange &additional) {
+  UiStyle::StyledText fs = _fs;
   QList<FormatRange> ranges;
 
   if(additional.length > 0) {
@@ -76,6 +83,7 @@ QList<ChatLineOld::FormatRange> ChatLineOld::calcFormatRanges(UiStyle::StyledTex
       }
     }
   }
+
   foreach(QTextLayout::FormatRange f, fs.formats) {
     if(f.length <= 0) continue;
     FormatRange range;

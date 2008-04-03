@@ -429,6 +429,8 @@ void Client::recvMessage(const Message &message) {
 
   checkForHighlight(msg);
 
+  // FIXME clean up code! (dup)
+
   if(msg.flags() & Message::Redirected) {
     BufferSettings bufferSettings;
     bool inStatus = bufferSettings.value("UserMessagesInStatusBuffer", QVariant(true)).toBool();
@@ -438,22 +440,21 @@ void Client::recvMessage(const Message &message) {
     if(inStatus) {
       b = statusBuffer(msg.bufferInfo().networkId());
       if(b) {
-	b->appendMsg(msg);
+        b->appendMsg(msg);
       } else if(!inQuery && !inCurrent) {	// make sure the message get's shown somewhere
-	b = buffer(msg.bufferInfo());
-	b->appendMsg(msg);
+        b = buffer(msg.bufferInfo());
+        b->appendMsg(msg);
       }
     }
 
     if(inQuery) {
       b = buffer(msg.bufferInfo().bufferId());
       if(b) {
-	b->appendMsg(msg);
-      } else if(!inStatus && !inCurrent) {	// make sure the message get's shown somewhere
-	b = statusBuffer(msg.bufferInfo().networkId());
-	if(!b)
-	  b = buffer(msg.bufferInfo()); // seems like we have to create the buffer anyways... 
-	b->appendMsg(msg);
+        b->appendMsg(msg);
+      } else if(!inStatus && !inCurrent) { // make sure the message get's shown somewhere
+        b = statusBuffer(msg.bufferInfo().networkId());
+      if(!b) b = buffer(msg.bufferInfo()); // seems like we have to create the buffer anyways...
+      b->appendMsg(msg);
       }
     }
 
@@ -461,12 +462,11 @@ void Client::recvMessage(const Message &message) {
       BufferId currentId = bufferModel()->currentIndex().data(NetworkModel::BufferIdRole).value<BufferId>();
       b = buffer(currentId);
       if(b && currentId != msg.bufferInfo().bufferId() && !inQuery) {
-	b->appendMsg(msg);
+        b->appendMsg(msg);
       } else if(!inStatus && !inQuery) {	// make sure the message get's shown somewhere
-	b = statusBuffer(msg.bufferInfo().networkId());
-	if(!b)
-	  b = buffer(msg.bufferInfo()); // seems like we have to create the buffer anyways... 
-	b->appendMsg(msg);
+        b = statusBuffer(msg.bufferInfo().networkId());
+        if(!b) b = buffer(msg.bufferInfo()); // seems like we have to create the buffer anyways...
+        b->appendMsg(msg);
       }
     }
   } else {

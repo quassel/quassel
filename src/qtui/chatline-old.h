@@ -104,7 +104,8 @@ class ChatLineOld : public QObject, public AbstractUiMsg {
     int selectionStart, selectionEnd;
     void formatMsg(Message);
     void precomputeLine();
-    QList<FormatRange> calcFormatRanges(UiStyle::StyledText, QTextLayout::FormatRange additional = QTextLayout::FormatRange());
+    QList<FormatRange> calcFormatRanges(const UiStyle::StyledText &);
+    QList<FormatRange> calcFormatRanges(const UiStyle::StyledText &, const QTextLayout::FormatRange &additional);
 };
 
 #endif

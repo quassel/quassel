@@ -57,6 +57,7 @@
 
 #include "debugconsole.h"
 #include "global.h"
+#include "qtuistyle.h"
 
 MainWin::MainWin(QtUi *_gui, QWidget *parent)
   : QMainWindow(parent),
@@ -441,11 +442,12 @@ void MainWin::receiveMessage(const Message &msg) {
         sender = sender.left(i);
       title += QString(" - %1").arg(sender);
     }
-    QString text = QtUi::style()->styleString(Message::mircToInternal(msg.text())).text;
 
     UiSettings uiSettings;
 
     if(uiSettings.value("DisplayPopupMessages", QVariant(true)).toBool()) {
+      // FIXME don't invoke style engine for this!
+      QString text = QtUi::style()->styleString(Message::mircToInternal(msg.text())).text;
       displayTrayIconMessage(title, text);
     }
 
