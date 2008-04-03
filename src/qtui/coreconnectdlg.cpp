@@ -459,39 +459,35 @@ void CoreConnectDlg::syncFinished() {
 /*****************************************************************************************
  * CoreAccountEditDlg
  *****************************************************************************************/
-CoreAccountEditDlg::CoreAccountEditDlg(AccountId id, const QVariantMap &acct, const QStringList &_existing, QWidget *parent) : QDialog(parent) {
+CoreAccountEditDlg::CoreAccountEditDlg(AccountId id, const QVariantMap &acct, const QStringList &_existing, QWidget *parent)
+  : QDialog(parent)
+{
   ui.setupUi(this);
   existing = _existing;
-  account = acct;
   if(id.isValid()) {
-    // add new settings
-    if(!acct.contains("useProxy")) {
-      account["useProxy"] = false;
-      account["proxyHost"] = "localhost";
-      account["proxyPort"] = 8080;
-      account["proxyType"] = QNetworkProxy::Socks5Proxy;
-      account["proxyUser"] = "";
-      account["proxyPassword"] = "";
-    }
     existing.removeAll(acct["AccountName"].toString());
     ui.host->setText(acct["Host"].toString());
     ui.port->setValue(acct["Port"].toUInt());
     ui.useInternal->setChecked(acct["UseInternal"].toBool());
     ui.accountName->setText(acct["AccountName"].toString());
 #ifndef QT_NO_OPENSSL
-    ui.useSsl->setChecked(account["useSsl"].toBool());
+    ui.useSsl->setChecked(acct["useSsl"].toBool());
 #else
     ui.useSsl->setChecked(false);
     ui.useSsl->setEnabled(false);
 #endif
-    ui.useProxy->setChecked(account["useProxy"].toBool());
-    ui.proxyHost->setText(account["proxyHost"].toString());
-    ui.proxyPort->setValue(account["proxyPort"].toUInt());
-    ui.proxyType->setCurrentIndex(account["proxyType"].toInt() == QNetworkProxy::Socks5Proxy ? 0 : 1);
-    ui.proxyHost->setText(account["proxyUser"].toString());
-    ui.proxyHost->setText(account["proxyPassword"].toString());
+    ui.useProxy->setChecked(acct["useProxy"].toBool());
+    ui.proxyHost->setText(acct["proxyHost"].toString());
+    ui.proxyPort->setValue(acct["proxyPort"].toUInt());
+    ui.proxyType->setCurrentIndex(acct["proxyType"].toInt() == QNetworkProxy::Socks5Proxy ? 0 : 1);
+    ui.proxyUser->setText(acct["proxyUser"].toString());
+    ui.proxyPassword->setText(acct["proxyPassword"].toString());
   } else {
     setWindowTitle(tr("Add Core Account"));
+#ifdef QT_NO_OPENSSL
+    ui.useSsl->setChecked(false);
+    ui.useSsl->setEnabled(false);
+#endif
   }
 }
 
