@@ -169,9 +169,7 @@ private:
 
   bool _previousConnectionAttemptFailed;
   int _lastUsedServerlistIndex;
-  
-  QByteArray lastMsgReceived;  //  FIXME debug
-  
+
   class ParseError : public Exception {
   public:
     ParseError(QString cmd, QString prefix, QStringList params);

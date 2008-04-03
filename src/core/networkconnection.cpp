@@ -279,12 +279,7 @@ void NetworkConnection::disconnectFromIrc(bool requested) {
 
 void NetworkConnection::socketHasData() {
   while(socket.canReadLine()) {
-    QByteArray s = socket.readLine().trimmed();
-    // FIXME debug
-    if(Global::SPUTDEV && s == lastMsgReceived) {
-      qWarning() << "NetworkConnection::socketHasData(): Message repeated! -> loop?";
-    }
-    lastMsgReceived = s;
+    QByteArray s = socket.readLine();
     ircServerHandler()->handleServerMsg(s);
   }
 }
