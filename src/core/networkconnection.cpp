@@ -279,7 +279,7 @@ void NetworkConnection::disconnectFromIrc(bool requested) {
 
 void NetworkConnection::socketHasData() {
   while(socket.canReadLine()) {
-    QByteArray s = socket.readLine();
+    QByteArray s = socket.readLine().trimmed();
     ircServerHandler()->handleServerMsg(s);
   }
 }
