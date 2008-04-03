@@ -19,7 +19,7 @@ linux-g++:static {
 for(mod, MODULES) {
   INCLUDEPATH *= $$SRCPATH/$$mod
   LIBS *= -L../modules/$$dirname(mod) -l$$basename(mod)
-  #PRE_TARGETDEPS *= ../modules/$$mod
+  PRE_TARGETDEPS *= ../modules/$$mod
 }
 PRE_TARGETDEPS *= ../../version.inc
 
