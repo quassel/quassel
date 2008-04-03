@@ -132,7 +132,7 @@ QString UiStyle::formatCode(FormatType ftype) const {
 UiStyle::StyledText UiStyle::styleString(const QString &_s) {
   QString s = _s;  // we can't use call-by-value since this seems to maybe screw up Qt's implicit sharing somehow
                    // at least invalid formats are created if we do that
-
+  if(s.startsWith(" ")) {};  // and yet some other stupid no-op that seems to fix the font issue on some machines... -_- 
   StyledText result;
   QList<FormatType> fmtList;
   fmtList.append(None);
