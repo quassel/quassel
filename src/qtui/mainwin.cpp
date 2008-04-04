@@ -62,9 +62,11 @@
 MainWin::MainWin(QtUi *_gui, QWidget *parent)
   : QMainWindow(parent),
     gui(_gui),
+    sslLabel(new QLabel()),
     systray(new QSystemTrayIcon(this)),
     activeTrayIcon(":/icons/quassel-icon-active.png"),
-    inactiveTrayIcon(":/icons/quassel-icon.png"),
+    onlineTrayIcon(":/icons/quassel-icon.png"),
+    offlineTrayIcon(":/icons/quassel-icon-offline.png"),
     trayIconActive(false),
     timer(new QTimer(this)),
     settingsDlg(new SettingsDlg(this)),
@@ -72,7 +74,8 @@ MainWin::MainWin(QtUi *_gui, QWidget *parent)
 {
   ui.setupUi(this);
   setWindowTitle("Quassel IRC");
-  setWindowIcon(inactiveTrayIcon);
+  setWindowIcon(offlineTrayIcon);
+  systray->setIcon(offlineTrayIcon);
   setWindowIconText("Quassel IRC");
 
   statusBar()->showMessage(tr("Waiting for core..."));
@@ -84,6 +87,11 @@ MainWin::MainWin(QtUi *_gui, QWidget *parent)
   if(style != "") {
     QApplication::setStyle(style);
   }
+
+  connect(Client::instance(), SIGNAL(securedConnection()), this, SLOT(securedConnection()));
+  sslLabel->setPixmap(QPixmap::fromImage(QImage(":/16x16/status/no-ssl")));
+  statusBar()->addPermanentWidget(sslLabel);
+
 }
 
 void MainWin::init() {
@@ -131,7 +139,7 @@ void MainWin::init() {
   // attach the BufferWidget to the BufferModel and the default selection
   ui.bufferWidget->setModel(Client::bufferModel());
   ui.bufferWidget->setSelectionModel(Client::bufferModel()->standardSelectionModel());
-  
+
   if(Global::SPUTDEV) {
     //showSettingsDlg();
     //showAboutDlg();
@@ -286,10 +294,6 @@ void MainWin::setupSystray() {
   connect(timer, SIGNAL(timeout()), this, SLOT(makeTrayIconBlink()));
   connect(Client::instance(), SIGNAL(messageReceived(const Message &)), this, SLOT(receiveMessage(const Message &)));
 
-  systray->setIcon(inactiveTrayIcon);
-//  systray->setToolTip("left click to minimize the quassel client to tray");
-//  systray->setToolTip(toolTip);
-
   systrayMenu = new QMenu(this);
   systrayMenu->addAction(ui.actionAboutQuassel);
   systrayMenu->addSeparator();
@@ -344,6 +348,15 @@ void MainWin::connectedToCore() {
   //ui.actionNetworkList->setEnabled(true);
   ui.bufferWidget->show();
   statusBar()->showMessage(tr("Connected to core."));
+  setWindowIcon(onlineTrayIcon);
+  systray->setIcon(onlineTrayIcon);
+}
+
+void MainWin::securedConnection() {
+  // todo: make status bar entry
+  qDebug() << "secured the connection";
+
+  sslLabel->setPixmap(QPixmap::fromImage(QImage(":/16x16/status/ssl")));
 }
 
 void MainWin::disconnectedFromCore() {
@@ -355,6 +368,9 @@ void MainWin::disconnectedFromCore() {
   ui.actionConnectCore->setEnabled(true);
   // nickListWidget->reset();
   statusBar()->showMessage(tr("Not connected to core."));
+  setWindowIcon(offlineTrayIcon);
+  systray->setIcon(offlineTrayIcon);
+  sslLabel->setPixmap(QPixmap::fromImage(QImage(":/16x16/status/no-ssl")));
 }
 
 AbstractUiMsg *MainWin::layoutMsg(const Message &msg) {
@@ -474,13 +490,13 @@ void MainWin::setTrayIconActivity(bool active) {
       timer->start(500);
   } else {
     timer->stop();
-    systray->setIcon(inactiveTrayIcon);
+    systray->setIcon(onlineTrayIcon);
   }
 }
 
 void MainWin::makeTrayIconBlink() {
   if(trayIconActive) {
-    systray->setIcon(inactiveTrayIcon);
+    systray->setIcon(onlineTrayIcon);
     trayIconActive = false;
   } else {
     systray->setIcon(activeTrayIcon);

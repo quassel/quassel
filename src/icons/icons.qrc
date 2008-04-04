@@ -584,6 +584,10 @@
         <file>oxygen/22x22/actions/zoom-original.png</file>
         <file>oxygen/22x22/actions/zoom-out.png</file>
     </qresource>
+    <qresource prefix="/16x16/status" >
+            <file alias="no-ssl">oxygen/16x16/status/object-unlocked.png</file>
+	    <file alias="ssl">oxygen/16x16/status/object-locked.png</file>
+    </qresource>
     <qresource prefix="/22x22/status" >
         <file alias="dialog-error">oxygen/22x22/status/dialog-error.png</file>
         <file>oxygen/22x22/status/dialog-information.png</file>
@@ -597,5 +601,6 @@
     <qresource prefix="/icons" >
         <file>quassel-icon.png</file>
         <file>quassel-icon-active.png</file>
+        <file>quassel-icon-offline.png</file>
     </qresource>
 </RCC>

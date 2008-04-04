@@ -126,6 +126,7 @@ signals:
   void showConfigWizard(const QVariantMap &coredata);
 
   void connected();
+  void securedConnection();
   void disconnected();
   void coreConnectionStateChanged(bool);
 
@@ -189,6 +190,8 @@ private slots:
 
   void setConnectedToCore(QIODevice *socket, AccountId id);
   void setSyncedToCore();
+  void setSecuredConnection();
+
 
 private:
   Client(QObject *parent = 0);

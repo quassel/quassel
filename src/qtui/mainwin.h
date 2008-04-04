@@ -63,6 +63,7 @@ class MainWin : public QMainWindow {
 
   protected slots:
     void connectedToCore();
+    void securedConnection();
     void disconnectedFromCore();
     void systrayActivated( QSystemTrayIcon::ActivationReason );
 
@@ -94,6 +95,7 @@ class MainWin : public QMainWindow {
     QtUi *gui;
 
     QMenu *systrayMenu;
+    QLabel *sslLabel;
 
     void setupMenus();
     void setupViews();
@@ -111,7 +113,8 @@ class MainWin : public QMainWindow {
 
     QSystemTrayIcon *systray;
     QIcon activeTrayIcon;
-    QIcon inactiveTrayIcon;
+    QIcon onlineTrayIcon;
+    QIcon offlineTrayIcon;
     bool trayIconActive;
     QTimer *timer;
 

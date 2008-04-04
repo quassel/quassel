@@ -318,6 +318,10 @@ void Client::setSyncedToCore() {
   emit coreConnectionStateChanged(true);
 }
 
+void Client::setSecuredConnection() {
+  emit securedConnection();
+}
+
 void Client::disconnectFromCore() {
   if(!isConnected())
     return;
