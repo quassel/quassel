@@ -20,7 +20,9 @@
 
 #include "clientsyncer.h"
 
-#include <QNetworkProxy>
+#ifndef QT_NO_NETWORKPROXY
+#  include <QNetworkProxy>
+#endif
 
 #include "client.h"
 #include "global.h"
@@ -131,11 +133,12 @@ void ClientSyncer::connectToCore(const QVariantMap &conn) {
     }
     QTcpSocket *sock = new QTcpSocket(Client::instance());
 #endif
-
+#ifndef QT_NO_NETWORKPROXY
     if(conn.contains("useProxy") && conn["useProxy"].toBool()) {
       QNetworkProxy proxy((QNetworkProxy::ProxyType)conn["proxyType"].toInt(), conn["proxyHost"].toString(), conn["proxyPort"].toUInt(), conn["proxyUser"].toString(), conn["proxyPassword"].toString());
       sock->setProxy(proxy);
     }
+#endif
     socket = sock;
     connect(sock, SIGNAL(readyRead()), this, SLOT(coreHasData()));
     connect(sock, SIGNAL(connected()), this, SLOT(coreSocketConnected()));
