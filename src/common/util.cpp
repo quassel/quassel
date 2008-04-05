@@ -148,8 +148,11 @@ QDir quasselDir() {
 #endif
 
   QDir qDir(quasselDir);
-  if(!qDir.exists(quasselDir))
-    qDir.mkpath(quasselDir);
+  if(!qDir.exists(quasselDir)) {
+    if(!qDir.mkpath(quasselDir)) {
+      qCritical() << "Unable to create Quassel data directory:" << qPrintable(qDir.absolutePath());
+    }
+  }
 
   return qDir;
 }
