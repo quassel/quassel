@@ -37,6 +37,9 @@ class AbstractBufferContainer : public AbstractItemView {
 
     inline BufferId currentBuffer() const { return _currentBuffer; }
 
+  signals:
+    void currentChanged(BufferId);
+
   protected:
     //! Create an AbstractChatView for the given BufferId and add it to the UI if necessary
     virtual AbstractChatView *createChatView(BufferId) = 0;
@@ -46,7 +49,7 @@ class AbstractBufferContainer : public AbstractItemView {
      *  It also shall delete the object afterwards.
      * \param view The chat view to be removed and deleted
      */
-    virtual void removeChatView(AbstractChatView *view) = 0;
+    virtual void removeChatView(BufferId) = 0;
 
   protected slots:
     virtual void currentChanged(const QModelIndex &current, const QModelIndex &previous);
@@ -57,7 +60,7 @@ class AbstractBufferContainer : public AbstractItemView {
      *  selecting the appropriate page in a QStackedWidget.
      * \param view The chat view to be displayed. May be 0 if no chat view is selected.
      */
-    virtual void showChatView(AbstractChatView *view) = 0;
+    virtual void showChatView(BufferId) = 0;
 
   private slots:
     void appendMsg(AbstractUiMsg *);
@@ -77,6 +80,7 @@ class AbstractChatView {
     virtual void appendMsg(AbstractUiMsg *msg) = 0;
     virtual void prependMsg(AbstractUiMsg *msg) = 0;
     virtual void setContents(const QList<AbstractUiMsg *> &contents) = 0;
+    //virtual BufferId bufferId() const = 0;
 
 };
 

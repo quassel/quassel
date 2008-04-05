@@ -37,24 +37,28 @@ BufferWidget::~BufferWidget() {
 }
 
 AbstractChatView *BufferWidget::createChatView(BufferId id) {
-  AbstractChatView *chatView;
+  QWidget *chatView;
   if(Global::SPUTDEV) {
     chatView = new ChatView(Client::buffer(id), this);
   } else {
     chatView = new ChatWidget(id, this);
   }
-  ui.stackedWidget->addWidget(dynamic_cast<QWidget *>(chatView));
-  dynamic_cast<QWidget *>(chatView)->setFocusProxy(this);
-  return chatView;
+  _chatViews[id] = chatView;
+  ui.stackedWidget->addWidget(chatView);
+  chatView->setFocusProxy(this);
+  return dynamic_cast<AbstractChatView*>(chatView);
 }
 
-void BufferWidget::removeChatView(AbstractChatView *view) {
-  ui.stackedWidget->removeWidget(dynamic_cast<QWidget *>(view));
-  dynamic_cast<QWidget *>(view)->deleteLater();
+void BufferWidget::removeChatView(BufferId id) {
+  QWidget *view = _chatViews.value(id, 0);
+  if(!view) return;
+  ui.stackedWidget->removeWidget(view);
+  view->deleteLater();
+  _chatViews.take(id);
 }
 
-void BufferWidget::showChatView(AbstractChatView *view) {
-  if(!view) ui.stackedWidget->setCurrentWidget(ui.page);
-  else ui.stackedWidget->setCurrentWidget(dynamic_cast<QWidget *>(view));
+void BufferWidget::showChatView(BufferId id) {
+  if(!id.isValid()) ui.stackedWidget->setCurrentWidget(ui.page);
+  else ui.stackedWidget->setCurrentWidget(_chatViews.value(id));
 }
 

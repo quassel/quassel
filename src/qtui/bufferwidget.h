@@ -34,14 +34,14 @@ class BufferWidget : public AbstractBufferContainer {
 
   protected:
     virtual AbstractChatView *createChatView(BufferId);
-    virtual void removeChatView(AbstractChatView *view);
+    virtual void removeChatView(BufferId);
 
   protected slots:
-    virtual void showChatView(AbstractChatView *view);
+    virtual void showChatView(BufferId);
 
   private:
     Ui::BufferWidget ui;
-
+    QHash<BufferId, QWidget *> _chatViews;
 };
 
 #endif

@@ -42,13 +42,10 @@ void AbstractBufferContainer::rowsAboutToBeRemoved(const QModelIndex &parent, in
     if(model()->rowCount(parent) != end - start + 1)
       return;
 
-    AbstractChatView *chatView;
-    QHash<BufferId, AbstractChatView *>::iterator iter = _chatViews.begin();
-    while(iter != _chatViews.end()) {
-      chatView = *iter;
-      iter = _chatViews.erase(iter);
-      removeChatView(chatView);
+    foreach(BufferId id, _chatViews.keys()) {
+      removeChatView(id);
     }
+    _chatViews.clear();
   } else {
     // check if there are explicitly buffers removed
     for(int i = start; i <= end; i++) {
@@ -63,19 +60,21 @@ void AbstractBufferContainer::rowsAboutToBeRemoved(const QModelIndex &parent, in
 }
 
 void AbstractBufferContainer::removeBuffer(BufferId bufferId) {
+  if(Client::buffer(bufferId)) Client::buffer(bufferId)->setVisible(false);
   if(!_chatViews.contains(bufferId))
     return;
 
-  if(Client::buffer(bufferId)) Client::buffer(bufferId)->setVisible(false);
-  AbstractChatView *chatView = _chatViews.take(bufferId);
-  removeChatView(chatView);
+  removeChatView(bufferId);
+  _chatViews.take(bufferId);
 }
 
 void AbstractBufferContainer::currentChanged(const QModelIndex &current, const QModelIndex &previous) {
   BufferId newBufferId = current.data(NetworkModel::BufferIdRole).value<BufferId>();
   BufferId oldBufferId = previous.data(NetworkModel::BufferIdRole).value<BufferId>();
-  if(newBufferId != oldBufferId)
+  if(newBufferId != oldBufferId) {
     setCurrentBuffer(newBufferId);
+    emit currentChanged(newBufferId);
+  }
 }
 
 void AbstractBufferContainer::setCurrentBuffer(BufferId bufferId) {
@@ -102,7 +101,7 @@ void AbstractBufferContainer::setCurrentBuffer(BufferId bufferId) {
     _chatViews[bufferId] = chatView;
   }
   _currentBuffer = bufferId;
-  showChatView(chatView);
+  showChatView(bufferId);
   buf->setVisible(true);
   setFocus();
 }
