@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include <QHeaderView>
+#include <QScrollBar>
 #include <QDebug>
 #include <QMenu>
 
@@ -42,6 +43,7 @@ NickView::NickView(QWidget *parent)
   setIndentation(10);
   setAnimated(true);
   header()->hide();
+  setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
   setSortingEnabled(true);
   sortByColumn(0, Qt::AscendingOrder);
 
