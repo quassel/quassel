@@ -36,7 +36,7 @@ TopicButton::TopicButton(QWidget *parent)
   : QAbstractButton(parent)
 {
   setFixedHeight(QFontMetrics(qApp->font()).height());
-  setToolTip("Click to edit!");
+  setToolTip(tr("Click to edit!"));
 }
 
 void TopicButton::paintEvent(QPaintEvent *event) {
@@ -75,5 +75,8 @@ void TopicButton::setAndStyleText(const QString &text) {
     height = QFontMetrics(qApp->font()).height();
   
   setFixedHeight(height);
+  
+  // show topic in tooltip
+  setToolTip(tr("%1\n\nClick to edit!").arg(QAbstractButton::text()));
 }
 
