@@ -1,4 +1,4 @@
-CONFIG += warn_on uic resources qt
+CONFIG += warn_on uic resources qt silent
 # CONFIG += incremental link_prl nostrip qt_no_framework
 
 release {
