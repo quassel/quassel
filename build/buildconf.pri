@@ -10,3 +10,7 @@ release {
 win32:static { 
   CONFIG = release warn_on uic resources qt windows static
 }
+
+mac:Tiger {
+ QMAKE_MAC_SDK=/Developer/SDKs/MacOSX10.4u.sdk
+}
