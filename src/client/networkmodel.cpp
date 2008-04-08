@@ -288,14 +288,14 @@ QString BufferItem::toolTip(int column) const {
   switch(bufferType()) {
     case BufferInfo::StatusBuffer: {
       QString netName = Client::network(bufferInfo().networkId())->networkName();
-      toolTip.append(QString("<b>Status buffer from %1</b>").arg(netName));
+      toolTip.append(tr("<b>Status buffer from %1</b>").arg(netName));
       break;
     }
     case BufferInfo::ChannelBuffer:
-      toolTip.append(QString("<h4>Channel %1</h4>").arg(bufferName()));
+      toolTip.append(tr("<b>Channel %1</b>").arg(bufferName()));
       if(isActive()) {
         //TODO: add channel modes 
-        toolTip.append(QString("<b>Users:</b> %1").arg(nickCount()));
+        toolTip.append(tr("<b>Users:</b> %1").arg(nickCount()));
 
         BufferSettings s;
         bool showTopic = s.value("DisplayTopicInTooltip", QVariant(false)).toBool();
@@ -305,23 +305,23 @@ QString BufferItem::toolTip(int column) const {
             _topic.replace(QString("<"), QString("&lt;"));
             _topic.replace(QString(">"), QString("&gt;"));
             toolTip.append(QString("<font size='-2'>&nbsp;</font>"));
-            toolTip.append(QString("<b>Topic:</b> %1").arg(_topic));
+            toolTip.append(tr("<b>Topic:</b> %1").arg(_topic));
           }
         }
       } else {
-        toolTip.append(QString("Not active <br /> Double-click to join"));
+        toolTip.append(tr("Not active <br /> Double-click to join"));
       }
       break;
     case BufferInfo::QueryBuffer:
-      toolTip.append(QString("<b>Query with %1</b>").arg(bufferName()));
-      if(topic() != "") toolTip.append(QString("Away Message: %1").arg(topic()));
+      toolTip.append(tr("<b>Query with %1</b>").arg(bufferName()));
+      if(topic() != "") toolTip.append(tr("Away Message: %1").arg(topic()));
       break;
     default: //this should not happen
-      toolTip.append(QString("%1 - %2").arg(bufferInfo().bufferId().toInt()).arg(bufferName()));
+      toolTip.append(tr("%1 - %2").arg(bufferInfo().bufferId().toInt()).arg(bufferName()));
       break;
   }
 
-  return QString("<p> %1 </p>").arg(toolTip.join("<br />"));
+  return tr("<p> %1 </p>").arg(toolTip.join("<br />"));
 }
 
 /*
