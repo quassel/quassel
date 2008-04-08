@@ -272,7 +272,7 @@ void CoreSession::msgFromClient(BufferInfo bufinfo, QString msg) {
   if(conn) {
     conn->userInput(bufinfo, msg);
   } else {
-    qWarning() << "Trying to send to unconnected network!";
+    qWarning() << "Trying to send to unconnected network:" << msg;
   }
 }
 

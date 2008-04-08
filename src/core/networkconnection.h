@@ -33,12 +33,12 @@
 # include <QTcpSocket>
 #endif
 
+#include "coresession.h"
 #include "identity.h"
 #include "message.h"
 #include "network.h"
 #include "signalproxy.h"
 
-class CoreSession;
 class Network;
 
 class IrcServerHandler;
@@ -52,18 +52,18 @@ public:
   NetworkConnection(Network *network, CoreSession *session);
   ~NetworkConnection();
 
-  NetworkId networkId() const;
-  QString networkName() const;
-  Network *network() const;
-  Identity *identity() const;
-  CoreSession *coreSession() const;
+  inline NetworkId networkId() const { return network()->networkId(); }
+  inline QString networkName() const { return network()->networkName(); }
+  inline Network *network() const { return _network; }
+  inline Identity *identity() const { return coreSession()->identity(network()->identity()); }
+  inline CoreSession *coreSession() const { return _coreSession; }
 
-  bool isConnected() const;
-  Network::ConnectionState connectionState() const;
+  inline bool isConnected() const { return connectionState() == Network::Initialized; }
+  inline Network::ConnectionState connectionState() const { return _connectionState; }
 
-  IrcServerHandler *ircServerHandler() const;
-  UserInputHandler *userInputHandler() const;
-  CtcpHandler *ctcpHandler() const;
+  inline IrcServerHandler *ircServerHandler() const { return _ircServerHandler; }
+  inline UserInputHandler *userInputHandler() const { return _userInputHandler; }
+  inline CtcpHandler *ctcpHandler() const { return _ctcpHandler; }
 
   //! Decode a string using the server (network) decoding.
   QString serverDecode(const QByteArray &string) const;
@@ -86,6 +86,8 @@ public:
   inline QString channelKey(const QString &channel) const { return _channelKeys.value(channel.toLower(), QString()); }
   inline QStringList persistentChannels() const { return _channelKeys.keys(); }
 
+  inline bool isAutoWhoInProgress(const QString &channel) const { return _autoWhoInProgress.contains(channel); }
+
 public slots:
   // void setServerOptions();
   void connectToIrc(bool reconnecting = false);
@@ -100,12 +102,7 @@ public slots:
   void addChannelKey(const QString &channel, const QString &key);
   void removeChannelKey(const QString &channel);
 
-private slots:
-  void sendPerform();
-  void autoReconnectSettingsChanged();
-  void doAutoReconnect();
-  void sendWho();
-  void nickChanged(const QString &newNick, const QString &oldNick); // this signal is inteded to rename query buffers in the storage backend
+  bool setAutoWhoDone(const QString &channel);
 
 signals:
   // #void networkState(QString net, QVariantMap data);
@@ -138,6 +135,13 @@ private slots:
   void setConnectionState(Network::ConnectionState);
   void networkInitialized(const QString &currentServer);
 
+  void sendPerform();
+  void autoReconnectSettingsChanged();
+  void doAutoReconnect();
+  void sendAutoWho();
+  void startAutoWhoCycle();
+  void nickChanged(const QString &newNick, const QString &oldNick); // this signal is inteded to rename query buffers in the storage backend
+
 #ifndef QT_NO_OPENSSL
   void socketEncrypted();
   void sslErrors(const QList<QSslError> &errors);
@@ -165,10 +169,17 @@ private:
   QTimer _autoReconnectTimer;
   int _autoReconnectCount;
 
-  QTimer _whoTimer;
-
   bool _previousConnectionAttemptFailed;
   int _lastUsedServerlistIndex;
+
+  bool _autoWhoEnabled;
+  QStringList _autoWhoQueue;
+  QSet<QString> _autoWhoInProgress;
+  int _autoWhoInterval;
+  int _autoWhoNickLimit;
+  int _autoWhoDelay;
+  QTimer _autoWhoTimer, _autoWhoCycleTimer;
+
 
   class ParseError : public Exception {
   public:

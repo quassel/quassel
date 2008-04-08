@@ -259,7 +259,10 @@ void IrcServerHandler::handleMode(const QString &prefix, const QList<QByteArray>
 
 void IrcServerHandler::handleNick(const QString &prefix, const QList<QByteArray> &params) {
   IrcUser *ircuser = network()->updateNickFromMask(prefix);
-  Q_ASSERT(ircuser);
+  if(!ircuser) {
+    qWarning() << "IrcServerHandler::handleNick(): Unknown IrcUser!";
+    return;
+  }
   QString newnick = serverDecode(params[0]);
   QString oldnick = ircuser->nick();
 
@@ -293,7 +296,10 @@ void IrcServerHandler::handleNotice(const QString &prefix, const QList<QByteArra
 void IrcServerHandler::handlePart(const QString &prefix, const QList<QByteArray> &params) {
   IrcUser *ircuser = network()->updateNickFromMask(prefix);
   QString channel = serverDecode(params[0]);
-  Q_ASSERT(ircuser);
+  if(!ircuser) {
+    qWarning() << "IrcServerHandler::handlePart(): Unknown IrcUser!";
+    return;
+  }
 
   ircuser->partChannel(channel);
 
@@ -312,7 +318,10 @@ void IrcServerHandler::handlePing(const QString &prefix, const QList<QByteArray>
 
 void IrcServerHandler::handlePrivmsg(const QString &prefix, const QList<QByteArray> &params) {
   IrcUser *ircuser = network()->updateNickFromMask(prefix);
-  Q_ASSERT(ircuser);
+  if(!ircuser) {
+    qWarning() << "IrcServerHandler::handlePrivmsg(): Unknown IrcUser!";
+    return;
+  }
 
   if(params.isEmpty()) {
     qWarning() << "IrcServerHandler::handlePrivmsg(): received PRIVMSG without target or message from:" << prefix;
@@ -494,10 +503,15 @@ void IrcServerHandler::handle314(const QString &prefix, const QList<QByteArray> 
 
 /*  RPL_ENDOFWHO: "<name> :End of WHO list" */
 void IrcServerHandler::handle315(const QString &prefix, const QList<QByteArray> &params) {
-  Q_UNUSED(prefix)
-  // FIXME temporarily made silent
-  Q_UNUSED(params)
-  // emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Who] %1").arg(serverDecode(params).join(" ")));
+  Q_UNUSED(prefix);
+  QStringList p = serverDecode(params);
+  if(p.count()) {
+    if(networkConnection()->setAutoWhoDone(p[0])) {
+      return; // stay silent
+    }
+    p.takeLast(); // should be "End of WHO list"
+    emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Who] End of /WHO list for %1").arg(p.join(" ")));
+  }
 }
 
 /*  RPL_WHOISIDLE - "<nick> <integer> :seconds idle" 
@@ -602,8 +616,9 @@ void IrcServerHandler::handle352(const QString &prefix, const QList<QByteArray> 
     ircuser->setRealName(serverDecode(params.last()).section(" ", 1));
   }
 
-  // FIXME temporarily made silent
-  //emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Who] %1").arg(serverDecode(params).join(" ")));
+  if(!networkConnection()->isAutoWhoInProgress(channel)) {
+    emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Who] %1").arg(serverDecode(params).join(" ")));
+  }
 }
 
 /* RPL_NAMREPLY */

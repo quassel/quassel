@@ -46,11 +46,20 @@ NetworkConnection::NetworkConnection(Network *network, CoreSession *session) : Q
     _autoReconnectCount(0)
 {
   _autoReconnectTimer.setSingleShot(true);
- _previousConnectionAttemptFailed = false;
- _lastUsedServerlistIndex = 0;
-  // TODO make configurable
-  _whoTimer.setInterval(90 * 1000);
-  _whoTimer.setSingleShot(false);
+
+  _previousConnectionAttemptFailed = false;
+  _lastUsedServerlistIndex = 0;
+
+  // TODO make autowho configurable (possibly per-network)
+  _autoWhoEnabled = true;
+  _autoWhoInterval = 90;
+  _autoWhoNickLimit = 0; // unlimited
+  _autoWhoDelay = 3;
+
+  _autoWhoTimer.setInterval(_autoWhoDelay * 1000);
+  _autoWhoTimer.setSingleShot(false);
+  _autoWhoCycleTimer.setInterval(_autoWhoInterval * 1000);
+  _autoWhoCycleTimer.setSingleShot(false);
 
   QHash<QString, QString> channels = coreSession()->persistentChannels(networkId());
   foreach(QString chan, channels.keys()) {
@@ -58,7 +67,8 @@ NetworkConnection::NetworkConnection(Network *network, CoreSession *session) : Q
   }
 
   connect(&_autoReconnectTimer, SIGNAL(timeout()), this, SLOT(doAutoReconnect()));
-  connect(&_whoTimer, SIGNAL(timeout()), this, SLOT(sendWho()));
+  connect(&_autoWhoTimer, SIGNAL(timeout()), this, SLOT(sendAutoWho()));
+  connect(&_autoWhoCycleTimer, SIGNAL(timeout()), this, SLOT(startAutoWhoCycle()));
 
   connect(network, SIGNAL(currentServerSet(const QString &)), this, SLOT(networkInitialized(const QString &)));
   connect(network, SIGNAL(useAutoReconnectSet(bool)), this, SLOT(autoReconnectSettingsChanged()));
@@ -90,51 +100,10 @@ NetworkConnection::~NetworkConnection() {
   delete _ctcpHandler;
 }
 
-bool NetworkConnection::isConnected() const {
-  // return socket.state() == QAbstractSocket::ConnectedState;
-  return connectionState() == Network::Initialized;
-}
-
-Network::ConnectionState NetworkConnection::connectionState() const {
-  return _connectionState;
-}
-
 void NetworkConnection::setConnectionState(Network::ConnectionState state) {
   _connectionState = state;
   network()->setConnectionState(state);
   emit connectionStateChanged(state);
-}
-
-NetworkId NetworkConnection::networkId() const {
-  return network()->networkId();
-}
-
-QString NetworkConnection::networkName() const {
-  return network()->networkName();
-}
-
-Identity *NetworkConnection::identity() const {
-  return coreSession()->identity(network()->identity());
-}
-
-Network *NetworkConnection::network() const {
-  return _network;
-}
-
-CoreSession *NetworkConnection::coreSession() const {
-  return _coreSession;
-}
-
-IrcServerHandler *NetworkConnection::ircServerHandler() const {
-  return _ircServerHandler;
-}
-
-UserInputHandler *NetworkConnection::userInputHandler() const {
-  return _userInputHandler;
-}
-
-CtcpHandler *NetworkConnection::ctcpHandler() const {
-  return _ctcpHandler;
 }
 
 QString NetworkConnection::serverDecode(const QByteArray &string) const {
@@ -234,9 +203,11 @@ void NetworkConnection::networkInitialized(const QString &currentServer) {
   setConnectionState(Network::Initialized);
   network()->setConnected(true);
   emit connected(networkId());
-  if(!Global::SPUTDEV) {
-    sendWho();
-    _whoTimer.start();
+
+  if(_autoWhoEnabled) {
+    _autoWhoCycleTimer.start();
+    _autoWhoTimer.start();
+    startAutoWhoCycle();  // FIXME wait for autojoin to be completed
   }
 }
 
@@ -304,7 +275,7 @@ void NetworkConnection::socketError(QAbstractSocket::SocketError) {
 
 #ifndef QT_NO_OPENSSL
 
-void NetworkConnection::sslErrors(const QList<QSslError> &errors) {
+void NetworkConnection::sslErrors(const QList<QSslError> &sslErrors) {
   socket.ignoreSslErrors();
   /* TODO errorhandling
   QVariantMap errmsg;
@@ -380,7 +351,11 @@ void NetworkConnection::socketStateChanged(QAbstractSocket::SocketState socketSt
 }
 
 void NetworkConnection::socketDisconnected() {
-  _whoTimer.stop();
+  _autoWhoCycleTimer.stop();
+  _autoWhoTimer.stop();
+  _autoWhoQueue.clear();
+  _autoWhoInProgress.clear();
+
   network()->setConnected(false);
   emit disconnected(networkId());
   if(_autoReconnectCount != 0) {
@@ -425,18 +400,44 @@ void NetworkConnection::putCmd(const QString &cmd, const QVariantList &params, c
   putRawLine(msg);
 }
 
-void NetworkConnection::sendWho() {
-  foreach(QString chan, network()->channels()) {
+void NetworkConnection::sendAutoWho() {
+  while(!_autoWhoQueue.isEmpty()) {
+    QString chan = _autoWhoQueue.takeFirst();
+    IrcChannel *ircchan = network()->ircChannel(chan);
+    if(!ircchan) continue;
+    if(_autoWhoNickLimit > 0 && ircchan->ircUsers().count() > _autoWhoNickLimit) continue;
+    _autoWhoInProgress.insert(chan);
     putRawLine("WHO " + serverEncode(chan));
+    if(_autoWhoQueue.isEmpty() && _autoWhoEnabled && !_autoWhoCycleTimer.isActive()) {
+      // Timer was stopped, means a new cycle is due immediately
+      _autoWhoCycleTimer.start();
+      startAutoWhoCycle();
+    }
+    break;
   }
+}
+
+void NetworkConnection::startAutoWhoCycle() {
+  if(!_autoWhoQueue.isEmpty()) {
+    _autoWhoCycleTimer.stop();
+    return;
+  }
+  _autoWhoQueue = network()->channels();
+}
+
+bool NetworkConnection::setAutoWhoDone(const QString &channel) {
+  return _autoWhoInProgress.remove(channel);
 }
 
 void NetworkConnection::setChannelJoined(const QString &channel) {
   emit channelJoined(networkId(), channel, _channelKeys[channel.toLower()]);
+  _autoWhoQueue.prepend(channel); // prepend so this new chan is the first to be checked
 }
 
 void NetworkConnection::setChannelParted(const QString &channel) {
   removeChannelKey(channel);
+  _autoWhoQueue.removeAll(channel);
+  _autoWhoInProgress.remove(channel);
   emit channelParted(networkId(), channel);
 }
 
