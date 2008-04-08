@@ -35,6 +35,8 @@ QString hostFromMask(QString mask);
 bool isChannelName(QString str);
 
 
+QString secondsToString(int timeInSeconds);
+
 //! Take a string and decode it using the specified text codec, recognizing utf8.
 /** This function takes a string and first checks if it is encoded in utf8, in which case it is
  *  decoded appropriately. Otherwise, the specified text codec is used to transform the string.

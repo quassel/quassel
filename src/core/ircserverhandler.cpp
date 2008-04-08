@@ -451,8 +451,10 @@ void IrcServerHandler::handle311(const QString &prefix, const QList<QByteArray> 
     ircuser->setUser(serverDecode(params[1]));
     ircuser->setHost(serverDecode(params[2]));
     ircuser->setRealName(serverDecode(params.last()));
+    emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Whois] %1 is %2 (%3)") .arg(ircuser->nick()).arg(ircuser->hostmask()).arg(ircuser->realName()));
+  } else {
+    emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Whois] %1 is %2 (%3)") .arg(serverDecode(params[1])).arg(serverDecode(params[2])).arg(serverDecode(params.last())));
   }
-  emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Whois] %1") .arg(serverDecode(params).join(" ")));
 }
  
 /*  RPL_WHOISSERVER -  "<nick> <server> :<server info>" */
@@ -462,10 +464,12 @@ void IrcServerHandler::handle312(const QString &prefix, const QList<QByteArray> 
   if(ircuser) {
     ircuser->setServer(serverDecode(params[1]));
   }
+
+  QString returnString = tr("%1 is online via %2 (%3)").arg(serverDecode(params[0])).arg(serverDecode(params[1])).arg(serverDecode(params.last()));
   if(_whois) {
-    emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Whois] %1").arg(serverDecode(params).join(" ")));
+    emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Whois] %1").arg(returnString));
   } else {
-    emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Whowas] %1").arg(serverDecode(params).join(" ")));
+    emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Whowas] %1").arg(returnString));
   }
 }
 
@@ -482,7 +486,10 @@ void IrcServerHandler::handle313(const QString &prefix, const QList<QByteArray> 
 /*  RPL_WHOWASUSER - "<nick> <user> <host> * :<real name>" */
 void IrcServerHandler::handle314(const QString &prefix, const QList<QByteArray> &params) {
   Q_UNUSED(prefix)
-  emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Whowas] %1").arg(serverDecode(params).join(" ")));
+  QString nick = serverDecode(params[0]);
+  QString hostmask = QString("%1@%2").arg(serverDecode(params[1])).arg(serverDecode(params[2]));
+  QString realName = serverDecode(params.last());
+  emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Whowas] %1 was %2 (%3)").arg(nick).arg(hostmask).arg(realName));
 }
 
 /*  RPL_ENDOFWHO: "<name> :End of WHO list" */
@@ -495,7 +502,6 @@ void IrcServerHandler::handle315(const QString &prefix, const QList<QByteArray> 
 
 /*  RPL_WHOISIDLE - "<nick> <integer> :seconds idle" 
    (real life: "<nick> <integer> <integer> :seconds idle, signon time) */
-   //TODO: parse real life message
 void IrcServerHandler::handle317(const QString &prefix, const QList<QByteArray> &params) {
   Q_UNUSED(prefix);
   QString nick = serverDecode(params[0]);
@@ -508,9 +514,9 @@ void IrcServerHandler::handle317(const QString &prefix, const QList<QByteArray> 
     if(params.size()>3) {
       int loginTime = serverDecode(params[2]).toInt();
       ircuser->setLoginTime(QDateTime::fromTime_t(loginTime));
-      emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Whois] %1 is logged in since %2 seconds").arg(ircuser->nick()).arg(ircuser->loginTime().toString()));
+      emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Whois] %1 is logged in since %2").arg(ircuser->nick()).arg(ircuser->loginTime().toString()));
     }
-    emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Whois] %1 is idling for %2").arg(ircuser->nick()).arg(ircuser->idleTime().secsTo(now)));
+    emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Whois] %1 is idling for %2 (%3)").arg(ircuser->nick()).arg(secondsToString(ircuser->idleTime().secsTo(now))).arg(ircuser->idleTime().toString()));
     
   } else {
     emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Whois] idle message: %1").arg(userDecode(nick, params).join(" ")));
@@ -521,12 +527,37 @@ void IrcServerHandler::handle317(const QString &prefix, const QList<QByteArray> 
 void IrcServerHandler::handle318(const QString &prefix, const QList<QByteArray> &params) {
   Q_UNUSED(prefix)
   _whois = false;
-  emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Whois] %1").arg(serverDecode(params).join(" ")));
+  QStringList parameter = serverDecode(params);
+  parameter.removeFirst();
+  emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Whois] %1").arg(parameter.join(" ")));
 }
 
 /*  RPL_WHOISCHANNELS - "<nick> :*( ( "@" / "+" ) <channel> " " )" */
 void IrcServerHandler::handle319(const QString &prefix, const QList<QByteArray> &params) {
   Q_UNUSED(prefix)
+  QString nick = serverDecode(params.first());
+  QStringList op;
+  QStringList voice;
+  QStringList user;
+  foreach (QString channel, serverDecode(params.last()).split(" ")) {
+    if(channel.startsWith("@"))
+       op.append(channel.remove(0,1));
+    else if(channel.startsWith("+"))
+      voice.append(channel.remove(0,1));
+    else
+      user.append(channel);
+  }
+  if(!user.isEmpty()) 
+    emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Whois] %1 is a user on channels: %2").arg(nick).arg(user.join(" ")));
+  if(!voice.isEmpty()) 
+    emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Whois] %1 has voice on channels: %2").arg(nick).arg(voice.join(" ")));
+  if(!op.isEmpty()) 
+    emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Whois] %1 is an operator on channels: %2").arg(nick).arg(op.join(" ")));
+}
+
+/*  RPL_WHOISVIRT - "<nick> is identified to services" */
+void IrcServerHandler::handle320(const QString &prefix, const QList<QByteArray> &params) {
+  Q_UNUSED(prefix);
   emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Whois] %1").arg(serverDecode(params).join(" ")));
 }
 

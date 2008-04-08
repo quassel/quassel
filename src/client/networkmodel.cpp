@@ -596,23 +596,7 @@ QString IrcUserItem::toolTip(int column) const {
     QDateTime now = QDateTime::currentDateTime();
     QDateTime idle = _ircUser->idleTime();
     int idleTime = idle.secsTo(now);
-
-    QList< QPair<int, QString> > timeUnit;
-    timeUnit.append(qMakePair(365*60*60, tr("year")));
-    timeUnit.append(qMakePair(24*60*60, tr("day")));
-    timeUnit.append(qMakePair(60*60, tr("h")));
-    timeUnit.append(qMakePair(60, tr("min")));
-    timeUnit.append(qMakePair(1, tr("sec")));
-
-    QString idleString(' ');
-    for(int i=0; i < timeUnit.size(); i++) {
-      int n = idleTime / timeUnit[i].first;
-      if(n > 0) {
-        idleString += QString("%1 %2 ").arg(QString::number(n), timeUnit[i].second);
-      }
-      idleTime = idleTime % timeUnit[i].first;
-    }
-    toolTip.append(tr("idling since %1").arg(idleString));
+    toolTip.append(tr("idling since %1").arg(secondsToString(idleTime)));
   }
   if(_ircUser->loginTime().isValid()) {
     toolTip.append(tr("login time: %1").arg(_ircUser->loginTime().toString()));
