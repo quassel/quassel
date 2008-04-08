@@ -49,7 +49,7 @@ NetworkConnection::NetworkConnection(Network *network, CoreSession *session) : Q
  _previousConnectionAttemptFailed = false;
  _lastUsedServerlistIndex = 0;
   // TODO make configurable
-  _whoTimer.setInterval(60 * 1000);
+  _whoTimer.setInterval(90 * 1000);
   _whoTimer.setSingleShot(false);
 
   QHash<QString, QString> channels = coreSession()->persistentChannels(networkId());
@@ -234,8 +234,10 @@ void NetworkConnection::networkInitialized(const QString &currentServer) {
   setConnectionState(Network::Initialized);
   network()->setConnected(true);
   emit connected(networkId());
-  sendWho();
-  _whoTimer.start();
+  if(!Global::SPUTDEV) {
+    sendWho();
+    _whoTimer.start();
+  }
 }
 
 void NetworkConnection::sendPerform() {
@@ -405,6 +407,7 @@ void NetworkConnection::userInput(BufferInfo buf, QString msg) {
 void NetworkConnection::putRawLine(QByteArray s) {
   s += "\r\n";
   socket.write(s);
+  if(Global::SPUTDEV) qDebug() << "SENT:" << s;
 }
 
 void NetworkConnection::putCmd(const QString &cmd, const QVariantList &params, const QByteArray &prefix) {
