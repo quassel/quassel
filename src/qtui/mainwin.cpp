@@ -89,7 +89,7 @@ MainWin::MainWin(QtUi *_gui, QWidget *parent)
   }
 
   connect(Client::instance(), SIGNAL(securedConnection()), this, SLOT(securedConnection()));
-  sslLabel->setPixmap(QPixmap::fromImage(QImage(":/16x16/status/no-ssl")));
+  sslLabel->setPixmap(QPixmap());
   statusBar()->addPermanentWidget(sslLabel);
 
 }
@@ -350,6 +350,8 @@ void MainWin::connectedToCore() {
   statusBar()->showMessage(tr("Connected to core."));
   setWindowIcon(onlineTrayIcon);
   systray->setIcon(onlineTrayIcon);
+  if(sslLabel->width() == 0)
+    sslLabel->setPixmap(QPixmap::fromImage(QImage(":/16x16/status/no-ssl")));
 }
 
 void MainWin::securedConnection() {
@@ -370,7 +372,7 @@ void MainWin::disconnectedFromCore() {
   statusBar()->showMessage(tr("Not connected to core."));
   setWindowIcon(offlineTrayIcon);
   systray->setIcon(offlineTrayIcon);
-  sslLabel->setPixmap(QPixmap::fromImage(QImage(":/16x16/status/no-ssl")));
+  sslLabel->setPixmap(QPixmap());
 }
 
 AbstractUiMsg *MainWin::layoutMsg(const Message &msg) {

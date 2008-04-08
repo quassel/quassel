@@ -288,7 +288,7 @@ QString BufferItem::toolTip(int column) const {
   switch(bufferType()) {
     case BufferInfo::StatusBuffer: {
       QString netName = Client::network(bufferInfo().networkId())->networkName();
-      toolTip.append(tr("<b>Status buffer from %1</b>").arg(netName));
+      toolTip.append(tr("<b>Status buffer of %1</b>").arg(netName));
       break;
     }
     case BufferInfo::ChannelBuffer:
