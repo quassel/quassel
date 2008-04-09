@@ -133,6 +133,11 @@ class TreeModel : public QAbstractItemModel {
   Q_OBJECT
 
 public:
+  enum myRoles {
+    SortRole = Qt::UserRole,
+    UserRole
+  };
+
   TreeModel(const QList<QVariant> &, QObject *parent = 0);
   virtual ~TreeModel();
 

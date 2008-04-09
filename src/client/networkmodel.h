@@ -146,12 +146,12 @@ private:
 *****************************************/
 class UserCategoryItem : public PropertyMapItem {
   Q_OBJECT
-  Q_PROPERTY(QString categoryId READ categoryId)
+  Q_PROPERTY(QString categoryName READ categoryName)
     
 public:
   UserCategoryItem(int category, AbstractTreeItem *parent);
 
-  QString categoryId();
+  QString categoryName() const;
   virtual quint64 id() const;
   virtual QVariant data(int column, int role) const;
   
@@ -163,13 +163,7 @@ public:
 private:
   int _category;
 
-  struct Category {
-    QChar mode;
-    QString displayString;
-    inline Category(QChar mode_, QString displayString_) : mode(mode_), displayString(displayString_) {};
-  };
-
-  static const QList<Category> categories;
+  static const QList<QChar> categories;
 };
 
 /*****************************************
@@ -208,7 +202,7 @@ class NetworkModel : public TreeModel {
 
 public:
   enum myRoles {
-    BufferTypeRole = Qt::UserRole,
+    BufferTypeRole = TreeModel::UserRole,
     ItemActiveRole,
     BufferActivityRole,
     BufferIdRole,

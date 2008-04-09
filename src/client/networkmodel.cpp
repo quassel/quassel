@@ -465,24 +465,27 @@ QString NetworkItem::toolTip(int column) const {
 // TODO make this translateable depending on the number of users in a category
 //      -> we can't set the real string here, because tr() needs to get the actual number as second param
 //      -> tr("%n User(s)", n) needs to be used somewhere where we do know the user number n
-const QList<UserCategoryItem::Category> UserCategoryItem::categories = QList<UserCategoryItem::Category>()
-  << UserCategoryItem::Category('q', tr("Owners"))
-  << UserCategoryItem::Category('a', tr("Admins"))
-  << UserCategoryItem::Category('o', tr("Operators"))
-  << UserCategoryItem::Category('h', tr("Half-Ops"))
-  << UserCategoryItem::Category('v', tr("Voiced"));
+
+const QList<QChar> UserCategoryItem::categories = QList<QChar>() << 'q' << 'a' << 'o' << 'h' << 'v';
 
 UserCategoryItem::UserCategoryItem(int category, AbstractTreeItem *parent)
-  : PropertyMapItem(QStringList() << "categoryId", parent),
+  : PropertyMapItem(QStringList() << "categoryName", parent),
     _category(category)
 {
+
 }
 
-QString UserCategoryItem::categoryId() {
-  if(_category < categories.count())
-    return categories[_category].displayString;
-  else
-    return tr("Users");
+// caching this makes no sense, since we display the user number dynamically
+QString UserCategoryItem::categoryName() const {
+  int n = childCount();
+  switch(_category) {
+    case 0: return tr("%n Owner(s)", 0, n);
+    case 1: return tr("%n Admin(s)", 0, n);
+    case 2: return tr("%n Operator(s)", 0, n);
+    case 3: return tr("%n Half-Op(s)", 0, n);
+    case 4: return tr("%n Voiced", 0, n);
+    default: return tr("%n User(s)", 0, n);
+  }
 }
 
 quint64 UserCategoryItem::id() const {
@@ -502,7 +505,7 @@ bool UserCategoryItem::removeUser(IrcUser *ircUser) {
 
 int UserCategoryItem::categoryFromModes(const QString &modes) {
   for(int i = 0; i < categories.count(); i++) {
-    if(modes.contains(categories[i].mode))
+    if(modes.contains(categories[i]))
       return i;
   }
   return categories.count();
@@ -510,6 +513,8 @@ int UserCategoryItem::categoryFromModes(const QString &modes) {
 
 QVariant UserCategoryItem::data(int column, int role) const {
   switch(role) {
+  case TreeModel::SortRole:
+    return _category;
   case NetworkModel::ItemActiveRole:
     return true;
   case NetworkModel::ItemTypeRole:

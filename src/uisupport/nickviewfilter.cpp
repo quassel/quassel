@@ -36,6 +36,7 @@ NickViewFilter::NickViewFilter(const BufferId &bufferId, NetworkModel *parent)
   setSourceModel(parent);
   setDynamicSortFilter(true);
   setSortCaseSensitivity(Qt::CaseInsensitive);
+  setSortRole(TreeModel::SortRole);
 }
 
 QVariant NickViewFilter::data(const QModelIndex &index, int role) const {

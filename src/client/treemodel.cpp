@@ -247,6 +247,7 @@ QVariant PropertyMapItem::data(int column, int role) const {
   case Qt::ToolTipRole:
     return toolTip(column);
   case Qt::DisplayRole:
+  case TreeModel::SortRole:  // fallthrough, since SortRole should default to DisplayRole
     return property(_propertyOrder[column].toAscii());
   default:
     return QVariant();
