@@ -23,28 +23,36 @@
 
 #include "ui_mainwidget.h"
 
+#include "abstractbuffercontainer.h"
+#include "bufferinfo.h"
+
 class Buffer;
 class ChatWidget;
 
-class MainWidget : public QWidget {
+class MainWidget : public AbstractBufferContainer {
   Q_OBJECT
 
   public:
-    MainWidget(QWidget *parent = 0);
+    MainWidget(QWidget *parent);
     ~MainWidget();
 
-  public slots:
-    void setTopic(QString topic);
-    void setBuffer(Buffer *);
+  signals:
+    void userInput(const BufferInfo &, const QString &);
+
+  protected:
+    virtual AbstractChatView *createChatView(BufferId);
+    virtual void removeChatView(BufferId);
+
+  protected slots:
+    virtual void showChatView(BufferId);
 
   private slots:
-    void enterPressed();
+    void userInput(const QString &);
 
   private:
     Ui::MainWidget ui;
-    QHash<Buffer *, ChatWidget *> chatWidgets;
-
-    Buffer *currentBuffer;
+    QHash<BufferId, ChatWidget *> _chatViews;
+    BufferInfo currentBufferInfo;
 
 };
 

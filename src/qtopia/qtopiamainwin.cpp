@@ -24,10 +24,12 @@
 #include "bufferviewwidget.h"
 #include "nicklistwidget.h"
 #include "chatline.h"
+#include "clientbacklogmanager.h"
 #include "coreconnectdlg.h"
 #include "global.h"
 #include "mainwidget.h"
 #include "message.h"
+#include "network.h"
 #include "qtopiaui.h"
 #include "signalproxy.h"
 
@@ -41,33 +43,42 @@
 QtopiaMainWin::QtopiaMainWin(QWidget *parent, Qt::WFlags flags) : QMainWindow(parent, flags) {
   Global::registerMetaTypes();
 
+#include "../../version.inc"
+
   Global::runMode = Global::ClientOnly;
   Global::defaultPort = 4242;
+  Global::SPUTDEV = true;
+
+  Network::setDefaultCodecForServer("ISO-8859-1");
+  Network::setDefaultCodecForEncoding("UTF-8");
+  Network::setDefaultCodecForDecoding("ISO-8859-15");
 
   QCoreApplication::setOrganizationDomain("quassel-irc.org");
   QCoreApplication::setApplicationName("Quassel IRC");
-  QCoreApplication::setOrganizationName("Quassel IRC Team");
+  QCoreApplication::setOrganizationName("Quassel Project");
 
   QtopiaUi *gui = new QtopiaUi(this);
   Client::init(gui);
 
   setWindowTitle("Quassel IRC");
-  setWindowIcon(QIcon(":/qirc-icon.png"));
+  setWindowIcon(QIcon(":icons/quassel-icon.png"));
   setWindowIconText("Quassel IRC");
 
   mainWidget = new MainWidget(this);
+  mainWidget->setModel(Client::bufferModel());
+  mainWidget->setSelectionModel(Client::bufferModel()->standardSelectionModel());
   setCentralWidget(mainWidget);
-
-  NetworkModel *model = Client::networkModel();
-  connect(model, SIGNAL(bufferSelected(Buffer *)), this, SLOT(showBuffer(Buffer *)));
 
   toolBar = new QToolBar(this);
   toolBar->setIconSize(QSize(16, 16));
   toolBar->setWindowTitle(tr("Show Toolbar"));
   addToolBar(toolBar);
 
-  bufferViewWidget = new BufferViewWidget(this);
+  //bufferViewWidget = new BufferViewWidget(this);
+  bufferViewWidget = 0;  // delayed creation to avoid QPainter warnings
   nickListWidget = new NickListWidget(this);
+
+  connect(mainWidget, SIGNAL(currentChanged(BufferId)), this, SLOT(showBuffer(BufferId)));
 
   setupActions();
 
@@ -78,8 +89,6 @@ QtopiaMainWin::QtopiaMainWin(QWidget *parent, Qt::WFlags flags) : QMainWindow(pa
 
 // at this point, client is fully initialized
 void QtopiaMainWin::init() {
-  Client::signalProxy()->attachSignal(this, SIGNAL(requestBacklog(BufferInfo, QVariant, QVariant)));
-
   showMaximized();
   CoreConnectDlg *dlg = new CoreConnectDlg(this);
   //setCentralWidget(dlg);
@@ -124,16 +133,8 @@ void QtopiaMainWin::setupActions() {
 
 void QtopiaMainWin::connectedToCore() {
   foreach(BufferInfo id, Client::allBufferInfos()) {
-    emit requestBacklog(id, 100, -1);
+    Client::backlogManager()->requestBacklog(id.bufferId(), 500, -1);
   }
-
-#ifdef DEVELMODE
-  // FIXME just for testing: select first available buffer
-  if(Client::allBufferInfos().count() > 1) {
-    Buffer *b = Client::buffer(Client::allBufferInfos()[1]);
-    Client::networkModel()->selectBuffer(b);
-  }
-#endif
 }
 
 void QtopiaMainWin::disconnectedFromCore() {
@@ -142,19 +143,22 @@ void QtopiaMainWin::disconnectedFromCore() {
 }
 
 AbstractUiMsg *QtopiaMainWin::layoutMsg(const Message &msg) {
-  return new ChatLineOld(msg);
+  return new ChatLine(msg);
   //return 0;
 }
 
-void QtopiaMainWin::showBuffer(Buffer *b) {
-  bufferViewWidget->hide();
-  mainWidget->setBuffer(b);
-  nickListWidget->setBuffer(b);
-  showNicksAction->setEnabled(b && b->bufferType() == Buffer::ChannelType);
+void QtopiaMainWin::showBuffer(BufferId id) {
+  nickListWidget->setBuffer(id);
+  Buffer *b = Client::buffer(id);
+  //showNicksAction->setEnabled(b && b->bufferInfo().type() == BufferInfo::ChannelBuffer);  FIXME enable again when we have a nicklist!
 
 }
 
 void QtopiaMainWin::showBufferView() {
+  if(!bufferViewWidget) {
+    bufferViewWidget = new BufferViewWidget(this);
+    connect(mainWidget, SIGNAL(currentChanged(BufferId)), bufferViewWidget, SLOT(accept()));
+  }
   bufferViewWidget->showMaximized();
 }
 

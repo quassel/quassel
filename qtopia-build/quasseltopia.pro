@@ -1,6 +1,6 @@
 qtopia_project(qtopia app)
 
-error(QuasselTopia cannot be build at the moment. Its codebase is out of sync with the rest of Quassel. Please bear with us until we have fixed that!)
+# error(QuasselTopia cannot be build at the moment. Its codebase is out of sync with the rest of Quassel. Please bear with us until we have fixed that!)
 
 TARGET = quasseltopia
 CONFIG += release qtopia_main no_quicklaunch no_singleexec

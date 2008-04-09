@@ -18,34 +18,35 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _CHATWIDGET_H_
-#define _CHATWIDGET_H_
+#ifndef CHATWIDGET_H_
+#define CHATWIDGET_H_
 
 #include <QTextEdit>
+
+#include "abstractbuffercontainer.h"
 #include "chatline.h"
 #include "qtopiauistyle.h"
 #include "quasselui.h"
 
-class ChatWidget : public QTextEdit {
+class ChatWidget : public QTextEdit, public AbstractChatView {
   Q_OBJECT
 
   public:
     ChatWidget(QWidget *parent = 0);
 
   public slots:
-    void setContents(QList<ChatLineOld *>);
+    void setContents(const QList<AbstractUiMsg *> &);
     void appendMsg(AbstractUiMsg *);
     void prependMsg(AbstractUiMsg *);
-    void prependChatLine(ChatLineOld *);
-    void appendChatLine(ChatLineOld *);
-    void prependChatLines(QList<ChatLineOld *>);
-    void appendChatLines(QList<ChatLineOld *>);
+
+    void prependChatLine(ChatLine *);
+    void appendChatLine(ChatLine *);
+    void prependChatLines(QList<ChatLine *>);
+    void appendChatLines(QList<ChatLine *>);
 
   private:
-    void insertChatLine(ChatLineOld *);
+    void insertChatLine(ChatLine *);
     void insertStyledText(const QtopiaUiStyle::StyledText &);
-
-
 
 };
 

@@ -57,7 +57,13 @@ void BufferView::init() {
 
   setSortingEnabled(true);
   sortByColumn(0, Qt::AscendingOrder);
+#ifndef Q_WS_QWS
+  // this is a workaround to not join channels automatically... we need a saner way to navigate for qtopia anyway though,
+  // such as mark first, activate at second click...
   connect(this, SIGNAL(activated(QModelIndex)), this, SLOT(joinChannel(QModelIndex)));
+#else
+  connect(this, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(joinChannel(QModelIndex)));  // Qtopia uses single click for activation
+#endif
 }
 
 void BufferView::setFilteredModel(QAbstractItemModel *model, BufferViewFilter::Modes mode, QList<NetworkId> nets) {

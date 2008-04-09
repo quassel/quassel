@@ -20,12 +20,13 @@
 
 #include "bufferviewwidget.h"
 #include "client.h"
+#include "buffermodel.h"
 
 
 BufferViewWidget::BufferViewWidget(QWidget *parent) : QDialog(parent) {
   ui.setupUi(this);
   setModal(true);
-  setStyleSheet("background-color: rgba(220, 220, 255, 40%); color: rgb(0, 0, 0); font-size: 5pt;");
+  //setStyleSheet("background-color: rgb(220, 220, 255, 70%); color: rgb(0, 0, 0); font-size: 5pt;");
   //ui.tabWidget->tabBar()->setStyleSheet("font-size: 5pt;");
 
   // get rid of the default tab page designer forces upon us :(
@@ -33,14 +34,13 @@ BufferViewWidget::BufferViewWidget(QWidget *parent) : QDialog(parent) {
   ui.tabWidget->removeTab(0);
   delete w;
 
-  addPage(tr("All"), BufferViewFilter::AllNets, QList<uint>());
-  addPage(tr("Chans"), BufferViewFilter::AllNets|BufferViewFilter::NoQueries|BufferViewFilter::NoServers, QList<uint>());
-  addPage(tr("Queries"), BufferViewFilter::AllNets|BufferViewFilter::NoChannels|BufferViewFilter::NoServers, QList<uint>());
-  addPage(tr("Nets"), BufferViewFilter::AllNets|BufferViewFilter::NoChannels|BufferViewFilter::NoQueries, QList<uint>());
+  addPage(tr("All"), BufferViewFilter::AllNets, QList<NetworkId>());
+  addPage(tr("Chans"), BufferViewFilter::AllNets|BufferViewFilter::NoQueries|BufferViewFilter::NoServers, QList<NetworkId>());
+  addPage(tr("Queries"), BufferViewFilter::AllNets|BufferViewFilter::NoChannels|BufferViewFilter::NoServers, QList<NetworkId>());
+  addPage(tr("Nets"), BufferViewFilter::AllNets|BufferViewFilter::NoChannels|BufferViewFilter::NoQueries, QList<NetworkId>());
 
   // this sometimes deadlocks, so we have to hide the dialog from the outside:
-  //connect(Client::bufferModel(), SIGNAL(bufferSelected(Buffer *)), this, SLOT(accept()));
-
+  //connect(Client::bufferModel()->standardSelectionModel(), SIGNAL(currentChanged(const QModelIndex &, const QModelIndex &)), this, SLOT(accept()));
 }
 
 BufferViewWidget::~BufferViewWidget() {
@@ -48,8 +48,9 @@ BufferViewWidget::~BufferViewWidget() {
 
 }
 
-void BufferViewWidget::addPage(const QString &title, const BufferViewFilter::Modes &mode, const QList<uint> &nets) {
+void BufferViewWidget::addPage(const QString &title, const BufferViewFilter::Modes &mode, const QList<NetworkId> &nets) {
   BufferView *view = new BufferView(ui.tabWidget);
+  view->setStyleSheet("background-color: rgb(220, 220, 255, 70%); color: rgb(0, 0, 0); font-size: 5pt;");
   view->setFilteredModel(Client::bufferModel(), mode, nets);
   Client::bufferModel()->synchronizeView(view);
   ui.tabWidget->addTab(view, title);

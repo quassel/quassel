@@ -22,30 +22,32 @@
 #include <QtGui>
 #include "chatwidget.h"
 
-ChatWidget::ChatWidget(QWidget *parent) : QTextEdit(parent) {
+ChatWidget::ChatWidget(QWidget *parent) : QTextEdit(parent), AbstractChatView() {
   setStyleSheet("background-color: rgba(255, 255, 255, 60%)");
   setTextInteractionFlags(Qt::TextBrowserInteraction);
 }
 
-void ChatWidget::setContents(QList<ChatLineOld *> lines) {
+void ChatWidget::setContents(const QList<AbstractUiMsg *> &lines) {
   clear();
-  appendChatLines(lines);
+  QList<ChatLine *> list;
+  foreach(AbstractUiMsg *msg, lines) list << static_cast<ChatLine*>(msg);
+  appendChatLines(list);
 
 }
 
 void ChatWidget::prependMsg(AbstractUiMsg *msg) {
-  ChatLineOld *line = static_cast<ChatLineOld*>(msg);
+  ChatLine *line = static_cast<ChatLine*>(msg);
   Q_ASSERT(line);
   prependChatLine(line);
 }
 
 void ChatWidget::appendMsg(AbstractUiMsg *msg) {
-  ChatLineOld *line = static_cast<ChatLineOld*>(msg);
+  ChatLine *line = static_cast<ChatLine*>(msg);
   Q_ASSERT(line);
   appendChatLine(line);
 }
 
-void ChatWidget::appendChatLine(ChatLineOld *line) {
+void ChatWidget::appendChatLine(ChatLine *line) {
   QTextCursor cursor = textCursor();
   moveCursor(QTextCursor::End);
   if(!document()->isEmpty()) insertPlainText("\n");
@@ -55,13 +57,13 @@ void ChatWidget::appendChatLine(ChatLineOld *line) {
   setTextCursor(cursor);
 }
 
-void ChatWidget::appendChatLines(QList<ChatLineOld *> list) {
-  foreach(ChatLineOld *line, list) {
+void ChatWidget::appendChatLines(QList<ChatLine *> list) {
+  foreach(ChatLine *line, list) {
     appendChatLine(line);
   }
 }
 
-void ChatWidget::prependChatLine(ChatLineOld *line) {
+void ChatWidget::prependChatLine(ChatLine *line) {
   QTextCursor cursor = textCursor();
   moveCursor(QTextCursor::Start);
   bool flg = document()->isEmpty();
@@ -72,13 +74,13 @@ void ChatWidget::prependChatLine(ChatLineOld *line) {
   setTextCursor(cursor);
 }
 
-void ChatWidget::prependChatLines(QList<ChatLineOld *> list) {
-  foreach(ChatLineOld *line, list) {
+void ChatWidget::prependChatLines(QList<ChatLine *> list) {
+  foreach(ChatLine *line, list) {
     prependChatLine(line);
   }
 }
 
-void ChatWidget::insertChatLine(ChatLineOld *line) {
+void ChatWidget::insertChatLine(ChatLine *line) {
   if(!document()->isEmpty()) insertPlainText("\n");
   insertStyledText(line->styledSender());
   insertPlainText(" ");

@@ -36,7 +36,7 @@ class BufferViewWidget : public QDialog {
     virtual void accept();
 
   private:
-    void addPage(const QString &title, const BufferViewFilter::Modes &mode, const QList<uint> &nets);
+    void addPage(const QString &title, const BufferViewFilter::Modes &mode, const QList<NetworkId> &nets);
     Ui::BufferViewWidget ui;
 
 };

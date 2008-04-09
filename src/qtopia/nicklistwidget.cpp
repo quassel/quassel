@@ -23,10 +23,12 @@
 #include "buffer.h"
 #include "nickview.h"
 
+// FIXME bring back nicks!
+
 NickListWidget::NickListWidget(QWidget *parent) : QDialog(parent) {
   ui.setupUi(this);
   setModal(true);
-  setStyleSheet("background-color: rgba(220, 220, 255, 40%); color: rgb(0, 0, 0); font-size: 5pt;");
+  //setStyleSheet("background-color: rgba(220, 220, 255, 40%); color: rgb(0, 0, 0); font-size: 5pt;");
 
 
 }
@@ -37,11 +39,12 @@ NickListWidget::~NickListWidget() {
 
 }
 
-void NickListWidget::setBuffer(Buffer *buf) {
-  if(!buf) {
+void NickListWidget::setBuffer(BufferId id) {
+  if(!id.isValid()) {
     ui.stackedWidget->setCurrentWidget(ui.emptyPage);
     return;
   }
+  /*
   if(buf->bufferType() != Buffer::ChannelType) {
     ui.stackedWidget->setCurrentWidget(ui.emptyPage);
   } else {
@@ -56,21 +59,26 @@ void NickListWidget::setBuffer(Buffer *buf) {
       connect(buf, SIGNAL(destroyed(QObject *)), this, SLOT(bufferDestroyed(QObject *)));
     }
   }
+  */
 }
 
 void NickListWidget::reset() {
+  /*
   foreach(NickView *view, nickViews.values()) {
     ui.stackedWidget->removeWidget(view);
     view->deleteLater();
   }
   nickViews.clear();
+  */
 }
 
 void NickListWidget::bufferDestroyed(QObject *buf) {
+  /*
   if(nickViews.contains((Buffer *)buf)) {
     NickView *view = nickViews.take((Buffer *)buf);
     ui.stackedWidget->removeWidget(view);
     view->deleteLater();
   }
+  */
 }
 

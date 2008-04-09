@@ -18,13 +18,13 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _TOPICBAR_H_
-#define _TOPICBAR_H_
+#ifndef TOPICBAR_H_
+#define TOPICBAR_H_
 
 #include <QPushButton>
 #include <QTimeLine>
 
-#include <QtGui>
+#include "buffermodel.h"
 
 class QPixmap;
 class QTimer;
@@ -44,13 +44,19 @@ class TopicBar : public QPushButton {
   protected:
     virtual void paintEvent(QPaintEvent *event);
     virtual void resizeEvent (QResizeEvent *event);
+    
 
   private slots:
     void updateOffset();
+    void dataChanged(const QModelIndex &, const QModelIndex &);
+    void currentChanged(const QModelIndex &, const QModelIndex &);
 
   private:
     void calcTextMetrics();
 
+    BufferModel *_model;
+    QItemSelectionModel *_selectionModel;
+    
     QTimer *timer;
     int offset;
     int fillTextStart, secondTextStart;

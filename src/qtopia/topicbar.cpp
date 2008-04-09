@@ -18,9 +18,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "topicbar.h"
-
 #include <QtGui>
+
+#include "topicbar.h"
+#include "client.h"
 
 
 TopicBar::TopicBar(QWidget *parent) : QPushButton(parent) {
@@ -41,12 +42,32 @@ TopicBar::TopicBar(QWidget *parent) : QPushButton(parent) {
   timer->setInterval(25);
   connect(timer, SIGNAL(timeout()), this, SLOT(updateOffset()));
   connect(this, SIGNAL(clicked()), this, SLOT(startScrolling()));
+
+  _model = Client::bufferModel();
+  connect(_model, SIGNAL(dataChanged(QModelIndex, QModelIndex)),
+          this, SLOT(dataChanged(QModelIndex, QModelIndex)));
+
+  _selectionModel = Client::bufferModel()->standardSelectionModel();
+  connect(_selectionModel, SIGNAL(currentChanged(QModelIndex, QModelIndex)),
+          this, SLOT(currentChanged(QModelIndex, QModelIndex)));
 }
 
 TopicBar::~TopicBar() {
 
 
 }
+
+void TopicBar::currentChanged(const QModelIndex &current, const QModelIndex &previous) {
+  Q_UNUSED(previous);
+  setContents(current.sibling(current.row(), 1).data().toString());
+}
+
+void TopicBar::dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight) {
+  QItemSelectionRange changedArea(topLeft, bottomRight);
+  QModelIndex currentTopicIndex = _selectionModel->currentIndex().sibling(_selectionModel->currentIndex().row(), 1);
+  if(changedArea.contains(currentTopicIndex))
+    setContents(currentTopicIndex.data().toString());
+};
 
 void TopicBar::resizeEvent(QResizeEvent *event) {
   QPushButton::resizeEvent(event);

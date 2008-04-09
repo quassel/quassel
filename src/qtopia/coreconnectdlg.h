@@ -21,10 +21,15 @@
 #ifndef _CORECONNECTDLG_H
 #define _CORECONNECTDLG_H
 
+#include <QAbstractSocket>
+
+#include "types.h"
+
 #include "ui_coreconnectdlg.h"
 #include "ui_coreconnectprogressdlg.h"
-#include "ui_editcoreacctdlg.h"
+#include "ui_coreaccounteditdlg.h"
 
+class ClientSyncer;
 class CoreConnectProgressDlg;
 
 class CoreConnectDlg : public QDialog {
@@ -44,9 +49,28 @@ class CoreConnectDlg : public QDialog {
     void connectionSuccess();
     void connectionFailure();
 
+    /*** Phase One: Connection ***/
+
+    void restartPhaseNull();
+    void initPhaseError(const QString &error);
+    void initPhaseMsg(const QString &msg);
+    void initPhaseSocketState(QAbstractSocket::SocketState);
+
+    /*** Phase Two: Login ***/
+    void startLogin();
+    void loginFailed(const QString &);
+
+    /*** Phase Three: Sync ***/
+    void startSync();
+
   private:
     Ui::CoreConnectDlg ui;
-    QVariant coreState;
+    ClientSyncer *clientSyncer;
+
+    AccountId autoConnectAccount;
+    QHash<AccountId, QVariantMap> accounts;
+    QVariantMap accountData;
+    AccountId account;
 
     void editAccount(QString);
 
@@ -55,12 +79,12 @@ class CoreConnectDlg : public QDialog {
     CoreConnectProgressDlg *progressDlg;
 };
 
-class EditCoreAcctDlg : public QDialog {
+class CoreAccountEditDlg : public QDialog {
   Q_OBJECT
 
   public:
-    EditCoreAcctDlg(QString accname = 0, QDialog *parent = 0);
-    QString accountName() const;
+    CoreAccountEditDlg(AccountId id, const QVariantMap &data, const QStringList &existing = QStringList(), QWidget *parent = 0);
+    QVariantMap accountData();
 
   public slots:
     void accept();
@@ -69,8 +93,9 @@ class EditCoreAcctDlg : public QDialog {
 
 
   private:
-    Ui::EditCoreAcctDlg ui;
-    QString accName;
+    Ui::CoreAccountEditDlg ui;
+    QVariantMap account;
+    QStringList existing;
 
 };
 
@@ -78,20 +103,19 @@ class CoreConnectProgressDlg : public QDialog {
   Q_OBJECT
 
   public:
-    CoreConnectProgressDlg(QDialog *parent = 0);
-    bool isConnected() const;
-
-  public slots:
-    void connectToCore(QVariantMap connInfo);
+    CoreConnectProgressDlg(ClientSyncer *, QDialog *parent = 0);
 
   private slots:
-    void coreConnected();
-    void coreConnectionError(QString);
-    void updateProgressBar(uint partial, uint total);
+
+    void syncFinished();
+
+    void coreSessionProgress(quint32, quint32);
+    void coreNetworksProgress(quint32, quint32);
+    void coreChannelsProgress(quint32, quint32);
+    void coreIrcUsersProgress(quint32, quint32);
 
   private:
     Ui::CoreConnectProgressDlg ui;
-    bool connectsuccess;
 
 };
 

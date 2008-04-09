@@ -5,18 +5,18 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>156</width>
-    <height>183</height>
+    <width>168</width>
+    <height>212</height>
    </rect>
   </property>
   <property name="windowTitle" >
    <string>Connection Progress</string>
   </property>
-  <layout class="QVBoxLayout" >
+  <layout class="QVBoxLayout" name="verticalLayout" >
    <item>
     <widget class="QLabel" name="label" >
      <property name="text" >
-      <string>&lt;b>Connection to core in progress.&lt;/b></string>
+      <string>Connecting to core...</string>
      </property>
      <property name="alignment" >
       <set>Qt::AlignCenter</set>
@@ -27,31 +27,86 @@
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="connectionStatus" >
-     <property name="text" >
-      <string>Connecting...</string>
-     </property>
-     <property name="wordWrap" >
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QProgressBar" name="connectionProgress" >
-     <property name="value" >
-      <number>0</number>
-     </property>
-     <property name="orientation" >
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
+    <layout class="QGridLayout" name="gridLayout" >
+     <item row="0" column="0" >
+      <widget class="QLabel" name="label_2" >
+       <property name="text" >
+        <string>Session</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1" >
+      <widget class="QProgressBar" name="sessionProgress" >
+       <property name="value" >
+        <number>0</number>
+       </property>
+       <property name="orientation" >
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="format" >
+        <string>%p%</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0" >
+      <widget class="QLabel" name="label_3" >
+       <property name="text" >
+        <string>Networks</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1" >
+      <widget class="QProgressBar" name="networksProgress" >
+       <property name="value" >
+        <number>24</number>
+       </property>
+       <property name="format" >
+        <string>%p%</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0" >
+      <widget class="QLabel" name="label_4" >
+       <property name="text" >
+        <string>Channels</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1" >
+      <widget class="QProgressBar" name="channelsProgress" >
+       <property name="value" >
+        <number>24</number>
+       </property>
+       <property name="format" >
+        <string>%p%</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0" >
+      <widget class="QLabel" name="label_5" >
+       <property name="text" >
+        <string>Users</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1" >
+      <widget class="QProgressBar" name="ircUsersProgress" >
+       <property name="value" >
+        <number>24</number>
+       </property>
+       <property name="format" >
+        <string>%p%</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
    <item>
     <spacer>
      <property name="orientation" >
       <enum>Qt::Vertical</enum>
      </property>
-     <property name="sizeHint" >
+     <property name="sizeHint" stdset="0" >
       <size>
        <width>138</width>
        <height>51</height>

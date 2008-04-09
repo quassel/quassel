@@ -48,7 +48,7 @@ class QtopiaMainWin : public QMainWindow {
     void requestBacklog(BufferInfo, QVariant, QVariant);
 
   private slots:
-    void showBuffer(Buffer *);
+    void showBuffer(BufferId);
     void showBufferView();
     void showNickList();
     void showAboutDlg();

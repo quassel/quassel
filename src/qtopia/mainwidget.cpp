@@ -22,12 +22,13 @@
 
 #include "buffer.h"
 #include "chatwidget.h"
+#include "client.h"
 
-MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
+MainWidget::MainWidget(QWidget *parent) : AbstractBufferContainer(parent) {
   ui.setupUi(this);
   ui.inputLine->hide(); ui.topicBar->hide();
-  connect(ui.inputLine, SIGNAL(returnPressed()), this, SLOT(enterPressed()));
-  currentBuffer = 0;
+  connect(ui.inputLine, SIGNAL(sendText(const QString &)), this, SLOT(userInput(const QString &)));
+  connect(this, SIGNAL(userInput(BufferInfo, QString)), Client::instance(), SIGNAL(sendInput(BufferInfo, QString)));
 }
 
 MainWidget::~MainWidget() {
@@ -36,14 +37,48 @@ MainWidget::~MainWidget() {
 
 }
 
+AbstractChatView *MainWidget::createChatView(BufferId id) {
+  Q_UNUSED(id)
+  ChatWidget *widget = new ChatWidget(this);
+  AbstractChatView *chatView = static_cast<AbstractChatView *>(widget); // can't use dynamic_cast on some Qtopia devices
+  Q_ASSERT(chatView);
+  _chatViews[id] = widget;
+  ui.stack->addWidget(widget);
+  widget->setFocusProxy(this);
+  return chatView;
+}
+
+void MainWidget::removeChatView(BufferId id) {
+  ChatWidget *view = _chatViews.value(id, 0);
+  if(!view) return;
+  ui.stack->removeWidget(view);
+  view->deleteLater();
+}
+
+void MainWidget::showChatView(BufferId id) {
+  if(id.isValid()) currentBufferInfo = Client::buffer(id)->bufferInfo();
+  else currentBufferInfo = BufferInfo();
+  ChatWidget *widget = _chatViews.value(id, 0);
+  if(!widget) ui.stack->setCurrentIndex(0);
+  else {
+    ui.stack->setCurrentWidget(widget);
+    ui.inputLine->show(); ui.topicBar->show();
+    ui.inputLine->setFocus();
+  }
+}
+
+
+/*
 void MainWidget::setBuffer(Buffer *buf) {
+
   if(!buf) {
     ui.stack->setCurrentIndex(0);
     currentBuffer = 0;
     return;
   }
   //  TODO update topic if changed; handle status buffer display
-  QString title = QString("%1 (%2): \"%3\"").arg(buf->name()).arg(buf->networkName()).arg(buf->topic());
+//  QString title = QString("%1 (%2): \"%3\"").arg(buf->bufferInfo().bufferName()).arg(buf->bufferInfo().networkName()).arg(buf->topic());
+  QString title = "foobar";
   ui.topicBar->setContents(title);
 
   //ui.chatWidget->setStyleSheet("div { color: #777777; }");
@@ -55,10 +90,10 @@ void MainWidget::setBuffer(Buffer *buf) {
   ChatWidget *chatWidget;
   if(!chatWidgets.contains(buf)) {
     chatWidget = new ChatWidget(this);
-    QList<ChatLineOld *> lines;
+    QList<ChatLine *> lines;
     QList<AbstractUiMsg *> msgs = buf->contents();
     foreach(AbstractUiMsg *msg, msgs) {
-      lines.append((ChatLineOld*)(msg));
+      lines.append((ChatLine *)(msg));
     }
     chatWidget->setContents(lines);
     connect(buf, SIGNAL(msgAppended(AbstractUiMsg *)), chatWidget, SLOT(appendMsg(AbstractUiMsg *)));
@@ -73,22 +108,16 @@ void MainWidget::setBuffer(Buffer *buf) {
   ui.stack->setCurrentWidget(chatWidget);
   ui.inputLine->setFocus();
   currentBuffer = buf;
+  
 }
+*/
 
-void MainWidget::enterPressed() {
-  QStringList lines = ui.inputLine->text().split('\n', QString::SkipEmptyParts);
+void MainWidget::userInput(const QString &input) {
+  if(!currentBufferInfo.isValid()) return;
+  QStringList lines = input.split('\n', QString::SkipEmptyParts);
   foreach(QString msg, lines) {
     if(msg.isEmpty()) continue;
-    if(currentBuffer) currentBuffer->processUserInput(msg);
+    emit userInput(currentBufferInfo, msg);
   }
   ui.inputLine->clear();
-}
-
-// FIXME make this more elegant, we don't need to send a string around...
-void MainWidget::setTopic(QString topic) {
-  Q_UNUSED(topic);
-  if(currentBuffer) {
-    QString title = QString("%1 (%2): \"%3\"").arg(currentBuffer->name()).arg(currentBuffer->networkName()).arg(currentBuffer->topic());
-    ui.topicBar->setContents(title);
-  }
 }

@@ -29,7 +29,7 @@ ChatLine::ChatLine(Message msg) {
   _styledText = QtopiaUi::style()->styleString(msg.formattedText());
   _timestamp = msg.timestamp();
   _msgId = msg.msgId();
-  _bufferInfo = msg.buffer();
+  _bufferInfo = msg.bufferInfo();
 
 
 }

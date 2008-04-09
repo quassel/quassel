@@ -26,6 +26,7 @@
 #include "ui_nicklistwidget.h"
 
 class Buffer;
+class BufferId;
 class NickView;
 
 class NickListWidget : public QDialog {
@@ -36,7 +37,7 @@ class NickListWidget : public QDialog {
     ~NickListWidget();
 
   public slots:
-    void setBuffer(Buffer *);
+    void setBuffer(BufferId);
     void reset();
 
   private slots:
