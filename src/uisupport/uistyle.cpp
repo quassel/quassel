@@ -17,6 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#include <QApplication>
 
 #include "uistyle.h"
 #include "uistylesettings.h"
@@ -25,7 +26,7 @@ UiStyle::UiStyle(const QString &settingsKey) : _settingsKey(settingsKey) {
   // Default format
   QTextCharFormat def;
   def.setForeground(QBrush("#000000"));
-  //def.setFont(QFont("Mono", 10));
+  def.setFont(QFont("Monospace", QApplication::font().pointSize()));
   def.font().setFixedPitch(true);
   def.font().setStyleHint(QFont::TypeWriter);
   _defaultFormats = QVector<QTextCharFormat>(NumFormatTypes, def);
