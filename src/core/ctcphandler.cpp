@@ -108,13 +108,11 @@ void CtcpHandler::parse(Message::Type messageType, const QString &prefix, const 
 
     xdelimEndPos = dequotedMessage.indexOf(XDELIM, xdelimPos + 1);
     if(xdelimEndPos == -1) {
-      // no matching end delimiter found...
-      dequotedMessage = dequotedMessage.mid(xdelimPos + 1);
-      break;
-    } else {
-      ctcp = xdelimDequote(dequotedMessage.mid(xdelimPos + 1, xdelimEndPos - xdelimPos - 1));
-      dequotedMessage = dequotedMessage.mid(xdelimEndPos + 1);
+      // no matching end delimiter found... treat rest of the message as ctcp
+      xdelimEndPos = dequotedMessage.count();
     }
+    ctcp = xdelimDequote(dequotedMessage.mid(xdelimPos + 1, xdelimEndPos - xdelimPos - 1));
+    dequotedMessage = dequotedMessage.mid(xdelimEndPos + 1);
 
     //dispatch the ctcp command
     QString ctcpcmd = userDecode(target, ctcp.left(spacePos));
