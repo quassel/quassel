@@ -53,7 +53,7 @@ namespace Global {
   extern RunMode runMode;
   extern unsigned int defaultPort;
 
-  extern bool SPUTDEV; // FIXME This is for internal use only!
+  extern bool DEBUG;
 
   void registerMetaTypes();
 };

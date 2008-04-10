@@ -382,7 +382,6 @@ void NetworkConnection::userInput(BufferInfo buf, QString msg) {
 void NetworkConnection::putRawLine(QByteArray s) {
   s += "\r\n";
   socket.write(s);
-  if(Global::SPUTDEV) qDebug() << "SENT:" << s;
 }
 
 void NetworkConnection::putCmd(const QString &cmd, const QVariantList &params, const QByteArray &prefix) {

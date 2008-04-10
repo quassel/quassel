@@ -124,7 +124,7 @@ void BufferView::keyPressEvent(QKeyEvent *event) {
 void BufferView::rowsInserted(const QModelIndex & parent, int start, int end) {
   QTreeView::rowsInserted(parent, start, end);
   if(model()->rowCount(parent) == 1 && parent.data(NetworkModel::ItemTypeRole) == NetworkModel::NetworkItemType
-     && (Global::SPUTDEV || parent.data(NetworkModel::ItemActiveRole) == true)) {
+     && parent.data(NetworkModel::ItemActiveRole) == true) {
     // without updating the parent the expand will have no effect... Qt Bug?
     update(parent);
     expand(parent);
@@ -145,12 +145,7 @@ void BufferView::dataChanged(const QModelIndex &topLeft, const QModelIndex &bott
       continue;
 
     bool isActive = networkIdx.data(NetworkModel::ItemActiveRole).toBool();
-    if(Global::SPUTDEV) {
-      if(isExpanded(networkIdx) != isActive) setExpanded(networkIdx, true);
-    } else {
-      if(isExpanded(networkIdx) != isActive)
-        setExpanded(networkIdx, isActive);
-    }
+    if(isExpanded(networkIdx) != isActive) setExpanded(networkIdx, isActive);
   }
 }
 

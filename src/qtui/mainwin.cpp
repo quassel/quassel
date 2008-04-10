@@ -22,7 +22,6 @@
 #include "aboutdlg.h"
 #include "chatwidget.h"
 #include "bufferview.h"
-#include "chatline.h"
 #include "chatline-old.h"
 #include "client.h"
 #include "clientbacklogmanager.h"
@@ -135,13 +134,6 @@ void MainWin::init() {
   // attach the BufferWidget to the BufferModel and the default selection
   ui.bufferWidget->setModel(Client::bufferModel());
   ui.bufferWidget->setSelectionModel(Client::bufferModel()->standardSelectionModel());
-
-  if(Global::SPUTDEV) {
-    //showSettingsDlg();
-    //showAboutDlg();
-    //showNetworkDlg();
-    //exit(1);
-  }
 
 }
 
@@ -397,7 +389,6 @@ void MainWin::disconnectedFromCore() {
 }
 
 AbstractUiMsg *MainWin::layoutMsg(const Message &msg) {
-  if(Global::SPUTDEV) return new ChatLine(msg);
   return new ChatLineOld(msg);
 }
 

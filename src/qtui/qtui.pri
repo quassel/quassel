@@ -1,12 +1,12 @@
 DEPMOD = client common uisupport
 QT_MOD = core gui network
 
-SRCS += aboutdlg.cpp bufferwidget.cpp chatitem.cpp chatline.cpp chatline-old.cpp chatscene.cpp chatview.cpp chatwidget.cpp \
+SRCS += aboutdlg.cpp bufferwidget.cpp chatline-old.cpp chatwidget.cpp \
         coreconfigwizard.cpp coreconnectdlg.cpp configwizard.cpp debugconsole.cpp inputwidget.cpp \
         mainwin.cpp nicklistwidget.cpp qtui.cpp qtuisettings.cpp qtuistyle.cpp settingsdlg.cpp settingspagedlg.cpp \
         topicbutton.cpp topicwidget.cpp verticaldock.cpp jumpkeyhandler.cpp
 
-HDRS += aboutdlg.h bufferwidget.h chatitem.h chatline.h chatline-old.h chatscene.h chatview.h chatwidget.h \
+HDRS += aboutdlg.h bufferwidget.h chatline-old.h chatwidget.h \
         coreconfigwizard.h configwizard.h debugconsole.h inputwidget.h \
         coreconnectdlg.h mainwin.h nicklistwidget.h qtui.h qtuisettings.h qtuistyle.h settingsdlg.h settingspagedlg.h \
         topicbutton.h topicwidget.h verticaldock.h jumpkeyhandler.h
