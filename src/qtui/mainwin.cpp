@@ -87,11 +87,6 @@ MainWin::MainWin(QtUi *_gui, QWidget *parent)
   if(style != "") {
     QApplication::setStyle(style);
   }
-
-  connect(Client::instance(), SIGNAL(securedConnection()), this, SLOT(securedConnection()));
-  sslLabel->setPixmap(QPixmap());
-  statusBar()->addPermanentWidget(sslLabel);
-
 }
 
 void MainWin::init() {
@@ -126,6 +121,7 @@ void MainWin::init() {
   setupTopicWidget();
   setupChatMonitor();
   setupInputWidget();
+  setupStatusBar();
   setupSystray();
 
   setupSettingsDlg();
@@ -288,6 +284,31 @@ void MainWin::setupTopicWidget() {
   addDockWidget(Qt::TopDockWidgetArea, dock);
 
   ui.menuViews->addAction(dock->toggleViewAction());
+}
+
+void MainWin::setupStatusBar() {
+  connect(Client::instance(), SIGNAL(securedConnection()), this, SLOT(securedConnection()));
+  sslLabel->setPixmap(QPixmap());
+  statusBar()->addPermanentWidget(sslLabel);
+
+  ui.menuViews->addSeparator();
+  QAction *showStatusbar = ui.menuViews->addAction(tr("Statusbar"));
+  showStatusbar->setCheckable(true);
+
+  UiSettings uiSettings;
+
+  //TODO: save status
+  bool enabled = uiSettings.value("ShowStatusBar", QVariant(true)).toBool();
+  showStatusbar->setChecked(enabled);
+  enabled ? statusBar()->show() : statusBar()->hide();
+
+  connect(showStatusbar, SIGNAL(toggled(bool)), statusBar(), SLOT(setVisible(bool)));
+  connect(showStatusbar, SIGNAL(toggled(bool)), this, SLOT(saveStatusBarStatus(bool)));
+}
+
+void MainWin::saveStatusBarStatus(bool enabled) {
+  UiSettings uiSettings;
+  uiSettings.setValue("ShowStatusBar", enabled);
 }
 
 void MainWin::setupSystray() {

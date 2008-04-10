@@ -84,6 +84,7 @@ class MainWin : public QMainWindow {
 
     void changeTopic(const QString &topic);
     void makeTrayIconBlink();
+    void saveStatusBarStatus(bool enabled);
 
   signals:
     void connectToCore(const QVariantMap &connInfo);
@@ -103,6 +104,7 @@ class MainWin : public QMainWindow {
     void setupChatMonitor();
     void setupInputWidget();
     void setupTopicWidget();
+    void setupStatusBar();
     void setupSystray();
 
     void setupSettingsDlg();
