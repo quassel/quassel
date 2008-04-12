@@ -23,6 +23,8 @@
 #include "network.h"
 #include "qtui.h"
 
+#include "qtuisettings.h"
+
 //! Construct a ChatLineOld object from a message.
 /**
  * \param m   The message to be layouted and rendered
@@ -316,8 +318,10 @@ void ChatLineOld::draw(QPainter *p, const QPointF &pos) {
     p->drawRect(QRectF(pos, QSizeF(tsWidth + QtUi::style()->sepTsSender() + senderWidth + QtUi::style()->sepSenderText() + textWidth, height())));
   } else {
     if(isHighlight) {
+      QtUiSettings s("QtUi/Colors");
+      QColor highlightColor = s.value("highlightColor", QVariant(QColor("lightcoral"))).value<QColor>();
       p->setPen(Qt::NoPen);
-      p->setBrush(QColor("lightcoral") /*pal.brush(QPalette::AlternateBase) */);
+      p->setBrush(highlightColor /*pal.brush(QPalette::AlternateBase) */);
       p->drawRect(QRectF(pos, QSizeF(tsWidth + QtUi::style()->sepTsSender() + senderWidth + QtUi::style()->sepSenderText() + textWidth, height())));
     }
     if(selectionMode == Partial) {
