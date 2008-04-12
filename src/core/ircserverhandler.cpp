@@ -389,7 +389,7 @@ void IrcServerHandler::handle005(const QString &prefix, const QList<QByteArray> 
     qWarning() << "IrcServerHandler::handle005(): received RPL_ISUPPORT (005) with too few parameters:" << serverDecode(params);
     return;
   }
-    
+
   QString rpl_isupport_suffix = serverDecode(params.last());
   if(!rpl_isupport_suffix.toLower().contains("supported")) {
     qWarning() << "Received invalid RPL_ISUPPORT! Suffix is:" << rpl_isupport_suffix << "Excpected: are supported by this server";
@@ -406,6 +406,33 @@ void IrcServerHandler::handle005(const QString &prefix, const QList<QByteArray> 
   }
 }
 
+/* RPL_UMODEIS - "<user_modes> [<user_mode_params>]" */
+void IrcServerHandler::handle221(const QString &prefix, const QList<QByteArray> &params) {
+  Q_UNUSED(prefix)
+  //TODO: save information in network object
+  emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("%1").arg(serverDecode(params).join(" ")));
+}
+
+/* RPL_STATSCONN - "Highest connection cout: 8000 (7999 clients)" */
+void IrcServerHandler::handle250(const QString &prefix, const QList<QByteArray> &params) {
+  Q_UNUSED(prefix)
+  //TODO: save information in network object
+  emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("%1").arg(serverDecode(params).join(" ")));
+}
+
+/* RPL_LOCALUSERS - "Current local user: 5024  Max: 7999 */
+void IrcServerHandler::handle265(const QString &prefix, const QList<QByteArray> &params) {
+  Q_UNUSED(prefix)
+  //TODO: save information in network object
+  emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("%1").arg(serverDecode(params).join(" ")));
+}
+
+/* RPL_GLOBALUSERS - "Current global users: 46093  Max: 47650" */
+void IrcServerHandler::handle266(const QString &prefix, const QList<QByteArray> &params) {
+  Q_UNUSED(prefix)
+  //TODO: save information in network object
+  emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("%1").arg(serverDecode(params).join(" ")));
+}
 
 /* 
 WHOIS-Message: 
@@ -449,6 +476,28 @@ void IrcServerHandler::handle301(const QString &prefix, const QList<QByteArray> 
       emit displayMsg(Message::Server, BufferInfo::QueryBuffer, params[0], tr("%1 is away: \"%2\"").arg(nickName).arg(awayMessage));
     }
   }
+}
+
+/* RPL_WHOISSERVICE - "<user> is registered nick" */
+void IrcServerHandler::handle307(const QString &prefix, const QList<QByteArray> &params) {
+  Q_UNUSED(prefix)
+  QString whoisServiceReply = serverDecode(params).join(" ");
+  IrcUser *ircuser = network()->ircUser(serverDecode(params[0]));
+  if(ircuser) {
+    ircuser->setWhoisServiceReply(whoisServiceReply);
+  }
+  emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Whois] %1").arg(whoisServiceReply));
+}
+
+/* RPL_SUSERHOST - "<user> is available for help." */
+void IrcServerHandler::handle310(const QString &prefix, const QList<QByteArray> &params) {
+  Q_UNUSED(prefix)
+  QString suserHost = serverDecode(params).join(" ");
+  IrcUser *ircuser = network()->ircUser(serverDecode(params[0]));
+  if(ircuser) {
+    ircuser->setSuserHost(suserHost);
+  }
+  emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Whois] %1").arg(suserHost));
 }
 
 /*  RPL_WHOISUSER - "<nick> <user> <host> * :<real name>" */

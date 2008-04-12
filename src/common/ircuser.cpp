@@ -40,6 +40,7 @@ IrcUser::IrcUser(const QString &hostmask, Network *network) : SyncableObject(net
     // _idleTime(QDateTime::currentDateTime()),
     _ircOperator(),
     _lastAwayMessage(0),
+    _whoisServiceReply(),
     _network(network),
     _codecForEncoding(0),
     _codecForDecoding(0)
@@ -54,58 +55,14 @@ IrcUser::~IrcUser() {
 //  PUBLIC:
 // ====================
 
-QString IrcUser::user() const {
-  return _user;
-}
-
-QString IrcUser::host() const {
-  return _host;
-}
-
-QString IrcUser::nick() const {
-  return _nick;
-}
-
-QString IrcUser::realName() const {
-  return _realName;
-}
-
 QString IrcUser::hostmask() const {
   return QString("%1!%2@%3").arg(nick()).arg(user()).arg(host());
-}
-
-bool IrcUser::isAway() const {
-  return _away;
-}
-
-QString IrcUser::awayMessage() const {
-  return _awayMessage;
-}
-
-QString IrcUser::server() const {
-  return _server;
 }
 
 QDateTime IrcUser::idleTime() {
   if(QDateTime::currentDateTime().toTime_t() - _idleTimeSet.toTime_t() > 1200)
     _idleTime = QDateTime();
   return _idleTime;
-}
-
-QDateTime IrcUser::loginTime() const {
-  return _loginTime;
-}
-
-QString IrcUser::ircOperator() const {
-  return _ircOperator;
-}
-
-int IrcUser::lastAwayMessage() const {
-  return _lastAwayMessage;
-}
-
-QString IrcUser::userModes() const {
-  return _userModes;
 }
 
 QStringList IrcUser::channels() const {
@@ -117,13 +74,6 @@ QStringList IrcUser::channels() const {
   return chanList;
 }
 
-Network* IrcUser::network() const {
-  return _network;
-}
-
-QTextCodec *IrcUser::codecForEncoding() const {
-  return _codecForEncoding;
-}
 
 void IrcUser::setCodecForEncoding(const QString &name) {
   setCodecForEncoding(QTextCodec::codecForName(name.toAscii()));
@@ -131,10 +81,6 @@ void IrcUser::setCodecForEncoding(const QString &name) {
 
 void IrcUser::setCodecForEncoding(QTextCodec *codec) {
   _codecForEncoding = codec;
-}
-
-QTextCodec *IrcUser::codecForDecoding() const {
-  return _codecForDecoding;
 }
 
 void IrcUser::setCodecForDecoding(const QString &name) {
@@ -236,6 +182,20 @@ void IrcUser::setNick(const QString &nick) {
     _nick = nick;
     updateObjectName();
     emit nickSet(nick);
+  }
+}
+
+void IrcUser::setWhoisServiceReply(const QString &whoisServiceReply) {
+  if(!whoisServiceReply.isEmpty() && whoisServiceReply != _whoisServiceReply) {
+    _whoisServiceReply = whoisServiceReply;
+    emit whoisServiceReplySet(whoisServiceReply);
+  }
+}
+
+void IrcUser::setSuserHost(const QString &suserHost) {
+  if(!suserHost.isEmpty() && suserHost != _suserHost) {
+    _suserHost = suserHost;
+    emit suserHostSet(suserHost);
   }
 }
 
