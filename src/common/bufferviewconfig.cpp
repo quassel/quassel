@@ -129,7 +129,6 @@ void BufferViewConfig::initSetBufferList(const QList<BufferId> &buffers) {
 }
 
 void BufferViewConfig::addBuffer(const BufferId &bufferId, int pos) {
-  qDebug() << "addBuffer" << bufferId;
   if(_buffers.contains(bufferId))
     return;
   
@@ -138,17 +137,14 @@ void BufferViewConfig::addBuffer(const BufferId &bufferId, int pos) {
 }
 
 void BufferViewConfig::moveBuffer(const BufferId &bufferId, int pos) {
-  qDebug() << "moveeBuffer" << bufferId;
   if(!_buffers.contains(bufferId))
     return;
 
-  qDebug() << "lala" << bufferId << pos;
   _buffers.move(_buffers.indexOf(bufferId), pos);
   emit bufferMoved(bufferId, pos);
 }
 
 void BufferViewConfig::removeBuffer(const BufferId &bufferId) {
-  qDebug() << "removeBuffer" << bufferId;
   if(!_buffers.contains(bufferId))
     return;
   
