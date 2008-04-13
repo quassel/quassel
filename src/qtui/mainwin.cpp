@@ -297,7 +297,6 @@ void MainWin::setupStatusBar() {
 
   UiSettings uiSettings;
 
-  //TODO: save status
   bool enabled = uiSettings.value("ShowStatusBar", QVariant(true)).toBool();
   showStatusbar->setChecked(enabled);
   enabled ? statusBar()->show() : statusBar()->hide();

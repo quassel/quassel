@@ -139,7 +139,7 @@ void InputWidget::updateNickSelector() const {
   }
 
   if(net->me() && nickIdx < nicks.count())
-    nicks[nickIdx] = net->myNick() + QString(" (%1)").arg(net->me()->userModes());
+    nicks[nickIdx] = net->myNick() + QString(" (+%1)").arg(net->me()->userModes());
       
   ui.ownNick->addItems(nicks);
   ui.ownNick->setCurrentIndex(nickIdx);

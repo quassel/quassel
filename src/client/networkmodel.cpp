@@ -590,7 +590,10 @@ QString IrcUserItem::toolTip(int column) const {
   if(_ircUser->isAway()) toolTip[0].append(" is away");
   if(!_ircUser->awayMessage().isEmpty()) toolTip[0].append(QString(" (%1)").arg(_ircUser->awayMessage()));
   if(!_ircUser->realName().isEmpty()) toolTip.append(_ircUser->realName());
-  if(!_ircUser->ircOperator().isEmpty()) toolTip.append(_ircUser->ircOperator());
+  if(!_ircUser->ircOperator().isEmpty()) toolTip.append(QString("%1 %2").arg(nickName()).arg(_ircUser->ircOperator()));
+  if(!_ircUser->suserHost().isEmpty()) toolTip.append(_ircUser->suserHost());
+  if(!_ircUser->whoisServiceReply().isEmpty()) toolTip.append(_ircUser->whoisServiceReply());
+
   toolTip.append(_ircUser->hostmask().remove(0, _ircUser->hostmask().indexOf("!")+1));
 
   if(_ircUser->idleTime().isValid()) {

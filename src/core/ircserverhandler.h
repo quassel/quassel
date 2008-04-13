@@ -46,7 +46,13 @@ public slots:
 
   void handle001(const QString &prefix, const QList<QByteArray> &params);   // RPL_WELCOME
   void handle005(const QString &prefix, const QList<QByteArray> &params);   // RPL_ISUPPORT
+  void handle221(const QString &prefix, const QList<QByteArray> &params);   // RPL_UMODEIS
+  void handle250(const QString &prefix, const QList<QByteArray> &params);   // RPL_STATSDLINE
+  void handle265(const QString &prefix, const QList<QByteArray> &params);   // RPL_LOCALUSERS
+  void handle266(const QString &prefix, const QList<QByteArray> &params);   // RPL_GLOBALUSERS
   void handle301(const QString &prefix, const QList<QByteArray> &params);   // RPL_AWAY
+  void handle307(const QString &prefix, const QList<QByteArray> &params);   // RPL_WHOISSERVICE
+  void handle310(const QString &prefix, const QList<QByteArray> &params);   // RPL_SUSERHOST
   void handle311(const QString &prefix, const QList<QByteArray> &params);   // RPL_WHOISUSER
   void handle312(const QString &prefix, const QList<QByteArray> &params);   // RPL_WHOISSERVER
   void handle313(const QString &prefix, const QList<QByteArray> &params);   // RPL_WHOISOPERATOR

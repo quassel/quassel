@@ -47,6 +47,8 @@ class IrcUser : public SyncableObject {
   Q_PROPERTY(QString server READ server WRITE setServer STORED false)
   Q_PROPERTY(QString ircOperator READ ircOperator WRITE setIrcOperator STORED false)
   Q_PROPERTY(int lastAwayMessage READ lastAwayMessage WRITE setLastAwayMessage STORED false)
+  Q_PROPERTY(QString whoisServiceReply READ whoisServiceReply WRITE setWhoisServiceReply STORED false)
+  Q_PROPERTY(QString suserHost READ suserHost WRITE setSuserHost STORED false)
 
   Q_PROPERTY(QStringList channels READ channels STORED false)
   Q_PROPERTY(QString userModes READ userModes WRITE setUserModes)
@@ -55,27 +57,29 @@ public:
   IrcUser(const QString &hostmask, Network *network);
   virtual ~IrcUser();
 
-  QString user() const;
-  QString host() const;
-  QString nick() const;
-  QString realName() const; 
+  inline QString user() const { return _user; }
+  inline QString host() const { return _host; }
+  inline QString nick() const { return _nick; }
+  inline QString realName() const { return _realName; }
   QString hostmask() const;
-  bool isAway() const;
-  QString awayMessage() const;
+  inline bool isAway() const { return _away; }
+  inline QString awayMessage() const { return _awayMessage; }
   QDateTime idleTime();
-  QDateTime loginTime() const;
-  QString server() const;
-  QString ircOperator() const;
-  int lastAwayMessage() const;
-  Network *network() const;
+  inline QDateTime loginTime() const { return _loginTime; }
+  inline QString server() const { return _server; }
+  inline QString ircOperator() const { return _ircOperator; }
+  inline int lastAwayMessage() const { return _lastAwayMessage; }
+  inline QString whoisServiceReply() const { return _whoisServiceReply; }
+  inline QString suserHost() const { return _suserHost; }
+  inline Network *network() const { return _network; }
 
-  QString userModes() const;
+  inline QString userModes() const { return _userModes; }
 
   QStringList channels() const;
 
   // user-specific encodings
-  QTextCodec *codecForEncoding() const;
-  QTextCodec *codecForDecoding() const;
+  inline QTextCodec *codecForEncoding() const { return _codecForEncoding; }
+  inline QTextCodec *codecForDecoding() const { return _codecForDecoding; }
   void setCodecForEncoding(const QString &codecName);
   void setCodecForEncoding(QTextCodec *codec);
   void setCodecForDecoding(const QString &codecName);
@@ -96,6 +100,8 @@ public slots:
   void setServer(const QString &server);
   void setIrcOperator(const QString &ircOperator);
   void setLastAwayMessage(const int &lastAwayMessage);
+  void setWhoisServiceReply(const QString &whoisServiceReply);
+  void setSuserHost(const QString &suserHost);
   void updateHostmask(const QString &mask);
 
   void setUserModes(const QString &modes);
@@ -120,6 +126,8 @@ signals:
   void serverSet(QString server);
   void ircOperatorSet(QString ircOperator);
   void lastAwayMessageSet(int lastAwayMessage);
+  void whoisServiceReplySet(QString whoisServiceReply);
+  void suserHostSet(QString suserHost);
   void hostmaskUpdated(QString mask);
 
   void userModesSet(QString modes);
@@ -157,7 +165,9 @@ private:
   QDateTime _loginTime;
   QString _ircOperator;
   int _lastAwayMessage;
-  
+  QString _whoisServiceReply;
+  QString _suserHost;
+
   // QSet<QString> _channels;
   QSet<IrcChannel *> _channels;
   QString _userModes;
