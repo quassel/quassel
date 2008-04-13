@@ -53,6 +53,15 @@ void BufferViewManager::addBufferViewConfig(int bufferViewConfigId) {
   addBufferViewConfig(new BufferViewConfig(bufferViewConfigId, this));
 }
 
+void BufferViewManager::deleteBufferViewConfig(int bufferViewConfigId) {
+  if(!_bufferViewConfigs.contains(bufferViewConfigId))
+     return;
+
+  _bufferViewConfigs[bufferViewConfigId]->deleteLater();
+  _bufferViewConfigs.remove(bufferViewConfigId);
+  emit bufferViewConfigDeleted(bufferViewConfigId);
+}
+
 QVariantList BufferViewManager::initBufferViewIds() const {
   QVariantList bufferViewIds;
   BufferViewConfigHash::const_iterator iter = _bufferViewConfigs.constBegin();

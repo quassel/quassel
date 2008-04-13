@@ -414,7 +414,9 @@ void NetworkItem::attachNetwork(Network *network) {
 	  this, SLOT(attachIrcChannel(QString)));
   connect(network, SIGNAL(connectedSet(bool)),
 	  this, SIGNAL(dataChanged()));
-
+  connect(network, SIGNAL(destroyed()),
+	  this, SIGNAL(dataChanged()));
+  
   emit dataChanged();
 }
 

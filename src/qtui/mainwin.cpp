@@ -22,6 +22,9 @@
 #include "aboutdlg.h"
 #include "chatwidget.h"
 #include "bufferview.h"
+#include "bufferviewconfig.h"
+#include "bufferviewfilter.h"
+#include "bufferviewmanager.h"
 #include "chatline.h"
 #include "chatline-old.h"
 #include "client.h"
@@ -165,39 +168,68 @@ void MainWin::setupMenus() {
   actionEditNetworks = new QAction(QIcon(":/22x22/actions/configure"), tr("Edit &Networks..."), this);
   ui.menuNetworks->addAction(actionEditNetworks);
   connect(actionEditNetworks, SIGNAL(triggered()), this, SLOT(showNetworkDlg()));
+  connect(ui.actionManageViews, SIGNAL(triggered()), this, SLOT(showManageViewsDlg()));
 }
 
 void MainWin::setupViews() {
-  BufferModel *model = Client::bufferModel();
-
-  addBufferView(tr("All Buffers"), model, BufferViewFilter::AllNets, QList<NetworkId>());
-  addBufferView(tr("All Channels"), model, BufferViewFilter::AllNets|BufferViewFilter::NoQueries|BufferViewFilter::NoServers, QList<NetworkId>());
-  addBufferView(tr("All Queries"), model, BufferViewFilter::AllNets|BufferViewFilter::NoChannels|BufferViewFilter::NoServers, QList<NetworkId>());
-  addBufferView(tr("All Networks"), model, BufferViewFilter::AllNets|BufferViewFilter::NoChannels|BufferViewFilter::NoQueries, QList<NetworkId>());
-  addBufferView(tr("Full Custom"), model, BufferViewFilter::FullCustom, QList<NetworkId>());
-
-  ui.menuViews->addSeparator();
+  QAction *separator = ui.menuViews->addSeparator();
+  separator->setData("__EOBV__");
+  addBufferView();
 }
 
-QDockWidget *MainWin::addBufferView(const QString &viewname, QAbstractItemModel *model, const BufferViewFilter::Modes &mode, const QList<NetworkId> &nets) {
-  QDockWidget *dock = new QDockWidget(viewname, this);
-  dock->setObjectName(QString("ViewDock-" + viewname)); // should be unique for mainwindow state!
-  dock->setAllowedAreas(Qt::RightDockWidgetArea|Qt::LeftDockWidgetArea);
+void MainWin::addBufferView(int bufferViewConfigId) {
+  addBufferView(Client::bufferViewManager()->bufferViewConfig(bufferViewConfigId));
+}
+
+void MainWin::addBufferView(BufferViewConfig *config) {
+  BufferViewDock *dock;
+  if(config)
+    dock = new BufferViewDock(config, this);
+  else
+    dock = new BufferViewDock(this);
 
   //create the view and initialize it's filter
   BufferView *view = new BufferView(dock);
+  view->setFilteredModel(Client::bufferModel(), config);
   view->show();
-  view->setFilteredModel(model, mode, nets);
+
   Client::bufferModel()->synchronizeView(view);
+
   dock->setWidget(view);
   dock->show();
 
   addDockWidget(Qt::LeftDockWidgetArea, dock);
 
-  ui.menuViews->addAction(dock->toggleViewAction());
+  QAction *endOfBufferViews = 0;
+  foreach(QAction *action, ui.menuViews->actions()) {
+    if(action->data().toString() == "__EOBV__") {
+      endOfBufferViews = action;
+      break;
+    }
+  }
+  Q_CHECK_PTR(endOfBufferViews);
+  ui.menuViews->insertAction(endOfBufferViews, dock->toggleViewAction());
 
-  netViews.append(dock);
-  return dock;
+  _netViews.append(dock);
+}
+
+void MainWin::removeBufferView(int bufferViewConfigId) {
+  QVariant actionData;
+  BufferViewDock *dock;
+  foreach(QAction *action, ui.menuViews->actions()) {
+    actionData = action->data();
+    if(!actionData.isValid())
+      continue;
+    
+    if(actionData.toString() == "__EOBV__")
+      break;
+
+    dock = qobject_cast<BufferViewDock *>(action->parent());
+    if(dock && actionData.toInt() != bufferViewConfigId) {
+      removeAction(action);
+      dock->deleteLater();
+    }
+  }
 }
 
 void MainWin::setupSettingsDlg() {
@@ -211,7 +243,17 @@ void MainWin::setupSettingsDlg() {
   //Category: General
   settingsDlg->registerSettingsPage(new IdentitiesSettingsPage(settingsDlg));
   settingsDlg->registerSettingsPage(new NetworksSettingsPage(settingsDlg));
-  // settingsDlg->registerSettingsPage(new BufferViewSettingsPage(settingsDlg));
+  settingsDlg->registerSettingsPage(new BufferViewSettingsPage(settingsDlg));
+}
+
+void MainWin::showNetworkDlg() {
+  SettingsPageDlg dlg(new NetworksSettingsPage(this), this);
+  dlg.exec();
+}
+
+void MainWin::showManageViewsDlg() {
+  SettingsPageDlg dlg(new BufferViewSettingsPage(this), this);
+  dlg.exec();
 }
 
 void MainWin::setupNickWidget() {
@@ -357,6 +399,11 @@ void MainWin::changeTopic(const QString &topic) {
 }
 
 void MainWin::connectedToCore() {
+  Q_CHECK_PTR(Client::bufferViewManager());
+  connect(Client::bufferViewManager(), SIGNAL(bufferViewConfigAdded(int)), this, SLOT(addBufferView(int)));
+  connect(Client::bufferViewManager(), SIGNAL(bufferViewConfigDeleted(int)), this, SLOT(removeBufferView(int)));
+  connect(Client::bufferViewManager(), SIGNAL(initDone()), this, SLOT(loadLayout()));
+  
   foreach(BufferInfo id, Client::allBufferInfos()) {
     Client::backlogManager()->requestBacklog(id.bufferId(), 500, -1);
   }
@@ -374,6 +421,12 @@ void MainWin::connectedToCore() {
     sslLabel->setPixmap(QPixmap::fromImage(QImage(":/16x16/status/no-ssl")));
 }
 
+void MainWin::loadLayout() {
+  QtUiSettings s;
+  int accountId = Client::currentCoreAccount().toInt();
+  restoreState(s.value(QString("MainWinState-%1").arg(accountId)).toByteArray(), accountId);
+}
+
 void MainWin::securedConnection() {
   // todo: make status bar entry
   qDebug() << "secured the connection";
@@ -382,6 +435,27 @@ void MainWin::securedConnection() {
 }
 
 void MainWin::disconnectedFromCore() {
+  // save core specific layout and remove bufferviews;
+  QtUiSettings s;
+  int accountId = Client::currentCoreAccount().toInt();
+  s.setValue(QString("MainWinState-%1").arg(accountId) , saveState(accountId));
+  QVariant actionData;
+  BufferViewDock *dock;
+  foreach(QAction *action, ui.menuViews->actions()) {
+    actionData = action->data();
+    if(!actionData.isValid())
+      continue;
+    
+    if(actionData.toString() == "__EOBV__")
+      break;
+
+    dock = qobject_cast<BufferViewDock *>(action->parent());
+    if(dock && actionData.toInt() != -1) {
+      removeAction(action);
+      dock->deleteLater();
+    }
+  }
+
   ui.menuViews->setEnabled(false);
   //ui.menuCore->setEnabled(false);
   ui.actionDisconnectCore->setEnabled(false);
@@ -526,11 +600,6 @@ void MainWin::makeTrayIconBlink() {
   }
 }
 
-
-void MainWin::showNetworkDlg() {
-  SettingsPageDlg dlg(new NetworksSettingsPage(this), this);
-  dlg.exec();
-}
 
 void MainWin::clientNetworkCreated(NetworkId id) {
   const Network *net = Client::network(id);

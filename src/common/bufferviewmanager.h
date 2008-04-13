@@ -43,14 +43,23 @@ public slots:
   void addBufferViewConfig(int bufferViewConfigId);
   inline void newBufferViewConfig(int bufferViewConfigId)  { addBufferViewConfig(bufferViewConfigId); }
 
+  void deleteBufferViewConfig(int bufferViewConfigId);
+
   QVariantList initBufferViewIds() const;
   void initSetBufferViewIds(const QVariantList bufferViewIds);
 
-  virtual inline void requestCreateBufferView(const QString &bufferViewName) { emit createBufferViewRequested(bufferViewName); }
+  virtual inline void requestCreateBufferView(const QVariantMap &properties) { emit createBufferViewRequested(properties); }
+  virtual inline void requestCreateBufferViews(const QVariantList &properties) { emit createBufferViewsRequested(properties); }
+  virtual inline void requestDeleteBufferView(int bufferViewId) { emit deleteBufferViewRequested(bufferViewId); }
+  virtual inline void requestDeleteBufferViews(const QVariantList &bufferViews) { emit deleteBufferViewsRequested(bufferViews); }
 
 signals:
   void bufferViewConfigAdded(int bufferViewConfigId);
-  void createBufferViewRequested(const QString &bufferViewName);
+  void bufferViewConfigDeleted(int bufferViewConfigId);
+  void createBufferViewRequested(const QVariantMap &properties);
+  void createBufferViewsRequested(const QVariantList &properties);
+  void deleteBufferViewRequested(int bufferViewId);
+  void deleteBufferViewsRequested(const QVariantList &bufferViews);
 
 protected:
   typedef QHash<int, BufferViewConfig *> BufferViewConfigHash;

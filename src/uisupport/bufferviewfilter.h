@@ -18,15 +18,17 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _BUFFERVIEWFILTER_H_
-#define _BUFFERVIEWFILTER_H_
+#ifndef BUFFERVIEWFILTER_H_
+#define BUFFERVIEWFILTER_H_
 
-#include <QFlags>
 #include <QDropEvent>
-#include <QSortFilterProxyModel>
+#include <QFlags>
+#include <QPointer>
 #include <QSet>
-// #include "buffer.h"
+#include <QSortFilterProxyModel>
+
 #include "types.h"
+#include "bufferviewconfig.h"
 
 /*****************************************
  * Buffer View Filter
@@ -47,32 +49,35 @@ public:
   };
   Q_DECLARE_FLAGS(Modes, Mode);
 
-  BufferViewFilter(QAbstractItemModel *model, const Modes &mode, const QList<NetworkId> &nets);
+  BufferViewFilter(QAbstractItemModel *model, BufferViewConfig *config = 0);
   
   virtual Qt::ItemFlags flags(const QModelIndex &index) const;
   virtual bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent);
 
   QVariant data(const QModelIndex &index, int role) const;
   QVariant foreground(const QModelIndex &index) const;
-									   
+
+  void setConfig(BufferViewConfig *config);
+  inline BufferViewConfig *config() const { return _config; }
+
 public slots:
   void removeBuffer(const QModelIndex &);
   
 protected:
   bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
-  bool lessThan(const QModelIndex &, const QModelIndex &) const;
-  
+  bool lessThan(const QModelIndex &source_left, const QModelIndex &source_right) const;
+  bool bufferLessThan(const QModelIndex &source_left, const QModelIndex &source_right) const;
+  bool networkLessThan(const QModelIndex &source_left, const QModelIndex &source_right) const;
+
 private:
-  Modes mode;
-  QSet<NetworkId> networks;
-  QSet<BufferId> buffers;
+  QPointer<BufferViewConfig> _config;
 
   bool filterAcceptBuffer(const QModelIndex &) const;
   bool filterAcceptNetwork(const QModelIndex &) const;
   void addBuffer(const BufferId &);
-
 };
 Q_DECLARE_OPERATORS_FOR_FLAGS(BufferViewFilter::Modes)    
 
-#endif
+bool bufferIdLessThan(const BufferId &, const BufferId &);
 
+#endif // BUFFERVIEWFILTER_H_

@@ -20,10 +20,16 @@
 
 #include "settingspagedlg.h"
 
-SettingsPageDlg::SettingsPageDlg(SettingsPage *page, QWidget *parent) : QDialog(parent) {
+SettingsPageDlg::SettingsPageDlg(SettingsPage *page, QWidget *parent)
+  : QDialog(parent)
+{
   ui.setupUi(this);
   _currentPage = page;
   page->setParent(this);
+
+  // make it look more native under Mac OS X:
+  setWindowFlags(Qt::Sheet);
+
   ui.pageTitle->setText(page->title());
 
   // make the scrollarea behave sanely

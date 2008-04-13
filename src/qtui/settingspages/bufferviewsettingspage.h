@@ -25,6 +25,8 @@
 #include "ui_bufferviewsettingspage.h"
 #include "ui_buffervieweditdlg.h"
 
+#include <QItemSelection>
+
 class BufferViewConfig;
 
 class BufferViewSettingsPage : public SettingsPage {
@@ -44,29 +46,38 @@ private slots:
 
   void addBufferView(BufferViewConfig *config);
   void addBufferView(int bufferViewId);
+  void bufferViewDeleted();
   void newBufferView(const QString &bufferViewName);
   void updateBufferView();
 
   void on_addBufferView_clicked();
   void on_renameBufferView_clicked();
+  void on_deleteBufferView_clicked();
+  void bufferViewSelectionChanged(const QItemSelection &current, const QItemSelection &previous);
+
+  void widgetHasChanged();
   
 private:
   Ui::BufferViewSettingsPage ui;
-
-  // mappings for bufferViewId to position in the list and vice versa
-  QHash<int, int> _viewToListPos;
-  QHash<int, int> _listPosToView;
+  bool _ignoreWidgetChanges;
 
   // list of bufferviews to create
   QList<BufferViewConfig *> _newBufferViews;
 
+  // list of buferViews to delete
+  QList<int> _deleteBufferViews;
+  
   // Hash of pointers to cloned bufferViewConfigs holding the changes
   QHash<BufferViewConfig *, BufferViewConfig *> _changedBufferViews;
 
   int listPos(BufferViewConfig *config);
-  int bufferViewId(int listPos);
+  BufferViewConfig *bufferView(int listPos);
   BufferViewConfig *cloneConfig(BufferViewConfig *config);
   BufferViewConfig *configForDisplay(BufferViewConfig *config);
+
+  void loadConfig(BufferViewConfig *config);
+  void saveConfig(BufferViewConfig *config);
+  bool testHasChanged();
 };
 
 

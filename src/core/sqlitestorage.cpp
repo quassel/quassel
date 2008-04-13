@@ -133,6 +133,49 @@ void SqliteStorage::delUser(UserId user) {
   emit userRemoved(user);
 }
 
+void SqliteStorage::setUserSetting(UserId userId, const QString &settingName, const QVariant &data) {
+  QByteArray rawData;
+  QDataStream out(&rawData, QIODevice::WriteOnly);
+  out.setVersion(QDataStream::Qt_4_2);
+  out << data;
+
+  QSqlQuery query(logDb());
+  query.prepare(queryString("insert_user_setting"));
+  query.bindValue(":userid", userId.toInt());
+  query.bindValue(":settingname", settingName);
+  query.bindValue(":settingvalue", rawData);
+  query.exec();
+
+  if(query.lastError().isValid()) {
+    QSqlQuery updateQuery(logDb());
+    updateQuery.prepare(queryString("update_user_setting"));
+    updateQuery.bindValue(":userid", userId.toInt());
+    updateQuery.bindValue(":settingname", settingName);
+    updateQuery.bindValue(":settingvalue", rawData);
+    updateQuery.exec();
+  }
+		  
+}
+
+QVariant SqliteStorage::getUserSetting(UserId userId, const QString &settingName, const QVariant &defaultData) {
+  QSqlQuery query(logDb());
+  query.prepare(queryString("select_user_setting"));
+  query.bindValue(":userid", userId.toInt());
+  query.bindValue(":settingname", settingName);
+  query.exec();
+
+  if(query.first()) {
+    QVariant data;
+    QByteArray rawData = query.value(0).toByteArray();
+    QDataStream in(&rawData, QIODevice::ReadOnly);
+    in.setVersion(QDataStream::Qt_4_2);
+    in >> data;
+    return data;
+  } else {
+    return defaultData;
+  }
+}
+
 NetworkId SqliteStorage::createNetwork(UserId user, const NetworkInfo &info) {
   NetworkId networkId;
   QSqlQuery query(logDb());

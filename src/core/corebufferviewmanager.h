@@ -23,16 +23,26 @@
 
 #include "bufferviewmanager.h"
 
+class CoreSession;
+
 class CoreBufferViewManager : public BufferViewManager {
   Q_OBJECT
 
 public:
-  CoreBufferViewManager(SignalProxy *proxy, QObject *parent = 0);
-
+  CoreBufferViewManager(SignalProxy *proxy, CoreSession *parent);
+  ~CoreBufferViewManager();
+  
   virtual const QMetaObject *syncMetaObject() const { return &BufferViewManager::staticMetaObject; }
 
 public slots:
-  virtual void requestCreateBufferView(const QString &bufferViewName);
+  virtual void requestCreateBufferView(const QVariantMap &properties);
+  virtual void requestCreateBufferViews(const QVariantList &properties);
+  virtual void requestDeleteBufferView(int bufferViewId);
+  virtual void requestDeleteBufferViews(const QVariantList &bufferViews);
+
+private:
+  CoreSession *_coreSession;
 };
 
 #endif // COREBUFFERVIEWMANAGER_H
+

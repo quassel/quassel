@@ -207,6 +207,16 @@ void Core::syncStorage() {
 }
 
 /*** Storage Access ***/
+void Core::setUserSetting(UserId userId, const QString &settingName, const QVariant &data) {
+  QMutexLocker locker(&mutex);
+  instance()->storage->setUserSetting(userId, settingName, data);
+}
+
+QVariant Core::getUserSetting(UserId userId, const QString &settingName, const QVariant &data) {
+  QMutexLocker locker(&mutex);
+  return instance()->storage->getUserSetting(userId, settingName, data);
+}
+
 bool Core::createNetwork(UserId user, NetworkInfo &info) {
   QMutexLocker locker(&mutex);
   NetworkId networkId = instance()->storage->createNetwork(user, info);
