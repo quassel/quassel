@@ -107,6 +107,23 @@ class Storage : public QObject {
      */
     virtual void delUser(UserId user) = 0;
 
+    //! Store a user setting persistently
+    /**
+     * \param userId       The users Id
+     * \param settingName  The Name of the Setting
+     * \param data         The Value
+     */
+    virtual void setUserSetting(UserId userId, const QString &settingName, const QVariant &data) = 0;
+  
+    //! Retrieve a persistent user setting
+    /**
+     * \param userId       The users Id
+     * \param settingName  The Name of the Setting
+     * \param default      Value to return in case it's unset.
+     * \return the Value of the Setting or the default value if it is unset.
+     */
+    virtual QVariant getUserSetting(UserId userId, const QString &settingName, const QVariant &data = QVariant()) = 0;
+  
     /* Network handling */
 
     //! Create a new Network in the storage backend and return it unique Id

@@ -83,6 +83,7 @@ Client::~Client() {
 void Client::init() {
   _currentCoreAccount = 0;
   _networkModel = new NetworkModel(this);
+
   connect(this, SIGNAL(bufferUpdated(BufferInfo)),
           _networkModel, SLOT(bufferUpdated(BufferInfo)));
   connect(this, SIGNAL(networkRemoved(NetworkId)),
@@ -325,12 +326,12 @@ void Client::setSecuredConnection() {
 void Client::disconnectFromCore() {
   if(!isConnected())
     return;
+  _connectedToCore = false;
   
   if(socket) {
     socket->close();
     socket->deleteLater();
   }
-  _connectedToCore = false;
   _syncedToCore = false;
   setCurrentCoreAccount(0);
   emit disconnected();
@@ -346,7 +347,7 @@ void Client::disconnectFromCore() {
     _bufferViewManager->deleteLater();
     _bufferViewManager = 0;
   }
-  
+
   _networkModel->clear();
 
   QHash<BufferId, Buffer *>::iterator bufferIter =  _buffers.begin();

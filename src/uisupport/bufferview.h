@@ -18,13 +18,17 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _BUFFERVIEW_H_
-#define _BUFFERVIEW_H_
+#ifndef BUFFERVIEW_H_
+#define BUFFERVIEW_H_
 
-#include <QtGui>
-#include <QFlags>
+#include <QDockWidget>
+#include <QModelIndex>
+#include <QTreeView>
+#include <QPointer>
 
-#include "bufferviewfilter.h"
+#include "bufferviewconfig.h"
+
+#include "types.h"
 
 /*****************************************
  * The TreeView showing the Buffers
@@ -35,8 +39,15 @@ class BufferView : public QTreeView {
 public:
   BufferView(QWidget *parent = 0);
   void init();
+
   void setModel(QAbstractItemModel *model);
-  void setFilteredModel(QAbstractItemModel *model, BufferViewFilter::Modes mode, QList<NetworkId> nets);
+  void setFilteredModel(QAbstractItemModel *model, BufferViewConfig *config);
+
+  void setConfig(BufferViewConfig *config);
+  inline BufferViewConfig *config() { return _config; }
+
+public slots:
+  void setRootIndexForNetworkId(const NetworkId &networkId);
   
 signals:
   void removeBuffer(const QModelIndex &);
@@ -53,8 +64,24 @@ private slots:
   void toggleHeader(bool checked);
   void showContextMenu(const QPoint &);
 
+private:
+  QPointer<BufferViewConfig> _config;
 };
 
+
+// ==============================
+//  BufferView Dock
+// ==============================
+class BufferViewDock : public QDockWidget {
+  Q_OBJECT
+
+public:
+  BufferViewDock(BufferViewConfig *config, QWidget *parent);
+  BufferViewDock(QWidget *parent);
+
+public slots:
+  void bufferViewRenamed(const QString &newName);
+};
 
 #endif
 

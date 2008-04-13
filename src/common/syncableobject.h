@@ -49,27 +49,35 @@ public:
   //! Initialize the object's state from a given QVariantMap.
   /** \see toVariantMap() for important information concerning this method.
    */
-  virtual void fromVariantMap(const QVariantMap &map);
+  virtual void fromVariantMap(const QVariantMap &properties);
 
   virtual bool isInitialized() const;
 
   virtual const QMetaObject *syncMetaObject() const { return metaObject(); };
 
+  inline void setAllowClientUpdates(bool allow) { _allowClientUpdates = allow; }
+  inline bool allowClientUpdates() const { return _allowClientUpdates; }
+
 public slots:
   virtual void setInitialized();
+  void requestUpdate(const QVariantMap &properties);
+  void update(const QVariantMap &properties);
 
 protected:
   void renameObject(const QString &newName);
-  
+
 signals:
   void initDone();
   void updatedRemotely();
+  void updated(const QVariantMap &properties);
+  void updateRequested(const QVariantMap &properties);
   void objectRenamed(QString newName, QString oldName);
 
 private:
   bool setInitValue(const QString &property, const QVariant &value);
   
   bool _initialized;
+  bool _allowClientUpdates;
 
 };
 

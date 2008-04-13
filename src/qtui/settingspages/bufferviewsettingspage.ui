@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>507</width>
-    <height>485</height>
+    <width>672</width>
+    <height>529</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -75,7 +75,7 @@
     </layout>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox" >
+    <widget class="QGroupBox" name="settingsGroupBox" >
      <property name="title" >
       <string>Buffer View  Settings</string>
      </property>
@@ -85,12 +85,18 @@
         <item>
          <widget class="QLabel" name="label" >
           <property name="text" >
-           <string>Show only Buffers from:</string>
+           <string>Network:</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="comboBox" />
+         <widget class="QComboBox" name="networkSelector" >
+          <item>
+           <property name="text" >
+            <string>All</string>
+           </property>
+          </item>
+         </widget>
         </item>
        </layout>
       </item>
@@ -101,21 +107,21 @@
         </property>
         <layout class="QVBoxLayout" >
          <item>
-          <widget class="QCheckBox" name="checkBox" >
+          <widget class="QCheckBox" name="onlyStatusBuffers" >
            <property name="text" >
             <string>Status Buffers</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QCheckBox" name="checkBox_2" >
+          <widget class="QCheckBox" name="onlyChannelBuffers" >
            <property name="text" >
             <string>Channel Buffers</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QCheckBox" name="checkBox_3" >
+          <widget class="QCheckBox" name="onlyQueryBuffers" >
            <property name="text" >
             <string>Query Buffers</string>
            </property>
@@ -125,17 +131,55 @@
        </widget>
       </item>
       <item>
-       <widget class="QCheckBox" name="checkBox_4" >
+       <widget class="QCheckBox" name="hideInactiveBuffers" >
+        <property name="text" >
+         <string>Hide inactive Buffers</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="addNewBuffersAutomatically" >
         <property name="text" >
          <string>Add new Buffers automatically</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QCheckBox" name="checkBox_5" >
+       <widget class="QCheckBox" name="sortAlphabetically" >
         <property name="text" >
-         <string>Sort Buffers alphabetically</string>
+         <string>Sort alphabetically</string>
         </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_3" >
+        <property name="text" >
+         <string>Minimum Activity:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="minimumActivitySelector" >
+        <item>
+         <property name="text" >
+          <string>No Activity</string>
+         </property>
+        </item>
+        <item>
+         <property name="text" >
+          <string>Other Activity</string>
+         </property>
+        </item>
+        <item>
+         <property name="text" >
+          <string>New Message</string>
+         </property>
+        </item>
+        <item>
+         <property name="text" >
+          <string>Highlight</string>
+         </property>
+        </item>
        </widget>
       </item>
       <item>
@@ -154,8 +198,29 @@
      </layout>
     </widget>
    </item>
+   <item>
+    <layout class="QVBoxLayout" >
+     <item>
+      <widget class="QLabel" name="label_2" >
+       <property name="text" >
+        <string>Preview:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="BufferView" name="bufferViewPreview" />
+     </item>
+    </layout>
+   </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>BufferView</class>
+   <extends>QTreeView</extends>
+   <header>bufferview.h</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="../../icons/icons.qrc" />
  </resources>

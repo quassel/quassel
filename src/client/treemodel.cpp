@@ -147,8 +147,11 @@ AbstractTreeItem *AbstractTreeItem::childById(const quint64 &id) const {
   return 0;
 }
 
-int AbstractTreeItem::childCount() const {
-  return _childItems.count();
+int AbstractTreeItem::childCount(int column) const {
+  if(column > 0)
+    return 0;
+  else
+    return _childItems.count();
 }
 
 int AbstractTreeItem::row() const {
@@ -293,6 +296,8 @@ TreeModel::TreeModel(const QList<QVariant> &data, QObject *parent)
 	    this, SLOT(debug_rowsInserted(const QModelIndex &, int, int)));
     connect(this, SIGNAL(rowsRemoved(const QModelIndex &, int, int)),
 	    this, SLOT(debug_rowsRemoved(const QModelIndex &, int, int)));
+    connect(this, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &)),
+	    this, SLOT(debug_dataChanged(const QModelIndex &, const QModelIndex &)));
   }
 }
 
@@ -370,27 +375,23 @@ int TreeModel::rowCount(const QModelIndex &parent) const {
   else
     parentItem = static_cast<AbstractTreeItem*>(parent.internalPointer());
 
-  return parentItem->childCount();
+  return parentItem->childCount(parent.column());
 }
 
 int TreeModel::columnCount(const QModelIndex &parent) const {
   Q_UNUSED(parent)
+  return rootItem->columnCount();
   // since there the Qt Views don't draw more columns than the header has columns
   // we can be lazy and simply return the count of header columns
   // actually this gives us more freedom cause we don't have to ensure that a rows parent
   // has equal or more columns than that row
-  
-//   if(parent.isValid()) {
-//     AbstractTreeItem *child;
-//     if(child = static_cast<AbstractTreeItem *>(parent.internalPointer())->child(parent.column(), parent.row()))
-//       return child->columnCount();
-//     else
-//       return static_cast<AbstractTreeItem*>(parent.internalPointer())->columnCount();
-//   } else {
-//     return rootItem->columnCount();
-//   }
 
-  return rootItem->columnCount();
+//   AbstractTreeItem *parentItem;
+//   if(!parent.isValid())
+//     parentItem = rootItem;
+//   else
+//     parentItem = static_cast<AbstractTreeItem*>(parent.internalPointer());
+//   return parentItem->columnCount();
 }
 
 QVariant TreeModel::data(const QModelIndex &index, int role) const {
@@ -398,6 +399,9 @@ QVariant TreeModel::data(const QModelIndex &index, int role) const {
     return QVariant();
 
   AbstractTreeItem *item = static_cast<AbstractTreeItem *>(index.internalPointer());
+  if(role == Qt::DisplayRole && !item->data(index.column(), role).isValid()) {
+    qDebug() << item->data(0, role) << item->columnCount();
+  }
   return item->data(index.column(), role);
 }
 
@@ -410,12 +414,12 @@ bool TreeModel::setData(const QModelIndex &index, const QVariant &value, int rol
 }
 
 Qt::ItemFlags TreeModel::flags(const QModelIndex &index) const {
-  AbstractTreeItem *item;
-  if(!index.isValid())
-    item = rootItem;
-  else
-    item = static_cast<AbstractTreeItem *>(index.internalPointer());
-  return item->flags();
+  if(!index.isValid()) {
+    return rootItem->flags() & Qt::ItemIsDropEnabled;
+  } else {
+    AbstractTreeItem *item = static_cast<AbstractTreeItem *>(index.internalPointer());
+    return item->flags();
+  }
 }
 
 QVariant TreeModel::headerData(int section, Qt::Orientation orientation, int role) const {
@@ -498,29 +502,37 @@ void TreeModel::beginRemoveChilds(int firstRow, int lastRow) {
     qWarning() << "TreeModel::beginRemoveChilds(): cannot append Childs to unknown parent";
     return;
   }
+
+  for(int i = firstRow; i <= lastRow; i++) {
+    disconnect(parentItem->child(i), 0, this, 0);
+  }
+  
+  // consitency checks
   QModelIndex parent = indexByItem(parentItem);
   Q_ASSERT(firstRow <= lastRow);
   Q_ASSERT(parentItem->childCount() > lastRow);
   Q_ASSERT(!_aboutToRemoveOrInsert);
-  
   _aboutToRemoveOrInsert = true;
   _childStatus = ChildStatus(parent, rowCount(parent), firstRow, lastRow);
+
   beginRemoveRows(parent, firstRow, lastRow);
 }
 
 void TreeModel::endRemoveChilds() {
   AbstractTreeItem *parentItem = qobject_cast<AbstractTreeItem *>(sender());
   if(!parentItem) {
-    qWarning() << "TreeModel::endRemoveChilds(): cannot append Childs to unknown parent";
+    qWarning() << "TreeModel::endRemoveChilds(): cannot remove Childs from unknown parent";
     return;
   }
+
+  // concistency checks
   Q_ASSERT(_aboutToRemoveOrInsert);
   ChildStatus cs = _childStatus;
   QModelIndex parent = indexByItem(parentItem);
   Q_ASSERT(cs.parent == parent);
   Q_ASSERT(rowCount(parent) == cs.childCount - cs.end + cs.start - 1);
-  
   _aboutToRemoveOrInsert = false;
+
   endRemoveRows();
 }
 
@@ -537,7 +549,7 @@ void TreeModel::debug_rowsAboutToBeRemoved(const QModelIndex &parent, int start,
   parentItem = static_cast<AbstractTreeItem *>(parent.internalPointer());
   if(!parentItem)
     parentItem = rootItem;
-  qDebug() << "#" << parent << parentItem << parent.data().toString() << rowCount(parent) << start << end;
+  qDebug() << "debug_rowsAboutToBeRemoved" << parent << parentItem << parent.data().toString() << rowCount(parent) << start << end;
 
   QModelIndex child;
   AbstractTreeItem *childItem;
@@ -554,7 +566,7 @@ void TreeModel::debug_rowsInserted(const QModelIndex &parent, int start, int end
   parentItem = static_cast<AbstractTreeItem *>(parent.internalPointer());
   if(!parentItem)
     parentItem = rootItem;
-  qDebug() << "#" << parent << parentItem << parent.data().toString() << rowCount(parent) << start << end;
+  qDebug() << "debug_rowsInserted:" << parent << parentItem << parent.data().toString() << rowCount(parent) << start << end;
 
   QModelIndex child;
   AbstractTreeItem *childItem;
@@ -568,4 +580,16 @@ void TreeModel::debug_rowsInserted(const QModelIndex &parent, int start, int end
 
 void TreeModel::debug_rowsRemoved(const QModelIndex &parent, int start, int end) {
   qDebug() << "debug_rowsRemoved" << parent << parent.internalPointer() << parent.data().toString() << rowCount(parent) << start << end;
+}
+
+void TreeModel::debug_dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight) {
+  qDebug() << "debug_dataChanged" << topLeft << bottomRight;
+  QStringList displayData;
+  for(int row = topLeft.row(); row <= bottomRight.row(); row++) {
+    displayData = QStringList();
+    for(int column = topLeft.column(); column <= bottomRight.column(); column++) {
+      displayData << data(topLeft.sibling(row, column), Qt::DisplayRole).toString();
+    }
+    qDebug() << "  row:" << row << displayData;
+  }
 }

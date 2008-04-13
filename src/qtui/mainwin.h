@@ -24,7 +24,6 @@
 #include "ui_mainwin.h"
 
 #include "qtui.h"
-#include "bufferviewfilter.h"
 
 #include <QSystemTrayIcon>
 #include <QTimer>
@@ -32,11 +31,13 @@
 class ServerListDlg;
 class CoreConnectDlg;
 class Buffer;
+class BufferViewConfig;
 class SettingsDlg;
 class QtUi;
 class Message;
 class NickListWidget;
 class DebugConsole;
+
 
 //!\brief The main window of Quassel's QtUi.
 class MainWin : public QMainWindow {
@@ -47,7 +48,7 @@ class MainWin : public QMainWindow {
     virtual ~MainWin();
 
     void init();
-    QDockWidget *addBufferView(const QString &, QAbstractItemModel *, const BufferViewFilter::Modes &, const QList<NetworkId> &);
+    void addBufferView(BufferViewConfig *config = 0);
 
     AbstractUiMsg *layoutMsg(const Message &);
     void displayTrayIconMessage(const QString &title, const QString &message);
@@ -68,9 +69,12 @@ class MainWin : public QMainWindow {
     void systrayActivated( QSystemTrayIcon::ActivationReason );
 
   private slots:
+    void addBufferView(int bufferViewConfigId);
+    void removeBufferView(int bufferViewConfigId);
     void receiveMessage(const Message &msg);
     void showSettingsDlg();
     void showNetworkDlg();
+    void showManageViewsDlg();
     void showAboutDlg();
     void showDebugConsole();
 
@@ -86,6 +90,8 @@ class MainWin : public QMainWindow {
     void makeTrayIconBlink();
     void saveStatusBarStatus(bool enabled);
 
+    void loadLayout();
+  
   signals:
     void connectToCore(const QVariantMap &connInfo);
     void disconnectFromCore();
@@ -127,7 +133,7 @@ class MainWin : public QMainWindow {
     BufferId currentBuffer;
     QString currentProfile;
 
-    QList<QDockWidget *> netViews;
+    QList<QDockWidget *> _netViews;
     NickListWidget *nickListWidget;
 
     QAction *actionEditNetworks;

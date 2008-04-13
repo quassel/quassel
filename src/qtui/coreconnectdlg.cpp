@@ -28,8 +28,13 @@
 #include "clientsyncer.h"
 #include "coreconfigwizard.h"
 
-CoreConnectDlg::CoreConnectDlg(QWidget *parent, bool autoconnect) : QDialog(parent) {
+CoreConnectDlg::CoreConnectDlg(QWidget *parent, bool autoconnect)
+  : QDialog(parent)
+{
   ui.setupUi(this);
+
+  // make it look more native under Mac OS X:
+  setWindowFlags(Qt::Sheet);
 
   clientSyncer = new ClientSyncer(this);
   wizard = 0;

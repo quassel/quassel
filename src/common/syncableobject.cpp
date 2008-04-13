@@ -27,13 +27,18 @@
 #include "signalproxy.h"
 #include "util.h"
 
-SyncableObject::SyncableObject(QObject *parent) : QObject(parent) {
-  _initialized = false;
+SyncableObject::SyncableObject(QObject *parent)
+  : QObject(parent),
+    _initialized(false),
+    _allowClientUpdates(false)
+{
 }
 
-SyncableObject::SyncableObject(const SyncableObject &other, QObject *parent) : QObject(parent) {
-  _initialized = other._initialized;
-
+SyncableObject::SyncableObject(const SyncableObject &other, QObject *parent)
+  : QObject(parent),
+    _initialized(other._initialized),
+    _allowClientUpdates(false)
+{
 }
 
 bool SyncableObject::isInitialized() const {
@@ -51,9 +56,14 @@ QVariantMap SyncableObject::toVariantMap() {
   const QMetaObject* meta = metaObject();
 
   // we collect data from properties
+  QMetaProperty prop;
+  QString propName;
   for(int i = 0; i < meta->propertyCount(); i++) {
-    QMetaProperty prop = meta->property(i);
-    properties[QString(prop.name())] = prop.read(this);
+    prop = meta->property(i);
+    propName = QString(prop.name());
+    if(propName == "objectName")
+      continue;
+    properties[propName] = prop.read(this);
   }
 
   // ...as well as methods, which have names starting with "init"
@@ -84,14 +94,20 @@ void SyncableObject::fromVariantMap(const QVariantMap &properties) {
   const QMetaObject *meta = metaObject();
 
   QVariantMap::const_iterator iterator = properties.constBegin();
+  QString propName;
   while(iterator != properties.constEnd()) {
-    QString name = iterator.key();
-    int propertyIndex = meta->indexOfProperty(name.toAscii());
+    propName = iterator.key();
+    if(propName == "objectName") {
+      iterator++;
+      continue;
+    }
+    
+    int propertyIndex = meta->indexOfProperty(propName.toAscii());
 
     if(propertyIndex == -1 || !meta->property(propertyIndex).isWritable())
-      setInitValue(name, iterator.value());
+      setInitValue(propName, iterator.value());
     else
-      setProperty(name.toAscii(), iterator.value());
+      setProperty(propName.toAscii(), iterator.value());
     // qDebug() << "<<< SYNC:" << name << iterator.value();
     iterator++;
   }
@@ -110,4 +126,16 @@ void SyncableObject::renameObject(const QString &newName) {
     setObjectName(newName);
     emit objectRenamed(newName, oldName);
   }
+}
+
+void SyncableObject::update(const QVariantMap &properties) {
+  fromVariantMap(properties);
+  emit updated(properties);
+}
+
+void SyncableObject::requestUpdate(const QVariantMap &properties) {
+  if(allowClientUpdates()) {
+    update(properties);
+  }
+  emit updateRequested(properties);
 }

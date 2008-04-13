@@ -59,6 +59,24 @@ class Core : public QObject {
     /*** Storage access ***/
     // These methods are threadsafe.
 
+    //! Store a user setting persistently
+    /**
+     * \param userId       The users Id
+     * \param settingName  The Name of the Setting
+     * \param data         The Value
+     */
+    static void setUserSetting(UserId userId, const QString &settingName, const QVariant &data);
+  
+    //! Retrieve a persistent user setting
+    /**
+     * \param userId       The users Id
+     * \param settingName  The Name of the Setting
+     * \param default      Value to return in case it's unset.
+     * \return the Value of the Setting or the default value if it is unset.
+     */
+    static QVariant getUserSetting(UserId userId, const QString &settingName, const QVariant &data = QVariant());
+
+  
     //! Create a Network in the Storage and store it's Id in the given NetworkInfo
     /** \note This method is thredsafe.
      *

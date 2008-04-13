@@ -23,9 +23,11 @@
 CoreBufferViewConfig::CoreBufferViewConfig(int bufferViewId, QObject *parent)
   : BufferViewConfig(bufferViewId, parent)
 {
+  setAllowClientUpdates(true);
 }
 
-void CoreBufferViewConfig::requestSetBufferViewName(const QString &bufferViewName) {
-  qDebug() << "requestSetBufferViewName" << bufferViewName;
-  setBufferViewName(bufferViewName);
+CoreBufferViewConfig::CoreBufferViewConfig(int bufferViewId, const QVariantMap &properties, QObject *parent)
+  : BufferViewConfig(bufferViewId, properties, parent)
+{
+  setAllowClientUpdates(true);
 }

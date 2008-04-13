@@ -18,15 +18,25 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "client.h"
-#include "buffersyncer.h"
 #include "bufferview.h"
-#include "networkmodel.h"
+
+#include "bufferviewfilter.h"
+#include "buffersyncer.h"
+#include "client.h"
 #include "network.h"
+#include "networkmodel.h"
 
 #include "uisettings.h"
 
 #include "global.h"
+
+#include <QAction>
+#include <QFlags>
+#include <QHeaderView>
+#include <QInputDialog>
+#include <QLineEdit>
+#include <QMenu>
+#include <QMessageBox>
 
 /*****************************************
 * The TreeView showing the Buffers
@@ -66,16 +76,12 @@ void BufferView::init() {
 #endif
 }
 
-void BufferView::setFilteredModel(QAbstractItemModel *model, BufferViewFilter::Modes mode, QList<NetworkId> nets) {
-  BufferViewFilter *filter = new BufferViewFilter(model, mode, nets);
-  setModel(filter);
-  connect(this, SIGNAL(removeBuffer(const QModelIndex &)), filter, SLOT(removeBuffer(const QModelIndex &)));
-}
-
 void BufferView::setModel(QAbstractItemModel *model) {
   delete selectionModel();
   QTreeView::setModel(model);
   init();
+  if(!model)
+    return;
 
   // remove old Actions
   QList<QAction *> oldactions = header()->actions();
@@ -96,6 +102,59 @@ void BufferView::setModel(QAbstractItemModel *model) {
     header()->addAction(showSection);
   }
   
+}
+
+void BufferView::setFilteredModel(QAbstractItemModel *model_, BufferViewConfig *config) {
+  BufferViewFilter *filter = qobject_cast<BufferViewFilter *>(model());
+  if(filter) {
+    filter->setConfig(config);
+    setConfig(config);
+    return;
+  }
+
+  if(model()) {
+    disconnect(this, 0, model(), 0);
+  }
+
+  if(!model_) {
+    setModel(model_);
+  } else {
+    BufferViewFilter *filter = new BufferViewFilter(model_, config);
+    setModel(filter);
+    connect(this, SIGNAL(removeBuffer(const QModelIndex &)), filter, SLOT(removeBuffer(const QModelIndex &)));
+  }
+  setConfig(config);
+}
+
+void BufferView::setConfig(BufferViewConfig *config) {
+  if(_config == config)
+    return;
+  
+  if(_config) {
+    disconnect(_config, 0, this, 0);
+  }
+
+  _config = config;
+  if(config) {
+    connect(config, SIGNAL(networkIdSet(const NetworkId &)), this, SLOT(setRootIndexForNetworkId(const NetworkId &)));
+    setRootIndexForNetworkId(config->networkId());
+  } else {
+    setRootIndex(QModelIndex());
+  }
+}
+
+void BufferView::setRootIndexForNetworkId(const NetworkId &networkId) {
+  if(!networkId.isValid() || !model()) {
+    setRootIndex(QModelIndex());
+  } else {
+    int networkCount = model()->rowCount();
+    QModelIndex child;
+    for(int i = 0; i < networkCount; i++) {
+      child = model()->index(i, 0);
+      if(networkId == model()->data(child, NetworkModel::NetworkIdRole).value<NetworkId>())
+	setRootIndex(child);
+    }
+  }
 }
 
 void BufferView::joinChannel(const QModelIndex &index) {
@@ -299,7 +358,7 @@ void BufferView::wheelEvent(QWheelEvent* event) {
 
 
 QSize BufferView::sizeHint() const {
-  return QSize(120, 50);
+  return QTreeView::sizeHint();
   
   if(!model())
     return QTreeView::sizeHint();
@@ -313,4 +372,29 @@ QSize BufferView::sizeHint() const {
       columnSize += sizeHintForColumn(i);
   }
   return QSize(columnSize, 50);
+}
+
+// ==============================
+//  BufferView Dock
+// ==============================
+BufferViewDock::BufferViewDock(BufferViewConfig *config, QWidget *parent)
+  : QDockWidget(config->bufferViewName(), parent)
+{
+  setObjectName("BufferViewDock-" + QString::number(config->bufferViewId()));
+  toggleViewAction()->setData(config->bufferViewId());
+  setAllowedAreas(Qt::RightDockWidgetArea|Qt::LeftDockWidgetArea);
+  connect(config, SIGNAL(bufferViewNameSet(const QString &)), this, SLOT(bufferViewRenamed(const QString &)));
+}
+
+BufferViewDock::BufferViewDock(QWidget *parent)
+  : QDockWidget(tr("All Buffers"), parent)
+{
+  setObjectName("BufferViewDock--1");
+  toggleViewAction()->setData((int)-1);
+  setAllowedAreas(Qt::RightDockWidgetArea|Qt::LeftDockWidgetArea);
+}
+
+void BufferViewDock::bufferViewRenamed(const QString &newName) {
+  setWindowTitle(newName);
+  toggleViewAction()->setText(newName);
 }

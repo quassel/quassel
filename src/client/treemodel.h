@@ -52,7 +52,7 @@ public:
   AbstractTreeItem *child(int row) const;
   AbstractTreeItem *childById(const quint64 &id) const;
 
-  int childCount() const;
+  int childCount(int column = 0) const;
 
   virtual int columnCount() const = 0;
 
@@ -188,6 +188,7 @@ private slots:
   void debug_rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
   void debug_rowsInserted(const QModelIndex &parent, int start, int end);
   void debug_rowsRemoved(const QModelIndex &parent, int start, int end);
+  void debug_dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
 };
 
 #endif

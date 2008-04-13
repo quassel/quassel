@@ -20,10 +20,25 @@
 
 #include "bufferviewconfig.h"
 
+#include "bufferinfo.h"
+
 BufferViewConfig::BufferViewConfig(int bufferViewId, QObject *parent)
+  : SyncableObject(parent),
+    _bufferViewId(bufferViewId),
+    _addNewBuffersAutomatically(true),
+    _sortAlphabetically(true),
+    _hideInactiveBuffers(false),
+    _allowedBufferTypes(BufferInfo::StatusBuffer | BufferInfo::ChannelBuffer | BufferInfo::QueryBuffer | BufferInfo::GroupBuffer),
+    _minimumActivity(0)
+{
+  setObjectName(QString::number(bufferViewId));
+}
+
+BufferViewConfig::BufferViewConfig(int bufferViewId, const QVariantMap &properties, QObject *parent)
   : SyncableObject(parent),
     _bufferViewId(bufferViewId)
 {
+  fromVariantMap(properties);
   setObjectName(QString::number(bufferViewId));
 }
 
@@ -57,4 +72,86 @@ void BufferViewConfig::setSortAlphabetically(bool sortAlphabetically) {
 
   _sortAlphabetically = sortAlphabetically;
   emit sortAlphabeticallySet(sortAlphabetically);
+}
+
+void BufferViewConfig::setAllowedBufferTypes(int bufferTypes) {
+  if(_allowedBufferTypes == bufferTypes)
+    return;
+
+  _allowedBufferTypes = bufferTypes;
+  emit allowedBufferTypesSet(bufferTypes);
+}
+
+void BufferViewConfig::setMinimumActivity(int activity) {
+  if(_minimumActivity == activity)
+    return;
+
+  _minimumActivity = activity;
+  emit minimumActivitySet(activity);
+}
+
+void BufferViewConfig::setHideInactiveBuffers(bool hideInactiveBuffers) {
+  if(_hideInactiveBuffers == hideInactiveBuffers)
+    return;
+
+  _hideInactiveBuffers = hideInactiveBuffers;
+  emit hideInactiveBuffersSet(hideInactiveBuffers);
+}
+
+QVariantList BufferViewConfig::initBufferList() const {
+  QVariantList buffers;
+
+  foreach(BufferId bufferId, _buffers) {
+    buffers << qVariantFromValue(bufferId);
+  }
+
+  return buffers;
+}
+
+void BufferViewConfig::initSetBufferList(const QVariantList &buffers) {
+  _buffers.clear();
+
+  foreach(QVariant buffer, buffers) {
+    _buffers << buffer.value<BufferId>();
+  }
+
+  emit bufferListSet();
+}
+
+void BufferViewConfig::initSetBufferList(const QList<BufferId> &buffers) {
+  _buffers.clear();
+
+  foreach(BufferId bufferId, buffers) {
+    _buffers << bufferId;
+  }
+
+  emit bufferListSet();
+}
+
+void BufferViewConfig::addBuffer(const BufferId &bufferId, int pos) {
+  qDebug() << "addBuffer" << bufferId;
+  if(_buffers.contains(bufferId))
+    return;
+  
+  _buffers.insert(pos, bufferId);
+  emit bufferAdded(bufferId, pos);
+}
+
+void BufferViewConfig::moveBuffer(const BufferId &bufferId, int pos) {
+  qDebug() << "moveeBuffer" << bufferId;
+  if(!_buffers.contains(bufferId))
+    return;
+
+  qDebug() << "lala" << bufferId << pos;
+  _buffers.move(_buffers.indexOf(bufferId), pos);
+  emit bufferMoved(bufferId, pos);
+}
+
+void BufferViewConfig::removeBuffer(const BufferId &bufferId) {
+  qDebug() << "removeBuffer" << bufferId;
+  if(!_buffers.contains(bufferId))
+    return;
+  
+  _buffers.removeAt(_buffers.indexOf(bufferId));
+  emit bufferRemoved(bufferId);
 }
