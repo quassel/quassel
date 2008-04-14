@@ -1,6 +1,14 @@
 <ui version="4.0" >
  <class>NetworksSettingsPage</class>
  <widget class="QWidget" name="NetworksSettingsPage" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>736</width>
+    <height>452</height>
+   </rect>
+  </property>
   <property name="windowTitle" >
    <string>Form</string>
   </property>
@@ -29,7 +37,8 @@
         <string>Re&amp;name...</string>
        </property>
        <property name="icon" >
-        <iconset resource="../../icons/icons.qrc" >:/16x16/actions/oxygen/16x16/actions/edit-rename.png</iconset>
+        <iconset resource="../../icons/icons.qrc" >
+         <normaloff>:/16x16/actions/oxygen/16x16/actions/edit-rename.png</normaloff>:/16x16/actions/oxygen/16x16/actions/edit-rename.png</iconset>
        </property>
       </widget>
      </item>
@@ -45,7 +54,8 @@
         <string>&amp;Add...</string>
        </property>
        <property name="icon" >
-        <iconset resource="../../icons/icons.qrc" >:/16x16/actions/oxygen/16x16/actions/list-add.png</iconset>
+        <iconset resource="../../icons/icons.qrc" >
+         <normaloff>:/16x16/actions/oxygen/16x16/actions/list-add.png</normaloff>:/16x16/actions/oxygen/16x16/actions/list-add.png</iconset>
        </property>
        <property name="iconSize" >
         <size>
@@ -67,7 +77,8 @@
         <string>De&amp;lete</string>
        </property>
        <property name="icon" >
-        <iconset resource="../../icons/icons.qrc" >:/16x16/actions/oxygen/16x16/actions/edit-delete.png</iconset>
+        <iconset resource="../../icons/icons.qrc" >
+         <normaloff>:/16x16/actions/oxygen/16x16/actions/edit-delete.png</normaloff>:/16x16/actions/oxygen/16x16/actions/edit-delete.png</iconset>
        </property>
       </widget>
      </item>
@@ -76,7 +87,7 @@
        <property name="orientation" >
         <enum>Qt::Vertical</enum>
        </property>
-       <property name="sizeHint" >
+       <property name="sizeHint" stdset="0" >
         <size>
          <width>131</width>
          <height>71</height>
@@ -99,7 +110,9 @@
         <string>Connect now</string>
        </property>
        <property name="icon" >
-        <iconset/>
+        <iconset>
+         <normaloff/>
+        </iconset>
        </property>
       </widget>
      </item>
@@ -148,11 +161,19 @@
 Unless you *really* know what you do, leave this as ISO-8859-1!</string>
         </property>
         <property name="currentIndex" >
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="serversTab" >
          <property name="enabled" >
           <bool>true</bool>
+         </property>
+         <property name="geometry" >
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>398</width>
+           <height>326</height>
+          </rect>
          </property>
          <attribute name="title" >
           <string>Servers</string>
@@ -184,7 +205,9 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</string>
                  <string>&amp;Edit...</string>
                 </property>
                 <property name="icon" >
-                 <iconset/>
+                 <iconset>
+                  <normaloff/>
+                 </iconset>
                 </property>
                </widget>
               </item>
@@ -200,7 +223,8 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</string>
                  <string>&amp;Add...</string>
                 </property>
                 <property name="icon" >
-                 <iconset resource="../../icons/icons.qrc" >:/16x16/actions/oxygen/16x16/actions/list-add.png</iconset>
+                 <iconset resource="../../icons/icons.qrc" >
+                  <normaloff>:/16x16/actions/oxygen/16x16/actions/list-add.png</normaloff>:/16x16/actions/oxygen/16x16/actions/list-add.png</iconset>
                 </property>
                </widget>
               </item>
@@ -216,7 +240,8 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</string>
                  <string>De&amp;lete</string>
                 </property>
                 <property name="icon" >
-                 <iconset resource="../../icons/icons.qrc" >:/16x16/actions/oxygen/16x16/actions/edit-delete.png</iconset>
+                 <iconset resource="../../icons/icons.qrc" >
+                  <normaloff>:/16x16/actions/oxygen/16x16/actions/edit-delete.png</normaloff>:/16x16/actions/oxygen/16x16/actions/edit-delete.png</iconset>
                 </property>
                </widget>
               </item>
@@ -227,7 +252,7 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</string>
                   <property name="orientation" >
                    <enum>Qt::Horizontal</enum>
                   </property>
-                  <property name="sizeHint" >
+                  <property name="sizeHint" stdset="0" >
                    <size>
                     <width>0</width>
                     <height>20</height>
@@ -244,7 +269,8 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</string>
                    <string>...</string>
                   </property>
                   <property name="icon" >
-                   <iconset resource="../../icons/icons.qrc" >:/16x16/actions/oxygen/16x16/actions/go-up.png</iconset>
+                   <iconset resource="../../icons/icons.qrc" >
+                    <normaloff>:/16x16/actions/oxygen/16x16/actions/go-up.png</normaloff>:/16x16/actions/oxygen/16x16/actions/go-up.png</iconset>
                   </property>
                  </widget>
                 </item>
@@ -257,7 +283,8 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</string>
                    <string>...</string>
                   </property>
                   <property name="icon" >
-                   <iconset resource="../../icons/icons.qrc" >:/16x16/actions/oxygen/16x16/actions/go-down.png</iconset>
+                   <iconset resource="../../icons/icons.qrc" >
+                    <normaloff>:/16x16/actions/oxygen/16x16/actions/go-down.png</normaloff>:/16x16/actions/oxygen/16x16/actions/go-down.png</iconset>
                   </property>
                  </widget>
                 </item>
@@ -266,7 +293,7 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</string>
                   <property name="orientation" >
                    <enum>Qt::Horizontal</enum>
                   </property>
-                  <property name="sizeHint" >
+                  <property name="sizeHint" stdset="0" >
                    <size>
                     <width>0</width>
                     <height>20</height>
@@ -281,7 +308,7 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</string>
                 <property name="orientation" >
                  <enum>Qt::Vertical</enum>
                 </property>
-                <property name="sizeHint" >
+                <property name="sizeHint" stdset="0" >
                  <size>
                   <width>20</width>
                   <height>40</height>
@@ -306,10 +333,18 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</string>
          </layout>
         </widget>
         <widget class="QWidget" name="performTab" >
+         <property name="geometry" >
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>398</width>
+           <height>326</height>
+          </rect>
+         </property>
          <attribute name="title" >
           <string>Perform</string>
          </attribute>
-         <layout class="QVBoxLayout" >
+         <layout class="QVBoxLayout" name="verticalLayout" >
           <item>
            <widget class="QLabel" name="label" >
             <property name="text" >
@@ -341,52 +376,60 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</string>
             <property name="checked" >
              <bool>true</bool>
             </property>
-            <widget class="QWidget" name="" >
-             <layout class="QGridLayout" >
-              <item row="0" column="0" >
-               <widget class="QLabel" name="label_2" >
-                <property name="text" >
-                 <string>Service:</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="1" >
-               <widget class="QLineEdit" name="autoIdentifyService" >
-                <property name="enabled" >
-                 <bool>true</bool>
-                </property>
-                <property name="text" >
-                 <string>NickServ</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="0" >
-               <widget class="QLabel" name="label_3" >
-                <property name="enabled" >
-                 <bool>true</bool>
-                </property>
-                <property name="text" >
-                 <string>Password:</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="1" >
-               <widget class="QLineEdit" name="autoIdentifyPassword" >
-                <property name="enabled" >
-                 <bool>true</bool>
-                </property>
-                <property name="echoMode" >
-                 <enum>QLineEdit::Password</enum>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
            </widget>
+          </item>
+          <item>
+           <layout class="QGridLayout" >
+            <item row="0" column="0" >
+             <widget class="QLabel" name="label_2" >
+              <property name="text" >
+               <string>Service:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1" >
+             <widget class="QLineEdit" name="autoIdentifyService" >
+              <property name="enabled" >
+               <bool>true</bool>
+              </property>
+              <property name="text" >
+               <string>NickServ</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0" >
+             <widget class="QLabel" name="label_3" >
+              <property name="enabled" >
+               <bool>true</bool>
+              </property>
+              <property name="text" >
+               <string>Password:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1" >
+             <widget class="QLineEdit" name="autoIdentifyPassword" >
+              <property name="enabled" >
+               <bool>true</bool>
+              </property>
+              <property name="echoMode" >
+               <enum>QLineEdit::Password</enum>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
          </layout>
         </widget>
         <widget class="QWidget" name="tab" >
+         <property name="geometry" >
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>398</width>
+           <height>326</height>
+          </rect>
+         </property>
          <attribute name="title" >
           <string>Advanced</string>
          </attribute>
