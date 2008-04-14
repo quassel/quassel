@@ -248,8 +248,12 @@ void CoreSession::networkConnected(NetworkId networkid) {
 
 // called now only on /quit and requested disconnects, not on normal disconnects!
 void CoreSession::networkDisconnected(NetworkId networkid) {
-  Core::setNetworkConnected(user(), networkid, false);
-  if(_connections.contains(networkid)) _connections.take(networkid)->deleteLater();
+  // if the network has already been removed, we don't have a networkconnection left either, so we don't do anything
+  // make sure to not depend on the network still existing when calling this function!
+  if(_connections.contains(networkid)) {
+    Core::setNetworkConnected(user(), networkid, false);
+    _connections.take(networkid)->deleteLater();
+  }
 }
 
 void CoreSession::channelJoined(NetworkId id, const QString &channel, const QString &key) {
@@ -433,7 +437,10 @@ void CoreSession::removeNetwork(NetworkId id) {
 }
 
 void CoreSession::destroyNetwork(NetworkId id) {
-  Q_ASSERT(!_connections.contains(id));
+  if(_connections.contains(id)) {
+    // this can happen if the network was reconnecting while being removed
+    _connections.take(id)->deleteLater();
+  }
   Network *net = _networks.take(id);
   if(net && Core::removeNetwork(user(), id)) {
     emit networkRemoved(id);
