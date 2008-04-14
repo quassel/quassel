@@ -100,8 +100,7 @@ void MainWin::init() {
 
   Client::signalProxy()->attachSignal(this, SIGNAL(requestBacklog(BufferInfo, QVariant, QVariant)));
 
-  // let's hope here that nothing in disconnectedFromCore() needs user interaction/event loop...
-  connect(QApplication::instance(), SIGNAL(aboutToQuit()), this, SLOT(disconnectedFromCore()));
+  connect(QApplication::instance(), SIGNAL(aboutToQuit()), this, SLOT(saveLayout()));
 
   connect(Client::instance(), SIGNAL(networkCreated(NetworkId)), this, SLOT(clientNetworkCreated(NetworkId)));
   connect(Client::instance(), SIGNAL(networkRemoved(NetworkId)), this, SLOT(clientNetworkRemoved(NetworkId)));
@@ -425,6 +424,12 @@ void MainWin::loadLayout() {
   restoreState(s.value(QString("MainWinState-%1").arg(accountId)).toByteArray(), accountId);
 }
 
+void MainWin::saveLayout() {
+  QtUiSettings s;
+  int accountId = Client::currentCoreAccount().toInt();
+  if(accountId > 0) s.setValue(QString("MainWinState-%1").arg(accountId) , saveState(accountId));
+}
+
 void MainWin::securedConnection() {
   // todo: make status bar entry
   qDebug() << "secured the connection";
@@ -434,9 +439,7 @@ void MainWin::securedConnection() {
 
 void MainWin::disconnectedFromCore() {
   // save core specific layout and remove bufferviews;
-  QtUiSettings s;
-  int accountId = Client::currentCoreAccount().toInt();
-  s.setValue(QString("MainWinState-%1").arg(accountId) , saveState(accountId));
+  saveLayout();
   QVariant actionData;
   BufferViewDock *dock;
   foreach(QAction *action, ui.menuViews->actions()) {
@@ -453,6 +456,7 @@ void MainWin::disconnectedFromCore() {
       dock->deleteLater();
     }
   }
+  QtUiSettings s;
   restoreState(s.value("MainWinState").toByteArray());
   setDisconnectedState();
 }

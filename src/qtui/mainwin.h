@@ -93,6 +93,7 @@ class MainWin : public QMainWindow {
     void saveStatusBarStatus(bool enabled);
 
     void loadLayout();
+    void saveLayout();
   
   signals:
     void connectToCore(const QVariantMap &connInfo);
