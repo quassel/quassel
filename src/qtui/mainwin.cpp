@@ -101,6 +101,8 @@ void MainWin::init() {
 
   Client::signalProxy()->attachSignal(this, SIGNAL(requestBacklog(BufferInfo, QVariant, QVariant)));
 
+  connect(QApplication::instance(), SIGNAL(aboutToQuit()), this, SLOT(saveLayout()));
+
   connect(Client::instance(), SIGNAL(networkCreated(NetworkId)), this, SLOT(clientNetworkCreated(NetworkId)));
   connect(Client::instance(), SIGNAL(networkRemoved(NetworkId)), this, SLOT(clientNetworkRemoved(NetworkId)));
   //ui.bufferWidget->init();
@@ -132,7 +134,7 @@ void MainWin::init() {
   // restore mainwin state
   restoreState(s.value("MainWinState").toByteArray());
 
-  disconnectedFromCore();  // Disable menus and stuff
+  setDisconnectedState();  // Disable menus and stuff
   showCoreConnectionDlg(true); // autoconnect if appropriate
 
   // attach the BufferWidget to the BufferModel and the default selection
@@ -225,7 +227,7 @@ void MainWin::removeBufferView(int bufferViewConfigId) {
       break;
 
     dock = qobject_cast<BufferViewDock *>(action->parent());
-    if(dock && actionData.toInt() != bufferViewConfigId) {
+    if(dock && actionData.toInt() == bufferViewConfigId) {
       removeAction(action);
       dock->deleteLater();
     }
@@ -407,7 +409,10 @@ void MainWin::connectedToCore() {
   foreach(BufferInfo id, Client::allBufferInfos()) {
     Client::backlogManager()->requestBacklog(id.bufferId(), 500, -1);
   }
+  setConnectedState();
+}
 
+void MainWin::setConnectedState() {
   ui.menuViews->setEnabled(true);
   //ui.menuCore->setEnabled(true);
   ui.actionConnectCore->setEnabled(false);
@@ -427,6 +432,12 @@ void MainWin::loadLayout() {
   restoreState(s.value(QString("MainWinState-%1").arg(accountId)).toByteArray(), accountId);
 }
 
+void MainWin::saveLayout() {
+  QtUiSettings s;
+  int accountId = Client::currentCoreAccount().toInt();
+  if(accountId > 0) s.setValue(QString("MainWinState-%1").arg(accountId) , saveState(accountId));
+}
+
 void MainWin::securedConnection() {
   // todo: make status bar entry
   qDebug() << "secured the connection";
@@ -436,9 +447,7 @@ void MainWin::securedConnection() {
 
 void MainWin::disconnectedFromCore() {
   // save core specific layout and remove bufferviews;
-  QtUiSettings s;
-  int accountId = Client::currentCoreAccount().toInt();
-  s.setValue(QString("MainWinState-%1").arg(accountId) , saveState(accountId));
+  saveLayout();
   QVariant actionData;
   BufferViewDock *dock;
   foreach(QAction *action, ui.menuViews->actions()) {
@@ -455,7 +464,12 @@ void MainWin::disconnectedFromCore() {
       dock->deleteLater();
     }
   }
+  QtUiSettings s;
+  restoreState(s.value("MainWinState").toByteArray());
+  setDisconnectedState();
+}
 
+void MainWin::setDisconnectedState() {
   ui.menuViews->setEnabled(false);
   //ui.menuCore->setEnabled(false);
   ui.actionDisconnectCore->setEnabled(false);

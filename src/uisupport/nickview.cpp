@@ -124,10 +124,9 @@ void NickView::showContextMenu(const QPoint & pos ) {
   QAction *deVoiceAction = modeMenu->addAction(tr("Devoice %1").arg(nick));
 
   QMenu *kickBanMenu = nickContextMenu.addMenu(tr("Kick/Ban"));
-  //TODO: add kick message from network identity (kick reason)
   QAction *kickAction = kickBanMenu->addAction(tr("Kick %1").arg(nick));
+  QAction *banAction = kickBanMenu->addAction(tr("Ban %1").arg(nick));
   QAction *kickBanAction = kickBanMenu->addAction(tr("Kickban %1").arg(nick));
-  kickBanMenu->setEnabled(false);
   QAction *ignoreAction = nickContextMenu.addAction(tr("Ignore"));
   ignoreAction->setEnabled(false);
 
@@ -152,7 +151,9 @@ void NickView::showContextMenu(const QPoint & pos ) {
   else if(action == deVoiceAction)  { executeCommand(bufferInfo, QString("/DEVOICE %1").arg(nick)); }
 
   else if(action == kickAction)     { executeCommand(bufferInfo, QString("/KICK %1").arg(nick)); }
-  else if(action == kickBanAction)  { executeCommand(bufferInfo, QString("/KICKBAN %1").arg(nick)); }
+  else if(action == banAction)      { executeCommand(bufferInfo, QString("/BAN %1").arg(nick)); }
+  else if(action == kickBanAction)  { executeCommand(bufferInfo, QString("/KICK %1").arg(nick)); 
+                                      executeCommand(bufferInfo, QString("/BAN %1").arg(nick)); }
   else if(action == queryAction)    { executeCommand(bufferInfo, QString("/QUERY %1").arg(nick)); }
 
 }

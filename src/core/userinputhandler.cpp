@@ -24,6 +24,7 @@
 #include "networkconnection.h"
 #include "network.h"
 #include "ctcphandler.h"
+#include "ircuser.h"
 
 #include <QDebug>
 
@@ -58,13 +59,41 @@ void UserInputHandler::handleAway(const BufferInfo &bufferInfo, const QString &m
 }
 
 void UserInputHandler::handleBan(const BufferInfo &bufferInfo, const QString &msg) {
-  if(bufferInfo.type() != BufferInfo::ChannelBuffer)
+  QString banChannel;
+  QString banUser;
+
+  QStringList params = msg.split(" ");
+
+  if(!params.isEmpty() && isChannelName(params[0])) {
+    banChannel = params.takeFirst();
+  } else if(bufferInfo.type() == BufferInfo::ChannelBuffer) {
+    banChannel = bufferInfo.bufferName();
+  } else {
+    emit displayMsg(Message::Error, BufferInfo::StatusBuffer, "", QString("Error: channel unknown in command: /BAN %1").arg(msg));
     return;
-  
-  //TODO: find suitable default hostmask if msg gives only nickname 
-  // Example: MODE &oulu +b *!*@*
-  QByteArray banMsg = serverEncode(bufferInfo.bufferName()) + " +b " + channelEncode(bufferInfo.bufferName(), msg);
-  emit putCmd("MODE", banMsg);
+  }
+
+  if(!params.isEmpty() && !params.contains("!") && network()->ircUser(params[0])) {
+    IrcUser *ircuser = network()->ircUser(params[0]);
+    // generalizedHost changes <nick> to  *!ident@*.sld.tld.
+    QString generalizedHost = ircuser->host();
+    if(generalizedHost.isEmpty()) {
+      emit displayMsg(Message::Error, BufferInfo::StatusBuffer, "", QString("Error: host unknown in command: /BAN %1").arg(msg));
+      return;
+    }
+
+    if(generalizedHost.lastIndexOf(".") != -1 && generalizedHost.lastIndexOf(".", generalizedHost.lastIndexOf(".")-1) != -1) {
+      int secondLastPeriodPosition = generalizedHost.lastIndexOf(".", generalizedHost.lastIndexOf(".")-1);
+      generalizedHost.replace(0, secondLastPeriodPosition, "*");
+    }
+    banUser = QString("*!%1@%2").arg(ircuser->user()).arg(generalizedHost);
+  } else {
+    banUser = params.join(" ");
+  }
+
+  QString banMsg = QString("MODE %1 +b %2").arg(banChannel).arg(banUser);
+  qDebug() << banMsg;
+  emit putRawLine(serverEncode(banMsg));
 }
 
 void UserInputHandler::handleCtcp(const BufferInfo &bufferInfo, const QString &msg) {
@@ -139,6 +168,15 @@ void UserInputHandler::handleKick(const BufferInfo &bufferInfo, const QString &m
   emit putCmd("KICK", params);
 }
 
+void UserInputHandler::handleKill(const BufferInfo &bufferInfo, const QString &msg) {
+  QString nick = msg.section(' ', 0, 0, QString::SectionSkipEmpty);
+  QString pass = msg.section(' ', 1, -1, QString::SectionSkipEmpty);
+  QList<QByteArray> params;
+  params << serverEncode(nick) << serverEncode(pass);
+  emit putCmd("KILL", params);
+}
+
+
 void UserInputHandler::handleList(const BufferInfo &bufferInfo, const QString &msg) {
   Q_UNUSED(bufferInfo)
   emit putCmd("LIST", serverEncode(msg.split(' ', QString::SkipEmptyParts)));
@@ -182,6 +220,10 @@ void UserInputHandler::handleOp(const BufferInfo &bufferInfo, const QString &msg
   QStringList params;
   params << bufferInfo.bufferName() << m << nicks;
   emit putCmd("MODE", serverEncode(params));
+}
+
+void UserInputHandler::handleOper(const BufferInfo &bufferInfo, const QString &msg) {
+  emit putRawLine(serverEncode(QString("OPER %1").arg(msg)));
 }
 
 void UserInputHandler::handlePart(const BufferInfo &bufferInfo, const QString &msg) {

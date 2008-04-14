@@ -39,7 +39,8 @@ CoreAccountSettings::CoreAccountSettings(const QString &subgroup) : ClientSettin
 QList<AccountId> CoreAccountSettings::knownAccounts() {
   QList<AccountId> ids;
   foreach(QString key, localChildGroups()) {
-    ids << key.toInt();
+    AccountId acc = key.toInt();
+    if(acc.isValid()) ids << acc;
   }
   return ids;
 }

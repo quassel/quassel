@@ -333,11 +333,12 @@ void Client::disconnectFromCore() {
     socket->deleteLater();
   }
   _syncedToCore = false;
-  setCurrentCoreAccount(0);
   emit disconnected();
   emit coreConnectionStateChanged(false);
 
   // Clear internal data. Hopefully nothing relies on it at this point.
+  setCurrentCoreAccount(0);
+
   if(_bufferSyncer) {
     _bufferSyncer->deleteLater();
     _bufferSyncer = 0;
