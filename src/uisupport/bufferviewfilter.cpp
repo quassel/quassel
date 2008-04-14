@@ -148,6 +148,9 @@ bool BufferViewFilter::filterAcceptBuffer(const QModelIndex &source_bufferIndex)
   if(!_config)
     return true;
 
+  if(config()->networkId().isValid() && config()->networkId() != sourceModel()->data(source_bufferIndex, NetworkModel::NetworkIdRole).value<NetworkId>())
+    return false;
+
   if(!(_config->allowedBufferTypes() & (BufferInfo::Type)source_bufferIndex.data(NetworkModel::BufferTypeRole).toInt()))
     return false;
 
@@ -206,7 +209,7 @@ bool BufferViewFilter::bufferLessThan(const QModelIndex &source_left, const QMod
   if(config()) {
     return config()->bufferList().indexOf(leftBufferId) < config()->bufferList().indexOf(rightBufferId);
   } else
-    return leftBufferId < rightBufferId;
+    return bufferIdLessThan(leftBufferId, rightBufferId);
 }
 
 bool BufferViewFilter::networkLessThan(const QModelIndex &source_left, const QModelIndex &source_right) const {
