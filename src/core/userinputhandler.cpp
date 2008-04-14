@@ -168,6 +168,15 @@ void UserInputHandler::handleKick(const BufferInfo &bufferInfo, const QString &m
   emit putCmd("KICK", params);
 }
 
+void UserInputHandler::handleKill(const BufferInfo &bufferInfo, const QString &msg) {
+  QString nick = msg.section(' ', 0, 0, QString::SectionSkipEmpty);
+  QString pass = msg.section(' ', 1, -1, QString::SectionSkipEmpty);
+  QList<QByteArray> params;
+  params << serverEncode(nick) << serverEncode(pass);
+  emit putCmd("KILL", params);
+}
+
+
 void UserInputHandler::handleList(const BufferInfo &bufferInfo, const QString &msg) {
   Q_UNUSED(bufferInfo)
   emit putCmd("LIST", serverEncode(msg.split(' ', QString::SkipEmptyParts)));
@@ -211,6 +220,10 @@ void UserInputHandler::handleOp(const BufferInfo &bufferInfo, const QString &msg
   QStringList params;
   params << bufferInfo.bufferName() << m << nicks;
   emit putCmd("MODE", serverEncode(params));
+}
+
+void UserInputHandler::handleOper(const BufferInfo &bufferInfo, const QString &msg) {
+  emit putRawLine(serverEncode(QString("OPER %1").arg(msg)));
 }
 
 void UserInputHandler::handlePart(const BufferInfo &bufferInfo, const QString &msg) {

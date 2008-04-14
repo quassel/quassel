@@ -43,11 +43,13 @@ public slots:
   void handleJ(const BufferInfo &bufferInfo, const QString &text);
   void handleJoin(const BufferInfo &bufferInfo, const QString &text);
   void handleKick(const BufferInfo &bufferInfo, const QString &text);
+  void handleKill(const BufferInfo &bufferInfo, const QString &text);
   void handleList(const BufferInfo &bufferInfo, const QString &text);
   void handleMe(const BufferInfo &bufferInfo, const QString &text);
   void handleMode(const BufferInfo &bufferInfo, const QString &text);
   void handleMsg(const BufferInfo &bufferInfo, const QString &text);
   void handleNick(const BufferInfo &bufferInfo, const QString &text);
+  void handleOper(const BufferInfo &bufferInfo, const QString &text);
   void handleOp(const BufferInfo &bufferInfo, const QString &text);
   void handlePart(const BufferInfo &bufferInfo, const QString &text);
   void handleQuery(const BufferInfo &bufferInfo, const QString &text);
