@@ -54,9 +54,6 @@ BufferViewSettingsPage::BufferViewSettingsPage(QWidget *parent)
   connect(ui.hideInactiveBuffers, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
   connect(ui.networkSelector, SIGNAL(currentIndexChanged(int)), this, SLOT(widgetHasChanged()));
   connect(ui.minimumActivitySelector, SIGNAL(currentIndexChanged(int)), this, SLOT(widgetHasChanged()));
-
-  // FIXME: (see FIXME in BufferViewFilter::filterAcceptBuffer())
-  ui.minimumActivitySelector->setEnabled(false);
 }
 
 BufferViewSettingsPage::~BufferViewSettingsPage() {

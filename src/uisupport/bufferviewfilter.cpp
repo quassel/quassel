@@ -22,6 +22,7 @@
 
 #include <QColor>
 
+#include "buffermodel.h"
 #include "client.h"
 #include "networkmodel.h"
 
@@ -146,16 +147,17 @@ void BufferViewFilter::removeBuffer(const QModelIndex &index) {
 bool BufferViewFilter::filterAcceptBuffer(const QModelIndex &source_bufferIndex) const {
   if(!_config)
     return true;
-  
+
   if(!(_config->allowedBufferTypes() & (BufferInfo::Type)source_bufferIndex.data(NetworkModel::BufferTypeRole).toInt()))
     return false;
 
   if(_config->hideInactiveBuffers() && !source_bufferIndex.data(NetworkModel::ItemActiveRole).toBool())
     return false;
 
-  // FIXME: this can result in bad loops :(
-  // if(_config->minimumActivity() > source_bufferIndex.data(NetworkModel::BufferActivityRole).toInt())
-  //   return false;
+  if(_config->minimumActivity() > source_bufferIndex.data(NetworkModel::BufferActivityRole).toInt()) {
+    if(!Client::bufferModel()->standardSelectionModel()->isSelected(source_bufferIndex))
+      return false;
+  }
 
   BufferId bufferId = sourceModel()->data(source_bufferIndex, NetworkModel::BufferIdRole).value<BufferId>();
   return _config->bufferList().contains(bufferId);
