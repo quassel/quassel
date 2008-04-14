@@ -64,8 +64,10 @@ class MainWin : public QMainWindow {
 
   protected slots:
     void connectedToCore();
+    void setConnectedState();
     void securedConnection();
     void disconnectedFromCore();
+    void setDisconnectedState();
     void systrayActivated( QSystemTrayIcon::ActivationReason );
 
   private slots:

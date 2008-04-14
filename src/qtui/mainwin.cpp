@@ -131,7 +131,7 @@ void MainWin::init() {
   // restore mainwin state
   restoreState(s.value("MainWinState").toByteArray());
 
-  disconnectedFromCore();  // Disable menus and stuff
+  setDisconnectedState();  // Disable menus and stuff
   showCoreConnectionDlg(true); // autoconnect if appropriate
 
   // attach the BufferWidget to the BufferModel and the default selection
@@ -399,7 +399,10 @@ void MainWin::connectedToCore() {
   foreach(BufferInfo id, Client::allBufferInfos()) {
     Client::backlogManager()->requestBacklog(id.bufferId(), 500, -1);
   }
+  setConnectedState();
+}
 
+void MainWin::setConnectedState() {
   ui.menuViews->setEnabled(true);
   //ui.menuCore->setEnabled(true);
   ui.actionConnectCore->setEnabled(false);
@@ -447,7 +450,11 @@ void MainWin::disconnectedFromCore() {
       dock->deleteLater();
     }
   }
+  restoreState(s.value("MainWinState").toByteArray());
+  setDisconnectedState();
+}
 
+void MainWin::setDisconnectedState() {
   ui.menuViews->setEnabled(false);
   //ui.menuCore->setEnabled(false);
   ui.actionDisconnectCore->setEnabled(false);
