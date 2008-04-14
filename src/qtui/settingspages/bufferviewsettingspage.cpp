@@ -54,6 +54,9 @@ BufferViewSettingsPage::BufferViewSettingsPage(QWidget *parent)
   connect(ui.hideInactiveBuffers, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
   connect(ui.networkSelector, SIGNAL(currentIndexChanged(int)), this, SLOT(widgetHasChanged()));
   connect(ui.minimumActivitySelector, SIGNAL(currentIndexChanged(int)), this, SLOT(widgetHasChanged()));
+
+  // FIXME: (see FIXME in BufferViewFilter::filterAcceptBuffer())
+  ui.minimumActivitySelector->setEnabled(false);
 }
 
 BufferViewSettingsPage::~BufferViewSettingsPage() {
@@ -425,6 +428,12 @@ BufferViewConfig *BufferViewSettingsPage::cloneConfig(BufferViewConfig *config) 
   BufferViewConfig *changedConfig = new BufferViewConfig(-1, this);
   changedConfig->fromVariantMap(config->toVariantMap());
   _changedBufferViews[config] = changedConfig;
+  connect(config, SIGNAL(bufferAdded(const BufferId &, int)), changedConfig, SLOT(addBuffer(const BufferId &, int)));
+  connect(config, SIGNAL(bufferMoved(const BufferId &, int)), changedConfig, SLOT(moveBuffer(const BufferId &, int)));
+  connect(config, SIGNAL(bufferRemoved(const BufferId &)), changedConfig, SLOT(removeBuffer(const BufferId &)));
+  connect(config, SIGNAL(addBufferRequested(const BufferId &, int)), changedConfig, SLOT(addBuffer(const BufferId &, int)));
+  connect(config, SIGNAL(moveBufferRequested(const BufferId &, int)), changedConfig, SLOT(moveBuffer(const BufferId &, int)));
+  connect(config, SIGNAL(removeBufferRequested(const BufferId &)), changedConfig, SLOT(removeBuffer(const BufferId &)));
 
   // if this is the currently displayed view we have to change the config of the preview filter
   BufferViewFilter *filter = qobject_cast<BufferViewFilter *>(ui.bufferViewPreview->model());

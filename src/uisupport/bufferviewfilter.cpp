@@ -36,6 +36,8 @@ BufferViewFilter::BufferViewFilter(QAbstractItemModel *model, BufferViewConfig *
 {
   setConfig(config);
   setSourceModel(model);
+  connect(model, SIGNAL(rowsInserted(const QModelIndex &, int, int)), this, SLOT(source_rowsInserted(const QModelIndex &, int, int)));
+			
   // setSortCaseSensitivity(Qt::CaseInsensitive);
   setDynamicSortFilter(true);
 }
@@ -88,6 +90,8 @@ bool BufferViewFilter::dropMimeData(const QMimeData *data, Qt::DropAction action
     networkId = bufferList[i].first;
     bufferId = bufferList[i].second;
     if(droppedNetworkId == networkId) {
+      if(row < 0)
+	row = 0;
       if(row < rowCount(parent)) {
 	BufferId beforeBufferId = parent.child(row, 0).data(NetworkModel::BufferIdRole).value<BufferId>();
 	pos = config()->bufferList().indexOf(beforeBufferId);
@@ -149,11 +153,12 @@ bool BufferViewFilter::filterAcceptBuffer(const QModelIndex &source_bufferIndex)
   if(_config->hideInactiveBuffers() && !source_bufferIndex.data(NetworkModel::ItemActiveRole).toBool())
     return false;
 
-   if(_config->minimumActivity() > source_bufferIndex.data(NetworkModel::BufferActivityRole).toInt())
-    return false;
+  // FIXME: this can result in bad loops :(
+  // if(_config->minimumActivity() > source_bufferIndex.data(NetworkModel::BufferActivityRole).toInt())
+  //   return false;
 
-   BufferId bufferId = sourceModel()->data(source_bufferIndex, NetworkModel::BufferIdRole).value<BufferId>();
-   return _config->bufferList().contains(bufferId);
+  BufferId bufferId = sourceModel()->data(source_bufferIndex, NetworkModel::BufferIdRole).value<BufferId>();
+  return _config->bufferList().contains(bufferId);
 }
 
 bool BufferViewFilter::filterAcceptNetwork(const QModelIndex &source_index) const {
@@ -243,6 +248,17 @@ QVariant BufferViewFilter::foreground(const QModelIndex &index) const {
 
 }
 
+void BufferViewFilter::source_rowsInserted(const QModelIndex &parent, int start, int end) {
+  if(parent.data(NetworkModel::ItemTypeRole) != NetworkModel::NetworkItemType)
+    return;
+
+  if(!config() || !config()->addNewBuffersAutomatically())
+    return;
+
+  for(int row = start; row <= end; row++) {
+    addBuffer(parent.child(row, 0).data(NetworkModel::BufferIdRole).value<BufferId>());
+  }
+}
 
 // ******************************
 //  Helper

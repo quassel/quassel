@@ -62,6 +62,7 @@ public:
 
 public slots:
   void removeBuffer(const QModelIndex &);
+  void source_rowsInserted(const QModelIndex &parent, int start, int end);
   
 protected:
   bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;

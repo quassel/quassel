@@ -217,7 +217,7 @@ void MainWin::removeBufferView(int bufferViewConfigId) {
       break;
 
     dock = qobject_cast<BufferViewDock *>(action->parent());
-    if(dock && actionData.toInt() != bufferViewConfigId) {
+    if(dock && actionData.toInt() == bufferViewConfigId) {
       removeAction(action);
       dock->deleteLater();
     }
