@@ -52,6 +52,7 @@ CoreConnectDlg::CoreConnectDlg(QWidget *parent, bool autoconnect)
   foreach(AccountId id, s.knownAccounts()) {
     if(!id.isValid()) continue;
     QVariantMap data = s.retrieveAccountData(id);
+    data["AccountId"] = QVariant::fromValue<AccountId>(id);
     accounts[id] = data;
     QListWidgetItem *item = new QListWidgetItem(data["AccountName"].toString(), ui.accountList);
     item->setData(Qt::UserRole, QVariant::fromValue<AccountId>(id));
