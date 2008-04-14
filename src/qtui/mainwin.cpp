@@ -100,6 +100,9 @@ void MainWin::init() {
 
   Client::signalProxy()->attachSignal(this, SIGNAL(requestBacklog(BufferInfo, QVariant, QVariant)));
 
+  // let's hope here that nothing in disconnectedFromCore() needs user interaction/event loop...
+  connect(QApplication::instance(), SIGNAL(aboutToQuit()), this, SLOT(disconnectedFromCore()));
+
   connect(Client::instance(), SIGNAL(networkCreated(NetworkId)), this, SLOT(clientNetworkCreated(NetworkId)));
   connect(Client::instance(), SIGNAL(networkRemoved(NetworkId)), this, SLOT(clientNetworkRemoved(NetworkId)));
   //ui.bufferWidget->init();
