@@ -131,6 +131,11 @@ void BufferViewConfig::initSetBufferList(const QList<BufferId> &buffers) {
 void BufferViewConfig::addBuffer(const BufferId &bufferId, int pos) {
   if(_buffers.contains(bufferId))
     return;
+
+  if(pos < 0)
+    pos = 0;
+  if(pos > _buffers.count())
+    pos = _buffers.count();
   
   _buffers.insert(pos, bufferId);
   emit bufferAdded(bufferId, pos);
@@ -139,6 +144,11 @@ void BufferViewConfig::addBuffer(const BufferId &bufferId, int pos) {
 void BufferViewConfig::moveBuffer(const BufferId &bufferId, int pos) {
   if(!_buffers.contains(bufferId))
     return;
+
+  if(pos < 0)
+    pos = 0;
+  if(pos >= _buffers.count())
+    pos = _buffers.count() - 1;
 
   _buffers.move(_buffers.indexOf(bufferId), pos);
   emit bufferMoved(bufferId, pos);
