@@ -36,6 +36,9 @@ ChatLineOld::ChatLineOld(Message m) {
   selectionMode = None;
   isHighlight = false;
   formatMsg(msg);
+
+  QtUiSettings s("QtUi/Colors");
+  _highlightColor = s.value("highlightColor", QVariant(QColor("lightcoral"))).value<QColor>();
 }
 
 ChatLineOld::~ChatLineOld() {
@@ -318,10 +321,8 @@ void ChatLineOld::draw(QPainter *p, const QPointF &pos) {
     p->drawRect(QRectF(pos, QSizeF(tsWidth + QtUi::style()->sepTsSender() + senderWidth + QtUi::style()->sepSenderText() + textWidth, height())));
   } else {
     if(isHighlight) {
-      QtUiSettings s("QtUi/Colors");
-      QColor highlightColor = s.value("highlightColor", QVariant(QColor("lightcoral"))).value<QColor>();
       p->setPen(Qt::NoPen);
-      p->setBrush(highlightColor /*pal.brush(QPalette::AlternateBase) */);
+      p->setBrush(_highlightColor /*pal.brush(QPalette::AlternateBase) */);
       p->drawRect(QRectF(pos, QSizeF(tsWidth + QtUi::style()->sepTsSender() + senderWidth + QtUi::style()->sepSenderText() + textWidth, height())));
     }
     if(selectionMode == Partial) {
