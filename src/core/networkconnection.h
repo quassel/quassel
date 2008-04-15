@@ -147,6 +147,8 @@ private slots:
   void sslErrors(const QList<QSslError> &errors);
 #endif
 
+  void fillBucketAndProcessQueue();
+
 private:
 #ifndef QT_NO_OPENSSL
   QSslSocket socket;
@@ -179,6 +181,15 @@ private:
   int _autoWhoNickLimit;
   int _autoWhoDelay;
   QTimer _autoWhoTimer, _autoWhoCycleTimer;
+
+  QTimer _tokenBucketTimer;
+  int _messagesPerSecond;   // token refill speed
+  int _burstSize;   // size of the token bucket
+  int _tokenBucket; // the virtual bucket that holds the tokens
+  QList<QByteArray> _msgQueue;
+
+  void writeToSocket(QByteArray s);
+
 
 
   class ParseError : public Exception {
