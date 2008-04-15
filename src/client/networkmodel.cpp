@@ -144,6 +144,9 @@ void BufferItem::attachIrcChannel(IrcChannel *ircChannel) {
 }
 
 void BufferItem::ircChannelDestroyed() {
+  Q_CHECK_PTR(_ircChannel);
+  disconnect(_ircChannel, 0, this, 0);
+  _ircChannel = 0;
   emit dataChanged();
   removeAllChilds();
 }
