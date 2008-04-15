@@ -282,6 +282,6 @@ bool bufferIdLessThan(const BufferId &left, const BufferId &right) {
   if(leftType != rightType)
     return leftType < rightType;
   else
-    return Client::networkModel()->data(leftIndex, Qt::DisplayRole).toString() < Client::networkModel()->data(rightIndex, Qt::DisplayRole).toString();
+    return QString::compare(Client::networkModel()->data(leftIndex, Qt::DisplayRole).toString(), Client::networkModel()->data(rightIndex, Qt::DisplayRole).toString(), Qt::CaseInsensitive) < 0;
 }
 
