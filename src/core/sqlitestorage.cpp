@@ -188,7 +188,9 @@ NetworkId SqliteStorage::createNetwork(UserId user, const NetworkInfo &info) {
   if(!networkId.isValid()) {
     watchQuery(&query);
   } else {
-    updateNetwork(user, info);
+    NetworkInfo newNetworkInfo = info;
+    newNetworkInfo.networkId = networkId;
+    updateNetwork(user, newNetworkInfo);
   }
   return networkId;
 }
