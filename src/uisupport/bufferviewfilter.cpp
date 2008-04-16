@@ -39,7 +39,6 @@ BufferViewFilter::BufferViewFilter(QAbstractItemModel *model, BufferViewConfig *
   setSourceModel(model);
   connect(model, SIGNAL(rowsInserted(const QModelIndex &, int, int)), this, SLOT(source_rowsInserted(const QModelIndex &, int, int)));
 			
-  // setSortCaseSensitivity(Qt::CaseInsensitive);
   setDynamicSortFilter(true);
 }
 
@@ -116,7 +115,7 @@ bool BufferViewFilter::dropMimeData(const QMimeData *data, Qt::DropAction action
 }
 
 void BufferViewFilter::addBuffer(const BufferId &bufferId) {
-  if(config()->bufferList().contains(bufferId))
+  if(!config() || config()->bufferList().contains(bufferId))
     return;
   
   int pos = config()->bufferList().count();
@@ -147,6 +146,9 @@ void BufferViewFilter::removeBuffer(const QModelIndex &index) {
 bool BufferViewFilter::filterAcceptBuffer(const QModelIndex &source_bufferIndex) const {
   if(!_config)
     return true;
+
+  if(config()->networkId().isValid() && config()->networkId() != sourceModel()->data(source_bufferIndex, NetworkModel::NetworkIdRole).value<NetworkId>())
+    return false;
 
   if(!(_config->allowedBufferTypes() & (BufferInfo::Type)source_bufferIndex.data(NetworkModel::BufferTypeRole).toInt()))
     return false;
@@ -206,7 +208,7 @@ bool BufferViewFilter::bufferLessThan(const QModelIndex &source_left, const QMod
   if(config()) {
     return config()->bufferList().indexOf(leftBufferId) < config()->bufferList().indexOf(rightBufferId);
   } else
-    return leftBufferId < rightBufferId;
+    return bufferIdLessThan(leftBufferId, rightBufferId);
 }
 
 bool BufferViewFilter::networkLessThan(const QModelIndex &source_left, const QModelIndex &source_right) const {
@@ -279,6 +281,6 @@ bool bufferIdLessThan(const BufferId &left, const BufferId &right) {
   if(leftType != rightType)
     return leftType < rightType;
   else
-    return Client::networkModel()->data(leftIndex, Qt::DisplayRole).toString() < Client::networkModel()->data(rightIndex, Qt::DisplayRole).toString();
+    return QString::compare(Client::networkModel()->data(leftIndex, Qt::DisplayRole).toString(), Client::networkModel()->data(rightIndex, Qt::DisplayRole).toString(), Qt::CaseInsensitive) < 0;
 }
 

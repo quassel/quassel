@@ -100,7 +100,7 @@ private:
   QString _bufferName;
   Buffer::ActivityLevel _activity;
 
-  QPointer<IrcChannel> _ircChannel;
+  IrcChannel *_ircChannel;
 };
 
 

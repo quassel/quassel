@@ -27,14 +27,9 @@
 
 BufferModel::BufferModel(NetworkModel *parent)
   : QSortFilterProxyModel(parent),
-    _selectionModelSynchronizer(this),
-    _standardSelectionModel(this)
+    _selectionModelSynchronizer(this)
 {
   setSourceModel(parent);
-  _selectionModelSynchronizer.addRegularSelectionModel(standardSelectionModel());
-}
-
-BufferModel::~BufferModel() {
 }
 
 bool BufferModel::filterAcceptsRow(int sourceRow, const QModelIndex &parent) const {
@@ -65,6 +60,14 @@ QModelIndex BufferModel::currentIndex() {
 }
 
 void BufferModel::setCurrentIndex(const QModelIndex &newCurrent) {
-  _standardSelectionModel.setCurrentIndex(newCurrent, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
-  _standardSelectionModel.select(newCurrent, QItemSelectionModel::ClearAndSelect);
+  _selectionModelSynchronizer.selectionModel()->setCurrentIndex(newCurrent, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+  _selectionModelSynchronizer.selectionModel()->select(newCurrent, QItemSelectionModel::Current);
+}
+
+void BufferModel::debug_currentChanged(QModelIndex current, QModelIndex previous) {
+  qDebug() << "New current:" << current << "(previous:" << previous << ")";
+}
+
+void BufferModel::debug_selectionChanged(QItemSelection current , QItemSelection previous) {
+  qDebug() << "new selection:" << current << "(previoius:" << previous << ")";
 }

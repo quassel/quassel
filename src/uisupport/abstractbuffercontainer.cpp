@@ -78,19 +78,18 @@ void AbstractBufferContainer::currentChanged(const QModelIndex &current, const Q
 }
 
 void AbstractBufferContainer::setCurrentBuffer(BufferId bufferId) {
-  if(!bufferId.isValid()) {
+  AbstractChatView *chatView = 0;
+  Buffer *prevBuffer = Client::buffer(currentBuffer());
+  if(prevBuffer) prevBuffer->setVisible(false);
+
+  Buffer *buf;
+  if(!bufferId.isValid() || !(buf = Client::buffer(bufferId))) {
+    if(bufferId.isValid()) 
+      qWarning() << "AbstractBufferContainer::setBuffer(BufferId): Can't show unknown Buffer:" << bufferId;
+    _currentBuffer = 0;
     showChatView(0);
     return;
   }
-
-  AbstractChatView *chatView = 0;
-  Buffer *buf = Client::buffer(bufferId);
-  if(!buf) {
-    qWarning() << "AbstractBufferContainer::setBuffer(BufferId): Can't show unknown Buffer:" << bufferId;
-    return;
-  }
-  Buffer *prevBuffer = Client::buffer(currentBuffer());
-  if(prevBuffer) prevBuffer->setVisible(false);
   if(_chatViews.contains(bufferId)) {
     chatView = _chatViews[bufferId];
   } else {

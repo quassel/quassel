@@ -92,7 +92,6 @@ void UserInputHandler::handleBan(const BufferInfo &bufferInfo, const QString &ms
   }
 
   QString banMsg = QString("MODE %1 +b %2").arg(banChannel).arg(banUser);
-  qDebug() << banMsg;
   emit putRawLine(serverEncode(banMsg));
 }
 

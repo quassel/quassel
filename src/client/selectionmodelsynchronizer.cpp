@@ -23,78 +23,129 @@
 
 #include <QAbstractItemModel>
 #include "mappedselectionmodel.h"
+#include <QAbstractProxyModel>
 
 #include <QDebug>
 
 SelectionModelSynchronizer::SelectionModelSynchronizer(QAbstractItemModel *parent)
   : QObject(parent),
-    _model(parent)
+    _model(parent),
+    _selectionModel(parent)
 {
+  connect(&_selectionModel, SIGNAL(currentChanged(const QModelIndex &, const QModelIndex &)),
+	  this, SLOT(currentChanged(const QModelIndex &, const QModelIndex &)));
+  connect(&_selectionModel, SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
+	  this, SLOT(selectionChanged(const QItemSelection &, const QItemSelection &)));
 }
 
-SelectionModelSynchronizer::~SelectionModelSynchronizer() {
+bool SelectionModelSynchronizer::checkBaseModel(QItemSelectionModel *selectionModel) {
+  if(!selectionModel)
+    return false;
+
+  const QAbstractItemModel *baseModel = selectionModel->model();
+  const QAbstractProxyModel *proxyModel = 0;
+  while((proxyModel = qobject_cast<const QAbstractProxyModel *>(baseModel)) != 0) {
+    baseModel = proxyModel->sourceModel();
+    if(baseModel == model())
+      break;
+  }
+  return baseModel == model();
 }
 
-void SelectionModelSynchronizer::addSelectionModel(MappedSelectionModel *selectionmodel) {
-  if(selectionmodel->model() == model()) {
-    addRegularSelectionModel(selectionmodel);
+void SelectionModelSynchronizer::addSelectionModel(QItemSelectionModel *selectionModel) {
+  if(!checkBaseModel(selectionModel)) {
+    qWarning() << "cannot Syncronize SelectionModel" << selectionModel << "which has a different baseModel()";
     return;
   }
-  
-  if(selectionmodel->baseModel() != model()) {
-    qWarning() << "cannot Syncronize SelectionModel" << selectionmodel << "which has a different baseModel()";
-    return;
-  }
 
-  connect(selectionmodel, SIGNAL(mappedCurrentChanged(QModelIndex)),
-	  this, SLOT(_mappedCurrentChanged(QModelIndex)));
-  connect(selectionmodel, SIGNAL(mappedSelectionChanged(QItemSelection)),
-	  this, SLOT(_mappedSelectionChanged(QItemSelection)));
-  
-  connect(this, SIGNAL(setCurrentIndex(QModelIndex, QItemSelectionModel::SelectionFlags)),
-	  selectionmodel, SLOT(mappedSetCurrentIndex(QModelIndex, QItemSelectionModel::SelectionFlags)));
-  connect(this, SIGNAL(select(QItemSelection, QItemSelectionModel::SelectionFlags)),
- 	  selectionmodel, SLOT(mappedSelect(QItemSelection, QItemSelectionModel::SelectionFlags)));
+  connect(selectionModel, SIGNAL(currentChanged(QModelIndex, QModelIndex)),
+	  this, SLOT(mappedCurrentChanged(QModelIndex, QModelIndex)));
+  connect(selectionModel, SIGNAL(selectionChanged(QItemSelection, QItemSelection)),
+	  this, SLOT(mappedSelectionChanged(QItemSelection, QItemSelection)));
+
+  if(qobject_cast<MappedSelectionModel *>(selectionModel)) {
+    connect(this, SIGNAL(setCurrentIndex(QModelIndex, QItemSelectionModel::SelectionFlags)),
+	    selectionModel, SLOT(mappedSetCurrentIndex(QModelIndex, QItemSelectionModel::SelectionFlags)));
+    connect(this, SIGNAL(select(QItemSelection, QItemSelectionModel::SelectionFlags)),
+	    selectionModel, SLOT(mappedSelect(QItemSelection, QItemSelectionModel::SelectionFlags)));
+  } else {
+    connect(this, SIGNAL(setCurrentIndex(QModelIndex, QItemSelectionModel::SelectionFlags)),
+	    selectionModel, SLOT(setCurrentIndex(QModelIndex, QItemSelectionModel::SelectionFlags)));
+    connect(this, SIGNAL(select(QItemSelection, QItemSelectionModel::SelectionFlags)),
+	    selectionModel, SLOT(select(QItemSelection, QItemSelectionModel::SelectionFlags)));
+  }
 }
 
-void SelectionModelSynchronizer::addRegularSelectionModel(QItemSelectionModel *selectionmodel) {
-  if(selectionmodel->model() != model()) {
-    qWarning() << "cannot Syncronize QItemSelectionModel" << selectionmodel << "which has a different model()";    
-    return;
-  }
-  connect(selectionmodel, SIGNAL(currentChanged(QModelIndex, QModelIndex)),
-	  this, SLOT(_regularCurrentChanged(QModelIndex, QModelIndex)));
-  connect(selectionmodel, SIGNAL(selectionChanged(QItemSelection, QItemSelection)),
-	  this, SLOT(_regularSelectionChanged(QItemSelection, QItemSelection)));
-  
-  connect(this, SIGNAL(setCurrentIndex(QModelIndex, QItemSelectionModel::SelectionFlags)),
-	  selectionmodel, SLOT(setCurrentIndex(QModelIndex, QItemSelectionModel::SelectionFlags)));
-  connect(this, SIGNAL(select(QItemSelection, QItemSelectionModel::SelectionFlags)),
- 	  selectionmodel, SLOT(select(QItemSelection, QItemSelectionModel::SelectionFlags)));
-  
-}
-
-void SelectionModelSynchronizer::removeSelectionModel(MappedSelectionModel *model) {
+void SelectionModelSynchronizer::removeSelectionModel(QItemSelectionModel *model) {
   disconnect(model, 0, this, 0);
   disconnect(this, 0, model, 0);
 }
 
-void SelectionModelSynchronizer::_mappedCurrentChanged(const QModelIndex &current) {
-  emit setCurrentIndex(current, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
-}
-
-void SelectionModelSynchronizer::_mappedSelectionChanged(const QItemSelection &selected) {
-  emit select(selected, QItemSelectionModel::ClearAndSelect);
-}
-
-void SelectionModelSynchronizer::_regularCurrentChanged(const QModelIndex &newCurrent, const QModelIndex &oldCurrent) {
-  Q_UNUSED(oldCurrent)
-  emit setCurrentIndex(newCurrent, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
-}
-
-void SelectionModelSynchronizer::_regularSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected) {
-  Q_UNUSED(selected)
-  Q_UNUSED(deselected)
+void SelectionModelSynchronizer::mappedCurrentChanged(const QModelIndex &current, const QModelIndex &previous) {
+  Q_UNUSED(previous);
   QItemSelectionModel *selectionModel = qobject_cast<QItemSelectionModel *>(sender());
-  emit select(selectionModel->selection(), QItemSelectionModel::ClearAndSelect);
+  Q_ASSERT(selectionModel);
+  QModelIndex newSourceCurrent = mapToSource(current, selectionModel);
+  if(newSourceCurrent.isValid() && newSourceCurrent != currentIndex())
+    setCurrentIndex(newSourceCurrent);
+}
+
+void SelectionModelSynchronizer::mappedSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected) {
+  Q_UNUSED(selected);
+  Q_UNUSED(deselected);
+  QItemSelectionModel *selectionModel = qobject_cast<QItemSelectionModel *>(sender());
+  Q_ASSERT(selectionModel);
+  QItemSelection newSourceSelection = mapSelectionToSource(selectionModel->selection(), selectionModel);
+  QItemSelection currentContainsSelection = newSourceSelection;
+  currentContainsSelection.merge(currentSelection(), QItemSelectionModel::Deselect);
+  if(!currentContainsSelection.isEmpty())
+    setCurrentSelection(newSourceSelection);
+}
+
+QModelIndex SelectionModelSynchronizer::mapToSource(const QModelIndex &index, QItemSelectionModel *selectionModel) {
+  Q_ASSERT(selectionModel);
+
+  QModelIndex sourceIndex = index;
+  const QAbstractItemModel *baseModel = selectionModel->model();
+  const QAbstractProxyModel *proxyModel = 0;
+  while((proxyModel = qobject_cast<const QAbstractProxyModel *>(baseModel)) != 0) {
+    sourceIndex = proxyModel->mapToSource(sourceIndex);
+    baseModel = proxyModel->sourceModel();
+    if(baseModel == model())
+      break;
+  }
+  return sourceIndex;
+}
+
+QItemSelection SelectionModelSynchronizer::mapSelectionToSource(const QItemSelection &selection, QItemSelectionModel *selectionModel) {
+  Q_ASSERT(selectionModel);
+
+  QItemSelection sourceSelection = selection;
+  const QAbstractItemModel *baseModel = selectionModel->model();
+  const QAbstractProxyModel *proxyModel = 0;
+  while((proxyModel = qobject_cast<const QAbstractProxyModel *>(baseModel)) != 0) {
+    sourceSelection = proxyModel->mapSelectionToSource(sourceSelection);
+    baseModel = proxyModel->sourceModel();
+    if(baseModel == model())
+      break;
+  }
+  return sourceSelection;
+}
+
+void SelectionModelSynchronizer::setCurrentIndex(const QModelIndex &index) {
+  _selectionModel.setCurrentIndex(index, QItemSelectionModel::Current);
+}
+void SelectionModelSynchronizer::setCurrentSelection(const QItemSelection &selection) {
+  _selectionModel.select(selection, QItemSelectionModel::Rows | QItemSelectionModel::ClearAndSelect);
+}
+
+void SelectionModelSynchronizer::currentChanged(const QModelIndex &current, const QModelIndex &previous) {
+  Q_UNUSED(previous);
+  emit setCurrentIndex(current, QItemSelectionModel::Current);
+}
+
+void SelectionModelSynchronizer::selectionChanged(const QItemSelection &selected, const QItemSelection &deselected) {
+  Q_UNUSED(selected);
+  Q_UNUSED(deselected);
+  emit select(_selectionModel.selection(), QItemSelectionModel::ClearAndSelect);
 }

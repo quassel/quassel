@@ -61,6 +61,14 @@ NetworkConnection::NetworkConnection(Network *network, CoreSession *session) : Q
   _autoWhoCycleTimer.setInterval(_autoWhoInterval * 1000);
   _autoWhoCycleTimer.setSingleShot(false);
 
+  // TokenBucket to avaid sending too much at once
+  _messagesPerSecond = 1;
+  _burstSize = 5;
+  _tokenBucket = 5; // init with a full bucket
+
+  _tokenBucketTimer.start(_messagesPerSecond * 1000);
+  _tokenBucketTimer.setSingleShot(false);
+
   QHash<QString, QString> channels = coreSession()->persistentChannels(networkId());
   foreach(QString chan, channels.keys()) {
     _channelKeys[chan.toLower()] = channels[chan];
@@ -69,6 +77,7 @@ NetworkConnection::NetworkConnection(Network *network, CoreSession *session) : Q
   connect(&_autoReconnectTimer, SIGNAL(timeout()), this, SLOT(doAutoReconnect()));
   connect(&_autoWhoTimer, SIGNAL(timeout()), this, SLOT(sendAutoWho()));
   connect(&_autoWhoCycleTimer, SIGNAL(timeout()), this, SLOT(startAutoWhoCycle()));
+  connect(&_tokenBucketTimer, SIGNAL(timeout()), this, SLOT(fillBucketAndProcessQueue()));
 
   connect(network, SIGNAL(currentServerSet(const QString &)), this, SLOT(networkInitialized(const QString &)));
   connect(network, SIGNAL(useAutoReconnectSet(bool)), this, SLOT(autoReconnectSettingsChanged()));
@@ -380,9 +389,27 @@ void NetworkConnection::userInput(BufferInfo buf, QString msg) {
 }
 
 void NetworkConnection::putRawLine(QByteArray s) {
+  if(_tokenBucket > 0) {
+    writeToSocket(s);
+  } else {
+    _msgQueue.append(s);
+  }
+}
+
+void NetworkConnection::writeToSocket(QByteArray s) {
   s += "\r\n";
   socket.write(s);
-  if(Global::SPUTDEV) qDebug() << "SENT:" << s;
+  _tokenBucket--;
+}
+
+void NetworkConnection::fillBucketAndProcessQueue() {
+  if(_tokenBucket < _burstSize) {
+    _tokenBucket++;
+  }
+
+  while(_msgQueue.size() > 0 && _tokenBucket > 0) {
+    writeToSocket(_msgQueue.takeFirst());
+  }
 }
 
 void NetworkConnection::putCmd(const QString &cmd, const QVariantList &params, const QByteArray &prefix) {

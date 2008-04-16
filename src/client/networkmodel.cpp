@@ -41,7 +41,8 @@ BufferItem::BufferItem(BufferInfo bufferInfo, AbstractTreeItem *parent)
   : PropertyMapItem(QStringList() << "bufferName" << "topic" << "nickCount", parent),
     _bufferInfo(bufferInfo),
     _bufferName(bufferInfo.bufferName()),
-    _activity(Buffer::NoActivity)
+    _activity(Buffer::NoActivity),
+    _ircChannel(0)
 {
   Qt::ItemFlags flags = Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled;
   if(bufferType() == BufferInfo::QueryBuffer)
@@ -144,6 +145,9 @@ void BufferItem::attachIrcChannel(IrcChannel *ircChannel) {
 }
 
 void BufferItem::ircChannelDestroyed() {
+  Q_CHECK_PTR(_ircChannel);
+  disconnect(_ircChannel, 0, this, 0);
+  _ircChannel = 0;
   emit dataChanged();
   removeAllChilds();
 }

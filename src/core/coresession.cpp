@@ -396,19 +396,25 @@ void CoreSession::createNetwork(const NetworkInfo &info_) {
   if(!info.networkId.isValid())
     Core::createNetwork(user(), info);
 
-  Q_ASSERT(info.networkId.isValid());
+  if(!info.networkId.isValid()) {
+    qWarning() << qPrintable(tr("CoreSession::createNetwork(): Got invalid networkId from Core when trying to create network %1!").arg(info.networkName));
+    return;
+  }
 
   id = info.networkId.toInt();
-  Q_ASSERT(!_networks.contains(id));
-  
-  Network *net = new Network(id, this);
-  connect(net, SIGNAL(connectRequested(NetworkId)), this, SLOT(connectToNetwork(NetworkId)));
-  connect(net, SIGNAL(disconnectRequested(NetworkId)), this, SLOT(disconnectFromNetwork(NetworkId)));
-  net->setNetworkInfo(info);
-  net->setProxy(signalProxy());
-  _networks[id] = net;
-  signalProxy()->synchronize(net);
-  emit networkCreated(id);
+  if(!_networks.contains(id)) {
+    Network *net = new Network(id, this);
+    connect(net, SIGNAL(connectRequested(NetworkId)), this, SLOT(connectToNetwork(NetworkId)));
+    connect(net, SIGNAL(disconnectRequested(NetworkId)), this, SLOT(disconnectFromNetwork(NetworkId)));
+    net->setNetworkInfo(info);
+    net->setProxy(signalProxy());
+    _networks[id] = net;
+    signalProxy()->synchronize(net);
+    emit networkCreated(id);
+  } else {
+    qWarning() << qPrintable(tr("CoreSession::createNetwork(): Trying to create a network that already exists, updating instead!"));
+    updateNetwork(info);
+  }
 }
 
 void CoreSession::updateNetwork(const NetworkInfo &info) {
@@ -462,7 +468,10 @@ void CoreSession::removeBufferRequested(BufferId bufferId) {
   
   if(bufferInfo.type() == BufferInfo::ChannelBuffer) {
     Network *net = network(bufferInfo.networkId());
-    Q_ASSERT(net);
+    if(!net) {
+      qWarning() << "CoreSession::removeBufferRequested(): Received BufferInfo with unknown networkId!";
+      return;
+    }
     IrcChannel *chan = net->ircChannel(bufferInfo.bufferName());
     if(chan) {
       qWarning() << "CoreSession::removeBufferRequested(): Unable to remove Buffer for joined Channel:" << bufferInfo.bufferName();
