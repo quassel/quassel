@@ -25,34 +25,44 @@
 #include <QItemSelectionModel>
 
 class QAbstractItemModel;
-class MappedSelectionModel;
 
 class SelectionModelSynchronizer : public QObject {
   Q_OBJECT
 
 public:
   SelectionModelSynchronizer(QAbstractItemModel *parent = 0);
-  virtual ~SelectionModelSynchronizer();
 
-  void addSelectionModel(MappedSelectionModel *model);
-  void addRegularSelectionModel(QItemSelectionModel *model);
-  void removeSelectionModel(MappedSelectionModel *model);
+  void addSelectionModel(QItemSelectionModel *selectionModel);
+  void removeSelectionModel(QItemSelectionModel *selectionModel);
 
   inline QAbstractItemModel *model() { return _model; }
-
-private slots:
-  void _mappedCurrentChanged(const QModelIndex &current);
-  void _mappedSelectionChanged(const QItemSelection &selected);
-
-  void _regularCurrentChanged(const QModelIndex &newCurrent, const QModelIndex &oldCurrent);
-  void _regularSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
+  inline QItemSelectionModel *selectionModel() const { return const_cast<QItemSelectionModel *>(&_selectionModel); }
+  inline QModelIndex currentIndex() const { return _selectionModel.currentIndex(); }
+  inline QItemSelection currentSelection() const { return _selectionModel.selection(); }
 
 signals:
-  void select(const QItemSelection &selection, QItemSelectionModel::SelectionFlags command);
-  void setCurrentIndex(const QModelIndex &index, QItemSelectionModel::SelectionFlags command);
-  
+  void setCurrentIndex(const QModelIndex &current, QItemSelectionModel::SelectionFlags command);
+  void select(const QItemSelection &selected, QItemSelectionModel::SelectionFlags command);
+
+private slots:
+  void mappedCurrentChanged(const QModelIndex &current, const QModelIndex &previous);
+  void mappedSelectionChanged(const QItemSelection &selected, const QItemSelection &previous);
+
+  void setCurrentIndex(const QModelIndex &index);
+  void setCurrentSelection(const QItemSelection &selection);
+
+  void currentChanged(const QModelIndex &current, const QModelIndex &previous);
+  void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
+
 private:
   QAbstractItemModel *_model;
+  QItemSelectionModel _selectionModel;
+
+  bool checkBaseModel(QItemSelectionModel *model);
+  QModelIndex mapToSource(const QModelIndex &index, QItemSelectionModel *selectionModel);
+  QItemSelection mapSelectionToSource(const QItemSelection &selection, QItemSelectionModel *selectionModel);
+
+
 };
 
 #endif

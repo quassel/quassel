@@ -36,12 +36,11 @@ class BufferModel : public QSortFilterProxyModel {
 
 public:
   BufferModel(NetworkModel *parent = 0);
-  virtual ~BufferModel();
 
   bool filterAcceptsRow(int sourceRow, const QModelIndex &parent) const;
   
   inline const SelectionModelSynchronizer *selectionModelSynchronizer() const { return &_selectionModelSynchronizer; }
-  inline QItemSelectionModel *standardSelectionModel() const { return const_cast<QItemSelectionModel *>(&_standardSelectionModel); }
+  inline QItemSelectionModel *standardSelectionModel() const { return _selectionModelSynchronizer.selectionModel(); }
   
   void synchronizeSelectionModel(MappedSelectionModel *selectionModel);
   void synchronizeView(QAbstractItemView *view);
@@ -49,9 +48,12 @@ public:
   QModelIndex currentIndex();
   void setCurrentIndex(const QModelIndex &newCurrent);
 
+private slots:
+  void debug_currentChanged(QModelIndex current, QModelIndex previous);
+  void debug_selectionChanged(QItemSelection current , QItemSelection previous);
+    
 private:
   SelectionModelSynchronizer _selectionModelSynchronizer;
-  QItemSelectionModel _standardSelectionModel;
 };
 
 #endif // BUFFERMODEL_H

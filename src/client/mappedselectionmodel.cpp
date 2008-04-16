@@ -23,89 +23,60 @@
 #include <QItemSelectionModel>
 #include <QAbstractItemModel>
 #include <QAbstractProxyModel>
+#include <QLinkedList>
 #include <QDebug>
 
 MappedSelectionModel::MappedSelectionModel(QAbstractItemModel *model)
   : QItemSelectionModel(model)
 {
-  _isProxyModel = (bool)proxyModel();
-  connect(this, SIGNAL(currentChanged(QModelIndex, QModelIndex)),
-	  this, SLOT(_currentChanged(QModelIndex, QModelIndex)));
-  connect(this, SIGNAL(selectionChanged(QItemSelection, QItemSelection)),
-	  this, SLOT(_selectionChanged(QItemSelection, QItemSelection)));
-}
-
-MappedSelectionModel::~MappedSelectionModel() {
-}
-
-const QAbstractItemModel *MappedSelectionModel::baseModel() const {
-  if(isProxyModel())
-    return proxyModel()->sourceModel();
-  else
-    return model();
-}
-
-const QAbstractProxyModel *MappedSelectionModel::proxyModel() const {
-  return qobject_cast<const QAbstractProxyModel *>(model());
 }
 
 QModelIndex MappedSelectionModel::mapFromSource(const QModelIndex &sourceIndex) {
-  if(isProxyModel())
-    return proxyModel()->mapFromSource(sourceIndex);
-  else
-    return sourceIndex;
+  QModelIndex proxyIndex = sourceIndex;
+  QLinkedList<const QAbstractProxyModel *> proxies;
+  const QAbstractItemModel *baseModel = model();
+  const QAbstractProxyModel *proxyModel = 0;
+  while((proxyModel = qobject_cast<const QAbstractProxyModel *>(baseModel)) != 0) {
+    proxies.push_back(proxyModel);
+    baseModel = proxyModel->sourceModel();
+    if(baseModel == sourceIndex.model())
+      break;
+  }
+
+  while(!proxies.isEmpty()) {
+    proxyModel = proxies.takeLast();
+    proxyIndex = proxyModel->mapFromSource(proxyIndex);
+  }
+  return proxyIndex;
 }
 
 QItemSelection MappedSelectionModel::mapSelectionFromSource(const QItemSelection &sourceSelection) {
-  if(isProxyModel())
-    return proxyModel()->mapSelectionFromSource(sourceSelection);
-  else
+  if(sourceSelection.isEmpty())
     return sourceSelection;
+
+  QItemSelection proxySelection = sourceSelection;
+  QLinkedList<const QAbstractProxyModel *> proxies;
+  const QAbstractItemModel *baseModel = model();
+  const QAbstractProxyModel *proxyModel = 0;
+  while((proxyModel = qobject_cast<const QAbstractProxyModel *>(baseModel)) != 0) {
+    proxies.push_back(proxyModel);
+    baseModel = proxyModel->sourceModel();
+    if(baseModel == sourceSelection.first().model())
+      break;
+  }
+
+  while(!proxies.isEmpty()) {
+    proxyModel = proxies.takeLast();
+    proxySelection = proxyModel->mapSelectionFromSource(proxySelection);
+  }
+  return proxySelection;
 }
 				    
-QModelIndex MappedSelectionModel::mapToSource(const QModelIndex &proxyIndex) {
-  if(isProxyModel())
-    return proxyModel()->mapToSource(proxyIndex);
-  else
-    return proxyIndex;
-}
-
-QItemSelection MappedSelectionModel::mapSelectionToSource(const QItemSelection &proxySelection) {
-  if(isProxyModel())
-    return proxyModel()->mapSelectionToSource(proxySelection);
-  else
-    return proxySelection;
-}
-									
-void MappedSelectionModel::mappedSelect(const QModelIndex &index, QItemSelectionModel::SelectionFlags command) {
-  QModelIndex mappedIndex = mapFromSource(index);
-  if(!isSelected(mappedIndex))
-    select(mappedIndex, command);
+void MappedSelectionModel::mappedSetCurrentIndex(const QModelIndex &index, QItemSelectionModel::SelectionFlags command) {
+  setCurrentIndex(mapFromSource(index), command);
 }
 
 void MappedSelectionModel::mappedSelect(const QItemSelection &selection, QItemSelectionModel::SelectionFlags command) {
-  QItemSelection mappedSelection = mapSelectionFromSource(selection);
-  if(mappedSelection != QItemSelectionModel::selection())
-    select(mappedSelection, command);  
-}
-
-void MappedSelectionModel::mappedSetCurrentIndex(const QModelIndex &index, QItemSelectionModel::SelectionFlags command) {
-  QModelIndex mappedIndex = mapFromSource(index);
-  if(mappedIndex == currentIndex())
-    return;
-  setCurrentIndex(mappedIndex, command);
-}
-
-
-void MappedSelectionModel::_currentChanged(const QModelIndex &current, const QModelIndex &previous) {
-  Q_UNUSED(previous)
-  if(current.isValid())
-    emit mappedCurrentChanged(mapToSource(current));
-}
-
-void MappedSelectionModel::_selectionChanged(const QItemSelection &selected, const QItemSelection &deselected) {
-  Q_UNUSED(selected)
-  Q_UNUSED(deselected)
-  emit mappedSelectionChanged(mapSelectionToSource(QItemSelectionModel::selection()));
+  select(mapSelectionFromSource(selection), command);
 }
 

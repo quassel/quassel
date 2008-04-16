@@ -39,7 +39,6 @@ BufferViewFilter::BufferViewFilter(QAbstractItemModel *model, BufferViewConfig *
   setSourceModel(model);
   connect(model, SIGNAL(rowsInserted(const QModelIndex &, int, int)), this, SLOT(source_rowsInserted(const QModelIndex &, int, int)));
 			
-  // setSortCaseSensitivity(Qt::CaseInsensitive);
   setDynamicSortFilter(true);
 }
 
@@ -116,7 +115,7 @@ bool BufferViewFilter::dropMimeData(const QMimeData *data, Qt::DropAction action
 }
 
 void BufferViewFilter::addBuffer(const BufferId &bufferId) {
-  if(config()->bufferList().contains(bufferId))
+  if(!config() || config()->bufferList().contains(bufferId))
     return;
   
   int pos = config()->bufferList().count();

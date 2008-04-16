@@ -33,35 +33,13 @@ class MappedSelectionModel : public QItemSelectionModel {
 
 public:
   MappedSelectionModel(QAbstractItemModel *model = 0);
-  virtual ~MappedSelectionModel();
 
-  inline bool isProxyModel() const { return _isProxyModel; }
-
-  const QAbstractItemModel *baseModel() const;
-  const QAbstractProxyModel *proxyModel() const;
-  
   QModelIndex mapFromSource(const QModelIndex &sourceIndex);
   QItemSelection mapSelectionFromSource(const QItemSelection &sourceSelection);
-				    
-  QModelIndex mapToSource(const QModelIndex &proxyIndex);
-  QItemSelection mapSelectionToSource(const QItemSelection &proxySelection);
 									
 public slots:
-  void mappedSelect(const QModelIndex &index, QItemSelectionModel::SelectionFlags command);
   void mappedSelect(const QItemSelection &selection, QItemSelectionModel::SelectionFlags command);
   void mappedSetCurrentIndex(const QModelIndex &index, QItemSelectionModel::SelectionFlags command);
-
-private slots:
-  void _currentChanged(const QModelIndex &current, const QModelIndex &previous);
-  void _selectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
-  
-signals:
-  void mappedCurrentChanged(const QModelIndex &current);
-  void mappedSelectionChanged(const QItemSelection &selected);
-
-private:
-  bool _isProxyModel;
-
 };
 
 #endif
