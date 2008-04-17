@@ -253,14 +253,16 @@ QVariant BufferViewFilter::foreground(const QModelIndex &index) const {
 }
 
 void BufferViewFilter::source_rowsInserted(const QModelIndex &parent, int start, int end) {
-  if(parent.data(NetworkModel::ItemTypeRole) != NetworkModel::NetworkItemType)
+  if(parent.data(NetworkModel::ItemTypeRole) != NetworkModel::BufferItemType)
     return;
 
   if(!config() || !config()->addNewBuffersAutomatically())
     return;
 
+  QModelIndex child;
   for(int row = start; row <= end; row++) {
-    addBuffer(parent.child(row, 0).data(NetworkModel::BufferIdRole).value<BufferId>());
+    child = sourceModel()->index(row, 0, parent);
+    addBuffer(sourceModel()->data(child, NetworkModel::BufferIdRole).value<BufferId>());
   }
 }
 
