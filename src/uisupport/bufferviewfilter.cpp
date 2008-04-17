@@ -144,9 +144,11 @@ void BufferViewFilter::removeBuffer(const QModelIndex &index) {
 
 
 bool BufferViewFilter::filterAcceptBuffer(const QModelIndex &source_bufferIndex) const {
+  BufferId bufferId = sourceModel()->data(source_bufferIndex, NetworkModel::BufferIdRole).value<BufferId>();
+  Q_ASSERT(bufferId.isValid());
   if(!_config)
     return true;
-
+  
   if(config()->networkId().isValid() && config()->networkId() != sourceModel()->data(source_bufferIndex, NetworkModel::NetworkIdRole).value<NetworkId>())
     return false;
 
@@ -157,11 +159,10 @@ bool BufferViewFilter::filterAcceptBuffer(const QModelIndex &source_bufferIndex)
     return false;
 
   if(_config->minimumActivity() > source_bufferIndex.data(NetworkModel::BufferActivityRole).toInt()) {
-    if(!Client::bufferModel()->standardSelectionModel()->isSelected(source_bufferIndex))
+    if(bufferId != Client::bufferModel()->standardSelectionModel()->currentIndex().data(NetworkModel::BufferIdRole).value<BufferId>())
       return false;
   }
 
-  BufferId bufferId = sourceModel()->data(source_bufferIndex, NetworkModel::BufferIdRole).value<BufferId>();
   return _config->bufferList().contains(bufferId);
 }
 
@@ -184,7 +185,7 @@ bool BufferViewFilter::filterAcceptsRow(int source_row, const QModelIndex &sourc
     return false;
   }
 
-  if(source_parent == QModelIndex())
+  if(!source_parent.isValid())
     return filterAcceptNetwork(child);
   else
     return filterAcceptBuffer(child);
@@ -203,6 +204,7 @@ bool BufferViewFilter::lessThan(const QModelIndex &source_left, const QModelInde
 }
 
 bool BufferViewFilter::bufferLessThan(const QModelIndex &source_left, const QModelIndex &source_right) const {
+  return QSortFilterProxyModel::lessThan(source_left, source_right);
   BufferId leftBufferId = sourceModel()->data(source_left, NetworkModel::BufferIdRole).value<BufferId>();
   BufferId rightBufferId = sourceModel()->data(source_right, NetworkModel::BufferIdRole).value<BufferId>();
   if(config()) {
@@ -253,14 +255,16 @@ QVariant BufferViewFilter::foreground(const QModelIndex &index) const {
 }
 
 void BufferViewFilter::source_rowsInserted(const QModelIndex &parent, int start, int end) {
-  if(parent.data(NetworkModel::ItemTypeRole) != NetworkModel::NetworkItemType)
+  if(parent.data(NetworkModel::ItemTypeRole) != NetworkModel::BufferItemType)
     return;
 
   if(!config() || !config()->addNewBuffersAutomatically())
     return;
 
+  QModelIndex child;
   for(int row = start; row <= end; row++) {
-    addBuffer(parent.child(row, 0).data(NetworkModel::BufferIdRole).value<BufferId>());
+    child = sourceModel()->index(row, 0, parent);
+    addBuffer(sourceModel()->data(child, NetworkModel::BufferIdRole).value<BufferId>());
   }
 }
 
