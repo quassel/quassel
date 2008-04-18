@@ -64,8 +64,8 @@ QModelIndex BufferModel::currentIndex() {
 }
 
 void BufferModel::setCurrentIndex(const QModelIndex &newCurrent) {
-  _selectionModelSynchronizer.selectionModel()->setCurrentIndex(newCurrent, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
-  _selectionModelSynchronizer.selectionModel()->select(newCurrent, QItemSelectionModel::Current);
+  _selectionModelSynchronizer.selectionModel()->setCurrentIndex(newCurrent, QItemSelectionModel::Current);
+  _selectionModelSynchronizer.selectionModel()->select(newCurrent, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
 }
 
 void BufferModel::debug_currentChanged(QModelIndex current, QModelIndex previous) {

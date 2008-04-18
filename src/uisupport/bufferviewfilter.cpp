@@ -255,7 +255,7 @@ QVariant BufferViewFilter::foreground(const QModelIndex &index) const {
 }
 
 void BufferViewFilter::source_rowsInserted(const QModelIndex &parent, int start, int end) {
-  if(parent.data(NetworkModel::ItemTypeRole) != NetworkModel::BufferItemType)
+  if(parent.data(NetworkModel::ItemTypeRole) != NetworkModel::NetworkItemType)
     return;
 
   if(!config() || !config()->addNewBuffersAutomatically())

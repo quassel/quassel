@@ -20,9 +20,11 @@
 
 #include "bufferview.h"
 
+#include "buffermodel.h"
 #include "bufferviewfilter.h"
 #include "buffersyncer.h"
 #include "client.h"
+#include "mappedselectionmodel.h"
 #include "network.h"
 #include "networkmodel.h"
 
@@ -78,11 +80,12 @@ void BufferView::init() {
 
 void BufferView::setModel(QAbstractItemModel *model) {
   delete selectionModel();
+  if(QTreeView::model()) {
+    disconnect(QTreeView::model(), SIGNAL(layoutChanged()), this, SLOT(updateSelection()));
+  }
+  
   QTreeView::setModel(model);
   init();
-  if(!model)
-    return;
-
   // remove old Actions
   QList<QAction *> oldactions = header()->actions();
   foreach(QAction *action, oldactions) {
@@ -90,6 +93,11 @@ void BufferView::setModel(QAbstractItemModel *model) {
     action->deleteLater();
   }
 
+  if(!model)
+    return;
+
+  connect(model, SIGNAL(layoutChanged()), this, SLOT(updateSelection()));
+  
   QString sectionName;
   QAction *showSection;
   for(int i = 1; i < model->columnCount(); i++) {
@@ -182,12 +190,23 @@ void BufferView::keyPressEvent(QKeyEvent *event) {
 // ensure that newly inserted network nodes are expanded per default
 void BufferView::rowsInserted(const QModelIndex & parent, int start, int end) {
   QTreeView::rowsInserted(parent, start, end);
-  if(model()->rowCount(parent) == 1 && parent.data(NetworkModel::ItemTypeRole) == NetworkModel::NetworkItemType
-     && parent.data(NetworkModel::ItemActiveRole) == true) {
+  if(parent.data(NetworkModel::ItemTypeRole) != NetworkModel::NetworkItemType)
+    return;
+  
+  if(model()->rowCount(parent) == 1 && parent.data(NetworkModel::ItemActiveRole) == true) {
     // without updating the parent the expand will have no effect... Qt Bug?
     update(parent);
     expand(parent);
   }
+}
+
+void BufferView::updateSelection() {
+  MappedSelectionModel *mappedSelectionModel = qobject_cast<MappedSelectionModel *>(selectionModel());
+  if(!config())
+    return;
+
+  mappedSelectionModel->mappedSetCurrentIndex(Client::bufferModel()->standardSelectionModel()->currentIndex(), QItemSelectionModel::Current);
+  mappedSelectionModel->mappedSelect(Client::bufferModel()->standardSelectionModel()->selection(), QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
 }
 
 void BufferView::dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight) {
