@@ -30,6 +30,10 @@ BufferModel::BufferModel(NetworkModel *parent)
     _selectionModelSynchronizer(this)
 {
   setSourceModel(parent);
+  if(QCoreApplication::instance()->arguments().contains("--debugbufferswitches")) {
+    connect(_selectionModelSynchronizer.selectionModel(), SIGNAL(currentChanged(const QModelIndex &, const QModelIndex &)),
+	    this, SLOT(debug_currentChanged(const QModelIndex &, const QModelIndex &)));
+  }
 }
 
 bool BufferModel::filterAcceptsRow(int sourceRow, const QModelIndex &parent) const {
@@ -60,14 +64,11 @@ QModelIndex BufferModel::currentIndex() {
 }
 
 void BufferModel::setCurrentIndex(const QModelIndex &newCurrent) {
-  _selectionModelSynchronizer.selectionModel()->setCurrentIndex(newCurrent, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
-  _selectionModelSynchronizer.selectionModel()->select(newCurrent, QItemSelectionModel::Current);
+  _selectionModelSynchronizer.selectionModel()->setCurrentIndex(newCurrent, QItemSelectionModel::Current);
+  _selectionModelSynchronizer.selectionModel()->select(newCurrent, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
 }
 
 void BufferModel::debug_currentChanged(QModelIndex current, QModelIndex previous) {
-  qDebug() << "New current:" << current << "(previous:" << previous << ")";
-}
-
-void BufferModel::debug_selectionChanged(QItemSelection current , QItemSelection previous) {
-  qDebug() << "new selection:" << current << "(previoius:" << previous << ")";
+  Q_UNUSED(previous);
+  qDebug() << "Switched current Buffer: " << current << current.data().toString() << "Buffer:" << current.data(NetworkModel::BufferIdRole).value<BufferId>();
 }

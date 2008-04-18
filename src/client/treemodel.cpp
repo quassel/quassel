@@ -399,9 +399,6 @@ QVariant TreeModel::data(const QModelIndex &index, int role) const {
     return QVariant();
 
   AbstractTreeItem *item = static_cast<AbstractTreeItem *>(index.internalPointer());
-  if(role == Qt::DisplayRole && !item->data(index.column(), role).isValid()) {
-    qDebug() << item->data(0, role) << item->columnCount();
-  }
   return item->data(index.column(), role);
 }
 

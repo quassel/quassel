@@ -50,7 +50,6 @@ public:
 
 private slots:
   void debug_currentChanged(QModelIndex current, QModelIndex previous);
-  void debug_selectionChanged(QItemSelection current , QItemSelection previous);
     
 private:
   SelectionModelSynchronizer _selectionModelSynchronizer;

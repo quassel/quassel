@@ -45,7 +45,7 @@ public:
 
   void setConfig(BufferViewConfig *config);
   inline BufferViewConfig *config() { return _config; }
-
+							       
 public slots:
   void setRootIndexForNetworkId(const NetworkId &networkId);
   
@@ -58,11 +58,13 @@ protected:
   virtual void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
   virtual void wheelEvent(QWheelEvent *);
   virtual QSize sizeHint() const;
+  virtual void focusInEvent(QFocusEvent *event) { QAbstractScrollArea::focusInEvent(event); }
 
 private slots:
   void joinChannel(const QModelIndex &index);
   void toggleHeader(bool checked);
   void showContextMenu(const QPoint &);
+  void updateSelection();
 
 private:
   QPointer<BufferViewConfig> _config;
