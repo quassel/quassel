@@ -30,6 +30,7 @@
 
 class BufferInfo;
 class Message;
+class MessageModel;
 
 class Identity;
 class Network;
@@ -48,7 +49,6 @@ class SignalProxy;
 struct NetworkInfo;
 
 class QTimer;
-
 
 class Client : public QObject {
   Q_OBJECT
@@ -215,6 +215,8 @@ private:
   BufferSyncer * _bufferSyncer;
   ClientBacklogManager *_backlogManager;
   BufferViewManager *_bufferViewManager;
+
+  MessageModel *_messageModel;
 
   ClientMode clientMode;
 

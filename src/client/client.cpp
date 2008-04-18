@@ -21,21 +21,24 @@
 #include "client.h"
 
 #include "bufferinfo.h"
+#include "buffermodel.h"
+#include "buffersettings.h"
 #include "buffersyncer.h"
-#include "clientbacklogmanager.h"
 #include "bufferviewmanager.h"
+#include "clientbacklogmanager.h"
 #include "global.h"
 #include "identity.h"
 #include "ircchannel.h"
 #include "ircuser.h"
 #include "message.h"
+#ifdef SPUTDEV
+# include "messagemodel.h"
+#endif
 #include "network.h"
 #include "networkmodel.h"
-#include "buffermodel.h"
 #include "quasselui.h"
 #include "signalproxy.h"
 #include "util.h"
-#include "buffersettings.h"
 
 QPointer<Client> Client::instanceptr = 0;
 AccountId Client::_currentCoreAccount = 0;
@@ -68,6 +71,7 @@ Client::Client(QObject *parent)
     _bufferSyncer(0),
     _backlogManager(new ClientBacklogManager(this)),
     _bufferViewManager(0),
+    _messageModel(0),
     _connectedToCore(false),
     _syncedToCore(false)
 {
@@ -90,7 +94,9 @@ void Client::init() {
 	  _networkModel, SLOT(networkRemoved(NetworkId)));
 
   _bufferModel = new BufferModel(_networkModel);
-
+#ifdef SPUTDEV
+  _messageModel = new MessageModel(this);
+#endif
   SignalProxy *p = signalProxy();
 
   p->attachSlot(SIGNAL(displayMsg(const Message &)), this, SLOT(recvMessage(const Message &)));
@@ -437,6 +443,9 @@ void Client::recvMessage(const Message &message) {
 
   // FIXME clean up code! (dup)
 
+  // TODO: make redirected messages show up in the correct buffer!
+
+#ifndef SPUTDEV
   if(msg.flags() & Message::Redirected) {
     BufferSettings bufferSettings;
     bool inStatus = bufferSettings.value("UserMessagesInStatusBuffer", QVariant(true)).toBool();
@@ -480,9 +489,12 @@ void Client::recvMessage(const Message &message) {
     b = buffer(msg.bufferInfo());
     b->appendMsg(msg);
   }
+#endif
   
   //bufferModel()->updateBufferActivity(msg);
 
+  // monitor buffer goes away
+#ifndef SPUTDEV
   if(msg.type() == Message::Plain || msg.type() == Message::Notice || msg.type() == Message::Action) {
     const Network *net = network(msg.bufferInfo().networkId());
     QString networkName = net != 0
@@ -492,6 +504,7 @@ void Client::recvMessage(const Message &message) {
     Message mmsg = Message(msg.timestamp(), msg.bufferInfo(), msg.type(), msg.text(), sender, msg.flags());
     monitorBuffer()->appendMsg(mmsg);
   }
+#endif
 
   emit messageReceived(msg);
 }
@@ -501,11 +514,13 @@ void Client::recvStatusMsg(QString /*net*/, QString /*msg*/) {
 }
 
 void Client::receiveBacklog(BufferId bufferId, const QVariantList &msgs) {
+#ifndef SPUTDEV
   Buffer *buffer_ = buffer(bufferId);
   if(!buffer_) {
     qWarning() << "Client::recvBacklogData(): received Backlog for unknown Buffer:" << bufferId;
     return;
   }
+#endif
 
   if(msgs.isEmpty())
     return; // no work to be done...
