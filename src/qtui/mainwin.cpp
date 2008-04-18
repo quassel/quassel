@@ -141,7 +141,7 @@ void MainWin::init() {
   ui.bufferWidget->setModel(Client::bufferModel());
   ui.bufferWidget->setSelectionModel(Client::bufferModel()->standardSelectionModel());
 
-  if(Global::SPUTDEV) {
+  if(Global::DEBUG) {
     //showSettingsDlg();
     //showAboutDlg();
     //showNetworkDlg();
@@ -484,8 +484,11 @@ void MainWin::setDisconnectedState() {
 }
 
 AbstractUiMsg *MainWin::layoutMsg(const Message &msg) {
-  if(Global::SPUTDEV) return new ChatLine(msg);
+#ifdef SPUTDEV
+  return new ChatLine(msg);
+#else
   return new ChatLineOld(msg);
+#endif
 }
 
 void MainWin::showCoreConnectionDlg(bool autoConnect) {

@@ -7,6 +7,10 @@ release {
   CONFIG *= debug
 }
 
+sputdev {
+  DEFINES *= SPUTDEV
+}
+
 win32:static { 
   CONFIG = release warn_on uic resources qt windows static
 }

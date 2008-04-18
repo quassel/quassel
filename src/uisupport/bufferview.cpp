@@ -223,12 +223,11 @@ void BufferView::dataChanged(const QModelIndex &topLeft, const QModelIndex &bott
       continue;
 
     bool isActive = networkIdx.data(NetworkModel::ItemActiveRole).toBool();
-    if(Global::SPUTDEV) {
-      if(isExpanded(networkIdx) != isActive) setExpanded(networkIdx, true);
-    } else {
-      if(isExpanded(networkIdx) != isActive)
-        setExpanded(networkIdx, isActive);
-    }
+#ifdef SPUTDEV
+    if(isExpanded(networkIdx) != isActive) setExpanded(networkIdx, true);
+#else
+    if(isExpanded(networkIdx) != isActive) setExpanded(networkIdx, isActive);
+#endif
   }
 }
 

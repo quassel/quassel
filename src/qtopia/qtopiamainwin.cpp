@@ -47,7 +47,7 @@ QtopiaMainWin::QtopiaMainWin(QWidget *parent, Qt::WFlags flags) : QMainWindow(pa
 
   Global::runMode = Global::ClientOnly;
   Global::defaultPort = 4242;
-  Global::SPUTDEV = true;
+  Global::DEBUG = true;
 
   Network::setDefaultCodecForServer("ISO-8859-1");
   Network::setDefaultCodecForEncoding("UTF-8");
