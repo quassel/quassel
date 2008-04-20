@@ -5,7 +5,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>736</width>
+    <width>514</width>
     <height>452</height>
    </rect>
   </property>
@@ -171,7 +171,7 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</string>
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>398</width>
+           <width>301</width>
            <height>326</height>
           </rect>
          </property>
@@ -337,7 +337,7 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</string>
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>398</width>
+           <width>301</width>
            <height>326</height>
           </rect>
          </property>
@@ -376,48 +376,51 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</string>
             <property name="checked" >
              <bool>true</bool>
             </property>
+            <layout class="QFormLayout" name="formLayout" >
+             <item row="0" column="0" >
+              <widget class="QLabel" name="label_2" >
+               <property name="text" >
+                <string>Service:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1" >
+              <widget class="QLineEdit" name="autoIdentifyService" >
+               <property name="enabled" >
+                <bool>true</bool>
+               </property>
+               <property name="text" >
+                <string>NickServ</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0" >
+              <widget class="QLabel" name="label_3" >
+               <property name="enabled" >
+                <bool>true</bool>
+               </property>
+               <property name="text" >
+                <string>Password:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1" >
+              <widget class="QLineEdit" name="autoIdentifyPassword" >
+               <property name="enabled" >
+                <bool>true</bool>
+               </property>
+               <property name="echoMode" >
+                <enum>QLineEdit::Password</enum>
+               </property>
+              </widget>
+             </item>
+            </layout>
+            <zorder></zorder>
+            <zorder>autoIdentifyService</zorder>
+            <zorder>autoIdentifyPassword</zorder>
+            <zorder>label_2</zorder>
+            <zorder>label_3</zorder>
            </widget>
-          </item>
-          <item>
-           <layout class="QGridLayout" >
-            <item row="0" column="0" >
-             <widget class="QLabel" name="label_2" >
-              <property name="text" >
-               <string>Service:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="1" >
-             <widget class="QLineEdit" name="autoIdentifyService" >
-              <property name="enabled" >
-               <bool>true</bool>
-              </property>
-              <property name="text" >
-               <string>NickServ</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="0" >
-             <widget class="QLabel" name="label_3" >
-              <property name="enabled" >
-               <bool>true</bool>
-              </property>
-              <property name="text" >
-               <string>Password:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="1" >
-             <widget class="QLineEdit" name="autoIdentifyPassword" >
-              <property name="enabled" >
-               <bool>true</bool>
-              </property>
-              <property name="echoMode" >
-               <enum>QLineEdit::Password</enum>
-              </property>
-             </widget>
-            </item>
-           </layout>
           </item>
          </layout>
         </widget>
@@ -426,7 +429,7 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</string>
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>398</width>
+           <width>301</width>
            <height>326</height>
           </rect>
          </property>
