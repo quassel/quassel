@@ -81,7 +81,7 @@ void BufferView::init() {
 void BufferView::setModel(QAbstractItemModel *model) {
   delete selectionModel();
   if(QTreeView::model()) {
-    disconnect(QTreeView::model(), SIGNAL(layoutChanged()), this, SLOT(updateSelection()));
+    disconnect(QTreeView::model(), SIGNAL(layoutChanged()), this, SLOT(layoutChanged()));
   }
   
   QTreeView::setModel(model);
@@ -96,7 +96,7 @@ void BufferView::setModel(QAbstractItemModel *model) {
   if(!model)
     return;
 
-  connect(model, SIGNAL(layoutChanged()), this, SLOT(updateSelection()));
+  connect(model, SIGNAL(layoutChanged()), this, SLOT(layoutChanged()));
   
   QString sectionName;
   QAction *showSection;
@@ -187,9 +187,10 @@ void BufferView::keyPressEvent(QKeyEvent *event) {
   QTreeView::keyPressEvent(event);
 }
 
-// ensure that newly inserted network nodes are expanded per default
 void BufferView::rowsInserted(const QModelIndex & parent, int start, int end) {
   QTreeView::rowsInserted(parent, start, end);
+
+  // ensure that newly inserted network nodes are expanded per default
   if(parent.data(NetworkModel::ItemTypeRole) != NetworkModel::NetworkItemType)
     return;
   
@@ -200,9 +201,24 @@ void BufferView::rowsInserted(const QModelIndex & parent, int start, int end) {
   }
 }
 
-void BufferView::updateSelection() {
+void BufferView::layoutChanged() {
+  Q_ASSERT(model());
+
+  // expand all active networks
+  QModelIndex networkIdx;
+  for(int row = 0; row < model()->rowCount(); row++) {
+    networkIdx = model()->index(row, 0);
+    update(networkIdx);
+    if(model()->rowCount(networkIdx) > 0 && model()->data(networkIdx, NetworkModel::ItemActiveRole) == true) {
+      expand(networkIdx);
+    } else {
+      collapse(networkIdx);
+    }
+  }
+
+  // update selection to current one
   MappedSelectionModel *mappedSelectionModel = qobject_cast<MappedSelectionModel *>(selectionModel());
-  if(!config())
+  if(!config() || !mappedSelectionModel)
     return;
 
   mappedSelectionModel->mappedSetCurrentIndex(Client::bufferModel()->standardSelectionModel()->currentIndex(), QItemSelectionModel::Current);
