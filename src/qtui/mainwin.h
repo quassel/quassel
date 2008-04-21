@@ -24,9 +24,11 @@
 #include "ui_mainwin.h"
 
 #include "qtui.h"
+#include "titlesetter.h"
 
 #include <QSystemTrayIcon>
 #include <QTimer>
+
 
 class ServerListDlg;
 class CoreConnectDlg;
@@ -106,6 +108,8 @@ class MainWin : public QMainWindow {
 
     QMenu *systrayMenu;
     QLabel *sslLabel;
+
+    TitleSetter _titleSetter;
 
     void setupMenus();
     void setupViews();

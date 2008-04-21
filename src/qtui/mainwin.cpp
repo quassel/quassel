@@ -61,10 +61,12 @@
 #include "global.h"
 #include "qtuistyle.h"
 
+
 MainWin::MainWin(QtUi *_gui, QWidget *parent)
   : QMainWindow(parent),
     gui(_gui),
     sslLabel(new QLabel()),
+    _titleSetter(this),
     systray(new QSystemTrayIcon(this)),
     activeTrayIcon(":/icons/quassel-icon-active.png"),
     onlineTrayIcon(":/icons/quassel-icon.png"),
@@ -140,6 +142,8 @@ void MainWin::init() {
   ui.bufferWidget->setModel(Client::bufferModel());
   ui.bufferWidget->setSelectionModel(Client::bufferModel()->standardSelectionModel());
 
+  _titleSetter.setModel(Client::bufferModel());
+  _titleSetter.setSelectionModel(Client::bufferModel()->standardSelectionModel());
 }
 
 MainWin::~MainWin() {
@@ -604,6 +608,7 @@ void MainWin::makeTrayIconBlink() {
     trayIconActive = true;
   }
 }
+
 
 
 void MainWin::clientNetworkCreated(NetworkId id) {
