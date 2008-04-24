@@ -64,7 +64,7 @@ private slots:
   void joinChannel(const QModelIndex &index);
   void toggleHeader(bool checked);
   void showContextMenu(const QPoint &);
-  void updateSelection();
+  void layoutChanged();
 
 private:
   QPointer<BufferViewConfig> _config;

@@ -18,54 +18,28 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "messagemodel.h"
 
-MessageModel::MessageModel(QObject *parent) : QAbstractItemModel(parent) {
-  
-  
-  
-}
+#ifndef TITLESETTER_H
+#define TITLESETTER_H
 
-MessageModel::~MessageModel() {
-  
-  
-}
+#include "abstractitemview.h"
 
-QVariant MessageModel::data(const QModelIndex &index, int role) const {
-  int row = index.row();
-  if(row < 0 || row >= _messageList.count()) return QVariant();
-  return _messageList[row]->data(index.column(), role);
-}
+class MainWin;
 
-bool MessageModel::setData(const QModelIndex &index, const QVariant &value, int role) {
-  int row = index.row();
-  if(row < 0 || row >= _messageList.count()) return false;
-  if(_messageList[row]->setData(index.column(), role)) {
-    emit dataChanged(index, index); // FIXME make msg emit this (too)
-    return true;
-  }
-  return false;
-}
+class TitleSetter : public AbstractItemView {
+  Q_OBJECT
 
-void MessageModel::insertMessage(const Message &msg) {
-  MsgId id = msg.msgId();
-  MessageItem *item = createMessageItem(msg);
-  if(id > )
-    
-}
+  public:
+    TitleSetter(MainWin *parent);
 
-// returns index of msg with given Id or of the next message after that (i.e., the index where we'd insert this msg)
-int MessageModel::indexForId(MsgId id) {
-  if(!_messageList.count() || id <= _messageList[0]->data(0, MsgIdRole).value<MsgId>()) return 0;
-  if(id > _messageList.last()->data(0, MsgIdRole).value<MsgId>()) return _messageList.count();
-  // binary search
-  int start = 0; int end = _messageList.count()-1;
-  int idx;
-  while(1) {
-    if(start == end) return start;
-    idx = (end + start) / 2;
-    
-}
+  protected slots:
+    virtual void currentChanged(const QModelIndex &current, const QModelIndex &previous);
+    virtual void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
 
-/**********************************************************************************/
+  private:
+    MainWin *_mainWin;
+    void changeWindowTitle(QString title);
+};
 
+
+#endif

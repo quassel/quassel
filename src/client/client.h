@@ -35,7 +35,6 @@ class MessageModel;
 class Identity;
 class Network;
 
-
 class AbstractUi;
 class AbstractUiMsg;
 class NetworkModel;

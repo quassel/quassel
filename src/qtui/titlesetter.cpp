@@ -18,54 +18,32 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "messagemodel.h"
+#include "titlesetter.h"
 
-MessageModel::MessageModel(QObject *parent) : QAbstractItemModel(parent) {
-  
-  
-  
+#include "abstractitemview.h"
+#include "mainwin.h"
+
+TitleSetter::TitleSetter(MainWin *parent)
+  : AbstractItemView(parent),
+    _mainWin(parent)
+{
+
 }
 
-MessageModel::~MessageModel() {
-  
-  
+void TitleSetter::currentChanged(const QModelIndex &current, const QModelIndex &previous) {
+  Q_UNUSED(previous);
+  changeWindowTitle(current.sibling(current.row(), 0).data().toString());
 }
 
-QVariant MessageModel::data(const QModelIndex &index, int role) const {
-  int row = index.row();
-  if(row < 0 || row >= _messageList.count()) return QVariant();
-  return _messageList[row]->data(index.column(), role);
+void TitleSetter::dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight) {
+  QItemSelectionRange changedArea(topLeft, bottomRight);
+  QModelIndex currentTopicIndex = selectionModel()->currentIndex().sibling(selectionModel()->currentIndex().row(), 0);
+  if(changedArea.contains(currentTopicIndex))
+    changeWindowTitle(currentTopicIndex.data().toString());
+};
+
+void TitleSetter::changeWindowTitle(QString title) {
+  QString newTitle = QString("%1 - %2").arg("Quassel IRC").arg(title);
+  _mainWin->setWindowTitle(newTitle);
+  _mainWin->setWindowIconText(newTitle);
 }
-
-bool MessageModel::setData(const QModelIndex &index, const QVariant &value, int role) {
-  int row = index.row();
-  if(row < 0 || row >= _messageList.count()) return false;
-  if(_messageList[row]->setData(index.column(), role)) {
-    emit dataChanged(index, index); // FIXME make msg emit this (too)
-    return true;
-  }
-  return false;
-}
-
-void MessageModel::insertMessage(const Message &msg) {
-  MsgId id = msg.msgId();
-  MessageItem *item = createMessageItem(msg);
-  if(id > )
-    
-}
-
-// returns index of msg with given Id or of the next message after that (i.e., the index where we'd insert this msg)
-int MessageModel::indexForId(MsgId id) {
-  if(!_messageList.count() || id <= _messageList[0]->data(0, MsgIdRole).value<MsgId>()) return 0;
-  if(id > _messageList.last()->data(0, MsgIdRole).value<MsgId>()) return _messageList.count();
-  // binary search
-  int start = 0; int end = _messageList.count()-1;
-  int idx;
-  while(1) {
-    if(start == end) return start;
-    idx = (end + start) / 2;
-    
-}
-
-/**********************************************************************************/
-
