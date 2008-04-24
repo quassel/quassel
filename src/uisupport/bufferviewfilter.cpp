@@ -204,7 +204,6 @@ bool BufferViewFilter::lessThan(const QModelIndex &source_left, const QModelInde
 }
 
 bool BufferViewFilter::bufferLessThan(const QModelIndex &source_left, const QModelIndex &source_right) const {
-  return QSortFilterProxyModel::lessThan(source_left, source_right);
   BufferId leftBufferId = sourceModel()->data(source_left, NetworkModel::BufferIdRole).value<BufferId>();
   BufferId rightBufferId = sourceModel()->data(source_right, NetworkModel::BufferIdRole).value<BufferId>();
   if(config()) {
