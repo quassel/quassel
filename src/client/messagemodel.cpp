@@ -20,6 +20,8 @@
 
 #include "messagemodel.h"
 
+#include "message.h"
+
 MessageModel::MessageModel(QObject *parent) : QAbstractItemModel(parent) {
   
   
@@ -40,7 +42,7 @@ QVariant MessageModel::data(const QModelIndex &index, int role) const {
 bool MessageModel::setData(const QModelIndex &index, const QVariant &value, int role) {
   int row = index.row();
   if(row < 0 || row >= _messageList.count()) return false;
-  if(_messageList[row]->setData(index.column(), role)) {
+  if(_messageList[row]->setData(index.column(), value, role)) {
     emit dataChanged(index, index); // FIXME make msg emit this (too)
     return true;
   }
@@ -49,22 +51,32 @@ bool MessageModel::setData(const QModelIndex &index, const QVariant &value, int 
 
 void MessageModel::insertMessage(const Message &msg) {
   MsgId id = msg.msgId();
+  int idx = indexForId(id); qDebug() << "inserting at" << idx << msg.text();
   MessageItem *item = createMessageItem(msg);
-  if(id > )
-    
+  beginInsertRows(QModelIndex(), idx, idx);
+  _messageList.insert(idx, item);
+  endInsertRows();
+}
+
+void MessageModel::insertMessages(const QList<Message> &msglist) {
+  if(msglist.isEmpty()) return;
+  // FIXME make this more efficient by grouping msgs
+  foreach(Message msg, msglist) insertMessage(msg);
+
 }
 
 // returns index of msg with given Id or of the next message after that (i.e., the index where we'd insert this msg)
 int MessageModel::indexForId(MsgId id) {
-  if(!_messageList.count() || id <= _messageList[0]->data(0, MsgIdRole).value<MsgId>()) return 0;
+  if(_messageList.isEmpty() || id <= _messageList[0]->data(0, MsgIdRole).value<MsgId>()) return 0;
   if(id > _messageList.last()->data(0, MsgIdRole).value<MsgId>()) return _messageList.count();
   // binary search
   int start = 0; int end = _messageList.count()-1;
-  int idx;
   while(1) {
-    if(start == end) return start;
-    idx = (end + start) / 2;
-    
+    if(end - start == 1) return end;
+    int pivot = (end + start) / 2;
+    if(id <= _messageList[pivot]->data(0, MsgIdRole).value<MsgId>()) end = pivot;
+    else start = pivot;
+  }
 }
 
 /**********************************************************************************/

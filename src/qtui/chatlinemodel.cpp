@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-08 by the Quassel Project                          *
+ *   Copyright (C) 2005-08 by the Quassel IRC Team                         *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,54 +18,19 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "qtui.h"
+#include "chatlinemodel.h"
 
-#ifdef SPUTDEV
-# include "chatlinemodel.h"
-#endif
-#include "mainwin.h"
+ChatlineModel::ChatlineModel(QObject *parent) : MessageModel(parent) {
 
-QtUiStyle *QtUi::_style;
-
-QtUi::QtUi() : AbstractUi() {
-  mainWin = new MainWin(this);
-  _style = new QtUiStyle;
-
-  connect(mainWin, SIGNAL(connectToCore(const QVariantMap &)), this, SIGNAL(connectToCore(const QVariantMap &)));
-  connect(mainWin, SIGNAL(disconnectFromCore()), this, SIGNAL(disconnectFromCore()));
 
 }
 
-QtUi::~QtUi() {
-  delete _style;
-  delete mainWin;
+ChatlineModel::~ChatlineModel() {
+
 }
 
-void QtUi::init() {
-  mainWin->init();
-}
 
-QtUiStyle *QtUi::style() {
-  return _style;
-}
-
-MessageModel *QtUi::createMessageModel(QObject *parent) {
-#ifndef SPUTDEV
-  Q_UNUSED(parent)
+MessageItem *ChatlineModel::createMessageItem(const Message &msg) {
   return 0;
-#else
-  return new ChatlineModel(parent);
-#endif
-}
 
-AbstractUiMsg *QtUi::layoutMsg(const Message &msg) {
-  return mainWin->layoutMsg(msg);
-}
-
-void QtUi::connectedToCore() {
-  mainWin->connectedToCore();
-}
-
-void QtUi::disconnectedFromCore() {
-  mainWin->disconnectedFromCore();
 }

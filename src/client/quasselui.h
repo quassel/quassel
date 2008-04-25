@@ -24,6 +24,8 @@
 #include <QObject>
 #include "message.h"
 
+class MessageModel;
+
 class AbstractUiMsg {
 
   public:
@@ -42,6 +44,7 @@ class AbstractUi : public QObject {
 
   public:
     virtual void init() {};  // called after the client is initialized
+    virtual MessageModel *createMessageModel(QObject *parent = 0) = 0;
     virtual AbstractUiMsg *layoutMsg(const Message &) = 0;
 
   protected slots:

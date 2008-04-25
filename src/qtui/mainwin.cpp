@@ -274,6 +274,7 @@ void MainWin::setupNickWidget() {
 }
 
 void MainWin::setupChatMonitor() {
+#ifndef SPUTDEV
   VerticalDock *dock = new VerticalDock(tr("Chat Monitor"), this);
   dock->setObjectName("ChatMonitorDock");
 
@@ -292,6 +293,7 @@ void MainWin::setupChatMonitor() {
 
   addDockWidget(Qt::TopDockWidgetArea, dock, Qt::Vertical);
   ui.menuViews->addAction(dock->toggleViewAction());
+#endif /* SPUTDEV */
 }
 
 void MainWin::setupInputWidget() {

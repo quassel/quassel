@@ -95,7 +95,7 @@ void Client::init() {
 
   _bufferModel = new BufferModel(_networkModel);
 #ifdef SPUTDEV
-  _messageModel = new MessageModel(this);
+  _messageModel = mainUi->createMessageModel(this);
 #endif
   SignalProxy *p = signalProxy();
 
@@ -435,6 +435,7 @@ void Client::networkDestroyed() {
   }
 }
 
+#ifndef SPUTDEV
 void Client::recvMessage(const Message &message) {
   Message msg = message;
   Buffer *b;
@@ -445,7 +446,6 @@ void Client::recvMessage(const Message &message) {
 
   // TODO: make redirected messages show up in the correct buffer!
 
-#ifndef SPUTDEV
   if(msg.flags() & Message::Redirected) {
     BufferSettings bufferSettings;
     bool inStatus = bufferSettings.value("UserMessagesInStatusBuffer", QVariant(true)).toBool();
@@ -489,12 +489,8 @@ void Client::recvMessage(const Message &message) {
     b = buffer(msg.bufferInfo());
     b->appendMsg(msg);
   }
-#endif
-  
   //bufferModel()->updateBufferActivity(msg);
 
-  // monitor buffer goes away
-#ifndef SPUTDEV
   if(msg.type() == Message::Plain || msg.type() == Message::Notice || msg.type() == Message::Action) {
     const Network *net = network(msg.bufferInfo().networkId());
     QString networkName = net != 0
@@ -504,10 +500,16 @@ void Client::recvMessage(const Message &message) {
     Message mmsg = Message(msg.timestamp(), msg.bufferInfo(), msg.type(), msg.text(), sender, msg.flags());
     monitorBuffer()->appendMsg(mmsg);
   }
-#endif
-
   emit messageReceived(msg);
 }
+#else
+
+void Client::recvMessage(const Message &msg) {
+
+
+}
+
+#endif /* SPUTDEV */
 
 void Client::recvStatusMsg(QString /*net*/, QString /*msg*/) {
   //recvMessage(net, Message::server("", QString("[STATUS] %1").arg(msg)));
@@ -520,7 +522,6 @@ void Client::receiveBacklog(BufferId bufferId, const QVariantList &msgs) {
     qWarning() << "Client::recvBacklogData(): received Backlog for unknown Buffer:" << bufferId;
     return;
   }
-#endif
 
   if(msgs.isEmpty())
     return; // no work to be done...
@@ -541,6 +542,7 @@ void Client::receiveBacklog(BufferId bufferId, const QVariantList &msgs) {
   if(!layoutTimer->isActive()) {
     layoutTimer->start();
   }
+#endif
 }
 
 void Client::layoutMsg() {

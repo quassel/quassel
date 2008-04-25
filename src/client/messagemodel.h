@@ -23,7 +23,9 @@
 
 #include <QAbstractItemModel>
 
+class Message;
 class MessageItem;
+class MsgId;
 
 class MessageModel : public QAbstractItemModel {
   Q_OBJECT
@@ -41,10 +43,10 @@ class MessageModel : public QAbstractItemModel {
     MessageModel(QObject *parent);
     virtual ~MessageModel();
 
-    inline QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const { return createIndex(row, column); }
-    inline QModelIndex parent(const QModelIndex &index) const { return QModelIndex(); }
-    inline int rowCount(const QModelIndex &parent = QModelIndex()) const { return _messageList.count(); }
-    inline int columnCount(const QModelIndex &parent = QModelIndex()) const { return 3; }
+    inline QModelIndex index(int row, int column, const QModelIndex &/*parent*/ = QModelIndex()) const { return createIndex(row, column); }
+    inline QModelIndex parent(const QModelIndex &) const { return QModelIndex(); }
+    inline int rowCount(const QModelIndex &/*parent*/ = QModelIndex()) const { return _messageList.count(); }
+    inline int columnCount(const QModelIndex &/*parent*/ = QModelIndex()) const { return 3; }
 
     virtual QVariant data(const QModelIndex &index, int role) const;
     virtual bool setData(const QModelIndex &index, const QVariant &value, int role);
@@ -59,6 +61,8 @@ class MessageModel : public QAbstractItemModel {
 
   private:
     QList<MessageItem *> _messageList;
+
+    int indexForId(MsgId);
 
 };
 
