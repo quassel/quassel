@@ -168,6 +168,7 @@ void UserInputHandler::handleKick(const BufferInfo &bufferInfo, const QString &m
 }
 
 void UserInputHandler::handleKill(const BufferInfo &bufferInfo, const QString &msg) {
+  Q_UNUSED(bufferInfo)
   QString nick = msg.section(' ', 0, 0, QString::SectionSkipEmpty);
   QString pass = msg.section(' ', 1, -1, QString::SectionSkipEmpty);
   QList<QByteArray> params;
@@ -222,6 +223,7 @@ void UserInputHandler::handleOp(const BufferInfo &bufferInfo, const QString &msg
 }
 
 void UserInputHandler::handleOper(const BufferInfo &bufferInfo, const QString &msg) {
+  Q_UNUSED(bufferInfo)
   emit putRawLine(serverEncode(QString("OPER %1").arg(msg)));
 }
 

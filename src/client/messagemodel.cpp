@@ -81,3 +81,28 @@ int MessageModel::indexForId(MsgId id) {
 
 /**********************************************************************************/
 
+MessageItem::MessageItem(const Message &msg) {
+  _timestamp = msg.timestamp();
+  _msgId = msg.msgId();
+  _bufferId = msg.bufferInfo().bufferId();
+  _type = msg.type();
+  _flags = msg.flags();
+
+}
+
+MessageItem::~MessageItem() {
+
+}
+
+QVariant MessageItem::data(int column, int role) const {
+  if(column < TimestampRole || column > TextRole) return QVariant();
+  switch(role) {
+    case MsgIdRole: return _msgId;
+    case BufferIdRole: return _bufferId;
+    case TypeRole: return _type;
+    case FlagsRole: return _flags;
+    case TimestampRole: return _timestamp;
+    default: return QVariant();
+  }
+}
+

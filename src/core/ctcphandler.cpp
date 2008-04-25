@@ -94,7 +94,7 @@ void CtcpHandler::parse(Message::Type messageType, const QString &prefix, const 
     ? CtcpReply
     : CtcpQuery;
   
-  quint8 flags = (messageType == Message::Notice && !network()->isChannelName(target))
+  Message::Flags flags = (messageType == Message::Notice && !network()->isChannelName(target))
     ? Message::Redirected
     : Message::None;
 

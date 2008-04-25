@@ -48,18 +48,18 @@ public:
     Error  = 0x1000
   };
 
-  enum Flags {
+  enum Flag {
     None = 0,
     Self = 1,
     Highlight = 2,
     Redirected = 4
   };
-  Q_DECLARE_FLAGS(MessageFlags, Flags)
+  Q_DECLARE_FLAGS(Flags, Flag)
   
 
-  Message(BufferInfo bufferInfo = BufferInfo(), Type type = Plain, QString text = "", QString sender = "", quint8 flags = None);
+  Message(BufferInfo bufferInfo = BufferInfo(), Type type = Plain, QString text = "", QString sender = "", Flags flags = None);
 
-  Message(QDateTime ts, BufferInfo buffer = BufferInfo(), Type type = Plain, QString text = "", QString sender = "", quint8 flags = None);
+  Message(QDateTime ts, BufferInfo buffer = BufferInfo(), Type type = Plain, QString text = "", QString sender = "", Flags flags = None);
 
   inline MsgId msgId() const { return _msgId; }
   inline void setMsgId(MsgId id) { _msgId = id; }
@@ -68,10 +68,10 @@ public:
   inline QString text() const { return _text; }
   inline QString sender() const { return _sender; }
   inline Type type() const { return _type; }
-  inline quint8 flags() const { return _flags; }
+  inline Flags flags() const { return _flags; }
   inline QDateTime timestamp() const { return _timestamp; }
 
-  void setFlags(quint8 flags);
+  void setFlags(Flags flags);
   
   QString formattedTimestamp();
   QString formattedSender();
@@ -91,7 +91,7 @@ private:
   QString _text;
   QString _sender;
   Type _type;
-  quint8 _flags;
+  Flags _flags;
 
   QString _formattedTimestamp, _formattedSender, _formattedText; // cache
 
@@ -103,6 +103,6 @@ QDataStream &operator<<(QDataStream &out, const Message &msg);
 QDataStream &operator>>(QDataStream &in, Message &msg);
 
 Q_DECLARE_METATYPE(Message);
-Q_DECLARE_OPERATORS_FOR_FLAGS(Message::MessageFlags)
+Q_DECLARE_OPERATORS_FOR_FLAGS(Message::Flags)
 
 #endif

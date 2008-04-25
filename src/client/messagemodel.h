@@ -22,8 +22,11 @@
 #define MESSAGEMODEL_H_
 
 #include <QAbstractItemModel>
+#include <QDateTime>
 
-class Message;
+#include "message.h"
+#include "types.h"
+
 class MessageItem;
 class MsgId;
 
@@ -67,15 +70,24 @@ class MessageModel : public QAbstractItemModel {
 };
 
 class MessageItem {
-      
+
   public:
+    enum {
+      TimestampColumn, SenderColumn, TextColumn
+    };
+
     MessageItem(const Message &);
     virtual ~MessageItem();
 
-
-    virtual QVariant data(int column, int role) const = 0;
+    virtual QVariant data(int column, int role) const;
     virtual bool setData(int column, const QVariant &value, int role) = 0;
 
+  private:
+    QDateTime _timestamp;
+    MsgId _msgId;
+    BufferId _bufferId;
+    Message::Type _type;
+    Message::Flags _flags;
 };
 
 #endif

@@ -25,8 +25,11 @@
 #include "bufferviewconfig.h"
 #include "bufferviewfilter.h"
 #include "bufferviewmanager.h"
-#include "chatline.h"
-#include "chatline-old.h"
+#ifdef SPUTDEV
+# include "chatline.h"
+#else
+# include "chatline-old.h"
+#endif
 #include "client.h"
 #include "clientbacklogmanager.h"
 #include "coreconnectdlg.h"
