@@ -505,8 +505,8 @@ void Client::recvMessage(const Message &message) {
 #else
 
 void Client::recvMessage(const Message &msg) {
-
-
+  //checkForHighlight(msg);
+  _messageModel->insertMessage(msg);
 }
 
 #endif /* SPUTDEV */
@@ -515,8 +515,17 @@ void Client::recvStatusMsg(QString /*net*/, QString /*msg*/) {
   //recvMessage(net, Message::server("", QString("[STATUS] %1").arg(msg)));
 }
 
+#ifdef SPUTDEV
 void Client::receiveBacklog(BufferId bufferId, const QVariantList &msgs) {
-#ifndef SPUTDEV
+  //checkForHighlight(msg);
+  foreach(QVariant v, msgs) {
+    _messageModel->insertMessage(v.value<Message>());
+  }
+}
+
+#else
+
+void Client::receiveBacklog(BufferId bufferId, const QVariantList &msgs) {
   Buffer *buffer_ = buffer(bufferId);
   if(!buffer_) {
     qWarning() << "Client::recvBacklogData(): received Backlog for unknown Buffer:" << bufferId;
@@ -542,8 +551,8 @@ void Client::receiveBacklog(BufferId bufferId, const QVariantList &msgs) {
   if(!layoutTimer->isActive()) {
     layoutTimer->start();
   }
-#endif
 }
+#endif /* SPUTDEV */
 
 void Client::layoutMsg() {
   if(layoutQueue.isEmpty()) {

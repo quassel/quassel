@@ -20,6 +20,8 @@
 
 #include "chatlinemodel.h"
 
+#include "chatline.h"
+
 ChatlineModel::ChatlineModel(QObject *parent) : MessageModel(parent) {
 
 
@@ -31,6 +33,6 @@ ChatlineModel::~ChatlineModel() {
 
 
 MessageItem *ChatlineModel::createMessageItem(const Message &msg) {
-  return 0;
+  return new Chatline(msg);
 
 }

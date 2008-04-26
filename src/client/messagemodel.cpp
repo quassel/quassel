@@ -51,7 +51,7 @@ bool MessageModel::setData(const QModelIndex &index, const QVariant &value, int 
 
 void MessageModel::insertMessage(const Message &msg) {
   MsgId id = msg.msgId();
-  int idx = indexForId(id); qDebug() << "inserting at" << idx << msg.text();
+  int idx = indexForId(id);
   MessageItem *item = createMessageItem(msg);
   beginInsertRows(QModelIndex(), idx, idx);
   _messageList.insert(idx, item);
@@ -95,13 +95,13 @@ MessageItem::~MessageItem() {
 }
 
 QVariant MessageItem::data(int column, int role) const {
-  if(column < TimestampRole || column > TextRole) return QVariant();
+  if(column < TimestampColumn || column > TextColumn) return QVariant();
   switch(role) {
-    case MsgIdRole: return _msgId;
-    case BufferIdRole: return _bufferId;
-    case TypeRole: return _type;
-    case FlagsRole: return _flags;
-    case TimestampRole: return _timestamp;
+    case MessageModel::MsgIdRole: return QVariant::fromValue<MsgId>(_msgId);
+    case MessageModel::BufferIdRole: return QVariant::fromValue<BufferId>(_bufferId);
+    case MessageModel::TypeRole: return _type;
+    case MessageModel::FlagsRole: return (int)_flags;
+    case MessageModel::TimestampRole: return _timestamp;
     default: return QVariant();
   }
 }

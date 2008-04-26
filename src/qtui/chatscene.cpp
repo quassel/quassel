@@ -42,23 +42,28 @@ ChatScene::~ChatScene() {
 }
 
 void ChatScene::appendMsg(AbstractUiMsg * msg) {
+  /*
   ChatLine *line = dynamic_cast<ChatLine*>(msg);
   Q_ASSERT(line);
   _lines.append(line);
   addItem(line);
   line->setPos(0, _lines.count() * 30);
   line->setColumnWidths(80, 80, 400);
+  */
 }
 
 void ChatScene::prependMsg(AbstractUiMsg * msg) {
+  /*
   ChatLine *line = dynamic_cast<ChatLine*>(msg);
   Q_ASSERT(line); qDebug() << "prepending";
   _lines.prepend(line);
   addItem(line);
   line->setPos(0, _lines.count() * 30);
+  */
 }
 
 void ChatScene::mousePressEvent ( QGraphicsSceneMouseEvent * mouseEvent ) {
+  /*
   qDebug() << "recv" << mouseEvent->scenePos();
   ChatLine *line = static_cast<ChatLine*>(itemAt(mouseEvent->scenePos()));
   ChatItem *item = static_cast<ChatItem*>(itemAt(mouseEvent->scenePos()));
@@ -66,4 +71,5 @@ void ChatScene::mousePressEvent ( QGraphicsSceneMouseEvent * mouseEvent ) {
   if(line) {
     line->myMousePressEvent(mouseEvent);
   } else  QGraphicsScene::mousePressEvent(mouseEvent);
+  */
 }

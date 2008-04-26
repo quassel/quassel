@@ -21,10 +21,13 @@
 #ifndef CHATLINE_H_
 #define CHATLINE_H_
 
+#include "messagemodel.h"
+
 class Chatline : public MessageItem {
 
   public:
     Chatline(const Message &);
+    //virtual ~Chatline() {};
 
     virtual QVariant data(int column, int role) const;
     virtual bool setData(int column, const QVariant &value, int role);

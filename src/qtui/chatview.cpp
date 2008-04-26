@@ -50,9 +50,9 @@ void ChatView::clear()
 }
 
 void ChatView::prependMsg(AbstractUiMsg *msg) {
-  ChatLine *line = dynamic_cast<ChatLine*>(msg);
-  Q_ASSERT(line);
-  prependChatLine(line);
+  //ChatLine *line = dynamic_cast<ChatLine*>(msg);
+  //Q_ASSERT(line);
+  //prependChatLine(line);
 }
 
 void ChatView::prependChatLine(ChatLine *line) {
@@ -64,9 +64,9 @@ void ChatView::prependChatLines(QList<ChatLine *> clist) {
 }
 
 void ChatView::appendMsg(AbstractUiMsg *msg) {
-  ChatLine *line = dynamic_cast<ChatLine*>(msg);
-  Q_ASSERT(line);
-  appendChatLine(line);
+  //ChatLine *line = dynamic_cast<ChatLine*>(msg);
+  //Q_ASSERT(line);
+  //appendChatLine(line);
 }
 
 void ChatView::appendChatLine(ChatLine *line) {
@@ -75,9 +75,9 @@ void ChatView::appendChatLine(ChatLine *line) {
 
 
 void ChatView::appendChatLines(QList<ChatLine *> list) {
-  foreach(ChatLine *line, list) {
+  //foreach(ChatLine *line, list) {
     
-  }
+  //}
 }
 
 void ChatView::setContents(const QList<AbstractUiMsg *> &list) {

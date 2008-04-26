@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _CHATVIEW_H_
-#define _CHATVIEW_H_
+#ifndef CHATVIEW_H_
+#define CHATVIEW_H_
 
 #include <QGraphicsView>
 

@@ -20,9 +20,16 @@
 
 #include "chatline.h"
 
-Chatline::Chatline(const QMessage &msg) : MessageItem(msg) {
+Chatline::Chatline(const Message &msg) : MessageItem(msg) {
 
 
 }
 
 
+QVariant Chatline::data(int column, int role) const {
+  return MessageItem::data(column, role);
+}
+
+bool Chatline::setData(int column, const QVariant &value, int role) {
+  return false;
+}

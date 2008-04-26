@@ -487,7 +487,8 @@ void MainWin::setDisconnectedState() {
 
 AbstractUiMsg *MainWin::layoutMsg(const Message &msg) {
 #ifdef SPUTDEV
-  return new ChatLine(msg);
+  //return new ChatLine(msg);
+  return 0;
 #else
   return new ChatLineOld(msg);
 #endif
