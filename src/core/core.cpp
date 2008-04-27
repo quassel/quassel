@@ -478,7 +478,7 @@ void Core::processClientMessage(QTcpSocket *socket, const QVariantMap &msg) {
       }
       reply["MsgType"] = "ClientLoginAck";
       SignalProxy::writeDataToDevice(socket, reply);
-      qDebug() << qPrintable(tr("Client %1 initialized and authentificated successfully as \"%2\" (UserId: %3).").arg(socket->peerAddress().toString(), msg["User"].toString()).arg(uid.toInt()));
+      qDebug() << qPrintable(tr("Client %1 initialized and authenticated successfully as \"%2\" (UserId: %3).").arg(socket->peerAddress().toString(), msg["User"].toString()).arg(uid.toInt()));
       setupClientSession(socket, uid);
     }
   }
