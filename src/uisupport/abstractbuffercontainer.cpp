@@ -23,13 +23,13 @@
 #include "client.h"
 #include "networkmodel.h"
 
-AbstractBufferContainer::AbstractBufferContainer(QWidget *parent) : AbstractItemView(parent), _currentBuffer(0)
+AbstractBufferContainer::AbstractBufferContainer(QWidget *parent)
+  : AbstractItemView(parent),
+    _currentBuffer(0)
 {
-
 }
 
 AbstractBufferContainer::~AbstractBufferContainer() {
-
 }
 
 

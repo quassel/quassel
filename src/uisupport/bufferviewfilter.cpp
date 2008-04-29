@@ -20,8 +20,6 @@
 
 #include "bufferviewfilter.h"
 
-#include <QColor>
-
 #include "buffermodel.h"
 #include "client.h"
 #include "networkmodel.h"
@@ -40,6 +38,17 @@ BufferViewFilter::BufferViewFilter(QAbstractItemModel *model, BufferViewConfig *
   connect(model, SIGNAL(rowsInserted(const QModelIndex &, int, int)), this, SLOT(source_rowsInserted(const QModelIndex &, int, int)));
 			
   setDynamicSortFilter(true);
+
+  loadColors();
+}
+
+void BufferViewFilter::loadColors() {
+  UiSettings s("QtUi/Colors");
+  _FgColorInactiveActivity = s.value("inactiveActivityFG", QVariant(QColor(Qt::gray))).value<QColor>();
+  _FgColorNoActivity = s.value("noActivityFG", QVariant(QColor(Qt::black))).value<QColor>();
+  _FgColorHighlightActivity = s.value("highlightActivityFG", QVariant(QColor(Qt::magenta))).value<QColor>();
+  _FgColorNewMessageActivity = s.value("newMessageActivityFG", QVariant(QColor(Qt::green))).value<QColor>();
+  _FgColorOtherActivity = s.value("otherActivityFG", QVariant(QColor(Qt::darkGreen))).value<QColor>();
 }
 
 void BufferViewFilter::setConfig(BufferViewConfig *config) {
@@ -230,27 +239,19 @@ QVariant BufferViewFilter::data(const QModelIndex &index, int role) const {
 }
 
 QVariant BufferViewFilter::foreground(const QModelIndex &index) const {
-  UiSettings s("QtUi/Colors");
-  QVariant inactiveActivity = s.value("inactiveActivityFG", QVariant(QColor(Qt::gray)));
-  QVariant noActivity = s.value("noActivityFG", QVariant(QColor(Qt::black)));
-  QVariant highlightActivity = s.value("highlightActivityFG", QVariant(QColor(Qt::magenta)));
-  QVariant newMessageActivity = s.value("newMessageActivityFG", QVariant(QColor(Qt::green)));
-  QVariant otherActivity = s.value("otherActivityFG", QVariant(QColor(Qt::darkGreen)));
-
   if(!index.data(NetworkModel::ItemActiveRole).toBool())
-    return inactiveActivity;
+    return _FgColorInactiveActivity;
 
   Buffer::ActivityLevel activity = (Buffer::ActivityLevel)index.data(NetworkModel::BufferActivityRole).toInt();
 
   if(activity & Buffer::Highlight)
-    return highlightActivity;
+    return _FgColorHighlightActivity;
   if(activity & Buffer::NewMessage)
-    return newMessageActivity;
+    return _FgColorNewMessageActivity;
   if(activity & Buffer::OtherActivity)
-    return otherActivity;
+    return _FgColorOtherActivity;
 
-  return noActivity;
-
+  return _FgColorNoActivity;
 }
 
 void BufferViewFilter::source_rowsInserted(const QModelIndex &parent, int start, int end) {

@@ -33,7 +33,6 @@
 
 #include "util.h" // get rid of this (needed for isChannelName)
 
-
 /*****************************************
 *  Fancy Buffer Items
 *****************************************/
@@ -70,10 +69,11 @@ bool BufferItem::isActive() const {
     return qobject_cast<NetworkItem *>(parent())->isActive();
 }
 
-bool BufferItem::setActivityLevel(Buffer::ActivityLevel level) {
-  _activity = level;
-  emit dataChanged();
-  return true;
+void BufferItem::setActivityLevel(Buffer::ActivityLevel level) {
+  if(_activity != level) {
+    _activity = level;
+    emit dataChanged();
+  }
 }
 
 void BufferItem::updateActivityLevel(Buffer::ActivityLevel level) {
@@ -107,7 +107,8 @@ QVariant BufferItem::data(int column, int role) const {
 bool BufferItem::setData(int column, const QVariant &value, int role) {
   switch(role) {
   case NetworkModel::BufferActivityRole:
-    return setActivityLevel((Buffer::ActivityLevel)value.toInt());
+    setActivityLevel((Buffer::ActivityLevel)value.toInt());
+    return true;
   default:
     return PropertyMapItem::setData(column, value, role);
   }
