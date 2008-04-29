@@ -69,20 +69,25 @@ void NickListWidget::currentChanged(const QModelIndex &current, const QModelInde
   BufferId newBufferId = current.data(NetworkModel::BufferIdRole).value<BufferId>();
   BufferId oldBufferId = previous.data(NetworkModel::BufferIdRole).value<BufferId>();
 
-
   if(bufferType != BufferInfo::ChannelBuffer) {
     ui.stackedWidget->setCurrentWidget(ui.emptyPage);
-    QDockWidget *dock_ = dock();
-    if(dock_) {
-      dock_->close();
-    }
     return;
-  } else {
-    QDockWidget *dock_ = dock();
-    if(dock_ && dock_->toggleViewAction()->isChecked()) {
-      dock_->show();
-    }
   }
+
+  // See NickListDock::NickListDock() below
+//   if(bufferType != BufferInfo::ChannelBuffer) {
+//     ui.stackedWidget->setCurrentWidget(ui.emptyPage);
+//     QDockWidget *dock_ = dock();
+//     if(dock_) {
+//       dock_->close();
+//     }
+//     return;
+//   } else {
+//     QDockWidget *dock_ = dock();
+//     if(dock_ && dock_->toggleViewAction()->isChecked()) {
+//       dock_->show();
+//     }
+//   }
 
   if(newBufferId == oldBufferId)
     return;
@@ -163,28 +168,31 @@ QSize NickListWidget::sizeHint() const {
 NickListDock::NickListDock(const QString &title, QWidget *parent)
   : QDockWidget(title, parent)
 {
-  QAction *toggleView = toggleViewAction();
-  disconnect(toggleView, SIGNAL(triggered(bool)), this, 0);
-  toggleView->setChecked(QtUiSettings().value("ShowNickList", QVariant(true)).toBool());
+  // THIS STUFF IS NEEDED FOR NICKLIST AUTOHIDE... 
+  // AS THIS BRINGS LOTS OF FUCKUPS WITH IT IT'S DEACTIVATED FOR NOW...
+  
+//   QAction *toggleView = toggleViewAction();
+//   disconnect(toggleView, SIGNAL(triggered(bool)), this, 0);
+//   toggleView->setChecked(QtUiSettings().value("ShowNickList", QVariant(true)).toBool());
 
-  // reconnecting the closebuttons clicked signal to the action
-  foreach(QAbstractButton *button, findChildren<QAbstractButton *>()) {
-    if(disconnect(button, SIGNAL(clicked()), this, SLOT(close())))
-      connect(button, SIGNAL(clicked()), toggleView, SLOT(trigger()));
-  }
+//   // reconnecting the closebuttons clicked signal to the action
+//   foreach(QAbstractButton *button, findChildren<QAbstractButton *>()) {
+//     if(disconnect(button, SIGNAL(clicked()), this, SLOT(close())))
+//       connect(button, SIGNAL(clicked()), toggleView, SLOT(trigger()));
+//   }
 }
 
-NickListDock::~NickListDock() {
-  QtUiSettings().setValue("ShowNickList", toggleViewAction()->isChecked());
-}
+// NickListDock::~NickListDock() {
+//   QtUiSettings().setValue("ShowNickList", toggleViewAction()->isChecked());
+// }
 
-bool NickListDock::event(QEvent *event) {
-  switch (event->type()) {
-  case QEvent::Hide:
-  case QEvent::Show:
-    emit visibilityChanged(event->type() == QEvent::Show);
-    return QWidget::event(event);
-  default:
-    return QDockWidget::event(event);
-  }
-}
+// bool NickListDock::event(QEvent *event) {
+//   switch (event->type()) {
+//   case QEvent::Hide:
+//   case QEvent::Show:
+//     emit visibilityChanged(event->type() == QEvent::Show);
+//     return QWidget::event(event);
+//   default:
+//     return QDockWidget::event(event);
+//   }
+// }

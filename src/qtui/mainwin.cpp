@@ -269,7 +269,8 @@ void MainWin::setupNickWidget() {
 
   addDockWidget(Qt::RightDockWidgetArea, nickDock);
   ui.menuViews->addAction(nickDock->toggleViewAction());
-  connect(nickDock->toggleViewAction(), SIGNAL(triggered(bool)), nickListWidget, SLOT(showWidget(bool)));
+  // See NickListDock::NickListDock();
+  // connect(nickDock->toggleViewAction(), SIGNAL(triggered(bool)), nickListWidget, SLOT(showWidget(bool)));
 
   // attach the NickListWidget to the BufferModel and the default selection
   nickListWidget->setModel(Client::bufferModel());

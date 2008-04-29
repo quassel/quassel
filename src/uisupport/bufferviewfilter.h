@@ -21,6 +21,7 @@
 #ifndef BUFFERVIEWFILTER_H_
 #define BUFFERVIEWFILTER_H_
 
+#include <QColor>
 #include <QDropEvent>
 #include <QFlags>
 #include <QPointer>
@@ -73,6 +74,13 @@ protected:
 private:
   QPointer<BufferViewConfig> _config;
 
+  QColor _FgColorInactiveActivity;
+  QColor _FgColorNoActivity;
+  QColor _FgColorHighlightActivity;
+  QColor _FgColorNewMessageActivity;
+  QColor _FgColorOtherActivity;
+  void loadColors();
+  
   bool filterAcceptBuffer(const QModelIndex &) const;
   bool filterAcceptNetwork(const QModelIndex &) const;
   void addBuffer(const BufferId &);

@@ -72,7 +72,7 @@ public:
   bool isActive() const;
 
   inline Buffer::ActivityLevel activityLevel() const { return _activity; }
-  bool setActivityLevel(Buffer::ActivityLevel level);
+  void setActivityLevel(Buffer::ActivityLevel level);
   void updateActivityLevel(Buffer::ActivityLevel level);
 
   void setLastMsgInsert(QDateTime msgDate);

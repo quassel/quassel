@@ -69,9 +69,9 @@ class NickListDock : public QDockWidget {
 
 public:
   NickListDock(const QString &title, QWidget *parent = 0);
-  ~NickListDock();
+  // ~NickListDock();
 
-  virtual bool event(QEvent *event);
+  // virtual bool event(QEvent *event);
 };
 
 #endif
