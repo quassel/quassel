@@ -93,6 +93,7 @@ public:
 
   static inline NetworkModel *networkModel() { return instance()->_networkModel; }
   static inline BufferModel *bufferModel() { return instance()->_bufferModel; }
+  static inline MessageModel *messageModel() { return instance()->_messageModel; }
   static inline SignalProxy *signalProxy() { return instance()->_signalProxy; }
 
   static inline ClientBacklogManager *backlogManager() { return instance()->_backlogManager; }

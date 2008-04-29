@@ -32,6 +32,8 @@ class Chatline : public MessageItem {
     virtual QVariant data(int column, int role) const;
     virtual bool setData(int column, const QVariant &value, int role);
 
+  private:
+    Message _msg;
 };
 
 #endif

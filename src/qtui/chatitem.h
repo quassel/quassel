@@ -22,9 +22,11 @@
 #define _CHATITEM_H_
 
 #include <QGraphicsItem>
+#include <QPersistentModelIndex>
 #include <QTextLayout>
 #include <QTextOption>
 
+#include "messagemodel.h"
 #include "uistyle.h"
 
 class QGraphicsSceneMouseEvent;
@@ -32,28 +34,33 @@ class QGraphicsSceneMouseEvent;
 class ChatItem : public QGraphicsItem {
 
   public:
-    ChatItem(QGraphicsItem *parent = 0);
+    ChatItem(const QPersistentModelIndex &index, QGraphicsItem *parent = 0);
     virtual ~ChatItem();
 
     virtual QRectF boundingRect() const;
     virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
 
-    QString text() const;
-    void setText(const UiStyle::StyledText &text);
+    inline QPersistentModelIndex persistentIndex() const { return _index; }
+    inline const MessageModel *model() const { return _index.isValid() ? qobject_cast<const MessageModel *>(_index.model()) : 0; }
+    inline int row() const { return _index.isValid() ? _index.row() : 0; }
+    QVariant data(int role) const;
+    //QString text() const;
+    //void setText(const UiStyle::StyledText &text);
 
-    QTextOption textOption() const;
-    void setTextOption(const QTextOption &option);
+    //QTextOption textOption() const;
+    //void setTextOption(const QTextOption &option);
 
-    void setWidth(int width);
-    virtual void layout();
+    //void setWidth(int width);
+    //virtual void layout();
 
   protected:
     //void mouseMoveEvent ( QGraphicsSceneMouseEvent * event );
 
   private:
-    int _width;
-    QTextLayout _layout;
-    QTextOption _textOption;
+    //int _width;
+    //QTextLayout _layout;
+    //QTextOption _textOption;
+    QPersistentModelIndex _index;
 };
 
 #endif

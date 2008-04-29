@@ -34,13 +34,19 @@ class MessageModel : public QAbstractItemModel {
   Q_OBJECT
 
   public:
-    enum MessageRoles {
+    enum MessageRole {
       MsgIdRole = Qt::UserRole,
       BufferIdRole,
       TypeRole,
       FlagsRole,
       TimestampRole,
+      DisplayRole,
+      FormatRole,
       UserRole
+    };
+
+    enum ColumnType {
+      TimestampColumn, SenderColumn, TextColumn, UserColumnType
     };
 
     MessageModel(QObject *parent);
@@ -72,10 +78,12 @@ class MessageModel : public QAbstractItemModel {
 class MessageItem {
 
   public:
-    enum {
-      TimestampColumn, SenderColumn, TextColumn
-    };
 
+    //! Creates a MessageItem from a Message object.
+    /** This baseclass implementation takes care of all Message data *except* the stylable strings.
+     *  Subclasses need to provide Qt::DisplayRole at least, which should describe the plaintext
+     *  strings without formattings (e.g. for searching purposes).
+     */
     MessageItem(const Message &);
     virtual ~MessageItem();
 

@@ -27,8 +27,7 @@
 
 #include "chatitem.h"
 
-ChatItem::ChatItem(QGraphicsItem *parent) : QGraphicsItem(parent) {
-  _width = 0;
+ChatItem::ChatItem(const QPersistentModelIndex &index_, QGraphicsItem *parent) : QGraphicsItem(parent), _index(index_) {
   //if(_wrapMode == WordWrap) {
   //  setFlags(QGraphicsItem::ItemClipsToShape, true);
   //}
@@ -38,6 +37,27 @@ ChatItem::~ChatItem() {
 
 }
 
+QVariant ChatItem::data(int role) const {
+  if(!_index.isValid()) {
+    qWarning() << "ChatItem::data(): Model index is invalid!";
+    return QVariant();
+  }
+  return _index.data(role);
+}
+
+QRectF ChatItem::boundingRect() const {
+  return QRectF(0, 0, 500,20);
+}
+
+void ChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
+  Q_UNUSED(option); Q_UNUSED(widget);
+
+  painter->drawRect(boundingRect());
+  painter->drawText(boundingRect(), data(MessageModel::DisplayRole).toString());
+}
+
+
+/*
 void ChatItem::setWidth(int w) {
   _width = w;
   layout();
@@ -104,6 +124,7 @@ void ChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
   _layout.draw(painter, QPointF(0, 0));
 
 }
+*/
 
 /*
 void ChatItem::mouseMoveEvent ( QGraphicsSceneMouseEvent * event ) {

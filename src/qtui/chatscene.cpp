@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include <QGraphicsSceneMouseEvent>
+#include <QPersistentModelIndex>
 
 #include "buffer.h"
 #include "chatitem.h"
@@ -26,14 +27,15 @@
 #include "chatscene.h"
 #include "quasselui.h"
 
-ChatScene::ChatScene(Buffer *buf, QObject *parent) : QGraphicsScene(parent) {
-  _buffer = buf;
-
-  foreach(AbstractUiMsg *msg, buf->contents()) {
-    appendMsg(msg);
+ChatScene::ChatScene(MessageModel *model, QObject *parent) : QGraphicsScene(parent), _model(model) {
+  connect(model, SIGNAL(rowsInserted(const QModelIndex &, int, int)), this, SLOT(rowsInserted(const QModelIndex &, int, int)));
+  for(int i = 0; i < model->rowCount(); i++) {
+    ChatItem *item = new ChatItem(QPersistentModelIndex(model->index(i, 2)));
+    addItem(item);
+    item->setPos(30, i*item->boundingRect().height());
   }
-  connect(buf, SIGNAL(msgAppended(AbstractUiMsg *)), this, SLOT(appendMsg(AbstractUiMsg *)));
-  connect(buf, SIGNAL(msgPrepended(AbstractUiMsg *)), this, SLOT(prependMsg(AbstractUiMsg *)));
+
+  
 }
 
 ChatScene::~ChatScene() {
@@ -41,26 +43,6 @@ ChatScene::~ChatScene() {
 
 }
 
-void ChatScene::appendMsg(AbstractUiMsg * msg) {
-  /*
-  ChatLine *line = dynamic_cast<ChatLine*>(msg);
-  Q_ASSERT(line);
-  _lines.append(line);
-  addItem(line);
-  line->setPos(0, _lines.count() * 30);
-  line->setColumnWidths(80, 80, 400);
-  */
-}
-
-void ChatScene::prependMsg(AbstractUiMsg * msg) {
-  /*
-  ChatLine *line = dynamic_cast<ChatLine*>(msg);
-  Q_ASSERT(line); qDebug() << "prepending";
-  _lines.prepend(line);
-  addItem(line);
-  line->setPos(0, _lines.count() * 30);
-  */
-}
 
 void ChatScene::mousePressEvent ( QGraphicsSceneMouseEvent * mouseEvent ) {
   /*

@@ -23,8 +23,11 @@
 
 #include <QGraphicsScene>
 
+#include "messagemodel.h"
+
 class AbstractUiMsg;
 class Buffer;
+class ChatItem;
 class ChatLine;
 class QGraphicsSceneMouseEvent;
 
@@ -32,22 +35,23 @@ class ChatScene : public QGraphicsScene {
   Q_OBJECT
 
   public:
-    ChatScene(Buffer *buffer, QObject *parent);
+    ChatScene(MessageModel *model, QObject *parent);
     virtual ~ChatScene();
 
     Buffer *buffer() const;
+    inline MessageModel *model() const { return _model; }
 
   public slots:
 
   protected slots:
-    void appendMsg(AbstractUiMsg *msg);
-    void prependMsg(AbstractUiMsg *msg);
 
     void mousePressEvent ( QGraphicsSceneMouseEvent * mouseEvent );
 
   private:
-    Buffer *_buffer;
-    QList<ChatLine*> _lines;
+    //Buffer *_buffer;
+    //QList<ChatLine*> _lines;
+    MessageModel *_model;
+    QList<ChatItem *> _items;
 
 };
 

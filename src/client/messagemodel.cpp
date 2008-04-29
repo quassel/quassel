@@ -43,7 +43,7 @@ bool MessageModel::setData(const QModelIndex &index, const QVariant &value, int 
   int row = index.row();
   if(row < 0 || row >= _messageList.count()) return false;
   if(_messageList[row]->setData(index.column(), value, role)) {
-    emit dataChanged(index, index); // FIXME make msg emit this (too)
+    emit dataChanged(index, index);
     return true;
   }
   return false;
@@ -95,7 +95,7 @@ MessageItem::~MessageItem() {
 }
 
 QVariant MessageItem::data(int column, int role) const {
-  if(column < TimestampColumn || column > TextColumn) return QVariant();
+  if(column < MessageModel::TimestampColumn || column > MessageModel::TextColumn) return QVariant();
   switch(role) {
     case MessageModel::MsgIdRole: return QVariant::fromValue<MsgId>(_msgId);
     case MessageModel::BufferIdRole: return QVariant::fromValue<BufferId>(_bufferId);
