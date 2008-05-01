@@ -29,20 +29,21 @@
 /**
  * \param m   The message to be layouted and rendered
  */
-ChatLineOld::ChatLineOld(Message m) {
+QColor ChatLineOld::_highlightColor;
+ChatLineOld::ChatLineOld(const Message &m) {
   hght = 0;
-
   msg = m;
   selectionMode = None;
   isHighlight = false;
   formatMsg(msg);
 
-  QtUiSettings s("QtUi/Colors");
-  _highlightColor = s.value("highlightColor", QVariant(QColor("lightcoral"))).value<QColor>();
+  if(!_highlightColor.isValid()) {
+    QtUiSettings s("QtUi/Colors");
+    _highlightColor = s.value("highlightColor", QVariant(QColor("lightcoral"))).value<QColor>();
+  }
 }
 
 ChatLineOld::~ChatLineOld() {
-
 }
 
 void ChatLineOld::formatMsg(Message msg) {
