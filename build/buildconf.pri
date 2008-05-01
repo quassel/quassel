@@ -8,9 +8,10 @@ release {
 }
 
 win32 { 
-  CONFIG = warn_on uic resources qt silent windows
-  static { 
-    CONFIG += release static
+  static {
+    CONFIG = release warn_on uic resources qt windows static
+  } else {
+    CONFIG = warn_on uic resources qt silent windows
   }
 }
 

@@ -230,7 +230,7 @@ private:
   Buffer *_monitorBuffer;
 
   QTimer *layoutTimer;
-  QList<Buffer *> layoutQueue;
+  QLinkedList<Buffer *> layoutQueue;
 
   static AccountId _currentCoreAccount;
 

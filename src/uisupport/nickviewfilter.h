@@ -21,13 +21,13 @@
 #ifndef NICKVIEWFILTER_H
 #define NICKVIEWFILTER_H
 
+#include <QColor>
 #include <QSortFilterProxyModel>
 #include "types.h"
 
 class NetworkModel;
 
 // This is proxymodel is purely for the sorting right now
-// the old nickmodel is stored for future reference in /devnotes
 class NickViewFilter : public QSortFilterProxyModel {
   Q_OBJECT
 
@@ -41,6 +41,10 @@ protected:
 
 private:
   BufferId _bufferId;
+  QColor _FgOnlineStatus;
+  QColor _FgAwayStatus;
+
+  void loadColors();
 };
 
 #endif

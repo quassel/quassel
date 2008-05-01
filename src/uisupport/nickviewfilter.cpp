@@ -19,12 +19,8 @@
  ***************************************************************************/
 
 #include "nickviewfilter.h"
-
 #include "networkmodel.h"
-
 #include "uisettings.h"
-
-#include <QColor>
 
 /******************************************************************************************
  * NickViewFilter
@@ -37,6 +33,14 @@ NickViewFilter::NickViewFilter(const BufferId &bufferId, NetworkModel *parent)
   setDynamicSortFilter(true);
   setSortCaseSensitivity(Qt::CaseInsensitive);
   setSortRole(TreeModel::SortRole);
+  loadColors();
+}
+
+void NickViewFilter::loadColors() {
+  UiSettings s("QtUi/Colors");
+  _FgOnlineStatus = s.value("onlineStatusFG", QVariant(QColor(Qt::black))).value<QColor>();
+  _FgAwayStatus = s.value("awayStatusFG", QVariant(QColor(Qt::gray))).value<QColor>();
+  // FIXME: use the style interface instead of qsettings
 }
 
 QVariant NickViewFilter::data(const QModelIndex &index, int role) const {
@@ -44,26 +48,12 @@ QVariant NickViewFilter::data(const QModelIndex &index, int role) const {
     return foreground(index);
   else
     return QSortFilterProxyModel::data(index, role);
-//   else {
-//     QVariant d = 
-//     if(role == 0)
-//       qDebug() << index << role << d;
-//     return d;
-//   }
 }
 
 QVariant NickViewFilter::foreground(const QModelIndex &index) const {
-  UiSettings s("QtUi/Colors");
-  QVariant onlineStatusFG = s.value("onlineStatusFG", QVariant(QColor(Qt::black)));
-  QVariant awayStatusFG = s.value("awayStatusFG", QVariant(QColor(Qt::gray)));
-
   if(!index.data(NetworkModel::ItemActiveRole).toBool())
-    return awayStatusFG.value<QColor>();
-  
-  return onlineStatusFG.value<QColor>();
-  
-  // FIXME:: make colors configurable;
-  // FIXME: use the style interface instead of qsettings
+    return _FgAwayStatus;
+  return _FgOnlineStatus;
 }
 
 

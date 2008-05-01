@@ -50,7 +50,7 @@ public:
   Buffer(BufferInfo, QObject *parent = 0);
 
   BufferInfo bufferInfo() const;
-  QList<AbstractUiMsg *> contents() const;
+  const QList<AbstractUiMsg *> &contents() const;
   inline bool isVisible() const { return _isVisible; }
   inline MsgId lastSeenMsg() const { return _lastSeenMsg; }
   inline ActivityLevel activityLevel() const { return _activityLevel; }
@@ -74,7 +74,7 @@ private:
   MsgId _lastSeenMsg;
   ActivityLevel _activityLevel;
 
-  QList<Message> layoutQueue;
+  QLinkedList<Message> layoutQueue;
   QList<AbstractUiMsg *> layoutedMsgs;
 
   void updateActivityLevel(const Message &msg);

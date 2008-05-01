@@ -24,16 +24,18 @@
 # include "chatlinemodel.h"
 #endif
 #include "mainwin.h"
+#include "chatline-old.h"
 
 QtUiStyle *QtUi::_style;
 
-QtUi::QtUi() : AbstractUi() {
+QtUi::QtUi()
+  : AbstractUi()
+{
   mainWin = new MainWin(this);
   _style = new QtUiStyle;
 
   connect(mainWin, SIGNAL(connectToCore(const QVariantMap &)), this, SIGNAL(connectToCore(const QVariantMap &)));
   connect(mainWin, SIGNAL(disconnectFromCore()), this, SIGNAL(disconnectFromCore()));
-
 }
 
 QtUi::~QtUi() {
@@ -59,7 +61,7 @@ MessageModel *QtUi::createMessageModel(QObject *parent) {
 }
 
 AbstractUiMsg *QtUi::layoutMsg(const Message &msg) {
-  return mainWin->layoutMsg(msg);
+  return new ChatLineOld(msg);
 }
 
 void QtUi::connectedToCore() {

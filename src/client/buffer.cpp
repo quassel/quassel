@@ -42,7 +42,7 @@ BufferInfo Buffer::bufferInfo() const {
   return _bufferInfo;
 }
 
-QList<AbstractUiMsg *> Buffer::contents() const {
+const QList<AbstractUiMsg *> &Buffer::contents() const {
   return layoutedMsgs;
 }
 
@@ -55,7 +55,7 @@ void Buffer::appendMsg(const Message &msg) {
 
 void Buffer::prependMsg(const Message &msg) {
   // check for duplicate first
-  if(contents().count() > 0 && msg.msgId() >= contents().first()->msgId()) {
+  if(!layoutedMsgs.isEmpty()  && msg.msgId() >= layoutedMsgs.first()->msgId()) {
     return;
   }
   updateActivityLevel(msg);
@@ -63,18 +63,21 @@ void Buffer::prependMsg(const Message &msg) {
 }
 
 bool Buffer::layoutMsg() {
-  if(layoutQueue.count()) {
-    AbstractUiMsg *m = Client::layoutMsg(layoutQueue.takeFirst());
-    layoutedMsgs.prepend(m);
-    emit msgPrepended(m);
-  }
-  return layoutQueue.count();
+  if(layoutQueue.isEmpty())
+    return false;
+  
+  AbstractUiMsg *m = Client::layoutMsg(layoutQueue.takeFirst());
+  layoutedMsgs.prepend(m);
+  emit msgPrepended(m);
+
+  return !layoutQueue.isEmpty();
 }
 
 void Buffer::setVisible(bool visible) {
   _isVisible = visible;
   setActivityLevel(NoActivity);
-  if(!layoutedMsgs.count()) return;
+  if(layoutedMsgs.isEmpty())
+    return;
   setLastSeenMsg(layoutedMsgs.last()->msgId());
 }
 

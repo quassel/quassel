@@ -528,7 +528,7 @@ void Client::receiveBacklog(BufferId bufferId, const QVariantList &msgs) {
 void Client::receiveBacklog(BufferId bufferId, const QVariantList &msgs) {
   Buffer *buffer_ = buffer(bufferId);
   if(!buffer_) {
-    qWarning() << "Client::recvBacklogData(): received Backlog for unknown Buffer:" << bufferId;
+    qWarning() << "Client::receiveBacklog(): received Backlog for unknown Buffer:" << bufferId;
     return;
   }
 
@@ -564,7 +564,7 @@ void Client::layoutMsg() {
   if(buffer->layoutMsg()) {
     layoutQueue.append(buffer);  // Buffer has more messages in its queue --> Round Robin
     return;
-  } 
+  }
 
   if(layoutQueue.isEmpty())
     layoutTimer->stop();

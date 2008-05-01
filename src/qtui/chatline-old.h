@@ -44,7 +44,7 @@ class ChatLineOld : public QObject, public AbstractUiMsg {
   Q_OBJECT
 
   public:
-    ChatLineOld(Message message);
+    ChatLineOld(const Message &message);
     virtual ~ChatLineOld();
 
     qreal layout(qreal tsWidth, qreal nickWidth, qreal textWidth);
@@ -107,7 +107,7 @@ class ChatLineOld : public QObject, public AbstractUiMsg {
     QList<FormatRange> calcFormatRanges(const UiStyle::StyledText &);
     QList<FormatRange> calcFormatRanges(const UiStyle::StyledText &, const QTextLayout::FormatRange &additional);
 
-    QColor _highlightColor;
+    static QColor _highlightColor;
 };
 
 #endif
