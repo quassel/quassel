@@ -52,7 +52,6 @@ class MainWin : public QMainWindow {
     void init();
     void addBufferView(BufferViewConfig *config = 0);
 
-    AbstractUiMsg *layoutMsg(const Message &);
     void displayTrayIconMessage(const QString &title, const QString &message);
 
     virtual bool event(QEvent *event);

@@ -22,9 +22,10 @@
 
 #ifdef SPUTDEV
 # include "chatlinemodel.h"
+#else
+# include "chatline-old.h"
 #endif
 #include "mainwin.h"
-#include "chatline-old.h"
 
 QtUiStyle *QtUi::_style;
 
@@ -61,7 +62,11 @@ MessageModel *QtUi::createMessageModel(QObject *parent) {
 }
 
 AbstractUiMsg *QtUi::layoutMsg(const Message &msg) {
+#ifndef SPUTDEV
   return new ChatLineOld(msg);
+#else
+  return 0;
+#endif
 }
 
 void QtUi::connectedToCore() {

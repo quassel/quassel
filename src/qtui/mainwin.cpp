@@ -486,15 +486,6 @@ void MainWin::setDisconnectedState() {
   sslLabel->setPixmap(QPixmap());
 }
 
-AbstractUiMsg *MainWin::layoutMsg(const Message &msg) {
-#ifdef SPUTDEV
-  //return new ChatLine(msg);
-  return 0;
-#else
-  return new ChatLineOld(msg);
-#endif
-}
-
 void MainWin::showCoreConnectionDlg(bool autoConnect) {
   coreConnectDlg = new CoreConnectDlg(this, autoConnect);
   connect(coreConnectDlg, SIGNAL(finished(int)), this, SLOT(coreConnectionDlgFinished(int)));

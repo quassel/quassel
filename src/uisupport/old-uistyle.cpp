@@ -24,12 +24,14 @@
 
 UiStyle::UiStyle(const QString &settingsKey) : _settingsKey(settingsKey) {
   // Default format
-  _defaultPlainFormat.setForeground(QBrush("#000000"));
-  _defaultPlainFormat.setFont(QFont("Monospace", QApplication::font().pointSize()));
-  _defaultPlainFormat.font().setFixedPitch(true);
-  _defaultPlainFormat.font().setStyleHint(QFont::TypeWriter);
-  setFormat(None, _defaultPlainFormat, Settings::Default);
-  
+  QTextCharFormat def;
+  def.setForeground(QBrush("#000000"));
+  def.setFont(QFont("Monospace", QApplication::font().pointSize()));
+  def.font().setFixedPitch(true);
+  def.font().setStyleHint(QFont::TypeWriter);
+  _defaultFormats = QVector<QTextCharFormat>(NumFormatTypes, def);
+  _customFormats = QVector<QTextCharFormat>(NumFormatTypes, QTextFormat().toCharFormat());
+
   // Load saved custom formats
   UiStyleSettings s(_settingsKey);
   foreach(FormatType type, s.availableFormats()) {
@@ -78,6 +80,9 @@ UiStyle::UiStyle(const QString &settingsKey) : _settingsKey(settingsKey) {
     QTextCharFormat fgf, bgf;
     fgf.setForeground(QBrush(QColor(colors[i]))); setFormat((FormatType)(FgCol00 + i), fgf, Settings::Default);
     bgf.setBackground(QBrush(QColor(colors[i]))); setFormat((FormatType)(BgCol00 + i), bgf, Settings::Default);
+    //FIXME fix the havoc caused by ColorSettingsPage
+    setFormat((FormatType)(FgCol00 + i), fgf, Settings::Custom);
+    setFormat((FormatType)(BgCol00 + i), bgf, Settings::Custom);
   }
 
   // Set a few more standard formats
@@ -113,29 +118,8 @@ void UiStyle::setFormat(FormatType ftype, QTextCharFormat fmt, Settings::Mode mo
 }
 
 QTextCharFormat UiStyle::format(FormatType ftype, Settings::Mode mode) const {
-  if(mode == Settings::Custom && _customFormats.contains(ftype)) return _customFormats.value(ftype);
-  else return _defaultFormats.value(ftype, QTextCharFormat());
-}
-
-// NOTE: This function is intimately tied to the values in FormatType. Don't change this
-//       until you _really_ know what you do!
-QTextCharFormat UiStyle::mergedFormat(quint32 ftype) {
-  if(_cachedFormats.contains(ftype)) return _cachedFormats[ftype];
-  if(ftype == Invalid) return QTextCharFormat();
-  // Now we construct the merged format, starting with the default
-  QTextCharFormat fmt = format(None);
-  // First: general message format
-  fmt.merge(format((FormatType)(ftype & 0x0f)));
-  // now more specific ones
-  for(quint32 mask = 0x0010; mask <= 0x2000; mask <<= 1) {
-    if(ftype & mask) fmt.merge(format((FormatType)mask));
-  }
-  // color codes!
-  if(ftype & 0x00400000) fmt.merge(format((FormatType)(ftype & 0x0f400000))); // foreground
-  if(ftype & 0x00800000) fmt.merge(format((FormatType)(ftype & 0xf0800000))); // background
-  // URL
-  if(ftype & Url) fmt.merge(format(Url));
-  return fmt;
+  if(mode == Settings::Custom && _customFormats[ftype].isValid()) return _customFormats[ftype];
+  else return _defaultFormats[ftype];
 }
 
 UiStyle::FormatType UiStyle::formatType(const QString & code) const {
@@ -147,38 +131,64 @@ QString UiStyle::formatCode(FormatType ftype) const {
   return _formatCodes.key(ftype);
 }
 
-// This method expects a well-formatted string, there is no error checking!
-// Since we create those ourselves, we should be pretty safe that nobody does something crappy here.
-UiStyle::StyledString UiStyle::styleString(const QString &s_) {
-  QString s = s_;
-  StyledString result;
-  result.formats.append(qMakePair(0, (quint32)None));
-  quint32 curfmt = (quint32)None;
+UiStyle::StyledText UiStyle::styleString(const QString &_s) {
+  QString s = _s;
+  StyledText result;
+  QList<FormatType> fmtList;
+  fmtList.append(None);
+  QTextLayout::FormatRange curFmtRng;
+  curFmtRng.format = format(None);
+  curFmtRng.start = 0;
+  result.formats.append(curFmtRng);
   int pos = 0; int length = 0;
+  int fgCol = -1, bgCol = -1;  // marks current mIRC color
   for(;;) {
     pos = s.indexOf('%', pos);
     if(pos < 0) break;
-    if(s[pos+1] == '%') { // escaped %, we just remove one and continue
+    if(s[pos+1] == '%') { // escaped %, just remove one and continue
       s.remove(pos, 1);
       pos++;
       continue;
-    }
-    if(s[pos+1] == 'D' && s[pos+2] == 'c') { // color code
-      if(s[pos+3] == '-') {  // color off
-        curfmt &= 0x003fffff;
+    } else if(s[pos+1] == 'D' && s[pos+2] == 'c') { // color code
+      if(s[pos+3] == '-') { // color off
+        if(fgCol >= 0) {
+          fmtList.removeAll((FormatType)(FgCol00 + fgCol));
+          fgCol = -1;
+        }
+        if(bgCol >= 0) {
+          fmtList.removeAll((FormatType)(BgCol00 + bgCol));
+          bgCol = -1;
+        }
+        curFmtRng.format = mergedFormat(fmtList);
         length = 4;
       } else {
         int color = 10 * s[pos+4].digitValue() + s[pos+5].digitValue();
         //TODO: use 99 as transparent color (re mirc color "standard")
         color &= 0x0f;
-        if(pos+3 == 'f')
-          curfmt |= (color << 24) | 0x00400000;
-        else
-          curfmt |= (color << 28) | 0x00800000;
+        int *colptr; FormatType coltype;
+        if(s[pos+3] == 'f') { // foreground
+          colptr = &fgCol; coltype = FgCol00;
+        } else {              // background
+          Q_ASSERT(s[pos+3] == 'b');
+          colptr = &bgCol; coltype = BgCol00;
+        }
+        if(*colptr >= 0) {
+          // color already set, remove format code and add new one
+          Q_ASSERT(fmtList.contains((FormatType)(coltype + *colptr)));
+          fmtList.removeAll((FormatType)(coltype + *colptr));
+          fmtList.append((FormatType)(coltype + color));
+          curFmtRng.format = mergedFormat(fmtList);
+        } else {
+          fmtList.append((FormatType)(coltype + color));
+          curFmtRng.format.merge(format(fmtList.last()));
+        }
+        *colptr = color;
         length = 6;
       }
     } else if(s[pos+1] == 'O') { // reset formatting
-      curfmt &= 0x0000000f; // we keep message type-specific formatting
+      fmtList.clear(); fmtList.append(None);
+      curFmtRng.format = format(None);
+      fgCol = bgCol = -1;
       length = 2;
     } else if(s[pos+1] == 'R') { // reverse
       // TODO: implement reverse formatting
@@ -192,15 +202,41 @@ UiStyle::StyledString UiStyle::styleString(const QString &s_) {
         qWarning(qPrintable(QString("Invalid format code in string: %1").arg(s)));
         continue;
       }
-      curfmt ^= ftype;
+      //Q_ASSERT(ftype != Invalid);
       length = code.length();
+      if(!fmtList.contains(ftype)) {
+        // toggle it on
+        fmtList.append(ftype);
+        curFmtRng.format.merge(format(ftype));
+      } else {
+        // toggle it off
+        fmtList.removeAll(ftype);
+        curFmtRng.format = mergedFormat(fmtList);
+      }
     }
-    s.remove(pos, length);
-    if(pos == result.formats.last().first)
-      result.formats.last().second = curfmt;
-    else
-      result.formats.append(qMakePair(pos, curfmt));
+    s.remove(pos, length); // remove format code from string
+    // now see if something changed and else insert the format
+    if(curFmtRng.format == result.formats.last().format) continue;  // no change, so we just ignore
+    curFmtRng.start = pos;
+    if(pos == result.formats.last().start) {
+      // same starting point -> we just overwrite the old format
+      result.formats.last() = curFmtRng;
+    } else {
+      // fix length of last format
+      result.formats.last().length = pos - result.formats.last().start;
+      result.formats.append(curFmtRng);
+    }
   }
+  result.formats.last().length = s.length() - result.formats.last().start;
+  if(result.formats.last().length == 0) result.formats.removeLast();
   result.text = s;
   return result;
+}
+
+QTextCharFormat UiStyle::mergedFormat(QList<FormatType> formatList) {
+  QTextCharFormat fmt;
+  foreach(FormatType ftype, formatList) {
+    fmt.merge(format(ftype));
+  }
+  return fmt;
 }
