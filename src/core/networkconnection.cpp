@@ -285,6 +285,7 @@ void NetworkConnection::socketError(QAbstractSocket::SocketError) {
 #ifndef QT_NO_OPENSSL
 
 void NetworkConnection::sslErrors(const QList<QSslError> &sslErrors) {
+  Q_UNUSED(sslErrors)
   socket.ignoreSslErrors();
   /* TODO errorhandling
   QVariantMap errmsg;
@@ -433,7 +434,7 @@ void NetworkConnection::sendAutoWho() {
     IrcChannel *ircchan = network()->ircChannel(chan);
     if(!ircchan) continue;
     if(_autoWhoNickLimit > 0 && ircchan->ircUsers().count() > _autoWhoNickLimit) continue;
-    _autoWhoInProgress.insert(chan);
+    _autoWhoInProgress[chan]++;
     putRawLine("WHO " + serverEncode(chan));
     if(_autoWhoQueue.isEmpty() && _autoWhoEnabled && !_autoWhoCycleTimer.isActive()) {
       // Timer was stopped, means a new cycle is due immediately
@@ -453,18 +454,20 @@ void NetworkConnection::startAutoWhoCycle() {
 }
 
 bool NetworkConnection::setAutoWhoDone(const QString &channel) {
-  return _autoWhoInProgress.remove(channel);
+  if(_autoWhoInProgress.value(channel.toLower(), 0) <= 0) return false;
+  _autoWhoInProgress[channel.toLower()]--;
+  return true;
 }
 
 void NetworkConnection::setChannelJoined(const QString &channel) {
   emit channelJoined(networkId(), channel, _channelKeys[channel.toLower()]);
-  _autoWhoQueue.prepend(channel); // prepend so this new chan is the first to be checked
+  _autoWhoQueue.prepend(channel.toLower()); // prepend so this new chan is the first to be checked
 }
 
 void NetworkConnection::setChannelParted(const QString &channel) {
   removeChannelKey(channel);
-  _autoWhoQueue.removeAll(channel);
-  _autoWhoInProgress.remove(channel);
+  _autoWhoQueue.removeAll(channel.toLower());
+  _autoWhoInProgress.remove(channel.toLower());
   emit channelParted(networkId(), channel);
 }
 
