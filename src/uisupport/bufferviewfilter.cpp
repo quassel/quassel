@@ -18,6 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QCoreApplication>
+
 #include "bufferviewfilter.h"
 
 #include "buffermodel.h"
@@ -280,7 +282,7 @@ void BufferViewFilter::source_rowsInserted(const QModelIndex &parent, int start,
 void BufferViewFilter::checkPreviousCurrentForRemoval(const QModelIndex &current, const QModelIndex &previous) {
   Q_UNUSED(current);
   if(previous.isValid())
-    qApp->postEvent(this, new CheckRemovalEvent(previous));
+    QCoreApplication::instance()->postEvent(this, new CheckRemovalEvent(previous));
 }
 
 void BufferViewFilter::customEvent(QEvent *event) {
