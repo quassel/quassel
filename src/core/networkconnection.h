@@ -86,7 +86,7 @@ public:
   inline QString channelKey(const QString &channel) const { return _channelKeys.value(channel.toLower(), QString()); }
   inline QStringList persistentChannels() const { return _channelKeys.keys(); }
 
-  inline bool isAutoWhoInProgress(const QString &channel) const { return _autoWhoInProgress.contains(channel); }
+  inline bool isAutoWhoInProgress(const QString &channel) const { return _autoWhoInProgress.value(channel.toLower(), 0); }
 
 public slots:
   // void setServerOptions();
@@ -176,7 +176,7 @@ private:
 
   bool _autoWhoEnabled;
   QStringList _autoWhoQueue;
-  QSet<QString> _autoWhoInProgress;
+  QHash<QString, int> _autoWhoInProgress;
   int _autoWhoInterval;
   int _autoWhoNickLimit;
   int _autoWhoDelay;
