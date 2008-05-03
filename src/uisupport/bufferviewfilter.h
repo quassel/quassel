@@ -63,6 +63,9 @@ public:
 
 public slots:
   void removeBuffer(const QModelIndex &);
+  void checkPreviousCurrentForRemoval(const QModelIndex &current, const QModelIndex &previous);
+  void checkItemForRemoval(const QModelIndex &index) { checkItemsForRemoval(index, index); }
+  void checkItemsForRemoval(const QModelIndex &topLeft, const QModelIndex &bottomRight);
   void source_rowsInserted(const QModelIndex &parent, int start, int end);
   
 protected:
@@ -70,17 +73,21 @@ protected:
   bool lessThan(const QModelIndex &source_left, const QModelIndex &source_right) const;
   bool bufferLessThan(const QModelIndex &source_left, const QModelIndex &source_right) const;
   bool networkLessThan(const QModelIndex &source_left, const QModelIndex &source_right) const;
+  virtual void customEvent(QEvent *event);
 
+signals:
+  void _dataChanged(const QModelIndex &source_topLeft, const QModelIndex &source_bottomRight);
+  
 private:
   QPointer<BufferViewConfig> _config;
-
+  
   QColor _FgColorInactiveActivity;
   QColor _FgColorNoActivity;
   QColor _FgColorHighlightActivity;
   QColor _FgColorNewMessageActivity;
   QColor _FgColorOtherActivity;
   void loadColors();
-  
+
   bool filterAcceptBuffer(const QModelIndex &) const;
   bool filterAcceptNetwork(const QModelIndex &) const;
   void addBuffer(const BufferId &);
