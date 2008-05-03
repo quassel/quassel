@@ -129,9 +129,23 @@ void BufferView::setFilteredModel(QAbstractItemModel *model_, BufferViewConfig *
   } else {
     BufferViewFilter *filter = new BufferViewFilter(model_, config);
     setModel(filter);
-    connect(this, SIGNAL(removeBuffer(const QModelIndex &)), filter, SLOT(removeBuffer(const QModelIndex &)));
+    connect(this, SIGNAL(removeBuffer(const QModelIndex &)),
+	    filter, SLOT(removeBuffer(const QModelIndex &)));
   }
   setConfig(config);
+}
+
+void BufferView::setSelectionModel(QItemSelectionModel *selectionModel) {
+  if(QTreeView::selectionModel())
+    disconnect(selectionModel, SIGNAL(currentChanged(QModelIndex, QModelIndex)),
+	       model(), SIGNAL(checkPreviousCurrentForRemoval(QModelIndex, QModelIndex)));
+    
+  QTreeView::setSelectionModel(selectionModel);
+  BufferViewFilter *filter = qobject_cast<BufferViewFilter *>(model());
+  if(filter) {
+    connect(selectionModel, SIGNAL(currentChanged(QModelIndex, QModelIndex)),
+	    filter, SLOT(checkPreviousCurrentForRemoval(QModelIndex, QModelIndex)));
+  }
 }
 
 void BufferView::setConfig(BufferViewConfig *config) {

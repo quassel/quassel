@@ -78,6 +78,7 @@ signals:
   
 private:
   void tryNextNick(const QString &errnick);
+  bool checkParamCount(const QString &methodName, const QList<QByteArray> &params, int minParams);
   bool _whois;
 };
 

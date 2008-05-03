@@ -83,6 +83,7 @@ MainWin::MainWin(QtUi *_gui, QWidget *parent)
   ui.setupUi(this);
   setWindowTitle("Quassel IRC");
   setWindowIcon(offlineTrayIcon);
+  qApp->setWindowIcon(offlineTrayIcon);
   systray->setIcon(offlineTrayIcon);
   setWindowIconText("Quassel IRC");
 
@@ -424,6 +425,7 @@ void MainWin::setConnectedState() {
   ui.bufferWidget->show();
   statusBar()->showMessage(tr("Connected to core."));
   setWindowIcon(onlineTrayIcon);
+  qApp->setWindowIcon(onlineTrayIcon);
   systray->setIcon(onlineTrayIcon);
   if(sslLabel->width() == 0)
     sslLabel->setPixmap(QPixmap::fromImage(QImage(":/16x16/status/no-ssl")));
@@ -482,6 +484,7 @@ void MainWin::setDisconnectedState() {
   // nickListWidget->reset();
   statusBar()->showMessage(tr("Not connected to core."));
   setWindowIcon(offlineTrayIcon);
+  qApp->setWindowIcon(offlineTrayIcon);
   systray->setIcon(offlineTrayIcon);
   sslLabel->setPixmap(QPixmap());
 }

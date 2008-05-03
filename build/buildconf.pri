@@ -1,10 +1,14 @@
-CONFIG += warn_on uic resources qt silent
-# CONFIG += incremental link_prl nostrip qt_no_framework
+# This file contains global build settings. Note that you can add stuff to CONFIG
+# by using qmake -config stuff 
+# Notable examples:
+# 
+# -config debug (or release or debug_and_release)
+# -config verbose (to enable verbose compiling)
 
-release {
-  CONFIG *= release strip
-} else {
-  CONFIG *= debug
+CONFIG += warn_on uic resources qt silent
+
+verbose {
+  CONFIG -= silent
 }
 
 win32 { 
