@@ -191,10 +191,10 @@ void BufferView::joinChannel(const QModelIndex &index) {
 }
 
 void BufferView::keyPressEvent(QKeyEvent *event) {
-  if(event->key() == Qt::Key_Backspace || event->key() == Qt::Key_Delete) {
+  if((event->key() == Qt::Key_Backspace || event->key() == Qt::Key_Delete) && !selectionModel()->selectedIndexes().isEmpty()) {
     event->accept();
     QModelIndex index = selectionModel()->selectedIndexes().first();
-    if(index.isValid()) {
+    if(index.isValid() && index.data(NetworkModel::ItemTypeRole) == NetworkModel::BufferItemType) {
       emit removeBuffer(index);
     }
   }
