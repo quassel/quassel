@@ -39,6 +39,7 @@
 #include <QLineEdit>
 #include <QMenu>
 #include <QMessageBox>
+#include <QSet>
 
 /*****************************************
 * The TreeView showing the Buffers
@@ -50,6 +51,8 @@ BufferView::BufferView(QWidget *parent) : QTreeView(parent) {
 
   connect(this, SIGNAL(customContextMenuRequested(const QPoint &)),
           this, SLOT(showContextMenu(const QPoint &)));
+
+  setSelectionMode(QAbstractItemView::ExtendedSelection);
 }
 
 void BufferView::init() {
@@ -191,14 +194,21 @@ void BufferView::joinChannel(const QModelIndex &index) {
 }
 
 void BufferView::keyPressEvent(QKeyEvent *event) {
-  if((event->key() == Qt::Key_Backspace || event->key() == Qt::Key_Delete) && !selectionModel()->selectedIndexes().isEmpty()) {
+  if(event->key() == Qt::Key_Backspace || event->key() == Qt::Key_Delete) {
     event->accept();
-    QModelIndex index = selectionModel()->selectedIndexes().first();
-    if(index.isValid() && index.data(NetworkModel::ItemTypeRole) == NetworkModel::BufferItemType) {
+    removeSelectedBuffers();
+  }
+  QTreeView::keyPressEvent(event);
+}
+
+void BufferView::removeSelectedBuffers() {
+  QSet<int> removedRows;
+  foreach(QModelIndex index, selectionModel()->selectedIndexes()) {
+    if(index.data(NetworkModel::ItemTypeRole) == NetworkModel::BufferItemType && !removedRows.contains(index.row())) {
+      removedRows << index.row();
       emit removeBuffer(index);
     }
   }
-  QTreeView::keyPressEvent(event);
 }
 
 void BufferView::rowsInserted(const QModelIndex & parent, int start, int end) {
@@ -273,6 +283,8 @@ void BufferView::showContextMenu(const QPoint &pos) {
 
   QAction *joinBufferAction = new QAction(tr("Join"), this);
   QAction *partBufferAction = new QAction(tr("Part"), this);
+  QAction *hideBufferAction = new QAction(tr("Remove buffers"), this);
+  hideBufferAction->setToolTip(tr("Removes the selected buffers from a custom view but leaves the buffer itself untouched"));
   QAction *removeBufferAction = new QAction(tr("Delete buffer"), this);
 
   QMenu *hideEventsMenu = new QMenu(tr("Hide Events"), this);
@@ -313,6 +325,8 @@ void BufferView::showContextMenu(const QPoint &pos) {
     if(bufferInfo.type() != BufferInfo::ChannelBuffer && bufferInfo.type() != BufferInfo::QueryBuffer) return;
     contextMenu.addAction(joinBufferAction);
     contextMenu.addAction(partBufferAction);
+    if(config())
+      contextMenu.addAction(hideBufferAction);
     contextMenu.addAction(removeBufferAction);
     contextMenu.addMenu(hideEventsMenu);
     contextMenu.addAction(ignoreListAction);
@@ -357,14 +371,13 @@ void BufferView::showContextMenu(const QPoint &pos) {
       }
     }
 #endif
-  } else
-  if(result == joinBufferAction) {
+  } else if(result == joinBufferAction) {
     Client::instance()->userInput(bufferInfo, QString("/JOIN %1").arg(channelname));
-  } else
-  if(result == partBufferAction) {
+  } else if(result == partBufferAction) {
     Client::instance()->userInput(bufferInfo, QString("/PART %1").arg(channelname));
-  } else
-  if(result == removeBufferAction) {
+  } else if(result == hideBufferAction) {
+    removeSelectedBuffers();
+  } else if(result == removeBufferAction) {
     int res = QMessageBox::question(this, tr("Remove buffer permanently?"),
                                     tr("Do you want to delete the buffer \"%1\" permanently? This will delete all related data, including all backlog "
                                        "data, from the core's database!").arg(bufferInfo.bufferName()),

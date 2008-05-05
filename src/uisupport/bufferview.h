@@ -49,6 +49,7 @@ public:
 							       
 public slots:
   void setRootIndexForNetworkId(const NetworkId &networkId);
+  void removeSelectedBuffers();
   
 signals:
   void removeBuffer(const QModelIndex &);
