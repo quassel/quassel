@@ -18,15 +18,17 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef QT_NO_OPENSSL
-
 #ifndef SSLSERVER_H
 #define SSLSERVER_H
 
+#ifndef QT_NO_OPENSSL
+#  include <QSslCertificate>
+#  include <QSslKey>
 #include <QTcpServer>
 #include <QLinkedList>
-#include <QSslCertificate>
-#include <QSslKey>
+#endif
+
+#ifndef QT_NO_OPENSSL
 
 class SslServer : public QTcpServer {
   Q_OBJECT
@@ -51,6 +53,6 @@ private:
   bool _certIsValid;
 };
 
-#endif //SSLSERVER_H
-
 #endif //QT_NO_OPENSSL
+
+#endif //SSLSERVER_H

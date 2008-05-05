@@ -18,15 +18,18 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef QT_NO_OPENSSL
-
 #include "sslserver.h"
 
-#include <QSslSocket>
+#ifndef QT_NO_OPENSSL
+#  include <QSslSocket>
+#endif
+
 #include <QFile>
 #include <QDebug>
 
 #include "util.h"
+
+#ifndef QT_NO_OPENSSL
 
 SslServer::SslServer(QObject *parent)
   : QTcpServer(parent)
