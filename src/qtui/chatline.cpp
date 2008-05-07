@@ -19,19 +19,34 @@
  ***************************************************************************/
 
 #include "chatline.h"
+#include "chatlinemodel.h"
+#include "qtui.h"
+#include "uistyle.h"
 
 Chatline::Chatline(const Message &msg) : MessageItem(msg) {
-  _msg = msg;
-
+  _msg = QtUi::style()->styleMessage(msg);
 
 }
 
 
 QVariant Chatline::data(int column, int role) const {
   switch(role) {
-    case MessageModel::DisplayRole: return _msg.text();
-    default: return MessageItem::data(column, role);
+    case ChatlineModel::DisplayRole:
+      switch(column) {
+        case ChatlineModel::TimestampColumn: return _msg.timestamp.text;
+        case ChatlineModel::SenderColumn:    return _msg.sender.text;
+        case ChatlineModel::TextColumn:      return _msg.text.text;
+      }
+      break;
+    case ChatlineModel::FormatRole:
+      switch(column) {
+        case ChatlineModel::TimestampColumn: return QVariant::fromValue<UiStyle::FormatList>(_msg.timestamp.formats);
+        case ChatlineModel::SenderColumn:    return QVariant::fromValue<UiStyle::FormatList>(_msg.sender.formats);
+        case ChatlineModel::TextColumn:      return QVariant::fromValue<UiStyle::FormatList>(_msg.text.formats);
+      }
+      break;
   }
+  return MessageItem::data(column, role);
 }
 
 bool Chatline::setData(int column, const QVariant &value, int role) {

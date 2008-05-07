@@ -43,7 +43,7 @@ class ChatItem : public QGraphicsItem {
     inline QPersistentModelIndex persistentIndex() const { return _index; }
     inline const MessageModel *model() const { return _index.isValid() ? qobject_cast<const MessageModel *>(_index.model()) : 0; }
     inline int row() const { return _index.isValid() ? _index.row() : 0; }
-    QVariant data(int role) const;
+    virtual QVariant data(int role) const;
     //QString text() const;
     //void setText(const UiStyle::StyledText &text);
 

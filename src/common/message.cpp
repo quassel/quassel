@@ -48,6 +48,7 @@ void Message::setFlags(Flags flags) {
   _flags = flags;
 }
 
+#ifndef SPUTDEV
 QString Message::mircToInternal(QString mirc) {
   mirc.replace('%', "%%");      // escape % just to be sure
   mirc.replace('\x02', "%B");
@@ -168,14 +169,7 @@ QString Message::formattedText() {
   format();
   return _formattedText;
 }
-
-/*
-QString Message::formattedToHtml(const QString &f) {
-
-
-  return f;
-}
-*/
+#endif /* SPUTDEV */
 
 QDataStream &operator<<(QDataStream &out, const Message &msg) {
   out << msg.msgId() << (quint32)msg.timestamp().toTime_t() << (quint32)msg.type() << (quint8)msg.flags()

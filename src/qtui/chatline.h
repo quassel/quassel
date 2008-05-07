@@ -22,6 +22,7 @@
 #define CHATLINE_H_
 
 #include "messagemodel.h"
+#include "uistyle.h"
 
 class Chatline : public MessageItem {
 
@@ -33,7 +34,7 @@ class Chatline : public MessageItem {
     virtual bool setData(int column, const QVariant &value, int role);
 
   private:
-    Message _msg;
+    UiStyle::StyledMessage _msg;
 };
 
 #endif

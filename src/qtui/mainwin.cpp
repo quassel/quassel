@@ -572,12 +572,13 @@ void MainWin::receiveMessage(const Message &msg) {
 
     UiSettings uiSettings;
 
+#ifndef SPUTDEV
     if(uiSettings.value("DisplayPopupMessages", QVariant(true)).toBool()) {
       // FIXME don't invoke style engine for this!
       QString text = QtUi::style()->styleString(Message::mircToInternal(msg.text())).text;
       displayTrayIconMessage(title, text);
     }
-
+#endif
     if(uiSettings.value("AnimateTrayIcon", QVariant(true)).toBool()) {
       QApplication::alert(this);
       setTrayIconActivity(true);

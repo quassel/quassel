@@ -45,6 +45,8 @@ void TopicButton::paintEvent(QPaintEvent *event) {
   QPainter painter(this);
   painter.setBackgroundMode(Qt::OpaqueMode);
 
+  // FIXME re-enable topic painting
+#ifndef SPUTDEV
   QRect drawRect = rect();
   QRect brect;
   QString textPart;
@@ -56,6 +58,7 @@ void TopicButton::paintEvent(QPaintEvent *event) {
     painter.drawText(drawRect, Qt::AlignLeft|Qt::TextSingleLine, textPart, &brect);
     drawRect.setLeft(brect.right());
   }
+#endif
 }
 
 void TopicButton::setAndStyleText(const QString &text) {
@@ -64,6 +67,7 @@ void TopicButton::setAndStyleText(const QString &text) {
 
   setText(text); // this triggers a repaint event
 
+#ifndef SPUTDEV
   styledText = QtUi::style()->styleString(Message::mircToInternal(text));
   int height = 1;
   foreach(QTextLayout::FormatRange fr, styledText.formats) {
@@ -75,7 +79,7 @@ void TopicButton::setAndStyleText(const QString &text) {
     height = QFontMetrics(qApp->font()).height();
   
   setFixedHeight(height);
-  
+#endif  
   // show topic in tooltip
   setToolTip(tr("%1\n\nClick to edit!").arg(QAbstractButton::text()));
 }

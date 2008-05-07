@@ -27,6 +27,10 @@ class ChatlineModel : public MessageModel {
   Q_OBJECT
 
   public:
+    enum ChatlineRole {
+      FormatRole = MessageModel::UserRole
+    };
+
     ChatlineModel(QObject *parent = 0);
     virtual ~ChatlineModel();
 

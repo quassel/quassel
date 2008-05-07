@@ -25,6 +25,7 @@
 # include "old-uistyle.h"
 #else
 
+#include <QDataStream>
 #include <QTextCharFormat>
 #include <QTextLayout>
 #include <QUrl>
@@ -33,10 +34,13 @@
 #include "settings.h"
 
 class UiStyle {
+  Q_DECLARE_TR_FUNCTIONS (UiStyle);
 
   public:
     UiStyle(const QString &settingsKey);
     virtual ~UiStyle();
+
+    typedef QList<QPair<int, quint32> > FormatList;
 
     //! This enumerates the possible formats a text element may have. */
     /** These formats are ordered on increasing importance, in cases where a given property is specified
@@ -118,10 +122,17 @@ class UiStyle {
 
     struct StyledString {
       QString text;
-      QList<QPair<int, quint32> > formats;  // starting pos, ftypes
+      FormatList formats;  // starting pos, ftypes
+    };
+
+    struct StyledMessage {
+      StyledString timestamp;
+      StyledString sender;
+      StyledString text;
     };
 
     StyledString styleString(const QString &);
+    StyledMessage styleMessage(const Message &);
 
     void setFormat(FormatType, QTextCharFormat, Settings::Mode mode/* = Settings::Custom*/);
     QTextCharFormat format(FormatType, Settings::Mode mode = Settings::Custom) const;
@@ -134,6 +145,8 @@ class UiStyle {
 
 
   private:
+    QString mircToInternal(const QString &);
+
     QTextCharFormat _defaultPlainFormat;
     QHash<FormatType, QTextCharFormat> _defaultFormats;
     QHash<FormatType, QTextCharFormat> _customFormats;
@@ -142,6 +155,11 @@ class UiStyle {
 
     QString _settingsKey;
 };
+
+QDataStream &operator<<(QDataStream &out, const UiStyle::FormatList &formatList);
+QDataStream &operator>>(QDataStream &in, UiStyle::FormatList &formatList);
+
+Q_DECLARE_METATYPE(UiStyle::FormatList);
 
 #endif // SPUTDEV
 #endif

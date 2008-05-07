@@ -73,6 +73,7 @@ public:
 
   void setFlags(Flags flags);
   
+#ifndef SPUTDEV
   QString formattedTimestamp();
   QString formattedSender();
   QString formattedText();
@@ -83,6 +84,7 @@ public:
   static QString mircToInternal(QString);
 
   void format();
+#endif
 
 private:
   QDateTime _timestamp;
