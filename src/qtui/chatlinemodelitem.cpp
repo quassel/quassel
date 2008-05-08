@@ -18,18 +18,18 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "chatline.h"
+#include "chatlinemodelitem.h"
 #include "chatlinemodel.h"
 #include "qtui.h"
 #include "uistyle.h"
 
-Chatline::Chatline(const Message &msg) : MessageItem(msg) {
+ChatlineModelItem::ChatlineModelItem(const Message &msg) : MessageModelItem(msg) {
   _msg = QtUi::style()->styleMessage(msg);
 
 }
 
 
-QVariant Chatline::data(int column, int role) const {
+QVariant ChatlineModelItem::data(int column, int role) const {
   switch(role) {
     case ChatlineModel::DisplayRole:
       switch(column) {
@@ -46,9 +46,9 @@ QVariant Chatline::data(int column, int role) const {
       }
       break;
   }
-  return MessageItem::data(column, role);
+  return MessageModelItem::data(column, role);
 }
 
-bool Chatline::setData(int column, const QVariant &value, int role) {
+bool ChatlineModelItem::setData(int column, const QVariant &value, int role) {
   return false;
 }

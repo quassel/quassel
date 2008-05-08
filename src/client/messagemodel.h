@@ -27,7 +27,7 @@
 #include "message.h"
 #include "types.h"
 
-class MessageItem;
+class MessageModelItem;
 class MsgId;
 
 class MessageModel : public QAbstractItemModel {
@@ -66,26 +66,26 @@ class MessageModel : public QAbstractItemModel {
     void insertMessages(const QList<Message> &);
 
   protected:
-    virtual MessageItem *createMessageItem(const Message &) = 0;
+    virtual MessageModelItem *createMessageModelItem(const Message &) = 0;
 
   private:
-    QList<MessageItem *> _messageList;
+    QList<MessageModelItem *> _messageList;
 
     int indexForId(MsgId);
 
 };
 
-class MessageItem {
+class MessageModelItem {
 
   public:
 
-    //! Creates a MessageItem from a Message object.
+    //! Creates a MessageModelItem from a Message object.
     /** This baseclass implementation takes care of all Message data *except* the stylable strings.
      *  Subclasses need to provide Qt::DisplayRole at least, which should describe the plaintext
      *  strings without formattings (e.g. for searching purposes).
      */
-    MessageItem(const Message &);
-    virtual ~MessageItem();
+    MessageModelItem(const Message &);
+    virtual ~MessageModelItem();
 
     virtual QVariant data(int column, int role) const;
     virtual bool setData(int column, const QVariant &value, int role) = 0;

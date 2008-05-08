@@ -18,17 +18,17 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef CHATLINE_H_
-#define CHATLINE_H_
+#ifndef CHATLINEMODELITEM_H_
+#define CHATLINEMODELITEM_H_
 
 #include "messagemodel.h"
 #include "uistyle.h"
 
-class Chatline : public MessageItem {
+class ChatlineModelItem : public MessageModelItem {
 
   public:
-    Chatline(const Message &);
-    //virtual ~Chatline() {};
+    ChatlineModelItem(const Message &);
+    //virtual ~ChatlineModelItem() {};
 
     virtual QVariant data(int column, int role) const;
     virtual bool setData(int column, const QVariant &value, int role);

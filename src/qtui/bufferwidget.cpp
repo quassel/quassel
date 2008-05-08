@@ -19,11 +19,6 @@
  ***************************************************************************/
 
 #include "bufferwidget.h"
-#ifdef SPUTDEV
-# include "chatline.h"
-#else
-# include "chatline-old.h"
-#endif
 #include "chatview.h"
 #include "chatwidget.h"
 #include "settings.h"

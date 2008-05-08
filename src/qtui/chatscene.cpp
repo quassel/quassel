@@ -23,7 +23,7 @@
 
 #include "buffer.h"
 #include "chatitem.h"
-#include "chatline.h"
+#include "chatlinemodelitem.h"
 #include "chatscene.h"
 #include "quasselui.h"
 

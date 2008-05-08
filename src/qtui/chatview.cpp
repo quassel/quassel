@@ -21,7 +21,7 @@
 #include <QGraphicsTextItem>
 
 #include "buffer.h"
-#include "chatline.h"
+#include "chatlinemodelitem.h"
 #include "chatscene.h"
 #include "chatview.h"
 #include "client.h"

@@ -35,7 +35,7 @@ class ChatlineModel : public MessageModel {
     virtual ~ChatlineModel();
 
   protected:
-    virtual MessageItem *createMessageItem(const Message &);
+    virtual MessageModelItem *createMessageModelItem(const Message &);
 
 };
 
