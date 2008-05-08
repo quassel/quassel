@@ -25,7 +25,7 @@
 
 UiStyle::UiStyle(const QString &settingsKey) : _settingsKey(settingsKey) {
   // register FormatList if that hasn't happened yet
-  // FIXME I don't think this actually avoids double registration... :/
+  // FIXME I don't think this actually avoids double registration... then again... does it hurt?
   if(QVariant::nameToType("UiStyle::FormatList") == QVariant::Invalid) {
     qRegisterMetaType<FormatList>("UiStyle::FormatList");
     qRegisterMetaTypeStreamOperators<FormatList>("UiStyle::FormatList");

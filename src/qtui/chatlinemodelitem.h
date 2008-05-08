@@ -34,7 +34,13 @@ class ChatlineModelItem : public MessageModelItem {
     virtual bool setData(int column, const QVariant &value, int role);
 
   private:
-    UiStyle::StyledMessage _msg;
+    struct ChatlinePart {
+      QString plainText;
+      UiStyle::FormatList formatList;
+
+    };
+
+    ChatlinePart _timestamp, _sender, _contents;
 };
 
 #endif

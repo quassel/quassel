@@ -24,28 +24,34 @@
 #include "uistyle.h"
 
 ChatlineModelItem::ChatlineModelItem(const Message &msg) : MessageModelItem(msg) {
-  _msg = QtUi::style()->styleMessage(msg);
+  QtUiStyle::StyledMessage m = QtUi::style()->styleMessage(msg);
+
+  _timestamp.plainText = m.timestamp.text;
+  _sender.plainText = m.sender.text;
+  _contents.plainText = m.text.text;
+
+  _timestamp.formatList = m.timestamp.formats;
+  _sender.formatList = m.sender.formats;
+  _contents.formatList = m.text.formats;
 
 }
 
 
 QVariant ChatlineModelItem::data(int column, int role) const {
-  switch(role) {
-    case ChatlineModel::DisplayRole:
-      switch(column) {
-        case ChatlineModel::TimestampColumn: return _msg.timestamp.text;
-        case ChatlineModel::SenderColumn:    return _msg.sender.text;
-        case ChatlineModel::TextColumn:      return _msg.text.text;
-      }
-      break;
-    case ChatlineModel::FormatRole:
-      switch(column) {
-        case ChatlineModel::TimestampColumn: return QVariant::fromValue<UiStyle::FormatList>(_msg.timestamp.formats);
-        case ChatlineModel::SenderColumn:    return QVariant::fromValue<UiStyle::FormatList>(_msg.sender.formats);
-        case ChatlineModel::TextColumn:      return QVariant::fromValue<UiStyle::FormatList>(_msg.text.formats);
-      }
-      break;
+  const ChatlinePart *part;
+
+  switch(column) {
+    case ChatlineModel::TimestampColumn: part = &_timestamp; break;
+    case ChatlineModel::SenderColumn:    part = &_sender; break;
+    case ChatlineModel::TextColumn:      part = &_contents; break;
+    default: return MessageModelItem::data(column, role);
   }
+
+  switch(role) {
+    case ChatlineModel::DisplayRole: return part->plainText;
+    case ChatlineModel::FormatRole:  return QVariant::fromValue<UiStyle::FormatList>(part->formatList);
+  }
+
   return MessageModelItem::data(column, role);
 }
 
