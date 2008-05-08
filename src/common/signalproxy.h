@@ -32,7 +32,7 @@
 
 class SignalRelay;
 class SyncableObject;
-class QMetaObject;
+struct QMetaObject;
 
 class SignalProxy : public QObject {
   Q_OBJECT

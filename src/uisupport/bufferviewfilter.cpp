@@ -20,6 +20,8 @@
 
 #include "bufferviewfilter.h"
 
+#include <QCoreApplication>
+
 #include "buffermodel.h"
 #include "client.h"
 #include "networkmodel.h"
@@ -153,9 +155,9 @@ void BufferViewFilter::addBuffer(const BufferId &bufferId) {
 }
 
 void BufferViewFilter::removeBuffer(const QModelIndex &index) {
-  if(!config())
+  if(!config() || !index.isValid() || index.data(NetworkModel::ItemTypeRole) != NetworkModel::BufferItemType)
     return;
-  
+
   BufferId bufferId = data(index, NetworkModel::BufferIdRole).value<BufferId>();
   config()->requestRemoveBuffer(bufferId);
 }
@@ -280,7 +282,7 @@ void BufferViewFilter::source_rowsInserted(const QModelIndex &parent, int start,
 void BufferViewFilter::checkPreviousCurrentForRemoval(const QModelIndex &current, const QModelIndex &previous) {
   Q_UNUSED(current);
   if(previous.isValid())
-    qApp->postEvent(this, new CheckRemovalEvent(previous));
+    QCoreApplication::postEvent(this, new CheckRemovalEvent(previous));
 }
 
 void BufferViewFilter::customEvent(QEvent *event) {
