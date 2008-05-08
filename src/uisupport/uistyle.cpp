@@ -119,6 +119,8 @@ void UiStyle::setFormat(FormatType ftype, QTextCharFormat fmt, Settings::Mode mo
       s.removeCustomFormat(ftype);
     }
   }
+  // TODO: invalidate only affected cached formats... if that's possible with less overhead than just rebuilding them
+  _cachedFormats.clear();
 }
 
 QTextCharFormat UiStyle::format(FormatType ftype, Settings::Mode mode) const {
@@ -144,6 +146,7 @@ QTextCharFormat UiStyle::mergedFormat(quint32 ftype) {
   if(ftype & 0x00800000) fmt.merge(format((FormatType)(ftype & 0xf0800000))); // background
   // URL
   if(ftype & Url) fmt.merge(format(Url));
+  _cachedFormats[ftype] = fmt;
   return fmt;
 }
 
