@@ -570,7 +570,7 @@ void MainWin::receiveMessage(const Message &msg) {
 #ifndef SPUTDEV
     if(uiSettings.value("DisplayPopupMessages", QVariant(true)).toBool()) {
       // FIXME don't invoke style engine for this!
-      QString text = QtUi::style()->styleString(Message::mircToInternal(msg.text())).text;
+      QString text = QtUi::style()->styleString(Message::mircToInternal(msg.contents())).plainText;
       displayTrayIconMessage(title, text);
     }
 #endif

@@ -39,7 +39,7 @@ protected:
 
 private:
 #ifndef SPUTDEV
-  UiStyle::StyledText styledText;
+  UiStyle::StyledText styledContents;
 #endif
   QSize _sizeHint;
 };

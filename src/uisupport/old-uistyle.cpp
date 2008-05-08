@@ -139,7 +139,7 @@ UiStyle::StyledText UiStyle::styleString(const QString &_s) {
   QTextLayout::FormatRange curFmtRng;
   curFmtRng.format = format(None);
   curFmtRng.start = 0;
-  result.formats.append(curFmtRng);
+  result.formatList.append(curFmtRng);
   int pos = 0; int length = 0;
   int fgCol = -1, bgCol = -1;  // marks current mIRC color
   for(;;) {
@@ -216,20 +216,20 @@ UiStyle::StyledText UiStyle::styleString(const QString &_s) {
     }
     s.remove(pos, length); // remove format code from string
     // now see if something changed and else insert the format
-    if(curFmtRng.format == result.formats.last().format) continue;  // no change, so we just ignore
+    if(curFmtRng.format == result.formatList.last().format) continue;  // no change, so we just ignore
     curFmtRng.start = pos;
-    if(pos == result.formats.last().start) {
+    if(pos == result.formatList.last().start) {
       // same starting point -> we just overwrite the old format
-      result.formats.last() = curFmtRng;
+      result.formatList.last() = curFmtRng;
     } else {
       // fix length of last format
-      result.formats.last().length = pos - result.formats.last().start;
-      result.formats.append(curFmtRng);
+      result.formatList.last().length = pos - result.formatList.last().start;
+      result.formatList.append(curFmtRng);
     }
   }
-  result.formats.last().length = s.length() - result.formats.last().start;
-  if(result.formats.last().length == 0) result.formats.removeLast();
-  result.text = s;
+  result.formatList.last().length = s.length() - result.formatList.last().start;
+  if(result.formatList.last().length == 0) result.formatList.removeLast();
+  result.plainText = s;
   return result;
 }
 

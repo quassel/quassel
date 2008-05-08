@@ -53,7 +53,7 @@ void ChatWidget::appendChatLine(ChatLine *line) {
   if(!document()->isEmpty()) insertPlainText("\n");
   insertStyledText(line->styledSender());
   insertPlainText(" ");
-  insertStyledText(line->styledText());
+  insertStyledText(line->styledContents());
   setTextCursor(cursor);
 }
 
@@ -69,7 +69,7 @@ void ChatWidget::prependChatLine(ChatLine *line) {
   bool flg = document()->isEmpty();
   insertStyledText(line->styledSender());
   insertPlainText(" ");
-  insertStyledText(line->styledText());
+  insertStyledText(line->styledContents());
   if(!flg) insertPlainText("\n");
   setTextCursor(cursor);
 }
@@ -84,14 +84,14 @@ void ChatWidget::insertChatLine(ChatLine *line) {
   if(!document()->isEmpty()) insertPlainText("\n");
   insertStyledText(line->styledSender());
   insertPlainText(" ");
-  insertStyledText(line->styledText());
+  insertStyledText(line->styledContents());
 }
 
 void ChatWidget::insertStyledText(const QtopiaUiStyle::StyledText &stext) {
   QTextCursor cursor = textCursor();
-  foreach(QTextLayout::FormatRange format, stext.formats) {
+  foreach(QTextLayout::FormatRange format, stext.formatList) {
     cursor.setCharFormat(format.format);
     setTextCursor(cursor);
-    insertPlainText(stext.text.mid(format.start, format.length));
+    insertPlainText(stext.plainText.mid(format.start, format.length));
   }
 }

@@ -57,15 +57,15 @@ public:
   Q_DECLARE_FLAGS(Flags, Flag)
   
 
-  Message(BufferInfo bufferInfo = BufferInfo(), Type type = Plain, QString text = "", QString sender = "", Flags flags = None);
-
-  Message(QDateTime ts, BufferInfo buffer = BufferInfo(), Type type = Plain, QString text = "", QString sender = "", Flags flags = None);
+  Message(const BufferInfo &bufferInfo = BufferInfo(), Type type = Plain, const QString &contents = "", const QString &sender = "", Flags flags = None);
+  Message(const QDateTime &ts, const BufferInfo &buffer = BufferInfo(), Type type = Plain,
+          const QString &contents = "", const QString &sender = "", Flags flags = None);
 
   inline MsgId msgId() const { return _msgId; }
   inline void setMsgId(MsgId id) { _msgId = id; }
 
   inline BufferInfo bufferInfo() const { return _bufferInfo; }
-  inline QString text() const { return _text; }
+  inline QString contents() const { return _contents; }
   inline QString sender() const { return _sender; }
   inline Type type() const { return _type; }
   inline Flags flags() const { return _flags; }
@@ -90,7 +90,7 @@ private:
   QDateTime _timestamp;
   MsgId _msgId;
   BufferInfo _bufferInfo;
-  QString _text;
+  QString _contents;
   QString _sender;
   Type _type;
   Flags _flags;

@@ -26,7 +26,7 @@
 
 ChatLine::ChatLine(Message msg) {
   _styledSender = QtopiaUi::style()->styleString(msg.formattedSender());
-  _styledText = QtopiaUi::style()->styleString(msg.formattedText());
+  _styledContents = QtopiaUi::style()->styleString(msg.formattedText());
   _timestamp = msg.timestamp();
   _msgId = msg.msgId();
   _bufferInfo = msg.bufferInfo();
@@ -58,8 +58,8 @@ UiStyle::StyledText ChatLine::styledSender() const {
   return _styledSender;
 }
 
-UiStyle::StyledText ChatLine::styledText() const {
-  return _styledText;
+UiStyle::StyledText ChatLine::styledContents() const {
+  return _styledContents;
 }
 
 

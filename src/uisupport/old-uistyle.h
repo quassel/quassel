@@ -53,8 +53,8 @@ class UiStyle {
     };
 
     struct StyledText {
-      QString text;
-      QList<QTextLayout::FormatRange> formats;
+      QString plainText;
+      QList<QTextLayout::FormatRange> formatList;
       QList<UrlInfo> urls;
     };
 

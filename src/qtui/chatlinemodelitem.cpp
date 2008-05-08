@@ -26,13 +26,13 @@
 ChatlineModelItem::ChatlineModelItem(const Message &msg) : MessageModelItem(msg) {
   QtUiStyle::StyledMessage m = QtUi::style()->styleMessage(msg);
 
-  _timestamp.plainText = m.timestamp.text;
-  _sender.plainText = m.sender.text;
-  _contents.plainText = m.text.text;
+  _timestamp.plainText = m.timestamp.plainText;
+  _sender.plainText = m.sender.plainText;
+  _contents.plainText = m.contents.plainText;
 
-  _timestamp.formatList = m.timestamp.formats;
-  _sender.formatList = m.sender.formats;
-  _contents.formatList = m.text.formats;
+  _timestamp.formatList = m.timestamp.formatList;
+  _sender.formatList = m.sender.formatList;
+  _contents.formatList = m.contents.formatList;
 
 }
 

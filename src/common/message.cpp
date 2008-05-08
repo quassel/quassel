@@ -24,20 +24,20 @@
 
 #include <QDataStream>
 
-Message::Message(BufferInfo bufferInfo, Type type, QString text, QString sender, Flags flags)
+Message::Message(const BufferInfo &bufferInfo, Type type, const QString &contents, const QString &sender, Flags flags)
   : _timestamp(QDateTime::currentDateTime().toUTC()),
     _bufferInfo(bufferInfo),
-    _text(text),
+    _contents(contents),
     _sender(sender),
     _type(type),
     _flags(flags)
 {
 }
 
-Message::Message(QDateTime ts,BufferInfo bufferInfo, Type type, QString text, QString sender, Flags flags)
+Message::Message(const QDateTime &ts, const BufferInfo &bufferInfo, Type type, const QString &contents, const QString &sender, Flags flags)
   : _timestamp(ts),
     _bufferInfo(bufferInfo),
-    _text(text),
+    _contents(contents),
     _sender(sender),
     _type(type),
     _flags(flags)
@@ -99,7 +99,7 @@ void Message::format() {
   QString user = userFromMask(sender());
   QString host = hostFromMask(sender());
   QString nick = nickFromMask(sender());
-  QString txt = mircToInternal(text());
+  QString txt = mircToInternal(contents());
   QString bufferName = bufferInfo().bufferName();
 
   _formattedTimestamp = tr("%DT[%1]").arg(timestamp().toLocalTime().toString("hh:mm:ss"));
@@ -135,12 +135,12 @@ void Message::format() {
     break;
     case Message::Nick:
       s = tr("%Dr<->");
-      if(nick == text()) t = tr("%DrYou are now known as %DN%1%DN").arg(txt);
+      if(nick == contents()) t = tr("%DrYou are now known as %DN%1%DN").arg(txt);
       else t = tr("%Dr%DN%1%DN is now known as %DN%2%DN").arg(nick, txt);
       break;
     case Message::Mode:
       s = tr("%Dm***");
-      if(nick.isEmpty()) t = tr("%DmUser mode: %DM%1%DM").arg(text());
+      if(nick.isEmpty()) t = tr("%DmUser mode: %DM%1%DM").arg(contents());
       else t = tr("%DmMode %DM%1%DM by %DN%2%DN").arg(txt, nick);
       break;
     case Message::Action:
@@ -173,7 +173,7 @@ QString Message::formattedText() {
 
 QDataStream &operator<<(QDataStream &out, const Message &msg) {
   out << msg.msgId() << (quint32)msg.timestamp().toTime_t() << (quint32)msg.type() << (quint8)msg.flags()
-      << msg.bufferInfo() << msg.sender().toUtf8() << msg.text().toUtf8();
+      << msg.bufferInfo() << msg.sender().toUtf8() << msg.contents().toUtf8();
   return out;
 }
 
@@ -189,7 +189,7 @@ QDataStream &operator>>(QDataStream &in, Message &msg) {
   msg._bufferInfo = buf;
   msg._timestamp = QDateTime::fromTime_t(ts);
   msg._sender = QString::fromUtf8(s);
-  msg._text = QString::fromUtf8(m);
+  msg._contents = QString::fromUtf8(m);
   return in;
 }
 

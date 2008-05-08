@@ -78,7 +78,7 @@ QString ChatItem::text() const {
 
 void ChatItem::setText(const UiStyle::StyledText &text) {
   _layout.setText(text.text);
-  _layout.setAdditionalFormats(text.formats);
+  _layout.setAdditionalFormats(text.formatList);
   layout();
 }
 

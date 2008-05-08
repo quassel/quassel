@@ -497,7 +497,7 @@ void Client::recvMessage(const Message &message) {
       ? net->networkName() + ":"
       : QString();
     QString sender = networkName + msg.bufferInfo().bufferName() + ":" + msg.sender();
-    Message mmsg = Message(msg.timestamp(), msg.bufferInfo(), msg.type(), msg.text(), sender, msg.flags());
+    Message mmsg = Message(msg.timestamp(), msg.bufferInfo(), msg.type(), msg.contents(), sender, msg.flags());
     monitorBuffer()->appendMsg(mmsg);
   }
   emit messageReceived(msg);
@@ -588,7 +588,7 @@ void Client::checkForHighlight(Message &msg) {
       QRegExp nickRegExp("^(.*\\W)?" + QRegExp::escape(nickname) + "(\\W.*)?$");
       if((msg.type() & (Message::Plain | Message::Notice | Message::Action))
           && !(msg.flags() & Message::Self)
-          && nickRegExp.exactMatch(msg.text())) {
+          && nickRegExp.exactMatch(msg.contents())) {
         msg.setFlags(msg.flags() | Message::Highlight);
         return;
       }
@@ -608,7 +608,7 @@ void Client::checkForHighlight(Message &msg) {
       }
       if((msg.type() & (Message::Plain | Message::Notice | Message::Action))
           && !(msg.flags() & Message::Self)
-          && userRegExp.exactMatch(msg.text())) {
+          && userRegExp.exactMatch(msg.contents())) {
         msg.setFlags(msg.flags() | Message::Highlight);
         return;
       }

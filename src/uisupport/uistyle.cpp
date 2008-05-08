@@ -164,7 +164,7 @@ QString UiStyle::formatCode(FormatType ftype) const {
 UiStyle::StyledString UiStyle::styleString(const QString &s_) {
   QString s = s_;
   StyledString result;
-  result.formats.append(qMakePair(0, (quint32)None));
+  result.formatList.append(qMakePair(0, (quint32)None));
   quint32 curfmt = (quint32)None;
   int pos = 0; int length = 0;
   for(;;) {
@@ -208,12 +208,12 @@ UiStyle::StyledString UiStyle::styleString(const QString &s_) {
       length = code.length();
     }
     s.remove(pos, length);
-    if(pos == result.formats.last().first)
-      result.formats.last().second = curfmt;
+    if(pos == result.formatList.last().first)
+      result.formatList.last().second = curfmt;
     else
-      result.formats.append(qMakePair(pos, curfmt));
+      result.formatList.append(qMakePair(pos, curfmt));
   }
-  result.text = s;
+  result.plainText = s;
   return result;
 }
 
@@ -265,7 +265,7 @@ UiStyle::StyledMessage UiStyle::styleMessage(const Message &msg) {
   QString user = userFromMask(msg.sender());
   QString host = hostFromMask(msg.sender());
   QString nick = nickFromMask(msg.sender());
-  QString txt = mircToInternal(msg.text());
+  QString txt = mircToInternal(msg.contents());
   QString bufferName = msg.bufferInfo().bufferName();
 
   StyledMessage result;
@@ -303,7 +303,7 @@ UiStyle::StyledMessage UiStyle::styleMessage(const Message &msg) {
       break;
     case Message::Nick:
       s = tr("%Dr<->");
-      if(nick == msg.text()) t = tr("%DrYou are now known as %DN%1%DN").arg(txt);
+      if(nick == msg.contents()) t = tr("%DrYou are now known as %DN%1%DN").arg(txt);
       else t = tr("%Dr%DN%1%DN is now known as %DN%2%DN").arg(nick, txt);
       break;
     case Message::Mode:
@@ -320,7 +320,7 @@ UiStyle::StyledMessage UiStyle::styleMessage(const Message &msg) {
       t = tr("%De[%1]").arg(txt);
   }
   result.sender = styleString(s);
-  result.text = styleString(t);
+  result.contents = styleString(t);
   return result;
 }
 

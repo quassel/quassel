@@ -51,7 +51,7 @@ void ChatLineOld::formatMsg(Message msg) {
   QTextOption tsOption, senderOption, textOption;
   styledTimeStamp = QtUi::style()->styleString(msg.formattedTimestamp());
   styledSender = QtUi::style()->styleString(msg.formattedSender());
-  styledText = QtUi::style()->styleString(msg.formattedText());
+  styledContents = QtUi::style()->styleString(msg.formattedText());
   precomputeLine();
 }
 
@@ -69,28 +69,28 @@ QList<ChatLineOld::FormatRange> ChatLineOld::calcFormatRanges(const UiStyle::Sty
   QList<FormatRange> ranges;
 
   if(additional.length > 0) {
-    for(int i = 0; i < fs.formats.count(); i++) {
-      int oldend = fs.formats[i].start + fs.formats[i].length - 1;
+    for(int i = 0; i < fs.formatList.count(); i++) {
+      int oldend = fs.formatList[i].start + fs.formatList[i].length - 1;
       int addend = additional.start + additional.length - 1;
       if(oldend < additional.start) continue;
-      fs.formats[i].length = additional.start - fs.formats[i].start;
-      QTextLayout::FormatRange addfmtrng = fs.formats[i];
+      fs.formatList[i].length = additional.start - fs.formatList[i].start;
+      QTextLayout::FormatRange addfmtrng = fs.formatList[i];
       addfmtrng.format.merge(additional.format);
       addfmtrng.start = additional.start;
       addfmtrng.length = qMin(oldend, addend) - additional.start + 1;
-      fs.formats.insert(++i, addfmtrng);
+      fs.formatList.insert(++i, addfmtrng);
       if(addend == oldend) break;
       if(addend < oldend) {
-        QTextLayout::FormatRange restfmtrng = fs.formats[i-1];
+        QTextLayout::FormatRange restfmtrng = fs.formatList[i-1];
         restfmtrng.start = addend + 1;
         restfmtrng.length = oldend - addend;
-        fs.formats.insert(++i, restfmtrng);
+        fs.formatList.insert(++i, restfmtrng);
         break;
       }
     }
   }
 
-  foreach(QTextLayout::FormatRange f, fs.formats) {
+  foreach(QTextLayout::FormatRange f, fs.formatList) {
     if(f.length <= 0) continue;
     FormatRange range;
     range.start = f.start;
@@ -112,7 +112,7 @@ void ChatLineOld::setSelection(SelectionMode mode, int start, int end) {
     case None:
       tsFormat = calcFormatRanges(styledTimeStamp);
       senderFormat = calcFormatRanges(styledSender);
-      textFormat = calcFormatRanges(styledText);
+      textFormat = calcFormatRanges(styledContents);
       break;
     case Partial:
       selectionStart = qMin(start, end); selectionEnd = qMax(start, end);
@@ -120,21 +120,21 @@ void ChatLineOld::setSelection(SelectionMode mode, int start, int end) {
       textSel.format.setBackground(pal.brush(QPalette::Highlight));
       textSel.start = selectionStart;
       textSel.length = selectionEnd - selectionStart;
-      textFormat = calcFormatRanges(styledText, textSel);
+      textFormat = calcFormatRanges(styledContents, textSel);
       break;
     case Full:
       tsSel.format.setForeground(pal.brush(QPalette::HighlightedText));
       tsSel.format.setBackground(pal.brush(QPalette::Highlight));
-      tsSel.start = 0; tsSel.length = styledTimeStamp.text.length();
+      tsSel.start = 0; tsSel.length = styledTimeStamp.plainText.length();
       tsFormat = calcFormatRanges(styledTimeStamp, tsSel);
       senderSel.format.setForeground(pal.brush(QPalette::HighlightedText));
       senderSel.format.setBackground(pal.brush(QPalette::Highlight));
-      senderSel.start = 0; senderSel.length = styledSender.text.length();
+      senderSel.start = 0; senderSel.length = styledSender.plainText.length();
       senderFormat = calcFormatRanges(styledSender, senderSel);
       textSel.format.setForeground(pal.brush(QPalette::HighlightedText));
       textSel.format.setBackground(pal.brush(QPalette::Highlight));
-      textSel.start = 0; textSel.length = styledText.text.length();
-      textFormat = calcFormatRanges(styledText, textSel);
+      textSel.start = 0; textSel.length = styledContents.plainText.length();
+      textFormat = calcFormatRanges(styledContents, textSel);
       break;
   }
 }
@@ -152,11 +152,11 @@ QDateTime ChatLineOld::timestamp() const {
 }
 
 QString ChatLineOld::sender() const {
-  return styledSender.text;
+  return styledSender.plainText;
 }
 
 QString ChatLineOld::text() const {
-  return styledText.text;
+  return styledContents.plainText;
 }
 
 bool ChatLineOld::isUrl(int c) const {
@@ -167,7 +167,7 @@ bool ChatLineOld::isUrl(int c) const {
 QUrl ChatLineOld::getUrl(int c) const {
   if(c < 0 || c >= charUrlIdx.count()) return QUrl();
   int i = charUrlIdx[c];
-  if(i >= 0) return styledText.urls[i].url;
+  if(i >= 0) return styledContents.urls[i].url;
   else return QUrl();
 }
 
@@ -197,18 +197,18 @@ int ChatLineOld::posToCursor(QPointF pos) {
 void ChatLineOld::precomputeLine() {
   tsFormat = calcFormatRanges(styledTimeStamp);
   senderFormat = calcFormatRanges(styledSender);
-  textFormat = calcFormatRanges(styledText);
+  textFormat = calcFormatRanges(styledContents);
 
   minHeight = 0;
   foreach(FormatRange fr, tsFormat) minHeight = qMax(minHeight, fr.height);
   foreach(FormatRange fr, senderFormat) minHeight = qMax(minHeight, fr.height);
 
   words.clear();
-  charPos.resize(styledText.text.length() + 1);
-  charHeights.resize(styledText.text.length());
-  charUrlIdx.fill(-1, styledText.text.length());
-  for(int i = 0; i < styledText.urls.count(); i++) {
-    QtUiStyle::UrlInfo url = styledText.urls[i];
+  charPos.resize(styledContents.plainText.length() + 1);
+  charHeights.resize(styledContents.plainText.length());
+  charUrlIdx.fill(-1, styledContents.plainText.length());
+  for(int i = 0; i < styledContents.urls.count(); i++) {
+    QtUiStyle::UrlInfo url = styledContents.urls[i];
     for(int j = url.start; j < url.end; j++) charUrlIdx[j] = i;
   }
   if(!textFormat.count()) return;
@@ -216,10 +216,10 @@ void ChatLineOld::precomputeLine() {
   QFontMetrics metrics(textFormat[0].format.font());
   Word wr;
   wr.start = -1; wr.trailing = -1;
-  for(int i = 0; i < styledText.text.length(); ) {
+  for(int i = 0; i < styledContents.plainText.length(); ) {
     charPos[i] = w; charHeights[i] = textFormat[idx].height;
-    w += metrics.charWidth(styledText.text, i);
-    if(!styledText.text[i].isSpace()) {
+    w += metrics.charWidth(styledContents.plainText, i);
+    if(!styledContents.plainText[i].isSpace()) {
       if(wr.trailing >= 0) {
         // new word after space
         words.append(wr);
@@ -237,13 +237,13 @@ void ChatLineOld::precomputeLine() {
         wr.trailing++;
       }
     }
-    if(++i < styledText.text.length() && ++cnt >= textFormat[idx].length) {
+    if(++i < styledContents.plainText.length() && ++cnt >= textFormat[idx].length) {
       cnt = 0; idx++;
       Q_ASSERT(idx < textFormat.count());
       metrics = QFontMetrics(textFormat[idx].format.font());
     }
   }
-  charPos[styledText.text.length()] = w;
+  charPos[styledContents.plainText.length()] = w;
   if(wr.start >= 0) words.append(wr);
 }
 
@@ -346,14 +346,14 @@ void ChatLineOld::draw(QPainter *p, const QPointF &pos) {
   foreach(FormatRange fr, tsFormat) {
     p->setFont(fr.format.font());
     p->setPen(QPen(fr.format.foreground(), 0)); p->setBackground(fr.format.background());
-    p->drawText(rect, Qt::AlignLeft|Qt::TextSingleLine, styledTimeStamp.text.mid(fr.start, fr.length), &brect);
+    p->drawText(rect, Qt::AlignLeft|Qt::TextSingleLine, styledTimeStamp.plainText.mid(fr.start, fr.length), &brect);
     rect.setLeft(brect.right());
   }
   rect = QRectF(pos + QPointF(tsWidth + QtUi::style()->sepTsSender(), 0), QSizeF(senderWidth, minHeight));
   for(int i = senderFormat.count() - 1; i >= 0; i--) {
     FormatRange fr = senderFormat[i];
     p->setFont(fr.format.font()); p->setPen(QPen(fr.format.foreground(), 0)); p->setBackground(fr.format.background());
-    p->drawText(rect, Qt::AlignRight|Qt::TextSingleLine, styledSender.text.mid(fr.start, fr.length), &brect);
+    p->drawText(rect, Qt::AlignRight|Qt::TextSingleLine, styledSender.plainText.mid(fr.start, fr.length), &brect);
     rect.setRight(brect.left());
   }
   QPointF tpos = pos + QPointF(tsWidth + QtUi::style()->sepTsSender() + senderWidth + QtUi::style()->sepSenderText(), 0);
@@ -371,7 +371,7 @@ void ChatLineOld::draw(QPainter *p, const QPointF &pos) {
       llend = lineLayouts[l].start + lineLayouts[l].length;
       start = qMax(fr.start, lineLayouts[l].start); end = qMin(frend, llend);
       rect.setLeft(tpos.x() + charPos[start] - offset);
-      p->drawText(rect, Qt::AlignLeft|Qt::TextSingleLine, styledText.text.mid(start, end - start), &brect);
+      p->drawText(rect, Qt::AlignLeft|Qt::TextSingleLine, styledContents.plainText.mid(start, end - start), &brect);
       if(llend <= end) {
         h += lineLayouts[l].height;
         l++;

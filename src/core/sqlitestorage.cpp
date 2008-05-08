@@ -631,7 +631,7 @@ MsgId SqliteStorage::logMessage(Message msg) {
   logMessageQuery->bindValue(":type", msg.type());
   logMessageQuery->bindValue(":flags", (int)msg.flags());
   logMessageQuery->bindValue(":sender", msg.sender());
-  logMessageQuery->bindValue(":message", msg.text());
+  logMessageQuery->bindValue(":message", msg.contents());
   logMessageQuery->exec();
   
   if(logMessageQuery->lastError().isValid()) {

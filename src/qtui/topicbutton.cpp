@@ -50,8 +50,8 @@ void TopicButton::paintEvent(QPaintEvent *event) {
   QRect drawRect = rect();
   QRect brect;
   QString textPart;
-  foreach(QTextLayout::FormatRange fr, styledText.formats) {
-    textPart = styledText.text.mid(fr.start, fr.length);
+  foreach(QTextLayout::FormatRange fr, styledContents.formatList) {
+    textPart = styledContents.plainText.mid(fr.start, fr.length);
     painter.setFont(fr.format.font());
     painter.setPen(QPen(fr.format.foreground(), 0));
     painter.setBackground(fr.format.background());
@@ -68,9 +68,9 @@ void TopicButton::setAndStyleText(const QString &text) {
   setText(text); // this triggers a repaint event
 
 #ifndef SPUTDEV
-  styledText = QtUi::style()->styleString(Message::mircToInternal(text));
+  styledContents = QtUi::style()->styleString(Message::mircToInternal(text));
   int height = 1;
-  foreach(QTextLayout::FormatRange fr, styledText.formats) {
+  foreach(QTextLayout::FormatRange fr, styledContents.formatList) {
     height = qMax(height, QFontMetrics(fr.format.font()).height());
   }
 

@@ -121,14 +121,14 @@ class UiStyle {
     };
 
     struct StyledString {
-      QString text;
-      FormatList formats;  // starting pos, ftypes
+      QString plainText;
+      FormatList formatList;  // starting pos, ftypes
     };
 
     struct StyledMessage {
       StyledString timestamp;
       StyledString sender;
-      StyledString text;
+      StyledString contents;
     };
 
     StyledString styleString(const QString &);
