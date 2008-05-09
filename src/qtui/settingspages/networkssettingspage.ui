@@ -161,7 +161,7 @@
 Unless you *really* know what you do, leave this as ISO-8859-1!</string>
         </property>
         <property name="currentIndex" >
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="serversTab" >
          <property name="enabled" >
@@ -171,8 +171,8 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</string>
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>244</width>
-           <height>332</height>
+           <width>301</width>
+           <height>326</height>
           </rect>
          </property>
          <attribute name="title" >
@@ -337,8 +337,8 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</string>
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>244</width>
-           <height>332</height>
+           <width>301</width>
+           <height>326</height>
           </rect>
          </property>
          <attribute name="title" >
@@ -377,6 +377,13 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</string>
              <bool>true</bool>
             </property>
             <layout class="QGridLayout" name="gridLayout" >
+             <item row="0" column="0" >
+              <widget class="QLabel" name="label_2" >
+               <property name="text" >
+                <string>Service:</string>
+               </property>
+              </widget>
+             </item>
              <item row="0" column="1" >
               <widget class="QLineEdit" name="autoIdentifyService" >
                <property name="enabled" >
@@ -387,23 +394,6 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</string>
                </property>
               </widget>
              </item>
-             <item row="1" column="1" >
-              <widget class="QLineEdit" name="autoIdentifyPassword" >
-               <property name="enabled" >
-                <bool>true</bool>
-               </property>
-               <property name="echoMode" >
-                <enum>QLineEdit::Password</enum>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="0" >
-              <widget class="QLabel" name="label_2" >
-               <property name="text" >
-                <string>Service:</string>
-               </property>
-              </widget>
-             </item>
              <item row="1" column="0" >
               <widget class="QLabel" name="label_3" >
                <property name="enabled" >
@@ -411,6 +401,16 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</string>
                </property>
                <property name="text" >
                 <string>Password:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1" >
+              <widget class="QLineEdit" name="autoIdentifyPassword" >
+               <property name="enabled" >
+                <bool>true</bool>
+               </property>
+               <property name="echoMode" >
+                <enum>QLineEdit::Password</enum>
                </property>
               </widget>
              </item>
@@ -428,8 +428,8 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</string>
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>244</width>
-           <height>332</height>
+           <width>301</width>
+           <height>326</height>
           </rect>
          </property>
          <attribute name="title" >

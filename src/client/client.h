@@ -30,10 +30,10 @@
 
 class BufferInfo;
 class Message;
+class MessageModel;
 
 class Identity;
 class Network;
-
 
 class AbstractUi;
 class AbstractUiMsg;
@@ -48,7 +48,6 @@ class SignalProxy;
 struct NetworkInfo;
 
 class QTimer;
-
 
 class Client : public QObject {
   Q_OBJECT
@@ -94,6 +93,7 @@ public:
 
   static inline NetworkModel *networkModel() { return instance()->_networkModel; }
   static inline BufferModel *bufferModel() { return instance()->_bufferModel; }
+  static inline MessageModel *messageModel() { return instance()->_messageModel; }
   static inline SignalProxy *signalProxy() { return instance()->_signalProxy; }
 
   static inline ClientBacklogManager *backlogManager() { return instance()->_backlogManager; }
@@ -215,6 +215,8 @@ private:
   BufferSyncer * _bufferSyncer;
   ClientBacklogManager *_backlogManager;
   BufferViewManager *_bufferViewManager;
+
+  MessageModel *_messageModel;
 
   ClientMode clientMode;
 

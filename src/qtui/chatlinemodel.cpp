@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-08 by the Quassel Project                          *
+ *   Copyright (C) 2005-08 by the Quassel IRC Team                         *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,53 +18,21 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QtCore>
+#include "chatlinemodel.h"
 
-#include "chatline.h"
-#include "qtopiaui.h"
-#include "qtopiauistyle.h"
+#include "chatlinemodelitem.h"
 
-ChatLine::ChatLine(Message msg) {
-  _styledSender = QtopiaUi::style()->styleString(msg.formattedSender());
-  _styledContents = QtopiaUi::style()->styleString(msg.formattedText());
-  _timestamp = msg.timestamp();
-  _msgId = msg.msgId();
-  _bufferInfo = msg.bufferInfo();
+ChatlineModel::ChatlineModel(QObject *parent) : MessageModel(parent) {
 
 
 }
 
-QString ChatLine::sender() const {
-  return _sender;
-}
+ChatlineModel::~ChatlineModel() {
 
-QString ChatLine::text() const {
-  return _text;
-}
-
-MsgId ChatLine::msgId() const {
-  return _msgId;
-}
-
-BufferInfo ChatLine::bufferInfo() const {
-  return _bufferInfo;
-}
-
-QDateTime ChatLine::timestamp() const {
-  return _timestamp;
-}
-
-UiStyle::StyledText ChatLine::styledSender() const {
-  return _styledSender;
-}
-
-UiStyle::StyledText ChatLine::styledContents() const {
-  return _styledContents;
 }
 
 
+MessageModelItem *ChatlineModel::createMessageModelItem(const Message &msg) {
+  return new ChatlineModelItem(msg);
 
-QString ChatLine::formattedToHtml(const QString &f) {
-   
-  return f;
 }

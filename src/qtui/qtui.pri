@@ -11,6 +11,14 @@ HDRS += aboutdlg.h bufferwidget.h chatline-old.h chatwidget.h \
         coreconnectdlg.h mainwin.h nicklistwidget.h qtui.h qtuisettings.h qtuistyle.h settingsdlg.h settingspagedlg.h \
         titlesetter.h topicbutton.h topicwidget.h verticaldock.h jumpkeyhandler.h
 
+# new chatline model stuff
+sputdev {
+  SRCS += chatitem.cpp chatlinemodelitem.cpp chatlinemodel.cpp chatscene.cpp chatview.cpp
+  HDRS += chatitem.h chatlinemodelitem.h chatlinemodel.h chatscene.h chatview.h
+  SRCS -= chatline-old.cpp chatwidget.cpp
+  HDRS -= chatline-old.h chatwidget.h
+}
+
 FORMNAMES = aboutdlg.ui mainwin.ui coreaccounteditdlg.ui coreconnectdlg.ui bufferviewwidget.ui bufferwidget.ui nicklistwidget.ui settingsdlg.ui \
             settingspagedlg.ui topicwidget.ui debugconsole.ui inputwidget.ui \
             coreconfigwizardintropage.ui coreconfigwizardadminuserpage.ui coreconfigwizardstorageselectionpage.ui coreconfigwizardsyncpage.ui

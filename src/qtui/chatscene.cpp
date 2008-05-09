@@ -18,53 +18,40 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QtCore>
+#include <QGraphicsSceneMouseEvent>
+#include <QPersistentModelIndex>
 
-#include "chatline.h"
-#include "qtopiaui.h"
-#include "qtopiauistyle.h"
+#include "buffer.h"
+#include "chatitem.h"
+#include "chatlinemodelitem.h"
+#include "chatscene.h"
+#include "quasselui.h"
 
-ChatLine::ChatLine(Message msg) {
-  _styledSender = QtopiaUi::style()->styleString(msg.formattedSender());
-  _styledContents = QtopiaUi::style()->styleString(msg.formattedText());
-  _timestamp = msg.timestamp();
-  _msgId = msg.msgId();
-  _bufferInfo = msg.bufferInfo();
+ChatScene::ChatScene(MessageModel *model, QObject *parent) : QGraphicsScene(parent), _model(model) {
+  connect(model, SIGNAL(rowsInserted(const QModelIndex &, int, int)), this, SLOT(rowsInserted(const QModelIndex &, int, int)));
+  for(int i = 0; i < model->rowCount(); i++) {
+    ChatItem *item = new ChatItem(QPersistentModelIndex(model->index(i, 2)));
+    addItem(item);
+    item->setPos(30, i*item->boundingRect().height());
+  }
+
+  
+}
+
+ChatScene::~ChatScene() {
 
 
 }
 
-QString ChatLine::sender() const {
-  return _sender;
-}
 
-QString ChatLine::text() const {
-  return _text;
-}
-
-MsgId ChatLine::msgId() const {
-  return _msgId;
-}
-
-BufferInfo ChatLine::bufferInfo() const {
-  return _bufferInfo;
-}
-
-QDateTime ChatLine::timestamp() const {
-  return _timestamp;
-}
-
-UiStyle::StyledText ChatLine::styledSender() const {
-  return _styledSender;
-}
-
-UiStyle::StyledText ChatLine::styledContents() const {
-  return _styledContents;
-}
-
-
-
-QString ChatLine::formattedToHtml(const QString &f) {
-   
-  return f;
+void ChatScene::mousePressEvent ( QGraphicsSceneMouseEvent * mouseEvent ) {
+  /*
+  qDebug() << "recv" << mouseEvent->scenePos();
+  ChatLine *line = static_cast<ChatLine*>(itemAt(mouseEvent->scenePos()));
+  ChatItem *item = static_cast<ChatItem*>(itemAt(mouseEvent->scenePos()));
+  qDebug() << (void*)line << (void*)item;
+  if(line) {
+    line->myMousePressEvent(mouseEvent);
+  } else  QGraphicsScene::mousePressEvent(mouseEvent);
+  */
 }

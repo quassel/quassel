@@ -21,17 +21,24 @@
 
 #include "uistyle.h"
 #include "uistylesettings.h"
+#include "util.h"
 
 UiStyle::UiStyle(const QString &settingsKey) : _settingsKey(settingsKey) {
-  // Default format
-  QTextCharFormat def;
-  def.setForeground(QBrush("#000000"));
-  def.setFont(QFont("Monospace", QApplication::font().pointSize()));
-  def.font().setFixedPitch(true);
-  def.font().setStyleHint(QFont::TypeWriter);
-  _defaultFormats = QVector<QTextCharFormat>(NumFormatTypes, def);
-  _customFormats = QVector<QTextCharFormat>(NumFormatTypes, QTextFormat().toCharFormat());
+  // register FormatList if that hasn't happened yet
+  // FIXME I don't think this actually avoids double registration... then again... does it hurt?
+  if(QVariant::nameToType("UiStyle::FormatList") == QVariant::Invalid) {
+    qRegisterMetaType<FormatList>("UiStyle::FormatList");
+    qRegisterMetaTypeStreamOperators<FormatList>("UiStyle::FormatList");
+    Q_ASSERT(QVariant::nameToType("UiStyle::FormatList") != QVariant::Invalid);
+  }
 
+  // Default format
+  _defaultPlainFormat.setForeground(QBrush("#000000"));
+  _defaultPlainFormat.setFont(QFont("Monospace", QApplication::font().pointSize()));
+  _defaultPlainFormat.font().setFixedPitch(true);
+  _defaultPlainFormat.font().setStyleHint(QFont::TypeWriter);
+  setFormat(None, _defaultPlainFormat, Settings::Default);
+  
   // Load saved custom formats
   UiStyleSettings s(_settingsKey);
   foreach(FormatType type, s.availableFormats()) {
@@ -80,9 +87,6 @@ UiStyle::UiStyle(const QString &settingsKey) : _settingsKey(settingsKey) {
     QTextCharFormat fgf, bgf;
     fgf.setForeground(QBrush(QColor(colors[i]))); setFormat((FormatType)(FgCol00 + i), fgf, Settings::Default);
     bgf.setBackground(QBrush(QColor(colors[i]))); setFormat((FormatType)(BgCol00 + i), bgf, Settings::Default);
-    //FIXME fix the havoc caused by ColorSettingsPage
-    setFormat((FormatType)(FgCol00 + i), fgf, Settings::Custom);
-    setFormat((FormatType)(BgCol00 + i), bgf, Settings::Custom);
   }
 
   // Set a few more standard formats
@@ -115,11 +119,35 @@ void UiStyle::setFormat(FormatType ftype, QTextCharFormat fmt, Settings::Mode mo
       s.removeCustomFormat(ftype);
     }
   }
+  // TODO: invalidate only affected cached formats... if that's possible with less overhead than just rebuilding them
+  _cachedFormats.clear();
 }
 
 QTextCharFormat UiStyle::format(FormatType ftype, Settings::Mode mode) const {
-  if(mode == Settings::Custom && _customFormats[ftype].isValid()) return _customFormats[ftype];
-  else return _defaultFormats[ftype];
+  if(mode == Settings::Custom && _customFormats.contains(ftype)) return _customFormats.value(ftype);
+  else return _defaultFormats.value(ftype, QTextCharFormat());
+}
+
+// NOTE: This function is intimately tied to the values in FormatType. Don't change this
+//       until you _really_ know what you do!
+QTextCharFormat UiStyle::mergedFormat(quint32 ftype) {
+  if(_cachedFormats.contains(ftype)) return _cachedFormats[ftype];
+  if(ftype == Invalid) return QTextCharFormat();
+  // Now we construct the merged format, starting with the default
+  QTextCharFormat fmt = format(None);
+  // First: general message format
+  fmt.merge(format((FormatType)(ftype & 0x0f)));
+  // now more specific ones
+  for(quint32 mask = 0x0010; mask <= 0x2000; mask <<= 1) {
+    if(ftype & mask) fmt.merge(format((FormatType)mask));
+  }
+  // color codes!
+  if(ftype & 0x00400000) fmt.merge(format((FormatType)(ftype & 0x0f400000))); // foreground
+  if(ftype & 0x00800000) fmt.merge(format((FormatType)(ftype & 0xf0800000))); // background
+  // URL
+  if(ftype & Url) fmt.merge(format(Url));
+  _cachedFormats[ftype] = fmt;
+  return fmt;
 }
 
 UiStyle::FormatType UiStyle::formatType(const QString & code) const {
@@ -131,64 +159,38 @@ QString UiStyle::formatCode(FormatType ftype) const {
   return _formatCodes.key(ftype);
 }
 
-UiStyle::StyledText UiStyle::styleString(const QString &_s) {
-  QString s = _s;
-  StyledText result;
-  QList<FormatType> fmtList;
-  fmtList.append(None);
-  QTextLayout::FormatRange curFmtRng;
-  curFmtRng.format = format(None);
-  curFmtRng.start = 0;
-  result.formats.append(curFmtRng);
+// This method expects a well-formatted string, there is no error checking!
+// Since we create those ourselves, we should be pretty safe that nobody does something crappy here.
+UiStyle::StyledString UiStyle::styleString(const QString &s_) {
+  QString s = s_;
+  StyledString result;
+  result.formatList.append(qMakePair(0, (quint32)None));
+  quint32 curfmt = (quint32)None;
   int pos = 0; int length = 0;
-  int fgCol = -1, bgCol = -1;  // marks current mIRC color
   for(;;) {
     pos = s.indexOf('%', pos);
     if(pos < 0) break;
-    if(s[pos+1] == '%') { // escaped %, just remove one and continue
+    if(s[pos+1] == '%') { // escaped %, we just remove one and continue
       s.remove(pos, 1);
       pos++;
       continue;
-    } else if(s[pos+1] == 'D' && s[pos+2] == 'c') { // color code
-      if(s[pos+3] == '-') { // color off
-        if(fgCol >= 0) {
-          fmtList.removeAll((FormatType)(FgCol00 + fgCol));
-          fgCol = -1;
-        }
-        if(bgCol >= 0) {
-          fmtList.removeAll((FormatType)(BgCol00 + bgCol));
-          bgCol = -1;
-        }
-        curFmtRng.format = mergedFormat(fmtList);
+    }
+    if(s[pos+1] == 'D' && s[pos+2] == 'c') { // color code
+      if(s[pos+3] == '-') {  // color off
+        curfmt &= 0x003fffff;
         length = 4;
       } else {
         int color = 10 * s[pos+4].digitValue() + s[pos+5].digitValue();
         //TODO: use 99 as transparent color (re mirc color "standard")
         color &= 0x0f;
-        int *colptr; FormatType coltype;
-        if(s[pos+3] == 'f') { // foreground
-          colptr = &fgCol; coltype = FgCol00;
-        } else {              // background
-          Q_ASSERT(s[pos+3] == 'b');
-          colptr = &bgCol; coltype = BgCol00;
-        }
-        if(*colptr >= 0) {
-          // color already set, remove format code and add new one
-          Q_ASSERT(fmtList.contains((FormatType)(coltype + *colptr)));
-          fmtList.removeAll((FormatType)(coltype + *colptr));
-          fmtList.append((FormatType)(coltype + color));
-          curFmtRng.format = mergedFormat(fmtList);
-        } else {
-          fmtList.append((FormatType)(coltype + color));
-          curFmtRng.format.merge(format(fmtList.last()));
-        }
-        *colptr = color;
+        if(pos+3 == 'f')
+          curfmt |= (color << 24) | 0x00400000;
+        else
+          curfmt |= (color << 28) | 0x00800000;
         length = 6;
       }
     } else if(s[pos+1] == 'O') { // reset formatting
-      fmtList.clear(); fmtList.append(None);
-      curFmtRng.format = format(None);
-      fgCol = bgCol = -1;
+      curfmt &= 0x0000000f; // we keep message type-specific formatting
       length = 2;
     } else if(s[pos+1] == 'R') { // reverse
       // TODO: implement reverse formatting
@@ -202,41 +204,143 @@ UiStyle::StyledText UiStyle::styleString(const QString &_s) {
         qWarning(qPrintable(QString("Invalid format code in string: %1").arg(s)));
         continue;
       }
-      //Q_ASSERT(ftype != Invalid);
+      curfmt ^= ftype;
       length = code.length();
-      if(!fmtList.contains(ftype)) {
-        // toggle it on
-        fmtList.append(ftype);
-        curFmtRng.format.merge(format(ftype));
-      } else {
-        // toggle it off
-        fmtList.removeAll(ftype);
-        curFmtRng.format = mergedFormat(fmtList);
-      }
     }
-    s.remove(pos, length); // remove format code from string
-    // now see if something changed and else insert the format
-    if(curFmtRng.format == result.formats.last().format) continue;  // no change, so we just ignore
-    curFmtRng.start = pos;
-    if(pos == result.formats.last().start) {
-      // same starting point -> we just overwrite the old format
-      result.formats.last() = curFmtRng;
-    } else {
-      // fix length of last format
-      result.formats.last().length = pos - result.formats.last().start;
-      result.formats.append(curFmtRng);
-    }
+    s.remove(pos, length);
+    if(pos == result.formatList.last().first)
+      result.formatList.last().second = curfmt;
+    else
+      result.formatList.append(qMakePair(pos, curfmt));
   }
-  result.formats.last().length = s.length() - result.formats.last().start;
-  if(result.formats.last().length == 0) result.formats.removeLast();
-  result.text = s;
+  result.plainText = s;
   return result;
 }
 
-QTextCharFormat UiStyle::mergedFormat(QList<FormatType> formatList) {
-  QTextCharFormat fmt;
-  foreach(FormatType ftype, formatList) {
-    fmt.merge(format(ftype));
+QString UiStyle::mircToInternal(const QString &mirc_) {
+  QString mirc = mirc_;
+  mirc.replace('%', "%%");      // escape % just to be sure
+  mirc.replace('\x02', "%B");
+  mirc.replace('\x0f', "%O");
+  mirc.replace('\x12', "%R");
+  mirc.replace('\x16', "%R");
+  mirc.replace('\x1d', "%S");
+  mirc.replace('\x1f', "%U");
+
+  // Now we bring the color codes (\x03) in a sane format that can be parsed more easily later.
+  // %Dcfxx is foreground, %Dcbxx is background color, where xx is a 2 digit dec number denoting the color code.
+  // %Dc- turns color off.
+  // Note: We use the "mirc standard" as described in <http://www.mirc.co.uk/help/color.txt>.
+  //       This means that we don't accept something like \x03,5 (even though others, like WeeChat, do).
+  int pos = 0;
+  for(;;) {
+    pos = mirc.indexOf('\x03', pos);
+    if(pos < 0) break; // no more mirc color codes
+    QString ins, num;
+    int l = mirc.length();
+    int i = pos + 1;
+    // check for fg color
+    if(i < l && mirc[i].isDigit()) {
+      num = mirc[i++];
+      if(i < l && mirc[i].isDigit()) num.append(mirc[i++]);
+      else num.prepend('0');
+      ins = QString("%Dcf%1").arg(num);
+
+      if(i+1 < l && mirc[i] == ',' && mirc[i+1].isDigit()) {
+        i++;
+        num = mirc[i++];
+        if(i < l && mirc[i].isDigit()) num.append(mirc[i++]);
+        else num.prepend('0');
+        ins += QString("%Dcb%1").arg(num);
+      }
+    } else {
+      ins = "%Dc-";
+    }
+    mirc.replace(pos, i-pos, ins);
   }
-  return fmt;
+  return mirc;
+}
+
+UiStyle::StyledMessage UiStyle::styleMessage(const Message &msg) {
+  QString user = userFromMask(msg.sender());
+  QString host = hostFromMask(msg.sender());
+  QString nick = nickFromMask(msg.sender());
+  QString txt = mircToInternal(msg.contents());
+  QString bufferName = msg.bufferInfo().bufferName();
+
+  StyledMessage result;
+
+  result.timestamp = styleString(tr("%DT[%1]").arg(msg.timestamp().toLocalTime().toString("hh:mm:ss")));
+
+  QString s, t;
+  switch(msg.type()) {
+    case Message::Plain:
+      s = tr("%DS<%1>").arg(nick); t = tr("%D0%1").arg(txt); break;
+    case Message::Notice:
+      s = tr("%Dn[%1]").arg(nick); t = tr("%Dn%1").arg(txt); break;
+    case Message::Server:
+      s = tr("%Ds*"); t = tr("%Ds%1").arg(txt); break;
+    case Message::Error:
+      s = tr("%De*"); t = tr("%De%1").arg(txt); break;
+    case Message::Join:
+      s = tr("%Dj-->"); t = tr("%Dj%DN%1%DN %DH(%2@%3)%DH has joined %DC%4%DC").arg(nick, user, host, bufferName); break;
+    case Message::Part:
+      s = tr("%Dp<--"); t = tr("%Dp%DN%1%DN %DH(%2@%3)%DH has left %DC%4%DC").arg(nick, user, host, bufferName);
+      if(!txt.isEmpty()) t = QString("%1 (%2)").arg(t).arg(txt);
+      break;
+    case Message::Quit:
+      s = tr("%Dq<--"); t = tr("%Dq%DN%DU%1%DU%DN %DH(%2@%3)%DH has quit").arg(nick, user, host);
+      if(!txt.isEmpty()) t = QString("%1 (%2)").arg(t).arg(txt);
+      break;
+    case Message::Kick:
+      { s = tr("%Dk<-*");
+        QString victim = txt.section(" ", 0, 0);
+        //if(victim == ui.ownNick->currentText()) victim = tr("you");
+        QString kickmsg = txt.section(" ", 1);
+        t = tr("%Dk%DN%1%DN has kicked %DN%2%DN from %DC%3%DC").arg(nick).arg(victim).arg(bufferName);
+        if(!kickmsg.isEmpty()) t = QString("%1 (%2)").arg(t).arg(kickmsg);
+      }
+      break;
+    case Message::Nick:
+      s = tr("%Dr<->");
+      if(nick == msg.contents()) t = tr("%DrYou are now known as %DN%1%DN").arg(txt);
+      else t = tr("%Dr%DN%1%DN is now known as %DN%2%DN").arg(nick, txt);
+      break;
+    case Message::Mode:
+      s = tr("%Dm***");
+      if(nick.isEmpty()) t = tr("%DmUser mode: %DM%1%DM").arg(txt);
+      else t = tr("%DmMode %DM%1%DM by %DN%2%DN").arg(txt, nick);
+      break;
+    case Message::Action:
+      s = tr("%Da-*-");
+      t = tr("%Da%DN%1%DN %2").arg(nick).arg(txt);
+      break;
+    default:
+      s = tr("%De%1").arg(msg.sender());
+      t = tr("%De[%1]").arg(txt);
+  }
+  result.sender = styleString(s);
+  result.contents = styleString(t);
+  return result;
+}
+
+QDataStream &operator<<(QDataStream &out, const UiStyle::FormatList &formatList) {
+  out << formatList.count();
+  UiStyle::FormatList::const_iterator it = formatList.begin();
+  while(it != formatList.end()) {
+    out << (*it).first << (*it).second;
+    ++it;
+  }
+  return out;
+}
+
+QDataStream &operator>>(QDataStream &in, UiStyle::FormatList &formatList) {
+  int cnt;
+  in >> cnt;
+  for(int i = 0; i < cnt; i++) {
+    int pos; quint32 ftype;
+    in >> pos >> ftype;
+    formatList.append(qMakePair(pos, ftype));
+  }
+  return in;
 }

@@ -629,9 +629,9 @@ MsgId SqliteStorage::logMessage(Message msg) {
   logMessageQuery->bindValue(":time", msg.timestamp().toTime_t());
   logMessageQuery->bindValue(":bufferid", msg.bufferInfo().bufferId().toInt());
   logMessageQuery->bindValue(":type", msg.type());
-  logMessageQuery->bindValue(":flags", msg.flags());
+  logMessageQuery->bindValue(":flags", (int)msg.flags());
   logMessageQuery->bindValue(":sender", msg.sender());
-  logMessageQuery->bindValue(":message", msg.text());
+  logMessageQuery->bindValue(":message", msg.contents());
   logMessageQuery->exec();
   
   if(logMessageQuery->lastError().isValid()) {
@@ -688,7 +688,7 @@ QList<Message> SqliteStorage::requestMsgs(UserId user, BufferId bufferId, int la
                 (Message::Type)msgQuery->value(2).toUInt(),
                 msgQuery->value(5).toString(),
                 msgQuery->value(4).toString(),
-                msgQuery->value(3).toUInt());
+                (Message::Flags)msgQuery->value(3).toUInt());
     msg.setMsgId(msgQuery->value(0).toInt());
     messagelist << msg;
   }
@@ -726,7 +726,7 @@ QList<Message> SqliteStorage::requestMsgs(UserId user, BufferId bufferId, QDateT
                 (Message::Type)msgQuery->value(2).toUInt(),
                 msgQuery->value(5).toString(),
                 msgQuery->value(4).toString(),
-                msgQuery->value(3).toUInt());
+                (Message::Flags)msgQuery->value(3).toUInt());
     msg.setMsgId(msgQuery->value(0).toInt());
     messagelist << msg;
   }
@@ -756,7 +756,7 @@ QList<Message> SqliteStorage::requestMsgRange(UserId user, BufferId bufferId, in
                 (Message::Type)rangeQuery->value(2).toUInt(),
                 rangeQuery->value(5).toString(),
                 rangeQuery->value(4).toString(),
-                rangeQuery->value(3).toUInt());
+                (Message::Flags)rangeQuery->value(3).toUInt());
     msg.setMsgId(rangeQuery->value(0).toInt());
     messagelist << msg;
   }

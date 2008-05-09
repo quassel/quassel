@@ -6,6 +6,13 @@ SRCS += abstractbuffercontainer.cpp abstractitemview.cpp bufferview.cpp buffervi
 HDRS += abstractbuffercontainer.h abstractitemview.h bufferview.h bufferviewfilter.h clearablelineedit.h colorbutton.h \
         nickviewfilter.h inputline.h nickview.h settingspage.h tabcompleter.h uisettings.h uistyle.h uistylesettings.h
 
+!sputdev {
+  SRCS += old-uistyle.cpp
+  SRCS -= uistyle.cpp
+  HDRS += old-uistyle.h
+  HDRS -= uistyle.h
+}
+
 FORMNAMES = 
 
 for(ui, FORMNAMES) {

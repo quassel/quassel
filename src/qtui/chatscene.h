@@ -18,53 +18,41 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QtCore>
+#ifndef _CHATSCENE_H_
+#define _CHATSCENE_H_
 
-#include "chatline.h"
-#include "qtopiaui.h"
-#include "qtopiauistyle.h"
+#include <QGraphicsScene>
 
-ChatLine::ChatLine(Message msg) {
-  _styledSender = QtopiaUi::style()->styleString(msg.formattedSender());
-  _styledContents = QtopiaUi::style()->styleString(msg.formattedText());
-  _timestamp = msg.timestamp();
-  _msgId = msg.msgId();
-  _bufferInfo = msg.bufferInfo();
+#include "messagemodel.h"
 
+class AbstractUiMsg;
+class Buffer;
+class ChatItem;
+class ChatLine;
+class QGraphicsSceneMouseEvent;
 
-}
+class ChatScene : public QGraphicsScene {
+  Q_OBJECT
 
-QString ChatLine::sender() const {
-  return _sender;
-}
+  public:
+    ChatScene(MessageModel *model, QObject *parent);
+    virtual ~ChatScene();
 
-QString ChatLine::text() const {
-  return _text;
-}
+    Buffer *buffer() const;
+    inline MessageModel *model() const { return _model; }
 
-MsgId ChatLine::msgId() const {
-  return _msgId;
-}
+  public slots:
 
-BufferInfo ChatLine::bufferInfo() const {
-  return _bufferInfo;
-}
+  protected slots:
 
-QDateTime ChatLine::timestamp() const {
-  return _timestamp;
-}
+    void mousePressEvent ( QGraphicsSceneMouseEvent * mouseEvent );
 
-UiStyle::StyledText ChatLine::styledSender() const {
-  return _styledSender;
-}
+  private:
+    //Buffer *_buffer;
+    //QList<ChatLine*> _lines;
+    MessageModel *_model;
+    QList<ChatItem *> _items;
 
-UiStyle::StyledText ChatLine::styledContents() const {
-  return _styledContents;
-}
+};
 
-
-
-QString ChatLine::formattedToHtml(const QString &f) {
-   
-  return f;
-}
+#endif

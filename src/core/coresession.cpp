@@ -192,8 +192,8 @@ void CoreSession::attachNetworkConnection(NetworkConnection *conn) {
   //signalProxy()->attachSignal(conn, SIGNAL(connected(NetworkId)), SIGNAL(networkConnected(NetworkId)));
   //signalProxy()->attachSignal(conn, SIGNAL(disconnected(NetworkId)), SIGNAL(networkDisconnected(NetworkId)));
 
-  connect(conn, SIGNAL(displayMsg(Message::Type, BufferInfo::Type, QString, QString, QString, quint8)),
-	  this, SLOT(recvMessageFromServer(Message::Type, BufferInfo::Type, QString, QString, QString, quint8)));
+  connect(conn, SIGNAL(displayMsg(Message::Type, BufferInfo::Type, QString, QString, QString, Message::Flags)),
+	  this, SLOT(recvMessageFromServer(Message::Type, BufferInfo::Type, QString, QString, QString, Message::Flags)));
   connect(conn, SIGNAL(displayStatusMsg(QString)), this, SLOT(recvStatusMsgFromServer(QString)));
 
   connect(conn, SIGNAL(nickChanged(const NetworkId &, const QString &, const QString &)),
@@ -282,10 +282,11 @@ void CoreSession::msgFromClient(BufferInfo bufinfo, QString msg) {
 
 // ALL messages coming pass through these functions before going to the GUI.
 // So this is the perfect place for storing the backlog and log stuff.
-void CoreSession::recvMessageFromServer(Message::Type type, BufferInfo::Type bufferType, QString target, QString text, QString sender, quint8 flags) {
+void CoreSession::recvMessageFromServer(Message::Type type, BufferInfo::Type bufferType,
+                                        QString target, QString text, QString sender, Message::Flags flags) {
   NetworkConnection *netCon = qobject_cast<NetworkConnection*>(this->sender());
   Q_ASSERT(netCon);
-  
+
   BufferInfo bufferInfo = Core::bufferInfo(user(), netCon->networkId(), bufferType, target);
   Message msg(bufferInfo, type, text, sender, flags);
   msg.setMsgId(Core::storeMessage(msg));

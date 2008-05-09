@@ -30,8 +30,8 @@ BasicHandler::BasicHandler(NetworkConnection *parent)
     _networkConnection(parent),
     initDone(false)
 {
-  connect(this, SIGNAL(displayMsg(Message::Type, BufferInfo::Type, QString, QString, QString, quint8)),
-         networkConnection(), SIGNAL(displayMsg(Message::Type, BufferInfo::Type, QString, QString, QString, quint8)));
+  connect(this, SIGNAL(displayMsg(Message::Type, BufferInfo::Type, QString, QString, QString, Message::Flags)),
+         networkConnection(), SIGNAL(displayMsg(Message::Type, BufferInfo::Type, QString, QString, QString, Message::Flags)));
 
   connect(this, SIGNAL(putCmd(QString, const QVariantList &, const QByteArray &)),
          networkConnection(), SLOT(putCmd(QString, const QVariantList &, const QByteArray &)));
@@ -189,7 +189,7 @@ void BasicHandler::putCmd(const QString &cmd, const QList<QByteArray> &params, c
   emit putCmd(cmd, list, prefix);
 }
 
-void BasicHandler::displayMsg(Message::Type msgType, QString target, QString text, QString sender, quint8 flags) {
+void BasicHandler::displayMsg(Message::Type msgType, QString target, QString text, QString sender, Message::Flags flags) {
   IrcChannel *channel = network()->ircChannel(target);
   if(!channel && (target.startsWith('$') || target.startsWith('#')))
     target = nickFromMask(sender);

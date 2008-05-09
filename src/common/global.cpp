@@ -96,7 +96,6 @@ void Global::registerMetaTypes() {
   qRegisterMetaTypeStreamOperators<UserId>("UserId");
   qRegisterMetaTypeStreamOperators<AccountId>("AccountId");
   qRegisterMetaTypeStreamOperators<MsgId>("MsgId");
-
 }
 
 // Static variables

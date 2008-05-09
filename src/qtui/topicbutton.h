@@ -38,7 +38,9 @@ protected:
   virtual void paintEvent(QPaintEvent *event);
 
 private:
-  UiStyle::StyledText styledText;
+#ifndef SPUTDEV
+  UiStyle::StyledText styledContents;
+#endif
   QSize _sizeHint;
 };
 

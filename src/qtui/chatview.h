@@ -18,53 +18,43 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QtCore>
+#ifndef CHATVIEW_H_
+#define CHATVIEW_H_
 
-#include "chatline.h"
-#include "qtopiaui.h"
-#include "qtopiauistyle.h"
+#include <QGraphicsView>
 
-ChatLine::ChatLine(Message msg) {
-  _styledSender = QtopiaUi::style()->styleString(msg.formattedSender());
-  _styledContents = QtopiaUi::style()->styleString(msg.formattedText());
-  _timestamp = msg.timestamp();
-  _msgId = msg.msgId();
-  _bufferInfo = msg.bufferInfo();
+#include "abstractbuffercontainer.h"
 
+class AbstractUiMsg;
+class Buffer;
+class ChatLine;
+class ChatScene;
 
-}
+class ChatView : public QGraphicsView, public AbstractChatView {
+  Q_OBJECT
 
-QString ChatLine::sender() const {
-  return _sender;
-}
+  public:
+    ChatView(Buffer *, QWidget *parent = 0);
+    ~ChatView();
 
-QString ChatLine::text() const {
-  return _text;
-}
+    ChatScene *scene() const;
 
-MsgId ChatLine::msgId() const {
-  return _msgId;
-}
+  public slots:
 
-BufferInfo ChatLine::bufferInfo() const {
-  return _bufferInfo;
-}
+    void clear();
 
-QDateTime ChatLine::timestamp() const {
-  return _timestamp;
-}
+    void prependMsg(AbstractUiMsg *);
+    void appendMsg(AbstractUiMsg *);
 
-UiStyle::StyledText ChatLine::styledSender() const {
-  return _styledSender;
-}
+    void prependChatLine(ChatLine *);
+    void appendChatLine(ChatLine *);
+    void prependChatLines(QList<ChatLine *>);
+    void appendChatLines(QList<ChatLine *>);
 
-UiStyle::StyledText ChatLine::styledContents() const {
-  return _styledContents;
-}
+    void setContents(const QList<AbstractUiMsg *> &);
 
+  private:
+    ChatScene *_scene;
+};
 
-
-QString ChatLine::formattedToHtml(const QString &f) {
-   
-  return f;
-}
+#endif

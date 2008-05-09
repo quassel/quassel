@@ -70,7 +70,7 @@ class ChatLineOld : public QObject, public AbstractUiMsg {
     qreal hght;
     Message msg;
     qreal tsWidth, senderWidth, textWidth;
-    UiStyle::StyledText styledTimeStamp, styledSender, styledText;
+    UiStyle::StyledText styledTimeStamp, styledSender, styledContents;
 
     struct FormatRange {
       int start;

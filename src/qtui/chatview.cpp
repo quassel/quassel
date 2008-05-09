@@ -18,53 +18,71 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QtCore>
+#include <QGraphicsTextItem>
 
-#include "chatline.h"
-#include "qtopiaui.h"
-#include "qtopiauistyle.h"
+#include "buffer.h"
+#include "chatlinemodelitem.h"
+#include "chatscene.h"
+#include "chatview.h"
+#include "client.h"
+#include "quasselui.h"
 
-ChatLine::ChatLine(Message msg) {
-  _styledSender = QtopiaUi::style()->styleString(msg.formattedSender());
-  _styledContents = QtopiaUi::style()->styleString(msg.formattedText());
-  _timestamp = msg.timestamp();
-  _msgId = msg.msgId();
-  _bufferInfo = msg.bufferInfo();
+ChatView::ChatView(Buffer *buf, QWidget *parent) : QGraphicsView(parent), AbstractChatView() {
+  _scene = new ChatScene(Client::messageModel(), this);
+  setScene(_scene);
 
+  //QGraphicsTextItem *item = scene()->addText(buf->bufferInfo().bufferName());
 
 }
 
-QString ChatLine::sender() const {
-  return _sender;
-}
 
-QString ChatLine::text() const {
-  return _text;
-}
+ChatView::~ChatView() {
 
-MsgId ChatLine::msgId() const {
-  return _msgId;
-}
-
-BufferInfo ChatLine::bufferInfo() const {
-  return _bufferInfo;
-}
-
-QDateTime ChatLine::timestamp() const {
-  return _timestamp;
-}
-
-UiStyle::StyledText ChatLine::styledSender() const {
-  return _styledSender;
-}
-
-UiStyle::StyledText ChatLine::styledContents() const {
-  return _styledContents;
 }
 
 
-
-QString ChatLine::formattedToHtml(const QString &f) {
-   
-  return f;
+ChatScene *ChatView::scene() const {
+  return _scene;
 }
+
+
+void ChatView::clear()
+{
+}
+
+void ChatView::prependMsg(AbstractUiMsg *msg) {
+  //ChatLine *line = dynamic_cast<ChatLine*>(msg);
+  //Q_ASSERT(line);
+  //prependChatLine(line);
+}
+
+void ChatView::prependChatLine(ChatLine *line) {
+  //qDebug() << "prepending";
+}
+
+void ChatView::prependChatLines(QList<ChatLine *> clist) {
+
+}
+
+void ChatView::appendMsg(AbstractUiMsg *msg) {
+  //ChatLine *line = dynamic_cast<ChatLine*>(msg);
+  //Q_ASSERT(line);
+  //appendChatLine(line);
+}
+
+void ChatView::appendChatLine(ChatLine *line) {
+  //qDebug() << "appending";
+}
+
+
+void ChatView::appendChatLines(QList<ChatLine *> list) {
+  //foreach(ChatLine *line, list) {
+    
+  //}
+}
+
+void ChatView::setContents(const QList<AbstractUiMsg *> &list) {
+  //qDebug() << "setting" << list.count();
+  //appendChatLines(list);
+}
+

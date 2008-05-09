@@ -3,7 +3,7 @@
 
 { using namespace Global;
 
-  quasselVersion = "0.2.0-beta2-pre";
+  quasselVersion = "0.3.0-pre";
   quasselDate = "2008-05-09";
   quasselBuild = 827;
 

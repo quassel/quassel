@@ -18,53 +18,49 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QtCore>
+#ifndef _CHATITEM_H_
+#define _CHATITEM_H_
 
-#include "chatline.h"
-#include "qtopiaui.h"
-#include "qtopiauistyle.h"
+#include <QGraphicsItem>
+#include <QPersistentModelIndex>
+#include <QTextLayout>
+#include <QTextOption>
 
-ChatLine::ChatLine(Message msg) {
-  _styledSender = QtopiaUi::style()->styleString(msg.formattedSender());
-  _styledContents = QtopiaUi::style()->styleString(msg.formattedText());
-  _timestamp = msg.timestamp();
-  _msgId = msg.msgId();
-  _bufferInfo = msg.bufferInfo();
+#include "messagemodel.h"
+#include "uistyle.h"
 
+class QGraphicsSceneMouseEvent;
 
-}
+class ChatItem : public QGraphicsItem {
 
-QString ChatLine::sender() const {
-  return _sender;
-}
+  public:
+    ChatItem(const QPersistentModelIndex &index, QGraphicsItem *parent = 0);
+    virtual ~ChatItem();
 
-QString ChatLine::text() const {
-  return _text;
-}
+    virtual QRectF boundingRect() const;
+    virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
 
-MsgId ChatLine::msgId() const {
-  return _msgId;
-}
+    inline QPersistentModelIndex persistentIndex() const { return _index; }
+    inline const MessageModel *model() const { return _index.isValid() ? qobject_cast<const MessageModel *>(_index.model()) : 0; }
+    inline int row() const { return _index.isValid() ? _index.row() : 0; }
+    virtual QVariant data(int role) const;
+    //QString text() const;
+    //void setText(const UiStyle::StyledText &text);
 
-BufferInfo ChatLine::bufferInfo() const {
-  return _bufferInfo;
-}
+    //QTextOption textOption() const;
+    //void setTextOption(const QTextOption &option);
 
-QDateTime ChatLine::timestamp() const {
-  return _timestamp;
-}
+    //void setWidth(int width);
+    //virtual void layout();
 
-UiStyle::StyledText ChatLine::styledSender() const {
-  return _styledSender;
-}
+  protected:
+    //void mouseMoveEvent ( QGraphicsSceneMouseEvent * event );
 
-UiStyle::StyledText ChatLine::styledContents() const {
-  return _styledContents;
-}
+  private:
+    //int _width;
+    //QTextLayout _layout;
+    //QTextOption _textOption;
+    QPersistentModelIndex _index;
+};
 
-
-
-QString ChatLine::formattedToHtml(const QString &f) {
-   
-  return f;
-}
+#endif

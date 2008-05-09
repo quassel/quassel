@@ -103,7 +103,7 @@ int main(int argc, char **argv) {
 
   // Check if a non-standard core port is requested
   QStringList args = QCoreApplication::arguments();  // TODO Build a CLI parser
-  Global::DEBUG = args.contains("--debug"); // This enables (maybe) various debug features.
+  Global::DEBUG = args.contains("--debug"); // This enables various debug features.
 
   Global::defaultPort = 4242;
   int idx;

@@ -25,7 +25,6 @@
 #include "bufferviewconfig.h"
 #include "bufferviewfilter.h"
 #include "bufferviewmanager.h"
-#include "chatline-old.h"
 #include "client.h"
 #include "clientbacklogmanager.h"
 #include "coreconnectdlg.h"
@@ -275,6 +274,7 @@ void MainWin::setupNickWidget() {
 }
 
 void MainWin::setupChatMonitor() {
+#ifndef SPUTDEV
   VerticalDock *dock = new VerticalDock(tr("Chat Monitor"), this);
   dock->setObjectName("ChatMonitorDock");
 
@@ -293,6 +293,7 @@ void MainWin::setupChatMonitor() {
 
   addDockWidget(Qt::TopDockWidgetArea, dock, Qt::Vertical);
   ui.menuViews->addAction(dock->toggleViewAction());
+#endif /* SPUTDEV */
 }
 
 void MainWin::setupInputWidget() {
@@ -483,10 +484,6 @@ void MainWin::setDisconnectedState() {
   sslLabel->setPixmap(QPixmap());
 }
 
-AbstractUiMsg *MainWin::layoutMsg(const Message &msg) {
-  return new ChatLineOld(msg);
-}
-
 void MainWin::showCoreConnectionDlg(bool autoConnect) {
   coreConnectDlg = new CoreConnectDlg(this, autoConnect);
   connect(coreConnectDlg, SIGNAL(finished(int)), this, SLOT(coreConnectionDlgFinished(int)));
@@ -570,12 +567,13 @@ void MainWin::receiveMessage(const Message &msg) {
 
     UiSettings uiSettings;
 
+#ifndef SPUTDEV
     if(uiSettings.value("DisplayPopupMessages", QVariant(true)).toBool()) {
       // FIXME don't invoke style engine for this!
-      QString text = QtUi::style()->styleString(Message::mircToInternal(msg.text())).text;
+      QString text = QtUi::style()->styleString(Message::mircToInternal(msg.contents())).plainText;
       displayTrayIconMessage(title, text);
     }
-
+#endif
     if(uiSettings.value("AnimateTrayIcon", QVariant(true)).toBool()) {
       QApplication::alert(this);
       setTrayIconActivity(true);

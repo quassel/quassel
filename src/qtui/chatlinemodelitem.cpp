@@ -18,53 +18,43 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QtCore>
+#include "chatlinemodelitem.h"
+#include "chatlinemodel.h"
+#include "qtui.h"
+#include "uistyle.h"
 
-#include "chatline.h"
-#include "qtopiaui.h"
-#include "qtopiauistyle.h"
+ChatlineModelItem::ChatlineModelItem(const Message &msg) : MessageModelItem(msg) {
+  QtUiStyle::StyledMessage m = QtUi::style()->styleMessage(msg);
 
-ChatLine::ChatLine(Message msg) {
-  _styledSender = QtopiaUi::style()->styleString(msg.formattedSender());
-  _styledContents = QtopiaUi::style()->styleString(msg.formattedText());
-  _timestamp = msg.timestamp();
-  _msgId = msg.msgId();
-  _bufferInfo = msg.bufferInfo();
+  _timestamp.plainText = m.timestamp.plainText;
+  _sender.plainText = m.sender.plainText;
+  _contents.plainText = m.contents.plainText;
 
+  _timestamp.formatList = m.timestamp.formatList;
+  _sender.formatList = m.sender.formatList;
+  _contents.formatList = m.contents.formatList;
 
 }
 
-QString ChatLine::sender() const {
-  return _sender;
+
+QVariant ChatlineModelItem::data(int column, int role) const {
+  const ChatlinePart *part;
+
+  switch(column) {
+    case ChatlineModel::TimestampColumn: part = &_timestamp; break;
+    case ChatlineModel::SenderColumn:    part = &_sender; break;
+    case ChatlineModel::TextColumn:      part = &_contents; break;
+    default: return MessageModelItem::data(column, role);
+  }
+
+  switch(role) {
+    case ChatlineModel::DisplayRole: return part->plainText;
+    case ChatlineModel::FormatRole:  return QVariant::fromValue<UiStyle::FormatList>(part->formatList);
+  }
+
+  return MessageModelItem::data(column, role);
 }
 
-QString ChatLine::text() const {
-  return _text;
-}
-
-MsgId ChatLine::msgId() const {
-  return _msgId;
-}
-
-BufferInfo ChatLine::bufferInfo() const {
-  return _bufferInfo;
-}
-
-QDateTime ChatLine::timestamp() const {
-  return _timestamp;
-}
-
-UiStyle::StyledText ChatLine::styledSender() const {
-  return _styledSender;
-}
-
-UiStyle::StyledText ChatLine::styledContents() const {
-  return _styledContents;
-}
-
-
-
-QString ChatLine::formattedToHtml(const QString &f) {
-   
-  return f;
+bool ChatlineModelItem::setData(int column, const QVariant &value, int role) {
+  return false;
 }

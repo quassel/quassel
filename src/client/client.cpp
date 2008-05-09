@@ -21,21 +21,24 @@
 #include "client.h"
 
 #include "bufferinfo.h"
+#include "buffermodel.h"
+#include "buffersettings.h"
 #include "buffersyncer.h"
-#include "clientbacklogmanager.h"
 #include "bufferviewmanager.h"
+#include "clientbacklogmanager.h"
 #include "global.h"
 #include "identity.h"
 #include "ircchannel.h"
 #include "ircuser.h"
 #include "message.h"
+#ifdef SPUTDEV
+# include "messagemodel.h"
+#endif
 #include "network.h"
 #include "networkmodel.h"
-#include "buffermodel.h"
 #include "quasselui.h"
 #include "signalproxy.h"
 #include "util.h"
-#include "buffersettings.h"
 
 QPointer<Client> Client::instanceptr = 0;
 AccountId Client::_currentCoreAccount = 0;
@@ -68,6 +71,7 @@ Client::Client(QObject *parent)
     _bufferSyncer(0),
     _backlogManager(new ClientBacklogManager(this)),
     _bufferViewManager(0),
+    _messageModel(0),
     _connectedToCore(false),
     _syncedToCore(false)
 {
@@ -90,7 +94,9 @@ void Client::init() {
 	  _networkModel, SLOT(networkRemoved(NetworkId)));
 
   _bufferModel = new BufferModel(_networkModel);
-
+#ifdef SPUTDEV
+  _messageModel = mainUi->createMessageModel(this);
+#endif
   SignalProxy *p = signalProxy();
 
   p->attachSlot(SIGNAL(displayMsg(const Message &)), this, SLOT(recvMessage(const Message &)));
@@ -429,6 +435,7 @@ void Client::networkDestroyed() {
   }
 }
 
+#ifndef SPUTDEV
 void Client::recvMessage(const Message &message) {
   Message msg = message;
   Buffer *b;
@@ -436,6 +443,8 @@ void Client::recvMessage(const Message &message) {
   checkForHighlight(msg);
 
   // FIXME clean up code! (dup)
+
+  // TODO: make redirected messages show up in the correct buffer!
 
   if(msg.flags() & Message::Redirected) {
     BufferSettings bufferSettings;
@@ -480,7 +489,6 @@ void Client::recvMessage(const Message &message) {
     b = buffer(msg.bufferInfo());
     b->appendMsg(msg);
   }
-  
   //bufferModel()->updateBufferActivity(msg);
 
   if(msg.type() == Message::Plain || msg.type() == Message::Notice || msg.type() == Message::Action) {
@@ -489,16 +497,33 @@ void Client::recvMessage(const Message &message) {
       ? net->networkName() + ":"
       : QString();
     QString sender = networkName + msg.bufferInfo().bufferName() + ":" + msg.sender();
-    Message mmsg = Message(msg.timestamp(), msg.bufferInfo(), msg.type(), msg.text(), sender, msg.flags());
+    Message mmsg = Message(msg.timestamp(), msg.bufferInfo(), msg.type(), msg.contents(), sender, msg.flags());
     monitorBuffer()->appendMsg(mmsg);
   }
-
   emit messageReceived(msg);
 }
+#else
+
+void Client::recvMessage(const Message &msg) {
+  //checkForHighlight(msg);
+  _messageModel->insertMessage(msg);
+}
+
+#endif /* SPUTDEV */
 
 void Client::recvStatusMsg(QString /*net*/, QString /*msg*/) {
   //recvMessage(net, Message::server("", QString("[STATUS] %1").arg(msg)));
 }
+
+#ifdef SPUTDEV
+void Client::receiveBacklog(BufferId bufferId, const QVariantList &msgs) {
+  //checkForHighlight(msg);
+  foreach(QVariant v, msgs) {
+    _messageModel->insertMessage(v.value<Message>());
+  }
+}
+
+#else
 
 void Client::receiveBacklog(BufferId bufferId, const QVariantList &msgs) {
   Buffer *buffer_ = buffer(bufferId);
@@ -527,6 +552,7 @@ void Client::receiveBacklog(BufferId bufferId, const QVariantList &msgs) {
     layoutTimer->start();
   }
 }
+#endif /* SPUTDEV */
 
 void Client::layoutMsg() {
   if(layoutQueue.isEmpty()) {
@@ -562,7 +588,7 @@ void Client::checkForHighlight(Message &msg) {
       QRegExp nickRegExp("^(.*\\W)?" + QRegExp::escape(nickname) + "(\\W.*)?$");
       if((msg.type() & (Message::Plain | Message::Notice | Message::Action))
           && !(msg.flags() & Message::Self)
-          && nickRegExp.exactMatch(msg.text())) {
+          && nickRegExp.exactMatch(msg.contents())) {
         msg.setFlags(msg.flags() | Message::Highlight);
         return;
       }
@@ -582,7 +608,7 @@ void Client::checkForHighlight(Message &msg) {
       }
       if((msg.type() & (Message::Plain | Message::Notice | Message::Action))
           && !(msg.flags() & Message::Self)
-          && userRegExp.exactMatch(msg.text())) {
+          && userRegExp.exactMatch(msg.contents())) {
         msg.setFlags(msg.flags() | Message::Highlight);
         return;
       }
