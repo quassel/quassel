@@ -281,17 +281,17 @@ void BufferView::showContextMenu(const QPoint &pos) {
   QModelIndex index = indexAt(pos);
   if(!index.isValid()) return;
   QMenu contextMenu(this);
-  QAction *connectNetAction = new QAction(tr("Connect"), this);
-  QAction *disconnectNetAction = new QAction(tr("Disconnect"), this);
-  QAction *joinChannelAction = new QAction(tr("Join Channel"), this);
+  QAction *connectNetAction = contextMenu.addAction(tr("Connect"));
+  QAction *disconnectNetAction = contextMenu.addAction(tr("Disconnect"));
+  QAction *joinChannelAction = contextMenu.addAction(tr("Join Channel"));
 
-  QAction *joinBufferAction = new QAction(tr("Join"), this);
-  QAction *partBufferAction = new QAction(tr("Part"), this);
-  QAction *hideBufferAction = new QAction(tr("Remove buffers"), this);
+  QAction *joinBufferAction = contextMenu.addAction(tr("Join"));
+  QAction *partBufferAction = contextMenu.addAction(tr("Part"));
+  QAction *hideBufferAction = contextMenu.addAction(tr("Remove buffers"));
   hideBufferAction->setToolTip(tr("Removes the selected buffers from a custom view but leaves the buffer itself untouched"));
-  QAction *removeBufferAction = new QAction(tr("Delete buffer"), this);
+  QAction *removeBufferAction = contextMenu.addAction(tr("Delete buffer"));
 
-  QMenu *hideEventsMenu = new QMenu(tr("Hide Events"), this);
+  QMenu *hideEventsMenu = contextMenu.addMenu(tr("Hide Events"));
   QAction *hideJoinAction = hideEventsMenu->addAction(tr("Join Events"));
   QAction *hidePartAction = hideEventsMenu->addAction(tr("Part Events"));
   QAction *hideKillAction = hideEventsMenu->addAction(tr("Kill Events"));
