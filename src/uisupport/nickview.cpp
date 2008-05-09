@@ -154,7 +154,7 @@ void NickView::showContextMenu(const QPoint & pos ) {
   else if(action == banAction)      { executeCommand(bufferInfo, QString("/BAN %1").arg(nick)); }
   else if(action == kickBanAction)  { executeCommand(bufferInfo, QString("/KICK %1").arg(nick)); 
                                       executeCommand(bufferInfo, QString("/BAN %1").arg(nick)); }
-  else if(action == queryAction)    { executeCommand(bufferInfo, QString("/QUERY %1").arg(nick)); }
+  else if(action == queryAction)    { startQuery(index); }
 
 }
 
