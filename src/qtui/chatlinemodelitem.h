@@ -24,23 +24,23 @@
 #include "messagemodel.h"
 #include "uistyle.h"
 
-class ChatlineModelItem : public MessageModelItem {
+class ChatLineModelItem : public MessageModelItem {
 
   public:
-    ChatlineModelItem(const Message &);
-    //virtual ~ChatlineModelItem() {};
+    ChatLineModelItem(const Message &);
+    //virtual ~ChatLineModelItem() {};
 
     virtual QVariant data(int column, int role) const;
     virtual bool setData(int column, const QVariant &value, int role);
 
   private:
-    struct ChatlinePart {
+    struct ChatLinePart {
       QString plainText;
       UiStyle::FormatList formatList;
 
     };
 
-    ChatlinePart _timestamp, _sender, _contents;
+    ChatLinePart _timestamp, _sender, _contents;
 };
 
 #endif

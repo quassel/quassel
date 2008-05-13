@@ -22,17 +22,17 @@
 
 #include "chatlinemodelitem.h"
 
-ChatlineModel::ChatlineModel(QObject *parent) : MessageModel(parent) {
+ChatLineModel::ChatLineModel(QObject *parent) : MessageModel(parent) {
 
 
 }
 
-ChatlineModel::~ChatlineModel() {
+ChatLineModel::~ChatLineModel() {
 
 }
 
 
-MessageModelItem *ChatlineModel::createMessageModelItem(const Message &msg) {
-  return new ChatlineModelItem(msg);
+MessageModelItem *ChatLineModel::createMessageModelItem(const Message &msg) {
+  return new ChatLineModelItem(msg);
 
 }

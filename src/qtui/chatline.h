@@ -27,11 +27,11 @@
 
 class ChatItem;
 
-class Chatline : public QGraphicsItem {
+class ChatLine : public QGraphicsItem {
 
   public:
-    Chatline(const QModelIndex &tempIndex, QGraphicsItem *parent = 0);
-    virtual ~Chatline();
+    ChatLine(const QModelIndex &tempIndex, QGraphicsItem *parent = 0);
+    virtual ~ChatLine();
 
     virtual QRectF boundingRect () const;
     virtual void paint (QPainter * painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);

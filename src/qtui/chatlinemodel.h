@@ -23,16 +23,16 @@
 
 #include "messagemodel.h"
 
-class ChatlineModel : public MessageModel {
+class ChatLineModel : public MessageModel {
   Q_OBJECT
 
   public:
-    enum ChatlineRole {
+    enum ChatLineRole {
       FormatRole = MessageModel::UserRole
     };
 
-    ChatlineModel(QObject *parent = 0);
-    virtual ~ChatlineModel();
+    ChatLineModel(QObject *parent = 0);
+    virtual ~ChatLineModel();
 
   protected:
     virtual MessageModelItem *createMessageModelItem(const Message &);

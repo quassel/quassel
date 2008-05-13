@@ -23,7 +23,7 @@
 #include "qtui.h"
 #include "uistyle.h"
 
-ChatlineModelItem::ChatlineModelItem(const Message &msg) : MessageModelItem(msg) {
+ChatLineModelItem::ChatLineModelItem(const Message &msg) : MessageModelItem(msg) {
   QtUiStyle::StyledMessage m = QtUi::style()->styleMessage(msg);
 
   _timestamp.plainText = m.timestamp.plainText;
@@ -37,24 +37,24 @@ ChatlineModelItem::ChatlineModelItem(const Message &msg) : MessageModelItem(msg)
 }
 
 
-QVariant ChatlineModelItem::data(int column, int role) const {
-  const ChatlinePart *part;
+QVariant ChatLineModelItem::data(int column, int role) const {
+  const ChatLinePart *part;
 
   switch(column) {
-    case ChatlineModel::TimestampColumn: part = &_timestamp; break;
-    case ChatlineModel::SenderColumn:    part = &_sender; break;
-    case ChatlineModel::ContentsColumn:      part = &_contents; break;
+    case ChatLineModel::TimestampColumn: part = &_timestamp; break;
+    case ChatLineModel::SenderColumn:    part = &_sender; break;
+    case ChatLineModel::ContentsColumn:      part = &_contents; break;
     default: return MessageModelItem::data(column, role);
   }
 
   switch(role) {
-    case ChatlineModel::DisplayRole: return part->plainText;
-    case ChatlineModel::FormatRole:  return QVariant::fromValue<UiStyle::FormatList>(part->formatList);
+    case ChatLineModel::DisplayRole: return part->plainText;
+    case ChatLineModel::FormatRole:  return QVariant::fromValue<UiStyle::FormatList>(part->formatList);
   }
 
   return MessageModelItem::data(column, role);
 }
 
-bool ChatlineModelItem::setData(int column, const QVariant &value, int role) {
+bool ChatLineModelItem::setData(int column, const QVariant &value, int role) {
   return false;
 }

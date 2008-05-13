@@ -57,7 +57,7 @@ MessageModel *QtUi::createMessageModel(QObject *parent) {
   Q_UNUSED(parent)
   return 0;
 #else
-  return new ChatlineModel(parent);
+  return new ChatLineModel(parent);
 #endif
 }
 
