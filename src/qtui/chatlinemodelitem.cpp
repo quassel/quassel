@@ -43,7 +43,7 @@ QVariant ChatlineModelItem::data(int column, int role) const {
   switch(column) {
     case ChatlineModel::TimestampColumn: part = &_timestamp; break;
     case ChatlineModel::SenderColumn:    part = &_sender; break;
-    case ChatlineModel::TextColumn:      part = &_contents; break;
+    case ChatlineModel::ContentsColumn:      part = &_contents; break;
     default: return MessageModelItem::data(column, role);
   }
 

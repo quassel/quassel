@@ -30,9 +30,9 @@
 ChatScene::ChatScene(MessageModel *model, QObject *parent) : QGraphicsScene(parent), _model(model) {
   connect(model, SIGNAL(rowsInserted(const QModelIndex &, int, int)), this, SLOT(rowsInserted(const QModelIndex &, int, int)));
   for(int i = 0; i < model->rowCount(); i++) {
-    ChatItem *item = new ChatItem(QPersistentModelIndex(model->index(i, 2)));
-    addItem(item);
-    item->setPos(30, i*item->boundingRect().height());
+    Chatline *line = new Chatline(model->index(i, 0));
+    addItem(line);
+    line->setPos(30, i*line->boundingRect().height());
   }
 
   

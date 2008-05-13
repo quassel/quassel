@@ -18,18 +18,20 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _CHATLINE_H_
-#define _CHATLINE_H_
+#ifndef CHATLINE_H_
+#define CHATLINE_H_
 
 #include <QGraphicsItem>
 
-#include "message.h"
+#include "messagemodel.h"
 
-class ChatLine : public QGraphicsItem {
+class ChatItem;
+
+class Chatline : public QGraphicsItem {
 
   public:
-    ChatLine(const QPersistentModelIndex &, QGraphicsItem *parent = 0);
-    virtual ~ChatLine();
+    Chatline(const QModelIndex &tempIndex, QGraphicsItem *parent = 0);
+    virtual ~Chatline();
 
     virtual QRectF boundingRect () const;
     virtual void paint (QPainter * painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
@@ -43,7 +45,7 @@ class ChatLine : public QGraphicsItem {
     //bool sceneEvent ( QEvent * event );
 
   private:
-    QPersistentModelIndex _index;
+    ChatItem *_timestampItem, *_senderItem, *_contentsItem;
 };
 
 #endif

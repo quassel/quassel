@@ -46,7 +46,7 @@ class MessageModel : public QAbstractItemModel {
     };
 
     enum ColumnType {
-      TimestampColumn, SenderColumn, TextColumn, UserColumnType
+      TimestampColumn, SenderColumn, ContentsColumn, UserColumnType
     };
 
     MessageModel(QObject *parent);

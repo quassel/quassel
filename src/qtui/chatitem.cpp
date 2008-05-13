@@ -31,6 +31,7 @@ ChatItem::ChatItem(const QPersistentModelIndex &index_, QGraphicsItem *parent) :
   //if(_wrapMode == WordWrap) {
   //  setFlags(QGraphicsItem::ItemClipsToShape, true);
   //}
+  
 }
 
 ChatItem::~ChatItem() {

@@ -27,19 +27,24 @@
 #include "chatline.h"
 #include "qtui.h"
 
-ChatLine::ChatLine(const QPersistentModelIndex &index_, QGraphicsItem *parent) : QGraphicsItem(parent), _index(index_) {
+Chatline::Chatline(const QModelIndex &index, QGraphicsItem *parent) : QGraphicsItem(parent) {
+  _timestampItem = new ChatItem(QPersistentModelIndex(index.sibling(index.row(), ChatlineModel::TimestampColumn)), this);
+  _senderItem = new ChatItem(QPersistentModelIndex(index.sibling(index.row(), ChatlineModel::SenderColumn)), this);
+  _contentsItem = new ChatItem(QPersistentModelIndex(index.sibling(index.row(), ChatlineModel::ContentsColumn)), this);
+
+  _senderItem->setPos(80, 0);
+  _contentsItem->setPos(160, 0);
+}
+
+Chatline::~Chatline() {
 
 }
 
-ChatLine::~ChatLine() {
-
-}
-
-QRectF ChatLine::boundingRect () const {
+QRectF Chatline::boundingRect () const {
   return childrenBoundingRect();
 }
 
-void ChatLine::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
+void Chatline::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
 
 }
 

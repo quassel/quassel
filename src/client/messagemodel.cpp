@@ -95,7 +95,7 @@ MessageModelItem::~MessageModelItem() {
 }
 
 QVariant MessageModelItem::data(int column, int role) const {
-  if(column < MessageModel::TimestampColumn || column > MessageModel::TextColumn) return QVariant();
+  if(column < MessageModel::TimestampColumn || column > MessageModel::ContentsColumn) return QVariant();
   switch(role) {
     case MessageModel::MsgIdRole: return QVariant::fromValue<MsgId>(_msgId);
     case MessageModel::BufferIdRole: return QVariant::fromValue<BufferId>(_bufferId);
