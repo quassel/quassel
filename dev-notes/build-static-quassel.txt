@@ -14,8 +14,8 @@ and OpenSSL. Note that these are just hints that work for me; ymmv.
     -prefix /usr/local/Trolltech/qt-4.4-static
 
     To only build non-X dependent parts of Qt:
-    for i in `cat
-    /path/to/quassel/dev-notes/QT4_TARGET_DIRECTORIES`; do make -C $i; done
+
+    for i in `cat /path/to/quassel/dev-notes/QT4_TARGET_DIRECTORIES`; do make -C $i; done
 
     NOTE: This has not really been tested and may or may not be working for
           you. If in doubt, follow the official route and just do make
