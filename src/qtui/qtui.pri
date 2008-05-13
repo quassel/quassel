@@ -13,8 +13,8 @@ HDRS += aboutdlg.h bufferwidget.h chatline-old.h chatwidget.h \
 
 # new chatline model stuff
 sputdev {
-  SRCS += chatitem.cpp chatlinemodelitem.cpp chatlinemodel.cpp chatscene.cpp chatview.cpp
-  HDRS += chatitem.h chatlinemodelitem.h chatlinemodel.h chatscene.h chatview.h
+  SRCS += chatitem.cpp chatline.cpp chatlinemodelitem.cpp chatlinemodel.cpp chatscene.cpp chatview.cpp
+  HDRS += chatitem.h chatline.h chatlinemodelitem.h chatlinemodel.h chatscene.h chatview.h
   SRCS -= chatline-old.cpp chatwidget.cpp
   HDRS -= chatline-old.h chatwidget.h
 }
