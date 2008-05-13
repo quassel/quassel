@@ -10,7 +10,7 @@ SRCPATH = ../../src
 OBJECTS_DIR = .$$TARGET
 RCC_DIR     = .$$TARGET
 
-linux-g++:static {
+linux-g++*:static {
   # We put libs in contrib/libs that should be linked statically, especially libstdc++.a
   LIBS *= -L../contrib/libs
   QMAKE_LFLAGS *= -static-libgcc
