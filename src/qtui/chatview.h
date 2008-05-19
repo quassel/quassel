@@ -53,6 +53,9 @@ class ChatView : public QGraphicsView, public AbstractChatView {
 
     void setContents(const QList<AbstractUiMsg *> &);
 
+  protected:
+    virtual void resizeEvent(QResizeEvent *event);
+
   private:
     ChatScene *_scene;
 };

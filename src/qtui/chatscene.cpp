@@ -31,11 +31,9 @@ ChatScene::ChatScene(MessageModel *model, QObject *parent) : QGraphicsScene(pare
   connect(model, SIGNAL(rowsInserted(const QModelIndex &, int, int)), this, SLOT(rowsInserted(const QModelIndex &, int, int)));
   for(int i = 0; i < model->rowCount(); i++) {
     ChatLine *line = new ChatLine(model->index(i, 0));
+    _lines.append(line);
     addItem(line);
-    line->setPos(30, i*line->boundingRect().height());
   }
-
-  
 }
 
 ChatScene::~ChatScene() {
@@ -43,6 +41,15 @@ ChatScene::~ChatScene() {
 
 }
 
+void ChatScene::setWidth(int w) {
+  _width = w;
+  int h = 0;
+  foreach(ChatLine *line, _lines) {
+    line->setPos(0, h);
+    h += line->setColumnWidths(60, 80, w - 60 - 80);
+  }
+  setSceneRect(QRectF(0, 0, w, h));
+}
 
 void ChatScene::mousePressEvent ( QGraphicsSceneMouseEvent * mouseEvent ) {
   /*

@@ -37,7 +37,8 @@ class ChatLine : public QGraphicsItem {
     virtual void paint (QPainter * painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
     //void layout();
 
-    //void setColumnWidths(int tsColWidth, int senderColWidth, int textColWidth);
+    // returns height
+    int setColumnWidths(int tsColWidth, int senderColWidth, int textColWidth);
 
     //void myMousePressEvent ( QGraphicsSceneMouseEvent * event ) { qDebug() << "press"; mousePressEvent(event); }
 

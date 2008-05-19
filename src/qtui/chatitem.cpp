@@ -28,10 +28,7 @@
 #include "chatitem.h"
 
 ChatItem::ChatItem(const QPersistentModelIndex &index_, QGraphicsItem *parent) : QGraphicsItem(parent), _index(index_) {
-  //if(_wrapMode == WordWrap) {
-  //  setFlags(QGraphicsItem::ItemClipsToShape, true);
-  //}
-  
+  _width = _height = 0;
 }
 
 ChatItem::~ChatItem() {
@@ -47,22 +44,26 @@ QVariant ChatItem::data(int role) const {
 }
 
 QRectF ChatItem::boundingRect() const {
-  return QRectF(0, 0, 500,20);
+  return QRectF(0, 0, _width, _height);
 }
 
 void ChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
   Q_UNUSED(option); Q_UNUSED(widget);
 
-  painter->drawRect(boundingRect());
   painter->drawText(boundingRect(), data(MessageModel::DisplayRole).toString());
+  painter->setPen(Qt::DotLine);
+  painter->drawRect(boundingRect());
 }
 
+
+
+int ChatItem::setWidth(int w) {
+  _width = w;
+  _height = 20; // FIXME
+  return _height;
+}
 
 /*
-void ChatItem::setWidth(int w) {
-  _width = w;
-  layout();
-}
 
 void ChatItem::setTextOption(const QTextOption &option) {
   _textOption = option;

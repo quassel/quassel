@@ -49,14 +49,16 @@ class ChatItem : public QGraphicsItem {
     //QTextOption textOption() const;
     //void setTextOption(const QTextOption &option);
 
-    //void setWidth(int width);
+    // returns height
+    int setWidth(int width);
     //virtual void layout();
 
   protected:
     //void mouseMoveEvent ( QGraphicsSceneMouseEvent * event );
 
   private:
-    //int _width;
+    int _width;
+    int _height;
     //QTextLayout _layout;
     //QTextOption _textOption;
     QPersistentModelIndex _index;

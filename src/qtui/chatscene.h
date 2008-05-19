@@ -42,16 +42,16 @@ class ChatScene : public QGraphicsScene {
     inline MessageModel *model() const { return _model; }
 
   public slots:
+    void setWidth(int);
 
   protected slots:
 
     void mousePressEvent ( QGraphicsSceneMouseEvent * mouseEvent );
 
   private:
-    //Buffer *_buffer;
-    //QList<ChatLine*> _lines;
+    int _width;
     MessageModel *_model;
-    QList<ChatItem *> _items;
+    QList<ChatLine *> _lines;
 
 };
 

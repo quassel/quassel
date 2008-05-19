@@ -28,10 +28,11 @@
 #include "quasselui.h"
 
 ChatView::ChatView(Buffer *buf, QWidget *parent) : QGraphicsView(parent), AbstractChatView() {
+  setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
   _scene = new ChatScene(Client::messageModel(), this);
+  _scene->setWidth(width());
   setScene(_scene);
 
-  //QGraphicsTextItem *item = scene()->addText(buf->bufferInfo().bufferName());
 
 }
 
@@ -45,6 +46,10 @@ ChatScene *ChatView::scene() const {
   return _scene;
 }
 
+void ChatView::resizeEvent(QResizeEvent *event) {
+  scene()->setWidth(event->size().width());
+
+}
 
 void ChatView::clear()
 {
