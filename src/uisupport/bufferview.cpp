@@ -46,11 +46,37 @@
 *****************************************/
 // Please be carefull when reimplementing methods which are used to inform the view about changes to the data
 // to be on the safe side: call QTreeView's method aswell
-BufferView::BufferView(QWidget *parent) : QTreeView(parent) {
-  setContextMenuPolicy(Qt::CustomContextMenu);
+BufferView::BufferView(QWidget *parent)
+  : QTreeView(parent),
+    _connectNetAction(tr("Connect"), this),
+    _disconnectNetAction(tr("Disconnect"), this),
+    _joinChannelAction(tr("Join Channel"), this),
 
-  connect(this, SIGNAL(customContextMenuRequested(const QPoint &)),
-          this, SLOT(showContextMenu(const QPoint &)));
+    _joinBufferAction(tr("Join"), this),
+    _partBufferAction(tr("Part"), this),
+    _hideBufferAction(tr("Hide selected buffers"), this),
+    _removeBufferAction(tr("Delete buffer"), this),
+    _ignoreListAction(tr("Ignore list"), this),
+
+    _hideJoinAction(tr("Join Events"), this),
+    _hidePartAction(tr("Part Events"), this),
+    _hideKillAction(tr("Kill Events"), this),
+    _hideQuitAction(tr("Quit Events"), this),
+    _hideModeAction(tr("Mode Events"), this)
+
+{
+  // currently no events can be hidden -> disable actions
+  _hideJoinAction.setCheckable(true);
+  _hidePartAction.setCheckable(true);
+  _hideKillAction.setCheckable(true);
+  _hideQuitAction.setCheckable(true);
+  _hideModeAction.setCheckable(true);
+  _hideJoinAction.setEnabled(false);
+  _hidePartAction.setEnabled(false);
+  _ignoreListAction.setEnabled(false);
+  _hideKillAction.setEnabled(false);
+  _hideQuitAction.setEnabled(false);
+  _hideModeAction.setEnabled(false);
 
   setSelectionMode(QAbstractItemView::ExtendedSelection);
 }
@@ -273,122 +299,187 @@ void BufferView::toggleHeader(bool checked) {
   header()->setSectionHidden((action->property("column")).toInt(), !checked);
 }
 
-void BufferView::showContextMenu(const QPoint &pos) {
-  QModelIndex index = indexAt(pos);
-  if(!index.isValid()) return;
+bool BufferView::checkRequirements(const QModelIndex &index, itemActiveStates requiredActiveState) {
+  if(!index.isValid())
+    return false;
+
+//   NetworkModel::itemTypes itemType = static_cast<NetworkModel::itemTypes>(index.data(NetworkModel::ItemTypeRole).toInt());
+//   if(!(itemType & validItemTypes))
+//     return false;
+
+  itemActiveStates isActive = index.data(NetworkModel::ItemActiveRole).toBool()
+    ? activeState
+    : inactiveState;
+
+  if(!(isActive & requiredActiveState))
+    return false;
+
+  return true;
+}
+
+void BufferView::addItemToMenu(QAction &action, QMenu &menu, const QModelIndex &index, itemActiveStates requiredActiveState) {
+  if(checkRequirements(index, requiredActiveState)) {
+    menu.addAction(&action);
+    action.setVisible(true);
+  } else {
+    action.setVisible(false);
+  }
+}
+
+void BufferView::addItemToMenu(QAction &action, QMenu &menu, bool condition) {
+  if(condition) {
+    menu.addAction(&action);
+    action.setVisible(true);
+  } else {
+    action.setVisible(false);
+  }
+}
+
+
+void BufferView::addItemToMenu(QMenu &subMenu, QMenu &menu, const QModelIndex &index, itemActiveStates requiredActiveState) {
+  if(checkRequirements(index, requiredActiveState)) {
+    menu.addMenu(&subMenu);
+    subMenu.setVisible(true);
+  } else {
+    subMenu.setVisible(false);
+  }
+}
+
+void BufferView::addSeparatorToMenu(QMenu &menu, const QModelIndex &index, itemActiveStates requiredActiveState) {
+  if(checkRequirements(index, requiredActiveState)) {
+    menu.addSeparator();
+  }
+}
+
+QMenu *BufferView::createHideEventsSubMenu(QMenu &menu) {
+  // QMenu *hideEventsMenu = new QMenu(tr("Hide Events"), &menu);
+  QMenu *hideEventsMenu = menu.addMenu(tr("Hide Events"));
+  hideEventsMenu->addAction(&_hideJoinAction);
+  hideEventsMenu->addAction(&_hidePartAction);
+  hideEventsMenu->addAction(&_hideKillAction);
+  hideEventsMenu->addAction(&_hideQuitAction);
+  hideEventsMenu->addAction(&_hideModeAction);
+  return hideEventsMenu;
+}
+
+//void BufferView::showContextMenu(const QPoint &pos) {
+void BufferView::contextMenuEvent(QContextMenuEvent *event) {
+  QModelIndex index = indexAt(event->pos());
+  if(!index.isValid())
+    return;
+
+  const Network *network = Client::network(index.data(NetworkModel::NetworkIdRole).value<NetworkId>());
+  Q_CHECK_PTR(network);
+
+  QIcon connectionStateIcon;
+  if(network) {
+    if(network->connectionState() == Network::Initialized) {
+      connectionStateIcon = QIcon(":/22x22/actions/network-connect");
+    } else if(network->connectionState() == Network::Disconnected) {
+      connectionStateIcon = QIcon(":/22x22/actions/network-disconnect");
+    } else {
+      connectionStateIcon = QIcon(":/22x22/actions/gear");
+    }
+  }
+  
   QMenu contextMenu(this);
-  QAction *connectNetAction = contextMenu.addAction(tr("Connect"));
-  QAction *disconnectNetAction = contextMenu.addAction(tr("Disconnect"));
-  QAction *joinChannelAction = contextMenu.addAction(tr("Join Channel"));
-
-  QAction *joinBufferAction = contextMenu.addAction(tr("Join"));
-  QAction *partBufferAction = contextMenu.addAction(tr("Part"));
-  QAction *hideBufferAction = contextMenu.addAction(tr("Remove buffers"));
-  hideBufferAction->setToolTip(tr("Removes the selected buffers from a custom view but leaves the buffer itself untouched"));
-  QAction *removeBufferAction = contextMenu.addAction(tr("Delete buffer"));
-
-  QMenu *hideEventsMenu = contextMenu.addMenu(tr("Hide Events"));
-  QAction *hideJoinAction = hideEventsMenu->addAction(tr("Join Events"));
-  QAction *hidePartAction = hideEventsMenu->addAction(tr("Part Events"));
-  QAction *hideKillAction = hideEventsMenu->addAction(tr("Kill Events"));
-  QAction *hideQuitAction = hideEventsMenu->addAction(tr("Quit Events"));
-  QAction *hideModeAction = hideEventsMenu->addAction(tr("Mode Events"));
-  hideJoinAction->setCheckable(true);
-  hidePartAction->setCheckable(true);
-  hideKillAction->setCheckable(true);
-  hideQuitAction->setCheckable(true);
-  hideModeAction->setCheckable(true);
-  hideJoinAction->setEnabled(false);
-  hidePartAction->setEnabled(false);
-  hideKillAction->setEnabled(false);
-  hideQuitAction->setEnabled(false);
-  hideModeAction->setEnabled(false);
-
-  QAction *ignoreListAction = new QAction(tr("Ignore list"), this);
-  ignoreListAction->setEnabled(false);
-  QAction *whoBufferAction = new QAction(tr("WHO"), this);
-
-  if(index.data(NetworkModel::ItemTypeRole) == NetworkModel::NetworkItemType) {
-    if(index.data(NetworkModel::ItemActiveRole).toBool()) {
-      contextMenu.addAction(disconnectNetAction);
-      contextMenu.addSeparator();
-      contextMenu.addAction(joinChannelAction);
-    } else {
-      contextMenu.addAction(connectNetAction);
-    }
-  }
-
-  BufferInfo bufferInfo = index.data(NetworkModel::BufferInfoRole).value<BufferInfo>();
-  QString channelname = index.sibling(index.row(), 0).data().toString();
-
-  if(index.data(NetworkModel::ItemTypeRole) == NetworkModel::BufferItemType) {
-    if(bufferInfo.type() != BufferInfo::ChannelBuffer && bufferInfo.type() != BufferInfo::QueryBuffer) return;
-    contextMenu.addAction(joinBufferAction);
-    contextMenu.addAction(partBufferAction);
-    if(config())
-      contextMenu.addAction(hideBufferAction);
-    contextMenu.addAction(removeBufferAction);
-    contextMenu.addMenu(hideEventsMenu);
-    contextMenu.addAction(ignoreListAction);
-    contextMenu.addAction(whoBufferAction);
-
-    if(bufferInfo.type() == BufferInfo::ChannelBuffer) {
-      if(index.data(NetworkModel::ItemActiveRole).toBool()) {
-        removeBufferAction->setEnabled(false);
-        removeBufferAction->setToolTip("To delete the buffer, part the channel first.");
-        joinBufferAction->setVisible(false);
-        whoBufferAction->setVisible(false);
-      } else {
-        partBufferAction->setVisible(false);
+  NetworkModel::itemType itemType = static_cast<NetworkModel::itemType>(index.data(NetworkModel::ItemTypeRole).toInt());
+  
+  switch(itemType) {
+  case NetworkModel::NetworkItemType:
+    _disconnectNetAction.setIcon(connectionStateIcon);
+    _connectNetAction.setIcon(connectionStateIcon);
+    addItemToMenu(_disconnectNetAction, contextMenu, index, activeState);
+    addItemToMenu(_connectNetAction, contextMenu, index, inactiveState);
+    addSeparatorToMenu(contextMenu, index, activeState);
+    addItemToMenu(_joinChannelAction, contextMenu, index, activeState);
+    break;
+  case NetworkModel::BufferItemType:
+    {
+      BufferInfo bufferInfo = index.data(NetworkModel::BufferInfoRole).value<BufferInfo>();
+      switch(bufferInfo.type()) {
+      case BufferInfo::ChannelBuffer:
+	addItemToMenu(_joinBufferAction, contextMenu, index, inactiveState);
+	addItemToMenu(_partBufferAction, contextMenu, index, activeState);
+	addItemToMenu(_hideBufferAction, contextMenu, (bool)config());
+	addItemToMenu(_removeBufferAction, contextMenu, index, inactiveState);
+	createHideEventsSubMenu(contextMenu);
+	addItemToMenu(_ignoreListAction, contextMenu);
+	break;
+      case BufferInfo::QueryBuffer:
+	addItemToMenu(_hideBufferAction, contextMenu, (bool)config());
+	addItemToMenu(_removeBufferAction, contextMenu);
+	createHideEventsSubMenu(contextMenu);
+	break;
+      default:
+	addItemToMenu(_hideBufferAction, contextMenu, (bool)config());
+	break;
       }
-    } else {
-      joinBufferAction->setVisible(false);
-      partBufferAction->setVisible(false);
     }
+    break;
+  default:
+    return;
+  }
+  
+  if(contextMenu.actions().isEmpty())
+    return;
+  QAction *result = contextMenu.exec(QCursor::pos());
+  
+  // Handle Result
+  if(network && result == &_connectNetAction) {
+    network->requestConnect();
+    return;
   }
 
-  QAction *result = contextMenu.exec(QCursor::pos());
-  if(result == connectNetAction || result == disconnectNetAction) {
-    const Network *network = Client::network(index.data(NetworkModel::NetworkIdRole).value<NetworkId>());
-    if(!network) return;
-    if(network->connectionState() == Network::Disconnected) 
-      network->requestConnect();
-    else 
-      network->requestDisconnect();
-  } else
-  if(result == joinChannelAction) {
+  if(network && result == &_disconnectNetAction) {
+    network->requestDisconnect();
+    return;
+  }
+
+  if(result == &_joinChannelAction) {
     // FIXME no QInputDialog in Qtopia
 #ifndef Q_WS_QWS
     bool ok;
-    QString channelName = QInputDialog::getText(this, tr("Join Channel"), 
-                                                tr("Input channel name:"),QLineEdit::Normal,
-                                                QDir::home().dirName(), &ok);
-
-    if (ok && !channelName.isEmpty()) {
+    QString channelName = QInputDialog::getText(this, tr("Join Channel"), tr("Input channel name:"), QLineEdit::Normal, QString(), &ok);
+    if(ok && !channelName.isEmpty()) {
       BufferInfo bufferInfo = index.child(0,0).data(NetworkModel::BufferInfoRole).value<BufferInfo>();
       if(bufferInfo.isValid()) {
         Client::instance()->userInput(bufferInfo, QString("/J %1").arg(channelName));
       }
     }
 #endif
-  } else if(result == joinBufferAction) {
-    Client::instance()->userInput(bufferInfo, QString("/JOIN %1").arg(channelname));
-  } else if(result == partBufferAction) {
-    Client::instance()->userInput(bufferInfo, QString("/PART %1").arg(channelname));
-  } else if(result == hideBufferAction) {
+    return;
+  }
+
+  if(result == &_joinBufferAction) {
+    BufferInfo bufferInfo = index.data(NetworkModel::BufferInfoRole).value<BufferInfo>();
+    Client::instance()->userInput(bufferInfo, QString("/JOIN %1").arg(bufferInfo.bufferName()));
+    return;
+  }
+
+  if(result == &_partBufferAction) {
+    BufferInfo bufferInfo = index.data(NetworkModel::BufferInfoRole).value<BufferInfo>();
+    Client::instance()->userInput(bufferInfo, QString("/PART %1").arg(bufferInfo.bufferName()));
+    return;
+  }
+  
+  if(result == &_hideBufferAction) {
     removeSelectedBuffers();
-  } else if(result == removeBufferAction) {
+    return;
+  }
+
+  if(result == &_removeBufferAction) {
+    BufferInfo bufferInfo = index.data(NetworkModel::BufferInfoRole).value<BufferInfo>();
     int res = QMessageBox::question(this, tr("Remove buffer permanently?"),
                                     tr("Do you want to delete the buffer \"%1\" permanently? This will delete all related data, including all backlog "
                                        "data, from the core's database!").arg(bufferInfo.bufferName()),
                                         QMessageBox::Yes|QMessageBox::No, QMessageBox::No);
     if(res == QMessageBox::Yes) {
       Client::removeBuffer(bufferInfo.bufferId());
-    } 
-  } else 
-  if(result == whoBufferAction) {
-    Client::instance()->userInput(bufferInfo, QString("/WHO %1").arg(channelname));
+    }
+    return;
   }
+
 }
 
 void BufferView::wheelEvent(QWheelEvent* event) {

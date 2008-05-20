@@ -211,12 +211,13 @@ public:
     ItemTypeRole
   };
 
-  enum itemTypes {
-    NetworkItemType,
-    BufferItemType,
-    UserCategoryItemType,
-    IrcUserItemType
+  enum itemType {
+    NetworkItemType = 0x01,
+    BufferItemType = 0x02,
+    UserCategoryItemType = 0x04,
+    IrcUserItemType = 0x08
   };
+  Q_DECLARE_FLAGS(itemTypes, itemType);
 
   NetworkModel(QObject *parent = 0);
   static QList<QVariant> defaultHeader();
@@ -252,5 +253,6 @@ private:
   BufferItem *existsBufferItem(const BufferInfo &bufferInfo);
 
 };
+Q_DECLARE_OPERATORS_FOR_FLAGS(NetworkModel::itemTypes);
 
 #endif // NETWORKMODEL_H

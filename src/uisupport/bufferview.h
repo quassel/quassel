@@ -21,12 +21,15 @@
 #ifndef BUFFERVIEW_H_
 #define BUFFERVIEW_H_
 
+#include <QAction>
+#include <QMenu>
 #include <QDockWidget>
 #include <QModelIndex>
 #include <QTreeView>
 #include <QPointer>
 
 #include "bufferviewconfig.h"
+#include "networkmodel.h"
 
 #include "types.h"
 
@@ -61,16 +64,47 @@ protected:
   virtual void wheelEvent(QWheelEvent *);
   virtual QSize sizeHint() const;
   virtual void focusInEvent(QFocusEvent *event) { QAbstractScrollArea::focusInEvent(event); }
-
+  virtual void contextMenuEvent(QContextMenuEvent *event);
+							 
 private slots:
   void joinChannel(const QModelIndex &index);
   void toggleHeader(bool checked);
-  void showContextMenu(const QPoint &);
+  //  void showContextMenu(const QPoint &);
   void layoutChanged();
 
 private:
+  enum itemActiveState {
+    inactiveState = 0x01,
+    activeState = 0x02
+  };
+  Q_DECLARE_FLAGS(itemActiveStates, itemActiveState);
+
   QPointer<BufferViewConfig> _config;
+
+  QAction _connectNetAction;
+  QAction _disconnectNetAction;
+  QAction _joinChannelAction;
+
+  QAction _joinBufferAction;
+  QAction _partBufferAction;
+  QAction _hideBufferAction;
+  QAction _removeBufferAction;
+  QAction _ignoreListAction;
+
+  QAction _hideJoinAction;
+  QAction _hidePartAction;
+  QAction _hideKillAction;
+  QAction _hideQuitAction;
+  QAction _hideModeAction;
+
+  bool checkRequirements(const QModelIndex &index, itemActiveStates requiredActiveState = activeState | inactiveState);
+  void addItemToMenu(QAction &action, QMenu &menu, const QModelIndex &index, itemActiveStates requiredActiveState = activeState | inactiveState);
+  void addItemToMenu(QAction &action, QMenu &menu, bool condition = true);
+  void addItemToMenu(QMenu &subMenu, QMenu &menu, const QModelIndex &index, itemActiveStates requiredActiveState = activeState | inactiveState);
+  void addSeparatorToMenu(QMenu &menu, const QModelIndex &index, itemActiveStates requiredActiveState = activeState | inactiveState);
+  QMenu *createHideEventsSubMenu(QMenu &menu);
 };
+Q_DECLARE_OPERATORS_FOR_FLAGS(BufferView::itemActiveStates);
 
 
 // ==============================
