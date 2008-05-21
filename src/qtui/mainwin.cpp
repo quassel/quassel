@@ -609,11 +609,13 @@ void MainWin::receiveMessage(const Message &msg) {
     UiSettings uiSettings;
 
 #ifndef SPUTDEV
-    if(uiSettings.value("DisplayPopupMessages", QVariant(true)).toBool()) {
+	bool displayBubble = uiSettings.value("NotificationBubble", QVariant(true)).toBool();
+	bool displayDesktop = uiSettings.value("NotificationDesktop", QVariant(true)).toBool();
+    if(displayBubble || displayDesktop) {
       // FIXME don't invoke style engine for this!
       QString text = QtUi::style()->styleString(Message::mircToInternal(msg.contents())).plainText;
-      displayTrayIconMessage(title, text);
-	  sendDesktopNotification(title, text);
+	  if (displayBubble) displayTrayIconMessage(title, text);
+	  if (displayDesktop) sendDesktopNotification(title, text);
     }
 #endif
     if(uiSettings.value("AnimateTrayIcon", QVariant(true)).toBool()) {
@@ -638,9 +640,10 @@ void MainWin::sendDesktopNotification(const QString &title, const QString &messa
 {
 	QStringList actions;
 	QMap<QString, QVariant> hints;
+    UiSettings uiSettings;
 
-	hints["x"] = 100; // Standard hint: x location for the popup to show up
-	hints["y"] = 100; // Standard hint: y location for the popup to show up
+	hints["x"] = uiSettings.value("NotificationDesktopHintX", QVariant(0)).toInt(); // Standard hint: x location for the popup to show up
+	hints["y"] = uiSettings.value("NotificationDesktopHintY", QVariant(0)).toInt(); // Standard hint: y location for the popup to show up
 
 	actions << "click" << "Click Me!";
 
@@ -652,7 +655,7 @@ void MainWin::sendDesktopNotification(const QString &title, const QString &messa
 		QString("%1: %2:\n%2").arg(QTime::currentTime().toString()).arg(title).arg(message), // Body of the message to display
 		actions, // Actions from which the user may choose
 		hints, // Hints to the server displaying the message
-		5000 // Timeout in milliseconds
+		uiSettings.value("NotificationDesktopTimeout", QVariant(5000)).toInt() // Timeout in milliseconds
 	);
 
 	if (!reply.isValid())
