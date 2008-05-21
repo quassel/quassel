@@ -303,7 +303,7 @@ void BufferView::toggleHeader(bool checked) {
   header()->setSectionHidden((action->property("column")).toInt(), !checked);
 }
 
-bool BufferView::checkRequirements(const QModelIndex &index, itemActiveStates requiredActiveState) {
+bool BufferView::checkRequirements(const QModelIndex &index, ItemActiveStates requiredActiveState) {
   if(!index.isValid())
     return false;
 
@@ -311,9 +311,9 @@ bool BufferView::checkRequirements(const QModelIndex &index, itemActiveStates re
 //   if(!(itemType & validItemTypes))
 //     return false;
 
-  itemActiveStates isActive = index.data(NetworkModel::ItemActiveRole).toBool()
-    ? activeState
-    : inactiveState;
+  ItemActiveStates isActive = index.data(NetworkModel::ItemActiveRole).toBool()
+    ? ActiveState
+    : InactiveState;
 
   if(!(isActive & requiredActiveState))
     return false;
@@ -321,7 +321,7 @@ bool BufferView::checkRequirements(const QModelIndex &index, itemActiveStates re
   return true;
 }
 
-void BufferView::addItemToMenu(QAction &action, QMenu &menu, const QModelIndex &index, itemActiveStates requiredActiveState) {
+void BufferView::addItemToMenu(QAction &action, QMenu &menu, const QModelIndex &index, ItemActiveStates requiredActiveState) {
   if(checkRequirements(index, requiredActiveState)) {
     menu.addAction(&action);
     action.setVisible(true);
@@ -340,7 +340,7 @@ void BufferView::addItemToMenu(QAction &action, QMenu &menu, bool condition) {
 }
 
 
-void BufferView::addItemToMenu(QMenu &subMenu, QMenu &menu, const QModelIndex &index, itemActiveStates requiredActiveState) {
+void BufferView::addItemToMenu(QMenu &subMenu, QMenu &menu, const QModelIndex &index, ItemActiveStates requiredActiveState) {
   if(checkRequirements(index, requiredActiveState)) {
     menu.addMenu(&subMenu);
     subMenu.setVisible(true);
@@ -349,7 +349,7 @@ void BufferView::addItemToMenu(QMenu &subMenu, QMenu &menu, const QModelIndex &i
   }
 }
 
-void BufferView::addSeparatorToMenu(QMenu &menu, const QModelIndex &index, itemActiveStates requiredActiveState) {
+void BufferView::addSeparatorToMenu(QMenu &menu, const QModelIndex &index, ItemActiveStates requiredActiveState) {
   if(checkRequirements(index, requiredActiveState)) {
     menu.addSeparator();
   }
@@ -393,20 +393,20 @@ void BufferView::contextMenuEvent(QContextMenuEvent *event) {
   case NetworkModel::NetworkItemType:
     _disconnectNetAction.setIcon(connectionStateIcon);
     _connectNetAction.setIcon(connectionStateIcon);
-    addItemToMenu(_disconnectNetAction, contextMenu, index, activeState);
-    addItemToMenu(_connectNetAction, contextMenu, index, inactiveState);
-    addSeparatorToMenu(contextMenu, index, activeState);
-    addItemToMenu(_joinChannelAction, contextMenu, index, activeState);
+    addItemToMenu(_disconnectNetAction, contextMenu, index, ActiveState);
+    addItemToMenu(_connectNetAction, contextMenu, index, InactiveState);
+    addSeparatorToMenu(contextMenu, index, ActiveState);
+    addItemToMenu(_joinChannelAction, contextMenu, index, ActiveState);
     break;
   case NetworkModel::BufferItemType:
     {
       BufferInfo bufferInfo = index.data(NetworkModel::BufferInfoRole).value<BufferInfo>();
       switch(bufferInfo.type()) {
       case BufferInfo::ChannelBuffer:
-	addItemToMenu(_joinBufferAction, contextMenu, index, inactiveState);
-	addItemToMenu(_partBufferAction, contextMenu, index, activeState);
+	addItemToMenu(_joinBufferAction, contextMenu, index, InactiveState);
+	addItemToMenu(_partBufferAction, contextMenu, index, ActiveState);
 	addItemToMenu(_hideBufferAction, contextMenu, (bool)config());
-	addItemToMenu(_removeBufferAction, contextMenu, index, inactiveState);
+	addItemToMenu(_removeBufferAction, contextMenu, index, InactiveState);
 	createHideEventsSubMenu(contextMenu);
 	addItemToMenu(_ignoreListAction, contextMenu);
 	break;
