@@ -37,88 +37,94 @@
  * The TreeView showing the Buffers
  *****************************************/
 class BufferView : public QTreeView {
-  Q_OBJECT
-  
-public:
-  BufferView(QWidget *parent = 0);
-  void init();
+    Q_OBJECT
 
-  void setModel(QAbstractItemModel *model);
-  void setFilteredModel(QAbstractItemModel *model, BufferViewConfig *config);
-  virtual void setSelectionModel(QItemSelectionModel *selectionModel);
+  public:
+    BufferView(QWidget *parent = 0);
+    void init();
 
-  void setConfig(BufferViewConfig *config);
-  inline BufferViewConfig *config() { return _config; }
-							       
-public slots:
-  void setRootIndexForNetworkId(const NetworkId &networkId);
-  void removeSelectedBuffers();
-  
-signals:
-  void removeBuffer(const QModelIndex &);
+    void setModel(QAbstractItemModel *model);
+    void setFilteredModel(QAbstractItemModel *model, BufferViewConfig *config);
+    virtual void setSelectionModel(QItemSelectionModel *selectionModel);
 
-protected:
-  virtual void keyPressEvent(QKeyEvent *);
-  virtual void rowsInserted (const QModelIndex & parent, int start, int end);
-  virtual void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
-  virtual void wheelEvent(QWheelEvent *);
-  virtual QSize sizeHint() const;
-  virtual void focusInEvent(QFocusEvent *event) { QAbstractScrollArea::focusInEvent(event); }
-  virtual void contextMenuEvent(QContextMenuEvent *event);
-							 
-private slots:
-  void joinChannel(const QModelIndex &index);
-  void toggleHeader(bool checked);
-  //  void showContextMenu(const QPoint &);
-  void layoutChanged();
+    void setConfig(BufferViewConfig *config);
+    inline BufferViewConfig *config() { return _config; }
 
-private:
-  enum itemActiveState {
-    inactiveState = 0x01,
-    activeState = 0x02
-  };
-  Q_DECLARE_FLAGS(itemActiveStates, itemActiveState);
+  public slots:
+    void setRootIndexForNetworkId(const NetworkId &networkId);
+    void removeSelectedBuffers();
 
-  QPointer<BufferViewConfig> _config;
+  signals:
+    void removeBuffer(const QModelIndex &);
 
-  QAction _connectNetAction;
-  QAction _disconnectNetAction;
-  QAction _joinChannelAction;
+  protected:
+    virtual void keyPressEvent(QKeyEvent *);
+    virtual void rowsInserted(const QModelIndex & parent, int start, int end);
+    virtual void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
+    virtual void wheelEvent(QWheelEvent *);
+    virtual QSize sizeHint() const;
+    virtual void focusInEvent(QFocusEvent *event) { QAbstractScrollArea::focusInEvent(event); }
+    virtual void contextMenuEvent(QContextMenuEvent *event);
 
-  QAction _joinBufferAction;
-  QAction _partBufferAction;
-  QAction _hideBufferAction;
-  QAction _removeBufferAction;
-  QAction _ignoreListAction;
+  private slots:
+    void joinChannel(const QModelIndex &index);
+    void toggleHeader(bool checked);
+    //  void showContextMenu(const QPoint &);
+    void layoutChanged();
 
-  QAction _hideJoinAction;
-  QAction _hidePartAction;
-  QAction _hideKillAction;
-  QAction _hideQuitAction;
-  QAction _hideModeAction;
+  private:
+    enum ItemActiveState {
+      InactiveState = 0x01,
+      ActiveState = 0x02
+    };
+  public:
+    Q_DECLARE_FLAGS(ItemActiveStates, ItemActiveState);
 
-  bool checkRequirements(const QModelIndex &index, itemActiveStates requiredActiveState = activeState | inactiveState);
-  void addItemToMenu(QAction &action, QMenu &menu, const QModelIndex &index, itemActiveStates requiredActiveState = activeState | inactiveState);
-  void addItemToMenu(QAction &action, QMenu &menu, bool condition = true);
-  void addItemToMenu(QMenu &subMenu, QMenu &menu, const QModelIndex &index, itemActiveStates requiredActiveState = activeState | inactiveState);
-  void addSeparatorToMenu(QMenu &menu, const QModelIndex &index, itemActiveStates requiredActiveState = activeState | inactiveState);
-  QMenu *createHideEventsSubMenu(QMenu &menu);
+  private:
+    QPointer<BufferViewConfig> _config;
+
+    QAction _connectNetAction;
+    QAction _disconnectNetAction;
+    QAction _joinChannelAction;
+
+    QAction _joinBufferAction;
+    QAction _partBufferAction;
+    QAction _hideBufferAction;
+    QAction _removeBufferAction;
+    QAction _ignoreListAction;
+
+    QAction _hideJoinAction;
+    QAction _hidePartAction;
+    QAction _hideKillAction;
+    QAction _hideQuitAction;
+    QAction _hideModeAction;
+
+    bool checkRequirements(const QModelIndex &index,
+                           ItemActiveStates requiredActiveState = QFlags<ItemActiveState>(ActiveState) | QFlags<ItemActiveState>(InactiveState));
+    void addItemToMenu(QAction &action, QMenu &menu, const QModelIndex &index,
+                       ItemActiveStates requiredActiveState = QFlags<ItemActiveState>(ActiveState) | QFlags<ItemActiveState>(InactiveState));
+    void addItemToMenu(QAction &action, QMenu &menu, bool condition = true);
+    void addItemToMenu(QMenu &subMenu, QMenu &menu, const QModelIndex &index,
+                       ItemActiveStates requiredActiveState = QFlags<ItemActiveState>(ActiveState) | QFlags<ItemActiveState>(InactiveState));
+    void addSeparatorToMenu(QMenu &menu, const QModelIndex &index,
+                            ItemActiveStates requiredActiveState = QFlags<ItemActiveState>(ActiveState) | QFlags<ItemActiveState>(InactiveState));
+    QMenu *createHideEventsSubMenu(QMenu &menu);
 };
-Q_DECLARE_OPERATORS_FOR_FLAGS(BufferView::itemActiveStates);
+Q_DECLARE_OPERATORS_FOR_FLAGS(BufferView::ItemActiveStates);
 
 
 // ==============================
 //  BufferView Dock
 // ==============================
 class BufferViewDock : public QDockWidget {
-  Q_OBJECT
+    Q_OBJECT
 
-public:
-  BufferViewDock(BufferViewConfig *config, QWidget *parent);
-  BufferViewDock(QWidget *parent);
+  public:
+    BufferViewDock(BufferViewConfig *config, QWidget *parent);
+    BufferViewDock(QWidget *parent);
 
-public slots:
-  void bufferViewRenamed(const QString &newName);
+  public slots:
+    void bufferViewRenamed(const QString &newName);
 };
 
 #endif
