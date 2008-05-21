@@ -65,7 +65,7 @@
 #include "global.h"
 #include "qtuistyle.h"
 
-#include <Qt/QtDBus>
+#include "desktopnotifications.h"
 
 
 MainWin::MainWin(QtUi *_gui, QWidget *parent)
@@ -82,7 +82,12 @@ MainWin::MainWin(QtUi *_gui, QWidget *parent)
     timer(new QTimer(this)),
     channelListDlg(new ChannelListDlg(this)),
     settingsDlg(new SettingsDlg(this)),
-    debugConsole(new DebugConsole(this))
+    debugConsole(new DebugConsole(this)),
+	desktopNotifications(new org::freedesktop::Notifications(
+		"org.freedesktop.Notifications",
+		"/org/freedesktop/Notifications",
+		QDBusConnection::sessionBus(), this)),
+	notificationId(0)
 {
   UiSettings uiSettings;
   loadTranslation(uiSettings.value("Locale", QLocale::system()).value<QLocale>());
@@ -103,6 +108,14 @@ MainWin::MainWin(QtUi *_gui, QWidget *parent)
 
   installEventFilter(new JumpKeyHandler(this));
 
+  UiSettings uiSettings;
+  QString style = uiSettings.value("Style", QString("")).toString();
+  if(style != "") {
+    QApplication::setStyle(style);
+  }
+
+  connect(desktopNotifications, SIGNAL(NotificationClosed(uint, uint)), this, SLOT(desktopNotificationClosed(uint, uint)));
+  connect(desktopNotifications, SIGNAL(ActionInvoked(uint, const QString&)), this, SLOT(desktopNotificationInvoked(uint, const QString&)));
 }
 
 void MainWin::init() {
@@ -625,21 +638,46 @@ void MainWin::sendDesktopNotification(const QString &title, const QString &messa
 {
 	QStringList actions;
 	QMap<QString, QVariant> hints;
-	QDBusMessage msg = QDBusMessage::createMethodCall("org.freedesktop.Notifications", "/org/freedesktop/Notifications", "", "Notify");
 
 	hints["x"] = 100; // Standard hint: x location for the popup to show up
 	hints["y"] = 100; // Standard hint: y location for the popup to show up
 
-	msg << "Quassel"; // Application name
-	msg << quint32(0); // ID of previous notification to replace
-	msg << ""; // Icon to display
-	msg << "Quassel: " + title; // Summary / Header of the message to display
-	msg << message; // Body of the message to display
-	msg << actions; // Actions from which the user may choose
-	msg << hints; // Hints to the server displaying the message
-	msg << qint32(10000); // Timeout in milliseconds
+	actions << "click" << "Click Me!";
 
-	(void)QDBusConnection::sessionBus().call(msg); // Would return a message containing the id of this notification
+	QDBusReply<uint> reply = desktopNotifications->Notify(
+		"Quassel", // Application name
+		notificationId, // ID of previous notification to replace
+		"", // Icon to display
+		title, // Summary / Header of the message to display
+		QString("%1: %2:\n%2").arg(QTime::currentTime().toString()).arg(title).arg(message), // Body of the message to display
+		actions, // Actions from which the user may choose
+		hints, // Hints to the server displaying the message
+		5000 // Timeout in milliseconds
+	);
+
+	if (!reply.isValid())
+	{
+		/* ERROR */
+		qDebug() << "Error on sending notification...";
+		return;
+	}
+
+	notificationId = reply.value();
+
+	qDebug() << "ID: " << notificationId << " Time: " << QTime::currentTime().toString();
+}
+
+
+void MainWin::desktopNotificationClosed(uint id, uint reason)
+{
+	qDebug() << "OID: " << notificationId << " ID: " << id << " Reason: " << reason << " Time: " << QTime::currentTime().toString();
+	notificationId = 0;
+}
+
+
+void MainWin::desktopNotificationInvoked(uint id, const QString & action)
+{
+	qDebug() << "OID: " << notificationId << " ID: " << id << " Action: " << action << " Time: " << QTime::currentTime().toString();
 }
 
 

@@ -41,6 +41,7 @@ class Message;
 class NickListWidget;
 class DebugConsole;
 
+#include "desktopnotifications.h"
 
 //!\brief The main window of Quassel's QtUi.
 class MainWin : public QMainWindow {
@@ -102,6 +103,9 @@ class MainWin : public QMainWindow {
     void loadLayout();
     void saveLayout();
 
+	void desktopNotificationClosed(uint id, uint reason);
+	void desktopNotificationInvoked(uint id, const QString & action);
+
   signals:
     void connectToCore(const QVariantMap &connInfo);
     void disconnectFromCore();
@@ -149,6 +153,9 @@ class MainWin : public QMainWindow {
 
     QList<QDockWidget *> _netViews;
     NickListWidget *nickListWidget;
+
+	org::freedesktop::Notifications *desktopNotifications;
+	quint32 notificationId;
 
     friend class QtUi;
 };
