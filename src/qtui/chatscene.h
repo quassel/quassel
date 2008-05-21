@@ -45,11 +45,12 @@ class ChatScene : public QGraphicsScene {
     void setWidth(int);
 
   protected slots:
-
+    void rowsInserted(const QModelIndex &, int, int);
     void mousePressEvent ( QGraphicsSceneMouseEvent * mouseEvent );
 
   private:
-    int _width;
+    int _width, _height;
+    int _timestampWidth, _senderWidth;
     MessageModel *_model;
     QList<ChatLine *> _lines;
 

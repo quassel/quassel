@@ -34,6 +34,9 @@ class ChatLine : public QGraphicsItem {
     virtual ~ChatLine();
 
     virtual QRectF boundingRect () const;
+    inline int width() const { return _width; }
+    inline int height() const { return _height; }
+
     virtual void paint (QPainter * painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
     //void layout();
 
@@ -47,6 +50,7 @@ class ChatLine : public QGraphicsItem {
 
   private:
     ChatItem *_timestampItem, *_senderItem, *_contentsItem;
+    int _width, _height;
 };
 
 #endif

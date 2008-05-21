@@ -33,6 +33,7 @@ ChatLine::ChatLine(const QModelIndex &index, QGraphicsItem *parent) : QGraphicsI
   _contentsItem = new ChatItem(QPersistentModelIndex(index.sibling(index.row(), ChatLineModel::ContentsColumn)), this);
 
   _timestampItem->setPos(0,0);
+  _width = _height = 0;
 }
 
 ChatLine::~ChatLine() {
@@ -41,20 +42,21 @@ ChatLine::~ChatLine() {
   delete _contentsItem;
 }
 
-// FIXME make more efficient by caching width/height
 QRectF ChatLine::boundingRect () const {
-  return childrenBoundingRect();
+  //return childrenBoundingRect();
+  return QRectF(0, 0, _width, _height);
 }
 
 int ChatLine::setColumnWidths(int ts, int sender, int contents) {
   _timestampItem->setWidth(ts);
   _senderItem->setWidth(sender);
-  int h = _contentsItem->setWidth(contents);
+  _height = _contentsItem->setWidth(contents);
 
   _senderItem->setPos(ts, 0);
   _contentsItem->setPos(ts + sender, 0);
 
-  return h;
+  _width = ts + sender + contents;
+  return _height;
 }
 
 void ChatLine::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {

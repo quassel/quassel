@@ -28,6 +28,9 @@
 #include "quasselui.h"
 
 ChatScene::ChatScene(MessageModel *model, QObject *parent) : QGraphicsScene(parent), _model(model) {
+  _width = 0;
+  _timestampWidth = 60;
+  _senderWidth = 80;
   connect(model, SIGNAL(rowsInserted(const QModelIndex &, int, int)), this, SLOT(rowsInserted(const QModelIndex &, int, int)));
   for(int i = 0; i < model->rowCount(); i++) {
     ChatLine *line = new ChatLine(model->index(i, 0));
@@ -41,14 +44,40 @@ ChatScene::~ChatScene() {
 
 }
 
+void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
+  Q_UNUSED(index);
+  // maybe make this more efficient by prepending stuff with negative yval
+  // dunno if that's worth not guranteeing that 0 is on the top...
+  // TODO bulk inserts, iterators
+  int h = 0;
+  int y = 0;
+  if(_width && start > 0) y = _lines.value(start - 1)->y() + _lines.value(start - 1)->height();
+  for(int i = start; i <= end; i++) {
+    ChatLine *line = new ChatLine(model()->index(i, 0));
+    _lines.insert(i, line);
+    addItem(line);
+    if(_width > 0) {
+      line->setPos(0, y+h);
+      h += line->setColumnWidths(_timestampWidth, _senderWidth, _width - _timestampWidth - _senderWidth);
+    }
+  }
+  if(h > 0) {
+    _height += h;
+    for(int i = end+1; i < _lines.count(); i++) {
+      _lines.value(i)->moveBy(0, h);
+    }
+    setSceneRect(QRectF(0, 0, _width, _height));
+  }
+}
+
 void ChatScene::setWidth(int w) {
   _width = w;
-  int h = 0;
+  _height = 0;
   foreach(ChatLine *line, _lines) {
-    line->setPos(0, h);
-    h += line->setColumnWidths(60, 80, w - 60 - 80);
+    line->setPos(0, _height);
+    _height += line->setColumnWidths(_timestampWidth, _senderWidth, w - _timestampWidth - _senderWidth);
   }
-  setSceneRect(QRectF(0, 0, w, h));
+  setSceneRect(QRectF(0, 0, _width, _height));
 }
 
 void ChatScene::mousePressEvent ( QGraphicsSceneMouseEvent * mouseEvent ) {

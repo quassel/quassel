@@ -37,7 +37,7 @@ ChatItem::~ChatItem() {
 
 QVariant ChatItem::data(int role) const {
   if(!_index.isValid()) {
-    qWarning() << "ChatItem::data(): Model index is invalid!";
+    qWarning() << "ChatItem::data(): Model index is invalid!" << _index;
     return QVariant();
   }
   return _index.data(role);
