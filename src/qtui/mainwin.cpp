@@ -65,6 +65,8 @@
 #include "global.h"
 #include "qtuistyle.h"
 
+#include <Qt/QtDBus>
+
 
 MainWin::MainWin(QtUi *_gui, QWidget *parent)
   : QMainWindow(parent),
@@ -415,7 +417,7 @@ void MainWin::connectedToCore() {
   connect(Client::bufferViewManager(), SIGNAL(bufferViewConfigAdded(int)), this, SLOT(addBufferView(int)));
   connect(Client::bufferViewManager(), SIGNAL(bufferViewConfigDeleted(int)), this, SLOT(removeBufferView(int)));
   connect(Client::bufferViewManager(), SIGNAL(initDone()), this, SLOT(loadLayout()));
-  
+
   foreach(BufferInfo id, Client::allBufferInfos()) {
     Client::backlogManager()->requestBacklog(id.bufferId(), 500, -1);
   }
@@ -598,6 +600,7 @@ void MainWin::receiveMessage(const Message &msg) {
       // FIXME don't invoke style engine for this!
       QString text = QtUi::style()->styleString(Message::mircToInternal(msg.contents())).plainText;
       displayTrayIconMessage(title, text);
+	  sendDesktopNotification(title, text);
     }
 #endif
     if(uiSettings.value("AnimateTrayIcon", QVariant(true)).toBool()) {
@@ -612,6 +615,33 @@ bool MainWin::event(QEvent *event) {
     setTrayIconActivity(false);
   return QMainWindow::event(event);
 }
+
+
+/*
+Using the notification-daemon from Freedesktop's Galago project
+http://www.galago-project.org/specs/notification/0.9/x408.html#command-notify
+*/
+void MainWin::sendDesktopNotification(const QString &title, const QString &message)
+{
+	QStringList actions;
+	QMap<QString, QVariant> hints;
+	QDBusMessage msg = QDBusMessage::createMethodCall("org.freedesktop.Notifications", "/org/freedesktop/Notifications", "", "Notify");
+
+	hints["x"] = 100; // Standard hint: x location for the popup to show up
+	hints["y"] = 100; // Standard hint: y location for the popup to show up
+
+	msg << "Quassel"; // Application name
+	msg << quint32(0); // ID of previous notification to replace
+	msg << ""; // Icon to display
+	msg << "Quassel: " + title; // Summary / Header of the message to display
+	msg << message; // Body of the message to display
+	msg << actions; // Actions from which the user may choose
+	msg << hints; // Hints to the server displaying the message
+	msg << qint32(10000); // Timeout in milliseconds
+
+	(void)QDBusConnection::sessionBus().call(msg); // Would return a message containing the id of this notification
+}
+
 
 void MainWin::displayTrayIconMessage(const QString &title, const QString &message) {
   systray->showMessage(title, message);

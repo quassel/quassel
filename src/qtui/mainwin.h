@@ -54,6 +54,7 @@ class MainWin : public QMainWindow {
     void addBufferView(BufferViewConfig *config = 0);
 
     void displayTrayIconMessage(const QString &title, const QString &message);
+    void sendDesktopNotification(const QString &title, const QString &message);
 
     virtual bool event(QEvent *event);
 
@@ -100,7 +101,7 @@ class MainWin : public QMainWindow {
 
     void loadLayout();
     void saveLayout();
-  
+
   signals:
     void connectToCore(const QVariantMap &connInfo);
     void disconnectFromCore();
