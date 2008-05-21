@@ -652,7 +652,7 @@ void MainWin::sendDesktopNotification(const QString &title, const QString &messa
 		notificationId, // ID of previous notification to replace
 		"", // Icon to display
 		title, // Summary / Header of the message to display
-		QString("%1: %2:\n%2").arg(QTime::currentTime().toString()).arg(title).arg(message), // Body of the message to display
+		QString("%1: %2:\n%3").arg(QTime::currentTime().toString()).arg(title).arg(message), // Body of the message to display
 		actions, // Actions from which the user may choose
 		hints, // Hints to the server displaying the message
 		uiSettings.value("NotificationDesktopTimeout", QVariant(5000)).toInt() // Timeout in milliseconds
