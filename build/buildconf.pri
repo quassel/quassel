@@ -27,3 +27,9 @@ mac:Tiger {
 sputdev {
   DEFINES *= SPUTDEV
 }
+
+profile {
+  CONFIG += debug
+  QMAKE_CXXFLAGS_DEBUG += -pg
+  QMAKE_LFLAGS_DEBUG += -pg
+}
