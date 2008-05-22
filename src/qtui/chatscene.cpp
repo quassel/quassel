@@ -37,6 +37,7 @@ ChatScene::ChatScene(MessageModel *model, QObject *parent) : QGraphicsScene(pare
     _lines.append(line);
     addItem(line);
   }
+  emit heightChanged(height());
 }
 
 ChatScene::~ChatScene() {
@@ -66,7 +67,7 @@ void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
     for(int i = end+1; i < _lines.count(); i++) {
       _lines.value(i)->moveBy(0, h);
     }
-    //setSceneRect(0, 0, _width, _height);
+    emit heightChanged(height());
   }
 }
 
@@ -77,8 +78,7 @@ void ChatScene::setWidth(int w) {
     line->setPos(0, _height);
     _height += line->setColumnWidths(_timestampWidth, _senderWidth, w - _timestampWidth - _senderWidth);
   }
-  qDebug() << "setting width";
-  setSceneRect(0, 0, _width, _height * 2);
+  emit heightChanged(_height);
 }
 
 void ChatScene::mousePressEvent ( QGraphicsSceneMouseEvent * mouseEvent ) {

@@ -33,9 +33,10 @@ ChatView::ChatView(Buffer *buf, QWidget *parent) : QGraphicsView(parent), Abstra
       |QGraphicsView::DontSavePainterState
       |QGraphicsView::DontAdjustForAntialiasing);
   _scene = new ChatScene(Client::messageModel(), this);
-  _scene->setWidth(width());
+  connect(_scene, SIGNAL(heightChanged(int)), this, SLOT(sceneHeightChanged(int)));
+  //_scene->setWidth(width());
   setScene(_scene);
-
+  setSceneRect(0, 0, width(), 0);
 
 }
 
@@ -52,6 +53,10 @@ ChatScene *ChatView::scene() const {
 void ChatView::resizeEvent(QResizeEvent *event) {
   scene()->setWidth(event->size().width());
   qDebug() << "resize";
+}
+
+void ChatView::sceneHeightChanged(int h) {
+  setSceneRect(0, 0, width(), h);
 }
 
 void ChatView::clear()

@@ -56,6 +56,9 @@ class ChatView : public QGraphicsView, public AbstractChatView {
   protected:
     virtual void resizeEvent(QResizeEvent *event);
 
+  protected slots:
+    virtual void sceneHeightChanged(int height);
+
   private:
     ChatScene *_scene;
 };
