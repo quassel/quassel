@@ -27,7 +27,7 @@
 #include "chatscene.h"
 #include "quasselui.h"
 
-ChatScene::ChatScene(MessageModel *model, QObject *parent) : QGraphicsScene(parent), _model(model) {
+ChatScene::ChatScene(QAbstractItemModel *model, QObject *parent) : QGraphicsScene(parent), _model(model) {
   _width = 0;
   _timestampWidth = 60;
   _senderWidth = 80;

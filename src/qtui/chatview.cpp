@@ -25,6 +25,7 @@
 #include "chatscene.h"
 #include "chatview.h"
 #include "client.h"
+#include "messagefilter.h"
 #include "quasselui.h"
 
 ChatView::ChatView(Buffer *buf, QWidget *parent) : QGraphicsView(parent), AbstractChatView() {
@@ -32,9 +33,13 @@ ChatView::ChatView(Buffer *buf, QWidget *parent) : QGraphicsView(parent), Abstra
   setOptimizationFlags(QGraphicsView::DontClipPainter
       |QGraphicsView::DontSavePainterState
       |QGraphicsView::DontAdjustForAntialiasing);
-  _scene = new ChatScene(Client::messageModel(), this);
+
+  QList<BufferId> filterList;
+  filterList.append(buf->bufferInfo().bufferId());
+  MessageFilter *filter = new MessageFilter(Client::messageModel(), filterList, this);
+
+  _scene = new ChatScene(filter, this);
   connect(_scene, SIGNAL(heightChanged(int)), this, SLOT(sceneHeightChanged(int)));
-  //_scene->setWidth(width());
   setScene(_scene);
   setSceneRect(0, 0, width(), 0);
 
@@ -52,7 +57,6 @@ ChatScene *ChatView::scene() const {
 
 void ChatView::resizeEvent(QResizeEvent *event) {
   scene()->setWidth(event->size().width());
-  qDebug() << "resize";
 }
 
 void ChatView::sceneHeightChanged(int h) {

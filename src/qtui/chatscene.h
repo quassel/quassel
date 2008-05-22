@@ -21,9 +21,8 @@
 #ifndef _CHATSCENE_H_
 #define _CHATSCENE_H_
 
+#include <QAbstractItemModel>
 #include <QGraphicsScene>
-
-#include "messagemodel.h"
 
 class AbstractUiMsg;
 class Buffer;
@@ -35,11 +34,11 @@ class ChatScene : public QGraphicsScene {
   Q_OBJECT
 
   public:
-    ChatScene(MessageModel *model, QObject *parent);
+    ChatScene(QAbstractItemModel *model, QObject *parent);
     virtual ~ChatScene();
 
     Buffer *buffer() const;
-    inline MessageModel *model() const { return _model; }
+    inline QAbstractItemModel *model() const { return _model; }
 
   public slots:
     void setWidth(int);
@@ -54,7 +53,7 @@ class ChatScene : public QGraphicsScene {
   private:
     int _width, _height;
     int _timestampWidth, _senderWidth;
-    MessageModel *_model;
+    QAbstractItemModel *_model;
     QList<ChatLine *> _lines;
 
 };
