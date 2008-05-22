@@ -7,7 +7,7 @@ HDRS += buffer.h buffersettings.h clientbacklogmanager.h treemodel.h networkmode
         client.h clientsettings.h clientsyncer.h quasselui.h mappedselectionmodel.h selectionmodelsynchronizer.h
 
 sputdev {
-  SRCS += messagemodel.cpp
-  HDRS += messagemodel.h
+  SRCS += messagefilter.cpp messagemodel.cpp
+  HDRS += messagefilter.h messagemodel.h
 }
 
