@@ -39,7 +39,7 @@ class ChatItem : public QGraphicsItem {
     inline const MessageModel *model() const { return _index.isValid() ? qobject_cast<const MessageModel *>(_index.model()) : 0; }
     inline int row() const { return _index.isValid() ? _index.row() : 0; }
 
-    virtual QRectF boundingRect() const;
+    inline virtual QRectF boundingRect() const { return _boundingRect; }
     virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
 
     virtual QVariant data(int role) const;
@@ -57,8 +57,7 @@ class ChatItem : public QGraphicsItem {
     //void mouseMoveEvent ( QGraphicsSceneMouseEvent * event );
 
   private:
-    int _width;
-    int _height;
+    QRectF _boundingRect;
     //QTextLayout _layout;
     //QTextOption _textOption;
     QPersistentModelIndex _index;

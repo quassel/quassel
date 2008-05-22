@@ -29,6 +29,9 @@
 
 ChatView::ChatView(Buffer *buf, QWidget *parent) : QGraphicsView(parent), AbstractChatView() {
   setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+  setOptimizationFlags(QGraphicsView::DontClipPainter
+      |QGraphicsView::DontSavePainterState
+      |QGraphicsView::DontAdjustForAntialiasing);
   _scene = new ChatScene(Client::messageModel(), this);
   _scene->setWidth(width());
   setScene(_scene);
@@ -48,7 +51,7 @@ ChatScene *ChatView::scene() const {
 
 void ChatView::resizeEvent(QResizeEvent *event) {
   scene()->setWidth(event->size().width());
-
+  qDebug() << "resize";
 }
 
 void ChatView::clear()

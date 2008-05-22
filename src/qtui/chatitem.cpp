@@ -28,7 +28,7 @@
 #include "chatitem.h"
 
 ChatItem::ChatItem(const QPersistentModelIndex &index_, QGraphicsItem *parent) : QGraphicsItem(parent), _index(index_) {
-  _width = _height = 0;
+
 }
 
 ChatItem::~ChatItem() {
@@ -43,9 +43,11 @@ QVariant ChatItem::data(int role) const {
   return _index.data(role);
 }
 
+/*
 QRectF ChatItem::boundingRect() const {
   return QRectF(0, 0, _width, _height);
 }
+*/
 
 void ChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
   Q_UNUSED(option); Q_UNUSED(widget);
@@ -58,9 +60,9 @@ void ChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 
 
 int ChatItem::setWidth(int w) {
-  _width = w;
-  _height = 20; // FIXME
-  return _height;
+  _boundingRect.setWidth(w);
+  _boundingRect.setHeight(20); // FIXME
+  return 20;
 }
 
 /*
