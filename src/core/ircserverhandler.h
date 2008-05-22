@@ -51,6 +51,8 @@ public slots:
   void handle265(const QString &prefix, const QList<QByteArray> &params);   // RPL_LOCALUSERS
   void handle266(const QString &prefix, const QList<QByteArray> &params);   // RPL_GLOBALUSERS
   void handle301(const QString &prefix, const QList<QByteArray> &params);   // RPL_AWAY
+  void handle305(const QString &prefix, const QList<QByteArray> &params);   // RPL_UNAWAY
+  void handle306(const QString &prefix, const QList<QByteArray> &params);   // RPL_NOWAWAY
   void handle307(const QString &prefix, const QList<QByteArray> &params);   // RPL_WHOISSERVICE
   void handle310(const QString &prefix, const QList<QByteArray> &params);   // RPL_SUSERHOST
   void handle311(const QString &prefix, const QList<QByteArray> &params);   // RPL_WHOISUSER
@@ -65,7 +67,7 @@ public slots:
   void handle331(const QString &prefix, const QList<QByteArray> &params);   // RPL_NOTOPIC
   void handle332(const QString &prefix, const QList<QByteArray> &params);   // RPL_TOPIC
   void handle333(const QString &prefix, const QList<QByteArray> &params);   // Topic set by...
-  void handle352(const QString &prefix, const QList<QByteArray> &params);   //  RPL_WHOREPLY
+  void handle352(const QString &prefix, const QList<QByteArray> &params);   // RPL_WHOREPLY
   void handle353(const QString &prefix, const QList<QByteArray> &params);   // RPL_NAMREPLY
   void handle369(const QString &prefix, const QList<QByteArray> &params);   // RPL_ENDOFWHOWAS
   void handle432(const QString &prefix, const QList<QByteArray> &params);   // ERR_ERRONEUSNICKNAME

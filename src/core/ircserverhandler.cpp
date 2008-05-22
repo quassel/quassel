@@ -506,6 +506,30 @@ void IrcServerHandler::handle301(const QString &prefix, const QList<QByteArray> 
   }
 }
 
+// 305  RPL_UNAWAY
+//      ":You are no longer marked as being away"
+void IrcServerHandler::handle305(const QString &prefix, const QList<QByteArray> &params) {
+  Q_UNUSED(prefix);
+  IrcUser *me = network()->me();
+  if(me)
+    me->setAway(false);
+
+  if(!params.isEmpty())
+    emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", serverDecode(params[0]));
+}
+
+// 306  RPL_NOWAWAY
+//      ":You have been marked as being away"
+void IrcServerHandler::handle306(const QString &prefix, const QList<QByteArray> &params) {
+  Q_UNUSED(prefix);
+  IrcUser *me = network()->me();
+  if(me)
+    me->setAway(true);
+
+  if(!params.isEmpty())
+    emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", serverDecode(params[0]));
+}
+
 /* RPL_WHOISSERVICE - "<user> is registered nick" */
 void IrcServerHandler::handle307(const QString &prefix, const QList<QByteArray> &params) {
   Q_UNUSED(prefix)
