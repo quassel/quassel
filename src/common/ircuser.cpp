@@ -232,7 +232,7 @@ void IrcUser::partChannel(IrcChannel *channel) {
     disconnect(channel, 0, this, 0);
     channel->part(this);
     emit channelParted(channel->name());
-    if(_channels.isEmpty() && network()->isMe(this))
+    if(_channels.isEmpty() && !network()->isMe(this))
       deleteLater();
   }
 }
