@@ -35,6 +35,7 @@ public:
 public slots:
   virtual inline void requestSetBufferViewName(const QString &bufferViewName) { setBufferViewName(bufferViewName); }
   virtual inline void requestRemoveBuffer(const BufferId &bufferId) { removeBuffer(bufferId); }
+  virtual inline void requestRemoveBufferPermanently(const BufferId &bufferId) { removeBufferPermanently(bufferId); }
   virtual inline void requestAddBuffer(const BufferId &bufferId, int pos) { addBuffer(bufferId, pos); }
   virtual inline void requestMoveBuffer(const BufferId &bufferId, int pos) { moveBuffer(bufferId, pos); }
 };

@@ -115,6 +115,7 @@ void BufferViewConfig::initSetBufferList(const QVariantList &buffers) {
     _buffers << buffer.value<BufferId>();
   }
 
+  // normaly initSeters don't need an emit. this one is to track changes in the settingspage
   emit bufferListSet();
 }
 
@@ -125,7 +126,26 @@ void BufferViewConfig::initSetBufferList(const QList<BufferId> &buffers) {
     _buffers << bufferId;
   }
 
+  // normaly initSeters don't need an emit. this one is to track changes in the settingspage
   emit bufferListSet();
+}
+
+QVariantList BufferViewConfig::initRemovedBuffersList() const {
+  QVariantList removedBuffers;
+
+  foreach(BufferId bufferId, _removedBuffers) {
+    removedBuffers << qVariantFromValue(bufferId);
+  }
+
+  return removedBuffers;
+}
+
+void BufferViewConfig::initSetRemovedBuffersList(const QVariantList &buffers) {
+  _removedBuffers.clear();
+
+  foreach(QVariant buffer, buffers) {
+    _removedBuffers << buffer.value<BufferId>();
+  }
 }
 
 void BufferViewConfig::addBuffer(const BufferId &bufferId, int pos) {
@@ -136,6 +156,9 @@ void BufferViewConfig::addBuffer(const BufferId &bufferId, int pos) {
     pos = 0;
   if(pos > _buffers.count())
     pos = _buffers.count();
+
+  if(_removedBuffers.contains(bufferId))
+    _removedBuffers.remove(bufferId);
   
   _buffers.insert(pos, bufferId);
   emit bufferAdded(bufferId, pos);
@@ -160,4 +183,13 @@ void BufferViewConfig::removeBuffer(const BufferId &bufferId) {
   
   _buffers.removeAt(_buffers.indexOf(bufferId));
   emit bufferRemoved(bufferId);
+}
+
+void BufferViewConfig::removeBufferPermanently(const BufferId &bufferId) {
+  if(_buffers.contains(bufferId))
+    _buffers.removeAt(_buffers.indexOf(bufferId));
+  
+  _removedBuffers << bufferId;
+
+  emit bufferPermanentlyRemoved(bufferId);
 }

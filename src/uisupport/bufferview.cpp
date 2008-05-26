@@ -54,7 +54,8 @@ BufferView::BufferView(QWidget *parent)
 
     _joinBufferAction(tr("Join"), this),
     _partBufferAction(tr("Part"), this),
-    _hideBufferAction(tr("Hide selected buffers"), this),
+    _hideBufferTemporarilyAction(tr("Hide buffers"), this),
+    _hideBufferPermanentlyAction(tr("Hide buffers permanently"), this),
     _removeBufferAction(tr("Delete buffer"), this),
     _ignoreListAction(tr("Ignore list"), this),
 
@@ -158,8 +159,6 @@ void BufferView::setFilteredModel(QAbstractItemModel *model_, BufferViewConfig *
   } else {
     BufferViewFilter *filter = new BufferViewFilter(model_, config);
     setModel(filter);
-    connect(this, SIGNAL(removeBuffer(const QModelIndex &)),
-	    filter, SLOT(removeBuffer(const QModelIndex &)));
   }
   setConfig(config);
 }
@@ -227,13 +226,26 @@ void BufferView::keyPressEvent(QKeyEvent *event) {
   QTreeView::keyPressEvent(event);
 }
 
-void BufferView::removeSelectedBuffers() {
-  QSet<int> removedRows;
+void BufferView::removeSelectedBuffers(bool permanently) {
+  if(!config())
+    return;
+
+  BufferId bufferId;
+  QSet<BufferId> removedRows;
   foreach(QModelIndex index, selectionModel()->selectedIndexes()) {
-    if(index.data(NetworkModel::ItemTypeRole) == NetworkModel::BufferItemType && !removedRows.contains(index.row())) {
-      removedRows << index.row();
-      emit removeBuffer(index);
-    }
+    if(index.data(NetworkModel::ItemTypeRole) != NetworkModel::BufferItemType)
+      continue;
+
+    bufferId = index.data(NetworkModel::BufferIdRole).value<BufferId>();
+    if(removedRows.contains(bufferId))
+      continue;
+
+    removedRows << bufferId;
+    
+    if(permanently)
+      config()->requestRemoveBufferPermanently(bufferId);
+    else
+      config()->requestRemoveBuffer(bufferId);
   }
 }
 
@@ -405,18 +417,21 @@ void BufferView::contextMenuEvent(QContextMenuEvent *event) {
       case BufferInfo::ChannelBuffer:
 	addItemToMenu(_joinBufferAction, contextMenu, index, InactiveState);
 	addItemToMenu(_partBufferAction, contextMenu, index, ActiveState);
-	addItemToMenu(_hideBufferAction, contextMenu, (bool)config());
+	addItemToMenu(_hideBufferTemporarilyAction, contextMenu, (bool)config());
+	addItemToMenu(_hideBufferPermanentlyAction, contextMenu, (bool)config());
 	addItemToMenu(_removeBufferAction, contextMenu, index, InactiveState);
 	createHideEventsSubMenu(contextMenu);
 	addItemToMenu(_ignoreListAction, contextMenu);
 	break;
       case BufferInfo::QueryBuffer:
-	addItemToMenu(_hideBufferAction, contextMenu, (bool)config());
+	addItemToMenu(_hideBufferTemporarilyAction, contextMenu, (bool)config());
+	addItemToMenu(_hideBufferPermanentlyAction, contextMenu, (bool)config());
 	addItemToMenu(_removeBufferAction, contextMenu);
 	createHideEventsSubMenu(contextMenu);
 	break;
       default:
-	addItemToMenu(_hideBufferAction, contextMenu, (bool)config());
+	addItemToMenu(_hideBufferTemporarilyAction, contextMenu, (bool)config());
+	addItemToMenu(_hideBufferPermanentlyAction, contextMenu, (bool)config());
 	break;
       }
     }
@@ -467,8 +482,13 @@ void BufferView::contextMenuEvent(QContextMenuEvent *event) {
     return;
   }
   
-  if(result == &_hideBufferAction) {
+  if(result == &_hideBufferTemporarilyAction) {
     removeSelectedBuffers();
+    return;
+  }
+
+  if(result == &_hideBufferPermanentlyAction) {
+    removeSelectedBuffers(true);
     return;
   }
 

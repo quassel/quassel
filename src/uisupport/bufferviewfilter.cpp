@@ -71,19 +71,32 @@ void BufferViewFilter::setConfig(BufferViewConfig *config) {
   }
 
   _config = config;
-  if(config) {
-    connect(config, SIGNAL(bufferViewNameSet(const QString &)), this, SLOT(invalidate()));
-    connect(config, SIGNAL(networkIdSet(const NetworkId &)), this, SLOT(invalidate()));
-    connect(config, SIGNAL(addNewBuffersAutomaticallySet(bool)), this, SLOT(invalidate()));
-    connect(config, SIGNAL(sortAlphabeticallySet(bool)), this, SLOT(invalidate()));
-    connect(config, SIGNAL(hideInactiveBuffersSet(bool)), this, SLOT(invalidate()));
-    connect(config, SIGNAL(allowedBufferTypesSet(int)), this, SLOT(invalidate()));
-    connect(config, SIGNAL(minimumActivitySet(int)), this, SLOT(invalidate()));
-    connect(config, SIGNAL(bufferListSet()), this, SLOT(invalidate()));
-    connect(config, SIGNAL(bufferAdded(const BufferId &, int)), this, SLOT(invalidate()));
-    connect(config, SIGNAL(bufferMoved(const BufferId &, int)), this, SLOT(invalidate()));
-    connect(config, SIGNAL(bufferRemoved(const BufferId &)), this, SLOT(invalidate()));
+  if(config->isInitialized()) {
+    configInitialized();
+  } else {
+    connect(config, SIGNAL(initDone()), this, SLOT(configInitialized()));
+    invalidate();
   }
+}
+
+void BufferViewFilter::configInitialized() {
+  if(!config())
+    return;
+    
+  connect(config(), SIGNAL(bufferViewNameSet(const QString &)), this, SLOT(invalidate()));
+  connect(config(), SIGNAL(networkIdSet(const NetworkId &)), this, SLOT(invalidate()));
+  connect(config(), SIGNAL(addNewBuffersAutomaticallySet(bool)), this, SLOT(invalidate()));
+  connect(config(), SIGNAL(sortAlphabeticallySet(bool)), this, SLOT(invalidate()));
+  connect(config(), SIGNAL(hideInactiveBuffersSet(bool)), this, SLOT(invalidate()));
+  connect(config(), SIGNAL(allowedBufferTypesSet(int)), this, SLOT(invalidate()));
+  connect(config(), SIGNAL(minimumActivitySet(int)), this, SLOT(invalidate()));
+  connect(config(), SIGNAL(bufferListSet()), this, SLOT(invalidate()));
+  connect(config(), SIGNAL(bufferAdded(const BufferId &, int)), this, SLOT(invalidate()));
+  connect(config(), SIGNAL(bufferMoved(const BufferId &, int)), this, SLOT(invalidate()));
+  connect(config(), SIGNAL(bufferRemoved(const BufferId &)), this, SLOT(invalidate()));
+
+  disconnect(config(), SIGNAL(initDone()), this, SLOT(configInitialized()));
+
   invalidate();
 }
 
@@ -134,7 +147,7 @@ bool BufferViewFilter::dropMimeData(const QMimeData *data, Qt::DropAction action
   return true;
 }
 
-void BufferViewFilter::addBuffer(const BufferId &bufferId) {
+void BufferViewFilter::addBuffer(const BufferId &bufferId) const {
   if(!config() || config()->bufferList().contains(bufferId))
     return;
   
@@ -154,36 +167,34 @@ void BufferViewFilter::addBuffer(const BufferId &bufferId) {
   config()->requestAddBuffer(bufferId, pos);
 }
 
-void BufferViewFilter::removeBuffer(const QModelIndex &index) {
-  if(!config() || !index.isValid() || index.data(NetworkModel::ItemTypeRole) != NetworkModel::BufferItemType)
-    return;
-
-  BufferId bufferId = data(index, NetworkModel::BufferIdRole).value<BufferId>();
-  config()->requestRemoveBuffer(bufferId);
-}
-
-
 bool BufferViewFilter::filterAcceptBuffer(const QModelIndex &source_bufferIndex) const {
   BufferId bufferId = sourceModel()->data(source_bufferIndex, NetworkModel::BufferIdRole).value<BufferId>();
   Q_ASSERT(bufferId.isValid());
-  if(!_config)
+  if(!config())
     return true;
-  
+
+  int activityLevel = source_bufferIndex.data(NetworkModel::BufferActivityRole).toInt();
   if(config()->networkId().isValid() && config()->networkId() != sourceModel()->data(source_bufferIndex, NetworkModel::NetworkIdRole).value<NetworkId>())
     return false;
 
-  if(!(_config->allowedBufferTypes() & (BufferInfo::Type)source_bufferIndex.data(NetworkModel::BufferTypeRole).toInt()))
+  if(!(config()->allowedBufferTypes() & (BufferInfo::Type)source_bufferIndex.data(NetworkModel::BufferTypeRole).toInt()))
     return false;
 
-  if(_config->hideInactiveBuffers() && !source_bufferIndex.data(NetworkModel::ItemActiveRole).toBool())
+  if(config()->hideInactiveBuffers() && !source_bufferIndex.data(NetworkModel::ItemActiveRole).toBool())
     return false;
 
-  if(_config->minimumActivity() > source_bufferIndex.data(NetworkModel::BufferActivityRole).toInt()) {
+  if(config()->minimumActivity() > activityLevel) {
     if(bufferId != Client::bufferModel()->standardSelectionModel()->currentIndex().data(NetworkModel::BufferIdRole).value<BufferId>())
       return false;
   }
 
-  return _config->bufferList().contains(bufferId);
+  if(config()->bufferList().contains(bufferId))
+    return true;
+
+  if(config()->isInitialized() && !config()->removedBuffers().contains(bufferId) && activityLevel > Buffer::OtherActivity)
+    addBuffer(bufferId);
+
+  return false;
 }
 
 bool BufferViewFilter::filterAcceptNetwork(const QModelIndex &source_index) const {
