@@ -52,10 +52,11 @@ class BufferView : public QTreeView {
 
   public slots:
     void setRootIndexForNetworkId(const NetworkId &networkId);
-    void removeSelectedBuffers();
+    void removeSelectedBuffers(bool permanently = false);
 
   signals:
     void removeBuffer(const QModelIndex &);
+    void removeBufferPermanently(const QModelIndex &);
 
   protected:
     virtual void keyPressEvent(QKeyEvent *);
@@ -89,7 +90,8 @@ class BufferView : public QTreeView {
 
     QAction _joinBufferAction;
     QAction _partBufferAction;
-    QAction _hideBufferAction;
+    QAction _hideBufferTemporarilyAction;
+    QAction _hideBufferPermanentlyAction;
     QAction _removeBufferAction;
     QAction _ignoreListAction;
 

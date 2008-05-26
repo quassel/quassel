@@ -67,9 +67,14 @@ public slots:
   virtual inline void requestSetBufferViewName(const QString &bufferViewName) { emit setBufferViewNameRequested(bufferViewName); }
 
   const QList<BufferId> &bufferList() const { return _buffers; }
+  const QSet<BufferId> &removedBuffers() const { return _removedBuffers; }
+
   QVariantList initBufferList() const;
   void initSetBufferList(const QVariantList &buffers);
   void initSetBufferList(const QList<BufferId> &buffers);
+
+  QVariantList initRemovedBuffersList() const;
+  void initSetRemovedBuffersList(const QVariantList &buffers);
 
   void addBuffer(const BufferId &bufferId, int pos);
   virtual inline void requestAddBuffer(const BufferId &bufferId, int pos) { emit addBufferRequested(bufferId, pos); }
@@ -77,6 +82,9 @@ public slots:
   virtual inline void requestMoveBuffer(const BufferId &bufferId, int pos) { emit moveBufferRequested(bufferId, pos); }
   void removeBuffer(const BufferId &bufferId);
   virtual inline void requestRemoveBuffer(const BufferId &bufferId) { emit removeBufferRequested(bufferId); }
+  void removeBufferPermanently(const BufferId &bufferId);
+  virtual inline void requestRemoveBufferPermanently(const BufferId &bufferId) { emit removeBufferPermanentlyRequested(bufferId); }
+  
   
 signals:
   void bufferViewNameSet(const QString &bufferViewName);
@@ -93,7 +101,9 @@ signals:
   void bufferMoved(const BufferId &bufferId, int pos);
   void moveBufferRequested(const BufferId &bufferId, int pos);
   void bufferRemoved(const BufferId &bufferId);
+  void bufferPermanentlyRemoved(const BufferId &bufferId);
   void removeBufferRequested(const BufferId &bufferId);
+  void removeBufferPermanentlyRequested(const BufferId &bufferId);
   
   void setBufferViewNameRequested(const QString &bufferViewName);
 
@@ -107,6 +117,7 @@ private:
   int _allowedBufferTypes;
   int _minimumActivity;
   QList<BufferId> _buffers;
+  QSet<BufferId> _removedBuffers;
 };
 
 #endif // BUFFERVIEWCONFIG_H

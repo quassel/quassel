@@ -62,7 +62,6 @@ public:
   inline BufferViewConfig *config() const { return _config; }
 
 public slots:
-  void removeBuffer(const QModelIndex &);
   void checkPreviousCurrentForRemoval(const QModelIndex &current, const QModelIndex &previous);
   void checkItemForRemoval(const QModelIndex &index) { checkItemsForRemoval(index, index); }
   void checkItemsForRemoval(const QModelIndex &topLeft, const QModelIndex &bottomRight);
@@ -77,7 +76,10 @@ protected:
 
 signals:
   void _dataChanged(const QModelIndex &source_topLeft, const QModelIndex &source_bottomRight);
-  
+
+private slots:
+  void configInitialized();
+    
 private:
   QPointer<BufferViewConfig> _config;
   
@@ -90,7 +92,7 @@ private:
 
   bool filterAcceptBuffer(const QModelIndex &) const;
   bool filterAcceptNetwork(const QModelIndex &) const;
-  void addBuffer(const BufferId &);
+  void addBuffer(const BufferId &) const;
 };
 Q_DECLARE_OPERATORS_FOR_FLAGS(BufferViewFilter::Modes)    
 
