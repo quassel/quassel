@@ -65,6 +65,10 @@ NetworkConnection::NetworkConnection(Network *network, CoreSession *session) : Q
   _messagesPerSecond = 1;
   _burstSize = 5;
   _tokenBucket = 5; // init with a full bucket
+  // TODO: 
+  // should be 510 (2 bytes are added when writing to the socket)
+  // maxMsgSize is 510 minus the hostmask which will be added by the server
+  _maxMsgSize = 450; 
 
   _tokenBucketTimer.start(_messagesPerSecond * 1000);
   _tokenBucketTimer.setSingleShot(false);
@@ -391,6 +395,7 @@ void NetworkConnection::userInput(BufferInfo buf, QString msg) {
 
 void NetworkConnection::putRawLine(QByteArray s) {
   if(_tokenBucket > 0) {
+    // qDebug() << "putRawLine: " << s;
     writeToSocket(s);
   } else {
     _msgQueue.append(s);
@@ -399,6 +404,7 @@ void NetworkConnection::putRawLine(QByteArray s) {
 
 void NetworkConnection::writeToSocket(QByteArray s) {
   s += "\r\n";
+  // qDebug() << "writeToSocket: " << s.size();
   socket.write(s);
   _tokenBucket--;
 }
@@ -424,6 +430,23 @@ void NetworkConnection::putCmd(const QString &cmd, const QVariantList &params, c
   }
   if(!params.isEmpty())
     msg += " :" + params.last().toByteArray();
+
+  if(cmd == "PRIVMSG" && params.count() > 1) {
+    QByteArray msghead = "PRIVMSG " + params[0].toByteArray() + " :";
+
+    while (msg.size() > _maxMsgSize) {
+      QByteArray splitter(" .,-");
+      int splitPosition = 0;
+      for(int i = 0; i < splitter.size(); i++) {
+        splitPosition = qMax(splitPosition, msg.lastIndexOf(splitter[i], _maxMsgSize));
+      }
+      if(splitPosition < 300) {
+        splitPosition = _maxMsgSize;
+      }
+      putRawLine(msg.left(splitPosition)); 
+      msg = msghead + msg.mid(splitPosition);
+    }
+  }
 
   putRawLine(msg);
 }
