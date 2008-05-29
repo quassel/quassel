@@ -130,7 +130,7 @@ void BufferViewConfig::initSetBufferList(const QList<BufferId> &buffers) {
   emit bufferListSet();
 }
 
-QVariantList BufferViewConfig::initRemovedBuffersList() const {
+QVariantList BufferViewConfig::initRemovedBuffers() const {
   QVariantList removedBuffers;
 
   foreach(BufferId bufferId, _removedBuffers) {
@@ -140,11 +140,29 @@ QVariantList BufferViewConfig::initRemovedBuffersList() const {
   return removedBuffers;
 }
 
-void BufferViewConfig::initSetRemovedBuffersList(const QVariantList &buffers) {
+void BufferViewConfig::initSetRemovedBuffers(const QVariantList &buffers) {
   _removedBuffers.clear();
 
   foreach(QVariant buffer, buffers) {
     _removedBuffers << buffer.value<BufferId>();
+  }
+}
+
+QVariantList BufferViewConfig::initTemporarilyRemovedBuffers() const {
+  QVariantList temporarilyRemovedBuffers;
+
+  foreach(BufferId bufferId, _temporarilyRemovedBuffers) {
+    temporarilyRemovedBuffers << qVariantFromValue(bufferId);
+  }
+
+  return temporarilyRemovedBuffers;
+}
+
+void BufferViewConfig::initSetTemporarilyRemovedBuffers(const QVariantList &buffers) {
+  _temporarilyRemovedBuffers.clear();
+
+  foreach(QVariant buffer, buffers) {
+    _temporarilyRemovedBuffers << buffer.value<BufferId>();
   }
 }
 
@@ -159,6 +177,9 @@ void BufferViewConfig::addBuffer(const BufferId &bufferId, int pos) {
 
   if(_removedBuffers.contains(bufferId))
     _removedBuffers.remove(bufferId);
+  
+  if(_temporarilyRemovedBuffers.contains(bufferId))
+    _temporarilyRemovedBuffers.remove(bufferId);
   
   _buffers.insert(pos, bufferId);
   emit bufferAdded(bufferId, pos);
@@ -178,16 +199,23 @@ void BufferViewConfig::moveBuffer(const BufferId &bufferId, int pos) {
 }
 
 void BufferViewConfig::removeBuffer(const BufferId &bufferId) {
-  if(!_buffers.contains(bufferId))
-    return;
+  if(_buffers.contains(bufferId))
+    _buffers.removeAt(_buffers.indexOf(bufferId));
   
-  _buffers.removeAt(_buffers.indexOf(bufferId));
+  if(_removedBuffers.contains(bufferId))
+    _removedBuffers.remove(bufferId);
+
+  _temporarilyRemovedBuffers << bufferId;
+
   emit bufferRemoved(bufferId);
 }
 
 void BufferViewConfig::removeBufferPermanently(const BufferId &bufferId) {
   if(_buffers.contains(bufferId))
     _buffers.removeAt(_buffers.indexOf(bufferId));
+
+  if(_temporarilyRemovedBuffers.contains(bufferId))
+    _temporarilyRemovedBuffers.remove(bufferId);
   
   _removedBuffers << bufferId;
 

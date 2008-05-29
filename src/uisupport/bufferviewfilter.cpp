@@ -167,12 +167,26 @@ void BufferViewFilter::addBuffer(const BufferId &bufferId) const {
 }
 
 bool BufferViewFilter::filterAcceptBuffer(const QModelIndex &source_bufferIndex) const {
-  BufferId bufferId = sourceModel()->data(source_bufferIndex, NetworkModel::BufferIdRole).value<BufferId>();
-  Q_ASSERT(bufferId.isValid());
+  // no config -> "all buffers" -> accept everything
   if(!config())
     return true;
 
+  BufferId bufferId = sourceModel()->data(source_bufferIndex, NetworkModel::BufferIdRole).value<BufferId>();
+  Q_ASSERT(bufferId.isValid());
+
   int activityLevel = source_bufferIndex.data(NetworkModel::BufferActivityRole).toInt();
+
+  if(!config()->bufferList().contains(bufferId)) {
+    // add the buffer if...
+    if(config()->isInitialized() && !config()->removedBuffers().contains(bufferId) // it hasn't been manually removed and either
+       && ((config()->addNewBuffersAutomatically() && !config()->temporarilyRemovedBuffers().contains(bufferId)) // is totally unknown to us (a new buffer)...
+	   || activityLevel > Buffer::OtherActivity)) { // or was just temporarily hidden and has a new message waiting for us.
+      addBuffer(bufferId);
+    }
+    // note: adding the buffer to the valid list does not temper with the filters ("show only channels" and stuff)
+    return false;
+  }
+  
   if(config()->networkId().isValid() && config()->networkId() != sourceModel()->data(source_bufferIndex, NetworkModel::NetworkIdRole).value<NetworkId>())
     return false;
 
@@ -187,15 +201,7 @@ bool BufferViewFilter::filterAcceptBuffer(const QModelIndex &source_bufferIndex)
       return false;
   }
 
-  if(config()->bufferList().contains(bufferId))
-    return true;
-
-  if(config()->isInitialized() && !config()->removedBuffers().contains(bufferId)
-     && (activityLevel > Buffer::OtherActivity || config()->addNewBuffersAutomatically())) {
-    addBuffer(bufferId);
-  }
-  
-  return false;
+  return true;
 }
 
 bool BufferViewFilter::filterAcceptNetwork(const QModelIndex &source_index) const {
