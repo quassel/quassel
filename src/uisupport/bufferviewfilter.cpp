@@ -43,7 +43,6 @@ BufferViewFilter::BufferViewFilter(QAbstractItemModel *model, BufferViewConfig *
 {
   setConfig(config);
   setSourceModel(model);
-  connect(model, SIGNAL(rowsInserted(const QModelIndex &, int, int)), this, SLOT(source_rowsInserted(const QModelIndex &, int, int)));
 			
   setDynamicSortFilter(true);
 
@@ -191,9 +190,11 @@ bool BufferViewFilter::filterAcceptBuffer(const QModelIndex &source_bufferIndex)
   if(config()->bufferList().contains(bufferId))
     return true;
 
-  if(config()->isInitialized() && !config()->removedBuffers().contains(bufferId) && activityLevel > Buffer::OtherActivity)
+  if(config()->isInitialized() && !config()->removedBuffers().contains(bufferId)
+     && (activityLevel > Buffer::OtherActivity || config()->addNewBuffersAutomatically())) {
     addBuffer(bufferId);
-
+  }
+  
   return false;
 }
 
@@ -274,20 +275,6 @@ QVariant BufferViewFilter::foreground(const QModelIndex &index) const {
     return _FgColorOtherActivity;
 
   return _FgColorNoActivity;
-}
-
-void BufferViewFilter::source_rowsInserted(const QModelIndex &parent, int start, int end) {
-  if(parent.data(NetworkModel::ItemTypeRole) != NetworkModel::NetworkItemType)
-    return;
-
-  if(!config() || !config()->addNewBuffersAutomatically())
-    return;
-
-  QModelIndex child;
-  for(int row = start; row <= end; row++) {
-    child = sourceModel()->index(row, 0, parent);
-    addBuffer(sourceModel()->data(child, NetworkModel::BufferIdRole).value<BufferId>());
-  }
 }
 
 void BufferViewFilter::checkPreviousCurrentForRemoval(const QModelIndex &current, const QModelIndex &previous) {
