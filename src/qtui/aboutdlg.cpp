@@ -52,11 +52,11 @@ QString AboutDlg::authors() const {
   QString res;
   res = tr("Quassel IRC is mainly developed by:") +
         "<dl>"
-        "<dt>Manuel \"Sputnick\" Nickschas</dt><dd><a href=\"mailto:sput@quassel-irc.org\">sput@quassel-irc.org</a><br>"
-             "Project Founder, Lead Developer</dd><br>"
-        "<dt>Marcus \"EgS\" Eggenberger</dt><dd><a href=\"mailto:egs@quassel-irc.org\">egs@quassel-irc.org</a><br>"
-             "Project Motivator, Lead Developer, Mac Maintainer</dd><br>"
-        "<dt>Alexander \"phon\" von Renteln</dt><dd><a href=\"mailto:alex@phon.name\">alex@phon.name</a><br>"
+        "<dt><b>Manuel \"Sputnick\" Nickschas</b></dt><dd><a href=\"mailto:sput@quassel-irc.org\">sput@quassel-irc.org</a><br>"
+             "Project Founder, Lead Developer</dd>"
+        "<dt><b>Marcus \"EgS\" Eggenberger</b></dt><dd><a href=\"mailto:egs@quassel-irc.org\">egs@quassel-irc.org</a><br>"
+             "Project Motivator, Lead Developer, Mac Maintainer</dd>"
+        "<dt><b>Alexander \"phon\" von Renteln</b></dt><dd><a href=\"mailto:alex@phon.name\">alex@phon.name</a><br>"
              "Developer, Windows Maintainer</dd>"
         "</dl>";
 
@@ -67,12 +67,15 @@ QString AboutDlg::contributors() const {
   QString res;
   res = tr("We would like to thank the following contributors (in alphabetical order) and everybody we forgot to mention here:") + "<br>"
            "<dl>"
-           "<dt>Marco \"kaffeedoktor\" Genise</dt><dd><a href=\"mailto:kaffeedoktor@quassel-irc.org\">kaffeedoktor@quassel-irc.org</a><br>"
-                  "Ideas, Hacking, Motivation</dd><br>"
-           "<dt>Jonas \"Dante\" Heese</dt><dd>Project Founder, ebuilder</dd><br>"
-           "<dt>Daniel \"son\" Steinmetz</dt><dd>Early Beta Tester and Bughunter (on Vista&trade;!)</dd><br>"
-           "<dt>Adam \"adamt\" Tulinius</dt><dd>Early Beta Tester and Bughunter, Danish Translation</dd><br>"
-           "<dt>Pavel \"int\" Volkovitskiy</dt><dd>Early Beta Tester and Bughunter</dd><br>"
+           "<dt><b>Marco \"kaffeedoktor\" Genise</b></dt><dd><a href=\"mailto:kaffeedoktor@quassel-irc.org\">kaffeedoktor@quassel-irc.org</a><br>"
+                  "Ideas, Hacking, Motivation</dd>"
+           "<dt><b>John \"nox-Hand\" Hand</b></dt><dd>Gorgeous Application and Tray Icons</dd>"
+           "<dt><b>Jonas \"Dante\" Heese</b></dt><dd>Project Founder, ebuilder</dd>"
+           "<dt><b>Diego \"Flameeyes\" Petten&ograve;</b></dt><dd>Gentoo Maintainer</dd>"
+           "<dt><b>Harald \"apachelogger\" Sitter</b></dt><dd>{k|U}buntu packager, Motivator, Promoter</dd>"
+           "<dt><b>Daniel \"son\" Steinmetz</b></dt><dd>Early Beta Tester and Bughunter (on Vista&trade;!)</dd>"
+           "<dt><b>Adam \"adamt\" Tulinius</b></dt><dd>Early Beta Tester and Bughunter, Danish Translation</dd>"
+           "<dt><b>Pavel \"int\" Volkovitskiy</b></dt><dd>Early Beta Tester and Bughunter</dd>"
            "</dl>";
 
   return res;
@@ -82,9 +85,11 @@ QString AboutDlg::thanksTo() const {
   QString res;
   res = tr("Special thanks goes to:<br>"
            "<dl>"
-           "<dt><a href=\"http://www.oxygen-icons.org\">The Oxygen Team</a></dt>"
-              "<dd>for creating most of the shiny icons you see throughout Quassel</dd><br>"
-           "<dt><a href=\"http://www.trolltech.com\">Trolltech</a></dt>"
+           "<dt><b>John \"nox-Hand\" Hand</b></dt>"
+              "<dd>for great artwork and the Quassel logo/icon</dt>"
+           "<dt><b><a href=\"http://www.oxygen-icons.org\">The Oxygen Team</a></b></dt>"
+              "<dd>for creating most of the other shiny icons you see throughout Quassel</dd>"
+           "<dt><b><a href=\"http://www.trolltech.com\">Trolltech</a></b></dt>"
               "<dd>for creating Qt and Qtopia, and for sponsoring development of Quasseltopia with Greenphones and more</dd>"
           );
 
