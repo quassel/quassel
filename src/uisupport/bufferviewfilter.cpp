@@ -43,7 +43,6 @@ BufferViewFilter::BufferViewFilter(QAbstractItemModel *model, BufferViewConfig *
 {
   setConfig(config);
   setSourceModel(model);
-  connect(model, SIGNAL(rowsInserted(const QModelIndex &, int, int)), this, SLOT(source_rowsInserted(const QModelIndex &, int, int)));
 			
   setDynamicSortFilter(true);
 
@@ -168,12 +167,26 @@ void BufferViewFilter::addBuffer(const BufferId &bufferId) const {
 }
 
 bool BufferViewFilter::filterAcceptBuffer(const QModelIndex &source_bufferIndex) const {
-  BufferId bufferId = sourceModel()->data(source_bufferIndex, NetworkModel::BufferIdRole).value<BufferId>();
-  Q_ASSERT(bufferId.isValid());
+  // no config -> "all buffers" -> accept everything
   if(!config())
     return true;
 
+  BufferId bufferId = sourceModel()->data(source_bufferIndex, NetworkModel::BufferIdRole).value<BufferId>();
+  Q_ASSERT(bufferId.isValid());
+
   int activityLevel = source_bufferIndex.data(NetworkModel::BufferActivityRole).toInt();
+
+  if(!config()->bufferList().contains(bufferId)) {
+    // add the buffer if...
+    if(config()->isInitialized() && !config()->removedBuffers().contains(bufferId) // it hasn't been manually removed and either
+       && ((config()->addNewBuffersAutomatically() && !config()->temporarilyRemovedBuffers().contains(bufferId)) // is totally unknown to us (a new buffer)...
+	   || activityLevel > Buffer::OtherActivity)) { // or was just temporarily hidden and has a new message waiting for us.
+      addBuffer(bufferId);
+    }
+    // note: adding the buffer to the valid list does not temper with the filters ("show only channels" and stuff)
+    return false;
+  }
+  
   if(config()->networkId().isValid() && config()->networkId() != sourceModel()->data(source_bufferIndex, NetworkModel::NetworkIdRole).value<NetworkId>())
     return false;
 
@@ -188,13 +201,7 @@ bool BufferViewFilter::filterAcceptBuffer(const QModelIndex &source_bufferIndex)
       return false;
   }
 
-  if(config()->bufferList().contains(bufferId))
-    return true;
-
-  if(config()->isInitialized() && !config()->removedBuffers().contains(bufferId) && activityLevel > Buffer::OtherActivity)
-    addBuffer(bufferId);
-
-  return false;
+  return true;
 }
 
 bool BufferViewFilter::filterAcceptNetwork(const QModelIndex &source_index) const {
@@ -274,20 +281,6 @@ QVariant BufferViewFilter::foreground(const QModelIndex &index) const {
     return _FgColorOtherActivity;
 
   return _FgColorNoActivity;
-}
-
-void BufferViewFilter::source_rowsInserted(const QModelIndex &parent, int start, int end) {
-  if(parent.data(NetworkModel::ItemTypeRole) != NetworkModel::BufferItemType)
-    return;
-
-  if(!config() || !config()->addNewBuffersAutomatically())
-    return;
-
-  QModelIndex child;
-  for(int row = start; row <= end; row++) {
-    child = sourceModel()->index(row, 0, parent);
-    addBuffer(sourceModel()->data(child, NetworkModel::BufferIdRole).value<BufferId>());
-  }
 }
 
 void BufferViewFilter::checkPreviousCurrentForRemoval(const QModelIndex &current, const QModelIndex &previous) {

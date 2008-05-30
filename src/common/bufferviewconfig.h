@@ -68,13 +68,17 @@ public slots:
 
   const QList<BufferId> &bufferList() const { return _buffers; }
   const QSet<BufferId> &removedBuffers() const { return _removedBuffers; }
+  const QSet<BufferId> &temporarilyRemovedBuffers() const { return _temporarilyRemovedBuffers; }
 
   QVariantList initBufferList() const;
   void initSetBufferList(const QVariantList &buffers);
   void initSetBufferList(const QList<BufferId> &buffers);
 
-  QVariantList initRemovedBuffersList() const;
-  void initSetRemovedBuffersList(const QVariantList &buffers);
+  QVariantList initRemovedBuffers() const;
+  void initSetRemovedBuffers(const QVariantList &buffers);
+
+  QVariantList initTemporarilyRemovedBuffers() const;
+  void initSetTemporarilyRemovedBuffers(const QVariantList &buffers);
 
   void addBuffer(const BufferId &bufferId, int pos);
   virtual inline void requestAddBuffer(const BufferId &bufferId, int pos) { emit addBufferRequested(bufferId, pos); }
@@ -118,6 +122,7 @@ private:
   int _minimumActivity;
   QList<BufferId> _buffers;
   QSet<BufferId> _removedBuffers;
+  QSet<BufferId> _temporarilyRemovedBuffers;
 };
 
 #endif // BUFFERVIEWCONFIG_H

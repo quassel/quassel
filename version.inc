@@ -4,8 +4,8 @@
 { using namespace Global;
 
   quasselVersion = "0.3.0-pre";
-  quasselDate = "2008-05-26";
-  quasselBuild = 861;
+  quasselDate = "2008-05-30";
+  quasselBuild = 866;
 
   //! Minimum client build number the core needs
   clientBuildNeeded = 731;
