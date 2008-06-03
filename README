@@ -14,6 +14,7 @@ and one admin user for the core-side storage.  Note that Quassel does not
 support the administration of user accounts yet, this includes adding
 more users, changing passwords and so on.
 
+IRC is the preferred means of getting in touch with the developers.
 The Quassel IRC Team can be contacted on Freenode/#quassel (or 
 #quassel.de).  We always welcome new users in our channels!
 
