@@ -1,10 +1,12 @@
 Quassel IRC - Release Notes
 ===========================
 
-This is an alpha version. This means that a lot of stuff is not
-working yet, many features are still missing and things generally
-break.  Please refer to <http://quassel-irc.org/faq> for current
-issues.
+This is a beta version. Although Quassel should be quite usable by now,
+there are still many features missing. We are working on adding these;
+you might add your wishes and feature requests to our bugtracker though.
+Since we are now working on stabilizing the 0.2 branch, bugreports are
+more than welcome.
+Please also refer to <http://quassel-irc.org/faq> for current issues.
 
 On first run of the Quassel core, it will wait for a client to connect
 and present a first-run wizard that will allow you to create the database
