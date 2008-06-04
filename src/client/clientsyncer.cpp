@@ -160,6 +160,12 @@ void ClientSyncer::coreSocketConnected() {
   clientInit["ClientDate"] = Global::quasselDate;
   clientInit["ClientBuild"] = Global::quasselBuild; // this is a minimum, since we probably won't update for every commit
   clientInit["UseSsl"] = coreConnectionInfo["useSsl"];
+#ifndef QT_NO_COMPRESS
+  clientInit["UseCompression"] = true;
+#else
+  clientInit["UseCompression"] = false;
+#endif
+
   
   SignalProxy::writeDataToDevice(socket, clientInit);
 }
@@ -206,6 +212,12 @@ void ClientSyncer::clientInitAck(const QVariantMap &msg) {
   }
 #endif
 
+#ifndef QT_NO_COMPRESS
+  if(msg["SupportsCompression"].toBool()) {
+    socket->setProperty("UseCompression", true);
+  }
+#endif
+  
   if(!msg["Configured"].toBool()) {
     // start wizard
     emit startCoreSetup(msg["StorageBackends"].toList());

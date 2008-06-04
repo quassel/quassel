@@ -401,9 +401,16 @@ void Core::processClientMessage(QTcpSocket *socket, const QVariantMap &msg) {
 #else
     bool supportSsl = false;
 #endif
+
+#ifndef QT_NO_COMPRESS
+    bool supportsCompression = true;
+#else
+    bool supportsCompression = false;
+#endif
     
     reply["SupportSsl"] = supportSsl;
-    // switch to ssl after client has been informed about our capabilities (see below)
+    reply["SupportsCompression"] = supportsCompression;
+    // switch to ssl/compression after client has been informed about our capabilities (see below)
 
     reply["LoginEnabled"] = true;
 
@@ -439,12 +446,19 @@ void Core::processClientMessage(QTcpSocket *socket, const QVariantMap &msg) {
 #ifndef QT_NO_OPENSSL
     // after we told the client that we are ssl capable we switch to ssl mode
     if(supportSsl && msg["UseSsl"].toBool()) {
-      qDebug() << "Starting TLS for Client:"  << qPrintable(socket->peerAddress().toString());
+      qDebug() << "Starting TLS for Client:" << qPrintable(socket->peerAddress().toString());
       connect(sslSocket, SIGNAL(sslErrors(const QList<QSslError> &)), this, SLOT(sslErrors(const QList<QSslError> &)));
       sslSocket->startServerEncryption();
     }
 #endif
 
+#ifndef QT_NO_COMPRESS
+    if(supportsCompression && msg["UseCompression"].toBool()) {
+      socket->setProperty("UseCompression", true);
+      qDebug() << "Using compression for Client:" << qPrintable(socket->peerAddress().toString());
+    }
+#endif
+    
   } else {
     // for the rest, we need an initialized connection
     if(!clientInfo.contains(socket)) {

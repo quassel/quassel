@@ -81,13 +81,13 @@ public:
    *  so the corresponding function readDataFromDevice() can check if enough data is available
    *  at the device to reread the item.
    */
-  static void writeDataToDevice(QIODevice *dev, const QVariant &item);
+  static void writeDataToDevice(QIODevice *dev, const QVariant &item, bool compressed = false);
 
   //! Reads a data item from a device that has been written by writeDataToDevice().
   /** If not enough data bytes are available, the function returns false and the QVariant reference
    *  remains untouched.
    */
-  static bool readDataFromDevice(QIODevice *dev, quint32 &blockSize, QVariant &item);
+  static bool readDataFromDevice(QIODevice *dev, quint32 &blockSize, QVariant &item, bool compressed = false);
 
   static QString methodBaseName(const QMetaMethod &method);
 
@@ -163,7 +163,13 @@ public:
   
 private:
   // Hash of used QIODevices
-  QHash<QIODevice*, quint32> _peerByteCount;
+  struct peerInfo {
+    quint32 byteCount;
+    bool usesCompression;
+    peerInfo() : byteCount(0), usesCompression(false) {};
+  };
+  //QHash<QIODevice*, peerInfo> _peerByteCount;
+  QHash<QIODevice*, peerInfo> _peers;
 
   // containg a list of argtypes for fast access
   QHash<const QMetaObject *, ClassInfo*> _classInfo;

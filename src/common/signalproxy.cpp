@@ -179,7 +179,7 @@ void SignalRelay::attachSignal(int methodId, const QByteArray &func) {
   sigNames.insert(methodId, fn);
 }
 // ====================
-// END SIGNALRELAY
+//  /SIGNALRELAY
 // ====================
 
 
@@ -211,14 +211,14 @@ SignalProxy::~SignalProxy() {
     detachObject(sender);
 
   // close peer connections
-  foreach(QIODevice *device, _peerByteCount.keys()) {
+  foreach(QIODevice *device, _peers.keys()) {
     device->close();
     delete device;
   }
 }
 
 void SignalProxy::setProxyMode(ProxyMode mode) {
-  foreach(QIODevice* peer, _peerByteCount.keys()) {
+  foreach(QIODevice* peer, _peers.keys()) {
     if(peer->isOpen()) {
       qWarning() << "SignalProxy: Cannot change proxy mode while connected";
       return;
@@ -251,10 +251,10 @@ bool SignalProxy::addPeer(QIODevice* iodev) {
   if(!iodev)
     return false;
   
-  if(_peerByteCount.contains(iodev))
+  if(_peers.contains(iodev))
     return true;
 
-  if(proxyMode() == Client && !_peerByteCount.isEmpty()) {
+  if(proxyMode() == Client && !_peers.isEmpty()) {
     qWarning("SignalProxy: only one peer allowed in client mode!");
     return false;
   }
@@ -270,43 +270,45 @@ bool SignalProxy::addPeer(QIODevice* iodev) {
     connect(sock, SIGNAL(disconnected()), this, SLOT(removePeerBySender()));
   }
 
-  _peerByteCount[iodev] = 0;
+  _peers[iodev] = peerInfo();
+  if(iodev->property("UseCompression").toBool())
+    _peers[iodev].usesCompression = true;
 
-  if(_peerByteCount.count() == 1)
+  if(_peers.count() == 1)
     emit connected();
 
   return true;
 }
 
 void SignalProxy::removePeer(QIODevice* iodev) {
-  if(_peerByteCount.isEmpty()) {
+  if(_peers.isEmpty()) {
     qWarning() << "SignalProxy::removePeer(): No peers in use!";
     return;
   }
 
   if(proxyMode() == Server && !iodev) {
     // disconnect all
-    QList<QIODevice *> peers = _peerByteCount.keys();
+    QList<QIODevice *> peers = _peers.keys();
     foreach(QIODevice *peer, peers)
       removePeer(peer);
   }
 
   if(proxyMode() != Server && !iodev)
-    iodev = _peerByteCount.keys().first();
+    iodev = _peers.keys().first();
 
   Q_ASSERT(iodev);
 
-  if(!_peerByteCount.contains(iodev)) {
+  if(!_peers.contains(iodev)) {
     qWarning() << "SignalProxy: unknown QIODevice" << iodev;
     return;
   }
 
-  _peerByteCount.remove(iodev);
+  _peers.remove(iodev);
 
   disconnect(iodev, 0, this, 0);
   emit peerRemoved(iodev);
 
-  if(_peerByteCount.isEmpty())
+  if(_peers.isEmpty())
     emit disconnected();
 }
 
@@ -672,10 +674,11 @@ void SignalProxy::stopSync(SyncableObject* obj) {
 }
 
 void SignalProxy::dispatchSignal(QIODevice *receiver, const RequestType &requestType, const QVariantList &params) {
+  Q_ASSERT(_peers.contains(receiver));
   QVariantList packedFunc;
   packedFunc << (qint16)requestType;
   packedFunc << params;
-  writeDataToDevice(receiver, QVariant(packedFunc));
+  writeDataToDevice(receiver, QVariant(packedFunc), _peers[receiver].usesCompression);
 }
 
 void SignalProxy::dispatchSignal(const RequestType &requestType, const QVariantList &params) {
@@ -683,8 +686,10 @@ void SignalProxy::dispatchSignal(const RequestType &requestType, const QVariantL
   QVariantList packedFunc;
   packedFunc << (qint16)requestType;
   packedFunc << params;
-  foreach(QIODevice* dev, _peerByteCount.keys())
-    writeDataToDevice(dev, QVariant(packedFunc));
+  foreach(QIODevice* dev, _peers.keys()) {
+    Q_ASSERT(_peers.contains(dev));
+    writeDataToDevice(dev, QVariant(packedFunc), _peers[dev].usesCompression);
+  }
 }
 
 void SignalProxy::receivePeerSignal(QIODevice *sender, const QVariant &packedFunc) {
@@ -893,27 +898,43 @@ bool SignalProxy::invokeSlot(QObject *receiver, int methodId, const QVariantList
 void SignalProxy::dataAvailable() {
   // yet again. it's a private slot. no need for checks.
   QIODevice* ioDev = qobject_cast<QIODevice* >(sender());
+  Q_ASSERT(_peers.contains(ioDev));
   QVariant var;
-  while(readDataFromDevice(ioDev, _peerByteCount[ioDev], var))
+  while(readDataFromDevice(ioDev, _peers[ioDev].byteCount, var, _peers[ioDev].usesCompression))
     receivePeerSignal(ioDev, var);
 }
 
-void SignalProxy::writeDataToDevice(QIODevice *dev, const QVariant &item) {
+void SignalProxy::writeDataToDevice(QIODevice *dev, const QVariant &item, bool compressed) {
   QAbstractSocket* sock  = qobject_cast<QAbstractSocket*>(dev);
   if(!dev->isOpen() || (sock && sock->state()!=QAbstractSocket::ConnectedState)) {
     qWarning("SignalProxy: Can't call on a closed device");
     return;
   }
+
   QByteArray block;
   QDataStream out(&block, QIODevice::WriteOnly);
   out.setVersion(QDataStream::Qt_4_2);
-  out << (quint32)0 << item;
-  out.device()->seek(0);
-  out << (quint32)(block.size() - sizeof(quint32));
+
+  if(compressed) {
+    QByteArray rawItem;
+    QDataStream itemStream(&rawItem, QIODevice::WriteOnly);
+
+    itemStream.setVersion(QDataStream::Qt_4_2);
+    itemStream << item;
+
+    rawItem = qCompress(rawItem);
+
+    out << (quint32)rawItem.size() << rawItem;
+  } else {
+    out << (quint32)0 << item;
+    out.device()->seek(0);
+    out << (quint32)(block.size() - sizeof(quint32));
+  }
+
   dev->write(block);
 }
 
-bool SignalProxy::readDataFromDevice(QIODevice *dev, quint32 &blockSize, QVariant &item) {
+bool SignalProxy::readDataFromDevice(QIODevice *dev, quint32 &blockSize, QVariant &item, bool compressed) {
   QDataStream in(dev);
   in.setVersion(QDataStream::Qt_4_2);
 
@@ -924,8 +945,21 @@ bool SignalProxy::readDataFromDevice(QIODevice *dev, quint32 &blockSize, QVarian
 
   if(dev->bytesAvailable() < blockSize)
     return false;
-  in >> item;
+
+  if(compressed) {
+    QByteArray rawItem;
+    in >> rawItem;
+    rawItem = qUncompress(rawItem);
+
+    QDataStream itemStream(&rawItem, QIODevice::ReadOnly);
+    itemStream.setVersion(QDataStream::Qt_4_2);
+    itemStream >> item;
+  } else {
+    in >> item;
+  }
+
   blockSize = 0;
+
   return true;
 }
 
