@@ -520,7 +520,7 @@ void MainWin::closeEvent(QCloseEvent *event) {
 }
 
 void MainWin::systrayActivated( QSystemTrayIcon::ActivationReason activationReason) {
-  if (activationReason == QSystemTrayIcon::Trigger) {
+  if(activationReason == QSystemTrayIcon::Trigger) {
     toggleVisibility();
   }
 }
@@ -528,11 +528,12 @@ void MainWin::systrayActivated( QSystemTrayIcon::ActivationReason activationReas
 void MainWin::toggleVisibility() {
   if(isHidden() /*|| !isActiveWindow()*/) {
     show();
-    if(isMinimized())
-      if (isMaximized())
+    if(isMinimized()) {
+      if(isMaximized())
         showMaximized();
       else
         showNormal();
+    }
 
     raise();
     activateWindow();
