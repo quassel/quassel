@@ -93,6 +93,7 @@ void BufferViewFilter::configInitialized() {
   connect(config(), SIGNAL(bufferAdded(const BufferId &, int)), this, SLOT(invalidate()));
   connect(config(), SIGNAL(bufferMoved(const BufferId &, int)), this, SLOT(invalidate()));
   connect(config(), SIGNAL(bufferRemoved(const BufferId &)), this, SLOT(invalidate()));
+  connect(config(), SIGNAL(bufferPermanentlyRemoved(const BufferId &)), this, SLOT(invalidate()));
 
   disconnect(config(), SIGNAL(initDone()), this, SLOT(configInitialized()));
 
@@ -180,10 +181,10 @@ bool BufferViewFilter::filterAcceptBuffer(const QModelIndex &source_bufferIndex)
     // add the buffer if...
     if(config()->isInitialized() && !config()->removedBuffers().contains(bufferId) // it hasn't been manually removed and either
        && ((config()->addNewBuffersAutomatically() && !config()->temporarilyRemovedBuffers().contains(bufferId)) // is totally unknown to us (a new buffer)...
-	   || activityLevel > Buffer::OtherActivity)) { // or was just temporarily hidden and has a new message waiting for us.
+	   || (config()->temporarilyRemovedBuffers().contains(bufferId) && activityLevel > Buffer::OtherActivity))) { // or was just temporarily hidden and has a new message waiting for us.
       addBuffer(bufferId);
     }
-    // note: adding the buffer to the valid list does not temper with the filters ("show only channels" and stuff)
+    // note: adding the buffer to the valid list does not temper with the following filters ("show only channels" and stuff)
     return false;
   }
   
