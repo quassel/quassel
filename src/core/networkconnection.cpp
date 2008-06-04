@@ -36,35 +36,36 @@
 #include "userinputhandler.h"
 #include "ctcphandler.h"
 
-NetworkConnection::NetworkConnection(Network *network, CoreSession *session) : QObject(network),
+NetworkConnection::NetworkConnection(Network *network, CoreSession *session)
+  : QObject(network),
     _connectionState(Network::Disconnected),
     _network(network),
     _coreSession(session),
     _ircServerHandler(new IrcServerHandler(this)),
     _userInputHandler(new UserInputHandler(this)),
     _ctcpHandler(new CtcpHandler(this)),
-    _autoReconnectCount(0)
+    _autoReconnectCount(0),
+
+    _previousConnectionAttemptFailed(false),
+    _lastUsedServerlistIndex(0),
+
+    // TODO make autowho configurable (possibly per-network)
+    _autoWhoEnabled(true),
+    _autoWhoInterval(90),
+    _autoWhoNickLimit(0), // unlimited
+    _autoWhoDelay(3),
+    
+    // TokenBucket to avaid sending too much at once
+    _messagesPerSecond(1),
+    _burstSize(5),
+    _tokenBucket(5) // init with a full bucket
 {
   _autoReconnectTimer.setSingleShot(true);
-
-  _previousConnectionAttemptFailed = false;
-  _lastUsedServerlistIndex = 0;
-
-  // TODO make autowho configurable (possibly per-network)
-  _autoWhoEnabled = true;
-  _autoWhoInterval = 90;
-  _autoWhoNickLimit = 0; // unlimited
-  _autoWhoDelay = 3;
 
   _autoWhoTimer.setInterval(_autoWhoDelay * 1000);
   _autoWhoTimer.setSingleShot(false);
   _autoWhoCycleTimer.setInterval(_autoWhoInterval * 1000);
   _autoWhoCycleTimer.setSingleShot(false);
-
-  // TokenBucket to avaid sending too much at once
-  _messagesPerSecond = 1;
-  _burstSize = 5;
-  _tokenBucket = 5; // init with a full bucket
 
   _tokenBucketTimer.start(_messagesPerSecond * 1000);
   _tokenBucketTimer.setSingleShot(false);
@@ -104,6 +105,7 @@ NetworkConnection::NetworkConnection(Network *network, CoreSession *session) : Q
 NetworkConnection::~NetworkConnection() {
   if(connectionState() != Network::Disconnected && connectionState() != Network::Reconnecting)
     disconnectFromIrc(false); // clean up, but this does not count as requested disconnect!
+  disconnect(&socket, 0, this, 0); // this keeps the socket from triggering events during clean up
   delete _ircServerHandler;
   delete _userInputHandler;
   delete _ctcpHandler;
@@ -252,7 +254,9 @@ void NetworkConnection::disconnectFromIrc(bool requested) {
   if(socket.state() < QAbstractSocket::ConnectedState) {
     setConnectionState(Network::Disconnected);
     socketDisconnected();
-  } else socket.disconnectFromHost();
+  } else {
+    socket.disconnectFromHost();
+  }
 
   if(requested) {
     emit quitRequested(networkId());
