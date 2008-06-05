@@ -23,6 +23,7 @@
 #include "core.h"
 #include "coresession.h"
 #include "networkconnection.h"
+#include "userinputhandler.h"
 
 #include "signalproxy.h"
 #include "buffersyncer.h"
@@ -205,8 +206,11 @@ void CoreSession::attachNetworkConnection(NetworkConnection *conn) {
 }
 
 void CoreSession::disconnectFromNetwork(NetworkId id) {
-  if(!_connections.contains(id)) return;
-  _connections[id]->disconnectFromIrc();
+  if(!_connections.contains(id))
+    return;
+  
+  //_connections[id]->disconnectFromIrc();
+  _connections[id]->userInputHandler()->handleQuit(BufferInfo(), QString());
 }
 
 void CoreSession::networkStateRequested() {

@@ -55,7 +55,16 @@ void UserInputHandler::handleUserInput(const BufferInfo &bufferInfo, const QStri
 
 void UserInputHandler::handleAway(const BufferInfo &bufferInfo, const QString &msg) {
   Q_UNUSED(bufferInfo)
-  putCmd("AWAY", serverEncode(msg));
+
+  QString awayMsg;
+  // if there is no message supplied we have to check if we are already away or not
+  if(msg.isEmpty()) {
+    IrcUser *me = network()->me();
+    if(me && !me->isAway())
+      awayMsg = networkConnection()->identity()->awayReason();
+  }
+
+  putCmd("AWAY", serverEncode(awayMsg));
 }
 
 void UserInputHandler::handleBan(const BufferInfo &bufferInfo, const QString &msg) {
@@ -161,7 +170,9 @@ void UserInputHandler::handleJoin(const BufferInfo &bufferInfo, const QString &m
 void UserInputHandler::handleKick(const BufferInfo &bufferInfo, const QString &msg) {
   QString nick = msg.section(' ', 0, 0, QString::SectionSkipEmpty);
   QString reason = msg.section(' ', 1, -1, QString::SectionSkipEmpty).trimmed();
-  if(reason.isEmpty()) reason = networkConnection()->identity()->kickReason();
+  if(reason.isEmpty())
+    reason = networkConnection()->identity()->kickReason();
+
   QList<QByteArray> params;
   params << serverEncode(bufferInfo.bufferName()) << serverEncode(nick) << channelEncode(bufferInfo.bufferName(), reason);
   emit putCmd("KICK", params);
@@ -229,7 +240,21 @@ void UserInputHandler::handleOper(const BufferInfo &bufferInfo, const QString &m
 
 void UserInputHandler::handlePart(const BufferInfo &bufferInfo, const QString &msg) {
   QList<QByteArray> params;
-  params << serverEncode(bufferInfo.bufferName()) << channelEncode(bufferInfo.bufferName(), msg);
+  QString partReason;
+
+  // msg might contain either a channel name and/or a reaon, so we have to check if the first word is a known channel
+  QString channelName = msg.section(' ', 0, 0);
+  if(channelName.isEmpty() || !network()->ircChannel(channelName)) {
+    channelName = bufferInfo.bufferName();
+    partReason = msg;
+  } else {
+    partReason = msg.mid(channelName.length() + 1);
+  }
+  
+  if(partReason.isEmpty())
+    partReason = networkConnection()->identity()->partReason();
+
+  params << serverEncode(channelName) << channelEncode(bufferInfo.bufferName(), partReason);
   emit putCmd("PART", params);
 }
 
@@ -247,7 +272,15 @@ void UserInputHandler::handleQuery(const BufferInfo &bufferInfo, const QString &
 
 void UserInputHandler::handleQuit(const BufferInfo &bufferInfo, const QString &msg) {
   Q_UNUSED(bufferInfo)
-  emit putCmd("QUIT", serverEncode(msg));
+
+  QString quitReason;
+  if(msg.isEmpty())
+    quitReason = networkConnection()->identity()->quitReason();
+  else
+    quitReason = msg;
+
+  emit putCmd("QUIT", serverEncode(quitReason));
+  networkConnection()->disconnectFromIrc();
 }
 
 void UserInputHandler::handleQuote(const BufferInfo &bufferInfo, const QString &msg) {
