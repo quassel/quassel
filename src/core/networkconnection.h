@@ -130,6 +130,7 @@ private slots:
   void socketError(QAbstractSocket::SocketError);
   void socketConnected();
   void socketInitialized();
+  void socketCloseTimeout();
   void socketDisconnected();
   void socketStateChanged(QAbstractSocket::SocketState);
   void setConnectionState(Network::ConnectionState);
@@ -169,7 +170,12 @@ private:
   QHash<QString, QString> _channelKeys;  // stores persistent channels and their passwords, if any
 
   QTimer _autoReconnectTimer;
+  
   int _autoReconnectCount;
+
+  QTimer _socketCloseTimer;
+
+  bool _quitRequested;
 
   bool _previousConnectionAttemptFailed;
   int _lastUsedServerlistIndex;

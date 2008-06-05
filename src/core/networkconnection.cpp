@@ -45,6 +45,7 @@ NetworkConnection::NetworkConnection(Network *network, CoreSession *session)
     _userInputHandler(new UserInputHandler(this)),
     _ctcpHandler(new CtcpHandler(this)),
     _autoReconnectCount(0),
+    _quitRequested(false),
 
     _previousConnectionAttemptFailed(false),
     _lastUsedServerlistIndex(0),
@@ -54,21 +55,20 @@ NetworkConnection::NetworkConnection(Network *network, CoreSession *session)
     _autoWhoInterval(90),
     _autoWhoNickLimit(0), // unlimited
     _autoWhoDelay(3),
-    
+
     // TokenBucket to avaid sending too much at once
     _messagesPerSecond(1),
     _burstSize(5),
     _tokenBucket(5) // init with a full bucket
 {
   _autoReconnectTimer.setSingleShot(true);
-
+  _socketCloseTimer.setSingleShot(true);
+  connect(&_socketCloseTimer, SIGNAL(timeout()), this, SLOT(socketCloseTimeout()));
+  
   _autoWhoTimer.setInterval(_autoWhoDelay * 1000);
-  _autoWhoTimer.setSingleShot(false);
   _autoWhoCycleTimer.setInterval(_autoWhoInterval * 1000);
-  _autoWhoCycleTimer.setSingleShot(false);
-
+  
   _tokenBucketTimer.start(_messagesPerSecond * 1000);
-  _tokenBucketTimer.setSingleShot(false);
 
   QHash<QString, QString> channels = coreSession()->persistentChannels(networkId());
   foreach(QString chan, channels.keys()) {
@@ -255,12 +255,13 @@ void NetworkConnection::disconnectFromIrc(bool requested) {
     setConnectionState(Network::Disconnected);
     socketDisconnected();
   } else {
-    socket.disconnectFromHost();
+    _socketCloseTimer.start(10000); // the irc server has 10 seconds to close the socket
   }
 
-  if(requested) {
-    emit quitRequested(networkId());
-  }
+  // this flag triggers quitRequested() once the socket is closed
+  // it is needed to determine whether or not the connection needs to be
+  // in the automatic session restore.
+  _quitRequested = requested;
 }
 
 void NetworkConnection::socketHasData() {
@@ -364,18 +365,26 @@ void NetworkConnection::socketStateChanged(QAbstractSocket::SocketState socketSt
   setConnectionState(state);
 }
 
+void NetworkConnection::socketCloseTimeout() {
+  socket.disconnectFromHost();
+}
+
 void NetworkConnection::socketDisconnected() {
   _autoWhoCycleTimer.stop();
   _autoWhoTimer.stop();
   _autoWhoQueue.clear();
   _autoWhoInProgress.clear();
 
+  _socketCloseTimer.stop();
+  
   network()->setConnected(false);
   emit disconnected(networkId());
   if(_autoReconnectCount != 0) {
     setConnectionState(Network::Reconnecting);
     if(_autoReconnectCount == network()->autoReconnectRetries()) doAutoReconnect(); // first try is immediate
     else _autoReconnectTimer.start();
+  } else if(_quitRequested) {
+    emit quitRequested(networkId());
   }
 }
 

@@ -36,7 +36,8 @@
           <string>...</string>
          </property>
          <property name="icon" >
-          <iconset resource="../../icons/icons.qrc" >:/22x22/actions/oxygen/22x22/actions/edit-rename.png</iconset>
+          <iconset resource="../../icons/icons.qrc" >
+           <normaloff>:/22x22/actions/oxygen/22x22/actions/edit-rename.png</normaloff>:/22x22/actions/oxygen/22x22/actions/edit-rename.png</iconset>
          </property>
          <property name="iconSize" >
           <size>
@@ -55,7 +56,8 @@
           <string>Add...</string>
          </property>
          <property name="icon" >
-          <iconset resource="../../icons/icons.qrc" >:/22x22/actions/oxygen/22x22/actions/list-add-user.png</iconset>
+          <iconset resource="../../icons/icons.qrc" >
+           <normaloff>:/22x22/actions/oxygen/22x22/actions/list-add-user.png</normaloff>:/22x22/actions/oxygen/22x22/actions/list-add-user.png</iconset>
          </property>
          <property name="iconSize" >
           <size>
@@ -77,7 +79,8 @@
           <string>...</string>
          </property>
          <property name="icon" >
-          <iconset resource="../../icons/icons.qrc" >:/22x22/actions/oxygen/22x22/actions/list-remove-user.png</iconset>
+          <iconset resource="../../icons/icons.qrc" >
+           <normaloff>:/22x22/actions/oxygen/22x22/actions/list-remove-user.png</normaloff>:/22x22/actions/oxygen/22x22/actions/list-remove-user.png</iconset>
          </property>
          <property name="iconSize" >
           <size>
@@ -92,9 +95,17 @@
      <item>
       <widget class="QTabWidget" name="tabWidget" >
        <property name="currentIndex" >
-        <number>0</number>
+        <number>2</number>
        </property>
        <widget class="QWidget" name="generalTab" >
+        <property name="geometry" >
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>463</width>
+          <height>314</height>
+         </rect>
+        </property>
         <attribute name="title" >
          <string>General</string>
         </attribute>
@@ -162,7 +173,8 @@
                  <string>&amp;Add...</string>
                 </property>
                 <property name="icon" >
-                 <iconset resource="../../icons/icons.qrc" >:/16x16/actions/oxygen/16x16/actions/list-add.png</iconset>
+                 <iconset resource="../../icons/icons.qrc" >
+                  <normaloff>:/16x16/actions/oxygen/16x16/actions/list-add.png</normaloff>:/16x16/actions/oxygen/16x16/actions/list-add.png</iconset>
                 </property>
                 <property name="iconSize" >
                  <size>
@@ -187,7 +199,8 @@
                  <string>Remove</string>
                 </property>
                 <property name="icon" >
-                 <iconset resource="../../icons/icons.qrc" >:/16x16/actions/oxygen/16x16/actions/edit-delete.png</iconset>
+                 <iconset resource="../../icons/icons.qrc" >
+                  <normaloff>:/16x16/actions/oxygen/16x16/actions/edit-delete.png</normaloff>:/16x16/actions/oxygen/16x16/actions/edit-delete.png</iconset>
                 </property>
                </widget>
               </item>
@@ -206,7 +219,8 @@
                  <string>Re&amp;name...</string>
                 </property>
                 <property name="icon" >
-                 <iconset resource="../../icons/icons.qrc" >:/16x16/actions/oxygen/16x16/actions/edit-rename.png</iconset>
+                 <iconset resource="../../icons/icons.qrc" >
+                  <normaloff>:/16x16/actions/oxygen/16x16/actions/edit-rename.png</normaloff>:/16x16/actions/oxygen/16x16/actions/edit-rename.png</iconset>
                 </property>
                </widget>
               </item>
@@ -215,16 +229,7 @@
                 <property name="spacing" >
                  <number>6</number>
                 </property>
-                <property name="leftMargin" >
-                 <number>0</number>
-                </property>
-                <property name="topMargin" >
-                 <number>0</number>
-                </property>
-                <property name="rightMargin" >
-                 <number>0</number>
-                </property>
-                <property name="bottomMargin" >
+                <property name="margin" >
                  <number>0</number>
                 </property>
                 <item>
@@ -232,7 +237,7 @@
                   <property name="orientation" >
                    <enum>Qt::Horizontal</enum>
                   </property>
-                  <property name="sizeHint" >
+                  <property name="sizeHint" stdset="0" >
                    <size>
                     <width>0</width>
                     <height>20</height>
@@ -249,7 +254,8 @@
                    <string>...</string>
                   </property>
                   <property name="icon" >
-                   <iconset resource="../../icons/icons.qrc" >:/16x16/actions/oxygen/16x16/actions/go-up.png</iconset>
+                   <iconset resource="../../icons/icons.qrc" >
+                    <normaloff>:/16x16/actions/oxygen/16x16/actions/go-up.png</normaloff>:/16x16/actions/oxygen/16x16/actions/go-up.png</iconset>
                   </property>
                  </widget>
                 </item>
@@ -262,7 +268,8 @@
                    <string>...</string>
                   </property>
                   <property name="icon" >
-                   <iconset resource="../../icons/icons.qrc" >:/16x16/actions/oxygen/16x16/actions/go-down.png</iconset>
+                   <iconset resource="../../icons/icons.qrc" >
+                    <normaloff>:/16x16/actions/oxygen/16x16/actions/go-down.png</normaloff>:/16x16/actions/oxygen/16x16/actions/go-down.png</iconset>
                   </property>
                  </widget>
                 </item>
@@ -271,7 +278,7 @@
                   <property name="orientation" >
                    <enum>Qt::Horizontal</enum>
                   </property>
-                  <property name="sizeHint" >
+                  <property name="sizeHint" stdset="0" >
                    <size>
                     <width>0</width>
                     <height>20</height>
@@ -286,7 +293,7 @@
                 <property name="orientation" >
                  <enum>Qt::Vertical</enum>
                 </property>
-                <property name="sizeHint" >
+                <property name="sizeHint" stdset="0" >
                  <size>
                   <width>124</width>
                   <height>76</height>
@@ -302,28 +309,24 @@
         </layout>
        </widget>
        <widget class="QWidget" name="awayTab" >
+        <property name="geometry" >
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>100</width>
+          <height>30</height>
+         </rect>
+        </property>
         <attribute name="title" >
          <string>A&amp;way</string>
         </attribute>
         <layout class="QVBoxLayout" >
          <item>
           <layout class="QGridLayout" >
-           <property name="leftMargin" >
+           <property name="margin" >
             <number>0</number>
            </property>
-           <property name="topMargin" >
-            <number>0</number>
-           </property>
-           <property name="rightMargin" >
-            <number>0</number>
-           </property>
-           <property name="bottomMargin" >
-            <number>0</number>
-           </property>
-           <property name="horizontalSpacing" >
-            <number>6</number>
-           </property>
-           <property name="verticalSpacing" >
+           <property name="spacing" >
             <number>6</number>
            </property>
            <item row="0" column="1" >
@@ -385,16 +388,7 @@
             <property name="spacing" >
              <number>6</number>
             </property>
-            <property name="leftMargin" >
-             <number>8</number>
-            </property>
-            <property name="topMargin" >
-             <number>8</number>
-            </property>
-            <property name="rightMargin" >
-             <number>8</number>
-            </property>
-            <property name="bottomMargin" >
+            <property name="margin" >
              <number>8</number>
             </property>
             <item>
@@ -402,16 +396,7 @@
               <property name="spacing" >
                <number>6</number>
               </property>
-              <property name="leftMargin" >
-               <number>0</number>
-              </property>
-              <property name="topMargin" >
-               <number>0</number>
-              </property>
-              <property name="rightMargin" >
-               <number>0</number>
-              </property>
-              <property name="bottomMargin" >
+              <property name="margin" >
                <number>0</number>
               </property>
               <item>
@@ -436,7 +421,7 @@
                 <property name="orientation" >
                  <enum>Qt::Horizontal</enum>
                 </property>
-                <property name="sizeHint" >
+                <property name="sizeHint" stdset="0" >
                  <size>
                   <width>40</width>
                   <height>20</height>
@@ -448,22 +433,10 @@
             </item>
             <item>
              <layout class="QGridLayout" >
-              <property name="leftMargin" >
+              <property name="margin" >
                <number>0</number>
               </property>
-              <property name="topMargin" >
-               <number>0</number>
-              </property>
-              <property name="rightMargin" >
-               <number>0</number>
-              </property>
-              <property name="bottomMargin" >
-               <number>0</number>
-              </property>
-              <property name="horizontalSpacing" >
-               <number>6</number>
-              </property>
-              <property name="verticalSpacing" >
+              <property name="spacing" >
                <number>6</number>
               </property>
               <item row="1" column="0" >
@@ -496,7 +469,7 @@
            <property name="orientation" >
             <enum>Qt::Vertical</enum>
            </property>
-           <property name="sizeHint" >
+           <property name="sizeHint" stdset="0" >
             <size>
              <width>20</width>
              <height>40</height>
@@ -507,6 +480,14 @@
         </layout>
        </widget>
        <widget class="QWidget" name="advancedTab" >
+        <property name="geometry" >
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>463</width>
+          <height>314</height>
+         </rect>
+        </property>
         <attribute name="title" >
          <string>Advanced</string>
         </attribute>
@@ -537,22 +518,10 @@
            <layout class="QVBoxLayout" >
             <item>
              <layout class="QGridLayout" >
-              <property name="leftMargin" >
+              <property name="margin" >
                <number>0</number>
               </property>
-              <property name="topMargin" >
-               <number>0</number>
-              </property>
-              <property name="rightMargin" >
-               <number>0</number>
-              </property>
-              <property name="bottomMargin" >
-               <number>0</number>
-              </property>
-              <property name="horizontalSpacing" >
-               <number>6</number>
-              </property>
-              <property name="verticalSpacing" >
+              <property name="spacing" >
                <number>6</number>
               </property>
               <item row="1" column="0" >
@@ -595,7 +564,7 @@
            <property name="orientation" >
             <enum>Qt::Vertical</enum>
            </property>
-           <property name="sizeHint" >
+           <property name="sizeHint" stdset="0" >
             <size>
              <width>20</width>
              <height>40</height>
@@ -611,6 +580,36 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>identityList</tabstop>
+  <tabstop>renameIdentity</tabstop>
+  <tabstop>addIdentity</tabstop>
+  <tabstop>deleteIdentity</tabstop>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>realName</tabstop>
+  <tabstop>nicknameList</tabstop>
+  <tabstop>addNick</tabstop>
+  <tabstop>deleteNick</tabstop>
+  <tabstop>renameNick</tabstop>
+  <tabstop>nickUp</tabstop>
+  <tabstop>nickDown</tabstop>
+  <tabstop>awayNick</tabstop>
+  <tabstop>awayReasonEnabled</tabstop>
+  <tabstop>awayReason</tabstop>
+  <tabstop>returnMessageEnabled</tabstop>
+  <tabstop>returnMessage</tabstop>
+  <tabstop>awayNickEnabled</tabstop>
+  <tabstop>autoAwayEnabled</tabstop>
+  <tabstop>autoAwayTime</tabstop>
+  <tabstop>autoReturnMessageEnabled</tabstop>
+  <tabstop>autoAwayReasonEnabled</tabstop>
+  <tabstop>autoReturnMessage</tabstop>
+  <tabstop>autoAwayReason</tabstop>
+  <tabstop>ident</tabstop>
+  <tabstop>kickReason</tabstop>
+  <tabstop>partReason</tabstop>
+  <tabstop>quitReason</tabstop>
+ </tabstops>
  <resources>
   <include location="../../icons/icons.qrc" />
  </resources>

@@ -474,7 +474,7 @@ void BufferView::contextMenuEvent(QContextMenuEvent *event) {
 
   if(result == &_partBufferAction) {
     BufferInfo bufferInfo = index.data(NetworkModel::BufferInfoRole).value<BufferInfo>();
-    Client::instance()->userInput(bufferInfo, QString("/PART %1").arg(bufferInfo.bufferName()));
+    Client::instance()->userInput(bufferInfo, QString("/PART"));
     return;
   }
   
