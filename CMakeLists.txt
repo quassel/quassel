@@ -1,4 +1,9 @@
 # This is the cmake-based build system for Quassel IRC.
+# You may pass various options to cmake:
+# -DBUILD=<string> : Select binaries to build. <string> may contain any combination
+#                    of "core", "client", "mono" or "all".
+# -DQT=/path/to/qt : Choose a Qt4 installation to use instead of the system Qt4
+# -DSPUTDEV        : Do not use.
 
 project(QuasselIRC)
 
@@ -33,6 +38,12 @@ else(BUILD MATCHES all)
     message(STATUS "Building monolithic Quassel")
   endif(BUILD MATCHES mono)
 endif(BUILD MATCHES all)
+
+# Select a Qt installation here, if you don't want to use system Qt
+if(DEFINED QT)
+  # FindQt4 will look for the qmake binary in $PATH, so we just prepend the Qt dir
+  set(ENV{PATH} ${QT}/bin:$ENV{PATH})
+endif(DEFINED QT)
 
 # Enable mostly b0rked stuff (new ChatView), do not enable this unless you know what you do...
 if(SPUTDEV)
