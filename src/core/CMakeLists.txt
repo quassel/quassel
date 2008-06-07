@@ -40,10 +40,15 @@ set(HEADERS
     sessionthread.h
     userinputhandler.h)
 
-if(NOT ${QT_DEFINITIONS} MATCHES "-DQT_NO_OPENSSL")
+# QT_DEFINITIONS actually does not work, stuff gets included always.
+# Funny enough that does not seem to be harmful, but we should still find a way to figure out
+# if we have openssl in Qt...
+find_package(OpenSSL)
+
+if(OPENSSL_FOUND AND NOT ${QT_DEFINITIONS} MATCHES "-DQT_NO_OPENSSL")
   set(SOURCES ${SOURCES} sslserver.cpp)
   set(HEADERS ${HEADERS} sslserver.h)
-endif(NOT ${QT_DEFINITIONS} MATCHES "-DQT_NO_OPENSSL")
+endif(OPENSSL_FOUND AND NOT ${QT_DEFINITIONS} MATCHES "-DQT_NO_OPENSSL")
 
 QT4_WRAP_CPP(MOC ${HEADERS})
 
