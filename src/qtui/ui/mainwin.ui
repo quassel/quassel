@@ -13,6 +13,14 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget" >
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>22</y>
+     <width>800</width>
+     <height>556</height>
+    </rect>
+   </property>
    <property name="sizePolicy" >
     <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
      <horstretch>0</horstretch>
@@ -20,16 +28,7 @@
     </sizepolicy>
    </property>
    <layout class="QVBoxLayout" >
-    <property name="leftMargin" >
-     <number>0</number>
-    </property>
-    <property name="topMargin" >
-     <number>0</number>
-    </property>
-    <property name="rightMargin" >
-     <number>0</number>
-    </property>
-    <property name="bottomMargin" >
+    <property name="margin" >
      <number>0</number>
     </property>
     <item>
@@ -99,7 +98,16 @@
    <addaction name="menuDebug" />
    <addaction name="menuHelp" />
   </widget>
-  <widget class="QStatusBar" name="statusbar" />
+  <widget class="QStatusBar" name="statusbar" >
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>578</y>
+     <width>800</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
   <action name="actionNetworkList" >
    <property name="enabled" >
     <bool>false</bool>
@@ -153,7 +161,8 @@
   </action>
   <action name="actionQuit" >
    <property name="icon" >
-    <iconset resource="../../icons/icons.qrc" >:/22x22/actions/oxygen/22x22/actions/application-exit.png</iconset>
+    <iconset resource="../../icons/icons.qrc" >
+     <normaloff>:/22x22/actions/oxygen/22x22/actions/application-exit.png</normaloff>:/22x22/actions/oxygen/22x22/actions/application-exit.png</iconset>
    </property>
    <property name="text" >
     <string>Quit...</string>
@@ -169,7 +178,9 @@
   </action>
   <action name="actionSettingsDlg" >
    <property name="icon" >
-    <iconset/>
+    <iconset>
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text" >
     <string>Configure Quassel...</string>
@@ -196,7 +207,8 @@
     <bool>true</bool>
    </property>
    <property name="icon" >
-    <iconset resource="../../icons/icons.qrc" >:/icons/quassel-icon.png</iconset>
+    <iconset resource="../../icons/quassel-icons.qrc" >
+     <normaloff>:/icons/quassel-icon.png</normaloff>:/icons/quassel-icon.png</iconset>
    </property>
    <property name="text" >
     <string>About Quassel IRC...</string>
@@ -227,7 +239,9 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset/>
+    <iconset>
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text" >
     <string>Disconnect from Core</string>
@@ -238,7 +252,9 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset/>
+    <iconset>
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text" >
     <string>Connect to Core...</string>
@@ -272,6 +288,7 @@
  </customwidgets>
  <resources>
   <include location="../../icons/icons.qrc" />
+  <include location="../../icons/quassel-icons.qrc" />
  </resources>
  <connections/>
 </ui>
