@@ -3,7 +3,10 @@
 # -DBUILD=<string> : Select binaries to build. <string> may contain any combination
 #                    of "core", "client", "mono" or "all".
 # -DQT=/path/to/qt : Choose a Qt4 installation to use instead of the system Qt4
+# -DSTATIC=1       : Enable static building of Quassel, most useful with a static Qt.
 # -DSPUTDEV        : Do not use.
+#
+# NOTE: You need to remove CMakeCache.txt if you plan to change any of these values!
 
 project(QuasselIRC)
 
@@ -42,7 +45,7 @@ endif(BUILD MATCHES all)
 if(DEFINED QT)
   # FindQt4 will look for the qmake binary in $PATH, so we just prepend the Qt dir
   set(ENV{PATH} ${QT}/bin:$ENV{PATH})
-  SET(QT_QMAKE_EXECUTABLE ${QT}/bin/qmake CACHE FILEPATH "" FORCE)
+  #SET(QT_QMAKE_EXECUTABLE ${QT}/bin/qmake CACHE FILEPATH "" FORCE)
 endif(DEFINED QT)
 
 # Enable mostly b0rked stuff (new ChatView), do not enable this unless you know what you do...
@@ -74,6 +77,12 @@ qt4_add_resources(RES_I18N ${CMAKE_SOURCE_DIR}/i18n/i18n.qrc)
 qt4_add_resources(RES_ICONS ${CMAKE_SOURCE_DIR}/src/icons/icons.qrc)
 qt4_add_resources(RES_SQL ${CMAKE_SOURCE_DIR}/src/core/sql.qrc)
 
+# Set global buildflags
+if(DEFINED STATIC)
+  set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc ${CMAKE_EXE_LINKER_FLAGS}")
+  link_directories(${CMAKE_BINARY_DIR}/staticlibs)
+endif(DEFINED STATIC)
+
 # Here comes the dirty part. Our targets need different Qt4 modules, i.e. different libs
 # and defines. We can't simply include UseQt4 several times, since definitions add up.
 # We workaround this by only setting up QtCore first, and adding additional stuff later.
@@ -84,12 +93,13 @@ include_directories(${QT_INCLUDES})
 # This macro sets variables for additional Qt modules.
 macro(setup_qt4_variables)
   set(QUASSEL_QT_DEFINITIONS ${QT_DEFINITIONS})
-  set(QUASSEL_QT_LIBRARIES ${QT_LIBRARIES})
+  set(QUASSEL_QT_LIBRARIES )
   foreach(qtmod ${ARGV})
     # This needs to be a string, not a list, otherwise set_target_properties screws up...
     set(QUASSEL_QT_DEFINITIONS "${QUASSEL_QT_DEFINITIONS} -DQT_${qtmod}_LIB")
     set(QUASSEL_QT_LIBRARIES ${QUASSEL_QT_LIBRARIES} ${QT_QT${qtmod}_LIBRARY} ${QT_${qtmod}_LIB_DEPENDENCIES})
   endforeach(qtmod ${ARGV})
+  set(QUASSEL_QT_LIBRARIES ${QUASSEL_QT_LIBRARIES} ${QT_LIBRARIES})
 endmacro(setup_qt4_variables)
 
 # Now we have everything, so just glue the right pieces together :)
