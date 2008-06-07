@@ -10,7 +10,6 @@ project(QuasselIRC)
 cmake_minimum_required(VERSION 2.4.5)
 
 set(QT_MIN_VERSION "4.4.0")
-find_package(Qt4 REQUIRED)
 
 # By default, we build all binaries
 if(NOT DEFINED BUILD)
@@ -43,12 +42,16 @@ endif(BUILD MATCHES all)
 if(DEFINED QT)
   # FindQt4 will look for the qmake binary in $PATH, so we just prepend the Qt dir
   set(ENV{PATH} ${QT}/bin:$ENV{PATH})
+  SET(QT_QMAKE_EXECUTABLE ${QT}/bin/qmake CACHE FILEPATH "" FORCE)
 endif(DEFINED QT)
 
 # Enable mostly b0rked stuff (new ChatView), do not enable this unless you know what you do...
 if(SPUTDEV)
   add_definitions(-DSPUTDEV)
 endif(SPUTDEV)
+
+# Now that we have the correct $PATH, lets find Qt!
+find_package(Qt4 REQUIRED)
 
 # Add needed subdirs
 add_subdirectory(src/common)
@@ -80,8 +83,8 @@ include_directories(${QT_INCLUDES})
 
 # This macro sets variables for additional Qt modules.
 macro(setup_qt4_variables)
-  set(QUASSEL_QT_DEFINITIONS )
-  set(QUASSEL_QT_LIBRARIES )
+  set(QUASSEL_QT_DEFINITIONS ${QT_DEFINITIONS})
+  set(QUASSEL_QT_LIBRARIES ${QT_LIBRARIES})
   foreach(qtmod ${ARGV})
     # This needs to be a string, not a list, otherwise set_target_properties screws up...
     set(QUASSEL_QT_DEFINITIONS "${QUASSEL_QT_DEFINITIONS} -DQT_${qtmod}_LIB")
