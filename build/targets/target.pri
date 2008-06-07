@@ -42,5 +42,5 @@ win32:static {
 }
 
 macx {
-  ICON = ../../src/icons/quassel.icns
+  ICON = ../../src/icons/quassel/quassel.icns
 }

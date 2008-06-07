@@ -1,5 +1,6 @@
 include(mono.pri)
 include(target.pri)
 
-RESOURCES *= ../../src/icons/icons.qrc
-RESOURCES *= ../../src/core/sql.qrc
+RESOURCES *= ../../src/icons/icons.qrc \
+             ../../src/icons/quassel-icons.qrc \
+             ../../src/core/sql.qrc \
