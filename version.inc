@@ -1,18 +1,9 @@
 // Versioning, should be kept current :)
 // This is included in main.cpp
 
-{ using namespace Global;
+//! This is the fallback version number in case we can't autogenerate one
+quasselBaseVersion = "0.3.0-pre";
+protocolVersion = 1;       //< Version of the client/core protocol
 
-  quasselVersion = "0.3.0-pre";
-  quasselDate = "2008-06-04";
-  quasselBuild = 869;
-
-  //! Minimum client build number the core needs
-  clientBuildNeeded = 731;
-  clientVersionNeeded = quasselVersion;
-
-  //! Minimum core build number the client needs
-  coreBuildNeeded = 731;
-  coreVersionNeeded = quasselVersion;
-
-}
+coreNeedsProtocol   = 1;   //< Minimum protocol version the core needs
+clientNeedsProtocol = 1;   //< Minimum protocol version the client needs

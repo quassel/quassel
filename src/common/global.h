@@ -33,16 +33,14 @@
 namespace Global {
 
   extern QString quasselVersion;
-  extern QString quasselDate;
-  extern uint quasselBuild;
+  extern QString quasselBaseVersion;
+  extern QString quasselBuildDate;
+  extern uint protocolVersion;
 
-  //! Minimum client build number the core needs
-  extern uint clientBuildNeeded;
-  extern QString clientVersionNeeded;
+  extern uint clientNeedsProtocol;  //< Minimum protocol version the client needs
+  extern uint coreNeedsProtocol;    //< Minimum protocol version the core needs
 
-  //! Minimum core build number the client needs
-  extern uint coreBuildNeeded;
-  extern QString coreVersionNeeded;
+  extern QString quasselGeneratedVersion;  //< This is possibly set in version.gen
 
   // We need different config (QSettings) files for client and gui, since the core cannot work with GUI types
   // Set these here. They're used in ClientSettings and CoreSettings.
@@ -56,6 +54,7 @@ namespace Global {
   extern bool DEBUG;
 
   void registerMetaTypes();
+  void setupVersion();
 };
 
 #endif

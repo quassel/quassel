@@ -37,4 +37,6 @@ set(HEADERS
 
 qt4_wrap_cpp(MOC ${HEADERS})
 
+include_directories(${CMAKE_SOURCE_DIR}) # for version.inc and version.gen
+
 add_library(mod_common STATIC ${SOURCES} ${MOC})

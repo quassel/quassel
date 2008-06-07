@@ -98,15 +98,36 @@ void Global::registerMetaTypes() {
   qRegisterMetaTypeStreamOperators<MsgId>("MsgId");
 }
 
+//! This includes version.inc and possibly version.gen and sets up our version numbers.
+void Global::setupVersion() {
+
+#  include "version.inc"
+#  ifdef HAVE_VERSION_GEN
+#    include "version.gen"
+#  endif
+
+  if(quasselGeneratedVersion.isEmpty()) {
+    quasselVersion = QString("v%1 (unknown rev)").arg(quasselBaseVersion);
+  } else {
+    QStringList parts = quasselGeneratedVersion.split(':');
+    if(parts.count() < 2) parts.append("unknown rev");
+    quasselVersion = QString("v%1 (%2)").arg(parts[0], parts[1]);
+  }
+#  ifdef __DATE__
+    quasselBuildDate = __DATE__;
+#  endif
+
+}
+
 // Static variables
 
 QString Global::quasselVersion;
-QString Global::quasselDate;
-uint Global::quasselBuild;
-uint Global::clientBuildNeeded;
-QString Global::clientVersionNeeded;
-uint Global::coreBuildNeeded;
-QString Global::coreVersionNeeded;
+QString Global::quasselBaseVersion;
+QString Global::quasselGeneratedVersion;
+QString Global::quasselBuildDate;
+uint Global::protocolVersion;
+uint Global::clientNeedsProtocol;
+uint Global::coreNeedsProtocol;
 
 Global::RunMode Global::runMode;
 uint Global::defaultPort;
