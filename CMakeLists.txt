@@ -83,6 +83,42 @@ if(DEFINED STATIC)
   link_directories(${CMAKE_BINARY_DIR}/staticlibs)
 endif(DEFINED STATIC)
 
+# Now see if we can generate a decent version.gen.
+# First, check if we have a git repo and git-describe gives reasonable output...
+# NOTE: This may fail if we have .git but not git binaries installed...
+if(EXISTS ${CMAKE_SOURCE_DIR}/.git)
+  execute_process(COMMAND git-describe --long
+                  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+                  RESULT_VARIABLE GIT_RESULT
+                  OUTPUT_VARIABLE GIT_OUTPUT)
+  if(GIT_RESULT OR ${GIT_OUTPUT} MATCHES "fatal")
+    set(GIT_OUTPUT )
+  endif(GIT_RESULT OR ${GIT_OUTPUT} MATCHES "fatal")
+endif(EXISTS ${CMAKE_SOURCE_DIR}/.git)
+
+# Now if we got a valid revision, let's use it...
+# A git-describe string has the form "version-commitcount-gdeadbeef"
+if(GIT_OUTPUT)
+  string(REGEX REPLACE "(.*)-0-g[0-9a-f]+" "\\1" VERSION_STRING ${GIT_OUTPUT})
+  string(REGEX REPLACE "(.*)-([0-9]+)-g([0-9a-f]+)\n" "\\1:git-\\3+\\2" VERSION_STRING ${VERSION_STRING})
+endif(GIT_OUTPUT)
+
+# If got something valid out of it, write it to the file
+if(VERSION_STRING)
+  file(WRITE ${CMAKE_BINARY_DIR}/src/common/version.gen
+       "quasselGeneratedVersion = \"${VERSION_STRING}\";\n")
+elseif(VERSION_STRING)
+  # Maybe we have a version.dist?
+  if(EXISTS ${CMAKE_SOURCE_DIR}/version.dist)
+    file(READ ${CMAKE_SOURCE_DIR}/version.dist VERSION_DIST)
+    file(WRITE ${CMAKE_BINARY_DIR}/src/common/version.gen ${VERSION_DIST})
+  elseif(EXISTS ${CMAKE_SOURCE_DIR}/version.dist)
+    # Ah well, just touch it then
+    file(WRITE ${CMAKE_BINARY_DIR}/src/common/version.gen "\n")
+  endif(EXISTS ${CMAKE_SOURCE_DIR}/version.dist)
+endif(VERSION_STRING)
+
+
 # Here comes the dirty part. Our targets need different Qt4 modules, i.e. different libs
 # and defines. We can't simply include UseQt4 several times, since definitions add up.
 # We workaround this by only setting up QtCore first, and adding additional stuff later.
