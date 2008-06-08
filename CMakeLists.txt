@@ -56,6 +56,19 @@ endif(SPUTDEV)
 # Now that we have the correct $PATH, lets find Qt!
 find_package(Qt4 REQUIRED)
 
+set(QT_DONT_USE_QTGUI 1)
+include(${QT_USE_FILE})
+include_directories(${QT_INCLUDES})
+
+# We need to create a version.gen
+# For this, we create our genversion binary and make sure it is run every time.
+add_executable(genversion ${CMAKE_SOURCE_DIR}/src/common/genversion.cpp)
+target_link_libraries(genversion ${QT_LIBRARIES})
+
+add_custom_target(genversion_run ALL ${CMAKE_BINARY_DIR}/genversion
+                  ${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR}/src/common/version.gen)
+add_dependencies(genversion_run genversion)
+
 # Add needed subdirs
 add_subdirectory(src/common)
 include_directories(src/common)
@@ -72,6 +85,9 @@ if(BUILD_QTCLIENT OR BUILD_MONO)
   include_directories(src/qtui)
 endif(BUILD_QTCLIENT OR BUILD_MONO)
 
+# Make sure version.gen exists before building mod_common
+add_dependencies(mod_common genversion_run)
+
 # Add resources
 qt4_add_resources(RES_I18N ${CMAKE_SOURCE_DIR}/i18n/i18n.qrc)
 qt4_add_resources(RES_ICONS ${CMAKE_SOURCE_DIR}/src/icons/icons.qrc)
@@ -85,20 +101,7 @@ endif(DEFINED STATIC)
 
 # Here comes the dirty part. Our targets need different Qt4 modules, i.e. different libs
 # and defines. We can't simply include UseQt4 several times, since definitions add up.
-# We workaround this by only setting up QtCore first, and adding additional stuff later.
-set(QT_DONT_USE_QTGUI 1)
-include(${QT_USE_FILE})
-include_directories(${QT_INCLUDES})
-
-# We need to create a version.gen
-# For this, we create our genversion binary and make sure it is run every time.
-add_executable(genversion ${CMAKE_SOURCE_DIR}/src/common/genversion.cpp)
-target_link_libraries(genversion ${QT_LIBRARIES})
-
-add_custom_target(genversion_run ALL ${CMAKE_BINARY_DIR}/genversion
-                  ${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR}/src/common/version.gen)
-add_dependencies(genversion_run genversion)
-set_source_files_properties(src/common/global.cpp PROPERTIES OBJECT_DEPENDS genversion_run)
+# We workaround this by using our own macro to figure out what to add.
 
 # This macro sets variables for additional Qt modules.
 macro(setup_qt4_variables)

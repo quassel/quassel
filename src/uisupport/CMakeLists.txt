@@ -1,5 +1,6 @@
 # Builds the uisupport module
 
+set(QT_DONT_USE_QTGUI 0)
 set(QT_USE_QTNETWORK 1)
 include(${QT_USE_FILE})
 
