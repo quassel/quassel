@@ -25,12 +25,11 @@ set(SOURCES
     topicwidget.cpp
     verticaldock.cpp)
 
-set(HEADERS
+set(MOC_HDRS
     aboutdlg.h
     bufferwidget.h
     coreconfigwizard.h
     coreconnectdlg.h
-    configwizard.h
     debugconsole.h
     inputwidget.h
     jumpkeyhandler.h
@@ -44,13 +43,18 @@ set(HEADERS
     topicwidget.h
     verticaldock.h)
 
+set(HEADERS
+    qtuisettings.h
+    qtuistyle.h)
+
 if(SPUTDEV)
   set(SOURCES ${SOURCES} chatitem.cpp chatline.cpp chatlinemodelitem.cpp
                          chatlinemodel.cpp chatscene.cpp chatview.cpp)
-  set(HEADERS ${HEADERS} chatlinemodel.h chatscene.h chatview.h)
+  set(MOC_HDRS ${MOC_HDRS} chatlinemodel.h chatscene.h chatview.h)
+  set(HEADERS ${HEADERS} chatitem.h chatline.h chatlinemodelitem.h)
 else(SPUTDEV)
   set(SOURCES ${SOURCES} chatline-old.cpp chatwidget.cpp)
-  set(HEADERS ${HEADERS} chatline-old.h chatwidget.h)
+  set(MOC_HDRS ${MOC_HDRS} chatline-old.h chatwidget.h)
 endif(SPUTDEV)
 
 set(FORMS
@@ -93,7 +97,7 @@ foreach(FRM ${SP_FORMS})
 endforeach(FRM ${SP_FORMS})
 
 
-qt4_wrap_cpp(MOC ${HEADERS} ${SPHDR})
+qt4_wrap_cpp(MOC ${MOC_HDRS} ${SPHDR})
 qt4_wrap_ui(UI ${FORMPATH} ${SPFRM})
 
 include_directories(${CMAKE_SOURCE_DIR}/src/common
@@ -102,5 +106,5 @@ include_directories(${CMAKE_SOURCE_DIR}/src/common
                     ${CMAKE_SOURCE_DIR}/src/uisupport
                     ${CMAKE_CURRENT_BINARY_DIR})
 
-add_library(mod_qtui STATIC ${SOURCES} ${SPSRC} ${MOC} ${UI})
+add_library(mod_qtui STATIC ${SOURCES} ${SPSRC} ${MOC} ${UI} ${HEADERS})
 add_dependencies(mod_qtui mod_common mod_client mod_uisupport)

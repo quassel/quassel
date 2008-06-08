@@ -18,7 +18,7 @@ set(SOURCES
     selectionmodelsynchronizer.cpp
     treemodel.cpp)
 
-set(HEADERS
+set(MOC_HDRS
     buffer.h
     buffermodel.h
     client.h
@@ -30,10 +30,19 @@ set(HEADERS
     selectionmodelsynchronizer.h
     treemodel.h)
 
-qt4_wrap_cpp(MOC ${HEADERS})
+set(HEADERS
+    buffersettings.h
+    clientsettings.h)
+
+if(SPUTDEV)
+  set(SOURCES ${SOURCES} messagefilter.cpp messagemodel.cpp)
+  set(MOC_HDRS ${MOC_HDRS} messagefilter.h messagemodel.h)
+endif(SPUTDEV)
+
+qt4_wrap_cpp(MOC ${MOC_HDRS})
 
 include_directories(${CMAKE_SOURCE_DIR}/src/common)
 
-add_library(mod_client STATIC ${SOURCES} ${MOC})
+add_library(mod_client STATIC ${SOURCES} ${MOC} ${HEADERS})
 add_dependencies(mod_client mod_common)
 

@@ -22,7 +22,7 @@ set(SOURCES
     ircuser.cpp
     ircchannel.cpp)
 
-set(HEADERS
+set(MOC_HDRS
     backlogmanager.h
     buffersyncer.h
     bufferviewconfig.h
@@ -35,7 +35,15 @@ set(HEADERS
     signalproxy.h
     syncableobject.h)
 
-qt4_wrap_cpp(MOC ${HEADERS})
+set(HEADERS ${MOC_HDRS}
+    bufferinfo.h
+    global.h
+    message.h
+    settings.h
+    types.h
+    util.h)
+
+qt4_wrap_cpp(MOC ${MOC_HDRS})
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_SOURCE_DIR})  # for version.inc and version.gen
 add_definitions(-DHAVE_VERSION_GEN)  # we ensure that by deps in the main CMakeLists.txt

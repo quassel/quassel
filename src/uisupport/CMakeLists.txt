@@ -19,7 +19,7 @@ set(SOURCES
     uisettings.cpp
     uistylesettings.cpp)
 
-set(HEADERS
+set(MOC_HDRS
     abstractbuffercontainer.h
     abstractitemview.h
     bufferview.h
@@ -32,18 +32,22 @@ set(HEADERS
     settingspage.h
     tabcompleter.h)
 
+set(HEADERS
+    uisettings.h
+    uistylesettings.h)
+
 if(SPUTDEV)
   set(SOURCES ${SOURCES} uistyle.cpp)
-  set(HEADERS ${HEADERS} )
+  set(HEADERS ${HEADERS} uistyle.h)
 else(SPUTDEV)
   set(SOURCES ${SOURCES} old-uistyle.cpp)
-  set(HEADERS ${HEADERS} )
+  set(HEADERS ${HEADERS} old-uistyle.h)
 endif(SPUTDEV)
 
-qt4_wrap_cpp(MOC ${HEADERS})
+qt4_wrap_cpp(MOC ${MOC_HDRS})
 
 include_directories(${CMAKE_SOURCE_DIR}/src/common
                     ${CMAKE_SOURCE_DIR}/src/client)
 
-add_library(mod_uisupport STATIC ${SOURCES} ${MOC})
+add_library(mod_uisupport STATIC ${SOURCES} ${MOC} ${HEADERS})
 add_dependencies(mod_uisupport mod_common mod_client)
