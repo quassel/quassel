@@ -110,13 +110,11 @@ void Global::setupVersion() {
     quasselVersion = QString("v%1 (unknown rev)").arg(quasselBaseVersion);
   } else {
     QStringList parts = quasselGeneratedVersion.split(':');
-    if(parts.count() < 2) parts.append("unknown rev");
-    quasselVersion = QString("v%1 (%2)").arg(parts[0], parts[1]);
+    quasselVersion = QString("v%1").arg(parts[0]);
+    if(parts.count() >= 2) quasselVersion.append(QString(" (%1)").arg(parts[1]));
   }
-#  ifdef __DATE__
-    quasselBuildDate = __DATE__;
-#  endif
-
+  quasselBuildDate = __DATE__;
+  quasselBuildTime = __TIME__;
 }
 
 // Static variables
@@ -125,6 +123,7 @@ QString Global::quasselVersion;
 QString Global::quasselBaseVersion;
 QString Global::quasselGeneratedVersion;
 QString Global::quasselBuildDate;
+QString Global::quasselBuildTime;
 uint Global::protocolVersion;
 uint Global::clientNeedsProtocol;
 uint Global::coreNeedsProtocol;

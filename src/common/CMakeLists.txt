@@ -37,6 +37,7 @@ set(HEADERS
 
 qt4_wrap_cpp(MOC ${HEADERS})
 
-include_directories(${CMAKE_SOURCE_DIR}) # for version.inc and version.gen
+include_directories(${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_SOURCE_DIR}) # for version.inc and version.gen
+add_definitions(-DHAVE_VERSION_GEN) # we ensure that by deps in the main CMakeLists.txt
 
 add_library(mod_common STATIC ${SOURCES} ${MOC})

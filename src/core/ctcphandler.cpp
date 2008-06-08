@@ -175,7 +175,7 @@ void CtcpHandler::handlePing(CtcpType ctcptype, const QString &prefix, const QSt
 void CtcpHandler::handleVersion(CtcpType ctcptype, const QString &prefix, const QString &target, const QString &param) {
   Q_UNUSED(target)
   if(ctcptype == CtcpQuery) {
-    reply(nickFromMask(prefix), "VERSION", QString("Quassel IRC %1, built: %2 -- http://www.quassel-irc.org")
+    reply(nickFromMask(prefix), "VERSION", QString("Quassel IRC %1 (built on %2) -- http://www.quassel-irc.org")
         .arg(Global::quasselVersion).arg(Global::quasselBuildDate));
     emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("Received CTCP VERSION request by %1").arg(prefix));
   } else {

@@ -35,6 +35,7 @@ namespace Global {
   extern QString quasselVersion;
   extern QString quasselBaseVersion;
   extern QString quasselBuildDate;
+  extern QString quasselBuildTime;
   extern uint protocolVersion;
 
   extern uint clientNeedsProtocol;  //< Minimum protocol version the client needs
