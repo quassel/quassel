@@ -135,8 +135,8 @@ int IntroPage::nextId() const {
 
 AdminUserPage::AdminUserPage(QWidget *parent) : QWizardPage(parent) {
   ui.setupUi(this);
-  setTitle(tr("Create User Account"));
-  setSubTitle(tr("First, we will create a user account on the core. This first user will have administrator privileges."));
+  setTitle(tr("Create Admin User"));
+  setSubTitle(tr("First, we will create a user on the core. This first user will have administrator privileges."));
 
   registerField("adminUser.user*", ui.user);
   registerField("adminUser.password*", ui.password);
