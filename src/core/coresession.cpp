@@ -31,7 +31,7 @@
 #include "corebufferviewmanager.h"
 #include "storage.h"
 
-#include "network.h"
+#include "corenetwork.h"
 #include "ircuser.h"
 #include "ircchannel.h"
 #include "identity.h"
@@ -99,7 +99,7 @@ CoreSession::~CoreSession() {
   foreach(NetworkConnection *conn, _connections.values()) {
     delete conn;
   }
-  foreach(Network *net, _networks.values()) {
+  foreach(CoreNetwork *net, _networks.values()) {
     delete net;
   }
 }
@@ -108,7 +108,7 @@ UserId CoreSession::user() const {
   return _user;
 }
 
-Network *CoreSession::network(NetworkId id) const {
+CoreNetwork *CoreSession::network(NetworkId id) const {
   if(_networks.contains(id)) return _networks[id];
   return 0;
 }
@@ -170,7 +170,7 @@ void CoreSession::updateBufferInfo(UserId uid, const BufferInfo &bufinfo) {
 }
 
 void CoreSession::connectToNetwork(NetworkId id) {
-  Network *net = network(id);
+  CoreNetwork *net = network(id);
   if(!net) {
     qWarning() << "Connect to unknown network requested! net:" << id << "user:" << user();
     return;
@@ -408,7 +408,7 @@ void CoreSession::createNetwork(const NetworkInfo &info_) {
 
   id = info.networkId.toInt();
   if(!_networks.contains(id)) {
-    Network *net = new Network(id, this);
+    CoreNetwork *net = new CoreNetwork(id, this);
     connect(net, SIGNAL(connectRequested(NetworkId)), this, SLOT(connectToNetwork(NetworkId)));
     connect(net, SIGNAL(disconnectRequested(NetworkId)), this, SLOT(disconnectFromNetwork(NetworkId)));
     net->setNetworkInfo(info);
@@ -422,6 +422,7 @@ void CoreSession::createNetwork(const NetworkInfo &info_) {
   }
 }
 
+// FIXME: move to CoreNetwork
 void CoreSession::updateNetwork(const NetworkInfo &info) {
   if(!_networks.contains(info.networkId)) {
     qWarning() << "Update request for unknown network received!";
@@ -472,7 +473,7 @@ void CoreSession::removeBufferRequested(BufferId bufferId) {
   }
   
   if(bufferInfo.type() == BufferInfo::ChannelBuffer) {
-    Network *net = network(bufferInfo.networkId());
+    CoreNetwork *net = network(bufferInfo.networkId());
     if(!net) {
       qWarning() << "CoreSession::removeBufferRequested(): Received BufferInfo with unknown networkId!";
       return;

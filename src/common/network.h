@@ -18,10 +18,9 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _NETWORK_H_
-#define _NETWORK_H_
+#ifndef NETWORK_H_
+#define NETWORK_H_
 
-#include <QDebug>
 #include <QString>
 #include <QStringList>
 #include <QList>
@@ -33,9 +32,9 @@
 #include "types.h"
 #include "syncableobject.h"
 
-class SignalProxy;
-class IrcUser;
-class IrcChannel;
+#include "signalproxy.h"
+#include "ircuser.h"
+#include "ircchannel.h"
 
 // defined below!
 struct NetworkInfo;
@@ -68,48 +67,70 @@ class Network : public SyncableObject {
   Q_PROPERTY(bool rejoinChannels READ rejoinChannels WRITE setRejoinChannels STORED false)
 
 public:
-  enum ConnectionState { Disconnected, Connecting, Initializing, Initialized, Reconnecting, Disconnecting };
+  enum ConnectionState {
+    Disconnected,
+    Connecting,
+    Initializing,
+    Initialized,
+    Reconnecting,
+    Disconnecting
+  };
 
+  // see:
+  //  http://www.irc.org/tech_docs/005.html
+  //  http://www.irc.org/tech_docs/draft-brocklesby-irc-isupport-03.txt
+  enum ChannelModeType {
+    NOT_A_CHANMODE = 0x00,
+    A_CHANMODE = 0x01,
+    B_CHANMODE = 0x02,
+    C_CHANMODE = 0x04,
+    D_CHANMODE = 0x08
+  };
+
+  
   Network(const NetworkId &networkid, QObject *parent = 0);
   ~Network();
 
-  NetworkId networkId() const;
+  inline NetworkId networkId() const { return _networkId; }
 
-  SignalProxy *proxy() const;
-  void setProxy(SignalProxy *proxy);
+  inline SignalProxy *proxy() const { return _proxy; }
+  inline void setProxy(SignalProxy *proxy) { _proxy = proxy; }
 
-  bool isMyNick(const QString &nick) const;
-  bool isMe(IrcUser *ircuser) const;
+  inline bool isMyNick(const QString &nick) const { return (myNick().toLower() == nick.toLower()); }
+  inline bool isMe(IrcUser *ircuser) const { return (ircuser->nick().toLower() == myNick().toLower()); }
 
   bool isChannelName(const QString &channelname) const;
 
-  bool isConnected() const;
+  inline bool isConnected() const { return _connected; }
   //Network::ConnectionState connectionState() const;
-  int connectionState() const;
+  inline int connectionState() const { return _connectionState; }
 
   QString prefixToMode(const QString &prefix);
-  QString prefixToMode(const QCharRef &prefix);
+  inline QString prefixToMode(const QCharRef &prefix) { return prefixToMode(QString(prefix)); }
   QString modeToPrefix(const QString &mode);
-  QString modeToPrefix(const QCharRef &mode);
+  inline QString modeToPrefix(const QCharRef &mode) { return modeToPrefix(QString(mode)); }
 
-  QString networkName() const;
-  QString currentServer() const;
-  QString myNick() const;
+  ChannelModeType channelModeType(const QString &mode);
+  inline ChannelModeType channelModeType(const QCharRef &mode) { return channelModeType(QString(mode)); }
+  
+  inline const QString &networkName() const { return _networkName; }
+  inline const QString &currentServer() const { return _currentServer; }
+  inline const QString &myNick() const { return _myNick; }
   inline IrcUser *me() const { return ircUser(myNick()); }
-  IdentityId identity() const;
+  inline IdentityId identity() const { return _identity; }
   QStringList nicks() const;
-  QStringList channels() const;
-  QVariantList serverList() const;
-  bool useRandomServer() const;
-  QStringList perform() const;
-  bool useAutoIdentify() const;
-  QString autoIdentifyService() const;
-  QString autoIdentifyPassword() const;
-  bool useAutoReconnect() const;
-  quint32 autoReconnectInterval() const;
-  quint16 autoReconnectRetries() const;
-  bool unlimitedReconnectRetries() const;
-  bool rejoinChannels() const;
+  inline QStringList channels() const { return _ircChannels.keys(); }
+  inline const QVariantList &serverList() const { return _serverList; }
+  inline bool useRandomServer() const { return _useRandomServer; }
+  inline const QStringList &perform() const { return _perform; }
+  inline bool useAutoIdentify() const { return _useAutoIdentify; }
+  inline const QString &autoIdentifyService() const { return _autoIdentifyService; }
+  inline const QString &autoIdentifyPassword() const { return _autoIdentifyPassword; }
+  inline bool useAutoReconnect() const { return _useAutoReconnect; }
+  inline quint32 autoReconnectInterval() const { return _autoReconnectInterval; }
+  inline quint16 autoReconnectRetries() const { return _autoReconnectRetries; }
+  inline bool unlimitedReconnectRetries() const { return _unlimitedReconnectRetries; }
+  inline bool rejoinChannels() const { return _rejoinChannels; }
 
   NetworkInfo networkInfo() const;
   void setNetworkInfo(const NetworkInfo &);
@@ -117,22 +138,22 @@ public:
   QString prefixes();
   QString prefixModes();
 
-  bool supports(const QString &param) const;
+  bool supports(const QString &param) const { return _supports.contains(param); }
   QString support(const QString &param) const;
 
   IrcUser *newIrcUser(const QString &hostmask);
-  IrcUser *newIrcUser(const QByteArray &hostmask);
+  inline IrcUser *newIrcUser(const QByteArray &hostmask) { return newIrcUser(decodeServerString(hostmask)); }
   IrcUser *ircUser(QString nickname) const;
-  IrcUser *ircUser(const QByteArray &nickname) const;
-  QList<IrcUser *> ircUsers() const;
-  quint32 ircUserCount() const;
+  inline IrcUser *ircUser(const QByteArray &nickname) const { return ircUser(decodeServerString(nickname)); }
+  inline QList<IrcUser *> ircUsers() const { return _ircUsers.values(); }
+  inline quint32 ircUserCount() const { return _ircUsers.count(); }
 
   IrcChannel *newIrcChannel(const QString &channelname);
-  IrcChannel *newIrcChannel(const QByteArray &channelname);
+  inline IrcChannel *newIrcChannel(const QByteArray &channelname) { return newIrcChannel(decodeServerString(channelname)); }
   IrcChannel *ircChannel(QString channelname) const;
-  IrcChannel *ircChannel(const QByteArray &channelname) const;
-  QList<IrcChannel *> ircChannels() const;
-  quint32 ircChannelCount() const;
+  inline IrcChannel *ircChannel(const QByteArray &channelname) const { return ircChannel(decodeServerString(channelname)); }
+  inline QList<IrcChannel *> ircChannels() const { return _ircChannels.values(); }
+  inline quint32 ircChannelCount() const { return _ircChannels.count(); }
 
   QByteArray codecForServer() const;
   QByteArray codecForEncoding() const;
@@ -188,13 +209,13 @@ public slots:
 
   //init geters
   QVariantMap initSupports() const;
-  QVariantList initServerList() const;
+  inline QVariantList initServerList() const { return serverList(); }
   QStringList initIrcUsers() const;
   QStringList initIrcChannels() const;
   
   //init seters
   void initSetSupports(const QVariantMap &supports);
-  void initSetServerList(const QVariantList &serverList);
+  inline void initSetServerList(const QVariantList &serverList) { setServerList(serverList); }
   void initSetIrcUsers(const QStringList &hostmasks);
   void initSetIrcChannels(const QStringList &channels);
   
@@ -204,8 +225,8 @@ public slots:
   // channel lists up to date
   void ircUserNickChanged(QString newnick);
 
-  void requestConnect() const;
-  void requestDisconnect() const;
+  virtual inline void requestConnect() const { emit connectRequested(); }
+  virtual inline void requestDisconnect() const { emit disconnectRequested(); }
 
   void emitConnectionError(const QString &);
 

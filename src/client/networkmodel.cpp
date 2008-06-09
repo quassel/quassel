@@ -313,6 +313,11 @@ QString BufferItem::toolTip(int column) const {
             toolTip.append(tr("<b>Topic:</b> %1").arg(_topic));
           }
         }
+	if(_ircChannel) {
+	  QString channelMode = _ircChannel->channelModeString(); // channelModeString is compiled on the fly -> thus cache the result
+	  if(!channelMode.isEmpty())
+	    toolTip.append(tr("<b>Mode:</b> %1").arg(channelMode));
+	}
       } else {
         toolTip.append(tr("Not active <br /> Double-click to join"));
       }

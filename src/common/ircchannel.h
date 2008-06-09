@@ -22,6 +22,7 @@
 #define _IRCCHANNEL_H_
 
 #include <QHash>
+#include <QSet>
 #include <QString>
 #include <QStringList>
 #include <QVariantMap>
@@ -30,7 +31,6 @@
 
 class IrcUser;
 class Network;
-class SignalProxy;
 
 class IrcChannel : public SyncableObject {
   Q_OBJECT
@@ -41,7 +41,6 @@ class IrcChannel : public SyncableObject {
 
 public:
   IrcChannel(const QString &channelname, Network *network);
-  ~IrcChannel();
 
   bool isKnownUser(IrcUser *ircuser) const;
   bool isValidChannelUserMode(const QString &mode) const;
@@ -55,6 +54,11 @@ public:
   QString userModes(IrcUser *ircuser) const;
   QString userModes(const QString &nick) const;
 
+  bool hasMode(const QChar &mode) const;
+  QString modeValue(const QChar &mode) const;
+  QStringList modeValueList(const QChar &mode) const;
+  QString channelModeString() const;
+  
   inline QTextCodec *codecForEncoding() const { return _codecForEncoding; }
   inline QTextCodec *codecForDecoding() const { return _codecForDecoding; }
   void setCodecForEncoding(const QString &codecName);
@@ -86,22 +90,26 @@ public slots:
   void removeUserMode(IrcUser *ircuser, const QString &mode);
   void removeUserMode(const QString &nick, const QString &mode);
 
+  void addChannelMode(const QChar &mode, const QString &value);
+  void removeChannelMode(const QChar &mode, const QString &value);
+
   // init geters
   QVariantMap initUserModes() const;
+  QVariantMap initChanModes() const;
 
   // init seters
   void initSetUserModes(const QVariantMap &usermodes);
+  void initSetChanModes(const QVariantMap &chanModes);
 
 signals:
   void topicSet(const QString &topic);
   void passwordSet(const QString &password);
   void userModesSet(QString nick, QString modes);
-  //void userModesSet(IrcUser *ircuser, QString modes);
   void userModeAdded(QString nick, QString mode);
-  //void userModeAdded(IrcUser *ircuser, QString mode);
   void userModeRemoved(QString nick, QString mode);
-  //void userModeRemoved(IrcUser *ircuser, QString mode);
-
+  void channelModeAdded(const QChar &mode, const QString &value);
+  void channelModeRemoved(const QChar &mode, const QString &value);
+  
   void ircUsersJoined(QList<IrcUser *> ircusers);
   void ircUsersJoined(QStringList nicks, QStringList modes);
   void ircUserParted(IrcUser *ircuser);
@@ -126,6 +134,12 @@ private:
 
   QTextCodec *_codecForEncoding;
   QTextCodec *_codecForDecoding;
+
+  QHash<QChar, QStringList> _A_channelModes;
+  QHash<QChar, QString> _B_channelModes;
+  QHash<QChar, QString> _C_channelModes;
+  QSet<QChar> _D_channelModes;
+
 };
 
 #endif

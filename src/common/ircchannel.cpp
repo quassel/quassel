@@ -21,8 +21,6 @@
 #include "ircchannel.h"
 
 #include "network.h"
-//#include "nicktreemodel.h"
-#include "signalproxy.h"
 #include "ircuser.h"
 #include "util.h"
 
@@ -33,7 +31,8 @@
 #include <QDebug>
 
 
-IrcChannel::IrcChannel(const QString &channelname, Network *network) : SyncableObject(network),
+IrcChannel::IrcChannel(const QString &channelname, Network *network)
+  : SyncableObject(network),
     _initialized(false),
     _name(channelname),
     _topic(QString()),
@@ -42,9 +41,6 @@ IrcChannel::IrcChannel(const QString &channelname, Network *network) : SyncableO
     _codecForDecoding(0)
 {
   setObjectName(QString::number(network->networkId().toInt()) + "/" +  channelname);
-}
-
-IrcChannel::~IrcChannel() {
 }
 
 // ====================
@@ -241,7 +237,6 @@ void IrcChannel::removeUserMode(IrcUser *ircuser, const QString &mode) {
     emit userModeRemoved(ircuser->nick(), mode);
     emit ircUserModeRemoved(ircuser, mode);
   }
-
 }
 
 void IrcChannel::removeUserMode(const QString &nick, const QString &mode) {
@@ -271,6 +266,73 @@ void IrcChannel::initSetUserModes(const QVariantMap &usermodes) {
   joinIrcUsers(users, modes);
 }
 
+QVariantMap IrcChannel::initChanModes() const {
+  QVariantMap channelModes;
+
+  QVariantMap A_modes;
+  QHash<QChar, QStringList>::const_iterator A_iter = _A_channelModes.constBegin();
+  while(A_iter != _A_channelModes.constEnd()) {
+    A_modes[A_iter.key()] = A_iter.value();
+    A_iter++;
+  }
+  channelModes["A"] = A_modes;
+  
+  QVariantMap B_modes;
+  QHash<QChar, QString>::const_iterator B_iter = _B_channelModes.constBegin();
+  while(B_iter != _B_channelModes.constEnd()) {
+    B_modes[B_iter.key()] = B_iter.value();
+    B_iter++;
+  }
+  channelModes["B"] = B_modes;
+  
+  QVariantMap C_modes;
+  QHash<QChar, QString>::const_iterator C_iter = _C_channelModes.constBegin();
+  while(C_iter != _C_channelModes.constEnd()) {
+    C_modes[C_iter.key()] = C_iter.value();
+    C_iter++;
+  }
+  channelModes["C"] = C_modes;
+  
+  QString D_modes;
+  QSet<QChar>::const_iterator D_iter = _D_channelModes.constBegin();
+  while(D_iter != _D_channelModes.constEnd()) {
+    D_modes += *D_iter;
+    D_iter++;
+  }
+  channelModes["D"] = D_modes;
+
+  return channelModes;
+}
+
+void IrcChannel::initSetChanModes(const QVariantMap &channelModes) {
+  QVariantMap::const_iterator iter = channelModes["A"].toMap().constBegin();
+  QVariantMap::const_iterator iterEnd = channelModes["A"].toMap().constEnd();
+  while(iter != iterEnd) {
+    _A_channelModes[iter.key()[0]] = iter.value().toStringList();
+    iter++;
+  }
+
+  iter = channelModes["B"].toMap().constBegin();
+  iterEnd = channelModes["B"].toMap().constEnd();
+  while(iter != iterEnd) {
+    _B_channelModes[iter.key()[0]] = iter.value().toString();
+    iter++;
+  }
+  
+  iter = channelModes["C"].toMap().constBegin();
+  iterEnd = channelModes["C"].toMap().constEnd();
+  while(iter != iterEnd) {
+    _C_channelModes[iter.key()[0]] = iter.value().toString();
+    iter++;
+  }
+
+  QString D_modes = channelModes["D"].toString();
+  for(int i = 0; i < D_modes.count(); i++) {
+    _D_channelModes << D_modes[i];
+  }
+
+}
+
 void IrcChannel::ircUserDestroyed() {
   IrcUser *ircUser = static_cast<IrcUser *>(sender());
   Q_ASSERT(ircUser);
@@ -285,3 +347,182 @@ void IrcChannel::ircUserNickSet(QString nick) {
   emit ircUserNickSet(ircUser, nick);
 }
 
+/*******************************************************************************
+ *
+ * 3.3 CHANMODES
+ * 
+ *    o  CHANMODES=A,B,C,D
+ * 
+ *    The CHANMODES token specifies the modes that may be set on a channel.
+ *    These modes are split into four categories, as follows:
+ * 
+ *    o  Type A: Modes that add or remove an address to or from a list.
+ *       These modes always take a parameter when sent by the server to a
+ *       client; when sent by a client, they may be specified without a
+ *       parameter, which requests the server to display the current
+ *       contents of the corresponding list on the channel to the client.
+ *    o  Type B: Modes that change a setting on the channel.  These modes
+ *       always take a parameter.
+ *    o  Type C: Modes that change a setting on the channel. These modes
+ *       take a parameter only when set; the parameter is absent when the
+ *       mode is removed both in the client's and server's MODE command.
+ *    o  Type D: Modes that change a setting on the channel. These modes
+ *       never take a parameter.
+ * 
+ *    If the server sends any additional types after these 4, the client
+ *    MUST ignore them; this is intended to allow future extension of this
+ *    token.
+ * 
+ *    The IRC server MUST NOT list modes in CHANMODES which are also
+ *    present in the PREFIX parameter; however, for completeness, modes
+ *    described in PREFIX may be treated as type B modes.
+ *
+ ******************************************************************************/
+
+
+/*******************************************************************************
+ * Short Version:
+ * A --> add/remove from List
+ * B --> set value or remove
+ * C --> set value or remove
+ * D --> on/off
+ *
+ * B and C behave very similar... we store the data in different datastructes
+ * for future compatibility
+ ******************************************************************************/
+
+// NOTE: the behavior of addChannelMode and removeChannelMode depends on the type of mode
+// see list above for chanmode types
+void IrcChannel::addChannelMode(const QChar &mode, const QString &value) {
+  Network::ChannelModeType modeType = network->channelModeType(mode);
+
+  switch(modeType) {
+  case Network::NOT_A_CHANMODE:
+    return;
+  case Network::A_CHANMODE:
+    if(!_A_channelModes.contains(mode))
+      _A_channelModes[mode] = QStringList(value);
+    else if(!_A_channelModes[mode].contains(value))
+      _A_channelModes[mode] << value;
+    break;
+    
+  case Network::B_CHANMODE:
+    _B_channelModes[mode] = value;
+    break;
+
+  case Network::C_CHANMODE:
+    _C_channelModes[mode] = value;
+    break;
+
+  case Network::D_CHANMODE:
+    _D_channelModes << mode;
+    break;
+  }
+  emit channelModeAdded(mode, value);
+}
+
+void IrcChannel::removeChannelMode(const QChar &mode, const QString &value) {
+  Network::ChannelModeType modeType = network->channelModeType(mode);
+
+  switch(modeType) {
+  case Network::NOT_A_CHANMODE:
+    return;
+  case Network::A_CHANMODE:
+    if(_A_channelModes.contains(mode))
+      _A_channelModes[mode].removeOne(value);
+    break;
+    
+  case Network::B_CHANMODE:
+    _B_channelModes.remove(mode);
+    break;
+
+  case Network::C_CHANMODE:
+    _C_channelModes.remove(mode);
+    break;
+
+  case Network::D_CHANMODE:
+    _D_channelModes.remove(mode);
+    break;
+  }
+  emit channelModeRemoved(mode, value);
+}
+
+bool IrcChannel::hasMode(const QChar &mode) const {
+  Network::ChannelModeType modeType = network->channelModeType(mode);
+
+  switch(modeType) {
+  case Network::NOT_A_CHANMODE:
+    return false;
+  case Network::A_CHANMODE:
+    return _A_channelModes.contains(mode);
+  case Network::B_CHANMODE:
+    return _B_channelModes.contains(mode);
+  case Network::C_CHANMODE:
+    return _C_channelModes.contains(mode);
+  case Network::D_CHANMODE:
+    return _D_channelModes.contains(mode);
+  default:
+    return false;
+  }
+}
+
+QString IrcChannel::modeValue(const QChar &mode) const {
+  Network::ChannelModeType modeType = network->channelModeType(mode);
+
+  switch(modeType) {
+  case Network::B_CHANMODE:
+    if(_B_channelModes.contains(mode))
+      return _B_channelModes[mode];
+    else
+      return QString();
+  case Network::C_CHANMODE:
+    if(_C_channelModes.contains(mode))
+      return _C_channelModes[mode];
+    else
+      return QString();
+  default:
+    return QString();
+  }
+  
+}
+
+QStringList IrcChannel::modeValueList(const QChar &mode) const {
+  Network::ChannelModeType modeType = network->channelModeType(mode);
+
+  switch(modeType) {
+  case Network::A_CHANMODE:
+    if(_A_channelModes.contains(mode))
+      return _A_channelModes[mode];
+  default:
+    return QStringList();
+  }
+}
+
+QString IrcChannel::channelModeString() const {
+  QStringList params;
+  QString modeString;
+
+  QSet<QChar>::const_iterator D_iter = _D_channelModes.constBegin();
+  while(D_iter != _D_channelModes.constEnd()) {
+    modeString += *D_iter;
+    D_iter++;
+  }
+
+  QHash<QChar, QString>::const_iterator BC_iter = _C_channelModes.constBegin();
+  while(BC_iter != _C_channelModes.constEnd()) {
+    modeString += BC_iter.key();
+    params << BC_iter.value();
+    BC_iter++;
+  }
+
+  BC_iter = _B_channelModes.constBegin();
+  while(BC_iter != _B_channelModes.constEnd()) {
+    modeString += BC_iter.key();
+    params << BC_iter.value();
+    BC_iter++;
+  }
+  if(modeString.isEmpty())
+    return modeString;
+  else
+    return QString("+%1 %2").arg(modeString).arg(params.join(" "));
+}
