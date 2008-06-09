@@ -429,7 +429,7 @@ void IrcChannel::removeChannelMode(const QChar &mode, const QString &value) {
     return;
   case Network::A_CHANMODE:
     if(_A_channelModes.contains(mode))
-      _A_channelModes[mode].removeOne(value);
+      _A_channelModes[mode].removeAll(value);
     break;
     
   case Network::B_CHANMODE:
