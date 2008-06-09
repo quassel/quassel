@@ -16,6 +16,8 @@ set(SOURCES
     clientsettings.cpp
     clientsyncer.cpp
     irclistmodel.cpp
+    messagefilter.cpp
+    messagemodel.cpp
     mappedselectionmodel.cpp
     networkmodel.cpp
     selectionmodelsynchronizer.cpp
@@ -30,6 +32,8 @@ set(MOC_HDRS
     clientirclisthelper.h
     clientsyncer.h
     irclistmodel.h
+    messagefilter.h
+    messagemodel.h
     networkmodel.h
     mappedselectionmodel.h
     quasselui.h
@@ -40,15 +44,9 @@ set(HEADERS
     buffersettings.h
     clientsettings.h)
 
-if(SPUTDEV)
-  set(SOURCES ${SOURCES} messagefilter.cpp messagemodel.cpp)
-  set(MOC_HDRS ${MOC_HDRS} messagefilter.h messagemodel.h)
-endif(SPUTDEV)
-
 qt4_wrap_cpp(MOC ${MOC_HDRS})
 
 include_directories(${CMAKE_SOURCE_DIR}/src/common)
 
 add_library(mod_client STATIC ${SOURCES} ${MOC} ${HEADERS})
 add_dependencies(mod_client mod_common)
-

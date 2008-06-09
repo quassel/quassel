@@ -18,6 +18,7 @@ set(SOURCES
     settingspage.cpp
     tabcompleter.cpp
     uisettings.cpp
+    uistyle.cpp
     uistylesettings.cpp)
 
 set(MOC_HDRS
@@ -32,19 +33,12 @@ set(MOC_HDRS
     inputline.h
     nickview.h
     settingspage.h
-    tabcompleter.h)
+    tabcompleter.h
+    uistyle.h)
 
 set(HEADERS
     uisettings.h
     uistylesettings.h)
-
-if(SPUTDEV)
-  set(SOURCES ${SOURCES} uistyle.cpp)
-  set(HEADERS ${HEADERS} uistyle.h)
-else(SPUTDEV)
-  set(SOURCES ${SOURCES} old-uistyle.cpp)
-  set(HEADERS ${HEADERS} old-uistyle.h)
-endif(SPUTDEV)
 
 qt4_wrap_cpp(MOC ${MOC_HDRS})
 
