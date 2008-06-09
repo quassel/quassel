@@ -170,7 +170,10 @@ void IrcServerHandler::handleJoin(const QString &prefix, const QList<QByteArray>
   emit displayMsg(Message::Join, BufferInfo::ChannelBuffer, channel, channel, prefix);
   //qDebug() << "IrcServerHandler::handleJoin()" << prefix << params;
   ircuser->joinChannel(channel);
-  if(network()->isMe(ircuser)) networkConnection()->setChannelJoined(channel);
+  if(network()->isMe(ircuser)) {
+    networkConnection()->setChannelJoined(channel);
+    putCmd("MODE", params[0]); // we want to know the modes of the channel we just joined, so we ask politely
+  }
 }
 
 void IrcServerHandler::handleKick(const QString &prefix, const QList<QByteArray> &params) {
@@ -204,11 +207,9 @@ void IrcServerHandler::handleMode(const QString &prefix, const QList<QByteArray>
     emit displayMsg(Message::Mode, BufferInfo::ChannelBuffer, serverDecode(params[0]), serverDecode(params).join(" "), prefix);
 
     IrcChannel *channel = network()->ircChannel(params[0]);
-    // FIXME: currently the IrcChannels only support PREFIX-Modes for users
-    // This cannot be fixed unless the SignalProxy() doesn't rely on methodIds anymore
     QString modes = params[1];
     bool add = true;
-    int modeIndex = 2;
+    int paramOffset = 2;
     for(int c = 0; c < modes.length(); c++) {
       if(modes[c] == '+') {
 	add = true;
@@ -219,15 +220,36 @@ void IrcServerHandler::handleMode(const QString &prefix, const QList<QByteArray>
 	continue;
       }
 
-      // this is the part where we restrict the mode changes to PREFIXES:
-      if(network()->prefixModes().contains(modes[c]) && modeIndex < params.count()) {
-	IrcUser *ircUser = network()->ircUser(params[modeIndex]);
+      if(network()->prefixModes().contains(modes[c])) {
+	// user channel modes (op, voice, etc...)
+	if(paramOffset < params.count()) {
+	  IrcUser *ircUser = network()->ircUser(params[paramOffset]);
+	  if(add)
+	    channel->addUserMode(ircUser, QString(modes[c]));
+	  else
+	    channel->removeUserMode(ircUser, QString(modes[c]));
+	} else {
+	  qWarning() << "Received MODE with too few parameters:" << serverDecode(params);
+	}
+	paramOffset++;
+      } else {
+	// regular channel modes
+	QString value;
+	Network::ChannelModeType modeType = network()->channelModeType(modes[c]);
+	if(modeType == Network::A_CHANMODE || modeType == Network::B_CHANMODE || (modeType == Network::C_CHANMODE && add)) {
+	    if(paramOffset < params.count()) {
+	      value = params[paramOffset];
+	    } else {
+	      qWarning() << "Received MODE with too few parameters:" << serverDecode(params);
+	    }
+	    paramOffset++;
+	}
+	
 	if(add)
-	  channel->addUserMode(ircUser, QString(modes[c]));
+	  channel->addChannelMode(modes[c], value);
 	else
-	  channel->removeUserMode(ircUser, QString(modes[c]));
+	  channel->removeChannelMode(modes[c], value);
       }
-      modeIndex++;
     }
     
   } else {
@@ -699,6 +721,18 @@ void IrcServerHandler::handle319(const QString &prefix, const QList<QByteArray> 
 void IrcServerHandler::handle320(const QString &prefix, const QList<QByteArray> &params) {
   Q_UNUSED(prefix);
   emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Whois] %1").arg(serverDecode(params).join(" ")));
+}
+
+/* RPL_CHANNELMODEIS - "<channel> <mode> <mode params>" */
+void IrcServerHandler::handle324(const QString &prefix, const QList<QByteArray> &params) {
+  Q_UNUSED(prefix);
+  handleMode(prefix, params);
+}
+
+/* RPL_??? - "<channel> <creation time (unix)>" */
+void IrcServerHandler::handle329(const QString &prefix, const QList<QByteArray> &params) {
+  Q_UNUSED(prefix);
+  // FIXME implement this... 
 }
 
 /* RPL_NOTOPIC */

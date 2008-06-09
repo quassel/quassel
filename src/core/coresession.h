@@ -31,7 +31,7 @@ class CoreBacklogManager;
 class CoreBufferViewManager;
 class Identity;
 class NetworkConnection;
-class Network;
+class CoreNetwork;
 struct NetworkInfo;
 class SignalProxy;
 
@@ -46,7 +46,7 @@ public:
 
   QList<BufferInfo> buffers() const;
   UserId user() const;
-  Network *network(NetworkId) const;
+  CoreNetwork *network(NetworkId) const;
   NetworkConnection *networkConnection(NetworkId) const;
   Identity *identity(IdentityId) const;
 
@@ -178,8 +178,8 @@ private:
 
   SignalProxy *_signalProxy;
   QHash<NetworkId, NetworkConnection *> _connections;
-  QHash<NetworkId, Network *> _networks;
-  QHash<NetworkId, Network *> _networksToRemove;
+  QHash<NetworkId, CoreNetwork *> _networks;
+  //  QHash<NetworkId, CoreNetwork *> _networksToRemove;
   QHash<IdentityId, Identity *> _identities;
 
   BufferSyncer *_bufferSyncer;

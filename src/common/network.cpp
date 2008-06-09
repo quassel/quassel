@@ -19,10 +19,6 @@
  ***************************************************************************/
 #include "network.h"
 
-#include "signalproxy.h"
-#include "ircuser.h"
-#include "ircchannel.h"
-
 #include <QDebug>
 #include <QTextCodec>
 
@@ -31,11 +27,11 @@
 QTextCodec *Network::_defaultCodecForServer = 0;
 QTextCodec *Network::_defaultCodecForEncoding = 0;
 QTextCodec *Network::_defaultCodecForDecoding = 0;
-
 // ====================
 //  Public:
 // ====================
-Network::Network(const NetworkId &networkid, QObject *parent) : SyncableObject(parent),
+Network::Network(const NetworkId &networkid, QObject *parent)
+  : SyncableObject(parent),
     _proxy(0),
     _networkId(networkid),
     _identity(0),
@@ -59,38 +55,8 @@ Network::Network(const NetworkId &networkid, QObject *parent) : SyncableObject(p
   setObjectName(QString::number(networkid.toInt()));
 }
 
-// I think this is unnecessary since IrcUsers have us as their daddy :)
-
 Network::~Network() {
   emit aboutToBeDestroyed();
-//  QHashIterator<QString, IrcUser *> ircuser(_ircUsers);
-//  while (ircuser.hasNext()) {
-//    ircuser.next();
-//    delete ircuser.value();
-//  }
-//  qDebug() << "Destroying net" << networkName() << networkId();
-}
-
-
-NetworkId Network::networkId() const {
-  return _networkId;
-}
-
-SignalProxy *Network::proxy() const {
-  return _proxy;
-}
-
-void Network::setProxy(SignalProxy *proxy) {
-  _proxy = proxy;
-  //proxy->synchronize(this);  // we should to this explicitly from the outside!
-}
-
-bool Network::isMyNick(const QString &nick) const {
-  return (myNick().toLower() == nick.toLower());
-}
-
-bool Network::isMe(IrcUser *ircuser) const {
-  return (ircuser->nick().toLower() == myNick().toLower());
 }
 
 bool Network::isChannelName(const QString &channelname) const {
@@ -101,15 +67,6 @@ bool Network::isChannelName(const QString &channelname) const {
     return support("CHANTYPES").contains(channelname[0]);
   else
     return QString("#&!+").contains(channelname[0]);
-}
-
-bool Network::isConnected() const {
-  return _connected;
-}
-
-//Network::ConnectionState Network::connectionState() const {
-int Network::connectionState() const {
-  return _connectionState;
 }
 
 NetworkInfo Network::networkInfo() const {
@@ -161,35 +118,11 @@ QString Network::prefixToMode(const QString &prefix) {
     return QString();
 }
 
-QString Network::prefixToMode(const QCharRef &prefix) {
-  return prefixToMode(QString(prefix));
-}
-
 QString Network::modeToPrefix(const QString &mode) {
   if(prefixModes().contains(mode))
     return QString(prefixes()[prefixModes().indexOf(mode)]);
   else
     return QString();
-}
-
-QString Network::modeToPrefix(const QCharRef &mode) {
-  return modeToPrefix(QString(mode));
-}
-  
-QString Network::networkName() const {
-  return _networkName;
-}
-
-QString Network::currentServer() const {
-  return _currentServer;
-}
-
-QString Network::myNick() const {
-  return _myNick;
-}
-
-IdentityId Network::identity() const {
-  return _identity;
 }
 
 QStringList Network::nicks() const {
@@ -200,54 +133,6 @@ QStringList Network::nicks() const {
     nicks << ircuser->nick();
   }
   return nicks;
-}
-
-QStringList Network::channels() const {
-  return _ircChannels.keys();
-}
-
-QVariantList Network::serverList() const {
-  return _serverList;
-}
-
-bool Network::useRandomServer() const {
-  return _useRandomServer;
-}
-
-QStringList Network::perform() const {
-  return _perform;
-}
-
-bool Network::useAutoIdentify() const {
-  return _useAutoIdentify;
-}
-
-QString Network::autoIdentifyService() const {
-  return _autoIdentifyService;
-}
-
-QString Network::autoIdentifyPassword() const {
-  return _autoIdentifyPassword;
-}
-
-bool Network::useAutoReconnect() const {
-  return _useAutoReconnect;
-}
-
-quint32 Network::autoReconnectInterval() const {
-  return _autoReconnectInterval;
-}
-
-quint16 Network::autoReconnectRetries() const {
-  return _autoReconnectRetries;
-}
-
-bool Network::unlimitedReconnectRetries() const {
-  return _unlimitedReconnectRetries;
-}
-
-bool Network::rejoinChannels() const {
-  return _rejoinChannels;
 }
 
 QString Network::prefixes() {
@@ -264,8 +149,27 @@ QString Network::prefixModes() {
   return _prefixModes;
 }
 
-bool Network::supports(const QString &param) const {
-  return _supports.contains(param);
+// example Unreal IRCD: CHANMODES=beI,kfL,lj,psmntirRcOAQKVCuzNSMTG 
+Network::ChannelModeType Network::channelModeType(const QString &mode) {
+  if(mode.isEmpty())
+    return NOT_A_CHANMODE;
+
+  QString chanmodes = support("CHANMODES");
+  if(chanmodes.isEmpty())
+    return NOT_A_CHANMODE;
+
+  ChannelModeType modeType = A_CHANMODE;
+  for(int i = 0; i < chanmodes.count(); i++) {
+    if(chanmodes[i] == mode[0])
+      break;
+    else if(chanmodes[i] == ',')
+      modeType = (ChannelModeType)(modeType << 1);
+  }
+  if(modeType > D_CHANMODE) {
+    qWarning() << "Network" << networkId() << "supplied invalid CHANMODES:" << chanmodes;
+    modeType = NOT_A_CHANMODE;
+  }
+  return modeType;
 }
 
 QString Network::support(const QString &param) const {
@@ -294,10 +198,6 @@ IrcUser *Network::newIrcUser(const QString &hostmask) {
     emit ircUserAdded(ircuser);
   }
   return _ircUsers[nick];
-}
-
-IrcUser *Network::newIrcUser(const QByteArray &hostmask) {
-  return newIrcUser(decodeServerString(hostmask));
 }
 
 void Network::ircUserDestroyed() {
@@ -352,18 +252,6 @@ IrcUser *Network::ircUser(QString nickname) const {
     return 0;
 }
 
-IrcUser *Network::ircUser(const QByteArray &nickname) const {
-  return ircUser(decodeServerString(nickname));
-}
-
-QList<IrcUser *> Network::ircUsers() const {
-  return _ircUsers.values();
-}
-
-quint32 Network::ircUserCount() const {
-  return _ircUsers.count();
-}
-
 IrcChannel *Network::newIrcChannel(const QString &channelname) {
   if(!_ircChannels.contains(channelname.toLower())) {
     IrcChannel *channel = new IrcChannel(channelname, this);
@@ -382,10 +270,6 @@ IrcChannel *Network::newIrcChannel(const QString &channelname) {
   return _ircChannels[channelname.toLower()];
 }
 
-IrcChannel *Network::newIrcChannel(const QByteArray &channelname) {
-  return newIrcChannel(decodeServerString(channelname));
-}
-
 IrcChannel *Network::ircChannel(QString channelname) const {
   channelname = channelname.toLower();
   if(_ircChannels.contains(channelname))
@@ -394,21 +278,9 @@ IrcChannel *Network::ircChannel(QString channelname) const {
     return 0;
 }
 
-IrcChannel *Network::ircChannel(const QByteArray &channelname) const {
-  return ircChannel(decodeServerString(channelname));
-}
-
-
-QList<IrcChannel *> Network::ircChannels() const {
-  return _ircChannels.values();
-}
-
-quint32 Network::ircChannelCount() const {
-  return _ircChannels.count();
-}
-
 QByteArray Network::defaultCodecForServer() {
-  if(_defaultCodecForServer) return _defaultCodecForServer->name();
+  if(_defaultCodecForServer)
+    return _defaultCodecForServer->name();
   return QByteArray();
 }
 
@@ -417,7 +289,8 @@ void Network::setDefaultCodecForServer(const QByteArray &name) {
 }
 
 QByteArray Network::defaultCodecForEncoding() {
-  if(_defaultCodecForEncoding) return _defaultCodecForEncoding->name();
+  if(_defaultCodecForEncoding)
+    return _defaultCodecForEncoding->name();
   return QByteArray();
 }
 
@@ -426,7 +299,8 @@ void Network::setDefaultCodecForEncoding(const QByteArray &name) {
 }
 
 QByteArray Network::defaultCodecForDecoding() {
-  if(_defaultCodecForDecoding) return _defaultCodecForDecoding->name();
+  if(_defaultCodecForDecoding)
+    return _defaultCodecForDecoding->name();
   return QByteArray();
 }
 
@@ -435,7 +309,8 @@ void Network::setDefaultCodecForDecoding(const QByteArray &name) {
 }
 
 QByteArray Network::codecForServer() const {
-  if(_codecForServer) return _codecForServer->name();
+  if(_codecForServer)
+    return _codecForServer->name();
   return QByteArray();
 }
 
@@ -449,7 +324,8 @@ void Network::setCodecForServer(QTextCodec *codec) {
 }
 
 QByteArray Network::codecForEncoding() const {
-  if(_codecForEncoding) return _codecForEncoding->name();
+  if(_codecForEncoding)
+    return _codecForEncoding->name();
   return QByteArray();
 }
 
@@ -463,7 +339,8 @@ void Network::setCodecForEncoding(QTextCodec *codec) {
 }
 
 QByteArray Network::codecForDecoding() const {
-  if(_codecForDecoding) return _codecForDecoding->name();
+  if(_codecForDecoding)
+    return _codecForDecoding->name();
   else return QByteArray();
 }
 
@@ -478,7 +355,8 @@ void Network::setCodecForDecoding(QTextCodec *codec) {
 
 // FIXME use server encoding if appropriate
 QString Network::decodeString(const QByteArray &text) const {
-  if(_codecForDecoding) return ::decodeString(text, _codecForDecoding);
+  if(_codecForDecoding)
+    return ::decodeString(text, _codecForDecoding);
   else return ::decodeString(text, _defaultCodecForDecoding);
 }
 
@@ -493,8 +371,10 @@ QByteArray Network::encodeString(const QString &string) const {
 }
 
 QString Network::decodeServerString(const QByteArray &text) const {
-  if(_codecForServer) return ::decodeString(text, _codecForServer);
-  else return ::decodeString(text, _defaultCodecForServer);
+  if(_codecForServer)
+    return ::decodeString(text, _codecForServer);
+  else
+    return ::decodeString(text, _defaultCodecForServer);
 }
 
 QByteArray Network::encodeServerString(const QString &string) const {
@@ -521,6 +401,9 @@ void Network::setCurrentServer(const QString &currentServer) {
 }
 
 void Network::setConnected(bool connected) {
+  if(_connected == connected)
+    return;
+  
   _connected = connected;
   if(!connected) {
     removeChansAndUsers();
@@ -626,10 +509,6 @@ QVariantMap Network::initSupports() const {
   return supports;
 }
 
-QVariantList Network::initServerList() const {
-  return serverList();
-}
-
 QStringList Network::initIrcUsers() const {
   QStringList hostmasks;
   foreach(IrcUser *ircuser, ircUsers()) {
@@ -654,10 +533,6 @@ void Network::initSetSupports(const QVariantMap &supports) {
     iter.next();
     addSupport(iter.key(), iter.value().toString());
   }
-}
-
-void Network::initSetServerList(const QVariantList & serverList) {
-  setServerList(serverList);
 }
 
 void Network::initSetIrcUsers(const QStringList &hostmasks) {
@@ -735,30 +610,6 @@ void Network::channelDestroyed() {
   Q_ASSERT(channel);
   _ircChannels.remove(_ircChannels.key(channel));
   emit ircChannelRemoved(channel);
-}
-
-void Network::requestConnect() const {
-  if(!proxy()) return;
-  if(proxy()->proxyMode() == SignalProxy::Client) emit connectRequested(); // on the client this triggers calling this slot on the core
-  else {
-    if(connectionState() != Disconnected) {
-      qWarning() << "Requesting connect while already being connected!";
-      return;
-    }
-    emit connectRequested(networkId());  // and this is for CoreSession :)
-  }
-}
-
-void Network::requestDisconnect() const {
-  if(!proxy()) return;
-  if(proxy()->proxyMode() == SignalProxy::Client) emit disconnectRequested(); // on the client this triggers calling this slot on the core
-  else {
-    if(connectionState() == Disconnected) {
-      qWarning() << "Requesting disconnect while not being connected!";
-      return;
-    }
-    emit disconnectRequested(networkId());  // and this is for CoreSession :)
-  }
 }
 
 void Network::emitConnectionError(const QString &errorMsg) {
@@ -887,7 +738,3 @@ QDebug operator<<(QDebug dbg, const NetworkInfo &i) {
       << " rejoinChannels = " << i.rejoinChannels << ")";
   return dbg.space();
 }
-
-
-
-
