@@ -20,7 +20,6 @@
 
 #include "bufferwidget.h"
 #include "chatview.h"
-#include "chatwidget.h"
 #include "settings.h"
 #include "client.h"
 
@@ -36,11 +35,7 @@ BufferWidget::~BufferWidget() {
 
 AbstractChatView *BufferWidget::createChatView(BufferId id) {
   QWidget *chatView;
-#ifdef SPUTDEV
   chatView = new ChatView(Client::buffer(id), this);
-#else
-  chatView = new ChatWidget(id, this);
-#endif
   _chatViews[id] = chatView;
   ui.stackedWidget->addWidget(chatView);
   chatView->setFocusProxy(this);

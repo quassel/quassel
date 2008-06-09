@@ -32,9 +32,7 @@
 #include "ircchannel.h"
 #include "ircuser.h"
 #include "message.h"
-#ifdef SPUTDEV
-# include "messagemodel.h"
-#endif
+#include "messagemodel.h"
 #include "network.h"
 #include "networkmodel.h"
 #include "quasselui.h"
@@ -95,12 +93,11 @@ void Client::init() {
   connect(this, SIGNAL(bufferUpdated(BufferInfo)),
           _networkModel, SLOT(bufferUpdated(BufferInfo)));
   connect(this, SIGNAL(networkRemoved(NetworkId)),
-	  _networkModel, SLOT(networkRemoved(NetworkId)));
+          _networkModel, SLOT(networkRemoved(NetworkId)));
 
   _bufferModel = new BufferModel(_networkModel);
-#ifdef SPUTDEV
   _messageModel = mainUi->createMessageModel(this);
-#endif
+
   SignalProxy *p = signalProxy();
 
   p->attachSlot(SIGNAL(displayMsg(const Message &)), this, SLOT(recvMessage(const Message &)));
@@ -440,124 +437,21 @@ void Client::networkDestroyed() {
   }
 }
 
-#ifndef SPUTDEV
-void Client::recvMessage(const Message &message) {
-  Message msg = message;
-  Buffer *b;
-
-  checkForHighlight(msg);
-
-  // FIXME clean up code! (dup)
-
-  // TODO: make redirected messages show up in the correct buffer!
-
-  if(msg.flags() & Message::Redirected) {
-    BufferSettings bufferSettings;
-    bool inStatus = bufferSettings.value("UserMessagesInStatusBuffer", QVariant(true)).toBool();
-    bool inQuery = bufferSettings.value("UserMessagesInQueryBuffer", QVariant(false)).toBool();
-    bool inCurrent = bufferSettings.value("UserMessagesInCurrentBuffer", QVariant(false)).toBool();
-
-    if(inStatus) {
-      b = statusBuffer(msg.bufferInfo().networkId());
-      if(b) {
-        b->appendMsg(msg);
-      } else if(!inQuery && !inCurrent) {	// make sure the message get's shown somewhere
-        b = buffer(msg.bufferInfo());
-        b->appendMsg(msg);
-      }
-    }
-
-    if(inQuery) {
-      b = buffer(msg.bufferInfo().bufferId());
-      if(b) {
-        b->appendMsg(msg);
-      } else if(!inStatus && !inCurrent) { // make sure the message get's shown somewhere
-        b = statusBuffer(msg.bufferInfo().networkId());
-      if(!b) b = buffer(msg.bufferInfo()); // seems like we have to create the buffer anyways...
-      b->appendMsg(msg);
-      }
-    }
-
-    if(inCurrent) {
-      BufferId currentId = bufferModel()->currentIndex().data(NetworkModel::BufferIdRole).value<BufferId>();
-      b = buffer(currentId);
-      if(b && currentId != msg.bufferInfo().bufferId() && !inQuery) {
-        b->appendMsg(msg);
-      } else if(!inStatus && !inQuery) {	// make sure the message get's shown somewhere
-        b = statusBuffer(msg.bufferInfo().networkId());
-        if(!b) b = buffer(msg.bufferInfo()); // seems like we have to create the buffer anyways...
-        b->appendMsg(msg);
-      }
-    }
-  } else {
-    // the regular case: we can deliver where it was supposed to go
-    b = buffer(msg.bufferInfo());
-    b->appendMsg(msg);
-  }
-  //bufferModel()->updateBufferActivity(msg);
-
-  if(msg.type() == Message::Plain || msg.type() == Message::Notice || msg.type() == Message::Action) {
-    const Network *net = network(msg.bufferInfo().networkId());
-    QString networkName = net != 0
-      ? net->networkName() + ":"
-      : QString();
-    QString sender = networkName + msg.bufferInfo().bufferName() + ":" + msg.sender();
-    Message mmsg = Message(msg.timestamp(), msg.bufferInfo(), msg.type(), msg.contents(), sender, msg.flags());
-    monitorBuffer()->appendMsg(mmsg);
-  }
-  emit messageReceived(msg);
-}
-#else
-
 void Client::recvMessage(const Message &msg) {
   //checkForHighlight(msg);
   _messageModel->insertMessage(msg);
 }
 
-#endif /* SPUTDEV */
-
 void Client::recvStatusMsg(QString /*net*/, QString /*msg*/) {
   //recvMessage(net, Message::server("", QString("[STATUS] %1").arg(msg)));
 }
 
-#ifdef SPUTDEV
 void Client::receiveBacklog(BufferId bufferId, const QVariantList &msgs) {
   //checkForHighlight(msg);
   foreach(QVariant v, msgs) {
     _messageModel->insertMessage(v.value<Message>());
   }
 }
-
-#else
-
-void Client::receiveBacklog(BufferId bufferId, const QVariantList &msgs) {
-  Buffer *buffer_ = buffer(bufferId);
-  if(!buffer_) {
-    qWarning() << "Client::receiveBacklog(): received Backlog for unknown Buffer:" << bufferId;
-    return;
-  }
-
-  if(msgs.isEmpty())
-    return; // no work to be done...
-  
-  QVariantList::const_iterator msgIter = msgs.constBegin();
-  QVariantList::const_iterator msgIterEnd = msgs.constEnd();
-  Message msg;
-  while(msgIter != msgIterEnd) {
-    msg = (*msgIter).value<Message>();
-    checkForHighlight(msg);
-    buffer_->prependMsg(msg);
-    msgIter++;
-  }
-
-  if(!layoutQueue.contains(buffer_))
-    layoutQueue.append(buffer_);
-
-  if(!layoutTimer->isActive()) {
-    layoutTimer->start();
-  }
-}
-#endif /* SPUTDEV */
 
 void Client::layoutMsg() {
   if(layoutQueue.isEmpty()) {

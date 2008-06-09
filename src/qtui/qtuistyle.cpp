@@ -20,11 +20,7 @@
 
 #include "qtuistyle.h"
 
-#ifndef SPUTDEV
-QtUiStyle::QtUiStyle() : UiStyle("QtUiStyle") {
-#else
-QtUiStyle::QtUiStyle() : UiStyle("QtUiStyleNew") {
-#endif
+QtUiStyle::QtUiStyle() : UiStyle("QtUiStyleNew") {  // FIXME QtUiStyleNew naming
   // We need to just set our internal formats; everything else is done by the base class...
 
   // Internal message formats

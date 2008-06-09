@@ -21,10 +21,6 @@
 #ifndef _UISTYLE_H_
 #define _UISTYLE_H_
 
-#ifndef SPUTDEV
-# include "old-uistyle.h"
-#else
-
 #include <QDataStream>
 #include <QTextCharFormat>
 #include <QTextLayout>
@@ -161,5 +157,4 @@ QDataStream &operator>>(QDataStream &in, UiStyle::FormatList &formatList);
 
 Q_DECLARE_METATYPE(UiStyle::FormatList);
 
-#endif // SPUTDEV
 #endif

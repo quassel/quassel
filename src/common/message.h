@@ -72,19 +72,6 @@ public:
   inline QDateTime timestamp() const { return _timestamp; }
 
   void setFlags(Flags flags);
-  
-#ifndef SPUTDEV
-  QString formattedTimestamp();
-  QString formattedSender();
-  QString formattedText();
-
-  //static QString formattedToHtml(const QString &);
-
-  /** Convert mIRC control codes to our own */
-  static QString mircToInternal(QString);
-
-  void format();
-#endif
 
 private:
   QDateTime _timestamp;

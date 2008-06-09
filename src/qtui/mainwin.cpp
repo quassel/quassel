@@ -20,7 +20,6 @@
 #include "mainwin.h"
 
 #include "aboutdlg.h"
-#include "chatwidget.h"
 #include "bufferview.h"
 #include "bufferviewconfig.h"
 #include "bufferviewfilter.h"
@@ -286,7 +285,7 @@ void MainWin::setupNickWidget() {
 }
 
 void MainWin::setupChatMonitor() {
-#ifndef SPUTDEV
+/*
   VerticalDock *dock = new VerticalDock(tr("Chat Monitor"), this);
   dock->setObjectName("ChatMonitorDock");
 
@@ -305,7 +304,7 @@ void MainWin::setupChatMonitor() {
 
   addDockWidget(Qt::TopDockWidgetArea, dock, Qt::Vertical);
   ui.menuViews->addAction(dock->toggleViewAction());
-#endif /* SPUTDEV */
+*/
 }
 
 void MainWin::setupInputWidget() {
@@ -600,18 +599,19 @@ void MainWin::receiveMessage(const Message &msg) {
 
     UiSettings uiSettings;
 
-#ifndef SPUTDEV
     bool displayBubble = uiSettings.value("NotificationBubble", QVariant(true)).toBool();
     bool displayDesktop = uiSettings.value("NotificationDesktop", QVariant(true)).toBool();
     if(displayBubble || displayDesktop) {
+/* // FIXME port
+    if(uiSettings.value("DisplayPopupMessages", QVariant(true)).toBool()) {
       // FIXME don't invoke style engine for this!
       QString text = QtUi::style()->styleString(Message::mircToInternal(msg.contents())).plainText;
       if(displayBubble) displayTrayIconMessage(title, text);
 #  ifdef HAVE_DBUS
       if(displayDesktop) sendDesktopNotification(title, text);
 #  endif
+    */
     }
-#endif
     if(uiSettings.value("AnimateTrayIcon", QVariant(true)).toBool()) {
       QApplication::alert(this);
       setTrayIconActivity(true);
