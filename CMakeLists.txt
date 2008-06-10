@@ -50,17 +50,19 @@ else(BUILD MATCHES all)
   endif(BUILD MATCHES mono)
 endif(BUILD MATCHES all)
 
+# Enable mostly b0rked stuff (new ChatView), do not enable this unless you know what you do...
+if(SPUTDEV)
+  add_definitions(-DSPUTDEV)
+endif(SPUTDEV)
+
+find_package(OpenSSL)
+
 # Select a Qt installation here, if you don't want to use system Qt
 if(DEFINED QT)
   # FindQt4 will look for the qmake binary in $PATH, so we just prepend the Qt dir
   set(ENV{PATH} ${QT}/bin:$ENV{PATH})
   #SET(QT_QMAKE_EXECUTABLE ${QT}/bin/qmake CACHE FILEPATH "" FORCE)
 endif(DEFINED QT)
-
-# Enable mostly b0rked stuff (new ChatView), do not enable this unless you know what you do...
-if(SPUTDEV)
-  add_definitions(-DSPUTDEV)
-endif(SPUTDEV)
 
 # Now that we have the correct $PATH, lets find Qt!
 find_package(Qt4 REQUIRED)
@@ -111,6 +113,9 @@ endif(DEFINED STATIC)
 
 if(STATICWIN AND WIN32)
   link_libraries(imm32 winmm)  # missing by default :/
+  if(OPENSSL_FOUND)
+    link_libraries(libeay32MD ssleay32MD)
+  endif(OPENSSL_FOUND)
 endif(STATICWIN AND WIN32)
 
 if(WIN32)

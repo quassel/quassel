@@ -47,12 +47,10 @@ set(HEADERS
 # QT_DEFINITIONS actually does not work, stuff gets included always.
 # Funny enough that does not seem to be harmful, but we should still find a way to figure out
 # if we have openssl in Qt...
-find_package(OpenSSL)
-
-if(OPENSSL_FOUND AND NOT ${QT_DEFINITIONS} MATCHES "-DQT_NO_OPENSSL")
+if(OPENSSL_FOUND AND NOT QT_DEFINITIONS MATCHES "-DQT_NO_OPENSSL")
   set(SOURCES ${SOURCES} sslserver.cpp)
   set(MOC_HDRS ${MOC_HDRS} sslserver.h)
-endif(OPENSSL_FOUND AND NOT ${QT_DEFINITIONS} MATCHES "-DQT_NO_OPENSSL")
+endif(OPENSSL_FOUND AND NOT QT_DEFINITIONS MATCHES "-DQT_NO_OPENSSL")
 
 QT4_WRAP_CPP(MOC ${MOC_HDRS})
 
