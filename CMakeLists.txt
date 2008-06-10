@@ -12,10 +12,7 @@
 project(QuasselIRC)
 
 cmake_minimum_required(VERSION 2.4.5)
-
-# We can't use this on 2.4, so we'll have to live with warnings from 2.6 in
-# the meantime...
-#cmake_policy(SET CMP0003 OLD)  # suppress linker warnings
+cmake_policy(SET CMP0003 OLD)  # suppress linker warnings
 
 if(STATICWIN)
   set(CMAKE_BUILD_TYPE Release)
@@ -98,10 +95,10 @@ endif(BUILD_QTCLIENT OR BUILD_MONO)
 add_dependencies(mod_common genversion_run)
 
 # Add resources
-qt4_add_resources(RES_I18N i18n/i18n.qrc)
-qt4_add_resources(RES_ICONS src/icons/icons.qrc)
-qt4_add_resources(RES_QUASSEL_ICONS src/icons/quassel-icons.qrc)
-qt4_add_resources(RES_SQL src/core/sql.qrc)
+qt4_add_resources(RC_I18N i18n/i18n.qrc)
+qt4_add_resources(RC_ICONS src/icons/icons.qrc)
+qt4_add_resources(RC_QUASSEL_ICONS src/icons/quassel-icons.qrc)
+qt4_add_resources(RC_SQL src/core/sql.qrc)
 
 # Set global buildflags
 if(DEFINED STATIC)
@@ -112,6 +109,10 @@ endif(DEFINED STATIC)
 if(STATICWIN AND WIN32)
   link_libraries(imm32 winmm)  # missing by default :/
 endif(STATICWIN AND WIN32)
+
+if(WIN32)
+  set(WIN32_RC src/icons/win32.rc)  # for app icons on windows
+endif(WIN32)
 
 # FIXME: Add icons for windows as soon as we have merged with trunk (which has reorganized
 #        the icon files):
@@ -136,21 +137,24 @@ endmacro(setup_qt4_variables)
 # Now we have everything, so just glue the right pieces together :)
 if(BUILD_CORE)
   setup_qt4_variables(NETWORK SCRIPT SQL)
-  add_executable(quasselcore ${CMAKE_SOURCE_DIR}/src/common/main.cpp ${RES_SQL} ${RES_I18N})
+  add_executable(quasselcore ${CMAKE_SOURCE_DIR}/src/common/main.cpp
+                             ${RC_SQL} ${RC_I18N} ${WIN32_RC})
   set_target_properties(quasselcore PROPERTIES COMPILE_FLAGS "${QUASSEL_QT_DEFINITIONS} -DBUILD_CORE")
   target_link_libraries(quasselcore mod_core mod_common ${QUASSEL_QT_LIBRARIES})
 endif(BUILD_CORE)
 
 if(BUILD_QTCLIENT)
   setup_qt4_variables(GUI NETWORK)
-  add_executable(quasselclient ${CMAKE_SOURCE_DIR}/src/common/main.cpp ${RES_ICONS} ${RES_QUASSEL_ICONS} ${RES_I18N})
+  add_executable(quasselclient ${CMAKE_SOURCE_DIR}/src/common/main.cpp
+                               ${RC_ICONS} ${RC_QUASSEL_ICONS} ${RC_I18N} ${WIN32_RC})
   set_target_properties(quasselclient PROPERTIES COMPILE_FLAGS "${QUASSEL_QT_DEFINITIONS} -DBUILD_QTUI")
   target_link_libraries(quasselclient mod_qtui mod_uisupport mod_client mod_common ${QUASSEL_QT_LIBRARIES})
 endif(BUILD_QTCLIENT)
 
 if(BUILD_MONO)
   setup_qt4_variables(GUI NETWORK SCRIPT SQL)
-  add_executable(quassel ${CMAKE_SOURCE_DIR}/src/common/main.cpp ${RES_ICONS} ${RES_QUASSEL_ICONS} ${RES_SQL} ${RES_I18N})
+  add_executable(quassel ${CMAKE_SOURCE_DIR}/src/common/main.cpp
+                         ${RC_ICONS} ${RC_QUASSEL_ICONS} ${RC_SQL} ${RC_I18N} ${WIN32_RC})
   set_target_properties(quassel PROPERTIES COMPILE_FLAGS "${QUASSEL_QT_DEFINITIONS} -DBUILD_MONO")
   target_link_libraries(quassel mod_qtui mod_uisupport mod_client mod_core mod_common ${QUASSEL_QT_LIBRARIES})
 endif(BUILD_MONO)
