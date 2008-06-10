@@ -12,7 +12,10 @@
 project(QuasselIRC)
 
 cmake_minimum_required(VERSION 2.4.5)
-cmake_policy(SET CMP0003 OLD)  # suppress linker warnings
+
+# This would suppress annoying warnings on cmake-2.6, but we can't use it 
+# with 2.4, so... DUH!
+# cmake_policy(SET CMP0003 OLD)  # suppress linker warnings
 
 if(STATICWIN)
   set(CMAKE_BUILD_TYPE Release)
