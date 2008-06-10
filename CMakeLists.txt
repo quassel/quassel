@@ -55,6 +55,7 @@ if(SPUTDEV)
   add_definitions(-DSPUTDEV)
 endif(SPUTDEV)
 
+# Set up OpenSSL
 find_package(OpenSSL)
 
 # Select a Qt installation here, if you don't want to use system Qt
@@ -113,9 +114,9 @@ endif(DEFINED STATIC)
 
 if(STATICWIN AND WIN32)
   link_libraries(imm32 winmm)  # missing by default :/
-  if(OPENSSL_FOUND)
-    link_libraries(libeay32MD ssleay32MD)
-  endif(OPENSSL_FOUND)
+   if(OPENSSL_FOUND)
+     link_libraries(${OPENSSL_LIBRARIES})  # not sure if we need it in here
+   endif(OPENSSL_FOUND)
 endif(STATICWIN AND WIN32)
 
 if(WIN32)
