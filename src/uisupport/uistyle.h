@@ -36,7 +36,7 @@ class UiStyle {
     UiStyle(const QString &settingsKey);
     virtual ~UiStyle();
 
-    typedef QList<QPair<int, quint32> > FormatList;
+    typedef QList<QPair<quint16, quint32> > FormatList;
 
     //! This enumerates the possible formats a text element may have. */
     /** These formats are ordered on increasing importance, in cases where a given property is specified

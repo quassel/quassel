@@ -163,12 +163,16 @@ QString UiStyle::formatCode(FormatType ftype) const {
 // Since we create those ourselves, we should be pretty safe that nobody does something crappy here.
 UiStyle::StyledString UiStyle::styleString(const QString &s_) {
   QString s = s_;
+  if(s.length() > 65535) {
+    qWarning() << QString("String too long to be styled: %1").arg(s);
+    return StyledString();
+  }
   StyledString result;
-  result.formatList.append(qMakePair(0, (quint32)None));
+  result.formatList.append(qMakePair((quint16)0, (quint32)None));
   quint32 curfmt = (quint32)None;
-  int pos = 0; int length = 0;
+  int pos = 0; quint16 length = 0;
   for(;;) {
-    pos = s.indexOf('%', pos);
+    int pos = s.indexOf('%', pos);
     if(pos < 0) break;
     if(s[pos+1] == '%') { // escaped %, we just remove one and continue
       s.remove(pos, 1);
@@ -211,7 +215,7 @@ UiStyle::StyledString UiStyle::styleString(const QString &s_) {
     if(pos == result.formatList.last().first)
       result.formatList.last().second = curfmt;
     else
-      result.formatList.append(qMakePair(pos, curfmt));
+      result.formatList.append(qMakePair((quint16)pos, curfmt));
   }
   result.plainText = s;
   return result;
@@ -335,12 +339,12 @@ QDataStream &operator<<(QDataStream &out, const UiStyle::FormatList &formatList)
 }
 
 QDataStream &operator>>(QDataStream &in, UiStyle::FormatList &formatList) {
-  int cnt;
+  quint16 cnt;
   in >> cnt;
-  for(int i = 0; i < cnt; i++) {
-    int pos; quint32 ftype;
+  for(quint16 i = 0; i < cnt; i++) {
+    quint16 pos; quint32 ftype;
     in >> pos >> ftype;
-    formatList.append(qMakePair(pos, ftype));
+    formatList.append(qMakePair((quint16)pos, ftype));
   }
   return in;
 }
