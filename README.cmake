@@ -4,7 +4,7 @@ There is no "make distclean"; "make clean" should usually be enough since CMake 
 cleans up properly (qmake often didn't). If you really want to get rid of all build files,
 just remove the build directory.
 
-Usually, you should build Quassel as follows:
+Usually, you will build Quassel as follows:
 
 cd /path/to/build/dir
 cmake /path/to/quassel
@@ -32,3 +32,22 @@ Quassel recognizes the following options:
     Enable static building of Quassel. You should link the static versions of some libs
     (in particular libstdc++.a) into /path/to/build/dir/staticlibs in oder to create
     a portable binary!
+
+-DSTATICWIN=1
+    Enable static building for Windows platforms. This adds some libs that are not automatically
+    included for some reason.
+
+BUILDING ON WINDOWS:
+--------------------
+We have tested building on Windows with a statically built Qt (with its /bin directory in %PATH%)
+and MSVC 2005/2008. Make sure that you use a "shell" that has all needed env variables setup,
+such as the "Visual Studio Command Prompt". You will also need the /bin of the Microsoft SDK in
+your %PATH% at least for VS 2008, otherwise rc.exe is not found.
+Currently, only building in the shell using nmake seems to work; CMake can also create MSVC project
+files, but they seem to be problematic. However, YMMV.
+
+After you have everything setup:
+
+cd C:\path\to\quassel-build
+cmake -G"NMake Makefiles" C:\path\to\quassel\source -DSTATICWIN=1
+nmake

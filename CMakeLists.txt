@@ -4,6 +4,7 @@
 #                    of "core", "client", "mono" or "all".
 # -DQT=/path/to/qt : Choose a Qt4 installation to use instead of the system Qt4
 # -DSTATIC=1       : Enable static building of Quassel, most useful with a static Qt.
+# -DSTATICWIN=1    : Enable static building for Windows.
 # -DSPUTDEV        : Do not use.
 #
 # NOTE: You need to remove CMakeCache.txt if you plan to change any of these values!
@@ -11,6 +12,11 @@
 project(QuasselIRC)
 
 cmake_minimum_required(VERSION 2.4.5)
+cmake_policy(SET CMP0003 OLD)  # suppress linker warnings
+
+if(STATICWIN)
+  set(CMAKE_BUILD_TYPE Release)
+endif(STATICWIN)
 
 set(QT_MIN_VERSION "4.4.0")
 
@@ -98,6 +104,14 @@ if(DEFINED STATIC)
   set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc ${CMAKE_EXE_LINKER_FLAGS}")
   link_directories(${CMAKE_BINARY_DIR}/staticlibs)
 endif(DEFINED STATIC)
+
+if(STATICWIN AND WIN32)
+  link_libraries(imm32 winmm)  # missing by default :/
+endif(STATICWIN AND WIN32)
+
+# FIXME: Add icons for windows as soon as we have merged with trunk (which has reorganized
+#        the icon files):
+#        Simply add the .rc file to the targets
 
 # Here comes the dirty part. Our targets need different Qt4 modules, i.e. different libs
 # and defines. We can't simply include UseQt4 several times, since definitions add up.
