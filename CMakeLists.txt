@@ -12,7 +12,10 @@
 project(QuasselIRC)
 
 cmake_minimum_required(VERSION 2.4.5)
-cmake_policy(SET CMP0003 OLD)  # suppress linker warnings
+
+# We can't use this on 2.4, so we'll have to live with warnings from 2.6 in
+# the meantime...
+#cmake_policy(SET CMP0003 OLD)  # suppress linker warnings
 
 if(STATICWIN)
   set(CMAKE_BUILD_TYPE Release)
@@ -95,9 +98,10 @@ endif(BUILD_QTCLIENT OR BUILD_MONO)
 add_dependencies(mod_common genversion_run)
 
 # Add resources
-qt4_add_resources(RES_I18N ${CMAKE_SOURCE_DIR}/i18n/i18n.qrc)
-qt4_add_resources(RES_ICONS ${CMAKE_SOURCE_DIR}/src/icons/icons.qrc)
-qt4_add_resources(RES_SQL ${CMAKE_SOURCE_DIR}/src/core/sql.qrc)
+qt4_add_resources(RES_I18N i18n/i18n.qrc)
+qt4_add_resources(RES_ICONS src/icons/icons.qrc)
+qt4_add_resources(RES_QUASSEL_ICONS src/icons/quassel-icons.qrc)
+qt4_add_resources(RES_SQL src/core/sql.qrc)
 
 # Set global buildflags
 if(DEFINED STATIC)
@@ -139,14 +143,14 @@ endif(BUILD_CORE)
 
 if(BUILD_QTCLIENT)
   setup_qt4_variables(GUI NETWORK)
-  add_executable(quasselclient ${CMAKE_SOURCE_DIR}/src/common/main.cpp ${RES_ICONS} ${RES_I18N})
+  add_executable(quasselclient ${CMAKE_SOURCE_DIR}/src/common/main.cpp ${RES_ICONS} ${RES_QUASSEL_ICONS} ${RES_I18N})
   set_target_properties(quasselclient PROPERTIES COMPILE_FLAGS "${QUASSEL_QT_DEFINITIONS} -DBUILD_QTUI")
   target_link_libraries(quasselclient mod_qtui mod_uisupport mod_client mod_common ${QUASSEL_QT_LIBRARIES})
 endif(BUILD_QTCLIENT)
 
 if(BUILD_MONO)
   setup_qt4_variables(GUI NETWORK SCRIPT SQL)
-  add_executable(quassel ${CMAKE_SOURCE_DIR}/src/common/main.cpp ${RES_ICONS} ${RES_SQL} ${RES_I18N})
+  add_executable(quassel ${CMAKE_SOURCE_DIR}/src/common/main.cpp ${RES_ICONS} ${RES_QUASSEL_ICONS} ${RES_SQL} ${RES_I18N})
   set_target_properties(quassel PROPERTIES COMPILE_FLAGS "${QUASSEL_QT_DEFINITIONS} -DBUILD_MONO")
   target_link_libraries(quassel mod_qtui mod_uisupport mod_client mod_core mod_common ${QUASSEL_QT_LIBRARIES})
 endif(BUILD_MONO)
