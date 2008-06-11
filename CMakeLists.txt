@@ -115,7 +115,7 @@ endif(DEFINED STATIC)
 if(STATICWIN AND WIN32)
   link_libraries(imm32 winmm)  # missing by default :/
    if(OPENSSL_FOUND)
-     link_libraries(${OPENSSL_LIBRARIES})  # not sure if we need it in here
+     link_libraries(${OPENSSL_LIBRARIES} libeay32MD)
    endif(OPENSSL_FOUND)
 endif(STATICWIN AND WIN32)
 
