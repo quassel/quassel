@@ -32,9 +32,11 @@ UiStyle::UiStyle(const QString &settingsKey) : _settingsKey(settingsKey) {
     Q_ASSERT(QVariant::nameToType("UiStyle::FormatList") != QVariant::Invalid);
   }
 
+  _defaultFont = QFont("Monospace", QApplication::font().pointSize());
+
   // Default format
   _defaultPlainFormat.setForeground(QBrush("#000000"));
-  _defaultPlainFormat.setFont(QFont("Monospace", QApplication::font().pointSize()));
+  _defaultPlainFormat.setFont(_defaultFont);
   _defaultPlainFormat.font().setFixedPitch(true);
   _defaultPlainFormat.font().setStyleHint(QFont::TypeWriter);
   setFormat(None, _defaultPlainFormat, Settings::Default);
@@ -103,7 +105,7 @@ UiStyle::UiStyle(const QString &settingsKey) : _settingsKey(settingsKey) {
 }
 
 UiStyle::~ UiStyle() {
-  
+  qDeleteAll(_cachedFontMetrics);
 }
 
 void UiStyle::setFormat(FormatType ftype, QTextCharFormat fmt, Settings::Mode mode) {
@@ -131,7 +133,7 @@ QTextCharFormat UiStyle::format(FormatType ftype, Settings::Mode mode) const {
 // NOTE: This function is intimately tied to the values in FormatType. Don't change this
 //       until you _really_ know what you do!
 QTextCharFormat UiStyle::mergedFormat(quint32 ftype) {
-  if(_cachedFormats.contains(ftype)) return _cachedFormats[ftype];
+  if(_cachedFormats.contains(ftype)) return _cachedFormats.value(ftype);
   if(ftype == Invalid) return QTextCharFormat();
   // Now we construct the merged format, starting with the default
   QTextCharFormat fmt = format(None);
@@ -146,8 +148,13 @@ QTextCharFormat UiStyle::mergedFormat(quint32 ftype) {
   if(ftype & 0x00800000) fmt.merge(format((FormatType)(ftype & 0xf0800000))); // background
   // URL
   if(ftype & Url) fmt.merge(format(Url));
-  _cachedFormats[ftype] = fmt;
-  return fmt;
+  return _cachedFormats[ftype] = fmt;
+}
+
+QFontMetricsF *UiStyle::fontMetrics(quint32 ftype) {
+  // QFontMetricsF is not assignable, so we need to store pointers :/
+  if(_cachedFontMetrics.contains(ftype)) return _cachedFontMetrics.value(ftype);
+  return (_cachedFontMetrics[ftype] = new QFontMetricsF(mergedFormat(ftype).font()));
 }
 
 UiStyle::FormatType UiStyle::formatType(const QString & code) const {

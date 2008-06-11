@@ -22,6 +22,7 @@
 #define _UISTYLE_H_
 
 #include <QDataStream>
+#include <QFontMetricsF>
 #include <QTextCharFormat>
 #include <QTextLayout>
 #include <QUrl>
@@ -133,9 +134,12 @@ class UiStyle {
     void setFormat(FormatType, QTextCharFormat, Settings::Mode mode/* = Settings::Custom*/);
     QTextCharFormat format(FormatType, Settings::Mode mode = Settings::Custom) const;
     QTextCharFormat mergedFormat(quint32 formatType);
+    QFontMetricsF *fontMetrics(quint32 formatType);
 
     FormatType formatType(const QString &code) const;
     QString formatCode(FormatType) const;
+
+    inline QFont defaultFont() const { return _defaultFont; }
 
   protected:
 
@@ -143,10 +147,12 @@ class UiStyle {
   private:
     QString mircToInternal(const QString &);
 
+    QFont _defaultFont;
     QTextCharFormat _defaultPlainFormat;
     QHash<FormatType, QTextCharFormat> _defaultFormats;
     QHash<FormatType, QTextCharFormat> _customFormats;
     QHash<quint32, QTextCharFormat> _cachedFormats;
+    QHash<quint32, QFontMetricsF *> _cachedFontMetrics;
     QHash<QString, FormatType> _formatCodes;
 
     QString _settingsKey;
