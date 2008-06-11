@@ -18,6 +18,9 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QFontMetrics>
+#include <QTextBoundaryFinder>
+
 #include "chatlinemodelitem.h"
 #include "chatlinemodel.h"
 #include "qtui.h"
@@ -34,6 +37,7 @@ ChatLineModelItem::ChatLineModelItem(const Message &msg) : MessageModelItem(msg)
   _sender.formatList = m.sender.formatList;
   _contents.formatList = m.contents.formatList;
 
+  computeWordList();
 }
 
 
@@ -58,3 +62,40 @@ QVariant ChatLineModelItem::data(int column, int role) const {
 bool ChatLineModelItem::setData(int column, const QVariant &value, int role) {
   return false;
 }
+
+void ChatLineModelItem::computeWordList() {
+  QList<QPair<quint16, quint16> > wplist;  // use a temp list which we'll later copy into a QVector for efficiency
+  QTextBoundaryFinder finder(QTextBoundaryFinder::Word, _contents.plainText);
+  int idx;
+  int flistidx = -1;
+  int fmtend = -1;
+  QFontMetricsF *metrics;
+  QPair<quint16, quint16> wp(0, 0);
+  do {
+    idx = finder.toNextBoundary();
+    if(idx < 0) idx = _contents.plainText.length();
+    else if(finder.boundaryReasons() != QTextBoundaryFinder::StartWord) continue;
+    int start = wp.first;
+    while(start < idx) {
+      if(fmtend <= start) {
+        flistidx++;
+        fmtend = _contents.formatList.count() > flistidx+1 ? _contents.formatList[flistidx+1].first
+                                                           : _contents.plainText.length();
+        metrics = QtUi::style()->fontMetrics(_contents.formatList[flistidx].second);
+        Q_ASSERT(fmtend > start);
+      }
+      int i = qMin(idx, fmtend);
+      wp.second += metrics->width(_contents.plainText.mid(start, i - start));
+      start = i;
+    }
+    wplist.append(wp);
+    wp.first = idx;
+  } while(idx < _contents.plainText.length());
+
+  // A QVector needs less space than a QList
+  _wordList.resize(wplist.count());
+  for(int i = 0; i < wplist.count(); i++) {
+    _wordList[i] = wplist.at(i);
+  }
+}
+

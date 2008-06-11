@@ -21,6 +21,9 @@
 #ifndef CHATLINEMODELITEM_H_
 #define CHATLINEMODELITEM_H_
 
+#include <QVector>
+#include <QPair>
+
 #include "messagemodel.h"
 #include "uistyle.h"
 
@@ -34,13 +37,15 @@ class ChatLineModelItem : public MessageModelItem {
     virtual bool setData(int column, const QVariant &value, int role);
 
   private:
+    void computeWordList();
+
     struct ChatLinePart {
       QString plainText;
       UiStyle::FormatList formatList;
-
     };
-
     ChatLinePart _timestamp, _sender, _contents;
+
+    QVector<QPair<quint16, quint16> > _wordList;
 };
 
 #endif

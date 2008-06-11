@@ -448,9 +448,11 @@ void Client::recvStatusMsg(QString /*net*/, QString /*msg*/) {
 
 void Client::receiveBacklog(BufferId bufferId, const QVariantList &msgs) {
   //checkForHighlight(msg);
+  //QTime start = QTime::currentTime();
   foreach(QVariant v, msgs) {
     _messageModel->insertMessage(v.value<Message>());
   }
+  //qDebug() << "processed" << msgs.count() << "backlog lines in" << start.msecsTo(QTime::currentTime());
 }
 
 void Client::layoutMsg() {
