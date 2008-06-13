@@ -26,9 +26,12 @@
 #include <QtGui>
 
 #include "chatitem.h"
+#include "chatlinemodel.h"
+#include "qtui.h"
 
 ChatItem::ChatItem(const QPersistentModelIndex &index_, QGraphicsItem *parent) : QGraphicsItem(parent), _index(index_) {
-
+  QFontMetricsF *metrics = QtUi::style()->fontMetrics(data(ChatLineModel::FormatRole).value<UiStyle::FormatList>().at(0).second);
+  _lineHeight = metrics->lineSpacing();
 }
 
 ChatItem::~ChatItem() {
@@ -57,12 +60,33 @@ void ChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
   painter->drawRect(boundingRect());
 }
 
-
-
 int ChatItem::setWidth(int w) {
+  if(w == _boundingRect.width()) return _boundingRect.height();
+  int h = heightForWidth(w);
   _boundingRect.setWidth(w);
-  _boundingRect.setHeight(20); // FIXME
-  return 20;
+  _boundingRect.setHeight(h);
+  return h;
+}
+
+int ChatItem::heightForWidth(int width) {
+  if(data(ChatLineModel::ColumnTypeRole).toUInt() != ChatLineModel::ContentsColumn)
+    return _lineHeight; // only contents can be multi-line
+
+  QVariantList wrapList = data(ChatLineModel::WrapListRole).toList();
+  int lines = 1;
+  int offset = 0;
+  for(int i = 0; i < wrapList.count(); i+=2) {
+    if(wrapList.at(i+1).toUInt() - offset < width) continue;
+    lines++;
+    if(i > 0) {
+      if(offset != wrapList.at(i-1).toUInt()) offset = wrapList.at(i-1).toUInt();
+      else offset += width;
+    } else {
+      offset += width;
+    }
+    i-=2;
+  }
+  return lines * _lineHeight;
 }
 
 /*

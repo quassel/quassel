@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _CHATITEM_H_
-#define _CHATITEM_H_
+#ifndef CHATITEM_H_
+#define CHATITEM_H_
 
 #include <QGraphicsItem>
 #include <QTextLayout>
@@ -57,6 +57,9 @@ class ChatItem : public QGraphicsItem {
     //void mouseMoveEvent ( QGraphicsSceneMouseEvent * event );
 
   private:
+    int heightForWidth(int width);
+
+    int _lineHeight;
     QRectF _boundingRect;
     //QTextLayout _layout;
     //QTextOption _textOption;

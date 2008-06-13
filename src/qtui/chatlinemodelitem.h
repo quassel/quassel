@@ -37,7 +37,9 @@ class ChatLineModelItem : public MessageModelItem {
     virtual bool setData(int column, const QVariant &value, int role);
 
   private:
-    void computeWordList();
+    typedef QVector<QPair<quint16, quint16> > WrapList;
+
+    void computeWrapList();
 
     struct ChatLinePart {
       QString plainText;
@@ -45,7 +47,7 @@ class ChatLineModelItem : public MessageModelItem {
     };
     ChatLinePart _timestamp, _sender, _contents;
 
-    QVector<QPair<quint16, quint16> > _wordList;
+    WrapList _wrapList;
 };
 
 #endif

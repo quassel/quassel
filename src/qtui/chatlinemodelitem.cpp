@@ -37,7 +37,7 @@ ChatLineModelItem::ChatLineModelItem(const Message &msg) : MessageModelItem(msg)
   _sender.formatList = m.sender.formatList;
   _contents.formatList = m.contents.formatList;
 
-  computeWordList();
+  computeWrapList();
 }
 
 
@@ -52,8 +52,16 @@ QVariant ChatLineModelItem::data(int column, int role) const {
   }
 
   switch(role) {
-    case ChatLineModel::DisplayRole: return part->plainText;
-    case ChatLineModel::FormatRole:  return QVariant::fromValue<UiStyle::FormatList>(part->formatList);
+    case ChatLineModel::DisplayRole:
+      return part->plainText;
+    case ChatLineModel::FormatRole:
+      return QVariant::fromValue<UiStyle::FormatList>(part->formatList);
+    case ChatLineModel::WrapListRole:
+      if(column != ChatLineModel::ContentsColumn) return QVariant();
+      QVariantList wrapList;
+      typedef QPair<quint16, quint16> WrapPoint;  // foreach can't parse templated params
+      foreach(WrapPoint pair, _wrapList) wrapList << pair.first << pair.second;
+      return wrapList;
   }
 
   return MessageModelItem::data(column, role);
@@ -63,8 +71,8 @@ bool ChatLineModelItem::setData(int column, const QVariant &value, int role) {
   return false;
 }
 
-void ChatLineModelItem::computeWordList() {
-  QList<QPair<quint16, quint16> > wplist;  // use a temp list which we'll later copy into a QVector for efficiency
+void ChatLineModelItem::computeWrapList() {
+  WrapList wplist;  // use a temp list which we'll later copy into a QVector for efficiency
   QTextBoundaryFinder finder(QTextBoundaryFinder::Word, _contents.plainText);
   int idx;
   int flistidx = -1;
@@ -93,9 +101,9 @@ void ChatLineModelItem::computeWordList() {
   } while(idx < _contents.plainText.length());
 
   // A QVector needs less space than a QList
-  _wordList.resize(wplist.count());
+  _wrapList.resize(wplist.count());
   for(int i = 0; i < wplist.count(); i++) {
-    _wordList[i] = wplist.at(i);
+    _wrapList[i] = wplist.at(i);
   }
 }
 

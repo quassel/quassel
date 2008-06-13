@@ -34,8 +34,9 @@ MessageModel::~MessageModel() {
 }
 
 QVariant MessageModel::data(const QModelIndex &index, int role) const {
-  int row = index.row();
-  if(row < 0 || row >= _messageList.count()) return QVariant();
+  int row = index.row(); int column = index.column();
+  if(row < 0 || row >= _messageList.count() || column < 0) return QVariant();
+  if(role == ColumnTypeRole) return column;
   return _messageList[row]->data(index.column(), role);
 }
 

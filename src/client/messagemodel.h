@@ -42,6 +42,7 @@ class MessageModel : public QAbstractItemModel {
       TimestampRole,
       DisplayRole,
       FormatRole,
+      ColumnTypeRole,
       UserRole
     };
 
