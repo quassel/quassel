@@ -34,10 +34,24 @@ class ChatLineModel : public MessageModel {
     ChatLineModel(QObject *parent = 0);
     virtual ~ChatLineModel();
 
+    /// Used to store information about words to be used for wrapping
+    struct Word {
+      quint16 start;
+      qreal width;
+      qreal trailing;
+    };
+
+    typedef QVector<Word> WrapList;
+  
   protected:
     virtual MessageModelItem *createMessageModelItem(const Message &);
 
 };
+
+QDataStream &operator<<(QDataStream &out, const ChatLineModel::WrapList);
+QDataStream &operator>>(QDataStream &in, ChatLineModel::WrapList &);
+
+Q_DECLARE_METATYPE(ChatLineModel::WrapList);
 
 #endif
 

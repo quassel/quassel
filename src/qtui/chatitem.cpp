@@ -60,19 +60,21 @@ int ChatItem::heightForWidth(int width) {
   if(data(ChatLineModel::ColumnTypeRole).toUInt() != ChatLineModel::ContentsColumn)
     return _lineHeight; // only contents can be multi-line
 
-  QVariantList wrapList = data(ChatLineModel::WrapListRole).toList();
+  ChatLineModel::WrapList wrapList = data(ChatLineModel::WrapListRole).value<ChatLineModel::WrapList>();
   int lines = 1;
-  int offset = 0;
-  for(int i = 0; i < wrapList.count(); i+=2) {
-    if(wrapList.at(i+1).toUInt() - offset < width) continue;
-    lines++;
-    if(i > 0) {
-      if(offset < wrapList.at(i-1).toUInt()) offset = wrapList.at(i-1).toUInt();
-      else offset += width;
-    } else {
-      offset += width;
+  qreal w = 0;
+  for(int i = 0; i < wrapList.count(); i++) {
+    w += wrapList.at(i).width;
+    if(w <= width) {
+      w += wrapList.at(i).trailing;
+      continue;
     }
-    i-=2;
+    lines++;
+    w = wrapList.at(i).width;
+    while(w >= width) {
+      lines++;
+      w -= width;
+    }
   }
   return lines * _lineHeight;
 }
@@ -126,6 +128,12 @@ void ChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
   layout();
   _layout->draw(painter, QPointF(0,0), QVector<QTextLayout::FormatRange>(), boundingRect());
   painter->drawRect(boundingRect());
+  int width = 0;
+  QVariantList wrapList = data(ChatLineModel::WrapListRole).toList();
+  for(int i = 2; i < wrapList.count(); i+=2) {
+    QRect r(wrapList[i-1].toUInt(), 0, wrapList[i+1].toUInt() - wrapList[i-1].toUInt(), _lineHeight);
+    painter->drawRect(r);
+  }
 }
 
 /*

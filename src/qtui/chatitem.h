@@ -74,6 +74,7 @@ class ChatItem : public QGraphicsItem {
     QPersistentModelIndex _index;
 
     QTextLayout *_layout;
+    QList<quint16> _wrapPositions;
 };
 
 #endif

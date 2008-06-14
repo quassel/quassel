@@ -24,12 +24,13 @@
 #include <QVector>
 #include <QPair>
 
-#include "messagemodel.h"
+#include "chatlinemodel.h"
 #include "uistyle.h"
 
 class ChatLineModelItem : public MessageModelItem {
 
   public:
+
     ChatLineModelItem(const Message &);
     //virtual ~ChatLineModelItem() {};
 
@@ -37,9 +38,8 @@ class ChatLineModelItem : public MessageModelItem {
     virtual bool setData(int column, const QVariant &value, int role);
 
   private:
-    typedef QVector<QPair<quint16, quint16> > WrapList;
-
     void computeWrapList();
+    qreal snippetWidth(int start, int end, QFontMetricsF *&metrics, int &formatListIdx, int &formatEnd);
 
     struct ChatLinePart {
       QString plainText;
@@ -47,7 +47,7 @@ class ChatLineModelItem : public MessageModelItem {
     };
     ChatLinePart _timestamp, _sender, _contents;
 
-    WrapList _wrapList;
+    ChatLineModel::WrapList _wrapList;
 };
 
 #endif
