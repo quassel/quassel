@@ -98,7 +98,7 @@ void ChatLineModelItem::computeWrapList() {
     }
     wplist.append(wp);
     wp.first = idx;
-  } while(idx < _contents.plainText.length());
+  } while(finder.isAtBoundary());
 
   // A QVector needs less space than a QList
   _wrapList.resize(wplist.count());
