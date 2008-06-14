@@ -914,7 +914,8 @@ void SignalProxy::writeDataToDevice(QIODevice *dev, const QVariant &item, bool c
   QByteArray block;
   QDataStream out(&block, QIODevice::WriteOnly);
   out.setVersion(QDataStream::Qt_4_2);
-
+  out << (quint32)0;
+  
   if(compressed) {
     QByteArray rawItem;
     QDataStream itemStream(&rawItem, QIODevice::WriteOnly);
@@ -922,14 +923,18 @@ void SignalProxy::writeDataToDevice(QIODevice *dev, const QVariant &item, bool c
     itemStream.setVersion(QDataStream::Qt_4_2);
     itemStream << item;
 
+    int rawSize = rawItem.size();
     rawItem = qCompress(rawItem);
 
-    out << (quint32)rawItem.size() << rawItem;
+    out << rawItem;
+    qDebug() << "Sending compressed" << rawItem.size() << "Bytes. (was:" << rawSize << "Bytes)" << dev;
   } else {
-    out << (quint32)0 << item;
-    out.device()->seek(0);
-    out << (quint32)(block.size() - sizeof(quint32));
+    out << item;
+    qDebug() << "Sending uncompressed" << block.size() - sizeof(quint32);
   }
+
+  out.device()->seek(0);
+  out << (quint32)(block.size() - sizeof(quint32));
 
   dev->write(block);
 }
@@ -949,12 +954,15 @@ bool SignalProxy::readDataFromDevice(QIODevice *dev, quint32 &blockSize, QVarian
   if(compressed) {
     QByteArray rawItem;
     in >> rawItem;
+    int rawSize = rawItem.size();
     rawItem = qUncompress(rawItem);
-
+    qDebug() << "receiving compressed" << rawSize << "Bytes. (uncompressed:" << rawItem.size() << "Bytes)" << dev;
+      
     QDataStream itemStream(&rawItem, QIODevice::ReadOnly);
     itemStream.setVersion(QDataStream::Qt_4_2);
     itemStream >> item;
   } else {
+    qDebug() << "receiving uncompressed" << blockSize << "Bytes" << dev;
     in >> item;
   }
 
