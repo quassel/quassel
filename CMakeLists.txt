@@ -158,6 +158,7 @@ if(BUILD_QTCLIENT)
                                ${RC_ICONS} ${RC_QUASSEL_ICONS} ${RC_I18N} ${WIN32_RC})
   set_target_properties(quasselclient PROPERTIES COMPILE_FLAGS "-DQT_GUI_LIB -DQT_NETWORK_LIB -DBUILD_QTUI")
   target_link_libraries(quasselclient mod_qtui mod_uisupport mod_client mod_common ${QUASSEL_QT_LIBRARIES})
+  add_custom_command(TARGET quasselclient POST_BUILD COMMAND ${CMAKE_SOURCE_DIR}/scripts/build/macosx_makebundle.py ${CMAKE_SOURCE_DIR} "Quassel Client" quasselclient)
 endif(BUILD_QTCLIENT)
 
 if(BUILD_MONO)
@@ -166,4 +167,7 @@ if(BUILD_MONO)
                          ${RC_ICONS} ${RC_QUASSEL_ICONS} ${RC_SQL} ${RC_I18N} ${WIN32_RC})
   set_target_properties(quassel PROPERTIES COMPILE_FLAGS "-DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_SCRIPT_LIB -DQT_SQL_LIB -DBUILD_MONO")
   target_link_libraries(quassel mod_qtui mod_uisupport mod_client mod_core mod_common ${QUASSEL_QT_LIBRARIES})
+  add_custom_command(TARGET quassel POST_BUILD COMMAND ${CMAKE_SOURCE_DIR}/scripts/build/macosx_makebundle.py ${CMAKE_SOURCE_DIR} "Quassel" quassel)
 endif(BUILD_MONO)
+
+
