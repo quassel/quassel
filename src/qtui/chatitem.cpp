@@ -79,7 +79,7 @@ int ChatItem::heightForWidth(int width) {
     if(wrapList.at(i+1).toUInt() - offset < width) continue;
     lines++;
     if(i > 0) {
-      if(offset != wrapList.at(i-1).toUInt()) offset = wrapList.at(i-1).toUInt();
+      if(offset < wrapList.at(i-1).toUInt()) offset = wrapList.at(i-1).toUInt();
       else offset += width;
     } else {
       offset += width;
