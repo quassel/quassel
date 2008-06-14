@@ -20,10 +20,8 @@
 
 #include <QFontMetrics>
 #include <QGraphicsSceneMouseEvent>
-#include <QTextCursor>
-#include <QTextDocument>
-
-#include <QtGui>
+#include <QPainter>
+#include <QTextLayout>
 
 #include "chatitem.h"
 #include "chatlinemodel.h"
@@ -32,6 +30,8 @@
 ChatItem::ChatItem(const QPersistentModelIndex &index_, QGraphicsItem *parent) : QGraphicsItem(parent), _index(index_) {
   QFontMetricsF *metrics = QtUi::style()->fontMetrics(data(ChatLineModel::FormatRole).value<UiStyle::FormatList>().at(0).second);
   _lineHeight = metrics->lineSpacing();
+  _lineLeading = metrics->leading();
+  _layout = 0;
 }
 
 ChatItem::~ChatItem() {
@@ -44,20 +44,6 @@ QVariant ChatItem::data(int role) const {
     return QVariant();
   }
   return _index.data(role);
-}
-
-/*
-QRectF ChatItem::boundingRect() const {
-  return QRectF(0, 0, _width, _height);
-}
-*/
-
-void ChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
-  Q_UNUSED(option); Q_UNUSED(widget);
-
-  painter->drawText(boundingRect(), data(MessageModel::DisplayRole).toString());
-  painter->setPen(Qt::DotLine);
-  painter->drawRect(boundingRect());
 }
 
 int ChatItem::setWidth(int w) {
@@ -89,27 +75,52 @@ int ChatItem::heightForWidth(int width) {
   return lines * _lineHeight;
 }
 
+void ChatItem::layout() {
+  if(_layout) return;
+  _layout = new QTextLayout(data(MessageModel::DisplayRole).toString());
+
+  // Convert format information into a FormatRange
+  QList<QTextLayout::FormatRange> formatRanges;
+  UiStyle::FormatList formatList = data(MessageModel::FormatRole).value<UiStyle::FormatList>();
+  QTextLayout::FormatRange range;
+  int i = 0;
+  for(i = 0; i < formatList.count(); i++) {
+    range.format = QtUi::style()->mergedFormat(formatList.at(i).second);
+    range.start = formatList.at(i).first;
+    if(i > 0) formatRanges.last().length = range.start - formatRanges.last().start;
+    formatRanges.append(range);
+  }
+  if(i > 0) formatRanges.last().length = _layout->text().length() - formatRanges.last().start;
+  _layout->setAdditionalFormats(formatRanges);
+
+  // Now layout
+  qreal h = 0;
+  _layout->beginLayout();
+  forever {
+    QTextLine line = _layout->createLine();
+    if (!line.isValid())
+      break;
+
+    line.setLineWidth(width());
+    h += _lineLeading;
+    line.setPosition(QPointF(0, h));
+    h += line.height();
+  }
+  _layout->endLayout();
+}
+
+void ChatItem::clearLayout() {
+  delete _layout;
+  _layout = 0;
+}
+
+void ChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
+  Q_UNUSED(option); Q_UNUSED(widget);
+  layout();
+  _layout->draw(painter, QPointF(0,0), QVector<QTextLayout::FormatRange>(), boundingRect());
+}
+
 /*
-
-void ChatItem::setTextOption(const QTextOption &option) {
-  _textOption = option;
-  layout();
-}
-
-QTextOption ChatItem::textOption() const {
-  return _textOption;
-}
-
-QString ChatItem::text() const {
-  return _layout.text();
-}
-
-void ChatItem::setText(const UiStyle::StyledText &text) {
-  _layout.setText(text.text);
-  _layout.setAdditionalFormats(text.formatList);
-  layout();
-}
-
 void ChatItem::layout() {
   if(!_layout.additionalFormats().count()) return; // no text set
   if(_width <= 0) return;
@@ -165,6 +176,3 @@ void ChatItem::mouseMoveEvent ( QGraphicsSceneMouseEvent * event ) {
   } else QGraphicsTextItem::mouseMoveEvent(event);
 }
 */
-
-
-

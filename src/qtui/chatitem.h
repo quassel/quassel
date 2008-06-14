@@ -22,12 +22,12 @@
 #define CHATITEM_H_
 
 #include <QGraphicsItem>
-#include <QTextLayout>
-#include <QTextOption>
 
 #include "chatline.h"
 #include "chatlinemodel.h"
 #include "uistyle.h"
+
+class QTextLayout;
 
 class ChatItem : public QGraphicsItem {
 
@@ -40,6 +40,11 @@ class ChatItem : public QGraphicsItem {
     inline int row() const { return _index.isValid() ? _index.row() : 0; }
 
     inline virtual QRectF boundingRect() const { return _boundingRect; }
+    inline qreal width() const { return _boundingRect.width(); }
+    inline qreal height() const { return _boundingRect.height(); }
+
+    inline bool haveLayout() const { return _layout != 0; }
+    void clearLayout();
     virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
 
     virtual QVariant data(int role) const;
@@ -58,12 +63,16 @@ class ChatItem : public QGraphicsItem {
 
   private:
     int heightForWidth(int width);
+    void layout();
 
     int _lineHeight;
+    qreal _lineLeading;
     QRectF _boundingRect;
     //QTextLayout _layout;
     //QTextOption _textOption;
     QPersistentModelIndex _index;
+
+    QTextLayout *_layout;
 };
 
 #endif
