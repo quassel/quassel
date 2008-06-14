@@ -47,10 +47,12 @@ QVariant ChatItem::data(int role) const {
 }
 
 int ChatItem::setWidth(int w) {
+  w -= 10;
   if(w == _boundingRect.width()) return _boundingRect.height();
   int h = heightForWidth(w);
   _boundingRect.setWidth(w);
   _boundingRect.setHeight(h);
+  if(haveLayout()) updateLayout();
   return h;
 }
 
@@ -76,7 +78,7 @@ int ChatItem::heightForWidth(int width) {
 }
 
 void ChatItem::layout() {
-  if(_layout) return;
+  if(haveLayout()) return;
   _layout = new QTextLayout(data(MessageModel::DisplayRole).toString());
 
   // Convert format information into a FormatRange
@@ -92,6 +94,11 @@ void ChatItem::layout() {
   }
   if(i > 0) formatRanges.last().length = _layout->text().length() - formatRanges.last().start;
   _layout->setAdditionalFormats(formatRanges);
+  updateLayout();
+}
+
+void ChatItem::updateLayout() {
+  if(!haveLayout()) layout();
 
   // Now layout
   qreal h = 0;
@@ -118,6 +125,7 @@ void ChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
   Q_UNUSED(option); Q_UNUSED(widget);
   layout();
   _layout->draw(painter, QPointF(0,0), QVector<QTextLayout::FormatRange>(), boundingRect());
+  painter->drawRect(boundingRect());
 }
 
 /*

@@ -45,6 +45,7 @@ class ChatItem : public QGraphicsItem {
 
     inline bool haveLayout() const { return _layout != 0; }
     void clearLayout();
+    void updateLayout();
     virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
 
     virtual QVariant data(int role) const;
