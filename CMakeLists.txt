@@ -123,21 +123,14 @@ if(WIN32)
   set(WIN32_RC src/icons/win32.rc)  # for app icons on windows
 endif(WIN32)
 
-# FIXME: Add icons for windows as soon as we have merged with trunk (which has reorganized
-#        the icon files):
-#        Simply add the .rc file to the targets
-
 # Here comes the dirty part. Our targets need different Qt4 modules, i.e. different libs
 # and defines. We can't simply include UseQt4 several times, since definitions add up.
 # We workaround this by using our own macro to figure out what to add.
 
 # This macro sets variables for additional Qt modules.
 macro(setup_qt4_variables)
-  set(QUASSEL_QT_DEFINITIONS ${QT_DEFINITIONS})
   set(QUASSEL_QT_LIBRARIES )
   foreach(qtmod CORE ${ARGV})
-    # This needs to be a string, not a list, otherwise set_target_properties screws up...
-    set(QUASSEL_QT_DEFINITIONS "${QUASSEL_QT_DEFINITIONS} -DQT_${qtmod}_LIB")
     set(QUASSEL_QT_LIBRARIES ${QUASSEL_QT_LIBRARIES} ${QT_QT${qtmod}_LIBRARY} ${QT_${qtmod}_LIB_DEPENDENCIES})
   endforeach(qtmod ${ARGV})
   set(QUASSEL_QT_LIBRARIES ${QUASSEL_QT_LIBRARIES} ${QT_LIBRARIES})
@@ -148,7 +141,8 @@ if(BUILD_CORE)
   setup_qt4_variables(NETWORK SCRIPT SQL)
   add_executable(quasselcore ${CMAKE_SOURCE_DIR}/src/common/main.cpp
                              ${RC_SQL} ${RC_I18N} ${WIN32_RC})
-  set_target_properties(quasselcore PROPERTIES COMPILE_FLAGS "-DQT_NETWORK_LIB -DQT_SCRIPT_LIB -DQT_SQL_LIB -DBUILD_CORE")
+  set_target_properties(quasselcore PROPERTIES 
+                                    COMPILE_FLAGS "-DQT_NETWORK_LIB -DQT_SCRIPT_LIB -DQT_SQL_LIB -DBUILD_CORE")
   target_link_libraries(quasselcore mod_core mod_common ${QUASSEL_QT_LIBRARIES})
 endif(BUILD_CORE)
 
@@ -156,18 +150,26 @@ if(BUILD_QTCLIENT)
   setup_qt4_variables(GUI NETWORK)
   add_executable(quasselclient ${CMAKE_SOURCE_DIR}/src/common/main.cpp
                                ${RC_ICONS} ${RC_QUASSEL_ICONS} ${RC_I18N} ${WIN32_RC})
-  set_target_properties(quasselclient PROPERTIES COMPILE_FLAGS "-DQT_GUI_LIB -DQT_NETWORK_LIB -DBUILD_QTUI")
+  set_target_properties(quasselclient PROPERTIES
+                                      COMPILE_FLAGS "-DQT_GUI_LIB -DQT_NETWORK_LIB -DBUILD_QTUI")
   target_link_libraries(quasselclient mod_qtui mod_uisupport mod_client mod_common ${QUASSEL_QT_LIBRARIES})
-  add_custom_command(TARGET quasselclient POST_BUILD COMMAND ${CMAKE_SOURCE_DIR}/scripts/build/macosx_makebundle.py ${CMAKE_SOURCE_DIR} "Quassel Client" quasselclient)
 endif(BUILD_QTCLIENT)
 
 if(BUILD_MONO)
   setup_qt4_variables(GUI NETWORK SCRIPT SQL)
   add_executable(quassel ${CMAKE_SOURCE_DIR}/src/common/main.cpp
                          ${RC_ICONS} ${RC_QUASSEL_ICONS} ${RC_SQL} ${RC_I18N} ${WIN32_RC})
-  set_target_properties(quassel PROPERTIES COMPILE_FLAGS "-DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_SCRIPT_LIB -DQT_SQL_LIB -DBUILD_MONO")
+  set_target_properties(quassel PROPERTIES 
+                                COMPILE_FLAGS "-DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_SCRIPT_LIB -DQT_SQL_LIB -DBUILD_MONO")
   target_link_libraries(quassel mod_qtui mod_uisupport mod_client mod_core mod_common ${QUASSEL_QT_LIBRARIES})
-  add_custom_command(TARGET quassel POST_BUILD COMMAND ${CMAKE_SOURCE_DIR}/scripts/build/macosx_makebundle.py ${CMAKE_SOURCE_DIR} "Quassel" quassel)
 endif(BUILD_MONO)
 
-
+# Build bundles for MacOSX
+if(APPLE)
+  add_custom_command(TARGET quasselclient POST_BUILD
+                     COMMAND ${CMAKE_SOURCE_DIR}/scripts/build/macosx_makebundle.py
+                             ${CMAKE_SOURCE_DIR} "Quassel Client" quasselclient)
+  add_custom_command(TARGET quassel POST_BUILD
+                     COMMAND ${CMAKE_SOURCE_DIR}/scripts/build/macosx_makebundle.py
+                             ${CMAKE_SOURCE_DIR} "Quassel" quassel)
+endif(APPLE)
