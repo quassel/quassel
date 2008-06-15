@@ -36,7 +36,7 @@ if(ansi)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ansi")
 endif(ansi)
 
-set(QT_MIN_VERSION "4.4.0")
+set(QT_MIN_VERSION "4.3.0")
 
 # By default, we build all binaries
 if(NOT DEFINED BUILD)
