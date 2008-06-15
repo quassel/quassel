@@ -56,7 +56,7 @@ void UserInputHandler::handleUserInput(const BufferInfo &bufferInfo, const QStri
 void UserInputHandler::handleAway(const BufferInfo &bufferInfo, const QString &msg) {
   Q_UNUSED(bufferInfo)
 
-  QString awayMsg;
+  QString awayMsg = msg;
   // if there is no message supplied we have to check if we are already away or not
   if(msg.isEmpty()) {
     IrcUser *me = network()->me();
