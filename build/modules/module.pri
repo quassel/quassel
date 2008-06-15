@@ -46,7 +46,7 @@ include(../contrib/contrib.pri)
 for(dep, DEPMOD) {
   INCLUDEPATH *= $$SRCPATH/$$dep
 }
-INCLUDEPATH *= $$MODPATH  # and don't forget our own dir
+INCLUDEPATH *= $$MODPATH ../../  # and don't forget our own dir
 
 # Now prefix all filenames with the correct dirname
 
