@@ -9,7 +9,6 @@ set(SOURCES
     bufferwidget.cpp
     coreconfigwizard.cpp
     coreconnectdlg.cpp
-    configwizard.cpp
     debugconsole.cpp
     inputwidget.cpp
     jumpkeyhandler.cpp
