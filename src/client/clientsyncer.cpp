@@ -157,8 +157,9 @@ void ClientSyncer::coreSocketConnected() {
   QVariantMap clientInit;
   clientInit["MsgType"] = "ClientInit";
   clientInit["ClientVersion"] = Global::quasselVersion;
-  clientInit["ClientDate"] = Global::quasselDate;
-  clientInit["ClientBuild"] = Global::quasselBuild; // this is a minimum, since we probably won't update for every commit
+  clientInit["ClientBuild"] = 860; // FIXME legacy!
+  clientInit["ClientDate"] = Global::quasselBuildDate;
+  clientInit["ProtocolVersion"] = Global::protocolVersion;
   clientInit["UseSsl"] = coreConnectionInfo["useSsl"];
   
   SignalProxy::writeDataToDevice(socket, clientInit);
@@ -180,9 +181,10 @@ void ClientSyncer::coreSocketDisconnected() {
 
 void ClientSyncer::clientInitAck(const QVariantMap &msg) {
   // Core has accepted our version info and sent its own. Let's see if we accept it as well...
-  if(msg["CoreBuild"].toUInt() < Global::coreBuildNeeded) {
+  if(msg.contains("CoreBuild") && msg["CoreBuild"].toUInt() < 732  // legacy!
+    || !msg.contains("CoreBuild") && msg["ProtocolVersion"].toUInt() < Global::clientNeedsProtocol) {
     emit connectionError(tr("<b>The Quassel Core you are trying to connect to is too old!</b><br>"
-        "Need at least a Core Version %1 (Build >= %2) to connect.").arg(Global::quasselVersion).arg(Global::coreBuildNeeded));
+        "Need at least core/client protocol v%1 to connect.").arg(Global::clientNeedsProtocol));
     disconnectFromCore();
     return;
   }

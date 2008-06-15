@@ -66,8 +66,7 @@ int main(int argc, char **argv) {
   // Logger logger;
 
   Global::registerMetaTypes();
-
-#include "../../version.inc"
+  Global::setupVersion();
 
 #if defined BUILD_CORE
   Global::runMode = Global::CoreOnly;
