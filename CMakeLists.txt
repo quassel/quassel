@@ -21,6 +21,21 @@ if(STATICWIN)
   set(CMAKE_BUILD_TYPE Release)
 endif(STATICWIN)
 
+# Enable various flags on gcc
+include(CheckCXXCompilerFlag)
+check_cxx_compiler_flag(-Wall Wall)
+if(Wall)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
+endif(Wall)
+check_cxx_compiler_flag(-Wextra Wextra)
+if(Wextra)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra")
+endif(Wextra)
+check_cxx_compiler_flag(-ansi ansi)
+if(ansi)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ansi")
+endif(ansi)
+
 set(QT_MIN_VERSION "4.4.0")
 
 # By default, we build all binaries
