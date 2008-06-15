@@ -100,7 +100,7 @@ void Core::saveState() {
   QVariantMap state;
   QVariantList activeSessions;
   foreach(UserId user, instance()->sessions.keys()) activeSessions << QVariant::fromValue<UserId>(user);
-  state["CoreBuild"] = Global::quasselBuild;
+  state["CoreStateVersion"] = 1;
   state["ActiveSessions"] = activeSessions;
   s.setCoreState(state);
 }
@@ -115,11 +115,13 @@ void Core::restoreState() {
     return;
   }
   CoreSettings s;
-  uint build = s.coreState().toMap()["CoreBuild"].toUInt();
-  if(build < 362) {
+  /* We don't check, since we are at the first version since switching to Git
+  uint statever = s.coreState().toMap()["CoreStateVersion"].toUInt();
+  if(statever < 1) {
     qWarning() << qPrintable(tr("Core state too old, ignoring..."));
     return;
   }
+  */
   QVariantList activeSessions = s.coreState().toMap()["ActiveSessions"].toList();
   if(activeSessions.count() > 0) {
     qDebug() << "Restoring previous core state...";
@@ -382,16 +384,31 @@ void Core::processClientMessage(QTcpSocket *socket, const QVariantMap &msg) {
   // OK, so we have at least an init message format we can understand
   if(msg["MsgType"] == "ClientInit") {
     QVariantMap reply;
+
+    // Just version information -- check it!
+    if(msg.contains("ClientBuild") && msg["ClientBuild"].toUInt() < 732
+       || !msg.contains("ClientBuild") && msg["ProtocolVersion"].toUInt() < Global::coreNeedsProtocol) {
+      reply["MsgType"] = "ClientInitReject";
+      reply["Error"] = tr("<b>Your Quassel Client is too old!</b><br>"
+      "This core needs at least client/core protocol version %1.<br>"
+      "Please consider upgrading your client.").arg(Global::coreNeedsProtocol);
+      SignalProxy::writeDataToDevice(socket, reply);
+      qWarning() << qPrintable(tr("Client %1 too old, rejecting.").arg(socket->peerAddress().toString()));
+      socket->close(); return;
+    }
+
     reply["CoreVersion"] = Global::quasselVersion;
-    reply["CoreDate"] = Global::quasselDate;
-    reply["CoreBuild"] = Global::quasselBuild;
+    reply["CoreDate"] = Global::quasselBuildDate;
+    reply["CoreBuild"] = 860; // FIXME legacy
+    reply["ProtocolVersion"] = Global::protocolVersion;
     // TODO: Make the core info configurable
     int uptime = startTime.secsTo(QDateTime::currentDateTime());
     int updays = uptime / 86400; uptime %= 86400;
     int uphours = uptime / 3600; uptime %= 3600;
     int upmins = uptime / 60;
-    reply["CoreInfo"] = tr("<b>Quassel Core Version %1 (Build &ge; %2)</b><br>"
-                            "Up %3d%4h%5m (since %6)").arg(Global::quasselVersion).arg(Global::quasselBuild)
+    reply["CoreInfo"] = tr("<b>Quassel Core Version %1</b><br>"
+                            "Built: %2<br>"
+                            "Up %3d%4h%5m (since %6)").arg(Global::quasselVersion).arg(Global::quasselBuildDate)
                             .arg(updays).arg(uphours,2,10,QChar('0')).arg(upmins,2,10,QChar('0')).arg(startTime.toString(Qt::TextDate));
 
 #ifndef QT_NO_OPENSSL
@@ -407,23 +424,13 @@ void Core::processClientMessage(QTcpSocket *socket, const QVariantMap &msg) {
 #else
     bool supportsCompression = false;
 #endif
-    
+
     reply["SupportSsl"] = supportSsl;
     reply["SupportsCompression"] = supportsCompression;
     // switch to ssl/compression after client has been informed about our capabilities (see below)
 
     reply["LoginEnabled"] = true;
 
-    // Just version information -- check it!
-    if(msg["ClientBuild"].toUInt() < Global::clientBuildNeeded) {
-      reply["MsgType"] = "ClientInitReject";
-      reply["Error"] = tr("<b>Your Quassel Client is too old!</b><br>"
-                          "This core needs at least client version %1 (Build >= %2).<br>"
-                          "Please consider upgrading your client.").arg(Global::quasselVersion).arg(Global::quasselBuild);
-      SignalProxy::writeDataToDevice(socket, reply);
-      qWarning() << qPrintable(tr("Client %1 too old, rejecting.").arg(socket->peerAddress().toString()));
-      socket->close(); return;
-    }
     // check if we are configured, start wizard otherwise
     if(!configured) {
       reply["Configured"] = false;
