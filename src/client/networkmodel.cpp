@@ -255,7 +255,7 @@ void BufferItem::removeUserFromCategory(IrcUser *ircUser) {
   UserCategoryItem *categoryItem = 0;
   for(int i = 0; i < childCount(); i++) {
     categoryItem = qobject_cast<UserCategoryItem *>(child(i));
-    if(success = categoryItem->removeUser(ircUser)) {
+    if((success = categoryItem->removeUser(ircUser))) {
       if(categoryItem->childCount() == 0)
 	removeChild(i);
       break;

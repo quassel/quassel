@@ -628,7 +628,7 @@ void ChatWidget::viewportChanged(int newPos) {
     if(buffer->contents().isEmpty())
       return;
     MsgId msgId = buffer->contents().first()->msgId();
-    if(!lastBacklogOffset.isValid() || msgId < lastBacklogOffset && lastBacklogSize + REQUEST_COUNT <= buffer->contents().count()) {
+    if(!lastBacklogOffset.isValid() || (msgId < lastBacklogOffset && lastBacklogSize + REQUEST_COUNT <= buffer->contents().count())) {
       Client::backlogManager()->requestBacklog(bufferId, REQUEST_COUNT, msgId.toInt());
       lastBacklogOffset = msgId;
       lastBacklogSize = buffer->contents().size();
