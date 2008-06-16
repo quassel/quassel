@@ -333,7 +333,7 @@ QHash<BufferId, MsgId> Core::bufferLastSeenMsgIds(UserId user) {
 
 bool Core::startListening(uint port) {
   if(!server.listen(QHostAddress::Any, port)) {
-    qWarning(qPrintable(QString("Could not open GUI client port %1: %2").arg(port).arg(server.errorString())));
+    qWarning("%s", qPrintable(QString("Could not open GUI client port %1: %2").arg(port).arg(server.errorString())));
     return false;
   }
   qDebug() << "Listening for GUI clients on port" << server.serverPort();

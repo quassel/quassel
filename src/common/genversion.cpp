@@ -75,7 +75,7 @@ int main(int argc, char **argv) {
   // ok, create our version.gen now
   QFile gen(target);
   if(!gen.open(QIODevice::WriteOnly | QIODevice::Text)) {
-    qFatal(QString("Could not write %1!").arg(target).toAscii());
+    qFatal("%s", qPrintable(QString("Could not write %1!").arg(target)));
     return 255;
   }
   gen.write(QString("quasselGeneratedVersion = \"%1\";\n"
