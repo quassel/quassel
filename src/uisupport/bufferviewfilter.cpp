@@ -102,7 +102,7 @@ void BufferViewFilter::configInitialized() {
 
 Qt::ItemFlags BufferViewFilter::flags(const QModelIndex &index) const {
   Qt::ItemFlags flags = mapToSource(index).flags();
-  if(_config && index == QModelIndex() || index.parent() == QModelIndex())
+  if(_config && (index == QModelIndex() || index.parent() == QModelIndex()))
     flags |= Qt::ItemIsDropEnabled;
   return flags;
 }
