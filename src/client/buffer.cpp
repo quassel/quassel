@@ -84,7 +84,7 @@ void Buffer::setVisible(bool visible) {
 void Buffer::setLastSeenMsg(const MsgId &msgId) {
   // qDebug() << "want to set lastSeen:" << bufferInfo() << seen << lastSeen();
   const MsgId oldLastSeen = lastSeenMsg();
-  if(!oldLastSeen.isValid() || msgId.isValid() && msgId > oldLastSeen) {
+  if(!oldLastSeen.isValid() || (msgId.isValid() && msgId > oldLastSeen)) {
     //qDebug() << "setting:" << bufferInfo().bufferName() << seen;
     _lastSeenMsg = msgId;
     Client::setBufferLastSeenMsg(bufferInfo().bufferId(), msgId);
