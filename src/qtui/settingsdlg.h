@@ -28,36 +28,35 @@
 
 class SettingsDlg : public QDialog {
   Q_OBJECT
-  public:
-    SettingsDlg(QWidget *parent = 0);
-    void registerSettingsPage(SettingsPage *);
-    void unregisterSettingsPage(SettingsPage *);
 
-    SettingsPage *currentPage() const;
+public:
+  SettingsDlg(QWidget *parent = 0);
+  void registerSettingsPage(SettingsPage *);
+  void unregisterSettingsPage(SettingsPage *);
 
-    //QSize sizeHint() const;
+  inline SettingsPage *currentPage() const { return _currentPage; }
 
-  public slots:
-    void selectPage(const QString &category, const QString &title);
+public slots:
+  void selectPage(SettingsPage *sp); // const QString &category, const QString &title);
 
-  private slots:
-    void itemSelected();
-    void buttonClicked(QAbstractButton *);
-    bool applyChanges();
-    void undoChanges();
-    void reload();
-    void loadDefaults();
-    void setButtonStates();
+private slots:
+  void itemSelected();
+  void buttonClicked(QAbstractButton *);
+  bool applyChanges();
+  void undoChanges();
+  void reload();
+  void loadDefaults();
+  void setButtonStates();
+  
+private:
+  Ui::SettingsDlg ui;
+  
+  SettingsPage *_currentPage;
+  QHash<SettingsPage *, bool> pageIsLoaded;
 
-  private:
-    Ui::SettingsDlg ui;
-
-    SettingsPage *_currentPage;
-    QHash<QString, SettingsPage *> pages;
-    QHash<SettingsPage *, QTreeWidgetItem *> treeItems;
-    QHash<SettingsPage *, bool> pageIsLoaded;
-
-    //QSize recommendedSize;
+  enum {
+    SettingsPageRole = Qt::UserRole
+  };
 };
 
 

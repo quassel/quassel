@@ -20,15 +20,11 @@
 
 #include "settingsdlg.h"
 
-SettingsDlg::SettingsDlg(QWidget *parent) : QDialog(parent) {
+SettingsDlg::SettingsDlg(QWidget *parent)
+  : QDialog(parent),
+    _currentPage(0)
+{
   ui.setupUi(this);
-  _currentPage = 0;
-
-  //recommendedSize = layout()->minimumSize();
-
-  // make the scrollarea behave sanely
-  ui.settingsFrame->setWidgetResizable(true);
-  ui.settingsFrame->setWidget(ui.settingsStack);
 
   updateGeometry();
 
@@ -38,21 +34,10 @@ SettingsDlg::SettingsDlg(QWidget *parent) : QDialog(parent) {
   connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));
 }
 
-/*
-QSize SettingsDlg::sizeHint() const {
-  return recommendedSize;
-}
-*/
-
-SettingsPage *SettingsDlg::currentPage() const {
-  return _currentPage;
-}
-
 void SettingsDlg::registerSettingsPage(SettingsPage *sp) {
   sp->setParent(ui.settingsStack);
   ui.settingsStack->addWidget(sp);
-  //recommendedSize = recommendedSize.expandedTo(sp->sizeHint());
-  //updateGeometry();
+  
   connect(sp, SIGNAL(changed(bool)), this, SLOT(setButtonStates()));
 
   QTreeWidgetItem *cat;
@@ -61,27 +46,27 @@ void SettingsDlg::registerSettingsPage(SettingsPage *sp) {
     cat = new QTreeWidgetItem(ui.settingsTree, QStringList(sp->category()));
     cat->setExpanded(true);
     cat->setFlags(Qt::ItemIsEnabled);
-  } else cat = cats[0];
+  } else {
+    cat = cats[0];
+  }
   QTreeWidgetItem *item = new QTreeWidgetItem(cat, QStringList(sp->title()));
-  treeItems[sp] = item;
-  pages[QString("%1$%2").arg(sp->category(), sp->title())] = sp;
+  item->setData(0, SettingsPageRole, qVariantFromValue<QObject *>(sp));
   pageIsLoaded[sp] = false;
-  // TESTING
-  // selectPage(sp->category(), sp->title());
 }
 
-void SettingsDlg::selectPage(const QString &cat, const QString &title) {
-  SettingsPage *sp = pages[QString("%1$%2").arg(cat, title)];
+void SettingsDlg::selectPage(SettingsPage *sp) {
   if(!sp) {
     _currentPage = 0;
     ui.settingsStack->setCurrentIndex(0);
-    ui.settingsTree->setCurrentItem(0);
+    ui.pageTitle->setText(tr("Settings"));
     return;
   }
+
   if(!pageIsLoaded[sp]) {
     sp->load();
     pageIsLoaded[sp] = true;
   }
+
   if(sp != currentPage() && currentPage() != 0 && currentPage()->hasChanged()) {
     int ret = QMessageBox::warning(this, tr("Save changes"),
                                   tr("There are unsaved changes on the current configuration page. Would you like to apply your changes now?"),
@@ -92,27 +77,22 @@ void SettingsDlg::selectPage(const QString &cat, const QString &title) {
       undoChanges();
     } else sp = currentPage();
   }
+
   if(sp != currentPage()) {
     ui.pageTitle->setText(sp->title());
     ui.settingsStack->setCurrentWidget(sp);
-    ui.settingsStack->setMinimumSize(sp->minimumSizeHint());  // we don't want our page shrinked, use scrollbars instead...
     _currentPage = sp;
   }
-  ui.settingsTree->setCurrentItem(treeItems[sp]);
   setButtonStates();
 }
 
 void SettingsDlg::itemSelected() {
   QList<QTreeWidgetItem *> items = ui.settingsTree->selectedItems();
-  if(!items.count()) {
-    return;
-  } else {
-    QTreeWidgetItem *parent = items[0]->parent();
-    if(!parent) return;
-    QString cat = parent->text(0);
-    QString title = items[0]->text(0);
-    selectPage(cat, title);
+  SettingsPage *sp = 0;
+  if(!items.isEmpty()) {
+    sp = qobject_cast<SettingsPage *>(items[0]->data(0, SettingsPageRole).value<QObject *>());
   }
+  selectPage(sp);
 }
 
 void SettingsDlg::setButtonStates() {
