@@ -20,9 +20,8 @@ NOTE: In order to reconfigure, you need to remove CMakeCache.txt (or empty
 
 Quassel recognizes the following options:
 
--DBUILD=<string>
-    Specify which Quassel binaries to build. <string> may contain any combination of
-    "core", "client", "mono" or "all".
+-DWANT_(CORE|QTCLIENT|MONO)=(ON|OFF)
+    Allow to choose which Quassel binaries to build.
 
 -DQT=/path/to/qt
     Use a non-system Qt installation. This is for example useful if you have a static
