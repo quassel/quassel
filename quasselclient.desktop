@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=Quassel IRC
+GenericName=IRC Client
+Comment=Distributed IRC client with central core component
+Icon=quassel
+TryExec=quasselclient
+Exec=quasselclient
+Categories=Qt;Network;Chat;IRCClient;
