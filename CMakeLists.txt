@@ -188,3 +188,25 @@ if(APPLE)
                      COMMAND ${CMAKE_SOURCE_DIR}/scripts/build/macosx_makebundle.py
                              ${CMAKE_SOURCE_DIR} "Quassel" quassel)
 endif(APPLE)
+
+# Install rules
+if(BUILD_CORE)
+  install(TARGETS quasselcore
+          RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
+endif(BUILD_CORE)
+
+if(BUILD_QTCLIENT)
+  install(TARGETS quasselclient
+          RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
+
+  install(FILES quasselclient.desktop
+          DESTINATION ${CMAKE_INSTALL_PREFIX}/share/applications)
+endif(BUILD_QTCLIENT)
+
+if(BUILD_MONO)
+  install(TARGETS quassel
+          RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
+
+  install(FILES quassel.desktop
+          DESTINATION ${CMAKE_INSTALL_PREFIX}/share/applications)
+endif(BUILD_MONO)
