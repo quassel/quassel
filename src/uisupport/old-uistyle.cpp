@@ -199,7 +199,7 @@ UiStyle::StyledText UiStyle::styleString(const QString &_s) {
       if(s[pos+1] == 'D') code += s[pos+2];
       FormatType ftype = formatType(code);
       if(ftype == Invalid) {
-        qWarning(qPrintable(QString("Invalid format code in string: %1").arg(s)));
+        qWarning("%s", qPrintable(QString("Invalid format code in string: %1").arg(s)));
         continue;
       }
       //Q_ASSERT(ftype != Invalid);

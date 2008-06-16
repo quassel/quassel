@@ -54,7 +54,7 @@
 
 //! Signal handler for graceful shutdown.
 void handle_signal(int sig) {
-  qWarning(QString("Caught signal %1 - exiting.").arg(sig).toAscii());
+  qWarning("%s", qPrintable(QString("Caught signal %1 - exiting.").arg(sig)));
   QCoreApplication::quit();
 }
 
