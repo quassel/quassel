@@ -3,8 +3,7 @@
 # -DWANT_(CORE|QTCLIENT|MONO)=(ON|OFF)
 #                  : select binaries to build
 # -DQT=/path/to/qt : Choose a Qt4 installation to use instead of the system Qt4
-# -DSTATIC=1       : Enable static building of Quassel, most useful with a static Qt.
-# -DSTATICWIN=1    : Enable static building for Windows.
+# -DSTATIC         : Enable static building of Quassel. Use with care.
 # -DSPUTDEV        : Do not use.
 #
 # NOTE: You need to remove CMakeCache.txt if you plan to change any of these values!
@@ -18,9 +17,14 @@ cmake_minimum_required(VERSION 2.4.7 FATAL_ERROR)
 # with 2.4, so... DUH!
 # cmake_policy(SET CMP0003 OLD)  # suppress linker warnings
 
+# Temporary
 if(STATICWIN)
-  set(CMAKE_BUILD_TYPE Release)
+  set(STATIC 1)
 endif(STATICWIN)
+
+if(STATIC)
+  set(CMAKE_BUILD_TYPE Release)
+endif(STATIC)
 
 # Enable various flags on gcc
 include(CheckCXXCompilerFlag)
@@ -100,17 +104,22 @@ qt4_add_resources(RC_QUASSEL_ICONS src/icons/quassel-icons.qrc)
 qt4_add_resources(RC_SQL src/core/sql.qrc)
 
 # Set global buildflags
-if(DEFINED STATIC)
-  set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc ${CMAKE_EXE_LINKER_FLAGS}")
-  link_directories(${CMAKE_BINARY_DIR}/staticlibs)
-endif(DEFINED STATIC)
+# This is very much non-portable, so don't use -DSTATICGCC until you know what
+# you do.
+if(STATIC AND CMAKE_COMPILER_IS_GNUCXX)
+  set(CMAKE_CXX_FLAGS "-static-libgcc ${CMAKE_CXX_FLAGS}")
+  link_directories(${CMAKE_BINARY_DIR}/staticlibs) # override dynamic libs
+  if(OPENSSL_FOUND)
+    set(QUASSEL_SSL_LIBRARIES ssl crypto)  # these miss in static builds
+  endif(OPENSSL_FOUND)
+endif(STATIC AND CMAKE_COMPILER_IS_GNUCXX)
 
-if(STATICWIN AND WIN32)
+if(STATIC AND WIN32)
   link_libraries(imm32 winmm)  # missing by default :/
    if(OPENSSL_FOUND)
      link_libraries(${OPENSSL_LIBRARIES} libeay32MD)
    endif(OPENSSL_FOUND)
-endif(STATICWIN AND WIN32)
+endif(STATIC AND WIN32)
 
 if(WIN32)
   set(WIN32_RC src/icons/win32.rc)  # for app icons on windows
@@ -136,7 +145,8 @@ if(WANT_CORE)
                              ${RC_SQL} ${RC_I18N} ${WIN32_RC})
   set_target_properties(quasselcore PROPERTIES 
                                     COMPILE_FLAGS "-DQT_NETWORK_LIB -DQT_SCRIPT_LIB -DQT_SQL_LIB -DBUILD_CORE")
-  target_link_libraries(quasselcore mod_core mod_common ${QUASSEL_QT_LIBRARIES})
+  target_link_libraries(quasselcore mod_core mod_common 
+                                    ${QUASSEL_QT_LIBRARIES} ${QUASSEL_SSL_LIBRARIES})
 endif(WANT_CORE)
 
 if(WANT_QTCLIENT)
@@ -145,7 +155,8 @@ if(WANT_QTCLIENT)
                                ${RC_ICONS} ${RC_QUASSEL_ICONS} ${RC_I18N} ${WIN32_RC})
   set_target_properties(quasselclient PROPERTIES
                                       COMPILE_FLAGS "-DQT_GUI_LIB -DQT_NETWORK_LIB -DBUILD_QTUI")
-  target_link_libraries(quasselclient mod_qtui mod_uisupport mod_client mod_common ${QUASSEL_QT_LIBRARIES})
+  target_link_libraries(quasselclient mod_qtui mod_uisupport mod_client mod_common
+                                      ${QUASSEL_QT_LIBRARIES} ${QUASSEL_SSL_LIBRARIES})
 endif(WANT_QTCLIENT)
 
 if(WANT_MONO)
@@ -154,7 +165,8 @@ if(WANT_MONO)
                          ${RC_ICONS} ${RC_QUASSEL_ICONS} ${RC_SQL} ${RC_I18N} ${WIN32_RC})
   set_target_properties(quassel PROPERTIES 
                                 COMPILE_FLAGS "-DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_SCRIPT_LIB -DQT_SQL_LIB -DBUILD_MONO")
-  target_link_libraries(quassel mod_qtui mod_uisupport mod_client mod_core mod_common ${QUASSEL_QT_LIBRARIES})
+  target_link_libraries(quassel mod_qtui mod_uisupport mod_client mod_core mod_common 
+                                ${QUASSEL_QT_LIBRARIES} ${QUASSEL_SSL_LIBRARIES})
 endif(WANT_MONO)
 
 # Build bundles for MacOSX
