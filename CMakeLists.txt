@@ -1,7 +1,7 @@
 # This is the cmake-based build system for Quassel IRC.
 # You may pass various options to cmake:
-# -DBUILD=<string> : Select binaries to build. <string> may contain any combination
-#                    of "core", "client", "mono" or "all".
+# -DWANT_(CORE|QTCLIENT|MONO)=(ON|OFF)
+#                  : select binaries to build
 # -DQT=/path/to/qt : Choose a Qt4 installation to use instead of the system Qt4
 # -DSTATIC=1       : Enable static building of Quassel, most useful with a static Qt.
 # -DSTATICWIN=1    : Enable static building for Windows.
@@ -11,7 +11,8 @@
 
 project(QuasselIRC)
 
-cmake_minimum_required(VERSION 2.4.5)
+# Target scopes don't work in older versions
+cmake_minimum_required(VERSION 2.4.7 FATAL_ERROR)
 
 # This would suppress annoying warnings on cmake-2.6, but we can't use it 
 # with 2.4, so... DUH!
@@ -36,34 +37,11 @@ if(ansi)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ansi")
 endif(ansi)
 
-set(QT_MIN_VERSION "4.4.0")
+set(QT_MIN_VERSION "4.3.0")
 
-# By default, we build all binaries
-if(NOT DEFINED BUILD)
-  set(BUILD all)
-endif(NOT DEFINED BUILD)
-
-# User might define which binaries to build by invoking cmake -DBUILD=<string>,
-# where <string> might contain any combination of "core", "client", "mono" or "all"
-if(BUILD MATCHES all)
-  set(BUILD_CORE true)
-  set(BUILD_QTCLIENT true)
-  set(BUILD_MONO true)
-  message(STATUS "Building Quassel Client, Quassel Core and monolithic Quassel.")
-else(BUILD MATCHES all)
-  if(BUILD MATCHES core)
-    set(BUILD_CORE true)
-    message(STATUS "Building Quassel Core")
-  endif(BUILD MATCHES core)
-  if(BUILD MATCHES client)
-    set(BUILD_QTCLIENT true)
-    message(STATUS "Building Quassel Client")
-  endif(BUILD MATCHES client)
-  if(BUILD MATCHES mono)
-    set(BUILD_MONO true)
-    message(STATUS "Building monolithic Quassel")
-  endif(BUILD MATCHES mono)
-endif(BUILD MATCHES all)
+option(WANT_CORE     "Build the core (server) binary"           ON)
+option(WANT_QTCLIENT "Build the Qt4 GUI client binary"          ON)
+option(WANT_MONO     "Build the monolithic (all-in-one) binary" ON)
 
 # Enable mostly b0rked stuff (new ChatView), do not enable this unless you know what you do...
 if(SPUTDEV)
@@ -99,18 +77,18 @@ add_dependencies(genversion_run genversion)
 # Add needed subdirs
 add_subdirectory(src/common)
 include_directories(src/common)
-if(BUILD_CORE OR BUILD_MONO)
+if(WANT_CORE OR WANT_MONO)
   add_subdirectory(src/core)
   include_directories(src/core)
-endif(BUILD_CORE OR BUILD_MONO)
-if(BUILD_QTCLIENT OR BUILD_MONO)
+endif(WANT_CORE OR WANT_MONO)
+if(WANT_QTCLIENT OR WANT_MONO)
   add_subdirectory(src/client)
   add_subdirectory(src/uisupport)
   add_subdirectory(src/qtui)
   include_directories(src/client)
   include_directories(src/uisupport)
   include_directories(src/qtui)
-endif(BUILD_QTCLIENT OR BUILD_MONO)
+endif(WANT_QTCLIENT OR WANT_MONO)
 
 # Make sure version.gen exists before building mod_common
 add_dependencies(mod_common genversion_run)
@@ -152,32 +130,32 @@ macro(setup_qt4_variables)
 endmacro(setup_qt4_variables)
 
 # Now we have everything, so just glue the right pieces together :)
-if(BUILD_CORE)
+if(WANT_CORE)
   setup_qt4_variables(NETWORK SCRIPT SQL)
   add_executable(quasselcore ${CMAKE_SOURCE_DIR}/src/common/main.cpp
                              ${RC_SQL} ${RC_I18N} ${WIN32_RC})
   set_target_properties(quasselcore PROPERTIES 
                                     COMPILE_FLAGS "-DQT_NETWORK_LIB -DQT_SCRIPT_LIB -DQT_SQL_LIB -DBUILD_CORE")
   target_link_libraries(quasselcore mod_core mod_common ${QUASSEL_QT_LIBRARIES})
-endif(BUILD_CORE)
+endif(WANT_CORE)
 
-if(BUILD_QTCLIENT)
-  setup_qt4_variables(GUI NETWORK)
-  add_executable(quasselclient ${CMAKE_SOURCE_DIR}/src/common/main.cpp
+if(WANT_QTCLIENT)
+  setup_qt4_variables(GUI NETWORK MAIN)
+  add_executable(quasselclient WIN32 ${CMAKE_SOURCE_DIR}/src/common/main.cpp
                                ${RC_ICONS} ${RC_QUASSEL_ICONS} ${RC_I18N} ${WIN32_RC})
   set_target_properties(quasselclient PROPERTIES
                                       COMPILE_FLAGS "-DQT_GUI_LIB -DQT_NETWORK_LIB -DBUILD_QTUI")
   target_link_libraries(quasselclient mod_qtui mod_uisupport mod_client mod_common ${QUASSEL_QT_LIBRARIES})
-endif(BUILD_QTCLIENT)
+endif(WANT_QTCLIENT)
 
-if(BUILD_MONO)
-  setup_qt4_variables(GUI NETWORK SCRIPT SQL)
-  add_executable(quassel ${CMAKE_SOURCE_DIR}/src/common/main.cpp
+if(WANT_MONO)
+  setup_qt4_variables(GUI NETWORK SCRIPT SQL MAIN)
+  add_executable(quassel WIN32 ${CMAKE_SOURCE_DIR}/src/common/main.cpp
                          ${RC_ICONS} ${RC_QUASSEL_ICONS} ${RC_SQL} ${RC_I18N} ${WIN32_RC})
   set_target_properties(quassel PROPERTIES 
                                 COMPILE_FLAGS "-DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_SCRIPT_LIB -DQT_SQL_LIB -DBUILD_MONO")
   target_link_libraries(quassel mod_qtui mod_uisupport mod_client mod_core mod_common ${QUASSEL_QT_LIBRARIES})
-endif(BUILD_MONO)
+endif(WANT_MONO)
 
 # Build bundles for MacOSX
 if(APPLE)
@@ -188,3 +166,25 @@ if(APPLE)
                      COMMAND ${CMAKE_SOURCE_DIR}/scripts/build/macosx_makebundle.py
                              ${CMAKE_SOURCE_DIR} "Quassel" quassel)
 endif(APPLE)
+
+# Install rules
+if(WANT_CORE)
+  install(TARGETS quasselcore
+          RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
+endif(WANT_CORE)
+
+if(WANT_QTCLIENT)
+  install(TARGETS quasselclient
+          RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
+
+  install(FILES quasselclient.desktop
+          DESTINATION ${CMAKE_INSTALL_PREFIX}/share/applications)
+endif(WANT_QTCLIENT)
+
+if(WANT_MONO)
+  install(TARGETS quassel
+          RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
+
+  install(FILES quassel.desktop
+          DESTINATION ${CMAKE_INSTALL_PREFIX}/share/applications)
+endif(WANT_MONO)
