@@ -11,7 +11,8 @@
 
 project(QuasselIRC)
 
-cmake_minimum_required(VERSION 2.4.5)
+# Target scopes don't work in older versions
+cmake_minimum_required(VERSION 2.4.7 FATAL_ERROR)
 
 # This would suppress annoying warnings on cmake-2.6, but we can't use it 
 # with 2.4, so... DUH!
