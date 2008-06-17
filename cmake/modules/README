@@ -1,0 +1,15 @@
+These modules have been copied from KDE's repository as of 2008-06-17.
+
+Below is the contents of KDE's original README:
+
+--------8<--------------------------------------------------------------
+these are additional cmake modules required for compiling KDE3 or KDE4
+applications with cmake. Some of them are enhanced versions of the files
+coming with cmake, some of them are NOT yet part of cmake.
+To use them, copy them into the cmake Module directory or
+run "cmake ."  followed by "make install"
+
+Alex <neundorf@kde.org>
+-------->8--------------------------------------------------------------
+
+Thank you Alex!
