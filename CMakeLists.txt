@@ -17,6 +17,15 @@ cmake_minimum_required(VERSION 2.4.7 FATAL_ERROR)
 # with 2.4, so... DUH!
 # cmake_policy(SET CMP0003 OLD)  # suppress linker warnings
 
+# Various options and variables that can be set on the command line
+option(WANT_CORE     "Build the core (server) binary"           ON)
+option(WANT_QTCLIENT "Build the Qt4 GUI client binary"          ON)
+option(WANT_MONO     "Build the monolithic (all-in-one) binary" ON)
+
+set(STATIC 0 CACHE BOOL "Enable static building (might not be portable)")
+set(QT "" CACHE STRING "Path to a Qt installation to use instead of the system Qt")
+set(SPUTDEV CACHE STRING "Do not use!")
+
 # Temporary
 if(STATICWIN)
   set(STATIC 1)
@@ -43,10 +52,6 @@ endif(ansi)
 
 set(QT_MIN_VERSION "4.3.0")
 
-option(WANT_CORE     "Build the core (server) binary"           ON)
-option(WANT_QTCLIENT "Build the Qt4 GUI client binary"          ON)
-option(WANT_MONO     "Build the monolithic (all-in-one) binary" ON)
-
 # Enable mostly b0rked stuff (new ChatView), do not enable this unless you know what you do...
 if(SPUTDEV)
   add_definitions(-DSPUTDEV)
@@ -56,11 +61,11 @@ endif(SPUTDEV)
 find_package(OpenSSL)
 
 # Select a Qt installation here, if you don't want to use system Qt
-if(DEFINED QT)
+if(QT)
   # FindQt4 will look for the qmake binary in $PATH, so we just prepend the Qt dir
   set(ENV{PATH} ${QT}/bin:$ENV{PATH})
   #SET(QT_QMAKE_EXECUTABLE ${QT}/bin/qmake CACHE FILEPATH "" FORCE)
-endif(DEFINED QT)
+endif(QT)
 
 # Now that we have the correct $PATH, lets find Qt!
 find_package(Qt4 REQUIRED)
