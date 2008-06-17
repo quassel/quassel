@@ -17,6 +17,10 @@ cmake_minimum_required(VERSION 2.4.7 FATAL_ERROR)
 # with 2.4, so... DUH!
 # cmake_policy(SET CMP0003 OLD)  # suppress linker warnings
 
+# Use our own (well, KDE's) version of some modules
+# In particular cmake's FindQt4 and FindOpenSSL are quite buggy
+set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules)
+
 # Various options and variables that can be set on the command line
 option(WANT_CORE     "Build the core (server) binary"           ON)
 option(WANT_QTCLIENT "Build the Qt4 GUI client binary"          ON)
@@ -64,7 +68,6 @@ find_package(OpenSSL)
 if(QT)
   # FindQt4 will look for the qmake binary in $PATH, so we just prepend the Qt dir
   set(ENV{PATH} ${QT}/bin:$ENV{PATH})
-  #SET(QT_QMAKE_EXECUTABLE ${QT}/bin/qmake CACHE FILEPATH "" FORCE)
 endif(QT)
 
 # Now that we have the correct $PATH, lets find Qt!
