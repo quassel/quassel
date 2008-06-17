@@ -132,7 +132,10 @@ endif(WIN32)
 # This macro sets variables for additional Qt modules.
 macro(setup_qt4_variables)
   set(QUASSEL_QT_LIBRARIES )
-  foreach(qtmod CORE ${ARGV})
+  IF(WIN32)
+    set(MAIN MAIN)
+  ENDIF(WIN32)
+  foreach(qtmod CORE ${ARGV} ${MAIN})
     set(QUASSEL_QT_LIBRARIES ${QUASSEL_QT_LIBRARIES} ${QT_QT${qtmod}_LIBRARY} ${QT_${qtmod}_LIB_DEPENDENCIES})
   endforeach(qtmod ${ARGV})
   set(QUASSEL_QT_LIBRARIES ${QUASSEL_QT_LIBRARIES} ${QT_LIBRARIES})
@@ -151,8 +154,8 @@ endif(WANT_CORE)
 
 if(WANT_QTCLIENT)
   setup_qt4_variables(GUI NETWORK)
-  add_executable(quasselclient ${CMAKE_SOURCE_DIR}/src/common/main.cpp
-                               ${RC_ICONS} ${RC_QUASSEL_ICONS} ${RC_I18N} ${WIN32_RC})
+  add_executable(quasselclient WIN32 ${CMAKE_SOURCE_DIR}/src/common/main.cpp
+                                     ${RC_ICONS} ${RC_QUASSEL_ICONS} ${RC_I18N} ${WIN32_RC})
   set_target_properties(quasselclient PROPERTIES
                                       COMPILE_FLAGS "-DQT_GUI_LIB -DQT_NETWORK_LIB -DBUILD_QTUI")
   target_link_libraries(quasselclient mod_qtui mod_uisupport mod_client mod_common
@@ -161,8 +164,8 @@ endif(WANT_QTCLIENT)
 
 if(WANT_MONO)
   setup_qt4_variables(GUI NETWORK SCRIPT SQL)
-  add_executable(quassel ${CMAKE_SOURCE_DIR}/src/common/main.cpp
-                         ${RC_ICONS} ${RC_QUASSEL_ICONS} ${RC_SQL} ${RC_I18N} ${WIN32_RC})
+  add_executable(quassel WIN32 ${CMAKE_SOURCE_DIR}/src/common/main.cpp
+                               ${RC_ICONS} ${RC_QUASSEL_ICONS} ${RC_SQL} ${RC_I18N} ${WIN32_RC})
   set_target_properties(quassel PROPERTIES 
                                 COMPILE_FLAGS "-DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_SCRIPT_LIB -DQT_SQL_LIB -DBUILD_MONO")
   target_link_libraries(quassel mod_qtui mod_uisupport mod_client mod_core mod_common 
