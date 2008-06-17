@@ -86,23 +86,6 @@ NetworkConnection::NetworkConnection(Network *network, CoreSession *session)
   connect(network, SIGNAL(autoReconnectRetriesSet(quint16)), this, SLOT(autoReconnectSettingsChanged()));
 
 #ifndef QT_NO_OPENSSL
-  {
-    QFile certFile(quasselDir().absolutePath() + "/quasselClientCert.pem");
-    certFile.open(QIODevice::ReadOnly);
-    QSslCertificate cert(&certFile);
-    certFile.close();
-
-    certFile.open(QIODevice::ReadOnly);
-    QSslKey key(&certFile, QSsl::Rsa);
-    certFile.close();
-
-    if ( !cert.isNull() && cert.isValid() &&
-	 !key.isNull() ) {
-      socket.setLocalCertificate(cert);
-      socket.setPrivateKey(key);
-    }
-  }
-
   connect(&socket, SIGNAL(encrypted()), this, SLOT(socketEncrypted()));
   connect(&socket, SIGNAL(sslErrors(const QList<QSslError> &)), this, SLOT(sslErrors(const QList<QSslError> &)));
 #endif
