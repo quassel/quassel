@@ -39,6 +39,7 @@ class ChatItem : public QGraphicsItem {
     inline const MessageModel *model() const { return _index.isValid() ? qobject_cast<const MessageModel *>(_index.model()) : 0; }
     inline int row() const { return _index.isValid() ? _index.row() : 0; }
 
+    inline QFontMetricsF *fontMetrics() const { return _fontMetrics; }
     inline virtual QRectF boundingRect() const { return _boundingRect; }
     inline qreal width() const { return _boundingRect.width(); }
     inline qreal height() const { return _boundingRect.height(); }
@@ -66,9 +67,9 @@ class ChatItem : public QGraphicsItem {
     int heightForWidth(int width);
     void layout();
 
-    int _lineHeight;
-    qreal _lineLeading;
     QRectF _boundingRect;
+    QFontMetricsF *_fontMetrics;
+    quint8 _lines;
     //QTextLayout _layout;
     //QTextOption _textOption;
     QPersistentModelIndex _index;

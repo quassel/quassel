@@ -28,10 +28,9 @@
 #include "qtui.h"
 
 ChatItem::ChatItem(const QPersistentModelIndex &index_, QGraphicsItem *parent) : QGraphicsItem(parent), _index(index_) {
-  QFontMetricsF *metrics = QtUi::style()->fontMetrics(data(ChatLineModel::FormatRole).value<UiStyle::FormatList>().at(0).second);
-  _lineHeight = metrics->lineSpacing();
-  _lineLeading = metrics->leading();
+  _fontMetrics = QtUi::style()->fontMetrics(data(ChatLineModel::FormatRole).value<UiStyle::FormatList>().at(0).second);
   _layout = 0;
+  _lines = 0;
 }
 
 ChatItem::~ChatItem() {
@@ -58,10 +57,10 @@ int ChatItem::setWidth(int w) {
 
 int ChatItem::heightForWidth(int width) {
   if(data(ChatLineModel::ColumnTypeRole).toUInt() != ChatLineModel::ContentsColumn)
-    return _lineHeight; // only contents can be multi-line
+    return fontMetrics()->lineSpacing(); // only contents can be multi-line
 
   ChatLineModel::WrapList wrapList = data(ChatLineModel::WrapListRole).value<ChatLineModel::WrapList>();
-  int lines = 1;
+  _lines = 1;
   qreal w = 0;
   for(int i = 0; i < wrapList.count(); i++) {
     w += wrapList.at(i).width;
@@ -69,19 +68,27 @@ int ChatItem::heightForWidth(int width) {
       w += wrapList.at(i).trailing;
       continue;
     }
-    lines++;
+    _lines++;
     w = wrapList.at(i).width;
-    while(w >= width) {
-      lines++;
-      w -= width;
+    while(w >= width) {  // handle words longer than a line
+      _lines++;
+      // We do not want to compute an exact split position (that would require us to calculate glyph widths
+      // and also apply formats in this step...)
+      // Just using width should be a good estimate, but since a character can't be split in the middle, we
+      // subtract averageCharWidth as well... sometimes this won't be enough, but meh.
+      w -= width - 4*fontMetrics()->averageCharWidth();
     }
   }
-  return lines * _lineHeight;
+  return _lines * fontMetrics()->lineSpacing();
 }
 
 void ChatItem::layout() {
   if(haveLayout()) return;
   _layout = new QTextLayout(data(MessageModel::DisplayRole).toString());
+
+  QTextOption option;
+  option.setWrapMode(QTextOption::WrapAnywhere);
+  _layout->setTextOption(option);
 
   // Convert format information into a FormatRange
   QList<QTextLayout::FormatRange> formatRanges;
@@ -103,6 +110,11 @@ void ChatItem::updateLayout() {
   if(!haveLayout()) layout();
 
   // Now layout
+  ChatLineModel::WrapList wrapList = data(ChatLineModel::WrapListRole).value<ChatLineModel::WrapList>();
+  if(!wrapList.count()) return; // empty chatitem
+  int wordidx = 0;
+  ChatLineModel::Word word = wrapList.at(0);
+
   qreal h = 0;
   _layout->beginLayout();
   forever {
@@ -110,8 +122,30 @@ void ChatItem::updateLayout() {
     if (!line.isValid())
       break;
 
-    line.setLineWidth(width());
-    h += _lineLeading;
+    if(word.width >= width()) {
+      line.setLineWidth(width());
+      word.width -= line.naturalTextWidth();
+      word.start = line.textStart() + line.textLength();
+      //qDebug() << "setting width: " << width();
+    } else {
+      int w = 0;
+      while((w += word.width) <= width() && wordidx < wrapList.count()) {
+        w += word.trailing;
+        if(++wordidx < wrapList.count()) word = wrapList.at(wordidx);
+        else {
+          // last word (and it fits), but if we expected an extra line, wrap anyway here
+          // yeah, this is cheating, but much cheaper than computing widths ourself
+          if(_layout->lineCount() < _lines) {
+            wordidx--; qDebug() << "trigger!" << _lines << _layout->text();
+            break;
+          }
+        }
+      }
+      int lastcol = wordidx < wrapList.count() ? word.start : _layout->text().length();
+      line.setNumColumns(lastcol - line.textStart());// qDebug() << "setting cols:" << lastcol - line.textStart();
+    }
+
+    h += fontMetrics()->leading();
     line.setPosition(QPointF(0, h));
     h += line.height();
   }
@@ -131,7 +165,7 @@ void ChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
   int width = 0;
   QVariantList wrapList = data(ChatLineModel::WrapListRole).toList();
   for(int i = 2; i < wrapList.count(); i+=2) {
-    QRect r(wrapList[i-1].toUInt(), 0, wrapList[i+1].toUInt() - wrapList[i-1].toUInt(), _lineHeight);
+    QRect r(wrapList[i-1].toUInt(), 0, wrapList[i+1].toUInt() - wrapList[i-1].toUInt(), fontMetrics()->lineSpacing());
     painter->drawRect(r);
   }
 }
