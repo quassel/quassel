@@ -433,7 +433,6 @@ void IrcServerHandler::handle005(const QString &prefix, const QList<QByteArray> 
   const int numParams = params.size();
   if(numParams < 1) {
     qWarning() << "IrcServerHandler::handle005(): received RPL_ISUPPORT (005) with too few parameters:" << serverDecode(params);
-    return;
   }
 
   QString rpl_isupport_suffix = serverDecode(params.last());
