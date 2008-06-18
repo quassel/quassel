@@ -61,6 +61,8 @@ public:
   void setConfig(BufferViewConfig *config);
   inline BufferViewConfig *config() const { return _config; }
 
+  virtual void sort(int column, Qt::SortOrder order = Qt::AscendingOrder);
+									 
 public slots:
   void checkPreviousCurrentForRemoval(const QModelIndex &current, const QModelIndex &previous);
   void checkItemForRemoval(const QModelIndex &index) { checkItemsForRemoval(index, index); }
@@ -81,6 +83,7 @@ private slots:
     
 private:
   QPointer<BufferViewConfig> _config;
+  Qt::SortOrder _sortOrder;
   
   QColor _FgColorInactiveActivity;
   QColor _FgColorNoActivity;

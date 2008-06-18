@@ -39,7 +39,8 @@ public:
 *****************************************/
 BufferViewFilter::BufferViewFilter(QAbstractItemModel *model, BufferViewConfig *config)
   : QSortFilterProxyModel(model),
-    _config(0)
+    _config(0),
+    _sortOrder(Qt::AscendingOrder)
 {
   setConfig(config);
   setSourceModel(model);
@@ -125,11 +126,17 @@ bool BufferViewFilter::dropMimeData(const QMimeData *data, Qt::DropAction action
     if(droppedNetworkId == networkId) {
       if(row < 0)
 	row = 0;
+
       if(row < rowCount(parent)) {
 	BufferId beforeBufferId = parent.child(row, 0).data(NetworkModel::BufferIdRole).value<BufferId>();
 	pos = config()->bufferList().indexOf(beforeBufferId);
+	if(_sortOrder == Qt::DescendingOrder)
+	  pos++;
       } else {
-	pos = config()->bufferList().count();
+	if(_sortOrder == Qt::AscendingOrder)
+	  pos = config()->bufferList().count();
+	else
+	  pos = 0;
       }
 
       if(config()->bufferList().contains(bufferId)) {
@@ -145,6 +152,11 @@ bool BufferViewFilter::dropMimeData(const QMimeData *data, Qt::DropAction action
     }
   }
   return true;
+}
+
+void BufferViewFilter::sort(int column, Qt::SortOrder order) {
+  _sortOrder = order;
+  QSortFilterProxyModel::sort(column, order);
 }
 
 void BufferViewFilter::addBuffer(const BufferId &bufferId) const {
