@@ -425,9 +425,10 @@ void ChatWidget::mouseReleaseEvent(QMouseEvent *event) {
         // TODO Make X11SelectionMode configurable!
 #ifdef Q_WS_X11
         QApplication::clipboard()->setText(selectionToString(), QClipboard::Selection);
-#else
-        QApplication::clipboard()->setText(selectionToString());
 #endif
+//#else
+        QApplication::clipboard()->setText(selectionToString());
+//#endif
         break;
       default:
         mouseMode = Normal;
