@@ -193,7 +193,6 @@ void UserInputHandler::handleList(const BufferInfo &bufferInfo, const QString &m
   emit putCmd("LIST", serverEncode(msg.split(' ', QString::SkipEmptyParts)));
 }
 
-
 void UserInputHandler::handleMe(const BufferInfo &bufferInfo, const QString &msg) {
   if(bufferInfo.bufferName().isEmpty()) return; // server buffer
   networkConnection()->ctcpHandler()->query(bufferInfo.bufferName(), "ACTION", msg);
@@ -202,8 +201,14 @@ void UserInputHandler::handleMe(const BufferInfo &bufferInfo, const QString &msg
 
 void UserInputHandler::handleMode(const BufferInfo &bufferInfo, const QString &msg) {
   Q_UNUSED(bufferInfo)
+
+  QStringList params = msg.split(' ', QString::SkipEmptyParts);
+  // if the first argument is neither a channel nor us (user modes are only to oneself) the current buffer is assumed to be the target
+  if(!params.isEmpty() && !network()->isChannelName(params[0]) && !network()->isMyNick(params[0]))
+    params.prepend(bufferInfo.bufferName());
+  
   // TODO handle correct encoding for buffer modes (channelEncode())
-  emit putCmd("MODE", serverEncode(msg.split(' ', QString::SkipEmptyParts)));
+  emit putCmd("MODE", serverEncode(params));
 }
 
 // TODO: show privmsgs
