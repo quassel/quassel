@@ -422,6 +422,9 @@ void Network::setConnectionState(int state) {
 
 void Network::setMyNick(const QString &nickname) {
   _myNick = nickname;
+  if(!_myNick.isEmpty() && !ircUser(myNick())) {
+    newIrcUser(myNick());
+  }
   emit myNickSet(nickname);
 }
 
