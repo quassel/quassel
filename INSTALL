@@ -50,9 +50,10 @@ Quassel recognizes the following options:
     Qt installed in some local dir.
 
 -DSTATIC=1
-    Enable static building of Quassel. You should link the static versions of some libs
+    Enable static building of Quassel. On Linux, you should link the static versions of some libs
     (in particular libstdc++.a) into /path/to/build/dir/staticlibs in oder to create
-    a portable binary!
+    a portable binary! Be aware of the fact that some things we do in STATIC mode might not be portable
+    or require a particular setup; it's mainly meant for the devel team.
 
 BUILDING ON WINDOWS:
 --------------------
