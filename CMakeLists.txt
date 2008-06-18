@@ -30,29 +30,26 @@ set(STATIC 0 CACHE BOOL "Enable static building (might not be portable)")
 set(QT "" CACHE STRING "Path to a Qt installation to use instead of the system Qt")
 set(SPUTDEV CACHE STRING "Do not use!")
 
-# Temporary
-if(STATICWIN)
-  set(STATIC 1)
-endif(STATICWIN)
-
 if(STATIC)
   set(CMAKE_BUILD_TYPE Release)
 endif(STATIC)
 
 # Enable various flags on gcc
-include(CheckCXXCompilerFlag)
-check_cxx_compiler_flag(-Wall Wall)
-if(Wall)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
-endif(Wall)
-check_cxx_compiler_flag(-Wextra Wextra)
-if(Wextra)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra")
-endif(Wextra)
-check_cxx_compiler_flag(-ansi ansi)
-if(ansi)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ansi")
-endif(ansi)
+if(CMAKE_COMPILER_IS_GNUCXX)
+  include(CheckCXXCompilerFlag)
+  check_cxx_compiler_flag(-Wall HAVE_WALL)
+  if(HAVE_WALL)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
+  endif(HAVE_WALL)
+  check_cxx_compiler_flag(-Wextra HAVE_WEXTRA)
+  if(HAVE_WEXTRA)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra")
+  endif(HAVE_WEXTRA)
+  check_cxx_compiler_flag(-ansi HAVE_ANSI)
+  if(HAVE_ANSI)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ansi")
+  endif(HAVE_ANSI)
+endif(CMAKE_COMPILER_IS_GNUCXX)
 
 set(QT_MIN_VERSION "4.3.0")
 
@@ -80,7 +77,7 @@ include_directories(${QT_INCLUDES})
 # We need to create a version.gen
 # For this, we create our genversion binary and make sure it is run every time.
 add_executable(genversion ${CMAKE_SOURCE_DIR}/src/common/genversion.cpp)
-target_link_libraries(genversion ${QT_LIBRARIES})
+target_link_libraries(genversion ${QT_LIBRARIES} ${QT_CORE_LIB_DEPENDENCIES})
 
 add_custom_target(genversion_run ALL ${CMAKE_BINARY_DIR}/genversion
                   ${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR}/src/common/version.gen)
