@@ -76,8 +76,9 @@ int ChatItem::heightForWidth(int width) {
       // and also apply formats in this step...)
       // Just using width should be a good estimate, but since a character can't be split in the middle, we
       // subtract averageCharWidth as well... sometimes this won't be enough, but meh.
-      w -= width - 4*fontMetrics()->averageCharWidth();
+      w -= width - fontMetrics()->averageCharWidth();
     }
+    w += wrapList.at(i).trailing;
   }
   return _lines * fontMetrics()->lineSpacing();
 }
@@ -126,7 +127,6 @@ void ChatItem::updateLayout() {
       line.setLineWidth(width());
       word.width -= line.naturalTextWidth();
       word.start = line.textStart() + line.textLength();
-      //qDebug() << "setting width: " << width();
     } else {
       int w = 0;
       while((w += word.width) <= width() && wordidx < wrapList.count()) {
@@ -136,7 +136,7 @@ void ChatItem::updateLayout() {
           // last word (and it fits), but if we expected an extra line, wrap anyway here
           // yeah, this is cheating, but much cheaper than computing widths ourself
           if(_layout->lineCount() < _lines) {
-            wordidx--; qDebug() << "trigger!" << _lines << _layout->text();
+            wordidx--;
             break;
           }
         }
