@@ -79,7 +79,7 @@ int main(int argc, char **argv) {
   QApplication app(argc, argv);
 #endif
 
-  qsrand(QDateTime::currentDateTime().toTime_t());
+  qsrand(QTime(0,0,0).secsTo(QTime::currentTime()));
 
   // Set up i18n support
   QLocale locale = QLocale::system();
