@@ -379,6 +379,7 @@ void NetworksSettingsPage::networkConnectionStateChanged(Network::ConnectionStat
     ui.connectNow->setEnabled(state == Network::Initialized || state == Network::Disconnected);
   }
   setItemState(net->networkId());
+  setWidgetStates();
 }
 
 void NetworksSettingsPage::networkConnectionError(const QString &) {
