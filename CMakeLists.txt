@@ -3,8 +3,8 @@
 # -DWANT_(CORE|QTCLIENT|MONO)=(ON|OFF)
 #                  : select binaries to build
 # -DQT=/path/to/qt : Choose a Qt4 installation to use instead of the system Qt4
-# -DSTATIC         : Enable static building of Quassel. Use with care.
-# -DSPUTDEV        : Do not use.
+# -DSTATIC=ON      : Enable static building of Quassel. Use with care.
+# -DSPUTDEV=ON     : Do not use.
 #
 # NOTE: You need to remove CMakeCache.txt if you plan to change any of these values!
 
@@ -24,11 +24,12 @@ set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules)
 # Various options and variables that can be set on the command line
 option(WANT_CORE     "Build the core (server) binary"           ON)
 option(WANT_QTCLIENT "Build the Qt4 GUI client binary"          ON)
-option(WANT_MONO     "Build the monolithic (all-in-one) binary" ON)
+option(WANT_MONO     "Build the monolithic (all-in-one) binary" OFF)
 
-set(STATIC 0 CACHE BOOL "Enable static building (might not be portable)")
+option(STATIC        "Enable static building (might not be portable)" OFF)
+option(SPUTDEV       "Do not use!" OFF)
+
 set(QT "" CACHE STRING "Path to a Qt installation to use instead of the system Qt")
-set(SPUTDEV CACHE STRING "Do not use!")
 
 if(STATIC)
   set(CMAKE_BUILD_TYPE Release)
