@@ -457,8 +457,12 @@ void CoreSession::destroyNetwork(NetworkId id) {
     // this can happen if the network was reconnecting while being removed
     _connections.take(id)->deleteLater();
   }
+  QList<BufferId> removedBuffers = Core::requestBufferIdsForNetwork(user(), id);
   Network *net = _networks.take(id);
   if(net && Core::removeNetwork(user(), id)) {
+    foreach(BufferId bufferId, removedBuffers) {
+      _bufferSyncer->removeBuffer(bufferId);
+    }
     emit networkRemoved(id);
     net->deleteLater();
   }

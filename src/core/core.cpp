@@ -309,6 +309,11 @@ QList<BufferInfo> Core::requestBuffers(UserId user) {
   return instance()->storage->requestBuffers(user);
 }
 
+QList<BufferId> Core::requestBufferIdsForNetwork(UserId user, NetworkId networkId) {
+  QMutexLocker locker(&mutex);
+  return instance()->storage->requestBufferIdsForNetwork(user, networkId);
+}
+
 bool Core::removeBuffer(const UserId &user, const BufferId &bufferId) {
   QMutexLocker locker(&mutex);
   return instance()->storage->removeBuffer(user, bufferId);

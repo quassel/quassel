@@ -27,7 +27,6 @@
 #include "signalproxy.h"
 #include "network.h"
 #include "ircchannel.h"
-#include "ircuser.h"
 
 #include "buffersettings.h"
 
@@ -262,16 +261,16 @@ void BufferItem::removeUserFromCategory(IrcUser *ircUser) {
     }
   }
 
-  if(!success) {
-    qDebug() << "didn't find User:" << ircUser << qHash(ircUser);
-    qDebug() << "==== Childlist for Item:" << this << id() << bufferName() << "====";
-    for(int i = 0; i < childCount(); i++) {
-      categoryItem = qobject_cast<UserCategoryItem *>(child(i));
-      categoryItem->dumpChildList();
-    }
-    qDebug() << "==== End Of Childlist for Item:" << this << id() << bufferName() << "====";
-  }
-  Q_ASSERT(success);
+//   if(!success) {
+//     qDebug() << "didn't find User:" << ircUser << qHash(ircUser);
+//     qDebug() << "==== Childlist for Item:" << this << id() << bufferName() << "====";
+//     for(int i = 0; i < childCount(); i++) {
+//       categoryItem = qobject_cast<UserCategoryItem *>(child(i));
+//       categoryItem->dumpChildList();
+//     }
+//     qDebug() << "==== End Of Childlist for Item:" << this << id() << bufferName() << "====";
+//   }
+//   Q_ASSERT(success);
 }
 
 void BufferItem::userModeChanged(IrcUser *ircUser) {
@@ -568,14 +567,6 @@ bool IrcUserItem::isActive() const {
     return !_ircUser->isAway();
   else
     return false;
-}
-
-IrcUser *IrcUserItem::ircUser() {
-  return _ircUser;
-}
-
-quint64 IrcUserItem::id() const {
-  return _id;
 }
 
 QVariant IrcUserItem::data(int column, int role) const {

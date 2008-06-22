@@ -71,6 +71,7 @@ public slots:
   virtual BufferInfo getBufferInfo(UserId user, const NetworkId &networkId, BufferInfo::Type type, const QString &buffer = "");
   virtual BufferInfo getBufferInfo(UserId user, const BufferId &bufferId);
   virtual QList<BufferInfo> requestBuffers(UserId user);
+  virtual QList<BufferId> requestBufferIdsForNetwork(UserId user, NetworkId networkId);
   virtual bool removeBuffer(const UserId &user, const BufferId &bufferId);
   virtual BufferId renameBuffer(const UserId &user, const NetworkId &networkId, const QString &newName, const QString &oldName);
   virtual void setBufferLastSeenMsg(UserId user, const BufferId &bufferId, const MsgId &msgId);

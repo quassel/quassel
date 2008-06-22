@@ -32,6 +32,7 @@
     <file>./SQL/SQLite/11/select_bufferByName.sql</file>
     <file>./SQL/SQLite/11/select_bufferExists.sql</file>
     <file>./SQL/SQLite/11/select_buffers.sql</file>
+    <file>./SQL/SQLite/11/select_buffers_for_network.sql</file>
     <file>./SQL/SQLite/11/select_connected_networks.sql</file>
     <file>./SQL/SQLite/11/select_messageRange.sql</file>
     <file>./SQL/SQLite/11/select_messages.sql</file>
