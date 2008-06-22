@@ -71,6 +71,12 @@ void BufferViewFilter::setConfig(BufferViewConfig *config) {
   }
 
   _config = config;
+
+  if(!config) {
+    invalidate();
+    return;
+  }
+
   if(config->isInitialized()) {
     configInitialized();
   } else {
