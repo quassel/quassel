@@ -39,6 +39,8 @@ public:
   BufferInfo();
   BufferInfo(BufferId id, NetworkId networkid, Type type, uint gid = 0, QString buf = QString());
 
+  static BufferInfo fakeStatusBuffer(NetworkId networkId);
+
   inline bool isValid() const { return _bufferId != 0; }
   inline BufferId bufferId() const { return _bufferId; }
   inline NetworkId networkId() const { return _netid; }

@@ -25,6 +25,7 @@
 #include "bufferviewconfig.h"
 #include "bufferviewfilter.h"
 #include "bufferviewmanager.h"
+#include "channellistdlg.h"
 #include "chatline-old.h"
 #include "client.h"
 #include "clientbacklogmanager.h"
@@ -37,6 +38,7 @@
 #include "signalproxy.h"
 #include "topicwidget.h"
 #include "inputwidget.h"
+#include "irclistmodel.h"
 #include "verticaldock.h"
 #include "uisettings.h"
 #include "qtuisettings.h"
@@ -73,6 +75,7 @@ MainWin::MainWin(QtUi *_gui, QWidget *parent)
     offlineTrayIcon(":/icons/quassel-icon-offline.png"),
     trayIconActive(false),
     timer(new QTimer(this)),
+    channelListDlg(new ChannelListDlg(this)),
     settingsDlg(new SettingsDlg(this)),
     debugConsole(new DebugConsole(this))
 {
@@ -192,6 +195,8 @@ void MainWin::addBufferView(BufferViewConfig *config) {
   view->setFilteredModel(Client::bufferModel(), config);
   view->show();
 
+  connect(&view->showChannelList, SIGNAL(triggered()), this, SLOT(showChannelList()));
+  
   Client::bufferModel()->synchronizeView(view);
 
   dock->setWidget(view);
@@ -497,6 +502,16 @@ void MainWin::showCoreConnectionDlg(bool autoConnect) {
 void MainWin::coreConnectionDlgFinished(int /*code*/) {
   coreConnectDlg->close();
   //exit(1);
+}
+
+void MainWin::showChannelList(NetworkId netId) {
+  if(!netId.isValid()) {
+    QAction *action = qobject_cast<QAction *>(sender());
+    if(action)
+      netId = action->data().value<NetworkId>();
+  }
+  channelListDlg->setNetwork(netId);
+  channelListDlg->show();
 }
 
 void MainWin::showSettingsDlg() {

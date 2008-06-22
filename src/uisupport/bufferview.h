@@ -80,7 +80,7 @@ class BufferView : public QTreeView {
     };
   public:
     Q_DECLARE_FLAGS(ItemActiveStates, ItemActiveState);
-
+    QAction showChannelList;
   private:
     QPointer<BufferViewConfig> _config;
 

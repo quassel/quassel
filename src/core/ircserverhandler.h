@@ -64,6 +64,8 @@ public slots:
   void handle318(const QString &prefix, const QList<QByteArray> &params);   // RPL_ENDOFWHOIS
   void handle319(const QString &prefix, const QList<QByteArray> &params);   // RPL_WHOISCHANNELS
   void handle320(const QString &prefix, const QList<QByteArray> &params);   // RPL_WHOISVIRT (is identified to services)
+  void handle322(const QString &prefix, const QList<QByteArray> &params);   // RPL_LIST
+  void handle323(const QString &prefix, const QList<QByteArray> &params);   // RPL_LISTEND
   void handle324(const QString &prefix, const QList<QByteArray> &params);   // RPL_CHANNELMODEIS
   void handle329(const QString &prefix, const QList<QByteArray> &params);   // RPL_??? (channel creation time)
   void handle331(const QString &prefix, const QList<QByteArray> &params);   // RPL_NOTOPIC

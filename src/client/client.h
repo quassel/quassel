@@ -41,6 +41,7 @@ class NetworkModel;
 class BufferModel;
 class BufferSyncer;
 class ClientBacklogManager;
+class ClientIrcListHelper;
 class BufferViewManager;
 class IrcUser;
 class IrcChannel;
@@ -97,6 +98,7 @@ public:
   static inline SignalProxy *signalProxy() { return instance()->_signalProxy; }
 
   static inline ClientBacklogManager *backlogManager() { return instance()->_backlogManager; }
+  static inline ClientIrcListHelper *ircListHelper() { return instance()->_ircListHelper; }
   static inline BufferViewManager *bufferViewManager() { return instance()->_bufferViewManager; }
   
   static AccountId currentCoreAccount();
@@ -215,6 +217,7 @@ private:
   BufferSyncer * _bufferSyncer;
   ClientBacklogManager *_backlogManager;
   BufferViewManager *_bufferViewManager;
+  ClientIrcListHelper *_ircListHelper;
 
   ClientMode clientMode;
 

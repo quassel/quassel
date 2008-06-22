@@ -32,7 +32,7 @@ public:
 
 public slots:
   virtual QVariantList requestBacklog(BufferId bufferId, int lastMsgs = -1, int offset = -1);
-  virtual void receiveBacklog(BufferId, int, int, QVariantList) {};
+  inline virtual void receiveBacklog(BufferId, int, int, QVariantList) {};
 
 signals:
   void backlogRequested(BufferId, int, int);

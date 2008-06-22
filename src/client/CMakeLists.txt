@@ -11,8 +11,10 @@ set(SOURCES
     buffersettings.cpp
     client.cpp
     clientbacklogmanager.cpp
+    clientirclisthelper.cpp
     clientsettings.cpp
     clientsyncer.cpp
+    irclistmodel.cpp
     mappedselectionmodel.cpp
     networkmodel.cpp
     selectionmodelsynchronizer.cpp
@@ -23,7 +25,9 @@ set(MOC_HDRS
     buffermodel.h
     client.h
     clientbacklogmanager.h
+    clientirclisthelper.h
     clientsyncer.h
+    irclistmodel.h
     networkmodel.h
     mappedselectionmodel.h
     quasselui.h

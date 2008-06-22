@@ -30,7 +30,7 @@ public:
   CoreBufferViewConfig(int bufferViewId, QObject *parent = 0);
   CoreBufferViewConfig(int bufferViewId, const QVariantMap &properties, QObject *parent = 0);
   
-  virtual const QMetaObject *syncMetaObject() const { return &BufferViewConfig::staticMetaObject; }
+  inline virtual const QMetaObject *syncMetaObject() const { return &BufferViewConfig::staticMetaObject; }
 
 public slots:
   virtual inline void requestSetBufferViewName(const QString &bufferViewName) { setBufferViewName(bufferViewName); }

@@ -18,29 +18,29 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef CORENETWORK_H
-#define CORENETWORK_H
+#ifndef CLIENTIRCLISTHELPER_H
+#define CLIENTIRCLISTHELPER_H
 
-#include "network.h"
+#include "irclisthelper.h"
 
-class CoreSession;
-
-class CoreNetwork : public Network {
+class ClientIrcListHelper : public IrcListHelper {
   Q_OBJECT
 
 public:
-  CoreNetwork(const NetworkId &networkid, CoreSession *session);
+  inline ClientIrcListHelper(QObject *object = 0) : IrcListHelper(object) {};
 
-  inline virtual const QMetaObject *syncMetaObject() const { return &Network::staticMetaObject; }
-
-  inline CoreSession *coreSession() const { return _coreSession; }
+  inline virtual const QMetaObject *syncMetaObject() const { return &IrcListHelper::staticMetaObject; }
 
 public slots:
-  virtual void requestConnect() const;
-  virtual void requestDisconnect() const;
+  virtual QVariantList requestChannelList(const NetworkId &netId, const QStringList &channelFilters);
+  virtual void receiveChannelList(const NetworkId &netId, const QStringList &channelFilters, const QVariantList &channels);
+  virtual void reportFinishedList(const NetworkId &netId);
+
+signals:
+  void channelListReceived(const NetworkId &netId, const QStringList &channelFilters, const QList<IrcListHelper::ChannelDescription> &channelList);
 
 private:
-  CoreSession *_coreSession;
+  NetworkId _netId;
 };
 
-#endif //CORENETWORK_H
+#endif //CLIENTIRCLISTHELPER_H

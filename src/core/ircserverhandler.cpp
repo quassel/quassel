@@ -22,6 +22,7 @@
 #include "util.h"
 
 #include "coresession.h"
+#include "coreirclisthelper.h"
 #include "networkconnection.h"
 #include "network.h"
 #include "identity.h"
@@ -144,7 +145,7 @@ void IrcServerHandler::defaultHandler(QString cmd, const QString &prefix, const 
         break;
       }
       // Ignore these commands.
-      case 366: case 376:
+      case 321: case 366: case 376:
         break;
 
       // Everything else will be marked in red, so we can add them somewhere.
@@ -722,6 +723,37 @@ void IrcServerHandler::handle320(const QString &prefix, const QList<QByteArray> 
   emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Whois] %1").arg(serverDecode(params).join(" ")));
 }
 
+/* RPL_LIST -  "<channel> <# visible> :<topic>" */
+void IrcServerHandler::handle322(const QString &prefix, const QList<QByteArray> &params) {
+  Q_UNUSED(prefix)
+  QString channelName;
+  quint32 userCount = 0;
+  QString topic;
+  
+  int paramCount = params.count();
+  switch(paramCount) {
+  case 3:
+    topic = serverDecode(params[2]);
+  case 2:
+    userCount = serverDecode(params[1]).toUInt();
+  case 1:
+    channelName = serverDecode(params[0]);
+  default:
+    break;
+  }
+  if(!networkConnection()->coreSession()->ircListHelper()->addChannel(network()->networkId(), channelName, userCount, topic))
+    emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("Channel %1 has %2 users. Topic is: %3").arg(channelName).arg(userCount).arg(topic));
+}
+
+/* RPL_LISTEND ":End of LIST" */
+void IrcServerHandler::handle323(const QString &prefix, const QList<QByteArray> &params) {
+  Q_UNUSED(prefix)
+  Q_UNUSED(params)
+
+  if(!networkConnection()->coreSession()->ircListHelper()->endOfChannelList(network()->networkId()))
+    emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("End of channel list"));
+}
+       
 /* RPL_CHANNELMODEIS - "<channel> <mode> <mode params>" */
 void IrcServerHandler::handle324(const QString &prefix, const QList<QByteArray> &params) {
   Q_UNUSED(prefix);

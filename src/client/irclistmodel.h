@@ -18,29 +18,36 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef CORENETWORK_H
-#define CORENETWORK_H
+#ifndef IRCLISTMODEL_H
+#define IRCLISTMODEL_H
 
-#include "network.h"
+#include "irclisthelper.h"
 
-class CoreSession;
+#include <QAbstractItemModel>
 
-class CoreNetwork : public Network {
+class IrcListModel : public QAbstractItemModel {
   Q_OBJECT
 
 public:
-  CoreNetwork(const NetworkId &networkid, CoreSession *session);
+  IrcListModel(QObject *parent = 0);
 
-  inline virtual const QMetaObject *syncMetaObject() const { return &Network::staticMetaObject; }
+  virtual QVariant data(const QModelIndex &index, int role) const;
+  virtual Qt::ItemFlags flags(const QModelIndex &index) const;
 
-  inline CoreSession *coreSession() const { return _coreSession; }
+  QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+
+  QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
+
+  inline QModelIndex parent(const QModelIndex &) const { return QModelIndex(); }
+
+  inline int rowCount(const QModelIndex &parent = QModelIndex()) const { Q_UNUSED(parent) return _channelList.count(); }
+  inline int columnCount(const QModelIndex &parent = QModelIndex()) const { Q_UNUSED(parent) return 3; }
 
 public slots:
-  virtual void requestConnect() const;
-  virtual void requestDisconnect() const;
+  void setChannelList(const QList<IrcListHelper::ChannelDescription> &channelList = QList<IrcListHelper::ChannelDescription>());
 
 private:
-  CoreSession *_coreSession;
+  QList<IrcListHelper::ChannelDescription> _channelList;
 };
 
-#endif //CORENETWORK_H
+#endif //IRCLISTMODEL_H

@@ -18,29 +18,37 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef CORENETWORK_H
-#define CORENETWORK_H
+#include "clientirclisthelper.h"
 
-#include "network.h"
+#include <QStringList>
 
-class CoreSession;
+#include "client.h"
+#include "irclistmodel.h"
 
-class CoreNetwork : public Network {
-  Q_OBJECT
+QVariantList ClientIrcListHelper::requestChannelList(const NetworkId &netId, const QStringList &channelFilters) {
+  _netId = netId;
+  return IrcListHelper::requestChannelList(netId, channelFilters);
+}
 
-public:
-  CoreNetwork(const NetworkId &networkid, CoreSession *session);
+void ClientIrcListHelper::receiveChannelList(const NetworkId &netId, const QStringList &channelFilters, const QVariantList &channels) {
+  QVariantList::const_iterator iter = channels.constBegin();
+  QVariantList::const_iterator iterEnd = channels.constEnd();
 
-  inline virtual const QMetaObject *syncMetaObject() const { return &Network::staticMetaObject; }
+  QList<ChannelDescription> channelList;
+  while(iter != iterEnd) {
+    QVariantList channelVar = iter->toList();
+    ChannelDescription channelDescription(channelVar[0].toString(), channelVar[1].toUInt(), channelVar[2].toString());
+    channelList << channelDescription;
+    iter++;
+  }
 
-  inline CoreSession *coreSession() const { return _coreSession; }
+  emit channelListReceived(netId, channelFilters, channelList);
+}
 
-public slots:
-  virtual void requestConnect() const;
-  virtual void requestDisconnect() const;
+void ClientIrcListHelper::reportFinishedList(const NetworkId &netId) {
+  if(_netId == netId) {
+    requestChannelList(netId, QStringList());
+    emit finishedListReported(netId);
+  }
+}
 
-private:
-  CoreSession *_coreSession;
-};
-
-#endif //CORENETWORK_H

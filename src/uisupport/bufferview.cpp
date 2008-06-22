@@ -48,6 +48,7 @@
 // to be on the safe side: call QTreeView's method aswell
 BufferView::BufferView(QWidget *parent)
   : QTreeView(parent),
+    showChannelList(tr("Show Channel List"), this),
     _connectNetAction(tr("Connect"), this),
     _disconnectNetAction(tr("Disconnect"), this),
     _joinChannelAction(tr("Join Channel"), this),
@@ -399,8 +400,10 @@ void BufferView::contextMenuEvent(QContextMenuEvent *event) {
   
   switch(itemType) {
   case NetworkModel::NetworkItemType:
+    showChannelList.setData(index.data(NetworkModel::NetworkIdRole));
     _disconnectNetAction.setIcon(connectionStateIcon);
     _connectNetAction.setIcon(connectionStateIcon);
+    addItemToMenu(showChannelList, contextMenu, index, ActiveState);
     addItemToMenu(_disconnectNetAction, contextMenu, index, ActiveState);
     addItemToMenu(_connectNetAction, contextMenu, index, InactiveState);
     addSeparatorToMenu(contextMenu, index, ActiveState);
@@ -457,10 +460,11 @@ void BufferView::contextMenuEvent(QContextMenuEvent *event) {
     bool ok;
     QString channelName = QInputDialog::getText(this, tr("Join Channel"), tr("Input channel name:"), QLineEdit::Normal, QString(), &ok);
     if(ok && !channelName.isEmpty()) {
-      BufferInfo bufferInfo = index.child(0,0).data(NetworkModel::BufferInfoRole).value<BufferInfo>();
-      if(bufferInfo.isValid()) {
-        Client::instance()->userInput(bufferInfo, QString("/J %1").arg(channelName));
-      }
+      Client::instance()->userInput(BufferInfo::fakeStatusBuffer(index.data(NetworkModel::NetworkIdRole).value<NetworkId>()), QString("/J %1").arg(channelName));
+//       BufferInfo bufferInfo = index.child(0,0).data(NetworkModel::BufferInfoRole).value<BufferInfo>();
+//       if(bufferInfo.isValid()) {
+//         Client::instance()->userInput(bufferInfo, QString("/J %1").arg(channelName));
+//       }
     }
 #endif
     return;

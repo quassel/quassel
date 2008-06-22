@@ -32,7 +32,7 @@ public:
   CoreBufferViewManager(SignalProxy *proxy, CoreSession *parent);
   ~CoreBufferViewManager();
   
-  virtual const QMetaObject *syncMetaObject() const { return &BufferViewManager::staticMetaObject; }
+  inline virtual const QMetaObject *syncMetaObject() const { return &BufferViewManager::staticMetaObject; }
 
 public slots:
   virtual void requestCreateBufferView(const QVariantMap &properties);

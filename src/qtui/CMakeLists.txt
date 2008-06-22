@@ -7,6 +7,7 @@ include(${QT_USE_FILE})
 set(SOURCES
     aboutdlg.cpp
     bufferwidget.cpp
+    channellistdlg.cpp
     chatline-old.cpp
     chatwidget.cpp
     coreconfigwizard.cpp
@@ -29,6 +30,7 @@ set(SOURCES
 set(MOC_HDRS
     aboutdlg.h
     bufferwidget.h
+    channellistdlg.h
     chatline-old.h
     chatwidget.h
     coreconfigwizard.h
@@ -54,6 +56,7 @@ set(FORMS
     aboutdlg.ui
     bufferviewwidget.ui
     bufferwidget.ui
+    channellistdlg.ui
     coreaccounteditdlg.ui
     coreconfigwizardintropage.ui
     coreconfigwizardadminuserpage.ui
