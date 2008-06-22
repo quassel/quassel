@@ -33,12 +33,12 @@ class BufferInfo;
 #include "selectionmodelsynchronizer.h"
 #include "modelpropertymapper.h"
 #include "clientsettings.h"
+#include "ircuser.h"
 
 class MappedSelectionModel;
 class QAbstractItemView;
 class Network;
 class IrcChannel;
-class IrcUser;
 
 /*****************************************
  *  Fancy Buffer Items
@@ -179,8 +179,8 @@ public:
   QString nickName() const;
   bool isActive() const;
 
-  IrcUser *ircUser();
-  virtual quint64 id() const;
+  inline IrcUser *ircUser() { return _ircUser; }
+  inline virtual quint64 id() const { return _id; }
   virtual QVariant data(int column, int role) const;
   virtual QString toolTip(int column) const;
 
@@ -233,6 +233,7 @@ public:
 
   bool isBufferIndex(const QModelIndex &) const;
   //Buffer *getBufferByIndex(const QModelIndex &) const;
+  QModelIndex networkIndex(NetworkId networkId);
   QModelIndex bufferIndex(BufferId bufferId);
 
   const Network *networkByIndex(const QModelIndex &index) const;
@@ -246,7 +247,6 @@ public slots:
   void networkRemoved(const NetworkId &networkId);
   
 private:
-  QModelIndex networkIndex(NetworkId networkId);
   NetworkItem *networkItem(NetworkId networkId);
   NetworkItem *existsNetworkItem(NetworkId networkId);
   BufferItem *bufferItem(const BufferInfo &bufferInfo);

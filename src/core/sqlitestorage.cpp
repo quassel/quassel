@@ -538,6 +538,21 @@ QList<BufferInfo> SqliteStorage::requestBuffers(UserId user) {
   return bufferlist;
 }
 
+QList<BufferId> SqliteStorage::requestBufferIdsForNetwork(UserId user, NetworkId networkId) {
+  QList<BufferId> bufferList;
+  QSqlQuery query(logDb());
+  query.prepare(queryString("select_buffers_for_network"));
+  query.bindValue(":networkid", networkId.toInt());
+  query.bindValue(":userid", user.toInt());
+
+  query.exec();
+  watchQuery(&query);
+  while(query.next()) {
+    bufferList << BufferId(query.value(0).toInt());
+  }
+  return bufferList;
+}
+
 bool SqliteStorage::removeBuffer(const UserId &user, const BufferId &bufferId) {
   if(!isValidBuffer(user, bufferId))
     return false;

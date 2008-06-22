@@ -246,7 +246,8 @@ void Client::coreNetworkCreated(NetworkId id) {
 }
 
 void Client::coreNetworkRemoved(NetworkId id) {
-  if(!_networks.contains(id)) return;
+  if(!_networks.contains(id))
+    return;
   Network *net = _networks.take(id);
   emit networkRemoved(net->networkId());
   net->deleteLater();
@@ -641,7 +642,7 @@ void Client::removeBuffer(BufferId id) {
 }
 
 void Client::bufferRemoved(BufferId bufferId) {
-  // first remove the buffer from has. this prohibits further lastSeenUpdates
+  // first remove the buffer from hash. this prohibits further lastSeenUpdates
   Buffer *buff = 0;
   if(_buffers.contains(bufferId)) {
     buff = _buffers.take(bufferId);

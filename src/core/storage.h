@@ -236,6 +236,15 @@ class Storage : public QObject {
      */
     virtual QList<BufferInfo> requestBuffers(UserId user) = 0;
 
+    //! Request a list of BufferIds for a given NetworkId
+    /** \note This method is threadsafe.
+     *
+     *  \param user  The user whose buffers we request
+     *  \param networkId  The NetworkId of the network in question
+     *  \return List of BufferIds belonging to the Network
+     */
+    virtual QList<BufferId> requestBufferIdsForNetwork(UserId user, NetworkId networkId) = 0;
+
     //! Remove permanently a buffer and it's content from the storage backend
     /** This call cannot be reverted!
      *  \param user      The user who is the owner of the buffer
