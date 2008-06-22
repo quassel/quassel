@@ -426,17 +426,73 @@ void NetworkConnection::fillBucketAndProcessQueue() {
   }
 }
 
-void NetworkConnection::putCmd(const QString &cmd, const QVariantList &params, const QByteArray &prefix) {
+// returns 0 if the message will not be chopped by the irc server or number of chopped bytes if message is too long
+int NetworkConnection::lastParamOverrun(const QString &cmd, const QList<QByteArray> &params) {
+  //the server will pass our message that trunkated to 512 bytes including CRLF with the following format:
+  // ":prefix COMMAND param0 param1 :lastparam"
+  // where prefix = "nickname!user@host"
+  // that means that the last message can be as long as:
+  // 512 - nicklen - userlen - hostlen - commandlen - sum(param[0]..param[n-1])) - 2 (for CRLF) - 4 (":!@" + 1space between prefix and command) - max(paramcount - 1, 0) (space for simple params) - 2 (space and colon for last param)
+  IrcUser *me = network()->me();
+  int maxLen = 512 - serverEncode(me->nick()).count() - serverEncode(me->user()).count() - serverEncode(me->host()).count() - cmd.toAscii().count() - 6;
+
+  if(!params.isEmpty()) {
+    for(int i = 0; i < params.count() - 1; i++) {
+      maxLen -= (params[i].count() + 1);
+    }
+    maxLen -= 2; // " :" last param separator;
+    
+    if(params.last().count() > maxLen) {
+      return params.last().count() - maxLen;
+    } else {
+      return 0;
+    }
+  } else {
+    return 0;
+  }
+}
+
+void NetworkConnection::putCmd(const QString &cmd, const QList<QByteArray> &params, const QByteArray &prefix) {
   QByteArray msg;
+  if(cmd == "PRIVMSG" && params.count() > 1) {
+    int overrun = lastParamOverrun(cmd, params);
+    if(overrun) {
+      QList<QByteArray> paramCopy1;
+      QList<QByteArray> paramCopy2;
+      for(int i = 0; i < params.count() - 1; i++) {
+	paramCopy1 << params[i];
+	paramCopy2 << params[i];
+      }
+
+      QByteArray lastPart = params.last();
+      QByteArray splitter(" .,-");
+      int maxSplitPos = params.last().count() - overrun;
+      int splitPos = -1;
+      for(int i = 0; i < splitter.size(); i++) {
+	splitPos = qMax(splitPos, lastPart.lastIndexOf(splitter[i], maxSplitPos));
+      }
+
+      if(splitPos == -1) {
+	splitPos = maxSplitPos;
+      }
+      
+      paramCopy1 << lastPart.left(splitPos);
+      paramCopy2 << lastPart.mid(splitPos);
+      putCmd(cmd, paramCopy1, prefix);
+      putCmd(cmd, paramCopy2, prefix);
+      return;
+    }
+  }
+     
   if(!prefix.isEmpty())
     msg += ":" + prefix + " ";
   msg += cmd.toUpper().toAscii();
 
   for(int i = 0; i < params.size() - 1; i++) {
-    msg += " " + params[i].toByteArray();
+    msg += " " + params[i];
   }
   if(!params.isEmpty())
-    msg += " :" + params.last().toByteArray();
+    msg += " :" + params.last();
 
   putRawLine(msg);
 }
