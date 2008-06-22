@@ -41,7 +41,11 @@ void InputLine::keyPressEvent(QKeyEvent * event) {
   } else if(event->key() == Qt::Key_Down) {
     if(idx < history.count()) idx++;
     if(idx < history.count()) setText(history[idx]);
-    else setText("");
+    else if(!text().isEmpty()) {
+      history << text();
+      idx = history.count();
+      setText("");
+    }
     event->accept();
   } else if(event->key() == Qt::Key_Select) {  // for Qtopia
     emit returnPressed();
