@@ -26,6 +26,7 @@
 #include "buffersyncer.h"
 #include "bufferviewmanager.h"
 #include "clientbacklogmanager.h"
+#include "clientirclisthelper.h"
 #include "global.h"
 #include "identity.h"
 #include "ircchannel.h"
@@ -72,10 +73,13 @@ Client::Client(QObject *parent)
     _backlogManager(new ClientBacklogManager(this)),
     _bufferViewManager(0),
     _messageModel(0),
+    _ircListHelper(new ClientIrcListHelper(this)),
     _connectedToCore(false),
     _syncedToCore(false)
 {
   _monitorBuffer = new Buffer(BufferInfo(), this);
+  _signalProxy->synchronize(_ircListHelper);
+  
   connect(_backlogManager, SIGNAL(backlog(BufferId, const QVariantList &)),
 	  this, SLOT(receiveBacklog(BufferId, const QVariantList &)));
 }

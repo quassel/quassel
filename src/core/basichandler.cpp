@@ -22,7 +22,6 @@
 #include <QMetaMethod>
 
 #include "util.h"
-#include "networkconnection.h"
 
 BasicHandler::BasicHandler(NetworkConnection *parent)
   : QObject(parent),
@@ -158,15 +157,6 @@ QList<QByteArray> BasicHandler::userEncode(const QString &userNick, const QStrin
 // ====================
 //  protected:
 // ====================
-
-Network *BasicHandler::network() const {
-  return networkConnection()->network();
-}
-
-NetworkConnection *BasicHandler::networkConnection() const {
-  return _networkConnection;
-}
-
 BufferInfo::Type BasicHandler::typeByTarget(const QString &target) const {
   if(target.isEmpty())
     return BufferInfo::StatusBuffer;

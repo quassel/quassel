@@ -31,6 +31,7 @@
 
 
 class ServerListDlg;
+class ChannelListDlg;
 class CoreConnectDlg;
 class Buffer;
 class BufferViewConfig;
@@ -75,6 +76,7 @@ class MainWin : public QMainWindow {
     void addBufferView(int bufferViewConfigId);
     void removeBufferView(int bufferViewConfigId);
     void receiveMessage(const Message &msg);
+    void showChannelList(NetworkId netId = NetworkId());
     void showSettingsDlg();
     void showNetworkDlg();
     void showManageViewsDlg();
@@ -133,6 +135,7 @@ class MainWin : public QMainWindow {
     QTimer *timer;
 
     CoreConnectDlg *coreConnectDlg;
+    ChannelListDlg *channelListDlg;
     SettingsDlg *settingsDlg;
     DebugConsole *debugConsole;
 

@@ -29,6 +29,7 @@ set(MOC_HDRS
     bufferviewmanager.h
     identity.h
     ircchannel.h
+    irclisthelper.h
     ircuser.h
     logger.h
     network.h

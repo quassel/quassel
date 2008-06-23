@@ -31,7 +31,7 @@ class CoreBacklogManager : public BacklogManager {
 public:
   CoreBacklogManager(CoreSession *coreSession = 0);
 
-  virtual const QMetaObject *syncMetaObject() const { return &BacklogManager::staticMetaObject; }
+  inline virtual const QMetaObject *syncMetaObject() const { return &BacklogManager::staticMetaObject; }
 
   CoreSession *coreSession() { return _coreSession; }
 

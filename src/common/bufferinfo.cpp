@@ -45,6 +45,10 @@ BufferInfo::BufferInfo(BufferId id,  NetworkId networkid, Type type, uint gid, Q
 {
 }
 
+BufferInfo BufferInfo::fakeStatusBuffer(NetworkId networkId) {
+  return BufferInfo(0, networkId, StatusBuffer);
+}
+
 QString BufferInfo::bufferName() const {
   if(isChannelName(_bufferName))
     return _bufferName;

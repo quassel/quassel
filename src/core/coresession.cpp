@@ -29,6 +29,7 @@
 #include "buffersyncer.h"
 #include "corebacklogmanager.h"
 #include "corebufferviewmanager.h"
+#include "coreirclisthelper.h"
 #include "storage.h"
 
 #include "corenetwork.h"
@@ -46,6 +47,7 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
     _bufferSyncer(new BufferSyncer(this)),
     _backlogManager(new CoreBacklogManager(this)),
     _bufferViewManager(new CoreBufferViewManager(_signalProxy, this)),
+    _ircListHelper(new CoreIrcListHelper(this)),
     scriptEngine(new QScriptEngine(this))
 {
 
@@ -87,7 +89,10 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
 
   // init BacklogManager;
   p->synchronize(_backlogManager);
-    
+
+  // init IrcListHelper;
+  p->synchronize(ircListHelper());
+  
   // Restore session state
   if(restoreState) restoreSessionState();
 

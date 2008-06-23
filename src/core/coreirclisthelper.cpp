@@ -1,0 +1,80 @@
+/***************************************************************************
+ *   Copyright (C) 2005-08 by the Quassel Project                          *
+ *   devel@quassel-irc.org                                                 *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) version 3.                                           *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+
+#include "coreirclisthelper.h"
+
+#include "networkconnection.h"
+#include "userinputhandler.h"
+
+
+QVariantList CoreIrcListHelper::requestChannelList(const NetworkId &netId, const QStringList &channelFilters) {
+  if(_finishedChannelLists.contains(netId))
+    return _finishedChannelLists.take(netId);
+     
+  if(_channelLists.contains(netId)) {
+    _queuedQuery[netId] = channelFilters.join(",");
+  } else {
+    _channelLists[netId] = QList<ChannelDescription>();
+
+    NetworkConnection *networkConnection = coreSession()->networkConnection(netId);
+    if(networkConnection)
+      networkConnection->userInputHandler()->handleList(BufferInfo(), channelFilters.join(","));
+  }
+
+  return QVariantList();
+}
+
+bool CoreIrcListHelper::addChannel(const NetworkId &netId, const QString &channelName, quint32 userCount, const QString &topic) {
+  if(!_channelLists.contains(netId))
+    return false;
+
+  _channelLists[netId] << ChannelDescription(channelName, userCount, topic);
+  return true;
+}
+
+bool CoreIrcListHelper::endOfChannelList(const NetworkId &netId) {
+  if(_queuedQuery.contains(netId)) {
+    // we're no longer interessted in the current data. drop it and issue a new request.
+    _channelLists[netId] = QList<ChannelDescription>();
+    
+    NetworkConnection *networkConnection = coreSession()->networkConnection(netId);
+    if(networkConnection)
+      networkConnection->userInputHandler()->handleList(BufferInfo(), _queuedQuery[netId]);
+
+    _queuedQuery.remove(netId);
+    return true;
+  } else if(_channelLists.contains(netId)) {
+    QVariantList channelList;
+    foreach(ChannelDescription channel, _channelLists[netId]) {
+      QVariantList channelVariant;
+      channelVariant << channel.channelName
+		     << channel.userCount
+		     << channel.topic;
+      channelList << qVariantFromValue<QVariant>(channelVariant);
+    }
+    _finishedChannelLists[netId] = channelList;
+    _channelLists.remove(netId);
+    reportFinishedList(netId);
+    return true;
+  } else {
+    return false;
+  }
+}
+

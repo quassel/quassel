@@ -29,8 +29,7 @@
 
 #include "message.h"
 
-class NetworkConnection;
-class Network;
+#include "networkconnection.h"
 
 class BasicHandler : public QObject {
   Q_OBJECT
@@ -71,8 +70,9 @@ protected:
                       QGenericArgument val7 = QGenericArgument(), QGenericArgument val8 = QGenericArgument());
 
 
-  Network * network() const;
-  NetworkConnection * networkConnection() const;
+  inline Network *network() const { return _networkConnection->network(); }
+  inline NetworkConnection *networkConnection() const { return _networkConnection; }
+
   BufferInfo::Type typeByTarget(const QString &target) const;
 
 private:

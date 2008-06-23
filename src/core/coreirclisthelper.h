@@ -18,29 +18,34 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef CORENETWORK_H
-#define CORENETWORK_H
+#ifndef COREIRCLISTHELPER_H
+#define COREIRCLISTHELPER_H
 
-#include "network.h"
+#include "irclisthelper.h"
 
-class CoreSession;
+#include "coresession.h"
 
-class CoreNetwork : public Network {
+class CoreIrcListHelper : public IrcListHelper {
   Q_OBJECT
 
 public:
-  CoreNetwork(const NetworkId &networkid, CoreSession *session);
+  inline CoreIrcListHelper(CoreSession *coreSession) : IrcListHelper(coreSession), _coreSession(coreSession) {};
 
-  inline virtual const QMetaObject *syncMetaObject() const { return &Network::staticMetaObject; }
+  inline virtual const QMetaObject *syncMetaObject() const { return &IrcListHelper::staticMetaObject; }
 
   inline CoreSession *coreSession() const { return _coreSession; }
 
 public slots:
-  virtual void requestConnect() const;
-  virtual void requestDisconnect() const;
+  virtual QVariantList requestChannelList(const NetworkId &netId, const QStringList &channelFilters);
+  bool addChannel(const NetworkId &netId, const QString &channelName, quint32 userCount, const QString &topic);
+  bool endOfChannelList(const NetworkId &netId);
 
 private:
   CoreSession *_coreSession;
+
+  QHash<NetworkId, QString> _queuedQuery;
+  QHash<NetworkId, QList<ChannelDescription> > _channelLists;
+  QHash<NetworkId, QVariantList> _finishedChannelLists;
 };
 
-#endif //CORENETWORK_H
+#endif //COREIRCLISTHELPER_H

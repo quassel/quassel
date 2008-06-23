@@ -29,6 +29,7 @@
 class BufferSyncer;
 class CoreBacklogManager;
 class CoreBufferViewManager;
+class CoreIrcListHelper;
 class Identity;
 class NetworkConnection;
 class CoreNetwork;
@@ -54,6 +55,8 @@ public:
 
   SignalProxy *signalProxy() const;
 
+  inline CoreIrcListHelper *ircListHelper() const { return _ircListHelper; }
+  
   void attachNetworkConnection(NetworkConnection *conn);
 
   //! Return necessary data for restoring the session after restarting the core
@@ -185,6 +188,7 @@ private:
   BufferSyncer *_bufferSyncer;
   CoreBacklogManager *_backlogManager;
   CoreBufferViewManager *_bufferViewManager;
+  CoreIrcListHelper *_ircListHelper;
 
   QScriptEngine *scriptEngine;
 

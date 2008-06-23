@@ -18,29 +18,41 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef CORENETWORK_H
-#define CORENETWORK_H
+#ifndef CHANNELLISTDLG_H
+#define CHANNELLISTDLG_H
 
-#include "network.h"
+#include "ui_channellistdlg.h"
 
-class CoreSession;
+#include "irclisthelper.h"
+#include "irclistmodel.h"
+#include "types.h"
 
-class CoreNetwork : public Network {
+#include <QSortFilterProxyModel>
+
+class ChannelListDlg : public QDialog {
   Q_OBJECT
 
 public:
-  CoreNetwork(const NetworkId &networkid, CoreSession *session);
+  ChannelListDlg(QWidget *parent = 0);
 
-  inline virtual const QMetaObject *syncMetaObject() const { return &Network::staticMetaObject; }
+  void setNetwork(NetworkId netId);
 
-  inline CoreSession *coreSession() const { return _coreSession; }
-
-public slots:
-  virtual void requestConnect() const;
-  virtual void requestDisconnect() const;
-
+protected slots:
+  void requestSearch();
+  void receiveChannelList(const NetworkId &netId, const QStringList &channelFilters, const QList<IrcListHelper::ChannelDescription> &channelList);
+  void reportFinishedList();
+  void joinChannel(const QModelIndex &);
+  
 private:
-  CoreSession *_coreSession;
+  void showFilterLine(bool show);
+  void enableQuery(bool enable);
+
+  Ui::ChannelListDlg ui;
+
+  bool _listFinished;
+  NetworkId _netId;
+  IrcListModel _ircListModel;
+  QSortFilterProxyModel _sortFilter;
 };
 
-#endif //CORENETWORK_H
+#endif //CHANNELLIST_H
