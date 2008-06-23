@@ -287,7 +287,6 @@ void BufferView::layoutChanged() {
 }
 
 void BufferView::dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight) {
-  qDebug() << "dataChanged()";
   QTreeView::dataChanged(topLeft, bottomRight);
   
   // determine how many items have been changed and if any of them is a networkitem
