@@ -271,11 +271,9 @@ void BufferView::layoutChanged() {
   QModelIndex networkIdx;
   for(int row = 0; row < model()->rowCount(); row++) {
     networkIdx = model()->index(row, 0);
-    update(networkIdx);
     if(model()->rowCount(networkIdx) > 0 && model()->data(networkIdx, NetworkModel::ItemActiveRole) == true) {
+      update(networkIdx);
       expand(networkIdx);
-    } else {
-      collapse(networkIdx);
     }
   }
 
@@ -289,6 +287,7 @@ void BufferView::layoutChanged() {
 }
 
 void BufferView::dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight) {
+  qDebug() << "dataChanged()";
   QTreeView::dataChanged(topLeft, bottomRight);
   
   // determine how many items have been changed and if any of them is a networkitem
