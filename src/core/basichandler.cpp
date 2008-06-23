@@ -32,8 +32,8 @@ BasicHandler::BasicHandler(NetworkConnection *parent)
   connect(this, SIGNAL(displayMsg(Message::Type, BufferInfo::Type, QString, QString, QString, Message::Flags)),
          networkConnection(), SIGNAL(displayMsg(Message::Type, BufferInfo::Type, QString, QString, QString, Message::Flags)));
 
-  connect(this, SIGNAL(putCmd(QString, const QVariantList &, const QByteArray &)),
-         networkConnection(), SLOT(putCmd(QString, const QVariantList &, const QByteArray &)));
+  connect(this, SIGNAL(putCmd(QString, const QList<QByteArray> &, const QByteArray &)),
+	  networkConnection(), SLOT(putCmd(QString, const QList<QByteArray> &, const QByteArray &)));
 
   connect(this, SIGNAL(putRawLine(const QByteArray &)),
           networkConnection(), SLOT(putRawLine(const QByteArray &)));
@@ -168,14 +168,8 @@ BufferInfo::Type BasicHandler::typeByTarget(const QString &target) const {
 }
 
 void BasicHandler::putCmd(const QString &cmd, const QByteArray &param, const QByteArray &prefix) {
-  QVariantList list;
+  QList<QByteArray> list;
   list << param;
-  emit putCmd(cmd, list, prefix);
-}
-
-void BasicHandler::putCmd(const QString &cmd, const QList<QByteArray> &params, const QByteArray &prefix) {
-  QVariantList list;
-  foreach(QByteArray param, params) list << param;
   emit putCmd(cmd, list, prefix);
 }
 

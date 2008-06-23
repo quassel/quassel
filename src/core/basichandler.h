@@ -55,13 +55,12 @@ public:
 
 signals:
   void displayMsg(Message::Type, BufferInfo::Type, QString target, QString text, QString sender = "", Message::Flags flags = Message::None);
-  void putCmd(const QString &cmd, const QVariantList &params, const QByteArray &prefix);
+  void putCmd(const QString &cmd, const QList<QByteArray> &params, const QByteArray &prefix = QByteArray());
   void putRawLine(const QByteArray &msg);
 
 protected:
   void displayMsg(Message::Type, QString target, QString text, QString sender = "", Message::Flags flags = Message::None);
   void putCmd(const QString &cmd, const QByteArray &param, const QByteArray &prefix = QByteArray());
-  void putCmd(const QString &cmd, const QList<QByteArray> &params, const QByteArray &prefix = QByteArray());
 
   virtual void handle(const QString &member, QGenericArgument val0 = QGenericArgument(0),
                       QGenericArgument val1 = QGenericArgument(), QGenericArgument val2 = QGenericArgument(),

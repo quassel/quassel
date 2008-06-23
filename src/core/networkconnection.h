@@ -95,7 +95,8 @@ public slots:
   void userInput(BufferInfo bufferInfo, QString msg);
 
   void putRawLine(QByteArray input);
-  void putCmd(const QString &cmd, const QVariantList &params, const QByteArray &prefix = QByteArray());
+  int lastParamOverrun(const QString &cmd, const QList<QByteArray> &params);
+  void putCmd(const QString &cmd, const QList<QByteArray> &params, const QByteArray &prefix = QByteArray());
 
   void setChannelJoined(const QString &channel);
   void setChannelParted(const QString &channel);
