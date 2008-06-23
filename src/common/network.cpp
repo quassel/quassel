@@ -406,8 +406,9 @@ void Network::setConnected(bool connected) {
   
   _connected = connected;
   if(!connected) {
-    removeChansAndUsers();
+    setMyNick(QString());
     setCurrentServer(QString());
+    removeChansAndUsers();
   }
   emit connectedSet(connected);
 }
