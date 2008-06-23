@@ -59,12 +59,7 @@ NetworkConnection::NetworkConnection(Network *network, CoreSession *session)
     // TokenBucket to avaid sending too much at once
     _messagesPerSecond(1),
     _burstSize(5),
-    _tokenBucket(5), // init with a full bucket
-
-    // TODO: 
-    // should be 510 (2 bytes are added when writing to the socket)
-    // maxMsgSize is 510 minus the hostmask which will be added by the server
-    _maxMsgSize(450)
+    _tokenBucket(5) // init with a full bucket
 {
   _autoReconnectTimer.setSingleShot(true);
   _socketCloseTimer.setSingleShot(true);
@@ -500,23 +495,6 @@ void NetworkConnection::putCmd(const QString &cmd, const QList<QByteArray> &para
   }
   if(!params.isEmpty())
     msg += " :" + params.last();
-
-  if(cmd == "PRIVMSG" && params.count() > 1) {
-    QByteArray msghead = "PRIVMSG " + params[0].toByteArray() + " :";
-
-    while (msg.size() > _maxMsgSize) {
-      QByteArray splitter(" .,-");
-      int splitPosition = 0;
-      for(int i = 0; i < splitter.size(); i++) {
-        splitPosition = qMax(splitPosition, msg.lastIndexOf(splitter[i], _maxMsgSize));
-      }
-      if(splitPosition < 300) {
-        splitPosition = _maxMsgSize;
-      }
-      putRawLine(msg.left(splitPosition)); 
-      msg = msghead + msg.mid(splitPosition);
-    }
-  }
 
   putRawLine(msg);
 }

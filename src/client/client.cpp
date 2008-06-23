@@ -72,8 +72,8 @@ Client::Client(QObject *parent)
     _bufferSyncer(0),
     _backlogManager(new ClientBacklogManager(this)),
     _bufferViewManager(0),
-    _messageModel(0),
     _ircListHelper(new ClientIrcListHelper(this)),
+    _messageModel(0),
     _connectedToCore(false),
     _syncedToCore(false)
 {

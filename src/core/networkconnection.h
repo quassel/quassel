@@ -195,8 +195,6 @@ private:
   int _tokenBucket; // the virtual bucket that holds the tokens
   QList<QByteArray> _msgQueue;
 
-  int _maxMsgSize;
-
   void writeToSocket(QByteArray s);
 
 
