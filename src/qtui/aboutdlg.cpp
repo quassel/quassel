@@ -57,7 +57,7 @@ QString AboutDlg::authors() const {
              "Project Founder, Lead Developer</dd>"
         "<dt><b>Marcus \"EgS\" Eggenberger</b></dt><dd><a href=\"mailto:egs@quassel-irc.org\">egs@quassel-irc.org</a><br>"
              "Project Motivator, Lead Developer, Mac Maintainer</dd>"
-        "<dt><b>Alexander \"phon\" von Renteln</b></dt><dd><a href=\"mailto:alex@phon.name\">alex@phon.name</a><br>"
+        "<dt><b>Alexander \"phon\" von Renteln</b></dt><dd><a href=\"mailto:phon@quassel-irc.org\">phon@quassel-irc.org</a><br>"
              "Developer, Windows Maintainer</dd>"
         "</dl>";
 
