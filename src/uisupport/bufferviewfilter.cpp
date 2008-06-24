@@ -105,6 +105,7 @@ void BufferViewFilter::configInitialized() {
   disconnect(config(), SIGNAL(initDone()), this, SLOT(configInitialized()));
 
   invalidate();
+  emit configChanged();
 }
 
 Qt::ItemFlags BufferViewFilter::flags(const QModelIndex &index) const {
