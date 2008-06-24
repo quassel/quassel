@@ -67,7 +67,6 @@ BufferView::BufferView(QWidget *parent)
     _hideModeAction(tr("Mode Events"), this)
 
 {
-  // currently no events can be hidden -> disable actions
   _hideJoinAction.setCheckable(true);
   _hidePartAction.setCheckable(true);
   _hideKillAction.setCheckable(true);
@@ -79,6 +78,9 @@ BufferView::BufferView(QWidget *parent)
   _hideKillAction.setEnabled(false);
   _hideQuitAction.setEnabled(false);
   _hideModeAction.setEnabled(false);
+
+  connect(this, SIGNAL(collapsed(const QModelIndex &)), this, SLOT(on_collapse(const QModelIndex &)));
+  connect(this, SIGNAL(expanded(const QModelIndex &)), this, SLOT(on_expand(const QModelIndex &)));
 
   setSelectionMode(QAbstractItemView::ExtendedSelection);
 }
@@ -111,9 +113,6 @@ void BufferView::init() {
 
 void BufferView::setModel(QAbstractItemModel *model) {
   delete selectionModel();
-  if(QTreeView::model()) {
-    disconnect(QTreeView::model(), SIGNAL(layoutChanged()), this, SLOT(layoutChanged()));
-  }
   
   QTreeView::setModel(model);
   init();
@@ -127,8 +126,6 @@ void BufferView::setModel(QAbstractItemModel *model) {
   if(!model)
     return;
 
-  connect(model, SIGNAL(layoutChanged()), this, SLOT(layoutChanged()));
-  
   QString sectionName;
   QAction *showSection;
   for(int i = 1; i < model->columnCount(); i++) {
@@ -153,6 +150,7 @@ void BufferView::setFilteredModel(QAbstractItemModel *model_, BufferViewConfig *
 
   if(model()) {
     disconnect(this, 0, model(), 0);
+    disconnect(model(), 0, this, 0);
   }
 
   if(!model_) {
@@ -160,6 +158,7 @@ void BufferView::setFilteredModel(QAbstractItemModel *model_, BufferViewConfig *
   } else {
     BufferViewFilter *filter = new BufferViewFilter(model_, config);
     setModel(filter);
+    connect(filter, SIGNAL(configChanged()), this, SLOT(on_configChanged()));
   }
   setConfig(config);
 }
@@ -264,17 +263,33 @@ void BufferView::rowsInserted(const QModelIndex & parent, int start, int end) {
   }
 }
 
-void BufferView::layoutChanged() {
+void BufferView::on_configChanged() {
   Q_ASSERT(model());
 
-  // expand all active networks
+  // expand all active networks... collapse inactive ones... unless manually changed
   QModelIndex networkIdx;
+  NetworkId networkId;
   for(int row = 0; row < model()->rowCount(); row++) {
     networkIdx = model()->index(row, 0);
-    if(model()->rowCount(networkIdx) > 0 && model()->data(networkIdx, NetworkModel::ItemActiveRole) == true) {
-      update(networkIdx);
+    if(model()->rowCount(networkIdx) ==  0)
+      continue;
+
+    networkId = model()->data(networkIdx, NetworkModel::NetworkIdRole).value<NetworkId>();
+    if(!networkId.isValid())
+      continue;
+
+    update(networkIdx);
+
+    bool expandNetwork = false;
+    if(_expandedState.contains(networkId))
+      expandNetwork = _expandedState[networkId];
+    else
+      expandNetwork = model()->data(networkIdx, NetworkModel::ItemActiveRole).toBool();
+
+    if(expandNetwork)
       expand(networkIdx);
-    }
+    else
+      collapse(networkIdx);
   }
 
   // update selection to current one
@@ -284,6 +299,18 @@ void BufferView::layoutChanged() {
 
   mappedSelectionModel->mappedSetCurrentIndex(Client::bufferModel()->standardSelectionModel()->currentIndex(), QItemSelectionModel::Current);
   mappedSelectionModel->mappedSelect(Client::bufferModel()->standardSelectionModel()->selection(), QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+}
+
+void BufferView::on_collapse(const QModelIndex &index) {
+  storeExpandedState(index.data(NetworkModel::NetworkIdRole).value<NetworkId>(), false);
+}
+
+void BufferView::on_expand(const QModelIndex &index) {
+  storeExpandedState(index.data(NetworkModel::NetworkIdRole).value<NetworkId>(), true);
+}
+
+void BufferView::storeExpandedState(NetworkId networkId, bool expanded) {
+  _expandedState[networkId] = expanded;
 }
 
 void BufferView::dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight) {
@@ -304,7 +331,6 @@ void BufferView::dataChanged(const QModelIndex &topLeft, const QModelIndex &bott
   }
 }
 
-
 void BufferView::toggleHeader(bool checked) {
   QAction *action = qobject_cast<QAction *>(sender());
   header()->setSectionHidden((action->property("column")).toInt(), !checked);
@@ -313,10 +339,6 @@ void BufferView::toggleHeader(bool checked) {
 bool BufferView::checkRequirements(const QModelIndex &index, ItemActiveStates requiredActiveState) {
   if(!index.isValid())
     return false;
-
-//   NetworkModel::itemTypes itemType = static_cast<NetworkModel::itemTypes>(index.data(NetworkModel::ItemTypeRole).toInt());
-//   if(!(itemType & validItemTypes))
-//     return false;
 
   ItemActiveStates isActive = index.data(NetworkModel::ItemActiveRole).toBool()
     ? ActiveState
@@ -373,7 +395,6 @@ QMenu *BufferView::createHideEventsSubMenu(QMenu &menu) {
   return hideEventsMenu;
 }
 
-//void BufferView::showContextMenu(const QPoint &pos) {
 void BufferView::contextMenuEvent(QContextMenuEvent *event) {
   QModelIndex index = indexAt(event->pos());
   if(!index.isValid())
@@ -459,10 +480,6 @@ void BufferView::contextMenuEvent(QContextMenuEvent *event) {
     QString channelName = QInputDialog::getText(this, tr("Join Channel"), tr("Input channel name:"), QLineEdit::Normal, QString(), &ok);
     if(ok && !channelName.isEmpty()) {
       Client::instance()->userInput(BufferInfo::fakeStatusBuffer(index.data(NetworkModel::NetworkIdRole).value<NetworkId>()), QString("/J %1").arg(channelName));
-//       BufferInfo bufferInfo = index.child(0,0).data(NetworkModel::BufferInfoRole).value<BufferInfo>();
-//       if(bufferInfo.isValid()) {
-//         Client::instance()->userInput(bufferInfo, QString("/J %1").arg(channelName));
-//       }
     }
 #endif
     return;

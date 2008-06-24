@@ -37,80 +37,88 @@
  * The TreeView showing the Buffers
  *****************************************/
 class BufferView : public QTreeView {
-    Q_OBJECT
+  Q_OBJECT
 
-  public:
-    BufferView(QWidget *parent = 0);
-    void init();
+public:
+  BufferView(QWidget *parent = 0);
+  void init();
+  
+  void setModel(QAbstractItemModel *model);
+  void setFilteredModel(QAbstractItemModel *model, BufferViewConfig *config);
+  virtual void setSelectionModel(QItemSelectionModel *selectionModel);
+  
+  void setConfig(BufferViewConfig *config);
+  inline BufferViewConfig *config() { return _config; }
 
-    void setModel(QAbstractItemModel *model);
-    void setFilteredModel(QAbstractItemModel *model, BufferViewConfig *config);
-    virtual void setSelectionModel(QItemSelectionModel *selectionModel);
+public slots:
+  void setRootIndexForNetworkId(const NetworkId &networkId);
+  void removeSelectedBuffers(bool permanently = false);
+  
+signals:
+  void removeBuffer(const QModelIndex &);
+  void removeBufferPermanently(const QModelIndex &);
+  
+protected:
+  virtual void keyPressEvent(QKeyEvent *);
+  virtual void rowsInserted(const QModelIndex & parent, int start, int end);
+  virtual void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
+  virtual void wheelEvent(QWheelEvent *);
+  virtual QSize sizeHint() const;
+  virtual void focusInEvent(QFocusEvent *event) { QAbstractScrollArea::focusInEvent(event); }
+  virtual void contextMenuEvent(QContextMenuEvent *event);
 
-    void setConfig(BufferViewConfig *config);
-    inline BufferViewConfig *config() { return _config; }
+private slots:
+  void joinChannel(const QModelIndex &index);
+  void toggleHeader(bool checked);
 
-  public slots:
-    void setRootIndexForNetworkId(const NetworkId &networkId);
-    void removeSelectedBuffers(bool permanently = false);
+  void on_collapse(const QModelIndex &index);
+  void on_expand(const QModelIndex &index);
+  void on_configChanged();
 
-  signals:
-    void removeBuffer(const QModelIndex &);
-    void removeBufferPermanently(const QModelIndex &);
+private:
+  enum ItemActiveState {
+    InactiveState = 0x01,
+    ActiveState = 0x02
+  };
 
-  protected:
-    virtual void keyPressEvent(QKeyEvent *);
-    virtual void rowsInserted(const QModelIndex & parent, int start, int end);
-    virtual void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
-    virtual void wheelEvent(QWheelEvent *);
-    virtual QSize sizeHint() const;
-    virtual void focusInEvent(QFocusEvent *event) { QAbstractScrollArea::focusInEvent(event); }
-    virtual void contextMenuEvent(QContextMenuEvent *event);
+public:
+  Q_DECLARE_FLAGS(ItemActiveStates, ItemActiveState);
+  QAction showChannelList;
 
-  private slots:
-    void joinChannel(const QModelIndex &index);
-    void toggleHeader(bool checked);
-    //  void showContextMenu(const QPoint &);
-    void layoutChanged();
+private:
+  QPointer<BufferViewConfig> _config;
+  
+  QAction _connectNetAction;
+  QAction _disconnectNetAction;
+  QAction _joinChannelAction;
+  
+  QAction _joinBufferAction;
+  QAction _partBufferAction;
+  QAction _hideBufferTemporarilyAction;
+  QAction _hideBufferPermanentlyAction;
+  QAction _removeBufferAction;
+  QAction _ignoreListAction;
+  
+  QAction _hideJoinAction;
+  QAction _hidePartAction;
+  QAction _hideKillAction;
+  QAction _hideQuitAction;
+  QAction _hideModeAction;
 
-  private:
-    enum ItemActiveState {
-      InactiveState = 0x01,
-      ActiveState = 0x02
-    };
-  public:
-    Q_DECLARE_FLAGS(ItemActiveStates, ItemActiveState);
-    QAction showChannelList;
-  private:
-    QPointer<BufferViewConfig> _config;
+  QHash<NetworkId, bool> _expandedState;
 
-    QAction _connectNetAction;
-    QAction _disconnectNetAction;
-    QAction _joinChannelAction;
+  void storeExpandedState(NetworkId networkId, bool expanded);
 
-    QAction _joinBufferAction;
-    QAction _partBufferAction;
-    QAction _hideBufferTemporarilyAction;
-    QAction _hideBufferPermanentlyAction;
-    QAction _removeBufferAction;
-    QAction _ignoreListAction;
-
-    QAction _hideJoinAction;
-    QAction _hidePartAction;
-    QAction _hideKillAction;
-    QAction _hideQuitAction;
-    QAction _hideModeAction;
-
-    bool checkRequirements(const QModelIndex &index,
-                           ItemActiveStates requiredActiveState = QFlags<ItemActiveState>(ActiveState) | QFlags<ItemActiveState>(InactiveState));
-    void addItemToMenu(QAction &action, QMenu &menu, const QModelIndex &index,
-                       ItemActiveStates requiredActiveState = QFlags<ItemActiveState>(ActiveState) | QFlags<ItemActiveState>(InactiveState));
-    void addItemToMenu(QAction &action, QMenu &menu, bool condition = true);
-    void addItemToMenu(QMenu &subMenu, QMenu &menu, const QModelIndex &index,
-                       ItemActiveStates requiredActiveState = QFlags<ItemActiveState>(ActiveState) | QFlags<ItemActiveState>(InactiveState));
-    void addSeparatorToMenu(QMenu &menu, const QModelIndex &index,
-                            ItemActiveStates requiredActiveState = QFlags<ItemActiveState>(ActiveState) | QFlags<ItemActiveState>(InactiveState));
-    QMenu *createHideEventsSubMenu(QMenu &menu);
+  bool checkRequirements(const QModelIndex &index,
+			 ItemActiveStates requiredActiveState = QFlags<ItemActiveState>(ActiveState) | QFlags<ItemActiveState>(InactiveState));
+  void addItemToMenu(QAction &action, QMenu &menu, const QModelIndex &index,
+		     ItemActiveStates requiredActiveState = QFlags<ItemActiveState>(ActiveState) | QFlags<ItemActiveState>(InactiveState));
+  void addItemToMenu(QAction &action, QMenu &menu, bool condition = true);
+  void addItemToMenu(QMenu &subMenu, QMenu &menu, const QModelIndex &index,
+		     ItemActiveStates requiredActiveState = QFlags<ItemActiveState>(ActiveState) | QFlags<ItemActiveState>(InactiveState));
+  void addSeparatorToMenu(QMenu &menu, const QModelIndex &index,
+			  ItemActiveStates requiredActiveState = QFlags<ItemActiveState>(ActiveState) | QFlags<ItemActiveState>(InactiveState));
+  QMenu *createHideEventsSubMenu(QMenu &menu);
 };
 Q_DECLARE_OPERATORS_FOR_FLAGS(BufferView::ItemActiveStates);
 
@@ -119,14 +127,14 @@ Q_DECLARE_OPERATORS_FOR_FLAGS(BufferView::ItemActiveStates);
 //  BufferView Dock
 // ==============================
 class BufferViewDock : public QDockWidget {
-    Q_OBJECT
+  Q_OBJECT
 
-  public:
-    BufferViewDock(BufferViewConfig *config, QWidget *parent);
-    BufferViewDock(QWidget *parent);
-
-  public slots:
-    void bufferViewRenamed(const QString &newName);
+public:
+  BufferViewDock(BufferViewConfig *config, QWidget *parent);
+  BufferViewDock(QWidget *parent);
+				 
+public slots:
+  void bufferViewRenamed(const QString &newName);
 };
 
 #endif

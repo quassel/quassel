@@ -77,6 +77,7 @@ protected:
 
 signals:
   void _dataChanged(const QModelIndex &source_topLeft, const QModelIndex &source_bottomRight);
+  void configChanged();
 
 private slots:
   void configInitialized();
