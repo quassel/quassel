@@ -696,6 +696,9 @@ SaveNetworksDlg::SaveNetworksDlg(const QList<NetworkInfo> &toCreate, const QList
     connect(Client::instance(), SIGNAL(networkCreated(NetworkId)), this, SLOT(clientEvent()));
     connect(Client::instance(), SIGNAL(networkRemoved(NetworkId)), this, SLOT(clientEvent()));
 
+    foreach(NetworkId id, toRemove) {
+      Client::removeNetwork(id);
+    }
     foreach(NetworkInfo info, toCreate) {
       Client::createNetwork(info);
     }
@@ -709,9 +712,6 @@ SaveNetworksDlg::SaveNetworksDlg(const QList<NetworkInfo> &toCreate, const QList
       // FIXME this only checks for one changed item rather than all!
       connect(net, SIGNAL(updatedRemotely()), this, SLOT(clientEvent()));
       Client::updateNetwork(info);
-    }
-    foreach(NetworkId id, toRemove) {
-      Client::removeNetwork(id);
     }
   } else {
     qWarning() << "Sync dialog called without stuff to change!";
