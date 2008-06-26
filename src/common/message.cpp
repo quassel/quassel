@@ -24,7 +24,7 @@
 
 #include <QDataStream>
 
-Message::Message(BufferInfo bufferInfo, Type type, QString text, QString sender, quint8 flags)
+Message::Message(BufferInfo bufferInfo, Type type, QString text, QString sender, Flags flags)
   : _timestamp(QDateTime::currentDateTime().toUTC()),
     _bufferInfo(bufferInfo),
     _text(text),
@@ -34,7 +34,7 @@ Message::Message(BufferInfo bufferInfo, Type type, QString text, QString sender,
 {
 }
 
-Message::Message(QDateTime ts,BufferInfo bufferInfo, Type type, QString text, QString sender, quint8 flags)
+Message::Message(QDateTime ts,BufferInfo bufferInfo, Type type, QString text, QString sender, Flags flags)
   : _timestamp(ts),
     _bufferInfo(bufferInfo),
     _text(text),
@@ -44,7 +44,7 @@ Message::Message(QDateTime ts,BufferInfo bufferInfo, Type type, QString text, QS
 {
 }
 
-void Message::setFlags(quint8 flags) {
+void Message::setFlags(Flags flags) {
   _flags = flags;
 }
 
@@ -191,7 +191,7 @@ QDataStream &operator>>(QDataStream &in, Message &msg) {
   BufferInfo buf;
   in >> msg._msgId >> ts >> t >> f >> buf >> s >> m;
   msg._type = (Message::Type)t;
-  msg._flags = (quint8)f;
+  msg._flags = (Message::Flags)f;
   msg._bufferInfo = buf;
   msg._timestamp = QDateTime::fromTime_t(ts);
   msg._sender = QString::fromUtf8(s);

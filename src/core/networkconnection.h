@@ -110,7 +110,7 @@ signals:
   void recvRawServerMsg(QString);
   void displayStatusMsg(QString);
   //void displayMsg(Message msg);
-  void displayMsg(Message::Type, BufferInfo::Type, QString target, QString text, QString sender = "", quint8 flags = Message::None);
+  void displayMsg(Message::Type, BufferInfo::Type, QString target, QString text, QString sender = "", Message::Flags flags = Message::None);
   void connected(NetworkId networkId);   ///< Emitted after receipt of 001 to indicate that we can now send data to the IRC server
   void disconnected(NetworkId networkId);
   void connectionStateChanged(Network::ConnectionState);
