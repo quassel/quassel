@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>514</width>
-    <height>452</height>
+    <width>565</width>
+    <height>468</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -121,7 +121,7 @@
    <item>
     <widget class="QGroupBox" name="detailsBox" >
      <property name="sizePolicy" >
-      <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
+      <sizepolicy vsizetype="Preferred" hsizetype="MinimumExpanding" >
        <horstretch>10</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -157,11 +157,10 @@
          <bool>true</bool>
         </property>
         <property name="toolTip" >
-         <string>This specifies how control messages, nicks and servernames are encoded.
-Unless you *really* know what you do, leave this as ISO-8859-1!</string>
+         <string/>
         </property>
         <property name="currentIndex" >
-         <number>1</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="serversTab" >
          <property name="enabled" >
@@ -171,12 +170,15 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</string>
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>301</width>
-           <height>326</height>
+           <width>376</width>
+           <height>332</height>
           </rect>
          </property>
          <attribute name="title" >
           <string>Servers</string>
+         </attribute>
+         <attribute name="toolTip" >
+          <string>Manage servers for this network</string>
          </attribute>
          <layout class="QVBoxLayout" >
           <item>
@@ -337,12 +339,15 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</string>
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>301</width>
-           <height>326</height>
+           <width>376</width>
+           <height>332</height>
           </rect>
          </property>
          <attribute name="title" >
           <string>Perform</string>
+         </attribute>
+         <attribute name="toolTip" >
+          <string>Configure automatic identification or misc. commands to be executed after connecting to a server</string>
          </attribute>
          <layout class="QVBoxLayout" name="verticalLayout" >
           <item>
@@ -377,13 +382,6 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</string>
              <bool>true</bool>
             </property>
             <layout class="QGridLayout" name="gridLayout" >
-             <item row="0" column="0" >
-              <widget class="QLabel" name="label_2" >
-               <property name="text" >
-                <string>Service:</string>
-               </property>
-              </widget>
-             </item>
              <item row="0" column="1" >
               <widget class="QLineEdit" name="autoIdentifyService" >
                <property name="enabled" >
@@ -391,16 +389,6 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</string>
                </property>
                <property name="text" >
                 <string>NickServ</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="0" >
-              <widget class="QLabel" name="label_3" >
-               <property name="enabled" >
-                <bool>true</bool>
-               </property>
-               <property name="text" >
-                <string>Password:</string>
                </property>
               </widget>
              </item>
@@ -414,26 +402,43 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</string>
                </property>
               </widget>
              </item>
+             <item row="0" column="0" >
+              <widget class="QLabel" name="label_2" >
+               <property name="text" >
+                <string>Service:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0" >
+              <widget class="QLabel" name="label_3" >
+               <property name="enabled" >
+                <bool>true</bool>
+               </property>
+               <property name="text" >
+                <string>Password:</string>
+               </property>
+              </widget>
+             </item>
             </layout>
-            <zorder>autoIdentifyService</zorder>
-            <zorder>autoIdentifyPassword</zorder>
-            <zorder>label_2</zorder>
-            <zorder>label_3</zorder>
            </widget>
           </item>
          </layout>
         </widget>
-        <widget class="QWidget" name="tab" >
+        <widget class="QWidget" name="advancedTab" >
          <property name="geometry" >
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>301</width>
-           <height>326</height>
+           <width>376</width>
+           <height>332</height>
           </rect>
          </property>
          <attribute name="title" >
           <string>Advanced</string>
+         </attribute>
+         <attribute name="toolTip" >
+          <string>This specifies how control messages, nicks and servernames are encoded.
+Unless you *really* know what you do, leave this as ISO-8859-1!</string>
          </attribute>
          <layout class="QVBoxLayout" >
           <item>
