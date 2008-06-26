@@ -54,6 +54,11 @@ endif(CMAKE_COMPILER_IS_GNUCXX)
 
 set(QT_MIN_VERSION "4.3.0")
 
+if(APPLE)
+  set(CMAKE_OSX_ARCHITECTURES "i386;ppc")
+#  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mmacosx-version-min=10.4")
+endif(APPLE)
+
 # Enable mostly b0rked stuff (new ChatView), do not enable this unless you know what you do...
 if(SPUTDEV)
   add_definitions(-DSPUTDEV)
@@ -78,6 +83,10 @@ include_directories(${QT_INCLUDES})
 # We need to create a version.gen
 # For this, we create our genversion binary and make sure it is run every time.
 add_executable(genversion ${CMAKE_SOURCE_DIR}/src/common/genversion.cpp)
+#set_target_properties(genversion PROPERTIES 
+#                                 LINK_FLAGS "-mmacosx-version-min=10.4")
+#                                 COMPILE_FLAGS "-mmacosx-version-min=10.4"
+
 target_link_libraries(genversion ${QT_LIBRARIES} ${QT_CORE_LIB_DEPENDENCIES})
 
 add_custom_target(genversion_run ALL ${CMAKE_BINARY_DIR}/genversion
