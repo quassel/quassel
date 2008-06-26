@@ -434,7 +434,10 @@ int NetworkConnection::lastParamOverrun(const QString &cmd, const QList<QByteArr
   // that means that the last message can be as long as:
   // 512 - nicklen - userlen - hostlen - commandlen - sum(param[0]..param[n-1])) - 2 (for CRLF) - 4 (":!@" + 1space between prefix and command) - max(paramcount - 1, 0) (space for simple params) - 2 (space and colon for last param)
   IrcUser *me = network()->me();
-  int maxLen = 512 - serverEncode(me->nick()).count() - serverEncode(me->user()).count() - serverEncode(me->host()).count() - cmd.toAscii().count() - 6;
+  int maxLen = 480 - cmd.toAscii().count(); // educated guess in case we don't know us (yet?)
+
+  if(me)
+    maxLen = 512 - serverEncode(me->nick()).count() - serverEncode(me->user()).count() - serverEncode(me->host()).count() - cmd.toAscii().count() - 6;
 
   if(!params.isEmpty()) {
     for(int i = 0; i < params.count() - 1; i++) {
