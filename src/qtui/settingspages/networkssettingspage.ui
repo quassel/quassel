@@ -170,8 +170,8 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>376</width>
-           <height>332</height>
+           <width>364</width>
+           <height>348</height>
           </rect>
          </property>
          <attribute name="title" >
@@ -339,8 +339,8 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>376</width>
-           <height>332</height>
+           <width>364</width>
+           <height>348</height>
           </rect>
          </property>
          <attribute name="title" >
@@ -361,6 +361,10 @@
            <widget class="QTextEdit" name="performEdit" >
             <property name="enabled" >
              <bool>true</bool>
+            </property>
+            <property name="toolTip" >
+             <string>Specify a list of IRC commands to be executed upon connect.
+Note that Quassel IRC automatically rejoins channels, so /join will rarely be needed here!</string>
             </property>
             <property name="lineWrapMode" >
              <enum>QTextEdit::NoWrap</enum>
@@ -429,22 +433,24 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>376</width>
-           <height>332</height>
+           <width>364</width>
+           <height>348</height>
           </rect>
          </property>
          <attribute name="title" >
           <string>Advanced</string>
          </attribute>
          <attribute name="toolTip" >
-          <string>This specifies how control messages, nicks and servernames are encoded.
-Unless you *really* know what you do, leave this as ISO-8859-1!</string>
+          <string>Configure advanced settings such as message encodings and automatic reconnect</string>
          </attribute>
          <layout class="QVBoxLayout" >
           <item>
            <widget class="QGroupBox" name="groupBox_3" >
             <property name="enabled" >
              <bool>true</bool>
+            </property>
+            <property name="toolTip" >
+             <string>Control encodings for in- and outgoing messages</string>
             </property>
             <property name="title" >
              <string>Encodings</string>
@@ -454,6 +460,10 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</string>
               <layout class="QGridLayout" >
                <item row="0" column="0" >
                 <widget class="QLabel" name="label_4" >
+                 <property name="toolTip" >
+                  <string>Specify which encoding your messages will be sent in.
+UTF-8 should be a sane choice for most networks.</string>
+                 </property>
                  <property name="text" >
                   <string>Send messages in:</string>
                  </property>
@@ -470,6 +480,10 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</string>
                    <verstretch>0</verstretch>
                   </sizepolicy>
                  </property>
+                 <property name="toolTip" >
+                  <string>Specify which encoding your messages will be sent in.
+UTF-8 should be a sane choice for most networks.</string>
+                 </property>
                  <property name="insertPolicy" >
                   <enum>QComboBox::InsertAlphabetically</enum>
                  </property>
@@ -478,7 +492,8 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</string>
                <item row="1" column="0" >
                 <widget class="QLabel" name="label_5" >
                  <property name="toolTip" >
-                  <string>Incoming messages encoded in Utf8 will always be treated as such. This setting defines the encoding for messages that are not Utf8.</string>
+                  <string>Incoming messages encoded in Utf8 will always be treated as such.
+This setting defines the encoding for messages that are not Utf8.</string>
                  </property>
                  <property name="text" >
                   <string>Receive fallback:</string>
@@ -495,6 +510,10 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</string>
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
+                 </property>
+                 <property name="toolTip" >
+                  <string>Incoming messages encoded in Utf8 will always be treated as such.
+This setting defines the encoding for messages that are not Utf8.</string>
                  </property>
                  <property name="insertPolicy" >
                   <enum>QComboBox::InsertAlphabetically</enum>
@@ -517,6 +536,10 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</string>
                  <property name="enabled" >
                   <bool>false</bool>
                  </property>
+                 <property name="toolTip" >
+                  <string>This specifies how control messages, nicks and servernames are encoded.
+Unless you *really* know what you do, leave this as ISO-8859-1!</string>
+                 </property>
                 </widget>
                </item>
               </layout>
@@ -525,6 +548,9 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</string>
               <widget class="QCheckBox" name="useDefaultEncodings" >
                <property name="enabled" >
                 <bool>true</bool>
+               </property>
+               <property name="toolTip" >
+                <string>Use default settings for encodings (recommended)</string>
                </property>
                <property name="text" >
                 <string>Use defaults</string>
@@ -541,6 +567,9 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</string>
            <widget class="QGroupBox" name="autoReconnect" >
             <property name="enabled" >
              <bool>true</bool>
+            </property>
+            <property name="toolTip" >
+             <string>Control automatic reconnect to the network</string>
             </property>
             <property name="title" >
              <string>Automatic Reconnect</string>
