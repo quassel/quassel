@@ -1,6 +1,15 @@
 #!/usr/bin/python
 # -*- coding: iso-8859-1 -*-
 
+################################################################################
+#                                                                              #
+# 2008 June 27th by Marcus 'EgS' Eggenberger <egs@quassel-irc.org>             #
+#                                                                              #
+# The author disclaims copyright to this source code.                          #
+# This Python Script is in the PUBLIC DOMAIN.                                  #
+#                                                                              #
+################################################################################
+
 # ==============================
 #  Imports
 # ==============================
