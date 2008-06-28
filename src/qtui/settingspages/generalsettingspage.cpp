@@ -52,6 +52,7 @@ GeneralSettingsPage::GeneralSettingsPage(QWidget *parent)
 
   connect(ui.displayTopicInTooltip, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
   connect(ui.mouseWheelChangesBuffers, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
+  connect(ui.completionSuffix, SIGNAL(textEdited(const QString&)), this, SLOT(widgetHasChanged()));
 }
 
 bool GeneralSettingsPage::hasDefaults() const {
@@ -73,6 +74,8 @@ void GeneralSettingsPage::defaults() {
 
   ui.displayTopicInTooltip->setChecked(false);
   ui.mouseWheelChangesBuffers->setChecked(true);
+
+  ui.completionSuffix->setText(": ");
 
   widgetHasChanged();
 }
@@ -113,6 +116,10 @@ void GeneralSettingsPage::load() {
   settings["DisplayTopicInTooltip"] = bufferSettings.value("DisplayTopicInTooltip", QVariant(false));
   ui.displayTopicInTooltip->setChecked(settings["DisplayTopicInTooltip"].toBool());
 
+  // inputline settings
+  settings["CompletionSuffix"] = uiSettings.value("CompletionSuffix", QString(": "));
+  ui.completionSuffix->setText(settings["CompletionSuffix"].toString());
+
   setChangedState(false);
 }
 
@@ -125,7 +132,8 @@ void GeneralSettingsPage::save() {
 
   uiSettings.setValue("AnimateTrayIcon", ui.animateTrayIcon->isChecked());
   uiSettings.setValue("DisplayPopupMessages", ui.displayPopupMessages->isChecked());
-
+  uiSettings.setValue("CompletionSuffix", ui.completionSuffix->text());
+  
   BufferSettings bufferSettings;
   bufferSettings.setValue("UserMessagesInStatusBuffer", ui.userMessagesInStatusBuffer->isChecked());
   bufferSettings.setValue("UserMessagesInQueryBuffer", ui.userMessagesInQueryBuffer->isChecked());
@@ -156,6 +164,8 @@ bool GeneralSettingsPage::testHasChanged() {
 
   if(settings["DisplayTopicInTooltip"].toBool() != ui.displayTopicInTooltip->isChecked()) return true;
   if(settings["MouseWheelChangesBuffers"].toBool() != ui.mouseWheelChangesBuffers->isChecked()) return true;
+
+  if(settings["CompletionSuffix"].toString() != ui.completionSuffix->text()) return true;
 
   return false;
 }

@@ -27,6 +27,7 @@
 #include "network.h"
 #include "ircchannel.h"
 #include "ircuser.h"
+#include "uisettings.h"
 
 TabCompleter::TabCompleter(InputLine *inputLine_)
   : QObject(inputLine_),
@@ -84,6 +85,9 @@ void TabCompleter::ircUserJoinedOrParted(IrcUser *ircUser) {
 }
 
 void TabCompleter::complete() {
+  UiSettings uiSettings;
+  nickSuffix = uiSettings.value("CompletionSuffix", QString(": ")).toString();
+  
   if(!enabled) {
     buildCompletionList();
     enabled = true;
