@@ -45,9 +45,9 @@ SslServer::SslServer(QObject *parent)
 
   _certIsValid = !_cert.isNull() && _cert.isValid() && !_key.isNull();
   if(!_certIsValid) {
-    qWarning() << "SslServer: SSL Certificate is either missing or has wrong format!";
-    qWarning() << "           make sure that ~/.quassel/quasselCert.pem is pem format and contains the cert and an rsa key!";
-    qWarning() << "SslServer: this Quassel Core cannot provide SSL!";
+    qWarning() << "SslServer: SSL Certificate is either missing or has a wrong format!\n"
+               << "          Quassel Core will still work, but cannot provide SSL for client connections.\n"
+               << "          Please see http://quassel-irc.org/faq/cert to learn how to enable SSL support.";
   }
 }
 
