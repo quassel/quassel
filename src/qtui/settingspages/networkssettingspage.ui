@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>565</width>
-    <height>468</height>
+    <width>514</width>
+    <height>452</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -170,8 +170,8 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>364</width>
-           <height>348</height>
+           <width>244</width>
+           <height>332</height>
           </rect>
          </property>
          <attribute name="title" >
@@ -339,8 +339,8 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>364</width>
-           <height>348</height>
+           <width>244</width>
+           <height>332</height>
           </rect>
          </property>
          <attribute name="title" >
@@ -433,8 +433,8 @@ Note that Quassel IRC automatically rejoins channels, so /join will rarely be ne
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>364</width>
-           <height>348</height>
+           <width>244</width>
+           <height>332</height>
           </rect>
          </property>
          <attribute name="title" >
