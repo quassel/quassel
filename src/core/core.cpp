@@ -55,6 +55,9 @@ Core::Core() : storage(0) {
 
   if(!_storageBackends.count()) {
     qWarning() << qPrintable(tr("Could not initialize any storage backend! Exiting..."));
+    qWarning() << qPrintable(tr("Currently, Quassel only supports SQLite3. You need to build your\n"
+                                "Qt library with the sqlite plugin enabled in order for quasselcore\n"
+                                "to work."));
     exit(1); // TODO make this less brutal (especially for mono client -> popup)
   }
   connect(&_storageSyncTimer, SIGNAL(timeout()), this, SLOT(syncStorage()));
