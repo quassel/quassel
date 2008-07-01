@@ -22,8 +22,9 @@
 #define _TABCOMPLETER_H_
 
 #include <QObject>
-#include <QStringList>
 #include <QPointer>
+#include <QString>
+#include <QMap>
 
 class InputLine;
 class IrcUser;
@@ -47,10 +48,10 @@ private:
   bool enabled;
   QString nickSuffix;
 
-  QStringList completionList;
+  QMap<QString, QString> completionMap;
   // QStringList completionTemplates;
   
-  QStringList::Iterator nextCompletion;
+  QMap<QString, QString>::Iterator nextCompletion;
   int lastCompletionLength;
   
   void buildCompletionList();
