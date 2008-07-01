@@ -42,11 +42,12 @@ TabCompleter::TabCompleter(InputLine *inputLine_)
 
 void TabCompleter::buildCompletionList() {
   completionList.clear();
-  nextCompletion = completionList.begin();
   // this is the first time tab is pressed -> build up the completion list and it's iterator
   QModelIndex currentIndex = Client::bufferModel()->currentIndex();
-  if(!currentIndex.data(NetworkModel::BufferIdRole).isValid())
+  if(!currentIndex.data(NetworkModel::BufferIdRole).isValid()) {
+    nextCompletion = completionList.begin();
     return;
+  }
   
   NetworkId networkId = currentIndex.data(NetworkModel::NetworkIdRole).value<NetworkId>();
   QString channelName = currentIndex.sibling(currentIndex.row(), 0).data().toString();
@@ -68,9 +69,7 @@ void TabCompleter::buildCompletionList() {
 	  this, SLOT(ircUserJoinedOrParted(IrcUser *)));
   */
 
-  completionList.clear();
   QString tabAbbrev = inputLine->text().left(inputLine->cursorPosition()).section(' ',-1,-1);
-  completionList.clear();
   QRegExp regex(QString("^[^a-zA-Z]*").append(tabAbbrev), Qt::CaseInsensitive);
   QMap<QString, QString> sortMap;
 
