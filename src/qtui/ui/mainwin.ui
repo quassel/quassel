@@ -16,9 +16,9 @@
    <property name="geometry" >
     <rect>
      <x>0</x>
-     <y>24</y>
+     <y>22</y>
      <width>800</width>
-     <height>555</height>
+     <height>556</height>
     </rect>
    </property>
    <property name="sizePolicy" >
@@ -42,7 +42,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>24</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile" >
@@ -84,25 +84,18 @@
     <addaction name="actionAboutQuassel" />
     <addaction name="actionAboutQt" />
    </widget>
-   <widget class="QMenu" name="menuDebug" >
-    <property name="title" >
-     <string>&amp;Debug</string>
-    </property>
-    <addaction name="actionDebug_Console" />
-   </widget>
    <addaction name="menuFile" />
    <addaction name="menuViews" />
    <addaction name="menuSettings" />
-   <addaction name="menuDebug" />
    <addaction name="menuHelp" />
   </widget>
   <widget class="QStatusBar" name="statusbar" >
    <property name="geometry" >
     <rect>
      <x>0</x>
-     <y>579</y>
+     <y>578</y>
      <width>800</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

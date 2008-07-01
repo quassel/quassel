@@ -162,7 +162,7 @@ void MainWin::setupMenus() {
   connect(ui.actionQuit, SIGNAL(triggered()), QCoreApplication::instance(), SLOT(quit()));
   //connect(ui.actionNetworkList, SIGNAL(triggered()), this, SLOT(showServerList()));
   connect(ui.actionSettingsDlg, SIGNAL(triggered()), this, SLOT(showSettingsDlg()));
-  connect(ui.actionDebug_Console, SIGNAL(triggered()), this, SLOT(showDebugConsole()));
+  // connect(ui.actionDebug_Console, SIGNAL(triggered()), this, SLOT(showDebugConsole()));
   connect(ui.actionAboutQuassel, SIGNAL(triggered()), this, SLOT(showAboutDlg()));
   connect(ui.actionAboutQt, SIGNAL(triggered()), QApplication::instance(), SLOT(aboutQt()));
 

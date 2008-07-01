@@ -121,7 +121,7 @@
    <item>
     <widget class="QGroupBox" name="detailsBox" >
      <property name="sizePolicy" >
-      <sizepolicy vsizetype="Preferred" hsizetype="MinimumExpanding" >
+      <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
        <horstretch>10</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
