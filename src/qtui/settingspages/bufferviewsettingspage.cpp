@@ -424,6 +424,7 @@ BufferViewConfig *BufferViewSettingsPage::cloneConfig(BufferViewConfig *config) 
 
   BufferViewConfig *changedConfig = new BufferViewConfig(-1, this);
   changedConfig->fromVariantMap(config->toVariantMap());
+  changedConfig->setInitialized();
   _changedBufferViews[config] = changedConfig;
   connect(config, SIGNAL(bufferAdded(const BufferId &, int)), changedConfig, SLOT(addBuffer(const BufferId &, int)));
   connect(config, SIGNAL(bufferMoved(const BufferId &, int)), changedConfig, SLOT(moveBuffer(const BufferId &, int)));
