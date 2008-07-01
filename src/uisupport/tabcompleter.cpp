@@ -29,6 +29,8 @@
 #include "ircuser.h"
 #include "uisettings.h"
 
+#include <QRegExp>
+
 TabCompleter::TabCompleter(InputLine *inputLine_)
   : QObject(inputLine_),
     inputLine(inputLine_),
@@ -69,12 +71,17 @@ void TabCompleter::buildCompletionList() {
   completionList.clear();
   QString tabAbbrev = inputLine->text().left(inputLine->cursorPosition()).section(' ',-1,-1);
   completionList.clear();
+  QRegExp regex(QString("^[^a-zA-Z]*").append(tabAbbrev), Qt::CaseInsensitive);
+  QMap<QString, QString> sortMap;
+
   foreach(IrcUser *ircUser, channel->ircUsers()) {
-    if(ircUser->nick().toLower().startsWith(tabAbbrev.toLower())) {
-      completionList << ircUser->nick();
+    if(regex.indexIn(ircUser->nick()) > -1) {
+      sortMap[ircUser->nick().toLower()] = ircUser->nick();
     }
   }
-  completionList.sort();
+  foreach (QString str, sortMap)
+    completionList << str;
+
   nextCompletion = completionList.begin();
   lastCompletionLength = tabAbbrev.length();
 }
