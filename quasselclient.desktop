@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Application
 Version=1.0
-Name=Quassel IRC
+Name=Quassel IRC (Client only)
 GenericName=IRC Client
 Comment=Distributed IRC client with central core component
 Icon=quassel
