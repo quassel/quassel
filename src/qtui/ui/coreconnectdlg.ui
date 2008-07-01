@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>496</width>
-    <height>316</height>
+    <width>519</width>
+    <height>325</height>
    </rect>
   </property>
   <property name="sizePolicy" >
@@ -18,6 +18,10 @@
   <property name="windowTitle" >
    <string>Connect to Quassel Core</string>
   </property>
+  <property name="windowIcon" >
+   <iconset resource="../../icons/icons.qrc" >
+    <normaloff>:/16x16/actions/network-disconnect</normaloff>:/16x16/actions/network-disconnect</iconset>
+  </property>
   <layout class="QHBoxLayout" >
    <item>
     <widget class="QStackedWidget" name="stackedWidget" >
@@ -28,9 +32,17 @@
       </sizepolicy>
      </property>
      <property name="currentIndex" >
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="accountPage" >
+      <property name="geometry" >
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>511</width>
+        <height>317</height>
+       </rect>
+      </property>
       <layout class="QVBoxLayout" >
        <item>
         <widget class="QGroupBox" name="groupBox" >
@@ -53,7 +65,8 @@
                <string>Edit...</string>
               </property>
               <property name="icon" >
-               <iconset/>
+               <iconset resource="../../icons/icons.qrc" >
+                <normaloff>:/16x16/actions/oxygen/16x16/actions/document-properties.png</normaloff>:/16x16/actions/oxygen/16x16/actions/document-properties.png</iconset>
               </property>
              </widget>
             </item>
@@ -63,7 +76,8 @@
                <string>Add...</string>
               </property>
               <property name="icon" >
-               <iconset resource="../../icons/icons.qrc" >:/16x16/actions/oxygen/16x16/actions/list-add.png</iconset>
+               <iconset resource="../../icons/icons.qrc" >
+                <normaloff>:/16x16/actions/oxygen/16x16/actions/list-add.png</normaloff>:/16x16/actions/oxygen/16x16/actions/list-add.png</iconset>
               </property>
              </widget>
             </item>
@@ -73,7 +87,8 @@
                <string>Delete</string>
               </property>
               <property name="icon" >
-               <iconset resource="../../icons/icons.qrc" >:/16x16/actions/oxygen/16x16/actions/list-remove.png</iconset>
+               <iconset resource="../../icons/icons.qrc" >
+                <normaloff>:/16x16/actions/oxygen/16x16/actions/list-remove.png</normaloff>:/16x16/actions/oxygen/16x16/actions/list-remove.png</iconset>
               </property>
              </widget>
             </item>
@@ -82,7 +97,7 @@
               <property name="orientation" >
                <enum>Qt::Vertical</enum>
               </property>
-              <property name="sizeHint" >
+              <property name="sizeHint" stdset="0" >
                <size>
                 <width>20</width>
                 <height>40</height>
@@ -110,7 +125,7 @@
             <enum>Qt::Horizontal</enum>
            </property>
            <property name="standardButtons" >
-            <set>QDialogButtonBox::Cancel|QDialogButtonBox::NoButton|QDialogButtonBox::Ok</set>
+            <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
            </property>
           </widget>
          </item>
@@ -119,6 +134,14 @@
       </layout>
      </widget>
      <widget class="QWidget" name="loginPage" >
+      <property name="geometry" >
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>511</width>
+        <height>317</height>
+       </rect>
+      </property>
       <layout class="QVBoxLayout" >
        <item>
         <widget class="QGroupBox" name="groupBox_2" >
@@ -135,16 +158,7 @@
           <property name="spacing" >
            <number>0</number>
           </property>
-          <property name="leftMargin" >
-           <number>4</number>
-          </property>
-          <property name="topMargin" >
-           <number>4</number>
-          </property>
-          <property name="rightMargin" >
-           <number>4</number>
-          </property>
-          <property name="bottomMargin" >
+          <property name="margin" >
            <number>4</number>
           </property>
           <item>
@@ -177,7 +191,7 @@
               <property name="orientation" >
                <enum>Qt::Horizontal</enum>
               </property>
-              <property name="sizeHint" >
+              <property name="sizeHint" stdset="0" >
                <size>
                 <width>358</width>
                 <height>21</height>
@@ -231,13 +245,21 @@ space</string>
              <number>0</number>
             </property>
             <widget class="QWidget" name="loginCredentialsPage" >
+             <property name="geometry" >
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>485</width>
+               <height>147</height>
+              </rect>
+             </property>
              <layout class="QVBoxLayout" >
               <item>
                <spacer>
                 <property name="orientation" >
                  <enum>Qt::Vertical</enum>
                 </property>
-                <property name="sizeHint" >
+                <property name="sizeHint" stdset="0" >
                  <size>
                   <width>20</width>
                   <height>40</height>
@@ -250,7 +272,7 @@ space</string>
                 <property name="orientation" >
                  <enum>Qt::Vertical</enum>
                 </property>
-                <property name="sizeHint" >
+                <property name="sizeHint" stdset="0" >
                  <size>
                   <width>20</width>
                   <height>40</height>
@@ -270,16 +292,7 @@ space</string>
                  <string>Login</string>
                 </property>
                 <layout class="QVBoxLayout" >
-                 <property name="leftMargin" >
-                  <number>4</number>
-                 </property>
-                 <property name="topMargin" >
-                  <number>4</number>
-                 </property>
-                 <property name="rightMargin" >
-                  <number>4</number>
-                 </property>
-                 <property name="bottomMargin" >
+                 <property name="margin" >
                   <number>4</number>
                  </property>
                  <item>
@@ -327,6 +340,14 @@ space</string>
              </layout>
             </widget>
             <widget class="QWidget" name="coreConfigPage" >
+             <property name="geometry" >
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>100</width>
+               <height>30</height>
+              </rect>
+             </property>
              <layout class="QVBoxLayout" >
               <item>
                <widget class="QGroupBox" name="groupBox_4" >
@@ -360,7 +381,7 @@ space</string>
                      <property name="orientation" >
                       <enum>Qt::Horizontal</enum>
                      </property>
-                     <property name="sizeHint" >
+                     <property name="sizeHint" stdset="0" >
                       <size>
                        <width>40</width>
                        <height>20</height>
@@ -380,7 +401,7 @@ space</string>
                      <property name="orientation" >
                       <enum>Qt::Horizontal</enum>
                      </property>
-                     <property name="sizeHint" >
+                     <property name="sizeHint" stdset="0" >
                       <size>
                        <width>40</width>
                        <height>20</height>
@@ -398,7 +419,7 @@ space</string>
                 <property name="orientation" >
                  <enum>Qt::Vertical</enum>
                 </property>
-                <property name="sizeHint" >
+                <property name="sizeHint" stdset="0" >
                  <size>
                   <width>20</width>
                   <height>40</height>
@@ -408,7 +429,16 @@ space</string>
               </item>
              </layout>
             </widget>
-            <widget class="QWidget" name="loginEmptyPage" />
+            <widget class="QWidget" name="loginEmptyPage" >
+             <property name="geometry" >
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>100</width>
+               <height>30</height>
+              </rect>
+             </property>
+            </widget>
            </widget>
           </item>
          </layout>
@@ -417,13 +447,21 @@ space</string>
        <item>
         <widget class="QDialogButtonBox" name="loginButtonBox" >
          <property name="standardButtons" >
-          <set>QDialogButtonBox::Cancel|QDialogButtonBox::NoButton|QDialogButtonBox::Ok</set>
+          <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
          </property>
         </widget>
        </item>
       </layout>
      </widget>
      <widget class="QWidget" name="syncPage" >
+      <property name="geometry" >
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>511</width>
+        <height>317</height>
+       </rect>
+      </property>
       <layout class="QVBoxLayout" >
        <item>
         <widget class="QGroupBox" name="groupBox_3" >
@@ -535,7 +573,7 @@ space</string>
               <property name="orientation" >
                <enum>Qt::Vertical</enum>
               </property>
-              <property name="sizeHint" >
+              <property name="sizeHint" stdset="0" >
                <size>
                 <width>483</width>
                 <height>61</height>

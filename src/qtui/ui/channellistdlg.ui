@@ -12,6 +12,10 @@
   <property name="windowTitle" >
    <string>Channel List</string>
   </property>
+  <property name="windowIcon" >
+   <iconset resource="../../icons/icons.qrc" >
+    <normaloff>:/16x16/actions/oxygen/16x16/actions/format-list-unordered.png</normaloff>:/16x16/actions/oxygen/16x16/actions/format-list-unordered.png</iconset>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout" >
    <property name="spacing" >
     <number>2</number>
@@ -78,6 +82,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../icons/icons.qrc" />
+ </resources>
  <connections/>
 </ui>
