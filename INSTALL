@@ -1,38 +1,66 @@
 Quassel IRC - Installation Notes
 ================================
 
-These are preliminary instructions, until we get the config more
-polished.
+These should help you to install Quassel IRC from source. Please also have a
+look at the README file!
 
 Quassel IRC provides three binaries: quasselcore, quasselclient, and
 quassel. While quasselcore and quasselclient obviously provide the
 separated core and client functionality, the latter one (quassel) is a
 monolithic version containing both of them for convenience.
 
-To build Quassel IRC, cd to build/ and run qmake && make. This
-builds all three versions of Quassel. You may choose individual
-targets by setting qmakes BUILD variable:
+Note that quasselcore is no longer being built by default, since it tends to
+confuse users more than it helped. It will be back as soon as we have simple mode
+implemented.
 
-qmake BUILD=<foo>
+We now use CMake as our build system. CMake supports and encourages out-of-source 
+builds, which do not clutter the source directory. You can (and should) thus use 
+an arbitrary directory for building.
 
-where <foo> is any combination of qtclient, core, mono or all. Note
-that in order to change this later, you will have to make distclean,
-otherwise the BUILD setting seems to be ignored by qmake.
+There is no "make distclean"; "make clean" should usually be enough since CMake
+actually cleans up properly (qmake often didn't). If you really want to get rid
+of all build files, just remove the build directory.
 
-After running make, you will find the binaries in build/targets.
+Usually, you will build Quassel as follows:
 
-make install will probably do something, but it has never been tried
-and may destroy your system or kill a kitten. It's not necessary
-anyway, since there are no installable files other than the
-binaries. Though this might change in later releases.
+cd /path/to/build/dir
+cmake /path/to/quassel
+make
 
-On first run of the Quassel core, it will wait for a client to connect
-and present a wizard that will allow you to create the database and one
-admin user for the core-side storage. Note that Quassel does not support
-the administration of user accounts yet, this includes adding more users,
-changing passwords and so on.
+Additionally, you may add some options to the cmake call, prefixed by -D. These need
+to follow the source directory PATH:
 
-Please also do read the README file.
+cmake /path/to/quassel -D<option1> -D<option2>
 
-Thanks,
-~ The Quassel IRC Team
+NOTE: In order to reconfigure, you need to remove CMakeCache.txt (or empty
+      the build directory), otherwise cmake will ignore modified -D options!
+
+Quassel recognizes the following options:
+
+-DWANT_(CORE|QTCLIENT|MONO)=(ON|OFF)
+    Allow to choose which Quassel binaries to build.
+
+-DQT=/path/to/qt
+    Use a non-system Qt installation. This is for example useful if you have a static
+    Qt installed in some local dir.
+
+-DSTATIC=1
+    Enable static building of Quassel. You should link the static versions of some libs
+    (in particular libstdc++.a) into /path/to/build/dir/staticlibs in oder to create
+    a portable binary!
+
+BUILDING ON WINDOWS:
+--------------------
+We have tested building on Windows with a statically built Qt (with its /bin directory in %PATH%)
+and MSVC 2005/2008. Make sure that you use a "shell" that has all needed env variables setup,
+such as the "Visual Studio Command Prompt". You will also need the /bin of the Microsoft SDK in
+your %PATH% at least for VS 2008, otherwise rc.exe is not found.
+Currently, only building in the shell using nmake seems to work; CMake can also create MSVC project
+files, but they seem to be problematic. However, YMMV. Software development on Windows is a real
+PITA.
+
+After you have everything setup:
+
+cd C:\path\to\quassel-build
+cmake -G"NMake Makefiles" C:\path\to\quassel\source -DSTATIC=1
+nmake

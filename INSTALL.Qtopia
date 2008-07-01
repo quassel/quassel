@@ -1,6 +1,8 @@
 Quassel IRC Mobile Edition - Installation Notes
 ===============================================
 
+NOTE: QuasselTopia is currently broken. You will not be able to compile it.
+
 We assume that you are familiar with application development on the
 Greenphone (or other Qtopia devices), so we won't go into detail here.
 
