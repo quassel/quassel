@@ -16,9 +16,9 @@
    <property name="geometry" >
     <rect>
      <x>0</x>
-     <y>22</y>
+     <y>24</y>
      <width>800</width>
-     <height>556</height>
+     <height>555</height>
     </rect>
    </property>
    <property name="sizePolicy" >
@@ -42,7 +42,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>22</height>
+     <height>24</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile" >
@@ -59,9 +59,7 @@
     <addaction name="actionDisconnectCore" />
     <addaction name="separator" />
     <addaction name="menuNetworks" />
-    <addaction name="separator" />
     <addaction name="actionJoinChannel" />
-    <addaction name="separator" />
     <addaction name="actionSetAwayGlobally" />
     <addaction name="separator" />
     <addaction name="actionQuit" />
@@ -102,9 +100,9 @@
    <property name="geometry" >
     <rect>
      <x>0</x>
-     <y>578</y>
+     <y>579</y>
      <width>800</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>
@@ -150,6 +148,9 @@
    <property name="text" >
     <string>Join Channel...</string>
    </property>
+   <property name="visible" >
+    <bool>false</bool>
+   </property>
   </action>
   <action name="actionSetAwayGlobally" >
    <property name="enabled" >
@@ -157,6 +158,9 @@
    </property>
    <property name="text" >
     <string>Set Away globally</string>
+   </property>
+   <property name="visible" >
+    <bool>false</bool>
    </property>
   </action>
   <action name="actionQuit" >
@@ -178,9 +182,8 @@
   </action>
   <action name="actionSettingsDlg" >
    <property name="icon" >
-    <iconset>
-     <normaloff/>
-    </iconset>
+    <iconset resource="../../icons/icons.qrc" >
+     <normaloff>:/16x16/actions/configure</normaloff>:/16x16/actions/configure</iconset>
    </property>
    <property name="text" >
     <string>Configure Quassel...</string>
@@ -192,6 +195,10 @@
   <action name="actionManageViews" >
    <property name="enabled" >
     <bool>true</bool>
+   </property>
+   <property name="icon" >
+    <iconset resource="../../icons/icons.qrc" >
+     <normaloff>:/16x16/actions/oxygen/16x16/actions/view-tree.png</normaloff>:/16x16/actions/oxygen/16x16/actions/view-tree.png</iconset>
    </property>
    <property name="text" >
     <string>Manage Views...</string>
@@ -239,9 +246,8 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset>
-     <normaloff/>
-    </iconset>
+    <iconset resource="../../icons/icons.qrc" >
+     <normaloff>:/16x16/actions/network-disconnect</normaloff>:/16x16/actions/network-disconnect</iconset>
    </property>
    <property name="text" >
     <string>Disconnect from Core</string>
@@ -252,9 +258,8 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset>
-     <normaloff/>
-    </iconset>
+    <iconset resource="../../icons/icons.qrc" >
+     <normaloff>:/16x16/actions/network-connect</normaloff>:/16x16/actions/network-connect</iconset>
    </property>
    <property name="text" >
     <string>Connect to Core...</string>

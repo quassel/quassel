@@ -12,6 +12,10 @@
   <property name="windowTitle" >
    <string>Configure Quassel</string>
   </property>
+  <property name="windowIcon" >
+   <iconset resource="../../icons/icons.qrc" >
+    <normaloff>:/16x16/actions/configure</normaloff>:/16x16/actions/configure</iconset>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout_2" >
    <item>
     <widget class="QSplitter" name="splitter" >
@@ -31,7 +35,7 @@
        </property>
       </column>
      </widget>
-     <widget class="QWidget" name="" >
+     <widget class="QWidget" name="layoutWidget" >
       <layout class="QVBoxLayout" name="verticalLayout" >
        <item>
         <widget class="QLabel" name="pageTitle" >
@@ -60,8 +64,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>492</width>
-            <height>466</height>
+            <width>509</width>
+            <height>507</height>
            </rect>
           </property>
          </widget>
@@ -83,6 +87,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../icons/icons.qrc" />
+ </resources>
  <connections/>
 </ui>

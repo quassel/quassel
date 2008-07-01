@@ -10,7 +10,11 @@
    </rect>
   </property>
   <property name="windowTitle" >
-   <string>Dialog</string>
+   <string>Configure Quassel</string>
+  </property>
+  <property name="windowIcon" >
+   <iconset resource="../../icons/icons.qrc" >
+    <normaloff>:/16x16/actions/configure</normaloff>:/16x16/actions/configure</iconset>
   </property>
   <layout class="QVBoxLayout" >
    <item>
@@ -55,20 +59,14 @@
       <enum>Qt::Horizontal</enum>
      </property>
      <property name="standardButtons" >
-      <set>QDialogButtonBox::Apply|QDialogButtonBox::Cancel|QDialogButtonBox::NoButton|QDialogButtonBox::Ok|QDialogButtonBox::Reset|QDialogButtonBox::RestoreDefaults</set>
+      <set>QDialogButtonBox::Apply|QDialogButtonBox::Cancel|QDialogButtonBox::Ok|QDialogButtonBox::Reset|QDialogButtonBox::RestoreDefaults</set>
      </property>
     </widget>
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>QScrollArea</class>
-   <extends>QFrame</extends>
-   <header>QScrollArea</header>
-   <container>1</container>
-  </customwidget>
- </customwidgets>
- <resources/>
+ <resources>
+  <include location="../../icons/icons.qrc" />
+ </resources>
  <connections/>
 </ui>

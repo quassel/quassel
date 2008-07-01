@@ -15,6 +15,10 @@
   <property name="windowTitle" >
    <string>About Quassel</string>
   </property>
+  <property name="windowIcon" >
+   <iconset resource="../../icons/quassel-icons.qrc" >
+    <normaloff>:/quassel/16x16/apps/quassel.png</normaloff>:/quassel/16x16/apps/quassel.png</iconset>
+  </property>
   <layout class="QVBoxLayout" >
    <item>
     <widget class="QFrame" name="frame" >
@@ -107,8 +111,8 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>458</width>
-        <height>261</height>
+        <width>472</width>
+        <height>296</height>
        </rect>
       </property>
       <attribute name="title" >
