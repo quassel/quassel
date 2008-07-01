@@ -763,6 +763,7 @@ void IrcServerHandler::handle324(const QString &prefix, const QList<QByteArray> 
 /* RPL_??? - "<channel> <creation time (unix)>" */
 void IrcServerHandler::handle329(const QString &prefix, const QList<QByteArray> &params) {
   Q_UNUSED(prefix);
+  Q_UNUSED(params);
   // FIXME implement this... 
 }
 
