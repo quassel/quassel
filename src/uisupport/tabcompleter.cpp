@@ -41,11 +41,11 @@ TabCompleter::TabCompleter(InputLine *inputLine_)
 }
 
 void TabCompleter::buildCompletionList() {
-  completionList.clear();
+  completionMap.clear();
   // this is the first time tab is pressed -> build up the completion list and it's iterator
   QModelIndex currentIndex = Client::bufferModel()->currentIndex();
   if(!currentIndex.data(NetworkModel::BufferIdRole).isValid()) {
-    nextCompletion = completionList.begin();
+    nextCompletion = completionMap.begin();
     return;
   }
   
@@ -71,17 +71,14 @@ void TabCompleter::buildCompletionList() {
 
   QString tabAbbrev = inputLine->text().left(inputLine->cursorPosition()).section(' ',-1,-1);
   QRegExp regex(QString("^[^a-zA-Z]*").append(tabAbbrev), Qt::CaseInsensitive);
-  QMap<QString, QString> sortMap;
 
   foreach(IrcUser *ircUser, channel->ircUsers()) {
     if(regex.indexIn(ircUser->nick()) > -1) {
-      sortMap[ircUser->nick().toLower()] = ircUser->nick();
+      completionMap[ircUser->nick().toLower()] = ircUser->nick();
     }
   }
-  foreach (QString str, sortMap)
-    completionList << str;
 
-  nextCompletion = completionList.begin();
+  nextCompletion = completionMap.begin();
   lastCompletionLength = tabAbbrev.length();
 }
 
@@ -99,7 +96,7 @@ void TabCompleter::complete() {
     enabled = true;
   }
   
-  if (nextCompletion != completionList.end()) {
+  if (nextCompletion != completionMap.end()) {
     // clear previous completion
     for (int i = 0; i < lastCompletionLength; i++) {
       inputLine->backspace();
@@ -120,7 +117,10 @@ void TabCompleter::complete() {
 
   // we're at the end of the list -> start over again
   } else {
-    nextCompletion = completionList.begin();
+    if(!completionMap.isEmpty()) {
+      nextCompletion = completionMap.begin();
+      complete();
+    }
   }
   
 }
