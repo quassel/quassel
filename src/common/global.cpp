@@ -17,6 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#include <QDateTime>
 #include <QObject>
 #include <QMetaType>
 
@@ -102,12 +103,14 @@ void Global::registerMetaTypes() {
 void Global::setupVersion() {
 
 #  include "version.inc"
-#  ifdef HAVE_VERSION_GEN
-#    include "version.gen"
-#  endif
+#  include "version.gen"
 
   if(quasselGeneratedVersion.isEmpty()) {
-    quasselVersion = QString("v%1 (unknown rev)").arg(quasselBaseVersion);
+    if(quasselCommit.isEmpty())
+      quasselVersion = QString("v%1 (unknown rev)").arg(quasselBaseVersion);
+    else
+      quasselVersion = QString("v%1 (dist-%2, %3)").arg(quasselBaseVersion).arg(quasselCommit.left(7))
+                          .arg(QDateTime::fromTime_t(quasselArchiveDate).toLocalTime().toString("yyyy-MM-dd"));
   } else {
     QStringList parts = quasselGeneratedVersion.split(':');
     quasselVersion = QString("v%1").arg(parts[0]);
@@ -124,6 +127,8 @@ QString Global::quasselBaseVersion;
 QString Global::quasselGeneratedVersion;
 QString Global::quasselBuildDate;
 QString Global::quasselBuildTime;
+QString Global::quasselCommit;
+uint Global::quasselArchiveDate;
 uint Global::protocolVersion;
 uint Global::clientNeedsProtocol;
 uint Global::coreNeedsProtocol;

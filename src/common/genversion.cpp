@@ -37,7 +37,7 @@ int main(int argc, char **argv) {
   }
   QString gitroot = argv[1];
   QString target = argv[2];
-  QString version;
+  QString version, commit, archivetime;
 
   if(QFile::exists(gitroot + "/.git")) {
     // try to execute git-describe to get a version string
@@ -68,7 +68,10 @@ int main(int argc, char **argv) {
     // hmm, Git failed... let's check for version.dist instead
     QFile dist(gitroot + "/version.dist");
     if(dist.open(QIODevice::ReadOnly | QIODevice::Text)) {
-      version = dist.readAll();
+      QRegExp rxCommit("(^[0-9a-f]+)");
+      QRegExp rxTimestamp("(^[0-9]+)");
+      if(rxCommit.indexIn(dist.readLine()) > -1) commit = rxCommit.cap(1);
+      if(rxTimestamp.indexIn(dist.readLine()) > -1) archivetime = rxTimestamp.cap(1);
       dist.close();
     }
   }
@@ -80,7 +83,10 @@ int main(int argc, char **argv) {
   }
   gen.write(QString("quasselGeneratedVersion = \"%1\";\n"
                     "quasselBuildDate = \"%2\";\n"
-                    "quasselBuildTime = \"%3\";\n").arg(version).arg(__DATE__).arg(__TIME__).toAscii());
+                    "quasselBuildTime = \"%3\";\n"
+                    "quasselCommit = \"%4\";\n"
+                    "quasselArchiveDate = %5;\n")
+                    .arg(version).arg(__DATE__).arg(__TIME__).arg(commit).arg(archivetime.toUInt()).toAscii());
   gen.close();
   return EXIT_SUCCESS;
 }
