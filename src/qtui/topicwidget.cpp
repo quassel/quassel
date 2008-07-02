@@ -28,7 +28,7 @@ TopicWidget::TopicWidget(QWidget *parent)
   ui.setupUi(this);
   ui.topicLineEdit->hide();
   ui.topicLineEdit->installEventFilter(this);
-  ui.topicButton->show();
+  ui.topicLabel->show();
 }
 
 void TopicWidget::currentChanged(const QModelIndex &current, const QModelIndex &previous) {
@@ -48,7 +48,7 @@ void TopicWidget::setTopic(const QString &newtopic) {
     return;
   
   _topic = newtopic;
-  ui.topicButton->setAndStyleText(newtopic);
+  ui.topicLabel->setText(newtopic);
   ui.topicLineEdit->setText(newtopic);
   switchPlain();
 }
@@ -58,19 +58,21 @@ void TopicWidget::on_topicLineEdit_returnPressed() {
   switchPlain();
 }
 
-void TopicWidget::on_topicButton_clicked() {
+void TopicWidget::on_topicEditButton_clicked() {
   switchEditable();
 }
 
 void TopicWidget::switchEditable() {
-  ui.topicButton->hide();
+  ui.topicLabel->hide();
+  ui.topicEditButton->hide();
   ui.topicLineEdit->show();
   ui.topicLineEdit->setFocus();
 }
 
 void TopicWidget::switchPlain() {
   ui.topicLineEdit->hide();
-  ui.topicButton->show();
+  ui.topicLabel->show();
+  ui.topicEditButton->show();
   ui.topicLineEdit->setText(_topic);
 }
 
@@ -93,3 +95,4 @@ bool TopicWidget::eventFilter(QObject *obj, QEvent *event) {
   
   return false;
 }
+

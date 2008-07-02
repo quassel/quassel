@@ -10,6 +10,7 @@ set(SOURCES
     bufferview.cpp
     bufferviewfilter.cpp
     clearablelineedit.cpp
+    clickablelabel.cpp
     colorbutton.cpp
     nickviewfilter.cpp
     inputline.cpp
@@ -25,6 +26,7 @@ set(MOC_HDRS
     bufferview.h
     bufferviewfilter.h
     clearablelineedit.h
+    clickablelabel.h
     colorbutton.h
     nickviewfilter.h
     inputline.h

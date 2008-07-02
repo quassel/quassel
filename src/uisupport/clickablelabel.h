@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005/06 by the Quassel Project                          *
+ *   Copyright (C) 2005-08 by the Quassel Project                          *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,30 +18,22 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef TOPICBUTTON_H
-#define TOPICBUTTON_H
+#ifndef CLICKABLELABEL_H
+#define CLICKABLELABEL_H
 
-#include <QSize>
-#include <QAbstractButton>
+#include <QLabel>
 
-#include "uistyle.h"
-
-class TopicButton : public QAbstractButton {
+class ClickableLabel : public QLabel {
   Q_OBJECT
 
 public:
-  TopicButton(QWidget *parent = 0);
+  ClickableLabel(QWidget *parent = 0);
 
-  void setAndStyleText(const QString &text);
+signals:
+  void clicked();
 
 protected:
-  virtual void paintEvent(QPaintEvent *event);
-
-private:
-#ifndef SPUTDEV
-  UiStyle::StyledText styledContents;
-#endif
-  QSize _sizeHint;
+  void mouseReleaseEvent(QMouseEvent *event);
 };
 
-#endif
+#endif //CLICKABLELABEL_H

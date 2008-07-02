@@ -21,7 +21,7 @@ set(SOURCES
     settingsdlg.cpp
     settingspagedlg.cpp
     titlesetter.cpp
-    topicbutton.cpp
+    topiclabel.cpp
     topicwidget.cpp
     verticaldock.cpp)
 
@@ -40,7 +40,7 @@ set(MOC_HDRS
     settingsdlg.h
     settingspagedlg.h
     titlesetter.h
-    topicbutton.h
+    topiclabel.h
     topicwidget.h
     verticaldock.h)
 

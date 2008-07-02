@@ -18,41 +18,42 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _TOPICWIDGET_H_
-#define _TOPICWIDGET_H_
+#ifndef TOPICLABEL_H
+#define TOPICLABEL_H
 
-#include "abstractitemview.h"
+#include <QSize>
+#include <QFrame>
 
-#include "ui_topicwidget.h"
+#include "uistyle.h"
 
-class TopicWidget : public AbstractItemView {
+class TopicLabel : public QFrame {
   Q_OBJECT
 
 public:
-  TopicWidget(QWidget *parent = 0);
+  TopicLabel(QWidget *parent = 0);
 
-  void setTopic(const QString &newtopic);
+  void setText(const QString &text);
 
-  virtual bool eventFilter(QObject *obj, QEvent *event);
+protected:
+  virtual void paintEvent(QPaintEvent *event);
 
-signals:
-  void topicChanged(const QString &text);
-
-protected slots:
-  virtual void currentChanged(const QModelIndex &current, const QModelIndex &previous);
-  virtual void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
-
-private slots:
-  void on_topicLineEdit_returnPressed();
-  void on_topicEditButton_clicked();
-  void switchEditable();
-  void switchPlain();
+  void mouseMoveEvent(QMouseEvent *event);
+  void mousePressEvent(QMouseEvent *event);
+  void mouseReleaseEvent(QMouseEvent *event);
+  void mouseDoubleClickEvent(QMouseEvent *event);
   
 private:
-  Ui::TopicWidget ui;
+#ifndef SPUTDEV
+  UiStyle::StyledText styledContents;
+#endif
+  QString _text;
+  QSize _sizeHint;
 
-  QString _topic;
+  int offset;
+  int dragStartX;
+  bool dragMode;
+
+  QList<int> textPartOffset; // needed for location url positions
 };
-
 
 #endif

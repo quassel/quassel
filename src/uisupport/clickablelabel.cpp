@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005/06 by the Quassel Project                          *
+ *   Copyright (C) 2005-08 by the Quassel Project                          *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,41 +18,21 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _TOPICWIDGET_H_
-#define _TOPICWIDGET_H_
+#include "clickablelabel.h"
 
-#include "abstractitemview.h"
+#include <QDebug>
+#include <QMouseEvent>
 
-#include "ui_topicwidget.h"
-
-class TopicWidget : public AbstractItemView {
-  Q_OBJECT
-
-public:
-  TopicWidget(QWidget *parent = 0);
-
-  void setTopic(const QString &newtopic);
-
-  virtual bool eventFilter(QObject *obj, QEvent *event);
-
-signals:
-  void topicChanged(const QString &text);
-
-protected slots:
-  virtual void currentChanged(const QModelIndex &current, const QModelIndex &previous);
-  virtual void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
-
-private slots:
-  void on_topicLineEdit_returnPressed();
-  void on_topicEditButton_clicked();
-  void switchEditable();
-  void switchPlain();
-  
-private:
-  Ui::TopicWidget ui;
-
-  QString _topic;
-};
+ClickableLabel::ClickableLabel(QWidget *parent)
+  : QLabel(parent)
+{
+}
 
 
-#endif
+void ClickableLabel::mouseReleaseEvent(QMouseEvent *event) {
+  if(event->pos().x() > size().width() || event->pos().y() > size().height())
+    return;
+
+  event->accept();
+  emit clicked();
+}
