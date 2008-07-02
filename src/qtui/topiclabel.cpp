@@ -71,6 +71,7 @@ void TopicLabel::setText(const QString &text) {
     return;
 
   _text = text;
+  offset = 0;
   update();
 
 #ifndef SPUTDEV
@@ -109,7 +110,7 @@ void TopicLabel::mousePressEvent(QMouseEvent *event) {
 void TopicLabel::mouseReleaseEvent(QMouseEvent *event) {
   event->accept();
   dragMode = false;
-  if(qAbs(offset) < 10) {
+  if(qAbs(offset) < 30) {
     offset = 0;
     update();
   }
