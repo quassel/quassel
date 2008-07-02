@@ -51,6 +51,7 @@ private:
 
   int offset;
   int dragStartX;
+  int textWidth;
   bool dragMode;
 
   QList<int> textPartOffset; // needed for location url positions

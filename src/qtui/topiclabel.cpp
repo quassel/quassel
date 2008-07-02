@@ -37,8 +37,11 @@ TopicLabel::TopicLabel(QWidget *parent)
   : QFrame(parent),
     offset(0),
     dragStartX(0),
+    textWidth(0),
     dragMode(false)
 {
+  setToolTip(tr("Drag to scroll the topic!"));
+  setCursor(Qt::OpenHandCursor);
 }
 
 void TopicLabel::paintEvent(QPaintEvent *event) {
@@ -63,6 +66,7 @@ void TopicLabel::paintEvent(QPaintEvent *event) {
     painter.drawText(drawRect, Qt::AlignLeft|Qt::AlignVCenter, textPart, &brect);
     drawRect.setLeft(brect.right());
   }
+  textWidth = brect.right();
 #endif
 }
 
@@ -88,7 +92,6 @@ void TopicLabel::setText(const QString &text) {
   // setFixedHeight(height);
 #endif  
   // show topic in tooltip
-  setToolTip(_text);
 }
 
 
@@ -97,7 +100,14 @@ void TopicLabel::mouseMoveEvent(QMouseEvent *event) {
     return;
 
   event->accept();
-  offset = event->pos().x() - dragStartX;
+  int newOffset = event->pos().x() - dragStartX;
+  if(newOffset > 0)
+    offset = 0;
+  else if(width() < textWidth || offset < newOffset)
+    offset = newOffset;
+//     qDebug() << offset << (width() - textWidth) << width() << textWidth;
+//     if(offset < width() - textWidth)
+//       offset = width() - textWidth;
   update();
 }
 
@@ -105,6 +115,7 @@ void TopicLabel::mousePressEvent(QMouseEvent *event) {
   event->accept();
   dragMode = true;
   dragStartX = event->pos().x() - offset;
+  setCursor(Qt::ClosedHandCursor);
 }
 
 void TopicLabel::mouseReleaseEvent(QMouseEvent *event) {
@@ -114,6 +125,7 @@ void TopicLabel::mouseReleaseEvent(QMouseEvent *event) {
     offset = 0;
     update();
   }
+  setCursor(Qt::OpenHandCursor);
 }
 
 void TopicLabel::mouseDoubleClickEvent(QMouseEvent *event) {
