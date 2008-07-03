@@ -21,18 +21,18 @@
 #include "ircuser.h"
 #include "util.h"
 
-#include "network.h"
 #include "signalproxy.h"
 #include "ircchannel.h"
 
 #include <QTextCodec>
 #include <QDebug>
 
-IrcUser::IrcUser(const QString &hostmask, Network *network) : SyncableObject(network),
+IrcUser::IrcUser(const QString &hostmask, Network *network)
+  : SyncableObject(network),
     _initialized(false),
-    _nick(nickFromMask(hostmask)),
-    _user(userFromMask(hostmask)),
-    _host(hostFromMask(hostmask)),
+    _nick(network->encodeServerString(nickFromMask(hostmask))),
+    _user(network->encodeServerString(userFromMask(hostmask))),
+    _host(network->encodeServerString(hostFromMask(hostmask))),
     _realName(),
     _awayMessage(),
     _away(false),
@@ -107,16 +107,22 @@ QByteArray IrcUser::encodeString(const QString &string) const {
 //  PUBLIC SLOTS:
 // ====================
 void IrcUser::setUser(const QString &user) {
-  if(!user.isEmpty() && _user != user) {
-    _user = user;
-    emit userSet(user);
+  if(!user.isEmpty()) {
+    QByteArray newUser = network()->encodeServerString(user);
+    if(newUser != _user) {
+      _user = newUser;
+      emit userSet(user);
+    }
   }
 }
 
 void IrcUser::setRealName(const QString &realName) {
-  if (!realName.isEmpty() && _realName != realName) {
-    _realName = realName;
-    emit realNameSet(realName);
+  if(!realName.isEmpty()) {
+    QByteArray newRealName = network()->encodeServerString(realName);
+    if(newRealName != _realName) {
+      _realName = newRealName;
+      emit realNameSet(realName);
+    }
   }
 }
 
@@ -128,9 +134,12 @@ void IrcUser::setAway(const bool &away) {
 }
 
 void IrcUser::setAwayMessage(const QString &awayMessage) {
-  if(!awayMessage.isEmpty() && _awayMessage != awayMessage) {
-    _awayMessage = awayMessage;
-    emit awayMessageSet(awayMessage);
+  if(!awayMessage.isEmpty()) {
+    QByteArray newAwayMessage = network()->encodeServerString(awayMessage);
+    if(newAwayMessage != _awayMessage) {
+      _awayMessage = newAwayMessage;
+      emit awayMessageSet(awayMessage);
+    }
   }
 }
 
@@ -171,17 +180,23 @@ void IrcUser::setLastAwayMessage(const int &lastAwayMessage) {
 }
 
 void IrcUser::setHost(const QString &host) {
-  if(!host.isEmpty() && _host != host) {
-    _host = host;
-    emit hostSet(host);
+  if(!host.isEmpty()) {
+    QByteArray newHost = network()->encodeServerString(host);
+    if(newHost != _host) {
+      _host = newHost;
+      emit hostSet(host);
+    }
   }
 }
 
 void IrcUser::setNick(const QString &nick) {
-  if(!nick.isEmpty() && nick != _nick) {
-    _nick = nick;
-    updateObjectName();
-    emit nickSet(nick);
+  if(!nick.isEmpty()) {
+    QByteArray newNick = network()->encodeServerString(nick);
+    if(newNick != _nick) {
+      _nick = newNick;
+      updateObjectName();
+      emit nickSet(nick);
+    }
   }
 }
 
@@ -200,7 +215,7 @@ void IrcUser::setSuserHost(const QString &suserHost) {
 }
 
 void IrcUser::updateObjectName() {
-  renameObject(QString::number(network()->networkId().toInt()) + "/" + _nick);
+  renameObject(QString::number(network()->networkId().toInt()) + "/" + nick());
 }
 
 void IrcUser::updateHostmask(const QString &mask) {

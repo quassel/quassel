@@ -103,11 +103,9 @@ void TopicLabel::mouseMoveEvent(QMouseEvent *event) {
   int newOffset = event->pos().x() - dragStartX;
   if(newOffset > 0)
     offset = 0;
-  else if(width() < textWidth || offset < newOffset)
+  else if(width() + 1 < textWidth || offset < newOffset)
     offset = newOffset;
-//     qDebug() << offset << (width() - textWidth) << width() << textWidth;
-//     if(offset < width() - textWidth)
-//       offset = width() - textWidth;
+
   update();
 }
 
@@ -131,22 +129,19 @@ void TopicLabel::mouseReleaseEvent(QMouseEvent *event) {
 void TopicLabel::mouseDoubleClickEvent(QMouseEvent *event) {
 #ifndef SPUTDEV
   event->accept();
-  int textPart = 0;
-  int textOffset = 0;
-
   if(textPartOffset.isEmpty())
     return;
 
   // find the text part that contains the url. We don't expect color codes in urls so we expect only full parts (yet?)
-  int x = event->pos().x();
+  int textPart = 0;
+  int x = event->pos().x() + offset;
   while(textPart + 1 < textPartOffset.count()) {
-    if(textPartOffset[textPart + 1] < x) {
+    if(textPartOffset[textPart + 1] < x)
       textPart++;
-      textOffset = textPartOffset[textPart];
-    } else {
+    else
       break;
-    }
   }
+  int textOffset = textPartOffset[textPart];
 
   // we've Identified the needed text part \o/
   QString text = styledContents.plainText.mid(styledContents.formatList[textPart].start, styledContents.formatList[textPart].length);
@@ -156,6 +151,7 @@ void TopicLabel::mouseDoubleClickEvent(QMouseEvent *event) {
   
   int start = 0;
   int spacePos = text.indexOf(" ");
+  x -= offset; // offset needs to go here as it's already in the textOffset
   while(spacePos != -1) {
     if(fontMetric.width(text.left(spacePos + 1)) + textOffset < x) {
       start = spacePos + 1;
@@ -171,7 +167,6 @@ void TopicLabel::mouseDoubleClickEvent(QMouseEvent *event) {
     len = end - start;
   }
   QString word = text.mid(start, len);
-  qDebug() << word;
   QRegExp regex("^(h|f)t{1,2}ps?:\\/\\/");
   if(regex.indexIn(word) != -1) {
     QDesktopServices::openUrl(QUrl(word));
