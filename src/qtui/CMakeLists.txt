@@ -105,6 +105,7 @@ endforeach(FRM ${SP_FORMS})
 
 qt4_wrap_cpp(MOC ${MOC_HDRS} ${SPHDR})
 qt4_wrap_ui(UI ${FORMPATH} ${SPFRM})
+qt4_add_dbus_interface(DBUS ../../interfaces/org.freedesktop.Notifications.xml desktopnotifications)
 
 include_directories(${CMAKE_SOURCE_DIR}/src/common
                     ${CMAKE_SOURCE_DIR}/src/client
@@ -112,5 +113,5 @@ include_directories(${CMAKE_SOURCE_DIR}/src/common
                     ${CMAKE_SOURCE_DIR}/src/uisupport
                     ${CMAKE_CURRENT_BINARY_DIR})
 
-add_library(mod_qtui STATIC ${SOURCES} ${SPSRC} ${MOC} ${UI} ${HEADERS})
+add_library(mod_qtui STATIC ${SOURCES} ${SPSRC} ${MOC} ${DBUS} ${UI} ${HEADERS})
 add_dependencies(mod_qtui mod_common mod_client mod_uisupport)

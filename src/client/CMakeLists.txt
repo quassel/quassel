@@ -15,7 +15,6 @@ set(SOURCES
     clientirclisthelper.cpp
     clientsettings.cpp
     clientsyncer.cpp
-    desktopnotifications.cpp
     irclistmodel.cpp
     mappedselectionmodel.cpp
     networkmodel.cpp
@@ -30,7 +29,6 @@ set(MOC_HDRS
     clientcoreinfo.h
     clientirclisthelper.h
     clientsyncer.h
-    desktopnotifications.h
     irclistmodel.h
     networkmodel.h
     mappedselectionmodel.h
