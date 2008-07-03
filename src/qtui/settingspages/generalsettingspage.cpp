@@ -149,8 +149,8 @@ void GeneralSettingsPage::save() {
 
   uiSettings.setValue("AnimateTrayIcon", ui.animateTrayIcon->isChecked());
 //<<< HEAD:src/qtui/settingspages/generalsettingspage.cpp
-  uiSettings.setValue("DisplayPopupMessages", ui.displayPopupMessages->isChecked());
-  uiSettings.setValue("CompletionSuffix", ui.completionSuffix->text());
+//  uiSettings.setValue("DisplayPopupMessages", ui.displayPopupMessages->isChecked());
+//  uiSettings.setValue("CompletionSuffix", ui.completionSuffix->text());
   
 //=======
   uiSettings.setValue("NotificationBubble", ui.bubbleBox->isChecked());

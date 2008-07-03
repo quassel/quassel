@@ -3,6 +3,7 @@
 # We still have some minor deps to QtUi: QItemSelectionModel
 # set(QT_DONT_USE_QTGUI 1)
 set(QT_USE_QTNETWORK 1)
+set(QT_USE_QTDBUS 1)
 include(${QT_USE_FILE})
 
 set(SOURCES
@@ -14,6 +15,7 @@ set(SOURCES
     clientirclisthelper.cpp
     clientsettings.cpp
     clientsyncer.cpp
+    desktopnotifications.cpp
     irclistmodel.cpp
     mappedselectionmodel.cpp
     networkmodel.cpp
@@ -28,6 +30,7 @@ set(MOC_HDRS
     clientcoreinfo.h
     clientirclisthelper.h
     clientsyncer.h
+    desktopnotifications.h
     irclistmodel.h
     networkmodel.h
     mappedselectionmodel.h

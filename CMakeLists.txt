@@ -174,7 +174,7 @@ if(WANT_CORE)
 endif(WANT_CORE)
 
 if(WANT_QTCLIENT)
-  setup_qt4_variables(GUI NETWORK)
+  setup_qt4_variables(DBUS GUI NETWORK)
   add_executable(quasselclient WIN32 ${CMAKE_SOURCE_DIR}/src/common/main.cpp
                                      ${RC_ICONS} ${RC_QUASSEL_ICONS} ${RC_I18N} ${WIN32_RC})
   set_target_properties(quasselclient PROPERTIES
@@ -184,7 +184,7 @@ if(WANT_QTCLIENT)
 endif(WANT_QTCLIENT)
 
 if(WANT_MONO)
-  setup_qt4_variables(GUI NETWORK SCRIPT SQL)
+  setup_qt4_variables(DBUS GUI NETWORK SCRIPT SQL)
   add_executable(quassel WIN32 ${CMAKE_SOURCE_DIR}/src/common/main.cpp
                                ${RC_ICONS} ${RC_QUASSEL_ICONS} ${RC_SQL} ${RC_I18N} ${WIN32_RC})
   set_target_properties(quassel PROPERTIES 
