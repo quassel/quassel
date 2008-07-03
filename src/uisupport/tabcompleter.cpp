@@ -70,7 +70,7 @@ void TabCompleter::buildCompletionList() {
   */
 
   QString tabAbbrev = inputLine->text().left(inputLine->cursorPosition()).section(' ',-1,-1);
-  QRegExp regex(QString("^[^a-zA-Z]*").append(tabAbbrev), Qt::CaseInsensitive);
+  QRegExp regex(QString("^[^a-zA-Z]*").append(QRegExp::escape(tabAbbrev)), Qt::CaseInsensitive);
 
   foreach(IrcUser *ircUser, channel->ircUsers()) {
     if(regex.indexIn(ircUser->nick()) > -1) {
