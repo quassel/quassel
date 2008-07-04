@@ -105,7 +105,10 @@ endforeach(FRM ${SP_FORMS})
 
 qt4_wrap_cpp(MOC ${MOC_HDRS} ${SPHDR})
 qt4_wrap_ui(UI ${FORMPATH} ${SPFRM})
-qt4_add_dbus_interface(DBUS ../../interfaces/org.freedesktop.Notifications.xml desktopnotifications)
+
+IF(HAVE_DBUS)
+  qt4_add_dbus_interface(DBUS ../../interfaces/org.freedesktop.Notifications.xml desktopnotifications)
+ENDIF(HAVE_DBUS)
 
 include_directories(${CMAKE_SOURCE_DIR}/src/common
                     ${CMAKE_SOURCE_DIR}/src/client

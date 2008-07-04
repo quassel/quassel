@@ -65,9 +65,6 @@
 #include "global.h"
 #include "qtuistyle.h"
 
-#include "desktopnotifications.h"
-
-
 MainWin::MainWin(QtUi *_gui, QWidget *parent)
   : QMainWindow(parent),
     gui(_gui),
@@ -82,12 +79,7 @@ MainWin::MainWin(QtUi *_gui, QWidget *parent)
     timer(new QTimer(this)),
     channelListDlg(new ChannelListDlg(this)),
     settingsDlg(new SettingsDlg(this)),
-    debugConsole(new DebugConsole(this)),
-	desktopNotifications(new org::freedesktop::Notifications(
-		"org.freedesktop.Notifications",
-		"/org/freedesktop/Notifications",
-		QDBusConnection::sessionBus(), this)),
-	notificationId(0)
+    debugConsole(new DebugConsole(this))
 {
   UiSettings uiSettings;
   loadTranslation(uiSettings.value("Locale", QLocale::system()).value<QLocale>());
@@ -114,8 +106,15 @@ MainWin::MainWin(QtUi *_gui, QWidget *parent)
     QApplication::setStyle(style);
   }
 
+#ifdef HAVE_DBUS
+  desktopNotifications = new org::freedesktop::Notifications(
+                            "org.freedesktop.Notifications",
+                            "/org/freedesktop/Notifications",
+                            QDBusConnection::sessionBus(), this);
+  notificationId = 0;
   connect(desktopNotifications, SIGNAL(NotificationClosed(uint, uint)), this, SLOT(desktopNotificationClosed(uint, uint)));
   connect(desktopNotifications, SIGNAL(ActionInvoked(uint, const QString&)), this, SLOT(desktopNotificationInvoked(uint, const QString&)));
+#endif
 }
 
 void MainWin::init() {
@@ -609,13 +608,15 @@ void MainWin::receiveMessage(const Message &msg) {
     UiSettings uiSettings;
 
 #ifndef SPUTDEV
-	bool displayBubble = uiSettings.value("NotificationBubble", QVariant(true)).toBool();
-	bool displayDesktop = uiSettings.value("NotificationDesktop", QVariant(true)).toBool();
+    bool displayBubble = uiSettings.value("NotificationBubble", QVariant(true)).toBool();
+    bool displayDesktop = uiSettings.value("NotificationDesktop", QVariant(true)).toBool();
     if(displayBubble || displayDesktop) {
       // FIXME don't invoke style engine for this!
       QString text = QtUi::style()->styleString(Message::mircToInternal(msg.contents())).plainText;
-	  if (displayBubble) displayTrayIconMessage(title, text);
-	  if (displayDesktop) sendDesktopNotification(title, text);
+      if(displayBubble) displayTrayIconMessage(title, text);
+#  ifdef HAVE_DBUS
+      if(displayDesktop) sendDesktopNotification(title, text);
+#  endif
     }
 #endif
     if(uiSettings.value("AnimateTrayIcon", QVariant(true)).toBool()) {
@@ -631,58 +632,59 @@ bool MainWin::event(QEvent *event) {
   return QMainWindow::event(event);
 }
 
+#ifdef HAVE_DBUS
 
 /*
 Using the notification-daemon from Freedesktop's Galago project
 http://www.galago-project.org/specs/notification/0.9/x408.html#command-notify
 */
-void MainWin::sendDesktopNotification(const QString &title, const QString &message)
-{
-	QStringList actions;
-	QMap<QString, QVariant> hints;
-    UiSettings uiSettings;
+void MainWin::sendDesktopNotification(const QString &title, const QString &message) {
+  QStringList actions;
+  QMap<QString, QVariant> hints;
+  UiSettings uiSettings;
 
-	hints["x"] = uiSettings.value("NotificationDesktopHintX", QVariant(0)).toInt(); // Standard hint: x location for the popup to show up
-	hints["y"] = uiSettings.value("NotificationDesktopHintY", QVariant(0)).toInt(); // Standard hint: y location for the popup to show up
+  hints["x"] = uiSettings.value("NotificationDesktopHintX", QVariant(0)).toInt(); // Standard hint: x location for the popup to show up
+  hints["y"] = uiSettings.value("NotificationDesktopHintY", QVariant(0)).toInt(); // Standard hint: y location for the popup to show up
 
-	actions << "click" << "Click Me!";
+  actions << "click" << "Click Me!";
 
-	QDBusReply<uint> reply = desktopNotifications->Notify(
-		"Quassel", // Application name
-		notificationId, // ID of previous notification to replace
-		"", // Icon to display
-		title, // Summary / Header of the message to display
-		QString("%1: %2:\n%3").arg(QTime::currentTime().toString()).arg(title).arg(message), // Body of the message to display
-		actions, // Actions from which the user may choose
-		hints, // Hints to the server displaying the message
-		uiSettings.value("NotificationDesktopTimeout", QVariant(5000)).toInt() // Timeout in milliseconds
-	);
+  QDBusReply<uint> reply = desktopNotifications->Notify(
+                "Quassel", // Application name
+                notificationId, // ID of previous notification to replace
+                "", // Icon to display
+                title, // Summary / Header of the message to display
+                QString("%1: %2:\n%3").arg(QTime::currentTime().toString()).arg(title).arg(message), // Body of the message to display
+                actions, // Actions from which the user may choose
+                hints, // Hints to the server displaying the message
+                uiSettings.value("NotificationDesktopTimeout", QVariant(5000)).toInt() // Timeout in milliseconds
+        );
 
-	if (!reply.isValid())
-	{
-		/* ERROR */
-		qDebug() << "Error on sending notification...";
-		return;
-	}
+        if (!reply.isValid())
+        {
+                /* ERROR */
+                qDebug() << "Error on sending notification...";
+                return;
+        }
 
-	notificationId = reply.value();
+        notificationId = reply.value();
 
-	qDebug() << "ID: " << notificationId << " Time: " << QTime::currentTime().toString();
+        qDebug() << "ID: " << notificationId << " Time: " << QTime::currentTime().toString();
 }
 
 
 void MainWin::desktopNotificationClosed(uint id, uint reason)
 {
-	qDebug() << "OID: " << notificationId << " ID: " << id << " Reason: " << reason << " Time: " << QTime::currentTime().toString();
-	notificationId = 0;
+        qDebug() << "OID: " << notificationId << " ID: " << id << " Reason: " << reason << " Time: " << QTime::currentTime().toString();
+        notificationId = 0;
 }
 
 
 void MainWin::desktopNotificationInvoked(uint id, const QString & action)
 {
-	qDebug() << "OID: " << notificationId << " ID: " << id << " Action: " << action << " Time: " << QTime::currentTime().toString();
+        qDebug() << "OID: " << notificationId << " ID: " << id << " Action: " << action << " Time: " << QTime::currentTime().toString();
 }
 
+#endif /* HAVE_DBUS */
 
 void MainWin::displayTrayIconMessage(const QString &title, const QString &message) {
   systray->showMessage(title, message);
