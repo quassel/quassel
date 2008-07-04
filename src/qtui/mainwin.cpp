@@ -659,29 +659,26 @@ void MainWin::sendDesktopNotification(const QString &title, const QString &messa
                 uiSettings.value("NotificationDesktopTimeout", QVariant(5000)).toInt() // Timeout in milliseconds
         );
 
-        if (!reply.isValid())
-        {
-                /* ERROR */
-                qDebug() << "Error on sending notification...";
-                return;
-        }
+  if(!reply.isValid()) {
+    /* ERROR */
+    qDebug() << "Error on sending notification...";
+    return;
+  }
 
-        notificationId = reply.value();
+  notificationId = reply.value();
 
-        qDebug() << "ID: " << notificationId << " Time: " << QTime::currentTime().toString();
+  qDebug() << "ID: " << notificationId << " Time: " << QTime::currentTime().toString();
 }
 
 
-void MainWin::desktopNotificationClosed(uint id, uint reason)
-{
-        qDebug() << "OID: " << notificationId << " ID: " << id << " Reason: " << reason << " Time: " << QTime::currentTime().toString();
-        notificationId = 0;
+void MainWin::desktopNotificationClosed(uint id, uint reason) {
+  qDebug() << "OID: " << notificationId << " ID: " << id << " Reason: " << reason << " Time: " << QTime::currentTime().toString();
+  notificationId = 0;
 }
 
 
-void MainWin::desktopNotificationInvoked(uint id, const QString & action)
-{
-        qDebug() << "OID: " << notificationId << " ID: " << id << " Action: " << action << " Time: " << QTime::currentTime().toString();
+void MainWin::desktopNotificationInvoked(uint id, const QString & action) {
+  qDebug() << "OID: " << notificationId << " ID: " << id << " Action: " << action << " Time: " << QTime::currentTime().toString();
 }
 
 #endif /* HAVE_DBUS */
