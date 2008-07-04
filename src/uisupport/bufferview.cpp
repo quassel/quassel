@@ -79,6 +79,8 @@ BufferView::BufferView(QWidget *parent)
   _hideQuitAction.setEnabled(false);
   _hideModeAction.setEnabled(false);
 
+  showChannelList.setIcon(QIcon(":/16x16/actions/oxygen/16x16/actions/format-list-unordered.png"));
+
   connect(this, SIGNAL(collapsed(const QModelIndex &)), this, SLOT(on_collapse(const QModelIndex &)));
   connect(this, SIGNAL(expanded(const QModelIndex &)), this, SLOT(on_expand(const QModelIndex &)));
 
@@ -401,6 +403,8 @@ QMenu *BufferView::createHideEventsSubMenu(QMenu &menu) {
 
 void BufferView::contextMenuEvent(QContextMenuEvent *event) {
   QModelIndex index = indexAt(event->pos());
+  if(!index.isValid())
+    index = rootIndex();
   if(!index.isValid())
     return;
 

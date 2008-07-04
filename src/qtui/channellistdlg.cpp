@@ -66,6 +66,7 @@ void ChannelListDlg::setNetwork(NetworkId netId) {
   
   _netId = netId;
   _ircListModel.setChannelList();
+  showFilterLine(false);
 }
 
 void ChannelListDlg::requestSearch() {
