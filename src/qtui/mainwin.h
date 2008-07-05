@@ -80,6 +80,7 @@ class MainWin : public QMainWindow {
     void showSettingsDlg();
     void showNetworkDlg();
     void showManageViewsDlg();
+    void lockVerticalDocks(bool lock);
     void showAboutDlg();
     void showDebugConsole();
 

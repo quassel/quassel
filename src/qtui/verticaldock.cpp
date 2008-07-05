@@ -29,9 +29,6 @@ VerticalDockTitle::VerticalDockTitle(QDockWidget *parent)
 {
 }
 
-VerticalDockTitle::~VerticalDockTitle() {
-}
-
 QSize VerticalDockTitle::sizeHint() const {
   return QSize(10, 15);
 }
@@ -42,7 +39,7 @@ QSize VerticalDockTitle::minimumSizeHint() const {
 
 void VerticalDockTitle::paintEvent(QPaintEvent *event) {
   Q_UNUSED(event);
-  
+
   QPainter painter(this);
   
   if(rect().isValid() && rect().height() > minimumSizeHint().height()) {
@@ -52,8 +49,9 @@ void VerticalDockTitle::paintEvent(QPaintEvent *event) {
       qDrawShadeLine(&painter, topLeft, bottomRight, palette());
     }
   }
-  
+
 }
+
 
 
 // ==============================
@@ -71,9 +69,6 @@ VerticalDock::VerticalDock(QWidget *parent, Qt::WindowFlags flags)
   setDefaultTitleWidget();
 }
 
-VerticalDock::~VerticalDock() {
-}
-
 void VerticalDock::setDefaultTitleWidget() {
   QWidget *oldDockTitle = titleBarWidget();
   QWidget *newDockTitle = new VerticalDockTitle(this);
@@ -82,6 +77,20 @@ void VerticalDock::setDefaultTitleWidget() {
   setFeatures(features() | QDockWidget::DockWidgetVerticalTitleBar);
   setTitleBarWidget(newDockTitle);
   
+  if(oldDockTitle)
+    oldDockTitle->deleteLater();
+}
+
+void VerticalDock::showTitle(bool show) {
+  QWidget *oldDockTitle = titleBarWidget();
+  QWidget *newDockTitle = 0;
+  
+  if(show)
+    newDockTitle = new VerticalDockTitle(this);
+  else
+    newDockTitle = new EmptyDockTitle(this);
+
+  setTitleBarWidget(newDockTitle);
   if(oldDockTitle)
     oldDockTitle->deleteLater();
 }

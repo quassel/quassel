@@ -130,6 +130,12 @@ void MainWin::init() {
   setupTopicWidget();
   setupChatMonitor();
   setupInputWidget();
+
+  QAction *toggleLockDocksAction = ui.menuViews->addAction(tr("Lock dock positions"));
+  toggleLockDocksAction->setCheckable(true);
+  connect(toggleLockDocksAction, SIGNAL(toggled(bool)), this, SLOT(lockVerticalDocks(bool)));
+  toggleLockDocksAction->setChecked(s.value("LockDocks", false).toBool());
+  
   setupStatusBar();
   setupSystray();
 
@@ -257,6 +263,14 @@ void MainWin::showNetworkDlg() {
 void MainWin::showManageViewsDlg() {
   SettingsPageDlg dlg(new BufferViewSettingsPage(this), this);
   dlg.exec();
+}
+
+void MainWin::lockVerticalDocks(bool lock) {
+  QList<VerticalDock *> docks = findChildren<VerticalDock *>();
+  foreach(VerticalDock *dock, docks) {
+    dock->showTitle(!lock);
+  }
+  QtUiSettings().setValue("LockDocks", lock);
 }
 
 void MainWin::setupNickWidget() {

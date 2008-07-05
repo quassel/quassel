@@ -29,14 +29,27 @@ class VerticalDockTitle : public QWidget {
 
 public:
   VerticalDockTitle(QDockWidget *parent);
-  virtual ~VerticalDockTitle();
 
   virtual QSize sizeHint() const;
   virtual QSize minimumSizeHint() const;
+  void show(bool show_);
 
 protected:
   virtual void paintEvent(QPaintEvent *event);
+
+private:
+  bool _show;
 };
+
+class EmptyDockTitle : public QWidget {
+  Q_OBJECT
+
+public:
+  inline EmptyDockTitle(QDockWidget *parent) : QWidget(parent) {}
+
+  inline virtual QSize sizeHint() const { return QSize(0,0); }
+};
+
 
 class VerticalDock : public QDockWidget {
   Q_OBJECT
@@ -44,8 +57,8 @@ class VerticalDock : public QDockWidget {
 public:
   VerticalDock(const QString &title, QWidget *parent = 0, Qt::WindowFlags flags = 0);
   VerticalDock(QWidget *parent = 0, Qt::WindowFlags flags = 0);
-  virtual ~VerticalDock();
 
+  void showTitle(bool show);
   void setDefaultTitleWidget();
 };
 
