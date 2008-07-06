@@ -22,7 +22,6 @@
 #include <QDebug>
 #include <QTextCodec>
 
-#include "ircuser.h"
 #include "util.h"
 
 QTextCodec *Network::_defaultCodecForServer = 0;

@@ -28,9 +28,9 @@
 #include <QDateTime>
 
 #include "syncableobject.h"
-#include "network.h"
 
 class SignalProxy;
+class Network;
 class IrcChannel;
 
 class IrcUser : public SyncableObject {
@@ -57,13 +57,13 @@ public:
   IrcUser(const QString &hostmask, Network *network);
   virtual ~IrcUser();
 
-  inline QString user() const { return network()->decodeServerString(_user); }
-  inline QString host() const { return network()->decodeServerString(_host); }
-  inline QString nick() const { return network()->decodeServerString(_nick); }
-  inline QString realName() const { return network()->decodeServerString(_realName); }
+  inline QString user() const { return _user; }
+  inline QString host() const { return _host; }
+  inline QString nick() const { return _nick; }
+  inline QString realName() const { return _realName; }
   QString hostmask() const;
   inline bool isAway() const { return _away; }
-  inline QString awayMessage() const { return network()->decodeServerString(_awayMessage); }
+  inline QString awayMessage() const { return _awayMessage; }
   QDateTime idleTime();
   inline QDateTime loginTime() const { return _loginTime; }
   inline QString server() const { return _server; }
@@ -153,11 +153,11 @@ private:
 
   bool _initialized;
 
-  QByteArray _nick;
-  QByteArray _user;
-  QByteArray _host;
-  QByteArray _realName;
-  QByteArray _awayMessage;
+  QString _nick;
+  QString _user;
+  QString _host;
+  QString _realName;
+  QString _awayMessage;
   bool _away;
   QString _server;
   QDateTime _idleTime;

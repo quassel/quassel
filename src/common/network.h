@@ -33,9 +33,8 @@
 #include "syncableobject.h"
 
 #include "signalproxy.h"
+#include "ircuser.h"
 #include "ircchannel.h"
-
-class IrcUser;
 
 // defined below!
 struct NetworkInfo;
@@ -98,7 +97,7 @@ public:
   inline void setProxy(SignalProxy *proxy) { _proxy = proxy; }
 
   inline bool isMyNick(const QString &nick) const { return (myNick().toLower() == nick.toLower()); }
-  inline bool isMe(IrcUser *ircuser) const { return (ircuser == me()); }
+  inline bool isMe(IrcUser *ircuser) const { return (ircuser->nick().toLower() == myNick().toLower()); }
 
   bool isChannelName(const QString &channelname) const;
 
