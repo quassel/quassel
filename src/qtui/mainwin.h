@@ -79,8 +79,8 @@ class MainWin : public QMainWindow {
     void showChannelList(NetworkId netId = NetworkId());
     void showSettingsDlg();
     void showNetworkDlg();
-    void showManageViewsDlg();
-    void lockVerticalDocks(bool lock);
+    void on_actionManageViews_triggered();
+    void on_actionLockDockPositions_toggled(bool lock);
     void showAboutDlg();
     void showDebugConsole();
 

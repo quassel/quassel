@@ -130,12 +130,6 @@ void MainWin::init() {
   setupTopicWidget();
   setupChatMonitor();
   setupInputWidget();
-
-  QAction *toggleLockDocksAction = ui.menuViews->addAction(tr("Lock dock positions"));
-  toggleLockDocksAction->setCheckable(true);
-  connect(toggleLockDocksAction, SIGNAL(toggled(bool)), this, SLOT(lockVerticalDocks(bool)));
-  toggleLockDocksAction->setChecked(s.value("LockDocks", false).toBool());
-  
   setupStatusBar();
   setupSystray();
 
@@ -143,6 +137,10 @@ void MainWin::init() {
 
   // restore mainwin state
   restoreState(s.value("MainWinState").toByteArray());
+
+  // restore locked state of docks  
+  ui.actionLockDockPositions->setChecked(s.value("LockDocks", false).toBool());
+  
 
   setDisconnectedState();  // Disable menus and stuff
   showCoreConnectionDlg(true); // autoconnect if appropriate
@@ -175,12 +173,9 @@ void MainWin::setupMenus() {
   actionEditNetworks = new QAction(QIcon(":/22x22/actions/configure"), tr("Edit &Networks..."), this);
   ui.menuNetworks->addAction(actionEditNetworks);
   connect(actionEditNetworks, SIGNAL(triggered()), this, SLOT(showNetworkDlg()));
-  connect(ui.actionManageViews, SIGNAL(triggered()), this, SLOT(showManageViewsDlg()));
 }
 
 void MainWin::setupViews() {
-  QAction *separator = ui.menuViews->addSeparator();
-  separator->setData("__EOBV__");
   addBufferView();
 }
 
@@ -208,16 +203,7 @@ void MainWin::addBufferView(BufferViewConfig *config) {
   dock->show();
 
   addDockWidget(Qt::LeftDockWidgetArea, dock);
-
-  QAction *endOfBufferViews = 0;
-  foreach(QAction *action, ui.menuViews->actions()) {
-    if(action->data().toString() == "__EOBV__") {
-      endOfBufferViews = action;
-      break;
-    }
-  }
-  Q_CHECK_PTR(endOfBufferViews);
-  ui.menuViews->insertAction(endOfBufferViews, dock->toggleViewAction());
+  ui.menuBufferViews->addAction(dock->toggleViewAction());
 
   _netViews.append(dock);
 }
@@ -225,13 +211,10 @@ void MainWin::addBufferView(BufferViewConfig *config) {
 void MainWin::removeBufferView(int bufferViewConfigId) {
   QVariant actionData;
   BufferViewDock *dock;
-  foreach(QAction *action, ui.menuViews->actions()) {
+  foreach(QAction *action, ui.menuBufferViews->actions()) {
     actionData = action->data();
     if(!actionData.isValid())
       continue;
-    
-    if(actionData.toString() == "__EOBV__")
-      break;
 
     dock = qobject_cast<BufferViewDock *>(action->parent());
     if(dock && actionData.toInt() == bufferViewConfigId) {
@@ -260,12 +243,12 @@ void MainWin::showNetworkDlg() {
   dlg.exec();
 }
 
-void MainWin::showManageViewsDlg() {
+void MainWin::on_actionManageViews_triggered() {
   SettingsPageDlg dlg(new BufferViewSettingsPage(this), this);
   dlg.exec();
 }
 
-void MainWin::lockVerticalDocks(bool lock) {
+void MainWin::on_actionLockDockPositions_toggled(bool lock) {
   QList<VerticalDock *> docks = findChildren<VerticalDock *>();
   foreach(VerticalDock *dock, docks) {
     dock->showTitle(!lock);
@@ -469,13 +452,10 @@ void MainWin::disconnectedFromCore() {
   saveLayout();
   QVariant actionData;
   BufferViewDock *dock;
-  foreach(QAction *action, ui.menuViews->actions()) {
+  foreach(QAction *action, ui.menuBufferViews->actions()) {
     actionData = action->data();
     if(!actionData.isValid())
       continue;
-    
-    if(actionData.toString() == "__EOBV__")
-      break;
 
     dock = qobject_cast<BufferViewDock *>(action->parent());
     if(dock && actionData.toInt() != -1) {

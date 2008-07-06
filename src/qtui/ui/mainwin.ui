@@ -74,8 +74,16 @@
     <property name="title" >
      <string>&amp;Views</string>
     </property>
-    <addaction name="actionManageViews" />
+    <widget class="QMenu" name="menuBufferViews" >
+     <property name="title" >
+      <string>Buffer Views</string>
+     </property>
+     <addaction name="actionManageViews" />
+     <addaction name="separator" />
+    </widget>
+    <addaction name="menuBufferViews" />
     <addaction name="separator" />
+    <addaction name="actionLockDockPositions" />
    </widget>
    <widget class="QMenu" name="menuHelp" >
     <property name="title" >
@@ -185,7 +193,7 @@
     <string>F7</string>
    </property>
   </action>
-  <action name="actionManageViews" >
+  <action name="actionManageViews2" >
    <property name="enabled" >
     <bool>true</bool>
    </property>
@@ -274,6 +282,23 @@
    </property>
    <property name="text" >
     <string>&amp;Edit Networks...</string>
+   </property>
+  </action>
+  <action name="actionManageViews" >
+   <property name="icon" >
+    <iconset resource="../../icons/icons.qrc" >
+     <normaloff>:/16x16/actions/oxygen/16x16/actions/view-tree.png</normaloff>:/16x16/actions/oxygen/16x16/actions/view-tree.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Manage Buffer Views</string>
+   </property>
+  </action>
+  <action name="actionLockDockPositions" >
+   <property name="checkable" >
+    <bool>true</bool>
+   </property>
+   <property name="text" >
+    <string>Lock Dock Positions</string>
    </property>
   </action>
  </widget>
