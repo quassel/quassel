@@ -89,8 +89,8 @@ void Core::init() {
 }
 
 Core::~Core() {
-  foreach(QTcpSocket *socket, blocksizes.keys()) { qDebug() << "disconnecting" << socket << blocksizes.keys();
-    socket->disconnectFromHost();  // disconnect local (i.e. non-authed) clients
+  foreach(QTcpSocket *socket, blocksizes.keys()) {
+    socket->disconnectFromHost();  // disconnect non authed clients
   }
   qDeleteAll(sessions);
   qDeleteAll(_storageBackends);
@@ -515,13 +515,34 @@ void Core::processClientMessage(QTcpSocket *socket, const QVariantMap &msg) {
 
 // Potentially called during the initialization phase (before handing the connection off to the session)
 void Core::clientDisconnected() {
-  QTcpSocket *socket = dynamic_cast<QTcpSocket*>(sender());  // Note: This might be a QObject* already (if called by ~Core())!
-  Q_ASSERT(socket);
-  blocksizes.remove(socket);
-  clientInfo.remove(socket);
-  qDebug() << qPrintable(tr("Non-authed client disconnected."));
-  socket->deleteLater();
-  socket = 0;
+  QTcpSocket *socket = qobject_cast<QTcpSocket *>(sender());
+  if(socket) {
+    // here it's safe to call methods on socket!
+    qDebug() << qPrintable(tr("Non-authed client disconnected.")) << qPrintable(socket->peerAddress().toString());
+    socket->deleteLater();
+  } else {
+    // we have to crawl through the hashes and see if we find a victim to remove
+
+    // DO NOT CALL ANY METHODS ON socket!!
+    socket = static_cast<QTcpSocket *>(sender());
+    
+    QHash<QTcpSocket *, quint32>::iterator blockSizeIter = blocksizes.begin();
+    while(blockSizeIter != blocksizes.end()) {
+      if(blockSizeIter.key() == socket) {
+	blocksizes.erase(blockSizeIter);
+      }
+      blockSizeIter++;
+    }
+
+    QHash<QTcpSocket *, QVariantMap>::iterator clientInfoIter = clientInfo.begin();
+    while(clientInfoIter != clientInfo.end()) {
+      if(clientInfoIter.key() == socket) {
+	clientInfo.erase(clientInfoIter);
+      }
+      clientInfoIter++;
+    }
+  }
+
 
   // make server listen again if still not configured
   if (!configured) {
