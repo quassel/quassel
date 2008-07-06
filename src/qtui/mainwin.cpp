@@ -662,24 +662,25 @@ void MainWin::sendDesktopNotification(const QString &title, const QString &messa
 
   if(!reply.isValid()) {
     /* ERROR */
-    qDebug() << "Error on sending notification..." << reply;
+    // could also happen if no notification service runs, so... whatever :)
+    //qDebug() << "Error on sending notification..." << reply.error();
     return;
   }
 
   notificationId = reply.value();
 
-  qDebug() << "ID: " << notificationId << " Time: " << QTime::currentTime().toString();
+  // qDebug() << "ID: " << notificationId << " Time: " << QTime::currentTime().toString();
 }
 
 
 void MainWin::desktopNotificationClosed(uint id, uint reason) {
-  qDebug() << "OID: " << notificationId << " ID: " << id << " Reason: " << reason << " Time: " << QTime::currentTime().toString();
+  // qDebug() << "OID: " << notificationId << " ID: " << id << " Reason: " << reason << " Time: " << QTime::currentTime().toString();
   notificationId = 0;
 }
 
 
 void MainWin::desktopNotificationInvoked(uint id, const QString & action) {
-  qDebug() << "OID: " << notificationId << " ID: " << id << " Action: " << action << " Time: " << QTime::currentTime().toString();
+  // qDebug() << "OID: " << notificationId << " ID: " << id << " Action: " << action << " Time: " << QTime::currentTime().toString();
 }
 
 #else /* HAVE_DBUS */
