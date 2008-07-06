@@ -39,6 +39,7 @@ macro(quassel_generate_i18n_resource outvar)
       if(flg)
         quassel_generate_qm(QM ${basename})
         set(outfiles ${outfiles} ${QM})
+        set(gen_linguas "${gen_linguas} ${lang}")
       endif(flg)
     endforeach(TS_FILE ${avail_tsfiles})
 
@@ -59,8 +60,9 @@ macro(quassel_generate_i18n_resource outvar)
     qt4_add_resources(RC_OUT ${resfile})
     set(${outvar} ${RC_OUT})
 
+    message(STATUS "Including languages:${gen_linguas}")
   else(QT_LRELEASE_EXECUTABLE)
     message(STATUS "WARNING: lrelease not found, you won't have translations!")
   endif(QT_LRELEASE_EXECUTABLE)
-endmacro(quassel_generate_i18n_resource outvar linguas)
+endmacro(quassel_generate_i18n_resource outvar)
 

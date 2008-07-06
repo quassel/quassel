@@ -112,11 +112,11 @@ endif(WANT_QTCLIENT OR WANT_MONO)
 # Make sure version.gen exists before building mod_common
 add_dependencies(mod_common genversion_run)
 
+# Generate binary translation files
 include(QuasselGenerateTranslations)
 quassel_generate_i18n_resource(RC_I18N ${LINGUAS})
 
 # Add resources
-#qt4_add_resources(RC_I18N i18n/i18n.qrc)
 qt4_add_resources(RC_ICONS src/icons/icons.qrc)
 qt4_add_resources(RC_QUASSEL_ICONS src/icons/quassel-icons.qrc)
 qt4_add_resources(RC_SQL src/core/sql.qrc)
