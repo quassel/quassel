@@ -78,7 +78,7 @@ class MainWin : public QMainWindow {
     void receiveMessage(const Message &msg);
     void showChannelList(NetworkId netId = NetworkId());
     void showSettingsDlg();
-    void showNetworkDlg();
+    void on_actionEditNetworks_triggered();
     void on_actionManageViews_triggered();
     void on_actionLockDockPositions_toggled(bool lock);
     void showAboutDlg();
@@ -145,9 +145,6 @@ class MainWin : public QMainWindow {
 
     QList<QDockWidget *> _netViews;
     NickListWidget *nickListWidget;
-
-    QAction *actionEditNetworks;
-    QList<QAction *> networkActions;
 
     friend class QtUi;
 };

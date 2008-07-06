@@ -109,7 +109,6 @@ void MainWin::init() {
 
   connect(Client::instance(), SIGNAL(networkCreated(NetworkId)), this, SLOT(clientNetworkCreated(NetworkId)));
   connect(Client::instance(), SIGNAL(networkRemoved(NetworkId)), this, SLOT(clientNetworkRemoved(NetworkId)));
-  //ui.bufferWidget->init();
 
   show();
 
@@ -164,15 +163,10 @@ void MainWin::setupMenus() {
   connect(ui.actionConnectCore, SIGNAL(triggered()), this, SLOT(showCoreConnectionDlg()));
   connect(ui.actionDisconnectCore, SIGNAL(triggered()), Client::instance(), SLOT(disconnectFromCore()));
   connect(ui.actionQuit, SIGNAL(triggered()), QCoreApplication::instance(), SLOT(quit()));
-  //connect(ui.actionNetworkList, SIGNAL(triggered()), this, SLOT(showServerList()));
   connect(ui.actionSettingsDlg, SIGNAL(triggered()), this, SLOT(showSettingsDlg()));
   // connect(ui.actionDebug_Console, SIGNAL(triggered()), this, SLOT(showDebugConsole()));
   connect(ui.actionAboutQuassel, SIGNAL(triggered()), this, SLOT(showAboutDlg()));
   connect(ui.actionAboutQt, SIGNAL(triggered()), QApplication::instance(), SLOT(aboutQt()));
-
-  actionEditNetworks = new QAction(QIcon(":/22x22/actions/configure"), tr("Edit &Networks..."), this);
-  ui.menuNetworks->addAction(actionEditNetworks);
-  connect(actionEditNetworks, SIGNAL(triggered()), this, SLOT(showNetworkDlg()));
 }
 
 void MainWin::setupViews() {
@@ -238,7 +232,7 @@ void MainWin::setupSettingsDlg() {
   settingsDlg->registerSettingsPage(new BufferViewSettingsPage(settingsDlg));
 }
 
-void MainWin::showNetworkDlg() {
+void MainWin::on_actionEditNetworks_triggered() {
   SettingsPageDlg dlg(new NetworksSettingsPage(this), this);
   dlg.exec();
 }
@@ -418,7 +412,6 @@ void MainWin::setConnectedState() {
   //ui.menuCore->setEnabled(true);
   ui.actionConnectCore->setEnabled(false);
   ui.actionDisconnectCore->setEnabled(true);
-  //ui.actionNetworkList->setEnabled(true);
   ui.bufferWidget->show();
   statusBar()->showMessage(tr("Connected to core."));
   setWindowIcon(onlineTrayIcon);
@@ -442,8 +435,6 @@ void MainWin::saveLayout() {
 
 void MainWin::securedConnection() {
   // todo: make status bar entry
-  qDebug() << "secured the connection";
-
   sslLabel->setPixmap(QPixmap::fromImage(QImage(":/16x16/status/ssl")));
 }
 
@@ -472,10 +463,8 @@ void MainWin::setDisconnectedState() {
   ui.menuViews->setEnabled(false);
   //ui.menuCore->setEnabled(false);
   ui.actionDisconnectCore->setEnabled(false);
-  //ui.actionNetworkList->setEnabled(false);
   ui.bufferWidget->hide();
   ui.actionConnectCore->setEnabled(true);
-  // nickListWidget->reset();
   statusBar()->showMessage(tr("Not connected to core."));
   setWindowIcon(offlineTrayIcon);
   qApp->setWindowIcon(offlineTrayIcon);
@@ -621,61 +610,58 @@ void MainWin::makeTrayIconBlink() {
   }
 }
 
-
-
 void MainWin::clientNetworkCreated(NetworkId id) {
   const Network *net = Client::network(id);
   QAction *act = new QAction(net->networkName(), this);
+  act->setObjectName(QString("NetworkAction-%1").arg(id.toInt()));
   act->setData(QVariant::fromValue<NetworkId>(id));
   connect(net, SIGNAL(updatedRemotely()), this, SLOT(clientNetworkUpdated()));
   connect(act, SIGNAL(triggered()), this, SLOT(connectOrDisconnectFromNet()));
-  bool inserted = false;
-  for(int i = 0; i < networkActions.count(); i++) {
-    if(net->networkName().localeAwareCompare(networkActions[i]->text()) < 0) {
-      networkActions.insert(i, act);
-      inserted = true;
+
+  QAction *beforeAction = 0;
+  foreach(QAction *action, ui.menuNetworks->actions()) {
+    if(action->isSeparator()) {
+      beforeAction = action;
+      break;
+    }
+    if(net->networkName().localeAwareCompare(action->text()) < 0) {
+      beforeAction = action;
       break;
     }
   }
-  if(!inserted) networkActions.append(act);
-  ui.menuNetworks->clear();  // why the f*** isn't there a QMenu::insertAction()???
-  foreach(QAction *a, networkActions) ui.menuNetworks->addAction(a);
-  ui.menuNetworks->addSeparator();
-  ui.menuNetworks->addAction(actionEditNetworks);
+  Q_CHECK_PTR(beforeAction);
+  ui.menuNetworks->insertAction(beforeAction, act);
 }
 
 void MainWin::clientNetworkUpdated() {
   const Network *net = qobject_cast<const Network *>(sender());
-  if(!net) return;
-  foreach(QAction *a, networkActions) {
-    if(a->data().value<NetworkId>() == net->networkId()) {
-      a->setText(net->networkName());
-      if(net->connectionState() == Network::Initialized) {
-        a->setIcon(QIcon(":/16x16/actions/network-connect"));
-        //a->setEnabled(true);
-      } else if(net->connectionState() == Network::Disconnected) {
-        a->setIcon(QIcon(":/16x16/actions/network-disconnect"));
-        //a->setEnabled(true);
-      } else {
-        a->setIcon(QIcon(":/16x16/actions/gear"));
-        //a->setEnabled(false);
-      }
-      return;
-    }
+  if(!net)
+    return;
+
+  QAction *action = findChild<QAction *>(QString("NetworkAction-%1").arg(net->networkId().toInt()));
+  if(!action)
+    return;
+
+  action->setText(net->networkName());
+
+  switch(net->connectionState()) {
+  case Network::Initialized:
+    action->setIcon(QIcon(":/16x16/actions/network-connect"));
+    break;
+  case Network::Disconnected:
+    action->setIcon(QIcon(":/16x16/actions/network-disconnect"));
+    break;
+  default:
+    action->setIcon(QIcon(":/16x16/actions/gear"));
   }
 }
 
 void MainWin::clientNetworkRemoved(NetworkId id) {
-  QList<QAction *>::iterator actionIter = networkActions.begin();;
-  QAction *action;
-  while(actionIter != networkActions.end()) {
-    action = *actionIter;
-    if(action->data().value<NetworkId>() == id) {
-      action->deleteLater();
-      actionIter = networkActions.erase(actionIter);
-    } else
-      actionIter++;
-  }
+  QAction *action = findChild<QAction *>(QString("NetworkAction-%1").arg(id.toInt()));
+  if(!action)
+    return;
+  
+  action->deleteLater();
 }
 
 void MainWin::connectOrDisconnectFromNet() {

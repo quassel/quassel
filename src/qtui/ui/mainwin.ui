@@ -54,6 +54,7 @@
       <string>&amp;Networks</string>
      </property>
      <addaction name="separator" />
+     <addaction name="actionEditNetworks" />
     </widget>
     <addaction name="actionConnectCore" />
     <addaction name="actionDisconnectCore" />
@@ -276,14 +277,6 @@
     <string>Disconnect from Network...</string>
    </property>
   </action>
-  <action name="actionEditNetworks" >
-   <property name="enabled" >
-    <bool>false</bool>
-   </property>
-   <property name="text" >
-    <string>&amp;Edit Networks...</string>
-   </property>
-  </action>
   <action name="actionManageViews" >
    <property name="icon" >
     <iconset resource="../../icons/icons.qrc" >
@@ -299,6 +292,15 @@
    </property>
    <property name="text" >
     <string>Lock Dock Positions</string>
+   </property>
+  </action>
+  <action name="actionEditNetworks" >
+   <property name="icon" >
+    <iconset resource="../../icons/icons.qrc" >
+     <normaloff>:/16x16/actions/configure</normaloff>:/16x16/actions/configure</iconset>
+   </property>
+   <property name="text" >
+    <string>Edit &amp;Networks...</string>
    </property>
   </action>
  </widget>
