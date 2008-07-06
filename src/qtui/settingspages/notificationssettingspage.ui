@@ -41,6 +41,9 @@
    </item>
    <item>
     <widget class="QGroupBox" name="desktopBox" >
+     <property name="toolTip" >
+      <string>Sends Quassel's notifications to a notification daemon compliant to Freedesktop's Notification specification (org.freedesktop.Notification).</string>
+     </property>
      <property name="title" >
       <string>Desktop Notification (via DBus)</string>
      </property>

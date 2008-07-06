@@ -35,6 +35,9 @@ NotificationsSettingsPage::NotificationsSettingsPage(QWidget *parent)
   connect(ui.x_value, SIGNAL(valueChanged(int)), this, SLOT(widgetHasChanged()));
   connect(ui.y_value, SIGNAL(valueChanged(int)), this, SLOT(widgetHasChanged()));
 
+#ifndef HAVE_DBUS
+  ui.desktopBox->setEnabled(false);
+#endif
 }
 
 bool NotificationsSettingsPage::hasDefaults() const {
@@ -44,7 +47,7 @@ bool NotificationsSettingsPage::hasDefaults() const {
 void NotificationsSettingsPage::defaults() {
   ui.animateTrayIcon->setChecked(true);
   ui.showBubble->setChecked(true);
-  ui.desktopBox->setChecked(true);
+  ui.desktopBox->setChecked(false);
   ui.timeout_value->setValue(5000);
   ui.x_value->setValue(0);
   ui.y_value->setValue(0);
@@ -62,7 +65,7 @@ void NotificationsSettingsPage::load() {
   settings["NotificationBubble"] = uiSettings.value("NotificationBubble", QVariant(true));
   ui.showBubble->setChecked(settings["NotificationBubble"].toBool());
 
-  settings["NotificationDesktop"] = uiSettings.value("NotificationDesktop", QVariant(true));
+  settings["NotificationDesktop"] = uiSettings.value("NotificationDesktop", QVariant(false));
   ui.desktopBox->setChecked(settings["NotificationDesktop"].toBool());
   settings["NotificationDesktopTimeout"] = uiSettings.value("NotificationDesktopTimeout", QVariant(5000));
   ui.timeout_value->setValue(settings["NotificationDesktopTimeout"].toInt());
