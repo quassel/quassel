@@ -394,8 +394,10 @@ void Core::processClientMessage(QTcpSocket *socket, const QVariantMap &msg) {
     QVariantMap reply;
 
     // Just version information -- check it!
-    if((msg.contains("ClientBuild") && msg["ClientBuild"].toUInt() < 732)
-       || (!msg.contains("ClientBuild") && msg["ProtocolVersion"].toUInt() < Global::coreNeedsProtocol)) {
+    uint ver = 0;
+    if(!msg.contains("ProtocolVersion") && msg["ClientBuild"].toUInt() >= 732) ver = 1; // FIXME legacy
+    if(msg.contains("ProtocolVersion")) ver = msg["ProtocolVersion"].toUInt();
+    if(ver < Global::coreNeedsProtocol) {
       reply["MsgType"] = "ClientInitReject";
       reply["Error"] = tr("<b>Your Quassel Client is too old!</b><br>"
       "This core needs at least client/core protocol version %1.<br>"
