@@ -40,6 +40,11 @@ Quassel recognizes the following options:
 -DWANT_(CORE|QTCLIENT|MONO)=(ON|OFF)
     Allow to choose which Quassel binaries to build.
 
+-DLINGUAS="<languages">
+    Allow to choose which languages should be compiled into the binary.
+    <languages> is a space-separated list of language codes.
+    Example: -DLINGUAS="de en_US"
+
 -DQT=/path/to/qt
     Use a non-system Qt installation. This is for example useful if you have a static
     Qt installed in some local dir.

@@ -16,10 +16,13 @@ You can open these XML files with the Qt Linguist and add/edit translated string
 The *.ts files can and should be kept in sync with the source code by running
 lupdate regularly (existing translations won't be removed).
 
-Qt itself does not use the *.ts files, but a compact binary format (*.qm). In order
-to create these files from new or updated *.ts files, run
+Qt itself does not use the *.ts files, but a compact binary format (*.qm). 
+These files will automatically be generated at build time. By default, all
+languages will be built. To select languages, add -DLINGUAS="<languages>"
+to your cmake call, where <languages> is a space-separated list of language
+codes as explained above.
 
-lrelease *.ts
+NOTE: You'll need lrelease installed with your Qt in order to generate
+      translation files. Some distributions don't package that tool;
+      in that case you won't get translations.
 
-In addition, new languages need to be added to i18n/i18n.qrc, since we are using Qt's
-resource system for loading the translations.
