@@ -59,7 +59,7 @@
 #include "settingspages/highlightsettingspage.h"
 #include "settingspages/identitiessettingspage.h"
 #include "settingspages/networkssettingspage.h"
-
+#include "settingspages/notificationssettingspage.h"
 
 #include "debugconsole.h"
 #include "global.h"
@@ -249,6 +249,7 @@ void MainWin::setupSettingsDlg() {
   settingsDlg->registerSettingsPage(new GeneralSettingsPage(settingsDlg));
   settingsDlg->registerSettingsPage(new HighlightSettingsPage(settingsDlg));
   settingsDlg->registerSettingsPage(new AliasesSettingsPage(settingsDlg));
+  settingsDlg->registerSettingsPage(new NotificationsSettingsPage(settingsDlg));
   //Category: General
   settingsDlg->registerSettingsPage(new IdentitiesSettingsPage(settingsDlg));
   settingsDlg->registerSettingsPage(new NetworksSettingsPage(settingsDlg));
@@ -661,7 +662,7 @@ void MainWin::sendDesktopNotification(const QString &title, const QString &messa
 
   if(!reply.isValid()) {
     /* ERROR */
-    qDebug() << "Error on sending notification...";
+    qDebug() << "Error on sending notification..." << reply;
     return;
   }
 

@@ -43,13 +43,6 @@ GeneralSettingsPage::GeneralSettingsPage(QWidget *parent)
   connect(ui.minimizeOnMinimize, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
   connect(ui.minimizeOnClose, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
 
-  connect(ui.animateTrayIcon, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
-  connect(ui.bubbleBox, SIGNAL(toggled(bool)), this, SLOT(widgetHasChanged()));
-  connect(ui.desktopBox, SIGNAL(toggled(bool)), this, SLOT(widgetHasChanged()));
-  connect(ui.timeout_value, SIGNAL(valueChanged(int)), this, SLOT(widgetHasChanged()));
-  connect(ui.x_value, SIGNAL(valueChanged(int)), this, SLOT(widgetHasChanged()));
-  connect(ui.y_value, SIGNAL(valueChanged(int)), this, SLOT(widgetHasChanged()));
-
   connect(ui.userMessagesInStatusBuffer, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
   connect(ui.userMessagesInQueryBuffer, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
   connect(ui.userMessagesInCurrentBuffer, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
@@ -68,13 +61,6 @@ void GeneralSettingsPage::defaults() {
   ui.showSystemTrayIcon->setChecked(true);
   ui.minimizeOnMinimize->setChecked(false);
   ui.minimizeOnClose->setChecked(false);
-
-  ui.animateTrayIcon->setChecked(true);
-  ui.bubbleBox->setChecked(true);
-  ui.desktopBox->setChecked(true);
-  ui.timeout_value->setValue(5000);
-  ui.x_value->setValue(0);
-  ui.y_value->setValue(0);
 
   ui.userMessagesInStatusBuffer->setChecked(true);
   ui.userMessagesInQueryBuffer->setChecked(false);
@@ -104,21 +90,6 @@ void GeneralSettingsPage::load() {
   settings["MouseWheelChangesBuffers"] = uiSettings.value("MouseWheelChangesBuffers", QVariant(true));
   ui.mouseWheelChangesBuffers->setChecked(settings["MouseWheelChangesBuffers"].toBool());
 
-  settings["AnimateTrayIcon"] = uiSettings.value("AnimateTrayIcon", QVariant(true));
-  ui.animateTrayIcon->setChecked(settings["AnimateTrayIcon"].toBool());
-
-  settings["NotificationBubble"] = uiSettings.value("NotificationBubble", QVariant(true));
-  ui.bubbleBox->setChecked(settings["NotificationBubble"].toBool());
-
-  settings["NotificationDesktop"] = uiSettings.value("NotificationDesktop", QVariant(true));
-  ui.desktopBox->setChecked(settings["NotificationDesktop"].toBool());
-  settings["NotificationDesktopTimeout"] = uiSettings.value("NotificationDesktopTimeout", QVariant(5000));
-  ui.timeout_value->setValue(settings["NotificationDesktopTimeout"].toInt());
-  settings["NotificationDesktopHintX"] = uiSettings.value("NotificationDesktopHintX", QVariant(0));
-  ui.x_value->setValue(settings["NotificationDesktopHintX"].toInt());
-  settings["NotificationDesktopHintY"] = uiSettings.value("NotificationDesktopHintY", QVariant(0));
-  ui.y_value->setValue(settings["NotificationDesktopHintY"].toInt());
-
   // bufferSettings:
   BufferSettings bufferSettings;
   settings["UserMessagesInStatusBuffer"] = bufferSettings.value("UserMessagesInStatusBuffer", QVariant(true));
@@ -147,25 +118,14 @@ void GeneralSettingsPage::save() {
   uiSettings.setValue("MinimizeOnClose", ui.minimizeOnClose->isChecked());
   uiSettings.setValue("MouseWheelChangesBuffers", ui.mouseWheelChangesBuffers->isChecked());
 
-  uiSettings.setValue("AnimateTrayIcon", ui.animateTrayIcon->isChecked());
-//<<< HEAD:src/qtui/settingspages/generalsettingspage.cpp
-//  uiSettings.setValue("DisplayPopupMessages", ui.displayPopupMessages->isChecked());
-//  uiSettings.setValue("CompletionSuffix", ui.completionSuffix->text());
-  
-//=======
-  uiSettings.setValue("NotificationBubble", ui.bubbleBox->isChecked());
-  uiSettings.setValue("NotificationDesktop", ui.desktopBox->isChecked());
-  uiSettings.setValue("NotificationDesktopTimeout", ui.timeout_value->value());
-  uiSettings.setValue("NotificationDesktopHintX", ui.x_value->value());
-  uiSettings.setValue("NotificationDesktopHintY", ui.y_value->value());
-
-//>>> Configuration support for desktop notifications.:src/qtui/settingspages/generalsettingspage.cpp
   BufferSettings bufferSettings;
   bufferSettings.setValue("UserMessagesInStatusBuffer", ui.userMessagesInStatusBuffer->isChecked());
   bufferSettings.setValue("UserMessagesInQueryBuffer", ui.userMessagesInQueryBuffer->isChecked());
   bufferSettings.setValue("UserMessagesInCurrentBuffer", ui.userMessagesInCurrentBuffer->isChecked());
 
   bufferSettings.setValue("DisplayTopicInTooltip", ui.displayTopicInTooltip->isChecked());
+
+  uiSettings.setValue("CompletionSuffix", ui.completionSuffix->text());
 
   load();
   setChangedState(false);
@@ -181,13 +141,6 @@ bool GeneralSettingsPage::testHasChanged() {
   if(settings["MinimizeOnMinimize"].toBool() != ui.minimizeOnMinimize->isChecked()) return true;
   if(settings["MinimizeOnClose"].toBool() != ui.minimizeOnClose->isChecked()) return true;
 
-  if(settings["AnimateTrayIcon"].toBool() != ui.animateTrayIcon->isChecked()) return true;
-  if(settings["NotificationBubble"].toBool() != ui.bubbleBox->isChecked()) return true;
-  if(settings["NotificationDesktop"].toBool() != ui.desktopBox->isChecked()) return true;
-  if(settings["NotificationDesktopTimeout"].toInt() != ui.timeout_value->value()) return true;
-  if(settings["NotificationDesktopHintX"].toInt() != ui.x_value->value()) return true;
-  if(settings["NotificationDesktopHintY"].toInt() != ui.y_value->value()) return true;
-
   if(settings["UserMessagesInStatusBuffer"].toBool() != ui.userMessagesInStatusBuffer->isChecked()) return true;
   if(settings["UserMessagesInQueryBuffer"].toBool() != ui.userMessagesInQueryBuffer->isChecked()) return true;
   if(settings["UserMessagesInCurrentBuffer"].toBool() != ui.userMessagesInCurrentBuffer->isChecked()) return true;
@@ -199,7 +152,3 @@ bool GeneralSettingsPage::testHasChanged() {
 
   return false;
 }
-
-
-
-

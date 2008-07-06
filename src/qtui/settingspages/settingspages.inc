@@ -1,6 +1,7 @@
 # Putting $FOO in SETTINGSPAGES automatically includes
 # $FOOsettingspage.cpp, $FOOsettingspage.h and $FOOsettingspage.ui
-set(SETTINGSPAGES aliases appearance bufferview color fonts general highlight identities networks)
+
+set(SETTINGSPAGES aliases appearance bufferview color fonts general highlight identities networks notifications)
 
 # Specify additional files (e.g. for subdialogs) here!
 set(SP_SOURCES aliasesmodel.cpp)

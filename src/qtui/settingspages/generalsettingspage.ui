@@ -6,7 +6,7 @@
     <x>0</x>
     <y>0</y>
     <width>453</width>
-    <height>800</height>
+    <height>467</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -16,12 +16,12 @@
    <item>
     <widget class="QGroupBox" name="useSystemTrayIcon" >
      <property name="title" >
-      <string>Use system tray icon:</string>
+      <string>Show System Tray Icon</string>
      </property>
      <property name="checkable" >
       <bool>true</bool>
      </property>
-     <layout class="QVBoxLayout" >
+     <layout class="QVBoxLayout" name="_2" >
       <item>
        <widget class="QCheckBox" name="minimizeOnMinimize" >
         <property name="text" >
@@ -42,9 +42,9 @@
    <item>
     <widget class="QGroupBox" name="macOnly" >
      <property name="title" >
-      <string>Tray icon:</string>
+      <string>Tray Icon</string>
      </property>
-     <layout class="QHBoxLayout" >
+     <layout class="QHBoxLayout" name="_3" >
       <item>
        <widget class="QCheckBox" name="showSystemTrayIcon" >
         <property name="text" >
@@ -59,111 +59,9 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox_3" >
-     <property name="title" >
-      <string>User Notification:</string>
-     </property>
-     <layout class="QGridLayout" >
-      <item row="2" column="0" >
-       <widget class="QGroupBox" name="bubbleBox" >
-        <property name="title" >
-         <string>Bubble</string>
-        </property>
-        <property name="checkable" >
-         <bool>true</bool>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout" />
-       </widget>
-      </item>
-      <item row="2" column="1" >
-       <widget class="QGroupBox" name="desktopBox" >
-        <property name="title" >
-         <string>Desktop</string>
-        </property>
-        <property name="checkable" >
-         <bool>true</bool>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout_2" >
-         <item>
-          <widget class="QFrame" name="desktopFrame" >
-           <property name="frameShape" >
-            <enum>QFrame::StyledPanel</enum>
-           </property>
-           <property name="frameShadow" >
-            <enum>QFrame::Raised</enum>
-           </property>
-           <layout class="QFormLayout" name="formLayout" >
-            <item row="0" column="0" >
-             <widget class="QLabel" name="timeout_label" >
-              <property name="text" >
-               <string>Timeout</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="1" >
-             <widget class="QSpinBox" name="timeout_value" >
-              <property name="minimum" >
-               <number>-1</number>
-              </property>
-              <property name="maximum" >
-               <number>100000</number>
-              </property>
-              <property name="value" >
-               <number>5000</number>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="0" >
-             <widget class="QLabel" name="x_label" >
-              <property name="text" >
-               <string>X</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="0" >
-             <widget class="QLabel" name="y_label" >
-              <property name="text" >
-               <string>Y</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="1" >
-             <widget class="QSpinBox" name="x_value" >
-              <property name="maximum" >
-               <number>10000</number>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="1" >
-             <widget class="QSpinBox" name="y_value" >
-              <property name="maximum" >
-               <number>10000</number>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item row="1" column="0" >
-       <widget class="QCheckBox" name="animateTrayIcon" >
-        <property name="text" >
-         <string>Animate tray icon</string>
-        </property>
-        <property name="checked" >
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
     <widget class="QGroupBox" name="groupBox" >
      <property name="title" >
-      <string>Display user related messages and private Notices:</string>
+      <string>Display User-Related Messages And Private Notices:</string>
      </property>
      <layout class="QVBoxLayout" >
       <item>
@@ -205,7 +103,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox_2" >
      <property name="title" >
-      <string>Buffer view:</string>
+      <string>Buffer View</string>
      </property>
      <layout class="QVBoxLayout" >
       <item>
@@ -234,7 +132,7 @@
       <string>The suffix appended to a nick on completion via TAB. Default is ": "</string>
      </property>
      <property name="title" >
-      <string>Input Line:</string>
+      <string>Input Line</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout" >
       <item>
