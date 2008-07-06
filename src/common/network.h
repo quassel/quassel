@@ -210,14 +210,16 @@ public slots:
   //init geters
   QVariantMap initSupports() const;
   inline QVariantList initServerList() const { return serverList(); }
-  QStringList initIrcUsers() const;
-  QStringList initIrcChannels() const;
+  virtual QVariantMap initIrcUsersAndChannels() const;
+//   QStringList initIrcUsers() const;
+//   QStringList initIrcChannels() const;
   
   //init seters
   void initSetSupports(const QVariantMap &supports);
   inline void initSetServerList(const QVariantList &serverList) { setServerList(serverList); }
-  void initSetIrcUsers(const QStringList &hostmasks);
-  void initSetIrcChannels(const QStringList &channels);
+  virtual void initSetIrcUsersAndChannels(const QVariantMap &usersAndChannels);
+//   void initSetIrcUsers(const QStringList &hostmasks);
+//   void initSetIrcChannels(const QStringList &channels);
   
   IrcUser *updateNickFromMask(const QString &mask);
 

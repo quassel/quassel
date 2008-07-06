@@ -346,7 +346,8 @@ void ClientSyncer::ircUserRemoved(QObject *user) {
 }
 
 void ClientSyncer::checkSyncState() {
-  if(usersToSync.count() + channelsToSync.count() + netsToSync.count() == 0) {
+  // if(usersToSync.count() + channelsToSync.count() + netsToSync.count() == 0) {
+  if(netsToSync.isEmpty()) {
     // done syncing!
     /*
     qDebug() << "done";

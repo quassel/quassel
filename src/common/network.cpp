@@ -513,22 +513,86 @@ QVariantMap Network::initSupports() const {
   return supports;
 }
 
-QStringList Network::initIrcUsers() const {
-  QStringList hostmasks;
-  foreach(IrcUser *ircuser, ircUsers()) {
-    hostmasks << ircuser->hostmask();
+QVariantMap Network::initIrcUsersAndChannels() const {
+  QVariantMap usersAndChannels;
+  QVariantMap users;
+  QVariantMap channels;
+
+  QHash<QString, IrcUser *>::const_iterator userIter = _ircUsers.constBegin();
+  QHash<QString, IrcUser *>::const_iterator userIterEnd = _ircUsers.constEnd();
+  while(userIter != userIterEnd) {
+    users[userIter.value()->hostmask()] = userIter.value()->toVariantMap();
+    userIter++;
   }
-  return hostmasks;
+  usersAndChannels["users"] = users;
+
+  QHash<QString, IrcChannel *>::const_iterator channelIter = _ircChannels.constBegin();
+  QHash<QString, IrcChannel *>::const_iterator channelIterEnd = _ircChannels.constEnd();
+  while(channelIter != channelIterEnd) {
+    channels[channelIter.key()] = channelIter.value()->toVariantMap();
+    channelIter++;
+  }
+  usersAndChannels["channels"] = channels;
+
+  return usersAndChannels;
 }
 
-QStringList Network::initIrcChannels() const {
-  QStringList channels;
-  QHash<QString, IrcChannel *>::const_iterator iter = _ircChannels.constBegin();
-  while(iter != _ircChannels.constEnd()) {
-    channels << iter.value()->name();
-    iter++;
+void Network::initSetIrcUsersAndChannels(const QVariantMap &usersAndChannels) {
+  Q_ASSERT(proxy());
+  if(!_ircUsers.isEmpty() || !_ircChannels.isEmpty()) {
+    qWarning() << "Network" << networkId() << "received init data for users and channels allthough there allready are known users or channels!";
+    return;
   }
-  return channels;
+    
+  QVariantMap users = usersAndChannels.value("users").toMap();
+
+  QVariantMap::const_iterator userIter = users.constBegin();
+  QVariantMap::const_iterator userIterEnd = users.constEnd();
+  IrcUser *ircUser = 0;
+  QString hostmask;
+  while(userIter != userIterEnd) {
+    hostmask = userIter.key();
+    ircUser = new IrcUser(hostmask, this);
+    ircUser->fromVariantMap(userIter.value().toMap());
+    ircUser->setInitialized();
+    proxy()->synchronize(ircUser);
+
+    connect(ircUser, SIGNAL(nickSet(QString)), this, SLOT(ircUserNickChanged(QString)));
+    connect(ircUser, SIGNAL(destroyed()), this, SLOT(ircUserDestroyed()));
+
+    _ircUsers[nickFromMask(hostmask).toLower()] = ircUser;
+
+    emit ircUserAdded(hostmask);
+    emit ircUserAdded(ircUser);
+    emit ircUserInitDone(ircUser);
+
+    userIter++;
+  }
+
+
+  QVariantMap channels = usersAndChannels.value("channels").toMap();
+  QVariantMap::const_iterator channelIter = channels.constBegin();
+  QVariantMap::const_iterator channelIterEnd = channels.constEnd();
+  IrcChannel *ircChannel = 0;
+  QString channelName;
+
+  while(channelIter != channelIterEnd) {
+    channelName = channelIter.key();
+    ircChannel = new IrcChannel(channelName, this);
+    ircChannel->fromVariantMap(channelIter.value().toMap());
+    ircChannel->setInitialized();
+    proxy()->synchronize(ircChannel);
+      
+    connect(ircChannel, SIGNAL(destroyed()), this, SLOT(channelDestroyed()));
+    _ircChannels[channelName.toLower()] = ircChannel;
+
+    emit ircChannelAdded(channelName);
+    emit ircChannelAdded(ircChannel);
+    emit ircChannelInitDone(ircChannel);
+
+    channelIter++;
+  }
+  
 }
 
 void Network::initSetSupports(const QVariantMap &supports) {
@@ -537,21 +601,6 @@ void Network::initSetSupports(const QVariantMap &supports) {
     iter.next();
     addSupport(iter.key(), iter.value().toString());
   }
-}
-
-void Network::initSetIrcUsers(const QStringList &hostmasks) {
-  if(!_ircUsers.empty())
-    return;
-  foreach(QString hostmask, hostmasks) {
-    newIrcUser(hostmask);
-  }
-}
-
-void Network::initSetIrcChannels(const QStringList &channels) {
-  if(!_ircChannels.empty())
-    return;
-  foreach(QString channel, channels)
-    newIrcChannel(channel);
 }
 
 IrcUser *Network::updateNickFromMask(const QString &mask) {
@@ -582,13 +631,15 @@ void Network::ircUserNickChanged(QString newnick) {
 void Network::ircUserInitDone() {
   IrcUser *ircuser = static_cast<IrcUser *>(sender());
   Q_ASSERT(ircuser);
+  connect(ircuser, SIGNAL(initDone()), this, SLOT(ircUserInitDone()));
   emit ircUserInitDone(ircuser);
 }
 
 void Network::ircChannelInitDone() {
-  IrcChannel *ircchannel = static_cast<IrcChannel *>(sender());
-  Q_ASSERT(ircchannel);
-  emit ircChannelInitDone(ircchannel);
+  IrcChannel *ircChannel = static_cast<IrcChannel *>(sender());
+  Q_ASSERT(ircChannel);
+  disconnect(ircChannel, SIGNAL(initDone()), this, SLOT(ircChannelInitDone()));
+  emit ircChannelInitDone(ircChannel);
 }
 
 void Network::removeIrcChannel(IrcChannel *channel) {
