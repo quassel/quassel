@@ -186,8 +186,10 @@ void ClientSyncer::coreSocketDisconnected() {
 
 void ClientSyncer::clientInitAck(const QVariantMap &msg) {
   // Core has accepted our version info and sent its own. Let's see if we accept it as well...
-  if((msg.contains("CoreBuild") && msg["CoreBuild"].toUInt() < 732)  // legacy!
-     || (!msg.contains("CoreBuild") && msg["ProtocolVersion"].toUInt() < Global::clientNeedsProtocol)) {
+  uint ver = 0;
+  if(!msg.contains("ProtocolVersion") && msg["CoreBuild"].toUInt() >= 732) ver = 1; // legacy!
+  if(msg.contains("ProtocolVersion")) ver = msg["ProtocolVersion"].toUInt();
+  if(ver < Global::clientNeedsProtocol) {
     emit connectionError(tr("<b>The Quassel Core you are trying to connect to is too old!</b><br>"
         "Need at least core/client protocol v%1 to connect.").arg(Global::clientNeedsProtocol));
     disconnectFromCore();
