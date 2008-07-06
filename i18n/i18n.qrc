@@ -1,8 +1,0 @@
-<!DOCTYPE RCC><RCC version="1.0">
-<qresource prefix="/i18n">
-   <file>quassel.qm</file>
-   <file>quassel_fr.qm</file>
-   <file>quassel_da.qm</file>
-<!--   <file>quassel_de.qm</file> -->
-</qresource>
-</RCC>
