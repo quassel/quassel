@@ -39,8 +39,7 @@ class ChatLineModelItem : public MessageModelItem {
 
   private:
     void computeWrapList();
-    qreal snippetWidth(int start, int end, QFontMetricsF *&metrics, int &formatListIdx, int &formatEnd);
-
+s
     struct ChatLinePart {
       QString plainText;
       UiStyle::FormatList formatList;

@@ -68,38 +68,29 @@ bool ChatLineModelItem::setData(int column, const QVariant &value, int role) {
   return false;
 }
 
-// compute the width of a text snippet
-qreal ChatLineModelItem::snippetWidth(int start, int end, QFontMetricsF *&metrics, int &formatListIdx, int &formatEnd) {
-  qreal width = 0;
-  while(start < end) {
-    if(formatEnd <= start) {
-      formatListIdx++;
-      formatEnd = _contents.formatList.count() > formatListIdx+1 ? _contents.formatList[formatListIdx+1].first
-                                                                 : _contents.plainText.length();
-      metrics = QtUi::style()->fontMetrics(_contents.formatList[formatListIdx].second);
-      Q_ASSERT(formatEnd > start);
-    }
-    int i = qMin(end, formatEnd);
-    width += metrics->width(_contents.plainText.mid(start, i - start));
-    start = i;
-  }
-  return width;
-}
-
 void ChatLineModelItem::computeWrapList() {
   enum Mode { SearchStart, SearchEnd };
 
   QList<ChatLineModel::Word> wplist;  // use a temp list which we'll later copy into a QVector for efficiency
   QTextBoundaryFinder finder(QTextBoundaryFinder::Word, _contents.plainText);
   int idx, oldidx;
-  qreal pxpos = 0;
-  int flistidx = -1;
-  int fmtend = -1;
   bool wordStart = false; bool wordEnd = false;
-  QFontMetricsF *metrics = 0;
   Mode mode = SearchEnd;
   ChatLineModel::Word word;
   word.start = 0;
+  int wordstartx = 0;
+
+  QTextLayout layout(_contents.plainText);
+  QTextOption option;
+  option.setWrapMode(QTextOption::NoWrap);
+  layout.setTextOption(option);
+
+  layout.setAdditionalFormats(QtUi::style()->toTextLayoutList(_contents.formatList, _contents.plainText.length()));
+  layout.beginLayout();
+  QTextLine line = layout.createLine();
+  line.setNumColumns(_contents.plainText.length());
+  layout.endLayout();
+
   do {
     idx = finder.toNextBoundary();
     if(idx < 0) idx = _contents.plainText.length();
@@ -114,9 +105,11 @@ void ChatLineModelItem::computeWrapList() {
       mode = SearchStart;
       continue;
     }
-    // mode == SearchStart
-    word.width = snippetWidth(word.start, oldidx, metrics, flistidx, fmtend);
-    word.trailing = snippetWidth(oldidx, idx, metrics, flistidx, fmtend);
+    int wordendx = line.cursorToX(oldidx);
+    int trailingendx = line.cursorToX(idx);
+    word.width = wordendx - wordstartx;
+    word.trailing = trailingendx - wordendx;
+    wordstartx = trailingendx;
     wplist.append(word);
 
     if(wordStart) {
