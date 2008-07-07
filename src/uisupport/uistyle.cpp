@@ -40,7 +40,7 @@ UiStyle::UiStyle(const QString &settingsKey) : _settingsKey(settingsKey) {
   _defaultPlainFormat.font().setFixedPitch(true);
   _defaultPlainFormat.font().setStyleHint(QFont::TypeWriter);
   setFormat(None, _defaultPlainFormat, Settings::Default);
-  
+
   // Load saved custom formats
   UiStyleSettings s(_settingsKey);
   foreach(FormatType type, s.availableFormats()) {
@@ -164,6 +164,20 @@ UiStyle::FormatType UiStyle::formatType(const QString & code) const {
 
 QString UiStyle::formatCode(FormatType ftype) const {
   return _formatCodes.key(ftype);
+}
+
+QList<QTextLayout::FormatRange> UiStyle::toTextLayoutList(const FormatList &formatList, int textLength) {
+  QList<QTextLayout::FormatRange> formatRanges;
+  QTextLayout::FormatRange range;
+  int i = 0;
+  for(i = 0; i < formatList.count(); i++) {
+    range.format = mergedFormat(formatList.at(i).second);
+    range.start = formatList.at(i).first;
+    if(i > 0) formatRanges.last().length = range.start - formatRanges.last().start;
+    formatRanges.append(range);
+  }
+  if(i > 0) formatRanges.last().length = textLength - formatRanges.last().start;
+  return formatRanges;
 }
 
 // This method expects a well-formatted string, there is no error checking!

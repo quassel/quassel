@@ -141,6 +141,8 @@ class UiStyle {
 
     inline QFont defaultFont() const { return _defaultFont; }
 
+    QList<QTextLayout::FormatRange> toTextLayoutList(const FormatList &, int textLength);
+
   protected:
 
 
