@@ -48,9 +48,7 @@ set(HEADERS
     coresettings.h
     coreusersettings.h)
 
-message(${QT_DEFINITIONS})
 if(OPENSSL_FOUND AND NOT QT_DEFINITIONS MATCHES "QT_NO_OPENSSL")
-  message("found")
   set(SOURCES ${SOURCES} sslserver.cpp)
   set(MOC_HDRS ${MOC_HDRS} sslserver.h)
   include_directories(${OPENSSL_INCLUDE_DIR})
