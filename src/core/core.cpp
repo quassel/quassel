@@ -340,12 +340,23 @@ QHash<BufferId, MsgId> Core::bufferLastSeenMsgIds(UserId user) {
 /*** Network Management ***/
 
 bool Core::startListening(uint port) {
-  if(!server.listen(QHostAddress::AnyIPv6, port)) {
-    qWarning("%s", qPrintable(QString("Could not open GUI client port %1: %2").arg(port).arg(server.errorString())));
-    return false;
+  bool success = false;
+
+  // let's see if ipv6 is available
+  success = server.listen(QHostAddress::AnyIPv6, port);
+
+  if(!success && server.serverError() == QAbstractSocket::UnsupportedSocketOperationError) {
+    // fall back to v4
+    success = server.listen(QHostAddress::Any, port);
   }
-  qDebug() << "Listening for GUI clients on port" << server.serverPort();
-  return true;
+
+  if(!success) {
+    qWarning("%s", qPrintable(QString("Could not open GUI client port %1: %2").arg(port).arg(server.errorString())));
+  } else {
+    qDebug() << "Listening for GUI clients on port" << server.serverPort();
+  }
+  
+  return success;
 }
 
 void Core::stopListening() {
