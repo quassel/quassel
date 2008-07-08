@@ -1142,10 +1142,20 @@ IF (QT4_QMAKE_FOUND)
 
   ENDMACRO(QT4_GET_MOC_INC_DIRS)
 
+  # Added by Sput to provide definitions to moc calls
+  MACRO (QT4_GET_MOC_DEFINES _moc_DEFINES)
+     SET(${_moc_DEFINES})
+     GET_DIRECTORY_PROPERTY(_defines COMPILE_DEFINITIONS)
+     FOREACH(_current ${_defines})
+        SET(${_moc_DEFINES} ${${_moc_DEFINES}} -D${_current})
+     ENDFOREACH(_current ${_defines})
+
+  ENDMACRO(QT4_GET_MOC_DEFINES)
 
   MACRO (QT4_GENERATE_MOC infile outfile )
   # get include dirs
-     QT4_GET_MOC_INC_DIRS(moc_includes)
+     # QT4_GET_MOC_INC_DIRS(moc_includes) # Not needed...
+     QT4_GET_MOC_DEFINES(moc_defines)
 
      GET_FILENAME_COMPONENT(abs_infile ${infile} ABSOLUTE)
 
@@ -1161,7 +1171,7 @@ IF (QT4_QMAKE_FOUND)
      ELSE (MSVC_IDE)
         ADD_CUSTOM_COMMAND(OUTPUT ${outfile}
            COMMAND ${QT_MOC_EXECUTABLE}
-           ARGS ${moc_includes} -o ${outfile} ${abs_infile}
+           ARGS ${moc_includes} ${moc_defines} -o ${outfile} ${abs_infile}
            DEPENDS ${abs_infile})
      ENDIF (MSVC_IDE)
 
@@ -1175,7 +1185,8 @@ IF (QT4_QMAKE_FOUND)
 
   MACRO (QT4_WRAP_CPP outfiles )
     # get include dirs
-    QT4_GET_MOC_INC_DIRS(moc_includes)
+    # QT4_GET_MOC_INC_DIRS(moc_includes) # Not needed
+    QT4_GET_MOC_DEFINES(moc_defines)
     QT4_EXTRACT_OPTIONS(moc_files moc_options ${ARGN})
 
     FOREACH (it ${moc_files})
@@ -1185,7 +1196,7 @@ IF (QT4_QMAKE_FOUND)
       SET(outfile ${CMAKE_CURRENT_BINARY_DIR}/moc_${outfile}.cxx)
       ADD_CUSTOM_COMMAND(OUTPUT ${outfile}
         COMMAND ${QT_MOC_EXECUTABLE}
-        ARGS ${moc_includes} ${moc_options} -o ${outfile} ${it}
+        ARGS ${moc_includes} ${moc_defines} ${moc_options} -o ${outfile} ${it}
         DEPENDS ${it})
       SET(${outfiles} ${${outfiles}} ${outfile})
     ENDFOREACH(it)
@@ -1343,7 +1354,9 @@ IF (QT4_QMAKE_FOUND)
   ENDMACRO(QT4_ADD_DBUS_ADAPTOR)
 
    MACRO(QT4_AUTOMOC)
-      QT4_GET_MOC_INC_DIRS(_moc_INCS)
+      # QT4_GET_MOC_INC_DIRS(_moc_INCS)
+      QT4_GET_MOC_DEFINES(_moc_DEFINES)
+
 
       SET(_matching_FILES )
       FOREACH (_current_FILE ${ARGN})
@@ -1375,7 +1388,7 @@ IF (QT4_QMAKE_FOUND)
                   SET(_moc    ${CMAKE_CURRENT_BINARY_DIR}/${_current_MOC})
                   ADD_CUSTOM_COMMAND(OUTPUT ${_moc}
                      COMMAND ${QT_MOC_EXECUTABLE}
-                     ARGS ${_moc_INCS} ${_header} -o ${_moc}
+                     ARGS ${_moc_INCS} ${_moc_DEFINES} ${_header} -o ${_moc}
                      DEPENDS ${_header}
                   )
 
