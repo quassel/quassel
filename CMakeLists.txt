@@ -70,6 +70,9 @@ endif(SPUTDEV)
 
 # Set up OpenSSL
 find_package(OpenSSL)
+if(NOT OPENSSL_FOUND)
+  add_definitions(-DQT_NO_OPENSSL)
+endif(NOT OPENSSL_FOUND)
 
 # Select a Qt installation here, if you don't want to use system Qt
 if(QT)
