@@ -340,7 +340,7 @@ QHash<BufferId, MsgId> Core::bufferLastSeenMsgIds(UserId user) {
 /*** Network Management ***/
 
 bool Core::startListening(uint port) {
-  if(!server.listen(QHostAddress::Any, port)) {
+  if(!server.listen(QHostAddress::AnyIPv6, port)) {
     qWarning("%s", qPrintable(QString("Could not open GUI client port %1: %2").arg(port).arg(server.errorString())));
     return false;
   }
