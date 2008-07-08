@@ -40,13 +40,14 @@ TabCompleter::TabCompleter(InputLine *inputLine_)
 }
 
 void TabCompleter::buildCompletionList() {
+  // ensure a safe state in case we return early.
   completionMap.clear();
+  nextCompletion = completionMap.begin();
+
   // this is the first time tab is pressed -> build up the completion list and it's iterator
   QModelIndex currentIndex = Client::bufferModel()->currentIndex();
-  if(!currentIndex.data(NetworkModel::BufferIdRole).isValid()) {
-    nextCompletion = completionMap.begin();
+  if(!currentIndex.data(NetworkModel::BufferIdRole).isValid())
     return;
-  }
   
   NetworkId networkId = currentIndex.data(NetworkModel::NetworkIdRole).value<NetworkId>();
   QString channelName = currentIndex.sibling(currentIndex.row(), 0).data().toString();
