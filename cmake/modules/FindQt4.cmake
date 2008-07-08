@@ -1456,6 +1456,11 @@ IF (QT4_QMAKE_FOUND)
     # Trolltech said they'd consider exporting it for all platforms in future releases.
     SET(QT_DEFINITIONS ${QT_DEFINITIONS} -DQT_SHARED)
   ENDIF(NOT QT_CONFIG MATCHES "static")
+
+  # OpenSSL
+  IF(NOT QT_QCONFIG MATCHES "openssl")
+    SET(QT_DEFINITIONS ${QT_DEFINITIONS} -DQT_NO_OPENSSL)
+  ENDIF(NOT QT_QCONFIG MATCHES "openssl")
   
   ## system png
   IF(QT_QCONFIG MATCHES "system-png")

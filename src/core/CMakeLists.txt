@@ -48,14 +48,13 @@ set(HEADERS
     coresettings.h
     coreusersettings.h)
 
-# QT_DEFINITIONS actually does not work, stuff gets included always.
-# Funny enough that does not seem to be harmful, but we should still find a way to figure out
-# if we have openssl in Qt...
-if(OPENSSL_FOUND AND NOT QT_DEFINITIONS MATCHES "-DQT_NO_OPENSSL")
+message(${QT_DEFINITIONS})
+if(OPENSSL_FOUND AND NOT QT_DEFINITIONS MATCHES "QT_NO_OPENSSL")
+  message("found")
   set(SOURCES ${SOURCES} sslserver.cpp)
   set(MOC_HDRS ${MOC_HDRS} sslserver.h)
   include_directories(${OPENSSL_INCLUDE_DIR})
-endif(OPENSSL_FOUND AND NOT QT_DEFINITIONS MATCHES "-DQT_NO_OPENSSL")
+endif(OPENSSL_FOUND AND NOT QT_DEFINITIONS MATCHES "QT_NO_OPENSSL")
 
 QT4_WRAP_CPP(MOC ${MOC_HDRS})
 
