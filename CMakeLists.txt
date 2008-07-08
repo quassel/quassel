@@ -14,9 +14,9 @@ project(QuasselIRC)
 # Target scopes don't work in older versions
 cmake_minimum_required(VERSION 2.4.7 FATAL_ERROR)
 
-# This would suppress annoying warnings on cmake-2.6, but we can't use it 
-# with 2.4, so... DUH!
-# cmake_policy(SET CMP0003 OLD)  # suppress linker warnings
+if(COMMAND cmake_policy)
+   cmake_policy(SET CMP0003 OLD)  # suppress linker warnings
+endif(COMMAND cmake_policy)
 
 # Use our own (well, KDE's) version of some modules
 # In particular cmake's FindQt4 and FindOpenSSL are quite buggy
