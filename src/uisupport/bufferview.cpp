@@ -324,7 +324,7 @@ void BufferView::dataChanged(const QModelIndex &topLeft, const QModelIndex &bott
     return;
 
   for(int i = topLeft.row(); i <= bottomRight.row(); i++) {
-    QModelIndex networkIdx = topLeft.sibling(topLeft.row(), 0);
+    QModelIndex networkIdx = topLeft.sibling(i, 0);
     if(model()->rowCount(networkIdx) == 0)
       continue;
 
