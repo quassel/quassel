@@ -35,30 +35,67 @@ InputLine::~InputLine() {
 }
 
 void InputLine::keyPressEvent(QKeyEvent * event) {
-  if(event->key() == Qt::Key_Up) {
-    if(idx > 0) { idx--; setText(history[idx]); }
+  switch(event->key()) {
+  case Qt::Key_Up:
     event->accept();
-  } else if(event->key() == Qt::Key_Down) {
-    if(idx < history.count()) idx++;
-    if(idx < history.count()) setText(history[idx]);
-    else if(!text().isEmpty()) {
-      history << text();
-      idx = history.count();
-      setText("");
+
+    if(addToHistory(text())) {
+      clear();
+      break;
     }
+    
+    if(idx > 0) {
+      idx--;
+      setText(history[idx]);
+    }
+
+    break;
+    
+  case Qt::Key_Down:
     event->accept();
-  } else if(event->key() == Qt::Key_Select) {  // for Qtopia
+
+    if(addToHistory(text())) {
+      clear();
+      break;
+    }
+    
+    if(idx < history.count())
+      idx++;
+
+    if(idx < history.count())
+      setText(history[idx]);
+    else
+      clear();
+
+    break;
+    
+  case Qt::Key_Select:		// for Qtopia
     emit returnPressed();
-    QLineEdit::keyPressEvent(event);
-  } else {
+
+  default:
     QLineEdit::keyPressEvent(event);
   }
+}
 
+bool InputLine::addToHistory(const QString &text) {
+  if(text.isEmpty())
+    return false;
+
+  Q_ASSERT(0 <= idx && idx <= history.count());
+  
+  if(history.isEmpty() || text != history[idx - (int)(idx == history.count())]) {
+    // if we change an entry of the history the changed entry is appended to the list and we seek to the end
+    // we could also easily change the entry in the history... per setting maybe?
+    history << text;
+    idx = history.count();
+    return true;
+  } else {
+    return false;
+  }
 }
 
 void InputLine::on_returnPressed() {
-  history << text();
-  idx = history.count();
+  addToHistory(text());
   emit sendText(text());
   clear();
 }

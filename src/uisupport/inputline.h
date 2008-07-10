@@ -40,6 +40,8 @@ private slots:
   void on_returnPressed();
   void on_textChanged(QString newText);
 
+  bool addToHistory(const QString &text);
+
 signals:
   void sendText(QString text);
 
