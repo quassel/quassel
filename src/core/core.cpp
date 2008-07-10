@@ -373,7 +373,7 @@ void Core::incomingConnection() {
     
     QVariantMap clientInfo;
     blocksizes.insert(socket, (quint32)0);
-    qDebug() << "Client connected from"  << qPrintable(socket->peerAddress().toString());
+    qDebug() << qPrintable(tr("Client connected from"))  << qPrintable(socket->peerAddress().toString());
 
     if (!configured) {
       server.close();
@@ -414,7 +414,7 @@ void Core::processClientMessage(QTcpSocket *socket, const QVariantMap &msg) {
       "This core needs at least client/core protocol version %1.<br>"
       "Please consider upgrading your client.").arg(Global::coreNeedsProtocol);
       SignalProxy::writeDataToDevice(socket, reply);
-      qWarning() << qPrintable(tr("Client %1 too old, rejecting.").arg(socket->peerAddress().toString()));
+      qWarning() << qPrintable(tr("Client")) << qPrintable(socket->peerAddress().toString()) << qPrintable(tr("too old, rejecting."));
       socket->close(); return;
     }
 
@@ -474,7 +474,7 @@ void Core::processClientMessage(QTcpSocket *socket, const QVariantMap &msg) {
 #ifndef QT_NO_OPENSSL
     // after we told the client that we are ssl capable we switch to ssl mode
     if(supportSsl && msg["UseSsl"].toBool()) {
-      qDebug() << "Starting TLS for Client:" << qPrintable(socket->peerAddress().toString());
+      qDebug() << qPrintable(tr("Starting TLS for Client:"))  << qPrintable(socket->peerAddress().toString());
       connect(sslSocket, SIGNAL(sslErrors(const QList<QSslError> &)), this, SLOT(sslErrors(const QList<QSslError> &)));
       sslSocket->startServerEncryption();
     }
@@ -494,7 +494,7 @@ void Core::processClientMessage(QTcpSocket *socket, const QVariantMap &msg) {
       reply["MsgType"] = "ClientLoginReject";
       reply["Error"] = tr("<b>Client not initialized!</b><br>You need to send an init message before trying to login.");
       SignalProxy::writeDataToDevice(socket, reply);
-      qWarning() << qPrintable(tr("Client %1 did not send an init message before trying to login, rejecting.").arg(socket->peerAddress().toString()));
+      qWarning() << qPrintable(tr("Client")) << qPrintable(socket->peerAddress().toString()) << qPrintable(tr("did not send an init message before trying to login, rejecting."));
       socket->close(); return;
     }
     if(msg["MsgType"] == "CoreSetupData") {
@@ -520,7 +520,7 @@ void Core::processClientMessage(QTcpSocket *socket, const QVariantMap &msg) {
       }
       reply["MsgType"] = "ClientLoginAck";
       SignalProxy::writeDataToDevice(socket, reply);
-      qDebug() << qPrintable(tr("Client %1 initialized and authenticated successfully as \"%2\" (UserId: %3).").arg(socket->peerAddress().toString(), msg["User"].toString()).arg(uid.toInt()));
+      qDebug() << qPrintable(tr("Client")) << qPrintable(socket->peerAddress().toString()) << qPrintable(tr("initialized and authenticated successfully as \"%1\" (UserId: %2).").arg(msg["User"].toString()).arg(uid.toInt()));
       setupClientSession(socket, uid);
     }
   }
@@ -576,7 +576,7 @@ void Core::setupClientSession(QTcpSocket *socket, UserId uid) {
   blocksizes.remove(socket);
   clientInfo.remove(socket);
   if(!sess) {
-    qWarning() << qPrintable(tr("Could not initialize session for client %1!").arg(socket->peerAddress().toString()));
+    qWarning() << qPrintable(tr("Could not initialize session for client:")) << qPrintable(socket->peerAddress().toString());
     socket->close();
   }
   sess->addClient(socket);

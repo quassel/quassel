@@ -238,7 +238,7 @@ void CoreSession::removeClient(QIODevice *iodev) {
   // no checks for validity check - privateslot...
   QTcpSocket *socket = qobject_cast<QTcpSocket *>(iodev);
   if(socket)
-    qDebug() << qPrintable(tr("Client %1 disconnected (UserId: %2).").arg(socket->peerAddress().toString()).arg(user().toInt()));
+    qDebug() << qPrintable(tr("Client")) << qPrintable(socket->peerAddress().toString()) << qPrintable(tr("disconnected (UserId: %1).").arg(user().toInt()));
   else
     qDebug() << "Local client disconnedted.";
   disconnect(socket, 0, this, 0);
