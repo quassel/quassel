@@ -34,7 +34,7 @@ ChatItem::ChatItem(const QPersistentModelIndex &index_, QGraphicsItem *parent) :
 }
 
 ChatItem::~ChatItem() {
-
+  delete _layout;
 }
 
 QVariant ChatItem::data(int role) const {
@@ -169,52 +169,6 @@ void ChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     painter->drawRect(r);
   }
 }
-
-
-/*
-void ChatItem::layout() {
-  if(!_layout.additionalFormats().count()) return; // no text set
-  if(_width <= 0) return;
-  prepareGeometryChange();
-  QFontMetrics metrics(_layout.additionalFormats()[0].format.font());
-  int leading = metrics.leading();
-  int height = 0;
-  _layout.setTextOption(textOption());
-  _layout.beginLayout();
-  while(1) {
-    QTextLine line = _layout.createLine();
-    if(!line.isValid()) break;
-    line.setLineWidth(_width);
-    if(textOption().wrapMode() != QTextOption::NoWrap && line.naturalTextWidth() > _width) {
-      // word did not fit, we need to wrap it in the middle
-      // this is a workaround for Qt failing to handle WrapAtWordBoundaryOrAnywhere correctly
-      QTextOption::WrapMode mode = textOption().wrapMode();
-      textOption().setWrapMode(QTextOption::WrapAnywhere);
-      _layout.setTextOption(textOption());
-      line.setLineWidth(_width);
-      textOption().setWrapMode(mode);
-      _layout.setTextOption(textOption());
-    }
-    height += leading;
-    line.setPosition(QPoint(0, height));
-    height += line.height();
-  }
-  _layout.endLayout();
-  update();
-}    QDateTime _timestamp;
-    MsgId _msgId;
-
-
-QRectF ChatItem::boundingRect() const {
-  return _layout.boundingRect();
-}
-
-void ChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
-  Q_UNUSED(option); Q_UNUSED(widget);
-  _layout.draw(painter, QPointF(0, 0));
-
-}
-*/
 
 /*
 void ChatItem::mouseMoveEvent ( QGraphicsSceneMouseEvent * event ) {

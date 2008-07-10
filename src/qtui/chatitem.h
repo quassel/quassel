@@ -50,15 +50,9 @@ class ChatItem : public QGraphicsItem {
     virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
 
     virtual QVariant data(int role) const;
-    //QString text() const;
-    //void setText(const UiStyle::StyledText &text);
-
-    //QTextOption textOption() const;
-    //void setTextOption(const QTextOption &option);
 
     // returns height
     int setWidth(int width);
-    //virtual void layout();
 
   protected:
     //void mouseMoveEvent ( QGraphicsSceneMouseEvent * event );
@@ -70,8 +64,6 @@ class ChatItem : public QGraphicsItem {
     QRectF _boundingRect;
     QFontMetricsF *_fontMetrics;
     quint8 _lines;
-    //QTextLayout _layout;
-    //QTextOption _textOption;
     QPersistentModelIndex _index;
 
     QTextLayout *_layout;
