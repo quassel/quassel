@@ -65,11 +65,12 @@ int ChatItem::heightForWidth(int width) {
   return _lines * fontMetrics()->lineSpacing();
 }
 
-QTextLayout *ChatItem::createLayout(QTextOption::WrapMode wrapMode) {
+QTextLayout *ChatItem::createLayout(QTextOption::WrapMode wrapMode, Qt::Alignment alignment) {
   QTextLayout *layout = new QTextLayout(data(MessageModel::DisplayRole).toString());
 
   QTextOption option;
   option.setWrapMode(wrapMode);
+  option.setAlignment(alignment);
   layout->setTextOption(option);
 
   QList<QTextLayout::FormatRange> formatRanges
@@ -79,30 +80,49 @@ QTextLayout *ChatItem::createLayout(QTextOption::WrapMode wrapMode) {
 }
 
 void ChatItem::updateLayout() {
-  if(!haveLayout()) _layout = createLayout(QTextOption::WrapAnywhere);
-
-  // Now layout
-  ChatLineModel::WrapList wrapList = data(ChatLineModel::WrapListRole).value<ChatLineModel::WrapList>();
-  if(!wrapList.count()) return; // empty chatitem
-  int wordidx = 0;
-  ChatLineModel::Word word = wrapList.at(0);
-
-  qreal h = 0;
-  WrapColumnFinder finder(this);
-  _layout->beginLayout();
-  forever {
-    QTextLine line = _layout->createLine();
-    if (!line.isValid())
+  switch(data(ChatLineModel::ColumnTypeRole).toUInt()) {
+    case ChatLineModel::TimestampColumn:
+      if(!haveLayout()) _layout = createLayout(QTextOption::WrapAnywhere, Qt::AlignLeft);
+      // fallthrough
+    case ChatLineModel::SenderColumn:
+      if(!haveLayout()) _layout = createLayout(QTextOption::WrapAnywhere, Qt::AlignRight);
+      _layout->beginLayout();
+      {
+        QTextLine line = _layout->createLine();
+        if(line.isValid()) {
+          line.setLineWidth(width());
+        }
+        _layout->endLayout();
+      }
       break;
+    case ChatLineModel::ContentsColumn: {
+      if(!haveLayout()) _layout = createLayout(QTextOption::WrapAnywhere);
 
-    int col = finder.nextWrapColumn();
-    line.setNumColumns(col >= 0 ? col - line.textStart() : _layout->text().length());
+      // Now layout
+      ChatLineModel::WrapList wrapList = data(ChatLineModel::WrapListRole).value<ChatLineModel::WrapList>();
+      if(!wrapList.count()) return; // empty chatitem
+      int wordidx = 0;
+      ChatLineModel::Word word = wrapList.at(0);
 
-    h += fontMetrics()->leading();
-    line.setPosition(QPointF(0, h));
-    h += line.height();
+      qreal h = 0;
+      WrapColumnFinder finder(this);
+      _layout->beginLayout();
+      forever {
+        QTextLine line = _layout->createLine();
+        if (!line.isValid())
+          break;
+
+        int col = finder.nextWrapColumn();
+        line.setNumColumns(col >= 0 ? col - line.textStart() : _layout->text().length());
+
+        h += fontMetrics()->leading();
+        line.setPosition(QPointF(0, h));
+        h += line.height();
+      }
+      _layout->endLayout();
+    }
+    break;
   }
-  _layout->endLayout();
 }
 
 void ChatItem::clearLayout() {
@@ -117,12 +137,7 @@ void ChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
   if(!haveLayout()) updateLayout();
   _layout->draw(painter, QPointF(0,0), QVector<QTextLayout::FormatRange>(), boundingRect());
   painter->drawRect(boundingRect());
-  int width = 0;
-  QVariantList wrapList = data(ChatLineModel::WrapListRole).toList();
-  for(int i = 2; i < wrapList.count(); i+=2) {
-    QRect r(wrapList[i-1].toUInt(), 0, wrapList[i+1].toUInt() - wrapList[i-1].toUInt(), fontMetrics()->lineSpacing());
-    painter->drawRect(r);
-  }
+
 }
 
 /*

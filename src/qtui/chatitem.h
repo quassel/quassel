@@ -59,7 +59,7 @@ class ChatItem : public QGraphicsItem {
 
   private:
     int heightForWidth(int width);
-    QTextLayout *createLayout(QTextOption::WrapMode);
+    QTextLayout *createLayout(QTextOption::WrapMode, Qt::Alignment = Qt::AlignLeft);
 
     QRectF _boundingRect;
     QFontMetricsF *_fontMetrics;
