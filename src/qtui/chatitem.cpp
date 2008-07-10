@@ -91,8 +91,8 @@ int ChatItem::WrapColumnFinder::nextWrapColumn() {
           line.setLineWidth(item->width());
           layout->endLayout();
         }
-        int idx = line.xToCursor(lastwrappos + item->width());
-        qreal x = line.cursorToX(idx);
+        int idx = line.xToCursor(lastwrappos + item->width(), QTextLine::CursorOnCharacter);
+        qreal x = line.cursorToX(idx, QTextLine::Trailing);
         w = w - wrapList.at(wordidx).width - (x - lastwrappos);
         lastwrappos = x;
         lastwrapcol = idx;
