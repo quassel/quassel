@@ -41,6 +41,43 @@ class Network;
 class IrcChannel;
 
 /*****************************************
+ *  Network Items
+ *****************************************/
+class NetworkItem : public PropertyMapItem {
+  Q_OBJECT
+  Q_PROPERTY(QString networkName READ networkName)
+  Q_PROPERTY(QString currentServer READ currentServer)
+  Q_PROPERTY(int nickCount READ nickCount)
+    
+public:
+  NetworkItem(const NetworkId &netid, AbstractTreeItem *parent = 0);
+
+  virtual quint64 id() const;
+  virtual QVariant data(int column, int row) const;
+
+  bool isActive() const;
+
+  inline const NetworkId &networkId() const { return _networkId; }
+  QString networkName() const;
+  QString currentServer() const;
+  int nickCount() const;
+
+  virtual QString toolTip(int column) const;
+
+public slots:
+  void setNetworkName(const QString &networkName);
+  void setCurrentServer(const QString &serverName);
+
+  void attachNetwork(Network *network);
+  void attachIrcChannel(const QString &channelName);
+
+private:
+  NetworkId _networkId;
+
+  QPointer<Network> _network;
+};
+
+/*****************************************
  *  Fancy Buffer Items
  *****************************************/
 class BufferItem : public PropertyMapItem {
@@ -101,44 +138,6 @@ private:
   Buffer::ActivityLevel _activity;
 
   IrcChannel *_ircChannel;
-};
-
-
-/*****************************************
- *  Network Items
- *****************************************/
-class NetworkItem : public PropertyMapItem {
-  Q_OBJECT
-  Q_PROPERTY(QString networkName READ networkName)
-  Q_PROPERTY(QString currentServer READ currentServer)
-  Q_PROPERTY(int nickCount READ nickCount)
-    
-public:
-  NetworkItem(const NetworkId &netid, AbstractTreeItem *parent = 0);
-
-  virtual quint64 id() const;
-  virtual QVariant data(int column, int row) const;
-
-  bool isActive() const;
-
-  inline const NetworkId &networkId() const { return _networkId; }
-  QString networkName() const;
-  QString currentServer() const;
-  int nickCount() const;
-
-  virtual QString toolTip(int column) const;
-
-public slots:
-  void setNetworkName(const QString &networkName);
-  void setCurrentServer(const QString &serverName);
-
-  void attachNetwork(Network *network);
-  void attachIrcChannel(const QString &channelName);
-
-private:
-  NetworkId _networkId;
-
-  QPointer<Network> _network;
 };
 
 /*****************************************

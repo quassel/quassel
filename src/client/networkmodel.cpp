@@ -33,6 +33,119 @@
 #include "util.h" // get rid of this (needed for isChannelName)
 
 /*****************************************
+*  Network Items
+*****************************************/
+NetworkItem::NetworkItem(const NetworkId &netid, AbstractTreeItem *parent)
+  : PropertyMapItem(QList<QString>() << "networkName" << "currentServer" << "nickCount", parent),
+    _networkId(netid)
+{
+  setFlags(Qt::ItemIsEnabled);
+}
+
+QVariant NetworkItem::data(int column, int role) const {
+  switch(role) {
+  case NetworkModel::NetworkIdRole:
+    return qVariantFromValue(_networkId);
+  case NetworkModel::ItemTypeRole:
+    return NetworkModel::NetworkItemType;
+  case NetworkModel::ItemActiveRole:
+    return isActive();
+  default:
+    return PropertyMapItem::data(column, role);
+  }
+}
+
+quint64 NetworkItem::id() const {
+  return qHash(_networkId);
+}
+
+bool NetworkItem::isActive() const {
+  if(_network)
+    return _network->isConnected();
+  else
+    return false;
+}
+
+QString NetworkItem::networkName() const {
+  if(_network)
+    return _network->networkName();
+  else
+    return QString();
+}
+
+QString NetworkItem::currentServer() const {
+  if(_network)
+    return _network->currentServer();
+  else
+    return QString();
+}
+
+int NetworkItem::nickCount() const {
+  if(_network)
+    return _network->ircUsers().count();
+  else
+    return 0;
+}
+
+void NetworkItem::attachNetwork(Network *network) {
+  if(!network)
+    return;
+  
+  _network = network;
+
+  connect(network, SIGNAL(networkNameSet(QString)),
+	  this, SLOT(setNetworkName(QString)));
+  connect(network, SIGNAL(currentServerSet(QString)),
+	  this, SLOT(setCurrentServer(QString)));
+  connect(network, SIGNAL(ircChannelAdded(QString)),
+	  this, SLOT(attachIrcChannel(QString)));
+  connect(network, SIGNAL(connectedSet(bool)),
+	  this, SIGNAL(dataChanged()));
+  connect(network, SIGNAL(destroyed()),
+	  this, SIGNAL(dataChanged()));
+  
+  emit dataChanged();
+}
+
+void NetworkItem::attachIrcChannel(const QString &channelName) {
+  IrcChannel *ircChannel = _network->ircChannel(channelName);
+  if(!ircChannel) {
+    qWarning() << "NetworkItem::attachIrcChannel(): unkown Channel" << channelName;
+    return;
+  }
+  
+  BufferItem *bufferItem;
+  for(int i = 0; i < childCount(); i++) {
+    bufferItem = qobject_cast<BufferItem *>(child(i));
+    if(bufferItem->bufferName().toLower() == ircChannel->name().toLower()) {
+      bufferItem->attachIrcChannel(ircChannel);
+      break;
+    }
+  }
+}
+
+void NetworkItem::setNetworkName(const QString &networkName) {
+  Q_UNUSED(networkName);
+  emit dataChanged(0);
+}
+
+void NetworkItem::setCurrentServer(const QString &serverName) {
+  Q_UNUSED(serverName);
+  emit dataChanged(1);
+}
+
+
+QString NetworkItem::toolTip(int column) const {
+  Q_UNUSED(column);
+
+  QStringList toolTip(QString("<b>%1</b>").arg(networkName()));
+  toolTip.append(QString("Server: %1").arg(currentServer()));
+  toolTip.append(QString("Users: %1").arg(nickCount()));
+
+  return QString("<p> %1 </p>").arg(toolTip.join("<br />"));
+}
+
+/*****************************************
 *  Fancy Buffer Items
 *****************************************/
 BufferItem::BufferItem(BufferInfo bufferInfo, AbstractTreeItem *parent)
@@ -362,119 +475,6 @@ QDateTime BufferItem::lastSeen() {
   return _lastSeen;
 }
 */
-
-/*****************************************
-*  Network Items
-*****************************************/
-NetworkItem::NetworkItem(const NetworkId &netid, AbstractTreeItem *parent)
-  : PropertyMapItem(QList<QString>() << "networkName" << "currentServer" << "nickCount", parent),
-    _networkId(netid)
-{
-  setFlags(Qt::ItemIsEnabled);
-}
-
-QVariant NetworkItem::data(int column, int role) const {
-  switch(role) {
-  case NetworkModel::NetworkIdRole:
-    return qVariantFromValue(_networkId);
-  case NetworkModel::ItemTypeRole:
-    return NetworkModel::NetworkItemType;
-  case NetworkModel::ItemActiveRole:
-    return isActive();
-  default:
-    return PropertyMapItem::data(column, role);
-  }
-}
-
-quint64 NetworkItem::id() const {
-  return qHash(_networkId);
-}
-
-bool NetworkItem::isActive() const {
-  if(_network)
-    return _network->isConnected();
-  else
-    return false;
-}
-
-QString NetworkItem::networkName() const {
-  if(_network)
-    return _network->networkName();
-  else
-    return QString();
-}
-
-QString NetworkItem::currentServer() const {
-  if(_network)
-    return _network->currentServer();
-  else
-    return QString();
-}
-
-int NetworkItem::nickCount() const {
-  if(_network)
-    return _network->ircUsers().count();
-  else
-    return 0;
-}
-
-void NetworkItem::attachNetwork(Network *network) {
-  if(!network)
-    return;
-  
-  _network = network;
-
-  connect(network, SIGNAL(networkNameSet(QString)),
-	  this, SLOT(setNetworkName(QString)));
-  connect(network, SIGNAL(currentServerSet(QString)),
-	  this, SLOT(setCurrentServer(QString)));
-  connect(network, SIGNAL(ircChannelAdded(QString)),
-	  this, SLOT(attachIrcChannel(QString)));
-  connect(network, SIGNAL(connectedSet(bool)),
-	  this, SIGNAL(dataChanged()));
-  connect(network, SIGNAL(destroyed()),
-	  this, SIGNAL(dataChanged()));
-  
-  emit dataChanged();
-}
-
-void NetworkItem::attachIrcChannel(const QString &channelName) {
-  IrcChannel *ircChannel = _network->ircChannel(channelName);
-  if(!ircChannel) {
-    qWarning() << "NetworkItem::attachIrcChannel(): unkown Channel" << channelName;
-    return;
-  }
-  
-  BufferItem *bufferItem;
-  for(int i = 0; i < childCount(); i++) {
-    bufferItem = qobject_cast<BufferItem *>(child(i));
-    if(bufferItem->bufferName().toLower() == ircChannel->name().toLower()) {
-      bufferItem->attachIrcChannel(ircChannel);
-      break;
-    }
-  }
-}
-
-void NetworkItem::setNetworkName(const QString &networkName) {
-  Q_UNUSED(networkName);
-  emit dataChanged(0);
-}
-
-void NetworkItem::setCurrentServer(const QString &serverName) {
-  Q_UNUSED(serverName);
-  emit dataChanged(1);
-}
-
-
-QString NetworkItem::toolTip(int column) const {
-  Q_UNUSED(column);
-
-  QStringList toolTip(QString("<b>%1</b>").arg(networkName()));
-  toolTip.append(QString("Server: %1").arg(currentServer()));
-  toolTip.append(QString("Users: %1").arg(nickCount()));
-
-  return QString("<p> %1 </p>").arg(toolTip.join("<br />"));
-}
 
 
 /*****************************************
