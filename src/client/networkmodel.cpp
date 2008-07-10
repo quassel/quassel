@@ -104,6 +104,7 @@ QVariant BufferItem::data(int column, int role) const {
 }
 
 bool BufferItem::setData(int column, const QVariant &value, int role) {
+  qDebug() << "BufferItem::setData(int column, const QVariant &value, int role):" << this << column << value << role;
   switch(role) {
   case NetworkModel::BufferActivityRole:
     setActivityLevel((Buffer::ActivityLevel)value.toInt());
@@ -213,10 +214,14 @@ void BufferItem::addUsersToCategory(const QList<IrcUser *> &ircUsers) {
   Q_ASSERT(_ircChannel);
 
   QHash<UserCategoryItem *, QList<IrcUser *> > categories;
+
+  int categoryId = -1;
+  UserCategoryItem *categoryItem = 0;
+  
   foreach(IrcUser *ircUser, ircUsers) {
-    UserCategoryItem *categoryItem;
-    int categoryId = UserCategoryItem::categoryFromModes(_ircChannel->userModes(ircUser));
-    if(!(categoryItem = qobject_cast<UserCategoryItem *>(childById(qHash(categoryId))))) {
+    categoryId = UserCategoryItem::categoryFromModes(_ircChannel->userModes(ircUser));
+    categoryItem = qobject_cast<UserCategoryItem *>(childById(qHash(categoryId)));
+    if(!categoryItem) {
       categoryItem = new UserCategoryItem(categoryId, this);
       categories[categoryItem] = QList<IrcUser *>();
       newChild(categoryItem);
@@ -250,39 +255,42 @@ void BufferItem::removeUserFromCategory(IrcUser *ircUser) {
     return;
   }
 
-  bool success = false;
   UserCategoryItem *categoryItem = 0;
   for(int i = 0; i < childCount(); i++) {
     categoryItem = qobject_cast<UserCategoryItem *>(child(i));
-    if((success = categoryItem->removeUser(ircUser))) {
+    if(categoryItem->removeUser(ircUser)) {
       if(categoryItem->childCount() == 0)
 	removeChild(i);
       break;
     }
   }
-
-//   if(!success) {
-//     qDebug() << "didn't find User:" << ircUser << qHash(ircUser);
-//     qDebug() << "==== Childlist for Item:" << this << id() << bufferName() << "====";
-//     for(int i = 0; i < childCount(); i++) {
-//       categoryItem = qobject_cast<UserCategoryItem *>(child(i));
-//       categoryItem->dumpChildList();
-//     }
-//     qDebug() << "==== End Of Childlist for Item:" << this << id() << bufferName() << "====";
-//   }
-//   Q_ASSERT(success);
 }
 
 void BufferItem::userModeChanged(IrcUser *ircUser) {
   Q_ASSERT(_ircChannel);
 
-  UserCategoryItem *categoryItem;
   int categoryId = UserCategoryItem::categoryFromModes(_ircChannel->userModes(ircUser));
-  if((categoryItem = qobject_cast<UserCategoryItem *>(childById(qHash(categoryId)))) && categoryItem->childById(qHash(ircUser)))
+  UserCategoryItem *categoryItem = qobject_cast<UserCategoryItem *>(childById(qHash(categoryId)));
+    
+  if(categoryItem && categoryItem->childById(qHash(ircUser)))
     return; // already in the right category;
-  
-  removeUserFromCategory(ircUser);
-  addUserToCategory(ircUser);
+
+  // find the item that needs reparenting
+  IrcUserItem *ircUserItem = 0;
+  for(int i = 0; i < childCount(); i++) {
+    UserCategoryItem *categoryItem = qobject_cast<UserCategoryItem *>(child(i));
+    IrcUserItem *userItem = qobject_cast<IrcUserItem *>(categoryItem->childById(qHash(ircUser)));
+    if(userItem) {
+      ircUserItem = userItem;
+      break;
+    }
+  }
+
+  if(!ircUserItem) {
+    qWarning() << "BufferItem::userModeChanged(IrcUser *): unable to determine old category of" << ircUser;
+    return;
+  }
+  ircUserItem->reParent(categoryItem);
 }
 
 QString BufferItem::toolTip(int column) const {
@@ -354,6 +362,7 @@ QDateTime BufferItem::lastSeen() {
   return _lastSeen;
 }
 */
+
 /*****************************************
 *  Network Items
 *****************************************/
@@ -479,7 +488,6 @@ UserCategoryItem::UserCategoryItem(int category, AbstractTreeItem *parent)
   : PropertyMapItem(QStringList() << "categoryName", parent),
     _category(category)
 {
-
 }
 
 // caching this makes no sense, since we display the user number dynamically
@@ -504,10 +512,14 @@ void UserCategoryItem::addUsers(const QList<IrcUser *> &ircUsers) {
   foreach(IrcUser *ircUser, ircUsers)
     userItems << new IrcUserItem(ircUser, this);
   newChilds(userItems);
+  emit dataChanged(0);
 }
 
 bool UserCategoryItem::removeUser(IrcUser *ircUser) {
-  return removeChildById(qHash(ircUser));
+  bool success = removeChildById(qHash(ircUser));
+  if(success)
+    emit dataChanged(0);
+  return success;
 }
 
 int UserCategoryItem::categoryFromModes(const QString &modes) {

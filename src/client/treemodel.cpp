@@ -131,6 +131,31 @@ void AbstractTreeItem::removeAllChilds() {
   emit endRemoveChilds();
 }
 
+bool AbstractTreeItem::reParent(AbstractTreeItem *newParent) {
+  // currently we support only re parenting if the child that's about to be
+  // adopted does not have any children itself.
+  if(childCount() != 0) {
+    qDebug() << "AbstractTreeItem::reParent(): cannot reparent"  << this << "with children.";
+    return false;
+  }
+
+  int oldRow = row();
+  if(oldRow == -1)
+    return false;
+  
+  emit parent()->beginRemoveChilds(oldRow, oldRow);
+  parent()->_childItems.removeAt(oldRow);
+  emit parent()->endRemoveChilds();
+
+  setParent(newParent);
+
+  bool success = newParent->newChild(this);
+  if(!success)
+    qWarning() << "AbstractTreeItem::reParent(): failed to attach to new parent after removing from old parent! this:" << this << "new parent:" << newParent;
+
+  return success;
+}
+
 AbstractTreeItem *AbstractTreeItem::child(int row) const {
   if(childCount() <= row)
     return 0;
@@ -155,10 +180,15 @@ int AbstractTreeItem::childCount(int column) const {
 }
 
 int AbstractTreeItem::row() const {
-  if(!parent())
+  if(!parent()) {
+    qWarning() << "AbstractTreeItem::row():" << this << "has no parent AbstractTreeItem as it's parent! parent is" << QObject::parent();
     return -1;
-  else
-    return parent()->_childItems.indexOf(const_cast<AbstractTreeItem *>(this));
+  }
+  
+  int row_ = parent()->_childItems.indexOf(const_cast<AbstractTreeItem *>(this));
+  if(row_ == -1)
+    qWarning() << "AbstractTreeItem::row():" << this << "is not in the child list of" << QObject::parent();
+  return row_;
 }
 
 AbstractTreeItem *AbstractTreeItem::parent() const {

@@ -49,6 +49,8 @@ public:
 
   virtual quint64 id() const;
 
+  bool reParent(AbstractTreeItem *newParent);
+    
   AbstractTreeItem *child(int row) const;
   AbstractTreeItem *childById(const quint64 &id) const;
 
