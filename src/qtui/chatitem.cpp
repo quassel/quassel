@@ -60,9 +60,8 @@ int ChatItem::heightForWidth(int width) {
     return fontMetrics()->lineSpacing(); // only contents can be multi-line
 
   _lines = 1;
-  QTextLine line;
   WrapColumnFinder finder(this);
-  while(finder.nextWrapColumn(line) > 0) _lines++;
+  while(finder.nextWrapColumn() > 0) _lines++;
   return _lines * fontMetrics()->lineSpacing();
 }
 
@@ -79,25 +78,23 @@ ChatItem::WrapColumnFinder::~WrapColumnFinder() {
   delete layout;
 }
 
-int ChatItem::WrapColumnFinder::nextWrapColumn(QTextLine &line) {
+int ChatItem::WrapColumnFinder::nextWrapColumn() {
   while(wordidx < wrapList.count()) {
     w += wrapList.at(wordidx).width;
     if(w >= item->width()) {
-      if(lastwrapcol == wrapList.at(wordidx).start) {
+      if(lastwrapcol >= wrapList.at(wordidx).start) {
         // first word, and it doesn't fit
         if(!line.isValid()) {
-          layout = item->createLayout();
+          layout = item->createLayout(QTextOption::NoWrap);
           layout->beginLayout();
           line = layout->createLine();
           line.setLineWidth(item->width());
           layout->endLayout();
         }
-        int idx = line.xToCursor((line.textStart() ? 0 : lastwrappos) + item->width());
+        int idx = line.xToCursor(lastwrappos + item->width());
         qreal x = line.cursorToX(idx);
-        idx += line.textStart();
-        w = w - x - wrapList.at(wordidx).width;
-        if(line.textStart()) lastwrappos += x;
-        else lastwrappos = x;
+        w = w - wrapList.at(wordidx).width - (x - lastwrappos);
+        lastwrappos = x;
         lastwrapcol = idx;
         return idx;
       }
@@ -113,11 +110,11 @@ int ChatItem::WrapColumnFinder::nextWrapColumn(QTextLine &line) {
   return -1;
 }
 
-QTextLayout *ChatItem::createLayout() {
+QTextLayout *ChatItem::createLayout(QTextOption::WrapMode wrapMode) {
   QTextLayout *layout = new QTextLayout(data(MessageModel::DisplayRole).toString());
 
   QTextOption option;
-  option.setWrapMode(QTextOption::WrapAnywhere);
+  option.setWrapMode(wrapMode);
   layout->setTextOption(option);
 
   QList<QTextLayout::FormatRange> formatRanges
@@ -127,7 +124,7 @@ QTextLayout *ChatItem::createLayout() {
 }
 
 void ChatItem::updateLayout() {
-  if(!haveLayout()) _layout = createLayout();
+  if(!haveLayout()) _layout = createLayout(QTextOption::WrapAnywhere);
 
   // Now layout
   ChatLineModel::WrapList wrapList = data(ChatLineModel::WrapListRole).value<ChatLineModel::WrapList>();
@@ -143,7 +140,7 @@ void ChatItem::updateLayout() {
     if (!line.isValid())
       break;
 
-    int col = finder.nextWrapColumn(line);
+    int col = finder.nextWrapColumn();
     line.setNumColumns(col >= 0 ? col - line.textStart() : _layout->text().length());
 
     h += fontMetrics()->leading();

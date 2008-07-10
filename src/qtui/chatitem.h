@@ -65,7 +65,7 @@ class ChatItem : public QGraphicsItem {
 
   private:
     int heightForWidth(int width);
-    QTextLayout *createLayout();
+    QTextLayout *createLayout(QTextOption::WrapMode);
 
     QRectF _boundingRect;
     QFontMetricsF *_fontMetrics;
@@ -85,12 +85,12 @@ class ChatItem::WrapColumnFinder {
     WrapColumnFinder(ChatItem *parent);
     ~WrapColumnFinder();
 
-    int nextWrapColumn(QTextLine &line);
+    int nextWrapColumn();
 
   private:
     ChatItem *item;
     QTextLayout *layout;
-    QTextLine *line;
+    QTextLine line;
     ChatLineModel::WrapList wrapList;
     int wordidx;
     int lastwrapcol;
