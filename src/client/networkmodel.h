@@ -33,12 +33,13 @@ class BufferInfo;
 #include "selectionmodelsynchronizer.h"
 #include "modelpropertymapper.h"
 #include "clientsettings.h"
+#include "ircchannel.h"
 #include "ircuser.h"
+#include "network.h"
 
 class MappedSelectionModel;
 class QAbstractItemView;
-class Network;
-class IrcChannel;
+class BufferItem;
 
 /*****************************************
  *  Network Items
@@ -52,24 +53,26 @@ class NetworkItem : public PropertyMapItem {
 public:
   NetworkItem(const NetworkId &netid, AbstractTreeItem *parent = 0);
 
-  virtual quint64 id() const;
+  virtual quint64 id() const { return qHash(_networkId); }
   virtual QVariant data(int column, int row) const;
 
-  bool isActive() const;
+  inline bool isActive() const { return (bool)_network ? _network->isConnected() : false; }
 
   inline const NetworkId &networkId() const { return _networkId; }
-  QString networkName() const;
-  QString currentServer() const;
-  int nickCount() const;
+  inline QString networkName() const { return (bool)_network ? _network->networkName() : QString(); }
+  inline QString currentServer() const { return (bool)_network ? _network->currentServer() : QString(); }
+  inline int nickCount() const { return (bool)_network ? _network->ircUsers().count() : 0; }
 
   virtual QString toolTip(int column) const;
+
+  BufferItem *bufferItem(const BufferInfo &bufferInfo);
 
 public slots:
   void setNetworkName(const QString &networkName);
   void setCurrentServer(const QString &serverName);
 
   void attachNetwork(Network *network);
-  void attachIrcChannel(const QString &channelName);
+  void attachIrcChannel(IrcChannel *channel);
 
 private:
   NetworkId _networkId;
@@ -87,26 +90,22 @@ class BufferItem : public PropertyMapItem {
   Q_PROPERTY(int nickCount READ nickCount)
 
 public:
-  BufferItem(BufferInfo bufferInfo, AbstractTreeItem *parent = 0);
+  BufferItem(const BufferInfo &bufferInfo, AbstractTreeItem *parent = 0);
 
   inline const BufferInfo &bufferInfo() const { return _bufferInfo; }
-  virtual quint64 id() const;
+  virtual inline quint64 id() const { return qHash(_bufferInfo.bufferId()); }
   virtual QVariant data(int column, int role) const;
   virtual bool setData(int column, const QVariant &value, int role);
 
-  void attachIrcChannel(IrcChannel *ircChannel);
-
-  QString bufferName() const;
   inline BufferId bufferId() const { return _bufferInfo.bufferId(); }
   inline BufferInfo::Type bufferType() const { return _bufferInfo.type(); }
 
   void setBufferName(const QString &name);
-  QString topic() const;
-  int nickCount() const;
+  virtual inline QString bufferName() const { return _bufferInfo.bufferName(); }
+  virtual inline QString topic() const { return QString(); }
+  virtual inline int nickCount() const { return 0; }
 
-  // bool isStatusBuffer() const;
-
-  bool isActive() const;
+  virtual inline bool isActive() const { return qobject_cast<NetworkItem *>(parent())->isActive(); }
 
   inline Buffer::ActivityLevel activityLevel() const { return _activity; }
   void setActivityLevel(Buffer::ActivityLevel level);
@@ -119,7 +118,56 @@ public:
   virtual QString toolTip(int column) const;
 
 public slots:
-  void setTopic(const QString &topic);
+  virtual inline void setTopic(const QString &) { emit dataChanged(1); }
+
+private:
+  BufferInfo _bufferInfo;
+  Buffer::ActivityLevel _activity;
+};
+
+/*****************************************
+*  StatusBufferItem
+*****************************************/
+class StatusBufferItem : public BufferItem {
+  Q_OBJECT
+
+public:
+  StatusBufferItem(const BufferInfo &bufferInfo, NetworkItem *parent);
+
+  virtual QString toolTip(int column) const;
+  virtual inline QString bufferName() const { return tr("Status Buffer"); }
+};
+
+/*****************************************
+*  QueryBufferItem
+*****************************************/
+class QueryBufferItem : public BufferItem {
+  Q_OBJECT
+
+public:
+  QueryBufferItem(const BufferInfo &bufferInfo, NetworkItem *parent);
+
+  virtual QString toolTip(int column) const;
+};
+
+/*****************************************
+*  ChannelBufferItem
+*****************************************/
+class ChannelBufferItem : public BufferItem {
+  Q_OBJECT
+
+public:
+  ChannelBufferItem(const BufferInfo &bufferInfo, AbstractTreeItem *parent);
+
+  virtual inline bool isActive() const { return (bool)_ircChannel; }
+  virtual QString toolTip(int column) const;
+
+  virtual inline QString topic() const { return (bool)_ircChannel ? _ircChannel->topic() : QString(); }
+  virtual inline int nickCount() const { return (bool)_ircChannel ? _ircChannel->ircUsers().count() : 0; }
+  
+  void attachIrcChannel(IrcChannel *ircChannel);
+
+public slots:
   void join(const QList<IrcUser *> &ircUsers);
   void part(IrcUser *ircUser);
 
@@ -133,10 +181,6 @@ private slots:
   void ircUserDestroyed();
 
 private:
-  BufferInfo _bufferInfo;
-  QString _bufferName;
-  Buffer::ActivityLevel _activity;
-
   IrcChannel *_ircChannel;
 };
 
