@@ -39,7 +39,7 @@ class ChatLineModelItem : public MessageModelItem {
 
   private:
     void computeWrapList();
-s
+
     struct ChatLinePart {
       QString plainText;
       UiStyle::FormatList formatList;
