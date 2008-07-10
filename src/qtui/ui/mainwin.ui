@@ -193,6 +193,9 @@
    <property name="shortcut" >
     <string>F7</string>
    </property>
+   <property name="menuRole" >
+    <enum>QAction::PreferencesRole</enum>
+   </property>
   </action>
   <action name="actionManageViews2" >
    <property name="enabled" >
@@ -210,6 +213,9 @@
    <property name="text" >
     <string>About Qt...</string>
    </property>
+   <property name="menuRole" >
+    <enum>QAction::AboutQtRole</enum>
+   </property>
   </action>
   <action name="actionAboutQuassel" >
    <property name="enabled" >
@@ -221,6 +227,9 @@
    </property>
    <property name="text" >
     <string>About Quassel IRC...</string>
+   </property>
+   <property name="menuRole" >
+    <enum>QAction::AboutRole</enum>
    </property>
   </action>
   <action name="actionImportBacklog" >
