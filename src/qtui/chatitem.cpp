@@ -65,51 +65,6 @@ int ChatItem::heightForWidth(int width) {
   return _lines * fontMetrics()->lineSpacing();
 }
 
-ChatItem::WrapColumnFinder::WrapColumnFinder(ChatItem *_item) : item(_item) {
-  wrapList = item->data(ChatLineModel::WrapListRole).value<ChatLineModel::WrapList>();
-  wordidx = 0;
-  layout = 0;
-  lastwrapcol = 0;
-  lastwrappos = 0;
-  w = 0;
-}
-
-ChatItem::WrapColumnFinder::~WrapColumnFinder() {
-  delete layout;
-}
-
-int ChatItem::WrapColumnFinder::nextWrapColumn() {
-  while(wordidx < wrapList.count()) {
-    w += wrapList.at(wordidx).width;
-    if(w >= item->width()) {
-      if(lastwrapcol >= wrapList.at(wordidx).start) {
-        // first word, and it doesn't fit
-        if(!line.isValid()) {
-          layout = item->createLayout(QTextOption::NoWrap);
-          layout->beginLayout();
-          line = layout->createLine();
-          line.setLineWidth(item->width());
-          layout->endLayout();
-        }
-        int idx = line.xToCursor(lastwrappos + item->width(), QTextLine::CursorOnCharacter);
-        qreal x = line.cursorToX(idx, QTextLine::Trailing);
-        w = w - wrapList.at(wordidx).width - (x - lastwrappos);
-        lastwrappos = x;
-        lastwrapcol = idx;
-        return idx;
-      }
-      // not the first word, so just wrap before this
-      lastwrapcol = wrapList.at(wordidx).start;
-      lastwrappos = lastwrappos + w - wrapList.at(wordidx).width;
-      w = 0;
-      return lastwrapcol;
-    }
-    w += wrapList.at(wordidx).trailing;
-    wordidx++;
-  }
-  return -1;
-}
-
 QTextLayout *ChatItem::createLayout(QTextOption::WrapMode wrapMode) {
   QTextLayout *layout = new QTextLayout(data(MessageModel::DisplayRole).toString());
 
@@ -181,3 +136,50 @@ void ChatItem::mouseMoveEvent ( QGraphicsSceneMouseEvent * event ) {
   } else QGraphicsTextItem::mouseMoveEvent(event);
 }
 */
+
+/*************************************************************************************************/
+
+ChatItem::WrapColumnFinder::WrapColumnFinder(ChatItem *_item) : item(_item) {
+  wrapList = item->data(ChatLineModel::WrapListRole).value<ChatLineModel::WrapList>();
+  wordidx = 0;
+  layout = 0;
+  lastwrapcol = 0;
+  lastwrappos = 0;
+  w = 0;
+}
+
+ChatItem::WrapColumnFinder::~WrapColumnFinder() {
+  delete layout;
+}
+
+int ChatItem::WrapColumnFinder::nextWrapColumn() {
+  while(wordidx < wrapList.count()) {
+    w += wrapList.at(wordidx).width;
+    if(w >= item->width()) {
+      if(lastwrapcol >= wrapList.at(wordidx).start) {
+        // first word, and it doesn't fit
+        if(!line.isValid()) {
+          layout = item->createLayout(QTextOption::NoWrap);
+          layout->beginLayout();
+          line = layout->createLine();
+          line.setLineWidth(item->width());
+          layout->endLayout();
+        }
+        int idx = line.xToCursor(lastwrappos + item->width(), QTextLine::CursorOnCharacter);
+        qreal x = line.cursorToX(idx, QTextLine::Trailing);
+        w = w - wrapList.at(wordidx).width - (x - lastwrappos);
+        lastwrappos = x;
+        lastwrapcol = idx;
+        return idx;
+      }
+      // not the first word, so just wrap before this
+      lastwrapcol = wrapList.at(wordidx).start;
+      lastwrappos = lastwrappos + w - wrapList.at(wordidx).width;
+      w = 0;
+      return lastwrapcol;
+    }
+    w += wrapList.at(wordidx).trailing;
+    wordidx++;
+  }
+  return -1;
+}
