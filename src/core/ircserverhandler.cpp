@@ -432,14 +432,16 @@ void IrcServerHandler::handle001(const QString &prefix, const QList<QByteArray> 
 void IrcServerHandler::handle005(const QString &prefix, const QList<QByteArray> &params) {
   Q_UNUSED(prefix);
   const int numParams = params.size();
-  if(numParams < 1) {
-    qWarning() << "IrcServerHandler::handle005(): received RPL_ISUPPORT (005) with too few parameters:" << serverDecode(params);
+  if(numParams == 0) {
+    emit displayMsg(Message::Error, BufferInfo::StatusBuffer, "", tr("Received RPL_ISUPPORT (005) without parameters!"), prefix);
+    return;
   }
 
+  emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", serverDecode(params).join(" "), prefix);
+
   QString rpl_isupport_suffix = serverDecode(params.last());
-  if(!rpl_isupport_suffix.toLower().contains("supported")) {
-    qWarning() << "Received invalid RPL_ISUPPORT! Suffix is:" << rpl_isupport_suffix << "Excpected: are supported by this server";
-    return;
+  if(!rpl_isupport_suffix.toLower().contains("are supported by this server")) {
+    emit displayMsg(Message::Error, BufferInfo::StatusBuffer, "", tr("Received non RFC compliant RPL_ISUPPORT: this can lead to unexpected behavior!"), prefix);
   }
 
   QString rawSupport;
