@@ -204,6 +204,7 @@ public slots:
 
   inline void addIrcUser(const QString &hostmask) { newIrcUser(hostmask); }
   inline void addIrcChannel(const QString &channel) { newIrcChannel(channel); }
+  void removeDeletedIrcUser(const QString &username);
   void removeIrcUser(const QString &nick);
   void removeIrcChannel(const QString &channel);
 
@@ -274,6 +275,7 @@ signals:
   void ircChannelAdded(const QString &channelname);
   void ircChannelAdded(IrcChannel *);
 
+  void deletedIrcUserRemoved(const QString &username);
   void ircUserRemoved(const QString &nick);
   void ircChannelRemoved(const QString &channel);
 
