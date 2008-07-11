@@ -50,34 +50,37 @@ void TabCompleter::buildCompletionList() {
     return;
   
   NetworkId networkId = currentIndex.data(NetworkModel::NetworkIdRole).value<NetworkId>();
-  QString channelName = currentIndex.sibling(currentIndex.row(), 0).data().toString();
+  QString bufferName = currentIndex.sibling(currentIndex.row(), 0).data().toString();
 
   const Network *network = Client::network(networkId);
   if(!network)
     return;
 
-  IrcChannel *channel = network->ircChannel(channelName);
-  if(!channel)
-    return;
-
-  // FIXME commented for debugging
-  /*
-  disconnect(this, SLOT(ircUserJoinedOrParted(IrcUser *)));
-  connect(channel, SIGNAL(ircUserJoined(IrcUser *)),
-	  this, SLOT(ircUserJoinedOrParted(IrcUser *)));
-  connect(channel, SIGNAL(ircUserParted(IrcUser *)),
-	  this, SLOT(ircUserJoinedOrParted(IrcUser *)));
-  */
 
   QString tabAbbrev = inputLine->text().left(inputLine->cursorPosition()).section(' ',-1,-1);
   QRegExp regex(QString("^[^a-zA-Z]*").append(QRegExp::escape(tabAbbrev)), Qt::CaseInsensitive);
 
-  foreach(IrcUser *ircUser, channel->ircUsers()) {
-    if(regex.indexIn(ircUser->nick()) > -1) {
-      completionMap[ircUser->nick().toLower()] = ircUser->nick();
+  switch(static_cast<BufferInfo::Type>(currentIndex.data(NetworkModel::BufferTypeRole).toInt())) {
+  case BufferInfo::ChannelBuffer:
+    IrcChannel *channel = network->ircChannel(bufferName);
+    if(!channel)
+      return;
+    foreach(IrcUser *ircUser, channel->ircUsers()) {
+      if(regex.indexIn(ircUser->nick()) > -1)
+	completionMap[ircUser->nick().toLower()] = ircUser->nick();
     }
+    break;
+  case BufferInfo::QueryBuffer:
+    if(regex.indexIn(bufferName) > -1)
+      completionMap[bufferName.toLower()] = bufferName;
+  case BufferInfo::StatusBuffer:
+    if(!network->myNick().isEmpty() && regex.indexIn(network->myNick()) > -1)
+      completionMap[network->myNick().toLower()] = network->myNick();
+    break;
+  default:
+    return;
   }
-
+  
   nextCompletion = completionMap.begin();
   lastCompletionLength = tabAbbrev.length();
 }
