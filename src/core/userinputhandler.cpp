@@ -57,13 +57,16 @@ void UserInputHandler::handleAway(const BufferInfo &bufferInfo, const QString &m
   Q_UNUSED(bufferInfo)
 
   QString awayMsg = msg;
+  IrcUser *me = network()->me();
+
   // if there is no message supplied we have to check if we are already away or not
   if(msg.isEmpty()) {
-    IrcUser *me = network()->me();
     if(me && !me->isAway())
       awayMsg = networkConnection()->identity()->awayReason();
   }
-
+  if(me)
+    me->setAwayMessage(awayMsg);
+  
   putCmd("AWAY", serverEncode(awayMsg));
 }
 
