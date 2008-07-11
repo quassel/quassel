@@ -62,12 +62,14 @@ void TabCompleter::buildCompletionList() {
 
   switch(static_cast<BufferInfo::Type>(currentIndex.data(NetworkModel::BufferTypeRole).toInt())) {
   case BufferInfo::ChannelBuffer:
-    IrcChannel *channel = network->ircChannel(bufferName);
-    if(!channel)
-      return;
-    foreach(IrcUser *ircUser, channel->ircUsers()) {
-      if(regex.indexIn(ircUser->nick()) > -1)
-	completionMap[ircUser->nick().toLower()] = ircUser->nick();
+    { // scope is needed for local var declaration
+      IrcChannel *channel = network->ircChannel(bufferName);
+      if(!channel)
+	return;
+      foreach(IrcUser *ircUser, channel->ircUsers()) {
+	if(regex.indexIn(ircUser->nick()) > -1)
+	  completionMap[ircUser->nick().toLower()] = ircUser->nick();
+      }
     }
     break;
   case BufferInfo::QueryBuffer:
