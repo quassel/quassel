@@ -108,8 +108,7 @@ void IrcServerHandler::handleServerMsg(QByteArray msg) {
 
 void IrcServerHandler::defaultHandler(QString cmd, const QString &prefix, const QList<QByteArray> &rawparams) {
   // we assume that all this happens in server encoding
-  QStringList params;
-  foreach(QByteArray r, rawparams) params << serverDecode(r);
+  QStringList params = serverDecode(rawparams);
   uint num = cmd.toUInt();
   if(num) {
     // A lot of server messages don't really need their own handler because they don't do much.
@@ -150,7 +149,12 @@ void IrcServerHandler::defaultHandler(QString cmd, const QString &prefix, const 
 
       // Everything else will be marked in red, so we can add them somewhere.
       default:
-        emit displayMsg(Message::Error, BufferInfo::StatusBuffer, "", cmd + " " + params.join(" "), prefix);
+	if(_whois) {
+	  // many nets define their own WHOIS fields. we fetch those not in need of special attention here:
+	  emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", "[Whois] " + params.join(" "), prefix);
+	} else {
+	  emit displayMsg(Message::Error, BufferInfo::StatusBuffer, "", cmd + " " + params.join(" "), prefix);
+	}
     }
     //qDebug() << prefix <<":"<<cmd<<params;
   } else {
