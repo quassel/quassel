@@ -426,8 +426,13 @@ void ChannelBufferItem::userModeChanged(IrcUser *ircUser) {
   int categoryId = UserCategoryItem::categoryFromModes(_ircChannel->userModes(ircUser));
   UserCategoryItem *categoryItem = qobject_cast<UserCategoryItem *>(childById(qHash(categoryId)));
     
-  if(categoryItem && categoryItem->childById(qHash(ircUser)))
-    return; // already in the right category;
+  if(categoryItem) {
+    if(categoryItem->childById(qHash(ircUser)))
+      return; // already in the right category;
+  } else {
+    categoryItem = new UserCategoryItem(categoryId, this);
+    newChild(categoryItem);
+  }
 
   // find the item that needs reparenting
   IrcUserItem *ircUserItem = 0;
