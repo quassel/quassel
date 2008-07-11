@@ -91,6 +91,7 @@ void ChatItem::updateLayout() {
         QTextLine line = _layout->createLine();
         if(line.isValid()) {
           line.setLineWidth(width());
+          line.setPosition(QPointF(0, fontMetrics()->leading()));
         }
         _layout->endLayout();
       }
@@ -130,13 +131,11 @@ void ChatItem::clearLayout() {
   _layout = 0;
 }
 
-//int ChatItem::findNextWrapColumn(
-
 void ChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
   Q_UNUSED(option); Q_UNUSED(widget);
   if(!haveLayout()) updateLayout();
   _layout->draw(painter, QPointF(0,0), QVector<QTextLayout::FormatRange>(), boundingRect());
-  painter->drawRect(boundingRect());
+  //painter->drawRect(boundingRect());
 
 }
 
