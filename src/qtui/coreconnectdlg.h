@@ -81,8 +81,6 @@ class CoreConnectDlg : public QDialog {
 
     void coreSessionProgress(quint32, quint32);
     void coreNetworksProgress(quint32, quint32);
-    void coreChannelsProgress(quint32, quint32);
-    void coreIrcUsersProgress(quint32, quint32);
 
   private:
     Ui::CoreConnectDlg ui;
