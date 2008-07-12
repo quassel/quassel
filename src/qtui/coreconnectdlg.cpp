@@ -76,8 +76,6 @@ CoreConnectDlg::CoreConnectDlg(QWidget *parent, bool autoconnect)
   connect(clientSyncer, SIGNAL(startCoreSetup(const QVariantList &)), this, SLOT(startCoreConfig(const QVariantList &)));
   connect(clientSyncer, SIGNAL(sessionProgress(quint32, quint32)), this, SLOT(coreSessionProgress(quint32, quint32)));
   connect(clientSyncer, SIGNAL(networksProgress(quint32, quint32)), this, SLOT(coreNetworksProgress(quint32, quint32)));
-  connect(clientSyncer, SIGNAL(channelsProgress(quint32, quint32)), this, SLOT(coreChannelsProgress(quint32, quint32)));
-  connect(clientSyncer, SIGNAL(ircUsersProgress(quint32, quint32)), this, SLOT(coreIrcUsersProgress(quint32, quint32)));
   connect(clientSyncer, SIGNAL(syncFinished()), this, SLOT(syncFinished()));
 
   connect(ui.user, SIGNAL(textChanged(const QString &)), this, SLOT(setLoginWidgetStates()));
@@ -396,10 +394,6 @@ void CoreConnectDlg::startSync() {
   ui.sessionProgress->setValue(0);
   ui.networksProgress->setRange(0, 1);
   ui.networksProgress->setValue(0);
-  ui.channelsProgress->setRange(0, 1);
-  ui.channelsProgress->setValue(0);
-  ui.ircUsersProgress->setRange(0, 1);
-  ui.ircUsersProgress->setValue(0);
 
   ui.stackedWidget->setCurrentWidget(ui.syncPage);
   // clean up old page
@@ -425,31 +419,6 @@ void CoreConnectDlg::coreNetworksProgress(quint32 val, quint32 max) {
     ui.networksProgress->setFormat("%v/%m");
     ui.networksProgress->setRange(0, max);
     ui.networksProgress->setValue(val);
-  }
-}
-
-void CoreConnectDlg::coreChannelsProgress(quint32 val, quint32 max) {
-  if(max == 0) {
-    ui.channelsProgress->setFormat("0/0");
-    ui.channelsProgress->setRange(0, 1);
-    ui.channelsProgress->setValue(1);
-  } else {
-    ui.channelsProgress->setFormat("%v/%m");
-    ui.channelsProgress->setRange(0, max);
-    ui.channelsProgress->setValue(val);
-  }
-}
-
-void CoreConnectDlg::coreIrcUsersProgress(quint32 val, quint32 max) {
-  if(max == 0) {
-    ui.ircUsersProgress->setFormat("0/0");
-    ui.ircUsersProgress->setRange(0, 1);
-    ui.ircUsersProgress->setValue(1);
-  } else {
-    if(val % 100) return;
-    ui.ircUsersProgress->setFormat("%v/%m");
-    ui.ircUsersProgress->setRange(0, max);
-    ui.ircUsersProgress->setValue(val);
   }
 }
 

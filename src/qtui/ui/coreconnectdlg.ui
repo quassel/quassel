@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>519</width>
-    <height>325</height>
+    <width>563</width>
+    <height>356</height>
    </rect>
   </property>
   <property name="sizePolicy" >
@@ -32,15 +32,15 @@
       </sizepolicy>
      </property>
      <property name="currentIndex" >
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="accountPage" >
       <property name="geometry" >
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>511</width>
-        <height>317</height>
+        <width>539</width>
+        <height>331</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" >
@@ -138,8 +138,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>511</width>
-        <height>317</height>
+        <width>539</width>
+        <height>332</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" >
@@ -249,8 +249,8 @@ space</string>
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>485</width>
-               <height>147</height>
+               <width>501</width>
+               <height>145</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" >
@@ -458,8 +458,8 @@ space</string>
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>511</width>
-        <height>317</height>
+        <width>539</width>
+        <height>332</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" >
@@ -512,49 +512,6 @@ space</string>
               </item>
               <item row="1" column="1" >
                <widget class="QProgressBar" name="networksProgress" >
-                <property name="maximum" >
-                 <number>1</number>
-                </property>
-                <property name="value" >
-                 <number>0</number>
-                </property>
-                <property name="format" >
-                 <string>0/0</string>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="0" >
-               <widget class="QLabel" name="label_4" >
-                <property name="text" >
-                 <string>Channel states:</string>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="1" >
-               <widget class="QProgressBar" name="channelsProgress" >
-                <property name="maximum" >
-                 <number>1</number>
-                </property>
-                <property name="value" >
-                 <number>0</number>
-                </property>
-                <property name="format" >
-                 <string>0/0</string>
-                </property>
-               </widget>
-              </item>
-              <item row="3" column="0" >
-               <widget class="QLabel" name="label_5" >
-                <property name="text" >
-                 <string>User states:</string>
-                </property>
-               </widget>
-              </item>
-              <item row="3" column="1" >
-               <widget class="QProgressBar" name="ircUsersProgress" >
-                <property name="minimum" >
-                 <number>0</number>
-                </property>
                 <property name="maximum" >
                  <number>1</number>
                 </property>

@@ -178,8 +178,6 @@ void ClientSyncer::coreSocketDisconnected() {
 
   coreConnectionInfo.clear();
   netsToSync.clear();
-  channelsToSync.clear();
-  usersToSync.clear();
   blockSize = 0;
   //restartPhaseNull();
 }
@@ -264,17 +262,15 @@ void ClientSyncer::syncToCore(const QVariantMap &sessionState) {
   // create buffers
   // FIXME: get rid of this crap
   QVariantList bufferinfos = sessionState["BufferInfos"].toList();
-  foreach(QVariant vinfo, bufferinfos) Client::buffer(vinfo.value<BufferInfo>());  // create Buffers and BufferItems
+  foreach(QVariant vinfo, bufferinfos)
+    Client::buffer(vinfo.value<BufferInfo>());  // create Buffers and BufferItems
 
   QVariantList networkids = sessionState["NetworkIds"].toList();
 
-  // prepare sync progress thingys... FIXME: Care about removal of networks
+  // prepare sync progress thingys...
+  // FIXME: Care about removal of networks
   numNetsToSync = networkids.count();
-  numChannelsToSync = 0; //sessionState["IrcChannelCount"].toUInt();
-  numUsersToSync = 0; // sessionState["IrcUserCount"].toUInt(); qDebug() << numUsersToSync;
   emit networksProgress(0, numNetsToSync);
-  emit channelsProgress(0, numChannelsToSync);
-  emit ircUsersProgress(0, numUsersToSync);
 
   // create network objects
   foreach(QVariant networkid, networkids) {
@@ -282,12 +278,6 @@ void ClientSyncer::syncToCore(const QVariantMap &sessionState) {
     Network *net = new Network(netid, Client::instance());
     netsToSync.insert(net);
     connect(net, SIGNAL(initDone()), this, SLOT(networkInitDone()));
-    connect(net, SIGNAL(ircUserInitDone(IrcUser *)), this, SLOT(ircUserInitDone(IrcUser *)));
-    connect(net, SIGNAL(ircUserAdded(IrcUser *)), this, SLOT(ircUserAdded(IrcUser *)));
-    connect(net, SIGNAL(ircUserRemoved(QObject *)), this, SLOT(ircUserRemoved(QObject *)));
-    connect(net, SIGNAL(ircChannelInitDone(IrcChannel *)), this, SLOT(ircChannelInitDone(IrcChannel *)));
-    connect(net, SIGNAL(ircChannelAdded(IrcChannel *)), this, SLOT(ircChannelAdded(IrcChannel *)));
-    connect(net, SIGNAL(ircChannelRemoved(QObject *)), this, SLOT(ircChannelRemoved(QObject *)));
     Client::addNetwork(net);
   }
   checkSyncState();
@@ -299,83 +289,10 @@ void ClientSyncer::networkInitDone() {
   checkSyncState();
 }
 
-void ClientSyncer::ircChannelInitDone(IrcChannel *chan) {
-  channelsToSync.remove(chan);
-  emit channelsProgress(numChannelsToSync - channelsToSync.count(), numChannelsToSync);
-  checkSyncState();
-}
-
-void ClientSyncer::ircChannelAdded(IrcChannel *chan) {
-  if(!chan->isInitialized()) {
-    channelsToSync.insert(chan);
-    numChannelsToSync++;
-    emit channelsProgress(numChannelsToSync - channelsToSync.count(), numChannelsToSync);
-    checkSyncState();
-  }
-}
-
-void ClientSyncer::ircChannelRemoved(QObject *chan) {
-  if(channelsToSync.contains(chan)) {
-    numChannelsToSync--;
-    channelsToSync.remove(chan);
-    emit channelsProgress(numChannelsToSync - channelsToSync.count(), numChannelsToSync);
-    checkSyncState();
-  }
-}
-
-void ClientSyncer::ircUserInitDone(IrcUser *user) {
-  usersToSync.remove(user);
-  emit ircUsersProgress(numUsersToSync - usersToSync.count(), numUsersToSync);
-  checkSyncState();
-}
-
-void ClientSyncer::ircUserAdded(IrcUser *user) {
-  if(!user->isInitialized()) {
-    usersToSync.insert(user);
-    numUsersToSync++;
-    emit ircUsersProgress(numUsersToSync - usersToSync.count(), numUsersToSync);
-    checkSyncState();
-  }
-}
-
-void ClientSyncer::ircUserRemoved(QObject *user) {
-  if(usersToSync.contains(user)) {
-    numUsersToSync--;
-    usersToSync.remove(user);
-    emit ircUsersProgress(numUsersToSync - usersToSync.count(), numUsersToSync);
-    checkSyncState();
-  }
-}
-
 void ClientSyncer::checkSyncState() {
-  if(usersToSync.count() + channelsToSync.count() + netsToSync.count() == 0) {
-    // done syncing!
-    /*
-    qDebug() << "done";
-    foreach(Network *net, _networks.values()) {
-      //disconnect(net, 0, this, SLOT(networkInitDone()));
-      //disconnect(net, 0, this, SLOT(ircUserInitDone(IrcUser *)));
-      //disconnect(net, 0, this, SLOT(ircUserAdded(IrcUser *)));
-      //disconnect(net, 0, this, SLOT(ircUserRemoved(QObject *)));
-      //disconnect(net, 0, this, SLOT(ircChannelInitDone(IrcChannel *)));
-      //disconnect(net, 0, this, SLOT(ircChannelAdded(IrcChannel *)));
-      //disconnect(net, 0, this, SLOT(ircChannelRemoved(QObject *)));
-      qDebug() << "disconnecting";
-      disconnect(net, SIGNAL(initDone()), this, SLOT(networkInitDone()));
-      disconnect(net, SIGNAL(ircUserInitDone(IrcUser *)), this, SLOT(ircUserInitDone(IrcUser *)));
-      disconnect(net, SIGNAL(ircUserAdded(IrcUser *)), this, SLOT(ircUserAdded(IrcUser *)));
-      disconnect(net, SIGNAL(ircUserRemoved(QObject *)), this, SLOT(ircUserRemoved(QObject *)));
-      disconnect(net, SIGNAL(ircChannelInitDone(IrcChannel *)), this, SLOT(ircChannelInitDone(IrcChannel *)));
-      disconnect(net, SIGNAL(ircChannelAdded(IrcChannel *)), this, SLOT(ircChannelAdded(IrcChannel *)));
-      disconnect(net, SIGNAL(ircChannelRemoved(QObject *)), this, SLOT(ircChannelRemoved(QObject *)));
-    }
-    */
-
+  if(netsToSync.isEmpty()) {
     Client::instance()->setSyncedToCore();
     emit syncFinished();
-    //emit connected();
-    //emit connectionStateChanged(true);
-
   }
 }
 

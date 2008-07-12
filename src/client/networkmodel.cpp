@@ -325,10 +325,8 @@ void ChannelBufferItem::attachIrcChannel(IrcChannel *ircChannel) {
   connect(ircChannel, SIGNAL(ircUserModeRemoved(IrcUser *, QString)),
 	  this, SLOT(userModeChanged(IrcUser *)));
 
-  if(!ircChannel->ircUsers().isEmpty()) {
-    qWarning() << "Channel" << ircChannel->name() << "has already users which is quite surprising :)";
+  if(!ircChannel->ircUsers().isEmpty())
     join(ircChannel->ircUsers());
-  }
   
   emit dataChanged();
 }

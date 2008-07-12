@@ -3,7 +3,7 @@
 
 //! This is the fallback version number in case we can't autogenerate one
 quasselBaseVersion = "0.3.0-pre";
-protocolVersion = 1;       //< Version of the client/core protocol
+protocolVersion = 2;       //< Version of the client/core protocol
 
-coreNeedsProtocol   = 1;   //< Minimum protocol version the core needs
-clientNeedsProtocol = 1;   //< Minimum protocol version the client needs
+coreNeedsProtocol   = 2;   //< Minimum protocol version the core needs
+clientNeedsProtocol = 2;   //< Minimum protocol version the client needs
