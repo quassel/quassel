@@ -208,36 +208,11 @@ void Network::ircUserDestroyed() {
   QHash<QString, IrcUser *>::iterator ircUserIter = _ircUsers.begin();
   while(ircUserIter != _ircUsers.end()) {
     if(ircUser == *ircUserIter) {
-      emit deletedIrcUserRemoved(ircUserIter.key());
       ircUserIter = _ircUsers.erase(ircUserIter);
       break;
     }
     ircUserIter++;
   }
-}
-
-void Network::removeDeletedIrcUser(const QString &username) {
-  // DO NOT CALL THIS SLOT EVER!!!
-  
-  // this slots purpose is only to remove deleted users that haven't been synced yet.
-  // Reason:
-  // as a user parting a channel results in it's deletion if it is no longer in any known channel
-  // this action can only be communicated if the slaves are allready in sync.
-  // so if such a deleted user isn't synced in slave mode, we kill and remove it.
-
-  Q_ASSERT(proxy());
-
-  if(!_ircUsers.contains(username))
-    return;
-
-  IrcUser *ircUser = _ircUsers[username];
-
-  if(ircUser->isInitialized())
-    return;
-
-  _ircUsers.remove(username);
-  emit ircUserRemoved(username);
-  emit ircUserRemoved(ircUser);
 }
 
 void Network::removeIrcUser(IrcUser *ircuser) {
