@@ -67,8 +67,8 @@ public:
 
   void synchronize(SyncableObject *obj);
 
-  void setInitialized(SyncableObject *obj);
-  bool isInitialized(SyncableObject *obj) const;
+//   void setInitialized(SyncableObject *obj);
+//   bool isInitialized(SyncableObject *obj) const;
   void requestInit(SyncableObject *obj);
 
   void detachObject(QObject *obj);

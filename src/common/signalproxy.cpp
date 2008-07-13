@@ -606,23 +606,27 @@ void SignalProxy::synchronize(SyncableObject *obj) {
 
   if(proxyMode() == Server) {
     connect(obj, SIGNAL(objectRenamed(QString, QString)), this, SLOT(objectRenamed(QString, QString)));
-    setInitialized(obj);
+    obj->setInitialized();
+    emit objectInitialized(obj);
   } else {
-    requestInit(obj);
+    if(obj->isInitialized())
+      emit objectInitialized(obj);
+    else
+      requestInit(obj);
   }
 }
 
-void SignalProxy::setInitialized(SyncableObject *obj) {
-  obj->setInitialized();
-  emit objectInitialized(obj);
-}
+// void SignalProxy::setInitialized(SyncableObject *obj) {
+//   obj->setInitialized();
+//   emit objectInitialized(obj);
+// }
 
-bool SignalProxy::isInitialized(SyncableObject *obj) const {
-  return obj->isInitialized();
-}
+// bool SignalProxy::isInitialized(SyncableObject *obj) const {
+//   return obj->isInitialized();
+// }
 
 void SignalProxy::requestInit(SyncableObject *obj) {
-  if(proxyMode() == Server || isInitialized(obj))
+  if(proxyMode() == Server || obj->isInitialized())
     return;
 
   QVariantList params;
@@ -1012,10 +1016,11 @@ QVariantMap SignalProxy::initData(SyncableObject *obj) const {
 }
 
 void SignalProxy::setInitData(SyncableObject *obj, const QVariantMap &properties) {
-  if(isInitialized(obj))
+  if(obj->isInitialized())
     return;
   obj->fromVariantMap(properties);
-  setInitialized(obj);
+  obj->setInitialized();
+  emit objectInitialized(obj);
   invokeSlot(obj, updatedRemotelyId(obj));
 }
 
