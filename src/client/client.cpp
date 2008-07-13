@@ -321,7 +321,7 @@ void Client::setSyncedToCore() {
 
   // create a new BufferViewManager
   _bufferViewManager = new BufferViewManager(signalProxy(), this);
-  
+
   _syncedToCore = true;
   emit connected();
   emit coreConnectionStateChanged(true);
@@ -335,7 +335,7 @@ void Client::disconnectFromCore() {
   if(!isConnected())
     return;
   _connectedToCore = false;
-  
+
   if(socket) {
     socket->close();
     socket->deleteLater();
@@ -460,7 +460,7 @@ void Client::layoutMsg() {
     layoutTimer->stop();
     return;
   }
-  
+
   Buffer *buffer = layoutQueue.takeFirst();
   if(buffer->layoutMsg()) {
     layoutQueue.append(buffer);  // Buffer has more messages in its queue --> Round Robin
