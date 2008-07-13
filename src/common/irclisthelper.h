@@ -36,7 +36,7 @@ class IrcListHelper : public SyncableObject {
   Q_OBJECT
 
 public:
-  inline IrcListHelper(QObject *parent = 0) : SyncableObject(parent) {};
+  inline IrcListHelper(QObject *parent = 0) : SyncableObject(parent) { setInitialized(); };
 
   struct ChannelDescription {
     QString channelName;
