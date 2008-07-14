@@ -23,6 +23,7 @@
 #include <QObject>
 #include <QIODevice>
 #include <QAbstractSocket>
+#include <QHostAddress>
 #include <QHash>
 #include <QMultiHash>
 #include <QList>
@@ -911,7 +912,7 @@ void SignalProxy::dataAvailable() {
 void SignalProxy::writeDataToDevice(QIODevice *dev, const QVariant &item, bool compressed) {
   QAbstractSocket* sock  = qobject_cast<QAbstractSocket*>(dev);
   if(!dev->isOpen() || (sock && sock->state()!=QAbstractSocket::ConnectedState)) {
-    qWarning("SignalProxy: Can't call on a closed device");
+    qWarning("SignalProxy: Can't call write on a closed device");
     return;
   }
 
@@ -949,6 +950,14 @@ bool SignalProxy::readDataFromDevice(QIODevice *dev, quint32 &blockSize, QVarian
     in >> blockSize;
   }
 
+  if(blockSize > 1 << 22) {
+    qWarning() << qPrintable(tr("Client tried to send package larger than max package size!"));
+    QAbstractSocket* sock  = qobject_cast<QAbstractSocket*>(dev);
+    qWarning() << qPrintable(tr("Disconnecting")) << (sock ? qPrintable(sock->peerAddress().toString()) : qPrintable(tr("local client")));
+    dev->close();
+    return false;
+  }
+    
   if(dev->bytesAvailable() < blockSize)
     return false;
 
