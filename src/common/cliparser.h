@@ -26,36 +26,45 @@
 #include <QHash>
 #include <QVariant>
 
-class CliParserArg;
-
-class CliParser{
-public:
-    inline CliParser() {};
-    CliParser(int argc, char *argv[]);
-
-    ~CliParser();
-    bool parse();
-    QVariant value(QString key);
-    void addArgument(QString longName, char shortName, QVariant def);
-private:
-  QStringList argsRaw;
-  QHash<QString, QVariant*> savedValues;
-  QHash<QString, CliParserArg> argsHash;
-  QHash<QString, QHash<QString, CliParserArg>::iterator> shortHash;
-};
-
 class CliParserArg {
 public:
+  enum CliArgType {
+    CliArgInvalid,
+    CliArgSwitch,
+    CliArgOption
+  };
+  typedef CliArgType CliArgTypes;
+  
   inline CliParserArg() {};
   CliParserArg(const CliParserArg &other);
-  CliParserArg(QString longName, char shortName, QVariant _def);
+  CliParserArg(CliArgType type, QString longName, char shortName = 0, QVariant _def = QVariant());
   CliParserArg &operator=(const CliParserArg &other);
-// private:
+
+  CliArgType type;
   QString lname;
   char sname;
+  QString shortHelp;
   QVariant def;
   QVariant value;
 };
 Q_DECLARE_METATYPE(CliParserArg);
+
+class CliParser{
+public:
+  inline CliParser() {};
+  CliParser(QStringList arguments);
+  bool parse();
+  QVariant value(QString key);
+  void addSwitch(QString longName, char shortName = 0, QVariant def = false);
+  void addOption(QString longName, char shortName = 0, QVariant def = QVariant());
+  void addHelp(QString key, QString txt);
+  void usage();
+private:
+  void addArgument(CliParserArg::CliArgType type, QString longName, char shortName, QVariant def);
+  QStringList argsRaw;
+  QHash<QString, CliParserArg> argsHash;
+  QHash<const char, QHash<QString, CliParserArg>::iterator> shortHash;
+};
+
 
 #endif
