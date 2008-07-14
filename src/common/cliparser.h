@@ -37,15 +37,15 @@ public:
   
   inline CliParserArg() {};
   CliParserArg(const CliParserArg &other);
-  CliParserArg(CliArgType type, QString longName, char shortName = 0, QVariant _def = QVariant());
+  CliParserArg(const CliArgType type, const char _shortName = 0, const QString _help = QString(), const QString _def = QString());
   CliParserArg &operator=(const CliParserArg &other);
 
   CliArgType type;
-  QString lname;
-  char sname;
-  QString shortHelp;
-  QVariant def;
-  QVariant value;
+  char shortName;
+  QString help;
+  QString def;
+  QString value;
+  bool boolValue;
 };
 Q_DECLARE_METATYPE(CliParserArg);
 
@@ -54,17 +54,15 @@ public:
   inline CliParser() {};
   CliParser(QStringList arguments);
   bool parse();
-  QVariant value(QString key);
-  void addSwitch(QString longName, char shortName = 0, QVariant def = false);
-  void addOption(QString longName, char shortName = 0, QVariant def = QVariant());
-  void addHelp(QString key, QString txt);
+  QString value(const QString &longName);
+  bool isSet(const QString &longName);
+  void addSwitch(const QString longName, const char shortName = 0, const QString help = QString());
+  void addOption(const QString longName, const char shortName = 0, const QString help = QString(), const QString def = QString());
   void usage();
 private:
-  void addArgument(CliParserArg::CliArgType type, QString longName, char shortName, QVariant def);
   QStringList argsRaw;
   QHash<QString, CliParserArg> argsHash;
   QHash<const char, QHash<QString, CliParserArg>::iterator> shortHash;
 };
-
 
 #endif

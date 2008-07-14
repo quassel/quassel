@@ -25,25 +25,28 @@
 CliParser::CliParser(QStringList arguments)
 {
   argsRaw = arguments;
+//   remove Qt internal debugging arguments 
+  argsRaw.removeOne("-sync");
+  argsRaw.removeOne("-nograb");
+  argsRaw.removeOne("-dograb");
 }
 
-void CliParser::addSwitch(QString longName, char shortName, QVariant def) {
-  addArgument(CliParserArg::CliArgSwitch, longName, shortName, def);
-}
-
-void CliParser::addOption(QString longName, char shortName, QVariant def) {
-  addArgument(CliParserArg::CliArgOption, longName, shortName, def);
-}
-
-void CliParser::addArgument(CliParserArg::CliArgType type, QString longName, char shortName, QVariant def) {
-  CliParserArg arg = CliParserArg(type, longName, shortName, def);
+void CliParser::addSwitch(const QString longName, const char shortName, const QString help) {
+  CliParserArg arg = CliParserArg(CliParserArg::CliArgSwitch, shortName, help);
   argsHash.insert(longName, arg);
-  if(shortName && !shortHash.contains(shortName)) shortHash.insert(shortName, argsHash.find(longName));
+  if(shortName) {
+   if(!shortHash.contains(shortName)) shortHash.insert(shortName, argsHash.find(longName));
+   else qWarning("Warning: shortName %c defined multiple times.", shortName);
+  }
 }
 
-void CliParser::addHelp(QString key, QString txt) {
-  if(argsHash.contains(key)) argsHash[key].shortHelp = txt;
-  else qWarning("Warning: Helptext for unknown argument '%s' given",key.toLatin1().constData());
+void CliParser::addOption(const QString longName, const char shortName, const QString help, const QString def) {
+  CliParserArg arg = CliParserArg(CliParserArg::CliArgOption, shortName, help, def);
+  argsHash.insert(longName, arg);
+  if(shortName) {
+   if(!shortHash.contains(shortName)) shortHash.insert(shortName, argsHash.find(longName));
+   else qWarning("Warning: shortName %c defined multiple times.", shortName);
+  }
 }
 
 bool CliParser::parse() {
@@ -57,7 +60,7 @@ bool CliParser::parse() {
         QStringList tmp = currentArg->mid(2).split("=");
         name = tmp.at(0);
         QString value = tmp.at(1);
-        if(argsHash.contains(name) && !value.isEmpty()){ 
+        if(argsHash.contains(name) && !value.isEmpty()){
           argsHash[name].value = value;
         }
         else return false;
@@ -66,7 +69,7 @@ bool CliParser::parse() {
         // switch
         name = currentArg->mid(2);
         if(argsHash.contains(name)) {
-            argsHash[name].value = true;
+            argsHash[name].boolValue = true;
         }
         else return false;
       }
@@ -86,7 +89,7 @@ bool CliParser::parse() {
         for (int i = 0; i < currentArg->mid(1).toAscii().size(); i++) {
           name = currentArg->mid(1).toAscii().at(i);
           if(shortHash.contains(name) && shortHash.value(name).value().type == CliParserArg::CliArgSwitch) {
-            shortHash[name].value().value = true;
+            shortHash[name].value().boolValue = true;
           }
           else return false;
         }
@@ -94,7 +97,7 @@ bool CliParser::parse() {
       // if next arg is is no option/switch it's an argument to a shortoption
       else {
         // option
-        QString value = currentArg->toUtf8();
+        QString value = currentArg->toLocal8Bit();
         if(bla) --currentArg;
         name = currentArg->mid(1).toAscii().at(0);
         if(bla) currentArg++;
@@ -136,62 +139,74 @@ void CliParser::usage() {
     QString output;
     QString lnameField;
     
-    if(arg.value().sname) {
-      output.append(" -").append(arg.value().sname).append(",");
+    if(arg.value().shortName) {
+      output.append(" -").append(arg.value().shortName).append(",");
     }
     else output.append("    ");
-    lnameField.append(" --").append(arg.key().toLatin1().constData());
+    lnameField.append(" --").append(arg.key());
     if(arg.value().type == CliParserArg::CliArgOption) {
-      lnameField.append("=[").append(arg.value().lname.toUpper()).append("]");
+      lnameField.append("=[").append(arg.key().toUpper()).append("]");
     }
     output.append(lnameField.leftJustified(lnameFieldSize));
-    if(!arg.value().shortHelp.isEmpty()) {
-      output.append(arg.value().shortHelp);
+    if(!arg.value().help.isEmpty()) {
+      output.append(arg.value().help);
     }
     if(arg.value().type == CliParserArg::CliArgOption) {
-      output.append(". Default is: ").append(arg.value().def.toString());
+      output.append(". Default is: ").append(arg.value().def);
     }
     qWarning(output.toLatin1());
   }
 }
 
-QVariant CliParser::value(QString key) {
-  if(argsHash.contains(key)) {
-    if(argsHash.value(key).value.isValid())
-      return argsHash.value(key).value;
+QString CliParser::value(const QString &longName) {
+  if(argsHash.contains(longName) && argsHash.value(longName).type == CliParserArg::CliArgOption) {
+    if(!argsHash.value(longName).value.isEmpty())
+      return argsHash.value(longName).value;
     else
-      return argsHash.value(key).def;
+      return argsHash.value(longName).def;
   }
   else {
-    qWarning("Warning: Requested value of not defined argument '%s'",key.toLatin1().constData());
-    return QVariant();
+    qWarning("Warning: Requested value of not defined argument '%s' or argument is a switch",longName.toLatin1().constData());
+    return QString();
   }
 }
 
-CliParserArg::CliParserArg(CliArgType _type, QString longName, char shortName, QVariant _def)
+bool CliParser::isSet(const QString &longName) {
+  if(argsHash.contains(longName)) {
+    if(argsHash.value(longName).type == CliParserArg::CliArgOption) return !argsHash.value(longName).value.isEmpty();
+    else return argsHash.value(longName).boolValue;
+  }
+  else {
+    qWarning("Warning: Requested isSet of not defined argument '%s'",longName.toLatin1().constData());
+    return false;
+  }
+}
+
+CliParserArg::CliParserArg(const CliArgType _type, const char _shortName, const QString _help, const QString _def)
   : type(_type),
-    lname(longName),
-    sname(shortName),
-    shortHelp(QString()),
+    shortName(_shortName),
+    help(_help),
     def(_def),
-    value(QVariant()) {
+    value(QString()),
+    boolValue(false)
+{
 }
 
 CliParserArg::CliParserArg(const CliParserArg &other) {
   type = other.type;
-  lname = other.lname;
-  sname = other.sname;
-  shortHelp = other.shortHelp;
+  shortName = other.shortName;
+  help = other.help;
   def = other.def;
   value = other.value;
+  boolValue = other.boolValue;
 }
 
 CliParserArg &CliParserArg::operator=(const CliParserArg &other) {
   type = other.type;
-  lname = other.lname;
-  sname = other.sname;
-  shortHelp = other.shortHelp;
+  shortName = other.shortName;
+  help = other.help;
   def = other.def;
   value = other.value;
+  boolValue = other.boolValue;
   return *this;
 }
