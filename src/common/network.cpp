@@ -685,6 +685,12 @@ void Network::determinePrefixes() {
     QString defaultPrefixes("~&@%+");
     QString defaultPrefixModes("qaohv");
 
+    if(PREFIX.isEmpty()) {
+      _prefixes = defaultPrefixes;
+      _prefixModes = defaultPrefixModes;
+      return;
+    }
+
     // we just assume that in PREFIX are only prefix chars stored
     for(int i = 0; i < defaultPrefixes.size(); i++) {
       if(PREFIX.contains(defaultPrefixes[i])) {
