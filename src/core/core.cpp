@@ -518,9 +518,12 @@ void Core::clientDisconnected() {
   if(socket) {
     // here it's safe to call methods on socket!
     qDebug() << qPrintable(tr("Non-authed client disconnected.")) << qPrintable(socket->peerAddress().toString());
+    blocksizes.remove(socket);
+    clientInfo.remove(socket);
     socket->deleteLater();
   } else {
     // we have to crawl through the hashes and see if we find a victim to remove
+    qDebug() << qPrintable(tr("Non-authed client disconnected. (socket allready destroyed)"));
 
     // DO NOT CALL ANY METHODS ON socket!!
     socket = static_cast<QTcpSocket *>(sender());
