@@ -21,6 +21,7 @@
 
 #include <QString>
 #include <QFileInfo>
+#include <QDebug>
 
 CliParser::CliParser(QStringList arguments)
 {
@@ -31,16 +32,14 @@ CliParser::CliParser(QStringList arguments)
   argsRaw.removeOne("-dograb");
 }
 
-void CliParser::addArgument(const CliParserArg::CliArgType type, const QString longName, const char shortName, const QString help, const QString def) {
-  CliParserArg arg;
-  if(type == CliParserArg::CliArgOption)
-    arg = CliParserArg(CliParserArg::CliArgOption, shortName, help, def);
-  else
-    arg = CliParserArg(CliParserArg::CliArgSwitch, shortName, help);
+void CliParser::addArgument(const QString &longName, const CliParserArg &arg) {
+  if(argsHash.contains(longName)) qWarning() << "Warning: Multiple definition of argument" << longName;
+  if(arg.shortName != 0 && !lnameOfShortArg(arg.shortName).isNull())
+    qWarning().nospace() << "Warning: Redefining shortName '" << arg.shortName << "' for " << longName << " previously defined for " << lnameOfShortArg(arg.shortName);
   argsHash.insert(longName, arg);
 }
 
-bool CliParser::addLongArg(const CliParserArg::CliArgType type, const QString name, const QString value) {
+bool CliParser::addLongArg(const CliParserArg::CliArgType type, const QString &name, const QString &value) {
   if(argsHash.contains(name)){
     if(type == CliParserArg::CliArgOption && argsHash.value(name).type == type) {
       argsHash[name].value = value;
@@ -54,16 +53,23 @@ bool CliParser::addLongArg(const CliParserArg::CliArgType type, const QString na
   return false;
 }
 
-bool CliParser::addShortArg(const CliParserArg::CliArgType type, const char shortName, const QString value) {
+bool CliParser::addShortArg(const CliParserArg::CliArgType type, const char shortName, const QString &value) {
   QString longName = lnameOfShortArg(shortName);
   if(!longName.isNull()) {
     if(type == CliParserArg::CliArgOption && argsHash.value(longName).type == type) {
       argsHash[longName].value = value;
       return true;
     }
-    else if (type == CliParserArg::CliArgSwitch && argsHash.value(longName).type == type) {
-      argsHash[longName].boolValue = true;
-      return true;
+    else if (type == CliParserArg::CliArgSwitch) {
+      if(argsHash.value(longName).type == type) {
+        argsHash[longName].boolValue = true;
+        return true;
+      }
+      // arg is an option but detected as a switch -> argument is missing
+      else {
+        qWarning().nospace() << "Warning: '" << shortName << "' is an option which needs an argument";
+        return false;
+      }
     }
   }
   return false;
@@ -106,6 +112,11 @@ bool CliParser::parse() {
       // if next arg is is no option/switch it's an argument to a shortoption
       else {
         // option
+        // short options are not freely mixable with other shortargs
+        if(currentArg->mid(1).toAscii().size() > 1) {
+          qWarning() << "Warning: Shortoptions may not be combined with other shortoptions or switches";
+          return false;
+        }
         QString value;
         bool skipNext = false;
         if(nextArg != argsRaw.constEnd()) {
@@ -128,7 +139,7 @@ bool CliParser::parse() {
 }
 
 void CliParser::usage() {
-  qWarning("Usage: %s [arguments]",QFileInfo(argsRaw.at(0)).completeBaseName().toLatin1().constData());
+  qWarning() << "Usage:" << QFileInfo(argsRaw.at(0)).completeBaseName() << "[arguments]";
   
   // get size of longName field
   QStringList keys = argsHash.keys();
@@ -176,7 +187,7 @@ QString CliParser::value(const QString &longName) {
       return argsHash.value(longName).def;
   }
   else {
-    qWarning("Warning: Requested value of not defined argument '%s' or argument is a switch",longName.toLatin1().constData());
+    qWarning() << "Warning: Requested value of not defined argument" << longName << "or argument is a switch";
     return QString();
   }
 }
@@ -187,7 +198,7 @@ bool CliParser::isSet(const QString &longName) {
     else return argsHash.value(longName).boolValue;
   }
   else {
-    qWarning("Warning: Requested isSet of not defined argument '%s'",longName.toLatin1().constData());
+    qWarning() << "Warning: Requested isSet of not defined argument" << longName;
     return false;
   }
 }

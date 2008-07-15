@@ -33,11 +33,11 @@ public:
   bool parse();
   QString value(const QString &longName);
   bool isSet(const QString &longName);
-  inline void addSwitch(const QString longName, const char shortName = 0, const QString help = QString()) {
-    addArgument(CliParserArg::CliArgSwitch, longName, shortName, help);
+  inline void addSwitch(const QString &longName, const char shortName = 0, const QString &help = QString()) {
+    addArgument(longName, CliParserArg(CliParserArg::CliArgSwitch, shortName, help));
   }
-  inline void addOption(const QString longName, const char shortName = 0, const QString help = QString(), const QString def = QString()) {
-    addArgument(CliParserArg::CliArgOption, longName, shortName, help, def);
+  inline void addOption(const QString &longName, const char shortName = 0, const QString &help = QString(), const QString &def = QString()) {
+    addArgument(longName, CliParserArg(CliParserArg::CliArgOption, shortName, help, def));
   }
   void usage();
 
@@ -64,9 +64,9 @@ private:
     bool boolValue;
   };
   
-  void addArgument(const CliParserArg::CliArgType type, const QString longName, const char shortName = 0, const QString help = QString(), const QString def = QString());
-  bool addLongArg(const CliParserArg::CliArgType type, const QString name, const QString value = QString());
-  bool addShortArg(const CliParserArg::CliArgType type, const char shortName, const QString value = QString());
+  void addArgument(const QString &longName, const CliParserArg &arg);
+  bool addLongArg(const CliParserArg::CliArgType type, const QString &name, const QString &value = QString());
+  bool addShortArg(const CliParserArg::CliArgType type, const char shortName, const QString &value = QString());
   QString lnameOfShortArg(const char arg);
   QStringList argsRaw;
   QHash<QString, CliParserArg> argsHash;
