@@ -24,43 +24,52 @@
 #include <QString>
 #include <QStringList>
 #include <QHash>
-#include <QVariant>
-
-class CliParserArg {
-public:
-  enum CliArgType {
-    CliArgInvalid,
-    CliArgSwitch,
-    CliArgOption
-  };
-  typedef CliArgType CliArgTypes;
-  
-  inline CliParserArg() {};
-  CliParserArg(const CliArgType type, const char _shortName = 0, const QString _help = QString(), const QString _def = QString());
-
-  CliArgType type;
-  char shortName;
-  QString help;
-  QString def;
-  QString value;
-  bool boolValue;
-};
-Q_DECLARE_METATYPE(CliParserArg);
 
 class CliParser{
 public:
   inline CliParser() {};
   CliParser(QStringList arguments);
+
   bool parse();
   QString value(const QString &longName);
   bool isSet(const QString &longName);
-  void addSwitch(const QString longName, const char shortName = 0, const QString help = QString());
-  void addOption(const QString longName, const char shortName = 0, const QString help = QString(), const QString def = QString());
+  inline void addSwitch(const QString longName, const char shortName = 0, const QString help = QString()) {
+    addArgument(CliParserArg::CliArgSwitch, longName, shortName, help);
+  }
+  inline void addOption(const QString longName, const char shortName = 0, const QString help = QString(), const QString def = QString()) {
+    addArgument(CliParserArg::CliArgOption, longName, shortName, help, def);
+  }
   void usage();
+
 private:
+  struct CliParserArg {
+    enum CliArgType {
+      CliArgInvalid,
+      CliArgSwitch,
+      CliArgOption
+    };
+    CliParserArg(const CliArgType _type = CliArgInvalid, const char _shortName = 0, const QString _help = QString(), const QString _def = QString())
+    : type(_type),
+    shortName(_shortName),
+    help(_help),
+    def(_def),
+    value(QString()),
+    boolValue(false) {};
+  
+    CliArgType type;
+    char shortName;
+    QString help;
+    QString def;
+    QString value;
+    bool boolValue;
+  };
+  
+  void addArgument(const CliParserArg::CliArgType type, const QString longName, const char shortName = 0, const QString help = QString(), const QString def = QString());
+  bool addLongArg(const CliParserArg::CliArgType type, const QString name, const QString value = QString());
+  bool addShortArg(const CliParserArg::CliArgType type, const char shortName, const QString value = QString());
+  QString lnameOfShortArg(const char arg);
   QStringList argsRaw;
   QHash<QString, CliParserArg> argsHash;
-  QHash<const char, QHash<QString, CliParserArg>::iterator> shortHash;
 };
 
 #endif
