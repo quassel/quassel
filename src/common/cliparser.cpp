@@ -191,22 +191,3 @@ CliParserArg::CliParserArg(const CliArgType _type, const char _shortName, const 
     boolValue(false)
 {
 }
-
-CliParserArg::CliParserArg(const CliParserArg &other) {
-  type = other.type;
-  shortName = other.shortName;
-  help = other.help;
-  def = other.def;
-  value = other.value;
-  boolValue = other.boolValue;
-}
-
-CliParserArg &CliParserArg::operator=(const CliParserArg &other) {
-  type = other.type;
-  shortName = other.shortName;
-  help = other.help;
-  def = other.def;
-  value = other.value;
-  boolValue = other.boolValue;
-  return *this;
-}

@@ -36,9 +36,7 @@ public:
   typedef CliArgType CliArgTypes;
   
   inline CliParserArg() {};
-  CliParserArg(const CliParserArg &other);
   CliParserArg(const CliArgType type, const char _shortName = 0, const QString _help = QString(), const QString _def = QString());
-  CliParserArg &operator=(const CliParserArg &other);
 
   CliArgType type;
   char shortName;
