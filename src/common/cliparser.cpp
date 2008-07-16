@@ -26,10 +26,6 @@
 CliParser::CliParser(QStringList arguments)
 {
   argsRaw = arguments;
-//   remove Qt internal debugging arguments 
-  argsRaw.removeOne("-sync");
-  argsRaw.removeOne("-nograb");
-  argsRaw.removeOne("-dograb");
 }
 
 void CliParser::addArgument(const QString &longName, const CliParserArg &arg) {
