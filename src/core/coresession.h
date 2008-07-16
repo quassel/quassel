@@ -24,6 +24,7 @@
 #include <QString>
 #include <QVariant>
 
+#include "corecoreinfo.h"
 #include "message.h"
 
 class BufferSyncer;
@@ -189,6 +190,7 @@ private:
   CoreBacklogManager *_backlogManager;
   CoreBufferViewManager *_bufferViewManager;
   CoreIrcListHelper *_ircListHelper;
+  CoreCoreInfo _coreInfo;
 
   QScriptEngine *scriptEngine;
 

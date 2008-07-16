@@ -10,6 +10,7 @@ set(SOURCES
     channellistdlg.cpp
     coreconfigwizard.cpp
     coreconnectdlg.cpp
+    coreinfodlg.cpp
     debugconsole.cpp
     inputwidget.cpp
     jumpkeyhandler.cpp
@@ -31,6 +32,7 @@ set(MOC_HDRS
     channellistdlg.h
     coreconfigwizard.h
     coreconnectdlg.h
+    coreinfodlg.h
     debugconsole.h
     inputwidget.h
     jumpkeyhandler.h
@@ -69,6 +71,7 @@ set(FORMS
     coreconfigwizardstorageselectionpage.ui
     coreconfigwizardsyncpage.ui
     coreconnectdlg.ui
+    coreinfodlg.ui
     debugconsole.ui
     inputwidget.ui
     mainwin.ui

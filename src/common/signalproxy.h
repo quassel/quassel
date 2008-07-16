@@ -160,6 +160,7 @@ private:
 
 public:
   void dumpSyncMap(SyncableObject *object);
+  inline int peerCount() const { return _peers.size(); }
   
 private:
   // Hash of used QIODevices

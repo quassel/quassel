@@ -28,6 +28,7 @@
 #include "channellistdlg.h"
 #include "client.h"
 #include "clientbacklogmanager.h"
+#include "coreinfodlg.h"
 #include "coreconnectdlg.h"
 #include "networkmodel.h"
 #include "buffermodel.h"
@@ -162,6 +163,7 @@ MainWin::~MainWin() {
 void MainWin::setupMenus() {
   connect(ui.actionConnectCore, SIGNAL(triggered()), this, SLOT(showCoreConnectionDlg()));
   connect(ui.actionDisconnectCore, SIGNAL(triggered()), Client::instance(), SLOT(disconnectFromCore()));
+  connect(ui.actionCoreInfo, SIGNAL(triggered()), this, SLOT(showCoreInfoDlg()));
   connect(ui.actionQuit, SIGNAL(triggered()), QCoreApplication::instance(), SLOT(quit()));
   connect(ui.actionSettingsDlg, SIGNAL(triggered()), this, SLOT(showSettingsDlg()));
   // connect(ui.actionDebug_Console, SIGNAL(triggered()), this, SLOT(showDebugConsole()));
@@ -492,6 +494,11 @@ void MainWin::showChannelList(NetworkId netId) {
   }
   channelListDlg->setNetwork(netId);
   channelListDlg->show();
+}
+
+void MainWin::showCoreInfoDlg() {
+  CoreInfoDlg dlg(this);
+  dlg.exec();
 }
 
 void MainWin::showSettingsDlg() {

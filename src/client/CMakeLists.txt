@@ -25,6 +25,7 @@ set(MOC_HDRS
     buffermodel.h
     client.h
     clientbacklogmanager.h
+    clientcoreinfo.h
     clientirclisthelper.h
     clientsyncer.h
     irclistmodel.h

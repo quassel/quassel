@@ -282,6 +282,8 @@ class Core : public QObject {
      */
     static QHash<BufferId, MsgId> bufferLastSeenMsgIds(UserId user);
 
+  const QDateTime &startTime() const { return _startTime; }
+
   public slots:
     //! Make storage data persistent
     /** \note This method is threadsafe.
@@ -336,7 +338,7 @@ class Core : public QObject {
 
     QHash<QString, Storage *> _storageBackends;
 
-    QDateTime startTime;
+    QDateTime _startTime;
 
     bool configured;
 

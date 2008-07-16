@@ -58,6 +58,7 @@
     </widget>
     <addaction name="actionConnectCore" />
     <addaction name="actionDisconnectCore" />
+    <addaction name="actionCoreInfo" />
     <addaction name="separator" />
     <addaction name="menuNetworks" />
     <addaction name="actionJoinChannel" />
@@ -310,6 +311,15 @@
    </property>
    <property name="text" >
     <string>Edit &amp;Networks...</string>
+   </property>
+  </action>
+  <action name="actionCoreInfo" >
+   <property name="icon" >
+    <iconset resource="../../icons/icons.qrc" >
+     <normaloff>:/16x16/actions/oxygen/16x16/actions/help-about.png</normaloff>:/16x16/actions/oxygen/16x16/actions/help-about.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Core Info</string>
    </property>
   </action>
  </widget>

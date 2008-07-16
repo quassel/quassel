@@ -77,6 +77,7 @@ class MainWin : public QMainWindow {
     void removeBufferView(int bufferViewConfigId);
     void receiveMessage(const Message &msg);
     void showChannelList(NetworkId netId = NetworkId());
+    void showCoreInfoDlg();
     void showSettingsDlg();
     void on_actionEditNetworks_triggered();
     void on_actionManageViews_triggered();

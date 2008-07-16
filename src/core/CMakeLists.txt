@@ -13,6 +13,7 @@ set(SOURCES
     corebacklogmanager.cpp
     corebufferviewconfig.cpp
     corebufferviewmanager.cpp
+    corecoreinfo.cpp
     coreirclisthelper.cpp
     corenetwork.cpp
     coresession.cpp
@@ -33,6 +34,7 @@ set(MOC_HDRS
     corebacklogmanager.h
     corebufferviewconfig.h
     corebufferviewmanager.h
+    corecoreinfo.h
     coreirclisthelper.h
     corenetwork.h
     coresession.h

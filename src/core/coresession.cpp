@@ -48,6 +48,7 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
     _backlogManager(new CoreBacklogManager(this)),
     _bufferViewManager(new CoreBufferViewManager(_signalProxy, this)),
     _ircListHelper(new CoreIrcListHelper(this)),
+    _coreInfo(this),
     scriptEngine(new QScriptEngine(this))
 {
 
@@ -92,6 +93,9 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
 
   // init IrcListHelper;
   p->synchronize(ircListHelper());
+  
+  // init CoreInfo;
+  p->synchronize(&_coreInfo);
   
   // Restore session state
   if(restoreState) restoreSessionState();
