@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include "treemodel.h"
+#include "global.h"
 
 #include <QDebug>
 #include <QCoreApplication>
@@ -317,7 +318,7 @@ TreeModel::TreeModel(const QList<QVariant> &data, QObject *parent)
   rootItem = new SimpleTreeItem(data, 0);
   connectItem(rootItem);
 
-  if(QCoreApplication::instance()->arguments().contains("--debugmodel")) {
+  if(Global::parser.isSet("debugmodel")) {
     connect(this, SIGNAL(rowsAboutToBeInserted(const QModelIndex &, int, int)),
 	    this, SLOT(debug_rowsAboutToBeInserted(const QModelIndex &, int, int)));
     connect(this, SIGNAL(rowsAboutToBeRemoved(const QModelIndex &, int, int)),

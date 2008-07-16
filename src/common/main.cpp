@@ -89,6 +89,8 @@ int main(int argc, char **argv) {
 #endif // BUILD_QTUI
 #ifndef BUILD_CORE
 // put client-only arguments here
+  Global::parser.addSwitch("debugbufferswitches",0,"Enables debugging for bufferswitches");
+  Global::parser.addSwitch("debugmodel",0,"Enables debugging for models");
 #endif // BUILD_QTCORE
 // put shared client&core arguments here
   Global::parser.addSwitch("debug",'d',"Enable debug output");

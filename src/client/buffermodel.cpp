@@ -23,6 +23,8 @@
 #include "networkmodel.h"
 #include "mappedselectionmodel.h"
 #include "buffer.h"
+#include "global.h"
+
 #include <QAbstractItemView>
 
 BufferModel::BufferModel(NetworkModel *parent)
@@ -30,7 +32,7 @@ BufferModel::BufferModel(NetworkModel *parent)
     _selectionModelSynchronizer(this)
 {
   setSourceModel(parent);
-  if(QCoreApplication::instance()->arguments().contains("--debugbufferswitches")) {
+  if(Global::parser.isSet("debugbufferswitches")) {
     connect(_selectionModelSynchronizer.selectionModel(), SIGNAL(currentChanged(const QModelIndex &, const QModelIndex &)),
 	    this, SLOT(debug_currentChanged(const QModelIndex &, const QModelIndex &)));
   }
