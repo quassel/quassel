@@ -35,6 +35,13 @@ public:
 public slots:
   void coreInfoAvailable();
 
+protected:
+  virtual void timerEvent(QTimerEvent *) { updateUptime(); }
+
+private slots:
+  void on_closeButton_clicked() { reject(); }
+  void updateUptime();
+
 private:
   Ui::CoreInfoDlg ui;
   ClientCoreInfo _coreInfo;

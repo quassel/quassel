@@ -34,7 +34,20 @@ CoreInfoDlg::CoreInfoDlg(QWidget *parent)
 
 void CoreInfoDlg::coreInfoAvailable() {
   ui.labelCoreVersion->setText(_coreInfo["quasselVersion"].toString());
-  ui.labelUptime->setText(_coreInfo["startTime"].toString());
+  ui.labelCoreBuildDate->setText(_coreInfo["quasselBuildDate"].toString());
   ui.labelClientCount->setNum(_coreInfo["sessionConnectedClients"].toInt());
-  // data["quasselBuildDate"] = Global::quasselBuildDate;
+  updateUptime();
+  startTimer(1000);
+}
+
+void CoreInfoDlg::updateUptime() {
+  QDateTime startTime = _coreInfo["startTime"].toDateTime();
+  
+  int uptime = startTime.secsTo(QDateTime::currentDateTime());
+  int updays = uptime / 86400; uptime %= 86400;
+  int uphours = uptime / 3600; uptime %= 3600;
+  int upmins = uptime / 60; uptime %= 60;
+
+  QString uptimeText = QString("%1 Day(s) %2:%3:%4 (since %5)").arg(updays).arg(uphours,2,10,QChar('0')).arg(upmins,2,10,QChar('0')).arg(uptime,2,10,QChar('0')).arg(startTime.toString(Qt::TextDate));
+  ui.labelUptime->setText(uptimeText);
 }
