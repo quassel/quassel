@@ -50,6 +50,7 @@ bool CliParser::addLongArg(const CliParserArg::CliArgType type, const QString &n
       return true;
     }
   }
+  qWarning() << "Warning: Unrecognized argument:" << name;
   return false;
 }
 
@@ -72,6 +73,7 @@ bool CliParser::addShortArg(const CliParserArg::CliArgType type, const char shor
       }
     }
   }
+  qWarning().nospace() << "Warning: Unrecognized argument: '" << shortName << "'";
   return false;
 }
 
