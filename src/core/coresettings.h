@@ -36,7 +36,7 @@ class CoreSettings : public Settings {
     QVariant oldDbSettings();  // FIXME remove
 
     void setPort(const uint &port);
-    uint port(const uint &def = Global::defaultPort);
+    uint port(const uint &def = Global::parser.value("port").toUInt());
 
     void setCoreState(const QVariant &data);
     QVariant coreState(const QVariant &def = QVariant());

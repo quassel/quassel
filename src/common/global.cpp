@@ -137,3 +137,4 @@ Global::RunMode Global::runMode;
 uint Global::defaultPort;
 
 bool Global::DEBUG;
+CliParser Global::parser;

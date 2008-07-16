@@ -27,6 +27,7 @@
 #include "logger.h"
 #include "network.h"
 #include "settings.h"
+#include "cliparser.h"
 
 #if defined BUILD_CORE
 #include <QCoreApplication>
@@ -79,6 +80,25 @@ int main(int argc, char **argv) {
   QApplication app(argc, argv);
 #endif
 
+  Global::parser = CliParser(QCoreApplication::arguments());
+
+#ifndef BUILD_QTUI
+// put core-only arguments here
+  Global::parser.addOption("port",'p',"The port quasselcore will listen at",QString("4242"));
+  Global::parser.addSwitch("norestore", 'n', "Don't restore last core's state");
+#endif // BUILD_QTUI
+#ifndef BUILD_CORE
+// put client-only arguments here
+#endif // BUILD_QTCORE
+// put shared client&core arguments here
+  Global::parser.addSwitch("debug",'d',"Enable debug output");
+  Global::parser.addSwitch("help",'h', "Display this help and exit");
+
+  if(!Global::parser.parse() || Global::parser.isSet("help")) {
+    Global::parser.usage();
+    return 1;
+  }
+
   qsrand(QTime(0,0,0).secsTo(QTime::currentTime()));
 
   // Set up i18n support
@@ -100,17 +120,6 @@ int main(int argc, char **argv) {
   QCoreApplication::setApplicationName("Quassel IRC");
   QCoreApplication::setOrganizationName("Quassel Project");
 
-  // Check if a non-standard core port is requested
-  QStringList args = QCoreApplication::arguments();  // TODO Build a CLI parser
-  Global::DEBUG = args.contains("--debug"); // This enables various debug features.
-
-  Global::defaultPort = 4242;
-  int idx;
-  if((idx = args.indexOf("-p")) > 0 && idx < args.count() - 1) {
-    int port = args[idx+1].toInt();
-    if(port >= 1024 && port < 65536) Global::defaultPort = port;
-  }
-
 #ifndef BUILD_QTUI
   Core::instance();  // create and init the core
 #endif
@@ -126,7 +135,7 @@ int main(int argc, char **argv) {
 #endif
 
 #ifndef BUILD_QTUI
-  if(!args.contains("--norestore")) {
+  if(!Global::parser.isSet("norestore")) {
     Core::restoreState();
   }
 #endif

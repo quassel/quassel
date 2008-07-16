@@ -23,6 +23,8 @@
 #ifndef _GLOBAL_H_
 #define _GLOBAL_H_
 
+#include "cliparser.h"
+
 #include <QString>
 
 // Enable some shortcuts and stuff
@@ -55,7 +57,7 @@ namespace Global {
   extern unsigned int defaultPort;
 
   extern bool DEBUG;
-
+  extern CliParser parser;
   void registerMetaTypes();
   void setupVersion();
 };

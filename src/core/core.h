@@ -295,7 +295,7 @@ class Core : public QObject {
     void bufferInfoUpdated(UserId user, const BufferInfo &info);
 
   private slots:
-    bool startListening(uint port = Global::defaultPort);
+    bool startListening(uint port = Global::parser.value("port").toUInt());
     void stopListening();
     void incomingConnection();
     void clientHasData();
