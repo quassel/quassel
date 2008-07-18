@@ -24,7 +24,7 @@
 #include "ui_coreinfodlg.h"
 #include <QDialog>
 
-#include "clientcoreinfo.h";
+#include "clientcoreinfo.h"
 
 class CoreInfoDlg : public QDialog {
   Q_OBJECT
