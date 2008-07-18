@@ -410,10 +410,11 @@ void MainWin::connectedToCore() {
 }
 
 void MainWin::setConnectedState() {
-  ui.menuViews->setEnabled(true);
   //ui.menuCore->setEnabled(true);
   ui.actionConnectCore->setEnabled(false);
   ui.actionDisconnectCore->setEnabled(true);
+  ui.actionCoreInfo->setEnabled(true);
+  ui.menuViews->setEnabled(true);
   ui.bufferWidget->show();
   statusBar()->showMessage(tr("Connected to core."));
   setWindowIcon(onlineTrayIcon);
@@ -462,11 +463,12 @@ void MainWin::disconnectedFromCore() {
 }
 
 void MainWin::setDisconnectedState() {
-  ui.menuViews->setEnabled(false);
   //ui.menuCore->setEnabled(false);
-  ui.actionDisconnectCore->setEnabled(false);
-  ui.bufferWidget->hide();
   ui.actionConnectCore->setEnabled(true);
+  ui.actionDisconnectCore->setEnabled(false);
+  ui.actionCoreInfo->setEnabled(false);
+  ui.menuViews->setEnabled(false);
+  ui.bufferWidget->hide();
   statusBar()->showMessage(tr("Not connected to core."));
   setWindowIcon(offlineTrayIcon);
   qApp->setWindowIcon(offlineTrayIcon);
