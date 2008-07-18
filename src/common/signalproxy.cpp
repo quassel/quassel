@@ -191,12 +191,14 @@ SignalProxy::SignalProxy(QObject* parent)
   : QObject(parent)
 {
   setProxyMode(Client);
+  init();
 }
 
 SignalProxy::SignalProxy(ProxyMode mode, QObject* parent)
   : QObject(parent)
 {
   setProxyMode(mode);
+  init();
 }
 
 SignalProxy::SignalProxy(ProxyMode mode, QIODevice* device, QObject* parent)
@@ -204,6 +206,7 @@ SignalProxy::SignalProxy(ProxyMode mode, QIODevice* device, QObject* parent)
 {
   setProxyMode(mode);
   addPeer(device);
+  init();
 } 
 
 SignalProxy::~SignalProxy() {
@@ -236,16 +239,16 @@ SignalProxy::ProxyMode SignalProxy::proxyMode() const {
   return _proxyMode;
 }
 
+void SignalProxy::init() {
+  connect(&_heartBeatTimer, SIGNAL(timeout()), this, SLOT(sendHeartBeat()));
+  _heartBeatTimer.start(30 * 1000);
+}
+
 void SignalProxy::initServer() {
-  disconnect(&_heartBeatTimer, 0, this, 0);
-  _heartBeatTimer.stop();
 }
 
 void SignalProxy::initClient() {
   attachSlot("__objectRenamed__", this, SLOT(objectRenamed(QByteArray, QString, QString)));
-  connect(&_heartBeatTimer, SIGNAL(timeout()),
-	  this, SLOT(sendHeartBeat()));
-  _heartBeatTimer.start(60 * 1000); // msecs: one beep per minute
 }
 
 bool SignalProxy::addPeer(QIODevice* iodev) {
@@ -617,15 +620,6 @@ void SignalProxy::synchronize(SyncableObject *obj) {
   }
 }
 
-// void SignalProxy::setInitialized(SyncableObject *obj) {
-//   obj->setInitialized();
-//   emit objectInitialized(obj);
-// }
-
-// bool SignalProxy::isInitialized(SyncableObject *obj) const {
-//   return obj->isInitialized();
-// }
-
 void SignalProxy::requestInit(SyncableObject *obj) {
   if(proxyMode() == Server || obj->isInitialized())
     return;
@@ -709,23 +703,30 @@ void SignalProxy::receivePeerSignal(QIODevice *sender, const QVariant &packedFun
 
   switch(callType) {
   case RpcCall:
-    if(params.empty()) {
+    if(params.empty())
       qWarning() << "SignalProxy::receivePeerSignal(): received empty RPC-Call";
-      return;
-    } else {
-      return handleSignal(params.takeFirst().toByteArray(), params);
-    }
+    else
+      handleSignal(params.takeFirst().toByteArray(), params);
+    break;
+
   case Sync:
-    return handleSync(sender, params);
+    handleSync(sender, params);
+    break;
+    
   case InitRequest:
-    return handleInitRequest(sender, params);
+    handleInitRequest(sender, params);
+    break;
+    
   case InitData:
-    return handleInitData(sender, params);
+    handleInitData(sender, params);
+    break;
+    
   case HeartBeat:
-    return;
+    receiveHeartBeat(sender);
+    break;
+    
   default:
     qWarning() << "SignalProxy::receivePeerSignal(): received undefined CallType" << callType << params;
-    return;
   }
 }
 
@@ -952,7 +953,7 @@ bool SignalProxy::readDataFromDevice(QIODevice *dev, quint32 &blockSize, QVarian
 
   if(blockSize > 1 << 22) {
     qWarning() << qPrintable(tr("Client tried to send package larger than max package size!"));
-    QAbstractSocket* sock  = qobject_cast<QAbstractSocket*>(dev);
+    QAbstractSocket *sock  = qobject_cast<QAbstractSocket *>(dev);
     qWarning() << qPrintable(tr("Disconnecting")) << (sock ? qPrintable(sock->peerAddress().toString()) : qPrintable(tr("local client")));
     dev->close();
     return false;
@@ -1035,6 +1036,29 @@ void SignalProxy::setInitData(SyncableObject *obj, const QVariantMap &properties
 
 void SignalProxy::sendHeartBeat() {
   dispatchSignal(SignalProxy::HeartBeat, QVariantList());
+  QHash<QIODevice *, peerInfo>::iterator peerIter = _peers.begin();
+  QHash<QIODevice *, peerInfo>::iterator peerIterEnd = _peers.end();
+  while(peerIter != peerIterEnd) {
+    if(peerIter->sentHeartBeats > 1) {
+      QAbstractSocket *socket = qobject_cast<QAbstractSocket *>(peerIter.key());
+      qWarning() << "SignalProxy: Disconnecting peer:"
+		 << (socket ? qPrintable(socket->peerAddress().toString()) : "local client")
+		 << "(didn't receive a heartbeat for over" << peerIter->sentHeartBeats * _heartBeatTimer.interval() / 1000 << "seconds)";      
+      peerIter.key()->close();
+    } else {
+      peerIter->sentHeartBeats++;
+    }
+    peerIter++;
+  }
+}
+
+void SignalProxy::receiveHeartBeat(QIODevice *dev) {
+  if(!_peers.contains(dev)) {
+    qWarning() << "SignalProxy: received heart beat from unknown Device:" << dev;
+    return;
+  }
+
+  _peers[dev].sentHeartBeats = 0;
 }
 
 void SignalProxy::dumpProxyStats() {

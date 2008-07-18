@@ -120,14 +120,16 @@ private slots:
   void objectRenamed(const QString &newname, const QString &oldname);
   void objectRenamed(const QByteArray &classname, const QString &newname, const QString &oldname);
   void sendHeartBeat();
+  void receiveHeartBeat(QIODevice *dev);
 
 signals:
-  void peerRemoved(QIODevice *obj);
+  void peerRemoved(QIODevice *dev);
   void connected();
   void disconnected();
   void objectInitialized(SyncableObject *);
   
 private:
+  void init();
   void initServer();
   void initClient();
   
@@ -167,7 +169,8 @@ private:
   struct peerInfo {
     quint32 byteCount;
     bool usesCompression;
-    peerInfo() : byteCount(0), usesCompression(false) {};
+    int sentHeartBeats;
+    peerInfo() : byteCount(0), usesCompression(false), sentHeartBeats(0) {}
   };
   //QHash<QIODevice*, peerInfo> _peerByteCount;
   QHash<QIODevice*, peerInfo> _peers;
