@@ -464,6 +464,14 @@ CoreAccountEditDlg::CoreAccountEditDlg(AccountId id, const QVariantMap &acct, co
     ui.useSsl->setEnabled(false);
 #endif
   }
+
+#ifndef BUILD_MONO
+  // if we don't have a mono build we hide the option to use the internal connection and force the setting to use remote host
+  ui.useInternal->setChecked(false);
+  ui.useInternal->hide();
+  ui.useRemote->hide();
+  ui.labelUseBuiltinCore->hide();
+#endif
 }
 
 QVariantMap CoreAccountEditDlg::accountData() {
