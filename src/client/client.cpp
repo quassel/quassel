@@ -646,6 +646,7 @@ void Client::bufferRemoved(BufferId bufferId) {
   Buffer *buff = 0;
   if(_buffers.contains(bufferId)) {
     buff = _buffers.take(bufferId);
+    layoutQueue.removeAll(buff);
     disconnect(buff, 0, this, 0);
   }
 
