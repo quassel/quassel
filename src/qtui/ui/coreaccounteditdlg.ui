@@ -31,7 +31,11 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="accountName" />
+           <widget class="QLineEdit" name="accountName" >
+            <property name="text" >
+             <string>Local Core</string>
+            </property>
+           </widget>
           </item>
          </layout>
         </item>
@@ -48,7 +52,7 @@
            </widget>
           </item>
           <item row="0" column="1" colspan="2" >
-           <widget class="QLabel" name="label_4" >
+           <widget class="QLabel" name="labelUseBuiltinCore" >
             <property name="enabled" >
              <bool>false</bool>
             </property>
@@ -73,7 +77,7 @@
           <item row="1" column="1" >
            <widget class="QLabel" name="label_2" >
             <property name="text" >
-             <string>Remote host:</string>
+             <string>Hostname:</string>
             </property>
             <property name="buddy" >
              <cstring>useRemote</cstring>
@@ -88,7 +92,11 @@
            </widget>
           </item>
           <item row="2" column="1" >
-           <widget class="QLineEdit" name="host" />
+           <widget class="QLineEdit" name="host" >
+            <property name="text" >
+             <string>localhost</string>
+            </property>
+           </widget>
           </item>
           <item row="2" column="2" >
            <widget class="QSpinBox" name="port" >
@@ -109,7 +117,8 @@
              <string>Use secure connection (SSL)</string>
             </property>
             <property name="icon" >
-             <iconset resource="../../icons/icons.qrc" >:/16x16/actions/oxygen/16x16/actions/document-encrypt.png</iconset>
+             <iconset resource="../../icons/icons.qrc" >
+              <normaloff>:/16x16/actions/oxygen/16x16/actions/document-encrypt.png</normaloff>:/16x16/actions/oxygen/16x16/actions/document-encrypt.png</iconset>
             </property>
             <property name="checked" >
              <bool>false</bool>
@@ -213,7 +222,7 @@
        <property name="orientation" >
         <enum>Qt::Vertical</enum>
        </property>
-       <property name="sizeHint" >
+       <property name="sizeHint" stdset="0" >
         <size>
          <width>20</width>
          <height>40</height>
@@ -227,7 +236,7 @@
         <enum>Qt::Horizontal</enum>
        </property>
        <property name="standardButtons" >
-        <set>QDialogButtonBox::Cancel|QDialogButtonBox::NoButton|QDialogButtonBox::Ok</set>
+        <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
        </property>
       </widget>
      </item>
