@@ -20,9 +20,9 @@
 
 #include "uisettings.h"
 
-UiSettings::UiSettings(const QString &group) : ClientSettings(group) {
-
-
+UiSettings::UiSettings(const QString &group)
+  : ClientSettings(group)
+{
 }
 
 void UiSettings::setValue(const QString &key, const QVariant &data) {
@@ -31,4 +31,8 @@ void UiSettings::setValue(const QString &key, const QVariant &data) {
 
 QVariant UiSettings::value(const QString &key, const QVariant &def) {
   return localValue(key, def);
+}
+
+void UiSettings::remove(const QString &key) {
+  removeLocalKey(key);
 }

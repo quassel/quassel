@@ -18,33 +18,18 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _UISETTINGS_H_
-#define _UISETTINGS_H_
+#ifndef UISETTINGS_H
+#define UISETTINGS_H
 
 #include "clientsettings.h"
 
 class UiSettings : public ClientSettings {
-
-  public:
-    UiSettings(const QString &group = "Ui");
-
-    void setValue(const QString &key, const QVariant &data);
-    QVariant value(const QString &key, const QVariant &def = QVariant());
-
-
+public:
+  UiSettings(const QString &group = "Ui");
+  
+  void setValue(const QString &key, const QVariant &data);
+  QVariant value(const QString &key, const QVariant &def = QVariant());
+  void remove(const QString &key);
 };
 
-/*
-class GuiProfile : public ClientSettings {
-
-  public:
-    GuiProfile();
-
-    static QStringList availableProfiles();
-    static GuiProfile *profile(QString name);
-
-    
-
-};
-*/
 #endif

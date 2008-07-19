@@ -18,11 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include "util.h"
+
 #include <QCoreApplication>
 #include <QDebug>
 #include <QTextCodec>
-
-#include "util.h"
+#include <QTranslator>
 
 class QMetaMethod;
 
@@ -104,7 +105,6 @@ bool readDataFromDevice(QIODevice *dev, quint32 &blockSize, QVariant &item) {
 uint editingDistance(const QString &s1, const QString &s2) {
   uint n = s1.size()+1;
   uint m = s2.size()+1;
-  //uint matrix[n][m];
   QVector< QVector< uint > >matrix(n,QVector<uint>(m,0));
 
   for(uint i = 0; i < n; i++)
@@ -159,6 +159,26 @@ QDir quasselDir() {
   return qDir;
 }
 
+void loadTranslation(const QLocale &locale) {
+  QTranslator *qtTranslator = QCoreApplication::instance()->findChild<QTranslator *>("QtTr");
+  QTranslator *quasselTranslator = QCoreApplication::instance()->findChild<QTranslator *>("QuasselTr");
+  Q_ASSERT(qtTranslator);
+  Q_ASSERT(quasselTranslator);
+
+  QLocale::setDefault(locale);
+
+  QCoreApplication::removeTranslator(qtTranslator);
+  QCoreApplication::removeTranslator(quasselTranslator);
+
+  if(locale.language() == QLocale::C)
+    return;
+  
+  qtTranslator->load(QString(":i18n/qt_%1").arg(locale.name()));
+  quasselTranslator->load(QString(":i18n/quassel_%1").arg(locale.name()));
+
+  QCoreApplication::installTranslator(qtTranslator);
+  QCoreApplication::installTranslator(quasselTranslator);
+}
 
 QString secondsToString(int timeInSeconds) {
     QList< QPair<int, QString> > timeUnit;

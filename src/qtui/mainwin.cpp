@@ -41,6 +41,7 @@
 #include "irclistmodel.h"
 #include "verticaldock.h"
 #include "uisettings.h"
+#include "util.h"
 #include "qtuisettings.h"
 #include "jumpkeyhandler.h"
 
@@ -79,6 +80,14 @@ MainWin::MainWin(QtUi *_gui, QWidget *parent)
     settingsDlg(new SettingsDlg(this)),
     debugConsole(new DebugConsole(this))
 {
+  UiSettings uiSettings;
+  loadTranslation(uiSettings.value("Locale", QLocale::system()).value<QLocale>());
+  
+  QString style = uiSettings.value("Style", QString("")).toString();
+  if(style != "") {
+    QApplication::setStyle(style);
+  }
+  
   ui.setupUi(this);
   setWindowTitle("Quassel IRC");
   setWindowIcon(offlineTrayIcon);
@@ -90,11 +99,6 @@ MainWin::MainWin(QtUi *_gui, QWidget *parent)
 
   installEventFilter(new JumpKeyHandler(this));
 
-  UiSettings uiSettings;
-  QString style = uiSettings.value("Style", QString("")).toString();
-  if(style != "") {
-    QApplication::setStyle(style);
-  }
 }
 
 void MainWin::init() {

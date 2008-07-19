@@ -18,11 +18,11 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _UTIL_H_
-#define _UTIL_H_
+#ifndef UTIL_H
+#define UTIL_H
 
 #include <QDir>
-#include <QIODevice>
+#include <QLocale>
 #include <QVariant>
 #include <QString>
 #include <QMetaMethod>
@@ -46,14 +46,12 @@ QString secondsToString(int timeInSeconds);
  */
 QString decodeString(const QByteArray &input, QTextCodec *codec = 0);
 
-// NOTE: We have static copies of these in SignalProxy...
-//void writeDataToDevice(QIODevice *, const QVariant &);
-//bool readDataFromDevice(QIODevice *, quint32 &, QVariant &);
-
 uint editingDistance(const QString &s1, const QString &s2);
 
 QByteArray methodName(const QMetaMethod &method);
 
 QDir quasselDir();
+
+void loadTranslation(const QLocale &locale);
 
 #endif

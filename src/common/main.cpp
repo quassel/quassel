@@ -106,11 +106,13 @@ int main(int argc, char **argv) {
   // Set up i18n support
   QLocale locale = QLocale::system();
 
-  QTranslator qtTranslator;
+  QTranslator qtTranslator(&app);
+  qtTranslator.setObjectName("QtTr");
   qtTranslator.load(QString(":i18n/qt_%1").arg(locale.name()));
   app.installTranslator(&qtTranslator);
 
-  QTranslator quasselTranslator;
+  QTranslator quasselTranslator(&app);
+  quasselTranslator.setObjectName("QuasselTr");
   quasselTranslator.load(QString(":i18n/quassel_%1").arg(locale.name()));
   app.installTranslator(&quasselTranslator);
 
