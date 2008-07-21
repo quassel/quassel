@@ -29,7 +29,6 @@
 
 #include "ircchannel.h"
 #include "ircuser.h"
-#include "network.h"
 #include "identity.h"
 
 #include "ircserverhandler.h"

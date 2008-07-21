@@ -39,8 +39,6 @@
 #include "network.h"
 #include "signalproxy.h"
 
-class Network;
-
 class IrcServerHandler;
 class UserInputHandler;
 class CtcpHandler;

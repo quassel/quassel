@@ -117,7 +117,7 @@ public:
   inline const QString &networkName() const { return _networkName; }
   inline const QString &currentServer() const { return _currentServer; }
   inline const QString &myNick() const { return _myNick; }
-  inline const int latency() const { return _latency; }
+  inline int latency() const { return _latency; }
   inline IrcUser *me() const { return ircUser(myNick()); }
   inline IdentityId identity() const { return _identity; }
   QStringList nicks() const;
