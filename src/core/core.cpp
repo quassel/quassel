@@ -353,7 +353,7 @@ bool Core::startListening(uint port) {
   if(!success) {
     qWarning("%s", qPrintable(QString("Could not open GUI client port %1: %2").arg(port).arg(server.errorString())));
   } else {
-    qDebug() << "Listening for GUI clients on port" << server.serverPort();
+    qDebug() << "Listening for GUI clients on port" << server.serverPort() << "using protocol version" << Global::protocolVersion;
   }
   
   return success;
