@@ -336,7 +336,7 @@ void MainWin::setupStatusBar() {
   // Core Lag:
   updateLagIndicator(0);
   statusBar()->addPermanentWidget(coreLagLabel);
-  connect(Client::signalProxy(), SIGNAL(lagUpdated(float)), this, SLOT(updateLagIndicator(float)));
+  connect(Client::signalProxy(), SIGNAL(lagUpdated(int)), this, SLOT(updateLagIndicator(int)));
 
   // SSL indicator
   connect(Client::instance(), SIGNAL(securedConnection()), this, SLOT(securedConnection()));
@@ -447,7 +447,7 @@ void MainWin::saveLayout() {
   if(accountId > 0) s.setValue(QString("MainWinState-%1").arg(accountId) , saveState(accountId));
 }
 
-void MainWin::updateLagIndicator(float lag) {
+void MainWin::updateLagIndicator(int lag) {
   coreLagLabel->setText(QString("Core Lag: %1 msec").arg(lag));
 }
 

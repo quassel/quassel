@@ -1041,7 +1041,7 @@ void SignalProxy::sendHeartBeat() {
   QHash<QIODevice *, peerInfo>::iterator peerIterEnd = _peers.end();
   while(peerIter != peerIterEnd) {
     if(peerIter->sentHeartBeats > 0) {
-      updateLag(peerIter.key(), (float)_heartBeatTimer.interval());
+      updateLag(peerIter.key(), _heartBeatTimer.interval());
     }
     if(peerIter->sentHeartBeats > 1) {
       QAbstractSocket *socket = qobject_cast<QAbstractSocket *>(peerIter.key());
@@ -1077,10 +1077,10 @@ void SignalProxy::receiveHeartBeatReply(QIODevice *dev, const QVariantList &para
   }
   
   QTime sendTime = params[0].value<QTime>();
-  updateLag(dev, (float)sendTime.msecsTo(QTime::currentTime()) / 2);
+  updateLag(dev, sendTime.msecsTo(QTime::currentTime()) / 2);
 }
 
-void SignalProxy::updateLag(QIODevice *dev, float lag) {
+void SignalProxy::updateLag(QIODevice *dev, int lag) {
   Q_ASSERT(_peers.contains(dev));
   _peers[dev].lag = lag;
   if(proxyMode() == Client) {

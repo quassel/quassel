@@ -129,7 +129,7 @@ signals:
   void connected();
   void disconnected();
   void objectInitialized(SyncableObject *);
-  void lagUpdated(float lag);
+  void lagUpdated(int lag);
   
 private:
   void init();
@@ -163,7 +163,7 @@ private:
   QVariantMap initData(SyncableObject *obj) const;
   void setInitData(SyncableObject *obj, const QVariantMap &properties);
 
-  void updateLag(QIODevice *dev, float lag);
+  void updateLag(QIODevice *dev, int lag);
 
 public:
   void dumpSyncMap(SyncableObject *object);
@@ -175,7 +175,7 @@ private:
     quint32 byteCount;
     bool usesCompression;
     int sentHeartBeats;
-    float lag;
+    int lag;
     peerInfo() : byteCount(0), usesCompression(false), sentHeartBeats(0) {}
   };
   //QHash<QIODevice*, peerInfo> _peerByteCount;

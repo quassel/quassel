@@ -48,6 +48,7 @@ class Network : public SyncableObject {
   Q_PROPERTY(QString networkName READ networkName WRITE setNetworkName STORED false)
   Q_PROPERTY(QString currentServer READ currentServer WRITE setCurrentServer STORED false)
   Q_PROPERTY(QString myNick READ myNick WRITE setMyNick STORED false)
+  Q_PROPERTY(int latency READ latency WRITE setLatency STORED false)
   Q_PROPERTY(QByteArray codecForServer READ codecForServer WRITE setCodecForServer STORED false)
   Q_PROPERTY(QByteArray codecForEncoding READ codecForEncoding WRITE setCodecForEncoding STORED false)
   Q_PROPERTY(QByteArray codecForDecoding READ codecForDecoding WRITE setCodecForDecoding STORED false)
@@ -116,6 +117,7 @@ public:
   inline const QString &networkName() const { return _networkName; }
   inline const QString &currentServer() const { return _currentServer; }
   inline const QString &myNick() const { return _myNick; }
+  inline const int latency() const { return _latency; }
   inline IrcUser *me() const { return ircUser(myNick()); }
   inline IdentityId identity() const { return _identity; }
   QStringList nicks() const;
@@ -181,6 +183,7 @@ public slots:
   //void setConnectionState(Network::ConnectionState state);
   void setConnectionState(int state);
   void setMyNick(const QString &mynick);
+  void setLatency(int latency);
   void setIdentity(IdentityId);
 
   void setServerList(const QVariantList &serverList);
@@ -250,6 +253,7 @@ signals:
   void connectionStateSet(int);
   void connectionError(const QString &errorMsg);
   void myNickSet(const QString &mynick);
+  void latencySet(int latency);
   void identitySet(IdentityId);
 
   void serverListSet(QVariantList serverList);
@@ -296,6 +300,7 @@ private:
   IdentityId _identity;
 
   QString _myNick;
+  int _latency;
   QString _networkName;
   QString _currentServer;
   bool _connected;

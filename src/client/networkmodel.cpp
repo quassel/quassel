@@ -146,6 +146,10 @@ QString NetworkItem::toolTip(int column) const {
   toolTip.append(QString("Server: %1").arg(currentServer()));
   toolTip.append(QString("Users: %1").arg(nickCount()));
 
+  if(_network) {
+    toolTip.append(QString("Lag: %1 msecs").arg(_network->latency()));
+  }
+
   return QString("<p> %1 </p>").arg(toolTip.join("<br />"));
 }
 

@@ -64,7 +64,10 @@ NetworkConnection::NetworkConnection(Network *network, CoreSession *session)
   _autoReconnectTimer.setSingleShot(true);
   _socketCloseTimer.setSingleShot(true);
   connect(&_socketCloseTimer, SIGNAL(timeout()), this, SLOT(socketCloseTimeout()));
-  
+
+  _pingTimer.setInterval(60000);
+  connect(&_pingTimer, SIGNAL(timeout()), this, SLOT(sendPing()));
+
   _autoWhoTimer.setInterval(_autoWhoDelay * 1000);
   _autoWhoCycleTimer.setInterval(_autoWhoInterval * 1000);
   
@@ -214,6 +217,8 @@ void NetworkConnection::networkInitialized(const QString &currentServer) {
   setConnectionState(Network::Initialized);
   network()->setConnected(true);
   emit connected(networkId());
+
+  _pingTimer.start();
 
   if(_autoWhoEnabled) {
     _autoWhoCycleTimer.start();
@@ -500,6 +505,10 @@ void NetworkConnection::putCmd(const QString &cmd, const QList<QByteArray> &para
     msg += " :" + params.last();
 
   putRawLine(msg);
+}
+
+void NetworkConnection::sendPing() {
+  userInputHandler()->handlePing(BufferInfo(), QString());
 }
 
 void NetworkConnection::sendAutoWho() {

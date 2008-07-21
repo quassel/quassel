@@ -350,6 +350,23 @@ void IrcServerHandler::handlePing(const QString &prefix, const QList<QByteArray>
   putCmd("PONG", params);
 }
 
+void IrcServerHandler::handlePong(const QString &prefix, const QList<QByteArray> &params) {
+  Q_UNUSED(prefix);
+  // the server is supposed to send back what we passed as param. and we send a timestamp
+  // but using quote and whatnought one can send arbitrary pings, so we have to do some sanity checks
+  if(params.count() < 2)
+    return;
+
+  QString timestamp = serverDecode(params[1]);
+  QTime sendTime = QTime::fromString(timestamp, "hh:mm:ss.zzz");
+  if(!sendTime.isValid()) {
+    emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", "PONG " + serverDecode(params).join(" "), prefix);
+    return;
+  }
+
+  network()->setLatency(sendTime.msecsTo(QTime::currentTime()) / 2);
+}
+
 void IrcServerHandler::handlePrivmsg(const QString &prefix, const QList<QByteArray> &params) {
   if(!checkParamCount("IrcServerHandler::handlePrivmsg()", params, 1))
     return;

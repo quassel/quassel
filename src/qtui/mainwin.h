@@ -67,7 +67,7 @@ class MainWin : public QMainWindow {
   protected slots:
     void connectedToCore();
     void setConnectedState();
-    void updateLagIndicator(float lag);
+    void updateLagIndicator(int lag);
     void securedConnection();
     void disconnectedFromCore();
     void setDisconnectedState();

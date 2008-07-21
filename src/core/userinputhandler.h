@@ -52,6 +52,7 @@ public slots:
   void handleOper(const BufferInfo &bufferInfo, const QString &text);
   void handleOp(const BufferInfo &bufferInfo, const QString &text);
   void handlePart(const BufferInfo &bufferInfo, const QString &text);
+  void handlePing(const BufferInfo &bufferInfo, const QString &text);
   void handleQuery(const BufferInfo &bufferInfo, const QString &text);
   void handleQuit(const BufferInfo &bufferInfo, const QString &text);
   void handleQuote(const BufferInfo &bufferInfo, const QString &text);

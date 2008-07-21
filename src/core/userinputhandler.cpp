@@ -266,6 +266,16 @@ void UserInputHandler::handlePart(const BufferInfo &bufferInfo, const QString &m
   emit putCmd("PART", params);
 }
 
+void UserInputHandler::handlePing(const BufferInfo &bufferInfo, const QString &msg) {
+  Q_UNUSED(bufferInfo)
+
+  QString param = msg;
+  if(param.isEmpty())
+    param = QTime::currentTime().toString("hh:mm:ss.zzz");
+
+  putCmd("PING", serverEncode(param));
+}
+
 // TODO: implement queries
 void UserInputHandler::handleQuery(const BufferInfo &bufferInfo, const QString &msg) {
   Q_UNUSED(bufferInfo)

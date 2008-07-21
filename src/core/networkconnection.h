@@ -140,6 +140,7 @@ private slots:
   void sendPerform();
   void autoReconnectSettingsChanged();
   void doAutoReconnect();
+  void sendPing();
   void sendAutoWho();
   void startAutoWhoCycle();
   void nickChanged(const QString &newNick, const QString &oldNick); // this signal is inteded to rename query buffers in the storage backend
@@ -181,6 +182,8 @@ private:
   bool _previousConnectionAttemptFailed;
   int _lastUsedServerlistIndex;
 
+  QTimer _pingTimer;
+  
   bool _autoWhoEnabled;
   QStringList _autoWhoQueue;
   QHash<QString, int> _autoWhoInProgress;

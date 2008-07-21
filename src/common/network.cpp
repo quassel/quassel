@@ -36,6 +36,7 @@ Network::Network(const NetworkId &networkid, QObject *parent)
     _networkId(networkid),
     _identity(0),
     _myNick(QString()),
+    _latency(0),
     _networkName(QString("<not initialized>")),
     _currentServer(QString()),
     _connected(false),
@@ -427,6 +428,13 @@ void Network::setMyNick(const QString &nickname) {
     newIrcUser(myNick());
   }
   emit myNickSet(nickname);
+}
+
+void Network::setLatency(int latency) {
+  if(_latency == latency)
+    return;
+  _latency = latency;
+  emit latencySet(latency);
 }
 
 void Network::setIdentity(IdentityId id) {
