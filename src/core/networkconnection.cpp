@@ -375,6 +375,7 @@ void NetworkConnection::socketCloseTimeout() {
 }
 
 void NetworkConnection::socketDisconnected() {
+  _pingTimer.stop();
   _autoWhoCycleTimer.stop();
   _autoWhoTimer.stop();
   _autoWhoQueue.clear();
