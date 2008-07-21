@@ -33,6 +33,7 @@
 #include <QMetaProperty>
 #include <QRegExp>
 #include <QThread>
+#include <QTime>
 
 #include "syncableobject.h"
 #include "util.h"
@@ -233,10 +234,6 @@ void SignalProxy::setProxyMode(ProxyMode mode) {
     initServer();
   else
     initClient();
-}
-
-SignalProxy::ProxyMode SignalProxy::proxyMode() const {
-  return _proxyMode;
 }
 
 void SignalProxy::init() {
@@ -722,9 +719,13 @@ void SignalProxy::receivePeerSignal(QIODevice *sender, const QVariant &packedFun
     break;
     
   case HeartBeat:
-    receiveHeartBeat(sender);
+    receiveHeartBeat(sender, params);
     break;
-    
+
+  case HeartBeatReply:
+    receiveHeartBeatReply(sender, params);
+    break;
+
   default:
     qWarning() << "SignalProxy::receivePeerSignal(): received undefined CallType" << callType << params;
   }
@@ -1035,10 +1036,13 @@ void SignalProxy::setInitData(SyncableObject *obj, const QVariantMap &properties
 }
 
 void SignalProxy::sendHeartBeat() {
-  dispatchSignal(SignalProxy::HeartBeat, QVariantList());
+  dispatchSignal(SignalProxy::HeartBeat, QVariantList() << QTime::currentTime());
   QHash<QIODevice *, peerInfo>::iterator peerIter = _peers.begin();
   QHash<QIODevice *, peerInfo>::iterator peerIterEnd = _peers.end();
   while(peerIter != peerIterEnd) {
+    if(peerIter->sentHeartBeats > 0) {
+      updateLag(peerIter.key(), (float)_heartBeatTimer.interval());
+    }
     if(peerIter->sentHeartBeats > 1) {
       QAbstractSocket *socket = qobject_cast<QAbstractSocket *>(peerIter.key());
       qWarning() << "SignalProxy: Disconnecting peer:"
@@ -1052,14 +1056,39 @@ void SignalProxy::sendHeartBeat() {
   }
 }
 
-void SignalProxy::receiveHeartBeat(QIODevice *dev) {
+void SignalProxy::receiveHeartBeat(QIODevice *dev, const QVariantList &params) {
   if(!_peers.contains(dev)) {
     qWarning() << "SignalProxy: received heart beat from unknown Device:" << dev;
+  }
+  dispatchSignal(dev, SignalProxy::HeartBeatReply, params);
+}
+
+void SignalProxy::receiveHeartBeatReply(QIODevice *dev, const QVariantList &params) {
+  if(!_peers.contains(dev)) {
+    qWarning() << "SignalProxy: received heart beat reply from unknown Device:" << dev;
     return;
   }
 
   _peers[dev].sentHeartBeats = 0;
+
+  if(params.isEmpty()) {
+    qWarning() << "SignalProxy: received heart beat reply with less params then sent from:" << dev;
+    return;
+  }
+  
+  QTime sendTime = params[0].value<QTime>();
+  updateLag(dev, (float)sendTime.msecsTo(QTime::currentTime()) / 2);
 }
+
+void SignalProxy::updateLag(QIODevice *dev, float lag) {
+  Q_ASSERT(_peers.contains(dev));
+  _peers[dev].lag = lag;
+  if(proxyMode() == Client) {
+    qDebug() << "LAG" << lag;
+    emit lagUpdated(lag);
+  }
+}
+
 
 void SignalProxy::dumpProxyStats() {
   QString mode;

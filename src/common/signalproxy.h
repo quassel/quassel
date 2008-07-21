@@ -48,7 +48,8 @@ public:
     RpcCall,
     InitRequest,
     InitData,
-    HeartBeat
+    HeartBeat,
+    HeartBeatReply
   };
 
   SignalProxy(QObject *parent);
@@ -57,7 +58,7 @@ public:
   virtual ~SignalProxy();
 
   void setProxyMode(ProxyMode mode);
-  ProxyMode proxyMode() const;
+  inline ProxyMode proxyMode() const { return _proxyMode; }
 
   bool addPeer(QIODevice *iodev);
   void removePeer(QIODevice *iodev = 0);
@@ -120,13 +121,15 @@ private slots:
   void objectRenamed(const QString &newname, const QString &oldname);
   void objectRenamed(const QByteArray &classname, const QString &newname, const QString &oldname);
   void sendHeartBeat();
-  void receiveHeartBeat(QIODevice *dev);
-
+  void receiveHeartBeat(QIODevice *dev, const QVariantList &params);
+  void receiveHeartBeatReply(QIODevice *dev, const QVariantList &params);
+  
 signals:
   void peerRemoved(QIODevice *dev);
   void connected();
   void disconnected();
   void objectInitialized(SyncableObject *);
+  void lagUpdated(int lag);
   
 private:
   void init();
@@ -160,6 +163,8 @@ private:
   QVariantMap initData(SyncableObject *obj) const;
   void setInitData(SyncableObject *obj, const QVariantMap &properties);
 
+  void updateLag(QIODevice *dev, float lag);
+
 public:
   void dumpSyncMap(SyncableObject *object);
   inline int peerCount() const { return _peers.size(); }
@@ -170,6 +175,7 @@ private:
     quint32 byteCount;
     bool usesCompression;
     int sentHeartBeats;
+    float lag;
     peerInfo() : byteCount(0), usesCompression(false), sentHeartBeats(0) {}
   };
   //QHash<QIODevice*, peerInfo> _peerByteCount;
