@@ -73,6 +73,7 @@ public slots:
 
   void attachNetwork(Network *network);
   void attachIrcChannel(IrcChannel *channel);
+  void attachIrcUser(IrcUser *ircUser);
 
 private:
   NetworkId _networkId;
@@ -147,7 +148,15 @@ class QueryBufferItem : public BufferItem {
 public:
   QueryBufferItem(const BufferInfo &bufferInfo, NetworkItem *parent);
 
+  virtual bool isActive() const;
   virtual QString toolTip(int column) const;
+
+public slots:
+  void attachIrcUser(IrcUser *ircUser);
+  void ircUserDestroyed();
+
+private:
+  IrcUser *_ircUser;
 };
 
 /*****************************************
@@ -226,10 +235,6 @@ public:
   inline virtual quint64 id() const { return _id; }
   virtual QVariant data(int column, int role) const;
   virtual QString toolTip(int column) const;
-
-private slots:
-  void setNick(QString newNick);
-  void setAway(bool);
 
 private:
   QPointer<IrcUser> _ircUser;

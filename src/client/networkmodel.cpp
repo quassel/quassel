@@ -90,6 +90,8 @@ void NetworkItem::attachNetwork(Network *network) {
 	  this, SLOT(setCurrentServer(QString)));
   connect(network, SIGNAL(ircChannelAdded(IrcChannel *)),
 	  this, SLOT(attachIrcChannel(IrcChannel *)));
+  connect(network, SIGNAL(ircUserAdded(IrcUser *)),
+	  this, SLOT(attachIrcUser(IrcUser *)));
   connect(network, SIGNAL(connectedSet(bool)),
 	  this, SIGNAL(dataChanged()));
   connect(network, SIGNAL(destroyed()),
@@ -107,6 +109,20 @@ void NetworkItem::attachIrcChannel(IrcChannel *ircChannel) {
 
     if(channelItem->bufferName().toLower() == ircChannel->name().toLower()) {
       channelItem->attachIrcChannel(ircChannel);
+      break;
+    }
+  }
+}
+
+void NetworkItem::attachIrcUser(IrcUser *ircUser) {
+  QueryBufferItem *queryItem = 0;
+  for(int i = 0; i < childCount(); i++) {
+    queryItem = qobject_cast<QueryBufferItem *>(child(i));
+    if(!queryItem)
+      continue;
+
+    if(queryItem->bufferName().toLower() == ircUser->nick().toLower()) {
+      queryItem->attachIrcUser(ircUser);
       break;
     }
   }
@@ -247,21 +263,73 @@ QString StatusBufferItem::toolTip(int column) const {
 *  QueryBufferItem
 *****************************************/
 QueryBufferItem::QueryBufferItem(const BufferInfo &bufferInfo, NetworkItem *parent)
-  : BufferItem(bufferInfo, parent)
+  : BufferItem(bufferInfo, parent),
+    _ircUser(0)
 {
   setFlags(flags() | Qt::ItemIsDropEnabled);
+
+  const Network *net = Client::network(bufferInfo.networkId());
+  if(!net)
+    return;
+
+  IrcUser *ircUser = net->ircUser(bufferInfo.bufferName());
+  if(ircUser)
+    attachIrcUser(ircUser);
+
+}
+
+bool QueryBufferItem::isActive() const {
+  if(_ircUser)
+    return !_ircUser->isAway();
+  else
+    return false;
 }
 
 QString QueryBufferItem::toolTip(int column) const {
+  // pretty much code duplication of IrcUserItem::toolTip() but inheritance won't solve this... 
   Q_UNUSED(column);
   QStringList toolTip;
 
   toolTip.append(tr("<b>Query with %1</b>").arg(bufferName()));
-  if(topic() != "") {
-    toolTip.append(tr("Away Message: %1").arg(topic()));
+
+  if(_ircUser) {
+    if(_ircUser->userModes() != "") toolTip[0].append(QString(" (%1)").arg(_ircUser->userModes()));
+    if(_ircUser->isAway()) {
+      toolTip[0].append(QString(" (away%1)").arg(!_ircUser->awayMessage().isEmpty() ? (QString(" ") + _ircUser->awayMessage()) : QString()));
+    }
+    if(!_ircUser->realName().isEmpty()) toolTip.append(_ircUser->realName());
+    if(!_ircUser->ircOperator().isEmpty()) toolTip.append(QString("%1 %2").arg(_ircUser->nick()).arg(_ircUser->ircOperator()));
+    if(!_ircUser->suserHost().isEmpty()) toolTip.append(_ircUser->suserHost());
+    if(!_ircUser->whoisServiceReply().isEmpty()) toolTip.append(_ircUser->whoisServiceReply());
+    
+    toolTip.append(_ircUser->hostmask().remove(0, _ircUser->hostmask().indexOf("!")+1));
+    
+    if(_ircUser->idleTime().isValid()) {
+      QDateTime now = QDateTime::currentDateTime();
+      QDateTime idle = _ircUser->idleTime();
+      int idleTime = idle.secsTo(now);
+      toolTip.append(tr("idling since %1").arg(secondsToString(idleTime)));
+    }
+    if(_ircUser->loginTime().isValid()) {
+      toolTip.append(tr("login time: %1").arg(_ircUser->loginTime().toString()));
+    }
+    
+    if(!_ircUser->server().isEmpty()) toolTip.append(tr("server: %1").arg(_ircUser->server()));
   }
 
-  return tr("<p> %1 </p>").arg(toolTip.join("<br />"));
+  return QString("<p> %1 </p>").arg(toolTip.join("<br />"));
+}
+
+void QueryBufferItem::attachIrcUser(IrcUser *ircUser) {
+  _ircUser = ircUser;
+  connect(_ircUser, SIGNAL(destroyed()), this, SLOT(ircUserDestroyed()));
+  connect(_ircUser, SIGNAL(awaySet(bool)), this, SIGNAL(dataChanged()));
+  emit dataChanged();
+}
+
+void QueryBufferItem::ircUserDestroyed() {
+  _ircUser = 0;
+  emit dataChanged();
 }
 
 /*****************************************
@@ -271,6 +339,13 @@ ChannelBufferItem::ChannelBufferItem(const BufferInfo &bufferInfo, AbstractTreeI
   : BufferItem(bufferInfo, parent),
     _ircChannel(0)
 {
+  const Network *net = Client::network(bufferInfo.networkId());
+  if(!net)
+    return;
+
+  IrcChannel *ircChannel = net->ircChannel(bufferInfo.bufferName());
+  if(ircChannel)
+    attachIrcChannel(ircChannel);
 }
 
 QString ChannelBufferItem::toolTip(int column) const {
@@ -534,10 +609,8 @@ IrcUserItem::IrcUserItem(IrcUser *ircUser, AbstractTreeItem *parent)
   // we don't need to handle the ircUser's destroyed signal since it's automatically removed
   // by the IrcChannel::ircUserParted();
   
-  connect(ircUser, SIGNAL(nickSet(QString)),
-	  this, SLOT(setNick(QString)));
-  connect(ircUser, SIGNAL(awaySet(bool)),
-          this, SLOT(setAway(bool)));
+  connect(ircUser, SIGNAL(nickSet(QString)), this, SIGNAL(dataChanged()));
+  connect(ircUser, SIGNAL(awaySet(bool)), this, SIGNAL(dataChanged()));
 }
 
 QString IrcUserItem::nickName() const {
@@ -600,16 +673,6 @@ QString IrcUserItem::toolTip(int column) const {
   if(!_ircUser->server().isEmpty()) toolTip.append(tr("server: %1").arg(_ircUser->server()));
 
   return QString("<p> %1 </p>").arg(toolTip.join("<br />"));
-}
-
-void IrcUserItem::setNick(QString newNick) {
-  Q_UNUSED(newNick);
-  emit dataChanged(0);
-}
-
-void IrcUserItem::setAway(bool away) {
-  Q_UNUSED(away);
-  emit dataChanged(0);
 }
 
 /*****************************************
