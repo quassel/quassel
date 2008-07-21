@@ -1084,7 +1084,6 @@ void SignalProxy::updateLag(QIODevice *dev, float lag) {
   Q_ASSERT(_peers.contains(dev));
   _peers[dev].lag = lag;
   if(proxyMode() == Client) {
-    qDebug() << "LAG" << lag;
     emit lagUpdated(lag);
   }
 }

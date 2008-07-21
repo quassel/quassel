@@ -68,6 +68,7 @@
 MainWin::MainWin(QtUi *_gui, QWidget *parent)
   : QMainWindow(parent),
     gui(_gui),
+    coreLagLabel(new QLabel()),
     sslLabel(new QLabel()),
     _titleSetter(this),
     systray(new QSystemTrayIcon(this)),
@@ -332,6 +333,12 @@ void MainWin::setupTopicWidget() {
 }
 
 void MainWin::setupStatusBar() {
+  // Core Lag:
+  updateLagIndicator(0);
+  statusBar()->addPermanentWidget(coreLagLabel);
+  connect(Client::signalProxy(), SIGNAL(lagUpdated(float)), this, SLOT(updateLagIndicator(float)));
+
+  // SSL indicator
   connect(Client::instance(), SIGNAL(securedConnection()), this, SLOT(securedConnection()));
   sslLabel->setPixmap(QPixmap());
   statusBar()->addPermanentWidget(sslLabel);
@@ -439,6 +446,11 @@ void MainWin::saveLayout() {
   int accountId = Client::currentCoreAccount().toInt();
   if(accountId > 0) s.setValue(QString("MainWinState-%1").arg(accountId) , saveState(accountId));
 }
+
+void MainWin::updateLagIndicator(float lag) {
+  coreLagLabel->setText(QString("Core Lag: %1 msec").arg(lag));
+}
+
 
 void MainWin::securedConnection() {
   // todo: make status bar entry

@@ -129,7 +129,7 @@ signals:
   void connected();
   void disconnected();
   void objectInitialized(SyncableObject *);
-  void lagUpdated(int lag);
+  void lagUpdated(float lag);
   
 private:
   void init();

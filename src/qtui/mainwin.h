@@ -67,6 +67,7 @@ class MainWin : public QMainWindow {
   protected slots:
     void connectedToCore();
     void setConnectedState();
+    void updateLagIndicator(float lag);
     void securedConnection();
     void disconnectedFromCore();
     void setDisconnectedState();
@@ -110,6 +111,7 @@ class MainWin : public QMainWindow {
     QtUi *gui;
 
     QMenu *systrayMenu;
+    QLabel *coreLagLabel;
     QLabel *sslLabel;
 
     TitleSetter _titleSetter;
