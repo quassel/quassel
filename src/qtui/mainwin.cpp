@@ -666,12 +666,14 @@ void MainWin::sendDesktopNotification(const QString &title, const QString &messa
 
 
 void MainWin::desktopNotificationClosed(uint id, uint reason) {
+  Q_UNUSED(id); Q_UNUSED(reason);
   // qDebug() << "OID: " << notificationId << " ID: " << id << " Reason: " << reason << " Time: " << QTime::currentTime().toString();
   notificationId = 0;
 }
 
 
 void MainWin::desktopNotificationInvoked(uint id, const QString & action) {
+  Q_UNUSED(id); Q_UNUSED(action);
   // qDebug() << "OID: " << notificationId << " ID: " << id << " Action: " << action << " Time: " << QTime::currentTime().toString();
 }
 
