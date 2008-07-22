@@ -107,8 +107,10 @@ class MainWin : public QMainWindow {
     void loadLayout();
     void saveLayout();
 
+#ifdef HAVE_DBUS
     void desktopNotificationClosed(uint id, uint reason);
     void desktopNotificationInvoked(uint id, const QString & action);
+#endif
 
   signals:
     void connectToCore(const QVariantMap &connInfo);

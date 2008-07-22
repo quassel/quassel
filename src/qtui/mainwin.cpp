@@ -675,11 +675,6 @@ void MainWin::desktopNotificationInvoked(uint id, const QString & action) {
   // qDebug() << "OID: " << notificationId << " ID: " << id << " Action: " << action << " Time: " << QTime::currentTime().toString();
 }
 
-#else /* HAVE_DBUS */
-
-void MainWin::desktopNotificationClosed(uint, uint) {}
-void MainWin::desktopNotificationInvoked(uint, const QString &) {}
-
 #endif /* HAVE_DBUS */
 
 void MainWin::displayTrayIconMessage(const QString &title, const QString &message) {
