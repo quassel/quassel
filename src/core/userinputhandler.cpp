@@ -360,6 +360,8 @@ void UserInputHandler::expand(const QString &alias, const BufferInfo &bufferInfo
       command = command.replace(QString("$%1").arg(j), params[j - 1]);
     }
     command = command.replace("$0", msg);
+    command = command.replace("$channelname", bufferInfo.bufferName());
+    command = command.replace("$currentnick", network()->myNick());
     handleUserInput(bufferInfo, command);
   }
 }

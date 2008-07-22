@@ -52,7 +52,11 @@ QVariant AliasesModel::data(const QModelIndex &index, int role) const {
 	"<b>Example:</b> \"foo\" can be used per /foo";
     case 1:
       return "<b>The string the shortcut will be expanded to</b><br />"
-	"$i represenents the i'th parameter. $0 the whole string.<br />"
+	"<b>special variables:</b><br />"
+	" - <b>$i</b> represenents the i'th parameter.<br />"
+	" - <b>$0</b> the whole string.<br />"
+	" - <b>$currentnick</b> your current nickname<br />"
+	" - <b>$channelname</b> the name of the selected channel<br /><br />"
 	"Multiple commands can be separated with semicolons<br /><br />"
 	"<b>Example:</b> \"Test $1; Test $2; Test All $0\" will be expanded to three separate messages \"Test 1\", \"Test 2\" and \"Test All 1 2 3\" when called like /test 1 2 3";
     default:
