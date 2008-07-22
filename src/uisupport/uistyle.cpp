@@ -193,7 +193,7 @@ UiStyle::StyledString UiStyle::styleString(const QString &s_) {
   quint32 curfmt = (quint32)None;
   int pos = 0; quint16 length = 0;
   for(;;) {
-    int pos = s.indexOf('%', pos);
+    pos = s.indexOf('%', pos);
     if(pos < 0) break;
     if(s[pos+1] == '%') { // escaped %, we just remove one and continue
       s.remove(pos, 1);
