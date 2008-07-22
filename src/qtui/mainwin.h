@@ -160,9 +160,6 @@ class MainWin : public QMainWindow {
     QList<QDockWidget *> _netViews;
     NickListWidget *nickListWidget;
 
-    QAction *actionEditNetworks;
-    QList<QAction *> networkActions;
-
 #ifdef HAVE_DBUS
     org::freedesktop::Notifications *desktopNotifications;
     quint32 notificationId;
