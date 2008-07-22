@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS><TS version="1.1" language="fr">
+<defaultcodec></defaultcodec>
 <context>
     <name>AboutDlg</name>
     <message>
@@ -2549,7 +2550,7 @@ d&apos;espace</translation>
     <message>
         <location filename="../src/qtui/settingspages/generalsettingspage.ui" line="19"/>
         <source>Use system tray icon:</source>
-        <translation>Utiliser l&apos;icône système:</translation>
+        <translation type="obsolete">Utiliser l&apos;icône système:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/generalsettingspage.ui" line="28"/>
@@ -2564,7 +2565,7 @@ d&apos;espace</translation>
     <message>
         <location filename="../src/qtui/settingspages/generalsettingspage.ui" line="45"/>
         <source>Tray icon:</source>
-        <translation>Icône système:</translation>
+        <translation type="obsolete">Icône système:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/generalsettingspage.ui" line="51"/>
@@ -2574,67 +2575,92 @@ d&apos;espace</translation>
     <message>
         <location filename="../src/qtui/settingspages/generalsettingspage.ui" line="64"/>
         <source>User Notification:</source>
-        <translation>Notification à l&apos;Utilisateur:</translation>
+        <translation type="obsolete">Notification à l&apos;Utilisateur:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/generalsettingspage.ui" line="70"/>
         <source>Animate tray icon</source>
-        <translation>Animer l&apos;icone</translation>
+        <translation type="obsolete">Animer l&apos;icone</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/generalsettingspage.ui" line="80"/>
         <source>Display pop-up messages</source>
-        <translation>Afficher les messages d&apos;aide</translation>
+        <translation type="obsolete">Afficher les messages d&apos;aide</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/generalsettingspage.ui" line="93"/>
         <source>Display user related messages and private Notices:</source>
-        <translation>Afficher les messages des utilisateurs et les messages privés:</translation>
+        <translation type="obsolete">Afficher les messages des utilisateurs et les messages privés:</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/generalsettingspage.ui" line="102"/>
+        <location filename="../src/qtui/settingspages/generalsettingspage.ui" line="73"/>
         <source>in status buffer</source>
         <translation type="unfinished">dans le buffer d&apos;état</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/generalsettingspage.ui" line="115"/>
+        <location filename="../src/qtui/settingspages/generalsettingspage.ui" line="86"/>
         <source>in query buffer (if exists)</source>
         <translation type="unfinished">dans le buffer de requête (s&apos;il existe)</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/generalsettingspage.ui" line="125"/>
+        <location filename="../src/qtui/settingspages/generalsettingspage.ui" line="96"/>
         <source>in current buffer</source>
         <translation type="unfinished">dans le buffer courant</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/generalsettingspage.ui" line="135"/>
         <source>Buffer view:</source>
-        <translation type="unfinished">Vue Buffer:</translation>
+        <translation type="obsolete">Vue Buffer:</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/generalsettingspage.ui" line="141"/>
+        <location filename="../src/qtui/settingspages/generalsettingspage.ui" line="112"/>
         <source>Display topic in tooltip</source>
         <translation>Afficher le sujet en bulle</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/generalsettingspage.ui" line="148"/>
+        <location filename="../src/qtui/settingspages/generalsettingspage.ui" line="119"/>
         <source>Mouse wheel changes displayed buffers</source>
         <translation type="unfinished">La roulette de la souris change de buffer affiché</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/generalsettingspage.ui" line="161"/>
+        <location filename="../src/qtui/settingspages/generalsettingspage.ui" line="132"/>
         <source>The suffix appended to a nick on completion via TAB. Default is &quot;: &quot;</source>
         <translation>Le suffixe ajouté au pseudo lorsqu&apos;il est terminé par TAB est par défaut &quot;: &quot;</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/generalsettingspage.ui" line="164"/>
         <source>Input Line:</source>
-        <translation>Ligne de Saisie:</translation>
+        <translation type="obsolete">Ligne de Saisie:</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/generalsettingspage.ui" line="172"/>
+        <location filename="../src/qtui/settingspages/generalsettingspage.ui" line="143"/>
         <source>Completion suffix:</source>
         <translation>Suffixe pour compléter:</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/generalsettingspage.ui" line="19"/>
+        <source>Show System Tray Icon</source>
+        <translation>Afficher l&apos;icône dans la barre de tâches</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/generalsettingspage.ui" line="45"/>
+        <source>Tray Icon</source>
+        <translation>Icône de la barre de tâches</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/generalsettingspage.ui" line="64"/>
+        <source>Display User-Related Messages And Private Notices:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/generalsettingspage.ui" line="106"/>
+        <source>Buffer View</source>
+        <translation>Vue Buffer</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/generalsettingspage.ui" line="135"/>
+        <source>Input Line</source>
+        <translation>Ligne de Saisie</translation>
     </message>
 </context>
 <context>
@@ -3108,7 +3134,7 @@ d&apos;espace</translation>
     <message>
         <location filename="../src/qtui/settingspages/identitiessettingspage.ui" line="216"/>
         <source>Rename Nickname</source>
-        <translation type="unfinished"></translation>
+        <translation>Renommer le pseudo</translation>
     </message>
 </context>
 <context>
@@ -3405,12 +3431,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>MainWin</name>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="100"/>
+        <location filename="../src/qtui/mainwin.cpp" line="97"/>
         <source>Waiting for core...</source>
         <translation>Attente du noyau...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="490"/>
+        <location filename="../src/qtui/mainwin.cpp" line="497"/>
         <source>Not connected to core.</source>
         <translation>Déconnecté au noyau.</translation>
     </message>
@@ -3560,7 +3586,7 @@ p, li { white-space: pre-wrap; }
         <translation>Connecter au Noyau...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="432"/>
+        <location filename="../src/qtui/mainwin.cpp" line="439"/>
         <source>Connected to core.</source>
         <translation>Connecté au noyau.</translation>
     </message>
@@ -3570,27 +3596,27 @@ p, li { white-space: pre-wrap; }
         <translation>&amp;Modifier les réseaux...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="264"/>
+        <location filename="../src/qtui/mainwin.cpp" line="271"/>
         <source>Nicks</source>
         <translation>Pseudos</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="283"/>
+        <location filename="../src/qtui/mainwin.cpp" line="290"/>
         <source>Chat Monitor</source>
         <translation>Moniteur de Chat</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="305"/>
+        <location filename="../src/qtui/mainwin.cpp" line="312"/>
         <source>Inputline</source>
         <translation>Ligne de Saisie</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="322"/>
+        <location filename="../src/qtui/mainwin.cpp" line="329"/>
         <source>Topic</source>
         <translation>Sujet</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="349"/>
+        <location filename="../src/qtui/mainwin.cpp" line="356"/>
         <source>Statusbar</source>
         <translation>Barre d&apos;état</translation>
     </message>
@@ -4442,6 +4468,64 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
     </message>
 </context>
 <context>
+    <name>NotificationsSettingsPage</name>
+    <message>
+        <location filename="../src/qtui/settingspages/notificationssettingspage.cpp" line="28"/>
+        <source>Behaviour</source>
+        <translation>Comportement</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/notificationssettingspage.cpp" line="28"/>
+        <source>Notifications</source>
+        <translation>Notifications</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/notificationssettingspage.ui" line="13"/>
+        <source>Form</source>
+        <translation>Formulaire</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/notificationssettingspage.ui" line="19"/>
+        <source>System Tray</source>
+        <translation>Icône système</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/notificationssettingspage.ui" line="25"/>
+        <source>Animate tray icon</source>
+        <translation>Animer l&apos;icône</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/notificationssettingspage.ui" line="35"/>
+        <source>Show Bubble</source>
+        <translation>Voir les bulles</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/notificationssettingspage.ui" line="45"/>
+        <source>Sends Quassel&apos;s notifications to a notification daemon compliant to Freedesktop&apos;s Notification specification (org.freedesktop.Notification).</source>
+        <translation>Envoyer les notifications de Quassel à un programme supportant la spécification Freedesktop (org.freedesktop.Notification).</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/notificationssettingspage.ui" line="48"/>
+        <source>Desktop Notification (via DBus)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/notificationssettingspage.ui" line="59"/>
+        <source>Timeout</source>
+        <translation>Délai expiré</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/notificationssettingspage.ui" line="79"/>
+        <source>X</source>
+        <translation>X</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/notificationssettingspage.ui" line="93"/>
+        <source>Y</source>
+        <translation>Y</translation>
+    </message>
+</context>
+<context>
     <name>QtopiaMainWin</name>
     <message>
         <location filename="../src/qtopia/qtopiamainwin.cpp" line="74"/>
@@ -4512,7 +4596,7 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
     <message>
         <location filename="../src/client/networkmodel.cpp" line="297"/>
         <source>&lt;b&gt;Query with %1&lt;/b&gt;</source>
-        <translation>&lt;b&gt;Demande à %1&lt;/b&gt;</translation>
+        <translation>&lt;b&gt;Dialogue avec %1&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../src/client/networkmodel.cpp" line="261"/>
