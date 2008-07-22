@@ -24,6 +24,10 @@
 #include <QStringList>
 
 AliasManager &AliasManager::operator=(const AliasManager &other) {
+  if(this == &other)
+    return *this;
+  
+  SyncableObject::operator=(other);
   _aliases = other._aliases;
   return *this;
 }

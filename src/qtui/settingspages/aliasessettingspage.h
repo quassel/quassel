@@ -35,21 +35,15 @@ public:
 public slots:
   void save();
   void load();
-//   void defaults();
-		 
-// private slots:
-//   void widgetHasChanged();
-  
+
+private slots:
+  void enableDialog(bool);
+  void deleteSelectedAlias();
+
 private:
   Ui::AliasesSettingsPage ui;
 
   AliasesModel _aliasesModel;
-
-  //   bool testHasChanged();
-
-private slots:
-  void enableDialog();
-  void deleteSelectedAlias();
 };
 
 #endif //ALIASESSETTINGSPAGE_H

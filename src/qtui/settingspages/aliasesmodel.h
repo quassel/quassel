@@ -56,7 +56,7 @@ public slots:
 
 signals:
   void configChanged(bool);
-  void modelReady();
+  void modelReady(bool);
   
 private:
   AliasManager _aliasManager;
@@ -69,6 +69,7 @@ private:
 
 private slots:
   void clientConnected();
+  void clientDisconnected();
   void initDone();
 };
 

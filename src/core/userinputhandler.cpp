@@ -146,13 +146,6 @@ void UserInputHandler::handleInvite(const BufferInfo &bufferInfo, const QString 
   emit putCmd("INVITE", serverEncode(params));
 }
 
-void UserInputHandler::handleJ(const BufferInfo &bufferInfo, const QString &msg) {
-  QString trimmed = msg.trimmed();
-  if(trimmed.length() == 0) return;
-  if(trimmed[0].isLetter()) trimmed.prepend("#");
-  handleJoin(bufferInfo, trimmed);
-}
-
 void UserInputHandler::handleJoin(const BufferInfo &bufferInfo, const QString &msg) {
   Q_UNUSED(bufferInfo)
   QStringList params = msg.trimmed().split(" ");

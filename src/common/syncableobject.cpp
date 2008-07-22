@@ -37,8 +37,17 @@ SyncableObject::SyncableObject(QObject *parent)
 SyncableObject::SyncableObject(const SyncableObject &other, QObject *parent)
   : QObject(parent),
     _initialized(other._initialized),
-    _allowClientUpdates(false)
+    _allowClientUpdates(other._allowClientUpdates)
 {
+}
+
+SyncableObject &SyncableObject::operator=(const SyncableObject &other) {
+  if(this == &other)
+    return *this;
+  
+  _initialized = other._initialized;
+  _allowClientUpdates = other._allowClientUpdates;
+  return *this;
 }
 
 bool SyncableObject::isInitialized() const {

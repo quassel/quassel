@@ -65,6 +65,7 @@ public slots:
 
 protected:
   void renameObject(const QString &newName);
+  SyncableObject &operator=(const SyncableObject &other);
 
 signals:
   void initDone();
