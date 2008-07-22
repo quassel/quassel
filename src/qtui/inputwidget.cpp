@@ -55,9 +55,18 @@ void InputWidget::currentChanged(const QModelIndex &current, const QModelIndex &
   if(current.data(NetworkModel::BufferInfoRole) == previous.data(NetworkModel::BufferInfoRole))
     return;
 
-  setNetwork(Client::networkModel()->networkByIndex(current));
+  const Network *net = Client::networkModel()->networkByIndex(current);
+  setNetwork(net);
   updateNickSelector();
-  ui.inputEdit->setEnabled(current.data(NetworkModel::ItemActiveRole).value<bool>());
+
+  bool enabled = false;
+  if(net) {
+    // disable inputline if it's a channelbuffer we parted from or...
+    enabled = (current.data(NetworkModel::ItemActiveRole).value<bool>() || (current.data(NetworkModel::BufferTypeRole).toInt() != BufferInfo::ChannelBuffer));
+    // ... if we're not connected to the network at all
+    enabled &= net->isConnected();
+  }
+  ui.inputEdit->setEnabled(enabled);
 }
 
 void InputWidget::dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight) {
