@@ -349,8 +349,27 @@ void UserInputHandler::handleWhowas(const BufferInfo &bufferInfo, const QString 
 }
 
 void UserInputHandler::defaultHandler(QString cmd, const BufferInfo &bufferInfo, const QString &msg) {
-  Q_UNUSED(bufferInfo)
+  for(int i = 0; i < coreSession()->aliasManager().count(); i++) {
+    if(coreSession()->aliasManager()[i].name.toLower() == cmd.toLower()) {
+      expand(coreSession()->aliasManager()[i].expansion, bufferInfo, msg);
+      return;
+    }
+  }
   emit displayMsg(Message::Error, BufferInfo::StatusBuffer, "", QString("Error: %1 %2").arg(cmd).arg(msg));
 }
+
+void UserInputHandler::expand(const QString &alias, const BufferInfo &bufferInfo, const QString &msg) {
+  QStringList commands = alias.split(QRegExp("; ?"));
+  QStringList params = msg.split(' ');
+  for(int i = 0; i < commands.count(); i++) {
+    QString command = commands[i];
+    for(int j = params.count(); j > 0; j--) {
+      command = command.replace(QString("$%1").arg(j), params[j - 1]);
+    }
+    command = command.replace("$0", msg);
+    handleUserInput(bufferInfo, command);
+  }
+}
+
 
 

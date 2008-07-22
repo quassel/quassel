@@ -10,6 +10,7 @@ set(SOURCES
     abstractsqlstorage.cpp
     basichandler.cpp
     core.cpp
+    corealiasmanager.cpp
     corebacklogmanager.cpp
     corebufferviewconfig.cpp
     corebufferviewmanager.cpp
@@ -31,6 +32,7 @@ set(MOC_HDRS
     abstractsqlstorage.h
     basichandler.h
     core.h
+    corealiasmanager.h
     corebacklogmanager.h
     corebufferviewconfig.h
     corebufferviewmanager.h

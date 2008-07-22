@@ -31,6 +31,8 @@
 
 #include "networkconnection.h"
 
+class CoreSession;
+
 class BasicHandler : public QObject {
   Q_OBJECT
 
@@ -71,6 +73,7 @@ protected:
 
   inline Network *network() const { return _networkConnection->network(); }
   inline NetworkConnection *networkConnection() const { return _networkConnection; }
+  inline CoreSession *coreSession() const { return _networkConnection->coreSession(); }
 
   BufferInfo::Type typeByTarget(const QString &target) const;
 

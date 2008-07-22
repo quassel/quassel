@@ -5,6 +5,7 @@ set(QT_USE_QTNETWORK 1)
 include(${QT_USE_FILE})
 
 set(SOURCES
+    aliasmanager.cpp
     backlogmanager.cpp
     bufferinfo.cpp
     buffersyncer.cpp
@@ -24,6 +25,7 @@ set(SOURCES
     cliparser.cpp)
 
 set(MOC_HDRS
+    aliasmanager.h
     backlogmanager.h
     buffersyncer.h
     bufferviewconfig.h

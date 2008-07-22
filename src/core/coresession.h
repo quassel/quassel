@@ -18,13 +18,14 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _CORESESSION_H_
-#define _CORESESSION_H_
+#ifndef CORESESSION_H
+#define CORESESSION_H
 
 #include <QString>
 #include <QVariant>
 
 #include "corecoreinfo.h"
+#include "corealiasmanager.h"
 #include "message.h"
 
 class BufferSyncer;
@@ -55,6 +56,9 @@ public:
   QVariant sessionState();
 
   SignalProxy *signalProxy() const;
+
+  const AliasManager &aliasManager() const { return _aliasManager; }
+  AliasManager &aliasManager() { return _aliasManager; }
 
   inline CoreIrcListHelper *ircListHelper() const { return _ircListHelper; }
   
@@ -181,6 +185,7 @@ private:
   UserId _user;
 
   SignalProxy *_signalProxy;
+  CoreAliasManager _aliasManager;
   QHash<NetworkId, NetworkConnection *> _connections;
   QHash<NetworkId, CoreNetwork *> _networks;
   //  QHash<NetworkId, CoreNetwork *> _networksToRemove;

@@ -31,60 +31,59 @@
 class SettingsPage : public QWidget {
   Q_OBJECT
 
-  public:
-    SettingsPage(const QString &category, const QString &name, QWidget *parent = 0);
-    virtual ~SettingsPage() {};
-
-    //! The category of this settings page.
-    virtual QString category() const;
-
-    //! The title of this settings page.
-    virtual QString title() const;
-
-    //! Derived classes need to define this and return true if they have default settings.
-    /** If this method returns true, the "Restore Defaults" button in the SettingsDlg is
-     *  enabled. You also need to provide an implementation of defaults() then.
-     *
-     * The default implementation returns false.
+public:
+  SettingsPage(const QString &category, const QString &name, QWidget *parent = 0);
+  virtual ~SettingsPage() {};
+  
+  //! The category of this settings page.
+  inline virtual QString category() const { return _category; }
+  
+  //! The title of this settings page.
+  inline virtual QString title() const { return _title; }
+  
+  //! Derived classes need to define this and return true if they have default settings.
+  /** If this method returns true, the "Restore Defaults" button in the SettingsDlg is
+   *  enabled. You also need to provide an implementation of defaults() then.
+   *
+   * The default implementation returns false.
      */
-    virtual bool hasDefaults() const;
+  inline virtual bool hasDefaults() const { return false; }
+  
+  //! Check if there are changes in the page, compared to the state saved in permanent storage.
+  inline bool hasChanged() const { return _changed; }
+  
+  //! Called immediately before save() is called.
+  /** Derived classes should return false if saving is not possible (e.g. the current settings are invalid).
+   *  \return false, if the SettingsPage cannot be saved in its current state.
+   */
+  inline virtual bool aboutToSave() { return true; }
+			    
+public slots:
+  //! Save settings to permanent storage.
+  virtual void save() = 0;
+  
+  //! Load settings from permanent storage, overriding any changes the user might have made in the dialog.
+  virtual void load() = 0;
 
-    //! Check if there are changes in the page, compared to the state saved in permanent storage.
-    bool hasChanged() const;
-
-    //! Called immediately before save() is called.
-    /** Derived classes should return false if saving is not possible (e.g. the current settings are invalid).
-     *  \return false, if the SettingsPage cannot be saved in its current state.
-     */
-    virtual bool aboutToSave();
-
-  public slots:
-    //! Save settings to permanent storage.
-    virtual void save() = 0;
-
-    //! Load settings from permanent storage, overriding any changes the user might have made in the dialog.
-    virtual void load() = 0;
-
-    //! Restore defaults, overriding any changes the user might have made in the dialog.
-    /** The default implementation does nothing.
-     */
-    virtual void defaults();
-
-  protected slots:
-    //! Calling this slot is equivalent to calling setChangedState(true).
-    void changed();
-
-  protected:
-    //! This should be called whenever the widget state changes from unchanged to change or the other way round.
-    void setChangedState(bool hasChanged = true);
-
-  signals:
-    //! Emitted whenever the widget state changes.
-    void changed(bool hasChanged);
-
-  private:
-    QString _category, _title;
-    bool _changed;
+  //! Restore defaults, overriding any changes the user might have made in the dialog.
+  /** The default implementation does nothing.
+   */
+  inline virtual void defaults() {}
+			 
+protected slots:
+  //! Calling this slot is equivalent to calling setChangedState(true).
+  inline void changed() { setChangedState(true); }
+  
+  //! This should be called whenever the widget state changes from unchanged to change or the other way round.
+  void setChangedState(bool hasChanged = true);
+  
+signals:
+  //! Emitted whenever the widget state changes.
+  void changed(bool hasChanged);
+  
+private:
+  QString _category, _title;
+  bool _changed;
 };
 
 #endif

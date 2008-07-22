@@ -50,6 +50,7 @@
 #include "selectionmodelsynchronizer.h"
 #include "mappedselectionmodel.h"
 
+#include "settingspages/aliasessettingspage.h"
 #include "settingspages/appearancesettingspage.h"
 #include "settingspages/bufferviewsettingspage.h"
 #include "settingspages/colorsettingspage.h"
@@ -233,6 +234,7 @@ void MainWin::setupSettingsDlg() {
   //Category: Behaviour
   settingsDlg->registerSettingsPage(new GeneralSettingsPage(settingsDlg));
   settingsDlg->registerSettingsPage(new HighlightSettingsPage(settingsDlg));
+  settingsDlg->registerSettingsPage(new AliasesSettingsPage(settingsDlg));
   //Category: General
   settingsDlg->registerSettingsPage(new IdentitiesSettingsPage(settingsDlg));
   settingsDlg->registerSettingsPage(new NetworksSettingsPage(settingsDlg));

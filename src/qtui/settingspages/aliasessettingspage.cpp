@@ -1,0 +1,66 @@
+/***************************************************************************
+ *   Copyright (C) 2005-08 by the Quassel Project                          *
+ *   devel@quassel-irc.org                                                 *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) version 3.                                           *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+
+#include "aliasessettingspage.h"
+
+#include <QHeaderView>
+#include <QItemSelectionModel>
+
+AliasesSettingsPage::AliasesSettingsPage(QWidget *parent)
+  : SettingsPage(tr("Behaviour"), tr("Aliases"), parent)
+{
+  ui.setupUi(this);
+
+  ui.aliasesView->setSelectionBehavior(QAbstractItemView::SelectRows);
+  ui.aliasesView->setSelectionMode(QAbstractItemView::SingleSelection);
+  ui.aliasesView->setAlternatingRowColors(true);
+  ui.aliasesView->setTabKeyNavigation(false);
+  ui.aliasesView->setModel(&_aliasesModel);
+  // ui.aliasesView->setSortingEnabled(true);
+  ui.aliasesView->verticalHeader()->hide();
+  ui.aliasesView->horizontalHeader()->setStretchLastSection(true);
+
+  connect(ui.newAliasButton, SIGNAL(clicked()), &_aliasesModel, SLOT(newAlias()));
+  connect(ui.deleteAliasButton, SIGNAL(clicked()), this, SLOT(deleteSelectedAlias()));
+  connect(&_aliasesModel, SIGNAL(configChanged(bool)), this, SLOT(setChangedState(bool)));
+  connect(&_aliasesModel, SIGNAL(modelReady()), this, SLOT(enableDialog()));
+}
+
+void AliasesSettingsPage::load() {
+  if(_aliasesModel.configChanged())
+    _aliasesModel.revert();
+}
+
+void AliasesSettingsPage::save() {
+  if(_aliasesModel.configChanged())
+    _aliasesModel.commit();
+}
+
+void AliasesSettingsPage::enableDialog() {
+  ui.newAliasButton->setEnabled(true);
+  ui.deleteAliasButton->setEnabled(true);
+}
+
+void AliasesSettingsPage::deleteSelectedAlias() {
+  if(!ui.aliasesView->selectionModel()->hasSelection())
+    return;
+
+  _aliasesModel.removeAlias(ui.aliasesView->selectionModel()->selectedIndexes()[0].row());
+}

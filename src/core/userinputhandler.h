@@ -64,6 +64,9 @@ public slots:
   void handleWhowas(const BufferInfo &bufferInfo, const QString &text);
 
   void defaultHandler(QString cmd, const BufferInfo &bufferInfo, const QString &text);
+
+private:
+  void expand(const QString &alias, const BufferInfo &bufferInfo, const QString &msg);
 };
 
 

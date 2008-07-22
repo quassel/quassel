@@ -5,7 +5,7 @@
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
+ *   (at your option) version 3.                                           *
  *                                                                         *
  *   This program is distributed in the hope that it will be useful,       *
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
@@ -18,20 +18,25 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "settingspage.h"
+#ifndef COREALIASMANAGER_H
+#define COREALIASMANAGER_H
 
-SettingsPage::SettingsPage(const QString &category, const QString &title, QWidget *parent)
-  : QWidget(parent),
-    _category(category),
-    _title(title),
-    _changed(false)
-{
-}
+#include "aliasmanager.h"
 
-void SettingsPage::setChangedState(bool hasChanged) {
-  if(hasChanged != _changed) {
-    _changed = hasChanged;
-    emit changed(hasChanged);
-  }
-}
+class CoreSession;
 
+class CoreAliasManager : public AliasManager {
+  Q_OBJECT
+
+public:
+  CoreAliasManager(CoreSession *parent = 0);
+  ~CoreAliasManager();
+
+  inline virtual const QMetaObject *syncMetaObject() const { return &AliasManager::staticMetaObject; }
+
+private:
+  void loadDefaults();
+  
+};
+
+#endif //COREALIASMANAGER_H

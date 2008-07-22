@@ -1,0 +1,75 @@
+/***************************************************************************
+ *   Copyright (C) 2005-08 by the Quassel Project                          *
+ *   devel@quassel-irc.org                                                 *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) version 3.                                           *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+
+#ifndef ALIASESMODEL_H
+#define ALIASESMODEL_H
+
+#include <QAbstractItemModel>
+#include <QPointer>
+
+#include "aliasmanager.h"
+
+class AliasesModel : public QAbstractItemModel {
+  Q_OBJECT
+
+public:
+  AliasesModel(QObject *parent = 0);
+
+  virtual QVariant data(const QModelIndex &index, int role) const;
+  virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
+
+  virtual Qt::ItemFlags flags(const QModelIndex &index) const;
+
+  QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+
+  QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
+
+  inline QModelIndex parent(const QModelIndex &) const { return QModelIndex(); }
+
+  inline int rowCount(const QModelIndex &parent = QModelIndex()) const { Q_UNUSED(parent) return aliasManager().count(); }
+  inline int columnCount(const QModelIndex &parent = QModelIndex()) const { Q_UNUSED(parent) return 2; }
+
+  inline bool configChanged() const { return _configChanged; }
+
+public slots:
+  void newAlias();
+  void removeAlias(int index);
+  void revert();
+  void commit();
+
+signals:
+  void configChanged(bool);
+  void modelReady();
+  
+private:
+  AliasManager _aliasManager;
+  AliasManager _clonedAliasManager;
+  bool _configChanged;
+
+  const AliasManager &aliasManager() const;
+  AliasManager &aliasManager();
+  AliasManager &cloneAliasManager();
+
+private slots:
+  void clientConnected();
+  void initDone();
+};
+
+#endif //ALIASESMODEL_H

@@ -44,6 +44,7 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
   : QObject(parent),
     _user(uid),
     _signalProxy(new SignalProxy(SignalProxy::Server, 0, this)),
+    _aliasManager(this),
     _bufferSyncer(new BufferSyncer(this)),
     _backlogManager(new CoreBacklogManager(this)),
     _bufferViewManager(new CoreBufferViewManager(_signalProxy, this)),
@@ -88,13 +89,16 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
   p->synchronize(_bufferSyncer);
 
 
-  // init BacklogManager;
+  // init alias manager
+  p->synchronize(&aliasManager());
+  
+  // init BacklogManager
   p->synchronize(_backlogManager);
 
-  // init IrcListHelper;
+  // init IrcListHelper
   p->synchronize(ircListHelper());
   
-  // init CoreInfo;
+  // init CoreInfo
   p->synchronize(&_coreInfo);
   
   // Restore session state
