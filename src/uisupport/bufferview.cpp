@@ -431,8 +431,9 @@ void BufferView::contextMenuEvent(QContextMenuEvent *event) {
     _disconnectNetAction.setIcon(connectionStateIcon);
     _connectNetAction.setIcon(connectionStateIcon);
     addItemToMenu(showChannelList, contextMenu, index, ActiveState);
-    addItemToMenu(_disconnectNetAction, contextMenu, index, ActiveState);
-    addItemToMenu(_connectNetAction, contextMenu, index, InactiveState);
+    qDebug() << "state:" << network->connectionState() << Network::Disconnected << Network::Disconnecting;
+    addItemToMenu(_disconnectNetAction, contextMenu, network->connectionState() != Network::Disconnected);
+    addItemToMenu(_connectNetAction, contextMenu, network->connectionState() == Network::Disconnected);
     addSeparatorToMenu(contextMenu, index, ActiveState);
     addItemToMenu(_joinChannelAction, contextMenu, index, ActiveState);
     break;

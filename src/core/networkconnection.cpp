@@ -252,20 +252,19 @@ void NetworkConnection::sendPerform() {
 }
 
 void NetworkConnection::disconnectFromIrc(bool requested) {
+  _quitRequested = requested; // see socketDisconnected();
   _autoReconnectTimer.stop();
-  _autoReconnectCount = 0;
+  _autoReconnectCount = 0; // prohibiting auto reconnect
   displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("Disconnecting."));
-  if(socket.state() < QAbstractSocket::ConnectedState) {
-    setConnectionState(Network::Disconnected);
+  if(socket.state() == QAbstractSocket::UnconnectedState) {
+    socketDisconnected();
+  } else if(socket.state() < QAbstractSocket::ConnectedState) {
+    socket.close();
+    // we might be in a state waiting for a timeout... we don't care... set a disconnected state
     socketDisconnected();
   } else {
     _socketCloseTimer.start(10000); // the irc server has 10 seconds to close the socket
   }
-
-  // this flag triggers quitRequested() once the socket is closed
-  // it is needed to determine whether or not the connection needs to be
-  // in the automatic session restore.
-  _quitRequested = requested;
 }
 
 void NetworkConnection::socketHasData() {
@@ -282,7 +281,6 @@ void NetworkConnection::socketError(QAbstractSocket::SocketError) {
   emit displayMsg(Message::Error, BufferInfo::StatusBuffer, "", tr("Connection failure: %1").arg(socket.errorString()));
   network()->emitConnectionError(socket.errorString());
   if(socket.state() < QAbstractSocket::ConnectedState) {
-    setConnectionState(Network::Disconnected);
     socketDisconnected();
   }
   // mark last connection attempt as failed
@@ -384,12 +382,15 @@ void NetworkConnection::socketDisconnected() {
   
   network()->setConnected(false);
   emit disconnected(networkId());
-  if(_autoReconnectCount != 0) {
-    setConnectionState(Network::Reconnecting);
-    if(_autoReconnectCount == network()->autoReconnectRetries()) doAutoReconnect(); // first try is immediate
-    else _autoReconnectTimer.start();
-  } else if(_quitRequested) {
+  if(_quitRequested) {
+    setConnectionState(Network::Disconnected);
     emit quitRequested(networkId());
+  } else if(_autoReconnectCount != 0) {
+    setConnectionState(Network::Reconnecting);
+    if(_autoReconnectCount == network()->autoReconnectRetries())
+      doAutoReconnect(); // first try is immediate
+    else
+      _autoReconnectTimer.start();
   }
 }
 

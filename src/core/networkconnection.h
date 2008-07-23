@@ -175,6 +175,9 @@ private:
 
   QTimer _socketCloseTimer;
 
+  /* this flag triggers quitRequested() once the socket is closed
+   * it is needed to determine whether or not the connection needs to be
+   *in the automatic session restore. */
   bool _quitRequested;
 
   bool _previousConnectionAttemptFailed;
@@ -197,8 +200,6 @@ private:
   QList<QByteArray> _msgQueue;
 
   void writeToSocket(QByteArray s);
-
-
 
   class ParseError : public Exception {
   public:
