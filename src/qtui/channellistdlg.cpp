@@ -24,12 +24,16 @@
 #include "clientirclisthelper.h"
 
 #include <QHeaderView>
+#include <QHBoxLayout>
+#include <QSpacerItem>
 
 ChannelListDlg::ChannelListDlg(QWidget *parent)
   : QDialog(parent),
     _listFinished(true),
     _ircListModel(this),
-    _sortFilter(this)
+    _sortFilter(this),
+    _simpleModeSpacer(0),
+    _advancedMode(false)
 {
   _sortFilter.setSourceModel(&_ircListModel);
   _sortFilter.setFilterCaseSensitivity(Qt::CaseInsensitive);
@@ -47,18 +51,21 @@ ChannelListDlg::ChannelListDlg(QWidget *parent)
 
   ui.searchChannelsButton->setAutoDefault(false);
 
+  connect(ui.advancedModeLabel, SIGNAL(clicked()), this, SLOT(toggleMode()));
   connect(ui.searchChannelsButton, SIGNAL(clicked()), this, SLOT(requestSearch()));
   connect(ui.channelNameLineEdit, SIGNAL(returnPressed()), this, SLOT(requestSearch()));
   connect(ui.filterLineEdit, SIGNAL(textChanged(QString)), &_sortFilter, SLOT(setFilterFixedString(QString)));
   connect(Client::ircListHelper(), SIGNAL(channelListReceived(const NetworkId &, const QStringList &, QList<IrcListHelper::ChannelDescription>)),
 	  this, SLOT(receiveChannelList(NetworkId , QStringList, QList<IrcListHelper::ChannelDescription>)));
   connect(Client::ircListHelper(), SIGNAL(finishedListReported(const NetworkId &)), this, SLOT(reportFinishedList()));
+  connect(Client::ircListHelper(), SIGNAL(errorReported(const QString &)), this, SLOT(showError(const QString &)));
   connect(ui.channelListView, SIGNAL(activated(QModelIndex)), this, SLOT(joinChannel(QModelIndex)));
 
+  setAdvancedMode(false);
   enableQuery(true);
   showFilterLine(false);
+  showErrors(false);
 }
-
 
 void ChannelListDlg::setNetwork(NetworkId netId) {
   if(_netId == netId)
@@ -72,6 +79,7 @@ void ChannelListDlg::setNetwork(NetworkId netId) {
 void ChannelListDlg::requestSearch() {
   _listFinished = false;
   enableQuery(false);
+  showErrors(false);
   QStringList channelFilters;
   channelFilters << ui.channelNameLineEdit->text().trimmed();
   Client::ircListHelper()->requestChannelList(_netId, channelFilters);
@@ -97,10 +105,45 @@ void ChannelListDlg::enableQuery(bool enable) {
   ui.searchChannelsButton->setEnabled(enable);
 }
 
+void ChannelListDlg::setAdvancedMode(bool advanced) {
+  _advancedMode = advanced;
+  if(advanced) {
+    if(_simpleModeSpacer) {
+      ui.searchLayout->removeItem(_simpleModeSpacer);
+      delete _simpleModeSpacer;
+      _simpleModeSpacer = 0;
+    }
+    ui.advancedModeLabel->setPixmap(QPixmap(QString::fromUtf8(":/22x22/actions/oxygen/22x22/actions/edit-clear-locationbar-rtl.png")));
+  } else {
+    if(!_simpleModeSpacer) {
+      _simpleModeSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+      ui.searchLayout->insertSpacerItem(0, _simpleModeSpacer);
+    }
+    ui.advancedModeLabel->setPixmap(QPixmap(QString::fromUtf8(":/22x22/actions/oxygen/22x22/actions/edit-clear.png")));
+  }
+  ui.channelNameLineEdit->clear();
+  ui.channelNameLineEdit->setVisible(advanced);
+  ui.searchPatternLabel->setVisible(advanced);
+}
+
+void ChannelListDlg::showErrors(bool show) {
+  if(!show) {
+    ui.errorTextEdit->clear();
+  }
+  ui.errorLabel->setVisible(show);
+  ui.errorTextEdit->setVisible(show);
+}
+
+
 void ChannelListDlg::reportFinishedList() {
   _listFinished = true;
 }
 
+void ChannelListDlg::showError(const QString &error) {
+  showErrors(true);
+  ui.errorTextEdit->moveCursor(QTextCursor::End);
+  ui.errorTextEdit->insertPlainText(error + "\n");
+}
 
 void ChannelListDlg::joinChannel(const QModelIndex &index) {
   Client::instance()->userInput(BufferInfo::fakeStatusBuffer(_netId), QString("/JOIN %1").arg(index.sibling(index.row(), 0).data().toString()));

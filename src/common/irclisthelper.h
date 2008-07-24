@@ -49,10 +49,12 @@ public slots:
   inline virtual QVariantList requestChannelList(const NetworkId &netId, const QStringList &channelFilters) { emit channelListRequested(netId, channelFilters); return QVariantList(); }
   inline virtual void receiveChannelList(const NetworkId &, const QStringList &, const QVariantList &) {};
   inline virtual void reportFinishedList(const NetworkId &netId) { emit finishedListReported(netId); }
+  inline virtual void reportError(const QString &error) { emit errorReported(error); }
 
 signals:
   void channelListRequested(const NetworkId &netId, const QStringList &channelFilters);
   void finishedListReported(const NetworkId &netId);
+  void errorReported(const QString &error);
 };
 
 #endif //IRCLISTHELPER_H

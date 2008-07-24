@@ -25,6 +25,8 @@
 
 #include "coresession.h"
 
+class QTimerEvent;
+
 class CoreIrcListHelper : public IrcListHelper {
   Q_OBJECT
 
@@ -35,10 +37,18 @@ public:
 
   inline CoreSession *coreSession() const { return _coreSession; }
 
+  inline bool requestInProgress(const NetworkId &netId) const { return _channelLists.contains(netId); }
+
 public slots:
   virtual QVariantList requestChannelList(const NetworkId &netId, const QStringList &channelFilters);
   bool addChannel(const NetworkId &netId, const QString &channelName, quint32 userCount, const QString &topic);
   bool endOfChannelList(const NetworkId &netId);
+
+protected:
+  void timerEvent(QTimerEvent *event);
+
+private:
+  bool dispatchQuery(const NetworkId &netId, const QString &query);
 
 private:
   CoreSession *_coreSession;
@@ -46,6 +56,7 @@ private:
   QHash<NetworkId, QString> _queuedQuery;
   QHash<NetworkId, QList<ChannelDescription> > _channelLists;
   QHash<NetworkId, QVariantList> _finishedChannelLists;
+  QHash<int, NetworkId> _queryTimeout;
 };
 
 #endif //COREIRCLISTHELPER_H
