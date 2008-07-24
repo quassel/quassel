@@ -21,7 +21,10 @@
 #ifndef _LOGGER_H_
 #define _LOGGER_H_
 
+#include "types.h"
+
 #include <QString>
+#include <QStringList>
 #include <QTextStream>
 
 class Logger {
@@ -54,6 +57,13 @@ class Logger {
     inline Logger &operator<<(const QLatin1String &t) { stream->internalStream << t.latin1(); return *this; }
     inline Logger &operator<<(const QByteArray & t) { stream->internalStream << t ; return *this; }
     inline Logger &operator<<(const void * t) { stream->internalStream << t; return *this; }
+    inline Logger &operator<<(const QStringList & t) { stream->internalStream << t.join(" "); return *this; }
+    inline Logger &operator<<(const BufferId & t) { stream->internalStream << QVariant::fromValue(t).toInt(); return *this; }
+    inline Logger &operator<<(const NetworkId & t) { stream->internalStream << QVariant::fromValue(t).toInt(); return *this; }
+    inline Logger &operator<<(const UserId & t) { stream->internalStream << QVariant::fromValue(t).toInt(); return *this; }
+    inline Logger &operator<<(const MsgId & t) { stream->internalStream << QVariant::fromValue(t).toInt(); return *this; }
+    inline Logger &operator<<(const IdentityId & t) { stream->internalStream << QVariant::fromValue(t).toInt(); return *this; }
+    inline Logger &operator<<(const AccountId & t) { stream->internalStream << QVariant::fromValue(t).toInt(); return *this; }
 
     void log();
   private:
