@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>454</width>
-    <height>406</height>
+    <width>566</width>
+    <height>580</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -24,7 +24,7 @@
     <number>0</number>
    </property>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout" >
+    <layout class="QHBoxLayout" name="searchLayout" >
      <property name="spacing" >
       <number>6</number>
      </property>
@@ -32,7 +32,7 @@
       <number>6</number>
      </property>
      <item>
-      <widget class="QLabel" name="label" >
+      <widget class="QLabel" name="searchPatternLabel" >
        <property name="text" >
         <string>Search Pattern:</string>
        </property>
@@ -42,9 +42,23 @@
       <widget class="QLineEdit" name="channelNameLineEdit" />
      </item>
      <item>
+      <widget class="ClickableLabel" name="advancedModeLabel" >
+       <property name="toolTip" >
+        <string>Toggle between simple and advanced mode.
+Advanced mode allows to pass search strings to the IRC Server.</string>
+       </property>
+       <property name="text" >
+        <string/>
+       </property>
+       <property name="pixmap" >
+        <pixmap resource="../../icons/icons.qrc" >:/22x22/actions/oxygen/22x22/actions/edit-clear-locationbar-rtl.png</pixmap>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="searchChannelsButton" >
        <property name="text" >
-        <string>Search Channels</string>
+        <string>Show Channels</string>
        </property>
       </widget>
      </item>
@@ -78,10 +92,70 @@
     </layout>
    </item>
    <item>
-    <widget class="QTableView" name="channelListView" />
+    <widget class="QLabel" name="errorLabel" >
+     <property name="text" >
+      <string>Errors Occured:</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QTextEdit" name="errorTextEdit" >
+     <property name="sizePolicy" >
+      <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize" >
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize" >
+      <size>
+       <width>16777215</width>
+       <height>100</height>
+      </size>
+     </property>
+     <property name="acceptDrops" >
+      <bool>false</bool>
+     </property>
+     <property name="undoRedoEnabled" >
+      <bool>false</bool>
+     </property>
+     <property name="readOnly" >
+      <bool>true</bool>
+     </property>
+     <property name="html" >
+      <string>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'Lucida Grande'; font-size:13pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">SUPER EVIL CATASTROPHIC ERROR!!11&lt;/p>
+&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;/p>&lt;/body>&lt;/html></string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QTableView" name="channelListView" >
+     <property name="sizePolicy" >
+      <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ClickableLabel</class>
+   <extends>QLabel</extends>
+   <header location="global" >clickablelabel.h</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="../../icons/icons.qrc" />
  </resources>

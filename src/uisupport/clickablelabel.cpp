@@ -18,45 +18,21 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef COREIRCLISTHELPER_H
-#define COREIRCLISTHELPER_H
+#include "clickablelabel.h"
 
-#include "irclisthelper.h"
+#include <QDebug>
+#include <QMouseEvent>
 
-#include "coresession.h"
+ClickableLabel::ClickableLabel(QWidget *parent)
+  : QLabel(parent)
+{
+}
 
-class QTimerEvent;
 
-class CoreIrcListHelper : public IrcListHelper {
-  Q_OBJECT
+void ClickableLabel::mouseReleaseEvent(QMouseEvent *event) {
+  if(event->pos().x() > size().width() || event->pos().y() > size().height())
+    return;
 
-public:
-  inline CoreIrcListHelper(CoreSession *coreSession) : IrcListHelper(coreSession), _coreSession(coreSession) {};
-
-  inline virtual const QMetaObject *syncMetaObject() const { return &IrcListHelper::staticMetaObject; }
-
-  inline CoreSession *coreSession() const { return _coreSession; }
-
-  inline bool requestInProgress(const NetworkId &netId) const { return _channelLists.contains(netId); }
-
-public slots:
-  virtual QVariantList requestChannelList(const NetworkId &netId, const QStringList &channelFilters);
-  bool addChannel(const NetworkId &netId, const QString &channelName, quint32 userCount, const QString &topic);
-  bool endOfChannelList(const NetworkId &netId);
-
-protected:
-  void timerEvent(QTimerEvent *event);
-
-private:
-  bool dispatchQuery(const NetworkId &netId, const QString &query);
-
-private:
-  CoreSession *_coreSession;
-
-  QHash<NetworkId, QString> _queuedQuery;
-  QHash<NetworkId, QList<ChannelDescription> > _channelLists;
-  QHash<NetworkId, QVariantList> _finishedChannelLists;
-  QHash<int, NetworkId> _queryTimeout;
-};
-
-#endif //COREIRCLISTHELPER_H
+  event->accept();
+  emit clicked();
+}

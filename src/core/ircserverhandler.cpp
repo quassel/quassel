@@ -153,7 +153,10 @@ void IrcServerHandler::defaultHandler(QString cmd, const QString &prefix, const 
 	  // many nets define their own WHOIS fields. we fetch those not in need of special attention here:
 	  emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", "[Whois] " + params.join(" "), prefix);
 	} else {
-	  emit displayMsg(Message::Error, BufferInfo::StatusBuffer, "", cmd + " " + params.join(" "), prefix);
+	  if(networkConnection()->coreSession()->ircListHelper()->requestInProgress(network()->networkId()))
+	    networkConnection()->coreSession()->ircListHelper()->reportError(params.join(" "));
+	  else
+	    emit displayMsg(Message::Error, BufferInfo::StatusBuffer, "", cmd + " " + params.join(" "), prefix);
 	}
     }
     //qDebug() << prefix <<":"<<cmd<<params;
