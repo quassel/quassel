@@ -32,7 +32,10 @@ class ColumnHandleItem : public QGraphicsItem {
     inline QRectF boundingRect() const;
     void setXPos(qreal xpos);
 
-    virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
+    void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
+    void mousePressEvent(QGraphicsSceneMouseEvent *event);
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 
     void sceneRectChanged(const QRectF &);
 

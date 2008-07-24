@@ -53,7 +53,6 @@ class ChatScene : public QGraphicsScene {
 
   protected slots:
     void rowsInserted(const QModelIndex &, int, int);
-    void mousePressEvent(QGraphicsSceneMouseEvent * mouseEvent);
 
   private:
     qreal _width, _height;

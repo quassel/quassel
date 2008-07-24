@@ -98,15 +98,3 @@ void ChatScene::rectChanged(const QRectF &rect) {
   firstColHandle->sceneRectChanged(rect);
   secondColHandle->sceneRectChanged(rect);
 }
-
-void ChatScene::mousePressEvent ( QGraphicsSceneMouseEvent * mouseEvent ) {
-  /*
-  qDebug() << "recv" << mouseEvent->scenePos();
-  ChatLine *line = static_cast<ChatLine*>(itemAt(mouseEvent->scenePos()));
-  ChatItem *item = static_cast<ChatItem*>(itemAt(mouseEvent->scenePos()));
-  qDebug() << (void*)line << (void*)item;
-  if(line) {
-    line->myMousePressEvent(mouseEvent);
-  } else  QGraphicsScene::mousePressEvent(mouseEvent);
-  */
-}

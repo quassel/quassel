@@ -18,14 +18,19 @@
 *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 ***************************************************************************/
 
+#include <QCursor>
 #include <QGraphicsScene>
 #include <QPainter>
+
+#include <QDebug>
 
 #include "columnhandleitem.h"
 
 ColumnHandleItem::ColumnHandleItem(qreal w, QGraphicsItem *parent) : QGraphicsItem(parent) {
   _width = w;
-
+  setZValue(10);
+  setCursor(QCursor(Qt::OpenHandCursor));
+  setFlag(ItemIsMovable);
 }
 
 void ColumnHandleItem::setXPos(qreal xpos) {
@@ -35,6 +40,21 @@ void ColumnHandleItem::setXPos(qreal xpos) {
 void ColumnHandleItem::sceneRectChanged(const QRectF &rect) {
   if(rect.height() != boundingRect().height())
     prepareGeometryChange();
+}
+
+void ColumnHandleItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
+
+  QGraphicsItem::mouseMoveEvent(event);
+}
+
+void ColumnHandleItem::mousePressEvent(QGraphicsSceneMouseEvent *event) { qDebug() << "pressed!";
+  setCursor(QCursor(Qt::ClosedHandCursor));
+  QGraphicsItem::mousePressEvent(event);
+}
+
+void ColumnHandleItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
+  setCursor(QCursor(Qt::OpenHandCursor));
+  QGraphicsItem::mouseReleaseEvent(event);
 }
 
 void ColumnHandleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {

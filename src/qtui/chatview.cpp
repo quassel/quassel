@@ -31,9 +31,6 @@
 
 ChatView::ChatView(Buffer *buf, QWidget *parent) : QGraphicsView(parent), AbstractChatView() {
   setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-  setOptimizationFlags(QGraphicsView::DontClipPainter
-      |QGraphicsView::DontSavePainterState
-      |QGraphicsView::DontAdjustForAntialiasing);
   setAlignment(Qt::AlignBottom);
   setInteractive(true);
 
