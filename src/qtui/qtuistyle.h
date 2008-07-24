@@ -29,8 +29,8 @@ class QtUiStyle : public UiStyle {
     QtUiStyle();
     virtual ~QtUiStyle();
 
-    virtual int sepTsSender() { return 10; }
-    virtual int sepSenderText() { return 10; }
+    virtual inline qreal firstColumnSeparator() const { return 10; }
+    virtual inline qreal secondColumnSeparator() const { return 10; }
 };
 
 #endif

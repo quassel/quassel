@@ -15,6 +15,7 @@ set(SOURCES
     chatlinemodelitem.cpp
     chatscene.cpp
     chatview.cpp
+    columnhandleitem.cpp
     coreconfigwizard.cpp
     coreconnectdlg.cpp
     coreinfodlg.cpp
@@ -60,6 +61,7 @@ set(HEADERS
     chatitem.h
     chatline.h
     chatlinemodelitem.h
+    columnhandleitem.h
     qtuisettings.h
     qtuistyle.h)
 

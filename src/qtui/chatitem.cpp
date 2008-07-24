@@ -47,6 +47,7 @@ QVariant ChatItem::data(int role) const {
 
 int ChatItem::setWidth(int w) {
   if(w == _boundingRect.width()) return _boundingRect.height();
+  prepareGeometryChange();
   _boundingRect.setWidth(w);
   int h = heightForWidth(w);
   _boundingRect.setHeight(h);

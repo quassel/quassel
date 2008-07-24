@@ -35,13 +35,14 @@ ChatView::ChatView(Buffer *buf, QWidget *parent) : QGraphicsView(parent), Abstra
       |QGraphicsView::DontSavePainterState
       |QGraphicsView::DontAdjustForAntialiasing);
   setAlignment(Qt::AlignBottom);
+  setInteractive(true);
 
   QList<BufferId> filterList;
   filterList.append(buf->bufferInfo().bufferId());
   MessageFilter *filter = new MessageFilter(Client::messageModel(), filterList, this);
 
   _scene = new ChatScene(filter, this);
-  connect(_scene, SIGNAL(heightChanged(int)), this, SLOT(sceneHeightChanged(int)));
+  connect(_scene, SIGNAL(heightChanged(qreal)), this, SLOT(sceneHeightChanged(qreal)));
   setScene(_scene);
 }
 
@@ -60,7 +61,8 @@ void ChatView::resizeEvent(QResizeEvent *event) {
   verticalScrollBar()->setValue(verticalScrollBar()->maximum());
 }
 
-void ChatView::sceneHeightChanged(int h) {
+void ChatView::sceneHeightChanged(qreal h) {
+  Q_UNUSED(h)
   bool scrollable = verticalScrollBar()->value() == verticalScrollBar()->maximum();
   setSceneRect(scene()->sceneRect());
   if(scrollable) verticalScrollBar()->setValue(verticalScrollBar()->maximum());

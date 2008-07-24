@@ -25,18 +25,29 @@
 #include "chatitem.h"
 #include "chatlinemodelitem.h"
 #include "chatscene.h"
-#include "quasselui.h"
+#include "columnhandleitem.h"
+#include "qtui.h"
 
 ChatScene::ChatScene(QAbstractItemModel *model, QObject *parent) : QGraphicsScene(parent), _model(model) {
   _width = 0;
-  _timestampWidth = 60;
-  _senderWidth = 80;
+  connect(this, SIGNAL(sceneRectChanged(const QRectF &)), this, SLOT(rectChanged(const QRectF &)));
+
   connect(model, SIGNAL(rowsInserted(const QModelIndex &, int, int)), this, SLOT(rowsInserted(const QModelIndex &, int, int)));
   for(int i = 0; i < model->rowCount(); i++) {
     ChatLine *line = new ChatLine(model->index(i, 0));
     _lines.append(line);
     addItem(line);
   }
+
+  firstColHandlePos = 80;
+  secondColHandlePos = 200;
+
+  firstColHandle = new ColumnHandleItem(QtUi::style()->firstColumnSeparator()); addItem(firstColHandle);
+  secondColHandle = new ColumnHandleItem(QtUi::style()->secondColumnSeparator()); addItem(secondColHandle);
+
+  firstColHandle->setXPos(firstColHandlePos);
+  secondColHandle->setXPos(secondColHandlePos);
+
   emit heightChanged(height());
 }
 
@@ -50,8 +61,8 @@ void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
   // maybe make this more efficient by prepending stuff with negative yval
   // dunno if that's worth not guranteeing that 0 is on the top...
   // TODO bulk inserts, iterators
-  int h = 0;
-  int y = 0;
+  qreal h = 0;
+  qreal y = 0;
   if(_width && start > 0) y = _lines.value(start - 1)->y() + _lines.value(start - 1)->height();
   for(int i = start; i <= end; i++) {
     ChatLine *line = new ChatLine(model()->index(i, 0));
@@ -59,7 +70,7 @@ void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
     addItem(line);
     if(_width > 0) {
       line->setPos(0, y+h);
-      h += line->setColumnWidths(_timestampWidth, _senderWidth, _width - _timestampWidth - _senderWidth);
+      h += line->setGeometry(_width, firstColHandlePos, secondColHandlePos);
     }
   }
   if(h > 0) {
@@ -68,19 +79,24 @@ void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
       _lines.value(i)->moveBy(0, h);
     }
     setSceneRect(QRectF(0, 0, _width, _height));
-    emit heightChanged(height());
+    emit heightChanged(_height);
   }
 }
 
-void ChatScene::setWidth(int w) {
+void ChatScene::setWidth(qreal w) {
   _width = w;
   _height = 0;
   foreach(ChatLine *line, _lines) {
     line->setPos(0, _height);
-    _height += line->setColumnWidths(_timestampWidth, _senderWidth, w - _timestampWidth - _senderWidth);
+    _height += line->setGeometry(_width, firstColHandlePos, secondColHandlePos);
   }
   setSceneRect(QRectF(0, 0, w, _height));
-  emit heightChanged(height());
+  emit heightChanged(_height);
+}
+
+void ChatScene::rectChanged(const QRectF &rect) {
+  firstColHandle->sceneRectChanged(rect);
+  secondColHandle->sceneRectChanged(rect);
 }
 
 void ChatScene::mousePressEvent ( QGraphicsSceneMouseEvent * mouseEvent ) {

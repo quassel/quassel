@@ -28,6 +28,8 @@ class AbstractUiMsg;
 class Buffer;
 class ChatItem;
 class ChatLine;
+class ColumnHandleItem;
+
 class QGraphicsSceneMouseEvent;
 
 class ChatScene : public QGraphicsScene {
@@ -41,21 +43,25 @@ class ChatScene : public QGraphicsScene {
     inline QAbstractItemModel *model() const { return _model; }
 
   public slots:
-    void setWidth(int);
+    void setWidth(qreal);
+
+  private slots:
+    void rectChanged(const QRectF &);
 
   signals:
-    void heightChanged(int height);
+    void heightChanged(qreal height);
 
   protected slots:
     void rowsInserted(const QModelIndex &, int, int);
-    void mousePressEvent ( QGraphicsSceneMouseEvent * mouseEvent );
+    void mousePressEvent(QGraphicsSceneMouseEvent * mouseEvent);
 
   private:
-    int _width, _height;
-    int _timestampWidth, _senderWidth;
+    qreal _width, _height;
     QAbstractItemModel *_model;
     QList<ChatLine *> _lines;
 
+    ColumnHandleItem *firstColHandle, *secondColHandle;
+    qreal firstColHandlePos, secondColHandlePos;
 };
 
 #endif
