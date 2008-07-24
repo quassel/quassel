@@ -587,7 +587,9 @@ void Client::checkForHighlight(Message &msg) {
     if(notificationSettings.highlightNick() == NotificationSettings::CurrentNick) {
       nickList << net->myNick();
     } else if(notificationSettings.highlightNick() == NotificationSettings::AllNicks) {
-      nickList = identity(net->identity())->nicks();
+      const Identity *myIdentity = identity(net->identity());
+      if(myIdentity)
+	nickList = myIdentity->nicks();
     }
     foreach(QString nickname, nickList) {
       QRegExp nickRegExp("^(.*\\W)?" + QRegExp::escape(nickname) + "(\\W.*)?$");
