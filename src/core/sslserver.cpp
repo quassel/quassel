@@ -27,6 +27,7 @@
 #include <QFile>
 #include <QDebug>
 
+#include "logger.h"
 #include "util.h"
 
 #ifndef QT_NO_OPENSSL
@@ -45,7 +46,7 @@ SslServer::SslServer(QObject *parent)
 
   _certIsValid = !_cert.isNull() && _cert.isValid() && !_key.isNull();
   if(!_certIsValid) {
-    qWarning() << "SslServer: SSL Certificate is either missing or has a wrong format!\n"
+    quWarning() << "SslServer: SSL Certificate is either missing or has a wrong format!\n"
                << "          Quassel Core will still work, but cannot provide SSL for client connections.\n"
                << "          Please see http://quassel-irc.org/faq/cert to learn how to enable SSL support.";
   }

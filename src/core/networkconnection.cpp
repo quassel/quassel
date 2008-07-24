@@ -35,6 +35,8 @@
 #include "userinputhandler.h"
 #include "ctcphandler.h"
 
+#include "logger.h"
+
 NetworkConnection::NetworkConnection(Network *network, CoreSession *session)
   : QObject(network),
     _connectionState(Network::Disconnected),
@@ -177,11 +179,11 @@ void NetworkConnection::connectToIrc(bool reconnecting) {
   QVariantList serverList = network()->serverList();
   Identity *identity = coreSession()->identity(network()->identity());
   if(!serverList.count()) {
-    qWarning() << "Server list empty, ignoring connect request!";
+    quWarning() << "Server list empty, ignoring connect request!";
     return;
   }
   if(!identity) {
-    qWarning() << "Invalid identity configures, ignoring connect request!";
+    quWarning() << "Invalid identity configures, ignoring connect request!";
     return;
   }
   // use a random server?
@@ -276,7 +278,7 @@ void NetworkConnection::socketHasData() {
 
 void NetworkConnection::socketError(QAbstractSocket::SocketError) {
   _previousConnectionAttemptFailed = true;
-  qDebug() << qPrintable(tr("Could not connect to %1 (%2)").arg(network()->networkName(), socket.errorString()));
+  quWarning() << qPrintable(tr("Could not connect to %1 (%2)").arg(network()->networkName(), socket.errorString()));
   emit connectionError(socket.errorString());
   emit displayMsg(Message::Error, BufferInfo::StatusBuffer, "", tr("Connection failure: %1").arg(socket.errorString()));
   network()->emitConnectionError(socket.errorString());
@@ -333,7 +335,7 @@ void NetworkConnection::socketInitialized() {
   //emit connected(networkId());  initialize first!
   Identity *identity = coreSession()->identity(network()->identity());
   if(!identity) {
-    qWarning() << "Identity invalid!";
+    quError() << "Identity invalid!";
     disconnectFromIrc();
     return;
   }
@@ -396,7 +398,7 @@ void NetworkConnection::socketDisconnected() {
 
 void NetworkConnection::doAutoReconnect() {
   if(connectionState() != Network::Disconnected && connectionState() != Network::Reconnecting) {
-    qWarning() << "NetworkConnection::doAutoReconnect(): Cannot reconnect while not being disconnected!";
+    quWarning() << "NetworkConnection::doAutoReconnect(): Cannot reconnect while not being disconnected!";
     return;
   }
   if(_autoReconnectCount > 0) _autoReconnectCount--;

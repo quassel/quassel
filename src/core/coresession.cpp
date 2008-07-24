@@ -39,6 +39,7 @@
 
 #include "util.h"
 #include "coreusersettings.h"
+#include "logger.h"
 
 CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
   : QObject(parent),
@@ -142,13 +143,13 @@ void CoreSession::loadSettings() {
   foreach(IdentityId id, s.identityIds()) {
     Identity *i = new Identity(s.identity(id), this);
     if(!i->isValid()) {
-      qWarning() << QString("Invalid identity! Removing...");
+      quWarning() << "Invalid identity! Removing...";
       s.removeIdentity(id);
       delete i;
       continue;
     }
     if(_identities.contains(i->id())) {
-      qWarning() << "Duplicate identity, ignoring!";
+      quWarning() << "Duplicate identity, ignoring!";
       delete i;
       continue;
     }
@@ -185,7 +186,7 @@ void CoreSession::updateBufferInfo(UserId uid, const BufferInfo &bufinfo) {
 void CoreSession::connectToNetwork(NetworkId id) {
   CoreNetwork *net = network(id);
   if(!net) {
-    qWarning() << "Connect to unknown network requested! net:" << id << "user:" << user();
+    quWarning() << "Connect to unknown network requested! net: " << id << " user: " << user();
     return;
   }
 
@@ -232,7 +233,7 @@ void CoreSession::networkStateRequested() {
 void CoreSession::addClient(QObject *dev) { // this is QObject* so we can use it in signal connections
   QIODevice *device = qobject_cast<QIODevice *>(dev);
   if(!device) {
-    qWarning() << "Invoking CoreSession::addClient with a QObject that is not a QIODevice!";
+    quError() << "Invoking CoreSession::addClient with a QObject that is not a QIODevice!";
   } else {
     signalProxy()->addPeer(device);
     QVariantMap reply;
@@ -246,9 +247,9 @@ void CoreSession::removeClient(QIODevice *iodev) {
   // no checks for validity check - privateslot...
   QTcpSocket *socket = qobject_cast<QTcpSocket *>(iodev);
   if(socket)
-    qDebug() << qPrintable(tr("Client")) << qPrintable(socket->peerAddress().toString()) << qPrintable(tr("disconnected (UserId: %1).").arg(user().toInt()));
+    quInfo() << qPrintable(tr("Client ")) << qPrintable(socket->peerAddress().toString()) << qPrintable(tr(" disconnected (UserId: %1).").arg(user().toInt()));
   else
-    qDebug() << "Local client disconnedted.";
+    quInfo() << "Local client disconnedted.";
   disconnect(socket, 0, this, 0);
   socket->deleteLater();
 }
@@ -293,7 +294,7 @@ void CoreSession::msgFromClient(BufferInfo bufinfo, QString msg) {
   if(conn) {
     conn->userInput(bufinfo, msg);
   } else {
-    qWarning() << "Trying to send to unconnected network:" << msg;
+    quWarning() << "Trying to send to unconnected network:" << msg;
   }
 }
 
@@ -386,7 +387,7 @@ void CoreSession::createIdentity(const Identity &id) {
 
 void CoreSession::updateIdentity(const Identity &id) {
   if(!_identities.contains(id.id())) {
-    qWarning() << "Update request for unknown identity received!";
+    quWarning() << "Update request for unknown identity received!";
     return;
   }
   _identities[id.id()]->update(id);
@@ -415,7 +416,7 @@ void CoreSession::createNetwork(const NetworkInfo &info_) {
     Core::createNetwork(user(), info);
 
   if(!info.networkId.isValid()) {
-    qWarning() << qPrintable(tr("CoreSession::createNetwork(): Got invalid networkId from Core when trying to create network %1!").arg(info.networkName));
+    quWarning() << qPrintable(tr("CoreSession::createNetwork(): Got invalid networkId from Core when trying to create network %1!").arg(info.networkName));
     return;
   }
 
@@ -430,7 +431,7 @@ void CoreSession::createNetwork(const NetworkInfo &info_) {
     signalProxy()->synchronize(net);
     emit networkCreated(id);
   } else {
-    qWarning() << qPrintable(tr("CoreSession::createNetwork(): Trying to create a network that already exists, updating instead!"));
+    quWarning() << qPrintable(tr("CoreSession::createNetwork(): Trying to create a network that already exists, updating instead!"));
     updateNetwork(info);
   }
 }
@@ -438,7 +439,7 @@ void CoreSession::createNetwork(const NetworkInfo &info_) {
 // FIXME: move to CoreNetwork
 void CoreSession::updateNetwork(const NetworkInfo &info) {
   if(!_networks.contains(info.networkId)) {
-    qWarning() << "Update request for unknown network received!";
+    quWarning() << "Update request for unknown network received!";
     return;
   }
   _networks[info.networkId]->setNetworkInfo(info);
@@ -480,24 +481,24 @@ void CoreSession::destroyNetwork(NetworkId id) {
 void CoreSession::removeBufferRequested(BufferId bufferId) {
   BufferInfo bufferInfo = Core::getBufferInfo(user(), bufferId);
   if(!bufferInfo.isValid()) {
-    qWarning() << "CoreSession::removeBufferRequested(): invalid BufferId:" << bufferId << "for User:" << user();
+    quWarning() << "CoreSession::removeBufferRequested(): invalid BufferId: " << bufferId << " for User: " << user();
     return;
   }
   
   if(bufferInfo.type() == BufferInfo::StatusBuffer) {
-    qWarning() << "CoreSession::removeBufferRequested(): Status Buffers cannot be removed!";
+    quWarning() << "CoreSession::removeBufferRequested(): Status Buffers cannot be removed!";
     return;
   }
   
   if(bufferInfo.type() == BufferInfo::ChannelBuffer) {
     CoreNetwork *net = network(bufferInfo.networkId());
     if(!net) {
-      qWarning() << "CoreSession::removeBufferRequested(): Received BufferInfo with unknown networkId!";
+      quWarning() << "CoreSession::removeBufferRequested(): Received BufferInfo with unknown networkId!";
       return;
     }
     IrcChannel *chan = net->ircChannel(bufferInfo.bufferName());
     if(chan) {
-      qWarning() << "CoreSession::removeBufferRequested(): Unable to remove Buffer for joined Channel:" << bufferInfo.bufferName();
+      quWarning() << "CoreSession::removeBufferRequested(): Unable to remove Buffer for joined Channel: " << bufferInfo.bufferName();
       return;
     }
   }

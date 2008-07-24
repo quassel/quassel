@@ -21,6 +21,8 @@
 #include "corenetwork.h"
 #include "coresession.h"
 
+#include "logger.h"
+
 CoreNetwork::CoreNetwork(const NetworkId &networkid, CoreSession *session)
   : Network(networkid, session),
     _coreSession(session)
@@ -29,7 +31,7 @@ CoreNetwork::CoreNetwork(const NetworkId &networkid, CoreSession *session)
 
 void CoreNetwork::requestConnect() const {
   if(connectionState() != Disconnected) {
-    qWarning() << "Requesting connect while already being connected!";
+    quWarning() << "Requesting connect while already being connected!";
     return;
   }
   emit connectRequested(networkId());
@@ -37,7 +39,7 @@ void CoreNetwork::requestConnect() const {
 
 void CoreNetwork::requestDisconnect() const {
   if(connectionState() == Disconnected) {
-    qWarning() << "Requesting disconnect while not being connected!";
+    quWarning() << "Requesting disconnect while not being connected!";
     return;
   }
   emit disconnectRequested(networkId());

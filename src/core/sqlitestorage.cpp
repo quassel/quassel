@@ -25,6 +25,7 @@
 #include "network.h"
 
 #include "util.h"
+#include "logger.h"
 
 SqliteStorage::SqliteStorage(QObject *parent)
   : AbstractSqlStorage(parent)
@@ -256,7 +257,7 @@ bool SqliteStorage::removeNetwork(UserId user, const NetworkId &networkId) {
   if(withTransaction) {
     sync();
     if(!logDb().transaction()) {
-      qWarning() << "SqliteStorage::removeNetwork(): cannot start transaction. continuing with out rollback support!";
+      quWarning() << "SqliteStorage::removeNetwork(): cannot start transaction. continuing with out rollback support!";
       withTransaction = false;
     }
   }
@@ -490,16 +491,19 @@ BufferInfo SqliteStorage::getBufferInfo(UserId user, const NetworkId &networkId,
     query->exec();
     if(!query->first()) {
       watchQuery(query);
-      qWarning() << "unable to create BufferInfo for:" << user << networkId << buffer;
+      quWarning() << "unable to create BufferInfo for: " << user << networkId << buffer;
       return BufferInfo();
     }
   }
 
   BufferInfo bufferInfo = BufferInfo(query->value(0).toInt(), networkId, (BufferInfo::Type)query->value(1).toInt(), 0, buffer);
   if(query->next()) {
-    qWarning() << "SqliteStorage::getBufferInfo(): received more then one Buffer!";
-    qWarning() << "         Query:" << query->lastQuery();
-    qWarning() << "  bound Values:" << query->boundValues();
+    quError() << "SqliteStorage::getBufferInfo(): received more then one Buffer!";
+    quError() << "         Query: " << query->lastQuery();
+    quError() << "  bound Values:";
+    QList<QVariant> list = query->boundValues().values();
+    for (int i = 0; i < list.size(); ++i)
+      quError() << i << ": " << list.at(i).toString().toAscii().data();
     Q_ASSERT(false);
   }
 
@@ -809,7 +813,7 @@ bool SqliteStorage::init(const QVariantMap &settings) {
   getPasswordsQuery.exec();
 
   if(!watchQuery(&getPasswordsQuery)) {
-    qWarning() << "unable to migrate to new password format!";
+    quError() << "unable to migrate to new password format!";
     return false;
   }
 
@@ -827,6 +831,6 @@ bool SqliteStorage::init(const QVariantMap &settings) {
     watchQuery(&setPasswordsQuery);
   }
 
-  qDebug() << "successfully migrated passwords!";
+  quDebug() << "successfully migrated passwords!";
   return true;
 }
