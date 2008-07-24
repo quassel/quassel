@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS><TS version="1.1" language="fr">
+<defaultcodec></defaultcodec>
 <context>
     <name>AboutDlg</name>
     <message>
@@ -540,12 +541,12 @@ Lines:     1234
     <message>
         <location filename="../src/qtui/ui_buffervieweditdlg.h" line="80"/>
         <source>Please enter a name for the buffer view:</source>
-        <translation type="unfinished">Merci de saisir un nom pour la vue buffer:</translation>
+        <translation>Merci de saisir un nom pour la vue:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/bufferviewsettingspage.cpp" line="461"/>
         <source>Add Buffer View</source>
-        <translation type="unfinished">Ajouter une vue buffer</translation>
+        <translation>Ajouter une Vue</translation>
     </message>
 </context>
 <context>
@@ -558,17 +559,17 @@ Lines:     1234
     <message>
         <location filename="../src/qtui/settingspages/bufferviewsettingspage.cpp" line="34"/>
         <source>Buffer Views</source>
-        <translation type="unfinished">Vues buffer</translation>
+        <translation>Vues</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/bufferviewsettingspage.cpp" line="294"/>
         <source>Delete Buffer View?</source>
-        <translation type="unfinished">Supprimer la vue buffer ?</translation>
+        <translation>Supprimer la vue ?</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/bufferviewsettingspage.cpp" line="295"/>
         <source>Do you really want to delete the buffer view &quot;%1&quot;?</source>
-        <translation type="unfinished">Voulez vous réellement supprimer la vue buffer &quot;%1&quot; ?</translation>
+        <translation>Voulez vous réellement supprimer la vue &quot;%1&quot; ?</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui_bufferviewsettingspage.h" line="204"/>
@@ -593,7 +594,7 @@ Lines:     1234
     <message>
         <location filename="../src/qtui/ui_bufferviewsettingspage.h" line="208"/>
         <source>Buffer View  Settings</source>
-        <translation type="unfinished">Paramètres de la vue buffer</translation>
+        <translation>Paramètres des Vues</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui_bufferviewsettingspage.h" line="209"/>
@@ -676,7 +677,7 @@ Lines:     1234
     <message>
         <location filename="../src/qtui/ui_bufferviewwidget.h" line="58"/>
         <source>BufferView</source>
-        <translation type="unfinished">Vue Buffer</translation>
+        <translation>Vue</translation>
     </message>
     <message>
         <location filename="../src/qtopia/bufferviewwidget.cpp" line="37"/>
@@ -790,6 +791,38 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/qtui/ui_channellistdlg.h" line="116"/>
         <source>Filter:</source>
         <translation>Filtre:</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/ui/channellistdlg.ui" line="47"/>
+        <source>Toggle between simple and advanced mode.
+Advanced mode allows to pass search strings to the IRC Server.</source>
+        <translation>Basculer entre mode simple et mode avancé
+Le mode avancé permet de transmettre des chaines à rechercher au serveur IRC.</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/ui/channellistdlg.ui" line="61"/>
+        <source>Show Channels</source>
+        <translation>Voir les canaux</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/ui/channellistdlg.ui" line="97"/>
+        <source>Errors Occured:</source>
+        <translation>Erreurs survenues:</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/ui/channellistdlg.ui" line="131"/>
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;SUPER EVIL CATASTROPHIC ERROR!!11&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;SUPER ERREUR CATASTROPHIQUE !!11&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
@@ -934,7 +967,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/ui_colorsettingspage.h" line="1299"/>
         <source>Bufferview</source>
-        <translation type="unfinished">Vue Buffer</translation>
+        <translation>Vue</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui_colorsettingspage.h" line="1273"/>
@@ -2378,7 +2411,7 @@ d&apos;espace</translation>
     <message>
         <location filename="../src/qtui/ui_fontssettingspage.h" line="343"/>
         <source>Buffer Views:</source>
-        <translation type="unfinished">Vues des buffers:</translation>
+        <translation>Vues:</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui_fontssettingspage.h" line="346"/>
@@ -2599,7 +2632,7 @@ d&apos;espace</translation>
     <message>
         <location filename="../src/qtui/ui_generalsettingspage.h" line="189"/>
         <source>in query buffer (if exists)</source>
-        <translation type="unfinished">dans le buffer de requête (s&apos;il existe)</translation>
+        <translation type="unfinished">dans le buffer de dialogue (s&apos;il existe)</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui_generalsettingspage.h" line="190"/>
@@ -2649,7 +2682,7 @@ d&apos;espace</translation>
     <message>
         <location filename="../src/qtui/ui_generalsettingspage.h" line="187"/>
         <source>Display User-Related Messages And Private Notices:</source>
-        <translation type="unfinished"></translation>
+        <translation>Afficher les messages utilisateurs et les messages privés:</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui_generalsettingspage.h" line="191"/>
@@ -3221,22 +3254,22 @@ d&apos;espace</translation>
 <context>
     <name>IrcServerHandler</name>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="432"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="435"/>
         <source>%1 has changed topic for %2 to: &quot;%3&quot;</source>
         <translation>%1 à changé le sujet de  %2 en :&quot;%3&quot;</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="800"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="803"/>
         <source>No topic is set for %1.</source>
         <translation>Pas de sujet pour %1.</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="812"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="815"/>
         <source>Topic for %1 is &quot;%2&quot;</source>
         <translation>Le sujet pour %1 est &quot;%2&quot;</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="823"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="826"/>
         <source>Topic set by %1 on %2</source>
         <translation>Sujet mis par %1 le %2</translation>
     </message>
@@ -3256,132 +3289,132 @@ d&apos;espace</translation>
         <translation type="obsolete">Le pseudo %1 est déjà utilisé</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="503"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="506"/>
         <source>%1</source>
         <translation>%1</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="538"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="541"/>
         <source>[Whois] %1 is away: &quot;%2&quot;</source>
         <translation>[Whois] %1 est absent: &quot;%2&quot;</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="549"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="552"/>
         <source>%1 is away: &quot;%2&quot;</source>
         <translation>%1 est absent: &quot;%2&quot;</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="746"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="749"/>
         <source>[Whois] %1</source>
         <translation>[Whois] %1</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="620"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="623"/>
         <source>[Whois] %1 is %2 (%3)</source>
         <translation>[Whois] %1 est %2 (%3)</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="635"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="638"/>
         <source>%1 is online via %2 (%3)</source>
         <translation>%1 est connecté par %2 (%3)</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="887"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="890"/>
         <source>[Whowas] %1</source>
         <translation>[Whowas] %1</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="665"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="668"/>
         <source>[Whowas] %1 was %2 (%3)</source>
         <translation>[Whowas] %1 était %2 (%3)</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="679"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="682"/>
         <source>[Who] End of /WHO list for %1</source>
         <translation>[Who] Fin de la liste  /WHO pour %1</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="699"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="702"/>
         <source>[Whois] %1 is logged in since %2</source>
         <translation>[Whois] %1 est connecté depuis %2</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="701"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="704"/>
         <source>[Whois] %1 is idling for %2 (%3)</source>
         <translation>[Whois] %1est en attente depuis %2 (%3)</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="704"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="707"/>
         <source>[Whois] idle message: %1</source>
         <translation>[Whois] message d&apos;attente: %1</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="736"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="739"/>
         <source>[Whois] %1 is a user on channels: %2</source>
         <translation>[Whois] %1 est présent sur les canaux: %2</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="738"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="741"/>
         <source>[Whois] %1 has voice on channels: %2</source>
         <translation>[Whois] %1 a voix sur les canaux: %2</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="740"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="743"/>
         <source>[Whois] %1 is an operator on channels: %2</source>
         <translation>[Whois] %1 est opérateur sur les canaux: %2</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="768"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="771"/>
         <source>Channel %1 has %2 users. Topic is: %3</source>
         <translation>Le canal %1 a %2 utilisateurs. Son sujet est: %3</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="777"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="780"/>
         <source>End of channel list</source>
         <translation>Fin de la liste des canaux</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="846"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="849"/>
         <source>[Who] %1</source>
         <translation>[Who] %1</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="900"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="903"/>
         <source>There is a nickname in your identity&apos;s nicklist which contains illegal characters</source>
         <translation>Il y a un pseudo dans votre liste d&apos;identié qui contient des caractères illégaux</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="901"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="904"/>
         <source>Due to a bug in Unreal IRCd (and maybe other irc-servers too) we&apos;re unable to determine the erroneous nick</source>
         <translation>En raison d&apos;une bogue dans Unreal IRCd ( et peut être dans d&apos;autres serveurs IRC) nous ne pouvons déterminer le pseudo erroné</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="902"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="905"/>
         <source>Please use: /nick &lt;othernick&gt; to continue or clean up your nicklist</source>
         <translation>Merci d&apos;utiliser: /nick &lt;autrepseudo&gt; pour continuer ou de nettoyer votre liste de pseudos</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="905"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="908"/>
         <source>Nick %1 contains illegal characters</source>
         <translation>Le pseudo %1 contient des caractères illégaux</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="917"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="920"/>
         <source>Nick already in use: %1</source>
         <translation>Le pseudo suivant est déjà utilisé: %1</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="940"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="943"/>
         <source>No free and valid nicks in nicklist found. use: /nick &lt;othernick&gt; to continue</source>
         <translation>Aucun pseudo libre et valide n&apos;a été trouvé dans la liste. Utiliser: /nick &lt;autrepseudo&gt; pour continuer</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="457"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="460"/>
         <source>Received RPL_ISUPPORT (005) without parameters!</source>
         <translation>Réception de RPL_ISUPPORT (005) sans paramètres !</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="465"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="468"/>
         <source>Received non RFC compliant RPL_ISUPPORT: this can lead to unexpected behavior!</source>
         <translation>Récetion d&apos;un  RPL_ISUPPORT hors RFC: cela peut avoir des conséquences inattendues !</translation>
     </message>
@@ -3667,12 +3700,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/ui_mainwin.h" line="259"/>
         <source>Buffer Views</source>
-        <translation type="unfinished">Vues Buffer</translation>
+        <translation>Vues</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui_mainwin.h" line="251"/>
         <source>Manage Buffer Views</source>
-        <translation type="unfinished">Gérer les Vues Buffer</translation>
+        <translation>Gérer les Vues</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui_mainwin.h" line="252"/>
@@ -4501,12 +4534,12 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
     <message>
         <location filename="../src/qtui/ui_notificationssettingspage.h" line="144"/>
         <source>Sends Quassel&apos;s notifications to a notification daemon compliant to Freedesktop&apos;s Notification specification (org.freedesktop.Notification).</source>
-        <translation>Envoyer les notifications de Quassel à un programme supportant la spécification Freedesktop (org.freedesktop.Notification).</translation>
+        <translation>Envoyer les informations de Quassel à un programme supportant la spécification Freedesktop (org.freedesktop.Notification).</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui_notificationssettingspage.h" line="147"/>
         <source>Desktop Notification (via DBus)</source>
-        <translation type="unfinished"></translation>
+        <translation>Information Bureau (par Dbus)</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui_notificationssettingspage.h" line="148"/>
@@ -4875,7 +4908,7 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
     <message>
         <location filename="../src/client/networkmodel.cpp" line="261"/>
         <source>&lt;b&gt;Status buffer of %1&lt;/b&gt;</source>
-        <translation type="unfinished">&lt;b&gt;Etat du buffer %1&lt;/b&gt;</translation>
+        <translation type="unfinished">&lt;b&gt;Buffer d&apos;état de %1&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../src/client/networkmodel.cpp" line="263"/>
@@ -4885,7 +4918,7 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
     <message>
         <location filename="../src/client/networkmodel.h" line="139"/>
         <source>Status Buffer</source>
-        <translation type="unfinished">Etat du Buffer</translation>
+        <translation type="unfinished">Buffer d&apos;état</translation>
     </message>
 </context>
 <context>
