@@ -19,31 +19,43 @@
  ***************************************************************************/
 
 #include "logger.h"
+#include "global.h"
 
-#include <iostream>
-#include <stdlib.h>
+#include <QFile>
+#include <QTextStream>
+#include <QDateTime>
 
 Logger::~Logger() {
-  qInstallMsgHandler(0);
+  QDateTime date = QDateTime::currentDateTime();
+  if(stream->logLevel == DebugLevel) stream->buffer.prepend("Debug: ");
+  else if (stream->logLevel == InfoLevel) stream->buffer.prepend("Info: ");
+  else if (stream->logLevel == WarningLevel) stream->buffer.prepend("Warning: ");
+  else if (stream->logLevel == ErrorLevel) stream->buffer.prepend("Error: ");
+  stream->buffer.prepend(date.toString("yyyy-MM-dd hh:mm:ss "));
+  log();
+  delete stream;
 }
 
-void messageHandler(QtMsgType type, const char *msg) {
-  switch (type) {
-    case QtDebugMsg:
-      std::cerr << "[DEBUG] " << msg << "\n";
-      break;
-    case QtWarningMsg:
-      std::cerr << "[WARNING] " << msg << "\n";
-      break;
-    case QtCriticalMsg:
-      std::cerr << "[CRITICAL] " << msg << "\n";
-      break;
-    case QtFatalMsg:
-      std::cerr << "[FATAL] " << msg << "\n";
-      abort(); // deliberately core dump
+void Logger::log() {
+  LogLevel lvl;
+  if (Global::parser.value("loglevel") == "Debug") lvl = DebugLevel;
+  else if (Global::parser.value("loglevel") == "Info") lvl = InfoLevel;
+  else if (Global::parser.value("loglevel") == "Warning") lvl = WarningLevel;
+  else if (Global::parser.value("loglevel") == "Error") lvl = ErrorLevel;
+  else lvl = InfoLevel;
+
+  if(stream->logLevel < lvl) return;
+
+  // if we can't open logfile we log to stdout
+  QTextStream out(stdout);
+  QFile file;
+  if(!Global::parser.value("logfile").isEmpty()) {
+    file.setFileName(Global::parser.value("logfile"));
+    if (file.open(QIODevice::Append | QIODevice::Text)) {
+      out.setDevice(&file);
+      stream->buffer.remove(QChar('\n'));
+    }
   }
-}
-
-Logger::Logger() {
-  qInstallMsgHandler(messageHandler);
+  out << stream->buffer << "\n";
+  if(file.isOpen()) file.close();
 }

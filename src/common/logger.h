@@ -21,21 +21,55 @@
 #ifndef _LOGGER_H_
 #define _LOGGER_H_
 
-#include <QObject>
+#include <QString>
+#include <QTextStream>
 
-class Logger : public QObject {
-  Q_OBJECT
-
+class Logger {
   public:
-    Logger();
-    virtual ~Logger();
+    enum LogLevel {
+      DebugLevel,
+      InfoLevel,
+      WarningLevel,
+      ErrorLevel
+    };
 
+    inline Logger(LogLevel level) : stream(new Stream(level)) {}
+    ~Logger();
 
+    inline Logger &operator<<(const char* t) { stream->internalStream << QString::fromAscii(t); return *this; }
+    inline Logger &operator<<(QChar t) { stream->internalStream << t; return *this; }
+    inline Logger &operator<<(bool t) { stream->internalStream << (t ? "true" : "false"); return *this; }
+    inline Logger &operator<<(char t) { stream->internalStream << t; return *this; }
+    inline Logger &operator<<(signed short t) { stream->internalStream << t; return *this; }
+    inline Logger &operator<<(unsigned short t) { stream->internalStream << t; return *this; }
+    inline Logger &operator<<(signed int t) { stream->internalStream << t; return *this; }
+    inline Logger &operator<<(unsigned int t) { stream->internalStream << t; return *this; }
+    inline Logger &operator<<(signed long t) { stream->internalStream << t; return *this; }
+    inline Logger &operator<<(unsigned long t) { stream->internalStream << t; return *this; }
+    inline Logger &operator<<(qint64 t) { stream->internalStream << QString::number(t); return *this; }
+    inline Logger &operator<<(quint64 t) { stream->internalStream << QString::number(t); return *this; }
+    inline Logger &operator<<(float t) { stream->internalStream << t; return *this; }
+    inline Logger &operator<<(double t) { stream->internalStream << t; return *this; }
+    inline Logger &operator<<(const QString & t) { stream->internalStream << t; return *this; }
+    inline Logger &operator<<(const QLatin1String &t) { stream->internalStream << t.latin1(); return *this; }
+    inline Logger &operator<<(const QByteArray & t) { stream->internalStream << t ; return *this; }
+    inline Logger &operator<<(const void * t) { stream->internalStream << t; return *this; }
 
+    void log();
   private:
-    //void messageHandler(QtMsgType type, const char *msg);
+    struct Stream {
+      Stream(LogLevel level)
+      : internalStream(&buffer, QIODevice::WriteOnly),
+        logLevel(level) {}
+      QTextStream internalStream;
+      QString buffer;
+      LogLevel logLevel;
+    } *stream;
 };
 
-
+inline Logger quDebug() { return Logger(Logger::DebugLevel); }
+inline Logger quInfo() { return Logger(Logger::InfoLevel); }
+inline Logger quWarning() { return Logger(Logger::WarningLevel); }
+inline Logger quError() { return Logger(Logger::ErrorLevel); }
 
 #endif
