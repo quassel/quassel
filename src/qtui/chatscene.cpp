@@ -30,7 +30,11 @@
 
 const qreal minContentsWidth = 200;
 
-ChatScene::ChatScene(QAbstractItemModel *model, QObject *parent) : QGraphicsScene(parent), _model(model) {
+ChatScene::ChatScene(QAbstractItemModel *model, const QString &idString, QObject *parent)
+  : QGraphicsScene(parent),
+  _idString(idString),
+  _model(model)
+{
   _width = 0;
   connect(this, SIGNAL(sceneRectChanged(const QRectF &)), this, SLOT(rectChanged(const QRectF &)));
 

@@ -33,7 +33,7 @@ class MessageFilter : public QSortFilterProxyModel {
     MessageFilter(MessageModel *, const QList<BufferId> &buffers = QList<BufferId>(), QObject *parent = 0);
 
     virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
-
+    virtual QString idString() const;
 
   private:
     QList<BufferId> _bufferList;

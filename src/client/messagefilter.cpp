@@ -28,6 +28,17 @@ MessageFilter::MessageFilter(MessageModel *source, const QList<BufferId> &buffer
 
 }
 
+QString MessageFilter::idString() const {
+  if(_bufferList.isEmpty()) return "*";
+  QString idstr;
+  QStringList bufids;
+  foreach(BufferId id, _bufferList) bufids << QString(id.toInt());
+  bufids.sort();
+  foreach(QString id, bufids) idstr += id + '|';
+  idstr.chop(1);
+  return idstr;
+}
+
 bool MessageFilter::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const {
   Q_UNUSED(sourceParent);
   if(_bufferList.isEmpty()) return true;

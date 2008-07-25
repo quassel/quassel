@@ -36,7 +36,7 @@ class ChatScene : public QGraphicsScene {
   Q_OBJECT
 
   public:
-    ChatScene(QAbstractItemModel *model, QObject *parent);
+    ChatScene(QAbstractItemModel *model, const QString &idString, QObject *parent);
     virtual ~ChatScene();
 
     Buffer *buffer() const;
@@ -56,6 +56,7 @@ class ChatScene : public QGraphicsScene {
     void rowsInserted(const QModelIndex &, int, int);
 
   private:
+    QString _idString;
     qreal _width, _height;
     QAbstractItemModel *_model;
     QList<ChatLine *> _lines;
