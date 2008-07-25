@@ -27,6 +27,7 @@
 #include "chatscene.h"
 #include "columnhandleitem.h"
 #include "qtui.h"
+#include "qtuisettings.h"
 
 const qreal minContentsWidth = 200;
 
@@ -45,8 +46,14 @@ ChatScene::ChatScene(QAbstractItemModel *model, const QString &idString, QObject
     addItem(line);
   }
 
-  firstColHandlePos = 80;
-  secondColHandlePos = 200;
+  QtUiSettings s;
+  int defaultFirstColHandlePos = s.value("ChatView/DefaultFirstColumnHandlePos", 80).toInt();
+  int defaultSecondColHandlePos = s.value("ChatView/DefaultSecondColumnHandlePos", 200).toInt();
+
+  firstColHandlePos = s.value(QString("ChatView/%1/FirstColumnHandlePos").arg(_idString),
+                               defaultFirstColHandlePos).toInt();
+  secondColHandlePos = s.value(QString("ChatView/%1/SecondColumnHandlePos").arg(_idString),
+                                defaultSecondColHandlePos).toInt();
 
   firstColHandle = new ColumnHandleItem(QtUi::style()->firstColumnSeparator()); addItem(firstColHandle);
   secondColHandle = new ColumnHandleItem(QtUi::style()->secondColumnSeparator()); addItem(secondColHandle);
@@ -121,6 +128,12 @@ void ChatScene::handlePositionChanged(qreal xpos) {
     oldx = secondColHandlePos;
     secondColHandlePos = xpos;
   }
+  QtUiSettings s;
+  s.setValue(QString("ChatView/%1/FirstColumnHandlePos").arg(_idString), firstColHandlePos);
+  s.setValue(QString("ChatView/%1/SecondColumnHandlePos").arg(_idString), secondColHandlePos);
+  s.setValue(QString("ChatView/DefaultFirstColumnHandlePos"), firstColHandlePos);
+  s.setValue(QString("ChatView/DefaultSecondColumnHandlePos"), secondColHandlePos);
+
   setWidth(width());  // readjust all chatlines
   // we get ugly redraw errors if we don't update this explicitly... :(
   // width() should be the same for both handles, so just use firstColHandle regardless
