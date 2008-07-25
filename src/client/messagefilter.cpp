@@ -32,7 +32,7 @@ QString MessageFilter::idString() const {
   if(_bufferList.isEmpty()) return "*";
   QString idstr;
   QStringList bufids;
-  foreach(BufferId id, _bufferList) bufids << QString(id.toInt());
+  foreach(BufferId id, _bufferList) bufids << QString::number(id.toInt());
   bufids.sort();
   foreach(QString id, bufids) idstr += id + '|';
   idstr.chop(1);
