@@ -20,17 +20,25 @@
 
 #include <QCursor>
 #include <QGraphicsScene>
+#include <QGraphicsSceneHoverEvent>
 #include <QPainter>
 
 #include <QDebug>
 
 #include "columnhandleitem.h"
 
-ColumnHandleItem::ColumnHandleItem(qreal w, QGraphicsItem *parent) : QGraphicsItem(parent) {
-  _width = w;
+ColumnHandleItem::ColumnHandleItem(qreal w, QGraphicsItem *parent)
+  : QGraphicsItem(parent),
+    _width(w),
+    _hover(0),
+    _timeLine(150)
+{
+  setAcceptsHoverEvents(true);
   setZValue(10);
   setCursor(QCursor(Qt::OpenHandCursor));
   setFlag(ItemIsMovable);
+
+  connect(&_timeLine, SIGNAL(valueChanged(qreal)), this, SLOT(hoverChanged(qreal)));
 }
 
 void ColumnHandleItem::setXPos(qreal xpos) {
@@ -43,7 +51,6 @@ void ColumnHandleItem::sceneRectChanged(const QRectF &rect) {
 }
 
 void ColumnHandleItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
-
   QGraphicsItem::mouseMoveEvent(event);
 }
 
@@ -61,7 +68,31 @@ void ColumnHandleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *
   Q_UNUSED(option);
   Q_UNUSED(widget);
 
-  painter->drawRect(boundingRect());
-
-
+  QLinearGradient gradient(0, 0, width(), 0);
+  gradient.setColorAt(0.25, Qt::transparent);
+  gradient.setColorAt(0.5, QColor(0, 0, 0, _hover * 200));
+  gradient.setColorAt(0.75, Qt::transparent);
+  painter->fillRect(boundingRect(), gradient);
 }
+
+void ColumnHandleItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event) {
+  Q_UNUSED(event);
+
+  _timeLine.setDirection(QTimeLine::Forward);
+  if(_timeLine.state() != QTimeLine::Running)
+    _timeLine.start();
+}
+
+void ColumnHandleItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event) {
+  Q_UNUSED(event);
+
+  _timeLine.setDirection(QTimeLine::Backward);
+  if(_timeLine.state() != QTimeLine::Running)
+    _timeLine.start();
+}
+
+void ColumnHandleItem::hoverChanged(qreal value) {
+  _hover = value;
+  update();
+}
+

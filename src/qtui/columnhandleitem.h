@@ -21,34 +21,39 @@
 #ifndef COLUMNHANDLEITEM_H_
 #define COLUMNHANDLEITEM_H_
 
+#include <QObject>
 #include <QGraphicsItem>
+#include <QGraphicsScene>
+#include <QTimeLine>
 
-class ColumnHandleItem : public QGraphicsItem {
+class ColumnHandleItem : public QObject, public QGraphicsItem {
+  Q_OBJECT
 
-  public:
-    ColumnHandleItem(qreal width, QGraphicsItem *parent = 0);
+public:
+  ColumnHandleItem(qreal width, QGraphicsItem *parent = 0);
+  
+  inline qreal width() const { return _width; }
+  inline QRectF boundingRect() const { return QRectF(0, 0, _width, scene()->height()); }
+  void setXPos(qreal xpos);
+  
+  void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
+  void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
+  void mousePressEvent(QGraphicsSceneMouseEvent *event);
+  void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+  
+  void sceneRectChanged(const QRectF &);
 
-    inline qreal width() const;
-    inline QRectF boundingRect() const;
-    void setXPos(qreal xpos);
+protected:
+  void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
+  void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
 
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
-    void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
-    void mousePressEvent(QGraphicsSceneMouseEvent *event);
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+private slots:
+  void hoverChanged(qreal value);
 
-    void sceneRectChanged(const QRectF &);
-
-  private:
-    qreal _width;
+private:
+  qreal _width;
+  qreal _hover;
+  QTimeLine _timeLine;
 };
-
-qreal ColumnHandleItem::width() const {
-  return _width;
-}
-
-QRectF ColumnHandleItem::boundingRect() const {
-  return QRectF(0, 0, _width, scene()->height());
-}
 
 #endif

@@ -41,6 +41,7 @@ set(MOC_HDRS
     chatlinemodel.h
     chatscene.h
     chatview.h
+    columnhandleitem.h
     coreconfigwizard.h
     coreconnectdlg.h
     coreinfodlg.h
@@ -61,7 +62,6 @@ set(HEADERS
     chatitem.h
     chatline.h
     chatlinemodelitem.h
-    columnhandleitem.h
     qtuisettings.h
     qtuistyle.h)
 
