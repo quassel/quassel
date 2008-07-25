@@ -31,21 +31,22 @@ class ColumnHandleItem : public QObject, public QGraphicsItem {
 
 public:
   ColumnHandleItem(qreal width, QGraphicsItem *parent = 0);
-  
+
   inline qreal width() const { return _width; }
   inline QRectF boundingRect() const { return QRectF(0, 0, _width, scene()->height()); }
   void setXPos(qreal xpos);
-  
+
   void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
-  void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
-  void mousePressEvent(QGraphicsSceneMouseEvent *event);
-  void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-  
+
   void sceneRectChanged(const QRectF &);
+  void setXLimits(qreal min, qreal max);
 
 protected:
   void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
   void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
+  void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
+  void mousePressEvent(QGraphicsSceneMouseEvent *event);
+  void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 
 private slots:
   void hoverChanged(qreal value);
@@ -53,6 +54,8 @@ private slots:
 private:
   qreal _width;
   qreal _hover;
+  bool _moving;
+  qreal _minXPos, _maxXPos;
   QTimeLine _timeLine;
 };
 

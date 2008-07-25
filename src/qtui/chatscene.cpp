@@ -28,6 +28,8 @@
 #include "columnhandleitem.h"
 #include "qtui.h"
 
+const qreal minContentsWidth = 200;
+
 ChatScene::ChatScene(QAbstractItemModel *model, QObject *parent) : QGraphicsScene(parent), _model(model) {
   _width = 0;
   connect(this, SIGNAL(sceneRectChanged(const QRectF &)), this, SLOT(rectChanged(const QRectF &)));
@@ -46,7 +48,9 @@ ChatScene::ChatScene(QAbstractItemModel *model, QObject *parent) : QGraphicsScen
   secondColHandle = new ColumnHandleItem(QtUi::style()->secondColumnSeparator()); addItem(secondColHandle);
 
   firstColHandle->setXPos(firstColHandlePos);
+  firstColHandle->setXLimits(0, secondColHandlePos);
   secondColHandle->setXPos(secondColHandlePos);
+  secondColHandle->setXLimits(firstColHandlePos, width() - minContentsWidth);
 
   emit heightChanged(height());
 }
@@ -91,6 +95,7 @@ void ChatScene::setWidth(qreal w) {
     _height += line->setGeometry(_width, firstColHandlePos, secondColHandlePos);
   }
   setSceneRect(QRectF(0, 0, w, _height));
+  secondColHandle->setXLimits(firstColHandlePos, width() - minContentsWidth);
   emit heightChanged(_height);
 }
 

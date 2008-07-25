@@ -31,18 +31,27 @@ ColumnHandleItem::ColumnHandleItem(qreal w, QGraphicsItem *parent)
   : QGraphicsItem(parent),
     _width(w),
     _hover(0),
-    _timeLine(150)
+    _timeLine(150),
+    _moving(false),
+    _minXPos(0),
+    _maxXPos(0)
 {
   setAcceptsHoverEvents(true);
   setZValue(10);
   setCursor(QCursor(Qt::OpenHandCursor));
-  setFlag(ItemIsMovable);
 
   connect(&_timeLine, SIGNAL(valueChanged(qreal)), this, SLOT(hoverChanged(qreal)));
 }
 
 void ColumnHandleItem::setXPos(qreal xpos) {
-  setPos(xpos - width()/2, (qreal)0);
+  setPos(xpos - width()/2, 0);
+}
+
+void ColumnHandleItem::setXLimits(qreal min, qreal max) {
+  _minXPos = min;
+  _maxXPos = max;
+  //if(x() < min) setPos(min, 0);
+  //else if(x() > max) setPos(max - width(), 0);
 }
 
 void ColumnHandleItem::sceneRectChanged(const QRectF &rect) {
@@ -51,28 +60,37 @@ void ColumnHandleItem::sceneRectChanged(const QRectF &rect) {
 }
 
 void ColumnHandleItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
-  QGraphicsItem::mouseMoveEvent(event);
+  if(event->buttons() & Qt::LeftButton && _moving) {
+    if(contains(event->lastPos())) {
+      qreal newx = x() + (event->scenePos() - event->lastScenePos()).x();
+      if(newx < _minXPos) newx = _minXPos;
+      else if(newx + width() > _maxXPos) newx = _maxXPos - width();
+      setPos(newx, 0);
+    }
+    event->accept();
+  } else {
+    event->ignore();
+  }
 }
 
-void ColumnHandleItem::mousePressEvent(QGraphicsSceneMouseEvent *event) { qDebug() << "pressed!";
-  setCursor(QCursor(Qt::ClosedHandCursor));
-  QGraphicsItem::mousePressEvent(event);
+void ColumnHandleItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
+  if(event->buttons() & Qt::LeftButton) {
+    setCursor(QCursor(Qt::ClosedHandCursor));
+    _moving = true;
+    event->accept();
+  } else {
+    event->ignore();
+  }
 }
 
 void ColumnHandleItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
-  setCursor(QCursor(Qt::OpenHandCursor));
-  QGraphicsItem::mouseReleaseEvent(event);
-}
-
-void ColumnHandleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
-  Q_UNUSED(option);
-  Q_UNUSED(widget);
-
-  QLinearGradient gradient(0, 0, width(), 0);
-  gradient.setColorAt(0.25, Qt::transparent);
-  gradient.setColorAt(0.5, QColor(0, 0, 0, _hover * 200));
-  gradient.setColorAt(0.75, Qt::transparent);
-  painter->fillRect(boundingRect(), gradient);
+  if(_moving) {
+    _moving = false;
+    setCursor(QCursor(Qt::OpenHandCursor));
+    event->accept();
+  } else {
+    event->ignore();
+  }
 }
 
 void ColumnHandleItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event) {
@@ -94,5 +112,16 @@ void ColumnHandleItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event) {
 void ColumnHandleItem::hoverChanged(qreal value) {
   _hover = value;
   update();
+}
+
+void ColumnHandleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
+  Q_UNUSED(option);
+  Q_UNUSED(widget);
+  
+  QLinearGradient gradient(0, 0, width(), 0);
+  gradient.setColorAt(0.25, Qt::transparent);
+  gradient.setColorAt(0.5, QColor(0, 0, 0, _hover * 200));
+  gradient.setColorAt(0.75, Qt::transparent);
+  painter->fillRect(boundingRect(), gradient);
 }
 
