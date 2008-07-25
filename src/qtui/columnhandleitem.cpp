@@ -87,6 +87,7 @@ void ColumnHandleItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
   if(_moving) {
     _moving = false;
     setCursor(QCursor(Qt::OpenHandCursor));
+    emit positionChanged(x() + width()/2);
     event->accept();
   } else {
     event->ignore();

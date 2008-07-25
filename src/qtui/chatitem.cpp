@@ -135,8 +135,6 @@ void ChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
   Q_UNUSED(option); Q_UNUSED(widget);
   if(!haveLayout()) updateLayout();
   _layout->draw(painter, QPointF(0,0), QVector<QTextLayout::FormatRange>(), boundingRect());
-  //painter->drawRect(boundingRect());
-
 }
 
 /*

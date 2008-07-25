@@ -47,6 +47,9 @@ ChatScene::ChatScene(QAbstractItemModel *model, QObject *parent) : QGraphicsScen
   firstColHandle = new ColumnHandleItem(QtUi::style()->firstColumnSeparator()); addItem(firstColHandle);
   secondColHandle = new ColumnHandleItem(QtUi::style()->secondColumnSeparator()); addItem(secondColHandle);
 
+  connect(firstColHandle, SIGNAL(positionChanged(qreal)), this, SLOT(handlePositionChanged(qreal)));
+  connect(secondColHandle, SIGNAL(positionChanged(qreal)), this, SLOT(handlePositionChanged(qreal)));
+
   firstColHandle->setXPos(firstColHandlePos);
   firstColHandle->setXLimits(0, secondColHandlePos);
   secondColHandle->setXPos(secondColHandlePos);
@@ -102,4 +105,20 @@ void ChatScene::setWidth(qreal w) {
 void ChatScene::rectChanged(const QRectF &rect) {
   firstColHandle->sceneRectChanged(rect);
   secondColHandle->sceneRectChanged(rect);
+}
+
+void ChatScene::handlePositionChanged(qreal xpos) {
+  bool first = (sender() == firstColHandle);
+  qreal oldx;
+  if(first) {
+    oldx = firstColHandlePos;
+    firstColHandlePos = xpos;
+  } else {
+    oldx = secondColHandlePos;
+    secondColHandlePos = xpos;
+  }
+  setWidth(width());  // readjust all chatlines
+  // we get ugly redraw errors if we don't update this explicitly... :(
+  // width() should be the same for both handles, so just use firstColHandle regardless
+  update(qMin(oldx, xpos) - firstColHandle->width()/2, 0, qMax(oldx, xpos) + firstColHandle->width()/2, height());
 }

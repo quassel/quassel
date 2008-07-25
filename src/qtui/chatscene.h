@@ -47,6 +47,7 @@ class ChatScene : public QGraphicsScene {
 
   private slots:
     void rectChanged(const QRectF &);
+    void handlePositionChanged(qreal xpos);
 
   signals:
     void heightChanged(qreal height);
