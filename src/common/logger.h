@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _LOGGER_H_
-#define _LOGGER_H_
+#ifndef LOGGER_H
+#define LOGGER_H
 
 #include "types.h"
 
