@@ -20,6 +20,10 @@
 
 #include "messagefilter.h"
 
+MessageFilter::MessageFilter(QAbstractItemModel *source, QObject *parent) : QSortFilterProxyModel(parent) {
+  setSourceModel(source);
+}
+
 MessageFilter::MessageFilter(MessageModel *source, const QList<BufferId> &buffers, QObject *parent)
   : QSortFilterProxyModel(parent),
     _bufferList(buffers)

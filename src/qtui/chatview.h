@@ -29,11 +29,13 @@ class AbstractUiMsg;
 class Buffer;
 class ChatLine;
 class ChatScene;
+class MessageFilter;
 
 class ChatView : public QGraphicsView, public AbstractChatView {
   Q_OBJECT
 
   public:
+    ChatView(MessageFilter *, QWidget *parent = 0);
     ChatView(Buffer *, QWidget *parent = 0);
     ~ChatView();
 
@@ -60,6 +62,8 @@ class ChatView : public QGraphicsView, public AbstractChatView {
     virtual void sceneHeightChanged(qreal height);
 
   private:
+    void init(MessageFilter *filter);
+
     ChatScene *_scene;
 };
 

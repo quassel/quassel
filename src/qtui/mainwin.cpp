@@ -25,6 +25,8 @@
 #include "bufferviewfilter.h"
 #include "bufferviewmanager.h"
 #include "channellistdlg.h"
+#include "chatmonitorfilter.h"
+#include "chatview.h"
 #include "client.h"
 #include "clientbacklogmanager.h"
 #include "coreinfodlg.h"
@@ -285,26 +287,17 @@ void MainWin::setupNickWidget() {
 }
 
 void MainWin::setupChatMonitor() {
-/*
   VerticalDock *dock = new VerticalDock(tr("Chat Monitor"), this);
   dock->setObjectName("ChatMonitorDock");
 
-  ChatWidget *chatWidget = new ChatWidget(0, this);
-  chatWidget->show();
-  dock->setWidget(chatWidget);
+  ChatMonitorFilter *filter = new ChatMonitorFilter(Client::messageModel(), this); qDebug() << filter;
+  ChatView *chatView = new ChatView(filter, this);
+  chatView->show();
+  dock->setWidget(chatView);
   dock->show();
-
-  Buffer *buf = Client::monitorBuffer();
-  if(!buf)
-    return;
-
-  chatWidget->setContents(buf->contents());
-  connect(buf, SIGNAL(msgAppended(AbstractUiMsg *)), chatWidget, SLOT(appendMsg(AbstractUiMsg *)));
-  connect(buf, SIGNAL(msgPrepended(AbstractUiMsg *)), chatWidget, SLOT(prependMsg(AbstractUiMsg *)));
 
   addDockWidget(Qt::TopDockWidgetArea, dock, Qt::Vertical);
   ui.menuViews->addAction(dock->toggleViewAction());
-*/
 }
 
 void MainWin::setupInputWidget() {

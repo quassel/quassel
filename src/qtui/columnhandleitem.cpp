@@ -118,7 +118,7 @@ void ColumnHandleItem::hoverChanged(qreal value) {
 void ColumnHandleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
   Q_UNUSED(option);
   Q_UNUSED(widget);
-  
+
   QLinearGradient gradient(0, 0, width(), 0);
   gradient.setColorAt(0.25, Qt::transparent);
   gradient.setColorAt(0.5, QColor(0, 0, 0, _hover * 200));

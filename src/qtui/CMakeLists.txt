@@ -13,6 +13,7 @@ set(SOURCES
     chatline.cpp
     chatlinemodel.cpp
     chatlinemodelitem.cpp
+    chatmonitorfilter.cpp
     chatscene.cpp
     chatview.cpp
     columnhandleitem.cpp
@@ -39,6 +40,7 @@ set(MOC_HDRS
     bufferwidget.h
     channellistdlg.h
     chatlinemodel.h
+    chatmonitorfilter.h
     chatscene.h
     chatview.h
     columnhandleitem.h
