@@ -106,9 +106,32 @@ void ChannelListDlg::enableQuery(bool enable) {
 
 void ChannelListDlg::setAdvancedMode(bool advanced) {
   _advancedMode = advanced;
+
+  QHBoxLayout *searchLayout = 0;
+#if QT_VERSION >=  0x040400
+  searchLayout = ui.searchLayout;
+#else
+  // FIXME: REMOVE WHEN WE DEPEND ON Qt 4.4
+  /*
+   * ok this just sucks: in Qt 4.3 there is no way to search for a layout as uic creates
+   * them without a parent -.-
+   * in this case there are only 2 candidates: ui.hboxLayout and ui.hboxLayout1
+   */
+  if(ui.hboxLayout.findWidget(ui.searchPatternLabel) != -1)
+    searchLayout = ui.hboxLayout;
+  else if(ui.hboxLayout1.findWidget(ui.searchPatternLabel) != -1)
+    searchLayout = ui.hboxLayout1;
+  else
+    /* if this assert trigger we have been compiled on a too old Qt
+     * or uic generated something very unexpected. we cannot find the layout to manipulate.
+     * Please upgrade to a recent version of Qt.
+     */
+    Q_ASSERT(false);
+#endif
+
   if(advanced) {
     if(_simpleModeSpacer) {
-      ui.searchLayout->removeItem(_simpleModeSpacer);
+      searchLayout->removeItem(_simpleModeSpacer);
       delete _simpleModeSpacer;
       _simpleModeSpacer = 0;
     }
@@ -116,7 +139,7 @@ void ChannelListDlg::setAdvancedMode(bool advanced) {
   } else {
     if(!_simpleModeSpacer) {
       _simpleModeSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-      ui.searchLayout->insertSpacerItem(0, _simpleModeSpacer);
+      searchLayout->insertSpacerItem(0, _simpleModeSpacer);
     }
     ui.advancedModeLabel->setPixmap(QPixmap(QString::fromUtf8(":/22x22/actions/oxygen/22x22/actions/edit-clear.png")));
   }
