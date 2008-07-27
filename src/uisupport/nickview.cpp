@@ -30,15 +30,13 @@
 #include "types.h"
 #include "client.h"
 
-struct LazySizeHint {
-  LazySizeHint() : size(QSize()), needsUpdate(true) {};
-  QSize size;
-  bool needsUpdate;
+class ExpandAllEvent : public QEvent {
+public:
+  ExpandAllEvent() : QEvent(QEvent::User) {}
 };
 
 NickView::NickView(QWidget *parent)
-  : QTreeView(parent),
-    _sizeHint(new LazySizeHint())
+  : QTreeView(parent)
 {
   setIndentation(10);
   setAnimated(true);
@@ -55,20 +53,12 @@ NickView::NickView(QWidget *parent)
           this, SLOT(startQuery( const QModelIndex& )));
 }
 
-NickView::~NickView() {
-  delete _sizeHint;
-  _sizeHint = 0;
-}
-
 void NickView::init() {
   if(!model())
     return;
 
   for(int i = 1; i < model()->columnCount(); i++)
     setColumnHidden(i, true);
-
-  expandAll();
-  _sizeHint->needsUpdate = true;
 }
 
 void NickView::setModel(QAbstractItemModel *model) {
@@ -78,19 +68,15 @@ void NickView::setModel(QAbstractItemModel *model) {
 
 void NickView::rowsInserted(const QModelIndex &parent, int start, int end) {
   QTreeView::rowsInserted(parent, start, end);
-  if(model()->data(parent, NetworkModel::ItemTypeRole) == NetworkModel::UserCategoryItemType && !isExpanded(parent))
-    expand(parent);
-  _sizeHint->needsUpdate = true;
+  if(model()->data(parent, NetworkModel::ItemTypeRole) == NetworkModel::UserCategoryItemType && !isExpanded(parent)) {
+    QCoreApplication::postEvent(this, new ExpandAllEvent);
+  }
 }
 
-void NickView::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end) {
-  QTreeView::rowsAboutToBeRemoved(parent, start, end);
-  _sizeHint->needsUpdate = true;
-}
-
-void NickView::dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight) {
-  QTreeView::dataChanged(topLeft, bottomRight);
-  _sizeHint->needsUpdate = true;
+void NickView::setRootIndex(const QModelIndex &index) {
+  QAbstractItemView::setRootIndex(index);
+  if(index.isValid())
+    QCoreApplication::postEvent(this, new ExpandAllEvent);
 }
 
 QString NickView::nickFromModelIndex(const QModelIndex & index) {
@@ -185,16 +171,30 @@ void NickView::executeCommand(const BufferInfo & bufferInfo, const QString & com
   Client::instance()->userInput(bufferInfo, command);
 }
 
-QSize NickView::sizeHint() const {
-  Q_CHECK_PTR(_sizeHint);
-  if(_sizeHint->needsUpdate && model()) {;
-    int columnSize = 0;
-    for(int i = 0; i < model()->columnCount(); i++) {
-      if(!isColumnHidden(i))
-	columnSize += sizeHintForColumn(i);
+void NickView::customEvent(QEvent *event) {
+  // THIS IS A REPLACEMENT FOR expandAll()
+  /* WARNING: do not call expandAll()!
+   * it fucks up big time in combination with sorting and changing the rootIndex
+   * the following sequence of commands leads to unexpected behavior when inserting new items
+   * setSortingEnabled(true);
+   * setModel();
+   * expandAll();
+   * setRootIndex();
+   */
+  if(event->type() != QEvent::User)
+    return;
+
+  QModelIndex topLevelIdx;
+  for(int i = 0; i < model()->rowCount(rootIndex()); i++) {
+    topLevelIdx = model()->index(i, 0, rootIndex());
+    if(isExpanded(topLevelIdx))
+      continue;
+    else {
+      expand(topLevelIdx);
+      if(i < model()->rowCount(rootIndex()) - 1)
+        QCoreApplication::postEvent(this, new ExpandAllEvent);
+      break;
     }
-    _sizeHint->size = QSize(columnSize, 50);
-    _sizeHint->needsUpdate = false;
   }
-  return _sizeHint->size;
+  event->accept();
 }

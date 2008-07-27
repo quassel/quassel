@@ -100,7 +100,6 @@ void NickListWidget::currentChanged(const QModelIndex &current, const QModelInde
     view->setModel(filter);
     QModelIndex source_current = Client::bufferModel()->mapToSource(current);
     view->setRootIndex(filter->mapFromSource(source_current));
-    view->expandAll();
     nickViews[newBufferId] = view;
     ui.stackedWidget->addWidget(view);
     ui.stackedWidget->setCurrentWidget(view);
