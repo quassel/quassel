@@ -29,7 +29,6 @@
 
 
 class NickModel;
-class LazySizeHint;
 class FilteredNickModel;
 class QSortFilterProxyModel;
 class QResizeEvent;
@@ -39,23 +38,19 @@ class NickView : public QTreeView {
 
 public:
   NickView(QWidget *parent = 0);
-  virtual ~NickView();
 
 protected:
   virtual void rowsInserted(const QModelIndex &parent, int start, int end);
-  virtual void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
-  virtual void rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
-  virtual QSize sizeHint() const;
+  virtual void customEvent(QEvent *event);
 
 public slots:
-  void setModel(QAbstractItemModel *model);
+  virtual void setModel(QAbstractItemModel *model);
+  virtual void setRootIndex(const QModelIndex &index);
   void init();
   void showContextMenu(const QPoint & pos);
   void startQuery(const QModelIndex & modelIndex);
-  
-private:
-  LazySizeHint *_sizeHint;
 
+private:
   BufferInfo bufferInfoFromModelIndex(const QModelIndex & index);
   QString nickFromModelIndex(const QModelIndex & index);
   void executeCommand(const BufferInfo & bufferInfo, const QString & command);
