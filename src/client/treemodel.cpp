@@ -83,6 +83,7 @@ void AbstractTreeItem::removeAllChilds() {
   childIter = _childItems.begin();
   while(childIter != _childItems.end()) {
     child = *childIter;
+    child->setTreeItemFlags(0); // disable self deletion, as this would only fuck up consitency and the child gets deleted anyways
     child->removeAllChilds();
     childIter++;
   }
