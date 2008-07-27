@@ -232,8 +232,6 @@ public:
 
 private slots:
   void ircUserDestroyed() { parent()->removeChild(this); }
-  void setNick(QString newNick);
-  void setAway(bool);
 
 private:
   QPointer<IrcUser> _ircUser;

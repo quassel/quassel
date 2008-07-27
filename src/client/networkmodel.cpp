@@ -566,12 +566,9 @@ IrcUserItem::IrcUserItem(IrcUser *ircUser, AbstractTreeItem *parent)
     _ircUser(ircUser)
 {
   setObjectName(ircUser->nick());  
-  // we don't need to handle the ircUser's destroyed signal since it's automatically removed
-  // by the IrcChannel::ircUserParted();
-
   connect(ircUser, SIGNAL(destroyed()), this, SLOT(ircUserDestroyed()));
-  connect(ircUser, SIGNAL(nickSet(QString)), this, SLOT(setNick(QString)));
-  connect(ircUser, SIGNAL(awaySet(bool)), this, SLOT(setAway(bool)));
+  connect(ircUser, SIGNAL(nickSet(QString)), this, SIGNAL(dataChanged()));
+  connect(ircUser, SIGNAL(awaySet(bool)), this, SIGNAL(dataChanged()));
 }
 
 QVariant IrcUserItem::data(int column, int role) const {
@@ -620,16 +617,6 @@ QString IrcUserItem::toolTip(int column) const {
   if(!_ircUser->server().isEmpty()) toolTip.append(tr("server: %1").arg(_ircUser->server()));
 
   return QString("<p> %1 </p>").arg(toolTip.join("<br />"));
-}
-
-void IrcUserItem::setNick(QString newNick) {
-  Q_UNUSED(newNick);
-  emit dataChanged(0);
-}
-
-void IrcUserItem::setAway(bool away) {
-  Q_UNUSED(away);
-  emit dataChanged(0);
 }
 
 /*****************************************
