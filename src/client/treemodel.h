@@ -35,8 +35,13 @@ class AbstractTreeItem : public QObject {
   Q_OBJECT
 
 public:
+  enum TreeItemFlag {
+    NoTreeItemFlag = 0x00,
+    DeleteOnLastChildRemoved = 0x01
+  };
+  Q_DECLARE_FLAGS(TreeItemFlags, TreeItemFlag);
+
   AbstractTreeItem(AbstractTreeItem *parent = 0);
-  virtual ~AbstractTreeItem();
 
   bool newChild(AbstractTreeItem *child);
   bool newChilds(const QList<AbstractTreeItem *> &items);
@@ -59,6 +64,8 @@ public:
   virtual inline Qt::ItemFlags flags() const { return _flags; }
   virtual inline void setFlags(Qt::ItemFlags flags) { _flags = flags; }
 
+  inline AbstractTreeItem::TreeItemFlags treeItemFlags() const { return _treeItemFlags; }
+  inline void setTreeItemFlags(AbstractTreeItem::TreeItemFlags flags) { _treeItemFlags = flags; }
   int row() const;
   inline AbstractTreeItem *parent() const { return qobject_cast<AbstractTreeItem *>(QObject::parent()); }
 
@@ -76,6 +83,9 @@ signals:
 private:
   QList<AbstractTreeItem *> _childItems;
   Qt::ItemFlags _flags;
+  TreeItemFlags _treeItemFlags;
+
+  inline void checkForDeletion() { if(treeItemFlags() & DeleteOnLastChildRemoved && childCount() == 0) parent()->removeChild(this); }
 };
 
 

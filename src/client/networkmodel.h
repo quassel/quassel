@@ -240,7 +240,7 @@ public:
   virtual QString toolTip(int column) const;
 
 private slots:
-  void ircUserDestroyed() { parent()->removeChild(this); }
+  inline void ircUserDestroyed() { parent()->removeChild(this); }
 
 private:
   QPointer<IrcUser> _ircUser;
