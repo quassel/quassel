@@ -190,7 +190,6 @@ public slots:
 
 private slots:
   void ircChannelDestroyed();
-  void ircUserDestroyed();
 
 private:
   IrcChannel *_ircChannel;
@@ -233,12 +232,15 @@ class IrcUserItem : public PropertyMapItem {
 public:
   IrcUserItem(IrcUser *ircUser, AbstractTreeItem *parent);
 
-  QString nickName() const;
-  bool isActive() const;
+  inline QString nickName() const { return _ircUser ? _ircUser->nick() : QString(); }
+  inline bool isActive() const { return _ircUser ? !_ircUser->isAway() : false; }
 
   inline IrcUser *ircUser() { return _ircUser; }
   virtual QVariant data(int column, int role) const;
   virtual QString toolTip(int column) const;
+
+private slots:
+  void ircUserDestroyed() { parent()->removeChild(this); }
 
 private:
   QPointer<IrcUser> _ircUser;

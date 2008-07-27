@@ -432,22 +432,8 @@ void ChannelBufferItem::ircChannelDestroyed() {
   removeAllChilds();
 }
 
-void ChannelBufferItem::ircUserDestroyed() {
-  // PRIVATE
-  IrcUser *ircUser = static_cast<IrcUser *>(sender());
-  removeUserFromCategory(ircUser);
-  emit dataChanged(2);
-}
-
 void ChannelBufferItem::join(const QList<IrcUser *> &ircUsers) {
   addUsersToCategory(ircUsers);
-
-  foreach(IrcUser *ircUser, ircUsers) {
-    if(!ircUser)
-      continue;
-    connect(ircUser, SIGNAL(destroyed()), this, SLOT(ircUserDestroyed()));
-  }
-  
   emit dataChanged(2);
 }
 
@@ -657,24 +643,9 @@ IrcUserItem::IrcUserItem(IrcUser *ircUser, AbstractTreeItem *parent)
     _ircUser(ircUser)
 {
   setObjectName(ircUser->nick());  
-  // we don't need to handle the ircUser's destroyed signal since it's automatically removed
-  // by the IrcChannel::ircUserParted();
+  connect(ircUser, SIGNAL(destroyed()), this, SLOT(ircUserDestroyed()));
   connect(ircUser, SIGNAL(nickSet(QString)), this, SIGNAL(dataChanged()));
   connect(ircUser, SIGNAL(awaySet(bool)), this, SIGNAL(dataChanged()));
-}
-
-QString IrcUserItem::nickName() const {
-  if(_ircUser)
-    return _ircUser->nick();
-  else
-    return QString();
-}
-
-bool IrcUserItem::isActive() const {
-  if(_ircUser)
-    return !_ircUser->isAway();
-  else
-    return false;
 }
 
 QVariant IrcUserItem::data(int column, int role) const {
