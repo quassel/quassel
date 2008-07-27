@@ -20,6 +20,8 @@
 
 #include "chatmonitorfilter.h"
 
+#include "chatlinemodel.h"
+
 ChatMonitorFilter::ChatMonitorFilter(MessageModel *model, QObject *parent)
 : MessageFilter(model, QList<BufferId>(), parent)
 {
@@ -34,4 +36,15 @@ bool ChatMonitorFilter::filterAcceptsRow(int sourceRow, const QModelIndex &sourc
 
 QString ChatMonitorFilter::idString() const {
   return "ChatMonitor";
+}
+
+// override this to inject display of network and channel
+QVariant ChatMonitorFilter::data(const QModelIndex &index, int role) const {
+  if(index.column() != ChatLineModel::SenderColumn) return MessageFilter::data(index, role);
+  if(role == ChatLineModel::DisplayRole) {
+
+
+  }
+  return MessageFilter::data(index, role);
+
 }

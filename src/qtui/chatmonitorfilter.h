@@ -34,6 +34,8 @@ class ChatMonitorFilter : public MessageFilter {
     virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
     virtual QString idString() const;
 
+    virtual QVariant data(const QModelIndex &index, int role) const;
+
   private:
     QDateTime _initTime;
 };
