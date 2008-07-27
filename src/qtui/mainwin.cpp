@@ -700,7 +700,11 @@ void MainWin::connectOrDisconnectFromNet() {
 void MainWin::on_actionDebugNetworkModel_triggered(bool) {
   QTreeView *view = new QTreeView;
   view->setAttribute(Qt::WA_DeleteOnClose);
+  view->setWindowTitle("Debug NetworkModel View");
   view->setModel(Client::networkModel());
-  view->expandAll();
+  view->setColumnWidth(0, 250);
+  view->setColumnWidth(1, 250);
+  view->setColumnWidth(2, 80);
+  view->resize(610, 300);
   view->show();
 }
