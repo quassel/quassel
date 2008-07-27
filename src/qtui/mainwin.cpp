@@ -766,3 +766,12 @@ void MainWin::connectOrDisconnectFromNet() {
   else net->requestDisconnect();
 }
 
+
+
+void MainWin::on_actionDebugNetworkModel_triggered(bool) {
+  QTreeView *view = new QTreeView;
+  view->setAttribute(Qt::WA_DeleteOnClose);
+  view->setModel(Client::networkModel());
+  view->expandAll();
+  view->show();
+}

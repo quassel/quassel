@@ -91,6 +91,7 @@ class MainWin : public QMainWindow {
     void on_actionLockDockPositions_toggled(bool lock);
     void showAboutDlg();
     void showDebugConsole();
+    void on_actionDebugNetworkModel_triggered(bool);
 
     void showCoreConnectionDlg(bool autoConnect = false);
     void coreConnectionDlgFinished(int result);

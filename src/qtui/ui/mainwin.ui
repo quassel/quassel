@@ -91,8 +91,15 @@
     <property name="title" >
      <string>&amp;Help</string>
     </property>
+    <widget class="QMenu" name="menuDebug" >
+     <property name="title" >
+      <string>Debug</string>
+     </property>
+     <addaction name="actionDebugNetworkModel" />
+    </widget>
     <addaction name="actionAboutQuassel" />
     <addaction name="actionAboutQt" />
+    <addaction name="menuDebug" />
    </widget>
    <addaction name="menuFile" />
    <addaction name="menuViews" />
@@ -320,6 +327,11 @@
    </property>
    <property name="text" >
     <string>Core Info</string>
+   </property>
+  </action>
+  <action name="actionDebugNetworkModel" >
+   <property name="text" >
+    <string>NetworkModel</string>
    </property>
   </action>
  </widget>
