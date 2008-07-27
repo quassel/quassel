@@ -28,11 +28,9 @@
  *****************************************/
 AbstractTreeItem::AbstractTreeItem(AbstractTreeItem *parent)
   : QObject(parent),
-    _flags(Qt::ItemIsSelectable | Qt::ItemIsEnabled)
+    _flags(Qt::ItemIsSelectable | Qt::ItemIsEnabled),
+    _treeItemFlags(0)
 {
-}
-
-AbstractTreeItem::~AbstractTreeItem() {
 }
 
 bool AbstractTreeItem::newChild(AbstractTreeItem *item) {
@@ -67,6 +65,8 @@ bool AbstractTreeItem::removeChild(int row) {
   treeitem->deleteLater();
   emit endRemoveChilds();
 
+  checkForDeletion();
+  
   return true;
 }
 
@@ -95,6 +95,8 @@ void AbstractTreeItem::removeAllChilds() {
     child->deleteLater();
   }
   emit endRemoveChilds();
+
+  checkForDeletion();
 }
 
 bool AbstractTreeItem::reParent(AbstractTreeItem *newParent) {
@@ -112,6 +114,8 @@ bool AbstractTreeItem::reParent(AbstractTreeItem *newParent) {
   emit parent()->beginRemoveChilds(oldRow, oldRow);
   parent()->_childItems.removeAt(oldRow);
   emit parent()->endRemoveChilds();
+
+  parent()->checkForDeletion();
 
   setParent(newParent);
 

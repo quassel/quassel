@@ -449,13 +449,12 @@ void ChannelBufferItem::userModeChanged(IrcUser *ircUser) {
   }
 
   // find the item that needs reparenting
-  UserCategoryItem *oldCategoryItem = 0;
   IrcUserItem *ircUserItem = 0;
   for(int i = 0; i < childCount(); i++) {
-    UserCategoryItem *catItem = qobject_cast<UserCategoryItem *>(child(i));
-    IrcUserItem *userItem = catItem->findIrcUser(ircUser);
+    UserCategoryItem *oldCategoryItem = qobject_cast<UserCategoryItem *>(child(i));
+    Q_ASSERT(oldCategoryItem);
+    IrcUserItem *userItem = oldCategoryItem->findIrcUser(ircUser);
     if(userItem) {
-      oldCategoryItem = catItem;
       ircUserItem = userItem;
       break;
     }
@@ -465,11 +464,7 @@ void ChannelBufferItem::userModeChanged(IrcUser *ircUser) {
     qWarning() << "ChannelBufferItem::userModeChanged(IrcUser *): unable to determine old category of" << ircUser;
     return;
   }
-
-  Q_ASSERT(oldCategoryItem);
-  if(ircUserItem->reParent(categoryItem) && oldCategoryItem->childCount() == 0) {
-    removeChild(oldCategoryItem);
-  }
+  ircUserItem->reParent(categoryItem);
 }
 
 /*****************************************
@@ -483,6 +478,7 @@ UserCategoryItem::UserCategoryItem(int category, AbstractTreeItem *parent)
   : PropertyMapItem(QStringList() << "categoryName", parent),
     _category(category)
 {
+  setTreeItemFlags(AbstractTreeItem::DeleteOnLastChildRemoved);
   setObjectName(parent->data(0, Qt::DisplayRole).toString() + "/" + QString::number(category));
 }
 
@@ -618,6 +614,12 @@ QString IrcUserItem::toolTip(int column) const {
 
   return QString("<p> %1 </p>").arg(toolTip.join("<br />"));
 }
+
+// void IrcUserItem::ircUserDestroyed() {
+//   parent()->removeChild(this);
+//   if(parent()->childCount() == 0)
+//     parent()->parent()->removeChild(parent());
+// }
 
 /*****************************************
  * NetworkModel
