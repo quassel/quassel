@@ -83,6 +83,7 @@ class MainWin : public QMainWindow {
     void showManageViewsDlg();
     void showAboutDlg();
     void showDebugConsole();
+    void on_actionDebugNetworkModel_triggered(bool);
 
     void showCoreConnectionDlg(bool autoConnect = false);
     void coreConnectionDlgFinished(int result);
