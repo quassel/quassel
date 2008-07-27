@@ -37,7 +37,10 @@ void UserInputHandler::handleUserInput(const BufferInfo &bufferInfo, const QStri
       return;
     QString cmd;
     QString msg = msg_;
-    if(!msg.startsWith('/')) {
+    // leading slashes indicate there's a command to call unless there is anothere one in the first section (like a path /proc/cpuinfo)
+    int secondSlashPos = msg.indexOf('/', 1);
+    int firstSpacePos = msg.indexOf(' ');
+    if(!msg.startsWith('/') || (secondSlashPos != -1 && (secondSlashPos < firstSpacePos || firstSpacePos == -1))) {
       cmd = QString("SAY");
     } else {
       cmd = msg.section(' ', 0, 0).remove(0, 1).toUpper();
