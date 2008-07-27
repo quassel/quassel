@@ -18,13 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _TREEMODEL_H_
-#define _TREEMODEL_H_
+#ifndef TREEMODEL_H
+#define TREEMODEL_H
 
 #include <QList>
 #include <QStringList>
 #include <QVariant>
-#include <QHash>
 #include <QAbstractItemModel>
 
 #include <QLinkedList> // needed for debug
@@ -34,7 +33,6 @@
  *****************************************/
 class AbstractTreeItem : public QObject {
   Q_OBJECT
-  Q_PROPERTY(quint64 id READ id)
 
 public:
   AbstractTreeItem(AbstractTreeItem *parent = 0);
@@ -44,15 +42,12 @@ public:
   bool newChilds(const QList<AbstractTreeItem *> &items);
 
   bool removeChild(int row);
-  bool removeChildById(const quint64 &id);
+  inline bool removeChild(AbstractTreeItem *child) { return removeChild(child->row()); }
   void removeAllChilds();
-
-  virtual quint64 id() const;
 
   bool reParent(AbstractTreeItem *newParent);
     
   AbstractTreeItem *child(int row) const;
-  AbstractTreeItem *childById(const quint64 &id) const;
 
   int childCount(int column = 0) const;
 
@@ -61,11 +56,11 @@ public:
   virtual QVariant data(int column, int role) const = 0;
   virtual bool setData(int column, const QVariant &value, int role) = 0;
 
-  virtual Qt::ItemFlags flags() const;
-  virtual void setFlags(Qt::ItemFlags);
+  virtual inline Qt::ItemFlags flags() const { return _flags; }
+  virtual inline void setFlags(Qt::ItemFlags flags) { _flags = flags; }
 
   int row() const;
-  AbstractTreeItem *parent() const;
+  inline AbstractTreeItem *parent() const { return qobject_cast<AbstractTreeItem *>(QObject::parent()); }
 
   void dumpChildList();
 
@@ -150,7 +145,6 @@ public:
   QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
   
   QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
-  QModelIndex indexById(quint64 id, const QModelIndex &parent = QModelIndex()) const;
   QModelIndex indexByItem(AbstractTreeItem *item) const;
 
   QModelIndex parent(const QModelIndex &index) const;
