@@ -37,6 +37,7 @@ ChatScene::ChatScene(QAbstractItemModel *model, const QString &idString, QObject
   _model(model)
 {
   _width = 0;
+  _selectingItem = 0;
   connect(this, SIGNAL(sceneRectChanged(const QRectF &)), this, SLOT(rectChanged(const QRectF &)));
 
   connect(model, SIGNAL(rowsInserted(const QModelIndex &, int, int)), this, SLOT(rowsInserted(const QModelIndex &, int, int)));
@@ -138,4 +139,24 @@ void ChatScene::handlePositionChanged(qreal xpos) {
   // we get ugly redraw errors if we don't update this explicitly... :(
   // width() should be the same for both handles, so just use firstColHandle regardless
   update(qMin(oldx, xpos) - firstColHandle->width()/2, 0, qMax(oldx, xpos) + firstColHandle->width()/2, height());
+}
+
+void ChatScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
+
+  QGraphicsScene::mouseMoveEvent(event);
+}
+
+void ChatScene::mousePressEvent(QGraphicsSceneMouseEvent *event) {
+
+  QGraphicsScene::mousePressEvent(event);
+}
+
+void ChatScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
+
+  QGraphicsScene::mouseReleaseEvent(event);
+}
+
+void ChatScene::setSelectingItem(ChatItem *item) {
+  if(_selectingItem) _selectingItem->clearSelection();
+  _selectingItem = item;
 }

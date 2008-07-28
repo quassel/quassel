@@ -18,9 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QApplication>
+#include <QClipboard>
 #include <QFontMetrics>
 #include <QGraphicsSceneMouseEvent>
 #include <QPainter>
+#include <QPalette>
 #include <QTextLayout>
 
 #include "chatitem.h"
@@ -31,6 +34,7 @@ ChatItem::ChatItem(const QPersistentModelIndex &index_, QGraphicsItem *parent) :
   _fontMetrics = QtUi::style()->fontMetrics(data(ChatLineModel::FormatRole).value<UiStyle::FormatList>().at(0).second);
   _layout = 0;
   _lines = 0;
+  _selectionStart = -1;
 }
 
 ChatItem::~ChatItem() {
@@ -137,17 +141,72 @@ void ChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
   _layout->draw(painter, QPointF(0,0), QVector<QTextLayout::FormatRange>(), boundingRect());
 }
 
-/*
-void ChatItem::mouseMoveEvent ( QGraphicsSceneMouseEvent * event ) {
-  qDebug() << (void*)this << "moving" << event->pos();
-  if(event->pos().y() < 0) {
-    QTextCursor cursor(document());
-    //cursor.insertText("foo");
-    //cursor.select(QTextCursor::Document);
-    event->ignore();
-  } else QGraphicsTextItem::mouseMoveEvent(event);
+int ChatItem::posToCursor(const QPointF &pos) {
+  if(pos.y() > height()) return data(MessageModel::DisplayRole).toString().length();
+  if(pos.y() < 0) return 0;
+  if(!haveLayout()) updateLayout();
+  for(int l = _layout->lineCount() - 1; l >= 0; l--) {
+    QTextLine line = _layout->lineAt(l);
+    if(pos.y() >= line.y()) {
+      return line.xToCursor(pos.x(), QTextLine::CursorOnCharacter);
+    }
+  }
+  return 0;
 }
-*/
+
+void ChatItem::clearSelection() {
+  if(_selectionStart >= 0) {
+    QList<QTextLayout::FormatRange> formats = _layout->additionalFormats();
+    formats.removeLast();
+    _layout->setAdditionalFormats(formats);
+    _selectionStart = -1;
+    updateLayout();
+    update();
+  }
+}
+
+void ChatItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
+  int selectionEnd = posToCursor(event->pos());
+  QList<QTextLayout::FormatRange> formats = _layout->additionalFormats();
+  formats.last().start = qMin(_selectionStart, selectionEnd);
+  formats.last().length = qMax(_selectionStart, selectionEnd) - formats.last().start;
+  _layout->setAdditionalFormats(formats);
+  updateLayout();
+  update();
+}
+
+void ChatItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
+  if(event->buttons() & Qt::LeftButton) {
+    if(!haveLayout()) updateLayout();
+    chatScene()->setSelectingItem(this);
+    _selectionStart = posToCursor(event->pos());
+    QList<QTextLayout::FormatRange> formats = _layout->additionalFormats();
+    QTextLayout::FormatRange selectFmt;
+    QPalette pal = QApplication::palette();
+    selectFmt.format.setForeground(pal.brush(QPalette::HighlightedText));
+    selectFmt.format.setBackground(pal.brush(QPalette::Highlight));
+    selectFmt.length = 0;
+    formats.append(selectFmt);
+    _layout->setAdditionalFormats(formats);
+    updateLayout();
+    update();
+    event->accept();
+  } else {
+    event->ignore();
+  }
+}
+
+void ChatItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
+  if(_selectionStart >= 0) {
+    int selectionEnd = posToCursor(event->pos());
+    QString selection
+        = data(MessageModel::DisplayRole).toString().mid(qMin(_selectionStart, selectionEnd), qAbs(_selectionStart - selectionEnd));
+    QApplication::clipboard()->setText(selection, QClipboard::Clipboard);  // TODO configure where selections should go
+    event->accept();
+  } else {
+    event->ignore();
+  }
+}
 
 /*************************************************************************************************/
 

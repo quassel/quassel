@@ -45,15 +45,24 @@ class ChatScene : public QGraphicsScene {
   public slots:
     void setWidth(qreal);
 
-  private slots:
-    void rectChanged(const QRectF &);
-    void handlePositionChanged(qreal xpos);
+    // these are used by the chatitems to notify the scene
+    void setSelectingItem(ChatItem *item);
+    ChatItem *selectingItem() const { return _selectingItem; }
 
   signals:
     void heightChanged(qreal height);
 
+  protected:
+    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent);
+    virtual void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent);
+    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent);
+
   protected slots:
     void rowsInserted(const QModelIndex &, int, int);
+
+  private slots:
+    void rectChanged(const QRectF &);
+    void handlePositionChanged(qreal xpos);
 
   private:
     QString _idString;
@@ -63,6 +72,8 @@ class ChatScene : public QGraphicsScene {
 
     ColumnHandleItem *firstColHandle, *secondColHandle;
     qreal firstColHandlePos, secondColHandlePos;
+
+    ChatItem *_selectingItem;
 };
 
 #endif

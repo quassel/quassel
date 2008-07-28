@@ -22,9 +22,11 @@
 #define CHATITEM_H_
 
 #include <QGraphicsItem>
+#include <QObject>
 
 #include "chatline.h"
 #include "chatlinemodel.h"
+#include "chatscene.h"
 #include "uistyle.h"
 
 class QTextLayout;
@@ -38,6 +40,7 @@ class ChatItem : public QGraphicsItem {
     inline QPersistentModelIndex index() const { return _index; }
     inline const MessageModel *model() const { return _index.isValid() ? qobject_cast<const MessageModel *>(_index.model()) : 0; }
     inline int row() const { return _index.isValid() ? _index.row() : 0; }
+    inline ChatScene *chatScene() const { return qobject_cast<ChatScene *>(scene()); }
 
     inline QFontMetricsF *fontMetrics() const { return _fontMetrics; }
     inline virtual QRectF boundingRect() const { return _boundingRect; }
@@ -54,10 +57,17 @@ class ChatItem : public QGraphicsItem {
     // returns height
     int setWidth(int width);
 
+    // selection stuff, to be called by the scene
+    void clearSelection();
+    void setFullSelection();
+
   protected:
-    //void mouseMoveEvent ( QGraphicsSceneMouseEvent * event );
+    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
+    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
+    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 
   private:
+    int posToCursor(const QPointF &pos);
     int heightForWidth(int width);
     QTextLayout *createLayout(QTextOption::WrapMode, Qt::Alignment = Qt::AlignLeft);
 
@@ -68,6 +78,7 @@ class ChatItem : public QGraphicsItem {
 
     QTextLayout *_layout;
     QList<quint16> _wrapPositions;
+    int _selectionStart;
 
     class WrapColumnFinder;
 };
