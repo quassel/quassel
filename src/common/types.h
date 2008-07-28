@@ -24,6 +24,7 @@
 #include <QDebug>
 #include <QString>
 #include <QVariant>
+#include <QTextStream>
 
 class SignedId {
   protected:
@@ -54,6 +55,7 @@ class SignedId {
 
 inline QDataStream &operator<<(QDataStream &out, const SignedId &signedId) { out << signedId.toInt(); return out; }
 inline QDataStream &operator>>(QDataStream &in, SignedId &signedId) { in >> signedId.id; return in; }
+inline QTextStream &operator<<(QTextStream &out, const SignedId &signedId) { out << QString::number(signedId.toInt()); return out; }
 inline QDebug operator<<(QDebug dbg, const SignedId &signedId) { dbg.space() << signedId.toInt(); return dbg; }
 inline uint qHash(const SignedId &id) { return qHash(id.toInt()); }
 

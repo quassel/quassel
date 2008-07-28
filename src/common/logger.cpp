@@ -27,13 +27,12 @@
 
 Logger::~Logger() {
   QDateTime date = QDateTime::currentDateTime();
-  if(_stream->logLevel == DebugLevel) _stream->buffer.prepend("Debug: ");
-  else if (_stream->logLevel == InfoLevel) _stream->buffer.prepend("Info: ");
-  else if (_stream->logLevel == WarningLevel) _stream->buffer.prepend("Warning: ");
-  else if (_stream->logLevel == ErrorLevel) _stream->buffer.prepend("Error: ");
-  _stream->buffer.prepend(date.toString("yyyy-MM-dd hh:mm:ss "));
+  if(_logLevel == DebugLevel) _buffer.prepend("Debug: ");
+  else if (_logLevel == InfoLevel) _buffer.prepend("Info: ");
+  else if (_logLevel == WarningLevel) _buffer.prepend("Warning: ");
+  else if (_logLevel == ErrorLevel) _buffer.prepend("Error: ");
+  _buffer.prepend(date.toString("yyyy-MM-dd hh:mm:ss "));
   log();
-  delete _stream;
 }
 
 void Logger::log() {
@@ -44,7 +43,7 @@ void Logger::log() {
   else if (Global::parser.value("loglevel") == "Error") lvl = ErrorLevel;
   else lvl = InfoLevel;
 
-  if(_stream->logLevel < lvl) return;
+  if(_logLevel < lvl) return;
 
   // if we can't open logfile we log to stdout
   QTextStream out(stdout);
@@ -53,9 +52,9 @@ void Logger::log() {
     file.setFileName(Global::parser.value("logfile"));
     if (file.open(QIODevice::Append | QIODevice::Text)) {
       out.setDevice(&file);
-      _stream->buffer.remove(QChar('\n'));
+      _buffer.remove(QChar('\n'));
     }
   }
-  out << _stream->buffer << "\n";
+  out << _buffer << endl;
   if(file.isOpen()) file.close();
 }
