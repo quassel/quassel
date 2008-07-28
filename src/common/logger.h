@@ -42,7 +42,6 @@ class Logger {
     template<typename T>
     inline Logger &operator<<(const T &value) { _stream << value; return *this; }
     inline Logger &operator<<(const QStringList & t) { _stream << t.join(" "); return *this; }
-    inline Logger &operator<<(const char* t) { _stream << QString::fromLocal8Bit(t); return *this; }
     inline Logger &operator<<(bool t) { _stream << (t ? "true" : "false"); return *this; }
 
   private:
