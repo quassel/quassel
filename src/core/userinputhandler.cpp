@@ -41,7 +41,7 @@ void UserInputHandler::handleUserInput(const BufferInfo &bufferInfo, const QStri
     int secondSlashPos = msg.indexOf('/', 1);
     int firstSpacePos = msg.indexOf(' ');
     if(!msg.startsWith('/') || (secondSlashPos != -1 && (secondSlashPos < firstSpacePos || firstSpacePos == -1))) {
-      if(secondSlashPos == 1)
+      if(msg.startsWith("//"))
 	msg.remove(0, 1); // //asdf is transformed to /asdf
       cmd = QString("SAY");
     } else {
