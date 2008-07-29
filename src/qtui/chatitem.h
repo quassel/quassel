@@ -55,11 +55,12 @@ class ChatItem : public QGraphicsItem {
     virtual QVariant data(int role) const;
 
     // returns height
-    int setWidth(int width);
+    qreal setWidth(qreal width);
 
     // selection stuff, to be called by the scene
     void clearSelection();
     void setFullSelection();
+    void continueSelecting();
 
   protected:
     virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
@@ -67,18 +68,24 @@ class ChatItem : public QGraphicsItem {
     virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 
   private:
-    int posToCursor(const QPointF &pos);
-    int heightForWidth(int width);
+    qint16 posToCursor(const QPointF &pos);
+    qreal computeHeight();
     QTextLayout *createLayout(QTextOption::WrapMode, Qt::Alignment = Qt::AlignLeft);
+
+    // internal selection stuff
+    void setSelection(int start, int length);
 
     QRectF _boundingRect;
     QFontMetricsF *_fontMetrics;
     quint8 _lines;
     QPersistentModelIndex _index;
 
-    QTextLayout *_layout;
+    QTextLayout * _layout;
     QList<quint16> _wrapPositions;
-    int _selectionStart;
+
+    enum SelectionMode { NoSelection, PartialSelection, FullSelection };
+    SelectionMode _selectionMode;
+    qint16 _selectionStart, _selectionEnd;
 
     class WrapColumnFinder;
 };
@@ -88,15 +95,15 @@ class ChatItem::WrapColumnFinder {
     WrapColumnFinder(ChatItem *parent);
     ~WrapColumnFinder();
 
-    int nextWrapColumn();
+    qint16 nextWrapColumn();
 
   private:
     ChatItem *item;
     QTextLayout *layout;
     QTextLine line;
     ChatLineModel::WrapList wrapList;
-    int wordidx;
-    int lastwrapcol;
+    qint16 wordidx;
+    qint16 lastwrapcol;
     qreal lastwrappos;
     qreal w;
 };

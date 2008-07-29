@@ -35,6 +35,7 @@ ChatItem::ChatItem(const QPersistentModelIndex &index_, QGraphicsItem *parent) :
   _layout = 0;
   _lines = 0;
   _selectionStart = -1;
+  _selectionMode = NoSelection;
 }
 
 ChatItem::~ChatItem() {
@@ -49,17 +50,17 @@ QVariant ChatItem::data(int role) const {
   return _index.data(role);
 }
 
-int ChatItem::setWidth(int w) {
+qreal ChatItem::setWidth(qreal w) {
   if(w == _boundingRect.width()) return _boundingRect.height();
   prepareGeometryChange();
   _boundingRect.setWidth(w);
-  int h = heightForWidth(w);
+  qreal h = computeHeight();
   _boundingRect.setHeight(h);
   if(haveLayout()) updateLayout();
   return h;
 }
 
-int ChatItem::heightForWidth(int width) {
+qreal ChatItem::computeHeight() {
   if(data(ChatLineModel::ColumnTypeRole).toUInt() != ChatLineModel::ContentsColumn)
     return fontMetrics()->lineSpacing(); // only contents can be multi-line
 
@@ -95,7 +96,7 @@ void ChatItem::updateLayout() {
         QTextLine line = _layout->createLine();
         if(line.isValid()) {
           line.setLineWidth(width());
-          line.setPosition(QPointF(0, fontMetrics()->leading()));
+          line.setPosition(QPointF(0,0));
         }
         _layout->endLayout();
       }
@@ -106,23 +107,19 @@ void ChatItem::updateLayout() {
       // Now layout
       ChatLineModel::WrapList wrapList = data(ChatLineModel::WrapListRole).value<ChatLineModel::WrapList>();
       if(!wrapList.count()) return; // empty chatitem
-      int wordidx = 0;
-      ChatLineModel::Word word = wrapList.at(0);
 
       qreal h = 0;
       WrapColumnFinder finder(this);
       _layout->beginLayout();
       forever {
         QTextLine line = _layout->createLine();
-        if (!line.isValid())
+        if(!line.isValid())
           break;
 
         int col = finder.nextWrapColumn();
         line.setNumColumns(col >= 0 ? col - line.textStart() : _layout->text().length());
-
-        h += fontMetrics()->leading();
         line.setPosition(QPointF(0, h));
-        h += line.height();
+        h += line.height() + fontMetrics()->leading();
       }
       _layout->endLayout();
     }
@@ -135,13 +132,35 @@ void ChatItem::clearLayout() {
   _layout = 0;
 }
 
+// NOTE: This is not the most time-efficient implementation, but it saves space by not caching unnecessary data
+//       This is a deliberate trade-off. (-> selectFmt creation, data() call)
 void ChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
   Q_UNUSED(option); Q_UNUSED(widget);
   if(!haveLayout()) updateLayout();
-  _layout->draw(painter, QPointF(0,0), QVector<QTextLayout::FormatRange>(), boundingRect());
+  painter->setClipRect(boundingRect()); // no idea why QGraphicsItem clipping won't work
+  if(_selectionMode == FullSelection) {
+    painter->save();
+   painter->fillRect(boundingRect(), QApplication::palette().brush(QPalette::Highlight));
+    painter->restore();
+  } // TODO: add selection format here
+  QVector<QTextLayout::FormatRange> formats;
+  if(_selectionMode != NoSelection) {
+    QTextLayout::FormatRange selectFmt;
+    selectFmt.format.setForeground(QApplication::palette().brush(QPalette::HighlightedText));
+    selectFmt.format.setBackground(QApplication::palette().brush(QPalette::Highlight));
+    if(_selectionMode == PartialSelection) {
+      selectFmt.start = qMin(_selectionStart, _selectionEnd);
+      selectFmt.length = qAbs(_selectionStart - _selectionEnd);
+    } else { // FullSelection
+      selectFmt.start = 0;
+      selectFmt.length = data(MessageModel::DisplayRole).toString().length();
+    }
+    formats.append(selectFmt);
+  }
+  _layout->draw(painter, QPointF(0,0), formats, boundingRect());
 }
 
-int ChatItem::posToCursor(const QPointF &pos) {
+qint16 ChatItem::posToCursor(const QPointF &pos) {
   if(pos.y() > height()) return data(MessageModel::DisplayRole).toString().length();
   if(pos.y() < 0) return 0;
   if(!haveLayout()) updateLayout();
@@ -154,53 +173,43 @@ int ChatItem::posToCursor(const QPointF &pos) {
   return 0;
 }
 
-void ChatItem::clearSelection() {
-  if(_selectionStart >= 0) {
-    QList<QTextLayout::FormatRange> formats = _layout->additionalFormats();
-    formats.removeLast();
-    _layout->setAdditionalFormats(formats);
-    _selectionStart = -1;
-    updateLayout();
-    update();
-  }
+void ChatItem::setFullSelection() {
+  _selectionMode = FullSelection;
+  update();
 }
 
-void ChatItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
-  int selectionEnd = posToCursor(event->pos());
-  QList<QTextLayout::FormatRange> formats = _layout->additionalFormats();
-  formats.last().start = qMin(_selectionStart, selectionEnd);
-  formats.last().length = qMax(_selectionStart, selectionEnd) - formats.last().start;
-  _layout->setAdditionalFormats(formats);
-  updateLayout();
+void ChatItem::clearSelection() {
+  _selectionMode = NoSelection;
   update();
 }
 
 void ChatItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
   if(event->buttons() & Qt::LeftButton) {
-    if(!haveLayout()) updateLayout();
-    chatScene()->setSelectingItem(this);
-    _selectionStart = posToCursor(event->pos());
-    QList<QTextLayout::FormatRange> formats = _layout->additionalFormats();
-    QTextLayout::FormatRange selectFmt;
-    QPalette pal = QApplication::palette();
-    selectFmt.format.setForeground(pal.brush(QPalette::HighlightedText));
-    selectFmt.format.setBackground(pal.brush(QPalette::Highlight));
-    selectFmt.length = 0;
-    formats.append(selectFmt);
-    _layout->setAdditionalFormats(formats);
-    updateLayout();
-    update();
+    chatScene()->setSelectingItem(this);  // removes earlier selection if exists
+    _selectionStart = _selectionEnd = posToCursor(event->pos());
+    _selectionMode = PartialSelection;
     event->accept();
   } else {
     event->ignore();
   }
 }
 
+void ChatItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
+  if(contains(event->pos())) {
+    _selectionEnd = posToCursor(event->pos());
+    update();
+  } else {
+    setFullSelection();
+    ungrabMouse();
+    chatScene()->startGlobalSelection(this);
+  }
+}
+
 void ChatItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
-  if(_selectionStart >= 0) {
-    int selectionEnd = posToCursor(event->pos());
+  if(_selectionMode != NoSelection) {
+    _selectionEnd = posToCursor(event->pos());
     QString selection
-        = data(MessageModel::DisplayRole).toString().mid(qMin(_selectionStart, selectionEnd), qAbs(_selectionStart - selectionEnd));
+        = data(MessageModel::DisplayRole).toString().mid(qMin(_selectionStart, _selectionEnd), qAbs(_selectionStart - _selectionEnd));
     QApplication::clipboard()->setText(selection, QClipboard::Clipboard);  // TODO configure where selections should go
     event->accept();
   } else {
@@ -223,7 +232,7 @@ ChatItem::WrapColumnFinder::~WrapColumnFinder() {
   delete layout;
 }
 
-int ChatItem::WrapColumnFinder::nextWrapColumn() {
+qint16 ChatItem::WrapColumnFinder::nextWrapColumn() {
   while(wordidx < wrapList.count()) {
     w += wrapList.at(wordidx).width;
     if(w >= item->width()) {
