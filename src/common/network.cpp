@@ -537,7 +537,7 @@ QVariantMap Network::initIrcUsersAndChannels() const {
   QHash<QString, IrcChannel *>::const_iterator channelIter = _ircChannels.constBegin();
   QHash<QString, IrcChannel *>::const_iterator channelIterEnd = _ircChannels.constEnd();
   while(channelIter != channelIterEnd) {
-    channels[channelIter.key()] = channelIter.value()->toVariantMap();
+    channels[channelIter.value()->name()] = channelIter.value()->toVariantMap();
     channelIter++;
   }
   usersAndChannels["channels"] = channels;
