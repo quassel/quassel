@@ -48,6 +48,7 @@ class ChatScene : public QGraphicsScene {
     // these are used by the chatitems to notify the scene
     void setSelectingItem(ChatItem *item);
     ChatItem *selectingItem() const { return _selectingItem; }
+    void startGlobalSelection(ChatItem *item);
 
   signals:
     void heightChanged(qreal height);

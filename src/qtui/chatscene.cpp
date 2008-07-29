@@ -160,3 +160,9 @@ void ChatScene::setSelectingItem(ChatItem *item) {
   if(_selectingItem) _selectingItem->clearSelection();
   _selectingItem = item;
 }
+
+void ChatScene::startGlobalSelection(ChatItem *item) {
+
+
+}
+
