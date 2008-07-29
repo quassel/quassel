@@ -49,6 +49,7 @@ private slots:
   void setNetwork(const Network *network);
   void setIdentity(const IdentityId &identityId);
   void updateNickSelector() const;
+  void updateEnabledState();
 
   BufferInfo currentBufferInfo() const;
 
@@ -60,7 +61,6 @@ private:
   
   NetworkId _networkId;
   IdentityId _identityId;
-
 };
 
 
