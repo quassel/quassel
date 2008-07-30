@@ -34,6 +34,7 @@ ChatLine::ChatLine(const QModelIndex &index, QGraphicsItem *parent) : QGraphicsI
 
   _timestampItem->setPos(0,0);
   _width = _height = 0;
+  _selection = 0;
 }
 
 ChatLine::~ChatLine() {
@@ -45,6 +46,15 @@ ChatLine::~ChatLine() {
 QRectF ChatLine::boundingRect () const {
   //return childrenBoundingRect();
   return QRectF(0, 0, _width, _height);
+}
+
+ChatItem *ChatLine::item(ChatLineModel::ColumnType column) const {
+  switch(column) {
+    case ChatLineModel::TimestampColumn: return _timestampItem;
+    case ChatLineModel::SenderColumn: return _senderItem;
+    case ChatLineModel::ContentsColumn: return _contentsItem;
+    default: return 0;
+  }
 }
 
 qreal ChatLine::setGeometry(qreal width, qreal firstHandlePos, qreal secondHandlePos) {
@@ -63,6 +73,32 @@ qreal ChatLine::setGeometry(qreal width, qreal firstHandlePos, qreal secondHandl
   return _height;
 }
 
-void ChatLine::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
+void ChatLine::setSelected(bool selected, ChatLineModel::ColumnType minColumn) {
+  if(selected) {
+    _selection = (_selection & 0x80) | 0x40 | minColumn;
+    for(int i = 0; i < minColumn; i++) item((ChatLineModel::ColumnType)i)->clearSelection();
+    for(int i = minColumn; i <= ChatLineModel::ContentsColumn; i++) item((ChatLineModel::ColumnType)i)->setFullSelection();
+  }
+  else {
+    _selection &= 0x80;
+    for(int i = 0; i <= ChatLineModel::ContentsColumn; i++) item((ChatLineModel::ColumnType)i)->clearSelection();
+  }
+  update();
+}
 
+void ChatLine::setHighlighted(bool highlighted) {
+  if(highlighted) _selection |= 0x80;
+  else _selection &= 0x7f;
+  update();
+}
+
+void ChatLine::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
+  if(_selection & Highlighted) {
+    painter->fillRect(boundingRect(), QBrush(QtUi::style()->highlightColor()));
+  }
+  if(_selection & Selected) {
+    qreal left = item((ChatLineModel::ColumnType)(_selection & 0x3f))->x();
+    QRectF selectRect(left, 0, width() - left, height());
+    painter->fillRect(selectRect, QApplication::palette().brush(QPalette::Highlight));
+  }
 }

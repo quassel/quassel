@@ -23,7 +23,7 @@
 
 #include <QGraphicsItem>
 
-#include "messagemodel.h"
+#include "chatlinemodel.h"
 
 class ChatItem;
 
@@ -34,23 +34,25 @@ class ChatLine : public QGraphicsItem {
     virtual ~ChatLine();
 
     virtual QRectF boundingRect () const;
-    inline int width() const { return _width; }
-    inline int height() const { return _height; }
+    inline qreal width() const { return _width; }
+    inline qreal height() const { return _height; }
+    ChatItem *item(ChatLineModel::ColumnType) const;
 
     virtual void paint (QPainter * painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
-    //void layout();
 
     // returns height
     qreal setGeometry(qreal width, qreal firstColPos, qreal secondColPos);
-
-    //void myMousePressEvent ( QGraphicsSceneMouseEvent * event ) { qDebug() << "press"; mousePressEvent(event); }
+    void setSelected(bool selected, ChatLineModel::ColumnType minColumn = ChatLineModel::ContentsColumn);
+    void setHighlighted(bool highlighted);
 
   protected:
-    //bool sceneEvent ( QEvent * event );
 
   private:
     ChatItem *_timestampItem, *_senderItem, *_contentsItem;
-    int _width, _height;
+    qreal _width, _height;
+
+    enum { Selected = 0x40, Highlighted = 0x80 };
+    quint8 _selection;  // save space, so we put both the col and the flags into one byte
 };
 
 #endif
