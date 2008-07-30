@@ -102,7 +102,7 @@ QtUiStyle::QtUiStyle() : UiStyle("QtUiStyleNew") {  // FIXME QtUiStyleNew naming
   url.setAnchor(true);
   setFormat(Url, url, Settings::Default);
 
-
+  _highlightColor = QColor(Qt::red);
 }
 
 QtUiStyle::~QtUiStyle() {}

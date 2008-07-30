@@ -31,6 +31,10 @@ class QtUiStyle : public UiStyle {
 
     virtual inline qreal firstColumnSeparator() const { return 10; }
     virtual inline qreal secondColumnSeparator() const { return 10; }
+    virtual inline QColor highlightColor() const { return _highlightColor; }
+
+  private:
+    QColor _highlightColor;
 };
 
 #endif
