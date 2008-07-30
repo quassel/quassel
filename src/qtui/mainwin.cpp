@@ -290,7 +290,7 @@ void MainWin::setupChatMonitor() {
   VerticalDock *dock = new VerticalDock(tr("Chat Monitor"), this);
   dock->setObjectName("ChatMonitorDock");
 
-  ChatMonitorFilter *filter = new ChatMonitorFilter(Client::messageModel(), this); qDebug() << filter;
+  ChatMonitorFilter *filter = new ChatMonitorFilter(Client::messageModel(), this);
   ChatView *chatView = new ChatView(filter, this);
   chatView->show();
   dock->setWidget(chatView);

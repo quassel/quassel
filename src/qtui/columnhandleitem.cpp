@@ -23,8 +23,6 @@
 #include <QGraphicsSceneHoverEvent>
 #include <QPainter>
 
-#include <QDebug>
-
 #include "columnhandleitem.h"
 
 ColumnHandleItem::ColumnHandleItem(qreal w, QGraphicsItem *parent)
