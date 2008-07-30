@@ -85,7 +85,7 @@ int main(int argc, char **argv) {
 // put core-only arguments here
   Global::parser.addOption("port",'p',"The port quasselcore will listen at",QString("4242"));
   Global::parser.addSwitch("norestore", 'n', "Don't restore last core's state");
-  Global::parser.addOption("logfile",'l',"Path to logfile","./quassel.log");
+  Global::parser.addOption("logfile",'l',"Path to logfile");
   Global::parser.addOption("loglevel",'L',"Loglevel Debug|Info|Warning|Error","Info");
 #endif // BUILD_QTUI
 #ifndef BUILD_CORE
@@ -112,9 +112,9 @@ int main(int argc, char **argv) {
       logFile.setFileName(Global::parser.value("logfile"));
       if(!logFile.open(QIODevice::Append | QIODevice::Text))
         qWarning("Warning: Couldn't open logfile '%s' - will log to stdout instead",qPrintable(logFile.fileName()));
-      logFile.close();
+      else logFile.close();
     }
-    else qWarning("Warning: Couldn't open logfile '%s' - will log to stdout instead",qPrintable(logFile.fileName()));
+    else qWarning("No logfile set - will log to stdout instead");
   }
 
   qsrand(QTime(0,0,0).secsTo(QTime::currentTime()));

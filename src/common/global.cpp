@@ -22,7 +22,6 @@
 #include <QMetaType>
 
 #include "global.h"
-#include "logger.h"
 #include "message.h"
 #include "identity.h"
 #include "network.h"
