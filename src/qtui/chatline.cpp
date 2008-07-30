@@ -75,15 +75,22 @@ qreal ChatLine::setGeometry(qreal width, qreal firstHandlePos, qreal secondHandl
 
 void ChatLine::setSelected(bool selected, ChatLineModel::ColumnType minColumn) {
   if(selected) {
-    _selection = (_selection & 0x80) | 0x40 | minColumn;
-    for(int i = 0; i < minColumn; i++) item((ChatLineModel::ColumnType)i)->clearSelection();
-    for(int i = minColumn; i <= ChatLineModel::ContentsColumn; i++) item((ChatLineModel::ColumnType)i)->setFullSelection();
+    quint8 sel = (_selection & 0x80) | 0x40 | minColumn;
+    if(sel != _selection) {
+      _selection = sel;
+      for(int i = 0; i < minColumn; i++) item((ChatLineModel::ColumnType)i)->clearSelection();
+      for(int i = minColumn; i <= ChatLineModel::ContentsColumn; i++) item((ChatLineModel::ColumnType)i)->setFullSelection();
+      update();
+    }
   }
   else {
-    _selection &= 0x80;
-    for(int i = 0; i <= ChatLineModel::ContentsColumn; i++) item((ChatLineModel::ColumnType)i)->clearSelection();
+    quint8 sel = _selection &= 0x80;
+    if(sel != _selection) {
+      _selection = sel;
+      for(int i = 0; i <= ChatLineModel::ContentsColumn; i++) item((ChatLineModel::ColumnType)i)->clearSelection();
+      update();
+    }
   }
-  update();
 }
 
 void ChatLine::setHighlighted(bool highlighted) {
