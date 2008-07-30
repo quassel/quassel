@@ -354,7 +354,7 @@ bool Core::startListening(uint port) {
   if(!success) {
     quError() << qPrintable(QString("Could not open GUI client port %1: %2").arg(port).arg(server.errorString()));
   } else {
-    quInfo() << "Listening for GUI clients on port " << server.serverPort() << " using protocol version " << Global::protocolVersion;
+    quInfo() << "Listening for GUI clients on port" << server.serverPort() << "using protocol version" << Global::protocolVersion;
   }
   
   return success;
@@ -374,7 +374,7 @@ void Core::incomingConnection() {
     
     QVariantMap clientInfo;
     blocksizes.insert(socket, (quint32)0);
-    quInfo() << qPrintable(tr("Client connected from "))  << qPrintable(socket->peerAddress().toString());
+    quInfo() << qPrintable(tr("Client connected from"))  << qPrintable(socket->peerAddress().toString());
 
     if (!configured) {
       server.close();
@@ -484,7 +484,7 @@ void Core::processClientMessage(QTcpSocket *socket, const QVariantMap &msg) {
 #ifndef QT_NO_COMPRESS
     if(supportsCompression && msg["UseCompression"].toBool()) {
       socket->setProperty("UseCompression", true);
-      quDebug() << "Using compression for Client: " << qPrintable(socket->peerAddress().toString());
+      quDebug() << "Using compression for Client:" << qPrintable(socket->peerAddress().toString());
     }
 #endif
     
@@ -521,7 +521,7 @@ void Core::processClientMessage(QTcpSocket *socket, const QVariantMap &msg) {
       }
       reply["MsgType"] = "ClientLoginAck";
       SignalProxy::writeDataToDevice(socket, reply);
-      quInfo() << qPrintable(tr("Client ")) << qPrintable(socket->peerAddress().toString()) << qPrintable(tr(" initialized and authenticated successfully as \"%1\" (UserId: %2).").arg(msg["User"].toString()).arg(uid.toInt()));
+      quInfo() << qPrintable(tr("Client")) << qPrintable(socket->peerAddress().toString()) << qPrintable(tr("initialized and authenticated successfully as \"%1\" (UserId: %2).").arg(msg["User"].toString()).arg(uid.toInt()));
       setupClientSession(socket, uid);
     }
   }

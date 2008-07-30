@@ -186,7 +186,7 @@ void CoreSession::updateBufferInfo(UserId uid, const BufferInfo &bufinfo) {
 void CoreSession::connectToNetwork(NetworkId id) {
   CoreNetwork *net = network(id);
   if(!net) {
-    quWarning() << "Connect to unknown network requested! net: " << id << " user: " << user();
+    quWarning() << "Connect to unknown network requested! net:" << id << "user:" << user();
     return;
   }
 
@@ -247,7 +247,7 @@ void CoreSession::removeClient(QIODevice *iodev) {
   // no checks for validity check - privateslot...
   QTcpSocket *socket = qobject_cast<QTcpSocket *>(iodev);
   if(socket)
-    quInfo() << qPrintable(tr("Client ")) << qPrintable(socket->peerAddress().toString()) << qPrintable(tr(" disconnected (UserId: %1).").arg(user().toInt()));
+    quInfo() << qPrintable(tr("Client")) << qPrintable(socket->peerAddress().toString()) << qPrintable(tr("disconnected (UserId: %1).").arg(user().toInt()));
   else
     quInfo() << "Local client disconnedted.";
   disconnect(socket, 0, this, 0);
@@ -481,7 +481,7 @@ void CoreSession::destroyNetwork(NetworkId id) {
 void CoreSession::removeBufferRequested(BufferId bufferId) {
   BufferInfo bufferInfo = Core::getBufferInfo(user(), bufferId);
   if(!bufferInfo.isValid()) {
-    quWarning() << "CoreSession::removeBufferRequested(): invalid BufferId: " << bufferId << " for User: " << user();
+    quWarning() << "CoreSession::removeBufferRequested(): invalid BufferId:" << bufferId << "for User:" << user();
     return;
   }
   
@@ -498,7 +498,7 @@ void CoreSession::removeBufferRequested(BufferId bufferId) {
     }
     IrcChannel *chan = net->ircChannel(bufferInfo.bufferName());
     if(chan) {
-      quWarning() << "CoreSession::removeBufferRequested(): Unable to remove Buffer for joined Channel: " << bufferInfo.bufferName();
+      quWarning() << "CoreSession::removeBufferRequested(): Unable to remove Buffer for joined Channel:" << bufferInfo.bufferName();
       return;
     }
   }

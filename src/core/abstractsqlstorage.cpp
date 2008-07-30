@@ -52,8 +52,8 @@ QSqlDatabase AbstractSqlStorage::logDb() {
     return db;
 
   if(!openDb()) {
-    quWarning() << "Unable to Open Database " << displayName();
-    quWarning() << " - " << db.lastError().text();
+    quWarning() << "Unable to Open Database" << displayName();
+    quWarning() << "-" << db.lastError().text();
   }
 
   return QSqlDatabase::database("quassel_connection");
@@ -100,7 +100,7 @@ bool AbstractSqlStorage::init(const QVariantMap &settings) {
       return false;
   }
   
-  quInfo() << "Storage Backend is ready. Quassel Schema Version: " << installedSchemaVersion();
+  quInfo() << "Storage Backend is ready. Quassel Schema Version:" << installedSchemaVersion();
   return true;
 }
 
@@ -120,7 +120,7 @@ QString AbstractSqlStorage::queryString(const QString &queryName, int version) {
     
   QFileInfo queryInfo(QString(":/SQL/%1/%2/%3.sql").arg(displayName()).arg(version).arg(queryName));
   if(!queryInfo.exists() || !queryInfo.isFile() || !queryInfo.isReadable()) {
-    quError() << "Unable to read SQL-Query " << queryName << " for engine " << displayName();
+    quError() << "Unable to read SQL-Query" << queryName << "for engine" << displayName();
     return QString();
   }
 
@@ -234,14 +234,14 @@ bool AbstractSqlStorage::watchQuery(QSqlQuery *query) {
     quError() << "unhandled Error in QSqlQuery!";
     quError() << "                  last Query:\n" << query->lastQuery();
     quError() << "              executed Query:\n" << query->executedQuery();
-    quError() << "                bound Values: ";
+    quError() << "                bound Values:";
     QList<QVariant> list = query->boundValues().values();
     for (int i = 0; i < list.size(); ++i)
       quError() << i << ": " << list.at(i).toString().toAscii().data();
-    quError() << "                Error Number: "   << query->lastError().number();
-    quError() << "               Error Message: "   << query->lastError().text();
-    quError() << "              Driver Message: "   << query->lastError().driverText();
-    quError() << "                  DB Message: "   << query->lastError().databaseText();
+    quError() << "                Error Number:"   << query->lastError().number();
+    quError() << "               Error Message:"   << query->lastError().text();
+    quError() << "              Driver Message:"   << query->lastError().driverText();
+    quError() << "                  DB Message:"   << query->lastError().databaseText();
     
     return false;
   }

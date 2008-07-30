@@ -491,7 +491,7 @@ BufferInfo SqliteStorage::getBufferInfo(UserId user, const NetworkId &networkId,
     query->exec();
     if(!query->first()) {
       watchQuery(query);
-      quWarning() << "unable to create BufferInfo for: " << user << networkId << buffer;
+      quWarning() << "unable to create BufferInfo for:" << user << networkId << buffer;
       return BufferInfo();
     }
   }
@@ -499,11 +499,11 @@ BufferInfo SqliteStorage::getBufferInfo(UserId user, const NetworkId &networkId,
   BufferInfo bufferInfo = BufferInfo(query->value(0).toInt(), networkId, (BufferInfo::Type)query->value(1).toInt(), 0, buffer);
   if(query->next()) {
     quError() << "SqliteStorage::getBufferInfo(): received more then one Buffer!";
-    quError() << "         Query: " << query->lastQuery();
+    quError() << "         Query:" << query->lastQuery();
     quError() << "  bound Values:";
     QList<QVariant> list = query->boundValues().values();
     for (int i = 0; i < list.size(); ++i)
-      quError() << i << ": " << list.at(i).toString().toAscii().data();
+      quError() << i << ":" << list.at(i).toString().toAscii().data();
     Q_ASSERT(false);
   }
 

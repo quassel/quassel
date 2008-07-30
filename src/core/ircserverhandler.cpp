@@ -238,7 +238,7 @@ void IrcServerHandler::handleMode(const QString &prefix, const QList<QByteArray>
 	  else
 	    channel->removeUserMode(ircUser, QString(modes[c]));
 	} else {
-	  quWarning() << "Received MODE with too few parameters: " << serverDecode(params);
+	  quWarning() << "Received MODE with too few parameters:" << serverDecode(params);
 	}
 	paramOffset++;
       } else {
@@ -249,7 +249,7 @@ void IrcServerHandler::handleMode(const QString &prefix, const QList<QByteArray>
 	    if(paramOffset < params.count()) {
 	      value = params[paramOffset];
 	    } else {
-	      quWarning() << "Received MODE with too few parameters: " << serverDecode(params);
+	      quWarning() << "Received MODE with too few parameters:" << serverDecode(params);
 	    }
 	    paramOffset++;
 	}
@@ -382,7 +382,7 @@ void IrcServerHandler::handlePrivmsg(const QString &prefix, const QList<QByteArr
   }
 
   if(params.isEmpty()) {
-    quWarning() << "IrcServerHandler::handlePrivmsg(): received PRIVMSG without target or message from: " << prefix;
+    quWarning() << "IrcServerHandler::handlePrivmsg(): received PRIVMSG without target or message from:" << prefix;
     return;
   }
      
@@ -863,7 +863,7 @@ void IrcServerHandler::handle353(const QString &prefix, const QList<QByteArray> 
 
   IrcChannel *channel = network()->ircChannel(channelname);
   if(!channel) {
-    quWarning() << "IrcServerHandler::handle353(): received unknown target channel: " << channelname;
+    quWarning() << "IrcServerHandler::handle353(): received unknown target channel:" << channelname;
     return;
   }
 
@@ -947,7 +947,7 @@ void IrcServerHandler::tryNextNick(const QString &errnick) {
 
 bool IrcServerHandler::checkParamCount(const QString &methodName, const QList<QByteArray> &params, int minParams) {
   if(params.count() < minParams) {
-    quWarning() << qPrintable(methodName) << " requires " << minParams << " parameters but received only " << params.count() << serverDecode(params);
+    quWarning() << qPrintable(methodName) << "requires" << minParams << "parameters but received only" << params.count() << serverDecode(params);
     return false;
   } else {
     return true;
