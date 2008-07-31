@@ -39,6 +39,7 @@ ChatScene::ChatScene(QAbstractItemModel *model, const QString &idString, QObject
   _width = 0;
   _selectingItem = 0;
   _isSelecting = false;
+  _selectionStart = -1;
   connect(this, SIGNAL(sceneRectChanged(const QRectF &)), this, SLOT(rectChanged(const QRectF &)));
 
   connect(model, SIGNAL(rowsInserted(const QModelIndex &, int, int)), this, SLOT(rowsInserted(const QModelIndex &, int, int)));
@@ -211,8 +212,15 @@ void ChatScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
 }
 
 void ChatScene::mousePressEvent(QGraphicsSceneMouseEvent *event) {
-  qDebug() << "pressed";
-  QGraphicsScene::mousePressEvent(event);
+  if(event->buttons() & Qt::LeftButton && _selectionStart >= 0) {
+    for(int l = qMin(_selectionStart, _selectionEnd); l <= qMax(_selectionStart, _selectionEnd); l++) {
+      _lines[l]->setSelected(false);
+    }
+    _selectionStart = -1;
+    event->accept();
+  } else {
+    QGraphicsScene::mousePressEvent(event);
+  }
 }
 
 void ChatScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {

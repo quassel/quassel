@@ -197,9 +197,15 @@ void ChatItem::continueSelecting(const QPointF &pos) {
 
 void ChatItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
   if(event->buttons() & Qt::LeftButton) {
-    chatScene()->setSelectingItem(this);  // removes earlier selection if exists
-    _selectionStart = _selectionEnd = posToCursor(event->pos());
-    _selectionMode = PartialSelection;
+    if(_selectionMode == NoSelection) {
+      chatScene()->setSelectingItem(this);  // removes earlier selection if exists
+      _selectionStart = _selectionEnd = posToCursor(event->pos());
+      _selectionMode = PartialSelection;
+    } else {
+      chatScene()->setSelectingItem(0);
+      _selectionMode = NoSelection;
+      update();
+    }
     event->accept();
   } else {
     event->ignore();
