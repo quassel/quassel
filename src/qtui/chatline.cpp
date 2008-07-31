@@ -35,6 +35,8 @@ ChatLine::ChatLine(const QModelIndex &index, QGraphicsItem *parent) : QGraphicsI
   _timestampItem->setPos(0,0);
   _width = _height = 0;
   _selection = 0;
+
+  if(_contentsItem->data(MessageModel::FlagsRole).toInt() & Message::Highlight) setHighlighted(true);
 }
 
 ChatLine::~ChatLine() {

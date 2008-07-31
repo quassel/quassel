@@ -437,8 +437,9 @@ void Client::networkDestroyed() {
   }
 }
 
-void Client::recvMessage(const Message &msg) {
-  //checkForHighlight(msg);
+void Client::recvMessage(const Message &msg_) {
+  Message msg = msg_;
+  checkForHighlight(msg);
   _messageModel->insertMessage(msg);
 }
 
@@ -447,10 +448,11 @@ void Client::recvStatusMsg(QString /*net*/, QString /*msg*/) {
 }
 
 void Client::receiveBacklog(BufferId bufferId, const QVariantList &msgs) {
-  //checkForHighlight(msg);
   //QTime start = QTime::currentTime();
   foreach(QVariant v, msgs) {
-    _messageModel->insertMessage(v.value<Message>());
+    Message msg = v.value<Message>();
+    checkForHighlight(msg);
+    _messageModel->insertMessage(msg);
   }
   //qDebug() << "processed" << msgs.count() << "backlog lines in" << start.msecsTo(QTime::currentTime());
 }
@@ -475,7 +477,11 @@ AbstractUiMsg *Client::layoutMsg(const Message &msg) {
   return instance()->mainUi->layoutMsg(msg);
 }
 
+// TODO optimize checkForHighlight
 void Client::checkForHighlight(Message &msg) {
+  if(!((msg.type() & (Message::Plain | Message::Notice | Message::Action)) && !(msg.flags() & Message::Self)))
+    return;
+
   NotificationSettings notificationSettings;
   const Network *net = network(msg.bufferInfo().networkId());
   if(net && !net->myNick().isEmpty()) {
@@ -489,9 +495,7 @@ void Client::checkForHighlight(Message &msg) {
     }
     foreach(QString nickname, nickList) {
       QRegExp nickRegExp("^(.*\\W)?" + QRegExp::escape(nickname) + "(\\W.*)?$");
-      if((msg.type() & (Message::Plain | Message::Notice | Message::Action))
-          && !(msg.flags() & Message::Self)
-          && nickRegExp.exactMatch(msg.contents())) {
+      if(nickRegExp.exactMatch(msg.contents())) {
         msg.setFlags(msg.flags() | Message::Highlight);
         return;
       }
@@ -509,9 +513,7 @@ void Client::checkForHighlight(Message &msg) {
       } else {
         userRegExp = QRegExp("^(.*\\W)?" + QRegExp::escape(name) + "(\\W.*)?$", caseSensitivity);
       }
-      if((msg.type() & (Message::Plain | Message::Notice | Message::Action))
-          && !(msg.flags() & Message::Self)
-          && userRegExp.exactMatch(msg.contents())) {
+      if(userRegExp.exactMatch(msg.contents())) {
         msg.setFlags(msg.flags() | Message::Highlight);
         return;
       }
