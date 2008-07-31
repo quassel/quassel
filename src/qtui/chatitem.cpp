@@ -20,6 +20,7 @@
 
 #include <QApplication>
 #include <QClipboard>
+#include <QDesktopServices>
 #include <QFontMetrics>
 #include <QGraphicsSceneMouseEvent>
 #include <QPainter>
@@ -235,6 +236,24 @@ void ChatItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
   } else {
     event->ignore();
   }
+}
+
+void ChatItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) {
+  // FIXME dirty and fast hack to make http:// urls klickable
+
+  QRegExp regex("\\b((?:h|f)t{1,2}ps?:\\/\\/.+)\\b");
+  QString str = data(ChatLineModel::DisplayRole).toString();
+  int idx = posToCursor(event->pos());
+  int mi = 0;
+  do {
+    mi = regex.indexIn(str, mi);
+    if(mi < 0) break;
+    if(idx >= mi && idx < mi + regex.matchedLength()) {
+      QDesktopServices::openUrl(QUrl(regex.capturedTexts()[1]));
+      break;
+    }
+  } while(mi >= 0);
+  event->accept();
 }
 
 void ChatItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event) {
