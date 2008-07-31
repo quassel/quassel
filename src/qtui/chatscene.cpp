@@ -18,6 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QApplication>
+#include <QClipboard>
 #include <QGraphicsSceneMouseEvent>
 #include <QPersistentModelIndex>
 
@@ -225,6 +227,12 @@ void ChatScene::mousePressEvent(QGraphicsSceneMouseEvent *event) {
 
 void ChatScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
   if(_isSelecting) {
+#   ifdef Q_WS_X11
+      QApplication::clipboard()->setText(selectionToString(), QClipboard::Selection);
+#   endif
+//# else
+      QApplication::clipboard()->setText(selectionToString());
+//# endif
     _isSelecting = false;
     event->accept();
   } else {
@@ -232,3 +240,17 @@ void ChatScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
   }
 }
 
+//!\brief Convert current selection to human-readable string.
+QString ChatScene::selectionToString() const {
+  //TODO Make selection format configurable!
+  if(!_isSelecting) return "";
+  QString result;
+  for(int l = _selectionStart; l <= _selectionEnd; l++) {
+    if(_selectionMinCol == ChatLineModel::TimestampColumn)
+      result += _lines[l]->item(ChatLineModel::TimestampColumn)->data(MessageModel::DisplayRole).toString() + " ";
+    if(_selectionMinCol <= ChatLineModel::SenderColumn)
+      result += _lines[l]->item(ChatLineModel::SenderColumn)->data(MessageModel::DisplayRole).toString() + " ";
+    result += _lines[l]->item(ChatLineModel::ContentsColumn)->data(MessageModel::DisplayRole).toString() + "\n";
+  }
+  return result;
+}

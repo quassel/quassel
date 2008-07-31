@@ -68,6 +68,7 @@ class ChatScene : public QGraphicsScene {
 
   private:
     void updateSelection(const QPointF &pos);
+    QString selectionToString() const;
 
     QString _idString;
     qreal _width, _height;
