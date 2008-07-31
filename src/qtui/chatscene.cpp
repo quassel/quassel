@@ -38,6 +38,7 @@ ChatScene::ChatScene(QAbstractItemModel *model, const QString &idString, QObject
 {
   _width = 0;
   _selectingItem = 0;
+  _isSelecting = false;
   connect(this, SIGNAL(sceneRectChanged(const QRectF &)), this, SLOT(rectChanged(const QRectF &)));
 
   connect(model, SIGNAL(rowsInserted(const QModelIndex &, int, int)), this, SLOT(rowsInserted(const QModelIndex &, int, int)));
@@ -141,28 +142,85 @@ void ChatScene::handlePositionChanged(qreal xpos) {
   update(qMin(oldx, xpos) - firstColHandle->width()/2, 0, qMax(oldx, xpos) + firstColHandle->width()/2, height());
 }
 
-void ChatScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
-
-  QGraphicsScene::mouseMoveEvent(event);
-}
-
-void ChatScene::mousePressEvent(QGraphicsSceneMouseEvent *event) {
-
-  QGraphicsScene::mousePressEvent(event);
-}
-
-void ChatScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
-
-  QGraphicsScene::mouseReleaseEvent(event);
-}
-
 void ChatScene::setSelectingItem(ChatItem *item) {
   if(_selectingItem) _selectingItem->clearSelection();
   _selectingItem = item;
 }
 
-void ChatScene::startGlobalSelection(ChatItem *item) {
+void ChatScene::startGlobalSelection(ChatItem *item, const QPointF &itemPos) {
+  _selectionStart = _selectionEnd = item->index().row();
+  _selectionStartCol = _selectionMinCol = item->index().column();
+  _isSelecting = true;
+  _lines[_selectionStart]->setSelected(true, (ChatLineModel::ColumnType)_selectionMinCol);
+  updateSelection(item->mapToScene(itemPos));
+}
 
+void ChatScene::updateSelection(const QPointF &pos) {
+  // This is somewhat hacky... we look at the contents item that is at the cursor's y position (ignoring x), since
+  // it has the full height. From this item, we can then determine the row index and hence the ChatLine.
+  ChatItem *contentItem = static_cast<ChatItem *>(itemAt(QPointF(secondColHandlePos + secondColHandle->width()/2, pos.y())));
+  if(!contentItem) return;
 
+  int curRow = contentItem->index().row();
+  int curColumn;
+  if(pos.x() > secondColHandlePos + secondColHandle->width()/2) curColumn = ChatLineModel::ContentsColumn;
+  else if(pos.x() > firstColHandlePos) curColumn = ChatLineModel::SenderColumn;
+  else curColumn = ChatLineModel::TimestampColumn;
+
+  ChatLineModel::ColumnType minColumn = (ChatLineModel::ColumnType)qMin(curColumn, _selectionStartCol);
+  if(minColumn != _selectionMinCol) {
+    _selectionMinCol = minColumn;
+    for(int l = qMin(_selectionStart, _selectionEnd); l <= qMax(_selectionStart, _selectionEnd); l++) {
+      _lines[l]->setSelected(true, minColumn);
+    }
+  }
+
+  if(curRow > _selectionEnd && curRow > _selectionStart) {  // select further towards bottom
+    for(int l = _selectionEnd + 1; l <= curRow; l++) {
+      _lines[l]->setSelected(true, minColumn);
+    }
+  } else if(curRow > _selectionEnd && curRow <= _selectionStart) { // deselect towards bottom
+    for(int l = _selectionEnd; l < curRow; l++) {
+      _lines[l]->setSelected(false);
+    }
+  } else if(curRow < _selectionEnd && curRow >= _selectionStart) {
+    for(int l = _selectionEnd; l > curRow; l--) {
+      _lines[l]->setSelected(false);
+    }
+  } else if(curRow < _selectionEnd && curRow < _selectionStart) {
+    for(int l = _selectionEnd - 1; l >= curRow; l--) {
+      _lines[l]->setSelected(true, minColumn);
+    }
+  }
+  _selectionEnd = curRow;
+
+  if(curRow == _selectionStart && minColumn == ChatLineModel::ContentsColumn) {
+    _lines[curRow]->setSelected(false);
+    _isSelecting = false;
+    _selectingItem->continueSelecting(_selectingItem->mapFromScene(pos));
+  }
+}
+
+void ChatScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
+  if(_isSelecting && event->buttons() & Qt::LeftButton) {
+    updateSelection(event->scenePos());
+    event->accept();
+  } else {
+    QGraphicsScene::mouseMoveEvent(event);
+  }
+}
+
+void ChatScene::mousePressEvent(QGraphicsSceneMouseEvent *event) {
+  qDebug() << "pressed";
+  QGraphicsScene::mousePressEvent(event);
+}
+
+void ChatScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
+  if(_isSelecting) {
+    _isSelecting = false;
+    event->accept();
+  } else {
+    QGraphicsScene::mouseReleaseEvent(event);
+  }
 }
 

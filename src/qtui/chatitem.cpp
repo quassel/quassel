@@ -36,6 +36,8 @@ ChatItem::ChatItem(const QPersistentModelIndex &index_, QGraphicsItem *parent) :
   _lines = 0;
   _selectionStart = -1;
   _selectionMode = NoSelection;
+  setAcceptHoverEvents(true);
+  setZValue(20);
 }
 
 ChatItem::~ChatItem() {
@@ -138,11 +140,11 @@ void ChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
   Q_UNUSED(option); Q_UNUSED(widget);
   if(!haveLayout()) updateLayout();
   painter->setClipRect(boundingRect()); // no idea why QGraphicsItem clipping won't work
-  if(_selectionMode == FullSelection) {
-    painter->save();
-   painter->fillRect(boundingRect(), QApplication::palette().brush(QPalette::Highlight));
-    painter->restore();
-  } // TODO: add selection format here
+  //if(_selectionMode == FullSelection) {
+    //painter->save();
+    //painter->fillRect(boundingRect(), QApplication::palette().brush(QPalette::Highlight));
+    //painter->restore();
+  //}
   QVector<QTextLayout::FormatRange> formats;
   if(_selectionMode != NoSelection) {
     QTextLayout::FormatRange selectFmt;
@@ -174,12 +176,22 @@ qint16 ChatItem::posToCursor(const QPointF &pos) {
 }
 
 void ChatItem::setFullSelection() {
-  _selectionMode = FullSelection;
-  update();
+  if(_selectionMode != FullSelection) {
+    _selectionMode = FullSelection;
+    update();
+  }
 }
 
 void ChatItem::clearSelection() {
-  _selectionMode = NoSelection;
+  if(_selectionMode != NoSelection) {
+    _selectionMode = NoSelection;
+    update();
+  }
+}
+
+void ChatItem::continueSelecting(const QPointF &pos) {
+  _selectionMode = PartialSelection;
+  _selectionEnd = posToCursor(pos);
   update();
 }
 
@@ -196,12 +208,14 @@ void ChatItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
 
 void ChatItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
   if(contains(event->pos())) {
-    _selectionEnd = posToCursor(event->pos());
-    update();
+    qint16 end = posToCursor(event->pos());
+    if(end != _selectionEnd) {
+      _selectionEnd = end;
+      update();
+    }
   } else {
     setFullSelection();
-    ungrabMouse();
-    chatScene()->startGlobalSelection(this);
+    chatScene()->startGlobalSelection(this, event->pos());
   }
 }
 
@@ -216,6 +230,22 @@ void ChatItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
     event->ignore();
   }
 }
+
+void ChatItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event) {
+  //qDebug() << (void*)this << "entering";
+
+}
+
+void ChatItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event) {
+  //qDebug() << (void*)this << "leaving";
+
+}
+
+void ChatItem::hoverMoveEvent(QGraphicsSceneHoverEvent *event) {
+  //qDebug() << (void*)this << event->pos();
+
+}
+
 
 /*************************************************************************************************/
 

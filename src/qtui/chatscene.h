@@ -23,6 +23,7 @@
 
 #include <QAbstractItemModel>
 #include <QGraphicsScene>
+#include <QSet>
 
 class AbstractUiMsg;
 class Buffer;
@@ -45,10 +46,10 @@ class ChatScene : public QGraphicsScene {
   public slots:
     void setWidth(qreal);
 
-    // these are used by the chatitems to notify the scene
+    // these are used by the chatitems to notify the scene and manage selections
     void setSelectingItem(ChatItem *item);
     ChatItem *selectingItem() const { return _selectingItem; }
-    void startGlobalSelection(ChatItem *item);
+    void startGlobalSelection(ChatItem *item, const QPointF &itemPos);
 
   signals:
     void heightChanged(qreal height);
@@ -66,6 +67,8 @@ class ChatScene : public QGraphicsScene {
     void handlePositionChanged(qreal xpos);
 
   private:
+    void updateSelection(const QPointF &pos);
+
     QString _idString;
     qreal _width, _height;
     QAbstractItemModel *_model;
@@ -74,7 +77,12 @@ class ChatScene : public QGraphicsScene {
     ColumnHandleItem *firstColHandle, *secondColHandle;
     qreal firstColHandlePos, secondColHandlePos;
 
-    ChatItem *_selectingItem;
+    ChatItem *_selectingItem, *_lastItem;
+    QSet<ChatLine *> _selectedItems;
+    int _selectionStartCol, _selectionMinCol;
+    int _selectionStart;
+    int _selectionEnd;
+    bool _isSelecting;
 };
 
 #endif

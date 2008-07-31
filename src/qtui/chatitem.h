@@ -60,12 +60,16 @@ class ChatItem : public QGraphicsItem {
     // selection stuff, to be called by the scene
     void clearSelection();
     void setFullSelection();
-    void continueSelecting();
+    void continueSelecting(const QPointF &pos);
 
   protected:
     virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
     virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+
+    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
+    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
+    virtual void hoverMoveEvent(QGraphicsSceneHoverEvent *event);
 
   private:
     qint16 posToCursor(const QPointF &pos);
