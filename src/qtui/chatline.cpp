@@ -82,9 +82,8 @@ void ChatLine::setSelected(bool selected, ChatLineModel::ColumnType minColumn) {
       for(int i = minColumn; i <= ChatLineModel::ContentsColumn; i++) item((ChatLineModel::ColumnType)i)->setFullSelection();
       update();
     }
-  }
-  else {
-    quint8 sel = _selection &= 0x80;
+  } else {
+    quint8 sel = _selection & 0x80;
     if(sel != _selection) {
       _selection = sel;
       for(int i = 0; i <= ChatLineModel::ContentsColumn; i++) item((ChatLineModel::ColumnType)i)->clearSelection();
