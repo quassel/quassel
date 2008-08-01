@@ -99,7 +99,7 @@ void BufferViewSettingsPage::load() {
   _ignoreWidgetChanges = true;
   // load network selector
   ui.networkSelector->clear();
-  ui.networkSelector->addItem("All");
+  ui.networkSelector->addItem(tr("All"));
   ui.networkSelector->setItemData(0, qVariantFromValue<NetworkId>(NetworkId()));
   const Network *net;
   foreach(NetworkId netId, Client::networkIds()) {
