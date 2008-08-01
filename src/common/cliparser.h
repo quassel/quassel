@@ -67,6 +67,7 @@ private:
   void addArgument(const QString &longName, const CliParserArg &arg);
   bool addLongArg(const CliParserArg::CliArgType type, const QString &name, const QString &value = QString());
   bool addShortArg(const CliParserArg::CliArgType type, const char shortName, const QString &value = QString());
+  QString escapedValue(const QString &value);
   QString lnameOfShortArg(const char arg);
   QStringList argsRaw;
   QHash<QString, CliParserArg> argsHash;

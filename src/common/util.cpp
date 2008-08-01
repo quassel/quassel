@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include "util.h"
+#include "global.h"
 
 #include <QCoreApplication>
 #include <QDebug>
@@ -142,12 +143,18 @@ QByteArray methodName(const QMetaMethod &method) {
 }
 
 QDir quasselDir() {
-  // kinda ugly, but I currently see no other way to do that
+  QString quasselDir;
+  if(Global::parser.isSet("datadir")) {
+    quasselDir = Global::parser.value("datadir");
+  } else {
 #ifdef Q_OS_WIN32
-  QString quasselDir = qgetenv("APPDATA") + "/quassel/";
+    quasselDir = qgetenv("APPDATA") + "/quassel/";
+#elif defined Q_WS_MAC
+    quasselDir = QDir::homePath() + "/Library/Application Support/Quassel/";
 #else
-  QString quasselDir = QDir::homePath() + "/.quassel/";
+    quasselDir = QDir::homePath() + "/.quassel/";
 #endif
+  }
 
   QDir qDir(quasselDir);
   if(!qDir.exists(quasselDir)) {

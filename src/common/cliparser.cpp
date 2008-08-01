@@ -19,6 +19,7 @@
  ***************************************************************************/
 #include "cliparser.h"
 
+#include <QDir>
 #include <QString>
 #include <QFileInfo>
 #include <QDebug>
@@ -38,7 +39,7 @@ void CliParser::addArgument(const QString &longName, const CliParserArg &arg) {
 bool CliParser::addLongArg(const CliParserArg::CliArgType type, const QString &name, const QString &value) {
   if(argsHash.contains(name)){
     if(type == CliParserArg::CliArgOption && argsHash.value(name).type == type) {
-      argsHash[name].value = value;
+      argsHash[name].value = escapedValue(value);
       return true;
     }
     else if (type == CliParserArg::CliArgSwitch && argsHash.value(name).type == type) {
@@ -54,7 +55,7 @@ bool CliParser::addShortArg(const CliParserArg::CliArgType type, const char shor
   QString longName = lnameOfShortArg(shortName);
   if(!longName.isNull()) {
     if(type == CliParserArg::CliArgOption && argsHash.value(longName).type == type) {
-      argsHash[longName].value = value;
+      argsHash[longName].value = escapedValue(value);
       return true;
     }
     else if (type == CliParserArg::CliArgSwitch) {
@@ -71,6 +72,14 @@ bool CliParser::addShortArg(const CliParserArg::CliArgType type, const char shor
   }
   qWarning().nospace() << "Warning: Unrecognized argument: '" << shortName << "'";
   return false;
+}
+
+QString CliParser::escapedValue(const QString &value) {
+  QString escapedValue = value;
+  if(escapedValue.startsWith("~"))
+    escapedValue.replace(0, 1, QDir::homePath());
+
+  return escapedValue;
 }
 
 bool CliParser::parse() {

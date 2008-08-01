@@ -87,6 +87,7 @@ int main(int argc, char **argv) {
   Global::parser.addSwitch("norestore", 'n', "Don't restore last core's state");
   Global::parser.addOption("logfile",'l',"Path to logfile");
   Global::parser.addOption("loglevel",'L',"Loglevel Debug|Info|Warning|Error","Info");
+  Global::parser.addOption("datadir", 0, "Specify the directory holding datafiles like the Sqlite DB and the SSL Cert");
 #endif // BUILD_QTUI
 #ifndef BUILD_CORE
 // put client-only arguments here
@@ -114,7 +115,6 @@ int main(int argc, char **argv) {
         qWarning("Warning: Couldn't open logfile '%s' - will log to stdout instead",qPrintable(logFile.fileName()));
       else logFile.close();
     }
-    else qWarning("No logfile set - will log to stdout instead");
   }
 
   qsrand(QTime(0,0,0).secsTo(QTime::currentTime()));
