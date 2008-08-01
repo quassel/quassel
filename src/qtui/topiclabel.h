@@ -43,9 +43,6 @@ protected:
   void mouseDoubleClickEvent(QMouseEvent *event);
   
 private:
-#ifndef SPUTDEV
-  UiStyle::StyledText styledContents;
-#endif
   QString _text;
   QSize _sizeHint;
 

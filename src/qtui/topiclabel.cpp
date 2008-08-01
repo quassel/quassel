@@ -53,7 +53,7 @@ void TopicLabel::paintEvent(QPaintEvent *event) {
   painter.setBackgroundMode(Qt::OpaqueMode);
 
   // FIXME re-enable topic painting
-#ifndef SPUTDEV
+  /*
   QRect drawRect = rect().adjusted(offset, 0, 0, 0);
   QRect brect;
   QString textPart;
@@ -67,7 +67,7 @@ void TopicLabel::paintEvent(QPaintEvent *event) {
     drawRect.setLeft(brect.right());
   }
   textWidth = brect.right();
-#endif
+  */
 }
 
 void TopicLabel::setText(const QString &text) {
@@ -78,7 +78,7 @@ void TopicLabel::setText(const QString &text) {
   offset = 0;
   update();
 
-#ifndef SPUTDEV
+  /* FIXME SPUTDEV reenable
   styledContents = QtUi::style()->styleString(Message::mircToInternal(text));
   int height = 1;
   foreach(QTextLayout::FormatRange fr, styledContents.formatList) {
@@ -90,7 +90,7 @@ void TopicLabel::setText(const QString &text) {
     height = QFontMetrics(qApp->font()).height();
   
   // setFixedHeight(height);
-#endif  
+  */
   // show topic in tooltip
 }
 
@@ -127,7 +127,7 @@ void TopicLabel::mouseReleaseEvent(QMouseEvent *event) {
 }
 
 void TopicLabel::mouseDoubleClickEvent(QMouseEvent *event) {
-#ifndef SPUTDEV
+  /* FIXME SPUTDEV reenable
   event->accept();
   if(textPartOffset.isEmpty())
     return;
@@ -171,6 +171,6 @@ void TopicLabel::mouseDoubleClickEvent(QMouseEvent *event) {
   if(regex.indexIn(word) != -1) {
     QDesktopServices::openUrl(QUrl(word));
   }
-#endif
+  */
   
 }
