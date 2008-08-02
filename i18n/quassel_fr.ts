@@ -110,6 +110,11 @@ p, li { white-space: pre-wrap; }
         <source>&amp;Thanks To</source>
         <translation>&amp;Remerciements</translation>
     </message>
+    <message>
+        <location filename="../src/qtui/aboutdlg.cpp" line="27"/>
+        <source>&lt;b&gt;Version %1&lt;/b&gt;&lt;br&gt;Protocol version: %2&lt;br&gt;Built: %3 %4</source>
+        <translation>&lt;b&gt;Version %1&lt;/b&gt;&lt;br&gt;Version du protocole: %2&lt;br&gt;Compilation: %3 %4</translation>
+    </message>
 </context>
 <context>
     <name>AccountManagementSettingsPage</name>
@@ -3721,6 +3726,11 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/qtui/ui/mainwin.ui" line="334"/>
         <source>NetworkModel</source>
         <translation>Modèle Réseau</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/mainwin.cpp" line="460"/>
+        <source>Core Lag: %1 msec</source>
+        <translation>Lag Noyau:  %1 ms</translation>
     </message>
 </context>
 <context>
