@@ -76,9 +76,11 @@ bool Buffer::layoutMsg() {
 void Buffer::setVisible(bool visible) {
   _isVisible = visible;
   setActivityLevel(NoActivity);
-  if(layoutedMsgs.isEmpty())
-    return;
-  setLastSeenMsg(layoutedMsgs.last()->msgId());
+  //if(layoutedMsgs.isEmpty())
+  //  return;
+  //setLastSeenMsg(layoutedMsgs.last()->msgId());
+  if(_lastRcvdMsg.msgId() > 0) setLastSeenMsg(_lastRcvdMsg.msgId());
+  //qDebug() << "setting last seen" << _lastRcvdMsg.msgId();
 }
 
 void Buffer::setLastSeenMsg(const MsgId &msgId) {
@@ -102,6 +104,10 @@ void Buffer::setActivityLevel(ActivityLevel level) {
 }
 
 void Buffer::updateActivityLevel(const Message &msg) {
+  // FIXME dirty hack to allow the lastSeen stuff to continue to work
+  //       will be made much nicer once Buffer dies, I hope...
+  if(msg.msgId() > _lastRcvdMsg.msgId()) _lastRcvdMsg = msg;
+
   if(isVisible())
     return;
 

@@ -73,6 +73,7 @@ private:
   BufferInfo _bufferInfo;
   bool _isVisible;
   MsgId _lastSeenMsg;
+  Message _lastRcvdMsg;
   ActivityLevel _activityLevel;
 
   QLinkedList<Message> layoutQueue;
