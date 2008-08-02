@@ -451,7 +451,7 @@ void MainWin::saveLayout() {
 }
 
 void MainWin::updateLagIndicator(int lag) {
-  coreLagLabel->setText(QString("Core Lag: %1 msec").arg(lag));
+  coreLagLabel->setText(QString(tr("Core Lag: %1 msec")).arg(lag));
 }
 
 

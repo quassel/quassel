@@ -24,7 +24,7 @@
 AboutDlg::AboutDlg(QWidget *parent) : QDialog(parent) {
   ui.setupUi(this);
 
-  ui.versionLabel->setText(QString("<b>Version %1</b><br>Protcol version: %2<br>Built: %3 %4").arg(Global::quasselVersion)
+  ui.versionLabel->setText(QString(tr("<b>Version %1</b><br>Protocol version: %2<br>Built: %3 %4")).arg(Global::quasselVersion)
 			   .arg(Global::protocolVersion)
 			   .arg(Global::quasselBuildDate).arg(Global::quasselBuildTime));
   ui.aboutTextBrowser->setHtml(about());
