@@ -65,7 +65,7 @@ void Buffer::prependMsg(const Message &msg) {
 bool Buffer::layoutMsg() {
   if(layoutQueue.isEmpty())
     return false;
-  
+
   AbstractUiMsg *m = Client::layoutMsg(layoutQueue.takeFirst());
   layoutedMsgs.prepend(m);
   emit msgPrepended(m);
@@ -114,7 +114,7 @@ void Buffer::updateActivityLevel(const Message &msg) {
   ActivityLevel level = activityLevel() | OtherActivity;
   if(msg.type() & (Message::Plain | Message::Notice | Message::Action))
     level |= NewMessage;
-  
+
   if(msg.flags() & Message::Highlight)
     level |= Highlight;
 

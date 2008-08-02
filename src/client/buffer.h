@@ -67,6 +67,7 @@ public slots:
   void setVisible(bool visible);
   void setLastSeenMsg(const MsgId &msgId);
   void setActivityLevel(ActivityLevel level);
+  void updateActivityLevel(const Message &msg);
 
 private:
   BufferInfo _bufferInfo;
@@ -77,7 +78,6 @@ private:
   QLinkedList<Message> layoutQueue;
   QList<AbstractUiMsg *> layoutedMsgs;
 
-  void updateActivityLevel(const Message &msg);
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(Buffer::ActivityLevel)

@@ -77,7 +77,7 @@ Client::Client(QObject *parent)
 {
   _monitorBuffer = new Buffer(BufferInfo(), this);
   _signalProxy->synchronize(_ircListHelper);
-  
+
   connect(_backlogManager, SIGNAL(backlog(BufferId, const QVariantList &)),
 	  this, SLOT(receiveBacklog(BufferId, const QVariantList &)));
 }
@@ -441,6 +441,7 @@ void Client::recvMessage(const Message &msg_) {
   Message msg = msg_;
   checkForHighlight(msg);
   _messageModel->insertMessage(msg);
+  buffer(msg.bufferInfo())->updateActivityLevel(msg);
 }
 
 void Client::recvStatusMsg(QString /*net*/, QString /*msg*/) {
@@ -453,6 +454,7 @@ void Client::receiveBacklog(BufferId bufferId, const QVariantList &msgs) {
     Message msg = v.value<Message>();
     checkForHighlight(msg);
     _messageModel->insertMessage(msg);
+    buffer(msg.bufferInfo())->updateActivityLevel(msg);
   }
   //qDebug() << "processed" << msgs.count() << "backlog lines in" << start.msecsTo(QTime::currentTime());
 }
