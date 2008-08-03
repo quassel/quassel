@@ -42,8 +42,16 @@ QString ChatMonitorFilter::idString() const {
 QVariant ChatMonitorFilter::data(const QModelIndex &index, int role) const {
   if(index.column() != ChatLineModel::SenderColumn) return MessageFilter::data(index, role);
   if(role == ChatLineModel::DisplayRole) {
+    /*
+    BufferId bufid = data(index, ChatLineModel::BufferIdRole);
+    if(bufid.isValid) {
+      const Network *net = Client::networkModel()->networkByIndex(Client::networkModel()->bufferIndex(bufid));
+      if(!net) {
+        qDebug() << "invalid net!";
+        return QVariant();
+      }
 
-
+  */
   }
   return MessageFilter::data(index, role);
 
