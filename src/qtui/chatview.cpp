@@ -67,7 +67,7 @@ void ChatView::resizeEvent(QResizeEvent *event) {
 
 void ChatView::sceneHeightChanged(qreal h) {
   Q_UNUSED(h)
-  bool scrollable = verticalScrollBar()->value() == verticalScrollBar()->maximum();
+  bool scrollable = qAbs(verticalScrollBar()->value() - verticalScrollBar()->maximum()) <= 2; // be a bit tolerant here, also FIXME (why we need this?)
   setSceneRect(scene()->sceneRect());
   if(scrollable) verticalScrollBar()->setValue(verticalScrollBar()->maximum());
 }

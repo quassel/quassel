@@ -42,6 +42,7 @@ class ChatScene : public QGraphicsScene {
 
     Buffer *buffer() const;
     inline QAbstractItemModel *model() const { return _model; }
+    inline QString idString() const { return _idString; }
 
   public slots:
     void setWidth(qreal);
