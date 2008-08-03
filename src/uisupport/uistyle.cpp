@@ -242,7 +242,7 @@ UiStyle::StyledString UiStyle::styleString(const QString &s_) {
   return result;
 }
 
-QString UiStyle::mircToInternal(const QString &mirc_) {
+QString UiStyle::mircToInternal(const QString &mirc_) const {
   QString mirc = mirc_;
   mirc.replace('%', "%%");      // escape % just to be sure
   mirc.replace('\x02', "%B");

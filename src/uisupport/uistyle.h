@@ -130,6 +130,7 @@ class UiStyle {
 
     StyledString styleString(const QString &);
     StyledMessage styleMessage(const Message &);
+    QString mircToInternal(const QString &) const;
 
     void setFormat(FormatType, QTextCharFormat, Settings::Mode mode/* = Settings::Custom*/);
     QTextCharFormat format(FormatType, Settings::Mode mode = Settings::Custom) const;
@@ -147,7 +148,6 @@ class UiStyle {
 
 
   private:
-    QString mircToInternal(const QString &);
 
     QFont _defaultFont;
     QTextCharFormat _defaultPlainFormat;

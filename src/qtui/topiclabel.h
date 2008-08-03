@@ -41,7 +41,7 @@ protected:
   void mousePressEvent(QMouseEvent *event);
   void mouseReleaseEvent(QMouseEvent *event);
   void mouseDoubleClickEvent(QMouseEvent *event);
-  
+
 private:
   QString _text;
   QSize _sizeHint;
@@ -51,6 +51,8 @@ private:
   int textWidth;
   bool dragMode;
 
+  QString plainText;
+  QList<QTextLayout::FormatRange> formatList;
   QList<int> textPartOffset; // needed for location url positions
 };
 

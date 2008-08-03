@@ -48,17 +48,17 @@ void TopicLabel::paintEvent(QPaintEvent *event) {
   Q_UNUSED(event);
 
   textPartOffset.clear();
-  
+
   QPainter painter(this);
   painter.setBackgroundMode(Qt::OpaqueMode);
 
-  // FIXME re-enable topic painting
-  /*
+  // FIXME use QTextLayout instead
+
   QRect drawRect = rect().adjusted(offset, 0, 0, 0);
   QRect brect;
   QString textPart;
-  foreach(QTextLayout::FormatRange fr, styledContents.formatList) {
-    textPart = styledContents.plainText.mid(fr.start, fr.length);
+  foreach(QTextLayout::FormatRange fr, formatList) {
+    textPart = plainText.mid(fr.start, fr.length);
     textPartOffset << drawRect.left();
     painter.setFont(fr.format.font());
     painter.setPen(QPen(fr.format.foreground(), 0));
@@ -67,7 +67,6 @@ void TopicLabel::paintEvent(QPaintEvent *event) {
     drawRect.setLeft(brect.right());
   }
   textWidth = brect.right();
-  */
 }
 
 void TopicLabel::setText(const QString &text) {
@@ -78,19 +77,19 @@ void TopicLabel::setText(const QString &text) {
   offset = 0;
   update();
 
-  /* FIXME SPUTDEV reenable
-  styledContents = QtUi::style()->styleString(Message::mircToInternal(text));
+  UiStyle::StyledString styledContents = QtUi::style()->styleString(QtUi::style()->mircToInternal(text));
+  plainText = styledContents.plainText;
+  formatList = QtUi::style()->toTextLayoutList(styledContents.formatList, plainText.length());
   int height = 1;
-  foreach(QTextLayout::FormatRange fr, styledContents.formatList) {
+  foreach(QTextLayout::FormatRange fr, formatList) {
     height = qMax(height, QFontMetrics(fr.format.font()).height());
   }
 
   // ensure the label is editable (height != 1) if there is no text to show
   if(text.isEmpty())
     height = QFontMetrics(qApp->font()).height();
-  
+
   // setFixedHeight(height);
-  */
   // show topic in tooltip
 }
 
@@ -127,7 +126,6 @@ void TopicLabel::mouseReleaseEvent(QMouseEvent *event) {
 }
 
 void TopicLabel::mouseDoubleClickEvent(QMouseEvent *event) {
-  /* FIXME SPUTDEV reenable
   event->accept();
   if(textPartOffset.isEmpty())
     return;
@@ -144,11 +142,11 @@ void TopicLabel::mouseDoubleClickEvent(QMouseEvent *event) {
   int textOffset = textPartOffset[textPart];
 
   // we've Identified the needed text part \o/
-  QString text = styledContents.plainText.mid(styledContents.formatList[textPart].start, styledContents.formatList[textPart].length);
+  QString text = plainText.mid(formatList[textPart].start, formatList[textPart].length);
 
   // now we have to find the the left and right word delimiters of the clicked word
-  QFontMetrics fontMetric(styledContents.formatList[textPart].format.font());
-  
+  QFontMetrics fontMetric(formatList[textPart].format.font());
+
   int start = 0;
   int spacePos = text.indexOf(" ");
   x -= offset; // offset needs to go here as it's already in the textOffset
@@ -171,6 +169,4 @@ void TopicLabel::mouseDoubleClickEvent(QMouseEvent *event) {
   if(regex.indexIn(word) != -1) {
     QDesktopServices::openUrl(QUrl(word));
   }
-  */
-  
 }
