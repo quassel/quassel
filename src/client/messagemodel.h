@@ -66,6 +66,8 @@ class MessageModel : public QAbstractItemModel {
     void insertMessage(const Message &);
     void insertMessages(const QList<Message> &);
 
+    void clear();
+
   protected:
     virtual MessageModelItem *createMessageModelItem(const Message &) = 0;
 

@@ -357,6 +357,7 @@ void Client::disconnectFromCore() {
     _bufferViewManager = 0;
   }
 
+  _messageModel->clear();
   _networkModel->clear();
 
   QHash<BufferId, Buffer *>::iterator bufferIter =  _buffers.begin();

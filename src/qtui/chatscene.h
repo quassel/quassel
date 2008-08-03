@@ -62,6 +62,7 @@ class ChatScene : public QGraphicsScene {
 
   protected slots:
     void rowsInserted(const QModelIndex &, int, int);
+    void modelReset();
 
   private slots:
     void rectChanged(const QRectF &);

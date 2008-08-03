@@ -45,6 +45,7 @@ ChatScene::ChatScene(QAbstractItemModel *model, const QString &idString, QObject
   connect(this, SIGNAL(sceneRectChanged(const QRectF &)), this, SLOT(rectChanged(const QRectF &)));
 
   connect(model, SIGNAL(rowsInserted(const QModelIndex &, int, int)), this, SLOT(rowsInserted(const QModelIndex &, int, int)));
+  connect(model, SIGNAL(modelAboutToBeReset()), this, SLOT(modelReset()));
   for(int i = 0; i < model->rowCount(); i++) {
     ChatLine *line = new ChatLine(model->index(i, 0));
     _lines.append(line);
@@ -76,7 +77,6 @@ ChatScene::ChatScene(QAbstractItemModel *model, const QString &idString, QObject
 
 ChatScene::~ChatScene() {
 
-
 }
 
 void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
@@ -104,6 +104,15 @@ void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
     setSceneRect(QRectF(0, 0, _width, _height));
     emit heightChanged(_height);
   }
+}
+
+void ChatScene::modelReset() {
+  foreach(ChatLine *line, _lines) {
+    removeItem(line);
+    delete line;
+  }
+  _lines.clear();
+  setSceneRect(QRectF(0, 0, _width, 0));
 }
 
 void ChatScene::setWidth(qreal w) {
