@@ -583,6 +583,9 @@ void MainWin::messagesInserted(const QModelIndex &parent, int start, int end) {
   if(QApplication::activeWindow() != 0)
     return;
 
+  // FIXME
+  return;
+
   for(int i = start; i <= end; i++) {
     QModelIndex idx = Client::messageModel()->index(i, ChatLineModel::ContentsColumn);
     if(!idx.isValid()) {
