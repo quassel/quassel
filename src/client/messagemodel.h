@@ -28,7 +28,7 @@
 #include "types.h"
 
 class MessageModelItem;
-class MsgId;
+struct MsgId;
 
 class MessageModel : public QAbstractItemModel {
   Q_OBJECT
