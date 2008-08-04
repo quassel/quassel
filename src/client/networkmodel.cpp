@@ -958,19 +958,19 @@ const Network *NetworkModel::networkByIndex(const QModelIndex &index) const {
 
 
 void NetworkModel::checkForRemovedBuffers(const QModelIndex &parent, int start, int end) {
-  if(parent.data(ItemTypeRole) == NetworkItemType)
+  if(parent.data(ItemTypeRole) != NetworkItemType)
     return;
   
-  for(int row = start; row < end; row++) {
+  for(int row = start; row <= end; row++) {
     _bufferItemCache.remove(parent.child(row, 0).data(BufferIdRole).value<BufferId>());
   }
 }
 
 void NetworkModel::checkForNewBuffers(const QModelIndex &parent, int start, int end) {
-  if(parent.data(ItemTypeRole) == NetworkItemType)
+  if(parent.data(ItemTypeRole) != NetworkItemType)
     return;
-  
-  for(int row = start; row < end; row++) {
+
+  for(int row = start; row <= end; row++) {
     QModelIndex child = parent.child(row, 0);
     _bufferItemCache[child.data(BufferIdRole).value<BufferId>()] = static_cast<BufferItem *>(child.internalPointer());
   }
