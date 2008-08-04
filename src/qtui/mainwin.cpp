@@ -594,12 +594,7 @@ void MainWin::messagesInserted(const QModelIndex &parent, int start, int end) {
     BufferInfo::Type bufType = Client::networkModel()->bufferType(bufId);
 
     if(flags & Message::Highlight || bufType == BufferInfo::QueryBuffer) {
-      QString title = Client::networkModel()->networkName(bufId); qDebug() << bufId << "title" << title;
-      if(bufType == BufferInfo::QueryBuffer) {
-        QString sender = Client::messageModel()->index(i, ChatLineModel::SenderColumn).data(ChatLineModel::DisplayRole).toString();
-        sender = sender.mid(1, sender.length() - 2); // remove < >
-        title += " - " + sender;
-      }
+      QString title = Client::networkModel()->networkName(bufId) + " - " + Client::networkModel()->bufferName(bufId);
 
       // FIXME Don't instantiate this for every highlight...
       UiSettings uiSettings;
@@ -608,12 +603,11 @@ void MainWin::messagesInserted(const QModelIndex &parent, int start, int end) {
       bool displayDesktop = uiSettings.value("NotificationDesktop", QVariant(true)).toBool();
       if(displayBubble || displayDesktop) {
         if(uiSettings.value("DisplayPopupMessages", QVariant(true)).toBool()) {
-          // FIXME don't invoke style engine for this!
           QString text = idx.data(ChatLineModel::DisplayRole).toString();
           if(displayBubble) displayTrayIconMessage(title, text);
-  #  ifdef HAVE_DBUS
+#   ifdef HAVE_DBUS
           if(displayDesktop) sendDesktopNotification(title, text);
-  #  endif
+#   endif
         }
         if(uiSettings.value("AnimateTrayIcon", QVariant(true)).toBool()) {
           QApplication::alert(this);
