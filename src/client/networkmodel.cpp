@@ -705,6 +705,10 @@ QString IrcUserItem::toolTip(int column) const {
 NetworkModel::NetworkModel(QObject *parent)
   : TreeModel(NetworkModel::defaultHeader(), parent)
 {
+  connect(this, SIGNAL(rowsInserted(const QModelIndex &, int, int)),
+	  this, SLOT(checkForNewBuffers(const QModelIndex &, int, int)));
+  connect(this, SIGNAL(rowsAboutToBeRemoved(const QModelIndex &, int, int)),
+	  this, SLOT(checkForRemovedBuffers(const QModelIndex &, int, int)));
 }
 
 QList<QVariant >NetworkModel::defaultHeader() {
@@ -951,3 +955,59 @@ const Network *NetworkModel::networkByIndex(const QModelIndex &index) const {
   return Client::network(networkId);
 }
 
+
+
+void NetworkModel::checkForRemovedBuffers(const QModelIndex &parent, int start, int end) {
+  if(parent.data(ItemTypeRole) == NetworkItemType)
+    return;
+  
+  for(int row = start; row < end; row++) {
+    _bufferItemCache.remove(parent.child(row, 0).data(BufferIdRole).value<BufferId>());
+  }
+}
+
+void NetworkModel::checkForNewBuffers(const QModelIndex &parent, int start, int end) {
+  if(parent.data(ItemTypeRole) == NetworkItemType)
+    return;
+  
+  for(int row = start; row < end; row++) {
+    QModelIndex child = parent.child(row, 0);
+    _bufferItemCache[child.data(BufferIdRole).value<BufferId>()] = static_cast<BufferItem *>(child.internalPointer());
+  }
+}
+
+QString NetworkModel::bufferName(BufferId bufferId) {
+  if(!_bufferItemCache.contains(bufferId))
+    return QString();
+
+  return _bufferItemCache[bufferId]->bufferName();
+}
+
+NetworkId NetworkModel::networkId(BufferId bufferId) {
+  if(!_bufferItemCache.contains(bufferId))
+    return NetworkId();
+
+  NetworkItem *netItem = qobject_cast<NetworkItem *>(_bufferItemCache[bufferId]->parent());
+  if(netItem)
+    return netItem->networkId();
+  else
+    return NetworkId();
+}
+
+QString NetworkModel::networkName(BufferId bufferId) {
+  if(!_bufferItemCache.contains(bufferId))
+    return QString();
+
+  NetworkItem *netItem = qobject_cast<NetworkItem *>(_bufferItemCache[bufferId]->parent());
+  if(netItem)
+    return netItem->networkName();
+  else
+    return QString();
+}
+
+BufferInfo::Type NetworkModel::bufferType(BufferId bufferId) {
+  if(!_bufferItemCache.contains(bufferId))
+    return BufferInfo::InvalidBuffer;
+
+  return _bufferItemCache[bufferId]->bufferType();
+}

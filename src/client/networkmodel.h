@@ -295,12 +295,21 @@ public:
 
   Buffer::ActivityLevel bufferActivity(const BufferInfo &buffer) const;
 
+  QString bufferName(BufferId bufferId);
+  NetworkId networkId(BufferId bufferId);
+  QString networkName(BufferId bufferId);
+  BufferInfo::Type bufferType(BufferId bufferId);
+
 public slots:
   void bufferUpdated(BufferInfo bufferInfo);
   void removeBuffer(BufferId bufferId);
   void setBufferActivity(const BufferInfo &buffer, Buffer::ActivityLevel activity);
   void networkRemoved(const NetworkId &networkId);
-  
+
+private slots:
+  void checkForRemovedBuffers(const QModelIndex &parent, int start, int end);
+  void checkForNewBuffers(const QModelIndex &parent, int start, int end);
+
 private:
   int networkRow(NetworkId networkId);
   NetworkItem *findNetworkItem(NetworkId networkId);
@@ -309,6 +318,7 @@ private:
   BufferItem *findBufferItem(BufferId bufferId);
   BufferItem *bufferItem(const BufferInfo &bufferInfo);
 
+  QHash<BufferId, BufferItem *> _bufferItemCache;
 };
 Q_DECLARE_OPERATORS_FOR_FLAGS(NetworkModel::itemTypes);
 
