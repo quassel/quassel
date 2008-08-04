@@ -57,13 +57,13 @@ bool AbstractTreeItem::newChilds(const QList<AbstractTreeItem *> &items) {
 }
 
 bool AbstractTreeItem::removeChild(int row) {
-  if(childCount() <= row)
+  if(row < 0 || childCount() <= row)
     return false;
 
   child(row)->removeAllChilds();
   emit beginRemoveChilds(row, row);
   AbstractTreeItem *treeitem = _childItems.takeAt(row);
-  treeitem->deleteLater();
+  delete treeitem;
   emit endRemoveChilds();
 
   checkForDeletion();
@@ -94,7 +94,7 @@ void AbstractTreeItem::removeAllChilds() {
   while(childIter != _childItems.end()) {
     child = *childIter;
     childIter = _childItems.erase(childIter);
-    child->deleteLater();
+    delete child;
   }
   emit endRemoveChilds();
 

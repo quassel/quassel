@@ -123,7 +123,7 @@ void NetworkItem::attachIrcChannel(IrcChannel *ircChannel) {
 
     if(channelItem->bufferName().toLower() == ircChannel->name().toLower()) {
       channelItem->attachIrcChannel(ircChannel);
-      break;
+      return;
     }
   }
 }
