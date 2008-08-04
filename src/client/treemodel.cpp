@@ -117,13 +117,15 @@ bool AbstractTreeItem::reParent(AbstractTreeItem *newParent) {
   parent()->_childItems.removeAt(oldRow);
   emit parent()->endRemoveChilds();
 
-  parent()->checkForDeletion();
-
+  AbstractTreeItem *oldParent = parent();
   setParent(newParent);
 
   bool success = newParent->newChild(this);
   if(!success)
     qWarning() << "AbstractTreeItem::reParent(): failed to attach to new parent after removing from old parent! this:" << this << "new parent:" << newParent;
+
+  if(oldParent)
+    oldParent->checkForDeletion();
 
   return success;
 }
