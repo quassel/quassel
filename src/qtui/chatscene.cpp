@@ -252,9 +252,15 @@ void ChatScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
 //!\brief Convert current selection to human-readable string.
 QString ChatScene::selectionToString() const {
   //TODO Make selection format configurable!
-  if(!_isSelecting) return "";
+  if(!_isSelecting) return QString();
+  int start = qMin(_selectionStart, _selectionEnd);
+  int end = qMax(_selectionStart, _selectionEnd);
+  if(start < 0 || end >= _lines.count()) {
+    qDebug() << "Invalid selection range:" << start << end;
+    return QString();
+  }
   QString result;
-  for(int l = _selectionStart; l <= _selectionEnd; l++) {
+  for(int l = start; l <= end; l++) {
     if(_selectionMinCol == ChatLineModel::TimestampColumn)
       result += _lines[l]->item(ChatLineModel::TimestampColumn)->data(MessageModel::DisplayRole).toString() + " ";
     if(_selectionMinCol <= ChatLineModel::SenderColumn)
