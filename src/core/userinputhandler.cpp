@@ -156,9 +156,15 @@ void UserInputHandler::handleJoin(const BufferInfo &bufferInfo, const QString &m
   QStringList params = msg.trimmed().split(" ");
   QStringList chans = params[0].split(",");
   QStringList keys;
+  int i;
+  for(i = 0; i < chans.count(); i++) {
+    if (chans.at(i)[0].isLetterOrNumber())
+      chans[i].prepend(QChar('#'));
+  }
+  params[0] = chans.join(",");
   if(params.count() > 1) keys = params[1].split(",");
   emit putCmd("JOIN", serverEncode(params)); // FIXME handle messages longer than 512 bytes!
-  int i = 0;
+  i = 0;
   for(; i < keys.count(); i++) {
     if(i >= chans.count()) break;
     networkConnection()->addChannelKey(chans[i], keys[i]);
