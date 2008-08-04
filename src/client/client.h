@@ -48,8 +48,6 @@ class IrcChannel;
 class SignalProxy;
 struct NetworkInfo;
 
-class QTimer;
-
 class Client : public QObject {
   Q_OBJECT
 
@@ -100,10 +98,8 @@ public:
   static inline ClientBacklogManager *backlogManager() { return instance()->_backlogManager; }
   static inline ClientIrcListHelper *ircListHelper() { return instance()->_ircListHelper; }
   static inline BufferViewManager *bufferViewManager() { return instance()->_bufferViewManager; }
-  
-  static AccountId currentCoreAccount();
 
-  static AbstractUiMsg *layoutMsg(const Message &);
+  static AccountId currentCoreAccount();
 
   static bool isConnected();
   static bool isSynced();
@@ -123,7 +119,6 @@ signals:
   void backlogReceived(Buffer *, QList<Message>);
   void requestBacklog(BufferInfo, QVariant, QVariant);
   void requestNetworkStates();
-  void messageReceived(const Message &msg);
 
   void showConfigWizard(const QVariantMap &coredata);
 
@@ -181,8 +176,6 @@ private slots:
   void updateBufferInfo(BufferInfo);
   void updateLastSeenMsg(BufferId id, const MsgId &msgId);
 
-  void layoutMsg();
-
   void bufferDestroyed();
   void networkDestroyed();
   void coreIdentityCreated(const Identity &);
@@ -231,9 +224,6 @@ private:
   QHash<IdentityId, Identity *> _identities;
 
   Buffer *_monitorBuffer;
-
-  QTimer *layoutTimer;
-  QLinkedList<Buffer *> layoutQueue;
 
   static AccountId _currentCoreAccount;
 

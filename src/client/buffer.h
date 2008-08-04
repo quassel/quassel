@@ -32,7 +32,6 @@ struct BufferState;
 #include "message.h"
 #include "bufferinfo.h"
 
-/// Encapsulates the contents of a single channel, query or server status context.
 /**
  */
 class Buffer : public QObject {
@@ -50,20 +49,11 @@ public:
   Buffer(BufferInfo, QObject *parent = 0);
 
   BufferInfo bufferInfo() const;
-  const QList<AbstractUiMsg *> &contents() const;
   inline bool isVisible() const { return _isVisible; }
   inline MsgId lastSeenMsg() const { return _lastSeenMsg; }
   inline ActivityLevel activityLevel() const { return _activityLevel; }
 
-signals:
-  void msgAppended(AbstractUiMsg *);
-  void msgPrepended(AbstractUiMsg *);
-  void layoutQueueEmpty();
-
 public slots:
-  void appendMsg(const Message &);
-  void prependMsg(const Message &);
-  bool layoutMsg();
   void setVisible(bool visible);
   void setLastSeenMsg(const MsgId &msgId);
   void setActivityLevel(ActivityLevel level);
@@ -75,9 +65,6 @@ private:
   MsgId _lastSeenMsg;
   Message _lastRcvdMsg;
   ActivityLevel _activityLevel;
-
-  QLinkedList<Message> layoutQueue;
-  QList<AbstractUiMsg *> layoutedMsgs;
 
 };
 

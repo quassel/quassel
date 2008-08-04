@@ -126,11 +126,6 @@ void Client::init() {
   connect(this, SIGNAL(connected()), mainUi, SLOT(connectedToCore()));
   connect(this, SIGNAL(disconnected()), mainUi, SLOT(disconnectedFromCore()));
 
-  layoutTimer = new QTimer(this);
-  layoutTimer->setInterval(0);
-  layoutTimer->setSingleShot(false);
-  connect(layoutTimer, SIGNAL(timeout()), this, SLOT(layoutMsg()));
-
 }
 
 /*** public static methods ***/
@@ -390,8 +385,6 @@ void Client::disconnectFromCore() {
   }
   Q_ASSERT(_identities.isEmpty());
 
-  layoutQueue.clear();
-  layoutTimer->stop();
 }
 
 void Client::setCoreConfiguration(const QVariantMap &settings) {
@@ -458,26 +451,6 @@ void Client::receiveBacklog(BufferId bufferId, const QVariantList &msgs) {
     buffer(msg.bufferInfo())->updateActivityLevel(msg);
   }
   //qDebug() << "processed" << msgs.count() << "backlog lines in" << start.msecsTo(QTime::currentTime());
-}
-
-void Client::layoutMsg() {
-  if(layoutQueue.isEmpty()) {
-    layoutTimer->stop();
-    return;
-  }
-
-  Buffer *buffer = layoutQueue.takeFirst();
-  if(buffer->layoutMsg()) {
-    layoutQueue.append(buffer);  // Buffer has more messages in its queue --> Round Robin
-    return;
-  }
-
-  if(layoutQueue.isEmpty())
-    layoutTimer->stop();
-}
-
-AbstractUiMsg *Client::layoutMsg(const Message &msg) {
-  return instance()->mainUi->layoutMsg(msg);
 }
 
 // TODO optimize checkForHighlight
@@ -549,7 +522,6 @@ void Client::bufferRemoved(BufferId bufferId) {
   Buffer *buff = 0;
   if(_buffers.contains(bufferId)) {
     buff = _buffers.take(bufferId);
-    layoutQueue.removeAll(buff);
     disconnect(buff, 0, this, 0);
   }
 

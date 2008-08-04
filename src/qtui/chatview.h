@@ -45,16 +45,6 @@ class ChatView : public QGraphicsView, public AbstractChatView {
 
     void clear();
 
-    void prependMsg(AbstractUiMsg *);
-    void appendMsg(AbstractUiMsg *);
-
-    void prependChatLine(ChatLine *);
-    void appendChatLine(ChatLine *);
-    void prependChatLines(QList<ChatLine *>);
-    void appendChatLines(QList<ChatLine *>);
-
-    void setContents(const QList<AbstractUiMsg *> &);
-
   protected:
     virtual void resizeEvent(QResizeEvent *event);
 

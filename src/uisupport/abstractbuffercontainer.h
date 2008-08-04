@@ -63,8 +63,6 @@ class AbstractBufferContainer : public AbstractItemView {
     virtual void showChatView(BufferId) = 0;
 
   private slots:
-    void appendMsg(AbstractUiMsg *);
-    void prependMsg(AbstractUiMsg *);
     void removeBuffer(BufferId bufferId);
     void setCurrentBuffer(BufferId bufferId);
 
@@ -77,10 +75,6 @@ class AbstractChatView {
 
   public:
     virtual ~AbstractChatView() {};
-    virtual void appendMsg(AbstractUiMsg *msg) = 0;
-    virtual void prependMsg(AbstractUiMsg *msg) = 0;
-    virtual void setContents(const QList<AbstractUiMsg *> &contents) = 0;
-    //virtual BufferId bufferId() const = 0;
 
 };
 

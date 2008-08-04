@@ -42,55 +42,17 @@ BufferInfo Buffer::bufferInfo() const {
   return _bufferInfo;
 }
 
-const QList<AbstractUiMsg *> &Buffer::contents() const {
-  return layoutedMsgs;
-}
-
-void Buffer::appendMsg(const Message &msg) {
-  updateActivityLevel(msg);
-  AbstractUiMsg *m = Client::layoutMsg(msg);
-  layoutedMsgs.append(m);
-  emit msgAppended(m);
-}
-
-void Buffer::prependMsg(const Message &msg) {
-  // check for duplicate first
-  if(!layoutedMsgs.isEmpty()  && msg.msgId() >= layoutedMsgs.first()->msgId()) {
-    return;
-  }
-  updateActivityLevel(msg);
-  layoutQueue.append(msg);
-}
-
-bool Buffer::layoutMsg() {
-  if(layoutQueue.isEmpty())
-    return false;
-
-  AbstractUiMsg *m = Client::layoutMsg(layoutQueue.takeFirst());
-  layoutedMsgs.prepend(m);
-  emit msgPrepended(m);
-
-  return !layoutQueue.isEmpty();
-}
-
 void Buffer::setVisible(bool visible) {
   _isVisible = visible;
   setActivityLevel(NoActivity);
-  //if(layoutedMsgs.isEmpty())
-  //  return;
-  //setLastSeenMsg(layoutedMsgs.last()->msgId());
   if(_lastRcvdMsg.msgId() > 0) setLastSeenMsg(_lastRcvdMsg.msgId());
-  //qDebug() << "setting last seen" << _lastRcvdMsg.msgId();
 }
 
 void Buffer::setLastSeenMsg(const MsgId &msgId) {
-  // qDebug() << "want to set lastSeen:" << bufferInfo() << seen << lastSeen();
   const MsgId oldLastSeen = lastSeenMsg();
   if(!oldLastSeen.isValid() || (msgId.isValid() && msgId > oldLastSeen)) {
-    //qDebug() << "setting:" << bufferInfo().bufferName() << seen;
     _lastSeenMsg = msgId;
     Client::setBufferLastSeenMsg(bufferInfo().bufferId(), msgId);
-    //qDebug() << "setting lastSeen:" << bufferInfo() << lastSeen();
     setActivityLevel(NoActivity);
   }
 }
@@ -99,7 +61,6 @@ void Buffer::setActivityLevel(ActivityLevel level) {
   _activityLevel = level;
   if(bufferInfo().bufferId() > 0) {
     Client::networkModel()->setBufferActivity(bufferInfo(), level);
-    //qDebug() << "setting level:" << bufferInfo() << lastSeen() << level;
   }
 }
 

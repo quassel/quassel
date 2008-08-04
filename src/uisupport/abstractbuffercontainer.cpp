@@ -84,7 +84,7 @@ void AbstractBufferContainer::setCurrentBuffer(BufferId bufferId) {
 
   Buffer *buf;
   if(!bufferId.isValid() || !(buf = Client::buffer(bufferId))) {
-    if(bufferId.isValid()) 
+    if(bufferId.isValid())
       qWarning() << "AbstractBufferContainer::setBuffer(BufferId): Can't show unknown Buffer:" << bufferId;
     _currentBuffer = 0;
     showChatView(0);
@@ -94,41 +94,10 @@ void AbstractBufferContainer::setCurrentBuffer(BufferId bufferId) {
     chatView = _chatViews[bufferId];
   } else {
     chatView = createChatView(bufferId);
-    chatView->setContents(buf->contents());
-    connect(buf, SIGNAL(msgAppended(AbstractUiMsg *)), this, SLOT(appendMsg(AbstractUiMsg *)));
-    connect(buf, SIGNAL(msgPrepended(AbstractUiMsg *)), this, SLOT(prependMsg(AbstractUiMsg *)));
     _chatViews[bufferId] = chatView;
   }
   _currentBuffer = bufferId;
   showChatView(bufferId);
   buf->setVisible(true);
   setFocus();
-}
-
-void AbstractBufferContainer::appendMsg(AbstractUiMsg *msg) {
-  Buffer *buf = qobject_cast<Buffer *>(sender());
-  if(!buf) {
-    qWarning() << "AbstractBufferContainer::appendMsg(): Invalid slot caller!";
-    return;
-  }
-  BufferId id = buf->bufferInfo().bufferId();
-  if(!_chatViews.contains(id)) {
-    qWarning() << "AbstractBufferContainer::appendMsg(): Received message for unknown buffer!";
-    return;
-  }
-  _chatViews[id]->appendMsg(msg);
-}
-
-void AbstractBufferContainer::prependMsg(AbstractUiMsg *msg) {
-  Buffer *buf = qobject_cast<Buffer *>(sender());
-  if(!buf) {
-    qWarning() << "AbstractBufferContainer:prependMsg(): Invalid slot caller!";
-    return;
-  }
-  BufferId id = buf->bufferInfo().bufferId();
-  if(!_chatViews.contains(id)) {
-    qWarning() << "AbstractBufferContainer::prependMsg(): Received message for unknown buffer!";
-    return;
-  }
-  _chatViews[id]->prependMsg(msg);
 }
