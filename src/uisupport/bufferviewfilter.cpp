@@ -20,7 +20,9 @@
 
 #include "bufferviewfilter.h"
 
-#include <QCoreApplication>
+#include <QApplication>
+#include <QPalette>
+#include <QBrush>
 
 #include "buffermodel.h"
 #include "client.h"
@@ -281,10 +283,21 @@ bool BufferViewFilter::networkLessThan(const QModelIndex &source_left, const QMo
 }
 
 QVariant BufferViewFilter::data(const QModelIndex &index, int role) const {
-  if(role == Qt::ForegroundRole)
+  switch(role) {
+  case Qt::ForegroundRole:
     return foreground(index);
-  else
+  case Qt::BackgroundRole:
+    if(index.data(NetworkModel::UserAwayRole).toBool()) {
+      QLinearGradient gradient(0, 0, 0, 18);
+      gradient.setColorAt(0.4, QApplication::palette().color(QPalette::Normal, QPalette::Base));
+      gradient.setColorAt(0.5, QApplication::palette().color(QPalette::Disabled, QPalette::Base));
+      gradient.setColorAt(0.6, QApplication::palette().color(QPalette::Normal, QPalette::Base));
+      return QBrush(gradient);
+    }
+    // else: fallthrough to default
+  default:
     return QSortFilterProxyModel::data(index, role);
+  }
 }
 
 QVariant BufferViewFilter::foreground(const QModelIndex &index) const {

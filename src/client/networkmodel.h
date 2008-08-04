@@ -148,7 +148,8 @@ class QueryBufferItem : public BufferItem {
 public:
   QueryBufferItem(const BufferInfo &bufferInfo, NetworkItem *parent);
 
-  virtual bool isActive() const;
+  virtual QVariant data(int column, int role) const;
+  virtual inline bool isActive() const { return (bool)_ircUser; }
   virtual QString toolTip(int column) const;
 
 public slots:
@@ -261,7 +262,8 @@ public:
     BufferIdRole,
     NetworkIdRole,
     BufferInfoRole,
-    ItemTypeRole
+    ItemTypeRole,
+    UserAwayRole
   };
 
   enum itemType {
