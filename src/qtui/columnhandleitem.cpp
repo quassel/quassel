@@ -29,8 +29,8 @@ ColumnHandleItem::ColumnHandleItem(qreal w, QGraphicsItem *parent)
   : QGraphicsItem(parent),
     _width(w),
     _hover(0),
-    _timeLine(150),
     _moving(false),
+    _timeLine(150),
     _minXPos(0),
     _maxXPos(0)
 {

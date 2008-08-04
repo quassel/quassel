@@ -33,11 +33,11 @@ set(MOC_HDRS
     inputline.h
     nickview.h
     settingspage.h
-    tabcompleter.h
-    uistyle.h)
+    tabcompleter.h)
 
 set(HEADERS
     uisettings.h
+    uistyle.h
     uistylesettings.h)
 
 qt4_wrap_cpp(MOC ${MOC_HDRS})
