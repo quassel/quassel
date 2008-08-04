@@ -20,7 +20,10 @@
 
 #include "chatmonitorfilter.h"
 
+#include "buffer.h"
+#include "client.h"
 #include "chatlinemodel.h"
+#include "networkmodel.h"
 
 ChatMonitorFilter::ChatMonitorFilter(MessageModel *model, QObject *parent)
 : MessageFilter(model, QList<BufferId>(), parent)
@@ -30,6 +33,11 @@ ChatMonitorFilter::ChatMonitorFilter(MessageModel *model, QObject *parent)
 }
 
 bool ChatMonitorFilter::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const {
+  Q_UNUSED(sourceParent)
+  Message::Type type = (Message::Type)sourceModel()->data(sourceModel()->index(sourceRow, 0), MessageModel::TypeRole).toInt();
+  Message::Flags flags = (Message::Flags)sourceModel()->data(sourceModel()->index(sourceRow, 0), MessageModel::FlagsRole).toInt();
+  if(!((type & (Message::Plain | Message::Notice | Message::Action)) || flags & Message::Self))
+    return false;
   QDateTime msgTime = sourceModel()->data(sourceModel()->index(sourceRow, 0), MessageModel::TimestampRole).toDateTime();
   return msgTime > _initTime;
 }
@@ -42,16 +50,24 @@ QString ChatMonitorFilter::idString() const {
 QVariant ChatMonitorFilter::data(const QModelIndex &index, int role) const {
   if(index.column() != ChatLineModel::SenderColumn) return MessageFilter::data(index, role);
   if(role == ChatLineModel::DisplayRole) {
-    /*
-    BufferId bufid = data(index, ChatLineModel::BufferIdRole);
-    if(bufid.isValid) {
+    BufferId bufid = data(index, ChatLineModel::BufferIdRole).value<BufferId>();
+    if(bufid.isValid()) {
+      Buffer *buf = Client::buffer(bufid);
+      if(!buf) {
+        qDebug() << "invalid buffer!";
+        return QVariant();
+      }
       const Network *net = Client::networkModel()->networkByIndex(Client::networkModel()->bufferIndex(bufid));
       if(!net) {
         qDebug() << "invalid net!";
         return QVariant();
       }
+      QString result = QString("<%1:%2:%3").arg(net->networkName())
+                                            .arg(buf->bufferInfo().bufferName())
+                                            .arg(MessageFilter::data(index, role).toString().mid(1));
+      return result;
+    }
 
-  */
   }
   return MessageFilter::data(index, role);
 
