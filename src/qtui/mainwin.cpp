@@ -25,6 +25,7 @@
 #include "bufferviewfilter.h"
 #include "bufferviewmanager.h"
 #include "channellistdlg.h"
+#include "chatlinemodel.h"
 #include "chatmonitorfilter.h"
 #include "chatview.h"
 #include "client.h"
@@ -365,7 +366,8 @@ void MainWin::saveStatusBarStatus(bool enabled) {
 
 void MainWin::setupSystray() {
   connect(timer, SIGNAL(timeout()), this, SLOT(makeTrayIconBlink()));
-  connect(Client::instance(), SIGNAL(messageReceived(const Message &)), this, SLOT(receiveMessage(const Message &)));
+  connect(Client::messageModel(), SIGNAL(rowsInserted(const QModelIndex &, int, int)),
+                            this, SLOT(messagesInserted(const QModelIndex &, int, int)));
 
   systrayMenu = new QMenu(this);
   systrayMenu->addAction(ui.actionAboutQuassel);
@@ -576,36 +578,47 @@ void MainWin::toggleVisibility() {
   }
 }
 
-void MainWin::receiveMessage(const Message &msg) {
+void MainWin::messagesInserted(const QModelIndex &parent, int start, int end) {
+  Q_UNUSED(parent);
   if(QApplication::activeWindow() != 0)
     return;
 
-  if(msg.flags() & Message::Highlight || msg.bufferInfo().type() == BufferInfo::QueryBuffer) {
-    QString title = msg.bufferInfo().bufferName();;
-    if(msg.bufferInfo().type() != BufferInfo::QueryBuffer) {
-      QString sender = msg.sender();
-      int i = sender.indexOf("!");
-      if(i != -1)
-        sender = sender.left(i);
-      title += QString(" - %1").arg(sender);
+  for(int i = start; i <= end; i++) {
+    QModelIndex idx = Client::messageModel()->index(i, ChatLineModel::ContentsColumn);
+    if(!idx.isValid()) {
+      qDebug() << "MainWin::messagesInserted(): Invalid model index!";
+      continue;
     }
+    Message::Flags flags = (Message::Flags)idx.data(ChatLineModel::FlagsRole).toInt();
+    BufferId bufId = idx.data(ChatLineModel::BufferIdRole).value<BufferId>();
+    BufferInfo::Type bufType = Client::networkModel()->bufferType(bufId);
 
-    UiSettings uiSettings;
-
-    bool displayBubble = uiSettings.value("NotificationBubble", QVariant(true)).toBool();
-    bool displayDesktop = uiSettings.value("NotificationDesktop", QVariant(true)).toBool();
-    if(displayBubble || displayDesktop) {
-      if(uiSettings.value("DisplayPopupMessages", QVariant(true)).toBool()) {
-        // FIXME don't invoke style engine for this!
-        QString text = QtUi::style()->styleString(msg.contents()).plainText;
-        if(displayBubble) displayTrayIconMessage(title, text);
-#  ifdef HAVE_DBUS
-        if(displayDesktop) sendDesktopNotification(title, text);
-#  endif
+    if(flags & Message::Highlight || bufType == BufferInfo::QueryBuffer) {
+      QString title = Client::networkModel()->networkName(bufId); qDebug() << bufId << "title" << title;
+      if(bufType == BufferInfo::QueryBuffer) {
+        QString sender = Client::messageModel()->index(i, ChatLineModel::SenderColumn).data(ChatLineModel::DisplayRole).toString();
+        sender = sender.mid(1, sender.length() - 2); // remove < >
+        title += " - " + sender;
       }
-      if(uiSettings.value("AnimateTrayIcon", QVariant(true)).toBool()) {
-        QApplication::alert(this);
-        setTrayIconActivity(true);
+
+      // FIXME Don't instantiate this for every highlight...
+      UiSettings uiSettings;
+
+      bool displayBubble = uiSettings.value("NotificationBubble", QVariant(true)).toBool();
+      bool displayDesktop = uiSettings.value("NotificationDesktop", QVariant(true)).toBool();
+      if(displayBubble || displayDesktop) {
+        if(uiSettings.value("DisplayPopupMessages", QVariant(true)).toBool()) {
+          // FIXME don't invoke style engine for this!
+          QString text = idx.data(ChatLineModel::DisplayRole).toString();
+          if(displayBubble) displayTrayIconMessage(title, text);
+  #  ifdef HAVE_DBUS
+          if(displayDesktop) sendDesktopNotification(title, text);
+  #  endif
+        }
+        if(uiSettings.value("AnimateTrayIcon", QVariant(true)).toBool()) {
+          QApplication::alert(this);
+          setTrayIconActivity(true);
+        }
       }
     }
   }

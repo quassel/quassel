@@ -82,7 +82,7 @@ class MainWin : public QMainWindow {
   private slots:
     void addBufferView(int bufferViewConfigId);
     void removeBufferView(int bufferViewConfigId);
-    void receiveMessage(const Message &msg);
+    void messagesInserted(const QModelIndex &parent, int start, int end);
     void showChannelList(NetworkId netId = NetworkId());
     void showCoreInfoDlg();
     void showSettingsDlg();
