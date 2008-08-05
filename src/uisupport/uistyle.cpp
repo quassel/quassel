@@ -47,13 +47,6 @@ UiStyle::UiStyle(const QString &settingsKey) : _settingsKey(settingsKey) {
     _customFormats[type] = s.customFormat(type);
   }
 
-  // Initialize color codes according to mIRC "standard"
-  QStringList colors;
-  //colors << "white" << "black" << "navy" << "green" << "red" << "maroon" << "purple" << "orange";
-  //colors << "yellow" << "lime" << "teal" << "aqua" << "royalblue" << "fuchsia" << "grey" << "silver";
-  colors << "#ffffff" << "#000000" << "#000080" << "#008000" << "#ff0000" << "#800000" << "#800080" << "#ffa500";
-  colors << "#ffff00" << "#00ff00" << "#008080" << "#00ffff" << "#4169E1" << "#ff00ff" << "#808080" << "#c0c0c0";
-
   // Now initialize the mapping between FormatCodes and FormatTypes...
   _formatCodes["%O"] = None;
   _formatCodes["%B"] = Bold;
@@ -81,14 +74,21 @@ UiStyle::UiStyle(const QString &settingsKey) : _settingsKey(settingsKey) {
   _formatCodes["%DM"] = ModeFlags;
   _formatCodes["%DU"] = Url;
 
+  // Initialize color codes according to mIRC "standard"
+  QStringList colors;
+  //colors << "white" << "black" << "navy" << "green" << "red" << "maroon" << "purple" << "orange";
+  //colors << "yellow" << "lime" << "teal" << "aqua" << "royalblue" << "fuchsia" << "grey" << "silver";
+  colors << "#ffffff" << "#000000" << "#000080" << "#008000" << "#ff0000" << "#800000" << "#800080" << "#ffa500";
+  colors << "#ffff00" << "#00ff00" << "#008080" << "#00ffff" << "#4169E1" << "#ff00ff" << "#808080" << "#c0c0c0";
+
   // Set color formats
   for(int i = 0; i < 16; i++) {
     QString idx = QString("%1").arg(i, (int)2, (int)10, (QChar)'0');
-    _formatCodes[QString("%Dcf%1").arg(idx)] = (FormatType)(FgCol00 + i);
-    _formatCodes[QString("%Dcb%1").arg(idx)] = (FormatType)(BgCol00 + i);
+    _formatCodes[QString("%Dcf%1").arg(idx)] = (FormatType)(FgCol00 | i<<24);
+    _formatCodes[QString("%Dcb%1").arg(idx)] = (FormatType)(BgCol00 | i<<28);
     QTextCharFormat fgf, bgf;
-    fgf.setForeground(QBrush(QColor(colors[i]))); setFormat((FormatType)(FgCol00 + i), fgf, Settings::Default);
-    bgf.setBackground(QBrush(QColor(colors[i]))); setFormat((FormatType)(BgCol00 + i), bgf, Settings::Default);
+    fgf.setForeground(QBrush(QColor(colors[i]))); setFormat((FormatType)(FgCol00 | i<<24), fgf, Settings::Default);
+    bgf.setBackground(QBrush(QColor(colors[i]))); setFormat((FormatType)(BgCol00 | i<<28), bgf, Settings::Default);
   }
 
   // Set a few more standard formats
@@ -208,7 +208,7 @@ UiStyle::StyledString UiStyle::styleString(const QString &s_) {
         int color = 10 * s[pos+4].digitValue() + s[pos+5].digitValue();
         //TODO: use 99 as transparent color (re mirc color "standard")
         color &= 0x0f;
-        if(pos+3 == 'f')
+        if(s[pos+3] == 'f')
           curfmt |= (color << 24) | 0x00400000;
         else
           curfmt |= (color << 28) | 0x00800000;
