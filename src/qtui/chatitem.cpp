@@ -31,12 +31,18 @@
 #include "chatlinemodel.h"
 #include "qtui.h"
 
-ChatItem::ChatItem(const QPersistentModelIndex &index_, QGraphicsItem *parent) : QGraphicsItem(parent), _index(index_) {
-  _fontMetrics = QtUi::style()->fontMetrics(data(ChatLineModel::FormatRole).value<UiStyle::FormatList>().at(0).second);
-  _layout = 0;
-  _lines = 0;
-  _selectionStart = -1;
-  _selectionMode = NoSelection;
+ChatItem::ChatItem(int col, QAbstractItemModel *model, QGraphicsItem *parent)
+  : QGraphicsItem(parent),
+    _fontMetrics(0),
+    _col(col),
+    _lines(0),
+    _layout(0),
+    _selectionMode(NoSelection),
+    _selectionStart(-1)
+{
+  Q_ASSERT(model);
+  QModelIndex index = model->index(row(), col);
+  _fontMetrics = QtUi::style()->fontMetrics(model->data(index, ChatLineModel::FormatRole).value<UiStyle::FormatList>().at(0).second);
   setAcceptHoverEvents(true);
   setZValue(20);
 }
@@ -46,11 +52,12 @@ ChatItem::~ChatItem() {
 }
 
 QVariant ChatItem::data(int role) const {
-  if(!_index.isValid()) {
-    qWarning() << "ChatItem::data(): Model index is invalid!" << _index;
+  QModelIndex index = model()->index(row(), column());
+  if(!index.isValid()) {
+    qWarning() << "ChatItem::data(): model index is invalid!" << index;
     return QVariant();
   }
-  return _index.data(role);
+  return model()->data(index, role);
 }
 
 qreal ChatItem::setWidth(qreal w) {

@@ -24,23 +24,23 @@
 #include <QGraphicsItem>
 #include <QObject>
 
-#include "chatline.h"
 #include "chatlinemodel.h"
 #include "chatscene.h"
 #include "uistyle.h"
+#include "qtui.h"
 
 class QTextLayout;
 
 class ChatItem : public QGraphicsItem {
 
   public:
-    ChatItem(const QPersistentModelIndex &index, QGraphicsItem *parent);
+  ChatItem(int col, QAbstractItemModel *, QGraphicsItem *parent);
     virtual ~ChatItem();
 
-    inline QPersistentModelIndex index() const { return _index; }
-    inline const MessageModel *model() const { return _index.isValid() ? qobject_cast<const MessageModel *>(_index.model()) : 0; }
-    inline int row() const { return _index.isValid() ? _index.row() : 0; }
-    inline ChatScene *chatScene() const { return qobject_cast<ChatScene *>(scene()); }
+  inline const QAbstractItemModel *model() const { return chatScene() ? chatScene()->model() : 0; }
+  int row() const;
+  inline int column() const { return _col; }
+  inline ChatScene *chatScene() const { return qobject_cast<ChatScene *>(scene()); }
 
     inline QFontMetricsF *fontMetrics() const { return _fontMetrics; }
     inline virtual QRectF boundingRect() const { return _boundingRect; }
@@ -82,8 +82,8 @@ class ChatItem : public QGraphicsItem {
 
     QRectF _boundingRect;
     QFontMetricsF *_fontMetrics;
+    int _col;
     quint8 _lines;
-    QPersistentModelIndex _index;
 
     QTextLayout * _layout;
     QList<quint16> _wrapPositions;
@@ -112,5 +112,9 @@ class ChatItem::WrapColumnFinder {
     qreal lastwrappos;
     qreal w;
 };
+
+#include "chatline.h"
+inline int ChatItem::row() const { return static_cast<ChatLine *>(parentItem())->row(); }
+
 
 #endif

@@ -24,19 +24,20 @@
 #include <QGraphicsItem>
 
 #include "chatlinemodel.h"
-
-class ChatItem;
+#include "chatitem.h"
 
 class ChatLine : public QGraphicsItem {
 
   public:
-    ChatLine(const QModelIndex &tempIndex, QGraphicsItem *parent = 0);
-    virtual ~ChatLine();
+  ChatLine(int row, QAbstractItemModel *model, QGraphicsItem *parent = 0);
 
     virtual QRectF boundingRect () const;
+
+  inline int row() { return _row; }
+  inline void setRow(int row) { _row = row; }
     inline qreal width() const { return _width; }
     inline qreal height() const { return _height; }
-    ChatItem *item(ChatLineModel::ColumnType) const;
+    ChatItem &item(ChatLineModel::ColumnType);
 
     virtual void paint (QPainter * painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
 
@@ -48,7 +49,8 @@ class ChatLine : public QGraphicsItem {
   protected:
 
   private:
-    ChatItem *_timestampItem, *_senderItem, *_contentsItem;
+  int _row;
+    ChatItem _timestampItem, _senderItem, _contentsItem;
     qreal _width, _height;
 
     enum { Selected = 0x40, Highlighted = 0x80 };

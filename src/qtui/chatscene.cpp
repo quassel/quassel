@@ -25,6 +25,7 @@
 
 #include "buffer.h"
 #include "chatitem.h"
+#include "chatline.h"
 #include "chatlinemodelitem.h"
 #include "chatscene.h"
 #include "columnhandleitem.h"
@@ -47,7 +48,7 @@ ChatScene::ChatScene(QAbstractItemModel *model, const QString &idString, QObject
   connect(model, SIGNAL(rowsInserted(const QModelIndex &, int, int)), this, SLOT(rowsInserted(const QModelIndex &, int, int)));
   connect(model, SIGNAL(modelAboutToBeReset()), this, SLOT(modelReset()));
   for(int i = 0; i < model->rowCount(); i++) {
-    ChatLine *line = new ChatLine(model->index(i, 0));
+    ChatLine *line = new ChatLine(i, model);
     _lines.append(line);
     addItem(line);
   }
@@ -88,7 +89,7 @@ void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
   qreal y = 0;
   if(_width && start > 0) y = _lines.value(start - 1)->y() + _lines.value(start - 1)->height();
   for(int i = start; i <= end; i++) {
-    ChatLine *line = new ChatLine(model()->index(i, 0));
+    ChatLine *line = new ChatLine(i, model());
     _lines.insert(i, line);
     addItem(line);
     if(_width > 0) {
@@ -96,6 +97,11 @@ void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
       h += line->setGeometry(_width, firstColHandlePos, secondColHandlePos);
     }
   }
+  // update existing items
+  for(int i = end+1; i < _lines.count(); i++) {
+    _lines[i]->setRow(i);
+  }
+  
   if(h > 0) {
     _height += h;
     for(int i = end+1; i < _lines.count(); i++) {
@@ -160,8 +166,8 @@ void ChatScene::setSelectingItem(ChatItem *item) {
 }
 
 void ChatScene::startGlobalSelection(ChatItem *item, const QPointF &itemPos) {
-  _selectionStart = _selectionEnd = item->index().row();
-  _selectionStartCol = _selectionMinCol = item->index().column();
+  _selectionStart = _selectionEnd = item->row();
+  _selectionStartCol = _selectionMinCol = item->column();
   _isSelecting = true;
   _lines[_selectionStart]->setSelected(true, (ChatLineModel::ColumnType)_selectionMinCol);
   updateSelection(item->mapToScene(itemPos));
@@ -173,7 +179,7 @@ void ChatScene::updateSelection(const QPointF &pos) {
   ChatItem *contentItem = static_cast<ChatItem *>(itemAt(QPointF(secondColHandlePos + secondColHandle->width()/2, pos.y())));
   if(!contentItem) return;
 
-  int curRow = contentItem->index().row();
+  int curRow = contentItem->row();
   int curColumn;
   if(pos.x() > secondColHandlePos + secondColHandle->width()/2) curColumn = ChatLineModel::ContentsColumn;
   else if(pos.x() > firstColHandlePos) curColumn = ChatLineModel::SenderColumn;
@@ -262,10 +268,10 @@ QString ChatScene::selectionToString() const {
   QString result;
   for(int l = start; l <= end; l++) {
     if(_selectionMinCol == ChatLineModel::TimestampColumn)
-      result += _lines[l]->item(ChatLineModel::TimestampColumn)->data(MessageModel::DisplayRole).toString() + " ";
+      result += _lines[l]->item(ChatLineModel::TimestampColumn).data(MessageModel::DisplayRole).toString() + " ";
     if(_selectionMinCol <= ChatLineModel::SenderColumn)
-      result += _lines[l]->item(ChatLineModel::SenderColumn)->data(MessageModel::DisplayRole).toString() + " ";
-    result += _lines[l]->item(ChatLineModel::ContentsColumn)->data(MessageModel::DisplayRole).toString() + "\n";
+      result += _lines[l]->item(ChatLineModel::SenderColumn).data(MessageModel::DisplayRole).toString() + " ";
+    result += _lines[l]->item(ChatLineModel::ContentsColumn).data(MessageModel::DisplayRole).toString() + "\n";
   }
   return result;
 }
