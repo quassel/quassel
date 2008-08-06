@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include "qtuistyle.h"
+#include "qtuisettings.h"
 
 QtUiStyle::QtUiStyle() : UiStyle("QtUiStyle") {
   // We need to just set our internal formats; everything else is done by the base class...
@@ -102,7 +103,15 @@ QtUiStyle::QtUiStyle() : UiStyle("QtUiStyle") {
   url.setAnchor(true);
   setFormat(Url, url, Settings::Default);
 
-  _highlightColor = QColor(Qt::red);
+  QtUiStyleSettings s;
+  _highlightColor = s.highlightColor();
+  if(!_highlightColor.isValid()) _highlightColor = QColor("lightcoral");
 }
 
 QtUiStyle::~QtUiStyle() {}
+
+void QtUiStyle::setHighlightColor(const QColor &col) {
+  _highlightColor = col;
+  QtUiStyleSettings s;
+  s.setHighlightColor(col);
+}

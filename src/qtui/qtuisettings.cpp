@@ -23,3 +23,17 @@
 QtUiSettings::QtUiSettings(const QString &group) : UiSettings(group) {
 
 }
+
+/***********************************************************************/
+
+QtUiStyleSettings::QtUiStyleSettings(const QString &group) : UiStyleSettings(group) {
+
+}
+
+void QtUiStyleSettings::setHighlightColor(const QColor &col) {
+  setLocalValue("Colors/HighlightColor", col);
+}
+
+QColor QtUiStyleSettings::highlightColor() {
+  return localValue("Colors/HighlightColor", QColor()).value<QColor>();
+}

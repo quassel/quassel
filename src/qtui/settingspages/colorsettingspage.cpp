@@ -535,8 +535,7 @@ void ColorSettingsPage::load() {
   ui.urlFG->setColor(QtUi::style()->format(UiStyle::Url).foreground().color());
   ui.urlBG->setColor(QtUi::style()->format(UiStyle::Url).background().color());
 
-  settings["HighlightColor"] = s.value("highlightColor", QVariant(QColor("lightcoral")));
-  ui.highlightColor->setColor(settings["HighlightColor"].value<QColor>());
+  ui.highlightColor->setColor(QtUi::style()->highlightColor());
 
   ui.color0->setColor(QtUi::style()->format(UiStyle::FgCol00).foreground().color());
   ui.color1->setColor(QtUi::style()->format(UiStyle::FgCol01).foreground().color());
@@ -617,7 +616,7 @@ void ColorSettingsPage::save() {
   saveColor(UiStyle::RenameMsg, ui.renameMessageFG->color(), ui.renameMessageBG->color(), ui.renameMessageUseBG->isChecked());
   s.setValue("renameMessageUseBG", ui.renameMessageUseBG->isChecked());
 
-  s.setValue("highlightColor", ui.highlightColor->color());
+  QtUi::style()->setHighlightColor(ui.highlightColor->color());
 
   saveColor(UiStyle::Timestamp, ui.timestampFG->color(), ui.timestampBG->color(), ui.timestampUseBG->isChecked());
   s.setValue("timestampUseBG", ui.timestampUseBG->isChecked());
@@ -744,7 +743,7 @@ bool ColorSettingsPage::testHasChanged() {
   if(QtUi::style()->format(UiStyle::RenameMsg).background().color() != ui.renameMessageBG->color()) return true;
   if(settings["RenameMessageUseBG"].toBool() != ui.renameMessageUseBG->isChecked()) return true;
 
-  if(settings["HighlightColor"].value<QColor>() != ui.highlightColor->color()) return true;
+  if(QtUi::style()->highlightColor() != ui.highlightColor->color()) return true;
 
   if(QtUi::style()->format(UiStyle::Timestamp).foreground().color() != ui.timestampFG->color()) return true;
   if(QtUi::style()->format(UiStyle::Timestamp).background().color() != ui.timestampBG->color()) return true;

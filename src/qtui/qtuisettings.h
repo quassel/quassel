@@ -35,10 +35,10 @@ class QtUiSettings : public UiSettings {
 class QtUiStyleSettings : public UiStyleSettings {
 
   public:
-    QtUiStyleSettings();
+    QtUiStyleSettings(const QString &group = "QtUiStyle");
 
     void setHighlightColor(const QColor &);
-    QColor highlightColor() const;
+    QColor highlightColor();
 
 };
 
