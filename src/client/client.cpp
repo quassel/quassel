@@ -342,6 +342,8 @@ void Client::disconnectFromCore() {
   emit disconnected();
   emit coreConnectionStateChanged(false);
 
+  messageProcessor()->reset();
+
   // Clear internal data. Hopefully nothing relies on it at this point.
   setCurrentCoreAccount(0);
 

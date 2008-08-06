@@ -28,6 +28,7 @@ class AbstractMessageProcessor : public QObject {
 
   public:
     AbstractMessageProcessor(QObject *parent);
+    virtual void reset() = 0;
 
   public slots:
     virtual void process(Message &msg) = 0;

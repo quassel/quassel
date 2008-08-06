@@ -35,8 +35,11 @@ class QtUiMessageProcessor : public AbstractMessageProcessor {
     };
 
     QtUiMessageProcessor(QObject *parent);
+
     inline bool isProcessing() const { return _processing; }
     inline Mode processMode() const { return _processMode; }
+
+    void reset();
 
   public slots:
     void process(Message &msg);

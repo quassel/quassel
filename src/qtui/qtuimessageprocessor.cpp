@@ -33,6 +33,15 @@ QtUiMessageProcessor::QtUiMessageProcessor(QObject *parent) : AbstractMessagePro
   connect(&_processTimer, SIGNAL(timeout()), this, SLOT(processNextMessage()));
 }
 
+void QtUiMessageProcessor::reset() {
+  if(processMode() == TimerBased) {
+    if(_processTimer.isActive()) _processTimer.stop();
+    _processing = false;
+    _currentBatch.clear();
+    _processQueue.clear();
+  }
+}
+
 void QtUiMessageProcessor::process(Message &msg) {
   checkForHighlight(msg);
   Client::messageModel()->insertMessage(msg);
