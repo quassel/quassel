@@ -20,7 +20,7 @@
 
 #include "qtuistyle.h"
 
-QtUiStyle::QtUiStyle() : UiStyle("QtUiStyleNew") {  // FIXME QtUiStyleNew naming
+QtUiStyle::QtUiStyle() : UiStyle("QtUiStyle") {
   // We need to just set our internal formats; everything else is done by the base class...
 
   // Internal message formats
