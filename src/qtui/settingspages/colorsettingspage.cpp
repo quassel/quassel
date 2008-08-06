@@ -246,6 +246,10 @@ void ColorSettingsPage::defaults() {
   defaultMessage();
   defaultMircColorCodes();
   defaultNickview();
+
+  widgetHasChanged();
+  bufferviewPreview();
+  chatviewPreview();
 }
 
 void ColorSettingsPage::defaultBufferview() {
@@ -269,9 +273,6 @@ void ColorSettingsPage::defaultBufferview() {
   ui.otherActivityBG->setColor(QColor(Qt::white));
   ui.otherActivityBG->setEnabled(false);
   ui.otherActivityUseBG->setChecked(false);
-
-  widgetHasChanged();
-  bufferviewPreview();
 }
 
 void ColorSettingsPage::defaultServerActivity() {
@@ -292,9 +293,6 @@ void ColorSettingsPage::defaultServerActivity() {
   ui.serverMessageBG->setEnabled(false);
   ui.serverMessageUseBG->setChecked(false);
   ui.highlightColor->setColor(QColor("lightcoral"));
-
-  widgetHasChanged();
-  chatviewPreview();
 }
 
 void ColorSettingsPage::defaultUserActivity() {
@@ -326,9 +324,6 @@ void ColorSettingsPage::defaultUserActivity() {
   ui.renameMessageBG->setColor(QColor("white"));
   ui.renameMessageBG->setEnabled(false);
   ui.renameMessageUseBG->setChecked(false);
-
-  widgetHasChanged();
-  chatviewPreview();
 }
 
 void ColorSettingsPage::defaultMessage() {
@@ -360,9 +355,6 @@ void ColorSettingsPage::defaultMessage() {
   ui.urlBG->setColor(QColor("white"));
   ui.urlBG->setEnabled(false);
   ui.urlUseBG->setChecked(false);
-
-  widgetHasChanged();
-  chatviewPreview();
 }
 
 void ColorSettingsPage::defaultMircColorCodes() {
@@ -382,8 +374,6 @@ void ColorSettingsPage::defaultMircColorCodes() {
   ui.color13->setColor(QtUi::style()->format(UiStyle::FgCol13, Settings::Default).foreground().color());
   ui.color14->setColor(QtUi::style()->format(UiStyle::FgCol14, Settings::Default).foreground().color());
   ui.color15->setColor(QtUi::style()->format(UiStyle::FgCol15, Settings::Default).foreground().color());
-
-  widgetHasChanged();
 }
 
 void ColorSettingsPage::defaultNickview() {
@@ -395,12 +385,10 @@ void ColorSettingsPage::defaultNickview() {
   ui.awayStatusBG->setColor(QColor("white"));
   ui.awayStatusBG->setEnabled(false);
   ui.awayStatusUseBG->setChecked(false);
-
-  widgetHasChanged();
 }
 
 void ColorSettingsPage::load() {
-  QtUiSettings s("QtUi/Colors");
+  QtUiSettings s("QtUiStyle/Colors");
   settings["InactiveActivityFG"] = s.value("inactiveActivityFG", QVariant(QColor(Qt::gray)));
   ui.inactiveActivityFG->setColor(settings["InactiveActivityFG"].value<QColor>());
   settings["InactiveActivityBG"] = s.value("inactiveActivityBG", QVariant(QColor(Qt::white)));
@@ -448,78 +436,69 @@ void ColorSettingsPage::load() {
   ui.renameMessageFG->setColor(QtUi::style()->format(UiStyle::RenameMsg).foreground().color());
   ui.serverMessageFG->setColor(QtUi::style()->format(UiStyle::ServerMsg).foreground().color());
 
-  settings["ActionMessageBG"] = s.value("actionMessageBG", QVariant(QColor("white")));
-  ui.actionMessageBG->setColor(settings["ActionMessageBG"].value<QColor>());
+  ui.actionMessageBG->setColor(QtUi::style()->format(UiStyle::ActionMsg).background().color());
+  ui.errorMessageBG->setColor(QtUi::style()->format(UiStyle::ErrorMsg).background().color());
+  ui.joinMessageBG->setColor(QtUi::style()->format(UiStyle::JoinMsg).background().color());
+  ui.kickMessageBG->setColor(QtUi::style()->format(UiStyle::KickMsg).background().color());
+  ui.modeMessageBG->setColor(QtUi::style()->format(UiStyle::ModeMsg).background().color());
+  ui.noticeMessageBG->setColor(QtUi::style()->format(UiStyle::NoticeMsg).background().color());
+  ui.partMessageBG->setColor(QtUi::style()->format(UiStyle::PartMsg).background().color());
+  ui.plainMessageBG->setColor(QtUi::style()->format(UiStyle::PlainMsg).background().color());
+  ui.quitMessageBG->setColor(QtUi::style()->format(UiStyle::QuitMsg).background().color());
+  ui.renameMessageBG->setColor(QtUi::style()->format(UiStyle::RenameMsg).background().color());
+  ui.serverMessageBG->setColor(QtUi::style()->format(UiStyle::ServerMsg).background().color());
+
+  // FIXME set to false if appropriate
   settings["ActionMessageUseBG"] = s.value("actionMessageUseBG", QVariant(false));
   if(settings["ActionMessageUseBG"].toBool()) {
     ui.actionMessageUseBG->setChecked(true);
     ui.actionMessageBG->setEnabled(true);
   }
-  settings["ErrorMessageBG"] = s.value("errorMessageBG", QVariant(QColor("white")));
-  ui.errorMessageBG->setColor(settings["ErrorMessageBG"].value<QColor>());
   settings["ErrorMessageUseBG"] = s.value("errorMessageUseBG", QVariant(false));
   if(settings["ErrorMessageUseBG"].toBool()) {
     ui.errorMessageUseBG->setChecked(true);
     ui.errorMessageBG->setEnabled(true);
   }
-  settings["JoinMessageBG"] = s.value("joinMessageBG", QVariant(QColor("white")));
-  ui.joinMessageBG->setColor(settings["JoinMessageBG"].value<QColor>());
   settings["JoinMessageUseBG"] = s.value("joinMessageUseBG", QVariant(false));
   if(settings["JoinMessageUseBG"].toBool()) {
     ui.joinMessageUseBG->setChecked(true);
     ui.joinMessageBG->setEnabled(true);
   }
-  settings["KickMessageBG"] = s.value("kickMessageBG", QVariant(QColor("white")));
-  ui.kickMessageBG->setColor(settings["KickMessageBG"].value<QColor>());
   settings["KickMessageUseBG"] = s.value("kickMessageUseBG", QVariant(false));
   if(settings["KickMessageUseBG"].toBool()) {
     ui.kickMessageUseBG->setChecked(true);
     ui.kickMessageBG->setEnabled(true);
   }
-  settings["ModeMessageBG"] = s.value("modeMessageBG", QVariant(QColor("white")));
-  ui.modeMessageBG->setColor(settings["ModeMessageBG"].value<QColor>());
   settings["ModeMessageUseBG"] = s.value("modeMessageUseBG", QVariant(false));
   if(settings["ModeMessageUseBG"].toBool()) {
     ui.modeMessageUseBG->setChecked(true);
     ui.modeMessageBG->setEnabled(true);
   }
-  settings["NoticeMessageBG"] = s.value("noticeMessageBG", QVariant(QColor("white")));
-  ui.noticeMessageBG->setColor(settings["NoticeMessageBG"].value<QColor>());
   settings["NoticeMessageUseBG"] = s.value("noticeMessageUseBG", QVariant(false));
   if(settings["NoticeMessageUseBG"].toBool()) {
     ui.noticeMessageUseBG->setChecked(true);
     ui.noticeMessageBG->setEnabled(true);
   }
-  settings["PartMessageBG"] = s.value("partMessageBG", QVariant(QColor("white")));
-  ui.partMessageBG->setColor(settings["PartMessageBG"].value<QColor>());
   settings["PartMessageUseBG"] = s.value("partMessageUseBG", QVariant(false));
   if(settings["PartMessageUseBG"].toBool()) {
     ui.partMessageUseBG->setChecked(true);
     ui.partMessageBG->setEnabled(true);
   }
-  settings["PlainMessageBG"] = s.value("plainMessageBG", QVariant(QColor("white")));
-  ui.plainMessageBG->setColor(settings["PlainMessageBG"].value<QColor>());
   settings["PlainMessageUseBG"] = s.value("plainMessageUseBG", QVariant(false));
   if(settings["PlainMessageUseBG"].toBool()) {
     ui.plainMessageUseBG->setChecked(true);
     ui.plainMessageBG->setEnabled(true);
   }
-  settings["QuitMessageBG"] = s.value("quitMessageBG", QVariant(QColor("white")));
-  ui.quitMessageBG->setColor(settings["QuitMessageBG"].value<QColor>());
   settings["QuitMessageUseBG"] = s.value("quitMessageUseBG", QVariant(false));
   if(settings["QuitMessageUseBG"].toBool()) {
     ui.quitMessageUseBG->setChecked(true);
     ui.quitMessageBG->setEnabled(true);
   }
-  settings["RenameMessageBG"] = s.value("renameMessageBG", QVariant(QColor("white")));
-  ui.renameMessageBG->setColor(settings["RenameMessageBG"].value<QColor>());
   settings["RenameMessageUseBG"] = s.value("renameMessageUseBG", QVariant(false));
   if(settings["RenameMessageUseBG"].toBool()) {
     ui.renameMessageUseBG->setChecked(true);
     ui.renameMessageBG->setEnabled(true);
   }
-  settings["ServerMessageBG"] = s.value("serverMessageBG", QVariant(QColor("white")));
-  ui.serverMessageBG->setColor(settings["ServerMessageBG"].value<QColor>());
   settings["ServerMessageUseBG"] = s.value("serverMessageUseBG", QVariant(false));
   if(settings["ServerMessageUseBG"].toBool()) {
     ui.serverMessageUseBG->setChecked(true);
@@ -527,42 +506,31 @@ void ColorSettingsPage::load() {
   }
 
   ui.timestampFG->setColor(QtUi::style()->format(UiStyle::Timestamp).foreground().color());
+  ui.timestampBG->setColor(QtUi::style()->format(UiStyle::Timestamp).background().color());
   ui.senderFG->setColor(QtUi::style()->format(UiStyle::Sender).foreground().color());
+  ui.senderBG->setColor(QtUi::style()->format(UiStyle::Sender).background().color());
 
-  settings["TimestampBG"] = s.value("timestampBG", QVariant(QColor("white")));
-  ui.timestampBG->setColor(settings["TimestampBG"].value<QColor>());
   settings["TimestampUseBG"] = s.value("timestampUseBG", QVariant(false));
   if(settings["TimestampUseBG"].toBool()) {
     ui.timestampUseBG->setChecked(true);
     ui.timestampBG->setEnabled(true);
   }
-  settings["SenderBG"] = s.value("senderBG", QVariant(QColor("white")));
-  ui.senderBG->setColor(settings["SenderBG"].value<QColor>());
   settings["SenderUseBG"] = s.value("senderUseBG", QVariant(false));
   if(settings["SenderUseBG"].toBool()) {
     ui.senderUseBG->setChecked(true);
     ui.senderBG ->setEnabled(true);
   }
-  settings["NickFG"] = s.value("nickFG", QVariant(QColor("black")));
-  ui.nickFG->setColor(settings["NickFG"].value<QColor>());
-  settings["NickBG"] = s.value("nickBG", QVariant(QColor("white")));
-  ui.nickBG->setColor(settings["NickBG"].value<QColor>());
-  settings["HostmaskFG"] = s.value("hostmaskFG", QVariant(QColor("black")));
-  ui.hostmaskFG->setColor(settings["HostmaskFG"].value<QColor>());
-  settings["HostmaskBG"] = s.value("hostmaskBG", QVariant(QColor("white")));
-  ui.hostmaskBG->setColor(settings["HostmaskBG"].value<QColor>());
-  settings["ChannelnameFG"] = s.value("channelnameFG", QVariant(QColor("black")));
-  ui.channelnameFG->setColor(settings["ChannelnameFG"].value<QColor>());
-  settings["ChannelnameBG"] = s.value("channelnameBG", QVariant(QColor("white")));
-  ui.channelnameBG->setColor(settings["ChannelnameBG"].value<QColor>());
-  settings["ModeFlagsFG"] = s.value("modeFlagsFG", QVariant(QColor("black")));
-  ui.modeFlagsFG->setColor(settings["ModeFlagsFG"].value<QColor>());
-  settings["ModeFlagsBG"] = s.value("modeFlagsBG", QVariant(QColor("white")));
-  ui.modeFlagsBG->setColor(settings["ModeFlagsBG"].value<QColor>());
-  settings["UrlFG"] = s.value("urlFG", QVariant(QColor("black")));
-  ui.urlFG->setColor(settings["UrlFG"].value<QColor>());
-  settings["UrlBG"] = s.value("urlBG", QVariant(QColor("white")));
-  ui.urlBG->setColor(settings["UrlBG"].value<QColor>());
+
+  ui.nickFG->setColor(QtUi::style()->format(UiStyle::Nick).foreground().color());
+  ui.nickBG->setColor(QtUi::style()->format(UiStyle::Nick).background().color());
+  ui.hostmaskFG->setColor(QtUi::style()->format(UiStyle::Hostmask).foreground().color());
+  ui.hostmaskBG->setColor(QtUi::style()->format(UiStyle::Hostmask).background().color());
+  ui.channelnameFG->setColor(QtUi::style()->format(UiStyle::ChannelName).foreground().color());
+  ui.channelnameBG->setColor(QtUi::style()->format(UiStyle::ChannelName).background().color());
+  ui.modeFlagsFG->setColor(QtUi::style()->format(UiStyle::ModeFlags).foreground().color());
+  ui.modeFlagsBG->setColor(QtUi::style()->format(UiStyle::ModeFlags).background().color());
+  ui.urlFG->setColor(QtUi::style()->format(UiStyle::Url).foreground().color());
+  ui.urlBG->setColor(QtUi::style()->format(UiStyle::Url).background().color());
 
   settings["HighlightColor"] = s.value("highlightColor", QVariant(QColor("lightcoral")));
   ui.highlightColor->setColor(settings["HighlightColor"].value<QColor>());
@@ -597,14 +565,14 @@ void ColorSettingsPage::load() {
   ui.awayStatusBG->setColor(settings["AwayStatusBG"].value<QColor>());
   settings["AwayStatusUseBG"] = s.value("awayStatusUseBG");
   ui.awayStatusUseBG->setChecked(settings["AwayStatusUseBG"].toBool());
-  setChangedState(false);
 
+  setChangedState(false);
   bufferviewPreview();
   chatviewPreview();
 }
 
 void ColorSettingsPage::save() {
-  QtUiSettings s("QtUi/Colors");
+  QtUiSettings s("QtUiStyle/Colors");
   s.setValue("noActivityFG", ui.noActivityFG->color());
   s.setValue("noActivityBG", ui.noActivityBG->color());
   s.setValue("noActivityUseBG", ui.noActivityUseBG->isChecked());
@@ -621,110 +589,64 @@ void ColorSettingsPage::save() {
   s.setValue("otherActivityBG", ui.otherActivityBG->color());
   s.setValue("otherActivityUseBG", ui.otherActivityUseBG->isChecked());
 
-  saveColor(true, UiStyle::ErrorMsg, ui.errorMessageFG->color());
-  saveColor(false, UiStyle::ErrorMsg, ui.errorMessageBG->color(), ui.errorMessageUseBG->isChecked());
-  s.setValue("errorMessageBG", ui.errorMessageBG->color());
+  saveColor(UiStyle::ErrorMsg, ui.errorMessageFG->color(), ui.errorMessageBG->color(), ui.errorMessageUseBG->isChecked());
   s.setValue("errorMessageUseBG", ui.errorMessageUseBG->isChecked());
-  saveColor(true, UiStyle::NoticeMsg, ui.noticeMessageFG->color());
-  saveColor(false, UiStyle::NoticeMsg, ui.noticeMessageBG->color(), ui.noticeMessageUseBG->isChecked());
-  s.setValue("noticeMessageBG", ui.noticeMessageBG->color());
+  saveColor(UiStyle::NoticeMsg, ui.noticeMessageFG->color(), ui.noticeMessageBG->color(), ui.noticeMessageUseBG->isChecked());
   s.setValue("noticeMessageUseBG", ui.noticeMessageUseBG->isChecked());
-  saveColor(true, UiStyle::PlainMsg, ui.plainMessageFG->color());
-  saveColor(false, UiStyle::PlainMsg, ui.plainMessageBG->color(), ui.plainMessageUseBG->isChecked());
-  s.setValue("plainMessageBG", ui.plainMessageBG->color());
+  saveColor(UiStyle::PlainMsg, ui.plainMessageFG->color(), ui.plainMessageBG->color(), ui.plainMessageUseBG->isChecked());
   s.setValue("plainMessageUseBG", ui.plainMessageUseBG->isChecked());
-  saveColor(true, UiStyle::ServerMsg, ui.serverMessageFG->color());
-  saveColor(false, UiStyle::ServerMsg, ui.serverMessageBG->color(), ui.serverMessageUseBG->isChecked());
-  s.setValue("serverMessageBG", ui.serverMessageBG->color());
+  saveColor(UiStyle::ServerMsg, ui.serverMessageFG->color(), ui.serverMessageBG->color(), ui.serverMessageUseBG->isChecked());
   s.setValue("serverMessageUseBG", ui.serverMessageUseBG->isChecked());
-  saveColor(true, UiStyle::ActionMsg, ui.actionMessageFG->color());
-  saveColor(false, UiStyle::ActionMsg, ui.actionMessageBG->color(), ui.actionMessageUseBG->isChecked());
-  s.setValue("actionMessageBG", ui.actionMessageBG->color());
+  saveColor(UiStyle::ActionMsg, ui.actionMessageFG->color(), ui.actionMessageBG->color(), ui.actionMessageUseBG->isChecked());
   s.setValue("actionMessageUseBG", ui.actionMessageUseBG->isChecked());
-  saveColor(true, UiStyle::JoinMsg, ui.joinMessageFG->color());
-  saveColor(false, UiStyle::JoinMsg, ui.joinMessageBG->color(), ui.joinMessageUseBG->isChecked());
-  s.setValue("joinMessageBG", ui.joinMessageBG->color());
+  saveColor(UiStyle::JoinMsg, ui.joinMessageFG->color(), ui.joinMessageBG->color(), ui.joinMessageUseBG->isChecked());
   s.setValue("joinMessageUseBG", ui.joinMessageUseBG->isChecked());
-  saveColor(true, UiStyle::KickMsg, ui.kickMessageFG->color());
-  saveColor(false, UiStyle::KickMsg, ui.kickMessageBG->color(), ui.kickMessageUseBG->isChecked());
-  s.setValue("kickMessageBG", ui.kickMessageBG->color());
+  saveColor(UiStyle::KickMsg, ui.kickMessageFG->color(), ui.kickMessageBG->color(), ui.kickMessageUseBG->isChecked());
   s.setValue("kickMessageUseBG", ui.kickMessageUseBG->isChecked());
-  saveColor(true, UiStyle::ModeMsg, ui.modeMessageFG->color());
-  saveColor(false, UiStyle::ModeMsg, ui.modeMessageBG->color(), ui.modeMessageUseBG->isChecked());
-  s.setValue("modeMessageBG", ui.modeMessageBG->color());
+  saveColor(UiStyle::ModeMsg, ui.modeMessageFG->color(), ui.modeMessageBG->color(), ui.modeMessageUseBG->isChecked());
   s.setValue("modeMessageUseBG", ui.modeMessageUseBG->isChecked());
-  saveColor(true, UiStyle::PartMsg, ui.partMessageFG->color());
-  saveColor(false, UiStyle::PartMsg, ui.partMessageBG->color(), ui.partMessageUseBG->isChecked());
-  s.setValue("partMessageBG", ui.partMessageBG->color());
+  saveColor(UiStyle::NoticeMsg, ui.noticeMessageFG->color(), ui.noticeMessageBG->color(), ui.noticeMessageUseBG->isChecked());
+  s.setValue("noticeMessageUseBG", ui.noticeMessageUseBG->isChecked());
+  saveColor(UiStyle::PartMsg, ui.partMessageFG->color(), ui.partMessageBG->color(), ui.partMessageUseBG->isChecked());
   s.setValue("partMessageUseBG", ui.partMessageUseBG->isChecked());
-  saveColor(true, UiStyle::QuitMsg, ui.quitMessageFG->color());
-  saveColor(false, UiStyle::QuitMsg, ui.quitMessageBG->color(), ui.quitMessageUseBG->isChecked());
-  s.setValue("quitMessageBG", ui.quitMessageBG->color());
+  saveColor(UiStyle::QuitMsg, ui.quitMessageFG->color(), ui.quitMessageBG->color(), ui.quitMessageUseBG->isChecked());
   s.setValue("quitMessageUseBG", ui.quitMessageUseBG->isChecked());
-  saveColor(true, UiStyle::RenameMsg, ui.renameMessageFG->color());
-  saveColor(false, UiStyle::RenameMsg, ui.renameMessageBG->color(), ui.renameMessageUseBG->isChecked());
-  s.setValue("renameMessageBG", ui.renameMessageBG->color());
+  saveColor(UiStyle::RenameMsg, ui.renameMessageFG->color(), ui.renameMessageBG->color(), ui.renameMessageUseBG->isChecked());
   s.setValue("renameMessageUseBG", ui.renameMessageUseBG->isChecked());
 
   s.setValue("highlightColor", ui.highlightColor->color());
 
-  saveColor(true, UiStyle::Timestamp, ui.timestampFG->color());
-  saveColor(false, UiStyle::Timestamp, ui.timestampBG->color(), ui.timestampUseBG->isChecked());
-  s.setValue("timestampBG", ui.timestampBG->color());
+  saveColor(UiStyle::Timestamp, ui.timestampFG->color(), ui.timestampBG->color(), ui.timestampUseBG->isChecked());
   s.setValue("timestampUseBG", ui.timestampUseBG->isChecked());
-  saveColor(true, UiStyle::Sender, ui.senderFG->color());
-  saveColor(false, UiStyle::Sender, ui.senderBG->color(), ui.senderUseBG->isChecked());
-  s.setValue("senderBG", ui.senderBG->color());
+  saveColor(UiStyle::Sender, ui.senderFG->color(), ui.senderBG->color(), ui.senderUseBG->isChecked());
   s.setValue("senderUseBG", ui.senderUseBG->isChecked());
-  s.setValue("nickFG", ui.nickFG->color());
-  s.setValue("nickBG", ui.nickBG->color());
+  saveColor(UiStyle::Nick, ui.nickFG->color(), ui.nickBG->color(), ui.nickUseBG->isChecked());
   s.setValue("nickUseBG", ui.nickUseBG->isChecked());
-  s.setValue("hostmaskFG", ui.hostmaskFG->color());
-  s.setValue("hostmaskBG", ui.hostmaskBG->color());
+  saveColor(UiStyle::Hostmask, ui.hostmaskFG->color(), ui.hostmaskBG->color(), ui.hostmaskUseBG->isChecked());
   s.setValue("hostmaskUseBG", ui.hostmaskUseBG->isChecked());
-  s.setValue("channelnameFG", ui.channelnameFG->color());
-  s.setValue("channelnameBG", ui.channelnameBG->color());
+  saveColor(UiStyle::ChannelName, ui.channelnameFG->color(), ui.channelnameBG->color(), ui.channelnameUseBG->isChecked());
   s.setValue("channelnameUseBG", ui.channelnameUseBG->isChecked());
-  s.setValue("modeFlagsFG", ui.modeFlagsFG->color());
-  s.setValue("modeFlagsBG", ui.modeFlagsBG->color());
+  saveColor(UiStyle::ModeFlags, ui.modeFlagsFG->color(), ui.modeFlagsBG->color(), ui.modeFlagsUseBG->isChecked());
   s.setValue("modeFlagsUseBG", ui.modeFlagsUseBG->isChecked());
-  s.setValue("urlFG", ui.urlFG->color());
-  s.setValue("urlBG", ui.urlBG->color());
+  saveColor(UiStyle::Url, ui.urlFG->color(), ui.urlBG->color(), ui.urlUseBG->isChecked());
   s.setValue("urlUseBG", ui.urlUseBG->isChecked());
 
-  saveMircColor(true, UiStyle::FgCol00, ui.color0->color());
-  saveMircColor(true, UiStyle::FgCol01, ui.color1->color());
-  saveMircColor(true, UiStyle::FgCol02, ui.color2->color());
-  saveMircColor(true, UiStyle::FgCol03, ui.color3->color());
-  saveMircColor(true, UiStyle::FgCol04, ui.color4->color());
-  saveMircColor(true, UiStyle::FgCol05, ui.color5->color());
-  saveMircColor(true, UiStyle::FgCol06, ui.color6->color());
-  saveMircColor(true, UiStyle::FgCol07, ui.color7->color());
-  saveMircColor(true, UiStyle::FgCol08, ui.color8->color());
-  saveMircColor(true, UiStyle::FgCol09, ui.color9->color());
-  saveMircColor(true, UiStyle::FgCol10, ui.color10->color());
-  saveMircColor(true, UiStyle::FgCol11, ui.color11->color());
-  saveMircColor(true, UiStyle::FgCol12, ui.color12->color());
-  saveMircColor(true, UiStyle::FgCol13, ui.color13->color());
-  saveMircColor(true, UiStyle::FgCol14, ui.color14->color());
-  saveMircColor(true, UiStyle::FgCol15, ui.color15->color());
-
-  saveMircColor(false, UiStyle::BgCol00, ui.color0->color());
-  saveMircColor(false, UiStyle::BgCol01, ui.color1->color());
-  saveMircColor(false, UiStyle::BgCol02, ui.color2->color());
-  saveMircColor(false, UiStyle::BgCol03, ui.color3->color());
-  saveMircColor(false, UiStyle::BgCol04, ui.color4->color());
-  saveMircColor(false, UiStyle::BgCol05, ui.color5->color());
-  saveMircColor(false, UiStyle::BgCol06, ui.color6->color());
-  saveMircColor(false, UiStyle::BgCol07, ui.color7->color());
-  saveMircColor(false, UiStyle::BgCol08, ui.color8->color());
-  saveMircColor(false, UiStyle::BgCol09, ui.color9->color());
-  saveMircColor(false, UiStyle::BgCol10, ui.color10->color());
-  saveMircColor(false, UiStyle::BgCol11, ui.color11->color());
-  saveMircColor(false, UiStyle::BgCol12, ui.color12->color());
-  saveMircColor(false, UiStyle::BgCol13, ui.color13->color());
-  saveMircColor(false, UiStyle::BgCol14, ui.color14->color());
-  saveMircColor(false, UiStyle::BgCol15, ui.color15->color());
+  saveMircColor(0, ui.color0->color());
+  saveMircColor(1, ui.color1->color());
+  saveMircColor(2, ui.color2->color());
+  saveMircColor(3, ui.color3->color());
+  saveMircColor(4, ui.color4->color());
+  saveMircColor(5, ui.color5->color());
+  saveMircColor(6, ui.color6->color());
+  saveMircColor(7, ui.color7->color());
+  saveMircColor(8, ui.color8->color());
+  saveMircColor(9, ui.color9->color());
+  saveMircColor(10, ui.color10->color());
+  saveMircColor(11, ui.color11->color());
+  saveMircColor(12, ui.color12->color());
+  saveMircColor(13, ui.color13->color());
+  saveMircColor(14, ui.color14->color());
+  saveMircColor(15, ui.color15->color());
 
   s.setValue("onlineStatusFG", ui.onlineStatusFG->color());
   s.setValue("onlineStatusBG", ui.onlineStatusBG->color());
@@ -737,37 +659,21 @@ void ColorSettingsPage::save() {
   setChangedState(false);
 }
 
-void ColorSettingsPage::saveColor(bool foreground, UiStyle::FormatType formatType, const QColor &color, bool enableColor) {
+void ColorSettingsPage::saveColor(UiStyle::FormatType formatType, const QColor &foreground, const QColor &background, bool enableBG) {
   QTextCharFormat format = QtUi::style()->format(formatType);
-  if(foreground) {
-    if(enableColor) {
-      format.setForeground(QBrush(color));
-    } else {
-      format.clearForeground();
-    }
-  } else {
-    if(enableColor) {
-      format.setBackground(QBrush(color));
-    } else {
-      format.clearBackground();
-    }
-  }
-  QtUi::style()->setFormat(formatType, format, Settings::Custom);
-}
-
-//TODO: to be removed and exchanged by saveColor
-void ColorSettingsPage::saveMircColor(bool foreground, UiStyle::FormatType formatType, const QColor &color) {
-  QTextCharFormat format = QtUi::style()->format(formatType);
-  if(foreground) {
-    format.setForeground(QBrush(color));
+  format.setForeground(QBrush(foreground));
+  if(enableBG)
+    format.setBackground(QBrush(background));
+  else
     format.clearBackground();
-  } else {
-    format.clearForeground();
-    format.setBackground(QBrush(color));
-  }
   QtUi::style()->setFormat(formatType, format, Settings::Custom);
 }
 
+void ColorSettingsPage::saveMircColor(int num, const QColor &col) {
+  QTextCharFormat fgf, bgf;
+  fgf.setForeground(QBrush(col)); QtUi::style()->setFormat((UiStyle::FormatType)(UiStyle::FgCol00 | num<<24), fgf, Settings::Custom);
+  bgf.setBackground(QBrush(col)); QtUi::style()->setFormat((UiStyle::FormatType)(UiStyle::BgCol00 | num<<28), bgf, Settings::Custom);
+}
 
 void ColorSettingsPage::widgetHasChanged() {
   bool changed = testHasChanged();
@@ -796,58 +702,66 @@ bool ColorSettingsPage::testHasChanged() {
   if(settings["OtherActivityUseBG"].toBool() != ui.otherActivityUseBG->isChecked()) return true;
 
   if(QtUi::style()->format(UiStyle::ErrorMsg).foreground().color() != ui.errorMessageFG->color()) return true;
-  if(settings["ErrorMessageBG"].value<QColor>() != ui.errorMessageBG->color()) return true;
+  if(QtUi::style()->format(UiStyle::ErrorMsg).background().color() != ui.errorMessageBG->color()) return true;
   if(settings["ErrorMessageUseBG"].toBool() != ui.errorMessageUseBG->isChecked()) return true;
-  if(QtUi::style()->format(UiStyle::NoticeMsg).foreground().color() != ui.noticeMessageFG->color()) return true;
-  if(settings["NoticeMessageBG"].value<QColor>() != ui.noticeMessageBG->color()) return true;
+  if(QtUi::style()->format(UiStyle::ErrorMsg).foreground().color() != ui.errorMessageFG->color()) return true;
+  if(QtUi::style()->format(UiStyle::ErrorMsg).background().color() != ui.errorMessageBG->color()) return true;
   if(settings["NoticeMessageUseBG"].toBool() != ui.noticeMessageUseBG->isChecked()) return true;
   if(QtUi::style()->format(UiStyle::PlainMsg).foreground().color() != ui.plainMessageFG->color()) return true;
-  if(settings["PlainMessageBG"].value<QColor>() != ui.plainMessageBG->color()) return true;
+  if(QtUi::style()->format(UiStyle::PlainMsg).background().color() != ui.plainMessageBG->color()) return true;
   if(settings["PlainMessageUseBG"].toBool() != ui.plainMessageUseBG->isChecked()) return true;
   if(QtUi::style()->format(UiStyle::ServerMsg).foreground().color() != ui.serverMessageFG->color()) return true;
-  if(settings["ServerMessageBG"].value<QColor>() != ui.serverMessageBG->color()) return true;
+  if(QtUi::style()->format(UiStyle::ServerMsg).background().color() != ui.serverMessageBG->color()) return true;
   if(settings["ServerMessageUseBG"].toBool() != ui.serverMessageUseBG->isChecked()) return true;
   if(QtUi::style()->format(UiStyle::ActionMsg).foreground().color() != ui.actionMessageFG->color()) return true;
-  if(settings["ActionMessageBG"].value<QColor>() != ui.actionMessageBG->color()) return true;
+  if(QtUi::style()->format(UiStyle::ActionMsg).background().color() != ui.actionMessageBG->color()) return true;
   if(settings["ActionMessageUseBG"].toBool() != ui.actionMessageUseBG->isChecked()) return true;
   if(QtUi::style()->format(UiStyle::JoinMsg).foreground().color() != ui.joinMessageFG->color()) return true;
-  if(settings["JoinMessageBG"].value<QColor>() != ui.joinMessageBG->color()) return true;
+  if(QtUi::style()->format(UiStyle::JoinMsg).background().color() != ui.joinMessageBG->color()) return true;
   if(settings["JoinMessageUseBG"].toBool() != ui.joinMessageUseBG->isChecked()) return true;
   if(QtUi::style()->format(UiStyle::KickMsg).foreground().color() != ui.kickMessageFG->color()) return true;
-  if(settings["KickMessageBG"].value<QColor>() != ui.kickMessageBG->color()) return true;
+  if(QtUi::style()->format(UiStyle::KickMsg).background().color() != ui.joinMessageBG->color()) return true;
   if(settings["KickMessageUseBG"].toBool() != ui.kickMessageUseBG->isChecked()) return true;
   if(QtUi::style()->format(UiStyle::ModeMsg).foreground().color() != ui.modeMessageFG->color()) return true;
-  if(settings["ModeMessageBG"].value<QColor>() != ui.modeMessageBG->color()) return true;
+  if(QtUi::style()->format(UiStyle::ModeMsg).background().color() != ui.modeMessageBG->color()) return true;
   if(settings["ModeMessageUseBG"].toBool() != ui.modeMessageUseBG->isChecked()) return true;
+  if(QtUi::style()->format(UiStyle::NoticeMsg).foreground().color() != ui.noticeMessageFG->color()) return true;
+  if(QtUi::style()->format(UiStyle::NoticeMsg).background().color() != ui.noticeMessageBG->color()) return true;
+  if(settings["NoticeMessageUseBG"].toBool() != ui.noticeMessageUseBG->isChecked()) return true;
   if(QtUi::style()->format(UiStyle::PartMsg).foreground().color() != ui.partMessageFG->color()) return true;
-  if(settings["PartMessageBG"].value<QColor>() != ui.partMessageBG->color()) return true;
+  if(QtUi::style()->format(UiStyle::PartMsg).background().color() != ui.partMessageBG->color()) return true;
   if(settings["PartMessageUseBG"].toBool() != ui.partMessageUseBG->isChecked()) return true;
   if(QtUi::style()->format(UiStyle::QuitMsg).foreground().color() != ui.quitMessageFG->color()) return true;
-  if(settings["QuitMessageBG"].value<QColor>() != ui.quitMessageBG->color()) return true;
+  if(QtUi::style()->format(UiStyle::QuitMsg).background().color() != ui.quitMessageBG->color()) return true;
   if(settings["QuitMessageUseBG"].toBool() != ui.quitMessageUseBG->isChecked()) return true;
   if(QtUi::style()->format(UiStyle::RenameMsg).foreground().color() != ui.renameMessageFG->color()) return true;
-  if(settings["RenameMessageBG"].value<QColor>() != ui.renameMessageBG->color()) return true;
+  if(QtUi::style()->format(UiStyle::RenameMsg).background().color() != ui.renameMessageBG->color()) return true;
   if(settings["RenameMessageUseBG"].toBool() != ui.renameMessageUseBG->isChecked()) return true;
 
   if(settings["HighlightColor"].value<QColor>() != ui.highlightColor->color()) return true;
 
   if(QtUi::style()->format(UiStyle::Timestamp).foreground().color() != ui.timestampFG->color()) return true;
-  if(settings["TimestampBG"].value<QColor>() != ui.timestampBG->color()) return true;
+  if(QtUi::style()->format(UiStyle::Timestamp).background().color() != ui.timestampBG->color()) return true;
   if(settings["TimestampUseBG"].toBool() != ui.timestampUseBG->isChecked()) return true;
   if(QtUi::style()->format(UiStyle::Sender).foreground().color() != ui.senderFG->color()) return true;
-  if(settings["SenderBG"].value<QColor>() != ui.senderBG->color()) return true;
+  if(QtUi::style()->format(UiStyle::Sender).background().color() != ui.senderBG->color()) return true;
   if(settings["SenderUseBG"].toBool() != ui.senderUseBG->isChecked()) return true;
 
-  if(settings["NickFG"].value<QColor>() != ui.nickFG->color()) return true;
-  if(settings["NickBG"].value<QColor>() != ui.nickBG->color()) return true;
-  if(settings["HostmaskFG"].value<QColor>() != ui.hostmaskFG->color()) return true;
-  if(settings["HostmaskBG"].value<QColor>() != ui.hostmaskBG->color()) return true;
-  if(settings["ChannelnameFG"].value<QColor>() != ui.channelnameFG->color()) return true;
-  if(settings["ChannelnameBG"].value<QColor>() != ui.channelnameBG->color()) return true;
-  if(settings["ModeFlagsFG"].value<QColor>() != ui.modeFlagsFG->color()) return true;
-  if(settings["ModeFlagsBG"].value<QColor>() != ui.modeFlagsBG->color()) return true;
-  if(settings["UrlFG"].value<QColor>() != ui.urlFG->color()) return true;
-  if(settings["UrlBG"].value<QColor>() != ui.urlBG->color()) return true;
+  if(QtUi::style()->format(UiStyle::Nick).foreground().color() != ui.nickFG->color()) return true;
+  if(QtUi::style()->format(UiStyle::Nick).background().color() != ui.nickBG->color()) return true;
+  if(settings["nickUseBG"].toBool() != ui.nickUseBG->isChecked()) return true;
+  if(QtUi::style()->format(UiStyle::Hostmask).foreground().color() != ui.hostmaskFG->color()) return true;
+  if(QtUi::style()->format(UiStyle::Hostmask).background().color() != ui.hostmaskBG->color()) return true;
+  if(settings["hostmaskUseBG"].toBool() != ui.hostmaskUseBG->isChecked()) return true;
+  if(QtUi::style()->format(UiStyle::ChannelName).foreground().color() != ui.channelnameFG->color()) return true;
+  if(QtUi::style()->format(UiStyle::ChannelName).background().color() != ui.channelnameBG->color()) return true;
+  if(settings["channelnameUseBG"].toBool() != ui.channelnameUseBG->isChecked()) return true;
+  if(QtUi::style()->format(UiStyle::ModeFlags).foreground().color() != ui.modeFlagsFG->color()) return true;
+  if(QtUi::style()->format(UiStyle::ModeFlags).background().color() != ui.modeFlagsBG->color()) return true;
+  if(settings["modeFlagsUseBG"].toBool() != ui.modeFlagsUseBG->isChecked()) return true;
+  if(QtUi::style()->format(UiStyle::Url).foreground().color() != ui.urlFG->color()) return true;
+  if(QtUi::style()->format(UiStyle::Url).background().color() != ui.urlBG->color()) return true;
+  if(settings["urlUseBG"].toBool() != ui.urlUseBG->isChecked()) return true;
 
   if(QtUi::style()->format(UiStyle::FgCol00).foreground().color() != ui.color0->color()) return true;
   if(QtUi::style()->format(UiStyle::FgCol01).foreground().color() != ui.color1->color()) return true;

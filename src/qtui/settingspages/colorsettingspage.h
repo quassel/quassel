@@ -61,8 +61,8 @@ class ColorSettingsPage : public SettingsPage {
     bool testHasChanged();
     void chatviewPreview();
     void bufferviewPreview();
-    void saveColor(bool foreground, UiStyle::FormatType formatType, const QColor &color, bool enableColor=true);
-    void saveMircColor(bool foreground, UiStyle::FormatType formatType, const QColor &color);
+    void saveColor(UiStyle::FormatType formatType, const QColor &foreground, const QColor &background, bool enableBG = true);
+    void saveMircColor(int num, const QColor &color);
 };
 
 #endif
