@@ -28,14 +28,6 @@ AbstractMessageProcessor::AbstractMessageProcessor(QObject *parent) : QObject(pa
 
 }
 
-void AbstractMessageProcessor::process(Message &msg) {
-  processMessage(msg);
+void AbstractMessageProcessor::postProcess(Message &msg) {
   Client::buffer(msg.bufferInfo())->updateActivityLevel(msg);
-}
-
-void AbstractMessageProcessor::process(QList<Message> &msgs) {
-  processMessages(msgs);
-  foreach(Message msg, msgs) {
-    Client::buffer(msg.bufferInfo())->updateActivityLevel(msg);
-  }
 }

@@ -27,20 +27,42 @@
 #include "network.h"
 
 QtUiMessageProcessor::QtUiMessageProcessor(QObject *parent) : AbstractMessageProcessor(parent) {
-
-
+  _processing = false;
+  _processMode = TimerBased;
+  _processTimer.setInterval(0);
+  connect(&_processTimer, SIGNAL(timeout()), this, SLOT(processNextMessage()));
 }
 
-void QtUiMessageProcessor::processMessage(Message &msg) {
+void QtUiMessageProcessor::process(Message &msg) {
   checkForHighlight(msg);
   Client::messageModel()->insertMessage(msg);
+  postProcess(msg);
 }
 
-void QtUiMessageProcessor::processMessages(QList<Message> &msgs) {
-  foreach(Message msg, msgs) {
-    checkForHighlight(msg);
-    Client::messageModel()->insertMessage(msg);
+void QtUiMessageProcessor::process(QList<Message> &msgs) {
+  _processQueue.append(msgs);
+  if(!isProcessing()) startProcessing();
+}
+
+void QtUiMessageProcessor::startProcessing() {
+  if(processMode() == TimerBased) {
+    if(_currentBatch.isEmpty() && _processQueue.isEmpty()) return;
+    _processing = true;
+    if(!_processTimer.isActive()) _processTimer.start();
   }
+}
+
+void QtUiMessageProcessor::processNextMessage() {
+  if(_currentBatch.isEmpty()) {
+    if(_processQueue.isEmpty()) {
+      _processTimer.stop();
+      _processing = false;
+      return;
+    }
+    _currentBatch = _processQueue.takeFirst();
+  }
+  Message msg = _currentBatch.takeFirst();
+  process(msg);
 }
 
 // TODO optimize checkForHighlight

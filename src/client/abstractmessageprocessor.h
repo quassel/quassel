@@ -30,14 +30,13 @@ class AbstractMessageProcessor : public QObject {
     AbstractMessageProcessor(QObject *parent);
 
   public slots:
-    void process(Message &msg);
-    void process(QList<Message> &msgs);
+    virtual void process(Message &msg) = 0;
+    virtual void process(QList<Message> &msgs) = 0;
 
   signals:
 
   protected:
-    virtual void processMessage(Message &msg) = 0;
-    virtual void processMessages(QList<Message> &msgs) = 0;
+    void postProcess(Message &msg);
 
 };
 

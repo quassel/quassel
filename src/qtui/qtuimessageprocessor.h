@@ -21,21 +21,39 @@
 #ifndef QTUIMESSAGEPROCESSOR_H_
 #define QTUIMESSAGEPROCESSOR_H_
 
+#include <QTimer>
+
 #include "abstractmessageprocessor.h"
 
 class QtUiMessageProcessor : public AbstractMessageProcessor {
   Q_OBJECT
 
   public:
-    QtUiMessageProcessor(QObject *parent);
+    enum Mode {
+      TimerBased,
+      Concurrent
+    };
 
+    QtUiMessageProcessor(QObject *parent);
+    inline bool isProcessing() const { return _processing; }
+    inline Mode processMode() const { return _processMode; }
+
+  public slots:
+    void process(Message &msg);
+    void process(QList<Message> &msgs);
+
+  private slots:
+    void processNextMessage();
 
   private:
-    void processMessage(Message &msg);
-    void processMessages(QList<Message> &msgs);
-
     void checkForHighlight(Message &msg);
+    void startProcessing();
 
+    QList<QList<Message> > _processQueue;
+    QList<Message> _currentBatch;
+    QTimer _processTimer;
+    bool _processing;
+    Mode _processMode;
 };
 
 #endif
