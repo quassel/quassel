@@ -230,10 +230,13 @@ UiStyle::StyledString UiStyle::styleString(const QString &s_) {
         int color = 10 * s[pos+4].digitValue() + s[pos+5].digitValue();
         //TODO: use 99 as transparent color (re mirc color "standard")
         color &= 0x0f;
-        if(s[pos+3] == 'f')
+        if(s[pos+3] == 'f') {
+          curfmt &= 0xf0ffffff;
           curfmt |= (color << 24) | 0x00400000;
-        else
+        } else {
+          curfmt &= 0x0fffffff;
           curfmt |= (color << 28) | 0x00800000;
+        }
         length = 6;
       }
     } else if(s[pos+1] == 'O') { // reset formatting
