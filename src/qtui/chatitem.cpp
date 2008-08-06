@@ -248,7 +248,7 @@ void ChatItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
 void ChatItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) {
   // FIXME dirty and fast hack to make http:// urls klickable
 
-  QRegExp regex("\\b((?:h|f)t{1,2}ps?://[^\\s]+)\\b");
+  QRegExp regex("\\b([hf]t{1,2}ps?://[^\\s]+)\\b");
   QString str = data(ChatLineModel::DisplayRole).toString();
   int idx = posToCursor(event->pos());
   int mi = 0;
@@ -259,6 +259,7 @@ void ChatItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) {
       QDesktopServices::openUrl(QUrl(regex.capturedTexts()[1]));
       break;
     }
+    mi += regex.matchedLength();
   } while(mi >= 0);
   event->accept();
 }
