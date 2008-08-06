@@ -39,7 +39,7 @@ class UserManager(object):
                        {'username':username, 'password':self.shaCrypt(password)})
 
 if __name__ == "__main__":
-    generalError = "ERROR: Wrong arugment count (Syntax: %s add|changepass <username> <password>)" % sys.argv[0]
+    generalError = "ERROR: Wrong argument count (Syntax: %s add|changepass <username> <password>)" % sys.argv[0]
     if len(sys.argv) < 3:
         print generalError
         sys.exit(1)
