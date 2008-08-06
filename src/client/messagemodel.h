@@ -63,7 +63,7 @@ class MessageModel : public QAbstractItemModel {
 
     //virtual Qt::ItemFlags flags(const QModelIndex &index) const;
 
-    void insertMessage(const Message &);
+    bool insertMessage(const Message &, bool fakeMsg = false);
     void insertMessages(const QList<Message> &);
 
     void clear();

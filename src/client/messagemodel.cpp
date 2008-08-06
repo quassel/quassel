@@ -50,13 +50,19 @@ bool MessageModel::setData(const QModelIndex &index, const QVariant &value, int 
   return false;
 }
 
-void MessageModel::insertMessage(const Message &msg) {
+bool MessageModel::insertMessage(const Message &msg, bool fakeMsg) {
   MsgId id = msg.msgId();
   int idx = indexForId(id);
+  if(!fakeMsg && idx < _messageList.count()) { // check for duplicate
+    if(_messageList.value(idx)->data(0, MsgIdRole).value<MsgId>() == id) {
+      return false;
+    }
+  }
   MessageModelItem *item = createMessageModelItem(msg);
   beginInsertRows(QModelIndex(), idx, idx);
   _messageList.insert(idx, item);
   endInsertRows();
+  return true;
 }
 
 void MessageModel::insertMessages(const QList<Message> &msglist) {
@@ -74,14 +80,14 @@ void MessageModel::clear() {
 
 // returns index of msg with given Id or of the next message after that (i.e., the index where we'd insert this msg)
 int MessageModel::indexForId(MsgId id) {
-  if(_messageList.isEmpty() || id <= _messageList[0]->data(0, MsgIdRole).value<MsgId>()) return 0;
+  if(_messageList.isEmpty() || id <= _messageList.value(0)->data(0, MsgIdRole).value<MsgId>()) return 0;
   if(id > _messageList.last()->data(0, MsgIdRole).value<MsgId>()) return _messageList.count();
   // binary search
   int start = 0; int end = _messageList.count()-1;
   while(1) {
     if(end - start == 1) return end;
     int pivot = (end + start) / 2;
-    if(id <= _messageList[pivot]->data(0, MsgIdRole).value<MsgId>()) end = pivot;
+    if(id <= _messageList.value(pivot)->data(0, MsgIdRole).value<MsgId>()) end = pivot;
     else start = pivot;
   }
 }
