@@ -335,6 +335,8 @@ void ColorSettingsPage::defaultMessage() {
   ui.senderBG->setColor(QColor("white"));
   ui.senderBG->setEnabled(false);
   ui.senderUseBG->setChecked(false);
+
+  /*
   ui.nickFG->setColor(QColor("black"));
   ui.nickBG->setColor(QColor("white"));
   ui.nickBG->setEnabled(false);
@@ -355,6 +357,7 @@ void ColorSettingsPage::defaultMessage() {
   ui.urlBG->setColor(QColor("white"));
   ui.urlBG->setEnabled(false);
   ui.urlUseBG->setChecked(false);
+  */
 }
 
 void ColorSettingsPage::defaultMircColorCodes() {
@@ -620,6 +623,8 @@ void ColorSettingsPage::save() {
   s.setValue("timestampUseBG", ui.timestampUseBG->isChecked());
   saveColor(UiStyle::Sender, ui.senderFG->color(), ui.senderBG->color(), ui.senderUseBG->isChecked());
   s.setValue("senderUseBG", ui.senderUseBG->isChecked());
+
+  /*
   saveColor(UiStyle::Nick, ui.nickFG->color(), ui.nickBG->color(), ui.nickUseBG->isChecked());
   s.setValue("nickUseBG", ui.nickUseBG->isChecked());
   saveColor(UiStyle::Hostmask, ui.hostmaskFG->color(), ui.hostmaskBG->color(), ui.hostmaskUseBG->isChecked());
@@ -630,6 +635,7 @@ void ColorSettingsPage::save() {
   s.setValue("modeFlagsUseBG", ui.modeFlagsUseBG->isChecked());
   saveColor(UiStyle::Url, ui.urlFG->color(), ui.urlBG->color(), ui.urlUseBG->isChecked());
   s.setValue("urlUseBG", ui.urlUseBG->isChecked());
+  */
 
   saveMircColor(0, ui.color0->color());
   saveMircColor(1, ui.color1->color());
@@ -747,6 +753,7 @@ bool ColorSettingsPage::testHasChanged() {
   if(QtUi::style()->format(UiStyle::Sender).background().color() != ui.senderBG->color()) return true;
   if(settings["SenderUseBG"].toBool() != ui.senderUseBG->isChecked()) return true;
 
+  /*
   if(QtUi::style()->format(UiStyle::Nick).foreground().color() != ui.nickFG->color()) return true;
   if(QtUi::style()->format(UiStyle::Nick).background().color() != ui.nickBG->color()) return true;
   if(settings["nickUseBG"].toBool() != ui.nickUseBG->isChecked()) return true;
@@ -762,6 +769,7 @@ bool ColorSettingsPage::testHasChanged() {
   if(QtUi::style()->format(UiStyle::Url).foreground().color() != ui.urlFG->color()) return true;
   if(QtUi::style()->format(UiStyle::Url).background().color() != ui.urlBG->color()) return true;
   if(settings["urlUseBG"].toBool() != ui.urlUseBG->isChecked()) return true;
+  */
 
   if(QtUi::style()->format(UiStyle::FgCol00).foreground().color() != ui.color0->color()) return true;
   if(QtUi::style()->format(UiStyle::FgCol01).foreground().color() != ui.color1->color()) return true;
