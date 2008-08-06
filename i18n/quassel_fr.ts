@@ -448,7 +448,7 @@ Lines:     1234
         <translation>Déconnecter</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/bufferview.cpp" line="489"/>
+        <location filename="../src/uisupport/bufferview.cpp" line="488"/>
         <source>Join Channel</source>
         <translation>Rejoindre le Canal</translation>
     </message>
@@ -513,17 +513,17 @@ Lines:     1234
         <translation>Cacher les Avis</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/bufferview.cpp" line="489"/>
+        <location filename="../src/uisupport/bufferview.cpp" line="488"/>
         <source>Input channel name:</source>
         <translation>Entrez le nom du canal:</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/bufferview.cpp" line="521"/>
+        <location filename="../src/uisupport/bufferview.cpp" line="520"/>
         <source>Remove buffer permanently?</source>
         <translation>Supprimer le tampon définitivement ?</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/bufferview.cpp" line="523"/>
+        <location filename="../src/uisupport/bufferview.cpp" line="522"/>
         <source>Do you want to delete the buffer &quot;%1&quot; permanently? This will delete all related data, including all backlog data, from the core&apos;s database!</source>
         <translation>Voulez vous supprimer le tampon &quot;%1&quot; de manière permanente ? Cela supprimera toutes les données correspondantes, y compris celles sauvées dans l&apos;historique contenu dans la base de données du noyau !</translation>
     </message>
@@ -531,7 +531,7 @@ Lines:     1234
 <context>
     <name>BufferViewDock</name>
     <message>
-        <location filename="../src/uisupport/bufferview.cpp" line="591"/>
+        <location filename="../src/uisupport/bufferview.cpp" line="590"/>
         <source>All Buffers</source>
         <translation>Tous les Tampons</translation>
     </message>
@@ -745,32 +745,32 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ChannelBufferItem</name>
     <message>
-        <location filename="../src/client/networkmodel.cpp" line="373"/>
+        <location filename="../src/client/networkmodel.cpp" line="374"/>
         <source>&lt;b&gt;Channel %1&lt;/b&gt;</source>
         <translation>&lt;b&gt;Canal %1&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/client/networkmodel.cpp" line="376"/>
+        <location filename="../src/client/networkmodel.cpp" line="377"/>
         <source>&lt;b&gt;Users:&lt;/b&gt; %1</source>
         <translation>&lt;b&gt;Utilisateurs:&lt;/b&gt; %1</translation>
     </message>
     <message>
-        <location filename="../src/client/networkmodel.cpp" line="380"/>
+        <location filename="../src/client/networkmodel.cpp" line="381"/>
         <source>&lt;b&gt;Mode:&lt;/b&gt; %1</source>
         <translation>&lt;b&gt;Mode:&lt;/b&gt; %1</translation>
     </message>
     <message>
-        <location filename="../src/client/networkmodel.cpp" line="391"/>
+        <location filename="../src/client/networkmodel.cpp" line="392"/>
         <source>&lt;b&gt;Topic:&lt;/b&gt; %1</source>
         <translation>&lt;b&gt;Sujet:&lt;/b&gt; %1</translation>
     </message>
     <message>
-        <location filename="../src/client/networkmodel.cpp" line="395"/>
+        <location filename="../src/client/networkmodel.cpp" line="396"/>
         <source>Not active &lt;br /&gt; Double-click to join</source>
         <translation>Inactif &lt;br /&gt; Double-cliquez pour rejoindre</translation>
     </message>
     <message>
-        <location filename="../src/client/networkmodel.cpp" line="398"/>
+        <location filename="../src/client/networkmodel.cpp" line="399"/>
         <source>&lt;p&gt; %1 &lt;/p&gt;</source>
         <translation>&lt;p&gt; %1 &lt;/p&gt;</translation>
     </message>
@@ -909,7 +909,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Récupération des informations sur les canaux...</translation>
     </message>
     <message>
-        <location filename="../src/client/client.cpp" line="287"/>
+        <location filename="../src/client/client.cpp" line="279"/>
         <source>Identity already exists in client!</source>
         <translation>L&apos;Identité existe déjà dans le client!</translation>
     </message>
@@ -2202,6 +2202,11 @@ d&apos;espace</translation>
         <source>Close</source>
         <translation>Fermer</translation>
     </message>
+    <message>
+        <location filename="../src/qtui/coreinfodlg.cpp" line="51"/>
+        <source>%1 Day(s) %2:%3:%4 (since %5)</source>
+        <translation>%1 jour(s) %2:%3:%4 (depuis le %5)</translation>
+    </message>
 </context>
 <context>
     <name>CoreSession</name>
@@ -3124,7 +3129,7 @@ d&apos;espace</translation>
         <translation>Voulez vous vraiment supprimer l&apos;identité &quot;%1&quot;?</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/identitiessettingspage.ui" line="33"/>
+        <location filename="../src/qtui/settingspages/identitiessettingspage.ui" line="216"/>
         <source>Rename Identity</source>
         <translation>Renommer l&apos;identité</translation>
     </message>
@@ -3171,7 +3176,7 @@ d&apos;espace</translation>
     <message>
         <location filename="../src/qtui/settingspages/identitiessettingspage.ui" line="216"/>
         <source>Rename Nickname</source>
-        <translation>Renommer le pseudo</translation>
+        <translation type="obsolete">Renommer le pseudo</translation>
     </message>
 </context>
 <context>
@@ -3427,17 +3432,17 @@ d&apos;espace</translation>
 <context>
     <name>IrcUserItem</name>
     <message>
-        <location filename="../src/client/networkmodel.cpp" line="684"/>
+        <location filename="../src/client/networkmodel.cpp" line="685"/>
         <source>idling since %1</source>
         <translation>inactif depuis %1</translation>
     </message>
     <message>
-        <location filename="../src/client/networkmodel.cpp" line="687"/>
+        <location filename="../src/client/networkmodel.cpp" line="688"/>
         <source>login time: %1</source>
         <translation>durée de connexion: %1</translation>
     </message>
     <message>
-        <location filename="../src/client/networkmodel.cpp" line="690"/>
+        <location filename="../src/client/networkmodel.cpp" line="691"/>
         <source>server: %1</source>
         <translation>serveur: %1</translation>
     </message>
@@ -3468,12 +3473,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>MainWin</name>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="97"/>
+        <location filename="../src/qtui/mainwin.cpp" line="99"/>
         <source>Waiting for core...</source>
         <translation>Attente du noyau...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="497"/>
+        <location filename="../src/qtui/mainwin.cpp" line="491"/>
         <source>Not connected to core.</source>
         <translation>Déconnecté au noyau.</translation>
     </message>
@@ -3623,7 +3628,7 @@ p, li { white-space: pre-wrap; }
         <translation>Connecter au Noyau...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="439"/>
+        <location filename="../src/qtui/mainwin.cpp" line="433"/>
         <source>Connected to core.</source>
         <translation>Connecté au noyau.</translation>
     </message>
@@ -3633,27 +3638,27 @@ p, li { white-space: pre-wrap; }
         <translation>&amp;Modifier les réseaux...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="271"/>
+        <location filename="../src/qtui/mainwin.cpp" line="273"/>
         <source>Nicks</source>
         <translation>Pseudos</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="290"/>
+        <location filename="../src/qtui/mainwin.cpp" line="291"/>
         <source>Chat Monitor</source>
         <translation>Moniteur de Chat</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="312"/>
+        <location filename="../src/qtui/mainwin.cpp" line="305"/>
         <source>Inputline</source>
         <translation>Ligne de Saisie</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="329"/>
+        <location filename="../src/qtui/mainwin.cpp" line="322"/>
         <source>Topic</source>
         <translation>Sujet</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="356"/>
+        <location filename="../src/qtui/mainwin.cpp" line="349"/>
         <source>Statusbar</source>
         <translation>Barre d&apos;état</translation>
     </message>
@@ -3728,7 +3733,7 @@ p, li { white-space: pre-wrap; }
         <translation>Modèle Réseau</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="460"/>
+        <location filename="../src/qtui/mainwin.cpp" line="454"/>
         <source>Core Lag: %1 msec</source>
         <translation>Lag Noyau:  %1 ms</translation>
     </message>
@@ -3738,42 +3743,42 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/common/message.cpp" line="105"/>
         <source>%DT[%1]</source>
-        <translation>%DT[%1]</translation>
+        <translation type="obsolete">%DT[%1]</translation>
     </message>
     <message>
         <location filename="../src/common/message.cpp" line="110"/>
         <source>%DS&lt;%1&gt;</source>
-        <translation>%DS&lt;%1&gt;</translation>
+        <translation type="obsolete">%DS&lt;%1&gt;</translation>
     </message>
     <message>
         <location filename="../src/common/message.cpp" line="110"/>
         <source>%D0%1</source>
-        <translation>%D0%1</translation>
+        <translation type="obsolete">%D0%1</translation>
     </message>
     <message>
         <location filename="../src/common/message.cpp" line="114"/>
         <source>%Ds*</source>
-        <translation>%Ds*</translation>
+        <translation type="obsolete">%Ds*</translation>
     </message>
     <message>
         <location filename="../src/common/message.cpp" line="114"/>
         <source>%Ds%1</source>
-        <translation>%Ds%1</translation>
+        <translation type="obsolete">%Ds%1</translation>
     </message>
     <message>
         <location filename="../src/common/message.cpp" line="116"/>
         <source>%De*</source>
-        <translation>%De*</translation>
+        <translation type="obsolete">%De*</translation>
     </message>
     <message>
         <location filename="../src/common/message.cpp" line="151"/>
         <source>%De%1</source>
-        <translation>%De%1</translation>
+        <translation type="obsolete">%De%1</translation>
     </message>
     <message>
         <location filename="../src/common/message.cpp" line="118"/>
         <source>%Dj--&gt;</source>
-        <translation>%Dj--&gt;</translation>
+        <translation type="obsolete">%Dj--&gt;</translation>
     </message>
     <message>
         <location filename="../src/common/message.cpp" line="132"/>
@@ -3783,7 +3788,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/common/message.cpp" line="120"/>
         <source>%Dp&lt;--</source>
-        <translation>%Dp&lt;--</translation>
+        <translation type="obsolete">%Dp&lt;--</translation>
     </message>
     <message>
         <location filename="../src/common/message.cpp" line="134"/>
@@ -3793,17 +3798,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/common/message.cpp" line="124"/>
         <source>%Dq&lt;--</source>
-        <translation>%Dq&lt;--</translation>
+        <translation type="obsolete">%Dq&lt;--</translation>
     </message>
     <message>
         <location filename="../src/common/message.cpp" line="124"/>
         <source>%Dq%DN%DU%1%DU%DN %DH(%2@%3)%DH has quit</source>
-        <translation>%Dq%DN%DU%1%DU%DN %DH(%2@%3)%DH a quitté</translation>
+        <translation type="obsolete">%Dq%DN%DU%1%DU%DN %DH(%2@%3)%DH a quitté</translation>
     </message>
     <message>
         <location filename="../src/common/message.cpp" line="128"/>
         <source>%Dk&lt;-*</source>
-        <translation>%Dk&lt;-*</translation>
+        <translation type="obsolete">%Dk&lt;-*</translation>
     </message>
     <message>
         <location filename="../src/common/message.cpp" line="146"/>
@@ -3813,12 +3818,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/common/message.cpp" line="137"/>
         <source>%Dr&lt;-&gt;</source>
-        <translation>%Dr&lt;-&gt;</translation>
+        <translation type="obsolete">%Dr&lt;-&gt;</translation>
     </message>
     <message>
         <location filename="../src/common/message.cpp" line="138"/>
         <source>%DrYou are now known as %DN%1%DN</source>
-        <translation>%DrVous vous appellez maintenant %DN%1%DN</translation>
+        <translation type="obsolete">%DrVous vous appellez maintenant %DN%1%DN</translation>
     </message>
     <message>
         <location filename="../src/common/message.cpp" line="153"/>
@@ -3828,12 +3833,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/common/message.cpp" line="142"/>
         <source>%Dm***</source>
-        <translation>%Dm***</translation>
+        <translation type="obsolete">%Dm***</translation>
     </message>
     <message>
         <location filename="../src/common/message.cpp" line="143"/>
         <source>%DmUser mode: %DM%1%DM</source>
-        <translation>%Dmmode Utilisateur: %DM%1%DM</translation>
+        <translation type="obsolete">%Dmmode Utilisateur: %DM%1%DM</translation>
     </message>
     <message>
         <location filename="../src/common/message.cpp" line="158"/>
@@ -3843,7 +3848,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/common/message.cpp" line="147"/>
         <source>%Da-*-</source>
-        <translation>%Da-*-</translation>
+        <translation type="obsolete">%Da-*-</translation>
     </message>
     <message>
         <location filename="../src/common/message.cpp" line="162"/>
@@ -3853,47 +3858,47 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/common/message.cpp" line="152"/>
         <source>%De[%1]</source>
-        <translation>%De[%1]</translation>
+        <translation type="obsolete">%De[%1]</translation>
     </message>
     <message>
         <location filename="../src/common/message.cpp" line="112"/>
         <source>%Dn[%1]</source>
-        <translation>%Dn[%1]</translation>
+        <translation type="obsolete">%Dn[%1]</translation>
     </message>
     <message>
         <location filename="../src/common/message.cpp" line="112"/>
         <source>%Dn%1</source>
-        <translation>%Dn%1</translation>
+        <translation type="obsolete">%Dn%1</translation>
     </message>
     <message>
         <location filename="../src/common/message.cpp" line="118"/>
         <source>%Dj%DN%1%DN %DH(%2@%3)%DH has joined %DC%4%DC</source>
-        <translation>%Dj%DN%1%DN %DH(%2@%3)%DH a rejoint %DC%4%DC</translation>
+        <translation type="obsolete">%Dj%DN%1%DN %DH(%2@%3)%DH a rejoint %DC%4%DC</translation>
     </message>
     <message>
         <location filename="../src/common/message.cpp" line="120"/>
         <source>%Dp%DN%1%DN %DH(%2@%3)%DH has left %DC%4%DC</source>
-        <translation>%Dp%DN%1%DN %DH(%2@%3)%DH a quitté %DC%4%DC</translation>
+        <translation type="obsolete">%Dp%DN%1%DN %DH(%2@%3)%DH a quitté %DC%4%DC</translation>
     </message>
     <message>
         <location filename="../src/common/message.cpp" line="132"/>
         <source>%Dk%DN%1%DN has kicked %DN%2%DN from %DC%3%DC</source>
-        <translation>%Dk%DN%1%DN a kické %DN%2%DN de %DC%3%DC</translation>
+        <translation type="obsolete">%Dk%DN%1%DN a kické %DN%2%DN de %DC%3%DC</translation>
     </message>
     <message>
         <location filename="../src/common/message.cpp" line="139"/>
         <source>%Dr%DN%1%DN is now known as %DN%2%DN</source>
-        <translation>%Dr%DN%1%DN s&apos;appelle maintenant %DN%2%DN</translation>
+        <translation type="obsolete">%Dr%DN%1%DN s&apos;appelle maintenant %DN%2%DN</translation>
     </message>
     <message>
         <location filename="../src/common/message.cpp" line="144"/>
         <source>%DmMode %DM%1%DM by %DN%2%DN</source>
-        <translation>%DmMode %DM%1%DM par %DN%2%DN</translation>
+        <translation type="obsolete">%DmMode %DM%1%DM par %DN%2%DN</translation>
     </message>
     <message>
         <location filename="../src/common/message.cpp" line="148"/>
         <source>%Da%DN%1%DN %2</source>
-        <translation>%Da%DN%1%DN %2</translation>
+        <translation type="obsolete">%Da%DN%1%DN %2</translation>
     </message>
 </context>
 <context>
@@ -4043,19 +4048,37 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>NetworkItem</name>
+    <message>
+        <location filename="../src/client/networkmodel.cpp" line="160"/>
+        <source>Server: %1</source>
+        <translation>Serveur: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/client/networkmodel.cpp" line="161"/>
+        <source>Users: %1</source>
+        <translation>Utilisateurs: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/client/networkmodel.cpp" line="164"/>
+        <source>Lag: %1 msecs</source>
+        <translation>Lag: %1 ms</translation>
+    </message>
+</context>
+<context>
     <name>NetworkModel</name>
     <message>
-        <location filename="../src/client/networkmodel.cpp" line="711"/>
+        <location filename="../src/client/networkmodel.cpp" line="716"/>
         <source>Buffer</source>
         <translation>Tampon</translation>
     </message>
     <message>
-        <location filename="../src/client/networkmodel.cpp" line="711"/>
+        <location filename="../src/client/networkmodel.cpp" line="716"/>
         <source>Topic</source>
         <translation>Sujet</translation>
     </message>
     <message>
-        <location filename="../src/client/networkmodel.cpp" line="711"/>
+        <location filename="../src/client/networkmodel.cpp" line="716"/>
         <source>Nick Count</source>
         <translation>Nombre de Pseudos</translation>
     </message>
@@ -4641,7 +4664,7 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
 <context>
     <name>QueryBufferItem</name>
     <message>
-        <location filename="../src/client/networkmodel.cpp" line="311"/>
+        <location filename="../src/client/networkmodel.cpp" line="312"/>
         <source>&lt;b&gt;Query with %1&lt;/b&gt;</source>
         <translation>&lt;b&gt;Dialogue avec %1&lt;/b&gt;</translation>
     </message>
@@ -4656,17 +4679,17 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
         <translation type="obsolete">&lt;p&gt; %1 &lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/client/networkmodel.cpp" line="329"/>
+        <location filename="../src/client/networkmodel.cpp" line="330"/>
         <source>idling since %1</source>
         <translation>inactif depuis %1</translation>
     </message>
     <message>
-        <location filename="../src/client/networkmodel.cpp" line="332"/>
+        <location filename="../src/client/networkmodel.cpp" line="333"/>
         <source>login time: %1</source>
         <translation>durée de connexion: %1</translation>
     </message>
     <message>
-        <location filename="../src/client/networkmodel.cpp" line="335"/>
+        <location filename="../src/client/networkmodel.cpp" line="336"/>
         <source>server: %1</source>
         <translation>serveur: %1</translation>
     </message>
@@ -5026,132 +5049,132 @@ Click to edit!</source>
 <context>
     <name>UiStyle</name>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="273"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="320"/>
         <source>%DT[%1]</source>
         <translation>%DT[%1]</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="278"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="325"/>
         <source>%DS&lt;%1&gt;</source>
         <translation>%DS&lt;%1&gt;</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="278"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="325"/>
         <source>%D0%1</source>
         <translation>%D0%1</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="280"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="327"/>
         <source>%Dn[%1]</source>
         <translation>%Dn[%1]</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="280"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="327"/>
         <source>%Dn%1</source>
         <translation>%Dn%1</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="282"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="329"/>
         <source>%Ds*</source>
         <translation>%Ds*</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="282"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="329"/>
         <source>%Ds%1</source>
         <translation>%Ds%1</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="284"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="331"/>
         <source>%De*</source>
         <translation>%De*</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="319"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="366"/>
         <source>%De%1</source>
         <translation>%De%1</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="286"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="333"/>
         <source>%Dj--&gt;</source>
         <translation>%Dj--&gt;</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="286"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="333"/>
         <source>%Dj%DN%1%DN %DH(%2@%3)%DH has joined %DC%4%DC</source>
         <translation>%Dj%DN%1%DN %DH(%2@%3)%DH a rejoint %DC%4%DC</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="288"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="335"/>
         <source>%Dp&lt;--</source>
         <translation>%Dp&lt;--</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="288"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="335"/>
         <source>%Dp%DN%1%DN %DH(%2@%3)%DH has left %DC%4%DC</source>
         <translation>%Dp%DN%1%DN %DH(%2@%3)%DH a quitté %DC%4%DC</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="292"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="339"/>
         <source>%Dq&lt;--</source>
         <translation>%Dq&lt;--</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="292"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="339"/>
         <source>%Dq%DN%DU%1%DU%DN %DH(%2@%3)%DH has quit</source>
         <translation>%Dq%DN%DU%1%DU%DN %DH(%2@%3)%DH a quitté</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="296"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="343"/>
         <source>%Dk&lt;-*</source>
         <translation>%Dk&lt;-*</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="300"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="347"/>
         <source>%Dk%DN%1%DN has kicked %DN%2%DN from %DC%3%DC</source>
         <translation>%Dk%DN%1%DN a été kické %DN%2%DN de %DC%3%DC</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="305"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="352"/>
         <source>%Dr&lt;-&gt;</source>
         <translation>%Dr&lt;-&gt;</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="306"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="353"/>
         <source>%DrYou are now known as %DN%1%DN</source>
         <translation>%DrVous vous appellez maintenant %DN%1%DN</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="307"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="354"/>
         <source>%Dr%DN%1%DN is now known as %DN%2%DN</source>
         <translation>%Dr%DN%1%DN s&apos;appelle maintenant %DN%2%DN</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="310"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="357"/>
         <source>%Dm***</source>
         <translation>%Dm***</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="311"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="358"/>
         <source>%DmUser mode: %DM%1%DM</source>
         <translation>%DmMode utilisateur: %DM%1%DM</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="312"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="359"/>
         <source>%DmMode %DM%1%DM by %DN%2%DN</source>
         <translation>%DmMode %DM%1%DM par %DN%2%DN</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="315"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="362"/>
         <source>%Da-*-</source>
         <translation>%Da-*-</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="316"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="363"/>
         <source>%Da%DN%1%DN %2</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="320"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="367"/>
         <source>%De[%1]</source>
         <translation>%De[%1]</translation>
     </message>
@@ -5159,7 +5182,7 @@ Click to edit!</source>
 <context>
     <name>UserCategoryItem</name>
     <message numerus="yes">
-        <location filename="../src/client/networkmodel.cpp" line="566"/>
+        <location filename="../src/client/networkmodel.cpp" line="567"/>
         <source>%n Owner(s)</source>
         <translation>
             <numerusform>%n Fondateur</numerusform>
@@ -5167,7 +5190,7 @@ Click to edit!</source>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/client/networkmodel.cpp" line="567"/>
+        <location filename="../src/client/networkmodel.cpp" line="568"/>
         <source>%n Admin(s)</source>
         <translation>
             <numerusform>%n Admin</numerusform>
@@ -5175,7 +5198,7 @@ Click to edit!</source>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/client/networkmodel.cpp" line="568"/>
+        <location filename="../src/client/networkmodel.cpp" line="569"/>
         <source>%n Operator(s)</source>
         <translation>
             <numerusform>%n Operateur</numerusform>
@@ -5183,7 +5206,7 @@ Click to edit!</source>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/client/networkmodel.cpp" line="569"/>
+        <location filename="../src/client/networkmodel.cpp" line="570"/>
         <source>%n Half-Op(s)</source>
         <translation>
             <numerusform>%n Half-Op</numerusform>
@@ -5191,7 +5214,7 @@ Click to edit!</source>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/client/networkmodel.cpp" line="570"/>
+        <location filename="../src/client/networkmodel.cpp" line="571"/>
         <source>%n Voiced</source>
         <translation>
             <numerusform>%n Voicé</numerusform>
@@ -5199,7 +5222,7 @@ Click to edit!</source>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/client/networkmodel.cpp" line="571"/>
+        <location filename="../src/client/networkmodel.cpp" line="572"/>
         <source>%n User(s)</source>
         <translation>
             <numerusform>%n Utilisateur</numerusform>
