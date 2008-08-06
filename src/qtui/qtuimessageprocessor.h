@@ -30,9 +30,11 @@ class QtUiMessageProcessor : public AbstractMessageProcessor {
     QtUiMessageProcessor(QObject *parent);
 
 
-  protected:
+  private:
     void processMessage(Message &msg);
     void processMessages(QList<Message> &msgs);
+
+    void checkForHighlight(Message &msg);
 
 };
 

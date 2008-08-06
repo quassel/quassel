@@ -53,6 +53,11 @@ class Client : public QObject {
   Q_OBJECT
 
 public:
+  enum ClientMode {
+    LocalCore,
+    RemoteCore
+  };
+
   static Client *instance();
   static void destroy();
   static void init(AbstractUi *);
@@ -108,9 +113,6 @@ public:
 
   static void userInput(BufferInfo bufferInfo, QString message);
 
-  enum ClientMode { LocalCore, RemoteCore };
-
-  static void checkForHighlight(Message &msg);
   static void setBufferLastSeenMsg(BufferId id, const MsgId &msgId); // this is synced to core and other clients
   static void removeBuffer(BufferId id);
 
