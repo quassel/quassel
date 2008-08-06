@@ -158,11 +158,11 @@ QString NetworkItem::toolTip(int column) const {
   Q_UNUSED(column);
 
   QStringList toolTip(QString("<b>%1</b>").arg(networkName()));
-  toolTip.append(QString("Server: %1").arg(currentServer()));
-  toolTip.append(QString("Users: %1").arg(nickCount()));
+  toolTip.append(QString(tr("Server: %1")).arg(currentServer()));
+  toolTip.append(QString(tr("Users: %1")).arg(nickCount()));
 
   if(_network) {
-    toolTip.append(QString("Lag: %1 msecs").arg(_network->latency()));
+    toolTip.append(QString(tr("Lag: %1 msecs")).arg(_network->latency()));
   }
 
   return QString("<p> %1 </p>").arg(toolTip.join("<br />"));
