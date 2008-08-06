@@ -73,7 +73,8 @@ void ChatLineModelItem::computeWrapList() {
 
   QList<ChatLineModel::Word> wplist;  // use a temp list which we'll later copy into a QVector for efficiency
   QTextBoundaryFinder finder(QTextBoundaryFinder::Word, _contents.plainText);
-  int idx, oldidx;
+  int idx;
+  int oldidx = 0;
   bool wordStart = false; bool wordEnd = false;
   Mode mode = SearchEnd;
   ChatLineModel::Word word;
@@ -99,7 +100,7 @@ void ChatLineModelItem::computeWrapList() {
 
     //qDebug() << wordStart << wordEnd << _contents.plainText.left(idx) << _contents.plainText.mid(idx);
 
-    if(mode == SearchEnd || !wordStart && wordEnd) {
+    if(mode == SearchEnd || (!wordStart && wordEnd)) {
       if(wordStart || !wordEnd) continue;
       oldidx = idx;
       mode = SearchStart;
