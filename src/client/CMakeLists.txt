@@ -7,6 +7,7 @@ set(QT_USE_QTDBUS 1)
 include(${QT_USE_FILE})
 
 set(SOURCES
+    abstractmessageprocessor.cpp
     buffer.cpp
     buffermodel.cpp
     buffersettings.cpp
@@ -24,6 +25,7 @@ set(SOURCES
     treemodel.cpp)
 
 set(MOC_HDRS
+    abstractmessageprocessor.h
     buffer.h
     buffermodel.h
     client.h

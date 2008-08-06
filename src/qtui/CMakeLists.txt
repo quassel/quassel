@@ -26,6 +26,7 @@ set(SOURCES
     mainwin.cpp
     nicklistwidget.cpp
     qtui.cpp
+    qtuimessageprocessor.cpp
     qtuisettings.cpp
     qtuistyle.cpp
     settingsdlg.cpp
@@ -53,6 +54,7 @@ set(MOC_HDRS
     mainwin.h
     nicklistwidget.h
     qtui.h
+    qtuimessageprocessor.h
     settingsdlg.h
     settingspagedlg.h
     titlesetter.h
