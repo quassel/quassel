@@ -20,6 +20,7 @@
 
 #include "client.h"
 
+#include "abstractmessageprocessor.h"
 #include "bufferinfo.h"
 #include "buffermodel.h"
 #include "buffersettings.h"
@@ -72,6 +73,7 @@ Client::Client(QObject *parent)
     _bufferViewManager(0),
     _ircListHelper(new ClientIrcListHelper(this)),
     _messageModel(0),
+    _messageProcessor(0),
     _connectedToCore(false),
     _syncedToCore(false)
 {
@@ -97,6 +99,7 @@ void Client::init() {
 
   _bufferModel = new BufferModel(_networkModel);
   _messageModel = mainUi->createMessageModel(this);
+  _messageProcessor = mainUi->createMessageProcessor(this);
 
   SignalProxy *p = signalProxy();
 
@@ -431,25 +434,23 @@ void Client::networkDestroyed() {
   }
 }
 
-void Client::recvMessage(const Message &msg_) {
-  Message msg = msg_;
-  checkForHighlight(msg);
-  _messageModel->insertMessage(msg);
-  buffer(msg.bufferInfo())->updateActivityLevel(msg);
-}
-
+// Hmm... we never used this...
 void Client::recvStatusMsg(QString /*net*/, QString /*msg*/) {
   //recvMessage(net, Message::server("", QString("[STATUS] %1").arg(msg)));
 }
 
+void Client::recvMessage(const Message &msg_) {
+  Message msg = msg_;
+  messageProcessor()->process(msg);
+}
+
 void Client::receiveBacklog(BufferId bufferId, const QVariantList &msgs) {
   //QTime start = QTime::currentTime();
+  QList<Message> msglist;
   foreach(QVariant v, msgs) {
-    Message msg = v.value<Message>();
-    checkForHighlight(msg);
-    _messageModel->insertMessage(msg);
-    buffer(msg.bufferInfo())->updateActivityLevel(msg);
+    msglist << v.value<Message>();
   }
+  messageProcessor()->process(msglist);
   //qDebug() << "processed" << msgs.count() << "backlog lines in" << start.msecsTo(QTime::currentTime());
 }
 

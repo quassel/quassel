@@ -31,6 +31,7 @@
 class BufferInfo;
 class Message;
 class MessageModel;
+class AbstractMessageProcessor;
 
 class Identity;
 class Network;
@@ -93,6 +94,7 @@ public:
   static inline NetworkModel *networkModel() { return instance()->_networkModel; }
   static inline BufferModel *bufferModel() { return instance()->_bufferModel; }
   static inline MessageModel *messageModel() { return instance()->_messageModel; }
+  static inline AbstractMessageProcessor *messageProcessor() { return instance()->_messageProcessor; }
   static inline SignalProxy *signalProxy() { return instance()->_signalProxy; }
 
   static inline ClientBacklogManager *backlogManager() { return instance()->_backlogManager; }
@@ -213,6 +215,7 @@ private:
   ClientIrcListHelper *_ircListHelper;
 
   MessageModel *_messageModel;
+  AbstractMessageProcessor *_messageProcessor;
 
   ClientMode clientMode;
 

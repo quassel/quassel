@@ -22,6 +22,7 @@
 
 #include "chatlinemodel.h"
 #include "mainwin.h"
+#include "qtuimessageprocessor.h"
 
 QtUiStyle *QtUi::_style;
 
@@ -52,8 +53,8 @@ MessageModel *QtUi::createMessageModel(QObject *parent) {
   return new ChatLineModel(parent);
 }
 
-AbstractUiMsg *QtUi::layoutMsg(const Message &msg) {
-  return 0;  // FIXME obsolete?
+AbstractMessageProcessor *QtUi::createMessageProcessor(QObject *parent) {
+  return new QtUiMessageProcessor(parent);
 }
 
 void QtUi::connectedToCore() {

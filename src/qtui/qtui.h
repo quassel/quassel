@@ -26,6 +26,7 @@
 
 class MainWin;
 class MessageModel;
+class QtUiMessageProcessor;
 
 //! This class encapsulates Quassel's Qt-based GUI.
 /** This is basically a wrapper around MainWin, which is necessary because we cannot derive MainWin
@@ -38,8 +39,8 @@ class QtUi : public AbstractUi {
     QtUi();
     ~QtUi();
     //void init();
-    MessageModel *createMessageModel(QObject *parent = 0);
-    AbstractUiMsg *layoutMsg(const Message &);
+    MessageModel *createMessageModel(QObject *parent);
+    AbstractMessageProcessor *createMessageProcessor(QObject *parent);
 
     static QtUiStyle *style();
 

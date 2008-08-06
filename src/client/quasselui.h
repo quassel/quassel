@@ -25,27 +25,15 @@
 #include "message.h"
 
 class MessageModel;
-
-class AbstractUiMsg {
-
-  public:
-    virtual ~AbstractUiMsg() {};
-    virtual QString sender() const = 0;
-    virtual QString text() const = 0;
-    virtual MsgId msgId() const = 0;
-    virtual BufferInfo bufferInfo() const = 0;
-    virtual QDateTime timestamp() const = 0;
-
-};
-
+class AbstractMessageProcessor;
 
 class AbstractUi : public QObject {
   Q_OBJECT
 
   public:
     virtual void init() {};  // called after the client is initialized
-    virtual MessageModel *createMessageModel(QObject *parent = 0) = 0;
-    virtual AbstractUiMsg *layoutMsg(const Message &) = 0;
+    virtual MessageModel *createMessageModel(QObject *parent) = 0;
+    virtual AbstractMessageProcessor *createMessageProcessor(QObject *parent) = 0;
 
   protected slots:
     virtual void connectedToCore() {}
@@ -56,7 +44,5 @@ class AbstractUi : public QObject {
     void disconnectFromCore();
 
 };
-
-
 
 #endif
