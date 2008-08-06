@@ -117,7 +117,7 @@ void UiStyle::setFormat(FormatType ftype, QTextCharFormat fmt, Settings::Mode mo
       _customFormats[ftype] = fmt;
       s.setCustomFormat(ftype, fmt);
     } else {
-      _customFormats[ftype] = QTextFormat().toCharFormat();
+      _customFormats.remove(ftype);
       s.removeCustomFormat(ftype);
     }
   }
