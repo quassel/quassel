@@ -37,7 +37,7 @@ NickViewFilter::NickViewFilter(const BufferId &bufferId, NetworkModel *parent)
 }
 
 void NickViewFilter::loadColors() {
-  UiSettings s("QtUi/Colors");
+  UiSettings s("QtUiStyle/Colors");
   _FgOnlineStatus = s.value("onlineStatusFG", QVariant(QColor(Qt::black))).value<QColor>();
   _FgAwayStatus = s.value("awayStatusFG", QVariant(QColor(Qt::gray))).value<QColor>();
   // FIXME: use the style interface instead of qsettings
