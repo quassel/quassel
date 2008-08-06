@@ -21,6 +21,8 @@
 #ifndef _QTUISETTINGS_H_
 #define _QTUISETTINGS_H_
 
+#include <QColor>
+
 #include "uisettings.h"
 
 class QtUiSettings : public UiSettings {
@@ -30,5 +32,14 @@ class QtUiSettings : public UiSettings {
 
 }; 
 
+class QtUiStyleSettings : public UiStyleSettings {
+
+  public:
+    QtUiStyleSettings();
+
+    void setHighlightColor(const QColor &);
+    QColor highlightColor() const;
+
+};
 
 #endif

@@ -18,8 +18,7 @@ set(SOURCES
     settingspage.cpp
     tabcompleter.cpp
     uisettings.cpp
-    uistyle.cpp
-    uistylesettings.cpp)
+    uistyle.cpp)
 
 set(MOC_HDRS
     abstractbuffercontainer.h
@@ -37,8 +36,7 @@ set(MOC_HDRS
 
 set(HEADERS
     uisettings.h
-    uistyle.h
-    uistylesettings.h)
+    uistyle.h)
 
 qt4_wrap_cpp(MOC ${MOC_HDRS})
 

@@ -22,6 +22,7 @@
 #define UISETTINGS_H
 
 #include "clientsettings.h"
+#include "uistyle.h"
 
 class UiSettings : public ClientSettings {
 public:
@@ -30,6 +31,18 @@ public:
   void setValue(const QString &key, const QVariant &data);
   QVariant value(const QString &key, const QVariant &def = QVariant());
   void remove(const QString &key);
+};
+
+class UiStyleSettings : public ClientSettings {
+
+  public:
+    UiStyleSettings(const QString &group = "UiStyle");
+
+    void setCustomFormat(UiStyle::FormatType, QTextCharFormat);
+    QTextCharFormat customFormat(UiStyle::FormatType);
+
+    void removeCustomFormat(UiStyle::FormatType);
+    QList<UiStyle::FormatType> availableFormats();
 };
 
 #endif

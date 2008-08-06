@@ -36,3 +36,30 @@ QVariant UiSettings::value(const QString &key, const QVariant &def) {
 void UiSettings::remove(const QString &key) {
   removeLocalKey(key);
 }
+
+/**************************************************************************/
+
+UiStyleSettings::UiStyleSettings(const QString &group) : ClientSettings(group) {
+
+}
+
+void UiStyleSettings::setCustomFormat(UiStyle::FormatType ftype, QTextCharFormat format) {
+  setLocalValue(QString("Format/%1").arg(ftype), format);
+}
+
+QTextCharFormat UiStyleSettings::customFormat(UiStyle::FormatType ftype) {
+  return localValue(QString("Format/%1").arg(ftype), QTextFormat()).value<QTextFormat>().toCharFormat();
+}
+
+void UiStyleSettings::removeCustomFormat(UiStyle::FormatType ftype) {
+  removeLocalKey(QString("Format/%1").arg(ftype));
+}
+
+QList<UiStyle::FormatType> UiStyleSettings::availableFormats() {
+  QList<UiStyle::FormatType> formats;
+  QStringList list = localChildKeys("Format");
+  foreach(QString type, list) {
+    formats << (UiStyle::FormatType)type.toInt();
+  }
+  return formats;
+}

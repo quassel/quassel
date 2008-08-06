@@ -20,7 +20,7 @@
 #include <QApplication>
 
 #include "uistyle.h"
-#include "uistylesettings.h"
+#include "uisettings.h"
 #include "util.h"
 
 // FIXME remove with migration code
