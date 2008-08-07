@@ -29,6 +29,8 @@
 
 #include "settings.h"
 
+static QHash<QString, QHash<QString, QVariant> > __settingsCache__;
+
 Settings::Settings(QString g, QString applicationName)
 
 #ifdef Q_WS_MAC
@@ -57,15 +59,6 @@ Settings::Settings(QString g, QString applicationName)
   }
 #endif
 */
-}
-
-Settings::~Settings() {
-
-}
-
-void Settings::setGroup(QString g) {
-  group = g;
-
 }
 
 QStringList Settings::allLocalKeys() {
@@ -98,18 +91,34 @@ QStringList Settings::localChildGroups(const QString &rootkey) {
 void Settings::setLocalValue(const QString &key, const QVariant &data) {
   beginGroup(group);
   setValue(key, data);
+  setCacheValue(group, key, data);
   endGroup();
 }
 
-QVariant Settings::localValue(const QString &key, const QVariant &def) {
-  beginGroup(group);
-  QVariant res = value(key, def);
-  endGroup();
-  return res;
+const QVariant &Settings::localValue(const QString &key, const QVariant &def) {
+  if(!isCached(group, key)) {
+    beginGroup(group);
+    setCacheValue(group, key, value(key, def));
+    endGroup();
+  }
+  return cacheValue(group, key);
 }
 
 void Settings::removeLocalKey(const QString &key) {
   beginGroup(group);
   remove(key);
   endGroup();
+}
+
+
+void Settings::setCacheValue(const QString &group, const QString &key, const QVariant &data) {
+  ::__settingsCache__[group][key] = data;
+}
+
+const QVariant &Settings::cacheValue(const QString &group, const QString &key) {
+  return ::__settingsCache__[group][key];
+}
+
+bool Settings::isCached(const QString &group, const QString &key) {
+  return ::__settingsCache__.contains(group) && ::__settingsCache__[group].contains(key);
 }

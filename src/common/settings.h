@@ -26,31 +26,29 @@
 #include <QSettings>
 
 class Settings : private QSettings {
+public:
+  enum Mode { Default, Custom };
+  
+protected:
+  Settings(QString group, QString applicationName);
+  
+  inline void setGroup(const QString &group_) { group = group_; }
+  
+  virtual QStringList allLocalKeys();
+  virtual QStringList localChildKeys(const QString &rootkey = QString());
+  virtual QStringList localChildGroups(const QString &rootkey = QString());
+  
+  virtual void setLocalValue(const QString &key, const QVariant &data);
+  virtual const QVariant &localValue(const QString &key, const QVariant &def = QVariant());
+  
+  virtual void removeLocalKey(const QString &key);
+  
+  QString group;
 
-  public:
-    virtual ~Settings();
-
-    //static void setGuiValue(QString, QVariant) {};
-    //static QVariant guiValue(QString, QVariant = QVariant()) { return QVariant(); }
-
-    enum Mode { Default, Custom };
-
-  protected:
-    Settings(QString group, QString applicationName);
-
-    void setGroup(QString group);
-
-    virtual QStringList allLocalKeys();
-    virtual QStringList localChildKeys(const QString &rootkey = QString());
-    virtual QStringList localChildGroups(const QString &rootkey = QString());
-
-    virtual void setLocalValue(const QString &key, const QVariant &data);
-    virtual QVariant localValue(const QString &key, const QVariant &def = QVariant());
-
-    virtual void removeLocalKey(const QString &key);
-
-    QString group;
-
+private:
+  void setCacheValue(const QString &group, const QString &key, const QVariant &data);
+  const QVariant &cacheValue(const QString &group, const QString &key);
+  bool isCached(const QString &group, const QString &key);
 };
 
 
