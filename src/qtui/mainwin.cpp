@@ -32,6 +32,8 @@
 #include "clientbacklogmanager.h"
 #include "coreinfodlg.h"
 #include "coreconnectdlg.h"
+#include "msgprocessorstatuswidget.h"
+#include "qtuimessageprocessor.h"
 #include "networkmodel.h"
 #include "buffermodel.h"
 #include "nicklistwidget.h"
@@ -70,6 +72,7 @@ MainWin::MainWin(QtUi *_gui, QWidget *parent)
     gui(_gui),
     coreLagLabel(new QLabel()),
     sslLabel(new QLabel()),
+    msgProcessorStatusWidget(new MsgProcessorStatusWidget()),
     _titleSetter(this),
     systray(new QSystemTrayIcon(this)),
     activeTrayIcon(":/icons/quassel-icon-active.png"),
@@ -335,6 +338,10 @@ void MainWin::setupTopicWidget() {
 }
 
 void MainWin::setupStatusBar() {
+  // MessageProcessor progress
+  statusBar()->addPermanentWidget(msgProcessorStatusWidget);
+  connect(Client::messageProcessor(), SIGNAL(progressUpdated(int, int)), msgProcessorStatusWidget, SLOT(setProgress(int, int)));
+
   // Core Lag:
   updateLagIndicator(0);
   statusBar()->addPermanentWidget(coreLagLabel);

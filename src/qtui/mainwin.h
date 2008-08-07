@@ -34,6 +34,7 @@ class ChannelListDlg;
 class CoreConnectDlg;
 class Buffer;
 class BufferViewConfig;
+class MsgProcessorStatusWidget;
 class SettingsDlg;
 class QtUi;
 class Message;
@@ -125,6 +126,7 @@ class MainWin : public QMainWindow {
     QMenu *systrayMenu;
     QLabel *coreLagLabel;
     QLabel *sslLabel;
+    MsgProcessorStatusWidget *msgProcessorStatusWidget;
 
     TitleSetter _titleSetter;
 

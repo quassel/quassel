@@ -18,27 +18,22 @@
 *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 ***************************************************************************/
 
-#ifndef ABSTRACTMESSAGEPROCESSOR_H_
-#define ABSTRACTMESSAGEPROCESSOR_H_
+#ifndef MSGPROCESSORSTATUSWIDGET_H_
+#define MSGPROCESSORSTATUSWIDGET_H_
 
-#include "message.h"
+#include "ui_msgprocessorstatuswidget.h"
 
-class AbstractMessageProcessor : public QObject {
+class MsgProcessorStatusWidget : public QWidget {
   Q_OBJECT
 
   public:
-    AbstractMessageProcessor(QObject *parent);
-    virtual void reset() = 0;
+    MsgProcessorStatusWidget(QWidget *parent = 0);
 
   public slots:
-    virtual void process(Message &msg) = 0;
-    virtual void process(QList<Message> &msgs) = 0;
+    void setProgress(int value, int max);
 
-  signals:
-    void progressUpdated(int value, int maximum);
-
-  protected:
-    void postProcess(Message &msg);
+  private:
+    Ui::MsgProcessorStatusWidget ui;
 
 };
 
