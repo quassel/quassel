@@ -18,7 +18,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QCoreApplication>
 #include <QSettings>
 #include <QStringList>
 #include <QDebug>
@@ -29,96 +28,105 @@
 
 #include "settings.h"
 
-static QHash<QString, QHash<QString, QVariant> > __settingsCache__;
+QHash<QString, QHash<QString, QVariant> > Settings::settingsCache;
 
-Settings::Settings(QString g, QString applicationName)
+// Settings::Settings(QString group_, QString appName_)
+//   : group(group_),
+//     appName(appName_)
+// {
 
-#ifdef Q_WS_MAC
-  : QSettings(QCoreApplication::organizationDomain(), applicationName),
-#else
-  : QSettings(QCoreApplication::organizationName(), applicationName),
-#endif
-    group(g)
-{
-
-/* we need to call the constructor immediately in order to set the path...
-#ifndef Q_WS_QWS
-  QSettings(QCoreApplication::organizationName(), applicationName);
-#else
-  // FIXME sandboxDir() is not currently working correctly...
-  //if(Qtopia::sandboxDir().isEmpty()) QSettings();
-  //else QSettings(Qtopia::sandboxDir() + "/etc/QuasselIRC.conf", QSettings::NativeFormat);
-  // ...so we have to use a workaround:
-  QString appPath = QCoreApplication::applicationFilePath();
-  if(appPath.startsWith(Qtopia::packagePath())) {
-    QString sandboxPath = appPath.left(Qtopia::packagePath().length() + 32);
-    QSettings(sandboxPath + "/etc/QuasselIRC.conf", QSettings::IniFormat);
-    qDebug() << sandboxPath + "/etc/QuasselIRC.conf";
-  } else {
-    QSettings(QCoreApplication::organizationName(), applicationName);
-  }
-#endif
-*/
-}
+// /* we need to call the constructor immediately in order to set the path...
+// #ifndef Q_WS_QWS
+//   QSettings(QCoreApplication::organizationName(), applicationName);
+// #else
+//   // FIXME sandboxDir() is not currently working correctly...
+//   //if(Qtopia::sandboxDir().isEmpty()) QSettings();
+//   //else QSettings(Qtopia::sandboxDir() + "/etc/QuasselIRC.conf", QSettings::NativeFormat);
+//   // ...so we have to use a workaround:
+//   QString appPath = QCoreApplication::applicationFilePath();
+//   if(appPath.startsWith(Qtopia::packagePath())) {
+//     QString sandboxPath = appPath.left(Qtopia::packagePath().length() + 32);
+//     QSettings(sandboxPath + "/etc/QuasselIRC.conf", QSettings::IniFormat);
+//     qDebug() << sandboxPath + "/etc/QuasselIRC.conf";
+//   } else {
+//     QSettings(QCoreApplication::organizationName(), applicationName);
+//   }
+// #endif
+// */
+// }
 
 QStringList Settings::allLocalKeys() {
-  beginGroup(group);
-  QStringList res = allKeys();
-  endGroup();
+  QSettings s(org(), appName);
+  s.beginGroup(group);
+  QStringList res = s.allKeys();
+  s.endGroup();
   return res;
 }
 
 QStringList Settings::localChildKeys(const QString &rootkey) {
   QString g;
-  if(rootkey.isEmpty()) g = group;
-  else g = QString("%1/%2").arg(group, rootkey);
-  beginGroup(g);
-  QStringList res = childKeys();
-  endGroup();
+  if(rootkey.isEmpty())
+    g = group;
+  else
+    g = QString("%1/%2").arg(group, rootkey);
+
+  QSettings s(org(), appName);
+  s.beginGroup(g);
+  QStringList res = s.childKeys();
+  s.endGroup();
   return res;
 }
 
 QStringList Settings::localChildGroups(const QString &rootkey) {
   QString g;
-  if(rootkey.isEmpty()) g = group;
-  else g = QString("%1/%2").arg(group, rootkey);
-  beginGroup(g);
-  QStringList res = childGroups();
-  endGroup();
+  if(rootkey.isEmpty())
+    g = group;
+  else
+    g = QString("%1/%2").arg(group, rootkey);
+
+  QSettings s(org(), appName);
+  s.beginGroup(g);
+  QStringList res = s.childGroups();
+  s.endGroup();
   return res;
 }
 
 void Settings::setLocalValue(const QString &key, const QVariant &data) {
-  beginGroup(group);
-  setValue(key, data);
+  QSettings s(org(), appName);
+  s.beginGroup(group);
+  s.setValue(key, data);
+  s.endGroup();
   setCacheValue(group, key, data);
-  endGroup();
 }
 
 const QVariant &Settings::localValue(const QString &key, const QVariant &def) {
   if(!isCached(group, key)) {
-    beginGroup(group);
-    setCacheValue(group, key, value(key, def));
-    endGroup();
+    QSettings s(org(), appName);
+    s.beginGroup(group);
+    setCacheValue(group, key, s.value(key, def));
+    s.endGroup();
   }
   return cacheValue(group, key);
 }
 
 void Settings::removeLocalKey(const QString &key) {
-  beginGroup(group);
-  remove(key);
-  endGroup();
+  QSettings s(org(), appName);
+  s.beginGroup(group);
+  s.remove(key);
+  s.endGroup();
+  if(isCached(group, key))
+    settingsCache[group].remove(key);
 }
 
 
-void Settings::setCacheValue(const QString &group, const QString &key, const QVariant &data) {
-  ::__settingsCache__[group][key] = data;
-}
+// void Settings::setCacheValue(const QString &group, const QString &key, const QVariant &data) {
+//   settingsCache[group][key] = data;
+// }
 
-const QVariant &Settings::cacheValue(const QString &group, const QString &key) {
-  return ::__settingsCache__[group][key];
-}
+// const QVariant &Settings::cacheValue(const QString &group, const QString &key) {
+//   return settingsCache[group][key];
+// }
 
-bool Settings::isCached(const QString &group, const QString &key) {
-  return ::__settingsCache__.contains(group) && ::__settingsCache__[group].contains(key);
-}
+// bool Settings::isCached(const QString &group, const QString &key) {
+//   return settingsCache.contains(group) && settingsCache[group].contains(key);
+// }

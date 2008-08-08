@@ -18,19 +18,21 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _SETTINGS_H_
-#define _SETTINGS_H_
+#ifndef SETTINGS_H
+#define SETTINGS_H
 
+#include <QCoreApplication>
+#include <QHash>
 #include <QString>
 #include <QVariant>
-#include <QSettings>
 
-class Settings : private QSettings {
+class Settings {
 public:
   enum Mode { Default, Custom };
   
 protected:
-  Settings(QString group, QString applicationName);
+  inline Settings(QString group_, QString appName_) : group(group_), appName(appName_) {}
+  inline virtual ~Settings() {}
   
   inline void setGroup(const QString &group_) { group = group_; }
   
@@ -44,11 +46,27 @@ protected:
   virtual void removeLocalKey(const QString &key);
   
   QString group;
+  QString appName;
 
 private:
-  void setCacheValue(const QString &group, const QString &key, const QVariant &data);
-  const QVariant &cacheValue(const QString &group, const QString &key);
-  bool isCached(const QString &group, const QString &key);
+  inline QString org() {
+#ifdef Q_WS_MAC
+    return QCoreApplication::organizationDomain();
+#else
+    return QCoreApplication::organizationName();
+#endif
+  }
+
+  static QHash<QString, QHash<QString, QVariant> > settingsCache;
+  inline void setCacheValue(const QString &group, const QString &key, const QVariant &data) {
+    settingsCache[group][key] = data;
+  }
+  inline const QVariant &cacheValue(const QString &group, const QString &key) {
+    return settingsCache[group][key];
+  }
+  inline bool isCached(const QString &group, const QString &key) {
+    return settingsCache.contains(group) && settingsCache[group].contains(key);
+  }
 };
 
 
