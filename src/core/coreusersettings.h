@@ -38,11 +38,6 @@ class CoreUserSettings : public CoreSettings {
     void storeIdentity(const Identity &identity);
     void removeIdentity(IdentityId id);
 
-    NetworkInfo networkInfo(NetworkId id);
-    QList<NetworkId> networkIds();
-    void storeNetworkInfo(const NetworkInfo &info);
-    void removeNetworkInfo(NetworkId id);
-
     void setSessionState(const QVariant &data);
     QVariant sessionState(const QVariant &def = QVariant());
 

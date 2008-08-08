@@ -49,32 +49,6 @@ void CoreUserSettings::removeIdentity(IdentityId id) {
   removeLocalKey(QString("Identities/%1").arg(id.toInt()));
 }
 
-
-NetworkInfo CoreUserSettings::networkInfo(NetworkId id) {
-  QVariant v = localValue(QString("Networks/%1").arg(id.toInt()));
-  if(v.canConvert<NetworkInfo>()) {
-    return v.value<NetworkInfo>();
-  }
-  return NetworkInfo();
-}
-
-QList<NetworkId> CoreUserSettings::networkIds() {
-  QList<NetworkId> res;
-  foreach(QString id, localChildKeys("Networks")) {
-    res << id.toInt();
-  }
-  return res;
-}
-
-void CoreUserSettings::storeNetworkInfo(const NetworkInfo &info) {
-  setLocalValue(QString("Networks/%1").arg(info.networkId.toInt()), QVariant::fromValue<NetworkInfo>(info));
-}
-
-void CoreUserSettings::removeNetworkInfo(NetworkId id) {
-  removeLocalKey(QString("Networks/%1").arg(id.toInt()));
-}
-
-// FIXME remove as soon as the network data migration is gone
 void CoreUserSettings::setSessionState(const QVariant &data) {
   setLocalValue("SessionState", data);
 }
