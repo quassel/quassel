@@ -137,8 +137,10 @@ void IrcChannel::joinIrcUsers(const QList<IrcUser *> &users, const QStringList &
   IrcUser *ircuser;
   for(int i = 0; i < users.count(); i++) {
     ircuser = users[i];
-    if(!ircuser || _userModes.contains(ircuser))
+    if(!ircuser || _userModes.contains(ircuser)) {
+      addUserMode(ircuser, modes[i]);
       continue;
+    }
 
     _userModes[ircuser] = modes[i];
     ircuser->joinChannel(this);
