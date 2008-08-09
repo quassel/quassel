@@ -94,11 +94,17 @@ void ChatLineModelItem::computeWrapList() {
 
   do {
     idx = finder.toNextBoundary();
-    if(idx < 0) idx = _contents.plainText.length();
-    wordStart = finder.boundaryReasons().testFlag(QTextBoundaryFinder::StartWord);
-    wordEnd = finder.boundaryReasons().testFlag(QTextBoundaryFinder::EndWord);
+    if(idx < 0) {
+      idx = _contents.plainText.length();
+      wordStart = false;
+      wordEnd = false;
+      mode = SearchStart;
+    } else {
+      wordStart = finder.boundaryReasons().testFlag(QTextBoundaryFinder::StartWord);
+      wordEnd = finder.boundaryReasons().testFlag(QTextBoundaryFinder::EndWord);
+    }
 
-    //qDebug() << wordStart << wordEnd << _contents.plainText.left(idx) << _contents.plainText.mid(idx);
+    //if(flg) qDebug() << idx << mode << wordStart << wordEnd << _contents.plainText.left(idx) << _contents.plainText.mid(idx);
 
     if(mode == SearchEnd || (!wordStart && wordEnd)) {
       if(wordStart || !wordEnd) continue;
