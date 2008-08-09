@@ -909,7 +909,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Récupération des informations sur les canaux...</translation>
     </message>
     <message>
-        <location filename="../src/client/client.cpp" line="279"/>
+        <location filename="../src/client/client.cpp" line="282"/>
         <source>Identity already exists in client!</source>
         <translation>L&apos;Identité existe déjà dans le client!</translation>
     </message>
@@ -3473,12 +3473,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>MainWin</name>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="99"/>
+        <location filename="../src/qtui/mainwin.cpp" line="102"/>
         <source>Waiting for core...</source>
         <translation>Attente du noyau...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="491"/>
+        <location filename="../src/qtui/mainwin.cpp" line="498"/>
         <source>Not connected to core.</source>
         <translation>Déconnecté au noyau.</translation>
     </message>
@@ -3628,7 +3628,7 @@ p, li { white-space: pre-wrap; }
         <translation>Connecter au Noyau...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="433"/>
+        <location filename="../src/qtui/mainwin.cpp" line="440"/>
         <source>Connected to core.</source>
         <translation>Connecté au noyau.</translation>
     </message>
@@ -3638,27 +3638,27 @@ p, li { white-space: pre-wrap; }
         <translation>&amp;Modifier les réseaux...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="273"/>
+        <location filename="../src/qtui/mainwin.cpp" line="276"/>
         <source>Nicks</source>
         <translation>Pseudos</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="291"/>
+        <location filename="../src/qtui/mainwin.cpp" line="294"/>
         <source>Chat Monitor</source>
         <translation>Moniteur de Chat</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="305"/>
+        <location filename="../src/qtui/mainwin.cpp" line="308"/>
         <source>Inputline</source>
         <translation>Ligne de Saisie</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="322"/>
+        <location filename="../src/qtui/mainwin.cpp" line="325"/>
         <source>Topic</source>
         <translation>Sujet</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="349"/>
+        <location filename="../src/qtui/mainwin.cpp" line="356"/>
         <source>Statusbar</source>
         <translation>Barre d&apos;état</translation>
     </message>
@@ -3733,7 +3733,7 @@ p, li { white-space: pre-wrap; }
         <translation>Modèle Réseau</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="454"/>
+        <location filename="../src/qtui/mainwin.cpp" line="461"/>
         <source>Core Lag: %1 msec</source>
         <translation>Lag Noyau:  %1 ms</translation>
     </message>
@@ -3899,6 +3899,19 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/common/message.cpp" line="148"/>
         <source>%Da%DN%1%DN %2</source>
         <translation type="obsolete">%Da%DN%1%DN %2</translation>
+    </message>
+</context>
+<context>
+    <name>MsgProcessorStatusWidget</name>
+    <message>
+        <location filename="../src/qtui/ui/msgprocessorstatuswidget.ui" line="19"/>
+        <source>Form</source>
+        <translation>Formulaire</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/ui/msgprocessorstatuswidget.ui" line="34"/>
+        <source>Processing Messages</source>
+        <translation>Traitement des Messages</translation>
     </message>
 </context>
 <context>
@@ -5049,132 +5062,132 @@ Click to edit!</source>
 <context>
     <name>UiStyle</name>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="320"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="323"/>
         <source>%DT[%1]</source>
         <translation>%DT[%1]</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="325"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="328"/>
         <source>%DS&lt;%1&gt;</source>
         <translation>%DS&lt;%1&gt;</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="325"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="328"/>
         <source>%D0%1</source>
         <translation>%D0%1</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="327"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="330"/>
         <source>%Dn[%1]</source>
         <translation>%Dn[%1]</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="327"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="330"/>
         <source>%Dn%1</source>
         <translation>%Dn%1</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="329"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="332"/>
         <source>%Ds*</source>
         <translation>%Ds*</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="329"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="332"/>
         <source>%Ds%1</source>
         <translation>%Ds%1</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="331"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="334"/>
         <source>%De*</source>
         <translation>%De*</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="366"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="369"/>
         <source>%De%1</source>
         <translation>%De%1</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="333"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="336"/>
         <source>%Dj--&gt;</source>
         <translation>%Dj--&gt;</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="333"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="336"/>
         <source>%Dj%DN%1%DN %DH(%2@%3)%DH has joined %DC%4%DC</source>
         <translation>%Dj%DN%1%DN %DH(%2@%3)%DH a rejoint %DC%4%DC</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="335"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="338"/>
         <source>%Dp&lt;--</source>
         <translation>%Dp&lt;--</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="335"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="338"/>
         <source>%Dp%DN%1%DN %DH(%2@%3)%DH has left %DC%4%DC</source>
         <translation>%Dp%DN%1%DN %DH(%2@%3)%DH a quitté %DC%4%DC</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="339"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="342"/>
         <source>%Dq&lt;--</source>
         <translation>%Dq&lt;--</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="339"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="342"/>
         <source>%Dq%DN%DU%1%DU%DN %DH(%2@%3)%DH has quit</source>
         <translation>%Dq%DN%DU%1%DU%DN %DH(%2@%3)%DH a quitté</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="343"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="346"/>
         <source>%Dk&lt;-*</source>
         <translation>%Dk&lt;-*</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="347"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="350"/>
         <source>%Dk%DN%1%DN has kicked %DN%2%DN from %DC%3%DC</source>
         <translation>%Dk%DN%1%DN a été kické %DN%2%DN de %DC%3%DC</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="352"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="355"/>
         <source>%Dr&lt;-&gt;</source>
         <translation>%Dr&lt;-&gt;</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="353"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="356"/>
         <source>%DrYou are now known as %DN%1%DN</source>
         <translation>%DrVous vous appellez maintenant %DN%1%DN</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="354"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="357"/>
         <source>%Dr%DN%1%DN is now known as %DN%2%DN</source>
         <translation>%Dr%DN%1%DN s&apos;appelle maintenant %DN%2%DN</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="357"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="360"/>
         <source>%Dm***</source>
         <translation>%Dm***</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="358"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="361"/>
         <source>%DmUser mode: %DM%1%DM</source>
         <translation>%DmMode utilisateur: %DM%1%DM</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="359"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="362"/>
         <source>%DmMode %DM%1%DM by %DN%2%DN</source>
         <translation>%DmMode %DM%1%DM par %DN%2%DN</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="362"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="365"/>
         <source>%Da-*-</source>
         <translation>%Da-*-</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="363"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="366"/>
         <source>%Da%DN%1%DN %2</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="367"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="370"/>
         <source>%De[%1]</source>
         <translation>%De[%1]</translation>
     </message>
