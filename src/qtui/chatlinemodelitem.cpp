@@ -123,7 +123,9 @@ void ChatLineModelItem::computeWrapList() {
       word.start = idx;
       mode = SearchEnd;
     }
-  } while(finder.isAtBoundary());
+    // the part " || (finder.position() == _contents.plainText.length())" shouldn't be necessary
+    // but in rare and indeterministic cases Qt states that the end of the text is not a boundary o_O
+  } while(finder.isAtBoundary() || (finder.position() == _contents.plainText.length()));
 
   // A QVector needs less space than a QList
   _wrapList.resize(wplist.count());
