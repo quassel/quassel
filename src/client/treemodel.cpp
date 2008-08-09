@@ -24,6 +24,15 @@
 #include <QDebug>
 #include <QCoreApplication>
 
+class RemoveChildLaterEvent : public QEvent {
+public:
+  RemoveChildLaterEvent(AbstractTreeItem *child) : QEvent(QEvent::User), _child(child) {};
+  inline AbstractTreeItem *child() { return _child; }
+private:
+  AbstractTreeItem *_child;
+};
+
+
 /*****************************************
  *  Abstract Items of a TreeModel
  *****************************************/
@@ -99,6 +108,25 @@ void AbstractTreeItem::removeAllChilds() {
   emit endRemoveChilds();
 
   checkForDeletion();
+}
+
+void AbstractTreeItem::removeChildLater(AbstractTreeItem *child) {
+  Q_ASSERT(child);
+  QCoreApplication::postEvent(this, new RemoveChildLaterEvent(child));
+}
+
+void AbstractTreeItem::customEvent(QEvent *event) {
+  if(event->type() != QEvent::User)
+    return;
+
+  event->accept();
+
+  RemoveChildLaterEvent *removeEvent = static_cast<RemoveChildLaterEvent *>(event);
+  int childRow = _childItems.indexOf(removeEvent->child());
+  if(childRow == -1)
+    return;
+
+  removeChild(childRow);
 }
 
 bool AbstractTreeItem::reParent(AbstractTreeItem *newParent) {

@@ -79,13 +79,17 @@ signals:
   
   void beginRemoveChilds(int firstRow, int lastRow);
   void endRemoveChilds();
-				       
+
+protected:
+  void customEvent(QEvent *event);
+
 private:
   QList<AbstractTreeItem *> _childItems;
   Qt::ItemFlags _flags;
   TreeItemFlags _treeItemFlags;
 
-  inline void checkForDeletion() { if(treeItemFlags() & DeleteOnLastChildRemoved && childCount() == 0) parent()->removeChild(this); }
+  void removeChildLater(AbstractTreeItem *child);
+  inline void checkForDeletion() { if(treeItemFlags() & DeleteOnLastChildRemoved && childCount() == 0) parent()->removeChildLater(this); }
 };
 
 
