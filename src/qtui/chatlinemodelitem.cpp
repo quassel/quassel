@@ -26,23 +26,7 @@
 #include "qtui.h"
 #include "uistyle.h"
 
-// This Struct is taken from Harfbuzz. We use it only to calc it's size.
-// we use a shared memory region so we do not have to malloc a buffer area for every line
-typedef struct {
-    /*HB_LineBreakType*/ unsigned lineBreakType  :2;
-    /*HB_Bool*/ unsigned whiteSpace              :1;     /* A unicode whitespace character, except NBSP, ZWNBSP */
-    /*HB_Bool*/ unsigned charStop                :1;     /* Valid cursor position (for left/right arrow) */
-    /*HB_Bool*/ unsigned wordBoundary            :1;
-    /*HB_Bool*/ unsigned sentenceBoundary        :1;
-    unsigned unused                  :2;
-} HB_CharAttributes_Dummy;
-
-unsigned char *ChatLineModelItem::TextBoundaryFinderBuffer = (unsigned char *)malloc(512 * sizeof(HB_CharAttributes_Dummy));
-int ChatLineModelItem::TextBoundaryFinderBufferSize = 512 * (sizeof(HB_CharAttributes_Dummy) / sizeof(unsigned char));
-
-ChatLineModelItem::ChatLineModelItem(const Message &msg)
-  : MessageModelItem(msg)
-{
+ChatLineModelItem::ChatLineModelItem(const Message &msg) : MessageModelItem(msg) {
   QtUiStyle::StyledMessage m = QtUi::style()->styleMessage(msg);
 
   _timestamp.plainText = m.timestamp.plainText;
@@ -58,49 +42,40 @@ ChatLineModelItem::ChatLineModelItem(const Message &msg)
 
 
 QVariant ChatLineModelItem::data(int column, int role) const {
-  const ChatLinePart *part = 0;
+  const ChatLinePart *part;
 
   switch(column) {
-  case ChatLineModel::TimestampColumn:
-    part = &_timestamp;
-    break;
-  case ChatLineModel::SenderColumn:
-    part = &_sender;
-    break;
-  case ChatLineModel::ContentsColumn:
-    part = &_contents;
-    break;
-  default:
-    return MessageModelItem::data(column, role);
+    case ChatLineModel::TimestampColumn: part = &_timestamp; break;
+    case ChatLineModel::SenderColumn:    part = &_sender; break;
+    case ChatLineModel::ContentsColumn:      part = &_contents; break;
+    default: return MessageModelItem::data(column, role);
   }
 
   switch(role) {
-  case ChatLineModel::DisplayRole:
-    return part->plainText;
-  case ChatLineModel::FormatRole:
-    return QVariant::fromValue<UiStyle::FormatList>(part->formatList);
-  case ChatLineModel::WrapListRole:
-    if(column != ChatLineModel::ContentsColumn)
-      return QVariant();
-    return QVariant::fromValue<ChatLineModel::WrapList>(_wrapList);
+    case ChatLineModel::DisplayRole:
+      return part->plainText;
+    case ChatLineModel::FormatRole:
+      return QVariant::fromValue<UiStyle::FormatList>(part->formatList);
+    case ChatLineModel::WrapListRole:
+      if(column != ChatLineModel::ContentsColumn) return QVariant();
+      return QVariant::fromValue<ChatLineModel::WrapList>(_wrapList);
   }
+
   return MessageModelItem::data(column, role);
 }
 
-void ChatLineModelItem::computeWrapList() {
-  if(_contents.plainText.isEmpty())
-    return;
+bool ChatLineModelItem::setData(int column, const QVariant &value, int role) {
+  return false;
+}
 
+void ChatLineModelItem::computeWrapList() {
   enum Mode { SearchStart, SearchEnd };
 
   QList<ChatLineModel::Word> wplist;  // use a temp list which we'll later copy into a QVector for efficiency
-  // QTextBoundaryFinder finder(QTextBoundaryFinder::Word, _contents.plainText);
-  QTextBoundaryFinder finder(QTextBoundaryFinder::Word, _contents.plainText.unicode(), _contents.plainText.length(), TextBoundaryFinderBuffer, TextBoundaryFinderBufferSize);
-
+  QTextBoundaryFinder finder(QTextBoundaryFinder::Word, _contents.plainText);
   int idx;
   int oldidx = 0;
-  bool wordStart = false;
-  bool wordEnd = false;
+  bool wordStart = false; bool wordEnd = false;
   Mode mode = SearchEnd;
   ChatLineModel::Word word;
   word.start = 0;

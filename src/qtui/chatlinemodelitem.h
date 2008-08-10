@@ -22,30 +22,31 @@
 #define CHATLINEMODELITEM_H_
 
 #include <QVector>
+#include <QPair>
 
 #include "chatlinemodel.h"
 #include "uistyle.h"
 
 class ChatLineModelItem : public MessageModelItem {
-public:
-  ChatLineModelItem(const Message &);
 
-  virtual QVariant data(int column, int role) const;
-  virtual inline bool setData(int column, const QVariant &value, int role) { return false; }
+  public:
 
-private:
-  void computeWrapList();
+    ChatLineModelItem(const Message &);
+    //virtual ~ChatLineModelItem() {};
 
-  struct ChatLinePart {
-    QString plainText;
-    UiStyle::FormatList formatList;
-  };
-  ChatLinePart _timestamp, _sender, _contents;
+    virtual QVariant data(int column, int role) const;
+    virtual bool setData(int column, const QVariant &value, int role);
 
-  ChatLineModel::WrapList _wrapList;
+  private:
+    void computeWrapList();
 
-  static unsigned char *TextBoundaryFinderBuffer;
-  static int TextBoundaryFinderBufferSize;
+    struct ChatLinePart {
+      QString plainText;
+      UiStyle::FormatList formatList;
+    };
+    ChatLinePart _timestamp, _sender, _contents;
+
+    ChatLineModel::WrapList _wrapList;
 };
 
 #endif
