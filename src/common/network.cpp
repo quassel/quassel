@@ -547,7 +547,7 @@ QVariantMap Network::initIrcUsersAndChannels() const {
 
 void Network::initSetIrcUsersAndChannels(const QVariantMap &usersAndChannels) {
   Q_ASSERT(proxy());
-  if(!_ircUsers.isEmpty() || !_ircChannels.isEmpty()) {
+  if(isInitialized()) {
     qWarning() << "Network" << networkId() << "received init data for users and channels allthough there allready are known users or channels!";
     return;
   }
