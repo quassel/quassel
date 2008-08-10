@@ -55,4 +55,5 @@ CoreAliasManager::~CoreAliasManager() {
 void CoreAliasManager::loadDefaults() {
   // Default Aliases:
   addAlias("j", "/join $1");
+  addAlias("back", "/quote away");
 }
