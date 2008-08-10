@@ -216,6 +216,12 @@ void IrcServerHandler::handleMode(const QString &prefix, const QList<QByteArray>
     emit displayMsg(Message::Mode, BufferInfo::ChannelBuffer, serverDecode(params[0]), serverDecode(params).join(" "), prefix);
 
     IrcChannel *channel = network()->ircChannel(params[0]);
+    if(!channel) {
+      // we received mode information for a channel we're not in. that means probably we've just been kicked out or something like that
+      // anyways: we don't have a place to store the data --> discard the info.
+      return;
+    }
+
     QString modes = params[1];
     bool add = true;
     int paramOffset = 2;
