@@ -28,6 +28,8 @@
 #include "chatline.h"
 #include "chatlinemodelitem.h"
 #include "chatscene.h"
+#include "client.h"
+#include "clientbacklogmanager.h"
 #include "columnhandleitem.h"
 #include "qtui.h"
 #include "qtuisettings.h"
@@ -43,6 +45,8 @@ ChatScene::ChatScene(QAbstractItemModel *model, const QString &idString, QObject
   _selectingItem = 0;
   _isSelecting = false;
   _selectionStart = -1;
+  _fetchingBacklog = false;
+
   connect(this, SIGNAL(sceneRectChanged(const QRectF &)), this, SLOT(rectChanged(const QRectF &)));
 
   connect(model, SIGNAL(rowsInserted(const QModelIndex &, int, int)), this, SLOT(rowsInserted(const QModelIndex &, int, int)));
@@ -101,7 +105,7 @@ void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
   for(int i = end+1; i < _lines.count(); i++) {
     _lines[i]->setRow(i);
   }
-  
+
   if(h > 0) {
     _height += h;
     for(int i = end+1; i < _lines.count(); i++) {
@@ -110,6 +114,8 @@ void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
     setSceneRect(QRectF(0, 0, _width, _height));
     emit heightChanged(_height);
   }
+
+  requestBacklogIfNeeded();
 }
 
 void ChatScene::modelReset() {
@@ -274,4 +280,28 @@ QString ChatScene::selectionToString() const {
     result += _lines[l]->item(ChatLineModel::ContentsColumn).data(MessageModel::DisplayRole).toString() + "\n";
   }
   return result;
+}
+
+void ChatScene::setIsFetchingBacklog(bool fetch) {
+  if(!isBacklogFetchingEnabled()) return;
+
+  if(!fetch) {
+    _fetchingBacklog = false;
+  } else {
+    _fetchingBacklog = true;
+    requestBacklogIfNeeded();
+  }
+}
+
+void ChatScene::requestBacklogIfNeeded() {
+  const int REQUEST_COUNT = 50;
+
+  if(!isBacklogFetchingEnabled() || !isFetchingBacklog() || !model()->rowCount()) return;
+
+  MsgId msgId = model()->data(model()->index(0, 0), ChatLineModel::MsgIdRole).value<MsgId>();
+  if(!_lastBacklogOffset.isValid() || (msgId < _lastBacklogOffset && _lastBacklogSize + REQUEST_COUNT <= model()->rowCount())) {
+    Client::backlogManager()->requestBacklog(bufferForBacklogFetching(), REQUEST_COUNT, msgId.toInt());
+    _lastBacklogOffset = msgId;
+    _lastBacklogSize = model()->rowCount();
+  }
 }

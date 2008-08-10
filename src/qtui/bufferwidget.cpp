@@ -34,12 +34,13 @@ BufferWidget::~BufferWidget() {
 }
 
 AbstractChatView *BufferWidget::createChatView(BufferId id) {
-  QWidget *chatView;
+  ChatView *chatView;
   chatView = new ChatView(Client::buffer(id), this);
   _chatViews[id] = chatView;
   ui.stackedWidget->addWidget(chatView);
   chatView->setFocusProxy(this);
-  return dynamic_cast<AbstractChatView*>(chatView);
+  chatView->setBufferForBacklogFetching(id);
+  return chatView;
 }
 
 void BufferWidget::removeChatView(BufferId id) {
