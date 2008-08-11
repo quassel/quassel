@@ -49,6 +49,8 @@ class ChatScene : public QGraphicsScene {
     inline bool isFetchingBacklog() const;
     inline bool isBacklogFetchingEnabled() const;
     inline BufferId bufferForBacklogFetching() const;
+    int sectionByScenePos(int x);
+    inline int sectionByScenePos(const QPoint &pos) { return sectionByScenePos(pos.x()); }
 
   public slots:
     void setWidth(qreal);

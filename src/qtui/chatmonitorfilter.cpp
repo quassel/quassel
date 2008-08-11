@@ -26,10 +26,9 @@
 #include "networkmodel.h"
 
 ChatMonitorFilter::ChatMonitorFilter(MessageModel *model, QObject *parent)
-: MessageFilter(model, QList<BufferId>(), parent)
+  : MessageFilter(model, QList<BufferId>(), parent),
+    _initTime(QDateTime::currentDateTime())
 {
-  _initTime = QDateTime::currentDateTime();
-
 }
 
 bool ChatMonitorFilter::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const {
@@ -38,37 +37,62 @@ bool ChatMonitorFilter::filterAcceptsRow(int sourceRow, const QModelIndex &sourc
   Message::Flags flags = (Message::Flags)sourceModel()->data(sourceModel()->index(sourceRow, 0), MessageModel::FlagsRole).toInt();
   if(!((type & (Message::Plain | Message::Notice | Message::Action)) || flags & Message::Self))
     return false;
+
   QDateTime msgTime = sourceModel()->data(sourceModel()->index(sourceRow, 0), MessageModel::TimestampRole).toDateTime();
   return msgTime > _initTime;
 }
 
-QString ChatMonitorFilter::idString() const {
-  return "ChatMonitor";
-}
-
 // override this to inject display of network and channel
 QVariant ChatMonitorFilter::data(const QModelIndex &index, int role) const {
-  if(index.column() != ChatLineModel::SenderColumn) return MessageFilter::data(index, role);
-  if(role == ChatLineModel::DisplayRole) {
-    BufferId bufid = data(index, ChatLineModel::BufferIdRole).value<BufferId>();
-    if(bufid.isValid()) {
-      Buffer *buf = Client::buffer(bufid);
-      if(!buf) {
-        qDebug() << "invalid buffer!";
-        return QVariant();
-      }
-      const Network *net = Client::networkModel()->networkByIndex(Client::networkModel()->bufferIndex(bufid));
-      if(!net) {
-        qDebug() << "invalid net!";
-        return QVariant();
-      }
-      QString result = QString("<%1:%2:%3").arg(net->networkName())
-                                            .arg(buf->bufferInfo().bufferName())
-                                            .arg(MessageFilter::data(index, role).toString().mid(1));
-      return result;
-    }
+  if(index.column() != ChatLineModel::SenderColumn || role != ChatLineModel::DisplayRole)
+    return MessageFilter::data(index, role);
 
+  int showFields_ = showFields();
+    
+  BufferId bufid = data(index, ChatLineModel::BufferIdRole).value<BufferId>();
+  if(!bufid.isValid()) {
+    qDebug() << "ChatMonitorFilter::data(): chatline belongs to an invalid buffer!";
+    return QVariant();
   }
-  return MessageFilter::data(index, role);
-
+  
+  QStringList fields;
+  if(showFields_ & NetworkField) {
+    fields << Client::networkModel()->networkName(bufid);
+  }
+  if(showFields_ & BufferField) {
+    fields << Client::networkModel()->bufferName(bufid);
+  }
+  fields << MessageFilter::data(index, role).toString().mid(1);
+  return QString("<%1").arg(fields.join(":"));
 }
+
+void ChatMonitorFilter::addShowField(int field) {
+  QtUiSettings s;
+  int fields = s.value(showFieldSettingId(), AllFields).toInt();
+  if(fields & field)
+    return;
+
+  fields |= field;
+  s.setValue(showFieldSettingId(), fields);
+  showFieldSettingsChanged();
+}
+
+void ChatMonitorFilter::removeShowField(int field) {
+  QtUiSettings s;
+  int fields = s.value(showFieldSettingId(), AllFields).toInt();
+  if(!(fields & field))
+    return;
+
+  fields ^= field;
+  s.setValue(showFieldSettingId(), fields);
+  showFieldSettingsChanged();
+}
+
+void ChatMonitorFilter::showFieldSettingsChanged() {
+  int rows = rowCount();
+  if(rows == 0)
+    return;
+
+  emit dataChanged(index(0, ChatLineModel::SenderColumn), index(rows - 1, ChatLineModel::SenderColumn));
+}
+

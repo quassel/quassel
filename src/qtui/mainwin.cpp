@@ -27,6 +27,7 @@
 #include "channellistdlg.h"
 #include "chatlinemodel.h"
 #include "chatmonitorfilter.h"
+#include "chatmonitorview.h"
 #include "chatview.h"
 #include "client.h"
 #include "clientbacklogmanager.h"
@@ -295,7 +296,7 @@ void MainWin::setupChatMonitor() {
   dock->setObjectName("ChatMonitorDock");
 
   ChatMonitorFilter *filter = new ChatMonitorFilter(Client::messageModel(), this);
-  ChatView *chatView = new ChatView(filter, this);
+  ChatMonitorView *chatView = new ChatMonitorView(filter, this);
   chatView->show();
   dock->setWidget(chatView);
   dock->show();

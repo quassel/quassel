@@ -24,20 +24,35 @@
 #include <QDateTime>
 
 #include "messagefilter.h"
+#include "qtuisettings.h"
 
 class ChatMonitorFilter : public MessageFilter {
   Q_OBJECT
 
-  public:
-    ChatMonitorFilter(MessageModel *model, QObject *parent = 0);
+public:
+  enum SenderFields {
+    NoField = 0x00,
+    NetworkField = 0x01,
+    BufferField = 0x02,
+    SenderField = 0x04,
+    AllFields = 0xFF
+  };
 
-    virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
-    virtual QString idString() const;
+  ChatMonitorFilter(MessageModel *model, QObject *parent = 0);
 
-    virtual QVariant data(const QModelIndex &index, int role) const;
+  virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
+  virtual QString idString() const { return "ChatMonitor"; }
+  virtual QVariant data(const QModelIndex &index, int role) const;
 
-  private:
-    QDateTime _initTime;
+  inline QString showFieldSettingId() const { return QString("ChatView/%1/showFields").arg(idString()); }
+  inline int showFields() const { return QtUiSettings().value(showFieldSettingId(), AllFields).toInt(); }
+  void addShowField(int field);
+  void removeShowField(int field);
+
+private:
+  QDateTime _initTime;
+
+  void showFieldSettingsChanged();
 };
 
 #endif

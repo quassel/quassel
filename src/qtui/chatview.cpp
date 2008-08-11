@@ -29,7 +29,10 @@
 #include "messagefilter.h"
 #include "quasselui.h"
 
-ChatView::ChatView(Buffer *buf, QWidget *parent) : QGraphicsView(parent), AbstractChatView() {
+ChatView::ChatView(Buffer *buf, QWidget *parent)
+  : QGraphicsView(parent),
+    AbstractChatView()
+{
   QList<BufferId> filterList;
   filterList.append(buf->bufferInfo().bufferId());
   MessageFilter *filter = new MessageFilter(Client::messageModel(), filterList, this);
@@ -37,7 +40,10 @@ ChatView::ChatView(Buffer *buf, QWidget *parent) : QGraphicsView(parent), Abstra
 
 }
 
-ChatView::ChatView(MessageFilter *filter, QWidget *parent) : QGraphicsView(parent), AbstractChatView() {
+ChatView::ChatView(MessageFilter *filter, QWidget *parent)
+  : QGraphicsView(parent),
+    AbstractChatView()
+{
   init(filter);
 }
 
@@ -53,18 +59,6 @@ void ChatView::init(MessageFilter *filter) {
   connect(verticalScrollBar(), SIGNAL(sliderPressed()), this, SLOT(sliderPressed()));
   connect(verticalScrollBar(), SIGNAL(sliderReleased()), this, SLOT(sliderReleased()));
   connect(verticalScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(verticalScrollbarChanged(int)));
-}
-
-ChatView::~ChatView() {
-
-}
-
-ChatScene *ChatView::scene() const {
-  return _scene;
-}
-
-void ChatView::clear() {
-
 }
 
 void ChatView::resizeEvent(QResizeEvent *event) {

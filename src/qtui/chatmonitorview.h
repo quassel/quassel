@@ -18,46 +18,27 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef CHATVIEW_H_
-#define CHATVIEW_H_
+#ifndef CHATMONITORVIEW_H
+#define CHATMONITORVIEW_H
 
-#include <QGraphicsView>
+#include "chatview.h"
 
-#include "abstractbuffercontainer.h"
+class ChatMonitorFilter;
 
-class AbstractUiMsg;
-class Buffer;
-class ChatLine;
-class ChatScene;
-class MessageFilter;
-
-class ChatView : public QGraphicsView, public AbstractChatView {
+class ChatMonitorView : public ChatView {
   Q_OBJECT
 
 public:
-  ChatView(MessageFilter *, QWidget *parent = 0);
-  ChatView(Buffer *, QWidget *parent = 0);
-
-  inline ChatScene *scene() const { return _scene; }
-
-public slots:
-  inline virtual void clear() {}
-  void setBufferForBacklogFetching(BufferId buffer);
+  ChatMonitorView(ChatMonitorFilter *filter, QWidget *parent);
 
 protected:
-  virtual void resizeEvent(QResizeEvent *event);
+  virtual void contextMenuEvent(QContextMenuEvent *event);
 
-protected slots:
-  virtual void sceneHeightChanged(qreal height);
-  virtual void verticalScrollbarChanged(int);
-  virtual void sliderPressed();
-  virtual void sliderReleased();
-  
+private slots:
+  void showFieldsChanged(bool checked);
+    
 private:
-  void init(MessageFilter *filter);
-
-  ChatScene *_scene;
+  ChatMonitorFilter *_filter;
 };
 
-
-#endif
+#endif //CHATMONITORVIEW_H

@@ -14,6 +14,7 @@ set(SOURCES
     chatlinemodel.cpp
     chatlinemodelitem.cpp
     chatmonitorfilter.cpp
+    chatmonitorview.cpp
     chatscene.cpp
     chatview.cpp
     columnhandleitem.cpp
@@ -43,6 +44,7 @@ set(MOC_HDRS
     channellistdlg.h
     chatlinemodel.h
     chatmonitorfilter.h
+    chatmonitorview.h
     chatscene.h
     chatview.h
     columnhandleitem.h

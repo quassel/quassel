@@ -305,3 +305,12 @@ void ChatScene::requestBacklogIfNeeded() {
     _lastBacklogSize = model()->rowCount();
   }
 }
+
+int ChatScene::sectionByScenePos(int x) {
+  if(x < firstColHandlePos)
+    return ChatLineModel::TimestampColumn;
+  if(x < secondColHandlePos)
+    return ChatLineModel::SenderColumn;
+
+  return ChatLineModel::ContentsColumn;
+}
