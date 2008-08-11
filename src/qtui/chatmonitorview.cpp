@@ -61,10 +61,12 @@ void ChatMonitorView::contextMenuEvent(QContextMenuEvent *event) {
 }
 
 void ChatMonitorView::mouseDoubleClickEvent(QMouseEvent *event) {
-  if(scene()->sectionByScenePos(event->pos()) != ChatLineModel::SenderColumn)
+  if(scene()->sectionByScenePos(event->pos()) != ChatLineModel::SenderColumn) {
+    ChatView::mouseDoubleClickEvent(event);
     return;
+  }
 
-  //ChatItem *chatItem = static_cast<ChatItem *>(itemAt(event->pos()));
+  event->accept();
   ChatItem *chatItem = dynamic_cast<ChatItem *>(itemAt(event->pos()));
   BufferId bufferId = chatItem->data(MessageModel::BufferIdRole).value<BufferId>();
   if(!bufferId.isValid())
