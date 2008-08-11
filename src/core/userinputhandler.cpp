@@ -368,6 +368,8 @@ void UserInputHandler::expand(const QString &alias, const BufferInfo &bufferInfo
   for(int i = 0; i < commands.count(); i++) {
     QString command = commands[i];
     for(int j = params.count(); j > 0; j--) {
+      IrcUser *ircUser = network()->ircUser(params[j - 1]);
+      command = command.replace(QString("$%1:hostname").arg(j), ircUser ? ircUser->host() : QString("*"));
       command = command.replace(QString("$%1").arg(j), params[j - 1]);
     }
     command = command.replace("$0", msg);
