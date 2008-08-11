@@ -233,7 +233,7 @@ void ChatScene::updateSelection(const QPointF &pos) {
 }
 
 void ChatScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
-  if(_isSelecting && event->buttons() & Qt::LeftButton) {
+  if(_isSelecting && event->buttons() == Qt::LeftButton) {
     updateSelection(event->scenePos());
     event->accept();
   } else {
@@ -242,7 +242,7 @@ void ChatScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
 }
 
 void ChatScene::mousePressEvent(QGraphicsSceneMouseEvent *event) {
-  if(event->buttons() & Qt::LeftButton && _selectionStart >= 0) {
+  if(event->buttons() == Qt::LeftButton && _selectionStart >= 0) {
     for(int l = qMin(_selectionStart, _selectionEnd); l <= qMax(_selectionStart, _selectionEnd); l++) {
       _lines[l]->setSelected(false);
     }
@@ -254,7 +254,7 @@ void ChatScene::mousePressEvent(QGraphicsSceneMouseEvent *event) {
 }
 
 void ChatScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
-  if(_isSelecting) {
+  if(_isSelecting && event->buttons() == Qt::LeftButton) {
 #   ifdef Q_WS_X11
       QApplication::clipboard()->setText(selectionToString(), QClipboard::Selection);
 #   endif
