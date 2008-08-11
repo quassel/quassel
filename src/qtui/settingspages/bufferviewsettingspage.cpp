@@ -41,7 +41,7 @@ BufferViewSettingsPage::BufferViewSettingsPage(QWidget *parent)
   ui.settingsGroupBox->setEnabled(false);
   ui.bufferViewPreview->setEnabled(false);
 
-  setEnabled(Client::isConnected());  // need a core connection!
+  coreConnectionStateChanged(Client::isConnected());  // need a core connection!
   connect(Client::instance(), SIGNAL(coreConnectionStateChanged(bool)), this, SLOT(coreConnectionStateChanged(bool)));
   connect(ui.bufferViewList->selectionModel(), SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
 	  this, SLOT(bufferViewSelectionChanged(const QItemSelection &, const QItemSelection &)));
