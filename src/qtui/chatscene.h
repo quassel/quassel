@@ -97,6 +97,7 @@ class ChatScene : public QGraphicsScene {
     int _selectionStartCol, _selectionMinCol;
     int _selectionStart;
     int _selectionEnd;
+    int _firstSelectionRow, _lastSelectionRow;
     bool _isSelecting;
 
     bool _fetchingBacklog;

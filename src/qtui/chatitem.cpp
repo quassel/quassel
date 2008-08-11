@@ -239,7 +239,7 @@ void ChatItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
 }
 
 void ChatItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
-  if(_selectionMode != NoSelection && event->buttons() == Qt::LeftButton) {
+  if(_selectionMode != NoSelection && !event->buttons() & Qt::LeftButton) {
     _selectionEnd = posToCursor(event->pos());
     QString selection
         = data(MessageModel::DisplayRole).toString().mid(qMin(_selectionStart, _selectionEnd), qAbs(_selectionStart - _selectionEnd));

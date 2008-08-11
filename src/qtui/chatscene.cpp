@@ -179,7 +179,7 @@ void ChatScene::setSelectingItem(ChatItem *item) {
 }
 
 void ChatScene::startGlobalSelection(ChatItem *item, const QPointF &itemPos) {
-  _selectionStart = _selectionEnd = item->row();
+  _selectionStart = _selectionEnd = _lastSelectionRow = _firstSelectionRow = item->row();
   _selectionStartCol = _selectionMinCol = item->column();
   _isSelecting = true;
   _lines[_selectionStart]->setSelected(true, (ChatLineModel::ColumnType)_selectionMinCol);
@@ -206,26 +206,31 @@ void ChatScene::updateSelection(const QPointF &pos) {
     }
   }
 
-  if(curRow > _selectionEnd && curRow > _selectionStart) {  // select further towards bottom
-    for(int l = _selectionEnd + 1; l <= curRow; l++) {
-      _lines[l]->setSelected(true, minColumn);
-    }
-  } else if(curRow > _selectionEnd && curRow <= _selectionStart) { // deselect towards bottom
-    for(int l = _selectionEnd; l < curRow; l++) {
-      _lines[l]->setSelected(false);
-    }
-  } else if(curRow < _selectionEnd && curRow >= _selectionStart) {
-    for(int l = _selectionEnd; l > curRow; l--) {
-      _lines[l]->setSelected(false);
-    }
-  } else if(curRow < _selectionEnd && curRow < _selectionStart) {
-    for(int l = _selectionEnd - 1; l >= curRow; l--) {
-      _lines[l]->setSelected(true, minColumn);
-    }
-  }
-  _selectionEnd = curRow;
+  int newstart = qMin(curRow, _firstSelectionRow);
+  int newend = qMax(curRow, _firstSelectionRow);
 
-  if(curRow == _selectionStart && minColumn == ChatLineModel::ContentsColumn) {
+  if(newstart < _selectionStart) {
+    for(int l = newstart; l < _selectionStart; l++)
+      _lines[l]->setSelected(true, minColumn);
+  }
+  if(newstart > _selectionStart) {
+    for(int l = _selectionStart; l < newstart; l++)
+      _lines[l]->setSelected(false);
+  }
+  if(newend > _selectionEnd) {
+    for(int l = _selectionEnd+1; l <= newend; l++)
+      _lines[l]->setSelected(true, minColumn);
+  }
+  if(newend < _selectionEnd) {
+    for(int l = newend+1; l <= _selectionEnd; l++)
+      _lines[l]->setSelected(false);
+  }
+
+  _selectionStart = newstart;
+  _selectionEnd = newend;
+  _lastSelectionRow = curRow;
+
+  if(newstart == newend && minColumn == ChatLineModel::ContentsColumn) {
     _lines[curRow]->setSelected(false);
     _isSelecting = false;
     _selectingItem->continueSelecting(_selectingItem->mapFromScene(pos));
@@ -254,7 +259,7 @@ void ChatScene::mousePressEvent(QGraphicsSceneMouseEvent *event) {
 }
 
 void ChatScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
-  if(_isSelecting && event->buttons() == Qt::LeftButton) {
+  if(_isSelecting && !event->buttons() & Qt::LeftButton) {
 #   ifdef Q_WS_X11
       QApplication::clipboard()->setText(selectionToString(), QClipboard::Selection);
 #   endif
