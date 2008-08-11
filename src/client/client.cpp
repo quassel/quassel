@@ -450,7 +450,9 @@ void Client::receiveBacklog(BufferId bufferId, const QVariantList &msgs) {
   //QTime start = QTime::currentTime();
   QList<Message> msglist;
   foreach(QVariant v, msgs) {
-    msglist << v.value<Message>();
+    Message msg = v.value<Message>();
+    msg.setFlags(msg.flags() | Message::Backlog);
+    msglist << msg;
   }
   messageProcessor()->process(msglist);
   //qDebug() << "processed" << msgs.count() << "backlog lines in" << start.msecsTo(QTime::currentTime());

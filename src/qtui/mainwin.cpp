@@ -560,11 +560,9 @@ void MainWin::toggleVisibility() {
 
 void MainWin::messagesInserted(const QModelIndex &parent, int start, int end) {
   Q_UNUSED(parent);
+
   if(QApplication::activeWindow() != 0)
     return;
-
-  // FIXME
-  return;
 
   for(int i = start; i <= end; i++) {
     QModelIndex idx = Client::messageModel()->index(i, ChatLineModel::ContentsColumn);
@@ -573,6 +571,10 @@ void MainWin::messagesInserted(const QModelIndex &parent, int start, int end) {
       continue;
     }
     Message::Flags flags = (Message::Flags)idx.data(ChatLineModel::FlagsRole).toInt();
+    if(flags.testFlag(Message::Backlog)) continue;
+    flags |= Message::Backlog;  // we only want to trigger a highlight once!
+    Client::messageModel()->setData(idx, (int)flags, ChatLineModel::FlagsRole);
+
     BufferId bufId = idx.data(ChatLineModel::BufferIdRole).value<BufferId>();
     BufferInfo::Type bufType = Client::networkModel()->bufferType(bufId);
 

@@ -48,14 +48,16 @@ public:
     Error  = 0x1000
   };
 
+  // DO NOT CHANGE without knowing what you do, some of these flags are stored in the database
   enum Flag {
-    None = 0,
-    Self = 1,
-    Highlight = 2,
-    Redirected = 4
+    None = 0x00,
+    Self = 0x01,
+    Highlight = 0x02,
+    Redirected = 0x04,
+    Backlog = 0x80
   };
   Q_DECLARE_FLAGS(Flags, Flag)
-  
+
 
   Message(const BufferInfo &bufferInfo = BufferInfo(), Type type = Plain, const QString &contents = "", const QString &sender = "", Flags flags = None);
   Message(const QDateTime &ts, const BufferInfo &buffer = BufferInfo(), Type type = Plain,
