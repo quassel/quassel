@@ -54,6 +54,8 @@ QVariant ChatMonitorFilter::data(const QModelIndex &index, int role) const {
     qDebug() << "ChatMonitorFilter::data(): chatline belongs to an invalid buffer!";
     return QVariant();
   }
+
+  QModelIndex source_index = mapToSource(index);
   
   QStringList fields;
   if(showFields_ & NetworkField) {
@@ -62,8 +64,14 @@ QVariant ChatMonitorFilter::data(const QModelIndex &index, int role) const {
   if(showFields_ & BufferField) {
     fields << Client::networkModel()->bufferName(bufid);
   }
-  fields << MessageFilter::data(index, role).toString().mid(1);
-  return QString("<%1").arg(fields.join(":"));
+
+  Message::Type messageType = (Message::Type)sourceModel()->data(source_index, MessageModel::TypeRole).toInt();
+  if(messageType & (Message::Plain | Message::Notice)) {
+    QString sender = MessageFilter::data(index, role).toString();
+    // we have to strip leading and traling < / >
+    fields << sender.mid(1, sender.count() - 2);
+  }
+  return QString("<%1>").arg(fields.join(":"));
 }
 
 void ChatMonitorFilter::addShowField(int field) {
