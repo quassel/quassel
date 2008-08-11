@@ -36,7 +36,7 @@ NotificationsSettingsPage::NotificationsSettingsPage(QWidget *parent)
   connect(ui.y_value, SIGNAL(valueChanged(int)), this, SLOT(widgetHasChanged()));
 
 #ifndef HAVE_DBUS
-  ui.desktopBox->setEnabled(false);
+  ui.desktopBox->setVisible(false);
 #endif
 }
 
