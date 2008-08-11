@@ -26,7 +26,12 @@
 
 #include "chatmonitorfilter.h"
 #include "chatlinemodel.h"
+#include "chatitem.h"
 #include "chatscene.h"
+#include "client.h"
+#include "networkmodel.h"
+#include "buffermodel.h"
+#include "messagemodel.h"
 #include "qtuisettings.h"
 
 ChatMonitorView::ChatMonitorView(ChatMonitorFilter *filter, QWidget *parent)
@@ -53,6 +58,23 @@ void ChatMonitorView::contextMenuEvent(QContextMenuEvent *event) {
   showBufferAction->setData(ChatMonitorFilter::BufferField);
 
   contextMenu.exec(QCursor::pos());
+}
+
+void ChatMonitorView::mouseDoubleClickEvent(QMouseEvent *event) {
+  if(scene()->sectionByScenePos(event->pos()) != ChatLineModel::SenderColumn)
+    return;
+
+  //ChatItem *chatItem = static_cast<ChatItem *>(itemAt(event->pos()));
+  ChatItem *chatItem = dynamic_cast<ChatItem *>(itemAt(event->pos()));
+  BufferId bufferId = chatItem->data(MessageModel::BufferIdRole).value<BufferId>();
+  if(!bufferId.isValid())
+    return;
+  
+  QModelIndex bufferIdx = Client::networkModel()->bufferIndex(bufferId);
+  if(!bufferIdx.isValid())
+    return;
+
+  Client::bufferModel()->setCurrentIndex(Client::bufferModel()->mapFromSource(bufferIdx));
 }
 
 void ChatMonitorView::showFieldsChanged(bool checked) {

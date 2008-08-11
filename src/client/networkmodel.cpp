@@ -774,11 +774,10 @@ void NetworkModel::networkRemoved(const NetworkId &networkId) {
 }
 
 QModelIndex NetworkModel::bufferIndex(BufferId bufferId) {
-  BufferItem *bufferItem = findBufferItem(bufferId);
-  if(bufferItem)
-    return indexByItem(bufferItem);
-  else
+  if(!_bufferItemCache.contains(bufferId))
     return QModelIndex();
+
+  return indexByItem(_bufferItemCache[bufferId]);
 }
 
 BufferItem *NetworkModel::findBufferItem(const BufferInfo &bufferInfo) {

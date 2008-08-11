@@ -33,6 +33,7 @@ public:
 
 protected:
   virtual void contextMenuEvent(QContextMenuEvent *event);
+  virtual void mouseDoubleClickEvent(QMouseEvent *event);
 
 private slots:
   void showFieldsChanged(bool checked);
