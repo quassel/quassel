@@ -28,7 +28,7 @@
 #include "clientsyncer.h"
 #include "coreconfigwizard.h"
 
-CoreConnectDlg::CoreConnectDlg(QWidget *parent, bool autoconnect)
+CoreConnectDlg::CoreConnectDlg(bool autoconnect, QWidget *parent)
   : QDialog(parent)
 {
   ui.setupUi(this);
@@ -38,8 +38,6 @@ CoreConnectDlg::CoreConnectDlg(QWidget *parent, bool autoconnect)
 
   clientSyncer = new ClientSyncer(this);
   wizard = 0;
-
-  setAttribute(Qt::WA_DeleteOnClose);
 
   doingAutoConnect = false;
 

@@ -24,6 +24,7 @@ SettingsDlg::SettingsDlg(QWidget *parent)
   : QDialog(parent),
     _currentPage(0)
 {
+  setModal(false);
   ui.setupUi(this);
 
   updateGeometry();

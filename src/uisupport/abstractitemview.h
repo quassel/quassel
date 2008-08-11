@@ -41,6 +41,8 @@ public:
   inline QItemSelectionModel *selectionModel() const { return _selectionModel; }
   void setSelectionModel(QItemSelectionModel *selectionModel);
 
+  inline QModelIndex currentIndex() const { return _selectionModel->currentIndex(); }
+
 protected slots:
   virtual void closeEditor(QWidget *, QAbstractItemDelegate::EndEditHint) {};
   virtual void commitData(QWidget *) {};

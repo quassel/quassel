@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _QTUI_H_
-#define _QTUI_H_
+#ifndef QTUI_H
+#define QTUI_H
 
 #include "qtuistyle.h"
 #include "quasselui.h"
@@ -35,25 +35,25 @@ class QtUiMessageProcessor;
 class QtUi : public AbstractUi {
   Q_OBJECT
 
-  public:
-    QtUi();
-    ~QtUi();
-    //void init();
-    MessageModel *createMessageModel(QObject *parent);
-    AbstractMessageProcessor *createMessageProcessor(QObject *parent);
+public:
+  QtUi();
+  ~QtUi();
 
-    static QtUiStyle *style();
+  MessageModel *createMessageModel(QObject *parent);
+  AbstractMessageProcessor *createMessageProcessor(QObject *parent);
 
-  public slots:
-    void init();
+  inline static QtUiStyle *style() { return _style; }
 
-  protected slots:
-    void connectedToCore();
-    void disconnectedFromCore();
+public slots:
+  void init();
 
-  private:
-    MainWin *mainWin;
-    static QtUiStyle *_style;
+protected slots:
+  void connectedToCore();
+  void disconnectedFromCore();
+
+private:
+  MainWin *mainWin;
+  static QtUiStyle *_style;
 };
 
 #endif

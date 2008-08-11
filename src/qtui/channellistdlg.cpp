@@ -86,8 +86,9 @@ void ChannelListDlg::requestSearch() {
 }
 
 void ChannelListDlg::receiveChannelList(const NetworkId &netId, const QStringList &channelFilters, const QList<IrcListHelper::ChannelDescription> &channelList) {
-  Q_UNUSED(netId)
   Q_UNUSED(channelFilters)
+  if(netId != _netId)
+    return;
 
   showFilterLine(!channelList.isEmpty());
   _ircListModel.setChannelList(channelList);

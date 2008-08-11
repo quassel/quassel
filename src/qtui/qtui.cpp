@@ -20,16 +20,28 @@
 
 #include "qtui.h"
 
+#include <QDebug>
+
 #include "chatlinemodel.h"
 #include "mainwin.h"
 #include "qtuimessageprocessor.h"
+#include "uisettings.h"
+#include "util.h"
 
-QtUiStyle *QtUi::_style;
+QtUiStyle *QtUi::_style = 0;
 
 QtUi::QtUi()
   : AbstractUi()
 {
-  mainWin = new MainWin(this);
+  if(_style != 0) {
+    qWarning() << "QtUi has been instantiated again!";
+    return;
+  }
+    
+  UiSettings uiSettings;
+  loadTranslation(uiSettings.value("Locale", QLocale::system()).value<QLocale>());
+
+  mainWin = new MainWin();
   _style = new QtUiStyle;
 
   connect(mainWin, SIGNAL(connectToCore(const QVariantMap &)), this, SIGNAL(connectToCore(const QVariantMap &)));
@@ -43,10 +55,6 @@ QtUi::~QtUi() {
 
 void QtUi::init() {
   mainWin->init();
-}
-
-QtUiStyle *QtUi::style() {
-  return _style;
 }
 
 MessageModel *QtUi::createMessageModel(QObject *parent) {

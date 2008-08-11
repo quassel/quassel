@@ -22,6 +22,9 @@
 
 #include <QDebug>
 
+#include "client.h"
+#include "networkmodel.h"
+
 TopicWidget::TopicWidget(QWidget *parent)
   : AbstractItemView(parent)
 {
@@ -54,7 +57,11 @@ void TopicWidget::setTopic(const QString &newtopic) {
 }
 
 void TopicWidget::on_topicLineEdit_returnPressed() {
-  emit topicChanged(ui.topicLineEdit->text());
+  QModelIndex currentIdx = currentIndex();
+  if(currentIdx.isValid() && currentIdx.data(NetworkModel::BufferTypeRole) == BufferInfo::ChannelBuffer) {
+    BufferInfo bufferInfo = currentIdx.data(NetworkModel::BufferInfoRole).value<BufferInfo>();
+    Client::userInput(bufferInfo, QString("/topic %1").arg(ui.topicLineEdit->text()));
+  }
   switchPlain();
 }
 

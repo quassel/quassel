@@ -35,7 +35,7 @@ class CoreConnectDlg : public QDialog {
   Q_OBJECT
 
   public:
-    CoreConnectDlg(QWidget *parent = 0, bool = false);
+    CoreConnectDlg(bool = false, QWidget *parent = 0);
     ~CoreConnectDlg();
 
   private slots:

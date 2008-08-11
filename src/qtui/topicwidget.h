@@ -35,9 +35,6 @@ public:
 
   virtual bool eventFilter(QObject *obj, QEvent *event);
 
-signals:
-  void topicChanged(const QString &text);
-
 protected slots:
   virtual void currentChanged(const QModelIndex &current, const QModelIndex &previous);
   virtual void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);

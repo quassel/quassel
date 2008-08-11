@@ -46,7 +46,6 @@
 #include "irclistmodel.h"
 #include "verticaldock.h"
 #include "uisettings.h"
-#include "util.h"
 #include "qtuisettings.h"
 #include "jumpkeyhandler.h"
 
@@ -64,30 +63,26 @@
 #include "settingspages/networkssettingspage.h"
 #include "settingspages/notificationssettingspage.h"
 
-#include "debugconsole.h"
 #include "global.h"
 #include "qtuistyle.h"
 
-MainWin::MainWin(QtUi *_gui, QWidget *parent)
+MainWin::MainWin(QWidget *parent)
   : QMainWindow(parent),
-    gui(_gui),
     coreLagLabel(new QLabel()),
     sslLabel(new QLabel()),
     msgProcessorStatusWidget(new MsgProcessorStatusWidget()),
+
     _titleSetter(this),
     systray(new QSystemTrayIcon(this)),
+
     activeTrayIcon(":/icons/quassel-icon-active.png"),
     onlineTrayIcon(":/icons/quassel-icon.png"),
     offlineTrayIcon(":/icons/quassel-icon-offline.png"),
     trayIconActive(false),
-    timer(new QTimer(this)),
-    channelListDlg(new ChannelListDlg(this)),
-    settingsDlg(new SettingsDlg(this)),
-    debugConsole(new DebugConsole(this))
+
+    timer(new QTimer(this))
 {
   UiSettings uiSettings;
-  loadTranslation(uiSettings.value("Locale", QLocale::system()).value<QLocale>());
-
   QString style = uiSettings.value("Style", QString("")).toString();
   if(style != "") {
     QApplication::setStyle(style);
@@ -151,14 +146,11 @@ void MainWin::init() {
   setupStatusBar();
   setupSystray();
 
-  setupSettingsDlg();
-
   // restore mainwin state
   restoreState(s.value("MainWinState").toByteArray());
 
   // restore locked state of docks
   ui.actionLockDockPositions->setChecked(s.value("LockDocks", false).toBool());
-
 
   setDisconnectedState();  // Disable menus and stuff
   showCoreConnectionDlg(true); // autoconnect if appropriate
@@ -184,7 +176,6 @@ void MainWin::setupMenus() {
   connect(ui.actionCoreInfo, SIGNAL(triggered()), this, SLOT(showCoreInfoDlg()));
   connect(ui.actionQuit, SIGNAL(triggered()), QCoreApplication::instance(), SLOT(quit()));
   connect(ui.actionSettingsDlg, SIGNAL(triggered()), this, SLOT(showSettingsDlg()));
-  // connect(ui.actionDebug_Console, SIGNAL(triggered()), this, SLOT(showDebugConsole()));
   connect(ui.actionAboutQuassel, SIGNAL(triggered()), this, SLOT(showAboutDlg()));
   connect(ui.actionAboutQt, SIGNAL(triggered()), QApplication::instance(), SLOT(aboutQt()));
 }
@@ -236,22 +227,6 @@ void MainWin::removeBufferView(int bufferViewConfigId) {
       dock->deleteLater();
     }
   }
-}
-
-void MainWin::setupSettingsDlg() {
-  //Category: Appearance
-  settingsDlg->registerSettingsPage(new ColorSettingsPage(settingsDlg));
-  settingsDlg->registerSettingsPage(new FontsSettingsPage(settingsDlg));
-  settingsDlg->registerSettingsPage(new AppearanceSettingsPage(settingsDlg)); //General
-  //Category: Behaviour
-  settingsDlg->registerSettingsPage(new GeneralSettingsPage(settingsDlg));
-  settingsDlg->registerSettingsPage(new HighlightSettingsPage(settingsDlg));
-  settingsDlg->registerSettingsPage(new AliasesSettingsPage(settingsDlg));
-  settingsDlg->registerSettingsPage(new NotificationsSettingsPage(settingsDlg));
-  //Category: General
-  settingsDlg->registerSettingsPage(new IdentitiesSettingsPage(settingsDlg));
-  settingsDlg->registerSettingsPage(new NetworksSettingsPage(settingsDlg));
-  settingsDlg->registerSettingsPage(new BufferViewSettingsPage(settingsDlg));
 }
 
 void MainWin::on_actionEditNetworks_triggered() {
@@ -326,7 +301,6 @@ void MainWin::setupTopicWidget() {
   VerticalDock *dock = new VerticalDock(tr("Topic"), this);
   dock->setObjectName("TopicDock");
   TopicWidget *topicwidget = new TopicWidget(dock);
-  connect(topicwidget, SIGNAL(topicChanged(const QString &)), this, SLOT(changeTopic(const QString &)));
 
   dock->setWidget(topicwidget);
 
@@ -409,14 +383,6 @@ void MainWin::changeEvent(QEvent *event) {
       }
     }
   }
-}
-
-// FIXME this should be made prettier...
-void MainWin::changeTopic(const QString &topic) {
-  BufferId id = ui.bufferWidget->currentBuffer();
-  if(!id.isValid()) return;
-  Buffer *buffer = Client::buffer(id);
-  if(buffer) Client::userInput(buffer->bufferInfo(), QString("/topic %1").arg(topic));
 }
 
 void MainWin::connectedToCore() {
@@ -504,43 +470,49 @@ void MainWin::setDisconnectedState() {
 }
 
 void MainWin::showCoreConnectionDlg(bool autoConnect) {
-  coreConnectDlg = new CoreConnectDlg(this, autoConnect);
-  connect(coreConnectDlg, SIGNAL(finished(int)), this, SLOT(coreConnectionDlgFinished(int)));
-  coreConnectDlg->setModal(true);
-  coreConnectDlg->show();
-}
-
-void MainWin::coreConnectionDlgFinished(int /*code*/) {
-  coreConnectDlg->close();
-  //exit(1);
+  CoreConnectDlg(autoConnect, this).exec();
 }
 
 void MainWin::showChannelList(NetworkId netId) {
+  ChannelListDlg *channelListDlg = new ChannelListDlg();
+
   if(!netId.isValid()) {
     QAction *action = qobject_cast<QAction *>(sender());
     if(action)
       netId = action->data().value<NetworkId>();
   }
+
+  channelListDlg->setAttribute(Qt::WA_DeleteOnClose);
   channelListDlg->setNetwork(netId);
   channelListDlg->show();
 }
 
 void MainWin::showCoreInfoDlg() {
-  CoreInfoDlg dlg(this);
-  dlg.exec();
+  CoreInfoDlg(this).exec();
 }
 
 void MainWin::showSettingsDlg() {
-  settingsDlg->show();
-}
+  SettingsDlg *dlg = new SettingsDlg();
 
-void MainWin::showDebugConsole() {
-  debugConsole->show();
+  //Category: Appearance
+  dlg->registerSettingsPage(new ColorSettingsPage(dlg));
+  dlg->registerSettingsPage(new FontsSettingsPage(dlg));
+  dlg->registerSettingsPage(new AppearanceSettingsPage(dlg)); //General
+  //Category: Behaviour
+  dlg->registerSettingsPage(new GeneralSettingsPage(dlg));
+  dlg->registerSettingsPage(new HighlightSettingsPage(dlg));
+  dlg->registerSettingsPage(new AliasesSettingsPage(dlg));
+  dlg->registerSettingsPage(new NotificationsSettingsPage(dlg));
+  //Category: General
+  dlg->registerSettingsPage(new IdentitiesSettingsPage(dlg));
+  dlg->registerSettingsPage(new NetworksSettingsPage(dlg));
+  dlg->registerSettingsPage(new BufferViewSettingsPage(dlg));
+
+  dlg->show();
 }
 
 void MainWin::showAboutDlg() {
-  AboutDlg dlg(this);
-  dlg.exec();
+  AboutDlg(this).exec();
 }
 
 void MainWin::closeEvent(QCloseEvent *event) {
