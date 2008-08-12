@@ -28,7 +28,6 @@
 #include "types.h"
 
 class AbstractUiMsg;
-class Buffer;
 class BufferId;
 class ChatItem;
 class ChatLine;

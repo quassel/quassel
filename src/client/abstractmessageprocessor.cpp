@@ -22,12 +22,11 @@
 
 #include "client.h"
 
-AbstractMessageProcessor::AbstractMessageProcessor(QObject *parent) : QObject(parent) {
-
-
-
+AbstractMessageProcessor::AbstractMessageProcessor(QObject *parent)
+  : QObject(parent)
+{
 }
 
-void AbstractMessageProcessor::postProcess(Message &msg) {
-  Client::buffer(msg.bufferInfo())->updateActivityLevel(msg);
-}
+// void AbstractMessageProcessor::postProcess(Message &msg) {
+//   Client::buffer(msg.bufferInfo())->updateActivityLevel(msg);
+// }

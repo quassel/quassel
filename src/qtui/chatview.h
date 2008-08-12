@@ -38,6 +38,7 @@ public:
   ChatView(MessageFilter *, QWidget *parent = 0);
   ChatView(Buffer *, QWidget *parent = 0);
 
+  virtual MsgId lastMsgId() const;
   inline ChatScene *scene() const { return _scene; }
 
 public slots:

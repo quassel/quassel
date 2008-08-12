@@ -102,3 +102,15 @@ void ChatView::verticalScrollbarChanged(int newPos) {
     scene()->setIsFetchingBacklog(vbar->value() == vbar->minimum());
   }
 }
+
+MsgId ChatView::lastMsgId() const {
+  if(!scene())
+    return MsgId();
+
+  QAbstractItemModel *model = scene()->model();
+  if(!model || model->rowCount() == 0)
+    return MsgId();
+
+  
+  return model->data(model->index(model->rowCount() - 1, 0), MessageModel::MsgIdRole).value<MsgId>();
+}

@@ -49,23 +49,9 @@ public:
   Buffer(BufferInfo, QObject *parent = 0);
 
   BufferInfo bufferInfo() const;
-  inline bool isVisible() const { return _isVisible; }
-  inline MsgId lastSeenMsg() const { return _lastSeenMsg; }
-  inline ActivityLevel activityLevel() const { return _activityLevel; }
-
-public slots:
-  void setVisible(bool visible);
-  void setLastSeenMsg(const MsgId &msgId);
-  void setActivityLevel(ActivityLevel level);
-  void updateActivityLevel(const Message &msg);
 
 private:
   BufferInfo _bufferInfo;
-  bool _isVisible;
-  MsgId _lastSeenMsg;
-  Message _lastRcvdMsg;
-  ActivityLevel _activityLevel;
-
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(Buffer::ActivityLevel)

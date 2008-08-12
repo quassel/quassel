@@ -19,7 +19,6 @@
  ***************************************************************************/
 
 #include "abstractbuffercontainer.h"
-#include "buffer.h"
 #include "client.h"
 #include "networkmodel.h"
 
@@ -31,7 +30,6 @@ AbstractBufferContainer::AbstractBufferContainer(QWidget *parent)
 
 AbstractBufferContainer::~AbstractBufferContainer() {
 }
-
 
 void AbstractBufferContainer::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end) {
   Q_ASSERT(model());
@@ -60,7 +58,6 @@ void AbstractBufferContainer::rowsAboutToBeRemoved(const QModelIndex &parent, in
 }
 
 void AbstractBufferContainer::removeBuffer(BufferId bufferId) {
-  if(Client::buffer(bufferId)) Client::buffer(bufferId)->setVisible(false);
   if(!_chatViews.contains(bufferId))
     return;
 
@@ -78,26 +75,24 @@ void AbstractBufferContainer::currentChanged(const QModelIndex &current, const Q
 }
 
 void AbstractBufferContainer::setCurrentBuffer(BufferId bufferId) {
-  AbstractChatView *chatView = 0;
-  Buffer *prevBuffer = Client::buffer(currentBuffer());
-  if(prevBuffer) prevBuffer->setVisible(false);
+  BufferId prevBufferId = currentBuffer();
+  if(prevBufferId.isValid() && _chatViews.contains(prevBufferId)) {
+    Client::setBufferLastSeenMsg(prevBufferId, _chatViews[prevBufferId]->lastMsgId());
+  }
 
-  Buffer *buf;
-  if(!bufferId.isValid() || !(buf = Client::buffer(bufferId))) {
-    if(bufferId.isValid())
-      qWarning() << "AbstractBufferContainer::setBuffer(BufferId): Can't show unknown Buffer:" << bufferId;
+  if(!bufferId.isValid()) {
+    qWarning() << "AbstractBufferContainer::setBuffer(BufferId): invalid BufferId:" << bufferId;
     _currentBuffer = 0;
     showChatView(0);
     return;
   }
-  if(_chatViews.contains(bufferId)) {
-    chatView = _chatViews[bufferId];
-  } else {
-    chatView = createChatView(bufferId);
-    _chatViews[bufferId] = chatView;
-  }
+
+  if(!_chatViews.contains(bufferId))
+    _chatViews[bufferId] = createChatView(bufferId);
+
   _currentBuffer = bufferId;
   showChatView(bufferId);
-  buf->setVisible(true);
+  Client::networkModel()->setBufferActivity(bufferId, Buffer::NoActivity);
+  Client::setBufferLastSeenMsg(bufferId, _chatViews[bufferId]->lastMsgId());
   setFocus();
 }

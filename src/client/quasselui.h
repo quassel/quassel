@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _QUASSELUI_H_
-#define _QUASSELUI_H_
+#ifndef QUASSELUI_H
+#define QUASSELUI_H
 
 #include <QObject>
 #include "message.h"
@@ -35,6 +35,9 @@ class AbstractUi : public QObject {
     virtual MessageModel *createMessageModel(QObject *parent) = 0;
     virtual AbstractMessageProcessor *createMessageProcessor(QObject *parent) = 0;
 
+  inline static bool isVisible() { return _visible; }
+  inline static void setVisible(bool visible) { _visible = visible; }
+
   protected slots:
     virtual void connectedToCore() {}
     virtual void disconnectedFromCore() {}
@@ -43,6 +46,8 @@ class AbstractUi : public QObject {
     void connectToCore(const QVariantMap &connInfo);
     void disconnectFromCore();
 
+private:
+  static bool _visible;
 };
 
 #endif

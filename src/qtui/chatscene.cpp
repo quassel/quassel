@@ -23,7 +23,6 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QPersistentModelIndex>
 
-#include "buffer.h"
 #include "chatitem.h"
 #include "chatline.h"
 #include "chatlinemodelitem.h"

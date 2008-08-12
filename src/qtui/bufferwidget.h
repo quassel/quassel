@@ -30,7 +30,6 @@ class BufferWidget : public AbstractBufferContainer {
 
   public:
     BufferWidget(QWidget *parent);
-    virtual ~BufferWidget();
 
   protected:
     virtual AbstractChatView *createChatView(BufferId);

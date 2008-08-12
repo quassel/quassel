@@ -61,10 +61,6 @@ void BufferModel::synchronizeView(QAbstractItemView *view) {
   view->setSelectionModel(mappedSelectionModel);
 }
 
-QModelIndex BufferModel::currentIndex() {
-  return standardSelectionModel()->currentIndex();
-}
-
 void BufferModel::setCurrentIndex(const QModelIndex &newCurrent) {
   _selectionModelSynchronizer.selectionModel()->setCurrentIndex(newCurrent, QItemSelectionModel::Current);
   _selectionModelSynchronizer.selectionModel()->select(newCurrent, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);

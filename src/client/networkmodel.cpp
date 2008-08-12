@@ -23,6 +23,7 @@
 #include <QAbstractItemView>
 
 #include "bufferinfo.h"
+#include "buffermodel.h"
 #include "client.h"
 #include "signalproxy.h"
 #include "network.h"
@@ -185,10 +186,27 @@ void BufferItem::setActivityLevel(Buffer::ActivityLevel level) {
   }
 }
 
-void BufferItem::updateActivityLevel(Buffer::ActivityLevel level) {
-  Buffer::ActivityLevel oldActivity = _activity;
-  _activity |= level;
-  if(oldActivity != _activity)
+//void BufferItem::updateActivityLevel(Buffer::ActivityLevel level) {
+void BufferItem::updateActivityLevel(const Message &msg) {
+  if(isCurrentBuffer())
+    return;
+
+  if(msg.flags() & Message::Self)	// don't update activity for our own messages
+    return;
+
+  if(lastSeenMsgId() >= msg.msgId())
+    return;
+
+  Buffer::ActivityLevel oldLevel = activityLevel();
+
+  _activity |= Buffer::OtherActivity;
+  if(msg.type() & (Message::Plain | Message::Notice | Message::Action))
+    _activity |= Buffer::NewMessage;
+
+  if(msg.flags() & Message::Highlight)
+    _activity |= Buffer::Highlight;
+
+  if(oldLevel != _activity)
     emit dataChanged();
 }
 
@@ -230,32 +248,14 @@ void BufferItem::setBufferName(const QString &name) {
   emit dataChanged(0);
 }
 
+bool BufferItem::isCurrentBuffer() const {
+  return _bufferInfo.bufferId() == Client::bufferModel()->currentIndex().data(NetworkModel::BufferIdRole).value<BufferId>();
+}
+
 QString BufferItem::toolTip(int column) const {
   Q_UNUSED(column);
   return tr("<p> %1 - %2 </p>").arg(bufferInfo().bufferId().toInt()).arg(bufferName());
 }
-
-/*
-void BufferItem::setLastMsgInsert(QDateTime msgDate) {
-  if(msgDate.isValid() && msgDate > _lastMsgInsert)
-    _lastMsgInsert = msgDate;
-}
-*/
-/*
-// FIXME emit dataChanged()
-bool BufferItem::setLastSeen() {
-  if(_lastSeen > _lastMsgInsert)
-    return false;
-  
-  _lastSeen = _lastMsgInsert;
-  BufferSettings(bufferInfo().bufferId()).setLastSeen(_lastSeen);
-  return true;
-}
-
-QDateTime BufferItem::lastSeen() {
-  return _lastSeen;
-}
-*/
 
 /*****************************************
 *  StatusBufferItem
@@ -721,13 +721,6 @@ bool NetworkModel::isBufferIndex(const QModelIndex &index) const {
   return index.data(NetworkModel::ItemTypeRole) == NetworkModel::BufferItemType;
 }
 
-/*
-Buffer *NetworkModel::getBufferByIndex(const QModelIndex &index) const {
-  BufferItem *item = static_cast<BufferItem *>(index.internalPointer());
-  return Client::instance()->buffer(item->id());
-}
-*/
-
 int NetworkModel::networkRow(NetworkId networkId) {
   NetworkItem *netItem = 0;
   for(int i = 0; i < rootItem->childCount(); i++) {
@@ -780,28 +773,17 @@ QModelIndex NetworkModel::bufferIndex(BufferId bufferId) {
   return indexByItem(_bufferItemCache[bufferId]);
 }
 
-BufferItem *NetworkModel::findBufferItem(const BufferInfo &bufferInfo) {
-  NetworkItem *netItem = findNetworkItem(bufferInfo.networkId());
-  if(!netItem)
-    return 0;
-
-  BufferItem *bufferItem = netItem->findBufferItem(bufferInfo);
-  return bufferItem;
-}
-
 BufferItem *NetworkModel::findBufferItem(BufferId bufferId) {
-  NetworkItem *netItem;
-  BufferItem *bufferItem;
-  
-  for(int i = 0; i < rootItem->childCount(); i++) {
-    netItem = qobject_cast<NetworkItem *>(rootItem->child(i));
-    if((bufferItem = netItem->findBufferItem(bufferId)))
-      return bufferItem;
-  }
-  return 0;
+  if(_bufferItemCache.contains(bufferId))
+    return _bufferItemCache[bufferId];
+  else
+    return 0;
 }
 
 BufferItem *NetworkModel::bufferItem(const BufferInfo &bufferInfo) {
+  if(_bufferItemCache.contains(bufferInfo.bufferId()))
+    return _bufferItemCache[bufferInfo.bufferId()];
+
   NetworkItem *netItem = networkItem(bufferInfo.networkId());
   return netItem->bufferItem(bufferInfo);
 }
@@ -912,37 +894,38 @@ void NetworkModel::bufferUpdated(BufferInfo bufferInfo) {
 }
 
 void NetworkModel::removeBuffer(BufferId bufferId) {
-  BufferItem *bufferItem = findBufferItem(bufferId);
-  if(bufferItem)
-    bufferItem->parent()->removeChild(bufferItem);
-}
-
-/*
-void NetworkModel::updateBufferActivity(const Message &msg) {
-  BufferItem *buff = bufferItem(msg.bufferInfo());
-  Q_ASSERT(buff);
-
-  buff->setLastMsgInsert(msg.timestamp());
-
-  if(buff->lastSeen() >= msg.timestamp())
+  BufferItem *buffItem = findBufferItem(bufferId);
+  if(!buffItem)
     return;
 
-  BufferItem::ActivityLevel level = BufferItem::OtherActivity;
-  if(msg.type() == Message::Plain || msg.type() == Message::Notice)
-    level |= BufferItem::NewMessage;
-
-  if(msg.flags() & Message::Highlight) 
-      level |= BufferItem::Highlight;
-
-  bufferItem(msg.bufferInfo())->updateActivity(level);
+  buffItem->parent()->removeChild(buffItem);
 }
-*/
 
-void NetworkModel::setBufferActivity(const BufferInfo &info, Buffer::ActivityLevel level) {
-  BufferItem *buff = bufferItem(info);
-  Q_ASSERT(buff);
+void NetworkModel::setLastSeenMsgId(const BufferId &bufferId, const MsgId &msgId) {
+  BufferItem *bufferItem = findBufferItem(bufferId);
+  if(!bufferItem) {
+    qDebug() << "NetworkModel::setLastSeenMsgId(): buffer is unknown:" << bufferId;
+    return;
+  }
+  bufferItem->setLastSeenMsgId(msgId);
+}
 
-  buff->setActivityLevel(level);
+void NetworkModel::updateBufferActivity(const Message &msg) {
+  BufferItem *bufferItem = findBufferItem(msg.bufferInfo());
+  if(!bufferItem) {
+    qDebug() << "NetworkModel::updateBufferActivity(): buffer is unknown:" << msg.bufferInfo();
+    return;
+  }
+  bufferItem->updateActivityLevel(msg);
+}
+
+void NetworkModel::setBufferActivity(const BufferId &bufferId, Buffer::ActivityLevel level) {
+  BufferItem *bufferItem = findBufferItem(bufferId);
+  if(!bufferItem) {
+    qDebug() << "NetworkModel::setBufferActivity(): buffer is unknown:" << bufferId;
+    return;
+  }
+  bufferItem->setActivityLevel(level);
 }
 
 const Network *NetworkModel::networkByIndex(const QModelIndex &index) const {
@@ -953,8 +936,6 @@ const Network *NetworkModel::networkByIndex(const QModelIndex &index) const {
   NetworkId networkId = netVariant.value<NetworkId>();
   return Client::network(networkId);
 }
-
-
 
 void NetworkModel::checkForRemovedBuffers(const QModelIndex &parent, int start, int end) {
   if(parent.data(ItemTypeRole) != NetworkItemType)

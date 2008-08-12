@@ -32,7 +32,6 @@
 class Buffer;
 class BufferViewConfig;
 class MsgProcessorStatusWidget;
-class QtUi;
 class Message;
 class NickListWidget;
 
@@ -44,115 +43,115 @@ class NickListWidget;
 class MainWin : public QMainWindow {
   Q_OBJECT
 
-  public:
-    MainWin(QWidget *parent = 0);
-    virtual ~MainWin();
+public:
+  MainWin(QWidget *parent = 0);
+  virtual ~MainWin();
 
-    void init();
-    void addBufferView(BufferViewConfig *config = 0);
+  void init();
+  void addBufferView(BufferViewConfig *config = 0);
 
-    void displayTrayIconMessage(const QString &title, const QString &message);
-
-#ifdef HAVE_DBUS
-    void sendDesktopNotification(const QString &title, const QString &message);
-#endif
-
-    virtual bool event(QEvent *event);
-
-  public slots:
-    void setTrayIconActivity(bool active = false);
-
-  protected:
-    void closeEvent(QCloseEvent *event);
-    virtual void changeEvent(QEvent *event);
-
-  protected slots:
-    void connectedToCore();
-    void setConnectedState();
-    void updateLagIndicator(int lag);
-    void securedConnection();
-    void disconnectedFromCore();
-    void setDisconnectedState();
-    void systrayActivated( QSystemTrayIcon::ActivationReason );
-
-  private slots:
-    void addBufferView(int bufferViewConfigId);
-    void removeBufferView(int bufferViewConfigId);
-    void messagesInserted(const QModelIndex &parent, int start, int end);
-    void showChannelList(NetworkId netId = NetworkId());
-    void showCoreInfoDlg();
-    void showSettingsDlg();
-    void on_actionEditNetworks_triggered();
-    void on_actionManageViews_triggered();
-    void on_actionLockDockPositions_toggled(bool lock);
-    void showAboutDlg();
-    void on_actionDebugNetworkModel_triggered(bool);
-
-    void showCoreConnectionDlg(bool autoConnect = false);
-
-    void clientNetworkCreated(NetworkId);
-    void clientNetworkRemoved(NetworkId);
-    void clientNetworkUpdated();
-    void connectOrDisconnectFromNet();
-
-    void makeTrayIconBlink();
-    void saveStatusBarStatus(bool enabled);
-
-    void loadLayout();
-    void saveLayout();
+  void displayTrayIconMessage(const QString &title, const QString &message);
 
 #ifdef HAVE_DBUS
-    void desktopNotificationClosed(uint id, uint reason);
-    void desktopNotificationInvoked(uint id, const QString & action);
+  void sendDesktopNotification(const QString &title, const QString &message);
 #endif
 
-  signals:
-    void connectToCore(const QVariantMap &connInfo);
-    void disconnectFromCore();
-    void requestBacklog(BufferInfo, QVariant, QVariant);
+  virtual bool event(QEvent *event);
 
-  private:
-    Ui::MainWin ui;
+public slots:
+  void setTrayIconActivity(bool active = false);
 
-    QMenu *systrayMenu;
-    QLabel *coreLagLabel;
-    QLabel *sslLabel;
-    MsgProcessorStatusWidget *msgProcessorStatusWidget;
+protected:
+  void closeEvent(QCloseEvent *event);
+  virtual void changeEvent(QEvent *event);
+					 
+protected slots:
+  void connectedToCore();
+  void setConnectedState();
+  void updateLagIndicator(int lag);
+  void securedConnection();
+  void disconnectedFromCore();
+  void setDisconnectedState();
+  void systrayActivated( QSystemTrayIcon::ActivationReason );
+							    
+private slots:
+  void addBufferView(int bufferViewConfigId);
+  void removeBufferView(int bufferViewConfigId);
+  void messagesInserted(const QModelIndex &parent, int start, int end);
+  void showChannelList(NetworkId netId = NetworkId());
+  void showCoreInfoDlg();
+  void showSettingsDlg();
+  void on_actionEditNetworks_triggered();
+  void on_actionManageViews_triggered();
+  void on_actionLockDockPositions_toggled(bool lock);
+  void showAboutDlg();
+  void on_actionDebugNetworkModel_triggered(bool);
+  
+  void showCoreConnectionDlg(bool autoConnect = false);
+  
+  void clientNetworkCreated(NetworkId);
+  void clientNetworkRemoved(NetworkId);
+  void clientNetworkUpdated();
+  void connectOrDisconnectFromNet();
+  
+  void makeTrayIconBlink();
+  void saveStatusBarStatus(bool enabled);
 
-    TitleSetter _titleSetter;
-
-    void setupMenus();
-    void setupViews();
-    void setupNickWidget();
-    void setupChatMonitor();
-    void setupInputWidget();
-    void setupTopicWidget();
-    void setupStatusBar();
-    void setupSystray();
-
-    void toggleVisibility();
-
-    void enableMenus();
-
-    QSystemTrayIcon *systray;
-    QIcon activeTrayIcon;
-    QIcon onlineTrayIcon;
-    QIcon offlineTrayIcon;
-    bool trayIconActive;
-    QTimer *timer;
-
-    BufferId currentBuffer;
-    QString currentProfile;
-
-    QList<QDockWidget *> _netViews;
-    NickListWidget *nickListWidget;
-
+  void loadLayout();
+  void saveLayout();
+  
 #ifdef HAVE_DBUS
-    org::freedesktop::Notifications *desktopNotifications;
-    quint32 notificationId;
+  void desktopNotificationClosed(uint id, uint reason);
+  void desktopNotificationInvoked(uint id, const QString & action);
 #endif
+  
+signals:
+  void connectToCore(const QVariantMap &connInfo);
+  void disconnectFromCore();
+  void requestBacklog(BufferInfo, QVariant, QVariant);
+  
+private:
+  Ui::MainWin ui;
+  
+  QMenu *systrayMenu;
+  QLabel *coreLagLabel;
+  QLabel *sslLabel;
+  MsgProcessorStatusWidget *msgProcessorStatusWidget;
+  
+  TitleSetter _titleSetter;
+  
+  void setupMenus();
+  void setupViews();
+  void setupNickWidget();
+  void setupChatMonitor();
+  void setupInputWidget();
+  void setupTopicWidget();
+  void setupStatusBar();
+  void setupSystray();
+  
+  void toggleVisibility();
+  
+  void enableMenus();
+  
+  QSystemTrayIcon *systray;
+  QIcon activeTrayIcon;
+  QIcon onlineTrayIcon;
+  QIcon offlineTrayIcon;
+  bool trayIconActive;
+  QTimer *timer;
 
-    friend class QtUi;
+  BufferId currentBuffer;
+  QString currentProfile;
+  
+  QList<QDockWidget *> _netViews;
+  NickListWidget *nickListWidget;
+  
+#ifdef HAVE_DBUS
+  org::freedesktop::Notifications *desktopNotifications;
+  quint32 notificationId;
+#endif
+  
+  friend class QtUi;
 };
 
 #endif

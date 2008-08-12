@@ -75,7 +75,7 @@ class AbstractChatView {
 
   public:
     virtual ~AbstractChatView() {};
-
+    virtual MsgId lastMsgId() const = 0;
 };
 
 #endif

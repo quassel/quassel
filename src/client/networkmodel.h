@@ -108,14 +108,14 @@ public:
 
   virtual inline bool isActive() const { return qobject_cast<NetworkItem *>(parent())->isActive(); }
 
+  inline const MsgId &lastSeenMsgId() const { return _lastSeenMsgId; }
+  inline void setLastSeenMsgId(const MsgId &msgId) { _lastSeenMsgId = msgId; }
   inline Buffer::ActivityLevel activityLevel() const { return _activity; }
   void setActivityLevel(Buffer::ActivityLevel level);
-  void updateActivityLevel(Buffer::ActivityLevel level);
+  //void updateActivityLevel(Buffer::ActivityLevel level);
+  void updateActivityLevel(const Message &msg);
 
-  void setLastMsgInsert(QDateTime msgDate);
-  bool setLastSeen();
-  QDateTime lastSeen();
-
+  bool isCurrentBuffer() const;
   virtual QString toolTip(int column) const;
 
 public slots:
@@ -124,6 +124,7 @@ public slots:
 private:
   BufferInfo _bufferInfo;
   Buffer::ActivityLevel _activity;
+  MsgId _lastSeenMsgId;
 };
 
 /*****************************************
@@ -296,6 +297,7 @@ public:
   Buffer::ActivityLevel bufferActivity(const BufferInfo &buffer) const;
 
   QString bufferName(BufferId bufferId);
+  MsgId lastSeenMsgId(BufferId BufferId);
   NetworkId networkId(BufferId bufferId);
   QString networkName(BufferId bufferId);
   BufferInfo::Type bufferType(BufferId bufferId);
@@ -303,7 +305,9 @@ public:
 public slots:
   void bufferUpdated(BufferInfo bufferInfo);
   void removeBuffer(BufferId bufferId);
-  void setBufferActivity(const BufferInfo &buffer, Buffer::ActivityLevel activity);
+  void setLastSeenMsgId(const BufferId &bufferId, const MsgId &msgId);
+  void setBufferActivity(const BufferId &bufferId, Buffer::ActivityLevel activity);
+  void updateBufferActivity(const Message &msg);
   void networkRemoved(const NetworkId &networkId);
 
 private slots:
@@ -314,7 +318,7 @@ private:
   int networkRow(NetworkId networkId);
   NetworkItem *findNetworkItem(NetworkId networkId);
   NetworkItem *networkItem(NetworkId networkId);
-  BufferItem *findBufferItem(const BufferInfo &bufferInfo);
+  inline BufferItem *findBufferItem(const BufferInfo &bufferInfo) { return findBufferItem(bufferInfo.bufferId()); }
   BufferItem *findBufferItem(BufferId bufferId);
   BufferItem *bufferItem(const BufferInfo &bufferInfo);
 

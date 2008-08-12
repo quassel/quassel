@@ -23,8 +23,11 @@
 #include <QtGui>
 
 #include "bufferinfo.h"
+#include "buffersyncer.h"
+#include "client.h"
 #include "chatitem.h"
 #include "chatline.h"
+#include "messagemodel.h"
 #include "qtui.h"
 
 ChatLine::ChatLine(int row, QAbstractItemModel *model, QGraphicsItem *parent)
@@ -106,6 +109,12 @@ void ChatLine::setHighlighted(bool highlighted) {
 }
 
 void ChatLine::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
+//   const QAbstractItemModel *model_ = model();
+//   if(model_ && row() > 0) {
+//     MsgId msgId = model_->data(model_->index(row() - 1, 0), MessageModel::MsgIdRole).value<MsgId>();
+//     BufferId bufferId = model_->data(model_->index(row() - 1, 0), MessageModel::BufferIdRole).value<BufferId>();
+//     qDebug() << msgId;
+//   }
   if(_selection & Highlighted) {
     painter->fillRect(boundingRect(), QBrush(QtUi::style()->highlightColor()));
   }

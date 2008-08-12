@@ -21,6 +21,7 @@ set(SOURCES
     messagemodel.cpp
     mappedselectionmodel.cpp
     networkmodel.cpp
+    quasselui.cpp
     selectionmodelsynchronizer.cpp
     treemodel.cpp)
 

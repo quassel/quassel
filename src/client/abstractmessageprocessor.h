@@ -21,7 +21,9 @@
 #ifndef ABSTRACTMESSAGEPROCESSOR_H_
 #define ABSTRACTMESSAGEPROCESSOR_H_
 
+#include "client.h"
 #include "message.h"
+#include "networkmodel.h"
 
 class AbstractMessageProcessor : public QObject {
   Q_OBJECT
@@ -38,7 +40,7 @@ class AbstractMessageProcessor : public QObject {
     void progressUpdated(int value, int maximum);
 
   protected:
-    void postProcess(Message &msg);
+    inline void postProcess(Message &msg) { Client::networkModel()->updateBufferActivity(msg); }
 
 };
 

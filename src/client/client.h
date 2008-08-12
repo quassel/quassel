@@ -66,7 +66,6 @@ public:
   static QList<Buffer *> buffers();
   static Buffer *buffer(BufferId bufferUid);
   static Buffer *buffer(BufferInfo);
-  static inline Buffer *monitorBuffer() { return instance()->_monitorBuffer; }
 
   static QList<NetworkId> networkIds();
   static const Network * network(NetworkId);
@@ -178,7 +177,6 @@ private slots:
   void recvStatusMsg(QString network, QString message);
   void receiveBacklog(BufferId bufferId, const QVariantList &msgs);
   void updateBufferInfo(BufferInfo);
-  void updateLastSeenMsg(BufferId id, const MsgId &msgId);
 
   void bufferDestroyed();
   void networkDestroyed();
@@ -227,8 +225,6 @@ private:
   QHash<NetworkId, Buffer *> _statusBuffers; // fast lookup
   QHash<NetworkId, Network *> _networks;
   QHash<IdentityId, Identity *> _identities;
-
-  Buffer *_monitorBuffer;
 
   static AccountId _currentCoreAccount;
 

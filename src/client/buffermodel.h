@@ -45,7 +45,7 @@ public:
   void synchronizeSelectionModel(MappedSelectionModel *selectionModel);
   void synchronizeView(QAbstractItemView *view);
 
-  QModelIndex currentIndex();
+  inline QModelIndex currentIndex() { return standardSelectionModel()->currentIndex(); }
   void setCurrentIndex(const QModelIndex &newCurrent);
 
 private slots:
