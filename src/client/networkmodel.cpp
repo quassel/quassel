@@ -901,6 +901,13 @@ void NetworkModel::removeBuffer(BufferId bufferId) {
   buffItem->parent()->removeChild(buffItem);
 }
 
+MsgId NetworkModel::lastSeenMsgId(BufferId bufferId) {
+  if(!_bufferItemCache.contains(bufferId))
+    return MsgId();
+
+  return _bufferItemCache[bufferId]->lastSeenMsgId();
+}
+
 void NetworkModel::setLastSeenMsgId(const BufferId &bufferId, const MsgId &msgId) {
   BufferItem *bufferItem = findBufferItem(bufferId);
   if(!bufferItem) {

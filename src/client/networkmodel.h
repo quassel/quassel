@@ -297,7 +297,7 @@ public:
   Buffer::ActivityLevel bufferActivity(const BufferInfo &buffer) const;
 
   QString bufferName(BufferId bufferId);
-  MsgId lastSeenMsgId(BufferId BufferId);
+  MsgId lastSeenMsgId(BufferId bufferId);
   NetworkId networkId(BufferId bufferId);
   QString networkName(BufferId bufferId);
   BufferInfo::Type bufferType(BufferId bufferId);

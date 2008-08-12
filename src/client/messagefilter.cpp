@@ -29,7 +29,6 @@ MessageFilter::MessageFilter(MessageModel *source, const QList<BufferId> &buffer
     _bufferList(buffers)
 {
   setSourceModel(source);
-
 }
 
 QString MessageFilter::idString() const {

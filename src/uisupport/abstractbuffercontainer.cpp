@@ -93,6 +93,6 @@ void AbstractBufferContainer::setCurrentBuffer(BufferId bufferId) {
   _currentBuffer = bufferId;
   showChatView(bufferId);
   Client::networkModel()->setBufferActivity(bufferId, Buffer::NoActivity);
-  Client::setBufferLastSeenMsg(bufferId, _chatViews[bufferId]->lastMsgId());
+  // Client::setBufferLastSeenMsg(bufferId, _chatViews[bufferId]->lastMsgId());
   setFocus();
 }

@@ -28,6 +28,7 @@
 #include "chatitem.h"
 #include "chatline.h"
 #include "messagemodel.h"
+#include "networkmodel.h"
 #include "qtui.h"
 
 ChatLine::ChatLine(int row, QAbstractItemModel *model, QGraphicsItem *parent)
@@ -109,12 +110,6 @@ void ChatLine::setHighlighted(bool highlighted) {
 }
 
 void ChatLine::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
-//   const QAbstractItemModel *model_ = model();
-//   if(model_ && row() > 0) {
-//     MsgId msgId = model_->data(model_->index(row() - 1, 0), MessageModel::MsgIdRole).value<MsgId>();
-//     BufferId bufferId = model_->data(model_->index(row() - 1, 0), MessageModel::BufferIdRole).value<BufferId>();
-//     qDebug() << msgId;
-//   }
   if(_selection & Highlighted) {
     painter->fillRect(boundingRect(), QBrush(QtUi::style()->highlightColor()));
   }
@@ -123,4 +118,18 @@ void ChatLine::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     QRectF selectRect(left, 0, width() - left, height());
     painter->fillRect(selectRect, QApplication::palette().brush(QPalette::Highlight));
   }
+
+  const QAbstractItemModel *model_ = model();
+  if(model_ && row() > 0) {
+    MsgId msgId = model_->data(model_->index(row() - 1, 0), MessageModel::MsgIdRole).value<MsgId>();
+    BufferId bufferId = model_->data(model_->index(row() - 1, 0), MessageModel::BufferIdRole).value<BufferId>();
+    if(msgId == Client::networkModel()->lastSeenMsgId(bufferId) && chatScene()->isSingleBufferScene()) {
+      QLinearGradient gradient(0, 0, 0, height());
+      gradient.setColorAt(0, Qt::transparent);
+      gradient.setColorAt(1, Qt::red);
+      painter->fillRect(boundingRect(), gradient);
+    }
+  }
+
+
 }

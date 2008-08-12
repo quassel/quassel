@@ -37,7 +37,8 @@ class MessageFilter : public QSortFilterProxyModel {
 
     virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
     virtual QString idString() const;
-
+    inline bool isSingleBufferFilter() const { return _bufferList.count() == 1; }
+			    
   private:
     QList<BufferId> _bufferList;
 };
