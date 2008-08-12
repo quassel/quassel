@@ -160,15 +160,10 @@ Buffer *Client::statusBuffer(const NetworkId &networkId) const {
     return 0;
 }
 
-Buffer *Client::buffer(BufferId bufferId) {
-  if(instance()->_buffers.contains(bufferId))
-    return instance()->_buffers[bufferId];
-  else
-    return 0;
-}
-
 Buffer *Client::buffer(BufferInfo bufferInfo) {
-  Buffer *buff = buffer(bufferInfo.bufferId());
+  Buffer *buff = 0;
+  if(instance()->_buffers.contains(bufferInfo.bufferId()))
+    buff = instance()->_buffers[bufferInfo.bufferId()];
 
   if(!buff) {
     Client *client = Client::instance();

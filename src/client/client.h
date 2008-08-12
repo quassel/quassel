@@ -64,7 +64,7 @@ public:
 
   static QList<BufferInfo> allBufferInfos();
   static QList<Buffer *> buffers();
-  static Buffer *buffer(BufferId bufferUid);
+  // static Buffer *buffer(BufferId bufferUid);
   static Buffer *buffer(BufferInfo);
 
   static QList<NetworkId> networkIds();

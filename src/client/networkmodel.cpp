@@ -918,12 +918,7 @@ void NetworkModel::setLastSeenMsgId(const BufferId &bufferId, const MsgId &msgId
 }
 
 void NetworkModel::updateBufferActivity(const Message &msg) {
-  BufferItem *bufferItem = findBufferItem(msg.bufferInfo());
-  if(!bufferItem) {
-    qDebug() << "NetworkModel::updateBufferActivity(): buffer is unknown:" << msg.bufferInfo();
-    return;
-  }
-  bufferItem->updateActivityLevel(msg);
+  bufferItem(msg.bufferInfo())->updateActivityLevel(msg);
 }
 
 void NetworkModel::setBufferActivity(const BufferId &bufferId, Buffer::ActivityLevel level) {
@@ -970,6 +965,20 @@ QString NetworkModel::bufferName(BufferId bufferId) {
   return _bufferItemCache[bufferId]->bufferName();
 }
 
+BufferInfo::Type NetworkModel::bufferType(BufferId bufferId) {
+  if(!_bufferItemCache.contains(bufferId))
+    return BufferInfo::InvalidBuffer;
+
+  return _bufferItemCache[bufferId]->bufferType();
+}
+
+BufferInfo NetworkModel::bufferInfo(BufferId bufferId) {
+  if(!_bufferItemCache.contains(bufferId))
+    return BufferInfo();
+
+  return _bufferItemCache[bufferId]->bufferInfo();
+}
+
 NetworkId NetworkModel::networkId(BufferId bufferId) {
   if(!_bufferItemCache.contains(bufferId))
     return NetworkId();
@@ -990,11 +999,4 @@ QString NetworkModel::networkName(BufferId bufferId) {
     return netItem->networkName();
   else
     return QString();
-}
-
-BufferInfo::Type NetworkModel::bufferType(BufferId bufferId) {
-  if(!_bufferItemCache.contains(bufferId))
-    return BufferInfo::InvalidBuffer;
-
-  return _bufferItemCache[bufferId]->bufferType();
 }

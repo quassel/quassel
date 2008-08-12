@@ -29,12 +29,12 @@
 #include "messagefilter.h"
 #include "quasselui.h"
 
-ChatView::ChatView(Buffer *buf, QWidget *parent)
+ChatView::ChatView(BufferId bufferId, QWidget *parent)
   : QGraphicsView(parent),
     AbstractChatView()
 {
   QList<BufferId> filterList;
-  filterList.append(buf->bufferInfo().bufferId());
+  filterList.append(bufferId);
   MessageFilter *filter = new MessageFilter(Client::messageModel(), filterList, this);
   init(filter);
 

@@ -36,7 +36,7 @@ class ChatView : public QGraphicsView, public AbstractChatView {
 
 public:
   ChatView(MessageFilter *, QWidget *parent = 0);
-  ChatView(Buffer *, QWidget *parent = 0);
+  ChatView(BufferId bufferId, QWidget *parent = 0);
 
   virtual MsgId lastMsgId() const;
   inline ChatScene *scene() const { return _scene; }
