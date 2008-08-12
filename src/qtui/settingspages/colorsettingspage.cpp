@@ -30,184 +30,18 @@
 // #define PHONDEV
 
 ColorSettingsPage::ColorSettingsPage(QWidget *parent)
-  : SettingsPage(tr("Appearance"), tr("Color settings"), parent) {
+  : SettingsPage(tr("Appearance"), tr("Color settings"), parent),
+    mapper(new QSignalMapper(this))
+{
   ui.setupUi(this);
 
-  mapper = new QSignalMapper(this);
-  //Bufferview tab:
-  connect(ui.inactiveActivityFG, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.inactiveActivityBG, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.inactiveActivityUseBG, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
-  connect(ui.noActivityFG, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.noActivityBG, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.noActivityUseBG, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
-  connect(ui.highlightActivityFG, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.highlightActivityBG, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.highlightActivityUseBG, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
-  connect(ui.newMessageActivityFG, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.newMessageActivityBG, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.newMessageActivityUseBG, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
-  connect(ui.otherActivityFG, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.otherActivityBG, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.otherActivityUseBG, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
-
-  mapper->setMapping(ui.inactiveActivityFG, ui.inactiveActivityFG);
-  mapper->setMapping(ui.inactiveActivityBG, ui.inactiveActivityBG);
-  mapper->setMapping(ui.highlightActivityFG, ui.highlightActivityFG);
-  mapper->setMapping(ui.highlightActivityBG, ui.highlightActivityBG);
-  mapper->setMapping(ui.newMessageActivityFG, ui.newMessageActivityFG);
-  mapper->setMapping(ui.newMessageActivityBG, ui.newMessageActivityBG);
-  mapper->setMapping(ui.noActivityFG, ui.noActivityFG);
-  mapper->setMapping(ui.noActivityBG, ui.noActivityBG);
-  mapper->setMapping(ui.otherActivityFG, ui.otherActivityFG);
-  mapper->setMapping(ui.otherActivityBG, ui.otherActivityBG);
-
-
-  //Chatview tab:
-  connect(ui.errorMessageFG, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.errorMessageBG, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.errorMessageUseBG, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
-  connect(ui.noticeMessageFG, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.noticeMessageBG, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.noticeMessageUseBG, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
-  connect(ui.plainMessageFG, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.plainMessageBG, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.plainMessageUseBG, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
-  connect(ui.serverMessageFG, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.serverMessageBG, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.serverMessageUseBG, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
-  connect(ui.actionMessageFG, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.actionMessageBG, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.actionMessageUseBG, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
-  connect(ui.joinMessageFG, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.joinMessageBG, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.joinMessageUseBG, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
-  connect(ui.kickMessageFG, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.kickMessageBG, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.kickMessageUseBG, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
-  connect(ui.modeMessageFG, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.modeMessageBG, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.modeMessageUseBG, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
-  connect(ui.partMessageFG, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.partMessageBG, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.partMessageUseBG, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
-  connect(ui.quitMessageFG, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.quitMessageBG, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.quitMessageUseBG, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
-  connect(ui.renameMessageFG, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.renameMessageBG, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.renameMessageUseBG, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
-  connect(ui.highlightColor, SIGNAL(clicked()), mapper, SLOT(map()));
-
-  mapper->setMapping(ui.errorMessageFG, ui.errorMessageFG);
-  mapper->setMapping(ui.errorMessageBG, ui.errorMessageBG);
-  mapper->setMapping(ui.noticeMessageFG, ui.noticeMessageFG);
-  mapper->setMapping(ui.noticeMessageBG, ui.noticeMessageBG);
-  mapper->setMapping(ui.plainMessageFG, ui.plainMessageFG);
-  mapper->setMapping(ui.plainMessageBG, ui.plainMessageBG);
-  mapper->setMapping(ui.serverMessageFG, ui.serverMessageFG);
-  mapper->setMapping(ui.serverMessageBG, ui.serverMessageBG);
-  mapper->setMapping(ui.actionMessageFG, ui.actionMessageFG);
-  mapper->setMapping(ui.actionMessageBG, ui.actionMessageBG);
-  mapper->setMapping(ui.joinMessageFG, ui.joinMessageFG);
-  mapper->setMapping(ui.joinMessageBG, ui.joinMessageBG);
-  mapper->setMapping(ui.kickMessageFG, ui.kickMessageFG);
-  mapper->setMapping(ui.kickMessageBG, ui.kickMessageBG);
-  mapper->setMapping(ui.modeMessageFG, ui.modeMessageFG);
-  mapper->setMapping(ui.modeMessageBG, ui.modeMessageBG);
-  mapper->setMapping(ui.partMessageFG, ui.partMessageFG);
-  mapper->setMapping(ui.partMessageBG, ui.partMessageBG);
-  mapper->setMapping(ui.quitMessageFG, ui.quitMessageFG);
-  mapper->setMapping(ui.quitMessageBG, ui.quitMessageBG);
-  mapper->setMapping(ui.renameMessageFG, ui.renameMessageFG);
-  mapper->setMapping(ui.renameMessageBG, ui.renameMessageBG);
-  mapper->setMapping(ui.highlightColor, ui.highlightColor);
-
-  //Message Layout tab:
-  connect(ui.timestampFG, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.timestampBG, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.timestampUseBG, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
-  connect(ui.senderFG, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.senderBG, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.senderUseBG, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
-  connect(ui.nickFG, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.nickBG, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.nickUseBG, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
-  connect(ui.hostmaskFG, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.hostmaskBG, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.hostmaskUseBG, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
-  connect(ui.channelnameFG, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.channelnameBG, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.channelnameUseBG, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
-  connect(ui.modeFlagsFG, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.modeFlagsBG, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.modeFlagsUseBG, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
-  connect(ui.urlFG, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.urlBG, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.urlUseBG, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
-
-  mapper->setMapping(ui.timestampFG, ui.timestampFG);
-  mapper->setMapping(ui.timestampBG, ui.timestampBG);
-  mapper->setMapping(ui.senderFG, ui.senderFG);
-  mapper->setMapping(ui.senderBG, ui.senderBG);
-  mapper->setMapping(ui.nickFG, ui.nickFG);
-  mapper->setMapping(ui.nickBG, ui.nickBG);
-  mapper->setMapping(ui.hostmaskFG, ui.hostmaskFG);
-  mapper->setMapping(ui.hostmaskBG, ui.hostmaskBG);
-  mapper->setMapping(ui.channelnameFG, ui.channelnameFG);
-  mapper->setMapping(ui.channelnameBG, ui.channelnameBG);
-  mapper->setMapping(ui.modeFlagsFG, ui.modeFlagsFG);
-  mapper->setMapping(ui.modeFlagsBG, ui.modeFlagsBG);
-  mapper->setMapping(ui.urlFG, ui.urlFG);
-  mapper->setMapping(ui.urlBG, ui.urlBG);
-
-  //Mirc Color Codes tab:
-  connect(ui.color0, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.color1, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.color2, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.color3, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.color4, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.color5, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.color6, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.color7, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.color8, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.color9, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.color10, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.color11, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.color12, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.color13, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.color14, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.color15, SIGNAL(clicked()), mapper, SLOT(map()));
-
-  mapper->setMapping(ui.color0, ui.color0);
-  mapper->setMapping(ui.color1, ui.color1);
-  mapper->setMapping(ui.color2, ui.color2);
-  mapper->setMapping(ui.color3, ui.color3);
-  mapper->setMapping(ui.color4, ui.color4);
-  mapper->setMapping(ui.color5, ui.color5);
-  mapper->setMapping(ui.color6, ui.color6);
-  mapper->setMapping(ui.color7, ui.color7);
-  mapper->setMapping(ui.color8, ui.color8);
-  mapper->setMapping(ui.color9, ui.color9);
-  mapper->setMapping(ui.color10, ui.color10);
-  mapper->setMapping(ui.color11, ui.color11);
-  mapper->setMapping(ui.color12, ui.color12);
-  mapper->setMapping(ui.color13, ui.color13);
-  mapper->setMapping(ui.color14, ui.color14);
-  mapper->setMapping(ui.color15, ui.color15);
-
-  //NickView tab:
-  connect(ui.onlineStatusFG, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.onlineStatusBG, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.onlineStatusBG, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
-  connect(ui.awayStatusFG, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.awayStatusBG, SIGNAL(clicked()), mapper, SLOT(map()));
-  connect(ui.awayStatusBG, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
-
-  mapper->setMapping(ui.onlineStatusFG, ui.onlineStatusFG);
-  mapper->setMapping(ui.onlineStatusBG, ui.onlineStatusBG);
-  mapper->setMapping(ui.awayStatusFG, ui.awayStatusFG);
-  mapper->setMapping(ui.awayStatusBG, ui.awayStatusBG);
+  foreach(ColorButton *button, findChildren<ColorButton *>()) {
+    connect(button, SIGNAL(clicked()), mapper, SLOT(map()));
+    mapper->setMapping(button, button);
+  }
+  foreach(QCheckBox *checkBox, findChildren<QCheckBox *>()) {
+    connect(checkBox, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
+  }
 
   connect(mapper, SIGNAL(mapped(QWidget *)), this, SLOT(chooseColor(QWidget *)));
 
@@ -335,6 +169,7 @@ void ColorSettingsPage::defaultMessage() {
   ui.senderBG->setColor(QColor("white"));
   ui.senderBG->setEnabled(false);
   ui.senderUseBG->setChecked(false);
+  ui.newMsgMarkerFG->setColor(Qt::red);
 
   /*
   ui.nickFG->setColor(QColor("black"));
@@ -512,6 +347,8 @@ void ColorSettingsPage::load() {
   ui.timestampBG->setColor(QtUi::style()->format(UiStyle::Timestamp).background().color());
   ui.senderFG->setColor(QtUi::style()->format(UiStyle::Sender).foreground().color());
   ui.senderBG->setColor(QtUi::style()->format(UiStyle::Sender).background().color());
+  settings["NewMsgMarkerFG"] = s.value("newMsgMarkerFG", QColor(Qt::red));
+  ui.newMsgMarkerFG->setColor(settings["NewMsgMarkerFG"].value<QColor>());
 
   settings["TimestampUseBG"] = s.value("timestampUseBG", QVariant(false));
   if(settings["TimestampUseBG"].toBool()) {
@@ -622,6 +459,7 @@ void ColorSettingsPage::save() {
   s.setValue("timestampUseBG", ui.timestampUseBG->isChecked());
   saveColor(UiStyle::Sender, ui.senderFG->color(), ui.senderBG->color(), ui.senderUseBG->isChecked());
   s.setValue("senderUseBG", ui.senderUseBG->isChecked());
+  s.setValue("newMsgMarkerFG", ui.newMsgMarkerFG->color());
 
   /*
   saveColor(UiStyle::Nick, ui.nickFG->color(), ui.nickBG->color(), ui.nickUseBG->isChecked());
@@ -751,7 +589,8 @@ bool ColorSettingsPage::testHasChanged() {
   if(QtUi::style()->format(UiStyle::Sender).foreground().color() != ui.senderFG->color()) return true;
   if(QtUi::style()->format(UiStyle::Sender).background().color() != ui.senderBG->color()) return true;
   if(settings["SenderUseBG"].toBool() != ui.senderUseBG->isChecked()) return true;
-
+  if(settings["NewMsgMarkerFG"].value<QColor>() != ui.newMsgMarkerFG->color()) return true;
+  
   /*
   if(QtUi::style()->format(UiStyle::Nick).foreground().color() != ui.nickFG->color()) return true;
   if(QtUi::style()->format(UiStyle::Nick).background().color() != ui.nickBG->color()) return true;

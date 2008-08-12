@@ -30,6 +30,7 @@
 #include "messagemodel.h"
 #include "networkmodel.h"
 #include "qtui.h"
+#include "qtuisettings.h"
 
 ChatLine::ChatLine(int row, QAbstractItemModel *model, QGraphicsItem *parent)
   : QGraphicsItem(parent),
@@ -119,17 +120,22 @@ void ChatLine::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     painter->fillRect(selectRect, QApplication::palette().brush(QPalette::Highlight));
   }
 
+  // new line marker
   const QAbstractItemModel *model_ = model();
   if(model_ && row() > 0) {
-    MsgId msgId = model_->data(model_->index(row() - 1, 0), MessageModel::MsgIdRole).value<MsgId>();
-    BufferId bufferId = model_->data(model_->index(row() - 1, 0), MessageModel::BufferIdRole).value<BufferId>();
-    if(msgId == Client::networkModel()->lastSeenMsgId(bufferId) && chatScene()->isSingleBufferScene()) {
-      QLinearGradient gradient(0, 0, 0, height());
-      gradient.setColorAt(0, Qt::transparent);
-      gradient.setColorAt(1, Qt::red);
-      painter->fillRect(boundingRect(), gradient);
+    QModelIndex prevRowIdx = model_->index(row() - 1, 0);
+    MsgId msgId = model_->data(prevRowIdx, MessageModel::MsgIdRole).value<MsgId>();
+    Message::Flags flags = (Message::Flags)model_->data(model_->index(row(), 0), MessageModel::FlagsRole).toInt();
+    // don't show the marker if we wrote that new line
+    if(!(flags & Message::Self)) {
+      BufferId bufferId = model_->data(prevRowIdx, MessageModel::BufferIdRole).value<BufferId>();
+      if(msgId == Client::networkModel()->lastSeenMsgId(bufferId) && chatScene()->isSingleBufferScene()) {
+	QtUiSettings s("QtUiStyle/Colors");
+	QLinearGradient gradient(0, 0, 0, height());
+	gradient.setColorAt(0, s.value("newMsgMarkerFG", QColor(Qt::red)).value<QColor>());
+	gradient.setColorAt(0.1, Qt::transparent);
+	painter->fillRect(boundingRect(), gradient);
+      }
     }
   }
-
-
 }

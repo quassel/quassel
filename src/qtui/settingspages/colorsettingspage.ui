@@ -5,7 +5,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>448</width>
+    <width>517</width>
     <height>532</height>
    </rect>
   </property>
@@ -25,6 +25,14 @@
       <number>1</number>
      </property>
      <widget class="QWidget" name="bufferview" >
+      <property name="geometry" >
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>487</width>
+        <height>485</height>
+       </rect>
+      </property>
       <attribute name="title" >
        <string>Bufferview</string>
       </attribute>
@@ -270,7 +278,7 @@
             <property name="orientation" >
              <enum>Qt::Vertical</enum>
             </property>
-            <property name="sizeHint" >
+            <property name="sizeHint" stdset="0" >
              <size>
               <width>20</width>
               <height>40</height>
@@ -304,7 +312,7 @@
          <property name="orientation" >
           <enum>Qt::Vertical</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>318</width>
            <height>171</height>
@@ -315,6 +323,14 @@
       </layout>
      </widget>
      <widget class="QWidget" name="chatview" >
+      <property name="geometry" >
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>487</width>
+        <height>485</height>
+       </rect>
+      </property>
       <attribute name="title" >
        <string>Chatview</string>
       </attribute>
@@ -328,9 +344,17 @@
           </sizepolicy>
          </property>
          <property name="currentIndex" >
-          <number>0</number>
+          <number>2</number>
          </property>
          <widget class="QWidget" name="tab" >
+          <property name="geometry" >
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>441</width>
+            <height>262</height>
+           </rect>
+          </property>
           <attribute name="title" >
            <string>Server Activity</string>
           </attribute>
@@ -547,7 +571,7 @@
              <property name="orientation" >
               <enum>Qt::Vertical</enum>
              </property>
-             <property name="sizeHint" >
+             <property name="sizeHint" stdset="0" >
               <size>
                <width>20</width>
                <height>40</height>
@@ -558,6 +582,14 @@
           </layout>
          </widget>
          <widget class="QWidget" name="tab_2" >
+          <property name="geometry" >
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>441</width>
+            <height>294</height>
+           </rect>
+          </property>
           <attribute name="title" >
            <string>User Activity</string>
           </attribute>
@@ -875,6 +907,14 @@
           </layout>
          </widget>
          <widget class="QWidget" name="Seite_2" >
+          <property name="geometry" >
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>441</width>
+            <height>294</height>
+           </rect>
+          </property>
           <attribute name="title" >
            <string>Message</string>
           </attribute>
@@ -1189,6 +1229,20 @@
              </property>
             </widget>
            </item>
+           <item row="8" column="0" >
+            <widget class="QLabel" name="label_11" >
+             <property name="text" >
+              <string>New Message Marker:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="8" column="1" >
+            <widget class="ColorButton" name="newMsgMarkerFG" >
+             <property name="text" >
+              <string/>
+             </property>
+            </widget>
+           </item>
           </layout>
          </widget>
         </widget>
@@ -1214,6 +1268,14 @@
       </layout>
      </widget>
      <widget class="QWidget" name="Mirc" >
+      <property name="geometry" >
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>487</width>
+        <height>485</height>
+       </rect>
+      </property>
       <attribute name="title" >
        <string>Mirc Color Codes</string>
       </attribute>
@@ -1462,7 +1524,7 @@
          <property name="orientation" >
           <enum>Qt::Vertical</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>140</width>
            <height>291</height>
@@ -1473,6 +1535,14 @@
       </layout>
      </widget>
      <widget class="QWidget" name="nickview" >
+      <property name="geometry" >
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>487</width>
+        <height>485</height>
+       </rect>
+      </property>
       <attribute name="title" >
        <string>Nickview</string>
       </attribute>
@@ -1595,7 +1665,7 @@
             <property name="orientation" >
              <enum>Qt::Vertical</enum>
             </property>
-            <property name="sizeHint" >
+            <property name="sizeHint" stdset="0" >
              <size>
               <width>20</width>
               <height>40</height>
@@ -1629,7 +1699,7 @@
          <property name="orientation" >
           <enum>Qt::Vertical</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>261</width>
            <height>151</height>
