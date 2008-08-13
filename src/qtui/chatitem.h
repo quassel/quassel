@@ -55,7 +55,7 @@ class ChatItem : public QGraphicsItem {
     virtual QVariant data(int role) const;
 
     // returns height
-    qreal setWidth(qreal width);
+    qreal setGeometry(qreal width, qreal height = -1);
 
     // selection stuff, to be called by the scene
     void clearSelection();

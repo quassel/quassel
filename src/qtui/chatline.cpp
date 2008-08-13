@@ -71,9 +71,9 @@ qreal ChatLine::setGeometry(qreal width, qreal firstHandlePos, qreal secondHandl
   qreal firstsep = QtUi::style()->firstColumnSeparator()/2;
   qreal secondsep = QtUi::style()->secondColumnSeparator()/2;
 
-  _timestampItem.setWidth(firstHandlePos - firstsep);
-  _senderItem.setWidth(secondHandlePos - firstHandlePos - (firstsep+secondsep));
-  _height = _contentsItem.setWidth(width - secondHandlePos - secondsep);
+  _height = _contentsItem.setGeometry(width - secondHandlePos - secondsep);
+  _timestampItem.setGeometry(firstHandlePos - firstsep, _height);
+  _senderItem.setGeometry(secondHandlePos - firstHandlePos - (firstsep+secondsep), _height);
 
   _senderItem.setPos(firstHandlePos + firstsep, 0);
   _contentsItem.setPos(secondHandlePos + secondsep, 0);

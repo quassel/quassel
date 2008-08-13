@@ -60,11 +60,11 @@ QVariant ChatItem::data(int role) const {
   return model()->data(index, role);
 }
 
-qreal ChatItem::setWidth(qreal w) {
+qreal ChatItem::setGeometry(qreal w, qreal h) {
   if(w == _boundingRect.width()) return _boundingRect.height();
   prepareGeometryChange();
   _boundingRect.setWidth(w);
-  qreal h = computeHeight();
+  if(h < 0) h = computeHeight();
   _boundingRect.setHeight(h);
   if(haveLayout()) updateLayout();
   return h;
