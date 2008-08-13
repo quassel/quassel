@@ -81,7 +81,6 @@ void AbstractBufferContainer::setCurrentBuffer(BufferId bufferId) {
   }
 
   if(!bufferId.isValid()) {
-    qWarning() << "AbstractBufferContainer::setBuffer(BufferId): invalid BufferId:" << bufferId;
     _currentBuffer = 0;
     showChatView(0);
     return;
