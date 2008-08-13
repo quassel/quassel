@@ -43,7 +43,7 @@ ChatMonitorView::ChatMonitorView(ChatMonitorFilter *filter, QWidget *parent)
 void ChatMonitorView::contextMenuEvent(QContextMenuEvent *event) {
   if(scene()->sectionByScenePos(event->pos()) != ChatLineModel::SenderColumn)
     return;
-  
+
   int showFields = _filter->showFields();
 
   QMenu contextMenu(this);
@@ -51,7 +51,7 @@ void ChatMonitorView::contextMenuEvent(QContextMenuEvent *event) {
   showNetworkAction->setCheckable(true);
   showNetworkAction->setChecked(showFields & ChatMonitorFilter::NetworkField);
   showNetworkAction->setData(ChatMonitorFilter::NetworkField);
-  
+
   QAction *showBufferAction = contextMenu.addAction(tr("Show buffer name"), this, SLOT(showFieldsChanged(bool)));
   showBufferAction->setCheckable(true);
   showBufferAction->setChecked(showFields & ChatMonitorFilter::BufferField);
@@ -66,12 +66,17 @@ void ChatMonitorView::mouseDoubleClickEvent(QMouseEvent *event) {
     return;
   }
 
-  event->accept();
   ChatItem *chatItem = dynamic_cast<ChatItem *>(itemAt(event->pos()));
+  if(!chatItem) {
+    event->ignore();
+    return;
+  }
+
+  event->accept();
   BufferId bufferId = chatItem->data(MessageModel::BufferIdRole).value<BufferId>();
   if(!bufferId.isValid())
     return;
-  
+
   QModelIndex bufferIdx = Client::networkModel()->bufferIndex(bufferId);
   if(!bufferIdx.isValid())
     return;
@@ -87,5 +92,5 @@ void ChatMonitorView::showFieldsChanged(bool checked) {
   if(checked)
     _filter->addShowField(showAction->data().toInt());
   else
-    _filter->removeShowField(showAction->data().toInt());    
+    _filter->removeShowField(showAction->data().toInt());
 }
