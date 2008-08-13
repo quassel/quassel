@@ -35,6 +35,7 @@
 #include "coreconnectdlg.h"
 #include "msgprocessorstatuswidget.h"
 #include "qtuimessageprocessor.h"
+#include "qtuiapplication.h"
 #include "networkmodel.h"
 #include "buffermodel.h"
 #include "nicklistwidget.h"
@@ -48,6 +49,7 @@
 #include "uisettings.h"
 #include "qtuisettings.h"
 #include "jumpkeyhandler.h"
+#include "sessionsettings.h"
 
 #include "selectionmodelsynchronizer.h"
 #include "mappedselectionmodel.h"
@@ -108,6 +110,9 @@ MainWin::MainWin(QWidget *parent)
   connect(desktopNotifications, SIGNAL(NotificationClosed(uint, uint)), this, SLOT(desktopNotificationClosed(uint, uint)));
   connect(desktopNotifications, SIGNAL(ActionInvoked(uint, const QString&)), this, SLOT(desktopNotificationInvoked(uint, const QString&)));
 #endif
+  QtUiApplication* app = dynamic_cast<QtUiApplication*> qApp;
+  connect(app, SIGNAL(saveStateToSession(const QString&)), this, SLOT(saveStateToSession(const QString&)));
+  connect(app, SIGNAL(saveStateToSessionSettings(SessionSettings&)), this, SLOT(saveStateToSessionSettings(SessionSettings&)));
 }
 
 void MainWin::init() {
@@ -762,4 +767,20 @@ void MainWin::on_actionDebugNetworkModel_triggered(bool) {
   view->setColumnWidth(2, 80);
   view->resize(610, 300);
   view->show();
+}
+
+void MainWin::saveStateToSession(const QString &sessionId) {
+  return;
+  SessionSettings s(sessionId);
+  
+  s.setValue("MainWinSize", size());
+  s.setValue("MainWinPos", pos());
+  s.setValue("MainWinState", saveState());
+}
+
+void MainWin::saveStateToSessionSettings(SessionSettings & s)
+{
+  s.setValue("MainWinSize", size());
+  s.setValue("MainWinPos", pos());
+  s.setValue("MainWinState", saveState());
 }

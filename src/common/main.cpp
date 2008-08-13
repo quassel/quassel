@@ -31,26 +31,26 @@
 #include "cliparser.h"
 
 #if defined BUILD_CORE
-#include <QCoreApplication>
 #include <QDir>
 #include "core.h"
 #include "message.h"
 
 #elif defined BUILD_QTUI
-#include <QApplication>
 #include "client.h"
+#include "qtuiapplication.h"
 #include "qtui.h"
 
 #elif defined BUILD_MONO
-#include <QApplication>
 #include "client.h"
 #include "core.h"
 #include "coresession.h"
+#include "qtuiapplication.h"
 #include "qtui.h"
 
 #else
 #error "Something is wrong - you need to #define a build mode!"
 #endif
+
 
 #include <signal.h>
 
@@ -68,6 +68,7 @@ int main(int argc, char **argv) {
   Global::registerMetaTypes();
   Global::setupVersion();
 
+/*
 #if defined BUILD_CORE
   Global::runMode = Global::CoreOnly;
   QCoreApplication app(argc, argv);
@@ -78,6 +79,19 @@ int main(int argc, char **argv) {
   Global::runMode = Global::Monolithic;
   QApplication app(argc, argv);
 #endif
+*/
+#if defined BUILD_CORE
+  Global::runMode = Global::CoreOnly;
+  QCoreApplication app(argc, argv);
+#elif defined BUILD_QTUI
+  Global::runMode = Global::ClientOnly;
+  QtUiApplication app(argc, argv);
+#else
+  Global::runMode = Global::Monolithic;
+  QtUiApplication app(argc, argv);
+#endif
+
+
 
   Global::parser = CliParser(QCoreApplication::arguments());
 
@@ -140,6 +154,7 @@ int main(int argc, char **argv) {
   QCoreApplication::setApplicationName("Quassel IRC");
   QCoreApplication::setOrganizationName("Quassel Project");
 
+  
 #ifndef BUILD_QTUI
   Core::instance();  // create and init the core
 #endif
@@ -147,6 +162,7 @@ int main(int argc, char **argv) {
   //Settings::init();
 
 #ifndef BUILD_CORE
+  // session resume
   QtUi *gui = new QtUi();
   Client::init(gui);
   // init gui only after the event loop has started
@@ -160,6 +176,10 @@ int main(int argc, char **argv) {
   }
 #endif
 
+#ifndef BUILD_CORE 
+  app.resumeSessionIfPossible();
+#endif
+  
   int exitCode = app.exec();
 
 #ifndef BUILD_QTUI
