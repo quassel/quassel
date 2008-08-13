@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>495</width>
-    <height>417</height>
+    <width>602</width>
+    <height>386</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -95,17 +95,9 @@
      <item>
       <widget class="QTabWidget" name="tabWidget" >
        <property name="currentIndex" >
-        <number>2</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="generalTab" >
-        <property name="geometry" >
-         <rect>
-          <x>0</x>
-          <y>0</y>
-          <width>463</width>
-          <height>314</height>
-         </rect>
-        </property>
         <attribute name="title" >
          <string>General</string>
         </attribute>
@@ -309,74 +301,76 @@
         </layout>
        </widget>
        <widget class="QWidget" name="awayTab" >
-        <property name="geometry" >
-         <rect>
-          <x>0</x>
-          <y>0</y>
-          <width>100</width>
-          <height>30</height>
-         </rect>
-        </property>
         <attribute name="title" >
          <string>A&amp;way</string>
         </attribute>
-        <layout class="QVBoxLayout" >
+        <layout class="QVBoxLayout" name="verticalLayout_4" >
          <item>
-          <layout class="QGridLayout" >
-           <property name="margin" >
-            <number>0</number>
+          <widget class="QGroupBox" name="groupBox_2" >
+           <property name="title" >
+            <string>Default Away Settings</string>
            </property>
-           <property name="spacing" >
-            <number>6</number>
-           </property>
-           <item row="0" column="1" >
-            <widget class="QLineEdit" name="awayNick" >
-             <property name="enabled" >
-              <bool>false</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0" >
-            <widget class="QCheckBox" name="awayReasonEnabled" >
-             <property name="text" >
-              <string>Away Reason</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1" >
-            <widget class="QLineEdit" name="awayReason" >
-             <property name="enabled" >
-              <bool>false</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="0" >
-            <widget class="QCheckBox" name="returnMessageEnabled" >
-             <property name="text" >
-              <string>Return Message</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="1" >
-            <widget class="QLineEdit" name="returnMessage" >
-             <property name="enabled" >
-              <bool>false</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="0" >
-            <widget class="QCheckBox" name="awayNickEnabled" >
-             <property name="text" >
-              <string>Away Nick</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
+           <layout class="QVBoxLayout" name="verticalLayout_3" >
+            <item>
+             <layout class="QGridLayout" >
+              <property name="margin" >
+               <number>0</number>
+              </property>
+              <property name="spacing" >
+               <number>6</number>
+              </property>
+              <item row="0" column="1" >
+               <widget class="QLineEdit" name="awayNick" >
+                <property name="enabled" >
+                 <bool>false</bool>
+                </property>
+                <property name="toolTip" >
+                 <string>Nick to be used when being away</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0" >
+               <widget class="QCheckBox" name="awayReasonEnabled" >
+                <property name="toolTip" >
+                 <string>Default away reason</string>
+                </property>
+                <property name="text" >
+                 <string>Away Reason</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1" >
+               <widget class="QLineEdit" name="awayReason" >
+                <property name="enabled" >
+                 <bool>false</bool>
+                </property>
+                <property name="toolTip" >
+                 <string>Default away reason</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="0" >
+               <widget class="QCheckBox" name="awayNickEnabled" >
+                <property name="toolTip" >
+                 <string>Nick to be used when being away</string>
+                </property>
+                <property name="text" >
+                 <string>Away Nick</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </widget>
          </item>
          <item>
-          <widget class="QGroupBox" name="autoAwayEnabled" >
+          <widget class="QGroupBox" name="detachAwayEnabled" >
+           <property name="toolTip" >
+            <string>Set away when all clients have detached from the core</string>
+           </property>
            <property name="title" >
-            <string>Auto Away</string>
+            <string>Away On Detach</string>
            </property>
            <property name="checkable" >
             <bool>true</bool>
@@ -384,13 +378,52 @@
            <property name="checked" >
             <bool>false</bool>
            </property>
-           <layout class="QVBoxLayout" >
-            <property name="spacing" >
-             <number>6</number>
-            </property>
-            <property name="margin" >
-             <number>8</number>
-            </property>
+           <layout class="QVBoxLayout" name="verticalLayout" >
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout" >
+              <item>
+               <widget class="QCheckBox" name="detachAwayReasonEnabled" >
+                <property name="toolTip" >
+                 <string>Override default away reason for auto-away on detach</string>
+                </property>
+                <property name="text" >
+                 <string>Away Reason</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="detachAwayReason" >
+                <property name="enabled" >
+                 <bool>false</bool>
+                </property>
+                <property name="toolTip" >
+                 <string>Override default away reason for auto-away on detach</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QGroupBox" name="autoAwayEnabled" >
+           <property name="enabled" >
+            <bool>false</bool>
+           </property>
+           <property name="toolTip" >
+            <string>Not implemented yet</string>
+           </property>
+           <property name="title" >
+            <string>Away On Idle</string>
+           </property>
+           <property name="checkable" >
+            <bool>true</bool>
+           </property>
+           <property name="checked" >
+            <bool>false</bool>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_2" >
             <item>
              <layout class="QHBoxLayout" >
               <property name="spacing" >
@@ -402,7 +435,7 @@
               <item>
                <widget class="QLabel" name="autoAwayLabel_1" >
                 <property name="text" >
-                 <string>Auto away after</string>
+                 <string>Set away after</string>
                 </property>
                </widget>
               </item>
@@ -412,7 +445,7 @@
               <item>
                <widget class="QLabel" name="autoAwayLabel_2" >
                 <property name="text" >
-                 <string>minutes</string>
+                 <string>minutes of being idle</string>
                 </property>
                </widget>
               </item>
@@ -439,13 +472,6 @@
               <property name="spacing" >
                <number>6</number>
               </property>
-              <item row="1" column="0" >
-               <widget class="QCheckBox" name="autoReturnMessageEnabled" >
-                <property name="text" >
-                 <string>Return Message</string>
-                </property>
-               </widget>
-              </item>
               <item row="0" column="0" >
                <widget class="QCheckBox" name="autoAwayReasonEnabled" >
                 <property name="text" >
@@ -453,15 +479,17 @@
                 </property>
                </widget>
               </item>
-              <item row="1" column="1" >
-               <widget class="QLineEdit" name="autoReturnMessage" />
-              </item>
               <item row="0" column="1" >
-               <widget class="QLineEdit" name="autoAwayReason" />
+               <widget class="QLineEdit" name="autoAwayReason" >
+                <property name="enabled" >
+                 <bool>false</bool>
+                </property>
+               </widget>
               </item>
              </layout>
             </item>
            </layout>
+           <zorder>detachAwayEnabled</zorder>
           </widget>
          </item>
          <item>
@@ -480,14 +508,6 @@
         </layout>
        </widget>
        <widget class="QWidget" name="advancedTab" >
-        <property name="geometry" >
-         <rect>
-          <x>0</x>
-          <y>0</y>
-          <width>463</width>
-          <height>314</height>
-         </rect>
-        </property>
         <attribute name="title" >
          <string>Advanced</string>
         </attribute>
@@ -596,14 +616,10 @@
   <tabstop>awayNick</tabstop>
   <tabstop>awayReasonEnabled</tabstop>
   <tabstop>awayReason</tabstop>
-  <tabstop>returnMessageEnabled</tabstop>
-  <tabstop>returnMessage</tabstop>
   <tabstop>awayNickEnabled</tabstop>
   <tabstop>autoAwayEnabled</tabstop>
   <tabstop>autoAwayTime</tabstop>
-  <tabstop>autoReturnMessageEnabled</tabstop>
   <tabstop>autoAwayReasonEnabled</tabstop>
-  <tabstop>autoReturnMessage</tabstop>
   <tabstop>autoAwayReason</tabstop>
   <tabstop>ident</tabstop>
   <tabstop>kickReason</tabstop>
@@ -621,12 +637,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>47</x>
-     <y>85</y>
+     <x>71</x>
+     <y>128</y>
     </hint>
     <hint type="destinationlabel" >
-     <x>185</x>
-     <y>90</y>
+     <x>314</x>
+     <y>129</y>
     </hint>
    </hints>
   </connection>
@@ -637,28 +653,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>57</x>
-     <y>120</y>
+     <x>81</x>
+     <y>156</y>
     </hint>
     <hint type="destinationlabel" >
-     <x>177</x>
-     <y>123</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>returnMessageEnabled</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>returnMessage</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>85</x>
-     <y>154</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>240</x>
-     <y>160</y>
+     <x>306</x>
+     <y>157</y>
     </hint>
    </hints>
   </connection>
@@ -669,28 +669,28 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>107</x>
-     <y>262</y>
+     <x>126</x>
+     <y>327</y>
     </hint>
     <hint type="destinationlabel" >
-     <x>186</x>
-     <y>264</y>
+     <x>315</x>
+     <y>328</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>autoReturnMessageEnabled</sender>
+   <sender>detachAwayReasonEnabled</sender>
    <signal>toggled(bool)</signal>
-   <receiver>autoReturnMessage</receiver>
+   <receiver>detachAwayReason</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>122</x>
-     <y>292</y>
+     <x>33</x>
+     <y>214</y>
     </hint>
     <hint type="destinationlabel" >
      <x>204</x>
-     <y>299</y>
+     <y>218</y>
     </hint>
    </hints>
   </connection>

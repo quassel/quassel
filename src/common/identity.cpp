@@ -37,14 +37,13 @@ Identity::Identity(const Identity &other, QObject *parent) : SyncableObject(pare
             _awayNickEnabled(other.awayNickEnabled()),
             _awayReason(other.awayReason()),
             _awayReasonEnabled(other.awayReasonEnabled()),
-            _returnMessage(other.returnMessage()),
-            _returnMessageEnabled(other.returnMessageEnabled()),
             _autoAwayEnabled(other.autoAwayEnabled()),
             _autoAwayTime(other.autoAwayTime()),
             _autoAwayReason(other.autoAwayReason()),
             _autoAwayReasonEnabled(other.autoAwayReasonEnabled()),
-            _autoReturnMessage(other.autoReturnMessage()),
-            _autoReturnMessageEnabled(other.autoReturnMessageEnabled()),
+            _detachAwayEnabled(other.detachAwayEnabled()),
+            _detachAwayReason(other.detachAwayReason()),
+            _detachAwayReasonEnabled(other.detachAwayReasonEnabled()),
             _ident(other.ident()),
             _kickReason(other.kickReason()),
             _partReason(other.partReason()),
@@ -68,14 +67,13 @@ void Identity::setToDefaults() {
   setAwayNickEnabled(false);
   setAwayReason(tr("Gone fishing."));
   setAwayReasonEnabled(true);
-  setReturnMessage(tr("Brought fish."));
-  setReturnMessageEnabled(false);
   setAutoAwayEnabled(false);
   setAutoAwayTime(10);
   setAutoAwayReason(tr("Not here. No, really. not here!"));
   setAutoAwayReasonEnabled(false);
-  setAutoReturnMessage(tr("Back in action again!"));
-  setAutoReturnMessageEnabled(false);
+  setDetachAwayEnabled(false);
+  setDetachAwayReason(tr("All Quassel clients vanished from the face of the earth..."));
+  setDetachAwayReasonEnabled(false);
   setIdent("quassel");
   setKickReason(tr("Kindergarten is elsewhere!"));
   setPartReason(tr("http://quassel-irc.org - Chat comfortably. Anywhere."));
@@ -118,14 +116,6 @@ bool Identity::awayReasonEnabled() const {
   return _awayReasonEnabled;
 }
 
-QString Identity::returnMessage() const {
-  return _returnMessage;
-}
-
-bool Identity::returnMessageEnabled() const {
-  return _returnMessageEnabled;
-}
-
 bool Identity::autoAwayEnabled() const {
   return _autoAwayEnabled;
 }
@@ -142,12 +132,16 @@ bool Identity::autoAwayReasonEnabled() const {
   return _autoAwayReasonEnabled;
 }
 
-QString Identity::autoReturnMessage() const {
-  return _autoReturnMessage;
+bool Identity::detachAwayEnabled() const {
+  return _detachAwayEnabled;
 }
 
-bool Identity::autoReturnMessageEnabled() const {
-  return _autoReturnMessageEnabled;
+QString Identity::detachAwayReason() const {
+  return _detachAwayReason;
+}
+
+bool Identity::detachAwayReasonEnabled() const {
+  return _detachAwayReasonEnabled;
 }
 
 QString Identity::ident() const {
@@ -199,11 +193,6 @@ void Identity::setAwayReason(const QString &reason) {
   emit awayReasonSet(reason);
 }
 
-void Identity::setReturnMessage(const QString &message) {
-  _returnMessage = message;
-  emit returnMessageSet(message);
-}
-
 void Identity::setAwayNickEnabled(bool enabled) {
   _awayNickEnabled = enabled;
   emit awayNickEnabledSet(enabled);
@@ -212,11 +201,6 @@ void Identity::setAwayNickEnabled(bool enabled) {
 void Identity::setAwayReasonEnabled(bool enabled) {
   _awayReasonEnabled = enabled;
   emit awayReasonEnabledSet(enabled);
-}
-
-void Identity::setReturnMessageEnabled(bool enabled) {
-  _returnMessageEnabled = enabled;
-  emit returnMessageEnabledSet(enabled);
 }
 
 void Identity::setAutoAwayEnabled(bool enabled) {
@@ -239,14 +223,19 @@ void Identity::setAutoAwayReasonEnabled(bool enabled) {
   emit autoAwayReasonEnabledSet(enabled);
 }
 
-void Identity::setAutoReturnMessage(const QString & message) {
-  _autoReturnMessage = message;
-  emit autoReturnMessageSet(message);
+void Identity::setDetachAwayEnabled(bool enabled) {
+  _detachAwayEnabled = enabled;
+  emit detachAwayEnabledSet(enabled);
 }
 
-void Identity::setAutoReturnMessageEnabled(bool enabled) {
-  _autoReturnMessageEnabled = enabled;
-  emit autoReturnMessageEnabledSet(enabled);
+void Identity::setDetachAwayReason(const QString & reason) {
+  _detachAwayReason = reason;
+  emit detachAwayReasonSet(reason);
+}
+
+void Identity::setDetachAwayReasonEnabled(bool enabled) {
+  _detachAwayReasonEnabled = enabled;
+  emit detachAwayReasonEnabledSet(enabled);
 }
 
 void Identity::setIdent(const QString & ident) {
@@ -315,5 +304,3 @@ QDataStream &operator>>(QDataStream &in, Identity &id) {
   id.fromVariantMap(i);
   return in;
 }
-
-
