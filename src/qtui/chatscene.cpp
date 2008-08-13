@@ -44,7 +44,6 @@ ChatScene::ChatScene(QAbstractItemModel *model, const QString &idString, QObject
     _model(model),
     _singleBufferScene(false),
     _selectingItem(0),
-    _lastItem(0),
     _selectionStart(-1),
     _isSelecting(false),
     _fetchingBacklog(false)
@@ -111,6 +110,15 @@ void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
   // update existing items
   for(int i = end+1; i < _lines.count(); i++) {
     _lines[i]->setRow(i);
+  }
+
+  // update selection
+  if(_selectionStart >= 0) {
+    int offset = end - start + 1;
+    if(_selectionStart >= start) _selectionStart += offset;
+    if(_selectionEnd >= start) _selectionEnd += offset;
+    if(_firstSelectionRow >= start) _firstSelectionRow += offset;
+    if(_lastSelectionRow >= start) _lastSelectionRow += offset;
   }
 
   if(h > 0) {
@@ -205,10 +213,8 @@ void ChatScene::updateSelection(const QPointF &pos) {
       _lines[l]->setSelected(true, minColumn);
     }
   }
-
   int newstart = qMin(curRow, _firstSelectionRow);
   int newend = qMax(curRow, _firstSelectionRow);
-
   if(newstart < _selectionStart) {
     for(int l = newstart; l < _selectionStart; l++)
       _lines[l]->setSelected(true, minColumn);
