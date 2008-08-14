@@ -189,19 +189,19 @@ void loadTranslation(const QLocale &locale) {
 
 QString secondsToString(int timeInSeconds) {
     QList< QPair<int, QString> > timeUnit;
-    timeUnit.append(qMakePair(365*60*60, QCoreApplication::translate("Quassel::secondsToString()", "year")));
+    timeUnit.append(qMakePair(365*24*60*60, QCoreApplication::translate("Quassel::secondsToString()", "year")));
     timeUnit.append(qMakePair(24*60*60, QCoreApplication::translate("Quassel::secondsToString()", "day")));
     timeUnit.append(qMakePair(60*60, QCoreApplication::translate("Quassel::secondsToString()", "h")));
     timeUnit.append(qMakePair(60, QCoreApplication::translate("Quassel::secondsToString()", "min")));
     timeUnit.append(qMakePair(1, QCoreApplication::translate("Quassel::secondsToString()", "sec")));
 
-    QString returnString;
+    QStringList returnString;
     for(int i=0; i < timeUnit.size(); i++) {
       int n = timeInSeconds / timeUnit[i].first;
       if(n > 0) {
-        returnString += QString("%1 %2 ").arg(QString::number(n), timeUnit[i].second);
+        returnString += QString("%1 %2").arg(QString::number(n), timeUnit[i].second);
       }
       timeInSeconds = timeInSeconds % timeUnit[i].first;
     }
-    return returnString;
+    return returnString.join(", ");
 }
