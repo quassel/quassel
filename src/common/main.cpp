@@ -54,17 +54,94 @@
 
 #include <signal.h>
 
+#ifndef Q_OS_WIN32
+#include <execinfo.h>
+#include <dlfcn.h>
+#include <cxxabi.h>
+#endif
+
 //! Signal handler for graceful shutdown.
 void handle_signal(int sig) {
   qWarning("%s", qPrintable(QString("Caught signal %1 - exiting.").arg(sig)));
   QCoreApplication::quit();
 }
 
+#ifndef Q_OS_WIN32
+void handle_crash(int sig) {
+  void* callstack[128];
+  int i, frames = backtrace(callstack, 128);
+
+  QFile dumpFile(QString("Quassel-Crash-%1").arg(QDateTime::currentDateTime().toString("yyyyMMdd-hhmm.log")));
+  dumpFile.open(QIODevice::WriteOnly);
+  QTextStream dumpStream(&dumpFile);
+
+  for (i = 0; i < frames; ++i) {
+    Dl_info info;
+    dladdr (callstack[i], &info);
+    // as a reference:
+    //     typedef struct
+    //     {
+    //       __const char *dli_fname;	/* File name of defining object.  */
+    //       void *dli_fbase;		/* Load address of that object.  */
+    //       __const char *dli_sname;	/* Name of nearest symbol.  */
+    //       void *dli_saddr;		/* Exact value of nearest symbol.  */
+    //     } Dl_info;
+
+#if __LP64__
+    int addrSize = 16;
+#else
+    int addrSize = 8;
+#endif
+
+    QString funcName;
+    if(info.dli_sname) {
+      char *func = abi::__cxa_demangle(info.dli_sname, 0, 0, 0);
+      if(func) {
+	funcName = QString(func);
+	free(func);
+      } else {
+	funcName = QString(info.dli_sname);
+      }
+    } else {
+      funcName = QString("0x%1").arg((long)info.dli_saddr, addrSize, QLatin1Char('0'));
+    }
+
+    // prettificating the filename
+    QString fileName("???");
+    if(info.dli_fname) {
+      fileName = QString(info.dli_fname);
+      int slashPos = fileName.lastIndexOf('/');
+      if(slashPos != -1)
+	fileName = fileName.mid(slashPos + 1);
+      if(fileName.count() < 20)
+	fileName += QString(20 - fileName.count(), ' ');
+    }
+
+    QString debugLine = QString("#%1 %2 0x%3 %4").arg(i, 3, 10)
+      .arg(fileName)
+      .arg((long)(callstack[i]), addrSize, 16, QLatin1Char('0'))
+      .arg(funcName);
+
+    dumpStream << debugLine << "\n";
+    qDebug() << qPrintable(debugLine);
+  }
+  dumpFile.close();
+  exit(27);
+}
+#endif // ifndef Q_OS_WIN32
+
+
 int main(int argc, char **argv) {
   // We catch SIGTERM and SIGINT (caused by Ctrl+C) to graceful shutdown Quassel.
   signal(SIGTERM, handle_signal);
   signal(SIGINT, handle_signal);
 
+#ifndef Q_OS_WIN32
+  signal(SIGABRT, handle_crash);
+  signal(SIGBUS, handle_crash);
+  signal(SIGSEGV, handle_crash);
+#endif // ndef Q_OS_WIN32
+  
   Global::registerMetaTypes();
   Global::setupVersion();
 
