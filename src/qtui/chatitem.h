@@ -34,13 +34,13 @@ class QTextLayout;
 class ChatItem : public QGraphicsItem {
 
   public:
-  ChatItem(int col, QAbstractItemModel *, QGraphicsItem *parent);
+    ChatItem(int col, QAbstractItemModel *, QGraphicsItem *parent);
     virtual ~ChatItem();
 
-  inline const QAbstractItemModel *model() const { return chatScene() ? chatScene()->model() : 0; }
-  int row() const;
-  inline int column() const { return _col; }
-  inline ChatScene *chatScene() const { return qobject_cast<ChatScene *>(scene()); }
+    inline const QAbstractItemModel *model() const { return chatScene() ? chatScene()->model() : 0; }
+    int row() const;
+    inline int column() const { return _col; }
+    inline ChatScene *chatScene() const { return qobject_cast<ChatScene *>(scene()); }
 
     inline QFontMetricsF *fontMetrics() const { return _fontMetrics; }
     inline virtual QRectF boundingRect() const { return _boundingRect; }
