@@ -58,6 +58,7 @@ class ChatScene : public QGraphicsScene {
     void setSelectingItem(ChatItem *item);
     ChatItem *selectingItem() const { return _selectingItem; }
     void startGlobalSelection(ChatItem *item, const QPointF &itemPos);
+    void putToClipboard(const QString &);
 
     void setIsFetchingBacklog(bool);
     inline void setBufferForBacklogFetching(BufferId buffer);

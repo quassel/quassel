@@ -208,7 +208,7 @@ void ChatItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
     if(_selectionMode == NoSelection) {
       chatScene()->setSelectingItem(this);  // removes earlier selection if exists
       _selectionStart = _selectionEnd = posToCursor(event->pos());
-      _selectionMode = PartialSelection;
+      //_selectionMode = PartialSelection;
     } else {
       chatScene()->setSelectingItem(0);
       _selectionMode = NoSelection;
@@ -226,6 +226,8 @@ void ChatItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
       qint16 end = posToCursor(event->pos());
       if(end != _selectionEnd) {
         _selectionEnd = end;
+        if(_selectionStart != _selectionEnd) _selectionMode = PartialSelection;
+        else _selectionMode = NoSelection;
         update();
       }
     } else {
@@ -243,7 +245,7 @@ void ChatItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
     _selectionEnd = posToCursor(event->pos());
     QString selection
         = data(MessageModel::DisplayRole).toString().mid(qMin(_selectionStart, _selectionEnd), qAbs(_selectionStart - _selectionEnd));
-    QApplication::clipboard()->setText(selection, QClipboard::Clipboard);  // TODO configure where selections should go
+    chatScene()->putToClipboard(selection);
     event->accept();
   } else {
     event->ignore();

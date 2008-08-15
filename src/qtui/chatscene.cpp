@@ -266,17 +266,22 @@ void ChatScene::mousePressEvent(QGraphicsSceneMouseEvent *event) {
 
 void ChatScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
   if(_isSelecting && !event->buttons() & Qt::LeftButton) {
-#   ifdef Q_WS_X11
-      QApplication::clipboard()->setText(selectionToString(), QClipboard::Selection);
-#   endif
-//# else
-      QApplication::clipboard()->setText(selectionToString());
-//# endif
+    putToClipboard(selectionToString());
     _isSelecting = false;
     event->accept();
   } else {
     QGraphicsScene::mouseReleaseEvent(event);
   }
+}
+
+void ChatScene::putToClipboard(const QString &selection) {
+  // TODO Configure clipboards
+#   ifdef Q_WS_X11
+  QApplication::clipboard()->setText(selection, QClipboard::Selection);
+#   endif
+//# else
+  QApplication::clipboard()->setText(selection);
+//# endif
 }
 
 //!\brief Convert current selection to human-readable string.
