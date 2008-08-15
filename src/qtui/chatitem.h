@@ -47,8 +47,8 @@ class ChatItem : public QGraphicsItem {
     inline qreal width() const { return _boundingRect.width(); }
     inline qreal height() const { return _boundingRect.height(); }
 
-    inline bool haveLayout() const { return _layout != 0; }
-    void clearLayout();
+    inline bool haveLayout() const { return _layoutData != 0 && layout() != 0; }
+    void clearLayoutData();
     void updateLayout();
     virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
 
@@ -73,6 +73,11 @@ class ChatItem : public QGraphicsItem {
     virtual void hoverMoveEvent(QGraphicsSceneHoverEvent *event);
 
   private:
+    struct LayoutData;
+    class WrapColumnFinder;
+
+    inline QTextLayout *layout() const;
+    void setLayout(QTextLayout *);
     qint16 posToCursor(const QPointF &pos);
     qreal computeHeight();
     QTextLayout *createLayout(QTextOption::WrapMode, Qt::Alignment = Qt::AlignLeft);
@@ -85,14 +90,20 @@ class ChatItem : public QGraphicsItem {
     int _col;
     quint8 _lines;
 
-    QTextLayout * _layout;
     QList<quint16> _wrapPositions;
 
     enum SelectionMode { NoSelection, PartialSelection, FullSelection };
     SelectionMode _selectionMode;
     qint16 _selectionStart, _selectionEnd;
 
-    class WrapColumnFinder;
+    LayoutData *_layoutData;
+};
+
+struct ChatItem::LayoutData {
+  QTextLayout *layout;
+
+  LayoutData() { layout = 0; }
+  ~LayoutData() { delete layout; }
 };
 
 class ChatItem::WrapColumnFinder {
@@ -115,6 +126,6 @@ class ChatItem::WrapColumnFinder {
 
 #include "chatline.h"
 inline int ChatItem::row() const { return static_cast<ChatLine *>(parentItem())->row(); }
-
+inline QTextLayout *ChatItem::layout() const { return _layoutData->layout; }
 
 #endif
