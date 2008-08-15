@@ -48,6 +48,7 @@ void CoreInfoDlg::updateUptime() {
   int uphours = uptime / 3600; uptime %= 3600;
   int upmins = uptime / 60; uptime %= 60;
 
-  QString uptimeText = QString(tr("%1 Day(s) %2:%3:%4 (since %5)")).arg(updays).arg(uphours,2,10,QChar('0')).arg(upmins,2,10,QChar('0')).arg(uptime,2,10,QChar('0')).arg(startTime.toString(Qt::TextDate));
+  QString uptimeText = tr("%n Day(s)", "", updays)
+                     + tr(" %1:%2:%3 (since %4)").arg(uphours,2,10,QChar('0')).arg(upmins,2,10,QChar('0')).arg(uptime,2,10,QChar('0')).arg(startTime.toString(Qt::TextDate));
   ui.labelUptime->setText(uptimeText);
 }
