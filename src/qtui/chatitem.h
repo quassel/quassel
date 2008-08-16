@@ -92,8 +92,6 @@ class ChatItem : public QGraphicsItem {
     int _col;
     quint8 _lines;
 
-    QTextLayout * _layout;
-
     enum SelectionMode { NoSelection, PartialSelection, FullSelection };
     SelectionMode _selectionMode;
     qint16 _selectionStart, _selectionEnd;

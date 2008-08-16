@@ -226,9 +226,8 @@ QList<QRectF> ChatItem::findWords(const QString &searchWord, Qt::CaseSensitivity
   if(!haveLayout())
     updateLayout();
 
-  Q_ASSERT(_layout);
   foreach(int idx, indexList) {
-    QTextLine line = _layout->lineForTextPosition(idx);
+    QTextLine line = layout()->lineForTextPosition(idx);
     qreal x = line.cursorToX(idx);
     qreal width = line.cursorToX(idx + searchWord.count()) - x;
     qreal height = fontMetrics()->lineSpacing();
