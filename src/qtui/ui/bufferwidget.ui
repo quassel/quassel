@@ -27,10 +27,7 @@
   <property name="windowTitle" >
    <string/>
   </property>
-  <layout class="QVBoxLayout" >
-   <property name="margin" >
-    <number>0</number>
-   </property>
+  <layout class="QVBoxLayout" name="verticalLayout" >
    <item>
     <widget class="QStackedWidget" name="stackedWidget" >
      <property name="sizePolicy" >
@@ -47,8 +44,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>782</width>
-        <height>542</height>
+        <width>758</width>
+        <height>498</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" >
@@ -94,8 +91,19 @@ p, li { white-space: pre-wrap; }
      </widget>
     </widget>
    </item>
+   <item>
+    <widget class="ChatViewSearchBar" native="1" name="searchBar" />
+   </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ChatViewSearchBar</class>
+   <extends>QWidget</extends>
+   <header location="global" >chatviewsearchbar.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="../../icons/quassel-icons.qrc" />
  </resources>

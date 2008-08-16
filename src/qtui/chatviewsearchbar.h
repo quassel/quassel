@@ -18,34 +18,35 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef CHATLINEMODELITEM_H_
-#define CHATLINEMODELITEM_H_
+#ifndef CHATVIEWSEARCHBAR_H
+#define CHATVIEWSEARCHBAR_H
 
-#include <QVector>
+#include "ui_chatviewsearchbar.h"
 
-#include "chatlinemodel.h"
-#include "uistyle.h"
+#include <QWidget>
 
-class ChatLineModelItem : public MessageModelItem {
+class QAction;
+
+class ChatViewSearchBar : public QWidget {
+  Q_OBJECT
+
 public:
-  ChatLineModelItem(const Message &);
+  ChatViewSearchBar(QWidget *parent = 0);
 
-  virtual QVariant data(int column, int role) const;
-  virtual inline bool setData(int column, const QVariant &value, int role) { Q_UNUSED(column); Q_UNUSED(value); Q_UNUSED(role); return false; }
+  inline QLineEdit *searchEditLine() const { return ui.searchEditLine; }
+  inline QCheckBox *caseSensitiveBox() const { return ui.caseSensitiveBox; }
+  inline QCheckBox *searchSendersBox() const { return ui.searchSendersBox; }
+  inline QCheckBox *searchMsgsBox() const { return ui.searchMsgsBox; }
+  inline QCheckBox *searchOnlyRegularMsgsBox() const { return ui.searchOnlyRegularMsgsBox; }
+
+  inline QAction *toggleViewAction() const { return _toggleViewAction; }
+
+public slots:
+  void setVisible(bool visible);
 
 private:
-  void computeWrapList();
-
-  struct ChatLinePart {
-    QString plainText;
-    UiStyle::FormatList formatList;
-  };
-  ChatLinePart _timestamp, _sender, _contents;
-
-  ChatLineModel::WrapList _wrapList;
-
-  static unsigned char *TextBoundaryFinderBuffer;
-  static int TextBoundaryFinderBufferSize;
+  Ui::ChatViewSearchBar ui;
+  QAction *_toggleViewAction;
 };
 
-#endif
+#endif //CHATVIEWSEARCHBAR_H

@@ -25,11 +25,17 @@
 
 #include "abstractbuffercontainer.h"
 
+class ChatViewSearchBar;
+class ChatViewSearchController;
+
 class BufferWidget : public AbstractBufferContainer {
   Q_OBJECT
 
   public:
     BufferWidget(QWidget *parent);
+    ~BufferWidget();
+
+  inline ChatViewSearchBar *searchBar() const { return ui.searchBar; }
 
   protected:
     virtual AbstractChatView *createChatView(BufferId);
@@ -41,6 +47,8 @@ class BufferWidget : public AbstractBufferContainer {
   private:
     Ui::BufferWidget ui;
     QHash<BufferId, QWidget *> _chatViews;
+
+  ChatViewSearchController *_chatViewSearchController;
 };
 
 #endif

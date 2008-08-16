@@ -209,6 +209,36 @@ void ChatItem::continueSelecting(const QPointF &pos) {
   update();
 }
 
+QList<QRectF> ChatItem::findWords(const QString &searchWord, Qt::CaseSensitivity caseSensitive) {
+  QList<QRectF> resultList;
+  const QAbstractItemModel *model_ = model();
+  if(!model_)
+    return resultList;
+
+  QString plainText = model_->data(model_->index(row(), column()), MessageModel::DisplayRole).toString();
+  QList<int> indexList;
+  int searchIdx = plainText.indexOf(searchWord, 0, caseSensitive);
+  while(searchIdx != -1) {
+    indexList << searchIdx;
+    searchIdx = plainText.indexOf(searchWord, searchIdx + 1, caseSensitive);
+  }
+
+  if(!haveLayout())
+    updateLayout();
+
+  Q_ASSERT(_layout);
+  foreach(int idx, indexList) {
+    QTextLine line = _layout->lineForTextPosition(idx);
+    qreal x = line.cursorToX(idx);
+    qreal width = line.cursorToX(idx + searchWord.count()) - x;
+    qreal height = fontMetrics()->lineSpacing();
+    qreal y = height * line.lineNumber();
+    resultList << QRectF(x, y, width, height);
+  }
+  return resultList;
+}
+
+
 void ChatItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
   if(event->buttons() == Qt::LeftButton) {
     if(_selectionMode == NoSelection) {

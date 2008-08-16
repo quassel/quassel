@@ -18,34 +18,31 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef CHATLINEMODELITEM_H_
-#define CHATLINEMODELITEM_H_
+#include "chatviewsearchbar.h"
 
-#include <QVector>
+#include <QAction>
 
-#include "chatlinemodel.h"
-#include "uistyle.h"
+ChatViewSearchBar::ChatViewSearchBar(QWidget *parent)
+  : QWidget(parent)
+{
+  ui.setupUi(this);
+  layout()->setContentsMargins(0, 0, 0, 0);
 
-class ChatLineModelItem : public MessageModelItem {
-public:
-  ChatLineModelItem(const Message &);
+  ui.searchUpButton->setEnabled(false);
+  ui.searchDownButton->setEnabled(false);
 
-  virtual QVariant data(int column, int role) const;
-  virtual inline bool setData(int column, const QVariant &value, int role) { Q_UNUSED(column); Q_UNUSED(value); Q_UNUSED(role); return false; }
+  _toggleViewAction = new QAction(tr("Show search bar"), this);
+  _toggleViewAction->setCheckable(true);
+  _toggleViewAction->setChecked(false);
+  connect(_toggleViewAction, SIGNAL(toggled(bool)),
+	  this, SLOT(setVisible(bool)));
+  setVisible(false);
 
-private:
-  void computeWrapList();
+  connect(ui.hideButton, SIGNAL(clicked()),
+	  _toggleViewAction, SLOT(toggle()));
+}
 
-  struct ChatLinePart {
-    QString plainText;
-    UiStyle::FormatList formatList;
-  };
-  ChatLinePart _timestamp, _sender, _contents;
-
-  ChatLineModel::WrapList _wrapList;
-
-  static unsigned char *TextBoundaryFinderBuffer;
-  static int TextBoundaryFinderBufferSize;
-};
-
-#endif
+void ChatViewSearchBar::setVisible(bool visible) {
+  QWidget::setVisible(visible);
+  ui.searchEditLine->clear();
+}

@@ -1,0 +1,115 @@
+<ui version="4.0" >
+ <class>ChatViewSearchBar</class>
+ <widget class="QWidget" name="ChatViewSearchBar" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>727</width>
+    <height>51</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Form</string>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout" >
+   <item>
+    <widget class="QToolButton" name="hideButton" >
+     <property name="text" >
+      <string>...</string>
+     </property>
+     <property name="icon" >
+      <iconset resource="../../icons/icons.qrc" >
+       <normaloff>:/16x16/actions/oxygen/16x16/actions/application-exit.png</normaloff>:/16x16/actions/oxygen/16x16/actions/application-exit.png</iconset>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="ClearableLineEdit" name="searchEditLine" />
+   </item>
+   <item>
+    <widget class="QToolButton" name="searchDownButton" >
+     <property name="text" >
+      <string>...</string>
+     </property>
+     <property name="icon" >
+      <iconset resource="../../icons/icons.qrc" >
+       <normaloff>:/16x16/actions/oxygen/16x16/actions/go-down.png</normaloff>:/16x16/actions/oxygen/16x16/actions/go-down.png</iconset>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QToolButton" name="searchUpButton" >
+     <property name="text" >
+      <string>...</string>
+     </property>
+     <property name="icon" >
+      <iconset resource="../../icons/icons.qrc" >
+       <normaloff>:/16x16/actions/oxygen/16x16/actions/go-up.png</normaloff>:/16x16/actions/oxygen/16x16/actions/go-up.png</iconset>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="caseSensitiveBox" >
+     <property name="text" >
+      <string>case sensitive</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="searchSendersBox" >
+     <property name="text" >
+      <string>search nick</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="searchMsgsBox" >
+     <property name="text" >
+      <string>search message</string>
+     </property>
+     <property name="checkable" >
+      <bool>true</bool>
+     </property>
+     <property name="checked" >
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="searchOnlyRegularMsgsBox" >
+     <property name="text" >
+      <string>ignore joins, parts, etc.</string>
+     </property>
+     <property name="checked" >
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <spacer name="horizontalSpacer" >
+     <property name="orientation" >
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0" >
+      <size>
+       <width>40</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ClearableLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header location="global" >clearablelineedit.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="../../icons/icons.qrc" />
+ </resources>
+ <connections/>
+</ui>

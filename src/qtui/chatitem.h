@@ -62,6 +62,8 @@ class ChatItem : public QGraphicsItem {
     void setFullSelection();
     void continueSelecting(const QPointF &pos);
 
+  QList<QRectF> findWords(const QString &searchWord, Qt::CaseSensitivity caseSensitive);
+
   protected:
     virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
@@ -90,7 +92,7 @@ class ChatItem : public QGraphicsItem {
     int _col;
     quint8 _lines;
 
-    QList<quint16> _wrapPositions;
+    QTextLayout * _layout;
 
     enum SelectionMode { NoSelection, PartialSelection, FullSelection };
     SelectionMode _selectionMode;

@@ -50,6 +50,7 @@ class ChatScene : public QGraphicsScene {
     int sectionByScenePos(int x);
     inline int sectionByScenePos(const QPoint &pos) { return sectionByScenePos(pos.x()); }
     inline bool isSingleBufferScene() const { return _singleBufferScene; }
+    inline ChatLine *chatLine(int row) { return (row < _lines.count()) ? _lines[row] : 0; }
 
   public slots:
     void setWidth(qreal);

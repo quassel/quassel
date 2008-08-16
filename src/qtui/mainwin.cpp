@@ -29,6 +29,7 @@
 #include "chatmonitorfilter.h"
 #include "chatmonitorview.h"
 #include "chatview.h"
+#include "chatviewsearchbar.h"
 #include "client.h"
 #include "clientbacklogmanager.h"
 #include "coreinfodlg.h"
@@ -163,6 +164,7 @@ void MainWin::init() {
   // attach the BufferWidget to the BufferModel and the default selection
   ui.bufferWidget->setModel(Client::bufferModel());
   ui.bufferWidget->setSelectionModel(Client::bufferModel()->standardSelectionModel());
+  ui.menuViews->addAction(ui.bufferWidget->searchBar()->toggleViewAction());
 
   _titleSetter.setModel(Client::bufferModel());
   _titleSetter.setSelectionModel(Client::bufferModel()->standardSelectionModel());

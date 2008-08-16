@@ -17,6 +17,8 @@ set(SOURCES
     chatmonitorview.cpp
     chatscene.cpp
     chatview.cpp
+    chatviewsearchbar.cpp
+    chatviewsearchcontroller.cpp
     columnhandleitem.cpp
     coreconfigwizard.cpp
     coreconnectdlg.cpp
@@ -49,6 +51,8 @@ set(MOC_HDRS
     chatmonitorview.h
     chatscene.h
     chatview.h
+    chatviewsearchbar.h
+    chatviewsearchcontroller.h
     columnhandleitem.h
     coreconfigwizard.h
     coreconnectdlg.h
@@ -81,6 +85,7 @@ set(FORMS
     bufferviewwidget.ui
     bufferwidget.ui
     channellistdlg.ui
+    chatviewsearchbar.ui
     coreaccounteditdlg.ui
     coreconfigwizardintropage.ui
     coreconfigwizardadminuserpage.ui

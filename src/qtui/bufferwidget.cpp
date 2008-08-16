@@ -20,13 +20,44 @@
 
 #include "bufferwidget.h"
 #include "chatview.h"
+#include "chatviewsearchbar.h"
+#include "chatviewsearchcontroller.h"
 #include "settings.h"
 #include "client.h"
 
 #include "global.h"
 
-BufferWidget::BufferWidget(QWidget *parent) : AbstractBufferContainer(parent) {
+#include <QLayout>
+
+BufferWidget::BufferWidget(QWidget *parent)
+  : AbstractBufferContainer(parent),
+    _chatViewSearchController(new ChatViewSearchController(this))
+{
   ui.setupUi(this);
+  layout()->setContentsMargins(0, 0, 0, 0);
+  layout()->setSpacing(0);
+  // ui.searchBar->hide();
+
+  _chatViewSearchController->setCaseSensitive(ui.searchBar->caseSensitiveBox()->isChecked());
+  _chatViewSearchController->setSearchSenders(ui.searchBar->searchSendersBox()->isChecked());
+  _chatViewSearchController->setSearchMsgs(ui.searchBar->searchMsgsBox()->isChecked());
+  _chatViewSearchController->setSearchOnlyRegularMsgs(ui.searchBar->searchOnlyRegularMsgsBox()->isChecked());
+  
+  connect(ui.searchBar->searchEditLine(), SIGNAL(textChanged(const QString &)),
+	  _chatViewSearchController, SLOT(setSearchString(const QString &)));
+  connect(ui.searchBar->caseSensitiveBox(), SIGNAL(toggled(bool)),
+	  _chatViewSearchController, SLOT(setCaseSensitive(bool)));
+  connect(ui.searchBar->searchSendersBox(), SIGNAL(toggled(bool)),
+	  _chatViewSearchController, SLOT(setSearchSenders(bool)));
+  connect(ui.searchBar->searchMsgsBox(), SIGNAL(toggled(bool)),
+	  _chatViewSearchController, SLOT(setSearchMsgs(bool)));
+  connect(ui.searchBar->searchOnlyRegularMsgsBox(), SIGNAL(toggled(bool)),
+	  _chatViewSearchController, SLOT(setSearchOnlyRegularMsgs(bool)));
+}
+
+BufferWidget::~BufferWidget() {
+  delete _chatViewSearchController;
+  _chatViewSearchController = 0;
 }
 
 AbstractChatView *BufferWidget::createChatView(BufferId id) {
@@ -48,7 +79,13 @@ void BufferWidget::removeChatView(BufferId id) {
 }
 
 void BufferWidget::showChatView(BufferId id) {
-  if(!id.isValid()) ui.stackedWidget->setCurrentWidget(ui.page);
-  else ui.stackedWidget->setCurrentWidget(_chatViews.value(id));
+  if(!id.isValid()) {
+    ui.stackedWidget->setCurrentWidget(ui.page);
+  } else {
+    ChatView *view = qobject_cast<ChatView *>(_chatViews.value(id));
+    Q_ASSERT(view);
+    ui.stackedWidget->setCurrentWidget(view);
+    _chatViewSearchController->setScene(view->scene());
+  }
 }
 
