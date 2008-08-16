@@ -239,6 +239,8 @@ void ChatScene::updateSelection(const QPointF &pos) {
   if(newstart == newend && minColumn == ChatLineModel::ContentsColumn) {
     _lines[curRow]->setSelected(false);
     _isSelecting = false;
+    Q_ASSERT(_selectingItem); // this seems to not always be true, but I have no idea why
+                              // adding this assert to make sure the occasional segfault is caused by this
     _selectingItem->continueSelecting(_selectingItem->mapFromScene(pos));
   }
 }
