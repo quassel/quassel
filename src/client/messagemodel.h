@@ -35,12 +35,13 @@ class MessageModel : public QAbstractItemModel {
 
   public:
     enum MessageRole {
+      DisplayRole = Qt::DisplayRole,
+      EditRole = Qt::EditRole,
       MsgIdRole = Qt::UserRole,
       BufferIdRole,
       TypeRole,
       FlagsRole,
       TimestampRole,
-      DisplayRole,
       FormatRole,
       ColumnTypeRole,
       UserRole
