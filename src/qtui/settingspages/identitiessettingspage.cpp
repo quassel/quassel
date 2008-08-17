@@ -77,6 +77,8 @@ void IdentitiesSettingsPage::setWidgetStates() {
   }
   ui.deleteNick->setEnabled(ui.nicknameList->count() > 1);
 
+  // FIXME this is until stuff has been implemented
+  ui.detachAwayEnabled->setEnabled(false);
 }
 
 void IdentitiesSettingsPage::coreConnectionStateChanged(bool state) {
