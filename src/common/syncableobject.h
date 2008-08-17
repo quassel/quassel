@@ -45,7 +45,7 @@ public:
    *  \return The object's state in a QVariantMap
    */
   virtual QVariantMap toVariantMap();
-  
+
   //! Initialize the object's state from a given QVariantMap.
   /** \see toVariantMap() for important information concerning this method.
    */
@@ -76,7 +76,7 @@ signals:
 
 private:
   bool setInitValue(const QString &property, const QVariant &value);
-  
+
   bool _initialized;
   bool _allowClientUpdates;
 

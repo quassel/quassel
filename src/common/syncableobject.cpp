@@ -44,7 +44,7 @@ SyncableObject::SyncableObject(const SyncableObject &other, QObject *parent)
 SyncableObject &SyncableObject::operator=(const SyncableObject &other) {
   if(this == &other)
     return *this;
-  
+
   _initialized = other._initialized;
   _allowClientUpdates = other._allowClientUpdates;
   return *this;
@@ -110,7 +110,7 @@ void SyncableObject::fromVariantMap(const QVariantMap &properties) {
       iterator++;
       continue;
     }
-    
+
     int propertyIndex = meta->indexOfProperty(propName.toAscii());
 
     if(propertyIndex == -1 || !meta->property(propertyIndex).isWritable())
