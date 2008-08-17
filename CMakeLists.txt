@@ -38,6 +38,10 @@ if(STATIC)
   set(CMAKE_BUILD_TYPE Release)
 endif(STATIC)
 
+# RPATH needs to be set correctly
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH 1) 
+set(CMAKE_BUILD_WITH_INSTALL_RPATH 1)
+
 # Enable various flags on gcc
 if(CMAKE_COMPILER_IS_GNUCXX)
   include(CheckCXXCompilerFlag)
