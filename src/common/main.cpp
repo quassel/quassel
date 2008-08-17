@@ -54,7 +54,7 @@
 
 #include <signal.h>
 
-#ifndef Q_OS_WIN32
+#if not defined(Q_OS_WIN32) && not defined(MAC_10_4_SDK)
 #include <execinfo.h>
 #include <dlfcn.h>
 #include <cxxabi.h>
@@ -66,7 +66,7 @@ void handle_signal(int sig) {
   QCoreApplication::quit();
 }
 
-#ifndef Q_OS_WIN32
+#if not defined(Q_OS_WIN32) && not defined(MAC_10_4_SDK)
 void handle_crash(int sig) {
   void* callstack[128];
   int i, frames = backtrace(callstack, 128);
@@ -136,7 +136,7 @@ int main(int argc, char **argv) {
   signal(SIGTERM, handle_signal);
   signal(SIGINT, handle_signal);
 
-#ifndef Q_OS_WIN32
+#if not defined(Q_OS_WIN32) && not defined(MAC_10_4_SDK)
   signal(SIGABRT, handle_crash);
   signal(SIGBUS, handle_crash);
   signal(SIGSEGV, handle_crash);

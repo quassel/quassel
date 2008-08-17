@@ -61,6 +61,7 @@ if(APPLE AND DEPLOY)
   set(CMAKE_OSX_ARCHITECTURES "i386;ppc")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mmacosx-version-min=10.4")
   set(CMAKE_OSX_SYSROOT "/Developer/SDKs/MacOSX10.4u.sdk/")
+  add_definitions(-DMAC_10_4_SDK)
 endif(APPLE AND DEPLOY)
 
 # Enable mostly b0rked stuff (new ChatView), do not enable this unless you know what you do...
