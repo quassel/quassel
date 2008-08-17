@@ -115,7 +115,6 @@ void Client::init() {
   p->attachSlot(SIGNAL(identityRemoved(IdentityId)), this, SLOT(coreIdentityRemoved(IdentityId)));
 
   p->attachSignal(this, SIGNAL(requestCreateNetwork(const NetworkInfo &)), SIGNAL(createNetwork(const NetworkInfo &)));
-  p->attachSignal(this, SIGNAL(requestUpdateNetwork(const NetworkInfo &)), SIGNAL(updateNetwork(const NetworkInfo &)));
   p->attachSignal(this, SIGNAL(requestRemoveNetwork(NetworkId)), SIGNAL(removeNetwork(NetworkId)));
   p->attachSlot(SIGNAL(networkCreated(NetworkId)), this, SLOT(coreNetworkCreated(NetworkId)));
   p->attachSlot(SIGNAL(networkRemoved(NetworkId)), this, SLOT(coreNetworkRemoved(NetworkId)));
@@ -207,12 +206,17 @@ void Client::createNetwork(const NetworkInfo &info) {
   emit instance()->requestCreateNetwork(info);
 }
 
-void Client::updateNetwork(const NetworkInfo &info) {
-  emit instance()->requestUpdateNetwork(info);
-}
-
 void Client::removeNetwork(NetworkId id) {
   emit instance()->requestRemoveNetwork(id);
+}
+
+void Client::updateNetwork(const NetworkInfo &info) {
+  Network *netptr = instance()->_networks.value(info.networkId, 0);
+  if(!netptr) {
+    qWarning() << "Update for unknown network requested:" << info;
+    return;
+  }
+  netptr->requestSetNetworkInfo(info);
 }
 
 void Client::addNetwork(Network *net) {
@@ -257,7 +261,6 @@ void Client::createIdentity(const Identity &id) {
 }
 
 void Client::updateIdentity(IdentityId id, const QVariantMap &ser) {
-  //emit instance()->requestUpdateIdentity(id);
   Identity *idptr = instance()->_identities.value(id, 0);
   if(!idptr) {
     qWarning() << "Update for unknown identity requested:" << id;

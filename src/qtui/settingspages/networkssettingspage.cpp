@@ -315,7 +315,7 @@ void NetworksSettingsPage::clientIdentityRemoved(IdentityId id) {
 }
 
 QListWidgetItem *NetworksSettingsPage::networkItem(NetworkId id) const {
-  for(int i = 0; i < ui.networkList->count(); i++) { 
+  for(int i = 0; i < ui.networkList->count(); i++) {
     QListWidgetItem *item = ui.networkList->item(i);
     if(item->data(Qt::UserRole).value<NetworkId>() == id) return item;
   }

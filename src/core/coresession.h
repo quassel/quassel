@@ -93,11 +93,6 @@ public slots:
    */
   void createNetwork(const NetworkInfo &info);
 
-  //! Update a network and propagate the changes to the clients.
-  /** \param info The updated network settings.
-   */
-  void updateNetwork(const NetworkInfo &info);
-
   //! Remove identity and propagate that fact to the clients.
   /** \param identity The identity to be removed.
    */
@@ -163,7 +158,6 @@ private slots:
   void destroyNetwork(NetworkId);
 
   void identityUpdated(const QVariantMap &);
-  //void networkUpdated(const QVariantMap &);
 
   //! Called when storage updated a BufferInfo.
   /** This emits bufferInfoUpdated() via SignalProxy, iff it's one of our buffers.

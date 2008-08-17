@@ -153,7 +153,6 @@ signals:
   void networkRemoved(NetworkId id);
 
   void requestCreateNetwork(const NetworkInfo &info);
-  void requestUpdateNetwork(const NetworkInfo &info);
   void requestRemoveNetwork(NetworkId);
 
 public slots:

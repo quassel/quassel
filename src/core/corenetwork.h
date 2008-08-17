@@ -38,6 +38,7 @@ public:
 public slots:
   virtual void requestConnect() const;
   virtual void requestDisconnect() const;
+  virtual void requestSetNetworkInfo(const NetworkInfo &info);
 
 private:
   CoreSession *_coreSession;

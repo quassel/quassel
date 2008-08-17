@@ -71,7 +71,6 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
   p->attachSignal(this, SIGNAL(networkCreated(NetworkId)));
   p->attachSignal(this, SIGNAL(networkRemoved(NetworkId)));
   p->attachSlot(SIGNAL(createNetwork(const NetworkInfo &)), this, SLOT(createNetwork(const NetworkInfo &)));
-  p->attachSlot(SIGNAL(updateNetwork(const NetworkInfo &)), this, SLOT(updateNetwork(const NetworkInfo &)));
   p->attachSlot(SIGNAL(removeNetwork(NetworkId)), this, SLOT(removeNetwork(NetworkId)));
 
   loadSettings();
@@ -432,18 +431,8 @@ void CoreSession::createNetwork(const NetworkInfo &info_) {
     emit networkCreated(id);
   } else {
     quWarning() << qPrintable(tr("CoreSession::createNetwork(): Trying to create a network that already exists, updating instead!"));
-    updateNetwork(info);
+    _networks[info.networkId]->requestSetNetworkInfo(info);
   }
-}
-
-// FIXME: move to CoreNetwork
-void CoreSession::updateNetwork(const NetworkInfo &info) {
-  if(!_networks.contains(info.networkId)) {
-    quWarning() << "Update request for unknown network received!";
-    return;
-  }
-  _networks[info.networkId]->setNetworkInfo(info);
-  Core::updateNetwork(user(), info);
 }
 
 void CoreSession::removeNetwork(NetworkId id) {

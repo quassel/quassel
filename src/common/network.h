@@ -88,7 +88,7 @@ public:
     D_CHANMODE = 0x08
   };
 
-  
+
   Network(const NetworkId &networkid, QObject *parent = 0);
   ~Network();
 
@@ -113,7 +113,7 @@ public:
 
   ChannelModeType channelModeType(const QString &mode);
   inline ChannelModeType channelModeType(const QCharRef &mode) { return channelModeType(QString(mode)); }
-  
+
   inline const QString &networkName() const { return _networkName; }
   inline const QString &currentServer() const { return _currentServer; }
   inline const QString &myNick() const { return _myNick; }
@@ -216,14 +216,14 @@ public slots:
   virtual QVariantMap initIrcUsersAndChannels() const;
 //   QStringList initIrcUsers() const;
 //   QStringList initIrcChannels() const;
-  
+
   //init seters
   void initSetSupports(const QVariantMap &supports);
   inline void initSetServerList(const QVariantList &serverList) { setServerList(serverList); }
   virtual void initSetIrcUsersAndChannels(const QVariantMap &usersAndChannels);
 //   void initSetIrcUsers(const QStringList &hostmasks);
 //   void initSetIrcChannels(const QStringList &channels);
-  
+
   IrcUser *updateNickFromMask(const QString &mask);
 
   // these slots are to keep the hashlists of all users and the
@@ -232,6 +232,7 @@ public slots:
 
   virtual inline void requestConnect() const { emit connectRequested(); }
   virtual inline void requestDisconnect() const { emit disconnectRequested(); }
+  virtual inline void requestSetNetworkInfo(const NetworkInfo &info) { emit setNetworkInfoRequested(info); }
 
   void emitConnectionError(const QString &);
 
@@ -292,6 +293,7 @@ signals:
 
   void connectRequested(NetworkId id = 0) const;
   void disconnectRequested(NetworkId id = 0) const;
+  void setNetworkInfoRequested(const NetworkInfo &) const;
 
 private:
   QPointer<SignalProxy> _proxy;

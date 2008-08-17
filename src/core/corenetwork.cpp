@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include "core.h"
 #include "corenetwork.h"
 #include "coresession.h"
 
@@ -43,4 +44,9 @@ void CoreNetwork::requestDisconnect() const {
     return;
   }
   emit disconnectRequested(networkId());
+}
+
+void CoreNetwork::requestSetNetworkInfo(const NetworkInfo &info) {
+  setNetworkInfo(info);
+  Core::updateNetwork(coreSession()->user(), info);
 }
