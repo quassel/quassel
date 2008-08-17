@@ -110,7 +110,6 @@ void Client::init() {
   p->attachSignal(this, SIGNAL(requestNetworkStates()));
 
   p->attachSignal(this, SIGNAL(requestCreateIdentity(const Identity &)), SIGNAL(createIdentity(const Identity &)));
-  p->attachSignal(this, SIGNAL(requestUpdateIdentity(const Identity &)), SIGNAL(updateIdentity(const Identity &)));
   p->attachSignal(this, SIGNAL(requestRemoveIdentity(IdentityId)), SIGNAL(removeIdentity(IdentityId)));
   p->attachSlot(SIGNAL(identityCreated(const Identity &)), this, SLOT(coreIdentityCreated(const Identity &)));
   p->attachSlot(SIGNAL(identityRemoved(IdentityId)), this, SLOT(coreIdentityRemoved(IdentityId)));
@@ -257,8 +256,14 @@ void Client::createIdentity(const Identity &id) {
   emit instance()->requestCreateIdentity(id);
 }
 
-void Client::updateIdentity(const Identity &id) {
-  emit instance()->requestUpdateIdentity(id);
+void Client::updateIdentity(IdentityId id, const QVariantMap &ser) {
+  //emit instance()->requestUpdateIdentity(id);
+  Identity *idptr = instance()->_identities.value(id, 0);
+  if(!idptr) {
+    qWarning() << "Update for unknown identity requested:" << id;
+    return;
+  }
+  idptr->requestUpdate(ser);
 }
 
 void Client::removeIdentity(IdentityId id) {

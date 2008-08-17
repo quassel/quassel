@@ -463,9 +463,8 @@ SaveIdentitiesDlg::SaveIdentitiesDlg(const QList<Identity *> &toCreate, const QL
         numevents--;
         continue;
       }
-      // FIXME this only checks for one changed item rather than all!
       connect(cid, SIGNAL(updatedRemotely()), this, SLOT(clientEvent()));
-      Client::updateIdentity(*id);
+      Client::updateIdentity(id->id(), id->toVariantMap());
     }
     foreach(IdentityId id, toRemove) {
       Client::removeIdentity(id);

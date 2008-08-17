@@ -55,6 +55,7 @@ Identity::Identity(const Identity &other, QObject *parent) : SyncableObject(pare
 
 void Identity::init() {
   setObjectName(QString::number(id().toInt()));
+  setAllowClientUpdates(true);
 }
 
 void Identity::setToDefaults() {
@@ -269,7 +270,7 @@ for(int idx = metaObject()->propertyOffset(); idx < metaObject()->propertyCount(
     }
   }
 }
-#include <QDebug>
+
 bool Identity::operator==(const Identity &other) {
   for(int idx = metaObject()->propertyOffset(); idx < metaObject()->propertyCount(); idx++) {
     QMetaProperty metaProp = metaObject()->property(idx);

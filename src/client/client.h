@@ -82,9 +82,10 @@ public:
 
   //! Request update of an identity with the given data.
   /** The request will be sent to the core, and will be propagated back to all the clients.
-   *  \param identity The identity to be updated.
+   *  \param id The identity to be updated.
+   *  \param serializedData The identity's content (cf. SyncableObject::toVariantMap())
    */
-  static void updateIdentity(const Identity &identity);
+  static void updateIdentity(IdentityId id, const QVariantMap &serializedData);
 
   //! Request removal of the identity with the given ID from the core (and all the clients, of course).
   /** \param id The ID of the identity to be removed.
@@ -145,8 +146,6 @@ signals:
 
   //! Sent to the core when an identity shall be created. Should not be used elsewhere.
   void requestCreateIdentity(const Identity &);
-  //! Sent to the core when an identity shall be updated. Should not be used elsewhere.
-  void requestUpdateIdentity(const Identity &);
   //! Sent to the core when an identity shall be removed. Should not be used elsewhere.
   void requestRemoveIdentity(IdentityId);
 

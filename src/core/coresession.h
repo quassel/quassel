@@ -61,7 +61,7 @@ public:
   AliasManager &aliasManager() { return _aliasManager; }
 
   inline CoreIrcListHelper *ircListHelper() const { return _ircListHelper; }
-  
+
   void attachNetworkConnection(NetworkConnection *conn);
 
   //! Return necessary data for restoring the session after restarting the core
@@ -82,11 +82,6 @@ public slots:
   /** \param identity The identity to be created.
    */
   void createIdentity(const Identity &identity);
-
-  //! Update an identity and propagate the changes to the clients.
-  /** \param identity The identity to be updated.
-   */
-  void updateIdentity(const Identity &identity);
 
   //! Remove identity and propagate that fact to the clients.
   /** \param identity The identity to be removed.
@@ -166,6 +161,9 @@ private slots:
   void networkDisconnected(NetworkId networkid);
 
   void destroyNetwork(NetworkId);
+
+  void identityUpdated(const QVariantMap &);
+  //void networkUpdated(const QVariantMap &);
 
   //! Called when storage updated a BufferInfo.
   /** This emits bufferInfoUpdated() via SignalProxy, iff it's one of our buffers.
