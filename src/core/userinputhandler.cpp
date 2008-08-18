@@ -27,6 +27,7 @@
 #include "ircuser.h"
 
 #include <QDebug>
+#include <QRegExp>
 
 UserInputHandler::UserInputHandler(NetworkConnection *parent) : BasicHandler(parent) {
 }
@@ -152,14 +153,18 @@ void UserInputHandler::handleInvite(const BufferInfo &bufferInfo, const QString 
 }
 
 void UserInputHandler::handleJoin(const BufferInfo &bufferInfo, const QString &msg) {
-  Q_UNUSED(bufferInfo)
-  QStringList params = msg.trimmed().split(" ");
+  Q_UNUSED(bufferInfo);
+
+  // trim spaces before chans or keys
+  QString sane_msg = msg;
+  sane_msg.replace(QRegExp(", +"), ",");
+  QStringList params = sane_msg.trimmed().split(" ");
   QStringList chans = params[0].split(",");
   QStringList keys;
   int i;
   for(i = 0; i < chans.count(); i++) {
-    if (chans.at(i)[0].isLetterOrNumber())
-      chans[i].prepend(QChar('#'));
+    if(!network()->isChannelName(chans[i]))
+      chans[i].prepend('#');
   }
   params[0] = chans.join(",");
   if(params.count() > 1) keys = params[1].split(",");
