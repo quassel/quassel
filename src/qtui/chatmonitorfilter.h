@@ -50,7 +50,6 @@ public:
   void removeShowField(int field);
 
 private:
-  QDateTime _initTime;
 
   void showFieldSettingsChanged();
 };
