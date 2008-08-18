@@ -317,6 +317,7 @@ UiStyle::StyledMessage UiStyle::styleMessage(const Message &msg) {
   QString nick = nickFromMask(msg.sender());
   QString txt = mircToInternal(msg.contents());
   QString bufferName = msg.bufferInfo().bufferName();
+  bufferName.replace('%', "%%"); // well, you _can_ have a % in a buffername apparently... -_-
 
   StyledMessage result;
 
