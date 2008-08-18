@@ -140,6 +140,7 @@ void ChatScene::modelReset() {
   }
   _lines.clear();
   setSceneRect(QRectF(0, 0, _width, 0));
+  emit heightChanged(0);
 }
 
 void ChatScene::setWidth(qreal w) {
