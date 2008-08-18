@@ -35,9 +35,9 @@
 ChatLine::ChatLine(int row, QAbstractItemModel *model, QGraphicsItem *parent)
   : QGraphicsItem(parent),
     _row(row), // needs to be set before the items
-    _timestampItem(ChatLineModel::TimestampColumn, model, this),
-    _senderItem(ChatLineModel::SenderColumn, model, this),
-    _contentsItem(ChatLineModel::ContentsColumn, model, this),
+    _timestampItem(model, this),
+    _senderItem(model, this),
+    _contentsItem(model, this),
     _width(0),
     _height(0),
     _selection(0)
