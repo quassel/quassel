@@ -48,8 +48,8 @@ public:
   inline qreal width() const { return _boundingRect.width(); }
   inline qreal height() const { return _boundingRect.height(); }
 
-  inline bool haveLayout() const { return _layoutData != 0 && layout() != 0; }
-  void clearLayoutData();
+  virtual inline bool haveLayout() const { return layout() != 0; }
+  virtual void clearLayout();
   virtual QTextLayout *createLayout(QTextOption::WrapMode, Qt::Alignment = Qt::AlignLeft);
   virtual void updateLayout();
   virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
@@ -70,15 +70,9 @@ protected:
   virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
   virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
   virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-  virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
 
-  virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
-  virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
-  virtual void hoverMoveEvent(QGraphicsSceneHoverEvent *event);
-
-  struct LayoutData;
-  inline QTextLayout *layout() const;
-  void setLayout(QTextLayout *);
+  virtual inline QTextLayout *layout() const { return _layout; }
+  virtual inline void setLayout(QTextLayout *l) { _layout = l; }
   qint16 posToCursor(const QPointF &pos);
 
   virtual qreal computeHeight();
@@ -95,16 +89,12 @@ private:
   SelectionMode _selectionMode;
   qint16 _selectionStart, _selectionEnd;
 
-  LayoutData *_layoutData;
+  QTextLayout *_layout;
 };
 
-struct ChatItem::LayoutData {
-  QTextLayout *layout;
+/*************************************************************************************************/
 
-  LayoutData() { layout = 0; }
-  ~LayoutData() { delete layout; }
-};
-
+//! A ChatItem for the timestamp column
 class TimestampChatItem : public ChatItem {
 
 public:
@@ -113,30 +103,57 @@ public:
 
 };
 
+/*************************************************************************************************/
+
+//! A ChatItem for the sender column
 class SenderChatItem : public ChatItem {
 
 public:
   SenderChatItem(QAbstractItemModel *model, QGraphicsItem *parent) : ChatItem(column(), model, parent) {}
   inline ChatLineModel::ColumnType column() const { return ChatLineModel::SenderColumn; }
 
-  void updateLayout();
+  virtual void updateLayout();
 };
 
+/*************************************************************************************************/
+
+//! A ChatItem for the contents column
 class ContentsChatItem : public ChatItem {
 
 public:
-  ContentsChatItem(QAbstractItemModel *model, QGraphicsItem *parent) : ChatItem(column(), model, parent) {}
+  ContentsChatItem(QAbstractItemModel *model, QGraphicsItem *parent);
+  virtual ~ContentsChatItem();
+
   inline ChatLineModel::ColumnType column() const { return ChatLineModel::ContentsColumn; }
 
-  void updateLayout();
+  virtual void clearLayout();
+  virtual void updateLayout();
+  virtual inline bool haveLayout() const { return _layoutData != 0 && layout() != 0; }
+
+protected:
+  virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
+  virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
+  virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
+  virtual void hoverMoveEvent(QGraphicsSceneHoverEvent *event);
+
+  virtual inline QTextLayout *layout() const;
+  virtual void setLayout(QTextLayout *l);
 
 private:
+  struct LayoutData;
+  class WrapColumnFinder;
+
   qreal computeHeight();
 
-  class WrapColumnFinder;
+  LayoutData *_layoutData;
 };
 
+struct ContentsChatItem::LayoutData {
+  QTextLayout *layout;
 
+  LayoutData() { layout = 0; }
+  ~LayoutData() { delete layout; }
+};
 
 class ContentsChatItem::WrapColumnFinder {
 public:
@@ -156,8 +173,11 @@ private:
   qreal w;
 };
 
+/*************************************************************************************************/
+
+// Avoid circular include deps
 #include "chatline.h"
-inline int ChatItem::row() const { return static_cast<ChatLine *>(parentItem())->row(); }
-inline QTextLayout *ChatItem::layout() const { return _layoutData->layout; }
+int ChatItem::row() const { return static_cast<ChatLine *>(parentItem())->row(); }
+QTextLayout *ContentsChatItem::layout() const { return _layoutData->layout; }
 
 #endif

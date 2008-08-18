@@ -34,9 +34,9 @@
 ChatItem::ChatItem(ChatLineModel::ColumnType col, QAbstractItemModel *model, QGraphicsItem *parent)
   : QGraphicsItem(parent),
     _fontMetrics(0),
-    _layoutData(0),
     _selectionMode(NoSelection),
-    _selectionStart(-1)
+    _selectionStart(-1),
+    _layout(0)
 {
   Q_ASSERT(model);
   QModelIndex index = model->index(row(), col);
@@ -46,7 +46,7 @@ ChatItem::ChatItem(ChatLineModel::ColumnType col, QAbstractItemModel *model, QGr
 }
 
 ChatItem::~ChatItem() {
-  delete _layoutData;
+  delete _layout;
 }
 
 QVariant ChatItem::data(int role) const {
@@ -86,12 +86,6 @@ QTextLayout *ChatItem::createLayout(QTextOption::WrapMode wrapMode, Qt::Alignmen
   return layout;
 }
 
-void ChatItem::setLayout(QTextLayout *layout) {
-  if(!_layoutData)
-    _layoutData = new LayoutData;
-  _layoutData->layout = layout;
-}
-
 void ChatItem::updateLayout() {
   if(!haveLayout())
     setLayout(createLayout(QTextOption::WrapAnywhere, Qt::AlignLeft));
@@ -105,9 +99,9 @@ void ChatItem::updateLayout() {
   layout()->endLayout();
 }
 
-void ChatItem::clearLayoutData() {
-  delete _layoutData;
-  _layoutData = 0;
+void ChatItem::clearLayout() {
+  delete _layout;
+  _layout = 0;
 }
 
 // NOTE: This is not the most time-efficient implementation, but it saves space by not caching unnecessary data
@@ -199,7 +193,6 @@ QList<QRectF> ChatItem::findWords(const QString &searchWord, Qt::CaseSensitivity
   return resultList;
 }
 
-
 void ChatItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
   if(event->buttons() == Qt::LeftButton) {
     if(_selectionMode == NoSelection) {
@@ -249,40 +242,6 @@ void ChatItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
   }
 }
 
-void ChatItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) {
-  // FIXME dirty and fast hack to make http:// urls klickable
-
-  QRegExp regex("\\b([hf]t{1,2}ps?://[^\\s]+)\\b");
-  QString str = data(ChatLineModel::DisplayRole).toString();
-  int idx = posToCursor(event->pos());
-  int mi = 0;
-  do {
-    mi = regex.indexIn(str, mi);
-    if(mi < 0) break;
-    if(idx >= mi && idx < mi + regex.matchedLength()) {
-      QDesktopServices::openUrl(QUrl(regex.capturedTexts()[1]));
-      break;
-    }
-    mi += regex.matchedLength();
-  } while(mi >= 0);
-  event->accept();
-}
-
-void ChatItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event) {
-  //qDebug() << (void*)this << "entering";
-  event->ignore();
-}
-
-void ChatItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event) {
-  //qDebug() << (void*)this << "leaving";
-  event->ignore();
-}
-
-void ChatItem::hoverMoveEvent(QGraphicsSceneHoverEvent *event) {
-  //qDebug() << (void*)this << event->pos();
-  event->ignore();
-}
-
 /*************************************************************************************************/
 
 /*************************************************************************************************/
@@ -294,11 +253,32 @@ void SenderChatItem::updateLayout() {
 
 /*************************************************************************************************/
 
+ContentsChatItem::ContentsChatItem(QAbstractItemModel *model, QGraphicsItem *parent) : ChatItem(column(), model, parent),
+  _layoutData(0)
+{
+
+}
+
+ContentsChatItem::~ContentsChatItem() {
+  delete _layoutData;
+}
+
 qreal ContentsChatItem::computeHeight() {
   int lines = 1;
   WrapColumnFinder finder(this);
   while(finder.nextWrapColumn() > 0) lines++;
   return lines * fontMetrics()->lineSpacing();
+}
+
+void ContentsChatItem::setLayout(QTextLayout *layout) {
+  if(!_layoutData)
+    _layoutData = new LayoutData;
+  _layoutData->layout = layout;
+}
+
+void ContentsChatItem::clearLayout() {
+  delete _layoutData;
+  _layoutData = 0;
 }
 
 void ContentsChatItem::updateLayout() {
@@ -324,6 +304,39 @@ void ContentsChatItem::updateLayout() {
   layout()->endLayout();
 }
 
+void ContentsChatItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) {
+  // FIXME dirty and fast hack to make http:// urls klickable
+
+  QRegExp regex("\\b([hf]t{1,2}ps?://[^\\s]+)\\b");
+  QString str = data(ChatLineModel::DisplayRole).toString();
+  int idx = posToCursor(event->pos());
+  int mi = 0;
+  do {
+    mi = regex.indexIn(str, mi);
+    if(mi < 0) break;
+    if(idx >= mi && idx < mi + regex.matchedLength()) {
+      QDesktopServices::openUrl(QUrl(regex.capturedTexts()[1]));
+      break;
+    }
+    mi += regex.matchedLength();
+  } while(mi >= 0);
+  event->accept();
+}
+
+void ContentsChatItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event) {
+  //qDebug() << (void*)this << "entering";
+  event->ignore();
+}
+
+void ContentsChatItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event) {
+  //qDebug() << (void*)this << "leaving";
+  event->ignore();
+}
+
+void ContentsChatItem::hoverMoveEvent(QGraphicsSceneHoverEvent *event) {
+  //qDebug() << (void*)this << event->pos();
+  event->ignore();
+}
 
 /*************************************************************************************************/
 

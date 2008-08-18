@@ -76,7 +76,7 @@ void ChatViewSearchController::setSearchString(const QString &searchString) {
 void ChatViewSearchController::updateHighlights(bool reuse) {
   if(!_scene)
     return;
-  
+
   QAbstractItemModel *model = _scene->model();
   Q_ASSERT(model);
 
@@ -130,10 +130,10 @@ void ChatViewSearchController::highlightLine(ChatLine *line) {
   QList<ChatItem *> checkItems;
   if(_searchSenders)
     checkItems << &(line->item(MessageModel::SenderColumn));
-  
+
   if(_searchMsgs)
     checkItems << &(line->item(MessageModel::ContentsColumn));
-  
+
   foreach(ChatItem *item, checkItems) {
     foreach(QRectF wordRect, item->findWords(searchString(), caseSensitive())) {
       _highlightItems << new SearchHighlightItem(wordRect.adjusted(item->x(), 0, item->x(), 0), line);
@@ -192,8 +192,6 @@ void ChatViewSearchController::setSearchOnlyRegularMsgs(bool searchOnlyRegularMs
   updateHighlights(searchOnlyRegularMsgs);
 }
 
-
-
 SearchHighlightItem::SearchHighlightItem(QRectF wordRect, QGraphicsItem *parent)
   : QGraphicsItem(parent),
     _boundingRect(QRectF(-wordRect.width() / 2, -wordRect.height() / 2, wordRect.width(), wordRect.height()))
@@ -203,8 +201,9 @@ SearchHighlightItem::SearchHighlightItem(QRectF wordRect, QGraphicsItem *parent)
 }
 
 void SearchHighlightItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
+  Q_UNUSED(option);
   Q_UNUSED(widget);
-  
+
   painter->setPen(QPen(Qt::black, 1.5));
   //painter->setBrush(QColor(127, 133, 250));
   painter->setBrush(QColor(254, 237, 45));
