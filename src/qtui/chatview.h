@@ -43,7 +43,6 @@ public:
 
 public slots:
   inline virtual void clear() {}
-  void setBufferForBacklogFetching(BufferId buffer);
 
 protected:
   virtual void resizeEvent(QResizeEvent *event);
@@ -51,8 +50,6 @@ protected:
 protected slots:
   virtual void sceneHeightChanged(qreal height);
   virtual void verticalScrollbarChanged(int);
-  virtual void sliderPressed();
-  virtual void sliderReleased();
   
 private:
   void init(MessageFilter *filter);

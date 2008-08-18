@@ -20,31 +20,38 @@
 
 #include "messagefilter.h"
 
-MessageFilter::MessageFilter(QAbstractItemModel *source, QObject *parent) : QSortFilterProxyModel(parent) {
+MessageFilter::MessageFilter(QAbstractItemModel *source, QObject *parent)
+  : QSortFilterProxyModel(parent)
+{
   setSourceModel(source);
 }
 
 MessageFilter::MessageFilter(MessageModel *source, const QList<BufferId> &buffers, QObject *parent)
   : QSortFilterProxyModel(parent),
-    _bufferList(buffers)
+    _validBuffers(buffers.toSet())
 {
   setSourceModel(source);
 }
 
 QString MessageFilter::idString() const {
-  if(_bufferList.isEmpty()) return "*";
-  QString idstr;
-  QStringList bufids;
-  foreach(BufferId id, _bufferList) bufids << QString::number(id.toInt());
-  bufids.sort();
-  foreach(QString id, bufids) idstr += id + '|';
-  idstr.chop(1);
-  return idstr;
+  if(_validBuffers.isEmpty())
+    return "*";
+
+  QList<BufferId> bufferIds = _validBuffers.toList();;
+  qSort(bufferIds);
+  
+  QStringList bufferIdStrings;
+  foreach(BufferId id, bufferIds)
+    bufferIdStrings << QString::number(id.toInt());
+
+  return bufferIdStrings.join("|");
 }
 
 bool MessageFilter::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const {
   Q_UNUSED(sourceParent);
-  if(_bufferList.isEmpty()) return true;
+  if(_validBuffers.isEmpty())
+    return true;
+
   BufferId id = sourceModel()->data(sourceModel()->index(sourceRow, 0), MessageModel::BufferIdRole).value<BufferId>();
-  return _bufferList.contains(id);
+  return _validBuffers.contains(id);
 }

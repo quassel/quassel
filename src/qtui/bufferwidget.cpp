@@ -66,7 +66,6 @@ AbstractChatView *BufferWidget::createChatView(BufferId id) {
   _chatViews[id] = chatView;
   ui.stackedWidget->addWidget(chatView);
   chatView->setFocusProxy(this);
-  chatView->setBufferForBacklogFetching(id);
   return chatView;
 }
 

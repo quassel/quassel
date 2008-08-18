@@ -29,18 +29,18 @@
 class MessageFilter : public QSortFilterProxyModel {
   Q_OBJECT
 
-  protected:
-    MessageFilter(QAbstractItemModel *source, QObject *parent = 0);
+protected:
+  MessageFilter(QAbstractItemModel *source, QObject *parent = 0);
 
-  public:
-    MessageFilter(MessageModel *, const QList<BufferId> &buffers = QList<BufferId>(), QObject *parent = 0);
+public:
+  MessageFilter(MessageModel *, const QList<BufferId> &buffers = QList<BufferId>(), QObject *parent = 0);
 
-    virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
-    virtual QString idString() const;
-    inline bool isSingleBufferFilter() const { return _bufferList.count() == 1; }
-			    
-  private:
-    QList<BufferId> _bufferList;
+  virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
+  virtual QString idString() const;
+  inline bool isSingleBufferFilter() const { return _validBuffers.count() == 1; }
+  
+private:
+  QSet<BufferId> _validBuffers;
 };
 
 #endif

@@ -45,8 +45,7 @@ ChatScene::ChatScene(QAbstractItemModel *model, const QString &idString, QObject
     _singleBufferScene(false),
     _selectingItem(0),
     _selectionStart(-1),
-    _isSelecting(false),
-    _fetchingBacklog(false)
+    _isSelecting(false)
 {
   MessageFilter *filter = qobject_cast<MessageFilter*>(model);
   if(filter) {
@@ -129,8 +128,6 @@ void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
     setSceneRect(QRectF(0, 0, _width, _height));
     emit heightChanged(_height);
   }
-
-  requestBacklogIfNeeded();
 }
 
 void ChatScene::modelReset() {
@@ -308,27 +305,15 @@ QString ChatScene::selectionToString() const {
   return result;
 }
 
-void ChatScene::setIsFetchingBacklog(bool fetch) {
-  if(!isBacklogFetchingEnabled()) return;
-
-  if(!fetch) {
-    _fetchingBacklog = false;
-  } else {
-    _fetchingBacklog = true;
-    requestBacklogIfNeeded();
-  }
-}
-
-void ChatScene::requestBacklogIfNeeded() {
-  const int REQUEST_COUNT = 50;
-
-  if(!isBacklogFetchingEnabled() || !isFetchingBacklog() || !model()->rowCount()) return;
-
-  MsgId msgId = model()->data(model()->index(0, 0), ChatLineModel::MsgIdRole).value<MsgId>();
-  if(!_lastBacklogOffset.isValid() || (msgId < _lastBacklogOffset && _lastBacklogSize + REQUEST_COUNT <= model()->rowCount())) {
-    Client::backlogManager()->requestBacklog(bufferForBacklogFetching(), REQUEST_COUNT, msgId.toInt());
-    _lastBacklogOffset = msgId;
-    _lastBacklogSize = model()->rowCount();
+void ChatScene::requestBacklog() {
+  static const int REQUEST_COUNT = 50;
+  int backlogSize = model()->rowCount();
+  if(isSingleBufferScene() && backlogSize != 0 && _lastBacklogSize + REQUEST_COUNT <= backlogSize) {
+    QModelIndex msgIdx = model()->index(0, 0);
+    MsgId msgId = model()->data(msgIdx, ChatLineModel::MsgIdRole).value<MsgId>();
+    BufferId bufferId = model()->data(msgIdx, ChatLineModel::BufferIdRole).value<BufferId>();
+    _lastBacklogSize = backlogSize;
+    Client::backlogManager()->requestBacklog(bufferId, REQUEST_COUNT, msgId.toInt());
   }
 }
 

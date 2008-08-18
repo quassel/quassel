@@ -37,7 +37,6 @@ ChatView::ChatView(BufferId bufferId, QWidget *parent)
   filterList.append(bufferId);
   MessageFilter *filter = new MessageFilter(Client::messageModel(), filterList, this);
   init(filter);
-
 }
 
 ChatView::ChatView(MessageFilter *filter, QWidget *parent)
@@ -56,8 +55,6 @@ void ChatView::init(MessageFilter *filter) {
   connect(_scene, SIGNAL(heightChanged(qreal)), this, SLOT(sceneHeightChanged(qreal)));
   setScene(_scene);
 
-  connect(verticalScrollBar(), SIGNAL(sliderPressed()), this, SLOT(sliderPressed()));
-  connect(verticalScrollBar(), SIGNAL(sliderReleased()), this, SLOT(sliderReleased()));
   connect(verticalScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(verticalScrollbarChanged(int)));
 }
 
@@ -73,33 +70,16 @@ void ChatView::sceneHeightChanged(qreal h) {
   if(scrollable) verticalScrollBar()->setValue(verticalScrollBar()->maximum());
 }
 
-void ChatView::setBufferForBacklogFetching(BufferId id) {
-  scene()->setBufferForBacklogFetching(id);
-}
-
-void ChatView::sliderPressed() {
-  verticalScrollbarChanged(verticalScrollBar()->value());
-}
-
-void ChatView::sliderReleased() {
-  if(scene()->isFetchingBacklog()) scene()->setIsFetchingBacklog(false);
-}
-
 void ChatView::verticalScrollbarChanged(int newPos) {
-  Q_UNUSED(newPos);
-  if(!scene()->isBacklogFetchingEnabled()) return;
-
   QAbstractSlider *vbar = verticalScrollBar();
-  if(!vbar)
-    return;
-  if(vbar->isSliderDown()) {
-    /*
-    int relativePos = 100;
-    if(vbar->maximum() - vbar->minimum() != 0)
-      relativePos = (newPos - vbar->minimum()) * 100 / (vbar->maximum() - vbar->minimum());
-    scene()->setIsFetchingBacklog(relativePos < 20);
-    */
-    scene()->setIsFetchingBacklog(vbar->value() == vbar->minimum());
+  Q_ASSERT(vbar);
+
+  int relativePos = 100;
+  if(vbar->maximum() - vbar->minimum() != 0)
+    relativePos = (newPos - vbar->minimum()) * 100 / (vbar->maximum() - vbar->minimum());
+
+  if(relativePos < 20) {
+    scene()->requestBacklog();
   }
 }
 
@@ -111,6 +91,5 @@ MsgId ChatView::lastMsgId() const {
   if(!model || model->rowCount() == 0)
     return MsgId();
 
-  
   return model->data(model->index(model->rowCount() - 1, 0), MessageModel::MsgIdRole).value<MsgId>();
 }

@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _CHATSCENE_H_
-#define _CHATSCENE_H_
+#ifndef CHATSCENE_H_
+#define CHATSCENE_H_
 
 #include <QAbstractItemModel>
 #include <QGraphicsScene>
@@ -44,9 +44,6 @@ class ChatScene : public QGraphicsScene {
     inline QAbstractItemModel *model() const { return _model; }
     inline QString idString() const { return _idString; }
 
-    inline bool isFetchingBacklog() const;
-    inline bool isBacklogFetchingEnabled() const;
-    inline BufferId bufferForBacklogFetching() const;
     int sectionByScenePos(int x);
     inline int sectionByScenePos(const QPoint &pos) { return sectionByScenePos(pos.x()); }
     inline bool isSingleBufferScene() const { return _singleBufferScene; }
@@ -61,8 +58,7 @@ class ChatScene : public QGraphicsScene {
     void startGlobalSelection(ChatItem *item, const QPointF &itemPos);
     void putToClipboard(const QString &);
 
-    void setIsFetchingBacklog(bool);
-    inline void setBufferForBacklogFetching(BufferId buffer);
+    void requestBacklog();
 
   signals:
     void heightChanged(qreal height);
@@ -83,7 +79,6 @@ class ChatScene : public QGraphicsScene {
   private:
     void updateSelection(const QPointF &pos);
     QString selectionToString() const;
-    void requestBacklogIfNeeded();
 
     QString _idString;
     qreal _width, _height;
@@ -101,26 +96,7 @@ class ChatScene : public QGraphicsScene {
     int _firstSelectionRow, _lastSelectionRow;
     bool _isSelecting;
 
-    bool _fetchingBacklog;
-    BufferId _backlogFetchingBuffer;
-    MsgId _lastBacklogOffset;
     int _lastBacklogSize;
 };
-
-bool ChatScene::isFetchingBacklog() const {
-  return _fetchingBacklog;
-}
-
-bool ChatScene::isBacklogFetchingEnabled() const {
-  return _backlogFetchingBuffer.isValid();
-}
-
-BufferId ChatScene::bufferForBacklogFetching() const {
-  return _backlogFetchingBuffer;
-}
-
-void ChatScene::setBufferForBacklogFetching(BufferId buf) {
-  _backlogFetchingBuffer = buf;
-}
 
 #endif

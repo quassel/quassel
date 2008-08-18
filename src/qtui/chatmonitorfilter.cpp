@@ -26,7 +26,7 @@
 #include "networkmodel.h"
 
 ChatMonitorFilter::ChatMonitorFilter(MessageModel *model, QObject *parent)
-  : MessageFilter(model, QList<BufferId>(), parent)
+  : MessageFilter(model, parent)
 {
 }
 
