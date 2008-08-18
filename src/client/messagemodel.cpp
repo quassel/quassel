@@ -22,31 +22,32 @@
 
 #include "message.h"
 
-MessageModel::MessageModel(QObject *parent) : QAbstractItemModel(parent) {
-
-
-
-}
-
-MessageModel::~MessageModel() {
-
-
+MessageModel::MessageModel(QObject *parent)
+  : QAbstractItemModel(parent)
+{
 }
 
 QVariant MessageModel::data(const QModelIndex &index, int role) const {
   int row = index.row(); int column = index.column();
-  if(row < 0 || row >= _messageList.count() || column < 0) return QVariant();
-  if(role == ColumnTypeRole) return column;
+  if(row < 0 || row >= _messageList.count() || column < 0)
+    return QVariant();
+
+  if(role == ColumnTypeRole)
+    return column;
+
   return _messageList[row]->data(index.column(), role);
 }
 
 bool MessageModel::setData(const QModelIndex &index, const QVariant &value, int role) {
   int row = index.row();
-  if(row < 0 || row >= _messageList.count()) return false;
+  if(row < 0 || row >= _messageList.count())
+    return false;
+
   if(_messageList[row]->setData(index.column(), value, role)) {
     emit dataChanged(index, index);
     return true;
   }
+
   return false;
 }
 
@@ -54,10 +55,10 @@ bool MessageModel::insertMessage(const Message &msg, bool fakeMsg) {
   MsgId id = msg.msgId();
   int idx = indexForId(id);
   if(!fakeMsg && idx < _messageList.count()) { // check for duplicate
-    if(_messageList.value(idx)->data(0, MsgIdRole).value<MsgId>() == id) {
+    if(_messageList[idx]->msgId() == id)
       return false;
-    }
   }
+
   MessageModelItem *item = createMessageModelItem(msg);
   beginInsertRows(QModelIndex(), idx, idx);
   _messageList.insert(idx, item);
@@ -68,14 +69,15 @@ bool MessageModel::insertMessage(const Message &msg, bool fakeMsg) {
 void MessageModel::insertMessages(const QList<Message> &msglist) {
   if(msglist.isEmpty()) return;
   // FIXME make this more efficient by grouping msgs
-  foreach(Message msg, msglist) insertMessage(msg);
-
+  foreach(Message msg, msglist)
+    insertMessage(msg);
 }
 
 void MessageModel::clear() {
-  reset();
+  beginRemoveRows(QModelIndex(), 0, rowCount() - 1);
   qDeleteAll(_messageList);
   _messageList.clear();
+  endRemoveRows();
 }
 
 // returns index of msg with given Id or of the next message after that (i.e., the index where we'd insert this msg)
@@ -94,28 +96,26 @@ int MessageModel::indexForId(MsgId id) {
 
 /**********************************************************************************/
 
-MessageModelItem::MessageModelItem(const Message &msg) {
-  _timestamp = msg.timestamp();
-  _msgId = msg.msgId();
-  _bufferId = msg.bufferInfo().bufferId();
-  _type = msg.type();
-  _flags = msg.flags();
-
-}
-
-MessageModelItem::~MessageModelItem() {
-
+MessageModelItem::MessageModelItem(const Message &msg) :
+  _timestamp(msg.timestamp()),
+  _msgId(msg.msgId()),
+  _bufferId(msg.bufferInfo().bufferId()),
+  _type(msg.type()),
+  _flags(msg.flags())
+{
 }
 
 QVariant MessageModelItem::data(int column, int role) const {
-  if(column < MessageModel::TimestampColumn || column > MessageModel::ContentsColumn) return QVariant();
+  if(column < MessageModel::TimestampColumn || column > MessageModel::ContentsColumn)
+    return QVariant();
+
   switch(role) {
-    case MessageModel::MsgIdRole: return QVariant::fromValue<MsgId>(_msgId);
-    case MessageModel::BufferIdRole: return QVariant::fromValue<BufferId>(_bufferId);
-    case MessageModel::TypeRole: return _type;
-    case MessageModel::FlagsRole: return (int)_flags;
-    case MessageModel::TimestampRole: return _timestamp;
-    default: return QVariant();
+  case MessageModel::MsgIdRole: return QVariant::fromValue<MsgId>(_msgId);
+  case MessageModel::BufferIdRole: return QVariant::fromValue<BufferId>(_bufferId);
+  case MessageModel::TypeRole: return _type;
+  case MessageModel::FlagsRole: return (int)_flags;
+  case MessageModel::TimestampRole: return _timestamp;
+  default: return QVariant();
   }
 }
 

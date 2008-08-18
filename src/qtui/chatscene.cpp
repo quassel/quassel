@@ -45,7 +45,8 @@ ChatScene::ChatScene(QAbstractItemModel *model, const QString &idString, QObject
     _singleBufferScene(false),
     _selectingItem(0),
     _selectionStart(-1),
-    _isSelecting(false)
+    _isSelecting(false),
+    _lastBacklogSize(0)
 {
   MessageFilter *filter = qobject_cast<MessageFilter*>(model);
   if(filter) {
@@ -54,8 +55,11 @@ ChatScene::ChatScene(QAbstractItemModel *model, const QString &idString, QObject
 
   connect(this, SIGNAL(sceneRectChanged(const QRectF &)), this, SLOT(rectChanged(const QRectF &)));
 
-  connect(model, SIGNAL(rowsInserted(const QModelIndex &, int, int)), this, SLOT(rowsInserted(const QModelIndex &, int, int)));
-  connect(model, SIGNAL(modelAboutToBeReset()), this, SLOT(modelReset()));
+  connect(model, SIGNAL(rowsInserted(const QModelIndex &, int, int)),
+	  this, SLOT(rowsInserted(const QModelIndex &, int, int)));
+  connect(model, SIGNAL(rowsAboutToBeRemoved(const QModelIndex &, int, int)),
+	  this, SLOT(rowsAboutToBeRemoved(const QModelIndex &, int, int)));
+  
   for(int i = 0; i < model->rowCount(); i++) {
     ChatLine *line = new ChatLine(i, model);
     _lines.append(line);
@@ -86,7 +90,6 @@ ChatScene::ChatScene(QAbstractItemModel *model, const QString &idString, QObject
 }
 
 ChatScene::~ChatScene() {
-
 }
 
 void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
@@ -96,7 +99,9 @@ void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
   // TODO bulk inserts, iterators
   qreal h = 0;
   qreal y = 0;
-  if(_width && start > 0) y = _lines.value(start - 1)->y() + _lines.value(start - 1)->height();
+  if(_width && start > 0)
+    y = _lines.value(start - 1)->y() + _lines.value(start - 1)->height();
+
   for(int i = start; i <= end; i++) {
     ChatLine *line = new ChatLine(i, model());
     _lines.insert(i, line);
@@ -123,21 +128,56 @@ void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
   if(h > 0) {
     _height += h;
     for(int i = end+1; i < _lines.count(); i++) {
-      _lines.value(i)->moveBy(0, h);
+      _lines.at(i)->moveBy(0, h);
     }
     setSceneRect(QRectF(0, 0, _width, _height));
     emit heightChanged(_height);
   }
 }
 
-void ChatScene::modelReset() {
-  foreach(ChatLine *line, _lines) {
-    removeItem(line);
-    delete line;
+void ChatScene::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end) {
+  Q_UNUSED(parent);
+
+  qreal h = 0; // total height of removed items;
+
+  // remove items from scene
+  QList<ChatLine *>::iterator lineIter = _lines.begin() + start;
+  int lineCount = start;
+  while(lineIter != _lines.end() && lineCount <= end) {
+    h += (*lineIter)->height();
+    delete *lineIter;
+    lineIter = _lines.erase(lineIter);
+    lineCount++;
   }
-  _lines.clear();
-  setSceneRect(QRectF(0, 0, _width, 0));
-  emit heightChanged(0);
+
+  // update rows of remaining chatlines
+  for(int i = start; i < _lines.count(); i++) {
+    _lines.at(i)->setRow(i);
+  }
+
+  // update selection
+  if(_selectionStart >= 0) {
+    int offset = end - start + 1;
+    if(_selectionStart >= start)
+      _selectionStart -= offset;
+    if(_selectionEnd >= start)
+      _selectionEnd -= offset;
+    if(_firstSelectionRow >= start)
+      _firstSelectionRow -= offset;
+    if(_lastSelectionRow >= start)
+      _lastSelectionRow -= offset;
+  }
+
+  // reposition remaining chatlines
+  if(h > 0) {
+    Q_ASSERT(_height >= h);
+    _height -= h;
+    for(int i = start; i < _lines.count(); i++) {
+      _lines.at(i)->moveBy(0, -h);
+    }
+    setSceneRect(QRectF(0, 0, _width, _height));
+    emit heightChanged(_height);
+  }
 }
 
 void ChatScene::setWidth(qreal w) {

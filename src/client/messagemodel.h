@@ -33,73 +33,75 @@ struct MsgId;
 class MessageModel : public QAbstractItemModel {
   Q_OBJECT
 
-  public:
-    enum MessageRole {
-      DisplayRole = Qt::DisplayRole,
-      EditRole = Qt::EditRole,
-      MsgIdRole = Qt::UserRole,
-      BufferIdRole,
-      TypeRole,
-      FlagsRole,
-      TimestampRole,
-      FormatRole,
-      ColumnTypeRole,
-      UserRole
-    };
+public:
+  enum MessageRole {
+    DisplayRole = Qt::DisplayRole,
+    EditRole = Qt::EditRole,
+    MsgIdRole = Qt::UserRole,
+    BufferIdRole,
+    TypeRole,
+    FlagsRole,
+    TimestampRole,
+    FormatRole,
+    ColumnTypeRole,
+    UserRole
+  };
 
-    enum ColumnType {
-      TimestampColumn, SenderColumn, ContentsColumn, UserColumnType
-    };
+  enum ColumnType {
+    TimestampColumn, SenderColumn, ContentsColumn, UserColumnType
+  };
 
-    MessageModel(QObject *parent);
-    virtual ~MessageModel();
+  MessageModel(QObject *parent);
 
-    inline QModelIndex index(int row, int column, const QModelIndex &/*parent*/ = QModelIndex()) const { return createIndex(row, column); }
-    inline QModelIndex parent(const QModelIndex &) const { return QModelIndex(); }
-    inline int rowCount(const QModelIndex &/*parent*/ = QModelIndex()) const { return _messageList.count(); }
-    inline int columnCount(const QModelIndex &/*parent*/ = QModelIndex()) const { return 3; }
+  inline QModelIndex index(int row, int column, const QModelIndex &/*parent*/ = QModelIndex()) const { return createIndex(row, column); }
+  inline QModelIndex parent(const QModelIndex &) const { return QModelIndex(); }
+  inline int rowCount(const QModelIndex &/*parent*/ = QModelIndex()) const { return _messageList.count(); }
+  inline int columnCount(const QModelIndex &/*parent*/ = QModelIndex()) const { return 3; }
 
-    virtual QVariant data(const QModelIndex &index, int role) const;
-    virtual bool setData(const QModelIndex &index, const QVariant &value, int role);
+  virtual QVariant data(const QModelIndex &index, int role) const;
+  virtual bool setData(const QModelIndex &index, const QVariant &value, int role);
 
-    //virtual Qt::ItemFlags flags(const QModelIndex &index) const;
+  //virtual Qt::ItemFlags flags(const QModelIndex &index) const;
 
-    bool insertMessage(const Message &, bool fakeMsg = false);
-    void insertMessages(const QList<Message> &);
+  bool insertMessage(const Message &, bool fakeMsg = false);
+  void insertMessages(const QList<Message> &);
 
-    void clear();
+  void clear();
 
-  protected:
-    virtual MessageModelItem *createMessageModelItem(const Message &) = 0;
+protected:
+  virtual MessageModelItem *createMessageModelItem(const Message &) = 0;
 
-  private:
-    QList<MessageModelItem *> _messageList;
+private:
+  QList<MessageModelItem *> _messageList;
 
-    int indexForId(MsgId);
-
+  int indexForId(MsgId);
 };
 
 class MessageModelItem {
+public:
+  //! Creates a MessageModelItem from a Message object.
+  /** This baseclass implementation takes care of all Message data *except* the stylable strings.
+   *  Subclasses need to provide Qt::DisplayRole at least, which should describe the plaintext
+   *  strings without formattings (e.g. for searching purposes).
+   */
+  MessageModelItem(const Message &);
+  inline virtual ~MessageModelItem() {}
 
-  public:
+  virtual QVariant data(int column, int role) const;
+  virtual bool setData(int column, const QVariant &value, int role) = 0;
 
-    //! Creates a MessageModelItem from a Message object.
-    /** This baseclass implementation takes care of all Message data *except* the stylable strings.
-     *  Subclasses need to provide Qt::DisplayRole at least, which should describe the plaintext
-     *  strings without formattings (e.g. for searching purposes).
-     */
-    MessageModelItem(const Message &);
-    virtual ~MessageModelItem();
-
-    virtual QVariant data(int column, int role) const;
-    virtual bool setData(int column, const QVariant &value, int role) = 0;
-
-  private:
-    QDateTime _timestamp;
-    MsgId _msgId;
-    BufferId _bufferId;
-    Message::Type _type;
-    Message::Flags _flags;
+  inline const QDateTime &timeStamp() const { return _timestamp; }
+  inline MsgId msgId() const { return _msgId; }
+  inline BufferId bufferId() const { return _bufferId; }
+  inline Message::Type msgType() const { return _type; }
+  inline Message::Flags msgFlags() const { return _flags; }
+  
+private:
+  QDateTime _timestamp;
+  MsgId _msgId;
+  BufferId _bufferId;
+  Message::Type _type;
+  Message::Flags _flags;
 };
 
 #endif

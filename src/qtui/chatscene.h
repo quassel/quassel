@@ -70,7 +70,7 @@ class ChatScene : public QGraphicsScene {
 
   protected slots:
     void rowsInserted(const QModelIndex &, int, int);
-    void modelReset();
+    void rowsAboutToBeRemoved(const QModelIndex &, int, int);
 
   private slots:
     void rectChanged(const QRectF &);
