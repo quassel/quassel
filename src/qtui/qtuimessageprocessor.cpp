@@ -61,6 +61,7 @@ void QtUiMessageProcessor::process(Message &msg) {
 }
 
 void QtUiMessageProcessor::process(QList<Message> &msgs) {
+  if(msgs.isEmpty()) return;
   _processQueue.append(msgs);
   _msgCount += msgs.count();
   if(!isProcessing()) startProcessing();

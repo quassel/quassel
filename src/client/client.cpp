@@ -449,6 +449,7 @@ void Client::recvMessage(const Message &msg_) {
 }
 
 void Client::receiveBacklog(BufferId bufferId, const QVariantList &msgs) {
+  if(msgs.isEmpty()) return;
   //QTime start = QTime::currentTime();
   QList<Message> msglist;
   foreach(QVariant v, msgs) {
