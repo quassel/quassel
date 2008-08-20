@@ -153,10 +153,8 @@ void ChatItem::setFullSelection() {
 }
 
 void ChatItem::clearSelection() {
-  if(_selectionMode != NoSelection) {
-    _selectionMode = NoSelection;
-    update();
-  }
+  _selectionMode = NoSelection;
+  update();
 }
 
 void ChatItem::continueSelecting(const QPointF &pos) {
@@ -195,15 +193,10 @@ QList<QRectF> ChatItem::findWords(const QString &searchWord, Qt::CaseSensitivity
 
 void ChatItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
   if(event->buttons() == Qt::LeftButton) {
-    if(_selectionMode == NoSelection) {
-      chatScene()->setSelectingItem(this);  // removes earlier selection if exists
-      _selectionStart = _selectionEnd = posToCursor(event->pos());
-      //_selectionMode = PartialSelection;
-    } else {
-      chatScene()->setSelectingItem(0);
-      _selectionMode = NoSelection;
-      update();
-    }
+    chatScene()->setSelectingItem(this);
+    _selectionStart = _selectionEnd = posToCursor(event->pos());
+    _selectionMode = NoSelection; // will be set to PartialSelection by mouseMoveEvent
+    update();
     event->accept();
   } else {
     event->ignore();
@@ -216,8 +209,7 @@ void ChatItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
       qint16 end = posToCursor(event->pos());
       if(end != _selectionEnd) {
         _selectionEnd = end;
-        if(_selectionStart != _selectionEnd) _selectionMode = PartialSelection;
-        else _selectionMode = NoSelection;
+        _selectionMode = (_selectionStart != _selectionEnd ? PartialSelection : NoSelection);
         update();
       }
     } else {
