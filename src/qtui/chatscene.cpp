@@ -298,7 +298,7 @@ void ChatScene::mousePressEvent(QGraphicsSceneMouseEvent *event) {
       _lines[l]->setSelected(false);
     }
     _selectionStart = -1;
-    event->accept();
+    QGraphicsScene::mousePressEvent(event);  // so we can start a new local selection
   } else {
     QGraphicsScene::mousePressEvent(event);
   }
