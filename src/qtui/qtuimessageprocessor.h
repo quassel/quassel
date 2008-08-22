@@ -29,38 +29,51 @@
 class QtUiMessageProcessor : public AbstractMessageProcessor {
   Q_OBJECT
 
-  public:
-    enum Mode {
-      TimerBased,
-      Concurrent
-    };
+public:
+  enum Mode {
+    TimerBased,
+    Concurrent
+  };
 
-    QtUiMessageProcessor(QObject *parent);
+  QtUiMessageProcessor(QObject *parent);
 
-    inline bool isProcessing() const { return _processing; }
-    inline Mode processMode() const { return _processMode; }
+  inline bool isProcessing() const { return _processing; }
+  inline Mode processMode() const { return _processMode; }
 
-    void reset();
+  void reset();
 
-  public slots:
-    void process(Message &msg);
-    void process(QList<Message> &msgs);
+public slots:
+  void process(Message &msg);
+  void process(QList<Message> &msgs);
 
-  private slots:
-    void processNextMessage();
+private slots:
+  void processNextMessage();
+  void highlightListChanged(const QVariant &variant);
+  void highlightNickChanged(const QVariant &variant);
 
-  private:
-    void checkForHighlight(Message &msg);
-    void startProcessing();
-    void updateProgress(bool start = false);
+private:
+  void checkForHighlight(Message &msg);
+  void startProcessing();
+  void updateProgress(bool start = false);
 
-    QList<QList<Message> > _processQueue;
-    QList<Message> _currentBatch;
-    QTimer _processTimer;
-    bool _processing;
-    Mode _processMode;
-    int _msgsProcessed, _msgCount;
-    QTime _progressTimer;
+  QList<QList<Message> > _processQueue;
+  QList<Message> _currentBatch;
+  QTimer _processTimer;
+  bool _processing;
+  Mode _processMode;
+  int _msgsProcessed, _msgCount;
+  QTime _progressTimer;
+
+  struct HighlightRule {
+    QString name;
+    bool isEnabled;
+    Qt::CaseSensitivity caseSensitive;
+    bool isRegExp;
+    inline HighlightRule(const QString &name, bool enabled, Qt::CaseSensitivity cs, bool regExp) : name(name), isEnabled(enabled), caseSensitive(cs), isRegExp(regExp) {}
+  };
+  
+  QList<HighlightRule> _highlightRules;
+  NotificationSettings::HighlightNickType _highlightNick;
 };
 
 #endif

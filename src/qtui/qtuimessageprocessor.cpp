@@ -28,10 +28,19 @@
 
 const int progressUpdateDelay = 100;  // ms between progress signal updates
 
-QtUiMessageProcessor::QtUiMessageProcessor(QObject *parent) : AbstractMessageProcessor(parent) {
-  _msgsProcessed = _msgCount = 0;
-  _processing = false;
-  _processMode = TimerBased;
+QtUiMessageProcessor::QtUiMessageProcessor(QObject *parent)
+  : AbstractMessageProcessor(parent),
+    _processing(false),
+    _processMode(TimerBased),
+    _msgsProcessed(0),
+    _msgCount(0)
+{
+  NotificationSettings notificationSettings;
+  _highlightNick = notificationSettings.highlightNick();
+  highlightListChanged(notificationSettings.highlightList());
+  notificationSettings.notify("highlightList", this, SLOT(highlightListChanged(const QVariant &)));
+  notificationSettings.notify("highlightNick", this, SLOT(highlightNickChanged(const QVariant &)));
+  
   _processTimer.setInterval(0);
   connect(&_processTimer, SIGNAL(timeout()), this, SLOT(processNextMessage()));
 }
@@ -99,18 +108,17 @@ void QtUiMessageProcessor::updateProgress(bool start) {
   }
 }
 
-// TODO optimize checkForHighlight
 void QtUiMessageProcessor::checkForHighlight(Message &msg) {
   if(!((msg.type() & (Message::Plain | Message::Notice | Message::Action)) && !(msg.flags() & Message::Self)))
     return;
 
-  NotificationSettings notificationSettings;
+  //NotificationSettings notificationSettings;
   const Network *net = Client::network(msg.bufferInfo().networkId());
   if(net && !net->myNick().isEmpty()) {
     QStringList nickList;
-    if(notificationSettings.highlightNick() == NotificationSettings::CurrentNick) {
+    if(_highlightNick == NotificationSettings::CurrentNick) {
       nickList << net->myNick();
-    } else if(notificationSettings.highlightNick() == NotificationSettings::AllNicks) {
+    } else if(_highlightNick == NotificationSettings::AllNicks) {
       const Identity *myIdentity = Client::identity(net->identity());
       if(myIdentity)
         nickList = myIdentity->nicks();
@@ -123,17 +131,16 @@ void QtUiMessageProcessor::checkForHighlight(Message &msg) {
       }
     }
 
-    foreach(QVariant highlight, notificationSettings.highlightList()) {
-      QVariantMap highlightRule = highlight.toMap();
-      if(!highlightRule["enable"].toBool())
-        continue;
-      Qt::CaseSensitivity caseSensitivity = highlightRule["cs"].toBool() ? Qt::CaseSensitive : Qt::CaseInsensitive;
-      QString name = highlightRule["name"].toString();
+    for(int i = 0; i < _highlightRules.count(); i++) {
+      const HighlightRule &rule = _highlightRules[i];
+      if(!rule.isEnabled)
+	continue;
+
       QRegExp userRegExp;
-      if(highlightRule["regex"].toBool()) {
-        userRegExp = QRegExp(name, caseSensitivity);
+      if(rule.isRegExp) {
+        userRegExp = QRegExp(rule.name, rule.caseSensitive);
       } else {
-        userRegExp = QRegExp("^(.*\\W)?" + QRegExp::escape(name) + "(\\W.*)?$", caseSensitivity);
+        userRegExp = QRegExp("^(.*\\W)?" + QRegExp::escape(rule.name) + "(\\W.*)?$", rule.caseSensitive);
       }
       if(userRegExp.exactMatch(msg.contents())) {
         msg.setFlags(msg.flags() | Message::Highlight);
@@ -141,4 +148,24 @@ void QtUiMessageProcessor::checkForHighlight(Message &msg) {
       }
     }
   }
+}
+
+void QtUiMessageProcessor::highlightListChanged(const QVariant &variant) {
+  QVariantList varList = variant.toList();
+
+  _highlightRules.clear();
+  QVariantList::const_iterator iter = varList.constBegin();
+  QVariantList::const_iterator iterEnd = varList.constEnd();
+  while(iter != iterEnd) {
+    QVariantMap rule;
+    _highlightRules << HighlightRule(rule["name"].toString(),
+				     rule["enable"].toBool(),
+				     rule["cs"].toBool() ? Qt::CaseSensitive : Qt::CaseInsensitive,
+				     rule["regex"].toBool());
+    iter++;
+  }
+}
+
+void QtUiMessageProcessor::highlightNickChanged(const QVariant &variant) {
+  _highlightNick = (NotificationSettings::HighlightNickType)variant.toInt();
 }
