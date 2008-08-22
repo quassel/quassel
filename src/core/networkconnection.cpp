@@ -470,12 +470,9 @@ void NetworkConnection::putCmd(const QString &cmd, const QList<QByteArray> &para
   if(cmd == "PRIVMSG" && params.count() > 1) {
     int overrun = lastParamOverrun(cmd, params);
     if(overrun) {
-      QList<QByteArray> paramCopy1;
-      QList<QByteArray> paramCopy2;
-      for(int i = 0; i < params.count() - 1; i++) {
-	paramCopy1 << params[i];
-	paramCopy2 << params[i];
-      }
+      QList<QByteArray> paramCopy1 = params;
+      paramCopy1.removeLast();
+      QList<QByteArray> paramCopy2 = paramCopy1;
 
       QByteArray lastPart = params.last();
       QByteArray splitter(" .,-");
@@ -484,8 +481,7 @@ void NetworkConnection::putCmd(const QString &cmd, const QList<QByteArray> &para
       for(int i = 0; i < splitter.size(); i++) {
 	splitPos = qMax(splitPos, lastPart.lastIndexOf(splitter[i], maxSplitPos));
       }
-
-      if(splitPos == -1) {
+      if(splitPos <= 0) {
 	splitPos = maxSplitPos;
       }
       
