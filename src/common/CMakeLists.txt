@@ -36,6 +36,7 @@ set(MOC_HDRS
     irclisthelper.h
     ircuser.h
     network.h
+    settings.h
     signalproxy.h
     syncableobject.h)
 
@@ -44,7 +45,6 @@ set(HEADERS ${MOC_HDRS}
     global.h
     logger.h
     message.h
-    settings.h
     types.h
     util.h
     cliparser.h)

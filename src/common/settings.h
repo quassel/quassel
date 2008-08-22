@@ -26,10 +26,25 @@
 #include <QString>
 #include <QVariant>
 
+class SettingsChangeNotifier : public QObject {
+  Q_OBJECT
+
+signals:
+  void valueChanged(const QVariant &newValue);
+
+private:
+  friend class Settings;
+};
+
+
+
 class Settings {
 public:
   enum Mode { Default, Custom };
-  
+
+public:
+  void notify(const QString &key, QObject *receiver, const char *slot);
+
 protected:
   inline Settings(QString group_, QString appName_) : group(group_), appName(appName_) {}
   inline virtual ~Settings() {}
@@ -44,7 +59,7 @@ protected:
   virtual const QVariant &localValue(const QString &key, const QVariant &def = QVariant());
   
   virtual void removeLocalKey(const QString &key);
-  
+
   QString group;
   QString appName;
 
@@ -58,6 +73,8 @@ private:
   }
 
   static QHash<QString, QHash<QString, QVariant> > settingsCache;
+  static QHash<QString, QHash<QString, SettingsChangeNotifier *> > settingsChangeNotifier;
+
   inline void setCacheValue(const QString &group, const QString &key, const QVariant &data) {
     settingsCache[group][key] = data;
   }
@@ -67,8 +84,16 @@ private:
   inline bool isCached(const QString &group, const QString &key) {
     return settingsCache.contains(group) && settingsCache[group].contains(key);
   }
+
+  inline SettingsChangeNotifier *notifier(const QString &group, const QString &key) {
+    if(!hasNotifier(group, key))
+      settingsChangeNotifier[group][key] = new SettingsChangeNotifier();
+    return settingsChangeNotifier[group][key];
+  }
+
+  inline bool hasNotifier(const QString &group, const QString &key) {
+    return settingsChangeNotifier.contains(group) && settingsChangeNotifier[group].contains(key);
+  }
 };
-
-
 
 #endif

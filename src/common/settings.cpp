@@ -29,6 +29,7 @@
 #include "settings.h"
 
 QHash<QString, QHash<QString, QVariant> > Settings::settingsCache;
+QHash<QString, QHash<QString, SettingsChangeNotifier *> > Settings::settingsChangeNotifier;
 
 // Settings::Settings(QString group_, QString appName_)
 //   : group(group_),
@@ -54,6 +55,11 @@ QHash<QString, QHash<QString, QVariant> > Settings::settingsCache;
 // #endif
 // */
 // }
+
+void Settings::notify(const QString &key, QObject *receiver, const char *slot) {
+  QObject::connect(notifier(group, key), SIGNAL(valueChanged(const QVariant &)),
+		   receiver, slot);
+}
 
 QStringList Settings::allLocalKeys() {
   QSettings s(org(), appName);
@@ -97,6 +103,9 @@ void Settings::setLocalValue(const QString &key, const QVariant &data) {
   s.setValue(key, data);
   s.endGroup();
   setCacheValue(group, key, data);
+  if(hasNotifier(group, key)) {
+    emit notifier(group, key)->valueChanged(data);
+  }
 }
 
 const QVariant &Settings::localValue(const QString &key, const QVariant &def) {
@@ -117,16 +126,3 @@ void Settings::removeLocalKey(const QString &key) {
   if(isCached(group, key))
     settingsCache[group].remove(key);
 }
-
-
-// void Settings::setCacheValue(const QString &group, const QString &key, const QVariant &data) {
-//   settingsCache[group][key] = data;
-// }
-
-// const QVariant &Settings::cacheValue(const QString &group, const QString &key) {
-//   return settingsCache[group][key];
-// }
-
-// bool Settings::isCached(const QString &group, const QString &key) {
-//   return settingsCache.contains(group) && settingsCache[group].contains(key);
-// }
