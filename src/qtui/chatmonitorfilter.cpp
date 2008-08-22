@@ -28,13 +28,21 @@
 ChatMonitorFilter::ChatMonitorFilter(MessageModel *model, QObject *parent)
   : MessageFilter(model, parent)
 {
+  QtUiSettings qtUiSettings;
+  QString showFieldSettingId = QString("ChatView/%1/showFields").arg(idString());
+  QString showOwnMessagesSettingId = QString("ChatView/%1/showOwnMsgs").arg(idString());
+
+  _showFields = qtUiSettings.value(showFieldSettingId, AllFields).toInt();
+  _showOwnMessages = qtUiSettings.value(showOwnMessagesSettingId, true).toBool();
+  qtUiSettings.notify(showFieldSettingId, this, SLOT(showFieldsSettingsChanged(const QVariant &)));
+  qtUiSettings.notify(showOwnMessagesSettingId, this, SLOT(showOwnMessagesSettingChanged(const QVariant &)));
 }
 
 bool ChatMonitorFilter::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const {
   Q_UNUSED(sourceParent)
 
   Message::Flags flags = (Message::Flags)sourceModel()->data(sourceModel()->index(sourceRow, 0), MessageModel::FlagsRole).toInt();
-  if(flags & Message::Backlog || flags & Message::Self)
+  if(flags & Message::Backlog || (!_showOwnMessages && flags & Message::Self))
     return false;
 
   Message::Type type = (Message::Type)sourceModel()->data(sourceModel()->index(sourceRow, 0), MessageModel::TypeRole).toInt();
@@ -49,8 +57,6 @@ QVariant ChatMonitorFilter::data(const QModelIndex &index, int role) const {
   if(index.column() != ChatLineModel::SenderColumn || role != ChatLineModel::DisplayRole)
     return MessageFilter::data(index, role);
 
-  int showFields_ = showFields();
-
   BufferId bufid = data(index, ChatLineModel::BufferIdRole).value<BufferId>();
   if(!bufid.isValid()) {
     qDebug() << "ChatMonitorFilter::data(): chatline belongs to an invalid buffer!";
@@ -60,10 +66,10 @@ QVariant ChatMonitorFilter::data(const QModelIndex &index, int role) const {
   QModelIndex source_index = mapToSource(index);
 
   QStringList fields;
-  if(showFields_ & NetworkField) {
+  if(_showFields & NetworkField) {
     fields << Client::networkModel()->networkName(bufid);
   }
-  if(showFields_ & BufferField) {
+  if(_showFields & BufferField) {
     fields << Client::networkModel()->bufferName(bufid);
   }
 
@@ -77,28 +83,33 @@ QVariant ChatMonitorFilter::data(const QModelIndex &index, int role) const {
 }
 
 void ChatMonitorFilter::addShowField(int field) {
-  QtUiSettings s;
-  int fields = s.value(showFieldSettingId(), AllFields).toInt();
-  if(fields & field)
+  if(_showFields & field)
     return;
 
-  fields |= field;
-  s.setValue(showFieldSettingId(), fields);
-  showFieldSettingsChanged();
+  QtUiSettings().setValue(QString("ChatView/%1/showFields").arg(idString()), _showFields | field); 
 }
 
 void ChatMonitorFilter::removeShowField(int field) {
-  QtUiSettings s;
-  int fields = s.value(showFieldSettingId(), AllFields).toInt();
-  if(!(fields & field))
+  if(!(_showFields & field))
     return;
 
-  fields ^= field;
-  s.setValue(showFieldSettingId(), fields);
-  showFieldSettingsChanged();
+  QtUiSettings().setValue(QString("ChatView/%1/showFields").arg(idString()), _showFields ^ field);
 }
 
-void ChatMonitorFilter::showFieldSettingsChanged() {
+void ChatMonitorFilter::setShowOwnMessages(bool show) {
+  if(_showOwnMessages == show)
+    return;
+
+  QtUiSettings().setValue(QString("ChatView/%1/showOwnMsgs").arg(idString()), show);
+}
+
+void ChatMonitorFilter::showFieldsSettingsChanged(const QVariant &newValue) {
+  int newFields = newValue.toInt();
+  if(_showFields == newFields)
+    return;
+
+  _showFields = newFields;
+  
   int rows = rowCount();
   if(rows == 0)
     return;
@@ -106,3 +117,6 @@ void ChatMonitorFilter::showFieldSettingsChanged() {
   emit dataChanged(index(0, ChatLineModel::SenderColumn), index(rows - 1, ChatLineModel::SenderColumn));
 }
 
+void ChatMonitorFilter::showOwnMessagesSettingChanged(const QVariant &newValue) {
+  _showOwnMessages = newValue.toBool();
+}

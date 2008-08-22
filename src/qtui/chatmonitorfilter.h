@@ -44,14 +44,21 @@ public:
   virtual QString idString() const { return "ChatMonitor"; }
   virtual QVariant data(const QModelIndex &index, int role) const;
 
-  inline QString showFieldSettingId() const { return QString("ChatView/%1/showFields").arg(idString()); }
-  inline int showFields() const { return QtUiSettings().value(showFieldSettingId(), AllFields).toInt(); }
+  int showFields() const { return _showFields; }
+  bool showOwnMessages() const { return _showOwnMessages; }
+
+public slots:
   void addShowField(int field);
   void removeShowField(int field);
+  void setShowOwnMessages(bool show);
+
+private slots:
+  void showFieldsSettingsChanged(const QVariant &newValue);
+  void showOwnMessagesSettingChanged(const QVariant &newValue);
 
 private:
-
-  void showFieldSettingsChanged();
+  int _showFields;
+  bool _showOwnMessages;
 };
 
 #endif

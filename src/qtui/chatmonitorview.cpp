@@ -41,21 +41,25 @@ ChatMonitorView::ChatMonitorView(ChatMonitorFilter *filter, QWidget *parent)
 }
 
 void ChatMonitorView::contextMenuEvent(QContextMenuEvent *event) {
-  if(scene()->sectionByScenePos(event->pos()) != ChatLineModel::SenderColumn)
-    return;
-
-  int showFields = _filter->showFields();
-
   QMenu contextMenu(this);
-  QAction *showNetworkAction = contextMenu.addAction(tr("Show network name"), this, SLOT(showFieldsChanged(bool)));
-  showNetworkAction->setCheckable(true);
-  showNetworkAction->setChecked(showFields & ChatMonitorFilter::NetworkField);
-  showNetworkAction->setData(ChatMonitorFilter::NetworkField);
 
-  QAction *showBufferAction = contextMenu.addAction(tr("Show buffer name"), this, SLOT(showFieldsChanged(bool)));
-  showBufferAction->setCheckable(true);
-  showBufferAction->setChecked(showFields & ChatMonitorFilter::BufferField);
-  showBufferAction->setData(ChatMonitorFilter::BufferField);
+  QAction *showOwnNicksAction = contextMenu.addAction(tr("Show own messages"), _filter, SLOT(setShowOwnMessages(bool)));
+  showOwnNicksAction->setCheckable(true);
+  showOwnNicksAction->setChecked(_filter->showOwnMessages());
+    
+  if(scene()->sectionByScenePos(event->pos()) == ChatLineModel::SenderColumn) {
+    contextMenu.addSeparator();
+
+    QAction *showNetworkAction = contextMenu.addAction(tr("Show network name"), this, SLOT(showFieldsChanged(bool)));
+    showNetworkAction->setCheckable(true);
+    showNetworkAction->setChecked(_filter->showFields() & ChatMonitorFilter::NetworkField);
+    showNetworkAction->setData(ChatMonitorFilter::NetworkField);
+
+    QAction *showBufferAction = contextMenu.addAction(tr("Show buffer name"), this, SLOT(showFieldsChanged(bool)));
+    showBufferAction->setCheckable(true);
+    showBufferAction->setChecked(_filter->showFields() & ChatMonitorFilter::BufferField);
+    showBufferAction->setData(ChatMonitorFilter::BufferField);
+  }
 
   contextMenu.exec(QCursor::pos());
 }
