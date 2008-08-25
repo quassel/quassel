@@ -110,7 +110,6 @@ class MainWin : public QMainWindow {
   signals:
     void connectToCore(const QVariantMap &connInfo);
     void disconnectFromCore();
-    void requestBacklog(BufferInfo, QVariant, QVariant);
 
   private:
     Ui::MainWin ui;

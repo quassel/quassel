@@ -24,6 +24,7 @@
 #include <QPalette>
 #include <QBrush>
 
+#include "bufferinfo.h"
 #include "buffermodel.h"
 #include "client.h"
 #include "networkmodel.h"
@@ -202,7 +203,7 @@ bool BufferViewFilter::filterAcceptBuffer(const QModelIndex &source_bufferIndex)
     // add the buffer if...
     if(config()->isInitialized() && !config()->removedBuffers().contains(bufferId) // it hasn't been manually removed and either
        && ((config()->addNewBuffersAutomatically() && !config()->temporarilyRemovedBuffers().contains(bufferId)) // is totally unknown to us (a new buffer)...
-	   || (config()->temporarilyRemovedBuffers().contains(bufferId) && activityLevel > Buffer::OtherActivity))) { // or was just temporarily hidden and has a new message waiting for us.
+	   || (config()->temporarilyRemovedBuffers().contains(bufferId) && activityLevel > BufferInfo::OtherActivity))) { // or was just temporarily hidden and has a new message waiting for us.
       addBuffer(bufferId);
     }
     // note: adding the buffer to the valid list does not temper with the following filters ("show only channels" and stuff)
@@ -304,13 +305,13 @@ QVariant BufferViewFilter::foreground(const QModelIndex &index) const {
   if(!index.data(NetworkModel::ItemActiveRole).toBool())
     return _FgColorInactiveActivity;
 
-  Buffer::ActivityLevel activity = (Buffer::ActivityLevel)index.data(NetworkModel::BufferActivityRole).toInt();
+  BufferInfo::ActivityLevel activity = (BufferInfo::ActivityLevel)index.data(NetworkModel::BufferActivityRole).toInt();
 
-  if(activity & Buffer::Highlight)
+  if(activity & BufferInfo::Highlight)
     return _FgColorHighlightActivity;
-  if(activity & Buffer::NewMessage)
+  if(activity & BufferInfo::NewMessage)
     return _FgColorNewMessageActivity;
-  if(activity & Buffer::OtherActivity)
+  if(activity & BufferInfo::OtherActivity)
     return _FgColorOtherActivity;
 
   return _FgColorNoActivity;

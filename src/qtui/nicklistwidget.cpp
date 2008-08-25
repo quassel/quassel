@@ -20,7 +20,6 @@
 
 #include "nicklistwidget.h"
 
-#include "buffer.h"
 #include "nickview.h"
 #include "client.h"
 #include "networkmodel.h"

@@ -24,7 +24,7 @@
 #include <QtCore>
 
 #include "treemodel.h"
-#include "buffer.h"
+#include "bufferinfo.h"
 
 #include <QPointer>
 
@@ -35,6 +35,7 @@ class BufferInfo;
 #include "clientsettings.h"
 #include "ircchannel.h"
 #include "ircuser.h"
+#include "message.h"
 #include "network.h"
 
 class MappedSelectionModel;
@@ -110,9 +111,9 @@ public:
 
   inline const MsgId &lastSeenMsgId() const { return _lastSeenMsgId; }
   inline void setLastSeenMsgId(const MsgId &msgId) { _lastSeenMsgId = msgId; }
-  inline Buffer::ActivityLevel activityLevel() const { return _activity; }
-  void setActivityLevel(Buffer::ActivityLevel level);
-  //void updateActivityLevel(Buffer::ActivityLevel level);
+  inline BufferInfo::ActivityLevel activityLevel() const { return _activity; }
+  void setActivityLevel(BufferInfo::ActivityLevel level);
+  //void updateActivityLevel(BufferInfo::ActivityLevel level);
   void updateActivityLevel(const Message &msg);
 
   bool isCurrentBuffer() const;
@@ -123,7 +124,7 @@ public slots:
 
 private:
   BufferInfo _bufferInfo;
-  Buffer::ActivityLevel _activity;
+  BufferInfo::ActivityLevel _activity;
   MsgId _lastSeenMsgId;
 };
 
@@ -294,7 +295,7 @@ public:
 
   const Network *networkByIndex(const QModelIndex &index) const;
 
-  Buffer::ActivityLevel bufferActivity(const BufferInfo &buffer) const;
+  BufferInfo::ActivityLevel bufferActivity(const BufferInfo &buffer) const;
 
   QString bufferName(BufferId bufferId);
   BufferInfo::Type bufferType(BufferId bufferId);
@@ -303,11 +304,13 @@ public:
   NetworkId networkId(BufferId bufferId);
   QString networkName(BufferId bufferId);
 
+  inline QList<BufferId> allBufferIds() const { return _bufferItemCache.keys(); }
+
 public slots:
   void bufferUpdated(BufferInfo bufferInfo);
   void removeBuffer(BufferId bufferId);
   void setLastSeenMsgId(const BufferId &bufferId, const MsgId &msgId);
-  void setBufferActivity(const BufferId &bufferId, Buffer::ActivityLevel activity);
+  void setBufferActivity(const BufferId &bufferId, BufferInfo::ActivityLevel activity);
   void updateBufferActivity(const Message &msg);
   void networkRemoved(const NetworkId &networkId);
 

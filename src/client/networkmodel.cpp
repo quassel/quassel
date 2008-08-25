@@ -22,7 +22,6 @@
 
 #include <QAbstractItemView>
 
-#include "bufferinfo.h"
 #include "buffermodel.h"
 #include "client.h"
 #include "signalproxy.h"
@@ -174,19 +173,19 @@ QString NetworkItem::toolTip(int column) const {
 BufferItem::BufferItem(const BufferInfo &bufferInfo, AbstractTreeItem *parent)
   : PropertyMapItem(QStringList() << "bufferName" << "topic" << "nickCount", parent),
     _bufferInfo(bufferInfo),
-    _activity(Buffer::NoActivity)
+    _activity(BufferInfo::NoActivity)
 {
   setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled);
 }
 
-void BufferItem::setActivityLevel(Buffer::ActivityLevel level) {
+void BufferItem::setActivityLevel(BufferInfo::ActivityLevel level) {
   if(_activity != level) {
     _activity = level;
     emit dataChanged();
   }
 }
 
-//void BufferItem::updateActivityLevel(Buffer::ActivityLevel level) {
+//void BufferItem::updateActivityLevel(BufferInfo::ActivityLevel level) {
 void BufferItem::updateActivityLevel(const Message &msg) {
   if(isCurrentBuffer())
     return;
@@ -197,14 +196,14 @@ void BufferItem::updateActivityLevel(const Message &msg) {
   if(lastSeenMsgId() >= msg.msgId())
     return;
 
-  Buffer::ActivityLevel oldLevel = activityLevel();
+  BufferInfo::ActivityLevel oldLevel = activityLevel();
 
-  _activity |= Buffer::OtherActivity;
+  _activity |= BufferInfo::OtherActivity;
   if(msg.type() & (Message::Plain | Message::Notice | Message::Action))
-    _activity |= Buffer::NewMessage;
+    _activity |= BufferInfo::NewMessage;
 
   if(msg.flags() & Message::Highlight)
-    _activity |= Buffer::Highlight;
+    _activity |= BufferInfo::Highlight;
 
   if(oldLevel != _activity)
     emit dataChanged();
@@ -235,7 +234,7 @@ bool BufferItem::setData(int column, const QVariant &value, int role) {
   qDebug() << "BufferItem::setData(int column, const QVariant &value, int role):" << this << column << value << role;
   switch(role) {
   case NetworkModel::BufferActivityRole:
-    setActivityLevel((Buffer::ActivityLevel)value.toInt());
+    setActivityLevel((BufferInfo::ActivityLevel)value.toInt());
     return true;
   default:
     return PropertyMapItem::setData(column, value, role);
@@ -921,7 +920,7 @@ void NetworkModel::updateBufferActivity(const Message &msg) {
   bufferItem(msg.bufferInfo())->updateActivityLevel(msg);
 }
 
-void NetworkModel::setBufferActivity(const BufferId &bufferId, Buffer::ActivityLevel level) {
+void NetworkModel::setBufferActivity(const BufferId &bufferId, BufferInfo::ActivityLevel level) {
   BufferItem *bufferItem = findBufferItem(bufferId);
   if(!bufferItem) {
     qDebug() << "NetworkModel::setBufferActivity(): buffer is unknown:" << bufferId;

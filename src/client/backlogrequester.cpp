@@ -17,25 +17,29 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
+#include "backlogrequester.h"
+
 #include <QDebug>
 
-#include "buffer.h"
+#include "backlogmanager.h"
 
-#include "buffersyncer.h"
-#include "client.h"
-#include "networkmodel.h"
-#include "quasselui.h"
-#include "util.h"
+BacklogRequester::BacklogRequester(BacklogManager *backlogManager)
+  : backlogManager(backlogManager)
+{
+  Q_ASSERT(backlogManager);
+}
 
+// FIXED BACKLOG REQUESTER
+const int FixedBacklogRequester::backlogCount(500);
 
-Buffer::Buffer(BufferInfo bufferid, QObject *parent)
-  : QObject(parent),
-    _bufferInfo(bufferid)
+FixedBacklogRequester::FixedBacklogRequester(BacklogManager *backlogManager)
+  : BacklogRequester(backlogManager)
 {
 }
 
-BufferInfo Buffer::bufferInfo() const {
-  // still needed by the gui *sigh* to request the backlogs *sigh*
-  return _bufferInfo;
+void FixedBacklogRequester::requestBacklog() {
+  foreach(BufferId bufferId, allBufferIds()) {
+    backlogManager->requestBacklog(bufferId, backlogCount, -1);
+  }
 }
-

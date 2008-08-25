@@ -18,17 +18,17 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _CLIENT_H_
-#define _CLIENT_H_
+#ifndef CLIENT_H_
+#define CLIENT_H_
 
 #include <QAbstractSocket>
 #include <QTcpSocket>
 #include <QList>
 #include <QPointer>
 
-#include "buffer.h" // needed for activity lvl
+#include "bufferinfo.h"
+#include "types.h"
 
-class BufferInfo;
 class Message;
 class MessageModel;
 class AbstractMessageProcessor;
@@ -61,11 +61,6 @@ public:
   static Client *instance();
   static void destroy();
   static void init(AbstractUi *);
-
-  static QList<BufferInfo> allBufferInfos();
-  static QList<Buffer *> buffers();
-  // static Buffer *buffer(BufferId bufferUid);
-  static Buffer *buffer(BufferInfo);
 
   static QList<NetworkId> networkIds();
   static const Network * network(NetworkId);
@@ -118,10 +113,6 @@ public:
 
 signals:
   void sendInput(BufferInfo, QString message);
-  void showBuffer(Buffer *);
-  void bufferUpdated(BufferInfo bufferInfo);
-  void backlogReceived(Buffer *, QList<Message>);
-  void requestBacklog(BufferInfo, QVariant, QVariant);
   void requestNetworkStates();
 
   void showConfigWizard(const QVariantMap &coredata);
@@ -173,10 +164,7 @@ private slots:
 
   void recvMessage(const Message &message);
   void recvStatusMsg(QString network, QString message);
-  void receiveBacklog(BufferId bufferId, const QVariantList &msgs);
-  void updateBufferInfo(BufferInfo);
 
-  void bufferDestroyed();
   void networkDestroyed();
   void coreIdentityCreated(const Identity &);
   void coreIdentityRemoved(IdentityId);
@@ -196,8 +184,6 @@ private:
   static void addNetwork(Network *);
   static void setCurrentCoreAccount(AccountId);
   static inline BufferSyncer *bufferSyncer() { return instance()->_bufferSyncer; }
-
-  Buffer *statusBuffer(const NetworkId &networkid) const;
 
   static QPointer<Client> instanceptr;
 
@@ -219,8 +205,6 @@ private:
 
   bool _connectedToCore, _syncedToCore;
 
-  QHash<BufferId, Buffer *> _buffers;
-  QHash<NetworkId, Buffer *> _statusBuffers; // fast lookup
   QHash<NetworkId, Network *> _networks;
   QHash<IdentityId, Identity *> _identities;
 

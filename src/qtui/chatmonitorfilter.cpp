@@ -20,7 +20,6 @@
 
 #include "chatmonitorfilter.h"
 
-#include "buffer.h"
 #include "client.h"
 #include "chatlinemodel.h"
 #include "networkmodel.h"

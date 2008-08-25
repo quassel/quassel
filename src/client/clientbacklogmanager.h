@@ -33,9 +33,7 @@ public:
 
 public slots:
   virtual void receiveBacklog(BufferId bufferId, int lastMsgs, int offset, QVariantList msgs);
-
-signals:
-  void backlog(BufferId bufferId, const QVariantList &msgs);
+  void requestInitialBacklog();
 };
 
 #endif // CLIENTBACKLOGMANAGER_H

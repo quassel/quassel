@@ -18,42 +18,39 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _BUFFER_H_
-#define _BUFFER_H_
+#ifndef BACKLOGREQUESTER_H
+#define BACKLOGREQUESTER_H
 
-#include <QDateTime>
+#include <QList>
 
-class AbstractUiMsg;
-class IrcChannel;
-class NickModel;
+#include "client.h"
+#include "networkmodel.h"
+#include "types.h"
 
-struct BufferState;
+class BacklogManager;
 
-#include "message.h"
-#include "bufferinfo.h"
-
-/**
- */
-class Buffer : public QObject {
-  Q_OBJECT
-
+class BacklogRequester {
 public:
-  enum Activity {
-    NoActivity = 0x00,
-    OtherActivity = 0x01,
-    NewMessage = 0x02,
-    Highlight = 0x40
-  };
-  Q_DECLARE_FLAGS(ActivityLevel, Activity)
+  BacklogRequester(BacklogManager *backlogManger);
+  virtual inline ~BacklogRequester() {}
 
-  Buffer(BufferInfo, QObject *parent = 0);
+  virtual void requestBacklog() = 0;
 
-  BufferInfo bufferInfo() const;
-
-private:
-  BufferInfo _bufferInfo;
+protected:
+  inline QList<BufferId> allBufferIds() const { return Client::networkModel()->allBufferIds(); }
+  BacklogManager *backlogManager;
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(Buffer::ActivityLevel)
 
-#endif
+class FixedBacklogRequester : public BacklogRequester {
+public:
+  FixedBacklogRequester(BacklogManager *backlogManager);
+
+  virtual void requestBacklog();
+
+private:
+  static const int backlogCount;
+};
+
+
+#endif //BACKLOGREQUESTER_H

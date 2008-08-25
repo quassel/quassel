@@ -30,6 +30,7 @@
 #include "ircuser.h"
 #include "ircchannel.h"
 #include "network.h"
+#include "networkmodel.h"
 #include "signalproxy.h"
 
 
@@ -262,8 +263,10 @@ void ClientSyncer::syncToCore(const QVariantMap &sessionState) {
   // create buffers
   // FIXME: get rid of this crap
   QVariantList bufferinfos = sessionState["BufferInfos"].toList();
+  NetworkModel *networkModel = Client::networkModel();
+  Q_ASSERT(networkModel);
   foreach(QVariant vinfo, bufferinfos)
-    Client::buffer(vinfo.value<BufferInfo>());  // create Buffers and BufferItems
+    networkModel->bufferUpdated(vinfo.value<BufferInfo>());  // create BufferItems
 
   QVariantList networkids = sessionState["NetworkIds"].toList();
 

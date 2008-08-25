@@ -22,7 +22,6 @@
 
 #include "networkmodel.h"
 #include "mappedselectionmodel.h"
-#include "buffer.h"
 #include "global.h"
 
 #include <QAbstractItemView>

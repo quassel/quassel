@@ -21,7 +21,6 @@
 #include <QGraphicsTextItem>
 #include <QScrollBar>
 
-#include "buffer.h"
 #include "chatlinemodelitem.h"
 #include "chatscene.h"
 #include "chatview.h"

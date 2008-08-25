@@ -8,7 +8,7 @@ include(${QT_USE_FILE})
 
 set(SOURCES
     abstractmessageprocessor.cpp
-    buffer.cpp
+    backlogrequester.cpp
     buffermodel.cpp
     buffersettings.cpp
     client.cpp
@@ -27,7 +27,6 @@ set(SOURCES
 
 set(MOC_HDRS
     abstractmessageprocessor.h
-    buffer.h
     buffermodel.h
     client.h
     clientbacklogmanager.h
@@ -44,6 +43,7 @@ set(MOC_HDRS
     treemodel.h)
 
 set(HEADERS
+    backlogrequester.h
     buffersettings.h
     clientsettings.h)
 

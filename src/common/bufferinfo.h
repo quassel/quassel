@@ -36,6 +36,14 @@ public:
     GroupBuffer = 0x08
   };
   
+  enum Activity {
+    NoActivity = 0x00,
+    OtherActivity = 0x01,
+    NewMessage = 0x02,
+    Highlight = 0x40
+  };
+  Q_DECLARE_FLAGS(ActivityLevel, Activity)
+
   BufferInfo();
   BufferInfo(BufferId id, NetworkId networkid, Type type, uint gid = 0, QString buf = QString());
 
@@ -69,6 +77,7 @@ QDataStream &operator>>(QDataStream &in, BufferInfo &bufferInfo);
 QDebug operator<<(QDebug dbg, const BufferInfo &b);
 
 Q_DECLARE_METATYPE(BufferInfo);
+Q_DECLARE_OPERATORS_FOR_FLAGS(BufferInfo::ActivityLevel)
 
 uint qHash(const BufferInfo &);
 

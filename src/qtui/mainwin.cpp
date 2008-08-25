@@ -123,8 +123,6 @@ void MainWin::init() {
   else
     resize(QSize(800, 500));
 
-  Client::signalProxy()->attachSignal(this, SIGNAL(requestBacklog(BufferInfo, QVariant, QVariant)));
-
   connect(QApplication::instance(), SIGNAL(aboutToQuit()), this, SLOT(saveLayout()));
 
   connect(Client::instance(), SIGNAL(networkCreated(NetworkId)), this, SLOT(clientNetworkCreated(NetworkId)));
@@ -398,9 +396,7 @@ void MainWin::connectedToCore() {
   connect(Client::bufferViewManager(), SIGNAL(bufferViewConfigDeleted(int)), this, SLOT(removeBufferView(int)));
   connect(Client::bufferViewManager(), SIGNAL(initDone()), this, SLOT(loadLayout()));
 
-  foreach(BufferInfo id, Client::allBufferInfos()) {
-    Client::backlogManager()->requestBacklog(id.bufferId(), 500, -1);
-  }
+  Client::backlogManager()->requestInitialBacklog();
   setConnectedState();
 }
 

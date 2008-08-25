@@ -78,9 +78,6 @@ Client::Client(QObject *parent)
     _syncedToCore(false)
 {
   _signalProxy->synchronize(_ircListHelper);
-
-  connect(_backlogManager, SIGNAL(backlog(BufferId, const QVariantList &)),
-	  this, SLOT(receiveBacklog(BufferId, const QVariantList &)));
 }
 
 Client::~Client() {
@@ -91,8 +88,6 @@ void Client::init() {
   _currentCoreAccount = 0;
   _networkModel = new NetworkModel(this);
 
-  connect(this, SIGNAL(bufferUpdated(BufferInfo)),
-          _networkModel, SLOT(bufferUpdated(BufferInfo)));
   connect(this, SIGNAL(networkRemoved(NetworkId)),
           _networkModel, SLOT(networkRemoved(NetworkId)));
 
@@ -105,7 +100,7 @@ void Client::init() {
   p->attachSlot(SIGNAL(displayMsg(const Message &)), this, SLOT(recvMessage(const Message &)));
   p->attachSlot(SIGNAL(displayStatusMsg(QString, QString)), this, SLOT(recvStatusMsg(QString, QString)));
 
-  p->attachSlot(SIGNAL(bufferInfoUpdated(BufferInfo)), this, SLOT(updateBufferInfo(BufferInfo)));
+  p->attachSlot(SIGNAL(bufferInfoUpdated(BufferInfo)), _networkModel, SLOT(bufferUpdated(BufferInfo)));
   p->attachSignal(this, SIGNAL(sendInput(BufferInfo, QString)));
   p->attachSignal(this, SIGNAL(requestNetworkStates()));
 
@@ -136,51 +131,6 @@ AccountId Client::currentCoreAccount() {
 
 void Client::setCurrentCoreAccount(AccountId id) {
   _currentCoreAccount = id;
-}
-
-QList<BufferInfo> Client::allBufferInfos() {
-  QList<BufferInfo> bufferids;
-  foreach(Buffer *buffer, buffers()) {
-    bufferids << buffer->bufferInfo();
-  }
-  return bufferids;
-}
-
-QList<Buffer *> Client::buffers() {
-  return instance()->_buffers.values();
-}
-
-
-Buffer *Client::statusBuffer(const NetworkId &networkId) const {
-  if(_statusBuffers.contains(networkId))
-    return _statusBuffers[networkId];
-  else
-    return 0;
-}
-
-Buffer *Client::buffer(BufferInfo bufferInfo) {
-  Buffer *buff = 0;
-  if(instance()->_buffers.contains(bufferInfo.bufferId()))
-    buff = instance()->_buffers[bufferInfo.bufferId()];
-
-  if(!buff) {
-    Client *client = Client::instance();
-    buff = new Buffer(bufferInfo, client);
-    connect(buff, SIGNAL(destroyed()), client, SLOT(bufferDestroyed()));
-    client->_buffers[bufferInfo.bufferId()] = buff;
-    if(bufferInfo.type() == BufferInfo::StatusBuffer)
-      client->_statusBuffers[bufferInfo.networkId()] = buff;
-
-    emit client->bufferUpdated(bufferInfo);
-
-    // I don't like this: but currently there isn't really a prettier way:
-    if(isSynced()) {  // this slows down syncing a lot, so disable it during sync
-      QModelIndex bufferIdx = networkModel()->bufferIndex(bufferInfo.bufferId());
-      bufferModel()->setCurrentIndex(bufferModel()->mapFromSource(bufferIdx));
-    }
-  }
-  Q_ASSERT(buff);
-  return buff;
 }
 
 bool Client::isConnected() {
@@ -362,17 +312,6 @@ void Client::disconnectFromCore() {
   _messageModel->clear();
   _networkModel->clear();
 
-  QHash<BufferId, Buffer *>::iterator bufferIter =  _buffers.begin();
-  while(bufferIter != _buffers.end()) {
-    Buffer *buffer = bufferIter.value();
-    disconnect(buffer, SIGNAL(destroyed()), this, 0);
-    bufferIter = _buffers.erase(bufferIter);
-    buffer->deleteLater();
-  }
-  Q_ASSERT(_buffers.isEmpty());
-
-  _statusBuffers.clear();
-
   QHash<NetworkId, Network*>::iterator netIter = _networks.begin();
   while(netIter != _networks.end()) {
     Network *net = netIter.value();
@@ -400,31 +339,6 @@ void Client::setCoreConfiguration(const QVariantMap &settings) {
 
 /*** ***/
 
-void Client::updateBufferInfo(BufferInfo id) {
-  emit bufferUpdated(id);
-}
-
-void Client::bufferDestroyed() {
-  Buffer *buffer = static_cast<Buffer *>(sender());
-  QHash<BufferId, Buffer *>::iterator iter = _buffers.begin();
-  while(iter != _buffers.end()) {
-    if(iter.value() == buffer) {
-      iter = _buffers.erase(iter);
-      break;
-    }
-    iter++;
-  }
-
-  QHash<NetworkId, Buffer *>::iterator statusIter = _statusBuffers.begin();
-  while(statusIter != _statusBuffers.end()) {
-    if(statusIter.value() == buffer) {
-      statusIter = _statusBuffers.erase(statusIter);
-      break;
-    }
-    statusIter++;
-  }
-}
-
 void Client::networkDestroyed() {
   Network *net = static_cast<Network *>(sender());
   QHash<NetworkId, Network *>::iterator netIter = _networks.begin();
@@ -448,19 +362,6 @@ void Client::recvMessage(const Message &msg_) {
   messageProcessor()->process(msg);
 }
 
-void Client::receiveBacklog(BufferId bufferId, const QVariantList &msgs) {
-  if(msgs.isEmpty()) return;
-  //QTime start = QTime::currentTime();
-  QList<Message> msglist;
-  foreach(QVariant v, msgs) {
-    Message msg = v.value<Message>();
-    msg.setFlags(msg.flags() | Message::Backlog);
-    msglist << msg;
-  }
-  messageProcessor()->process(msglist);
-  //qDebug() << "processed" << msgs.count() << "backlog lines in" << start.msecsTo(QTime::currentTime());
-}
-
 void Client::setBufferLastSeenMsg(BufferId id, const MsgId &msgId) {
   if(!bufferSyncer())
     return;
@@ -473,14 +374,7 @@ void Client::removeBuffer(BufferId id) {
 }
 
 void Client::bufferRemoved(BufferId bufferId) {
-  // first remove the buffer from hash. this prohibits further lastSeenUpdates
-  Buffer *buff = 0;
-  if(_buffers.contains(bufferId)) {
-    buff = _buffers.take(bufferId);
-    disconnect(buff, 0, this, 0);
-  }
-
-  // then we select a sane buffer (status buffer)
+  // select a sane buffer (status buffer)
   /* we have to manually select a buffer because otherwise inconsitent changes
    * to the model might occur:
    * the result of a buffer removal triggers a change in the selection model.
@@ -495,9 +389,6 @@ void Client::bufferRemoved(BufferId bufferId) {
 
   // and remove it from the model
   networkModel()->removeBuffer(bufferId);
-
-  if(buff)
-    buff->deleteLater();
 }
 
 void Client::bufferRenamed(BufferId bufferId, const QString &newName) {

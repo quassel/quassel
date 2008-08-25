@@ -196,9 +196,7 @@ void BufferViewSettingsPage::newBufferView(const QString &bufferViewName) {
 
   QList<BufferId> bufferIds;
   if(config->addNewBuffersAutomatically()) {
-    foreach(BufferInfo bufferInfo, Client::allBufferInfos()) {
-      bufferIds << bufferInfo.bufferId();
-    }
+    bufferIds = Client::networkModel()->allBufferIds();
     if(config->sortAlphabetically())
       qSort(bufferIds.begin(), bufferIds.end(), bufferIdLessThan);
   }
@@ -378,9 +376,7 @@ void BufferViewSettingsPage::saveConfig(BufferViewConfig *config) {
   if(_newBufferViews.contains(config)) {
     QList<BufferId> bufferIds;
     if(config->addNewBuffersAutomatically()) {
-      foreach(BufferInfo bufferInfo, Client::allBufferInfos()) {
-	bufferIds << bufferInfo.bufferId();
-      }
+      bufferIds = Client::networkModel()->allBufferIds();
       if(config->sortAlphabetically())
 	qSort(bufferIds.begin(), bufferIds.end(), bufferIdLessThan);
     }

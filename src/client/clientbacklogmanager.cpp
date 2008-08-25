@@ -19,6 +19,9 @@
  ***************************************************************************/
 
 #include "clientbacklogmanager.h"
+
+#include "abstractmessageprocessor.h"
+#include "backlogrequester.h"
 #include "client.h"
 
 #include <QDebug>
@@ -29,7 +32,25 @@ ClientBacklogManager::ClientBacklogManager(QObject *parent)
 }
 
 void ClientBacklogManager::receiveBacklog(BufferId bufferId, int lastMsgs, int offset, QVariantList msgs) {
+  Q_UNUSED(bufferId)
   Q_UNUSED(lastMsgs)
   Q_UNUSED(offset)
-  emit backlog(bufferId, msgs);
+
+  if(msgs.isEmpty())
+    return;
+
+  //QTime start = QTime::currentTime();
+  QList<Message> msglist;
+  foreach(QVariant v, msgs) {
+    Message msg = v.value<Message>();
+    msg.setFlags(msg.flags() | Message::Backlog);
+    msglist << msg;
+  }
+  Client::messageProcessor()->process(msglist);
+  //qDebug() << "processed" << msgs.count() << "backlog lines in" << start.msecsTo(QTime::currentTime());
+}
+
+void ClientBacklogManager::requestInitialBacklog() {
+  FixedBacklogRequester backlogRequester(this);
+  backlogRequester.requestBacklog();
 }
