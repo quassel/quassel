@@ -295,6 +295,28 @@ void ContentsChatItem::updateLayout() {
     h += line.height() + fontMetrics()->leading();
   }
   layout()->endLayout();
+
+  analyze();
+}
+
+void ContentsChatItem::analyze() {
+  // Match an URL
+  static QString urlEnd("(?:>|[,.;:]?\\s|\\b)");
+  static QString urlChars("(?:[\\w\\-~@/?&=+$()!%#]|[,.;:]\\w)");
+  static QRegExp urlExp(QString("((?:(?:https?://|ftp://|irc://|mailto:)|www)%1+)%2").arg(urlChars, urlEnd));
+
+  // Match a channel name
+  // We don't match for channel names starting with + or &, because that gives us a lot of false positives.
+  static QRegExp chanExp("((?:#|![A-Z0-9]{5})[^,:\\s]+(?::[^,:\\s]+)?)\\b");
+  QString str = data(ChatLineModel::DisplayRole).toString();
+  quint16 idx = 0;
+  // first, we split on characters that might be URL separators
+  int i = str.indexOf(chanExp);
+  if(i >= 0) {
+    qDebug() << i << chanExp.cap(1);
+  }
+
+
 }
 
 void ContentsChatItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) {

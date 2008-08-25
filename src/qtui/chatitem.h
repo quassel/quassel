@@ -141,15 +141,30 @@ protected:
 
 private:
   struct LayoutData;
+  struct Clickable;
   class WrapColumnFinder;
 
   qreal computeHeight();
+  void analyze();
 
   LayoutData *_layoutData;
 };
 
+struct ContentsChatItem::Clickable {
+  enum Type {
+    Url,
+    Channel,
+    Nick
+  };
+
+  quint16 start;
+  quint16 length;
+  Type type;
+};
+
 struct ContentsChatItem::LayoutData {
   QTextLayout *layout;
+  QList<Clickable> clickables;
 
   LayoutData() { layout = 0; }
   ~LayoutData() { delete layout; }
