@@ -26,6 +26,8 @@
 #include "chatlinemodel.h"
 #include "uistyle.h"
 
+class ChatLineModelItemPrivate;
+
 class ChatLineModelItem : public MessageModelItem {
 public:
   ChatLineModelItem(const Message &);
@@ -34,7 +36,7 @@ public:
   virtual inline bool setData(int column, const QVariant &value, int role) { Q_UNUSED(column); Q_UNUSED(value); Q_UNUSED(role); return false; }
 
 private:
-  void computeWrapList();
+  void computeWrapList() const;
 
   struct ChatLinePart {
     QString plainText;
@@ -42,7 +44,7 @@ private:
   };
   ChatLinePart _timestamp, _sender, _contents;
 
-  ChatLineModel::WrapList _wrapList;
+  ChatLineModelItemPrivate *_data;
 
   static unsigned char *TextBoundaryFinderBuffer;
   static int TextBoundaryFinderBufferSize;

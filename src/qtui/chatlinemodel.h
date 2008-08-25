@@ -26,25 +26,23 @@
 class ChatLineModel : public MessageModel {
   Q_OBJECT
 
-  public:
-    enum ChatLineRole {
-      WrapListRole = MessageModel::UserRole
-    };
+public:
+  enum ChatLineRole {
+    WrapListRole = MessageModel::UserRole
+  };
 
-    ChatLineModel(QObject *parent = 0);
-    virtual ~ChatLineModel();
+  ChatLineModel(QObject *parent = 0);
 
-    /// Used to store information about words to be used for wrapping
-    struct Word {
-      quint16 start;
-      qreal width;
-      qreal trailing;
-    };
+  /// Used to store information about words to be used for wrapping
+  struct Word {
+    quint16 start;
+    qreal width;
+    qreal trailing;
+  };
+  typedef QVector<Word> WrapList;
 
-    typedef QVector<Word> WrapList;
-  
-  protected:
-    virtual MessageModelItem *createMessageModelItem(const Message &);
+protected:
+  virtual MessageModelItem *createMessageModelItem(const Message &);
 
 };
 

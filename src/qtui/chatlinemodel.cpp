@@ -22,20 +22,15 @@
 
 #include "chatlinemodelitem.h"
 
-ChatLineModel::ChatLineModel(QObject *parent) : MessageModel(parent) {
+ChatLineModel::ChatLineModel(QObject *parent)
+  : MessageModel(parent)
+{
   qRegisterMetaType<WrapList>("ChatLineModel::WrapList");
   qRegisterMetaTypeStreamOperators<WrapList>("ChatLineModel::WrapList");
-
 }
-
-ChatLineModel::~ChatLineModel() {
-
-}
-
 
 MessageModelItem *ChatLineModel::createMessageModelItem(const Message &msg) {
   return new ChatLineModelItem(msg);
-
 }
 
 

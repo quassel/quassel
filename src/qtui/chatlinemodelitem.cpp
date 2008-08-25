@@ -40,8 +40,13 @@ typedef struct {
 unsigned char *ChatLineModelItem::TextBoundaryFinderBuffer = (unsigned char *)malloc(512 * sizeof(HB_CharAttributes_Dummy));
 int ChatLineModelItem::TextBoundaryFinderBufferSize = 512 * (sizeof(HB_CharAttributes_Dummy) / sizeof(unsigned char));
 
+struct ChatLineModelItemPrivate {
+  ChatLineModel::WrapList wrapList;
+};
+
 ChatLineModelItem::ChatLineModelItem(const Message &msg)
-  : MessageModelItem(msg)
+  : MessageModelItem(msg),
+    _data(new ChatLineModelItemPrivate)
 {
   QtUiStyle::StyledMessage m = QtUi::style()->styleMessage(msg);
 
@@ -52,10 +57,7 @@ ChatLineModelItem::ChatLineModelItem(const Message &msg)
   _timestamp.formatList = m.timestamp.formatList;
   _sender.formatList = m.sender.formatList;
   _contents.formatList = m.contents.formatList;
-
-  computeWrapList();
 }
-
 
 QVariant ChatLineModelItem::data(int column, int role) const {
   const ChatLinePart *part = 0;
@@ -82,19 +84,20 @@ QVariant ChatLineModelItem::data(int column, int role) const {
   case ChatLineModel::WrapListRole:
     if(column != ChatLineModel::ContentsColumn)
       return QVariant();
-    return QVariant::fromValue<ChatLineModel::WrapList>(_wrapList);
+    if(_data->wrapList.isEmpty())
+      computeWrapList();
+    return QVariant::fromValue<ChatLineModel::WrapList>(_data->wrapList);
   }
   return MessageModelItem::data(column, role);
 }
 
-void ChatLineModelItem::computeWrapList() {
+void ChatLineModelItem::computeWrapList() const {
   if(_contents.plainText.isEmpty())
     return;
 
   enum Mode { SearchStart, SearchEnd };
 
   QList<ChatLineModel::Word> wplist;  // use a temp list which we'll later copy into a QVector for efficiency
-  // QTextBoundaryFinder finder(QTextBoundaryFinder::Word, _contents.plainText);
   QTextBoundaryFinder finder(QTextBoundaryFinder::Word, _contents.plainText.unicode(), _contents.plainText.length(), TextBoundaryFinderBuffer, TextBoundaryFinderBufferSize);
 
   int idx;
@@ -153,9 +156,9 @@ void ChatLineModelItem::computeWrapList() {
   } while(finder.isAtBoundary() || (finder.position() == _contents.plainText.length()));
 
   // A QVector needs less space than a QList
-  _wrapList.resize(wplist.count());
+  _data->wrapList.resize(wplist.count());
   for(int i = 0; i < wplist.count(); i++) {
-    _wrapList[i] = wplist.at(i);
+    _data->wrapList[i] = wplist.at(i);
   }
 }
 
