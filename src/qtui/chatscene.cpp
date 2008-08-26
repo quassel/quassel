@@ -59,7 +59,7 @@ ChatScene::ChatScene(QAbstractItemModel *model, const QString &idString, QObject
 	  this, SLOT(rowsInserted(const QModelIndex &, int, int)));
   connect(model, SIGNAL(rowsAboutToBeRemoved(const QModelIndex &, int, int)),
 	  this, SLOT(rowsAboutToBeRemoved(const QModelIndex &, int, int)));
-  
+
   for(int i = 0; i < model->rowCount(); i++) {
     ChatLine *line = new ChatLine(i, model);
     _lines.append(line);
@@ -278,10 +278,12 @@ void ChatScene::updateSelection(const QPointF &pos) {
   _lastSelectionRow = curRow;
 
   if(newstart == newend && minColumn == ChatLineModel::ContentsColumn) {
+    if(!_selectingItem) {
+      qWarning() << "WARNING: ChatScene::updateSelection() has a null _selectingItem, this should never happen! Please report.";
+      return;
+    }
     _lines[curRow]->setSelected(false);
     _isSelecting = false;
-    Q_ASSERT(_selectingItem); // this seems to not always be true, but I have no idea why
-                              // adding this assert to make sure the occasional segfault is caused by this
     _selectingItem->continueSelecting(_selectingItem->mapFromScene(pos));
   }
 }
