@@ -18,24 +18,24 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _QTUISTYLE_H_
-#define _QTUISTYLE_H_
+#ifndef QTUISTYLE_H_
+#define QTUISTYLE_H_
 
 #include "uistyle.h"
 
 class QtUiStyle : public UiStyle {
 
-  public:
-    QtUiStyle();
-    virtual ~QtUiStyle();
+public:
+  QtUiStyle();
+  virtual ~QtUiStyle();
 
-    virtual inline qreal firstColumnSeparator() const { return 10; }
-    virtual inline qreal secondColumnSeparator() const { return 10; }
-    virtual inline QColor highlightColor() const { return _highlightColor; }
-    virtual void setHighlightColor(const QColor &);
+  virtual inline qreal firstColumnSeparator() const { return 6; }
+  virtual inline qreal secondColumnSeparator() const { return 6; }
+  virtual inline QColor highlightColor() const { return _highlightColor; }
+  virtual void setHighlightColor(const QColor &);
 
-  private:
-    QColor _highlightColor;
+private:
+  QColor _highlightColor;
 };
 
 #endif

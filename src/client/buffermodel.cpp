@@ -71,6 +71,21 @@ void BufferModel::switchToBuffer(const BufferId &bufferId) {
   setCurrentIndex(mapFromSource(source_index));
 }
 
+void BufferModel::switchToBufferIndex(const QModelIndex &bufferIdx) {
+  // we accept indexes that directly belong to us or our parent - nothing else
+  if(bufferIdx.model() == this) {
+    setCurrentIndex(bufferIdx);
+    return;
+  }
+
+  if(bufferIdx.model() == sourceModel()) {
+    setCurrentIndex(mapFromSource(bufferIdx));
+    return;
+  }
+
+  qWarning() << "BufferModel::switchToBufferIndex(const QModelIndex &):" << bufferIdx << "does not belong to BufferModel or NetworkModel";
+}
+
 void BufferModel::debug_currentChanged(QModelIndex current, QModelIndex previous) {
   Q_UNUSED(previous);
   qDebug() << "Switched current Buffer: " << current << current.data().toString() << "Buffer:" << current.data(NetworkModel::BufferIdRole).value<BufferId>();

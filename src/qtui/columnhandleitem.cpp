@@ -18,12 +18,14 @@
 *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 ***************************************************************************/
 
+#include "columnhandleitem.h"
+
+#include <QApplication>
 #include <QCursor>
 #include <QGraphicsScene>
 #include <QGraphicsSceneHoverEvent>
 #include <QPainter>
-
-#include "columnhandleitem.h"
+#include <QPalette>
 
 ColumnHandleItem::ColumnHandleItem(qreal w, QGraphicsItem *parent)
   : QGraphicsItem(parent),
@@ -42,7 +44,7 @@ ColumnHandleItem::ColumnHandleItem(qreal w, QGraphicsItem *parent)
 }
 
 void ColumnHandleItem::setXPos(qreal xpos) {
-  setPos(xpos - width()/2, 0);
+  setPos(xpos, 0);
 }
 
 void ColumnHandleItem::setXLimits(qreal min, qreal max) {
@@ -85,7 +87,7 @@ void ColumnHandleItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
   if(_moving) {
     _moving = false;
     setCursor(QCursor(Qt::OpenHandCursor));
-    emit positionChanged(x() + width()/2);
+    emit positionChanged(x());
     event->accept();
   } else {
     event->ignore();
@@ -118,9 +120,12 @@ void ColumnHandleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *
   Q_UNUSED(widget);
 
   QLinearGradient gradient(0, 0, width(), 0);
-  gradient.setColorAt(0.25, Qt::transparent);
-  gradient.setColorAt(0.5, QColor(0, 0, 0, _hover * 200));
-  gradient.setColorAt(0.75, Qt::transparent);
+  QColor rulerColor = QApplication::palette().windowText().color();
+  rulerColor.setAlphaF(_hover);
+  gradient.setColorAt(0, Qt::transparent);
+  gradient.setColorAt(0.4, rulerColor);
+  gradient.setColorAt(0.6, rulerColor);
+  gradient.setColorAt(1, Qt::transparent);
   painter->fillRect(boundingRect(), gradient);
 }
 

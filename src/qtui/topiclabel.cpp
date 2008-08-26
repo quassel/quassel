@@ -77,7 +77,7 @@ void TopicLabel::setText(const QString &text) {
   offset = 0;
   update();
 
-  UiStyle::StyledString styledContents = QtUi::style()->styleString(QtUi::style()->mircToInternal(text));
+  UiStyle::StyledString styledContents = QtUi::style()->styleString("%D0" + QtUi::style()->mircToInternal(text));
   plainText = styledContents.plainText;
   formatList = QtUi::style()->toTextLayoutList(styledContents.formatList, plainText.length());
   int height = 1;
