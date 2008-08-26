@@ -20,9 +20,10 @@
 
 #include "buffermodel.h"
 
-#include "networkmodel.h"
-#include "mappedselectionmodel.h"
+#include "client.h"
 #include "global.h"
+#include "mappedselectionmodel.h"
+#include "networkmodel.h"
 
 #include <QAbstractItemView>
 
@@ -63,6 +64,11 @@ void BufferModel::synchronizeView(QAbstractItemView *view) {
 void BufferModel::setCurrentIndex(const QModelIndex &newCurrent) {
   _selectionModelSynchronizer.selectionModel()->setCurrentIndex(newCurrent, QItemSelectionModel::Current);
   _selectionModelSynchronizer.selectionModel()->select(newCurrent, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+}
+
+void BufferModel::switchToBuffer(const BufferId &bufferId) {
+  QModelIndex source_index = Client::networkModel()->bufferIndex(bufferId);
+  setCurrentIndex(mapFromSource(source_index));
 }
 
 void BufferModel::debug_currentChanged(QModelIndex current, QModelIndex previous) {

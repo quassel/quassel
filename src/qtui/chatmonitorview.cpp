@@ -81,11 +81,7 @@ void ChatMonitorView::mouseDoubleClickEvent(QMouseEvent *event) {
   if(!bufferId.isValid())
     return;
 
-  QModelIndex bufferIdx = Client::networkModel()->bufferIndex(bufferId);
-  if(!bufferIdx.isValid())
-    return;
-
-  Client::bufferModel()->setCurrentIndex(Client::bufferModel()->mapFromSource(bufferIdx));
+  Client::bufferModel()->switchToBuffer(bufferId);
 }
 
 void ChatMonitorView::showFieldsChanged(bool checked) {
