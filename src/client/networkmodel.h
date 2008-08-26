@@ -110,7 +110,8 @@ public:
   virtual inline bool isActive() const { return qobject_cast<NetworkItem *>(parent())->isActive(); }
 
   inline const MsgId &lastSeenMsgId() const { return _lastSeenMsgId; }
-  inline void setLastSeenMsgId(const MsgId &msgId) { _lastSeenMsgId = msgId; }
+  //inline void setLastSeenMsgId(const MsgId &msgId) { _lastSeenMsgId = msgId; }
+  void setLastSeenMsgId(const MsgId &msgId);
   inline BufferInfo::ActivityLevel activityLevel() const { return _activity; }
   void setActivityLevel(BufferInfo::ActivityLevel level);
   //void updateActivityLevel(BufferInfo::ActivityLevel level);

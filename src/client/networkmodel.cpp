@@ -185,7 +185,6 @@ void BufferItem::setActivityLevel(BufferInfo::ActivityLevel level) {
   }
 }
 
-//void BufferItem::updateActivityLevel(BufferInfo::ActivityLevel level) {
 void BufferItem::updateActivityLevel(const Message &msg) {
   if(isCurrentBuffer())
     return;
@@ -245,6 +244,11 @@ bool BufferItem::setData(int column, const QVariant &value, int role) {
 void BufferItem::setBufferName(const QString &name) {
   _bufferInfo = BufferInfo(_bufferInfo.bufferId(), _bufferInfo.networkId(), _bufferInfo.type(), _bufferInfo.groupId(), name);
   emit dataChanged(0);
+}
+
+void BufferItem::setLastSeenMsgId(const MsgId &msgId) {
+  _lastSeenMsgId = msgId;
+  setActivityLevel(BufferInfo::NoActivity); 
 }
 
 bool BufferItem::isCurrentBuffer() const {
