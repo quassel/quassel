@@ -77,6 +77,7 @@ class ChatScene : public QGraphicsScene {
     void handlePositionChanged(qreal xpos);
 
   private:
+    void setHandleXLimits();
     void updateSelection(const QPointF &pos);
     QString selectionToString() const;
 
