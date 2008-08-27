@@ -89,6 +89,7 @@ ChatScene::ChatScene(QAbstractItemModel *model, const QString &idString, QObject
   setHandleXLimits();
 
   emit heightChanged(height());
+  emit heightChangedAt(0, height());
 }
 
 ChatScene::~ChatScene() {
@@ -180,10 +181,12 @@ void ChatScene::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int e
     }
     setSceneRect(QRectF(0, 0, _width, _height));
     emit heightChanged(_height);
+    emit heightChangedAt(_lines.at(start)->y(), -h);
   }
 }
 
 void ChatScene::setWidth(qreal w) {
+  qreal oldh = _height;
   _width = w;
   _height = 0;
   foreach(ChatLine *line, _lines) {
@@ -193,6 +196,8 @@ void ChatScene::setWidth(qreal w) {
   setSceneRect(QRectF(0, 0, w, _height));
   setHandleXLimits();
   emit heightChanged(_height);
+  emit heightChangedAt(0, _height - oldh);
+
 }
 
 void ChatScene::rectChanged(const QRectF &rect) {
