@@ -78,6 +78,7 @@ QString AboutDlg::contributors() const {
            "<dt><b>Regis \"ZRegis\" Perrin</b></dt><dd>French translation</dd>"
            "<dt><b>Diego \"Flameeyes\" Petten&ograve;</b></dt><dd>Gentoo maintainer</dd>"
            "<dt><b>Dennis \"devurandom\" Schridde</b></dt><dd>D-Bus notifications</dd>"
+           "<dt><b>Jussi \"jussi01\" Schultink</b></dt><dd>Tireless tester, {k|U}buntu nightly packages</dd>"
            "<dt><b>Harald \"apachelogger\" Sitter</b></dt><dd>{k|U}buntu packager, motivator, promoter</dd>"
            "<dt><b>Daniel \"son\" Steinmetz</b></dt><dd>Early beta tester and bughunter (on Vista&trade;!)</dd>"
            "<dt><b>Adam \"adamt\" Tulinius</b></dt><dd>Early beta tester and bughunter, Danish translation</dd>"
