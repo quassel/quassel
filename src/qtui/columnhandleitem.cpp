@@ -119,7 +119,7 @@ void ColumnHandleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *
   Q_UNUSED(option);
   Q_UNUSED(widget);
 
-  QLinearGradient gradient(0, 0, width(), 0);
+  QLinearGradient gradient(boundingRect().topLeft(), boundingRect().topRight());
   QColor rulerColor = QApplication::palette().windowText().color();
   rulerColor.setAlphaF(_hover);
   gradient.setColorAt(0, Qt::transparent);

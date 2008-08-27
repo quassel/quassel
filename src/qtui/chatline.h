@@ -44,7 +44,7 @@ public:
   virtual void paint (QPainter * painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
 
   // returns height
-  qreal setGeometry(qreal width, qreal firstColPos, qreal secondColPos);
+  qreal setGeometry(qreal width);
   void setSelected(bool selected, ChatLineModel::ColumnType minColumn = ChatLineModel::ContentsColumn);
   void setHighlighted(bool highlighted);
 

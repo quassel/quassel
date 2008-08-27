@@ -33,7 +33,7 @@ class ColumnHandleItem : public QObject, public QGraphicsItem {
     ColumnHandleItem(qreal width, QGraphicsItem *parent = 0);
 
     inline qreal width() const { return _width; }
-    inline QRectF boundingRect() const { return QRectF(0, 0, _width, scene()->height()); }
+    inline QRectF boundingRect() const { return QRectF(-_width/2, 0, _width, scene()->height()); }
     void setXPos(qreal xpos);
 
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);

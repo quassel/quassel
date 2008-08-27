@@ -110,7 +110,7 @@ void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
     addItem(line);
     if(_width > 0) {
       line->setPos(0, y+h);
-      h += line->setGeometry(_width, firstColHandlePos, secondColHandlePos);
+      h += line->setGeometry(_width);
     }
   }
   // update existing items
@@ -187,7 +187,7 @@ void ChatScene::setWidth(qreal w) {
   _height = 0;
   foreach(ChatLine *line, _lines) {
     line->setPos(0, _height);
-    _height += line->setGeometry(_width, firstColHandlePos, secondColHandlePos);
+    _height += line->setGeometry(_width);
   }
   setSceneRect(QRectF(0, 0, w, _height));
   setHandleXLimits();
@@ -218,14 +218,12 @@ void ChatScene::handlePositionChanged(qreal xpos) {
   setWidth(width());  // readjust all chatlines
   // we get ugly redraw errors if we don't update this explicitly... :(
   // width() should be the same for both handles, so just use firstColHandle regardless
-  update(qMin(oldx, xpos), 0, qMax(oldx, xpos) + firstColHandle->width(), height());
+  //update(qMin(oldx, xpos), 0, qMax(oldx, xpos) + firstColHandle->width(), height());
 }
 
 void ChatScene::setHandleXLimits() {
-  qreal firstsepwidth = QtUi::style()->firstColumnSeparator();
-  qreal secondsepwidth = QtUi::style()->secondColumnSeparator();
-  firstColHandle->setXLimits(-firstsepwidth/2, secondColHandlePos - firstsepwidth/2);
-  secondColHandle->setXLimits(firstColHandlePos + firstsepwidth - secondsepwidth/2, width() - minContentsWidth - secondsepwidth/2);
+  firstColHandle->setXLimits(0, secondColumnHandleRect().left());
+  secondColHandle->setXLimits(firstColumnHandleRect().right(), width() - minContentsWidth);
 }
 
 void ChatScene::setSelectingItem(ChatItem *item) {
@@ -244,12 +242,12 @@ void ChatScene::startGlobalSelection(ChatItem *item, const QPointF &itemPos) {
 void ChatScene::updateSelection(const QPointF &pos) {
   // This is somewhat hacky... we look at the contents item that is at the cursor's y position (ignoring x), since
   // it has the full height. From this item, we can then determine the row index and hence the ChatLine.
-  ChatItem *contentItem = static_cast<ChatItem *>(itemAt(QPointF(secondColHandlePos + secondColHandle->width(), pos.y())));
+  ChatItem *contentItem = static_cast<ChatItem *>(itemAt(QPointF(secondColumnHandleRect().right() + 1, pos.y())));
   if(!contentItem) return;
 
   int curRow = contentItem->row();
   int curColumn;
-  if(pos.x() > secondColHandlePos + secondColHandle->width()/2) curColumn = ChatLineModel::ContentsColumn;
+  if(pos.x() > secondColumnHandleRect().right()) curColumn = ChatLineModel::ContentsColumn;
   else if(pos.x() > firstColHandlePos) curColumn = ChatLineModel::SenderColumn;
   else curColumn = ChatLineModel::TimestampColumn;
 
@@ -369,9 +367,9 @@ void ChatScene::requestBacklog() {
 }
 
 int ChatScene::sectionByScenePos(int x) {
-  if(x < firstColHandlePos + firstColHandle->width()/2)
+  if(x < firstColHandle->x())
     return ChatLineModel::TimestampColumn;
-  if(x < secondColHandlePos + secondColHandle->width()/2)
+  if(x < secondColHandle->x())
     return ChatLineModel::SenderColumn;
 
   return ChatLineModel::ContentsColumn;
