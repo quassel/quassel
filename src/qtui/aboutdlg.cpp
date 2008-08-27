@@ -69,16 +69,21 @@ QString AboutDlg::contributors() const {
   QString res;
   res = tr("We would like to thank the following contributors (in alphabetical order) and everybody we forgot to mention here:") + "<br>"
            "<dl>"
-           "<dt><b>Marco \"kaffeedoktor\" Genise</b></dt><dd><a href=\"mailto:kaffeedoktor@quassel-irc.org\">kaffeedoktor@quassel-irc.org</a><br>"
-                  "Ideas, Hacking, Motivation</dd>"
-           "<dt><b>John \"nox-Hand\" Hand</b></dt><dd>Gorgeous Application and Tray Icons</dd>"
-           "<dt><b>Jonas \"Dante\" Heese</b></dt><dd>Project Founder, ebuilder</dd>"
-           "<dt><b>Diego \"Flameeyes\" Petten&ograve;</b></dt><dd>Gentoo Maintainer</dd>"
-           "<dt><b>Harald \"apachelogger\" Sitter</b></dt><dd>{k|U}buntu packager, Motivator, Promoter</dd>"
-           "<dt><b>Daniel \"son\" Steinmetz</b></dt><dd>Early Beta Tester and Bughunter (on Vista&trade;!)</dd>"
-           "<dt><b>Adam \"adamt\" Tulinius</b></dt><dd>Early Beta Tester and Bughunter, Danish Translation</dd>"
-           "<dt><b>Pavel \"int\" Volkovitskiy</b></dt><dd>Early Beta Tester and Bughunter</dd>"
-           "</dl>";
+           "<dt><b>Daniel \"al\" Albers</b></dt><dd>German translation, various fixes</dd>"
+           "<dt><b>Terje \"tan\" Andersen</b></dt><dd>Norwegian translation, documentation</dd>"
+           "<dt><b>Marco \"kaffeedoktor\" Genise</b></dt><dd>Ideas, hacking, motivation</dd>"
+           "<dt><b>Sebastian \"seezer\" Goth</b></dt><dd>Various improvements and features</dd>"
+           "<dt><b>John \"nox-Hand\" Hand</b></dt><dd>Gorgeous application and tray icons</dd>"
+           "<dt><b>Jonas \"Dante\" Heese</b></dt><dd>Project founder, various improvements</dd>"
+           "<dt><b>Regis \"ZRegis\" Perrin</b></dt><dd>French translation</dd>"
+           "<dt><b>Diego \"Flameeyes\" Petten&ograve;</b></dt><dd>Gentoo maintainer</dd>"
+           "<dt><b>Dennis \"devurandom\" Schridde</b></dt><dd>D-Bus notifications</dd>"
+           "<dt><b>Harald \"apachelogger\" Sitter</b></dt><dd>{k|U}buntu packager, motivator, promoter</dd>"
+           "<dt><b>Daniel \"son\" Steinmetz</b></dt><dd>Early beta tester and bughunter (on Vista&trade;!)</dd>"
+           "<dt><b>Adam \"adamt\" Tulinius</b></dt><dd>Early beta tester and bughunter, Danish translation</dd>"
+           "<dt><b>Pavel \"int\" Volkovitskiy</b></dt><dd>Early beta tester and bughunter</dd>"
+           "</dl><br>"
+           "...and anybody else finding and reporting bugs, giving feedback, helping others and being part of the community!";
 
   return res;
 }
