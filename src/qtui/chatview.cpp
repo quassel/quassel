@@ -51,9 +51,10 @@ void ChatView::init(MessageFilter *filter) {
   setInteractive(true);
 
   _scene = new ChatScene(filter, filter->idString(), this);
-  connect(_scene, SIGNAL(heightChanged(qreal)), this, SLOT(sceneHeightChanged(qreal)));
+  connect(_scene, SIGNAL(heightChangedAt(qreal, qreal)), this, SLOT(sceneHeightChangedAt(qreal, qreal)));
   setScene(_scene);
 
+  _lastScrollbarPos = 0;
   connect(verticalScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(verticalScrollbarChanged(int)));
 }
 
@@ -62,24 +63,28 @@ void ChatView::resizeEvent(QResizeEvent *event) {
   verticalScrollBar()->setValue(verticalScrollBar()->maximum());
 }
 
-void ChatView::sceneHeightChanged(qreal h) {
-  Q_UNUSED(h)
-  bool scrollable = qAbs(verticalScrollBar()->value() - verticalScrollBar()->maximum()) <= 2; // be a bit tolerant here, also FIXME (why we need this?)
+void ChatView::sceneHeightChangedAt(qreal ypos, qreal hdiff) {
   setSceneRect(scene()->sceneRect());
-  if(scrollable) verticalScrollBar()->setValue(verticalScrollBar()->maximum());
+  int y = mapFromScene(0, ypos).y();
+  if(y <= viewport()->height() + 2) {  // be a bit tolerant here, also FIXME (why we need the 2px?)
+    verticalScrollBar()->setValue(verticalScrollBar()->value() + hdiff);
+  }
 }
 
 void ChatView::verticalScrollbarChanged(int newPos) {
   QAbstractSlider *vbar = verticalScrollBar();
   Q_ASSERT(vbar);
 
-  int relativePos = 100;
-  if(vbar->maximum() - vbar->minimum() != 0)
-    relativePos = (newPos - vbar->minimum()) * 100 / (vbar->maximum() - vbar->minimum());
+  if(newPos < _lastScrollbarPos) {
+    int relativePos = 100;
+    if(vbar->maximum() - vbar->minimum() != 0)
+      relativePos = (newPos - vbar->minimum()) * 100 / (vbar->maximum() - vbar->minimum());
 
-  if(relativePos < 20) {
-    scene()->requestBacklog();
+    if(relativePos < 20) {
+      scene()->requestBacklog();
+    }
   }
+  _lastScrollbarPos = newPos;
 }
 
 MsgId ChatView::lastMsgId() const {

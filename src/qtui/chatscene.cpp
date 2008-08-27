@@ -134,6 +134,7 @@ void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
     }
     setSceneRect(QRectF(0, 0, _width, _height));
     emit heightChanged(_height);
+    emit heightChangedAt(_lines.at(start)->y(), h);
   }
 }
 

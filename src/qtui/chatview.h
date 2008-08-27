@@ -48,13 +48,14 @@ protected:
   virtual void resizeEvent(QResizeEvent *event);
 
 protected slots:
-  virtual void sceneHeightChanged(qreal height);
+  virtual void sceneHeightChangedAt(qreal ypos, qreal hdiff);
   virtual void verticalScrollbarChanged(int);
-  
+
 private:
   void init(MessageFilter *filter);
 
   ChatScene *_scene;
+  int _lastScrollbarPos;
 };
 
 

@@ -65,6 +65,7 @@ class ChatScene : public QGraphicsScene {
 
   signals:
     void heightChanged(qreal height);
+    void heightChangedAt(qreal ypos, qreal hdiff);
 
   protected:
     virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent);
