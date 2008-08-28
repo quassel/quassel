@@ -74,6 +74,9 @@ void ChatView::sceneHeightChangedAt(qreal ypos, qreal hdiff) {
 void ChatView::verticalScrollbarChanged(int newPos) {
   QAbstractSlider *vbar = verticalScrollBar();
   Q_ASSERT(vbar);
+  
+  // FIXME dirty hack to battle the "I just scroll up a pixel on hide()/show()" problem
+  if(vbar->maximum() - vbar->value() < 5) vbar->setValue(vbar->maximum()); 
 
   if(newPos < _lastScrollbarPos) {
     int relativePos = 100;
