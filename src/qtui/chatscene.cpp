@@ -181,7 +181,9 @@ void ChatScene::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int e
     }
     setSceneRect(QRectF(0, 0, _width, _height));
     emit heightChanged(_height);
-    emit heightChangedAt(_lines.at(start)->y(), -h);
+    Q_ASSERT(_lines.isEmpty() || (start < _lines.count())); // if _lines isn't empty it better contain start
+    qreal changePos = (_lines.isEmpty()) ? 0 : _lines.at(start)->y();
+    emit heightChangedAt(changePos, -h);
   }
 }
 
