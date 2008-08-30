@@ -49,7 +49,7 @@ protected:
 QDataStream &operator<<(QDataStream &out, const ChatLineModel::WrapList);
 QDataStream &operator>>(QDataStream &in, ChatLineModel::WrapList &);
 
-Q_DECLARE_METATYPE(ChatLineModel::WrapList);
+Q_DECLARE_METATYPE(ChatLineModel::WrapList)
 
 #endif
 

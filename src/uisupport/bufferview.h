@@ -82,7 +82,7 @@ private:
   };
 
 public:
-  Q_DECLARE_FLAGS(ItemActiveStates, ItemActiveState);
+  Q_DECLARE_FLAGS(ItemActiveStates, ItemActiveState)
   QAction showChannelList;
 
 private:
@@ -120,7 +120,7 @@ private:
 			  ItemActiveStates requiredActiveState = QFlags<ItemActiveState>(ActiveState) | QFlags<ItemActiveState>(InactiveState));
   QMenu *createHideEventsSubMenu(QMenu &menu);
 };
-Q_DECLARE_OPERATORS_FOR_FLAGS(BufferView::ItemActiveStates);
+Q_DECLARE_OPERATORS_FOR_FLAGS(BufferView::ItemActiveStates)
 
 
 // ==============================

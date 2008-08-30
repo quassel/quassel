@@ -31,7 +31,7 @@
 #include "settings.h"
 
 class UiStyle {
-  Q_DECLARE_TR_FUNCTIONS (UiStyle);
+  Q_DECLARE_TR_FUNCTIONS (UiStyle)
 
   public:
     UiStyle(const QString &settingsKey);
@@ -163,6 +163,6 @@ class UiStyle {
 QDataStream &operator<<(QDataStream &out, const UiStyle::FormatList &formatList);
 QDataStream &operator>>(QDataStream &in, UiStyle::FormatList &formatList);
 
-Q_DECLARE_METATYPE(UiStyle::FormatList);
+Q_DECLARE_METATYPE(UiStyle::FormatList)
 
 #endif

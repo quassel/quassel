@@ -39,7 +39,7 @@ public:
     NoTreeItemFlag = 0x00,
     DeleteOnLastChildRemoved = 0x01
   };
-  Q_DECLARE_FLAGS(TreeItemFlags, TreeItemFlag);
+  Q_DECLARE_FLAGS(TreeItemFlags, TreeItemFlag)
 
   AbstractTreeItem(AbstractTreeItem *parent = 0);
 

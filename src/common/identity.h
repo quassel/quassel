@@ -32,25 +32,25 @@
 class Identity : public SyncableObject {
   Q_OBJECT
 
-  Q_PROPERTY(IdentityId identityId READ id WRITE setId STORED false);
-  Q_PROPERTY(QString identityName READ identityName WRITE setIdentityName STORED false);
-  Q_PROPERTY(QString realName READ realName WRITE setRealName STORED false);
-  Q_PROPERTY(QStringList nicks READ nicks WRITE setNicks STORED false);
-  Q_PROPERTY(QString awayNick READ awayNick WRITE setAwayNick STORED false);
-  Q_PROPERTY(bool awayNickEnabled READ awayNickEnabled WRITE setAwayNickEnabled STORED false);
-  Q_PROPERTY(QString awayReason READ awayReason WRITE setAwayReason STORED false);
-  Q_PROPERTY(bool awayReasonEnabled READ awayReasonEnabled WRITE setAwayReasonEnabled STORED false);
-  Q_PROPERTY(bool autoAwayEnabled READ autoAwayEnabled WRITE setAutoAwayEnabled STORED false);
-  Q_PROPERTY(int autoAwayTime READ autoAwayTime WRITE setAutoAwayTime STORED false);
-  Q_PROPERTY(QString autoAwayReason READ autoAwayReason WRITE setAutoAwayReason STORED false);
-  Q_PROPERTY(bool autoAwayReasonEnabled READ autoAwayReasonEnabled WRITE setAutoAwayReasonEnabled STORED false);
-  Q_PROPERTY(bool detachAwayEnabled READ detachAwayEnabled WRITE setDetachAwayEnabled STORED false);
-  Q_PROPERTY(QString detachAwayReason READ detachAwayReason WRITE setDetachAwayReason STORED false);
-  Q_PROPERTY(bool detachAwayReasonEnabled READ detachAwayReasonEnabled WRITE setDetachAwayReasonEnabled STORED false);
-  Q_PROPERTY(QString ident READ ident WRITE setIdent STORED false);
-  Q_PROPERTY(QString kickReason READ kickReason WRITE setKickReason STORED false);
-  Q_PROPERTY(QString partReason READ partReason WRITE setPartReason STORED false);
-  Q_PROPERTY(QString quitReason READ quitReason WRITE setQuitReason STORED false);
+  Q_PROPERTY(IdentityId identityId READ id WRITE setId STORED false)
+  Q_PROPERTY(QString identityName READ identityName WRITE setIdentityName STORED false)
+  Q_PROPERTY(QString realName READ realName WRITE setRealName STORED false)
+  Q_PROPERTY(QStringList nicks READ nicks WRITE setNicks STORED false)
+  Q_PROPERTY(QString awayNick READ awayNick WRITE setAwayNick STORED false)
+  Q_PROPERTY(bool awayNickEnabled READ awayNickEnabled WRITE setAwayNickEnabled STORED false)
+  Q_PROPERTY(QString awayReason READ awayReason WRITE setAwayReason STORED false)
+  Q_PROPERTY(bool awayReasonEnabled READ awayReasonEnabled WRITE setAwayReasonEnabled STORED false)
+  Q_PROPERTY(bool autoAwayEnabled READ autoAwayEnabled WRITE setAutoAwayEnabled STORED false)
+  Q_PROPERTY(int autoAwayTime READ autoAwayTime WRITE setAutoAwayTime STORED false)
+  Q_PROPERTY(QString autoAwayReason READ autoAwayReason WRITE setAutoAwayReason STORED false)
+  Q_PROPERTY(bool autoAwayReasonEnabled READ autoAwayReasonEnabled WRITE setAutoAwayReasonEnabled STORED false)
+  Q_PROPERTY(bool detachAwayEnabled READ detachAwayEnabled WRITE setDetachAwayEnabled STORED false)
+  Q_PROPERTY(QString detachAwayReason READ detachAwayReason WRITE setDetachAwayReason STORED false)
+  Q_PROPERTY(bool detachAwayReasonEnabled READ detachAwayReasonEnabled WRITE setDetachAwayReasonEnabled STORED false)
+  Q_PROPERTY(QString ident READ ident WRITE setIdent STORED false)
+  Q_PROPERTY(QString kickReason READ kickReason WRITE setKickReason STORED false)
+  Q_PROPERTY(QString partReason READ partReason WRITE setPartReason STORED false)
+  Q_PROPERTY(QString quitReason READ quitReason WRITE setQuitReason STORED false)
 
   public:
     Identity(IdentityId id = 0, QObject *parent = 0);
@@ -151,6 +151,6 @@ class Identity : public SyncableObject {
 QDataStream &operator<<(QDataStream &out, Identity identity);
 QDataStream &operator>>(QDataStream &in, Identity &identity);
 
-Q_DECLARE_METATYPE(Identity);
+Q_DECLARE_METATYPE(Identity)
 
 #endif

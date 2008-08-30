@@ -26,16 +26,16 @@
 class Action : public QWidgetAction {
   Q_OBJECT
 
-  Q_PROPERTY(QShortcut shortcut READ shortcut WRITE setShortcut);
-  Q_PROPERTY(bool shortcutConfigurable READ isShortcutConfigurable WRITE setShortcutConfigurable);
-  Q_FLAGS(ShortcutType);
+  Q_PROPERTY(QShortcut shortcut READ shortcut WRITE setShortcut)
+  Q_PROPERTY(bool shortcutConfigurable READ isShortcutConfigurable WRITE setShortcutConfigurable)
+  Q_FLAGS(ShortcutType)
 
   public:
     enum ShortcutType {
       ActiveShortcut = 0x01,
       DefaultShortcut = 0x02
     };
-    Q_DECLARE_FLAGS(ShortcutTypes, ShortcutType);
+    Q_DECLARE_FLAGS(ShortcutTypes, ShortcutType)
 
     explicit Action(QObject *parent);
     Action(const QString &text, QObject *parent);
@@ -47,4 +47,4 @@ class Action : public QWidgetAction {
 
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(ShortcutTypes);
+Q_DECLARE_OPERATORS_FOR_FLAGS(ShortcutTypes)
