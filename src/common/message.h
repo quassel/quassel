@@ -28,7 +28,7 @@
 #include "types.h"
 
 class Message {
-  Q_DECLARE_TR_FUNCTIONS(Message);
+  Q_DECLARE_TR_FUNCTIONS(Message)
 
 public:
   /** The different types a message can have for display */
@@ -93,7 +93,7 @@ private:
 QDataStream &operator<<(QDataStream &out, const Message &msg);
 QDataStream &operator>>(QDataStream &in, Message &msg);
 
-Q_DECLARE_METATYPE(Message);
+Q_DECLARE_METATYPE(Message)
 Q_DECLARE_OPERATORS_FOR_FLAGS(Message::Flags)
 
 #endif

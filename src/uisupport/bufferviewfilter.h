@@ -48,7 +48,7 @@ public:
     NoServers = 0x40,
     FullCustom = 0x80
   };
-  Q_DECLARE_FLAGS(Modes, Mode);
+  Q_DECLARE_FLAGS(Modes, Mode)
 
   BufferViewFilter(QAbstractItemModel *model, BufferViewConfig *config = 0);
   

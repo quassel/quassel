@@ -275,7 +275,7 @@ public:
     UserCategoryItemType = 0x04,
     IrcUserItemType = 0x08
   };
-  Q_DECLARE_FLAGS(itemTypes, itemType);
+  Q_DECLARE_FLAGS(itemTypes, itemType)
 
   NetworkModel(QObject *parent = 0);
   static QList<QVariant> defaultHeader();
@@ -329,6 +329,6 @@ private:
 
   QHash<BufferId, BufferItem *> _bufferItemCache;
 };
-Q_DECLARE_OPERATORS_FOR_FLAGS(NetworkModel::itemTypes);
+Q_DECLARE_OPERATORS_FOR_FLAGS(NetworkModel::itemTypes)
 
 #endif // NETWORKMODEL_H

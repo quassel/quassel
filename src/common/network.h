@@ -375,6 +375,6 @@ QDataStream &operator<<(QDataStream &out, const NetworkInfo &info);
 QDataStream &operator>>(QDataStream &in, NetworkInfo &info);
 QDebug operator<<(QDebug dbg, const NetworkInfo &i);
 
-Q_DECLARE_METATYPE(NetworkInfo);
+Q_DECLARE_METATYPE(NetworkInfo)
 
 #endif
