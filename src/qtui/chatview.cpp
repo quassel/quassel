@@ -50,33 +50,31 @@ void ChatView::init(MessageFilter *filter) {
   setAlignment(Qt::AlignBottom);
   setInteractive(true);
 
-  _scene = new ChatScene(filter, filter->idString(), this);
-  connect(_scene, SIGNAL(heightChangedAt(qreal, qreal)), this, SLOT(sceneHeightChangedAt(qreal, qreal)));
+  _scene = new ChatScene(filter, filter->idString(), viewport()->width(), this);
+  connect(_scene, SIGNAL(sceneHeightChanged(qreal)), this, SLOT(sceneHeightChanged(qreal)));
   setScene(_scene);
 
-  _lastScrollbarPos = 0;
+  _lastScrollbarPos = verticalScrollBar()->maximum();
   connect(verticalScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(verticalScrollbarChanged(int)));
 }
 
 void ChatView::resizeEvent(QResizeEvent *event) {
-  scene()->setWidth(event->size().width() - 2);  // FIXME figure out why we have to hardcode the -2 here
+//   scene()->setWidth(event->size().width() - 2);  // FIXME figure out why we have to hardcode the -2 here
+  QGraphicsView::resizeEvent(event);
+  scene()->setWidth(viewport()->width());
   verticalScrollBar()->setValue(verticalScrollBar()->maximum());
 }
 
-void ChatView::sceneHeightChangedAt(qreal ypos, qreal hdiff) {
-  setSceneRect(scene()->sceneRect());
-  int y = mapFromScene(0, ypos).y();
-  if(y <= viewport()->height() + 2) {  // be a bit tolerant here, also FIXME (why we need the 2px?)
-    verticalScrollBar()->setValue(verticalScrollBar()->value() + hdiff);
-  }
+void ChatView::sceneHeightChanged(qreal dh) {
+  QAbstractSlider *vbar = verticalScrollBar();
+  Q_ASSERT(vbar);
+  if(vbar->maximum() - vbar->value() <= dh + 5) // in case we had scrolled only about half a line to the bottom we allow a grace of 5
+    vbar->setValue(vbar->maximum());
 }
 
 void ChatView::verticalScrollbarChanged(int newPos) {
   QAbstractSlider *vbar = verticalScrollBar();
   Q_ASSERT(vbar);
-  
-  // FIXME dirty hack to battle the "I just scroll up a pixel on hide()/show()" problem
-  if(vbar->maximum() - vbar->value() < 5) vbar->setValue(vbar->maximum()); 
 
   if(newPos < _lastScrollbarPos) {
     int relativePos = 100;

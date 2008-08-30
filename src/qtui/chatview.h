@@ -48,7 +48,7 @@ protected:
   virtual void resizeEvent(QResizeEvent *event);
 
 protected slots:
-  virtual void sceneHeightChangedAt(qreal ypos, qreal hdiff);
+  virtual void sceneHeightChanged(qreal dh);
   virtual void verticalScrollbarChanged(int);
 
 private:

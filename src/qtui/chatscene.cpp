@@ -36,11 +36,9 @@
 
 const qreal minContentsWidth = 200;
 
-ChatScene::ChatScene(QAbstractItemModel *model, const QString &idString, QObject *parent)
-  : QGraphicsScene(parent),
+ChatScene::ChatScene(QAbstractItemModel *model, const QString &idString, qreal width, QObject *parent)
+  : QGraphicsScene(0, 0, width, 0, parent),
     _idString(idString),
-    _width(0),
-    _height(0),
     _model(model),
     _singleBufferScene(false),
     _selectingItem(0),
@@ -51,19 +49,6 @@ ChatScene::ChatScene(QAbstractItemModel *model, const QString &idString, QObject
   MessageFilter *filter = qobject_cast<MessageFilter*>(model);
   if(filter) {
     _singleBufferScene = filter->isSingleBufferFilter();
-  }
-
-  connect(this, SIGNAL(sceneRectChanged(const QRectF &)), this, SLOT(rectChanged(const QRectF &)));
-
-  connect(model, SIGNAL(rowsInserted(const QModelIndex &, int, int)),
-	  this, SLOT(rowsInserted(const QModelIndex &, int, int)));
-  connect(model, SIGNAL(rowsAboutToBeRemoved(const QModelIndex &, int, int)),
-	  this, SLOT(rowsAboutToBeRemoved(const QModelIndex &, int, int)));
-
-  for(int i = 0; i < model->rowCount(); i++) {
-    ChatLine *line = new ChatLine(i, model);
-    _lines.append(line);
-    addItem(line);
   }
 
   QtUiSettings s;
@@ -77,19 +62,25 @@ ChatScene::ChatScene(QAbstractItemModel *model, const QString &idString, QObject
 
   firstColHandle = new ColumnHandleItem(QtUi::style()->firstColumnSeparator());
   addItem(firstColHandle);
+  firstColHandle->setXPos(firstColHandlePos);
+  connect(firstColHandle, SIGNAL(positionChanged(qreal)), this, SLOT(handlePositionChanged(qreal)));
+  connect(this, SIGNAL(sceneRectChanged(const QRectF &)), firstColHandle, SLOT(sceneRectChanged(const QRectF &)));
 
   secondColHandle = new ColumnHandleItem(QtUi::style()->secondColumnSeparator());
   addItem(secondColHandle);
-
-  connect(firstColHandle, SIGNAL(positionChanged(qreal)), this, SLOT(handlePositionChanged(qreal)));
-  connect(secondColHandle, SIGNAL(positionChanged(qreal)), this, SLOT(handlePositionChanged(qreal)));
-
-  firstColHandle->setXPos(firstColHandlePos);
   secondColHandle->setXPos(secondColHandlePos);
+  connect(secondColHandle, SIGNAL(positionChanged(qreal)), this, SLOT(handlePositionChanged(qreal)));
+  connect(this, SIGNAL(sceneRectChanged(const QRectF &)), secondColHandle, SLOT(sceneRectChanged(const QRectF &)));
+
   setHandleXLimits();
 
-  emit heightChanged(height());
-  emit heightChangedAt(0, height());
+  connect(model, SIGNAL(rowsInserted(const QModelIndex &, int, int)),
+	  this, SLOT(rowsInserted(const QModelIndex &, int, int)));
+  connect(model, SIGNAL(rowsAboutToBeRemoved(const QModelIndex &, int, int)),
+	  this, SLOT(rowsAboutToBeRemoved(const QModelIndex &, int, int)));
+
+  if(model->rowCount() > 0)
+    rowsInserted(QModelIndex(), 0, model->rowCount() - 1);
 }
 
 ChatScene::~ChatScene() {
@@ -97,45 +88,49 @@ ChatScene::~ChatScene() {
 
 void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
   Q_UNUSED(index);
-  // maybe make this more efficient by prepending stuff with negative yval
-  // dunno if that's worth not guranteeing that 0 is on the top...
-  // TODO bulk inserts, iterators
   qreal h = 0;
-  qreal y = 0;
-  if(_width && start > 0)
-    y = _lines.value(start - 1)->y() + _lines.value(start - 1)->height();
+  qreal y = sceneRect().y();
+  qreal width = sceneRect().width();
+  bool atTop = true;
+  bool atBottom = false;
+  bool hasWidth = (width != 0);
 
-  for(int i = start; i <= end; i++) {
+  if(start > 0) {
+    y = _lines.value(start - 1)->y() + _lines.value(start - 1)->height();
+    atTop = false;
+  }
+  if(start == _lines.count())
+    atBottom = true;
+
+  // right now this method doesn't properly handle messages that are inserted at an arbitrary point
+  Q_ASSERT(atBottom || atTop);
+
+  for(int i = end; i >= start; i--) {
     ChatLine *line = new ChatLine(i, model());
-    _lines.insert(i, line);
+    _lines.insert(start, line);
     addItem(line);
-    if(_width > 0) {
-      line->setPos(0, y+h);
-      h += line->setGeometry(_width);
+    if(hasWidth) {
+      if(atTop) {
+	h -= line->setGeometry(width);
+	line->setPos(0, y+h);
+      } else {
+	line->setPos(0, y+h);
+	h += line->setGeometry(width);
+      }
     }
   }
+
   // update existing items
   for(int i = end+1; i < _lines.count(); i++) {
     _lines[i]->setRow(i);
   }
 
-  // update selection
-  if(_selectionStart >= 0) {
-    int offset = end - start + 1;
-    if(_selectionStart >= start) _selectionStart += offset;
-    if(_selectionEnd >= start) _selectionEnd += offset;
-    if(_firstSelectionRow >= start) _firstSelectionRow += offset;
-    if(_lastSelectionRow >= start) _lastSelectionRow += offset;
-  }
-
-  if(h > 0) {
-    _height += h;
-    for(int i = end+1; i < _lines.count(); i++) {
-      _lines.at(i)->moveBy(0, h);
-    }
-    setSceneRect(QRectF(0, 0, _width, _height));
-    emit heightChanged(_height);
-    emit heightChangedAt(_lines.at(start)->y(), h);
+  // update sceneRect
+  if(atBottom) {
+    setSceneRect(sceneRect().adjusted(0, 0, 0, h));
+    emit sceneHeightChanged(h);
+  } else {
+    setSceneRect(sceneRect().adjusted(0, h, 0, 0));
   }
 }
 
@@ -143,6 +138,12 @@ void ChatScene::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int e
   Q_UNUSED(parent);
 
   qreal h = 0; // total height of removed items;
+
+  bool atTop = (start == 0);
+  bool atBottom = (end == _lines.count() - 1);
+
+  // right now this method doesn't properly handle messages that are removed at an arbitrary point
+  Q_ASSERT(atBottom || atTop);
 
   // remove items from scene
   QList<ChatLine *>::iterator lineIter = _lines.begin() + start;
@@ -159,52 +160,35 @@ void ChatScene::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int e
     _lines.at(i)->setRow(i);
   }
 
-  // update selection
-  if(_selectionStart >= 0) {
-    int offset = end - start + 1;
-    if(_selectionStart >= start)
-      _selectionStart -= offset;
-    if(_selectionEnd >= start)
-      _selectionEnd -= offset;
-    if(_firstSelectionRow >= start)
-      _firstSelectionRow -= offset;
-    if(_lastSelectionRow >= start)
-      _lastSelectionRow -= offset;
-  }
-
-  // reposition remaining chatlines
-  if(h > 0) {
-    Q_ASSERT(_height >= h);
-    _height -= h;
-    for(int i = start; i < _lines.count(); i++) {
-      _lines.at(i)->moveBy(0, -h);
-    }
-    setSceneRect(QRectF(0, 0, _width, _height));
-    emit heightChanged(_height);
-    Q_ASSERT(_lines.isEmpty() || (start < _lines.count())); // if _lines isn't empty it better contain start
-    qreal changePos = (_lines.isEmpty()) ? 0 : _lines.at(start)->y();
-    emit heightChangedAt(changePos, -h);
+  // update sceneRect
+  if(atBottom) {
+    setSceneRect(sceneRect().adjusted(0, 0, 0, -h));
+  } else {
+    setSceneRect(sceneRect().adjusted(0, h, 0, 0));
   }
 }
 
-void ChatScene::setWidth(qreal w) {
-  qreal oldh = _height;
-  _width = w;
-  _height = 0;
+void ChatScene::setWidth(qreal width, bool forceReposition) {
+  if(width == sceneRect().width() && !forceReposition)
+    return;
+
+  qreal oldHeight = sceneRect().height();
+  qreal y = sceneRect().y();
+  qreal linePos = y;
+
   foreach(ChatLine *line, _lines) {
-    line->setPos(0, _height);
-    _height += line->setGeometry(_width);
+    line->setPos(0, linePos);
+    linePos += line->setGeometry(width);
   }
-  setSceneRect(QRectF(0, 0, w, _height));
+
+  qreal height = linePos - y;
+
+  setSceneRect(QRectF(0, y, width, height));
   setHandleXLimits();
-  emit heightChanged(_height);
-  emit heightChangedAt(0, _height - oldh);
 
-}
-
-void ChatScene::rectChanged(const QRectF &rect) {
-  firstColHandle->sceneRectChanged(rect);
-  secondColHandle->sceneRectChanged(rect);
+  qreal dh = height - oldHeight;
+  if(dh > 0)
+    emit sceneHeightChanged(dh);
 }
 
 void ChatScene::handlePositionChanged(qreal xpos) {
@@ -223,7 +207,7 @@ void ChatScene::handlePositionChanged(qreal xpos) {
   s.setValue(QString("ChatView/DefaultFirstColumnHandlePos"), firstColHandlePos);
   s.setValue(QString("ChatView/DefaultSecondColumnHandlePos"), secondColHandlePos);
 
-  setWidth(width());  // readjust all chatlines
+  setWidth(width(), true);  // readjust all chatlines
   // we get ugly redraw errors if we don't update this explicitly... :(
   // width() should be the same for both handles, so just use firstColHandle regardless
   //update(qMin(oldx, xpos), 0, qMax(oldx, xpos) + firstColHandle->width(), height());

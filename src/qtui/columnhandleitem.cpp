@@ -27,6 +27,8 @@
 #include <QPainter>
 #include <QPalette>
 
+#include <QDebug>
+
 ColumnHandleItem::ColumnHandleItem(qreal w, QGraphicsItem *parent)
   : QGraphicsItem(parent),
     _width(w),
@@ -55,8 +57,8 @@ void ColumnHandleItem::setXLimits(qreal min, qreal max) {
 }
 
 void ColumnHandleItem::sceneRectChanged(const QRectF &rect) {
-  if(rect.height() != boundingRect().height())
-    prepareGeometryChange();
+  Q_UNUSED(rect)
+  prepareGeometryChange();
 }
 
 void ColumnHandleItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
