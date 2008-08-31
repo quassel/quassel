@@ -59,6 +59,10 @@ ChatLineModelItem::ChatLineModelItem(const Message &msg)
   _contents.formatList = m.contents.formatList;
 }
 
+ChatLineModelItem::~ChatLineModelItem() {
+  delete _data;
+}
+
 QVariant ChatLineModelItem::data(int column, int role) const {
   const ChatLinePart *part = 0;
 
