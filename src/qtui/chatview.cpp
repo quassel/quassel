@@ -50,7 +50,7 @@ void ChatView::init(MessageFilter *filter) {
   setAlignment(Qt::AlignBottom);
   setInteractive(true);
 
-  _scene = new ChatScene(filter, filter->idString(), viewport()->width(), this);
+  _scene = new ChatScene(filter, filter->idString(), viewport()->width() - 2, this); // see below: resizeEvent()
   connect(_scene, SIGNAL(sceneHeightChanged(qreal)), this, SLOT(sceneHeightChanged(qreal)));
   setScene(_scene);
 
