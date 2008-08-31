@@ -75,6 +75,9 @@ void ChatView::verticalScrollbarChanged(int newPos) {
   QAbstractSlider *vbar = verticalScrollBar();
   Q_ASSERT(vbar);
 
+  if(vbar->maximum() - vbar->value() <= 5) // FIXME workaround the fact that the view gets scrolled up a few px on buffer change
+    vbar->setValue(vbar->maximum());
+
   if(newPos < _lastScrollbarPos) {
     int relativePos = 100;
     if(vbar->maximum() - vbar->minimum() != 0)
