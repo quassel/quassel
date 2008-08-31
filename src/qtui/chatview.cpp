@@ -59,9 +59,8 @@ void ChatView::init(MessageFilter *filter) {
 }
 
 void ChatView::resizeEvent(QResizeEvent *event) {
-//   scene()->setWidth(event->size().width() - 2);  // FIXME figure out why we have to hardcode the -2 here
   QGraphicsView::resizeEvent(event);
-  scene()->setWidth(viewport()->width());
+  scene()->setWidth(viewport()->width() - 2);  // FIXME figure out why we have to hardcode the -2 here -> Qt-Bug most probably
   verticalScrollBar()->setValue(verticalScrollBar()->maximum());
 }
 
