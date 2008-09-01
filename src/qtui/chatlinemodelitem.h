@@ -26,7 +26,7 @@
 #include "chatlinemodel.h"
 #include "uistyle.h"
 
-class ChatLineModelItemPrivate;
+struct ChatLineModelItemPrivate;
 
 class ChatLineModelItem : public MessageModelItem {
 public:
