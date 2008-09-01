@@ -54,7 +54,7 @@
 
 #include <signal.h>
 
-#ifdef Q_OS_LINUX
+#if defined(HAVE_EXECINFO) and not defined(Q_OS_MAC)
 #include <execinfo.h>
 #include <dlfcn.h>
 #include <cxxabi.h>
@@ -66,8 +66,9 @@ void handle_signal(int sig) {
   QCoreApplication::quit();
 }
 
-#ifdef Q_OS_LINUX
+#if defined(HAVE_EXECINFO) and not defined(Q_OS_MAC)
 void handle_crash(int sig) {
+  Q_UNUSED(sig)
   void* callstack[128];
   int i, frames = backtrace(callstack, 128);
 
@@ -128,7 +129,7 @@ void handle_crash(int sig) {
   dumpFile.close();
   exit(27);
 }
-#endif // #ifdef Q_OS_LINUX
+#endif // #if defined(HAVE_EXECINFO) and not defined(Q_OS_MAC)
 
 
 int main(int argc, char **argv) {
@@ -136,11 +137,11 @@ int main(int argc, char **argv) {
   signal(SIGTERM, handle_signal);
   signal(SIGINT, handle_signal);
 
-#ifdef Q_OS_LINUX
+#if defined(HAVE_EXECINFO) and not defined(Q_OS_MAC)
   signal(SIGABRT, handle_crash);
   signal(SIGBUS, handle_crash);
   signal(SIGSEGV, handle_crash);
-#endif // #ifdef Q_OS_LINUX
+#endif // #if defined(HAVE_EXECINFO) and not defined(Q_OS_MAC)
   
   Global::registerMetaTypes();
   Global::setupVersion();
@@ -167,8 +168,6 @@ int main(int argc, char **argv) {
   Global::runMode = Global::Monolithic;
   QtUiApplication app(argc, argv);
 #endif
-
-
 
   Global::parser = CliParser(QCoreApplication::arguments());
 
