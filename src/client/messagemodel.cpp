@@ -119,6 +119,7 @@ void MessageModel::insertMessages(const QList<Message> &msglist) {
   // and give back controll to the eventloop (similar to what the QtUiMessageProcessor used to do)
   QList<Message> grouplist;
   MsgId id;
+  MsgId dupeId;
   bool fastForward = false;
   QList<Message>::const_iterator iter;
   if(inOrder) {
@@ -130,13 +131,16 @@ void MessageModel::insertMessages(const QList<Message> &msglist) {
 
   // DUPE (1 / 3)
   int idx = indexForId((*iter).msgId());
+  if(idx > 0)
+    dupeId = _messageList[idx]->msgId();
   // we always compare to the previous entry...
   // if there isn't, we can fastforward to the top
   if(idx - 1 >= 0) // also safe as we've passed another empty check
     id = _messageList[idx - 1]->msgId();
   else
     fastForward = true;
-  grouplist << *iter;
+  if((*iter).msgId() != dupeId)
+    grouplist << *iter;
 
   if(!inOrder)
     iter++;
@@ -151,12 +155,15 @@ void MessageModel::insertMessages(const QList<Message> &msglist) {
 	
 	// build new group
 	int idx = indexForId((*iter).msgId());
+	if(idx > 0)
+	  dupeId = _messageList[idx]->msgId();
 	if(idx - 1 >= 0)
 	  id = _messageList[idx - 1]->msgId();
 	else
 	  fastForward = true;
       }
-      grouplist.prepend(*iter);
+      if((*iter).msgId() != dupeId)
+	grouplist.prepend(*iter);
     }
   } else {
     while(iter != msglist.constEnd()) {
@@ -167,12 +174,15 @@ void MessageModel::insertMessages(const QList<Message> &msglist) {
 	
 	// build new group
 	int idx = indexForId((*iter).msgId());
+	if(idx > 0)
+	  dupeId = _messageList[idx]->msgId();
 	if(idx - 1 >= 0)
 	  id = _messageList[idx - 1]->msgId();
 	else
 	  fastForward = true;
       }
-      grouplist.prepend(*iter);
+      if((*iter).msgId() != dupeId)
+	grouplist.prepend(*iter);
       iter++;
     }
   }
