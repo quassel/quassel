@@ -797,7 +797,9 @@ void IrcServerHandler::handle324(const QString &prefix, const QList<QByteArray> 
 void IrcServerHandler::handle329(const QString &prefix, const QList<QByteArray> &params) {
   Q_UNUSED(prefix);
   Q_UNUSED(params)
-#warning "Implement handle329 (Channel creation time)"
+#ifdef __GNUC__
+#  warning "Implement handle329 (Channel creation time)"
+#endif
   // FIXME implement this... 
 }
 
