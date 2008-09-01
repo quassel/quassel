@@ -126,24 +126,38 @@ set(QT_DONT_USE_QTGUI 1)
 include(${QT_USE_FILE})
 include_directories(${QT_INCLUDES})
 
-# Set up OpenSSL
+# Setup OpenSSL
 if(WITH_OPENSSL)
   find_package(OpenSSL)
+else(WITH_OPENSSL)
+  message(STATUS "Disabling OpenSSL support")
 endif(WITH_OPENSSL)
+
 if(OPENSSL_FOUND)
   if(NOT QT_DEFINITIONS MATCHES "QT_NO_OPENSSL")
+    message(STATUS "Found OpenSSL support in Qt")
     add_definitions(-DHAVE_SSL)
     set(HAVE_SSL true)
+  else(NOT QT_DEFINITIONS MATCHES "QT_NO_OPENSSL")
+    message(STATUS "No OpenSSL support found in Qt, disabling")
   endif(NOT QT_DEFINITIONS MATCHES "QT_NO_OPENSSL")
 else(OPENSSL_FOUND)
   add_definitions(-DQT_NO_OPENSSL)
 endif(OPENSSL_FOUND)
 
-if(WITH_DBUS AND QT_QTDBUS_FOUND)
-  add_definitions(-DHAVE_DBUS)
-  set(LINK_DBUS DBUS)
-  set(HAVE_DBUS true)
-endif(WITH_DBUS AND QT_QTDBUS_FOUND)
+# Setup D-Bus support
+if(WITH_DBUS)
+  if(QT_QTDBUS_FOUND)
+    message(STATUS "Found QtDBus, enabling D-Bus support")
+    add_definitions(-DHAVE_DBUS)
+    set(LINK_DBUS DBUS)
+    set(HAVE_DBUS true)
+  else(QT_QTDBUS_FOUND)
+    message(STATUS "QtDBus not found, disabling D-Bus support")
+  endif(QT_QTDBUS_FOUND)
+else(WITH_DBUS)
+  message(STATUS "Disabling D-Bus support")
+endif(WITH_DBUS)
 
 # We need to create a version.gen
 # For this, we create our genversion binary and make sure it is run every time.

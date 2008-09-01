@@ -1144,11 +1144,19 @@ IF (QT4_QMAKE_FOUND)
 
   # Added by Sput to provide definitions to moc calls
   MACRO (QT4_GET_MOC_DEFINES _moc_DEFINES)
-     SET(${_moc_DEFINES})
-     GET_DIRECTORY_PROPERTY(_defines COMPILE_DEFINITIONS)
-     FOREACH(_current ${_defines})
+    SET(${_moc_DEFINES})
+    if(CMAKE_MAJOR_VERSION EQUAL 2 AND CMAKE_MINOR_VERSION LESS 6)
+      GET_DIRECTORY_PROPERTY(_defines DEFINITIONS)
+      SEPARATE_ARGUMENTS(_defines)
+      FOREACH(_current ${_defines})
+        SET(${_moc_DEFINES} ${${_moc_DEFINES}} ${_current})
+      ENDFOREACH(_current ${_defines})
+    else(CMAKE_MAJOR_VERSION EQUAL 2 AND CMAKE_MINOR_VERSION LESS 6) 
+      GET_DIRECTORY_PROPERTY(_defines COMPILE_DEFINITIONS)
+      FOREACH(_current ${_defines})
         SET(${_moc_DEFINES} ${${_moc_DEFINES}} -D${_current})
-     ENDFOREACH(_current ${_defines})
+      ENDFOREACH(_current ${_defines})
+    endif(CMAKE_MAJOR_VERSION EQUAL 2 AND CMAKE_MINOR_VERSION LESS 6)
 
   ENDMACRO(QT4_GET_MOC_DEFINES)
 

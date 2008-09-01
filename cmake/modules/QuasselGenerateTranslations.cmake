@@ -53,8 +53,8 @@ macro(quassel_generate_i18n_resource outvar)
     endforeach(file ${outfiles})
     file(APPEND ${resfile} "</qresource>\n</RCC>\n")
     add_custom_command(OUTPUT ${resfile} DEPENDS ${outfiles})
-    set_directory_properties(PROPERTIES
-          ADDITIONAL_MAKE_CLEAN_FILES "${outfiles} i18n.qrc")
+#    set_directory_properties(PROPERTIES
+#          ADDITIONAL_MAKE_CLEAN_FILES "${outfiles} i18n.qrc")
 
     # Generate resource
     qt4_add_resources(RC_OUT ${resfile})
@@ -65,4 +65,3 @@ macro(quassel_generate_i18n_resource outvar)
     message(STATUS "WARNING: lrelease not found, you won't have translations!")
   endif(QT_LRELEASE_EXECUTABLE)
 endmacro(quassel_generate_i18n_resource outvar)
-
