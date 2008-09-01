@@ -165,7 +165,8 @@ endif(WITH_DBUS)
 add_executable(genversion ${CMAKE_SOURCE_DIR}/src/common/genversion.cpp)
 target_link_libraries(genversion ${QT_LIBRARIES} ${QT_CORE_LIB_DEPENDENCIES})
 
-add_custom_target(genversion_run ALL ${CMAKE_BINARY_DIR}/genversion
+get_target_property(GENVERSION_EXECUTABLE genversion LOCATION)
+add_custom_target(genversion_run ALL ${GENVERSION_EXECUTABLE}
                   ${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR}/src/common/version.gen)
 add_dependencies(genversion_run genversion)
 
