@@ -20,6 +20,7 @@
 
 #include "verticaldock.h"
 
+#include <QLayout>
 #include <QPainter>
 
 #include <QDebug>
@@ -34,7 +35,7 @@ QSize VerticalDockTitle::sizeHint() const {
 }
 
 QSize VerticalDockTitle::minimumSizeHint() const {
-  return QSize(10, 15);
+  return QSize(10, 10);
 }
 
 void VerticalDockTitle::paintEvent(QPaintEvent *event) {
@@ -44,15 +45,12 @@ void VerticalDockTitle::paintEvent(QPaintEvent *event) {
   
   if(rect().isValid() && rect().height() > minimumSizeHint().height()) {
     for(int i = 0; i < 2; i++) {
-      QPoint topLeft = rect().topLeft() + QPoint(3 + i*2, 5);
-      QPoint bottomRight = rect().topLeft() + QPoint(3 + i*2, rect().height() - 5);
+      QPoint topLeft = rect().topLeft() + QPoint(3 + i*2, 2);
+      QPoint bottomRight = rect().topLeft() + QPoint(3 + i*2, rect().height() - 2);
       qDrawShadeLine(&painter, topLeft, bottomRight, palette());
     }
   }
-
 }
-
-
 
 // ==============================
 //  Vertical Dock
@@ -67,6 +65,7 @@ VerticalDock::VerticalDock(QWidget *parent, Qt::WindowFlags flags)
   : QDockWidget(parent, flags)
 {
   setDefaultTitleWidget();
+  setContentsMargins(0, 0, 0, 0);
 }
 
 void VerticalDock::setDefaultTitleWidget() {
