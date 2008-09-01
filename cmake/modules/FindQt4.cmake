@@ -1145,7 +1145,7 @@ IF (QT4_QMAKE_FOUND)
   # Added by Sput to provide definitions to moc calls
   MACRO (QT4_GET_MOC_DEFINES _moc_DEFINES)
      SET(${_moc_DEFINES})
-     GET_DIRECTORY_PROPERTY(_defines COMPILE_DEFINITIONS)
+     GET_DIRECTORY_PROPERTY(_defines DEFINITIONS)
      FOREACH(_current ${_defines})
         SET(${_moc_DEFINES} ${${_moc_DEFINES}} -D${_current})
      ENDFOREACH(_current ${_defines})
