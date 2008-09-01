@@ -72,8 +72,8 @@ protected:
   virtual MessageModelItem *createMessageModelItem(const Message &) = 0;
 
 private:
+  void insertMessageGroup(const QList<Message> &);
   QList<MessageModelItem *> _messageList;
-
   int indexForId(MsgId);
 };
 
@@ -96,6 +96,12 @@ public:
   inline Message::Type msgType() const { return _type; }
   inline Message::Flags msgFlags() const { return _flags; }
   
+  // For sorting
+  bool operator<(const MessageModelItem &) const;
+  bool operator==(const MessageModelItem &) const;
+  bool operator>(const MessageModelItem &) const;
+  static bool lessThan(const MessageModelItem *m1, const MessageModelItem *m2);
+
 private:
   QDateTime _timestamp;
   MsgId _msgId;

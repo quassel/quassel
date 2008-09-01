@@ -61,6 +61,17 @@ void QtUiMessageProcessor::process(Message &msg) {
 }
 
 void QtUiMessageProcessor::process(QList<Message> &msgs) {
+  QList<Message>::iterator msgIter = msgs.begin();
+  QList<Message>::iterator msgIterEnd = msgs.end();
+  while(msgIter != msgIterEnd) {
+    checkForHighlight(*msgIter);
+    postProcess(*msgIter);
+    msgIter++;
+  }
+  Client::messageModel()->insertMessages(msgs);
+  return;
+
+  
   if(msgs.isEmpty()) return;
   _processQueue.append(msgs);
   _msgCount += msgs.count();

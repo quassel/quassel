@@ -27,12 +27,12 @@
 #include <QDebug>
 
 ClientBacklogManager::ClientBacklogManager(QObject *parent)
-  : BacklogManager(parent)
+  : BacklogManager(parent),
+    _buffer(true)
 {
 }
 
 void ClientBacklogManager::receiveBacklog(BufferId bufferId, int lastMsgs, int offset, QVariantList msgs) {
-  Q_UNUSED(bufferId)
   Q_UNUSED(lastMsgs)
   Q_UNUSED(offset)
 
@@ -46,8 +46,27 @@ void ClientBacklogManager::receiveBacklog(BufferId bufferId, int lastMsgs, int o
     msg.setFlags(msg.flags() | Message::Backlog);
     msglist << msg;
   }
-  Client::messageProcessor()->process(msglist);
+
+  if(_buffer) {
+    _messageBuffer << msglist;
+    _buffersWaiting.remove(bufferId);
+    if(_buffersWaiting.isEmpty()) {
+      _buffer = false;
+      qSort(_messageBuffer);
+      Client::messageProcessor()->process(_messageBuffer);
+      _messageBuffer.clear();
+    }
+  } else {
+    Client::messageProcessor()->process(msglist);
+  }
   //qDebug() << "processed" << msgs.count() << "backlog lines in" << start.msecsTo(QTime::currentTime());
+}
+
+QVariantList ClientBacklogManager::requestBacklog(BufferId bufferId, int lastMsgs, int offset) {
+  if(_buffer)
+    _buffersWaiting << bufferId;
+
+  return BacklogManager::requestBacklog(bufferId, lastMsgs, offset);
 }
 
 void ClientBacklogManager::requestInitialBacklog() {

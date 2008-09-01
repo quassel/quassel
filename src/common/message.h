@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _MESSAGE_H_
-#define _MESSAGE_H_
+#ifndef MESSAGE_H_
+#define MESSAGE_H_
 
 #include <QString>
 #include <QDateTime>
@@ -74,6 +74,8 @@ public:
   inline QDateTime timestamp() const { return _timestamp; }
 
   void setFlags(Flags flags);
+
+  inline bool operator<(const Message &other) const { return _msgId < other._msgId; }
 
 private:
   QDateTime _timestamp;
