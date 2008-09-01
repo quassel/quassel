@@ -32,6 +32,8 @@ TopicWidget::TopicWidget(QWidget *parent)
   ui.topicLineEdit->hide();
   ui.topicLineEdit->installEventFilter(this);
   ui.topicLabel->show();
+  setContentsMargins(0,0,0,0);
+  parent->setMinimumHeight(layout()->sizeHint().height() + 2*qApp->style()->pixelMetric(QStyle::PM_DockWidgetTitleBarButtonMargin));
 }
 
 void TopicWidget::currentChanged(const QModelIndex &current, const QModelIndex &previous) {
@@ -74,6 +76,11 @@ void TopicWidget::switchEditable() {
   ui.topicEditButton->hide();
   ui.topicLineEdit->show();
   ui.topicLineEdit->setFocus();
+
+  setFixedHeight(layout()->sizeHint().height());
+  // Update the dock widget too, else it won't resize in all styles... FIXME try to sanitize this
+  qobject_cast<QWidget *>(parent())->setMinimumHeight(height() + 2*qApp->style()->pixelMetric(QStyle::PM_DockWidgetTitleBarButtonMargin));
+  qobject_cast<QWidget *>(parent())->adjustSize();
 }
 
 void TopicWidget::switchPlain() {
@@ -81,6 +88,10 @@ void TopicWidget::switchPlain() {
   ui.topicLabel->show();
   ui.topicEditButton->show();
   ui.topicLineEdit->setText(_topic);
+  setFixedHeight(layout()->sizeHint().height());
+  // Update the dock widget too, else it won't resize in all styles... FIXME try to sanitize this
+  qobject_cast<QWidget *>(parent())->setMinimumHeight(height() + 2*qApp->style()->pixelMetric(QStyle::PM_DockWidgetTitleBarButtonMargin));
+  qobject_cast<QWidget *>(parent())->adjustSize();
 }
 
 // filter for the input widget to switch back to normal mode
@@ -102,4 +113,3 @@ bool TopicWidget::eventFilter(QObject *obj, QEvent *event) {
   
   return false;
 }
-
