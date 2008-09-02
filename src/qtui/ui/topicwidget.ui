@@ -34,8 +34,17 @@
    <property name="sizeConstraint" >
     <enum>QLayout::SetDefaultConstraint</enum>
    </property>
-   <property name="margin" >
-    <number>0</number>
+   <property name="leftMargin" >
+    <number>4</number>
+   </property>
+   <property name="topMargin" >
+    <number>2</number>
+   </property>
+   <property name="rightMargin" >
+    <number>4</number>
+   </property>
+   <property name="bottomMargin" >
+    <number>2</number>
    </property>
    <item>
     <widget class="TopicLabel" name="topicLabel" >
