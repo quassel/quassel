@@ -37,26 +37,164 @@ typedef struct {
     unsigned unused                  :2;
 } HB_CharAttributes_Dummy;
 
-unsigned char *ChatLineModelItem::TextBoundaryFinderBuffer = (unsigned char *)malloc(512 * sizeof(HB_CharAttributes_Dummy));
-int ChatLineModelItem::TextBoundaryFinderBufferSize = 512 * (sizeof(HB_CharAttributes_Dummy) / sizeof(unsigned char));
+// PRIVATE DATA FOR CHATLINE MODEL ITEM
+class ChatLineModelItemPrivate {
+  struct ChatLinePart {
+    QString plainText;
+    UiStyle::FormatList formatList;
+    inline ChatLinePart(const QString &pT, const UiStyle::FormatList &fL) : plainText(pT), formatList(fL) {}
+  };
 
-struct ChatLineModelItemPrivate {
-  ChatLineModel::WrapList wrapList;
+public:
+  inline ChatLineModelItemPrivate(const Message &msg) : _msgBuffer(new Message(msg)), timestamp(0), sender(0), contents(0) {}
+  inline ~ChatLineModelItemPrivate() {
+    if(_msgBuffer) {
+      delete _msgBuffer;
+    } else {
+      delete timestamp;
+      delete sender;
+      delete contents;
+    }
+  }
+
+  inline bool needsStyling() { return (bool)_msgBuffer; }
+
+  inline ChatLinePart *partByColumn(MessageModel::ColumnType column) {
+    switch(column) {
+    case ChatLineModel::TimestampColumn:
+      return timestamp;
+    case ChatLineModel::SenderColumn:
+      return sender;
+    case ChatLineModel::ContentsColumn:
+      return contents;
+    default:
+      Q_ASSERT(false);
+      return 0;
+    }
+  }
+
+  inline const QString &plainText(MessageModel::ColumnType column) {
+    if(needsStyling())
+      style();
+    return partByColumn(column)->plainText;
+  }
+
+  inline const UiStyle::FormatList &formatList(MessageModel::ColumnType column) {
+    if(needsStyling())
+      style();
+    return partByColumn(column)->formatList;
+  }
+
+  inline const ChatLineModel::WrapList &wrapList() {
+    if(needsStyling())
+      style();
+    if(_wrapList.isEmpty())
+      computeWrapList();
+    return _wrapList;
+  }
+  
+private:
+  inline void style() {
+    QtUiStyle::StyledMessage m = QtUi::style()->styleMessage(*_msgBuffer);
+
+    timestamp = new ChatLinePart(m.timestamp.plainText, m.timestamp.formatList);
+    sender = new ChatLinePart(m.sender.plainText, m.sender.formatList);
+    contents = new ChatLinePart(m.contents.plainText, m.contents.formatList);
+
+    delete _msgBuffer;
+    _msgBuffer = 0;
+  }
+
+  inline void computeWrapList() {
+    if(contents->plainText.isEmpty())
+      return;
+
+    enum Mode { SearchStart, SearchEnd };
+
+    QList<ChatLineModel::Word> wplist;  // use a temp list which we'll later copy into a QVector for efficiency
+    QTextBoundaryFinder finder(QTextBoundaryFinder::Word, contents->plainText.unicode(), contents->plainText.length(), TextBoundaryFinderBuffer, TextBoundaryFinderBufferSize);
+
+    int idx;
+    int oldidx = 0;
+    bool wordStart = false;
+    bool wordEnd = false;
+    Mode mode = SearchEnd;
+    ChatLineModel::Word word;
+    word.start = 0;
+    qreal wordstartx = 0;
+
+    QTextLayout layout(contents->plainText);
+    QTextOption option;
+    option.setWrapMode(QTextOption::NoWrap);
+    layout.setTextOption(option);
+
+    layout.setAdditionalFormats(QtUi::style()->toTextLayoutList(contents->formatList, contents->plainText.length()));
+    layout.beginLayout();
+    QTextLine line = layout.createLine();
+    line.setNumColumns(contents->plainText.length());
+    layout.endLayout();
+
+    do {
+      idx = finder.toNextBoundary();
+      if(idx < 0) {
+	idx = contents->plainText.length();
+	wordStart = false;
+	wordEnd = false;
+	mode = SearchStart;
+      } else {
+	wordStart = finder.boundaryReasons().testFlag(QTextBoundaryFinder::StartWord);
+	wordEnd = finder.boundaryReasons().testFlag(QTextBoundaryFinder::EndWord);
+      }
+
+      //if(flg) qDebug() << idx << mode << wordStart << wordEnd << contents->plainText.left(idx) << contents->plainText.mid(idx);
+
+      if(mode == SearchEnd || (!wordStart && wordEnd)) {
+	if(wordStart || !wordEnd) continue;
+	oldidx = idx;
+	mode = SearchStart;
+	continue;
+      }
+      qreal wordendx = line.cursorToX(oldidx);
+      qreal trailingendx = line.cursorToX(idx);
+      word.width = wordendx - wordstartx;
+      word.trailing = trailingendx - wordendx;
+      wordstartx = trailingendx;
+      wplist.append(word);
+
+      if(wordStart) {
+	word.start = idx;
+	mode = SearchEnd;
+      }
+      // the part " || (finder.position() == contents->plainText.length())" shouldn't be necessary
+      // but in rare and indeterministic cases Qt states that the end of the text is not a boundary o_O
+    } while(finder.isAtBoundary() || (finder.position() == contents->plainText.length()));
+    
+    // A QVector needs less space than a QList
+    _wrapList.resize(wplist.count());
+    for(int i = 0; i < wplist.count(); i++) {
+      _wrapList[i] = wplist.at(i);
+    }
+  }
+
+  ChatLineModel::WrapList _wrapList;
+  Message *_msgBuffer;
+  ChatLinePart *timestamp, *sender, *contents;
+
+  static unsigned char *TextBoundaryFinderBuffer;
+  static int TextBoundaryFinderBufferSize;
 };
 
+unsigned char *ChatLineModelItemPrivate::TextBoundaryFinderBuffer = (unsigned char *)malloc(512 * sizeof(HB_CharAttributes_Dummy));
+int ChatLineModelItemPrivate::TextBoundaryFinderBufferSize = 512 * (sizeof(HB_CharAttributes_Dummy) / sizeof(unsigned char));
+
+
+// ****************************************
+// the actual ChatLineModelItem
+// ****************************************
 ChatLineModelItem::ChatLineModelItem(const Message &msg)
   : MessageModelItem(msg),
-    _data(new ChatLineModelItemPrivate)
+    _data(new ChatLineModelItemPrivate(msg))
 {
-  QtUiStyle::StyledMessage m = QtUi::style()->styleMessage(msg);
-
-  _timestamp.plainText = m.timestamp.plainText;
-  _sender.plainText = m.sender.plainText;
-  _contents.plainText = m.contents.plainText;
-
-  _timestamp.formatList = m.timestamp.formatList;
-  _sender.formatList = m.sender.formatList;
-  _contents.formatList = m.contents.formatList;
 }
 
 ChatLineModelItem::~ChatLineModelItem() {
@@ -64,105 +202,20 @@ ChatLineModelItem::~ChatLineModelItem() {
 }
 
 QVariant ChatLineModelItem::data(int column, int role) const {
-  const ChatLinePart *part = 0;
-
-  switch(column) {
-  case ChatLineModel::TimestampColumn:
-    part = &_timestamp;
-    break;
-  case ChatLineModel::SenderColumn:
-    part = &_sender;
-    break;
-  case ChatLineModel::ContentsColumn:
-    part = &_contents;
-    break;
-  default:
+  if(column < ChatLineModel::TimestampColumn || column > ChatLineModel::ContentsColumn)
     return MessageModelItem::data(column, role);
-  }
+  MessageModel::ColumnType columnType = (MessageModel::ColumnType)column;
 
   switch(role) {
   case ChatLineModel::DisplayRole:
-    return part->plainText;
+    return _data->plainText(columnType);
   case ChatLineModel::FormatRole:
-    return QVariant::fromValue<UiStyle::FormatList>(part->formatList);
+    return QVariant::fromValue<UiStyle::FormatList>(_data->formatList(columnType));
   case ChatLineModel::WrapListRole:
-    if(column != ChatLineModel::ContentsColumn)
+    if(columnType != ChatLineModel::ContentsColumn)
       return QVariant();
-    if(_data->wrapList.isEmpty())
-      computeWrapList();
-    return QVariant::fromValue<ChatLineModel::WrapList>(_data->wrapList);
+    return QVariant::fromValue<ChatLineModel::WrapList>(_data->wrapList());
   }
   return MessageModelItem::data(column, role);
-}
-
-void ChatLineModelItem::computeWrapList() const {
-  if(_contents.plainText.isEmpty())
-    return;
-
-  enum Mode { SearchStart, SearchEnd };
-
-  QList<ChatLineModel::Word> wplist;  // use a temp list which we'll later copy into a QVector for efficiency
-  QTextBoundaryFinder finder(QTextBoundaryFinder::Word, _contents.plainText.unicode(), _contents.plainText.length(), TextBoundaryFinderBuffer, TextBoundaryFinderBufferSize);
-
-  int idx;
-  int oldidx = 0;
-  bool wordStart = false;
-  bool wordEnd = false;
-  Mode mode = SearchEnd;
-  ChatLineModel::Word word;
-  word.start = 0;
-  qreal wordstartx = 0;
-
-  QTextLayout layout(_contents.plainText);
-  QTextOption option;
-  option.setWrapMode(QTextOption::NoWrap);
-  layout.setTextOption(option);
-
-  layout.setAdditionalFormats(QtUi::style()->toTextLayoutList(_contents.formatList, _contents.plainText.length()));
-  layout.beginLayout();
-  QTextLine line = layout.createLine();
-  line.setNumColumns(_contents.plainText.length());
-  layout.endLayout();
-
-  do {
-    idx = finder.toNextBoundary();
-    if(idx < 0) {
-      idx = _contents.plainText.length();
-      wordStart = false;
-      wordEnd = false;
-      mode = SearchStart;
-    } else {
-      wordStart = finder.boundaryReasons().testFlag(QTextBoundaryFinder::StartWord);
-      wordEnd = finder.boundaryReasons().testFlag(QTextBoundaryFinder::EndWord);
-    }
-
-    //if(flg) qDebug() << idx << mode << wordStart << wordEnd << _contents.plainText.left(idx) << _contents.plainText.mid(idx);
-
-    if(mode == SearchEnd || (!wordStart && wordEnd)) {
-      if(wordStart || !wordEnd) continue;
-      oldidx = idx;
-      mode = SearchStart;
-      continue;
-    }
-    qreal wordendx = line.cursorToX(oldidx);
-    qreal trailingendx = line.cursorToX(idx);
-    word.width = wordendx - wordstartx;
-    word.trailing = trailingendx - wordendx;
-    wordstartx = trailingendx;
-    wplist.append(word);
-
-    if(wordStart) {
-      word.start = idx;
-      mode = SearchEnd;
-    }
-    // the part " || (finder.position() == _contents.plainText.length())" shouldn't be necessary
-    // but in rare and indeterministic cases Qt states that the end of the text is not a boundary o_O
-  } while(finder.isAtBoundary() || (finder.position() == _contents.plainText.length()));
-
-  // A QVector needs less space than a QList
-  _data->wrapList.resize(wplist.count());
-  for(int i = 0; i < wplist.count(); i++) {
-    _data->wrapList[i] = wplist.at(i);
-  }
 }
 
