@@ -31,11 +31,11 @@ VerticalDockTitle::VerticalDockTitle(QDockWidget *parent)
 }
 
 QSize VerticalDockTitle::sizeHint() const {
-  return QSize(10, 15);
+  return QSize(8, 15);
 }
 
 QSize VerticalDockTitle::minimumSizeHint() const {
-  return QSize(10, 10);
+  return QSize(8, 10);
 }
 
 void VerticalDockTitle::paintEvent(QPaintEvent *event) {
