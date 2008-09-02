@@ -27,12 +27,12 @@
 #include <QVariant>
 #include <QTimer>
 
-#ifndef QT_NO_OPENSSL
-#include <QSslSocket>
-#include "sslserver.h"
+#ifdef HAVE_SSL
+#  include <QSslSocket>
+#  include "sslserver.h"
 #else
-#include <QTcpSocket>
-#include <QTcpServer>
+#  include <QTcpSocket>
+#  include <QTcpServer>
 #endif
 
 #include "bufferinfo.h"
@@ -303,7 +303,7 @@ class Core : public QObject {
 
     bool initStorage(QVariantMap dbSettings, bool setup = false);
 
-#ifndef QT_NO_OPENSSL
+#ifdef HAVE_SSL
     void sslErrors(const QList<QSslError> &errors);
 #endif
     void socketError(QAbstractSocket::SocketError);
@@ -327,7 +327,7 @@ class Core : public QObject {
     Storage *storage;
     QTimer _storageSyncTimer;
 
-#ifndef QT_NO_OPENSSL  
+#ifdef HAVE_SSL  
     SslServer server;
 #else
     QTcpServer server;

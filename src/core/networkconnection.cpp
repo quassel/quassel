@@ -89,7 +89,7 @@ NetworkConnection::NetworkConnection(Network *network, CoreSession *session)
   connect(network, SIGNAL(autoReconnectIntervalSet(quint32)), this, SLOT(autoReconnectSettingsChanged()));
   connect(network, SIGNAL(autoReconnectRetriesSet(quint16)), this, SLOT(autoReconnectSettingsChanged()));
 
-#ifndef QT_NO_OPENSSL
+#ifdef HAVE_SSL
   connect(&socket, SIGNAL(encrypted()), this, SLOT(socketEncrypted()));
   connect(&socket, SIGNAL(sslErrors(const QList<QSslError> &)), this, SLOT(sslErrors(const QList<QSslError> &)));
 #endif
@@ -291,7 +291,7 @@ void NetworkConnection::socketError(QAbstractSocket::SocketError) {
   //exit(1);
 }
 
-#ifndef QT_NO_OPENSSL
+#ifdef HAVE_SSL
 
 void NetworkConnection::sslErrors(const QList<QSslError> &sslErrors) {
   Q_UNUSED(sslErrors)
@@ -315,10 +315,10 @@ void NetworkConnection::socketEncrypted() {
   socketInitialized();
 }
 
-#endif  // QT_NO_OPENSSL
+#endif  // HAVE_SSL
 
 void NetworkConnection::socketConnected() {
-#ifdef QT_NO_OPENSSL
+#ifndef HAVE_SSL
   socketInitialized();
   return;
 #else

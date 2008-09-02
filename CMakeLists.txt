@@ -112,7 +112,6 @@ if(HAVE_EXECINFO)
   add_definitions(-DHAVE_EXECINFO)
 endif(HAVE_EXECINFO)
 
-
 # Select a Qt installation here, if you don't want to use system Qt
 if(QT)
   # FindQt4 will look for the qmake binary in $PATH, so we just prepend the Qt dir
@@ -138,6 +137,7 @@ if(OPENSSL_FOUND)
     message(STATUS "Found OpenSSL support in Qt")
     add_definitions(-DHAVE_SSL)
     set(HAVE_SSL true)
+    set(MOC_DEFINES ${MOC_DEFINES} -DHAVE_SSL)
   else(NOT QT_DEFINITIONS MATCHES "QT_NO_OPENSSL")
     message(STATUS "No OpenSSL support found in Qt, disabling")
   endif(NOT QT_DEFINITIONS MATCHES "QT_NO_OPENSSL")
@@ -152,6 +152,7 @@ if(WITH_DBUS)
     add_definitions(-DHAVE_DBUS)
     set(LINK_DBUS DBUS)
     set(HAVE_DBUS true)
+    set(MOC_DEFINES ${MOC_DEFINES} -DHAVE_DBUS)
   else(QT_QTDBUS_FOUND)
     message(STATUS "QtDBus not found, disabling D-Bus support")
   endif(QT_QTDBUS_FOUND)
