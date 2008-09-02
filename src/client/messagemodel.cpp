@@ -94,19 +94,6 @@ void MessageModel::insertMessages(const QList<Message> &msglist) {
   }
 
   bool inOrder = (msglist.first().msgId() < msglist.last().msgId());
-  
-  // check if the whole bunch fits in at one position
-  if(indexForId(msglist.first().msgId()) == indexForId(msglist.last().msgId())) {
-    if(inOrder) {
-      insertMessageGroup(msglist);
-    } else {
-      QList<Message> messages = msglist;
-      qSort(messages);
-      insertMessageGroup(messages);
-    }
-    return;
-  }
-
   // depending on the order we have to traverse from the front to the back or vice versa
   // for the sake of performance we have a little code duplication here
   // if you need to do some changes here you'll probably need to change them at all
@@ -131,7 +118,7 @@ void MessageModel::insertMessages(const QList<Message> &msglist) {
 
   // DUPE (1 / 3)
   int idx = indexForId((*iter).msgId());
-  if(idx > 0)
+  if(idx >= 0)
     dupeId = _messageList[idx]->msgId();
   // we always compare to the previous entry...
   // if there isn't, we can fastforward to the top
@@ -155,7 +142,7 @@ void MessageModel::insertMessages(const QList<Message> &msglist) {
 	
 	// build new group
 	int idx = indexForId((*iter).msgId());
-	if(idx > 0)
+	if(idx >= 0)
 	  dupeId = _messageList[idx]->msgId();
 	if(idx - 1 >= 0)
 	  id = _messageList[idx - 1]->msgId();
@@ -174,7 +161,7 @@ void MessageModel::insertMessages(const QList<Message> &msglist) {
 	
 	// build new group
 	int idx = indexForId((*iter).msgId());
-	if(idx > 0)
+	if(idx >= 0)
 	  dupeId = _messageList[idx]->msgId();
 	if(idx - 1 >= 0)
 	  id = _messageList[idx - 1]->msgId();
