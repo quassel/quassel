@@ -124,7 +124,7 @@ void ClientSyncer::connectToCore(const QVariantMap &conn) {
     //emit coreConnectionMsg(tr("Connecting..."));
     Q_ASSERT(!socket);
 
-#ifndef QT_NO_OPENSSL
+#ifdef HAVE_SSL
     QSslSocket *sock = new QSslSocket(Client::instance());
 #else
     if(conn["useSsl"].toBool()) {
@@ -196,7 +196,7 @@ void ClientSyncer::clientInitAck(const QVariantMap &msg) {
   }
   emit connectionMsg(msg["CoreInfo"].toString());
 
-#ifndef QT_NO_OPENSSL
+#ifdef HAVE_SSL
   if(coreConnectionInfo["useSsl"].toBool()) {
     if(msg["SupportSsl"].toBool()) {
       QSslSocket *sslSocket = qobject_cast<QSslSocket *>(socket);
@@ -219,7 +219,7 @@ void ClientSyncer::clientInitAck(const QVariantMap &msg) {
     socket->setProperty("UseCompression", true);
   }
 #endif
-  
+
   if(!msg["Configured"].toBool()) {
     // start wizard
     emit startCoreSetup(msg["StorageBackends"].toList());
@@ -299,7 +299,7 @@ void ClientSyncer::checkSyncState() {
   }
 }
 
-#ifndef QT_NO_OPENSSL
+#ifdef HAVE_SSL
 void ClientSyncer::sslErrors(const QList<QSslError> &errors) {
   qDebug() << "SSL Errors:";
   foreach(QSslError err, errors)

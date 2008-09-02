@@ -25,10 +25,10 @@
 #include <QString>
 #include <QVariantMap>
 
-#ifndef QT_NO_OPENSSL
-#include <QSslSocket>
+#ifdef HAVE_SSL
+#  include <QSslSocket>
 #else
-#include <QTcpSocket>
+#  include <QTcpSocket>
 #endif
 
 class IrcUser;
@@ -40,7 +40,7 @@ class ClientSyncer : public QObject {
 public:
   ClientSyncer(QObject *parent = 0);
   ~ClientSyncer();
-  
+
 signals:
   void recvPartialItem(quint32 avail, quint32 size);
   void connectionError(const QString &errorMsg);
@@ -49,7 +49,7 @@ signals:
   void networksProgress(quint32 part, quint32 total);
   void socketStateChanged(QAbstractSocket::SocketState);
   void socketDisconnected();
-  
+
   void startLogin();
   void loginFailed(const QString &error);
   void loginSuccess();
@@ -57,14 +57,14 @@ signals:
   void startCoreSetup(const QVariantList &);
   void coreSetupSuccess();
   void coreSetupFailed(const QString &error);
-  
+
   void encrypted(bool);
-		      
+
 public slots:
   void connectToCore(const QVariantMap &);
   void loginToCore(const QString &user, const QString &passwd);
   void disconnectFromCore();
-			   
+
 private slots:
   void coreSocketError(QAbstractSocket::SocketError);
   void coreHasData();
@@ -72,24 +72,24 @@ private slots:
   void coreSocketDisconnected();
 
   void clientInitAck(const QVariantMap &msg);
-  
+
   // for sync progress
   void networkInitDone();
   void checkSyncState();
-  
+
   void syncToCore(const QVariantMap &sessionState);
   void sessionStateReceived(const QVariantMap &state);
-  
+
   void doCoreSetup(const QVariant &setupData);
-#ifndef QT_NO_OPENSSL
+#ifdef HAVE_SSL
     void sslErrors(const QList<QSslError> &errors);
 #endif
-  
+
 private:
   QPointer<QIODevice> socket;
   quint32 blockSize;
   QVariantMap coreConnectionInfo;
-  
+
   QSet<QObject *> netsToSync;
   int numNetsToSync;
 };

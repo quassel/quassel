@@ -21,14 +21,12 @@
 #ifndef SSLSERVER_H
 #define SSLSERVER_H
 
-#ifndef QT_NO_OPENSSL
-#  include <QSslCertificate>
-#  include <QSslKey>
+#ifdef HAVE_SSL
+
+#include <QSslCertificate>
+#include <QSslKey>
 #include <QTcpServer>
 #include <QLinkedList>
-#endif
-
-#ifndef QT_NO_OPENSSL
 
 class SslServer : public QTcpServer {
   Q_OBJECT
@@ -53,6 +51,6 @@ private:
   bool _certIsValid;
 };
 
-#endif //QT_NO_OPENSSL
+#endif //HAVE_SSL
 
 #endif //SSLSERVER_H

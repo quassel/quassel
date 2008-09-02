@@ -26,7 +26,7 @@
 #include <QStringList>
 #include <QTimer>
 
-#ifndef QT_NO_OPENSSL
+#ifdef HAVE_SSL
 # include <QSslSocket>
 # include <QSslError>
 #else
@@ -143,7 +143,7 @@ private slots:
   void startAutoWhoCycle();
   void nickChanged(const QString &newNick, const QString &oldNick); // this signal is inteded to rename query buffers in the storage backend
 
-#ifndef QT_NO_OPENSSL
+#ifdef HAVE_SSL
   void socketEncrypted();
   void sslErrors(const QList<QSslError> &errors);
 #endif
@@ -151,7 +151,7 @@ private slots:
   void fillBucketAndProcessQueue();
 
 private:
-#ifndef QT_NO_OPENSSL
+#ifdef HAVE_SSL
   QSslSocket socket;
 #else
   QTcpSocket socket;

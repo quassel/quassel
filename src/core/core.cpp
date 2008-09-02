@@ -433,7 +433,7 @@ void Core::processClientMessage(QTcpSocket *socket, const QVariantMap &msg) {
 			   "Up %3d%4h%5m (since %6)").arg(Global::quasselVersion).arg(Global::quasselBuildDate)
       .arg(updays).arg(uphours,2,10,QChar('0')).arg(upmins,2,10,QChar('0')).arg(startTime().toString(Qt::TextDate));
 
-#ifndef QT_NO_OPENSSL
+#ifdef HAVE_SSL
     SslServer *sslServer = qobject_cast<SslServer *>(&server);
     QSslSocket *sslSocket = qobject_cast<QSslSocket *>(socket);
     bool supportSsl = (bool)sslServer && (bool)sslSocket && sslServer->certIsValid();
@@ -472,7 +472,7 @@ void Core::processClientMessage(QTcpSocket *socket, const QVariantMap &msg) {
     reply["MsgType"] = "ClientInitAck";
     SignalProxy::writeDataToDevice(socket, reply);
 
-#ifndef QT_NO_OPENSSL
+#ifdef HAVE_SSL
     // after we told the client that we are ssl capable we switch to ssl mode
     if(supportSsl && msg["UseSsl"].toBool()) {
       quDebug() << qPrintable(tr("Starting TLS for Client:"))  << qPrintable(socket->peerAddress().toString());
@@ -597,7 +597,7 @@ SessionThread *Core::createSession(UserId uid, bool restore) {
   return sess;
 }
 
-#ifndef QT_NO_OPENSSL
+#ifdef HAVE_SSL
 void Core::sslErrors(const QList<QSslError> &errors) {
   Q_UNUSED(errors);
   QSslSocket *socket = qobject_cast<QSslSocket *>(sender());

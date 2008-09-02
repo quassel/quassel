@@ -20,7 +20,7 @@
 
 #include "sslserver.h"
 
-#ifndef QT_NO_OPENSSL
+#ifdef HAVE_SSL
 #  include <QSslSocket>
 #endif
 
@@ -30,7 +30,7 @@
 #include "logger.h"
 #include "util.h"
 
-#ifndef QT_NO_OPENSSL
+#ifdef HAVE_SSL
 
 SslServer::SslServer(QObject *parent)
   : QTcpServer(parent)
@@ -73,4 +73,4 @@ void SslServer::incomingConnection(int socketDescriptor) {
   }
 }
 
-#endif // QT_NO_OPENSSL
+#endif // HAVE_SSL

@@ -443,7 +443,7 @@ CoreAccountEditDlg::CoreAccountEditDlg(AccountId id, const QVariantMap &acct, co
     ui.port->setValue(acct["Port"].toUInt());
     ui.useInternal->setChecked(acct["UseInternal"].toBool());
     ui.accountName->setText(acct["AccountName"].toString());
-#ifndef QT_NO_OPENSSL
+#ifdef HAVE_SSL
     ui.useSsl->setChecked(acct["useSsl"].toBool());
 #else
     ui.useSsl->setChecked(false);
@@ -457,7 +457,7 @@ CoreAccountEditDlg::CoreAccountEditDlg(AccountId id, const QVariantMap &acct, co
     ui.proxyPassword->setText(acct["proxyPassword"].toString());
   } else {
     setWindowTitle(tr("Add Core Account"));
-#ifdef QT_NO_OPENSSL
+#ifndef HAVE_SSL
     ui.useSsl->setChecked(false);
     ui.useSsl->setEnabled(false);
 #endif
