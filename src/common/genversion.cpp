@@ -43,15 +43,15 @@ int main(int argc, char **argv) {
     // try to execute git-describe to get a version string
     QProcess git;
     git.setWorkingDirectory(gitroot);
-    git.start("git-describe", QStringList("--long"));
+    git.start("git", QStringList() << "describe" << "--long");
     if(git.waitForFinished(10000)) {
       QString gitversion = git.readAllStandardOutput();
       if(!gitversion.isEmpty() && !gitversion.contains("fatal")) {
         // seems we have a valid version string, now prettify it...
         // check if the workdir is dirty first
         QString dirty;
-        QStringList params = QStringList() << "--name-only" << "HEAD";
-        git.start("git-diff-index", params);
+        QStringList params = QStringList() << "diff-index" << "--name-only" << "HEAD";
+        git.start("git", params);
         if(git.waitForFinished(10000)) {
           if(!git.readAllStandardOutput().isEmpty()) dirty = "*";
         }
