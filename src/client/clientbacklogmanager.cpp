@@ -25,6 +25,7 @@
 #include "client.h"
 
 #include <QDebug>
+#include <ctime>
 
 ClientBacklogManager::ClientBacklogManager(QObject *parent)
   : BacklogManager(parent),
