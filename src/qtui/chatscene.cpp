@@ -93,6 +93,7 @@ void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
   qreal width = sceneRect().width();
   bool atTop = true;
   bool atBottom = false;
+  bool moveTop = false;
   bool hasWidth = (width != 0);
 
   if(start > 0) {
@@ -101,9 +102,6 @@ void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
   }
   if(start == _lines.count())
     atBottom = true;
-
-  // right now this method doesn't properly handle messages that are inserted at an arbitrary point
-  Q_ASSERT(atBottom || atTop);
 
   for(int i = end; i >= start; i--) {
     ChatLine *line = new ChatLine(i, model());
@@ -125,13 +123,44 @@ void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
     _lines[i]->setRow(i);
   }
 
+  // update selection
+  if(_selectionStart >= 0) {
+    int offset = end - start + 1;
+    if(_selectionStart >= start) _selectionStart += offset;
+    if(_selectionEnd >= start) _selectionEnd += offset;
+    if(_firstSelectionRow >= start) _firstSelectionRow += offset;
+    if(_lastSelectionRow >= start) _lastSelectionRow += offset;
+  }
+
+  // neither pre- or append means we have to do dirty work: move items...
+  if(!(atTop || atBottom)) {
+    qreal offset = h;
+    int moveStart = 0;
+    int moveEnd = _lines.count() - 1;
+    ChatLine *line = 0;
+    if(end > _lines.count() - end) {
+      // move top part
+      moveTop = true;
+      offset = -offset;
+      moveEnd = end;
+    } else {
+      // move bottom part
+      moveStart = start;
+    }
+    for(int i = moveStart; i <= moveEnd; i++) {
+      line = _lines.at(i);
+      line->setPos(0, line->pos().y() + offset);
+    }
+  }
+  
   // update sceneRect
-  if(atBottom) {
+  if(atTop || moveTop) {
+    setSceneRect(sceneRect().adjusted(0, h, 0, 0));
+  } else {
     setSceneRect(sceneRect().adjusted(0, 0, 0, h));
     emit sceneHeightChanged(h);
-  } else {
-    setSceneRect(sceneRect().adjusted(0, h, 0, 0));
   }
+
 }
 
 void ChatScene::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end) {
@@ -141,9 +170,7 @@ void ChatScene::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int e
 
   bool atTop = (start == 0);
   bool atBottom = (end == _lines.count() - 1);
-
-  // right now this method doesn't properly handle messages that are removed at an arbitrary point
-  Q_ASSERT(atBottom || atTop);
+  bool moveTop = false;
 
   // remove items from scene
   QList<ChatLine *>::iterator lineIter = _lines.begin() + start;
@@ -160,12 +187,47 @@ void ChatScene::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int e
     _lines.at(i)->setRow(i);
   }
 
-  // update sceneRect
-  if(atBottom) {
-    setSceneRect(sceneRect().adjusted(0, 0, 0, -h));
-  } else {
-    setSceneRect(sceneRect().adjusted(0, h, 0, 0));
+  // update selection
+  if(_selectionStart >= 0) {
+    int offset = end - start + 1;
+    if(_selectionStart >= start)
+      _selectionStart -= offset;
+    if(_selectionEnd >= start)
+      _selectionEnd -= offset;
+    if(_firstSelectionRow >= start)
+      _firstSelectionRow -= offset;
+    if(_lastSelectionRow >= start)
+      _lastSelectionRow -= offset;
   }
+
+  // neither removing at bottom or top means we have to move items...
+  if(!(atTop || atBottom)) {
+    qreal offset = h;
+    int moveStart = 0;
+    int moveEnd = _lines.count() - 1;
+    ChatLine *line = 0;
+    if(start > _lines.count() - end) {
+      // move top part
+      moveTop = true;
+      moveEnd = start - 1;
+    } else {
+      // move bottom part
+      moveStart = start;
+      offset = -offset;
+    }
+    for(int i = moveStart; i <= moveEnd; i++) {
+      line = _lines.at(i);
+      line->setPos(0, line->pos().y() + offset);
+    }
+  }
+
+  // update sceneRect
+  if(atTop || moveTop) {
+    setSceneRect(sceneRect().adjusted(0, h, 0, 0));
+  } else {
+    setSceneRect(sceneRect().adjusted(0, 0, 0, -h));
+  }
+
 }
 
 void ChatScene::setWidth(qreal width, bool forceReposition) {
