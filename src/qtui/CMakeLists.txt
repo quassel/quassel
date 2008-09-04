@@ -19,6 +19,7 @@ set(SOURCES
     chatview.cpp
     chatviewsearchbar.cpp
     chatviewsearchcontroller.cpp
+    chatviewsettings.cpp
     columnhandleitem.cpp
     coreconfigwizard.cpp
     coreconnectdlg.cpp
@@ -77,6 +78,7 @@ set(HEADERS
     chatitem.h
     chatline.h
     chatlinemodelitem.h
+    chatviewsettings.h
     qtuisettings.h
     qtuistyle.h)
 

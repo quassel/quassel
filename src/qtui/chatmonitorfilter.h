@@ -24,7 +24,6 @@
 #include <QDateTime>
 
 #include "messagefilter.h"
-#include "qtuisettings.h"
 
 class ChatMonitorFilter : public MessageFilter {
   Q_OBJECT

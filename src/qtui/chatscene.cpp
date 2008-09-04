@@ -32,7 +32,7 @@
 #include "columnhandleitem.h"
 #include "messagefilter.h"
 #include "qtui.h"
-#include "qtuisettings.h"
+#include "chatviewsettings.h"
 
 const qreal minContentsWidth = 200;
 
@@ -51,14 +51,13 @@ ChatScene::ChatScene(QAbstractItemModel *model, const QString &idString, qreal w
     _singleBufferScene = filter->isSingleBufferFilter();
   }
 
-  QtUiSettings s;
-  int defaultFirstColHandlePos = s.value("ChatView/DefaultFirstColumnHandlePos", 80).toInt();
-  int defaultSecondColHandlePos = s.value("ChatView/DefaultSecondColumnHandlePos", 200).toInt();
+  ChatViewSettings defaultSettings;
+  int defaultFirstColHandlePos = defaultSettings.value("FirstColumnHandlePos", 80).toInt();
+  int defaultSecondColHandlePos = defaultSettings.value("SecondColumnHandlePos", 200).toInt();
 
-  firstColHandlePos = s.value(QString("ChatView/%1/FirstColumnHandlePos").arg(_idString),
-                               defaultFirstColHandlePos).toInt();
-  secondColHandlePos = s.value(QString("ChatView/%1/SecondColumnHandlePos").arg(_idString),
-                                defaultSecondColHandlePos).toInt();
+  ChatViewSettings viewSettings(idString);
+  firstColHandlePos = viewSettings.value("FirstColumnHandlePos", defaultFirstColHandlePos).toInt();
+  secondColHandlePos = viewSettings.value("SecondColumnHandlePos", defaultSecondColHandlePos).toInt();
 
   firstColHandle = new ColumnHandleItem(QtUi::style()->firstColumnSeparator());
   addItem(firstColHandle);
@@ -263,11 +262,14 @@ void ChatScene::handlePositionChanged(qreal xpos) {
     oldx = secondColHandlePos;
     secondColHandlePos = xpos;
   }
-  QtUiSettings s;
-  s.setValue(QString("ChatView/%1/FirstColumnHandlePos").arg(_idString), firstColHandlePos);
-  s.setValue(QString("ChatView/%1/SecondColumnHandlePos").arg(_idString), secondColHandlePos);
-  s.setValue(QString("ChatView/DefaultFirstColumnHandlePos"), firstColHandlePos);
-  s.setValue(QString("ChatView/DefaultSecondColumnHandlePos"), secondColHandlePos);
+
+  ChatViewSettings viewSettings(idString());
+  viewSettings.setValue("FirstColumnHandlePos", firstColHandlePos);
+  viewSettings.setValue("SecondColumnHandlePos", secondColHandlePos);
+
+  ChatViewSettings defaultSettings;
+  defaultSettings.setValue("FirstColumnHandlePos", firstColHandlePos);
+  defaultSettings.setValue("SecondColumnHandlePos", secondColHandlePos);
 
   setWidth(width(), true);  // readjust all chatlines
   // we get ugly redraw errors if we don't update this explicitly... :(

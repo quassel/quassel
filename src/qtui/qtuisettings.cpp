@@ -20,8 +20,14 @@
 
 #include "qtuisettings.h"
 
-QtUiSettings::QtUiSettings(const QString &group) : UiSettings(group) {
+QtUiSettings::QtUiSettings(const QString &subGroup)
+  : UiSettings(QString("QtUi/%1").arg(subGroup))
+{
+}
 
+QtUiSettings::QtUiSettings()
+  : UiSettings("QtUi")
+{
 }
 
 /***********************************************************************/

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-08 by the Quassel IRC Team                         *
+ *   Copyright (C) 2005-08 by the Quassel Project                          *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,25 +18,14 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef QTUISETTINGS_H_
-#define QTUISETTINGS_H_
+#ifndef CHATVIEWSETTINGS_H
+#define CHATVIEWSETTINGS_H
 
-#include <QColor>
+#include "qtuisettings.h"
 
-#include "uisettings.h"
-
-class QtUiSettings : public UiSettings {
-public: 
-  QtUiSettings(const QString &subGroup);
-  QtUiSettings();
-}; 
-
-class QtUiStyleSettings : public UiStyleSettings {
+class ChatViewSettings : public QtUiSettings {
 public:
-  QtUiStyleSettings(const QString &group = "QtUiStyle");
-
-  void setHighlightColor(const QColor &);
-  QColor highlightColor();
+  ChatViewSettings(const QString &id = "__default__");
 };
 
-#endif
+#endif //CHATVIEWSETTINGS_H

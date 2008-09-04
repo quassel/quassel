@@ -23,18 +23,16 @@
 #include "client.h"
 #include "chatlinemodel.h"
 #include "networkmodel.h"
+#include "chatviewsettings.h"
 
 ChatMonitorFilter::ChatMonitorFilter(MessageModel *model, QObject *parent)
   : MessageFilter(model, parent)
 {
-  QtUiSettings qtUiSettings;
-  QString showFieldSettingId = QString("ChatView/%1/showFields").arg(idString());
-  QString showOwnMessagesSettingId = QString("ChatView/%1/showOwnMsgs").arg(idString());
-
-  _showFields = qtUiSettings.value(showFieldSettingId, AllFields).toInt();
-  _showOwnMessages = qtUiSettings.value(showOwnMessagesSettingId, true).toBool();
-  qtUiSettings.notify(showFieldSettingId, this, SLOT(showFieldsSettingsChanged(const QVariant &)));
-  qtUiSettings.notify(showOwnMessagesSettingId, this, SLOT(showOwnMessagesSettingChanged(const QVariant &)));
+  ChatViewSettings viewSettings(idString());
+  _showFields = viewSettings.value("showFields", AllFields).toInt();
+  _showOwnMessages = viewSettings.value("showOwnMsgs", true).toBool();
+  viewSettings.notify("showFields", this, SLOT(showFieldsSettingsChanged(const QVariant &)));
+  viewSettings.notify("showOwnMsgs", this, SLOT(showOwnMessagesSettingChanged(const QVariant &)));
 }
 
 bool ChatMonitorFilter::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const {
@@ -85,21 +83,21 @@ void ChatMonitorFilter::addShowField(int field) {
   if(_showFields & field)
     return;
 
-  QtUiSettings().setValue(QString("ChatView/%1/showFields").arg(idString()), _showFields | field); 
+  ChatViewSettings(idString()).setValue("showFields", _showFields | field); 
 }
 
 void ChatMonitorFilter::removeShowField(int field) {
   if(!(_showFields & field))
     return;
 
-  QtUiSettings().setValue(QString("ChatView/%1/showFields").arg(idString()), _showFields ^ field);
+  ChatViewSettings(idString()).setValue("showFields", _showFields ^ field);
 }
 
 void ChatMonitorFilter::setShowOwnMessages(bool show) {
   if(_showOwnMessages == show)
     return;
 
-  QtUiSettings().setValue(QString("ChatView/%1/showOwnMsgs").arg(idString()), show);
+  ChatViewSettings(idString()).setValue("showOwnMsgs", show);
 }
 
 void ChatMonitorFilter::showFieldsSettingsChanged(const QVariant &newValue) {

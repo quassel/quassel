@@ -33,16 +33,16 @@ public:
   void remove(const QString &key);
 };
 
+
 class UiStyleSettings : public ClientSettings {
+public:
+  UiStyleSettings(const QString &group = "UiStyle");
 
-  public:
-    UiStyleSettings(const QString &group = "UiStyle");
+  void setCustomFormat(UiStyle::FormatType, QTextCharFormat);
+  QTextCharFormat customFormat(UiStyle::FormatType);
 
-    void setCustomFormat(UiStyle::FormatType, QTextCharFormat);
-    QTextCharFormat customFormat(UiStyle::FormatType);
-
-    void removeCustomFormat(UiStyle::FormatType);
-    QList<UiStyle::FormatType> availableFormats();
+  void removeCustomFormat(UiStyle::FormatType);
+  QList<UiStyle::FormatType> availableFormats();
 };
 
 #endif
