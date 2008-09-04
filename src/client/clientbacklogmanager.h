@@ -37,6 +37,8 @@ public slots:
   virtual QVariantList requestBacklog(BufferId bufferId, int lastMsgs = -1, int offset = -1);
   void requestInitialBacklog();
 
+  void reset();
+
 private:
   bool _buffer;
   QList<Message> _messageBuffer;
