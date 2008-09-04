@@ -55,7 +55,7 @@ ChatScene::ChatScene(QAbstractItemModel *model, const QString &idString, qreal w
   int defaultFirstColHandlePos = defaultSettings.value("FirstColumnHandlePos", 80).toInt();
   int defaultSecondColHandlePos = defaultSettings.value("SecondColumnHandlePos", 200).toInt();
 
-  ChatViewSettings viewSettings(idString);
+  ChatViewSettings viewSettings(this);
   firstColHandlePos = viewSettings.value("FirstColumnHandlePos", defaultFirstColHandlePos).toInt();
   secondColHandlePos = viewSettings.value("SecondColumnHandlePos", defaultSecondColHandlePos).toInt();
 
@@ -263,7 +263,7 @@ void ChatScene::handlePositionChanged(qreal xpos) {
     secondColHandlePos = xpos;
   }
 
-  ChatViewSettings viewSettings(idString());
+  ChatViewSettings viewSettings(this);
   viewSettings.setValue("FirstColumnHandlePos", firstColHandlePos);
   viewSettings.setValue("SecondColumnHandlePos", secondColHandlePos);
 

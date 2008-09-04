@@ -23,9 +23,14 @@
 
 #include "qtuisettings.h"
 
+class ChatScene;
+class ChatView;
+
 class ChatViewSettings : public QtUiSettings {
 public:
   ChatViewSettings(const QString &id = "__default__");
+  ChatViewSettings(ChatScene *scene);
+  ChatViewSettings(ChatView *view);
 };
 
 #endif //CHATVIEWSETTINGS_H

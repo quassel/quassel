@@ -20,7 +20,20 @@
 
 #include "chatviewsettings.h"
 
+#include "chatscene.h"
+#include "chatview.h"
+
 ChatViewSettings::ChatViewSettings(const QString &id)
   : QtUiSettings(QString("ChatView/%1").arg(id))
+{
+}
+
+ChatViewSettings::ChatViewSettings(ChatScene *scene)
+  : QtUiSettings(QString("ChatView/%1").arg(scene->idString()))
+{
+}
+
+ChatViewSettings::ChatViewSettings(ChatView *view)
+  : QtUiSettings(QString("ChatView/%1").arg(view->scene()->idString()))
 {
 }
