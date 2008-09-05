@@ -226,7 +226,7 @@ void ColorSettingsPage::defaultNickview() {
 }
 
 void ColorSettingsPage::load() {
-  QtUiSettings s("QtUiStyle/Colors");
+  QtUiStyleSettings s("Colors");
   settings["InactiveActivityFG"] = s.value("inactiveActivityFG", QVariant(QColor(Qt::gray)));
   ui.inactiveActivityFG->setColor(settings["InactiveActivityFG"].value<QColor>());
   settings["InactiveActivityBG"] = s.value("inactiveActivityBG", QVariant(QColor(Qt::white)));
@@ -411,7 +411,7 @@ void ColorSettingsPage::load() {
 }
 
 void ColorSettingsPage::save() {
-  QtUiSettings s("QtUiStyle/Colors");
+  QtUiStyleSettings s("Colors");
   s.setValue("noActivityFG", ui.noActivityFG->color());
   s.setValue("noActivityBG", ui.noActivityBG->color());
   s.setValue("noActivityUseBG", ui.noActivityUseBG->isChecked());

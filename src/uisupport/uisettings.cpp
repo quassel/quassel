@@ -25,22 +25,11 @@ UiSettings::UiSettings(const QString &group)
 {
 }
 
-void UiSettings::setValue(const QString &key, const QVariant &data) {
-  setLocalValue(key, data);
-}
-
-QVariant UiSettings::value(const QString &key, const QVariant &def) {
-  return localValue(key, def);
-}
-
-void UiSettings::remove(const QString &key) {
-  removeLocalKey(key);
-}
-
 /**************************************************************************/
 
-UiStyleSettings::UiStyleSettings(const QString &group) : ClientSettings(group) {
-
+UiStyleSettings::UiStyleSettings(const QString &group)
+  : ClientSettings(group)
+{
 }
 
 void UiStyleSettings::setCustomFormat(UiStyle::FormatType ftype, QTextCharFormat format) {

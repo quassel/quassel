@@ -31,9 +31,14 @@ QtUiSettings::QtUiSettings()
 }
 
 /***********************************************************************/
+QtUiStyleSettings::QtUiStyleSettings(const QString &subGroup)
+  : UiStyleSettings(QString("QtUiStyle/%1").arg(subGroup))
+{
+}
 
-QtUiStyleSettings::QtUiStyleSettings(const QString &group) : UiStyleSettings(group) {
-
+QtUiStyleSettings::QtUiStyleSettings()
+  : UiStyleSettings("QtUiStyle")
+{
 }
 
 void QtUiStyleSettings::setHighlightColor(const QColor &col) {
