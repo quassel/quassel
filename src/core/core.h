@@ -328,9 +328,9 @@ class Core : public QObject {
     QTimer _storageSyncTimer;
 
 #ifdef HAVE_SSL  
-    SslServer server;
+  SslServer _server, _v6server;
 #else
-    QTcpServer server;
+  QTcpServer _server, _v6server;
 #endif  
 
     QHash<QTcpSocket *, quint32> blocksizes;
