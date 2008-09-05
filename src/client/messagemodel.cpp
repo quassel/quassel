@@ -98,8 +98,6 @@ void MessageModel::insertMessages(const QList<Message> &msglist) {
 }
 
 void MessageModel::insertMessageGroup(const QList<Message> &msglist) {
-  if(msglist.isEmpty()) return;
-
   int idx = indexForId(msglist.first().msgId());
   beginInsertRows(QModelIndex(), idx, idx+msglist.count()-1);
 
