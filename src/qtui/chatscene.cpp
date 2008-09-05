@@ -411,7 +411,7 @@ QString ChatScene::selectionToString() const {
 }
 
 void ChatScene::requestBacklog() {
-  static const int REQUEST_COUNT = 50;
+  static const int REQUEST_COUNT = 100;
   int backlogSize = model()->rowCount();
   if(isSingleBufferScene() && backlogSize != 0 && _lastBacklogSize + REQUEST_COUNT <= backlogSize) {
     QModelIndex msgIdx = model()->index(0, 0);

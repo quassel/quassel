@@ -22,6 +22,13 @@
 
 #include "message.h"
 
+#include <QEvent>
+
+class ProcessBufferEvent : public QEvent {
+public:
+  inline ProcessBufferEvent() : QEvent(QEvent::User) {}
+};
+
 MessageModel::MessageModel(QObject *parent)
   : QAbstractItemModel(parent)
 {
@@ -68,6 +75,27 @@ bool MessageModel::insertMessage(const Message &msg, bool fakeMsg) {
   return true;
 }
 
+void MessageModel::insertMessages(const QList<Message> &msglist) {
+  if(msglist.isEmpty())
+    return;
+
+  if(_messageList.isEmpty()) {
+    insertMessageGroup(msglist);
+  } else {
+    int processedMsgs = insertMessagesGracefully(msglist);
+    int remainingMsgs = msglist.count() - processedMsgs;
+    if(remainingMsgs > 0) {
+      if(msglist.first().msgId() < msglist.last().msgId()) {
+	// in Order
+	_messageBuffer << msglist.mid(0, remainingMsgs);
+      } else {
+	_messageBuffer << msglist.mid(processedMsgs);
+      }
+      qSort(_messageBuffer);
+      QCoreApplication::postEvent(this, new ProcessBufferEvent());
+    }
+  }
+}
 
 void MessageModel::insertMessageGroup(const QList<Message> &msglist) {
   if(msglist.isEmpty()) return;
@@ -83,30 +111,14 @@ void MessageModel::insertMessageGroup(const QList<Message> &msglist) {
   endInsertRows();
 }
 
-
-void MessageModel::insertMessages(const QList<Message> &msglist) {
-  if(msglist.isEmpty())
-    return;
-
-  if(_messageList.isEmpty()) {
-    insertMessageGroup(msglist);
-    return;
-  }
-
+int MessageModel::insertMessagesGracefully(const QList<Message> &msglist) {
   bool inOrder = (msglist.first().msgId() < msglist.last().msgId());
   // depending on the order we have to traverse from the front to the back or vice versa
-  // for the sake of performance we have a little code duplication here
-  // if you need to do some changes here you'll probably need to change them at all
-  // places marked DUPE
 
-
-  // FIXME: keep scrollbars from jumping
-  // the somewhat bulk insert leads to a jumpy scrollbar when the user requests further backlog.
-  // it would probably be the best to stop processing each time we actually insert a messagegroup
-  // and give back controll to the eventloop (similar to what the QtUiMessageProcessor used to do)
   QList<Message> grouplist;
   MsgId id;
   MsgId dupeId;
+  int dupeCount = 0;
   bool fastForward = false;
   QList<Message>::const_iterator iter;
   if(inOrder) {
@@ -116,18 +128,21 @@ void MessageModel::insertMessages(const QList<Message> &msglist) {
     iter = msglist.constBegin();
   }
 
-  // DUPE (1 / 3)
   int idx = indexForId((*iter).msgId());
   if(idx >= 0)
     dupeId = _messageList[idx]->msgId();
+
   // we always compare to the previous entry...
   // if there isn't, we can fastforward to the top
-  if(idx - 1 >= 0) // also safe as we've passed another empty check
+  if(idx - 1 >= 0)
     id = _messageList[idx - 1]->msgId();
   else
     fastForward = true;
+
   if((*iter).msgId() != dupeId)
     grouplist << *iter;
+  else
+    dupeCount++;
 
   if(!inOrder)
     iter++;
@@ -135,52 +150,52 @@ void MessageModel::insertMessages(const QList<Message> &msglist) {
   if(inOrder) {
     while(iter != msglist.constBegin()) {
       iter--;
-      // DUPE (2 / 3)
-      if(!fastForward && (*iter).msgId() < id) {
-	insertMessageGroup(grouplist);
-	grouplist.clear();
-	
-	// build new group
-	int idx = indexForId((*iter).msgId());
-	if(idx >= 0)
-	  dupeId = _messageList[idx]->msgId();
-	if(idx - 1 >= 0)
-	  id = _messageList[idx - 1]->msgId();
-	else
-	  fastForward = true;
-      }
+
+      if(!fastForward && (*iter).msgId() < id)
+	break;
+
       if((*iter).msgId() != dupeId)
 	grouplist.prepend(*iter);
+      else
+	dupeCount++;
     }
   } else {
     while(iter != msglist.constEnd()) {
-      // DUPE (3 / 3)
-      if(!fastForward && (*iter).msgId() < id) {
-	insertMessageGroup(grouplist);
-	grouplist.clear();
-	
-	// build new group
-	int idx = indexForId((*iter).msgId());
-	if(idx >= 0)
-	  dupeId = _messageList[idx]->msgId();
-	if(idx - 1 >= 0)
-	  id = _messageList[idx - 1]->msgId();
-	else
-	  fastForward = true;
-      }
+      if(!fastForward && (*iter).msgId() < id)
+	break;
+
       if((*iter).msgId() != dupeId)
 	grouplist.prepend(*iter);
+      else
+	dupeCount++;
+
       iter++;
     }
   }
 
-  if(!grouplist.isEmpty()) {
-    insertMessageGroup(grouplist);
-  }
-    
-  return;
+  insertMessageGroup(grouplist);
+  return grouplist.count() + dupeCount;
 }
 
+void MessageModel::customEvent(QEvent *event) {
+  if(event->type() != QEvent::User)
+    return;
+
+  event->accept();
+
+  if(_messageBuffer.isEmpty())
+    return;
+
+  int processedMsgs = insertMessagesGracefully(_messageBuffer);
+  int remainingMsgs = _messageBuffer.count() - processedMsgs;
+
+  QList<Message>::iterator removeStart = _messageBuffer.begin() + remainingMsgs;
+  QList<Message>::iterator removeEnd = _messageBuffer.end();
+  _messageBuffer.erase(removeStart, removeEnd);
+
+  if(!_messageBuffer.isEmpty())
+    QCoreApplication::postEvent(this, new ProcessBufferEvent());
+}
 
 void MessageModel::clear() {
   beginRemoveRows(QModelIndex(), 0, rowCount() - 1);
@@ -188,6 +203,7 @@ void MessageModel::clear() {
   _messageList.clear();
   endRemoveRows();
 }
+
 
 
 // returns index of msg with given Id or of the next message after that (i.e., the index where we'd insert this msg)
@@ -231,7 +247,7 @@ QVariant MessageModelItem::data(int column, int role) const {
 
 
 // Stuff for later
-bool MessageModelItem::lessThan(const MessageModelItem *m1, const MessageModelItem *m2){ 
+bool MessageModelItem::lessThan(const MessageModelItem *m1, const MessageModelItem *m2){
   return (*m1) < (*m2);
 }
 

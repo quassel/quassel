@@ -70,11 +70,15 @@ public:
 
 protected:
   virtual MessageModelItem *createMessageModelItem(const Message &) = 0;
+  virtual void customEvent(QEvent *event);
 
 private:
   void insertMessageGroup(const QList<Message> &);
-  QList<MessageModelItem *> _messageList;
+  int insertMessagesGracefully(const QList<Message> &); // inserts as many contiguous msgs as possible. returns numer of inserted msgs.
   int indexForId(MsgId);
+
+  QList<MessageModelItem *> _messageList;
+  QList<Message> _messageBuffer;
 };
 
 class MessageModelItem {
