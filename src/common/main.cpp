@@ -142,22 +142,10 @@ int main(int argc, char **argv) {
   signal(SIGBUS, handle_crash);
   signal(SIGSEGV, handle_crash);
 #endif // #if defined(HAVE_EXECINFO) and not defined(Q_OS_MAC)
-  
+
   Global::registerMetaTypes();
   Global::setupVersion();
 
-/*
-#if defined BUILD_CORE
-  Global::runMode = Global::CoreOnly;
-  QCoreApplication app(argc, argv);
-#elif defined BUILD_QTUI
-  Global::runMode = Global::ClientOnly;
-  QApplication app(argc, argv);
-#else
-  Global::runMode = Global::Monolithic;
-  QApplication app(argc, argv);
-#endif
-*/
 #if defined BUILD_CORE
   Global::runMode = Global::CoreOnly;
   QCoreApplication app(argc, argv);
@@ -230,7 +218,7 @@ int main(int argc, char **argv) {
   QCoreApplication::setApplicationName("Quassel IRC");
   QCoreApplication::setOrganizationName("Quassel Project");
 
-  
+
 #ifndef BUILD_QTUI
   Core::instance();  // create and init the core
 #endif
@@ -252,10 +240,10 @@ int main(int argc, char **argv) {
   }
 #endif
 
-#ifndef BUILD_CORE 
+#ifndef BUILD_CORE
   app.resumeSessionIfPossible();
 #endif
-  
+
   int exitCode = app.exec();
 
 #ifndef BUILD_QTUI
