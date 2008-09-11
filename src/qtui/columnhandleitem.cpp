@@ -32,6 +32,7 @@
 ColumnHandleItem::ColumnHandleItem(qreal w, QGraphicsItem *parent)
   : QGraphicsItem(parent),
     _width(w),
+    _boundingRect(-_width/2, 0, _width, 0),
     _hover(0),
     _moving(false),
     _minXPos(0),
@@ -47,6 +48,9 @@ ColumnHandleItem::ColumnHandleItem(qreal w, QGraphicsItem *parent)
 
 void ColumnHandleItem::setXPos(qreal xpos) {
   setPos(xpos, 0);
+  QRectF sceneBRect = _boundingRect.translated(x(), 0);
+  _sceneLeft = sceneBRect.left();
+  _sceneRight = sceneBRect.right();
 }
 
 void ColumnHandleItem::setXLimits(qreal min, qreal max) {
@@ -57,8 +61,8 @@ void ColumnHandleItem::setXLimits(qreal min, qreal max) {
 }
 
 void ColumnHandleItem::sceneRectChanged(const QRectF &rect) {
-  Q_UNUSED(rect)
   prepareGeometryChange();
+  _boundingRect = QRectF(-_width/2, rect.y(), _width, rect.height());
 }
 
 void ColumnHandleItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
@@ -89,6 +93,9 @@ void ColumnHandleItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
   if(_moving) {
     _moving = false;
     setCursor(QCursor(Qt::OpenHandCursor));
+    QRectF sceneBRect = _boundingRect.translated(x(), 0);
+    _sceneLeft = sceneBRect.left();
+    _sceneRight = sceneBRect.right();
     emit positionChanged(x());
     event->accept();
   } else {

@@ -29,39 +29,44 @@
 class ColumnHandleItem : public QObject, public QGraphicsItem {
   Q_OBJECT
 
-  public:
-    ColumnHandleItem(qreal width, QGraphicsItem *parent = 0);
+public:
+  ColumnHandleItem(qreal width, QGraphicsItem *parent = 0);
 
-    inline qreal width() const { return _width; }
-    inline QRectF boundingRect() const { return QRectF(-_width/2, scene()->sceneRect().y(), _width, scene()->height()); }
-    void setXPos(qreal xpos);
+  inline qreal width() const { return _width; }
+  inline QRectF boundingRect() const { return _boundingRect; }
+  inline qreal sceneLeft() const { return _sceneLeft; }
+  inline qreal sceneRight() const { return _sceneRight; }
 
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
+  void setXPos(qreal xpos);
 
-    void setXLimits(qreal min, qreal max);
+  void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
 
-  public slots:
-    void sceneRectChanged(const QRectF &);
+  void setXLimits(qreal min, qreal max);
 
-  protected:
-    void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
-    void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
-    void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
-    void mousePressEvent(QGraphicsSceneMouseEvent *event);
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+public slots:
+  void sceneRectChanged(const QRectF &);
 
-  signals:
-    void positionChanged(qreal x);
+protected:
+  void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
+  void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
+  void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
+  void mousePressEvent(QGraphicsSceneMouseEvent *event);
+  void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 
-  private slots:
-    void hoverChanged(qreal value);
+signals:
+  void positionChanged(qreal x);
 
-  private:
-    qreal _width;
-    qreal _hover;
-    bool _moving;
-    qreal _minXPos, _maxXPos;
-    QTimeLine _timeLine;
+private slots:
+  void hoverChanged(qreal value);
+
+private:
+  qreal _width;
+  qreal _sceneLeft, _sceneRight;
+  QRectF _boundingRect;
+  qreal _hover;
+  bool _moving;
+  qreal _minXPos, _maxXPos;
+  QTimeLine _timeLine;
 };
 
 #endif

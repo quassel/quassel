@@ -63,6 +63,7 @@ qreal ChatItem::setGeometry(qreal w, qreal h) {
   prepareGeometryChange();
   _boundingRect.setWidth(w);
   if(h < 0) h = computeHeight();
+  //if(h < 0) h = fontMetrics()->lineSpacing(); // only contents can be multi-line
   _boundingRect.setHeight(h);
   if(haveLayout()) updateLayout();
   return h;
@@ -332,13 +333,15 @@ void ContentsChatItem::hoverMoveEvent(QGraphicsSceneHoverEvent *event) {
 
 /*************************************************************************************************/
 
-ContentsChatItem::WrapColumnFinder::WrapColumnFinder(ChatItem *_item) : item(_item) {
-  wrapList = item->data(ChatLineModel::WrapListRole).value<ChatLineModel::WrapList>();
-  wordidx = 0;
-  layout = 0;
-  lastwrapcol = 0;
-  lastwrappos = 0;
-  w = 0;
+ContentsChatItem::WrapColumnFinder::WrapColumnFinder(ChatItem *_item)
+  : item(_item),
+    layout(0),
+    wrapList(item->data(ChatLineModel::WrapListRole).value<ChatLineModel::WrapList>()),
+    wordidx(0),
+    lastwrapcol(0),
+    lastwrappos(0),
+    w(0)
+{
 }
 
 ContentsChatItem::WrapColumnFinder::~WrapColumnFinder() {

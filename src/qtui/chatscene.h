@@ -49,8 +49,8 @@ public:
   inline bool isSingleBufferScene() const { return _singleBufferScene; }
   inline ChatLine *chatLine(int row) { return (row < _lines.count()) ? _lines[row] : 0; }
 
-  inline QRectF firstColumnHandleRect() const { return firstColHandle->boundingRect().translated(firstColHandle->x(), 0); }
-  inline QRectF secondColumnHandleRect() const { return secondColHandle->boundingRect().translated(secondColHandle->x(), 0); }
+  inline ColumnHandleItem *firstColumnHandle() const { return firstColHandle; }
+  inline ColumnHandleItem *secondColumnHandle() const { return secondColHandle; }
 
 public slots:
   void setWidth(qreal, bool forceReposition = false);

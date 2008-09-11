@@ -233,6 +233,7 @@ void ChatScene::setWidth(qreal width, bool forceReposition) {
   if(width == sceneRect().width() && !forceReposition)
     return;
 
+  // clock_t startT = clock();
   qreal oldHeight = sceneRect().height();
   qreal y = sceneRect().y();
   qreal linePos = y;
@@ -250,6 +251,9 @@ void ChatScene::setWidth(qreal width, bool forceReposition) {
   qreal dh = height - oldHeight;
   if(dh > 0)
     emit sceneHeightChanged(dh);
+
+  // clock_t endT = clock();
+  // qDebug() << "resized" << _lines.count() << "in" << (float)(endT - startT) / CLOCKS_PER_SEC << "sec";
 }
 
 void ChatScene::handlePositionChanged(qreal xpos) {
@@ -278,8 +282,8 @@ void ChatScene::handlePositionChanged(qreal xpos) {
 }
 
 void ChatScene::setHandleXLimits() {
-  firstColHandle->setXLimits(0, secondColumnHandleRect().left());
-  secondColHandle->setXLimits(firstColumnHandleRect().right(), width() - minContentsWidth);
+  firstColHandle->setXLimits(0, secondColHandle->sceneLeft());
+  secondColHandle->setXLimits(firstColHandle->sceneRight(), width() - minContentsWidth);
 }
 
 void ChatScene::setSelectingItem(ChatItem *item) {
@@ -298,12 +302,12 @@ void ChatScene::startGlobalSelection(ChatItem *item, const QPointF &itemPos) {
 void ChatScene::updateSelection(const QPointF &pos) {
   // This is somewhat hacky... we look at the contents item that is at the cursor's y position (ignoring x), since
   // it has the full height. From this item, we can then determine the row index and hence the ChatLine.
-  ChatItem *contentItem = static_cast<ChatItem *>(itemAt(QPointF(secondColumnHandleRect().right() + 1, pos.y())));
+  ChatItem *contentItem = static_cast<ChatItem *>(itemAt(QPointF(secondColHandle->sceneRight() + 1, pos.y())));
   if(!contentItem) return;
 
   int curRow = contentItem->row();
   int curColumn;
-  if(pos.x() > secondColumnHandleRect().right()) curColumn = ChatLineModel::ContentsColumn;
+  if(pos.x() > secondColHandle->sceneRight()) curColumn = ChatLineModel::ContentsColumn;
   else if(pos.x() > firstColHandlePos) curColumn = ChatLineModel::SenderColumn;
   else curColumn = ChatLineModel::TimestampColumn;
 
