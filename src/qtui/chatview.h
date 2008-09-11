@@ -49,6 +49,7 @@ protected:
 
 protected slots:
   virtual void sceneHeightChanged(qreal dh);
+  virtual inline void sceneRectChanged(const QRectF &rect) { setSceneRect(rect); }
   virtual void verticalScrollbarChanged(int);
 
 private:

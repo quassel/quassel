@@ -88,6 +88,11 @@ private:
   QList<ChatLine *> _lines;
   bool _singleBufferScene;
 
+  // calls to QChatScene::sceneRect() are very expensive. As we manage the scenerect ourselves
+  // we store the size in a member variable.
+  QRectF _sceneRect;
+  void updateSceneRect(const QRectF &rect);
+
   ColumnHandleItem *firstColHandle, *secondColHandle;
   qreal firstColHandlePos, secondColHandlePos;
 

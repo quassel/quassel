@@ -41,6 +41,7 @@ ChatScene::ChatScene(QAbstractItemModel *model, const QString &idString, qreal w
     _idString(idString),
     _model(model),
     _singleBufferScene(false),
+    _sceneRect(0, 0, width, 0),
     _selectingItem(0),
     _selectionStart(-1),
     _isSelecting(false),
@@ -88,8 +89,8 @@ ChatScene::~ChatScene() {
 void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
   Q_UNUSED(index);
   qreal h = 0;
-  qreal y = sceneRect().y();
-  qreal width = sceneRect().width();
+  qreal y = _sceneRect.y();
+  qreal width = _sceneRect.width();
   bool atTop = true;
   bool atBottom = false;
   bool moveTop = false;
@@ -154,9 +155,9 @@ void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
   
   // update sceneRect
   if(atTop || moveTop) {
-    setSceneRect(sceneRect().adjusted(0, h, 0, 0));
+    updateSceneRect(_sceneRect.adjusted(0, h, 0, 0));
   } else {
-    setSceneRect(sceneRect().adjusted(0, 0, 0, h));
+    updateSceneRect(_sceneRect.adjusted(0, 0, 0, h));
     emit sceneHeightChanged(h);
   }
 
@@ -222,20 +223,19 @@ void ChatScene::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int e
 
   // update sceneRect
   if(atTop || moveTop) {
-    setSceneRect(sceneRect().adjusted(0, h, 0, 0));
+    updateSceneRect(_sceneRect.adjusted(0, h, 0, 0));
   } else {
-    setSceneRect(sceneRect().adjusted(0, 0, 0, -h));
+    updateSceneRect(_sceneRect.adjusted(0, 0, 0, -h));
   }
-
 }
 
 void ChatScene::setWidth(qreal width, bool forceReposition) {
-  if(width == sceneRect().width() && !forceReposition)
+  if(width == _sceneRect.width() && !forceReposition)
     return;
 
   // clock_t startT = clock();
-  qreal oldHeight = sceneRect().height();
-  qreal y = sceneRect().y();
+  qreal oldHeight = _sceneRect.height();
+  qreal y = _sceneRect.y();
   qreal linePos = y;
 
   foreach(ChatLine *line, _lines) {
@@ -245,7 +245,7 @@ void ChatScene::setWidth(qreal width, bool forceReposition) {
 
   qreal height = linePos - y;
 
-  setSceneRect(QRectF(0, y, width, height));
+  updateSceneRect(QRectF(0, y, width, height));
   setHandleXLimits();
 
   qreal dh = height - oldHeight;
@@ -433,4 +433,9 @@ int ChatScene::sectionByScenePos(int x) {
     return ChatLineModel::SenderColumn;
 
   return ChatLineModel::ContentsColumn;
+}
+
+void ChatScene::updateSceneRect(const QRectF &rect) {
+  _sceneRect = rect;
+  setSceneRect(rect);
 }

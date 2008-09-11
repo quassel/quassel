@@ -52,6 +52,7 @@ void ChatView::init(MessageFilter *filter) {
 
   _scene = new ChatScene(filter, filter->idString(), viewport()->width() - 2, this); // see below: resizeEvent()
   connect(_scene, SIGNAL(sceneHeightChanged(qreal)), this, SLOT(sceneHeightChanged(qreal)));
+  connect(_scene, SIGNAL(sceneRectChanged(const QRectF &)), this, SLOT(sceneRectChanged(const QRectF &)));
   setScene(_scene);
 
   _lastScrollbarPos = verticalScrollBar()->maximum();
