@@ -116,7 +116,7 @@ void ChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     //painter->fillRect(boundingRect(), QApplication::palette().brush(QPalette::Highlight));
     //painter->restore();
   //}
-  QVector<QTextLayout::FormatRange> formats;
+  QVector<QTextLayout::FormatRange> formats = additionalFormats();
   if(_selectionMode != NoSelection) {
     QTextLayout::FormatRange selectFmt;
     selectFmt.format.setForeground(QApplication::palette().brush(QPalette::HighlightedText));
@@ -264,8 +264,12 @@ qreal ContentsChatItem::computeHeight() {
 }
 
 void ContentsChatItem::setLayout(QTextLayout *layout) {
-  if(!_layoutData)
+  if(!_layoutData) {
     _layoutData = new LayoutData;
+    _layoutData->clickables = findClickables();
+  } else {
+    delete _layoutData->layout;
+  }
   _layoutData->layout = layout;
 }
 
@@ -295,28 +299,79 @@ void ContentsChatItem::updateLayout() {
     h += line.height() + fontMetrics()->leading();
   }
   layout()->endLayout();
-
-  analyze();
 }
 
-void ContentsChatItem::analyze() {
-  // Match an URL
+// NOTE: This method is not threadsafe and not reentrant!
+//       (RegExps are not constant while matching, and they are static here for efficiency)
+QList<ContentsChatItem::Clickable> ContentsChatItem::findClickables() {
+  // For matching URLs
   static QString urlEnd("(?:>|[,.;:]?\\s|\\b)");
   static QString urlChars("(?:[\\w\\-~@/?&=+$()!%#]|[,.;:]\\w)");
-  static QRegExp urlExp(QString("((?:(?:https?://|ftp://|irc://|mailto:)|www)%1+)%2").arg(urlChars, urlEnd));
 
-  // Match a channel name
-  // We don't match for channel names starting with + or &, because that gives us a lot of false positives.
-  static QRegExp chanExp("((?:#|![A-Z0-9]{5})[^,:\\s]+(?::[^,:\\s]+)?)\\b");
+  static QRegExp regExp[] = {
+    // URL
+    QRegExp(QString("((?:(?:https?://|s?ftp://|irc://|mailto:)|www)%1+)%2").arg(urlChars, urlEnd)),
+
+    // Channel name
+    // We don't match for channel names starting with + or &, because that gives us a lot of false positives.
+    QRegExp("((?:#|![A-Z0-9]{5})[^,:\\s]+(?::[^,:\\s]+)?)\\b")
+
+    // TODO: Nicks, we'll need a filtering for only matching known nicknames further down if we do this
+  };
+
+  static const int regExpCount = 2;  // number of regexps in the array above
+
+  qint16 matches[] = { 0, 0, 0 };
+  qint16 matchEnd[] = { 0, 0, 0 };
+
   QString str = data(ChatLineModel::DisplayRole).toString();
-  quint16 idx = 0;
-  // first, we split on characters that might be URL separators
-  int i = str.indexOf(chanExp);
-  if(i >= 0) {
-    qDebug() << i << chanExp.cap(1);
+
+  QList<Clickable> result;
+  qint16 idx = 0;
+  qint16 minidx;
+  int type = -1;
+
+  do {
+    type = -1;
+    minidx = str.length();
+    for(int i = 0; i < regExpCount; i++) {
+      if(matches[i] < 0 || idx < matchEnd[i] || matchEnd[i] >= str.length()) continue;
+      matches[i] = str.indexOf(regExp[i], qMax(matchEnd[i], idx));
+      if(matches[i] >= 0) {
+        matchEnd[i] = matches[i] + regExp[i].cap(1).length();
+        if(matches[i] < minidx) {
+          minidx = matches[i];
+          type = i;
+        }
+      }
+    }
+    if(type >= 0) {
+      idx = matchEnd[type];
+      result.append(Clickable((Clickable::Type)type, matches[type], matchEnd[type] - matches[type]));
+    }
+  } while(type >= 0);
+
+  /* testing
+  if(!result.isEmpty()) qDebug() << str;
+  foreach(Clickable click, result) {
+    qDebug() << str.mid(click.start, click.length);
   }
+  */
+  return result;
+}
 
-
+QVector<QTextLayout::FormatRange> ContentsChatItem::additionalFormats() const {
+  // mark a clickable if hovered upon
+  QVector<QTextLayout::FormatRange> fmt;
+  if(layoutData()->currentClickable.isValid()) {
+    Clickable click = layoutData()->currentClickable;
+    QTextLayout::FormatRange f;
+    f.start = click.start;
+    f.length = click.length;
+    f.format.setFontUnderline(true);
+    fmt.append(f);
+  }
+  return fmt;
 }
 
 void ContentsChatItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) {
@@ -338,19 +393,38 @@ void ContentsChatItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) {
   event->accept();
 }
 
+void ContentsChatItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
+  // mouse move events always mean we're not hovering anymore...
+  if(layoutData()->currentClickable.isValid()) {
+    layoutData()->currentClickable = Clickable();
+    update();
+  }
+  ChatItem::mouseMoveEvent(event);
+}
+
 void ContentsChatItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event) {
-  //qDebug() << (void*)this << "entering";
-  event->ignore();
+  //layoutData()->currentClickable = event->pos();
+  event->accept();
 }
 
 void ContentsChatItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event) {
-  //qDebug() << (void*)this << "leaving";
-  event->ignore();
+  if(layoutData()->currentClickable.isValid()) {
+    layoutData()->currentClickable = Clickable();
+    update();
+  }
+  event->accept();
 }
 
 void ContentsChatItem::hoverMoveEvent(QGraphicsSceneHoverEvent *event) {
-  //qDebug() << (void*)this << event->pos();
-  event->ignore();
+  qint16 idx = posToCursor(event->pos());
+  for(int i = 0; i < layoutData()->clickables.count(); i++) {
+    Clickable click = layoutData()->clickables.at(i);
+    if(idx >= click.start && idx < click.start + click.length) {
+      layoutData()->currentClickable = click;
+      update();
+    }
+  }
+  event->accept();
 }
 
 /*************************************************************************************************/
