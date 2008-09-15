@@ -374,56 +374,76 @@ QVector<QTextLayout::FormatRange> ContentsChatItem::additionalFormats() const {
   return fmt;
 }
 
-void ContentsChatItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) {
-  // FIXME dirty and fast hack to make http:// urls klickable
+void ContentsChatItem::endHoverMode() {
+  if(layoutData()->currentClickable.isValid()) {
+    setCursor(Qt::ArrowCursor);
+    layoutData()->currentClickable = Clickable();
+    update();
+  }
+}
 
-  QRegExp regex("\\b([hf]t{1,2}ps?://[^\\s]+)\\b");
-  QString str = data(ChatLineModel::DisplayRole).toString();
-  int idx = posToCursor(event->pos());
-  int mi = 0;
-  do {
-    mi = regex.indexIn(str, mi);
-    if(mi < 0) break;
-    if(idx >= mi && idx < mi + regex.matchedLength()) {
-      QDesktopServices::openUrl(QUrl(regex.capturedTexts()[1]));
-      break;
+void ContentsChatItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
+  layoutData()->hasDragged = false;
+  ChatItem::mousePressEvent(event);
+}
+
+void ContentsChatItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
+  if(!event->buttons() && !layoutData()->hasDragged) {
+    // got a click
+    Clickable click = layoutData()->currentClickable;
+    if(click.isValid()) {
+      QString str = data(ChatLineModel::DisplayRole).toString().mid(click.start, click.length);
+      switch(click.type) {
+        case Clickable::Url:
+          QDesktopServices::openUrl(str);
+          break;
+        case Clickable::Channel:
+          // TODO join or whatever...
+          break;
+        default:
+          break;
+      }
     }
-    mi += regex.matchedLength();
-  } while(mi >= 0);
-  event->accept();
+  }
+  ChatItem::mouseReleaseEvent(event);
 }
 
 void ContentsChatItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
   // mouse move events always mean we're not hovering anymore...
-  if(layoutData()->currentClickable.isValid()) {
-    layoutData()->currentClickable = Clickable();
-    update();
-  }
+  endHoverMode();
+  // also, check if we have dragged the mouse
+  if(!layoutData()->hasDragged && event->buttons() & Qt::LeftButton
+    && (event->buttonDownScreenPos(Qt::LeftButton) - event->screenPos()).manhattanLength() >= QApplication::startDragDistance())
+    layoutData()->hasDragged = true;
   ChatItem::mouseMoveEvent(event);
 }
 
-void ContentsChatItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event) {
-  //layoutData()->currentClickable = event->pos();
-  event->accept();
-}
-
 void ContentsChatItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event) {
-  if(layoutData()->currentClickable.isValid()) {
-    layoutData()->currentClickable = Clickable();
-    update();
-  }
+  endHoverMode();
   event->accept();
 }
 
 void ContentsChatItem::hoverMoveEvent(QGraphicsSceneHoverEvent *event) {
+  bool onClickable = false;
   qint16 idx = posToCursor(event->pos());
   for(int i = 0; i < layoutData()->clickables.count(); i++) {
     Clickable click = layoutData()->clickables.at(i);
     if(idx >= click.start && idx < click.start + click.length) {
-      layoutData()->currentClickable = click;
-      update();
+      if(click.type == Clickable::Url)
+        onClickable = true;
+      else if(click.type == Clickable::Channel) {
+        // TODO: don't make clickable if it's our own name
+        //onClickable = true; FIXME disabled for now
+      }
+      if(onClickable) {
+        setCursor(Qt::PointingHandCursor);
+        layoutData()->currentClickable = click;
+        update();
+        break;
+      }
     }
   }
+  if(!onClickable) endHoverMode();
   event->accept();
 }
 

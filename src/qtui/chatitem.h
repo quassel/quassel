@@ -132,9 +132,9 @@ public:
   virtual inline bool haveLayout() const { return _layoutData != 0 && layout() != 0; }
 
 protected:
-  virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
   virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
-  virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
+  virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
+  virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
   virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
   virtual void hoverMoveEvent(QGraphicsSceneHoverEvent *event);
 
@@ -151,6 +151,7 @@ private:
 
   qreal computeHeight();
   QList<Clickable> findClickables();
+  void endHoverMode();
 
   LayoutData *_layoutData;
 };
@@ -177,8 +178,9 @@ struct ContentsChatItem::LayoutData {
   QTextLayout *layout;
   QList<Clickable> clickables;
   Clickable currentClickable;
+  bool hasDragged;
 
-  LayoutData() { layout = 0; }
+  LayoutData() { layout = 0; hasDragged = false; }
   ~LayoutData() { delete layout; }
 };
 
