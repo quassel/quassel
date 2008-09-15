@@ -38,7 +38,8 @@ public:
   virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
   virtual QString idString() const;
   inline bool isSingleBufferFilter() const { return _validBuffers.count() == 1; }
-  
+  inline bool containsBuffer(const BufferId &id) const { return _validBuffers.contains(id); }
+
 private:
   QSet<BufferId> _validBuffers;
 };

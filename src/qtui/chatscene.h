@@ -26,7 +26,7 @@
 #include <QSet>
 
 #include "columnhandleitem.h"
-
+#include "messagefilter.h"
 
 class AbstractUiMsg;
 class ChatItem;
@@ -47,6 +47,7 @@ public:
   int sectionByScenePos(int x);
   inline int sectionByScenePos(const QPoint &pos) { return sectionByScenePos(pos.x()); }
   inline bool isSingleBufferScene() const { return _singleBufferScene; }
+  inline bool containsBuffer(const BufferId &id) const;
   inline ChatLine *chatLine(int row) { return (row < _lines.count()) ? _lines[row] : 0; }
 
   inline ColumnHandleItem *firstColumnHandle() const { return firstColHandle; }
@@ -105,5 +106,9 @@ private:
 
   int _lastBacklogSize;
 };
+
+bool ChatScene::containsBuffer(const BufferId &id) const {
+  return qobject_cast<MessageFilter*>(model()) ? qobject_cast<MessageFilter*>(model())->containsBuffer(id) : false;
+}
 
 #endif
