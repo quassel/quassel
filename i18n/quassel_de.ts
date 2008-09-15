@@ -1590,7 +1590,7 @@ space</source>
     <message>
         <location filename="../src/qtui/ui/coreconnectdlg.ui" line="509"/>
         <source>Network states:</source>
-        <translation>Netzwerkstati:</translation>
+        <translation>Netzwerkstatus:</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/coreconnectdlg.ui" line="522"/>
@@ -1600,12 +1600,12 @@ space</source>
     <message>
         <location filename="../src/qtui/ui/coreconnectdlg.ui" line="529"/>
         <source>Channel states:</source>
-        <translation type="obsolete">Kanalstati:</translation>
+        <translation type="obsolete">Kanalstatus:</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/coreconnectdlg.ui" line="549"/>
         <source>User states:</source>
-        <translation type="obsolete">Benutzerstati:</translation>
+        <translation type="obsolete">Benutzerstatus:</translation>
     </message>
 </context>
 <context>
@@ -2895,7 +2895,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/core/networkconnection.cpp" line="204"/>
         <source>Connecting to %1:%2...</source>
-        <translation>Verbinde mint %1:%2...</translation>
+        <translation>Verbinde mit %1:%2...</translation>
     </message>
     <message>
         <location filename="../src/core/networkconnection.cpp" line="260"/>
@@ -3039,7 +3039,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/settingspages/networkssettingspage.ui" line="138"/>
         <source>Identity:</source>
-        <translation>Indentität:</translation>
+        <translation>Identität:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/networkssettingspage.ui" line="178"/>
