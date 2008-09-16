@@ -340,7 +340,7 @@ UiStyle::StyledMessage UiStyle::styleMessage(const Message &msg) {
       if(!txt.isEmpty()) t = QString("%1 (%2)").arg(t).arg(txt);
       break;
     case Message::Quit:
-      s = tr("%Dq<--"); t = tr("%Dq%DN%DU%1%DU%DN %DH(%2@%3)%DH has quit").arg(nick, user, host);
+      s = tr("%Dq<--"); t = tr("%Dq%DN%1%DN %DH(%2@%3)%DH has quit").arg(nick, user, host);
       if(!txt.isEmpty()) t = QString("%1 (%2)").arg(t).arg(txt);
       break;
     case Message::Kick:
