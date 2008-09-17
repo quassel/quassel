@@ -63,7 +63,6 @@ qreal ChatItem::setGeometry(qreal w, qreal h) {
   prepareGeometryChange();
   _boundingRect.setWidth(w);
   if(h < 0) h = computeHeight();
-  //if(h < 0) h = fontMetrics()->lineSpacing(); // only contents can be multi-line
   _boundingRect.setHeight(h);
   if(haveLayout()) updateLayout();
   return h;
@@ -296,7 +295,7 @@ void ContentsChatItem::updateLayout() {
     int col = finder.nextWrapColumn();
     line.setNumColumns(col >= 0 ? col - line.textStart() : layout()->text().length());
     line.setPosition(QPointF(0, h));
-    h += line.height() + fontMetrics()->leading();
+    h += fontMetrics()->lineSpacing();
   }
   layout()->endLayout();
 }
