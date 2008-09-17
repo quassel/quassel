@@ -43,7 +43,7 @@ void CoreInfoDlg::coreInfoAvailable() {
 void CoreInfoDlg::updateUptime() {
   QDateTime startTime = _coreInfo["startTime"].toDateTime();
   
-  int uptime = startTime.secsTo(QDateTime::currentDateTime());
+  int uptime = startTime.secsTo(QDateTime::currentDateTime().toUTC());
   int updays = uptime / 86400; uptime %= 86400;
   int uphours = uptime / 3600; uptime %= 3600;
   int upmins = uptime / 60; uptime %= 60;
