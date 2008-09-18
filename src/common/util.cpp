@@ -19,12 +19,13 @@
  ***************************************************************************/
 
 #include "util.h"
-#include "global.h"
 
 #include <QCoreApplication>
 #include <QDebug>
 #include <QTextCodec>
 #include <QTranslator>
+
+#include "quassel.h"
 
 class QMetaMethod;
 
@@ -124,7 +125,7 @@ uint editingDistance(const QString &s1, const QString &s2) {
 	min = deleteChar;
       else
 	min = insertChar;
-      
+
       if(s1[i-1] == s2[j-1]) {
 	uint inheritChar = matrix[i-1][j-1];
 	if(inheritChar < min)
@@ -144,9 +145,10 @@ QByteArray methodName(const QMetaMethod &method) {
 
 QDir quasselDir() {
   QString quasselDir;
-  if(Global::parser.isSet("datadir")) {
-    quasselDir = Global::parser.value("datadir");
+  if(Quassel::isOptionSet("datadir")) {
+    quasselDir = Quassel::optionValue("datadir");
   } else {
+    // FIXME use QDesktopServices
 #ifdef Q_OS_WIN32
     quasselDir = qgetenv("APPDATA") + "/quassel/";
 #elif defined Q_WS_MAC
@@ -179,7 +181,7 @@ void loadTranslation(const QLocale &locale) {
 
   if(locale.language() == QLocale::C)
     return;
-  
+
   qtTranslator->load(QString(":i18n/qt_%1").arg(locale.name()));
   quasselTranslator->load(QString(":i18n/quassel_%1").arg(locale.name()));
 

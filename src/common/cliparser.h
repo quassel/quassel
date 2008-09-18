@@ -28,9 +28,8 @@
 class CliParser{
 public:
   inline CliParser() {};
-  CliParser(QStringList arguments);
 
-  bool parse();
+  bool parse(const QStringList &arguments);
   QString value(const QString &longName);
   bool isSet(const QString &longName);
   inline void addSwitch(const QString &longName, const char shortName = 0, const QString &help = QString()) {
@@ -55,7 +54,7 @@ private:
     def(_def),
     value(QString()),
     boolValue(false) {};
-  
+
     CliArgType type;
     char shortName;
     QString help;
@@ -63,12 +62,13 @@ private:
     QString value;
     bool boolValue;
   };
-  
+
   void addArgument(const QString &longName, const CliParserArg &arg);
   bool addLongArg(const CliParserArg::CliArgType type, const QString &name, const QString &value = QString());
   bool addShortArg(const CliParserArg::CliArgType type, const char shortName, const QString &value = QString());
   QString escapedValue(const QString &value);
   QString lnameOfShortArg(const char arg);
+
   QStringList argsRaw;
   QHash<QString, CliParserArg> argsHash;
 };

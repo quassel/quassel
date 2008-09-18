@@ -19,13 +19,13 @@
  ***************************************************************************/
 #include <QApplication>
 
+#include "quassel.h"
 #include "uistyle.h"
 #include "uisettings.h"
 #include "util.h"
 
 // FIXME remove with migration code
 #include <QSettings>
-#include "global.h"
 
 UiStyle::UiStyle(const QString &settingsKey) : _settingsKey(settingsKey) {
   // register FormatList if that hasn't happened yet
@@ -39,9 +39,9 @@ UiStyle::UiStyle(const QString &settingsKey) : _settingsKey(settingsKey) {
   // FIXME remove migration at some point
   // We remove old settings if we find them, since they conflict
 #ifdef Q_WS_MAC
-  QSettings mys(QCoreApplication::organizationDomain(), Global::clientApplicationName);
+  QSettings mys(QCoreApplication::organizationDomain(), Quassel::buildInfo().clientApplicationName);
 #else
-  QSettings mys(QCoreApplication::organizationName(), Global::clientApplicationName);
+  QSettings mys(QCoreApplication::organizationName(), Quassel::buildInfo().clientApplicationName);
 #endif
   mys.beginGroup("QtUi");
   if(mys.childGroups().contains("Colors")) {

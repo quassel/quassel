@@ -11,18 +11,18 @@ set(SOURCES
     buffersyncer.cpp
     bufferviewconfig.cpp
     bufferviewmanager.cpp
-    global.cpp
+    cliparser.cpp
     identity.cpp
+    ircchannel.cpp
+    ircuser.cpp
     logger.cpp
     message.cpp
+    network.cpp
+    quassel.cpp
     settings.cpp
     signalproxy.cpp
     syncableobject.cpp
-    util.cpp
-    network.cpp
-    ircuser.cpp
-    ircchannel.cpp
-    cliparser.cpp)
+    util.cpp)
 
 set(MOC_HDRS
     aliasmanager.h
@@ -42,12 +42,11 @@ set(MOC_HDRS
 
 set(HEADERS ${MOC_HDRS}
     bufferinfo.h
-    global.h
+    cliparser.h
     logger.h
     message.h
     types.h
-    util.h
-    cliparser.h)
+    util.h)
 
 qt4_wrap_cpp(MOC ${MOC_HDRS})
 

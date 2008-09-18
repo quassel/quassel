@@ -11,6 +11,7 @@ set(SOURCES
     basichandler.cpp
     core.cpp
     corealiasmanager.cpp
+    coreapplication.cpp
     corebacklogmanager.cpp
     corebufferviewconfig.cpp
     corebufferviewmanager.cpp
@@ -33,6 +34,7 @@ set(MOC_HDRS
     basichandler.h
     core.h
     corealiasmanager.h
+    coreapplication.h
     corebacklogmanager.h
     corebufferviewconfig.h
     corebufferviewmanager.h

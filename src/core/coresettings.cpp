@@ -20,9 +20,9 @@
 
 #include "coresettings.h"
 
-#include <QStringList>
+#include "quassel.h"
 
-CoreSettings::CoreSettings(const QString group) : Settings(group, Global::coreApplicationName) {
+CoreSettings::CoreSettings(const QString group) : Settings(group, Quassel::buildInfo().coreApplicationName) {
 }
 
 CoreSettings::~CoreSettings() {
@@ -39,14 +39,6 @@ QVariant CoreSettings::storageSettings(const QVariant &def) {
 // FIXME remove
 QVariant CoreSettings::oldDbSettings() {
   return localValue("DatabaseSettings");
-}
-
-void CoreSettings::setPort(const uint &port) {
-  setLocalValue("Port", port);
-}
-
-uint CoreSettings::port(const uint &def) {
-  return localValue("Port", def).toUInt();
 }
 
 void CoreSettings::setCoreState(const QVariant &data) {

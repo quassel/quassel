@@ -24,22 +24,28 @@
 #include <QApplication>
 #include <QSessionManager>
 
+#include "quassel.h"
 #include "sessionsettings.h"
-#include "qtui.h"
 
-class QtUiApplication : public QApplication {
+class QtUi;
+
+class QtUiApplication : public QApplication, public Quassel {
   Q_OBJECT
+
   public:
-    QtUiApplication(int &, char**);
+    QtUiApplication(int &, char **);
     ~QtUiApplication();
+    virtual bool init();
+
     void resumeSessionIfPossible();
     virtual void saveState(QSessionManager & manager);
+
   signals:
     void saveStateToSession(const QString &sessionId);
-    void saveStateToSessionSettings(SessionSettings &s);
+    void saveStateToSessionSettings(SessionSettings &s); // FIXME refs in signals won't probably work
     void resumeFromSession(const QString sessionId);
     void resumeFromSessionSettings(SessionSettings &s);
-    
+
 };
 
 #endif

@@ -26,6 +26,7 @@
 #include "core.h"
 #include "coresession.h"
 #include "coresettings.h"
+#include "quassel.h"
 #include "signalproxy.h"
 #include "sqlitestorage.h"
 #include "network.h"
@@ -87,7 +88,7 @@ void Core::init() {
 
   connect(&_server, SIGNAL(newConnection()), this, SLOT(incomingConnection()));
   connect(&_v6server, SIGNAL(newConnection()), this, SLOT(incomingConnection()));
-  if(!startListening(cs.port())) exit(1); // TODO make this less brutal
+  if(!startListening()) exit(1); // TODO make this less brutal
 }
 
 Core::~Core() {
@@ -341,8 +342,9 @@ QHash<BufferId, MsgId> Core::bufferLastSeenMsgIds(UserId user) {
 
 /*** Network Management ***/
 
-bool Core::startListening(uint port) {
+bool Core::startListening() {
   bool success = false;
+  uint port = Quassel::optionValue("port").toUInt();
 
   if(_server.listen(QHostAddress::Any, port)) {
     quInfo() << "Listening for GUI clients on IPv6 port" << _server.serverPort() << "using protocol version" << Global::protocolVersion;
@@ -356,7 +358,7 @@ bool Core::startListening(uint port) {
   if(!success) {
     quError() << qPrintable(QString("Could not open GUI client port %1: %2").arg(port).arg(_server.errorString()));
   }
-  
+
   return success;
 }
 
@@ -374,7 +376,7 @@ void Core::incomingConnection() {
     connect(socket, SIGNAL(disconnected()), this, SLOT(clientDisconnected()));
     connect(socket, SIGNAL(readyRead()), this, SLOT(clientHasData()));
     connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(socketError(QAbstractSocket::SocketError)));
-    
+
     QVariantMap clientInfo;
     blocksizes.insert(socket, (quint32)0);
     quInfo() << qPrintable(tr("Client connected from"))  << qPrintable(socket->peerAddress().toString());
@@ -491,7 +493,7 @@ void Core::processClientMessage(QTcpSocket *socket, const QVariantMap &msg) {
       quDebug() << "Using compression for Client:" << qPrintable(socket->peerAddress().toString());
     }
 #endif
-    
+
   } else {
     // for the rest, we need an initialized connection
     if(!clientInfo.contains(socket)) {
@@ -546,7 +548,7 @@ void Core::clientDisconnected() {
 
     // DO NOT CALL ANY METHODS ON socket!!
     socket = static_cast<QTcpSocket *>(sender());
-    
+
     QHash<QTcpSocket *, quint32>::iterator blockSizeIter = blocksizes.begin();
     while(blockSizeIter != blocksizes.end()) {
       if(blockSizeIter.key() == socket) {

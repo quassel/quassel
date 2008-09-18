@@ -24,11 +24,6 @@
 #include <QFileInfo>
 #include <QDebug>
 
-CliParser::CliParser(QStringList arguments)
-{
-  argsRaw = arguments;
-}
-
 void CliParser::addArgument(const QString &longName, const CliParserArg &arg) {
   if(argsHash.contains(longName)) qWarning() << "Warning: Multiple definition of argument" << longName;
   if(arg.shortName != 0 && !lnameOfShortArg(arg.shortName).isNull())
@@ -82,7 +77,8 @@ QString CliParser::escapedValue(const QString &value) {
   return escapedValue;
 }
 
-bool CliParser::parse() {
+bool CliParser::parse(const QStringList &args) {
+  argsRaw = args;
   QStringList::const_iterator currentArg;
   for (currentArg = argsRaw.constBegin(); currentArg != argsRaw.constEnd(); ++currentArg) {
     if(currentArg->startsWith("--")) {
@@ -147,7 +143,7 @@ bool CliParser::parse() {
 
 void CliParser::usage() {
   qWarning() << "Usage:" << QFileInfo(argsRaw.at(0)).completeBaseName() << "[arguments]";
-  
+
   // get size of longName field
   QStringList keys = argsHash.keys();
   uint lnameFieldSize = 0;
@@ -161,12 +157,12 @@ void CliParser::usage() {
     size += 8;
     if(size > lnameFieldSize) lnameFieldSize = size;
   }
-  
+
   QHash<QString, CliParserArg>::const_iterator arg;
   for(arg = argsHash.constBegin(); arg != argsHash.constEnd(); ++arg) {
     QString output;
     QString lnameField;
-    
+
     if(arg.value().shortName) {
       output.append(" -").append(arg.value().shortName).append(",");
     }

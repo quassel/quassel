@@ -28,7 +28,6 @@
 #include "bufferviewmanager.h"
 #include "clientbacklogmanager.h"
 #include "clientirclisthelper.h"
-#include "global.h"
 #include "identity.h"
 #include "ircchannel.h"
 #include "ircuser.h"
@@ -52,8 +51,11 @@ Client *Client::instance() {
 }
 
 void Client::destroy() {
-  //delete instanceptr;
-  instanceptr->deleteLater();
+  if(instanceptr) {
+    delete instanceptr->mainUi;
+    instanceptr->deleteLater();
+    instanceptr = 0;
+  }
 }
 
 void Client::init(AbstractUi *ui) {

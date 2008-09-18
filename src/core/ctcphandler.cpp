@@ -19,10 +19,10 @@
  ***************************************************************************/
 #include "ctcphandler.h"
 
-#include "global.h"
-#include "util.h"
 #include "message.h"
 #include "network.h"
+#include "quassel.h"
+#include "util.h"
 
 CtcpHandler::CtcpHandler(NetworkConnection *parent)
   : BasicHandler(parent),
@@ -44,7 +44,7 @@ QByteArray CtcpHandler::dequote(const QByteArray &message) {
   QByteArray dequotedMessage;
   QByteArray messagepart;
   QHash<QByteArray, QByteArray>::iterator ctcpquote;
-  
+
   // copy dequote Message
   for(int i = 0; i < message.size(); i++) {
     messagepart = message.mid(i,1);
@@ -86,14 +86,14 @@ QByteArray CtcpHandler::xdelimDequote(const QByteArray &message) {
 
 void CtcpHandler::parse(Message::Type messageType, const QString &prefix, const QString &target, const QByteArray &message) {
   QByteArray ctcp;
-  
+
   //lowlevel message dequote
   QByteArray dequotedMessage = dequote(message);
 
   CtcpType ctcptype = messageType == Message::Notice
     ? CtcpReply
     : CtcpQuery;
-  
+
   Message::Flags flags = (messageType == Message::Notice && !network()->isChannelName(target))
     ? Message::Redirected
     : Message::None;
@@ -129,7 +129,7 @@ void CtcpHandler::parse(Message::Type messageType, const QString &prefix, const 
 
     handle(ctcpcmd, Q_ARG(CtcpType, ctcptype), Q_ARG(QString, prefix), Q_ARG(QString, target), Q_ARG(QString, ctcpparam));
   }
-  
+
   if(!dequotedMessage.isEmpty())
     displayMsg(messageType, target, userDecode(target, dequotedMessage), prefix, flags);
 }

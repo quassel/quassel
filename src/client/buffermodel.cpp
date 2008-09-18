@@ -20,19 +20,19 @@
 
 #include "buffermodel.h"
 
+#include <QAbstractItemView>
+
 #include "client.h"
-#include "global.h"
 #include "mappedselectionmodel.h"
 #include "networkmodel.h"
-
-#include <QAbstractItemView>
+#include "quassel.h"
 
 BufferModel::BufferModel(NetworkModel *parent)
   : QSortFilterProxyModel(parent),
     _selectionModelSynchronizer(this)
 {
   setSourceModel(parent);
-  if(Global::parser.isSet("debugbufferswitches")) {
+  if(Quassel::isOptionSet("debugbufferswitches")) {
     connect(_selectionModelSynchronizer.selectionModel(), SIGNAL(currentChanged(const QModelIndex &, const QModelIndex &)),
 	    this, SLOT(debug_currentChanged(const QModelIndex &, const QModelIndex &)));
   }

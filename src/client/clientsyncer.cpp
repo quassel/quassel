@@ -25,14 +25,13 @@
 #endif
 
 #include "client.h"
-#include "global.h"
 #include "identity.h"
 #include "ircuser.h"
 #include "ircchannel.h"
 #include "network.h"
 #include "networkmodel.h"
+#include "quassel.h"
 #include "signalproxy.h"
-
 
 ClientSyncer::ClientSyncer(QObject *parent)
   : QObject(parent)

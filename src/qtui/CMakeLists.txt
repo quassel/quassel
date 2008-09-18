@@ -30,8 +30,8 @@ set(SOURCES
     mainwin.cpp
     msgprocessorstatuswidget.cpp
     nicklistwidget.cpp
-    qtuiapplication.cpp
     qtui.cpp
+    qtuiapplication.cpp
     qtuimessageprocessor.cpp
     qtuisettings.cpp
     qtuistyle.cpp

@@ -239,7 +239,7 @@ endmacro(setup_qt4_variables)
 # Now we have everything, so just glue the right pieces together :)
 if(WANT_CORE)
   setup_qt4_variables(NETWORK SCRIPT SQL)
-  add_executable(quasselcore ${CMAKE_SOURCE_DIR}/src/common/main.cpp
+  add_executable(quasselcore src/common/main.cpp
                              ${RC_SQL} ${RC_I18N} ${WIN32_RC})
   set_target_properties(quasselcore PROPERTIES 
                                     COMPILE_FLAGS "-DQT_NETWORK_LIB -DQT_SCRIPT_LIB -DQT_SQL_LIB -DBUILD_CORE")
@@ -249,7 +249,7 @@ endif(WANT_CORE)
 
 if(WANT_QTCLIENT)
   setup_qt4_variables(${LINK_DBUS} GUI NETWORK)
-  add_executable(quasselclient WIN32 ${CMAKE_SOURCE_DIR}/src/common/main.cpp
+  add_executable(quasselclient WIN32 src/common/main.cpp
                                      ${RC_ICONS} ${RC_QUASSEL_ICONS} ${RC_I18N} ${WIN32_RC})
   set_target_properties(quasselclient PROPERTIES
                                       COMPILE_FLAGS "-DQT_GUI_LIB -DQT_NETWORK_LIB -DBUILD_QTUI")
@@ -259,7 +259,7 @@ endif(WANT_QTCLIENT)
 
 if(WANT_MONO)
   setup_qt4_variables(${LINK_DBUS} GUI NETWORK SCRIPT SQL)
-  add_executable(quassel WIN32 ${CMAKE_SOURCE_DIR}/src/common/main.cpp
+  add_executable(quassel WIN32 src/common/main.cpp src/qtui/monoapplication.cpp
                                ${RC_ICONS} ${RC_QUASSEL_ICONS} ${RC_SQL} ${RC_I18N} ${WIN32_RC})
   set_target_properties(quassel PROPERTIES 
                                 COMPILE_FLAGS "-DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_SCRIPT_LIB -DQT_SQL_LIB -DBUILD_MONO")

@@ -30,8 +30,6 @@
 
 #include "uisettings.h"
 
-#include "global.h"
-
 #include <QAction>
 #include <QFlags>
 #include <QHeaderView>
@@ -115,7 +113,7 @@ void BufferView::init() {
 
 void BufferView::setModel(QAbstractItemModel *model) {
   delete selectionModel();
-  
+
   QTreeView::setModel(model);
   init();
   // remove old Actions
@@ -139,7 +137,7 @@ void BufferView::setModel(QAbstractItemModel *model) {
     connect(showSection, SIGNAL(toggled(bool)), this, SLOT(toggleHeader(bool)));
     header()->addAction(showSection);
   }
-  
+
 }
 
 void BufferView::setFilteredModel(QAbstractItemModel *model_, BufferViewConfig *config) {
@@ -169,7 +167,7 @@ void BufferView::setSelectionModel(QItemSelectionModel *selectionModel) {
   if(QTreeView::selectionModel())
     disconnect(selectionModel, SIGNAL(currentChanged(QModelIndex, QModelIndex)),
 	       model(), SIGNAL(checkPreviousCurrentForRemoval(QModelIndex, QModelIndex)));
-    
+
   QTreeView::setSelectionModel(selectionModel);
   BufferViewFilter *filter = qobject_cast<BufferViewFilter *>(model());
   if(filter) {
@@ -181,7 +179,7 @@ void BufferView::setSelectionModel(QItemSelectionModel *selectionModel) {
 void BufferView::setConfig(BufferViewConfig *config) {
   if(_config == config)
     return;
-  
+
   if(_config) {
     disconnect(_config, 0, this, 0);
   }
@@ -216,7 +214,7 @@ void BufferView::joinChannel(const QModelIndex &index) {
     return;
 
   BufferInfo bufferInfo = index.data(NetworkModel::BufferInfoRole).value<BufferInfo>();
-  
+
   Client::userInput(bufferInfo, QString("/JOIN %1").arg(bufferInfo.bufferName()));
 }
 
@@ -243,7 +241,7 @@ void BufferView::removeSelectedBuffers(bool permanently) {
       continue;
 
     removedRows << bufferId;
-    
+
     if(permanently)
       config()->requestRemoveBufferPermanently(bufferId);
     else
@@ -257,7 +255,7 @@ void BufferView::rowsInserted(const QModelIndex & parent, int start, int end) {
   // ensure that newly inserted network nodes are expanded per default
   if(parent.data(NetworkModel::ItemTypeRole) != NetworkModel::NetworkItemType)
     return;
-  
+
   if(model()->rowCount(parent) == 1 && parent.data(NetworkModel::ItemActiveRole) == true) {
     // without updating the parent the expand will have no effect... Qt Bug?
     update(parent);
@@ -317,7 +315,7 @@ void BufferView::storeExpandedState(NetworkId networkId, bool expanded) {
 
 void BufferView::dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight) {
   QTreeView::dataChanged(topLeft, bottomRight);
-  
+
   // determine how many items have been changed and if any of them is a networkitem
   // which just swichted from active to inactive or vice versa
   if(topLeft.data(NetworkModel::ItemTypeRole) != NetworkModel::NetworkItemType)
@@ -421,10 +419,10 @@ void BufferView::contextMenuEvent(QContextMenuEvent *event) {
       connectionStateIcon = QIcon(":/22x22/actions/gear");
     }
   }
-  
+
   QMenu contextMenu(this);
   NetworkModel::itemType itemType = static_cast<NetworkModel::itemType>(index.data(NetworkModel::ItemTypeRole).toInt());
-  
+
   switch(itemType) {
   case NetworkModel::NetworkItemType:
     showChannelList.setData(index.data(NetworkModel::NetworkIdRole));
@@ -465,11 +463,11 @@ void BufferView::contextMenuEvent(QContextMenuEvent *event) {
   default:
     return;
   }
-  
+
   if(contextMenu.actions().isEmpty())
     return;
   QAction *result = contextMenu.exec(QCursor::pos());
-  
+
   // Handle Result
   if(network && result == &_connectNetAction) {
     network->requestConnect();
@@ -504,7 +502,7 @@ void BufferView::contextMenuEvent(QContextMenuEvent *event) {
     Client::instance()->userInput(bufferInfo, QString("/PART"));
     return;
   }
-  
+
   if(result == &_hideBufferTemporarilyAction) {
     removeSelectedBuffers();
     return;
@@ -553,13 +551,13 @@ void BufferView::wheelEvent(QWheelEvent* event) {
       }
   selectionModel()->setCurrentIndex( resultingIndex, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows );
   selectionModel()->select( resultingIndex, QItemSelectionModel::ClearAndSelect );
-  
+
 }
 
 
 QSize BufferView::sizeHint() const {
   return QTreeView::sizeHint();
-  
+
   if(!model())
     return QTreeView::sizeHint();
 

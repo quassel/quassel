@@ -66,7 +66,6 @@
 #include "settingspages/networkssettingspage.h"
 #include "settingspages/notificationssettingspage.h"
 
-#include "global.h"
 #include "qtuistyle.h"
 
 MainWin::MainWin(QWidget *parent)

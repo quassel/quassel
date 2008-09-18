@@ -25,7 +25,6 @@
 #include "networkssettingspage.h"
 
 #include "client.h"
-#include "global.h"
 #include "identity.h"
 #include "network.h"
 

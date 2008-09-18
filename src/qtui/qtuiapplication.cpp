@@ -18,14 +18,40 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include "qtuiapplication.h"
+
 #include <QStringList>
 
-#include "qtuiapplication.h"
-#include "sessionsettings.h"
 #include "client.h"
+#include "cliparser.h"
+#include "qtui.h"
+#include "sessionsettings.h"
 
-QtUiApplication::QtUiApplication(int &argc, char **argv) : QApplication(argc, argv) {
+QtUiApplication::QtUiApplication(int &argc, char **argv) : QApplication(argc, argv), Quassel() {
+  setRunMode(Quassel::ClientOnly);
 
+  // put client-only arguments here
+  CliParser *parser = Quassel::cliParser();
+  parser->addSwitch("debugbufferswitches",0,"Enables debugging for bufferswitches");
+  parser->addSwitch("debugmodel",0,"Enables debugging for models");
+}
+
+bool QtUiApplication::init() {
+  if(Quassel::init()) {
+    // session resume
+    QtUi *gui = new QtUi();
+    Client::init(gui);
+    // init gui only after the event loop has started
+    // QTimer::singleShot(0, gui, SLOT(init()));
+    gui->init();
+    resumeSessionIfPossible();
+    return true;
+  }
+  return false;
+}
+
+QtUiApplication::~QtUiApplication() {
+  Client::destroy();
 }
 
 void QtUiApplication::saveState(QSessionManager & manager) {
@@ -35,9 +61,6 @@ void QtUiApplication::saveState(QSessionManager & manager) {
   s.setSessionAge(0);
   emit saveStateToSession(manager.sessionId());
   emit saveStateToSessionSettings(s);
-}
-
-QtUiApplication::~ QtUiApplication() {
 }
 
 void QtUiApplication::resumeSessionIfPossible() {
@@ -56,4 +79,3 @@ void QtUiApplication::resumeSessionIfPossible() {
     s.cleanup();
   }
 }
-

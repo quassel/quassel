@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include "logger.h"
-#include "global.h"
+#include "quassel.h"
 
 #include <QFile>
 #include <QTextStream>
@@ -37,10 +37,10 @@ Logger::~Logger() {
 
 void Logger::log() {
   LogLevel lvl;
-  if (Global::parser.value("loglevel") == "Debug") lvl = DebugLevel;
-  else if (Global::parser.value("loglevel") == "Info") lvl = InfoLevel;
-  else if (Global::parser.value("loglevel") == "Warning") lvl = WarningLevel;
-  else if (Global::parser.value("loglevel") == "Error") lvl = ErrorLevel;
+  if (Quassel::optionValue("loglevel") == "Debug") lvl = DebugLevel;
+  else if (Quassel::optionValue("loglevel") == "Info") lvl = InfoLevel;
+  else if (Quassel::optionValue("loglevel") == "Warning") lvl = WarningLevel;
+  else if (Quassel::optionValue("loglevel") == "Error") lvl = ErrorLevel;
   else lvl = InfoLevel;
 
   if(_logLevel < lvl) return;
@@ -48,8 +48,8 @@ void Logger::log() {
   // if we can't open logfile we log to stdout
   QTextStream out(stdout);
   QFile file;
-  if(!Global::parser.value("logfile").isEmpty()) {
-    file.setFileName(Global::parser.value("logfile"));
+  if(!Quassel::optionValue("logfile").isEmpty()) {
+    file.setFileName(Quassel::optionValue("logfile"));
     if (file.open(QIODevice::Append | QIODevice::Text)) {
       out.setDevice(&file);
       _buffer.remove(QChar('\n'));

@@ -18,13 +18,13 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "client.h"
-#include "clientsettings.h"
-#include "global.h"
-
 #include <QStringList>
 
-ClientSettings::ClientSettings(QString g) : Settings(g, Global::clientApplicationName) {
+#include "client.h"
+#include "clientsettings.h"
+#include "quassel.h"
+
+ClientSettings::ClientSettings(QString g) : Settings(g, Quassel::buildInfo().clientApplicationName) {
 }
 
 ClientSettings::~ClientSettings() {

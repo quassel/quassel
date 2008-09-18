@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-08 by the Quassel Project                          *
+ *   Copyright (C) 2005-08 by the Quassel IRC Team                         *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,25 +18,27 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _CORESETTINGS_H_
-#define _CORESETTINGS_H_
+#include "monoapplication.h"
+#include "coreapplication.h"
+#include "client.h"
+#include "qtui.h"
 
-#include "settings.h"
+MonolithicApplication::MonolithicApplication(int &argc, char **argv) : QtUiApplication(argc, argv) {
+  setRunMode(Monolithic);
+  _internal = new CoreApplicationInternal();
 
-class CoreSettings : public Settings {
+}
 
-  public:
-    virtual ~CoreSettings();
-    CoreSettings(const QString group = "Core");
+bool MonolithicApplication::init() {
+  if(Quassel::init() && _internal->init()) {
+    return QtUiApplication::init();
+  }
+  return false;
+}
 
-    void setStorageSettings(const QVariant &data);
-    QVariant storageSettings(const QVariant &def = QVariant());
+MonolithicApplication::~MonolithicApplication() {
+  // Client needs to be destroyed first
+  Client::destroy();
 
-    QVariant oldDbSettings();  // FIXME remove
-
-    void setCoreState(const QVariant &data);
-    QVariant coreState(const QVariant &def = QVariant());
-
-};
-
-#endif /*_CORESETTINGS_H_*/
+  delete _internal;
+}

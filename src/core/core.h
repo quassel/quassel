@@ -37,7 +37,6 @@
 
 #include "bufferinfo.h"
 #include "message.h"
-#include "global.h"
 #include "sessionthread.h"
 #include "types.h"
 
@@ -66,7 +65,7 @@ class Core : public QObject {
      * \param data         The Value
      */
     static void setUserSetting(UserId userId, const QString &settingName, const QVariant &data);
-  
+
     //! Retrieve a persistent user setting
     /**
      * \param userId       The users Id
@@ -76,7 +75,7 @@ class Core : public QObject {
      */
     static QVariant getUserSetting(UserId userId, const QString &settingName, const QVariant &data = QVariant());
 
-  
+
     //! Create a Network in the Storage and store it's Id in the given NetworkInfo
     /** \note This method is thredsafe.
      *
@@ -85,7 +84,7 @@ class Core : public QObject {
      *  \return true if successfull.
      */
     static bool createNetwork(UserId user, NetworkInfo &info);
-	
+
     //! Apply the changes to NetworkInfo info to the storage engine
     /** \note This method is thredsafe.
      *
@@ -103,7 +102,7 @@ class Core : public QObject {
      *  \return true if successfull.
      */
     static bool removeNetwork(UserId user, const NetworkId &networkId);
-  
+
     //! Returns a list of all NetworkInfos for the given UserId user
     /** \note This method is thredsafe.
      *
@@ -186,7 +185,7 @@ class Core : public QObject {
      */
     static BufferInfo getBufferInfo(UserId user, const BufferId &bufferId);
 
-  
+
     //! Store a Message in the backlog.
     /** \note This method is threadsafe.
      *
@@ -289,13 +288,13 @@ class Core : public QObject {
     /** \note This method is threadsafe.
      */
     void syncStorage();
-  
+
   signals:
     //! Sent when a BufferInfo is updated in storage.
     void bufferInfoUpdated(UserId user, const BufferInfo &info);
 
   private slots:
-    bool startListening(uint port = Global::parser.value("port").toUInt());
+    bool startListening();
     void stopListening();
     void incomingConnection();
     void clientHasData();
@@ -327,11 +326,11 @@ class Core : public QObject {
     Storage *storage;
     QTimer _storageSyncTimer;
 
-#ifdef HAVE_SSL  
+#ifdef HAVE_SSL
   SslServer _server, _v6server;
 #else
   QTcpServer _server, _v6server;
-#endif  
+#endif
 
     QHash<QTcpSocket *, quint32> blocksizes;
     QHash<QTcpSocket *, QVariantMap> clientInfo;

@@ -25,8 +25,6 @@
 #include "settings.h"
 #include "client.h"
 
-#include "global.h"
-
 #include <QLayout>
 
 BufferWidget::BufferWidget(QWidget *parent)
@@ -42,7 +40,7 @@ BufferWidget::BufferWidget(QWidget *parent)
   _chatViewSearchController->setSearchSenders(ui.searchBar->searchSendersBox()->isChecked());
   _chatViewSearchController->setSearchMsgs(ui.searchBar->searchMsgsBox()->isChecked());
   _chatViewSearchController->setSearchOnlyRegularMsgs(ui.searchBar->searchOnlyRegularMsgsBox()->isChecked());
-  
+
   connect(ui.searchBar->searchEditLine(), SIGNAL(textChanged(const QString &)),
 	  _chatViewSearchController, SLOT(setSearchString(const QString &)));
   connect(ui.searchBar->caseSensitiveBox(), SIGNAL(toggled(bool)),

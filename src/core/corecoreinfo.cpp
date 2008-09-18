@@ -22,7 +22,7 @@
 
 #include "core.h"
 #include "coresession.h"
-#include "global.h"
+#include "quassel.h"
 #include "signalproxy.h"
 
 CoreCoreInfo::CoreCoreInfo(CoreSession *parent)

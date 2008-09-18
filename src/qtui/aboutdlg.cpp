@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include "aboutdlg.h"
-#include "global.h"
+#include "quassel.h"
 
 AboutDlg::AboutDlg(QWidget *parent) : QDialog(parent) {
   ui.setupUi(this);

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-08 by the Quassel Project                          *
+ *   Copyright (C) 2005-08 by the Quassel IRC Team                         *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,25 +18,23 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _CORESETTINGS_H_
-#define _CORESETTINGS_H_
+#ifndef MONOAPPLICATION_H_
+#define MONOAPPLICATION_H_
 
-#include "settings.h"
+#include "qtuiapplication.h"
 
-class CoreSettings : public Settings {
+class CoreApplicationInternal;
+
+class MonolithicApplication : public QtUiApplication {
 
   public:
-    virtual ~CoreSettings();
-    CoreSettings(const QString group = "Core");
+    MonolithicApplication(int &, char **);
+    ~MonolithicApplication();
 
-    void setStorageSettings(const QVariant &data);
-    QVariant storageSettings(const QVariant &def = QVariant());
+    bool init();
 
-    QVariant oldDbSettings();  // FIXME remove
-
-    void setCoreState(const QVariant &data);
-    QVariant coreState(const QVariant &def = QVariant());
-
+  private:
+    CoreApplicationInternal *_internal;
 };
 
-#endif /*_CORESETTINGS_H_*/
+#endif
