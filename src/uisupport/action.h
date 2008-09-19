@@ -16,17 +16,24 @@
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************
+ * Parts of this API have been shamelessly stolen from KDE's kaction.h     *
  ***************************************************************************/
 
 #ifndef ACTION_H_
 #define ACTION_H_
 
+#include <QShortcut>
 #include <QWidgetAction>
 
+/// A specialized QWidgetAction, enhanced by some KDE features
+/** This declares/implements a subset of KAction's API (notably we've left out global shortcuts
+ *  for now), which should make it easy to plug in KDE support later on.
+ */
 class Action : public QWidgetAction {
   Q_OBJECT
 
-  Q_PROPERTY(QShortcut shortcut READ shortcut WRITE setShortcut)
+  Q_PROPERTY(QKeySequence shortcut READ shortcut WRITE setShortcut)
   Q_PROPERTY(bool shortcutConfigurable READ isShortcutConfigurable WRITE setShortcutConfigurable)
   Q_FLAGS(ShortcutType)
 
@@ -41,10 +48,23 @@ class Action : public QWidgetAction {
     Action(const QString &text, QObject *parent);
     Action(const QIcon &icon, const QString &text, QObject *parent);
 
-    QShortcut shortcut(ShortcutTypes types = ActiveShortcut) const;
-    void setShortcut(const QShortcut &shortcut, ShortcutTypes type = ActiveShortcut);
-    void setShortcut(const QKeySequence &shortcut, ShortcutTypes type = ActiveShortcut);
+    QKeySequence shortcut(ShortcutTypes types = ActiveShortcut) const;
+    void setShortcut(const QShortcut &shortcut, ShortcutTypes type = ShortcutTypes(ActiveShortcut | DefaultShortcut));
+    void setShortcut(const QKeySequence &shortcut, ShortcutTypes type = ShortcutTypes(ActiveShortcut | DefaultShortcut));
 
+    bool isShortcutConfigurable() const;
+    void setShortcutConfigurable(bool configurable);
+
+  signals:
+    void triggered(Qt::MouseButtons buttons, Qt::KeyboardModifiers modifiers);
+
+  private:
+    void init();
+
+  private slots:
+    void slotTriggered();
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(ShortcutTypes)
+Q_DECLARE_OPERATORS_FOR_FLAGS(Action::ShortcutTypes)
+
+#endif
