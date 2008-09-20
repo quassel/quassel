@@ -51,6 +51,7 @@ QList<QAction *> ActionCollection::actions() const {
 
 Action *ActionCollection::addAction(const QString &name, Action *action) {
   QAction *act = addAction(name, static_cast<QAction *>(action));
+  Q_UNUSED(act);
   Q_ASSERT(act == action);
   return action;
 }
@@ -74,7 +75,7 @@ QAction *ActionCollection::addAction(const QString &name, QAction *action) {
   else
     action->setObjectName(indexName);
   if(indexName.isEmpty())
-    indexName = QString("unnamed-%1").arg((int)action, 16);
+    indexName = indexName.sprintf("unnamed-%p", (void *)action);
 
   // do we already have this action?
   if(_actionByName.value(indexName, 0) == action)

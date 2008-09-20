@@ -55,7 +55,7 @@ class Quassel {
       QString organizationDomain;
     };
 
-    ~Quassel();
+    virtual ~Quassel();
 
     static inline const BuildInfo & buildInfo();
     static inline RunMode runMode();
