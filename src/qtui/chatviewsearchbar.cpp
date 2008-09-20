@@ -20,7 +20,9 @@
 
 #include "chatviewsearchbar.h"
 
-#include <QAction>
+#include "action.h"
+#include "actioncollection.h"
+#include "qtui.h"
 
 ChatViewSearchBar::ChatViewSearchBar(QWidget *parent)
   : QWidget(parent)
@@ -31,18 +33,25 @@ ChatViewSearchBar::ChatViewSearchBar(QWidget *parent)
   ui.searchUpButton->setEnabled(false);
   ui.searchDownButton->setEnabled(false);
 
-  _toggleViewAction = new QAction(tr("Show search bar"), this);
-  _toggleViewAction->setCheckable(true);
-  _toggleViewAction->setChecked(false);
-  connect(_toggleViewAction, SIGNAL(toggled(bool)),
-	  this, SLOT(setVisible(bool)));
-  setVisible(false);
+  hide();
 
-  connect(ui.hideButton, SIGNAL(clicked()),
-	  _toggleViewAction, SLOT(toggle()));
+  ActionCollection *coll = QtUi::actionCollection();
+
+  Action *toggleSearchBar = coll->add<Action>("toggleSearchBar");
+  connect(toggleSearchBar, SIGNAL(toggled(bool)), SLOT(setVisible(bool)));
+  toggleSearchBar->setText(tr("Show Search Bar"));
+  toggleSearchBar->setShortcut(Qt::CTRL + Qt::Key_F);
+  toggleSearchBar->setCheckable(true);
+
+  Action *hideSearchBar = coll->add<Action>("hideSearchBar", toggleSearchBar, SLOT(setChecked(bool))); // always false
+  hideSearchBar->setShortcut(Qt::Key_Escape);
+
+  connect(ui.hideButton, SIGNAL(clicked()), toggleSearchBar, SLOT(toggle()));
 }
 
 void ChatViewSearchBar::setVisible(bool visible) {
   QWidget::setVisible(visible);
   ui.searchEditLine->clear();
+  if(visible) ui.searchEditLine->setFocus();
 }
+

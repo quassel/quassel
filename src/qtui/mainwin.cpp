@@ -20,6 +20,8 @@
 #include "mainwin.h"
 
 #include "aboutdlg.h"
+#include "action.h"
+#include "actioncollection.h"
 #include "bufferview.h"
 #include "bufferviewconfig.h"
 #include "bufferviewfilter.h"
@@ -82,7 +84,8 @@ MainWin::MainWin(QWidget *parent)
     offlineTrayIcon(":/icons/quassel-icon-offline.png"),
     trayIconActive(false),
 
-    timer(new QTimer(this))
+    timer(new QTimer(this)),
+    _actionCollection(new ActionCollection(this))
 {
   UiSettings uiSettings;
   QString style = uiSettings.value("Style", QString("")).toString();
@@ -96,6 +99,8 @@ MainWin::MainWin(QWidget *parent)
   qApp->setWindowIcon(offlineTrayIcon);
   systray->setIcon(offlineTrayIcon);
   setWindowIconText("Quassel IRC");
+
+  QtUi::actionCollection()->addAssociatedWidget(this);
 
   statusBar()->showMessage(tr("Waiting for core..."));
 
@@ -140,6 +145,7 @@ void MainWin::init() {
   setCorner(Qt::BottomRightCorner, Qt::RightDockWidgetArea);
 
   // setup stuff...
+  setupActions();
   setupMenus();
   setupViews();
   setupNickWidget();
@@ -161,7 +167,7 @@ void MainWin::init() {
   // attach the BufferWidget to the BufferModel and the default selection
   ui.bufferWidget->setModel(Client::bufferModel());
   ui.bufferWidget->setSelectionModel(Client::bufferModel()->standardSelectionModel());
-  ui.menuViews->addAction(ui.bufferWidget->searchBar()->toggleViewAction());
+  ui.menuViews->addAction(QtUi::actionCollection()->action("toggleSearchBar"));
 
   _titleSetter.setModel(Client::bufferModel());
   _titleSetter.setSelectionModel(Client::bufferModel()->standardSelectionModel());
@@ -172,6 +178,11 @@ MainWin::~MainWin() {
   s.setValue("MainWinSize", size());
   s.setValue("MainWinPos", pos());
   s.setValue("MainWinState", saveState());
+}
+
+void MainWin::setupActions() {
+
+
 }
 
 void MainWin::setupMenus() {

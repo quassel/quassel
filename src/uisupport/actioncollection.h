@@ -23,6 +23,7 @@
 #ifndef ACTIONCOLLECTION_H_
 #define ACTIONCOLLECTION_H_
 
+#include <QDebug>
 #include <QList>
 #include <QMap>
 #include <QObject>

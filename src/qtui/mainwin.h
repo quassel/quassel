@@ -18,18 +18,19 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _MAINWIN_H_
-#define _MAINWIN_H_
+#ifndef MAINWIN_H_
+#define MAINWIN_H_
 
 #include "ui_mainwin.h"
 
 #include "qtui.h"
 #include "titlesetter.h"
-#include "sessionsettings.h" 
+#include "sessionsettings.h"
 
 #include <QSystemTrayIcon>
 #include <QTimer>
 
+class ActionCollection;
 class Buffer;
 class BufferViewConfig;
 class MsgProcessorStatusWidget;
@@ -49,6 +50,7 @@ class MainWin : public QMainWindow {
     virtual ~MainWin();
 
     void init();
+
     void addBufferView(BufferViewConfig *config = 0);
 
     void displayTrayIconMessage(const QString &title, const QString &message);
@@ -121,6 +123,7 @@ class MainWin : public QMainWindow {
 
     TitleSetter _titleSetter;
 
+    void setupActions();
     void setupMenus();
     void setupViews();
     void setupNickWidget();
@@ -145,6 +148,8 @@ class MainWin : public QMainWindow {
 
     QList<QDockWidget *> _netViews;
     NickListWidget *nickListWidget;
+
+    ActionCollection *_actionCollection;
 
 #ifdef HAVE_DBUS
     org::freedesktop::Notifications *desktopNotifications;

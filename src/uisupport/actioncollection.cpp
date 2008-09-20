@@ -21,6 +21,7 @@
  ***************************************************************************/
 
 #include <QAction>
+#include <QDebug>
 
 #include "actioncollection.h"
 
@@ -49,7 +50,7 @@ QList<QAction *> ActionCollection::actions() const {
 }
 
 Action *ActionCollection::addAction(const QString &name, Action *action) {
-  QAction *act = addAction(name, action);
+  QAction *act = addAction(name, static_cast<QAction *>(action));
   Q_ASSERT(act == action);
   return action;
 }
@@ -204,6 +205,10 @@ void ActionCollection::clearAssociatedWidgets() {
       widget->removeAction(action);
 
   _associatedWidgets.clear();
+}
+
+void ActionCollection::associatedWidgetDestroyed(QObject *obj) {
+  _associatedWidgets.removeAll(static_cast<QWidget *>(obj));
 }
 
 bool ActionCollection::unlistAction(QAction *action) {

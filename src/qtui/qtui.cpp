@@ -22,22 +22,25 @@
 
 #include <QDebug>
 
+#include "actioncollection.h"
 #include "chatlinemodel.h"
 #include "mainwin.h"
 #include "qtuimessageprocessor.h"
+#include "qtuistyle.h"
 #include "uisettings.h"
 #include "util.h"
 
+ActionCollection *QtUi::_actionCollection = 0;
 QtUiStyle *QtUi::_style = 0;
 
-QtUi::QtUi()
-  : AbstractUi()
+QtUi::QtUi() : AbstractUi()
 {
   if(_style != 0) {
     qWarning() << "QtUi has been instantiated again!";
     return;
   }
-    
+  _actionCollection = new ActionCollection(this);
+
   UiSettings uiSettings;
   loadTranslation(uiSettings.value("Locale", QLocale::system()).value<QLocale>());
 

@@ -31,6 +31,7 @@
 #include <QFontMetrics>
 
 #include "qtui.h"
+#include "qtuistyle.h"
 #include "message.h"
 
 TopicLabel::TopicLabel(QWidget *parent)

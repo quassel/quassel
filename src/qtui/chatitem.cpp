@@ -30,6 +30,7 @@
 #include "chatitem.h"
 #include "chatlinemodel.h"
 #include "qtui.h"
+#include "qtuistyle.h"
 
 ChatItem::ChatItem(ChatLineModel::ColumnType col, QAbstractItemModel *model, QGraphicsItem *parent)
   : QGraphicsItem(parent),

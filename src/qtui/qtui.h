@@ -21,12 +21,13 @@
 #ifndef QTUI_H
 #define QTUI_H
 
-#include "qtuistyle.h"
 #include "quasselui.h"
 
+class ActionCollection;
 class MainWin;
 class MessageModel;
 class QtUiMessageProcessor;
+class QtUiStyle;
 
 //! This class encapsulates Quassel's Qt-based GUI.
 /** This is basically a wrapper around MainWin, which is necessary because we cannot derive MainWin
@@ -42,7 +43,14 @@ public:
   MessageModel *createMessageModel(QObject *parent);
   AbstractMessageProcessor *createMessageProcessor(QObject *parent);
 
-  inline static QtUiStyle *style() { return _style; }
+  inline static QtUiStyle *style();
+
+  //! Access the global ActionCollection.
+  /** This ActionCollection is associated with the main window, i.e. it contains global
+   *  actions (and thus, shortcuts). Widgets providing application-wide shortcuts should
+   *  create appropriate Action objects using QtUi::actionCollection()->add\<Action\>().
+   */
+  inline static ActionCollection *actionCollection();
 
 public slots:
   void init();
@@ -53,7 +61,11 @@ protected slots:
 
 private:
   MainWin *mainWin;
+  static ActionCollection *_actionCollection;
   static QtUiStyle *_style;
 };
+
+ActionCollection *QtUi::actionCollection() { return _actionCollection; }
+QtUiStyle *QtUi::style() { return _style; }
 
 #endif

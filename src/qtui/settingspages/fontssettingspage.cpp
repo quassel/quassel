@@ -22,6 +22,7 @@
 
 #include "qtui.h"
 #include "qtuisettings.h"
+#include "qtuistyle.h"
 
 #include <QFontDialog>
 
@@ -49,7 +50,7 @@ FontsSettingsPage::FontsSettingsPage(QWidget *parent)
   mapper->setMapping(ui.chooseTimestamp, ui.demoTimestamp);
 
   connect(mapper, SIGNAL(mapped(QWidget *)), this, SLOT(chooseFont(QWidget *)));
-  
+
   //connect(ui.customAppFonts, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
   connect(ui.checkTopic, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
   connect(ui.checkBufferView, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
@@ -87,7 +88,7 @@ void FontsSettingsPage::load(Settings::Mode mode) {
     inputLineFont = qApp->font();
   }
   initLabel(ui.demoInputLine, inputLineFont);
-  
+
   QTextCharFormat chatFormat = QtUi::style()->format(UiStyle::None, mode);
   initLabel(ui.demoChatMessages, chatFormat.font());
   QTextCharFormat nicksFormat = QtUi::style()->format(UiStyle::Sender, mode);
@@ -114,7 +115,7 @@ void FontsSettingsPage::save() {
   QtUiSettings s;
   s.setValue("UseInputLineFont", (ui.checkInputLine->checkState() == Qt::Checked));
   s.setValue("InputLineFont", ui.demoInputLine->font());
-  
+
   QTextCharFormat chatFormat = QtUi::style()->format(UiStyle::None);
   chatFormat.setFont(ui.demoChatMessages->font());
   QtUi::style()->setFormat(UiStyle::None, chatFormat, Settings::Custom);

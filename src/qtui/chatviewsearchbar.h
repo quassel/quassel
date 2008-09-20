@@ -39,14 +39,11 @@ public:
   inline QCheckBox *searchMsgsBox() const { return ui.searchMsgsBox; }
   inline QCheckBox *searchOnlyRegularMsgsBox() const { return ui.searchOnlyRegularMsgsBox; }
 
-  inline QAction *toggleViewAction() const { return _toggleViewAction; }
-
 public slots:
-  void setVisible(bool visible);
+  void setVisible(bool);
 
 private:
   Ui::ChatViewSearchBar ui;
-  QAction *_toggleViewAction;
 };
 
 #endif //CHATVIEWSEARCHBAR_H

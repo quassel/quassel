@@ -22,6 +22,7 @@
 
 #include "qtui.h"
 #include "qtuisettings.h"
+#include "qtuistyle.h"
 #include "colorbutton.h"
 
 #include <QColorDialog>
@@ -590,7 +591,7 @@ bool ColorSettingsPage::testHasChanged() {
   if(QtUi::style()->format(UiStyle::Sender).background().color() != ui.senderBG->color()) return true;
   if(settings["SenderUseBG"].toBool() != ui.senderUseBG->isChecked()) return true;
   if(settings["NewMsgMarkerFG"].value<QColor>() != ui.newMsgMarkerFG->color()) return true;
-  
+
   /*
   if(QtUi::style()->format(UiStyle::Nick).foreground().color() != ui.nickFG->color()) return true;
   if(QtUi::style()->format(UiStyle::Nick).background().color() != ui.nickBG->color()) return true;

@@ -32,6 +32,7 @@
 #include "columnhandleitem.h"
 #include "messagefilter.h"
 #include "qtui.h"
+#include "qtuistyle.h"
 #include "chatviewsettings.h"
 
 const qreal minContentsWidth = 200;
@@ -152,7 +153,7 @@ void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
       line->setPos(0, line->pos().y() + offset);
     }
   }
-  
+
   // update sceneRect
   if(atTop || moveTop) {
     updateSceneRect(_sceneRect.adjusted(0, h, 0, 0));

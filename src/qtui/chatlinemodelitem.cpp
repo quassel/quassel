@@ -24,7 +24,7 @@
 #include "chatlinemodelitem.h"
 #include "chatlinemodel.h"
 #include "qtui.h"
-#include "uistyle.h"
+#include "qtuistyle.h"
 
 // This Struct is taken from Harfbuzz. We use it only to calc it's size.
 // we use a shared memory region so we do not have to malloc a buffer area for every line
@@ -92,7 +92,7 @@ public:
       computeWrapList();
     return _wrapList;
   }
-  
+
 private:
   inline void style() {
     QtUiStyle::StyledMessage m = QtUi::style()->styleMessage(*_msgBuffer);
@@ -168,7 +168,7 @@ private:
       // the part " || (finder.position() == contents->plainText.length())" shouldn't be necessary
       // but in rare and indeterministic cases Qt states that the end of the text is not a boundary o_O
     } while(finder.isAtBoundary() || (finder.position() == contents->plainText.length()));
-    
+
     // A QVector needs less space than a QList
     _wrapList.resize(wplist.count());
     for(int i = 0; i < wplist.count(); i++) {

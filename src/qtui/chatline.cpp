@@ -32,6 +32,7 @@
 #include "networkmodel.h"
 #include "qtui.h"
 #include "qtuisettings.h"
+#include "qtuistyle.h"
 
 ChatLine::ChatLine(int row, QAbstractItemModel *model, QGraphicsItem *parent)
   : QGraphicsItem(parent),
