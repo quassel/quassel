@@ -32,17 +32,13 @@
 #include "qtui.h"
 #include "qtuistyle.h"
 
-ChatItem::ChatItem(const qreal &width, const qreal &height, const QPointF &pos, ChatLineModel::ColumnType col, QGraphicsItem *parent)
+ChatItem::ChatItem(const qreal &width, const qreal &height, const QPointF &pos, QGraphicsItem *parent)
   : QGraphicsItem(parent),
     _data(0),
     _boundingRect(0, 0, width, height),
-    _fontMetrics(0),
     _selectionMode(NoSelection),
     _selectionStart(-1)
 {
-  const QAbstractItemModel *model_ = model();
-  QModelIndex index = model_->index(row(), col);
-  _fontMetrics = QtUi::style()->fontMetrics(model_->data(index, ChatLineModel::FormatRole).value<UiStyle::FormatList>().at(0).second);
   setAcceptHoverEvents(true);
   setZValue(20);
   setPos(pos);
@@ -185,17 +181,21 @@ QList<QRectF> ChatItem::findWords(const QString &searchWord, Qt::CaseSensitivity
     searchIdx = plainText.indexOf(searchWord, searchIdx + 1, caseSensitive);
   }
 
-  if(!hasLayout())
+  bool hadLayout = hasLayout();
+  if(!hadLayout)
     updateLayout();
 
   foreach(int idx, indexList) {
     QTextLine line = layout()->lineForTextPosition(idx);
     qreal x = line.cursorToX(idx);
     qreal width = line.cursorToX(idx + searchWord.count()) - x;
-    qreal height = fontMetrics()->lineSpacing();
+    qreal height = line.height();
     qreal y = height * line.lineNumber();
     resultList << QRectF(x, y, width, height);
   }
+
+  if(!hadLayout)
+    clearLayout();
   return resultList;
 }
 
@@ -250,8 +250,12 @@ void ChatItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
 // ContentsChatItem
 // ************************************************************
 ContentsChatItem::ContentsChatItem(const qreal &width, const QPointF &pos, QGraphicsItem *parent)
-  : ChatItem(0, 0, pos, column(), parent)
+  : ChatItem(0, 0, pos, parent)
 {
+  const QAbstractItemModel *model_ = model();
+  QModelIndex index = model_->index(row(), column());
+  _fontMetrics = QtUi::style()->fontMetrics(model_->data(index, ChatLineModel::FormatRole).value<UiStyle::FormatList>().at(0).second);
+
   setGeometryByWidth(width);
 }
 

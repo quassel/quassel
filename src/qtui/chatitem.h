@@ -34,7 +34,7 @@ struct ChatItemPrivate;
 
 class ChatItem : public QGraphicsItem {
 protected:
-  ChatItem(const qreal &width, const qreal &height, const QPointF &pos, ChatLineModel::ColumnType column, QGraphicsItem *parent);
+  ChatItem(const qreal &width, const qreal &height, const QPointF &pos, QGraphicsItem *parent);
   virtual ~ChatItem();
 
 public:
@@ -43,7 +43,6 @@ public:
   virtual ChatLineModel::ColumnType column() const = 0;
   inline ChatScene *chatScene() const { return qobject_cast<ChatScene *>(scene()); }
 
-  inline QFontMetricsF *fontMetrics() const { return _fontMetrics; }
   inline QRectF boundingRect() const { return _boundingRect; }
   inline qreal width() const { return _boundingRect.width(); }
   inline qreal height() const { return _boundingRect.height(); }
@@ -51,9 +50,9 @@ public:
   inline bool hasLayout() const { return (bool)_data; }
   QTextLayout *createLayout(QTextOption::WrapMode, Qt::Alignment = Qt::AlignLeft);
   virtual inline QTextLayout *createLayout() { return createLayout(QTextOption::WrapAnywhere); }
+  virtual void updateLayout();
   void clearLayout();
 
-  virtual void updateLayout();
   virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
 
   QVariant data(int role) const;
@@ -94,7 +93,6 @@ private:
 
   ChatItemPrivate *_data;
   QRectF _boundingRect;
-  QFontMetricsF *_fontMetrics;
 
   enum SelectionMode { NoSelection, PartialSelection, FullSelection };
   SelectionMode _selectionMode;
@@ -122,7 +120,7 @@ ChatItemPrivate *ChatItem::privateData() const { return _data; }
 //! A ChatItem for the timestamp column
 class TimestampChatItem : public ChatItem {
 public:
-  TimestampChatItem(const qreal &width, const qreal &height, QGraphicsItem *parent) : ChatItem(width, height, QPointF(0, 0), column(), parent) {}
+  TimestampChatItem(const qreal &width, const qreal &height, QGraphicsItem *parent) : ChatItem(width, height, QPointF(0, 0), parent) {}
   virtual inline ChatLineModel::ColumnType column() const { return ChatLineModel::TimestampColumn; }
 };
 
@@ -132,7 +130,7 @@ public:
 //! A ChatItem for the sender column
 class SenderChatItem : public ChatItem {
 public:
-  SenderChatItem(const qreal &width, const qreal &height, const QPointF &pos, QGraphicsItem *parent) : ChatItem(width, height, pos, column(), parent) {}
+  SenderChatItem(const qreal &width, const qreal &height, const QPointF &pos, QGraphicsItem *parent) : ChatItem(width, height, pos, parent) {}
   virtual inline ChatLineModel::ColumnType column() const { return ChatLineModel::SenderColumn; }
   virtual inline QTextLayout *createLayout() { return ChatItem::createLayout(QTextOption::WrapAnywhere, Qt::AlignRight); }
 };
@@ -175,6 +173,9 @@ private:
   qreal setGeometryByWidth(qreal w);
   friend class ChatLine;
   friend struct ContentsChatItemPrivate;
+
+  inline QFontMetricsF *fontMetrics() const { return _fontMetrics; }
+  QFontMetricsF *_fontMetrics;
 };
 
 struct ContentsChatItem::Clickable {
@@ -203,6 +204,9 @@ struct ContentsChatItemPrivate : ChatItemPrivate {
   ContentsChatItemPrivate(QTextLayout *l, const QList<ContentsChatItem::Clickable> &c) : ChatItemPrivate(l), clickables(c), hasDragged(false) {}
 };
 
+//inlines regarding ContentsChatItemPrivate
+ContentsChatItemPrivate *ContentsChatItem::privateData() const { return (ContentsChatItemPrivate *)ChatItem::privateData(); }
+
 class ContentsChatItem::WrapColumnFinder {
 public:
   WrapColumnFinder(ChatItem *parent);
@@ -229,7 +233,5 @@ private:
 #include "chatline.h"
 const QAbstractItemModel *ChatItem::model() const { return static_cast<ChatLine *>(parentItem())->model(); }
 int ChatItem::row() const { return static_cast<ChatLine *>(parentItem())->row(); }
-
-ContentsChatItemPrivate *ContentsChatItem::privateData() const { return (ContentsChatItemPrivate *)privateData(); }
 
 #endif
