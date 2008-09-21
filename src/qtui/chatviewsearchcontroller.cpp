@@ -193,11 +193,11 @@ void ChatViewSearchController::setSearchOnlyRegularMsgs(bool searchOnlyRegularMs
 }
 
 SearchHighlightItem::SearchHighlightItem(QRectF wordRect, QGraphicsItem *parent)
-  : QGraphicsItem(parent),
-    _boundingRect(QRectF(-wordRect.width() / 2, -wordRect.height() / 2, wordRect.width(), wordRect.height()))
+  : QGraphicsItem(parent)
 {
-  setPos(wordRect.x() + wordRect.width() / 2 , wordRect.y() + wordRect.height() / 2);
-  scale(1.2, 1.2);
+  setPos(wordRect.x(), wordRect.y());
+  qreal sizedelta = wordRect.height() * 0.1;
+  _boundingRect = QRectF(-sizedelta, -sizedelta, wordRect.width() + 2 * sizedelta, wordRect.height() + 2 * sizedelta);
 }
 
 void SearchHighlightItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
@@ -205,8 +205,8 @@ void SearchHighlightItem::paint(QPainter *painter, const QStyleOptionGraphicsIte
   Q_UNUSED(widget);
 
   painter->setPen(QPen(Qt::black, 1.5));
-  //painter->setBrush(QColor(127, 133, 250));
   painter->setBrush(QColor(254, 237, 45));
   painter->setRenderHints(QPainter::Antialiasing);
-  painter->drawRoundedRect(boundingRect(), 30, 30, Qt::RelativeSize);
+  qreal radius = boundingRect().height() * 0.30;
+  painter->drawRoundedRect(boundingRect(), radius, radius);
 }
