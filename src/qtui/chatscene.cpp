@@ -43,6 +43,7 @@ ChatScene::ChatScene(QAbstractItemModel *model, const QString &idString, qreal w
     _model(model),
     _singleBufferScene(false),
     _sceneRect(0, 0, width, 0),
+    _viewportHeight(0),
     _selectingItem(0),
     _selectionStart(-1),
     _isSelecting(false),
@@ -95,7 +96,6 @@ void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
   bool atTop = true;
   bool atBottom = false;
   bool moveTop = false;
-  bool hasWidth = (width != 0);
 
   if(start > 0) {
     y = _lines.value(start - 1)->y() + _lines.value(start - 1)->height();
@@ -104,19 +104,27 @@ void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
   if(start == _lines.count())
     atBottom = true;
 
+  qreal contentsWidth = width - secondColumnHandle()->sceneRight();
+  qreal senderWidth = secondColumnHandle()->sceneLeft() - firstColumnHandle()->sceneRight();
+  qreal timestampWidth = firstColumnHandle()->sceneLeft();
+  QPointF contentsPos(secondColumnHandle()->sceneRight(), 0);
+  QPointF senderPos(firstColumnHandle()->sceneRight(), 0);
+
+
   for(int i = end; i >= start; i--) {
-    ChatLine *line = new ChatLine(i, model());
+    ChatLine *line = new ChatLine(i, model(),
+				  width,
+				  timestampWidth, senderWidth, contentsWidth,
+				  senderPos, contentsPos);
+    if(atTop) {
+      h -= line->height();
+      line->setPos(0, y+h);
+    } else {
+      line->setPos(0, y+h);
+      h += line->height();
+    }
     _lines.insert(start, line);
     addItem(line);
-    if(hasWidth) {
-      if(atTop) {
-	h -= line->setGeometry(width);
-	line->setPos(0, y+h);
-      } else {
-	line->setPos(0, y+h);
-	h += line->setGeometry(width);
-      }
-    }
   }
 
   // update existing items
@@ -159,7 +167,7 @@ void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
     updateSceneRect(_sceneRect.adjusted(0, h, 0, 0));
   } else {
     updateSceneRect(_sceneRect.adjusted(0, 0, 0, h));
-    emit sceneHeightChanged(h);
+    emit lastLineChanged(_lines.last());
   }
 
 }
@@ -230,31 +238,57 @@ void ChatScene::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int e
   }
 }
 
+void ChatScene::updateForViewport(qreal width, qreal height) {
+  _viewportHeight = height;
+  setWidth(width);
+}
+
+// setWidth is used for 2 things:
+//  a) updating the scene to fit the width of the corresponding view
+//  b) to update the positions of the items if a columhandle has changed it's position
+// forceReposition is true in the second case
+// this method features some codeduplication for the sake of performance
 void ChatScene::setWidth(qreal width, bool forceReposition) {
   if(width == _sceneRect.width() && !forceReposition)
     return;
 
-  // clock_t startT = clock();
-  qreal oldHeight = _sceneRect.height();
-  qreal y = _sceneRect.y();
-  qreal linePos = y;
+//   clock_t startT = clock();
 
-  foreach(ChatLine *line, _lines) {
-    line->setPos(0, linePos);
-    linePos += line->setGeometry(width);
+  qreal linePos = _sceneRect.y() + _sceneRect.height();
+  qreal yBottom = linePos;
+  QList<ChatLine *>::iterator lineIter = _lines.end();
+  QList<ChatLine *>::iterator lineIterBegin = _lines.begin();
+  ChatLine *line = 0;
+  qreal lineHeight = 0;
+  qreal contentsWidth = width - secondColumnHandle()->sceneRight();
+
+  if(forceReposition) {
+    qreal timestampWidth = firstColumnHandle()->sceneLeft();
+    qreal senderWidth = secondColumnHandle()->sceneLeft() - firstColumnHandle()->sceneRight();
+    QPointF senderPos(firstColumnHandle()->sceneRight(), 0);
+    QPointF contentsPos(secondColumnHandle()->sceneRight(), 0);
+    while(lineIter != lineIterBegin) {
+      lineIter--;
+      line = *lineIter;
+      lineHeight = line->setColumns(timestampWidth, senderWidth, contentsWidth, senderPos, contentsPos);
+      linePos -= lineHeight;
+      line->setPos(0, linePos);
+    }
+  } else {
+    while(lineIter != lineIterBegin) {
+      lineIter--;
+      line = *lineIter;
+      lineHeight = line->setGeometryByWidth(width, contentsWidth);
+      linePos -= lineHeight;
+      line->setPos(0, linePos);
+    }
   }
 
-  qreal height = linePos - y;
-
-  updateSceneRect(QRectF(0, y, width, height));
+  updateSceneRect(QRectF(0, linePos, width, yBottom - linePos));
   setHandleXLimits();
 
-  qreal dh = height - oldHeight;
-  if(dh > 0)
-    emit sceneHeightChanged(dh);
-
-  // clock_t endT = clock();
-  // qDebug() << "resized" << _lines.count() << "in" << (float)(endT - startT) / CLOCKS_PER_SEC << "sec";
+//   clock_t endT = clock();
+//   qDebug() << "resized" << _lines.count() << "in" << (float)(endT - startT) / CLOCKS_PER_SEC << "sec";
 }
 
 void ChatScene::handlePositionChanged(qreal xpos) {
@@ -416,7 +450,7 @@ QString ChatScene::selectionToString() const {
 }
 
 void ChatScene::requestBacklog() {
-  static const int REQUEST_COUNT = 100;
+  static const int REQUEST_COUNT = 500;
   int backlogSize = model()->rowCount();
   if(isSingleBufferScene() && backlogSize != 0 && _lastBacklogSize + REQUEST_COUNT <= backlogSize) {
     QModelIndex msgIdx = model()->index(0, 0);

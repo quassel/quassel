@@ -47,29 +47,33 @@ ChatView::ChatView(MessageFilter *filter, QWidget *parent)
 
 void ChatView::init(MessageFilter *filter) {
   setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-  setAlignment(Qt::AlignBottom);
+  // setAlignment(Qt::AlignBottom);
   setInteractive(true);
+  setOptimizationFlags(QGraphicsView::DontClipPainter | QGraphicsView::DontAdjustForAntialiasing);
+  setViewportUpdateMode(QGraphicsView::BoundingRectViewportUpdate);
+  setTransformationAnchor(QGraphicsView::NoAnchor);
 
   _scene = new ChatScene(filter, filter->idString(), viewport()->width() - 2, this); // see below: resizeEvent()
-  connect(_scene, SIGNAL(sceneHeightChanged(qreal)), this, SLOT(sceneHeightChanged(qreal)));
   connect(_scene, SIGNAL(sceneRectChanged(const QRectF &)), this, SLOT(sceneRectChanged(const QRectF &)));
+  //connect(_scene, SIGNAL(lastLineChanged(QGraphicsItem *)), this, SLOT(lastLineChanged(QGraphicsItem *)));
   setScene(_scene);
 
-  _lastScrollbarPos = verticalScrollBar()->maximum();
   connect(verticalScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(verticalScrollbarChanged(int)));
 }
 
 void ChatView::resizeEvent(QResizeEvent *event) {
   QGraphicsView::resizeEvent(event);
-  scene()->setWidth(viewport()->width() - 2);  // FIXME figure out why we have to hardcode the -2 here -> Qt-Bug most probably
+
+  // FIXME: without the hardcoded -2 Qt reserves space for a horizontal scrollbar even though it's disabled permanently.
+  // this does only occur on QtX11 (at least not on Qt for Mac OS). Seems like a Qt Bug.
+  scene()->updateForViewport(viewport()->width() - 2, viewport()->height());
+  _lastScrollbarPos = verticalScrollBar()->maximum();
   verticalScrollBar()->setValue(verticalScrollBar()->maximum());
 }
 
-void ChatView::sceneHeightChanged(qreal dh) {
-  QAbstractSlider *vbar = verticalScrollBar();
-  Q_ASSERT(vbar);
-  if(vbar->maximum() - vbar->value() <= dh + 5) // in case we had scrolled only about half a line to the bottom we allow a grace of 5
-    vbar->setValue(vbar->maximum());
+void ChatView::lastLineChanged(QGraphicsItem *chatLine) {
+  // FIXME: if vbar offset < chatline height -> centerOn(chatLine);
+  centerOn(chatLine);
 }
 
 void ChatView::verticalScrollbarChanged(int newPos) {

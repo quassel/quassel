@@ -156,6 +156,7 @@ private:
       }
       qreal wordendx = line.cursorToX(oldidx);
       qreal trailingendx = line.cursorToX(idx);
+      word.endX = wordendx;
       word.width = wordendx - wordstartx;
       word.trailing = trailingendx - wordendx;
       wordstartx = trailingendx;

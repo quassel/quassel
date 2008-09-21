@@ -36,6 +36,7 @@ public:
   /// Used to store information about words to be used for wrapping
   struct Word {
     quint16 start;
+    qreal endX;
     qreal width;
     qreal trailing;
   };

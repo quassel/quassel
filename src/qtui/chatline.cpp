@@ -34,14 +34,35 @@
 #include "qtuisettings.h"
 #include "qtuistyle.h"
 
-ChatLine::ChatLine(int row, QAbstractItemModel *model, QGraphicsItem *parent)
+// ChatLine::ChatLine(int row, QAbstractItemModel *model, QGraphicsItem *parent)
+//   : QGraphicsItem(parent),
+//     _row(row), // needs to be set before the items
+//     _model(model),
+//     _contentsItem(this),
+//     _senderItem(this),
+//     _timestampItem(this),
+//     _width(0),
+//     _height(0),
+//     _selection(0)
+// {
+//   Q_ASSERT(model);
+//   QModelIndex index = model->index(row, ChatLineModel::ContentsColumn);
+//   setHighlighted(model->data(index, MessageModel::FlagsRole).toInt() & Message::Highlight);
+// }
+
+ChatLine::ChatLine(int row, QAbstractItemModel *model,
+		   const qreal &width,
+		   const qreal &timestampWidth, const qreal &senderWidth, const qreal &contentsWidth,
+		   const QPointF &senderPos, const QPointF &contentsPos,
+		   QGraphicsItem *parent)
   : QGraphicsItem(parent),
     _row(row), // needs to be set before the items
-    _timestampItem(model, this),
-    _senderItem(model, this),
-    _contentsItem(model, this),
-    _width(0),
-    _height(0),
+    _model(model),
+    _contentsItem(contentsWidth, contentsPos, this),
+    _senderItem(senderWidth, _contentsItem.height(), senderPos, this),
+    _timestampItem(timestampWidth, _contentsItem.height(), this),
+    _width(width),
+    _height(_contentsItem.height()),
     _selection(0)
 {
   Q_ASSERT(model);
@@ -67,13 +88,47 @@ ChatItem &ChatLine::item(ChatLineModel::ColumnType column) {
   }
 }
 
-qreal ChatLine::setGeometry(qreal width) {
+// WARNING: setColumns should not be used without either:
+//  a) calling prepareGeometryChange() immediately before setColumns()
+//  b) calling Chatline::setPos() immediately afterwards
+//
+// NOTE: senderPos and contentsPos are in ChatLines coordinate system!
+qreal ChatLine::setColumns(const qreal &timestampWidth, const qreal &senderWidth, const qreal &contentsWidth,
+			   const QPointF &senderPos, const QPointF &contentsPos) {
+  _height = _contentsItem.setGeometryByWidth(contentsWidth);
+  _senderItem.setGeometry(senderWidth, _height);
+  _timestampItem.setGeometry(timestampWidth, _height);
+
+  _senderItem.setPos(senderPos);
+  _contentsItem.setPos(contentsPos);
+
+  _contentsItem.clearLayout();
+  _senderItem.clearLayout();
+  _timestampItem.clearLayout();
+
+  return _height;
+}
+
+// WARNING: setGeometryByWidth should not be used without either:
+//  a) calling prepareGeometryChange() immediately before setColumns()
+//  b) calling Chatline::setPos() immediately afterwards
+qreal ChatLine::setGeometryByWidth(const qreal &width, const qreal &contentsWidth) {
+  _width = width;
+  _height = _contentsItem.setGeometryByWidth(contentsWidth);
+  _timestampItem.setHeight(_height);
+  _senderItem.setHeight(_height);
+  _contentsItem.clearLayout();
+  return _height;
+}
+
+qreal ChatLine::setGeometryByWidth(qreal width) {
   if(width != _width)
     prepareGeometryChange();
 
   ColumnHandleItem *firstColumnHandle = chatScene()->firstColumnHandle();
   ColumnHandleItem *secondColumnHandle = chatScene()->secondColumnHandle();
-  _height = _contentsItem.setGeometry(width - secondColumnHandle->sceneRight());
+
+  _height = _contentsItem.setGeometryByWidth(width - secondColumnHandle->sceneRight());
   _timestampItem.setGeometry(firstColumnHandle->sceneLeft(), _height);
   _senderItem.setGeometry(secondColumnHandle->sceneLeft() - firstColumnHandle->sceneRight(), _height);
 

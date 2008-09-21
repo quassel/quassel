@@ -27,38 +27,50 @@
 #include "chatitem.h"
 
 class ChatLine : public QGraphicsItem {
-
 public:
-  ChatLine(int row, QAbstractItemModel *model, QGraphicsItem *parent = 0);
+//   ChatLine(int row, QAbstractItemModel *model, QGraphicsItem *parent = 0);
+  ChatLine(int row, QAbstractItemModel *model,
+	   const qreal &width,
+	   const qreal &timestampWidth, const qreal &senderWidth, const qreal &contentsWidth,
+	   const QPointF &senderPos, const QPointF &contentsPos,
+	   QGraphicsItem *parent = 0);
 
   virtual QRectF boundingRect () const;
 
   inline int row() { return _row; }
   inline void setRow(int row) { _row = row; }
-  inline const QAbstractItemModel *model() const { return chatScene() ? chatScene()->model() : 0; }
+  inline const QAbstractItemModel *model() const { return _model; }
   inline ChatScene *chatScene() const { return qobject_cast<ChatScene *>(scene()); }
   inline qreal width() const { return _width; }
   inline qreal height() const { return _height; }
   ChatItem &item(ChatLineModel::ColumnType);
+  inline ChatItem &timestampItem() { return _timestampItem; }
+  inline ChatItem &senderItem() { return _senderItem; }
+  inline ContentsChatItem &contentsItem() { return _contentsItem; }
 
   virtual void paint (QPainter * painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
 
   // returns height
-  qreal setGeometry(qreal width);
+  qreal setGeometryByWidth(qreal width);
   void setSelected(bool selected, ChatLineModel::ColumnType minColumn = ChatLineModel::ContentsColumn);
   void setHighlighted(bool highlighted);
 
-protected:
-
 private:
   int _row;
-  TimestampChatItem _timestampItem;
-  SenderChatItem _senderItem;
+  QAbstractItemModel *_model;
   ContentsChatItem _contentsItem;
+  SenderChatItem _senderItem;
+  TimestampChatItem _timestampItem;
   qreal _width, _height;
 
   enum { Selected = 0x40, Highlighted = 0x80 };
   quint8 _selection;  // save space, so we put both the col and the flags into one byte
+
+  // setColumns and setGeometryByWidth both return height
+  qreal setColumns(const qreal &timestampWidth, const qreal &senderWidth, const qreal &contentsWidth,
+		   const QPointF &senderPos, const QPointF &contentsPos);
+  qreal setGeometryByWidth(const qreal &width, const qreal &contentsWidth);
+  friend class ChatScene;
 };
 
 #endif

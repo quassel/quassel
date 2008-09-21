@@ -48,7 +48,7 @@ protected:
   virtual void resizeEvent(QResizeEvent *event);
 
 protected slots:
-  virtual void sceneHeightChanged(qreal dh);
+  void lastLineChanged(QGraphicsItem *chatLine);
   virtual inline void sceneRectChanged(const QRectF &rect) { setSceneRect(rect); }
   virtual void verticalScrollbarChanged(int);
 

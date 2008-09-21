@@ -54,6 +54,7 @@ public:
   inline ColumnHandleItem *secondColumnHandle() const { return secondColHandle; }
 
 public slots:
+  void updateForViewport(qreal width, qreal height);
   void setWidth(qreal, bool forceReposition = false);
 
   // these are used by the chatitems to notify the scene and manage selections
@@ -65,7 +66,7 @@ public slots:
   void requestBacklog();
 
 signals:
-  void sceneHeightChanged(qreal dh);
+  void lastLineChanged(QGraphicsItem *);
 
 protected:
   virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent);
@@ -93,6 +94,7 @@ private:
   // we store the size in a member variable.
   QRectF _sceneRect;
   void updateSceneRect(const QRectF &rect);
+  qreal _viewportHeight;
 
   ColumnHandleItem *firstColHandle, *secondColHandle;
   qreal firstColHandlePos, secondColHandlePos;
@@ -108,7 +110,11 @@ private:
 };
 
 bool ChatScene::containsBuffer(const BufferId &id) const {
-  return qobject_cast<MessageFilter*>(model()) ? qobject_cast<MessageFilter*>(model())->containsBuffer(id) : false;
+  MessageFilter *filter = qobject_cast<MessageFilter*>(model());
+  if(filter)
+    return filter->containsBuffer(id);
+  else
+    return false;
 }
 
 #endif
