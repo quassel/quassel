@@ -36,6 +36,7 @@
 #include "clientbacklogmanager.h"
 #include "coreinfodlg.h"
 #include "coreconnectdlg.h"
+#include "icon.h"
 #include "msgprocessorstatuswidget.h"
 #include "qtuimessageprocessor.h"
 #include "qtuiapplication.h"
@@ -92,7 +93,6 @@ MainWin::MainWin(QWidget *parent)
   if(style != "") {
     QApplication::setStyle(style);
   }
-
   ui.setupUi(this);
   setWindowTitle("Quassel IRC");
   setWindowIcon(offlineTrayIcon);

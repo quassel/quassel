@@ -14,9 +14,11 @@ set(SOURCES
     clearablelineedit.cpp
     clickablelabel.cpp
     colorbutton.cpp
-    nickviewfilter.cpp
+    icon.cpp
+    iconloader.cpp
     inputline.cpp
     nickview.cpp
+    nickviewfilter.cpp
     settingspage.cpp
     tabcompleter.cpp
     uisettings.cpp
@@ -32,13 +34,15 @@ set(MOC_HDRS
     clearablelineedit.h
     clickablelabel.h
     colorbutton.h
-    nickviewfilter.h
+    iconloader.h
     inputline.h
     nickview.h
+    nickviewfilter.h
     settingspage.h
     tabcompleter.h)
 
 set(HEADERS
+    icon.h
     uisettings.h
     uistyle.h)
 
