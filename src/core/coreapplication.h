@@ -36,6 +36,9 @@ class CoreApplicationInternal {
     ~CoreApplicationInternal();
 
     bool init();
+    
+  private:
+    bool _coreCreated;
 };
 
 class CoreApplication : public QCoreApplication, public Quassel {
