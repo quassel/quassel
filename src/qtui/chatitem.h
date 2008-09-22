@@ -74,8 +74,8 @@ protected:
   virtual inline QVector<QTextLayout::FormatRange> additionalFormats() const { return QVector<QTextLayout::FormatRange>(); }
   qint16 posToCursor(const QPointF &pos);
 
-  inline void ChatItem::setPrivateData(ChatItemPrivate *data) { Q_ASSERT(!_data); _data = data; }
-  inline ChatItemPrivate *ChatItem::privateData() const;
+  inline void setPrivateData(ChatItemPrivate *data) { Q_ASSERT(!_data); _data = data; }
+  inline ChatItemPrivate *privateData() const;
 
   // WARNING: setGeometry and setHeight should not be used without either:
   //  a) calling prepareGeometryChange() immediately before setColumns()
