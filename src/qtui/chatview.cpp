@@ -49,7 +49,8 @@ void ChatView::init(MessageFilter *filter) {
   setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
   setAlignment(Qt::AlignBottom);
   setInteractive(true);
-  setOptimizationFlags(QGraphicsView::DontClipPainter | QGraphicsView::DontAdjustForAntialiasing);
+  //setOptimizationFlags(QGraphicsView::DontClipPainter | QGraphicsView::DontAdjustForAntialiasing);
+  setOptimizationFlags(QGraphicsView::DontAdjustForAntialiasing);
   setViewportUpdateMode(QGraphicsView::BoundingRectViewportUpdate);
   setTransformationAnchor(QGraphicsView::NoAnchor);
 

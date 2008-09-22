@@ -25,28 +25,32 @@
 
 #include "abstractbuffercontainer.h"
 
+class QGraphicsItem;
 class ChatViewSearchBar;
 class ChatViewSearchController;
 
 class BufferWidget : public AbstractBufferContainer {
   Q_OBJECT
 
-  public:
-    BufferWidget(QWidget *parent);
-    ~BufferWidget();
+public:
+  BufferWidget(QWidget *parent);
+  ~BufferWidget();
 
   inline ChatViewSearchBar *searchBar() const { return ui.searchBar; }
 
-  protected:
-    virtual AbstractChatView *createChatView(BufferId);
-    virtual void removeChatView(BufferId);
+protected:
+  virtual AbstractChatView *createChatView(BufferId);
+  virtual void removeChatView(BufferId);
 
-  protected slots:
-    virtual void showChatView(BufferId);
+protected slots:
+  virtual void showChatView(BufferId);
 
-  private:
-    Ui::BufferWidget ui;
-    QHash<BufferId, QWidget *> _chatViews;
+private slots:
+  void scrollToHighlight(QGraphicsItem *highlightItem);
+
+private:
+  Ui::BufferWidget ui;
+  QHash<BufferId, QWidget *> _chatViews;
 
   ChatViewSearchController *_chatViewSearchController;
 };

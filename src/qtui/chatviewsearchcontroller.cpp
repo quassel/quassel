@@ -31,6 +31,7 @@
 ChatViewSearchController::ChatViewSearchController(QObject *parent)
   : QObject(parent),
     _scene(0),
+    _currentHighlight(0),
     _caseSensitive(false),
     _searchSenders(false),
     _searchMsgs(true),
@@ -71,7 +72,35 @@ void ChatViewSearchController::setSearchString(const QString &searchString) {
   updateHighlights();
  }
 
+void ChatViewSearchController::highlightNext() {
+  if(_highlightItems.isEmpty())
+    return;
 
+  if(_currentHighlight < _highlightItems.count()) {
+    _highlightItems.at(_currentHighlight)->setHighlighted(false);
+  }
+
+  _currentHighlight++;
+  if(_currentHighlight >= _highlightItems.count())
+    _currentHighlight = 0;
+  _highlightItems.at(_currentHighlight)->setHighlighted(true);
+  emit newCurrentHighlight(_highlightItems.at(_currentHighlight));
+}
+
+void ChatViewSearchController::highlightPrev() {
+  if(_highlightItems.isEmpty())
+    return;
+
+  if(_currentHighlight < _highlightItems.count()) {
+    _highlightItems.at(_currentHighlight)->setHighlighted(false);
+  }
+
+  _currentHighlight--;
+  if(_currentHighlight < 0)
+    _currentHighlight = _highlightItems.count() - 1;
+  _highlightItems.at(_currentHighlight)->setHighlighted(true);
+  emit newCurrentHighlight(_highlightItems.at(_currentHighlight));
+}
 
 void ChatViewSearchController::updateHighlights(bool reuse) {
   if(!_scene)
@@ -123,6 +152,12 @@ void ChatViewSearchController::updateHighlights(bool reuse) {
       }
       highlightLine(line);
     }
+  }
+
+  if(!_highlightItems.isEmpty()) {
+    _highlightItems.last()->setHighlighted(true);
+    _currentHighlight = _highlightItems.count() - 1;
+    emit newCurrentHighlight(_highlightItems.last());
   }
 }
 
@@ -192,20 +227,49 @@ void ChatViewSearchController::setSearchOnlyRegularMsgs(bool searchOnlyRegularMs
   updateHighlights(searchOnlyRegularMsgs);
 }
 
+
+// ==================================================
+//  SearchHighlightItem
+// ==================================================
 SearchHighlightItem::SearchHighlightItem(QRectF wordRect, QGraphicsItem *parent)
-  : QGraphicsItem(parent)
+  : QObject(),
+    QGraphicsItem(parent),
+    _highlighted(false),
+    _alpha(100),
+    _timeLine(150)
 {
   setPos(wordRect.x(), wordRect.y());
   qreal sizedelta = wordRect.height() * 0.1;
   _boundingRect = QRectF(-sizedelta, -sizedelta, wordRect.width() + 2 * sizedelta, wordRect.height() + 2 * sizedelta);
+
+  connect(&_timeLine, SIGNAL(valueChanged(qreal)), this, SLOT(updateHighlight(qreal)));
+}
+
+void SearchHighlightItem::setHighlighted(bool highlighted) {
+  _highlighted = highlighted;
+
+  if(highlighted)
+    _timeLine.setDirection(QTimeLine::Forward);
+  else
+    _timeLine.setDirection(QTimeLine::Backward);
+
+  if(_timeLine.state() != QTimeLine::Running)
+    _timeLine.start();
+
+  update();
+}
+
+void SearchHighlightItem::updateHighlight(qreal value) {
+  _alpha = 100 + 155 * value;
+  update();
 }
 
 void SearchHighlightItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
   Q_UNUSED(option);
   Q_UNUSED(widget);
 
-  painter->setPen(QPen(Qt::black, 1.5));
-  painter->setBrush(QColor(254, 237, 45));
+  painter->setPen(QPen(QColor(0, 0, 0, _alpha), 1.5));
+  painter->setBrush(QColor(254, 237, 45, _alpha));
   painter->setRenderHints(QPainter::Antialiasing);
   qreal radius = boundingRect().height() * 0.30;
   painter->drawRoundedRect(boundingRect(), radius, radius);

@@ -51,6 +51,13 @@ BufferWidget::BufferWidget(QWidget *parent)
 	  _chatViewSearchController, SLOT(setSearchMsgs(bool)));
   connect(ui.searchBar->searchOnlyRegularMsgsBox(), SIGNAL(toggled(bool)),
 	  _chatViewSearchController, SLOT(setSearchOnlyRegularMsgs(bool)));
+  connect(ui.searchBar->searchUpButton(), SIGNAL(clicked()),
+	  _chatViewSearchController, SLOT(highlightPrev()));
+  connect(ui.searchBar->searchDownButton(), SIGNAL(clicked()),
+	  _chatViewSearchController, SLOT(highlightNext()));
+
+  connect(_chatViewSearchController, SIGNAL(newCurrentHighlight(QGraphicsItem *)),
+	  this, SLOT(scrollToHighlight(QGraphicsItem *)));
 }
 
 BufferWidget::~BufferWidget() {
@@ -86,3 +93,9 @@ void BufferWidget::showChatView(BufferId id) {
   }
 }
 
+void BufferWidget::scrollToHighlight(QGraphicsItem *highlightItem) {
+  ChatView *view = qobject_cast<ChatView *>(ui.stackedWidget->currentWidget());
+  if(view) {
+    view->centerOn(highlightItem);
+  }
+}

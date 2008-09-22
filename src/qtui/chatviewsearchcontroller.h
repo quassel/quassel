@@ -25,9 +25,11 @@
 #include <QHash>
 #include <QPointer>
 #include <QString>
+#include <QTimeLine>
 
 #include "message.h"
 
+class QGraphicsItem;
 class ChatLine;
 class ChatScene;
 class SearchHighlightItem;
@@ -49,14 +51,21 @@ public slots:
   void setSearchMsgs(bool searchMsgs);
   void setSearchOnlyRegularMsgs(bool searchOnlyRegularMsgs);
 
+  void highlightNext();
+  void highlightPrev();
+
 private slots:
   void sceneDestroyed();
   void updateHighlights(bool reuse = false);
+
+signals:
+  void newCurrentHighlight(QGraphicsItem *highlightItem);
 
 private:
   QString _searchString;
   ChatScene *_scene;
   QList<SearchHighlightItem *> _highlightItems;
+  int _currentHighlight;
 
   bool _caseSensitive;
   bool _searchSenders;
@@ -73,14 +82,23 @@ private:
 // Highlight Items
 #include <QGraphicsItem>
 
-class SearchHighlightItem : public QGraphicsItem {
+class SearchHighlightItem : public QObject, public QGraphicsItem {
+  Q_OBJECT
+
 public:
   SearchHighlightItem(QRectF wordRect, QGraphicsItem *parent = 0);
   inline virtual QRectF boundingRect() const { return _boundingRect; }
   virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
+  void setHighlighted(bool highlighted);
+
+private slots:
+  void updateHighlight(qreal value);
 
 private:
   QRectF _boundingRect;
+  bool _highlighted;
+  qreal _alpha;
+  QTimeLine _timeLine;
 };
 
 #endif //CHATVIEWSEARCHCONTROLLER_H

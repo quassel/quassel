@@ -30,9 +30,6 @@ ChatViewSearchBar::ChatViewSearchBar(QWidget *parent)
   ui.setupUi(this);
   layout()->setContentsMargins(0, 0, 0, 0);
 
-  ui.searchUpButton->setEnabled(false);
-  ui.searchDownButton->setEnabled(false);
-
   hide();
 
   ActionCollection *coll = QtUi::actionCollection();
