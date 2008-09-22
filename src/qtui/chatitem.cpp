@@ -458,10 +458,10 @@ ContentsChatItem::WrapColumnFinder::WrapColumnFinder(ChatItem *_item)
     wrapList(item->data(ChatLineModel::WrapListRole).value<ChatLineModel::WrapList>()),
     wordidx(0),
     lineCount(0),
-    choppedTrailing(0),
-    lastwrapcol(0),
-    lastwrappos(0),
-    width(0)
+    choppedTrailing(0)
+//     lastwrapcol(0),
+//     lastwrappos(0),
+//     width(0)
 {
 }
 
@@ -480,25 +480,41 @@ qint16 ContentsChatItem::WrapColumnFinder::nextWrapColumn() {
   qint16 end = wrapList.count() - 1;
 
   // check if the whole line fits
-  if(wrapList.at(end).endX <= targetWidth || start == end)
+  if(wrapList.at(end).endX <= targetWidth) //  || start == end)
     return -1;
 
+  // check if we have a very long word that needs inter word wrap
+  if(wrapList.at(start).endX > targetWidth) {
+    if(!line.isValid()) {
+      layout = item->createLayout(QTextOption::NoWrap);
+      layout->beginLayout();
+      line = layout->createLine();
+      layout->endLayout();
+    }
+    return line.xToCursor(targetWidth, QTextLine::CursorOnCharacter);
+  }
+
   while(true) {
-    if(start == end) {
-      wordidx = start;
-      if(wordidx > 0) {
-	const ChatLineModel::Word &prevWord = wrapList.at(wordidx - 1);
-	choppedTrailing += prevWord.trailing - (targetWidth - prevWord.endX);
-      }
+    if(start + 1 == end) {
+      wordidx = end;
+      const ChatLineModel::Word &lastWord = wrapList.at(start); // the last word we were able to squeeze in
+
+      // both cases should be cought preliminary
+      Q_ASSERT(lastWord.endX <= targetWidth); // ensure that "start" really fits in
+      Q_ASSERT(end < wrapList.count()); // ensure that start isn't the last word
+
+      choppedTrailing += lastWord.trailing - (targetWidth - lastWord.endX);
       return wrapList.at(wordidx).start;
     }
+
     qint16 pivot = (end + start) / 2;
     if(wrapList.at(pivot).endX > targetWidth && wordidx != pivot) {
       end = pivot;
     } else {
-      start = pivot + 1;
+      start = pivot;
     }
   }
+  Q_ASSERT(false);
   return -1;
 }
 
