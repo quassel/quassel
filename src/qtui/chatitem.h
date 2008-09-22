@@ -222,9 +222,6 @@ private:
   qint16 wordidx;
   qint16 lineCount;
   qreal choppedTrailing;
-//   qint16 lastwrapcol;
-//   qreal lastwrappos;
-//   qreal width;
 };
 
 /*************************************************************************************************/

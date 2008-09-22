@@ -459,9 +459,6 @@ ContentsChatItem::WrapColumnFinder::WrapColumnFinder(ChatItem *_item)
     wordidx(0),
     lineCount(0),
     choppedTrailing(0)
-//     lastwrapcol(0),
-//     lastwrappos(0),
-//     width(0)
 {
 }
 
@@ -508,7 +505,7 @@ qint16 ContentsChatItem::WrapColumnFinder::nextWrapColumn() {
     }
 
     qint16 pivot = (end + start) / 2;
-    if(wrapList.at(pivot).endX > targetWidth && wordidx != pivot) {
+    if(wrapList.at(pivot).endX > targetWidth) {
       end = pivot;
     } else {
       start = pivot;
