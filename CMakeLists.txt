@@ -173,6 +173,11 @@ if(WIN32)
   set(RC_WIN32 pics/win32.rc)  # for app icons on windows
 endif(WIN32)
 
+# This is dirty, but I haven't found a cleaner way to ensure that the generated .qrc files
+# (which will be removed with make clean) are regenerated :/
+set_directory_properties(PROPERTIES
+                         ADDITIONAL_MAKE_CLEAN_FILES CMakeCache.txt)
+
 # We need to create a version.gen
 # For this, we create our genversion binary and make sure it is run every time.
 add_executable(genversion ${CMAKE_SOURCE_DIR}/src/common/genversion.cpp)
@@ -183,14 +188,10 @@ add_custom_target(genversion_run ALL ${GENVERSION_EXECUTABLE}
                   ${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR}/src/common/version.gen)
 add_dependencies(genversion_run genversion)
 
-# Generate binary translation files
-include(QuasselGenerateTranslations)
-quassel_generate_i18n_resource(RC_I18N ${LINGUAS})
-
 
 # These variables will be added to the main targets (CORE, QTCLIENT, MONO)
 
-set(COMMON_DEPS ${RC_I18N} ${RC_WIN32})
+set(COMMON_DEPS ${RC_WIN32})
 set(CORE_DEPS )
 set(CLIENT_DEPS )
 set(KDE_DEPS )
@@ -199,6 +200,7 @@ set(KDE_DEPS )
 add_subdirectory(data)
 add_subdirectory(icons)
 #add_subdirectory(pics)
+add_subdirectory(i18n)
 add_subdirectory(src)
 
 # Make sure version.gen exists before building mod_common

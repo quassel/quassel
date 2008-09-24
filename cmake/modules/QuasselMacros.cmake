@@ -13,3 +13,16 @@ macro(setup_qt4_variables)
   endforeach(qtmod ${ARGV})
   set(QUASSEL_QT_LIBRARIES ${QUASSEL_QT_LIBRARIES} ${QT_LIBRARIES})
 endmacro(setup_qt4_variables)
+
+# This generates a .qm from a .ts file
+macro(generate_qm outvar basename)
+  set(input ${basename}.ts)
+  set(output ${CMAKE_CURRENT_BINARY_DIR}/${basename}.qm)
+  add_custom_command(OUTPUT ${output}
+          COMMAND ${QT_LRELEASE_EXECUTABLE}
+          ARGS ${input}
+               -qm ${output}
+               -silent -compress
+          DEPENDS ${basename}.ts)
+  set(${outvar} ${output})
+endmacro(generate_qm outvar basename)
