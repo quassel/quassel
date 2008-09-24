@@ -32,8 +32,8 @@ else:
     EXE_NAME = sys.argv[3]
 CONTENTS_DIR = BUNDLE_NAME + ".app/Contents/"
 
-BUNDLE_VERSION = "0.2.0-pre"
-ICON_FILE = "src/icons/quassel/quassel.icns"
+BUNDLE_VERSION = "0.3.0"
+ICON_FILE = "pics/quassel.icns"
 
 def createBundle():
     try:

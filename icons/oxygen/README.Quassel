@@ -1,0 +1,13 @@
+This is a stripped version of the Oxygen icon theme, part of KDE4, as found
+in KDE's svn on September 24th, 2008. We have removed parts of the theme we
+don't use in order to conserve space in our own repository and to make downloads
+smaller.
+
+We, the authors of Quassel IRC, do solely distribute this icon set (or parts
+thereof), we are not involved in creating/editing/maintaining it. Please see
+the appropriate files, in particular AUTHORS and COPYING, in this directory.
+
+We would like to thank the Oxygen team for creating such terrific artwork,
+and we do hope that they see our use of their icon theme as a compliment :)
+
+The Quassel IRC Team

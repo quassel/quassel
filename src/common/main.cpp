@@ -21,7 +21,7 @@
 #include <cstdlib>
 
 #ifdef BUILD_CORE
-#  include "coreapplication.h"
+#  include "../core/coreapplication.h"
 #elif defined BUILD_QTUI
 #  include "qtuiapplication.h"
 #elif defined BUILD_MONO

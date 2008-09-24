@@ -1,0 +1,62 @@
+# Builds the three main targets
+
+add_subdirectory(common)
+include_directories(common)
+if(WANT_CORE OR WANT_MONO)
+  add_subdirectory(core)
+  include_directories(core)
+endif(WANT_CORE OR WANT_MONO)
+if(WANT_QTCLIENT OR WANT_MONO)
+  add_subdirectory(client)
+  add_subdirectory(uisupport)
+  add_subdirectory(qtui)
+  include_directories(client)
+  include_directories(uisupport)
+  include_directories(qtui)
+endif(WANT_QTCLIENT OR WANT_MONO)
+
+if(WANT_CORE)
+  setup_qt4_variables(NETWORK SCRIPT SQL)
+  add_executable(quasselcore common/main.cpp ${COMMON_DEPS} ${CORE_DEPS})
+  set_target_properties(quasselcore PROPERTIES
+                                    COMPILE_FLAGS "-DQT_NETWORK_LIB -DQT_SCRIPT_LIB -DQT_SQL_LIB -DBUILD_CORE")
+  target_link_libraries(quasselcore mod_core mod_common
+                                    ${QUASSEL_QT_LIBRARIES} ${QUASSEL_SSL_LIBRARIES})
+  install(TARGETS quasselcore RUNTIME DESTINATION ${BIN_INSTALL_DIR})
+endif(WANT_CORE)
+
+if(WANT_QTCLIENT)
+  setup_qt4_variables(${LINK_DBUS} GUI NETWORK)
+  add_executable(quasselclient WIN32 common/main.cpp ${COMMON_DEPS} ${CLIENT_DEPS})
+  set_target_properties(quasselclient PROPERTIES
+                                      COMPILE_FLAGS "-DQT_GUI_LIB -DQT_NETWORK_LIB -DBUILD_QTUI")
+  target_link_libraries(quasselclient mod_qtui mod_uisupport mod_client mod_common
+                                      ${QUASSEL_QT_LIBRARIES} ${QUASSEL_SSL_LIBRARIES})
+  install(TARGETS quasselclient RUNTIME DESTINATION ${BIN_INSTALL_DIR})
+endif(WANT_QTCLIENT)
+
+if(WANT_MONO)
+  setup_qt4_variables(${LINK_DBUS} GUI NETWORK SCRIPT SQL)
+  add_executable(quassel WIN32 common/main.cpp qtui/monoapplication.cpp ${COMMON_DEPS} ${CLIENT_DEPS} ${CORE_DEPS})
+  set_target_properties(quassel PROPERTIES
+                                COMPILE_FLAGS "-DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_SCRIPT_LIB -DQT_SQL_LIB -DBUILD_MONO")
+  target_link_libraries(quassel mod_qtui mod_uisupport mod_client mod_core mod_common
+                                ${QUASSEL_QT_LIBRARIES} ${QUASSEL_SSL_LIBRARIES})
+  install(TARGETS quassel RUNTIME DESTINATION ${BIN_INSTALL_DIR})
+endif(WANT_MONO)
+
+# Build bundles for MacOSX
+if(APPLE)
+  add_custom_command(TARGET quasselclient POST_BUILD
+                     COMMAND ${CMAKE_SOURCE_DIR}/scripts/build/macosx_makebundle.py
+                             ${CMAKE_SOURCE_DIR} "Quassel Client" quasselclient)
+  add_custom_command(TARGET quassel POST_BUILD
+                     COMMAND ${CMAKE_SOURCE_DIR}/scripts/build/macosx_makebundle.py
+                             ${CMAKE_SOURCE_DIR} "Quassel" quassel)
+  if(DEPLOY)
+    add_custom_command(TARGET quasselclient POST_BUILD
+                       COMMAND ${CMAKE_SOURCE_DIR}/scripts/build/macosx_makePackage.sh Client)
+    add_custom_command(TARGET quasselcore POST_BUILD
+                       COMMAND ${CMAKE_SOURCE_DIR}/scripts/build/macosx_makePackage.sh Core)
+  endif(DEPLOY)
+endif(APPLE)
