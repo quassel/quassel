@@ -1,5 +1,46 @@
 <RCC>
-  <qresource prefix="icons" >
+  <qresource prefix="/icons" >
+    <file>oxygen/16x16/devices/audio-card.png</file>
+    <file>oxygen/16x16/devices/audio-headset.png</file>
+    <file>oxygen/16x16/devices/audio-input-line.png</file>
+    <file>oxygen/16x16/devices/audio-input-microphone.png</file>
+    <file>oxygen/16x16/devices/battery.png</file>
+    <file>oxygen/16x16/devices/camera-photo.png</file>
+    <file>oxygen/16x16/devices/camera-web.png</file>
+    <file>oxygen/16x16/devices/computer-laptop.png</file>
+    <file>oxygen/16x16/devices/computer.png</file>
+    <file>oxygen/16x16/devices/cpu.png</file>
+    <file>oxygen/16x16/devices/drive-harddisk.png</file>
+    <file>oxygen/16x16/devices/drive-optical.png</file>
+    <file>oxygen/16x16/devices/drive-removable-media.png</file>
+    <file>oxygen/16x16/devices/drive-removable-media-usb-pendrive.png</file>
+    <file>oxygen/16x16/devices/drive-removable-media-usb.png</file>
+    <file>oxygen/16x16/devices/input-gaming.png</file>
+    <file>oxygen/16x16/devices/input-keyboard.png</file>
+    <file>oxygen/16x16/devices/input-mouse.png</file>
+    <file>oxygen/16x16/devices/input-tablet.png</file>
+    <file>oxygen/16x16/devices/media-flash-memory-stick.png</file>
+    <file>oxygen/16x16/devices/media-flash.png</file>
+    <file>oxygen/16x16/devices/media-flash-sd-mmc.png</file>
+    <file>oxygen/16x16/devices/media-flash-smart-media.png</file>
+    <file>oxygen/16x16/devices/media-floppy.png</file>
+    <file>oxygen/16x16/devices/media-optical-audio.png</file>
+    <file>oxygen/16x16/devices/media-optical.png</file>
+    <file>oxygen/16x16/devices/media-optical-recordable.png</file>
+    <file>oxygen/16x16/devices/media-tape.png</file>
+    <file>oxygen/16x16/devices/modem.png</file>
+    <file>oxygen/16x16/devices/multimedia-player-apple-ipod.png</file>
+    <file>oxygen/16x16/devices/multimedia-player.png</file>
+    <file>oxygen/16x16/devices/network-wired.png</file>
+    <file>oxygen/16x16/devices/network-wireless.png</file>
+    <file>oxygen/16x16/devices/pda.png</file>
+    <file>oxygen/16x16/devices/phone-openmoko-freerunner.png</file>
+    <file>oxygen/16x16/devices/phone.png</file>
+    <file>oxygen/16x16/devices/printer.png</file>
+    <file>oxygen/16x16/devices/scanner.png</file>
+    <file>oxygen/16x16/devices/video-display.png</file>
+    <file>oxygen/16x16/devices/video-projector.png</file>
+    <file>oxygen/16x16/devices/video-television.png</file>
     <file>oxygen/16x16/emotes/face-angel.png</file>
     <file>oxygen/16x16/emotes/face-embarrassed.png</file>
     <file>oxygen/16x16/emotes/face-kiss.png</file>

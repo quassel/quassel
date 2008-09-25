@@ -48,6 +48,8 @@ bool Quassel::_initialized = false;
 bool Quassel::DEBUG = false;
 
 Quassel::Quassel() {
+  Q_INIT_RESOURCE(i18n);
+
   // We catch SIGTERM and SIGINT (caused by Ctrl+C) to graceful shutdown Quassel.
   signal(SIGTERM, handleSignal);
   signal(SIGINT, handleSignal);

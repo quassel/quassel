@@ -28,12 +28,16 @@ IconLoader IconLoader::_iconLoader;
 int IconLoader::_groupSize[] = { 48, 22, 22, 16, 32, 22 };  // default sizes taken from Oxygen
 
 IconLoader *IconLoader::global() {
+  // Workaround: the static _iconLoader might be initialized before the resources it needs
+  // This way, first call to global() will init it by setting the theme
+  if(_iconLoader.theme().isEmpty())
+    _iconLoader.setTheme("oxygen");
   return &_iconLoader;
 }
 
 IconLoader::IconLoader(QObject *parent) : QObject(parent) {
 
-  setTheme("oxygen");
+  // setTheme("oxygen");
 }
 
 IconLoader::~IconLoader() {
@@ -59,17 +63,25 @@ void IconLoader::setTheme(const QString &theme) {
   if(QFile::exists(path))
     _themedIconDirNames.append(path);
 
-  // Own icons in $data/apps/quassel/icons/hicolor and :/icons/hicolor
-  // Also, plain icon dirs $data/apps/quassel/pics and :/pics
-  dataDirNames.append(":");
+  // Own icons in $data/apps/quassel/icons/hicolor
+  // Also, plain icon dirs $data/apps/quassel/pics
   foreach(QString dir, dataDirNames) {
-    path = QString("%1/apps/quassel/icons/hicolor");
+    path = QString("%1/apps/quassel/icons/hicolor").arg(dir);
     if(QFile::exists(path))
       _themedIconDirNames.append(path);
-    path = QString("%1/apps/quassel/pics");
+    path = QString("%1/apps/quassel/pics").arg(dir);
     if(QFile::exists(path))
       _plainIconDirNames.append(path);
   }
+
+  // Same for :/icons/hicolor and :/pics
+  path = QString(":/icons/hicolor");
+  if(QFile::exists(path))
+    _themedIconDirNames.append(path);
+
+  path = QString(":/pics");
+  if(QFile::exists(path))
+    _plainIconDirNames.append(path);
 }
 
 // TODO: optionally implement cache (speed/memory tradeoff?)
@@ -109,4 +121,26 @@ QString IconLoader::findIconPath(const QString &name, int size) {
   }
 
   return QString();
+}
+
+// Convenience constructors
+
+QPixmap DesktopIcon(const QString& name, int force_size) {
+  IconLoader *loader = IconLoader::global();
+  return loader->loadIcon(name, IconLoader::Desktop, force_size);
+}
+
+QPixmap BarIcon(const QString& name, int force_size) {
+  IconLoader *loader = IconLoader::global();
+  return loader->loadIcon(name, IconLoader::Toolbar, force_size);
+}
+
+QPixmap MainBarIcon(const QString& name, int force_size) {
+  IconLoader *loader = IconLoader::global();
+  return loader->loadIcon(name, IconLoader::MainToolbar, force_size);
+}
+
+QPixmap SmallIcon(const QString& name, int force_size) {
+  IconLoader *loader = IconLoader::global();
+  return loader->loadIcon(name, IconLoader::Small, force_size);
 }

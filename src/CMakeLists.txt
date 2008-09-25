@@ -15,6 +15,16 @@ if(WANT_QTCLIENT OR WANT_MONO)
   include_directories(qtui)
 endif(WANT_QTCLIENT OR WANT_MONO)
 
+if(QUASSEL_ICONS MATCHES "Builtin")
+  qt4_add_resources(RC_ICONS ../icons/hicolor.qrc)
+endif(QUASSEL_ICONS MATCHES "Builtin")
+
+if(OXYGEN_ICONS MATCHES "Builtin")
+  qt4_add_resources(RC_ICONS ../icons/oxygen.qrc)
+endif(OXYGEN_ICONS MATCHES "Builtin")
+
+set(CLIENT_DEPS ${CLIENT_DEPS} ${RC_ICONS})
+
 if(WANT_CORE)
   setup_qt4_variables(NETWORK SCRIPT SQL)
   add_executable(quasselcore common/main.cpp ${COMMON_DEPS} ${CORE_DEPS})

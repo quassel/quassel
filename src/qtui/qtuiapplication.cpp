@@ -27,8 +27,6 @@
 #include "qtui.h"
 #include "sessionsettings.h"
 
-#include "iconloader.h"
-
 QtUiApplication::QtUiApplication(int &argc, char **argv) : QApplication(argc, argv), Quassel() {
   setRunMode(Quassel::ClientOnly);
 
@@ -48,9 +46,6 @@ bool QtUiApplication::init() {
     gui->init();
     resumeSessionIfPossible();
 
-    // DEBUG
-    QPixmap pix = IconLoader::global()->loadIcon("network-connect", IconLoader::Small);
-    qDebug() << pix;
     return true;
   }
   return false;

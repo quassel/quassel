@@ -36,7 +36,7 @@
 #include "clientbacklogmanager.h"
 #include "coreinfodlg.h"
 #include "coreconnectdlg.h"
-#include "icon.h"
+#include "iconloader.h"
 #include "msgprocessorstatuswidget.h"
 #include "qtuimessageprocessor.h"
 #include "qtuiapplication.h"
@@ -80,9 +80,9 @@ MainWin::MainWin(QWidget *parent)
     _titleSetter(this),
     systray(new QSystemTrayIcon(this)),
 
-    activeTrayIcon(":/icons/quassel-icon-active.png"),
-    onlineTrayIcon(":/icons/quassel-icon.png"),
-    offlineTrayIcon(":/icons/quassel-icon-offline.png"),
+    activeTrayIcon("quassel_newmessage"),
+    onlineTrayIcon("quassel"),
+    offlineTrayIcon("quassel_disconnected"),
     trayIconActive(false),
 
     timer(new QTimer(this)),
@@ -422,7 +422,7 @@ void MainWin::setConnectedState() {
   qApp->setWindowIcon(onlineTrayIcon);
   systray->setIcon(onlineTrayIcon);
   if(sslLabel->width() == 0)
-    sslLabel->setPixmap(QPixmap::fromImage(QImage(":/16x16/status/no-ssl")));
+    sslLabel->setPixmap(SmallIcon("security-low"));
 }
 
 void MainWin::loadLayout() {
@@ -444,7 +444,7 @@ void MainWin::updateLagIndicator(int lag) {
 
 void MainWin::securedConnection() {
   // todo: make status bar entry
-  sslLabel->setPixmap(QPixmap::fromImage(QImage(":/16x16/status/ssl")));
+  sslLabel->setPixmap(SmallIcon("security-high"));
 }
 
 void MainWin::disconnectedFromCore() {
@@ -736,13 +736,13 @@ void MainWin::clientNetworkUpdated() {
 
   switch(net->connectionState()) {
   case Network::Initialized:
-    action->setIcon(QIcon(":/16x16/actions/network-connect"));
+    action->setIcon(SmallIcon("network-connect"));
     break;
   case Network::Disconnected:
-    action->setIcon(QIcon(":/16x16/actions/network-disconnect"));
+    action->setIcon(SmallIcon("network-disconnect"));
     break;
   default:
-    action->setIcon(QIcon(":/16x16/actions/gear"));
+    action->setIcon(SmallIcon("network-wired"));
   }
 }
 

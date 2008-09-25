@@ -96,7 +96,7 @@ private:
 // convenience
 QPixmap DesktopIcon(const QString& name, int size = 0);
 QPixmap BarIcon(const QString& name, int size = 0);
-QPixmap MainbarIcon(const QString& name, int size = 0);
+QPixmap MainBarIcon(const QString& name, int size = 0);
 QPixmap SmallIcon(const QString& name, int size = 0);
 //QPixmap SmallMediumIcon(const QString &name, int size = 0);  // not part of KIconLoader
 

@@ -86,23 +86,6 @@ if(EXECINFO_FOUND)
   link_libraries(${EXECINFO_LIBRARIES})
 endif(EXECINFO_FOUND)
 
-# Decide what to do with icons
-if(WANT_QTCLIENT OR WANT_MONO)
-  if(QUASSEL_ICONS MATCHES "External")
-    message(STATUS "Install Quassel icons to ${CMAKE_INSTALL_PREFIX}/share/apps/quassel")
-  else(QUASSEL_ICONS MATCHES "External")
-    set(QUASSEL_ICONS "Builtin")
-    message(STATUS "Compile Quassel icons into the binary")
-  endif(QUASSEL_ICONS MATCHES "External")
-
-  if(OXYGEN_ICONS MATCHES "External")
-    message(STATUS "Use system-installed Oxygen icon theme")
-  else(OXYGEN_ICONS MATCHES "External")
-    set(OXYGEN_ICONS "Builtin")
-    message(STATUS "Compile Oxygen icon theme subset into the binary")
-  endif(OXYGEN_ICONS MATCHES "External")
-endif(WANT_QTCLIENT OR WANT_MONO)
-
 # Select a Qt installation here, if you don't want to use system Qt
 if(QT)
   # FindQt4 will look for the qmake binary in $PATH, so we just prepend the Qt dir
@@ -188,6 +171,22 @@ add_custom_target(genversion_run ALL ${GENVERSION_EXECUTABLE}
                   ${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR}/src/common/version.gen)
 add_dependencies(genversion_run genversion)
 
+# Decide what to do with icons
+if(WANT_QTCLIENT OR WANT_MONO)
+  if(QUASSEL_ICONS MATCHES "External")
+    message(STATUS "Install Quassel icons to ${CMAKE_INSTALL_PREFIX}/share/apps/quassel")
+  else(QUASSEL_ICONS MATCHES "External")
+    set(QUASSEL_ICONS "Builtin")
+    message(STATUS "Compile Quassel icons into the binary")
+  endif(QUASSEL_ICONS MATCHES "External")
+
+  if(OXYGEN_ICONS MATCHES "External")
+    message(STATUS "Use system-installed Oxygen icon theme")
+  else(OXYGEN_ICONS MATCHES "External")
+    set(OXYGEN_ICONS "Builtin")
+    message(STATUS "Compile Oxygen icon theme subset into the binary")
+  endif(OXYGEN_ICONS MATCHES "External")
+endif(WANT_QTCLIENT OR WANT_MONO)
 
 # These variables will be added to the main targets (CORE, QTCLIENT, MONO)
 

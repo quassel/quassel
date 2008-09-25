@@ -1,5 +1,5 @@
 <RCC>
-  <qresource prefix="icons" >
+  <qresource prefix="/icons" >
     <file>hicolor/16x16/apps/quassel_disconnected.png</file>
     <file>hicolor/16x16/apps/quassel_newmessage.png</file>
     <file>hicolor/16x16/apps/quassel.png</file>
