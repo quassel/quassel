@@ -23,10 +23,14 @@
 #include <QHeaderView>
 #include <QItemSelectionModel>
 
+#include "iconloader.h"
+
 AliasesSettingsPage::AliasesSettingsPage(QWidget *parent)
   : SettingsPage(tr("Behaviour"), tr("Aliases"), parent)
 {
   ui.setupUi(this);
+  ui.newAliasButton->setIcon(SmallIcon("list-add"));
+  ui.deleteAliasButton->setIcon(SmallIcon("edit-delete"));
 
   ui.aliasesView->setSelectionBehavior(QAbstractItemView::SelectRows);
   ui.aliasesView->setSelectionMode(QAbstractItemView::SingleSelection);

@@ -23,6 +23,7 @@
 #include <QMessageBox>
 
 #include "client.h"
+#include "iconloader.h"
 #include "network.h"
 #include "bufferviewconfig.h"
 #include "bufferviewfilter.h"
@@ -35,6 +36,10 @@ BufferViewSettingsPage::BufferViewSettingsPage(QWidget *parent)
     _ignoreWidgetChanges(false)
 {
   ui.setupUi(this);
+  ui.renameBufferView->setIcon(SmallIcon("edit-rename"));
+  ui.addBufferView->setIcon(SmallIcon("list-add"));
+  ui.deleteBufferView->setIcon(SmallIcon("edit-delete"));
+
   reset();
 
   ui.bufferViewList->setSortingEnabled(true);
@@ -81,7 +86,7 @@ void BufferViewSettingsPage::reset() {
   }
 
   _deleteBufferViews.clear();
-  
+
   setChangedState(false);
 }
 
@@ -108,7 +113,7 @@ void BufferViewSettingsPage::load() {
     ui.networkSelector->setItemData(ui.networkSelector->count() - 1, qVariantFromValue<NetworkId>(net->networkId()));
   }
   _ignoreWidgetChanges = false;
-  
+
   ui.bufferViewList->setCurrentRow(0);
 }
 
@@ -125,7 +130,7 @@ void BufferViewSettingsPage::save() {
   if(Client::bufferViewManager()) {
     Client::bufferViewManager()->requestDeleteBufferViews(deleteConfigs);
   }
-  
+
   QHash<BufferViewConfig *, BufferViewConfig *>::iterator changedConfigIter = _changedBufferViews.begin();
   QHash<BufferViewConfig *, BufferViewConfig *>::iterator changedConfigIterEnd = _changedBufferViews.end();
   BufferViewConfig *config, *changedConfig;
@@ -206,7 +211,7 @@ void BufferViewSettingsPage::newBufferView(const QString &bufferViewName) {
   addBufferView(config);
   ui.bufferViewList->setCurrentRow(listPos(config));
 }
-      
+
 int BufferViewSettingsPage::listPos(BufferViewConfig *config) {
   QObject *obj;
   for(int i = 0; i < ui.bufferViewList->count(); i++) {
@@ -244,7 +249,7 @@ void BufferViewSettingsPage::updateBufferView() {
 void BufferViewSettingsPage::on_addBufferView_clicked() {
   if(!Client::bufferViewManager())
     return;
-  
+
   QStringList existing;
   foreach(BufferViewConfig *bufferConfig, Client::bufferViewManager()->bufferViewConfigs()) {
     existing << bufferConfig->bufferViewName();
@@ -263,7 +268,7 @@ void BufferViewSettingsPage::on_renameBufferView_clicked() {
 
   if(!Client::bufferViewManager())
     return;
-  
+
   BufferViewConfig *config = bufferView(ui.bufferViewList->currentRow());
   if(!config)
     return;
@@ -319,7 +324,7 @@ void BufferViewSettingsPage::bufferViewSelectionChanged(const QItemSelection &cu
 void BufferViewSettingsPage::loadConfig(BufferViewConfig *config) {
   if(!config)
     return;
-  
+
   _ignoreWidgetChanges = true;
   ui.onlyStatusBuffers->setChecked(BufferInfo::StatusBuffer & config->allowedBufferTypes());
   ui.onlyChannelBuffers->setChecked(BufferInfo::ChannelBuffer & config->allowedBufferTypes());
@@ -346,14 +351,14 @@ void BufferViewSettingsPage::loadConfig(BufferViewConfig *config) {
   ui.minimumActivitySelector->setCurrentIndex(activityIndex);
 
   ui.bufferViewPreview->setFilteredModel(Client::bufferModel(), config);
-  
+
   _ignoreWidgetChanges = false;
 }
 
 void BufferViewSettingsPage::saveConfig(BufferViewConfig *config) {
   if(!config)
     return;
-  
+
   int allowedBufferTypes = 0;
   if(ui.onlyStatusBuffers->isChecked())
     allowedBufferTypes |= BufferInfo::StatusBuffer;
@@ -414,7 +419,7 @@ bool BufferViewSettingsPage::testHasChanged() {
 BufferViewConfig *BufferViewSettingsPage::cloneConfig(BufferViewConfig *config) {
   if(!config || config->bufferViewId() < 0)
     return config;
-  
+
   if(_changedBufferViews.contains(config))
     return _changedBufferViews[config];
 

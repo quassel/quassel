@@ -24,6 +24,7 @@
 #include "bufferviewfilter.h"
 #include "buffersyncer.h"
 #include "client.h"
+#include "iconloader.h"
 #include "mappedselectionmodel.h"
 #include "network.h"
 #include "networkmodel.h"
@@ -77,7 +78,7 @@ BufferView::BufferView(QWidget *parent)
   _hideQuitAction.setEnabled(false);
   _hideModeAction.setEnabled(false);
 
-  showChannelList.setIcon(QIcon(":/16x16/actions/oxygen/16x16/actions/format-list-unordered.png"));
+  showChannelList.setIcon(SmallIcon("format-list-unordered"));
 
   connect(this, SIGNAL(collapsed(const QModelIndex &)), this, SLOT(on_collapse(const QModelIndex &)));
   connect(this, SIGNAL(expanded(const QModelIndex &)), this, SLOT(on_expand(const QModelIndex &)));
@@ -409,14 +410,14 @@ void BufferView::contextMenuEvent(QContextMenuEvent *event) {
   const Network *network = Client::network(index.data(NetworkModel::NetworkIdRole).value<NetworkId>());
   Q_CHECK_PTR(network);
 
-  QIcon connectionStateIcon;
+  QPixmap connectionStateIcon;
   if(network) {
     if(network->connectionState() == Network::Initialized) {
-      connectionStateIcon = QIcon(":/22x22/actions/network-connect");
+      connectionStateIcon = SmallIcon("network-connect");
     } else if(network->connectionState() == Network::Disconnected) {
-      connectionStateIcon = QIcon(":/22x22/actions/network-disconnect");
+      connectionStateIcon = SmallIcon("network-disconnect");
     } else {
-      connectionStateIcon = QIcon(":/22x22/actions/gear");
+      connectionStateIcon = SmallIcon("network-wired");  // FIXME network-connecting
     }
   }
 

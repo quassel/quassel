@@ -24,11 +24,21 @@
 #include "identitiessettingspage.h"
 
 #include "client.h"
+#include "iconloader.h"
 
 IdentitiesSettingsPage::IdentitiesSettingsPage(QWidget *parent)
   : SettingsPage(tr("General"), tr("Identities"), parent) {
 
   ui.setupUi(this);
+  ui.renameIdentity->setIcon(BarIcon("edit-rename"));
+  ui.addIdentity->setIcon(BarIcon("list-add-user"));
+  ui.deleteIdentity->setIcon(BarIcon("list-remove-user"));
+  ui.addNick->setIcon(SmallIcon("list-add"));
+  ui.deleteNick->setIcon(SmallIcon("edit-delete"));
+  ui.renameNick->setIcon(SmallIcon("edit-rename"));
+  ui.nickUp->setIcon(SmallIcon("go-up"));
+  ui.nickDown->setIcon(SmallIcon("go-down"));
+
   setEnabled(Client::isConnected());  // need a core connection!
   setWidgetStates();
   connect(Client::instance(), SIGNAL(coreConnectionStateChanged(bool)), this, SLOT(coreConnectionStateChanged(bool)));
@@ -446,6 +456,8 @@ void CreateIdentityDlg::on_identityName_textChanged(const QString &text) {
 SaveIdentitiesDlg::SaveIdentitiesDlg(const QList<Identity *> &toCreate, const QList<Identity *> &toUpdate, const QList<IdentityId> &toRemove, QWidget *parent)
   : QDialog(parent) { //, toCreate(tocreate), toUpdate(toupdate), toRemove(toremove) {
   ui.setupUi(this);
+  ui.abort->setIcon(SmallIcon("dialog-cancel"));
+
   numevents = toCreate.count() + toUpdate.count() + toRemove.count();
   rcvevents = 0;
   if(numevents) {
