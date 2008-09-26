@@ -25,17 +25,29 @@
 #include "networkssettingspage.h"
 
 #include "client.h"
+#include "iconloader.h"
 #include "identity.h"
 #include "network.h"
 
 
 NetworksSettingsPage::NetworksSettingsPage(QWidget *parent) : SettingsPage(tr("General"), tr("Networks"), parent) {
   ui.setupUi(this);
+
+  // set up icons
+  ui.renameNetwork->setIcon(SmallIcon("edit-rename"));
+  ui.addNetwork->setIcon(SmallIcon("list-add"));
+  ui.deleteNetwork->setIcon(SmallIcon("edit-delete"));
+  ui.addServer->setIcon(SmallIcon("list-add"));
+  ui.deleteServer->setIcon(SmallIcon("edit-delete"));
+  ui.editServer->setIcon(SmallIcon("configure"));
+  ui.upServer->setIcon(SmallIcon("go-up"));
+  ui.downServer->setIcon(SmallIcon("go-down"));
+
   _ignoreWidgetChanges = false;
 
-  connectedIcon = QIcon(":/22x22/actions/network-connect");
-  connectingIcon = QIcon(":/22x22/actions/gear");
-  disconnectedIcon = QIcon(":/22x22/actions/network-disconnect");
+  connectedIcon = SmallIcon("network-connect");
+  connectingIcon = SmallIcon("network-wired");  // FIXME network-connecting
+  disconnectedIcon = SmallIcon("network-disconnect");
 
   foreach(int mib, QTextCodec::availableMibs()) {
     QByteArray codec = QTextCodec::codecForMib(mib)->name();
@@ -653,6 +665,8 @@ void NetworkEditDlg::on_networkEdit_textChanged(const QString &text) {
 
 ServerEditDlg::ServerEditDlg(const QVariant &_serverData, QWidget *parent) : QDialog(parent) {
   ui.setupUi(this);
+  ui.useSSL->setIcon(SmallIcon("document-encrypt"));
+
   QVariantMap serverData = _serverData.toMap();
   if(serverData.count()) {
     ui.host->setText(serverData["Host"].toString());

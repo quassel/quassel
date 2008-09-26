@@ -21,16 +21,15 @@
 #ifndef _NETWORKSSETTINGSPAGE_H_
 #define _NETWORKSSETTINGSPAGE_H_
 
-#include <QIcon>
+#include <QPixmap>
 
+#include "network.h"
 #include "settingspage.h"
+
 #include "ui_networkssettingspage.h"
 #include "ui_networkeditdlg.h"
 #include "ui_servereditdlg.h"
 #include "ui_saveidentitiesdlg.h"
-
-#include "network.h"
-#include "types.h"
 
 class NetworksSettingsPage : public SettingsPage {
   Q_OBJECT
@@ -83,7 +82,7 @@ class NetworksSettingsPage : public SettingsPage {
     QHash<NetworkId, NetworkInfo> networkInfos;
     bool _ignoreWidgetChanges;
 
-    QIcon connectedIcon, connectingIcon, disconnectedIcon;
+    QPixmap connectedIcon, connectingIcon, disconnectedIcon;
 
     void reset();
     bool testHasChanged();

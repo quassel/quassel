@@ -50,7 +50,7 @@
    <item>
     <layout class="QHBoxLayout" >
      <item>
-      <widget class="QLabel" name="label_3" >
+      <widget class="QLabel" name="passwordLabel" >
        <property name="text" >
         <string>Password:</string>
        </property>
@@ -77,7 +77,7 @@
       <string>Use SSL</string>
      </property>
      <property name="icon" >
-      <iconset resource="../../icons/icons.qrc" >
+      <iconset>
        <normaloff>:/16x16/actions/oxygen/16x16/actions/document-encrypt.png</normaloff>:/16x16/actions/oxygen/16x16/actions/document-encrypt.png</iconset>
      </property>
     </widget>
