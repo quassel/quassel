@@ -15,6 +15,9 @@ if(WANT_QTCLIENT OR WANT_MONO)
   include_directories(qtui)
 endif(WANT_QTCLIENT OR WANT_MONO)
 
+# We always add stuff in :/pics
+qt4_add_resources(RC_ICONS ../pics/pics.qrc)
+
 if(QUASSEL_ICONS MATCHES "Builtin")
   qt4_add_resources(RC_ICONS ../icons/hicolor.qrc)
 endif(QUASSEL_ICONS MATCHES "Builtin")

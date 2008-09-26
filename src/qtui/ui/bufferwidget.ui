@@ -40,14 +40,6 @@
       <number>0</number>
      </property>
      <widget class="QWidget" name="page" >
-      <property name="geometry" >
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>758</width>
-        <height>498</height>
-       </rect>
-      </property>
       <layout class="QVBoxLayout" >
        <property name="margin" >
         <number>0</number>
@@ -73,7 +65,7 @@
 &lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
 p, li { white-space: pre-wrap; }
 &lt;/style>&lt;/head>&lt;body style=" font-family:'Trebuchet MS'; font-size:13pt; font-weight:400; font-style:normal;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;img src=":/quassel/96x96/apps/quassel.png" />&lt;span style=" font-size:89pt; color:#00008b;">uassel IRC&lt;/span>&lt;/p>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;img src=":/pics/quassel-large.png" />&lt;span style=" font-size:89pt; color:#00008b;">uassel IRC&lt;/span>&lt;/p>
 &lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:49pt;">&lt;span style=" font-size:22pt;">Chat comfortably. Anywhere.&lt;/span>&lt;/p>&lt;/body>&lt;/html></string>
             </property>
             <property name="scaledContents" >
@@ -105,7 +97,7 @@ p, li { white-space: pre-wrap; }
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../../icons/quassel-icons.qrc" />
+  <include location="../../../pics/pics.qrc" />
  </resources>
  <connections/>
 </ui>

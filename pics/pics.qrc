@@ -1,0 +1,5 @@
+<RCC>
+  <qresource prefix="/pics" >
+    <file>quassel-large.png</file>
+  </qresource>
+</RCC>
