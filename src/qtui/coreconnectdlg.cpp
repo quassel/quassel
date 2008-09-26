@@ -27,11 +27,17 @@
 #include "clientsettings.h"
 #include "clientsyncer.h"
 #include "coreconfigwizard.h"
+#include "iconloader.h"
 
 CoreConnectDlg::CoreConnectDlg(bool autoconnect, QWidget *parent)
   : QDialog(parent)
 {
   ui.setupUi(this);
+  ui.editAccount->setIcon(SmallIcon("document-properties"));
+  ui.addAccount->setIcon(SmallIcon("list-add"));
+  ui.deleteAccount->setIcon(SmallIcon("list-remove"));
+  ui.connectIcon->setPixmap(BarIcon("network-disconnect"));
+  ui.secureConnection->setPixmap(SmallIcon("document-encrypt"));
 
   // make it look more native under Mac OS X:
   setWindowFlags(Qt::Sheet);
@@ -213,7 +219,7 @@ void CoreConnectDlg::on_accountButtonBox_accepted() {
 
 void CoreConnectDlg::connectToCore() {
   ui.secureConnection->hide();
-  ui.connectIcon->setPixmap(QPixmap::fromImage(QImage(":/22x22/actions/network-disconnect")));
+  ui.connectIcon->setPixmap(BarIcon("network-disconnect"));
   ui.connectLabel->setText(tr("Connect to %1").arg(accountData["Host"].toString()));
   ui.coreInfoLabel->setText("");
   ui.loginStack->setCurrentWidget(ui.loginEmptyPage);
@@ -229,7 +235,7 @@ void CoreConnectDlg::connectToCore() {
 void CoreConnectDlg::initPhaseError(const QString &error) {
   doingAutoConnect = false;
   ui.secureConnection->hide();
-  ui.connectIcon->setPixmap(QPixmap::fromImage(QImage(":/22x22/status/dialog-error")));
+  ui.connectIcon->setPixmap(BarIcon("dialog-error"));
   //ui.connectLabel->setBrush(QBrush("red"));
   ui.connectLabel->setText(tr("<div style=color:red;>Connection to %1 failed!</div>").arg(accountData["Host"].toString()));
   ui.coreInfoLabel->setText(error);
@@ -275,7 +281,7 @@ void CoreConnectDlg::restartPhaseNull() {
  *********************************************************/
 
 void CoreConnectDlg::startLogin() {
-  ui.connectIcon->setPixmap(QPixmap::fromImage(QImage(":/22x22/actions/network-connect")));
+  ui.connectIcon->setPixmap(BarIcon("network-connect"));
   ui.loginStack->setCurrentWidget(ui.loginCredentialsPage);
   //ui.loginStack->setMinimumSize(ui.loginStack->sizeHint()); ui.loginStack->updateGeometry();
   ui.loginButtonBox->setStandardButtons(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
@@ -336,6 +342,7 @@ void CoreConnectDlg::loginFailed(const QString &error) {
   if(wizard) {
     wizard->reject();
   }
+  ui.connectIcon->setPixmap(BarIcon("dialog-error"));
   ui.loginStack->setCurrentWidget(ui.loginCredentialsPage);
   ui.loginGroup->setTitle(tr("Login"));
   ui.user->setEnabled(true);
@@ -436,6 +443,8 @@ CoreAccountEditDlg::CoreAccountEditDlg(AccountId id, const QVariantMap &acct, co
   : QDialog(parent)
 {
   ui.setupUi(this);
+  ui.useSsl->setIcon(SmallIcon("document-encrypt"));
+
   existing = _existing;
   if(id.isValid()) {
     existing.removeAll(acct["AccountName"].toString());
