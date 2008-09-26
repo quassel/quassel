@@ -31,8 +31,11 @@
 class Icon : public QIcon {
 
   public:
-    //explicit Icon();
+    Icon();
     explicit Icon(const QString &iconName);
+    explicit Icon(const QIcon& copy);
+
+    Icon& operator=(const Icon &other);
 };
 
 #endif

@@ -21,6 +21,21 @@
 #include "icon.h"
 #include "iconloader.h"
 
+Icon::Icon() : QIcon() {
+
+}
+
 Icon::Icon(const QString &name) : QIcon() {
   addPixmap(IconLoader::global()->loadIcon(name, IconLoader::Desktop));
+}
+
+Icon::Icon(const QIcon& copy) : QIcon(copy) {
+
+}
+
+Icon& Icon::operator=(const Icon &other) {
+  if (this != &other) {
+    QIcon::operator=(other);
+  }
+  return *this;
 }
