@@ -23,20 +23,22 @@
 #include <QToolButton>
 #include <QStyle>
 
+#include "iconloader.h"
+
 ClearableLineEdit::ClearableLineEdit(QWidget *parent)
   : QLineEdit(parent)
 {
   clearButton = new QToolButton(this);
-  clearButton->setIcon(QIcon(":/22x22/actions/oxygen/22x22/actions/edit-clear-locationbar-rtl.png"));
+  clearButton->setIcon(SmallIcon("edit-clear-locationbar-rtl"));
 #ifndef Q_WS_QWS
   clearButton->setCursor(Qt::ArrowCursor);
 #endif
   clearButton->setStyleSheet("QToolButton { border: none; padding: 0px; }");
   clearButton->hide();
-  
+
   connect(clearButton, SIGNAL(clicked()), this, SLOT(clear()));
   connect(this, SIGNAL(textChanged(const QString&)), this, SLOT(updateClearButton(const QString&)));
-  
+
   int frameWidth = style()->pixelMetric(QStyle::PM_DefaultFrameWidth);
   setStyleSheet(QString("QLineEdit { padding-right: %1px; } ").arg(clearButton->sizeHint().width() + frameWidth + 1));
   QSize msz = minimumSizeHint();

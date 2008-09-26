@@ -22,9 +22,7 @@
 #include <QAbstractButton>
 
 #include "coreconfigwizard.h"
-
-//#include "client.h"
-//#include "identitiessettingspage.h"
+#include "iconloader.h"
 
 CoreConfigWizard::CoreConfigWizard(const QList<QVariant> &backends, QWidget *parent) : QWizard(parent) {
   foreach(QVariant v, backends) _backends[v.toMap()["DisplayName"].toString()] = v;
@@ -58,7 +56,7 @@ CoreConfigWizard::CoreConfigWizard(const QList<QVariant> &backends, QWidget *par
   setModal(true);
 
   setWindowTitle(tr("Core Configuration Wizard"));
-  setPixmap(QWizard::LogoPixmap, QPixmap(":icons/quassel-icon.png"));
+  setPixmap(QWizard::LogoPixmap, DesktopIcon("quassel"));
 }
 
 QHash<QString, QVariant> CoreConfigWizard::backends() const {

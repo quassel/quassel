@@ -13,7 +13,7 @@
    <string>Channel List</string>
   </property>
   <property name="windowIcon" >
-   <iconset resource="../../icons/icons.qrc" >
+   <iconset>
     <normaloff>:/16x16/actions/oxygen/16x16/actions/format-list-unordered.png</normaloff>:/16x16/actions/oxygen/16x16/actions/format-list-unordered.png</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout" >
@@ -51,7 +51,7 @@ Advanced mode allows to pass search strings to the IRC Server.</string>
         <string/>
        </property>
        <property name="pixmap" >
-        <pixmap resource="../../icons/icons.qrc" >:/22x22/actions/oxygen/22x22/actions/edit-clear-locationbar-rtl.png</pixmap>
+        <pixmap>:/22x22/actions/oxygen/22x22/actions/edit-clear-locationbar-rtl.png</pixmap>
        </property>
       </widget>
      </item>
@@ -131,9 +131,9 @@ Advanced mode allows to pass search strings to the IRC Server.</string>
       <string>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
 &lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
 p, li { white-space: pre-wrap; }
-&lt;/style>&lt;/head>&lt;body style=" font-family:'Lucida Grande'; font-size:13pt; font-weight:400; font-style:normal;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">SUPER EVIL CATASTROPHIC ERROR!!11&lt;/p>
-&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;/p>&lt;/body>&lt;/html></string>
+&lt;/style>&lt;/head>&lt;body style=" font-family:'DejaVu Sans'; font-size:8pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; font-size:13pt;">SUPER EVIL CATASTROPHIC ERROR!!11&lt;/p>
+&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lucida Grande'; font-size:13pt;">&lt;/p>&lt;/body>&lt;/html></string>
      </property>
     </widget>
    </item>

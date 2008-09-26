@@ -23,12 +23,15 @@
 #include <QDebug>
 
 #include "client.h"
+#include "iconloader.h"
 #include "networkmodel.h"
 
 TopicWidget::TopicWidget(QWidget *parent)
   : AbstractItemView(parent)
 {
   ui.setupUi(this);
+  ui.topicEditButton->setPixmap(BarIcon("edit-rename"));
+
   ui.topicLineEdit->hide();
   ui.topicLineEdit->installEventFilter(this);
   ui.topicLabel->show();
@@ -51,7 +54,7 @@ void TopicWidget::dataChanged(const QModelIndex &topLeft, const QModelIndex &bot
 void TopicWidget::setTopic(const QString &newtopic) {
   if(_topic == newtopic)
     return;
-  
+
   _topic = newtopic;
   ui.topicLabel->setText(newtopic);
   ui.topicLineEdit->setText(newtopic);
@@ -110,6 +113,6 @@ bool TopicWidget::eventFilter(QObject *obj, QEvent *event) {
     switchPlain();
     return true;
   }
-  
+
   return false;
 }
