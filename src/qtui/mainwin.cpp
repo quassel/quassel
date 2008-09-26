@@ -181,8 +181,16 @@ MainWin::~MainWin() {
 }
 
 void MainWin::setupActions() {
-
-
+  // TODO don't get these from *.ui anymore... we shouldn't need one
+  ui.actionQuit->setIcon(SmallIcon("application-exit"));
+  ui.actionSettingsDlg->setIcon(SmallIcon("configure"));
+  ui.actionManageViews->setIcon(SmallIcon("view-tree"));
+  ui.actionManageViews2->setIcon(SmallIcon("view-tree"));
+  ui.actionAboutQt->setIcon(SmallIcon("qt"));
+  ui.actionAboutQuassel->setIcon(SmallIcon("quassel"));
+  ui.actionConnectCore->setIcon(SmallIcon("network-connect"));
+  ui.actionDisconnectCore->setIcon(SmallIcon("network-disconnect"));
+  ui.actionCoreInfo->setIcon(SmallIcon("help-about"));
 }
 
 void MainWin::setupMenus() {
