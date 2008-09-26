@@ -19,10 +19,13 @@
  ***************************************************************************/
 
 #include "aboutdlg.h"
+#include "icon.h"
+#include "iconloader.h"
 #include "quassel.h"
 
 AboutDlg::AboutDlg(QWidget *parent) : QDialog(parent) {
   ui.setupUi(this);
+  ui.quasselLogo->setPixmap(DesktopIcon("quassel", IconLoader::SizeHuge));
 
   ui.versionLabel->setText(QString(tr("<b>Version %1</b><br>Protocol version: %2<br>Built: %3 %4")).arg(Global::quasselVersion)
 			   .arg(Global::protocolVersion)
@@ -32,6 +35,7 @@ AboutDlg::AboutDlg(QWidget *parent) : QDialog(parent) {
   ui.contributorTextBrowser->setHtml(contributors());
   ui.thanksToTextBrowser->setHtml(thanksTo());
 
+  setWindowIcon(Icon("quassel"));
 }
 
 QString AboutDlg::about() const {

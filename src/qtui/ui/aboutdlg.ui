@@ -16,7 +16,7 @@
    <string>About Quassel</string>
   </property>
   <property name="windowIcon" >
-   <iconset resource="../../icons/quassel-icons.qrc" >
+   <iconset>
     <normaloff>:/quassel/16x16/apps/quassel.png</normaloff>:/quassel/16x16/apps/quassel.png</iconset>
   </property>
   <layout class="QVBoxLayout" >
@@ -35,12 +35,12 @@
       <item>
        <layout class="QHBoxLayout" >
         <item>
-         <widget class="QLabel" name="label_2" >
+         <widget class="QLabel" name="quasselLogo" >
           <property name="text" >
            <string/>
           </property>
           <property name="pixmap" >
-           <pixmap resource="../../icons/quassel-icons.qrc" >:/quassel/64x64/apps/quassel.png</pixmap>
+           <pixmap>:/quassel/64x64/apps/quassel.png</pixmap>
           </property>
           <property name="scaledContents" >
            <bool>false</bool>
@@ -107,14 +107,6 @@ p, li { white-space: pre-wrap; }
       <number>0</number>
      </property>
      <widget class="QWidget" name="aboutTab" >
-      <property name="geometry" >
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>472</width>
-        <height>296</height>
-       </rect>
-      </property>
       <attribute name="title" >
        <string>&amp;About</string>
       </attribute>
@@ -135,14 +127,6 @@ p, li { white-space: pre-wrap; }
       </layout>
      </widget>
      <widget class="QWidget" name="authorsTab" >
-      <property name="geometry" >
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>458</width>
-        <height>288</height>
-       </rect>
-      </property>
       <attribute name="title" >
        <string>A&amp;uthors</string>
       </attribute>
@@ -163,14 +147,6 @@ p, li { white-space: pre-wrap; }
       </layout>
      </widget>
      <widget class="QWidget" name="tab_2" >
-      <property name="geometry" >
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>458</width>
-        <height>288</height>
-       </rect>
-      </property>
       <attribute name="title" >
        <string>&amp;Contributors</string>
       </attribute>
@@ -191,14 +167,6 @@ p, li { white-space: pre-wrap; }
       </layout>
      </widget>
      <widget class="QWidget" name="tab" >
-      <property name="geometry" >
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>458</width>
-        <height>288</height>
-       </rect>
-      </property>
       <attribute name="title" >
        <string>&amp;Thanks To</string>
       </attribute>

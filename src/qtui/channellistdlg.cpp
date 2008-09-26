@@ -20,12 +20,14 @@
 
 #include "channellistdlg.h"
 
-#include "client.h"
-#include "clientirclisthelper.h"
-
 #include <QHeaderView>
 #include <QHBoxLayout>
 #include <QSpacerItem>
+
+#include "client.h"
+#include "clientirclisthelper.h"
+#include "icon.h"
+#include "iconloader.h"
 
 ChannelListDlg::ChannelListDlg(QWidget *parent)
   : QDialog(parent),
@@ -38,8 +40,10 @@ ChannelListDlg::ChannelListDlg(QWidget *parent)
   _sortFilter.setSourceModel(&_ircListModel);
   _sortFilter.setFilterCaseSensitivity(Qt::CaseInsensitive);
   _sortFilter.setFilterKeyColumn(-1);
-  
+
   ui.setupUi(this);
+  ui.advancedModeLabel->setPixmap(BarIcon("edit-rename"));
+
   ui.channelListView->setSelectionBehavior(QAbstractItemView::SelectRows);
   ui.channelListView->setSelectionMode(QAbstractItemView::SingleSelection);
   ui.channelListView->setAlternatingRowColors(true);
@@ -50,6 +54,8 @@ ChannelListDlg::ChannelListDlg(QWidget *parent)
   ui.channelListView->horizontalHeader()->setStretchLastSection(true);
 
   ui.searchChannelsButton->setAutoDefault(false);
+
+  setWindowIcon(Icon("format-list-unordered"));
 
   connect(ui.advancedModeLabel, SIGNAL(clicked()), this, SLOT(toggleMode()));
   connect(ui.searchChannelsButton, SIGNAL(clicked()), this, SLOT(requestSearch()));
@@ -70,7 +76,7 @@ ChannelListDlg::ChannelListDlg(QWidget *parent)
 void ChannelListDlg::setNetwork(NetworkId netId) {
   if(_netId == netId)
     return;
-  
+
   _netId = netId;
   _ircListModel.setChannelList();
   showFilterLine(false);
@@ -109,24 +115,21 @@ void ChannelListDlg::enableQuery(bool enable) {
 void ChannelListDlg::setAdvancedMode(bool advanced) {
   _advancedMode = advanced;
 
-#if QT_VERSION >=  0x040400
-  // FIXME: remove if macro when we depend on Qt 4.4
   if(advanced) {
     if(_simpleModeSpacer) {
       ui.searchLayout->removeItem(_simpleModeSpacer);
       delete _simpleModeSpacer;
       _simpleModeSpacer = 0;
     }
-    ui.advancedModeLabel->setPixmap(QPixmap(QString::fromUtf8(":/22x22/actions/oxygen/22x22/actions/edit-clear-locationbar-rtl.png")));
+    ui.advancedModeLabel->setPixmap(BarIcon("edit-clear-locationbar-rtl"));
   } else {
     if(!_simpleModeSpacer) {
       _simpleModeSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
       ui.searchLayout->insertSpacerItem(0, _simpleModeSpacer);
     }
-    ui.advancedModeLabel->setPixmap(QPixmap(QString::fromUtf8(":/22x22/actions/oxygen/22x22/actions/edit-clear.png")));
+    ui.advancedModeLabel->setPixmap(BarIcon("edit-rename"));
   }
-#endif
-  
+
   ui.channelNameLineEdit->clear();
   ui.channelNameLineEdit->setVisible(advanced);
   ui.searchPatternLabel->setVisible(advanced);
