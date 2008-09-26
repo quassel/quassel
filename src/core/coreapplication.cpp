@@ -22,9 +22,11 @@
 
 #include "core.h"
 
-CoreApplicationInternal::CoreApplicationInternal() 
+CoreApplicationInternal::CoreApplicationInternal()
   : _coreCreated(false)
 {
+  Q_INIT_RESOURCE(sql);
+
   // put core-only arguments here
   CliParser *parser = Quassel::cliParser();
   parser->addOption("port",'p', tr("The port quasselcore will listen at"), QString("4242"));

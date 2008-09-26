@@ -36,8 +36,6 @@ private:
   friend class Settings;
 };
 
-
-
 class Settings {
 public:
   enum Mode { Default, Custom };
@@ -48,16 +46,16 @@ public:
 protected:
   inline Settings(QString group_, QString appName_) : group(group_), appName(appName_) {}
   inline virtual ~Settings() {}
-  
+
   inline void setGroup(const QString &group_) { group = group_; }
-  
+
   virtual QStringList allLocalKeys();
   virtual QStringList localChildKeys(const QString &rootkey = QString());
   virtual QStringList localChildGroups(const QString &rootkey = QString());
-  
+
   virtual void setLocalValue(const QString &key, const QVariant &data);
   virtual const QVariant &localValue(const QString &key, const QVariant &def = QVariant());
-  
+
   virtual void removeLocalKey(const QString &key);
 
   QString group;

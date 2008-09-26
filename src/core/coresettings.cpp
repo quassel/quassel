@@ -23,6 +23,7 @@
 #include "quassel.h"
 
 CoreSettings::CoreSettings(const QString group) : Settings(group, Quassel::buildInfo().coreApplicationName) {
+
 }
 
 CoreSettings::~CoreSettings() {
