@@ -684,16 +684,16 @@ void Network::emitConnectionError(const QString &errorMsg) {
 // ====================
 void Network::determinePrefixes() {
   // seems like we have to construct them first
-  QString PREFIX = support("PREFIX");
+  QString prefix = support("PREFIX");
   
-  if(PREFIX.startsWith("(") && PREFIX.contains(")")) {
-    _prefixes = PREFIX.section(")", 1);
-    _prefixModes = PREFIX.mid(1).section(")", 0, 0);
+  if(prefix.startsWith("(") && prefix.contains(")")) {
+    _prefixes = prefix.section(")", 1);
+    _prefixModes = prefix.mid(1).section(")", 0, 0);
   } else {
     QString defaultPrefixes("~&@%+");
     QString defaultPrefixModes("qaohv");
 
-    if(PREFIX.isEmpty()) {
+    if(prefix.isEmpty()) {
       _prefixes = defaultPrefixes;
       _prefixModes = defaultPrefixModes;
       return;
@@ -701,7 +701,7 @@ void Network::determinePrefixes() {
 
     // we just assume that in PREFIX are only prefix chars stored
     for(int i = 0; i < defaultPrefixes.size(); i++) {
-      if(PREFIX.contains(defaultPrefixes[i])) {
+      if(prefix.contains(defaultPrefixes[i])) {
 	_prefixes += defaultPrefixes[i];
 	_prefixModes += defaultPrefixModes[i];
       }
@@ -713,7 +713,7 @@ void Network::determinePrefixes() {
     // well... our assumption was obviously wrong...
     // check if it's only prefix modes
     for(int i = 0; i < defaultPrefixes.size(); i++) {
-      if(PREFIX.contains(defaultPrefixModes[i])) {
+      if(prefix.contains(defaultPrefixModes[i])) {
 	_prefixes += defaultPrefixes[i];
 	_prefixModes += defaultPrefixModes[i];
       }
