@@ -23,11 +23,11 @@
 
 #include "ui_mainwin.h"
 
-#include "icon.h"
 #include "qtui.h"
 #include "titlesetter.h"
 #include "sessionsettings.h"
 
+#include <QPixmap>
 #include <QSystemTrayIcon>
 #include <QTimer>
 
@@ -138,9 +138,9 @@ class MainWin : public QMainWindow {
     void enableMenus();
 
     QSystemTrayIcon *systray;
-    Icon activeTrayIcon;
-    Icon onlineTrayIcon;
-    Icon offlineTrayIcon;
+    QPixmap activeTrayIcon;
+    QPixmap onlineTrayIcon;
+    QPixmap offlineTrayIcon;
     bool trayIconActive;
     QTimer *timer;
 

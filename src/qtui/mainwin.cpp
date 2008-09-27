@@ -80,9 +80,9 @@ MainWin::MainWin(QWidget *parent)
     _titleSetter(this),
     systray(new QSystemTrayIcon(this)),
 
-    activeTrayIcon("quassel_newmessage"),
-    onlineTrayIcon("quassel"),
-    offlineTrayIcon("quassel_disconnected"),
+    activeTrayIcon(DesktopIcon("quassel_newmessage", IconLoader::SizeEnormous)),
+    onlineTrayIcon(DesktopIcon("quassel", IconLoader::SizeEnormous)),
+    offlineTrayIcon(DesktopIcon("quassel_disconnected", IconLoader::SizeEnormous)),
     trayIconActive(false),
 
     timer(new QTimer(this)),
