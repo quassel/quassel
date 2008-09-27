@@ -202,9 +202,14 @@ struct ContentsChatItemPrivate : ChatItemPrivate {
   ContentsChatItem::Clickable currentClickable;
   bool hasDragged;
 
+#ifdef HAVE_WEBKIT
   ContentsChatItemPrivate(QTextLayout *l, const QList<ContentsChatItem::Clickable> &c, ContentsChatItem *parent) : ChatItemPrivate(l), contentsItem(parent), clickables(c), hasDragged(false), controller(0) {}
+#else
+  ContentsChatItemPrivate(QTextLayout *l, const QList<ContentsChatItem::Clickable> &c, ContentsChatItem *parent) : ChatItemPrivate(l), contentsItem(parent), clickables(c), hasDragged(false) {}
+#endif
   ~ContentsChatItemPrivate();
 
+#ifdef HAVE_WEBKIT
   void loadWebPreview(const QString &url, const QRectF &urlRect);
   void clearPreview();
 
@@ -212,8 +217,10 @@ private:
   class PreviewController;
   class PreviewItem;
   PreviewController *controller;
+#endif //#ifdef HAVE_WEBKIT
 };
 
+#ifdef HAVE_WEBKIT
 class ContentsChatItemPrivate::PreviewController : public QObject {
   Q_OBJECT
 public:
@@ -242,6 +249,7 @@ public:
 private:
   QRectF _boundingRect;
 };
+#endif //#ifdef HAVE_WEBKIT
 
 //inlines regarding ContentsChatItemPrivate
 ContentsChatItemPrivate *ContentsChatItem::privateData() const { return (ContentsChatItemPrivate *)ChatItem::privateData(); }

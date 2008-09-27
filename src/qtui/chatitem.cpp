@@ -26,7 +26,9 @@
 #include <QPainter>
 #include <QPalette>
 #include <QTextLayout>
+#ifdef HAVE_WEBKIT
 #include <QWebView>
+#endif
 #include <QGraphicsProxyWidget>
 
 #include "chatitem.h"
@@ -381,7 +383,9 @@ void ContentsChatItem::endHoverMode() {
   if(hasLayout() && privateData()->currentClickable.isValid()) {
     setCursor(Qt::ArrowCursor);
     privateData()->currentClickable = Clickable();
+#ifdef HAVE_WEBKIT
     privateData()->clearPreview();
+#endif
     update();
   }
 }
@@ -441,6 +445,7 @@ void ContentsChatItem::hoverMoveEvent(QGraphicsSceneHoverEvent *event) {
 	if(!hasLayout())
 	  updateLayout();
 
+#ifdef HAVE_WEBKIT
 	QTextLine line = layout()->lineForTextPosition(click.start);
 	qreal x = line.cursorToX(click.start);
 	qreal width = line.cursorToX(click.start + click.length) - x;
@@ -451,6 +456,7 @@ void ContentsChatItem::hoverMoveEvent(QGraphicsSceneHoverEvent *event) {
 	if(!url.contains("://"))
 	  url = "http://" + url;
 	privateData()->loadWebPreview(url, urlRect);
+#endif
       } else if(click.type == Clickable::Channel) {
         // TODO: don't make clickable if it's our own name
         //onClickable = true; //FIXME disabled for now
@@ -471,9 +477,12 @@ void ContentsChatItem::hoverMoveEvent(QGraphicsSceneHoverEvent *event) {
 // ContentsChatItemPrivate
 // ****************************************
 ContentsChatItemPrivate::~ContentsChatItemPrivate() {
+#ifdef HAVE_WEBKIT
   clearPreview();
+#endif
 }
 
+#ifdef HAVE_WEBKIT
 void ContentsChatItemPrivate::loadWebPreview(const QString &url, const QRectF &urlRect) {
   if(!controller)
     controller = new PreviewController(contentsItem);
@@ -549,6 +558,7 @@ void ContentsChatItemPrivate::PreviewItem::paint(QPainter *painter, const QStyle
   QString text = QString::number(zValue());
   painter->drawText(_boundingRect.center(), text);
 }
+#endif // #ifdef HAVE_WEBKIT
 
 /*************************************************************************************************/
 

@@ -33,6 +33,7 @@ option(WANT_MONO     "Build the monolithic (all-in-one) binary" OFF)
 
 option(WITH_OPENSSL  "Enable OpenSSL support if present on the system"	ON)
 option(WITH_DBUS     "Enable D-Bus support if present on the system"	ON)
+option(WITH_WEBKIT   "Enable WebKit support if present on the system"	ON)
 
 option(STATIC        "Enable static building (might not be portable)" OFF)
 option(DEPLOY        "Mac OS X only! Adds required libs to bundle resources and create a dmg. Note: requires Qt to be built with 10.4u SDK" OFF)
@@ -132,6 +133,22 @@ if(WITH_DBUS)
 else(WITH_DBUS)
   message(STATUS "Disabling D-Bus support")
 endif(WITH_DBUS)
+
+# Setup QtWebKit support
+if(WITH_WEBKIT)
+  if(QT_QTWEBKIT_FOUND)
+    message(STATUS "Found QtWebKit, enabling WebKit support")
+    add_definitions(-DHAVE_WEBKIT)
+    set(LINK_WEBKIT WEBKIT)
+    set(HAVE_WEBKIT true)
+    set(MOC_DEFINES ${MOC_DEFINES} -DHAVE_WEBKIT)
+  else(QT_QTWEBKIT_FOUND)
+    message(STATUS "QtWebKit not found, disabling D-Bus support")
+  endif(QT_QTWEBKIT_FOUND)
+else(WITH_WEBKIT)
+  message(STATUS "Disabling WebKit support")
+endif(WITH_WEBKIT)
+
 
 # Set global buildflags
 # This is very much non-portable, so don't use -DSTATIC until you know what
