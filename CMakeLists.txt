@@ -20,7 +20,6 @@ cmake_minimum_required(VERSION 2.6.0 FATAL_ERROR)
 
 if(COMMAND cmake_policy)
    cmake_policy(SET CMP0003 NEW)
-   cmake_policy(SET CMP0005 NEW)
 endif(COMMAND cmake_policy)
 
 # Use our own (well, and KDE's) version of some modules
@@ -60,8 +59,6 @@ set(BIN_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/bin)
 set(DATA_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/share/apps)
 set(ICON_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/share/icons)
 set(XDG_APPS_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/share/applications)
-
-add_definitions(-DPREFIX=${CMAKE_INSTALL_PREFIX})
 
 # Enable various flags on gcc
 if(CMAKE_COMPILER_IS_GNUCXX)

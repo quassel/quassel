@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QCoreApplication>
 #include <QDebug>
 #include <QDir>
 #include <QFile>
@@ -50,7 +51,19 @@ void IconLoader::setTheme(const QString &theme) {
   _themedIconDirNames.clear();
   _plainIconDirNames.clear();
   QString path;
-  QStringList dataDirNames = QString(qgetenv("XDG_DATA_DIRS")).split(':');
+  QStringList dataDirNames = QString(qgetenv("XDG_DATA_DIRS")).split(':', QString::SkipEmptyParts);
+
+// Provide a fallback
+# ifdef Q_OS_UNIX
+    if(dataDirNames.isEmpty()) dataDirNames.append("/usr/share");
+    // on UNIX, we always check our install prefix
+    QString appDir = QCoreApplication::applicationDirPath();
+    int binpos = appDir.lastIndexOf("/bin");
+    if(binpos >= 0) {
+      appDir.replace(binpos, 4, "/share");
+      if(!dataDirNames.contains(appDir)) dataDirNames.append(appDir);
+    }
+# endif
 
   // System theme in $data/icons/$theme
   foreach(QString dir, dataDirNames) {
