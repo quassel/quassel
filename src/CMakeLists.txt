@@ -39,7 +39,7 @@ if(WANT_CORE)
 endif(WANT_CORE)
 
 if(WANT_QTCLIENT)
-  setup_qt4_variables(${LINK_DBUS} GUI NETWORK)
+  setup_qt4_variables(${LINK_DBUS} GUI NETWORK WEBKIT)
   add_executable(quasselclient WIN32 common/main.cpp ${COMMON_DEPS} ${CLIENT_DEPS})
   add_dependencies(quasselclient icons)
   set_target_properties(quasselclient PROPERTIES
@@ -50,7 +50,7 @@ if(WANT_QTCLIENT)
 endif(WANT_QTCLIENT)
 
 if(WANT_MONO)
-  setup_qt4_variables(${LINK_DBUS} GUI NETWORK SCRIPT SQL)
+  setup_qt4_variables(${LINK_DBUS} GUI NETWORK SCRIPT SQL WEBKIT)
   add_executable(quassel WIN32 common/main.cpp qtui/monoapplication.cpp ${COMMON_DEPS} ${CLIENT_DEPS} ${CORE_DEPS})
   add_dependencies(quassel icons)
   set_target_properties(quassel PROPERTIES
