@@ -26,6 +26,8 @@
 #include <QPainter>
 #include <QPalette>
 #include <QTextLayout>
+#include <QWebView>
+#include <QGraphicsProxyWidget>
 
 #include "chatitem.h"
 #include "chatlinemodel.h"
@@ -274,9 +276,7 @@ qreal ContentsChatItem::setGeometryByWidth(qreal w) {
 
 void ContentsChatItem::updateLayout() {
   if(!privateData()) {
-    ContentsChatItemPrivate *data = new ContentsChatItemPrivate(createLayout(QTextOption::WrapAnywhere),
-								findClickables());
-    // data->clickables = findClickables();
+    ContentsChatItemPrivate *data = new ContentsChatItemPrivate(createLayout(QTextOption::WrapAnywhere), findClickables(), this);
     setPrivateData(data);
   }
 
@@ -378,9 +378,10 @@ QVector<QTextLayout::FormatRange> ContentsChatItem::additionalFormats() const {
 }
 
 void ContentsChatItem::endHoverMode() {
-  if(privateData()->currentClickable.isValid()) {
+  if(hasLayout() && privateData()->currentClickable.isValid()) {
     setCursor(Qt::ArrowCursor);
     privateData()->currentClickable = Clickable();
+    privateData()->clearPreview();
     update();
   }
 }
@@ -398,6 +399,8 @@ void ContentsChatItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
       QString str = data(ChatLineModel::DisplayRole).toString().mid(click.start, click.length);
       switch(click.type) {
         case Clickable::Url:
+	  if(!str.contains("://"))
+	    str = "http://" + str;
           QDesktopServices::openUrl(str);
           break;
         case Clickable::Channel:
@@ -415,7 +418,7 @@ void ContentsChatItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
   // mouse move events always mean we're not hovering anymore...
   endHoverMode();
   // also, check if we have dragged the mouse
-  if(!privateData()->hasDragged && event->buttons() & Qt::LeftButton
+  if(hasLayout() && !privateData()->hasDragged && event->buttons() & Qt::LeftButton
     && (event->buttonDownScreenPos(Qt::LeftButton) - event->screenPos()).manhattanLength() >= QApplication::startDragDistance())
     privateData()->hasDragged = true;
   ChatItem::mouseMoveEvent(event);
@@ -432,9 +435,23 @@ void ContentsChatItem::hoverMoveEvent(QGraphicsSceneHoverEvent *event) {
   for(int i = 0; i < privateData()->clickables.count(); i++) {
     Clickable click = privateData()->clickables.at(i);
     if(idx >= click.start && idx < click.start + click.length) {
-      if(click.type == Clickable::Url)
+      if(click.type == Clickable::Url) {
         onClickable = true;
-      else if(click.type == Clickable::Channel) {
+
+	if(!hasLayout())
+	  updateLayout();
+
+	QTextLine line = layout()->lineForTextPosition(click.start);
+	qreal x = line.cursorToX(click.start);
+	qreal width = line.cursorToX(click.start + click.length) - x;
+	qreal height = line.height();
+	qreal y = height * line.lineNumber();
+	QRectF urlRect(x, y, width, height);
+	QString url = data(ChatLineModel::DisplayRole).toString().mid(click.start, click.length);
+	if(!url.contains("://"))
+	  url = "http://" + url;
+	privateData()->loadWebPreview(url, urlRect);
+      } else if(click.type == Clickable::Channel) {
         // TODO: don't make clickable if it's our own name
         //onClickable = true; //FIXME disabled for now
       }
@@ -448,6 +465,89 @@ void ContentsChatItem::hoverMoveEvent(QGraphicsSceneHoverEvent *event) {
   }
   if(!onClickable) endHoverMode();
   event->accept();
+}
+
+// ****************************************
+// ContentsChatItemPrivate
+// ****************************************
+ContentsChatItemPrivate::~ContentsChatItemPrivate() {
+  clearPreview();
+}
+
+void ContentsChatItemPrivate::loadWebPreview(const QString &url, const QRectF &urlRect) {
+  if(!controller)
+    controller = new PreviewController(contentsItem);
+  controller->loadPage(url, urlRect);
+}
+
+void ContentsChatItemPrivate::clearPreview() {
+  delete controller;
+  controller = 0;
+}
+
+ContentsChatItemPrivate::PreviewController::~PreviewController() {
+  if(previewItem) {
+    contentsItem->scene()->removeItem(previewItem);
+    delete previewItem;
+  }
+}
+
+void ContentsChatItemPrivate::PreviewController::loadPage(const QString &newUrl, const QRectF &urlRect) {
+  if(newUrl.isEmpty() || newUrl == url)
+    return;
+
+  url = newUrl;
+  QWebView *view = new QWebView;
+  connect(view, SIGNAL(loadFinished(bool)), this, SLOT(pageLoaded(bool)));
+  view->load(url);
+  previewItem = new ContentsChatItemPrivate::PreviewItem(view);
+
+  QPointF sPos = contentsItem->scenePos();
+  qreal previewY = sPos.y() + urlRect.y() + urlRect.height(); // bottom of url;
+  qreal previewX = sPos.x() + urlRect.x();
+  if(previewY + previewItem->boundingRect().height() > contentsItem->scene()->sceneRect().bottom())
+    previewY = sPos.y() + urlRect.y() - previewItem->boundingRect().height();
+
+  if(previewX + previewItem->boundingRect().width() > contentsItem->scene()->sceneRect().width())
+    previewX = contentsItem->scene()->sceneRect().right() - previewItem->boundingRect().width();
+
+  previewItem->setPos(previewX, previewY);
+  contentsItem->scene()->addItem(previewItem);
+}
+
+void ContentsChatItemPrivate::PreviewController::pageLoaded(bool success) {
+  Q_UNUSED(success)
+}
+
+ContentsChatItemPrivate::PreviewItem::PreviewItem(QWebView *webView)
+  : QGraphicsItem(0), // needs to be a top level item as we otherwise cannot guarantee that it's on top of other chatlines
+    _boundingRect(0, 0, 400, 300)
+{
+  qreal frameWidth = 5;
+  webView->resize(1000, 750);
+  QGraphicsProxyWidget *proxyItem = new QGraphicsProxyWidget(this);
+  proxyItem->setWidget(webView);
+  proxyItem->setAcceptHoverEvents(false);
+
+  qreal xScale = (_boundingRect.width() - 2 * frameWidth) / webView->width();
+  qreal yScale = (_boundingRect.height() - 2 * frameWidth) / webView->height();
+  proxyItem->scale(xScale, yScale);
+  proxyItem->setPos(frameWidth, frameWidth);
+
+  setZValue(30);
+}
+
+void ContentsChatItemPrivate::PreviewItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
+  Q_UNUSED(option); Q_UNUSED(widget);
+  painter->setClipRect(boundingRect());
+  painter->setPen(QPen(Qt::black, 5));
+  painter->setBrush(Qt::black);
+  painter->setRenderHints(QPainter::Antialiasing);
+  painter->drawRoundedRect(boundingRect(), 10, 10);
+
+  painter->setPen(QPen(Qt::green));
+  QString text = QString::number(zValue());
+  painter->drawText(_boundingRect.center(), text);
 }
 
 /*************************************************************************************************/

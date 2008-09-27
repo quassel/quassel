@@ -197,11 +197,50 @@ struct ContentsChatItem::Clickable {
 };
 
 struct ContentsChatItemPrivate : ChatItemPrivate {
+  ContentsChatItem *contentsItem;
   QList<ContentsChatItem::Clickable> clickables;
   ContentsChatItem::Clickable currentClickable;
   bool hasDragged;
 
-  ContentsChatItemPrivate(QTextLayout *l, const QList<ContentsChatItem::Clickable> &c) : ChatItemPrivate(l), clickables(c), hasDragged(false) {}
+  ContentsChatItemPrivate(QTextLayout *l, const QList<ContentsChatItem::Clickable> &c, ContentsChatItem *parent) : ChatItemPrivate(l), contentsItem(parent), clickables(c), hasDragged(false), controller(0) {}
+  ~ContentsChatItemPrivate();
+
+  void loadWebPreview(const QString &url, const QRectF &urlRect);
+  void clearPreview();
+
+private:
+  class PreviewController;
+  class PreviewItem;
+  PreviewController *controller;
+};
+
+class ContentsChatItemPrivate::PreviewController : public QObject {
+  Q_OBJECT
+public:
+  PreviewController(ContentsChatItem *contentsItem) : contentsItem(contentsItem), previewItem(0) {}
+  ~PreviewController();
+
+  void loadPage(const QString &url, const QRectF &urlRect);
+
+private slots:
+  void pageLoaded(bool success);
+
+private:
+  ContentsChatItem *contentsItem;
+  ContentsChatItemPrivate::PreviewItem *previewItem;
+
+  QString url;
+};
+
+class QWebView;
+class ContentsChatItemPrivate::PreviewItem : public QGraphicsItem {
+public:
+  PreviewItem(QWebView *webView);
+  virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
+  virtual inline QRectF boundingRect() const { return _boundingRect; }
+
+private:
+  QRectF _boundingRect;
 };
 
 //inlines regarding ContentsChatItemPrivate

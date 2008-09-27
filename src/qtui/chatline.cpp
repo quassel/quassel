@@ -51,6 +51,7 @@ ChatLine::ChatLine(int row, QAbstractItemModel *model,
 {
   Q_ASSERT(model);
   QModelIndex index = model->index(row, ChatLineModel::ContentsColumn);
+  setZValue(0);
   setHighlighted(model->data(index, MessageModel::FlagsRole).toInt() & Message::Highlight);
 }
 

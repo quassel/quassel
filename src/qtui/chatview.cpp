@@ -50,7 +50,7 @@ void ChatView::init(MessageFilter *filter) {
   setAlignment(Qt::AlignBottom);
   setInteractive(true);
   //setOptimizationFlags(QGraphicsView::DontClipPainter | QGraphicsView::DontAdjustForAntialiasing);
-  setOptimizationFlags(QGraphicsView::DontAdjustForAntialiasing);
+  // setOptimizationFlags(QGraphicsView::DontAdjustForAntialiasing);
   setViewportUpdateMode(QGraphicsView::BoundingRectViewportUpdate);
   setTransformationAnchor(QGraphicsView::NoAnchor);
 

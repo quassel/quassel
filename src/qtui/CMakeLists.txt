@@ -47,6 +47,7 @@ set(MOC_HDRS
     aboutdlg.h
     bufferwidget.h
     channellistdlg.h
+    chatitem.h
     chatlinemodel.h
     chatmonitorfilter.h
     chatmonitorview.h
@@ -75,7 +76,6 @@ set(MOC_HDRS
     verticaldock.h)
 
 set(HEADERS
-    chatitem.h
     chatline.h
     chatlinemodelitem.h
     chatviewsettings.h
