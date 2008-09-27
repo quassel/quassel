@@ -24,7 +24,7 @@ if(QT_LRELEASE_EXECUTABLE)
   endforeach(TS_FILE ${avail_tsfiles})
 
   # Write resource file
-  set(resfile ${CMAKE_BINARY_DIR}/i18n.qrc)
+  set(resfile ${CMAKE_CURRENT_BINARY_DIR}/i18n.qrc)
   file(WRITE ${resfile} "<!DOCTYPE RCC><RCC version=\"1.0\">\n"
                         "<qresource prefix=\"/i18n\">\n")
   foreach(file ${qm_files})
@@ -35,7 +35,8 @@ if(QT_LRELEASE_EXECUTABLE)
   add_custom_command(OUTPUT ${resfile} DEPENDS ${qm_files})
   #set_directory_properties(PROPERTIES
   #      ADDITIONAL_MAKE_CLEAN_FILES "${outfiles} i18n.qrc")
-
+  qt4_add_resources(RC_I18N ${resfile})
+  add_custom_target(i18n DEPENDS ${RC_I18N})
   message(STATUS "Including languages:${gen_linguas}")
 else(QT_LRELEASE_EXECUTABLE)
   message(STATUS "WARNING: lrelease not found, you won't have translations!")

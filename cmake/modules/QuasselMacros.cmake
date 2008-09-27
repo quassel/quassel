@@ -16,7 +16,7 @@ endmacro(setup_qt4_variables)
 
 # This generates a .qm from a .ts file
 macro(generate_qm outvar basename)
-  set(input ${basename}.ts)
+  set(input ${CMAKE_SOURCE_DIR}/i18n/${basename}.ts)
   set(output ${CMAKE_CURRENT_BINARY_DIR}/${basename}.qm)
   add_custom_command(OUTPUT ${output}
           COMMAND ${QT_LRELEASE_EXECUTABLE}

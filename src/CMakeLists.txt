@@ -16,17 +16,17 @@ if(WANT_QTCLIENT OR WANT_MONO)
 endif(WANT_QTCLIENT OR WANT_MONO)
 
 # We always add stuff in :/pics
-qt4_add_resources(RC_ICONS ../pics/pics.qrc)
+qt4_add_resources(CLIENT_DEPS ../pics/pics.qrc)
 
 if(QUASSEL_ICONS MATCHES "Builtin")
-  qt4_add_resources(RC_ICONS ../icons/hicolor.qrc)
+  set(CLIENT_DEPS ${CLIENT_DEPS} ../icons/qrc_hicolor.cxx)
+  set_source_files_properties(../icons/qrc_hicolor.cxx PROPERTIES GENERATED true)
 endif(QUASSEL_ICONS MATCHES "Builtin")
 
 if(OXYGEN_ICONS MATCHES "Builtin")
-  qt4_add_resources(RC_ICONS ../icons/oxygen.qrc)
+  set(CLIENT_DEPS ${CLIENT_DEPS} ../icons/qrc_oxygen.cxx)
+  set_source_files_properties(../icons/qrc_oxygen.cxx PROPERTIES GENERATED true)
 endif(OXYGEN_ICONS MATCHES "Builtin")
-
-set(CLIENT_DEPS ${CLIENT_DEPS} ${RC_ICONS})
 
 if(WANT_CORE)
   setup_qt4_variables(NETWORK SCRIPT SQL)
@@ -41,6 +41,7 @@ endif(WANT_CORE)
 if(WANT_QTCLIENT)
   setup_qt4_variables(${LINK_DBUS} GUI NETWORK)
   add_executable(quasselclient WIN32 common/main.cpp ${COMMON_DEPS} ${CLIENT_DEPS})
+  add_dependencies(quasselclient icons)
   set_target_properties(quasselclient PROPERTIES
                                       COMPILE_FLAGS "-DQT_GUI_LIB -DQT_NETWORK_LIB -DBUILD_QTUI")
   target_link_libraries(quasselclient mod_qtui mod_uisupport mod_client mod_common
@@ -51,6 +52,7 @@ endif(WANT_QTCLIENT)
 if(WANT_MONO)
   setup_qt4_variables(${LINK_DBUS} GUI NETWORK SCRIPT SQL)
   add_executable(quassel WIN32 common/main.cpp qtui/monoapplication.cpp ${COMMON_DEPS} ${CLIENT_DEPS} ${CORE_DEPS})
+  add_dependencies(quassel icons)
   set_target_properties(quassel PROPERTIES
                                 COMPILE_FLAGS "-DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_SCRIPT_LIB -DQT_SQL_LIB -DBUILD_MONO")
   target_link_libraries(quassel mod_qtui mod_uisupport mod_client mod_core mod_common
