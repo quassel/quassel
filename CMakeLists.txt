@@ -169,7 +169,7 @@ if(STATIC AND WIN32)
 endif(STATIC AND WIN32)
 
 if(WIN32)
-  set(RC_WIN32 pics/win32.rc)  # for app icons on windows
+  set(RC_WIN32 ../pics/win32.rc)  # for app icons on windows
 endif(WIN32)
 
 # This is dirty, but I haven't found a cleaner way to ensure that the generated .qrc files
