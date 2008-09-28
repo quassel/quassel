@@ -32,7 +32,8 @@ if(WANT_CORE)
   setup_qt4_variables(NETWORK SCRIPT SQL)
   add_executable(quasselcore common/main.cpp ${COMMON_DEPS} ${CORE_DEPS})
   set_target_properties(quasselcore PROPERTIES
-                                    COMPILE_FLAGS "-DQT_NETWORK_LIB -DQT_SCRIPT_LIB -DQT_SQL_LIB -DBUILD_CORE")
+                                    COMPILE_FLAGS "-DQT_NETWORK_LIB -DQT_SCRIPT_LIB -DQT_SQL_LIB -DBUILD_CORE"
+                                    OUTPUT_NAME ../quasselcore)
   target_link_libraries(quasselcore mod_core mod_common
                                     ${QUASSEL_QT_LIBRARIES} ${QUASSEL_SSL_LIBRARIES})
   install(TARGETS quasselcore RUNTIME DESTINATION ${BIN_INSTALL_DIR})
@@ -43,7 +44,8 @@ if(WANT_QTCLIENT)
   add_executable(quasselclient WIN32 common/main.cpp ${COMMON_DEPS} ${CLIENT_DEPS})
   add_dependencies(quasselclient icons)
   set_target_properties(quasselclient PROPERTIES
-                                      COMPILE_FLAGS "-DQT_GUI_LIB -DQT_NETWORK_LIB -DBUILD_QTUI")
+                                      COMPILE_FLAGS "-DQT_GUI_LIB -DQT_NETWORK_LIB -DBUILD_QTUI"
+                                      OUTPUT_NAME ../quasselclient)
   target_link_libraries(quasselclient mod_qtui mod_uisupport mod_client mod_common
                                       ${QUASSEL_QT_LIBRARIES} ${QUASSEL_SSL_LIBRARIES})
   install(TARGETS quasselclient RUNTIME DESTINATION ${BIN_INSTALL_DIR})
@@ -54,7 +56,8 @@ if(WANT_MONO)
   add_executable(quassel WIN32 common/main.cpp qtui/monoapplication.cpp ${COMMON_DEPS} ${CLIENT_DEPS} ${CORE_DEPS})
   add_dependencies(quassel icons)
   set_target_properties(quassel PROPERTIES
-                                COMPILE_FLAGS "-DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_SCRIPT_LIB -DQT_SQL_LIB -DBUILD_MONO")
+                                COMPILE_FLAGS "-DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_SCRIPT_LIB -DQT_SQL_LIB -DBUILD_MONO"
+                                OUTPUT_NAME ../quassel)
   target_link_libraries(quassel mod_qtui mod_uisupport mod_client mod_core mod_common
                                 ${QUASSEL_QT_LIBRARIES} ${QUASSEL_SSL_LIBRARIES})
   install(TARGETS quassel RUNTIME DESTINATION ${BIN_INSTALL_DIR})
