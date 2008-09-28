@@ -14,6 +14,7 @@
 #  Imports
 # ==============================
 import os
+import os.path
 import sys
 
 # ==============================
@@ -28,9 +29,13 @@ if len(sys.argv) < 4:
     BUNDLE_NAME= "Quassel Client"
     EXE_NAME = "quasselclient"
 else:
-    BUNDLE_NAME = sys.argv[2]
     EXE_NAME = sys.argv[3]
-CONTENTS_DIR = BUNDLE_NAME + ".app/Contents/"
+    BUNDLE_NAME = sys.argv[2]
+
+# make the dir of the exe the target dir
+if(os.path.dirname(EXE_NAME)):
+    CONTENTS_DIR = os.path.dirname(EXE_NAME) + "/"
+CONTENTS_DIR += BUNDLE_NAME + ".app/Contents/"
 
 BUNDLE_VERSION = "0.3.0"
 ICON_FILE = "pics/quassel.icns"
@@ -50,7 +55,6 @@ def createPlist(bundleName, iconFile, bundleVersion):
     templateFile = file(SOURCE_DIR + "/scripts/build/Info.plist", 'r')
     template = templateFile.read()
     templateFile.close()
-    print 
 
     plistFile = file(CONTENTS_DIR + "Info.plist", 'w')
     plistFile.write(template % {"BUNDLE_NAME" : bundleName,

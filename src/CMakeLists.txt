@@ -67,14 +67,14 @@ endif(WANT_MONO)
 if(APPLE)
   add_custom_command(TARGET quasselclient POST_BUILD
                      COMMAND ${CMAKE_SOURCE_DIR}/scripts/build/macosx_makebundle.py
-                             ${CMAKE_SOURCE_DIR} "Quassel Client" quasselclient)
+                             ${CMAKE_SOURCE_DIR} "Quassel Client" ../quasselclient)
   add_custom_command(TARGET quassel POST_BUILD
                      COMMAND ${CMAKE_SOURCE_DIR}/scripts/build/macosx_makebundle.py
-                             ${CMAKE_SOURCE_DIR} "Quassel" quassel)
+                             ${CMAKE_SOURCE_DIR} "Quassel" ../quassel)
   if(DEPLOY)
     add_custom_command(TARGET quasselclient POST_BUILD
-                       COMMAND ${CMAKE_SOURCE_DIR}/scripts/build/macosx_makePackage.sh Client)
+                       COMMAND ${CMAKE_SOURCE_DIR}/scripts/build/macosx_makePackage.sh Client ..)
     add_custom_command(TARGET quasselcore POST_BUILD
-                       COMMAND ${CMAKE_SOURCE_DIR}/scripts/build/macosx_makePackage.sh Core)
+                       COMMAND ${CMAKE_SOURCE_DIR}/scripts/build/macosx_makePackage.sh Core ..)
   endif(DEPLOY)
 endif(APPLE)

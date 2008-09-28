@@ -43,17 +43,26 @@ fi
 SCRIPTDIR=$(dirname $mypath)
 QUASSEL_VERSION=$(git-describe)
 BUILDTYPE=$1
+
+# check the working dir
+WORKINGDIR=$2
+if [[ ! -n $2 ]]; then
+    WORKINGDIR="."
+fi
+WORKINGDIR="${WORKINGDIR}/"
+PACKAGETMPDIR="${WORKINGDIR}PACKAGE_TMP_DIR_${BUILDTYPE}"
 if [[ $BUILDTYPE = "Core" ]] || [[ $BUILDTYPE = "Client" ]]; then
     QUASSEL_DMG="Quassel${BUILDTYPE}_MacOSX-universal_${QUASSEL_VERSION}.dmg"
-    mkdir $BUILDTYPE
+    mkdir $PACKAGETMPDIR
     if [[ $BUILDTYPE = "Client" ]]; then
-	cp -r Quassel\ Client.app Client/
-	${SCRIPTDIR}/macosx_DeployApp.py "Client/Quassel Client.app"
+	cp -r ${WORKINGDIR}Quassel\ Client.app ${PACKAGETMPDIR}/
+	${SCRIPTDIR}/macosx_DeployApp.py "${PACKAGETMPDIR}/Quassel Client.app"
     else
-	cp quasselcore Core/
-	${SCRIPTDIR}/macosx_DeployApp.py --nobundle Core
+	cp ${WORKINGDIR}quasselcore ${PACKAGETMPDIR}/
+	${SCRIPTDIR}/macosx_DeployApp.py --nobundle ${PACKAGETMPDIR}
     fi
-    hdiutil create -srcfolder ${BUILDTYPE} -format UDBZ -volname "Quassel ${BUILDTYPE} - ${QUASSEL_VERSION}" "Quassel${BUILDTYPE}_MacOSX-universal_${QUASSEL_VERSION}.dmg" >/dev/null
+    hdiutil create -srcfolder ${PACKAGETMPDIR} -format UDBZ -volname "Quassel ${BUILDTYPE} - ${QUASSEL_VERSION}" "${WORKINGDIR}Quassel${BUILDTYPE}_MacOSX-universal_${QUASSEL_VERSION}.dmg" >/dev/null
+    rm -rf ${PACKAGETMPDIR}
 else
     echo >&2 "Valid parameters are \"Client\" or \"Core\""
 fi
