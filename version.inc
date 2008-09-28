@@ -2,7 +2,7 @@
 // This is included in main.cpp
 
 //! This is the fallback version number in case we can't autogenerate one
-quasselBaseVersion = "0.3.0.1";
+quasselBaseVersion = "0.3.0.2";
 protocolVersion = 5;       //< Version of the client/core protocol
 
 coreNeedsProtocol   = 5;   //< Minimum protocol version the core needs
