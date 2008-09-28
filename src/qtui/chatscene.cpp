@@ -483,6 +483,11 @@ void ChatScene::updateSceneRect(const QRectF &rect) {
 
 
 void ChatScene::loadWebPreview(ChatItem *parentItem, const QString &url, const QRectF &urlRect) {
+#ifndef HAVE_WEBKIT
+  Q_UNUSED(parentItem)
+  Q_UNUSED(url)
+  Q_UNUSED(urlRect)
+#else
   if(webPreview.parentItem != parentItem)
     webPreview.parentItem = parentItem;
 
@@ -508,9 +513,13 @@ void ChatScene::loadWebPreview(ChatItem *parentItem, const QString &url, const Q
 
     webPreview.previewItem->setPos(previewX, previewY);
   }
+#endif
 }
 
 void ChatScene::clearWebPreview(ChatItem *parentItem) {
+#ifndef HAVE_WEBKIT
+  Q_UNUSED(parentItem)
+#else
   if(parentItem == 0 || webPreview.parentItem == parentItem) {
     if(webPreview.previewItem) {
       removeItem(webPreview.previewItem);
@@ -521,4 +530,5 @@ void ChatScene::clearWebPreview(ChatItem *parentItem) {
     webPreview.url = QString();
     webPreview.urlRect = QRectF();
   }
+#endif
 }
