@@ -169,7 +169,7 @@ private:
   void showWebPreview(const Clickable &click);
   void clearWebPreview();
 
-  
+
   // WARNING: setGeometry and setHeight should not be used without either:
   //  a) calling prepareGeometryChange() immediately before setColumns()
   //  b) calling Chatline::setPos() immediately afterwards
@@ -205,35 +205,9 @@ struct ContentsChatItemPrivate : ChatItemPrivate {
   ContentsChatItem::Clickable currentClickable;
   bool hasDragged;
 
-#ifndef HAVE_WEBKIT
   ContentsChatItemPrivate(QTextLayout *l, const QList<ContentsChatItem::Clickable> &c, ContentsChatItem *parent) : ChatItemPrivate(l), contentsItem(parent), clickables(c), hasDragged(false) {}
-#else
-  ContentsChatItemPrivate(QTextLayout *l, const QList<ContentsChatItem::Clickable> &c, ContentsChatItem *parent) : ChatItemPrivate(l), contentsItem(parent), clickables(c), hasDragged(false), previewItem(0) {}
-  ~ContentsChatItemPrivate();
-
-  void loadWebPreview(const QString &url, const QRectF &urlRect);
-  void clearWebPreview();
-
-private:
-  class PreviewItem;
-  PreviewItem *previewItem;
-  QString previewUrl;
-  QRectF previewUrlRect;
-#endif //#ifndef HAVE_WEBKIT
 };
 
-#ifdef HAVE_WEBKIT
-class QWebView;
-class ContentsChatItemPrivate::PreviewItem : public QGraphicsItem {
-public:
-  PreviewItem(QWebView *webView);
-  virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
-  virtual inline QRectF boundingRect() const { return _boundingRect; }
-
-private:
-  QRectF _boundingRect;
-};
-#endif //#ifdef HAVE_WEBKIT
 
 //inlines regarding ContentsChatItemPrivate
 ContentsChatItemPrivate *ContentsChatItem::privateData() const { return (ContentsChatItemPrivate *)ChatItem::privateData(); }

@@ -31,6 +31,7 @@
 class AbstractUiMsg;
 class ChatItem;
 class ChatLine;
+class WebPreviewItem;
 
 class QGraphicsSceneMouseEvent;
 
@@ -64,6 +65,9 @@ public slots:
   void putToClipboard(const QString &);
 
   void requestBacklog();
+
+  void loadWebPreview(ChatItem *parentItem, const QString &url, const QRectF &urlRect);
+  void clearWebPreview(ChatItem *parentItem = 0);
 
 signals:
   void lastLineChanged(QGraphicsItem *);
@@ -107,6 +111,15 @@ private:
   bool _isSelecting;
 
   int _lastBacklogSize;
+
+  struct WebPreview {
+    ChatItem *parentItem;
+    WebPreviewItem *previewItem;
+    QString url;
+    QRectF urlRect;
+    WebPreview() : parentItem(0), previewItem(0) {}
+  };
+  WebPreview webPreview;
 };
 
 bool ChatScene::containsBuffer(const BufferId &id) const {

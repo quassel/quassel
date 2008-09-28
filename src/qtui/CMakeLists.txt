@@ -41,7 +41,8 @@ set(SOURCES
     titlesetter.cpp
     topiclabel.cpp
     topicwidget.cpp
-    verticaldock.cpp)
+    verticaldock.cpp
+    webpreviewitem.cpp)
 
 set(MOC_HDRS
     aboutdlg.h
@@ -80,7 +81,8 @@ set(HEADERS
     chatlinemodelitem.h
     chatviewsettings.h
     qtuisettings.h
-    qtuistyle.h)
+    qtuistyle.h
+    webpreviewitem.h)
 
 set(FORMS
     aboutdlg.ui

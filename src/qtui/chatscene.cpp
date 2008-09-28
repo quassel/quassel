@@ -34,6 +34,7 @@
 #include "qtui.h"
 #include "qtuistyle.h"
 #include "chatviewsettings.h"
+#include "webpreviewitem.h"
 
 const qreal minContentsWidth = 200;
 
@@ -90,6 +91,9 @@ ChatScene::~ChatScene() {
 
 void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
   Q_UNUSED(index);
+
+  clearWebPreview();
+
   qreal h = 0;
   qreal y = _sceneRect.y();
   qreal width = _sceneRect.width();
@@ -174,6 +178,8 @@ void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
 
 void ChatScene::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end) {
   Q_UNUSED(parent);
+
+  clearWebPreview();
 
   qreal h = 0; // total height of removed items;
 
@@ -473,4 +479,46 @@ int ChatScene::sectionByScenePos(int x) {
 void ChatScene::updateSceneRect(const QRectF &rect) {
   _sceneRect = rect;
   setSceneRect(rect);
+}
+
+
+void ChatScene::loadWebPreview(ChatItem *parentItem, const QString &url, const QRectF &urlRect) {
+  if(webPreview.parentItem != parentItem)
+    webPreview.parentItem = parentItem;
+
+  if(webPreview.url != url) {
+    webPreview.url = url;
+    // load a new web view and delete the old one (if exists)
+    if(webPreview.previewItem) {
+      removeItem(webPreview.previewItem);
+      delete webPreview.previewItem;
+    }
+    webPreview.previewItem = new WebPreviewItem(url);
+    addItem(webPreview.previewItem);
+  }
+  if(webPreview.urlRect != urlRect) {
+    webPreview.urlRect = urlRect;
+    qreal previewY = urlRect.bottom();
+    qreal previewX = urlRect.x();
+    if(previewY + webPreview.previewItem->boundingRect().height() > sceneRect().bottom())
+      previewY = urlRect.y() - webPreview.previewItem->boundingRect().height();
+
+    if(previewX + webPreview.previewItem->boundingRect().width() > sceneRect().width())
+      previewX = sceneRect().right() - webPreview.previewItem->boundingRect().width();
+
+    webPreview.previewItem->setPos(previewX, previewY);
+  }
+}
+
+void ChatScene::clearWebPreview(ChatItem *parentItem) {
+  if(parentItem == 0 || webPreview.parentItem == parentItem) {
+    if(webPreview.previewItem) {
+      removeItem(webPreview.previewItem);
+      delete webPreview.previewItem;
+      webPreview.previewItem = 0;
+    }
+    webPreview.parentItem = 0;
+    webPreview.url = QString();
+    webPreview.urlRect = QRectF();
+  }
 }
