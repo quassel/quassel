@@ -1,23 +1,5 @@
 # Builds the three main targets
 
-# Define resources for icons and pics, if needed
-# We always add stuff in :/pics
-qt4_add_resources(CLIENT_DEPS ../pics/pics.qrc)
-
-if(QUASSEL_ICONS MATCHES "Builtin")
-  set(CLIENT_DEPS ${CLIENT_DEPS} ../icons/qrc_hicolor.cxx)
-  set_source_files_properties(../icons/qrc_hicolor.cxx PROPERTIES GENERATED true)
-  add_definitions(-DQUASSEL_ICONS_BUILTIN)
-endif(QUASSEL_ICONS MATCHES "Builtin")
-
-if(OXYGEN_ICONS MATCHES "Builtin")
-  set(CLIENT_DEPS ${CLIENT_DEPS} ../icons/qrc_oxygen.cxx)
-  set_source_files_properties(../icons/qrc_oxygen.cxx PROPERTIES GENERATED true)
-  add_definitions(-DOXYGEN_ICONS_BUILTIN)
-endif(OXYGEN_ICONS MATCHES "Builtin")
-
-# Now it's time to build the modules...
-
 add_subdirectory(common)
 include_directories(common)
 if(WANT_CORE OR WANT_MONO)
@@ -33,7 +15,18 @@ if(WANT_QTCLIENT OR WANT_MONO)
   include_directories(qtui)
 endif(WANT_QTCLIENT OR WANT_MONO)
 
-# ... and finally the executables
+# We always add stuff in :/pics
+qt4_add_resources(CLIENT_DEPS ../pics/pics.qrc)
+
+if(QUASSEL_ICONS MATCHES "Builtin")
+  set(CLIENT_DEPS ${CLIENT_DEPS} ../icons/qrc_hicolor.cxx)
+  set_source_files_properties(../icons/qrc_hicolor.cxx PROPERTIES GENERATED true)
+endif(QUASSEL_ICONS MATCHES "Builtin")
+
+if(OXYGEN_ICONS MATCHES "Builtin")
+  set(CLIENT_DEPS ${CLIENT_DEPS} ../icons/qrc_oxygen.cxx)
+  set_source_files_properties(../icons/qrc_oxygen.cxx PROPERTIES GENERATED true)
+endif(OXYGEN_ICONS MATCHES "Builtin")
 
 if(WANT_CORE)
   setup_qt4_variables(NETWORK SCRIPT SQL)

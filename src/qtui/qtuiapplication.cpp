@@ -28,14 +28,6 @@
 #include "sessionsettings.h"
 
 QtUiApplication::QtUiApplication(int &argc, char **argv) : QApplication(argc, argv), Quassel() {
-  Q_INIT_RESOURCE(pics);
-# ifdef QUASSEL_ICONS_BUILTIN
-  Q_INIT_RESOURCE(hicolor);
-# endif
-# ifdef OXYGEN_ICONS_BUILTIN
-  Q_INIT_RESOURCE(oxygen);
-# endif
-
   setRunMode(Quassel::ClientOnly);
 
   // put client-only arguments here
