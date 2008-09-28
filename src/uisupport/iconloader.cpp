@@ -72,7 +72,7 @@ void IconLoader::setTheme(const QString &theme) {
       _themedIconDirNames.append(path);
   }
   // Resource for system theme :/icons/$theme
-  path = QString(":/icons/%2");
+  path = QString(":/icons/%1").arg(theme);
   if(QFile::exists(path))
     _themedIconDirNames.append(path);
 
