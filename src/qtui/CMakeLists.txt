@@ -74,20 +74,13 @@ set(MOC_HDRS
     topicwidget.h
     verticaldock.h)
 
-if(HAVE_WEBKIT)
-  set(MOC_HDRS ${MOC_HDRS} chatitem.h)
-endif(HAVE_WEBKIT)
-
 set(HEADERS
+    chatitem.h
     chatline.h
     chatlinemodelitem.h
     chatviewsettings.h
     qtuisettings.h
     qtuistyle.h)
-
-if(NOT HAVE_WEBKIT)
-  set(HEADERS ${HEADERS} chatitem.h)
-endif(NOT HAVE_WEBKIT)
 
 set(FORMS
     aboutdlg.ui

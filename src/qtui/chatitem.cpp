@@ -380,11 +380,13 @@ QVector<QTextLayout::FormatRange> ContentsChatItem::additionalFormats() const {
 }
 
 void ContentsChatItem::endHoverMode() {
-  if(hasLayout() && privateData()->currentClickable.isValid()) {
-    setCursor(Qt::ArrowCursor);
-    privateData()->currentClickable = Clickable();
+  if(hasLayout()) {
+    if(privateData()->currentClickable.isValid()) {
+      setCursor(Qt::ArrowCursor);
+      privateData()->currentClickable = Clickable();
+    }
 #ifdef HAVE_WEBKIT
-    privateData()->clearPreview();
+    clearWebPreview();
 #endif
     update();
   }
@@ -441,21 +443,8 @@ void ContentsChatItem::hoverMoveEvent(QGraphicsSceneHoverEvent *event) {
     if(idx >= click.start && idx < click.start + click.length) {
       if(click.type == Clickable::Url) {
         onClickable = true;
-
-	if(!hasLayout())
-	  updateLayout();
-
 #ifdef HAVE_WEBKIT
-	QTextLine line = layout()->lineForTextPosition(click.start);
-	qreal x = line.cursorToX(click.start);
-	qreal width = line.cursorToX(click.start + click.length) - x;
-	qreal height = line.height();
-	qreal y = height * line.lineNumber();
-	QRectF urlRect(x, y, width, height);
-	QString url = data(ChatLineModel::DisplayRole).toString().mid(click.start, click.length);
-	if(!url.contains("://"))
-	  url = "http://" + url;
-	privateData()->loadWebPreview(url, urlRect);
+	showWebPreview(click);
 #endif
       } else if(click.type == Clickable::Channel) {
         // TODO: don't make clickable if it's our own name
@@ -473,59 +462,73 @@ void ContentsChatItem::hoverMoveEvent(QGraphicsSceneHoverEvent *event) {
   event->accept();
 }
 
+#ifdef HAVE_WEBKIT
+void ContentsChatItem::showWebPreview(const Clickable &click) {
+  if(!hasLayout())
+    updateLayout();
+
+  QTextLine line = layout()->lineForTextPosition(click.start);
+  qreal x = line.cursorToX(click.start);
+  qreal width = line.cursorToX(click.start + click.length) - x;
+  qreal height = line.height();
+  qreal y = height * line.lineNumber();
+  QRectF urlRect(x, y, width, height);
+  QString url = data(ChatLineModel::DisplayRole).toString().mid(click.start, click.length);
+  if(!url.contains("://"))
+    url = "http://" + url;
+  privateData()->loadWebPreview(url, urlRect);
+}
+
+void ContentsChatItem::clearWebPreview() {
+  if(hasLayout())
+    privateData()->clearWebPreview();
+}
+#endif
+
 // ****************************************
 // ContentsChatItemPrivate
 // ****************************************
+#ifdef HAVE_WEBKIT
 ContentsChatItemPrivate::~ContentsChatItemPrivate() {
-#ifdef HAVE_WEBKIT
-  clearPreview();
-#endif
+  clearWebPreview();
 }
 
-#ifdef HAVE_WEBKIT
 void ContentsChatItemPrivate::loadWebPreview(const QString &url, const QRectF &urlRect) {
-  if(!controller)
-    controller = new PreviewController(contentsItem);
-  controller->loadPage(url, urlRect);
-}
-
-void ContentsChatItemPrivate::clearPreview() {
-  delete controller;
-  controller = 0;
-}
-
-ContentsChatItemPrivate::PreviewController::~PreviewController() {
-  if(previewItem) {
-    contentsItem->scene()->removeItem(previewItem);
-    delete previewItem;
+  if(url != previewUrl) {
+    previewUrl = url;
+    // load a new web view and delete the old one (if exists)
+    if(previewItem) {
+      contentsItem->scene()->removeItem(previewItem);
+      delete previewItem;
+    }
+    QWebView *view = new QWebView;
+    view->load(url);
+    previewItem = new ContentsChatItemPrivate::PreviewItem(view);
+    contentsItem->scene()->addItem(previewItem);
+  }
+  if(urlRect != previewUrlRect) {
+    previewUrlRect = urlRect;
+    QPointF sPos = contentsItem->scenePos();
+    qreal previewY = sPos.y() + urlRect.y() + urlRect.height(); // bottom of url;
+    qreal previewX = sPos.x() + urlRect.x();
+    if(previewY + previewItem->boundingRect().height() > contentsItem->scene()->sceneRect().bottom())
+      previewY = sPos.y() + urlRect.y() - previewItem->boundingRect().height();
+    
+    if(previewX + previewItem->boundingRect().width() > contentsItem->scene()->sceneRect().width())
+      previewX = contentsItem->scene()->sceneRect().right() - previewItem->boundingRect().width();
+  
+    previewItem->setPos(previewX, previewY);
   }
 }
 
-void ContentsChatItemPrivate::PreviewController::loadPage(const QString &newUrl, const QRectF &urlRect) {
-  if(newUrl.isEmpty() || newUrl == url)
-    return;
-
-  url = newUrl;
-  QWebView *view = new QWebView;
-  connect(view, SIGNAL(loadFinished(bool)), this, SLOT(pageLoaded(bool)));
-  view->load(url);
-  previewItem = new ContentsChatItemPrivate::PreviewItem(view);
-
-  QPointF sPos = contentsItem->scenePos();
-  qreal previewY = sPos.y() + urlRect.y() + urlRect.height(); // bottom of url;
-  qreal previewX = sPos.x() + urlRect.x();
-  if(previewY + previewItem->boundingRect().height() > contentsItem->scene()->sceneRect().bottom())
-    previewY = sPos.y() + urlRect.y() - previewItem->boundingRect().height();
-
-  if(previewX + previewItem->boundingRect().width() > contentsItem->scene()->sceneRect().width())
-    previewX = contentsItem->scene()->sceneRect().right() - previewItem->boundingRect().width();
-
-  previewItem->setPos(previewX, previewY);
-  contentsItem->scene()->addItem(previewItem);
-}
-
-void ContentsChatItemPrivate::PreviewController::pageLoaded(bool success) {
-  Q_UNUSED(success)
+void ContentsChatItemPrivate::clearWebPreview() {
+  if(previewItem) {
+    contentsItem->scene()->removeItem(previewItem);
+    delete previewItem;
+    previewItem = 0;
+  }
+  previewUrl = QString();
+  previewUrlRect = QRectF();
 }
 
 ContentsChatItemPrivate::PreviewItem::PreviewItem(QWebView *webView)

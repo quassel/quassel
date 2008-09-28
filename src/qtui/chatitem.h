@@ -166,7 +166,10 @@ private:
 
   QList<Clickable> findClickables();
   void endHoverMode();
+  void showWebPreview(const Clickable &click);
+  void clearWebPreview();
 
+  
   // WARNING: setGeometry and setHeight should not be used without either:
   //  a) calling prepareGeometryChange() immediately before setColumns()
   //  b) calling Chatline::setPos() immediately afterwards
@@ -202,43 +205,24 @@ struct ContentsChatItemPrivate : ChatItemPrivate {
   ContentsChatItem::Clickable currentClickable;
   bool hasDragged;
 
-#ifdef HAVE_WEBKIT
-  ContentsChatItemPrivate(QTextLayout *l, const QList<ContentsChatItem::Clickable> &c, ContentsChatItem *parent) : ChatItemPrivate(l), contentsItem(parent), clickables(c), hasDragged(false), controller(0) {}
-#else
+#ifndef HAVE_WEBKIT
   ContentsChatItemPrivate(QTextLayout *l, const QList<ContentsChatItem::Clickable> &c, ContentsChatItem *parent) : ChatItemPrivate(l), contentsItem(parent), clickables(c), hasDragged(false) {}
-#endif
+#else
+  ContentsChatItemPrivate(QTextLayout *l, const QList<ContentsChatItem::Clickable> &c, ContentsChatItem *parent) : ChatItemPrivate(l), contentsItem(parent), clickables(c), hasDragged(false), previewItem(0) {}
   ~ContentsChatItemPrivate();
 
-#ifdef HAVE_WEBKIT
   void loadWebPreview(const QString &url, const QRectF &urlRect);
-  void clearPreview();
+  void clearWebPreview();
 
 private:
-  class PreviewController;
   class PreviewItem;
-  PreviewController *controller;
-#endif //#ifdef HAVE_WEBKIT
+  PreviewItem *previewItem;
+  QString previewUrl;
+  QRectF previewUrlRect;
+#endif //#ifndef HAVE_WEBKIT
 };
 
 #ifdef HAVE_WEBKIT
-class ContentsChatItemPrivate::PreviewController : public QObject {
-  Q_OBJECT
-public:
-  PreviewController(ContentsChatItem *contentsItem) : contentsItem(contentsItem), previewItem(0) {}
-  ~PreviewController();
-
-  void loadPage(const QString &url, const QRectF &urlRect);
-
-private slots:
-  void pageLoaded(bool success);
-
-private:
-  ContentsChatItem *contentsItem;
-  ContentsChatItemPrivate::PreviewItem *previewItem;
-
-  QString url;
-};
-
 class QWebView;
 class ContentsChatItemPrivate::PreviewItem : public QGraphicsItem {
 public:
