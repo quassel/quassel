@@ -94,6 +94,10 @@ void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
 
   clearWebPreview();
 
+//   QModelIndex sidx = model()->index(start, 0);
+//   QModelIndex eidx = model()->index(end, 0);
+//   qDebug() << "rowsInserted" << start << end << "-" << sidx.data(MessageModel::MsgIdRole).value<MsgId>() << eidx.data(MessageModel::MsgIdRole).value<MsgId>();
+
   qreal h = 0;
   qreal y = _sceneRect.y();
   qreal width = _sceneRect.width();
@@ -101,12 +105,15 @@ void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
   bool atBottom = false;
   bool moveTop = false;
 
-  if(start > 0) {
-    y = _lines.value(start - 1)->y() + _lines.value(start - 1)->height();
+  if(start > 0 && start < _lines.count()) {
+    y = _lines.value(start)->y();
     atTop = false;
   }
-  if(start == _lines.count())
+  if(start == _lines.count()) {
+    y = _sceneRect.bottom();
+    atTop = false;
     atBottom = true;
+  }
 
   qreal contentsWidth = width - secondColumnHandle()->sceneRight();
   qreal senderWidth = secondColumnHandle()->sceneLeft() - firstColumnHandle()->sceneRight();
@@ -114,20 +121,14 @@ void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
   QPointF contentsPos(secondColumnHandle()->sceneRight(), 0);
   QPointF senderPos(firstColumnHandle()->sceneRight(), 0);
 
-
-  for(int i = end; i >= start; i--) {
+  for(int i = start; i <= end; i++) {
     ChatLine *line = new ChatLine(i, model(),
 				  width,
 				  timestampWidth, senderWidth, contentsWidth,
 				  senderPos, contentsPos);
-    if(atTop) {
-      h -= line->height();
-      line->setPos(0, y+h);
-    } else {
-      line->setPos(0, y+h);
-      h += line->height();
-    }
-    _lines.insert(start, line);
+    line->setPos(0, y+h);
+    h += line->height();
+    _lines.insert(i, line);
     addItem(line);
   }
 
@@ -150,8 +151,9 @@ void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
     qreal offset = h;
     int moveStart = 0;
     int moveEnd = _lines.count() - 1;
-    ChatLine *line = 0;
-    if(end > _lines.count() - end) {
+    // move top means: moving 0 to end (aka: end + 1)
+    // move top means: moving end + 1 to _lines.count() - 1 (aka: _lines.count() - (end + 1)
+    if(end + 1 < _lines.count() - end - 1) {
       // move top part
       moveTop = true;
       offset = -offset;
@@ -160,6 +162,7 @@ void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
       // move bottom part
       moveStart = start;
     }
+    ChatLine *line = 0;
     for(int i = moveStart; i <= moveEnd; i++) {
       line = _lines.at(i);
       line->setPos(0, line->pos().y() + offset);
@@ -168,7 +171,7 @@ void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
 
   // update sceneRect
   if(atTop || moveTop) {
-    updateSceneRect(_sceneRect.adjusted(0, h, 0, 0));
+    updateSceneRect(_sceneRect.adjusted(0, -h, 0, 0));
   } else {
     updateSceneRect(_sceneRect.adjusted(0, 0, 0, h));
     emit lastLineChanged(_lines.last());
@@ -220,8 +223,7 @@ void ChatScene::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int e
     qreal offset = h;
     int moveStart = 0;
     int moveEnd = _lines.count() - 1;
-    ChatLine *line = 0;
-    if(start > _lines.count() - end) {
+    if(start < _lines.count() - start) {
       // move top part
       moveTop = true;
       moveEnd = start - 1;
@@ -230,6 +232,7 @@ void ChatScene::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int e
       moveStart = start;
       offset = -offset;
     }
+    ChatLine *line = 0;
     for(int i = moveStart; i <= moveEnd; i++) {
       line = _lines.at(i);
       line->setPos(0, line->pos().y() + offset);

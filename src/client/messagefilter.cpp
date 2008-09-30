@@ -53,5 +53,8 @@ bool MessageFilter::filterAcceptsRow(int sourceRow, const QModelIndex &sourcePar
     return true;
 
   BufferId id = sourceModel()->data(sourceModel()->index(sourceRow, 0), MessageModel::BufferIdRole).value<BufferId>();
+  if(!id.isValid()) {
+    return true;
+  }
   return _validBuffers.contains(id);
 }

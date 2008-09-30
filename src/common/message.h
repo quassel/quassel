@@ -33,19 +33,20 @@ class Message {
 public:
   /** The different types a message can have for display */
   enum Type {
-    Plain  = 0x0001,
-    Notice = 0x0002,
-    Action = 0x0004,
-    Nick   = 0x0008,
-    Mode   = 0x0010,
-    Join   = 0x0020,
-    Part   = 0x0040,
-    Quit   = 0x0080,
-    Kick   = 0x0100,
-    Kill   = 0x0200,
-    Server = 0x0400,
-    Info   = 0x0800,
-    Error  = 0x1000
+    Plain     = 0x0001,
+    Notice    = 0x0002,
+    Action    = 0x0004,
+    Nick      = 0x0008,
+    Mode      = 0x0010,
+    Join      = 0x0020,
+    Part      = 0x0040,
+    Quit      = 0x0080,
+    Kick      = 0x0100,
+    Kill      = 0x0200,
+    Server    = 0x0400,
+    Info      = 0x0800,
+    Error     = 0x1000,
+    DayChange = 0x2000
   };
 
   // DO NOT CHANGE without knowing what you do, some of these flags are stored in the database
@@ -63,6 +64,7 @@ public:
   Message(const QDateTime &ts, const BufferInfo &buffer = BufferInfo(), Type type = Plain,
           const QString &contents = "", const QString &sender = "", Flags flags = None);
 
+  inline static Message ChangeOfDay(const QDateTime &day) { return Message(day, BufferInfo(), DayChange, tr("Day changed to %1").arg(day.toString("dddd MMMM d yyyy"))); }
   inline MsgId msgId() const { return _msgId; }
   inline void setMsgId(MsgId id) { _msgId = id; }
 
