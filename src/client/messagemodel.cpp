@@ -114,6 +114,9 @@ void MessageModel::insertMessageGroup(const QList<Message> &msglist) {
       idx--;
     }
   }
+  int start = idx;
+  int end = idx + msglist.count() - 1;
+
   Message dayChangeMsg;
   bool needsDayChangeMsg = false;
   if(idx < _messageList.count() && _messageList[idx]->msgType() != Message::DayChange) {
@@ -129,10 +132,9 @@ void MessageModel::insertMessageGroup(const QList<Message> &msglist) {
       dayChangeMsg = Message::ChangeOfDay(nextTs);
       dayChangeMsg.setMsgId(msglist.last().msgId());
       needsDayChangeMsg = true;
+      end++;
     }
   }
-  int start = idx;
-  int end = idx + msglist.count() - 1;
   beginInsertRows(QModelIndex(), start, end);
   foreach(Message msg, msglist) {
     _messageList.insert(idx, createMessageModelItem(msg));
