@@ -169,11 +169,8 @@ void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
     }
   }
 
-  // update sceneRect
-  if(atTop || moveTop) {
-    updateSceneRect(_sceneRect.adjusted(0, -h, 0, 0));
-  } else {
-    updateSceneRect(_sceneRect.adjusted(0, 0, 0, h));
+  updateSceneRect();
+  if(atBottom) {
     emit lastLineChanged(_lines.last());
   }
 
@@ -239,12 +236,30 @@ void ChatScene::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int e
     }
   }
 
+
   // update sceneRect
-  if(atTop || moveTop) {
-    updateSceneRect(_sceneRect.adjusted(0, h, 0, 0));
-  } else {
-    updateSceneRect(_sceneRect.adjusted(0, 0, 0, -h));
-  }
+  // when searching for the first non-date-line we have to take into account that our
+  // model still contains the just removed lines so we cannot simply call updateSceneRect()
+  int numRows = model()->rowCount();
+  QModelIndex firstLineIdx;
+  int row = -1;
+  bool needOffset = false;
+  do {
+    row++;
+    if(row >= start && row <= end) {
+      row = end + 1;
+      needOffset = true;
+    }
+    firstLineIdx = model()->index(row, 0);
+  } while((Message::Type)(model()->data(firstLineIdx, MessageModel::TypeRole).toInt()) == Message::DayChange && row < numRows);
+
+  if(needOffset)
+    row -= end - start + 1;
+
+  ChatLine *firstLine = _lines.at(row);
+  ChatLine *lastLine = _lines.last();
+
+  updateSceneRect(QRectF(0, firstLine->pos().y(), _sceneRect.width(), lastLine->pos().y() + lastLine->height() - firstLine->pos().y()));
 }
 
 void ChatScene::updateForViewport(qreal width, qreal height) {
@@ -264,7 +279,6 @@ void ChatScene::setWidth(qreal width, bool forceReposition) {
 //   clock_t startT = clock();
 
   qreal linePos = _sceneRect.y() + _sceneRect.height();
-  qreal yBottom = linePos;
   QList<ChatLine *>::iterator lineIter = _lines.end();
   QList<ChatLine *>::iterator lineIterBegin = _lines.begin();
   ChatLine *line = 0;
@@ -293,7 +307,7 @@ void ChatScene::setWidth(qreal width, bool forceReposition) {
     }
   }
 
-  updateSceneRect(QRectF(0, linePos, width, yBottom - linePos));
+  updateSceneRect(width);
   setHandleXLimits();
 
 //   clock_t endT = clock();
@@ -480,6 +494,31 @@ int ChatScene::sectionByScenePos(int x) {
     return ChatLineModel::SenderColumn;
 
   return ChatLineModel::ContentsColumn;
+}
+
+void ChatScene::updateSceneRect() {
+  if(_lines.isEmpty())
+    return;
+
+  // we hide day change messages at the top by making the scene rect smaller
+  int numRows = model()->rowCount();
+  int row = -1;
+  QModelIndex firstLineIdx;
+  do {
+    row++;
+    firstLineIdx = model()->index(row, 0);
+  } while((Message::Type)(model()->data(firstLineIdx, MessageModel::TypeRole).toInt()) == Message::DayChange && row < numRows);
+
+  // the following call should be safe. If it crashes something went wrong during insert/remove
+  ChatLine *firstLine = _lines.at(row);
+  ChatLine *lastLine = _lines.last();
+
+  updateSceneRect(QRectF(0, firstLine->pos().y(), _sceneRect.width(), lastLine->pos().y() + lastLine->height() - firstLine->pos().y()));
+}
+
+void ChatScene::updateSceneRect(qreal width) {
+  _sceneRect.setWidth(width);
+  updateSceneRect();
 }
 
 void ChatScene::updateSceneRect(const QRectF &rect) {
