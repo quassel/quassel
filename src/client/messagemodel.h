@@ -72,6 +72,9 @@ protected:
   virtual MessageModelItem *createMessageModelItem(const Message &) = 0;
   virtual void customEvent(QEvent *event);
 
+private slots:
+  void changeOfDay();
+
 private:
   void insertMessageGroup(const QList<Message> &);
   int insertMessagesGracefully(const QList<Message> &); // inserts as many contiguous msgs as possible. returns numer of inserted msgs.
@@ -79,8 +82,13 @@ private:
 
   QList<MessageModelItem *> _messageList;
   QList<Message> _messageBuffer;
+  QTimer _dayChangeTimer;
+  QDateTime _nextDayChange;
 };
 
+// **************************************************
+//  MessageModelItem
+// **************************************************
 class MessageModelItem {
 public:
   //! Creates a MessageModelItem from a Message object.

@@ -463,6 +463,9 @@ void ChatScene::requestBacklog() {
   int backlogSize = model()->rowCount();
   if(isSingleBufferScene() && backlogSize != 0 && _lastBacklogSize + REQUEST_COUNT <= backlogSize) {
     QModelIndex msgIdx = model()->index(0, 0);
+    while((Message::Type)(model()->data(msgIdx, ChatLineModel::TypeRole).toInt()) == Message::DayChange) {
+      msgIdx = msgIdx.sibling(msgIdx.row() + 1, 0);
+    }
     MsgId msgId = model()->data(msgIdx, ChatLineModel::MsgIdRole).value<MsgId>();
     BufferId bufferId = model()->data(msgIdx, ChatLineModel::BufferIdRole).value<BufferId>();
     _lastBacklogSize = backlogSize;
