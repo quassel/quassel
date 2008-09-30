@@ -240,6 +240,10 @@ void ChatScene::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int e
   // update sceneRect
   // when searching for the first non-date-line we have to take into account that our
   // model still contains the just removed lines so we cannot simply call updateSceneRect()
+  if(_lines.isEmpty()) {
+    updateSceneRect(QRectF(0, 0, _sceneRect.width(), 0));
+    return;
+  }
   int numRows = model()->rowCount();
   QModelIndex firstLineIdx;
   int row = -1;
