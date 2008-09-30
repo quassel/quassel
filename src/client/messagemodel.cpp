@@ -37,7 +37,6 @@ MessageModel::MessageModel(QObject *parent)
   _nextDayChange.setTimeSpec(Qt::UTC);
   _nextDayChange.setTime_t(((now.toTime_t() / 86400) + 1) * 86400);
   _nextDayChange.setTimeSpec(Qt::LocalTime);
-  qDebug() << _nextDayChange;
   _dayChangeTimer.setInterval(QDateTime::currentDateTime().secsTo(_nextDayChange) * 1000);
   _dayChangeTimer.start();
   connect(&_dayChangeTimer, SIGNAL(timeout()), this, SLOT(changeOfDay()));

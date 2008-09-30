@@ -146,6 +146,7 @@ public:
   ContentsChatItem(const qreal &width, const QPointF &pos, QGraphicsItem *parent);
 
   inline ChatLineModel::ColumnType column() const { return ChatLineModel::ContentsColumn; }
+  inline QFontMetricsF *fontMetrics() const { return _fontMetrics; }
 
 protected:
   virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
@@ -177,7 +178,6 @@ private:
   friend class ChatLine;
   friend struct ContentsChatItemPrivate;
 
-  inline QFontMetricsF *fontMetrics() const { return _fontMetrics; }
   QFontMetricsF *_fontMetrics;
 };
 

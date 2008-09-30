@@ -152,7 +152,7 @@ void ChatLine::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
       BufferId bufferId = model_->data(prevRowIdx, MessageModel::BufferIdRole).value<BufferId>();
       if(msgId == Client::networkModel()->lastSeenMsgId(bufferId) && chatScene()->isSingleBufferScene()) {
 	QtUiStyleSettings s("Colors");
-	QLinearGradient gradient(0, 0, 0, height());
+	QLinearGradient gradient(0, 0, 0, contentsItem().fontMetrics()->lineSpacing());
 	gradient.setColorAt(0, s.value("newMsgMarkerFG", QColor(Qt::red)).value<QColor>());
 	gradient.setColorAt(0.1, Qt::transparent);
 	painter->fillRect(boundingRect(), gradient);
