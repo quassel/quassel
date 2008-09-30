@@ -119,19 +119,30 @@ void ChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
   layout()->draw(painter, QPointF(0,0), formats, boundingRect());
 
   // Debuging Stuff
-  // uncomment the following lines to draw the bounding rect and the row number in alternating colors
+  // uncomment partially or all of the following stuff:
+  //
+  // 0) alternativ painter color for debug stuff
 //   if(row() % 2)
 //     painter->setPen(Qt::red);
 //   else
 //     painter->setPen(Qt::blue);
-//   QString rowString = QString::number(row());
-//   QRect rowRect = painter->fontMetrics().boundingRect(rowString);
-//   QPointF topPoint = _boundingRect.topLeft();
-//   topPoint.ry() += rowRect.height();
-//   painter->drawText(topPoint, rowString);
-//   QPointF bottomPoint = _boundingRect.bottomRight();
-//   bottomPoint.rx() -= rowRect.width();
-//   painter->drawText(bottomPoint, rowString);
+  // 1) draw wordwrap points in the first line
+//   if(column() == 2) {
+//     ChatLineModel::WrapList wrapList = data(ChatLineModel::WrapListRole).value<ChatLineModel::WrapList>();
+//     foreach(ChatLineModel::Word word, wrapList) {
+//       if(word.endX > width())
+// 	break;
+//       painter->drawLine(word.endX, 0, word.endX, height());
+//     }
+//   }
+  // 2) draw MsgId over the time column
+//   if(column() == 0) {
+//     QString msgIdString = QString::number(data(MessageModel::MsgIdRole).value<MsgId>().toInt());
+//     QPointF bottomPoint = boundingRect().bottomLeft();
+//     bottomPoint.ry() -= 2;
+//     painter->drawText(bottomPoint, msgIdString);
+//   }
+  // 3) draw bounding rect
 //   painter->drawRect(_boundingRect.adjusted(0, 0, -1, -1));
 }
 
