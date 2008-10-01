@@ -97,6 +97,7 @@ private:
   // calls to QChatScene::sceneRect() are very expensive. As we manage the scenerect ourselves
   // we store the size in a member variable.
   QRectF _sceneRect;
+  int _firstLineRow; // the first row to display (aka: not a daychange msg)
   void updateSceneRect();
   void updateSceneRect(qreal width);
   void updateSceneRect(const QRectF &rect);

@@ -44,6 +44,7 @@ ChatScene::ChatScene(QAbstractItemModel *model, const QString &idString, qreal w
     _model(model),
     _singleBufferScene(false),
     _sceneRect(0, 0, width, 0),
+    _firstLineRow(-1),
     _viewportHeight(0),
     _selectingItem(0),
     _selectionStart(-1),
@@ -126,8 +127,13 @@ void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
 				  width,
 				  timestampWidth, senderWidth, contentsWidth,
 				  senderPos, contentsPos);
-    line->setPos(0, y+h);
-    h += line->height();
+    if(atTop) {
+      h += line->height();
+      line->setPos(0, y-h);
+    } else {
+      line->setPos(0, y+h);
+      h += line->height();
+    }
     _lines.insert(i, line);
     addItem(line);
   }
@@ -169,6 +175,10 @@ void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
     }
   }
 
+  if(!atBottom) {
+    // force new search for first proper line
+    _firstLineRow = -1;
+  }
   updateSceneRect();
   if(atBottom) {
     emit lastLineChanged(_lines.last());
@@ -240,30 +250,22 @@ void ChatScene::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int e
   // update sceneRect
   // when searching for the first non-date-line we have to take into account that our
   // model still contains the just removed lines so we cannot simply call updateSceneRect()
-  if(_lines.isEmpty()) {
-    updateSceneRect(QRectF(0, 0, _sceneRect.width(), 0));
-    return;
-  }
   int numRows = model()->rowCount();
   QModelIndex firstLineIdx;
-  int row = -1;
+  _firstLineRow = -1;
   bool needOffset = false;
   do {
-    row++;
-    if(row >= start && row <= end) {
-      row = end + 1;
+    _firstLineRow++;
+    if(_firstLineRow >= start && _firstLineRow <= end) {
+      _firstLineRow = end + 1;
       needOffset = true;
     }
-    firstLineIdx = model()->index(row, 0);
-  } while((Message::Type)(model()->data(firstLineIdx, MessageModel::TypeRole).toInt()) == Message::DayChange && row < numRows);
+    firstLineIdx = model()->index(_firstLineRow, 0);
+  } while((Message::Type)(model()->data(firstLineIdx, MessageModel::TypeRole).toInt()) == Message::DayChange && _firstLineRow < numRows);
 
   if(needOffset)
-    row -= end - start + 1;
-
-  ChatLine *firstLine = _lines.at(row);
-  ChatLine *lastLine = _lines.last();
-
-  updateSceneRect(QRectF(0, firstLine->pos().y(), _sceneRect.width(), lastLine->pos().y() + lastLine->height() - firstLine->pos().y()));
+    _firstLineRow -= end - start + 1;
+  updateSceneRect();
 }
 
 void ChatScene::updateForViewport(qreal width, qreal height) {
@@ -501,22 +503,24 @@ int ChatScene::sectionByScenePos(int x) {
 }
 
 void ChatScene::updateSceneRect() {
-  if(_lines.isEmpty())
+  if(_lines.isEmpty()) {
+    updateSceneRect(QRectF(0, 0, _sceneRect.width(), 0));
     return;
+  }
 
   // we hide day change messages at the top by making the scene rect smaller
-  int numRows = model()->rowCount();
-  int row = -1;
-  QModelIndex firstLineIdx;
-  do {
-    row++;
-    firstLineIdx = model()->index(row, 0);
-  } while((Message::Type)(model()->data(firstLineIdx, MessageModel::TypeRole).toInt()) == Message::DayChange && row < numRows);
+  if(_firstLineRow == -1) {
+    int numRows = model()->rowCount();
+    QModelIndex firstLineIdx;
+    do {
+      _firstLineRow++;
+      firstLineIdx = model()->index(_firstLineRow, 0);
+    } while((Message::Type)(model()->data(firstLineIdx, MessageModel::TypeRole).toInt()) == Message::DayChange && _firstLineRow < numRows);
+  }
 
   // the following call should be safe. If it crashes something went wrong during insert/remove
-  ChatLine *firstLine = _lines.at(row);
+  ChatLine *firstLine = _lines.at(_firstLineRow);
   ChatLine *lastLine = _lines.last();
-
   updateSceneRect(QRectF(0, firstLine->pos().y(), _sceneRect.width(), lastLine->pos().y() + lastLine->height() - firstLine->pos().y()));
 }
 
