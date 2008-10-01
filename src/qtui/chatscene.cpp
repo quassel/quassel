@@ -176,6 +176,12 @@ void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
   }
 
   if(!atBottom) {
+    if(start < _firstLineRow) {
+      int prevFirstLineRow = _firstLineRow + (end - start + 1);
+      for(int i = end + 1; i < prevFirstLineRow; i++) {
+	_lines.at(i)->show();
+      }
+    }
     // force new search for first proper line
     _firstLineRow = -1;
   }
@@ -509,13 +515,21 @@ void ChatScene::updateSceneRect() {
   }
 
   // we hide day change messages at the top by making the scene rect smaller
+  // and by calling QGraphicsItem::hide() on all leading day change messages
+  // the first one is needed to ensure proper scrollbar ranges
+  // the second for cases where the viewport is larger then the set scenerect
+  //  (in this case the items are shown anyways)
   if(_firstLineRow == -1) {
     int numRows = model()->rowCount();
+    _firstLineRow = 0;
     QModelIndex firstLineIdx;
-    do {
-      _firstLineRow++;
+    while(_firstLineRow < numRows) {
       firstLineIdx = model()->index(_firstLineRow, 0);
-    } while((Message::Type)(model()->data(firstLineIdx, MessageModel::TypeRole).toInt()) == Message::DayChange && _firstLineRow < numRows);
+      if((Message::Type)(model()->data(firstLineIdx, MessageModel::TypeRole).toInt()) != Message::DayChange)
+	break;
+      _lines.at(_firstLineRow)->hide();
+      _firstLineRow++;
+    }
   }
 
   // the following call should be safe. If it crashes something went wrong during insert/remove
