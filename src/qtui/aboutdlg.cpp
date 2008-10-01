@@ -18,6 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QDateTime>
+
 #include "aboutdlg.h"
 #include "icon.h"
 #include "iconloader.h"
@@ -27,9 +29,10 @@ AboutDlg::AboutDlg(QWidget *parent) : QDialog(parent) {
   ui.setupUi(this);
   ui.quasselLogo->setPixmap(DesktopIcon("quassel", IconLoader::SizeHuge));
 
-  ui.versionLabel->setText(QString(tr("<b>Version %1</b><br>Protocol version: %2<br>Built: %3 %4")).arg(Global::quasselVersion)
-			   .arg(Global::protocolVersion)
-			   .arg(Global::quasselBuildDate).arg(Global::quasselBuildTime));
+  ui.versionLabel->setText(QString(tr("<b>Version:</b> %1<br><b>Protocol version:</b> %2<br><b>Built:</b> %3"))
+                           .arg(Quassel::buildInfo().fancyVersionString)
+			   .arg(Quassel::buildInfo().protocolVersion)
+			   .arg(Quassel::buildInfo().buildDate));
   ui.aboutTextBrowser->setHtml(about());
   ui.authorTextBrowser->setHtml(authors());
   ui.contributorTextBrowser->setHtml(contributors());

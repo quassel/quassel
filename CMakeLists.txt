@@ -184,7 +184,7 @@ target_link_libraries(genversion ${QT_LIBRARIES} ${QT_CORE_LIB_DEPENDENCIES})
 
 get_target_property(GENVERSION_EXECUTABLE genversion LOCATION)
 add_custom_target(genversion_run ALL ${GENVERSION_EXECUTABLE}
-                  ${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR}/src/common/version.gen)
+                  ${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR}/src/version.gen)
 add_dependencies(genversion_run genversion)
 
 # Decide what to do with icons
@@ -217,7 +217,3 @@ add_subdirectory(icons)
 #add_subdirectory(pics)
 add_subdirectory(i18n)
 add_subdirectory(src)
-
-# Make sure version.gen exists before building mod_common
-# TODO: make only main.cpp depend on that! Recompiles suck...
-add_dependencies(mod_common genversion_run)

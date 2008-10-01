@@ -20,7 +20,6 @@
 
 /** This is called at compile time and generates a suitable version.gen.
  *  usage: genversion git_root target_file
- * 
  */
 
 #include <QDebug>
@@ -37,56 +36,78 @@ int main(int argc, char **argv) {
   }
   QString gitroot = argv[1];
   QString target = argv[2];
-  QString version, commit, archivetime;
+  QString basever, protover, clientneeds, coreneeds, descrver, dirty;
+  QString committish, commitdate;
 
+  // check Git for information if present
   if(QFile::exists(gitroot + "/.git")) {
     // try to execute git-describe to get a version string
     QProcess git;
     git.setWorkingDirectory(gitroot);
     git.start("git", QStringList() << "describe" << "--long");
     if(git.waitForFinished(10000)) {
-      QString gitversion = git.readAllStandardOutput();
-      if(!gitversion.isEmpty() && !gitversion.contains("fatal")) {
-        // seems we have a valid version string, now prettify it...
-        // check if the workdir is dirty first
-        QString dirty;
-        QStringList params = QStringList() << "diff-index" << "--name-only" << "HEAD";
-        git.start("git", params);
+      QString descr = git.readAllStandardOutput().trimmed();
+      if(!descr.isEmpty() && !descr.contains("fatal")) {
+        // seems we have a valid git describe string
+        descrver = descr;
+        // check if the workdir is dirty
+        git.start("git", QStringList() << "diff-index" << "--name-only" << "HEAD");
         if(git.waitForFinished(10000)) {
           if(!git.readAllStandardOutput().isEmpty()) dirty = "*";
         }
+        // get a full committish
+        git.start("git", QStringList() << "rev-parse" << "HEAD");
+        if(git.waitForFinished(10000)) {
+          committish = git.readAllStandardOutput().trimmed();
+        }
         // Now we do some replacement magic...
-        QRegExp rxCheckTag("(.*)-0-g[0-9a-f]+\n$");
-        QRegExp rxGittify("(.*)-(\\d+)-g([0-9a-f]+)\n$");
-        gitversion.replace(rxCheckTag, QString("\\1%1").arg(dirty));
-        gitversion.replace(rxGittify, QString("\\1:git-\\3+\\2%1").arg(dirty));
-        if(!gitversion.isEmpty()) version = gitversion;
+        //QRegExp rxCheckTag("(.*)-0-g[0-9a-f]+\n$");
+        //QRegExp rxGittify("(.*)-(\\d+)-g([0-9a-f]+)\n$");
+        //gitversion.replace(rxCheckTag, QString("\\1%1").arg(dirty));
+        //gitversion.replace(rxGittify, QString("\\1:git-\\3+\\2%1").arg(dirty));
       }
     }
   }
-  if(version.isEmpty()) {
-    // hmm, Git failed... let's check for version.dist instead
-    QFile dist(gitroot + "/version.dist");
-    if(dist.open(QIODevice::ReadOnly | QIODevice::Text)) {
-      QRegExp rxCommit("(^[0-9a-f]+)");
-      QRegExp rxTimestamp("(^[0-9]+)");
-      if(rxCommit.indexIn(dist.readLine()) > -1) commit = rxCommit.cap(1);
-      if(rxTimestamp.indexIn(dist.readLine()) > -1) archivetime = rxTimestamp.cap(1);
-      dist.close();
+
+  // parse version.inc
+  QFile verfile(gitroot + "/version.inc");
+  if(verfile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+    QString ver = verfile.readAll();
+
+    QRegExp rxBasever("baseVersion\\s*=\\s*\"(.*)\";");
+    if(rxBasever.indexIn(ver) >= 0)
+      basever = rxBasever.cap(1);
+
+    QRegExp rxProtover("protocolVersion\\s*=\\s*(\\d+)");
+    if(rxProtover.indexIn(ver) >= 0)
+      protover = rxProtover.cap(1);
+
+    QRegExp rxClientneeds("clientNeedsProtocol\\s*=\\s*(\\d+)");
+    if(rxClientneeds.indexIn(ver) >= 0)
+      clientneeds = rxClientneeds.cap(1);
+
+    QRegExp rxCoreneeds("coreNeedsProtocol\\s*=\\s*(\\d+)");
+    if(rxCoreneeds.indexIn(ver) >= 0)
+      coreneeds = rxCoreneeds.cap(1);
+
+    if(committish.isEmpty()) {
+      QRegExp rxCommit("distCommittish\\s*=\\s*([0-9a-f]+)");
+      if(rxCommit.indexIn(ver) >= 0) committish = rxCommit.cap(1);
     }
+
+    QRegExp rxTimestamp("distCommitDate\\s*=\\s*([0-9]+)");
+    if(rxTimestamp.indexIn(ver) >= 0) commitdate = rxTimestamp.cap(1);
+    verfile.close();
   }
+
   // ok, create our version.gen now
   QFile gen(target);
   if(!gen.open(QIODevice::WriteOnly | QIODevice::Text)) {
     qFatal("%s", qPrintable(QString("Could not write %1!").arg(target)));
-    return 255;
+    return EXIT_FAILURE;
   }
-  gen.write(QString("quasselGeneratedVersion = \"%1\";\n"
-                    "quasselBuildDate = \"%2\";\n"
-                    "quasselBuildTime = \"%3\";\n"
-                    "quasselCommit = \"%4\";\n"
-                    "quasselArchiveDate = %5;\n")
-                    .arg(version).arg(__DATE__).arg(__TIME__).arg(commit).arg(archivetime.toUInt()).toAscii());
+  gen.write(QString("QString buildinfo = \"%1,%2,%3,%4,%5,%6,%7,%8\";")
+           .arg(basever, descrver, dirty, committish, commitdate, protover, clientneeds, coreneeds).toAscii());
   gen.close();
   return EXIT_SUCCESS;
 }

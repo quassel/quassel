@@ -77,8 +77,6 @@ bool Quassel::init() {
   qsrand(QTime(0,0,0).secsTo(QTime::currentTime()));
 
   registerMetaTypes();
-  setupBuildInfo();
-  Global::setupVersion();
   setupTranslations();
 
   QCoreApplication::setApplicationName(buildInfo().applicationName);
@@ -147,30 +145,59 @@ void Quassel::setupTranslations() {
   qApp->installTranslator(quasselTranslator);
 }
 
-void Quassel::setupBuildInfo() {
+void Quassel::setupBuildInfo(const QString &generated) {
   _buildInfo.applicationName = "Quassel IRC";
   _buildInfo.coreApplicationName = "Quassel Core";
   _buildInfo.clientApplicationName = "Quassel Client";
   _buildInfo.organizationName = "Quassel Project";
   _buildInfo.organizationDomain = "quassel-irc.org";
-/*
-#  include "version.inc"
-#  include "version.gen"
 
-  if(quasselGeneratedVersion.isEmpty()) {
-    if(quasselCommit.isEmpty())
-      quasselVersion = QString("v%1 (unknown rev)").arg(quasselBaseVersion);
-    else
-      quasselVersion = QString("v%1 (dist-%2, %3)").arg(quasselBaseVersion).arg(quasselCommit.left(7))
-      .arg(QDateTime::fromTime_t(quasselArchiveDate).toLocalTime().toString("yyyy-MM-dd"));
+  QStringList gen = generated.split(',');
+  Q_ASSERT(gen.count() == 10);
+  _buildInfo.baseVersion = gen[0];
+  _buildInfo.generatedVersion = gen[1];
+  _buildInfo.isSourceDirty = !gen[2].isEmpty();
+  _buildInfo.commitHash = gen[3];
+  _buildInfo.commitDate = gen[4].toUInt();
+  _buildInfo.protocolVersion = gen[5].toUInt();
+  _buildInfo.clientNeedsProtocol = gen[6].toUInt();
+  _buildInfo.coreNeedsProtocol = gen[7].toUInt();
+  _buildInfo.buildDate = QString("%1 %2").arg(gen[8], gen[9]);
+  // create a nice version string
+  if(_buildInfo.generatedVersion.isEmpty()) {
+    if(!_buildInfo.commitHash.isEmpty()) {
+      // dist version
+      _buildInfo.plainVersionString = QString("v%1 (dist-%2)")
+                                        .arg(_buildInfo.baseVersion)
+                                        .arg(_buildInfo.commitHash.left(7));
+      _buildInfo.fancyVersionString = QString("v%1 (dist-<a href=\"http://git.quassel-irc.org/%3\">%2</a>)")
+                                        .arg(_buildInfo.baseVersion)
+                                        .arg(_buildInfo.commitHash.left(7))
+                                        .arg(_buildInfo.commitHash);
+    } else {
+    // we only have a base version :(
+      _buildInfo.plainVersionString = QString("v%1 (unknown rev)").arg(_buildInfo.baseVersion);
+    }
   } else {
-    QStringList parts = quasselGeneratedVersion.split(':');
-    quasselVersion = QString("v%1").arg(parts[0]);
-    if(parts.count() >= 2) quasselVersion.append(QString(" (%1)").arg(parts[1]));
+    // analyze what we got from git-describe
+    QRegExp rx("(.*)-(\\d+)-g([0-9a-f]+)$");
+    if(rx.exactMatch(_buildInfo.generatedVersion)) {
+      QString distance = rx.cap(2) == "0" ? QString() : QString(" [+%1]").arg(rx.cap(2));
+      _buildInfo.plainVersionString = QString("v%1%2 (git-%3%4)")
+                                        .arg(rx.cap(1), distance, rx.cap(3))
+                                        .arg(_buildInfo.isSourceDirty ? "*" : "");
+      if(!_buildInfo.commitHash.isEmpty()) {
+        _buildInfo.fancyVersionString = QString("v%1%2 (git-<a href=\"http://git.quassel-irc.org/%5\">%3</a>%4)")
+                                          .arg(rx.cap(1), distance, rx.cap(3))
+                                          .arg(_buildInfo.isSourceDirty ? "*" : "")
+                                          .arg(_buildInfo.commitHash);
+      }
+    } else {
+      _buildInfo.plainVersionString = QString("v%1 (invalid rev)").arg(_buildInfo.baseVersion);
+    }
   }
-  quasselBuildDate = __DATE__;
-  quasselBuildTime = __TIME__;
-  */
+  if(_buildInfo.fancyVersionString.isEmpty())
+    _buildInfo.fancyVersionString = _buildInfo.plainVersionString;
 }
 
 //! Signal handler for graceful shutdown.
@@ -257,36 +284,3 @@ void Quassel::handleCrash() {
   exit(27);
 #endif /* BUILD_CRASHHANDLER */
 }
-
-// FIXME temporary
-
-void Global::setupVersion() {
-
-  #  include "version.inc"
-  #  include "version.gen"
-
-  if(quasselGeneratedVersion.isEmpty()) {
-    if(quasselCommit.isEmpty())
-      quasselVersion = QString("v%1 (unknown rev)").arg(quasselBaseVersion);
-    else
-      quasselVersion = QString("v%1 (dist-%2, %3)").arg(quasselBaseVersion).arg(quasselCommit.left(7))
-      .arg(QDateTime::fromTime_t(quasselArchiveDate).toLocalTime().toString("yyyy-MM-dd"));
-  } else {
-    QStringList parts = quasselGeneratedVersion.split(':');
-    quasselVersion = QString("v%1").arg(parts[0]);
-    if(parts.count() >= 2) quasselVersion.append(QString(" (%1)").arg(parts[1]));
-  }
-  quasselBuildDate = __DATE__;
-  quasselBuildTime = __TIME__;
-}
-
-QString Global::quasselVersion;
-QString Global::quasselBaseVersion;
-QString Global::quasselGeneratedVersion;
-QString Global::quasselBuildDate;
-QString Global::quasselBuildTime;
-QString Global::quasselCommit;
-uint Global::quasselArchiveDate;
-uint Global::protocolVersion;
-uint Global::clientNeedsProtocol;
-uint Global::coreNeedsProtocol;

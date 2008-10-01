@@ -156,10 +156,10 @@ void ClientSyncer::coreSocketConnected() {
   //emit coreConnectionMsg(tr("Synchronizing to core..."));
   QVariantMap clientInit;
   clientInit["MsgType"] = "ClientInit";
-  clientInit["ClientVersion"] = Global::quasselVersion;
+  clientInit["ClientVersion"] = Quassel::buildInfo().fancyVersionString;
   clientInit["ClientBuild"] = 860; // FIXME legacy!
-  clientInit["ClientDate"] = Global::quasselBuildDate;
-  clientInit["ProtocolVersion"] = Global::protocolVersion;
+  clientInit["ClientDate"] = Quassel::buildInfo().buildDate;
+  clientInit["ProtocolVersion"] = Quassel::buildInfo().protocolVersion;
   clientInit["UseSsl"] = coreConnectionInfo["useSsl"];
 #ifndef QT_NO_COMPRESS
   clientInit["UseCompression"] = true;
@@ -187,9 +187,9 @@ void ClientSyncer::clientInitAck(const QVariantMap &msg) {
   uint ver = 0;
   if(!msg.contains("ProtocolVersion") && msg["CoreBuild"].toUInt() >= 732) ver = 1; // legacy!
   if(msg.contains("ProtocolVersion")) ver = msg["ProtocolVersion"].toUInt();
-  if(ver < Global::clientNeedsProtocol) {
+  if(ver < Quassel::buildInfo().clientNeedsProtocol) {
     emit connectionError(tr("<b>The Quassel Core you are trying to connect to is too old!</b><br>"
-        "Need at least core/client protocol v%1 to connect.").arg(Global::clientNeedsProtocol));
+        "Need at least core/client protocol v%1 to connect.").arg(Quassel::buildInfo().clientNeedsProtocol));
     disconnectFromCore();
     return;
   }

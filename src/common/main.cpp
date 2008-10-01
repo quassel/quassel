@@ -43,6 +43,10 @@ int main(int argc, char **argv) {
     MonolithicApplication app(argc, argv);
 #  endif
 
+# include "version.gen"
+  buildinfo.append(QString(",%1,%2").arg(__DATE__, __TIME__));
+  app.setupBuildInfo(buildinfo);
+
   if(!app.init()) return EXIT_FAILURE;
   return app.exec();
 }

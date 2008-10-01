@@ -20,6 +20,8 @@
 
 #include "coreinfodlg.h"
 
+#include <QDateTime>
+
 #include "client.h"
 #include "signalproxy.h"
 
@@ -34,7 +36,7 @@ CoreInfoDlg::CoreInfoDlg(QWidget *parent)
 
 void CoreInfoDlg::coreInfoAvailable() {
   ui.labelCoreVersion->setText(_coreInfo["quasselVersion"].toString());
-  ui.labelCoreBuildDate->setText(_coreInfo["quasselBuildDate"].toString());
+  ui.labelCoreBuildDate->setText(QDateTime::fromTime_t(_coreInfo["quasselBuildDate"].toUInt()).toLocalTime().toString());
   ui.labelClientCount->setNum(_coreInfo["sessionConnectedClients"].toInt());
   updateUptime();
   startTimer(1000);
@@ -42,7 +44,7 @@ void CoreInfoDlg::coreInfoAvailable() {
 
 void CoreInfoDlg::updateUptime() {
   QDateTime startTime = _coreInfo["startTime"].toDateTime();
-  
+
   int uptime = startTime.secsTo(QDateTime::currentDateTime().toUTC());
   int updays = uptime / 86400; uptime %= 86400;
   int uphours = uptime / 3600; uptime %= 3600;

@@ -37,13 +37,15 @@ class Quassel {
     };
 
     struct BuildInfo {
-      QString version;
+      QString fancyVersionString; // clickable rev
+      QString plainVersionString; // no <a> tag
+
       QString baseVersion;
       QString generatedVersion;
-      QString buildDate;
-      QString buildTime;
       QString commitHash;
-      uint archiveDate;
+      uint commitDate;
+      QString buildDate;
+      bool isSourceDirty;
       uint protocolVersion;
       uint clientNeedsProtocol;
       uint coreNeedsProtocol;
@@ -54,6 +56,8 @@ class Quassel {
       QString organizationName;
       QString organizationDomain;
     };
+
+    void setupBuildInfo(const QString &generated);
 
     virtual ~Quassel();
 
@@ -74,7 +78,6 @@ class Quassel {
 
 
   private:
-    void setupBuildInfo();
     void setupTranslations();
     void registerMetaTypes();
 
@@ -85,24 +88,6 @@ class Quassel {
     static CliParser *_cliParser;
     static RunMode _runMode;
     static bool _initialized;
-};
-
-// FIXME temporary
-namespace Global {
-  extern QString quasselVersion;
-  extern QString quasselBaseVersion;
-  extern QString quasselBuildDate;
-  extern QString quasselBuildTime;
-  extern QString quasselCommit;
-  extern uint quasselArchiveDate;
-  extern uint protocolVersion;
-
-  extern uint clientNeedsProtocol;  //< Minimum protocol version the client needs
-  extern uint coreNeedsProtocol;    //< Minimum protocol version the core needs
-
-  extern QString quasselGeneratedVersion;  //< This is possibly set in version.gen
-
-  void setupVersion();
 };
 
 const Quassel::BuildInfo & Quassel::buildInfo() { return _buildInfo; }

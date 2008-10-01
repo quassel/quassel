@@ -33,8 +33,8 @@ CoreCoreInfo::CoreCoreInfo(CoreSession *parent)
 
 QVariantMap CoreCoreInfo::coreData() const {
   QVariantMap data;
-  data["quasselVersion"] = Global::quasselVersion;
-  data["quasselBuildDate"] = Global::quasselBuildDate;
+  data["quasselVersion"] = Quassel::buildInfo().fancyVersionString;
+  data["quasselBuildDate"] = Quassel::buildInfo().buildDate;
   data["startTime"] = Core::instance()->startTime();
   data["sessionConnectedClients"] = _coreSession->signalProxy()->peerCount();
   return data;

@@ -347,11 +347,13 @@ bool Core::startListening() {
   uint port = Quassel::optionValue("port").toUInt();
 
   if(_server.listen(QHostAddress::Any, port)) {
-    quInfo() << "Listening for GUI clients on IPv6 port" << _server.serverPort() << "using protocol version" << Global::protocolVersion;
+    quInfo() << "Listening for GUI clients on IPv6 port" << _server.serverPort()
+             << "using protocol version" << Quassel::buildInfo().protocolVersion;
     success = true;
   }
   if(_v6server.listen(QHostAddress::AnyIPv6, port)) {
-    quInfo() << "Listening for GUI clients on IPv4 port" << _v6server.serverPort() << "using protocol version" << Global::protocolVersion;
+    quInfo() << "Listening for GUI clients on IPv4 port" << _v6server.serverPort()
+             << "using protocol version" << Quassel::buildInfo().protocolVersion;
     success = true;
   }
 
@@ -415,20 +417,20 @@ void Core::processClientMessage(QTcpSocket *socket, const QVariantMap &msg) {
     uint ver = 0;
     if(!msg.contains("ProtocolVersion") && msg["ClientBuild"].toUInt() >= 732) ver = 1; // FIXME legacy
     if(msg.contains("ProtocolVersion")) ver = msg["ProtocolVersion"].toUInt();
-    if(ver < Global::coreNeedsProtocol) {
+    if(ver < Quassel::buildInfo().coreNeedsProtocol) {
       reply["MsgType"] = "ClientInitReject";
       reply["Error"] = tr("<b>Your Quassel Client is too old!</b><br>"
       "This core needs at least client/core protocol version %1.<br>"
-      "Please consider upgrading your client.").arg(Global::coreNeedsProtocol);
+      "Please consider upgrading your client.").arg(Quassel::buildInfo().coreNeedsProtocol);
       SignalProxy::writeDataToDevice(socket, reply);
       quWarning() << qPrintable(tr("Client")) << qPrintable(socket->peerAddress().toString()) << qPrintable(tr("too old, rejecting."));
       socket->close(); return;
     }
 
-    reply["CoreVersion"] = Global::quasselVersion;
-    reply["CoreDate"] = Global::quasselBuildDate;
+    reply["CoreVersion"] = Quassel::buildInfo().fancyVersionString;
+    reply["CoreDate"] = Quassel::buildInfo().buildDate;
     reply["CoreBuild"] = 860; // FIXME legacy
-    reply["ProtocolVersion"] = Global::protocolVersion;
+    reply["ProtocolVersion"] = Quassel::buildInfo().protocolVersion;
     // TODO: Make the core info configurable
     int uptime = startTime().secsTo(QDateTime::currentDateTime().toUTC());
     int updays = uptime / 86400; uptime %= 86400;
@@ -436,7 +438,8 @@ void Core::processClientMessage(QTcpSocket *socket, const QVariantMap &msg) {
     int upmins = uptime / 60;
     reply["CoreInfo"] = tr("<b>Quassel Core Version %1</b><br>"
 			   "Built: %2<br>"
-			   "Up %3d%4h%5m (since %6)").arg(Global::quasselVersion).arg(Global::quasselBuildDate)
+			   "Up %3d%4h%5m (since %6)").arg(Quassel::buildInfo().fancyVersionString)
+                                                     .arg(Quassel::buildInfo().buildDate)
       .arg(updays).arg(uphours,2,10,QChar('0')).arg(upmins,2,10,QChar('0')).arg(startTime().toString(Qt::TextDate));
 
 #ifdef HAVE_SSL
