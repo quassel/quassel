@@ -414,9 +414,7 @@ void Core::processClientMessage(QTcpSocket *socket, const QVariantMap &msg) {
     QVariantMap reply;
 
     // Just version information -- check it!
-    uint ver = 0;
-    if(!msg.contains("ProtocolVersion") && msg["ClientBuild"].toUInt() >= 732) ver = 1; // FIXME legacy
-    if(msg.contains("ProtocolVersion")) ver = msg["ProtocolVersion"].toUInt();
+    uint ver = msg["ProtocolVersion"].toUInt();
     if(ver < Quassel::buildInfo().coreNeedsProtocol) {
       reply["MsgType"] = "ClientInitReject";
       reply["Error"] = tr("<b>Your Quassel Client is too old!</b><br>"
@@ -429,7 +427,6 @@ void Core::processClientMessage(QTcpSocket *socket, const QVariantMap &msg) {
 
     reply["CoreVersion"] = Quassel::buildInfo().fancyVersionString;
     reply["CoreDate"] = Quassel::buildInfo().buildDate;
-    reply["CoreBuild"] = 860; // FIXME legacy
     reply["ProtocolVersion"] = Quassel::buildInfo().protocolVersion;
     // TODO: Make the core info configurable
     int uptime = startTime().secsTo(QDateTime::currentDateTime().toUTC());
