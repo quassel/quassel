@@ -145,6 +145,7 @@ void UiStyle::setFormat(FormatType ftype, QTextCharFormat fmt, Settings::Mode mo
   }
   // TODO: invalidate only affected cached formats... if that's possible with less overhead than just rebuilding them
   _cachedFormats.clear();
+  _cachedFontMetrics.clear();
 }
 
 QTextCharFormat UiStyle::format(FormatType ftype, Settings::Mode mode) const {
