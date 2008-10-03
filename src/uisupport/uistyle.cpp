@@ -312,39 +312,45 @@ QString UiStyle::mircToInternal(const QString &mirc_) const {
 }
 
 UiStyle::StyledMessage UiStyle::styleMessage(const Message &msg) {
+  return StyledMessage(msg, this);
+}
+
+/***********************************************************************************/
+
+UiStyle::StyledMessage::StyledMessage(const Message &msg, UiStyle *style) {
   QString user = userFromMask(msg.sender());
   QString host = hostFromMask(msg.sender());
   QString nick = nickFromMask(msg.sender());
-  QString txt = mircToInternal(msg.contents());
+  QString txt = style->mircToInternal(msg.contents());
   QString bufferName = msg.bufferInfo().bufferName();
   bufferName.replace('%', "%%"); // well, you _can_ have a % in a buffername apparently... -_-
 
-  StyledMessage result;
+  _msgType = msg.type();
+  _timestamp = msg.timestamp();
 
-  result.timestamp = styleString(tr("%DT[%1]").arg(msg.timestamp().toLocalTime().toString("hh:mm:ss")));
-
-  QString s, t;
+  QString t;
   switch(msg.type()) {
     case Message::Plain:
-      s = tr("%DS<%1>").arg(nick); t = tr("%D0%1").arg(txt); break;
+      _sender = nick;
+      t = tr("%D0%1").arg(txt); break;
     case Message::Notice:
-      s = tr("%Dn[%1]").arg(nick); t = tr("%Dn%1").arg(txt); break;
+      _sender = nick;
+      t = tr("%Dn%1").arg(txt); break;
     case Message::Server:
-      s = tr("%Ds*"); t = tr("%Ds%1").arg(txt); break;
+      t = tr("%Ds%1").arg(txt); break;
     case Message::Error:
-      s = tr("%De*"); t = tr("%De%1").arg(txt); break;
+      t = tr("%De%1").arg(txt); break;
     case Message::Join:
-      s = tr("%Dj-->"); t = tr("%Dj%DN%1%DN %DH(%2@%3)%DH has joined %DC%4%DC").arg(nick, user, host, bufferName); break;
+      t = tr("%Dj%DN%1%DN %DH(%2@%3)%DH has joined %DC%4%DC").arg(nick, user, host, bufferName); break;
     case Message::Part:
-      s = tr("%Dp<--"); t = tr("%Dp%DN%1%DN %DH(%2@%3)%DH has left %DC%4%DC").arg(nick, user, host, bufferName);
+      t = tr("%Dp%DN%1%DN %DH(%2@%3)%DH has left %DC%4%DC").arg(nick, user, host, bufferName);
       if(!txt.isEmpty()) t = QString("%1 (%2)").arg(t).arg(txt);
       break;
     case Message::Quit:
-      s = tr("%Dq<--"); t = tr("%Dq%DN%1%DN %DH(%2@%3)%DH has quit").arg(nick, user, host);
+      t = tr("%Dq%DN%1%DN %DH(%2@%3)%DH has quit").arg(nick, user, host);
       if(!txt.isEmpty()) t = QString("%1 (%2)").arg(t).arg(txt);
       break;
-    case Message::Kick:
-      { s = tr("%Dk<-*");
+    case Message::Kick: {
         QString victim = txt.section(" ", 0, 0);
         //if(victim == ui.ownNick->currentText()) victim = tr("you");
         QString kickmsg = txt.section(" ", 1);
@@ -353,27 +359,112 @@ UiStyle::StyledMessage UiStyle::styleMessage(const Message &msg) {
       }
       break;
     case Message::Nick:
-      s = tr("%Dr<->");
       if(nick == msg.contents()) t = tr("%DrYou are now known as %DN%1%DN").arg(txt);
       else t = tr("%Dr%DN%1%DN is now known as %DN%2%DN").arg(nick, txt);
       break;
     case Message::Mode:
-      s = tr("%Dm***");
       if(nick.isEmpty()) t = tr("%DmUser mode: %DM%1%DM").arg(txt);
       else t = tr("%DmMode %DM%1%DM by %DN%2%DN").arg(txt, nick);
       break;
     case Message::Action:
-      s = tr("%Da-*-");
       t = tr("%Da%DN%1%DN %2").arg(nick).arg(txt);
       break;
     default:
-      s = tr("%De%1").arg(msg.sender());
+      _sender = msg.sender();
       t = tr("%De[%1]").arg(txt);
   }
-  result.sender = styleString(s);
-  result.contents = styleString(t);
-  return result;
+  _contents = style->styleString(t);
 }
+
+QDateTime UiStyle::StyledMessage::timestamp() const {
+  return _timestamp;
+}
+
+QString UiStyle::StyledMessage::decoratedTimestamp() const {
+  return QString("[%1]").arg(_timestamp.toLocalTime().toString("hh:mm:ss"));
+}
+
+QString UiStyle::StyledMessage::sender() const {
+  switch(type()) {
+    case Message::Plain:
+    case Message::Notice:
+      return _sender;
+    default:
+      return QString();
+  }
+}
+
+QString UiStyle::StyledMessage::decoratedSender() const {
+  switch(type()) {
+    case Message::Plain:
+      return tr("<%1>").arg(_sender); break;
+    case Message::Notice:
+      return tr("[%1]").arg(_sender); break;
+    case Message::Server:
+      return tr("*"); break;
+    case Message::Error:
+      return tr("*"); break;
+    case Message::Join:
+      return tr("-->"); break;
+    case Message::Part:
+      return tr("<--"); break;
+    case Message::Quit:
+      return tr("<--"); break;
+    case Message::Kick:
+      return tr("<-*"); break;
+    case Message::Nick:
+      return tr("<->"); break;
+    case Message::Mode:
+      return tr("***"); break;
+    case Message::Action:
+      return tr("-*-"); break;
+    default:
+      return tr("%1").arg(_sender);
+  }
+}
+
+QString UiStyle::StyledMessage::contents() const {
+  return _contents.plainText;
+}
+
+UiStyle::FormatType UiStyle::StyledMessage::timestampFormat() const {
+  return UiStyle::Timestamp;
+}
+
+UiStyle::FormatType UiStyle::StyledMessage::senderFormat() const {
+  switch(type()) {
+    case Message::Plain:
+      return UiStyle::Sender; break;
+    case Message::Notice:
+      return UiStyle::NoticeMsg; break;
+    case Message::Server:
+      return UiStyle::ServerMsg; break;
+    case Message::Error:
+      return UiStyle::ErrorMsg; break;
+    case Message::Join:
+      return UiStyle::JoinMsg; break;
+    case Message::Part:
+      return UiStyle::PartMsg; break;
+    case Message::Quit:
+      return UiStyle::QuitMsg; break;
+    case Message::Kick:
+      return UiStyle::KickMsg; break;
+    case Message::Nick:
+      return UiStyle::RenameMsg; break;
+    case Message::Mode:
+      return UiStyle::ModeMsg; break;
+    case Message::Action:
+      return UiStyle::ActionMsg; break;
+    default:
+      return UiStyle::ErrorMsg;
+  }
+}
+
+UiStyle::FormatList UiStyle::StyledMessage::contentsFormatList() const {
+  return _contents.formatList;
+}
+
+/***********************************************************************************/
 
 QDataStream &operator<<(QDataStream &out, const UiStyle::FormatList &formatList) {
   out << formatList.count();

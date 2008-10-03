@@ -72,9 +72,8 @@ QVariant ChatMonitorFilter::data(const QModelIndex &index, int role) const {
 
   Message::Type messageType = (Message::Type)sourceModel()->data(source_index, MessageModel::TypeRole).toInt();
   if(messageType & (Message::Plain | Message::Notice)) {
-    QString sender = MessageFilter::data(index, role).toString();
-    // we have to strip leading and traling < / >
-    fields << sender.mid(1, sender.count() - 2);
+    QString sender = MessageFilter::data(index, ChatLineModel::EditRole).toString();
+    fields << sender;
   }
   return QString("<%1>").arg(fields.join(":"));
 }

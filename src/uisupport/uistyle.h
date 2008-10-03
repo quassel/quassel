@@ -31,7 +31,7 @@
 #include "settings.h"
 
 class UiStyle {
-  Q_DECLARE_TR_FUNCTIONS (UiStyle)
+  Q_DECLARE_TR_FUNCTIONS(UiStyle)
 
   public:
     UiStyle(const QString &settingsKey);
@@ -122,11 +122,7 @@ class UiStyle {
       FormatList formatList;  // starting pos, ftypes
     };
 
-    struct StyledMessage {
-      StyledString timestamp;
-      StyledString sender;
-      StyledString contents;
-    };
+    class StyledMessage;
 
     StyledString styleString(const QString &);
     StyledMessage styleMessage(const Message &);
@@ -158,6 +154,30 @@ class UiStyle {
     QHash<QString, FormatType> _formatCodes;
 
     QString _settingsKey;
+};
+
+class UiStyle::StyledMessage {
+
+  public:
+    explicit StyledMessage(const Message &, UiStyle *style);
+
+    QDateTime timestamp() const;
+    QString decoratedTimestamp() const;
+    QString sender() const;             //!< Nickname (no decorations) for Plain and Notice, empty else
+    QString decoratedSender() const;
+    QString contents() const;
+
+    FormatType timestampFormat() const;
+    FormatType senderFormat() const;
+    FormatList contentsFormatList() const;
+
+    inline Message::Type type() const { return _msgType; }
+
+  private:
+    StyledString _contents;
+    QDateTime _timestamp;
+    QString _sender;
+    Message::Type _msgType;
 };
 
 QDataStream &operator<<(QDataStream &out, const UiStyle::FormatList &formatList);
