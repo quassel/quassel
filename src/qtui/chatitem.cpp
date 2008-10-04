@@ -57,7 +57,7 @@ QVariant ChatItem::data(int role) const {
   return model()->data(index, role);
 }
 
-QTextLayout *ChatItem::createLayout(QTextOption::WrapMode wrapMode, Qt::Alignment alignment) {
+QTextLayout *ChatItem::createLayout(QTextOption::WrapMode wrapMode, Qt::Alignment alignment) const {
   QTextLayout *layout = new QTextLayout(data(MessageModel::DisplayRole).toString());
 
   QTextOption option;
@@ -71,10 +71,7 @@ QTextLayout *ChatItem::createLayout(QTextOption::WrapMode wrapMode, Qt::Alignmen
   return layout;
 }
 
-void ChatItem::updateLayout() {
-  if(!privateData()) {
-    setPrivateData(new ChatItemPrivate(createLayout()));
-  }
+void ChatItem::doLayout() {
   QTextLayout *layout_ = layout();
   layout_->beginLayout();
   QTextLine line = layout_->createLine();
@@ -90,12 +87,19 @@ void ChatItem::clearLayout() {
   _data = 0;
 }
 
+ChatItemPrivate *ChatItem::privateData() const {
+  if(!_data) {
+    ChatItem *that = const_cast<ChatItem *>(this);
+    that->_data = that->newPrivateData();
+    that->doLayout();
+  }
+  return _data;
+}
+
 // NOTE: This is not the most time-efficient implementation, but it saves space by not caching unnecessary data
 //       This is a deliberate trade-off. (-> selectFmt creation, data() call)
 void ChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
   Q_UNUSED(option); Q_UNUSED(widget);
-  if(!hasLayout())
-    updateLayout();
   painter->setClipRect(boundingRect()); // no idea why QGraphicsItem clipping won't work
   //if(_selectionMode == FullSelection) {
     //painter->save();
@@ -149,8 +153,6 @@ void ChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 qint16 ChatItem::posToCursor(const QPointF &pos) {
   if(pos.y() > height()) return data(MessageModel::DisplayRole).toString().length();
   if(pos.y() < 0) return 0;
-  if(!hasLayout())
-    updateLayout();
   for(int l = layout()->lineCount() - 1; l >= 0; l--) {
     QTextLine line = layout()->lineAt(l);
     if(pos.y() >= line.y()) {
@@ -192,9 +194,7 @@ QList<QRectF> ChatItem::findWords(const QString &searchWord, Qt::CaseSensitivity
     searchIdx = plainText.indexOf(searchWord, searchIdx + 1, caseSensitive);
   }
 
-  bool hadLayout = hasLayout();
-  if(!hadLayout)
-    updateLayout();
+  bool hadPrivateData = hasPrivateData();
 
   foreach(int idx, indexList) {
     QTextLine line = layout()->lineForTextPosition(idx);
@@ -205,7 +205,7 @@ QList<QRectF> ChatItem::findWords(const QString &searchWord, Qt::CaseSensitivity
     resultList << QRectF(x, y, width, height);
   }
 
-  if(!hadLayout)
+  if(!hadPrivateData)
     clearLayout();
   return resultList;
 }
@@ -283,13 +283,7 @@ qreal ContentsChatItem::setGeometryByWidth(qreal w) {
   return height();
 }
 
-void ContentsChatItem::updateLayout() {
-  if(!privateData()) {
-    ContentsChatItemPrivate *data = new ContentsChatItemPrivate(createLayout(QTextOption::WrapAnywhere), findClickables(), this);
-    setPrivateData(data);
-  }
-
-  // Now layout
+void ContentsChatItem::doLayout() {
   ChatLineModel::WrapList wrapList = data(ChatLineModel::WrapListRole).value<ChatLineModel::WrapList>();
   if(!wrapList.count()) return; // empty chatitem
 
@@ -311,7 +305,7 @@ void ContentsChatItem::updateLayout() {
 
 // NOTE: This method is not threadsafe and not reentrant!
 //       (RegExps are not constant while matching, and they are static here for efficiency)
-QList<ContentsChatItem::Clickable> ContentsChatItem::findClickables() {
+QList<ContentsChatItem::Clickable> ContentsChatItem::findClickables() const {
   // For matching URLs
   static QString urlEnd("(?:>|[,.;:\"]*\\s|\\b|$)");
   static QString urlChars("(?:[\\w\\-~@/?&=+$()!%#]|[,.;:]\\w)");
@@ -387,7 +381,7 @@ QVector<QTextLayout::FormatRange> ContentsChatItem::additionalFormats() const {
 }
 
 void ContentsChatItem::endHoverMode() {
-  if(hasLayout()) {
+  if(hasPrivateData()) {
     if(privateData()->currentClickable.isValid()) {
       setCursor(Qt::ArrowCursor);
       privateData()->currentClickable = Clickable();
@@ -429,7 +423,7 @@ void ContentsChatItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
   // mouse move events always mean we're not hovering anymore...
   endHoverMode();
   // also, check if we have dragged the mouse
-  if(hasLayout() && !privateData()->hasDragged && event->buttons() & Qt::LeftButton
+  if(hasPrivateData() && !privateData()->hasDragged && event->buttons() & Qt::LeftButton
     && (event->buttonDownScreenPos(Qt::LeftButton) - event->screenPos()).manhattanLength() >= QApplication::startDragDistance())
     privateData()->hasDragged = true;
   ChatItem::mouseMoveEvent(event);
@@ -467,9 +461,6 @@ void ContentsChatItem::hoverMoveEvent(QGraphicsSceneHoverEvent *event) {
 
 void ContentsChatItem::showWebPreview(const Clickable &click) {
 #ifdef HAVE_WEBKIT
-  if(!hasLayout())
-    updateLayout();
-
   QTextLine line = layout()->lineForTextPosition(click.start);
   qreal x = line.cursorToX(click.start);
   qreal width = line.cursorToX(click.start + click.length) - x;

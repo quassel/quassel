@@ -47,10 +47,8 @@ public:
   inline qreal width() const { return _boundingRect.width(); }
   inline qreal height() const { return _boundingRect.height(); }
 
-  inline bool hasLayout() const { return (bool)_data; }
-  QTextLayout *createLayout(QTextOption::WrapMode, Qt::Alignment = Qt::AlignLeft);
-  virtual inline QTextLayout *createLayout() { return createLayout(QTextOption::WrapAnywhere); }
-  virtual void updateLayout();
+  QTextLayout *createLayout(QTextOption::WrapMode, Qt::Alignment = Qt::AlignLeft) const;
+  virtual void doLayout();
   void clearLayout();
 
   virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
@@ -74,8 +72,9 @@ protected:
   virtual inline QVector<QTextLayout::FormatRange> additionalFormats() const { return QVector<QTextLayout::FormatRange>(); }
   qint16 posToCursor(const QPointF &pos);
 
-  inline void setPrivateData(ChatItemPrivate *data) { Q_ASSERT(!_data); _data = data; }
-  inline ChatItemPrivate *privateData() const;
+  inline bool hasPrivateData() const { return (bool)_data; }
+  ChatItemPrivate *privateData() const;
+  virtual inline ChatItemPrivate *newPrivateData();
 
   // WARNING: setGeometry and setHeight should not be used without either:
   //  a) calling prepareGeometryChange() immediately before setColumns()
@@ -111,7 +110,7 @@ struct ChatItemPrivate {
 
 // inlines of ChatItem
 QTextLayout *ChatItem::layout() const { return privateData()->layout; }
-ChatItemPrivate *ChatItem::privateData() const { return _data; }
+ChatItemPrivate *ChatItem::newPrivateData() { return new ChatItemPrivate(createLayout(QTextOption::WrapAnywhere)); }
 
 // ************************************************************
 // TimestampChatItem
@@ -132,7 +131,9 @@ class SenderChatItem : public ChatItem {
 public:
   SenderChatItem(const qreal &width, const qreal &height, const QPointF &pos, QGraphicsItem *parent) : ChatItem(width, height, pos, parent) {}
   virtual inline ChatLineModel::ColumnType column() const { return ChatLineModel::SenderColumn; }
-  virtual inline QTextLayout *createLayout() { return ChatItem::createLayout(QTextOption::WrapAnywhere, Qt::AlignRight); }
+
+protected:
+  virtual inline ChatItemPrivate *newPrivateData() { return new ChatItemPrivate(createLayout(QTextOption::WrapAnywhere, Qt::AlignRight)); }
 };
 
 // ************************************************************
@@ -157,7 +158,8 @@ protected:
 
   virtual QVector<QTextLayout::FormatRange> additionalFormats() const;
 
-  virtual void updateLayout();
+  virtual void doLayout();
+  virtual inline ChatItemPrivate *newPrivateData();
 
 private:
   struct Clickable;
@@ -165,7 +167,7 @@ private:
 
   inline ContentsChatItemPrivate *privateData() const;
 
-  QList<Clickable> findClickables();
+  QList<Clickable> findClickables() const;
   void endHoverMode();
   void showWebPreview(const Clickable &click);
   void clearWebPreview();
@@ -208,8 +210,8 @@ struct ContentsChatItemPrivate : ChatItemPrivate {
   ContentsChatItemPrivate(QTextLayout *l, const QList<ContentsChatItem::Clickable> &c, ContentsChatItem *parent) : ChatItemPrivate(l), contentsItem(parent), clickables(c), hasDragged(false) {}
 };
 
-
 //inlines regarding ContentsChatItemPrivate
+ChatItemPrivate *ContentsChatItem::newPrivateData() { return new ContentsChatItemPrivate(createLayout(QTextOption::WrapAnywhere), findClickables(), this); }
 ContentsChatItemPrivate *ContentsChatItem::privateData() const { return (ContentsChatItemPrivate *)ChatItem::privateData(); }
 
 class ContentsChatItem::WrapColumnFinder {
