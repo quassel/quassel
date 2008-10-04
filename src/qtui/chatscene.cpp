@@ -122,20 +122,28 @@ void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
   QPointF contentsPos(secondColumnHandle()->sceneRight(), 0);
   QPointF senderPos(firstColumnHandle()->sceneRight(), 0);
 
-  for(int i = start; i <= end; i++) {
-    ChatLine *line = new ChatLine(i, model(),
-				  width,
-				  timestampWidth, senderWidth, contentsWidth,
-				  senderPos, contentsPos);
-    if(atTop) {
+  if(atTop) {
+    for(int i = end; i >= start; i--) {
+      ChatLine *line = new ChatLine(i, model(),
+				    width,
+				    timestampWidth, senderWidth, contentsWidth,
+				    senderPos, contentsPos);
       h += line->height();
       line->setPos(0, y-h);
-    } else {
+      _lines.insert(start, line);
+      addItem(line);
+    }
+  } else {
+    for(int i = start; i <= end; i++) {
+      ChatLine *line = new ChatLine(i, model(),
+				    width,
+				    timestampWidth, senderWidth, contentsWidth,
+				    senderPos, contentsPos);
       line->setPos(0, y+h);
       h += line->height();
+      _lines.insert(i, line);
+      addItem(line);
     }
-    _lines.insert(i, line);
-    addItem(line);
   }
 
   // update existing items
@@ -166,7 +174,7 @@ void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
       moveEnd = end;
     } else {
       // move bottom part
-      moveStart = start;
+      moveStart = end + 1;
     }
     ChatLine *line = 0;
     for(int i = moveStart; i <= moveEnd; i++) {
