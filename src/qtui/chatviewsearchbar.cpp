@@ -52,8 +52,11 @@ ChatViewSearchBar::ChatViewSearchBar(QWidget *parent)
 }
 
 void ChatViewSearchBar::setVisible(bool visible) {
-  QWidget::setVisible(visible);
+  // clearing the search field also removes the highlight items from the scene
+  // this should be done before the SearchBar is hidden, as the hiding triggers
+  // a resize event which can lead to strange side effects.
   ui.searchEditLine->clear();
+  QWidget::setVisible(visible);
   if(visible) ui.searchEditLine->setFocus();
 }
 
