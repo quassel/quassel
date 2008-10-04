@@ -623,10 +623,8 @@ void ChatScene::showWebPreview() {
 void ChatScene::clearWebPreviewEvent() {
 #ifdef HAVE_WEBKIT
   if(webPreview.previewItem) {
-    if(!webPreview.delayTimer.isActive())
+    if(webPreview.previewItem->scene())
       removeItem(webPreview.previewItem);
-    else
-      webPreview.delayTimer.stop();
     delete webPreview.previewItem;
     webPreview.previewItem = 0;
   }
