@@ -23,6 +23,7 @@
 
 #include "quasselui.h"
 
+class AbstractNotificationBackend;
 class ActionCollection;
 class MainWin;
 class MessageModel;
@@ -52,6 +53,11 @@ public:
    */
   inline static ActionCollection *actionCollection();
 
+  static void registerNotificationBackend(AbstractNotificationBackend *);
+  static void unregisterNotificationBackend(AbstractNotificationBackend *);
+  static void unregisterAllNotificationBackends();
+  static void notify(BufferId bufId, const QString &sender, const QString &text);
+
 public slots:
   void init();
 
@@ -63,6 +69,7 @@ private:
   MainWin *mainWin;
   static ActionCollection *_actionCollection;
   static QtUiStyle *_style;
+  static QSet<AbstractNotificationBackend *> _notificationBackends;
 };
 
 ActionCollection *QtUi::actionCollection() { return _actionCollection; }

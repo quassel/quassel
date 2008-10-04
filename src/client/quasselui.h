@@ -31,12 +31,14 @@ class AbstractUi : public QObject {
   Q_OBJECT
 
   public:
+    AbstractUi();
+    virtual ~AbstractUi() {};
     virtual void init() {};  // called after the client is initialized
     virtual MessageModel *createMessageModel(QObject *parent) = 0;
     virtual AbstractMessageProcessor *createMessageProcessor(QObject *parent) = 0;
 
-  inline static bool isVisible() { return _visible; }
-  inline static void setVisible(bool visible) { _visible = visible; }
+    inline static bool isVisible() { return _visible; }
+    inline static void setVisible(bool visible) { _visible = visible; }
 
   protected slots:
     virtual void connectedToCore() {}
@@ -46,8 +48,9 @@ class AbstractUi : public QObject {
     void connectToCore(const QVariantMap &connInfo);
     void disconnectFromCore();
 
-private:
-  static bool _visible;
+  private:
+    static AbstractUi *_instance;
+    static bool _visible;
 };
 
 #endif

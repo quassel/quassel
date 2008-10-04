@@ -20,4 +20,10 @@
 
 #include "quasselui.h"
 
+AbstractUi * AbstractUi::_instance = 0;
 bool AbstractUi::_visible = false;
+
+AbstractUi::AbstractUi() {
+  Q_ASSERT(!_instance);
+  _instance = this;
+}

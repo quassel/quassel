@@ -7,6 +7,7 @@ include(${QT_USE_FILE})
 set(SOURCES
     abstractbuffercontainer.cpp
     abstractitemview.cpp
+    abstractnotificationbackend.cpp
     action.cpp
     actioncollection.cpp
     bufferview.cpp
@@ -27,6 +28,7 @@ set(SOURCES
 set(MOC_HDRS
     abstractbuffercontainer.h
     abstractitemview.h
+    abstractnotificationbackend.h
     action.h
     actioncollection.h
     bufferview.h

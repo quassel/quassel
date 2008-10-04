@@ -20,21 +20,21 @@
 
 #include "qtui.h"
 
-#include <QDebug>
-
 #include "actioncollection.h"
 #include "chatlinemodel.h"
 #include "mainwin.h"
+#include "abstractnotificationbackend.h"
 #include "qtuimessageprocessor.h"
 #include "qtuistyle.h"
+#include "types.h"
 #include "uisettings.h"
 #include "util.h"
 
 ActionCollection *QtUi::_actionCollection = 0;
+QSet<AbstractNotificationBackend *> QtUi::_notificationBackends;
 QtUiStyle *QtUi::_style = 0;
 
-QtUi::QtUi() : AbstractUi()
-{
+QtUi::QtUi() : AbstractUi() {
   if(_style != 0) {
     qWarning() << "QtUi has been instantiated again!";
     return;
@@ -52,6 +52,7 @@ QtUi::QtUi() : AbstractUi()
 }
 
 QtUi::~QtUi() {
+  unregisterAllNotificationBackends();
   delete _style;
   delete mainWin;
 }
@@ -74,4 +75,23 @@ void QtUi::connectedToCore() {
 
 void QtUi::disconnectedFromCore() {
   mainWin->disconnectedFromCore();
+}
+
+void QtUi::registerNotificationBackend(AbstractNotificationBackend *backend) {
+  if(!_notificationBackends.contains(backend)) {
+    _notificationBackends.insert(backend);
+  }
+}
+
+void QtUi::unregisterNotificationBackend(AbstractNotificationBackend *backend) {
+  _notificationBackends.remove(backend);
+}
+
+void QtUi::unregisterAllNotificationBackends() {
+  _notificationBackends.clear();
+}
+
+void QtUi::notify(BufferId id, const QString &sender, const QString &text) {
+  foreach(AbstractNotificationBackend *backend, _notificationBackends)
+    backend->notify(id, sender, text);
 }
