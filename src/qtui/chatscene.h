@@ -76,6 +76,7 @@ protected:
   virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent);
   virtual void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent);
   virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent);
+  virtual void customEvent(QEvent *event);
 
 protected slots:
   void rowsInserted(const QModelIndex &, int, int);
@@ -83,6 +84,8 @@ protected slots:
 
 private slots:
   void handlePositionChanged(qreal xpos);
+  void showWebPreview();
+  void clearWebPreviewEvent();
 
 private:
   void setHandleXLimits();
@@ -120,6 +123,7 @@ private:
     WebPreviewItem *previewItem;
     QString url;
     QRectF urlRect;
+    QTimer delayTimer;
     WebPreview() : parentItem(0), previewItem(0) {}
   };
   WebPreview webPreview;

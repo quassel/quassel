@@ -38,6 +38,11 @@
 
 const qreal minContentsWidth = 200;
 
+class ClearWebPreviewEvent : public QEvent {
+public:
+  inline ClearWebPreviewEvent() : QEvent(QEvent::User) {}
+};
+
 ChatScene::ChatScene(QAbstractItemModel *model, const QString &idString, qreal width, QObject *parent)
   : QGraphicsScene(0, 0, width, 0, parent),
     _idString(idString),
@@ -85,6 +90,9 @@ ChatScene::ChatScene(QAbstractItemModel *model, const QString &idString, qreal w
 
   if(model->rowCount() > 0)
     rowsInserted(QModelIndex(), 0, model->rowCount() - 1);
+
+  webPreview.delayTimer.setSingleShot(true);
+  connect(&webPreview.delayTimer, SIGNAL(timeout()), this, SLOT(showWebPreview()));
 }
 
 ChatScene::~ChatScene() {
@@ -92,9 +100,6 @@ ChatScene::~ChatScene() {
 
 void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
   Q_UNUSED(index);
-
-  clearWebPreview();
-
 //   QModelIndex sidx = model()->index(start, 0);
 //   QModelIndex eidx = model()->index(end, 0);
 //   qDebug() << "rowsInserted" << start << end << "-" << sidx.data(MessageModel::MsgIdRole).value<MsgId>() << eidx.data(MessageModel::MsgIdRole).value<MsgId>();
@@ -202,8 +207,6 @@ void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
 
 void ChatScene::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end) {
   Q_UNUSED(parent);
-
-  clearWebPreview();
 
   qreal h = 0; // total height of removed items;
 
@@ -556,6 +559,13 @@ void ChatScene::updateSceneRect(const QRectF &rect) {
   setSceneRect(rect);
 }
 
+void ChatScene::customEvent(QEvent *event) {
+  if(event->type() != QEvent::User)
+    return;
+
+  event->accept();
+  clearWebPreviewEvent();
+}
 
 void ChatScene::loadWebPreview(ChatItem *parentItem, const QString &url, const QRectF &urlRect) {
 #ifndef HAVE_WEBKIT
@@ -574,7 +584,7 @@ void ChatScene::loadWebPreview(ChatItem *parentItem, const QString &url, const Q
       delete webPreview.previewItem;
     }
     webPreview.previewItem = new WebPreviewItem(url);
-    addItem(webPreview.previewItem);
+    webPreview.delayTimer.start(2000);
   }
   if(webPreview.urlRect != urlRect) {
     webPreview.urlRect = urlRect;
@@ -596,14 +606,32 @@ void ChatScene::clearWebPreview(ChatItem *parentItem) {
   Q_UNUSED(parentItem)
 #else
   if(parentItem == 0 || webPreview.parentItem == parentItem) {
-    if(webPreview.previewItem) {
-      removeItem(webPreview.previewItem);
-      delete webPreview.previewItem;
-      webPreview.previewItem = 0;
-    }
-    webPreview.parentItem = 0;
-    webPreview.url = QString();
-    webPreview.urlRect = QRectF();
+    // posting an event ensures that the item will not be removed as
+    // the result of another event. this could result in bad segfaults
+    QCoreApplication::postEvent(this, new ClearWebPreviewEvent());
   }
+#endif
+}
+
+void ChatScene::showWebPreview() {
+#ifdef HAVE_WEBKIT
+  if(webPreview.previewItem)
+    addItem(webPreview.previewItem);
+#endif
+}
+
+void ChatScene::clearWebPreviewEvent() {
+#ifdef HAVE_WEBKIT
+  if(webPreview.previewItem) {
+    if(!webPreview.delayTimer.isActive())
+      removeItem(webPreview.previewItem);
+    else
+      webPreview.delayTimer.stop();
+    delete webPreview.previewItem;
+    webPreview.previewItem = 0;
+  }
+  webPreview.parentItem = 0;
+  webPreview.url = QString();
+  webPreview.urlRect = QRectF();
 #endif
 }
