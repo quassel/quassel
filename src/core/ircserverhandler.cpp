@@ -810,7 +810,10 @@ void IrcServerHandler::handle331(const QString &prefix, const QList<QByteArray> 
     return;
 
   QString channel = serverDecode(params[0]);
-  network()->ircChannel(channel)->setTopic(QString());
+  IrcChannel *chan = network()->ircChannel(channel);
+  if(chan)
+    chan->setTopic(QString());
+
   emit displayMsg(Message::Server, BufferInfo::ChannelBuffer, channel, tr("No topic is set for %1.").arg(channel));
 }
 
@@ -822,7 +825,10 @@ void IrcServerHandler::handle332(const QString &prefix, const QList<QByteArray> 
 
   QString channel = serverDecode(params[0]);
   QString topic = channelDecode(channel, params[1]);
-  network()->ircChannel(channel)->setTopic(topic);
+  IrcChannel *chan = network()->ircChannel(channel);
+  if(chan)
+    chan->setTopic(topic);
+
   emit displayMsg(Message::Server, BufferInfo::ChannelBuffer, channel, tr("Topic for %1 is \"%2\"").arg(channel, topic));
 }
 
