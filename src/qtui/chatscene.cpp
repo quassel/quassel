@@ -573,6 +573,8 @@ void ChatScene::loadWebPreview(ChatItem *parentItem, const QString &url, const Q
   Q_UNUSED(url)
   Q_UNUSED(urlRect)
 #else
+    qDebug() << "load call" << this << webPreview.previewItem;
+
   if(webPreview.parentItem != parentItem)
     webPreview.parentItem = parentItem;
 
@@ -605,6 +607,7 @@ void ChatScene::clearWebPreview(ChatItem *parentItem) {
 #ifndef HAVE_WEBKIT
   Q_UNUSED(parentItem)
 #else
+    qDebug() << "clear call" << this << webPreview.previewItem;
   if(parentItem == 0 || webPreview.parentItem == parentItem) {
     // posting an event ensures that the item will not be removed as
     // the result of another event. this could result in bad segfaults
@@ -615,6 +618,7 @@ void ChatScene::clearWebPreview(ChatItem *parentItem) {
 
 void ChatScene::showWebPreview() {
 #ifdef HAVE_WEBKIT
+  qDebug() << "show event" << this << webPreview.previewItem;
   if(webPreview.previewItem)
     addItem(webPreview.previewItem);
 #endif
@@ -622,10 +626,14 @@ void ChatScene::showWebPreview() {
 
 void ChatScene::clearWebPreviewEvent() {
 #ifdef HAVE_WEBKIT
+  qDebug() << "clear event" << this << webPreview.previewItem;
   if(webPreview.previewItem) {
-    if(webPreview.previewItem->scene())
-      removeItem(webPreview.previewItem);
+//     if(webPreview.previewItem->scene()) {
+//       removeItem(webPreview.previewItem);
+//       items();
+//     }
     delete webPreview.previewItem;
+    items();
     webPreview.previewItem = 0;
   }
   webPreview.parentItem = 0;
