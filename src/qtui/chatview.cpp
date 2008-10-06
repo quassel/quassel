@@ -56,7 +56,7 @@ void ChatView::init(MessageFilter *filter) {
 
   _scene = new ChatScene(filter, filter->idString(), viewport()->width() - 2, this); // see below: resizeEvent()
   connect(_scene, SIGNAL(sceneRectChanged(const QRectF &)), this, SLOT(sceneRectChanged(const QRectF &)));
-  connect(_scene, SIGNAL(lastLineChanged(QGraphicsItem *)), this, SLOT(lastLineChanged(QGraphicsItem *)));
+  connect(_scene, SIGNAL(lastLineChanged(QGraphicsItem *, qreal)), this, SLOT(lastLineChanged(QGraphicsItem *, qreal)));
   setScene(_scene);
 
   connect(verticalScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(verticalScrollbarChanged(int)));
@@ -76,10 +76,11 @@ void ChatView::resizeEvent(QResizeEvent *event) {
   verticalScrollBar()->setValue(verticalScrollBar()->maximum());
 }
 
-void ChatView::lastLineChanged(QGraphicsItem *chatLine) {
+void ChatView::lastLineChanged(QGraphicsItem *chatLine, qreal offset) {
+  Q_UNUSED(chatLine)
   QAbstractSlider *vbar = verticalScrollBar();
   Q_ASSERT(vbar);
-  if(vbar->maximum() - vbar->value() <= chatLine->boundingRect().height() + 5) { // 5px grace area
+  if(vbar->maximum() - vbar->value() <= offset + 5) { // 5px grace area
     vbar->setValue(vbar->maximum());
   }
 }

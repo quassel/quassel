@@ -70,7 +70,7 @@ public slots:
   void clearWebPreview(ChatItem *parentItem = 0);
 
 signals:
-  void lastLineChanged(QGraphicsItem *);
+  void lastLineChanged(QGraphicsItem *item, qreal offset);
 
 protected:
   virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent);

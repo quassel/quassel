@@ -111,10 +111,13 @@ void MessageModel::insertMessageGroup(const QList<Message> &msglist) {
        && _messageList[prevIdx]->timeStamp() > msglist.value(0).timestamp()) {
       beginRemoveRows(QModelIndex(), prevIdx, prevIdx);
       MessageModelItem *oldItem = _messageList.takeAt(prevIdx);
-      if(msglist.last().timestamp() < oldItem->timeStamp())
-	dayChangeItem = oldItem;
-      else
-	delete oldItem;
+      if(msglist.last().timestamp() < oldItem->timeStamp()) {
+	// we have to reinsert it (with changed msgId -> thus we need to recreate it)
+	Message dayChangeMsg = Message::ChangeOfDay(oldItem->timeStamp());
+	dayChangeMsg.setMsgId(msglist.last().msgId());
+	dayChangeItem = createMessageModelItem(dayChangeMsg);
+      }
+      delete oldItem;
       endRemoveRows();
       idx--;
     }
