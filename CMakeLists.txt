@@ -4,6 +4,7 @@
 #                     : select binaries to build
 # -DWITH_OPENSSL=OFF  : Disable OpenSSL support
 # -DWITH_DBUS=OFF     : Disable D-Bus support
+# -DWITH_WEBKIT=OFF   : Disable WebKit support
 # -DOXYGEN_ICONS=(Builtin|External)  : If "Builtin" (the default), compile our Oxygen Icon Theme subset into the binary
 #                                    : If "External", we assume Oxygen is already installed on the system
 # -DQUASSEL_ICONS=(Builtin|External) : If "Builtin" (the default), put our own icons into the binary
