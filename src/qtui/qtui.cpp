@@ -31,7 +31,9 @@
 #include "util.h"
 
 ActionCollection *QtUi::_actionCollection = 0;
+MainWin *QtUi::_mainWin = 0;
 QSet<AbstractNotificationBackend *> QtUi::_notificationBackends;
+QList<AbstractNotificationBackend::Notification> QtUi::_notifications;
 QtUiStyle *QtUi::_style = 0;
 
 QtUi::QtUi() : AbstractUi() {
@@ -44,21 +46,21 @@ QtUi::QtUi() : AbstractUi() {
   UiSettings uiSettings;
   loadTranslation(uiSettings.value("Locale", QLocale::system()).value<QLocale>());
 
-  mainWin = new MainWin();
+  _mainWin = new MainWin();
   _style = new QtUiStyle;
 
-  connect(mainWin, SIGNAL(connectToCore(const QVariantMap &)), this, SIGNAL(connectToCore(const QVariantMap &)));
-  connect(mainWin, SIGNAL(disconnectFromCore()), this, SIGNAL(disconnectFromCore()));
+  connect(_mainWin, SIGNAL(connectToCore(const QVariantMap &)), this, SIGNAL(connectToCore(const QVariantMap &)));
+  connect(_mainWin, SIGNAL(disconnectFromCore()), this, SIGNAL(disconnectFromCore()));
 }
 
 QtUi::~QtUi() {
   unregisterAllNotificationBackends();
   delete _style;
-  delete mainWin;
+  delete _mainWin;
 }
 
 void QtUi::init() {
-  mainWin->init();
+  _mainWin->init();
 }
 
 MessageModel *QtUi::createMessageModel(QObject *parent) {
@@ -70,11 +72,11 @@ AbstractMessageProcessor *QtUi::createMessageProcessor(QObject *parent) {
 }
 
 void QtUi::connectedToCore() {
-  mainWin->connectedToCore();
+  _mainWin->connectedToCore();
 }
 
 void QtUi::disconnectedFromCore() {
-  mainWin->disconnectedFromCore();
+  _mainWin->disconnectedFromCore();
 }
 
 void QtUi::registerNotificationBackend(AbstractNotificationBackend *backend) {
@@ -91,7 +93,46 @@ void QtUi::unregisterAllNotificationBackends() {
   _notificationBackends.clear();
 }
 
-void QtUi::notify(BufferId id, const QString &sender, const QString &text) {
-  foreach(AbstractNotificationBackend *backend, _notificationBackends)
-    backend->notify(id, sender, text);
+const QSet<AbstractNotificationBackend *> &QtUi::notificationBackends() {
+  return _notificationBackends;
 }
+
+uint QtUi::invokeNotification(BufferId bufId, const QString &sender, const QString &text) {
+  static int notificationId = 0;
+  //notificationId++;
+  AbstractNotificationBackend::Notification notification(++notificationId, bufId, sender, text);
+  _notifications.append(notification);
+  foreach(AbstractNotificationBackend *backend, _notificationBackends)
+    backend->notify(notification);
+  return notificationId;
+}
+
+void QtUi::closeNotification(uint notificationId) {
+  QList<AbstractNotificationBackend::Notification>::iterator i = _notifications.begin();
+  while(i != _notifications.end()) {
+    if((*i).notificationId == notificationId) {
+      foreach(AbstractNotificationBackend *backend, _notificationBackends)
+        backend->close(notificationId);
+      _notifications.erase(i);
+      break;
+    }
+    ++i;
+  }
+}
+
+void QtUi::closeNotifications(BufferId bufferId) {
+  QList<AbstractNotificationBackend::Notification>::iterator i = _notifications.begin();
+  while(i != _notifications.end()) {
+    if((*i).bufferId == bufferId) {
+      foreach(AbstractNotificationBackend *backend, _notificationBackends)
+        backend->close((*i).notificationId);
+      _notifications.erase(i);
+    }
+    ++i;
+  }
+}
+
+const QList<AbstractNotificationBackend::Notification> &QtUi::activeNotifications() {
+  return _notifications;
+}
+

@@ -78,7 +78,11 @@ class NotificationSettings : public ClientSettings {
     };
 
     NotificationSettings();
-
+    
+    inline void setValue(const QString &key, const QVariant &data) { setLocalValue(key, data); }
+    inline QVariant value(const QString &key, const QVariant &def = QVariant()) { return localValue(key, def); }
+    inline void remove(const QString &key) { removeLocalKey(key); }
+      
     void setHighlightList(const QVariantList &highlightList);
     QVariantList highlightList();
 

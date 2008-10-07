@@ -37,6 +37,7 @@ class BufferViewConfig;
 class MsgProcessorStatusWidget;
 class Message;
 class NickListWidget;
+class SystemTrayIcon;
 
 #ifdef HAVE_DBUS
 #  include "desktopnotifications.h"
@@ -55,6 +56,7 @@ class MainWin : public QMainWindow {
     void addBufferView(BufferViewConfig *config = 0);
 
     void displayTrayIconMessage(const QString &title, const QString &message);
+    inline QSystemTrayIcon *systemTrayIcon() const;
 
 #ifdef HAVE_DBUS
     void sendDesktopNotification(const QString &title, const QString &message);
@@ -77,7 +79,7 @@ class MainWin : public QMainWindow {
     void securedConnection();
     void disconnectedFromCore();
     void setDisconnectedState();
-    void systrayActivated( QSystemTrayIcon::ActivationReason );
+    void systrayActivated(QSystemTrayIcon::ActivationReason);
 
   private slots:
     void addBufferView(int bufferViewConfigId);
@@ -137,7 +139,7 @@ class MainWin : public QMainWindow {
     void toggleVisibility();
     void enableMenus();
 
-    QSystemTrayIcon *systray;
+    QSystemTrayIcon *_trayIcon;
     QPixmap activeTrayIcon;
     QPixmap onlineTrayIcon;
     QPixmap offlineTrayIcon;
@@ -159,5 +161,9 @@ class MainWin : public QMainWindow {
 
     friend class QtUi;
 };
+
+QSystemTrayIcon *MainWin::systemTrayIcon() const {
+  return _trayIcon;
+}
 
 #endif

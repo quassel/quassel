@@ -38,6 +38,7 @@ set(SOURCES
     sessionsettings.cpp
     settingsdlg.cpp
     settingspagedlg.cpp
+    systraynotificationbackend.cpp
     titlesetter.cpp
     topiclabel.cpp
     topicwidget.cpp
@@ -70,6 +71,7 @@ set(MOC_HDRS
     qtuimessageprocessor.h
     settingsdlg.h
     settingspagedlg.h
+    systraynotificationbackend.h
     titlesetter.h
     topiclabel.h
     topicwidget.h

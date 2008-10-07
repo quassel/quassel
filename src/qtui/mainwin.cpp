@@ -78,7 +78,7 @@ MainWin::MainWin(QWidget *parent)
     msgProcessorStatusWidget(new MsgProcessorStatusWidget()),
 
     _titleSetter(this),
-    systray(new QSystemTrayIcon(this)),
+    _trayIcon(new QSystemTrayIcon(this)),
 
     activeTrayIcon(DesktopIcon("quassel_newmessage", IconLoader::SizeEnormous)),
     onlineTrayIcon(DesktopIcon("quassel", IconLoader::SizeEnormous)),
@@ -97,7 +97,7 @@ MainWin::MainWin(QWidget *parent)
   setWindowTitle("Quassel IRC");
   setWindowIcon(offlineTrayIcon);
   qApp->setWindowIcon(offlineTrayIcon);
-  systray->setIcon(offlineTrayIcon);
+  systemTrayIcon()->setIcon(offlineTrayIcon);
   setWindowIconText("Quassel IRC");
 
   QtUi::actionCollection()->addAssociatedWidget(this);
@@ -382,15 +382,15 @@ void MainWin::setupSystray() {
   systrayMenu->addSeparator();
   systrayMenu->addAction(ui.actionQuit);
 
-  systray->setContextMenu(systrayMenu);
+  systemTrayIcon()->setContextMenu(systrayMenu);
 
   UiSettings s;
   if(s.value("UseSystemTrayIcon", QVariant(true)).toBool()) {
-    systray->show();
+    systemTrayIcon()->show();
   }
 
 #ifndef Q_WS_MAC
-  connect(systray, SIGNAL(activated( QSystemTrayIcon::ActivationReason )),
+  connect(systemTrayIcon(), SIGNAL(activated( QSystemTrayIcon::ActivationReason )),
           this, SLOT(systrayActivated( QSystemTrayIcon::ActivationReason )));
 #endif
 
@@ -428,7 +428,7 @@ void MainWin::setConnectedState() {
   statusBar()->showMessage(tr("Connected to core."));
   setWindowIcon(onlineTrayIcon);
   qApp->setWindowIcon(onlineTrayIcon);
-  systray->setIcon(onlineTrayIcon);
+  systemTrayIcon()->setIcon(onlineTrayIcon);
   if(sslLabel->width() == 0)
     sslLabel->setPixmap(SmallIcon("security-low"));
 }
@@ -486,7 +486,7 @@ void MainWin::setDisconnectedState() {
   statusBar()->showMessage(tr("Not connected to core."));
   setWindowIcon(offlineTrayIcon);
   qApp->setWindowIcon(offlineTrayIcon);
-  systray->setIcon(offlineTrayIcon);
+  systemTrayIcon()->setIcon(offlineTrayIcon);
   sslLabel->setPixmap(QPixmap());
 }
 
@@ -567,11 +567,11 @@ void MainWin::toggleVisibility() {
     // setFocus(); //Qt::ActiveWindowFocusReason
 
   } else {
-    if(systray->isSystemTrayAvailable ()) {
+    if(systemTrayIcon()->isSystemTrayAvailable ()) {
       clearFocus();
       hide();
-      if(!systray->isVisible()) {
-        systray->show();
+      if(!systemTrayIcon()->isVisible()) {
+        systemTrayIcon()->show();
       }
     } else {
       lower();
@@ -685,7 +685,7 @@ void MainWin::desktopNotificationInvoked(uint id, const QString & action) {
 #endif /* HAVE_DBUS */
 
 void MainWin::displayTrayIconMessage(const QString &title, const QString &message) {
-  systray->showMessage(title, message);
+  systemTrayIcon()->showMessage(title, message);
 }
 
 void MainWin::setTrayIconActivity(bool active) {
@@ -694,16 +694,16 @@ void MainWin::setTrayIconActivity(bool active) {
       timer->start(500);
   } else {
     timer->stop();
-    systray->setIcon(onlineTrayIcon);
+    systemTrayIcon()->setIcon(onlineTrayIcon);
   }
 }
 
 void MainWin::makeTrayIconBlink() {
   if(trayIconActive) {
-    systray->setIcon(onlineTrayIcon);
+    systemTrayIcon()->setIcon(onlineTrayIcon);
     trayIconActive = false;
   } else {
-    systray->setIcon(activeTrayIcon);
+    systemTrayIcon()->setIcon(activeTrayIcon);
     trayIconActive = true;
   }
 }

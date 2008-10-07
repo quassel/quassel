@@ -18,37 +18,63 @@
 *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 ***************************************************************************/
 
-#ifndef ABSTRACTNOTIFICATIONBACKEND_H_
-#define ABSTRACTNOTIFICATIONBACKEND_H_
+#ifndef SYSTRAYNOTIFICATIONBACKEND_H_
+#define SYSTRAYNOTIFICATIONBACKEND_H_
 
-#include <QObject>
-#include <QString>
+#include "abstractnotificationbackend.h"
 
-#include "bufferinfo.h"
+#include "settingspage.h"
 
-class SettingsPage;
+class QCheckBox;
 
-class AbstractNotificationBackend : public QObject {
+class SystrayNotificationBackend : public AbstractNotificationBackend {
   Q_OBJECT
 
-  public:
-    struct Notification {
-      uint notificationId;
-      BufferId bufferId;
-      QString sender;
-      QString message;
+public:
+  SystrayNotificationBackend(QObject *parent = 0);
+  ~SystrayNotificationBackend();
 
-      Notification(uint id_, BufferId buf_, const QString &sender_, const QString &msg_)
-      : notificationId(id_), bufferId(buf_), sender(sender_), message(msg_) {};
-    };
+  void notify(const Notification &);
+  void close(uint notificationId);
+  SettingsPage *configWidget() const;
 
-    inline AbstractNotificationBackend(QObject *parent) : QObject(parent) {};
-    virtual ~AbstractNotificationBackend() {};
+private slots:
+  void showBubble();
+  void closeBubble();
+  void startAnimation();
+  void stopAnimation();
+  void blink();
 
-    virtual void notify(const Notification &) = 0;
-    virtual void close(uint notificationId) { Q_UNUSED(notificationId); }
-    virtual SettingsPage *configWidget() const = 0;
+  void animateChanged(const QVariant &);
+  void showBubbleChanged(const QVariant &);
 
+private:
+  class ConfigWidget;
+
+  SettingsPage *_configWidget;
+  bool _showBubble;
+  bool _animate;
+  bool _iconActive;
+  QTimer _animationTimer;
+  QList<Notification> _notifications;
+};
+
+class SystrayNotificationBackend::ConfigWidget : public SettingsPage {
+  Q_OBJECT
+
+public:
+  ConfigWidget(QWidget *parent = 0);
+  void save();
+  void load();
+  bool hasDefaults() const;
+  void defaults();
+
+private slots:
+  void widgetChanged();
+
+private:
+  QCheckBox *_showBubbleBox, *_animateBox;
+  bool _showBubble, _animate;
 };
 
 #endif
