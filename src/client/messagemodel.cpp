@@ -99,16 +99,17 @@ void MessageModel::insertMessages(const QList<Message> &msglist) {
 }
 
 void MessageModel::insertMessageGroup(const QList<Message> &msglist) {
-  // the msglist can be assumed to be non empty
-  int idx = indexForId(msglist.first().msgId());
-  int start = idx;
-  int end = idx + msglist.count() - 1;
+  Q_ASSERT(!msglist.isEmpty()); // the msglist can be assumed to be non empty
+  int start = indexForId(msglist.first().msgId());
+  int end = start + msglist.count() - 1;
   MessageModelItem *dayChangeItem = 0;
 
-  if(idx > 0) {
-    int prevIdx = idx - 1;
-    if(_messageList[prevIdx]->msgType() == Message::DayChange
-       && _messageList[prevIdx]->timeStamp() > msglist.value(0).timestamp()) {
+  if(start > 0) {
+    // check if the preceeding msg is a daychange message and if so if
+    // we have to drop or relocate it at the end of this chunk
+    int prevIdx = start - 1;
+    if(_messageList.at(prevIdx)->msgType() == Message::DayChange
+       && _messageList.at(prevIdx)->timeStamp() > msglist.at(0).timestamp()) {
       beginRemoveRows(QModelIndex(), prevIdx, prevIdx);
       MessageModelItem *oldItem = _messageList.takeAt(prevIdx);
       if(msglist.last().timestamp() < oldItem->timeStamp()) {
@@ -119,12 +120,17 @@ void MessageModel::insertMessageGroup(const QList<Message> &msglist) {
       }
       delete oldItem;
       endRemoveRows();
-      idx--;
+      start--;
     }
   }
 
-  if(!dayChangeItem && idx < _messageList.count() && _messageList[idx]->msgType() != Message::DayChange) {
-    QDateTime nextTs = _messageList[idx]->timeStamp();
+  if(!dayChangeItem && start < _messageList.count()) {
+    // check if we need to insert a daychange message at the end of the this group
+
+    // if this assert triggers then indexForId() would have found a spot right before a DayChangeMsg
+    // this should never happen as daychange messages share the msgId with the preceeding message
+    Q_ASSERT(_messageList[start]->msgType() != Message::DayChange);
+    QDateTime nextTs = _messageList[start]->timeStamp();
     QDateTime prevTs = msglist.last().timestamp();
     nextTs.setTimeSpec(Qt::UTC);
     prevTs.setTimeSpec(Qt::UTC);
@@ -144,13 +150,15 @@ void MessageModel::insertMessageGroup(const QList<Message> &msglist) {
 
   beginInsertRows(QModelIndex(), start, end);
   foreach(Message msg, msglist) {
-    _messageList.insert(idx, createMessageModelItem(msg));
-    idx++;
+    _messageList.insert(start, createMessageModelItem(msg));
+    start++;
   }
   if(dayChangeItem) {
-    _messageList.insert(idx, dayChangeItem);
+    _messageList.insert(start, dayChangeItem);
+    start++; // needed for the following assert
   }
   endInsertRows();
+  Q_ASSERT(start - 1 == end);
 }
 
 int MessageModel::insertMessagesGracefully(const QList<Message> &msglist) {
