@@ -24,8 +24,12 @@
 #include <QHash>
 
 #include "settingspage.h"
-#include "ui_notificationssettingspage.h"
 
+//! A settings page for configuring notifications
+/** This class just vertically stacks the ConfigWidgets of the registered notification backends.
+ *  \NOTE: When this is called, all backends need to be already registered. No dynamic changes
+ *         are tracked or reacted to!
+ */
 class NotificationsSettingsPage : public SettingsPage {
   Q_OBJECT
 
@@ -43,10 +47,7 @@ class NotificationsSettingsPage : public SettingsPage {
     void widgetHasChanged();
 
   private:
-    Ui::NotificationsSettingsPage ui;
-    QHash<QString, QVariant> settings;
-
-    bool testHasChanged();
+    QList<SettingsPage *> _configWidgets;
 };
 
 #endif

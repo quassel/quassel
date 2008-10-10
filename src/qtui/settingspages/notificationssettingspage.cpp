@@ -18,26 +18,25 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QVBoxLayout>
+
 #include "notificationssettingspage.h"
 
 #include "qtui.h"
-#include "uisettings.h"
-#include "buffersettings.h"
 
 NotificationsSettingsPage::NotificationsSettingsPage(QWidget *parent)
   : SettingsPage(tr("Behaviour"), tr("Notifications"), parent) {
-  ui.setupUi(this);
 
-  connect(ui.animateTrayIcon, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
-  connect(ui.showBubble, SIGNAL(toggled(bool)), this, SLOT(widgetHasChanged()));
-  connect(ui.desktopBox, SIGNAL(toggled(bool)), this, SLOT(widgetHasChanged()));
-  connect(ui.timeout_value, SIGNAL(valueChanged(int)), this, SLOT(widgetHasChanged()));
-  connect(ui.x_value, SIGNAL(valueChanged(int)), this, SLOT(widgetHasChanged()));
-  connect(ui.y_value, SIGNAL(valueChanged(int)), this, SLOT(widgetHasChanged()));
-
-#ifndef HAVE_DBUS
-  ui.desktopBox->setVisible(false);
-#endif
+  QVBoxLayout *layout = new QVBoxLayout(this);
+  foreach(AbstractNotificationBackend *backend, QtUi::notificationBackends()) {
+    SettingsPage *cw = backend->configWidget();
+    if(cw) {
+      _configWidgets.append(cw);
+      layout->addWidget(cw);
+      connect(cw, SIGNAL(changed(bool)), SLOT(widgetHasChanged()));
+    }
+  }
+  layout->addStretch(1);
 }
 
 bool NotificationsSettingsPage::hasDefaults() const {
@@ -45,65 +44,30 @@ bool NotificationsSettingsPage::hasDefaults() const {
 }
 
 void NotificationsSettingsPage::defaults() {
-  ui.animateTrayIcon->setChecked(true);
-  ui.showBubble->setChecked(true);
-  ui.desktopBox->setChecked(false);
-  ui.timeout_value->setValue(5000);
-  ui.x_value->setValue(0);
-  ui.y_value->setValue(0);
-
+  foreach(SettingsPage *cw, _configWidgets)
+    cw->defaults();
   widgetHasChanged();
 }
 
 void NotificationsSettingsPage::load() {
-  // uiSettings:
-  UiSettings uiSettings;
-
-  settings["AnimateTrayIcon"] = uiSettings.value("AnimateTrayIcon", QVariant(true));
-  ui.animateTrayIcon->setChecked(settings["AnimateTrayIcon"].toBool());
-
-  settings["NotificationBubble"] = uiSettings.value("NotificationBubble", QVariant(true));
-  ui.showBubble->setChecked(settings["NotificationBubble"].toBool());
-
-  settings["NotificationDesktop"] = uiSettings.value("NotificationDesktop", QVariant(false));
-  ui.desktopBox->setChecked(settings["NotificationDesktop"].toBool());
-  settings["NotificationDesktopTimeout"] = uiSettings.value("NotificationDesktopTimeout", QVariant(5000));
-  ui.timeout_value->setValue(settings["NotificationDesktopTimeout"].toInt());
-  settings["NotificationDesktopHintX"] = uiSettings.value("NotificationDesktopHintX", QVariant(0));
-  ui.x_value->setValue(settings["NotificationDesktopHintX"].toInt());
-  settings["NotificationDesktopHintY"] = uiSettings.value("NotificationDesktopHintY", QVariant(0));
-  ui.y_value->setValue(settings["NotificationDesktopHintY"].toInt());
-
+  foreach(SettingsPage *cw, _configWidgets)
+    cw->load();
   setChangedState(false);
 }
 
 void NotificationsSettingsPage::save() {
-  UiSettings uiSettings;
-
-  uiSettings.setValue("AnimateTrayIcon", ui.animateTrayIcon->isChecked());
-
-  uiSettings.setValue("NotificationBubble", ui.showBubble->isChecked());
-  uiSettings.setValue("NotificationDesktop", ui.desktopBox->isChecked());
-  uiSettings.setValue("NotificationDesktopTimeout", ui.timeout_value->value());
-  uiSettings.setValue("NotificationDesktopHintX", ui.x_value->value());
-  uiSettings.setValue("NotificationDesktopHintY", ui.y_value->value());
-
-  load();
+  foreach(SettingsPage *cw, _configWidgets)
+    cw->save();
   setChangedState(false);
 }
 
 void NotificationsSettingsPage::widgetHasChanged() {
-  bool changed = testHasChanged();
+  bool changed = false;
+  foreach(SettingsPage *cw, _configWidgets) {
+    if(cw->hasChanged()) {
+      changed = true;
+      break;
+    }
+  }
   if(changed != hasChanged()) setChangedState(changed);
-}
-
-bool NotificationsSettingsPage::testHasChanged() {
-  if(settings["AnimateTrayIcon"].toBool() != ui.animateTrayIcon->isChecked()) return true;
-  if(settings["NotificationBubble"].toBool() != ui.showBubble->isChecked()) return true;
-  if(settings["NotificationDesktop"].toBool() != ui.desktopBox->isChecked()) return true;
-  if(settings["NotificationDesktopTimeout"].toInt() != ui.timeout_value->value()) return true;
-  if(settings["NotificationDesktopHintX"].toInt() != ui.x_value->value()) return true;
-  if(settings["NotificationDesktopHintY"].toInt() != ui.y_value->value()) return true;
-
-  return false;
 }
