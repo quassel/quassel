@@ -22,41 +22,31 @@
 #include "aboutdlg.h"
 #include "action.h"
 #include "actioncollection.h"
-#include "bufferview.h"
-#include "bufferviewconfig.h"
-#include "bufferviewfilter.h"
+#include "buffermodel.h"
 #include "bufferviewmanager.h"
 #include "channellistdlg.h"
 #include "chatlinemodel.h"
 #include "chatmonitorfilter.h"
 #include "chatmonitorview.h"
 #include "chatview.h"
-#include "chatviewsearchbar.h"
 #include "client.h"
 #include "clientbacklogmanager.h"
 #include "coreinfodlg.h"
 #include "coreconnectdlg.h"
 #include "iconloader.h"
-#include "msgprocessorstatuswidget.h"
-#include "qtuimessageprocessor.h"
-#include "qtuiapplication.h"
-#include "networkmodel.h"
-#include "buffermodel.h"
-#include "nicklistwidget.h"
-#include "settingsdlg.h"
-#include "settingspagedlg.h"
-#include "signalproxy.h"
-#include "topicwidget.h"
 #include "inputwidget.h"
 #include "irclistmodel.h"
-#include "verticaldock.h"
-#include "uisettings.h"
-#include "qtuisettings.h"
 #include "jumpkeyhandler.h"
+#include "msgprocessorstatuswidget.h"
+#include "nicklistwidget.h"
+#include "qtuiapplication.h"
+#include "qtuimessageprocessor.h"
+#include "qtuisettings.h"
 #include "sessionsettings.h"
-
-#include "selectionmodelsynchronizer.h"
-#include "mappedselectionmodel.h"
+#include "settingsdlg.h"
+#include "settingspagedlg.h"
+#include "topicwidget.h"
+#include "verticaldock.h"
 
 #include "desktopnotificationbackend.h"
 #include "systraynotificationbackend.h"
@@ -72,34 +62,24 @@
 #include "settingspages/networkssettingspage.h"
 #include "settingspages/notificationssettingspage.h"
 
-#include "qtuistyle.h"
-
 MainWin::MainWin(QWidget *parent)
   : QMainWindow(parent),
     coreLagLabel(new QLabel()),
     sslLabel(new QLabel()),
     msgProcessorStatusWidget(new MsgProcessorStatusWidget()),
-
     _titleSetter(this),
     _trayIcon(new QSystemTrayIcon(this)),
-
-    activeTrayIcon(DesktopIcon("quassel_newmessage", IconLoader::SizeEnormous)),
-    onlineTrayIcon(DesktopIcon("quassel", IconLoader::SizeEnormous)),
-    offlineTrayIcon(DesktopIcon("quassel_disconnected", IconLoader::SizeEnormous)),
-
     _actionCollection(new ActionCollection(this))
 {
-  UiSettings uiSettings;
+  QtUiSettings uiSettings;
   QString style = uiSettings.value("Style", QString("")).toString();
   if(style != "") {
     QApplication::setStyle(style);
   }
   ui.setupUi(this);
   setWindowTitle("Quassel IRC");
-  setWindowIcon(offlineTrayIcon);
-  qApp->setWindowIcon(offlineTrayIcon);
-  systemTrayIcon()->setIcon(offlineTrayIcon);
   setWindowIconText("Quassel IRC");
+  updateIcon();
 
   QtUi::actionCollection()->addAssociatedWidget(this);
 
@@ -175,6 +155,17 @@ MainWin::~MainWin() {
   s.setValue("MainWinSize", size());
   s.setValue("MainWinPos", pos());
   s.setValue("MainWinState", saveState());
+}
+
+void MainWin::updateIcon() {
+  QPixmap icon;
+  if(Client::isConnected())
+    icon = DesktopIcon("quassel", IconLoader::SizeEnormous);
+  else
+    icon = DesktopIcon("quassel_disconnected", IconLoader::SizeEnormous);
+  setWindowIcon(icon);
+  qApp->setWindowIcon(icon);
+  systemTrayIcon()->setIcon(icon);
 }
 
 void MainWin::setupActions() {
@@ -422,11 +413,9 @@ void MainWin::setConnectedState() {
   ui.menuViews->setEnabled(true);
   ui.bufferWidget->show();
   statusBar()->showMessage(tr("Connected to core."));
-  setWindowIcon(onlineTrayIcon);
-  qApp->setWindowIcon(onlineTrayIcon);
-  systemTrayIcon()->setIcon(onlineTrayIcon);
   if(sslLabel->width() == 0)
     sslLabel->setPixmap(SmallIcon("security-low"));
+  updateIcon();
 }
 
 void MainWin::loadLayout() {
@@ -480,10 +469,8 @@ void MainWin::setDisconnectedState() {
   ui.menuViews->setEnabled(false);
   ui.bufferWidget->hide();
   statusBar()->showMessage(tr("Not connected to core."));
-  setWindowIcon(offlineTrayIcon);
-  qApp->setWindowIcon(offlineTrayIcon);
-  systemTrayIcon()->setIcon(offlineTrayIcon);
   sslLabel->setPixmap(QPixmap());
+  updateIcon();
 }
 
 void MainWin::showCoreConnectionDlg(bool autoConnect) {

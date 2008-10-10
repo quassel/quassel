@@ -21,21 +21,17 @@
 #ifndef MAINWIN_H_
 #define MAINWIN_H_
 
+#include <QSystemTrayIcon>
+
 #include "ui_mainwin.h"
 
 #include "qtui.h"
-#include "titlesetter.h"
 #include "sessionsettings.h"
-
-#include <QPixmap>
-#include <QSystemTrayIcon>
-#include <QTimer>
+#include "titlesetter.h"
 
 class ActionCollection;
-class Buffer;
 class BufferViewConfig;
 class MsgProcessorStatusWidget;
-class Message;
 class NickListWidget;
 class SystemTrayIcon;
 
@@ -119,16 +115,11 @@ class MainWin : public QMainWindow {
     void setupStatusBar();
     void setupSystray();
 
+    void updateIcon();
     void toggleVisibility();
     void enableMenus();
 
     QSystemTrayIcon *_trayIcon;
-    QPixmap activeTrayIcon;
-    QPixmap onlineTrayIcon;
-    QPixmap offlineTrayIcon;
-
-    BufferId currentBuffer;
-    QString currentProfile;
 
     QList<QDockWidget *> _netViews;
     NickListWidget *nickListWidget;
