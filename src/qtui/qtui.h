@@ -63,7 +63,7 @@ public:
   static const QSet<AbstractNotificationBackend *> &notificationBackends();
   static uint invokeNotification(BufferId bufId, const QString &sender, const QString &text);
   static void closeNotification(uint notificationId);
-  static void closeNotifications(BufferId bufferId);
+  static void closeNotifications(BufferId bufferId = BufferId());
   static const QList<AbstractNotificationBackend::Notification> &activeNotifications();
 
 public slots:

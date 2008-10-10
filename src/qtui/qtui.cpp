@@ -123,7 +123,7 @@ void QtUi::closeNotification(uint notificationId) {
 void QtUi::closeNotifications(BufferId bufferId) {
   QList<AbstractNotificationBackend::Notification>::iterator i = _notifications.begin();
   while(i != _notifications.end()) {
-    if((*i).bufferId == bufferId) {
+    if(!bufferId.isValid() || (*i).bufferId == bufferId) {
       foreach(AbstractNotificationBackend *backend, _notificationBackends)
         backend->close((*i).notificationId);
       _notifications.erase(i);

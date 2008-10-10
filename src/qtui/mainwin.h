@@ -39,10 +39,6 @@ class Message;
 class NickListWidget;
 class SystemTrayIcon;
 
-#ifdef HAVE_DBUS
-#  include "desktopnotifications.h"
-#endif
-
 //!\brief The main window of Quassel's QtUi.
 class MainWin : public QMainWindow {
   Q_OBJECT
@@ -55,16 +51,10 @@ class MainWin : public QMainWindow {
 
     void addBufferView(BufferViewConfig *config = 0);
 
-    void displayTrayIconMessage(const QString &title, const QString &message);
     inline QSystemTrayIcon *systemTrayIcon() const;
-
-#ifdef HAVE_DBUS
-    void sendDesktopNotification(const QString &title, const QString &message);
-#endif
 
     virtual bool event(QEvent *event);
   public slots:
-    void setTrayIconActivity(bool active = false);
     void saveStateToSession(const QString &sessionId);
     void saveStateToSessionSettings(SessionSettings &s);
 
@@ -85,32 +75,25 @@ class MainWin : public QMainWindow {
     void addBufferView(int bufferViewConfigId);
     void removeBufferView(int bufferViewConfigId);
     void messagesInserted(const QModelIndex &parent, int start, int end);
+    void showAboutDlg();
     void showChannelList(NetworkId netId = NetworkId());
+    void showCoreConnectionDlg(bool autoConnect = false);
     void showCoreInfoDlg();
     void showSettingsDlg();
     void on_actionEditNetworks_triggered();
     void on_actionManageViews_triggered();
     void on_actionLockDockPositions_toggled(bool lock);
-    void showAboutDlg();
     void on_actionDebugNetworkModel_triggered(bool);
-
-    void showCoreConnectionDlg(bool autoConnect = false);
 
     void clientNetworkCreated(NetworkId);
     void clientNetworkRemoved(NetworkId);
     void clientNetworkUpdated();
     void connectOrDisconnectFromNet();
 
-    void makeTrayIconBlink();
     void saveStatusBarStatus(bool enabled);
 
     void loadLayout();
     void saveLayout();
-
-#ifdef HAVE_DBUS
-    void desktopNotificationClosed(uint id, uint reason);
-    void desktopNotificationInvoked(uint id, const QString & action);
-#endif
 
   signals:
     void connectToCore(const QVariantMap &connInfo);
@@ -143,8 +126,6 @@ class MainWin : public QMainWindow {
     QPixmap activeTrayIcon;
     QPixmap onlineTrayIcon;
     QPixmap offlineTrayIcon;
-    bool trayIconActive;
-    QTimer *timer;
 
     BufferId currentBuffer;
     QString currentProfile;
@@ -153,11 +134,6 @@ class MainWin : public QMainWindow {
     NickListWidget *nickListWidget;
 
     ActionCollection *_actionCollection;
-
-#ifdef HAVE_DBUS
-    org::freedesktop::Notifications *desktopNotifications;
-    quint32 notificationId;
-#endif
 
     friend class QtUi;
 };
