@@ -75,9 +75,10 @@ ChatItem &ChatLine::item(ChatLineModel::ColumnType column) {
 // NOTE: senderPos and contentsPos are in ChatLines coordinate system!
 qreal ChatLine::setColumns(const qreal &timestampWidth, const qreal &senderWidth, const qreal &contentsWidth,
 			   const QPointF &senderPos, const QPointF &contentsPos) {
-  _height = _contentsItem.setGeometryByWidth(contentsWidth);
-  _senderItem.setGeometry(senderWidth, _height);
-  _timestampItem.setGeometry(timestampWidth, _height);
+  prepareGeometryChange();
+  qreal height = _contentsItem.setGeometryByWidth(contentsWidth);
+  _senderItem.setGeometry(senderWidth, height);
+  _timestampItem.setGeometry(timestampWidth, height);
 
   _senderItem.setPos(senderPos);
   _contentsItem.setPos(contentsPos);
@@ -86,6 +87,9 @@ qreal ChatLine::setColumns(const qreal &timestampWidth, const qreal &senderWidth
   _senderItem.clearLayout();
   _timestampItem.clearLayout();
 
+
+  _height = height;
+
   return _height;
 }
 
@@ -93,11 +97,13 @@ qreal ChatLine::setColumns(const qreal &timestampWidth, const qreal &senderWidth
 //  a) calling prepareGeometryChange() immediately before setColumns()
 //  b) calling Chatline::setPos() immediately afterwards
 qreal ChatLine::setGeometryByWidth(const qreal &width, const qreal &contentsWidth) {
-  _width = width;
-  _height = _contentsItem.setGeometryByWidth(contentsWidth);
-  _timestampItem.setHeight(_height);
-  _senderItem.setHeight(_height);
+  prepareGeometryChange();
+  qreal height = _contentsItem.setGeometryByWidth(contentsWidth);
+  _timestampItem.setHeight(height);
+  _senderItem.setHeight(height);
   _contentsItem.clearLayout();
+  _height = height;
+  _width = width;
   return _height;
 }
 

@@ -39,6 +39,11 @@ class ChatScene : public QGraphicsScene {
   Q_OBJECT
 
 public:
+  enum MyEventTypes {
+    ClearWebPreviewEventType = QEvent::User
+  };
+  class ClearWebPreviewEvent;
+
   ChatScene(QAbstractItemModel *model, const QString &idString, qreal width, QObject *parent);
   virtual ~ChatScene();
 
@@ -53,6 +58,8 @@ public:
 
   inline ColumnHandleItem *firstColumnHandle() const { return firstColHandle; }
   inline ColumnHandleItem *secondColumnHandle() const { return secondColHandle; }
+
+  virtual bool eventFilter(QObject *watched, QEvent *event);
 
 public slots:
   void updateForViewport(qreal width, qreal height);
@@ -85,7 +92,7 @@ protected slots:
 private slots:
   void handlePositionChanged(qreal xpos);
   void showWebPreview();
-  void clearWebPreviewEvent();
+  void clearWebPreviewEvent(ClearWebPreviewEvent *event);
 
 private:
   void setHandleXLimits();

@@ -80,11 +80,18 @@ protected:
   //  a) calling prepareGeometryChange() immediately before setColumns()
   //  b) calling Chatline::setPos() immediately afterwards
   inline void setGeometry(qreal width, qreal height) {
+    prepareGeometryChange();
     _boundingRect.setWidth(width);
     _boundingRect.setHeight(height);
   }
-  inline void setHeight(const qreal &height) { _boundingRect.setHeight(height); }
-  inline void setWidth(const qreal &width) { _boundingRect.setWidth(width); }
+  inline void setHeight(const qreal &height) {
+    prepareGeometryChange();
+    _boundingRect.setHeight(height);
+  }
+  inline void setWidth(const qreal &width) {
+    prepareGeometryChange();
+    _boundingRect.setWidth(width);
+  }
 
 private:
   // internal selection stuff
