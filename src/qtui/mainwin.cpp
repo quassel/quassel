@@ -50,6 +50,7 @@
 
 #include "desktopnotificationbackend.h"
 #include "systraynotificationbackend.h"
+#include "taskbarnotificationbackend.h"
 
 #include "settingspages/aliasessettingspage.h"
 #include "settingspages/appearancesettingspage.h"
@@ -87,6 +88,7 @@ MainWin::MainWin(QWidget *parent)
 
   installEventFilter(new JumpKeyHandler(this));
 
+  QtUi::registerNotificationBackend(new TaskbarNotificationBackend(this));
   QtUi::registerNotificationBackend(new SystrayNotificationBackend(this));
 #ifdef HAVE_DBUS
   QtUi::registerNotificationBackend(new DesktopNotificationBackend(this));

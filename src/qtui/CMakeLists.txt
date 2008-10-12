@@ -39,6 +39,7 @@ set(SOURCES
     settingsdlg.cpp
     settingspagedlg.cpp
     systraynotificationbackend.cpp
+    taskbarnotificationbackend.cpp
     titlesetter.cpp
     topiclabel.cpp
     topicwidget.cpp
@@ -72,6 +73,7 @@ set(MOC_HDRS
     settingsdlg.h
     settingspagedlg.h
     systraynotificationbackend.h
+    taskbarnotificationbackend.h
     titlesetter.h
     topiclabel.h
     topicwidget.h

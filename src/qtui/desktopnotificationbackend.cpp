@@ -203,7 +203,7 @@ void DesktopNotificationBackend::ConfigWidget::load() {
   NotificationSettings s;
   enabled = s.value("DesktopNotification/Enabled", false).toBool();
   useTimeout = s.value("DesktopNotification/UseTimeout", true).toBool();
-  timeout = s.value("DesktopNotification/Timeout", 10).toInt();
+  timeout = s.value("DesktopNotification/Timeout", 10000).toInt();
   useHints = s.value("DesktopNotification/UseHints", false).toBool();
   xHint = s.value("DesktopNotification/XHint", 0).toInt();
   yHint = s.value("DesktopNotification/YHint", 0).toInt();
