@@ -90,12 +90,12 @@ private:
 
   QString _formattedTimestamp, _formattedSender, _formattedText; // cache
 
-
   friend QDataStream &operator>>(QDataStream &in, Message &msg);
 };
 
 QDataStream &operator<<(QDataStream &out, const Message &msg);
 QDataStream &operator>>(QDataStream &in, Message &msg);
+QDebug operator<<(QDebug dbg, const Message &msg);
 
 Q_DECLARE_METATYPE(Message)
 Q_DECLARE_OPERATORS_FOR_FLAGS(Message::Flags)

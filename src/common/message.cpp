@@ -70,3 +70,11 @@ QDataStream &operator>>(QDataStream &in, Message &msg) {
   return in;
 }
 
+QDebug operator<<(QDebug dbg, const Message &msg) {
+  dbg.nospace() << qPrintable(QString("Message(MsgId:")) << msg.msgId()
+	      << qPrintable(QString(",")) << msg.timestamp()
+	      << qPrintable(QString(", Type:")) << msg.type()
+	      << qPrintable(QString(", Flags:")) << msg.flags() << qPrintable(QString(")"))
+	      << msg.sender() << ":" << msg.contents();
+  return dbg;
+}
