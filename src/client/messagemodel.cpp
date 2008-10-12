@@ -121,6 +121,7 @@ void MessageModel::insertMessageGroup(const QList<Message> &msglist) {
       delete oldItem;
       endRemoveRows();
       start--;
+      end--;
     }
   }
 
@@ -148,17 +149,22 @@ void MessageModel::insertMessageGroup(const QList<Message> &msglist) {
   if(dayChangeItem)
     end++;
 
+  Q_ASSERT(start == 0 || _messageList[start - 1]->msgId() < msglist.first().msgId());
+  Q_ASSERT(start == _messageList.count() || _messageList[start]->msgId() > msglist.last().msgId());
   beginInsertRows(QModelIndex(), start, end);
+  int pos = start;
   foreach(Message msg, msglist) {
-    _messageList.insert(start, createMessageModelItem(msg));
-    start++;
+    _messageList.insert(pos, createMessageModelItem(msg));
+    pos++;
   }
   if(dayChangeItem) {
-    _messageList.insert(start, dayChangeItem);
-    start++; // needed for the following assert
+    _messageList.insert(pos, dayChangeItem);
+    pos++; // needed for the following assert
   }
   endInsertRows();
-  Q_ASSERT(start - 1 == end);
+  Q_ASSERT(start == 0 || _messageList[start - 1]->msgId() < _messageList[start]->msgId());
+  Q_ASSERT(end + 1 == _messageList.count() || _messageList[end]->msgId() < _messageList[end + 1]->msgId());
+  Q_ASSERT(pos - 1 == end);
 }
 
 int MessageModel::insertMessagesGracefully(const QList<Message> &msglist) {
@@ -310,7 +316,6 @@ int MessageModel::indexForId(MsgId id) {
 
 void MessageModel::changeOfDay() {
   _dayChangeTimer.setInterval(86400000);
-  qDebug() << _nextDayChange;
   if(!_messageList.isEmpty()) {
     int idx = _messageList.count();
     while(idx > 0 && _messageList[idx - 1]->timeStamp() > _nextDayChange) {
