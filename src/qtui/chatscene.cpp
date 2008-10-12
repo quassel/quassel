@@ -96,7 +96,7 @@ ChatScene::ChatScene(QAbstractItemModel *model, const QString &idString, qreal w
   connect(&webPreview.delayTimer, SIGNAL(timeout()), this, SLOT(showWebPreview()));
 
   // installEventFilter(this);
-  // setItemIndexMethod(QGraphicsScene::NoIndex);
+  setItemIndexMethod(QGraphicsScene::NoIndex);
 }
 
 ChatScene::~ChatScene() {
@@ -191,6 +191,10 @@ void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
       line->setPos(0, line->pos().y() + offset);
     }
   }
+
+  // check if all went right
+  Q_ASSERT(start == 0 || _lines.at(start - 1)->pos().y() + _lines.at(start - 1)->height() == _lines.at(start)->pos().y());
+  Q_ASSERT(end + 1 == _lines.count() || _lines.at(end)->pos().y() + _lines.at(end)->height() == _lines.at(end + 1)->pos().y());
 
   if(!atBottom) {
     if(start < _firstLineRow) {
