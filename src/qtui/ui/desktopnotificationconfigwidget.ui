@@ -153,5 +153,54 @@
   </layout>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>useHints</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>xHint</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>92</x>
+     <y>82</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>156</x>
+     <y>82</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>useHints</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>yHint</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>51</x>
+     <y>78</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>262</x>
+     <y>83</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>useTimeout</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>timeout</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>58</x>
+     <y>50</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>128</x>
+     <y>51</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
