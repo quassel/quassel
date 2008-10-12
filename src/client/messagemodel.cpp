@@ -150,7 +150,13 @@ void MessageModel::insertMessageGroup(const QList<Message> &msglist) {
     end++;
 
   Q_ASSERT(start == 0 || _messageList[start - 1]->msgId() < msglist.first().msgId());
+
+  if(start < _messageList.count() && _messageList[start]->msgId() <= msglist.last().msgId()) {
+    qDebug() << _messageList[start] << ">" << msglist.last();
+  }
   Q_ASSERT(start == _messageList.count() || _messageList[start]->msgId() > msglist.last().msgId());
+
+
   beginInsertRows(QModelIndex(), start, end);
   int pos = start;
   foreach(Message msg, msglist) {
@@ -371,4 +377,13 @@ bool MessageModelItem::operator==(const MessageModelItem &other) const {
 
 bool MessageModelItem::operator>(const MessageModelItem &other) const {
   return _msgId > other._msgId;
+}
+
+QDebug operator<<(QDebug dbg, const MessageModelItem &msgItem) {
+  dbg.nospace() << qPrintable(QString("MessageModelItem(MsgId:")) << msgItem.msgId()
+		<< qPrintable(QString(",")) << msgItem.timeStamp()
+		<< qPrintable(QString(", Type:")) << msgItem.msgType()
+		<< qPrintable(QString(", Flags:")) << msgItem.msgFlags() << qPrintable(QString(")"))
+		<< msgItem.data(1, Qt::DisplayRole).toString() << ":" << msgItem.data(2, Qt::DisplayRole).toString();
+  return dbg;
 }

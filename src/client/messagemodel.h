@@ -122,4 +122,6 @@ private:
   Message::Flags _flags;
 };
 
+QDebug operator<<(QDebug dbg, const MessageModelItem &msgItem);
+
 #endif
