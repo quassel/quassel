@@ -60,7 +60,7 @@ public:
   static void registerNotificationBackend(AbstractNotificationBackend *);
   static void unregisterNotificationBackend(AbstractNotificationBackend *);
   static void unregisterAllNotificationBackends();
-  static const QSet<AbstractNotificationBackend *> &notificationBackends();
+  static const QList<AbstractNotificationBackend *> &notificationBackends();
   static uint invokeNotification(BufferId bufId, const QString &sender, const QString &text);
   static void closeNotification(uint notificationId);
   static void closeNotifications(BufferId bufferId = BufferId());
@@ -77,7 +77,7 @@ private:
   static MainWin *_mainWin;
   static ActionCollection *_actionCollection;
   static QtUiStyle *_style;
-  static QSet<AbstractNotificationBackend *> _notificationBackends;
+  static QList<AbstractNotificationBackend *> _notificationBackends;
   static QList<AbstractNotificationBackend::Notification> _notifications;
 };
 

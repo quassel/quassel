@@ -32,7 +32,7 @@
 
 ActionCollection *QtUi::_actionCollection = 0;
 MainWin *QtUi::_mainWin = 0;
-QSet<AbstractNotificationBackend *> QtUi::_notificationBackends;
+QList<AbstractNotificationBackend *> QtUi::_notificationBackends;
 QList<AbstractNotificationBackend::Notification> QtUi::_notifications;
 QtUiStyle *QtUi::_style = 0;
 
@@ -81,19 +81,19 @@ void QtUi::disconnectedFromCore() {
 
 void QtUi::registerNotificationBackend(AbstractNotificationBackend *backend) {
   if(!_notificationBackends.contains(backend)) {
-    _notificationBackends.insert(backend);
+    _notificationBackends.append(backend);
   }
 }
 
 void QtUi::unregisterNotificationBackend(AbstractNotificationBackend *backend) {
-  _notificationBackends.remove(backend);
+  _notificationBackends.removeAll(backend);
 }
 
 void QtUi::unregisterAllNotificationBackends() {
   _notificationBackends.clear();
 }
 
-const QSet<AbstractNotificationBackend *> &QtUi::notificationBackends() {
+const QList<AbstractNotificationBackend *> &QtUi::notificationBackends() {
   return _notificationBackends;
 }
 
