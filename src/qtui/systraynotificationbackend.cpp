@@ -58,7 +58,7 @@ void SystrayNotificationBackend::notify(const Notification &notification) {
   if(_showBubble) {
     showBubble();
   }
-  if(_animate && _notifications.count() == 1) {
+  if(_animate) {
     startAnimation();
   }
 }
