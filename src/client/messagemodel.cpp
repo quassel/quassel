@@ -218,6 +218,11 @@ int MessageModel::insertMessagesGracefully(const QList<Message> &msglist) {
 	break;
       processedMsgs++;
 
+      if(grouplist.isEmpty()) { // as long as we don't have a starting point, we have to update the dupeId
+	idx = indexForId((*iter).msgId());
+	if(idx >= 0 && !_messageList.isEmpty())
+	  dupeId = _messageList[idx]->msgId();
+      }
       if((*iter).msgId() != dupeId) {
 	if(!grouplist.isEmpty()) {
 	  QDateTime nextTs = grouplist.value(0).timestamp();
@@ -244,6 +249,11 @@ int MessageModel::insertMessagesGracefully(const QList<Message> &msglist) {
 	break;
       processedMsgs++;
 
+      if(grouplist.isEmpty()) { // as long as we don't have a starting point, we have to update the dupeId
+	idx = indexForId((*iter).msgId());
+	if(idx >= 0 && !_messageList.isEmpty())
+	  dupeId = _messageList[idx]->msgId();
+      }
       if((*iter).msgId() != dupeId) {
 	if(!grouplist.isEmpty()) {
 	  QDateTime nextTs = grouplist.value(0).timestamp();
@@ -267,7 +277,6 @@ int MessageModel::insertMessagesGracefully(const QList<Message> &msglist) {
     }
   }
 
-  Q_ASSERT(idx == indexForId(grouplist.first().msgId()) && idx == indexForId(grouplist.last().msgId()));
   insertMessageGroup(grouplist);
   return processedMsgs;
 }
