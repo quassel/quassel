@@ -277,7 +277,8 @@ int MessageModel::insertMessagesGracefully(const QList<Message> &msglist) {
     }
   }
 
-  insertMessageGroup(grouplist);
+  if(!grouplist.isEmpty())
+    insertMessageGroup(grouplist);
   return processedMsgs;
 }
 
