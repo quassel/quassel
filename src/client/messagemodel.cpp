@@ -103,7 +103,7 @@ void MessageModel::insertMessageGroup(const QList<Message> &msglist) {
   int start = indexForId(msglist.first().msgId());
   int end = start + msglist.count() - 1;
   MessageModelItem *dayChangeItem = 0;
-
+  bool relocatedMsg = false;
   if(start > 0) {
     // check if the preceeding msg is a daychange message and if so if
     // we have to drop or relocate it at the end of this chunk
@@ -122,6 +122,7 @@ void MessageModel::insertMessageGroup(const QList<Message> &msglist) {
       endRemoveRows();
       start--;
       end--;
+      relocatedMsg = true;
     }
   }
 
@@ -151,8 +152,9 @@ void MessageModel::insertMessageGroup(const QList<Message> &msglist) {
 
   Q_ASSERT(start == 0 || _messageList[start - 1]->msgId() < msglist.first().msgId());
 
-  if(start < _messageList.count() && _messageList[start]->msgId() <= msglist.last().msgId()) {
-    qDebug() << _messageList[start] << ">" << msglist.last();
+  if(start < _messageList.count()) { // && _messageList[start]->msgId() <= msglist.last().msgId()) {
+    qDebug() << *(_messageList[start]) << "<=" << msglist.last();
+    qDebug() << start << end << msglist.count() << dayChangeItem << relocatedMsg;
   }
   Q_ASSERT(start == _messageList.count() || _messageList[start]->msgId() > msglist.last().msgId());
 
