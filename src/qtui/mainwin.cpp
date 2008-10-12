@@ -89,7 +89,7 @@ MainWin::MainWin(QWidget *parent)
 
   QtUi::registerNotificationBackend(new SystrayNotificationBackend(this));
 #ifdef HAVE_DBUS
-  //QtUi::registerNotificationBackend(new DesktopNotificationBackend(this));
+  QtUi::registerNotificationBackend(new DesktopNotificationBackend(this));
 #endif
 
   QtUiApplication* app = qobject_cast<QtUiApplication*> qApp;

@@ -21,11 +21,14 @@
 #ifndef DESKTOPNOTIFICATIONBACKEND_H_
 #define DESKTOPNOTIFICATIONBACKEND_H_
 
+#include <QHash>
+
 #include "abstractnotificationbackend.h"
 
 #include "settingspage.h"
 
 #include "desktopnotificationinterface.h"
+#include "ui_desktopnotificationconfigwidget.h"
 
 //! Implements the freedesktop.org notifications specification (via D-Bus)
 /**
@@ -49,15 +52,49 @@ private slots:
   void desktopNotificationInvoked(uint id, const QString &action);
 
   void enabledChanged(const QVariant &);
+  void useHintsChanged(const QVariant &);
   void xHintChanged(const QVariant &);
   void yHintChanged(const QVariant &);
+  void queueNotificationsChanged(const QVariant &);
+  void timeoutChanged(const QVariant &);
+  void useTimeoutChanged(const QVariant &);
 
 private:
-  org::freedesktop::Notifications *_dbusInterface;
-  quint32 _dbusNotificationId;
+  class ConfigWidget;
+  SettingsPage *_configWidget;
 
-  bool _enabled;
+  org::freedesktop::Notifications *_dbusInterface;
+  bool _daemonSupportsMarkup;
+  quint32 _lastDbusId;
+  QHash<uint, uint> _idMap; ///< Maps our own notification Id to the D-Bus one
+
+  bool _enabled, _queueNotifications, _useHints;
   int _xHint, _yHint;
+  int _timeout;
+  bool _useTimeout;
+
+};
+
+class DesktopNotificationBackend::ConfigWidget : public SettingsPage {
+  Q_OBJECT
+
+  public:
+    ConfigWidget(QWidget *parent = 0);
+    void save();
+    void load();
+    bool hasDefaults() const;
+    void defaults();
+
+  private slots:
+    void widgetChanged();
+
+  private:
+    Ui::DesktopNotificationConfigWidget ui;
+    int xHint, yHint;
+    bool useHints, queueNotifications;
+    int timeout;
+    bool useTimeout;
+    bool enabled;
 };
 
 #endif

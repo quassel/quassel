@@ -111,6 +111,7 @@ set(FORMS
 IF(HAVE_DBUS)
   set(SOURCES ${SOURCES} desktopnotificationbackend.cpp)
   set(MOC_HDRS ${MOC_HDRS} desktopnotificationbackend.h)
+  set(FORMS ${FORMS} desktopnotificationconfigwidget.ui)
   qt4_add_dbus_interface(DBUS ../../interfaces/org.freedesktop.Notifications.xml desktopnotificationinterface)
 ENDIF(HAVE_DBUS)
 
