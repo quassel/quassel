@@ -48,7 +48,9 @@
 #include "topicwidget.h"
 #include "verticaldock.h"
 
-#include "desktopnotificationbackend.h"
+#ifdef HAVE_DBUS
+#  include "desktopnotificationbackend.h"
+#endif
 #include "systraynotificationbackend.h"
 #include "taskbarnotificationbackend.h"
 
