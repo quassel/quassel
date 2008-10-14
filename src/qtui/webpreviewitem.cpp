@@ -54,10 +54,6 @@ void WebPreviewItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
   painter->setBrush(Qt::black);
   painter->setRenderHints(QPainter::Antialiasing);
   painter->drawRoundedRect(boundingRect(), 10, 10);
-
-  painter->setPen(QPen(Qt::green));
-  QString text = QString::number(zValue());
-  painter->drawText(_boundingRect.center(), text);
 }
 
 #endif //#ifdef HAVE_WEBKIT

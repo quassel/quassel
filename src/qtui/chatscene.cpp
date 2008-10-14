@@ -94,9 +94,8 @@ ChatScene::ChatScene(QAbstractItemModel *model, const QString &idString, qreal w
 
   webPreview.delayTimer.setSingleShot(true);
   connect(&webPreview.delayTimer, SIGNAL(timeout()), this, SLOT(showWebPreview()));
-
-  // installEventFilter(this);
-  setItemIndexMethod(QGraphicsScene::NoIndex);
+  webPreview.deleteTimer.setInterval(600000);
+  connect(&webPreview.deleteTimer, SIGNAL(timeout()), this, SLOT(deleteWebPreview()));
 }
 
 ChatScene::~ChatScene() {
@@ -591,12 +590,17 @@ void ChatScene::loadWebPreview(ChatItem *parentItem, const QString &url, const Q
   if(webPreview.url != url) {
     webPreview.url = url;
     // load a new web view and delete the old one (if exists)
-    if(webPreview.previewItem) {
+    if(webPreview.previewItem && webPreview.previewItem->scene()) {
       removeItem(webPreview.previewItem);
       delete webPreview.previewItem;
     }
     webPreview.previewItem = new WebPreviewItem(url);
     webPreview.delayTimer.start(2000);
+    webPreview.deleteTimer.stop();
+  } else if(webPreview.previewItem && !webPreview.previewItem->scene()) {
+      // we just have to readd the item to the scene
+      webPreview.delayTimer.start(2000);
+      webPreview.deleteTimer.stop();
   }
   if(webPreview.urlRect != urlRect) {
     webPreview.urlRect = urlRect;
@@ -635,21 +639,20 @@ void ChatScene::showWebPreview() {
 void ChatScene::clearWebPreviewEvent(ClearWebPreviewEvent *event) {
 #ifdef HAVE_WEBKIT
   event->accept();
+  if(webPreview.previewItem && webPreview.previewItem->scene()) {
+    removeItem(webPreview.previewItem);
+    webPreview.deleteTimer.start();
+  }
+  webPreview.delayTimer.stop();
+#endif
+}
+
+void ChatScene::deleteWebPreview() {
   if(webPreview.previewItem) {
-    if(webPreview.previewItem->scene()) {
-      removeItem(webPreview.previewItem);
-    }
     delete webPreview.previewItem;
     webPreview.previewItem = 0;
   }
   webPreview.parentItem = 0;
   webPreview.url = QString();
   webPreview.urlRect = QRectF();
-#endif
 }
-
-bool ChatScene::eventFilter(QObject *watched, QEvent *event) {
-  qDebug() << watched << event;
-  return false;
-}
-

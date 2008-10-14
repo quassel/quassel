@@ -59,8 +59,6 @@ public:
   inline ColumnHandleItem *firstColumnHandle() const { return firstColHandle; }
   inline ColumnHandleItem *secondColumnHandle() const { return secondColHandle; }
 
-  virtual bool eventFilter(QObject *watched, QEvent *event);
-
 public slots:
   void updateForViewport(qreal width, qreal height);
   void setWidth(qreal, bool forceReposition = false);
@@ -93,6 +91,7 @@ private slots:
   void handlePositionChanged(qreal xpos);
   void showWebPreview();
   void clearWebPreviewEvent(ClearWebPreviewEvent *event);
+  void deleteWebPreview();
 
 private:
   void setHandleXLimits();
@@ -127,10 +126,11 @@ private:
 
   struct WebPreview {
     ChatItem *parentItem;
-    WebPreviewItem *previewItem;
+    QGraphicsItem *previewItem;
     QString url;
     QRectF urlRect;
     QTimer delayTimer;
+    QTimer deleteTimer;
     WebPreview() : parentItem(0), previewItem(0) {}
   };
   WebPreview webPreview;
