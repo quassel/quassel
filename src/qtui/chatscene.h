@@ -51,8 +51,8 @@ public:
   inline bool containsBuffer(const BufferId &id) const;
   inline ChatLine *chatLine(int row) { return (row < _lines.count()) ? _lines[row] : 0; }
 
-  inline ColumnHandleItem *firstColumnHandle() const { return firstColHandle; }
-  inline ColumnHandleItem *secondColumnHandle() const { return secondColHandle; }
+  inline ColumnHandleItem *firstColumnHandle() const { return _firstColHandle; }
+  inline ColumnHandleItem *secondColumnHandle() const { return _secondColHandle; }
 
 public slots:
   void updateForViewport(qreal width, qreal height);
@@ -106,8 +106,8 @@ private:
   void updateSceneRect(const QRectF &rect);
   qreal _viewportHeight;
 
-  ColumnHandleItem *firstColHandle, *secondColHandle;
-  qreal firstColHandlePos, secondColHandlePos;
+  ColumnHandleItem *_firstColHandle, *_secondColHandle;
+  qreal _firstColHandlePos, _secondColHandlePos;
 
   ChatItem *_selectingItem;
   int _selectionStartCol, _selectionMinCol;

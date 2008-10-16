@@ -62,20 +62,20 @@ ChatScene::ChatScene(QAbstractItemModel *model, const QString &idString, qreal w
   int defaultSecondColHandlePos = defaultSettings.value("SecondColumnHandlePos", 200).toInt();
 
   ChatViewSettings viewSettings(this);
-  firstColHandlePos = viewSettings.value("FirstColumnHandlePos", defaultFirstColHandlePos).toInt();
-  secondColHandlePos = viewSettings.value("SecondColumnHandlePos", defaultSecondColHandlePos).toInt();
+  _firstColHandlePos = viewSettings.value("FirstColumnHandlePos", defaultFirstColHandlePos).toInt();
+  _secondColHandlePos = viewSettings.value("SecondColumnHandlePos", defaultSecondColHandlePos).toInt();
 
-  firstColHandle = new ColumnHandleItem(QtUi::style()->firstColumnSeparator());
-  addItem(firstColHandle);
-  firstColHandle->setXPos(firstColHandlePos);
-  connect(firstColHandle, SIGNAL(positionChanged(qreal)), this, SLOT(handlePositionChanged(qreal)));
-  connect(this, SIGNAL(sceneRectChanged(const QRectF &)), firstColHandle, SLOT(sceneRectChanged(const QRectF &)));
+  _firstColHandle = new ColumnHandleItem(QtUi::style()->firstColumnSeparator());
+  addItem(_firstColHandle);
+  _firstColHandle->setXPos(_firstColHandlePos);
+  connect(_firstColHandle, SIGNAL(positionChanged(qreal)), this, SLOT(handlePositionChanged(qreal)));
+  connect(this, SIGNAL(sceneRectChanged(const QRectF &)), _firstColHandle, SLOT(sceneRectChanged(const QRectF &)));
 
-  secondColHandle = new ColumnHandleItem(QtUi::style()->secondColumnSeparator());
-  addItem(secondColHandle);
-  secondColHandle->setXPos(secondColHandlePos);
-  connect(secondColHandle, SIGNAL(positionChanged(qreal)), this, SLOT(handlePositionChanged(qreal)));
-  connect(this, SIGNAL(sceneRectChanged(const QRectF &)), secondColHandle, SLOT(sceneRectChanged(const QRectF &)));
+  _secondColHandle = new ColumnHandleItem(QtUi::style()->secondColumnSeparator());
+  addItem(_secondColHandle);
+  _secondColHandle->setXPos(_secondColHandlePos);
+  connect(_secondColHandle, SIGNAL(positionChanged(qreal)), this, SLOT(handlePositionChanged(qreal)));
+  connect(this, SIGNAL(sceneRectChanged(const QRectF &)), _secondColHandle, SLOT(sceneRectChanged(const QRectF &)));
 
   setHandleXLimits();
 
@@ -348,33 +348,33 @@ void ChatScene::setWidth(qreal width, bool forceReposition) {
 }
 
 void ChatScene::handlePositionChanged(qreal xpos) {
-  bool first = (sender() == firstColHandle);
+  bool first = (sender() == _firstColHandle);
   qreal oldx;
   if(first) {
-    oldx = firstColHandlePos;
-    firstColHandlePos = xpos;
+    oldx = _firstColHandlePos;
+    _firstColHandlePos = xpos;
   } else {
-    oldx = secondColHandlePos;
-    secondColHandlePos = xpos;
+    oldx = _secondColHandlePos;
+    _secondColHandlePos = xpos;
   }
 
   ChatViewSettings viewSettings(this);
-  viewSettings.setValue("FirstColumnHandlePos", firstColHandlePos);
-  viewSettings.setValue("SecondColumnHandlePos", secondColHandlePos);
+  viewSettings.setValue("FirstColumnHandlePos", _firstColHandlePos);
+  viewSettings.setValue("SecondColumnHandlePos", _secondColHandlePos);
 
   ChatViewSettings defaultSettings;
-  defaultSettings.setValue("FirstColumnHandlePos", firstColHandlePos);
-  defaultSettings.setValue("SecondColumnHandlePos", secondColHandlePos);
+  defaultSettings.setValue("FirstColumnHandlePos", _firstColHandlePos);
+  defaultSettings.setValue("SecondColumnHandlePos", _secondColHandlePos);
 
   setWidth(width(), true);  // readjust all chatlines
   // we get ugly redraw errors if we don't update this explicitly... :(
-  // width() should be the same for both handles, so just use firstColHandle regardless
+  // width() should be the same for both handles, so just use _firstColHandle regardless
   //update(qMin(oldx, xpos), 0, qMax(oldx, xpos) + firstColHandle->width(), height());
 }
 
 void ChatScene::setHandleXLimits() {
-  firstColHandle->setXLimits(0, secondColHandle->sceneLeft());
-  secondColHandle->setXLimits(firstColHandle->sceneRight(), width() - minContentsWidth);
+  _firstColHandle->setXLimits(0, _secondColHandle->sceneLeft());
+  _secondColHandle->setXLimits(_firstColHandle->sceneRight(), width() - minContentsWidth);
 }
 
 void ChatScene::setSelectingItem(ChatItem *item) {
@@ -393,13 +393,13 @@ void ChatScene::startGlobalSelection(ChatItem *item, const QPointF &itemPos) {
 void ChatScene::updateSelection(const QPointF &pos) {
   // This is somewhat hacky... we look at the contents item that is at the cursor's y position (ignoring x), since
   // it has the full height. From this item, we can then determine the row index and hence the ChatLine.
-  ChatItem *contentItem = static_cast<ChatItem *>(itemAt(QPointF(secondColHandle->sceneRight() + 1, pos.y())));
+  ChatItem *contentItem = static_cast<ChatItem *>(itemAt(QPointF(_secondColHandle->sceneRight() + 1, pos.y())));
   if(!contentItem) return;
 
   int curRow = contentItem->row();
   int curColumn;
-  if(pos.x() > secondColHandle->sceneRight()) curColumn = ChatLineModel::ContentsColumn;
-  else if(pos.x() > firstColHandlePos) curColumn = ChatLineModel::SenderColumn;
+  if(pos.x() > _secondColHandle->sceneRight()) curColumn = ChatLineModel::ContentsColumn;
+  else if(pos.x() > _firstColHandlePos) curColumn = ChatLineModel::SenderColumn;
   else curColumn = ChatLineModel::TimestampColumn;
 
   ChatLineModel::ColumnType minColumn = (ChatLineModel::ColumnType)qMin(curColumn, _selectionStartCol);
@@ -521,9 +521,9 @@ void ChatScene::requestBacklog() {
 }
 
 int ChatScene::sectionByScenePos(int x) {
-  if(x < firstColHandle->x())
+  if(x < _firstColHandle->x())
     return ChatLineModel::TimestampColumn;
-  if(x < secondColHandle->x())
+  if(x < _secondColHandle->x())
     return ChatLineModel::SenderColumn;
 
   return ChatLineModel::ContentsColumn;
