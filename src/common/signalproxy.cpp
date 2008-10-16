@@ -966,6 +966,15 @@ bool SignalProxy::readDataFromDevice(QIODevice *dev, quint32 &blockSize, QVarian
   if(compressed) {
     QByteArray rawItem;
     in >> rawItem;
+    // debug check
+    int nbytes = rawItem.size();
+    if (nbytes <= 4) {
+      const char *data = rawItem.constData();
+      if (nbytes < 4 || (data[0]!=0 || data[1]!=0 || data[2]!=0 || data[3]!=0))
+	qWarning() << "receieved corrupted compressed data:"
+		   << blockSize << rawItem << rawItem.size() << dev;
+    }
+    // end
     rawItem = qUncompress(rawItem);
       
     QDataStream itemStream(&rawItem, QIODevice::ReadOnly);
