@@ -68,43 +68,66 @@ ChatItem &ChatLine::item(ChatLineModel::ColumnType column) {
   }
 }
 
-// WARNING: setColumns should not be used without either:
-//  a) calling prepareGeometryChange() immediately before setColumns()
-//  b) calling Chatline::setPos() immediately afterwards
-//
-// NOTE: senderPos and contentsPos are in ChatLines coordinate system!
-qreal ChatLine::setColumns(const qreal &timestampWidth, const qreal &senderWidth, const qreal &contentsWidth,
-			   const QPointF &senderPos, const QPointF &contentsPos) {
-  prepareGeometryChange();
-  qreal height = _contentsItem.setGeometryByWidth(contentsWidth);
-  _senderItem.setGeometry(senderWidth, height);
-  _timestampItem.setGeometry(timestampWidth, height);
-
+// NOTE: senderPos is in ChatLines coordinate system!
+void ChatLine::setFirstColumn(const qreal &timestampWidth, const qreal &senderWidth, const QPointF &senderPos) {
+  _timestampItem.prepareGeometryChange();
+  _timestampItem.setGeometry(timestampWidth, _height);
+  // senderItem doesn't need a geom change as it's Pos is changed (ensured by void ChatScene::firstHandlePositionChanged(qreal xpos))
+  _senderItem.setGeometry(senderWidth, _height);
   _senderItem.setPos(senderPos);
+
+  _timestampItem.clearLayout();
+  _senderItem.clearLayout();
+}
+
+// NOTE: contentsPos is in ChatLines coordinate system!
+void ChatLine::setSecondColumn(const qreal &senderWidth, const qreal &contentsWidth,
+			       const QPointF &contentsPos, qreal &linePos) {
+  // contentsItem doesn't need a geom change as it's Pos is changed (ensured by void ChatScene::firstHandlePositionChanged(qreal xpos))
+  qreal height = _contentsItem.setGeometryByWidth(contentsWidth);
+  linePos -= height;
+  bool needGeometryChange = linePos == pos().y() && height != _height;
+
+  if(needGeometryChange) {
+    _timestampItem.prepareGeometryChange();
+    _senderItem.prepareGeometryChange();
+  }
+  _timestampItem.setHeight(height);
+  _senderItem.setGeometry(senderWidth, height);
+
   _contentsItem.setPos(contentsPos);
 
-  _contentsItem.clearLayout();
-  _senderItem.clearLayout();
   _timestampItem.clearLayout();
+  _senderItem.clearLayout();
 
+  if(needGeometryChange)
+    prepareGeometryChange();
 
   _height = height;
 
-  return _height;
+  setPos(0, linePos);
 }
 
-// WARNING: setGeometryByWidth should not be used without either:
-//  a) calling prepareGeometryChange() immediately before setColumns()
-//  b) calling Chatline::setPos() immediately afterwards
-qreal ChatLine::setGeometryByWidth(const qreal &width, const qreal &contentsWidth) {
-  prepareGeometryChange();
+void ChatLine::setGeometryByWidth(const qreal &width, const qreal &contentsWidth, qreal &linePos) {
   qreal height = _contentsItem.setGeometryByWidth(contentsWidth);
+  linePos -= height;
+  bool needGeometryChange = linePos == pos().y();
+
+  if(needGeometryChange) {
+    _timestampItem.prepareGeometryChange();
+    _senderItem.prepareGeometryChange();
+  }
   _timestampItem.setHeight(height);
   _senderItem.setHeight(height);
   _contentsItem.clearLayout();
+
+  if(needGeometryChange)
+    prepareGeometryChange();
+
   _height = height;
   _width = width;
-  return _height;
+
+  setPos(0, linePos); // set pos is _very_ cheap if nothing changes.
 }
 
 void ChatLine::setSelected(bool selected, ChatLineModel::ColumnType minColumn) {

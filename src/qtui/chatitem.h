@@ -80,16 +80,13 @@ protected:
   //  a) calling prepareGeometryChange() immediately before setColumns()
   //  b) calling Chatline::setPos() immediately afterwards
   inline void setGeometry(qreal width, qreal height) {
-    prepareGeometryChange();
     _boundingRect.setWidth(width);
     _boundingRect.setHeight(height);
   }
   inline void setHeight(const qreal &height) {
-    prepareGeometryChange();
     _boundingRect.setHeight(height);
   }
   inline void setWidth(const qreal &width) {
-    prepareGeometryChange();
     _boundingRect.setWidth(width);
   }
 
@@ -179,10 +176,6 @@ private:
   void showWebPreview(const Clickable &click);
   void clearWebPreview();
 
-
-  // WARNING: setGeometry and setHeight should not be used without either:
-  //  a) calling prepareGeometryChange() immediately before setColumns()
-  //  b) calling Chatline::setPos() immediately afterwards
   qreal setGeometryByWidth(qreal w);
   friend class ChatLine;
   friend struct ContentsChatItemPrivate;

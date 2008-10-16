@@ -52,10 +52,11 @@ public:
 
   virtual void paint (QPainter * painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
 
-  // setColumns and setGeometryByWidth both return height
-  qreal setColumns(const qreal &timestampWidth, const qreal &senderWidth, const qreal &contentsWidth,
-		   const QPointF &senderPos, const QPointF &contentsPos);
-  qreal setGeometryByWidth(const qreal &width, const qreal &contentsWidth);
+  void setFirstColumn(const qreal &timestampWidth, const qreal &senderWidth, const QPointF &senderPos);
+  // setSecondColumn and setGeometryByWidth both also relocate the chatline.
+  // the _bottom_ position is passed via linePos. linePos is updated to the top of the chatLine.
+  void setSecondColumn(const qreal &senderWidth, const qreal &contentsWidth, const QPointF &contentsPos, qreal &linePos);
+  void setGeometryByWidth(const qreal &width, const qreal &contentsWidth, qreal &linePos);
 
   void setSelected(bool selected, ChatLineModel::ColumnType minColumn = ChatLineModel::ContentsColumn);
   void setHighlighted(bool highlighted);

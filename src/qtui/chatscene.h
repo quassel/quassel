@@ -56,7 +56,8 @@ public:
 
 public slots:
   void updateForViewport(qreal width, qreal height);
-  void setWidth(qreal, bool forceReposition = false);
+  //void setWidth(qreal, bool forceReposition = false);
+  void setWidth(qreal width);
 
   // these are used by the chatitems to notify the scene and manage selections
   void setSelectingItem(ChatItem *item);
@@ -83,7 +84,8 @@ protected slots:
   void rowsAboutToBeRemoved(const QModelIndex &, int, int);
 
 private slots:
-  void handlePositionChanged(qreal xpos);
+  void firstHandlePositionChanged(qreal xpos);
+  void secondHandlePositionChanged(qreal xpos);
   void showWebPreviewEvent();
   void deleteWebPreviewEvent();
 
@@ -101,8 +103,8 @@ private:
   // we store the size in a member variable.
   QRectF _sceneRect;
   int _firstLineRow; // the first row to display (aka: not a daychange msg)
-  void updateSceneRect();
   void updateSceneRect(qreal width);
+  inline void updateSceneRect() { updateSceneRect(_sceneRect.width()); }
   void updateSceneRect(const QRectF &rect);
   qreal _viewportHeight;
 

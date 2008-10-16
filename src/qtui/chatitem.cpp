@@ -272,6 +272,7 @@ ContentsChatItem::ContentsChatItem(const qreal &width, const QPointF &pos, QGrap
 
 qreal ContentsChatItem::setGeometryByWidth(qreal w) {
   if(w != width()) {
+    prepareGeometryChange();
     setWidth(w);
     // compute height
     int lines = 1;
