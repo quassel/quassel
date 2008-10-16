@@ -39,11 +39,6 @@ class ChatScene : public QGraphicsScene {
   Q_OBJECT
 
 public:
-  enum MyEventTypes {
-    ClearWebPreviewEventType = QEvent::User
-  };
-  class ClearWebPreviewEvent;
-
   ChatScene(QAbstractItemModel *model, const QString &idString, qreal width, QObject *parent);
   virtual ~ChatScene();
 
@@ -89,9 +84,8 @@ protected slots:
 
 private slots:
   void handlePositionChanged(qreal xpos);
-  void showWebPreview();
-  void clearWebPreviewEvent(ClearWebPreviewEvent *event);
-  void deleteWebPreview();
+  void showWebPreviewEvent();
+  void deleteWebPreviewEvent();
 
 private:
   void setHandleXLimits();

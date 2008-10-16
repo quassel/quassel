@@ -39,11 +39,6 @@
 
 const qreal minContentsWidth = 200;
 
-class ChatScene::ClearWebPreviewEvent : public QEvent {
-public:
-  inline ClearWebPreviewEvent() : QEvent((QEvent::Type)ChatScene::ClearWebPreviewEventType) {}
-};
-
 ChatScene::ChatScene(QAbstractItemModel *model, const QString &idString, qreal width, QObject *parent)
   : QGraphicsScene(0, 0, width, 0, parent),
     _idString(idString),
@@ -92,10 +87,12 @@ ChatScene::ChatScene(QAbstractItemModel *model, const QString &idString, qreal w
   if(model->rowCount() > 0)
     rowsInserted(QModelIndex(), 0, model->rowCount() - 1);
 
+#ifdef HAVE_WEBKIT
   webPreview.delayTimer.setSingleShot(true);
-  connect(&webPreview.delayTimer, SIGNAL(timeout()), this, SLOT(showWebPreview()));
+  connect(&webPreview.delayTimer, SIGNAL(timeout()), this, SLOT(showWebPreviewEvent()));
   webPreview.deleteTimer.setInterval(600000);
-  connect(&webPreview.deleteTimer, SIGNAL(timeout()), this, SLOT(deleteWebPreview()));
+  connect(&webPreview.deleteTimer, SIGNAL(timeout()), this, SLOT(deleteWebPreviewEvent()));
+#endif
 }
 
 ChatScene::~ChatScene() {
@@ -309,6 +306,10 @@ void ChatScene::setWidth(qreal width, bool forceReposition) {
 
 //   clock_t startT = clock();
 
+  // disabling the index while doing this complex updates is about
+  // 2 to 10 times faster!
+  setItemIndexMethod(QGraphicsScene::NoIndex);
+
   qreal linePos = _sceneRect.y() + _sceneRect.height();
   QList<ChatLine *>::iterator lineIter = _lines.end();
   QList<ChatLine *>::iterator lineIterBegin = _lines.begin();
@@ -337,6 +338,7 @@ void ChatScene::setWidth(qreal width, bool forceReposition) {
       line->setPos(0, linePos);
     }
   }
+  setItemIndexMethod(QGraphicsScene::BspTreeIndex);
 
   updateSceneRect(width);
   setHandleXLimits();
@@ -570,9 +572,6 @@ void ChatScene::updateSceneRect(const QRectF &rect) {
 
 void ChatScene::customEvent(QEvent *event) {
   switch(event->type()) {
-  case ClearWebPreviewEventType:
-    clearWebPreviewEvent((ClearWebPreviewEvent *)event);
-    break;
   default:
     return;
   }
@@ -617,37 +616,29 @@ void ChatScene::loadWebPreview(ChatItem *parentItem, const QString &url, const Q
 #endif
 }
 
-void ChatScene::clearWebPreview(ChatItem *parentItem) {
-#ifndef HAVE_WEBKIT
-  Q_UNUSED(parentItem)
-#else
-  if(parentItem == 0 || webPreview.parentItem == parentItem) {
-    // posting an event ensures that the item will not be removed as
-    // the result of another event. this could result in bad segfaults
-    QCoreApplication::postEvent(this, new ClearWebPreviewEvent());
-  }
-#endif
-}
-
-void ChatScene::showWebPreview() {
+void ChatScene::showWebPreviewEvent() {
 #ifdef HAVE_WEBKIT
   if(webPreview.previewItem)
     addItem(webPreview.previewItem);
 #endif
 }
 
-void ChatScene::clearWebPreviewEvent(ClearWebPreviewEvent *event) {
-#ifdef HAVE_WEBKIT
-  event->accept();
-  if(webPreview.previewItem && webPreview.previewItem->scene()) {
-    removeItem(webPreview.previewItem);
-    webPreview.deleteTimer.start();
+void ChatScene::clearWebPreview(ChatItem *parentItem) {
+#ifndef HAVE_WEBKIT
+  Q_UNUSED(parentItem)
+#else
+  if(parentItem == 0 || webPreview.parentItem == parentItem) {
+    if(webPreview.previewItem && webPreview.previewItem->scene()) {
+      removeItem(webPreview.previewItem);
+      webPreview.deleteTimer.start();
+    }
+    webPreview.delayTimer.stop();
   }
-  webPreview.delayTimer.stop();
 #endif
 }
 
-void ChatScene::deleteWebPreview() {
+void ChatScene::deleteWebPreviewEvent() {
+#ifdef HAVE_WEBKIT
   if(webPreview.previewItem) {
     delete webPreview.previewItem;
     webPreview.previewItem = 0;
@@ -655,4 +646,5 @@ void ChatScene::deleteWebPreview() {
   webPreview.parentItem = 0;
   webPreview.url = QString();
   webPreview.urlRect = QRectF();
+#endif
 }
