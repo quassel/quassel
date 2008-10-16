@@ -266,8 +266,7 @@ void ChatScene::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int e
     }
   }
 
-  Q_ASSERT(start == 0 || _lines.at(start - 1)->pos().y() + _lines.at(start - 1)->height() == _lines.at(start)->pos().y());
-  Q_ASSERT(end + 1 == _lines.count() || _lines.at(end)->pos().y() + _lines.at(end)->height() == _lines.at(end + 1)->pos().y());
+  Q_ASSERT(start == 0 || start >= _lines.count() || _lines.at(start - 1)->pos().y() + _lines.at(start - 1)->height() == _lines.at(start)->pos().y());
 
   // update sceneRect
   // when searching for the first non-date-line we have to take into account that our
