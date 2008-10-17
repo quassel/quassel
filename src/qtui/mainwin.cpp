@@ -176,8 +176,10 @@ void MainWin::setupActions() {
   // View
   coll->addAction("ManageBufferViews", new Action(SmallIcon("view-tree"), tr("&Manage Buffer Views..."), coll,
                                              this, SLOT(on_actionManageViews_triggered())));
-  connect(coll->addAction("LockDockPositions", new Action(tr("&Lock Dock Positions"), coll)), SIGNAL(toggled(bool)),
-           this, SLOT(on_actionLockDockPositions_toggled(bool)));
+  Action *lockAct = coll->addAction("LockDockPositions", new Action(tr("&Lock Dock Positions"), coll));
+  lockAct->setCheckable(true);
+  connect(lockAct, SIGNAL(toggled(bool)), SLOT(on_actionLockDockPositions_toggled(bool)));
+
   coll->addAction("ToggleSearchBar", new Action(SmallIcon("edit-find"), tr("Show &Search Bar"), coll,
                                                  0, 0, tr("Ctrl+F")))->setCheckable(true);
   coll->addAction("ToggleStatusBar", new Action(tr("Show Status &Bar"), coll,
@@ -217,6 +219,7 @@ void MainWin::setupMenus() {
   _viewMenu->addAction(coll->action("ToggleSearchBar"));
   _viewMenu->addAction(coll->action("ToggleStatusBar"));
   _viewMenu->addSeparator();
+  _viewMenu->addAction(coll->action("LockDockPositions"));
 
   _settingsMenu = menuBar()->addMenu(tr("&Settings"));
   _settingsMenu->addAction(coll->action("ConfigureQuassel"));
