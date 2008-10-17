@@ -26,6 +26,9 @@
 #include "jumpkeyhandler.h"
 #include "qtuisettings.h"
 
+#include "action.h"
+#include "actioncollection.h"
+#include "qtui.h"
 
 InputWidget::InputWidget(QWidget *parent)
   : AbstractItemView(parent),
@@ -46,6 +49,14 @@ InputWidget::InputWidget(QWidget *parent)
   if(useInputLineFont) {
     ui.inputEdit->setFont(s.value("InputLineFont").value<QFont>());
   }
+
+  ActionCollection *coll = QtUi::actionCollection();
+
+  Action *activateInputline = coll->add<Action>("FocusInputLine");
+  connect(activateInputline, SIGNAL(triggered()), SLOT(setFocus()));
+  activateInputline->setText(tr("Focus Input Line"));
+  activateInputline->setShortcut(tr("Ctrl+L"));
+
 }
 
 InputWidget::~InputWidget() {
