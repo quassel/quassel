@@ -48,12 +48,13 @@ public:
   inline static QtUiStyle *style();
   inline static MainWin *mainWindow();
 
-  //! Access the global ActionCollection.
-  /** This ActionCollection is associated with the main window, i.e. it contains global
+  //! Access global ActionCollections.
+  /** These ActionCollections are associated with the main window, i.e. they contain global
    *  actions (and thus, shortcuts). Widgets providing application-wide shortcuts should
-   *  create appropriate Action objects using QtUi::actionCollection()->add\<Action\>().
+   *  create appropriate Action objects using QtUi::actionCollection(cat)->add\<Action\>().
+   *  @param category The category (default: "General")
    */
-  inline static ActionCollection *actionCollection();
+  static ActionCollection *actionCollection(const QString &category = "General");
 
   /* Notifications */
 
@@ -75,13 +76,12 @@ protected slots:
 
 private:
   static MainWin *_mainWin;
-  static ActionCollection *_actionCollection;
+  static QHash<QString, ActionCollection *> _actionCollections;
   static QtUiStyle *_style;
   static QList<AbstractNotificationBackend *> _notificationBackends;
   static QList<AbstractNotificationBackend::Notification> _notifications;
 };
 
-ActionCollection *QtUi::actionCollection() { return _actionCollection; }
 QtUiStyle *QtUi::style() { return _style; }
 MainWin *QtUi::mainWindow() { return _mainWin; }
 

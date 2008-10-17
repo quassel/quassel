@@ -28,15 +28,23 @@ Action::Action(QObject *parent) : QWidgetAction(parent) {
   init();
 }
 
-Action::Action(const QString &text, QObject *parent) : QWidgetAction(parent) {
+Action::Action(const QString &text, QObject *parent, const QObject *receiver, const char *slot, const QKeySequence &shortcut)
+: QWidgetAction(parent) {
   init();
   setText(text);
+  setShortcut(shortcut);
+  if(receiver && slot)
+    connect(this, SIGNAL(triggered()), receiver, slot);
 }
 
-Action::Action(const QIcon &icon, const QString &text, QObject *parent) : QWidgetAction(parent) {
+Action::Action(const QIcon &icon, const QString &text, QObject *parent, const QObject *receiver, const char *slot, const QKeySequence &shortcut)
+: QWidgetAction(parent) {
   init();
   setIcon(icon);
   setText(text);
+  setShortcut(shortcut);
+  if(receiver && slot)
+    connect(this, SIGNAL(triggered()), receiver, slot);
 }
 
 void Action::init() {

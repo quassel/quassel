@@ -21,9 +21,8 @@
 #ifndef MAINWIN_H_
 #define MAINWIN_H_
 
+#include <QMainWindow>
 #include <QSystemTrayIcon>
-
-#include "ui_mainwin.h"
 
 #include "qtui.h"
 #include "sessionsettings.h"
@@ -31,9 +30,13 @@
 
 class ActionCollection;
 class BufferViewConfig;
+class BufferWidget;
 class MsgProcessorStatusWidget;
 class NickListWidget;
 class SystemTrayIcon;
+
+class QMenu;
+class QLabel;
 
 //!\brief The main window of Quassel's QtUi.
 class MainWin : public QMainWindow {
@@ -79,7 +82,7 @@ class MainWin : public QMainWindow {
     void on_actionEditNetworks_triggered();
     void on_actionManageViews_triggered();
     void on_actionLockDockPositions_toggled(bool lock);
-    void on_actionDebugNetworkModel_triggered(bool);
+    void on_actionDebugNetworkModel_triggered();
 
     void clientNetworkCreated(NetworkId);
     void clientNetworkRemoved(NetworkId);
@@ -96,7 +99,6 @@ class MainWin : public QMainWindow {
     void disconnectFromCore();
 
   private:
-    Ui::MainWin ui;
 
     QMenu *systrayMenu;
     QLabel *coreLagLabel;
@@ -106,6 +108,7 @@ class MainWin : public QMainWindow {
     TitleSetter _titleSetter;
 
     void setupActions();
+    void setupBufferWidget();
     void setupMenus();
     void setupViews();
     void setupNickWidget();
@@ -114,6 +117,7 @@ class MainWin : public QMainWindow {
     void setupTopicWidget();
     void setupStatusBar();
     void setupSystray();
+    void setupTitleSetter();
 
     void updateIcon();
     void toggleVisibility();
@@ -122,9 +126,10 @@ class MainWin : public QMainWindow {
     QSystemTrayIcon *_trayIcon;
 
     QList<QDockWidget *> _netViews;
-    NickListWidget *nickListWidget;
+    BufferWidget *_bufferWidget;
+    NickListWidget *_nickListWidget;
 
-    ActionCollection *_actionCollection;
+    QMenu *_fileMenu, *_networksMenu, *_viewMenu, *_bufferViewsMenu, *_settingsMenu, *_helpMenu, *_helpDebugMenu;
 
     friend class QtUi;
 };

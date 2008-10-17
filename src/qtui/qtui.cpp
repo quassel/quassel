@@ -30,7 +30,7 @@
 #include "uisettings.h"
 #include "util.h"
 
-ActionCollection *QtUi::_actionCollection = 0;
+QHash<QString, ActionCollection *> QtUi::_actionCollections;
 MainWin *QtUi::_mainWin = 0;
 QList<AbstractNotificationBackend *> QtUi::_notificationBackends;
 QList<AbstractNotificationBackend::Notification> QtUi::_notifications;
@@ -41,7 +41,6 @@ QtUi::QtUi() : AbstractUi() {
     qWarning() << "QtUi has been instantiated again!";
     return;
   }
-  _actionCollection = new ActionCollection(this);
 
   UiSettings uiSettings;
   loadTranslation(uiSettings.value("Locale", QLocale::system()).value<QLocale>());
@@ -61,6 +60,15 @@ QtUi::~QtUi() {
 
 void QtUi::init() {
   _mainWin->init();
+}
+
+ActionCollection *QtUi::actionCollection(const QString &category) {
+  if(_actionCollections.contains(category))
+    return _actionCollections.value(category);
+  ActionCollection *coll = new ActionCollection(mainWindow());
+  coll->addAssociatedWidget(mainWindow());
+  _actionCollections.insert(category, coll);
+  return coll;
 }
 
 MessageModel *QtUi::createMessageModel(QObject *parent) {
