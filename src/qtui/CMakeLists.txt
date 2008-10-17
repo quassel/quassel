@@ -103,7 +103,6 @@ set(FORMS
     coreinfodlg.ui
     debugconsole.ui
     inputwidget.ui
-    mainwin.ui
     msgprocessorstatuswidget.ui
     nicklistwidget.ui
     settingsdlg.ui
