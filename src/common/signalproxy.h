@@ -64,9 +64,8 @@ public:
   inline ProxyMode proxyMode() const { return _proxyMode; }
 
   bool addPeer(QIODevice *iodev);
-  void removePeer(QIODevice *iodev);
   bool addPeer(SignalProxy *proxy);
-  void removePeer(SignalProxy *proxy);
+  void removePeer(QObject *peer);
   void removeAllPeers();
   
   bool attachSignal(QObject *sender, const char *signal, const QByteArray& sigName = QByteArray());

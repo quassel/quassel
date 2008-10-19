@@ -243,14 +243,10 @@ void CoreSession::addClient(QObject *dev) { // this is QObject* so we can use it
 }
 
 void CoreSession::removeClient(QIODevice *iodev) {
-  // no checks for validity check - privateslot...
   QTcpSocket *socket = qobject_cast<QTcpSocket *>(iodev);
   if(socket)
     quInfo() << qPrintable(tr("Client")) << qPrintable(socket->peerAddress().toString()) << qPrintable(tr("disconnected (UserId: %1).").arg(user().toInt()));
-  else
-    quInfo() << "Local client disconnedted.";
-  disconnect(socket, 0, this, 0);
-  socket->deleteLater();
+  iodev->deleteLater();
 }
 
 SignalProxy *CoreSession::signalProxy() const {

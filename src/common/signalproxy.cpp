@@ -223,6 +223,7 @@ SignalProxy::~SignalProxy() {
   QList<QObject*> senders = _relayHash.keys();
   foreach(QObject* sender, senders)
     detachObject(sender);
+  removeAllPeers();
 }
 
 void SignalProxy::setProxyMode(ProxyMode mode) {
@@ -284,9 +285,6 @@ bool SignalProxy::addPeer(QIODevice* iodev) {
     connect(sock, SIGNAL(disconnected()), this, SLOT(removePeerBySender()));
   }
 
-  // we take ownership of that device
-  iodev->setParent(this);
-
   _peers[iodev] = new IODevicePeer(iodev, iodev->property("UseCompression").toBool());
 
   if(_peers.count() == 1)
@@ -300,60 +298,37 @@ void SignalProxy::removeAllPeers() {
   // wee need to copy that list since we modify it in the loop
   QList<QObject *> peers = _peers.keys();
   foreach(QObject *peer, peers) {
-    switch(_peers[peer]->type()) {
-    case AbstractPeer::IODevicePeer:
-      removePeer(static_cast<QIODevice *>(peer));
-      break;
-    case AbstractPeer::SignalProxyPeer:
-      removePeer(static_cast<SignalProxy *>(peer));
-      break;
-    default:
-      Q_ASSERT(false); // there shouldn't be any peers with wrong / unknown type
-    }
+    removePeer(peer);
   }
 }
 
-void SignalProxy::removePeer(QIODevice* iodev) {
+void SignalProxy::removePeer(QObject* dev) {
   if(_peers.isEmpty()) {
     qWarning() << "SignalProxy::removePeer(): No peers in use!";
     return;
   }
 
-  Q_ASSERT(iodev);
-  if(!_peers.contains(iodev)) {
-    qWarning() << "SignalProxy: unknown QIODevice" << iodev;
+  Q_ASSERT(dev);
+  if(!_peers.contains(dev)) {
+    qWarning() << "SignalProxy: unknown Peer" << dev;
     return;
   }
 
-  AbstractPeer *peer = _peers[iodev];
-  _peers.remove(iodev);  
+  AbstractPeer *peer = _peers[dev];
+  _peers.remove(dev);
+
+  disconnect(dev, 0, this, 0);
+  if(peer->type() == AbstractPeer::IODevicePeer)
+    emit peerRemoved(static_cast<QIODevice *>(dev));
+
   delete peer;
 
-  disconnect(iodev, 0, this, 0);
-  emit peerRemoved(iodev);
-
   if(_peers.isEmpty())
     emit disconnected();
 }
-
-void SignalProxy::removePeer(SignalProxy *proxy) {
-  if(!_peers.contains(proxy)) {
-    qWarning() << "SignalProxy: unknown QIODevice" << proxy;
-    return;
-  }
-
-  _peers.remove(proxy);
-
-  if(_peers.isEmpty())
-    emit disconnected();
-}
-
 
 void SignalProxy::removePeerBySender() {
-  // OK we're brutal here... but since it's a private slot we know what we've got connected to it...
-  // this Slot is not triggered by destroyed, so the object is still alive and can be used!
-  QIODevice *ioDev = (QIODevice *)(sender());
-  removePeer(ioDev);
+  removePeer(sender());
 }
 
 void SignalProxy::objectRenamed(const QString &newname, const QString &oldname) {
