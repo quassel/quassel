@@ -106,7 +106,7 @@ int main(int argc, char **argv) {
     qFatal("%s", qPrintable(QString("Could not write %1!").arg(target)));
     return EXIT_FAILURE;
   }
-  gen.write(QString("QString buildinfo = \"%1,%2,%3,%4,%5,%6,%7,%8\";")
+  gen.write(QString("QString buildinfo = \"%1,%2,%3,%4,%5,%6,%7,%8\";\n")
            .arg(basever, descrver, dirty, committish, commitdate, protover, clientneeds, coreneeds).toAscii());
   gen.close();
   return EXIT_SUCCESS;
