@@ -39,14 +39,11 @@ void InputLine::keyPressEvent(QKeyEvent * event) {
   case Qt::Key_Up:
     event->accept();
 
-    if(addToHistory(text())) {
-      clear();
-      break;
-    }
+    addToHistory(text(), true);
     
     if(idx > 0) {
       idx--;
-      setText(history[idx]);
+      showHistoryEntry();
     }
 
     break;
@@ -54,18 +51,18 @@ void InputLine::keyPressEvent(QKeyEvent * event) {
   case Qt::Key_Down:
     event->accept();
 
-    if(addToHistory(text())) {
-      clear();
-      break;
-    }
+    addToHistory(text(), true);
     
-    if(idx < history.count())
+    if(idx < history.count()) {
       idx++;
-
-    if(idx < history.count())
-      setText(history[idx]);
-    else
-      clear();
+      if(idx < history.count() || tempHistory.contains(idx)) // tempHistory might have an entry for idx == history.count() + 1
+        showHistoryEntry();
+      else
+        resetLine();              // equals clear() in this case
+    } else {
+      addToHistory(text());
+      resetLine();
+    }
 
     break;
     
@@ -77,17 +74,22 @@ void InputLine::keyPressEvent(QKeyEvent * event) {
   }
 }
 
-bool InputLine::addToHistory(const QString &text) {
+bool InputLine::addToHistory(const QString &text, bool temporary) {
   if(text.isEmpty())
     return false;
 
   Q_ASSERT(0 <= idx && idx <= history.count());
   
   if(history.isEmpty() || text != history[idx - (int)(idx == history.count())]) {
-    // if we change an entry of the history the changed entry is appended to the list and we seek to the end
-    // we could also easily change the entry in the history... per setting maybe?
-    history << text;
-    idx = history.count();
+    // if an entry of the history is changed, we remember it and show it again at this
+    // position until a line was actually sent
+    // sent lines get appended to the history
+    if(temporary) {
+      tempHistory[idx] = text;
+    } else {
+      history << text;
+      tempHistory.clear();
+    }
     return true;
   } else {
     return false;
@@ -97,7 +99,7 @@ bool InputLine::addToHistory(const QString &text) {
 void InputLine::on_returnPressed() {
   addToHistory(text());
   emit sendText(text());
-  clear();
+  resetLine();
 }
 
 void InputLine::on_textChanged(QString newText) {
@@ -125,6 +127,15 @@ void InputLine::on_textChanged(QString newText) {
     emit returnPressed();
     insert(remainder);
   }
-  
 }
 
+void InputLine::resetLine() {
+  // every time the InputLine is cleared we also reset history index
+  idx = history.count();
+  clear();
+}
+
+void InputLine::showHistoryEntry() {
+  // if the user changed the history, display the changed line
+  tempHistory.contains(idx) ? setText(tempHistory[idx]) : setText(history[idx]);
+}

@@ -40,18 +40,22 @@ private slots:
   void on_returnPressed();
   void on_textChanged(QString newText);
 
-  bool addToHistory(const QString &text);
+  bool addToHistory(const QString &text, bool temporary = false);
 
 signals:
   void sendText(QString text);
 
 private:
   QStringList history;
+  QHash<int, QString> tempHistory;
   qint32 idx;
   TabCompleter *tabCompleter;
 
   int bindModifier;
   int jumpModifier;
+
+  void resetLine();
+  void showHistoryEntry();
 };
 
 #endif
