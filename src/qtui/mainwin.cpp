@@ -108,25 +108,25 @@ void MainWin::init() {
   connect(Client::instance(), SIGNAL(networkCreated(NetworkId)), SLOT(clientNetworkCreated(NetworkId)));
   connect(Client::instance(), SIGNAL(networkRemoved(NetworkId)), SLOT(clientNetworkRemoved(NetworkId)));
 
-  // Order is sometimes important
-  setupActions();
-  setupBufferWidget();
-  setupMenus();
-  setupViews();
-  setupChatMonitor();
-  setupNickWidget();
-  setupTopicWidget();
-  setupInputWidget();
-  setupStatusBar();
-  setupSystray();
-  setupTitleSetter();
-
   // Setup Dock Areas
   setDockNestingEnabled(true);
   setCorner(Qt::TopLeftCorner, Qt::LeftDockWidgetArea);
   setCorner(Qt::BottomLeftCorner, Qt::LeftDockWidgetArea);
   setCorner(Qt::TopRightCorner, Qt::RightDockWidgetArea);
   setCorner(Qt::BottomRightCorner, Qt::RightDockWidgetArea);
+
+  // Order is sometimes important
+  setupActions();
+  setupBufferWidget();
+  setupMenus();
+  setupViews();
+  setupTopicWidget();
+  setupChatMonitor();
+  setupNickWidget();
+  setupInputWidget();
+  setupStatusBar();
+  setupSystray();
+  setupTitleSetter();
 
   // restore mainwin state
   restoreState(s.value("MainWinState").toByteArray());
@@ -370,7 +370,7 @@ void MainWin::setupTopicWidget() {
   topicwidget->setModel(Client::bufferModel());
   topicwidget->setSelectionModel(Client::bufferModel()->standardSelectionModel());
 
-  addDockWidget(Qt::TopDockWidgetArea, dock);
+  addDockWidget(Qt::TopDockWidgetArea, dock, Qt::Vertical);
 
   _viewMenu->addAction(dock->toggleViewAction());
   dock->toggleViewAction()->setText(tr("Show Topic Line"));
@@ -469,8 +469,7 @@ void MainWin::setConnectedState() {
   coll->action("ConnectCore")->setEnabled(false);
   coll->action("DisconnectCore")->setEnabled(true);
   coll->action("CoreInfo")->setEnabled(true);
-  _viewMenu->setEnabled(true);
-  _bufferWidget->show();
+  // _viewMenu->setEnabled(true);
   statusBar()->showMessage(tr("Connected to core."));
   if(sslLabel->width() == 0)
     sslLabel->setPixmap(SmallIcon("security-low"));
@@ -526,8 +525,7 @@ void MainWin::setDisconnectedState() {
   coll->action("ConnectCore")->setEnabled(true);
   coll->action("DisconnectCore")->setEnabled(false);
   coll->action("CoreInfo")->setEnabled(false);
-  _viewMenu->setEnabled(false);
-  _bufferWidget->hide();
+  //_viewMenu->setEnabled(false);
   statusBar()->showMessage(tr("Not connected to core."));
   sslLabel->setPixmap(QPixmap());
   updateIcon();
