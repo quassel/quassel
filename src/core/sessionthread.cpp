@@ -21,15 +21,17 @@
 #include <QMutexLocker>
 
 #include "sessionthread.h"
-
+#include "signalproxy.h"
 #include "coresession.h"
 
-SessionThread::SessionThread(UserId uid, bool restoreState, QObject *parent) : QThread(parent) {
-    _user = uid;
-    _session = 0;
-    _sessionInitialized = false;
-    _restoreState = restoreState,
-    connect(this, SIGNAL(initialized()), this, SLOT(setSessionInitialized()));
+SessionThread::SessionThread(UserId uid, bool restoreState, QObject *parent)
+  : QThread(parent),
+    _session(0),
+    _user(uid),
+    _sessionInitialized(false),
+    _restoreState(restoreState)
+{
+  connect(this, SIGNAL(initialized()), this, SLOT(setSessionInitialized()));
 }
 
 SessionThread::~SessionThread() {
@@ -52,31 +54,50 @@ bool SessionThread::isSessionInitialized() {
 
 void SessionThread::setSessionInitialized() {
   _sessionInitialized = true;
-  foreach(QIODevice *socket, clientQueue) {
-    addClientToSession(socket);
+  foreach(QObject *peer, clientQueue) {
+    addClientToSession(peer);
   }
   clientQueue.clear();
 }
 
-void SessionThread::addClient(QIODevice *socket) {
+void SessionThread::addClient(QObject *peer) {
   if(isSessionInitialized()) {
-    addClientToSession(socket);
+    addClientToSession(peer);
   } else {
-    clientQueue.append(socket);
+    clientQueue.append(peer);
   }
 }
 
-void SessionThread::addClientToSession(QIODevice *socket) {
+void SessionThread::addClientToSession(QObject *peer) {
+  QIODevice *socket = qobject_cast<QIODevice *>(peer);
+  if(socket) {
+    addRemoteClientToSession(socket);
+    return;
+  }
+
+  SignalProxy *proxy = qobject_cast<SignalProxy *>(peer);
+  if(proxy) {
+    addInternalClientToSession(proxy);
+    return;
+  }
+
+  qWarning() << "SessionThread::addClient() received neither QIODevice nor SignalProxy as peer!" << peer;
+}
+
+void SessionThread::addRemoteClientToSession(QIODevice *socket) {
   socket->setParent(0);
   socket->moveToThread(session()->thread());
-  if(!QMetaObject::invokeMethod(session(), "addClient", Q_ARG(QObject *, socket))) {
-    qWarning() << qPrintable(tr("Could not initialize session!"));
-    socket->close();
-  }
+  emit addRemoteClient(socket);
+}
+
+void SessionThread::addInternalClientToSession(SignalProxy *proxy) {
+  emit addInternalClient(proxy);
 }
 
 void SessionThread::run() {
   _session = new CoreSession(user(), _restoreState);
+  connect(this, SIGNAL(addRemoteClient(QIODevice *)), _session, SLOT(addClient(QIODevice *)));
+  connect(this, SIGNAL(addInternalClient(SignalProxy *)), _session, SLOT(addClient(SignalProxy *)));
   emit initialized();
   exec();
   delete _session;

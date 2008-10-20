@@ -229,8 +229,7 @@ void CoreSession::disconnectFromNetwork(NetworkId id) {
 void CoreSession::networkStateRequested() {
 }
 
-void CoreSession::addClient(QObject *dev) { // this is QObject* so we can use it in signal connections
-  QIODevice *device = qobject_cast<QIODevice *>(dev);
+void CoreSession::addClient(QIODevice *device) {
   if(!device) {
     quError() << "Invoking CoreSession::addClient with a QObject that is not a QIODevice!";
   } else {
@@ -240,6 +239,11 @@ void CoreSession::addClient(QObject *dev) { // this is QObject* so we can use it
     reply["SessionState"] = sessionState();
     SignalProxy::writeDataToDevice(device, reply);
   }
+}
+
+void CoreSession::addClient(SignalProxy *proxy) {
+  signalProxy()->addPeer(proxy);
+  emit sessionState(sessionState());
 }
 
 void CoreSession::removeClient(QIODevice *iodev) {

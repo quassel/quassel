@@ -42,6 +42,7 @@
 
 class CoreSession;
 class SessionThread;
+class SignalProxy;
 class Storage;
 struct NetworkInfo;
 
@@ -288,7 +289,7 @@ class Core : public QObject {
     /** \note This method is threadsafe.
      */
     void syncStorage();
-
+    void setupInternalClientSession(SignalProxy *proxy);
   signals:
     //! Sent when a BufferInfo is updated in storage.
     void bufferInfoUpdated(UserId user, const BufferInfo &info);

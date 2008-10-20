@@ -71,7 +71,8 @@ public:
 public slots:
   void networkStateRequested();
 
-  void addClient(QObject *socket);
+  void addClient(QIODevice *device);
+  void addClient(SignalProxy *proxy);
 
   void connectToNetwork(NetworkId);
   void disconnectFromNetwork(NetworkId id);
@@ -118,6 +119,7 @@ public slots:
 
 signals:
   void initialized();
+  void sessionState(const QVariant &);
 
   //void msgFromGui(uint netid, QString buf, QString message);
   void displayMsg(Message message);

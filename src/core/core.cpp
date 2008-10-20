@@ -592,6 +592,17 @@ void Core::setupClientSession(QTcpSocket *socket, UserId uid) {
   sess->addClient(socket);
 }
 
+void Core::setupInternalClientSession(SignalProxy *proxy) {
+  UserId uid = 3; // FIXME!!!11
+  // Find or create session for validated user
+  SessionThread *sess;
+  if(sessions.contains(uid))
+    sess = sessions[uid];
+  else
+    sess = createSession(uid);
+  sess->addClient(proxy);
+}
+
 SessionThread *Core::createSession(UserId uid, bool restore) {
   if(sessions.contains(uid)) {
     quWarning() << "Calling createSession() when a session for the user already exists!";

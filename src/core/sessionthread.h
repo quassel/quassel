@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _SESSIONTHREAD_H_
-#define _SESSIONTHREAD_H_
+#ifndef SESSIONTHREAD_H
+#define SESSIONTHREAD_H
 
 #include <QMutex>
 #include <QThread>
@@ -28,38 +28,44 @@
 
 class CoreSession;
 class QIODevice;
+class SignalProxy;
 
 class SessionThread : public QThread {
   Q_OBJECT
 
-  public:
-    SessionThread(UserId user, bool restoreState, QObject *parent = 0);
-    ~SessionThread();
+public:
+  SessionThread(UserId user, bool restoreState, QObject *parent = 0);
+  ~SessionThread();
 
-    void run();
+  void run();
 
-    CoreSession *session();
-    UserId user();
+  CoreSession *session();
+  UserId user();
 
-  public slots:
-    void addClient(QIODevice *socket);
+public slots:
+  void addClient(QObject *peer);
 
-  private slots:
-    void setSessionInitialized();
+private slots:
+  void setSessionInitialized();
 
-  signals:
-    void initialized();
-    void shutdown();
+signals:
+  void initialized();
+  void shutdown();
 
-  private:
-    CoreSession *_session;
-    UserId _user;
-    QList<QIODevice *> clientQueue;
-    bool _sessionInitialized;
-    bool _restoreState;
+  void addRemoteClient(QIODevice *);
+  void addInternalClient(SignalProxy *);
 
-    bool isSessionInitialized();
-    void addClientToSession(QIODevice *socket);
+private:
+  CoreSession *_session;
+  UserId _user;
+  QList<QObject *> clientQueue;
+  bool _sessionInitialized;
+  bool _restoreState;
+
+  bool isSessionInitialized();
+  void addClientToSession(QObject *peer);
+  void addRemoteClientToSession(QIODevice *socket);
+  void addInternalClientToSession(SignalProxy *proxy);
 };
 
 #endif
