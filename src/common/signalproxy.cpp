@@ -34,10 +34,22 @@
 #include <QRegExp>
 #include <QThread>
 #include <QTime>
+#include <QEvent>
+#include <QCoreApplication>
 
 #include "syncableobject.h"
 #include "util.h"
 
+// ==================================================
+//  PeerSignalEvent
+// ==================================================
+class PeerSignalEvent : public QEvent {
+public:
+  PeerSignalEvent(SignalProxy *sender, SignalProxy::RequestType requestType, const QVariantList &params) : QEvent(QEvent::User), sender(sender), requestType(requestType), params(params) {}
+  SignalProxy *sender;
+  SignalProxy::RequestType requestType;
+  QVariantList params;
+};
 
 // ==================================================
 //  SIGNALRELAY
@@ -194,6 +206,18 @@ void SignalProxy::IODevicePeer::dispatchSignal(const RequestType &requestType, c
   dispatchPackedFunc(QVariant(packedFunc));
 }
 
+void SignalProxy::SignalProxyPeer::dispatchSignal(const RequestType &requestType, const QVariantList &params) {
+  Qt::ConnectionType type = QThread::currentThread() == receiver->thread()
+    ? Qt::DirectConnection
+    : Qt::QueuedConnection;
+
+  if(type == Qt::DirectConnection) {
+    receiver->receivePeerSignal(sender, requestType, params);
+  } else {
+    QCoreApplication::postEvent(receiver, new PeerSignalEvent(sender, requestType, params));
+  }
+}
+
 // ==================================================
 //  SignalProxy
 // ==================================================
@@ -286,6 +310,34 @@ bool SignalProxy::addPeer(QIODevice* iodev) {
   }
 
   _peers[iodev] = new IODevicePeer(iodev, iodev->property("UseCompression").toBool());
+
+  if(_peers.count() == 1)
+    emit connected();
+
+  return true;
+}
+
+bool SignalProxy::addPeer(SignalProxy* proxy) {
+  if(!proxy)
+    return false;
+
+  if(proxyMode() == proxy->proxyMode()) {
+    qWarning() << "SignalProxy::addPeer(): adding a SignalProxy as peer requires one proxy to be server and one client!";
+    return false;
+  }
+
+  if(_peers.contains(proxy)) {
+    return true;
+  }
+
+  if(proxyMode() == Client && !_peers.isEmpty()) {
+    qWarning("SignalProxy: only one peer allowed in client mode!");
+    return false;
+  }
+
+  _peers[proxy] = new SignalProxyPeer(this, proxy);
+
+  proxy->addPeer(this);
 
   if(_peers.count() == 1)
     emit connected();
@@ -748,6 +800,15 @@ void SignalProxy::receivePeerSignal(AbstractPeer *sender, const RequestType &req
   }
 }
 
+void SignalProxy::receivePeerSignal(SignalProxy *sender, const RequestType &requestType, const QVariantList &params) {
+  if(!_peers.contains(sender)) {
+    // we output only the pointer value. otherwise Qt would try to pretty print. As the object might already been destroyed, this is not a good idea.
+    qWarning() << "SignalProxy::receivePeerSignal(): received Signal from unknown Proxy" << reinterpret_cast<void *>(sender);
+    return;
+  }
+  receivePeerSignal(_peers[sender], requestType, params);
+}
+
 void SignalProxy::handleSync(AbstractPeer *sender, QVariantList params) {
   if(params.count() < 3) {
     qWarning() << "received invalid Sync call" << params;
@@ -1110,6 +1171,20 @@ void SignalProxy::receiveHeartBeatReply(AbstractPeer *peer, const QVariantList &
   
   QTime sendTime = params[0].value<QTime>();
   updateLag(ioPeer, sendTime.msecsTo(QTime::currentTime()) / 2);
+}
+
+void SignalProxy::customEvent(QEvent *event) {
+  switch(event->type()) {
+  case QEvent::User:
+    {
+      PeerSignalEvent *sig = static_cast<PeerSignalEvent *>(event);
+      receivePeerSignal(sig->sender, sig->requestType, sig->params);
+    }
+    event->accept();
+    break;
+  default:
+    return;
+  }
 }
 
 void SignalProxy::updateLag(IODevicePeer *peer, int lag) {

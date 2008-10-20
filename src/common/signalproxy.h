@@ -119,6 +119,9 @@ public:
 
   void dumpProxyStats();
   
+protected:
+  void customEvent(QEvent *event);
+
 private slots:
   void dataAvailable();
   void detachSender();
@@ -158,6 +161,7 @@ private:
 
   void receivePackedFunc(AbstractPeer *sender, const QVariant &packedFunc);
   void receivePeerSignal(AbstractPeer *sender, const RequestType &requestType, const QVariantList &params);
+  void receivePeerSignal(SignalProxy *sender, const RequestType &requestType, const QVariantList &params);
   void handleSync(AbstractPeer *sender, QVariantList params);
   void handleInitRequest(AbstractPeer *sender, const QVariantList &params);
   void handleInitData(AbstractPeer *sender, const QVariantList &params);
@@ -211,10 +215,11 @@ private:
 
   class SignalProxyPeer : public AbstractPeer {
   public:
-    SignalProxyPeer(SignalProxy *proxy) : AbstractPeer(AbstractPeer::SignalProxyPeer), proxy(proxy) {}
+    SignalProxyPeer(SignalProxy *sender, SignalProxy *receiver) : AbstractPeer(AbstractPeer::SignalProxyPeer), sender(sender), receiver(receiver) {}
     virtual void dispatchSignal(const RequestType &requestType, const QVariantList &params);
   private:
-    SignalProxy *proxy;
+    SignalProxy *sender;
+    SignalProxy *receiver;
   };
 
   // a Hash of the actual used communication object to it's corresponding peer
