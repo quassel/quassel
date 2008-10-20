@@ -1128,11 +1128,13 @@ void SignalProxy::setInitData(SyncableObject *obj, const QVariantMap &properties
 }
 
 void SignalProxy::sendHeartBeat() {
-  dispatchSignal(SignalProxy::HeartBeat, QVariantList() << QTime::currentTime());
+  QVariantList heartBeatParams;
+  heartBeatParams << QTime::currentTime();
   PeerHash::iterator peer = _peers.begin();
   while(peer != _peers.end()) {
     if((*peer)->type() == AbstractPeer::IODevicePeer) {
       IODevicePeer *ioPeer = static_cast<IODevicePeer *>(*peer);
+      ioPeer->dispatchSignal(SignalProxy::HeartBeat, heartBeatParams);
       if(ioPeer->sentHeartBeats > 0) {
 	updateLag(ioPeer, ioPeer->sentHeartBeats * _heartBeatTimer.interval());
       }
