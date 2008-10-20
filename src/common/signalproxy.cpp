@@ -206,6 +206,14 @@ void SignalProxy::IODevicePeer::dispatchSignal(const RequestType &requestType, c
   dispatchPackedFunc(QVariant(packedFunc));
 }
 
+QString SignalProxy::IODevicePeer::address() const {
+  QAbstractSocket *socket = qobject_cast<QAbstractSocket *>(_device);
+  if(socket)
+    return socket->peerAddress().toString();
+  else
+    return QString();
+}
+
 void SignalProxy::SignalProxyPeer::dispatchSignal(const RequestType &requestType, const QVariantList &params) {
   Qt::ConnectionType type = QThread::currentThread() == receiver->thread()
     ? Qt::DirectConnection
@@ -1139,12 +1147,9 @@ void SignalProxy::sendHeartBeat() {
 	updateLag(ioPeer, ioPeer->sentHeartBeats * _heartBeatTimer.interval());
       }
       if(ioPeer->sentHeartBeats > 1) {
-	//FIXME: proper disconnect.
-// 	QAbstractSocket *socket = qobject_cast<QAbstractSocket *>(peerIter.key());
-// 	qWarning() << "SignalProxy: Disconnecting peer:"
-// 		   << (socket ? qPrintable(socket->peerAddress().toString()) : "local client")
-// 		   << "(didn't receive a heartbeat for over" << peerIter->sentHeartBeats * _heartBeatTimer.interval() / 1000 << "seconds)";      
-// 	peerIter.key()->close();
+	qWarning() << "SignalProxy: Disconnecting peer:" << ioPeer->address()
+		   << "(didn't receive a heartbeat for over" << ioPeer->sentHeartBeats * _heartBeatTimer.interval() / 1000 << "seconds)";
+	ioPeer->close();
       } else {
 	ioPeer->sentHeartBeats++;
       }
@@ -1167,7 +1172,7 @@ void SignalProxy::receiveHeartBeatReply(AbstractPeer *peer, const QVariantList &
   ioPeer->sentHeartBeats = 0;
 
   if(params.isEmpty()) {
-    qWarning() << "SignalProxy: received heart beat reply with less params then sent from:" << ioPeer->device();
+    qWarning() << "SignalProxy: received heart beat reply with less params then sent from:" << ioPeer->address();
     return;
   }
   

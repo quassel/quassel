@@ -201,8 +201,9 @@ private:
     IODevicePeer(QIODevice *device, bool compress) : AbstractPeer(AbstractPeer::IODevicePeer), _device(device), byteCount(0), usesCompression(compress), sentHeartBeats(0), lag(0) {}
     virtual void dispatchSignal(const RequestType &requestType, const QVariantList &params);
     inline void dispatchPackedFunc(const QVariant &packedFunc) { SignalProxy::writeDataToDevice(_device, packedFunc, usesCompression); }
-    inline QIODevice *device() const { return _device; }
+    QString address() const;
     inline bool isOpen() const { return _device->isOpen(); }
+    inline void close() const { _device->close(); }
     inline bool readData(QVariant &item) { return SignalProxy::readDataFromDevice(_device, byteCount, item, usesCompression); }
   private:
     QIODevice *_device;
