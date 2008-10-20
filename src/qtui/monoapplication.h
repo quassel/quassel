@@ -23,18 +23,20 @@
 
 #include "qtuiapplication.h"
 
+class ClientSyncer;
 class CoreApplicationInternal;
 
 class MonolithicApplication : public QtUiApplication {
+public:
+  MonolithicApplication(int &, char **);
+  ~MonolithicApplication();
 
-  public:
-    MonolithicApplication(int &, char **);
-    ~MonolithicApplication();
+  bool init();
+  bool startInternalCore();
+  void connectClientSyncer(ClientSyncer *syncer);
 
-    bool init();
-
-  private:
-    CoreApplicationInternal *_internal;
+private:
+  CoreApplicationInternal *_internal;
 };
 
 #endif

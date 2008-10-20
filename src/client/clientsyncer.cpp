@@ -33,10 +33,6 @@
 #include "quassel.h"
 #include "signalproxy.h"
 
-//#ifdef BUILD_MONO
-#include "core.h"
-//#endif
-
 ClientSyncer::ClientSyncer(QObject *parent)
   : QObject(parent)
 {
@@ -44,11 +40,6 @@ ClientSyncer::ClientSyncer(QObject *parent)
   blockSize = 0;
 
   connect(Client::signalProxy(), SIGNAL(disconnected()), this, SLOT(coreSocketDisconnected()));
-
-  //#ifdef BUILD_MONO
-  connect(this, SIGNAL(connectToInternalCore(SignalProxy *)), Core::instance(), SLOT(setupInternalClientSession(SignalProxy *)));
-  connect(Core::instance(), SIGNAL(sessionState(const QVariant &)), this, SLOT(internalSessionStateReceived(const QVariant &)));
-  //#endif
 }
 
 ClientSyncer::~ClientSyncer() {

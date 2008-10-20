@@ -21,16 +21,19 @@
 #include "monoapplication.h"
 #include "coreapplication.h"
 #include "client.h"
+#include "clientsyncer.h"
+#include "core.h"
 #include "qtui.h"
 
-MonolithicApplication::MonolithicApplication(int &argc, char **argv) : QtUiApplication(argc, argv) {
+MonolithicApplication::MonolithicApplication(int &argc, char **argv)
+  : QtUiApplication(argc, argv)
+{
+  _internal = new CoreApplicationInternal(); // needed for parser options
   setRunMode(Monolithic);
-  _internal = new CoreApplicationInternal();
-
 }
 
 bool MonolithicApplication::init() {
-  if(Quassel::init() && _internal->init()) {
+  if(Quassel::init()) {
     return QtUiApplication::init();
   }
   return false;
@@ -39,6 +42,15 @@ bool MonolithicApplication::init() {
 MonolithicApplication::~MonolithicApplication() {
   // Client needs to be destroyed first
   Client::destroy();
-
   delete _internal;
+}
+
+bool MonolithicApplication::startInternalCore() {
+  return _internal->init();
+}
+
+void MonolithicApplication::connectClientSyncer(ClientSyncer *syncer) {
+  Core *core = Core::instance();
+  connect(syncer, SIGNAL(connectToInternalCore(SignalProxy *)), core, SLOT(setupInternalClientSession(SignalProxy *)));
+  connect(core, SIGNAL(sessionState(const QVariant &)), syncer, SLOT(internalSessionStateReceived(const QVariant &)));
 }

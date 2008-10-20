@@ -28,6 +28,7 @@
 #include "clientsyncer.h"
 #include "coreconfigwizard.h"
 #include "iconloader.h"
+#include "monoapplication.h"
 
 CoreConnectDlg::CoreConnectDlg(bool autoconnect, QWidget *parent)
   : QDialog(parent)
@@ -43,6 +44,7 @@ CoreConnectDlg::CoreConnectDlg(bool autoconnect, QWidget *parent)
   setWindowFlags(Qt::Sheet);
 
   clientSyncer = new ClientSyncer(this);
+
   wizard = 0;
 
   doingAutoConnect = false;
@@ -212,6 +214,13 @@ void CoreConnectDlg::on_accountButtonBox_accepted() {
 }
 
 void CoreConnectDlg::on_useInternalCore_clicked() {
+  // FIXME: this needs to be a qobject_cast - therefore MonolithicApplication needs to be a proper QObject... :/
+  MonolithicApplication *monoApp = static_cast<MonolithicApplication *>(QApplication::instance());
+  if(monoApp) {
+    qDebug() << "starting core...";
+    monoApp->startInternalCore();
+    monoApp->connectClientSyncer(clientSyncer);
+  }
   clientSyncer->useInternalCore();
   startSync();
 }
