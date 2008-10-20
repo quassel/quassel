@@ -23,6 +23,7 @@
 #include "sessionthread.h"
 #include "signalproxy.h"
 #include "coresession.h"
+#include "core.h"
 
 SessionThread::SessionThread(UserId uid, bool restoreState, QObject *parent)
   : QThread(parent),
@@ -98,6 +99,7 @@ void SessionThread::run() {
   _session = new CoreSession(user(), _restoreState);
   connect(this, SIGNAL(addRemoteClient(QIODevice *)), _session, SLOT(addClient(QIODevice *)));
   connect(this, SIGNAL(addInternalClient(SignalProxy *)), _session, SLOT(addClient(SignalProxy *)));
+  connect(_session, SIGNAL(sessionState(const QVariant &)), Core::instance(), SIGNAL(sessionState(const QVariant &)));
   emit initialized();
   exec();
   delete _session;

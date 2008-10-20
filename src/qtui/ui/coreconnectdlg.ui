@@ -19,7 +19,7 @@
    <string>Connect to Quassel Core</string>
   </property>
   <property name="windowIcon" >
-   <iconset resource="../../icons/icons.qrc" >
+   <iconset>
     <normaloff>:/16x16/actions/network-disconnect</normaloff>:/16x16/actions/network-disconnect</iconset>
   </property>
   <layout class="QHBoxLayout" >
@@ -32,7 +32,7 @@
       </sizepolicy>
      </property>
      <property name="currentIndex" >
-      <number>2</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="accountPage" >
       <property name="geometry" >
@@ -40,7 +40,7 @@
         <x>0</x>
         <y>0</y>
         <width>539</width>
-        <height>331</height>
+        <height>332</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" >
@@ -65,7 +65,7 @@
                <string>Edit...</string>
               </property>
               <property name="icon" >
-               <iconset resource="../../icons/icons.qrc" >
+               <iconset>
                 <normaloff>:/16x16/actions/oxygen/16x16/actions/document-properties.png</normaloff>:/16x16/actions/oxygen/16x16/actions/document-properties.png</iconset>
               </property>
              </widget>
@@ -76,7 +76,7 @@
                <string>Add...</string>
               </property>
               <property name="icon" >
-               <iconset resource="../../icons/icons.qrc" >
+               <iconset>
                 <normaloff>:/16x16/actions/oxygen/16x16/actions/list-add.png</normaloff>:/16x16/actions/oxygen/16x16/actions/list-add.png</iconset>
               </property>
              </widget>
@@ -87,7 +87,7 @@
                <string>Delete</string>
               </property>
               <property name="icon" >
-               <iconset resource="../../icons/icons.qrc" >
+               <iconset>
                 <normaloff>:/16x16/actions/oxygen/16x16/actions/list-remove.png</normaloff>:/16x16/actions/oxygen/16x16/actions/list-remove.png</iconset>
               </property>
              </widget>
@@ -104,6 +104,13 @@
                </size>
               </property>
              </spacer>
+            </item>
+            <item>
+             <widget class="QPushButton" name="useInternalCore" >
+              <property name="text" >
+               <string>use internal core</string>
+              </property>
+             </widget>
             </item>
            </layout>
           </item>
@@ -169,7 +176,7 @@
                <string/>
               </property>
               <property name="pixmap" >
-               <pixmap resource="../../icons/icons.qrc" >:/22x22/actions/network-disconnect</pixmap>
+               <pixmap>:/22x22/actions/network-disconnect</pixmap>
               </property>
              </widget>
             </item>
@@ -227,7 +234,7 @@ space</string>
                <string/>
               </property>
               <property name="pixmap" >
-               <pixmap resource="../../icons/icons.qrc" >:/22x22/actions/oxygen/22x22/actions/document-encrypt.png</pixmap>
+               <pixmap>:/22x22/actions/oxygen/22x22/actions/document-encrypt.png</pixmap>
               </property>
              </widget>
             </item>
@@ -250,7 +257,7 @@ space</string>
                <x>0</x>
                <y>0</y>
                <width>501</width>
-               <height>145</height>
+               <height>146</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" >

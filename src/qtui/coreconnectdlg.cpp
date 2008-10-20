@@ -211,6 +211,11 @@ void CoreConnectDlg::on_accountButtonBox_accepted() {
   connectToCore();
 }
 
+void CoreConnectDlg::on_useInternalCore_clicked() {
+  clientSyncer->useInternalCore();
+  startSync();
+}
+
 /*****************************************************
  * Connecting to the Core
  ****************************************************/

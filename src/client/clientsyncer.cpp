@@ -33,6 +33,10 @@
 #include "quassel.h"
 #include "signalproxy.h"
 
+//#ifdef BUILD_MONO
+#include "core.h"
+//#endif
+
 ClientSyncer::ClientSyncer(QObject *parent)
   : QObject(parent)
 {
@@ -40,6 +44,11 @@ ClientSyncer::ClientSyncer(QObject *parent)
   blockSize = 0;
 
   connect(Client::signalProxy(), SIGNAL(disconnected()), this, SLOT(coreSocketDisconnected()));
+
+  //#ifdef BUILD_MONO
+  connect(this, SIGNAL(connectToInternalCore(SignalProxy *)), Core::instance(), SLOT(setupInternalClientSession(SignalProxy *)));
+  connect(Core::instance(), SIGNAL(sessionState(const QVariant &)), this, SLOT(internalSessionStateReceived(const QVariant &)));
+  //#endif
 }
 
 ClientSyncer::~ClientSyncer() {
@@ -169,6 +178,10 @@ void ClientSyncer::coreSocketConnected() {
   SignalProxy::writeDataToDevice(socket, clientInit);
 }
 
+void ClientSyncer::useInternalCore() {
+  emit connectToInternalCore(Client::instance()->signalProxy());
+}
+
 void ClientSyncer::coreSocketDisconnected() {
   emit socketDisconnected();
   Client::instance()->disconnectFromCore();
@@ -238,6 +251,13 @@ void ClientSyncer::loginToCore(const QString &user, const QString &passwd) {
   clientLogin["User"] = user;
   clientLogin["Password"] = passwd;
   SignalProxy::writeDataToDevice(socket, clientLogin);
+}
+
+void ClientSyncer::internalSessionStateReceived(const QVariant &packedState) {
+  QVariantMap state = packedState.toMap();
+  emit sessionProgress(1, 1);
+  // Client::instance()->setConnectedToCore(socket, AccountId());
+  syncToCore(state);
 }
 
 void ClientSyncer::sessionStateReceived(const QVariantMap &state) {

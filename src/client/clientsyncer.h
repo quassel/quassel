@@ -33,6 +33,7 @@
 
 class IrcUser;
 class IrcChannel;
+class SignalProxy;
 
 class ClientSyncer : public QObject {
   Q_OBJECT
@@ -60,10 +61,13 @@ signals:
 
   void encrypted(bool);
 
+  void connectToInternalCore(SignalProxy *proxy);
+
 public slots:
   void connectToCore(const QVariantMap &);
   void loginToCore(const QString &user, const QString &passwd);
   void disconnectFromCore();
+  void useInternalCore();
 
 private slots:
   void coreSocketError(QAbstractSocket::SocketError);
@@ -78,6 +82,7 @@ private slots:
   void checkSyncState();
 
   void syncToCore(const QVariantMap &sessionState);
+  void internalSessionStateReceived(const QVariant &packedState);
   void sessionStateReceived(const QVariantMap &state);
 
   void doCoreSetup(const QVariant &setupData);

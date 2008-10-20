@@ -294,6 +294,9 @@ class Core : public QObject {
     //! Sent when a BufferInfo is updated in storage.
     void bufferInfoUpdated(UserId user, const BufferInfo &info);
 
+  //! Relay From CoreSession::sessionState(const QVariant &). Used for internal connection only
+  void sessionState(const QVariant &);
+
   private slots:
     bool startListening();
     void stopListening();

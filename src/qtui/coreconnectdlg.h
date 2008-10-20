@@ -34,90 +34,91 @@ class CoreConfigWizard;
 class CoreConnectDlg : public QDialog {
   Q_OBJECT
 
-  public:
-    CoreConnectDlg(bool = false, QWidget *parent = 0);
-    ~CoreConnectDlg();
+public:
+  CoreConnectDlg(bool = false, QWidget *parent = 0);
+  ~CoreConnectDlg();
 
-  private slots:
+private slots:
 
-    /*** Phase Null: Accounts ***/
-    void restartPhaseNull();
+  /*** Phase Null: Accounts ***/
+  void restartPhaseNull();
 
-    void on_accountList_itemSelectionChanged();
-    void on_autoConnect_clicked(bool);
+  void on_accountList_itemSelectionChanged();
+  void on_autoConnect_clicked(bool);
 
-    void on_addAccount_clicked();
-    void on_editAccount_clicked();
-    void on_deleteAccount_clicked();
+  void on_addAccount_clicked();
+  void on_editAccount_clicked();
+  void on_deleteAccount_clicked();
+  void on_useInternalCore_clicked();
 
-    void on_accountList_itemDoubleClicked(QListWidgetItem *item);
-    void on_accountButtonBox_accepted();
+  void on_accountList_itemDoubleClicked(QListWidgetItem *item);
+  void on_accountButtonBox_accepted();
 
-    void setAccountWidgetStates();
+  void setAccountWidgetStates();
 
-    /*** Phase One: Connection ***/
-    void connectToCore();
+  /*** Phase One: Connection ***/
+  void connectToCore();
 
-    void initPhaseError(const QString &error);
-    void initPhaseMsg(const QString &msg);
-    void initPhaseSocketState(QAbstractSocket::SocketState);
-    void encrypted(bool);
+  void initPhaseError(const QString &error);
+  void initPhaseMsg(const QString &msg);
+  void initPhaseSocketState(QAbstractSocket::SocketState);
+  void encrypted(bool);
 
-    /*** Phase Two: Login ***/
-    void startLogin();
-    void doLogin();
-    void doLogin(const QVariantMap &loginData);
-    void loginFailed(const QString &);
-    void startCoreConfig(const QVariantList &backends);
-    void configWizardAccepted();
-    void configWizardRejected();
-    void on_launchCoreConfigWizard_clicked();
+  /*** Phase Two: Login ***/
+  void startLogin();
+  void doLogin();
+  void doLogin(const QVariantMap &loginData);
+  void loginFailed(const QString &);
+  void startCoreConfig(const QVariantList &backends);
+  void configWizardAccepted();
+  void configWizardRejected();
+  void on_launchCoreConfigWizard_clicked();
 
-    void setLoginWidgetStates();
+  void setLoginWidgetStates();
 
-    /*** Phase Three: Sync ***/
-    void startSync();
-    void syncFinished();
+  /*** Phase Three: Sync ***/
+  void startSync();
+  void syncFinished();
 
-    void coreSessionProgress(quint32, quint32);
-    void coreNetworksProgress(quint32, quint32);
+  void coreSessionProgress(quint32, quint32);
+  void coreNetworksProgress(quint32, quint32);
 
-  private:
-    Ui::CoreConnectDlg ui;
+private:
+  Ui::CoreConnectDlg ui;
 
-    AccountId autoConnectAccount;
-    QHash<AccountId, QVariantMap> accounts;
-    QVariantMap accountData;
-    AccountId account;
+  AccountId autoConnectAccount;
+  QHash<AccountId, QVariantMap> accounts;
+  QVariantMap accountData;
+  AccountId account;
 
-    bool doingAutoConnect;
+  bool doingAutoConnect;
 
-    QVariantList storageBackends;
+  QVariantList storageBackends;
 
-    ClientSyncer *clientSyncer;
-    CoreConfigWizard *wizard;
+  ClientSyncer *clientSyncer;
+  CoreConfigWizard *wizard;
 };
 
 class CoreAccountEditDlg : public QDialog {
   Q_OBJECT
 
-  public:
-    CoreAccountEditDlg(AccountId id, const QVariantMap &data, const QStringList &existing = QStringList(), QWidget *parent = 0);
+public:
+  CoreAccountEditDlg(AccountId id, const QVariantMap &data, const QStringList &existing = QStringList(), QWidget *parent = 0);
 
-    QVariantMap accountData();
+  QVariantMap accountData();
 
-  private slots:
-    void on_host_textChanged(const QString &);
-    void on_accountName_textChanged(const QString &);
-    void on_useRemote_toggled(bool);
+private slots:
+  void on_host_textChanged(const QString &);
+  void on_accountName_textChanged(const QString &);
+  void on_useRemote_toggled(bool);
 
-    void setWidgetStates();
+  void setWidgetStates();
 
-  private:
-    Ui::CoreAccountEditDlg ui;
+private:
+  Ui::CoreAccountEditDlg ui;
 
-    QStringList existing;
-    QVariantMap account;
+  QStringList existing;
+  QVariantMap account;
 };
 
 #endif
