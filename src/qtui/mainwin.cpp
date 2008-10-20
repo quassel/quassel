@@ -77,7 +77,7 @@ MainWin::MainWin(QWidget *parent)
   QtUiSettings uiSettings;
   QString style = uiSettings.value("Style", QString()).toString();
   if(!style.isEmpty()) {
-    QApplication::setStyle("plastique");
+    QApplication::setStyle(style);
   }
 
   setWindowTitle("Quassel IRC");
