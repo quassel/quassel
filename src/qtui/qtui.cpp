@@ -25,9 +25,9 @@
 #include "mainwin.h"
 #include "abstractnotificationbackend.h"
 #include "qtuimessageprocessor.h"
+#include "qtuisettings.h"
 #include "qtuistyle.h"
 #include "types.h"
-#include "uisettings.h"
 #include "util.h"
 
 QHash<QString, ActionCollection *> QtUi::_actionCollections;
@@ -42,7 +42,7 @@ QtUi::QtUi() : AbstractUi() {
     return;
   }
 
-  UiSettings uiSettings;
+  QtUiSettings uiSettings;
   loadTranslation(uiSettings.value("Locale", QLocale::system()).value<QLocale>());
 
   _mainWin = new MainWin();

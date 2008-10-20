@@ -76,15 +76,16 @@ void GeneralSettingsPage::defaults() {
 
 void GeneralSettingsPage::load() {
   // uiSettings:
-  QtUiSettings uiSettings;
-  settings["UseSystemTrayIcon"] = uiSettings.value("UseSystemTrayIcon", QVariant(true));
+  QtUiSettings qtuiSettings;
+  UiSettings uiSettings;
+  settings["UseSystemTrayIcon"] = qtuiSettings.value("UseSystemTrayIcon", QVariant(true));
   ui.useSystemTrayIcon->setChecked(settings["UseSystemTrayIcon"].toBool());
   ui.showSystemTrayIcon->setChecked(settings["UseSystemTrayIcon"].toBool());
 
-  settings["MinimizeOnMinimize"] = uiSettings.value("MinimizeOnMinimize", QVariant(false));
+  settings["MinimizeOnMinimize"] = qtuiSettings.value("MinimizeOnMinimize", QVariant(false));
   ui.minimizeOnMinimize->setChecked(settings["MinimizeOnMinimize"].toBool());
 
-  settings["MinimizeOnClose"] = uiSettings.value("MinimizeOnClose", QVariant(false));
+  settings["MinimizeOnClose"] = qtuiSettings.value("MinimizeOnClose", QVariant(false));
   ui.minimizeOnClose->setChecked(settings["MinimizeOnClose"].toBool());
 
   settings["MouseWheelChangesBuffers"] = uiSettings.value("MouseWheelChangesBuffers", QVariant(true));
@@ -112,10 +113,12 @@ void GeneralSettingsPage::load() {
 }
 
 void GeneralSettingsPage::save() {
-  QtUiSettings uiSettings;
-  uiSettings.setValue("UseSystemTrayIcon", ui.useSystemTrayIcon->isChecked());
-  uiSettings.setValue("MinimizeOnMinimize",  ui.minimizeOnMinimize->isChecked());
-  uiSettings.setValue("MinimizeOnClose", ui.minimizeOnClose->isChecked());
+  QtUiSettings qtuiSettings;
+  qtuiSettings.setValue("UseSystemTrayIcon", ui.useSystemTrayIcon->isChecked());
+  qtuiSettings.setValue("MinimizeOnMinimize",  ui.minimizeOnMinimize->isChecked());
+  qtuiSettings.setValue("MinimizeOnClose", ui.minimizeOnClose->isChecked());
+
+  UiSettings uiSettings;
   uiSettings.setValue("MouseWheelChangesBuffers", ui.mouseWheelChangesBuffers->isChecked());
 
   BufferSettings bufferSettings;
