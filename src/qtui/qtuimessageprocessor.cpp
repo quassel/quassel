@@ -36,11 +36,13 @@ QtUiMessageProcessor::QtUiMessageProcessor(QObject *parent)
     _msgCount(0)
 {
   NotificationSettings notificationSettings;
+  _nicksCaseSensitive = notificationSettings.nicksCaseSensitive();
   _highlightNick = notificationSettings.highlightNick();
   highlightListChanged(notificationSettings.highlightList());
+  notificationSettings.notify("Highlights/NicksCaseSensitive", this, SLOT(nicksCaseSensitiveChanged(const QVariant &)));
   notificationSettings.notify("highlightList", this, SLOT(highlightListChanged(const QVariant &)));
   notificationSettings.notify("highlightNick", this, SLOT(highlightNickChanged(const QVariant &)));
-  
+
   _processTimer.setInterval(0);
   connect(&_processTimer, SIGNAL(timeout()), this, SLOT(processNextMessage()));
 }
@@ -71,7 +73,7 @@ void QtUiMessageProcessor::process(QList<Message> &msgs) {
   Client::messageModel()->insertMessages(msgs);
   return;
 
-  
+
   if(msgs.isEmpty()) return;
   _processQueue.append(msgs);
   _msgCount += msgs.count();
@@ -124,7 +126,7 @@ void QtUiMessageProcessor::checkForHighlight(Message &msg) {
   if(!((msg.type() & (Message::Plain | Message::Notice | Message::Action)) && !(msg.flags() & Message::Self)))
     return;
 
-  //NotificationSettings notificationSettings;
+  // TODO: Cache this (per network)
   const Network *net = Client::network(msg.bufferInfo().networkId());
   if(net && !net->myNick().isEmpty()) {
     QStringList nickList;
@@ -136,23 +138,24 @@ void QtUiMessageProcessor::checkForHighlight(Message &msg) {
         nickList = myIdentity->nicks();
     }
     foreach(QString nickname, nickList) {
-      QRegExp nickRegExp("^(.*\\W)?" + QRegExp::escape(nickname) + "(\\W.*)?$");
-      if(nickRegExp.exactMatch(msg.contents())) {
+      QRegExp nickRegExp("\\b" + QRegExp::escape(nickname) + "\\b",
+                          _nicksCaseSensitive ? Qt::CaseSensitive : Qt::CaseInsensitive);
+      if(nickRegExp.indexIn(msg.contents()) >= 0) {
         msg.setFlags(msg.flags() | Message::Highlight);
         return;
       }
     }
 
     for(int i = 0; i < _highlightRules.count(); i++) {
-      const HighlightRule &rule = _highlightRules[i];
+      const HighlightRule &rule = _highlightRules.at(i);
       if(!rule.isEnabled)
 	continue;
 
       QRegExp userRegExp;
       if(rule.isRegExp) {
-        userRegExp = QRegExp(rule.name, rule.caseSensitive);
+        userRegExp = QRegExp(rule.name, rule.caseSensitive? Qt::CaseSensitive : Qt::CaseInsensitive);
       } else {
-        userRegExp = QRegExp("^(.*\\W)?" + QRegExp::escape(rule.name) + "(\\W.*)?$", rule.caseSensitive);
+        userRegExp = QRegExp("\\b" + QRegExp::escape(rule.name) + "\\b", rule.caseSensitive? Qt::CaseSensitive : Qt::CaseInsensitive);
       }
       if(userRegExp.exactMatch(msg.contents())) {
         msg.setFlags(msg.flags() | Message::Highlight);
@@ -160,6 +163,10 @@ void QtUiMessageProcessor::checkForHighlight(Message &msg) {
       }
     }
   }
+}
+
+void QtUiMessageProcessor::nicksCaseSensitiveChanged(const QVariant &variant) {
+  _nicksCaseSensitive = variant.toBool();
 }
 
 void QtUiMessageProcessor::highlightListChanged(const QVariant &variant) {
@@ -171,9 +178,9 @@ void QtUiMessageProcessor::highlightListChanged(const QVariant &variant) {
   while(iter != iterEnd) {
     QVariantMap rule;
     _highlightRules << HighlightRule(rule["name"].toString(),
-				     rule["enable"].toBool(),
-				     rule["cs"].toBool() ? Qt::CaseSensitive : Qt::CaseInsensitive,
-				     rule["regex"].toBool());
+                                     rule["enable"].toBool(),
+                                     rule["cs"].toBool() ? Qt::CaseSensitive : Qt::CaseInsensitive,
+                                     rule["regex"].toBool());
     iter++;
   }
 }

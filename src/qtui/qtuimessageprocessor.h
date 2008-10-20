@@ -48,6 +48,7 @@ public slots:
 
 private slots:
   void processNextMessage();
+  void nicksCaseSensitiveChanged(const QVariant &variant);
   void highlightListChanged(const QVariant &variant);
   void highlightNickChanged(const QVariant &variant);
 
@@ -69,11 +70,13 @@ private:
     bool isEnabled;
     Qt::CaseSensitivity caseSensitive;
     bool isRegExp;
-    inline HighlightRule(const QString &name, bool enabled, Qt::CaseSensitivity cs, bool regExp) : name(name), isEnabled(enabled), caseSensitive(cs), isRegExp(regExp) {}
+    inline HighlightRule(const QString &name, bool enabled, Qt::CaseSensitivity cs, bool regExp)
+    : name(name), isEnabled(enabled), caseSensitive(cs), isRegExp(regExp) {}
   };
-  
+
   QList<HighlightRule> _highlightRules;
   NotificationSettings::HighlightNickType _highlightNick;
+  bool _nicksCaseSensitive;
 };
 
 #endif

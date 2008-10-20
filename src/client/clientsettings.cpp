@@ -126,3 +126,11 @@ void NotificationSettings::setHighlightNick(NotificationSettings::HighlightNickT
 NotificationSettings::HighlightNickType NotificationSettings::highlightNick() {
   return (NotificationSettings::HighlightNickType) localValue("highlightNick", CurrentNick).toInt();
 }
+
+void NotificationSettings::setNicksCaseSensitive(bool cs) {
+  setLocalValue("Highlights/NicksCaseSensitive", cs);
+}
+
+bool NotificationSettings::nicksCaseSensitive() {
+  return localValue("Highlights/NicksCaseSensitive", true).toBool();
+}
