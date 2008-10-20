@@ -69,9 +69,9 @@ void ChatView::resizeEvent(QResizeEvent *event) {
   // we can reduce viewport updates if we scroll to the bottom allready at the beginning
   verticalScrollBar()->setValue(verticalScrollBar()->maximum());
 
-  // FIXME: without the hardcoded -2 Qt reserves space for a horizontal scrollbar even though it's disabled permanently.
+  // FIXME: without the hardcoded -4 Qt reserves space for a horizontal scrollbar even though it's disabled permanently.
   // this does only occur on QtX11 (at least not on Qt for Mac OS). Seems like a Qt Bug.
-  scene()->updateForViewport(viewport()->width() - 2, viewport()->height());
+  scene()->updateForViewport(viewport()->width() - 4, viewport()->height());
 
   _lastScrollbarPos = verticalScrollBar()->maximum();
   verticalScrollBar()->setValue(verticalScrollBar()->maximum());
