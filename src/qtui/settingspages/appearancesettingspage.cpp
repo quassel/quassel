@@ -21,7 +21,7 @@
 #include "appearancesettingspage.h"
 
 #include "qtui.h"
-#include "uisettings.h"
+#include "qtuisettings.h"
 #include "util.h"
 
 #include <QDir>
@@ -33,13 +33,13 @@ AppearanceSettingsPage::AppearanceSettingsPage(QWidget *parent)
   initStyleComboBox();
   initLanguageComboBox();
 
-  connect(ui.styleComboBox, SIGNAL(currentIndexChanged(QString)), this, SLOT(widgetHasChanged())); 
-  connect(ui.languageComboBox, SIGNAL(currentIndexChanged(QString)), this, SLOT(widgetHasChanged())); 
+  connect(ui.styleComboBox, SIGNAL(currentIndexChanged(QString)), this, SLOT(widgetHasChanged()));
+  connect(ui.languageComboBox, SIGNAL(currentIndexChanged(QString)), this, SLOT(widgetHasChanged()));
 }
 
 void AppearanceSettingsPage::initStyleComboBox() {
   QStringList styleList = QStyleFactory::keys();
-  ui.styleComboBox->addItem("<default>");
+  ui.styleComboBox->addItem(tr("<System Default>"));
   foreach(QString style, styleList) {
     ui.styleComboBox->addItem(style);
   }
@@ -65,7 +65,7 @@ void AppearanceSettingsPage::defaults() {
 }
 
 void AppearanceSettingsPage::load() {
-  UiSettings uiSettings;
+  QtUiSettings uiSettings;
 
   settings["Style"] = uiSettings.value("Style", QString(""));
   if(settings["Style"].toString() == "") {
@@ -88,7 +88,7 @@ void AppearanceSettingsPage::load() {
 }
 
 void AppearanceSettingsPage::save() {
-  UiSettings uiSettings;
+  QtUiSettings uiSettings;
 
   if(ui.styleComboBox->currentIndex() < 1) {
     uiSettings.setValue("Style", QString(""));
@@ -101,7 +101,7 @@ void AppearanceSettingsPage::save() {
   } else {
     uiSettings.setValue("Locale", selectedLocale());
   }
-  
+
   load();
   setChangedState(false);
 }

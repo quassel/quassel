@@ -21,7 +21,7 @@
 #include "generalsettingspage.h"
 
 #include "qtui.h"
-#include "uisettings.h"
+#include "qtuisettings.h"
 #include "buffersettings.h"
 
 GeneralSettingsPage::GeneralSettingsPage(QWidget *parent)
@@ -76,7 +76,7 @@ void GeneralSettingsPage::defaults() {
 
 void GeneralSettingsPage::load() {
   // uiSettings:
-  UiSettings uiSettings;
+  QtUiSettings uiSettings;
   settings["UseSystemTrayIcon"] = uiSettings.value("UseSystemTrayIcon", QVariant(true));
   ui.useSystemTrayIcon->setChecked(settings["UseSystemTrayIcon"].toBool());
   ui.showSystemTrayIcon->setChecked(settings["UseSystemTrayIcon"].toBool());
@@ -112,7 +112,7 @@ void GeneralSettingsPage::load() {
 }
 
 void GeneralSettingsPage::save() {
-  UiSettings uiSettings;
+  QtUiSettings uiSettings;
   uiSettings.setValue("UseSystemTrayIcon", ui.useSystemTrayIcon->isChecked());
   uiSettings.setValue("MinimizeOnMinimize",  ui.minimizeOnMinimize->isChecked());
   uiSettings.setValue("MinimizeOnClose", ui.minimizeOnClose->isChecked());

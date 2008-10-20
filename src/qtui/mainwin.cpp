@@ -75,9 +75,9 @@ MainWin::MainWin(QWidget *parent)
     _trayIcon(new QSystemTrayIcon(this))
 {
   QtUiSettings uiSettings;
-  QString style = uiSettings.value("Style", QString("")).toString();
-  if(style != "") {
-    QApplication::setStyle(style);
+  QString style = uiSettings.value("Style", QString()).toString();
+  if(!style.isEmpty()) {
+    QApplication::setStyle("plastique");
   }
 
   setWindowTitle("Quassel IRC");
@@ -399,7 +399,7 @@ void MainWin::setupStatusBar() {
   _viewMenu->addSeparator();
   QAction *showStatusbar = QtUi::actionCollection("General")->action("ToggleStatusBar");
 
-  UiSettings uiSettings;
+  QtUiSettings uiSettings;
 
   bool enabled = uiSettings.value("ShowStatusBar", QVariant(true)).toBool();
   showStatusbar->setChecked(enabled);
@@ -410,7 +410,7 @@ void MainWin::setupStatusBar() {
 }
 
 void MainWin::saveStatusBarStatus(bool enabled) {
-  UiSettings uiSettings;
+  QtUiSettings uiSettings;
   uiSettings.setValue("ShowStatusBar", enabled);
 }
 
@@ -429,7 +429,7 @@ void MainWin::setupSystray() {
 
   systemTrayIcon()->setContextMenu(systrayMenu);
 
-  UiSettings s;
+  QtUiSettings s;
   if(s.value("UseSystemTrayIcon", QVariant(true)).toBool()) {
     systemTrayIcon()->show();
   }
@@ -444,7 +444,7 @@ void MainWin::setupSystray() {
 void MainWin::changeEvent(QEvent *event) {
   if(event->type() == QEvent::WindowStateChange) {
     if(windowState() & Qt::WindowMinimized) {
-      UiSettings s;
+      QtUiSettings s;
       if(s.value("UseSystemTrayIcon").toBool() && s.value("MinimizeOnMinimize").toBool()) {
         toggleVisibility();
         event->ignore();
@@ -578,7 +578,7 @@ void MainWin::showAboutDlg() {
 }
 
 void MainWin::closeEvent(QCloseEvent *event) {
-  UiSettings s;
+  QtUiSettings s;
   if(s.value("UseSystemTrayIcon").toBool() && s.value("MinimizeOnClose").toBool()) {
     toggleVisibility();
     event->ignore();
