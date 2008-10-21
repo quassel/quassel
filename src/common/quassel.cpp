@@ -72,8 +72,10 @@ Quassel::~Quassel() {
 }
 
 bool Quassel::init() {
-  if(_initialized) return true;  // allow multiple invocations because of MonolithicApplication
+  if(_initialized)
+    return true;  // allow multiple invocations because of MonolithicApplication
 
+  _initialized = true;
   qsrand(QTime(0,0,0).secsTo(QTime::currentTime()));
 
   registerMetaTypes();
