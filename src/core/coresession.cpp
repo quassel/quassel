@@ -233,6 +233,9 @@ void CoreSession::addClient(QIODevice *device) {
   if(!device) {
     quError() << "Invoking CoreSession::addClient with a QObject that is not a QIODevice!";
   } else {
+    // if the socket is an orphan, the signalProxy adopts it.
+    // -> we don't need to care about it anymore
+    device->setParent(0);
     signalProxy()->addPeer(device);
     QVariantMap reply;
     reply["MsgType"] = "SessionInit";
@@ -250,7 +253,6 @@ void CoreSession::removeClient(QIODevice *iodev) {
   QTcpSocket *socket = qobject_cast<QTcpSocket *>(iodev);
   if(socket)
     quInfo() << qPrintable(tr("Client")) << qPrintable(socket->peerAddress().toString()) << qPrintable(tr("disconnected (UserId: %1).").arg(user().toInt()));
-  iodev->deleteLater();
 }
 
 SignalProxy *CoreSession::signalProxy() const {

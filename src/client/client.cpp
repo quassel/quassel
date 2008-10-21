@@ -65,7 +65,6 @@ void Client::init(AbstractUi *ui) {
 
 Client::Client(QObject *parent)
   : QObject(parent),
-    socket(0),
     _signalProxy(new SignalProxy(SignalProxy::Client, this)),
     mainUi(0),
     _networkModel(0),
@@ -116,7 +115,7 @@ void Client::init() {
   p->attachSlot(SIGNAL(networkCreated(NetworkId)), this, SLOT(coreNetworkCreated(NetworkId)));
   p->attachSlot(SIGNAL(networkRemoved(NetworkId)), this, SLOT(coreNetworkRemoved(NetworkId)));
 
-  connect(p, SIGNAL(disconnected()), this, SLOT(disconnectFromCore()));
+  connect(p, SIGNAL(disconnected()), this, SLOT(disconnectedFromCore()));
 
   //connect(mainUi, SIGNAL(connectToCore(const QVariantMap &)), this, SLOT(connectToCore(const QVariantMap &)));
   connect(mainUi, SIGNAL(disconnectFromCore()), this, SLOT(disconnectFromCore()));
@@ -252,11 +251,18 @@ void Client::userInput(BufferInfo bufferInfo, QString message) {
 
 /*** core connection stuff ***/
 
-void Client::setConnectedToCore(QIODevice *sock, AccountId id) {
-  socket = sock;
+void Client::setConnectedToCore(QIODevice *socket, AccountId id) {
+  // if the socket is an orphan, the signalProxy adopts it.
+  // -> we don't need to care about it anymore
+  socket->setParent(0);
   signalProxy()->addPeer(socket);
   _connectedToCore = true;
   setCurrentCoreAccount(id);
+}
+
+void Client::setConnectedToInternalCore() {
+  _connectedToCore = true;
+  setCurrentCoreAccount(AccountId());
 }
 
 void Client::setSyncedToCore() {
@@ -286,12 +292,12 @@ void Client::setSecuredConnection() {
 void Client::disconnectFromCore() {
   if(!isConnected())
     return;
-  _connectedToCore = false;
 
-  if(socket) {
-    socket->close();
-    socket->deleteLater();
-  }
+  signalProxy()->removeAllPeers();
+}
+
+void Client::disconnectedFromCore() {
+  _connectedToCore = false;
   _syncedToCore = false;
   emit disconnected();
   emit coreConnectionStateChanged(false);
@@ -334,10 +340,6 @@ void Client::disconnectFromCore() {
   }
   Q_ASSERT(_identities.isEmpty());
 
-}
-
-void Client::setCoreConfiguration(const QVariantMap &settings) {
-  SignalProxy::writeDataToDevice(socket, settings);
 }
 
 /*** ***/

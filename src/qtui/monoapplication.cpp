@@ -26,7 +26,8 @@
 #include "qtui.h"
 
 MonolithicApplication::MonolithicApplication(int &argc, char **argv)
-  : QtUiApplication(argc, argv)
+  : QtUiApplication(argc, argv),
+    _internalInitDone(false)
 {
   _internal = new CoreApplicationInternal(); // needed for parser options
   setRunMode(Monolithic);
@@ -34,10 +35,7 @@ MonolithicApplication::MonolithicApplication(int &argc, char **argv)
 
 bool MonolithicApplication::init() {
   connect(Client::instance(), SIGNAL(newClientSyncer(ClientSyncer *)), this, SLOT(newClientSyncer(ClientSyncer *)));
-  if(QtUiApplication::init()) {
-    return true;
-  }
-  return false;
+  return QtUiApplication::init();
 }
 
 MonolithicApplication::~MonolithicApplication() {
@@ -51,7 +49,9 @@ void MonolithicApplication::newClientSyncer(ClientSyncer *syncer) {
 }
 
 void MonolithicApplication::startInternalCore() {
-  _internal->init();
+  if(!_internalInitDone) {
+    _internal->init();
+  }
   Core *core = Core::instance();
   ClientSyncer *syncer = static_cast<ClientSyncer *>(sender());
   connect(syncer, SIGNAL(connectToInternalCore(SignalProxy *)), core, SLOT(setupInternalClientSession(SignalProxy *)));

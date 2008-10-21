@@ -248,7 +248,7 @@ void ClientSyncer::loginToCore(const QString &user, const QString &passwd) {
 void ClientSyncer::internalSessionStateReceived(const QVariant &packedState) {
   QVariantMap state = packedState.toMap();
   emit sessionProgress(1, 1);
-  // Client::instance()->setConnectedToCore(socket, AccountId());
+  Client::instance()->setConnectedToInternalCore();
   syncToCore(state);
 }
 
@@ -256,13 +256,11 @@ void ClientSyncer::sessionStateReceived(const QVariantMap &state) {
   emit sessionProgress(1, 1);
   disconnect(this, SIGNAL(recvPartialItem(quint32, quint32)), this, SIGNAL(sessionProgress(quint32, quint32)));
   disconnect(socket, 0, this, 0);  // rest of communication happens through SignalProxy
-  //Client::signalProxy()->addPeer(socket);
   Client::instance()->setConnectedToCore(socket, coreConnectionInfo["AccountId"].value<AccountId>());
   syncToCore(state);
 }
 
 void ClientSyncer::syncToCore(const QVariantMap &sessionState) {
-
   // create identities
   foreach(QVariant vid, sessionState["Identities"].toList()) {
     Client::instance()->coreIdentityCreated(vid.value<Identity>());

@@ -40,6 +40,7 @@ private slots:
 
 private:
   CoreApplicationInternal *_internal;
+  bool _internalInitDone;
 };
 
 #endif

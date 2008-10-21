@@ -154,16 +154,11 @@ public slots:
 
   void disconnectFromCore();
 
-  void setCoreConfiguration(const QVariantMap &settings);
-
   void bufferRemoved(BufferId bufferId);
   void bufferRenamed(BufferId bufferId, const QString &newName);
 
 private slots:
-  //void coreSocketError(QAbstractSocket::SocketError);
-
-  //void networkConnected(NetworkId);
-  //void networkDisconnected(NetworkId);
+  void disconnectedFromCore();
 
   void recvMessage(const Message &message);
   void recvStatusMsg(QString network, QString message);
@@ -175,6 +170,7 @@ private slots:
   void coreNetworkRemoved(NetworkId);
 
   void setConnectedToCore(QIODevice *socket, AccountId id);
+  void setConnectedToInternalCore();
   void setSyncedToCore();
   void setSecuredConnection();
 
@@ -189,8 +185,6 @@ private:
   static inline BufferSyncer *bufferSyncer() { return instance()->_bufferSyncer; }
 
   static QPointer<Client> instanceptr;
-
-  QPointer<QIODevice> socket;
 
   SignalProxy * _signalProxy;
   AbstractUi * mainUi;
