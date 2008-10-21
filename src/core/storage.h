@@ -102,6 +102,11 @@ class Storage : public QObject {
      */
     virtual UserId validateUser(const QString &user, const QString &password) = 0;
 
+    //! Determine the UserId of the internal user
+    /** \return A valid UserId if the password matches the username; 0 else
+     */
+    virtual UserId internalUser() = 0;
+
     //! Remove a core user from storage.
     /** \param user     The userid to delete
      */

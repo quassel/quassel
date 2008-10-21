@@ -625,7 +625,10 @@ void Core::setupInternalClientSession(SignalProxy *proxy) {
     setupCoreForInternalUsage();
   }
 
-  UserId uid = 3; // FIXME!!!11
+  mutex.lock();
+  UserId uid = storage->internalUser();
+  mutex.unlock();
+
   // Find or create session for validated user
   SessionThread *sess;
   if(sessions.contains(uid))

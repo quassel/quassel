@@ -113,6 +113,18 @@ UserId SqliteStorage::validateUser(const QString &user, const QString &password)
   }
 }
 
+UserId SqliteStorage::internalUser() {
+  QSqlQuery query(logDb());
+  query.prepare(queryString("select_internaluser"));
+  query.exec();
+
+  if(query.first()) {
+    return query.value(0).toInt();
+  } else {
+    return 0;
+  }
+}
+
 void SqliteStorage::delUser(UserId user) {
   QSqlQuery query(logDb());
   query.prepare(queryString("delete_backlog_by_uid"));
