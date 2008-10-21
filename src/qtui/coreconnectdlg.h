@@ -112,7 +112,6 @@ public:
 private slots:
   void on_host_textChanged(const QString &);
   void on_accountName_textChanged(const QString &);
-  void on_useRemote_toggled(bool);
 
   void setWidgetStates();
 

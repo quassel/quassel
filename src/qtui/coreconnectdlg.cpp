@@ -29,6 +29,7 @@
 #include "clientsyncer.h"
 #include "coreconfigwizard.h"
 #include "iconloader.h"
+#include "quassel.h"
 
 CoreConnectDlg::CoreConnectDlg(bool autoconnect, QWidget *parent)
   : QDialog(parent)
@@ -39,6 +40,10 @@ CoreConnectDlg::CoreConnectDlg(bool autoconnect, QWidget *parent)
   ui.deleteAccount->setIcon(SmallIcon("list-remove"));
   ui.connectIcon->setPixmap(BarIcon("network-disconnect"));
   ui.secureConnection->setPixmap(SmallIcon("document-encrypt"));
+
+  if(Quassel::runMode() != Quassel::Monolithic) {
+    ui.useInternalCore->hide();
+  }
 
   // make it look more native under Mac OS X:
   setWindowFlags(Qt::Sheet);
@@ -216,13 +221,6 @@ void CoreConnectDlg::on_accountButtonBox_accepted() {
 }
 
 void CoreConnectDlg::on_useInternalCore_clicked() {
-//   // FIXME: this needs to be a qobject_cast - therefore MonolithicApplication needs to be a proper QObject... :/
-//   MonolithicApplication *monoApp = qobject_cast<MonolithicApplication *>(QApplication::instance());
-//   if(monoApp) {
-//     qDebug() << "starting core...";
-//     monoApp->startInternalCore();
-//     monoApp->connectClientSyncer(clientSyncer);
-//   }
   clientSyncer->useInternalCore();
   startSync();
 }
@@ -466,7 +464,6 @@ CoreAccountEditDlg::CoreAccountEditDlg(AccountId id, const QVariantMap &acct, co
     existing.removeAll(acct["AccountName"].toString());
     ui.host->setText(acct["Host"].toString());
     ui.port->setValue(acct["Port"].toUInt());
-    ui.useInternal->setChecked(acct["UseInternal"].toBool());
     ui.accountName->setText(acct["AccountName"].toString());
 #ifdef HAVE_SSL
     ui.useSsl->setChecked(acct["useSsl"].toBool());
@@ -487,21 +484,12 @@ CoreAccountEditDlg::CoreAccountEditDlg(AccountId id, const QVariantMap &acct, co
     ui.useSsl->setEnabled(false);
 #endif
   }
-
-#ifndef BUILD_MONO
-  // if we don't have a mono build we hide the option to use the internal connection and force the setting to use remote host
-  ui.useInternal->setChecked(false);
-  ui.useInternal->hide();
-  ui.useRemote->hide();
-  ui.labelUseBuiltinCore->hide();
-#endif
 }
 
 QVariantMap CoreAccountEditDlg::accountData() {
   account["AccountName"] = ui.accountName->text().trimmed();
   account["Host"] = ui.host->text().trimmed();
   account["Port"] = ui.port->value();
-  account["UseInternal"] = ui.useInternal->isChecked();
   account["useSsl"] = ui.useSsl->isChecked();
   account["useProxy"] = ui.useProxy->isChecked();
   account["proxyHost"] = ui.proxyHost->text().trimmed();
@@ -513,7 +501,7 @@ QVariantMap CoreAccountEditDlg::accountData() {
 }
 
 void CoreAccountEditDlg::setWidgetStates() {
-  bool ok = !ui.accountName->text().trimmed().isEmpty() && !existing.contains(ui.accountName->text()) && (ui.useInternal->isChecked() || !ui.host->text().isEmpty());
+  bool ok = !ui.accountName->text().trimmed().isEmpty() && !existing.contains(ui.accountName->text()) && !ui.host->text().isEmpty();
   ui.buttonBox->button(QDialogButtonBox::Ok)->setEnabled(ok);
 }
 
@@ -524,10 +512,5 @@ void CoreAccountEditDlg::on_host_textChanged(const QString &text) {
 
 void CoreAccountEditDlg::on_accountName_textChanged(const QString &text) {
   Q_UNUSED(text);
-  setWidgetStates();
-}
-
-void CoreAccountEditDlg::on_useRemote_toggled(bool state) {
-  Q_UNUSED(state);
   setWidgetStates();
 }

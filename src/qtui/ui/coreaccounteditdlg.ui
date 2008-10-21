@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>514</width>
-    <height>534</height>
+    <width>509</width>
+    <height>458</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -42,63 +42,27 @@
         <item>
          <layout class="QGridLayout" >
           <item row="0" column="0" >
-           <widget class="QRadioButton" name="useInternal" >
-            <property name="enabled" >
-             <bool>false</bool>
-            </property>
-            <property name="text" >
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1" colspan="2" >
-           <widget class="QLabel" name="labelUseBuiltinCore" >
-            <property name="enabled" >
-             <bool>false</bool>
-            </property>
-            <property name="text" >
-             <string>Use built-in Quassel Core</string>
-            </property>
-            <property name="buddy" >
-             <cstring>useInternal</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0" >
-           <widget class="QRadioButton" name="useRemote" >
-            <property name="text" >
-             <string/>
-            </property>
-            <property name="checked" >
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1" >
            <widget class="QLabel" name="label_2" >
             <property name="text" >
              <string>Hostname:</string>
             </property>
-            <property name="buddy" >
-             <cstring>useRemote</cstring>
-            </property>
            </widget>
           </item>
-          <item row="1" column="2" >
+          <item row="0" column="1" >
            <widget class="QLabel" name="label_3" >
             <property name="text" >
              <string>Port:</string>
             </property>
            </widget>
           </item>
-          <item row="2" column="1" >
+          <item row="1" column="0" >
            <widget class="QLineEdit" name="host" >
             <property name="text" >
              <string>localhost</string>
             </property>
            </widget>
           </item>
-          <item row="2" column="2" >
+          <item row="1" column="1" >
            <widget class="QSpinBox" name="port" >
             <property name="minimum" >
              <number>1</number>
@@ -111,13 +75,13 @@
             </property>
            </widget>
           </item>
-          <item row="3" column="1" colspan="2" >
+          <item row="2" column="0" colspan="2" >
            <widget class="QCheckBox" name="useSsl" >
             <property name="text" >
              <string>Use secure connection (SSL)</string>
             </property>
             <property name="icon" >
-             <iconset resource="../../icons/icons.qrc" >
+             <iconset>
               <normaloff>:/16x16/actions/oxygen/16x16/actions/document-encrypt.png</normaloff>:/16x16/actions/oxygen/16x16/actions/document-encrypt.png</iconset>
             </property>
             <property name="checked" >
@@ -277,54 +241,6 @@
     <hint type="destinationlabel" >
      <x>286</x>
      <y>207</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>useInternal</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>host</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>63</x>
-     <y>100</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>92</x>
-     <y>143</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>useInternal</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>port</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>63</x>
-     <y>100</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>400</x>
-     <y>144</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>useRemote</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>host</receiver>
-   <slot>setFocus()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>59</x>
-     <y>126</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>184</x>
-     <y>146</y>
     </hint>
    </hints>
   </connection>
