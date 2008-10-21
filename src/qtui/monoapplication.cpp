@@ -33,8 +33,9 @@ MonolithicApplication::MonolithicApplication(int &argc, char **argv)
 }
 
 bool MonolithicApplication::init() {
-  if(Quassel::init()) {
-    return QtUiApplication::init();
+  connect(Client::instance(), SIGNAL(newClientSyncer(ClientSyncer *)), this, SLOT(newClientSyncer(ClientSyncer *)));
+  if(QtUiApplication::init()) {
+    return true;
   }
   return false;
 }
@@ -45,12 +46,14 @@ MonolithicApplication::~MonolithicApplication() {
   delete _internal;
 }
 
-bool MonolithicApplication::startInternalCore() {
-  return _internal->init();
+void MonolithicApplication::newClientSyncer(ClientSyncer *syncer) {
+  connect(syncer, SIGNAL(startInternalCore()), this, SLOT(startInternalCore()));
 }
 
-void MonolithicApplication::connectClientSyncer(ClientSyncer *syncer) {
+void MonolithicApplication::startInternalCore() {
+  _internal->init();
   Core *core = Core::instance();
+  ClientSyncer *syncer = static_cast<ClientSyncer *>(sender());
   connect(syncer, SIGNAL(connectToInternalCore(SignalProxy *)), core, SLOT(setupInternalClientSession(SignalProxy *)));
   connect(core, SIGNAL(sessionState(const QVariant &)), syncer, SLOT(internalSessionStateReceived(const QVariant &)));
 }

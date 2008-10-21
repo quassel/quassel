@@ -27,13 +27,16 @@ class ClientSyncer;
 class CoreApplicationInternal;
 
 class MonolithicApplication : public QtUiApplication {
+  Q_OBJECT
 public:
   MonolithicApplication(int &, char **);
   ~MonolithicApplication();
 
   bool init();
-  bool startInternalCore();
-  void connectClientSyncer(ClientSyncer *syncer);
+
+private slots:
+  void newClientSyncer(ClientSyncer *syncer);
+  void startInternalCore();
 
 private:
   CoreApplicationInternal *_internal;

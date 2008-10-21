@@ -43,6 +43,7 @@ class BufferModel;
 class BufferSyncer;
 class ClientBacklogManager;
 class ClientIrcListHelper;
+class ClientSyncer;
 class BufferViewManager;
 class IrcUser;
 class IrcChannel;
@@ -145,6 +146,8 @@ signals:
 
   void requestCreateNetwork(const NetworkInfo &info);
   void requestRemoveNetwork(NetworkId);
+
+  void newClientSyncer(ClientSyncer *);
 
 public slots:
   //void selectBuffer(Buffer *);

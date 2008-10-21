@@ -24,11 +24,11 @@
 
 #include "coreconnectdlg.h"
 
+#include "client.h"
 #include "clientsettings.h"
 #include "clientsyncer.h"
 #include "coreconfigwizard.h"
 #include "iconloader.h"
-#include "monoapplication.h"
 
 CoreConnectDlg::CoreConnectDlg(bool autoconnect, QWidget *parent)
   : QDialog(parent)
@@ -44,6 +44,8 @@ CoreConnectDlg::CoreConnectDlg(bool autoconnect, QWidget *parent)
   setWindowFlags(Qt::Sheet);
 
   clientSyncer = new ClientSyncer(this);
+  connect(this, SIGNAL(newClientSyncer(ClientSyncer *)), Client::instance(), SIGNAL(newClientSyncer(ClientSyncer *)));
+  emit newClientSyncer(clientSyncer); // announce the new client syncer via the client.
 
   wizard = 0;
 
@@ -214,13 +216,13 @@ void CoreConnectDlg::on_accountButtonBox_accepted() {
 }
 
 void CoreConnectDlg::on_useInternalCore_clicked() {
-  // FIXME: this needs to be a qobject_cast - therefore MonolithicApplication needs to be a proper QObject... :/
-  MonolithicApplication *monoApp = static_cast<MonolithicApplication *>(QApplication::instance());
-  if(monoApp) {
-    qDebug() << "starting core...";
-    monoApp->startInternalCore();
-    monoApp->connectClientSyncer(clientSyncer);
-  }
+//   // FIXME: this needs to be a qobject_cast - therefore MonolithicApplication needs to be a proper QObject... :/
+//   MonolithicApplication *monoApp = qobject_cast<MonolithicApplication *>(QApplication::instance());
+//   if(monoApp) {
+//     qDebug() << "starting core...";
+//     monoApp->startInternalCore();
+//     monoApp->connectClientSyncer(clientSyncer);
+//   }
   clientSyncer->useInternalCore();
   startSync();
 }

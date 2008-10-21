@@ -170,6 +170,7 @@ void ClientSyncer::coreSocketConnected() {
 }
 
 void ClientSyncer::useInternalCore() {
+  emit startInternalCore();
   emit connectToInternalCore(Client::instance()->signalProxy());
 }
 

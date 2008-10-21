@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _CORECONNECTDLG_H_
-#define _CORECONNECTDLG_H_
+#ifndef CORECONNECTDLG_H
+#define CORECONNECTDLG_H
 
 #include <QAbstractSocket>
 
@@ -38,8 +38,10 @@ public:
   CoreConnectDlg(bool = false, QWidget *parent = 0);
   ~CoreConnectDlg();
 
-private slots:
+signals:
+  void newClientSyncer(ClientSyncer *);
 
+private slots:
   /*** Phase Null: Accounts ***/
   void restartPhaseNull();
 

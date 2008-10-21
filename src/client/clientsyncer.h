@@ -61,6 +61,7 @@ signals:
 
   void encrypted(bool);
 
+  void startInternalCore();
   void connectToInternalCore(SignalProxy *proxy);
 
 public slots:
