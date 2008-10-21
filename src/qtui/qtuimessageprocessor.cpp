@@ -40,8 +40,8 @@ QtUiMessageProcessor::QtUiMessageProcessor(QObject *parent)
   _highlightNick = notificationSettings.highlightNick();
   highlightListChanged(notificationSettings.highlightList());
   notificationSettings.notify("Highlights/NicksCaseSensitive", this, SLOT(nicksCaseSensitiveChanged(const QVariant &)));
-  notificationSettings.notify("highlightList", this, SLOT(highlightListChanged(const QVariant &)));
-  notificationSettings.notify("highlightNick", this, SLOT(highlightNickChanged(const QVariant &)));
+  notificationSettings.notify("Highlights/CustomList", this, SLOT(highlightListChanged(const QVariant &)));
+  notificationSettings.notify("Highlights/HighlightNick", this, SLOT(highlightNickChanged(const QVariant &)));
 
   _processTimer.setInterval(0);
   connect(&_processTimer, SIGNAL(timeout()), this, SLOT(processNextMessage()));
@@ -174,13 +174,12 @@ void QtUiMessageProcessor::highlightListChanged(const QVariant &variant) {
 
   _highlightRules.clear();
   QVariantList::const_iterator iter = varList.constBegin();
-  QVariantList::const_iterator iterEnd = varList.constEnd();
-  while(iter != iterEnd) {
-    QVariantMap rule;
-    _highlightRules << HighlightRule(rule["name"].toString(),
-                                     rule["enable"].toBool(),
-                                     rule["cs"].toBool() ? Qt::CaseSensitive : Qt::CaseInsensitive,
-                                     rule["regex"].toBool());
+  while(iter != varList.constEnd()) {
+    QVariantMap rule = iter->toMap();
+    _highlightRules << HighlightRule(rule["Name"].toString(),
+                                     rule["Enable"].toBool(),
+                                     rule["CS"].toBool() ? Qt::CaseSensitive : Qt::CaseInsensitive,
+                                     rule["RegEx"].toBool());
     iter++;
   }
 }

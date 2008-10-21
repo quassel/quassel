@@ -112,19 +112,19 @@ NotificationSettings::NotificationSettings() : ClientSettings("Notification") {
 }
 
 void NotificationSettings::setHighlightList(const QVariantList &highlightList) {
-  setLocalValue("highlightList", highlightList);
+  setLocalValue("Highlights/CustomList", highlightList);
 }
 
 QVariantList NotificationSettings::highlightList() {
-  return localValue("highlightList").toList();
+  return localValue("Highlights/CustomList").toList();
 }
 
 void NotificationSettings::setHighlightNick(NotificationSettings::HighlightNickType highlightNickType) {
-  setLocalValue("highlightNick", highlightNickType);
+  setLocalValue("Highlights/HighlightNick", highlightNickType);
 }
 
 NotificationSettings::HighlightNickType NotificationSettings::highlightNick() {
-  return (NotificationSettings::HighlightNickType) localValue("highlightNick", CurrentNick).toInt();
+  return (NotificationSettings::HighlightNickType) localValue("Highlights/HighlightNick", CurrentNick).toInt();
 }
 
 void NotificationSettings::setNicksCaseSensitive(bool cs) {
@@ -132,5 +132,5 @@ void NotificationSettings::setNicksCaseSensitive(bool cs) {
 }
 
 bool NotificationSettings::nicksCaseSensitive() {
-  return localValue("Highlights/NicksCaseSensitive", true).toBool();
+  return localValue("Highlights/NicksCaseSensitive", false).toBool();
 }

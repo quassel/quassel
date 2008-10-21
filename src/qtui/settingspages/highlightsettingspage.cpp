@@ -63,7 +63,7 @@ bool HighlightSettingsPage::hasDefaults() const {
 
 void HighlightSettingsPage::defaults() {
   ui.highlightCurrentNick->setChecked(true);
-  ui.nicksCaseSensitive->setChecked(true);
+  ui.nicksCaseSensitive->setChecked(false);
   emptyTable();
 
   widgetHasChanged();
@@ -102,10 +102,10 @@ void HighlightSettingsPage::addNewRow(QString name, bool regex, bool cs, bool en
   ui.highlightTable->setItem(lastRow, HighlightSettingsPage::EnableColumn, enableItem);
 
   QVariantMap highlightRule;
-  highlightRule["name"] = name;
-  highlightRule["regex"] = regex;
-  highlightRule["cs"] = cs;
-  highlightRule["enable"] = enable;
+  highlightRule["Name"] = name;
+  highlightRule["RegEx"] = regex;
+  highlightRule["CS"] = cs;
+  highlightRule["Enable"] = enable;
 
   highlightList.append(highlightRule);
 }
@@ -157,16 +157,16 @@ void HighlightSettingsPage::tableChanged(QTableWidgetItem *item) {
     case HighlightSettingsPage::NameColumn:
       if(item->text() == "")
         item->setText(tr("this shouldn't be empty"));
-      highlightRule["name"] = item->text();
+      highlightRule["Name"] = item->text();
       break;
     case HighlightSettingsPage::RegExColumn:
-      highlightRule["regex"] = (item->checkState() == Qt::Checked);
+      highlightRule["RegEx"] = (item->checkState() == Qt::Checked);
       break;
     case HighlightSettingsPage::CsColumn:
-      highlightRule["cs"] = (item->checkState() == Qt::Checked);
+      highlightRule["CS"] = (item->checkState() == Qt::Checked);
       break;
     case HighlightSettingsPage::EnableColumn:
-      highlightRule["enable"] = (item->checkState() == Qt::Checked);
+      highlightRule["Enable"] = (item->checkState() == Qt::Checked);
       break;
   }
   highlightList[item->row()] = highlightRule;
@@ -180,10 +180,10 @@ void HighlightSettingsPage::load() {
 
   foreach(QVariant highlight, notificationSettings.highlightList()) {
     QVariantMap highlightRule = highlight.toMap();
-    QString name = highlightRule["name"].toString();
-    bool regex = highlightRule["regex"].toBool();
-    bool cs = highlightRule["cs"].toBool();
-    bool enable = highlightRule["enable"].toBool();
+    QString name = highlightRule["Name"].toString();
+    bool regex = highlightRule["RegEx"].toBool();
+    bool cs = highlightRule["CS"].toBool();
+    bool enable = highlightRule["Enable"].toBool();
 
     addNewRow(name, regex, cs, enable);
   }
