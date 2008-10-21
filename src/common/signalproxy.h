@@ -55,6 +55,11 @@ public:
     HeartBeatReply
   };
 
+  enum ClientConnectionType {
+    SignalProxyConnection,
+    IODeviceConnection
+  };
+
   SignalProxy(QObject *parent);
   SignalProxy(ProxyMode mode, QObject *parent);
   SignalProxy(ProxyMode mode, QIODevice *device, QObject *parent);
@@ -227,16 +232,6 @@ private:
   // currently a communication object can either be an arbitrary QIODevice or another SignalProxy
   typedef QHash<QObject *, AbstractPeer *> PeerHash;
   PeerHash _peers;
-  
-//   // Hash of used QIODevices
-//   struct peerInfo {
-//     quint32 byteCount;
-//     bool usesCompression;
-//     int sentHeartBeats;
-//     int lag;
-//     peerInfo() : byteCount(0), usesCompression(false), sentHeartBeats(0) {}
-//   };
-//   QHash<QIODevice*, peerInfo> _peers;
 
   // containg a list of argtypes for fast access
   QHash<const QMetaObject *, ClassInfo*> _classInfo;
