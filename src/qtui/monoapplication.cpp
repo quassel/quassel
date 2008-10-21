@@ -34,6 +34,14 @@ MonolithicApplication::MonolithicApplication(int &argc, char **argv)
 }
 
 bool MonolithicApplication::init() {
+  if(!Quassel::init()) // parse args
+    return false;
+
+  if(isOptionSet("port")) {
+    _internal->init();
+    _internalInitDone = true;
+  }
+
   connect(Client::instance(), SIGNAL(newClientSyncer(ClientSyncer *)), this, SLOT(newClientSyncer(ClientSyncer *)));
   return QtUiApplication::init();
 }
@@ -51,6 +59,7 @@ void MonolithicApplication::newClientSyncer(ClientSyncer *syncer) {
 void MonolithicApplication::startInternalCore() {
   if(!_internalInitDone) {
     _internal->init();
+    _internalInitDone = true;
   }
   Core *core = Core::instance();
   ClientSyncer *syncer = static_cast<ClientSyncer *>(sender());

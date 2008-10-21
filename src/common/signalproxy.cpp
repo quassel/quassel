@@ -389,7 +389,6 @@ void SignalProxy::removePeer(QObject* dev) {
       proxy->removePeer(this);
   }
 
-
   if(dev->parent() == this)
     dev->deleteLater();
 

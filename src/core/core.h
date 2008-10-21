@@ -299,7 +299,7 @@ class Core : public QObject {
 
   private slots:
     bool startListening();
-    void stopListening();
+    void stopListening(const QString &msg = QString());
     void incomingConnection();
     void clientHasData();
     void clientDisconnected();
@@ -321,7 +321,8 @@ class Core : public QObject {
     void setupClientSession(QTcpSocket *socket, UserId uid);
     void processClientMessage(QTcpSocket *socket, const QVariantMap &msg);
     //void processCoreSetup(QTcpSocket *socket, QVariantMap &msg);
-    QString setupCore(const QVariant &setupData);
+    QString setupCoreForInternalUsage();
+    QString setupCore(QVariantMap setupData);
 
     bool registerStorageBackend(Storage *);
     void unregisterStorageBackend(Storage *);

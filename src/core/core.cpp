@@ -139,9 +139,22 @@ void Core::restoreState() {
 }
 
 /*** Core Setup ***/
+QString Core::setupCoreForInternalUsage() {
+  Q_ASSERT(!_storageBackends.isEmpty());
+  QVariantMap setupData;
+  qsrand(QDateTime::currentDateTime().toTime_t());
+  int pass = 0;
+  for(int i = 0; i < 10; i++) {
+    pass *= 10;
+    pass += qrand() % 10;
+  }
+  setupData["AdminUser"] = "AdminUser";
+  setupData["AdminPasswd"] = QString::number(pass);
+  setupData["Backend"] = _storageBackends[_storageBackends.keys().first()]->displayName();
+  return setupCore(setupData);
+}
 
-QString Core::setupCore(const QVariant &setupData_) {
-  QVariantMap setupData = setupData_.toMap();
+QString Core::setupCore(QVariantMap setupData) {
   QString user = setupData.take("AdminUser").toString();
   QString password = setupData.take("AdminPasswd").toString();
   if(user.isEmpty() || password.isEmpty()) {
@@ -343,6 +356,10 @@ QHash<BufferId, MsgId> Core::bufferLastSeenMsgIds(UserId user) {
 /*** Network Management ***/
 
 bool Core::startListening() {
+  // in mono mode we only start a local port if a port is specified in the cli call
+  if(Quassel::runMode() == Quassel::Monolithic && !Quassel::isOptionSet("port"))
+    return true;
+  
   bool success = false;
   uint port = Quassel::optionValue("port").toUInt();
 
@@ -364,10 +381,22 @@ bool Core::startListening() {
   return success;
 }
 
-void Core::stopListening() {
-  _server.close();
-  _v6server.close();
-  quInfo() << "No longer listening for GUI clients.";
+void Core::stopListening(const QString &reason) {
+  bool wasListening = false;
+  if(_server.isListening()) {
+    wasListening = true;
+    _server.close();
+  }
+  if(_v6server.isListening()) {
+    wasListening = true;
+    _v6server.close();
+  }
+  if(wasListening) {
+    if(reason.isEmpty())
+      quInfo() << "No longer listening for GUI clients.";
+    else
+      quInfo() << qPrintable(reason);
+  }
 }
 
 void Core::incomingConnection() {
@@ -384,9 +413,7 @@ void Core::incomingConnection() {
     quInfo() << qPrintable(tr("Client connected from"))  << qPrintable(socket->peerAddress().toString());
 
     if(!configured) {
-      _server.close();
-      _v6server.close();
-      quDebug() << "Closing server for basic setup.";
+      stopListening(tr("Closing server for basic setup."));
     }
   }
 }
@@ -506,7 +533,7 @@ void Core::processClientMessage(QTcpSocket *socket, const QVariantMap &msg) {
     }
     if(msg["MsgType"] == "CoreSetupData") {
       QVariantMap reply;
-      QString result = setupCore(msg["SetupData"]);
+      QString result = setupCore(msg["SetupData"].toMap());
       if(!result.isEmpty()) {
         reply["MsgType"] = "CoreSetupReject";
         reply["Error"] = result;
@@ -593,6 +620,11 @@ void Core::setupClientSession(QTcpSocket *socket, UserId uid) {
 }
 
 void Core::setupInternalClientSession(SignalProxy *proxy) {
+  if(!configured) {
+    stopListening();
+    setupCoreForInternalUsage();
+  }
+
   UserId uid = 3; // FIXME!!!11
   // Find or create session for validated user
   SessionThread *sess;
