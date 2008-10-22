@@ -650,12 +650,12 @@ NetworkEditDlg::NetworkEditDlg(const QString &old, const QStringList &exist, QWi
 }
 
 QString NetworkEditDlg::networkName() const {
-  return ui.networkEdit->text();
+  return ui.networkEdit->text().trimmed();
 
 }
 
 void NetworkEditDlg::on_networkEdit_textChanged(const QString &text) {
-  ui.buttonBox->button(QDialogButtonBox::Ok)->setDisabled(text.isEmpty() || existing.contains(text));
+  ui.buttonBox->button(QDialogButtonBox::Ok)->setDisabled(text.isEmpty() || existing.contains(text.trimmed()));
 }
 
 
