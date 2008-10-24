@@ -41,7 +41,7 @@ public:
   enum Mode { Default, Custom };
 
 public:
-  void notify(const QString &key, QObject *receiver, const char *slot);
+  virtual void notify(const QString &key, QObject *receiver, const char *slot);
 
 protected:
   inline Settings(QString group_, QString appName_) : group(group_), appName(appName_) {}

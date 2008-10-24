@@ -101,7 +101,6 @@ private:
   
   QAction _hideJoinAction;
   QAction _hidePartAction;
-  QAction _hideKillAction;
   QAction _hideQuitAction;
   QAction _hideModeAction;
 
@@ -118,7 +117,7 @@ private:
 		     ItemActiveStates requiredActiveState = QFlags<ItemActiveState>(ActiveState) | QFlags<ItemActiveState>(InactiveState));
   void addSeparatorToMenu(QMenu &menu, const QModelIndex &index,
 			  ItemActiveStates requiredActiveState = QFlags<ItemActiveState>(ActiveState) | QFlags<ItemActiveState>(InactiveState));
-  QMenu *createHideEventsSubMenu(QMenu &menu);
+  QMenu *createHideEventsSubMenu(QMenu &menu, BufferId bufferId);
 };
 Q_DECLARE_OPERATORS_FOR_FLAGS(BufferView::ItemActiveStates)
 

@@ -19,18 +19,49 @@
  ***************************************************************************/
 
 #include "messagefilter.h"
+#include "buffersettings.h"
 
 MessageFilter::MessageFilter(QAbstractItemModel *source, QObject *parent)
-  : QSortFilterProxyModel(parent)
+  : QSortFilterProxyModel(parent),
+    _messageTypeFilter(0)
 {
+  init();
   setSourceModel(source);
 }
 
 MessageFilter::MessageFilter(MessageModel *source, const QList<BufferId> &buffers, QObject *parent)
   : QSortFilterProxyModel(parent),
-    _validBuffers(buffers.toSet())
+    _validBuffers(buffers.toSet()),
+    _messageTypeFilter(0)
 {
+  init();
   setSourceModel(source);
+}
+
+void MessageFilter::init() {
+  BufferSettings defaultSettings;
+  _messageTypeFilter = defaultSettings.messageFilter();
+  defaultSettings.notify("MessageTypeFilter", this, SLOT(messageTypeFilterChanged()));
+
+  BufferSettings mySettings(idString());
+  if(mySettings.hasFilter())
+    _messageTypeFilter = mySettings.messageFilter();
+  mySettings.notify("MessageTypeFilter", this, SLOT(messageTypeFilterChanged()));
+}
+
+void MessageFilter::messageTypeFilterChanged() {
+  int newFilter;
+  BufferSettings defaultSettings();
+  newFilter = BufferSettings().messageFilter();
+
+  BufferSettings mySettings(idString());
+  if(mySettings.hasFilter())
+    newFilter = mySettings.messageFilter();
+
+  if(_messageTypeFilter != newFilter) {
+    _messageTypeFilter = newFilter;
+    invalidateFilter();
+  }
 }
 
 QString MessageFilter::idString() const {
@@ -49,10 +80,14 @@ QString MessageFilter::idString() const {
 
 bool MessageFilter::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const {
   Q_UNUSED(sourceParent);
+  QModelIndex sourceIdx = sourceModel()->index(sourceRow, 0);
+  if(_messageTypeFilter & sourceModel()->data(sourceIdx, MessageModel::TypeRole).toInt())
+    return false;
+
   if(_validBuffers.isEmpty())
     return true;
 
-  BufferId id = sourceModel()->data(sourceModel()->index(sourceRow, 0), MessageModel::BufferIdRole).value<BufferId>();
+  BufferId id = sourceModel()->data(sourceIdx, MessageModel::BufferIdRole).value<BufferId>();
   if(!id.isValid()) {
     return true;
   }

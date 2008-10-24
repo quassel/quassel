@@ -32,8 +32,14 @@ ClientSettings::~ClientSettings() {
 
 /***********************************************************************************************/
 
-CoreAccountSettings::CoreAccountSettings(const QString &subgroup) : ClientSettings("CoreAccounts") {
-  _subgroup = subgroup;
+CoreAccountSettings::CoreAccountSettings(const QString &subgroup)
+  : ClientSettings("CoreAccounts"),
+    _subgroup(subgroup)
+{
+}
+
+void CoreAccountSettings::notify(const QString &key, QObject *receiver, const char *slot) {
+  ClientSettings::notify(QString("%1/%2/%3").arg(Client::currentCoreAccount().toInt()).arg(_subgroup).arg(key), receiver, slot);
 }
 
 QList<AccountId> CoreAccountSettings::knownAccounts() {

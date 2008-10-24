@@ -20,7 +20,6 @@
 
 #include <QSettings>
 #include <QStringList>
-#include <QDebug>
 
 #ifdef Q_WS_QWS
 #include <Qtopia>

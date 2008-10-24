@@ -172,14 +172,17 @@ void ChatLine::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 
   // new line marker
   const QAbstractItemModel *model_ = model();
-  if(model_ && row() > 0) {
+  if(model_ && row() > 0  && chatScene()->isSingleBufferScene()) {
     QModelIndex prevRowIdx = model_->index(row() - 1, 0);
-    MsgId msgId = model_->data(prevRowIdx, MessageModel::MsgIdRole).value<MsgId>();
-    Message::Flags flags = (Message::Flags)model_->data(model_->index(row(), 0), MessageModel::FlagsRole).toInt();
+    MsgId prevMsgId = model_->data(prevRowIdx, MessageModel::MsgIdRole).value<MsgId>();
+    QModelIndex myIdx = model_->index(row(), 0);
+    MsgId myMsgId = model_->data(myIdx, MessageModel::MsgIdRole).value<MsgId>();
+    Message::Flags flags = (Message::Flags)model_->data(myIdx, MessageModel::FlagsRole).toInt();
     // don't show the marker if we wrote that new line
     if(!(flags & Message::Self)) {
-      BufferId bufferId = model_->data(prevRowIdx, MessageModel::BufferIdRole).value<BufferId>();
-      if(msgId == Client::networkModel()->lastSeenMsgId(bufferId) && chatScene()->isSingleBufferScene()) {
+      BufferId bufferId = BufferId(chatScene()->idString().toInt());
+      MsgId lastSeenMsgId = Client::networkModel()->lastSeenMsgId(bufferId);
+      if(lastSeenMsgId < myMsgId && lastSeenMsgId >= prevMsgId) {
 	QtUiStyleSettings s("Colors");
 	QLinearGradient gradient(0, 0, 0, contentsItem().fontMetrics()->lineSpacing());
 	gradient.setColorAt(0, s.value("newMsgMarkerFG", QColor(Qt::red)).value<QColor>());

@@ -40,8 +40,14 @@ public:
   inline bool isSingleBufferFilter() const { return _validBuffers.count() == 1; }
   inline bool containsBuffer(const BufferId &id) const { return _validBuffers.contains(id); }
 
+public slots:
+  void messageTypeFilterChanged();
+
 private:
+  void init();
+
   QSet<BufferId> _validBuffers;
+  int _messageTypeFilter;
 };
 
 #endif

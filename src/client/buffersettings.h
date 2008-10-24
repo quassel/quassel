@@ -18,20 +18,24 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _BUFFERSETTINGS_H_
-#define _BUFFERSETTINGS_H_
+#ifndef BUFFERSETTINGS_H
+#define BUFFERSETTINGS_H
 
 #include "clientsettings.h"
+#include "message.h"
+#include "types.h"
 
 class BufferSettings : public ClientSettings {
+public:
+  BufferSettings(const QString &idString = "__default__");
+  BufferSettings(BufferId bufferId);
 
-  public:
-    BufferSettings(const QString &group = "Buffer");
+  inline void setValue(const QString &key, const QVariant &data) { setLocalValue(key, data); }
+  inline QVariant value(const QString &key, const QVariant &def = QVariant()) { return localValue(key, def); }
 
-    void setValue(const QString &key, const QVariant &data);
-    QVariant value(const QString &key, const QVariant &def = QVariant());
-
-
+  bool hasFilter();
+  int messageFilter();
+  void filterMessage(Message::Type msgType, bool filter);
 };
 
 

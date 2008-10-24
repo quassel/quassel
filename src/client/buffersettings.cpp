@@ -20,14 +20,29 @@
 
 #include "buffersettings.h"
 
-BufferSettings::BufferSettings(const QString &group) : ClientSettings(group) {
-
+BufferSettings::BufferSettings(BufferId bufferId)
+  : ClientSettings(QString("Buffer/%1").arg(bufferId.toInt()))
+{
 }
 
-void BufferSettings::setValue(const QString &key, const QVariant &data) {
-  setLocalValue(key, data);
+BufferSettings::BufferSettings(const QString &idString)
+  : ClientSettings(QString("Buffer/%1").arg(idString))
+{
 }
 
-QVariant BufferSettings::value(const QString &key, const QVariant &def) {
-  return localValue(key, def);
+bool BufferSettings::hasFilter() {
+  return localValue("hasMessageTypeFilter", false).toBool();
+}
+
+int BufferSettings::messageFilter() {
+  return localValue("MessageTypeFilter", 0).toInt();
+}
+
+void BufferSettings::filterMessage(Message::Type msgType, bool filter) {
+  if(!hasFilter())
+    setLocalValue("hasMessageTypeFilter", true);
+  if(filter)
+    setLocalValue("MessageTypeFilter", localValue("MessageTypeFilter", 0).toInt() | msgType);
+  else
+    setLocalValue("MessageTypeFilter", localValue("MessageTypeFilter", 0).toInt() & ~msgType);
 }

@@ -22,6 +22,7 @@
 
 #include "buffermodel.h"
 #include "bufferviewfilter.h"
+#include "buffersettings.h"
 #include "buffersyncer.h"
 #include "client.h"
 #include "iconloader.h"
@@ -61,22 +62,15 @@ BufferView::BufferView(QWidget *parent)
 
     _hideJoinAction(tr("Join Events"), this),
     _hidePartAction(tr("Part Events"), this),
-    _hideKillAction(tr("Kill Events"), this),
     _hideQuitAction(tr("Quit Events"), this),
     _hideModeAction(tr("Mode Events"), this)
 
 {
   _hideJoinAction.setCheckable(true);
   _hidePartAction.setCheckable(true);
-  _hideKillAction.setCheckable(true);
   _hideQuitAction.setCheckable(true);
   _hideModeAction.setCheckable(true);
-  _hideJoinAction.setEnabled(false);
-  _hidePartAction.setEnabled(false);
   _ignoreListAction.setEnabled(false);
-  _hideKillAction.setEnabled(false);
-  _hideQuitAction.setEnabled(false);
-  _hideModeAction.setEnabled(false);
 
   showChannelList.setIcon(SmallIcon("format-list-unordered"));
 
@@ -389,12 +383,16 @@ void BufferView::addSeparatorToMenu(QMenu &menu, const QModelIndex &index, ItemA
   }
 }
 
-QMenu *BufferView::createHideEventsSubMenu(QMenu &menu) {
-  // QMenu *hideEventsMenu = new QMenu(tr("Hide Events"), &menu);
+QMenu *BufferView::createHideEventsSubMenu(QMenu &menu, BufferId bufferId) {
+  int filter = BufferSettings(bufferId).messageFilter();
+  _hideJoinAction.setChecked(filter & Message::Join);
+  _hidePartAction.setChecked(filter & Message::Part);
+  _hideQuitAction.setChecked(filter & Message::Quit);
+  _hideModeAction.setChecked(filter & Message::Mode);
+  
   QMenu *hideEventsMenu = menu.addMenu(tr("Hide Events"));
   hideEventsMenu->addAction(&_hideJoinAction);
   hideEventsMenu->addAction(&_hidePartAction);
-  hideEventsMenu->addAction(&_hideKillAction);
   hideEventsMenu->addAction(&_hideQuitAction);
   hideEventsMenu->addAction(&_hideModeAction);
   return hideEventsMenu;
@@ -445,14 +443,14 @@ void BufferView::contextMenuEvent(QContextMenuEvent *event) {
 	addItemToMenu(_hideBufferTemporarilyAction, contextMenu, (bool)config());
 	addItemToMenu(_hideBufferPermanentlyAction, contextMenu, (bool)config());
 	addItemToMenu(_removeBufferAction, contextMenu, index, InactiveState);
-	createHideEventsSubMenu(contextMenu);
+	createHideEventsSubMenu(contextMenu, bufferInfo.bufferId());
 	addItemToMenu(_ignoreListAction, contextMenu);
 	break;
       case BufferInfo::QueryBuffer:
 	addItemToMenu(_hideBufferTemporarilyAction, contextMenu, (bool)config());
 	addItemToMenu(_hideBufferPermanentlyAction, contextMenu, (bool)config());
 	addItemToMenu(_removeBufferAction, contextMenu);
-	createHideEventsSubMenu(contextMenu);
+	createHideEventsSubMenu(contextMenu, bufferInfo.bufferId());
 	break;
       default:
 	addItemToMenu(_hideBufferTemporarilyAction, contextMenu, (bool)config());
@@ -523,6 +521,27 @@ void BufferView::contextMenuEvent(QContextMenuEvent *event) {
     if(res == QMessageBox::Yes) {
       Client::removeBuffer(bufferInfo.bufferId());
     }
+    return;
+  }
+
+  if(result == & _hideJoinAction) {
+    BufferId bufferId = index.data(NetworkModel::BufferIdRole).value<BufferId>();
+    BufferSettings(bufferId).filterMessage(Message::Join, _hideJoinAction.isChecked());
+    return;
+  }
+  if(result == &_hidePartAction) {
+    BufferId bufferId = index.data(NetworkModel::BufferIdRole).value<BufferId>();
+    BufferSettings(bufferId).filterMessage(Message::Part, _hidePartAction.isChecked());
+    return;
+  }
+  if(result == &_hideQuitAction) {
+    BufferId bufferId = index.data(NetworkModel::BufferIdRole).value<BufferId>();
+    BufferSettings(bufferId).filterMessage(Message::Quit, _hideQuitAction.isChecked());
+    return;
+  }
+  if(result == &_hideModeAction) {
+    BufferId bufferId = index.data(NetworkModel::BufferIdRole).value<BufferId>();
+    BufferSettings(bufferId).filterMessage(Message::Mode, _hideModeAction.isChecked());
     return;
   }
 

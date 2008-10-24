@@ -93,6 +93,8 @@ ChatScene::ChatScene(QAbstractItemModel *model, const QString &idString, qreal w
   webPreview.deleteTimer.setInterval(600000);
   connect(&webPreview.deleteTimer, SIGNAL(timeout()), this, SLOT(deleteWebPreviewEvent()));
 #endif
+
+  setItemIndexMethod(QGraphicsScene::NoIndex);
 }
 
 ChatScene::~ChatScene() {
@@ -302,7 +304,7 @@ void ChatScene::setWidth(qreal width) {
 
   // disabling the index while doing this complex updates is about
   // 2 to 10 times faster!
-  setItemIndexMethod(QGraphicsScene::NoIndex);
+  //setItemIndexMethod(QGraphicsScene::NoIndex);
 
   QList<ChatLine *>::iterator lineIter = _lines.end();
   QList<ChatLine *>::iterator lineIterBegin = _lines.begin();
@@ -312,7 +314,7 @@ void ChatScene::setWidth(qreal width) {
     lineIter--;
     (*lineIter)->setGeometryByWidth(width, contentsWidth, linePos);
   }
-  setItemIndexMethod(QGraphicsScene::BspTreeIndex);
+  //setItemIndexMethod(QGraphicsScene::BspTreeIndex);
 
   updateSceneRect(width);
   setHandleXLimits();
@@ -335,7 +337,7 @@ void ChatScene::firstHandlePositionChanged(qreal xpos) {
 
   // disabling the index while doing this complex updates is about
   // 2 to 10 times faster!
-  setItemIndexMethod(QGraphicsScene::NoIndex);
+  //setItemIndexMethod(QGraphicsScene::NoIndex);
 
   QList<ChatLine *>::iterator lineIter = _lines.end();
   QList<ChatLine *>::iterator lineIterBegin = _lines.begin();
@@ -347,7 +349,7 @@ void ChatScene::firstHandlePositionChanged(qreal xpos) {
     lineIter--;
     (*lineIter)->setFirstColumn(timestampWidth, senderWidth, senderPos);
   }
-  setItemIndexMethod(QGraphicsScene::BspTreeIndex);
+  //setItemIndexMethod(QGraphicsScene::BspTreeIndex);
 
   setHandleXLimits();
 
@@ -369,7 +371,7 @@ void ChatScene::secondHandlePositionChanged(qreal xpos) {
 
   // disabling the index while doing this complex updates is about
   // 2 to 10 times faster!
-  setItemIndexMethod(QGraphicsScene::NoIndex);
+  //setItemIndexMethod(QGraphicsScene::NoIndex);
 
   QList<ChatLine *>::iterator lineIter = _lines.end();
   QList<ChatLine *>::iterator lineIterBegin = _lines.begin();
@@ -381,7 +383,7 @@ void ChatScene::secondHandlePositionChanged(qreal xpos) {
     lineIter--;
     (*lineIter)->setSecondColumn(senderWidth, contentsWidth, contentsPos, linePos);
   }
-  setItemIndexMethod(QGraphicsScene::BspTreeIndex);
+  //setItemIndexMethod(QGraphicsScene::BspTreeIndex);
 
   setHandleXLimits();
 

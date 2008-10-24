@@ -18,20 +18,18 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _CLIENTSETTINGS_H_
-#define _CLIENTSETTINGS_H_
+#ifndef CLIENTSETTINGS_H
+#define CLIENTSETTINGS_H
 
 #include "settings.h"
 #include "types.h"
 
 class ClientSettings : public Settings {
+public:
+  virtual ~ClientSettings();
 
-  public:
-    virtual ~ClientSettings();
-
-  protected:
-    ClientSettings(QString group = "General");
-
+protected:
+  ClientSettings(QString group = "General");
 };
 
 // Deriving from CoreAccountSettings:
@@ -42,30 +40,31 @@ class ClientSettings : public Settings {
 // Note that you'll get invalid data (and setting is ignored) if you are not connected to a core!
 
 class CoreAccountSettings : public ClientSettings {
+public:
+  // stores account-specific data in CoreAccounts/$ACCID/$SUBGROUP/$KEY)
+  CoreAccountSettings(const QString &subgroup = "General");
 
-  public:
-    // stores account-specific data in CoreAccounts/$ACCID/$SUBGROUP/$KEY)
-    CoreAccountSettings(const QString &subgroup = "General");
+  virtual void notify(const QString &key, QObject *receiver, const char *slot);
 
-    QList<AccountId> knownAccounts();
-    AccountId lastAccount();
-    void setLastAccount(AccountId);
-    AccountId autoConnectAccount();
-    void setAutoConnectAccount(AccountId);
+  QList<AccountId> knownAccounts();
+  AccountId lastAccount();
+  void setLastAccount(AccountId);
+  AccountId autoConnectAccount();
+  void setAutoConnectAccount(AccountId);
 
-    void storeAccountData(AccountId id, const QVariantMap &data);
-    QVariantMap retrieveAccountData(AccountId);
-    void removeAccount(AccountId);
+  void storeAccountData(AccountId id, const QVariantMap &data);
+  QVariantMap retrieveAccountData(AccountId);
+  void removeAccount(AccountId);
 
-    void setJumpKeyMap(const QHash<int, BufferId> &keyMap);
-    QHash<int, BufferId> jumpKeyMap();
+  void setJumpKeyMap(const QHash<int, BufferId> &keyMap);
+  QHash<int, BufferId> jumpKeyMap();
 
-  protected:
-    void setAccountValue(const QString &key, const QVariant &data);
-    QVariant accountValue(const QString &key, const QVariant &def = QVariant());
+protected:
+  void setAccountValue(const QString &key, const QVariant &data);
+  QVariant accountValue(const QString &key, const QVariant &def = QVariant());
 
-  private:
-    QString _subgroup;
+private:
+  QString _subgroup;
 };
 
 class NotificationSettings : public ClientSettings {
