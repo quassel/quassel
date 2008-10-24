@@ -90,7 +90,7 @@
       <string/>
      </property>
      <property name="pixmap" >
-      <pixmap resource="../../icons/icons.qrc" >:/22x22/actions/oxygen/22x22/actions/edit-clear.png</pixmap>
+      <pixmap>:/22x22/actions/oxygen/22x22/actions/edit-clear.png</pixmap>
      </property>
     </widget>
    </item>
@@ -114,8 +114,6 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="../../icons/icons.qrc" />
- </resources>
+ <resources/>
  <connections/>
 </ui>

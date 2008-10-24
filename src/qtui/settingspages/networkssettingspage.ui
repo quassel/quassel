@@ -37,7 +37,7 @@
         <string>Re&amp;name...</string>
        </property>
        <property name="icon" >
-        <iconset resource="../../icons/icons.qrc" >
+        <iconset>
          <normaloff>:/16x16/actions/oxygen/16x16/actions/edit-rename.png</normaloff>:/16x16/actions/oxygen/16x16/actions/edit-rename.png</iconset>
        </property>
       </widget>
@@ -54,7 +54,7 @@
         <string>&amp;Add...</string>
        </property>
        <property name="icon" >
-        <iconset resource="../../icons/icons.qrc" >
+        <iconset>
          <normaloff>:/16x16/actions/oxygen/16x16/actions/list-add.png</normaloff>:/16x16/actions/oxygen/16x16/actions/list-add.png</iconset>
        </property>
        <property name="iconSize" >
@@ -77,7 +77,7 @@
         <string>De&amp;lete</string>
        </property>
        <property name="icon" >
-        <iconset resource="../../icons/icons.qrc" >
+        <iconset>
          <normaloff>:/16x16/actions/oxygen/16x16/actions/edit-delete.png</normaloff>:/16x16/actions/oxygen/16x16/actions/edit-delete.png</iconset>
        </property>
       </widget>
@@ -160,19 +160,11 @@
          <string/>
         </property>
         <property name="currentIndex" >
-         <number>0</number>
+         <number>2</number>
         </property>
         <widget class="QWidget" name="serversTab" >
          <property name="enabled" >
           <bool>true</bool>
-         </property>
-         <property name="geometry" >
-          <rect>
-           <x>0</x>
-           <y>0</y>
-           <width>364</width>
-           <height>348</height>
-          </rect>
          </property>
          <attribute name="title" >
           <string>Servers</string>
@@ -225,7 +217,7 @@
                  <string>&amp;Add...</string>
                 </property>
                 <property name="icon" >
-                 <iconset resource="../../icons/icons.qrc" >
+                 <iconset>
                   <normaloff>:/16x16/actions/oxygen/16x16/actions/list-add.png</normaloff>:/16x16/actions/oxygen/16x16/actions/list-add.png</iconset>
                 </property>
                </widget>
@@ -242,7 +234,7 @@
                  <string>De&amp;lete</string>
                 </property>
                 <property name="icon" >
-                 <iconset resource="../../icons/icons.qrc" >
+                 <iconset>
                   <normaloff>:/16x16/actions/oxygen/16x16/actions/edit-delete.png</normaloff>:/16x16/actions/oxygen/16x16/actions/edit-delete.png</iconset>
                 </property>
                </widget>
@@ -271,7 +263,7 @@
                    <string>...</string>
                   </property>
                   <property name="icon" >
-                   <iconset resource="../../icons/icons.qrc" >
+                   <iconset>
                     <normaloff>:/16x16/actions/oxygen/16x16/actions/go-up.png</normaloff>:/16x16/actions/oxygen/16x16/actions/go-up.png</iconset>
                   </property>
                  </widget>
@@ -285,7 +277,7 @@
                    <string>...</string>
                   </property>
                   <property name="icon" >
-                   <iconset resource="../../icons/icons.qrc" >
+                   <iconset>
                     <normaloff>:/16x16/actions/oxygen/16x16/actions/go-down.png</normaloff>:/16x16/actions/oxygen/16x16/actions/go-down.png</iconset>
                   </property>
                  </widget>
@@ -335,14 +327,6 @@
          </layout>
         </widget>
         <widget class="QWidget" name="performTab" >
-         <property name="geometry" >
-          <rect>
-           <x>0</x>
-           <y>0</y>
-           <width>364</width>
-           <height>348</height>
-          </rect>
-         </property>
          <attribute name="title" >
           <string>Perform</string>
          </attribute>
@@ -429,14 +413,6 @@ Note that Quassel IRC automatically rejoins channels, so /join will rarely be ne
          </layout>
         </widget>
         <widget class="QWidget" name="advancedTab" >
-         <property name="geometry" >
-          <rect>
-           <x>0</x>
-           <y>0</y>
-           <width>364</width>
-           <height>348</height>
-          </rect>
-         </property>
          <attribute name="title" >
           <string>Advanced</string>
          </attribute>
@@ -657,9 +633,7 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</string>
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="../../icons/icons.qrc" />
- </resources>
+ <resources/>
  <connections>
   <connection>
    <sender>unlimitedRetries</sender>

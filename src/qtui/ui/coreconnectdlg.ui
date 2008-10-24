@@ -35,14 +35,6 @@
       <number>0</number>
      </property>
      <widget class="QWidget" name="accountPage" >
-      <property name="geometry" >
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>539</width>
-        <height>332</height>
-       </rect>
-      </property>
       <layout class="QVBoxLayout" >
        <item>
         <widget class="QGroupBox" name="groupBox" >
@@ -141,14 +133,6 @@
       </layout>
      </widget>
      <widget class="QWidget" name="loginPage" >
-      <property name="geometry" >
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>539</width>
-        <height>332</height>
-       </rect>
-      </property>
       <layout class="QVBoxLayout" >
        <item>
         <widget class="QGroupBox" name="groupBox_2" >
@@ -252,14 +236,6 @@ space</string>
              <number>0</number>
             </property>
             <widget class="QWidget" name="loginCredentialsPage" >
-             <property name="geometry" >
-              <rect>
-               <x>0</x>
-               <y>0</y>
-               <width>501</width>
-               <height>146</height>
-              </rect>
-             </property>
              <layout class="QVBoxLayout" >
               <item>
                <spacer>
@@ -347,14 +323,6 @@ space</string>
              </layout>
             </widget>
             <widget class="QWidget" name="coreConfigPage" >
-             <property name="geometry" >
-              <rect>
-               <x>0</x>
-               <y>0</y>
-               <width>100</width>
-               <height>30</height>
-              </rect>
-             </property>
              <layout class="QVBoxLayout" >
               <item>
                <widget class="QGroupBox" name="groupBox_4" >
@@ -436,16 +404,7 @@ space</string>
               </item>
              </layout>
             </widget>
-            <widget class="QWidget" name="loginEmptyPage" >
-             <property name="geometry" >
-              <rect>
-               <x>0</x>
-               <y>0</y>
-               <width>100</width>
-               <height>30</height>
-              </rect>
-             </property>
-            </widget>
+            <widget class="QWidget" name="loginEmptyPage" />
            </widget>
           </item>
          </layout>
@@ -461,14 +420,6 @@ space</string>
       </layout>
      </widget>
      <widget class="QWidget" name="syncPage" >
-      <property name="geometry" >
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>539</width>
-        <height>332</height>
-       </rect>
-      </property>
       <layout class="QVBoxLayout" >
        <item>
         <widget class="QGroupBox" name="groupBox_3" >
@@ -580,9 +531,7 @@ space</string>
   <tabstop>launchCoreConfigWizard</tabstop>
   <tabstop>syncButtonBox</tabstop>
  </tabstops>
- <resources>
-  <include location="../../icons/icons.qrc" />
- </resources>
+ <resources/>
  <connections>
   <connection>
    <sender>accountButtonBox</sender>

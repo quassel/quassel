@@ -36,7 +36,7 @@
           <string>...</string>
          </property>
          <property name="icon" >
-          <iconset resource="../../icons/icons.qrc" >
+          <iconset>
            <normaloff>:/22x22/actions/oxygen/22x22/actions/edit-rename.png</normaloff>:/22x22/actions/oxygen/22x22/actions/edit-rename.png</iconset>
          </property>
          <property name="iconSize" >
@@ -56,7 +56,7 @@
           <string>Add...</string>
          </property>
          <property name="icon" >
-          <iconset resource="../../icons/icons.qrc" >
+          <iconset>
            <normaloff>:/22x22/actions/oxygen/22x22/actions/list-add-user.png</normaloff>:/22x22/actions/oxygen/22x22/actions/list-add-user.png</iconset>
          </property>
          <property name="iconSize" >
@@ -79,7 +79,7 @@
           <string>...</string>
          </property>
          <property name="icon" >
-          <iconset resource="../../icons/icons.qrc" >
+          <iconset>
            <normaloff>:/22x22/actions/oxygen/22x22/actions/list-remove-user.png</normaloff>:/22x22/actions/oxygen/22x22/actions/list-remove-user.png</iconset>
          </property>
          <property name="iconSize" >
@@ -165,7 +165,7 @@
                  <string>&amp;Add...</string>
                 </property>
                 <property name="icon" >
-                 <iconset resource="../../icons/icons.qrc" >
+                 <iconset>
                   <normaloff>:/16x16/actions/oxygen/16x16/actions/list-add.png</normaloff>:/16x16/actions/oxygen/16x16/actions/list-add.png</iconset>
                 </property>
                 <property name="iconSize" >
@@ -191,7 +191,7 @@
                  <string>Remove</string>
                 </property>
                 <property name="icon" >
-                 <iconset resource="../../icons/icons.qrc" >
+                 <iconset>
                   <normaloff>:/16x16/actions/oxygen/16x16/actions/edit-delete.png</normaloff>:/16x16/actions/oxygen/16x16/actions/edit-delete.png</iconset>
                 </property>
                </widget>
@@ -211,7 +211,7 @@
                  <string>Re&amp;name...</string>
                 </property>
                 <property name="icon" >
-                 <iconset resource="../../icons/icons.qrc" >
+                 <iconset>
                   <normaloff>:/16x16/actions/oxygen/16x16/actions/edit-rename.png</normaloff>:/16x16/actions/oxygen/16x16/actions/edit-rename.png</iconset>
                 </property>
                </widget>
@@ -246,7 +246,7 @@
                    <string>...</string>
                   </property>
                   <property name="icon" >
-                   <iconset resource="../../icons/icons.qrc" >
+                   <iconset>
                     <normaloff>:/16x16/actions/oxygen/16x16/actions/go-up.png</normaloff>:/16x16/actions/oxygen/16x16/actions/go-up.png</iconset>
                   </property>
                  </widget>
@@ -260,7 +260,7 @@
                    <string>...</string>
                   </property>
                   <property name="icon" >
-                   <iconset resource="../../icons/icons.qrc" >
+                   <iconset>
                     <normaloff>:/16x16/actions/oxygen/16x16/actions/go-down.png</normaloff>:/16x16/actions/oxygen/16x16/actions/go-down.png</iconset>
                   </property>
                  </widget>
@@ -489,7 +489,6 @@
              </layout>
             </item>
            </layout>
-           <zorder>detachAwayEnabled</zorder>
           </widget>
          </item>
          <item>
@@ -626,9 +625,7 @@
   <tabstop>partReason</tabstop>
   <tabstop>quitReason</tabstop>
  </tabstops>
- <resources>
-  <include location="../../icons/icons.qrc" />
- </resources>
+ <resources/>
  <connections>
   <connection>
    <sender>awayNickEnabled</sender>

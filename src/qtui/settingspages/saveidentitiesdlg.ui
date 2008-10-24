@@ -33,7 +33,7 @@
        <property name="orientation" >
         <enum>Qt::Vertical</enum>
        </property>
-       <property name="sizeHint" >
+       <property name="sizeHint" stdset="0" >
         <size>
          <width>20</width>
          <height>40</height>
@@ -47,7 +47,7 @@
         <number>0</number>
        </property>
        <property name="value" >
-        <number>0</number>
+        <number>32</number>
        </property>
        <property name="invertedAppearance" >
         <bool>false</bool>
@@ -61,7 +61,7 @@
          <property name="orientation" >
           <enum>Qt::Horizontal</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>40</width>
            <height>20</height>
@@ -81,7 +81,8 @@
           <string>Abort</string>
          </property>
          <property name="icon" >
-          <iconset resource="../../icons/icons.qrc" >:/22x22/actions/oxygen/22x22/actions/dialog-cancel.png</iconset>
+          <iconset>
+           <normaloff>:/22x22/actions/oxygen/22x22/actions/dialog-cancel.png</normaloff>:/22x22/actions/oxygen/22x22/actions/dialog-cancel.png</iconset>
          </property>
         </widget>
        </item>
@@ -90,7 +91,7 @@
          <property name="orientation" >
           <enum>Qt::Horizontal</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>40</width>
            <height>20</height>
@@ -104,9 +105,7 @@
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="../../icons/icons.qrc" />
- </resources>
+ <resources/>
  <connections>
   <connection>
    <sender>abort</sender>

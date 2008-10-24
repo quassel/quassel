@@ -208,9 +208,7 @@
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="../../icons/icons.qrc" />
- </resources>
+ <resources/>
  <connections>
   <connection>
    <sender>buttonBox</sender>

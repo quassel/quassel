@@ -30,7 +30,8 @@
         <string>Re&amp;name...</string>
        </property>
        <property name="icon" >
-        <iconset resource="../../icons/icons.qrc" >:/16x16/actions/oxygen/16x16/actions/edit-rename.png</iconset>
+        <iconset>
+         <normaloff>:/16x16/actions/oxygen/16x16/actions/edit-rename.png</normaloff>:/16x16/actions/oxygen/16x16/actions/edit-rename.png</iconset>
        </property>
       </widget>
      </item>
@@ -46,7 +47,8 @@
         <string>&amp;Add...</string>
        </property>
        <property name="icon" >
-        <iconset resource="../../icons/icons.qrc" >:/16x16/actions/oxygen/16x16/actions/list-add.png</iconset>
+        <iconset>
+         <normaloff>:/16x16/actions/oxygen/16x16/actions/list-add.png</normaloff>:/16x16/actions/oxygen/16x16/actions/list-add.png</iconset>
        </property>
        <property name="iconSize" >
         <size>
@@ -68,7 +70,8 @@
         <string>De&amp;lete</string>
        </property>
        <property name="icon" >
-        <iconset resource="../../icons/icons.qrc" >:/16x16/actions/oxygen/16x16/actions/edit-delete.png</iconset>
+        <iconset>
+         <normaloff>:/16x16/actions/oxygen/16x16/actions/edit-delete.png</normaloff>:/16x16/actions/oxygen/16x16/actions/edit-delete.png</iconset>
        </property>
       </widget>
      </item>
@@ -187,7 +190,7 @@
         <property name="orientation" >
          <enum>Qt::Vertical</enum>
         </property>
-        <property name="sizeHint" >
+        <property name="sizeHint" stdset="0" >
          <size>
           <width>20</width>
           <height>40</height>
@@ -221,8 +224,6 @@
    <header>bufferview.h</header>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="../../icons/icons.qrc" />
- </resources>
+ <resources/>
  <connections/>
 </ui>

@@ -203,10 +203,7 @@ p, li { white-space: pre-wrap; }
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="../../icons/icons.qrc" />
-  <include location="../../icons/quassel-icons.qrc" />
- </resources>
+ <resources/>
  <connections>
   <connection>
    <sender>buttonBox</sender>

@@ -13,7 +13,7 @@
    <string>Configure Quassel</string>
   </property>
   <property name="windowIcon" >
-   <iconset resource="../../icons/icons.qrc" >
+   <iconset>
     <normaloff>:/16x16/actions/configure</normaloff>:/16x16/actions/configure</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2" >
@@ -59,16 +59,7 @@
        </item>
        <item>
         <widget class="QStackedWidget" name="settingsStack" >
-         <widget class="QWidget" name="page" >
-          <property name="geometry" >
-           <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>509</width>
-            <height>507</height>
-           </rect>
-          </property>
-         </widget>
+         <widget class="QWidget" name="page" />
         </widget>
        </item>
       </layout>
@@ -87,8 +78,6 @@
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="../../icons/icons.qrc" />
- </resources>
+ <resources/>
  <connections/>
 </ui>

@@ -27,7 +27,7 @@
         <string>New</string>
        </property>
        <property name="icon" >
-        <iconset resource="../../icons/icons.qrc" >
+        <iconset>
          <normaloff>:/16x16/actions/oxygen/16x16/actions/list-add.png</normaloff>:/16x16/actions/oxygen/16x16/actions/list-add.png</iconset>
        </property>
       </widget>
@@ -41,7 +41,7 @@
         <string>Delete</string>
        </property>
        <property name="icon" >
-        <iconset resource="../../icons/icons.qrc" >
+        <iconset>
          <normaloff>:/16x16/actions/oxygen/16x16/actions/edit-delete.png</normaloff>:/16x16/actions/oxygen/16x16/actions/edit-delete.png</iconset>
        </property>
       </widget>
@@ -63,8 +63,6 @@
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="../../icons/icons.qrc" />
- </resources>
+ <resources/>
  <connections/>
 </ui>
