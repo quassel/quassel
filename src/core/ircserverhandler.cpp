@@ -870,7 +870,7 @@ void IrcServerHandler::handle352(const QString &prefix, const QList<QByteArray> 
 /* RPL_NAMREPLY */
 void IrcServerHandler::handle353(const QString &prefix, const QList<QByteArray> &params) {
   Q_UNUSED(prefix);
-  if(!checkParamCount("IrcServerHandler::handle353()", params, 2))
+  if(!checkParamCount("IrcServerHandler::handle353()", params, 3))
     return;
     
   // param[0] is either "=", "*" or "@" indicating a public, private or secret channel
