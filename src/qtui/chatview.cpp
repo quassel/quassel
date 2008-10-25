@@ -30,7 +30,8 @@
 
 ChatView::ChatView(BufferId bufferId, QWidget *parent)
   : QGraphicsView(parent),
-    AbstractChatView()
+    AbstractChatView(),
+    _currentScaleFactor(1)
 {
   QList<BufferId> filterList;
   filterList.append(bufferId);
@@ -40,7 +41,8 @@ ChatView::ChatView(BufferId bufferId, QWidget *parent)
 
 ChatView::ChatView(MessageFilter *filter, QWidget *parent)
   : QGraphicsView(parent),
-    AbstractChatView()
+    AbstractChatView(),
+    _currentScaleFactor(1)
 {
   init(filter);
 }
@@ -52,7 +54,8 @@ void ChatView::init(MessageFilter *filter) {
   //setOptimizationFlags(QGraphicsView::DontClipPainter | QGraphicsView::DontAdjustForAntialiasing);
   // setOptimizationFlags(QGraphicsView::DontAdjustForAntialiasing);
   setViewportUpdateMode(QGraphicsView::BoundingRectViewportUpdate);
-  setTransformationAnchor(QGraphicsView::NoAnchor);
+  // setTransformationAnchor(QGraphicsView::NoAnchor);
+  setTransformationAnchor(QGraphicsView::AnchorViewCenter); 
 
   _scene = new ChatScene(filter, filter->idString(), viewport()->width() - 2, this); // see below: resizeEvent()
   connect(_scene, SIGNAL(sceneRectChanged(const QRectF &)), this, SLOT(sceneRectChanged(const QRectF &)));
@@ -112,4 +115,22 @@ MsgId ChatView::lastMsgId() const {
     return MsgId();
 
   return model->data(model->index(model->rowCount() - 1, 0), MessageModel::MsgIdRole).value<MsgId>();
+}
+
+void ChatView::zoomIn() { 
+    _currentScaleFactor *= 1.2;
+    scale(1.2, 1.2);
+    scene()->setWidth(viewport()->width() / _currentScaleFactor - 2);
+}
+
+void ChatView::zoomOut() {
+    _currentScaleFactor /= 1.2;
+    scale(1 / 1.2, 1 / 1.2);
+    scene()->setWidth(viewport()->width() / _currentScaleFactor - 2);
+}
+
+void ChatView::zoomNormal() {
+    scale(1/_currentScaleFactor, 1/_currentScaleFactor);
+    _currentScaleFactor = 1;
+    scene()->setWidth(viewport()->width() - 2);
 }

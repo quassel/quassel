@@ -56,7 +56,6 @@ InputWidget::InputWidget(QWidget *parent)
   connect(activateInputline, SIGNAL(triggered()), SLOT(setFocus()));
   activateInputline->setText(tr("Focus Input Line"));
   activateInputline->setShortcut(tr("Ctrl+L"));
-
 }
 
 InputWidget::~InputWidget() {

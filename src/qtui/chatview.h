@@ -43,6 +43,9 @@ public:
 
 public slots:
   inline virtual void clear() {}
+  void zoomIn();
+  void zoomOut();
+  void zoomNormal();
 
 protected:
   virtual void resizeEvent(QResizeEvent *event);
@@ -57,6 +60,7 @@ private:
 
   ChatScene *_scene;
   int _lastScrollbarPos;
+  qreal _currentScaleFactor;
 };
 
 

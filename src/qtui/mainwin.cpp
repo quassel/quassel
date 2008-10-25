@@ -36,6 +36,7 @@
 #include "coreconnectdlg.h"
 #include "iconloader.h"
 #include "inputwidget.h"
+#include "inputline.h"
 #include "irclistmodel.h"
 #include "jumpkeyhandler.h"
 #include "msgprocessorstatuswidget.h"
@@ -358,6 +359,8 @@ void MainWin::setupInputWidget() {
   inputWidget->setSelectionModel(Client::bufferModel()->standardSelectionModel());
 
   _bufferWidget->setFocusProxy(inputWidget);
+
+  inputWidget->inputLine()->installEventFilter(_bufferWidget);
 }
 
 void MainWin::setupTopicWidget() {

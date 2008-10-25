@@ -36,6 +36,8 @@ public:
   BufferWidget(QWidget *parent);
   ~BufferWidget();
 
+  virtual bool eventFilter(QObject *watched, QEvent *event);
+
   inline ChatViewSearchBar *searchBar() const { return ui.searchBar; }
 
 protected:
@@ -47,6 +49,9 @@ protected slots:
 
 private slots:
   void scrollToHighlight(QGraphicsItem *highlightItem);
+  void zoomIn();
+  void zoomOut();
+  void zoomNormal();
 
 private:
   Ui::BufferWidget ui;

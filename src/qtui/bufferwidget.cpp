@@ -25,7 +25,12 @@
 #include "settings.h"
 #include "client.h"
 
+#include "action.h"
+#include "actioncollection.h"
+#include "qtui.h"
+
 #include <QLayout>
+#include <QKeyEvent>
 
 BufferWidget::BufferWidget(QWidget *parent)
   : AbstractBufferContainer(parent),
@@ -58,6 +63,23 @@ BufferWidget::BufferWidget(QWidget *parent)
 
   connect(_chatViewSearchController, SIGNAL(newCurrentHighlight(QGraphicsItem *)),
 	  this, SLOT(scrollToHighlight(QGraphicsItem *)));
+  
+  ActionCollection *coll = QtUi::actionCollection();
+
+  Action *zoomChatview = coll->add<Action>("ZoomChatView");
+  connect(zoomChatview, SIGNAL(triggered()), SLOT(zoomIn()));
+  zoomChatview->setText(tr("Enlarge Chat View"));
+  zoomChatview->setShortcut(tr("Ctrl++"));
+
+  Action *zoomOutChatview = coll->add<Action>("ZoomOutChatView");
+  connect(zoomOutChatview, SIGNAL(triggered()), SLOT(zoomOut()));
+  zoomOutChatview->setText(tr("Demagnify Chat View"));
+  zoomOutChatview->setShortcut(tr("Ctrl+-"));
+
+  Action *zoomNormalChatview = coll->add<Action>("ZoomNormalChatView");
+  connect(zoomNormalChatview, SIGNAL(triggered()), SLOT(zoomNormal()));
+  zoomNormalChatview->setText(tr("Normalize zoom of Chat View"));
+  zoomNormalChatview->setShortcut(tr("Ctrl+0"));
 }
 
 BufferWidget::~BufferWidget() {
@@ -97,5 +119,40 @@ void BufferWidget::scrollToHighlight(QGraphicsItem *highlightItem) {
   ChatView *view = qobject_cast<ChatView *>(ui.stackedWidget->currentWidget());
   if(view) {
     view->centerOn(highlightItem);
+  }
+}
+
+
+void BufferWidget::zoomIn() {
+  ChatView *view = qobject_cast<ChatView *>(ui.stackedWidget->currentWidget());
+  if(!view) return;
+  view->zoomIn();
+}
+
+void BufferWidget::zoomOut() {
+  ChatView *view = qobject_cast<ChatView *>(ui.stackedWidget->currentWidget());
+  if(!view) return;
+  view->zoomOut();
+}
+
+void BufferWidget::zoomNormal() {
+  ChatView *view = qobject_cast<ChatView *>(ui.stackedWidget->currentWidget());
+  if(!view) return;
+  view->zoomNormal();
+}
+
+bool BufferWidget::eventFilter(QObject *watched, QEvent *event) {
+  Q_UNUSED(watched);
+  if(event->type() != QEvent::KeyPress)
+    return false;
+
+  QKeyEvent *keyEvent = static_cast<QKeyEvent*>(event);
+  switch(keyEvent->key()) {
+    case Qt::Key_PageUp:
+    case Qt::Key_PageDown:
+      // static cast to access public qobject::event
+      return static_cast<QObject*>(ui.stackedWidget->currentWidget())->event(event);
+    default:
+      return false;
   }
 }

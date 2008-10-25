@@ -46,7 +46,7 @@ bool JumpKeyHandler::eventFilter(QObject *obj, QEvent *event) {
 
   const int key = keyEvent->key();
   
-  if(key < Qt::Key_0 || Qt::Key_9 < key)
+  if(key < Qt::Key_1 || Qt::Key_9 < key)
     return QObject::eventFilter(obj, event);
   
   if(keyEvent->modifiers() ==  bindModifier) {

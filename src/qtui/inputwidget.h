@@ -29,6 +29,8 @@
 #include "identity.h"
 #include "network.h"
 
+class InputLine;
+
 class InputWidget : public AbstractItemView {
   Q_OBJECT
 
@@ -37,6 +39,8 @@ public:
   virtual ~InputWidget();
 
   const Network *currentNetwork() const;
+
+  inline  InputLine* inputLine() const { return ui.inputEdit; }
 
 protected slots:
   virtual void currentChanged(const QModelIndex &current, const QModelIndex &previous);
