@@ -31,6 +31,7 @@
 
 #include <QLayout>
 #include <QKeyEvent>
+#include <QScrollBar>
 
 BufferWidget::BufferWidget(QWidget *parent)
   : AbstractBufferContainer(parent),
@@ -147,11 +148,24 @@ bool BufferWidget::eventFilter(QObject *watched, QEvent *event) {
     return false;
 
   QKeyEvent *keyEvent = static_cast<QKeyEvent*>(event);
+
+  int direction = 1;
   switch(keyEvent->key()) {
     case Qt::Key_PageUp:
     case Qt::Key_PageDown:
       // static cast to access public qobject::event
       return static_cast<QObject*>(ui.stackedWidget->currentWidget())->event(event);
+
+    case Qt::Key_Up:
+      direction = -1;
+    case Qt::Key_Down:
+      if(keyEvent->modifiers() == Qt::ShiftModifier) {
+        QAbstractScrollArea *scrollArea = qobject_cast<QAbstractScrollArea*>(ui.stackedWidget->currentWidget());
+        if(!scrollArea)
+          return false;
+        int sliderPosition = scrollArea->verticalScrollBar()->value();
+        scrollArea->verticalScrollBar()->setValue(sliderPosition + (direction * 12));
+      }
     default:
       return false;
   }
