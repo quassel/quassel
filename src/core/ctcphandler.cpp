@@ -30,9 +30,9 @@ CtcpHandler::CtcpHandler(NetworkConnection *parent)
 {
 
   QByteArray MQUOTE = QByteArray("\020");
-  ctcpMDequoteHash[MQUOTE + '0'] = QByteArray("\000");
-  ctcpMDequoteHash[MQUOTE + 'n'] = QByteArray("\n");
-  ctcpMDequoteHash[MQUOTE + 'r'] = QByteArray("\r");
+  ctcpMDequoteHash[MQUOTE + '0'] = QByteArray(1, '\000');
+  ctcpMDequoteHash[MQUOTE + 'n'] = QByteArray(1, '\n');
+  ctcpMDequoteHash[MQUOTE + 'r'] = QByteArray(1, '\r');
   ctcpMDequoteHash[MQUOTE + MQUOTE] = MQUOTE;
 
   QByteArray XQUOTE = QByteArray("\134");
@@ -42,8 +42,14 @@ CtcpHandler::CtcpHandler(NetworkConnection *parent)
 
 QByteArray CtcpHandler::lowLevelQuote(const QByteArray &message) {
   QByteArray quotedMessage = message;
-  QHash<QByteArray, QByteArray>::const_iterator quoteIter = ctcpMDequoteHash.constBegin();
-  while(quoteIter != ctcpMDequoteHash.constEnd()) {
+
+  QHash<QByteArray, QByteArray> quoteHash = ctcpMDequoteHash;
+  QByteArray MQUOTE = QByteArray("\020");
+  quoteHash.remove(MQUOTE + MQUOTE);
+  quotedMessage.replace(MQUOTE, MQUOTE + MQUOTE);
+
+  QHash<QByteArray, QByteArray>::const_iterator quoteIter = quoteHash.constBegin();
+  while(quoteIter != quoteHash.constEnd()) {
     quotedMessage.replace(quoteIter.value(), quoteIter.key());
     quoteIter++;
   }
