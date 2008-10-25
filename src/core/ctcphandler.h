@@ -36,7 +36,9 @@ public:
 
   void parse(Message::Type, const QString &prefix, const QString &target, const QByteArray &message);
 
-  QByteArray dequote(const QByteArray &);
+  QByteArray lowLevelQuote(const QByteArray &);
+  QByteArray lowLevelDequote(const QByteArray &);
+  QByteArray xdelimQuote(const QByteArray &);
   QByteArray xdelimDequote(const QByteArray &);
 
   QByteArray pack(const QByteArray &ctcpTag, const QByteArray &message);
