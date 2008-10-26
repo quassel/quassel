@@ -3040,7 +3040,7 @@ space</source>
     <message>
         <location filename="../src/qtui/mainwin.cpp" line="165"/>
         <source>&amp;Connect to Core...</source>
-        <translation>Zum Core &amp;Verbinden...</translation>
+        <translation>Zum Core &amp;verbinden...</translation>
     </message>
     <message>
         <location filename="../src/qtui/mainwin.cpp" line="167"/>
