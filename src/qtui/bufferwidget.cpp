@@ -165,6 +165,7 @@ bool BufferWidget::eventFilter(QObject *watched, QEvent *event) {
           return false;
         int sliderPosition = scrollArea->verticalScrollBar()->value();
         scrollArea->verticalScrollBar()->setValue(sliderPosition + (direction * 12));
+        return true;
       }
     default:
       return false;
