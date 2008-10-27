@@ -22,6 +22,7 @@
 
 #include <QEvent>
 
+#include "backlogsettings.h"
 #include "clientbacklogmanager.h"
 #include "client.h"
 #include "message.h"
@@ -349,16 +350,17 @@ void MessageModel::requestBacklog(BufferId bufferId) {
   if(_messagesWaiting.contains(bufferId))
     return;
 
-  static const int REQUEST_COUNT = 500;
+  BacklogSettings backlogSettings;
+  int requestCount = backlogSettings.dynamicBacklogAmount();
 
   for(int i = 0; i < _messageList.count(); i++) {
     if(_messageList.at(i)->bufferId() == bufferId) {
-      _messagesWaiting[bufferId] = REQUEST_COUNT;
+      _messagesWaiting[bufferId] = requestCount;
       Client::backlogManager()->emitMessagesRequested(tr("Requesting %1 messages from backlog for buffer %2:%3")
-						      .arg(REQUEST_COUNT)
+						      .arg(requestCount)
 						      .arg(Client::networkModel()->networkName(bufferId))
 						      .arg(Client::networkModel()->bufferName(bufferId)));
-      Client::backlogManager()->requestBacklog(bufferId, REQUEST_COUNT, _messageList.at(i)->msgId().toInt());
+      Client::backlogManager()->requestBacklog(bufferId, requestCount, _messageList.at(i)->msgId().toInt());
       return;
     }
   }

@@ -22,6 +22,7 @@
 
 #include <QObject>
 
+#include "backlogsettings.h"
 #include "clientbacklogmanager.h"
 
 BacklogRequester::BacklogRequester(bool buffering, ClientBacklogManager *backlogManager)
@@ -41,9 +42,10 @@ bool BacklogRequester::buffer(BufferId bufferId, const MessageList &messages) {
 //  FIXED BACKLOG REQUESTER
 // ========================================
 FixedBacklogRequester::FixedBacklogRequester(ClientBacklogManager *backlogManager)
-  : BacklogRequester(true, backlogManager),
-    _backlogCount(500)
+  : BacklogRequester(true, backlogManager)
 {
+  BacklogSettings backlogSettings;
+  _backlogCount = backlogSettings.fixedBacklogAmount();
 }
 
 void FixedBacklogRequester::requestBacklog() {
