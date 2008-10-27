@@ -27,6 +27,8 @@
 
 #include <ctime>
 
+#include <QDebug>
+
 ClientBacklogManager::ClientBacklogManager(QObject *parent)
   : BacklogManager(parent),
     _requester(0)
@@ -39,6 +41,8 @@ void ClientBacklogManager::receiveBacklog(BufferId bufferId, int lastMsgs, int o
 
   if(msgs.isEmpty())
     return;
+
+  emit messagesReceived(bufferId, msgs.count());
 
   MessageList msglist;
   foreach(QVariant v, msgs) {

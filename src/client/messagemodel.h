@@ -68,6 +68,10 @@ public:
 
   void clear();
 
+public slots:
+  void requestBacklog(BufferId bufferId);
+  void messagesReceived(BufferId bufferId, int count);
+
 protected:
   virtual MessageModelItem *createMessageModelItem(const Message &) = 0;
   virtual void customEvent(QEvent *event);
@@ -84,6 +88,7 @@ private:
   QList<Message> _messageBuffer;
   QTimer _dayChangeTimer;
   QDateTime _nextDayChange;
+  QHash<BufferId, int> _messagesWaiting;
 };
 
 // **************************************************

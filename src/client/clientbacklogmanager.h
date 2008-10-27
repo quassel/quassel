@@ -34,12 +34,17 @@ public:
 
   virtual const QMetaObject *syncMetaObject() const { return &BacklogManager::staticMetaObject; }
 
+  // helper for the backlogRequester, as it isn't a QObject and can't emit itself
+  inline void emitMessagesRequested(const QString &msg) const { emit messagesRequested(msg); }
+
 public slots:
   virtual void receiveBacklog(BufferId bufferId, int lastMsgs, int offset, QVariantList msgs);
   void requestInitialBacklog();
 
 signals:
-  void messagesProcessed(const QString &);
+  void messagesReceived(BufferId bufferId, int count) const;
+  void messagesRequested(const QString &) const;
+  void messagesProcessed(const QString &) const;
 
 private:
   bool isBuffering();

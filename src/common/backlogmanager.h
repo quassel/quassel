@@ -28,7 +28,7 @@ class BacklogManager : public SyncableObject {
   Q_OBJECT
 
 public:
-  BacklogManager(QObject *parent = 0);
+  BacklogManager(QObject *parent = 0) : SyncableObject(parent) {}
 
 public slots:
   virtual QVariantList requestBacklog(BufferId bufferId, int lastMsgs = -1, int offset = -1);

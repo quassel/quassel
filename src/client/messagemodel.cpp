@@ -20,9 +20,12 @@
 
 #include "messagemodel.h"
 
-#include "message.h"
-
 #include <QEvent>
+
+#include "clientbacklogmanager.h"
+#include "client.h"
+#include "message.h"
+#include "networkmodel.h"
 
 class ProcessBufferEvent : public QEvent {
 public:
@@ -65,8 +68,6 @@ bool MessageModel::setData(const QModelIndex &index, const QVariant &value, int 
 
   return false;
 }
-
-
 
 bool MessageModel::insertMessage(const Message &msg, bool fakeMsg) {
   MsgId id = msg.msgId();
@@ -307,9 +308,8 @@ void MessageModel::clear() {
   qDeleteAll(_messageList);
   _messageList.clear();
   endRemoveRows();
+  _messagesWaiting.clear();
 }
-
-
 
 // returns index of msg with given Id or of the next message after that (i.e., the index where we'd insert this msg)
 int MessageModel::indexForId(MsgId id) {
@@ -345,8 +345,37 @@ void MessageModel::changeOfDay() {
   _nextDayChange = _nextDayChange.addSecs(86400);
 }
 
-/**********************************************************************************/
+void MessageModel::requestBacklog(BufferId bufferId) {
+  if(_messagesWaiting.contains(bufferId))
+    return;
 
+  static const int REQUEST_COUNT = 500;
+
+  for(int i = 0; i < _messageList.count(); i++) {
+    if(_messageList.at(i)->bufferId() == bufferId) {
+      _messagesWaiting[bufferId] = REQUEST_COUNT;
+      Client::backlogManager()->emitMessagesRequested(tr("Requesting %1 messages from backlog for buffer %2:%3")
+						      .arg(REQUEST_COUNT)
+						      .arg(Client::networkModel()->networkName(bufferId))
+						      .arg(Client::networkModel()->bufferName(bufferId)));
+      Client::backlogManager()->requestBacklog(bufferId, REQUEST_COUNT, _messageList.at(i)->msgId().toInt());
+      return;
+    }
+  }
+}
+
+void MessageModel::messagesReceived(BufferId bufferId, int count) {
+  if(!_messagesWaiting.contains(bufferId))
+    return;
+
+  _messagesWaiting[bufferId] -= count;
+  if(_messagesWaiting[bufferId] <= 0)
+    _messagesWaiting.remove(bufferId);
+}
+
+// ========================================
+//  MessageModelItem
+// ========================================
 MessageModelItem::MessageModelItem(const Message &msg) :
   _timestamp(msg.timestamp()),
   _msgId(msg.msgId()),

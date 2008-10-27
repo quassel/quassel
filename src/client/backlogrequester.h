@@ -28,7 +28,7 @@
 #include "networkmodel.h"
 #include "types.h"
 
-class BacklogManager;
+class ClientBacklogManager;
 
 class BacklogRequester {
 public:
@@ -39,7 +39,7 @@ public:
     PerBufferFixed
   };
 
-  BacklogRequester(bool buffering, BacklogManager *backlogManger);
+  BacklogRequester(bool buffering, ClientBacklogManager *backlogManger);
   virtual inline ~BacklogRequester() {}
 
   inline bool isBuffering() { return _isBuffering; }
@@ -55,7 +55,8 @@ protected:
   inline void setWaitingBuffers(const QList<BufferId> &buffers) { _buffersWaiting = buffers.toSet(); }
   inline void setWaitingBuffers(const QSet<BufferId> &buffers) { _buffersWaiting = buffers; }
   inline void addWaitingBuffer(BufferId buffer) { _buffersWaiting << buffer; }
-  BacklogManager *backlogManager;
+
+  ClientBacklogManager *backlogManager;
 
 private:
   bool _isBuffering;
@@ -68,7 +69,7 @@ private:
 // ========================================
 class FixedBacklogRequester : public BacklogRequester {
 public:
-  FixedBacklogRequester(BacklogManager *backlogManager);
+  FixedBacklogRequester(ClientBacklogManager *backlogManager);
   virtual void requestBacklog();
 
 private:

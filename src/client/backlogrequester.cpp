@@ -20,11 +20,11 @@
 
 #include "backlogrequester.h"
 
-#include <QDebug>
+#include <QObject>
 
-#include "backlogmanager.h"
+#include "clientbacklogmanager.h"
 
-BacklogRequester::BacklogRequester(bool buffering, BacklogManager *backlogManager)
+BacklogRequester::BacklogRequester(bool buffering, ClientBacklogManager *backlogManager)
   : backlogManager(backlogManager),
     _isBuffering(buffering)
 {
@@ -40,7 +40,7 @@ bool BacklogRequester::buffer(BufferId bufferId, const MessageList &messages) {
 // ========================================
 //  FIXED BACKLOG REQUESTER
 // ========================================
-FixedBacklogRequester::FixedBacklogRequester(BacklogManager *backlogManager)
+FixedBacklogRequester::FixedBacklogRequester(ClientBacklogManager *backlogManager)
   : BacklogRequester(true, backlogManager),
     _backlogCount(500)
 {
@@ -49,6 +49,7 @@ FixedBacklogRequester::FixedBacklogRequester(BacklogManager *backlogManager)
 void FixedBacklogRequester::requestBacklog() {
   QList<BufferId> allBuffers = allBufferIds();
   setWaitingBuffers(allBuffers);
+  backlogManager->emitMessagesRequested(QObject::tr("Requesting a total of up to %1 backlog messages for %2 buffers").arg(_backlogCount * allBuffers.count()).arg(allBuffers.count()));
   foreach(BufferId bufferId, allBuffers) {
     backlogManager->requestBacklog(bufferId, _backlogCount, -1);
   }

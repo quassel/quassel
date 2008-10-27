@@ -42,6 +42,7 @@ public:
 
 public slots:
   void messageTypeFilterChanged();
+  void requestBacklog();
 
 private:
   void init();

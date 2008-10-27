@@ -122,6 +122,9 @@ void Client::init() {
   connect(this, SIGNAL(connected()), mainUi, SLOT(connectedToCore()));
   connect(this, SIGNAL(disconnected()), mainUi, SLOT(disconnectedFromCore()));
 
+  // attach backlog manager
+  p->synchronize(backlogManager());
+  connect(backlogManager(), SIGNAL(messagesReceived(BufferId, int)), _messageModel, SLOT(messagesReceived(BufferId, int)));
 }
 
 /*** public static methods ***/
@@ -273,9 +276,6 @@ void Client::setSyncedToCore() {
   connect(bufferSyncer(), SIGNAL(bufferRemoved(BufferId)), this, SLOT(bufferRemoved(BufferId)));
   connect(bufferSyncer(), SIGNAL(bufferRenamed(BufferId, QString)), this, SLOT(bufferRenamed(BufferId, QString)));
   signalProxy()->synchronize(bufferSyncer());
-
-  // attach backlog manager
-  signalProxy()->synchronize(backlogManager());
 
   // create a new BufferViewManager
   _bufferViewManager = new BufferViewManager(signalProxy(), this);

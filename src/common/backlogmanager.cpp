@@ -20,13 +20,6 @@
 
 #include "backlogmanager.h"
 
-#include <QDebug>
-
-BacklogManager::BacklogManager(QObject *parent)
-  : SyncableObject(parent)
-{
-}
-
 QVariantList BacklogManager::requestBacklog(BufferId bufferId, int lastMsgs, int offset) {
   emit backlogRequested(bufferId, lastMsgs, offset);
   return QVariantList();

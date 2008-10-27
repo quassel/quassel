@@ -19,7 +19,10 @@
  ***************************************************************************/
 
 #include "messagefilter.h"
+
 #include "buffersettings.h"
+#include "client.h"
+#include "messagemodel.h"
 
 MessageFilter::MessageFilter(QAbstractItemModel *source, QObject *parent)
   : QSortFilterProxyModel(parent),
@@ -92,4 +95,12 @@ bool MessageFilter::filterAcceptsRow(int sourceRow, const QModelIndex &sourcePar
     return true;
   }
   return _validBuffers.contains(id);
+}
+
+void MessageFilter::requestBacklog() {
+  QSet<BufferId>::const_iterator bufferIdIter = _validBuffers.constBegin();
+  while(bufferIdIter != _validBuffers.constEnd()) {
+    Client::messageModel()->requestBacklog(*bufferIdIter);
+    bufferIdIter++;
+  }
 }
