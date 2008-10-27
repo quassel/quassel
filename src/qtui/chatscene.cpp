@@ -47,6 +47,7 @@ ChatScene::ChatScene(QAbstractItemModel *model, const QString &idString, qreal w
     _sceneRect(0, 0, width, 0),
     _firstLineRow(-1),
     _viewportHeight(0),
+    _cutoffMode(CutoffLeft),
     _selectingItem(0),
     _selectionStart(-1),
     _isSelecting(false)

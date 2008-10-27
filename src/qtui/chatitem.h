@@ -69,7 +69,9 @@ protected:
 
   inline QTextLayout *layout() const;
 
+  virtual QTextLayout::FormatRange selectionFormat() const;
   virtual inline QVector<QTextLayout::FormatRange> additionalFormats() const { return QVector<QTextLayout::FormatRange>(); }
+
   qint16 posToCursor(const QPointF &pos);
 
   inline bool hasPrivateData() const { return (bool)_data; }
@@ -137,7 +139,8 @@ public:
   virtual inline ChatLineModel::ColumnType column() const { return ChatLineModel::SenderColumn; }
 
 protected:
-  virtual inline ChatItemPrivate *newPrivateData() { return new ChatItemPrivate(createLayout(QTextOption::WrapAnywhere, Qt::AlignRight)); }
+  virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
+  virtual inline ChatItemPrivate *newPrivateData() { return new ChatItemPrivate(createLayout(QTextOption::ManualWrap, Qt::AlignRight)); }
 };
 
 // ************************************************************
@@ -207,7 +210,8 @@ struct ContentsChatItemPrivate : ChatItemPrivate {
   ContentsChatItem::Clickable currentClickable;
   bool hasDragged;
 
-  ContentsChatItemPrivate(QTextLayout *l, const QList<ContentsChatItem::Clickable> &c, ContentsChatItem *parent) : ChatItemPrivate(l), contentsItem(parent), clickables(c), hasDragged(false) {}
+  ContentsChatItemPrivate(QTextLayout *l, const QList<ContentsChatItem::Clickable> &c, ContentsChatItem *parent)
+  : ChatItemPrivate(l), contentsItem(parent), clickables(c), hasDragged(false) {}
 };
 
 //inlines regarding ContentsChatItemPrivate

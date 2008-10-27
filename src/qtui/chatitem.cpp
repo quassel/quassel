@@ -101,25 +101,9 @@ ChatItemPrivate *ChatItem::privateData() const {
 void ChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
   Q_UNUSED(option); Q_UNUSED(widget);
   painter->setClipRect(boundingRect()); // no idea why QGraphicsItem clipping won't work
-  //if(_selectionMode == FullSelection) {
-    //painter->save();
-    //painter->fillRect(boundingRect(), QApplication::palette().brush(QPalette::Highlight));
-    //painter->restore();
-  //}
   QVector<QTextLayout::FormatRange> formats = additionalFormats();
-  if(_selectionMode != NoSelection) {
-    QTextLayout::FormatRange selectFmt;
-    selectFmt.format.setForeground(QApplication::palette().brush(QPalette::HighlightedText));
-    selectFmt.format.setBackground(QApplication::palette().brush(QPalette::Highlight));
-    if(_selectionMode == PartialSelection) {
-      selectFmt.start = qMin(_selectionStart, _selectionEnd);
-      selectFmt.length = qAbs(_selectionStart - _selectionEnd);
-    } else { // FullSelection
-      selectFmt.start = 0;
-      selectFmt.length = data(MessageModel::DisplayRole).toString().length();
-    }
-    formats.append(selectFmt);
-  }
+  QTextLayout::FormatRange selectFmt = selectionFormat();
+  if(selectFmt.format.isValid()) formats.append(selectFmt);
   layout()->draw(painter, QPointF(0,0), formats, boundingRect());
 
   // Debuging Stuff
@@ -178,6 +162,25 @@ void ChatItem::continueSelecting(const QPointF &pos) {
   _selectionMode = PartialSelection;
   _selectionEnd = posToCursor(pos);
   update();
+}
+
+QTextLayout::FormatRange ChatItem::selectionFormat() const {
+  QTextLayout::FormatRange selectFmt;
+  if(_selectionMode != NoSelection) {
+    selectFmt.format.setForeground(QApplication::palette().brush(QPalette::HighlightedText));
+    selectFmt.format.setBackground(QApplication::palette().brush(QPalette::Highlight));
+    if(_selectionMode == PartialSelection) {
+      selectFmt.start = qMin(_selectionStart, _selectionEnd);
+      selectFmt.length = qAbs(_selectionStart - _selectionEnd);
+    } else { // FullSelection
+      selectFmt.start = 0;
+      selectFmt.length = data(MessageModel::DisplayRole).toString().length();
+    }
+  } else {
+    selectFmt.start = -1;
+    selectFmt.length = 0;
+  }
+  return selectFmt;
 }
 
 QList<QRectF> ChatItem::findWords(const QString &searchWord, Qt::CaseSensitivity caseSensitive) {
@@ -256,6 +259,51 @@ void ChatItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
 // ************************************************************
 // SenderChatItem
 // ************************************************************
+
+void SenderChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
+  Q_UNUSED(option); Q_UNUSED(widget);
+
+  //painter->setClipRect(boundingRect()); // no idea why QGraphicsItem clipping won't work
+  qreal layoutWidth = layout()->minimumWidth();
+  qreal offset = 0;
+  if(chatScene()->senderCutoffMode() == ChatScene::CutoffLeft)
+    offset = qMin(width() - layoutWidth, (qreal)0);
+  else
+    offset = qMax(layoutWidth - width(), (qreal)0);
+
+  QTextLayout::FormatRange selectFmt = selectionFormat();
+
+  if(layoutWidth > width()) {
+    // Draw a nice gradient for longer items
+    // Qt's text drawing with a gradient brush sucks, so we use an alpha-channeled pixmap instead
+    QPixmap pixmap(QSize(layout()->boundingRect().width(), layout()->boundingRect().height()));
+    pixmap.fill(QApplication::palette().brush(QPalette::Base).color());
+    QPainter pixPainter(&pixmap);
+    layout()->draw(&pixPainter, QPointF(qMax(offset, (qreal)0), 0), QVector<QTextLayout::FormatRange>() << selectFmt);
+    pixPainter.end();
+
+    // Create alpha channel mask
+    QPixmap mask(pixmap.size());
+    QPainter maskPainter(&mask);
+    QLinearGradient gradient;
+    if(offset < 0) {
+      gradient.setStart(0, 0);
+      gradient.setFinalStop(12, 0);
+      gradient.setColorAt(0, Qt::black);
+      gradient.setColorAt(1, Qt::white);
+    } else {
+      gradient.setStart(width()-10, 0);
+      gradient.setFinalStop(width(), 0);
+      gradient.setColorAt(0, Qt::white);
+      gradient.setColorAt(1, Qt::black);
+    }
+    maskPainter.fillRect(boundingRect(), gradient);
+    pixmap.setAlphaChannel(mask);
+    painter->drawPixmap(0, 0, pixmap);
+  } else {
+    layout()->draw(painter, QPointF(0,0), QVector<QTextLayout::FormatRange>() << selectFmt, boundingRect());
+  }
+}
 
 // ************************************************************
 // ContentsChatItem
