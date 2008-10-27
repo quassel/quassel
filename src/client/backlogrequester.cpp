@@ -24,22 +24,32 @@
 
 #include "backlogmanager.h"
 
-BacklogRequester::BacklogRequester(BacklogManager *backlogManager)
-  : backlogManager(backlogManager)
+BacklogRequester::BacklogRequester(bool buffering, BacklogManager *backlogManager)
+  : backlogManager(backlogManager),
+    _isBuffering(buffering)
 {
   Q_ASSERT(backlogManager);
 }
 
-// FIXED BACKLOG REQUESTER
-const int FixedBacklogRequester::backlogCount(500);
+bool BacklogRequester::buffer(BufferId bufferId, const MessageList &messages) {
+  _bufferedMessages << messages;
+  _buffersWaiting.remove(bufferId);
+  return !_buffersWaiting.isEmpty();
+}
 
+// ========================================
+//  FIXED BACKLOG REQUESTER
+// ========================================
 FixedBacklogRequester::FixedBacklogRequester(BacklogManager *backlogManager)
-  : BacklogRequester(backlogManager)
+  : BacklogRequester(true, backlogManager),
+    _backlogCount(500)
 {
 }
 
 void FixedBacklogRequester::requestBacklog() {
-  foreach(BufferId bufferId, allBufferIds()) {
-    backlogManager->requestBacklog(bufferId, backlogCount, -1);
+  QList<BufferId> allBuffers = allBufferIds();
+  setWaitingBuffers(allBuffers);
+  foreach(BufferId bufferId, allBuffers) {
+    backlogManager->requestBacklog(bufferId, _backlogCount, -1);
   }
 }

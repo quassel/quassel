@@ -410,6 +410,8 @@ void MainWin::setupStatusBar() {
 
   connect(showStatusbar, SIGNAL(toggled(bool)), statusBar(), SLOT(setVisible(bool)));
   connect(showStatusbar, SIGNAL(toggled(bool)), this, SLOT(saveStatusBarStatus(bool)));
+
+  connect(Client::backlogManager(), SIGNAL(messagesProcessed(const QString &)), this, SLOT(showStatusBarMessage(const QString &)));
 }
 
 void MainWin::saveStatusBarStatus(bool enabled) {
@@ -744,4 +746,8 @@ void MainWin::saveStateToSessionSettings(SessionSettings & s)
   s.setValue("MainWinSize", size());
   s.setValue("MainWinPos", pos());
   s.setValue("MainWinState", saveState());
+}
+
+void MainWin::showStatusBarMessage(const QString &message) {
+  statusBar()->showMessage(message, 10);
 }

@@ -24,6 +24,7 @@
 #include <QList>
 
 #include "client.h"
+#include "message.h"
 #include "networkmodel.h"
 #include "types.h"
 
@@ -31,25 +32,47 @@ class BacklogManager;
 
 class BacklogRequester {
 public:
-  BacklogRequester(BacklogManager *backlogManger);
+  enum RequesterTypes {
+    InvalidRequester = 0,
+    GlobalUnread,
+    PerBufferUnread,
+    PerBufferFixed
+  };
+
+  BacklogRequester(bool buffering, BacklogManager *backlogManger);
   virtual inline ~BacklogRequester() {}
 
+  inline bool isBuffering() { return _isBuffering; }
+  inline const QList<Message> &bufferedMessages() { return _bufferedMessages; }
+
+  //! returns false if it was the last missing backlogpart
+  bool buffer(BufferId bufferId, const MessageList &messages);
+  
   virtual void requestBacklog() = 0;
 
 protected:
   inline QList<BufferId> allBufferIds() const { return Client::networkModel()->allBufferIds(); }
+  inline void setWaitingBuffers(const QList<BufferId> &buffers) { _buffersWaiting = buffers.toSet(); }
+  inline void setWaitingBuffers(const QSet<BufferId> &buffers) { _buffersWaiting = buffers; }
+  inline void addWaitingBuffer(BufferId buffer) { _buffersWaiting << buffer; }
   BacklogManager *backlogManager;
+
+private:
+  bool _isBuffering;
+  MessageList _bufferedMessages;
+  QSet<BufferId> _buffersWaiting;
 };
 
-
+// ========================================
+//  FIXED BACKLOG REQUESTER
+// ========================================
 class FixedBacklogRequester : public BacklogRequester {
 public:
   FixedBacklogRequester(BacklogManager *backlogManager);
-
   virtual void requestBacklog();
 
 private:
-  static const int backlogCount;
+  int _backlogCount;
 };
 
 

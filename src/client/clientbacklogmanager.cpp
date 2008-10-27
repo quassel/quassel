@@ -21,15 +21,15 @@
 #include "clientbacklogmanager.h"
 
 #include "abstractmessageprocessor.h"
+#include "backlogsettings.h"
 #include "backlogrequester.h"
 #include "client.h"
 
-#include <QDebug>
 #include <ctime>
 
 ClientBacklogManager::ClientBacklogManager(QObject *parent)
   : BacklogManager(parent),
-    _buffer(true)
+    _requester(0)
 {
 }
 
@@ -40,46 +40,62 @@ void ClientBacklogManager::receiveBacklog(BufferId bufferId, int lastMsgs, int o
   if(msgs.isEmpty())
     return;
 
-  //QTime start = QTime::currentTime();
-  QList<Message> msglist;
+  MessageList msglist;
   foreach(QVariant v, msgs) {
     Message msg = v.value<Message>();
     msg.setFlags(msg.flags() | Message::Backlog);
     msglist << msg;
   }
 
-  if(_buffer) {
-    _messageBuffer << msglist;
-    _buffersWaiting.remove(bufferId);
-    if(_buffersWaiting.isEmpty()) {
-      _buffer = false;
-      clock_t start_t = clock();
-      qSort(_messageBuffer);
-      Client::messageProcessor()->process(_messageBuffer);
-      clock_t end_t = clock();
-      qDebug() << "Processed" << _messageBuffer.count() << "Messages in" << (float)(end_t - start_t) / CLOCKS_PER_SEC << "seconds ==" << end_t - start_t << "clocks.";
-      _messageBuffer.clear();
+  if(isBuffering()) {
+    if(!_requester->buffer(bufferId, msglist)) {
+      // this was the last part to buffer
+      stopBuffering();
     }
   } else {
-    Client::messageProcessor()->process(msglist);
+    dispatchMessages(msglist);
   }
-  //qDebug() << "processed" << msgs.count() << "backlog lines in" << start.msecsTo(QTime::currentTime());
-}
-
-QVariantList ClientBacklogManager::requestBacklog(BufferId bufferId, int lastMsgs, int offset) {
-  if(_buffer)
-    _buffersWaiting << bufferId;
-
-  return BacklogManager::requestBacklog(bufferId, lastMsgs, offset);
 }
 
 void ClientBacklogManager::requestInitialBacklog() {
-  FixedBacklogRequester backlogRequester(this);
-  backlogRequester.requestBacklog();
+  if(_requester) {
+    qWarning() << "ClientBacklogManager::requestInitialBacklog() called twice in the same session! (Backlog has already been requested)";
+    return;
+  }
+
+  BacklogSettings settings;
+  switch(settings.requesterType()) {
+  case BacklogRequester::GlobalUnread:
+  case BacklogRequester::PerBufferUnread:
+  case BacklogRequester::PerBufferFixed:
+  default:
+    _requester = new FixedBacklogRequester(this);
+  };
+
+  _requester->requestBacklog();
 }
 
-void ClientBacklogManager::reset() {
-  _buffer = true;
-  _messageBuffer.clear();
-  _buffersWaiting.clear();
+void ClientBacklogManager::stopBuffering() {
+  Q_ASSERT(_requester);
+
+  dispatchMessages(_requester->bufferedMessages(), true);
+
+  delete _requester;
+  _requester = 0;
+}
+
+bool ClientBacklogManager::isBuffering() {
+  return _requester && _requester->isBuffering();
+}
+
+void ClientBacklogManager::dispatchMessages(const MessageList &messages, bool sort) {
+  MessageList msgs = messages;
+
+  clock_t start_t = clock();
+  if(sort)
+    qSort(msgs);
+  Client::messageProcessor()->process(msgs);
+  clock_t end_t = clock();
+
+  emit messagesProcessed(tr("Processed %1 messages in %2 seconds.").arg(msgs.count()).arg((float)(end_t - start_t) / CLOCKS_PER_SEC));
 }

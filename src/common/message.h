@@ -93,6 +93,8 @@ private:
   friend QDataStream &operator>>(QDataStream &in, Message &msg);
 };
 
+typedef QList<Message> MessageList;
+
 QDataStream &operator<<(QDataStream &out, const Message &msg);
 QDataStream &operator>>(QDataStream &in, Message &msg);
 QDebug operator<<(QDebug dbg, const Message &msg);

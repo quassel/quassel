@@ -24,6 +24,8 @@
 #include "backlogmanager.h"
 #include "message.h"
 
+class BacklogRequester;
+
 class ClientBacklogManager : public BacklogManager {
   Q_OBJECT
 
@@ -34,15 +36,18 @@ public:
 
 public slots:
   virtual void receiveBacklog(BufferId bufferId, int lastMsgs, int offset, QVariantList msgs);
-  virtual QVariantList requestBacklog(BufferId bufferId, int lastMsgs = -1, int offset = -1);
   void requestInitialBacklog();
 
-  void reset();
+signals:
+  void messagesProcessed(const QString &);
 
 private:
-  bool _buffer;
-  QList<Message> _messageBuffer;
-  QSet<BufferId> _buffersWaiting;
+  bool isBuffering();
+  void stopBuffering();
+
+  void dispatchMessages(const MessageList &messages, bool sort = false);
+
+  BacklogRequester *_requester;
 };
 
 #endif // CLIENTBACKLOGMANAGER_H

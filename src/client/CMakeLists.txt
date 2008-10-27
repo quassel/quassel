@@ -43,6 +43,7 @@ set(MOC_HDRS
     treemodel.h)
 
 set(HEADERS
+    backlogsettings.h
     backlogrequester.h
     buffersettings.h
     clientsettings.h)
