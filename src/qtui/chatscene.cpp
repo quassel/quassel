@@ -573,9 +573,14 @@ void ChatScene::updateSceneRect(qreal width) {
   }
 
   // the following call should be safe. If it crashes something went wrong during insert/remove
-  ChatLine *firstLine = _lines.at(_firstLineRow);
-  ChatLine *lastLine = _lines.last();
-  updateSceneRect(QRectF(0, firstLine->pos().y(), width, lastLine->pos().y() + lastLine->height() - firstLine->pos().y()));
+  if(_firstLineRow < _lines.count()) {
+    ChatLine *firstLine = _lines.at(_firstLineRow);
+    ChatLine *lastLine = _lines.last();
+    updateSceneRect(QRectF(0, firstLine->pos().y(), width, lastLine->pos().y() + lastLine->height() - firstLine->pos().y()));
+  } else {
+    // empty scene rect
+    updateSceneRect(QRectF(0, 0, width, 0));
+  }
 }
 
 void ChatScene::updateSceneRect(const QRectF &rect) {
