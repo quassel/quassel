@@ -302,6 +302,7 @@ void Client::disconnectedFromCore() {
   emit disconnected();
   emit coreConnectionStateChanged(false);
 
+  backlogManager()->reset();
   messageProcessor()->reset();
 
   // Clear internal data. Hopefully nothing relies on it at this point.

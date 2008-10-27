@@ -83,9 +83,7 @@ void ClientBacklogManager::stopBuffering() {
   Q_ASSERT(_requester);
 
   dispatchMessages(_requester->bufferedMessages(), true);
-
-  delete _requester;
-  _requester = 0;
+  reset();
 }
 
 bool ClientBacklogManager::isBuffering() {
@@ -102,4 +100,9 @@ void ClientBacklogManager::dispatchMessages(const MessageList &messages, bool so
   clock_t end_t = clock();
 
   emit messagesProcessed(tr("Processed %1 messages in %2 seconds.").arg(msgs.count()).arg((float)(end_t - start_t) / CLOCKS_PER_SEC));
+}
+
+void ClientBacklogManager::reset() {
+  delete _requester;
+  _requester = 0;
 }

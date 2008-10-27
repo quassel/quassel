@@ -37,6 +37,8 @@ public:
   // helper for the backlogRequester, as it isn't a QObject and can't emit itself
   inline void emitMessagesRequested(const QString &msg) const { emit messagesRequested(msg); }
 
+  void reset();
+
 public slots:
   virtual void receiveBacklog(BufferId bufferId, int lastMsgs, int offset, QVariantList msgs);
   void requestInitialBacklog();
