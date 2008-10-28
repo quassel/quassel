@@ -198,7 +198,7 @@ void BufferViewSettingsPage::newBufferView(const QString &bufferViewName) {
   int fakeId = -1 * (_newBufferViews.count() + 1);
   BufferViewConfig *config = new BufferViewConfig(fakeId);
   config->setBufferViewName(bufferViewName);
-
+  config->setInitialized();
   QList<BufferId> bufferIds;
   if(config->addNewBuffersAutomatically()) {
     bufferIds = Client::networkModel()->allBufferIds();
