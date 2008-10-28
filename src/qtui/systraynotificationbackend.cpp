@@ -87,7 +87,10 @@ void SystrayNotificationBackend::showBubble() {
 
 void SystrayNotificationBackend::closeBubble() {
   // there really seems to be no decent way to close the bubble...
+  // in addition, windows ignores the timeout -_-
+#ifndef Q_WS_WIN
   QtUi::mainWindow()->systemTrayIcon()->showMessage("", "", QSystemTrayIcon::NoIcon, 1);
+#endif
 }
 
 void SystrayNotificationBackend::showBubbleChanged(const QVariant &v) {
