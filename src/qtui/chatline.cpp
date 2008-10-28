@@ -86,7 +86,7 @@ void ChatLine::setSecondColumn(const qreal &senderWidth, const qreal &contentsWi
   // contentsItem doesn't need a geom change as it's Pos is changed (ensured by void ChatScene::firstHandlePositionChanged(qreal xpos))
   qreal height = _contentsItem.setGeometryByWidth(contentsWidth);
   linePos -= height;
-  bool needGeometryChange = linePos == pos().y() && height != _height;
+  bool needGeometryChange = linePos == pos().y();
 
   if(needGeometryChange) {
     _timestampItem.prepareGeometryChange();
