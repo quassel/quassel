@@ -38,7 +38,7 @@ void UserInputHandler::handleUserInput(const BufferInfo &bufferInfo, const QStri
       return;
     QString cmd;
     QString msg = msg_;
-    // leading slashes indicate there's a command to call unless there is anothere one in the first section (like a path /proc/cpuinfo)
+    // leading slashes indicate there's a command to call unless there is another one in the first section (like a path /proc/cpuinfo)
     int secondSlashPos = msg.indexOf('/', 1);
     int firstSpacePos = msg.indexOf(' ');
     if(!msg.startsWith('/') || (secondSlashPos != -1 && (secondSlashPos < firstSpacePos || firstSpacePos == -1))) {
@@ -72,7 +72,7 @@ void UserInputHandler::handleAway(const BufferInfo &bufferInfo, const QString &m
   }
   if(me)
     me->setAwayMessage(awayMsg);
-  
+
   putCmd("AWAY", serverEncode(awayMsg));
 }
 
@@ -104,12 +104,12 @@ void UserInputHandler::handleBan(const BufferInfo &bufferInfo, const QString &ms
       int secondLastPeriodPosition = generalizedHost.lastIndexOf(".", generalizedHost.lastIndexOf(".")-1);
       generalizedHost.replace(0, secondLastPeriodPosition, "*");
     }
-    banUser = QString("*!%1@%2").arg(ircuser->user()).arg(generalizedHost);
+    banUser = QString("*!%1@%2").arg(ircuser->user(), generalizedHost);
   } else {
     banUser = params.join(" ");
   }
 
-  QString banMsg = QString("MODE %1 +b %2").arg(banChannel).arg(banUser);
+  QString banMsg = QString("MODE %1 +b %2").arg(banChannel, banUser);
   emit putRawLine(serverEncode(banMsg));
 }
 
@@ -218,7 +218,7 @@ void UserInputHandler::handleMode(const BufferInfo &bufferInfo, const QString &m
   // if the first argument is neither a channel nor us (user modes are only to oneself) the current buffer is assumed to be the target
   if(!params.isEmpty() && !network()->isChannelName(params[0]) && !network()->isMyNick(params[0]))
     params.prepend(bufferInfo.bufferName());
-  
+
   // TODO handle correct encoding for buffer modes (channelEncode())
   emit putCmd("MODE", serverEncode(params));
 }
@@ -267,7 +267,7 @@ void UserInputHandler::handlePart(const BufferInfo &bufferInfo, const QString &m
   } else {
     partReason = msg.mid(channelName.length() + 1);
   }
-  
+
   if(partReason.isEmpty())
     partReason = networkConnection()->identity()->partReason();
 
@@ -364,7 +364,7 @@ void UserInputHandler::defaultHandler(QString cmd, const BufferInfo &bufferInfo,
       return;
     }
   }
-  emit displayMsg(Message::Error, BufferInfo::StatusBuffer, "", QString("Error: %1 %2").arg(cmd).arg(msg));
+  emit displayMsg(Message::Error, BufferInfo::StatusBuffer, "", QString("Error: %1 %2").arg(cmd, msg));
 }
 
 void UserInputHandler::expand(const QString &alias, const BufferInfo &bufferInfo, const QString &msg) {
