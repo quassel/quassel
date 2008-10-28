@@ -56,7 +56,6 @@ public:
 
 public slots:
   void updateForViewport(qreal width, qreal height);
-  //void setWidth(qreal, bool forceReposition = false);
   void setWidth(qreal width);
 
   // these are used by the chatitems to notify the scene and manage selections
@@ -117,8 +116,6 @@ private:
   int _selectionEnd;
   int _firstSelectionRow, _lastSelectionRow;
   bool _isSelecting;
-
-  int _lastBacklogSize;
 
   struct WebPreview {
     ChatItem *parentItem;

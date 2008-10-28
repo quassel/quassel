@@ -49,8 +49,7 @@ ChatScene::ChatScene(QAbstractItemModel *model, const QString &idString, qreal w
     _viewportHeight(0),
     _selectingItem(0),
     _selectionStart(-1),
-    _isSelecting(false),
-    _lastBacklogSize(0)
+    _isSelecting(false)
 {
   MessageFilter *filter = qobject_cast<MessageFilter*>(model);
   if(filter) {
