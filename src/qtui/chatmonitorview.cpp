@@ -38,6 +38,7 @@ ChatMonitorView::ChatMonitorView(ChatMonitorFilter *filter, QWidget *parent)
   : ChatView(filter, parent),
     _filter(filter)
 {
+  scene()->setSenderCutoffMode(ChatScene::CutoffLeft);
 }
 
 void ChatMonitorView::contextMenuEvent(QContextMenuEvent *event) {
