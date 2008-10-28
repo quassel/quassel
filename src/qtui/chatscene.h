@@ -84,7 +84,6 @@ protected:
   virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent);
   virtual void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent);
   virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent);
-  virtual void customEvent(QEvent *event);
 
 protected slots:
   void rowsInserted(const QModelIndex &, int, int);

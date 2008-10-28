@@ -54,7 +54,7 @@ void MessageFilter::init() {
 
 void MessageFilter::messageTypeFilterChanged() {
   int newFilter;
-  BufferSettings defaultSettings();
+  BufferSettings defaultSettings;
   newFilter = BufferSettings().messageFilter();
 
   BufferSettings mySettings(idString());

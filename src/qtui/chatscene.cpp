@@ -582,13 +582,6 @@ void ChatScene::updateSceneRect(const QRectF &rect) {
   update();
 }
 
-void ChatScene::customEvent(QEvent *event) {
-  switch(event->type()) {
-  default:
-    return;
-  }
-}
-
 void ChatScene::loadWebPreview(ChatItem *parentItem, const QString &url, const QRectF &urlRect) {
 #ifndef HAVE_WEBKIT
   Q_UNUSED(parentItem)
