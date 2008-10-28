@@ -57,6 +57,9 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
   SignalProxy *p = signalProxy();
   connect(p, SIGNAL(peerRemoved(QIODevice *)), this, SLOT(removeClient(QIODevice *)));
 
+  connect(p, SIGNAL(connected()), this, SLOT(clientsConnected()));
+  connect(p, SIGNAL(disconnected()), this, SLOT(clientsDisconnected()));
+
   //p->attachSlot(SIGNAL(disconnectFromNetwork(NetworkId)), this, SLOT(disconnectFromNetwork(NetworkId))); // FIXME
   p->attachSlot(SIGNAL(sendInput(BufferInfo, QString)), this, SLOT(msgFromClient(BufferInfo, QString)));
   p->attachSignal(this, SIGNAL(displayMsg(Message)));
@@ -114,10 +117,6 @@ CoreSession::~CoreSession() {
   foreach(CoreNetwork *net, _networks.values()) {
     delete net;
   }
-}
-
-UserId CoreSession::user() const {
-  return _user;
 }
 
 CoreNetwork *CoreSession::network(NetworkId id) const {
@@ -501,5 +500,67 @@ void CoreSession::renameBuffer(const NetworkId &networkId, const QString &newNam
   BufferId bufferId = Core::renameBuffer(user(), networkId, newName, oldName);
   if(bufferId.isValid()) {
     emit bufferRenamed(bufferId, newName);
+  }
+}
+
+void CoreSession::clientsConnected() {
+  QHash<NetworkId, NetworkConnection *>::iterator conIter = _connections.begin();
+  Identity *identity = 0;
+  NetworkConnection *con = 0;
+  Network *network = 0;
+  IrcUser *me = 0;
+  QString awayReason;
+  while(conIter != _connections.end()) {
+    con = *conIter;
+    conIter++;
+
+    if(!con->isConnected())
+      continue;
+    identity = con->identity();
+    if(!identity)
+      continue;
+    network = con->network();
+    if(!network)
+      continue;
+    me = network->me();
+    if(!me)
+      continue;
+
+    if(identity->detachAwayEnabled() && me->isAway()) {
+      con->userInputHandler()->handleAway(BufferInfo(), QString());
+    }
+  }
+}
+
+void CoreSession::clientsDisconnected() {
+  QHash<NetworkId, NetworkConnection *>::iterator conIter = _connections.begin();
+  Identity *identity = 0;
+  NetworkConnection *con = 0;
+  Network *network = 0;
+  IrcUser *me = 0;
+  QString awayReason;
+  while(conIter != _connections.end()) {
+    con = *conIter;
+    conIter++;
+
+    if(!con->isConnected())
+      continue;
+    identity = con->identity();
+    if(!identity)
+      continue;
+    network = con->network();
+    if(!network)
+      continue;
+    me = network->me();
+    if(!me)
+      continue;
+
+    if(identity->detachAwayEnabled() && !me->isAway()) {
+      if(identity->detachAwayReasonEnabled())
+	awayReason = identity->detachAwayReason();
+      else
+	awayReason = identity->awayReason();
+      con->userInputHandler()->handleAway(BufferInfo(), awayReason);
+    }
   }
 }

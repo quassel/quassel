@@ -48,7 +48,7 @@ public:
   ~CoreSession();
 
   QList<BufferInfo> buffers() const;
-  UserId user() const;
+  inline UserId user() const { return _user; }
   CoreNetwork *network(NetworkId) const;
   NetworkConnection *networkConnection(NetworkId) const;
   Identity *identity(IdentityId) const;
@@ -171,6 +171,9 @@ private slots:
   void storeBufferLastSeenMsg(BufferId buffer, const MsgId &msgId);
 
   void scriptRequest(QString script);
+
+  void clientsConnected();
+  void clientsDisconnected();
 
 private:
   void loadSettings();

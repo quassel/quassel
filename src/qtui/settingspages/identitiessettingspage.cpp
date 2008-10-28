@@ -72,7 +72,6 @@ IdentitiesSettingsPage::IdentitiesSettingsPage(QWidget *parent)
   // we would need this if we enabled drag and drop in the nicklist...
   //connect(ui.nicknameList, SIGNAL(rowsInserted(const QModelIndex &, int, int)), this, SLOT(setWidgetStates()));
   //connect(ui.nicknameList->model(), SIGNAL(rowsInserted(const QModelIndex &, int, int)), this, SLOT(nicklistHasChanged()));
-
 }
 
 void IdentitiesSettingsPage::setWidgetStates() {
@@ -86,9 +85,6 @@ void IdentitiesSettingsPage::setWidgetStates() {
     ui.nickDown->setDisabled(true);
   }
   ui.deleteNick->setEnabled(ui.nicknameList->count() > 1);
-
-  // FIXME this is until stuff has been implemented
-  ui.detachAwayEnabled->setEnabled(false);
 }
 
 void IdentitiesSettingsPage::coreConnectionStateChanged(bool state) {
