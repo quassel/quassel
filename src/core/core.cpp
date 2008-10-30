@@ -56,8 +56,8 @@ Core::Core() : storage(0) {
   registerStorageBackend(new SqliteStorage(this));
 
   if(!_storageBackends.count()) {
-    quWarning() << qPrintable(tr("Could not initialize any storage backend! Exiting..."));
-    quWarning() << qPrintable(tr("Currently, Quassel only supports SQLite3. You need to build your\n"
+    qWarning() << qPrintable(tr("Could not initialize any storage backend! Exiting..."));
+    qWarning() << qPrintable(tr("Currently, Quassel only supports SQLite3. You need to build your\n"
                                 "Qt library with the sqlite plugin enabled in order for quasselcore\n"
                                 "to work."));
     exit(1); // TODO make this less brutal (especially for mono client -> popup)
@@ -72,7 +72,7 @@ void Core::init() {
   CoreSettings cs;
 
   if(!(configured = initStorage(cs.storageSettings().toMap()))) {
-    quWarning() << "Core is currently not configured! Please connect with a Quassel Client for basic setup.";
+    qWarning() << "Core is currently not configured! Please connect with a Quassel Client for basic setup.";
 
     // try to migrate old settings
     QVariantMap old = cs.oldDbSettings().toMap();
@@ -80,7 +80,7 @@ void Core::init() {
       QVariantMap newSettings;
       newSettings["Backend"] = "SQLite";
       if((configured = initStorage(newSettings))) {
-        quWarning() << "...but thankfully I found some old settings to migrate!";
+        qWarning() << "...but thankfully I found some old settings to migrate!";
         cs.setStorageSettings(newSettings);
       }
     }
@@ -117,7 +117,7 @@ void Core::restoreState() {
     return;
   }
   if(instance()->sessions.count()) {
-    quWarning() << qPrintable(tr("Calling restoreState() even though active sessions exist!"));
+    qWarning() << qPrintable(tr("Calling restoreState() even though active sessions exist!"));
     return;
   }
   CoreSettings s;
@@ -202,12 +202,12 @@ bool Core::initStorage(QVariantMap dbSettings, bool setup) {
   if(_storageBackends.contains(backend)) {
     storage = _storageBackends[backend];
   } else {
-    quError() << "Selected storage backend is not available:" << backend;
+    qCritical() << "Selected storage backend is not available:" << backend;
     return configured = false;
   }
   if(!storage->init(dbSettings)) {
     if(!setup || !(storage->setup(dbSettings) && storage->init(dbSettings))) {
-      quError() << "Could not init storage!";
+      qCritical() << "Could not init storage!";
       storage = 0;
       return configured = false;
     }
@@ -375,7 +375,7 @@ bool Core::startListening() {
   }
 
   if(!success) {
-    quError() << qPrintable(QString("Could not open GUI client port %1: %2").arg(port).arg(_server.errorString()));
+    qCritical() << qPrintable(QString("Could not open GUI client port %1: %2").arg(port).arg(_server.errorString()));
   }
 
   return success;
@@ -432,7 +432,7 @@ void Core::clientHasData() {
 void Core::processClientMessage(QTcpSocket *socket, const QVariantMap &msg) {
   if(!msg.contains("MsgType")) {
     // Client is way too old, does not even use the current init format
-    quWarning() << qPrintable(tr("Antique client trying to connect... refusing."));
+    qWarning() << qPrintable(tr("Antique client trying to connect... refusing."));
     socket->close();
     return;
   }
@@ -448,7 +448,7 @@ void Core::processClientMessage(QTcpSocket *socket, const QVariantMap &msg) {
       "This core needs at least client/core protocol version %1.<br>"
       "Please consider upgrading your client.").arg(Quassel::buildInfo().coreNeedsProtocol);
       SignalProxy::writeDataToDevice(socket, reply);
-      quWarning() << qPrintable(tr("Client")) << qPrintable(socket->peerAddress().toString()) << qPrintable(tr("too old, rejecting."));
+      qWarning() << qPrintable(tr("Client")) << qPrintable(socket->peerAddress().toString()) << qPrintable(tr("too old, rejecting."));
       socket->close(); return;
     }
 
@@ -508,7 +508,7 @@ void Core::processClientMessage(QTcpSocket *socket, const QVariantMap &msg) {
 #ifdef HAVE_SSL
     // after we told the client that we are ssl capable we switch to ssl mode
     if(supportSsl && msg["UseSsl"].toBool()) {
-      quDebug() << qPrintable(tr("Starting TLS for Client:"))  << qPrintable(socket->peerAddress().toString());
+      qDebug() << qPrintable(tr("Starting TLS for Client:"))  << qPrintable(socket->peerAddress().toString());
       connect(sslSocket, SIGNAL(sslErrors(const QList<QSslError> &)), this, SLOT(sslErrors(const QList<QSslError> &)));
       sslSocket->startServerEncryption();
     }
@@ -517,7 +517,7 @@ void Core::processClientMessage(QTcpSocket *socket, const QVariantMap &msg) {
 #ifndef QT_NO_COMPRESS
     if(supportsCompression && msg["UseCompression"].toBool()) {
       socket->setProperty("UseCompression", true);
-      quDebug() << "Using compression for Client:" << qPrintable(socket->peerAddress().toString());
+      qDebug() << "Using compression for Client:" << qPrintable(socket->peerAddress().toString());
     }
 #endif
 
@@ -528,7 +528,7 @@ void Core::processClientMessage(QTcpSocket *socket, const QVariantMap &msg) {
       reply["MsgType"] = "ClientLoginReject";
       reply["Error"] = tr("<b>Client not initialized!</b><br>You need to send an init message before trying to login.");
       SignalProxy::writeDataToDevice(socket, reply);
-      quWarning() << qPrintable(tr("Client")) << qPrintable(socket->peerAddress().toString()) << qPrintable(tr("did not send an init message before trying to login, rejecting."));
+      qWarning() << qPrintable(tr("Client")) << qPrintable(socket->peerAddress().toString()) << qPrintable(tr("did not send an init message before trying to login, rejecting."));
       socket->close(); return;
     }
     if(msg["MsgType"] == "CoreSetupData") {
@@ -571,7 +571,7 @@ void Core::clientDisconnected() {
     socket->deleteLater();
   } else {
     // we have to crawl through the hashes and see if we find a victim to remove
-    quDebug() << qPrintable(tr("Non-authed client disconnected. (socket allready destroyed)"));
+    qDebug() << qPrintable(tr("Non-authed client disconnected. (socket allready destroyed)"));
 
     // DO NOT CALL ANY METHODS ON socket!!
     socket = static_cast<QTcpSocket *>(sender());
@@ -613,7 +613,7 @@ void Core::setupClientSession(QTcpSocket *socket, UserId uid) {
   blocksizes.remove(socket);
   clientInfo.remove(socket);
   if(!sess) {
-    quWarning() << qPrintable(tr("Could not initialize session for client:")) << qPrintable(socket->peerAddress().toString());
+    qWarning() << qPrintable(tr("Could not initialize session for client:")) << qPrintable(socket->peerAddress().toString());
     socket->close();
   }
   sess->addClient(socket);
@@ -640,7 +640,7 @@ void Core::setupInternalClientSession(SignalProxy *proxy) {
 
 SessionThread *Core::createSession(UserId uid, bool restore) {
   if(sessions.contains(uid)) {
-    quWarning() << "Calling createSession() when a session for the user already exists!";
+    qWarning() << "Calling createSession() when a session for the user already exists!";
     return 0;
   }
   SessionThread *sess = new SessionThread(uid, restore, this);
@@ -661,5 +661,5 @@ void Core::sslErrors(const QList<QSslError> &errors) {
 void Core::socketError(QAbstractSocket::SocketError err) {
   QAbstractSocket *socket = qobject_cast<QAbstractSocket *>(sender());
   if(socket && err != QAbstractSocket::RemoteHostClosedError)
-    quWarning() << "Core::socketError()" << socket << err << socket->errorString();
+    qWarning() << "Core::socketError()" << socket << err << socket->errorString();
 }

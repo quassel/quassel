@@ -58,3 +58,22 @@ void Logger::log() {
   out << _buffer << endl;
   if(file.isOpen()) file.close();
 }
+
+
+void Logger::logMessage(QtMsgType type, const char *msg) {
+  switch (type) {
+  case QtDebugMsg:
+    Logger(Logger::DebugLevel) << msg;
+    break;
+  case QtWarningMsg:
+    Logger(Logger::WarningLevel) << msg;
+    break;
+  case QtCriticalMsg:
+    Logger(Logger::ErrorLevel) << msg;
+    break;
+  case QtFatalMsg:
+    Logger(Logger::ErrorLevel) << msg;
+    Quassel::logFatalMessage(msg);
+    return;
+  }
+}

@@ -27,13 +27,36 @@
 #include "qtui.h"
 #include "sessionsettings.h"
 
-QtUiApplication::QtUiApplication(int &argc, char **argv) : QApplication(argc, argv), Quassel() {
+
+// void myMessageOutput(QtMsgType type, const char *msg) {
+//   Client::debugLog() << "Debug:" <<  msg << '\n';
+//   return;
+// //   switch (type) {
+// //   case QtDebugMsg:
+// //     break;
+// //   case QtWarningMsg:
+// //     fprintf(stderr, "Warning: %s\n", msg);
+// //     break;
+// //   case QtCriticalMsg:
+// //     fprintf(stderr, "Critical: %s\n", msg);
+// //     break;
+// //   case QtFatalMsg:
+// //     fprintf(stderr, "Fatal: %s\n", msg);
+// //     abort();
+// //   }
+// }
+
+QtUiApplication::QtUiApplication(int &argc, char **argv)
+  : QApplication(argc, argv), Quassel()
+{
   setRunMode(Quassel::ClientOnly);
 
   // put client-only arguments here
   CliParser *parser = Quassel::cliParser();
   parser->addSwitch("debugbufferswitches",0,"Enables debugging for bufferswitches");
   parser->addSwitch("debugmodel",0,"Enables debugging for models");
+
+  qInstallMsgHandler(Client::logMessage);
 }
 
 bool QtUiApplication::init() {
@@ -79,3 +102,5 @@ void QtUiApplication::resumeSessionIfPossible() {
     s.cleanup();
   }
 }
+
+

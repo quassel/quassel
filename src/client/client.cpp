@@ -35,6 +35,7 @@
 #include "messagemodel.h"
 #include "network.h"
 #include "networkmodel.h"
+#include "quassel.h"
 #include "quasselui.h"
 #include "signalproxy.h"
 #include "util.h"
@@ -76,7 +77,8 @@ Client::Client(QObject *parent)
     _messageModel(0),
     _messageProcessor(0),
     _connectedToCore(false),
-    _syncedToCore(false)
+    _syncedToCore(false),
+    _debugLog(&_debugLogBuffer)
 {
   _signalProxy->synchronize(_ircListHelper);
 }
@@ -362,9 +364,9 @@ void Client::recvStatusMsg(QString /*net*/, QString /*msg*/) {
   //recvMessage(net, Message::server("", QString("[STATUS] %1").arg(msg)));
 }
 
-void Client::recvMessage(const Message &msg_) {
-  Message msg = msg_;
-  messageProcessor()->process(msg);
+void Client::recvMessage(const Message &msg) {
+  Message msg_ = msg;
+  messageProcessor()->process(msg_);
 }
 
 void Client::setBufferLastSeenMsg(BufferId id, const MsgId &msgId) {
@@ -402,3 +404,24 @@ void Client::bufferRenamed(BufferId bufferId, const QString &newName) {
     networkModel()->setData(bufferIndex, newName, Qt::DisplayRole);
   }
 }
+
+void Client::logMessage(QtMsgType type, const char *msg) {
+  QString prefix;
+  switch (type) {
+  case QtDebugMsg:
+    prefix = "Debug";
+    break;
+  case QtWarningMsg:
+    prefix = "Warning";
+    break;
+  case QtCriticalMsg:
+    prefix = "Critical";
+    break;
+  case QtFatalMsg:
+    Quassel::logFatalMessage(msg);
+    return;
+  }
+  instance()->_debugLog << prefix << ": " << msg << "\n";
+  emit instance()->logUpdated();
+}
+

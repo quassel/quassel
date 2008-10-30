@@ -25,6 +25,7 @@ set(SOURCES
     coreconnectdlg.cpp
     coreinfodlg.cpp
     debugconsole.cpp
+    debuglogwidget.cpp
     inputwidget.cpp
     jumpkeyhandler.cpp
     mainwin.cpp
@@ -62,6 +63,7 @@ set(MOC_HDRS
     coreconnectdlg.h
     coreinfodlg.h
     debugconsole.h
+    debuglogwidget.h
     inputwidget.h
     jumpkeyhandler.h
     mainwin.h
@@ -102,6 +104,7 @@ set(FORMS
     coreconnectdlg.ui
     coreinfodlg.ui
     debugconsole.ui
+    debuglogwidget.ui
     inputwidget.ui
     msgprocessorstatuswidget.ui
     nicklistwidget.ui

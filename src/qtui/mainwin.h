@@ -84,6 +84,7 @@ class MainWin : public QMainWindow {
     void on_actionManageViews_triggered();
     void on_actionLockDockPositions_toggled(bool lock);
     void on_actionDebugNetworkModel_triggered();
+    void on_actionDebugLog_triggered();
 
     void clientNetworkCreated(NetworkId);
     void clientNetworkRemoved(NetworkId);

@@ -29,65 +29,70 @@
 class Quassel {
   Q_DECLARE_TR_FUNCTIONS(Quassel)
 
-  public:
-    enum RunMode {
-      Monolithic,
-      ClientOnly,
-      CoreOnly
-    };
+public:
+  enum RunMode {
+    Monolithic,
+    ClientOnly,
+    CoreOnly
+  };
 
-    struct BuildInfo {
-      QString fancyVersionString; // clickable rev
-      QString plainVersionString; // no <a> tag
+  struct BuildInfo {
+    QString fancyVersionString; // clickable rev
+    QString plainVersionString; // no <a> tag
 
-      QString baseVersion;
-      QString generatedVersion;
-      QString commitHash;
-      uint commitDate;
-      QString buildDate;
-      bool isSourceDirty;
-      uint protocolVersion;
-      uint clientNeedsProtocol;
-      uint coreNeedsProtocol;
+    QString baseVersion;
+    QString generatedVersion;
+    QString commitHash;
+    uint commitDate;
+    QString buildDate;
+    bool isSourceDirty;
+    uint protocolVersion;
+    uint clientNeedsProtocol;
+    uint coreNeedsProtocol;
 
-      QString applicationName;
-      QString coreApplicationName;
-      QString clientApplicationName;
-      QString organizationName;
-      QString organizationDomain;
-    };
+    QString applicationName;
+    QString coreApplicationName;
+    QString clientApplicationName;
+    QString organizationName;
+    QString organizationDomain;
+  };
 
-    void setupBuildInfo(const QString &generated);
+  void setupBuildInfo(const QString &generated);
 
-    virtual ~Quassel();
+  virtual ~Quassel();
 
-    static inline const BuildInfo & buildInfo();
-    static inline RunMode runMode();
+  static inline const BuildInfo & buildInfo();
+  static inline RunMode runMode();
 
-    static inline CliParser *cliParser();
-    static inline QString optionValue(const QString &option);
-    static inline bool isOptionSet(const QString &option);
+  static inline CliParser *cliParser();
+  static inline QString optionValue(const QString &option);
+  static inline bool isOptionSet(const QString &option);
 
-    static bool DEBUG;
+  static const QString &coreDumpFileName();
 
-  protected:
-    Quassel();
-    virtual bool init();
+  static bool DEBUG;
 
-    inline void setRunMode(RunMode mode);
+  static void logFatalMessage(const char *msg);
 
+protected:
+  Quassel();
+  virtual bool init();
 
-  private:
-    void setupTranslations();
-    void registerMetaTypes();
+  inline void setRunMode(RunMode mode);
 
-    static void handleSignal(int signal);
-    static void handleCrash();
+private:
+  void setupTranslations();
+  void registerMetaTypes();
 
-    static BuildInfo _buildInfo;
-    static CliParser *_cliParser;
-    static RunMode _runMode;
-    static bool _initialized;
+  static void handleSignal(int signal);
+  static void handleCrash();
+
+  static BuildInfo _buildInfo;
+  static CliParser *_cliParser;
+  static RunMode _runMode;
+  static bool _initialized;
+
+  static QString _coreDumpFileName;
 };
 
 const Quassel::BuildInfo & Quassel::buildInfo() { return _buildInfo; }

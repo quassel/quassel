@@ -32,7 +32,7 @@ CoreNetwork::CoreNetwork(const NetworkId &networkid, CoreSession *session)
 
 void CoreNetwork::requestConnect() const {
   if(connectionState() != Disconnected) {
-    quWarning() << "Requesting connect while already being connected!";
+    qWarning() << "Requesting connect while already being connected!";
     return;
   }
   emit connectRequested(networkId());
@@ -40,7 +40,7 @@ void CoreNetwork::requestConnect() const {
 
 void CoreNetwork::requestDisconnect() const {
   if(connectionState() == Disconnected) {
-    quWarning() << "Requesting disconnect while not being connected!";
+    qWarning() << "Requesting disconnect while not being connected!";
     return;
   }
   emit disconnectRequested(networkId());

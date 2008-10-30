@@ -48,7 +48,7 @@ IrcServerHandler::~IrcServerHandler() {
 void IrcServerHandler::handleServerMsg(QByteArray msg) {
   try {
     if(msg.isEmpty()) {
-      quWarning() << "Received empty string from server!";
+      qWarning() << "Received empty string from server!";
       return;
     }
 
@@ -68,7 +68,7 @@ void IrcServerHandler::handleServerMsg(QByteArray msg) {
     QList<QByteArray> params = msg.split(' ');
     if(!trailing.isEmpty()) params << trailing;
     if(params.count() < 1) {
-      quWarning() << "Received invalid string from server!";
+      qWarning() << "Received invalid string from server!";
       return;
     }
 
@@ -79,7 +79,7 @@ void IrcServerHandler::handleServerMsg(QByteArray msg) {
       foo.remove(0, 1);
       prefix = foo;
       if(params.count() < 1) {
-        quWarning() << "Received invalid string from server!";
+        qWarning() << "Received invalid string from server!";
         return;
       }
       foo = serverDecode(params.takeFirst());
@@ -92,7 +92,7 @@ void IrcServerHandler::handleServerMsg(QByteArray msg) {
     uint num = cmd.toUInt();
     if(num > 0) {
       if(params.count() == 0) {
-        quWarning() << "Message received from server violates RFC and is ignored!";
+        qWarning() << "Message received from server violates RFC and is ignored!";
         return;
       }
       params.removeFirst();
@@ -244,7 +244,7 @@ void IrcServerHandler::handleMode(const QString &prefix, const QList<QByteArray>
 	  else
 	    channel->removeUserMode(ircUser, QString(modes[c]));
 	} else {
-	  quWarning() << "Received MODE with too few parameters:" << serverDecode(params);
+	  qWarning() << "Received MODE with too few parameters:" << serverDecode(params);
 	}
 	paramOffset++;
       } else {
@@ -255,7 +255,7 @@ void IrcServerHandler::handleMode(const QString &prefix, const QList<QByteArray>
 	    if(paramOffset < params.count()) {
 	      value = params[paramOffset];
 	    } else {
-	      quWarning() << "Received MODE with too few parameters:" << serverDecode(params);
+	      qWarning() << "Received MODE with too few parameters:" << serverDecode(params);
 	    }
 	    paramOffset++;
 	}
@@ -304,7 +304,7 @@ void IrcServerHandler::handleNick(const QString &prefix, const QList<QByteArray>
 
   IrcUser *ircuser = network()->updateNickFromMask(prefix);
   if(!ircuser) {
-    quWarning() << "IrcServerHandler::handleNick(): Unknown IrcUser!";
+    qWarning() << "IrcServerHandler::handleNick(): Unknown IrcUser!";
     return;
   }
   QString newnick = serverDecode(params[0]);
@@ -341,7 +341,7 @@ void IrcServerHandler::handlePart(const QString &prefix, const QList<QByteArray>
   IrcUser *ircuser = network()->updateNickFromMask(prefix);
   QString channel = serverDecode(params[0]);
   if(!ircuser) {
-    quWarning() << "IrcServerHandler::handlePart(): Unknown IrcUser!";
+    qWarning() << "IrcServerHandler::handlePart(): Unknown IrcUser!";
     return;
   }
 
@@ -383,12 +383,12 @@ void IrcServerHandler::handlePrivmsg(const QString &prefix, const QList<QByteArr
 
   IrcUser *ircuser = network()->updateNickFromMask(prefix);
   if(!ircuser) {
-    quWarning() << "IrcServerHandler::handlePrivmsg(): Unknown IrcUser!";
+    qWarning() << "IrcServerHandler::handlePrivmsg(): Unknown IrcUser!";
     return;
   }
 
   if(params.isEmpty()) {
-    quWarning() << "IrcServerHandler::handlePrivmsg(): received PRIVMSG without target or message from:" << prefix;
+    qWarning() << "IrcServerHandler::handlePrivmsg(): received PRIVMSG without target or message from:" << prefix;
     return;
   }
      
@@ -879,7 +879,7 @@ void IrcServerHandler::handle353(const QString &prefix, const QList<QByteArray> 
 
   IrcChannel *channel = network()->ircChannel(channelname);
   if(!channel) {
-    quWarning() << "IrcServerHandler::handle353(): received unknown target channel:" << channelname;
+    qWarning() << "IrcServerHandler::handle353(): received unknown target channel:" << channelname;
     return;
   }
 
@@ -963,7 +963,7 @@ void IrcServerHandler::tryNextNick(const QString &errnick) {
 
 bool IrcServerHandler::checkParamCount(const QString &methodName, const QList<QByteArray> &params, int minParams) {
   if(params.count() < minParams) {
-    quWarning() << qPrintable(methodName) << "requires" << minParams << "parameters but received only" << params.count() << serverDecode(params);
+    qWarning() << qPrintable(methodName) << "requires" << minParams << "parameters but received only" << params.count() << serverDecode(params);
     return false;
   } else {
     return true;

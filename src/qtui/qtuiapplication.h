@@ -32,20 +32,19 @@ class QtUi;
 class QtUiApplication : public QApplication, public Quassel {
   Q_OBJECT
 
-  public:
-    QtUiApplication(int &, char **);
-    ~QtUiApplication();
-    virtual bool init();
+ public:
+  QtUiApplication(int &, char **);
+  ~QtUiApplication();
+  virtual bool init();
 
-    void resumeSessionIfPossible();
-    virtual void saveState(QSessionManager & manager);
+  void resumeSessionIfPossible();
+  virtual void saveState(QSessionManager & manager);
 
-  signals:
-    void saveStateToSession(const QString &sessionId);
-    void saveStateToSessionSettings(SessionSettings &s); // FIXME refs in signals won't probably work
-    void resumeFromSession(const QString sessionId);
-    void resumeFromSessionSettings(SessionSettings &s);
-
+signals:
+  void saveStateToSession(const QString &sessionId);
+  void saveStateToSessionSettings(SessionSettings &s); // FIXME refs in signals won't probably work
+  void resumeFromSession(const QString sessionId);
+  void resumeFromSessionSettings(SessionSettings &s);
 };
 
 #endif

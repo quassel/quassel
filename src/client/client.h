@@ -112,6 +112,9 @@ public:
   static void setBufferLastSeenMsg(BufferId id, const MsgId &msgId); // this is synced to core and other clients
   static void removeBuffer(BufferId id);
 
+  static void logMessage(QtMsgType type, const char *msg);
+  static inline const QString &debugLog() { return instance()->_debugLogBuffer; }
+
 signals:
   void sendInput(BufferInfo, QString message);
   void requestNetworkStates();
@@ -148,6 +151,8 @@ signals:
   void requestRemoveNetwork(NetworkId);
 
   void newClientSyncer(ClientSyncer *);
+
+  void logUpdated();
 
 public slots:
   //void selectBuffer(Buffer *);
@@ -206,6 +211,9 @@ private:
   QHash<IdentityId, Identity *> _identities;
 
   static AccountId _currentCoreAccount;
+
+  QString _debugLogBuffer;
+  QTextStream _debugLog;
 
   friend class ClientSyncer;
 };

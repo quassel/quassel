@@ -21,6 +21,7 @@
 #include "coreapplication.h"
 
 #include "core.h"
+#include "logger.h"
 
 CoreApplicationInternal::CoreApplicationInternal()
   : _coreCreated(false)
@@ -67,9 +68,14 @@ bool CoreApplicationInternal::init() {
 
 /*****************************************************************************/
 
-CoreApplication::CoreApplication(int &argc, char **argv) : QCoreApplication(argc, argv), Quassel() {
+CoreApplication::CoreApplication(int &argc, char **argv)
+  : QCoreApplication(argc, argv),
+    Quassel()
+{
   setRunMode(Quassel::CoreOnly);
   _internal = new CoreApplicationInternal();
+
+  qInstallMsgHandler(Logger::logMessage);
 }
 
 CoreApplication::~CoreApplication() {

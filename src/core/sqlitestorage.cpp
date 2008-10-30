@@ -269,7 +269,7 @@ bool SqliteStorage::removeNetwork(UserId user, const NetworkId &networkId) {
   if(withTransaction) {
     sync();
     if(!logDb().transaction()) {
-      quWarning() << "SqliteStorage::removeNetwork(): cannot start transaction. continuing with out rollback support!";
+      qWarning() << "SqliteStorage::removeNetwork(): cannot start transaction. continuing with out rollback support!";
       withTransaction = false;
     }
   }
@@ -503,19 +503,19 @@ BufferInfo SqliteStorage::getBufferInfo(UserId user, const NetworkId &networkId,
     query->exec();
     if(!query->first()) {
       watchQuery(query);
-      quWarning() << "unable to create BufferInfo for:" << user << networkId << buffer;
+      qWarning() << "unable to create BufferInfo for:" << user << networkId << buffer;
       return BufferInfo();
     }
   }
 
   BufferInfo bufferInfo = BufferInfo(query->value(0).toInt(), networkId, (BufferInfo::Type)query->value(1).toInt(), 0, buffer);
   if(query->next()) {
-    quError() << "SqliteStorage::getBufferInfo(): received more then one Buffer!";
-    quError() << "         Query:" << query->lastQuery();
-    quError() << "  bound Values:";
+    qCritical() << "SqliteStorage::getBufferInfo(): received more then one Buffer!";
+    qCritical() << "         Query:" << query->lastQuery();
+    qCritical() << "  bound Values:";
     QList<QVariant> list = query->boundValues().values();
     for (int i = 0; i < list.size(); ++i)
-      quError() << i << ":" << list.at(i).toString().toAscii().data();
+      qCritical() << i << ":" << list.at(i).toString().toAscii().data();
     Q_ASSERT(false);
   }
 
@@ -825,7 +825,7 @@ bool SqliteStorage::init(const QVariantMap &settings) {
   getPasswordsQuery.exec();
 
   if(!watchQuery(&getPasswordsQuery)) {
-    quError() << "unable to migrate to new password format!";
+    qCritical() << "unable to migrate to new password format!";
     return false;
   }
 
@@ -843,6 +843,6 @@ bool SqliteStorage::init(const QVariantMap &settings) {
     watchQuery(&setPasswordsQuery);
   }
 
-  quDebug() << "successfully migrated passwords!";
+  qDebug() << "successfully migrated passwords!";
   return true;
 }

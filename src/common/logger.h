@@ -28,46 +28,34 @@
 #include <QTextStream>
 
 class Logger {
-  public:
-    enum LogLevel {
-      DebugLevel,
-      InfoLevel,
-      WarningLevel,
-      ErrorLevel
-    };
+public:
+  enum LogLevel {
+    DebugLevel,
+    InfoLevel,
+    WarningLevel,
+    ErrorLevel
+  };
 
-    inline Logger(LogLevel level) : _stream(&_buffer, QIODevice::WriteOnly), _logLevel(level) {}
-    ~Logger();
+  inline Logger(LogLevel level) : _stream(&_buffer, QIODevice::WriteOnly), _logLevel(level) {}
+  ~Logger();
 
-    template<typename T>
-    inline Logger &operator<<(const T &value) { _stream << value << " "; return *this; }
-    inline Logger &operator<<(const QStringList & t) { _stream << t.join(" ") << " "; return *this; }
-    inline Logger &operator<<(bool t) { _stream << (t ? "true" : "false") << " "; return *this; }
+  static void logMessage(QtMsgType type, const char *msg);
 
-  private:
-    void log();
-    QTextStream _stream;
-    QString _buffer;
-    LogLevel _logLevel;
-};
+  template<typename T>
+  inline Logger &operator<<(const T &value) { _stream << value << " "; return *this; }
+  inline Logger &operator<<(const QStringList & t) { _stream << t.join(" ") << " "; return *this; }
+  inline Logger &operator<<(bool t) { _stream << (t ? "true" : "false") << " "; return *this; }
 
-class quDebug : public Logger {
-  public:
-    inline quDebug() : Logger(Logger::DebugLevel) {}
+private:
+  void log();
+  QTextStream _stream;
+  QString _buffer;
+  LogLevel _logLevel;
 };
 
 class quInfo : public Logger {
-  public:
-    inline quInfo() : Logger(Logger::InfoLevel) {}
+public:
+  inline quInfo() : Logger(Logger::InfoLevel) {}
 };
 
-class quWarning : public Logger {
-  public:
-    inline quWarning() : Logger(Logger::WarningLevel) {}
-};
-
-class quError : public Logger {
-  public:
-    inline quError() : Logger(Logger::ErrorLevel) {}
-};
 #endif
