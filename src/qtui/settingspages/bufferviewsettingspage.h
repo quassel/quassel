@@ -60,6 +60,8 @@ private slots:
 private:
   Ui::BufferViewSettingsPage ui;
   bool _ignoreWidgetChanges;
+  bool _useBufferViewHint;
+  int _bufferViewHint;
 
   // list of bufferviews to create
   QList<BufferViewConfig *> _newBufferViews;
@@ -72,6 +74,7 @@ private:
 
   int listPos(BufferViewConfig *config);
   BufferViewConfig *bufferView(int listPos);
+  bool selectBufferViewById(int bufferViewId);
   BufferViewConfig *cloneConfig(BufferViewConfig *config);
   BufferViewConfig *configForDisplay(BufferViewConfig *config);
 

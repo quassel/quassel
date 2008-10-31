@@ -33,7 +33,9 @@
 
 BufferViewSettingsPage::BufferViewSettingsPage(QWidget *parent)
   : SettingsPage(tr("General"), tr("Buffer Views"), parent),
-    _ignoreWidgetChanges(false)
+    _ignoreWidgetChanges(false),
+    _useBufferViewHint(false),
+    _bufferViewHint(0)
 {
   ui.setupUi(this);
   ui.renameBufferView->setIcon(SmallIcon("edit-rename"));
@@ -91,6 +93,7 @@ void BufferViewSettingsPage::reset() {
 }
 
 void BufferViewSettingsPage::load() {
+  qDebug() << "loooooooad";
   reset();
 
   if(!Client::bufferViewManager())
@@ -114,11 +117,20 @@ void BufferViewSettingsPage::load() {
   }
   _ignoreWidgetChanges = false;
 
-  ui.bufferViewList->setCurrentRow(0);
+  
+  if(!_useBufferViewHint || !selectBufferViewById(_bufferViewHint))
+    ui.bufferViewList->setCurrentRow(0);
 }
 
 void BufferViewSettingsPage::save() {
   setEnabled(false);
+
+  BufferViewConfig *currentConfig = bufferView(ui.bufferViewList->currentRow());
+  if(currentConfig) {
+    _useBufferViewHint = true;
+    _bufferViewHint = currentConfig->bufferViewId();
+  }
+  
   QVariantList newConfigs;
   QVariantList deleteConfigs;
   QVariantList changedConfigs;
@@ -176,8 +188,11 @@ void BufferViewSettingsPage::addBufferView(BufferViewConfig *config) {
 }
 
 void BufferViewSettingsPage::addBufferView(int bufferViewId) {
+  qDebug() << "addBufferView" << bufferViewId;
+  // we are informed about a new bufferview from Client::bufferViewManager()
   Q_ASSERT(Client::bufferViewManager());
   addBufferView(Client::bufferViewManager()->bufferViewConfig(bufferViewId));
+  selectBufferViewById(bufferViewId);
 }
 
 void BufferViewSettingsPage::bufferViewDeleted() {
@@ -229,6 +244,18 @@ BufferViewConfig *BufferViewSettingsPage::bufferView(int listPos) {
   } else {
     return 0;
   }
+}
+
+bool BufferViewSettingsPage::selectBufferViewById(int bufferViewId) {
+  BufferViewConfig *config;
+  for(int i = 0; i < ui.bufferViewList->count(); i++) {
+    config = qobject_cast<BufferViewConfig *>(ui.bufferViewList->item(i)->data(Qt::UserRole).value<QObject *>());
+    if(config && config->bufferViewId() == bufferViewId) {
+      ui.bufferViewList->setCurrentRow(i);
+      return true;
+    }
+  }
+  return false;
 }
 
 void BufferViewSettingsPage::updateBufferView() {
