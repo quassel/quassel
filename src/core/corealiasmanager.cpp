@@ -54,6 +54,14 @@ CoreAliasManager::~CoreAliasManager() {
 
 void CoreAliasManager::loadDefaults() {
   // Default Aliases:
-  addAlias("j", "/join $1");
+  addAlias("j", "/join $0");
+
+  addAlias("ns", "/msg nickserv $0");
+  addAlias("nickserv", "/msg nickserv $0");
+  addAlias("cs", "/msg chanserv $0");
+  addAlias("chanserv",  "/msg chanserv $0");
+  addAlias("hs", "/msg hostserv $0");
+  addAlias("hostserv", "/msg hostserv $0");
+
   addAlias("back", "/quote away");
 }
