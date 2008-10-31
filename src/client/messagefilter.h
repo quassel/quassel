@@ -23,6 +23,7 @@
 
 #include <QSortFilterProxyModel>
 
+#include "bufferinfo.h"
 #include "messagemodel.h"
 #include "types.h"
 
@@ -38,17 +39,26 @@ public:
   virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
   virtual QString idString() const;
   inline bool isSingleBufferFilter() const { return _validBuffers.count() == 1; }
+  BufferId singleBufferId() const { return *(_validBuffers.constBegin()); }
   inline bool containsBuffer(const BufferId &id) const { return _validBuffers.contains(id); }
 
 public slots:
   void messageTypeFilterChanged();
   void requestBacklog();
 
+protected:
+  const QString &bufferName() const;
+  BufferInfo::Type bufferType() const;
+
 private:
   void init();
 
   QSet<BufferId> _validBuffers;
+  QSet<uint> _filteredQuitMsgs;
   int _messageTypeFilter;
+
+  QString _bufferName;
+  BufferInfo::Type _bufferType;
 };
 
 #endif
