@@ -89,11 +89,15 @@ void BufferViewSettingsPage::reset() {
 
   _deleteBufferViews.clear();
 
+  bool _useBufferViewHint;
+  int _bufferViewHint;
+
   setChangedState(false);
 }
 
 void BufferViewSettingsPage::load() {
-  qDebug() << "loooooooad";
+  bool useBufferViewHint = _useBufferViewHint;
+  int bufferViewHint = _bufferViewHint;
   reset();
 
   if(!Client::bufferViewManager())
@@ -118,7 +122,7 @@ void BufferViewSettingsPage::load() {
   _ignoreWidgetChanges = false;
 
   
-  if(!_useBufferViewHint || !selectBufferViewById(_bufferViewHint))
+  if(!useBufferViewHint || !selectBufferViewById(bufferViewHint))
     ui.bufferViewList->setCurrentRow(0);
 }
 
