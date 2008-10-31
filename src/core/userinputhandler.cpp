@@ -77,6 +77,14 @@ void UserInputHandler::handleAway(const BufferInfo &bufferInfo, const QString &m
 }
 
 void UserInputHandler::handleBan(const BufferInfo &bufferInfo, const QString &msg) {
+  banOrUnban(bufferInfo, msg, true);
+}
+
+void UserInputHandler::handleUnban(const BufferInfo &bufferInfo, const QString &msg) {
+  banOrUnban(bufferInfo, msg, false);
+}
+
+void UserInputHandler::banOrUnban(const BufferInfo &bufferInfo, const QString &msg, bool ban) {
   QString banChannel;
   QString banUser;
 
@@ -109,7 +117,8 @@ void UserInputHandler::handleBan(const BufferInfo &bufferInfo, const QString &ms
     banUser = params.join(" ");
   }
 
-  QString banMsg = QString("MODE %1 +b %2").arg(banChannel, banUser);
+  QString banMode = ban ? "+b" : "-b";
+  QString banMsg = QString("MODE %1 %2 %3").arg(banChannel, banMode, banUser);
   emit putRawLine(serverEncode(banMsg));
 }
 
