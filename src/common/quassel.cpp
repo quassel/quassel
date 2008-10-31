@@ -34,7 +34,7 @@
 #include "types.h"
 #include "syncableobject.h"
 
-#if defined(HAVE_EXECINFO) and not defined(Q_OS_MAC)
+#if defined(HAVE_EXECINFO) && !defined(Q_OS_MAC)
 #  define BUILD_CRASHHANDLER
 #  include <execinfo.h>
 #  include <dlfcn.h>
@@ -59,7 +59,7 @@ Quassel::Quassel() {
   signal(SIGABRT, handleSignal);
   signal(SIGBUS, handleSignal);
   signal(SIGSEGV, handleSignal);
-#endif // #if defined(HAVE_EXECINFO) and not defined(Q_OS_MAC)
+#endif // #if defined(HAVE_EXECINFO) && !defined(Q_OS_MAC)
 
   _cliParser = new CliParser();
 
