@@ -144,7 +144,10 @@ void NickView::showContextMenu(const QPoint & pos ) {
 
 }
 
-void NickView::startQuery(const QModelIndex & index) {
+void NickView::startQuery(const QModelIndex &index) {
+  if(index.data(NetworkModel::ItemTypeRole) != NetworkModel::IrcUserItemType)
+    return;
+
   QString nick = nickFromModelIndex(index);
   bool activated = false;
 
