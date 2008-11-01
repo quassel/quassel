@@ -49,6 +49,7 @@ public slots:
   void handleMode(const BufferInfo &bufferInfo, const QString &text);
   void handleMsg(const BufferInfo &bufferInfo, const QString &text);
   void handleNick(const BufferInfo &bufferInfo, const QString &text);
+  void handleNotice(const BufferInfo &bufferInfo, const QString &text);
   void handleOper(const BufferInfo &bufferInfo, const QString &text);
   void handleOp(const BufferInfo &bufferInfo, const QString &text);
   void handlePart(const BufferInfo &bufferInfo, const QString &text);

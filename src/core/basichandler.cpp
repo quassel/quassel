@@ -175,6 +175,9 @@ void BasicHandler::putCmd(const QString &cmd, const QByteArray &param, const QBy
 }
 
 void BasicHandler::displayMsg(Message::Type msgType, QString target, QString text, QString sender, Message::Flags flags) {
+  if(!target.isEmpty() && network()->prefixes().contains(target[0]))
+    target = target.mid(1);
+
   IrcChannel *channel = network()->ircChannel(target);
   if(!channel && (target.startsWith('$') || target.startsWith('#')))
     target = nickFromMask(sender);

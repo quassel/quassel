@@ -326,10 +326,14 @@ void IrcServerHandler::handleNotice(const QString &prefix, const QList<QByteArra
     return;
 
   QString target = serverDecode(params[0]);
-  if(prefix.isEmpty() || target == "AUTH")
+  if(prefix.isEmpty() || target == "AUTH") {
     target = "";
-  else if(!network()->isChannelName(target))
-    target = nickFromMask(prefix);
+  } else {
+    if(!target.isEmpty() && network()->prefixes().contains(target[0]))
+      target = target.mid(1);
+    if(!network()->isChannelName(target))
+      target = nickFromMask(prefix);
+  }
 
   networkConnection()->ctcpHandler()->parse(Message::Notice, prefix, target, params[1]);
 }
@@ -398,9 +402,8 @@ void IrcServerHandler::handlePrivmsg(const QString &prefix, const QList<QByteArr
     ? QByteArray("")
     : params[1];
 
-  // are we the target?
-  if(network()->isMyNick(target))
-    target = nickFromMask(ircuser->nick());
+  if(!network()->isChannelName(target))
+    target = nickFromMask(prefix);
 
   // it's possible to pack multiple privmsgs into one param using ctcp
   // - > we let the ctcpHandler do the work

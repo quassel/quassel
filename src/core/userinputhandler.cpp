@@ -251,6 +251,15 @@ void UserInputHandler::handleNick(const BufferInfo &bufferInfo, const QString &m
   emit putCmd("NICK", serverEncode(nick));
 }
 
+void UserInputHandler::handleNotice(const BufferInfo &bufferInfo, const QString &msg) {
+  QString bufferName = msg.section(' ', 0, 0);
+  QString payload = msg.section(' ', 1);
+  QList<QByteArray> params;
+  params << serverEncode(bufferName) << channelEncode(bufferInfo.bufferName(), payload);
+  emit putCmd("NOTICE", params);
+  emit displayMsg(Message::Notice, bufferName, payload, network()->myNick(), Message::Self);
+}
+
 void UserInputHandler::handleOp(const BufferInfo &bufferInfo, const QString &msg) {
   QStringList nicks = msg.split(' ', QString::SkipEmptyParts);
   QString m = "+"; for(int i = 0; i < nicks.count(); i++) m += 'o';
