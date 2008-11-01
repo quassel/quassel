@@ -51,7 +51,8 @@ Network::Network(const NetworkId &networkid, QObject *parent)
     _unlimitedReconnectRetries(false),
     _codecForServer(0),
     _codecForEncoding(0),
-    _codecForDecoding(0)
+    _codecForDecoding(0),
+    _autoAwayActive(false)
 {
   setObjectName(QString::number(networkid.toInt()));
 }

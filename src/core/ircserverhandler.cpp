@@ -572,8 +572,12 @@ void IrcServerHandler::handle305(const QString &prefix, const QList<QByteArray> 
   if(me)
     me->setAway(false);
 
-  if(!params.isEmpty())
-    emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", serverDecode(params[0]));
+  if(!network()->autoAwayActive()) {
+    if(!params.isEmpty())
+      emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", serverDecode(params[0]));
+  } else {
+    network()->setAutoAwayActive(false);
+  }
 }
 
 // 306  RPL_NOWAWAY
@@ -584,7 +588,7 @@ void IrcServerHandler::handle306(const QString &prefix, const QList<QByteArray> 
   if(me)
     me->setAway(true);
 
-  if(!params.isEmpty())
+  if(!params.isEmpty() && !network()->autoAwayActive())
     emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", serverDecode(params[0]));
 }
 

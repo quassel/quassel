@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef NETWORK_H_
-#define NETWORK_H_
+#ifndef NETWORK_H
+#define NETWORK_H
 
 #include <QString>
 #include <QStringList>
@@ -175,6 +175,9 @@ public:
   static void setDefaultCodecForServer(const QByteArray &name);
   static void setDefaultCodecForEncoding(const QByteArray &name);
   static void setDefaultCodecForDecoding(const QByteArray &name);
+
+  bool autoAwayActive() const { return _autoAwayActive; }
+  void setAutoAwayActive(bool active) { _autoAwayActive = active; }
 
 public slots:
   void setNetworkName(const QString &networkName);
@@ -338,6 +341,8 @@ private:
   static QTextCodec *_defaultCodecForServer;
   static QTextCodec *_defaultCodecForEncoding;
   static QTextCodec *_defaultCodecForDecoding;
+
+  bool _autoAwayActive; // when this is active handle305 and handle306 don't trigger any output
 };
 
 //! Stores all editable information about a network (as opposed to runtime state).

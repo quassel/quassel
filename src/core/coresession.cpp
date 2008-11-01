@@ -560,6 +560,7 @@ void CoreSession::clientsDisconnected() {
 	awayReason = identity->detachAwayReason();
       else
 	awayReason = identity->awayReason();
+      network->setAutoAwayActive(true);
       con->userInputHandler()->handleAway(BufferInfo(), awayReason);
     }
   }
