@@ -116,7 +116,7 @@ void TabCompleter::complete() {
     nextCompletion++;
     
     // we're completing the first word of the line
-    if(inputLine->text().length() == lastCompletionLength) {
+    if(inputLine->cursorPosition() == lastCompletionLength) {
       inputLine->insert(nickSuffix);
       lastCompletionLength += nickSuffix.length();
     }
