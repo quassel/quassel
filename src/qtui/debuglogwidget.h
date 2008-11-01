@@ -30,7 +30,7 @@ public:
   DebugLogWidget(QWidget *parent = 0);
 
 private slots:
-  void logUpdated();
+  void logUpdated(const QString &msg);
 
 private:
   Ui::DebugLogWidget ui;

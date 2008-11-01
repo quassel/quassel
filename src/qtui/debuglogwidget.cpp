@@ -27,12 +27,14 @@ DebugLogWidget::DebugLogWidget(QWidget *parent)
 {
   ui.setupUi(this);
   setAttribute(Qt::WA_DeleteOnClose, true);
-  logUpdated();
-  connect(Client::instance(), SIGNAL(logUpdated()), this, SLOT(logUpdated()));
+  ui.textEdit->setPlainText(Client::debugLog());
+  connect(Client::instance(), SIGNAL(logUpdated(const QString &)), this, SLOT(logUpdated(const QString &)));
   ui.textEdit->setReadOnly(true);
 }
 
-void DebugLogWidget::logUpdated() {
-  ui.textEdit->setPlainText(Client::debugLog());
+void DebugLogWidget::logUpdated(const QString &msg) {
+  ui.textEdit->moveCursor(QTextCursor::End);
+  ui.textEdit->insertPlainText(msg);
+  ui.textEdit->moveCursor(QTextCursor::End);
 }
 

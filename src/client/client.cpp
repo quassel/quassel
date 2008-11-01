@@ -421,7 +421,8 @@ void Client::logMessage(QtMsgType type, const char *msg) {
     Quassel::logFatalMessage(msg);
     return;
   }
-  instance()->_debugLog << prefix << ": " << msg << "\n";
-  emit instance()->logUpdated();
+  QString msgString = QString("%1: %3\n").arg(prefix, msg);
+  instance()->_debugLog << msgString;
+  emit instance()->logUpdated(msgString);
 }
 

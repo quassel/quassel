@@ -152,7 +152,7 @@ signals:
 
   void newClientSyncer(ClientSyncer *);
 
-  void logUpdated();
+  void logUpdated(const QString &msg);
 
 public slots:
   //void selectBuffer(Buffer *);
