@@ -56,7 +56,7 @@ QtUiApplication::QtUiApplication(int &argc, char **argv)
   parser->addSwitch("debugbufferswitches",0,"Enables debugging for bufferswitches");
   parser->addSwitch("debugmodel",0,"Enables debugging for models");
 
-  //  qInstallMsgHandler(Client::logMessage);
+  qInstallMsgHandler(Client::logMessage);
 }
 
 bool QtUiApplication::init() {

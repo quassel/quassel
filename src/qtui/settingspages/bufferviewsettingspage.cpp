@@ -192,7 +192,6 @@ void BufferViewSettingsPage::addBufferView(BufferViewConfig *config) {
 }
 
 void BufferViewSettingsPage::addBufferView(int bufferViewId) {
-  qDebug() << "addBufferView" << bufferViewId;
   // we are informed about a new bufferview from Client::bufferViewManager()
   Q_ASSERT(Client::bufferViewManager());
   addBufferView(Client::bufferViewManager()->bufferViewConfig(bufferViewId));
