@@ -386,10 +386,30 @@ void UserInputHandler::defaultHandler(QString cmd, const BufferInfo &bufferInfo,
 }
 
 void UserInputHandler::expand(const QString &alias, const BufferInfo &bufferInfo, const QString &msg) {
+  QRegExp paramRangeR("\\$(\\d+)\\.\\.(\\d*)");
   QStringList commands = alias.split(QRegExp("; ?"));
   QStringList params = msg.split(' ');
   for(int i = 0; i < commands.count(); i++) {
     QString command = commands[i];
+
+    // replace ranges like $1..3
+    if(!params.isEmpty()) {
+      int pos;
+      while((pos = paramRangeR.indexIn(command)) != -1) {
+	int start = paramRangeR.cap(1).toInt();
+	bool ok;
+	int end = paramRangeR.cap(2).toInt(&ok);
+	if(!ok) {
+	  end = params.count();
+	}
+	if(end < start)
+	  command = command.replace(pos, paramRangeR.matchedLength(), QString());
+	else {
+	  command = command.replace(pos, paramRangeR.matchedLength(), QStringList(params.mid(start - 1, end - start + 1)).join(" "));
+	}
+      }
+    }
+
     for(int j = params.count(); j > 0; j--) {
       IrcUser *ircUser = network()->ircUser(params[j - 1]);
       command = command.replace(QString("$%1:hostname").arg(j), ircUser ? ircUser->host() : QString("*"));
