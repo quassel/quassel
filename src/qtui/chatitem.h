@@ -162,6 +162,9 @@ protected:
   virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
   virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
   virtual void hoverMoveEvent(QGraphicsSceneHoverEvent *event);
+  virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
+
+
 
   virtual QVector<QTextLayout::FormatRange> additionalFormats() const;
 

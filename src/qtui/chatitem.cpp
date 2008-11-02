@@ -26,6 +26,8 @@
 #include <QPainter>
 #include <QPalette>
 #include <QTextLayout>
+#include <QMenu>
+
 
 #include "chatitem.h"
 #include "chatlinemodel.h"
@@ -506,6 +508,29 @@ void ContentsChatItem::hoverMoveEvent(QGraphicsSceneHoverEvent *event) {
   }
   if(!onClickable) endHoverMode();
   event->accept();
+}
+
+void ContentsChatItem::contextMenuEvent(QGraphicsSceneContextMenuEvent *event) {
+  qint16 idx = posToCursor(event->pos());
+  for(int i = 0; i < privateData()->clickables.count(); i++) {
+    Clickable click = privateData()->clickables.at(i);
+    if(idx >= click.start && idx < click.start + click.length) {
+      if(click.type == Clickable::Url) {
+        QMenu menu;
+        QAction *copyToClipboard = menu.addAction(QObject::tr("Copy to Clipboard"));
+        QAction *selected = menu.exec(event->screenPos());
+        if(selected == copyToClipboard) {
+          QString url = data(ChatLineModel::DisplayRole).toString().mid(click.start, click.length);
+#   ifdef Q_WS_X11
+          QApplication::clipboard()->setText(url, QClipboard::Selection);
+#   endif
+//# else
+          QApplication::clipboard()->setText(url);
+//# endif
+        }
+      }
+    }
+  }
 }
 
 void ContentsChatItem::showWebPreview(const Clickable &click) {
