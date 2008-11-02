@@ -89,8 +89,7 @@ void BufferViewSettingsPage::reset() {
 
   _deleteBufferViews.clear();
 
-  bool _useBufferViewHint;
-  int _bufferViewHint;
+  _useBufferViewHint = false;
 
   setChangedState(false);
 }

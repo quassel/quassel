@@ -216,7 +216,7 @@ bool BufferViewFilter::filterAcceptBuffer(const QModelIndex &source_bufferIndex)
   if(!(config()->allowedBufferTypes() & (BufferInfo::Type)source_bufferIndex.data(NetworkModel::BufferTypeRole).toInt()))
     return false;
 
-  if(config()->hideInactiveBuffers() && !source_bufferIndex.data(NetworkModel::ItemActiveRole).toBool())
+  if(config()->hideInactiveBuffers() && !source_bufferIndex.data(NetworkModel::ItemActiveRole).toBool() && activityLevel <= BufferInfo::OtherActivity)
     return false;
 
   if(config()->minimumActivity() > activityLevel) {
@@ -302,9 +302,6 @@ QVariant BufferViewFilter::data(const QModelIndex &index, int role) const {
 }
 
 QVariant BufferViewFilter::foreground(const QModelIndex &index) const {
-  if(!index.data(NetworkModel::ItemActiveRole).toBool())
-    return _FgColorInactiveActivity;
-
   BufferInfo::ActivityLevel activity = (BufferInfo::ActivityLevel)index.data(NetworkModel::BufferActivityRole).toInt();
 
   if(activity & BufferInfo::Highlight)
@@ -313,6 +310,9 @@ QVariant BufferViewFilter::foreground(const QModelIndex &index) const {
     return _FgColorNewMessageActivity;
   if(activity & BufferInfo::OtherActivity)
     return _FgColorOtherActivity;
+
+  if(!index.data(NetworkModel::ItemActiveRole).toBool())
+    return _FgColorInactiveActivity;
 
   return _FgColorNoActivity;
 }
