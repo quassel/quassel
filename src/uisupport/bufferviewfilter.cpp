@@ -216,13 +216,15 @@ bool BufferViewFilter::filterAcceptBuffer(const QModelIndex &source_bufferIndex)
   if(!(config()->allowedBufferTypes() & (BufferInfo::Type)source_bufferIndex.data(NetworkModel::BufferTypeRole).toInt()))
     return false;
 
+  // the following dynamic filters may not trigger if the buffer is currently selected.
+  if(bufferId == Client::bufferModel()->standardSelectionModel()->currentIndex().data(NetworkModel::BufferIdRole).value<BufferId>())
+    return true;
+
   if(config()->hideInactiveBuffers() && !source_bufferIndex.data(NetworkModel::ItemActiveRole).toBool() && activityLevel <= BufferInfo::OtherActivity)
     return false;
 
-  if(config()->minimumActivity() > activityLevel) {
-    if(bufferId != Client::bufferModel()->standardSelectionModel()->currentIndex().data(NetworkModel::BufferIdRole).value<BufferId>())
-      return false;
-  }
+  if(config()->minimumActivity() > activityLevel)
+    return false;
 
   return true;
 }
