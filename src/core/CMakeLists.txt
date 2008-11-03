@@ -16,6 +16,7 @@ set(SOURCES
     corebufferviewconfig.cpp
     corebufferviewmanager.cpp
     corecoreinfo.cpp
+    coreircchannel.cpp
     coreirclisthelper.cpp
     corenetwork.cpp
     coresession.cpp
@@ -39,6 +40,7 @@ set(MOC_HDRS
     corebufferviewconfig.h
     corebufferviewmanager.h
     corecoreinfo.h
+    coreircchannel.h
     coreirclisthelper.h
     corenetwork.h
     coresession.h

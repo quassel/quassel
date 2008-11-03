@@ -29,7 +29,7 @@
 #include "ctcphandler.h"
 
 #include "ircuser.h"
-#include "ircchannel.h"
+#include "coreircchannel.h"
 #include "logger.h"
 
 #include <QDebug>
@@ -41,7 +41,6 @@ IrcServerHandler::IrcServerHandler(NetworkConnection *parent)
 }
 
 IrcServerHandler::~IrcServerHandler() {
-
 }
 
 /*! Handle a raw message string sent by the server. We try to find a suitable handler, otherwise we call a default handler. */
@@ -326,6 +325,24 @@ void IrcServerHandler::handleNotice(const QString &prefix, const QList<QByteArra
     return;
 
   QString target = serverDecode(params[0]);
+
+  // special treatment for welcome messages like:
+  // :ChanServ!ChanServ@services. NOTICE egst :[#apache] Welcome, this is #apache. Please read the in-channel topic message. This channel is being logged by IRSeekBot. If you have any question please see http://blog.freenode.net/?p=68
+  if(!network()->isChannelName(target)) {
+    QString msg = serverDecode(params[1]);
+    QRegExp welcomeRegExp("^\\[([^\\]]+)\\] ");
+    if(welcomeRegExp.indexIn(msg) != -1) {
+      QString channelname = welcomeRegExp.cap(1);
+      msg = msg.mid(welcomeRegExp.matchedLength());
+      CoreIrcChannel *chan = static_cast<CoreIrcChannel *>(network()->ircChannel(channelname)); // we only have CoreIrcChannels in the core, so this cast is safe
+      if(chan && !chan->receivedWelcomeMsg()) {
+	chan->setReceivedWelcomeMsg();
+	emit displayMsg(Message::Notice, BufferInfo::ChannelBuffer, channelname, msg, prefix);
+	return;
+      }
+    }
+  }
+
   if(prefix.isEmpty() || target == "AUTH") {
     target = "";
   } else {

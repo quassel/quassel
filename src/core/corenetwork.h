@@ -22,6 +22,7 @@
 #define CORENETWORK_H
 
 #include "network.h"
+#include "coreircchannel.h"
 
 class CoreSession;
 
@@ -39,6 +40,9 @@ public slots:
   virtual void requestConnect() const;
   virtual void requestDisconnect() const;
   virtual void requestSetNetworkInfo(const NetworkInfo &info);
+
+protected:
+  inline virtual IrcChannel *ircChannelFactory(const QString &channelname) { return new CoreIrcChannel(channelname, this); }
 
 private:
   CoreSession *_coreSession;

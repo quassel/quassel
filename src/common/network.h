@@ -298,6 +298,9 @@ signals:
   void disconnectRequested(NetworkId id = 0) const;
   void setNetworkInfoRequested(const NetworkInfo &) const;
 
+protected:
+  inline virtual IrcChannel *ircChannelFactory(const QString &channelname) { return new IrcChannel(channelname, this); }
+
 private:
   QPointer<SignalProxy> _proxy;
 
