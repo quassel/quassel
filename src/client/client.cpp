@@ -406,23 +406,14 @@ void Client::bufferRenamed(BufferId bufferId, const QString &newName) {
 }
 
 void Client::logMessage(QtMsgType type, const char *msg) {
-  QString prefix;
-  switch (type) {
-  case QtDebugMsg:
-    prefix = "Debug";
-    break;
-  case QtWarningMsg:
-    prefix = "Warning";
-    break;
-  case QtCriticalMsg:
-    prefix = "Critical";
-    break;
-  case QtFatalMsg:
+  if(type == QtFatalMsg) {
     Quassel::logFatalMessage(msg);
-    return;
+  } else {
+    fprintf(stderr, "%s\n", msg);
+    fflush(stderr);
+    QString msgString = QString("%1\n").arg(msg);
+    instance()->_debugLog << msgString;
+    emit instance()->logUpdated(msgString);
   }
-  QString msgString = QString("%1: %3\n").arg(prefix, msg);
-  instance()->_debugLog << msgString;
-  emit instance()->logUpdated(msgString);
 }
 
