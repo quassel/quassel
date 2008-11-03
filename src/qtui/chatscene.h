@@ -124,7 +124,7 @@ private:
   int _selectionStartCol, _selectionMinCol;
   int _selectionStart;
   int _selectionEnd;
-  int _firstSelectionRow, _lastSelectionRow;
+  int _firstSelectionRow;
   bool _isSelecting;
 
   struct WebPreview {

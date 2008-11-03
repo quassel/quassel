@@ -158,10 +158,17 @@ void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
   // update selection
   if(_selectionStart >= 0) {
     int offset = end - start + 1;
-    if(_selectionStart >= start) _selectionStart += offset;
-    if(_selectionEnd >= start) _selectionEnd += offset;
-    if(_firstSelectionRow >= start) _firstSelectionRow += offset;
-    if(_lastSelectionRow >= start) _lastSelectionRow += offset;
+    int oldStart = _selectionStart;
+    if(_selectionStart >= start)
+      _selectionStart += offset;
+    if(_selectionEnd >= start) {
+      _selectionEnd += offset;
+      if(_selectionStart == oldStart)
+        for(int i = start; i < start + offset; i++)
+          _lines[i]->setSelected(true);
+    }
+    if(_firstSelectionRow >= start)
+      _firstSelectionRow += offset;
   }
 
   // neither pre- or append means we have to do dirty work: move items...
@@ -234,6 +241,13 @@ void ChatScene::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int e
   bool atBottom = (end == _lines.count() - 1);
   bool moveTop = false;
 
+  // clear selection
+  if(_selectingItem) {
+    int row = _selectingItem->row();
+    if(row >= start && row <= end)
+      setSelectingItem(0);
+  }
+
   // remove items from scene
   QList<ChatLine *>::iterator lineIter = _lines.begin() + start;
   int lineCount = start;
@@ -253,13 +267,16 @@ void ChatScene::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int e
   if(_selectionStart >= 0) {
     int offset = end - start + 1;
     if(_selectionStart >= start)
-      _selectionStart -= offset;
+      _selectionStart = qMax(_selectionStart -= offset, start);
     if(_selectionEnd >= start)
       _selectionEnd -= offset;
     if(_firstSelectionRow >= start)
       _firstSelectionRow -= offset;
-    if(_lastSelectionRow >= start)
-      _lastSelectionRow -= offset;
+
+    if(_selectionEnd < _selectionStart) {
+      _isSelecting = false;
+      _selectionStart = -1;
+    }
   }
 
   // neither removing at bottom or top means we have to move items...
@@ -417,7 +434,7 @@ void ChatScene::setSelectingItem(ChatItem *item) {
 }
 
 void ChatScene::startGlobalSelection(ChatItem *item, const QPointF &itemPos) {
-  _selectionStart = _selectionEnd = _lastSelectionRow = _firstSelectionRow = item->row();
+  _selectionStart = _selectionEnd = _firstSelectionRow = item->row();
   _selectionStartCol = _selectionMinCol = item->column();
   _isSelecting = true;
   _lines[_selectionStart]->setSelected(true, (ChatLineModel::ColumnType)_selectionMinCol);
@@ -464,11 +481,10 @@ void ChatScene::updateSelection(const QPointF &pos) {
 
   _selectionStart = newstart;
   _selectionEnd = newend;
-  _lastSelectionRow = curRow;
 
   if(newstart == newend && minColumn == ChatLineModel::ContentsColumn) {
     if(!_selectingItem) {
-      qWarning() << "WARNING: ChatScene::updateSelection() has a null _selectingItem, this should never happen! Please report.";
+      // _selectingItem has been removed already
       return;
     }
     _lines[curRow]->setSelected(false);
@@ -487,10 +503,11 @@ void ChatScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
 }
 
 void ChatScene::mousePressEvent(QGraphicsSceneMouseEvent *event) {
-  if(event->buttons() == Qt::LeftButton && _selectionStart >= 0) {
+  if(_selectionStart >= 0 && event->buttons() == Qt::LeftButton) {
     for(int l = qMin(_selectionStart, _selectionEnd); l <= qMax(_selectionStart, _selectionEnd); l++) {
       _lines[l]->setSelected(false);
     }
+    _isSelecting = false;
     _selectionStart = -1;
     QGraphicsScene::mousePressEvent(event);  // so we can start a new local selection
   } else {
