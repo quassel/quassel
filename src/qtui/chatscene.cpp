@@ -108,20 +108,16 @@ void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
 //   qDebug() << "rowsInserted" << start << end << "-" << sidx.data(MessageModel::MsgIdRole).value<MsgId>() << eidx.data(MessageModel::MsgIdRole).value<MsgId>();
 
   qreal h = 0;
-  qreal y = _sceneRect.y();
+  qreal y = 0;
   qreal width = _sceneRect.width();
-  bool atTop = true;
-  bool atBottom = false;
+  bool atBottom = (start == _lines.count());
+  bool atTop = !atBottom && (start == 0);
   bool moveTop = false;
 
-  if(start > 0 && start < _lines.count()) {
+  if(start < _lines.count()) {
     y = _lines.value(start)->y();
-    atTop = false;
-  }
-  if(start == _lines.count()) {
-    y = _sceneRect.bottom();
-    atTop = false;
-    atBottom = true;
+  } else if(atBottom && !_lines.isEmpty()) {
+    y = _lines.last()->y() + _lines.last()->height();
   }
 
   qreal contentsWidth = width - secondColumnHandle()->sceneRight();
@@ -173,9 +169,6 @@ void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
   int moveEnd = _lines.count() - 1;
   qreal offset = h;
   if(!(atTop || atBottom)) {
-//     int moveStart = 0;
-//     int moveEnd = _lines.count() - 1;
-//     qreal offset = h;
     // move top means: moving 0 to end (aka: end + 1)
     // move top means: moving end + 1 to _lines.count() - 1 (aka: _lines.count() - (end + 1)
     if(end + 1 < _lines.count() - end - 1) {
@@ -196,16 +189,25 @@ void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
 
   // check if all went right
   Q_ASSERT(start == 0 || _lines.at(start - 1)->pos().y() + _lines.at(start - 1)->height() == _lines.at(start)->pos().y());
-  //Q_ASSERT(end + 1 == _lines.count() || _lines.at(end)->pos().y() + _lines.at(end)->height() == _lines.at(end + 1)->pos().y());
-  if(end + 1 < _lines.count()) {
-    if(_lines.at(end)->pos().y() + _lines.at(end)->height() != _lines.at(end + 1)->pos().y()) {
-      qDebug() << "lines:" << _lines.count() << "start:" << start << "end:" << end;
-      qDebug() << "line[end]:" << _lines.at(end)->pos().y() << "+" << _lines.at(end)->height() << "=" << _lines.at(end)->pos().y() + _lines.at(end)->height();
-      qDebug() << "line[end+1]" << _lines.at(end + 1)->pos().y();
-      qDebug() << "needed moving:" << !(atTop || atBottom) << moveTop << moveStart << moveEnd << offset;
-      Q_ASSERT(false);
-    }
-  }
+//   if(start != 0) {
+//     if(_lines.at(start - 1)->pos().y() + _lines.at(start - 1)->height() != _lines.at(start)->pos().y()) {
+//       qDebug() << "lines:" << _lines.count() << "start:" << start << "end:" << end;
+//       qDebug() << "line[start - 1]:" << _lines.at(start - 1)->pos().y() << "+" << _lines.at(start - 1)->height() << "=" << _lines.at(start - 1)->pos().y() + _lines.at(start - 1)->height();
+//       qDebug() << "line[start]" << _lines.at(start)->pos().y();
+//       qDebug() << "needed moving:" << !(atTop || atBottom) << moveTop << moveStart << moveEnd << offset;
+//       Q_ASSERT(false)
+//     }
+//   }
+  Q_ASSERT(end + 1 == _lines.count() || _lines.at(end)->pos().y() + _lines.at(end)->height() == _lines.at(end + 1)->pos().y());
+//   if(end + 1 < _lines.count()) {
+//     if(_lines.at(end)->pos().y() + _lines.at(end)->height() != _lines.at(end + 1)->pos().y()) {
+//       qDebug() << "lines:" << _lines.count() << "start:" << start << "end:" << end;
+//       qDebug() << "line[end]:" << _lines.at(end)->pos().y() << "+" << _lines.at(end)->height() << "=" << _lines.at(end)->pos().y() + _lines.at(end)->height();
+//       qDebug() << "line[end+1]" << _lines.at(end + 1)->pos().y();
+//       qDebug() << "needed moving:" << !(atTop || atBottom) << moveTop << moveStart << moveEnd << offset;
+//       Q_ASSERT(false);
+//     }
+//   }
 
   if(!atBottom) {
     if(start < _firstLineRow) {
