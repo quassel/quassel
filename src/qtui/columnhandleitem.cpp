@@ -37,8 +37,11 @@ ColumnHandleItem::ColumnHandleItem(qreal w, QGraphicsItem *parent)
     _moving(false),
     _minXPos(0),
     _maxXPos(0),
-    _timeLine(150)
+    _timeLine(350),
+    _rulerColor(QApplication::palette().windowText().color())
 {
+  _timeLine.setUpdateInterval(20);
+
   setAcceptsHoverEvents(true);
   setZValue(10);
   setCursor(QCursor(Qt::OpenHandCursor));
@@ -129,11 +132,11 @@ void ColumnHandleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *
   Q_UNUSED(widget);
 
   QLinearGradient gradient(boundingRect().topLeft(), boundingRect().topRight());
-  QColor rulerColor = QApplication::palette().windowText().color();
-  rulerColor.setAlphaF(_hover);
+  QColor _rulerColor = QApplication::palette().windowText().color();
+  _rulerColor.setAlphaF(_hover);
   gradient.setColorAt(0, Qt::transparent);
-  gradient.setColorAt(0.4, rulerColor);
-  gradient.setColorAt(0.6, rulerColor);
+  gradient.setColorAt(0.4, _rulerColor);
+  gradient.setColorAt(0.6, _rulerColor);
   gradient.setColorAt(1, Qt::transparent);
   painter->fillRect(boundingRect(), gradient);
 }

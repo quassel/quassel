@@ -62,7 +62,9 @@ public:
   inline CutoffMode senderCutoffMode() const { return _cutoffMode; }
   inline void setSenderCutoffMode(CutoffMode mode) { _cutoffMode = mode; }
 
-public slots:
+  virtual bool event(QEvent *e);
+
+ public slots:
   void updateForViewport(qreal width, qreal height);
   void setWidth(qreal width);
 

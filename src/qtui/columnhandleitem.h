@@ -45,6 +45,7 @@ public:
 
 public slots:
   void sceneRectChanged(const QRectF &);
+  inline void setColor(const QColor &color) { _rulerColor = color; }
 
 protected:
   void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
@@ -67,6 +68,7 @@ private:
   bool _moving;
   qreal _minXPos, _maxXPos;
   QTimeLine _timeLine;
+  QColor _rulerColor;
 };
 
 #endif
