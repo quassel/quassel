@@ -169,10 +169,13 @@ void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
   }
 
   // neither pre- or append means we have to do dirty work: move items...
+  int moveStart = 0;
+  int moveEnd = _lines.count() - 1;
+  qreal offset = h;
   if(!(atTop || atBottom)) {
-    qreal offset = h;
-    int moveStart = 0;
-    int moveEnd = _lines.count() - 1;
+//     int moveStart = 0;
+//     int moveEnd = _lines.count() - 1;
+//     qreal offset = h;
     // move top means: moving 0 to end (aka: end + 1)
     // move top means: moving end + 1 to _lines.count() - 1 (aka: _lines.count() - (end + 1)
     if(end + 1 < _lines.count() - end - 1) {
@@ -193,7 +196,16 @@ void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
 
   // check if all went right
   Q_ASSERT(start == 0 || _lines.at(start - 1)->pos().y() + _lines.at(start - 1)->height() == _lines.at(start)->pos().y());
-  Q_ASSERT(end + 1 == _lines.count() || _lines.at(end)->pos().y() + _lines.at(end)->height() == _lines.at(end + 1)->pos().y());
+  //Q_ASSERT(end + 1 == _lines.count() || _lines.at(end)->pos().y() + _lines.at(end)->height() == _lines.at(end + 1)->pos().y());
+  if(end + 1 < _lines.count()) {
+    if(_lines.at(end)->pos().y() + _lines.at(end)->height() != _lines.at(end + 1)->pos().y()) {
+      qDebug() << "lines:" << _lines.count() << "start:" << start << "end:" << end;
+      qDebug() << "line[end]:" << _lines.at(end)->pos().y() << "+" << _lines.at(end)->height() << "=" << _lines.at(end)->pos().y() + _lines.at(end)->height();
+      qDebug() << "line[end+1]" << _lines.at(end + 1)->pos().y();
+      qDebug() << "needed moving:" << !(atTop || atBottom) << moveTop << moveStart << moveEnd << offset;
+      Q_ASSERT(false);
+    }
+  }
 
   if(!atBottom) {
     if(start < _firstLineRow) {

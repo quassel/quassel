@@ -40,6 +40,9 @@
 #include "signalproxy.h"
 #include "util.h"
 
+#include <stdio.h>
+#include <stdlib.h>
+
 QPointer<Client> Client::instanceptr = 0;
 AccountId Client::_currentCoreAccount = 0;
 
