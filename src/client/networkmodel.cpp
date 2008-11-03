@@ -39,11 +39,16 @@ NetworkItem::NetworkItem(const NetworkId &netid, AbstractTreeItem *parent)
   : PropertyMapItem(QList<QString>() << "networkName" << "currentServer" << "nickCount", parent),
     _networkId(netid)
 {
-  setFlags(Qt::ItemIsEnabled);
+  setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
 }
 
 QVariant NetworkItem::data(int column, int role) const {
   switch(role) {
+  case NetworkModel::BufferIdRole:
+    if(childCount())
+      return child(0)->data(column, role);
+    else
+      return QVariant();
   case NetworkModel::NetworkIdRole:
     return qVariantFromValue(_networkId);
   case NetworkModel::ItemTypeRole:
