@@ -1055,28 +1055,33 @@ bool SignalProxy::readDataFromDevice(QIODevice *dev, quint32 &blockSize, QVarian
   }
 
   if(blockSize > 1 << 22) {
-    qWarning() << qPrintable(tr("Client tried to send package larger than max package size!"));
-    QAbstractSocket *sock  = qobject_cast<QAbstractSocket *>(dev);
-    qWarning() << qPrintable(tr("Disconnecting")) << (sock ? qPrintable(sock->peerAddress().toString()) : qPrintable(tr("local client")));
-    dev->close();
+    disconnectDevice(dev, tr("Client tried to send package larger than max package size!"));
+    return false;
+  }
+
+  if(blockSize == 0) {
+    disconnectDevice(dev, tr("Client tried to send 0 byte package!"));
     return false;
   }
 
   if(dev->bytesAvailable() < blockSize)
     return false;
 
+  blockSize = 0;
+
   if(compressed) {
     QByteArray rawItem;
     in >> rawItem;
-    // debug check
+
     int nbytes = rawItem.size();
-    if (nbytes <= 4) {
+    if(nbytes <= 4) {
       const char *data = rawItem.constData();
-      if (nbytes < 4 || (data[0]!=0 || data[1]!=0 || data[2]!=0 || data[3]!=0))
-	qWarning() << "receieved corrupted compressed data:"
-		   << blockSize << rawItem << rawItem.size() << dev;
+      if(nbytes < 4 || (data[0]!=0 || data[1]!=0 || data[2]!=0 || data[3]!=0)) {
+	disconnectDevice(dev, tr("Client sent corrupted compressed data!"));
+	return false;
+      }
     }
-    // end
+
     rawItem = qUncompress(rawItem);
 
     QDataStream itemStream(&rawItem, QIODevice::ReadOnly);
@@ -1086,7 +1091,10 @@ bool SignalProxy::readDataFromDevice(QIODevice *dev, quint32 &blockSize, QVarian
     in >> item;
   }
 
-  blockSize = 0;
+  if(!item.isValid()) {
+    disconnectDevice(dev, tr("Client sent corrupt data: unable to load QVariant!"));
+    return false;
+  }
 
   return true;
 }
@@ -1203,6 +1211,15 @@ void SignalProxy::customEvent(QEvent *event) {
   default:
     return;
   }
+}
+
+void SignalProxy::disconnectDevice(QIODevice *dev, const QString &reason) {
+  if(!reason.isEmpty())
+    qWarning() << qPrintable(reason);
+  QAbstractSocket *sock  = qobject_cast<QAbstractSocket *>(dev);
+  if(sock)
+    qWarning() << qPrintable(tr("Disconnecting")) << qPrintable(sock->peerAddress().toString());
+  dev->close();
 }
 
 void SignalProxy::updateLag(IODevicePeer *peer, int lag) {

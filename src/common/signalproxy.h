@@ -185,6 +185,8 @@ public:
   inline int peerCount() const { return _peers.size(); }
   
 private:
+  static void disconnectDevice(QIODevice *dev, const QString &reason = QString());
+
   class AbstractPeer {
   public:
     enum PeerType {
