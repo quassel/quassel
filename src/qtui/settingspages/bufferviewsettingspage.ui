@@ -211,7 +211,7 @@
       </widget>
      </item>
      <item>
-      <widget class="BufferView" name="bufferViewPreview" />
+      <widget class="PreviewBufferView" name="bufferViewPreview" />
      </item>
     </layout>
    </item>
@@ -219,9 +219,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>BufferView</class>
+   <class>PreviewBufferView</class>
    <extends>QTreeView</extends>
-   <header>bufferview.h</header>
+   <header>settingspages/previewbufferview.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
