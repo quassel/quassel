@@ -86,22 +86,29 @@ void MessageModel::insertMessages(const QList<Message> &msglist) {
   if(msglist.isEmpty())
     return;
 
-  int processedMsgs = insertMessagesGracefully(msglist);
-  int remainingMsgs = msglist.count() - processedMsgs;
-  if(remainingMsgs > 0) {
-    if(msglist.first().msgId() < msglist.last().msgId()) {
-      // in Order - we have just successfully processed "processedMsg" messages from the end of the list
-      _messageBuffer << msglist.mid(0, remainingMsgs);
-    } else {
-      _messageBuffer << msglist.mid(processedMsgs);
+  if(_messageBuffer.isEmpty()) {
+    int processedMsgs = insertMessagesGracefully(msglist);
+    int remainingMsgs = msglist.count() - processedMsgs;
+    if(remainingMsgs > 0) {
+      if(msglist.first().msgId() < msglist.last().msgId()) {
+	// in Order - we have just successfully processed "processedMsg" messages from the end of the list
+	_messageBuffer = msglist.mid(0, remainingMsgs);
+      } else {
+	_messageBuffer = msglist.mid(processedMsgs);
+      }
+      qSort(_messageBuffer);
+      QCoreApplication::postEvent(this, new ProcessBufferEvent());
     }
+  } else {
+    _messageBuffer << msglist;
     qSort(_messageBuffer);
-    QCoreApplication::postEvent(this, new ProcessBufferEvent());
   }
 }
 
 void MessageModel::insertMessageGroup(const QList<Message> &msglist) {
   Q_ASSERT(!msglist.isEmpty()); // the msglist can be assumed to be non empty
+//   int last = msglist.count() - 1;
+//   Q_ASSERT(0 == last || msglist.at(0).msgId() != msglist.at(last).msgId() || msglist.at(last).type() == Message::DayChange);
   int start = indexForId(msglist.first().msgId());
   int end = start + msglist.count() - 1;
   MessageModelItem *dayChangeItem = 0;
@@ -165,6 +172,8 @@ void MessageModel::insertMessageGroup(const QList<Message> &msglist) {
     pos++; // needed for the following assert
   }
   endInsertRows();
+
+//   Q_ASSERT(start == end || _messageList.at(start)->msgId() != _messageList.at(end)->msgId() || _messageList.at(end)->msgType() == Message::DayChange);
   Q_ASSERT(start == 0 || _messageList[start - 1]->msgId() < _messageList[start]->msgId());
   Q_ASSERT(end + 1 == _messageList.count() || _messageList[end]->msgId() < _messageList[end + 1]->msgId());
   Q_ASSERT(pos - 1 == end);
@@ -182,7 +191,7 @@ int MessageModel::insertMessagesGracefully(const QList<Message> &msglist) {
   // depending on the order we have to traverse from the front to the back or vice versa
 
   QList<Message> grouplist;
-  MsgId id;
+  MsgId minId;
   MsgId dupeId;
   int processedMsgs = 1; // we know the list isn't empty, so we at least process one message
   int idx;
@@ -196,18 +205,20 @@ int MessageModel::insertMessagesGracefully(const QList<Message> &msglist) {
   }
 
   idx = indexForId((*iter).msgId());
-  if(idx >= 0 && !_messageList.isEmpty())
+  if(idx < _messageList.count())
     dupeId = _messageList[idx]->msgId();
 
   // we always compare to the previous entry...
   // if there isn't, we can fastforward to the top
   if(idx - 1 >= 0)
-    id = _messageList[idx - 1]->msgId();
+    minId = _messageList[idx - 1]->msgId();
   else
     fastForward = true;
 
-  if((*iter).msgId() != dupeId)
+  if((*iter).msgId() != dupeId) {
     grouplist << *iter;
+    dupeId = (*iter).msgId();
+  }
 
   if(!inOrder)
     iter++;
@@ -216,7 +227,7 @@ int MessageModel::insertMessagesGracefully(const QList<Message> &msglist) {
     while(iter != msglist.constBegin()) {
       iter--;
 
-      if(!fastForward && (*iter).msgId() < id)
+      if(!fastForward && (*iter).msgId() < minId)
 	break;
       processedMsgs++;
 
@@ -247,7 +258,7 @@ int MessageModel::insertMessagesGracefully(const QList<Message> &msglist) {
     }
   } else {
     while(iter != msglist.constEnd()) {
-      if(!fastForward && (*iter).msgId() < id)
+      if(!fastForward && (*iter).msgId() < minId)
 	break;
       processedMsgs++;
 
@@ -299,7 +310,6 @@ void MessageModel::customEvent(QEvent *event) {
   QList<Message>::iterator removeStart = _messageBuffer.begin() + remainingMsgs;
   QList<Message>::iterator removeEnd = _messageBuffer.end();
   _messageBuffer.erase(removeStart, removeEnd);
-
   if(!_messageBuffer.isEmpty())
     QCoreApplication::postEvent(this, new ProcessBufferEvent());
 }

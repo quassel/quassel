@@ -26,6 +26,7 @@ set(SOURCES
     coreinfodlg.cpp
     debugconsole.cpp
     debuglogwidget.cpp
+    debugmessagemodelfilter.cpp
     inputwidget.cpp
     jumpkeyhandler.cpp
     mainwin.cpp
@@ -64,6 +65,7 @@ set(MOC_HDRS
     coreinfodlg.h
     debugconsole.h
     debuglogwidget.h
+    debugmessagemodelfilter.h
     inputwidget.h
     jumpkeyhandler.h
     mainwin.h

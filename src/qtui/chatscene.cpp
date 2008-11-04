@@ -103,9 +103,25 @@ ChatScene::~ChatScene() {
 
 void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
   Q_UNUSED(index);
-//   QModelIndex sidx = model()->index(start, 0);
-//   QModelIndex eidx = model()->index(end, 0);
-//   qDebug() << "rowsInserted" << start << end << "-" << sidx.data(MessageModel::MsgIdRole).value<MsgId>() << eidx.data(MessageModel::MsgIdRole).value<MsgId>();
+
+
+//   QModelIndex sidx = model()->index(start, 2);
+//   QModelIndex eidx = model()->index(end, 2);
+//   qDebug() << "rowsInserted:";
+//   if(start > 0) {
+//     QModelIndex ssidx = model()->index(start - 1, 2);
+//     qDebug() << "Start--:" << start - 1 << ssidx.data(MessageModel::MsgIdRole).value<MsgId>()
+// 	     << ssidx.data(Qt::DisplayRole).toString();
+//   }
+//   qDebug() << "Start:" << start << sidx.data(MessageModel::MsgIdRole).value<MsgId>()
+// 	   << sidx.data(Qt::DisplayRole).toString();
+//   qDebug() << "End:" << end << eidx.data(MessageModel::MsgIdRole).value<MsgId>()
+// 	   << eidx.data(Qt::DisplayRole).toString();
+//   if(end + 1 < model()->rowCount()) {
+//     QModelIndex eeidx = model()->index(end + 1, 2);
+//     qDebug() << "End++:" << end + 1 << eeidx.data(MessageModel::MsgIdRole).value<MsgId>()
+// 	     << eeidx.data(Qt::DisplayRole).toString();
+//   }
 
   qreal h = 0;
   qreal y = 0;

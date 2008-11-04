@@ -55,7 +55,7 @@ public:
 
   inline QModelIndex index(int row, int column, const QModelIndex &/*parent*/ = QModelIndex()) const { return createIndex(row, column); }
   inline QModelIndex parent(const QModelIndex &) const { return QModelIndex(); }
-  inline int rowCount(const QModelIndex &/*parent*/ = QModelIndex()) const { return _messageList.count(); }
+  inline int rowCount(const QModelIndex &parent = QModelIndex()) const { return parent.isValid() ? 0 : _messageList.count(); }
   inline int columnCount(const QModelIndex &/*parent*/ = QModelIndex()) const { return 3; }
 
   virtual QVariant data(const QModelIndex &index, int role) const;
