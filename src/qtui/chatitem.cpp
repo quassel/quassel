@@ -457,7 +457,7 @@ void ContentsChatItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
         case Clickable::Url:
 	  if(!str.contains("://"))
 	    str = "http://" + str;
-          QDesktopServices::openUrl(str);
+          QDesktopServices::openUrl(QUrl::fromEncoded(str.toAscii()));
           break;
         case Clickable::Channel:
           // TODO join or whatever...
