@@ -79,7 +79,10 @@ private:
   inline Qt::CaseSensitivity caseSensitive() const { return _caseSensitive ? Qt::CaseSensitive : Qt::CaseInsensitive; }
 
   inline bool checkType(Message::Type type) const { return type & (Message::Plain | Message::Notice | Message::Action); }
+
+  void checkMessagesForHighlight(int start = 0, int end = -1);
   void highlightLine(ChatLine *line);
+  void updateHighlights(ChatLine *line);
 };
 
 
@@ -92,6 +95,7 @@ class SearchHighlightItem : public QObject, public QGraphicsItem {
 public:
   SearchHighlightItem(QRectF wordRect, QGraphicsItem *parent = 0);
   virtual inline QRectF boundingRect() const { return _boundingRect; }
+  void updateGeometry(qreal width, qreal height);
   virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
   enum { Type = ChatScene::SearchHighlightType };
   virtual inline int type() const { return Type; }

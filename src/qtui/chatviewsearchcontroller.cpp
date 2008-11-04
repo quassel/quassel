@@ -107,58 +107,138 @@ void ChatViewSearchController::updateHighlights(bool reuse) {
   if(!_scene)
     return;
 
+  if(reuse) {
+    QSet<ChatLine *> chatLines;
+    foreach(SearchHighlightItem *highlightItem, _highlightItems) {
+      ChatLine *line = qgraphicsitem_cast<ChatLine *>(highlightItem->parentItem());
+      if(line)
+      chatLines << line;
+    }
+    foreach(ChatLine *line, QList<ChatLine *>(chatLines.toList())) {
+      updateHighlights(line);
+    }
+  } else {
+    QPointF oldHighlightPos;
+    if(!_highlightItems.isEmpty() && _currentHighlight < _highlightItems.count()) {
+      oldHighlightPos = _highlightItems[_currentHighlight]->scenePos();
+    }
+    qDeleteAll(_highlightItems);
+    _highlightItems.clear();
+    Q_ASSERT(_highlightItems.isEmpty());
+
+    if(searchString().isEmpty() || !(_searchSenders || _searchMsgs))
+      return;
+
+    checkMessagesForHighlight();
+
+    if(!_highlightItems.isEmpty()) {
+      if(!oldHighlightPos.isNull()) {
+	int start = 0; int end = _highlightItems.count() - 1;
+	QPointF startPos;
+	QPointF endPos;
+	while(1) {
+	  startPos = _highlightItems[start]->scenePos();
+	  endPos = _highlightItems[end]->scenePos();
+	  if(startPos == oldHighlightPos) {
+	    _currentHighlight = start;
+	    break;
+	  }
+	  if(endPos == oldHighlightPos) {
+	    _currentHighlight = end;
+	    break;
+	  }
+	  if(end - start == 1) {
+	    _currentHighlight = start;
+	    break;
+	  }
+	  int pivot = (end + start) / 2;
+	  QPointF pivotPos = _highlightItems[pivot]->scenePos();
+	  if(startPos.y() == endPos.y()) {
+	    if(oldHighlightPos.x() <= pivotPos.x())
+	      end = pivot;
+	    else
+	      start = pivot;
+	  } else {
+	    if(oldHighlightPos.y() <= pivotPos.y())
+	      end = pivot;
+	    else
+	      start = pivot;
+	  }
+	}
+      } else {
+	_currentHighlight = _highlightItems.count() - 1;
+      }
+      _highlightItems[_currentHighlight]->setHighlighted(true);
+      emit newCurrentHighlight(_highlightItems[_currentHighlight]);
+    }
+  }
+}
+
+void ChatViewSearchController::checkMessagesForHighlight(int start, int end) {
   QAbstractItemModel *model = _scene->model();
   Q_ASSERT(model);
 
+  if(end == -1) {
+    end = model->rowCount() - 1;
+    if(end == -1)
+      return;
+  }
 
-  QList<ChatLine *> chatLines;
-  if(reuse) {
-    foreach(SearchHighlightItem *highlightItem, _highlightItems) {
-      ChatLine *line = dynamic_cast<ChatLine *>(highlightItem->parentItem());
-      if(!line || chatLines.contains(line))
+  QModelIndex index;
+  for(int row = start; row <= end; row++) {
+    if(_searchOnlyRegularMsgs) {
+      index = model->index(row, 0);
+      if(!checkType((Message::Type)index.data(MessageModel::TypeRole).toInt()))
 	continue;
-      chatLines << line;
+      highlightLine(_scene->chatLine(row));
+    }
+  }
+}
+
+void ChatViewSearchController::updateHighlights(ChatLine *line) {
+  QList<ChatItem *> checkItems;
+  if(_searchSenders)
+    checkItems << &(line->item(MessageModel::SenderColumn));
+
+  if(_searchMsgs)
+    checkItems << &(line->item(MessageModel::ContentsColumn));
+
+  QHash<quint64, QHash<quint64, QRectF> > wordRects;
+  foreach(ChatItem *item, checkItems) {
+    foreach(QRectF wordRect, item->findWords(searchString(), caseSensitive())) {
+      wordRects[wordRect.x() + item->x()][wordRect.y()] = wordRect;
     }
   }
 
-  qDeleteAll(_highlightItems);
-  _highlightItems.clear();
-  Q_ASSERT(_highlightItems.isEmpty());
-
-  if(searchString().isEmpty() || !(_searchSenders || _searchMsgs))
-    return;
-
-  if(reuse) {
-    QModelIndex index;
-    foreach(ChatLine *line, chatLines) {
-      if(_searchOnlyRegularMsgs) {
-	index = model->index(line->row(), 0);
-	if(!checkType((Message::Type)index.data(MessageModel::TypeRole).toInt()))
-	  continue;
-      }
-      highlightLine(line);
-    }
-  } else {
-    // we have to crawl through the data
-    QModelIndex index;
-    QString plainText;
-    int rowCount = model->rowCount();
-    for(int row = 0; row < rowCount; row++) {
-      ChatLine *line = _scene->chatLine(row);
-
-      if(_searchOnlyRegularMsgs) {
-	index = model->index(row, 0);
-	if(!checkType((Message::Type)index.data(MessageModel::TypeRole).toInt()))
-	  continue;
-      }
-      highlightLine(line);
-    }
+  bool deleteAll = false;
+  QAbstractItemModel *model = _scene->model();
+  Q_ASSERT(model);
+  if(_searchOnlyRegularMsgs) {
+    QModelIndex index = model->index(line->row(), 0);
+    if(!checkType((Message::Type)index.data(MessageModel::TypeRole).toInt()))
+      deleteAll = true;
   }
 
-  if(!_highlightItems.isEmpty()) {
-    _highlightItems.last()->setHighlighted(true);
-    _currentHighlight = _highlightItems.count() - 1;
-    emit newCurrentHighlight(_highlightItems.last());
+  
+  foreach(QGraphicsItem *child, line->childItems()) {
+    SearchHighlightItem *highlightItem = qgraphicsitem_cast<SearchHighlightItem *>(child);
+    if(!highlightItem)
+      continue;
+
+    if(!deleteAll && wordRects.contains(highlightItem->pos().x()) && wordRects[highlightItem->pos().x()].contains(highlightItem->pos().y())) {
+      QRectF &wordRect = wordRects[highlightItem->pos().x()][highlightItem->pos().y()];
+      highlightItem->updateGeometry(wordRect.width(), wordRect.height());
+    } else {
+      int pos = _highlightItems.indexOf(highlightItem);
+      if(pos == _currentHighlight) {
+	highlightPrev();
+      } else if (pos < _currentHighlight) {
+	_currentHighlight--;
+      }
+
+      _highlightItems.removeAt(pos);
+      delete highlightItem;
+    }
   }
 }
 
@@ -284,8 +364,7 @@ SearchHighlightItem::SearchHighlightItem(QRectF wordRect, QGraphicsItem *parent)
     _timeLine(150)
 {
   setPos(wordRect.x(), wordRect.y());
-  qreal sizedelta = wordRect.height() * 0.1;
-  _boundingRect = QRectF(-sizedelta, -sizedelta, wordRect.width() + 2 * sizedelta, wordRect.height() + 2 * sizedelta);
+  updateGeometry(wordRect.width(), wordRect.height());
 
   connect(&_timeLine, SIGNAL(valueChanged(qreal)), this, SLOT(updateHighlight(qreal)));
 }
@@ -318,6 +397,13 @@ void SearchHighlightItem::paint(QPainter *painter, const QStyleOptionGraphicsIte
   painter->setRenderHints(QPainter::Antialiasing);
   qreal radius = boundingRect().height() * 0.30;
   painter->drawRoundedRect(boundingRect(), radius, radius);
+}
+
+void SearchHighlightItem::updateGeometry(qreal width, qreal height) {
+  prepareGeometryChange();
+  qreal sizedelta = height * 0.1;
+  _boundingRect = QRectF(-sizedelta, -sizedelta, width + 2 * sizedelta, height + 2 * sizedelta);
+  update();
 }
 
 bool SearchHighlightItem::firstInLine(QGraphicsItem *item1, QGraphicsItem *item2) {
