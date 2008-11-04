@@ -27,6 +27,7 @@
 #include <QString>
 #include <QTimeLine>
 
+#include "chatscene.h"
 #include "message.h"
 
 class QGraphicsItem;
@@ -58,6 +59,9 @@ private slots:
   void sceneDestroyed();
   void updateHighlights(bool reuse = false);
 
+  void repositionHighlights();
+  void repositionHighlights(ChatLine *line);
+
 signals:
   void newCurrentHighlight(QGraphicsItem *highlightItem);
 
@@ -87,9 +91,14 @@ class SearchHighlightItem : public QObject, public QGraphicsItem {
 
 public:
   SearchHighlightItem(QRectF wordRect, QGraphicsItem *parent = 0);
-  inline virtual QRectF boundingRect() const { return _boundingRect; }
+  virtual inline QRectF boundingRect() const { return _boundingRect; }
   virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
+  enum { Type = ChatScene::SearchHighlightType };
+  virtual inline int type() const { return Type; }
+
   void setHighlighted(bool highlighted);
+
+  static bool firstInLine(QGraphicsItem *item1, QGraphicsItem *item2);
 
 private slots:
   void updateHighlight(qreal value);

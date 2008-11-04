@@ -69,6 +69,7 @@ void ChatViewSearchController::setSearchString(const QString &searchString) {
     return;
 
   connect(_scene, SIGNAL(destroyed()), this, SLOT(sceneDestroyed()));
+  connect(_scene, SIGNAL(layoutChanged()), this, SLOT(repositionHighlights()));
   updateHighlights();
  }
 
@@ -176,6 +177,50 @@ void ChatViewSearchController::highlightLine(ChatLine *line) {
   }
 }
 
+void ChatViewSearchController::repositionHighlights() {
+  QSet<ChatLine *> chatLines;
+  foreach(SearchHighlightItem *item, _highlightItems) {
+    ChatLine *line = qgraphicsitem_cast<ChatLine *>(item->parentItem());
+    if(line)
+      chatLines << line;
+  }
+  QList<ChatLine *> chatLineList(chatLines.toList());
+  foreach(ChatLine *line, chatLineList) {
+    repositionHighlights(line);
+  }
+}
+
+void ChatViewSearchController::repositionHighlights(ChatLine *line) {
+  QList<SearchHighlightItem *> searchHighlights;
+  foreach(QGraphicsItem *child, line->childItems()) {
+    SearchHighlightItem *highlightItem = qgraphicsitem_cast<SearchHighlightItem *>(child);
+    if(highlightItem)
+      searchHighlights << highlightItem;
+  }
+
+  if(searchHighlights.isEmpty())
+    return;
+
+  QList<QPointF> wordPos;
+  if(_searchSenders) {
+    foreach(QRectF wordRect, line->senderItem().findWords(searchString(), caseSensitive())) {
+      wordPos << QPointF(wordRect.x() + line->senderItem().x(), wordRect.y());
+    }
+  }
+  if(_searchMsgs) {
+    foreach(QRectF wordRect, line->contentsItem().findWords(searchString(), caseSensitive())) {
+      wordPos << QPointF(wordRect.x() + line->contentsItem().x(), wordRect.y());
+    }
+  }
+
+  qSort(searchHighlights.begin(), searchHighlights.end(), SearchHighlightItem::firstInLine);
+
+  Q_ASSERT(wordPos.count() == searchHighlights.count());
+  for(int i = 0; i < searchHighlights.count(); i++) {
+    searchHighlights.at(i)->setPos(wordPos.at(i));
+  }
+}
+
 void ChatViewSearchController::sceneDestroyed() {
   // WARNING: don't call any methods on scene!
   _scene = 0;
@@ -273,4 +318,11 @@ void SearchHighlightItem::paint(QPainter *painter, const QStyleOptionGraphicsIte
   painter->setRenderHints(QPainter::Antialiasing);
   qreal radius = boundingRect().height() * 0.30;
   painter->drawRoundedRect(boundingRect(), radius, radius);
+}
+
+bool SearchHighlightItem::firstInLine(QGraphicsItem *item1, QGraphicsItem *item2) {
+  if(item1->pos().y() != item2->pos().y())
+    return item1->pos().y() < item2->pos().y();
+  else
+    return item1->pos().x() < item2->pos().x();
 }

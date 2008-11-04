@@ -44,6 +44,16 @@ public:
     CutoffRight
   };
 
+  enum ItemType {
+    ChatLineType = QGraphicsItem::UserType + 1,
+    ChatItemType,
+    TimestampChatItemType,
+    SenderChatItemType,
+    ContentsChatItemType,
+    SearchHighlightType,
+    WebPreviewType
+  };
+
   ChatScene(QAbstractItemModel *model, const QString &idString, qreal width, QObject *parent);
   virtual ~ChatScene();
 
@@ -81,6 +91,7 @@ public:
 
 signals:
   void lastLineChanged(QGraphicsItem *item, qreal offset);
+  void layoutChanged(); // indicates changes to the scenerect due to resizing of the contentsitems
 
 protected:
   virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent);

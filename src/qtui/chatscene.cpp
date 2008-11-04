@@ -350,6 +350,7 @@ void ChatScene::setWidth(qreal width) {
 
   updateSceneRect(width);
   setHandleXLimits();
+  emit layoutChanged();
 
 //   clock_t endT = clock();
 //   qDebug() << "resized" << _lines.count() << "in" << (float)(endT - startT) / CLOCKS_PER_SEC << "sec";
@@ -417,7 +418,9 @@ void ChatScene::secondHandlePositionChanged(qreal xpos) {
   }
   //setItemIndexMethod(QGraphicsScene::BspTreeIndex);
 
+  updateSceneRect();
   setHandleXLimits();
+  emit layoutChanged();
 
 //   clock_t endT = clock();
 //   qDebug() << "resized" << _lines.count() << "in" << (float)(endT - startT) / CLOCKS_PER_SEC << "sec";

@@ -25,6 +25,7 @@
 
 #include "chatlinemodel.h"
 #include "chatitem.h"
+#include "chatscene.h"
 
 class ChatLine : public QGraphicsItem {
 public:
@@ -51,6 +52,8 @@ public:
   inline ContentsChatItem &contentsItem() { return _contentsItem; }
 
   virtual void paint (QPainter * painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
+  enum { Type = ChatScene::ChatLineType };
+  virtual inline int type() const { return Type; }
 
   void setFirstColumn(const qreal &timestampWidth, const qreal &senderWidth, const QPointF &senderPos);
   // setSecondColumn and setGeometryByWidth both also relocate the chatline.
