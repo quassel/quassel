@@ -24,7 +24,9 @@
 #include <QSortFilterProxyModel>
 
 #include "bufferinfo.h"
+#include "client.h"
 #include "messagemodel.h"
+#include "networkmodel.h"
 #include "types.h"
 
 class MessageFilter : public QSortFilterProxyModel {
@@ -47,18 +49,16 @@ public slots:
   void requestBacklog();
 
 protected:
-  const QString &bufferName() const;
-  BufferInfo::Type bufferType() const;
+  QString bufferName() const { return Client::networkModel()->bufferName(singleBufferId()); }
+  BufferInfo::Type bufferType() const { return Client::networkModel()->bufferType(singleBufferId()); }
+  NetworkId networkId() const { return Client::networkModel()->networkId(singleBufferId()); }
 
 private:
   void init();
 
   QSet<BufferId> _validBuffers;
-  QSet<uint> _filteredQuitMsgs;
+  QMultiHash<QString, uint> _filteredQuitMsgs;
   int _messageTypeFilter;
-
-  QString _bufferName;
-  BufferInfo::Type _bufferType;
 };
 
 #endif

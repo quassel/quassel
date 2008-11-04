@@ -27,8 +27,7 @@
 
 MessageFilter::MessageFilter(QAbstractItemModel *source, QObject *parent)
   : QSortFilterProxyModel(parent),
-    _messageTypeFilter(0),
-    _bufferType(BufferInfo::InvalidBuffer)
+    _messageTypeFilter(0)
 {
   init();
   setSourceModel(source);
@@ -37,8 +36,7 @@ MessageFilter::MessageFilter(QAbstractItemModel *source, QObject *parent)
 MessageFilter::MessageFilter(MessageModel *source, const QList<BufferId> &buffers, QObject *parent)
   : QSortFilterProxyModel(parent),
     _validBuffers(buffers.toSet()),
-    _messageTypeFilter(0),
-    _bufferType(BufferInfo::InvalidBuffer)
+    _messageTypeFilter(0)
 {
   init();
   setSourceModel(source);
@@ -110,19 +108,20 @@ bool MessageFilter::filterAcceptsRow(int sourceRow, const QModelIndex &sourcePar
       return false;
     if(!(messageType & Message::Quit))
       return false;
+    if(networkId() != Client::networkModel()->networkId(id))
+      return false;
 
     uint messageTimestamp = sourceModel()->data(sourceIdx, MessageModel::TimestampRole).value<QDateTime>().toTime_t();
-    if(_filteredQuitMsgs.contains(messageTimestamp))
+    QString quiter = sourceModel()->data(sourceIdx, Qt::DisplayRole).toString().section(' ', 0, 0, QString::SectionSkipEmpty).toLower();
+    if(quiter != bufferName().toLower())
       return false;
 
-    QString quiter = sourceModel()->data(sourceIdx, Qt::DisplayRole).toString().section(' ', 0, 0, QString::SectionSkipEmpty);
-    if(quiter.toLower() == bufferName().toLower()) {
-      MessageFilter *that = const_cast<MessageFilter *>(this);
-      that->_filteredQuitMsgs << messageTimestamp;
-      return true;
-    } else {
+    if(_filteredQuitMsgs.contains(quiter, messageTimestamp))
       return false;
-    }
+
+    MessageFilter *that = const_cast<MessageFilter *>(this);
+    that->_filteredQuitMsgs.insert(quiter,  messageTimestamp);
+    return true;
   }
 }
 
@@ -132,22 +131,4 @@ void MessageFilter::requestBacklog() {
     Client::messageModel()->requestBacklog(*bufferIdIter);
     bufferIdIter++;
   }
-}
-
-const QString &MessageFilter::bufferName() const {
-  if(_bufferName.isEmpty()) {
-    MessageFilter *that = const_cast<MessageFilter *>(this);
-    that->_bufferName = Client::networkModel()->bufferName(singleBufferId());
-    return that->_bufferName;
-  }
-  return _bufferName;
-}
-
-BufferInfo::Type MessageFilter::bufferType() const {
-  if(_bufferType == BufferInfo::InvalidBuffer) {
-    MessageFilter *that = const_cast<MessageFilter *>(this);
-    that->_bufferType = Client::networkModel()->bufferType(singleBufferId());
-    return that->_bufferType;
-  }
-  return _bufferType;
 }
