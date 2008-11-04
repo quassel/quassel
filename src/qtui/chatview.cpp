@@ -18,7 +18,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QApplication>
 #include <QGraphicsTextItem>
 #include <QScrollBar>
 
@@ -56,7 +55,7 @@ void ChatView::init(MessageFilter *filter) {
   // setOptimizationFlags(QGraphicsView::DontAdjustForAntialiasing);
   setViewportUpdateMode(QGraphicsView::BoundingRectViewportUpdate);
   // setTransformationAnchor(QGraphicsView::NoAnchor);
-  setTransformationAnchor(QGraphicsView::AnchorViewCenter);
+  setTransformationAnchor(QGraphicsView::AnchorViewCenter); 
 
   _scene = new ChatScene(filter, filter->idString(), viewport()->width() - 2, this); // see below: resizeEvent()
   connect(_scene, SIGNAL(sceneRectChanged(const QRectF &)), this, SLOT(sceneRectChanged(const QRectF &)));
@@ -85,8 +84,7 @@ void ChatView::lastLineChanged(QGraphicsItem *chatLine, qreal offset) {
   Q_UNUSED(chatLine)
   QAbstractSlider *vbar = verticalScrollBar();
   Q_ASSERT(vbar);
-  if(QApplication::mouseButtons() == Qt::NoButton
-  && vbar->maximum() - vbar->value() <= (offset + 5) * _currentScaleFactor ) { // 5px grace area
+  if(vbar->maximum() - vbar->value() <= (offset + 5) * _currentScaleFactor ) { // 5px grace area
     vbar->setValue(vbar->maximum());
   }
 }
@@ -119,7 +117,7 @@ MsgId ChatView::lastMsgId() const {
   return model->data(model->index(model->rowCount() - 1, 0), MessageModel::MsgIdRole).value<MsgId>();
 }
 
-void ChatView::zoomIn() {
+void ChatView::zoomIn() { 
     _currentScaleFactor *= 1.2;
     scale(1.2, 1.2);
     scene()->setWidth(viewport()->width() / _currentScaleFactor - 2);
