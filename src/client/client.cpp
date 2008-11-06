@@ -409,11 +409,11 @@ void Client::bufferRenamed(BufferId bufferId, const QString &newName) {
 }
 
 void Client::logMessage(QtMsgType type, const char *msg) {
+  fprintf(stderr, "%s\n", msg);
+  fflush(stderr);
   if(type == QtFatalMsg) {
     Quassel::logFatalMessage(msg);
   } else {
-    fprintf(stderr, "%s\n", msg);
-    fflush(stderr);
     QString msgString = QString("%1\n").arg(msg);
     instance()->_debugLog << msgString;
     emit instance()->logUpdated(msgString);
