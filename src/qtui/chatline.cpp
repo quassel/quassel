@@ -97,8 +97,8 @@ void ChatLine::setSecondColumn(const qreal &senderWidth, const qreal &contentsWi
 
   _contentsItem.setPos(contentsPos);
 
-  _timestampItem.clearLayout();
   _senderItem.clearLayout();
+  _contentsItem.clearLayout();
 
   if(needGeometryChange)
     prepareGeometryChange();
