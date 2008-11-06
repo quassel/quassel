@@ -2,6 +2,21 @@
 <!DOCTYPE TS><TS version="1.1" language="fr">
 <defaultcodec></defaultcodec>
 <context>
+    <name>QShortcut</name>
+    <message>
+        <source>Ctrl</source>
+    </message>
+    <message>
+        <source>Shift</source>
+    </message>
+    <message>
+        <source>Alt</source>
+    </message>
+    <message>
+        <source>Meta</source>
+    </message>
+</context>
+<context>
     <name>AboutDlg</name>
     <message>
         <location filename="../src/qtui/ui/aboutdlg.ui" line="16"/>

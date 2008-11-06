@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS><TS version="1.1" language="nb_NO">
 <context>
+    <name>QShortcut</name>
+    <message>
+        <source>Ctrl</source>
+    </message>
+    <message>
+        <source>Shift</source>
+    </message>
+    <message>
+        <source>Alt</source>
+    </message>
+    <message>
+        <source>Meta</source>
+    </message>
+</context>
+<context>
     <name>AboutDlg</name>
     <message>
         <location filename="../src/qtopia/ui/aboutdlg.ui" line="13"/>
