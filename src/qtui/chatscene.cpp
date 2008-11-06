@@ -91,7 +91,8 @@ ChatScene::ChatScene(QAbstractItemModel *model, const QString &idString, qreal w
 #ifdef HAVE_WEBKIT
   webPreview.delayTimer.setSingleShot(true);
   connect(&webPreview.delayTimer, SIGNAL(timeout()), this, SLOT(showWebPreviewEvent()));
-  webPreview.deleteTimer.setInterval(600000);
+  //webPreview.deleteTimer.setInterval(600000);
+  webPreview.deleteTimer.setInterval(10000);
   connect(&webPreview.deleteTimer, SIGNAL(timeout()), this, SLOT(deleteWebPreviewEvent()));
 #endif
 

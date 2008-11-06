@@ -284,6 +284,8 @@ void ClientSyncer::syncToCore(const QVariantMap &sessionState) {
   // create network objects
   foreach(QVariant networkid, networkids) {
     NetworkId netid = networkid.value<NetworkId>();
+    if(Client::network(netid))
+      continue;
     Network *net = new Network(netid, Client::instance());
     netsToSync.insert(net);
     connect(net, SIGNAL(initDone()), this, SLOT(networkInitDone()));
