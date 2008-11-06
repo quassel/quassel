@@ -143,14 +143,14 @@ public:
   bool supports(const QString &param) const { return _supports.contains(param); }
   QString support(const QString &param) const;
 
-  IrcUser *newIrcUser(const QString &hostmask);
+  IrcUser *newIrcUser(const QString &hostmask, const QVariantMap &initData = QVariantMap());
   inline IrcUser *newIrcUser(const QByteArray &hostmask) { return newIrcUser(decodeServerString(hostmask)); }
   IrcUser *ircUser(QString nickname) const;
   inline IrcUser *ircUser(const QByteArray &nickname) const { return ircUser(decodeServerString(nickname)); }
   inline QList<IrcUser *> ircUsers() const { return _ircUsers.values(); }
   inline quint32 ircUserCount() const { return _ircUsers.count(); }
 
-  IrcChannel *newIrcChannel(const QString &channelname);
+  IrcChannel *newIrcChannel(const QString &channelname, const QVariantMap &initData = QVariantMap());
   inline IrcChannel *newIrcChannel(const QByteArray &channelname) { return newIrcChannel(decodeServerString(channelname)); }
   IrcChannel *ircChannel(QString channelname) const;
   inline IrcChannel *ircChannel(const QByteArray &channelname) const { return ircChannel(decodeServerString(channelname)); }

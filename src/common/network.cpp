@@ -64,7 +64,7 @@ Network::~Network() {
 bool Network::isChannelName(const QString &channelname) const {
   if(channelname.isEmpty())
     return false;
-  
+
   if(supports("CHANTYPES"))
     return support("CHANTYPES").contains(channelname[0]);
   else
@@ -140,7 +140,7 @@ QStringList Network::nicks() const {
 QString Network::prefixes() {
   if(_prefixes.isNull())
     determinePrefixes();
-  
+
   return _prefixes;
 }
 
@@ -151,7 +151,7 @@ QString Network::prefixModes() {
   return _prefixModes;
 }
 
-// example Unreal IRCD: CHANMODES=beI,kfL,lj,psmntirRcOAQKVCuzNSMTG 
+// example Unreal IRCD: CHANMODES=beI,kfL,lj,psmntirRcOAQKVCuzNSMTG
 Network::ChannelModeType Network::channelModeType(const QString &mode) {
   if(mode.isEmpty())
     return NOT_A_CHANMODE;
@@ -182,23 +182,33 @@ QString Network::support(const QString &param) const {
     return QString();
 }
 
-IrcUser *Network::newIrcUser(const QString &hostmask) {
+IrcUser *Network::newIrcUser(const QString &hostmask, const QVariantMap &initData) {
   QString nick(nickFromMask(hostmask).toLower());
   if(!_ircUsers.contains(nick)) {
     IrcUser *ircuser = new IrcUser(hostmask, this);
+    if(initData.isEmpty()) {
+      ircuser->fromVariantMap(initData);
+      ircuser->setInitialized();
+    }
 
     if(proxy())
       proxy()->synchronize(ircuser);
     else
       qWarning() << "unable to synchronize new IrcUser" << hostmask << "forgot to call Network::setProxy(SignalProxy *)?";
-    
+
     connect(ircuser, SIGNAL(nickSet(QString)), this, SLOT(ircUserNickChanged(QString)));
-    connect(ircuser, SIGNAL(initDone()), this, SLOT(ircUserInitDone()));
     connect(ircuser, SIGNAL(destroyed()), this, SLOT(ircUserDestroyed()));
+    if(!ircuser->isInitialized())
+      connect(ircuser, SIGNAL(initDone()), this, SLOT(ircUserInitDone()));
+
     _ircUsers[nick] = ircuser;
+
     emit ircUserAdded(hostmask);
     emit ircUserAdded(ircuser);
+    if(ircuser->isInitialized())
+      emit ircUserInitDone(ircuser);
   }
+
   return _ircUsers[nick];
 }
 
@@ -254,20 +264,29 @@ IrcUser *Network::ircUser(QString nickname) const {
     return 0;
 }
 
-IrcChannel *Network::newIrcChannel(const QString &channelname) {
+IrcChannel *Network::newIrcChannel(const QString &channelname, const QVariantMap &initData) {
   if(!_ircChannels.contains(channelname.toLower())) {
     IrcChannel *channel = ircChannelFactory(channelname);
+    if(initData.isEmpty()) {
+      channel->fromVariantMap(initData);
+      channel->setInitialized();
+    }
 
     if(proxy())
       proxy()->synchronize(channel);
     else
       qWarning() << "unable to synchronize new IrcChannel" << channelname << "forgot to call Network::setProxy(SignalProxy *)?";
 
-    connect(channel, SIGNAL(initDone()), this, SLOT(ircChannelInitDone()));
     connect(channel, SIGNAL(destroyed()), this, SLOT(channelDestroyed()));
+    if(!channel->isInitialized())
+      connect(channel, SIGNAL(initDone()), this, SLOT(ircChannelInitDone()));
+
     _ircChannels[channelname.toLower()] = channel;
+
     emit ircChannelAdded(channelname);
     emit ircChannelAdded(channel);
+    if(channel->isInitialized())
+      emit ircChannelInitDone(channel);
   }
   return _ircChannels[channelname.toLower()];
 }
@@ -405,7 +424,7 @@ void Network::setCurrentServer(const QString &currentServer) {
 void Network::setConnected(bool connected) {
   if(_connected == connected)
     return;
-  
+
   _connected = connected;
   if(!connected) {
     setMyNick(QString());
@@ -552,56 +571,23 @@ void Network::initSetIrcUsersAndChannels(const QVariantMap &usersAndChannels) {
     qWarning() << "Network" << networkId() << "received init data for users and channels allthough there allready are known users or channels!";
     return;
   }
-    
-  QVariantMap users = usersAndChannels.value("users").toMap();
 
+  QVariantMap users = usersAndChannels.value("users").toMap();
   QVariantMap::const_iterator userIter = users.constBegin();
   QVariantMap::const_iterator userIterEnd = users.constEnd();
-  IrcUser *ircUser = 0;
-  QString hostmask;
   while(userIter != userIterEnd) {
-    hostmask = userIter.key();
-    ircUser = new IrcUser(hostmask, this);
-    ircUser->fromVariantMap(userIter.value().toMap());
-    ircUser->setInitialized();
-    proxy()->synchronize(ircUser);
-
-    connect(ircUser, SIGNAL(nickSet(QString)), this, SLOT(ircUserNickChanged(QString)));
-    connect(ircUser, SIGNAL(destroyed()), this, SLOT(ircUserDestroyed()));
-
-    _ircUsers[nickFromMask(hostmask).toLower()] = ircUser;
-
-    emit ircUserAdded(hostmask);
-    emit ircUserAdded(ircUser);
-    emit ircUserInitDone(ircUser);
-
+    newIrcUser(userIter.key(), userIter.value().toMap());
     userIter++;
   }
-
 
   QVariantMap channels = usersAndChannels.value("channels").toMap();
   QVariantMap::const_iterator channelIter = channels.constBegin();
   QVariantMap::const_iterator channelIterEnd = channels.constEnd();
-  IrcChannel *ircChannel = 0;
-  QString channelName;
-
   while(channelIter != channelIterEnd) {
-    channelName = channelIter.key();
-    ircChannel = ircChannelFactory(channelName);
-    ircChannel->fromVariantMap(channelIter.value().toMap());
-    ircChannel->setInitialized();
-    proxy()->synchronize(ircChannel);
-      
-    connect(ircChannel, SIGNAL(destroyed()), this, SLOT(channelDestroyed()));
-    _ircChannels[channelName.toLower()] = ircChannel;
-
-    emit ircChannelAdded(channelName);
-    emit ircChannelAdded(ircChannel);
-    emit ircChannelInitDone(ircChannel);
-
+    newIrcChannel(channelIter.key(), channelIter.value().toMap());
     channelIter++;
   }
-  
+
 }
 
 void Network::initSetSupports(const QVariantMap &supports) {
@@ -615,7 +601,7 @@ void Network::initSetSupports(const QVariantMap &supports) {
 IrcUser *Network::updateNickFromMask(const QString &mask) {
   QString nick(nickFromMask(mask).toLower());
   IrcUser *ircuser;
-  
+
   if(_ircUsers.contains(nick)) {
     ircuser = _ircUsers[nick];
     ircuser->updateHostmask(mask);
@@ -655,7 +641,7 @@ void Network::removeIrcChannel(IrcChannel *channel) {
   QString chanName = _ircChannels.key(channel);
   if(chanName.isNull())
     return;
-  
+
   _ircChannels.remove(chanName);
   disconnect(channel, 0, this, 0);
   emit ircChannelRemoved(chanName);
@@ -686,7 +672,7 @@ void Network::emitConnectionError(const QString &errorMsg) {
 void Network::determinePrefixes() {
   // seems like we have to construct them first
   QString prefix = support("PREFIX");
-  
+
   if(prefix.startsWith("(") && prefix.contains(")")) {
     _prefixes = prefix.section(")", 1);
     _prefixModes = prefix.mid(1).section(")", 0, 0);
@@ -710,7 +696,7 @@ void Network::determinePrefixes() {
     // check for success
     if(!_prefixes.isNull())
       return;
-    
+
     // well... our assumption was obviously wrong...
     // check if it's only prefix modes
     for(int i = 0; i < defaultPrefixes.size(); i++) {
