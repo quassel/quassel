@@ -534,7 +534,9 @@ void ContentsChatItem::contextMenuEvent(QGraphicsSceneContextMenuEvent *event) {
 }
 
 void ContentsChatItem::showWebPreview(const Clickable &click) {
-#ifdef HAVE_WEBKIT
+#ifndef HAVE_WEBKIT
+  Q_UNUSED(click);
+#else
   QTextLine line = layout()->lineForTextPosition(click.start);
   qreal x = line.cursorToX(click.start);
   qreal width = line.cursorToX(click.start + click.length) - x;
