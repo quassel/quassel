@@ -72,6 +72,8 @@ public:
   inline CutoffMode senderCutoffMode() const { return _cutoffMode; }
   inline void setSenderCutoffMode(CutoffMode mode) { _cutoffMode = mode; }
 
+  bool isScrollingAllowed() const;
+
   virtual bool event(QEvent *e);
 
  public slots:

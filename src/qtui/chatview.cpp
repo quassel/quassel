@@ -108,6 +108,9 @@ void ChatView::scrollTimerTimeout() {
 
 void ChatView::lastLineChanged(QGraphicsItem *chatLine, qreal offset) {
   Q_UNUSED(chatLine)
+  if(!scene()->isScrollingAllowed())
+    return;
+
   QAbstractSlider *vbar = verticalScrollBar();
   Q_ASSERT(vbar);
   if(vbar->maximum() - vbar->value() <= (offset + 5) * _currentScaleFactor ) { // 5px grace area

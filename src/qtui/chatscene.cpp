@@ -513,6 +513,15 @@ void ChatScene::updateSelection(const QPointF &pos) {
   }
 }
 
+bool ChatScene::isScrollingAllowed() const {
+  if(_isSelecting)
+    return false;
+
+  // TODO: Handle clicks and single-item selections too
+
+  return true;
+}
+
 void ChatScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
   if(_isSelecting && event->buttons() == Qt::LeftButton) {
     updateSelection(event->scenePos());
