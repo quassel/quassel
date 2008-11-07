@@ -265,7 +265,7 @@ void ChatItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
 void SenderChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
   Q_UNUSED(option); Q_UNUSED(widget);
 
-  //painter->setClipRect(boundingRect()); // no idea why QGraphicsItem clipping won't work
+  painter->setClipRect(boundingRect()); // no idea why QGraphicsItem clipping won't work
   qreal layoutWidth = layout()->minimumWidth();
   qreal offset = 0;
   if(chatScene()->senderCutoffMode() == ChatScene::CutoffLeft)
