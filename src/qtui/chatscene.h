@@ -174,13 +174,13 @@ private:
   int _firstSelectionRow;
   bool _isSelecting;
 
-  bool _showWebPreview;
-
   QTimer _clickTimer;
   ClickMode _clickMode;
   QPointF _clickPos;
   bool _clickHandled;
   bool _leftButtonPressed;
+
+  bool _showWebPreview;
 
   struct WebPreview {
     ChatItem *parentItem;
