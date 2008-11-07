@@ -92,6 +92,7 @@ public:
 signals:
   void lastLineChanged(QGraphicsItem *item, qreal offset);
   void layoutChanged(); // indicates changes to the scenerect due to resizing of the contentsitems
+  void mouseMoveWhileSelecting(const QPointF &scenePos);
 
 protected:
   virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent);

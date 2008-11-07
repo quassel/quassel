@@ -22,6 +22,7 @@
 #define CHATVIEW_H_
 
 #include <QGraphicsView>
+#include <QTimer>
 
 #include "abstractbuffercontainer.h"
 
@@ -51,9 +52,13 @@ protected:
   virtual void resizeEvent(QResizeEvent *event);
 
 protected slots:
-  void lastLineChanged(QGraphicsItem *chatLine, qreal offset);
   virtual inline void sceneRectChanged(const QRectF &rect) { setSceneRect(rect); }
   virtual void verticalScrollbarChanged(int);
+
+private slots:
+  void lastLineChanged(QGraphicsItem *chatLine, qreal offset);
+  void mouseMoveWhileSelecting(const QPointF &scenePos);
+  void scrollTimerTimeout();
 
 private:
   void init(MessageFilter *filter);
@@ -61,6 +66,8 @@ private:
   ChatScene *_scene;
   int _lastScrollbarPos;
   qreal _currentScaleFactor;
+  QTimer _scrollTimer;
+  int _scrollOffset;
 };
 
 

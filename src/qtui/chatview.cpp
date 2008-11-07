@@ -55,11 +55,16 @@ void ChatView::init(MessageFilter *filter) {
   // setOptimizationFlags(QGraphicsView::DontAdjustForAntialiasing);
   setViewportUpdateMode(QGraphicsView::BoundingRectViewportUpdate);
   // setTransformationAnchor(QGraphicsView::NoAnchor);
-  setTransformationAnchor(QGraphicsView::AnchorViewCenter); 
+  setTransformationAnchor(QGraphicsView::AnchorViewCenter);
+
+  _scrollTimer.setInterval(100);
+  _scrollTimer.setSingleShot(true);
+  connect(&_scrollTimer, SIGNAL(timeout()), SLOT(scrollTimerTimeout()));
 
   _scene = new ChatScene(filter, filter->idString(), viewport()->width() - 2, this); // see below: resizeEvent()
   connect(_scene, SIGNAL(sceneRectChanged(const QRectF &)), this, SLOT(sceneRectChanged(const QRectF &)));
   connect(_scene, SIGNAL(lastLineChanged(QGraphicsItem *, qreal)), this, SLOT(lastLineChanged(QGraphicsItem *, qreal)));
+  connect(_scene, SIGNAL(mouseMoveWhileSelecting(const QPointF &)), this, SLOT(mouseMoveWhileSelecting(const QPointF &)));
   setScene(_scene);
   // installEventFilter(_scene);
 
@@ -78,6 +83,27 @@ void ChatView::resizeEvent(QResizeEvent *event) {
 
   _lastScrollbarPos = verticalScrollBar()->maximum();
   verticalScrollBar()->setValue(verticalScrollBar()->maximum());
+}
+
+void ChatView::mouseMoveWhileSelecting(const QPointF &scenePos) {
+  int y = (int)mapFromScene(scenePos).y();
+  _scrollOffset = 0;
+  if(y < 0)
+    _scrollOffset = y;
+  else if(y > height())
+    _scrollOffset = y - height();
+
+  if(_scrollOffset && !_scrollTimer.isActive())
+    _scrollTimer.start();
+}
+
+void ChatView::scrollTimerTimeout() {
+  // scroll view
+  QAbstractSlider *vbar = verticalScrollBar();
+  if(_scrollOffset < 0 && vbar->value() > 0)
+    vbar->setValue(qMax(vbar->value() + _scrollOffset, 0));
+  else if(_scrollOffset > 0 && vbar->value() < vbar->maximum())
+    vbar->setValue(qMin(vbar->value() + _scrollOffset, vbar->maximum()));
 }
 
 void ChatView::lastLineChanged(QGraphicsItem *chatLine, qreal offset) {
@@ -117,7 +143,7 @@ MsgId ChatView::lastMsgId() const {
   return model->data(model->index(model->rowCount() - 1, 0), MessageModel::MsgIdRole).value<MsgId>();
 }
 
-void ChatView::zoomIn() { 
+void ChatView::zoomIn() {
     _currentScaleFactor *= 1.2;
     scale(1.2, 1.2);
     scene()->setWidth(viewport()->width() / _currentScaleFactor - 2);

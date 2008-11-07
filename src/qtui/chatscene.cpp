@@ -516,6 +516,7 @@ void ChatScene::updateSelection(const QPointF &pos) {
 void ChatScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
   if(_isSelecting && event->buttons() == Qt::LeftButton) {
     updateSelection(event->scenePos());
+    emit mouseMoveWhileSelecting(event->scenePos());
     event->accept();
   } else {
     QGraphicsScene::mouseMoveEvent(event);
