@@ -81,9 +81,9 @@ ChatScene::ChatScene(QAbstractItemModel *model, const QString &idString, qreal w
   setHandleXLimits();
 
   connect(model, SIGNAL(rowsInserted(const QModelIndex &, int, int)),
-	  this, SLOT(rowsInserted(const QModelIndex &, int, int)));
+          this, SLOT(rowsInserted(const QModelIndex &, int, int)));
   connect(model, SIGNAL(rowsAboutToBeRemoved(const QModelIndex &, int, int)),
-	  this, SLOT(rowsAboutToBeRemoved(const QModelIndex &, int, int)));
+          this, SLOT(rowsAboutToBeRemoved(const QModelIndex &, int, int)));
 
   if(model->rowCount() > 0)
     rowsInserted(QModelIndex(), 0, model->rowCount() - 1);
@@ -146,9 +146,9 @@ void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
   if(atTop) {
     for(int i = end; i >= start; i--) {
       ChatLine *line = new ChatLine(i, model(),
-				    width,
-				    timestampWidth, senderWidth, contentsWidth,
-				    senderPos, contentsPos);
+                                    width,
+                                    timestampWidth, senderWidth, contentsWidth,
+                                    senderPos, contentsPos);
       h += line->height();
       line->setPos(0, y-h);
       _lines.insert(start, line);
@@ -157,9 +157,9 @@ void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
   } else {
     for(int i = start; i <= end; i++) {
       ChatLine *line = new ChatLine(i, model(),
-				    width,
-				    timestampWidth, senderWidth, contentsWidth,
-				    senderPos, contentsPos);
+                                    width,
+                                    timestampWidth, senderWidth, contentsWidth,
+                                    senderPos, contentsPos);
       line->setPos(0, y+h);
       h += line->height();
       _lines.insert(i, line);
@@ -237,7 +237,7 @@ void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
     if(start < _firstLineRow) {
       int prevFirstLineRow = _firstLineRow + (end - start + 1);
       for(int i = end + 1; i < prevFirstLineRow; i++) {
-	_lines.at(i)->show();
+        _lines.at(i)->show();
       }
     }
     // force new search for first proper line
@@ -611,7 +611,7 @@ void ChatScene::updateSceneRect(qreal width) {
     while(_firstLineRow < numRows) {
       firstLineIdx = model()->index(_firstLineRow, 0);
       if((Message::Type)(model()->data(firstLineIdx, MessageModel::TypeRole).toInt()) != Message::DayChange)
-	break;
+        break;
       _lines.at(_firstLineRow)->hide();
       _firstLineRow++;
     }
