@@ -61,7 +61,7 @@ void ChatView::init(MessageFilter *filter) {
   _scrollTimer.setSingleShot(true);
   connect(&_scrollTimer, SIGNAL(timeout()), SLOT(scrollTimerTimeout()));
 
-  _scene = new ChatScene(filter, filter->idString(), viewport()->width() - 2, this); // see below: resizeEvent()
+  _scene = new ChatScene(filter, filter->idString(), viewport()->width() - 4, this); // see below: resizeEvent()
   connect(_scene, SIGNAL(sceneRectChanged(const QRectF &)), this, SLOT(sceneRectChanged(const QRectF &)));
   connect(_scene, SIGNAL(lastLineChanged(QGraphicsItem *, qreal)), this, SLOT(lastLineChanged(QGraphicsItem *, qreal)));
   connect(_scene, SIGNAL(mouseMoveWhileSelecting(const QPointF &)), this, SLOT(mouseMoveWhileSelecting(const QPointF &)));

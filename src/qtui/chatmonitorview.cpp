@@ -48,7 +48,7 @@ void ChatMonitorView::contextMenuEvent(QContextMenuEvent *event) {
   showOwnNicksAction->setCheckable(true);
   showOwnNicksAction->setChecked(_filter->showOwnMessages());
     
-  if(scene()->sectionByScenePos(event->pos()) == ChatLineModel::SenderColumn) {
+  if(scene()->columnByScenePos(event->pos()) == ChatLineModel::SenderColumn) {
     contextMenu.addSeparator();
 
     QAction *showNetworkAction = contextMenu.addAction(tr("Show network name"), this, SLOT(showFieldsChanged(bool)));
@@ -66,7 +66,7 @@ void ChatMonitorView::contextMenuEvent(QContextMenuEvent *event) {
 }
 
 void ChatMonitorView::mouseDoubleClickEvent(QMouseEvent *event) {
-  if(scene()->sectionByScenePos(event->pos()) != ChatLineModel::SenderColumn) {
+  if(scene()->columnByScenePos(event->pos()) != ChatLineModel::SenderColumn) {
     ChatView::mouseDoubleClickEvent(event);
     return;
   }

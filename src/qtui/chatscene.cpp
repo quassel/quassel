@@ -104,6 +104,14 @@ ChatScene::ChatScene(QAbstractItemModel *model, const QString &idString, qreal w
 ChatScene::~ChatScene() {
 }
 
+bool ChatScene::containsBuffer(const BufferId &id) const {
+  MessageFilter *filter = qobject_cast<MessageFilter*>(model());
+  if(filter)
+    return filter->containsBuffer(id);
+  else
+    return false;
+}
+
 void ChatScene::rowsInserted(const QModelIndex &index, int start, int end) {
   Q_UNUSED(index);
 
@@ -464,17 +472,9 @@ void ChatScene::startGlobalSelection(ChatItem *item, const QPointF &itemPos) {
 }
 
 void ChatScene::updateSelection(const QPointF &pos) {
-  // This is somewhat hacky... we look at the contents item that is at the cursor's y position (ignoring x), since
-  // it has the full height. From this item, we can then determine the row index and hence the ChatLine.
-  ChatItem *contentItem = static_cast<ChatItem *>(itemAt(QPointF(_secondColHandle->sceneRight() + 1, pos.y())));
-  if(!contentItem) return;
-
-  int curRow = contentItem->row();
-  int curColumn;
-  if(pos.x() > _secondColHandle->sceneRight()) curColumn = ChatLineModel::ContentsColumn;
-  else if(pos.x() > _firstColHandlePos) curColumn = ChatLineModel::SenderColumn;
-  else curColumn = ChatLineModel::TimestampColumn;
-
+  int curRow = rowByScenePos(pos);
+  if(curRow < 0) return;
+  int curColumn = (int)columnByScenePos(pos);
   ChatLineModel::ColumnType minColumn = (ChatLineModel::ColumnType)qMin(curColumn, _selectionStartCol);
   if(minColumn != _selectionMinCol) {
     _selectionMinCol = minColumn;
@@ -595,13 +595,22 @@ void ChatScene::requestBacklog() {
   return;
 }
 
-int ChatScene::sectionByScenePos(int x) {
+ChatLineModel::ColumnType ChatScene::columnByScenePos(qreal x) {
   if(x < _firstColHandle->x())
     return ChatLineModel::TimestampColumn;
   if(x < _secondColHandle->x())
     return ChatLineModel::SenderColumn;
 
   return ChatLineModel::ContentsColumn;
+}
+
+int ChatScene::rowByScenePos(qreal y) {
+  // This is somewhat hacky... we look at the contents item that is at the given y position, since
+  // it has the full height. From this item, we can then determine the row index and hence the ChatLine.
+  // ChatItems cover their ChatLine, so we won't get to the latter directly.
+  ChatItem *contentItem = static_cast<ChatItem *>(itemAt(QPointF(_secondColHandle->sceneRight() + 1, y)));
+  if(!contentItem) return -1;
+  return contentItem->row();
 }
 
 void ChatScene::updateSceneRect(qreal width) {

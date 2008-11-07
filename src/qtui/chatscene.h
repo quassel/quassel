@@ -24,7 +24,9 @@
 #include <QAbstractItemModel>
 #include <QGraphicsScene>
 #include <QSet>
+#include <QTimer>
 
+#include "chatlinemodel.h"
 #include "columnhandleitem.h"
 #include "messagefilter.h"
 
@@ -54,16 +56,25 @@ public:
     WebPreviewType
   };
 
+  enum ClickMode {
+    NoClick,
+    SingleClick,
+    DoubleClick,
+    TripleClick
+  };
+
   ChatScene(QAbstractItemModel *model, const QString &idString, qreal width, QObject *parent);
   virtual ~ChatScene();
 
   inline QAbstractItemModel *model() const { return _model; }
   inline QString idString() const { return _idString; }
 
-  int sectionByScenePos(int x);
-  inline int sectionByScenePos(const QPoint &pos) { return sectionByScenePos(pos.x()); }
+  int rowByScenePos(qreal y);
+  inline int rowByScenePos(const QPointF &pos) { return rowByScenePos(pos.y()); }
+  ChatLineModel::ColumnType columnByScenePos(qreal x);
+  inline ChatLineModel::ColumnType columnByScenePos(const QPointF &pos) { return columnByScenePos(pos.x()); }
   inline bool isSingleBufferScene() const { return _singleBufferScene; }
-  inline bool containsBuffer(const BufferId &id) const;
+  bool containsBuffer(const BufferId &id) const;
   inline ChatLine *chatLine(int row) { return (row < _lines.count()) ? _lines[row] : 0; }
 
   inline ColumnHandleItem *firstColumnHandle() const { return _firstColHandle; }
@@ -100,6 +111,7 @@ protected:
   virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent);
   virtual void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent);
   virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent);
+  //virtual bool handleLeftClick(ClickMode mode);
 
 protected slots:
   void rowsInserted(const QModelIndex &, int, int);
@@ -144,6 +156,8 @@ private:
 
   bool _showWebPreview;
 
+  QTimer _clickTimer;
+
   struct WebPreview {
     ChatItem *parentItem;
     QGraphicsItem *previewItem;
@@ -155,13 +169,5 @@ private:
   };
   WebPreview webPreview;
 };
-
-bool ChatScene::containsBuffer(const BufferId &id) const {
-  MessageFilter *filter = qobject_cast<MessageFilter*>(model());
-  if(filter)
-    return filter->containsBuffer(id);
-  else
-    return false;
-}
 
 #endif
