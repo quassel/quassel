@@ -147,8 +147,17 @@
            </item>
            <item row="2" column="2" >
             <widget class="QSpinBox" name="proxyPort" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimum" >
+              <number>1</number>
+             </property>
              <property name="maximum" >
-              <number>10000</number>
+              <number>65535</number>
              </property>
              <property name="value" >
               <number>8080</number>
