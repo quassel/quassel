@@ -100,7 +100,7 @@
             <item>
              <widget class="QPushButton" name="useInternalCore" >
               <property name="text" >
-               <string>use internal core</string>
+               <string>Use internal core</string>
               </property>
              </widget>
             </item>
@@ -199,10 +199,10 @@
                </sizepolicy>
               </property>
               <property name="text" >
-               <string>Core Info
-reserve
-some
-space</string>
+               <string>THIS IS A PLACEHOLDER
+TO
+RESERVE
+SOME SPACE</string>
               </property>
               <property name="alignment" >
                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
