@@ -151,13 +151,15 @@ void QtUiMessageProcessor::checkForHighlight(Message &msg) {
       if(!rule.isEnabled)
 	continue;
 
-      QRegExp userRegExp;
+      bool match = false;
       if(rule.isRegExp) {
-        userRegExp = QRegExp(rule.name, rule.caseSensitive? Qt::CaseSensitive : Qt::CaseInsensitive);
+        QRegExp rx(rule.name, rule.caseSensitive? Qt::CaseSensitive : Qt::CaseInsensitive);
+        match = rx.exactMatch(msg.contents());
       } else {
-        userRegExp = QRegExp("\\b" + QRegExp::escape(rule.name) + "\\b", rule.caseSensitive? Qt::CaseSensitive : Qt::CaseInsensitive);
+        QRegExp rx("\\b" + QRegExp::escape(rule.name) + "\\b", rule.caseSensitive? Qt::CaseSensitive : Qt::CaseInsensitive);
+        match = (rx.indexIn(msg.contents()) >= 0);
       }
-      if(userRegExp.exactMatch(msg.contents())) {
+      if(match) {
         msg.setFlags(msg.flags() | Message::Highlight);
         return;
       }
