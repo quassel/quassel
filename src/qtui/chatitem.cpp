@@ -278,7 +278,7 @@ void SenderChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
   if(layoutWidth > width()) {
     // Draw a nice gradient for longer items
     // Qt's text drawing with a gradient brush sucks, so we use an alpha-channeled pixmap instead
-    QPixmap pixmap(QSize(layout()->boundingRect().width(), layout()->boundingRect().height()));
+    QPixmap pixmap(layout()->boundingRect().toRect().size());
     pixmap.fill(Qt::transparent);
     QPainter pixPainter(&pixmap);
     layout()->draw(&pixPainter, QPointF(qMax(offset, (qreal)0), 0), QVector<QTextLayout::FormatRange>() << selectFmt);
