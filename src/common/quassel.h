@@ -85,7 +85,7 @@ private:
   void registerMetaTypes();
 
   static void handleSignal(int signal);
-  static void handleCrash();
+  static void logBacktrace(const QString &filename);
 
   static BuildInfo _buildInfo;
   static CliParser *_cliParser;

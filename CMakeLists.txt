@@ -162,12 +162,14 @@ if(STATIC AND CMAKE_COMPILER_IS_GNUCXX)
   endif(HAVE_SSL)
 endif(STATIC AND CMAKE_COMPILER_IS_GNUCXX)
 
-if(STATIC AND WIN32)
-  link_libraries(imm32 winmm)  # missing by default :/
-   if(HAVE_SSL)
+if(WIN32)
+  #if(STATIC)
+  link_libraries(imm32 winmm dbghelp)  # missing by default :/
+  #endif(STATIC)
+  if(HAVE_SSL)
      link_libraries(${OPENSSL_LIBRARIES} libeay32MD)
-   endif(HAVE_SSL)
-endif(STATIC AND WIN32)
+  endif(HAVE_SSL)
+endif(WIN32)
 
 if(WIN32)
   set(RC_WIN32 ../pics/win32.rc)  # for app icons on windows

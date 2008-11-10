@@ -24,6 +24,15 @@ set(SOURCES
     syncableobject.cpp
     util.cpp)
 
+if(CMAKE_HOST_WIN32)
+    set(SOURCES ${SOURCES} logbacktrace_win.cpp)
+endif(CMAKE_HOST_WIN32)
+if(CMAKE_HOST_UNIX)
+    set(SOURCES ${SOURCES} logbacktrace_unix.cpp)
+endif(CMAKE_HOST_UNIX)
+
+
+
 set(MOC_HDRS
     aliasmanager.h
     backlogmanager.h
