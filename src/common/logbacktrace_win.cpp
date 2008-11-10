@@ -34,7 +34,7 @@ void loadHelpStackFrame(IMAGEHLP_STACK_FRAME &ihsf, const STACKFRAME64 &stackFra
   ihsf.FrameOffset = stackFrame.AddrFrame.Offset;
 }
 
-BOOL CALLBACK EnumSymbolsCB(PSYMBOL_INFO symInfo, ULONG size, PVOID user) { 
+BOOL CALLBACK EnumSymbolsCB(PSYMBOL_INFO symInfo, ULONG size, PVOID user) {
   QStringList *params = (QStringList *)user;
   if(symInfo->Flags & SYMFLAG_PARAMETER) {
     params->append(symInfo->Name);
@@ -49,7 +49,11 @@ struct EnumModulesContext {
   EnumModulesContext(HANDLE hProcess, QTextStream &stream) : hProcess(hProcess), stream(stream) {}
 };
 
+#if _MSC_VER >= 1500
 BOOL CALLBACK EnumModulesCB(PCTSTR ModuleName, DWORD64 BaseOfDll, PVOID UserContext) {
+#else
+BOOL CALLBACK EnumModulesCB(PSTR ModuleName, DWORD64 BaseOfDll, PVOID UserContext) {
+#endif
   IMAGEHLP_MODULE64 mod;
   EnumModulesContext *context = (EnumModulesContext *)UserContext;
   mod.SizeOfStruct = sizeof(IMAGEHLP_MODULE64);
@@ -59,7 +63,7 @@ BOOL CALLBACK EnumModulesCB(PCTSTR ModuleName, DWORD64 BaseOfDll, PVOID UserCont
       .arg(mod.LoadedImageName);
     // qDebug() << qPrintable(line);
     context->stream  << line << '\n';
-    
+
     QString pdbName(mod.LoadedPdbName);
     if(!pdbName.isEmpty()) {
       QString line2 = QString("%1 %2").arg("", 32).arg(pdbName);
@@ -145,7 +149,7 @@ void Quassel::logBacktrace(const QString &filename) {
   PSYMBOL_INFO pSymbol = (PSYMBOL_INFO)buffer;
   pSymbol->SizeOfStruct = sizeof(SYMBOL_INFO);
   pSymbol->MaxNameLen = MAX_SYM_NAME;
-  
+
   IMAGEHLP_MODULE64 mod;
   mod.SizeOfStruct = sizeof(IMAGEHLP_MODULE64);
 
@@ -159,7 +163,7 @@ void Quassel::logBacktrace(const QString &filename) {
 
     loadHelpStackFrame(ihsf, StackFrame);
     if(StackFrame.AddrPC.Offset != 0) { // Valid frame.
-      
+
       QString fileName("???");
       if(SymGetModuleInfo64(hProcess, ihsf.InstructionOffset, &mod)) {
 	fileName = QString(mod.ImageName);
@@ -176,7 +180,7 @@ void Quassel::logBacktrace(const QString &filename) {
       QStringList params;
       SymSetContext(hProcess, &ihsf, NULL);
       SymEnumSymbols(hProcess, 0, NULL, EnumSymbolsCB, (PVOID)&params);
-      
+
       QString debugLine = QString("#%1 %2 0x%3 %4(%5)").arg(i, 3, 10)
 	.arg(fileName, -20)
 	.arg(ihsf.InstructionOffset, 8, 16, QLatin1Char('0'))
