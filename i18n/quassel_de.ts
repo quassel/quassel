@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS><TS version="1.1" language="de">
 <context>
+    <name>QShortcut</name>
+    <message>
+        <source>Ctrl</source>
+	<translation>Strg</translation>
+    </message>
+    <message>
+        <source>Shift</source>
+        <translation>Umschalt</translation>
+    </message>
+    <message>
+        <source>Alt</source>
+    </message>
+    <message>
+        <source>Meta</source>
+    </message>
+</context>
+<context>
     <name></name>
     <message>
         <location filename="../src/common/message.h" line="67"/>
