@@ -49,11 +49,7 @@ struct EnumModulesContext {
   EnumModulesContext(HANDLE hProcess, QTextStream &stream) : hProcess(hProcess), stream(stream) {}
 };
 
-#if _MSC_VER >= 1500
 BOOL CALLBACK EnumModulesCB(PCTSTR ModuleName, DWORD64 BaseOfDll, PVOID UserContext) {
-#else
-BOOL CALLBACK EnumModulesCB(PSTR ModuleName, DWORD64 BaseOfDll, PVOID UserContext) {
-#endif
   IMAGEHLP_MODULE64 mod;
   EnumModulesContext *context = (EnumModulesContext *)UserContext;
   mod.SizeOfStruct = sizeof(IMAGEHLP_MODULE64);
@@ -72,6 +68,11 @@ BOOL CALLBACK EnumModulesCB(PSTR ModuleName, DWORD64 BaseOfDll, PVOID UserContex
     }
   }
   return TRUE;
+}
+
+// we don't use the ModuleName anyways so we can easily "convert" this
+inline BOOL CALLBACK EnumModulesCB(PSTR ModuleName, DWORD64 BaseOfDll, PVOID UserContext) {
+  return EnumModulesCB(PCTSTR(0), BaseOfDll, UserContext);
 }
 
 #ifdef _M_IX86
