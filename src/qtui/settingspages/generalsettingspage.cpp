@@ -116,9 +116,9 @@ void GeneralSettingsPage::load() {
   SettingsPage::load(ui.userNoticesInStatusBuffer, bufferSettings.value("UserNoticesInStatusBuffer", QVariant(false)).toBool());
   SettingsPage::load(ui.userNoticesInCurrentBuffer, bufferSettings.value("UserNoticesInCurrentBuffer", QVariant(false)).toBool());
 
-  SettingsPage::load(ui.serverNoticesInDefaultBuffer, bufferSettings.value("serverNoticesInDefaultBuffer", QVariant(false)).toBool());
-  SettingsPage::load(ui.serverNoticesInStatusBuffer, bufferSettings.value("serverNoticesInStatusBuffer", QVariant(true)).toBool());
-  SettingsPage::load(ui.serverNoticesInCurrentBuffer, bufferSettings.value("serverNoticesInCurrentBuffer", QVariant(false)).toBool());
+  SettingsPage::load(ui.serverNoticesInDefaultBuffer, bufferSettings.value("ServerNoticesInDefaultBuffer", QVariant(false)).toBool());
+  SettingsPage::load(ui.serverNoticesInStatusBuffer, bufferSettings.value("ServerNoticesInStatusBuffer", QVariant(true)).toBool());
+  SettingsPage::load(ui.serverNoticesInCurrentBuffer, bufferSettings.value("ServerNoticesInCurrentBuffer", QVariant(false)).toBool());
 
   SettingsPage::load(ui.errorMsgsInDefaultBuffer, bufferSettings.value("ErrorMsgsInDefaultBuffer", QVariant(true)).toBool());
   SettingsPage::load(ui.errorMsgsInStatusBuffer, bufferSettings.value("ErrorMsgsInStatusBuffer", QVariant(false)).toBool());

@@ -55,6 +55,7 @@ public:
     Self = 0x01,
     Highlight = 0x02,
     Redirected = 0x04,
+    ServerMsg = 0x08,
     Backlog = 0x80
   };
   Q_DECLARE_FLAGS(Flags, Flag)

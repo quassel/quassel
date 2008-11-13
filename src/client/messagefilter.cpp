@@ -22,6 +22,7 @@
 
 #include "buffersettings.h"
 #include "client.h"
+#include "buffermodel.h"
 #include "messagemodel.h"
 #include "networkmodel.h"
 
@@ -46,6 +47,18 @@ void MessageFilter::init() {
   BufferSettings defaultSettings;
   _messageTypeFilter = defaultSettings.messageFilter();
   defaultSettings.notify("MessageTypeFilter", this, SLOT(messageTypeFilterChanged()));
+  defaultSettings.notify("UserNoticesInDefaultBuffer", this, SLOT(messageRedirectionChanged()));
+  defaultSettings.notify("UserNoticesInStatusBuffer", this, SLOT(messageRedirectionChanged()));
+  defaultSettings.notify("UserNoticesInCurrentBuffer", this, SLOT(messageRedirectionChanged()));
+
+  defaultSettings.notify("serverNoticesInDefaultBuffer", this, SLOT(messageRedirectionChanged()));
+  defaultSettings.notify("serverNoticesInStatusBuffer", this, SLOT(messageRedirectionChanged()));
+  defaultSettings.notify("serverNoticesInCurrentBuffer", this, SLOT(messageRedirectionChanged()));
+
+  defaultSettings.notify("ErrorMsgsInDefaultBuffer", this, SLOT(messageRedirectionChanged()));
+  defaultSettings.notify("ErrorMsgsInStatusBuffer", this, SLOT(messageRedirectionChanged()));
+  defaultSettings.notify("ErrorMsgsInCurrentBuffer", this, SLOT(messageRedirectionChanged()));
+  messageRedirectionChanged();
 
   BufferSettings mySettings(idString());
   if(mySettings.hasFilter())
@@ -69,13 +82,30 @@ void MessageFilter::messageTypeFilterChanged() {
   }
 }
 
+void MessageFilter::messageRedirectionChanged() {
+  BufferSettings bufferSettings;
+  _userNoticesInDefaultBuffer = bufferSettings.value("UserNoticesInDefaultBuffer", QVariant(true)).toBool();
+  _userNoticesInStatusBuffer = bufferSettings.value("UserNoticesInStatusBuffer", QVariant(false)).toBool();
+  _userNoticesInCurrentBuffer = bufferSettings.value("UserNoticesInCurrentBuffer", QVariant(false)).toBool();
+
+  _serverNoticesInDefaultBuffer = bufferSettings.value("ServerNoticesInDefaultBuffer", QVariant(false)).toBool();
+  _serverNoticesInStatusBuffer = bufferSettings.value("ServerNoticesInStatusBuffer", QVariant(true)).toBool();
+  _serverNoticesInCurrentBuffer = bufferSettings.value("ServerNoticesInCurrentBuffer", QVariant(false)).toBool();
+
+  _errorMsgsInDefaultBuffer = bufferSettings.value("ErrorMsgsInDefaultBuffer", QVariant(true)).toBool();
+  _errorMsgsInStatusBuffer = bufferSettings.value("ErrorMsgsInStatusBuffer", QVariant(false)).toBool();
+  _errorMsgsInCurrentBuffer = bufferSettings.value("ErrorMsgsInCurrentBuffer", QVariant(false)).toBool();
+
+  invalidateFilter();
+}
+
 QString MessageFilter::idString() const {
   if(_validBuffers.isEmpty())
     return "*";
 
   QList<BufferId> bufferIds = _validBuffers.toList();;
   qSort(bufferIds);
-  
+
   QStringList bufferIdStrings;
   foreach(BufferId id, bufferIds)
     bufferIdStrings << QString::number(id.toInt());
@@ -95,12 +125,80 @@ bool MessageFilter::filterAcceptsRow(int sourceRow, const QModelIndex &sourcePar
   if(_validBuffers.isEmpty())
     return true;
 
-  BufferId id = sourceModel()->data(sourceIdx, MessageModel::BufferIdRole).value<BufferId>();
-  if(!id.isValid()) {
+  BufferId bufferId = sourceModel()->data(sourceIdx, MessageModel::BufferIdRole).value<BufferId>();
+  if(!bufferId.isValid()) {
     return true;
   }
 
-  if(_validBuffers.contains(id)) {
+  MsgId msgId = sourceModel()->data(sourceIdx, MessageModel::MsgIdRole).value<MsgId>();
+  Message::Flags flags = (Message::Flags)sourceModel()->data(sourceIdx, MessageModel::FlagsRole).toInt();
+
+  NetworkId myNetworkId = networkId();
+  NetworkId msgNetworkId = Client::networkModel()->networkId(bufferId);
+  if(myNetworkId != msgNetworkId)
+    return false;
+
+  bool redirect = false;
+  bool inDefaultBuffer;
+  bool inStatusBuffer;
+  bool inCurrentBuffer;
+
+  switch(messageType) {
+  case Message::Notice:
+    if(Client::networkModel()->bufferType(bufferId) != BufferInfo::ChannelBuffer) {
+      redirect = true;
+      if(flags & Message::ServerMsg) {
+	// server notice
+	inDefaultBuffer = _serverNoticesInDefaultBuffer;
+	inStatusBuffer = _serverNoticesInStatusBuffer;
+	inCurrentBuffer = _serverNoticesInCurrentBuffer;
+      } else {
+	inDefaultBuffer = _userNoticesInDefaultBuffer;
+	inStatusBuffer = _userNoticesInStatusBuffer;
+	inCurrentBuffer = _userNoticesInCurrentBuffer;
+      }
+    }
+    break;
+  case Message::Error:
+    redirect = true;
+    inDefaultBuffer = _errorMsgsInDefaultBuffer;
+    inStatusBuffer = _errorMsgsInStatusBuffer;
+    inCurrentBuffer = _errorMsgsInCurrentBuffer;
+    break;
+  default:
+    break;
+  }
+
+  if(redirect) {
+    if(_redirectedMsgs.contains(msgId))
+      return true;
+
+    if(inDefaultBuffer && _validBuffers.contains(bufferId))
+      return true;
+
+    if(inCurrentBuffer && !(flags & Message::Backlog) && _validBuffers.contains(Client::bufferModel()->currentIndex().data(NetworkModel::BufferIdRole).value<BufferId>())) {
+      BufferId redirectedTo = sourceModel()->data(sourceIdx, MessageModel::RedirectedToRole).value<BufferId>();
+      if(!redirectedTo.isValid()) {
+	sourceModel()->setData(sourceIdx, QVariant::fromValue<BufferId>(singleBufferId()), MessageModel::RedirectedToRole);
+	_redirectedMsgs << msgId;
+	return true;
+      } else if(_validBuffers.contains(redirectedTo)) {
+	return true;
+      }
+    }
+
+    QSet<BufferId>::const_iterator idIter = _validBuffers.constBegin();
+    while(idIter != _validBuffers.constEnd()) {
+      if(inStatusBuffer && Client::networkModel()->bufferType(*idIter) == BufferInfo::StatusBuffer)
+	return true;
+      idIter++;
+    }
+
+    return false;
+  }
+
+
+  if(_validBuffers.contains(bufferId)) {
     return true;
   } else {
     // show Quit messages in Query buffers:
@@ -108,7 +206,8 @@ bool MessageFilter::filterAcceptsRow(int sourceRow, const QModelIndex &sourcePar
       return false;
     if(!(messageType & Message::Quit))
       return false;
-    if(networkId() != Client::networkModel()->networkId(id))
+
+    if(myNetworkId != msgNetworkId)
       return false;
 
     uint messageTimestamp = sourceModel()->data(sourceIdx, MessageModel::TimestampRole).value<QDateTime>().toTime_t();

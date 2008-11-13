@@ -395,6 +395,8 @@ MessageModelItem::MessageModelItem(const Message &msg) :
   _type(msg.type()),
   _flags(msg.flags())
 {
+  if(!msg.sender().contains('!'))
+    _flags |= Message::ServerMsg;
 }
 
 QVariant MessageModelItem::data(int column, int role) const {
@@ -407,7 +409,20 @@ QVariant MessageModelItem::data(int column, int role) const {
   case MessageModel::TypeRole: return _type;
   case MessageModel::FlagsRole: return (int)_flags;
   case MessageModel::TimestampRole: return _timestamp;
+  case MessageModel::RedirectedToRole: return qVariantFromValue<BufferId>(_redirectedTo);
   default: return QVariant();
+  }
+}
+
+bool MessageModelItem::setData(int column, const QVariant &value, int role) {
+  Q_UNUSED(column);
+
+  switch(role) {
+  case MessageModel::RedirectedToRole:
+    _redirectedTo = value.value<BufferId>();
+    return true;
+  default:
+    return false;
   }
 }
 

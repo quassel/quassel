@@ -46,6 +46,7 @@ public:
 
 public slots:
   void messageTypeFilterChanged();
+  void messageRedirectionChanged();
   void requestBacklog();
 
 protected:
@@ -57,8 +58,21 @@ private:
   void init();
 
   QSet<BufferId> _validBuffers;
+  mutable QSet<MsgId> _redirectedMsgs;
   QMultiHash<QString, uint> _filteredQuitMsgs;
   int _messageTypeFilter;
+
+  bool _userNoticesInDefaultBuffer;
+  bool _userNoticesInStatusBuffer;
+  bool _userNoticesInCurrentBuffer;
+
+  bool _serverNoticesInDefaultBuffer;
+  bool _serverNoticesInStatusBuffer;
+  bool _serverNoticesInCurrentBuffer;
+
+  bool _errorMsgsInDefaultBuffer;
+  bool _errorMsgsInStatusBuffer;
+  bool _errorMsgsInCurrentBuffer;
 };
 
 #endif

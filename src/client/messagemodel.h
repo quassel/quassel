@@ -44,6 +44,7 @@ public:
     TimestampRole,
     FormatRole,
     ColumnTypeRole,
+    RedirectedToRole,
     UserRole
   };
 
@@ -105,7 +106,7 @@ public:
   inline virtual ~MessageModelItem() {}
 
   virtual QVariant data(int column, int role) const;
-  virtual bool setData(int column, const QVariant &value, int role) = 0;
+  virtual bool setData(int column, const QVariant &value, int role);
 
   inline const QDateTime &timeStamp() const { return _timestamp; }
   inline MsgId msgId() const { return _msgId; }
@@ -123,6 +124,7 @@ private:
   QDateTime _timestamp;
   MsgId _msgId;
   BufferId _bufferId;
+  BufferId _redirectedTo;
   Message::Type _type;
   Message::Flags _flags;
 };
