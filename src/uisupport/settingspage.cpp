@@ -20,6 +20,9 @@
 
 #include "settingspage.h"
 
+#include <QCheckBox>
+#include <QVariant>
+
 SettingsPage::SettingsPage(const QString &category, const QString &title, QWidget *parent)
   : QWidget(parent),
     _category(category),
@@ -35,3 +38,11 @@ void SettingsPage::setChangedState(bool hasChanged) {
   }
 }
 
+void SettingsPage::load(QCheckBox *box, bool checked) {
+  box->setProperty("StoredValue", checked);
+  box->setChecked(checked);
+}
+
+bool SettingsPage::hasChanged(QCheckBox *box) {
+  return box->property("StoredValue").toBool() == box->isChecked();
+}

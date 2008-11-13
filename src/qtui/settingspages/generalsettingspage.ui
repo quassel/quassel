@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>542</width>
-    <height>599</height>
+    <width>549</width>
+    <height>621</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -61,39 +61,132 @@
    <item>
     <widget class="QGroupBox" name="groupBox" >
      <property name="title" >
-      <string>Display User-Related Messages And Private Notices:</string>
+      <string>Message Redirection</string>
      </property>
-     <layout class="QVBoxLayout" >
-      <item>
-       <widget class="QCheckBox" name="userMessagesInStatusBuffer" >
+     <layout class="QGridLayout" name="gridLayout_2" >
+      <item row="1" column="0" >
+       <widget class="QLabel" name="label_3" >
+        <property name="text" >
+         <string>User Notices:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1" >
+       <widget class="QCheckBox" name="userNoticesInDefaultBuffer" >
         <property name="enabled" >
          <bool>true</bool>
         </property>
         <property name="text" >
-         <string>in status buffer</string>
+         <string/>
         </property>
         <property name="checked" >
          <bool>true</bool>
         </property>
        </widget>
       </item>
-      <item>
-       <widget class="QCheckBox" name="userMessagesInQueryBuffer" >
+      <item row="1" column="2" >
+       <widget class="QCheckBox" name="userNoticesInStatusBuffer" >
         <property name="enabled" >
          <bool>true</bool>
         </property>
         <property name="text" >
-         <string>in query buffer (if exists)</string>
+         <string/>
+        </property>
+        <property name="checked" >
+         <bool>false</bool>
         </property>
        </widget>
       </item>
-      <item>
-       <widget class="QCheckBox" name="userMessagesInCurrentBuffer" >
+      <item row="1" column="3" >
+       <widget class="QCheckBox" name="userNoticesInCurrentBuffer" >
         <property name="enabled" >
          <bool>true</bool>
         </property>
         <property name="text" >
-         <string>in current buffer</string>
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0" >
+       <widget class="QLabel" name="label_4" >
+        <property name="text" >
+         <string>Server Notices:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1" >
+       <widget class="QCheckBox" name="serverNoticesInDefaultBuffer" >
+        <property name="text" >
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1" >
+       <widget class="QLabel" name="label_5" >
+        <property name="text" >
+         <string>Default Target</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2" >
+       <widget class="QLabel" name="label_6" >
+        <property name="text" >
+         <string>Status Buffer</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="3" >
+       <widget class="QLabel" name="label_7" >
+        <property name="text" >
+         <string>Current Buffer</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0" >
+       <widget class="QLabel" name="label_8" >
+        <property name="text" >
+         <string>Errors</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="2" >
+       <widget class="QCheckBox" name="serverNoticesInStatusBuffer" >
+        <property name="text" >
+         <string/>
+        </property>
+        <property name="checked" >
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="3" >
+       <widget class="QCheckBox" name="serverNoticesInCurrentBuffer" >
+        <property name="text" >
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1" >
+       <widget class="QCheckBox" name="errorMsgsInDefaultBuffer" >
+        <property name="text" >
+         <string/>
+        </property>
+        <property name="checked" >
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="2" >
+       <widget class="QCheckBox" name="errorMsgsInStatusBuffer" >
+        <property name="text" >
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="3" >
+       <widget class="QCheckBox" name="errorMsgsInCurrentBuffer" >
+        <property name="text" >
+         <string/>
         </property>
        </widget>
       </item>

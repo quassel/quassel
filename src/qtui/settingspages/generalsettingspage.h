@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _GENERALSETTINGSPAGE_H_
-#define _GENERALSETTINGSPAGE_H_
+#ifndef GENERALSETTINGSPAGE_H
+#define GENERALSETTINGSPAGE_H
 
 #include <QHash>
 
@@ -29,24 +29,24 @@
 class GeneralSettingsPage : public SettingsPage {
   Q_OBJECT
 
-  public:
-    GeneralSettingsPage(QWidget *parent = 0);
+public:
+  GeneralSettingsPage(QWidget *parent = 0);
 
-    bool hasDefaults() const;
+  bool hasDefaults() const;
 
-  public slots:
-    void save();
-    void load();
-    void defaults();
+public slots:
+  void save();
+  void load();
+  void defaults();
 
-  private slots:
-    void widgetHasChanged();
+private slots:
+  void widgetHasChanged();
 
-  private:
-    Ui::GeneralSettingsPage ui;
-    QHash<QString, QVariant> settings;
+private:
+  Ui::GeneralSettingsPage ui;
+  QHash<QString, QVariant> settings;
 
-    bool testHasChanged();
+  bool testHasChanged();
 };
 
 #endif

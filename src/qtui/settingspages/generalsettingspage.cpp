@@ -44,10 +44,18 @@ GeneralSettingsPage::GeneralSettingsPage(QWidget *parent)
   connect(ui.minimizeOnMinimize, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
   connect(ui.minimizeOnClose, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
 
-  connect(ui.userMessagesInStatusBuffer, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
-  connect(ui.userMessagesInQueryBuffer, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
-  connect(ui.userMessagesInCurrentBuffer, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
+  connect(ui.userNoticesInDefaultBuffer, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
+  connect(ui.userNoticesInStatusBuffer, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
+  connect(ui.userNoticesInCurrentBuffer, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
 
+  connect(ui.serverNoticesInDefaultBuffer, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
+  connect(ui.serverNoticesInStatusBuffer, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
+  connect(ui.serverNoticesInCurrentBuffer, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
+
+  connect(ui.errorMsgsInDefaultBuffer, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
+  connect(ui.errorMsgsInStatusBuffer, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
+  connect(ui.errorMsgsInCurrentBuffer, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
+  
   connect(ui.displayTopicInTooltip, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
   connect(ui.mouseWheelChangesBuffers, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
   connect(ui.completionSuffix, SIGNAL(textEdited(const QString&)), this, SLOT(widgetHasChanged()));
@@ -65,9 +73,17 @@ void GeneralSettingsPage::defaults() {
   ui.minimizeOnMinimize->setChecked(false);
   ui.minimizeOnClose->setChecked(false);
 
-  ui.userMessagesInStatusBuffer->setChecked(true);
-  ui.userMessagesInQueryBuffer->setChecked(false);
-  ui.userMessagesInCurrentBuffer->setChecked(false);
+  ui.userNoticesInDefaultBuffer->setChecked(true);
+  ui.userNoticesInStatusBuffer->setChecked(false);
+  ui.userNoticesInCurrentBuffer->setChecked(false);
+
+  ui.serverNoticesInDefaultBuffer->setChecked(false);
+  ui.serverNoticesInStatusBuffer->setChecked(true);
+  ui.serverNoticesInCurrentBuffer->setChecked(false);
+
+  ui.errorMsgsInDefaultBuffer->setChecked(true);
+  ui.errorMsgsInStatusBuffer->setChecked(false);
+  ui.errorMsgsInCurrentBuffer->setChecked(false);
 
   ui.displayTopicInTooltip->setChecked(false);
   ui.mouseWheelChangesBuffers->setChecked(true);
@@ -96,15 +112,19 @@ void GeneralSettingsPage::load() {
 
   // bufferSettings:
   BufferSettings bufferSettings;
-  settings["UserMessagesInStatusBuffer"] = bufferSettings.value("UserMessagesInStatusBuffer", QVariant(true));
-  ui.userMessagesInStatusBuffer->setChecked(settings["UserMessagesInStatusBuffer"].toBool());
+  SettingsPage::load(ui.userNoticesInDefaultBuffer, bufferSettings.value("UserNoticesInDefaultBuffer", QVariant(true)).toBool());
+  SettingsPage::load(ui.userNoticesInStatusBuffer, bufferSettings.value("UserNoticesInStatusBuffer", QVariant(false)).toBool());
+  SettingsPage::load(ui.userNoticesInCurrentBuffer, bufferSettings.value("UserNoticesInCurrentBuffer", QVariant(false)).toBool());
 
-  settings["UserMessagesInQueryBuffer"] = bufferSettings.value("UserMessagesInQueryBuffer", QVariant(false));
-  ui.userMessagesInQueryBuffer->setChecked(settings["UserMessagesInQueryBuffer"].toBool());
+  SettingsPage::load(ui.serverNoticesInDefaultBuffer, bufferSettings.value("serverNoticesInDefaultBuffer", QVariant(false)).toBool());
+  SettingsPage::load(ui.serverNoticesInStatusBuffer, bufferSettings.value("serverNoticesInStatusBuffer", QVariant(true)).toBool());
+  SettingsPage::load(ui.serverNoticesInCurrentBuffer, bufferSettings.value("serverNoticesInCurrentBuffer", QVariant(false)).toBool());
 
-  settings["UserMessagesInCurrentBuffer"] = bufferSettings.value("UserMessagesInCurrentBuffer", QVariant(false));
-  ui.userMessagesInCurrentBuffer->setChecked(settings["UserMessagesInCurrentBuffer"].toBool());
+  SettingsPage::load(ui.errorMsgsInDefaultBuffer, bufferSettings.value("ErrorMsgsInDefaultBuffer", QVariant(true)).toBool());
+  SettingsPage::load(ui.errorMsgsInStatusBuffer, bufferSettings.value("ErrorMsgsInStatusBuffer", QVariant(false)).toBool());
+  SettingsPage::load(ui.errorMsgsInCurrentBuffer, bufferSettings.value("ErrorMsgsInCurrentBuffer", QVariant(false)).toBool());
 
+  
   settings["DisplayTopicInTooltip"] = bufferSettings.value("DisplayTopicInTooltip", QVariant(false));
   ui.displayTopicInTooltip->setChecked(settings["DisplayTopicInTooltip"].toBool());
 
@@ -133,9 +153,17 @@ void GeneralSettingsPage::save() {
   uiSettings.setValue("MouseWheelChangesBuffers", ui.mouseWheelChangesBuffers->isChecked());
 
   BufferSettings bufferSettings;
-  bufferSettings.setValue("UserMessagesInStatusBuffer", ui.userMessagesInStatusBuffer->isChecked());
-  bufferSettings.setValue("UserMessagesInQueryBuffer", ui.userMessagesInQueryBuffer->isChecked());
-  bufferSettings.setValue("UserMessagesInCurrentBuffer", ui.userMessagesInCurrentBuffer->isChecked());
+  bufferSettings.setValue("UserNoticesInDefaultBuffer", ui.userNoticesInDefaultBuffer->isChecked());
+  bufferSettings.setValue("UserNoticesInStatusBuffer", ui.userNoticesInStatusBuffer->isChecked());
+  bufferSettings.setValue("UserNoticesInCurrentBuffer", ui.userNoticesInCurrentBuffer->isChecked());
+
+  bufferSettings.setValue("ServerNoticesInDefaultBuffer", ui.serverNoticesInDefaultBuffer->isChecked());
+  bufferSettings.setValue("ServerNoticesInStatusBuffer", ui.serverNoticesInStatusBuffer->isChecked());
+  bufferSettings.setValue("ServerNoticesInCurrentBuffer", ui.serverNoticesInCurrentBuffer->isChecked());
+
+  bufferSettings.setValue("ErrorMsgsInDefaultBuffer", ui.errorMsgsInDefaultBuffer->isChecked());
+  bufferSettings.setValue("ErrorMsgsInStatusBuffer", ui.errorMsgsInStatusBuffer->isChecked());
+  bufferSettings.setValue("ErrorMsgsInCurrentBuffer", ui.errorMsgsInCurrentBuffer->isChecked());
 
   bufferSettings.setValue("DisplayTopicInTooltip", ui.displayTopicInTooltip->isChecked());
 
@@ -160,9 +188,17 @@ bool GeneralSettingsPage::testHasChanged() {
   if(settings["MinimizeOnMinimize"].toBool() != ui.minimizeOnMinimize->isChecked()) return true;
   if(settings["MinimizeOnClose"].toBool() != ui.minimizeOnClose->isChecked()) return true;
 
-  if(settings["UserMessagesInStatusBuffer"].toBool() != ui.userMessagesInStatusBuffer->isChecked()) return true;
-  if(settings["UserMessagesInQueryBuffer"].toBool() != ui.userMessagesInQueryBuffer->isChecked()) return true;
-  if(settings["UserMessagesInCurrentBuffer"].toBool() != ui.userMessagesInCurrentBuffer->isChecked()) return true;
+  if(SettingsPage::hasChanged(ui.userNoticesInStatusBuffer)) return true;
+  if(SettingsPage::hasChanged(ui.userNoticesInDefaultBuffer)) return true;
+  if(SettingsPage::hasChanged(ui.userNoticesInCurrentBuffer)) return true;
+
+  if(SettingsPage::hasChanged(ui.serverNoticesInStatusBuffer)) return true;
+  if(SettingsPage::hasChanged(ui.serverNoticesInDefaultBuffer)) return true;
+  if(SettingsPage::hasChanged(ui.serverNoticesInCurrentBuffer)) return true;
+
+  if(SettingsPage::hasChanged(ui.errorMsgsInStatusBuffer)) return true;
+  if(SettingsPage::hasChanged(ui.errorMsgsInDefaultBuffer)) return true;
+  if(SettingsPage::hasChanged(ui.errorMsgsInCurrentBuffer)) return true;
 
   if(settings["DisplayTopicInTooltip"].toBool() != ui.displayTopicInTooltip->isChecked()) return true;
   if(settings["MouseWheelChangesBuffers"].toBool() != ui.mouseWheelChangesBuffers->isChecked()) return true;

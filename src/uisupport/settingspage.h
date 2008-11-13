@@ -23,6 +23,8 @@
 
 #include <QWidget>
 
+class QCheckBox;
+
 //! A SettingsPage is a page in the settings dialog.
 /** The SettingsDlg provides suitable standard buttons, such as Ok, Apply, Cancel, Restore Defaults and Reset.
  *  Some pages might also be used in standalone dialogs or other containers. A SettingsPage provides suitable
@@ -57,7 +59,11 @@ public:
    *  \return false, if the SettingsPage cannot be saved in its current state.
    */
   inline virtual bool aboutToSave() { return true; }
-			    
+
+  //! sets checked state depending on \checked and stores the value for later comparision
+  static void load(QCheckBox *box, bool checked);
+  static bool hasChanged(QCheckBox *box);
+
 public slots:
   //! Save settings to permanent storage.
   virtual void save() = 0;
@@ -85,5 +91,7 @@ private:
   QString _category, _title;
   bool _changed;
 };
+
+
 
 #endif
