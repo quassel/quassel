@@ -191,8 +191,9 @@ void BufferItem::setActivityLevel(BufferInfo::ActivityLevel level) {
 }
 
 void BufferItem::updateActivityLevel(const Message &msg) {
-  if(isCurrentBuffer())
+  if(isCurrentBuffer()) {
     return;
+  }
 
   if(msg.flags() & Message::Self)	// don't update activity for our own messages
     return;
@@ -253,6 +254,9 @@ void BufferItem::setBufferName(const QString &name) {
 
 void BufferItem::setLastSeenMsgId(const MsgId &msgId) {
   _lastSeenMsgId = msgId;
+  if(!isCurrentBuffer()) {
+    _lastSeenMarkerMsgId = msgId;
+  }
   setActivityLevel(BufferInfo::NoActivity); 
 }
 
@@ -916,6 +920,13 @@ MsgId NetworkModel::lastSeenMsgId(BufferId bufferId) {
   return _bufferItemCache[bufferId]->lastSeenMsgId();
 }
 
+MsgId NetworkModel::lastSeenMarkerMsgId(BufferId bufferId) {
+  if(!_bufferItemCache.contains(bufferId))
+    return MsgId();
+
+  return _bufferItemCache[bufferId]->lastSeenMarkerMsgId();
+}
+
 void NetworkModel::setLastSeenMsgId(const BufferId &bufferId, const MsgId &msgId) {
   BufferItem *bufferItem = findBufferItem(bufferId);
   if(!bufferItem) {
@@ -926,7 +937,10 @@ void NetworkModel::setLastSeenMsgId(const BufferId &bufferId, const MsgId &msgId
 }
 
 void NetworkModel::updateBufferActivity(const Message &msg) {
-  bufferItem(msg.bufferInfo())->updateActivityLevel(msg);
+  BufferItem *item = bufferItem(msg.bufferInfo());
+  item->updateActivityLevel(msg);
+  if(item->isCurrentBuffer())
+    emit setLastSeenMsg(item->bufferId(), msg.msgId());
 }
 
 void NetworkModel::setBufferActivity(const BufferId &bufferId, BufferInfo::ActivityLevel level) {

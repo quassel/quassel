@@ -280,6 +280,7 @@ void Client::setSyncedToCore() {
   connect(bufferSyncer(), SIGNAL(lastSeenMsgSet(BufferId, MsgId)), _networkModel, SLOT(setLastSeenMsgId(BufferId, MsgId)));
   connect(bufferSyncer(), SIGNAL(bufferRemoved(BufferId)), this, SLOT(bufferRemoved(BufferId)));
   connect(bufferSyncer(), SIGNAL(bufferRenamed(BufferId, QString)), this, SLOT(bufferRenamed(BufferId, QString)));
+  connect(networkModel(), SIGNAL(setLastSeenMsg(BufferId, MsgId)), bufferSyncer(), SLOT(requestSetLastSeenMsg(BufferId, const MsgId &)));
   signalProxy()->synchronize(bufferSyncer());
 
   // create a new BufferViewManager

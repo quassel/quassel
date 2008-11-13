@@ -110,11 +110,10 @@ public:
   virtual inline bool isActive() const { return qobject_cast<NetworkItem *>(parent())->isActive(); }
 
   inline const MsgId &lastSeenMsgId() const { return _lastSeenMsgId; }
-  //inline void setLastSeenMsgId(const MsgId &msgId) { _lastSeenMsgId = msgId; }
+  inline const MsgId &lastSeenMarkerMsgId() const { return _lastSeenMarkerMsgId; }
   void setLastSeenMsgId(const MsgId &msgId);
   inline BufferInfo::ActivityLevel activityLevel() const { return _activity; }
   void setActivityLevel(BufferInfo::ActivityLevel level);
-  //void updateActivityLevel(BufferInfo::ActivityLevel level);
   void updateActivityLevel(const Message &msg);
 
   bool isCurrentBuffer() const;
@@ -127,6 +126,7 @@ private:
   BufferInfo _bufferInfo;
   BufferInfo::ActivityLevel _activity;
   MsgId _lastSeenMsgId;
+  MsgId _lastSeenMarkerMsgId;
 };
 
 /*****************************************
@@ -302,6 +302,7 @@ public:
   BufferInfo::Type bufferType(BufferId bufferId);
   BufferInfo bufferInfo(BufferId bufferId);
   MsgId lastSeenMsgId(BufferId bufferId);
+  MsgId lastSeenMarkerMsgId(BufferId bufferId);
   NetworkId networkId(BufferId bufferId);
   QString networkName(BufferId bufferId);
 
@@ -314,6 +315,9 @@ public slots:
   void setBufferActivity(const BufferId &bufferId, BufferInfo::ActivityLevel activity);
   void updateBufferActivity(const Message &msg);
   void networkRemoved(const NetworkId &networkId);
+
+signals:
+  void setLastSeenMsg(BufferId bufferId, MsgId msgId);
 
 private slots:
   void checkForRemovedBuffers(const QModelIndex &parent, int start, int end);
