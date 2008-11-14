@@ -187,7 +187,7 @@ bool ChatItem::isPosOverSelection(const QPointF &pos) const {
   if(_selectionMode == FullSelection)
     return true;
   if(_selectionMode == PartialSelection) {
-    int cursor = posToCursor(pos); qDebug() << cursor << _selectionStart << _selectionEnd;
+    int cursor = posToCursor(pos);
     return cursor >= qMin(_selectionStart, _selectionEnd) && cursor <= qMax(_selectionStart, _selectionEnd);
   }
   return false;
@@ -243,11 +243,17 @@ QList<QRectF> ChatItem::findWords(const QString &searchWord, Qt::CaseSensitivity
 }
 
 void ChatItem::handleClick(const QPointF &pos, ChatScene::ClickMode clickMode) {
-  if(clickMode == ChatScene::SingleClick) {
+  // single clicks are already handled by the scene (for clearing the selection)
+  if(clickMode == ChatScene::DragStartClick) {
     chatScene()->setSelectingItem(this);
     _selectionStart = _selectionEnd = posToCursor(pos);
     _selectionMode = NoSelection; // will be set to PartialSelection by mouseMoveEvent
     update();
+  } else if(clickMode == ChatScene::DoubleClick) {
+    //_selectionMode = PartialSelection;
+
+  } else if(clickMode == ChatScene::TripleClick) {
+
   }
 }
 
@@ -474,21 +480,15 @@ void ContentsChatItem::endHoverMode() {
   }
 }
 
-void ContentsChatItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
-  privateData()->hasDragged = false;
-  ChatItem::mousePressEvent(event);
-}
-
-void ContentsChatItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
-  if(!event->buttons() && !privateData()->hasDragged) {
-    // got a click
+void ContentsChatItem::handleClick(const QPointF &pos, ChatScene::ClickMode clickMode) {
+  if(clickMode == ChatScene::SingleClick) {
     Clickable click = privateData()->currentClickable;
     if(click.isValid()) {
       QString str = data(ChatLineModel::DisplayRole).toString().mid(click.start, click.length);
       switch(click.type) {
         case Clickable::Url:
-	  if(!str.contains("://"))
-	    str = "http://" + str;
+          if(!str.contains("://"))
+            str = "http://" + str;
           QDesktopServices::openUrl(QUrl::fromEncoded(str.toAscii()));
           break;
         case Clickable::Channel:
@@ -499,16 +499,12 @@ void ContentsChatItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
       }
     }
   }
-  ChatItem::mouseReleaseEvent(event);
+  ChatItem::handleClick(pos, clickMode);
 }
 
 void ContentsChatItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
   // mouse move events always mean we're not hovering anymore...
   endHoverMode();
-  // also, check if we have dragged the mouse
-  if(hasPrivateData() && !privateData()->hasDragged && event->buttons() & Qt::LeftButton
-    && (event->buttonDownScreenPos(Qt::LeftButton) - event->screenPos()).manhattanLength() >= QApplication::startDragDistance())
-    privateData()->hasDragged = true;
   ChatItem::mouseMoveEvent(event);
 }
 
@@ -525,7 +521,7 @@ void ContentsChatItem::hoverMoveEvent(QGraphicsSceneHoverEvent *event) {
     if(idx >= click.start && idx < click.start + click.length) {
       if(click.type == Clickable::Url) {
         onClickable = true;
-	showWebPreview(click);
+        showWebPreview(click);
       } else if(click.type == Clickable::Channel) {
         // TODO: don't make clickable if it's our own name
         //onClickable = true; //FIXME disabled for now

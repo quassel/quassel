@@ -172,13 +172,11 @@ public:
 
 protected:
   virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
-  virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
-  virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
   virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
   virtual void hoverMoveEvent(QGraphicsSceneHoverEvent *event);
   virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
 
-
+  virtual void handleClick(const QPointF &pos, ChatScene::ClickMode clickMode);
 
   virtual QVector<QTextLayout::FormatRange> additionalFormats() const;
 
@@ -225,10 +223,9 @@ struct ContentsChatItemPrivate : ChatItemPrivate {
   ContentsChatItem *contentsItem;
   QList<ContentsChatItem::Clickable> clickables;
   ContentsChatItem::Clickable currentClickable;
-  bool hasDragged;
 
   ContentsChatItemPrivate(QTextLayout *l, const QList<ContentsChatItem::Clickable> &c, ContentsChatItem *parent)
-  : ChatItemPrivate(l), contentsItem(parent), clickables(c), hasDragged(false) {}
+  : ChatItemPrivate(l), contentsItem(parent), clickables(c) {}
 };
 
 //inlines regarding ContentsChatItemPrivate

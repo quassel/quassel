@@ -573,8 +573,10 @@ void ChatScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
       if(_clickTimer.isActive()) _clickTimer.stop();
       if(_clickMode == SingleClick && isPosOverSelection(_clickPos))
         initiateDrag(event->widget());
-      else
+      else {
+        _clickMode = DragStartClick;
         handleClick(Qt::LeftButton, _clickPos);
+      }
       _clickMode = NoClick;
     }
     if(_isSelecting) {

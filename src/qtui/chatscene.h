@@ -63,7 +63,8 @@ public:
     NoClick,
     SingleClick,
     DoubleClick,
-    TripleClick
+    TripleClick,
+    DragStartClick
   };
 
   ChatScene(QAbstractItemModel *model, const QString &idString, qreal width, ChatView *parent);
