@@ -186,7 +186,7 @@ IrcUser *Network::newIrcUser(const QString &hostmask, const QVariantMap &initDat
   QString nick(nickFromMask(hostmask).toLower());
   if(!_ircUsers.contains(nick)) {
     IrcUser *ircuser = new IrcUser(hostmask, this);
-    if(initData.isEmpty()) {
+    if(!initData.isEmpty()) {
       ircuser->fromVariantMap(initData);
       ircuser->setInitialized();
     }
@@ -267,7 +267,7 @@ IrcUser *Network::ircUser(QString nickname) const {
 IrcChannel *Network::newIrcChannel(const QString &channelname, const QVariantMap &initData) {
   if(!_ircChannels.contains(channelname.toLower())) {
     IrcChannel *channel = ircChannelFactory(channelname);
-    if(initData.isEmpty()) {
+    if(!initData.isEmpty()) {
       channel->fromVariantMap(initData);
       channel->setInitialized();
     }
