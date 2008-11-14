@@ -26,11 +26,14 @@
 #include <QGraphicsScene>
 #include <QTimeLine>
 
+#include "chatscene.h"
+
 class ColumnHandleItem : public QObject, public QGraphicsItem {
   Q_OBJECT
 
 public:
   ColumnHandleItem(qreal width, QGraphicsItem *parent = 0);
+  virtual inline int type() const { return ChatScene::ColumnHandleType; }
 
   inline qreal width() const { return _width; }
   inline QRectF boundingRect() const { return _boundingRect; }
@@ -38,10 +41,9 @@ public:
   inline qreal sceneRight() const { return _sceneRight; }
 
   void setXPos(qreal xpos);
+  void setXLimits(qreal min, qreal max);
 
   void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
-
-  void setXLimits(qreal min, qreal max);
 
 public slots:
   void sceneRectChanged(const QRectF &);

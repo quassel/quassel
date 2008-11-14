@@ -136,7 +136,7 @@ void ChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 //   painter->drawRect(_boundingRect.adjusted(0, 0, -1, -1));
 }
 
-qint16 ChatItem::posToCursor(const QPointF &pos) {
+qint16 ChatItem::posToCursor(const QPointF &pos) const {
   if(pos.y() > height()) return data(MessageModel::DisplayRole).toString().length();
   if(pos.y() < 0) return 0;
   for(int l = layout()->lineCount() - 1; l >= 0; l--) {
@@ -146,6 +146,23 @@ qint16 ChatItem::posToCursor(const QPointF &pos) {
     }
   }
   return 0;
+}
+
+bool ChatItem::hasSelection() const {
+  if(_selectionMode == NoSelection)
+    return false;
+  if(_selectionMode == FullSelection)
+    return true;
+  // partial
+  return _selectionStart != _selectionEnd;
+}
+
+QString ChatItem::selection() const {
+  if(_selectionMode == FullSelection)
+    return data(MessageModel::DisplayRole).toString();
+  if(_selectionMode == PartialSelection)
+    return data(MessageModel::DisplayRole).toString().mid(qMin(_selectionStart, _selectionEnd), qAbs(_selectionStart - _selectionEnd));
+  return QString();
 }
 
 void ChatItem::setFullSelection() {
@@ -164,6 +181,16 @@ void ChatItem::continueSelecting(const QPointF &pos) {
   _selectionMode = PartialSelection;
   _selectionEnd = posToCursor(pos);
   update();
+}
+
+bool ChatItem::isPosOverSelection(const QPointF &pos) const {
+  if(_selectionMode == FullSelection)
+    return true;
+  if(_selectionMode == PartialSelection) {
+    int cursor = posToCursor(pos); qDebug() << cursor << _selectionStart << _selectionEnd;
+    return cursor >= qMin(_selectionStart, _selectionEnd) && cursor <= qMax(_selectionStart, _selectionEnd);
+  }
+  return false;
 }
 
 QTextLayout::FormatRange ChatItem::selectionFormat() const {
@@ -215,15 +242,12 @@ QList<QRectF> ChatItem::findWords(const QString &searchWord, Qt::CaseSensitivity
   return resultList;
 }
 
-void ChatItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
-  if(event->buttons() == Qt::LeftButton) {
+void ChatItem::handleClick(const QPointF &pos, ChatScene::ClickMode clickMode) {
+  if(clickMode == ChatScene::SingleClick) {
     chatScene()->setSelectingItem(this);
-    _selectionStart = _selectionEnd = posToCursor(event->pos());
+    _selectionStart = _selectionEnd = posToCursor(pos);
     _selectionMode = NoSelection; // will be set to PartialSelection by mouseMoveEvent
     update();
-    event->accept();
-  } else {
-    event->ignore();
   }
 }
 
@@ -240,6 +264,14 @@ void ChatItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
       setFullSelection();
       chatScene()->startGlobalSelection(this, event->pos());
     }
+    event->accept();
+  } else {
+    event->ignore();
+  }
+}
+
+void ChatItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
+  if(event->buttons() == Qt::LeftButton) {
     event->accept();
   } else {
     event->ignore();

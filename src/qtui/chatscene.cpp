@@ -20,6 +20,7 @@
 
 #include <QApplication>
 #include <QClipboard>
+#include <QDrag>
 #include <QGraphicsSceneMouseEvent>
 #include <QPersistentModelIndex>
 #include <QWebView>
@@ -39,8 +40,9 @@
 
 const qreal minContentsWidth = 200;
 
-ChatScene::ChatScene(QAbstractItemModel *model, const QString &idString, qreal width, QObject *parent)
-  : QGraphicsScene(0, 0, width, 0, parent),
+ChatScene::ChatScene(QAbstractItemModel *model, const QString &idString, qreal width, ChatView *parent)
+  : QGraphicsScene(0, 0, width, 0, (QObject *)parent),
+    _chatView(parent),
     _idString(idString),
     _model(model),
     _singleBufferScene(false),
@@ -50,7 +52,10 @@ ChatScene::ChatScene(QAbstractItemModel *model, const QString &idString, qreal w
     _cutoffMode(CutoffRight),
     _selectingItem(0),
     _selectionStart(-1),
-    _isSelecting(false)
+    _isSelecting(false),
+    _clickMode(NoClick),
+    _clickHandled(true),
+    _leftButtonPressed(false)
 {
   MessageFilter *filter = qobject_cast<MessageFilter*>(model);
   if(filter) {
@@ -98,10 +103,31 @@ ChatScene::ChatScene(QAbstractItemModel *model, const QString &idString, qreal w
   _showWebPreview = defaultSettings.showWebPreview();
   defaultSettings.notify("ShowWebPreview", this, SLOT(showWebPreviewChanged()));
 
+  _clickTimer.setInterval(QApplication::doubleClickInterval());
+  _clickTimer.setSingleShot(true);
+  connect(&_clickTimer, SIGNAL(timeout()), SLOT(clickTimeout()));
+
   setItemIndexMethod(QGraphicsScene::NoIndex);
 }
 
 ChatScene::~ChatScene() {
+}
+
+ChatView *ChatScene::chatView() const {
+  return _chatView;
+}
+
+ColumnHandleItem *ChatScene::firstColumnHandle() const {
+  return _firstColHandle;
+}
+
+ColumnHandleItem *ChatScene::secondColumnHandle() const {
+  return _secondColHandle;
+}
+
+ChatItem *ChatScene::chatItemAt(const QPointF &scenePos) const {
+  QGraphicsItem *item = itemAt(scenePos);
+  return dynamic_cast<ChatItem *>(item);
 }
 
 bool ChatScene::containsBuffer(const BufferId &id) const {
@@ -511,8 +537,23 @@ void ChatScene::updateSelection(const QPointF &pos) {
     }
     _lines[curRow]->setSelected(false);
     _isSelecting = false;
+    _selectionStart = -1;
     _selectingItem->continueSelecting(_selectingItem->mapFromScene(pos));
   }
+}
+
+bool ChatScene::isPosOverSelection(const QPointF &pos) const {
+  ChatItem *chatItem = chatItemAt(pos);
+  if(!chatItem)
+    return false;
+  if(hasGlobalSelection()) {
+    int row = chatItem->row();
+    if(row >= qMin(_selectionStart, _selectionEnd) && row <= qMax(_selectionStart, _selectionEnd))
+      return true;
+  } else {
+    return chatItem->isPosOverSelection(chatItem->mapFromScene(pos));
+  }
+  return false;
 }
 
 bool ChatScene::isScrollingAllowed() const {
@@ -524,38 +565,110 @@ bool ChatScene::isScrollingAllowed() const {
   return true;
 }
 
+/******** MOUSE HANDLING **************************************************************************/
+
 void ChatScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
-  if(_isSelecting && event->buttons() == Qt::LeftButton) {
-    updateSelection(event->scenePos());
-    emit mouseMoveWhileSelecting(event->scenePos());
-    event->accept();
-  } else {
+  if(event->buttons() == Qt::LeftButton) {
+    if(!_clickHandled && (event->scenePos() - _clickPos).toPoint().manhattanLength() >= QApplication::startDragDistance()) {
+      if(_clickTimer.isActive()) _clickTimer.stop();
+      if(_clickMode == SingleClick && isPosOverSelection(_clickPos))
+        initiateDrag(event->widget());
+      else
+        handleClick(Qt::LeftButton, _clickPos);
+      _clickMode = NoClick;
+    }
+    if(_isSelecting) {
+      updateSelection(event->scenePos());
+      emit mouseMoveWhileSelecting(event->scenePos());
+      event->accept();
+    } else if(_clickHandled)
+      QGraphicsScene::mouseMoveEvent(event);
+  } else
     QGraphicsScene::mouseMoveEvent(event);
-  }
 }
 
 void ChatScene::mousePressEvent(QGraphicsSceneMouseEvent *event) {
-  if(_selectionStart >= 0 && event->buttons() == Qt::LeftButton) {
-    for(int l = qMin(_selectionStart, _selectionEnd); l <= qMax(_selectionStart, _selectionEnd); l++) {
-      _lines[l]->setSelected(false);
+  if(event->buttons() == Qt::LeftButton) {
+    _leftButtonPressed = true;
+    _clickHandled = false;
+    if(!isPosOverSelection(event->scenePos())) {
+      // immediately clear selection if clicked outside; otherwise, wait for potential drag
+      clearSelection();
     }
-    _isSelecting = false;
-    _selectionStart = -1;
-    QGraphicsScene::mousePressEvent(event);  // so we can start a new local selection
-  } else {
-    QGraphicsScene::mousePressEvent(event);
+    if(_clickMode != NoClick && _clickTimer.isActive()) {
+      _clickMode = (ClickMode)(_clickMode == TripleClick ? DoubleClick : _clickMode + 1);
+      handleClick(Qt::LeftButton, event->scenePos());
+    } else {
+      _clickMode = SingleClick;
+      _clickPos = event->scenePos();
+    }
+    _clickTimer.start();
+  } else if(event->buttons() == Qt::RightButton) {
+    handleClick(Qt::RightButton, event->scenePos());
   }
+  if(event->type() == QEvent::GraphicsSceneMouseDoubleClick)
+    QGraphicsScene::mouseDoubleClickEvent(event);
+  else
+    QGraphicsScene::mousePressEvent(event);
+}
+
+void ChatScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) {
+  // we check for doubleclick ourselves, so just call press handler
+  mousePressEvent(event);
 }
 
 void ChatScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
-  if(_isSelecting && !event->buttons() & Qt::LeftButton) {
-    putToClipboard(selectionToString());
-    _isSelecting = false;
-    event->accept();
-  } else {
-    QGraphicsScene::mouseReleaseEvent(event);
+  if(!event->buttons() & Qt::LeftButton) {
+    _leftButtonPressed = false;
+    if(_clickMode != NoClick) {
+      clearSelection();
+      event->accept();
+      if(!_clickTimer.isActive())
+        handleClick(Qt::LeftButton, _clickPos);
+    } else {
+      // no click -> drag or selection move
+      if(isGloballySelecting()) {
+        putToClipboard(selection());
+        _isSelecting = false;
+        event->accept();
+        return;
+      }
+    }
+  }
+  QGraphicsScene::mouseReleaseEvent(event);
+}
+
+void ChatScene::clickTimeout() {
+  if(!_leftButtonPressed && _clickMode == SingleClick)
+    handleClick(Qt::LeftButton, _clickPos);
+}
+
+void ChatScene::handleClick(Qt::MouseButton button, const QPointF &scenePos) {
+  if(button == Qt::LeftButton) {
+    clearSelection();
+
+    // Now send click down to items
+    ChatItem *chatItem = chatItemAt(scenePos);
+    if(chatItem) {
+      chatItem->handleClick(chatItem->mapFromScene(scenePos), _clickMode);
+    }
+    _clickHandled = true;
+  } else if(button == Qt::RightButton) {
+    // TODO: context menu
+
   }
 }
+
+void ChatScene::initiateDrag(QWidget *source) {
+  QDrag *drag = new QDrag(source);
+  QMimeData *mimeData = new QMimeData;
+  mimeData->setText(selection());
+  drag->setMimeData(mimeData);
+
+  drag->exec(Qt::CopyAction);
+}
+
+/******** SELECTIONS ******************************************************************************/
 
 void ChatScene::putToClipboard(const QString &selection) {
   // TODO Configure clipboards
@@ -568,25 +681,45 @@ void ChatScene::putToClipboard(const QString &selection) {
 }
 
 //!\brief Convert current selection to human-readable string.
-QString ChatScene::selectionToString() const {
+QString ChatScene::selection() const {
   //TODO Make selection format configurable!
-  if(!_isSelecting) return QString();
-  int start = qMin(_selectionStart, _selectionEnd);
-  int end = qMax(_selectionStart, _selectionEnd);
-  if(start < 0 || end >= _lines.count()) {
-    qDebug() << "Invalid selection range:" << start << end;
-    return QString();
-  }
-  QString result;
-  for(int l = start; l <= end; l++) {
-    if(_selectionMinCol == ChatLineModel::TimestampColumn)
-      result += _lines[l]->item(ChatLineModel::TimestampColumn).data(MessageModel::DisplayRole).toString() + " ";
-    if(_selectionMinCol <= ChatLineModel::SenderColumn)
-      result += _lines[l]->item(ChatLineModel::SenderColumn).data(MessageModel::DisplayRole).toString() + " ";
-    result += _lines[l]->item(ChatLineModel::ContentsColumn).data(MessageModel::DisplayRole).toString() + "\n";
-  }
-  return result;
+  if(hasGlobalSelection()) {
+    int start = qMin(_selectionStart, _selectionEnd);
+    int end = qMax(_selectionStart, _selectionEnd);
+    if(start < 0 || end >= _lines.count()) {
+      qDebug() << "Invalid selection range:" << start << end;
+      return QString();
+    }
+    QString result;
+    for(int l = start; l <= end; l++) {
+      if(_selectionMinCol == ChatLineModel::TimestampColumn)
+        result += _lines[l]->item(ChatLineModel::TimestampColumn).data(MessageModel::DisplayRole).toString() + " ";
+      if(_selectionMinCol <= ChatLineModel::SenderColumn)
+        result += _lines[l]->item(ChatLineModel::SenderColumn).data(MessageModel::DisplayRole).toString() + " ";
+      result += _lines[l]->item(ChatLineModel::ContentsColumn).data(MessageModel::DisplayRole).toString() + "\n";
+    }
+    return result;
+  } else if(selectingItem())
+    return selectingItem()->selection();
+  return QString();
 }
+
+void ChatScene::clearGlobalSelection() {
+  if(hasGlobalSelection()) {
+    for(int l = qMin(_selectionStart, _selectionEnd); l <= qMax(_selectionStart, _selectionEnd); l++)
+      _lines[l]->setSelected(false);
+    _isSelecting = false;
+    _selectionStart = -1;
+  }
+}
+
+void ChatScene::clearSelection() {
+  clearGlobalSelection();
+  if(selectingItem())
+    selectingItem()->clearSelection();
+}
+
+/******** *************************************************************************************/
 
 void ChatScene::requestBacklog() {
   MessageFilter *filter = qobject_cast<MessageFilter*>(model());
@@ -661,6 +794,8 @@ bool ChatScene::event(QEvent *e) {
   }
   return QGraphicsScene::event(e);
 }
+
+/******** WEB PREVIEW *****************************************************************************/
 
 void ChatScene::loadWebPreview(ChatItem *parentItem, const QString &url, const QRectF &urlRect) {
 #ifndef HAVE_WEBKIT

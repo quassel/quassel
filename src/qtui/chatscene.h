@@ -22,17 +22,19 @@
 #define CHATSCENE_H_
 
 #include <QAbstractItemModel>
+#include <QGraphicsItem>
 #include <QGraphicsScene>
 #include <QSet>
 #include <QTimer>
 
 #include "chatlinemodel.h"
-#include "columnhandleitem.h"
 #include "messagefilter.h"
 
 class AbstractUiMsg;
 class ChatItem;
 class ChatLine;
+class ChatView;
+class ColumnHandleItem;
 class WebPreviewItem;
 
 class QGraphicsSceneMouseEvent;
@@ -53,7 +55,8 @@ public:
     SenderChatItemType,
     ContentsChatItemType,
     SearchHighlightType,
-    WebPreviewType
+    WebPreviewType,
+    ColumnHandleType
   };
 
   enum ClickMode {
@@ -63,7 +66,7 @@ public:
     TripleClick
   };
 
-  ChatScene(QAbstractItemModel *model, const QString &idString, qreal width, QObject *parent);
+  ChatScene(QAbstractItemModel *model, const QString &idString, qreal width, ChatView *parent);
   virtual ~ChatScene();
 
   inline QAbstractItemModel *model() const { return _model; }
@@ -73,15 +76,25 @@ public:
   inline int rowByScenePos(const QPointF &pos) { return rowByScenePos(pos.y()); }
   ChatLineModel::ColumnType columnByScenePos(qreal x);
   inline ChatLineModel::ColumnType columnByScenePos(const QPointF &pos) { return columnByScenePos(pos.x()); }
+
+  ChatView *chatView() const;
+  ChatItem *chatItemAt(const QPointF &pos) const;
+
   inline bool isSingleBufferScene() const { return _singleBufferScene; }
   bool containsBuffer(const BufferId &id) const;
   inline ChatLine *chatLine(int row) { return (row < _lines.count()) ? _lines[row] : 0; }
 
-  inline ColumnHandleItem *firstColumnHandle() const { return _firstColHandle; }
-  inline ColumnHandleItem *secondColumnHandle() const { return _secondColHandle; }
+  ColumnHandleItem *firstColumnHandle() const;
+  ColumnHandleItem *secondColumnHandle() const;
 
   inline CutoffMode senderCutoffMode() const { return _cutoffMode; }
   inline void setSenderCutoffMode(CutoffMode mode) { _cutoffMode = mode; }
+
+  QString selection() const;
+  inline bool hasGlobalSelection() const { return _selectionStart >= 0; }
+  inline bool isGloballySelecting() const { return _isSelecting; }
+  bool isPosOverSelection(const QPointF &) const;
+  void initiateDrag(QWidget *source);
 
   bool isScrollingAllowed() const;
 
@@ -95,6 +108,9 @@ public:
   void setSelectingItem(ChatItem *item);
   ChatItem *selectingItem() const { return _selectingItem; }
   void startGlobalSelection(ChatItem *item, const QPointF &itemPos);
+  void clearGlobalSelection();
+  void clearSelection();
+
   void putToClipboard(const QString &);
 
   void requestBacklog();
@@ -111,7 +127,8 @@ protected:
   virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent);
   virtual void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent);
   virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent);
-  //virtual bool handleLeftClick(ClickMode mode);
+  virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *mouseEvent);
+  virtual void handleClick(Qt::MouseButton button, const QPointF &scenePos);
 
 protected slots:
   void rowsInserted(const QModelIndex &, int, int);
@@ -124,11 +141,13 @@ private slots:
   void deleteWebPreviewEvent();
   void showWebPreviewChanged();
 
+  void clickTimeout();
+
 private:
   void setHandleXLimits();
   void updateSelection(const QPointF &pos);
-  QString selectionToString() const;
 
+  ChatView *_chatView;
   QString _idString;
   QAbstractItemModel *_model;
   QList<ChatLine *> _lines;
@@ -157,6 +176,10 @@ private:
   bool _showWebPreview;
 
   QTimer _clickTimer;
+  ClickMode _clickMode;
+  QPointF _clickPos;
+  bool _clickHandled;
+  bool _leftButtonPressed;
 
   struct WebPreview {
     ChatItem *parentItem;

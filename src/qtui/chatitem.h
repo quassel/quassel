@@ -58,25 +58,28 @@ public:
   QVariant data(int role) const;
 
   // selection stuff, to be called by the scene
+  QString selection() const;
   void clearSelection();
   void setFullSelection();
   void continueSelecting(const QPointF &pos);
+  bool hasSelection() const;
+  bool isPosOverSelection(const QPointF &pos) const;
 
   QList<QRectF> findWords(const QString &searchWord, Qt::CaseSensitivity caseSensitive);
+
+  virtual void handleClick(const QPointF &pos, ChatScene::ClickMode);
 
 protected:
   virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
   virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
   virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 
-  //virtual bool handleClick(ClickMode mode);
-
   inline QTextLayout *layout() const;
 
   virtual QTextLayout::FormatRange selectionFormat() const;
   virtual inline QVector<QTextLayout::FormatRange> additionalFormats() const { return QVector<QTextLayout::FormatRange>(); }
 
-  qint16 posToCursor(const QPointF &pos);
+  qint16 posToCursor(const QPointF &pos) const;
 
   inline bool hasPrivateData() const { return (bool)_data; }
   ChatItemPrivate *privateData() const;
