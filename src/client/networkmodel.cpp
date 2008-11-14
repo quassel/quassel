@@ -190,6 +190,12 @@ void BufferItem::setActivityLevel(BufferInfo::ActivityLevel level) {
   }
 }
 
+void BufferItem::clearActivityLevel() {
+  _activity = BufferInfo::NoActivity;
+  _lastSeenMarkerMsgId = _lastSeenMsgId;
+  emit dataChanged();
+}
+
 void BufferItem::updateActivityLevel(const Message &msg) {
   if(isCurrentBuffer()) {
     return;
@@ -950,6 +956,15 @@ void NetworkModel::setBufferActivity(const BufferId &bufferId, BufferInfo::Activ
     return;
   }
   bufferItem->setActivityLevel(level);
+}
+
+void NetworkModel::clearBufferActivity(const BufferId &bufferId) {
+  BufferItem *bufferItem = findBufferItem(bufferId);
+  if(!bufferItem) {
+    qDebug() << "NetworkModel::clearBufferActivity(): buffer is unknown:" << bufferId;
+    return;
+  }
+  bufferItem->clearActivityLevel();
 }
 
 const Network *NetworkModel::networkByIndex(const QModelIndex &index) const {

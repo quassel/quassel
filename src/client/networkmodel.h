@@ -114,6 +114,7 @@ public:
   void setLastSeenMsgId(const MsgId &msgId);
   inline BufferInfo::ActivityLevel activityLevel() const { return _activity; }
   void setActivityLevel(BufferInfo::ActivityLevel level);
+  void clearActivityLevel();
   void updateActivityLevel(const Message &msg);
 
   bool isCurrentBuffer() const;
@@ -313,6 +314,7 @@ public slots:
   void removeBuffer(BufferId bufferId);
   void setLastSeenMsgId(const BufferId &bufferId, const MsgId &msgId);
   void setBufferActivity(const BufferId &bufferId, BufferInfo::ActivityLevel activity);
+  void clearBufferActivity(const BufferId &bufferId);
   void updateBufferActivity(const Message &msg);
   void networkRemoved(const NetworkId &networkId);
 
