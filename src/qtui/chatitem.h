@@ -80,8 +80,6 @@ protected:
   virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
   virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 
-  //virtual bool handleClick(ClickMode mode);
-
   inline QTextLayout *layout() const;
 
   virtual QTextLayout::FormatRange selectionFormat() const;

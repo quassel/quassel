@@ -107,6 +107,10 @@ ChatScene::ChatScene(QAbstractItemModel *model, const QString &idString, qreal w
   _clickTimer.setSingleShot(true);
   connect(&_clickTimer, SIGNAL(timeout()), SLOT(clickTimeout()));
 
+  _clickTimer.setInterval(QApplication::doubleClickInterval());
+  _clickTimer.setSingleShot(true);
+  connect(&_clickTimer, SIGNAL(timeout()), SLOT(clickTimeout()));
+
   setItemIndexMethod(QGraphicsScene::NoIndex);
 }
 
