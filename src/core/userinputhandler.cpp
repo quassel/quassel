@@ -343,13 +343,11 @@ void UserInputHandler::handleSay(const BufferInfo &bufferInfo, const QString &ms
 
 void UserInputHandler::handleTopic(const BufferInfo &bufferInfo, const QString &msg) {
   if(bufferInfo.bufferName().isEmpty()) return;
-  if(!msg.isEmpty()) {
-    QList<QByteArray> params;
-    params << serverEncode(bufferInfo.bufferName()) << channelEncode(bufferInfo.bufferName(), msg);
-    emit putCmd("TOPIC", params);
-  } else {
-    emit networkConnection()->putRawLine("TOPIC " + serverEncode(bufferInfo.bufferName()) + " :");
-  }
+  QList<QByteArray> params;
+  params << serverEncode(bufferInfo.bufferName());
+  if(!msg.isEmpty())
+    params << channelEncode(bufferInfo.bufferName(), msg);
+  emit putCmd("TOPIC", params);
 }
 
 void UserInputHandler::handleVoice(const BufferInfo &bufferInfo, const QString &msg) {
