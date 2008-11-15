@@ -200,7 +200,9 @@ void loadTranslation(const QLocale &locale) {
   if(locale.language() == QLocale::C)
     return;
 
-  qtTranslator->load(QString("%2/qt_%1").arg(locale.name(), QLibraryInfo::location(QLibraryInfo::TranslationsPath)));
+  bool success = qtTranslator->load(QString(":i18n/qt_%1").arg(locale.name()));
+  if(!success)
+    qtTranslator->load(QString("%2/qt_%1").arg(locale.name(), QLibraryInfo::location(QLibraryInfo::TranslationsPath)));
   quasselTranslator->load(QString(":i18n/quassel_%1").arg(locale.name()));
 }
 
