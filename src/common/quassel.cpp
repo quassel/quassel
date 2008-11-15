@@ -77,7 +77,6 @@ bool Quassel::init() {
   qsrand(QTime(0,0,0).secsTo(QTime::currentTime()));
 
   registerMetaTypes();
-  setupTranslations();
 
   QCoreApplication::setApplicationName(buildInfo().applicationName);
   QCoreApplication::setOrganizationName(buildInfo().organizationName);
@@ -128,21 +127,6 @@ void Quassel::registerMetaTypes() {
   qRegisterMetaTypeStreamOperators<UserId>("UserId");
   qRegisterMetaTypeStreamOperators<AccountId>("AccountId");
   qRegisterMetaTypeStreamOperators<MsgId>("MsgId");
-}
-
-void Quassel::setupTranslations() {
-  // Set up i18n support
-  QLocale locale = QLocale::system();
-
-  QTranslator *qtTranslator = new QTranslator(qApp);
-  qtTranslator->setObjectName("QtTr");
-  qtTranslator->load(QString(":i18n/qt_%1").arg(locale.name()));
-  qApp->installTranslator(qtTranslator);
-
-  QTranslator *quasselTranslator = new QTranslator(qApp);
-  quasselTranslator->setObjectName("QuasselTr");
-  quasselTranslator->load(QString(":i18n/quassel_%1").arg(locale.name()));
-  qApp->installTranslator(quasselTranslator);
 }
 
 void Quassel::setupBuildInfo(const QString &generated) {
@@ -228,7 +212,7 @@ void Quassel::logFatalMessage(const char *msg) {
   QFile dumpFile(coreDumpFileName());
   dumpFile.open(QIODevice::Append);
   QTextStream dumpStream(&dumpFile);
-  
+
   dumpStream << "Fatal: " << msg << '\n';
   dumpStream.flush();
   dumpFile.close();

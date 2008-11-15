@@ -52,6 +52,8 @@ void Core::destroy() {
 Core::Core() : storage(0) {
   _startTime = QDateTime::currentDateTime().toUTC();  // for uptime :)
 
+  loadTranslation(QLocale::system());
+
   // Register storage backends here!
   registerStorageBackend(new SqliteStorage(this));
 
@@ -359,7 +361,7 @@ bool Core::startListening() {
   // in mono mode we only start a local port if a port is specified in the cli call
   if(Quassel::runMode() == Quassel::Monolithic && !Quassel::isOptionSet("port"))
     return true;
-  
+
   bool success = false;
   uint port = Quassel::optionValue("port").toUInt();
 

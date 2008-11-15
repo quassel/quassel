@@ -22,6 +22,7 @@
 
 #include <QCoreApplication>
 #include <QDebug>
+#include <QLibraryInfo>
 #include <QTextCodec>
 #include <QTranslator>
 
@@ -182,22 +183,25 @@ QDir quasselDir() {
 void loadTranslation(const QLocale &locale) {
   QTranslator *qtTranslator = QCoreApplication::instance()->findChild<QTranslator *>("QtTr");
   QTranslator *quasselTranslator = QCoreApplication::instance()->findChild<QTranslator *>("QuasselTr");
-  Q_ASSERT(qtTranslator);
-  Q_ASSERT(quasselTranslator);
+
+  if(!qtTranslator) {
+    qtTranslator = new QTranslator(qApp);
+    qtTranslator->setObjectName("QtTr");
+    qApp->installTranslator(qtTranslator);
+  }
+  if(!quasselTranslator) {
+    quasselTranslator = new QTranslator(qApp);
+    quasselTranslator->setObjectName("QuasselTr");
+    qApp->installTranslator(quasselTranslator);
+  }
 
   QLocale::setDefault(locale);
-
-  QCoreApplication::removeTranslator(qtTranslator);
-  QCoreApplication::removeTranslator(quasselTranslator);
 
   if(locale.language() == QLocale::C)
     return;
 
-  qtTranslator->load(QString(":i18n/qt_%1").arg(locale.name()));
+  qtTranslator->load(QString("%2/qt_%1").arg(locale.name(), QLibraryInfo::location(QLibraryInfo::TranslationsPath)));
   quasselTranslator->load(QString(":i18n/quassel_%1").arg(locale.name()));
-
-  QCoreApplication::installTranslator(qtTranslator);
-  QCoreApplication::installTranslator(quasselTranslator);
 }
 
 QString secondsToString(int timeInSeconds) {

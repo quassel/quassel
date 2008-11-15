@@ -81,7 +81,6 @@ protected:
   inline void setRunMode(RunMode mode);
 
 private:
-  void setupTranslations();
   void registerMetaTypes();
 
   static void handleSignal(int signal);
