@@ -97,12 +97,13 @@ void BufferView::init() {
 
   setSortingEnabled(true);
   sortByColumn(0, Qt::AscendingOrder);
-#ifndef Q_WS_QWS
-  // this is a workaround to not join channels automatically... we need a saner way to navigate for qtopia anyway though,
-  // such as mark first, activate at second click...
-  connect(this, SIGNAL(activated(QModelIndex)), this, SLOT(joinChannel(QModelIndex)));
+
+  // activated() fails on X11 and Qtopia at least
+#if defined Q_WS_QWS or defined Q_WS_X11
+  connect(this, SIGNAL(doubleClicked(QModelIndex)), SLOT(joinChannel(QModelIndex)));
 #else
-  connect(this, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(joinChannel(QModelIndex)));  // Qtopia uses single click for activation
+  // afaik this is better on Mac and Windows
+  connect(this, SIGNAL(activated(QModelIndex)), SLOT(joinChannel(QModelIndex)));
 #endif
 }
 
@@ -389,7 +390,7 @@ QMenu *BufferView::createHideEventsSubMenu(QMenu &menu, BufferId bufferId) {
   _hidePartAction.setChecked(filter & Message::Part);
   _hideQuitAction.setChecked(filter & Message::Quit);
   _hideModeAction.setChecked(filter & Message::Mode);
-  
+
   QMenu *hideEventsMenu = menu.addMenu(tr("Hide Events"));
   hideEventsMenu->addAction(&_hideJoinAction);
   hideEventsMenu->addAction(&_hidePartAction);
