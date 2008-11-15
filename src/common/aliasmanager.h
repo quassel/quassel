@@ -37,6 +37,7 @@ public:
     QString expansion;
     Alias(const QString &name_, const QString &expansion_) : name(name_), expansion(expansion_) {}
   };
+  typedef QList<Alias> AliasList ;
 
   int indexOf(const QString &name) const;
   inline bool contains(const QString &name) const { return indexOf(name) != -1; }
@@ -45,7 +46,9 @@ public:
   inline void removeAt(int index) { _aliases.removeAt(index); }
   inline Alias &operator[](int i) { return _aliases[i]; }
   inline const Alias &operator[](int i) const { return _aliases[i]; }
-  inline const QList<Alias> &aliases() const { return _aliases; }
+  inline const AliasList &aliases() const { return _aliases; }
+
+  static AliasList defaults();
 
 public slots:
   virtual QVariantMap initAliases() const;
@@ -60,7 +63,7 @@ signals:
   void aliasAdded(const QString &name, const QString &expansion);
   
 private:
-  QList<Alias> _aliases;
+  AliasList _aliases;
 
 };
 

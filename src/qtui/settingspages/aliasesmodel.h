@@ -50,6 +50,7 @@ public:
 
 public slots:
   void newAlias();
+  void loadDefaults();
   void removeAlias(int index);
   void revert();
   void commit();

@@ -117,6 +117,24 @@ void AliasesModel::newAlias() {
   endInsertRows();
 }
 
+void AliasesModel::loadDefaults() {
+  AliasManager &manager = cloneAliasManager();
+
+  if(!manager.isEmpty()) {
+    beginRemoveRows(QModelIndex(), 0, rowCount() - 1);
+    for(int i = rowCount() - 1; i >= 0; i--)
+      manager.removeAt(i);
+    endRemoveRows();
+  }
+
+  AliasManager::AliasList defaults = AliasManager::defaults();
+  beginInsertRows(QModelIndex(), 0, defaults.count() - 1);
+  foreach(AliasManager::Alias alias, defaults) {
+    manager.addAlias(alias.name, alias.expansion);
+  }
+  endInsertRows();
+}
+
 void AliasesModel::removeAlias(int index) {
   if(index < 0 || index >= rowCount())
     return;

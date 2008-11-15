@@ -52,6 +52,10 @@ void AliasesSettingsPage::load() {
     _aliasesModel.revert();
 }
 
+void AliasesSettingsPage::defaults() {
+  _aliasesModel.loadDefaults();
+}
+
 void AliasesSettingsPage::save() {
   if(_aliasesModel.configChanged())
     _aliasesModel.commit();

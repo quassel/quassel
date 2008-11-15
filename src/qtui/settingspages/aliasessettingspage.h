@@ -32,9 +32,12 @@ class AliasesSettingsPage : public SettingsPage {
 public:
   AliasesSettingsPage(QWidget *parent = 0);
 
+  virtual inline bool hasDefaults() const { return true; }
+
 public slots:
   void save();
   void load();
+  void defaults();
 
 private slots:
   void enableDialog(bool);

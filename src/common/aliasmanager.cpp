@@ -80,3 +80,16 @@ void AliasManager::addAlias(const QString &name, const QString &expansion) {
 
   emit aliasAdded(name, expansion);
 }
+
+AliasManager::AliasList AliasManager::defaults() {
+  AliasList aliases;
+  aliases << Alias("j", "/join $0")
+	  << Alias("ns", "/msg nickserv $0")
+	  << Alias("nickserv", "/msg nickserv $0")
+	  << Alias("cs", "/msg chanserv $0")
+	  << Alias("chanserv",  "/msg chanserv $0")
+	  << Alias("hs", "/msg hostserv $0")
+	  << Alias("hostserv", "/msg hostserv $0")
+	  << Alias("back", "/quote away");
+  return aliases;
+}
