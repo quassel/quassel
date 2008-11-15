@@ -623,7 +623,8 @@ void ChatScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
   if(!event->buttons() & Qt::LeftButton) {
     _leftButtonPressed = false;
     if(_clickMode != NoClick) {
-      clearSelection();
+      if(_clickMode == SingleClick)
+        clearSelection();
       event->accept();
       if(!_clickTimer.isActive())
         handleClick(Qt::LeftButton, _clickPos);

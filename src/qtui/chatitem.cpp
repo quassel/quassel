@@ -165,6 +165,13 @@ QString ChatItem::selection() const {
   return QString();
 }
 
+void ChatItem::setSelection(SelectionMode mode, qint16 start, qint16 end) {
+  _selectionMode = mode;
+  _selectionStart = start;
+  _selectionEnd = end;
+  update();
+}
+
 void ChatItem::setFullSelection() {
   if(_selectionMode != FullSelection) {
     _selectionMode = FullSelection;
@@ -173,8 +180,10 @@ void ChatItem::setFullSelection() {
 }
 
 void ChatItem::clearSelection() {
-  _selectionMode = NoSelection;
-  update();
+  if(_selectionMode != NoSelection) {
+    _selectionMode = NoSelection;
+    update();
+  }
 }
 
 void ChatItem::continueSelecting(const QPointF &pos) {
@@ -249,11 +258,6 @@ void ChatItem::handleClick(const QPointF &pos, ChatScene::ClickMode clickMode) {
     _selectionStart = _selectionEnd = posToCursor(pos);
     _selectionMode = NoSelection; // will be set to PartialSelection by mouseMoveEvent
     update();
-  } else if(clickMode == ChatScene::DoubleClick) {
-    //_selectionMode = PartialSelection;
-
-  } else if(clickMode == ChatScene::TripleClick) {
-
   }
 }
 
@@ -277,23 +281,20 @@ void ChatItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
 }
 
 void ChatItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
-  if(event->buttons() == Qt::LeftButton) {
+  if(event->buttons() == Qt::LeftButton)
     event->accept();
-  } else {
+  else
     event->ignore();
-  }
 }
 
 void ChatItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
   if(_selectionMode != NoSelection && !event->buttons() & Qt::LeftButton) {
-    _selectionEnd = posToCursor(event->pos());
     QString selection
         = data(MessageModel::DisplayRole).toString().mid(qMin(_selectionStart, _selectionEnd), qAbs(_selectionStart - _selectionEnd));
     chatScene()->putToClipboard(selection);
     event->accept();
-  } else {
+  } else
     event->ignore();
-  }
 }
 
 // ************************************************************
@@ -498,6 +499,26 @@ void ContentsChatItem::handleClick(const QPointF &pos, ChatScene::ClickMode clic
           break;
       }
     }
+  } else if(clickMode == ChatScene::DoubleClick) {
+    chatScene()->setSelectingItem(this);
+    setSelectionMode(PartialSelection);
+    Clickable click = privateData()->currentClickable;
+    if(click.isValid()) {
+      setSelectionStart(click.start);
+      setSelectionEnd(click.start + click.length);
+    } else {
+      // find word boundary
+      QString str = data(ChatLineModel::DisplayRole).toString();
+      qint16 cursor = posToCursor(pos);
+      qint16 start = str.lastIndexOf(QRegExp("\\W"), cursor) + 1;
+      qint16 end = qMin(str.indexOf(QRegExp("\\W"), cursor), str.length());
+      if(end < 0) end = str.length();
+      setSelectionStart(start);
+      setSelectionEnd(end);
+    }
+    update();
+  } else if(clickMode == ChatScene::TripleClick) {
+    setSelection(PartialSelection, 0, data(ChatLineModel::DisplayRole).toString().length());
   }
   ChatItem::handleClick(pos, clickMode);
 }
@@ -524,7 +545,7 @@ void ContentsChatItem::hoverMoveEvent(QGraphicsSceneHoverEvent *event) {
         showWebPreview(click);
       } else if(click.type == Clickable::Channel) {
         // TODO: don't make clickable if it's our own name
-        //onClickable = true; //FIXME disabled for now
+        // onClickable = true; //FIXME disabled for now
       }
       if(onClickable) {
         setCursor(Qt::PointingHandCursor);

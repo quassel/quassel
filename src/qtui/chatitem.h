@@ -70,6 +70,12 @@ public:
   virtual void handleClick(const QPointF &pos, ChatScene::ClickMode);
 
 protected:
+  enum SelectionMode {
+    NoSelection,
+    PartialSelection,
+    FullSelection
+  };
+
   virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
   virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
   virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
@@ -78,6 +84,14 @@ protected:
 
   virtual QTextLayout::FormatRange selectionFormat() const;
   virtual inline QVector<QTextLayout::FormatRange> additionalFormats() const { return QVector<QTextLayout::FormatRange>(); }
+
+  inline qint16 selectionStart() const { return _selectionStart; }
+  inline void setSelectionStart(qint16 start) { _selectionStart = start; }
+  inline qint16 selectionEnd() const { return _selectionEnd; }
+  inline void setSelectionEnd(qint16 end) { _selectionEnd = end; }
+  inline SelectionMode selectionMode() const { return _selectionMode; }
+  inline void setSelectionMode(SelectionMode mode) { _selectionMode = mode; }
+  void setSelection(SelectionMode mode, qint16 selectionStart, qint16 selectionEnd);
 
   qint16 posToCursor(const QPointF &pos) const;
 
@@ -106,7 +120,6 @@ private:
   ChatItemPrivate *_data;
   QRectF _boundingRect;
 
-  enum SelectionMode { NoSelection, PartialSelection, FullSelection };
   SelectionMode _selectionMode;
   qint16 _selectionStart, _selectionEnd;
 
@@ -229,7 +242,9 @@ struct ContentsChatItemPrivate : ChatItemPrivate {
 };
 
 //inlines regarding ContentsChatItemPrivate
-ChatItemPrivate *ContentsChatItem::newPrivateData() { return new ContentsChatItemPrivate(createLayout(QTextOption::WrapAnywhere), findClickables(), this); }
+ChatItemPrivate *ContentsChatItem::newPrivateData() {
+  return new ContentsChatItemPrivate(createLayout(QTextOption::WrapAnywhere), findClickables(), this);
+}
 ContentsChatItemPrivate *ContentsChatItem::privateData() const { return (ContentsChatItemPrivate *)ChatItem::privateData(); }
 
 class ContentsChatItem::WrapColumnFinder {
