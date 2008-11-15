@@ -61,7 +61,6 @@ qt4_wrap_cpp(MOC ${MOC_HDRS})
 
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_SOURCE_DIR})  # for version.inc and version.gen
-add_definitions(-DHAVE_VERSION_GEN)  # we ensure that by deps in the main CMakeLists.txt
 set_directory_properties(PROPERTIES ADDITIONAL_MAKE_CLEAN_FILES version.gen)
 
 add_library(mod_common STATIC ${SOURCES} ${MOC} ${CMAKE_BINARY_DIR}/i18n/qrc_i18n.cxx)
