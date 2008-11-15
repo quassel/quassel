@@ -49,6 +49,17 @@ bool isChannelName(QString str) {
   return QString("#&!+").contains(str[0]);
 }
 
+QString stripFormatCodes(QString str) {
+  str.remove(QRegExp("\x03(\\d\\d?(,\\d\\d?)?)?"));
+  str.remove('\x02');
+  str.remove('\x0f');
+  str.remove('\x12');
+  str.remove('\x16');
+  str.remove('\x1d');
+  str.remove('\x1f');
+  return str;
+}
+
 QString decodeString(const QByteArray &input, QTextCodec *codec) {
   // First, we check if it's utf8. It is very improbable to encounter a string that looks like
   // valid utf8, but in fact is not. This means that if the input string passes as valid utf8, it

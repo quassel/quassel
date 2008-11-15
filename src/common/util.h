@@ -34,6 +34,8 @@ QString userFromMask(QString mask);
 QString hostFromMask(QString mask);
 bool isChannelName(QString str);
 
+//! Strip mIRC format codes
+QString stripFormatCodes(QString);
 
 QString secondsToString(int timeInSeconds);
 

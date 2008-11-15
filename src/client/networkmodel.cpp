@@ -62,7 +62,7 @@ QVariant NetworkItem::data(int column, int role) const {
 
 BufferItem *NetworkItem::findBufferItem(BufferId bufferId) {
   BufferItem *bufferItem = 0;
-  
+
   for(int i = 0; i < childCount(); i++) {
     bufferItem = qobject_cast<BufferItem *>(child(i));
     if(!bufferItem)
@@ -78,7 +78,7 @@ BufferItem *NetworkItem::bufferItem(const BufferInfo &bufferInfo) {
   BufferItem *bufferItem = findBufferItem(bufferInfo);
   if(bufferItem)
     return bufferItem;
-  
+
   switch(bufferInfo.type()) {
   case BufferInfo::StatusBuffer:
     bufferItem = new StatusBufferItem(bufferInfo, this);
@@ -100,7 +100,7 @@ BufferItem *NetworkItem::bufferItem(const BufferInfo &bufferInfo) {
 void NetworkItem::attachNetwork(Network *network) {
   if(!network)
     return;
-  
+
   _network = network;
 
   connect(network, SIGNAL(networkNameSet(QString)),
@@ -115,7 +115,7 @@ void NetworkItem::attachNetwork(Network *network) {
 	  this, SIGNAL(dataChanged()));
   connect(network, SIGNAL(destroyed()),
 	  this, SIGNAL(dataChanged()));
-  
+
   emit dataChanged();
 }
 
@@ -263,7 +263,7 @@ void BufferItem::setLastSeenMsgId(const MsgId &msgId) {
   if(!isCurrentBuffer()) {
     _lastSeenMarkerMsgId = msgId;
   }
-  setActivityLevel(BufferInfo::NoActivity); 
+  setActivityLevel(BufferInfo::NoActivity);
 }
 
 bool BufferItem::isCurrentBuffer() const {
@@ -323,7 +323,7 @@ QVariant QueryBufferItem::data(int column, int role) const {
 }
 
 QString QueryBufferItem::toolTip(int column) const {
-  // pretty much code duplication of IrcUserItem::toolTip() but inheritance won't solve this... 
+  // pretty much code duplication of IrcUserItem::toolTip() but inheritance won't solve this...
   Q_UNUSED(column);
   QStringList toolTip;
 
@@ -338,9 +338,9 @@ QString QueryBufferItem::toolTip(int column) const {
     if(!_ircUser->ircOperator().isEmpty()) toolTip.append(QString("%1 %2").arg(_ircUser->nick()).arg(_ircUser->ircOperator()));
     if(!_ircUser->suserHost().isEmpty()) toolTip.append(_ircUser->suserHost());
     if(!_ircUser->whoisServiceReply().isEmpty()) toolTip.append(_ircUser->whoisServiceReply());
-    
+
     toolTip.append(_ircUser->hostmask().remove(0, _ircUser->hostmask().indexOf("!")+1));
-    
+
     if(_ircUser->idleTime().isValid()) {
       QDateTime now = QDateTime::currentDateTime();
       QDateTime idle = _ircUser->idleTime();
@@ -350,7 +350,7 @@ QString QueryBufferItem::toolTip(int column) const {
     if(_ircUser->loginTime().isValid()) {
       toolTip.append(tr("login time: %1").arg(_ircUser->loginTime().toString()));
     }
-    
+
     if(!_ircUser->server().isEmpty()) toolTip.append(tr("server: %1").arg(_ircUser->server()));
   }
 
@@ -391,35 +391,36 @@ QString ChannelBufferItem::toolTip(int column) const {
 
   toolTip.append(tr("<b>Channel %1</b>").arg(bufferName()));
   if(isActive()) {
-    //TODO: add channel modes 
+    //TODO: add channel modes
     toolTip.append(tr("<b>Users:</b> %1").arg(nickCount()));
     if(_ircChannel) {
       QString channelMode = _ircChannel->channelModeString(); // channelModeString is compiled on the fly -> thus cache the result
       if(!channelMode.isEmpty())
-	toolTip.append(tr("<b>Mode:</b> %1").arg(channelMode));
+        toolTip.append(tr("<b>Mode:</b> %1").arg(channelMode));
     }
-    
+
     BufferSettings s;
     bool showTopic = s.value("DisplayTopicInTooltip", QVariant(false)).toBool();
     if(showTopic) {
       QString _topic = topic();
       if(_topic != "") {
-	_topic.replace(QString("<"), QString("&lt;"));
-	_topic.replace(QString(">"), QString("&gt;"));
-	toolTip.append(QString("<font size='-2'>&nbsp;</font>"));
-	toolTip.append(tr("<b>Topic:</b> %1").arg(_topic));
+        _topic = stripFormatCodes(_topic);
+        _topic.replace(QString("<"), QString("&lt;"));
+        _topic.replace(QString(">"), QString("&gt;"));
+        toolTip.append(QString("<font size='-2'>&nbsp;</font>"));
+        toolTip.append(tr("<b>Topic:</b> %1").arg(_topic));
       }
     }
   } else {
     toolTip.append(tr("Not active <br /> Double-click to join"));
   }
 
-  return tr("<p> %1 </p>").arg(toolTip.join("<br />"));  
+  return tr("<p> %1 </p>").arg(toolTip.join("<br />"));
 }
 
 void ChannelBufferItem::attachIrcChannel(IrcChannel *ircChannel) {
   Q_ASSERT(!_ircChannel && ircChannel);
-  
+
   _ircChannel = ircChannel;
 
   connect(ircChannel, SIGNAL(topicSet(QString)),
@@ -439,7 +440,7 @@ void ChannelBufferItem::attachIrcChannel(IrcChannel *ircChannel) {
 
   if(!ircChannel->ircUsers().isEmpty())
     join(ircChannel->ircUsers());
-  
+
   emit dataChanged();
 }
 
@@ -458,7 +459,7 @@ void ChannelBufferItem::join(const QList<IrcUser *> &ircUsers) {
 
 UserCategoryItem *ChannelBufferItem::findCategoryItem(int categoryId) {
   UserCategoryItem *categoryItem = 0;
-  
+
   for(int i = 0; i < childCount(); i++) {
     categoryItem = qobject_cast<UserCategoryItem *>(child(i));
     if(!categoryItem)
@@ -480,7 +481,7 @@ void ChannelBufferItem::addUsersToCategory(const QList<IrcUser *> &ircUsers) {
 
   int categoryId = -1;
   UserCategoryItem *categoryItem = 0;
-  
+
   foreach(IrcUser *ircUser, ircUsers) {
     categoryId = UserCategoryItem::categoryFromModes(_ircChannel->userModes(ircUser));
     categoryItem = findCategoryItem(categoryId);
@@ -534,7 +535,7 @@ void ChannelBufferItem::userModeChanged(IrcUser *ircUser) {
 
   int categoryId = UserCategoryItem::categoryFromModes(_ircChannel->userModes(ircUser));
   UserCategoryItem *categoryItem = findCategoryItem(categoryId);
-    
+
   if(categoryItem) {
     if(categoryItem->findIrcUser(ircUser)) {
       return; // already in the right category;
@@ -657,7 +658,7 @@ IrcUserItem::IrcUserItem(IrcUser *ircUser, AbstractTreeItem *parent)
   : PropertyMapItem(QStringList() << "nickName", parent),
     _ircUser(ircUser)
 {
-  setObjectName(ircUser->nick());  
+  setObjectName(ircUser->nick());
   connect(ircUser, SIGNAL(destroyed()), this, SLOT(ircUserDestroyed()));
   connect(ircUser, SIGNAL(nickSet(QString)), this, SIGNAL(dataChanged()));
   connect(ircUser, SIGNAL(awaySet(bool)), this, SIGNAL(dataChanged()));
@@ -881,7 +882,7 @@ bool NetworkModel::dropMimeData(const QMimeData *data, Qt::DropAction action, in
 
   // no self merges (would kill us)
   if(bufferId == parent.data(BufferIdRole).value<BufferId>())
-    return false; 
+    return false;
 
   NetworkItem *netItem = findNetworkItem(netId);
   Q_ASSERT(netItem);
@@ -892,11 +893,11 @@ bool NetworkModel::dropMimeData(const QMimeData *data, Qt::DropAction action, in
   // source must be a query too
   if(bufferItem->bufferType() != BufferInfo::QueryBuffer)
     return false;
-    
+
   // TODO: warn user about buffermerge!
   qDebug() << "merging" << bufferId << parent.data(BufferIdRole).value<BufferId>();
   removeRow(parent.row(), parent.parent());
-  
+
   return true;
 }
 
@@ -979,7 +980,7 @@ const Network *NetworkModel::networkByIndex(const QModelIndex &index) const {
 void NetworkModel::checkForRemovedBuffers(const QModelIndex &parent, int start, int end) {
   if(parent.data(ItemTypeRole) != NetworkItemType)
     return;
-  
+
   for(int row = start; row <= end; row++) {
     _bufferItemCache.remove(parent.child(row, 0).data(BufferIdRole).value<BufferId>());
   }
