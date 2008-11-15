@@ -1,2 +1,43 @@
-As of now (because the codebase is still evolving too fast), we don't keep a ChangeLog here.
-Feel free to read the SVN revision history...  
+ChangeLog for Quassel IRC
+=========================
+This is not a full ChangeLog, but rather an end-user FeatureLog that is supposed
+to provide a list of new features between Quassel versions. As such, it only
+contains end-user visible, mostly major new features. It does not contain (most)
+bugfixes, nor is it guaranteed to be complete or up-to-date at all. Also, it does
+start at 0.3.0 only, since this was the first version widely available.
+
+Please have a look at <http://bugs.quassel-irc.org/changelog_page.php> for a
+list of closed bug/feature reports (which still does not cover bugs we have
+fixed but which were never reported, of course), and for a full list of
+changes, the git history at <http://git.quassel-irc.org> is your friend.
+
+Without further ado, let's start:
+
+
+Version 0.3.1 (not yet released)
+================================
+
+* Load Qt's default translations
+* Add new settings for proper message redirection
+* Add context menu to links
+* Automatic backtraces on Windows
+* Add russian translation
+* Cut off the sender column on the left in ChatView
+* Enable away on detach
+* Backlog amount (initial and dynamic) can now be configured
+* Shift Up/Down scrolls the ChatView
+* Page Up/Down scrolls the ChatView
+* ChatView Zoom with Ctrl + / Ctrl -
+* Join/Part/Quit... events can now be hidden in ChatView
+* Monolithic build features zero configuration: Click'n'Run
+* Monolithic build now uses a proper (socket-less) internal connection
+* Ctrl+L focuses input line
+* Improve notification handling, use proper D-Bus notifications
+* Day change messages in ChatView
+* Web Preview on hovering over a link (requires QtWebkit)
+* Allow icons to be installed externally, optionally use system Oxygen theme
+* Improve URL handling in ChatView (underline, single-click invocation)
+
+Version 0.3.0 (2008-08-27)
+==========================
+The first widely available release of Quassel IRC.
