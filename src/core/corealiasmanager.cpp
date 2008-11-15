@@ -34,11 +34,9 @@ CoreAliasManager::CoreAliasManager(CoreSession *parent)
   }
 
   QVariantMap aliases = Core::getUserSetting(session->user(), "Aliases").toMap();
-  if(aliases.isEmpty()) {
+  initSetAliases(Core::getUserSetting(session->user(), "Aliases").toMap());
+  if(isEmpty())
     loadDefaults();
-  } else {
-    initSetAliases(aliases);
-  }
 }
 
 
