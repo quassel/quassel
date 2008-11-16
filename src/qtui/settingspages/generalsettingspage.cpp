@@ -55,7 +55,7 @@ GeneralSettingsPage::GeneralSettingsPage(QWidget *parent)
   connect(ui.errorMsgsInDefaultBuffer, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
   connect(ui.errorMsgsInStatusBuffer, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
   connect(ui.errorMsgsInCurrentBuffer, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
-  
+
   connect(ui.displayTopicInTooltip, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
   connect(ui.mouseWheelChangesBuffers, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
   connect(ui.completionSuffix, SIGNAL(textEdited(const QString&)), this, SLOT(widgetHasChanged()));
@@ -86,7 +86,7 @@ void GeneralSettingsPage::defaults() {
   ui.errorMsgsInCurrentBuffer->setChecked(false);
 
   ui.displayTopicInTooltip->setChecked(false);
-  ui.mouseWheelChangesBuffers->setChecked(true);
+  ui.mouseWheelChangesBuffers->setChecked(false);
 
   ui.completionSuffix->setText(": ");
 
@@ -107,7 +107,7 @@ void GeneralSettingsPage::load() {
   settings["MinimizeOnClose"] = qtuiSettings.value("MinimizeOnClose", QVariant(false));
   ui.minimizeOnClose->setChecked(settings["MinimizeOnClose"].toBool());
 
-  settings["MouseWheelChangesBuffers"] = uiSettings.value("MouseWheelChangesBuffers", QVariant(true));
+  settings["MouseWheelChangesBuffers"] = uiSettings.value("MouseWheelChangesBuffers", QVariant(false));
   ui.mouseWheelChangesBuffers->setChecked(settings["MouseWheelChangesBuffers"].toBool());
 
   // bufferSettings:
@@ -124,7 +124,7 @@ void GeneralSettingsPage::load() {
   SettingsPage::load(ui.errorMsgsInStatusBuffer, bufferSettings.value("ErrorMsgsInStatusBuffer", QVariant(false)).toBool());
   SettingsPage::load(ui.errorMsgsInCurrentBuffer, bufferSettings.value("ErrorMsgsInCurrentBuffer", QVariant(false)).toBool());
 
-  
+
   settings["DisplayTopicInTooltip"] = bufferSettings.value("DisplayTopicInTooltip", QVariant(false));
   ui.displayTopicInTooltip->setChecked(settings["DisplayTopicInTooltip"].toBool());
 
@@ -173,7 +173,7 @@ void GeneralSettingsPage::save() {
   BacklogSettings backlogSettings;
   backlogSettings.setFixedBacklogAmount(ui.fixedBacklogAmount->value());
   backlogSettings.setDynamicBacklogAmount(ui.dynamicBacklogAmount->value());
-  
+
   load();
   setChangedState(false);
 }

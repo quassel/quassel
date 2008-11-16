@@ -22,17 +22,9 @@
    <item>
     <widget class="QTabWidget" name="tabWidget" >
      <property name="currentIndex" >
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="bufferview" >
-      <property name="geometry" >
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>487</width>
-        <height>485</height>
-       </rect>
-      </property>
       <attribute name="title" >
        <string>Bufferview</string>
       </attribute>
@@ -323,14 +315,6 @@
       </layout>
      </widget>
      <widget class="QWidget" name="chatview" >
-      <property name="geometry" >
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>487</width>
-        <height>485</height>
-       </rect>
-      </property>
       <attribute name="title" >
        <string>Chatview</string>
       </attribute>
@@ -344,17 +328,9 @@
           </sizepolicy>
          </property>
          <property name="currentIndex" >
-          <number>2</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="tab" >
-          <property name="geometry" >
-           <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>441</width>
-            <height>262</height>
-           </rect>
-          </property>
           <attribute name="title" >
            <string>Server Activity</string>
           </attribute>
@@ -582,14 +558,6 @@
           </layout>
          </widget>
          <widget class="QWidget" name="tab_2" >
-          <property name="geometry" >
-           <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>441</width>
-            <height>294</height>
-           </rect>
-          </property>
           <attribute name="title" >
            <string>User Activity</string>
           </attribute>
@@ -907,14 +875,6 @@
           </layout>
          </widget>
          <widget class="QWidget" name="Seite_2" >
-          <property name="geometry" >
-           <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>441</width>
-            <height>294</height>
-           </rect>
-          </property>
           <attribute name="title" >
            <string>Message</string>
           </attribute>
@@ -1268,14 +1228,6 @@
       </layout>
      </widget>
      <widget class="QWidget" name="Mirc" >
-      <property name="geometry" >
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>487</width>
-        <height>485</height>
-       </rect>
-      </property>
       <attribute name="title" >
        <string>Mirc Color Codes</string>
       </attribute>
@@ -1535,14 +1487,6 @@
       </layout>
      </widget>
      <widget class="QWidget" name="nickview" >
-      <property name="geometry" >
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>487</width>
-        <height>485</height>
-       </rect>
-      </property>
       <attribute name="title" >
        <string>Nickview</string>
       </attribute>
