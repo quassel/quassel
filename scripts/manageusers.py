@@ -1,12 +1,16 @@
 #!/usr/bin/python
-# -*- coding: iso-8859-1 -*-
+# -*- coding: utf-8 -*-
+#
+# Requires at least python version 2.5
 
-# ==============================
-#  Imports
-# ==============================
+"""Usage:
+    manageusers.py (add|changepass) <username> <password>
+    manageusers.py list"""
+
 import os
 import sha
 import sys
+from pprint import pprint
 
 try:
     import sqlite3
@@ -19,38 +23,45 @@ except ImportError:
 class UserManager(object):
     def __init__(self):
         self.db = sqlite3.connect(os.environ['HOME'] + '/.quassel/quassel-storage.sqlite')
-        
+        self.cursor = self.db.cursor()
+
     def __del__(self):
         self.db.commit()
         self.db.close();
 
-    def shaCrypt(self, password):
-        shaPass = sha.new(password)
-        return shaPass.hexdigest()
-        
-    def addUser(self, username, password):
-        cursor = self.db.cursor()
-        cursor.execute('INSERT INTO quasseluser (username, password) VALUES (:username, :password)',
-                       {'username':username, 'password':self.shaCrypt(password)})
+    def _shaCrypt(self, password):
+        return sha.new(password).hexdigest()
 
-    def changePass(self, username, password):
-        cursor = self.db.cursor()
-        cursor.execute('UPDATE quasseluser SET password = :password WHERE username = :username',
-                       {'username':username, 'password':self.shaCrypt(password)})
+    def add(self, username, password):
+        self.cursor.execute('INSERT INTO quasseluser (username, password) VALUES (:username, :password)',
+            {'username':username, 'password':self._shaCrypt(password)}).fetchone()
+
+    def changepass(self, username, password):
+        self.cursor.execute('UPDATE quasseluser SET password = :password WHERE username = :username',
+            {'username':username, 'password':self._shaCrypt(password)}).fetchone()
+
+    def list(self):
+        return self.cursor.execute("SELECT * FROM quasseluser").fetchall()
+
+    def callByName(self, name, *args, **kws):
+        return self.__getattribute__(name)(*args, **kws)
+
+def main():
+    usermanager = UserManager()
+
+    try:
+        action = sys.argv[1].lower()
+    except:
+        print(__doc__)
+        return
+
+    if action == 'list':
+        pprint(usermanager.list())
+    elif action in ['add', 'changepass'] and len(sys.argv) > 3:
+        usermanager.callByName(action, sys.argv[2], sys.argv[3])
+    else:
+        print("ERROR: Wrong arguments supplied.")
+        print(__doc__)
 
 if __name__ == "__main__":
-    generalError = "ERROR: Wrong argument count (Syntax: %s add|changepass <username> <password>)" % sys.argv[0]
-    if len(sys.argv) < 3:
-        print generalError
-        sys.exit(1)
-
-    if sys.argv[1].lower() not in ['add', 'changepass']:
-        print generalError
-        sys.exit(2)
-
-    userManager = UserManager()
-    actions = {'add':userManager.addUser,
-               'changepass':userManager.changePass}
-
-    actions[sys.argv[1]](sys.argv[2], sys.argv[3])
-    
+    main()
