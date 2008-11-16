@@ -78,8 +78,10 @@ QString AboutDlg::contributors() const {
            "<dl>"
            "<dt><b>Daniel \"al\" Albers</b></dt><dd>German translation, various fixes</dd>"
            "<dt><b>Terje \"tan\" Andersen</b></dt><dd>Norwegian translation, documentation</dd>"
+           "<dt><b>Kevin \"KRF\" Funk</b></dt><dd>German translation</dd>"
            "<dt><b>Marco \"kaffeedoktor\" Genise</b></dt><dd>Ideas, hacking, motivation</dd>"
            "<dt><b>Sebastian \"seezer\" Goth</b></dt><dd>Various improvements and features</dd>"
+           "<dt><b>Edward \"Aides\" Hades</b></dt><dd>Russian translation</dd>"
            "<dt><b>John \"nox-Hand\" Hand</b></dt><dd>Gorgeous application and tray icons</dd>"
            "<dt><b>Jonas \"Dante\" Heese</b></dt><dd>Project founder, various improvements</dd>"
            "<dt><b>Paul \"Haudrauf\" Klumpp</b></dt><dd>Initial design and mainwindow layout</dd>"
@@ -102,12 +104,14 @@ QString AboutDlg::thanksTo() const {
   QString res;
   res = tr("Special thanks goes to:<br>"
            "<dl>"
-           "<dt><b>John \"nox-Hand\" Hand</b></dt>"
+           "<dt><b>John \"nox\" Hand</b></dt>"
               "<dd>for great artwork and the Quassel logo/icon</dt>"
            "<dt><b><a href=\"http://www.oxygen-icons.org\">The Oxygen Team</a></b></dt>"
               "<dd>for creating most of the other shiny icons you see throughout Quassel</dd>"
-           "<dt><b><a href=\"http://www.trolltech.com\">Trolltech</a></b></dt>"
-              "<dd>for creating Qt and Qtopia, and for sponsoring development of Quasseltopia with Greenphones and more</dd>"
+           "<dt><b><a href=\"http://www.trolltech.com\">Qt Software formerly known as Trolltech</a></b></dt>"
+              "<dd>for creating Qt and Qtopia, and for sponsoring development of QuasselTopia with Greenphones and more</dd>"
+           "<dt><b><a href=\"http://www.nokia.com\">Nokia</a></b></dt>"
+              "<dd>for keeping Qt alive, and for sponsoring development of Quassel Mobile with N810s</dd>"
           );
 
   return res;
