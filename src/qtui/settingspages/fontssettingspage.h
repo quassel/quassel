@@ -22,6 +22,7 @@
 #define _FONTSSETTINGSPAGE_H_
 
 #include <QHash>
+#include <QTextCharFormat>
 
 #include "settings.h"
 #include "settingspage.h"
@@ -53,6 +54,8 @@ class FontsSettingsPage : public SettingsPage {
     void widgetHasChanged();
 
   private:
+    void clearFontFromFormat(QTextCharFormat &fmt);
+
     Ui::FontsSettingsPage ui;
 
     QSignalMapper *mapper;

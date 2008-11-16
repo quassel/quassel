@@ -99,6 +99,7 @@ void FontsSettingsPage::load(Settings::Mode mode) {
     initLabel(ui.demoNicks, chatFormat.font());
     ui.checkNicks->setChecked(false);
   }
+
   QTextCharFormat timestampFormat = QtUi::style()->format(UiStyle::Timestamp, mode);
   if(timestampFormat.hasProperty(QTextFormat::FontFamily)) {
     initLabel(ui.demoTimestamp, timestampFormat.font());
@@ -120,15 +121,18 @@ void FontsSettingsPage::save() {
   chatFormat.setFont(ui.demoChatMessages->font());
   QtUi::style()->setFormat(UiStyle::None, chatFormat, Settings::Custom);
 
-  //FIXME: actually remove font properties from the formats
   QTextCharFormat nicksFormat = QtUi::style()->format(UiStyle::Sender);
-  if(ui.checkNicks->checkState() == Qt::Checked) nicksFormat.setFont(ui.demoNicks->font());
-  else nicksFormat.setFont(chatFormat.font());
+  if(ui.checkNicks->checkState() == Qt::Checked)
+    nicksFormat.setFont(ui.demoNicks->font());
+  else
+    clearFontFromFormat(nicksFormat);
   QtUi::style()->setFormat(UiStyle::Sender, nicksFormat, Settings::Custom);
 
   QTextCharFormat timestampFormat = QtUi::style()->format(UiStyle::Timestamp);
-  if(ui.checkTimestamp->checkState() == Qt::Checked) timestampFormat.setFont(ui.demoTimestamp->font());
-  else timestampFormat.setFont(chatFormat.font());
+  if(ui.checkTimestamp->checkState() == Qt::Checked)
+    timestampFormat.setFont(ui.demoTimestamp->font());
+  else
+    clearFontFromFormat(timestampFormat);
   QtUi::style()->setFormat(UiStyle::Timestamp, timestampFormat, Settings::Custom);
 
   setChangedState(false);
@@ -156,4 +160,19 @@ void FontsSettingsPage::chooseFont(QWidget *widget) {
   if(ok) {
     setFont(label, font);
   }
+}
+
+void FontsSettingsPage::clearFontFromFormat(QTextCharFormat &fmt) {
+  fmt.clearProperty(QTextFormat::FontFamily);
+  fmt.clearProperty(QTextFormat::FontPointSize);
+  fmt.clearProperty(QTextFormat::FontPixelSize);
+  fmt.clearProperty(QTextFormat::FontWeight);
+  fmt.clearProperty(QTextFormat::FontItalic);
+  fmt.clearProperty(QTextFormat::TextUnderlineStyle);
+  fmt.clearProperty(QTextFormat::FontOverline);
+  fmt.clearProperty(QTextFormat::FontStrikeOut);
+  fmt.clearProperty(QTextFormat::FontFixedPitch);
+  fmt.clearProperty(QTextFormat::FontCapitalization);
+  fmt.clearProperty(QTextFormat::FontWordSpacing);
+  fmt.clearProperty(QTextFormat::FontLetterSpacing);
 }
