@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="/pics" >
     <file>quassel-large.png</file>
+    <file>qt-logo.png</file>
   </qresource>
 </RCC>
