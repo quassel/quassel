@@ -461,6 +461,8 @@ CoreAccountEditDlg::CoreAccountEditDlg(AccountId id, const QVariantMap &acct, co
 
   existing = _existing;
   if(id.isValid()) {
+    account = acct;
+
     existing.removeAll(acct["AccountName"].toString());
     ui.host->setText(acct["Host"].toString());
     ui.port->setValue(acct["Port"].toUInt());
