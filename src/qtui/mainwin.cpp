@@ -83,6 +83,8 @@ MainWin::MainWin(QWidget *parent)
     QApplication::setStyle(style);
   }
 
+  QApplication::setQuitOnLastWindowClosed(false);
+
   setWindowTitle("Quassel IRC");
   setWindowIconText("Quassel IRC");
   updateIcon();
@@ -598,6 +600,7 @@ void MainWin::closeEvent(QCloseEvent *event) {
     event->ignore();
   } else {
     event->accept();
+    QApplication::quit();
   }
 }
 
