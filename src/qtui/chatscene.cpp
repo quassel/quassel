@@ -555,7 +555,7 @@ bool ChatScene::isPosOverSelection(const QPointF &pos) const {
   if(hasGlobalSelection()) {
     int row = chatItem->row();
     if(row >= qMin(_selectionStart, _selectionEnd) && row <= qMax(_selectionStart, _selectionEnd))
-      return true;
+      return columnByScenePos(pos) >= _selectionMinCol;
   } else {
     return chatItem->isPosOverSelection(chatItem->mapFromScene(pos));
   }
@@ -766,7 +766,7 @@ void ChatScene::requestBacklog() {
   return;
 }
 
-ChatLineModel::ColumnType ChatScene::columnByScenePos(qreal x) {
+ChatLineModel::ColumnType ChatScene::columnByScenePos(qreal x) const {
   if(x < _firstColHandle->x())
     return ChatLineModel::TimestampColumn;
   if(x < _secondColHandle->x())
@@ -775,7 +775,7 @@ ChatLineModel::ColumnType ChatScene::columnByScenePos(qreal x) {
   return ChatLineModel::ContentsColumn;
 }
 
-int ChatScene::rowByScenePos(qreal y) {
+int ChatScene::rowByScenePos(qreal y) const {
   // This is somewhat hacky... we look at the contents item that is at the given y position, since
   // it has the full height. From this item, we can then determine the row index and hence the ChatLine.
   // ChatItems cover their ChatLine, so we won't get to the latter directly.

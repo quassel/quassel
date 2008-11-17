@@ -74,10 +74,10 @@ public:
   inline QAbstractItemModel *model() const { return _model; }
   inline QString idString() const { return _idString; }
 
-  int rowByScenePos(qreal y);
-  inline int rowByScenePos(const QPointF &pos) { return rowByScenePos(pos.y()); }
-  ChatLineModel::ColumnType columnByScenePos(qreal x);
-  inline ChatLineModel::ColumnType columnByScenePos(const QPointF &pos) { return columnByScenePos(pos.x()); }
+  int rowByScenePos(qreal y) const;
+  inline int rowByScenePos(const QPointF &pos) const { return rowByScenePos(pos.y()); }
+  ChatLineModel::ColumnType columnByScenePos(qreal x) const ;
+  inline ChatLineModel::ColumnType columnByScenePos(const QPointF &pos) const { return columnByScenePos(pos.x()); }
 
   ChatView *chatView() const;
   ChatItem *chatItemAt(const QPointF &pos) const;
