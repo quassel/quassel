@@ -24,6 +24,7 @@
 #include <QColor>
 #include <QDropEvent>
 #include <QFlags>
+#include <QPixmap>
 #include <QPointer>
 #include <QSet>
 #include <QSortFilterProxyModel>
@@ -56,6 +57,7 @@ public:
   virtual bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent);
 
   QVariant data(const QModelIndex &index, int role) const;
+  QVariant icon(const QModelIndex &index) const;
   QVariant foreground(const QModelIndex &index) const;
 
   void setConfig(BufferViewConfig *config);
@@ -91,6 +93,11 @@ private:
   QColor _FgColorHighlightActivity;
   QColor _FgColorNewMessageActivity;
   QColor _FgColorOtherActivity;
+
+  QPixmap _userOfflineIcon;
+  QPixmap _userAwayIcon;
+  QPixmap _userOnlineIcon;
+
   void loadColors();
 
   bool filterAcceptBuffer(const QModelIndex &) const;

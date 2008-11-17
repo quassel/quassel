@@ -27,6 +27,7 @@
 #include "bufferinfo.h"
 #include "buffermodel.h"
 #include "client.h"
+#include "iconloader.h"
 #include "networkmodel.h"
 
 #include "uisettings.h"
@@ -43,7 +44,10 @@ public:
 BufferViewFilter::BufferViewFilter(QAbstractItemModel *model, BufferViewConfig *config)
   : QSortFilterProxyModel(model),
     _config(0),
-    _sortOrder(Qt::AscendingOrder)
+    _sortOrder(Qt::AscendingOrder),
+    _userOfflineIcon(SmallIcon("user-offline")),
+    _userAwayIcon(SmallIcon("user-away")),
+    _userOnlineIcon(SmallIcon("user-online"))
 {
   setConfig(config);
   setSourceModel(model);
@@ -287,20 +291,31 @@ bool BufferViewFilter::networkLessThan(const QModelIndex &source_left, const QMo
 
 QVariant BufferViewFilter::data(const QModelIndex &index, int role) const {
   switch(role) {
+  case Qt::DecorationRole:
+    return icon(index);
   case Qt::ForegroundRole:
     return foreground(index);
-  case Qt::BackgroundRole:
-    if(index.data(NetworkModel::UserAwayRole).toBool()) {
-      QLinearGradient gradient(0, 0, 0, 18);
-      gradient.setColorAt(0.4, QApplication::palette().color(QPalette::Normal, QPalette::Base));
-      gradient.setColorAt(0.5, QApplication::palette().color(QPalette::Disabled, QPalette::Base));
-      gradient.setColorAt(0.6, QApplication::palette().color(QPalette::Normal, QPalette::Base));
-      return QBrush(gradient);
-    }
-    // else: fallthrough to default
   default:
     return QSortFilterProxyModel::data(index, role);
   }
+}
+
+QVariant BufferViewFilter::icon(const QModelIndex &index) const {
+  if(index.column() != 0)
+    return QVariant();
+
+  if(index.data(NetworkModel::BufferTypeRole).toInt() != BufferInfo::QueryBuffer)
+    return QVariant();
+
+  if(!index.data(NetworkModel::ItemActiveRole).toBool())
+    return _userOfflineIcon;
+
+  if(index.data(NetworkModel::UserAwayRole).toBool())
+    return _userAwayIcon;
+  else
+    return _userOnlineIcon;
+
+  return QVariant();
 }
 
 QVariant BufferViewFilter::foreground(const QModelIndex &index) const {
@@ -313,7 +328,7 @@ QVariant BufferViewFilter::foreground(const QModelIndex &index) const {
   if(activity & BufferInfo::OtherActivity)
     return _FgColorOtherActivity;
 
-  if(!index.data(NetworkModel::ItemActiveRole).toBool())
+  if(!index.data(NetworkModel::ItemActiveRole).toBool() || index.data(NetworkModel::UserAwayRole).toBool())
     return _FgColorInactiveActivity;
 
   return _FgColorNoActivity;
