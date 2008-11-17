@@ -42,22 +42,22 @@ class BufferView : public QTreeView {
 public:
   BufferView(QWidget *parent = 0);
   void init();
-  
+
   void setModel(QAbstractItemModel *model);
   void setFilteredModel(QAbstractItemModel *model, BufferViewConfig *config);
   virtual void setSelectionModel(QItemSelectionModel *selectionModel);
-  
+
   void setConfig(BufferViewConfig *config);
   inline BufferViewConfig *config() { return _config; }
 
 public slots:
   void setRootIndexForNetworkId(const NetworkId &networkId);
   void removeSelectedBuffers(bool permanently = false);
-  
+
 signals:
   void removeBuffer(const QModelIndex &);
   void removeBufferPermanently(const QModelIndex &);
-  
+
 protected:
   virtual void keyPressEvent(QKeyEvent *);
   virtual void rowsInserted(const QModelIndex & parent, int start, int end);
@@ -87,22 +87,24 @@ public:
 
 private:
   QPointer<BufferViewConfig> _config;
-  
+
   QAction _connectNetAction;
   QAction _disconnectNetAction;
   QAction _joinChannelAction;
-  
+
   QAction _joinBufferAction;
   QAction _partBufferAction;
   QAction _hideBufferTemporarilyAction;
   QAction _hideBufferPermanentlyAction;
   QAction _removeBufferAction;
   QAction _ignoreListAction;
-  
+
   QAction _hideJoinAction;
   QAction _hidePartAction;
   QAction _hideQuitAction;
+  QAction _hideNickAction;
   QAction _hideModeAction;
+  QAction _hideDayChangeAction;
 
   QHash<NetworkId, bool> _expandedState;
 
@@ -131,7 +133,7 @@ class BufferViewDock : public QDockWidget {
 public:
   BufferViewDock(BufferViewConfig *config, QWidget *parent);
   BufferViewDock(QWidget *parent);
-				 
+
 public slots:
   void bufferViewRenamed(const QString &newName);
 };

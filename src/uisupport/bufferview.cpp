@@ -60,16 +60,19 @@ BufferView::BufferView(QWidget *parent)
     _removeBufferAction(tr("Delete buffer"), this),
     _ignoreListAction(tr("Ignore list"), this),
 
-    _hideJoinAction(tr("Join Events"), this),
-    _hidePartAction(tr("Part Events"), this),
-    _hideQuitAction(tr("Quit Events"), this),
-    _hideModeAction(tr("Mode Events"), this)
-
+    _hideJoinAction(tr("Joins"), this),
+    _hidePartAction(tr("Parts"), this),
+    _hideQuitAction(tr("Quits"), this),
+    _hideNickAction(tr("Nick Changes"), this),
+    _hideModeAction(tr("Mode"), this),
+    _hideDayChangeAction(tr("Day Change"), this)
 {
   _hideJoinAction.setCheckable(true);
   _hidePartAction.setCheckable(true);
   _hideQuitAction.setCheckable(true);
+  _hideNickAction.setCheckable(true);
   _hideModeAction.setCheckable(true);
+  _hideDayChangeAction.setCheckable(true);
   _ignoreListAction.setEnabled(false);
 
   showChannelList.setIcon(SmallIcon("format-list-unordered"));
@@ -389,13 +392,17 @@ QMenu *BufferView::createHideEventsSubMenu(QMenu &menu, BufferId bufferId) {
   _hideJoinAction.setChecked(filter & Message::Join);
   _hidePartAction.setChecked(filter & Message::Part);
   _hideQuitAction.setChecked(filter & Message::Quit);
+  _hideNickAction.setChecked(filter & Message::Nick);
   _hideModeAction.setChecked(filter & Message::Mode);
+  _hideDayChangeAction.setChecked(filter & Message::DayChange);
 
   QMenu *hideEventsMenu = menu.addMenu(tr("Hide Events"));
   hideEventsMenu->addAction(&_hideJoinAction);
   hideEventsMenu->addAction(&_hidePartAction);
   hideEventsMenu->addAction(&_hideQuitAction);
+  hideEventsMenu->addAction(&_hideNickAction);
   hideEventsMenu->addAction(&_hideModeAction);
+  hideEventsMenu->addAction(&_hideDayChangeAction);
   return hideEventsMenu;
 }
 
@@ -540,12 +547,21 @@ void BufferView::contextMenuEvent(QContextMenuEvent *event) {
     BufferSettings(bufferId).filterMessage(Message::Quit, _hideQuitAction.isChecked());
     return;
   }
+  if(result == &_hideNickAction) {
+    BufferId bufferId = index.data(NetworkModel::BufferIdRole).value<BufferId>();
+    BufferSettings(bufferId).filterMessage(Message::Nick, _hideNickAction.isChecked());
+    return;
+  }
   if(result == &_hideModeAction) {
     BufferId bufferId = index.data(NetworkModel::BufferIdRole).value<BufferId>();
     BufferSettings(bufferId).filterMessage(Message::Mode, _hideModeAction.isChecked());
     return;
   }
-
+  if(result == &_hideDayChangeAction) {
+    BufferId bufferId = index.data(NetworkModel::BufferIdRole).value<BufferId>();
+    BufferSettings(bufferId).filterMessage(Message::DayChange, _hideDayChangeAction.isChecked());
+    return;
+  }
 }
 
 void BufferView::wheelEvent(QWheelEvent* event) {
