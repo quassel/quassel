@@ -95,6 +95,8 @@ ChatScene::ChatScene(QAbstractItemModel *model, const QString &idString, qreal w
   webPreview.deleteTimer.setInterval(10000);
   connect(&webPreview.deleteTimer, SIGNAL(timeout()), this, SLOT(deleteWebPreviewEvent()));
 #endif
+  _showWebPreview = defaultSettings.showWebPreview();
+  defaultSettings.notify("ShowWebPreview", this, SLOT(showWebPreviewChanged()));
 
   setItemIndexMethod(QGraphicsScene::NoIndex);
 }
@@ -657,6 +659,9 @@ void ChatScene::loadWebPreview(ChatItem *parentItem, const QString &url, const Q
   Q_UNUSED(url)
   Q_UNUSED(urlRect)
 #else
+  if(!_showWebPreview)
+    return;
+
   if(webPreview.parentItem != parentItem)
     webPreview.parentItem = parentItem;
 
@@ -721,4 +726,9 @@ void ChatScene::deleteWebPreviewEvent() {
   webPreview.url = QString();
   webPreview.urlRect = QRectF();
 #endif
+}
+
+void ChatScene::showWebPreviewChanged() {
+  ChatViewSettings settings;
+  _showWebPreview = settings.showWebPreview();
 }

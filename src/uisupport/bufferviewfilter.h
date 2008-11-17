@@ -37,7 +37,7 @@
  *****************************************/
 class BufferViewFilter : public QSortFilterProxyModel {
   Q_OBJECT
-  
+
 public:
   enum Mode {
     NoActive = 0x01,
@@ -52,7 +52,7 @@ public:
   Q_DECLARE_FLAGS(Modes, Mode)
 
   BufferViewFilter(QAbstractItemModel *model, BufferViewConfig *config = 0);
-  
+
   virtual Qt::ItemFlags flags(const QModelIndex &index) const;
   virtual bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent);
 
@@ -64,12 +64,12 @@ public:
   inline BufferViewConfig *config() const { return _config; }
 
   virtual void sort(int column, Qt::SortOrder order = Qt::AscendingOrder);
-									 
+
 public slots:
   void checkPreviousCurrentForRemoval(const QModelIndex &current, const QModelIndex &previous);
   void checkItemForRemoval(const QModelIndex &index) { checkItemsForRemoval(index, index); }
   void checkItemsForRemoval(const QModelIndex &topLeft, const QModelIndex &bottomRight);
-  
+
 protected:
   bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
   bool lessThan(const QModelIndex &source_left, const QModelIndex &source_right) const;
@@ -83,11 +83,12 @@ signals:
 
 private slots:
   void configInitialized();
-    
+  void showUserStateIconsChanged();
+
 private:
   QPointer<BufferViewConfig> _config;
   Qt::SortOrder _sortOrder;
-  
+
   QColor _FgColorInactiveActivity;
   QColor _FgColorNoActivity;
   QColor _FgColorHighlightActivity;
@@ -97,6 +98,7 @@ private:
   QPixmap _userOfflineIcon;
   QPixmap _userAwayIcon;
   QPixmap _userOnlineIcon;
+  bool _showUserStateIcons;
 
   void loadColors();
 
@@ -104,7 +106,7 @@ private:
   bool filterAcceptNetwork(const QModelIndex &) const;
   void addBuffer(const BufferId &) const;
 };
-Q_DECLARE_OPERATORS_FOR_FLAGS(BufferViewFilter::Modes)    
+Q_DECLARE_OPERATORS_FOR_FLAGS(BufferViewFilter::Modes)
 
 bool bufferIdLessThan(const BufferId &, const BufferId &);
 

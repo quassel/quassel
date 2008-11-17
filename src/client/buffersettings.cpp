@@ -30,14 +30,6 @@ BufferSettings::BufferSettings(const QString &idString)
 {
 }
 
-bool BufferSettings::hasFilter() {
-  return localValue("hasMessageTypeFilter", false).toBool();
-}
-
-int BufferSettings::messageFilter() {
-  return localValue("MessageTypeFilter", 0).toInt();
-}
-
 void BufferSettings::filterMessage(Message::Type msgType, bool filter) {
   if(!hasFilter())
     setLocalValue("hasMessageTypeFilter", true);

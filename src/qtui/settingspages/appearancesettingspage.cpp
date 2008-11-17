@@ -20,6 +20,8 @@
 
 #include "appearancesettingspage.h"
 
+#include "buffersettings.h"
+#include "chatviewsettings.h"
 #include "qtui.h"
 #include "qtuisettings.h"
 #include "util.h"
@@ -33,8 +35,12 @@ AppearanceSettingsPage::AppearanceSettingsPage(QWidget *parent)
   initStyleComboBox();
   initLanguageComboBox();
 
-  connect(ui.styleComboBox, SIGNAL(currentIndexChanged(QString)), this, SLOT(widgetHasChanged()));
-  connect(ui.languageComboBox, SIGNAL(currentIndexChanged(QString)), this, SLOT(widgetHasChanged()));
+  foreach(QComboBox *comboBox, findChildren<QComboBox *>()) {
+    connect(comboBox, SIGNAL(currentIndexChanged(QString)), this, SLOT(widgetHasChanged()));
+  }
+  foreach(QCheckBox *checkBox, findChildren<QCheckBox *>()) {
+    connect(checkBox, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
+  }
 }
 
 void AppearanceSettingsPage::initStyleComboBox() {
@@ -67,6 +73,7 @@ void AppearanceSettingsPage::defaults() {
 void AppearanceSettingsPage::load() {
   QtUiSettings uiSettings;
 
+  // Gui Style
   settings["Style"] = uiSettings.value("Style", QString(""));
   if(settings["Style"].toString() == "") {
     ui.styleComboBox->setCurrentIndex(0);
@@ -75,6 +82,7 @@ void AppearanceSettingsPage::load() {
     QApplication::setStyle(settings["Style"].toString());
   }
 
+  // Language
   QLocale locale = uiSettings.value("Locale", QLocale::system()).value<QLocale>();
   if(locale == QLocale::system())
     ui.languageComboBox->setCurrentIndex(0);
@@ -83,6 +91,12 @@ void AppearanceSettingsPage::load() {
   else
     ui.languageComboBox->setCurrentIndex(ui.languageComboBox->findText(QLocale::languageToString(locale.language()), Qt::MatchExactly));
   loadTranslation(selectedLocale());
+
+  ChatViewSettings chatViewSettings;
+  SettingsPage::load(ui.showWebPreview, chatViewSettings.showWebPreview());
+
+  BufferSettings bufferSettings;
+  SettingsPage::load(ui.showUserStateIcons, bufferSettings.showUserStateIcons());
 
   setChangedState(false);
 }
@@ -101,6 +115,12 @@ void AppearanceSettingsPage::save() {
   } else {
     uiSettings.setValue("Locale", selectedLocale());
   }
+
+  ChatViewSettings chatViewSettings;
+  chatViewSettings.enableWebPreview(ui.showWebPreview->isChecked());
+
+  BufferSettings bufferSettings;
+  bufferSettings.enableUserStateIcons(ui.showUserStateIcons->isChecked());
 
   load();
   setChangedState(false);
@@ -126,6 +146,9 @@ void AppearanceSettingsPage::widgetHasChanged() {
 bool AppearanceSettingsPage::testHasChanged() {
   if(settings["Style"].toString() != ui.styleComboBox->currentText()) return true;
   if(selectedLocale() != QLocale()) return true; // QLocale() returns the default locale (manipulated via loadTranslation())
+
+  if(SettingsPage::hasChanged(ui.showWebPreview)) return true;
+  if(SettingsPage::hasChanged(ui.showUserStateIcons)) return true;
 
   return false;
 }

@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>331</width>
-    <height>269</height>
+    <width>396</width>
+    <height>324</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -56,7 +56,36 @@
     </widget>
    </item>
    <item>
-    <spacer>
+    <widget class="QGroupBox" name="groupBox_3" >
+     <property name="title" >
+      <string>Misc:</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_3" >
+      <item>
+       <widget class="QCheckBox" name="showWebPreview" >
+        <property name="text" >
+         <string>Show Web Previews</string>
+        </property>
+        <property name="checked" >
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="showUserStateIcons" >
+        <property name="text" >
+         <string>Use Icons to represent away state of Users</string>
+        </property>
+        <property name="checked" >
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer" >
      <property name="orientation" >
       <enum>Qt::Vertical</enum>
      </property>

@@ -31,6 +31,9 @@ public:
   ChatViewSettings(const QString &id = "__default__");
   ChatViewSettings(ChatScene *scene);
   ChatViewSettings(ChatView *view);
+
+  inline bool showWebPreview() { return localValue("ShowWebPreview", true).toBool(); }
+  inline void enableWebPreview(bool enabled) { setLocalValue("ShowWebPreview", enabled); }
 };
 
 #endif //CHATVIEWSETTINGS_H

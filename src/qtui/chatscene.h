@@ -110,6 +110,7 @@ private slots:
   void secondHandlePositionChanged(qreal xpos);
   void showWebPreviewEvent();
   void deleteWebPreviewEvent();
+  void showWebPreviewChanged();
 
 private:
   void setHandleXLimits();
@@ -140,6 +141,8 @@ private:
   int _selectionEnd;
   int _firstSelectionRow;
   bool _isSelecting;
+
+  bool _showWebPreview;
 
   struct WebPreview {
     ChatItem *parentItem;

@@ -33,9 +33,12 @@ public:
   inline void setValue(const QString &key, const QVariant &data) { setLocalValue(key, data); }
   inline QVariant value(const QString &key, const QVariant &def = QVariant()) { return localValue(key, def); }
 
-  bool hasFilter();
-  int messageFilter();
+  inline bool hasFilter() { return localValue("hasMessageTypeFilter", false).toBool(); }
+  inline int messageFilter() { return localValue("MessageTypeFilter", 0).toInt(); }
   void filterMessage(Message::Type msgType, bool filter);
+
+  inline bool showUserStateIcons() { return localValue("ShowUserStateIcons", true).toBool(); }
+  inline void enableUserStateIcons(bool enabled) { setLocalValue("ShowUserStateIcons", enabled); }
 };
 
 

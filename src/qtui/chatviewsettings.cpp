@@ -37,3 +37,4 @@ ChatViewSettings::ChatViewSettings(ChatView *view)
   : QtUiSettings(QString("ChatView/%1").arg(view->scene()->idString()))
 {
 }
+

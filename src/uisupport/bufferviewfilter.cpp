@@ -26,6 +26,7 @@
 
 #include "bufferinfo.h"
 #include "buffermodel.h"
+#include "buffersettings.h"
 #include "client.h"
 #include "iconloader.h"
 #include "networkmodel.h"
@@ -58,6 +59,10 @@ BufferViewFilter::BufferViewFilter(QAbstractItemModel *model, BufferViewConfig *
 
   connect(this, SIGNAL(_dataChanged(const QModelIndex &, const QModelIndex &)),
 	  this, SLOT(_q_sourceDataChanged(QModelIndex,QModelIndex)));
+
+  BufferSettings bufferSettings;
+  _showUserStateIcons = bufferSettings.showUserStateIcons();
+  bufferSettings.notify("ShowUserStateIcons", this, SLOT(showUserStateIconsChanged()));
 }
 
 void BufferViewFilter::loadColors() {
@@ -67,6 +72,11 @@ void BufferViewFilter::loadColors() {
   _FgColorHighlightActivity = s.value("highlightActivityFG", QVariant(QColor(Qt::magenta))).value<QColor>();
   _FgColorNewMessageActivity = s.value("newMessageActivityFG", QVariant(QColor(Qt::green))).value<QColor>();
   _FgColorOtherActivity = s.value("otherActivityFG", QVariant(QColor(Qt::darkGreen))).value<QColor>();
+}
+
+void BufferViewFilter::showUserStateIconsChanged() {
+  BufferSettings bufferSettings;
+  _showUserStateIcons = bufferSettings.showUserStateIcons();
 }
 
 void BufferViewFilter::setConfig(BufferViewConfig *config) {
@@ -301,6 +311,9 @@ QVariant BufferViewFilter::data(const QModelIndex &index, int role) const {
 }
 
 QVariant BufferViewFilter::icon(const QModelIndex &index) const {
+  if(!_showUserStateIcons)
+    return QVariant();
+
   if(index.column() != 0)
     return QVariant();
 
