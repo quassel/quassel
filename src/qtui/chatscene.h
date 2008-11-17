@@ -22,6 +22,7 @@
 #define CHATSCENE_H_
 
 #include <QAbstractItemModel>
+#include <QClipboard>
 #include <QGraphicsItem>
 #include <QGraphicsScene>
 #include <QSet>
@@ -92,9 +93,10 @@ public:
   inline void setSenderCutoffMode(CutoffMode mode) { _cutoffMode = mode; }
 
   QString selection() const;
-  inline bool hasGlobalSelection() const { return _selectionStart >= 0; }
-  inline bool isGloballySelecting() const { return _isSelecting; }
+  bool hasSelection() const;
+  bool hasGlobalSelection() const;
   bool isPosOverSelection(const QPointF &) const;
+  bool isGloballySelecting() const;
   void initiateDrag(QWidget *source);
 
   bool isScrollingAllowed() const;
@@ -111,8 +113,7 @@ public:
   void startGlobalSelection(ChatItem *item, const QPointF &itemPos);
   void clearGlobalSelection();
   void clearSelection();
-
-  void putToClipboard(const QString &);
+  void selectionToClipboard(QClipboard::Mode = QClipboard::Clipboard);
 
   void requestBacklog();
 
@@ -125,6 +126,7 @@ signals:
   void mouseMoveWhileSelecting(const QPointF &scenePos);
 
 protected:
+  virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent *contextMenuEvent);
   virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent);
   virtual void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent);
   virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent);

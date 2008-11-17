@@ -18,20 +18,21 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QLayout>
+#include <QKeyEvent>
+#include <QScrollBar>
+
+#include "action.h"
+#include "actioncollection.h"
 #include "bufferwidget.h"
 #include "chatview.h"
 #include "chatviewsearchbar.h"
 #include "chatviewsearchcontroller.h"
-#include "settings.h"
 #include "client.h"
-
-#include "action.h"
-#include "actioncollection.h"
+#include "inputline.h"
 #include "qtui.h"
+#include "settings.h"
 
-#include <QLayout>
-#include <QKeyEvent>
-#include <QScrollBar>
 
 BufferWidget::BufferWidget(QWidget *parent)
   : AbstractBufferContainer(parent),
@@ -64,7 +65,7 @@ BufferWidget::BufferWidget(QWidget *parent)
 
   connect(_chatViewSearchController, SIGNAL(newCurrentHighlight(QGraphicsItem *)),
 	  this, SLOT(scrollToHighlight(QGraphicsItem *)));
-  
+
   ActionCollection *coll = QtUi::actionCollection();
 
   Action *zoomChatview = coll->add<Action>("ZoomChatView");
@@ -148,6 +149,19 @@ bool BufferWidget::eventFilter(QObject *watched, QEvent *event) {
     return false;
 
   QKeyEvent *keyEvent = static_cast<QKeyEvent*>(event);
+
+  // Intercept copy key presses
+  if(keyEvent == QKeySequence::Copy) {
+    InputLine *inputLine = qobject_cast<InputLine *>(watched);
+    if(!inputLine)
+      return false;
+    if(inputLine->hasSelectedText())
+      return false;
+    ChatView *view = qobject_cast<ChatView *>(ui.stackedWidget->currentWidget());
+    if(view)
+      view->scene()->selectionToClipboard();
+    return true;
+  }
 
   int direction = 1;
   switch(keyEvent->key()) {

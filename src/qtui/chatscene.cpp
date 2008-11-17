@@ -22,6 +22,7 @@
 #include <QClipboard>
 #include <QDrag>
 #include <QGraphicsSceneMouseEvent>
+#include <QMenu>
 #include <QPersistentModelIndex>
 #include <QWebView>
 
@@ -32,6 +33,7 @@
 #include "client.h"
 #include "clientbacklogmanager.h"
 #include "columnhandleitem.h"
+#include "iconloader.h"
 #include "messagefilter.h"
 #include "qtui.h"
 #include "qtuistyle.h"
@@ -571,6 +573,19 @@ bool ChatScene::isScrollingAllowed() const {
 
 /******** MOUSE HANDLING **************************************************************************/
 
+void ChatScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event) {
+  QPointF pos = event->scenePos();
+  QMenu menu;
+
+  if(isPosOverSelection(pos))
+    menu.addAction(SmallIcon("edit-copy"), tr("Copy Selection"),
+                    this, SLOT(selectionToClipboard()),
+                    QKeySequence::Copy);
+
+  menu.exec(event->screenPos());
+
+}
+
 void ChatScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
   if(event->buttons() == Qt::LeftButton) {
     if(!_clickHandled && (event->scenePos() - _clickPos).toPoint().manhattanLength() >= QApplication::startDragDistance()) {
@@ -635,7 +650,7 @@ void ChatScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
     } else {
       // no click -> drag or selection move
       if(isGloballySelecting()) {
-        putToClipboard(selection());
+        selectionToClipboard(QClipboard::Selection);
         _isSelecting = false;
         event->accept();
         return;
@@ -660,9 +675,6 @@ void ChatScene::handleClick(Qt::MouseButton button, const QPointF &scenePos) {
       chatItem->handleClick(chatItem->mapFromScene(scenePos), _clickMode);
     }
     _clickHandled = true;
-  } else if(button == Qt::RightButton) {
-    // TODO: context menu
-
   }
 }
 
@@ -677,14 +689,21 @@ void ChatScene::initiateDrag(QWidget *source) {
 
 /******** SELECTIONS ******************************************************************************/
 
-void ChatScene::putToClipboard(const QString &selection) {
-  // TODO Configure clipboards
-#   ifdef Q_WS_X11
-  QApplication::clipboard()->setText(selection, QClipboard::Selection);
-#   endif
-//# else
-  QApplication::clipboard()->setText(selection);
-//# endif
+void ChatScene::selectionToClipboard(QClipboard::Mode mode) {
+  if(!hasSelection())
+    return;
+
+  switch(mode) {
+    case QClipboard::Clipboard:
+      QApplication::clipboard()->setText(selection());
+      break;
+    case QClipboard::Selection:
+      if(QApplication::clipboard()->supportsSelection())
+        QApplication::clipboard()->setText(selection(), QClipboard::Selection);
+      break;
+    default:
+      break;
+  };
 }
 
 //!\brief Convert current selection to human-readable string.
@@ -709,6 +728,18 @@ QString ChatScene::selection() const {
   } else if(selectingItem())
     return selectingItem()->selection();
   return QString();
+}
+
+bool ChatScene::hasSelection() const {
+  return hasGlobalSelection() || (selectingItem() && selectingItem()->hasSelection());
+}
+
+bool ChatScene::hasGlobalSelection() const {
+  return _selectionStart >= 0;
+}
+
+bool ChatScene::isGloballySelecting() const {
+  return _isSelecting;
 }
 
 void ChatScene::clearGlobalSelection() {

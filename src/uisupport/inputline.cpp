@@ -19,7 +19,6 @@
  ***************************************************************************/
 
 #include "inputline.h"
-
 #include "tabcompleter.h"
 
 InputLine::InputLine(QWidget *parent)
@@ -40,19 +39,19 @@ void InputLine::keyPressEvent(QKeyEvent * event) {
     event->accept();
 
     addToHistory(text(), true);
-    
+
     if(idx > 0) {
       idx--;
       showHistoryEntry();
     }
 
     break;
-    
+
   case Qt::Key_Down:
     event->accept();
 
     addToHistory(text(), true);
-    
+
     if(idx < history.count()) {
       idx++;
       if(idx < history.count() || tempHistory.contains(idx)) // tempHistory might have an entry for idx == history.count() + 1
@@ -65,7 +64,7 @@ void InputLine::keyPressEvent(QKeyEvent * event) {
     }
 
     break;
-    
+
   case Qt::Key_Select:		// for Qtopia
     emit returnPressed();
 
@@ -79,7 +78,7 @@ bool InputLine::addToHistory(const QString &text, bool temporary) {
     return false;
 
   Q_ASSERT(0 <= idx && idx <= history.count());
-  
+
   if(history.isEmpty() || text != history[idx - (int)(idx == history.count())]) {
     // if an entry of the history is changed, we remember it and show it again at this
     // position until a line was actually sent
@@ -107,7 +106,7 @@ void InputLine::on_textChanged(QString newText) {
   lineSeperators << QString("\r\n")
 		 << QString('\n')
 		 << QString('\r');
-  
+
   QString lineSep;
   foreach(QString seperator, lineSeperators) {
     if(newText.contains(seperator)) {
@@ -118,7 +117,7 @@ void InputLine::on_textChanged(QString newText) {
 
   if(lineSep.isEmpty())
     return;
-  
+
   if(newText.contains(lineSep)) {
     clear();
     QString line = newText.section(lineSep, 0, 0);

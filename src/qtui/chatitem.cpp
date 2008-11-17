@@ -289,9 +289,7 @@ void ChatItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
 
 void ChatItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
   if(_selectionMode != NoSelection && !event->buttons() & Qt::LeftButton) {
-    QString selection
-        = data(MessageModel::DisplayRole).toString().mid(qMin(_selectionStart, _selectionEnd), qAbs(_selectionStart - _selectionEnd));
-    chatScene()->putToClipboard(selection);
+    chatScene()->selectionToClipboard(QClipboard::Selection);
     event->accept();
   } else
     event->ignore();
@@ -559,6 +557,7 @@ void ContentsChatItem::hoverMoveEvent(QGraphicsSceneHoverEvent *event) {
   event->accept();
 }
 
+/*
 void ContentsChatItem::contextMenuEvent(QGraphicsSceneContextMenuEvent *event) {
   qint16 idx = posToCursor(event->pos());
   for(int i = 0; i < privateData()->clickables.count(); i++) {
@@ -581,6 +580,7 @@ void ContentsChatItem::contextMenuEvent(QGraphicsSceneContextMenuEvent *event) {
     }
   }
 }
+*/
 
 void ContentsChatItem::showWebPreview(const Clickable &click) {
 #ifndef HAVE_WEBKIT

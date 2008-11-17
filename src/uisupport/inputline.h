@@ -31,7 +31,7 @@ class InputLine : public QLineEdit {
 public:
   InputLine(QWidget *parent = 0);
   ~InputLine();
-    
+
 protected:
   //    virtual bool event(QEvent *);
   virtual void keyPressEvent(QKeyEvent * event);
