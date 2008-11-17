@@ -65,7 +65,10 @@ void TopicWidget::on_topicLineEdit_returnPressed() {
   QModelIndex currentIdx = currentIndex();
   if(currentIdx.isValid() && currentIdx.data(NetworkModel::BufferTypeRole) == BufferInfo::ChannelBuffer) {
     BufferInfo bufferInfo = currentIdx.data(NetworkModel::BufferInfoRole).value<BufferInfo>();
-    Client::userInput(bufferInfo, QString("/topic %1").arg(ui.topicLineEdit->text()));
+    if(ui.topicLineEdit->text().isEmpty())
+      Client::userInput(bufferInfo, QString("/quote TOPIC %1 :").arg(bufferInfo.bufferName()));
+    else
+      Client::userInput(bufferInfo, QString("/topic %1").arg(ui.topicLineEdit->text()));
   }
   switchPlain();
 }
