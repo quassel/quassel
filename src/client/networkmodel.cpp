@@ -45,6 +45,8 @@ NetworkItem::NetworkItem(const NetworkId &netid, AbstractTreeItem *parent)
 QVariant NetworkItem::data(int column, int role) const {
   switch(role) {
   case NetworkModel::BufferIdRole:
+  case NetworkModel::BufferInfoRole:
+  case NetworkModel::BufferTypeRole:
     if(childCount())
       return child(0)->data(column, role);
     else
