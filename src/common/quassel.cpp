@@ -199,6 +199,7 @@ void Quassel::handleSignal(int sig) {
   case SIGBUS:
 #endif
     logBacktrace(coreDumpFileName());
+    exit(EXIT_FAILURE);
     break;
   default:
     break;
