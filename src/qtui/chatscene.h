@@ -114,6 +114,7 @@ public:
   void clearGlobalSelection();
   void clearSelection();
   void selectionToClipboard(QClipboard::Mode = QClipboard::Clipboard);
+  void stringToClipboard(const QString &str, QClipboard::Mode = QClipboard::Clipboard);
 
   void requestBacklog();
 

@@ -295,6 +295,12 @@ void ChatItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
     event->ignore();
 }
 
+void ChatItem::addActionsToMenu(QMenu *menu, const QPointF &pos) {
+  Q_UNUSED(menu);
+  Q_UNUSED(pos);
+
+}
+
 // ************************************************************
 // SenderChatItem
 // ************************************************************
@@ -347,6 +353,9 @@ void SenderChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
 // ************************************************************
 // ContentsChatItem
 // ************************************************************
+
+ContentsChatItem::ActionProxy ContentsChatItem::_actionProxy;
+
 ContentsChatItem::ContentsChatItem(const qreal &width, const QPointF &pos, QGraphicsItem *parent)
   : ChatItem(0, 0, pos, parent)
 {
@@ -557,30 +566,33 @@ void ContentsChatItem::hoverMoveEvent(QGraphicsSceneHoverEvent *event) {
   event->accept();
 }
 
-/*
-void ContentsChatItem::contextMenuEvent(QGraphicsSceneContextMenuEvent *event) {
-  qint16 idx = posToCursor(event->pos());
-  for(int i = 0; i < privateData()->clickables.count(); i++) {
-    Clickable click = privateData()->clickables.at(i);
-    if(idx >= click.start && idx < click.start + click.length) {
-      if(click.type == Clickable::Url) {
-        QMenu menu;
-        QAction *copyToClipboard = menu.addAction(QObject::tr("Copy to Clipboard"));
-        QAction *selected = menu.exec(event->screenPos());
-        if(selected == copyToClipboard) {
-          QString url = data(ChatLineModel::DisplayRole).toString().mid(click.start, click.length);
-#   ifdef Q_WS_X11
-          QApplication::clipboard()->setText(url, QClipboard::Selection);
-#   endif
-//# else
-          QApplication::clipboard()->setText(url);
-//# endif
-        }
-      }
+void ContentsChatItem::addActionsToMenu(QMenu *menu, const QPointF &pos) {
+  Q_UNUSED(pos); // we assume that the current mouse cursor pos is the point of invocation
+
+  if(privateData()->currentClickable.isValid()) {
+    switch(privateData()->currentClickable.type) {
+      case Clickable::Url:
+        privateData()->activeClickable = privateData()->currentClickable;
+        menu->addAction(tr("Copy Link Address"), &_actionProxy, SLOT(copyLinkToClipboard()))->setData(QVariant::fromValue<void *>(this));
+        break;
+
+      default:
+        break;
     }
   }
 }
-*/
+
+void ContentsChatItem::copyLinkToClipboard() {
+  Clickable click = privateData()->activeClickable;
+  if(click.isValid() && click.type == Clickable::Url) {
+    QString url = data(ChatLineModel::DisplayRole).toString().mid(click.start, click.length);
+    if(!url.contains("://"))
+      url = "http://" + url;
+    chatScene()->stringToClipboard(url);
+  }
+}
+
+/******** WEB PREVIEW *****************************************************************************/
 
 void ContentsChatItem::showWebPreview(const Clickable &click) {
 #ifndef HAVE_WEBKIT
@@ -672,4 +684,6 @@ qint16 ContentsChatItem::WrapColumnFinder::nextWrapColumn() {
   Q_ASSERT(false);
   return -1;
 }
+
+/*************************************************************************************************/
 

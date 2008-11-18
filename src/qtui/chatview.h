@@ -26,11 +26,13 @@
 
 #include "abstractbuffercontainer.h"
 
+class AbstractBufferContainer;
 class AbstractUiMsg;
 class Buffer;
 class ChatLine;
 class ChatScene;
 class MessageFilter;
+class QMenu;
 
 class ChatView : public QGraphicsView, public AbstractChatView {
   Q_OBJECT
@@ -40,13 +42,18 @@ public:
   ChatView(BufferId bufferId, QWidget *parent = 0);
 
   virtual MsgId lastMsgId() const;
+  inline AbstractBufferContainer *bufferContainer() const { return _bufferContainer; }
+  inline void setBufferContainer(AbstractBufferContainer *c) { _bufferContainer = c; }
+
   inline ChatScene *scene() const { return _scene; }
+
+  void addActionsToMenu(QMenu *);
 
 public slots:
   inline virtual void clear() {}
   void zoomIn();
   void zoomOut();
-  void zoomNormal();
+  void zoomOriginal();
 
 protected:
   virtual void resizeEvent(QResizeEvent *event);
@@ -63,6 +70,7 @@ private slots:
 private:
   void init(MessageFilter *filter);
 
+  AbstractBufferContainer *_bufferContainer;
   ChatScene *_scene;
   int _lastScrollbarPos;
   qreal _currentScaleFactor;

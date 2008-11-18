@@ -19,8 +19,10 @@
  ***************************************************************************/
 
 #include <QGraphicsTextItem>
+#include <QMenu>
 #include <QScrollBar>
 
+#include "bufferwidget.h"
 #include "chatlinemodelitem.h"
 #include "chatscene.h"
 #include "chatview.h"
@@ -31,6 +33,7 @@
 ChatView::ChatView(BufferId bufferId, QWidget *parent)
   : QGraphicsView(parent),
     AbstractChatView(),
+    _bufferContainer(0),
     _currentScaleFactor(1)
 {
   QList<BufferId> filterList;
@@ -147,6 +150,15 @@ MsgId ChatView::lastMsgId() const {
   return model->data(model->index(model->rowCount() - 1, 0), MessageModel::MsgIdRole).value<MsgId>();
 }
 
+void ChatView::addActionsToMenu(QMenu *menu) {
+  // zoom actions
+  BufferWidget *bw = qobject_cast<BufferWidget *>(bufferContainer());
+  if(bw) {
+    bw->addActionsToMenu(menu);
+    menu->addSeparator();
+  }
+}
+
 void ChatView::zoomIn() {
     _currentScaleFactor *= 1.2;
     scale(1.2, 1.2);
@@ -159,7 +171,7 @@ void ChatView::zoomOut() {
     scene()->setWidth(viewport()->width() / _currentScaleFactor - 2);
 }
 
-void ChatView::zoomNormal() {
+void ChatView::zoomOriginal() {
     scale(1/_currentScaleFactor, 1/_currentScaleFactor);
     _currentScaleFactor = 1;
     scene()->setWidth(viewport()->width() - 2);

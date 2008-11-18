@@ -39,6 +39,7 @@ public:
   virtual bool eventFilter(QObject *watched, QEvent *event);
 
   inline ChatViewSearchBar *searchBar() const { return ui.searchBar; }
+  void addActionsToMenu(QMenu *);
 
 protected:
   virtual AbstractChatView *createChatView(BufferId);
@@ -51,7 +52,7 @@ private slots:
   void scrollToHighlight(QGraphicsItem *highlightItem);
   void zoomIn();
   void zoomOut();
-  void zoomNormal();
+  void zoomOriginal();
 
 private:
   Ui::BufferWidget ui;

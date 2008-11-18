@@ -30,6 +30,7 @@
 #include "chatline.h"
 #include "chatlinemodelitem.h"
 #include "chatscene.h"
+#include "chatview.h"
 #include "client.h"
 #include "clientbacklogmanager.h"
 #include "columnhandleitem.h"
@@ -577,10 +578,18 @@ void ChatScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event) {
   QPointF pos = event->scenePos();
   QMenu menu;
 
+  // zoom actions and similar
+  chatView()->addActionsToMenu(&menu);
+
   if(isPosOverSelection(pos))
     menu.addAction(SmallIcon("edit-copy"), tr("Copy Selection"),
                     this, SLOT(selectionToClipboard()),
                     QKeySequence::Copy);
+
+  // item-specific options (select link etc)
+  ChatItem *item = chatItemAt(pos);
+  if(item)
+    item->addActionsToMenu(&menu, item->mapFromScene(pos));
 
   menu.exec(event->screenPos());
 
@@ -693,13 +702,17 @@ void ChatScene::selectionToClipboard(QClipboard::Mode mode) {
   if(!hasSelection())
     return;
 
+  stringToClipboard(selection(), mode);
+}
+
+void ChatScene::stringToClipboard(const QString &str, QClipboard::Mode mode) {
   switch(mode) {
     case QClipboard::Clipboard:
-      QApplication::clipboard()->setText(selection());
+      QApplication::clipboard()->setText(str);
       break;
     case QClipboard::Selection:
       if(QApplication::clipboard()->supportsSelection())
-        QApplication::clipboard()->setText(selection(), QClipboard::Selection);
+        QApplication::clipboard()->setText(str, QClipboard::Selection);
       break;
     default:
       break;

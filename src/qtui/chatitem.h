@@ -21,6 +21,7 @@
 #ifndef CHATITEM_H_
 #define CHATITEM_H_
 
+#include <QAction>
 #include <QGraphicsItem>
 #include <QObject>
 
@@ -67,6 +68,7 @@ public:
 
   QList<QRectF> findWords(const QString &searchWord, Qt::CaseSensitivity caseSensitive);
 
+  virtual void addActionsToMenu(QMenu *menu, const QPointF &itemPos);
   virtual void handleClick(const QPointF &pos, ChatScene::ClickMode);
 
 protected:
@@ -129,7 +131,7 @@ private:
 struct ChatItemPrivate {
   QTextLayout *layout;
   ChatItemPrivate(QTextLayout *l) : layout(l) {}
-  ~ChatItemPrivate() {
+  virtual ~ChatItemPrivate() {
     delete layout;
   }
 };
@@ -174,6 +176,8 @@ struct ContentsChatItemPrivate;
 
 //! A ChatItem for the contents column
 class ContentsChatItem : public ChatItem {
+  Q_DECLARE_TR_FUNCTIONS(ContentsChatItem);
+
 public:
   ContentsChatItem(const qreal &width, const QPointF &pos, QGraphicsItem *parent);
 
@@ -187,9 +191,10 @@ protected:
   virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
   virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
   virtual void hoverMoveEvent(QGraphicsSceneHoverEvent *event);
-  //virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
-
   virtual void handleClick(const QPointF &pos, ChatScene::ClickMode clickMode);
+
+  virtual void addActionsToMenu(QMenu *menu, const QPointF &itemPos);
+  virtual void copyLinkToClipboard();
 
   virtual QVector<QTextLayout::FormatRange> additionalFormats() const;
 
@@ -198,6 +203,7 @@ protected:
 
 private:
   struct Clickable;
+  class ActionProxy;
   class WrapColumnFinder;
 
   inline ContentsChatItemPrivate *privateData() const;
@@ -212,6 +218,9 @@ private:
   friend struct ContentsChatItemPrivate;
 
   QFontMetricsF *_fontMetrics;
+
+  // we need a receiver for Action signals
+  static ActionProxy _actionProxy;
 };
 
 struct ContentsChatItem::Clickable {
@@ -236,6 +245,7 @@ struct ContentsChatItemPrivate : ChatItemPrivate {
   ContentsChatItem *contentsItem;
   QList<ContentsChatItem::Clickable> clickables;
   ContentsChatItem::Clickable currentClickable;
+  ContentsChatItem::Clickable activeClickable;
 
   ContentsChatItemPrivate(QTextLayout *l, const QList<ContentsChatItem::Clickable> &c, ContentsChatItem *parent)
   : ChatItemPrivate(l), contentsItem(parent), clickables(c) {}
@@ -262,6 +272,28 @@ private:
   qint16 wordidx;
   qint16 lineCount;
   qreal choppedTrailing;
+};
+
+//! Acts as a proxy for Action signals targetted at a ContentsChatItem
+/** Since a ChatItem is not a QObject, hence cannot receive signals, we use a static ActionProxy
+ *  as a receiver instead. This avoids having to handle ChatItem actions (e.g. context menu entries)
+ *  outside the ChatItem.
+ */
+class ContentsChatItem::ActionProxy : public QObject {
+  Q_OBJECT
+
+public slots:
+  inline void copyLinkToClipboard() { item()->copyLinkToClipboard(); }
+
+private:
+  /// Returns the ContentsChatItem that should receive the action event.
+  /** For efficiency reasons, values are not checked for validity. You gotta make sure that you set the data() member
+   *  in the Action correctly.
+   *  @return The ChatItem from which the sending Action originated
+   */
+  inline ContentsChatItem *item() const {
+    return static_cast<ContentsChatItem *>(qobject_cast<QAction *>(sender())->data().value<void *>());
+  }
 };
 
 /*************************************************************************************************/
