@@ -193,12 +193,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>AppearanceSettingsPage</name>
     <message>
-        <location filename="../src/qtui/settingspages/appearancesettingspage.cpp" line="31"/>
+        <location filename="../src/qtui/settingspages/appearancesettingspage.cpp" line="33"/>
         <source>Appearance</source>
         <translation>Utseende</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/appearancesettingspage.cpp" line="31"/>
+        <location filename="../src/qtui/settingspages/appearancesettingspage.cpp" line="33"/>
         <source>General</source>
         <translation>Generelt</translation>
     </message>
@@ -236,6 +236,21 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/qtui/settingspages/appearancesettingspage.ui" line="38"/>
         <source>&lt;System Default&gt;</source>
         <translation>&lt;System Standard&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/appearancesettingspage.ui" line="61"/>
+        <source>Misc:</source>
+        <translation>Div:</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/appearancesettingspage.ui" line="67"/>
+        <source>Show Web Previews</source>
+        <translation>Vis forhåndsvisninger av websider</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/appearancesettingspage.ui" line="77"/>
+        <source>Use Icons to represent away state of Users</source>
+        <translation>Bruk ikoner for å representere tilstanden til Brukere</translation>
     </message>
 </context>
 <context>
@@ -296,7 +311,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">&lt;b&gt;Modus:&lt;/b&gt; %1</translation>
     </message>
     <message>
-        <location filename="../src/client/networkmodel.cpp" line="275"/>
+        <location filename="../src/client/networkmodel.cpp" line="277"/>
         <source>&lt;p&gt; %1 - %2 &lt;/p&gt;</source>
         <translation>&lt;p&gt; %1 - %2 &lt;/p&gt;</translation>
     </message>
@@ -314,7 +329,7 @@ p, li { white-space: pre-wrap; }
         <translation>Koble fra</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/bufferview.cpp" line="486"/>
+        <location filename="../src/uisupport/bufferview.cpp" line="493"/>
         <source>Join Channel</source>
         <translation>Bli med i kanal</translation>
     </message>
@@ -334,19 +349,19 @@ p, li { white-space: pre-wrap; }
         <translation>Slett buffer</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/bufferview.cpp" line="394"/>
+        <location filename="../src/uisupport/bufferview.cpp" line="399"/>
         <source>Hide Events</source>
         <translation>Skjul hendelser</translation>
     </message>
     <message>
         <location filename="../src/uisupport/bufferview.cpp" line="63"/>
         <source>Join Events</source>
-        <translation>Bli med hendelser</translation>
+        <translation type="obsolete">Bli med hendelser</translation>
     </message>
     <message>
         <location filename="../src/uisupport/bufferview.cpp" line="64"/>
         <source>Part Events</source>
-        <translation>Forlate hendelser</translation>
+        <translation type="obsolete">Forlate hendelser</translation>
     </message>
     <message>
         <location filename="../src/uisupport/bufferview.cpp" line="64"/>
@@ -356,17 +371,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/uisupport/bufferview.cpp" line="65"/>
         <source>Quit Events</source>
-        <translation>Avslutt hendelser</translation>
+        <translation type="obsolete">Avslutt hendelser</translation>
     </message>
     <message>
         <location filename="../src/uisupport/bufferview.cpp" line="66"/>
         <source>Mode Events</source>
-        <translation>Mouds hendelser</translation>
+        <translation type="obsolete">Mouds hendelser</translation>
     </message>
     <message>
         <location filename="../src/uisupport/bufferview.cpp" line="61"/>
         <source>Ignore list</source>
-        <translation>Ignorerings liste</translation>
+        <translation>Ignoreringsliste</translation>
     </message>
     <message>
         <location filename="../src/uisupport/bufferview.cpp" line="194"/>
@@ -374,17 +389,17 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">WHO</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/bufferview.cpp" line="486"/>
+        <location filename="../src/uisupport/bufferview.cpp" line="493"/>
         <source>Input channel name:</source>
         <translation>Skriv inn kanal navnet:</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/bufferview.cpp" line="518"/>
+        <location filename="../src/uisupport/bufferview.cpp" line="525"/>
         <source>Remove buffer permanently?</source>
         <translation>Slette buffer permanent?</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/bufferview.cpp" line="520"/>
+        <location filename="../src/uisupport/bufferview.cpp" line="527"/>
         <source>Do you want to delete the buffer &quot;%1&quot; permanently? This will delete all related data, including all backlog data, from the core&apos;s database!</source>
         <translation>Vil do slette bufferen &quot;%1&quot; permanent? Dette vil slette alle relaterte data, inkludert all historikk-data, fra Kjernens database!</translation>
     </message>
@@ -403,11 +418,41 @@ p, li { white-space: pre-wrap; }
         <source>Hide buffers permanently</source>
         <translation>Skjuler Buffere permanent</translation>
     </message>
+    <message>
+        <location filename="../src/uisupport/bufferview.cpp" line="63"/>
+        <source>Joins</source>
+        <translation>Tilknytninger</translation>
+    </message>
+    <message>
+        <location filename="../src/uisupport/bufferview.cpp" line="64"/>
+        <source>Parts</source>
+        <translation>Frakoblinger</translation>
+    </message>
+    <message>
+        <location filename="../src/uisupport/bufferview.cpp" line="65"/>
+        <source>Quits</source>
+        <translation>Avsluttelser</translation>
+    </message>
+    <message>
+        <location filename="../src/uisupport/bufferview.cpp" line="66"/>
+        <source>Nick Changes</source>
+        <translation>Kallenavn endringer</translation>
+    </message>
+    <message>
+        <location filename="../src/uisupport/bufferview.cpp" line="67"/>
+        <source>Mode</source>
+        <translation>Modus</translation>
+    </message>
+    <message>
+        <location filename="../src/uisupport/bufferview.cpp" line="68"/>
+        <source>Day Change</source>
+        <translation>Dagsendringer</translation>
+    </message>
 </context>
 <context>
     <name>BufferViewDock</name>
     <message>
-        <location filename="../src/uisupport/bufferview.cpp" line="609"/>
+        <location filename="../src/uisupport/bufferview.cpp" line="625"/>
         <source>All Buffers</source>
         <translation>Alle Buffere</translation>
     </message>
@@ -666,32 +711,32 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ChannelBufferItem</name>
     <message>
-        <location filename="../src/client/networkmodel.cpp" line="392"/>
+        <location filename="../src/client/networkmodel.cpp" line="394"/>
         <source>&lt;b&gt;Channel %1&lt;/b&gt;</source>
         <translation>&lt;b&gt;Kanal %1&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/client/networkmodel.cpp" line="395"/>
+        <location filename="../src/client/networkmodel.cpp" line="397"/>
         <source>&lt;b&gt;Users:&lt;/b&gt; %1</source>
         <translation>&lt;b&gt;Brukere:&lt;/b&gt; %1</translation>
     </message>
     <message>
-        <location filename="../src/client/networkmodel.cpp" line="399"/>
+        <location filename="../src/client/networkmodel.cpp" line="401"/>
         <source>&lt;b&gt;Mode:&lt;/b&gt; %1</source>
         <translation>&lt;b&gt;Modus:&lt;/b&gt; %1</translation>
     </message>
     <message>
-        <location filename="../src/client/networkmodel.cpp" line="411"/>
+        <location filename="../src/client/networkmodel.cpp" line="413"/>
         <source>&lt;b&gt;Topic:&lt;/b&gt; %1</source>
         <translation>&lt;b&gt;Emne:&lt;/b&gt; %1</translation>
     </message>
     <message>
-        <location filename="../src/client/networkmodel.cpp" line="415"/>
+        <location filename="../src/client/networkmodel.cpp" line="417"/>
         <source>Not active &lt;br /&gt; Double-click to join</source>
         <translation>Ikke aktive &lt;br/&gt; Dobbelt-klikk for å bli med</translation>
     </message>
     <message>
-        <location filename="../src/client/networkmodel.cpp" line="418"/>
+        <location filename="../src/client/networkmodel.cpp" line="420"/>
         <source>&lt;p&gt; %1 &lt;/p&gt;</source>
         <translation>&lt;p&gt; %1 &lt;/p&gt;</translation>
     </message>
@@ -3126,17 +3171,17 @@ NOE PLASS</translation>
 <context>
     <name>IrcUserItem</name>
     <message>
-        <location filename="../src/client/networkmodel.cpp" line="704"/>
+        <location filename="../src/client/networkmodel.cpp" line="706"/>
         <source>idling since %1</source>
         <translation>inaktiv siden %1</translation>
     </message>
     <message>
-        <location filename="../src/client/networkmodel.cpp" line="707"/>
+        <location filename="../src/client/networkmodel.cpp" line="709"/>
         <source>login time: %1</source>
         <translation>Tid for pålogging: %1</translation>
     </message>
     <message>
-        <location filename="../src/client/networkmodel.cpp" line="710"/>
+        <location filename="../src/client/networkmodel.cpp" line="712"/>
         <source>server: %1</source>
         <translation>server: %1</translation>
     </message>
@@ -3730,17 +3775,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>NetworkItem</name>
     <message>
-        <location filename="../src/client/networkmodel.cpp" line="165"/>
+        <location filename="../src/client/networkmodel.cpp" line="167"/>
         <source>Server: %1</source>
         <translation>Tjener: %1</translation>
     </message>
     <message>
-        <location filename="../src/client/networkmodel.cpp" line="166"/>
+        <location filename="../src/client/networkmodel.cpp" line="168"/>
         <source>Users: %1</source>
         <translation>Brukere: %1</translation>
     </message>
     <message>
-        <location filename="../src/client/networkmodel.cpp" line="169"/>
+        <location filename="../src/client/networkmodel.cpp" line="171"/>
         <source>Lag: %1 msecs</source>
         <translation>Forsinkelse: %1 ms</translation>
     </message>
@@ -3748,17 +3793,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>NetworkModel</name>
     <message>
-        <location filename="../src/client/networkmodel.cpp" line="735"/>
+        <location filename="../src/client/networkmodel.cpp" line="737"/>
         <source>Buffer</source>
         <translation>Buffer</translation>
     </message>
     <message>
-        <location filename="../src/client/networkmodel.cpp" line="735"/>
+        <location filename="../src/client/networkmodel.cpp" line="737"/>
         <source>Topic</source>
         <translation>Emne</translation>
     </message>
     <message>
-        <location filename="../src/client/networkmodel.cpp" line="735"/>
+        <location filename="../src/client/networkmodel.cpp" line="737"/>
         <source>Nick Count</source>
         <translation>Antall Kallenavn</translation>
     </message>
@@ -4306,22 +4351,22 @@ Disse innstillingene definerer kodingen for beskjeder som ikke er Utf8.</transla
 <context>
     <name>QueryBufferItem</name>
     <message>
-        <location filename="../src/client/networkmodel.cpp" line="330"/>
+        <location filename="../src/client/networkmodel.cpp" line="332"/>
         <source>&lt;b&gt;Query with %1&lt;/b&gt;</source>
         <translation>&lt;b&gt;Spørring med %1&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/client/networkmodel.cpp" line="348"/>
+        <location filename="../src/client/networkmodel.cpp" line="350"/>
         <source>idling since %1</source>
         <translation>inaktiv siden %1</translation>
     </message>
     <message>
-        <location filename="../src/client/networkmodel.cpp" line="351"/>
+        <location filename="../src/client/networkmodel.cpp" line="353"/>
         <source>login time: %1</source>
         <translation>Tid for pålogging: %1</translation>
     </message>
     <message>
-        <location filename="../src/client/networkmodel.cpp" line="354"/>
+        <location filename="../src/client/networkmodel.cpp" line="356"/>
         <source>server: %1</source>
         <translation>server: %1</translation>
     </message>
@@ -4383,32 +4428,32 @@ Disse innstillingene definerer kodingen for beskjeder som ikke er Utf8.</transla
 <context>
     <name>SettingsDlg</name>
     <message>
-        <location filename="../src/qtui/settingsdlg.cpp" line="72"/>
+        <location filename="../src/qtui/settingsdlg.cpp" line="73"/>
         <source>Save changes</source>
         <translation>Lagre endringer</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingsdlg.cpp" line="73"/>
+        <location filename="../src/qtui/settingsdlg.cpp" line="74"/>
         <source>There are unsaved changes on the current configuration page. Would you like to apply your changes now?</source>
         <translation>Det er ikke-lagrede endringer i nåværende konfigurasjonsside. Vil du påføre endringene nå?</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingsdlg.cpp" line="148"/>
+        <location filename="../src/qtui/settingsdlg.cpp" line="149"/>
         <source>Reload Settings</source>
         <translation>Gjeninnles innstillinger</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingsdlg.cpp" line="148"/>
+        <location filename="../src/qtui/settingsdlg.cpp" line="149"/>
         <source>Do you like to reload the settings, undoing your changes on this page?</source>
         <translation>Vil du gjeninnlese innstillingene og angre dine endringer på denne siden?</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingsdlg.cpp" line="157"/>
+        <location filename="../src/qtui/settingsdlg.cpp" line="158"/>
         <source>Restore Defaults</source>
         <translation>Gjenopprett standard</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingsdlg.cpp" line="157"/>
+        <location filename="../src/qtui/settingsdlg.cpp" line="158"/>
         <source>Do you like to restore the default values for this page?</source>
         <translation>Vil du gjenopprette standard verdier for denne siden?</translation>
     </message>
@@ -4505,12 +4550,12 @@ Disse innstillingene definerer kodingen for beskjeder som ikke er Utf8.</transla
 <context>
     <name>StatusBufferItem</name>
     <message>
-        <location filename="../src/client/networkmodel.cpp" line="293"/>
+        <location filename="../src/client/networkmodel.cpp" line="295"/>
         <source>&lt;b&gt;Status buffer of %1&lt;/b&gt;</source>
         <translation>&lt;b&gt;Status buffer av %1&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/client/networkmodel.cpp" line="295"/>
+        <location filename="../src/client/networkmodel.cpp" line="297"/>
         <source>&lt;p&gt; %1 &lt;/p&gt;</source>
         <translation>&lt;p&gt; %1 &lt;/p&gt;</translation>
     </message>
@@ -4574,17 +4619,17 @@ Disse innstillingene definerer kodingen for beskjeder som ikke er Utf8.</transla
 <context>
     <name>SystrayNotificationBackend::ConfigWidget</name>
     <message>
-        <location filename="../src/qtui/systraynotificationbackend.cpp" line="126"/>
+        <location filename="../src/qtui/systraynotificationbackend.cpp" line="123"/>
         <source>System Tray Icon</source>
         <translation>System kurv ikon</translation>
     </message>
     <message>
-        <location filename="../src/qtui/systraynotificationbackend.cpp" line="127"/>
+        <location filename="../src/qtui/systraynotificationbackend.cpp" line="124"/>
         <source>Animate</source>
         <translation>Animer</translation>
     </message>
     <message>
-        <location filename="../src/qtui/systraynotificationbackend.cpp" line="129"/>
+        <location filename="../src/qtui/systraynotificationbackend.cpp" line="126"/>
         <source>Show bubble</source>
         <translation>Vis bobble</translation>
     </message>
@@ -4592,22 +4637,22 @@ Disse innstillingene definerer kodingen for beskjeder som ikke er Utf8.</transla
 <context>
     <name>TaskbarNotificationBackend::ConfigWidget</name>
     <message>
-        <location filename="../src/qtui/taskbarnotificationbackend.cpp" line="72"/>
+        <location filename="../src/qtui/taskbarnotificationbackend.cpp" line="68"/>
         <source>Activate dock entry, timeout:</source>
         <translation>Aktiver dock innslag, timeout:</translation>
     </message>
     <message>
-        <location filename="../src/qtui/taskbarnotificationbackend.cpp" line="74"/>
+        <location filename="../src/qtui/taskbarnotificationbackend.cpp" line="70"/>
         <source>Mark taskbar entry, timeout:</source>
         <translation>Marker oppgaveline innslag, timeout:</translation>
     </message>
     <message>
-        <location filename="../src/qtui/taskbarnotificationbackend.cpp" line="79"/>
+        <location filename="../src/qtui/taskbarnotificationbackend.cpp" line="75"/>
         <source>Unlimited</source>
         <translation>Ubegrenset</translation>
     </message>
     <message>
-        <location filename="../src/qtui/taskbarnotificationbackend.cpp" line="80"/>
+        <location filename="../src/qtui/taskbarnotificationbackend.cpp" line="76"/>
         <source> s</source>
         <translation> s</translation>
     </message>
@@ -4912,7 +4957,7 @@ Click to edit!</source>
 <context>
     <name>UserCategoryItem</name>
     <message numerus="yes">
-        <location filename="../src/client/networkmodel.cpp" line="586"/>
+        <location filename="../src/client/networkmodel.cpp" line="588"/>
         <source>%n Owner(s)</source>
         <translation>
             <numerusform>%n Owner</numerusform>
@@ -4920,7 +4965,7 @@ Click to edit!</source>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/client/networkmodel.cpp" line="587"/>
+        <location filename="../src/client/networkmodel.cpp" line="589"/>
         <source>%n Admin(s)</source>
         <translation>
             <numerusform>%n Admin</numerusform>
@@ -4928,7 +4973,7 @@ Click to edit!</source>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/client/networkmodel.cpp" line="588"/>
+        <location filename="../src/client/networkmodel.cpp" line="590"/>
         <source>%n Operator(s)</source>
         <translation>
             <numerusform>%n Operator</numerusform>
@@ -4936,7 +4981,7 @@ Click to edit!</source>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/client/networkmodel.cpp" line="589"/>
+        <location filename="../src/client/networkmodel.cpp" line="591"/>
         <source>%n Half-Op(s)</source>
         <translation>
             <numerusform>%n Half-Op</numerusform>
@@ -4944,7 +4989,7 @@ Click to edit!</source>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/client/networkmodel.cpp" line="590"/>
+        <location filename="../src/client/networkmodel.cpp" line="592"/>
         <source>%n Voiced</source>
         <translation>
             <numerusform>%n Voiced</numerusform>
@@ -4952,7 +4997,7 @@ Click to edit!</source>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/client/networkmodel.cpp" line="591"/>
+        <location filename="../src/client/networkmodel.cpp" line="593"/>
         <source>%n User(s)</source>
         <translation>
             <numerusform>%n User</numerusform>
