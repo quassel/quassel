@@ -25,7 +25,6 @@ SettingsDlg::SettingsDlg(QWidget *parent)
     _currentPage(0)
 {
   setModal(true);
-  setWindowFlags(Qt::Sheet);
   setAttribute(Qt::WA_DeleteOnClose, true);
   ui.setupUi(this);
 

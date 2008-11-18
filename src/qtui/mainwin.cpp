@@ -569,7 +569,7 @@ void MainWin::showCoreInfoDlg() {
 }
 
 void MainWin::showSettingsDlg() {
-  SettingsDlg *dlg = new SettingsDlg(this);
+  SettingsDlg *dlg = new SettingsDlg();
 
   //Category: Appearance
   dlg->registerSettingsPage(new ColorSettingsPage(dlg));
