@@ -26,19 +26,15 @@
 #include "mainwin.h"
 #include "qtui.h"
 
-TaskbarNotificationBackend::TaskbarNotificationBackend(QObject *parent) : AbstractNotificationBackend(parent) {
+TaskbarNotificationBackend::TaskbarNotificationBackend(QObject *parent)
+  : AbstractNotificationBackend(parent)
+{
   NotificationSettings notificationSettings;
   _enabled = notificationSettings.value("Taskbar/Enabled", true).toBool();
   _timeout = notificationSettings.value("Taskbar/Timeout", 0).toBool();
 
   notificationSettings.notify("Taskbar/Enabled", this, SLOT(enabledChanged(const QVariant &)));
   notificationSettings.notify("Taskbar/Timeout", this, SLOT(timeoutChanged(const QVariant &)));
-
-  _configWidget = new ConfigWidget();
-}
-
-TaskbarNotificationBackend::~TaskbarNotificationBackend() {
-  delete _configWidget;
 }
 
 void TaskbarNotificationBackend::notify(const Notification &notification) {
@@ -60,8 +56,8 @@ void TaskbarNotificationBackend::timeoutChanged(const QVariant &v) {
   _timeout = v.toInt();
 }
 
-SettingsPage *TaskbarNotificationBackend::configWidget() const {
-  return _configWidget;
+SettingsPage *TaskbarNotificationBackend::createConfigWidget() const {
+  return new ConfigWidget();
 }
 
 /***************************************************************************/

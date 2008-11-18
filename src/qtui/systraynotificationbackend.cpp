@@ -29,7 +29,9 @@
 #include "networkmodel.h"
 #include "qtui.h"
 
-SystrayNotificationBackend::SystrayNotificationBackend(QObject *parent) : AbstractNotificationBackend(parent) {
+SystrayNotificationBackend::SystrayNotificationBackend(QObject *parent)
+  : AbstractNotificationBackend(parent)
+{
   NotificationSettings notificationSettings;
   _showBubble = notificationSettings.value("Systray/ShowBubble", true).toBool();
   _animate = notificationSettings.value("Systray/Animate", true).toBool();
@@ -37,13 +39,8 @@ SystrayNotificationBackend::SystrayNotificationBackend(QObject *parent) : Abstra
   notificationSettings.notify("Systray/ShowBubble", this, SLOT(showBubbleChanged(const QVariant &)));
   notificationSettings.notify("Systray/Animate", this, SLOT(animateChanged(const QVariant &)));
 
-  _configWidget = new ConfigWidget();
   _iconActive = false;
   connect(&_animationTimer, SIGNAL(timeout()), SLOT(blink()));
-}
-
-SystrayNotificationBackend::~SystrayNotificationBackend() {
-  delete _configWidget;
 }
 
 void SystrayNotificationBackend::notify(const Notification &notification) {
@@ -116,8 +113,8 @@ void SystrayNotificationBackend::animateChanged(const QVariant &v) {
   _animate = v.toBool();
 }
 
-SettingsPage *SystrayNotificationBackend::configWidget() const {
-  return _configWidget;
+SettingsPage *SystrayNotificationBackend::createConfigWidget() const {
+  return new ConfigWidget();
 }
 
 /***************************************************************************/

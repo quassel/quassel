@@ -32,11 +32,10 @@ class SystrayNotificationBackend : public AbstractNotificationBackend {
 
 public:
   SystrayNotificationBackend(QObject *parent = 0);
-  ~SystrayNotificationBackend();
 
   void notify(const Notification &);
   void close(uint notificationId);
-  SettingsPage *configWidget() const;
+  virtual SettingsPage *createConfigWidget() const;
 
 private slots:
   void showBubble();
@@ -51,7 +50,6 @@ private slots:
 private:
   class ConfigWidget;
 
-  SettingsPage *_configWidget;
   bool _showBubble;
   bool _animate;
   bool _iconActive;

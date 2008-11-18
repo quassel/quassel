@@ -41,11 +41,10 @@ class DesktopNotificationBackend : public AbstractNotificationBackend {
 
 public:
   DesktopNotificationBackend(QObject *parent = 0);
-  ~DesktopNotificationBackend();
 
   void notify(const Notification &);
   void close(uint notificationId);
-  SettingsPage *configWidget() const;
+  virtual SettingsPage *createConfigWidget() const;
 
 private slots:
   void desktopNotificationClosed(uint id, uint reason);
@@ -61,7 +60,6 @@ private slots:
 
 private:
   class ConfigWidget;
-  SettingsPage *_configWidget;
 
   org::freedesktop::Notifications *_dbusInterface;
   bool _daemonSupportsMarkup;
@@ -78,23 +76,23 @@ private:
 class DesktopNotificationBackend::ConfigWidget : public SettingsPage {
   Q_OBJECT
 
-  public:
-    ConfigWidget(QWidget *parent = 0);
-    void save();
-    void load();
-    bool hasDefaults() const;
-    void defaults();
+public:
+  ConfigWidget(QWidget *parent = 0);
+  void save();
+  void load();
+  bool hasDefaults() const;
+  void defaults();
 
-  private slots:
-    void widgetChanged();
+private slots:
+  void widgetChanged();
 
-  private:
-    Ui::DesktopNotificationConfigWidget ui;
-    int xHint, yHint;
-    bool useHints, queueNotifications;
-    int timeout;
-    bool useTimeout;
-    bool enabled;
+private:
+  Ui::DesktopNotificationConfigWidget ui;
+  int xHint, yHint;
+  bool useHints, queueNotifications;
+  int timeout;
+  bool useTimeout;
+  bool enabled;
 };
 
 #endif

@@ -33,11 +33,10 @@ class TaskbarNotificationBackend : public AbstractNotificationBackend {
 
 public:
   TaskbarNotificationBackend(QObject *parent = 0);
-  ~TaskbarNotificationBackend();
 
   void notify(const Notification &);
   void close(uint notificationId);
-  SettingsPage *configWidget() const;
+  virtual SettingsPage *createConfigWidget() const;
 
 private slots:
   void enabledChanged(const QVariant &);
@@ -46,7 +45,6 @@ private slots:
 private:
   class ConfigWidget;
 
-  SettingsPage *_configWidget;
   bool _enabled;
   int _timeout;
 };

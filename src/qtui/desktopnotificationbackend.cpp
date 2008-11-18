@@ -26,9 +26,9 @@
 #include "clientsettings.h"
 #include "networkmodel.h"
 
-DesktopNotificationBackend::DesktopNotificationBackend(QObject *parent) : AbstractNotificationBackend(parent) {
-  _configWidget = new ConfigWidget();
-
+DesktopNotificationBackend::DesktopNotificationBackend(QObject *parent)
+  : AbstractNotificationBackend(parent)
+{
   _dbusInterface = new org::freedesktop::Notifications(
     "org.freedesktop.Notifications",
     "/org/freedesktop/Notifications",
@@ -57,10 +57,6 @@ DesktopNotificationBackend::DesktopNotificationBackend(QObject *parent) : Abstra
   notificationSettings.notify("DesktopNotification/Timeout", this, SLOT(timeoutChanged(const QVariant &)));
   notificationSettings.notify("DesktopNotification/UseTimeout", this, SLOT(useTimeoutChanged(const QVariant &)));
   notificationSettings.notify("DesktopNotification/QueueNotifications", this, SLOT(queueNotificationsChanged(const QVariant &)));
-}
-
-DesktopNotificationBackend::~DesktopNotificationBackend() {
-  delete _configWidget;
 }
 
 void DesktopNotificationBackend::enabledChanged(const QVariant &v) {
@@ -154,8 +150,8 @@ void DesktopNotificationBackend::desktopNotificationInvoked(uint id, const QStri
   Q_UNUSED(id); Q_UNUSED(action);
 }
 
-SettingsPage *DesktopNotificationBackend::configWidget() const {
-  return _configWidget;
+SettingsPage *DesktopNotificationBackend::createConfigWidget() const {
+  return new ConfigWidget();
 }
 
 /***************************************************************************/

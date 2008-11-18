@@ -29,8 +29,9 @@ NotificationsSettingsPage::NotificationsSettingsPage(QWidget *parent)
 
   QVBoxLayout *layout = new QVBoxLayout(this);
   foreach(AbstractNotificationBackend *backend, QtUi::notificationBackends()) {
-    SettingsPage *cw = backend->configWidget();
+    SettingsPage *cw = backend->createConfigWidget();
     if(cw) {
+      cw->setParent(this);
       _configWidgets.append(cw);
       layout->addWidget(cw);
       connect(cw, SIGNAL(changed(bool)), SLOT(widgetHasChanged()));
