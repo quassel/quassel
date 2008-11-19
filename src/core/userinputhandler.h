@@ -66,6 +66,8 @@ public slots:
 
   void defaultHandler(QString cmd, const BufferInfo &bufferInfo, const QString &text);
 
+  void issueQuit(const QString &reason);
+
 private:
   void expand(const QString &alias, const BufferInfo &bufferInfo, const QString &msg);
   void banOrUnban(const BufferInfo &bufferInfo, const QString &text, bool ban);

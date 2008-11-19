@@ -89,7 +89,7 @@ public:
 public slots:
   // void setServerOptions();
   void connectToIrc(bool reconnecting = false);
-  void disconnectFromIrc(bool requested = true);
+  void disconnectFromIrc(bool requested = true, const QString &reason = QString());
   void userInput(BufferInfo bufferInfo, QString msg);
 
   void putRawLine(QByteArray input);

@@ -317,15 +317,16 @@ void UserInputHandler::handleQuery(const BufferInfo &bufferInfo, const QString &
 
 void UserInputHandler::handleQuit(const BufferInfo &bufferInfo, const QString &msg) {
   Q_UNUSED(bufferInfo)
+  networkConnection()->disconnectFromIrc(true, msg);
+}
 
+void UserInputHandler::issueQuit(const QString &reason) {
   QString quitReason;
-  if(msg.isEmpty())
+  if(reason.isEmpty())
     quitReason = networkConnection()->identity()->quitReason();
   else
-    quitReason = msg;
-
+    quitReason = reason;
   emit putCmd("QUIT", serverEncode(quitReason));
-  networkConnection()->disconnectFromIrc();
 }
 
 void UserInputHandler::handleQuote(const BufferInfo &bufferInfo, const QString &msg) {

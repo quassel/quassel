@@ -253,19 +253,24 @@ void NetworkConnection::sendPerform() {
   if(!joinString.isEmpty()) userInputHandler()->handleJoin(statusBuf, joinString);
 }
 
-void NetworkConnection::disconnectFromIrc(bool requested) {
+void NetworkConnection::disconnectFromIrc(bool requested, const QString &reason) {
   _quitRequested = requested; // see socketDisconnected();
   _autoReconnectTimer.stop();
   _autoReconnectCount = 0; // prohibiting auto reconnect
   displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("Disconnecting."));
   if(socket.state() == QAbstractSocket::UnconnectedState) {
     socketDisconnected();
-  } else if(socket.state() < QAbstractSocket::ConnectedState) {
+  } else if(socket.state() < QAbstractSocket::ConnectedState || !requested) {
+    // we might be in a state waiting for a timeout...
+    // or (!requested) this is a core shutdown...
+    // in both cases we don't really care... set a disconnected state
     socket.close();
-    // we might be in a state waiting for a timeout... we don't care... set a disconnected state
     socketDisconnected();
   } else {
-    _socketCloseTimer.start(10000); // the irc server has 10 seconds to close the socket
+    // quit gracefully if it's user requested quit
+    userInputHandler()->issueQuit(reason);
+    // the irc server has 10 seconds to close the socket
+    _socketCloseTimer.start(10000);
   }
 }
 
@@ -381,7 +386,13 @@ void NetworkConnection::socketDisconnected() {
   _autoWhoInProgress.clear();
 
   _socketCloseTimer.stop();
-  
+
+  IrcUser *me = network()->me();
+  if(me) {
+    foreach(QString channel, me->channels())
+      emit displayMsg(Message::Quit, BufferInfo::ChannelBuffer, channel, "", me->hostmask());
+  }
+
   network()->setConnected(false);
   emit disconnected(networkId());
   if(_quitRequested) {
