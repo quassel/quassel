@@ -366,12 +366,12 @@ bool Core::startListening() {
   uint port = Quassel::optionValue("port").toUInt();
 
   if(_server.listen(QHostAddress::Any, port)) {
-    quInfo() << "Listening for GUI clients on IPv6 port" << _server.serverPort()
+    quInfo() << "Listening for GUI clients on IPv4 port" << _server.serverPort()
              << "using protocol version" << Quassel::buildInfo().protocolVersion;
     success = true;
   }
   if(_v6server.listen(QHostAddress::AnyIPv6, port)) {
-    quInfo() << "Listening for GUI clients on IPv4 port" << _v6server.serverPort()
+    quInfo() << "Listening for GUI clients on IPv6 port" << _v6server.serverPort()
              << "using protocol version" << Quassel::buildInfo().protocolVersion;
     success = true;
   }
