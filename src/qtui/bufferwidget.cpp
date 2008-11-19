@@ -145,13 +145,13 @@ void BufferWidget::zoomOriginal() {
     view->zoomOriginal();
 }
 
-void BufferWidget::addActionsToMenu(QMenu *menu) {
+void BufferWidget::addActionsToMenu(QMenu *menu, const QPointF &pos) {
+  Q_UNUSED(pos);
   ActionCollection *coll = QtUi::actionCollection();
   menu->addSeparator();
   menu->addAction(coll->action("ZoomInChatView"));
   menu->addAction(coll->action("ZoomOutChatView"));
   menu->addAction(coll->action("ZoomOriginalChatView"));
-
 }
 
 bool BufferWidget::eventFilter(QObject *watched, QEvent *event) {

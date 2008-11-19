@@ -579,7 +579,8 @@ void ChatScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event) {
   QMenu menu;
 
   // zoom actions and similar
-  chatView()->addActionsToMenu(&menu);
+  chatView()->addActionsToMenu(&menu, pos);
+  menu.addSeparator();
 
   if(isPosOverSelection(pos))
     menu.addAction(SmallIcon("edit-copy"), tr("Copy Selection"),

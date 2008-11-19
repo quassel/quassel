@@ -39,7 +39,7 @@ public:
   virtual bool eventFilter(QObject *watched, QEvent *event);
 
   inline ChatViewSearchBar *searchBar() const { return ui.searchBar; }
-  void addActionsToMenu(QMenu *);
+  void addActionsToMenu(QMenu *, const QPointF &pos);
 
 protected:
   virtual AbstractChatView *createChatView(BufferId);

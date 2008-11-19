@@ -45,6 +45,7 @@ ChatView::ChatView(BufferId bufferId, QWidget *parent)
 ChatView::ChatView(MessageFilter *filter, QWidget *parent)
   : QGraphicsView(parent),
     AbstractChatView(),
+    _bufferContainer(0),
     _currentScaleFactor(1)
 {
   init(filter);
@@ -150,11 +151,11 @@ MsgId ChatView::lastMsgId() const {
   return model->data(model->index(model->rowCount() - 1, 0), MessageModel::MsgIdRole).value<MsgId>();
 }
 
-void ChatView::addActionsToMenu(QMenu *menu) {
+void ChatView::addActionsToMenu(QMenu *menu, const QPointF &pos) {
   // zoom actions
   BufferWidget *bw = qobject_cast<BufferWidget *>(bufferContainer());
   if(bw) {
-    bw->addActionsToMenu(menu);
+    bw->addActionsToMenu(menu, pos);
     menu->addSeparator();
   }
 }

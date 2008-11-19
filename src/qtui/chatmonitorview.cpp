@@ -41,28 +41,26 @@ ChatMonitorView::ChatMonitorView(ChatMonitorFilter *filter, QWidget *parent)
   scene()->setSenderCutoffMode(ChatScene::CutoffLeft);
 }
 
-void ChatMonitorView::contextMenuEvent(QContextMenuEvent *event) {
-  QMenu contextMenu(this);
-
-  QAction *showOwnNicksAction = contextMenu.addAction(tr("Show own messages"), _filter, SLOT(setShowOwnMessages(bool)));
+void ChatMonitorView::addActionsToMenu(QMenu *menu, const QPointF &pos) {
+  ChatView::addActionsToMenu(menu, pos);
+  menu->addSeparator();
+  QAction *showOwnNicksAction = menu->addAction(tr("Show Own Messages"), _filter, SLOT(setShowOwnMessages(bool)));
   showOwnNicksAction->setCheckable(true);
   showOwnNicksAction->setChecked(_filter->showOwnMessages());
-    
-  if(scene()->columnByScenePos(event->pos()) == ChatLineModel::SenderColumn) {
-    contextMenu.addSeparator();
 
-    QAction *showNetworkAction = contextMenu.addAction(tr("Show network name"), this, SLOT(showFieldsChanged(bool)));
+  if(scene()->columnByScenePos(pos) == ChatLineModel::SenderColumn) {
+    menu->addSeparator();
+
+    QAction *showNetworkAction = menu->addAction(tr("Show Network Name"), this, SLOT(showFieldsChanged(bool)));
     showNetworkAction->setCheckable(true);
     showNetworkAction->setChecked(_filter->showFields() & ChatMonitorFilter::NetworkField);
     showNetworkAction->setData(ChatMonitorFilter::NetworkField);
 
-    QAction *showBufferAction = contextMenu.addAction(tr("Show buffer name"), this, SLOT(showFieldsChanged(bool)));
+    QAction *showBufferAction = menu->addAction(tr("Show Buffer Name"), this, SLOT(showFieldsChanged(bool)));
     showBufferAction->setCheckable(true);
     showBufferAction->setChecked(_filter->showFields() & ChatMonitorFilter::BufferField);
     showBufferAction->setData(ChatMonitorFilter::BufferField);
   }
-
-  contextMenu.exec(QCursor::pos());
 }
 
 void ChatMonitorView::mouseDoubleClickEvent(QMouseEvent *event) {

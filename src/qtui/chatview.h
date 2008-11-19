@@ -47,7 +47,7 @@ public:
 
   inline ChatScene *scene() const { return _scene; }
 
-  void addActionsToMenu(QMenu *);
+  virtual void addActionsToMenu(QMenu *, const QPointF &pos);
 
 public slots:
   inline virtual void clear() {}

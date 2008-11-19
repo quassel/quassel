@@ -32,12 +32,12 @@ public:
   ChatMonitorView(ChatMonitorFilter *filter, QWidget *parent);
 
 protected:
-  virtual void contextMenuEvent(QContextMenuEvent *event);
+  virtual void addActionsToMenu(QMenu *menu, const QPointF &pos);
   virtual void mouseDoubleClickEvent(QMouseEvent *event);
 
 private slots:
   void showFieldsChanged(bool checked);
-    
+
 private:
   ChatMonitorFilter *_filter;
 };
