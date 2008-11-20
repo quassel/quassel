@@ -29,7 +29,9 @@
 #include "titlesetter.h"
 
 class ActionCollection;
+class BufferView;
 class BufferViewConfig;
+class BufferViewDock;
 class BufferWidget;
 class MsgProcessorStatusWidget;
 class NickListWidget;
@@ -49,6 +51,7 @@ class MainWin : public QMainWindow {
     void init();
 
     void addBufferView(BufferViewConfig *config = 0);
+    BufferView *allBuffersView() const;
 
     inline QSystemTrayIcon *systemTrayIcon() const;
 
@@ -128,7 +131,7 @@ class MainWin : public QMainWindow {
 
     QSystemTrayIcon *_trayIcon;
 
-    QList<QDockWidget *> _netViews;
+    QList<BufferViewDock *> _bufferViews;
     BufferWidget *_bufferWidget;
     NickListWidget *_nickListWidget;
 

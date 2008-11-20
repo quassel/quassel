@@ -18,11 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 #include "mainwin.h"
-#include <QDir>
+
 #include "aboutdlg.h"
 #include "action.h"
 #include "actioncollection.h"
 #include "buffermodel.h"
+#include "bufferview.h"
 #include "bufferviewmanager.h"
 #include "bufferwidget.h"
 #include "channellistdlg.h"
@@ -279,7 +280,7 @@ void MainWin::addBufferView(BufferViewConfig *config) {
   addDockWidget(Qt::LeftDockWidgetArea, dock);
   _bufferViewsMenu->addAction(dock->toggleViewAction());
 
-  _netViews.append(dock);
+  _bufferViews.append(dock);
 }
 
 void MainWin::removeBufferView(int bufferViewConfigId) {
@@ -296,6 +297,13 @@ void MainWin::removeBufferView(int bufferViewConfigId) {
       dock->deleteLater();
     }
   }
+}
+
+BufferView *MainWin::allBuffersView() const {
+  // "All Buffers" is always the first dock created
+  if(_bufferViews.count() > 0)
+    return _bufferViews[0]->bufferView();
+  return 0;
 }
 
 void MainWin::on_actionEditNetworks_triggered() {

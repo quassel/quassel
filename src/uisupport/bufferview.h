@@ -134,9 +134,10 @@ public:
   BufferViewDock(BufferViewConfig *config, QWidget *parent);
   BufferViewDock(QWidget *parent);
 
+  inline BufferView *bufferView() const { return qobject_cast<BufferView *>(widget()); }
+
 public slots:
   void bufferViewRenamed(const QString &newName);
 };
 
 #endif
-
