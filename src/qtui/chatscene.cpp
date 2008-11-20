@@ -595,7 +595,8 @@ void ChatScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event) {
 void ChatScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
   if(event->buttons() == Qt::LeftButton) {
     if(!_clickHandled && (event->scenePos() - _clickPos).toPoint().manhattanLength() >= QApplication::startDragDistance()) {
-      if(_clickTimer.isActive()) _clickTimer.stop();
+      if(_clickTimer.isActive())
+        _clickTimer.stop();
       if(_clickMode == SingleClick && isPosOverSelection(_clickPos))
         initiateDrag(event->widget());
       else {
@@ -608,7 +609,7 @@ void ChatScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
       updateSelection(event->scenePos());
       emit mouseMoveWhileSelecting(event->scenePos());
       event->accept();
-    } else if(_clickHandled)
+    } else if(_clickHandled && _clickMode < DoubleClick)
       QGraphicsScene::mouseMoveEvent(event);
   } else
     QGraphicsScene::mouseMoveEvent(event);
@@ -624,14 +625,12 @@ void ChatScene::mousePressEvent(QGraphicsSceneMouseEvent *event) {
     }
     if(_clickMode != NoClick && _clickTimer.isActive()) {
       _clickMode = (ClickMode)(_clickMode == TripleClick ? DoubleClick : _clickMode + 1);
-      handleClick(Qt::LeftButton, event->scenePos());
+      handleClick(Qt::LeftButton, _clickPos);
     } else {
       _clickMode = SingleClick;
       _clickPos = event->scenePos();
     }
     _clickTimer.start();
-  } else if(event->buttons() == Qt::RightButton) {
-    handleClick(Qt::RightButton, event->scenePos());
   }
   if(event->type() == QEvent::GraphicsSceneMouseDoubleClick)
     QGraphicsScene::mouseDoubleClickEvent(event);

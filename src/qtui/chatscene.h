@@ -63,9 +63,9 @@ public:
   enum ClickMode {
     NoClick,
     SingleClick,
+    DragStartClick,
     DoubleClick,
-    TripleClick,
-    DragStartClick
+    TripleClick
   };
 
   ChatScene(QAbstractItemModel *model, const QString &idString, qreal width, ChatView *parent);
