@@ -671,7 +671,7 @@ void ChatScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
 }
 
 void ChatScene::clickTimeout() {
-  if(!_leftButtonPressed && _clickMode == SingleClick)
+  if(!_leftButtonPressed && _clickMode == SingleClick && !_clickHandled)
     handleClick(Qt::LeftButton, _clickPos);
 }
 
