@@ -50,7 +50,7 @@ class NetworkItem : public PropertyMapItem {
   Q_PROPERTY(QString networkName READ networkName)
   Q_PROPERTY(QString currentServer READ currentServer)
   Q_PROPERTY(int nickCount READ nickCount)
-    
+
 public:
   NetworkItem(const NetworkId &netid, AbstractTreeItem *parent = 0);
 
@@ -180,7 +180,7 @@ public:
 
   virtual inline QString topic() const { return (bool)_ircChannel ? _ircChannel->topic() : QString(); }
   virtual inline int nickCount() const { return (bool)_ircChannel ? _ircChannel->ircUsers().count() : 0; }
-  
+
   void attachIrcChannel(IrcChannel *ircChannel);
 
 public slots:
@@ -207,7 +207,7 @@ class IrcUserItem;
 class UserCategoryItem : public PropertyMapItem {
   Q_OBJECT
   Q_PROPERTY(QString categoryName READ categoryName)
-    
+
 public:
   UserCategoryItem(int category, AbstractTreeItem *parent);
 
@@ -233,7 +233,7 @@ private:
 class IrcUserItem : public PropertyMapItem {
   Q_OBJECT
   Q_PROPERTY(QString nickName READ nickName)
-    
+
 public:
   IrcUserItem(IrcUser *ircUser, AbstractTreeItem *parent);
 
@@ -299,13 +299,21 @@ public:
 
   BufferInfo::ActivityLevel bufferActivity(const BufferInfo &buffer) const;
 
-  QString bufferName(BufferId bufferId);
-  BufferInfo::Type bufferType(BufferId bufferId);
-  BufferInfo bufferInfo(BufferId bufferId);
-  MsgId lastSeenMsgId(BufferId bufferId);
-  MsgId lastSeenMarkerMsgId(BufferId bufferId);
-  NetworkId networkId(BufferId bufferId);
-  QString networkName(BufferId bufferId);
+  //! Finds a buffer with a given name in a given network
+  /** This performs a linear search through all BufferItems, hence it is expensive.
+   *  @param networkId  The network which we search in
+   *  @param bufferName The bufferName we look for
+   *  @return The id of the buffer if found, an invalid one else
+   */
+  BufferId bufferId(NetworkId networkId, const QString &bufferName) const;
+
+  QString bufferName(BufferId bufferId) const;
+  BufferInfo::Type bufferType(BufferId bufferId) const;
+  BufferInfo bufferInfo(BufferId bufferId) const;
+  MsgId lastSeenMsgId(BufferId bufferId) const;
+  MsgId lastSeenMarkerMsgId(BufferId bufferId) const;
+  NetworkId networkId(BufferId bufferId) const;
+  QString networkName(BufferId bufferId) const;
 
   inline QList<BufferId> allBufferIds() const { return _bufferItemCache.keys(); }
 
