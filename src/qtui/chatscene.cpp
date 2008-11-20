@@ -110,10 +110,6 @@ ChatScene::ChatScene(QAbstractItemModel *model, const QString &idString, qreal w
   _clickTimer.setSingleShot(true);
   connect(&_clickTimer, SIGNAL(timeout()), SLOT(clickTimeout()));
 
-  _clickTimer.setInterval(QApplication::doubleClickInterval());
-  _clickTimer.setSingleShot(true);
-  connect(&_clickTimer, SIGNAL(timeout()), SLOT(clickTimeout()));
-
   setItemIndexMethod(QGraphicsScene::NoIndex);
 }
 
@@ -671,7 +667,7 @@ void ChatScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
 }
 
 void ChatScene::clickTimeout() {
-  if(!_leftButtonPressed && _clickMode == SingleClick && !_clickHandled)
+  if(!_leftButtonPressed && _clickMode == SingleClick)
     handleClick(Qt::LeftButton, _clickPos);
 }
 
