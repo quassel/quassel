@@ -13,6 +13,14 @@ changes, the git history at <http://git.quassel-irc.org> is your friend.
 
 Without further ado, let's start:
 
+Version 0.3.2 (not yet released)
+================================
+
+* Improved context menus in ChatView
+* Respect the separate clipboards (Ctrl+C / X11 selection) on X11
+* Improved mouse handling:
+  - Double/triple click selections
+  - Drag'n'Drop
 
 Version 0.3.1 (2008-11-20)
 ================================
