@@ -2,23 +2,6 @@
 <!DOCTYPE TS><TS version="1.1" language="de">
 <defaultcodec></defaultcodec>
 <context>
-    <name>QShortcut</name>
-    <message>
-        <source>Ctrl</source>
-	<translation>Strg</translation>
-    </message>
-    <message>
-        <source>Shift</source>
-        <translation>Umschalt</translation>
-    </message>
-    <message>
-        <source>Alt</source>
-    </message>
-    <message>
-        <source>Meta</source>
-    </message>
-</context>
-<context>
     <name></name>
     <message>
         <location filename="../src/common/message.h" line="68"/>
@@ -3937,11 +3920,11 @@ Lassen Sie dies auf ISO-8859-1 gesetzt, falls Sie nicht *wirklich* wissen, was S
     <name>QShortcut</name>
     <message>
         <source>Ctrl</source>
-        <translation type="obsolete">Strg</translation>
+        <translation>Strg</translation>
     </message>
     <message>
         <source>Shift</source>
-        <translation type="obsolete">Umschalt</translation>
+        <translation>Umschalt</translation>
     </message>
 </context>
 <context>
