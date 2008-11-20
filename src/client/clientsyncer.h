@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _CLIENTSYNCER_H_
-#define _CLIENTSYNCER_H_
+#ifndef CLIENTSYNCER_H_
+#define CLIENTSYNCER_H_
 
 #include <QPointer>
 #include <QString>
@@ -30,6 +30,8 @@
 #else
 #  include <QTcpSocket>
 #endif
+
+#include "types.h"
 
 class IrcUser;
 class IrcChannel;
@@ -68,7 +70,7 @@ public slots:
   void connectToCore(const QVariantMap &);
   void loginToCore(const QString &user, const QString &passwd);
   void disconnectFromCore();
-  void useInternalCore();
+  void useInternalCore(AccountId internalAccountId);
 
 private slots:
   void coreSocketError(QAbstractSocket::SocketError);

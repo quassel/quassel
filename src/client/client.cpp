@@ -259,18 +259,15 @@ void Client::userInput(BufferInfo bufferInfo, QString message) {
 
 /*** core connection stuff ***/
 
-void Client::setConnectedToCore(QIODevice *socket, AccountId id) {
-  // if the socket is an orphan, the signalProxy adopts it.
-  // -> we don't need to care about it anymore
-  socket->setParent(0);
-  signalProxy()->addPeer(socket);
+void Client::setConnectedToCore(AccountId id, QIODevice *socket) {
+  if(socket) { // external core
+    // if the socket is an orphan, the signalProxy adopts it.
+    // -> we don't need to care about it anymore
+    socket->setParent(0);
+    signalProxy()->addPeer(socket);
+  }
   _connectedToCore = true;
   setCurrentCoreAccount(id);
-}
-
-void Client::setConnectedToInternalCore() {
-  _connectedToCore = true;
-  setCurrentCoreAccount(AccountId());
 }
 
 void Client::setSyncedToCore() {

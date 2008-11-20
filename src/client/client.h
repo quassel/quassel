@@ -174,8 +174,7 @@ private slots:
   void coreNetworkCreated(NetworkId);
   void coreNetworkRemoved(NetworkId);
 
-  void setConnectedToCore(QIODevice *socket, AccountId id);
-  void setConnectedToInternalCore();
+  void setConnectedToCore(AccountId id, QIODevice *socket = 0);
   void setSyncedToCore();
   void setSecuredConnection();
 

@@ -169,7 +169,8 @@ void ClientSyncer::coreSocketConnected() {
   SignalProxy::writeDataToDevice(socket, clientInit);
 }
 
-void ClientSyncer::useInternalCore() {
+void ClientSyncer::useInternalCore(AccountId internalAccountId) {
+  coreConnectionInfo["AccountId"] = QVariant::fromValue<AccountId>(internalAccountId);
   emit startInternalCore();
   emit connectToInternalCore(Client::instance()->signalProxy());
 }
@@ -248,7 +249,7 @@ void ClientSyncer::loginToCore(const QString &user, const QString &passwd) {
 void ClientSyncer::internalSessionStateReceived(const QVariant &packedState) {
   QVariantMap state = packedState.toMap();
   emit sessionProgress(1, 1);
-  Client::instance()->setConnectedToInternalCore();
+  Client::instance()->setConnectedToCore(coreConnectionInfo["AccountId"].value<AccountId>());
   syncToCore(state);
 }
 
@@ -256,7 +257,7 @@ void ClientSyncer::sessionStateReceived(const QVariantMap &state) {
   emit sessionProgress(1, 1);
   disconnect(this, SIGNAL(recvPartialItem(quint32, quint32)), this, SIGNAL(sessionProgress(quint32, quint32)));
   disconnect(socket, 0, this, 0);  // rest of communication happens through SignalProxy
-  Client::instance()->setConnectedToCore(socket, coreConnectionInfo["AccountId"].value<AccountId>());
+  Client::instance()->setConnectedToCore(coreConnectionInfo["AccountId"].value<AccountId>(), socket);
   syncToCore(state);
 }
 

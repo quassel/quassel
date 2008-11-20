@@ -32,7 +32,8 @@
 #include "quassel.h"
 
 CoreConnectDlg::CoreConnectDlg(bool autoconnect, QWidget *parent)
-  : QDialog(parent)
+  : QDialog(parent),
+    _internalAccountId(0)
 {
   ui.setupUi(this);
   ui.editAccount->setIcon(SmallIcon("document-properties"));
@@ -65,6 +66,10 @@ CoreConnectDlg::CoreConnectDlg(bool autoconnect, QWidget *parent)
   foreach(AccountId id, s.knownAccounts()) {
     if(!id.isValid()) continue;
     QVariantMap data = s.retrieveAccountData(id);
+    if(data.contains("InternalAccount") && data["InternalAccount"].toBool()) {
+      _internalAccountId = id;
+      continue;
+    }
     data["AccountId"] = QVariant::fromValue<AccountId>(id);
     accounts[id] = data;
     QListWidgetItem *item = new QListWidgetItem(data["AccountName"].toString(), ui.accountList);
@@ -150,14 +155,7 @@ void CoreConnectDlg::on_addAccount_clicked() {
   for(int i = 0; i < ui.accountList->count(); i++) existing << ui.accountList->item(i)->text();
   CoreAccountEditDlg dlg(0, QVariantMap(), existing, this);
   if(dlg.exec() == QDialog::Accepted) {
-    // find free ID
-    AccountId id = accounts.count() + 1;
-    for(AccountId i = 1; i <= accounts.count(); i++) {
-      if(!accounts.keys().contains(i)) {
-        id = i;
-        break;
-      }
-    }
+    AccountId id = findFreeAccountId();
     QVariantMap data = dlg.accountData();
     data["AccountId"] = QVariant::fromValue<AccountId>(id);
     accounts[id] = data;
@@ -221,7 +219,14 @@ void CoreConnectDlg::on_accountButtonBox_accepted() {
 }
 
 void CoreConnectDlg::on_useInternalCore_clicked() {
-  clientSyncer->useInternalCore();
+  if(!_internalAccountId.isValid()) {
+    _internalAccountId = findFreeAccountId();
+    QVariantMap data;
+    data["InternalAccount"] = true;
+    CoreAccountSettings accountSettings;
+    accountSettings.storeAccountData(_internalAccountId, data);
+  }
+  clientSyncer->useInternalCore(_internalAccountId);
   startSync();
 }
 
@@ -447,6 +452,13 @@ void CoreConnectDlg::syncFinished() {
     hide();
     disconnect(wizard, 0, this, 0);
     connect(wizard, SIGNAL(finished(int)), this, SLOT(accept()));
+  }
+}
+
+AccountId CoreConnectDlg::findFreeAccountId() {
+  for(AccountId i = 1;; i++) {
+    if(!accounts.contains(i) && i != _internalAccountId)
+      return i;
   }
 }
 

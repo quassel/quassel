@@ -86,10 +86,13 @@ private slots:
   void coreNetworksProgress(quint32, quint32);
 
 private:
+  AccountId findFreeAccountId();
+
   Ui::CoreConnectDlg ui;
 
   AccountId autoConnectAccount;
   QHash<AccountId, QVariantMap> accounts;
+  AccountId _internalAccountId;
   QVariantMap accountData;
   AccountId account;
 
