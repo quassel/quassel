@@ -14,9 +14,12 @@ changes, the git history at <http://git.quassel-irc.org> is your friend.
 Without further ado, let's start:
 
 
-Version 0.3.1 (not yet released)
+Version 0.3.1 (2008-11-20)
 ================================
 
+* Nick changes and day change messages can now be hidden
+* Web previews and status icons can be disabled
+* Icons for Online/Away/Offline status of queries
 * Load Qt's default translations
 * Add new settings for proper message redirection
 * Add context menu to links
