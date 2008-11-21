@@ -21,6 +21,7 @@
 #ifndef SIGNALPROXY_H
 #define SIGNALPROXY_H
 
+#include <QEvent>
 #include <QList>
 #include <QHash>
 #include <QVariant>
@@ -58,6 +59,11 @@ public:
   enum ClientConnectionType {
     SignalProxyConnection,
     IODeviceConnection
+  };
+
+  enum CustomEvents {
+    PeerSignal = QEvent::User,
+    RemovePeer
   };
 
   SignalProxy(QObject *parent);

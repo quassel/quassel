@@ -45,10 +45,16 @@
 // ==================================================
 class PeerSignalEvent : public QEvent {
 public:
-  PeerSignalEvent(SignalProxy *sender, SignalProxy::RequestType requestType, const QVariantList &params) : QEvent(QEvent::User), sender(sender), requestType(requestType), params(params) {}
+  PeerSignalEvent(SignalProxy *sender, SignalProxy::RequestType requestType, const QVariantList &params) : QEvent(QEvent::Type(SignalProxy::PeerSignal)), sender(sender), requestType(requestType), params(params) {}
   SignalProxy *sender;
   SignalProxy::RequestType requestType;
   QVariantList params;
+};
+
+class RemovePeerEvent : public QEvent {
+public:
+  RemovePeerEvent(QObject *peer) : QEvent(QEvent::Type(SignalProxy::RemovePeer)), peer(peer) {}
+  QObject *peer;
 };
 
 // ==================================================
@@ -306,19 +312,16 @@ bool SignalProxy::addPeer(QIODevice* iodev) {
     return false;
   }
 
-  if(!iodev->isOpen())
-    qWarning("SignalProxy::the device you passed is not open!");
+  if(!iodev->isOpen()) {
+    qWarning("SignalProxy::addPeer(QIODevice *iodev): iodev needs to be open!");
+    return false;
+  }
 
   connect(iodev, SIGNAL(disconnected()), this, SLOT(removePeerBySender()));
   connect(iodev, SIGNAL(readyRead()), this, SLOT(dataAvailable()));
 
-  QAbstractSocket* sock  = qobject_cast<QAbstractSocket*>(iodev);
-  if(sock) {
-    connect(sock, SIGNAL(disconnected()), this, SLOT(removePeerBySender()));
-  }
-
-  if(!sock->parent())
-    sock->setParent(this);
+  if(!iodev->parent())
+    iodev->setParent(this);
 
   _peers[iodev] = new IODevicePeer(iodev, iodev->property("UseCompression").toBool());
 
@@ -759,7 +762,10 @@ void SignalProxy::dispatchSignal(const RequestType &requestType, const QVariantL
     case AbstractPeer::IODevicePeer:
       {
 	IODevicePeer *ioPeer = static_cast<IODevicePeer *>(*peer);
-	ioPeer->dispatchPackedFunc(packedFunc);
+	if(ioPeer->isOpen())
+	  ioPeer->dispatchPackedFunc(packedFunc);
+	else
+	  QCoreApplication::postEvent(this, new RemovePeerEvent(peer.key()));
       }
       break;
     case AbstractPeer::SignalProxyPeer:
@@ -1201,13 +1207,19 @@ void SignalProxy::receiveHeartBeatReply(AbstractPeer *peer, const QVariantList &
 
 void SignalProxy::customEvent(QEvent *event) {
   switch(event->type()) {
-  case QEvent::User:
+  case PeerSignal:
     {
-      PeerSignalEvent *sig = static_cast<PeerSignalEvent *>(event);
-      receivePeerSignal(sig->sender, sig->requestType, sig->params);
+      PeerSignalEvent *e = static_cast<PeerSignalEvent *>(event);
+      receivePeerSignal(e->sender, e->requestType, e->params);
     }
     event->accept();
     break;
+  case RemovePeer:
+    {
+      RemovePeerEvent *e = static_cast<RemovePeerEvent *>(event);
+      removePeer(e->peer);
+    }
+    event->accept();
   default:
     return;
   }
