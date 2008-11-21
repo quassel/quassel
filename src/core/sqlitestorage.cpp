@@ -480,7 +480,6 @@ void SqliteStorage::setPersistentChannelKey(UserId user, const NetworkId &networ
 
 
 void SqliteStorage::createBuffer(UserId user, const NetworkId &networkId, BufferInfo::Type type, const QString &buffer) {
-  // QSqlQuery &query = cachedQuery("insert_buffer");
   QSqlQuery query(logDb());
   query.prepare(queryString("insert_buffer"));
   query.bindValue(":userid", user.toInt());
@@ -494,7 +493,6 @@ void SqliteStorage::createBuffer(UserId user, const NetworkId &networkId, Buffer
 }
 
 BufferInfo SqliteStorage::getBufferInfo(UserId user, const NetworkId &networkId, BufferInfo::Type type, const QString &buffer) {
-  // QSqlQuery &query = cachedQuery("select_bufferByName");
   QSqlQuery query(logDb());
   query.prepare(queryString("select_bufferByName"));
   query.bindValue(":networkid", networkId.toInt());
@@ -636,7 +634,6 @@ BufferId SqliteStorage::renameBuffer(const UserId &user, const NetworkId &networ
 }
 
 void SqliteStorage::setBufferLastSeenMsg(UserId user, const BufferId &bufferId, const MsgId &msgId) {
-  // QSqlQuery &query = cachedQuery("update_buffer_lastseen");
   QSqlQuery query(logDb());
   query.prepare(queryString("update_buffer_lastseen"));
 
@@ -663,7 +660,6 @@ QHash<BufferId, MsgId> SqliteStorage::bufferLastSeenMsgIds(UserId user) {
 }
 
 MsgId SqliteStorage::logMessage(Message msg) {
-  // QSqlQuery &logMessageQuery = cachedQuery("insert_message");
   QSqlQuery logMessageQuery(logDb());
   logMessageQuery.prepare(queryString("insert_message"));
 
@@ -678,7 +674,6 @@ MsgId SqliteStorage::logMessage(Message msg) {
   if(logMessageQuery.lastError().isValid()) {
     // constraint violation - must be NOT NULL constraint - probably the sender is missing...
     if(logMessageQuery.lastError().number() == 19) {
-      // QSqlQuery &addSenderQuery = cachedQuery("insert_sender");
       QSqlQuery addSenderQuery(logDb());
       addSenderQuery.prepare(queryString("insert_sender"));
       addSenderQuery.bindValue(":sender", msg.sender());
@@ -707,7 +702,6 @@ QList<Message> SqliteStorage::requestMsgs(UserId user, BufferId bufferId, int la
     offset = 0;
   } else {
     // we have to determine the real offset first
-    // QSqlQuery &offsetQuery = cachedQuery("select_messagesOffset");
     QSqlQuery offsetQuery(logDb());
     offsetQuery.prepare(queryString("select_messagesOffset"));
 
@@ -719,7 +713,6 @@ QList<Message> SqliteStorage::requestMsgs(UserId user, BufferId bufferId, int la
   }
 
   // now let's select the messages
-  // QSqlQuery &msgQuery = cachedQuery("select_messages");
   QSqlQuery msgQuery(logDb());
   msgQuery.prepare(queryString("select_messages"));
 
@@ -752,7 +745,6 @@ QList<Message> SqliteStorage::requestMsgs(UserId user, BufferId bufferId, QDateT
     return messagelist;
 
   // we have to determine the real offset first
-  // QSqlQuery &offsetQuery = cachedQuery("select_messagesSinceOffset");
   QSqlQuery offsetQuery(logDb());
   offsetQuery.prepare(queryString("select_messagesSinceOffset"));
 
@@ -763,7 +755,6 @@ QList<Message> SqliteStorage::requestMsgs(UserId user, BufferId bufferId, QDateT
   offset = offsetQuery.value(0).toInt();
 
   // now let's select the messages
-  // QSqlQuery &msgQuery = cachedQuery("select_messagesSince");
   QSqlQuery msgQuery(logDb());
   msgQuery.prepare(queryString("select_messagesSince"));
   msgQuery.bindValue(":bufferid", bufferId.toInt());
@@ -795,7 +786,6 @@ QList<Message> SqliteStorage::requestMsgRange(UserId user, BufferId bufferId, in
   if(!bufferInfo.isValid())
     return messagelist;
 
-  // QSqlQuery &rangeQuery = cachedQuery("select_messageRange");
   QSqlQuery rangeQuery(logDb());
   rangeQuery.prepare(queryString("select_messageRange"));
   rangeQuery.bindValue(":bufferid", bufferId.toInt());

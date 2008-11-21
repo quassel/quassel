@@ -45,7 +45,6 @@ QSqlDatabase AbstractSqlStorage::logDb() {
   if(!_connectionPool.contains(QThread::currentThread()))
     addConnectionToPool();
 
-  qDebug() << "using logDb" << _connectionPool[QThread::currentThread()]->name() << QThread::currentThread();
   return QSqlDatabase::database(_connectionPool[QThread::currentThread()]->name());
 }
 
@@ -61,7 +60,6 @@ void AbstractSqlStorage::addConnectionToPool() {
   int connectionId = _nextConnectionId++;
 
   Connection *connection = new Connection(QLatin1String(QString("quassel_connection_%1").arg(connectionId).toLatin1()));
-  qDebug() << "new connection" << connection->name() << currentThread << QLatin1String(QString("quassel_connection_%1").arg(connectionId).toLatin1());
   connection->moveToThread(currentThread);
   connect(this, SIGNAL(destroyed()), connection, SLOT(deleteLater()));
   connect(currentThread, SIGNAL(destroyed()), connection, SLOT(deleteLater()));
