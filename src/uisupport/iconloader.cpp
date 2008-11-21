@@ -79,7 +79,7 @@ void IconLoader::setTheme(const QString &theme) {
   // Own icons in $data/apps/quassel/icons/hicolor
   // Also, plain icon dirs $data/apps/quassel/pics
   foreach(QString dir, dataDirNames) {
-    path = QString("%1/apps/quassel/icons/hicolor").arg(dir);
+    path = QString("%1/icons/hicolor").arg(dir);
     if(QFile::exists(path))
       _themedIconDirNames.append(path);
     path = QString("%1/apps/quassel/pics").arg(dir);
