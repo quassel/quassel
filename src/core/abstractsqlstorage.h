@@ -41,10 +41,10 @@ protected:
   QSqlDatabase logDb();
   
   QString queryString(const QString &queryName, int version);
-  QString queryString(const QString &queryName);
+  inline QString queryString(const QString &queryName) { return queryString(queryName, 0); }
 
-  QSqlQuery *cachedQuery(const QString &queryName, int version);
-  QSqlQuery *cachedQuery(const QString &queryName);
+  QSqlQuery &cachedQuery(const QString &queryName, int version);
+  inline QSqlQuery &cachedQuery(const QString &queryName) { return cachedQuery(queryName, 0); }
 
   QStringList setupQueries();
   bool setup(const QVariantMap &settings = QVariantMap());
@@ -52,7 +52,7 @@ protected:
   QStringList upgradeQueries(int ver);
   bool upgradeDb();
 
-  bool watchQuery(QSqlQuery *query);
+  bool watchQuery(QSqlQuery &query);
   
   int schemaVersion();
   virtual int installedSchemaVersion() { return -1; };
@@ -69,7 +69,6 @@ private:
   int _schemaVersion;
 
   QHash<QPair<QString, int>, QSqlQuery *> _queryCache;
-
 };
 
 

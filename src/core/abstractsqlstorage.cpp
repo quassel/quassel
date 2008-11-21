@@ -133,22 +133,14 @@ QString AbstractSqlStorage::queryString(const QString &queryName, int version) {
   return query.trimmed();
 }
 
-QString AbstractSqlStorage::queryString(const QString &queryName) {
-  return queryString(queryName, 0);
-}
-
-QSqlQuery *AbstractSqlStorage::cachedQuery(const QString &queryName, int version) {
+QSqlQuery &AbstractSqlStorage::cachedQuery(const QString &queryName, int version) {
   QPair<QString, int> queryId = qMakePair(queryName, version);
   if(!_queryCache.contains(queryId)) {
     QSqlQuery *query = new QSqlQuery(logDb());
     query->prepare(queryString(queryName, version));
     _queryCache[queryId] = query;
   }
-  return _queryCache[queryId];
-}
-
-QSqlQuery *AbstractSqlStorage::cachedQuery(const QString &queryName) {
-  return cachedQuery(queryName, 0);
+  return *(_queryCache[queryId]);
 }
 
 QStringList AbstractSqlStorage::setupQueries() {
@@ -170,7 +162,7 @@ bool AbstractSqlStorage::setup(const QVariantMap &settings) {
 
   foreach(QString queryString, setupQueries()) {
     QSqlQuery query = db.exec(queryString);
-    if(!watchQuery(&query)) {
+    if(!watchQuery(query)) {
       qCritical() << "Unable to setup Logging Backend!";
       return false;
     }
@@ -196,7 +188,7 @@ bool AbstractSqlStorage::upgradeDb() {
   for(int ver = installedSchemaVersion() + 1; ver <= schemaVersion(); ver++) {
     foreach(QString queryString, upgradeQueries(ver)) {
       QSqlQuery query = db.exec(queryString);
-      if(!watchQuery(&query)) {
+      if(!watchQuery(query)) {
 	qCritical() << "Unable to upgrade Logging Backend!";
 	return false;
       }
@@ -229,19 +221,19 @@ int AbstractSqlStorage::schemaVersion() {
   return _schemaVersion;
 }
 
-bool AbstractSqlStorage::watchQuery(QSqlQuery *query) {
-  if(query->lastError().isValid()) {
+bool AbstractSqlStorage::watchQuery(QSqlQuery &query) {
+  if(query.lastError().isValid()) {
     qCritical() << "unhandled Error in QSqlQuery!";
-    qCritical() << "                  last Query:\n" << query->lastQuery();
-    qCritical() << "              executed Query:\n" << query->executedQuery();
+    qCritical() << "                  last Query:\n" << query.lastQuery();
+    qCritical() << "              executed Query:\n" << query.executedQuery();
     qCritical() << "                bound Values:";
-    QList<QVariant> list = query->boundValues().values();
+    QList<QVariant> list = query.boundValues().values();
     for (int i = 0; i < list.size(); ++i)
       qCritical() << i << ": " << list.at(i).toString().toAscii().data();
-    qCritical() << "                Error Number:"   << query->lastError().number();
-    qCritical() << "               Error Message:"   << query->lastError().text();
-    qCritical() << "              Driver Message:"   << query->lastError().driverText();
-    qCritical() << "                  DB Message:"   << query->lastError().databaseText();
+    qCritical() << "                Error Number:"   << query.lastError().number();
+    qCritical() << "               Error Message:"   << query.lastError().text();
+    qCritical() << "              Driver Message:"   << query.lastError().driverText();
+    qCritical() << "                  DB Message:"   << query.lastError().databaseText();
     
     return false;
   }
