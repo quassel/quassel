@@ -683,7 +683,6 @@ MsgId SqliteStorage::logMessage(Message msg) {
       addSenderQuery.prepare(queryString("insert_sender"));
       addSenderQuery.bindValue(":sender", msg.sender());
       addSenderQuery.exec();
-      watchQuery(addSenderQuery);
       logMessageQuery.exec();
       if(!watchQuery(logMessageQuery))
 	return 0;

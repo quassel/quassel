@@ -36,15 +36,12 @@ public:
 
 protected:
   virtual bool init(const QVariantMap &settings = QVariantMap());
-  virtual void sync();
+  inline virtual void sync() {};
   
   QSqlDatabase logDb();
   
   QString queryString(const QString &queryName, int version);
   inline QString queryString(const QString &queryName) { return queryString(queryName, 0); }
-
-  QSqlQuery &cachedQuery(const QString &queryName, int version);
-  inline QSqlQuery &cachedQuery(const QString &queryName) { return cachedQuery(queryName, 0); }
 
   QStringList setupQueries();
   bool setup(const QVariantMap &settings = QVariantMap());
@@ -63,9 +60,6 @@ protected:
   inline virtual QString userName() { return QString(); }
   inline virtual QString password() { return QString(); }
 
-signals:
-  void syncCachedQueries();
-
 private slots:
   void connectionDestroyed();
 
@@ -76,6 +70,9 @@ private:
 
   int _nextConnectionId;
   QMutex _connectionPoolMutex;
+  // we let a Connection Object manage each actual db connection
+  // those objects reside in the thread the connection belongs to
+  // which allows us thread safe termination of a connection
   class Connection;
   QHash<QThread *, Connection *> _connectionPool;
 };
@@ -87,19 +84,13 @@ class AbstractSqlStorage::Connection : public QObject {
   Q_OBJECT
 
 public:
-  Connection(const QString &name, AbstractSqlStorage *storage, QObject *parent = 0);
+  Connection(const QString &name, QObject *parent = 0);
   ~Connection();
   
   inline QLatin1String name() const { return QLatin1String(_name); }
-  QSqlQuery &cachedQuery(const QString &queryName, int version);
-
-public slots:
-  void syncCachedQueries();
 
 private:
   QByteArray _name;
-  QHash<QPair<QString, int>, QSqlQuery *> _queryCache;
-  AbstractSqlStorage *_storageEngine;
 };
 
 #endif

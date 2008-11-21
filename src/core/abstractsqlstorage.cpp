@@ -60,10 +60,9 @@ void AbstractSqlStorage::addConnectionToPool() {
 
   int connectionId = _nextConnectionId++;
 
-  Connection *connection = new Connection(QLatin1String(QString("quassel_connection_%1").arg(connectionId).toLatin1()), this);
+  Connection *connection = new Connection(QLatin1String(QString("quassel_connection_%1").arg(connectionId).toLatin1()));
   qDebug() << "new connection" << connection->name() << currentThread << QLatin1String(QString("quassel_connection_%1").arg(connectionId).toLatin1());
   connection->moveToThread(currentThread);
-  connect(this, SIGNAL(syncCachedQueries()), connection, SLOT(syncCachedQueries()));
   connect(this, SIGNAL(destroyed()), connection, SLOT(deleteLater()));
   connect(currentThread, SIGNAL(destroyed()), connection, SLOT(deleteLater()));
   connect(connection, SIGNAL(destroyed()), this, SLOT(connectionDestroyed()));
@@ -112,10 +111,6 @@ bool AbstractSqlStorage::init(const QVariantMap &settings) {
   return true;
 }
 
-void AbstractSqlStorage::sync() {
-  emit syncCachedQueries();
-}
-
 QString AbstractSqlStorage::queryString(const QString &queryName, int version) {
   if(version == 0)
     version = schemaVersion();
@@ -133,12 +128,6 @@ QString AbstractSqlStorage::queryString(const QString &queryName, int version) {
   queryFile.close();
   
   return query.trimmed();
-}
-
-QSqlQuery &AbstractSqlStorage::cachedQuery(const QString &queryName, int version) {
-  Q_ASSERT(_connectionPool.contains(QThread::currentThread()));
-  qDebug() << "cached query" << queryName << "using" << _connectionPool[QThread::currentThread()]->name() << QThread::currentThread();
-  return _connectionPool[QThread::currentThread()]->cachedQuery(queryName, version);
 }
 
 QStringList AbstractSqlStorage::setupQueries() {
@@ -246,19 +235,13 @@ void AbstractSqlStorage::connectionDestroyed() {
 // ========================================
 //  AbstractSqlStorage::Connection
 // ========================================
-AbstractSqlStorage::Connection::Connection(const QString &name, AbstractSqlStorage *storage, QObject *parent)
+AbstractSqlStorage::Connection::Connection(const QString &name, QObject *parent)
   : QObject(parent),
-    _name(name.toLatin1()),
-    _storageEngine(storage)
+    _name(name.toLatin1())
 {
 }
 
 AbstractSqlStorage::Connection::~Connection() {
-  QHash<QPair<QString, int>, QSqlQuery *>::iterator iter = _queryCache.begin();
-  while(iter != _queryCache.end()) {
-    delete *iter;
-    iter = _queryCache.erase(iter);
-  }
   {
     QSqlDatabase db = QSqlDatabase::database(name(), false);
     if(db.isOpen()) {
@@ -267,27 +250,4 @@ AbstractSqlStorage::Connection::~Connection() {
     }
   }
   QSqlDatabase::removeDatabase(name());
-}
-
-QSqlQuery &AbstractSqlStorage::Connection::cachedQuery(const QString &queryName, int version) {
-  QPair<QString, int> queryId = qMakePair(queryName, version);
-  if(_queryCache.contains(queryId)) {
-    return *(_queryCache[queryId]);
-  }
-
-  QSqlQuery *query = new QSqlQuery(QSqlDatabase::database(name()));
-  query->prepare(_storageEngine->queryString(queryName, version));
-  _queryCache[queryId] = query;
-  return *query;
-}
-
-void AbstractSqlStorage::Connection::syncCachedQueries() {
-  QHash<QPair<QString, int>, QSqlQuery *>::iterator iter = _queryCache.begin();
-  while(iter != _queryCache.end()) {
-    delete *iter;
-    iter = _queryCache.erase(iter);
-  }
-  QSqlDatabase db = QSqlDatabase::database(name(), false);
-  if(db.isOpen())
-    db.commit();
 }
