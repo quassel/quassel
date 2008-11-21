@@ -63,13 +63,43 @@ protected:
   inline virtual QString userName() { return QString(); }
   inline virtual QString password() { return QString(); }
 
+signals:
+  void syncCachedQueries();
+
+private slots:
+  void connectionDestroyed();
+
 private:
-  bool openDb();
+  void addConnectionToPool();
 
   int _schemaVersion;
 
-  QHash<QPair<QString, int>, QSqlQuery *> _queryCache;
+  int _nextConnectionId;
+  QMutex _connectionPoolMutex;
+  class Connection;
+  QHash<QThread *, Connection *> _connectionPool;
 };
 
+// ========================================
+//  AbstractSqlStorage::Connection
+// ========================================
+class AbstractSqlStorage::Connection : public QObject {
+  Q_OBJECT
+
+public:
+  Connection(const QString &name, AbstractSqlStorage *storage, QObject *parent = 0);
+  ~Connection();
+  
+  inline QLatin1String name() const { return QLatin1String(_name); }
+  QSqlQuery &cachedQuery(const QString &queryName, int version);
+
+public slots:
+  void syncCachedQueries();
+
+private:
+  QByteArray _name;
+  QHash<QPair<QString, int>, QSqlQuery *> _queryCache;
+  AbstractSqlStorage *_storageEngine;
+};
 
 #endif
