@@ -624,7 +624,13 @@ void ChatScene::mousePressEvent(QGraphicsSceneMouseEvent *event) {
       clearSelection();
     }
     if(_clickMode != NoClick && _clickTimer.isActive()) {
-      _clickMode = (ClickMode)(_clickMode == TripleClick ? DoubleClick : _clickMode + 1);
+      switch(_clickMode) {
+        case NoClick: _clickMode = SingleClick; break;
+        case SingleClick: _clickMode = DoubleClick; break;
+        case DoubleClick: _clickMode = TripleClick; break;
+        case TripleClick: _clickMode = DoubleClick; break;
+        case DragStartClick: break;
+      }
       handleClick(Qt::LeftButton, _clickPos);
     } else {
       _clickMode = SingleClick;

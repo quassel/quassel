@@ -62,8 +62,8 @@ public:
 
   enum ClickMode {
     NoClick,
-    SingleClick,
     DragStartClick,
+    SingleClick,
     DoubleClick,
     TripleClick
   };
