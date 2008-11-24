@@ -28,6 +28,7 @@
 #include <QTreeView>
 #include <QPointer>
 
+#include "actioncollection.h"
 #include "bufferviewconfig.h"
 #include "networkmodel.h"
 
@@ -50,6 +51,8 @@ public:
   void setConfig(BufferViewConfig *config);
   inline BufferViewConfig *config() { return _config; }
 
+  void addActionsToMenu(QMenu *menu, const QModelIndex &index);
+
 public slots:
   void setRootIndexForNetworkId(const NetworkId &networkId);
   void removeSelectedBuffers(bool permanently = false);
@@ -70,6 +73,7 @@ protected:
 private slots:
   void joinChannel(const QModelIndex &index);
   void toggleHeader(bool checked);
+  void actionTriggered(QAction *);
 
   void on_collapse(const QModelIndex &index);
   void on_expand(const QModelIndex &index);
@@ -87,39 +91,22 @@ public:
 
 private:
   QPointer<BufferViewConfig> _config;
-
-  QAction _connectNetAction;
-  QAction _disconnectNetAction;
-  QAction _joinChannelAction;
-
-  QAction _joinBufferAction;
-  QAction _partBufferAction;
-  QAction _hideBufferTemporarilyAction;
-  QAction _hideBufferPermanentlyAction;
-  QAction _removeBufferAction;
-  QAction _ignoreListAction;
-
-  QAction _hideJoinAction;
-  QAction _hidePartAction;
-  QAction _hideQuitAction;
-  QAction _hideNickAction;
-  QAction _hideModeAction;
-  QAction _hideDayChangeAction;
-
+  ActionCollection _menuActions;
+  QModelIndex _menuIndex;
   QHash<NetworkId, bool> _expandedState;
 
   void storeExpandedState(NetworkId networkId, bool expanded);
-
+  void setupMenuActions();
   bool checkRequirements(const QModelIndex &index,
-			 ItemActiveStates requiredActiveState = QFlags<ItemActiveState>(ActiveState) | QFlags<ItemActiveState>(InactiveState));
-  void addItemToMenu(QAction &action, QMenu &menu, const QModelIndex &index,
-		     ItemActiveStates requiredActiveState = QFlags<ItemActiveState>(ActiveState) | QFlags<ItemActiveState>(InactiveState));
-  void addItemToMenu(QAction &action, QMenu &menu, bool condition = true);
-  void addItemToMenu(QMenu &subMenu, QMenu &menu, const QModelIndex &index,
-		     ItemActiveStates requiredActiveState = QFlags<ItemActiveState>(ActiveState) | QFlags<ItemActiveState>(InactiveState));
-  void addSeparatorToMenu(QMenu &menu, const QModelIndex &index,
-			  ItemActiveStates requiredActiveState = QFlags<ItemActiveState>(ActiveState) | QFlags<ItemActiveState>(InactiveState));
-  QMenu *createHideEventsSubMenu(QMenu &menu, BufferId bufferId);
+                          ItemActiveStates requiredActiveState = QFlags<ItemActiveState>(ActiveState | InactiveState));
+  void addItemToMenu(QAction *action, QMenu *menu, const QModelIndex &index,
+                     ItemActiveStates requiredActiveState = QFlags<ItemActiveState>(ActiveState | InactiveState));
+  void addItemToMenu(QAction *action, QMenu *menu, bool condition = true);
+  void addItemToMenu(QMenu *subMenu, QMenu *menu, const QModelIndex &index,
+                     ItemActiveStates requiredActiveState = QFlags<ItemActiveState>(ActiveState | InactiveState));
+  void addSeparatorToMenu(QMenu *menu, const QModelIndex &index,
+                          ItemActiveStates requiredActiveState = QFlags<ItemActiveState>(ActiveState | InactiveState));
+  QMenu *createHideEventsSubMenu(QMenu *menu, BufferId bufferId);
 };
 Q_DECLARE_OPERATORS_FOR_FLAGS(BufferView::ItemActiveStates)
 
