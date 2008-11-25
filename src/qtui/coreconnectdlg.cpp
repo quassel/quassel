@@ -227,6 +227,7 @@ void CoreConnectDlg::on_useInternalCore_clicked() {
     accountSettings.storeAccountData(_internalAccountId, data);
   }
   clientSyncer->useInternalCore(_internalAccountId);
+  ui.loginButtonBox->setStandardButtons(QDialogButtonBox::Cancel);
   startSync();
 }
 
@@ -425,7 +426,8 @@ void CoreConnectDlg::startSync() {
   ui.user->setEnabled(true);
   ui.password->setEnabled(true);
   ui.rememberPasswd->setEnabled(true);
-  ui.loginButtonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
+  if(ui.loginButtonBox->standardButtons() & QDialogButtonBox::Ok) // in mono mode we don't show an Ok Button
+    ui.loginButtonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
 }
 
 void CoreConnectDlg::coreSessionProgress(quint32 val, quint32 max) {
