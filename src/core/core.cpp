@@ -20,7 +20,6 @@
 
 #include <QMetaObject>
 #include <QMetaMethod>
-#include <QMutexLocker>
 #include <QCoreApplication>
 
 #include "core.h"
@@ -35,7 +34,6 @@
 #include "util.h"
 
 Core *Core::instanceptr = 0;
-QMutex Core::mutex;
 
 Core *Core::instance() {
   if(instanceptr) return instanceptr;
@@ -168,9 +166,7 @@ QString Core::setupCore(QVariantMap setupData) {
   CoreSettings s;
   s.setStorageSettings(setupData);
   quInfo() << qPrintable(tr("Creating admin user..."));
-  //mutex.lock();
   storage->addUser(user, password);
-  //mutex.unlock();
   startListening();  // TODO check when we need this
   return QString();
 }
@@ -225,134 +221,17 @@ bool Core::initStorage(QVariantMap dbSettings, bool setup) {
 }
 
 void Core::syncStorage() {
-  // QMutexLocker locker(&mutex);
   if(storage) storage->sync();
 }
 
 /*** Storage Access ***/
-void Core::setUserSetting(UserId userId, const QString &settingName, const QVariant &data) {
-  // QMutexLocker locker(&mutex);
-  instance()->storage->setUserSetting(userId, settingName, data);
-}
-
-QVariant Core::getUserSetting(UserId userId, const QString &settingName, const QVariant &data) {
-  // QMutexLocker locker(&mutex);
-  return instance()->storage->getUserSetting(userId, settingName, data);
-}
-
 bool Core::createNetwork(UserId user, NetworkInfo &info) {
-  // QMutexLocker locker(&mutex);
   NetworkId networkId = instance()->storage->createNetwork(user, info);
   if(!networkId.isValid())
     return false;
 
   info.networkId = networkId;
   return true;
-}
-
-bool Core::updateNetwork(UserId user, const NetworkInfo &info) {
-  // QMutexLocker locker(&mutex);
-  return instance()->storage->updateNetwork(user, info);
-}
-
-bool Core::removeNetwork(UserId user, const NetworkId &networkId) {
-  // QMutexLocker locker(&mutex);
-  return instance()->storage->removeNetwork(user, networkId);
-}
-
-QList<NetworkInfo> Core::networks(UserId user) {
-  // QMutexLocker locker(&mutex);
-  return instance()->storage->networks(user);
-}
-
-NetworkId Core::networkId(UserId user, const QString &network) {
-  // QMutexLocker locker(&mutex);
-  return instance()->storage->getNetworkId(user, network);
-}
-
-QList<NetworkId> Core::connectedNetworks(UserId user) {
-  // QMutexLocker locker(&mutex);
-  return instance()->storage->connectedNetworks(user);
-}
-
-void Core::setNetworkConnected(UserId user, const NetworkId &networkId, bool isConnected) {
-  // QMutexLocker locker(&mutex);
-  return instance()->storage->setNetworkConnected(user, networkId, isConnected);
-}
-
-QHash<QString, QString> Core::persistentChannels(UserId user, const NetworkId &networkId) {
-  // QMutexLocker locker(&mutex);
-  return instance()->storage->persistentChannels(user, networkId);
-}
-
-void Core::setChannelPersistent(UserId user, const NetworkId &networkId, const QString &channel, bool isJoined) {
-  // QMutexLocker locker(&mutex);
-  return instance()->storage->setChannelPersistent(user, networkId, channel, isJoined);
-}
-
-void Core::setPersistentChannelKey(UserId user, const NetworkId &networkId, const QString &channel, const QString &key) {
-  // QMutexLocker locker(&mutex);
-  return instance()->storage->setPersistentChannelKey(user, networkId, channel, key);
-}
-
-BufferInfo Core::bufferInfo(UserId user, const NetworkId &networkId, BufferInfo::Type type, const QString &buffer) {
-  // QMutexLocker locker(&mutex);
-  return instance()->storage->getBufferInfo(user, networkId, type, buffer);
-}
-
-BufferInfo Core::getBufferInfo(UserId user, const BufferId &bufferId) {
-  // QMutexLocker locker(&mutex);
-  return instance()->storage->getBufferInfo(user, bufferId);
-}
-
-MsgId Core::storeMessage(const Message &message) {
-  // QMutexLocker locker(&mutex);
-  return instance()->storage->logMessage(message);
-}
-
-QList<Message> Core::requestMsgs(UserId user, BufferId buffer, int limit, int offset) {
-  // QMutexLocker locker(&mutex);
-  return instance()->storage->requestMsgs(user, buffer, limit, offset);
-}
-
-QList<Message> Core::requestMsgs(UserId user, BufferId buffer, QDateTime since, int offset) {
-  // QMutexLocker locker(&mutex);
-  return instance()->storage->requestMsgs(user, buffer, since, offset);
-}
-
-QList<Message> Core::requestMsgRange(UserId user, BufferId buffer, int first, int last) {
-  // QMutexLocker locker(&mutex);
-  return instance()->storage->requestMsgRange(user, buffer, first, last);
-}
-
-QList<BufferInfo> Core::requestBuffers(UserId user) {
-  // QMutexLocker locker(&mutex);
-  return instance()->storage->requestBuffers(user);
-}
-
-QList<BufferId> Core::requestBufferIdsForNetwork(UserId user, NetworkId networkId) {
-  // QMutexLocker locker(&mutex);
-  return instance()->storage->requestBufferIdsForNetwork(user, networkId);
-}
-
-bool Core::removeBuffer(const UserId &user, const BufferId &bufferId) {
-  // QMutexLocker locker(&mutex);
-  return instance()->storage->removeBuffer(user, bufferId);
-}
-
-BufferId Core::renameBuffer(const UserId &user, const NetworkId &networkId, const QString &newName, const QString &oldName) {
-  // QMutexLocker locker(&mutex);
-  return instance()->storage->renameBuffer(user, networkId, newName, oldName);
-}
-
-void Core::setBufferLastSeenMsg(UserId user, const BufferId &bufferId, const MsgId &msgId) {
-  // QMutexLocker locker(&mutex);
-  return instance()->storage->setBufferLastSeenMsg(user, bufferId, msgId);
-}
-
-QHash<BufferId, MsgId> Core::bufferLastSeenMsgIds(UserId user) {
-  // QMutexLocker locker(&mutex);
-  return instance()->storage->bufferLastSeenMsgIds(user);
 }
 
 /*** Network Management ***/
@@ -545,9 +424,7 @@ void Core::processClientMessage(QTcpSocket *socket, const QVariantMap &msg) {
       SignalProxy::writeDataToDevice(socket, reply);
     } else if(msg["MsgType"] == "ClientLogin") {
       QVariantMap reply;
-      // mutex.lock();
       UserId uid = storage->validateUser(msg["User"].toString(), msg["Password"].toString());
-      // mutex.unlock();
       if(uid == 0) {
         reply["MsgType"] = "ClientLoginReject";
         reply["Error"] = tr("<b>Invalid username or password!</b><br>The username/password combination you supplied could not be found in the database.");
@@ -627,9 +504,7 @@ void Core::setupInternalClientSession(SignalProxy *proxy) {
     setupCoreForInternalUsage();
   }
 
-  // mutex.lock();
   UserId uid = storage->internalUser();
-  // mutex.unlock();
 
   // Find or create session for validated user
   SessionThread *sess;
