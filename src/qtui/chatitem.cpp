@@ -463,6 +463,16 @@ QList<ContentsChatItem::Clickable> ContentsChatItem::findClickables() const {
   return result;
 }
 
+ContentsChatItem::Clickable ContentsChatItem::clickableAt(const QPointF &pos) const {
+  qint16 idx = posToCursor(pos);
+  for(int i = 0; i < privateData()->clickables.count(); i++) {
+    Clickable click = privateData()->clickables.at(i);
+    if(idx >= click.start && idx < click.start + click.length)
+      return click;
+  }
+  return Clickable();
+}
+
 QVector<QTextLayout::FormatRange> ContentsChatItem::additionalFormats() const {
   // mark a clickable if hovered upon
   QVector<QTextLayout::FormatRange> fmt;
@@ -490,7 +500,7 @@ void ContentsChatItem::endHoverMode() {
 
 void ContentsChatItem::handleClick(const QPointF &pos, ChatScene::ClickMode clickMode) {
   if(clickMode == ChatScene::SingleClick) {
-    Clickable click = privateData()->currentClickable;
+    Clickable click = clickableAt(pos);
     if(click.isValid()) {
       QString str = data(ChatLineModel::DisplayRole).toString().mid(click.start, click.length);
       switch(click.type) {
@@ -509,7 +519,7 @@ void ContentsChatItem::handleClick(const QPointF &pos, ChatScene::ClickMode clic
   } else if(clickMode == ChatScene::DoubleClick) {
     chatScene()->setSelectingItem(this);
     setSelectionMode(PartialSelection);
-    Clickable click = privateData()->currentClickable;
+    Clickable click = clickableAt(pos);
     if(click.isValid()) {
       setSelectionStart(click.start);
       setSelectionEnd(click.start + click.length);
@@ -543,23 +553,20 @@ void ContentsChatItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event) {
 
 void ContentsChatItem::hoverMoveEvent(QGraphicsSceneHoverEvent *event) {
   bool onClickable = false;
-  qint16 idx = posToCursor(event->pos());
-  for(int i = 0; i < privateData()->clickables.count(); i++) {
-    Clickable click = privateData()->clickables.at(i);
-    if(idx >= click.start && idx < click.start + click.length) {
-      if(click.type == Clickable::Url) {
-        onClickable = true;
-        showWebPreview(click);
-      } else if(click.type == Clickable::Channel) {
-        // TODO: don't make clickable if it's our own name
-        // onClickable = true; //FIXME disabled for now
-      }
-      if(onClickable) {
-        setCursor(Qt::PointingHandCursor);
-        privateData()->currentClickable = click;
-        update();
-        break;
-      }
+  Clickable click = clickableAt(event->pos());
+  if(click.isValid()) {
+    if(click.type == Clickable::Url) {
+      onClickable = true;
+      showWebPreview(click);
+    } else if(click.type == Clickable::Channel) {
+      // TODO: don't make clickable if it's our own name
+      // onClickable = true; //FIXME disabled for now
+    }
+    if(onClickable) {
+      setCursor(Qt::PointingHandCursor);
+      privateData()->currentClickable = click;
+      update();
+      return;
     }
   }
   if(!onClickable) endHoverMode();

@@ -209,6 +209,8 @@ private:
   inline ContentsChatItemPrivate *privateData() const;
 
   QList<Clickable> findClickables() const;
+  Clickable clickableAt(const QPointF &pos) const;
+
   void endHoverMode();
   void showWebPreview(const Clickable &click);
   void clearWebPreview();
