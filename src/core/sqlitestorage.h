@@ -36,15 +36,15 @@ public:
 
 public slots:
   /* General */
-  
+
   bool isAvailable() const;
   QString displayName() const;
   QString description() const;
 
   // TODO: Add functions for configuring the backlog handling, i.e. defining auto-cleanup settings etc
-  
+
   /* User handling */
-  
+
   virtual UserId addUser(const QString &user, const QString &password);
   virtual void updateUser(UserId user, const QString &password);
   virtual void renameUser(UserId user, const QString &newName);
@@ -54,7 +54,7 @@ public slots:
   virtual void setUserSetting(UserId userId, const QString &settingName, const QVariant &data);
   virtual QVariant getUserSetting(UserId userId, const QString &settingName, const QVariant &defaultData = QVariant());
 
-  
+
   /* Network handling */
   virtual NetworkId createNetwork(UserId user, const NetworkInfo &info);
   virtual bool updateNetwork(UserId user, const NetworkInfo &info);
@@ -67,7 +67,7 @@ public slots:
   virtual QHash<QString, QString> persistentChannels(UserId user, const NetworkId &networkId);
   virtual void setChannelPersistent(UserId user, const NetworkId &networkId, const QString &channel, bool isJoined);
   virtual void setPersistentChannelKey(UserId user, const NetworkId &networkId, const QString &channel, const QString &key);
-  
+
   /* Buffer handling */
   virtual BufferInfo getBufferInfo(UserId user, const NetworkId &networkId, BufferInfo::Type type, const QString &buffer = "");
   virtual BufferInfo getBufferInfo(UserId user, const BufferId &bufferId);
@@ -77,20 +77,22 @@ public slots:
   virtual BufferId renameBuffer(const UserId &user, const NetworkId &networkId, const QString &newName, const QString &oldName);
   virtual void setBufferLastSeenMsg(UserId user, const BufferId &bufferId, const MsgId &msgId);
   virtual QHash<BufferId, MsgId> bufferLastSeenMsgIds(UserId user);
-  
+
   /* Message handling */
-  
+
   virtual MsgId logMessage(Message msg);
   virtual QList<Message> requestMsgs(UserId user, BufferId bufferId, int limit = -1, int offset = -1);
   virtual QList<Message> requestMsgs(UserId user, BufferId bufferId, QDateTime since, int offset = -1);
   virtual QList<Message> requestMsgRange(UserId user, BufferId bufferId, int first, int last);
+  virtual QList<Message> requestNewMsgs(UserId user, BufferId bufferId, int first, int limit = -1);
+  virtual QList<Message> requestAllNewMsgs(UserId user, int first, int limit = -1);
 
 protected:
   inline virtual QString driverName() { return "QSQLITE"; }
   inline virtual QString databaseName() { return backlogFile(); }
   virtual int installedSchemaVersion();
   bool safeExec(QSqlQuery &query, int retryCount = 0);
-  
+
 private:
   static QString backlogFile();
   bool isValidNetwork(UserId user, const NetworkId &networkId);

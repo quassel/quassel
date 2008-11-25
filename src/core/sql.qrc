@@ -37,6 +37,8 @@
     <file>./SQL/SQLite/11/select_internaluser.sql</file>
     <file>./SQL/SQLite/11/select_messageRange.sql</file>
     <file>./SQL/SQLite/11/select_messages.sql</file>
+    <file>./SQL/SQLite/11/select_messagesAllNew.sql</file>
+    <file>./SQL/SQLite/11/select_messagesNew.sql</file>
     <file>./SQL/SQLite/11/select_messagesOffset.sql</file>
     <file>./SQL/SQLite/11/select_messagesSince.sql</file>
     <file>./SQL/SQLite/11/select_messagesSinceOffset.sql</file>

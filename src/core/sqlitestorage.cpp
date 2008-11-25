@@ -811,6 +811,67 @@ QList<Message> SqliteStorage::requestMsgRange(UserId user, BufferId bufferId, in
   return messagelist;
 }
 
+QList<Message> SqliteStorage::requestNewMsgs(UserId user, BufferId bufferId, int first, int limit) {
+  QList<Message> messagelist;
+
+  BufferInfo bufferInfo = getBufferInfo(user, bufferId);
+  if(!bufferInfo.isValid())
+    return messagelist;
+
+  QSqlQuery query(logDb());
+  query.prepare(queryString("select_messagesNew"));
+  query.bindValue(":bufferid", bufferId.toInt());
+  query.bindValue(":firstmsg", first);
+  query.bindValue(":limit", limit);
+  safeExec(query);
+
+  watchQuery(query);
+
+  while(query.next()) {
+    Message msg(QDateTime::fromTime_t(query.value(1).toInt()),
+                bufferInfo,
+                (Message::Type)query.value(2).toUInt(),
+                query.value(5).toString(),
+                query.value(4).toString(),
+                (Message::Flags)query.value(3).toUInt());
+    msg.setMsgId(query.value(0).toInt());
+    messagelist << msg;
+  }
+
+  return messagelist;
+}
+
+QList<Message> SqliteStorage::requestAllNewMsgs(UserId user, int first, int limit) {
+  QList<Message> messagelist;
+
+  QHash<BufferId, BufferInfo> bufferInfoHash;
+  foreach(BufferInfo bufferInfo, requestBuffers(user)) {
+    bufferInfoHash[bufferInfo.bufferId()] = bufferInfo;
+  }
+
+  QSqlQuery query(logDb());
+  query.prepare(queryString("select_messagesAllNew"));
+  query.bindValue(":userid", user.toInt());
+  query.bindValue(":firstmsg", first);
+  query.bindValue(":limit", limit);
+  safeExec(query);
+
+  watchQuery(query);
+
+  while(query.next()) {
+    Message msg(QDateTime::fromTime_t(query.value(1).toInt()),
+                bufferInfoHash[query.value(2).toInt()],
+                (Message::Type)query.value(3).toUInt(),
+                query.value(6).toString(),
+                query.value(5).toString(),
+                (Message::Flags)query.value(4).toUInt());
+    msg.setMsgId(query.value(0).toInt());
+    messagelist << msg;
+  }
+
+  return messagelist;
+}
+
 QString SqliteStorage::backlogFile() {
   return quasselDir().absolutePath() + "/quassel-storage.sqlite";
 }

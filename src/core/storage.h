@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _STORAGE_H_
-#define _STORAGE_H_
+#ifndef STORAGE_H
+#define STORAGE_H
 
 #include <QtCore>
 
@@ -31,306 +31,321 @@ class Storage : public QObject {
   Q_OBJECT
 
   public:
-    Storage(QObject *parent = 0);
-    virtual ~Storage() {};
+  Storage(QObject *parent = 0);
+  virtual ~Storage() {};
 
-  public slots:
-    /* General */
+public slots:
+  /* General */
 
-    //! Check if the storage type is available.
-    /** A storage subclass should return true if it can be successfully used, i.e. if all
-     *  prerequisites are in place (e.g. we have an appropriate DB driver etc.).
-     * \return True if and only if the storage class can be successfully used.
-     */
-    virtual bool isAvailable() const = 0;
+  //! Check if the storage type is available.
+  /** A storage subclass should return true if it can be successfully used, i.e. if all
+   *  prerequisites are in place (e.g. we have an appropriate DB driver etc.).
+   * \return True if and only if the storage class can be successfully used.
+   */
+  virtual bool isAvailable() const = 0;
 
-    //! Returns the display name of the storage backend
-    /** \return A string that can be used by the client to name the storage backend */
-    virtual QString displayName() const = 0;
+  //! Returns the display name of the storage backend
+  /** \return A string that can be used by the client to name the storage backend */
+  virtual QString displayName() const = 0;
 
-    //! Returns a description of this storage backend
-    /** \return A string that can be displayed by the client to describe the storage backend */
-    virtual QString description() const = 0;
+  //! Returns a description of this storage backend
+  /** \return A string that can be displayed by the client to describe the storage backend */
+  virtual QString description() const = 0;
 
-    //! Setup the storage provider.
-    /** This prepares the storage provider (e.g. create tables, etc.) for use within Quassel.
-     *  \param settings   Hostname, port, username, password, ...
-     *  \return True if and only if the storage provider was initialized successfully.
-     */
-    virtual bool setup(const QVariantMap &settings = QVariantMap()) = 0;
+  //! Setup the storage provider.
+  /** This prepares the storage provider (e.g. create tables, etc.) for use within Quassel.
+   *  \param settings   Hostname, port, username, password, ...
+   *  \return True if and only if the storage provider was initialized successfully.
+   */
+  virtual bool setup(const QVariantMap &settings = QVariantMap()) = 0;
 
-    //! Initialize the storage provider
-    /** \param settings   Hostname, port, username, password, ...  
-     *  \return True if and only if the storage provider was initialized successfully.
-     */
-    virtual bool init(const QVariantMap &settings = QVariantMap()) = 0;
+  //! Initialize the storage provider
+  /** \param settings   Hostname, port, username, password, ...  
+   *  \return True if and only if the storage provider was initialized successfully.
+   */
+  virtual bool init(const QVariantMap &settings = QVariantMap()) = 0;
 
-    //! Makes temp data persistent
-    /** This Method is periodically called by the Quassel Core to make temporary
-    *  data persistant. This reduces the data loss drastically in the
-    *  unlikely case of a Core crash.
-    */
-    virtual void sync() = 0;
+  //! Makes temp data persistent
+  /** This Method is periodically called by the Quassel Core to make temporary
+   *  data persistant. This reduces the data loss drastically in the
+   *  unlikely case of a Core crash.
+   */
+  virtual void sync() = 0;
 
-    // TODO: Add functions for configuring the backlog handling, i.e. defining auto-cleanup settings etc
+  // TODO: Add functions for configuring the backlog handling, i.e. defining auto-cleanup settings etc
 
-    /* User handling */
+  /* User handling */
 
-    //! Add a new core user to the storage.
-    /** \param user     The username of the new user
-     *  \param password The cleartext password for the new user
-     *  \return The new user's UserId
-     */
-    virtual UserId addUser(const QString &user, const QString &password) = 0;
+  //! Add a new core user to the storage.
+  /** \param user     The username of the new user
+   *  \param password The cleartext password for the new user
+   *  \return The new user's UserId
+   */
+  virtual UserId addUser(const QString &user, const QString &password) = 0;
 
-    //! Update a core user's password.
-    /** \param user     The user's id
-     *  \param password The user's new password
-     */
-    virtual void updateUser(UserId user, const QString &password) = 0;
+  //! Update a core user's password.
+  /** \param user     The user's id
+   *  \param password The user's new password
+   */
+  virtual void updateUser(UserId user, const QString &password) = 0;
 
-    //! Rename a user
-    /** \param user     The user's id
-     *  \param newName  The user's new name
-     */
-    virtual void renameUser(UserId user, const QString &newName) = 0;
+  //! Rename a user
+  /** \param user     The user's id
+   *  \param newName  The user's new name
+   */
+  virtual void renameUser(UserId user, const QString &newName) = 0;
 
-    //! Validate a username with a given password.
-    /** \param user     The username to validate
-     *  \param password The user's alleged password
-     *  \return A valid UserId if the password matches the username; 0 else
-     */
-    virtual UserId validateUser(const QString &user, const QString &password) = 0;
+  //! Validate a username with a given password.
+  /** \param user     The username to validate
+   *  \param password The user's alleged password
+   *  \return A valid UserId if the password matches the username; 0 else
+   */
+  virtual UserId validateUser(const QString &user, const QString &password) = 0;
 
-    //! Determine the UserId of the internal user
-    /** \return A valid UserId if the password matches the username; 0 else
-     */
-    virtual UserId internalUser() = 0;
+  //! Determine the UserId of the internal user
+  /** \return A valid UserId if the password matches the username; 0 else
+   */
+  virtual UserId internalUser() = 0;
 
-    //! Remove a core user from storage.
-    /** \param user     The userid to delete
-     */
-    virtual void delUser(UserId user) = 0;
+  //! Remove a core user from storage.
+  /** \param user     The userid to delete
+   */
+  virtual void delUser(UserId user) = 0;
 
-    //! Store a user setting persistently
-    /**
-     * \param userId       The users Id
-     * \param settingName  The Name of the Setting
-     * \param data         The Value
-     */
-    virtual void setUserSetting(UserId userId, const QString &settingName, const QVariant &data) = 0;
+  //! Store a user setting persistently
+  /**
+   * \param userId       The users Id
+   * \param settingName  The Name of the Setting
+   * \param data         The Value
+   */
+  virtual void setUserSetting(UserId userId, const QString &settingName, const QVariant &data) = 0;
   
-    //! Retrieve a persistent user setting
-    /**
-     * \param userId       The users Id
-     * \param settingName  The Name of the Setting
-     * \param default      Value to return in case it's unset.
-     * \return the Value of the Setting or the default value if it is unset.
-     */
-    virtual QVariant getUserSetting(UserId userId, const QString &settingName, const QVariant &data = QVariant()) = 0;
+  //! Retrieve a persistent user setting
+  /**
+   * \param userId       The users Id
+   * \param settingName  The Name of the Setting
+   * \param default      Value to return in case it's unset.
+   * \return the Value of the Setting or the default value if it is unset.
+   */
+  virtual QVariant getUserSetting(UserId userId, const QString &settingName, const QVariant &data = QVariant()) = 0;
   
-    /* Network handling */
+  /* Network handling */
 
-    //! Create a new Network in the storage backend and return it unique Id
-    /** \param user        The core user who owns this network
-     *  \param networkInfo The networkInfo holding the network definition
-     *  \return the NetworkId of the newly created Network. Possibly invalid.
-     */
-    virtual NetworkId createNetwork(UserId user, const NetworkInfo &info) = 0;
+  //! Create a new Network in the storage backend and return it unique Id
+  /** \param user        The core user who owns this network
+   *  \param networkInfo The networkInfo holding the network definition
+   *  \return the NetworkId of the newly created Network. Possibly invalid.
+   */
+  virtual NetworkId createNetwork(UserId user, const NetworkInfo &info) = 0;
 
-    //! Apply the changes to NetworkInfo info to the storage engine
-    /**
-     *  \param user        The core user
-     *  \param networkInfo The Updated NetworkInfo
-     *  \return true if successfull.
-     */
-    virtual bool updateNetwork(UserId user, const NetworkInfo &info) = 0;
+  //! Apply the changes to NetworkInfo info to the storage engine
+  /**
+   *  \param user        The core user
+   *  \param networkInfo The Updated NetworkInfo
+   *  \return true if successfull.
+   */
+  virtual bool updateNetwork(UserId user, const NetworkInfo &info) = 0;
 
-    //! Permanently remove a Network and all the data associated with it.
-    /** \note This method is thredsafe.
-     *
-     *  \param user        The core user
-     *  \param networkId   The network to delete
-     *  \return true if successfull.
-     */
-    virtual bool removeNetwork(UserId user, const NetworkId &networkId) = 0;
+  //! Permanently remove a Network and all the data associated with it.
+  /** \note This method is thredsafe.
+   *
+   *  \param user        The core user
+   *  \param networkId   The network to delete
+   *  \return true if successfull.
+   */
+  virtual bool removeNetwork(UserId user, const NetworkId &networkId) = 0;
 
-    //! Returns a list of all NetworkInfos for the given UserId user
-    /** \note This method is thredsafe.
-     *
-     *  \param user        The core user
-     *  \return QList<NetworkInfo>.
-     */
-    virtual QList<NetworkInfo> networks(UserId user) = 0;
+  //! Returns a list of all NetworkInfos for the given UserId user
+  /** \note This method is thredsafe.
+   *
+   *  \param user        The core user
+   *  \return QList<NetworkInfo>.
+   */
+  virtual QList<NetworkInfo> networks(UserId user) = 0;
   
-    //! Get the unique NetworkId of the network for a user.
-    /** \param user    The core user who owns this network
-     *  \param network The network name
-     *  \return The NetworkId corresponding to the given network, or 0 if not found
-     */
-    virtual NetworkId getNetworkId(UserId user, const QString &network) = 0;
+  //! Get the unique NetworkId of the network for a user.
+  /** \param user    The core user who owns this network
+   *  \param network The network name
+   *  \return The NetworkId corresponding to the given network, or 0 if not found
+   */
+  virtual NetworkId getNetworkId(UserId user, const QString &network) = 0;
 
-    //! Get a list of Networks to restore
-    /** Return a list of networks the user was connected at the time of core shutdown
-     *  \note This method is threadsafe.
-     *
-     *  \param user  The User Id in question
-     */
-    virtual QList<NetworkId> connectedNetworks(UserId user) = 0;
+  //! Get a list of Networks to restore
+  /** Return a list of networks the user was connected at the time of core shutdown
+   *  \note This method is threadsafe.
+   *
+   *  \param user  The User Id in question
+   */
+  virtual QList<NetworkId> connectedNetworks(UserId user) = 0;
 
-    //! Update the connected state of a network
-    /** \note This method is threadsafe
-     *
-     *  \param user        The Id of the networks owner
-     *  \param networkId   The Id of the network
-     *  \param isConnected whether the network is connected or not
-     */
-    virtual void setNetworkConnected(UserId user, const NetworkId &networkId, bool isConnected) = 0;
+  //! Update the connected state of a network
+  /** \note This method is threadsafe
+   *
+   *  \param user        The Id of the networks owner
+   *  \param networkId   The Id of the network
+   *  \param isConnected whether the network is connected or not
+   */
+  virtual void setNetworkConnected(UserId user, const NetworkId &networkId, bool isConnected) = 0;
 
-    //! Get a hash of channels with their channel keys for a given network
-    /** The keys are channel names and values are passwords (possibly empty)
-     *  \note This method is threadsafe
-     *
-     *  \param user       The id of the networks owner
-     *  \param networkId  The Id of the network
-     */
-    virtual QHash<QString, QString> persistentChannels(UserId user, const NetworkId &networkId) = 0;
+  //! Get a hash of channels with their channel keys for a given network
+  /** The keys are channel names and values are passwords (possibly empty)
+   *  \note This method is threadsafe
+   *
+   *  \param user       The id of the networks owner
+   *  \param networkId  The Id of the network
+   */
+  virtual QHash<QString, QString> persistentChannels(UserId user, const NetworkId &networkId) = 0;
 
-    //! Update the connected state of a channel
-    /** \note This method is threadsafe
-     *
-     *  \param user       The Id of the networks owner
-     *  \param networkId  The Id of the network
-     *  \param channel    The name of the channel
-     *  \param isJoined   whether the channel is connected or not
-     */
-    virtual void setChannelPersistent(UserId user, const NetworkId &networkId, const QString &channel, bool isJoined) = 0;
+  //! Update the connected state of a channel
+  /** \note This method is threadsafe
+   *
+   *  \param user       The Id of the networks owner
+   *  \param networkId  The Id of the network
+   *  \param channel    The name of the channel
+   *  \param isJoined   whether the channel is connected or not
+   */
+  virtual void setChannelPersistent(UserId user, const NetworkId &networkId, const QString &channel, bool isJoined) = 0;
 
-    //! Update the key of a channel
-    /** \note This method is threadsafe
-     *
-     *  \param user       The Id of the networks owner
-     *  \param networkId  The Id of the network
-     *  \param channel    The name of the channel
-     *  \param key        The key of the channel (possibly empty)
-     */
-    virtual void setPersistentChannelKey(UserId user, const NetworkId &networkId, const QString &channel, const QString &key) = 0;
+  //! Update the key of a channel
+  /** \note This method is threadsafe
+   *
+   *  \param user       The Id of the networks owner
+   *  \param networkId  The Id of the network
+   *  \param channel    The name of the channel
+   *  \param key        The key of the channel (possibly empty)
+   */
+  virtual void setPersistentChannelKey(UserId user, const NetworkId &networkId, const QString &channel, const QString &key) = 0;
   
-    /* Buffer handling */
+  /* Buffer handling */
 
-    //! Get the unique BufferInfo for the given combination of network and buffername for a user.
-    /** \param user      The core user who owns this buffername
-     *  \param networkId The network id
-     *  \param type      The type of the buffer (StatusBuffer, Channel, etc.)
-     *  \param buffer  The buffer name (if empty, the net's status buffer is returned)
-     *  \return The BufferInfo corresponding to the given network and buffer name, or an invalid BufferInfo if not found
-     */
-    virtual BufferInfo getBufferInfo(UserId user, const NetworkId &networkId, BufferInfo::Type type, const QString &buffer = "") = 0;
+  //! Get the unique BufferInfo for the given combination of network and buffername for a user.
+  /** \param user      The core user who owns this buffername
+   *  \param networkId The network id
+   *  \param type      The type of the buffer (StatusBuffer, Channel, etc.)
+   *  \param buffer  The buffer name (if empty, the net's status buffer is returned)
+   *  \return The BufferInfo corresponding to the given network and buffer name, or an invalid BufferInfo if not found
+   */
+  virtual BufferInfo getBufferInfo(UserId user, const NetworkId &networkId, BufferInfo::Type type, const QString &buffer = "") = 0;
 
-    //! Get the unique BufferInfo for a bufferId
-    /** \param user      The core user who owns this buffername
-     *  \param bufferId  The id of the buffer
-     *  \return The BufferInfo corresponding to the given buffer id, or an invalid BufferInfo if not found.
-     */
-    virtual BufferInfo getBufferInfo(UserId user, const BufferId &bufferId) = 0;
+  //! Get the unique BufferInfo for a bufferId
+  /** \param user      The core user who owns this buffername
+   *  \param bufferId  The id of the buffer
+   *  \return The BufferInfo corresponding to the given buffer id, or an invalid BufferInfo if not found.
+   */
+  virtual BufferInfo getBufferInfo(UserId user, const BufferId &bufferId) = 0;
 
-    //! Request a list of all buffers known to a user.
-    /** This method is used to get a list of all buffers we have stored a backlog from.
-     *  \param user  The user whose buffers we request
-     *  \return A list of the BufferInfos for all buffers as requested
-     */
-    virtual QList<BufferInfo> requestBuffers(UserId user) = 0;
+  //! Request a list of all buffers known to a user.
+  /** This method is used to get a list of all buffers we have stored a backlog from.
+   *  \param user  The user whose buffers we request
+   *  \return A list of the BufferInfos for all buffers as requested
+   */
+  virtual QList<BufferInfo> requestBuffers(UserId user) = 0;
 
-    //! Request a list of BufferIds for a given NetworkId
-    /** \note This method is threadsafe.
-     *
-     *  \param user  The user whose buffers we request
-     *  \param networkId  The NetworkId of the network in question
-     *  \return List of BufferIds belonging to the Network
-     */
-    virtual QList<BufferId> requestBufferIdsForNetwork(UserId user, NetworkId networkId) = 0;
+  //! Request a list of BufferIds for a given NetworkId
+  /** \note This method is threadsafe.
+   *
+   *  \param user  The user whose buffers we request
+   *  \param networkId  The NetworkId of the network in question
+   *  \return List of BufferIds belonging to the Network
+   */
+  virtual QList<BufferId> requestBufferIdsForNetwork(UserId user, NetworkId networkId) = 0;
 
-    //! Remove permanently a buffer and it's content from the storage backend
-    /** This call cannot be reverted!
-     *  \param user      The user who is the owner of the buffer
-     *  \param bufferId  The bufferId
-     *  \return true if successfull
-     */
-    virtual bool removeBuffer(const UserId &user, const BufferId &bufferId) = 0;
+  //! Remove permanently a buffer and it's content from the storage backend
+  /** This call cannot be reverted!
+   *  \param user      The user who is the owner of the buffer
+   *  \param bufferId  The bufferId
+   *  \return true if successfull
+   */
+  virtual bool removeBuffer(const UserId &user, const BufferId &bufferId) = 0;
 
-    //! Rename a Buffer
-    /** \param user      The id of the buffer owner
-     *  \param networkId The id of the network the buffer belongs to
-     *  \param newName   The new name of the buffer
-     *  \param oldName   The previous name of the buffer
-     *  \return the BufferId of the affected buffer or an invalid BufferId if not successfull
-     */
-    virtual BufferId renameBuffer(const UserId &user, const NetworkId &networkId, const QString &newName, const QString &oldName) = 0;
+  //! Rename a Buffer
+  /** \param user      The id of the buffer owner
+   *  \param networkId The id of the network the buffer belongs to
+   *  \param newName   The new name of the buffer
+   *  \param oldName   The previous name of the buffer
+   *  \return the BufferId of the affected buffer or an invalid BufferId if not successfull
+   */
+  virtual BufferId renameBuffer(const UserId &user, const NetworkId &networkId, const QString &newName, const QString &oldName) = 0;
   
-    //! Update the LastSeenDate for a Buffer
-    /** This Method is used to make the LastSeenDate of a Buffer persistent
-     * \param user      The Owner of that Buffer
-     * \param bufferId  The buffer id
-     * \param MsgId     The Message id of the message that has been just seen
-     */
-    virtual void setBufferLastSeenMsg(UserId user, const BufferId &bufferId, const MsgId &msgId) = 0;
+  //! Update the LastSeenDate for a Buffer
+  /** This Method is used to make the LastSeenDate of a Buffer persistent
+   * \param user      The Owner of that Buffer
+   * \param bufferId  The buffer id
+   * \param MsgId     The Message id of the message that has been just seen
+   */
+  virtual void setBufferLastSeenMsg(UserId user, const BufferId &bufferId, const MsgId &msgId) = 0;
 
-    //! Get a Hash of all last seen message ids
-    /** This Method is called when the Quassel Core is started to restore the lastSeenMsgIds
-     * \param user      The Owner of the buffers
-     */
-    virtual QHash<BufferId, MsgId> bufferLastSeenMsgIds(UserId user) = 0;
+  //! Get a Hash of all last seen message ids
+  /** This Method is called when the Quassel Core is started to restore the lastSeenMsgIds
+   * \param user      The Owner of the buffers
+   */
+  virtual QHash<BufferId, MsgId> bufferLastSeenMsgIds(UserId user) = 0;
 
   
-    /* Message handling */
+  /* Message handling */
 
-    //! Store a Message in the backlog.
-    /** \param msg  The message object to be stored
-     *  \return The globally unique id for the stored message
-     */
-    virtual MsgId logMessage(Message msg) = 0;
+  //! Store a Message in the backlog.
+  /** \param msg  The message object to be stored
+   *  \return The globally unique id for the stored message
+   */
+  virtual MsgId logMessage(Message msg) = 0;
 
-    //! Request a certain number (or all) messages stored in a given buffer.
-    /** \param buffer   The buffer we request messages from
-     *  \param limit The number of messages we would like to receive, or -1 if we'd like all messages from that buffername
-     *  \param offset   Do not return (but DO count) messages with MsgId >= offset, if offset >= 0
-     *  \return The requested list of messages
-     */
-    virtual QList<Message> requestMsgs(UserId user, BufferId buffer, int limit = -1, int offset = -1) = 0;
+  //! Request a certain number (or all) messages stored in a given buffer.
+  /** \param buffer   The buffer we request messages from
+   *  \param limit The number of messages we would like to receive, or -1 if we'd like all messages from that buffername
+   *  \param offset   Do not return (but DO count) messages with MsgId >= offset, if offset >= 0
+   *  \return The requested list of messages
+   */
+  virtual QList<Message> requestMsgs(UserId user, BufferId buffer, int limit = -1, int offset = -1) = 0;
 
-    //! Request messages stored in a given buffer since a certain point in time.
-    /** \param buffer   The buffer we request messages from
-     *  \param since    Only return messages newer than this point in time
-     *  \param offset   Do not return messages with MsgId >= offset, if offset >= 0
-     *  \return The requested list of messages
-     */
-    virtual QList<Message> requestMsgs(UserId user, BufferId buffer, QDateTime since, int offset = -1) = 0;
+  //! Request messages stored in a given buffer since a certain point in time.
+  /** \param buffer   The buffer we request messages from
+   *  \param since    Only return messages newer than this point in time
+   *  \param offset   Do not return messages with MsgId >= offset, if offset >= 0
+   *  \return The requested list of messages
+   */
+  virtual QList<Message> requestMsgs(UserId user, BufferId buffer, QDateTime since, int offset = -1) = 0;
 
-    //! Request a range of messages stored in a given buffer.
-    /** \param buffer   The buffer we request messages from
-     *  \param first    Return messages with first <= MsgId <= last
-     *  \param last     Return messages with first <= MsgId <= last
-     *  \return The requested list of messages
-     */
-    virtual QList<Message> requestMsgRange(UserId user, BufferId buffer, int first, int last) = 0;
+  //! Request a range of messages stored in a given buffer.
+  /** \param buffer   The buffer we request messages from
+   *  \param first    Return messages with first <= MsgId <= last
+   *  \param last     Return messages with first <= MsgId <= last
+   *  \return The requested list of messages
+   */
+  virtual QList<Message> requestMsgRange(UserId user, BufferId buffer, int first, int last) = 0;
 
-  signals:
-    //! Sent when a new BufferInfo is created, or an existing one changed somehow.
-    void bufferInfoUpdated(UserId user, const BufferInfo &);
-    //! Sent when a Buffer was renamed
-    void bufferRenamed(const QString &newName, const QString &oldName);
-    //! Sent when a new user has been added
-    void userAdded(UserId, const QString &username);
-    //! Sent when a user has been renamed
-    void userRenamed(UserId, const QString &newname);
-    //! Sent when a user has been removed
-    void userRemoved(UserId);
+  //! Request all unread messages
+  /** \param buffer   The buffer we request messages from
+   *  \param first    Return messages with first <= MsgId
+   *  \param limit    Max amount of messages
+   *  \return The requested list of messages
+   */
+  virtual QList<Message> requestNewMsgs(UserId user, BufferId bufferId, int first, int limit = -1) = 0;
 
-  protected:
-    //! when implementing a storage handler, use this method to crypt user passwords.
-    /**  This guarantees compatibility with other storage handlers and allows easy migration
-     */
-    QString cryptedPassword(const QString &password);
+  //! Request all unread messages for all buffers
+  /** \param first    Return messages with first <= MsgId
+   *  \param limit    Max amount of messages
+   *  \return The requested list of messages
+   */
+  virtual QList<Message> requestAllNewMsgs(UserId user, int first, int limit = -1) = 0;
+
+signals:
+  //! Sent when a new BufferInfo is created, or an existing one changed somehow.
+  void bufferInfoUpdated(UserId user, const BufferInfo &);
+  //! Sent when a Buffer was renamed
+  void bufferRenamed(const QString &newName, const QString &oldName);
+  //! Sent when a new user has been added
+  void userAdded(UserId, const QString &username);
+  //! Sent when a user has been renamed
+  void userRenamed(UserId, const QString &newname);
+  //! Sent when a user has been removed
+  void userRemoved(UserId);
+
+protected:
+  //! when implementing a storage handler, use this method to crypt user passwords.
+  /**  This guarantees compatibility with other storage handlers and allows easy migration
+   */
+  QString cryptedPassword(const QString &password);
 };
 
 

@@ -257,6 +257,25 @@ class Core : public QObject {
     return instance()->storage->requestMsgRange(user, buffer, first, last);
   }
 
+  //! Request all unread messages
+  /** \param buffer   The buffer we request messages from
+   *  \param first    Return messages with first <= MsgId
+   *  \param limit    Max amount of messages
+   *  \return The requested list of messages
+   */
+  static inline QList<Message> requestNewMsgs(UserId user, BufferId bufferId, int first, int limit = -1) {
+    return instance()->storage->requestNewMsgs(user, bufferId, first, limit);
+  }
+
+  //! Request all unread messages for all buffers
+  /** \param first    Return messages with first <= MsgId
+   *  \param limit    Max amount of messages
+   *  \return The requested list of messages
+   */
+  static inline QList<Message> requestAllNewMsgs(UserId user, int first, int limit = -1) {
+    return instance()->storage->requestAllNewMsgs(user, first, limit);
+  }
+
   //! Request a list of all buffers known to a user.
   /** This method is used to get a list of all buffers we have stored a backlog from.
    *  \note This method is threadsafe.
