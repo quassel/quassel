@@ -30,10 +30,10 @@ CoreBacklogManager::CoreBacklogManager(CoreSession *coreSession)
 {
 }
 
-QVariantList CoreBacklogManager::requestBacklog(BufferId bufferId, int lastMsgs, int offset) {
+QVariantList CoreBacklogManager::requestBacklog(BufferId bufferId, int limit, int offset) {
   QVariantList backlog;
   QList<Message> msgList;
-  msgList = Core::requestMsgs(coreSession()->user(), bufferId, lastMsgs, offset);
+  msgList = Core::requestMsgs(coreSession()->user(), bufferId, limit, offset);
 
   QList<Message>::const_iterator msgIter = msgList.constBegin();
   QList<Message>::const_iterator msgListEnd = msgList.constEnd();

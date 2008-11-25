@@ -31,7 +31,7 @@ public:
   BacklogManager(QObject *parent = 0) : SyncableObject(parent) {}
 
 public slots:
-  virtual QVariantList requestBacklog(BufferId bufferId, int lastMsgs = -1, int offset = -1);
+  virtual QVariantList requestBacklog(BufferId bufferId, int limit = -1, int offset = -1);
   inline virtual void receiveBacklog(BufferId, int, int, QVariantList) {};
 
 signals:

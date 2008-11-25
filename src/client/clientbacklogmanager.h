@@ -40,7 +40,7 @@ public:
   void reset();
 
 public slots:
-  virtual void receiveBacklog(BufferId bufferId, int lastMsgs, int offset, QVariantList msgs);
+  virtual void receiveBacklog(BufferId bufferId, int limit, int offset, QVariantList msgs);
   void requestInitialBacklog();
 
 signals:

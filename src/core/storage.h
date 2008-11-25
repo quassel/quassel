@@ -292,11 +292,11 @@ class Storage : public QObject {
 
     //! Request a certain number (or all) messages stored in a given buffer.
     /** \param buffer   The buffer we request messages from
-     *  \param lastmsgs The number of messages we would like to receive, or -1 if we'd like all messages from that buffername
+     *  \param limit The number of messages we would like to receive, or -1 if we'd like all messages from that buffername
      *  \param offset   Do not return (but DO count) messages with MsgId >= offset, if offset >= 0
      *  \return The requested list of messages
      */
-    virtual QList<Message> requestMsgs(UserId user, BufferId buffer, int lastmsgs = -1, int offset = -1) = 0;
+    virtual QList<Message> requestMsgs(UserId user, BufferId buffer, int limit = -1, int offset = -1) = 0;
 
     //! Request messages stored in a given buffer since a certain point in time.
     /** \param buffer   The buffer we request messages from

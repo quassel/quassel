@@ -310,9 +310,9 @@ MsgId Core::storeMessage(const Message &message) {
   return instance()->storage->logMessage(message);
 }
 
-QList<Message> Core::requestMsgs(UserId user, BufferId buffer, int lastmsgs, int offset) {
+QList<Message> Core::requestMsgs(UserId user, BufferId buffer, int limit, int offset) {
   // QMutexLocker locker(&mutex);
-  return instance()->storage->requestMsgs(user, buffer, lastmsgs, offset);
+  return instance()->storage->requestMsgs(user, buffer, limit, offset);
 }
 
 QList<Message> Core::requestMsgs(UserId user, BufferId buffer, QDateTime since, int offset) {

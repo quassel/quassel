@@ -693,7 +693,7 @@ MsgId SqliteStorage::logMessage(Message msg) {
   return msgId;
 }
 
-QList<Message> SqliteStorage::requestMsgs(UserId user, BufferId bufferId, int lastmsgs, int offset) {
+QList<Message> SqliteStorage::requestMsgs(UserId user, BufferId bufferId, int limit, int offset) {
   QList<Message> messagelist;
 
   BufferInfo bufferInfo = getBufferInfo(user, bufferId);
@@ -719,7 +719,7 @@ QList<Message> SqliteStorage::requestMsgs(UserId user, BufferId bufferId, int la
   msgQuery.prepare(queryString("select_messages"));
 
   msgQuery.bindValue(":bufferid", bufferId.toInt());
-  msgQuery.bindValue(":limit", lastmsgs);
+  msgQuery.bindValue(":limit", limit);
   msgQuery.bindValue(":offset", offset);
   safeExec(msgQuery);
 

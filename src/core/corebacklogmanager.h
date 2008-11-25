@@ -36,7 +36,7 @@ public:
   CoreSession *coreSession() { return _coreSession; }
 
 public slots:
-  virtual QVariantList requestBacklog(BufferId bufferId, int lastMsgs = -1, int offset = -1);
+  virtual QVariantList requestBacklog(BufferId bufferId, int limit = -1, int offset = -1);
 
 private:
   CoreSession *_coreSession;
