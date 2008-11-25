@@ -81,10 +81,11 @@ public:
 
   ChatView *chatView() const;
   ChatItem *chatItemAt(const QPointF &pos) const;
-
-  inline bool isSingleBufferScene() const { return _singleBufferScene; }
-  bool containsBuffer(const BufferId &id) const;
   inline ChatLine *chatLine(int row) { return (row < _lines.count()) ? _lines[row] : 0; }
+
+  inline bool isSingleBufferScene() const { return _singleBufferId.isValid(); }
+  inline BufferId singleBufferId() const { return _singleBufferId; }
+  bool containsBuffer(const BufferId &id) const;
 
   ColumnHandleItem *firstColumnHandle() const;
   ColumnHandleItem *secondColumnHandle() const;
@@ -155,7 +156,7 @@ private:
   QString _idString;
   QAbstractItemModel *_model;
   QList<ChatLine *> _lines;
-  bool _singleBufferScene;
+  BufferId _singleBufferId;
 
   // calls to QChatScene::sceneRect() are very expensive. As we manage the scenerect ourselves
   // we store the size in a member variable.

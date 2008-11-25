@@ -399,21 +399,21 @@ QMenu *BufferView::createHideEventsSubMenu(QMenu *menu, BufferId bufferId) {
 }
 
 void BufferView::contextMenuEvent(QContextMenuEvent *event) {
-  _menuIndex = indexAt(event->pos());
-  if(!_menuIndex.isValid())
-    _menuIndex = rootIndex();
-  if(!_menuIndex.isValid())
+  QModelIndex index = indexAt(event->pos());
+  if(!index.isValid())
+    index = rootIndex();
+  if(!index.isValid())
     return;
 
   QMenu contextMenu(this);
-  addActionsToMenu(&contextMenu, _menuIndex);
+  addActionsToMenu(&contextMenu, index);
   if(!contextMenu.actions().isEmpty())
     contextMenu.exec(QCursor::pos());
 
-  _menuIndex = QModelIndex();
 }
 
 void BufferView::addActionsToMenu(QMenu *contextMenu, const QModelIndex &index) {
+  _menuIndex = index;
   const Network *network = Client::network(index.data(NetworkModel::NetworkIdRole).value<NetworkId>());
   Q_CHECK_PTR(network);
 

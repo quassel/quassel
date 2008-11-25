@@ -28,9 +28,11 @@
 #include <QTextLayout>
 #include <QMenu>
 
-
+#include "bufferview.h"
 #include "chatitem.h"
 #include "chatlinemodel.h"
+#include "iconloader.h"
+#include "mainwin.h"
 #include "qtui.h"
 #include "qtuistyle.h"
 
@@ -580,13 +582,25 @@ void ContentsChatItem::addActionsToMenu(QMenu *menu, const QPointF &pos) {
     switch(privateData()->currentClickable.type) {
       case Clickable::Url:
         privateData()->activeClickable = privateData()->currentClickable;
-        menu->addAction(tr("Copy Link Address"), &_actionProxy, SLOT(copyLinkToClipboard()))->setData(QVariant::fromValue<void *>(this));
+        menu->addAction(SmallIcon("edit-copy"), tr("Copy Link Address"),
+                         &_actionProxy, SLOT(copyLinkToClipboard()))->setData(QVariant::fromValue<void *>(this));
         break;
 
       default:
         break;
     }
   }
+
+  // Buffer-specific actions
+  // We add these in ChatItem (rather than the scene), because they depend on the current clickable
+  if(chatScene()->isSingleBufferScene()) {
+    QModelIndex index = Client::networkModel()->bufferIndex(chatScene()->singleBufferId());
+    if(index.isValid()) {
+      menu->addSeparator();
+      QtUi::mainWindow()->allBuffersView()->addActionsToMenu(menu, index);
+    }
+  }
+
 }
 
 void ContentsChatItem::copyLinkToClipboard() {
