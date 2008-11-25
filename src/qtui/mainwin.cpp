@@ -481,9 +481,8 @@ void MainWin::connectedToCore() {
   connect(Client::bufferViewManager(), SIGNAL(bufferViewConfigAdded(int)), this, SLOT(addBufferView(int)));
   connect(Client::bufferViewManager(), SIGNAL(bufferViewConfigDeleted(int)), this, SLOT(removeBufferView(int)));
   connect(Client::bufferViewManager(), SIGNAL(initDone()), this, SLOT(loadLayout()));
-
+  
   setConnectedState();
-  Client::backlogManager()->requestInitialBacklog();
 }
 
 void MainWin::setConnectedState() {

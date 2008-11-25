@@ -277,15 +277,23 @@ void Client::setSyncedToCore() {
   connect(bufferSyncer(), SIGNAL(lastSeenMsgSet(BufferId, MsgId)), _networkModel, SLOT(setLastSeenMsgId(BufferId, MsgId)));
   connect(bufferSyncer(), SIGNAL(bufferRemoved(BufferId)), this, SLOT(bufferRemoved(BufferId)));
   connect(bufferSyncer(), SIGNAL(bufferRenamed(BufferId, QString)), this, SLOT(bufferRenamed(BufferId, QString)));
+  connect(bufferSyncer(), SIGNAL(initDone()), this, SLOT(requestInitialBacklog()));
   connect(networkModel(), SIGNAL(setLastSeenMsg(BufferId, MsgId)), bufferSyncer(), SLOT(requestSetLastSeenMsg(BufferId, const MsgId &)));
   signalProxy()->synchronize(bufferSyncer());
 
   // create a new BufferViewManager
+  Q_ASSERT(!_bufferViewManager);
   _bufferViewManager = new BufferViewManager(signalProxy(), this);
+  connect(bufferViewManager(), SIGNAL(initDone()), this, SLOT(requestInitialBacklog()));
 
   _syncedToCore = true;
   emit connected();
   emit coreConnectionStateChanged(true);
+}
+
+void Client::requestInitialBacklog() {
+  if(bufferViewManager()->isInitialized() && bufferSyncer()->isInitialized())
+    Client::backlogManager()->requestInitialBacklog();
 }
 
 void Client::setSecuredConnection() {
