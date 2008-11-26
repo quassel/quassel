@@ -410,7 +410,7 @@ QList<ContentsChatItem::Clickable> ContentsChatItem::findClickables() const {
   static QRegExp regExp[] = {
     // URL
     // QRegExp(QString("((?:https?://|s?ftp://|irc://|mailto:|www\\.)%1+|%1+\\.[a-z]{2,4}(?:?=/%1+|\\b))%2").arg(urlChars, urlEnd)),
-    QRegExp(QString("((?:(?:https?://|s?ftp://|irc://|mailto:)|www)%1+)%2").arg(urlChars, urlEnd), Qt::CaseInsensitive),
+    QRegExp(QString("((?:(?:https?://|s?ftp://|irc://|gopher://|mailto:)|www)%1+)%2").arg(urlChars, urlEnd), Qt::CaseInsensitive),
 
     // Channel name
     // We don't match for channel names starting with + or &, because that gives us a lot of false positives.
