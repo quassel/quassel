@@ -507,7 +507,7 @@ void ContentsChatItem::handleClick(const QPointF &pos, ChatScene::ClickMode clic
         case Clickable::Url:
           if(!str.contains("://"))
             str = "http://" + str;
-          QDesktopServices::openUrl(QUrl::fromEncoded(str.toAscii()));
+	  QDesktopServices::openUrl(QUrl::fromEncoded(str.toUtf8(), QUrl::TolerantMode));
           break;
         case Clickable::Channel:
           // TODO join or whatever...
