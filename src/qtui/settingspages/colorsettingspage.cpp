@@ -153,6 +153,7 @@ void ColorSettingsPage::defaultMessage() {
   ui.senderBG->setColor(QColor("white"));
   ui.senderBG->setEnabled(false);
   ui.senderUseBG->setChecked(false);
+  ui.senderAutoColor->setChecked(true);  
   ui.newMsgMarkerFG->setColor(Qt::red);
 
   /*
@@ -331,6 +332,11 @@ void ColorSettingsPage::load() {
   ui.timestampBG->setColor(QtUi::style()->format(UiStyle::Timestamp).background().color());
   ui.senderFG->setColor(QtUi::style()->format(UiStyle::Sender).foreground().color());
   ui.senderBG->setColor(QtUi::style()->format(UiStyle::Sender).background().color());
+  settings["SenderAutoColor"] = s.value("senderAutoColor", QVariant(true));
+  if (settings["SenderAutoColor"].toBool()) {
+    ui.senderAutoColor->setChecked(true);
+    ui.senderFrame->setEnabled(false);
+  }
   settings["NewMsgMarkerFG"] = s.value("newMsgMarkerFG", QColor(Qt::red));
   ui.newMsgMarkerFG->setColor(settings["NewMsgMarkerFG"].value<QColor>());
 
@@ -443,6 +449,8 @@ void ColorSettingsPage::save() {
   s.setValue("timestampUseBG", ui.timestampUseBG->isChecked());
   saveColor(UiStyle::Sender, ui.senderFG->color(), ui.senderBG->color(), ui.senderUseBG->isChecked());
   s.setValue("senderUseBG", ui.senderUseBG->isChecked());
+  s.setValue("senderAutoColor", ui.senderAutoColor->isChecked());
+  QtUi::style()->setSenderAutoColor(ui.senderAutoColor->isChecked());
   s.setValue("newMsgMarkerFG", ui.newMsgMarkerFG->color());
 
   /*
@@ -573,6 +581,7 @@ bool ColorSettingsPage::testHasChanged() {
   if(QtUi::style()->format(UiStyle::Sender).foreground().color() != ui.senderFG->color()) return true;
   if(QtUi::style()->format(UiStyle::Sender).background().color() != ui.senderBG->color()) return true;
   if(settings["SenderUseBG"].toBool() != ui.senderUseBG->isChecked()) return true;
+  if(settings["SenderAutoColor"].toBool() != ui.senderAutoColor->isChecked()) return true;
   if(settings["NewMsgMarkerFG"].value<QColor>() != ui.newMsgMarkerFG->color()) return true;
 
   /*

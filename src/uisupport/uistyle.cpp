@@ -48,6 +48,9 @@ UiStyle::UiStyle(const QString &settingsKey) : _settingsKey(settingsKey) {
     _customFormats[type] = s.customFormat(type);
   }
 
+  // Check for the sender auto coloring option
+  _senderAutoColor = s.value("Flags/senderAutoColor", QVariant(true)).toBool();  
+
   // Now initialize the mapping between FormatCodes and FormatTypes...
   _formatCodes["%O"] = None;
   _formatCodes["%B"] = Bold;
@@ -127,11 +130,17 @@ void UiStyle::setFormat(FormatType ftype, QTextCharFormat fmt, Settings::Mode mo
   _cachedFontMetrics.clear();
 }
 
+void UiStyle::setSenderAutoColor( bool state ) {
+  _senderAutoColor = state;
+  UiStyleSettings s(_settingsKey);
+  s.setValue("Flags/senderAutoColor", QVariant(state));
+}
+
 QTextCharFormat UiStyle::format(FormatType ftype, Settings::Mode mode) const {
-  // TODO: implement setting for nick autocoloring and make a check for it here
-  if ( (ftype & 0x00000fff) == Sender ) 
-  {
-    // If it is not enabled just set ftype to Sender and go on
+  // Check for enabled sender auto coloring
+  if ( (ftype & 0x00000fff) == Sender && !_senderAutoColor ) {
+    // Just use the default sender style if auto coloring is disabled
+    ftype = Sender;
   }
 
   if(mode == Settings::Custom && _customFormats.contains(ftype)) return _customFormats.value(ftype);
@@ -404,11 +413,11 @@ UiStyle::FormatType UiStyle::StyledMessage::senderFormat() const {
   quint16 hash;
   switch(type()) {
     case Message::Plain:
-    // To produce random like but stable nick colorings some sort of hashing should work best.
-    // In this case we just use the qt function qChecksum which produces a
-    // CRC16 hash. This should be fast and 16 bits are more than enough.
-    hash = qChecksum(_sender.toAscii().data(), _sender.toAscii().size());
-    return (UiStyle::FormatType)((((hash % 21) + 1) << 24) + 0x200);
+      // To produce random like but stable nick colorings some sort of hashing should work best.
+      // In this case we just use the qt function qChecksum which produces a
+      // CRC16 hash. This should be fast and 16 bits are more than enough.
+      hash = qChecksum(_sender.toAscii().data(), _sender.toAscii().size());
+      return (UiStyle::FormatType)((((hash % 21) + 1) << 24) + 0x200);
     case Message::Notice:
       return UiStyle::NoticeMsg; break;
     case Message::Server:
