@@ -317,6 +317,8 @@ QueryBufferItem::QueryBufferItem(const BufferInfo &bufferInfo, NetworkItem *pare
 
 QVariant QueryBufferItem::data(int column, int role) const {
   switch(role) {
+  case NetworkModel::IrcUserRole:
+    return _ircUser;
   case NetworkModel::UserAwayRole:
     return (bool)_ircUser ? _ircUser->isAway() : false;
   default:

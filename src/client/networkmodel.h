@@ -267,7 +267,8 @@ public:
     NetworkIdRole,
     BufferInfoRole,
     ItemTypeRole,
-    UserAwayRole
+    UserAwayRole,
+    IrcUserRole
   };
 
   enum ItemType {
