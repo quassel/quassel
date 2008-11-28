@@ -128,6 +128,12 @@ void UiStyle::setFormat(FormatType ftype, QTextCharFormat fmt, Settings::Mode mo
 }
 
 QTextCharFormat UiStyle::format(FormatType ftype, Settings::Mode mode) const {
+  // TODO: implement setting for nick autocoloring and make a check for it here
+  if ( (ftype & 0x00000fff) == Sender ) 
+  {
+    // If it is not enabled just set ftype to Sender and go on
+  }
+
   if(mode == Settings::Custom && _customFormats.contains(ftype)) return _customFormats.value(ftype);
   else return _defaultFormats.value(ftype, QTextCharFormat());
 }
@@ -148,6 +154,8 @@ QTextCharFormat UiStyle::mergedFormat(quint32 ftype) {
   // color codes!
   if(ftype & 0x00400000) fmt.merge(format((FormatType)(ftype & 0x0f400000))); // foreground
   if(ftype & 0x00800000) fmt.merge(format((FormatType)(ftype & 0xf0800000))); // background
+  // Sender auto colors
+  if((ftype & 0xfff) == 0x200 && (ftype & 0xff000200) != 0x200) fmt.merge(format((FormatType)(ftype & 0xff000200)));
   // URL
   if(ftype & Url) fmt.merge(format(Url));
   return _cachedFormats[ftype] = fmt;
@@ -393,9 +401,14 @@ QString UiStyle::StyledMessage::decoratedSender() const {
 }
 
 UiStyle::FormatType UiStyle::StyledMessage::senderFormat() const {
+  quint16 hash;
   switch(type()) {
     case Message::Plain:
-      return UiStyle::Sender; break;
+    // To produce random like but stable nick colorings some sort of hashing should work best.
+    // In this case we just use the qt function qChecksum which produces a
+    // CRC16 hash. This should be fast and 16 bits are more than enough.
+    hash = qChecksum(_sender.toAscii().data(), _sender.toAscii().size());
+    return (UiStyle::FormatType)((((hash % 21) + 1) << 24) + 0x200);
     case Message::Notice:
       return UiStyle::NoticeMsg; break;
     case Message::Server:

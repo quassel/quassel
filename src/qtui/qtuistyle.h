@@ -34,6 +34,9 @@ public:
   virtual inline QColor highlightColor() const { return _highlightColor; }
   virtual void setHighlightColor(const QColor &);
 
+protected:
+  void inline addSenderAutoColor( FormatType type, const QString name );
+
 private:
   QColor _highlightColor;
 };

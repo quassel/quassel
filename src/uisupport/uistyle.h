@@ -108,7 +108,31 @@ public:
     BgCol12         = 0xc0800000,
     BgCol13         = 0xd0800000,
     BgCol14         = 0xe0800000,
-    BgCol15         = 0xf0800000
+    BgCol15         = 0xf0800000,
+
+    // Colors used for sender auto coloring
+    // (starting at 01 because 00 is the default Sender format)
+    SenderCol01     = 0x01000200,
+    SenderCol02     = 0x02000200,
+    SenderCol03     = 0x03000200,
+    SenderCol04     = 0x04000200,
+    SenderCol05     = 0x05000200,
+    SenderCol06     = 0x06000200,
+    SenderCol07     = 0x07000200,
+    SenderCol08     = 0x08000200,
+    SenderCol09     = 0x09000200,
+    SenderCol10     = 0x0a000200,
+    SenderCol11     = 0x0b000200,
+    SenderCol12     = 0x0c000200,
+    SenderCol13     = 0x0d000200,
+    SenderCol14     = 0x0e000200,
+    SenderCol15     = 0x0f000200,
+    SenderCol16     = 0x10000200,
+    SenderCol17     = 0x11000200,
+    SenderCol18     = 0x12000200,
+    SenderCol19     = 0x13000200,
+    SenderCol20     = 0x14000200,
+    SenderCol21     = 0x15000200
 
   };
 
