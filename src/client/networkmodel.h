@@ -259,7 +259,7 @@ class NetworkModel : public TreeModel {
   Q_OBJECT
 
 public:
-  enum myRoles {
+  enum Role {
     BufferTypeRole = TreeModel::UserRole,
     ItemActiveRole,
     BufferActivityRole,
@@ -270,13 +270,13 @@ public:
     UserAwayRole
   };
 
-  enum itemType {
+  enum ItemType {
     NetworkItemType = 0x01,
     BufferItemType = 0x02,
     UserCategoryItemType = 0x04,
     IrcUserItemType = 0x08
   };
-  Q_DECLARE_FLAGS(itemTypes, itemType)
+  Q_DECLARE_FLAGS(ItemTypes, ItemType)
 
   NetworkModel(QObject *parent = 0);
   static QList<QVariant> defaultHeader();
@@ -343,6 +343,6 @@ private:
 
   QHash<BufferId, BufferItem *> _bufferItemCache;
 };
-Q_DECLARE_OPERATORS_FOR_FLAGS(NetworkModel::itemTypes)
+Q_DECLARE_OPERATORS_FOR_FLAGS(NetworkModel::ItemTypes)
 
 #endif // NETWORKMODEL_H

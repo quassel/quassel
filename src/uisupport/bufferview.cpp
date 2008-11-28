@@ -417,7 +417,7 @@ void BufferView::addActionsToMenu(QMenu *contextMenu, const QModelIndex &index) 
   const Network *network = Client::network(index.data(NetworkModel::NetworkIdRole).value<NetworkId>());
   Q_CHECK_PTR(network);
 
-  NetworkModel::itemType itemType = static_cast<NetworkModel::itemType>(index.data(NetworkModel::ItemTypeRole).toInt());
+  NetworkModel::ItemType itemType = static_cast<NetworkModel::ItemType>(index.data(NetworkModel::ItemTypeRole).toInt());
 
   switch(itemType) {
   case NetworkModel::NetworkItemType:
