@@ -221,54 +221,19 @@ class Core : public QObject {
     return instance()->storage->logMessage(message);
   }
 
-  //! Request a certain number (or all) messages stored in a given buffer.
-  /** \note This method is threadsafe.
-   *
-   *  \param buffer   The buffer we request messages from
-   *  \param limit The number of messages we would like to receive, or -1 if we'd like all messages from that buffername
-   *  \param offset   Do not return (but DO count) messages with MsgId >= offset, if offset >= 0
-   *  \return The requested list of messages
-   */
-  static inline QList<Message> requestMsgs(UserId user, BufferId buffer, int limit = -1, int offset = -1) {
-    return instance()->storage->requestMsgs(user, buffer, limit, offset);
-  }
-
-  //! Request messages stored in a given buffer since a certain point in time.
-  /** \note This method is threadsafe.
-   *
-   *  \param buffer   The buffer we request messages from
-   *  \param since    Only return messages newer than this point in time
-   *  \param offset   Do not return messages with MsgId >= offset, if offset >= 0
-   *  \return The requested list of messages
-   */
-  static inline QList<Message> requestMsgs(UserId user, BufferId buffer, QDateTime since, int offset = -1) {
-    return instance()->storage->requestMsgs(user, buffer, since, offset);
-  }
-
-  //! Request a range of messages stored in a given buffer.
-  /** \note This method is threadsafe.
-   *
-   *  \param buffer   The buffer we request messages from
-   *  \param first    Return messages with first <= MsgId <= last
-   *  \param last     Return messages with first <= MsgId <= last
-   *  \return The requested list of messages
-   */
-  static inline QList<Message> requestMsgRange(UserId user, BufferId buffer, int first, int last) {
-    return instance()->storage->requestMsgRange(user, buffer, first, last);
-  }
-
-  //! Request all unread messages
+  //! Request a certain number messages stored in a given buffer.
   /** \param buffer   The buffer we request messages from
-   *  \param first    Return messages with first <= MsgId
-   *  \param limit    Max amount of messages
+   *  \param first    if != -1 return only messages with a MsgId >= first
+   *  \param last     if != -1 return only messages with a MsgId < last
+   *  \param limit    if != -1 limit the returned list to a max of \limit entries
    *  \return The requested list of messages
    */
-  static inline QList<Message> requestNewMsgs(UserId user, BufferId bufferId, int first, int limit = -1) {
-    return instance()->storage->requestNewMsgs(user, bufferId, first, limit);
+  static inline QList<Message> requestMsgs(UserId user, BufferId bufferId, MsgId first = -1, MsgId last = -1, int limit = -1) {
+    return instance()->storage->requestMsgs(user, bufferId, first, last, limit);
   }
 
   //! Request all unread messages for all buffers
-  /** \param first    Return messages with first <= MsgId
+  /** \param first    Return messages with MsgId >= first
    *  \param limit    Max amount of messages
    *  \return The requested list of messages
    */

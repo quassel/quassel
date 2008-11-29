@@ -35,9 +35,10 @@ ClientBacklogManager::ClientBacklogManager(QObject *parent)
 {
 }
 
-void ClientBacklogManager::receiveBacklog(BufferId bufferId, int limit, int offset, QVariantList msgs) {
+void ClientBacklogManager::receiveBacklog(BufferId bufferId, MsgId first, MsgId last, int limit, QVariantList msgs) {
+  Q_UNUSED(first)
+  Q_UNUSED(last)
   Q_UNUSED(limit)
-  Q_UNUSED(offset)
 
   if(msgs.isEmpty())
     return;

@@ -29,13 +29,14 @@ class BacklogManager : public SyncableObject {
 
 public:
   BacklogManager(QObject *parent = 0) : SyncableObject(parent) {}
+  inline virtual const QMetaObject *syncMetaObject() const { return &staticMetaObject; }
 
 public slots:
-  virtual QVariantList requestBacklog(BufferId bufferId, int limit = -1, int offset = -1);
-  inline virtual void receiveBacklog(BufferId, int, int, QVariantList) {};
+  virtual QVariantList requestBacklog(BufferId bufferId, MsgId first = -1, MsgId last = -1, int limit = -1);
+  inline virtual void receiveBacklog(BufferId, MsgId, MsgId, int, QVariantList) {};
 
 signals:
-  void backlogRequested(BufferId, int, int);
+  void backlogRequested(BufferId, MsgId, MsgId, int);
 
 };
 

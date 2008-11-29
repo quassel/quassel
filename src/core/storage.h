@@ -290,40 +290,17 @@ public slots:
    */
   virtual MsgId logMessage(Message msg) = 0;
 
-  //! Request a certain number (or all) messages stored in a given buffer.
+  //! Request a certain number messages stored in a given buffer.
   /** \param buffer   The buffer we request messages from
-   *  \param limit The number of messages we would like to receive, or -1 if we'd like all messages from that buffername
-   *  \param offset   Do not return (but DO count) messages with MsgId >= offset, if offset >= 0
+   *  \param first    if != -1 return only messages with a MsgId >= first
+   *  \param last     if != -1 return only messages with a MsgId < last
+   *  \param limit    if != -1 limit the returned list to a max of \limit entries
    *  \return The requested list of messages
    */
-  virtual QList<Message> requestMsgs(UserId user, BufferId buffer, int limit = -1, int offset = -1) = 0;
-
-  //! Request messages stored in a given buffer since a certain point in time.
-  /** \param buffer   The buffer we request messages from
-   *  \param since    Only return messages newer than this point in time
-   *  \param offset   Do not return messages with MsgId >= offset, if offset >= 0
-   *  \return The requested list of messages
-   */
-  virtual QList<Message> requestMsgs(UserId user, BufferId buffer, QDateTime since, int offset = -1) = 0;
-
-  //! Request a range of messages stored in a given buffer.
-  /** \param buffer   The buffer we request messages from
-   *  \param first    Return messages with first <= MsgId <= last
-   *  \param last     Return messages with first <= MsgId <= last
-   *  \return The requested list of messages
-   */
-  virtual QList<Message> requestMsgRange(UserId user, BufferId buffer, int first, int last) = 0;
-
-  //! Request all unread messages
-  /** \param buffer   The buffer we request messages from
-   *  \param first    Return messages with first <= MsgId
-   *  \param limit    Max amount of messages
-   *  \return The requested list of messages
-   */
-  virtual QList<Message> requestNewMsgs(UserId user, BufferId bufferId, int first, int limit = -1) = 0;
+  virtual QList<Message> requestMsgs(UserId user, BufferId bufferId, MsgId first = -1, MsgId last = -1, int limit = -1) = 0;
 
   //! Request all unread messages for all buffers
-  /** \param first    Return messages with first <= MsgId
+  /** \param first    Return messages with MsgId >= first
    *  \param limit    Max amount of messages
    *  \return The requested list of messages
    */

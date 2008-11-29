@@ -693,125 +693,7 @@ MsgId SqliteStorage::logMessage(Message msg) {
   return msgId;
 }
 
-QList<Message> SqliteStorage::requestMsgs(UserId user, BufferId bufferId, int limit, int offset) {
-  QList<Message> messagelist;
-
-  BufferInfo bufferInfo = getBufferInfo(user, bufferId);
-  if(!bufferInfo.isValid())
-    return messagelist;
-
-  if(offset == -1) {
-    offset = 0;
-  } else {
-    // we have to determine the real offset first
-    QSqlQuery offsetQuery(logDb());
-    offsetQuery.prepare(queryString("select_messagesOffset"));
-
-    offsetQuery.bindValue(":bufferid", bufferId.toInt());
-    offsetQuery.bindValue(":messageid", offset);
-    safeExec(offsetQuery);
-    offsetQuery.first();
-    offset = offsetQuery.value(0).toInt();
-  }
-
-  // now let's select the messages
-  QSqlQuery msgQuery(logDb());
-  msgQuery.prepare(queryString("select_messages"));
-
-  msgQuery.bindValue(":bufferid", bufferId.toInt());
-  msgQuery.bindValue(":limit", limit);
-  msgQuery.bindValue(":offset", offset);
-  safeExec(msgQuery);
-
-  watchQuery(msgQuery);
-
-  while(msgQuery.next()) {
-    Message msg(QDateTime::fromTime_t(msgQuery.value(1).toInt()),
-                bufferInfo,
-                (Message::Type)msgQuery.value(2).toUInt(),
-                msgQuery.value(5).toString(),
-                msgQuery.value(4).toString(),
-                (Message::Flags)msgQuery.value(3).toUInt());
-    msg.setMsgId(msgQuery.value(0).toInt());
-    messagelist << msg;
-  }
-  return messagelist;
-}
-
-
-QList<Message> SqliteStorage::requestMsgs(UserId user, BufferId bufferId, QDateTime since, int offset) {
-  QList<Message> messagelist;
-
-  BufferInfo bufferInfo = getBufferInfo(user, bufferId);
-  if(!bufferInfo.isValid())
-    return messagelist;
-
-  // we have to determine the real offset first
-  QSqlQuery offsetQuery(logDb());
-  offsetQuery.prepare(queryString("select_messagesSinceOffset"));
-
-  offsetQuery.bindValue(":bufferid", bufferId.toInt());
-  offsetQuery.bindValue(":since", since.toTime_t());
-  safeExec(offsetQuery);
-  offsetQuery.first();
-  offset = offsetQuery.value(0).toInt();
-
-  // now let's select the messages
-  QSqlQuery msgQuery(logDb());
-  msgQuery.prepare(queryString("select_messagesSince"));
-  msgQuery.bindValue(":bufferid", bufferId.toInt());
-  msgQuery.bindValue(":since", since.toTime_t());
-  msgQuery.bindValue(":offset", offset);
-  safeExec(msgQuery);
-
-  watchQuery(msgQuery);
-
-  while(msgQuery.next()) {
-    Message msg(QDateTime::fromTime_t(msgQuery.value(1).toInt()),
-                bufferInfo,
-                (Message::Type)msgQuery.value(2).toUInt(),
-                msgQuery.value(5).toString(),
-                msgQuery.value(4).toString(),
-                (Message::Flags)msgQuery.value(3).toUInt());
-    msg.setMsgId(msgQuery.value(0).toInt());
-    messagelist << msg;
-  }
-
-  return messagelist;
-}
-
-
-QList<Message> SqliteStorage::requestMsgRange(UserId user, BufferId bufferId, int first, int last) {
-  QList<Message> messagelist;
-
-  BufferInfo bufferInfo = getBufferInfo(user, bufferId);
-  if(!bufferInfo.isValid())
-    return messagelist;
-
-  QSqlQuery rangeQuery(logDb());
-  rangeQuery.prepare(queryString("select_messageRange"));
-  rangeQuery.bindValue(":bufferid", bufferId.toInt());
-  rangeQuery.bindValue(":firstmsg", first);
-  rangeQuery.bindValue(":lastmsg", last);
-  safeExec(rangeQuery);
-
-  watchQuery(rangeQuery);
-
-  while(rangeQuery.next()) {
-    Message msg(QDateTime::fromTime_t(rangeQuery.value(1).toInt()),
-                bufferInfo,
-                (Message::Type)rangeQuery.value(2).toUInt(),
-                rangeQuery.value(5).toString(),
-                rangeQuery.value(4).toString(),
-                (Message::Flags)rangeQuery.value(3).toUInt());
-    msg.setMsgId(rangeQuery.value(0).toInt());
-    messagelist << msg;
-  }
-
-  return messagelist;
-}
-
-QList<Message> SqliteStorage::requestNewMsgs(UserId user, BufferId bufferId, int first, int limit) {
+QList<Message> SqliteStorage::requestMsgs(UserId user, BufferId bufferId, MsgId first, MsgId last, int limit) {
   QList<Message> messagelist;
 
   BufferInfo bufferInfo = getBufferInfo(user, bufferId);
@@ -819,9 +701,15 @@ QList<Message> SqliteStorage::requestNewMsgs(UserId user, BufferId bufferId, int
     return messagelist;
 
   QSqlQuery query(logDb());
-  query.prepare(queryString("select_messagesNew"));
+  if(last == -1) {
+    query.prepare(queryString("select_messagesNew"));
+  } else {
+    query.prepare(queryString("select_messages"));
+    query.bindValue(":lastmsg", last.toInt());
+  }
+
   query.bindValue(":bufferid", bufferId.toInt());
-  query.bindValue(":firstmsg", first);
+  query.bindValue(":firstmsg", first.toInt());
   query.bindValue(":limit", limit);
   safeExec(query);
 
@@ -837,7 +725,6 @@ QList<Message> SqliteStorage::requestNewMsgs(UserId user, BufferId bufferId, int
     msg.setMsgId(query.value(0).toInt());
     messagelist << msg;
   }
-
   return messagelist;
 }
 

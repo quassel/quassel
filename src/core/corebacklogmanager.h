@@ -31,12 +31,10 @@ class CoreBacklogManager : public BacklogManager {
 public:
   CoreBacklogManager(CoreSession *coreSession = 0);
 
-  inline virtual const QMetaObject *syncMetaObject() const { return &BacklogManager::staticMetaObject; }
-
   CoreSession *coreSession() { return _coreSession; }
 
 public slots:
-  virtual QVariantList requestBacklog(BufferId bufferId, int limit = -1, int offset = -1);
+  virtual QVariantList requestBacklog(BufferId bufferId, MsgId first = -1, MsgId last = -1, int limit = -1);
 
 private:
   CoreSession *_coreSession;

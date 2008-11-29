@@ -370,7 +370,7 @@ void MessageModel::requestBacklog(BufferId bufferId) {
 						      .arg(requestCount)
 						      .arg(Client::networkModel()->networkName(bufferId))
 						      .arg(Client::networkModel()->bufferName(bufferId)));
-      Client::backlogManager()->requestBacklog(bufferId, requestCount, _messageList.at(i)->msgId().toInt());
+      Client::backlogManager()->requestBacklog(bufferId, -1, _messageList.at(i)->msgId(), requestCount);
       return;
     }
   }

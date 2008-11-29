@@ -53,6 +53,6 @@ void FixedBacklogRequester::requestBacklog() {
   setWaitingBuffers(allBuffers);
   backlogManager->emitMessagesRequested(QObject::tr("Requesting a total of up to %1 backlog messages for %2 buffers").arg(_backlogCount * allBuffers.count()).arg(allBuffers.count()));
   foreach(BufferId bufferId, allBuffers) {
-    backlogManager->requestBacklog(bufferId, _backlogCount, -1);
+    backlogManager->requestBacklog(bufferId, -1, -1, _backlogCount);
   }
 }

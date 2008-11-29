@@ -81,10 +81,7 @@ public slots:
   /* Message handling */
 
   virtual MsgId logMessage(Message msg);
-  virtual QList<Message> requestMsgs(UserId user, BufferId bufferId, int limit = -1, int offset = -1);
-  virtual QList<Message> requestMsgs(UserId user, BufferId bufferId, QDateTime since, int offset = -1);
-  virtual QList<Message> requestMsgRange(UserId user, BufferId bufferId, int first, int last);
-  virtual QList<Message> requestNewMsgs(UserId user, BufferId bufferId, int first, int limit = -1);
+  virtual QList<Message> requestMsgs(UserId user, BufferId bufferId, MsgId first = -1, MsgId last = -1, int limit = -1);
   virtual QList<Message> requestAllNewMsgs(UserId user, int first, int limit = -1);
 
 protected:

@@ -35,13 +35,9 @@
     <file>./SQL/SQLite/11/select_buffers_for_network.sql</file>
     <file>./SQL/SQLite/11/select_connected_networks.sql</file>
     <file>./SQL/SQLite/11/select_internaluser.sql</file>
-    <file>./SQL/SQLite/11/select_messageRange.sql</file>
     <file>./SQL/SQLite/11/select_messages.sql</file>
     <file>./SQL/SQLite/11/select_messagesAllNew.sql</file>
     <file>./SQL/SQLite/11/select_messagesNew.sql</file>
-    <file>./SQL/SQLite/11/select_messagesOffset.sql</file>
-    <file>./SQL/SQLite/11/select_messagesSince.sql</file>
-    <file>./SQL/SQLite/11/select_messagesSinceOffset.sql</file>
     <file>./SQL/SQLite/11/select_networkExists.sql</file>
     <file>./SQL/SQLite/11/select_networks_for_user.sql</file>
     <file>./SQL/SQLite/11/select_persistent_channels.sql</file>
