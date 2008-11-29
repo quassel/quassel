@@ -22,7 +22,6 @@
 
 #include "qtui.h"
 #include "qtuisettings.h"
-#include "backlogsettings.h"
 #include "buffersettings.h"
 
 GeneralSettingsPage::GeneralSettingsPage(QWidget *parent)
@@ -59,8 +58,6 @@ GeneralSettingsPage::GeneralSettingsPage(QWidget *parent)
   connect(ui.displayTopicInTooltip, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
   connect(ui.mouseWheelChangesBuffers, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
   connect(ui.completionSuffix, SIGNAL(textEdited(const QString&)), this, SLOT(widgetHasChanged()));
-  connect(ui.fixedBacklogAmount, SIGNAL(valueChanged(int)), this, SLOT(widgetHasChanged()));
-  connect(ui.dynamicBacklogAmount, SIGNAL(valueChanged(int)), this, SLOT(widgetHasChanged()));
 }
 
 bool GeneralSettingsPage::hasDefaults() const {
@@ -132,14 +129,6 @@ void GeneralSettingsPage::load() {
   settings["CompletionSuffix"] = uiSettings.value("CompletionSuffix", QString(": "));
   ui.completionSuffix->setText(settings["CompletionSuffix"].toString());
 
-  // backlogSettings:
-  BacklogSettings backlogSettings;
-  settings["FixedBacklogAmount"] = backlogSettings.fixedBacklogAmount();
-  ui.fixedBacklogAmount->setValue(backlogSettings.fixedBacklogAmount());
-
-  settings["DynamicBacklogAmount"] = backlogSettings.dynamicBacklogAmount();
-  ui.dynamicBacklogAmount->setValue(backlogSettings.dynamicBacklogAmount());
-
   setChangedState(false);
 }
 
@@ -169,10 +158,6 @@ void GeneralSettingsPage::save() {
 
   uiSettings.setValue("CompletionSuffix", ui.completionSuffix->text());
 
-
-  BacklogSettings backlogSettings;
-  backlogSettings.setFixedBacklogAmount(ui.fixedBacklogAmount->value());
-  backlogSettings.setDynamicBacklogAmount(ui.dynamicBacklogAmount->value());
 
   load();
   setChangedState(false);
@@ -204,9 +189,6 @@ bool GeneralSettingsPage::testHasChanged() {
   if(settings["MouseWheelChangesBuffers"].toBool() != ui.mouseWheelChangesBuffers->isChecked()) return true;
 
   if(settings["CompletionSuffix"].toString() != ui.completionSuffix->text()) return true;
-
-  if(settings["FixedBacklogAmount"].toInt() != ui.fixedBacklogAmount->value()) return true;
-  if(settings["DynamicBacklogAmount"].toInt() != ui.dynamicBacklogAmount->value()) return true;
 
   return false;
 }
