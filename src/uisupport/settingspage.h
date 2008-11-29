@@ -24,6 +24,8 @@
 #include <QWidget>
 
 class QCheckBox;
+class QComboBox;
+class QSpinBox;
 
 //! A SettingsPage is a page in the settings dialog.
 /** The SettingsDlg provides suitable standard buttons, such as Ok, Apply, Cancel, Restore Defaults and Reset.
@@ -63,6 +65,10 @@ public:
   //! sets checked state depending on \checked and stores the value for later comparision
   static void load(QCheckBox *box, bool checked);
   static bool hasChanged(QCheckBox *box);
+  static void load(QComboBox *box, int index);
+  static bool hasChanged(QComboBox *box);
+  static void load(QSpinBox *box, int value);
+  static bool hasChanged(QSpinBox *box);
 
 public slots:
   //! Save settings to permanent storage.

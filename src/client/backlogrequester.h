@@ -34,9 +34,9 @@ class BacklogRequester {
 public:
   enum RequesterTypes {
     InvalidRequester = 0,
-    GlobalUnread,
+    PerBufferFixed,
     PerBufferUnread,
-    PerBufferFixed
+    GlobalUnread
   };
 
   BacklogRequester(bool buffering, ClientBacklogManager *backlogManger);

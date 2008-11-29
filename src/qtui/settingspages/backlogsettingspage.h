@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-08 by the Quassel Project                          *
+ *   Copyright (C) 2005-08 by the Quassel IRC Team                         *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,52 +18,35 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#ifndef BACKLOGSETTINGSPAGE_H
+#define BACKLOGSETTINGSPAGE_H
+
+#include <QHash>
+
 #include "settingspage.h"
+#include "ui_backlogsettingspage.h"
 
-#include <QCheckBox>
-#include <QComboBox>
-#include <QSpinBox>
-#include <QVariant>
+class BacklogSettingsPage : public SettingsPage {
+  Q_OBJECT
 
-SettingsPage::SettingsPage(const QString &category, const QString &title, QWidget *parent)
-  : QWidget(parent),
-    _category(category),
-    _title(title),
-    _changed(false)
-{
-}
+public:
+  BacklogSettingsPage(QWidget *parent = 0);
 
-void SettingsPage::setChangedState(bool hasChanged) {
-  if(hasChanged != _changed) {
-    _changed = hasChanged;
-    emit changed(hasChanged);
-  }
-}
+  bool hasDefaults() const;
 
-void SettingsPage::load(QCheckBox *box, bool checked) {
-  box->setProperty("StoredValue", checked);
-  box->setChecked(checked);
-}
+public slots:
+  void save();
+  void load();
+  void defaults();
 
-bool SettingsPage::hasChanged(QCheckBox *box) {
-  return box->property("StoredValue").toBool() == box->isChecked();
-}
+private slots:
+  void widgetHasChanged();
 
+private:
+  Ui::BacklogSettingsPage ui;
+  QHash<QString, QVariant> settings;
 
-void SettingsPage::load(QComboBox *box, int index) {
-  box->setProperty("StoredValue", index);
-  box->setCurrentIndex(index);
-}
+  bool testHasChanged();
+};
 
-bool SettingsPage::hasChanged(QComboBox *box) {
-  return box->property("StoredValue").toInt() == box->currentIndex();
-}
-
-void SettingsPage::load(QSpinBox *box, int value) {
-  box->setProperty("StoredValue", value);
-  box->setValue(value);
-}
-
-bool SettingsPage::hasChanged(QSpinBox *box) {
-  return box->property("StoredValue").toInt() == box->value();
-}
+#endif

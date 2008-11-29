@@ -26,7 +26,7 @@
 class BacklogSettings : public ClientSettings {
 public:
   BacklogSettings() : ClientSettings("Backlog") {}
-  inline int requesterType() { return localValue("RequesterType", 0).toInt(); }
+  inline int requesterType() { return localValue("RequesterType", 1).toInt(); }
   inline void setRequesterType(int requesterType) { setLocalValue("RequesterType", requesterType); }
 
   inline int dynamicBacklogAmount() { return localValue("DynamicBacklogAmount", 200).toInt(); }

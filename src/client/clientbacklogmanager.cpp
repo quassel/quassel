@@ -85,8 +85,10 @@ void ClientBacklogManager::requestInitialBacklog() {
   switch(settings.requesterType()) {
   case BacklogRequester::GlobalUnread:
     _requester = new GlobalUnreadBacklogRequester(this);
+    break;
   case BacklogRequester::PerBufferUnread:
     _requester = new PerBufferUnreadBacklogRequester(this);
+    break;
   case BacklogRequester::PerBufferFixed:
   default:
     _requester = new FixedBacklogRequester(this);

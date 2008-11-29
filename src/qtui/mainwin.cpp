@@ -61,6 +61,7 @@
 
 #include "settingspages/aliasessettingspage.h"
 #include "settingspages/appearancesettingspage.h"
+#include "settingspages/backlogsettingspage.h"
 #include "settingspages/bufferviewsettingspage.h"
 #include "settingspages/colorsettingspage.h"
 #include "settingspages/fontssettingspage.h"
@@ -584,6 +585,7 @@ void MainWin::showSettingsDlg() {
   dlg->registerSettingsPage(new AppearanceSettingsPage(dlg)); //General
   //Category: Behaviour
   dlg->registerSettingsPage(new GeneralSettingsPage(dlg));
+  dlg->registerSettingsPage(new BacklogSettingsPage(dlg));
   dlg->registerSettingsPage(new HighlightSettingsPage(dlg));
   dlg->registerSettingsPage(new AliasesSettingsPage(dlg));
   dlg->registerSettingsPage(new NotificationsSettingsPage(dlg));
