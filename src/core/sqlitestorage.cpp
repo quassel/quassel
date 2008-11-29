@@ -728,7 +728,7 @@ QList<Message> SqliteStorage::requestMsgs(UserId user, BufferId bufferId, MsgId 
   return messagelist;
 }
 
-QList<Message> SqliteStorage::requestAllNewMsgs(UserId user, int first, int limit) {
+QList<Message> SqliteStorage::requestAllMsgs(UserId user, MsgId first, MsgId last, int limit) {
   QList<Message> messagelist;
 
   QHash<BufferId, BufferInfo> bufferInfoHash;
@@ -737,17 +737,22 @@ QList<Message> SqliteStorage::requestAllNewMsgs(UserId user, int first, int limi
   }
 
   QSqlQuery query(logDb());
-  query.prepare(queryString("select_messagesAllNew"));
+  if(last == -1) {
+    query.prepare(queryString("select_messagesAllNew"));
+  } else {
+    query.prepare(queryString("select_messagesAll"));
+    query.bindValue(":lastmsg", last.toInt());
+  }
   query.bindValue(":userid", user.toInt());
-  query.bindValue(":firstmsg", first);
+  query.bindValue(":firstmsg", first.toInt());
   query.bindValue(":limit", limit);
   safeExec(query);
 
   watchQuery(query);
 
   while(query.next()) {
-    Message msg(QDateTime::fromTime_t(query.value(1).toInt()),
-                bufferInfoHash[query.value(2).toInt()],
+    Message msg(QDateTime::fromTime_t(query.value(2).toInt()),
+                bufferInfoHash[query.value(1).toInt()],
                 (Message::Type)query.value(3).toUInt(),
                 query.value(6).toString(),
                 query.value(5).toString(),

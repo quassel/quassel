@@ -34,7 +34,8 @@ public:
   CoreSession *coreSession() { return _coreSession; }
 
 public slots:
-  virtual QVariantList requestBacklog(BufferId bufferId, MsgId first = -1, MsgId last = -1, int limit = -1);
+  virtual QVariantList requestBacklog(BufferId bufferId, MsgId first = -1, MsgId last = -1, int limit = -1, int additional = 0);
+  virtual QVariantList requestBacklogAll(MsgId first = -1, MsgId last = -1, int limit = -1, int additional = 0);
 
 private:
   CoreSession *_coreSession;

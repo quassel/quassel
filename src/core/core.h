@@ -232,13 +232,14 @@ class Core : public QObject {
     return instance()->storage->requestMsgs(user, bufferId, first, last, limit);
   }
 
-  //! Request all unread messages for all buffers
-  /** \param first    Return messages with MsgId >= first
+  //! Request a certain number of messages across all buffers
+  /** \param first    if != -1 return only messages with a MsgId >= first
+   *  \param last     if != -1 return only messages with a MsgId < last
    *  \param limit    Max amount of messages
    *  \return The requested list of messages
    */
-  static inline QList<Message> requestAllNewMsgs(UserId user, int first, int limit = -1) {
-    return instance()->storage->requestAllNewMsgs(user, first, limit);
+  static inline QList<Message> requestAllMsgs(UserId user, MsgId first = -1, MsgId last = -1, int limit = -1) {
+    return instance()->storage->requestAllMsgs(user, first, last, limit);
   }
 
   //! Request a list of all buffers known to a user.

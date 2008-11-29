@@ -299,12 +299,13 @@ public slots:
    */
   virtual QList<Message> requestMsgs(UserId user, BufferId bufferId, MsgId first = -1, MsgId last = -1, int limit = -1) = 0;
 
-  //! Request all unread messages for all buffers
-  /** \param first    Return messages with MsgId >= first
+  //! Request a certain number of messages across all buffers
+  /** \param first    if != -1 return only messages with a MsgId >= first
+   *  \param last     if != -1 return only messages with a MsgId < last
    *  \param limit    Max amount of messages
    *  \return The requested list of messages
    */
-  virtual QList<Message> requestAllNewMsgs(UserId user, int first, int limit = -1) = 0;
+  virtual QList<Message> requestAllMsgs(UserId user, MsgId first = -1, MsgId last = -1, int limit = -1) = 0;
 
 signals:
   //! Sent when a new BufferInfo is created, or an existing one changed somehow.

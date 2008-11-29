@@ -82,7 +82,7 @@ public slots:
 
   virtual MsgId logMessage(Message msg);
   virtual QList<Message> requestMsgs(UserId user, BufferId bufferId, MsgId first = -1, MsgId last = -1, int limit = -1);
-  virtual QList<Message> requestAllNewMsgs(UserId user, int first, int limit = -1);
+  virtual QList<Message> requestAllMsgs(UserId user, MsgId first = -1, MsgId last = -1, int limit = -1);
 
 protected:
   inline virtual QString driverName() { return "QSQLITE"; }

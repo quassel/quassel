@@ -36,6 +36,7 @@
     <file>./SQL/SQLite/11/select_connected_networks.sql</file>
     <file>./SQL/SQLite/11/select_internaluser.sql</file>
     <file>./SQL/SQLite/11/select_messages.sql</file>
+    <file>./SQL/SQLite/11/select_messagesAll.sql</file>
     <file>./SQL/SQLite/11/select_messagesAllNew.sql</file>
     <file>./SQL/SQLite/11/select_messagesNew.sql</file>
     <file>./SQL/SQLite/11/select_networkExists.sql</file>

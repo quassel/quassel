@@ -34,6 +34,16 @@ public:
 
   inline int fixedBacklogAmount() { return localValue("FixedBacklogAmount", 500).toInt(); }
   inline void setFixedBacklogAmount(int amount) { return setLocalValue("FixedBacklogAmount", amount); }
+
+  inline int globalUnreadBacklogLimit() { return localValue("GlobalUnreadBacklogLimit", 5000).toInt(); }
+  inline void setGlobalUnreadBacklogLimit(int limit) { return setLocalValue("GlobalUnreadBacklogLimit", limit); }
+  inline int globalUnreadBacklogAdditional() { return localValue("GlobalUnreadBacklogAdditional", 100).toInt(); }
+  inline void setGlobalUnreadBacklogAdditional(int Additional) { return setLocalValue("GlobalUnreadBacklogAdditional", Additional); }
+
+  inline int perBufferUnreadBacklogLimit() { return localValue("PerBufferUnreadBacklogLimit", 200).toInt(); }
+  inline void setPerBufferUnreadBacklogLimit(int limit) { return setLocalValue("PerBufferUnreadBacklogLimit", limit); }
+  inline int perBufferUnreadBacklogAdditional() { return localValue("PerBufferUnreadBacklogAdditional", 50).toInt(); }
+  inline void setPerBufferUnreadBacklogAdditional(int Additional) { return setLocalValue("PerBufferUnreadBacklogAdditional", Additional); }
 };
 
 #endif //BACKLOGSETTINGS_H
