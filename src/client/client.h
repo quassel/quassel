@@ -62,6 +62,7 @@ public:
   static Client *instance();
   static void destroy();
   static void init(AbstractUi *);
+  static AbstractUi *mainUi();
 
   static QList<NetworkId> networkIds();
   static const Network * network(NetworkId);
@@ -192,7 +193,7 @@ private:
   static QPointer<Client> instanceptr;
 
   SignalProxy * _signalProxy;
-  AbstractUi * mainUi;
+  AbstractUi * _mainUi;
   NetworkModel * _networkModel;
   BufferModel * _bufferModel;
   BufferSyncer * _bufferSyncer;

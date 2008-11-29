@@ -56,21 +56,21 @@ Client *Client::instance() {
 
 void Client::destroy() {
   if(instanceptr) {
-    delete instanceptr->mainUi;
+    delete instanceptr->mainUi();
     instanceptr->deleteLater();
     instanceptr = 0;
   }
 }
 
 void Client::init(AbstractUi *ui) {
-  instance()->mainUi = ui;
+  instance()->_mainUi = ui;
   instance()->init();
 }
 
 Client::Client(QObject *parent)
   : QObject(parent),
     _signalProxy(new SignalProxy(SignalProxy::Client, this)),
-    mainUi(0),
+    _mainUi(0),
     _networkModel(0),
     _bufferModel(0),
     _bufferSyncer(0),
@@ -98,8 +98,8 @@ void Client::init() {
           _networkModel, SLOT(networkRemoved(NetworkId)));
 
   _bufferModel = new BufferModel(_networkModel);
-  _messageModel = mainUi->createMessageModel(this);
-  _messageProcessor = mainUi->createMessageProcessor(this);
+  _messageModel = mainUi()->createMessageModel(this);
+  _messageProcessor = mainUi()->createMessageProcessor(this);
 
   SignalProxy *p = signalProxy();
 
@@ -122,10 +122,10 @@ void Client::init() {
 
   connect(p, SIGNAL(disconnected()), this, SLOT(disconnectedFromCore()));
 
-  //connect(mainUi, SIGNAL(connectToCore(const QVariantMap &)), this, SLOT(connectToCore(const QVariantMap &)));
-  connect(mainUi, SIGNAL(disconnectFromCore()), this, SLOT(disconnectFromCore()));
-  connect(this, SIGNAL(connected()), mainUi, SLOT(connectedToCore()));
-  connect(this, SIGNAL(disconnected()), mainUi, SLOT(disconnectedFromCore()));
+  //connect(mainUi(), SIGNAL(connectToCore(const QVariantMap &)), this, SLOT(connectToCore(const QVariantMap &)));
+  connect(mainUi(), SIGNAL(disconnectFromCore()), this, SLOT(disconnectFromCore()));
+  connect(this, SIGNAL(connected()), mainUi(), SLOT(connectedToCore()));
+  connect(this, SIGNAL(disconnected()), mainUi(), SLOT(disconnectedFromCore()));
 
   // attach backlog manager
   p->synchronize(backlogManager());
@@ -133,6 +133,10 @@ void Client::init() {
 }
 
 /*** public static methods ***/
+
+AbstractUi *Client::mainUi() {
+  return instance()->_mainUi;
+}
 
 AccountId Client::currentCoreAccount() {
   return _currentCoreAccount;
