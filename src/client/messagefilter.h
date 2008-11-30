@@ -43,6 +43,7 @@ public:
   inline bool isSingleBufferFilter() const { return _validBuffers.count() == 1; }
   BufferId singleBufferId() const { return *(_validBuffers.constBegin()); }
   inline bool containsBuffer(const BufferId &id) const { return _validBuffers.contains(id); }
+  inline QSet<BufferId> containedBuffers() const { return _validBuffers; }
 
 public slots:
   void messageTypeFilterChanged();
