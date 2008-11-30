@@ -55,6 +55,7 @@ public:
    *  @param category The category (default: "General")
    */
   static ActionCollection *actionCollection(const QString &category = "General");
+  inline AbstractActionProvider *actionProvider() const;
 
   /* Notifications */
 
@@ -75,6 +76,8 @@ protected slots:
   void disconnectedFromCore();
 
 private:
+  AbstractActionProvider *_actionProvider;
+
   static MainWin *_mainWin;
   static QHash<QString, ActionCollection *> _actionCollections;
   static QtUiStyle *_style;
@@ -84,5 +87,6 @@ private:
 
 QtUiStyle *QtUi::style() { return _style; }
 MainWin *QtUi::mainWindow() { return _mainWin; }
+AbstractActionProvider *QtUi::actionProvider() const { return _actionProvider; }
 
 #endif

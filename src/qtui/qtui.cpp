@@ -20,10 +20,11 @@
 
 #include "qtui.h"
 
+#include "abstractnotificationbackend.h"
 #include "actioncollection.h"
 #include "chatlinemodel.h"
 #include "mainwin.h"
-#include "abstractnotificationbackend.h"
+#include "networkmodelactionprovider.h"
 #include "qtuimessageprocessor.h"
 #include "qtuisettings.h"
 #include "qtuistyle.h"
@@ -41,6 +42,8 @@ QtUi::QtUi() : AbstractUi() {
     qWarning() << "QtUi has been instantiated again!";
     return;
   }
+
+  _actionProvider = new NetworkModelActionProvider(this);
 
   QtUiSettings uiSettings;
   loadTranslation(uiSettings.value("Locale", QLocale::system()).value<QLocale>());

@@ -24,8 +24,13 @@
 #include <QObject>
 #include "message.h"
 
+class MessageFilter;
 class MessageModel;
 class AbstractMessageProcessor;
+class AbstractActionProvider;
+
+class QAction;
+class QMenu;
 
 class AbstractUi : public QObject {
   Q_OBJECT
@@ -36,6 +41,7 @@ class AbstractUi : public QObject {
     virtual void init() {};  // called after the client is initialized
     virtual MessageModel *createMessageModel(QObject *parent) = 0;
     virtual AbstractMessageProcessor *createMessageProcessor(QObject *parent) = 0;
+    virtual AbstractActionProvider *actionProvider() const = 0;
 
     inline static bool isVisible() { return _visible; }
     inline static void setVisible(bool visible) { _visible = visible; }
@@ -51,6 +57,24 @@ class AbstractUi : public QObject {
   private:
     static AbstractUi *_instance;
     static bool _visible;
+};
+
+class AbstractActionProvider : public QObject {
+  Q_OBJECT
+
+  public:
+    AbstractActionProvider(QObject *parent = 0) : QObject(parent) {}
+    virtual ~AbstractActionProvider() {}
+
+    virtual void addActions(QMenu *, const QModelIndex &index, QObject *receiver = 0, const char *method = 0, bool allowBufferHide = false) = 0;
+    virtual void addActions(QMenu *, const QList<QModelIndex> &indexList, QObject *receiver = 0, const char *method = 0, bool allowBufferHide = false) = 0;
+    virtual void addActions(QMenu *, BufferId id, QObject *receiver = 0, const char *method = 0) = 0;
+    virtual void addActions(QMenu *, MessageFilter *filter, QObject *receiver = 0, const char *method = 0) = 0;
+
+  signals:
+    void showChannelList(NetworkId);
+    void showIgnoreList(NetworkId);
+
 };
 
 #endif

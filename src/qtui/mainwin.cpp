@@ -114,6 +114,7 @@ void MainWin::init() {
   connect(QApplication::instance(), SIGNAL(aboutToQuit()), SLOT(saveLayout()));
   connect(Client::instance(), SIGNAL(networkCreated(NetworkId)), SLOT(clientNetworkCreated(NetworkId)));
   connect(Client::instance(), SIGNAL(networkRemoved(NetworkId)), SLOT(clientNetworkRemoved(NetworkId)));
+  connect(Client::mainUi()->actionProvider(), SIGNAL(showChannelList(NetworkId)), SLOT(showChannelList(NetworkId)));
 
   // Setup Dock Areas
   setDockNestingEnabled(true);
@@ -270,8 +271,6 @@ void MainWin::addBufferView(BufferViewConfig *config) {
   BufferView *view = new BufferView(dock);
   view->setFilteredModel(Client::bufferModel(), config);
   view->show();
-
-  connect(&view->showChannelList, SIGNAL(triggered()), this, SLOT(showChannelList()));
 
   Client::bufferModel()->synchronizeView(view);
 
