@@ -18,6 +18,7 @@ set(SOURCES
     icon.cpp
     iconloader.cpp
     inputline.cpp
+    networkmodelactionprovider.cpp
     nickview.cpp
     nickviewfilter.cpp
     settingspage.cpp
@@ -38,6 +39,7 @@ set(MOC_HDRS
     colorbutton.h
     iconloader.h
     inputline.h
+    networkmodelactionprovider.h
     nickview.h
     nickviewfilter.h
     settingspage.h
