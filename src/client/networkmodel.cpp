@@ -680,6 +680,10 @@ QVariant IrcUserItem::data(int column, int role) const {
     return parent()->data(column, role);
   case NetworkModel::BufferInfoRole:
     return parent()->data(column, role);
+  case NetworkModel::IrcUserRole:
+    return _ircUser.data();
+  case NetworkModel::UserAwayRole:
+    return (bool)_ircUser ? _ircUser->isAway() : false;
   default:
     return PropertyMapItem::data(column, role);
   }
