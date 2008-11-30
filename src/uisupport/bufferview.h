@@ -31,7 +31,6 @@
 #include "actioncollection.h"
 #include "bufferviewconfig.h"
 #include "networkmodel.h"
-
 #include "types.h"
 
 /*****************************************
@@ -56,6 +55,7 @@ public:
 public slots:
   void setRootIndexForNetworkId(const NetworkId &networkId);
   void removeSelectedBuffers(bool permanently = false);
+  void menuActionTriggered(QAction *);
 
 signals:
   void removeBuffer(const QModelIndex &);
@@ -73,43 +73,17 @@ protected:
 private slots:
   void joinChannel(const QModelIndex &index);
   void toggleHeader(bool checked);
-  void actionTriggered(QAction *);
 
   void on_collapse(const QModelIndex &index);
   void on_expand(const QModelIndex &index);
   void on_configChanged();
 
 private:
-  enum ItemActiveState {
-    InactiveState = 0x01,
-    ActiveState = 0x02
-  };
-
-public:
-  Q_DECLARE_FLAGS(ItemActiveStates, ItemActiveState)
-  QAction showChannelList;
-
-private:
   QPointer<BufferViewConfig> _config;
-  ActionCollection _menuActions;
-  QModelIndex _menuIndex;
   QHash<NetworkId, bool> _expandedState;
 
   void storeExpandedState(NetworkId networkId, bool expanded);
-  void setupMenuActions();
-  bool checkRequirements(const QModelIndex &index,
-                          ItemActiveStates requiredActiveState = QFlags<ItemActiveState>(ActiveState | InactiveState));
-  void addItemToMenu(QAction *action, QMenu *menu, const QModelIndex &index,
-                     ItemActiveStates requiredActiveState = QFlags<ItemActiveState>(ActiveState | InactiveState));
-  void addItemToMenu(QAction *action, QMenu *menu, bool condition = true);
-  void addItemToMenu(QMenu *subMenu, QMenu *menu, const QModelIndex &index,
-                     ItemActiveStates requiredActiveState = QFlags<ItemActiveState>(ActiveState | InactiveState));
-  void addSeparatorToMenu(QMenu *menu, const QModelIndex &index,
-                          ItemActiveStates requiredActiveState = QFlags<ItemActiveState>(ActiveState | InactiveState));
-  QMenu *createHideEventsSubMenu(QMenu *menu, BufferId bufferId);
 };
-Q_DECLARE_OPERATORS_FOR_FLAGS(BufferView::ItemActiveStates)
-
 
 // ==============================
 //  BufferView Dock

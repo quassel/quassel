@@ -18,6 +18,14 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QAction>
+#include <QFlags>
+#include <QHeaderView>
+#include <QLineEdit>
+#include <QMenu>
+#include <QMessageBox>
+#include <QSet>
+
 #include "bufferview.h"
 
 #include "action.h"
@@ -30,31 +38,16 @@
 #include "mappedselectionmodel.h"
 #include "network.h"
 #include "networkmodel.h"
-
+#include "networkmodelactionprovider.h"
+#include "quasselui.h"
 #include "uisettings.h"
-
-#include <QAction>
-#include <QFlags>
-#include <QHeaderView>
-#include <QInputDialog>
-#include <QLineEdit>
-#include <QMenu>
-#include <QMessageBox>
-#include <QSet>
 
 /*****************************************
 * The TreeView showing the Buffers
 *****************************************/
 // Please be carefull when reimplementing methods which are used to inform the view about changes to the data
 // to be on the safe side: call QTreeView's method aswell
-BufferView::BufferView(QWidget *parent)
-  : QTreeView(parent),
-    showChannelList(tr("Show Channel List"), this),
-    _menuActions(this)
-{
-  setupMenuActions();
-  showChannelList.setIcon(SmallIcon("format-list-unordered"));
-
+BufferView::BufferView(QWidget *parent) : QTreeView(parent) {
   connect(this, SIGNAL(collapsed(const QModelIndex &)), SLOT(on_collapse(const QModelIndex &)));
   connect(this, SIGNAL(expanded(const QModelIndex &)), SLOT(on_expand(const QModelIndex &)));
 
@@ -86,26 +79,6 @@ void BufferView::init() {
   // afaik this is better on Mac and Windows
   connect(this, SIGNAL(activated(QModelIndex)), SLOT(joinChannel(QModelIndex)));
 #endif
-}
-
-void BufferView::setupMenuActions() {
-  _menuActions.addAction("ConnectNet", new Action(SmallIcon("network-connect"), tr("Connect"), this));
-  _menuActions.addAction("DisconnectNet", new Action(SmallIcon("network-disconnect"), tr("Disconnect"), this));
-  _menuActions.addAction("JoinChannel", new Action(tr("Join Channel"), this));
-  _menuActions.addAction("JoinBuffer", new Action(tr("Join"), this));
-  _menuActions.addAction("PartBuffer", new Action(tr("Part"), this));
-  _menuActions.addAction("HideBuffersTemporarily", new Action(tr("Hide Buffers"), this));
-  _menuActions.addAction("HideBuffersPermanently", new Action(tr("Hide Buffers Permanently"), this));
-  _menuActions.addAction("RemoveBuffer", new Action(tr("Delete Buffer"), this));
-  _menuActions.addAction("IgnoreList", new Action(tr("Ignore List"), this));
-  _menuActions.addAction("HideJoin", new Action(tr("Joins"), this))->setCheckable(true);
-  _menuActions.addAction("HidePart", new Action(tr("Parts"), this))->setCheckable(true);
-  _menuActions.addAction("HideQuit", new Action(tr("Quits"), this))->setCheckable(true);
-  _menuActions.addAction("HideNick", new Action(tr("Nick Changes"), this))->setCheckable(true);
-  _menuActions.addAction("HideMode", new Action(tr("Mode Changes"), this))->setCheckable(true);
-  _menuActions.addAction("HideDayChange", new Action(tr("Day Change"), this))->setCheckable(true);
-
-  connect(&_menuActions, SIGNAL(actionTriggered(QAction *)), SLOT(actionTriggered(QAction *)));
 }
 
 void BufferView::setModel(QAbstractItemModel *model) {
@@ -337,67 +310,6 @@ void BufferView::toggleHeader(bool checked) {
   header()->setSectionHidden((action->property("column")).toInt(), !checked);
 }
 
-bool BufferView::checkRequirements(const QModelIndex &index, ItemActiveStates requiredActiveState) {
-  if(!index.isValid())
-    return false;
-
-  ItemActiveStates isActive = index.data(NetworkModel::ItemActiveRole).toBool()
-    ? ActiveState
-    : InactiveState;
-
-  if(!(isActive & requiredActiveState))
-    return false;
-
-  return true;
-}
-
-void BufferView::addItemToMenu(QAction *action, QMenu *menu, const QModelIndex &index, ItemActiveStates requiredActiveState) {
-  addItemToMenu(action, menu, checkRequirements(index, requiredActiveState));
-}
-
-void BufferView::addItemToMenu(QAction *action, QMenu *menu, bool condition) {
-  if(condition) {
-    menu->addAction(action);
-    action->setVisible(true);
-  } else {
-    action->setVisible(false);
-  }
-}
-
-void BufferView::addItemToMenu(QMenu *subMenu, QMenu *menu, const QModelIndex &index, ItemActiveStates requiredActiveState) {
-  if(checkRequirements(index, requiredActiveState)) {
-    menu->addMenu(subMenu);
-    subMenu->setVisible(true);
-  } else {
-    subMenu->setVisible(false);
-  }
-}
-
-void BufferView::addSeparatorToMenu(QMenu *menu, const QModelIndex &index, ItemActiveStates requiredActiveState) {
-  if(checkRequirements(index, requiredActiveState)) {
-    menu->addSeparator();
-  }
-}
-
-QMenu *BufferView::createHideEventsSubMenu(QMenu *menu, BufferId bufferId) {
-  int filter = BufferSettings(bufferId).messageFilter();
-  _menuActions.action("HideJoin")->setChecked(filter & Message::Join);
-  _menuActions.action("HidePart")->setChecked(filter & Message::Part);
-  _menuActions.action("HideQuit")->setChecked(filter & Message::Quit);
-  _menuActions.action("HideNick")->setChecked(filter & Message::Nick);
-  _menuActions.action("HideMode")->setChecked(filter & Message::Mode);
-  _menuActions.action("HideDayChange")->setChecked(filter & Message::DayChange);
-
-  QMenu *hideEventsMenu = menu->addMenu(tr("Hide Events"));
-  hideEventsMenu->addAction(_menuActions.action("HideJoin"));
-  hideEventsMenu->addAction(_menuActions.action("HidePart"));
-  hideEventsMenu->addAction(_menuActions.action("HideQuit"));
-  hideEventsMenu->addAction(_menuActions.action("HideNick"));
-  hideEventsMenu->addAction(_menuActions.action("HideMode"));
-  hideEventsMenu->addAction(_menuActions.action("HideDayChange"));
-  return hideEventsMenu;
-}
-
 void BufferView::contextMenuEvent(QContextMenuEvent *event) {
   QModelIndex index = indexAt(event->pos());
   if(!index.isValid())
@@ -413,145 +325,21 @@ void BufferView::contextMenuEvent(QContextMenuEvent *event) {
 }
 
 void BufferView::addActionsToMenu(QMenu *contextMenu, const QModelIndex &index) {
-  _menuIndex = index;
-  const Network *network = Client::network(index.data(NetworkModel::NetworkIdRole).value<NetworkId>());
-  Q_CHECK_PTR(network);
-
-  NetworkModel::ItemType itemType = static_cast<NetworkModel::ItemType>(index.data(NetworkModel::ItemTypeRole).toInt());
-
-  switch(itemType) {
-  case NetworkModel::NetworkItemType:
-    showChannelList.setData(index.data(NetworkModel::NetworkIdRole));
-    addItemToMenu(&showChannelList, contextMenu, index, ActiveState);
-    addItemToMenu(_menuActions.action("DisconnectNet"), contextMenu, network->connectionState() != Network::Disconnected);
-    addItemToMenu(_menuActions.action("ConnectNet"), contextMenu, network->connectionState() == Network::Disconnected);
-    addSeparatorToMenu(contextMenu, index, ActiveState);
-    addItemToMenu(_menuActions.action("JoinChannel"), contextMenu, index, ActiveState);
-    break;
-  case NetworkModel::BufferItemType:
-    {
-      BufferInfo bufferInfo = index.data(NetworkModel::BufferInfoRole).value<BufferInfo>();
-      switch(bufferInfo.type()) {
-      case BufferInfo::ChannelBuffer:
-        addItemToMenu(_menuActions.action("JoinBuffer"), contextMenu, index, InactiveState);
-        addItemToMenu(_menuActions.action("PartBuffer"), contextMenu, index, ActiveState);
-        addItemToMenu(_menuActions.action("HideBuffersTemporarily"), contextMenu, (bool)config());
-        addItemToMenu(_menuActions.action("HideBuffersPermanently"), contextMenu, (bool)config());
-        addItemToMenu(_menuActions.action("RemoveBuffer"), contextMenu, index, InactiveState);
-        createHideEventsSubMenu(contextMenu, bufferInfo.bufferId());
-        addItemToMenu(_menuActions.action("IgnoreList"), contextMenu);
-        break;
-      case BufferInfo::QueryBuffer:
-        addItemToMenu(_menuActions.action("HideBuffersTemporarily"), contextMenu, (bool)config());
-        addItemToMenu(_menuActions.action("HideBuffersPermanently"), contextMenu, (bool)config());
-        addItemToMenu(_menuActions.action("RemoveBuffer"), contextMenu);
-        createHideEventsSubMenu(contextMenu, bufferInfo.bufferId());
-        break;
-      default:
-        addItemToMenu(_menuActions.action("HideBuffersTemporarily"), contextMenu, (bool)config());
-        addItemToMenu(_menuActions.action("HideBuffersPermanently"), contextMenu, (bool)config());
-        break;
-      }
-    }
-    break;
-  default:
-    return;
-  }
+  Client::mainUi()->actionProvider()->addActions(contextMenu, index, this, "menuActionTriggered", (bool)config());
 }
 
-void BufferView::actionTriggered(QAction *result) {
-  const Network *network = Client::network(_menuIndex.data(NetworkModel::NetworkIdRole).value<NetworkId>());
-  Q_CHECK_PTR(network);
-
-  if(network && result == _menuActions.action("ConnectNet")) {
-    network->requestConnect();
-    return;
+void BufferView::menuActionTriggered(QAction *result) {
+  NetworkModelActionProvider::ActionType type = (NetworkModelActionProvider::ActionType)result->data().toInt();
+  switch(type) {
+    case NetworkModelActionProvider::HideBufferTemporarily:
+      removeSelectedBuffers();
+      break;
+    case NetworkModelActionProvider::HideBufferPermanently:
+      removeSelectedBuffers(true);
+      break;
+    default:
+      return;
   }
-
-  if(network && result == _menuActions.action("DisconnectNet")) {
-    network->requestDisconnect();
-    return;
-  }
-
-if(result == _menuActions.action("JoinChannel")) {
-    // FIXME no QInputDialog in Qtopia
-#ifndef Q_WS_QWS
-    bool ok;
-    QString channelName = QInputDialog::getText(this, tr("Join Channel"), tr("Input channel name:"), QLineEdit::Normal, QString(), &ok);
-    if(ok && !channelName.isEmpty()) {
-      Client::instance()->userInput(BufferInfo::fakeStatusBuffer(_menuIndex.data(NetworkModel::NetworkIdRole).value<NetworkId>()),
-                                     QString("/J %1").arg(channelName));
-    }
-#endif
-    return;
-  }
-
-  if(result == _menuActions.action("JoinBuffer")) {
-    BufferInfo bufferInfo = _menuIndex.data(NetworkModel::BufferInfoRole).value<BufferInfo>();
-    Client::instance()->userInput(bufferInfo, QString("/JOIN %1").arg(bufferInfo.bufferName()));
-    return;
-  }
-
-  if(result == _menuActions.action("PartBuffer")) {
-    BufferInfo bufferInfo = _menuIndex.data(NetworkModel::BufferInfoRole).value<BufferInfo>();
-    Client::instance()->userInput(bufferInfo, QString("/PART"));
-    return;
-  }
-
-  if(result == _menuActions.action("HideBuffersTemporarily")) {
-    removeSelectedBuffers();
-    return;
-  }
-
-  if(result == _menuActions.action("HideBuffersPermanently")) {
-    removeSelectedBuffers(true);
-    return;
-  }
-
-  if(result == _menuActions.action("RemoveBuffer")) {
-    BufferInfo bufferInfo = _menuIndex.data(NetworkModel::BufferInfoRole).value<BufferInfo>();
-    int res = QMessageBox::question(this, tr("Remove buffer permanently?"),
-                                    tr("Do you want to delete the buffer \"%1\" permanently? This will delete all related data, including all backlog "
-                                       "data, from the core's database!").arg(bufferInfo.bufferName()),
-                                        QMessageBox::Yes|QMessageBox::No, QMessageBox::No);
-    if(res == QMessageBox::Yes) {
-      Client::removeBuffer(bufferInfo.bufferId());
-    }
-    return;
-  }
-
-  if(result == _menuActions.action("HideJoin")) {
-    BufferId bufferId = _menuIndex.data(NetworkModel::BufferIdRole).value<BufferId>();
-    BufferSettings(bufferId).filterMessage(Message::Join, result->isChecked());
-    return;
-  }
-  if(result == _menuActions.action("HidePart")) {
-    BufferId bufferId = _menuIndex.data(NetworkModel::BufferIdRole).value<BufferId>();
-    BufferSettings(bufferId).filterMessage(Message::Part, result->isChecked());
-    return;
-  }
-  if(result == _menuActions.action("HideQuit")) {
-    BufferId bufferId = _menuIndex.data(NetworkModel::BufferIdRole).value<BufferId>();
-    BufferSettings(bufferId).filterMessage(Message::Quit, result->isChecked());
-    return;
-  }
-  if(result == _menuActions.action("HideNick")) {
-    BufferId bufferId = _menuIndex.data(NetworkModel::BufferIdRole).value<BufferId>();
-    BufferSettings(bufferId).filterMessage(Message::Nick, result->isChecked());
-    return;
-  }
-  if(result == _menuActions.action("HideMode")) {
-    BufferId bufferId = _menuIndex.data(NetworkModel::BufferIdRole).value<BufferId>();
-    BufferSettings(bufferId).filterMessage(Message::Mode, result->isChecked());
-    return;
-  }
-  if(result == _menuActions.action("HideDayChange")) {
-    BufferId bufferId = _menuIndex.data(NetworkModel::BufferIdRole).value<BufferId>();
-    BufferSettings(bufferId).filterMessage(Message::DayChange, result->isChecked());
-    return;
-  }
-
-  qWarning() << "Unhandled menu action";
 }
 
 void BufferView::wheelEvent(QWheelEvent* event) {
@@ -580,7 +368,6 @@ void BufferView::wheelEvent(QWheelEvent* event) {
   selectionModel()->select( resultingIndex, QItemSelectionModel::ClearAndSelect );
 
 }
-
 
 QSize BufferView::sizeHint() const {
   return QTreeView::sizeHint();
