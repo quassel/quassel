@@ -70,9 +70,35 @@ void ChatView::init(MessageFilter *filter) {
   connect(_scene, SIGNAL(lastLineChanged(QGraphicsItem *, qreal)), this, SLOT(lastLineChanged(QGraphicsItem *, qreal)));
   connect(_scene, SIGNAL(mouseMoveWhileSelecting(const QPointF &)), this, SLOT(mouseMoveWhileSelecting(const QPointF &)));
   setScene(_scene);
-  // installEventFilter(_scene);
 
   connect(verticalScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(verticalScrollbarChanged(int)));
+}
+
+bool ChatView::event(QEvent *event) {
+  if(event->type() == QEvent::KeyPress) {
+    QKeyEvent *keyEvent = static_cast<QKeyEvent*>(event);
+    switch(keyEvent->key()) {
+    case Qt::Key_Up:
+    case Qt::Key_Down:
+    case Qt::Key_PageUp:
+    case Qt::Key_PageDown:
+      if(!verticalScrollBar()->isVisible()) {
+	scene()->requestBacklog();
+	return true;
+      }
+    default:
+      break;
+    }
+  }
+
+  if(event->type() == QEvent::Wheel) {
+    if(!verticalScrollBar()->isVisible()) {
+      scene()->requestBacklog();
+      return true;
+    }
+  }
+
+  return QGraphicsView::event(event);
 }
 
 void ChatView::resizeEvent(QResizeEvent *event) {

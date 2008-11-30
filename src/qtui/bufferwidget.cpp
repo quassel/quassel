@@ -173,25 +173,16 @@ bool BufferWidget::eventFilter(QObject *watched, QEvent *event) {
     return true;
   }
 
-  int direction = 1;
   switch(keyEvent->key()) {
-    case Qt::Key_PageUp:
-    case Qt::Key_PageDown:
-      // static cast to access public qobject::event
-      return static_cast<QObject*>(ui.stackedWidget->currentWidget())->event(event);
-
-    case Qt::Key_Up:
-      direction = -1;
-    case Qt::Key_Down:
-      if(keyEvent->modifiers() == Qt::ShiftModifier) {
-        QAbstractScrollArea *scrollArea = qobject_cast<QAbstractScrollArea*>(ui.stackedWidget->currentWidget());
-        if(!scrollArea)
-          return false;
-        int sliderPosition = scrollArea->verticalScrollBar()->value();
-        scrollArea->verticalScrollBar()->setValue(sliderPosition + (direction * 12));
-        return true;
-      }
-    default:
+  case Qt::Key_Up:
+  case Qt::Key_Down:
+    if(!(keyEvent->modifiers() & Qt::ShiftModifier))
       return false;
+  case Qt::Key_PageUp:
+  case Qt::Key_PageDown:
+    // static cast to access public qobject::event
+    return static_cast<QObject*>(ui.stackedWidget->currentWidget())->event(event);
+  default:
+    return false;
   }
 }

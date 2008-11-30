@@ -49,6 +49,8 @@ public:
 
   virtual void addActionsToMenu(QMenu *, const QPointF &pos);
 
+  virtual bool event(QEvent *event);
+
 public slots:
   inline virtual void clear() {}
   void zoomIn();
