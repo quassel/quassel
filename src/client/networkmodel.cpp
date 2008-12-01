@@ -748,7 +748,7 @@ bool NetworkModel::isBufferIndex(const QModelIndex &index) const {
   return index.data(NetworkModel::ItemTypeRole) == NetworkModel::BufferItemType;
 }
 
-int NetworkModel::networkRow(NetworkId networkId) {
+int NetworkModel::networkRow(NetworkId networkId) const {
   NetworkItem *netItem = 0;
   for(int i = 0; i < rootItem->childCount(); i++) {
     netItem = qobject_cast<NetworkItem *>(rootItem->child(i));
@@ -768,7 +768,7 @@ QModelIndex NetworkModel::networkIndex(NetworkId networkId) {
     return indexByItem(qobject_cast<NetworkItem *>(rootItem->child(netRow)));
 }
 
-NetworkItem *NetworkModel::findNetworkItem(NetworkId networkId) {
+NetworkItem *NetworkModel::findNetworkItem(NetworkId networkId) const {
   int netRow = networkRow(networkId);
   if(netRow == -1)
     return 0;
@@ -800,7 +800,7 @@ QModelIndex NetworkModel::bufferIndex(BufferId bufferId) {
   return indexByItem(_bufferItemCache[bufferId]);
 }
 
-BufferItem *NetworkModel::findBufferItem(BufferId bufferId) {
+BufferItem *NetworkModel::findBufferItem(BufferId bufferId) const {
   if(_bufferItemCache.contains(bufferId))
     return _bufferItemCache[bufferId];
   else
@@ -1047,11 +1047,15 @@ QString NetworkModel::networkName(BufferId bufferId) const {
     return QString();
 }
 
-BufferId NetworkModel::bufferId(NetworkId networkId, const QString &bufferName) const {
-  foreach(BufferItem *item, _bufferItemCache) {
-    NetworkItem *netItem = qobject_cast<NetworkItem *>(item->parent());
-    if(netItem && netItem->networkId() == networkId && item->bufferName() == bufferName)
-      return item->bufferId();
+BufferId NetworkModel::bufferId(NetworkId networkId, const QString &bufferName, Qt::CaseSensitivity cs) const {
+  const NetworkItem *netItem = findNetworkItem(networkId);
+  if(!netItem)
+    return BufferId();
+
+  for(int i = 0; i < netItem->childCount(); i++) {
+    BufferItem *bufferItem = qobject_cast<BufferItem *>(netItem->child(i));
+    if(bufferItem && !bufferItem->bufferName().compare(bufferName, cs))
+      return bufferItem->bufferId();
   }
   return BufferId();
 }

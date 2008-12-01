@@ -306,7 +306,7 @@ public:
    *  @param bufferName The bufferName we look for
    *  @return The id of the buffer if found, an invalid one else
    */
-  BufferId bufferId(NetworkId networkId, const QString &bufferName) const;
+  BufferId bufferId(NetworkId networkId, const QString &bufferName, Qt::CaseSensitivity cs = Qt::CaseInsensitive) const;
 
   QString bufferName(BufferId bufferId) const;
   BufferInfo::Type bufferType(BufferId bufferId) const;
@@ -335,11 +335,11 @@ private slots:
   void checkForNewBuffers(const QModelIndex &parent, int start, int end);
 
 private:
-  int networkRow(NetworkId networkId);
-  NetworkItem *findNetworkItem(NetworkId networkId);
+  int networkRow(NetworkId networkId) const;
+  NetworkItem *findNetworkItem(NetworkId networkId) const;
   NetworkItem *networkItem(NetworkId networkId);
-  inline BufferItem *findBufferItem(const BufferInfo &bufferInfo) { return findBufferItem(bufferInfo.bufferId()); }
-  BufferItem *findBufferItem(BufferId bufferId);
+  inline BufferItem *findBufferItem(const BufferInfo &bufferInfo) const { return findBufferItem(bufferInfo.bufferId()); }
+  BufferItem *findBufferItem(BufferId bufferId) const;
   BufferItem *bufferItem(const BufferInfo &bufferInfo);
 
   QHash<BufferId, BufferItem *> _bufferItemCache;
