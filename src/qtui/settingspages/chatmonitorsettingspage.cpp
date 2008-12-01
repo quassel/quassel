@@ -20,7 +20,6 @@
 
 #include "chatmonitorsettingspage.h"
 
-
 #include "client.h"
 #include "networkmodel.h"
 #include "bufferviewconfig.h"
@@ -28,7 +27,6 @@
 #include "bufferview.h"
 #include "bufferviewfilter.h"
 #include "iconloader.h"
-//#include "chatmonitorsettings.h"
 #include "chatviewsettings.h"
 
 #include <QVariant>
@@ -111,8 +109,9 @@ void ChatMonitorSettingsPage::load() {
 }
 
 void ChatMonitorSettingsPage::loadSettings() {
-  ChatViewSettings chatViewSettings;
+  ChatViewSettings chatViewSettings("ChatMonitor");
   settings["OperationMode"] = static_cast<ChatViewSettings::OperationMode>(chatViewSettings.value("OperationMode", QVariant()).toInt());
+
   // Load default behavior if no or invalid settings found
   if (settings["OperationMode"] == ChatViewSettings::InvalidMode) {
     switchOperationMode(ui.operationMode->findData(ChatViewSettings::OptOut));
@@ -123,7 +122,7 @@ void ChatMonitorSettingsPage::loadSettings() {
 }
 
 void ChatMonitorSettingsPage::save() {
-  ChatViewSettings chatViewSettings;
+  ChatViewSettings chatViewSettings("ChatMonitor");
   // save operation mode
   chatViewSettings.setValue("OperationMode", settings["OperationMode"]);
   chatViewSettings.setValue("HighlightAlways", settings["HighlightAlways"]);
@@ -156,11 +155,11 @@ bool ChatMonitorSettingsPage::testHasChanged() {
   toggleBuffers takes each a bufferView and its config for "input" and "output".
   Any selected item will be moved over from the input to the output bufferview.
 */
-void ChatMonitorSettingsPage::toggleBuffers(BufferView &inView, BufferViewConfig &inCfg, BufferView &outView, BufferViewConfig &outCfg) {
+void ChatMonitorSettingsPage::toggleBuffers(BufferView *inView, BufferViewConfig *inCfg, BufferView *outView, BufferViewConfig *outCfg) {
 
   // Fill QMap with selected items ordered by selection row
   QMap<int, QList<BufferId> > selectedBuffers;
-  foreach (QModelIndex index, inView.selectionModel()->selectedIndexes()) {
+  foreach (QModelIndex index, inView->selectionModel()->selectedIndexes()) {
     BufferId inBufferId = index.data(NetworkModel::BufferIdRole).value<BufferId>();
     if(index.data(NetworkModel::ItemTypeRole) == NetworkModel::NetworkItemType) {
       // TODO: 
@@ -172,7 +171,7 @@ void ChatMonitorSettingsPage::toggleBuffers(BufferView &inView, BufferViewConfig
   }
 
   // clear selection to be able to remove the bufferIds without errors
-  inView.selectionModel()->clearSelection();
+  inView->selectionModel()->clearSelection();
 
   /*
     Invalidate the BufferViewFilters' configs to get constant add/remove times
@@ -180,33 +179,33 @@ void ChatMonitorSettingsPage::toggleBuffers(BufferView &inView, BufferViewConfig
     This can probably be removed whenever BufferViewConfig::bulkAdd or something
     like that is available.
   */
-  qobject_cast<BufferViewFilter *>(outView.model())->setConfig(0);
-  qobject_cast<BufferViewFilter *>(inView.model())->setConfig(0);
+  qobject_cast<BufferViewFilter *>(outView->model())->setConfig(0);
+  qobject_cast<BufferViewFilter *>(inView->model())->setConfig(0);
 
   // actually move the ids
   foreach (QList<BufferId> list, selectedBuffers) {
     foreach (BufferId buffer, list) {
-      outCfg.addBuffer(buffer,0);
-      inCfg.removeBuffer(buffer);
+      outCfg->addBuffer(buffer,0);
+      inCfg->removeBuffer(buffer);
     }
   }
 
-  outView.setFilteredModel(Client::bufferModel(), &outCfg);
-  inView.setFilteredModel(Client::bufferModel(), &inCfg);
+  outView->setFilteredModel(Client::bufferModel(), outCfg);
+  inView->setFilteredModel(Client::bufferModel(), inCfg);
 
   widgetHasChanged();
 }
 
 void ChatMonitorSettingsPage::on_activateBuffer_clicked() {
   if (ui.availableBuffers->currentIndex().isValid() && ui.availableBuffers->selectionModel()->hasSelection()) {
-    toggleBuffers(*ui.availableBuffers, *configAvailable, *ui.activeBuffers, *configActive);
+    toggleBuffers(ui.availableBuffers, configAvailable, ui.activeBuffers, configActive);
     widgetHasChanged();
   }
 }
 
 void ChatMonitorSettingsPage::on_deactivateBuffer_clicked() {
   if (ui.activeBuffers->currentIndex().isValid() && ui.activeBuffers->selectionModel()->hasSelection()) {
-    toggleBuffers(*ui.activeBuffers, *configActive, *ui.availableBuffers, *configAvailable);
+    toggleBuffers(ui.activeBuffers, configActive, ui.availableBuffers, configAvailable);
     widgetHasChanged();
   }
 }

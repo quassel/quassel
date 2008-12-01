@@ -24,10 +24,9 @@
 #include "settingspage.h"
 #include "ui_chatmonitorsettingspage.h"
 
-// replace with forward declaration
-#include "bufferviewconfig.h"
-
 #include <QHash>
+
+class BufferViewConfig;
 
 class ChatMonitorSettingsPage : public SettingsPage {
   Q_OBJECT
@@ -53,7 +52,7 @@ class ChatMonitorSettingsPage : public SettingsPage {
     Ui::ChatMonitorSettingsPage ui;
     QHash<QString, QVariant> settings;
     bool testHasChanged();
-    void toggleBuffers(BufferView &inView, BufferViewConfig &inCfg, BufferView &outView, BufferViewConfig &outCfg);
+    void toggleBuffers(BufferView *inView, BufferViewConfig *inCfg, BufferView *outView, BufferViewConfig *outCfg);
     BufferViewConfig *configAvailable;
     BufferViewConfig *configActive;
 };
