@@ -54,10 +54,16 @@ public slots:
 private slots:
   void showFieldsSettingsChanged(const QVariant &newValue);
   void showOwnMessagesSettingChanged(const QVariant &newValue);
+  void highlightAlwaysSettingsChanged(const QVariant &newValue);
+  void operationModeSettingsChanged(const QVariant &newValue);
+  void buffersSettingsChanged(const QVariant &newValue);
 
 private:
   int _showFields;
   bool _showOwnMessages;
+  QList<BufferId> _bufferIds;
+  bool _highlightAlways;
+  int _operationMode;
 };
 
 #endif

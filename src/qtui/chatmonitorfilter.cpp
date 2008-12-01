@@ -33,6 +33,21 @@ ChatMonitorFilter::ChatMonitorFilter(MessageModel *model, QObject *parent)
   _showOwnMessages = viewSettings.value("showOwnMsgs", true).toBool();
   viewSettings.notify("showFields", this, SLOT(showFieldsSettingsChanged(const QVariant &)));
   viewSettings.notify("showOwnMsgs", this, SLOT(showOwnMessagesSettingChanged(const QVariant &)));
+
+  // ChatMonitorSettingsPage
+  QString highlightAlwaysSettingsId = "HighlightAlways";
+  QString operationModeSettingsId = "OperationMode";
+  QString buffersSettingsId = "Buffers";
+
+  _highlightAlways = viewSettings.value(highlightAlwaysSettingsId, false).toBool();
+  _operationMode = viewSettings.value(operationModeSettingsId, 0).toInt();
+  // read configured list of buffers to monitor/ignore
+  foreach(QVariant v, viewSettings.value(buffersSettingsId, QVariant()).toList())
+    _bufferIds << v.value<BufferId>();
+
+  viewSettings.notify(highlightAlwaysSettingsId, this, SLOT(highlightAlwaysSettingsChanged(const QVariant &)));
+  viewSettings.notify(operationModeSettingsId, this, SLOT(operationModeSettingsChanged(const QVariant &)));
+  viewSettings.notify(buffersSettingsId, this, SLOT(buffersSettingsChanged(const QVariant &)));
 }
 
 bool ChatMonitorFilter::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const {
@@ -44,6 +59,12 @@ bool ChatMonitorFilter::filterAcceptsRow(int sourceRow, const QModelIndex &sourc
 
   Message::Type type = (Message::Type)sourceModel()->data(sourceModel()->index(sourceRow, 0), MessageModel::TypeRole).toInt();
   if(!(type & (Message::Plain | Message::Notice | Message::Action)))
+    return false;
+
+  // ChatMonitorSettingsPage
+  if (_operationMode == ChatViewSettings::OptOut && !(_highlightAlways && flags & Message::Highlight) &&  _bufferIds.contains(sourceModel()->data(sourceModel()->index(sourceRow, 0), MessageModel::BufferIdRole).value<BufferId>()))
+    return false;
+  if (_operationMode == ChatViewSettings::OptIn && !(_highlightAlways && flags & Message::Highlight) && !_bufferIds.contains(sourceModel()->data(sourceModel()->index(sourceRow, 0), MessageModel::BufferIdRole).value<BufferId>()))
     return false;
 
   return true;
@@ -115,4 +136,19 @@ void ChatMonitorFilter::showFieldsSettingsChanged(const QVariant &newValue) {
 
 void ChatMonitorFilter::showOwnMessagesSettingChanged(const QVariant &newValue) {
   _showOwnMessages = newValue.toBool();
+}
+
+void ChatMonitorFilter::highlightAlwaysSettingsChanged(const QVariant &newValue) {
+  _highlightAlways = newValue.toBool();
+}
+
+void ChatMonitorFilter::operationModeSettingsChanged(const QVariant &newValue) {
+  _operationMode = newValue.toInt();
+}
+
+void ChatMonitorFilter::buffersSettingsChanged(const QVariant &newValue) {
+  _bufferIds.clear();
+  foreach (QVariant v, newValue.toList()) {
+    _bufferIds << v.value<BufferId>();
+  }
 }

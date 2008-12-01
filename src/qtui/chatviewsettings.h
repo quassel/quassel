@@ -28,6 +28,15 @@ class ChatView;
 
 class ChatViewSettings : public QtUiSettings {
 public:
+  Q_ENUMS(OperationMode);
+  public:
+    enum OperationMode {
+      InvalidMode = 0,
+      OptIn = 1,
+      OptOut = 2
+    };
+  Q_DECLARE_FLAGS(operationModes, OperationMode);
+
   ChatViewSettings(const QString &id = "__default__");
   ChatViewSettings(ChatScene *scene);
   ChatViewSettings(ChatView *view);
@@ -35,5 +44,5 @@ public:
   inline bool showWebPreview() { return localValue("ShowWebPreview", true).toBool(); }
   inline void enableWebPreview(bool enabled) { setLocalValue("ShowWebPreview", enabled); }
 };
-
+Q_DECLARE_METATYPE(ChatViewSettings::OperationMode);
 #endif //CHATVIEWSETTINGS_H
