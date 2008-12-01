@@ -389,6 +389,15 @@ ChannelBufferItem::ChannelBufferItem(const BufferInfo &bufferInfo, AbstractTreeI
     attachIrcChannel(ircChannel);
 }
 
+QVariant ChannelBufferItem::data(int column, int role) const {
+  switch(role) {
+    case NetworkModel::IrcChannelRole:
+      return _ircChannel;
+    default:
+      return BufferItem::data(column, role);
+  }
+}
+
 QString ChannelBufferItem::toolTip(int column) const {
   Q_UNUSED(column);
   QStringList toolTip;

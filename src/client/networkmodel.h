@@ -175,6 +175,7 @@ class ChannelBufferItem : public BufferItem {
 public:
   ChannelBufferItem(const BufferInfo &bufferInfo, AbstractTreeItem *parent);
 
+  virtual QVariant data(int column, int role) const;
   virtual inline bool isActive() const { return (bool)_ircChannel; }
   virtual QString toolTip(int column) const;
 
@@ -268,7 +269,8 @@ public:
     BufferInfoRole,
     ItemTypeRole,
     UserAwayRole,
-    IrcUserRole
+    IrcUserRole,
+    IrcChannelRole
   };
 
   enum ItemType {
