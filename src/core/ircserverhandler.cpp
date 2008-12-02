@@ -438,7 +438,7 @@ void IrcServerHandler::handleQuit(const QString &prefix, const QList<QByteArray>
   foreach(QString channel, ircuser->channels())
     emit displayMsg(Message::Quit, BufferInfo::ChannelBuffer, channel, msg, prefix);
 
-  network()->removeIrcUser(nickFromMask(prefix));
+  ircuser->quit();
 }
 
 void IrcServerHandler::handleTopic(const QString &prefix, const QList<QByteArray> &params) {

@@ -363,12 +363,12 @@ QString QueryBufferItem::toolTip(int column) const {
 
 void QueryBufferItem::attachIrcUser(IrcUser *ircUser) {
   _ircUser = ircUser;
-  connect(_ircUser, SIGNAL(destroyed()), this, SLOT(ircUserDestroyed()));
+  connect(_ircUser, SIGNAL(quited()), this, SLOT(ircUserQuited()));
   connect(_ircUser, SIGNAL(awaySet(bool)), this, SIGNAL(dataChanged()));
   emit dataChanged();
 }
 
-void QueryBufferItem::ircUserDestroyed() {
+void QueryBufferItem::ircUserQuited() {
   _ircUser = 0;
   emit dataChanged();
 }
@@ -442,8 +442,8 @@ void ChannelBufferItem::attachIrcChannel(IrcChannel *ircChannel) {
 	  this, SLOT(join(QList<IrcUser *>)));
   connect(ircChannel, SIGNAL(ircUserParted(IrcUser *)),
 	  this, SLOT(part(IrcUser *)));
-  connect(ircChannel, SIGNAL(destroyed()),
-	  this, SLOT(ircChannelDestroyed()));
+  connect(ircChannel, SIGNAL(parted()),
+	  this, SLOT(ircChannelParted()));
   connect(ircChannel, SIGNAL(ircUserModesSet(IrcUser *, QString)),
 	  this, SLOT(userModeChanged(IrcUser *)));
   connect(ircChannel, SIGNAL(ircUserModeAdded(IrcUser *, QString)),
@@ -457,7 +457,7 @@ void ChannelBufferItem::attachIrcChannel(IrcChannel *ircChannel) {
   emit dataChanged();
 }
 
-void ChannelBufferItem::ircChannelDestroyed() {
+void ChannelBufferItem::ircChannelParted() {
   Q_CHECK_PTR(_ircChannel);
   disconnect(_ircChannel, 0, this, 0);
   _ircChannel = 0;
@@ -672,7 +672,7 @@ IrcUserItem::IrcUserItem(IrcUser *ircUser, AbstractTreeItem *parent)
     _ircUser(ircUser)
 {
   setObjectName(ircUser->nick());
-  connect(ircUser, SIGNAL(destroyed()), this, SLOT(ircUserDestroyed()));
+  connect(ircUser, SIGNAL(quited()), this, SLOT(ircUserQuited()));
   connect(ircUser, SIGNAL(nickSet(QString)), this, SIGNAL(dataChanged()));
   connect(ircUser, SIGNAL(awaySet(bool)), this, SIGNAL(dataChanged()));
 }
@@ -728,12 +728,6 @@ QString IrcUserItem::toolTip(int column) const {
 
   return QString("<p> %1 </p>").arg(toolTip.join("<br />"));
 }
-
-// void IrcUserItem::ircUserDestroyed() {
-//   parent()->removeChild(this);
-//   if(parent()->childCount() == 0)
-//     parent()->parent()->removeChild(parent());
-// }
 
 /*****************************************
  * NetworkModel

@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _IRCUSER_H_
-#define _IRCUSER_H_
+#ifndef IRCUSER_H
+#define IRCUSER_H
 
 #include <QSet>
 #include <QString>
@@ -110,6 +110,7 @@ public slots:
   void joinChannel(const QString &channelname);
   void partChannel(IrcChannel *channel);
   void partChannel(const QString &channelname);
+  void quit();
 
   void addUserModes(const QString &modes);
   void removeUserModes(const QString &modes);
@@ -134,6 +135,7 @@ signals:
 
   // void channelJoined(QString channel);
   void channelParted(QString channel);
+  void quited();
 
   void userModesAdded(QString modes);
   void userModesRemoved(QString modes);

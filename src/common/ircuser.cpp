@@ -218,7 +218,7 @@ void IrcUser::joinChannel(IrcChannel *channel) {
   if(!_channels.contains(channel)) {
     _channels.insert(channel);
     channel->joinIrcUsers(this);
-    connect(channel, SIGNAL(destroyed()), this, SLOT(channelDestroyed()));
+    // connect(channel, SIGNAL(destroyed()), this, SLOT(channelDestroyed()));
   }
 }
 
@@ -233,7 +233,7 @@ void IrcUser::partChannel(IrcChannel *channel) {
     channel->part(this);
     emit channelParted(channel->name());
     if(_channels.isEmpty() && !network()->isMe(this))
-      deleteLater();
+      quit();
   }
 }
 
@@ -246,13 +246,24 @@ void IrcUser::partChannel(const QString &channelname) {
   }
 }
 
+void IrcUser::quit() {
+  QList<IrcChannel *> channels = _channels.toList();
+  _channels.clear();
+  foreach(IrcChannel *channel, channels) {
+    disconnect(channel, 0, this, 0);
+    channel->part(this);
+  }
+  network()->removeIrcUser(this);
+  emit quited();
+}
+
 void IrcUser::channelDestroyed() {
   // private slot!
   IrcChannel *channel = static_cast<IrcChannel*>(sender());
   if(_channels.contains(channel)) {
     _channels.remove(channel);
-    if(_channels.isEmpty())
-      deleteLater();
+    if(_channels.isEmpty() && !network()->isMe(this))
+      quit();
   }
 }
 

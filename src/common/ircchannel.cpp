@@ -43,6 +43,9 @@ IrcChannel::IrcChannel(const QString &channelname, Network *network)
   setObjectName(QString::number(network->networkId().toInt()) + "/" +  channelname);
 }
 
+IrcChannel::~IrcChannel() {
+}
+
 // ====================
 //  PUBLIC:
 // ====================
@@ -144,9 +147,8 @@ void IrcChannel::joinIrcUsers(const QList<IrcUser *> &users, const QStringList &
 
     _userModes[ircuser] = modes[i];
     ircuser->joinChannel(this);
-    //qDebug() << "JOIN" << name() << ircuser->nick() << ircUsers().count();
     connect(ircuser, SIGNAL(nickSet(QString)), this, SLOT(ircUserNickSet(QString)));
-    connect(ircuser, SIGNAL(destroyed()), this, SLOT(ircUserDestroyed()));
+    // connect(ircuser, SIGNAL(destroyed()), this, SLOT(ircUserDestroyed()));
     // if you wonder why there is no counterpart to ircUserJoined:
     // the joines are propagted by the ircuser. the signal ircUserJoined is only for convenience
 
@@ -185,13 +187,22 @@ void IrcChannel::part(IrcUser *ircuser) {
   if(isKnownUser(ircuser)) {
     _userModes.remove(ircuser);
     ircuser->partChannel(this);
-    //qDebug() << "PART" << name() << ircuser->nick() << ircUsers().count();
     // if you wonder why there is no counterpart to ircUserParted:
     // the joines are propagted by the ircuser. the signal ircUserParted is only for convenience
     disconnect(ircuser, 0, this, 0);
     emit ircUserParted(ircuser);
-    if(network->isMe(ircuser))
-       deleteLater();
+    
+    if(network->isMe(ircuser)) {
+      // we left -> clean up the channel and destroy it
+      QList<IrcUser *> users = _userModes.keys();
+      _userModes.clear();
+      foreach(IrcUser *user, users) {
+	disconnect(user, 0, this, 0);
+	user->partChannel(this);
+      }
+      emit parted();
+      network->removeIrcChannel(this);
+    }
   }
 }
 

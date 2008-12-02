@@ -210,8 +210,6 @@ public slots:
 
   inline void addIrcUser(const QString &hostmask) { newIrcUser(hostmask); }
   inline void addIrcChannel(const QString &channel) { newIrcChannel(channel); }
-  void removeIrcUser(const QString &nick);
-  void removeIrcChannel(const QString &channel);
 
   //init geters
   QVariantMap initSupports() const;
@@ -240,13 +238,9 @@ public slots:
   void emitConnectionError(const QString &);
 
 private slots:
-  void ircUserDestroyed();
-  void channelDestroyed();
   void removeIrcUser(IrcUser *ircuser);
   void removeIrcChannel(IrcChannel *ircChannel);
   void removeChansAndUsers();
-  void ircUserInitDone();
-  void ircChannelInitDone();
 
 signals:
   void aboutToBeDestroyed();
@@ -283,16 +277,6 @@ signals:
   void ircUserAdded(IrcUser *);
   void ircChannelAdded(const QString &channelname);
   void ircChannelAdded(IrcChannel *);
-
-  void ircUserRemoved(const QString &nick);
-  void ircChannelRemoved(const QString &channel);
-
-  // needed for client sync progress
-  void ircUserRemoved(QObject *);
-  void ircChannelRemoved(QObject *);
-
-  void ircUserInitDone(IrcUser *);
-  void ircChannelInitDone(IrcChannel *);
 
   void connectRequested(NetworkId id = 0) const;
   void disconnectRequested(NetworkId id = 0) const;
@@ -346,6 +330,9 @@ private:
   static QTextCodec *_defaultCodecForDecoding;
 
   bool _autoAwayActive; // when this is active handle305 and handle306 don't trigger any output
+
+  friend class IrcUser;
+  friend class IrcChannel;
 };
 
 //! Stores all editable information about a network (as opposed to runtime state).

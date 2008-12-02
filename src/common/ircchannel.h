@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _IRCCHANNEL_H_
-#define _IRCCHANNEL_H_
+#ifndef IRCCHANNEL_H
+#define IRCCHANNEL_H
 
 #include <QHash>
 #include <QSet>
@@ -41,6 +41,7 @@ class IrcChannel : public SyncableObject {
 
 public:
   IrcChannel(const QString &channelname, Network *network);
+  ~IrcChannel();
 
   bool isKnownUser(IrcUser *ircuser) const;
   bool isValidChannelUserMode(const QString &mode) const;
@@ -117,6 +118,8 @@ signals:
   void ircUserModeAdded(IrcUser *ircuser, QString mode);
   void ircUserModeRemoved(IrcUser *ircuser, QString mode);
   void ircUserModesSet(IrcUser *ircuser, QString modes);
+
+  void parted(); // convenience signal emitted before channels destruction
 
 private slots:
    void ircUserDestroyed();

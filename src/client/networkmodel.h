@@ -158,7 +158,7 @@ public:
 
 public slots:
   void attachIrcUser(IrcUser *ircUser);
-  void ircUserDestroyed();
+  void ircUserQuited();
 
 private:
   IrcUser *_ircUser;
@@ -195,7 +195,7 @@ public slots:
   void userModeChanged(IrcUser *ircUser);
 
 private slots:
-  void ircChannelDestroyed();
+  void ircChannelParted();
 
 private:
   IrcChannel *_ircChannel;
@@ -246,7 +246,7 @@ public:
   virtual QString toolTip(int column) const;
 
 private slots:
-  inline void ircUserDestroyed() { parent()->removeChild(this); }
+  inline void ircUserQuited() { parent()->removeChild(this); }
 
 private:
   QPointer<IrcUser> _ircUser;

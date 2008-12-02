@@ -26,8 +26,6 @@
 
 #include "client.h"
 #include "identity.h"
-#include "ircuser.h"
-#include "ircchannel.h"
 #include "network.h"
 #include "networkmodel.h"
 #include "quassel.h"
