@@ -440,6 +440,8 @@ void SignalProxy::setArgTypes(QObject* obj, int methodId) {
 
 const QList<int> &SignalProxy::argTypes(QObject *obj, int methodId) {
   const QMetaObject *meta = metaObject(obj);
+  if(!_classInfo.contains(meta))
+    qDebug() << obj << meta;
   Q_ASSERT(_classInfo.contains(meta));
   if(!_classInfo[meta]->argTypes.contains(methodId))
     setArgTypes(obj, methodId);
@@ -1107,7 +1109,8 @@ bool SignalProxy::readDataFromDevice(QIODevice *dev, quint32 &blockSize, QVarian
 
 bool SignalProxy::methodsMatch(const QMetaMethod &signal, const QMetaMethod &slot) const {
   // if we don't even have the same basename it's a sure NO
-  if(methodBaseName(signal) != methodBaseName(slot))
+  QString baseName = methodBaseName(signal);
+  if(baseName != methodBaseName(slot))
     return false;
 
   // are the signatures compatible?
@@ -1115,11 +1118,20 @@ bool SignalProxy::methodsMatch(const QMetaMethod &signal, const QMetaMethod &slo
     return false;
 
   // we take an educated guess if the signals and slots match
-  QString signalsuffix = ::methodName(signal).mid(QString(::methodName(signal)).lastIndexOf(QRegExp("[A-Z]"))).toLower();
-  QString slotprefix = ::methodName(slot).left(QString(::methodName(slot)).indexOf(QRegExp("[A-Z]"))).toLower();
-
+  QString signalsuffix = ::methodName(signal);
+  QString slotprefix = ::methodName(slot);
+  if(!baseName.isEmpty()) {
+    signalsuffix = signalsuffix.mid(baseName.count()).toLower();
+    slotprefix = slotprefix.left(slotprefix.count() - baseName.count()).toLower();
+  }
+  
   uint sizediff = qAbs(slotprefix.size() - signalsuffix.size());
   int ratio = editingDistance(slotprefix, signalsuffix) - sizediff;
+//   if(ratio < 2) {
+//     qDebug() << Q_FUNC_INFO;
+//     qDebug() << methodBaseName(signal) << methodBaseName(slot);
+//     qDebug() << signalsuffix << slotprefix << sizediff << ratio;
+//   }
   return (ratio < 2);
 }
 
@@ -1273,13 +1285,7 @@ void SignalProxy::dumpSyncMap(SyncableObject *object) {
   QHash<QByteArray, int> syncMap_ = syncMap(object);
   QHash<QByteArray, int>::const_iterator iter = syncMap_.constBegin();
   while(iter != syncMap_.constEnd()) {
-    qDebug() << iter.key() << "-->" << iter.value() << meta->method(iter.value()).signature();
+    qDebug() << qPrintable(QString("%1 --> %2 %3").arg(QString(iter.key()), 40).arg(iter.value()).arg(QString(meta->method(iter.value()).signature())));
     iter++;
   }
-//   QHash<int, int> syncMap_ = syncMap(object);
-//   QHash<int, int>::const_iterator iter = syncMap_.constBegin();
-//   while(iter != syncMap_.constEnd()) {
-//     qDebug() << iter.key() << meta->method(iter.key()).signature() << "-->" << iter.value() << meta->method(iter.value()).signature();
-//     iter++;
-//   }
 }
