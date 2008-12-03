@@ -318,7 +318,7 @@ QueryBufferItem::QueryBufferItem(const BufferInfo &bufferInfo, NetworkItem *pare
 QVariant QueryBufferItem::data(int column, int role) const {
   switch(role) {
   case NetworkModel::IrcUserRole:
-    return _ircUser;
+    return QVariant::fromValue<QObject *>(_ircUser);
   case NetworkModel::UserAwayRole:
     return (bool)_ircUser ? _ircUser->isAway() : false;
   default:
@@ -392,7 +392,7 @@ ChannelBufferItem::ChannelBufferItem(const BufferInfo &bufferInfo, AbstractTreeI
 QVariant ChannelBufferItem::data(int column, int role) const {
   switch(role) {
     case NetworkModel::IrcChannelRole:
-      return _ircChannel;
+      return QVariant::fromValue<QObject *>(_ircChannel);
     default:
       return BufferItem::data(column, role);
   }
@@ -689,8 +689,10 @@ QVariant IrcUserItem::data(int column, int role) const {
     return parent()->data(column, role);
   case NetworkModel::BufferInfoRole:
     return parent()->data(column, role);
+  case NetworkModel::IrcChannelRole:
+    return parent()->data(column, role);
   case NetworkModel::IrcUserRole:
-    return _ircUser.data();
+    return QVariant::fromValue<QObject *>(_ircUser.data());
   case NetworkModel::UserAwayRole:
     return (bool)_ircUser ? _ircUser->isAway() : false;
   default:
