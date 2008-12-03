@@ -1,22 +1,22 @@
 /***************************************************************************
-*   Copyright (C) 2005-08 by the Quassel Project                          *
-*   devel@quassel-irc.org                                                 *
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) version 3.                                           *
-*                                                                         *
-*   This program is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU General Public License for more details.                          *
-*                                                                         *
-*   You should have received a copy of the GNU General Public License     *
-*   along with this program; if not, write to the                         *
-*   Free Software Foundation, Inc.,                                       *
-*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-***************************************************************************/
+ *   Copyright (C) 2005-08 by the Quassel Project                          *
+ *   devel@quassel-irc.org                                                 *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) version 3.                                           *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
 
 #ifndef NETWORKMODELACTIONPROVIDER_H
 #define NETWORKMODELACTIONPROVIDER_H
@@ -44,7 +44,8 @@ public:
     BufferMask = 0xf0,
     BufferJoin = 0x10,
     BufferPart = 0x20,
-    BufferRemove = 0x30,
+    BufferSwitchTo = 0x30,
+    BufferRemove = 0x40,
 
     // Hide actions
     HideMask = 0x0f00,
@@ -64,11 +65,13 @@ public:
 
     // Nick actions
     NickMask = 0xff0000,
-    NickCtcpWhois = 0x010000,
-    NickCtcpVersion = 0x020000,
-    NickCtcpPing = 0x030000,
-    NickCtcpTime = 0x040000,
-    NickCtcpFinger = 0x050000,
+    NickWhois = 0x010000,
+    NickQuery = 0x020000,
+    NickSwitchTo = 0x030000,
+    NickCtcpVersion = 0x040000,
+    NickCtcpPing = 0x050000,
+    NickCtcpTime = 0x060000,
+    NickCtcpFinger = 0x070000,
     NickOp = 0x080000,
     NickDeop = 0x090000,
     NickVoice = 0x0a0000,
@@ -76,7 +79,6 @@ public:
     NickKick = 0x0c0000,
     NickBan = 0x0d0000,
     NickKickBan = 0x0e0000,
-    NickQuery = 0x0f0000,
 
     // Actions that are handled externally
     // These emit a signal to the action requester, rather than being handled here
@@ -102,7 +104,8 @@ public:
   void addActions(QMenu *, const QModelIndex &index, QObject *receiver = 0, const char *slot = 0, bool allowBufferHide = false);
   void addActions(QMenu *, const QList<QModelIndex> &indexList, QObject *receiver = 0, const char *slot = 0, bool allowBufferHide = false);
   void addActions(QMenu *, BufferId id, QObject *receiver = 0, const char *slot = 0);
-  void addActions(QMenu *, MessageFilter *filter, QObject *receiver = 0, const char *slot = 0);
+  void addActions(QMenu *, MessageFilter *filter, BufferId msgBuffer, QObject *receiver = 0, const char *slot = 0);
+  void addActions(QMenu *, MessageFilter *filter, BufferId msgBuffer, const QString &chanOrNick, QObject *receiver = 0, const char *slot = 0);
 
 signals:
   void showChannelList(NetworkId);
@@ -117,7 +120,7 @@ protected slots:
 private:
   enum ItemActiveState {
     InactiveState = 0x01,
-  ActiveState = 0x02
+    ActiveState = 0x02
   };
 
 public:
@@ -146,7 +149,11 @@ private:
 
   void addNetworkItemActions(QMenu *, const QModelIndex &);
   void addBufferItemActions(QMenu *, const QModelIndex &, bool isCustomBufferView = false);
-  void addIrcUserActions(QMenu *, IrcUser *ircUser, bool isNickView = true);
+  void addIrcUserActions(QMenu *, const QModelIndex &);
+
+  QString nickName(const QModelIndex &index) const;
+  BufferId findQueryBuffer(const QModelIndex &index, const QString &predefinedNick = QString()) const;
+  BufferId findQueryBuffer(NetworkId, const QString &nickName) const;
 
   NetworkModel *_model;
 
@@ -154,9 +161,12 @@ private:
   QHash<ActionType, Action *> _actionByType;
 
   Action *_hideEventsMenuAction;
+  Action *_nickCtcpMenuAction;
+  Action *_nickModeMenuAction;
 
   QList<QModelIndex> _indexList;
   MessageFilter *_messageFilter;
+  QString _contextItem;   ///< Channel name or nick to provide context menu for
   QObject *_receiver;
   const char *_method;
 };

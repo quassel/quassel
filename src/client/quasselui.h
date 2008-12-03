@@ -66,10 +66,11 @@ class AbstractActionProvider : public QObject {
     AbstractActionProvider(QObject *parent = 0) : QObject(parent) {}
     virtual ~AbstractActionProvider() {}
 
-    virtual void addActions(QMenu *, const QModelIndex &index, QObject *receiver = 0, const char *method = 0, bool allowBufferHide = false) = 0;
-    virtual void addActions(QMenu *, const QList<QModelIndex> &indexList, QObject *receiver = 0, const char *method = 0, bool allowBufferHide = false) = 0;
-    virtual void addActions(QMenu *, BufferId id, QObject *receiver = 0, const char *method = 0) = 0;
-    virtual void addActions(QMenu *, MessageFilter *filter, QObject *receiver = 0, const char *method = 0) = 0;
+    virtual void addActions(QMenu *, const QModelIndex &index, QObject *receiver = 0, const char *slot = 0, bool allowBufferHide = false) = 0;
+    virtual void addActions(QMenu *, const QList<QModelIndex> &indexList, QObject *receiver = 0, const char *slot = 0, bool allowBufferHide = false) = 0;
+    virtual void addActions(QMenu *, BufferId id, QObject *receiver = 0, const char *slot = 0) = 0;
+    virtual void addActions(QMenu *, MessageFilter *filter, BufferId msgBuffer, QObject *receiver = 0, const char *slot = 0) = 0;
+    virtual void addActions(QMenu *, MessageFilter *filter, BufferId msgBuffer, const QString &chanOrNick, QObject *receiver = 0, const char *slot = 0) = 0;
 
   signals:
     void showChannelList(NetworkId);

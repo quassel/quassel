@@ -1,22 +1,22 @@
 /***************************************************************************
-*   Copyright (C) 2005-08 by the Quassel Project                          *
-*   devel@quassel-irc.org                                                 *
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) version 3.                                           *
-*                                                                         *
-*   This program is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU General Public License for more details.                          *
-*                                                                         *
-*   You should have received a copy of the GNU General Public License     *
-*   along with this program; if not, write to the                         *
-*   Free Software Foundation, Inc.,                                       *
-*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-***************************************************************************/
+ *   Copyright (C) 2005-08 by the Quassel Project                          *
+ *   devel@quassel-irc.org                                                 *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) version 3.                                           *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
 
 #include <QInputDialog>
 #include <QMenu>
@@ -24,6 +24,7 @@
 
 #include "networkmodelactionprovider.h"
 
+#include "buffermodel.h"
 #include "buffersettings.h"
 #include "iconloader.h"
 #include "identity.h"
@@ -41,6 +42,7 @@ NetworkModelActionProvider::NetworkModelActionProvider(QObject *parent)
   registerAction(BufferJoin, tr("Join"));
   registerAction(BufferPart, tr("Part"));
   registerAction(BufferRemove, tr("Delete Buffer..."));
+  registerAction(BufferSwitchTo, tr("Show Buffer"));
 
   registerAction(HideJoin, tr("Joins"), true);
   registerAction(HidePart, tr("Parts"), true);
@@ -52,7 +54,10 @@ NetworkModelActionProvider::NetworkModelActionProvider(QObject *parent)
 
   registerAction(JoinChannel, tr("Join Channel..."));
 
-  registerAction(NickCtcpWhois, tr("Whois"));
+  registerAction(NickQuery, tr("Start Query"));
+  registerAction(NickSwitchTo, tr("Show Query"));
+  registerAction(NickWhois, tr("Whois"));
+
   registerAction(NickCtcpVersion, tr("Version"));
   registerAction(NickCtcpTime, tr("Time"));
   registerAction(NickCtcpPing, tr("Ping"));
@@ -65,7 +70,6 @@ NetworkModelActionProvider::NetworkModelActionProvider(QObject *parent)
   registerAction(NickKick, tr("Kick"));
   registerAction(NickBan, tr("Ban"));
   registerAction(NickKickBan, tr("Kickban"));
-  registerAction(NickQuery, tr("Query"));
 
   registerAction(HideBufferTemporarily, tr("Hide Buffer(s) Temporarily"));
   registerAction(HideBufferPermanently, tr("Hide Buffer(s) Permanently"));
@@ -87,11 +91,31 @@ NetworkModelActionProvider::NetworkModelActionProvider(QObject *parent)
   hideEventsMenu->addAction(action(HideApplyToAll));
   _hideEventsMenuAction = new Action(tr("Hide Events"), 0);
   _hideEventsMenuAction->setMenu(hideEventsMenu);
+
+  QMenu *nickCtcpMenu = new QMenu();
+  nickCtcpMenu->addAction(action(NickCtcpPing));
+  nickCtcpMenu->addAction(action(NickCtcpVersion));
+  nickCtcpMenu->addAction(action(NickCtcpTime));
+  nickCtcpMenu->addAction(action(NickCtcpFinger));
+  _nickCtcpMenuAction = new Action(tr("CTCP"), 0);
+  _nickCtcpMenuAction->setMenu(nickCtcpMenu);
+
+  QMenu *nickModeMenu = new QMenu();
+  nickModeMenu->addAction(action(NickOp));
+  nickModeMenu->addAction(action(NickDeop));
+  nickModeMenu->addAction(action(NickVoice));
+  nickModeMenu->addAction(action(NickDevoice));
+  _nickModeMenuAction = new Action(tr("Modes"), 0);
+  _nickModeMenuAction->setMenu(nickModeMenu);
 }
 
 NetworkModelActionProvider::~NetworkModelActionProvider() {
   _hideEventsMenuAction->menu()->deleteLater();
   _hideEventsMenuAction->deleteLater();
+  _nickCtcpMenuAction->menu()->deleteLater();
+  _nickCtcpMenuAction->deleteLater();
+  _nickModeMenuAction->menu()->deleteLater();
+  _nickModeMenuAction->deleteLater();
 }
 
 void NetworkModelActionProvider::registerAction(ActionType type, const QString &text, bool checkable) {
@@ -116,24 +140,28 @@ void NetworkModelActionProvider::addActions(QMenu *menu, BufferId bufId, QObject
   if(!bufId.isValid())
     return;
   _messageFilter = 0;
+  _contextItem = QString();
   addActions(menu, Client::networkModel()->bufferIndex(bufId), receiver, method);
-}
-
-void NetworkModelActionProvider::addActions(QMenu *menu, MessageFilter *filter, QObject *receiver, const char *method) {
-  if(!filter)
-    return;
-  _messageFilter = filter;
-  QList<QModelIndex> indexes;
-  foreach(BufferId bufId, filter->containedBuffers())
-    indexes << Client::networkModel()->bufferIndex(bufId);
-  addActions(menu, indexes, receiver, method);
 }
 
 void NetworkModelActionProvider::addActions(QMenu *menu, const QModelIndex &index, QObject *receiver, const char *method, bool isCustomBufferView) {
   if(!index.isValid())
     return;
   _messageFilter = 0;
+  _contextItem = QString();
   addActions(menu, QList<QModelIndex>() << index, receiver, method, isCustomBufferView);
+}
+
+void NetworkModelActionProvider::addActions(QMenu *menu, MessageFilter *filter, BufferId msgBuffer, QObject *receiver, const char *slot) {
+  addActions(menu, filter, msgBuffer, QString(), receiver, slot);
+}
+
+void NetworkModelActionProvider::addActions(QMenu *menu, MessageFilter *filter, BufferId msgBuffer, const QString &chanOrNick, QObject *receiver, const char *method) {
+  if(!filter)
+    return;
+  _messageFilter = filter;
+  _contextItem = chanOrNick;
+  addActions(menu, QList<QModelIndex>() << Client::networkModel()->bufferIndex(msgBuffer), receiver, method);
 }
 
 // add a list of actions sensible for the current item(s)
@@ -164,15 +192,25 @@ void NetworkModelActionProvider::addActions(QMenu *menu,
       case NetworkModel::BufferItemType:
         addBufferItemActions(menu, index, isCustomBufferView);
         break;
-
+      case NetworkModel::IrcUserItemType:
+        addIrcUserActions(menu, index);
+        break;
       default:
         return;
 
     }
   } else {
     // ChatView actions
+    if(_contextItem.isEmpty()) {
+      // a) query buffer: handle like ircuser
+      // b) general chatview: only react if _contextItem is set (i.e. we right-clicked on something)
+      // NOTE stuff breaks probably with merged buffers, need to rework a lot around here then
+      // for now, use the item type of a random buffer... assuming we never mix channel and query buffers
+      //if(!_messageFilter->containedBuffers.count())
+      //  return;
+      //BufferId randomBuf = _messageFilter->containedBuffers.values().at(0);
 
-
+    }
   }
 }
 
@@ -210,11 +248,11 @@ void NetworkModelActionProvider::addBufferItemActions(QMenu *menu, const QModelI
 
     case BufferInfo::QueryBuffer:
     {
-      IrcUser *ircUser = qobject_cast<IrcUser *>(index.data(NetworkModel::IrcUserRole).value<QObject *>());
-      if(ircUser) {
-        addIrcUserActions(menu, ircUser, false);
+      //IrcUser *ircUser = qobject_cast<IrcUser *>(index.data(NetworkModel::IrcUserRole).value<QObject *>());
+      //if(ircUser) {
+        addIrcUserActions(menu, index);
         menu->addSeparator();
-      }
+      //}
       addHideEventsMenu(menu, bufferInfo.bufferId());
       menu->addSeparator();
       addAction(HideBufferTemporarily, menu, isCustomBufferView);
@@ -229,9 +267,29 @@ void NetworkModelActionProvider::addBufferItemActions(QMenu *menu, const QModelI
   }
 }
 
-void NetworkModelActionProvider::addIrcUserActions(QMenu *menu, IrcUser *ircUser, bool isNickView) {
+void NetworkModelActionProvider::addIrcUserActions(QMenu *menu, const QModelIndex &index) {
+  // this can be called: a) as a nicklist context menu (index has IrcUserItemType)
+  //                     b) as a query buffer context menu (index has BufferItemType and is a QueryBufferItem)
+  //                     c) right-click in a query chatview (same as b), index will be the corresponding QueryBufferItem)
+  //                     d) right-click on some nickname (_contextItem will be non-null, _filter -> chatview, index -> message buffer)
 
+  if(_contextItem.isNull()) {
+    // cases a, b, c
+    bool haveQuery = findQueryBuffer(index).isValid();
+    NetworkModel::ItemType itemType = static_cast<NetworkModel::ItemType>(index.data(NetworkModel::ItemTypeRole).toInt());
+    addAction(_nickModeMenuAction, menu, itemType == NetworkModel::IrcUserItemType);
+    addAction(_nickCtcpMenuAction, menu);
+    menu->addSeparator();
+    addAction(NickQuery, menu, itemType == NetworkModel::IrcUserItemType && !haveQuery);
+    addAction(NickSwitchTo, menu, itemType == NetworkModel::IrcUserItemType && haveQuery);
+    menu->addSeparator();
+    addAction(NickWhois, menu, true);
 
+  } else if(!_contextItem.isEmpty() && _messageFilter) {
+    // case d
+    // TODO
+
+  }
 }
 
 /******** Helper Functions ***********************************************************************/
@@ -291,6 +349,42 @@ void NetworkModelActionProvider::addHideEventsMenu(QMenu *menu, int filter) {
   menu->addAction(_hideEventsMenuAction);
 }
 
+QString NetworkModelActionProvider::nickName(const QModelIndex &index) const {
+  IrcUser *ircUser = qobject_cast<IrcUser *>(index.data(NetworkModel::IrcUserRole).value<QObject *>());
+  if(ircUser)
+    return ircUser->nick();
+
+  BufferInfo bufferInfo = index.data(NetworkModel::BufferInfoRole).value<BufferInfo>();
+  if(!bufferInfo.isValid())
+    return QString();
+
+  return bufferInfo.bufferName(); // FIXME this might break with merged queries maybe
+}
+
+BufferId NetworkModelActionProvider::findQueryBuffer(const QModelIndex &index, const QString &predefinedNick) const {
+  NetworkId networkId = _indexList.at(0).data(NetworkModel::NetworkIdRole).value<NetworkId>();
+  if(!networkId.isValid())
+    return BufferId();
+
+  QString nick = predefinedNick.isEmpty() ? nickName(index) : predefinedNick;
+  if(nick.isEmpty())
+    return BufferId();
+
+  return findQueryBuffer(networkId, nick);
+}
+
+BufferId NetworkModelActionProvider::findQueryBuffer(NetworkId networkId, const QString &nick) const {
+  return Client::networkModel()->bufferId(networkId, nick);
+}
+
+void NetworkModelActionProvider::handleExternalAction(ActionType type, QAction *action) {
+  Q_UNUSED(type);
+  if(_receiver && _method) {
+    if(!QMetaObject::invokeMethod(_receiver, _method, Q_ARG(QAction *, action)))
+      qWarning() << "NetworkModelActionProvider::handleExternalAction(): Could not invoke slot" << _receiver << _method;
+  }
+}
+
 /******** Handle Actions *************************************************************************/
 
 void NetworkModelActionProvider::actionTriggered(QAction *action) {
@@ -344,14 +438,17 @@ void NetworkModelActionProvider::handleBufferAction(ActionType type, QAction *) 
 
     switch(type) {
       case BufferJoin:
-        Client::instance()->userInput(bufferInfo, QString("/JOIN %1").arg(bufferInfo.bufferName()));
+        Client::userInput(bufferInfo, QString("/JOIN %1").arg(bufferInfo.bufferName()));
         break;
       case BufferPart:
       {
         QString reason = Client::identity(Client::network(bufferInfo.networkId())->identity())->partReason();
-        Client::instance()->userInput(bufferInfo, QString("/PART %1").arg(reason));
+        Client::userInput(bufferInfo, QString("/PART %1").arg(reason));
         break;
       }
+      case BufferSwitchTo:
+        Client::bufferModel()->switchToBuffer(bufferInfo.bufferId());
+        break;
       case BufferRemove:
       {
         int res = QMessageBox::question(0, tr("Remove buffer permanently?"),
@@ -386,6 +483,7 @@ void NetworkModelActionProvider::handleHideAction(ActionType type, QAction *acti
       msgType = Message::DayChange; break;
     case HideApplyToAll:
       // TODO implement "apply to all" for hiding messages
+      return;
       break;
     default:
       return;
@@ -436,14 +534,63 @@ void NetworkModelActionProvider::handleGeneralAction(ActionType type, QAction *a
 }
 
 void NetworkModelActionProvider::handleNickAction(ActionType type, QAction *) {
+  if(!_indexList.count())
+    return;
+  NetworkId networkId = _indexList.at(0).data(NetworkModel::NetworkIdRole).value<NetworkId>();
+  if(!networkId.isValid())
+    return;
+  QString nick = nickName(_indexList.at(0));
+  if(nick.isEmpty())
+    return;
+  BufferInfo bufferInfo = _indexList.at(0).data(NetworkModel::BufferInfoRole).value<BufferInfo>();
+  if(!bufferInfo.isValid())
+    return;
 
-
-}
-
-void NetworkModelActionProvider::handleExternalAction(ActionType type, QAction *action) {
-  Q_UNUSED(type);
-  if(_receiver && _method) {
-    if(!QMetaObject::invokeMethod(_receiver, _method, Q_ARG(QAction *, action)))
-      qWarning() << "NetworkModelActionProvider::handleExternalAction(): Could not invoke slot" << _receiver << _method;
+  switch(type) {
+    case NickWhois:
+      Client::userInput(bufferInfo, QString("/WHOIS %1 %1").arg(nick));
+      break;
+    case NickCtcpVersion:
+      Client::userInput(bufferInfo, QString("/CTCP %1 VERSION").arg(nick));
+      break;
+    case NickCtcpPing:
+      Client::userInput(bufferInfo, QString("/CTCP %1 PING").arg(nick));
+      break;
+    case NickCtcpTime:
+      Client::userInput(bufferInfo, QString("/CTCP %1 TIME").arg(nick));
+      break;
+    case NickCtcpFinger:
+      Client::userInput(bufferInfo, QString("/CTCP %1 FINGER").arg(nick));
+      break;
+    case NickOp:
+      Client::userInput(bufferInfo, QString("/OP %1").arg(nick));
+      break;
+    case NickDeop:
+      Client::userInput(bufferInfo, QString("/DEOP %1").arg(nick));
+      break;
+    case NickVoice:
+      Client::userInput(bufferInfo, QString("/VOICE %1").arg(nick));
+      break;
+    case NickDevoice:
+      Client::userInput(bufferInfo, QString("/DEVOICE %1").arg(nick));
+      break;
+    case NickKick:
+      Client::userInput(bufferInfo, QString("/KICK %1").arg(nick));
+      break;
+    case NickBan:
+      Client::userInput(bufferInfo, QString("/BAN %1").arg(nick));
+      break;
+    case NickKickBan:
+      Client::userInput(bufferInfo, QString("/BAN %1").arg(nick));
+      Client::userInput(bufferInfo, QString("/KICK %1").arg(nick));
+      break;
+    case NickSwitchTo:
+      Client::bufferModel()->switchToBuffer(findQueryBuffer(networkId, nick));
+      break;
+    case NickQuery:
+      Client::userInput(bufferInfo, QString("/QUERY %1").arg(nick));
+      break;
+    default:
+      qWarning() << "Unhandled nick action";
   }
 }
