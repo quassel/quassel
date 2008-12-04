@@ -67,9 +67,9 @@ NetworkModelActionProvider::NetworkModelActionProvider(QObject *parent)
   registerAction(NickDeop, tr("Take Operator Status"));
   registerAction(NickVoice, tr("Give Voice"));
   registerAction(NickDevoice, tr("Take Voice"));
-  registerAction(NickKick, tr("Kick"));
-  registerAction(NickBan, tr("Ban"));
-  registerAction(NickKickBan, tr("Kickban"));
+  registerAction(NickKick, tr("Kick From Channel"));
+  registerAction(NickBan, tr("Ban From Channel"));
+  registerAction(NickKickBan, tr("Kick && Ban"));
 
   registerAction(HideBufferTemporarily, tr("Hide Buffer(s) Temporarily"));
   registerAction(HideBufferPermanently, tr("Hide Buffer(s) Permanently"));
@@ -105,7 +105,11 @@ NetworkModelActionProvider::NetworkModelActionProvider(QObject *parent)
   nickModeMenu->addAction(action(NickDeop));
   nickModeMenu->addAction(action(NickVoice));
   nickModeMenu->addAction(action(NickDevoice));
-  _nickModeMenuAction = new Action(tr("Modes"), 0);
+  nickModeMenu->addSeparator();
+  nickModeMenu->addAction(action(NickKick));
+  nickModeMenu->addAction(action(NickBan));
+  nickModeMenu->addAction(action(NickKickBan));
+  _nickModeMenuAction = new Action(tr("Actions"), 0);
   _nickModeMenuAction->setMenu(nickModeMenu);
 }
 
