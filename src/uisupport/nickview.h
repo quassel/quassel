@@ -18,20 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _NICKVIEW_H_
-#define _NICKVIEW_H_
-
+#ifndef NICKVIEW_H_
+#define NICKVIEW_H_
 
 #include <QTreeView>
 
-#include "types.h"
 #include "bufferinfo.h"
-
-
-class NickModel;
-class FilteredNickModel;
-class QSortFilterProxyModel;
-class QResizeEvent;
 
 class NickView : public QTreeView {
   Q_OBJECT
@@ -55,6 +47,5 @@ private:
   QString nickFromModelIndex(const QModelIndex & index);
   void executeCommand(const BufferInfo & bufferInfo, const QString & command);
 };
-
 
 #endif

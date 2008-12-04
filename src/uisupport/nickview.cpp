@@ -23,12 +23,13 @@
 #include <QDebug>
 #include <QMenu>
 
+#include "buffermodel.h"
+#include "client.h"
 #include "nickview.h"
 #include "nickviewfilter.h"
 #include "networkmodel.h"
-#include "buffermodel.h"
+#include "quasselui.h"
 #include "types.h"
-#include "client.h"
 
 class ExpandAllEvent : public QEvent {
 public:
@@ -47,10 +48,14 @@ NickView::NickView(QWidget *parent)
 
   setContextMenuPolicy(Qt::CustomContextMenu);
 
-  connect(this, SIGNAL(customContextMenuRequested(const QPoint&)),
-	  this, SLOT(showContextMenu(const QPoint&)));
-  connect(this, SIGNAL(activated( const QModelIndex& )),
-          this, SLOT(startQuery( const QModelIndex& )));
+  connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), SLOT(showContextMenu(const QPoint&)));
+
+#if defined Q_WS_QWS or defined Q_WS_X11
+  connect(this, SIGNAL(doubleClicked(QModelIndex)), SLOT(startQuery(QModelIndex)));
+#else
+  // afaik this is better on Mac and Windows
+  connect(this, SIGNAL(activated(QModelIndex)), SLOT(startQuery(QModelIndex)));
+#endif
 }
 
 void NickView::init() {
@@ -79,99 +84,30 @@ void NickView::setRootIndex(const QModelIndex &index) {
     QCoreApplication::postEvent(this, new ExpandAllEvent);
 }
 
-QString NickView::nickFromModelIndex(const QModelIndex & index) {
-  QString nick = index.sibling(index.row(), 0).data().toString();
-  return nick;
-}
-
-BufferInfo NickView::bufferInfoFromModelIndex(const QModelIndex & index) {
-  BufferInfo bufferInfo = index.data(NetworkModel::BufferInfoRole).value<BufferInfo>();
-  return bufferInfo;
-}
-
 void NickView::showContextMenu(const QPoint & pos ) {
   QModelIndex index = indexAt(pos);
-  if(index.data(NetworkModel::ItemTypeRole) != NetworkModel::IrcUserItemType) return;
+  if(index.data(NetworkModel::ItemTypeRole) != NetworkModel::IrcUserItemType)
+    return;
 
-  QString nick = nickFromModelIndex(index);
-
-  QMenu nickContextMenu(this);
-
-  QAction *whoisAction = nickContextMenu.addAction(tr("WHOIS"));
-  QAction *versionAction = nickContextMenu.addAction(tr("VERSION"));
-  QAction *pingAction = nickContextMenu.addAction(tr("PING"));
-
-  nickContextMenu.addSeparator();
-
-  QMenu *modeMenu = nickContextMenu.addMenu(tr("Modes"));
-  QAction *opAction = modeMenu->addAction(tr("Op %1").arg(nick));
-  QAction *deOpAction = modeMenu->addAction(tr("Deop %1").arg(nick));
-  QAction *voiceAction = modeMenu->addAction(tr("Voice %1").arg(nick));
-  QAction *deVoiceAction = modeMenu->addAction(tr("Devoice %1").arg(nick));
-
-  QMenu *kickBanMenu = nickContextMenu.addMenu(tr("Kick/Ban"));
-  QAction *kickAction = kickBanMenu->addAction(tr("Kick %1").arg(nick));
-  QAction *banAction = kickBanMenu->addAction(tr("Ban %1").arg(nick));
-  QAction *kickBanAction = kickBanMenu->addAction(tr("Kickban %1").arg(nick));
-  QAction *ignoreAction = nickContextMenu.addAction(tr("Ignore"));
-  ignoreAction->setEnabled(false);
-
-  nickContextMenu.addSeparator();
-
-  QAction *queryAction = nickContextMenu.addAction(tr("Query"));
-  QAction *dccChatAction = nickContextMenu.addAction(tr("DCC-Chat"));
-  dccChatAction->setEnabled(false);
-  QAction *sendFileAction = nickContextMenu.addAction(tr("Send file"));
-  sendFileAction->setEnabled(false);
-
-  QAction *action = nickContextMenu.exec(QCursor::pos());
-  BufferInfo bufferInfo = bufferInfoFromModelIndex(index);
-
-  if(action == whoisAction)         { executeCommand(bufferInfo, QString("/WHOIS %1 %1").arg(nick)); }
-  else if(action == versionAction)  { executeCommand(bufferInfo, QString("/CTCP %1 VERSION").arg(nick)); }
-  else if(action == pingAction)     { executeCommand(bufferInfo, QString("/CTCP %1 PING ").arg(nick)); }
-
-  else if(action == opAction)       { executeCommand(bufferInfo, QString("/OP %1").arg(nick)); }
-  else if(action == deOpAction)     { executeCommand(bufferInfo, QString("/DEOP %1").arg(nick)); }
-  else if(action == voiceAction)    { executeCommand(bufferInfo, QString("/VOICE %1").arg(nick)); }
-  else if(action == deVoiceAction)  { executeCommand(bufferInfo, QString("/DEVOICE %1").arg(nick)); }
-
-  else if(action == kickAction)     { executeCommand(bufferInfo, QString("/KICK %1").arg(nick)); }
-  else if(action == banAction)      { executeCommand(bufferInfo, QString("/BAN %1").arg(nick)); }
-  else if(action == kickBanAction)  { executeCommand(bufferInfo, QString("/KICK %1").arg(nick)); 
-                                      executeCommand(bufferInfo, QString("/BAN %1").arg(nick)); }
-  else if(action == queryAction)    { startQuery(index); }
-
+  QMenu contextMenu(this);
+  Client::mainUi()->actionProvider()->addActions(&contextMenu, index);
+  contextMenu.exec(QCursor::pos());
 }
 
 void NickView::startQuery(const QModelIndex &index) {
   if(index.data(NetworkModel::ItemTypeRole) != NetworkModel::IrcUserItemType)
     return;
 
-  QString nick = nickFromModelIndex(index);
-  bool activated = false;
+  IrcUser *ircUser = qobject_cast<IrcUser *>(index.data(NetworkModel::IrcUserRole).value<QObject *>());
+  NetworkId networkId = index.data(NetworkModel::NetworkIdRole).value<NetworkId>();
+  if(!ircUser || !networkId.isValid())
+    return;
 
-  if(QSortFilterProxyModel *nickviewFilter = qobject_cast<QSortFilterProxyModel *>(model())) {
-    // rootIndex() is the channel, parent() is the corresponding network
-    QModelIndex networkIndex = rootIndex().parent(); 
-    QModelIndex source_networkIndex = nickviewFilter->mapToSource(networkIndex);
-    for(int i = 0; i < Client::networkModel()->rowCount(source_networkIndex); i++) {
-      QModelIndex childIndex = source_networkIndex.child( i, 0);
-      if(nick.toLower() == childIndex.data().toString().toLower()) {
-        QModelIndex queryIndex = Client::bufferModel()->mapFromSource(childIndex);
-        Client::bufferModel()->setCurrentIndex(queryIndex);
-        activated = true;
-      }
-    }
-  }
-  if(!activated) {
-    BufferInfo bufferInfo = bufferInfoFromModelIndex(index);
-    executeCommand(bufferInfo, QString("/QUERY %1").arg(nick));
-  }
-}
-
-void NickView::executeCommand(const BufferInfo & bufferInfo, const QString & command) {
-  Client::instance()->userInput(bufferInfo, command);
+  BufferId bufId = Client::networkModel()->bufferId(networkId, ircUser->nick());
+  if(bufId.isValid())
+    Client::bufferModel()->switchToBuffer(bufId);
+  else
+    Client::userInput(index.data(NetworkModel::BufferInfoRole).value<BufferInfo>(), QString("/QUERY %1").arg(ircUser->nick()));
 }
 
 void NickView::customEvent(QEvent *event) {
