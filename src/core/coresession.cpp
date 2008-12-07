@@ -22,9 +22,7 @@
 
 #include "core.h"
 #include "coresession.h"
-#include "networkconnection.h"
 #include "userinputhandler.h"
-
 #include "signalproxy.h"
 #include "buffersyncer.h"
 #include "corebacklogmanager.h"
@@ -60,11 +58,9 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
   connect(p, SIGNAL(connected()), this, SLOT(clientsConnected()));
   connect(p, SIGNAL(disconnected()), this, SLOT(clientsDisconnected()));
 
-  //p->attachSlot(SIGNAL(disconnectFromNetwork(NetworkId)), this, SLOT(disconnectFromNetwork(NetworkId))); // FIXME
   p->attachSlot(SIGNAL(sendInput(BufferInfo, QString)), this, SLOT(msgFromClient(BufferInfo, QString)));
   p->attachSignal(this, SIGNAL(displayMsg(Message)));
   p->attachSignal(this, SIGNAL(displayStatusMsg(QString, QString)));
-  p->attachSignal(this, SIGNAL(bufferInfoUpdated(BufferInfo)));
 
   p->attachSignal(this, SIGNAL(identityCreated(const Identity &)));
   p->attachSignal(this, SIGNAL(identityRemoved(IdentityId)));
@@ -111,9 +107,6 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
 
 CoreSession::~CoreSession() {
   saveSessionState();
-  foreach(NetworkConnection *conn, _connections.values()) {
-    delete conn;
-  }
   foreach(CoreNetwork *net, _networks.values()) {
     delete net;
   }
@@ -121,11 +114,6 @@ CoreSession::~CoreSession() {
 
 CoreNetwork *CoreSession::network(NetworkId id) const {
   if(_networks.contains(id)) return _networks[id];
-  return 0;
-}
-
-NetworkConnection *CoreSession::networkConnection(NetworkId id) const {
-  if(_connections.contains(id)) return _connections[id];
   return 0;
 }
 
@@ -167,65 +155,16 @@ void CoreSession::loadSettings() {
 }
 
 void CoreSession::saveSessionState() const {
-
 }
 
 void CoreSession::restoreSessionState() {
   QList<NetworkId> nets = Core::connectedNetworks(user());
+  CoreNetwork *net = 0;
   foreach(NetworkId id, nets) {
-    connectToNetwork(id);
+    net = network(id);
+    Q_ASSERT(net);
+    net->connectToIrc();
   }
-}
-
-void CoreSession::updateBufferInfo(UserId uid, const BufferInfo &bufinfo) {
-  if(uid == user()) emit bufferInfoUpdated(bufinfo);
-}
-
-void CoreSession::connectToNetwork(NetworkId id) {
-  CoreNetwork *net = network(id);
-  if(!net) {
-    qWarning() << "Connect to unknown network requested! net:" << id << "user:" << user();
-    return;
-  }
-
-  NetworkConnection *conn = networkConnection(id);
-  if(!conn) {
-    conn = new NetworkConnection(net, this);
-    _connections[id] = conn;
-    attachNetworkConnection(conn);
-  }
-  conn->connectToIrc();
-}
-
-void CoreSession::attachNetworkConnection(NetworkConnection *conn) {
-  connect(conn, SIGNAL(connected(NetworkId)), this, SLOT(networkConnected(NetworkId)));
-  connect(conn, SIGNAL(quitRequested(NetworkId)), this, SLOT(networkDisconnected(NetworkId)));
-
-  // I guess we don't need these anymore, client-side can just connect the network's signals directly
-  //signalProxy()->attachSignal(conn, SIGNAL(connected(NetworkId)), SIGNAL(networkConnected(NetworkId)));
-  //signalProxy()->attachSignal(conn, SIGNAL(disconnected(NetworkId)), SIGNAL(networkDisconnected(NetworkId)));
-
-  connect(conn, SIGNAL(displayMsg(Message::Type, BufferInfo::Type, QString, QString, QString, Message::Flags)),
-	  this, SLOT(recvMessageFromServer(Message::Type, BufferInfo::Type, QString, QString, QString, Message::Flags)));
-  connect(conn, SIGNAL(displayStatusMsg(QString)), this, SLOT(recvStatusMsgFromServer(QString)));
-
-  connect(conn, SIGNAL(nickChanged(const NetworkId &, const QString &, const QString &)),
-	  this, SLOT(renameBuffer(const NetworkId &, const QString &, const QString &)));
-  connect(conn, SIGNAL(channelJoined(NetworkId, const QString &, const QString &)),
-          this, SLOT(channelJoined(NetworkId, const QString &, const QString &)));
-  connect(conn, SIGNAL(channelParted(NetworkId, const QString &)),
-          this, SLOT(channelParted(NetworkId, const QString &)));
-}
-
-void CoreSession::disconnectFromNetwork(NetworkId id) {
-  if(!_connections.contains(id))
-    return;
-
-  //_connections[id]->disconnectFromIrc();
-  _connections[id]->userInputHandler()->handleQuit(BufferInfo(), QString());
-}
-
-void CoreSession::networkStateRequested() {
 }
 
 void CoreSession::addClient(QIODevice *device) {
@@ -254,35 +193,6 @@ void CoreSession::removeClient(QIODevice *iodev) {
     quInfo() << qPrintable(tr("Client")) << qPrintable(socket->peerAddress().toString()) << qPrintable(tr("disconnected (UserId: %1).").arg(user().toInt()));
 }
 
-SignalProxy *CoreSession::signalProxy() const {
-  return _signalProxy;
-}
-
-// FIXME we need a sane way for creating buffers!
-void CoreSession::networkConnected(NetworkId networkid) {
-  Core::bufferInfo(user(), networkid, BufferInfo::StatusBuffer); // create status buffer
-  Core::setNetworkConnected(user(), networkid, true);
-}
-
-// called now only on /quit and requested disconnects, not on normal disconnects!
-void CoreSession::networkDisconnected(NetworkId networkid) {
-  // if the network has already been removed, we don't have a networkconnection left either, so we don't do anything
-  // make sure to not depend on the network still existing when calling this function!
-  if(_connections.contains(networkid)) {
-    Core::setNetworkConnected(user(), networkid, false);
-    _connections.take(networkid)->deleteLater();
-  }
-}
-
-void CoreSession::channelJoined(NetworkId id, const QString &channel, const QString &key) {
-  Core::setChannelPersistent(user(), id, channel, true);
-  Core::setPersistentChannelKey(user(), id, channel, key);
-}
-
-void CoreSession::channelParted(NetworkId id, const QString &channel) {
-  Core::setChannelPersistent(user(), id, channel, false);
-}
-
 QHash<QString, QString> CoreSession::persistentChannels(NetworkId id) const {
   return Core::persistentChannels(user(), id);
   return QHash<QString, QString>();
@@ -290,9 +200,9 @@ QHash<QString, QString> CoreSession::persistentChannels(NetworkId id) const {
 
 // FIXME switch to BufferId
 void CoreSession::msgFromClient(BufferInfo bufinfo, QString msg) {
-  NetworkConnection *conn = networkConnection(bufinfo.networkId());
-  if(conn) {
-    conn->userInput(bufinfo, msg);
+  CoreNetwork *net = network(bufinfo.networkId());
+  if(net) {
+    net->userInput(bufinfo, msg);
   } else {
     qWarning() << "Trying to send to unconnected network:" << msg;
   }
@@ -302,10 +212,10 @@ void CoreSession::msgFromClient(BufferInfo bufinfo, QString msg) {
 // So this is the perfect place for storing the backlog and log stuff.
 void CoreSession::recvMessageFromServer(Message::Type type, BufferInfo::Type bufferType,
                                         QString target, QString text, QString sender, Message::Flags flags) {
-  NetworkConnection *netCon = qobject_cast<NetworkConnection*>(this->sender());
-  Q_ASSERT(netCon);
+  CoreNetwork *net = qobject_cast<CoreNetwork*>(this->sender());
+  Q_ASSERT(net);
 
-  BufferInfo bufferInfo = Core::bufferInfo(user(), netCon->networkId(), bufferType, target);
+  BufferInfo bufferInfo = Core::bufferInfo(user(), net->networkId(), bufferType, target);
   Message msg(bufferInfo, type, text, sender, flags);
   msg.setMsgId(Core::storeMessage(msg));
   Q_ASSERT(msg.msgId() != 0);
@@ -313,9 +223,9 @@ void CoreSession::recvMessageFromServer(Message::Type type, BufferInfo::Type buf
 }
 
 void CoreSession::recvStatusMsgFromServer(QString msg) {
-  NetworkConnection *s = qobject_cast<NetworkConnection*>(sender());
-  Q_ASSERT(s);
-  emit displayStatusMsg(s->networkName(), msg);
+  CoreNetwork *net = qobject_cast<CoreNetwork*>(sender());
+  Q_ASSERT(net);
+  emit displayStatusMsg(net->networkName(), msg);
 }
 
 QList<BufferInfo> CoreSession::buffers() const {
@@ -423,8 +333,10 @@ void CoreSession::createNetwork(const NetworkInfo &info_) {
   id = info.networkId.toInt();
   if(!_networks.contains(id)) {
     CoreNetwork *net = new CoreNetwork(id, this);
-    connect(net, SIGNAL(connectRequested(NetworkId)), this, SLOT(connectToNetwork(NetworkId)));
-    connect(net, SIGNAL(disconnectRequested(NetworkId)), this, SLOT(disconnectFromNetwork(NetworkId)));
+    connect(net, SIGNAL(displayMsg(Message::Type, BufferInfo::Type, QString, QString, QString, Message::Flags)),
+	    this, SLOT(recvMessageFromServer(Message::Type, BufferInfo::Type, QString, QString, QString, Message::Flags)));
+    connect(net, SIGNAL(displayStatusMsg(QString)), this, SLOT(recvStatusMsgFromServer(QString)));
+
     net->setNetworkInfo(info);
     net->setProxy(signalProxy());
     _networks[id] = net;
@@ -438,25 +350,19 @@ void CoreSession::createNetwork(const NetworkInfo &info_) {
 
 void CoreSession::removeNetwork(NetworkId id) {
   // Make sure the network is disconnected!
-  NetworkConnection *conn = _connections.value(id, 0);
-  if(conn) {
-    if(conn->connectionState() != Network::Disconnected) {
-      connect(conn, SIGNAL(disconnected(NetworkId)), this, SLOT(destroyNetwork(NetworkId)));
-      conn->disconnectFromIrc();
-    } else {
-      _connections.take(id)->deleteLater();  // TODO make this saner
-      destroyNetwork(id);
-    }
+  CoreNetwork *net = network(id);
+  if(!net)
+    return;
+
+  if(net->connectionState() != Network::Disconnected) {
+    connect(net, SIGNAL(disconnected(NetworkId)), this, SLOT(destroyNetwork(NetworkId)));
+    net->disconnectFromIrc();
   } else {
     destroyNetwork(id);
   }
 }
 
 void CoreSession::destroyNetwork(NetworkId id) {
-  if(_connections.contains(id)) {
-    // this can happen if the network was reconnecting while being removed
-    _connections.take(id)->deleteLater();
-  }
   QList<BufferId> removedBuffers = Core::requestBufferIdsForNetwork(user(), id);
   Network *net = _networks.take(id);
   if(net && Core::removeNetwork(user(), id)) {
@@ -496,6 +402,7 @@ void CoreSession::removeBufferRequested(BufferId bufferId) {
     emit bufferRemoved(bufferId);
 }
 
+// FIXME: use a coreBufferSyncer for this
 void CoreSession::renameBuffer(const NetworkId &networkId, const QString &newName, const QString &oldName) {
   BufferId bufferId = Core::renameBuffer(user(), networkId, newName, oldName);
   if(bufferId.isValid()) {
@@ -504,54 +411,46 @@ void CoreSession::renameBuffer(const NetworkId &networkId, const QString &newNam
 }
 
 void CoreSession::clientsConnected() {
-  QHash<NetworkId, NetworkConnection *>::iterator conIter = _connections.begin();
+  QHash<NetworkId, CoreNetwork *>::iterator netIter = _networks.begin();
   Identity *identity = 0;
-  NetworkConnection *con = 0;
-  Network *network = 0;
+  CoreNetwork *net = 0;
   IrcUser *me = 0;
   QString awayReason;
-  while(conIter != _connections.end()) {
-    con = *conIter;
-    conIter++;
+  while(netIter != _networks.end()) {
+    net = *netIter;
+    netIter++;
 
-    if(!con->isConnected())
+    if(!net->isConnected())
       continue;
-    identity = con->identity();
+    identity = net->identityPtr();
     if(!identity)
       continue;
-    network = con->network();
-    if(!network)
-      continue;
-    me = network->me();
+    me = net->me();
     if(!me)
       continue;
 
     if(identity->detachAwayEnabled() && me->isAway()) {
-      con->userInputHandler()->handleAway(BufferInfo(), QString());
+      net->userInputHandler()->handleAway(BufferInfo(), QString());
     }
   }
 }
 
 void CoreSession::clientsDisconnected() {
-  QHash<NetworkId, NetworkConnection *>::iterator conIter = _connections.begin();
+  QHash<NetworkId, CoreNetwork *>::iterator netIter = _networks.begin();
   Identity *identity = 0;
-  NetworkConnection *con = 0;
-  Network *network = 0;
+  CoreNetwork *net = 0;
   IrcUser *me = 0;
   QString awayReason;
-  while(conIter != _connections.end()) {
-    con = *conIter;
-    conIter++;
+  while(netIter != _networks.end()) {
+    net = *netIter;
+    netIter++;
 
-    if(!con->isConnected())
+    if(!net->isConnected())
       continue;
-    identity = con->identity();
+    identity = net->identityPtr();
     if(!identity)
       continue;
-    network = con->network();
-    if(!network)
-      continue;
-    me = network->me();
+    me = net->me();
     if(!me)
       continue;
 
@@ -560,8 +459,8 @@ void CoreSession::clientsDisconnected() {
 	awayReason = identity->detachAwayReason();
       else
 	awayReason = identity->awayReason();
-      network->setAutoAwayActive(true);
-      con->userInputHandler()->handleAway(BufferInfo(), awayReason);
+      net->setAutoAwayActive(true);
+      net->userInputHandler()->handleAway(BufferInfo(), awayReason);
     }
   }
 }

@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _BASICHANDLER_H_
-#define _BASICHANDLER_H_
+#ifndef BASICHANDLER_H_
+#define BASICHANDLER_H_
 
 #include <QObject>
 #include <QString>
@@ -29,7 +29,7 @@
 
 #include "message.h"
 
-#include "networkconnection.h"
+#include "corenetwork.h"
 
 class CoreSession;
 
@@ -37,7 +37,7 @@ class BasicHandler : public QObject {
   Q_OBJECT
 
 public:
-  BasicHandler(NetworkConnection *parent = 0);
+  BasicHandler(CoreNetwork *parent = 0);
 
   QStringList providesHandlers();
 
@@ -71,9 +71,8 @@ protected:
                       QGenericArgument val7 = QGenericArgument(), QGenericArgument val8 = QGenericArgument());
 
 
-  inline Network *network() const { return _networkConnection->network(); }
-  inline NetworkConnection *networkConnection() const { return _networkConnection; }
-  inline CoreSession *coreSession() const { return _networkConnection->coreSession(); }
+  inline CoreNetwork *network() const { return _network; }
+  inline CoreSession *coreSession() const { return _network->coreSession(); }
 
   BufferInfo::Type typeByTarget(const QString &target) const;
 
@@ -81,7 +80,7 @@ private:
   const QHash<QString, int> &handlerHash();
   QHash<QString, int> _handlerHash;
   int defaultHandler;
-  NetworkConnection *_networkConnection;
+  CoreNetwork *_network;
   bool initDone;
 };
 #endif

@@ -29,7 +29,7 @@ class UserInputHandler : public BasicHandler {
   Q_OBJECT
 
 public:
-  UserInputHandler(NetworkConnection *parent = 0);
+  UserInputHandler(CoreNetwork *parent = 0);
 
   void handleUserInput(const BufferInfo &bufferInfo, const QString &text);
   
@@ -71,6 +71,8 @@ public slots:
 private:
   void expand(const QString &alias, const BufferInfo &bufferInfo, const QString &msg);
   void banOrUnban(const BufferInfo &bufferInfo, const QString &text, bool ban);
+  void putPrivmsg(const QByteArray &target, const QByteArray &message);
+  int lastParamOverrun(const QString &cmd, const QList<QByteArray> &params);
 };
 
 

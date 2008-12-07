@@ -192,8 +192,9 @@ void IrcChannel::part(IrcUser *ircuser) {
     disconnect(ircuser, 0, this, 0);
     emit ircUserParted(ircuser);
     
-    if(network->isMe(ircuser)) {
-      // we left -> clean up the channel and destroy it
+    if(network->isMe(ircuser) || _userModes.isEmpty()) {
+      // in either case we're no longer in the channel
+      //  -> clean up the channel and destroy it
       QList<IrcUser *> users = _userModes.keys();
       _userModes.clear();
       foreach(IrcUser *user, users) {

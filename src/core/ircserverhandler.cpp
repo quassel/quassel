@@ -23,8 +23,6 @@
 
 #include "coresession.h"
 #include "coreirclisthelper.h"
-#include "networkconnection.h"
-#include "network.h"
 #include "identity.h"
 #include "ctcphandler.h"
 
@@ -34,7 +32,7 @@
 
 #include <QDebug>
 
-IrcServerHandler::IrcServerHandler(NetworkConnection *parent)
+IrcServerHandler::IrcServerHandler(CoreNetwork *parent)
   : BasicHandler(parent),
     _whois(false)
 {
@@ -153,8 +151,8 @@ void IrcServerHandler::defaultHandler(QString cmd, const QString &prefix, const 
 	  // many nets define their own WHOIS fields. we fetch those not in need of special attention here:
 	  emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", "[Whois] " + params.join(" "), prefix);
 	} else {
-	  if(networkConnection()->coreSession()->ircListHelper()->requestInProgress(network()->networkId()))
-	    networkConnection()->coreSession()->ircListHelper()->reportError(params.join(" "));
+	  if(coreSession()->ircListHelper()->requestInProgress(network()->networkId()))
+	    coreSession()->ircListHelper()->reportError(params.join(" "));
 	  else
 	    emit displayMsg(Message::Error, BufferInfo::StatusBuffer, "", cmd + " " + params.join(" "), prefix);
 	}
@@ -179,7 +177,7 @@ void IrcServerHandler::handleJoin(const QString &prefix, const QList<QByteArray>
   //qDebug() << "IrcServerHandler::handleJoin()" << prefix << params;
   ircuser->joinChannel(channel);
   if(network()->isMe(ircuser)) {
-    networkConnection()->setChannelJoined(channel);
+    network()->setChannelJoined(channel);
     putCmd("MODE", params[0]); // we want to know the modes of the channel we just joined, so we ask politely
   }
 }
@@ -203,7 +201,7 @@ void IrcServerHandler::handleKick(const QString &prefix, const QList<QByteArray>
     msg = victim->nick();
 
   emit displayMsg(Message::Kick, BufferInfo::ChannelBuffer, channel, msg, prefix);
-  //if(network()->isMe(victim)) networkConnection()->setKickedFromChannel(channel);
+  //if(network()->isMe(victim)) network()->setKickedFromChannel(channel);
 }
 
 void IrcServerHandler::handleMode(const QString &prefix, const QList<QByteArray> &params) {
@@ -313,7 +311,7 @@ void IrcServerHandler::handleNick(const QString &prefix, const QList<QByteArray>
     ? newnick
     : prefix;
 
-  emit nickChanged(newnick, oldnick);
+  coreSession()->renameBuffer(network()->networkId(), newnick, oldnick);
   foreach(QString channel, ircuser->channels())
     emit displayMsg(Message::Nick, BufferInfo::ChannelBuffer, channel, newnick, sender);
   
@@ -352,7 +350,7 @@ void IrcServerHandler::handleNotice(const QString &prefix, const QList<QByteArra
       target = nickFromMask(prefix);
   }
 
-  networkConnection()->ctcpHandler()->parse(Message::Notice, prefix, target, params[1]);
+  network()->ctcpHandler()->parse(Message::Notice, prefix, target, params[1]);
 }
 
 void IrcServerHandler::handlePart(const QString &prefix, const QList<QByteArray> &params) {
@@ -373,7 +371,7 @@ void IrcServerHandler::handlePart(const QString &prefix, const QList<QByteArray>
     msg = userDecode(ircuser->nick(), params[1]);
 
   emit displayMsg(Message::Part, BufferInfo::ChannelBuffer, channel, msg, prefix);
-  if(network()->isMe(ircuser)) networkConnection()->setChannelParted(channel);
+  if(network()->isMe(ircuser)) network()->setChannelParted(channel);
 }
 
 void IrcServerHandler::handlePing(const QString &prefix, const QList<QByteArray> &params) {
@@ -424,7 +422,7 @@ void IrcServerHandler::handlePrivmsg(const QString &prefix, const QList<QByteArr
 
   // it's possible to pack multiple privmsgs into one param using ctcp
   // - > we let the ctcpHandler do the work
-  networkConnection()->ctcpHandler()->parse(Message::Plain, prefix, target, msg);
+  network()->ctcpHandler()->parse(Message::Plain, prefix, target, msg);
 }
 
 void IrcServerHandler::handleQuit(const QString &prefix, const QList<QByteArray> &params) {
@@ -706,7 +704,7 @@ void IrcServerHandler::handle315(const QString &prefix, const QList<QByteArray> 
     return;
 
   QStringList p = serverDecode(params);
-  if(networkConnection()->setAutoWhoDone(p[0])) {
+  if(network()->setAutoWhoDone(p[0])) {
     return; // stay silent
   }
   p.takeLast(); // should be "End of WHO list"
@@ -798,7 +796,7 @@ void IrcServerHandler::handle322(const QString &prefix, const QList<QByteArray> 
   default:
     break;
   }
-  if(!networkConnection()->coreSession()->ircListHelper()->addChannel(network()->networkId(), channelName, userCount, topic))
+  if(!coreSession()->ircListHelper()->addChannel(network()->networkId(), channelName, userCount, topic))
     emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("Channel %1 has %2 users. Topic is: %3").arg(channelName).arg(userCount).arg(topic));
 }
 
@@ -807,7 +805,7 @@ void IrcServerHandler::handle323(const QString &prefix, const QList<QByteArray> 
   Q_UNUSED(prefix)
   Q_UNUSED(params)
 
-  if(!networkConnection()->coreSession()->ircListHelper()->endOfChannelList(network()->networkId()))
+  if(!coreSession()->ircListHelper()->endOfChannelList(network()->networkId()))
     emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("End of channel list"));
 }
        
@@ -886,7 +884,7 @@ void IrcServerHandler::handle352(const QString &prefix, const QList<QByteArray> 
     ircuser->setRealName(serverDecode(params.last()).section(" ", 1));
   }
 
-  if(!networkConnection()->isAutoWhoInProgress(channel)) {
+  if(!network()->isAutoWhoInProgress(channel)) {
     emit displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("[Who] %1").arg(serverDecode(params).join(" ")));
   }
 }
@@ -976,7 +974,7 @@ void IrcServerHandler::handle433(const QString &prefix, const QList<QByteArray> 
 /* */
 
 void IrcServerHandler::tryNextNick(const QString &errnick) {
-  QStringList desiredNicks = networkConnection()->coreSession()->identity(network()->identity())->nicks();
+  QStringList desiredNicks = coreSession()->identity(network()->identity())->nicks();
   int nextNick = desiredNicks.indexOf(errnick) + 1;
   if(desiredNicks.size() > nextNick) {
     putCmd("NICK", serverEncode(desiredNicks[nextNick]));

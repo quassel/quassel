@@ -440,8 +440,6 @@ void SignalProxy::setArgTypes(QObject* obj, int methodId) {
 
 const QList<int> &SignalProxy::argTypes(QObject *obj, int methodId) {
   const QMetaObject *meta = metaObject(obj);
-  if(!_classInfo.contains(meta))
-    qDebug() << obj << meta;
   Q_ASSERT(_classInfo.contains(meta));
   if(!_classInfo[meta]->argTypes.contains(methodId))
     setArgTypes(obj, methodId);
@@ -719,9 +717,9 @@ void SignalProxy::detachSender() {
 }
 
 void SignalProxy::detachObject(QObject* obj) {
+  stopSync(static_cast<SyncableObject *>(obj));
   detachSignals(obj);
   detachSlots(obj);
-  stopSync(static_cast<SyncableObject *>(obj));
 }
 
 void SignalProxy::detachSignals(QObject* sender) {

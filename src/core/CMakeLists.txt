@@ -24,7 +24,6 @@ set(SOURCES
     coreusersettings.cpp
     ctcphandler.cpp
     ircserverhandler.cpp
-    networkconnection.cpp
     sessionthread.cpp
     sqlitestorage.cpp
     storage.cpp
@@ -46,7 +45,6 @@ set(MOC_HDRS
     coresession.h
     ctcphandler.h
     ircserverhandler.h
-    networkconnection.h
     sqlitestorage.h
     storage.h
     sessionthread.h

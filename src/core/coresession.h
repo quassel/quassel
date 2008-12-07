@@ -55,27 +55,22 @@ public:
 
   QVariant sessionState();
 
-  SignalProxy *signalProxy() const;
+  inline SignalProxy *signalProxy() const { return _signalProxy; }
 
   const AliasManager &aliasManager() const { return _aliasManager; }
   AliasManager &aliasManager() { return _aliasManager; }
 
   inline CoreIrcListHelper *ircListHelper() const { return _ircListHelper; }
 
-  void attachNetworkConnection(NetworkConnection *conn);
+//   void attachNetworkConnection(NetworkConnection *conn);
 
   //! Return necessary data for restoring the session after restarting the core
   void saveSessionState() const;
   void restoreSessionState();
 
 public slots:
-  void networkStateRequested();
-
   void addClient(QIODevice *device);
   void addClient(SignalProxy *proxy);
-
-  void connectToNetwork(NetworkId);
-  void disconnectFromNetwork(NetworkId id);
 
   void msgFromClient(BufferInfo, QString message);
 
@@ -113,8 +108,6 @@ public slots:
    */
   void renameBuffer(const NetworkId &networkId, const QString &newName, const QString &oldName);
 
-  void channelJoined(NetworkId id, const QString &channel, const QString &key = QString());
-  void channelParted(NetworkId, const QString &channel);
   QHash<QString, QString> persistentChannels(NetworkId) const;
 
 signals:
@@ -124,11 +117,6 @@ signals:
   //void msgFromGui(uint netid, QString buf, QString message);
   void displayMsg(Message message);
   void displayStatusMsg(QString, QString);
-
-  //void connectToIrc(QString net);
-  //void disconnectFromIrc(QString net);
-
-  void bufferInfoUpdated(BufferInfo);
 
   void scriptResult(QString result);
 
@@ -154,19 +142,10 @@ private slots:
 
   void recvStatusMsgFromServer(QString msg);
   void recvMessageFromServer(Message::Type, BufferInfo::Type, QString target, QString text, QString sender = "", Message::Flags flags = Message::None);
-  void networkConnected(NetworkId networkid);
-  void networkDisconnected(NetworkId networkid);
 
   void destroyNetwork(NetworkId);
 
   void identityUpdated(const QVariantMap &);
-
-  //! Called when storage updated a BufferInfo.
-  /** This emits bufferInfoUpdated() via SignalProxy, iff it's one of our buffers.
-   *  \param user       The buffer's owner (not necessarily us)
-   *  \param bufferInfo The updated BufferInfo
-   */
-  void updateBufferInfo(UserId user, const BufferInfo &bufferInfo);
 
   void storeBufferLastSeenMsg(BufferId buffer, const MsgId &msgId);
 
@@ -183,7 +162,7 @@ private:
 
   SignalProxy *_signalProxy;
   CoreAliasManager _aliasManager;
-  QHash<NetworkId, NetworkConnection *> _connections;
+  // QHash<NetworkId, NetworkConnection *> _connections;
   QHash<NetworkId, CoreNetwork *> _networks;
   //  QHash<NetworkId, CoreNetwork *> _networksToRemove;
   QHash<IdentityId, Identity *> _identities;

@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _IRCSERVERHANDLER_H_
-#define _IRCSERVERHANDLER_H_
+#ifndef IRCSERVERHANDLER_H
+#define IRCSERVERHANDLER_H
 
 #include "basichandler.h"
 
@@ -27,7 +27,7 @@ class IrcServerHandler : public BasicHandler {
   Q_OBJECT
 
 public:
-  IrcServerHandler(NetworkConnection *parent);
+  IrcServerHandler(CoreNetwork *parent);
   ~IrcServerHandler();
 
   void handleServerMsg(QByteArray rawMsg);
@@ -80,9 +80,6 @@ public slots:
 
   void defaultHandler(QString cmd, const QString &prefix, const QList<QByteArray> &params);
 
-signals:
-  void nickChanged(const QString &newNick, const QString &oldNick); // this signal is inteded to rename query buffers in the storage backend
-  
 private:
   void tryNextNick(const QString &errnick);
   bool checkParamCount(const QString &methodName, const QList<QByteArray> &params, int minParams);

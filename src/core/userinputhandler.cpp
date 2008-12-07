@@ -21,15 +21,16 @@
 
 #include "util.h"
 
-#include "networkconnection.h"
-#include "network.h"
 #include "ctcphandler.h"
+#include "identity.h"
 #include "ircuser.h"
 
 #include <QDebug>
 #include <QRegExp>
 
-UserInputHandler::UserInputHandler(NetworkConnection *parent) : BasicHandler(parent) {
+UserInputHandler::UserInputHandler(CoreNetwork *parent)
+  : BasicHandler(parent)
+{
 }
 
 void UserInputHandler::handleUserInput(const BufferInfo &bufferInfo, const QString &msg_) {
@@ -58,7 +59,6 @@ void UserInputHandler::handleUserInput(const BufferInfo &bufferInfo, const QStri
 // ====================
 //  Public Slots
 // ====================
-
 void UserInputHandler::handleAway(const BufferInfo &bufferInfo, const QString &msg) {
   Q_UNUSED(bufferInfo)
 
@@ -68,7 +68,7 @@ void UserInputHandler::handleAway(const BufferInfo &bufferInfo, const QString &m
   // if there is no message supplied we have to check if we are already away or not
   if(msg.isEmpty()) {
     if(me && !me->isAway())
-      awayMsg = networkConnection()->identity()->awayReason();
+      awayMsg = network()->identityPtr()->awayReason();
   }
   if(me)
     me->setAwayMessage(awayMsg);
@@ -124,9 +124,12 @@ void UserInputHandler::banOrUnban(const BufferInfo &bufferInfo, const QString &m
 
 void UserInputHandler::handleCtcp(const BufferInfo &bufferInfo, const QString &msg) {
   Q_UNUSED(bufferInfo)
+
   QString nick = msg.section(' ', 0, 0);
   QString ctcpTag = msg.section(' ', 1, 1).toUpper();
-  if (ctcpTag.isEmpty()) return;
+  if(ctcpTag.isEmpty())
+    return;
+
   QString message = "";
   QString verboseMessage = tr("sending CTCP-%1 request").arg(ctcpTag);
 
@@ -135,7 +138,7 @@ void UserInputHandler::handleCtcp(const BufferInfo &bufferInfo, const QString &m
     message = QString::number(now);
   }
 
-  networkConnection()->ctcpHandler()->query(nick, ctcpTag, message);
+  network()->ctcpHandler()->query(nick, ctcpTag, message);
   emit displayMsg(Message::Action, BufferInfo::StatusBuffer, "", verboseMessage, network()->myNick());
 }
 
@@ -181,10 +184,10 @@ void UserInputHandler::handleJoin(const BufferInfo &bufferInfo, const QString &m
   i = 0;
   for(; i < keys.count(); i++) {
     if(i >= chans.count()) break;
-    networkConnection()->addChannelKey(chans[i], keys[i]);
+    network()->addChannelKey(chans[i], keys[i]);
   }
   for(; i < chans.count(); i++) {
-    networkConnection()->removeChannelKey(chans[i]);
+    network()->removeChannelKey(chans[i]);
   }
 }
 
@@ -192,7 +195,7 @@ void UserInputHandler::handleKick(const BufferInfo &bufferInfo, const QString &m
   QString nick = msg.section(' ', 0, 0, QString::SectionSkipEmpty);
   QString reason = msg.section(' ', 1, -1, QString::SectionSkipEmpty).trimmed();
   if(reason.isEmpty())
-    reason = networkConnection()->identity()->kickReason();
+    reason = network()->identityPtr()->kickReason();
 
   QList<QByteArray> params;
   params << serverEncode(bufferInfo.bufferName()) << serverEncode(nick) << channelEncode(bufferInfo.bufferName(), reason);
@@ -216,7 +219,7 @@ void UserInputHandler::handleList(const BufferInfo &bufferInfo, const QString &m
 
 void UserInputHandler::handleMe(const BufferInfo &bufferInfo, const QString &msg) {
   if(bufferInfo.bufferName().isEmpty()) return; // server buffer
-  networkConnection()->ctcpHandler()->query(bufferInfo.bufferName(), "ACTION", msg);
+  network()->ctcpHandler()->query(bufferInfo.bufferName(), "ACTION", msg);
   emit displayMsg(Message::Action, bufferInfo.type(), bufferInfo.bufferName(), msg, network()->myNick(), Message::Self);
 }
 
@@ -238,11 +241,8 @@ void UserInputHandler::handleMsg(const BufferInfo &bufferInfo, const QString &ms
   if(!msg.contains(' '))
     return;
 
-  QList<QByteArray> params;
-  params << serverEncode(msg.section(' ', 0, 0));
-  params << userEncode(params[0], msg.section(' ', 1));
-
-  emit putCmd("PRIVMSG", params);
+  QByteArray target = serverEncode(msg.section(' ', 0, 0));
+  putPrivmsg(target, userEncode(target, msg.section(' ', 1)));
 }
 
 void UserInputHandler::handleNick(const BufferInfo &bufferInfo, const QString &msg) {
@@ -287,7 +287,7 @@ void UserInputHandler::handlePart(const BufferInfo &bufferInfo, const QString &m
   }
 
   if(partReason.isEmpty())
-    partReason = networkConnection()->identity()->partReason();
+    partReason = network()->identityPtr()->partReason();
 
   params << serverEncode(channelName) << channelEncode(bufferInfo.bufferName(), partReason);
   emit putCmd("PART", params);
@@ -317,13 +317,13 @@ void UserInputHandler::handleQuery(const BufferInfo &bufferInfo, const QString &
 
 void UserInputHandler::handleQuit(const BufferInfo &bufferInfo, const QString &msg) {
   Q_UNUSED(bufferInfo)
-  networkConnection()->disconnectFromIrc(true, msg);
+  network()->disconnectFromIrc(true, msg);
 }
 
 void UserInputHandler::issueQuit(const QString &reason) {
   QString quitReason;
   if(reason.isEmpty())
-    quitReason = networkConnection()->identity()->quitReason();
+    quitReason = network()->identityPtr()->quitReason();
   else
     quitReason = reason;
   emit putCmd("QUIT", serverEncode(quitReason));
@@ -335,10 +335,9 @@ void UserInputHandler::handleQuote(const BufferInfo &bufferInfo, const QString &
 }
 
 void UserInputHandler::handleSay(const BufferInfo &bufferInfo, const QString &msg) {
-  if(bufferInfo.bufferName().isEmpty()) return;  // server buffer
-  QList<QByteArray> params;
-  params << serverEncode(bufferInfo.bufferName()) << channelEncode(bufferInfo.bufferName(), msg);
-  emit putCmd("PRIVMSG", params);
+  if(bufferInfo.bufferName().isEmpty())
+    return;  // server buffer
+  putPrivmsg(serverEncode(bufferInfo.bufferName()), channelEncode(bufferInfo.bufferName(), msg));
   emit displayMsg(Message::Plain, bufferInfo.type(), bufferInfo.bufferName(), msg, network()->myNick(), Message::Self);
 }
 
@@ -422,4 +421,53 @@ void UserInputHandler::expand(const QString &alias, const BufferInfo &bufferInfo
 }
 
 
+void UserInputHandler::putPrivmsg(const QByteArray &target, const QByteArray &message) {
+  static const char *cmd = "PRIVMSG";
+  int overrun = lastParamOverrun(cmd, QList<QByteArray>() << message);
+  if(overrun) {
+    static const char *splitter = " .,-";
+    int maxSplitPos = message.count() - overrun;
+    int splitPos = -1;
+    for(const char *splitChar = splitter; *splitChar != 0; splitChar++) {
+      splitPos = qMax(splitPos, message.lastIndexOf(*splitChar, maxSplitPos));
+    }
+    if(splitPos <= 0) {
+      splitPos = maxSplitPos;
+    }
+    putCmd(cmd, QList<QByteArray>() << target << message.left(splitPos));
+    putPrivmsg(target, message.mid(splitPos));
+    return;
+  } else {
+    putCmd(cmd, QList<QByteArray>() << target << message);
+  }
+}
+
+// returns 0 if the message will not be chopped by the irc server or number of chopped bytes if message is too long
+int UserInputHandler::lastParamOverrun(const QString &cmd, const QList<QByteArray> &params) {
+  // the server will pass our message trunkated to 512 bytes including CRLF with the following format:
+  // ":prefix COMMAND param0 param1 :lastparam"
+  // where prefix = "nickname!user@host"
+  // that means that the last message can be as long as:
+  // 512 - nicklen - userlen - hostlen - commandlen - sum(param[0]..param[n-1])) - 2 (for CRLF) - 4 (":!@" + 1space between prefix and command) - max(paramcount - 1, 0) (space for simple params) - 2 (space and colon for last param)
+  IrcUser *me = network()->me();
+  int maxLen = 480 - cmd.toAscii().count(); // educated guess in case we don't know us (yet?)
+
+  if(me)
+    maxLen = 512 - serverEncode(me->nick()).count() - serverEncode(me->user()).count() - serverEncode(me->host()).count() - cmd.toAscii().count() - 6;
+
+  if(!params.isEmpty()) {
+    for(int i = 0; i < params.count() - 1; i++) {
+      maxLen -= (params[i].count() + 1);
+    }
+    maxLen -= 2; // " :" last param separator;
+
+    if(params.last().count() > maxLen) {
+      return params.last().count() - maxLen;
+    } else {
+      return 0;
+    }
+  } else {
+    return 0;
+  }
+}
 

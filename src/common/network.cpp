@@ -27,6 +27,21 @@
 QTextCodec *Network::_defaultCodecForServer = 0;
 QTextCodec *Network::_defaultCodecForEncoding = 0;
 QTextCodec *Network::_defaultCodecForDecoding = 0;
+
+Network::Server Network::Server::fromVariant(const QVariant &variant) {
+  QVariantMap serverMap = variant.toMap();
+  return Server(serverMap["Host"].toString(), serverMap["Port"].toUInt(), serverMap["Password"].toString(), serverMap["UseSSL"].toBool());
+}
+
+QVariant Network::Server::toVariant() const {
+  QVariantMap serverMap;
+  serverMap["Host"] = host;
+  serverMap["Port"] = port;
+  serverMap["Password"] = password;
+  serverMap["UseSSL"] = useSsl;
+  return QVariant::fromValue<QVariantMap>(serverMap);
+}
+
 // ====================
 //  Public:
 // ====================
@@ -79,7 +94,7 @@ NetworkInfo Network::networkInfo() const {
   info.codecForServer = codecForServer();
   info.codecForEncoding = codecForEncoding();
   info.codecForDecoding = codecForDecoding();
-  info.serverList = serverList();
+  info.serverList = variantServerList();
   info.useRandomServer = useRandomServer();
   info.perform = perform();
   info.useAutoIdentify = useAutoIdentify();
@@ -135,6 +150,16 @@ QStringList Network::nicks() const {
     nicks << ircuser->nick();
   }
   return nicks;
+}
+
+QVariantList Network::variantServerList() const {
+  QVariantList servers;
+  ServerList::const_iterator serverIter = _serverList.constBegin();
+  while(serverIter != _serverList.constEnd()) {
+    servers << serverIter->toVariant();
+    serverIter++;
+  }
+  return servers;
 }
 
 QString Network::prefixes() {
@@ -240,14 +265,21 @@ void Network::removeChansAndUsers() {
   _ircUsers.clear();
   QList<IrcChannel *> channels = ircChannels();
   _ircChannels.clear();
-  
+
   foreach(IrcChannel *channel, channels) {
+    proxy()->detachObject(channel);
     disconnect(channel, 0, this, 0);
   }
   foreach(IrcUser *user, users) {
+    proxy()->detachObject(user);
     disconnect(user, 0, this, 0);
+  }
+
+  // the second loop is needed because quit can have sideffects
+  foreach(IrcUser *user, users) {
     user->quit();
   }
+
   qDeleteAll(users);
   qDeleteAll(channels);
 }
@@ -445,7 +477,10 @@ void Network::setIdentity(IdentityId id) {
 }
 
 void Network::setServerList(const QVariantList &serverList) {
-  _serverList = serverList;
+  _serverList.clear();
+  foreach(QVariant variant, serverList) {
+    _serverList << Server::fromVariant(variant);
+  }
   emit serverListSet(serverList);
 }
 
@@ -569,7 +604,6 @@ void Network::initSetIrcUsersAndChannels(const QVariantMap &usersAndChannels) {
     newIrcChannel(channelIter.key(), channelIter.value().toMap());
     channelIter++;
   }
-
 }
 
 void Network::initSetSupports(const QVariantMap &supports) {
@@ -577,6 +611,12 @@ void Network::initSetSupports(const QVariantMap &supports) {
   while(iter.hasNext()) {
     iter.next();
     addSupport(iter.key(), iter.value().toString());
+  }
+}
+
+void Network::initSetServerList(const QVariantList &serverList) {
+  foreach(QVariant variant, serverList) {
+    _serverList << Server::fromVariant(variant);
   }
 }
 

@@ -24,7 +24,7 @@
 #include "quassel.h"
 #include "util.h"
 
-CtcpHandler::CtcpHandler(NetworkConnection *parent)
+CtcpHandler::CtcpHandler(CoreNetwork *parent)
   : BasicHandler(parent),
     XDELIM("\001")
 {

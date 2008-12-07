@@ -218,7 +218,6 @@ void IrcUser::joinChannel(IrcChannel *channel) {
   if(!_channels.contains(channel)) {
     _channels.insert(channel);
     channel->joinIrcUsers(this);
-    // connect(channel, SIGNAL(destroyed()), this, SLOT(channelDestroyed()));
   }
 }
 

@@ -20,7 +20,7 @@
 
 #include "coreirclisthelper.h"
 
-#include "networkconnection.h"
+#include "corenetwork.h"
 #include "userinputhandler.h"
 
 QVariantList CoreIrcListHelper::requestChannelList(const NetworkId &netId, const QStringList &channelFilters) {
@@ -44,10 +44,10 @@ bool CoreIrcListHelper::addChannel(const NetworkId &netId, const QString &channe
 }
 
 bool CoreIrcListHelper::dispatchQuery(const NetworkId &netId, const QString &query) {
-  NetworkConnection *networkConnection = coreSession()->networkConnection(netId);
-  if(networkConnection) {
+  CoreNetwork *network = coreSession()->network(netId);
+  if(network) {
     _channelLists[netId] = QList<ChannelDescription>();
-    networkConnection->userInputHandler()->handleList(BufferInfo(), query);
+    network->userInputHandler()->handleList(BufferInfo(), query);
     _queryTimeout[startTimer(10000)] = netId;
     return true;
   } else {

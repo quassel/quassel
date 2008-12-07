@@ -88,6 +88,19 @@ public:
     D_CHANMODE = 0x08
   };
 
+  struct Server {
+    QString host;
+    uint port;
+    QString password;
+    bool useSsl;
+    Server() : port(0), useSsl(false) {}
+    Server(const QString &host, uint port, const QString &password, bool useSsl)
+      : host(host), port(port), password(password), useSsl(useSsl) {}
+
+    static Server fromVariant(const QVariant &variant);
+    QVariant toVariant() const;
+  };
+  typedef QList<Server> ServerList;
 
   Network(const NetworkId &networkid, QObject *parent = 0);
   ~Network();
@@ -122,7 +135,8 @@ public:
   inline IdentityId identity() const { return _identity; }
   QStringList nicks() const;
   inline QStringList channels() const { return _ircChannels.keys(); }
-  inline const QVariantList &serverList() const { return _serverList; }
+  inline const ServerList &serverList() const { return _serverList; }
+  QVariantList variantServerList() const;
   inline bool useRandomServer() const { return _useRandomServer; }
   inline const QStringList &perform() const { return _perform; }
   inline bool useAutoIdentify() const { return _useAutoIdentify; }
@@ -176,16 +190,15 @@ public:
   static void setDefaultCodecForEncoding(const QByteArray &name);
   static void setDefaultCodecForDecoding(const QByteArray &name);
 
-  bool autoAwayActive() const { return _autoAwayActive; }
-  void setAutoAwayActive(bool active) { _autoAwayActive = active; }
+  inline bool autoAwayActive() const { return _autoAwayActive; }
+  inline void setAutoAwayActive(bool active) { _autoAwayActive = active; }
 
 public slots:
   void setNetworkName(const QString &networkName);
   void setCurrentServer(const QString &currentServer);
   void setConnected(bool isConnected);
-  //void setConnectionState(Network::ConnectionState state);
   void setConnectionState(int state);
-  void setMyNick(const QString &mynick);
+  virtual void setMyNick(const QString &mynick);
   void setLatency(int latency);
   void setIdentity(IdentityId);
 
@@ -195,9 +208,9 @@ public slots:
   void setUseAutoIdentify(bool);
   void setAutoIdentifyService(const QString &);
   void setAutoIdentifyPassword(const QString &);
-  void setUseAutoReconnect(bool);
-  void setAutoReconnectInterval(quint32);
-  void setAutoReconnectRetries(quint16);
+  virtual void setUseAutoReconnect(bool);
+  virtual void setAutoReconnectInterval(quint32);
+  virtual void setAutoReconnectRetries(quint16);
   void setUnlimitedReconnectRetries(bool);
   void setRejoinChannels(bool);
 
@@ -213,17 +226,13 @@ public slots:
 
   //init geters
   QVariantMap initSupports() const;
-  inline QVariantList initServerList() const { return serverList(); }
+  inline QVariantList initServerList() const { return variantServerList(); }
   virtual QVariantMap initIrcUsersAndChannels() const;
-//   QStringList initIrcUsers() const;
-//   QStringList initIrcChannels() const;
 
   //init seters
   void initSetSupports(const QVariantMap &supports);
-  inline void initSetServerList(const QVariantList &serverList) { setServerList(serverList); }
+  void initSetServerList(const QVariantList &serverList);
   virtual void initSetIrcUsersAndChannels(const QVariantMap &usersAndChannels);
-//   void initSetIrcUsers(const QStringList &hostmasks);
-//   void initSetIrcChannels(const QStringList &channels);
 
   IrcUser *updateNickFromMask(const QString &mask);
 
@@ -278,8 +287,8 @@ signals:
   void ircChannelAdded(const QString &channelname);
   void ircChannelAdded(IrcChannel *);
 
-  void connectRequested(NetworkId id = 0) const;
-  void disconnectRequested(NetworkId id = 0) const;
+  void connectRequested() const;
+  void disconnectRequested() const;
   void setNetworkInfoRequested(const NetworkInfo &) const;
 
 protected:
@@ -305,7 +314,7 @@ private:
   QHash<QString, IrcChannel *> _ircChannels; // stores all known channels
   QHash<QString, QString> _supports;  // stores results from RPL_ISUPPORT
 
-  QVariantList _serverList;
+  ServerList _serverList;
   bool _useRandomServer;
   QStringList _perform;
 
