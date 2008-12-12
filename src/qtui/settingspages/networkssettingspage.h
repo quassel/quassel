@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _NETWORKSSETTINGSPAGE_H_
-#define _NETWORKSSETTINGSPAGE_H_
+#ifndef NETWORKSSETTINGSPAGE_H
+#define NETWORKSSETTINGSPAGE_H
 
 #include <QPixmap>
 
@@ -114,16 +114,16 @@ class NetworkEditDlg : public QDialog {
 class ServerEditDlg : public QDialog {
   Q_OBJECT
 
-  public:
-    ServerEditDlg(const QVariant &serverData = QVariant(), QWidget *parent = 0);
+public:
+  ServerEditDlg(const Network::Server &server = Network::Server(), QWidget *parent = 0);
 
-    QVariant serverData() const;
+  Network::Server serverData() const;
 
-  private slots:
-    void on_host_textChanged();
+private slots:
+  void on_host_textChanged();
 
-  private:
-    Ui::ServerEditDlg ui;
+private:
+  Ui::ServerEditDlg ui;
 };
 
 

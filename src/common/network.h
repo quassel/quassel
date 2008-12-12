@@ -24,12 +24,14 @@
 #include <QString>
 #include <QStringList>
 #include <QList>
+#include <QNetworkProxy>
 #include <QHash>
 #include <QVariantMap>
 #include <QPointer>
 #include <QMutex>
 
 #include "types.h"
+#include "util.h"
 #include "syncableobject.h"
 
 #include "signalproxy.h"
@@ -93,12 +95,21 @@ public:
     uint port;
     QString password;
     bool useSsl;
-    Server() : port(0), useSsl(false) {}
-    Server(const QString &host, uint port, const QString &password, bool useSsl)
-      : host(host), port(port), password(password), useSsl(useSsl) {}
+    int sslVersion;
 
-    static Server fromVariant(const QVariant &variant);
-    QVariant toVariant() const;
+    bool useProxy;
+    int proxyType;
+    QString proxyHost;
+    uint proxyPort;
+    QString proxyUser;
+    QString proxyPass;
+
+    Server() : port(6667), useSsl(false), sslVersion(0), useProxy(false), proxyType(QNetworkProxy::Socks5Proxy), proxyHost("localhost"), proxyPort(8080) {}
+    Server(const QString &host, uint port, const QString &password, bool useSsl)
+      : host(host), port(port), password(password), useSsl(useSsl), sslVersion(0),
+	useProxy(false), proxyType(QNetworkProxy::Socks5Proxy), proxyHost("localhost"), proxyPort(8080) {}
+    bool operator==(const Server &other) const;
+    bool operator!=(const Server &other) const;
   };
   typedef QList<Server> ServerList;
 
@@ -136,7 +147,6 @@ public:
   QStringList nicks() const;
   inline QStringList channels() const { return _ircChannels.keys(); }
   inline const ServerList &serverList() const { return _serverList; }
-  QVariantList variantServerList() const;
   inline bool useRandomServer() const { return _useRandomServer; }
   inline const QStringList &perform() const { return _perform; }
   inline bool useAutoIdentify() const { return _useAutoIdentify; }
@@ -226,12 +236,12 @@ public slots:
 
   //init geters
   QVariantMap initSupports() const;
-  inline QVariantList initServerList() const { return variantServerList(); }
+  inline QVariantList initServerList() const { return toVariantList(serverList()); }
   virtual QVariantMap initIrcUsersAndChannels() const;
 
   //init seters
   void initSetSupports(const QVariantMap &supports);
-  void initSetServerList(const QVariantList &serverList);
+  inline void initSetServerList(const QVariantList &serverList) { _serverList = fromVariantList<Server>(serverList); }
   virtual void initSetIrcUsersAndChannels(const QVariantMap &usersAndChannels);
 
   IrcUser *updateNickFromMask(const QString &mask);
@@ -356,7 +366,7 @@ struct NetworkInfo {
   QByteArray codecForDecoding;
 
   // Server entry: QString "Host", uint "Port", QString "Password", bool "UseSSL"
-  QVariantList serverList;
+  Network::ServerList serverList;
   bool useRandomServer;
 
   QStringList perform;
@@ -378,7 +388,11 @@ struct NetworkInfo {
 QDataStream &operator<<(QDataStream &out, const NetworkInfo &info);
 QDataStream &operator>>(QDataStream &in, NetworkInfo &info);
 QDebug operator<<(QDebug dbg, const NetworkInfo &i);
-
 Q_DECLARE_METATYPE(NetworkInfo)
+
+QDataStream &operator<<(QDataStream &out, const Network::Server &server);
+QDataStream &operator>>(QDataStream &in, Network::Server &server);
+QDebug operator<<(QDebug dbg, const Network::Server &server);
+Q_DECLARE_METATYPE(Network::Server)
 
 #endif

@@ -105,7 +105,7 @@ public slots:
 
   bool setAutoWhoDone(const QString &channel);
 
-  inline const Server &usedServer() const { return serverList()[_lastUsedServerIndex]; }
+  Server usedServer() const;
 
 signals:
   void recvRawServerMsg(QString);
@@ -136,7 +136,6 @@ private slots:
   void startAutoWhoCycle();
 
 #ifdef HAVE_SSL
-  void sslSocketConnected();
   void sslErrors(const QList<QSslError> &errors);
 #endif
 

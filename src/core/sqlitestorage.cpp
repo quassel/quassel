@@ -246,12 +246,11 @@ bool SqliteStorage::updateNetwork(UserId user, const NetworkInfo &info) {
 
   QSqlQuery insertServersQuery(logDb());
   insertServersQuery.prepare(queryString("insert_server"));
-  foreach(QVariant server_, info.serverList) {
-    QVariantMap server = server_.toMap();
-    insertServersQuery.bindValue(":hostname", server["Host"]);
-    insertServersQuery.bindValue(":port", server["Port"].toInt());
-    insertServersQuery.bindValue(":password", server["Password"]);
-    insertServersQuery.bindValue(":ssl", server["UseSSL"].toBool() ? 1 : 0);
+  foreach(Network::Server server, info.serverList) {
+    insertServersQuery.bindValue(":hostname", server.host);
+    insertServersQuery.bindValue(":port", server.port);
+    insertServersQuery.bindValue(":password", server.password);
+    insertServersQuery.bindValue(":ssl", server.useSsl ? 1 : 0);
     insertServersQuery.bindValue(":userid", user.toInt());
     insertServersQuery.bindValue(":networkid", info.networkId.toInt());
 
@@ -358,13 +357,13 @@ QList<NetworkInfo> SqliteStorage::networks(UserId user) {
     if(!watchQuery(serversQuery))
       return nets;
 
-    QVariantList servers;
+    Network::ServerList servers;
     while(serversQuery.next()) {
-      QVariantMap server;
-      server["Host"] = serversQuery.value(0).toString();
-      server["Port"] = serversQuery.value(1).toInt();
-      server["Password"] = serversQuery.value(2).toString();
-      server["UseSSL"] = serversQuery.value(3).toInt() == 1 ? true : false;
+      Network::Server server;
+      server.host = serversQuery.value(0).toString();
+      server.port = serversQuery.value(1).toUInt();
+      server.password = serversQuery.value(2).toString();
+      server.useSsl = serversQuery.value(3).toInt() == 1 ? true : false;
       servers << server;
     }
     net.serverList = servers;

@@ -5,92 +5,303 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>264</width>
-    <height>167</height>
+    <width>386</width>
+    <height>346</height>
    </rect>
   </property>
   <property name="windowTitle" >
    <string>Dialog</string>
   </property>
-  <layout class="QVBoxLayout" >
+  <layout class="QVBoxLayout" name="verticalLayout_3" >
    <item>
-    <layout class="QGridLayout" >
-     <item row="0" column="0" >
-      <widget class="QLabel" name="label" >
-       <property name="text" >
-        <string>Server address:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1" >
-      <widget class="QLabel" name="label_2" >
-       <property name="text" >
-        <string>Port:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0" >
-      <widget class="QLineEdit" name="host" />
-     </item>
-     <item row="1" column="1" >
-      <widget class="QSpinBox" name="port" >
-       <property name="minimum" >
-        <number>1</number>
-       </property>
-       <property name="maximum" >
-        <number>65535</number>
-       </property>
-       <property name="value" >
-        <number>6667</number>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" >
-     <item>
-      <widget class="QLabel" name="passwordLabel" >
-       <property name="text" >
-        <string>Password:</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="password" >
-       <property name="enabled" >
-        <bool>true</bool>
-       </property>
-       <property name="echoMode" >
-        <enum>QLineEdit::Password</enum>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <widget class="QCheckBox" name="useSSL" >
-     <property name="enabled" >
-      <bool>true</bool>
+    <widget class="QTabWidget" name="tabWidget" >
+     <property name="toolTip" >
+      <string/>
      </property>
-     <property name="text" >
-      <string>Use SSL</string>
+     <property name="currentIndex" >
+      <number>0</number>
      </property>
-     <property name="icon" >
-      <iconset>
-       <normaloff>:/16x16/actions/oxygen/16x16/actions/document-encrypt.png</normaloff>:/16x16/actions/oxygen/16x16/actions/document-encrypt.png</iconset>
+     <property name="usesScrollButtons" >
+      <bool>false</bool>
      </property>
+     <widget class="QWidget" name="basic" >
+      <property name="geometry" >
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>356</width>
+        <height>243</height>
+       </rect>
+      </property>
+      <attribute name="title" >
+       <string>Server Info</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_4" >
+       <item>
+        <layout class="QGridLayout" name="gridLayout_2" >
+         <item row="0" column="0" >
+          <widget class="QLabel" name="label" >
+           <property name="text" >
+            <string>Server address:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1" >
+          <widget class="QLabel" name="label_2" >
+           <property name="text" >
+            <string>Port:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0" >
+          <widget class="QLineEdit" name="host" />
+         </item>
+         <item row="1" column="1" >
+          <widget class="QSpinBox" name="port" >
+           <property name="minimum" >
+            <number>1</number>
+           </property>
+           <property name="maximum" >
+            <number>65535</number>
+           </property>
+           <property name="value" >
+            <number>6667</number>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" >
+         <item>
+          <widget class="QLabel" name="passwordLabel" >
+           <property name="text" >
+            <string>Password:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="password" >
+           <property name="enabled" >
+            <bool>true</bool>
+           </property>
+           <property name="echoMode" >
+            <enum>QLineEdit::Password</enum>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="useSSL" >
+         <property name="enabled" >
+          <bool>true</bool>
+         </property>
+         <property name="text" >
+          <string>Use SSL</string>
+         </property>
+         <property name="icon" >
+          <iconset>
+           <normaloff>:/16x16/actions/oxygen/16x16/actions/document-encrypt.png</normaloff>:/16x16/actions/oxygen/16x16/actions/document-encrypt.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_2" >
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0" >
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="advanced" >
+      <property name="geometry" >
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>356</width>
+        <height>243</height>
+       </rect>
+      </property>
+      <attribute name="title" >
+       <string>Advanced</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_2" >
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout" >
+         <item>
+          <spacer name="horizontalSpacer" >
+           <property name="orientation" >
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0" >
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_3" >
+           <property name="text" >
+            <string>SSL Version:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="sslVersion" >
+           <property name="toolTip" >
+            <string>Do not change unless you're going to connect to a server not supporting SSLv3!</string>
+           </property>
+           <item>
+            <property name="text" >
+             <string>SSLv3 (default)</string>
+            </property>
+           </item>
+           <item>
+            <property name="text" >
+             <string>SSLv2</string>
+            </property>
+           </item>
+           <item>
+            <property name="text" >
+             <string>TLSv1</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="useProxy" >
+         <property name="title" >
+          <string>Use a Proxy</string>
+         </property>
+         <property name="flat" >
+          <bool>false</bool>
+         </property>
+         <property name="checkable" >
+          <bool>true</bool>
+         </property>
+         <property name="checked" >
+          <bool>false</bool>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout" >
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_3" >
+            <item>
+             <widget class="QLabel" name="label_8" >
+              <property name="text" >
+               <string>Proxy Type:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="proxyType" >
+              <item>
+               <property name="text" >
+                <string>Socks 5</string>
+               </property>
+              </item>
+              <item>
+               <property name="text" >
+                <string>HTTP</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_2" >
+            <item>
+             <widget class="QLabel" name="label_4" >
+              <property name="text" >
+               <string>Proxy Host:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="proxyHost" >
+              <property name="text" >
+               <string>localhost</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_5" >
+              <property name="text" >
+               <string>Port:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSpinBox" name="proxyPort" >
+              <property name="minimum" >
+               <number>1</number>
+              </property>
+              <property name="maximum" >
+               <number>65535</number>
+              </property>
+              <property name="value" >
+               <number>8080</number>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QGridLayout" name="gridLayout" >
+            <item row="0" column="0" >
+             <widget class="QLabel" name="label_6" >
+              <property name="text" >
+               <string>Proxy Username:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1" >
+             <widget class="QLineEdit" name="proxyUsername" />
+            </item>
+            <item row="1" column="0" >
+             <widget class="QLabel" name="label_7" >
+              <property name="text" >
+               <string>Proxy Password:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1" >
+             <widget class="QLineEdit" name="proxyPassword" >
+              <property name="echoMode" >
+               <enum>QLineEdit::Password</enum>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </item>
    <item>
-    <spacer>
+    <spacer name="verticalSpacer" >
      <property name="orientation" >
       <enum>Qt::Vertical</enum>
      </property>
      <property name="sizeHint" stdset="0" >
       <size>
        <width>20</width>
-       <height>40</height>
+       <height>17</height>
       </size>
      </property>
     </spacer>

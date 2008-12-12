@@ -22,25 +22,9 @@
 #include <QDebug>
 #include <QTextCodec>
 
-#include "util.h"
-
 QTextCodec *Network::_defaultCodecForServer = 0;
 QTextCodec *Network::_defaultCodecForEncoding = 0;
 QTextCodec *Network::_defaultCodecForDecoding = 0;
-
-Network::Server Network::Server::fromVariant(const QVariant &variant) {
-  QVariantMap serverMap = variant.toMap();
-  return Server(serverMap["Host"].toString(), serverMap["Port"].toUInt(), serverMap["Password"].toString(), serverMap["UseSSL"].toBool());
-}
-
-QVariant Network::Server::toVariant() const {
-  QVariantMap serverMap;
-  serverMap["Host"] = host;
-  serverMap["Port"] = port;
-  serverMap["Password"] = password;
-  serverMap["UseSSL"] = useSsl;
-  return QVariant::fromValue<QVariantMap>(serverMap);
-}
 
 // ====================
 //  Public:
@@ -94,7 +78,7 @@ NetworkInfo Network::networkInfo() const {
   info.codecForServer = codecForServer();
   info.codecForEncoding = codecForEncoding();
   info.codecForDecoding = codecForDecoding();
-  info.serverList = variantServerList();
+  info.serverList = serverList();
   info.useRandomServer = useRandomServer();
   info.perform = perform();
   info.useAutoIdentify = useAutoIdentify();
@@ -115,7 +99,7 @@ void Network::setNetworkInfo(const NetworkInfo &info) {
   if(info.codecForServer != codecForServer()) setCodecForServer(QTextCodec::codecForName(info.codecForServer));
   if(info.codecForEncoding != codecForEncoding()) setCodecForEncoding(QTextCodec::codecForName(info.codecForEncoding));
   if(info.codecForDecoding != codecForDecoding()) setCodecForDecoding(QTextCodec::codecForName(info.codecForDecoding));
-  if(info.serverList.count()) setServerList(info.serverList); // FIXME compare components
+  if(info.serverList.count()) setServerList(toVariantList(info.serverList)); // FIXME compare components
   if(info.useRandomServer != useRandomServer()) setUseRandomServer(info.useRandomServer);
   if(info.perform != perform()) setPerform(info.perform);
   if(info.useAutoIdentify != useAutoIdentify()) setUseAutoIdentify(info.useAutoIdentify);
@@ -150,16 +134,6 @@ QStringList Network::nicks() const {
     nicks << ircuser->nick();
   }
   return nicks;
-}
-
-QVariantList Network::variantServerList() const {
-  QVariantList servers;
-  ServerList::const_iterator serverIter = _serverList.constBegin();
-  while(serverIter != _serverList.constEnd()) {
-    servers << serverIter->toVariant();
-    serverIter++;
-  }
-  return servers;
 }
 
 QString Network::prefixes() {
@@ -477,10 +451,7 @@ void Network::setIdentity(IdentityId id) {
 }
 
 void Network::setServerList(const QVariantList &serverList) {
-  _serverList.clear();
-  foreach(QVariant variant, serverList) {
-    _serverList << Server::fromVariant(variant);
-  }
+  _serverList = fromVariantList<Server>(serverList);
   emit serverListSet(serverList);
 }
 
@@ -614,12 +585,6 @@ void Network::initSetSupports(const QVariantMap &supports) {
   }
 }
 
-void Network::initSetServerList(const QVariantList &serverList) {
-  foreach(QVariant variant, serverList) {
-    _serverList << Server::fromVariant(variant);
-  }
-}
-
 IrcUser *Network::updateNickFromMask(const QString &mask) {
   QString nick(nickFromMask(mask).toLower());
   IrcUser *ircuser;
@@ -729,7 +694,7 @@ QDataStream &operator<<(QDataStream &out, const NetworkInfo &info) {
   i["CodecForServer"] = info.codecForServer;
   i["CodecForEncoding"] = info.codecForEncoding;
   i["CodecForDecoding"] = info.codecForDecoding;
-  i["ServerList"] = info.serverList;
+  i["ServerList"] = toVariantList(info.serverList);
   i["UseRandomServer"] = info.useRandomServer;
   i["Perform"] = info.perform;
   i["UseAutoIdentify"] = info.useAutoIdentify;
@@ -753,7 +718,7 @@ QDataStream &operator>>(QDataStream &in, NetworkInfo &info) {
   info.codecForServer = i["CodecForServer"].toByteArray();
   info.codecForEncoding = i["CodecForEncoding"].toByteArray();
   info.codecForDecoding = i["CodecForDecoding"].toByteArray();
-  info.serverList = i["ServerList"].toList();
+  info.serverList = fromVariantList<Network::Server>(i["ServerList"].toList());
   info.useRandomServer = i["UseRandomServer"].toBool();
   info.perform = i["Perform"].toStringList();
   info.useAutoIdentify = i["UseAutoIdentify"].toBool();
@@ -769,11 +734,70 @@ QDataStream &operator>>(QDataStream &in, NetworkInfo &info) {
 
 QDebug operator<<(QDebug dbg, const NetworkInfo &i) {
   dbg.nospace() << "(id = " << i.networkId << " name = " << i.networkName << " identity = " << i.identity
-      << " codecForServer = " << i.codecForServer << " codecForEncoding = " << i.codecForEncoding << " codecForDecoding = " << i.codecForDecoding
-      << " serverList = " << i.serverList << " useRandomServer = " << i.useRandomServer << " perform = " << i.perform
-      << " useAutoIdentify = " << i.useAutoIdentify << " autoIdentifyService = " << i.autoIdentifyService << " autoIdentifyPassword = " << i.autoIdentifyPassword
-      << " useAutoReconnect = " << i.useAutoReconnect << " autoReconnectInterval = " << i.autoReconnectInterval
-      << " autoReconnectRetries = " << i.autoReconnectRetries << " unlimitedReconnectRetries = " << i.unlimitedReconnectRetries
-      << " rejoinChannels = " << i.rejoinChannels << ")";
+		<< " codecForServer = " << i.codecForServer << " codecForEncoding = " << i.codecForEncoding << " codecForDecoding = " << i.codecForDecoding
+		<< " serverList = " << i.serverList << " useRandomServer = " << i.useRandomServer << " perform = " << i.perform
+		<< " useAutoIdentify = " << i.useAutoIdentify << " autoIdentifyService = " << i.autoIdentifyService << " autoIdentifyPassword = " << i.autoIdentifyPassword
+		<< " useAutoReconnect = " << i.useAutoReconnect << " autoReconnectInterval = " << i.autoReconnectInterval
+		<< " autoReconnectRetries = " << i.autoReconnectRetries << " unlimitedReconnectRetries = " << i.unlimitedReconnectRetries
+		<< " rejoinChannels = " << i.rejoinChannels << ")";
+  return dbg.space();
+}
+
+QDataStream &operator<<(QDataStream &out, const Network::Server &server) {
+  QVariantMap serverMap;
+  serverMap["Host"] = server.host;
+  serverMap["Port"] = server.port;
+  serverMap["Password"] = server.password;
+  serverMap["UseSSL"] = server.useSsl;
+  serverMap["sslVersion"] = server.sslVersion;
+  serverMap["UseProxy"] = server.useProxy;
+  serverMap["ProxyType"] = server.proxyType;
+  serverMap["ProxyHost"] = server.proxyHost;
+  serverMap["ProxyPort"] = server.proxyPort;
+  serverMap["ProxyUser"] = server.proxyUser;
+  serverMap["ProxyPass"] = server.proxyPass;
+  out << serverMap;
+  return out;
+}
+
+QDataStream &operator>>(QDataStream &in, Network::Server &server) {
+  QVariantMap serverMap;
+  in >> serverMap;
+  server.host = serverMap["Host"].toString();
+  server.port = serverMap["Port"].toUInt();
+  server.password = serverMap["Password"].toString();
+  server.useSsl = serverMap["UseSSL"].toBool();
+  server.sslVersion = serverMap["sslVersion"].toInt();
+  server.useProxy = serverMap["UseProxy"].toBool();
+  server.proxyType = serverMap["ProxyType"].toInt();
+  server.proxyHost = serverMap["ProxyHost"].toString();
+  server.proxyPort = serverMap["ProxyPort"].toUInt();
+  server.proxyUser = serverMap["ProxyUser"].toString();
+  server.proxyPass = serverMap["ProxyPass"].toString();
+  return in;
+}
+
+
+bool Network::Server::operator==(const Server &other) const {
+  if(host != other.host) return false;
+  if(port != other.port) return false;
+  if(password != other.password) return false;
+  if(useSsl != other.useSsl) return false;
+  if(sslVersion != other.sslVersion) return false;
+  if(useProxy != other.useProxy) return false;
+  if(proxyType != other.proxyType) return false;
+  if(proxyHost != other.proxyHost) return false;
+  if(proxyPort != other.proxyPort) return false;
+  if(proxyUser != other.proxyUser) return false;
+  if(proxyPass != other.proxyPass) return false;
+  return true;
+}
+
+bool Network::Server::operator!=(const Server &other) const {
+  return !(*this == other);
+}
+
+QDebug operator<<(QDebug dbg, const Network::Server &server) {
+  dbg.nospace() << "Server(host = " << server.host << ":" << server.port << ", useSsl = " << server.useSsl << ")";
   return dbg.space();
 }

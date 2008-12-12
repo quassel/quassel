@@ -104,6 +104,7 @@ void Quassel::registerMetaTypes() {
   qRegisterMetaType<Message>("Message");
   qRegisterMetaType<BufferInfo>("BufferInfo");
   qRegisterMetaType<NetworkInfo>("NetworkInfo");
+  qRegisterMetaType<Network::Server>("Network::Server");
   qRegisterMetaType<Identity>("Identity");
   qRegisterMetaType<Network::ConnectionState>("Network::ConnectionState");
 
@@ -111,6 +112,7 @@ void Quassel::registerMetaTypes() {
   qRegisterMetaTypeStreamOperators<Message>("Message");
   qRegisterMetaTypeStreamOperators<BufferInfo>("BufferInfo");
   qRegisterMetaTypeStreamOperators<NetworkInfo>("NetworkInfo");
+  qRegisterMetaTypeStreamOperators<Network::Server>("Network::Server");
   qRegisterMetaTypeStreamOperators<Identity>("Identity");
   qRegisterMetaTypeStreamOperators<qint8>("Network::ConnectionState");
 

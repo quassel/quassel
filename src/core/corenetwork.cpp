@@ -69,16 +69,14 @@ CoreNetwork::CoreNetwork(const NetworkId &networkid, CoreSession *session)
   connect(this, SIGNAL(connectRequested()), this, SLOT(connectToIrc()));
 
 
+  connect(&socket, SIGNAL(connected()), this, SLOT(socketInitialized()));
   connect(&socket, SIGNAL(disconnected()), this, SLOT(socketDisconnected()));
   connect(&socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(socketError(QAbstractSocket::SocketError)));
   connect(&socket, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SLOT(socketStateChanged(QAbstractSocket::SocketState)));
   connect(&socket, SIGNAL(readyRead()), this, SLOT(socketHasData()));
 #ifdef HAVE_SSL
-  connect(&socket, SIGNAL(connected()), this, SLOT(sslSocketConnected()));
   connect(&socket, SIGNAL(encrypted()), this, SLOT(socketInitialized()));
   connect(&socket, SIGNAL(sslErrors(const QList<QSslError> &)), this, SLOT(sslErrors(const QList<QSslError> &)));
-#else
-  connect(&socket, SIGNAL(connected()), this, SLOT(socketInitialized()));
 #endif
 }
 
@@ -155,7 +153,23 @@ void CoreNetwork::connectToIrc(bool reconnecting) {
   Server server = usedServer();
   displayStatusMsg(tr("Connecting to %1:%2...").arg(server.host).arg(server.port));
   displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("Connecting to %1:%2...").arg(server.host).arg(server.port));
+
+  if(server.useProxy) {
+    QNetworkProxy proxy((QNetworkProxy::ProxyType)server.proxyType, server.proxyHost, server.proxyPort, server.proxyUser, server.proxyPass);
+    socket.setProxy(proxy);
+  } else {
+    socket.setProxy(QNetworkProxy::NoProxy);
+  }
+
+#ifdef HAVE_SSL
+  socket.setProtocol((QSsl::SslProtocol)server.sslVersion);
+  if(server.useSsl)
+    socket.connectToHostEncrypted(server.host, server.port);
+  else
+    socket.connectToHost(server.host, server.port);
+#else
   socket.connectToHost(server.host, server.port);
+#endif
 }
 
 void CoreNetwork::disconnectFromIrc(bool requested, const QString &reason) {
@@ -264,16 +278,13 @@ void CoreNetwork::socketError(QAbstractSocket::SocketError) {
   }
 }
 
+void CoreNetwork::socketInitialized() {
+  Server server = usedServer();
 #ifdef HAVE_SSL
-void CoreNetwork::sslSocketConnected() {
-  if(!usedServer().useSsl)
-    socketInitialized();
-  else
-    socket.startClientEncryption();
-}
+  if(server.useSsl && !socket.isEncrypted())
+    return;
 #endif
 
-void CoreNetwork::socketInitialized() {
   Identity *identity = identityPtr();
   if(!identity) {
     qCritical() << "Identity invalid!";
@@ -287,9 +298,8 @@ void CoreNetwork::socketInitialized() {
   _tokenBucket = 5; // init with a full bucket
   _tokenBucketTimer.start(_messagesPerSecond * 1000);
 
-  QString passwd = usedServer().password;
-  if(!passwd.isEmpty()) {
-    putRawLine(serverEncode(QString("PASS %1").arg(passwd)));
+  if(!server.password.isEmpty()) {
+    putRawLine(serverEncode(QString("PASS %1").arg(server.password)));
   }
   putRawLine(serverEncode(QString("NICK :%1").arg(identity->nicks()[0])));
   putRawLine(serverEncode(QString("USER %1 8 * :%2").arg(identity->ident(), identity->realName())));
@@ -464,18 +474,7 @@ void CoreNetwork::startAutoWhoCycle() {
 void CoreNetwork::sslErrors(const QList<QSslError> &sslErrors) {
   Q_UNUSED(sslErrors)
   socket.ignoreSslErrors();
-  /* TODO errorhandling
-  QVariantMap errmsg;
-  QVariantList errnums;
-  foreach(QSslError err, errors) errnums << err.error();
-  errmsg["SslErrors"] = errnums;
-  errmsg["SslCert"] = socket.peerCertificate().toPem();
-  errmsg["PeerAddress"] = socket.peerAddress().toString();
-  errmsg["PeerPort"] = socket.peerPort();
-  errmsg["PeerName"] = socket.peerName();
-  emit sslErrors(errmsg);
-  disconnectFromIrc();
-  */
+  // TODO errorhandling
 }
 #endif  // HAVE_SSL
 
@@ -495,6 +494,13 @@ void CoreNetwork::writeToSocket(const QByteArray &data) {
   _tokenBucket--;
 }
 
+Network::Server CoreNetwork::usedServer() const {
+  if(_lastUsedServerIndex < serverList().count())
+    return serverList()[_lastUsedServerIndex];
+  else
+    return Network::Server();
+}
+
 void CoreNetwork::requestConnect() const {
   if(connectionState() != Disconnected) {
     qWarning() << "Requesting connect while already being connected!";
@@ -512,6 +518,16 @@ void CoreNetwork::requestDisconnect() const {
 }
 
 void CoreNetwork::requestSetNetworkInfo(const NetworkInfo &info) {
+  Network::Server currentServer = usedServer();
   setNetworkInfo(info);
   Core::updateNetwork(coreSession()->user(), info);
+
+  // update _lastUsedServerIndex;
+  for(int i = 0; i < serverList().count(); i++) {
+    Network::Server server = serverList()[i];
+    if(server.host == currentServer.host && server.port == currentServer.port) {
+      _lastUsedServerIndex = i;
+      break;
+    }
+  }
 }

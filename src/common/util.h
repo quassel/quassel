@@ -56,4 +56,22 @@ QDir quasselDir();
 
 void loadTranslation(const QLocale &locale);
 
+template<typename T>
+QVariantList toVariantList(const QList<T> &list) {
+  QVariantList variants;
+  for(int i = 0; i < list.count(); i++) {
+    variants << QVariant::fromValue<T>(list[i]);
+  }
+  return variants;
+}
+
+template<typename T>
+QList<T> fromVariantList(const QVariantList &variants) {
+  QList<T> list;
+  for(int i = 0; i < variants.count(); i++) {
+    list << variants[i].value<T>();
+  }
+  return list;
+}
+
 #endif

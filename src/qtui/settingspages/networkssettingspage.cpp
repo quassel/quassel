@@ -428,8 +428,8 @@ void NetworksSettingsPage::displayNetwork(NetworkId id) {
     NetworkInfo info = networkInfos[id];
     ui.identityList->setCurrentIndex(ui.identityList->findData(info.identity.toInt()));
     ui.serverList->clear();
-    foreach(QVariant v, info.serverList) {
-      ui.serverList->addItem(QString("%1:%2").arg(v.toMap()["Host"].toString()).arg(v.toMap()["Port"].toUInt()));
+    foreach(Network::Server server, info.serverList) {
+      ui.serverList->addItem(QString("%1:%2").arg(server.host).arg(server.port));
     }
     //setItemState(id);
     ui.randomServer->setChecked(info.useRandomServer);
@@ -586,14 +586,13 @@ void NetworksSettingsPage::on_serverList_itemSelectionChanged() {
 
 void NetworksSettingsPage::on_addServer_clicked() {
   if(currentId == 0) return;
-  ServerEditDlg dlg(QVariantMap(), this);
+  ServerEditDlg dlg(Network::Server(), this);
   if(dlg.exec() == QDialog::Accepted) {
     networkInfos[currentId].serverList.append(dlg.serverData());
     displayNetwork(currentId);
     ui.serverList->setCurrentRow(ui.serverList->count()-1);
     widgetHasChanged();
   }
-
 }
 
 void NetworksSettingsPage::on_editServer_clicked() {
@@ -619,8 +618,8 @@ void NetworksSettingsPage::on_deleteServer_clicked() {
 
 void NetworksSettingsPage::on_upServer_clicked() {
   int cur = ui.serverList->currentRow();
-  QVariant foo = networkInfos[currentId].serverList.takeAt(cur);
-  networkInfos[currentId].serverList.insert(cur-1, foo);
+  Network::Server server = networkInfos[currentId].serverList.takeAt(cur);
+  networkInfos[currentId].serverList.insert(cur-1, server);
   displayNetwork(currentId);
   ui.serverList->setCurrentRow(cur-1);
   widgetHasChanged();
@@ -628,8 +627,8 @@ void NetworksSettingsPage::on_upServer_clicked() {
 
 void NetworksSettingsPage::on_downServer_clicked() {
   int cur = ui.serverList->currentRow();
-  QVariant foo = networkInfos[currentId].serverList.takeAt(cur);
-  networkInfos[currentId].serverList.insert(cur+1, foo);
+  Network::Server server = networkInfos[currentId].serverList.takeAt(cur);
+  networkInfos[currentId].serverList.insert(cur+1, server);
   displayNetwork(currentId);
   ui.serverList->setCurrentRow(cur+1);
   widgetHasChanged();
@@ -662,30 +661,33 @@ void NetworkEditDlg::on_networkEdit_textChanged(const QString &text) {
 /**************************************************************************
  * ServerEditDlg
  *************************************************************************/
-
-ServerEditDlg::ServerEditDlg(const QVariant &_serverData, QWidget *parent) : QDialog(parent) {
+ServerEditDlg::ServerEditDlg(const Network::Server &server, QWidget *parent) : QDialog(parent) {
   ui.setupUi(this);
   ui.useSSL->setIcon(SmallIcon("document-encrypt"));
-
-  QVariantMap serverData = _serverData.toMap();
-  if(serverData.count()) {
-    ui.host->setText(serverData["Host"].toString());
-    ui.port->setValue(serverData["Port"].toUInt());
-    ui.password->setText(serverData["Password"].toString());
-    ui.useSSL->setChecked(serverData["UseSSL"].toBool());
-  } else {
-    ui.port->setValue(6667);
-  }
+  ui.host->setText(server.host);
+  ui.port->setValue(server.port);
+  ui.password->setText(server.password);
+  ui.useSSL->setChecked(server.useSsl);
+  ui.sslVersion->setCurrentIndex(server.sslVersion);
+  ui.useProxy->setChecked(server.useProxy);
+  ui.proxyType->setCurrentIndex(server.proxyType == QNetworkProxy::Socks5Proxy ? 0 : 1);
+  ui.proxyHost->setText(server.proxyHost);
+  ui.proxyPort->setValue(server.proxyPort);
+  ui.proxyUsername->setText(server.proxyUser);
+  ui.proxyPassword->setText(server.proxyPass);
   on_host_textChanged();
 }
 
-QVariant ServerEditDlg::serverData() const {
-  QVariantMap _serverData;
-  _serverData["Host"] = ui.host->text().trimmed();
-  _serverData["Port"] = ui.port->value();
-  _serverData["Password"] = ui.password->text();
-  _serverData["UseSSL"] = ui.useSSL->isChecked();
-  return _serverData;
+Network::Server ServerEditDlg::serverData() const {
+  Network::Server server(ui.host->text().trimmed(), ui.port->value(), ui.password->text(), ui.useSSL->isChecked());
+  server.sslVersion = ui.sslVersion->currentIndex();
+  server.useProxy = ui.useProxy->isChecked();
+  server.proxyType = ui.proxyType->currentIndex() == 0 ? QNetworkProxy::Socks5Proxy : QNetworkProxy::HttpProxy;
+  server.proxyHost = ui.proxyHost->text();
+  server.proxyPort = ui.proxyPort->value();
+  server.proxyUser = ui.proxyUsername->text();
+  server.proxyPass = ui.proxyPassword->text();
+  return server;
 }
 
 void ServerEditDlg::on_host_textChanged() {
