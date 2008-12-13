@@ -72,6 +72,7 @@ public:
   virtual ~ChatScene();
 
   inline QAbstractItemModel *model() const { return _model; }
+  inline MessageFilter *filter() const { return qobject_cast<MessageFilter*>(_model); }
   inline QString idString() const { return _idString; }
 
   int rowByScenePos(qreal y) const;

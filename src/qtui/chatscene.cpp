@@ -587,6 +587,9 @@ void ChatScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event) {
   ChatItem *item = chatItemAt(pos);
   if(item)
     item->addActionsToMenu(&menu, item->mapFromScene(pos));
+  else
+    // no item -> default scene actions
+    Client::mainUi()->actionProvider()->addActions(&menu, filter(), BufferId());
 
   menu.exec(event->screenPos());
 

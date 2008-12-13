@@ -589,18 +589,11 @@ void ContentsChatItem::addActionsToMenu(QMenu *menu, const QPointF &pos) {
       default:
         break;
     }
-  }
+  } else {
 
-  // Buffer-specific actions
-  // We add these in ChatItem (rather than the scene), because they depend on the current clickable
-  if(chatScene()->isSingleBufferScene()) {
-    QModelIndex index = Client::networkModel()->bufferIndex(chatScene()->singleBufferId());
-    if(index.isValid()) {
-      menu->addSeparator();
-      QtUi::mainWindow()->allBuffersView()->addActionsToMenu(menu, index);
-    }
+    // Buffer-specific actions
+    Client::mainUi()->actionProvider()->addActions(menu, chatScene()->filter(), data(MessageModel::BufferIdRole).value<BufferId>());
   }
-
 }
 
 void ContentsChatItem::copyLinkToClipboard() {

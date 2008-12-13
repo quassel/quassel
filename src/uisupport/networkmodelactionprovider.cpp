@@ -207,13 +207,18 @@ void NetworkModelActionProvider::addActions(QMenu *menu,
     // ChatView actions
     if(_contextItem.isEmpty()) {
       // a) query buffer: handle like ircuser
-      // b) general chatview: only react if _contextItem is set (i.e. we right-clicked on something)
+      // b) general chatview: handle like channel iff it displays a single buffer
       // NOTE stuff breaks probably with merged buffers, need to rework a lot around here then
-      // for now, use the item type of a random buffer... assuming we never mix channel and query buffers
-      //if(!_messageFilter->containedBuffers.count())
-      //  return;
-      //BufferId randomBuf = _messageFilter->containedBuffers.values().at(0);
+      if(_messageFilter->containedBuffers().count() == 1) {
+        // we can handle this like a single bufferItem
+        QModelIndex index = Client::networkModel()->bufferIndex(_messageFilter->containedBuffers().values().at(0));
+        _indexList = QList<QModelIndex>() << index;
+        addBufferItemActions(menu, index);
+        return;
+      } else {
+        // TODO: actions for merged buffers... _indexList contains the index of the message we clicked on
 
+      }
     }
   }
 }
@@ -506,6 +511,8 @@ void NetworkModelActionProvider::handleHideAction(ActionType type, QAction *acti
 }
 
 void NetworkModelActionProvider::handleGeneralAction(ActionType type, QAction *action) {
+  Q_UNUSED(action)
+
   if(!_indexList.count())
     return;
   NetworkId networkId = _indexList.at(0).data(NetworkModel::NetworkIdRole).value<NetworkId>();
