@@ -29,6 +29,7 @@
 #include "iconloader.h"
 #include "identity.h"
 #include "network.h"
+#include "util.h"
 
 NetworkModelActionProvider::NetworkModelActionProvider(QObject *parent)
 : AbstractActionProvider(parent),
@@ -218,6 +219,24 @@ void NetworkModelActionProvider::addActions(QMenu *menu,
       } else {
         // TODO: actions for merged buffers... _indexList contains the index of the message we clicked on
 
+      }
+    } else {
+      // context item = chan or nick, _indexList = buf where the msg clicked on originated
+      if(isChannelName(_contextItem)) {
+        QModelIndex msgIdx = _indexList.at(0);
+        if(!msgIdx.isValid())
+          return;
+        NetworkId networkId = msgIdx.data(NetworkModel::NetworkIdRole).value<NetworkId>();
+        BufferId bufId = Client::networkModel()->bufferId(networkId, _contextItem);
+        if(bufId.isValid()) {
+          QModelIndex targetIdx = Client::networkModel()->bufferIndex(bufId);
+          _indexList = QList<QModelIndex>() << targetIdx;
+          addAction(BufferJoin, menu, targetIdx, InactiveState);
+          addAction(BufferSwitchTo, menu, targetIdx, ActiveState);
+        } else
+          addAction(JoinChannel, menu);
+      } else {
+        // TODO: actions for a nick
       }
     }
   }
@@ -520,17 +539,17 @@ void NetworkModelActionProvider::handleGeneralAction(ActionType type, QAction *a
     return;
 
   switch(type) {
-    case JoinChannel:
-    {
-    //  FIXME no QInputDialog in Qtopia
-#   ifndef Q_WS_QWS
-      bool ok;
-      QString channelName = QInputDialog::getText(0, tr("Join Channel"), tr("Input channel name:"), QLineEdit::Normal, QString(), &ok);
-      if(ok && !channelName.isEmpty()) {
-        Client::instance()->userInput(BufferInfo::fakeStatusBuffer(networkId),
-                                      QString("/JOIN %1").arg(channelName));
+    case JoinChannel: {
+      QString channelName = _contextItem;
+      if(channelName.isEmpty()) {
+        bool ok;
+        channelName = QInputDialog::getText(0, tr("Join Channel"), tr("Input channel name:"), QLineEdit::Normal, QString(), &ok);
+        if(!ok)
+          return;
       }
-#   endif
+      if(!channelName.isEmpty()) {
+        Client::instance()->userInput(BufferInfo::fakeStatusBuffer(networkId), QString("/JOIN %1").arg(channelName));
+      }
       break;
     }
     case ShowChannelList:

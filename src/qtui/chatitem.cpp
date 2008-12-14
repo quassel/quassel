@@ -509,7 +509,7 @@ void ContentsChatItem::handleClick(const QPointF &pos, ChatScene::ClickMode clic
         case Clickable::Url:
           if(!str.contains("://"))
             str = "http://" + str;
-	  QDesktopServices::openUrl(QUrl::fromEncoded(str.toUtf8(), QUrl::TolerantMode));
+          QDesktopServices::openUrl(QUrl::fromEncoded(str.toUtf8(), QUrl::TolerantMode));
           break;
         case Clickable::Channel:
           // TODO join or whatever...
@@ -561,8 +561,11 @@ void ContentsChatItem::hoverMoveEvent(QGraphicsSceneHoverEvent *event) {
       onClickable = true;
       showWebPreview(click);
     } else if(click.type == Clickable::Channel) {
-      // TODO: don't make clickable if it's our own name
-      // onClickable = true; //FIXME disabled for now
+      // don't make clickable if it's our own name
+      QString name = data(ChatLineModel::DisplayRole).toString().mid(click.start, click.length);
+      BufferId myId = data(MessageModel::BufferIdRole).value<BufferId>();
+      if(Client::networkModel()->bufferName(myId) != name)
+        onClickable = true;
     }
     if(onClickable) {
       setCursor(Qt::PointingHandCursor);
@@ -579,13 +582,21 @@ void ContentsChatItem::addActionsToMenu(QMenu *menu, const QPointF &pos) {
   Q_UNUSED(pos); // we assume that the current mouse cursor pos is the point of invocation
 
   if(privateData()->currentClickable.isValid()) {
-    switch(privateData()->currentClickable.type) {
+    Clickable click = privateData()->currentClickable;
+    switch(click.type) {
       case Clickable::Url:
-        privateData()->activeClickable = privateData()->currentClickable;
+        privateData()->activeClickable = click;
         menu->addAction(SmallIcon("edit-copy"), tr("Copy Link Address"),
                          &_actionProxy, SLOT(copyLinkToClipboard()))->setData(QVariant::fromValue<void *>(this));
         break;
-
+      case Clickable::Channel: {
+        // Hide existing menu actions, they confuse us when right-clicking on a clickable
+        foreach(QAction *action, menu->actions())
+          action->setVisible(false);
+        QString name = data(ChatLineModel::DisplayRole).toString().mid(click.start, click.length);
+        Client::mainUi()->actionProvider()->addActions(menu, chatScene()->filter(), data(MessageModel::BufferIdRole).value<BufferId>(), name);
+        break;
+      }
       default:
         break;
     }

@@ -21,25 +21,12 @@
 #ifndef NETWORKMODEL_H
 #define NETWORKMODEL_H
 
-#include <QtCore>
-
-#include "treemodel.h"
 #include "bufferinfo.h"
-
-#include <QPointer>
-
-class BufferInfo;
-
-#include "selectionmodelsynchronizer.h"
-#include "modelpropertymapper.h"
 #include "clientsettings.h"
-#include "ircchannel.h"
-#include "ircuser.h"
 #include "message.h"
 #include "network.h"
+#include "treemodel.h"
 
-class MappedSelectionModel;
-class QAbstractItemView;
 class BufferItem;
 
 /*****************************************
