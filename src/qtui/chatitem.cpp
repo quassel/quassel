@@ -28,6 +28,7 @@
 #include <QTextLayout>
 #include <QMenu>
 
+#include "buffermodel.h"
 #include "bufferview.h"
 #include "chatitem.h"
 #include "chatlinemodel.h"
@@ -511,9 +512,18 @@ void ContentsChatItem::handleClick(const QPointF &pos, ChatScene::ClickMode clic
             str = "http://" + str;
           QDesktopServices::openUrl(QUrl::fromEncoded(str.toUtf8(), QUrl::TolerantMode));
           break;
-        case Clickable::Channel:
-          // TODO join or whatever...
+        case Clickable::Channel: {
+          NetworkId networkId = Client::networkModel()->networkId(data(MessageModel::BufferIdRole).value<BufferId>());
+          BufferId bufId = Client::networkModel()->bufferId(networkId, str);
+          if(bufId.isValid()) {
+            QModelIndex targetIdx = Client::networkModel()->bufferIndex(bufId);
+            Client::bufferModel()->switchToBuffer(bufId);
+            if(!targetIdx.data(NetworkModel::ItemActiveRole).toBool())
+              Client::userInput(BufferInfo::fakeStatusBuffer(networkId), QString("/JOIN %1").arg(str));
+          } else
+              Client::userInput(BufferInfo::fakeStatusBuffer(networkId), QString("/JOIN %1").arg(str));
           break;
+        }
         default:
           break;
       }
