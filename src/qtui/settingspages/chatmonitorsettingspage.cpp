@@ -3,16 +3,16 @@
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU Blank Public License as published by  *
+ *   it under the terms of the GNU Blank Public License as published by    *
  *   the Free Software Foundation; either version 2 of the License, or     *
  *   (at your option) any later version.                                   *
  *                                                                         *
  *   This program is distributed in the hope that it will be useful,       *
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Blank Public License for more details.                          *
+ *   GNU Blank Public License for more details.                            *
  *                                                                         *
- *   You should have received a copy of the GNU Blank Public License     *
+ *   You should have received a copy of the GNU Blank Public License       *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
@@ -32,7 +32,7 @@
 #include <QVariant>
 
 ChatMonitorSettingsPage::ChatMonitorSettingsPage(QWidget *parent)
-  : SettingsPage(tr("Behaviour"), tr("ChatMonitor"), parent) {
+  : SettingsPage(tr("General"), tr("Chat Monitor"), parent) {
   ui.setupUi(this);
 
   ui.activateBuffer->setIcon(SmallIcon("go-next"));
@@ -42,8 +42,8 @@ ChatMonitorSettingsPage::ChatMonitorSettingsPage(QWidget *parent)
   configActive = 0;
 
   // fill combobox with operation modes
-  ui.operationMode->addItem("Opt-In", ChatViewSettings::OptIn);
-  ui.operationMode->addItem("Opt-Out", ChatViewSettings::OptOut);
+  ui.operationMode->addItem(tr("Opt In"), ChatViewSettings::OptIn);
+  ui.operationMode->addItem(tr("Opt Out"), ChatViewSettings::OptOut);
 
   // connect slots
   connect(ui.operationMode, SIGNAL(currentIndexChanged(int)), this, SLOT(switchOperationMode(int)));
@@ -55,7 +55,7 @@ bool ChatMonitorSettingsPage::hasDefaults() const {
 
 void ChatMonitorSettingsPage::defaults() {
   settings["OperationMode"] = ChatViewSettings::OptOut;
-  settings["HighlightAlways"] = false;
+  settings["ShowHighlights"] = false;
   settings["Buffers"] = QVariant();
   settings["Default"] = true;
   load();
@@ -72,7 +72,7 @@ void ChatMonitorSettingsPage::load() {
     loadSettings();
 
   ui.operationMode->setCurrentIndex(settings["OperationMode"].toInt() - 1);
-  ui.highlightAlways->setChecked(settings["HighlightAlways"].toBool());
+  ui.showHighlights->setChecked(settings["ShowHighlights"].toBool());
 
   // setup available buffers config (for the bufferview on the left)
   configAvailable = new BufferViewConfig(-667);
@@ -117,7 +117,7 @@ void ChatMonitorSettingsPage::loadSettings() {
     switchOperationMode(ui.operationMode->findData(ChatViewSettings::OptOut));
     settings["OperationMode"] == ChatViewSettings::OptOut;
   }
-  settings["HighlightAlways"] = chatViewSettings.value("HighlightAlways", false);
+  settings["ShowHighlights"] = chatViewSettings.value("ShowHighlights", false);
   settings["Buffers"] = chatViewSettings.value("Buffers", QVariantList());
 }
 
@@ -125,10 +125,10 @@ void ChatMonitorSettingsPage::save() {
   ChatViewSettings chatViewSettings("ChatMonitor");
   // save operation mode
   chatViewSettings.setValue("OperationMode", settings["OperationMode"]);
-  chatViewSettings.setValue("HighlightAlways", settings["HighlightAlways"]);
+  chatViewSettings.setValue("ShowHighlights", settings["ShowHighlights"]);
 
   // save list of active buffers
-  QVariantList saveableBufferIdList; 
+  QVariantList saveableBufferIdList;
   foreach(BufferId id, configActive->bufferList()) {
     saveableBufferIdList << QVariant::fromValue<BufferId>(id);
   }
@@ -162,7 +162,7 @@ void ChatMonitorSettingsPage::toggleBuffers(BufferView *inView, BufferViewConfig
   foreach (QModelIndex index, inView->selectionModel()->selectedIndexes()) {
     BufferId inBufferId = index.data(NetworkModel::BufferIdRole).value<BufferId>();
     if(index.data(NetworkModel::ItemTypeRole) == NetworkModel::NetworkItemType) {
-      // TODO: 
+      // TODO:
       //  If item is a network: move over all children and skip other selected items of this node
     }
     else if (index.data(NetworkModel::ItemTypeRole) == NetworkModel::BufferItemType) {
@@ -210,9 +210,9 @@ void ChatMonitorSettingsPage::on_deactivateBuffer_clicked() {
   }
 }
 
-void ChatMonitorSettingsPage::on_highlightAlways_toggled(bool state)
+void ChatMonitorSettingsPage::on_showHighlights_toggled(bool state)
 {
-  settings["HighlightAlways"] = state;
+  settings["ShowHighlights"] = state;
   widgetHasChanged();
 }
 
@@ -225,7 +225,7 @@ void ChatMonitorSettingsPage::switchOperationMode(int modeIndex) {
 
   if(newMode == ChatViewSettings::OptIn) {
     ui.labelActiveBuffers->setText(tr("Show:"));
-  } 
+  }
   else if(newMode == ChatViewSettings::OptOut) {
     ui.labelActiveBuffers->setText(tr("Ignore:"));
   }

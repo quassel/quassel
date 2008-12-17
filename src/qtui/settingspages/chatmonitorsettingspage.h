@@ -45,9 +45,9 @@ class ChatMonitorSettingsPage : public SettingsPage {
     void widgetHasChanged();
     void on_activateBuffer_clicked();
     void on_deactivateBuffer_clicked();
-    void on_highlightAlways_toggled(bool state);
+    void on_showHighlights_toggled(bool state);
     void switchOperationMode(int modeIndex);
-    
+
   private:
     Ui::ChatMonitorSettingsPage ui;
     QHash<QString, QVariant> settings;
