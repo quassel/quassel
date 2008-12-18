@@ -56,6 +56,9 @@
 #ifdef HAVE_DBUS
 #  include "desktopnotificationbackend.h"
 #endif
+#ifdef HAVE_PHONON
+#  include "phononnotificationbackend.h"
+#endif
 #include "systraynotificationbackend.h"
 #include "taskbarnotificationbackend.h"
 
@@ -95,6 +98,9 @@ MainWin::MainWin(QWidget *parent)
 
   QtUi::registerNotificationBackend(new TaskbarNotificationBackend(this));
   QtUi::registerNotificationBackend(new SystrayNotificationBackend(this));
+#ifdef HAVE_PHONON
+  QtUi::registerNotificationBackend(new PhononNotificationBackend(this));
+#endif
 #ifdef HAVE_DBUS
   QtUi::registerNotificationBackend(new DesktopNotificationBackend(this));
 #endif
@@ -481,7 +487,7 @@ void MainWin::connectedToCore() {
   connect(Client::bufferViewManager(), SIGNAL(bufferViewConfigAdded(int)), this, SLOT(addBufferView(int)));
   connect(Client::bufferViewManager(), SIGNAL(bufferViewConfigDeleted(int)), this, SLOT(removeBufferView(int)));
   connect(Client::bufferViewManager(), SIGNAL(initDone()), this, SLOT(loadLayout()));
-  
+
   setConnectedState();
 }
 

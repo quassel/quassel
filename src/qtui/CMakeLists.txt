@@ -122,9 +122,9 @@ IF(HAVE_DBUS)
 ENDIF(HAVE_DBUS)
 
 IF(HAVE_PHONON)
-  set(SOURCES ${SOURCES} )
-  set(MOC_HDRS ${MOC_HDRS} )
-  set(FORMS ${FORMS} )
+  set(SOURCES ${SOURCES} phononnotificationbackend.cpp)
+  set(MOC_HDRS ${MOC_HDRS} phononnotificationbackend.h)
+  set(FORMS ${FORMS} phononnotificationconfigwidget.ui)
   include_directories(${PHONON_INCLUDES})
 ENDIF(HAVE_PHONON)
 

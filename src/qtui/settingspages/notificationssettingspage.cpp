@@ -38,6 +38,7 @@ NotificationsSettingsPage::NotificationsSettingsPage(QWidget *parent)
     }
   }
   layout->addStretch(1);
+  load();
 }
 
 bool NotificationsSettingsPage::hasDefaults() const {
