@@ -73,7 +73,7 @@ void BufferView::init() {
   sortByColumn(0, Qt::AscendingOrder);
 
   // activated() fails on X11 and Qtopia at least
-#if defined Q_WS_QWS or defined Q_WS_X11
+#if defined Q_WS_QWS || defined Q_WS_X11
   connect(this, SIGNAL(doubleClicked(QModelIndex)), SLOT(joinChannel(QModelIndex)));
 #else
   // afaik this is better on Mac and Windows

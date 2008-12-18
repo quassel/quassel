@@ -50,7 +50,7 @@ NickView::NickView(QWidget *parent)
 
   connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), SLOT(showContextMenu(const QPoint&)));
 
-#if defined Q_WS_QWS or defined Q_WS_X11
+#if defined Q_WS_QWS || defined Q_WS_X11
   connect(this, SIGNAL(doubleClicked(QModelIndex)), SLOT(startQuery(QModelIndex)));
 #else
   // afaik this is better on Mac and Windows
