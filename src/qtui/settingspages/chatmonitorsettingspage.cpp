@@ -37,9 +37,20 @@ ChatMonitorSettingsPage::ChatMonitorSettingsPage(QWidget *parent)
 
   ui.activateBuffer->setIcon(SmallIcon("go-next"));
   ui.deactivateBuffer->setIcon(SmallIcon("go-previous"));
-  // initialize pointers
-  configAvailable = 0;
-  configActive = 0;
+
+  // setup available buffers config (for the bufferview on the left)
+  _configAvailable = new BufferViewConfig(-667, this);
+  _configAvailable->setBufferViewName("tmpChatMonitorAvailableBuffers");
+  _configAvailable->sortAlphabetically();
+  _configAvailable->setNetworkId(NetworkId());
+  _configAvailable->setInitialized();
+
+  // setup active buffers config (for the bufferview on the right)
+  _configActive = new BufferViewConfig(-666, this);
+  _configActive->setBufferViewName("tmpChatMonitorActiveBuffers");
+  _configActive->setSortAlphabetically(true);
+  _configActive->setNetworkId(NetworkId());
+  _configActive->setInitialized();
 
   // fill combobox with operation modes
   ui.operationMode->addItem(tr("Opt In"), ChatViewSettings::OptIn);
@@ -63,10 +74,7 @@ void ChatMonitorSettingsPage::defaults() {
 }
 
 void ChatMonitorSettingsPage::load() {
-  delete configAvailable;
-  delete configActive;
-
-  if (settings.contains("Default"))
+  if(settings.contains("Default"))
     settings.remove("Default");
   else
     loadSettings();
@@ -74,21 +82,7 @@ void ChatMonitorSettingsPage::load() {
   ui.operationMode->setCurrentIndex(settings["OperationMode"].toInt() - 1);
   ui.showHighlights->setChecked(settings["ShowHighlights"].toBool());
 
-  // setup available buffers config (for the bufferview on the left)
-  configAvailable = new BufferViewConfig(-667);
-  configAvailable->setBufferViewName("tmpChatMonitorAvailableBuffers");
-  configAvailable->sortAlphabetically();
-  configAvailable->setNetworkId(NetworkId());
-  configAvailable->setInitialized();
-
-  // setup active buffers config (for the bufferview on the right)
-  configActive = new BufferViewConfig(-666);
-  configActive->setBufferViewName("tmpChatMonitorActiveBuffers");
-  configActive->setSortAlphabetically(true);
-  configActive->setNetworkId(NetworkId());
-  configActive->setInitialized();
-
-  //   get all available buffer Ids
+  // get all available buffer Ids
   QList<BufferId> allBufferIds = Client::networkModel()->allBufferIds();
 
   if(!settings["Buffers"].toList().isEmpty()) {
@@ -96,14 +90,14 @@ void ChatMonitorSettingsPage::load() {
     // remove all active buffers from the available config
     foreach(QVariant v, settings["Buffers"].toList()) {
       bufferIdsFromConfig << v.value<BufferId>();
-      allBufferIds.removeOne(v.value<BufferId>());
+      allBufferIds.removeAll(v.value<BufferId>());
     }
-    configActive->initSetBufferList(bufferIdsFromConfig);
+    _configActive->initSetBufferList(bufferIdsFromConfig);
   }
-  ui.activeBuffers->setFilteredModel(Client::bufferModel(), configActive);
+  ui.activeBuffers->setFilteredModel(Client::bufferModel(), _configActive);
 
-  configAvailable->initSetBufferList(allBufferIds);
-  ui.availableBuffers->setFilteredModel(Client::bufferModel(), configAvailable);
+  _configAvailable->initSetBufferList(allBufferIds);
+  ui.availableBuffers->setFilteredModel(Client::bufferModel(), _configAvailable);
 
   setChangedState(false);
 }
@@ -113,7 +107,7 @@ void ChatMonitorSettingsPage::loadSettings() {
   settings["OperationMode"] = static_cast<ChatViewSettings::OperationMode>(chatViewSettings.value("OperationMode", QVariant()).toInt());
 
   // Load default behavior if no or invalid settings found
-  if (settings["OperationMode"] == ChatViewSettings::InvalidMode) {
+  if(settings["OperationMode"] == ChatViewSettings::InvalidMode) {
     switchOperationMode(ui.operationMode->findData(ChatViewSettings::OptOut));
     settings["OperationMode"] == ChatViewSettings::OptOut;
   }
@@ -129,7 +123,7 @@ void ChatMonitorSettingsPage::save() {
 
   // save list of active buffers
   QVariantList saveableBufferIdList;
-  foreach(BufferId id, configActive->bufferList()) {
+  foreach(BufferId id, _configActive->bufferList()) {
     saveableBufferIdList << QVariant::fromValue<BufferId>(id);
   }
 
@@ -144,7 +138,7 @@ void ChatMonitorSettingsPage::widgetHasChanged() {
 }
 
 bool ChatMonitorSettingsPage::testHasChanged() {
-  if (configAvailable != configActive) return true;
+  if (_configAvailable != _configActive) return true;
   return false;
 }
 
@@ -159,13 +153,13 @@ void ChatMonitorSettingsPage::toggleBuffers(BufferView *inView, BufferViewConfig
 
   // Fill QMap with selected items ordered by selection row
   QMap<int, QList<BufferId> > selectedBuffers;
-  foreach (QModelIndex index, inView->selectionModel()->selectedIndexes()) {
+  foreach(QModelIndex index, inView->selectionModel()->selectedIndexes()) {
     BufferId inBufferId = index.data(NetworkModel::BufferIdRole).value<BufferId>();
     if(index.data(NetworkModel::ItemTypeRole) == NetworkModel::NetworkItemType) {
       // TODO:
       //  If item is a network: move over all children and skip other selected items of this node
     }
-    else if (index.data(NetworkModel::ItemTypeRole) == NetworkModel::BufferItemType) {
+    else if(index.data(NetworkModel::ItemTypeRole) == NetworkModel::BufferItemType) {
       selectedBuffers[index.parent().row()] << inBufferId;
     }
   }
@@ -198,14 +192,14 @@ void ChatMonitorSettingsPage::toggleBuffers(BufferView *inView, BufferViewConfig
 
 void ChatMonitorSettingsPage::on_activateBuffer_clicked() {
   if (ui.availableBuffers->currentIndex().isValid() && ui.availableBuffers->selectionModel()->hasSelection()) {
-    toggleBuffers(ui.availableBuffers, configAvailable, ui.activeBuffers, configActive);
+    toggleBuffers(ui.availableBuffers, _configAvailable, ui.activeBuffers, _configActive);
     widgetHasChanged();
   }
 }
 
 void ChatMonitorSettingsPage::on_deactivateBuffer_clicked() {
   if (ui.activeBuffers->currentIndex().isValid() && ui.activeBuffers->selectionModel()->hasSelection()) {
-    toggleBuffers(ui.activeBuffers, configActive, ui.availableBuffers, configAvailable);
+    toggleBuffers(ui.activeBuffers, _configActive, ui.availableBuffers, _configAvailable);
     widgetHasChanged();
   }
 }

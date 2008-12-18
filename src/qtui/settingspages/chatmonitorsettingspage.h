@@ -53,7 +53,8 @@ class ChatMonitorSettingsPage : public SettingsPage {
     QHash<QString, QVariant> settings;
     bool testHasChanged();
     void toggleBuffers(BufferView *inView, BufferViewConfig *inCfg, BufferView *outView, BufferViewConfig *outCfg);
-    BufferViewConfig *configAvailable;
-    BufferViewConfig *configActive;
+
+    BufferViewConfig *_configAvailable;
+    BufferViewConfig *_configActive;
 };
 #endif
