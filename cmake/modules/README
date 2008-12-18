@@ -1,4 +1,4 @@
-These modules have been copied from KDE's repository as of 2008-06-17.
+Most of these modules have been copied from KDE's repository.
 
 FindQt4 has been adjusted to still contain the library deps and Qt config
 stuff from the original FindQt4 (of cmake 2.4.7). Also, I've fixed OpenSSL

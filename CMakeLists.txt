@@ -3,8 +3,9 @@
 # -DWANT_(CORE|QTCLIENT|MONO)=(ON|OFF)
 #                     : select binaries to build
 # -DWITH_OPENSSL=OFF  : Disable OpenSSL support
-# -DWITH_DBUS=OFF     : Disable D-Bus support
-# -DWITH_WEBKIT=OFF   : Disable WebKit support
+# -DWITH_DBUS=OFF     : Disable D-Bus support (dbus notifications)
+# -DWITH_WEBKIT=OFF   : Disable WebKit support (link previews)
+# -DWITH_PHONON=OFF   : Disable Phonon support (audio notifications)
 # -DOXYGEN_ICONS=(Builtin|External)  : If "Builtin" (the default), compile our Oxygen Icon Theme subset into the binary
 #                                    : If "External", we assume Oxygen is already installed on the system
 # -DQUASSEL_ICONS=(Builtin|External) : If "Builtin" (the default), put our own icons into the binary
@@ -34,7 +35,8 @@ option(WANT_MONO     "Build the monolithic (all-in-one) binary" ON)
 
 option(WITH_OPENSSL  "Enable OpenSSL support if present on the system"	ON)
 option(WITH_DBUS     "Enable D-Bus support if present on the system"	ON)
-option(WITH_WEBKIT   "Enable WebKit support if present on the system"	ON)
+option(WITH_WEBKIT   "Enable WebKit support (for link previews)"	ON)
+option(WITH_PHONON   "Enable Phonon support (for audio notifications)"	ON)
 
 option(STATIC        "Enable static building (might not be portable)" OFF)
 option(DEPLOY        "Mac OS X only! Adds required libs to bundle resources and create a dmg. Note: requires Qt to be built with 10.4u SDK" OFF)
@@ -150,6 +152,20 @@ else(WITH_WEBKIT)
   message(STATUS "Disabling WebKit support")
 endif(WITH_WEBKIT)
 
+# Setup Phonon support
+if(WITH_PHONON)
+  find_package(Phonon)
+  if(PHONON_FOUND)
+    message(STATUS "Enabling Phonon support")
+    add_definitions(-DHAVE_PHONON)
+    set(HAVE_PHONON true)
+    set(MOC_DEFINES ${MOC_DEFINES} -DHAVE_PHONON)
+  else(PHONON_FOUND)
+    message(STATUS "Phonon not found, disabling audio notifications")
+  endif(PHONON_FOUND)
+else(WITH_PHONON)
+  message(STATUS "Disabling Phonon support")
+endif(WITH_PHONON)
 
 # Set global buildflags
 # This is very much non-portable, so don't use -DSTATIC until you know what

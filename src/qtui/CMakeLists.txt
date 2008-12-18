@@ -121,6 +121,13 @@ IF(HAVE_DBUS)
   qt4_add_dbus_interface(DBUS ../../interfaces/org.freedesktop.Notifications.xml desktopnotificationinterface)
 ENDIF(HAVE_DBUS)
 
+IF(HAVE_PHONON)
+  set(SOURCES ${SOURCES} )
+  set(MOC_HDRS ${MOC_HDRS} )
+  set(FORMS ${FORMS} )
+  include_directories(${PHONON_INCLUDES})
+ENDIF(HAVE_PHONON)
+
 foreach(FORM ${FORMS})
   set(FORMPATH ${FORMPATH} ui/${FORM})
 endforeach(FORM ${FORMS})

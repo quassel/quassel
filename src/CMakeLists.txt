@@ -50,7 +50,7 @@ if(WANT_QTCLIENT)
                                       COMPILE_FLAGS "-DQT_GUI_LIB -DQT_NETWORK_LIB -DBUILD_QTUI"
                                       OUTPUT_NAME ../quasselclient)
   target_link_libraries(quasselclient mod_qtui mod_uisupport mod_client mod_common
-                                      ${QUASSEL_QT_LIBRARIES} ${QUASSEL_SSL_LIBRARIES})
+                                      ${QUASSEL_QT_LIBRARIES} ${QUASSEL_SSL_LIBRARIES} ${PHONON_LIBS})
   install(TARGETS quasselclient RUNTIME DESTINATION ${BIN_INSTALL_DIR})
 endif(WANT_QTCLIENT)
 
@@ -63,7 +63,7 @@ if(WANT_MONO)
                                 COMPILE_FLAGS "-DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_SCRIPT_LIB -DQT_SQL_LIB -DBUILD_MONO"
                                 OUTPUT_NAME ../quassel)
   target_link_libraries(quassel mod_qtui mod_uisupport mod_client mod_core mod_common
-                                ${QUASSEL_QT_LIBRARIES} ${QUASSEL_SSL_LIBRARIES})
+                                ${QUASSEL_QT_LIBRARIES} ${QUASSEL_SSL_LIBRARIES} ${PHONON_LIBS})
   install(TARGETS quassel RUNTIME DESTINATION ${BIN_INSTALL_DIR})
 endif(WANT_MONO)
 
