@@ -34,6 +34,8 @@ SettingsDlg::SettingsDlg(QWidget *parent)
 
   connect(ui.settingsTree, SIGNAL(itemSelectionChanged()), this, SLOT(itemSelected()));
   connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));
+
+  setButtonStates();
 }
 
 void SettingsDlg::registerSettingsPage(SettingsPage *sp) {

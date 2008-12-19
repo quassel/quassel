@@ -142,7 +142,19 @@ void ChatMonitorSettingsPage::widgetHasChanged() {
 }
 
 bool ChatMonitorSettingsPage::testHasChanged() {
-  if (_configAvailable != _configActive) return true;
+  if(settings["OperationMode"] != ui.operationMode->itemData(ui.operationMode->currentIndex()))
+    return true;
+
+  if(_configActive->bufferList().count() != settings["Buffers"].toList().count())
+    return true;
+
+  QSet<BufferId> uiBufs = _configActive->bufferList().toSet();
+  QSet<BufferId> settingsBufs;
+  foreach(QVariant v, settings["Buffers"].toList())
+    settingsBufs << v.value<BufferId>();
+  if(uiBufs != settingsBufs)
+    return true;
+
   return false;
 }
 
@@ -227,9 +239,5 @@ void ChatMonitorSettingsPage::switchOperationMode(int modeIndex) {
   else if(newMode == ChatViewSettings::OptOut) {
     ui.labelActiveBuffers->setText(tr("Ignore:"));
   }
-
-  if(settings["OperationMode"] != newMode) {
-    setChangedState(true);
-  }
-  settings["OperationMode"] = newMode;
+  widgetHasChanged();
 }
