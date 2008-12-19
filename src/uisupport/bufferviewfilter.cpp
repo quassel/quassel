@@ -311,7 +311,7 @@ QVariant BufferViewFilter::data(const QModelIndex &index, int role) const {
 }
 
 QVariant BufferViewFilter::icon(const QModelIndex &index) const {
-  if(!_showUserStateIcons)
+  if(!_showUserStateIcons || config() && config()->disableDecoration())
     return QVariant();
 
   if(index.column() != 0)
@@ -332,6 +332,9 @@ QVariant BufferViewFilter::icon(const QModelIndex &index) const {
 }
 
 QVariant BufferViewFilter::foreground(const QModelIndex &index) const {
+  if(config() && config()->disableDecoration())
+    return _FgColorNoActivity;
+
   BufferInfo::ActivityLevel activity = (BufferInfo::ActivityLevel)index.data(NetworkModel::BufferActivityRole).toInt();
 
   if(activity & BufferInfo::Highlight)

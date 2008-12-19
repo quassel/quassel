@@ -28,6 +28,7 @@ BufferViewConfig::BufferViewConfig(int bufferViewId, QObject *parent)
     _addNewBuffersAutomatically(true),
     _sortAlphabetically(true),
     _hideInactiveBuffers(false),
+    _disableDecoration(false),
     _allowedBufferTypes(BufferInfo::StatusBuffer | BufferInfo::ChannelBuffer | BufferInfo::QueryBuffer | BufferInfo::GroupBuffer),
     _minimumActivity(0)
 {
@@ -36,7 +37,8 @@ BufferViewConfig::BufferViewConfig(int bufferViewId, QObject *parent)
 
 BufferViewConfig::BufferViewConfig(int bufferViewId, const QVariantMap &properties, QObject *parent)
   : SyncableObject(parent),
-    _bufferViewId(bufferViewId)
+    _bufferViewId(bufferViewId),
+    _disableDecoration(false)  // FIXME remove as soon as we have bumped the protocol version to v8
 {
   fromVariantMap(properties);
   setObjectName(QString::number(bufferViewId));
@@ -72,6 +74,14 @@ void BufferViewConfig::setSortAlphabetically(bool sortAlphabetically) {
 
   _sortAlphabetically = sortAlphabetically;
   emit sortAlphabeticallySet(sortAlphabetically);
+}
+
+void BufferViewConfig::setDisableDecoration(bool disableDecoration) {
+  if(_disableDecoration == disableDecoration)
+    return;
+
+  _disableDecoration = disableDecoration;
+  emit disableDecorationSet(disableDecoration);
 }
 
 void BufferViewConfig::setAllowedBufferTypes(int bufferTypes) {
@@ -177,10 +187,10 @@ void BufferViewConfig::addBuffer(const BufferId &bufferId, int pos) {
 
   if(_removedBuffers.contains(bufferId))
     _removedBuffers.remove(bufferId);
-  
+
   if(_temporarilyRemovedBuffers.contains(bufferId))
     _temporarilyRemovedBuffers.remove(bufferId);
-  
+
   _buffers.insert(pos, bufferId);
   emit bufferAdded(bufferId, pos);
 }
@@ -201,7 +211,7 @@ void BufferViewConfig::moveBuffer(const BufferId &bufferId, int pos) {
 void BufferViewConfig::removeBuffer(const BufferId &bufferId) {
   if(_buffers.contains(bufferId))
     _buffers.removeAt(_buffers.indexOf(bufferId));
-  
+
   if(_removedBuffers.contains(bufferId))
     _removedBuffers.remove(bufferId);
 
@@ -216,7 +226,7 @@ void BufferViewConfig::removeBufferPermanently(const BufferId &bufferId) {
 
   if(_temporarilyRemovedBuffers.contains(bufferId))
     _temporarilyRemovedBuffers.remove(bufferId);
-  
+
   _removedBuffers << bufferId;
 
   emit bufferPermanentlyRemoved(bufferId);

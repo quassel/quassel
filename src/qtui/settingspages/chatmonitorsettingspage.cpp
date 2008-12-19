@@ -42,6 +42,7 @@ ChatMonitorSettingsPage::ChatMonitorSettingsPage(QWidget *parent)
   _configAvailable = new BufferViewConfig(-667, this);
   _configAvailable->setBufferViewName("tmpChatMonitorAvailableBuffers");
   _configAvailable->setSortAlphabetically(true);
+  _configAvailable->setDisableDecoration(true);
   _configAvailable->setNetworkId(NetworkId());
   _configAvailable->setInitialized();
 
@@ -49,6 +50,7 @@ ChatMonitorSettingsPage::ChatMonitorSettingsPage(QWidget *parent)
   _configActive = new BufferViewConfig(-666, this);
   _configActive->setBufferViewName("tmpChatMonitorActiveBuffers");
   _configActive->setSortAlphabetically(true);
+  _configActive->setDisableDecoration(true);
   _configActive->setNetworkId(NetworkId());
   _configActive->setInitialized();
 

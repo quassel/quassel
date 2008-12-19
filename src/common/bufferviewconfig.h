@@ -32,6 +32,7 @@ class BufferViewConfig : public SyncableObject {
   Q_PROPERTY(bool addNewBuffersAutomatically READ addNewBuffersAutomatically WRITE setAddNewBuffersAutomatically)
   Q_PROPERTY(bool sortAlphabetically READ sortAlphabetically WRITE setSortAlphabetically)
   Q_PROPERTY(bool hideInactiveBuffers READ hideInactiveBuffers WRITE setHideInactiveBuffers)
+  Q_PROPERTY(bool disableDecoration READ disableDecoration WRITE setDisableDecoration)
   Q_PROPERTY(int allowedBufferTypes READ allowedBufferTypes WRITE setAllowedBufferTypes)
   Q_PROPERTY(int minimumActivity READ minimumActivity WRITE setMinimumActivity)
 
@@ -55,6 +56,9 @@ public slots:
   inline bool sortAlphabetically() const { return _sortAlphabetically; }
   void setSortAlphabetically(bool sortAlphabetically);
 
+  inline bool disableDecoration() const { return _disableDecoration; }
+  void setDisableDecoration(bool disableDecoration);
+
   inline int allowedBufferTypes() const { return _allowedBufferTypes; }
   void setAllowedBufferTypes(int bufferTypes);
 
@@ -63,7 +67,7 @@ public slots:
 
   inline bool hideInactiveBuffers() const { return _hideInactiveBuffers; }
   void setHideInactiveBuffers(bool hideInactiveBuffers);
-  
+
   virtual inline void requestSetBufferViewName(const QString &bufferViewName) { emit setBufferViewNameRequested(bufferViewName); }
 
   const QList<BufferId> &bufferList() const { return _buffers; }
@@ -88,13 +92,14 @@ public slots:
   virtual inline void requestRemoveBuffer(const BufferId &bufferId) { emit removeBufferRequested(bufferId); }
   void removeBufferPermanently(const BufferId &bufferId);
   virtual inline void requestRemoveBufferPermanently(const BufferId &bufferId) { emit removeBufferPermanentlyRequested(bufferId); }
-  
-  
+
+
 signals:
   void bufferViewNameSet(const QString &bufferViewName);
   void networkIdSet(const NetworkId &networkId);
   void addNewBuffersAutomaticallySet(bool addNewBuffersAutomatically);
-  void sortAlphabeticallySet(bool sortAlphabetically);  
+  void sortAlphabeticallySet(bool sortAlphabetically);
+  void disableDecorationSet(bool disableDecoration);
   void allowedBufferTypesSet(int allowedBufferTypes);
   void minimumActivitySet(int activity);
   void hideInactiveBuffersSet(bool hideInactiveBuffers);
@@ -108,7 +113,7 @@ signals:
   void bufferPermanentlyRemoved(const BufferId &bufferId);
   void removeBufferRequested(const BufferId &bufferId);
   void removeBufferPermanentlyRequested(const BufferId &bufferId);
-  
+
   void setBufferViewNameRequested(const QString &bufferViewName);
 
 private:
@@ -118,6 +123,7 @@ private:
   bool _addNewBuffersAutomatically;
   bool _sortAlphabetically;
   bool _hideInactiveBuffers;
+  bool _disableDecoration;
   int _allowedBufferTypes;
   int _minimumActivity;
   QList<BufferId> _buffers;
