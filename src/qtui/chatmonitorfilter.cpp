@@ -53,22 +53,24 @@ ChatMonitorFilter::ChatMonitorFilter(MessageModel *model, QObject *parent)
 bool ChatMonitorFilter::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const {
   Q_UNUSED(sourceParent)
 
-  Message::Flags flags = (Message::Flags)sourceModel()->data(sourceModel()->index(sourceRow, 0), MessageModel::FlagsRole).toInt();
+  QModelIndex source_index = sourceModel()->index(sourceRow, 0);
+
+  Message::Flags flags = (Message::Flags)source_index.data(MessageModel::FlagsRole).toInt();
   if(flags & Message::Backlog || (!_showOwnMessages && flags & Message::Self))
     return false;
 
-  Message::Type type = (Message::Type)sourceModel()->data(sourceModel()->index(sourceRow, 0), MessageModel::TypeRole).toInt();
+  Message::Type type = (Message::Type)source_index.data(MessageModel::TypeRole).toInt();
   if(!(type & (Message::Plain | Message::Notice | Message::Action)))
     return false;
 
   // ChatMonitorSettingsPage
   if(_operationMode == ChatViewSettings::OptOut
     && !(_showHighlights && flags & Message::Highlight)
-    &&  _bufferIds.contains(sourceModel()->data(sourceModel()->index(sourceRow, 0), MessageModel::BufferIdRole).value<BufferId>()))
+    &&  _bufferIds.contains(source_index.data(MessageModel::BufferIdRole).value<BufferId>()))
     return false;
   if(_operationMode == ChatViewSettings::OptIn
     && !(_showHighlights && flags & Message::Highlight)
-    && !_bufferIds.contains(sourceModel()->data(sourceModel()->index(sourceRow, 0), MessageModel::BufferIdRole).value<BufferId>()))
+    && !_bufferIds.contains(source_index.data(MessageModel::BufferIdRole).value<BufferId>()))
     return false;
 
   return true;
@@ -95,7 +97,7 @@ QVariant ChatMonitorFilter::data(const QModelIndex &index, int role) const {
     fields << Client::networkModel()->bufferName(bufid);
   }
 
-  Message::Type messageType = (Message::Type)sourceModel()->data(source_index, MessageModel::TypeRole).toInt();
+  Message::Type messageType = (Message::Type)source_index.data(MessageModel::TypeRole).toInt();
   if(messageType & (Message::Plain | Message::Notice)) {
     QString sender = MessageFilter::data(index, ChatLineModel::EditRole).toString();
     fields << sender;
