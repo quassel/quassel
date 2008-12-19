@@ -208,7 +208,7 @@ bool BufferViewFilter::filterAcceptBuffer(const QModelIndex &source_bufferIndex)
   if(!config())
     return true;
 
-  BufferId bufferId = sourceModel()->data(source_bufferIndex, NetworkModel::BufferIdRole).value<BufferId>();
+  BufferId bufferId = source_bufferIndex.data(NetworkModel::BufferIdRole).value<BufferId>();
   Q_ASSERT(bufferId.isValid());
 
   int activityLevel = source_bufferIndex.data(NetworkModel::BufferActivityRole).toInt();
@@ -224,7 +224,7 @@ bool BufferViewFilter::filterAcceptBuffer(const QModelIndex &source_bufferIndex)
     return false;
   }
 
-  if(config()->networkId().isValid() && config()->networkId() != sourceModel()->data(source_bufferIndex, NetworkModel::NetworkIdRole).value<NetworkId>())
+  if(config()->networkId().isValid() && config()->networkId() != source_bufferIndex.data(NetworkModel::NetworkIdRole).value<NetworkId>())
     return false;
 
   if(!(config()->allowedBufferTypes() & (BufferInfo::Type)source_bufferIndex.data(NetworkModel::BufferTypeRole).toInt()))
@@ -250,7 +250,7 @@ bool BufferViewFilter::filterAcceptNetwork(const QModelIndex &source_index) cons
   if(!config()->networkId().isValid()) {
     return true;
   } else {
-    return config()->networkId() == sourceModel()->data(source_index, NetworkModel::NetworkIdRole).value<NetworkId>();
+    return config()->networkId() == source_index.data(NetworkModel::NetworkIdRole).value<NetworkId>();
   }
 }
 
@@ -269,7 +269,7 @@ bool BufferViewFilter::filterAcceptsRow(int source_row, const QModelIndex &sourc
 }
 
 bool BufferViewFilter::lessThan(const QModelIndex &source_left, const QModelIndex &source_right) const {
-  int itemType = sourceModel()->data(source_left, NetworkModel::ItemTypeRole).toInt();
+  int itemType = source_left.data(NetworkModel::ItemTypeRole).toInt();
   switch(itemType) {
   case NetworkModel::NetworkItemType:
     return networkLessThan(source_left, source_right);
@@ -281,8 +281,8 @@ bool BufferViewFilter::lessThan(const QModelIndex &source_left, const QModelInde
 }
 
 bool BufferViewFilter::bufferLessThan(const QModelIndex &source_left, const QModelIndex &source_right) const {
-  BufferId leftBufferId = sourceModel()->data(source_left, NetworkModel::BufferIdRole).value<BufferId>();
-  BufferId rightBufferId = sourceModel()->data(source_right, NetworkModel::BufferIdRole).value<BufferId>();
+  BufferId leftBufferId = source_left.data(NetworkModel::BufferIdRole).value<BufferId>();
+  BufferId rightBufferId = source_right.data(NetworkModel::BufferIdRole).value<BufferId>();
   if(config()) {
     return config()->bufferList().indexOf(leftBufferId) < config()->bufferList().indexOf(rightBufferId);
   } else
@@ -290,8 +290,8 @@ bool BufferViewFilter::bufferLessThan(const QModelIndex &source_left, const QMod
 }
 
 bool BufferViewFilter::networkLessThan(const QModelIndex &source_left, const QModelIndex &source_right) const {
-  NetworkId leftNetworkId = sourceModel()->data(source_left, NetworkModel::NetworkIdRole).value<NetworkId>();
-  NetworkId rightNetworkId = sourceModel()->data(source_right, NetworkModel::NetworkIdRole).value<NetworkId>();
+  NetworkId leftNetworkId = source_left.data(NetworkModel::NetworkIdRole).value<NetworkId>();
+  NetworkId rightNetworkId = source_right.data(NetworkModel::NetworkIdRole).value<NetworkId>();
 
   if(config() && config()->sortAlphabetically())
     return QSortFilterProxyModel::lessThan(source_left, source_right);
@@ -380,12 +380,12 @@ bool bufferIdLessThan(const BufferId &left, const BufferId &right) {
   QModelIndex leftIndex = Client::networkModel()->bufferIndex(left);
   QModelIndex rightIndex = Client::networkModel()->bufferIndex(right);
 
-  int leftType = Client::networkModel()->data(leftIndex, NetworkModel::BufferTypeRole).toInt();
-  int rightType = Client::networkModel()->data(rightIndex, NetworkModel::BufferTypeRole).toInt();
+  int leftType = leftIndex.data(NetworkModel::BufferTypeRole).toInt();
+  int rightType = rightIndex.data(NetworkModel::BufferTypeRole).toInt();
 
   if(leftType != rightType)
     return leftType < rightType;
   else
-    return QString::compare(Client::networkModel()->data(leftIndex, Qt::DisplayRole).toString(), Client::networkModel()->data(rightIndex, Qt::DisplayRole).toString(), Qt::CaseInsensitive) < 0;
+    return QString::compare(leftIndex.data(Qt::DisplayRole).toString(), rightIndex.data(Qt::DisplayRole).toString(), Qt::CaseInsensitive) < 0;
 }
 
