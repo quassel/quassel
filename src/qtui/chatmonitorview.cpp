@@ -29,10 +29,13 @@
 #include "chatitem.h"
 #include "chatscene.h"
 #include "client.h"
+#include "iconloader.h"
 #include "networkmodel.h"
 #include "buffermodel.h"
 #include "messagemodel.h"
 #include "qtuisettings.h"
+#include "settingspagedlg.h"
+#include "settingspages/chatmonitorsettingspage.h"
 
 ChatMonitorView::ChatMonitorView(ChatMonitorFilter *filter, QWidget *parent)
   : ChatView(filter, parent),
@@ -61,6 +64,9 @@ void ChatMonitorView::addActionsToMenu(QMenu *menu, const QPointF &pos) {
     showBufferAction->setChecked(_filter->showFields() & ChatMonitorFilter::BufferField);
     showBufferAction->setData(ChatMonitorFilter::BufferField);
   }
+
+  menu->addSeparator();
+  menu->addAction(SmallIcon("configure"), tr("Configure..."), this, SLOT(showSettingsPage()));
 }
 
 void ChatMonitorView::mouseDoubleClickEvent(QMouseEvent *event) {
@@ -92,4 +98,9 @@ void ChatMonitorView::showFieldsChanged(bool checked) {
     _filter->addShowField(showAction->data().toInt());
   else
     _filter->removeShowField(showAction->data().toInt());
+}
+
+void ChatMonitorView::showSettingsPage() {
+  SettingsPageDlg dlg(new ChatMonitorSettingsPage(), this);
+  dlg.exec();
 }

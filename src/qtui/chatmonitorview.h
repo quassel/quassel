@@ -37,6 +37,7 @@ protected:
 
 private slots:
   void showFieldsChanged(bool checked);
+  void showSettingsPage();
 
 private:
   ChatMonitorFilter *_filter;
