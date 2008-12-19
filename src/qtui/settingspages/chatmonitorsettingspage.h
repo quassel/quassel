@@ -45,7 +45,6 @@ class ChatMonitorSettingsPage : public SettingsPage {
     void widgetHasChanged();
     void on_activateBuffer_clicked();
     void on_deactivateBuffer_clicked();
-    void on_showHighlights_toggled(bool state);
     void switchOperationMode(int modeIndex);
 
   private:

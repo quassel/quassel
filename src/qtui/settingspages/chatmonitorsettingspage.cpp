@@ -59,7 +59,9 @@ ChatMonitorSettingsPage::ChatMonitorSettingsPage(QWidget *parent)
   ui.operationMode->addItem(tr("Opt Out"), ChatViewSettings::OptOut);
 
   // connect slots
-  connect(ui.operationMode, SIGNAL(currentIndexChanged(int)), this, SLOT(switchOperationMode(int)));
+  connect(ui.operationMode, SIGNAL(currentIndexChanged(int)), SLOT(switchOperationMode(int)));
+  connect(ui.showHighlights, SIGNAL(toggled(bool)), SLOT(widgetHasChanged()));
+  connect(ui.showOwnMessages, SIGNAL(toggled(bool)), SLOT(widgetHasChanged()));
 }
 
 bool ChatMonitorSettingsPage::hasDefaults() const {
@@ -69,6 +71,7 @@ bool ChatMonitorSettingsPage::hasDefaults() const {
 void ChatMonitorSettingsPage::defaults() {
   settings["OperationMode"] = ChatViewSettings::OptOut;
   settings["ShowHighlights"] = false;
+  settings["ShowOwnMsgs"] = false;
   settings["Buffers"] = QVariant();
   settings["Default"] = true;
   load();
@@ -83,6 +86,7 @@ void ChatMonitorSettingsPage::load() {
 
   ui.operationMode->setCurrentIndex(settings["OperationMode"].toInt() - 1);
   ui.showHighlights->setChecked(settings["ShowHighlights"].toBool());
+  ui.showOwnMessages->setChecked(settings["ShowOwnMsgs"].toBool());
 
   // get all available buffer Ids
   QList<BufferId> allBufferIds = Client::networkModel()->allBufferIds();
@@ -116,14 +120,16 @@ void ChatMonitorSettingsPage::loadSettings() {
     settings["OperationMode"] == ChatViewSettings::OptOut;
   }
   settings["ShowHighlights"] = chatViewSettings.value("ShowHighlights", false);
+  settings["ShowOwnMsgs"] = chatViewSettings.value("ShowOwnMsgs", false);
   settings["Buffers"] = chatViewSettings.value("Buffers", QVariantList());
 }
 
 void ChatMonitorSettingsPage::save() {
   ChatViewSettings chatViewSettings("ChatMonitor");
   // save operation mode
-  chatViewSettings.setValue("OperationMode", settings["OperationMode"]);
-  chatViewSettings.setValue("ShowHighlights", settings["ShowHighlights"]);
+  chatViewSettings.setValue("OperationMode", ui.operationMode->currentIndex() + 1);
+  chatViewSettings.setValue("ShowHighlights", ui.showHighlights->isChecked());
+  chatViewSettings.setValue("ShowOwnMsgs", ui.showOwnMessages->isChecked());
 
   // save list of active buffers
   QVariantList saveableBufferIdList;
@@ -143,6 +149,10 @@ void ChatMonitorSettingsPage::widgetHasChanged() {
 
 bool ChatMonitorSettingsPage::testHasChanged() {
   if(settings["OperationMode"] != ui.operationMode->itemData(ui.operationMode->currentIndex()))
+    return true;
+  if(settings["ShowHighlights"].toBool() != ui.showHighlights->isChecked())
+    return true;
+  if(settings["ShowOwnMsgs"].toBool() != ui.showOwnMessages->isChecked())
     return true;
 
   if(_configActive->bufferList().count() != settings["Buffers"].toList().count())
@@ -218,12 +228,6 @@ void ChatMonitorSettingsPage::on_deactivateBuffer_clicked() {
     toggleBuffers(ui.activeBuffers, _configActive, ui.availableBuffers, _configAvailable);
     widgetHasChanged();
   }
-}
-
-void ChatMonitorSettingsPage::on_showHighlights_toggled(bool state)
-{
-  settings["ShowHighlights"] = state;
-  widgetHasChanged();
 }
 
 /*
