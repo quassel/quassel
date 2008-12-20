@@ -84,6 +84,7 @@ void ChatMonitorSettingsPage::load() {
   else
     loadSettings();
 
+  switchOperationMode(settings["OperationMode"].toInt() - 1);
   ui.operationMode->setCurrentIndex(settings["OperationMode"].toInt() - 1);
   ui.showHighlights->setChecked(settings["ShowHighlights"].toBool());
   ui.showOwnMessages->setChecked(settings["ShowOwnMsgs"].toBool());
@@ -112,13 +113,8 @@ void ChatMonitorSettingsPage::load() {
 
 void ChatMonitorSettingsPage::loadSettings() {
   ChatViewSettings chatViewSettings("ChatMonitor");
-  settings["OperationMode"] = static_cast<ChatViewSettings::OperationMode>(chatViewSettings.value("OperationMode", QVariant()).toInt());
+  settings["OperationMode"] = (ChatViewSettings::OperationMode)chatViewSettings.value("OperationMode", ChatViewSettings::OptOut).toInt();
 
-  // Load default behavior if no or invalid settings found
-  if(settings["OperationMode"] == ChatViewSettings::InvalidMode) {
-    switchOperationMode(ui.operationMode->findData(ChatViewSettings::OptOut));
-    settings["OperationMode"] == ChatViewSettings::OptOut;
-  }
   settings["ShowHighlights"] = chatViewSettings.value("ShowHighlights", false);
   settings["ShowOwnMsgs"] = chatViewSettings.value("ShowOwnMsgs", false);
   settings["Buffers"] = chatViewSettings.value("Buffers", QVariantList());
@@ -148,7 +144,7 @@ void ChatMonitorSettingsPage::widgetHasChanged() {
 }
 
 bool ChatMonitorSettingsPage::testHasChanged() {
-  if(settings["OperationMode"] != ui.operationMode->itemData(ui.operationMode->currentIndex()))
+  if(settings["OperationMode"].toInt() != ui.operationMode->currentIndex() + 1)
     return true;
   if(settings["ShowHighlights"].toBool() != ui.showHighlights->isChecked())
     return true;
@@ -234,13 +230,12 @@ void ChatMonitorSettingsPage::on_deactivateBuffer_clicked() {
   switchOperationMode gets called on combobox signal currentIndexChanged.
   modeIndex is the row id in combobox itemlist
 */
-void ChatMonitorSettingsPage::switchOperationMode(int modeIndex) {
-  ChatViewSettings::OperationMode newMode = static_cast<ChatViewSettings::OperationMode>(ui.operationMode->itemData(modeIndex).toInt());
-
-  if(newMode == ChatViewSettings::OptIn) {
+void ChatMonitorSettingsPage::switchOperationMode(int idx) {
+  ChatViewSettings::OperationMode mode = (ChatViewSettings::OperationMode)(idx + 1);
+  if(mode == ChatViewSettings::OptIn) {
     ui.labelActiveBuffers->setText(tr("Show:"));
   }
-  else if(newMode == ChatViewSettings::OptOut) {
+  else if(mode == ChatViewSettings::OptOut) {
     ui.labelActiveBuffers->setText(tr("Ignore:"));
   }
   widgetHasChanged();

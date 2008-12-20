@@ -45,7 +45,7 @@ class ChatMonitorSettingsPage : public SettingsPage {
     void widgetHasChanged();
     void on_activateBuffer_clicked();
     void on_deactivateBuffer_clicked();
-    void switchOperationMode(int modeIndex);
+    void switchOperationMode(int idx);
 
   private:
     Ui::ChatMonitorSettingsPage ui;
