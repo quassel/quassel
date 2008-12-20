@@ -1074,6 +1074,96 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>ChatMonitorSettingsPage</name>
+    <message>
+        <location filename="../src/qtui/settingspages/chatmonitorsettingspage.cpp" line="35"/>
+        <source>General</source>
+        <translation>Général</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/chatmonitorsettingspage.cpp" line="35"/>
+        <source>Chat Monitor</source>
+        <translation>Moniteur de discussion</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/chatmonitorsettingspage.cpp" line="58"/>
+        <source>Opt In</source>
+        <translation>Activé</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/chatmonitorsettingspage.cpp" line="59"/>
+        <source>Opt Out</source>
+        <translation>Inactivé</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/chatmonitorsettingspage.ui" line="132"/>
+        <source>Show:</source>
+        <translation>Montrer:</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/chatmonitorsettingspage.cpp" line="239"/>
+        <source>Ignore:</source>
+        <translation>Ignorer:</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/chatmonitorsettingspage.ui" line="13"/>
+        <source>Form</source>
+        <translation>Formulaire</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/chatmonitorsettingspage.ui" line="21"/>
+        <source>Operation Mode:</source>
+        <translation>Mode de fonctionnement:</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/chatmonitorsettingspage.ui" line="28"/>
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;DejaVu Sans&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Operation modes:&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;span style=&quot; font-weight:400; text-decoration: underline;&quot;&gt;Opt-In:&lt;/span&gt; &lt;span style=&quot; font-weight:400;&quot;&gt;Only buffers on the right side are shown in chatmonitor&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;Opt-Out:&lt;/span&gt; Buffers on the right side will be ignored in chatmonitor&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;DejaVu Sans&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Modes de fonctionnement:&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;span style=&quot; font-weight:400; text-decoration: underline;&quot;&gt;Activé:&lt;/span&gt; &lt;span style=&quot; font-weight:400;&quot;&gt;Seul les tampons visibles à droite sont affichés dans le Moniteur de discussion&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;Inactivé:&lt;/span&gt; Les tampons figurant à droite sont ignoré dans le Moniteur de discusssion&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/chatmonitorsettingspage.ui" line="60"/>
+        <source>Available Buffers:</source>
+        <translation>Tampons disponibles:</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/chatmonitorsettingspage.ui" line="87"/>
+        <source>Move selected buffers to the left</source>
+        <translation>Déplacer les tampons sélectionnés vers la gauche</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/chatmonitorsettingspage.ui" line="101"/>
+        <source>Move selected buffers to the right</source>
+        <translation>Déplacer les tampons sélectionnés vers la droite</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/chatmonitorsettingspage.ui" line="146"/>
+        <source>Show highlights in chatmonitor even if the originating buffer is ignored</source>
+        <translation>Mettre en surbrillance dans le moniteur de discussion même si le tampon original est ignoré</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/chatmonitorsettingspage.ui" line="149"/>
+        <source>Always show highlighted messages</source>
+        <translation>Toujours monter les messages surlignés</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/chatmonitorsettingspage.ui" line="156"/>
+        <source>Show own messages</source>
+        <translation>Montrer mes messages</translation>
+    </message>
+</context>
+<context>
     <name>ChatMonitorView</name>
     <message>
         <location filename="../src/qtui/chatmonitorview.cpp" line="53"/>
@@ -1091,19 +1181,24 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Montrer mes messages</translation>
     </message>
     <message>
-        <location filename="../src/qtui/chatmonitorview.cpp" line="47"/>
+        <location filename="../src/qtui/chatmonitorview.cpp" line="50"/>
         <source>Show Own Messages</source>
         <translation>Montrer Mes Messages</translation>
     </message>
     <message>
-        <location filename="../src/qtui/chatmonitorview.cpp" line="54"/>
+        <location filename="../src/qtui/chatmonitorview.cpp" line="57"/>
         <source>Show Network Name</source>
         <translation>Montrer le Nom du Réseau</translation>
     </message>
     <message>
-        <location filename="../src/qtui/chatmonitorview.cpp" line="59"/>
+        <location filename="../src/qtui/chatmonitorview.cpp" line="62"/>
         <source>Show Buffer Name</source>
         <translation>Montrer le Nom du Tampon</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/chatmonitorview.cpp" line="69"/>
+        <source>Configure...</source>
+        <translation>Configurer...</translation>
     </message>
 </context>
 <context>
@@ -4023,7 +4118,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Attente du noyau...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="557"/>
+        <location filename="../src/qtui/mainwin.cpp" line="558"/>
         <source>Not connected to core.</source>
         <translation>Déconnecté au noyau.</translation>
     </message>
@@ -4068,7 +4163,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Aide</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="248"/>
+        <location filename="../src/qtui/mainwin.cpp" line="249"/>
         <source>Debug</source>
         <translation>Déboguage</translation>
     </message>
@@ -4128,7 +4223,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Configurer Quassel...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="203"/>
+        <location filename="../src/qtui/mainwin.cpp" line="204"/>
         <source>F7</source>
         <translation>F7</translation>
     </message>
@@ -4173,32 +4268,32 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Connecter au Noyau...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="501"/>
+        <location filename="../src/qtui/mainwin.cpp" line="502"/>
         <source>Connected to core.</source>
         <translation>Connecté au noyau.</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="184"/>
+        <location filename="../src/qtui/mainwin.cpp" line="185"/>
         <source>Edit &amp;Networks...</source>
         <translation>&amp;Modifier les réseaux...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="335"/>
+        <location filename="../src/qtui/mainwin.cpp" line="336"/>
         <source>Nicks</source>
         <translation>Pseudos</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="355"/>
+        <location filename="../src/qtui/mainwin.cpp" line="356"/>
         <source>Chat Monitor</source>
         <translation>Moniteur de discussion</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="370"/>
+        <location filename="../src/qtui/mainwin.cpp" line="371"/>
         <source>Inputline</source>
         <translation>Ligne de Saisie</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="390"/>
+        <location filename="../src/qtui/mainwin.cpp" line="391"/>
         <source>Topic</source>
         <translation>Sujet</translation>
     </message>
@@ -4208,17 +4303,17 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Barre d&apos;état</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="221"/>
+        <location filename="../src/qtui/mainwin.cpp" line="222"/>
         <source>&amp;File</source>
         <translation>&amp;Fichier</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="226"/>
+        <location filename="../src/qtui/mainwin.cpp" line="227"/>
         <source>&amp;Networks</source>
         <translation>&amp;Réseaux</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="241"/>
+        <location filename="../src/qtui/mainwin.cpp" line="242"/>
         <source>&amp;Settings</source>
         <translation>&amp;Paramètres</translation>
     </message>
@@ -4228,7 +4323,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">&amp;Vues</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="244"/>
+        <location filename="../src/qtui/mainwin.cpp" line="245"/>
         <source>&amp;Help</source>
         <translation>&amp;Aide</translation>
     </message>
@@ -4278,117 +4373,117 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Modèle Réseau</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="520"/>
+        <location filename="../src/qtui/mainwin.cpp" line="521"/>
         <source>Core Lag: %1 msec</source>
         <translation>Lag noyau:  %1 ms</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="178"/>
+        <location filename="../src/qtui/mainwin.cpp" line="179"/>
         <source>&amp;Connect to Core...</source>
         <translation>&amp;Connecter au Noyau...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="180"/>
+        <location filename="../src/qtui/mainwin.cpp" line="181"/>
         <source>&amp;Disconnect from Core</source>
         <translation>&amp;Déconnecter du Noyau</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="182"/>
+        <location filename="../src/qtui/mainwin.cpp" line="183"/>
         <source>Core &amp;Info...</source>
         <translation>&amp;Info Noyau</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="186"/>
+        <location filename="../src/qtui/mainwin.cpp" line="187"/>
         <source>&amp;Quit</source>
         <translation>&amp;Quitter</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="187"/>
+        <location filename="../src/qtui/mainwin.cpp" line="188"/>
         <source>Ctrl+Q</source>
         <translation>Ctrl+Q</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="190"/>
+        <location filename="../src/qtui/mainwin.cpp" line="191"/>
         <source>&amp;Manage Buffer Views...</source>
         <translation>&amp;Gérer les Vues...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="192"/>
+        <location filename="../src/qtui/mainwin.cpp" line="193"/>
         <source>&amp;Lock Dock Positions</source>
         <translation>&amp;Bloquer les positions des fenêtres</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="196"/>
+        <location filename="../src/qtui/mainwin.cpp" line="197"/>
         <source>Show &amp;Search Bar</source>
         <translation>Montrer la Barre de &amp;Recherche</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="197"/>
+        <location filename="../src/qtui/mainwin.cpp" line="198"/>
         <source>Ctrl+F</source>
         <translation>Ctrl+F</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="198"/>
+        <location filename="../src/qtui/mainwin.cpp" line="199"/>
         <source>Show Status &amp;Bar</source>
         <translation>Monter la Barre d&apos;&amp;Etat</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="202"/>
+        <location filename="../src/qtui/mainwin.cpp" line="203"/>
         <source>&amp;Configure Quassel...</source>
         <translation>&amp;Configurer Quassel...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="206"/>
+        <location filename="../src/qtui/mainwin.cpp" line="207"/>
         <source>&amp;About Quassel...</source>
         <translation>&amp;À propos de Quassel...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="208"/>
+        <location filename="../src/qtui/mainwin.cpp" line="209"/>
         <source>About &amp;Qt...</source>
         <translation>À propos de &amp;Qt...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="210"/>
+        <location filename="../src/qtui/mainwin.cpp" line="211"/>
         <source>Debug &amp;NetworkModel</source>
         <translation>Déboguage et Modèle &amp;Réseau</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="212"/>
+        <location filename="../src/qtui/mainwin.cpp" line="213"/>
         <source>Debug &amp;MessageModel</source>
         <translation>Déboguage et Modèle &amp;Message</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="214"/>
+        <location filename="../src/qtui/mainwin.cpp" line="215"/>
         <source>Debug &amp;Log</source>
         <translation>Déboguage &amp;Historique</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="232"/>
+        <location filename="../src/qtui/mainwin.cpp" line="233"/>
         <source>&amp;View</source>
         <translation>&amp;Vue</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="233"/>
+        <location filename="../src/qtui/mainwin.cpp" line="234"/>
         <source>&amp;Buffer Views</source>
         <translation>&amp;Vues</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="344"/>
+        <location filename="../src/qtui/mainwin.cpp" line="345"/>
         <source>Show Nick List</source>
         <translation>Afficher la liste des pseudos</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="366"/>
+        <location filename="../src/qtui/mainwin.cpp" line="367"/>
         <source>Show Chat Monitor</source>
         <translation>Afficher le moniteur de discussion</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="379"/>
+        <location filename="../src/qtui/mainwin.cpp" line="380"/>
         <source>Show Input Line</source>
         <translation>Afficher la ligne de commande</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="402"/>
+        <location filename="../src/qtui/mainwin.cpp" line="403"/>
         <source>Show Topic Line</source>
         <translation>Afficher la ligne de Sujet</translation>
     </message>
@@ -5728,32 +5823,32 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
         <translation>Paramètres</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingsdlg.cpp" line="73"/>
+        <location filename="../src/qtui/settingsdlg.cpp" line="75"/>
         <source>Save changes</source>
         <translation>Sauver les changements</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingsdlg.cpp" line="74"/>
+        <location filename="../src/qtui/settingsdlg.cpp" line="76"/>
         <source>There are unsaved changes on the current configuration page. Would you like to apply your changes now?</source>
         <translation>Il y a des changements non sauvegardés sur cette page de configuration. Voulez vous appliquer vos changements maintenant ?</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingsdlg.cpp" line="149"/>
+        <location filename="../src/qtui/settingsdlg.cpp" line="151"/>
         <source>Reload Settings</source>
         <translation>Recharger les paramètres</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingsdlg.cpp" line="149"/>
+        <location filename="../src/qtui/settingsdlg.cpp" line="151"/>
         <source>Do you like to reload the settings, undoing your changes on this page?</source>
         <translation>Voulez vous recharger les paramètres, et annuler vos changements sur cette page ?</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingsdlg.cpp" line="158"/>
+        <location filename="../src/qtui/settingsdlg.cpp" line="160"/>
         <source>Restore Defaults</source>
         <translation>Restaurer les valeurs par défaut</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingsdlg.cpp" line="158"/>
+        <location filename="../src/qtui/settingsdlg.cpp" line="160"/>
         <source>Do you like to restore the default values for this page?</source>
         <translation>Voulez-vous restaurer les paramètres par défaut de cette page?</translation>
     </message>
