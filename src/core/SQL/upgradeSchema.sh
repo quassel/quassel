@@ -12,7 +12,7 @@ fi
 
 cd $TARGET_DIR
 
-CURRENT_VERSION=`ls | sort -n | tail -n1`
+CURRENT_VERSION=$(ls | sort -n | tail -n1)
 
 if [ ! $CURRENT_VERSION ]; then
     echo "no previous schema found to upgrade from"
@@ -22,6 +22,7 @@ fi
 ((NEW_VERSION=$CURRENT_VERSION + 1))
 
 mkdir $NEW_VERSION
-svn add $NEW_VERSION
-find $CURRENT_VERSION -depth 1 \! -name "upgrade_*" \! -name ".*" -exec svn mv {} $NEW_VERSION \;
-svn cp ${CURRENT_VERSION}/upgrade_999_version.sql $NEW_VERSION
+git add $NEW_VERSION
+find $CURRENT_VERSION -depth 1 \! -name "upgrade_*" \! -name ".*" -exec git mv {} $NEW_VERSION \;
+cp ${CURRENT_VERSION}/upgrade_999_version.sql $NEW_VERSION
+git add ${NEW_VERSION}/upgrade_999_version.sql

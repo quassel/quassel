@@ -23,7 +23,7 @@
 
 #include "core.h"
 #include "coresession.h"
-#include "identity.h"
+#include "coreidentity.h"
 
 #include "ircserverhandler.h"
 #include "userinputhandler.h"
@@ -133,7 +133,7 @@ void CoreNetwork::connectToIrc(bool reconnecting) {
     qWarning() << "Server list empty, ignoring connect request!";
     return;
   }
-  Identity *identity = identityPtr();
+  CoreIdentity *identity = identityPtr();
   if(!identity) {
     qWarning() << "Invalid identity configures, ignoring connect request!";
     return;
@@ -285,7 +285,7 @@ void CoreNetwork::socketInitialized() {
     return;
 #endif
 
-  Identity *identity = identityPtr();
+  CoreIdentity *identity = identityPtr();
   if(!identity) {
     qCritical() << "Identity invalid!";
     disconnectFromIrc();

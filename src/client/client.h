@@ -34,6 +34,7 @@ class MessageModel;
 class AbstractMessageProcessor;
 
 class Identity;
+class CertIdentity;
 class Network;
 
 class AbstractUi;
@@ -68,14 +69,14 @@ public:
   static const Network * network(NetworkId);
 
   static QList<IdentityId> identityIds();
-  static const Identity * identity(IdentityId);
+  static const Identity *identity(IdentityId);
 
   //! Request creation of an identity with the given data.
   /** The request will be sent to the core, and will be propagated back to all the clients
    *  with a new valid IdentityId.
    *  \param identity The identity template for the new identity. It does not need to have a valid ID.
    */
-  static void createIdentity(const Identity &identity);
+  static void createIdentity(const CertIdentity &identity);
 
   //! Request update of an identity with the given data.
   /** The request will be sent to the core, and will be propagated back to all the clients.
@@ -141,7 +142,7 @@ signals:
   void identityRemoved(IdentityId id);
 
   //! Sent to the core when an identity shall be created. Should not be used elsewhere.
-  void requestCreateIdentity(const Identity &);
+  void requestCreateIdentity(const Identity &, const QVariantMap &);
   //! Sent to the core when an identity shall be removed. Should not be used elsewhere.
   void requestRemoveIdentity(IdentityId);
 

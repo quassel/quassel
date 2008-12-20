@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _SYNCABLEOBJECT_H_
-#define _SYNCABLEOBJECT_H_
+#ifndef SYNCABLEOBJECT_H
+#define SYNCABLEOBJECT_H
 
 #include <QDataStream>
 #include <QMetaType>
@@ -31,6 +31,7 @@ class SyncableObject : public QObject {
 
 public:
   SyncableObject(QObject *parent = 0);
+  SyncableObject(const QString &objectName, QObject *parent = 0);
   SyncableObject(const SyncableObject &other, QObject *parent = 0);
 
   //! Stores the object's state into a QVariantMap.
@@ -61,7 +62,7 @@ public:
 public slots:
   virtual void setInitialized();
   void requestUpdate(const QVariantMap &properties);
-  void update(const QVariantMap &properties);
+  virtual void update(const QVariantMap &properties);
 
 protected:
   void renameObject(const QString &newName);

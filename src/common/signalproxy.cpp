@@ -407,7 +407,7 @@ void SignalProxy::removePeerBySender() {
 
 void SignalProxy::objectRenamed(const QString &newname, const QString &oldname) {
   SyncableObject *syncObject = qobject_cast<SyncableObject *>(sender());
-  const QMetaObject *meta = syncObject->metaObject();
+  const QMetaObject *meta = syncObject->syncMetaObject();
   const QByteArray className(meta->className());
   objectRenamed(className, newname, oldname);
 

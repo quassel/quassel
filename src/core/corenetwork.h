@@ -35,7 +35,7 @@
 
 #include "coresession.h"
 
-class Identity;
+class CoreIdentity;
 class IrcServerHandler;
 class UserInputHandler;
 class CtcpHandler;
@@ -48,7 +48,7 @@ public:
   ~CoreNetwork();
   inline virtual const QMetaObject *syncMetaObject() const { return &Network::staticMetaObject; }
 
-  inline Identity *identityPtr() const { return coreSession()->identity(identity()); }
+  inline CoreIdentity *identityPtr() const { return coreSession()->identity(identity()); }
   inline CoreSession *coreSession() const { return _coreSession; }
 
   inline IrcServerHandler *ircServerHandler() const { return _ircServerHandler; }

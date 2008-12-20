@@ -33,6 +33,7 @@ class CoreBacklogManager;
 class CoreBufferViewManager;
 class CoreIrcListHelper;
 class Identity;
+class CoreIdentity;
 class NetworkConnection;
 class CoreNetwork;
 struct NetworkInfo;
@@ -51,7 +52,7 @@ public:
   inline UserId user() const { return _user; }
   CoreNetwork *network(NetworkId) const;
   NetworkConnection *networkConnection(NetworkId) const;
-  Identity *identity(IdentityId) const;
+  CoreIdentity *identity(IdentityId) const;
 
   QVariant sessionState();
 
@@ -77,7 +78,7 @@ public slots:
   //! Create an identity and propagate the changes to the clients.
   /** \param identity The identity to be created.
    */
-  void createIdentity(const Identity &identity);
+  void createIdentity(const Identity &identity, const QVariantMap &additional = QVariantMap());
 
   //! Remove identity and propagate that fact to the clients.
   /** \param identity The identity to be removed.
@@ -89,8 +90,8 @@ public slots:
    */
   void createNetwork(const NetworkInfo &info);
 
-  //! Remove identity and propagate that fact to the clients.
-  /** \param identity The identity to be removed.
+  //! Remove network and propagate that fact to the clients.
+  /** \param network The id of the network to be removed.
    */
   void removeNetwork(NetworkId network);
 
@@ -145,8 +146,6 @@ private slots:
 
   void destroyNetwork(NetworkId);
 
-  void identityUpdated(const QVariantMap &);
-
   void storeBufferLastSeenMsg(BufferId buffer, const MsgId &msgId);
 
   void scriptRequest(QString script);
@@ -165,7 +164,7 @@ private:
   // QHash<NetworkId, NetworkConnection *> _connections;
   QHash<NetworkId, CoreNetwork *> _networks;
   //  QHash<NetworkId, CoreNetwork *> _networksToRemove;
-  QHash<IdentityId, Identity *> _identities;
+  QHash<IdentityId, CoreIdentity *> _identities;
 
   BufferSyncer *_bufferSyncer;
   CoreBacklogManager *_backlogManager;

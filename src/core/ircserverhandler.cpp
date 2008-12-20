@@ -23,7 +23,7 @@
 
 #include "coresession.h"
 #include "coreirclisthelper.h"
-#include "identity.h"
+#include "coreidentity.h"
 #include "ctcphandler.h"
 
 #include "ircuser.h"

@@ -21,6 +21,7 @@
 #ifndef IDENTITY_H
 #define IDENTITY_H
 
+#include <QByteArray>
 #include <QDataStream>
 #include <QMetaType>
 #include <QString>
@@ -55,6 +56,8 @@ class Identity : public SyncableObject {
 public:
   Identity(IdentityId id = 0, QObject *parent = 0);
   Identity(const Identity &other, QObject *parent = 0);
+  inline virtual const QMetaObject *syncMetaObject() const { return &staticMetaObject; }
+
   void setToDefaults();
 
   bool operator==(const Identity &other);
@@ -153,4 +156,33 @@ QDataStream &operator>>(QDataStream &in, Identity &identity);
 
 Q_DECLARE_METATYPE(Identity)
 
-#endif
+#ifdef HAVE_SSL
+#include <QSslKey>
+#include <QSslCertificate>
+
+class CertManager : public SyncableObject {
+  Q_OBJECT
+  Q_PROPERTY(QByteArray sslKey READ sslKeyPem WRITE setSslKey STORED false)
+  Q_PROPERTY(QByteArray sslCert READ sslCertPem WRITE setSslCert STORED false)
+
+public:
+  CertManager(IdentityId id, QObject *parent = 0) : SyncableObject(QString::number(id.toInt()), parent) {}
+  inline virtual const QMetaObject *syncMetaObject() const { return &staticMetaObject; }
+
+  virtual const QSslKey &sslKey() const = 0;
+  inline QByteArray sslKeyPem() const { return sslKey().toPem(); }
+  virtual const QSslCertificate &sslCert() const = 0;
+  inline QByteArray sslCertPem() const { return sslCert().toPem(); }
+
+public slots:
+  inline virtual void setSslKey(const QByteArray &encoded) { emit sslKeySet(encoded); }
+  inline virtual void setSslCert(const QByteArray &encoded) { emit sslCertSet(encoded); }
+
+signals:
+  void sslKeySet(const QByteArray &);
+  void sslCertSet(const QByteArray &);
+};
+
+#endif // HAVE_SSL
+
+#endif // IDENTITY_H

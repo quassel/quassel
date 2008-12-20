@@ -86,10 +86,10 @@ void Identity::setToDefaults() {
 
 /*** setters ***/
 
-// NOTE: DO NOT USE ON SYNCHRONIZED OBJECTS!
 void Identity::setId(IdentityId _id) {
   _identityId = _id;
-  setObjectName(QString::number(id().toInt()));
+  emit idSet(_id);
+  renameObject(QString::number(id().toInt()));
 }
 
 void Identity::setIdentityName(const QString &identityName) {
@@ -228,3 +228,4 @@ QDataStream &operator>>(QDataStream &in, Identity &id) {
   id.fromVariantMap(i);
   return in;
 }
+

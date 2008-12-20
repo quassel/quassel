@@ -18,16 +18,22 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QInputDialog>
-#include <QMessageBox>
-
 #include "identitiessettingspage.h"
+
+#include <QInputDialog>
+#include <QFileDialog>
+#include <QDesktopServices>
+#include <QMessageBox>
+#include <QSslKey>
 
 #include "client.h"
 #include "iconloader.h"
+#include "signalproxy.h"
 
 IdentitiesSettingsPage::IdentitiesSettingsPage(QWidget *parent)
-  : SettingsPage(tr("General"), tr("Identities"), parent) {
+  : SettingsPage(tr("General"), tr("Identities"), parent),
+    _editSsl(false)
+{
 
   ui.setupUi(this);
   ui.renameIdentity->setIcon(BarIcon("edit-rename"));
@@ -69,6 +75,12 @@ IdentitiesSettingsPage::IdentitiesSettingsPage(QWidget *parent)
 
   connect(ui.nicknameList, SIGNAL(itemSelectionChanged()), this, SLOT(setWidgetStates()));
 
+#ifdef HAVE_SSL
+  ui.keyAndCertSettings->setCurrentIndex(1);
+#else
+  ui.keyAndCertSettings->setCurrentIndex(0);
+#endif
+
   // we would need this if we enabled drag and drop in the nicklist...
   //connect(ui.nicknameList, SIGNAL(rowsInserted(const QModelIndex &, int, int)), this, SLOT(setWidgetStates()));
   //connect(ui.nicknameList->model(), SIGNAL(rowsInserted(const QModelIndex &, int, int)), this, SLOT(nicklistHasChanged()));
@@ -99,18 +111,18 @@ void IdentitiesSettingsPage::coreConnectionStateChanged(bool state) {
 
 void IdentitiesSettingsPage::save() {
   setEnabled(false);
-  QList<Identity *> toCreate, toUpdate;
+  QList<CertIdentity *> toCreate, toUpdate;
   // we need to remove our temporarily created identities.
   // these are going to be re-added after the core has propagated them back...
-  QHash<IdentityId, Identity *>::iterator i = identities.begin();
+  QHash<IdentityId, CertIdentity *>::iterator i = identities.begin();
   while(i != identities.end()) {
     if((*i)->id() < 0) {
-      Identity *temp = *i;
+      CertIdentity *temp = *i;
       i = identities.erase(i);
       toCreate.append(temp);
       ui.identityList->removeItem(ui.identityList->findData(temp->id().toInt()));
     } else {
-      if(**i != *Client::identity((*i)->id())) {
+      if(**i != *Client::identity((*i)->id()) || (*i)->isDirty()) {
         toUpdate.append(*i);
       }
       ++i;
@@ -158,10 +170,11 @@ bool IdentitiesSettingsPage::testHasChanged() {
   } else {
     if(currentId != 0) {
       changedIdentities.removeAll(currentId);
-      Identity temp(currentId, this);
+      CertIdentity temp(currentId, this);
       saveToIdentity(&temp);
       temp.setIdentityName(identities[currentId]->identityName());
-      if(temp != *Client::identity(currentId)) changedIdentities.append(currentId);
+      if(temp != *Client::identity(currentId) || temp.isDirty())
+	changedIdentities.append(currentId);
     }
     return changedIdentities.count();
   }
@@ -188,7 +201,10 @@ bool IdentitiesSettingsPage::aboutToSave() {
 }
 
 void IdentitiesSettingsPage::clientIdentityCreated(IdentityId id) {
-  insertIdentity(new Identity(*Client::identity(id), this));
+  CertIdentity *identity = new CertIdentity(*Client::identity(id), this);
+  identity->enableEditSsl(_editSsl);
+  insertIdentity(identity);
+  connect(identity, SIGNAL(sslSettingsUpdated()), this, SLOT(clientIdentityUpdated()));
   connect(Client::identity(id), SIGNAL(updatedRemotely()), this, SLOT(clientIdentityUpdated()));
 }
 
@@ -202,10 +218,16 @@ void IdentitiesSettingsPage::clientIdentityUpdated() {
     qWarning() << "Unknown identity to update:" << clientIdentity->identityName();
     return;
   }
-  Identity *identity = identities[clientIdentity->id()];
-  if(identity->identityName() != clientIdentity->identityName()) renameIdentity(identity->id(), clientIdentity->identityName());
+
+  CertIdentity *identity = identities[clientIdentity->id()];
+
+  if(identity->identityName() != clientIdentity->identityName())
+    renameIdentity(identity->id(), clientIdentity->identityName());
+
   identity->update(*clientIdentity);
-  if(identity->id() == currentId) displayIdentity(identity, true);
+
+  if(identity->id() == currentId)
+    displayIdentity(identity, true);
 }
 
 void IdentitiesSettingsPage::clientIdentityRemoved(IdentityId id) {
@@ -216,7 +238,7 @@ void IdentitiesSettingsPage::clientIdentityRemoved(IdentityId id) {
   }
 }
 
-void IdentitiesSettingsPage::insertIdentity(Identity *identity) {
+void IdentitiesSettingsPage::insertIdentity(CertIdentity *identity) {
   IdentityId id = identity->id();
   identities[id] = identity;
   if(id == 1) {
@@ -264,7 +286,7 @@ void IdentitiesSettingsPage::on_identityList_currentIndexChanged(int index) {
   }
 }
 
-void IdentitiesSettingsPage::displayIdentity(Identity *id, bool dontsave) {
+void IdentitiesSettingsPage::displayIdentity(CertIdentity *id, bool dontsave) {
   if(currentId != 0 && !dontsave && identities.contains(currentId)) {
     saveToIdentity(identities[currentId]);
   }
@@ -292,10 +314,12 @@ void IdentitiesSettingsPage::displayIdentity(Identity *id, bool dontsave) {
     ui.kickReason->setText(id->kickReason());
     ui.partReason->setText(id->partReason());
     ui.quitReason->setText(id->quitReason());
+    showKeyState(id->sslKey());
+    showCertState(id->sslCert());
   }
 }
 
-void IdentitiesSettingsPage::saveToIdentity(Identity *id) {
+void IdentitiesSettingsPage::saveToIdentity(CertIdentity *id) {
   id->setRealName(ui.realName->text());
   QStringList nicks;
   for(int i = 0; i < ui.nicknameList->count(); i++) {
@@ -317,6 +341,8 @@ void IdentitiesSettingsPage::saveToIdentity(Identity *id) {
   id->setKickReason(ui.kickReason->text());
   id->setPartReason(ui.partReason->text());
   id->setQuitReason(ui.quitReason->text());
+  id->setSslKey(QSslKey(ui.keyTypeLabel->property("sslKey").toByteArray(), (QSsl::KeyAlgorithm)(ui.keyTypeLabel->property("sslKeyType").toInt())));
+  id->setSslCert(QSslCertificate(ui.certOrgLabel->property("sslCert").toByteArray()));
 }
 
 void IdentitiesSettingsPage::on_addIdentity_clicked() {
@@ -328,7 +354,8 @@ void IdentitiesSettingsPage::on_addIdentity_clicked() {
       if(!identities.keys().contains(-id.toInt())) break;
     }
     id = -id.toInt();
-    Identity *newId = new Identity(id, this);
+    CertIdentity *newId = new CertIdentity(id, this);
+    newId->enableEditSsl(_editSsl);
     if(dlg.duplicateId() != 0) {
       // duplicate
       newId->update(*identities[dlg.duplicateId()]);
@@ -421,9 +448,101 @@ void IdentitiesSettingsPage::on_nickDown_clicked() {
   }
 }
 
+void IdentitiesSettingsPage::on_continueUnsecured_clicked() {
+  _editSsl = true;
+
+  QHash<IdentityId, CertIdentity *>::iterator idIter;
+  for(idIter = identities.begin(); idIter != identities.end(); idIter++) {
+    idIter.value()->enableEditSsl();
+  }
+
+  ui.keyAndCertSettings->setCurrentIndex(2);
+}
+
+void IdentitiesSettingsPage::on_clearOrLoadKeyButton_clicked() {
+  QSslKey key;
+
+  if(ui.keyTypeLabel->property("sslKey").toByteArray().isEmpty()) {
+    QString keyFileName = QFileDialog::getOpenFileName(this, tr("Load a Key"), QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
+    QFile keyFile(keyFileName);
+    keyFile.open(QIODevice::ReadOnly);
+    QByteArray keyRaw = keyFile.read(2 << 20);
+    keyFile.close();
+
+    for(int i = 0; i < 2; i++) {
+      for(int j = 0; j < 2; j++) {
+	key = QSslKey(keyRaw, (QSsl::KeyAlgorithm)j, (QSsl::EncodingFormat)i);
+	if(!key.isNull())
+	  goto showKey;
+      }
+    }
+  }
+
+ showKey:
+  showKeyState(key);
+  widgetHasChanged();
+}
+
+void IdentitiesSettingsPage::showKeyState(const QSslKey &key) {
+  if(key.isNull()) {
+    ui.keyTypeLabel->setText(tr("No Key loaded"));
+    ui.clearOrLoadKeyButton->setText(tr("Load"));
+  } else {
+    switch(key.algorithm()) {
+    case QSsl::Rsa:
+      ui.keyTypeLabel->setText(tr("RSA"));
+      break;
+    case QSsl::Dsa:
+      ui.keyTypeLabel->setText(tr("DSA"));
+      break;
+    default:
+      ui.keyTypeLabel->setText(tr("No Key Loaded"));
+    }
+    ui.clearOrLoadKeyButton->setText(tr("Clear"));
+  }
+  ui.keyTypeLabel->setProperty("sslKey", key.toPem());
+  ui.keyTypeLabel->setProperty("sslKeyType", (int)key.algorithm());
+}
+
+void IdentitiesSettingsPage::on_clearOrLoadCertButton_clicked() {
+  QSslCertificate cert;
+
+  if(ui.certOrgLabel->property("sslCert").toByteArray().isEmpty()) {
+    QString certFileName = QFileDialog::getOpenFileName(this, tr("Load a Certificate"), QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
+    QFile certFile(certFileName);
+    certFile.open(QIODevice::ReadOnly);
+    QByteArray certRaw = certFile.read(2 << 20);
+    certFile.close();
+
+    for(int i = 0; i < 2; i++) {
+      cert = QSslCertificate(certRaw, (QSsl::EncodingFormat)i);
+      if(cert.isValid())
+	break;
+    }
+  }
+
+  showCertState(cert);
+  widgetHasChanged();
+}
+
+void IdentitiesSettingsPage::showCertState(const QSslCertificate &cert) {
+  if(!cert.isValid()) {
+    ui.certOrgLabel->setText(tr("No Certificate loaded"));
+    ui.certCNameLabel->setText(tr("No Certificate loaded"));
+    ui.clearOrLoadCertButton->setText(tr("Load"));
+  } else {
+    ui.certOrgLabel->setText(cert.subjectInfo(QSslCertificate::Organization));
+    ui.certCNameLabel->setText(cert.subjectInfo(QSslCertificate::CommonName));
+    ui.clearOrLoadCertButton->setText(tr("Clear"));
+  }
+  ui.certOrgLabel->setProperty("sslCert", cert.toPem());
+ }
+
 /*****************************************************************************************/
 
-CreateIdentityDlg::CreateIdentityDlg(QAbstractItemModel *model, QWidget *parent) : QDialog(parent) {
+CreateIdentityDlg::CreateIdentityDlg(QAbstractItemModel *model, QWidget *parent)
+  : QDialog(parent)
+{
   ui.setupUi(this);
 
   ui.identityList->setModel(model);  // now we use the identity list of the main page... Trolltech <3
@@ -449,8 +568,9 @@ void CreateIdentityDlg::on_identityName_textChanged(const QString &text) {
 
 /*********************************************************************************************/
 
-SaveIdentitiesDlg::SaveIdentitiesDlg(const QList<Identity *> &toCreate, const QList<Identity *> &toUpdate, const QList<IdentityId> &toRemove, QWidget *parent)
-  : QDialog(parent) { //, toCreate(tocreate), toUpdate(toupdate), toRemove(toremove) {
+SaveIdentitiesDlg::SaveIdentitiesDlg(const QList<CertIdentity *> &toCreate, const QList<CertIdentity *> &toUpdate, const QList<IdentityId> &toRemove, QWidget *parent)
+  : QDialog(parent)
+{
   ui.setupUi(this);
   ui.abort->setIcon(SmallIcon("dialog-cancel"));
 
@@ -463,10 +583,10 @@ SaveIdentitiesDlg::SaveIdentitiesDlg(const QList<Identity *> &toCreate, const QL
     connect(Client::instance(), SIGNAL(identityCreated(IdentityId)), this, SLOT(clientEvent()));
     connect(Client::instance(), SIGNAL(identityRemoved(IdentityId)), this, SLOT(clientEvent()));
 
-    foreach(Identity *id, toCreate) {
+    foreach(CertIdentity *id, toCreate) {
       Client::createIdentity(*id);
     }
-    foreach(Identity *id, toUpdate) {
+    foreach(CertIdentity *id, toUpdate) {
       const Identity *cid = Client::identity(id->id());
       if(!cid) {
         qWarning() << "Invalid client identity!";
@@ -475,6 +595,7 @@ SaveIdentitiesDlg::SaveIdentitiesDlg(const QList<Identity *> &toCreate, const QL
       }
       connect(cid, SIGNAL(updatedRemotely()), this, SLOT(clientEvent()));
       Client::updateIdentity(id->id(), id->toVariantMap());
+      id->requestUpdateSslSettings();
     }
     foreach(IdentityId id, toRemove) {
       Client::removeIdentity(id);

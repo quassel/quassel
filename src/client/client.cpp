@@ -28,7 +28,7 @@
 #include "bufferviewmanager.h"
 #include "clientbacklogmanager.h"
 #include "clientirclisthelper.h"
-#include "identity.h"
+#include "clientidentity.h"
 #include "ircchannel.h"
 #include "ircuser.h"
 #include "message.h"
@@ -110,7 +110,7 @@ void Client::init() {
   p->attachSignal(this, SIGNAL(sendInput(BufferInfo, QString)));
   p->attachSignal(this, SIGNAL(requestNetworkStates()));
 
-  p->attachSignal(this, SIGNAL(requestCreateIdentity(const Identity &)), SIGNAL(createIdentity(const Identity &)));
+  p->attachSignal(this, SIGNAL(requestCreateIdentity(const Identity &, const QVariantMap &)), SIGNAL(createIdentity(const Identity &, const QVariantMap &)));
   p->attachSignal(this, SIGNAL(requestRemoveIdentity(IdentityId)), SIGNAL(removeIdentity(IdentityId)));
   p->attachSlot(SIGNAL(identityCreated(const Identity &)), this, SLOT(coreIdentityCreated(const Identity &)));
   p->attachSlot(SIGNAL(identityRemoved(IdentityId)), this, SLOT(coreIdentityRemoved(IdentityId)));
@@ -214,13 +214,16 @@ QList<IdentityId> Client::identityIds() {
   return instance()->_identities.keys();
 }
 
-const Identity * Client::identity(IdentityId id) {
+const Identity *Client::identity(IdentityId id) {
   if(instance()->_identities.contains(id)) return instance()->_identities[id];
   else return 0;
 }
 
-void Client::createIdentity(const Identity &id) {
-  emit instance()->requestCreateIdentity(id);
+void Client::createIdentity(const CertIdentity &id) {
+  QVariantMap additional;
+  additional["KeyPem"] = id.sslKey().toPem();
+  additional["CertPem"] = id.sslCert().toPem();
+  emit instance()->requestCreateIdentity(id, additional);
 }
 
 void Client::updateIdentity(IdentityId id, const QVariantMap &ser) {
@@ -346,10 +349,10 @@ void Client::disconnectedFromCore() {
   }
   Q_ASSERT(_networks.isEmpty());
 
-  QHash<IdentityId, Identity*>::iterator idIter = _identities.begin();
+  QHash<IdentityId, Identity *>::iterator idIter = _identities.begin();
   while(idIter != _identities.end()) {
+    emit identityRemoved(idIter.key());
     Identity *id = idIter.value();
-    emit identityRemoved(id->id());
     idIter = _identities.erase(idIter);
     id->deleteLater();
   }

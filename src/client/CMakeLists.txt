@@ -13,6 +13,7 @@ set(SOURCES
     buffersettings.cpp
     client.cpp
     clientbacklogmanager.cpp
+    clientidentity.cpp
     clientirclisthelper.cpp
     clientsettings.cpp
     clientsyncer.cpp
@@ -31,6 +32,7 @@ set(MOC_HDRS
     client.h
     clientbacklogmanager.h
     clientcoreinfo.h
+    clientidentity.h
     clientirclisthelper.h
     clientsyncer.h
     irclistmodel.h

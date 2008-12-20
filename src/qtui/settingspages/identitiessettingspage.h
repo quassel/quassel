@@ -18,10 +18,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _IDENTITIESSETTINGSPAGE_H_
-#define _IDENTITIESSETTINGSPAGE_H_
+#ifndef IDENTITIESSETTINGSPAGE_H
+#define IDENTITIESSETTINGSPAGE_H
 
-#include "identity.h"
+#include "clientidentity.h"
 #include "settingspage.h"
 
 #include "ui_identitiessettingspage.h"
@@ -34,105 +34,109 @@ class QAbstractItemModel;
 class IdentitiesSettingsPage : public SettingsPage {
   Q_OBJECT
 
-  public:
-    IdentitiesSettingsPage(QWidget *parent = 0);
+public:
+  IdentitiesSettingsPage(QWidget *parent = 0);
 
-    bool aboutToSave();
+  bool aboutToSave();
 
-  public slots:
-    void save();
-    void load();
+public slots:
+  void save();
+  void load();
 
-  private slots:
-    void coreConnectionStateChanged(bool);
-    void clientIdentityCreated(IdentityId);
-    void clientIdentityUpdated();
-    void clientIdentityRemoved(IdentityId);
+private slots:
+  void coreConnectionStateChanged(bool);
+  void clientIdentityCreated(IdentityId);
+  void clientIdentityUpdated();
+  void clientIdentityRemoved(IdentityId);
 
-    void on_identityList_currentIndexChanged(int index);
+  void on_identityList_currentIndexChanged(int index);
 
-    void on_addIdentity_clicked();
-    void on_deleteIdentity_clicked();
-    void on_renameIdentity_clicked();
+  void on_addIdentity_clicked();
+  void on_deleteIdentity_clicked();
+  void on_renameIdentity_clicked();
 
-    void on_addNick_clicked();
-    void on_deleteNick_clicked();
-    void on_renameNick_clicked();
-    void on_nickUp_clicked();
-    void on_nickDown_clicked();
+  void on_addNick_clicked();
+  void on_deleteNick_clicked();
+  void on_renameNick_clicked();
+  void on_nickUp_clicked();
+  void on_nickDown_clicked();
 
-    void widgetHasChanged();
-    void setWidgetStates();
+  void on_continueUnsecured_clicked();
+  void on_clearOrLoadKeyButton_clicked();
+  void on_clearOrLoadCertButton_clicked();
+  void widgetHasChanged();
+  void setWidgetStates();
 
-  private:
-    Ui::IdentitiesSettingsPage ui;
+private:
+  Ui::IdentitiesSettingsPage ui;
 
-    QHash<IdentityId, Identity *> identities;
-    IdentityId currentId;
+  QHash<IdentityId, CertIdentity *> identities;
+  IdentityId currentId;
 
-    QList<IdentityId> changedIdentities;  // for setting the widget changed state
-    QList<IdentityId> deletedIdentities;
+  QList<IdentityId> changedIdentities;  // for setting the widget changed state
+  QList<IdentityId> deletedIdentities;
 
-    void insertIdentity(Identity *identity);
-    void removeIdentity(Identity *identity);
-    void renameIdentity(IdentityId id, const QString &newName);
-    void displayIdentity(Identity *, bool dontsave = false);
-    void saveToIdentity(Identity *);
+  bool _editSsl;
 
-    bool testHasChanged();
+  void insertIdentity(CertIdentity *identity);
+  void removeIdentity(Identity *identity);
+  void renameIdentity(IdentityId id, const QString &newName);
+  void displayIdentity(CertIdentity *, bool dontsave = false);
+  void saveToIdentity(CertIdentity *);
+
+  void showKeyState(const QSslKey &key);
+  void showCertState(const QSslCertificate &cert);
+
+  bool testHasChanged();
 };
 
 class CreateIdentityDlg : public QDialog {
   Q_OBJECT
 
-  public:
-    CreateIdentityDlg(QAbstractItemModel *model, QWidget *parent = 0);
+public:
+  CreateIdentityDlg(QAbstractItemModel *model, QWidget *parent = 0);
 
-    QString identityName() const;
-    IdentityId duplicateId() const;
+  QString identityName() const;
+  IdentityId duplicateId() const;
 
-  private slots:
-    void on_identityName_textChanged(const QString &text);
+private slots:
+  void on_identityName_textChanged(const QString &text);
 
-  private:
-    Ui::CreateIdentityDlg ui;
+private:
+  Ui::CreateIdentityDlg ui;
 };
 
 class SaveIdentitiesDlg : public QDialog {
   Q_OBJECT
 
-  public:
-    SaveIdentitiesDlg(const QList<Identity *> &toCreate, const QList<Identity *> &toUpdate, const QList<IdentityId> &toRemove, QWidget *parent = 0);
+public:
+  SaveIdentitiesDlg(const QList<CertIdentity *> &toCreate, const QList<CertIdentity *> &toUpdate, const QList<IdentityId> &toRemove, QWidget *parent = 0);
 
-  private slots:
-    void clientEvent();
+private slots:
+  void clientEvent();
 
-  private:
-    Ui::SaveIdentitiesDlg ui;
+private:
+  Ui::SaveIdentitiesDlg ui;
 
-    //QList<Identity *> toCreate, toUpdate;
-    //QList<IdentityId> toRemove;
-
-    int numevents, rcvevents;
-
+  int numevents, rcvevents;
 };
 
 class NickEditDlg : public QDialog {
   Q_OBJECT
 
-  public:
-    NickEditDlg(const QString &oldnick, const QStringList &existing = QStringList(), QWidget *parent = 0);
+public:
+  NickEditDlg(const QString &oldnick, const QStringList &existing = QStringList(), QWidget *parent = 0);
 
-    QString nick() const;
+  QString nick() const;
 
-  private slots:
-    void on_nickEdit_textChanged(const QString &);
+private slots:
+  void on_nickEdit_textChanged(const QString &);
 
-  private:
-    Ui::NickEditDlg ui;
+private:
+  Ui::NickEditDlg ui;
 
-    QString oldNick;
-    QStringList existing;
+  QString oldNick;
+  QStringList existing;
 
 };
 

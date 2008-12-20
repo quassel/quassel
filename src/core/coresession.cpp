@@ -30,10 +30,10 @@
 #include "coreirclisthelper.h"
 #include "storage.h"
 
+#include "coreidentity.h"
 #include "corenetwork.h"
 #include "ircuser.h"
 #include "ircchannel.h"
-#include "identity.h"
 
 #include "util.h"
 #include "coreusersettings.h"
@@ -64,7 +64,7 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
 
   p->attachSignal(this, SIGNAL(identityCreated(const Identity &)));
   p->attachSignal(this, SIGNAL(identityRemoved(IdentityId)));
-  p->attachSlot(SIGNAL(createIdentity(const Identity &)), this, SLOT(createIdentity(const Identity &)));
+  p->attachSlot(SIGNAL(createIdentity(const Identity &, const QVariantMap &)), this, SLOT(createIdentity(const Identity &, const QVariantMap &)));
   p->attachSlot(SIGNAL(removeIdentity(IdentityId)), this, SLOT(removeIdentity(IdentityId)));
 
   p->attachSignal(this, SIGNAL(networkCreated(NetworkId)));
@@ -117,7 +117,7 @@ CoreNetwork *CoreSession::network(NetworkId id) const {
   return 0;
 }
 
-Identity *CoreSession::identity(IdentityId id) const {
+CoreIdentity *CoreSession::identity(IdentityId id) const {
   if(_identities.contains(id)) return _identities[id];
   return 0;
 }
@@ -126,27 +126,13 @@ void CoreSession::loadSettings() {
   CoreUserSettings s(user());
 
   foreach(IdentityId id, s.identityIds()) {
-    Identity *i = new Identity(s.identity(id), this);
-    if(!i->isValid()) {
-      qWarning() << "Invalid identity! Removing...";
-      s.removeIdentity(id);
-      delete i;
-      continue;
-    }
-    if(_identities.contains(i->id())) {
-      qWarning() << "Duplicate identity, ignoring!";
-      delete i;
-      continue;
-    }
-    connect(i, SIGNAL(updated(const QVariantMap &)), this, SLOT(identityUpdated(const QVariantMap &)));
-    _identities[i->id()] = i;
-    signalProxy()->synchronize(i);
+    createIdentity(s.identity(id));
   }
   if(!_identities.count()) {
-    Identity i(1);
-    i.setToDefaults();
-    i.setIdentityName(tr("Default Identity"));
-    createIdentity(i);
+    Identity identity;
+    identity.setToDefaults();
+    identity.setIdentityName(tr("Default Identity"));
+    createIdentity(identity);
   }
 
   foreach(NetworkInfo info, Core::networks(user())) {
@@ -279,21 +265,35 @@ void CoreSession::scriptRequest(QString script) {
 
 /*** Identity Handling ***/
 
-void CoreSession::createIdentity(const Identity &id) {
-  // find free ID
-  int i;
-  for(i = 1; i <= _identities.count(); i++) {
-    if(!_identities.keys().contains(i)) break;
+void CoreSession::createIdentity(const Identity &identity, const QVariantMap &additional) {
+  if(_identities.contains(identity.id())) {
+    qWarning() << "duplicate Identity:" << identity.id();
+    return;
   }
-  //qDebug() << "found free id" << i;
-  Identity *newId = new Identity(id, this);
-  newId->setId(i);
-  _identities[i] = newId;
-  signalProxy()->synchronize(newId);
-  CoreUserSettings s(user());
-  s.storeIdentity(*newId);
-  connect(newId, SIGNAL(updated(const QVariantMap &)), this, SLOT(identityUpdated(const QVariantMap &)));
-  emit identityCreated(*newId);
+
+  int id = identity.id().toInt();
+  bool newId = !identity.isValid();
+  CoreIdentity *coreIdentity = new CoreIdentity(identity, signalProxy(), this);
+  if(additional.contains("KeyPem"))
+    coreIdentity->setSslKey(additional["KeyPem"].toByteArray());
+  if(additional.contains("CertPem"))
+    coreIdentity->setSslCert(additional["CertPem"].toByteArray());
+  if(newId) {
+    // find free ID
+    for(id = 1; id <= _identities.count(); id++) {
+      if(!_identities.keys().contains(id))
+	break;
+    }
+    coreIdentity->setId(id);
+    coreIdentity->save();
+  }
+
+  _identities[id] = coreIdentity;
+  qDebug() << id << coreIdentity->id();
+  signalProxy()->synchronize(coreIdentity);
+
+  if(newId)
+    emit identityCreated(*coreIdentity);
 }
 
 void CoreSession::removeIdentity(IdentityId id) {
@@ -304,16 +304,6 @@ void CoreSession::removeIdentity(IdentityId id) {
     s.removeIdentity(id);
     i->deleteLater();
   }
-}
-
-void CoreSession::identityUpdated(const QVariantMap &data) {
-  IdentityId id = data.value("identityId", 0).value<IdentityId>();
-  if(!id.isValid() || !_identities.contains(id)) {
-    qWarning() << "Update request for unknown identity received!";
-    return;
-  }
-  CoreUserSettings s(user());
-  s.storeIdentity(*_identities.value(id));
 }
 
 /*** Network Handling ***/

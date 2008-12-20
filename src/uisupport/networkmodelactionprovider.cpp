@@ -27,7 +27,7 @@
 #include "buffermodel.h"
 #include "buffersettings.h"
 #include "iconloader.h"
-#include "identity.h"
+#include "clientidentity.h"
 #include "network.h"
 #include "util.h"
 

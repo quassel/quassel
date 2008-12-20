@@ -22,7 +22,7 @@
 #include "util.h"
 
 #include "ctcphandler.h"
-#include "identity.h"
+#include "coreidentity.h"
 #include "ircuser.h"
 
 #include <QDebug>
