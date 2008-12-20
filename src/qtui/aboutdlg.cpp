@@ -74,13 +74,15 @@ QString AboutDlg::authors() const {
 
 QString AboutDlg::contributors() const {
   QString res;
-  res = tr("We would like to thank the following contributors (in alphabetical order) and everybody we forgot to mention here:") + "<br>"
+  res = tr("We would like to thank the following contributors (in alphabetical order) and everybody we forgot to mention here:")
+      + QString::fromUtf8("<br>"
            "<dl>"
            "<dt><b>Daniel \"al\" Albers</b></dt><dd>German translation, various fixes</dd>"
            "<dt><b>Terje \"tan\" Andersen</b></dt><dd>Norwegian translation, documentation</dd>"
            "<dt><b>Kevin \"KRF\" Funk</b></dt><dd>German translation</dd>"
            "<dt><b>Marco \"kaffeedoktor\" Genise</b></dt><dd>Ideas, hacking, motivation</dd>"
            "<dt><b>Sebastian \"seezer\" Goth</b></dt><dd>Various improvements and features</dd>"
+           "<dt><b>H. İbrahim \"igungor\" Güngör</b></dt><dd>Turkish translation</dd>"
            "<dt><b>Edward \"Aides\" Toroshchin</b></dt><dd>Russian translation</dd>"
            "<dt><b>John \"nox-Hand\" Hand</b></dt><dd>Gorgeous application and tray icons</dd>"
            "<dt><b>Jonas \"Dante\" Heese</b></dt><dd>Project founder, various improvements</dd>"
@@ -95,7 +97,7 @@ QString AboutDlg::contributors() const {
            "<dt><b>Adam \"adamt\" Tulinius</b></dt><dd>Early beta tester and bughunter, Danish translation</dd>"
            "<dt><b>Pavel \"int\" Volkovitskiy</b></dt><dd>Early beta tester and bughunter</dd>"
            "</dl><br>"
-           "...and anybody else finding and reporting bugs, giving feedback, helping others and being part of the community!";
+           "...and anybody else finding and reporting bugs, giving feedback, helping others and being part of the community!");
 
   return res;
 }
