@@ -16,7 +16,9 @@ Without further ado, let's start:
 Version 0.3.2 (not yet released)
 ================================
 
+* Chat Monitor configuration dialog
 * Audio notifications
+* Clickable channel names in ChatView
 * Improved context menus in ChatView
 * Respect the separate clipboards (Ctrl+C / X11 selection) on X11
 * Improved mouse handling:
