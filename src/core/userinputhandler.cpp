@@ -34,26 +34,22 @@ UserInputHandler::UserInputHandler(CoreNetwork *parent)
 }
 
 void UserInputHandler::handleUserInput(const BufferInfo &bufferInfo, const QString &msg_) {
-  try {
-    if(msg_.isEmpty())
-      return;
-    QString cmd;
-    QString msg = msg_;
-    // leading slashes indicate there's a command to call unless there is another one in the first section (like a path /proc/cpuinfo)
-    int secondSlashPos = msg.indexOf('/', 1);
-    int firstSpacePos = msg.indexOf(' ');
-    if(!msg.startsWith('/') || (secondSlashPos != -1 && (secondSlashPos < firstSpacePos || firstSpacePos == -1))) {
-      if(msg.startsWith("//"))
-	msg.remove(0, 1); // //asdf is transformed to /asdf
-      cmd = QString("SAY");
-    } else {
-      cmd = msg.section(' ', 0, 0).remove(0, 1).toUpper();
-      msg = msg.section(' ', 1);
-    }
-    handle(cmd, Q_ARG(BufferInfo, bufferInfo), Q_ARG(QString, msg));
-  } catch(Exception e) {
-    emit displayMsg(Message::Error, bufferInfo.type(), "", e.msg());
+  if(msg_.isEmpty())
+    return;
+  QString cmd;
+  QString msg = msg_;
+  // leading slashes indicate there's a command to call unless there is another one in the first section (like a path /proc/cpuinfo)
+  int secondSlashPos = msg.indexOf('/', 1);
+  int firstSpacePos = msg.indexOf(' ');
+  if(!msg.startsWith('/') || (secondSlashPos != -1 && (secondSlashPos < firstSpacePos || firstSpacePos == -1))) {
+    if(msg.startsWith("//"))
+      msg.remove(0, 1); // //asdf is transformed to /asdf
+    cmd = QString("SAY");
+  } else {
+    cmd = msg.section(' ', 0, 0).remove(0, 1).toUpper();
+    msg = msg.section(' ', 1);
   }
+  handle(cmd, Q_ARG(BufferInfo, bufferInfo), Q_ARG(QString, msg));
 }
 
 // ====================

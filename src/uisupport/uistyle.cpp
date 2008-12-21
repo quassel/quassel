@@ -252,7 +252,7 @@ UiStyle::StyledString UiStyle::styleString(const QString &s_) {
       if(s[pos+1] == 'D') code += s[pos+2];
       FormatType ftype = formatType(code);
       if(ftype == Invalid) {
-        qWarning(qPrintable(QString("Invalid format code in string: %1").arg(s)));
+        qWarning() << (QString("Invalid format code in string: %1").arg(s));
         continue;
       }
       curfmt ^= ftype;

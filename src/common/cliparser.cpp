@@ -178,7 +178,7 @@ void CliParser::usage() {
     if(arg.value().type == CliParserArg::CliArgOption && !arg.value().def.isNull()) {
       output.append(". Default is: ").append(arg.value().def);
     }
-    qWarning(output.toLatin1());
+    qWarning() << output.toLatin1();
   }
 }
 

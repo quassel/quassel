@@ -311,7 +311,7 @@ QVariant BufferViewFilter::data(const QModelIndex &index, int role) const {
 }
 
 QVariant BufferViewFilter::icon(const QModelIndex &index) const {
-  if(!_showUserStateIcons || config() && config()->disableDecoration())
+  if(!_showUserStateIcons || (config() && config()->disableDecoration()))
     return QVariant();
 
   if(index.column() != 0)

@@ -35,11 +35,11 @@
 
 int main(int argc, char **argv) {
 
-#  ifdef BUILD_CORE
+#  if defined BUILD_CORE
     CoreApplication app(argc, argv);
-#  elif BUILD_QTUI
+#  elif defined BUILD_QTUI
     QtUiApplication app(argc, argv);
-#  elif BUILD_MONO
+#  elif defined BUILD_MONO
     MonolithicApplication app(argc, argv);
 #  endif
 
