@@ -76,7 +76,10 @@ IdentitiesSettingsPage::IdentitiesSettingsPage(QWidget *parent)
   connect(ui.nicknameList, SIGNAL(itemSelectionChanged()), this, SLOT(setWidgetStates()));
 
 #ifdef HAVE_SSL
-  ui.keyAndCertSettings->setCurrentIndex(1);
+  if(Client::signalProxy()->isSecure())
+    ui.keyAndCertSettings->setCurrentIndex(2);
+  else
+    ui.keyAndCertSettings->setCurrentIndex(1);
 #else
   ui.keyAndCertSettings->setCurrentIndex(0);
 #endif

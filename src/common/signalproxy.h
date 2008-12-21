@@ -106,6 +106,8 @@ public:
    */
   static bool readDataFromDevice(QIODevice *dev, quint32 &blockSize, QVariant &item, bool compressed = false);
 
+  bool isSecure() const { return _secure; }
+  
   static QString methodBaseName(const QMetaMethod &method);
 
   const QList<int> &argTypes(QObject *obj, int methodId);
@@ -142,14 +144,18 @@ private slots:
   void sendHeartBeat();
   void receiveHeartBeat(AbstractPeer *peer, const QVariantList &params);
   void receiveHeartBeatReply(AbstractPeer *peer, const QVariantList &params);
-  
+
+  void updateSecureState();
+
 signals:
   void peerRemoved(QIODevice *dev);
   void connected();
   void disconnected();
   void objectInitialized(SyncableObject *);
   void lagUpdated(int lag);
-  
+  void securityChanged(bool);
+  void secureStateChanged(bool);
+
 private:
   void init();
   void initServer();
@@ -205,6 +211,7 @@ private:
     virtual ~AbstractPeer() {}
     inline PeerType type() const { return _type; }
     virtual void dispatchSignal(const RequestType &requestType, const QVariantList &params) = 0;
+    virtual bool isSecure() const = 0;
   private:
     PeerType _type;
   };
@@ -213,6 +220,7 @@ private:
   public:
     IODevicePeer(QIODevice *device, bool compress) : AbstractPeer(AbstractPeer::IODevicePeer), _device(device), byteCount(0), usesCompression(compress), sentHeartBeats(0), lag(0) {}
     virtual void dispatchSignal(const RequestType &requestType, const QVariantList &params);
+    virtual bool isSecure() const;
     inline void dispatchPackedFunc(const QVariant &packedFunc) { SignalProxy::writeDataToDevice(_device, packedFunc, usesCompression); }
     QString address() const;
     inline bool isOpen() const { return _device->isOpen(); }
@@ -231,6 +239,7 @@ private:
   public:
     SignalProxyPeer(SignalProxy *sender, SignalProxy *receiver) : AbstractPeer(AbstractPeer::SignalProxyPeer), sender(sender), receiver(receiver) {}
     virtual void dispatchSignal(const RequestType &requestType, const QVariantList &params);
+    virtual inline bool isSecure() const { return true; }
   private:
     SignalProxy *sender;
     SignalProxy *receiver;
@@ -259,6 +268,8 @@ private:
 
   ProxyMode _proxyMode;
   QTimer _heartBeatTimer;
+
+  bool _secure; // determines if all connections are in a secured state (using ssl or internal connections)
   
   friend class SignalRelay;
 };

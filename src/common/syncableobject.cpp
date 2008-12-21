@@ -100,7 +100,6 @@ QVariantMap SyncableObject::toVariantMap() {
     QMetaObject::invokeMethod(this, methodname.toAscii(), genericvalue);
 
     properties[SignalProxy::methodBaseName(method)] = value;
-    // qDebug() << ">>> SYNC:" << methodBaseName(method) << value;
   }
   // properties["Payload"] = QByteArray(10000000, 'a');  // for testing purposes
   return properties;

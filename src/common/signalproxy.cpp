@@ -32,6 +32,7 @@
 #include <QMetaMethod>
 #include <QMetaProperty>
 #include <QRegExp>
+#include <QSslSocket>
 #include <QThread>
 #include <QTime>
 #include <QEvent>
@@ -212,6 +213,18 @@ void SignalProxy::IODevicePeer::dispatchSignal(const RequestType &requestType, c
   dispatchPackedFunc(QVariant(packedFunc));
 }
 
+bool SignalProxy::IODevicePeer::isSecure() const {
+  QSslSocket *sslSocket = qobject_cast<QSslSocket *>(_device);
+  if(sslSocket)
+    return sslSocket->isEncrypted() || sslSocket->localAddress() == QHostAddress::LocalHost || sslSocket->localAddress() == QHostAddress::LocalHostIPv6;
+
+  QAbstractSocket *socket = qobject_cast<QAbstractSocket *>(_device);
+  if(socket)
+    return socket->localAddress() == QHostAddress::LocalHost || socket->localAddress() == QHostAddress::LocalHostIPv6;
+
+  return false;
+}
+
 QString SignalProxy::IODevicePeer::address() const {
   QAbstractSocket *socket = qobject_cast<QAbstractSocket *>(_device);
   if(socket)
@@ -291,6 +304,8 @@ void SignalProxy::setProxyMode(ProxyMode mode) {
 void SignalProxy::init() {
   connect(&_heartBeatTimer, SIGNAL(timeout()), this, SLOT(sendHeartBeat()));
   _heartBeatTimer.start(30 * 1000);
+  _secure = false;
+  updateSecureState();
 }
 
 void SignalProxy::initServer() {
@@ -320,6 +335,11 @@ bool SignalProxy::addPeer(QIODevice* iodev) {
   connect(iodev, SIGNAL(disconnected()), this, SLOT(removePeerBySender()));
   connect(iodev, SIGNAL(readyRead()), this, SLOT(dataAvailable()));
 
+  QSslSocket *sslSocket = qobject_cast<QSslSocket *>(iodev);
+  if(sslSocket) {
+    connect(iodev, SIGNAL(encrypted()), this, SLOT(updateSecureState()));
+  }
+
   if(!iodev->parent())
     iodev->setParent(this);
 
@@ -328,6 +348,7 @@ bool SignalProxy::addPeer(QIODevice* iodev) {
   if(_peers.count() == 1)
     emit connected();
 
+  updateSecureState();
   return true;
 }
 
@@ -355,6 +376,7 @@ bool SignalProxy::addPeer(SignalProxy* proxy) {
   if(_peers.count() == 1)
     emit connected();
 
+  updateSecureState();
   return true;
 }
 
@@ -396,6 +418,8 @@ void SignalProxy::removePeer(QObject* dev) {
     dev->deleteLater();
 
   delete peer;
+
+  updateSecureState();
 
   if(_peers.isEmpty())
     emit disconnected();
@@ -1122,7 +1146,7 @@ bool SignalProxy::methodsMatch(const QMetaMethod &signal, const QMetaMethod &slo
     signalsuffix = signalsuffix.mid(baseName.count()).toLower();
     slotprefix = slotprefix.left(slotprefix.count() - baseName.count()).toLower();
   }
-  
+
   uint sizediff = qAbs(slotprefix.size() - signalsuffix.size());
   int ratio = editingDistance(slotprefix, signalsuffix) - sizediff;
 //   if(ratio < 2) {
@@ -1286,4 +1310,17 @@ void SignalProxy::dumpSyncMap(SyncableObject *object) {
     qDebug() << qPrintable(QString("%1 --> %2 %3").arg(QString(iter.key()), 40).arg(iter.value()).arg(QString(meta->method(iter.value()).signature())));
     iter++;
   }
+}
+
+void SignalProxy::updateSecureState() {
+  bool wasSecure = _secure;
+
+  _secure = !_peers.isEmpty();
+  PeerHash::const_iterator peerIter;
+  for(peerIter = _peers.constBegin(); peerIter != _peers.constEnd(); peerIter++) {
+    _secure &= (*peerIter)->isSecure();
+  }
+
+  if(wasSecure != _secure)
+    emit secureStateChanged(_secure);
 }
