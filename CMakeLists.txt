@@ -6,6 +6,7 @@
 # -DWITH_DBUS=OFF     : Disable D-Bus support (dbus notifications)
 # -DWITH_WEBKIT=OFF   : Disable WebKit support (link previews)
 # -DWITH_PHONON=OFF   : Disable Phonon support (audio notifications)
+# -DWITH_KDE=ON       : Enable KDE4 support
 # -DOXYGEN_ICONS=(Builtin|External)  : If "Builtin" (the default), compile our Oxygen Icon Theme subset into the binary
 #                                    : If "External", we assume Oxygen is already installed on the system
 # -DQUASSEL_ICONS=(Builtin|External) : If "Builtin" (the default), put our own icons into the binary
@@ -37,6 +38,7 @@ option(WITH_OPENSSL  "Enable OpenSSL support if present on the system"	ON)
 option(WITH_DBUS     "Enable D-Bus support if present on the system"	ON)
 option(WITH_WEBKIT   "Enable WebKit support (for link previews)"	ON)
 option(WITH_PHONON   "Enable Phonon support (for audio notifications)"	ON)
+option(WITH_KDE      "Enable KDE4 integration"				OFF)
 
 option(STATIC        "Enable static building (might not be portable)" OFF)
 option(DEPLOY        "Mac OS X only! Adds required libs to bundle resources and create a dmg. Note: requires Qt to be built with 10.4u SDK" OFF)
@@ -166,6 +168,23 @@ if(WITH_PHONON)
 else(WITH_PHONON)
   message(STATUS "Disabling Phonon support")
 endif(WITH_PHONON)
+
+# Setup KDE4 support
+if(WITH_KDE)
+  find_package(KDE4)
+  if(KDE4_FOUND)
+    message(STATUS "Enabling KDE4 integration")
+    include_directories(${KDE4_INCLUDES})
+    add_definitions(-DHAVE_KDE ${KDE4_DEFINITIONS})
+    set(HAVE_KDE 1)
+    set(MOC_DEFINES ${MOC_DEFINES} -DHAVE_KDE)
+    set(QUASSEL_KDE_LIBRARIES ${KDE4_KDECORE_LIBS} ${KDE4_KDEUI_LIBRARY})
+  else(KDE4_FOUND)
+    message(STATUS "KDE4 not found, disabling KDE integration")
+  endif(KDE4_FOUND)
+else(WITH_KDE)
+  message(STATUS "Disabling KDE4 integration")
+endif(WITH_KDE)
 
 # Set global buildflags
 # This is very much non-portable, so don't use -DSTATIC until you know what
