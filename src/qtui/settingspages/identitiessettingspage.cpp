@@ -20,11 +20,12 @@
 
 #include "identitiessettingspage.h"
 
-#include <QInputDialog>
-#include <QFileDialog>
 #include <QDesktopServices>
+#include <QDragEnterEvent>
+#include <QDropEvent>
+#include <QFileDialog>
+#include <QInputDialog>
 #include <QMessageBox>
-#include <QSslKey>
 
 #include "client.h"
 #include "iconloader.h"
@@ -75,18 +76,14 @@ IdentitiesSettingsPage::IdentitiesSettingsPage(QWidget *parent)
 
   connect(ui.nicknameList, SIGNAL(itemSelectionChanged()), this, SLOT(setWidgetStates()));
 
-#ifdef HAVE_SSL
-  if(Client::signalProxy()->isSecure())
-    ui.keyAndCertSettings->setCurrentIndex(2);
-  else
-    ui.keyAndCertSettings->setCurrentIndex(1);
-#else
-  ui.keyAndCertSettings->setCurrentIndex(0);
-#endif
-
   // we would need this if we enabled drag and drop in the nicklist...
   //connect(ui.nicknameList, SIGNAL(rowsInserted(const QModelIndex &, int, int)), this, SLOT(setWidgetStates()));
   //connect(ui.nicknameList->model(), SIGNAL(rowsInserted(const QModelIndex &, int, int)), this, SLOT(nicklistHasChanged()));
+
+  ui.sslKeyGroupBox->setAcceptDrops(true);
+  ui.sslKeyGroupBox->installEventFilter(this);
+  ui.sslCertGroupBox->setAcceptDrops(true);
+  ui.sslCertGroupBox->installEventFilter(this);
 }
 
 void IdentitiesSettingsPage::setWidgetStates() {
@@ -102,9 +99,17 @@ void IdentitiesSettingsPage::setWidgetStates() {
   ui.deleteNick->setEnabled(ui.nicknameList->count() > 1);
 }
 
-void IdentitiesSettingsPage::coreConnectionStateChanged(bool state) {
-  this->setEnabled(state);
-  if(state) {
+void IdentitiesSettingsPage::coreConnectionStateChanged(bool connected) {
+  setEnabled(connected);
+  if(connected) {
+#ifdef HAVE_SSL
+    if(Client::signalProxy()->isSecure())
+      ui.keyAndCertSettings->setCurrentIndex(2);
+    else
+      ui.keyAndCertSettings->setCurrentIndex(1);
+#else
+    ui.keyAndCertSettings->setCurrentIndex(0);
+#endif
     load();
   } else {
     // reset
@@ -462,28 +467,77 @@ void IdentitiesSettingsPage::on_continueUnsecured_clicked() {
   ui.keyAndCertSettings->setCurrentIndex(2);
 }
 
+bool IdentitiesSettingsPage::eventFilter(QObject *watched, QEvent *event) {
+  bool isCert = (watched == ui.sslCertGroupBox);
+  switch(event->type()) {
+  case QEvent::DragEnter:
+    sslDragEnterEvent(static_cast<QDragEnterEvent *>(event));
+    return true;
+  case QEvent::Drop:
+    sslDropEvent(static_cast<QDropEvent *>(event), isCert);
+    return true;
+  default:
+    return false;
+  }
+}
+
+void IdentitiesSettingsPage::sslDragEnterEvent(QDragEnterEvent *event) {
+  if(event->mimeData()->hasFormat("text/uri-list") || event->mimeData()->hasFormat("text/uri")) {
+    event->setDropAction(Qt::CopyAction);
+    event->accept();
+  }
+}
+
+void IdentitiesSettingsPage::sslDropEvent(QDropEvent *event, bool isCert) {
+  QByteArray rawUris;
+  if(event->mimeData()->hasFormat("text/uri-list"))
+    rawUris = event->mimeData()->data("text/uri-list");
+  else
+    rawUris = event->mimeData()->data("text/uri");
+
+  QTextStream uriStream(rawUris);
+  QString filename = QUrl(uriStream.readLine()).toLocalFile();
+
+  if(isCert) {
+    QSslCertificate cert = certByFilename(filename);
+    if(cert.isValid())
+      showCertState(cert);
+  } else {
+    QSslKey key = keyByFilename(filename);
+    if(!key.isNull())
+      showKeyState(key);
+  }
+  event->accept();
+  widgetHasChanged();
+}
+
 void IdentitiesSettingsPage::on_clearOrLoadKeyButton_clicked() {
   QSslKey key;
 
-  if(ui.keyTypeLabel->property("sslKey").toByteArray().isEmpty()) {
-    QString keyFileName = QFileDialog::getOpenFileName(this, tr("Load a Key"), QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
-    QFile keyFile(keyFileName);
-    keyFile.open(QIODevice::ReadOnly);
-    QByteArray keyRaw = keyFile.read(2 << 20);
-    keyFile.close();
+  if(ui.keyTypeLabel->property("sslKey").toByteArray().isEmpty())
+    key = keyByFilename(QFileDialog::getOpenFileName(this, tr("Load a Key"), QDesktopServices::storageLocation(QDesktopServices::HomeLocation)));
 
-    for(int i = 0; i < 2; i++) {
-      for(int j = 0; j < 2; j++) {
-	key = QSslKey(keyRaw, (QSsl::KeyAlgorithm)j, (QSsl::EncodingFormat)i);
-	if(!key.isNull())
-	  goto showKey;
-      }
-    }
-  }
-
- showKey:
   showKeyState(key);
   widgetHasChanged();
+}
+
+QSslKey IdentitiesSettingsPage::keyByFilename(const QString &filename) {
+  QSslKey key;
+
+  QFile keyFile(filename);
+  keyFile.open(QIODevice::ReadOnly);
+  QByteArray keyRaw = keyFile.read(2 << 20);
+  keyFile.close();
+
+  for(int i = 0; i < 2; i++) {
+    for(int j = 0; j < 2; j++) {
+      key = QSslKey(keyRaw, (QSsl::KeyAlgorithm)j, (QSsl::EncodingFormat)i);
+      if(!key.isNull())
+	goto returnKey;
+    }
+  }
+ returnKey:
+  return key;
 }
 
 void IdentitiesSettingsPage::showKeyState(const QSslKey &key) {
@@ -510,22 +564,26 @@ void IdentitiesSettingsPage::showKeyState(const QSslKey &key) {
 void IdentitiesSettingsPage::on_clearOrLoadCertButton_clicked() {
   QSslCertificate cert;
 
-  if(ui.certOrgLabel->property("sslCert").toByteArray().isEmpty()) {
-    QString certFileName = QFileDialog::getOpenFileName(this, tr("Load a Certificate"), QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
-    QFile certFile(certFileName);
-    certFile.open(QIODevice::ReadOnly);
-    QByteArray certRaw = certFile.read(2 << 20);
-    certFile.close();
-
-    for(int i = 0; i < 2; i++) {
-      cert = QSslCertificate(certRaw, (QSsl::EncodingFormat)i);
-      if(cert.isValid())
-	break;
-    }
-  }
+  if(ui.certOrgLabel->property("sslCert").toByteArray().isEmpty())
+    cert = certByFilename(QFileDialog::getOpenFileName(this, tr("Load a Certificate"), QDesktopServices::storageLocation(QDesktopServices::HomeLocation)));
 
   showCertState(cert);
   widgetHasChanged();
+}
+
+QSslCertificate IdentitiesSettingsPage::certByFilename(const QString &filename) {
+  QSslCertificate cert;
+  QFile certFile(filename);
+  certFile.open(QIODevice::ReadOnly);
+  QByteArray certRaw = certFile.read(2 << 20);
+  certFile.close();
+
+  for(int i = 0; i < 2; i++) {
+    cert = QSslCertificate(certRaw, (QSsl::EncodingFormat)i);
+    if(cert.isValid())
+      break;
+  }
+  return cert;
 }
 
 void IdentitiesSettingsPage::showCertState(const QSslCertificate &cert) {

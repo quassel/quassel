@@ -29,6 +29,9 @@
 #include "ui_saveidentitiesdlg.h"
 #include "ui_nickeditdlg.h"
 
+#include <QSslCertificate>
+#include <QSslKey>
+
 class QAbstractItemModel;
 
 class IdentitiesSettingsPage : public SettingsPage {
@@ -42,6 +45,9 @@ public:
 public slots:
   void save();
   void load();
+
+protected:
+  virtual bool eventFilter(QObject *watched, QEvent *event);
 
 private slots:
   void coreConnectionStateChanged(bool);
@@ -67,6 +73,9 @@ private slots:
   void widgetHasChanged();
   void setWidgetStates();
 
+  void sslDragEnterEvent(QDragEnterEvent *event);
+  void sslDropEvent(QDropEvent *event, bool isCert);
+
 private:
   Ui::IdentitiesSettingsPage ui;
 
@@ -84,7 +93,9 @@ private:
   void displayIdentity(CertIdentity *, bool dontsave = false);
   void saveToIdentity(CertIdentity *);
 
+  QSslKey keyByFilename(const QString &filename);
   void showKeyState(const QSslKey &key);
+  QSslCertificate certByFilename(const QString &filename);
   void showCertState(const QSslCertificate &cert);
 
   bool testHasChanged();

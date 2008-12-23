@@ -697,7 +697,7 @@ Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificat
             <number>0</number>
            </property>
            <item>
-            <widget class="QGroupBox" name="groupBox_4" >
+            <widget class="QGroupBox" name="sslKeyGroupBox" >
              <property name="styleSheet" >
               <string notr="true" />
              </property>
@@ -753,7 +753,7 @@ Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificat
             </widget>
            </item>
            <item>
-            <widget class="QGroupBox" name="groupBox_7" >
+            <widget class="QGroupBox" name="sslCertGroupBox" >
              <property name="title" >
               <string>Use SSL Certificate</string>
              </property>
