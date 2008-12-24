@@ -32,7 +32,7 @@
 #include "util.h"
 
 QHash<QString, ActionCollection *> QtUi::_actionCollections;
-MainWin *QtUi::_mainWin = 0;
+QPointer<MainWin> QtUi::_mainWin = 0;
 QList<AbstractNotificationBackend *> QtUi::_notificationBackends;
 QList<AbstractNotificationBackend::Notification> QtUi::_notifications;
 QtUiStyle *QtUi::_style = 0;

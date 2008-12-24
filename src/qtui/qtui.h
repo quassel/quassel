@@ -24,6 +24,7 @@
 #include "quasselui.h"
 
 #include "abstractnotificationbackend.h"
+#include "mainwin.h"
 
 class ActionCollection;
 class MainWin;
@@ -78,7 +79,7 @@ protected slots:
 private:
   AbstractActionProvider *_actionProvider;
 
-  static MainWin *_mainWin;
+  static QPointer<MainWin> _mainWin;
   static QHash<QString, ActionCollection *> _actionCollections;
   static QtUiStyle *_style;
   static QList<AbstractNotificationBackend *> _notificationBackends;
