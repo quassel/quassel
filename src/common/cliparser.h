@@ -25,11 +25,16 @@
 #include <QStringList>
 #include <QHash>
 
-class CliParser{
-public:
-  inline CliParser() {};
+#ifdef HAVE_KDE
+#  include <KCmdLineOptions>
+#endif
 
-  bool parse(const QStringList &arguments);
+class CliParser {
+public:
+  CliParser();
+
+  bool init(const QStringList &arguments = QStringList());
+
   QString value(const QString &longName);
   bool isSet(const QString &longName);
   inline void addSwitch(const QString &longName, const char shortName = 0, const QString &help = QString()) {
@@ -64,6 +69,8 @@ private:
   };
 
   void addArgument(const QString &longName, const CliParserArg &arg);
+
+#ifndef HAVE_KDE
   bool addLongArg(const CliParserArg::CliArgType type, const QString &name, const QString &value = QString());
   bool addShortArg(const CliParserArg::CliArgType type, const char shortName, const QString &value = QString());
   QString escapedValue(const QString &value);
@@ -71,6 +78,10 @@ private:
 
   QStringList argsRaw;
   QHash<QString, CliParserArg> argsHash;
+
+#else
+  KCmdLineOptions _cmdLineOptions;
+#endif
 };
 
 #endif

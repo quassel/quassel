@@ -21,7 +21,12 @@
 #ifndef MAINWIN_H_
 #define MAINWIN_H_
 
-#include <QMainWindow>
+#ifdef HAVE_KDE
+#  include <KMainWindow>
+#else
+#  include <QMainWindow>
+#endif
+
 #include <QSystemTrayIcon>
 
 #include "qtui.h"
@@ -41,7 +46,12 @@ class QMenu;
 class QLabel;
 
 //!\brief The main window of Quassel's QtUi.
-class MainWin : public QMainWindow {
+class MainWin
+#ifdef HAVE_KDE
+: public KMainWindow {
+#else
+: public QMainWindow {
+#endif
   Q_OBJECT
 
   public:

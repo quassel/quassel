@@ -57,10 +57,9 @@ public:
     QString organizationDomain;
   };
 
-  void setupBuildInfo(const QString &generated);
-
   virtual ~Quassel();
 
+  static void setupBuildInfo(const QString &generated);
   static inline const BuildInfo & buildInfo();
   static inline RunMode runMode();
 
@@ -98,7 +97,7 @@ const Quassel::BuildInfo & Quassel::buildInfo() { return _buildInfo; }
 Quassel::RunMode Quassel::runMode() { return _runMode; }
 void Quassel::setRunMode(Quassel::RunMode mode) { _runMode = mode; }
 
-CliParser *Quassel::cliParser() { return _cliParser; }
+CliParser *Quassel::cliParser() { return _cliParser ? _cliParser : _cliParser = new CliParser(); }
 QString Quassel::optionValue(const QString &key) { return cliParser()->value(key); }
 bool Quassel::isOptionSet(const QString &key) { return cliParser()->isSet(key); }
 

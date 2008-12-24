@@ -19,6 +19,11 @@
  ***************************************************************************/
 #include "mainwin.h"
 
+#ifdef HAVE_KDE
+#  include <KMenuBar>
+#  include <KStatusBar>
+#endif
+
 #include "aboutdlg.h"
 #include "action.h"
 #include "actioncollection.h"
@@ -76,7 +81,11 @@
 #include "settingspages/notificationssettingspage.h"
 
 MainWin::MainWin(QWidget *parent)
+#ifdef HAVE_KDE
+  : KMainWindow(parent),
+#else
   : QMainWindow(parent),
+#endif
     coreLagLabel(new QLabel()),
     sslLabel(new QLabel()),
     msgProcessorStatusWidget(new MsgProcessorStatusWidget()),
@@ -159,7 +168,7 @@ MainWin::~MainWin() {
   QtUiSettings s;
   s.setValue("MainWinSize", size());
   s.setValue("MainWinPos", pos());
-  s.setValue("MainWinState", saveState());
+  s.setValue("MainWinState", saveState()); qDebug() << "fini!";
 }
 
 void MainWin::updateIcon() {

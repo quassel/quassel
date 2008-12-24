@@ -20,10 +20,44 @@
 #include "cliparser.h"
 
 #include <QDir>
+#include <QDebug>
 #include <QString>
 #include <QFileInfo>
-#include <QDebug>
 
+#ifdef HAVE_KDE
+#  include <KCmdLineArgs>
+#endif
+
+CliParser::CliParser() {
+
+}
+
+#ifdef HAVE_KDE
+void CliParser::addArgument(const QString &longName, const CliParserArg &arg) {
+  if(arg.shortName != 0) {
+    _cmdLineOptions.add(QByteArray().append(arg.shortName));
+  }
+  _cmdLineOptions.add(longName.toUtf8(), ki18n(arg.help.toUtf8()), arg.def.toUtf8());
+}
+
+bool CliParser::init(const QStringList &) {
+  KCmdLineArgs::addCmdLineOptions(_cmdLineOptions);
+  return true;
+}
+
+QString CliParser::value(const QString &longName) {
+  return KCmdLineArgs::parsedArgs()->getOption(longName.toUtf8());
+}
+
+bool CliParser::isSet(const QString &longName) {
+  return KCmdLineArgs::parsedArgs()->isSet(longName.toUtf8());
+}
+
+void CliParser::usage() {
+  KCmdLineArgs::usage();
+}
+
+#else
 void CliParser::addArgument(const QString &longName, const CliParserArg &arg) {
   if(argsHash.contains(longName)) qWarning() << "Warning: Multiple definition of argument" << longName;
   if(arg.shortName != 0 && !lnameOfShortArg(arg.shortName).isNull())
@@ -77,7 +111,7 @@ QString CliParser::escapedValue(const QString &value) {
   return escapedValue;
 }
 
-bool CliParser::parse(const QStringList &args) {
+bool CliParser::init(const QStringList &args) {
   argsRaw = args;
   QStringList::const_iterator currentArg;
   for (currentArg = argsRaw.constBegin(); currentArg != argsRaw.constEnd(); ++currentArg) {
@@ -213,3 +247,5 @@ QString CliParser::lnameOfShortArg(const char arg) {
   }
   return QString();
 }
+
+#endif

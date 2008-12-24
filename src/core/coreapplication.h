@@ -21,7 +21,11 @@
 #ifndef COREAPPLICATION_H_
 #define COREAPPLICATION_H_
 
-#include <QCoreApplication>
+#ifdef HAVE_KDE
+#  include <KApplication>
+#else
+#  include <QCoreApplication>
+#endif
 
 #include "quassel.h"
 
@@ -36,12 +40,17 @@ class CoreApplicationInternal {
     ~CoreApplicationInternal();
 
     bool init();
-    
+
   private:
     bool _coreCreated;
 };
 
+#ifdef HAVE_KDE
+class CoreApplication : public KApplication, public Quassel {
+#else
 class CoreApplication : public QCoreApplication, public Quassel {
+#endif
+
   Q_OBJECT
   public:
     CoreApplication(int &argc, char **argv);

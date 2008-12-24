@@ -58,11 +58,6 @@ Quassel::Quassel() {
 #  endif
 #endif
 
-  _cliParser = new CliParser();
-
-  // put shared client&core arguments here
-  cliParser()->addSwitch("debug",'d', tr("Enable debug output"));
-  cliParser()->addSwitch("help",'h', tr("Display this help and exit"));
 }
 
 Quassel::~Quassel() {
@@ -86,10 +81,11 @@ bool Quassel::init() {
   Network::setDefaultCodecForEncoding("UTF-8");
   Network::setDefaultCodecForDecoding("ISO-8859-15");
 
-  if(!cliParser()->parse(QCoreApplication::arguments()) || isOptionSet("help")) {
+  if(isOptionSet("help")) {
     cliParser()->usage();
     return false;
   }
+
   DEBUG = isOptionSet("debug");
   return true;
 }

@@ -20,6 +20,11 @@
 
 #include <cstdlib>
 
+#ifdef HAVE_KDE
+#  include <KCmdLineArgs>
+#  include <KAboutData>
+#endif
+
 #ifdef BUILD_CORE
 #  include "coreapplication.h"
 #elif defined BUILD_QTUI
@@ -35,6 +40,52 @@
 
 int main(int argc, char **argv) {
 
+  // Setup build information and version string
+  # include "version.gen"
+  buildinfo.append(QString(",%1,%2").arg(__DATE__, __TIME__));
+  Quassel::setupBuildInfo(buildinfo);
+  QCoreApplication::setApplicationName(Quassel::buildInfo().applicationName);
+  QCoreApplication::setOrganizationName(Quassel::buildInfo().organizationName);
+  QCoreApplication::setOrganizationDomain(Quassel::buildInfo().organizationDomain);
+
+#ifdef HAVE_KDE
+  // We need to init KCmdLineArgs first
+  // TODO: build an AboutData class to replace our aboutDlg strings
+  KAboutData aboutData(argv[0], 0, ki18n("Quassel IRC"), Quassel::buildInfo().plainVersionString.toUtf8());
+  aboutData.setOrganizationDomain(Quassel::buildInfo().organizationDomain.toUtf8());
+  KCmdLineArgs::init(argc, argv, &aboutData);
+#endif
+
+  // Initialize CLI arguments
+  // NOTE: We can't use tr() at this point, since app is not yet created
+  CliParser *cliParser = Quassel::cliParser();
+
+  // put shared client&core arguments here
+  cliParser->addSwitch("debug",'d', "Enable debug output");
+  cliParser->addSwitch("help",'h', "Display this help and exit");
+
+#ifndef BUILD_CORE
+  // put client-only arguments here
+  cliParser->addSwitch("debugbufferswitches", 0, "Enables debugging for bufferswitches");
+  cliParser->addSwitch("debugmodel", 0, "Enables debugging for models");
+#endif
+#ifndef BUILD_QTCLIENT
+  // put core-only arguments here
+  cliParser->addOption("port <port>",'p', "The port quasselcore will listen at", QString("4242"));
+  cliParser->addSwitch("norestore", 'n', "Don't restore last core's state");
+  cliParser->addOption("logfile <path>", 'l', "Path to logfile");
+  cliParser->addOption("loglevel <level>", 'L', "Loglevel Debug|Info|Warning|Error", "Info");
+  cliParser->addOption("datadir <path>", 0, "Specify the directory holding datafiles like the Sqlite DB and the SSL Cert");
+#endif
+
+#ifdef HAVE_KDE
+  // the KDE version needs this extra call to parse argc/argv before app is instantiated
+  if(!cliParser->init()) {
+    cliParser->usage();
+    return EXIT_FAILURE;
+  }
+#endif
+
 #  if defined BUILD_CORE
     CoreApplication app(argc, argv);
 #  elif defined BUILD_QTUI
@@ -43,9 +94,13 @@ int main(int argc, char **argv) {
     MonolithicApplication app(argc, argv);
 #  endif
 
-# include "version.gen"
-  buildinfo.append(QString(",%1,%2").arg(__DATE__, __TIME__));
-  app.setupBuildInfo(buildinfo);
+#ifndef HAVE_KDE
+  // the non-KDE version parses after app has been instantiated
+  if(!cliParser->init(app.arguments())) {
+    cliParser->usage();
+    return false;
+  }
+#endif
 
   if(!app.init()) return EXIT_FAILURE;
   return app.exec();

@@ -21,7 +21,12 @@
 #ifndef QTUIAPPLICATION_H_
 #define QTUIAPPLICATION_H_
 
-#include <QApplication>
+#ifdef HAVE_KDE
+#  include <KApplication>
+#else
+#  include <QApplication>
+#endif
+
 #include <QSessionManager>
 
 #include "quassel.h"
@@ -29,7 +34,12 @@
 
 class QtUi;
 
+#ifdef HAVE_KDE
+class QtUiApplication : public KApplication, public Quassel {
+#else
 class QtUiApplication : public QApplication, public Quassel {
+#endif
+
   Q_OBJECT
 
  public:
