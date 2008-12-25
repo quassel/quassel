@@ -26,36 +26,8 @@
 #include <QSslKey>
 #include <QSslCertificate>
 
-class CoreCertManager;
-class CoreSession;
+class CoreIdentity;
 class SignalProxy;
-
-class CoreIdentity : public Identity {
-  Q_OBJECT
-
-public:
-  CoreIdentity(IdentityId id, SignalProxy *proxy, CoreSession *parent);
-  CoreIdentity(const Identity &other, SignalProxy *proxy, CoreSession *parent);
-
-  inline const QSslKey &sslKey() const { return _sslKey; }
-  inline void setSslKey(const QSslKey &key) { _sslKey = key; }
-  void setSslKey(const QByteArray &encoded);
-  inline const QSslCertificate &sslCert() const { return _sslCert; }
-  inline void setSslCert(const QSslCertificate &cert) { _sslCert = cert; }
-  void setSslCert(const QByteArray &encoded);
-
-public slots:
-  virtual void update(const QVariantMap &properties);
-  void save();
-
-private:
-  QSslKey _sslKey;
-  QSslCertificate _sslCert;
-
-  CoreCertManager *_certManager;
-  CoreSession *_coreSession;
-};
-
 
 // ========================================
 //  CoreCertManager
@@ -64,11 +36,10 @@ class CoreCertManager : public CertManager {
   Q_OBJECT
 
 public:
-  CoreCertManager(CoreIdentity *identity);
+  CoreCertManager(CoreIdentity &identity);
 
-  inline CoreIdentity *identity() const { return _identity; }
-  virtual inline const QSslKey &sslKey() const { return identity()->sslKey(); }
-  virtual inline const QSslCertificate &sslCert() const { return identity()->sslCert(); }
+  virtual const QSslKey &sslKey() const;
+  virtual const QSslCertificate &sslCert() const;
 
 public slots:
   virtual void setSslKey(const QByteArray &encoded);
@@ -77,7 +48,45 @@ public slots:
   void setId(IdentityId id);
 
 private:
-  CoreIdentity *_identity;
+  CoreIdentity &identity;
 };
+
+// =========================================
+//  CoreIdentity
+// =========================================
+class CoreIdentity : public Identity {
+  Q_OBJECT
+
+public:
+  CoreIdentity(IdentityId id, QObject *parent = 0);
+  CoreIdentity(const Identity &other, QObject *parent = 0);
+  CoreIdentity(const CoreIdentity &other, QObject *parent = 0);
+
+  void synchronize(SignalProxy *proxy);
+
+  inline const QSslKey &sslKey() const { return _sslKey; }
+  inline void setSslKey(const QSslKey &key) { _sslKey = key; }
+  void setSslKey(const QByteArray &encoded);
+  inline const QSslCertificate &sslCert() const { return _sslCert; }
+  inline void setSslCert(const QSslCertificate &cert) { _sslCert = cert; }
+  void setSslCert(const QByteArray &encoded);
+
+  CoreIdentity& CoreIdentity::operator=(const CoreIdentity &identity);
+
+private:
+  QSslKey _sslKey;
+  QSslCertificate _sslCert;
+
+  CoreCertManager _certManager;
+};
+
+inline const QSslKey &CoreCertManager::sslKey() const {
+  return identity.sslKey();
+}
+inline const QSslCertificate &CoreCertManager::sslCert() const {
+  return identity.sslCert();
+}
+
+
 
 #endif //COREIDENTITY_H

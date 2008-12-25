@@ -24,6 +24,7 @@
 #include <QtCore>
 
 #include "types.h"
+#include "coreidentity.h"
 #include "message.h"
 #include "network.h"
 
@@ -128,6 +129,12 @@ public slots:
    * \return the Value of the Setting or the default value if it is unset.
    */
   virtual QVariant getUserSetting(UserId userId, const QString &settingName, const QVariant &data = QVariant()) = 0;
+
+  /* Identity handling */
+  virtual IdentityId createIdentity(UserId user, CoreIdentity &identity) = 0;
+  virtual bool updateIdentity(UserId user, const CoreIdentity &identity) = 0;
+  virtual void removeIdentity(UserId user, IdentityId identityId) = 0;
+  virtual QList<CoreIdentity> identities(UserId user) = 0;
   
   /* Network handling */
 

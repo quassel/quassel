@@ -78,7 +78,8 @@ public slots:
   //! Create an identity and propagate the changes to the clients.
   /** \param identity The identity to be created.
    */
-  void createIdentity(const Identity &identity, const QVariantMap &additional = QVariantMap());
+  void createIdentity(const Identity &identity, const QVariantMap &additional);
+  void createIdentity(const CoreIdentity &identity);
 
   //! Remove identity and propagate that fact to the clients.
   /** \param identity The identity to be removed.
@@ -152,6 +153,8 @@ private slots:
 
   void clientsConnected();
   void clientsDisconnected();
+
+  void updateIdentityBySender();
 
 private:
   void loadSettings();

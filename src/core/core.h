@@ -79,6 +79,19 @@ class Core : public QObject {
     return instance()->storage->getUserSetting(userId, settingName, data);
   }
 
+  /* Identity handling */
+  static inline IdentityId createIdentity(UserId user, CoreIdentity &identity) {
+    return instance()->storage->createIdentity(user, identity);
+  }
+  static bool updateIdentity(UserId user, const CoreIdentity &identity) {
+    return instance()->storage->updateIdentity(user, identity);
+  }
+  static void removeIdentity(UserId user, IdentityId identityId) {
+    instance()->storage->removeIdentity(user, identityId);
+  }
+  static QList<CoreIdentity> identities(UserId user) {
+    return instance()->storage->identities(user);
+  }
 
   //! Create a Network in the Storage and store it's Id in the given NetworkInfo
   /** \note This method is thredsafe.

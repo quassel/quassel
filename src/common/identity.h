@@ -60,8 +60,8 @@ public:
 
   void setToDefaults();
 
-  bool operator==(const Identity &other);
-  bool operator!=(const Identity &other);
+  bool operator==(const Identity &other) const;
+  bool operator!=(const Identity &other) const;
 
   inline bool isValid() const { return id().isValid(); }
 

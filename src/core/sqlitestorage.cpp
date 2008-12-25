@@ -191,6 +191,175 @@ QVariant SqliteStorage::getUserSetting(UserId userId, const QString &settingName
   }
 }
 
+IdentityId SqliteStorage::createIdentity(UserId user, CoreIdentity &identity) {
+  IdentityId identityId;
+
+  QSqlQuery query(logDb());
+  query.prepare(queryString("insert_identity"));
+  query.bindValue(":userid", user.toInt());
+  query.bindValue(":identityname", identity.identityName());
+  query.bindValue(":realname", identity.realName());
+  query.bindValue(":awaynick", identity.awayNick());
+  query.bindValue(":awaynickenabled", identity.awayNickEnabled() ? 1 : 0);
+  query.bindValue(":awayreason", identity.awayReason());
+  query.bindValue(":awayreasonenabled", identity.awayReasonEnabled() ? 1 : 0);
+  query.bindValue(":autoawayenabled", identity.awayReasonEnabled() ? 1 : 0);
+  query.bindValue(":autoawaytime", identity.autoAwayTime());
+  query.bindValue(":autoawayreason", identity.autoAwayReason());
+  query.bindValue(":autoawayreasonenabled", identity.autoAwayReasonEnabled() ? 1 : 0);
+  query.bindValue(":detachawayenabled", identity.detachAwayEnabled() ? 1 : 0);
+  query.bindValue(":detachawayreason", identity.detachAwayReason());
+  query.bindValue(":detachawayreasonenabled", identity.detachAwayReasonEnabled() ? 1 : 0);
+  query.bindValue(":ident", identity.ident());
+  query.bindValue(":kickreason", identity.kickReason());
+  query.bindValue(":partreason", identity.partReason());
+  query.bindValue(":quitreason", identity.quitReason());
+  query.bindValue(":sslcert", identity.sslCert().toPem());
+  query.bindValue(":sslkey", identity.sslKey().toPem());
+  safeExec(query);
+
+  identityId = query.lastInsertId().toInt();
+  qDebug() << identityId << identity.nicks();
+  if(!identityId.isValid()) {
+    watchQuery(query);
+  } else {
+    QSqlQuery deleteNickQuery(logDb());
+    deleteNickQuery.prepare(queryString("delete_nicks"));
+    deleteNickQuery.bindValue(":identityid", identityId.toInt());
+    safeExec(deleteNickQuery);
+
+    QSqlQuery insertNickQuery(logDb());
+    insertNickQuery.prepare(queryString("insert_nick"));
+    foreach(QString nick, identity.nicks()) {
+      insertNickQuery.bindValue(":identityid", identityId.toInt());
+      insertNickQuery.bindValue(":nick", nick);
+      safeExec(insertNickQuery);
+    }
+  }
+  identity.setId(identityId);
+  return identityId;
+}
+
+bool SqliteStorage::updateIdentity(UserId user, const CoreIdentity &identity) {
+  QSqlQuery checkQuery(logDb());
+  checkQuery.prepare(queryString("select_checkidentity"));
+  checkQuery.bindValue(":identityid", identity.id().toInt());
+  checkQuery.bindValue(":userid", user.toInt());
+  safeExec(checkQuery);
+
+  if(!checkQuery.first() || checkQuery.value(0).toInt() != 1) // there should be exactly one identity for the given id and user
+    return false;
+
+  QSqlQuery query(logDb());
+  query.prepare(queryString("update_identity"));
+  query.bindValue(":identityname", identity.identityName());
+  query.bindValue(":realname", identity.realName());
+  query.bindValue(":awaynick", identity.awayNick());
+  query.bindValue(":awaynickenabled", identity.awayNickEnabled() ? 1 : 0);
+  query.bindValue(":awayreason", identity.awayReason());
+  query.bindValue(":awayreasonenabled", identity.awayReasonEnabled() ? 1 : 0);
+  query.bindValue(":autoawayenabled", identity.awayReasonEnabled() ? 1 : 0);
+  query.bindValue(":autoawaytime", identity.autoAwayTime());
+  query.bindValue(":autoawayreason", identity.autoAwayReason());
+  query.bindValue(":autoawayreasonenabled", identity.autoAwayReasonEnabled() ? 1 : 0);
+  query.bindValue(":detachawayenabled", identity.detachAwayEnabled() ? 1 : 0);
+  query.bindValue(":detachawayreason", identity.detachAwayReason());
+  query.bindValue(":detachawayreasonenabled", identity.detachAwayReasonEnabled() ? 1 : 0);
+  query.bindValue(":ident", identity.ident());
+  query.bindValue(":kickreason", identity.kickReason());
+  query.bindValue(":partreason", identity.partReason());
+  query.bindValue(":quitreason", identity.quitReason());
+  query.bindValue(":sslcert", identity.sslCert().toPem());
+  query.bindValue(":sslkey", identity.sslKey().toPem());
+  query.bindValue(":identityid", identity.id().toInt());
+  safeExec(query);
+
+  QSqlQuery deleteNickQuery(logDb());
+  deleteNickQuery.prepare(queryString("delete_nicks"));
+  deleteNickQuery.bindValue(":identityid", identity.id().toInt());
+  safeExec(deleteNickQuery);
+
+  QSqlQuery insertNickQuery(logDb());
+  insertNickQuery.prepare(queryString("insert_nick"));
+  foreach(QString nick, identity.nicks()) {
+    insertNickQuery.bindValue(":identityid", identity.id().toInt());
+    insertNickQuery.bindValue(":nick", nick);
+    safeExec(insertNickQuery);
+  }
+
+  return true;
+}
+
+void SqliteStorage::removeIdentity(UserId user, IdentityId identityId) {
+  QSqlQuery checkQuery(logDb());
+  checkQuery.prepare(queryString("select_checkidentity"));
+  checkQuery.bindValue(":identityid", identityId.toInt());
+  checkQuery.bindValue(":userid", user.toInt());
+  safeExec(checkQuery);
+
+  if(!checkQuery.first() || checkQuery.value(0).toInt() != 1) // there should be exactly one identity for the given id and user
+    return;
+
+  QSqlQuery deleteNickQuery(logDb());
+  deleteNickQuery.prepare(queryString("delete_nicks"));
+  deleteNickQuery.bindValue(":identityid", identityId.toInt());
+  safeExec(deleteNickQuery);
+
+  QSqlQuery deleteIdentityQuery(logDb());
+  deleteIdentityQuery.prepare(queryString("delete_identity"));
+  deleteIdentityQuery.bindValue(":identityid", identityId.toInt());
+  deleteIdentityQuery.bindValue(":userid", user.toInt());
+  safeExec(deleteIdentityQuery);
+}
+
+QList<CoreIdentity> SqliteStorage::identities(UserId user) {
+  QList<CoreIdentity> identities;
+
+  QSqlQuery query(logDb());
+  query.prepare(queryString("select_identities"));
+  query.bindValue(":userid", user.toInt());
+
+  QSqlQuery nickQuery(logDb());
+  nickQuery.prepare(queryString("select_nicks"));
+
+  safeExec(query);
+
+  while(query.next()) {
+    CoreIdentity identity(IdentityId(query.value(0).toInt()));
+
+    identity.setIdentityName(query.value(1).toString());
+    identity.setRealName(query.value(2).toString());
+    identity.setAwayNick(query.value(3).toString());
+    identity.setAwayNickEnabled(!!query.value(4).toInt());
+    identity.setAwayReason(query.value(5).toString());
+    identity.setAwayReasonEnabled(!!query.value(6).toInt());
+    identity.setAutoAwayEnabled(!!query.value(7).toInt());
+    identity.setAutoAwayTime(query.value(8).toInt());
+    identity.setAutoAwayReason(query.value(9).toString());
+    identity.setAutoAwayReasonEnabled(!!query.value(10).toInt());
+    identity.setDetachAwayEnabled(!!query.value(11).toInt());
+    identity.setDetachAwayReason(query.value(12).toString());
+    identity.setDetachAwayReasonEnabled(!!query.value(13).toInt());
+    identity.setIdent(query.value(14).toString());
+    identity.setKickReason(query.value(15).toString());
+    identity.setPartReason(query.value(16).toString());
+    identity.setQuitReason(query.value(17).toString());
+    identity.setSslCert(query.value(18).toByteArray());
+    identity.setSslKey(query.value(19).toByteArray());
+
+    nickQuery.bindValue(":identityid", identity.id().toInt());
+    QList<QString> nicks;
+    safeExec(nickQuery);
+    watchQuery(nickQuery);
+    while(nickQuery.next()) {
+      nicks << nickQuery.value(0).toString();
+    }
+    identity.setNicks(nicks);
+    identities << identity;
+  }
+  return identities;
+}
+
 NetworkId SqliteStorage::createNetwork(UserId user, const NetworkInfo &info) {
   NetworkId networkId;
   QSqlQuery query(logDb());

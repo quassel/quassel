@@ -54,6 +54,11 @@ public slots:
   virtual void setUserSetting(UserId userId, const QString &settingName, const QVariant &data);
   virtual QVariant getUserSetting(UserId userId, const QString &settingName, const QVariant &defaultData = QVariant());
 
+  /* Identity handling */
+  virtual IdentityId createIdentity(UserId user, CoreIdentity &identity);
+  virtual bool updateIdentity(UserId user, const CoreIdentity &identity);
+  virtual void removeIdentity(UserId user, IdentityId identityId);
+  virtual QList<CoreIdentity> identities(UserId user);
 
   /* Network handling */
   virtual NetworkId createNetwork(UserId user, const NetworkInfo &info);

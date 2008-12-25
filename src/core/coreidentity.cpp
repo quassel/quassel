@@ -20,36 +20,34 @@
 
 #include "coreidentity.h"
 
-#include "coresession.h"
-#include "coreusersettings.h"
 #include "signalproxy.h"
 
-CoreIdentity::CoreIdentity(IdentityId id, SignalProxy *proxy, CoreSession *parent)
+CoreIdentity::CoreIdentity(IdentityId id, QObject *parent)
   : Identity(id, parent),
-    _certManager(new CoreCertManager(this)),
-    _coreSession(parent)
+    _certManager(*this)
 {
-  proxy->synchronize(_certManager);
-  connect(this, SIGNAL(idSet(IdentityId)), _certManager, SLOT(setId(IdentityId)));
+  connect(this, SIGNAL(idSet(IdentityId)), &_certManager, SLOT(setId(IdentityId)));
 }
 
-CoreIdentity::CoreIdentity(const Identity &other, SignalProxy *proxy, CoreSession *parent)
+CoreIdentity::CoreIdentity(const Identity &other, QObject *parent)
   : Identity(other, parent),
-    _certManager(new CoreCertManager(this)),
-    _coreSession(parent)
+    _certManager(*this)
 {
-  proxy->synchronize(_certManager);
-  connect(this, SIGNAL(idSet(IdentityId)), _certManager, SLOT(setId(IdentityId)));
+  connect(this, SIGNAL(idSet(IdentityId)), &_certManager, SLOT(setId(IdentityId)));
 }
 
-void CoreIdentity::update(const QVariantMap &properties) {
-  SyncableObject::update(properties);
-  save();
+CoreIdentity::CoreIdentity(const CoreIdentity &other, QObject *parent)
+  : Identity(other, parent),
+    _sslKey(other._sslKey),
+    _sslCert(other._sslCert),
+    _certManager(*this)
+{
+  connect(this, SIGNAL(idSet(IdentityId)), &_certManager, SLOT(setId(IdentityId)));
 }
 
-void CoreIdentity::save() {
-  CoreUserSettings s(_coreSession->user());
-  s.storeIdentity(*this);
+void CoreIdentity::synchronize(SignalProxy *proxy) {
+  proxy->synchronize(this);
+  proxy->synchronize(&_certManager);
 }
 
 void CoreIdentity::setSslKey(const QByteArray &encoded) {
@@ -63,24 +61,30 @@ void CoreIdentity::setSslCert(const QByteArray &encoded) {
   setSslCert(QSslCertificate(encoded));
 }
 
+CoreIdentity &CoreIdentity::operator=(const CoreIdentity &identity) {
+  Identity::operator=(identity);
+  _sslKey = identity._sslKey;
+  _sslCert = identity._sslCert;
+  return *this;
+}
 
 // ========================================
 //  CoreCertManager
 // ========================================
-CoreCertManager::CoreCertManager(CoreIdentity *identity)
-  : CertManager(identity->id(), identity),
-    _identity(identity)
+CoreCertManager::CoreCertManager(CoreIdentity &identity)
+  : CertManager(identity.id()),
+    identity(identity)
 {
   setAllowClientUpdates(true);
 }
 
 void CoreCertManager::setSslKey(const QByteArray &encoded) {
-  identity()->setSslKey(encoded);
+  identity.setSslKey(encoded);
   CertManager::setSslKey(encoded);
 }
 
 void CoreCertManager::setSslCert(const QByteArray &encoded) {
-  identity()->setSslCert(encoded);
+  identity.setSslCert(encoded);
   CertManager::setSslCert(encoded);
 }
 

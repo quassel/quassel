@@ -185,8 +185,8 @@ void Identity::setQuitReason(const QString &reason) {
 /***  ***/
 
 void Identity::update(const Identity &other) {
-for(int idx = metaObject()->propertyOffset(); idx < metaObject()->propertyCount(); idx++) {
-    QMetaProperty metaProp = metaObject()->property(idx);
+  for(int idx = staticMetaObject.propertyOffset(); idx < staticMetaObject.propertyCount(); idx++) {
+    QMetaProperty metaProp = staticMetaObject.property(idx);
     Q_ASSERT(metaProp.isValid());
     if(this->property(metaProp.name()) != other.property(metaProp.name())) {
       setProperty(metaProp.name(), other.property(metaProp.name()));
@@ -194,9 +194,9 @@ for(int idx = metaObject()->propertyOffset(); idx < metaObject()->propertyCount(
   }
 }
 
-bool Identity::operator==(const Identity &other) {
-  for(int idx = metaObject()->propertyOffset(); idx < metaObject()->propertyCount(); idx++) {
-    QMetaProperty metaProp = metaObject()->property(idx);
+bool Identity::operator==(const Identity &other) const {
+  for(int idx = staticMetaObject.propertyOffset(); idx < staticMetaObject.propertyCount(); idx++) {
+    QMetaProperty metaProp = staticMetaObject.property(idx);
     Q_ASSERT(metaProp.isValid());
     QVariant v1 = this->property(metaProp.name());
     QVariant v2 = other.property(metaProp.name()); // qDebug() << v1 << v2;
@@ -210,7 +210,7 @@ bool Identity::operator==(const Identity &other) {
   return true;
 }
 
-bool Identity::operator!=(const Identity &other) {
+bool Identity::operator!=(const Identity &other) const {
   return !(*this == other);
 }
 

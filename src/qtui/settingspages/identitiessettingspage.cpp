@@ -46,7 +46,7 @@ IdentitiesSettingsPage::IdentitiesSettingsPage(QWidget *parent)
   ui.nickUp->setIcon(SmallIcon("go-up"));
   ui.nickDown->setIcon(SmallIcon("go-down"));
 
-  setEnabled(Client::isConnected());  // need a core connection!
+  coreConnectionStateChanged(Client::isConnected());  // need a core connection!
   setWidgetStates();
   connect(Client::instance(), SIGNAL(coreConnectionStateChanged(bool)), this, SLOT(coreConnectionStateChanged(bool)));
   connect(Client::instance(), SIGNAL(identityCreated(IdentityId)), this, SLOT(clientIdentityCreated(IdentityId)));
@@ -103,10 +103,13 @@ void IdentitiesSettingsPage::coreConnectionStateChanged(bool connected) {
   setEnabled(connected);
   if(connected) {
 #ifdef HAVE_SSL
-    if(Client::signalProxy()->isSecure())
+    if(Client::signalProxy()->isSecure()) {
       ui.keyAndCertSettings->setCurrentIndex(2);
-    else
+      _editSsl = true;
+    } else {
       ui.keyAndCertSettings->setCurrentIndex(1);
+      _editSsl = false;
+    }
 #else
     ui.keyAndCertSettings->setCurrentIndex(0);
 #endif

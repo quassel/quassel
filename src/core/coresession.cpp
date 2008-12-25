@@ -125,14 +125,34 @@ CoreIdentity *CoreSession::identity(IdentityId id) const {
 void CoreSession::loadSettings() {
   CoreUserSettings s(user());
 
-  foreach(IdentityId id, s.identityIds()) {
-    createIdentity(s.identity(id));
+  // migrate to db
+  QList<IdentityId> ids = s.identityIds();
+  QList<NetworkInfo> networkInfos = Core::networks(user());
+  foreach(IdentityId id, ids) {
+    CoreIdentity identity(s.identity(id));
+    IdentityId newId = Core::createIdentity(user(), identity);
+    QList<NetworkInfo>::iterator networkIter = networkInfos.begin();
+    while(networkIter != networkInfos.end()) {
+      if(networkIter->identity == id) {
+	networkIter->identity = newId;
+	Core::updateNetwork(user(), *networkIter);
+	networkIter = networkInfos.erase(networkIter);
+      } else {
+	networkIter++;
+      }
+    }
+    s.removeIdentity(id);
+  }
+  // end of migration
+
+  foreach(CoreIdentity identity, Core::identities(user())) {
+    createIdentity(identity);
   }
   if(!_identities.count()) {
     Identity identity;
     identity.setToDefaults();
     identity.setIdentityName(tr("Default Identity"));
-    createIdentity(identity);
+    createIdentity(identity, QVariantMap());
   }
 
   foreach(NetworkInfo info, Core::networks(user())) {
@@ -264,45 +284,41 @@ void CoreSession::scriptRequest(QString script) {
 }
 
 /*** Identity Handling ***/
-
 void CoreSession::createIdentity(const Identity &identity, const QVariantMap &additional) {
-  if(_identities.contains(identity.id())) {
-    qWarning() << "duplicate Identity:" << identity.id();
-    return;
-  }
-
-  int id = identity.id().toInt();
-  bool newId = !identity.isValid();
-  CoreIdentity *coreIdentity = new CoreIdentity(identity, signalProxy(), this);
+  CoreIdentity coreIdentity(identity);
   if(additional.contains("KeyPem"))
-    coreIdentity->setSslKey(additional["KeyPem"].toByteArray());
+    coreIdentity.setSslKey(additional["KeyPem"].toByteArray());
   if(additional.contains("CertPem"))
-    coreIdentity->setSslCert(additional["CertPem"].toByteArray());
-  if(newId) {
-    // find free ID
-    for(id = 1; id <= _identities.count(); id++) {
-      if(!_identities.keys().contains(id))
-	break;
-    }
-    coreIdentity->setId(id);
-    coreIdentity->save();
-  }
+    coreIdentity.setSslCert(additional["CertPem"].toByteArray());
+  IdentityId id = Core::createIdentity(user(), coreIdentity);
+  if(!id.isValid())
+    return;
+  else
+    createIdentity(coreIdentity);
+}
 
-  _identities[id] = coreIdentity;
-  qDebug() << id << coreIdentity->id();
-  signalProxy()->synchronize(coreIdentity);
+void CoreSession::createIdentity(const CoreIdentity &identity) {
+  CoreIdentity *coreIdentity = new CoreIdentity(identity, this);
+  _identities[identity.id()] = coreIdentity;
+  // CoreIdentity has it's own synchronize method since it's "private" sslManager needs to be synced aswell
+  coreIdentity->synchronize(signalProxy());
+  connect(coreIdentity, SIGNAL(updated(const QVariantMap &)), this, SLOT(updateIdentityBySender()));
+  emit identityCreated(*coreIdentity);
+}
 
-  if(newId)
-    emit identityCreated(*coreIdentity);
+void CoreSession::updateIdentityBySender() {
+  CoreIdentity *identity = qobject_cast<CoreIdentity *>(sender());
+  if(!identity)
+    return;
+  Core::updateIdentity(user(), *identity);
 }
 
 void CoreSession::removeIdentity(IdentityId id) {
-  Identity *i = _identities.take(id);
-  if(i) {
+  CoreIdentity *identity = _identities.take(id);
+  if(identity) {
     emit identityRemoved(id);
-    CoreUserSettings s(user());
-    s.removeIdentity(id);
-    i->deleteLater();
+    Core::removeIdentity(user(), id);
+    identity->deleteLater();
   }
 }
 
