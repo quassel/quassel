@@ -163,10 +163,16 @@ void CoreNetwork::connectToIrc(bool reconnecting) {
 
 #ifdef HAVE_SSL
   socket.setProtocol((QSsl::SslProtocol)server.sslVersion);
-  if(server.useSsl)
+  if(server.useSsl) {
+    CoreIdentity *identity = identityPtr();
+    if(identity) {
+      socket.setLocalCertificate(identity->sslCert());
+      socket.setPrivateKey(identity->sslKey());
+    }
     socket.connectToHostEncrypted(server.host, server.port);
-  else
+  } else {
     socket.connectToHost(server.host, server.port);
+  }
 #else
   socket.connectToHost(server.host, server.port);
 #endif
