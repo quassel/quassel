@@ -6,7 +6,7 @@ CREATE TABLE ircserver (
     port INTEGER NOT NULL DEFAULT 6667,
     password TEXT,
     ssl INTEGER NOT NULL DEFAULT 0, -- bool
-    sslVersion INTEGER NOT NULL DEFAULT 0,
+    sslversion INTEGER NOT NULL DEFAULT 0,
     useproxy INTEGER NOT NULL DEFAULT 0, -- bool
     proxytype INTEGER NOT NULL DEFAULT 0,
     proxyhost TEXT NOT NULL DEFAULT 'localhost',

@@ -416,12 +416,19 @@ bool SqliteStorage::updateNetwork(UserId user, const NetworkInfo &info) {
   QSqlQuery insertServersQuery(logDb());
   insertServersQuery.prepare(queryString("insert_server"));
   foreach(Network::Server server, info.serverList) {
+    insertServersQuery.bindValue(":userid", user.toInt());
+    insertServersQuery.bindValue(":networkid", info.networkId.toInt());
     insertServersQuery.bindValue(":hostname", server.host);
     insertServersQuery.bindValue(":port", server.port);
     insertServersQuery.bindValue(":password", server.password);
     insertServersQuery.bindValue(":ssl", server.useSsl ? 1 : 0);
-    insertServersQuery.bindValue(":userid", user.toInt());
-    insertServersQuery.bindValue(":networkid", info.networkId.toInt());
+    insertServersQuery.bindValue(":sslversion", server.sslVersion);
+    insertServersQuery.bindValue(":useproxy", server.useProxy ? 1 : 0);
+    insertServersQuery.bindValue(":proxytype", server.proxyType);
+    insertServersQuery.bindValue(":proxyhost", server.proxyHost);
+    insertServersQuery.bindValue(":proxyport", server.proxyPort);
+    insertServersQuery.bindValue(":proxyuser", server.proxyUser);
+    insertServersQuery.bindValue(":proxypass", server.proxyPass);
 
     safeExec(insertServersQuery);
     if(!watchQuery(insertServersQuery))
@@ -533,6 +540,13 @@ QList<NetworkInfo> SqliteStorage::networks(UserId user) {
       server.port = serversQuery.value(1).toUInt();
       server.password = serversQuery.value(2).toString();
       server.useSsl = serversQuery.value(3).toInt() == 1 ? true : false;
+      server.sslVersion = serversQuery.value(4).toInt();
+      server.useProxy = serversQuery.value(5).toInt() == 1 ? true : false;
+      server.proxyType = serversQuery.value(6).toInt();
+      server.proxyHost = serversQuery.value(7).toString();
+      server.proxyPort = serversQuery.value(8).toUInt();
+      server.proxyUser = serversQuery.value(9).toString();
+      server.proxyPass = serversQuery.value(10).toString();
       servers << server;
     }
     net.serverList = servers;
