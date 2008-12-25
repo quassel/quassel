@@ -18,6 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#ifndef HAVE_KDE
+
 #include <QCoreApplication>
 #include <QDebug>
 #include <QDir>
@@ -157,3 +159,5 @@ QPixmap SmallIcon(const QString& name, int force_size) {
   IconLoader *loader = IconLoader::global();
   return loader->loadIcon(name, IconLoader::Small, force_size);
 }
+
+#endif

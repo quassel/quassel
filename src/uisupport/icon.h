@@ -21,6 +21,8 @@
 #ifndef ICON_H_
 #define ICON_H_
 
+#ifndef HAVE_KDE
+
 #include <QIcon>
 
 /// A very thin wrapper around QIcon
@@ -37,5 +39,17 @@ class Icon : public QIcon {
 
     Icon& operator=(const Icon &other);
 };
+
+#else /* HAVE_KDE */
+#include <KIcon>
+class Icon : public KIcon {
+
+  public:
+    inline Icon() : KIcon() {};
+    inline explicit Icon(const QString &iconName) : KIcon(iconName) {};
+    inline explicit Icon(const QIcon& copy) : KIcon(copy) {};
+};
+
+#endif /* HAVE_KDE */
 
 #endif

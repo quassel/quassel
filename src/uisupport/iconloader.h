@@ -24,6 +24,8 @@
 #ifndef ICONLOADER_H_
 #define ICONLOADER_H_
 
+#ifndef HAVE_KDE
+
 #include <QPixmap>
 
 /// Provides basic facilities to load icons from standard locations or resources
@@ -101,5 +103,12 @@ QPixmap SmallIcon(const QString& name, int size = 0);
 //QPixmap SmallMediumIcon(const QString &name, int size = 0);  // not part of KIconLoader
 
 QString IconLoader::theme() const { return _theme; }
+
+#else /* HAVE_KDE */
+
+#include <KIconLoader>
+class IconLoader : public KIconLoader { Q_OBJECT };
+
+#endif /* HAVE_KDE */
 
 #endif
