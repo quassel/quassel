@@ -32,7 +32,9 @@
 #include <QMetaMethod>
 #include <QMetaProperty>
 #include <QRegExp>
+#ifdef HAVE_SSL
 #include <QSslSocket>
+#endif
 #include <QThread>
 #include <QTime>
 #include <QEvent>
@@ -214,9 +216,11 @@ void SignalProxy::IODevicePeer::dispatchSignal(const RequestType &requestType, c
 }
 
 bool SignalProxy::IODevicePeer::isSecure() const {
+#ifdef HAVE_SSL
   QSslSocket *sslSocket = qobject_cast<QSslSocket *>(_device);
   if(sslSocket)
     return sslSocket->isEncrypted() || sslSocket->localAddress() == QHostAddress::LocalHost || sslSocket->localAddress() == QHostAddress::LocalHostIPv6;
+#endif
 
   QAbstractSocket *socket = qobject_cast<QAbstractSocket *>(_device);
   if(socket)
@@ -335,10 +339,12 @@ bool SignalProxy::addPeer(QIODevice* iodev) {
   connect(iodev, SIGNAL(disconnected()), this, SLOT(removePeerBySender()));
   connect(iodev, SIGNAL(readyRead()), this, SLOT(dataAvailable()));
 
+#ifdef HAVE_SSL
   QSslSocket *sslSocket = qobject_cast<QSslSocket *>(iodev);
   if(sslSocket) {
     connect(iodev, SIGNAL(encrypted()), this, SLOT(updateSecureState()));
   }
+#endif
 
   if(!iodev->parent())
     iodev->setParent(this);

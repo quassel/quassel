@@ -80,10 +80,12 @@ IdentitiesSettingsPage::IdentitiesSettingsPage(QWidget *parent)
   //connect(ui.nicknameList, SIGNAL(rowsInserted(const QModelIndex &, int, int)), this, SLOT(setWidgetStates()));
   //connect(ui.nicknameList->model(), SIGNAL(rowsInserted(const QModelIndex &, int, int)), this, SLOT(nicklistHasChanged()));
 
+#ifdef HAVE_SSL
   ui.sslKeyGroupBox->setAcceptDrops(true);
   ui.sslKeyGroupBox->installEventFilter(this);
   ui.sslCertGroupBox->setAcceptDrops(true);
   ui.sslCertGroupBox->installEventFilter(this);
+#endif
 }
 
 void IdentitiesSettingsPage::setWidgetStates() {
@@ -213,9 +215,13 @@ bool IdentitiesSettingsPage::aboutToSave() {
 
 void IdentitiesSettingsPage::clientIdentityCreated(IdentityId id) {
   CertIdentity *identity = new CertIdentity(*Client::identity(id), this);
+#ifdef HAVE_SSL
   identity->enableEditSsl(_editSsl);
+#endif
   insertIdentity(identity);
+#ifdef HAVE_SSL
   connect(identity, SIGNAL(sslSettingsUpdated()), this, SLOT(clientIdentityUpdated()));
+#endif
   connect(Client::identity(id), SIGNAL(updatedRemotely()), this, SLOT(clientIdentityUpdated()));
 }
 
@@ -325,8 +331,10 @@ void IdentitiesSettingsPage::displayIdentity(CertIdentity *id, bool dontsave) {
     ui.kickReason->setText(id->kickReason());
     ui.partReason->setText(id->partReason());
     ui.quitReason->setText(id->quitReason());
+#ifdef HAVE_SSL
     showKeyState(id->sslKey());
     showCertState(id->sslCert());
+#endif
   }
 }
 
@@ -352,8 +360,10 @@ void IdentitiesSettingsPage::saveToIdentity(CertIdentity *id) {
   id->setKickReason(ui.kickReason->text());
   id->setPartReason(ui.partReason->text());
   id->setQuitReason(ui.quitReason->text());
+#ifdef HAVE_SSL
   id->setSslKey(QSslKey(ui.keyTypeLabel->property("sslKey").toByteArray(), (QSsl::KeyAlgorithm)(ui.keyTypeLabel->property("sslKeyType").toInt())));
   id->setSslCert(QSslCertificate(ui.certOrgLabel->property("sslCert").toByteArray()));
+#endif
 }
 
 void IdentitiesSettingsPage::on_addIdentity_clicked() {
@@ -366,7 +376,9 @@ void IdentitiesSettingsPage::on_addIdentity_clicked() {
     }
     id = -id.toInt();
     CertIdentity *newId = new CertIdentity(id, this);
+#ifdef HAVE_SSL
     newId->enableEditSsl(_editSsl);
+#endif
     if(dlg.duplicateId() != 0) {
       // duplicate
       newId->update(*identities[dlg.duplicateId()]);
@@ -459,6 +471,7 @@ void IdentitiesSettingsPage::on_nickDown_clicked() {
   }
 }
 
+#ifdef HAVE_SSL
 void IdentitiesSettingsPage::on_continueUnsecured_clicked() {
   _editSsl = true;
 
@@ -601,6 +614,7 @@ void IdentitiesSettingsPage::showCertState(const QSslCertificate &cert) {
   }
   ui.certOrgLabel->setProperty("sslCert", cert.toPem());
  }
+#endif //HAVE_SSL
 
 /*****************************************************************************************/
 
@@ -659,7 +673,9 @@ SaveIdentitiesDlg::SaveIdentitiesDlg(const QList<CertIdentity *> &toCreate, cons
       }
       connect(cid, SIGNAL(updatedRemotely()), this, SLOT(clientEvent()));
       Client::updateIdentity(id->id(), id->toVariantMap());
+#ifdef HAVE_SSL
       id->requestUpdateSslSettings();
+#endif
     }
     foreach(IdentityId id, toRemove) {
       Client::removeIdentity(id);

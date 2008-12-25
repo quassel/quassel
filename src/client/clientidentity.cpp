@@ -24,28 +24,35 @@
 #include "signalproxy.h"
 
 CertIdentity::CertIdentity(IdentityId id, QObject *parent)
-  : Identity(id, parent),
-    _certManager(0),
+  : Identity(id, parent)
+#ifdef HAVE_SSL
+  ,  _certManager(0),
     _isDirty(false)
+#endif
 {
 }
 
 CertIdentity::CertIdentity(const Identity &other, QObject *parent)
-  : Identity(other, parent),
-    _certManager(0),
+  : Identity(other, parent)
+#ifdef HAVE_SSL
+  , _certManager(0),
     _isDirty(false)
+#endif
 {
 }
 
 CertIdentity::CertIdentity(const CertIdentity &other, QObject *parent)
-  : Identity(other, parent),
-    _certManager(0),
+  : Identity(other, parent)
+#ifdef HAVE_SSL
+  , _certManager(0),
     _isDirty(other._isDirty),
     _sslKey(other._sslKey),
     _sslCert(other._sslCert)
+#endif
 {
 }
 
+#ifdef HAVE_SSL
 void CertIdentity::enableEditSsl(bool enable) {
   if(!enable || _certManager)
     return;
@@ -97,3 +104,6 @@ void ClientCertManager::setSslKey(const QByteArray &encoded) {
 void ClientCertManager::setSslCert(const QByteArray &encoded) {
   _certIdentity->setSslCert(QSslCertificate(encoded));
 }
+
+
+#endif // HAVE_SSL

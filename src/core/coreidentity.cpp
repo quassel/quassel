@@ -23,33 +23,48 @@
 #include "signalproxy.h"
 
 CoreIdentity::CoreIdentity(IdentityId id, QObject *parent)
-  : Identity(id, parent),
-    _certManager(*this)
+  : Identity(id, parent)
+#ifdef HAVE_SSL
+  , _certManager(*this)
+#endif
 {
+#ifdef HAVE_SSL
   connect(this, SIGNAL(idSet(IdentityId)), &_certManager, SLOT(setId(IdentityId)));
+#endif
 }
 
 CoreIdentity::CoreIdentity(const Identity &other, QObject *parent)
-  : Identity(other, parent),
-    _certManager(*this)
+  : Identity(other, parent)
+#ifdef HAVE_SSL
+  , _certManager(*this)
+#endif
 {
+#ifdef HAVE_SSL
   connect(this, SIGNAL(idSet(IdentityId)), &_certManager, SLOT(setId(IdentityId)));
+#endif
 }
 
 CoreIdentity::CoreIdentity(const CoreIdentity &other, QObject *parent)
-  : Identity(other, parent),
-    _sslKey(other._sslKey),
+  : Identity(other, parent)
+#ifdef HAVE_SSL
+  , _sslKey(other._sslKey),
     _sslCert(other._sslCert),
     _certManager(*this)
+#endif
 {
+#ifdef HAVE_SSL
   connect(this, SIGNAL(idSet(IdentityId)), &_certManager, SLOT(setId(IdentityId)));
+#endif
 }
 
 void CoreIdentity::synchronize(SignalProxy *proxy) {
   proxy->synchronize(this);
+#ifdef HAVE_SSL
   proxy->synchronize(&_certManager);
+#endif
 }
 
+#ifdef HAVE_SSL
 void CoreIdentity::setSslKey(const QByteArray &encoded) {
   QSslKey key(encoded, QSsl::Rsa);
   if(key.isNull())
@@ -60,14 +75,18 @@ void CoreIdentity::setSslKey(const QByteArray &encoded) {
 void CoreIdentity::setSslCert(const QByteArray &encoded) {
   setSslCert(QSslCertificate(encoded));
 }
+#endif
 
 CoreIdentity &CoreIdentity::operator=(const CoreIdentity &identity) {
   Identity::operator=(identity);
+#ifdef HAVE_SSL
   _sslKey = identity._sslKey;
   _sslCert = identity._sslCert;
+#endif
   return *this;
 }
 
+#ifdef HAVE_SSL
 // ========================================
 //  CoreCertManager
 // ========================================
@@ -76,6 +95,10 @@ CoreCertManager::CoreCertManager(CoreIdentity &identity)
     identity(identity)
 {
   setAllowClientUpdates(true);
+}
+
+void CoreCertManager::setId(IdentityId id) {
+  renameObject(QString::number(id.toInt()));
 }
 
 void CoreCertManager::setSslKey(const QByteArray &encoded) {
@@ -87,7 +110,4 @@ void CoreCertManager::setSslCert(const QByteArray &encoded) {
   identity.setSslCert(encoded);
   CertManager::setSslCert(encoded);
 }
-
-void CoreCertManager::setId(IdentityId id) {
-  renameObject(QString::number(id.toInt()));
-}
+#endif //HAVE_SSL
