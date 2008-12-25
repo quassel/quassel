@@ -20,6 +20,9 @@
 #include "mainwin.h"
 
 #ifdef HAVE_KDE
+#  include <KAction>
+#  include <KActionCollection>
+#  include <KHelpMenu>
 #  include <KMenuBar>
 #  include <KStatusBar>
 #endif
@@ -83,6 +86,7 @@
 MainWin::MainWin(QWidget *parent)
 #ifdef HAVE_KDE
   : KMainWindow(parent),
+  _kHelpMenu(new KHelpMenu(this)),
 #else
   : QMainWindow(parent),
 #endif
@@ -213,9 +217,9 @@ void MainWin::setupActions() {
                                                   this, SLOT(showSettingsDlg()), tr("F7")));
 
   // Help
-  coll->addAction("AboutQuassel", new Action(SmallIcon("quassel"), tr("&About Quassel..."), coll,
+  coll->addAction("AboutQuassel", new Action(SmallIcon("quassel"), tr("&About Quassel"), coll,
                                               this, SLOT(showAboutDlg())));
-  coll->addAction("AboutQt", new Action(QIcon(":/pics/qt-logo.png"), tr("About &Qt..."), coll,
+  coll->addAction("AboutQt", new Action(QIcon(":/pics/qt-logo.png"), tr("About &Qt"), coll,
                                          qApp, SLOT(aboutQt())));
   coll->addAction("DebugNetworkModel", new Action(SmallIcon("tools-report-bug"), tr("Debug &NetworkModel"), coll,
                                        this, SLOT(on_actionDebugNetworkModel_triggered())));
@@ -253,7 +257,11 @@ void MainWin::setupMenus() {
 
   _helpMenu = menuBar()->addMenu(tr("&Help"));
   _helpMenu->addAction(coll->action("AboutQuassel"));
+#ifndef HAVE_KDE
   _helpMenu->addAction(coll->action("AboutQt"));
+#else
+  _helpMenu->addAction(KStandardAction::aboutKDE(_kHelpMenu, SLOT(aboutKDE()), this));
+#endif
   _helpMenu->addSeparator();
   _helpDebugMenu = _helpMenu->addMenu(SmallIcon("tools-report-bug"), tr("Debug"));
   _helpDebugMenu->addAction(coll->action("DebugNetworkModel"));

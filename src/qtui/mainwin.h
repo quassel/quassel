@@ -45,6 +45,8 @@ class SystemTrayIcon;
 class QMenu;
 class QLabel;
 
+class KHelpMenu;
+
 //!\brief The main window of Quassel's QtUi.
 class MainWin
 #ifdef HAVE_KDE
@@ -115,6 +117,9 @@ class MainWin
     void disconnectFromCore();
 
   private:
+#ifdef HAVE_KDE
+    KHelpMenu *_kHelpMenu;
+#endif
 
     QMenu *systrayMenu;
     QLabel *coreLagLabel;
