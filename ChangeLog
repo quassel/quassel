@@ -13,9 +13,13 @@ changes, the git history at <http://git.quassel-irc.org> is your friend.
 
 Without further ado, let's start:
 
-Version 0.3.2 (not yet released)
+Version 0.4.0 (not yet released)
 ================================
 
+* Optional support for KDE4
+  - KNotify support
+  - KDE icon and color theme support
+  - Editable shortcuts
 * Chat Monitor configuration dialog
 * Audio notifications
 * Clickable channel names in ChatView
