@@ -39,6 +39,7 @@
 #include "quassel.h"
 
 int main(int argc, char **argv) {
+  Q_INIT_RESOURCE(i18n);
 
   // Setup build information and version string
   # include "version.gen"
@@ -50,8 +51,8 @@ int main(int argc, char **argv) {
 
 #ifdef HAVE_KDE
   // We need to init KCmdLineArgs first
-  // TODO: build an AboutData class to replace our aboutDlg strings
-  KAboutData aboutData(argv[0], 0, ki18n("Quassel IRC"), Quassel::buildInfo().plainVersionString.toUtf8());
+  // TODO: build an AboutData compat class to replace our aboutDlg strings
+  KAboutData aboutData("quassel", 0, ki18n("Quassel IRC"), Quassel::buildInfo().plainVersionString.toUtf8());
   aboutData.setOrganizationDomain(Quassel::buildInfo().organizationDomain.toUtf8());
   KCmdLineArgs::init(argc, argv, &aboutData);
 #endif

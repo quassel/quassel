@@ -168,7 +168,7 @@ MainWin::~MainWin() {
   QtUiSettings s;
   s.setValue("MainWinSize", size());
   s.setValue("MainWinPos", pos());
-  s.setValue("MainWinState", saveState()); qDebug() << "fini!";
+  s.setValue("MainWinState", saveState());
 }
 
 void MainWin::updateIcon() {

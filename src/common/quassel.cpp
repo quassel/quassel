@@ -42,8 +42,6 @@ bool Quassel::DEBUG = false;
 QString Quassel::_coreDumpFileName;
 
 Quassel::Quassel() {
-  Q_INIT_RESOURCE(i18n);
-
   // We catch SIGTERM and SIGINT (caused by Ctrl+C) to graceful shutdown Quassel.
   signal(SIGTERM, handleSignal);
   signal(SIGINT, handleSignal);
@@ -72,10 +70,6 @@ bool Quassel::init() {
   qsrand(QTime(0,0,0).secsTo(QTime::currentTime()));
 
   registerMetaTypes();
-
-  QCoreApplication::setApplicationName(buildInfo().applicationName);
-  QCoreApplication::setOrganizationName(buildInfo().organizationName);
-  QCoreApplication::setOrganizationDomain(buildInfo().organizationDomain);
 
   Network::setDefaultCodecForServer("ISO-8859-1");
   Network::setDefaultCodecForEncoding("UTF-8");
