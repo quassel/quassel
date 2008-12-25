@@ -23,6 +23,8 @@
 #ifndef ACTIONCOLLECTION_H_
 #define ACTIONCOLLECTION_H_
 
+#ifndef HAVE_KDE
+
 #include <QDebug>
 #include <QList>
 #include <QMap>
@@ -113,5 +115,17 @@ class ActionCollection : public QObject {
 int ActionCollection::count() const { return actions().count(); }
 bool ActionCollection::isEmpty() const { return actions().count(); }
 
+#else /* HAVE_KDE */
+
+#include <KActionCollection>
+
+class ActionCollection : public KActionCollection {
+  Q_OBJECT
+
+  public:
+    explicit ActionCollection(QObject *parent) : KActionCollection(parent) {};
+
+};
+#endif
 
 #endif

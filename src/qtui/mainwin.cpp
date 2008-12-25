@@ -211,7 +211,7 @@ void MainWin::setupActions() {
   // View
   coll->addAction("ManageBufferViews", new Action(SmallIcon("view-tree"), tr("&Manage Buffer Views..."), coll,
                                              this, SLOT(on_actionManageViews_triggered())));
-  Action *lockAct = coll->addAction("LockDockPositions", new Action(tr("&Lock Dock Positions"), coll));
+  QAction *lockAct = coll->addAction("LockDockPositions", new Action(tr("&Lock Dock Positions"), coll));
   lockAct->setCheckable(true);
   connect(lockAct, SIGNAL(toggled(bool)), SLOT(on_actionLockDockPositions_toggled(bool)));
 

@@ -20,6 +20,8 @@
  * Parts of this implementation are based on KDE's KActionCollection.      *
  ***************************************************************************/
 
+#ifndef HAVE_KDE
+
 #include <QAction>
 #include <QDebug>
 
@@ -226,3 +228,5 @@ bool ActionCollection::unlistAction(QAction *action) {
 
   return true;
 }
+
+#endif /* HAVE_KDE */

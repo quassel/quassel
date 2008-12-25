@@ -20,16 +20,27 @@
  * Parts of this implementation are taken from KDE's kaction.cpp           *
  ***************************************************************************/
 
-#include <QApplication>
-
 #include "action.h"
 
-Action::Action(QObject *parent) : QWidgetAction(parent) {
+#include <QApplication>
+
+Action::Action(QObject *parent)
+#ifdef HAVE_KDE
+: KAction(parent)
+#else
+: QWidgetAction(parent)
+#endif
+{
   init();
 }
 
 Action::Action(const QString &text, QObject *parent, const QObject *receiver, const char *slot, const QKeySequence &shortcut)
-: QWidgetAction(parent) {
+#ifdef HAVE_KDE
+: KAction(parent)
+#else
+: QWidgetAction(parent)
+#endif
+{
   init();
   setText(text);
   setShortcut(shortcut);
@@ -38,7 +49,12 @@ Action::Action(const QString &text, QObject *parent, const QObject *receiver, co
 }
 
 Action::Action(const QIcon &icon, const QString &text, QObject *parent, const QObject *receiver, const char *slot, const QKeySequence &shortcut)
-: QWidgetAction(parent) {
+#ifdef HAVE_KDE
+: KAction(parent)
+#else
+: QWidgetAction(parent)
+#endif
+{
   init();
   setIcon(icon);
   setText(text);
@@ -47,6 +63,9 @@ Action::Action(const QIcon &icon, const QString &text, QObject *parent, const QO
     connect(this, SIGNAL(triggered()), receiver, slot);
 }
 
+#ifdef HAVE_KDE
+void Action::init() { }
+#else
 void Action::init() {
   connect(this, SIGNAL(triggered(bool)), this, SLOT(slotTriggered()));
 
@@ -87,3 +106,5 @@ void Action::setShortcut(const QKeySequence &key, ShortcutTypes type) {
   if(type & ActiveShortcut)
     QAction::setShortcut(key);
 }
+
+#endif /* HAVE_KDE */
