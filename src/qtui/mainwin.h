@@ -95,6 +95,7 @@ class MainWin
     void showCoreConnectionDlg(bool autoConnect = false);
     void showCoreInfoDlg();
     void showSettingsDlg();
+    void showNotificationsDlg();
     void on_actionEditNetworks_triggered();
     void on_actionManageViews_triggered();
     void on_actionLockDockPositions_toggled(bool lock);

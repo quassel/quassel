@@ -261,6 +261,9 @@ void MainWin::setupMenus() {
   _viewMenu->addAction(coll->action("LockDockPositions"));
 
   _settingsMenu = menuBar()->addMenu(tr("&Settings"));
+#ifdef HAVE_KDE
+  _settingsMenu->addAction(KStandardAction::configureNotifications(this, SLOT(showNotificationsDlg()), this));
+#endif
   _settingsMenu->addAction(coll->action("ConfigureQuassel"));
 
   _helpMenu = menuBar()->addMenu(tr("&Help"));
@@ -336,6 +339,11 @@ BufferView *MainWin::allBuffersView() const {
   if(_bufferViews.count() > 0)
     return _bufferViews[0]->bufferView();
   return 0;
+}
+
+void MainWin::showNotificationsDlg() {
+  SettingsPageDlg dlg(new NotificationsSettingsPage(this), this);
+  dlg.exec();
 }
 
 void MainWin::on_actionEditNetworks_triggered() {
