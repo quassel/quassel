@@ -1,0 +1,9 @@
+[Global]
+IconName=quassel
+Comment=Quassel IRC
+
+[Event/Highlight]
+Name=Highlight
+Comment=A highlighted message has arrived
+Sound=KDE-Im-Highlight-Msg.ogg
+Action=Sound|Popup

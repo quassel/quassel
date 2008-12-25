@@ -54,6 +54,7 @@ if(STATIC)
   set(CMAKE_BUILD_TYPE Release)
   set(OXYGEN_ICONS "Builtin")
   set(QUASSEL_ICONS "Builtin")
+  set(WITH_KDE OFF)
 endif(STATIC)
 
 # RPATH needs to be set correctly
@@ -62,7 +63,7 @@ set(CMAKE_BUILD_WITH_INSTALL_RPATH 1)
 
 # Define install locations. Using variables will allow overriding this by the KDE macros later.
 set(BIN_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/bin)
-set(DATA_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/share/apps/quassel)
+set(DATA_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/share/apps)
 set(ICON_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/share/icons)
 set(XDG_APPS_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/share/applications)
 
@@ -178,8 +179,9 @@ if(WITH_KDE)
     add_definitions(-DHAVE_KDE ${KDE4_DEFINITIONS})
     set(HAVE_KDE 1)
     set(MOC_DEFINES ${MOC_DEFINES} -DHAVE_KDE)
-    set(QUASSEL_KDE_LIBRARIES ${KDE4_KDECORE_LIBS} ${KDE4_KDEUI_LIBRARY})
+    set(QUASSEL_KDE_LIBRARIES ${KDE4_KDECORE_LIBS} ${KDE4_KDEUI_LIBRARY} knotifyconfig)
     set(OXYGEN_ICONS "External")
+    set(QUASSEL_ICONS "External")
   else(KDE4_FOUND)
     message(STATUS "KDE4 not found, disabling KDE integration")
   endif(KDE4_FOUND)

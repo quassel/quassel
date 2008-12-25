@@ -18,42 +18,43 @@
 *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 ***************************************************************************/
 
-#ifndef ABSTRACTNOTIFICATIONBACKEND_H_
-#define ABSTRACTNOTIFICATIONBACKEND_H_
+#ifndef KNOTIFICATIONBACKEND_H_
+#define KNOTIFICATIONBACKEND_H_
 
-#include <QObject>
-#include <QString>
+#include "abstractnotificationbackend.h"
+#include "settingspage.h"
 
-#include "bufferinfo.h"
+class KNotification;
+class KNotifyConfigWidget;
 
-class SettingsPage;
-
-class AbstractNotificationBackend : public QObject {
+class KNotificationBackend : public AbstractNotificationBackend {
   Q_OBJECT
 
 public:
-  struct Notification {
-    uint notificationId;
-    BufferId bufferId;
-    QString sender;
-    QString message;
+  KNotificationBackend(QObject *parent = 0);
 
-    Notification(uint id_, BufferId buf_, const QString &sender_, const QString &msg_)
-      : notificationId(id_), bufferId(buf_), sender(sender_), message(msg_) {};
-  };
+  void notify(const Notification &);
+  void close(uint notificationId);
+  virtual SettingsPage *createConfigWidget() const;
 
-  inline AbstractNotificationBackend(QObject *parent) : QObject(parent) {};
-  virtual ~AbstractNotificationBackend() {};
+private:
+  class ConfigWidget;
+};
 
-  virtual void notify(const Notification &) = 0;
-  virtual void close(uint notificationId) { Q_UNUSED(notificationId); }
+class KNotificationBackend::ConfigWidget : public SettingsPage {
+  Q_OBJECT
 
-  //! Factory to create a configuration widget suitable for a specific notification backend
-  /**
-   * AbstractNotification will not take ownership of that configWidget!
-   * In case you need to communicate with the configWidget directly, make your connections here
-   */
-  virtual SettingsPage *createConfigWidget() const = 0;
+public:
+  ConfigWidget(QWidget *parent = 0);
+
+  void save();
+  void load();
+
+private slots:
+  void widgetChanged(bool);
+
+private:
+  KNotifyConfigWidget *_widget;
 };
 
 #endif
