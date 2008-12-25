@@ -48,6 +48,7 @@ class NotificationsSettingsPage : public SettingsPage {
 
   private:
     QList<SettingsPage *> _configWidgets;
+    bool _hasDefaults;
 };
 
 #endif
