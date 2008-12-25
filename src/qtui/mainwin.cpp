@@ -24,6 +24,7 @@
 #  include <KActionCollection>
 #  include <KHelpMenu>
 #  include <KMenuBar>
+#  include <KShortcutsDialog>
 #  include <KStatusBar>
 #endif
 
@@ -209,7 +210,7 @@ void MainWin::setupActions() {
                                       qApp, SLOT(quit()), tr("Ctrl+Q")));
 
   // View
-  coll->addAction("ManageBufferViews", new Action(SmallIcon("view-tree"), tr("&Manage Buffer Views..."), coll,
+  coll->addAction("ManageBufferViews", new Action(tr("&Manage Buffer Views..."), coll,
                                              this, SLOT(on_actionManageViews_triggered())));
   QAction *lockAct = coll->addAction("LockDockPositions", new Action(tr("&Lock Dock Positions"), coll));
   lockAct->setCheckable(true);
@@ -262,6 +263,7 @@ void MainWin::setupMenus() {
 
   _settingsMenu = menuBar()->addMenu(tr("&Settings"));
 #ifdef HAVE_KDE
+  _settingsMenu->addAction(KStandardAction::keyBindings(this, SLOT(showShortcutsDlg()), this));
   _settingsMenu->addAction(KStandardAction::configureNotifications(this, SLOT(showNotificationsDlg()), this));
 #endif
   _settingsMenu->addAction(coll->action("ConfigureQuassel"));
@@ -640,6 +642,12 @@ void MainWin::showSettingsDlg() {
 void MainWin::showAboutDlg() {
   AboutDlg(this).exec();
 }
+
+#ifdef HAVE_KDE
+void MainWin::showShortcutsDlg() {
+  KShortcutsDialog::configure(QtUi::actionCollection("General"), KShortcutsEditor::LetterShortcutsDisallowed);
+}
+#endif
 
 void MainWin::closeEvent(QCloseEvent *event) {
   QtUiSettings s;
