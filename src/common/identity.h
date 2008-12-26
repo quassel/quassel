@@ -106,7 +106,7 @@ public slots:
   void setPartReason(const QString &reason);
   void setQuitReason(const QString &reason);
 
-  void update(const Identity &other);
+  void copyFrom(const Identity &other);
 
 signals:
   void idSet(IdentityId id);

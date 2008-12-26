@@ -241,7 +241,7 @@ void IdentitiesSettingsPage::clientIdentityUpdated() {
   if(identity->identityName() != clientIdentity->identityName())
     renameIdentity(identity->id(), clientIdentity->identityName());
 
-  identity->update(*clientIdentity);
+  identity->copyFrom(*clientIdentity);
 
   if(identity->id() == currentId)
     displayIdentity(identity, true);
@@ -381,7 +381,7 @@ void IdentitiesSettingsPage::on_addIdentity_clicked() {
 #endif
     if(dlg.duplicateId() != 0) {
       // duplicate
-      newId->update(*identities[dlg.duplicateId()]);
+      newId->copyFrom(*identities[dlg.duplicateId()]);
       newId->setId(id);
     }
     newId->setIdentityName(dlg.identityName());

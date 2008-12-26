@@ -184,7 +184,7 @@ void Identity::setQuitReason(const QString &reason) {
 
 /***  ***/
 
-void Identity::update(const Identity &other) {
+void Identity::copyFrom(const Identity &other) {
   for(int idx = staticMetaObject.propertyOffset(); idx < staticMetaObject.propertyCount(); idx++) {
     QMetaProperty metaProp = staticMetaObject.property(idx);
     Q_ASSERT(metaProp.isValid());

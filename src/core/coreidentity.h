@@ -77,9 +77,9 @@ public:
   inline const QSslCertificate &sslCert() const { return _sslCert; }
   inline void setSslCert(const QSslCertificate &cert) { _sslCert = cert; }
   void setSslCert(const QByteArray &encoded);
-#endif HAVE_SSL
+#endif /* HAVE_SSL */
 
-  CoreIdentity& CoreIdentity::operator=(const CoreIdentity &identity);
+  CoreIdentity& operator=(const CoreIdentity &identity);
 
 private:
 #ifdef HAVE_SSL
