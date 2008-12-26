@@ -20,6 +20,8 @@ Version 0.4.0 (not yet released)
   - KNotify support
   - KDE icon and color theme support
   - Editable shortcuts
+* Core now supports a proxy for connections to IRC
+* Core supports SSL certs and keys for IRC connections 
 * Chat Monitor configuration dialog
 * Audio notifications
 * Clickable channel names in ChatView
