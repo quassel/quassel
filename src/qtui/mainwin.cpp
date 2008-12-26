@@ -62,17 +62,18 @@
 #include "topicwidget.h"
 #include "verticaldock.h"
 
-#ifdef HAVE_DBUS
-#  include "desktopnotificationbackend.h"
-#endif
-#ifdef HAVE_PHONON
-#  include "phononnotificationbackend.h"
-#endif
-#ifdef HAVE_KDE
+#ifndef HAVE_KDE
+#  ifdef HAVE_DBUS
+#    include "desktopnotificationbackend.h"
+#  endif
+#  ifdef HAVE_PHONON
+#    include "phononnotificationbackend.h"
+#  endif
+#  include "systraynotificationbackend.h"
+#  include "taskbarnotificationbackend.h"
+#else /* HAVE_KDE */
 #  include "knotificationbackend.h"
-#endif
-#include "systraynotificationbackend.h"
-#include "taskbarnotificationbackend.h"
+#endif /* HAVE_KDE */
 
 #include "settingspages/aliasessettingspage.h"
 #include "settingspages/appearancesettingspage.h"

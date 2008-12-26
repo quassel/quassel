@@ -63,16 +63,14 @@ bool CoreApplicationInternal::init() {
 
 CoreApplication::CoreApplication(int &argc, char **argv)
 #ifdef HAVE_KDE
-  : KApplication(false),
+: KApplication(false), Quassel() {
+  Q_UNUSED(argc); Q_UNUSED(argv);
 #else
-  : QCoreApplication(argc, argv),
+: QCoreApplication(argc, argv), Quassel() {
 #endif
-    Quassel()
-{
+
   setRunMode(Quassel::CoreOnly);
   _internal = new CoreApplicationInternal();
-
-  qInstallMsgHandler(Logger::logMessage);
 }
 
 CoreApplication::~CoreApplication() {
@@ -80,7 +78,9 @@ CoreApplication::~CoreApplication() {
 }
 
 bool CoreApplication::init() {
-  if(Quassel::init())
-    return _internal->init();
+  if(Quassel::init() && _internal->init()) {
+    qInstallMsgHandler(Logger::logMessage);
+    return true;
+  }
   return false;
 }

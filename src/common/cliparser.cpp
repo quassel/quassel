@@ -58,7 +58,9 @@ void CliParser::usage() {
 }
 
 #else
-void CliParser::addArgument(const QString &longName, const CliParserArg &arg) {
+void CliParser::addArgument(const QString &longName_, const CliParserArg &arg) {
+  QString longName = longName_;
+  longName.remove(QRegExp("\\s*<.*>\\s*")); // KCmdLineArgs takes args of the form "arg <defval>"
   if(argsHash.contains(longName)) qWarning() << "Warning: Multiple definition of argument" << longName;
   if(arg.shortName != 0 && !lnameOfShortArg(arg.shortName).isNull())
     qWarning().nospace() << "Warning: Redefining shortName '" << arg.shortName << "' for " << longName << " previously defined for " << lnameOfShortArg(arg.shortName);

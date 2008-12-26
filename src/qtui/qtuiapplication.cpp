@@ -48,11 +48,12 @@
 
 QtUiApplication::QtUiApplication(int &argc, char **argv)
 #ifdef HAVE_KDE
-  : KApplication(), Quassel()
+  : KApplication(), Quassel() {
+  Q_UNUSED(argc); Q_UNUSED(argv);
 #else
-  : QApplication(argc, argv), Quassel()
+  : QApplication(argc, argv), Quassel() {
 #endif
-{
+
   setRunMode(Quassel::ClientOnly);
 
   qInstallMsgHandler(Client::logMessage);
