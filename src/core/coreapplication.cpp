@@ -52,8 +52,12 @@ bool CoreApplicationInternal::init() {
   Core::instance();  // create and init the core
   _coreCreated = true;
 
+#ifdef HAVE_KDE
   // if using KDE, option is called "restore" instead of "norestore"
-  if(Quassel::isOptionSet("restore") || !Quassel::isOptionSet("norestore"))
+  if(Quassel::isOptionSet("restore"))
+#else
+  if(!Quassel::isOptionSet("norestore"))
+#endif
     Core::restoreState();
 
   return true;
