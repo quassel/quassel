@@ -225,7 +225,6 @@ IdentityId SqliteStorage::createIdentity(UserId user, CoreIdentity &identity) {
   safeExec(query);
 
   identityId = query.lastInsertId().toInt();
-  qDebug() << identityId << identity.nicks();
   if(!identityId.isValid()) {
     watchQuery(query);
   } else {
