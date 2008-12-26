@@ -41,8 +41,6 @@ class CoreCertManager : public CertManager {
 public:
   CoreCertManager(CoreIdentity &identity);
 
-  void setId(IdentityId id);
-
 #ifdef HAVE_SSL
   virtual const QSslKey &sslKey() const;
   virtual const QSslCertificate &sslCert() const;
@@ -51,6 +49,8 @@ public slots:
   virtual void setSslKey(const QByteArray &encoded);
   virtual void setSslCert(const QByteArray &encoded);
 #endif
+
+  void setId(IdentityId id);
 
 private:
   CoreIdentity &identity;
