@@ -788,45 +788,24 @@ bool SqliteStorage::removeBuffer(const UserId &user, const BufferId &bufferId) {
   return true;
 }
 
-BufferId SqliteStorage::renameBuffer(const UserId &user, const NetworkId &networkId, const QString &newName, const QString &oldName) {
-  // check if such a buffer exists...
-  QSqlQuery existsQuery(logDb());
-  existsQuery.prepare(queryString("select_bufferByName"));
-  existsQuery.bindValue(":networkid", networkId.toInt());
-  existsQuery.bindValue(":userid", user.toInt());
-  existsQuery.bindValue(":buffercname", oldName.toLower());
-  safeExec(existsQuery);
-  if(!watchQuery(existsQuery))
+bool SqliteStorage::renameBuffer(const UserId &user, const BufferId &bufferId, const QString &newName) {
+  if(!isValidBuffer(user, bufferId))
     return false;
 
-  if(!existsQuery.first())
+  QSqlQuery query(logDb());
+  query.prepare(queryString("update_buffer_name"));
+  query.bindValue(":buffername", newName);
+  query.bindValue(":buffercname", newName.toLower());
+  query.bindValue(":bufferid", bufferId.toInt());
+  safeExec(query);
+  if(query.lastError().isValid()) {
+    // unexepcted error occured (19 == constraint violation)
+    if(query.lastError().number() != 19)
+      watchQuery(query);
     return false;
+  }
 
-  const int bufferid = existsQuery.value(0).toInt();
-
-  Q_ASSERT(!existsQuery.next());
-
-  // ... and if the new name is still free.
-  existsQuery.bindValue(":networkid", networkId.toInt());
-  existsQuery.bindValue(":userid", user.toInt());
-  existsQuery.bindValue(":buffercname", newName.toLower());
-  safeExec(existsQuery);
-  if(!watchQuery(existsQuery))
-    return false;
-
-  if(existsQuery.first())
-    return false;
-
-  QSqlQuery renameBufferQuery(logDb());
-  renameBufferQuery.prepare(queryString("update_buffer_name"));
-  renameBufferQuery.bindValue(":buffername", newName);
-  renameBufferQuery.bindValue(":buffercname", newName.toLower());
-  renameBufferQuery.bindValue(":bufferid", bufferid);
-  safeExec(renameBufferQuery);
-  if(watchQuery(existsQuery))
-    return BufferId(bufferid);
-  else
-    return BufferId();
+  return true;
 }
 
 void SqliteStorage::setBufferLastSeenMsg(UserId user, const BufferId &bufferId, const MsgId &msgId) {

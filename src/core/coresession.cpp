@@ -24,7 +24,7 @@
 #include "coresession.h"
 #include "userinputhandler.h"
 #include "signalproxy.h"
-#include "buffersyncer.h"
+#include "corebuffersyncer.h"
 #include "corebacklogmanager.h"
 #include "corebufferviewmanager.h"
 #include "coreirclisthelper.h"
@@ -44,7 +44,7 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
     _user(uid),
     _signalProxy(new SignalProxy(SignalProxy::Server, 0, this)),
     _aliasManager(this),
-    _bufferSyncer(new BufferSyncer(this)),
+    _bufferSyncer(new CoreBufferSyncer(this)),
     _backlogManager(new CoreBacklogManager(this)),
     _bufferViewManager(new CoreBufferViewManager(_signalProxy, this)),
     _ircListHelper(new CoreIrcListHelper(this)),
@@ -81,9 +81,6 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
     _bufferSyncer->requestSetLastSeenMsg(id, lastSeenHash[id]);
 
   connect(_bufferSyncer, SIGNAL(lastSeenMsgSet(BufferId, MsgId)), this, SLOT(storeBufferLastSeenMsg(BufferId, MsgId)));
-  connect(_bufferSyncer, SIGNAL(removeBufferRequested(BufferId)), this, SLOT(removeBufferRequested(BufferId)));
-  connect(this, SIGNAL(bufferRemoved(BufferId)), _bufferSyncer, SLOT(removeBuffer(BufferId)));
-  connect(this, SIGNAL(bufferRenamed(BufferId, QString)), _bufferSyncer, SLOT(renameBuffer(BufferId, QString)));
   p->synchronize(_bufferSyncer);
 
 
@@ -386,40 +383,9 @@ void CoreSession::destroyNetwork(NetworkId id) {
   }
 }
 
-void CoreSession::removeBufferRequested(BufferId bufferId) {
-  BufferInfo bufferInfo = Core::getBufferInfo(user(), bufferId);
-  if(!bufferInfo.isValid()) {
-    qWarning() << "CoreSession::removeBufferRequested(): invalid BufferId:" << bufferId << "for User:" << user();
-    return;
-  }
-
-  if(bufferInfo.type() == BufferInfo::StatusBuffer) {
-    qWarning() << "CoreSession::removeBufferRequested(): Status Buffers cannot be removed!";
-    return;
-  }
-
-  if(bufferInfo.type() == BufferInfo::ChannelBuffer) {
-    CoreNetwork *net = network(bufferInfo.networkId());
-    if(!net) {
-      qWarning() << "CoreSession::removeBufferRequested(): Received BufferInfo with unknown networkId!";
-      return;
-    }
-    IrcChannel *chan = net->ircChannel(bufferInfo.bufferName());
-    if(chan) {
-      qWarning() << "CoreSession::removeBufferRequested(): Unable to remove Buffer for joined Channel:" << bufferInfo.bufferName();
-      return;
-    }
-  }
-  if(Core::removeBuffer(user(), bufferId))
-    emit bufferRemoved(bufferId);
-}
-
-// FIXME: use a coreBufferSyncer for this
 void CoreSession::renameBuffer(const NetworkId &networkId, const QString &newName, const QString &oldName) {
-  BufferId bufferId = Core::renameBuffer(user(), networkId, newName, oldName);
-  if(bufferId.isValid()) {
-    emit bufferRenamed(bufferId, newName);
-  }
+  BufferInfo bufferInfo = Core::bufferInfo(user(), networkId, BufferInfo::QueryBuffer, oldName);
+  _bufferSyncer->renameBuffer(bufferInfo.bufferId(), newName);
 }
 
 void CoreSession::clientsConnected() {

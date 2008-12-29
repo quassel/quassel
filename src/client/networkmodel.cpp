@@ -244,7 +244,6 @@ QVariant BufferItem::data(int column, int role) const {
 }
 
 bool BufferItem::setData(int column, const QVariant &value, int role) {
-  qDebug() << "BufferItem::setData(int column, const QVariant &value, int role):" << this << column << value << role;
   switch(role) {
   case NetworkModel::BufferActivityRole:
     setActivityLevel((BufferInfo::ActivityLevel)value.toInt());
@@ -304,7 +303,7 @@ QueryBufferItem::QueryBufferItem(const BufferInfo &bufferInfo, NetworkItem *pare
   : BufferItem(bufferInfo, parent),
     _ircUser(0)
 {
-  setFlags(flags() | Qt::ItemIsDropEnabled);
+  setFlags(flags() | Qt::ItemIsDropEnabled | Qt::ItemIsEditable);
 
   const Network *net = Client::network(bufferInfo.networkId());
   if(!net)
@@ -323,6 +322,24 @@ QVariant QueryBufferItem::data(int column, int role) const {
     return (bool)_ircUser ? _ircUser->isAway() : false;
   default:
     return BufferItem::data(column, role);
+  }
+}
+
+bool QueryBufferItem::setData(int column, const QVariant &value, int role) {
+  switch(role) {
+  case Qt::EditRole:
+    {
+      QString newName = value.toString();
+      if(!newName.isEmpty()) {
+	Client::renameBuffer(bufferId(), newName);
+	return true;
+      } else {
+	return false;
+      }
+    }
+    break;
+  default:
+    return BufferItem::setData(column, value, role);
   }
 }
 

@@ -113,6 +113,7 @@ public:
 
   static void setBufferLastSeenMsg(BufferId id, const MsgId &msgId); // this is synced to core and other clients
   static void removeBuffer(BufferId id);
+  static void renameBuffer(BufferId bufferId, const QString &newName);
 
   static void logMessage(QtMsgType type, const char *msg);
   static inline const QString &debugLog() { return instance()->_debugLogBuffer; }

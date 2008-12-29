@@ -20,15 +20,15 @@
 
 #include "inputwidget.h"
 
-#include "ircuser.h"
-#include "client.h"
-#include "networkmodel.h"
-#include "jumpkeyhandler.h"
-#include "qtuisettings.h"
-
 #include "action.h"
 #include "actioncollection.h"
+#include "client.h"
+#include "iconloader.h"
+#include "ircuser.h"
+#include "jumpkeyhandler.h"
+#include "networkmodel.h"
 #include "qtui.h"
+#include "qtuisettings.h"
 
 InputWidget::InputWidget(QWidget *parent)
   : AbstractItemView(parent),
@@ -38,6 +38,7 @@ InputWidget::InputWidget(QWidget *parent)
   connect(ui.inputEdit, SIGNAL(sendText(QString)), this, SLOT(sendText(QString)));
   connect(ui.ownNick, SIGNAL(activated(QString)), this, SLOT(changeNick(QString)));
   connect(this, SIGNAL(userInput(BufferInfo, QString)), Client::instance(), SIGNAL(sendInput(BufferInfo, QString)));
+  connect(Client::instance(), SIGNAL(disconnected()), this, SLOT(updateNickSelector()));
   setFocusProxy(ui.inputEdit);
 
   ui.ownNick->setSizeAdjustPolicy(QComboBox::AdjustToContents);
@@ -119,6 +120,7 @@ void InputWidget::setNetwork(const Network *network) {
       connect(network->me(), SIGNAL(userModesSet(QString)), this, SLOT(updateNickSelector()));
       connect(network->me(), SIGNAL(userModesAdded(QString)), this, SLOT(updateNickSelector()));
       connect(network->me(), SIGNAL(userModesRemoved(QString)), this, SLOT(updateNickSelector()));
+      connect(network->me(), SIGNAL(awaySet(bool)), this, SLOT(updateNickSelector()));
     }
   }
   setIdentity(network->identity());
@@ -161,10 +163,18 @@ void InputWidget::updateNickSelector() const {
     nickIdx = 0;
   }
 
-  if(net->me() && nickIdx < nicks.count())
-    nicks[nickIdx] = net->myNick() + QString(" (+%1)").arg(net->me()->userModes());
+  if(nicks.isEmpty())
+    return;
+
+  IrcUser *me = net->me();
+  if(me)
+    nicks[nickIdx] = net->myNick() + QString(" (+%1)").arg(me->userModes());
       
   ui.ownNick->addItems(nicks);
+
+  if(me && me->isAway())
+    ui.ownNick->setItemData(nickIdx, SmallIcon("user-away"), Qt::DecorationRole);
+
   ui.ownNick->setCurrentIndex(nickIdx);
 }
 

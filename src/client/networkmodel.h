@@ -140,6 +140,7 @@ public:
   QueryBufferItem(const BufferInfo &bufferInfo, NetworkItem *parent);
 
   virtual QVariant data(int column, int role) const;
+  virtual bool setData(int column, const QVariant &value, int role);
   virtual inline bool isActive() const { return (bool)_ircUser; }
   virtual QString toolTip(int column) const;
 

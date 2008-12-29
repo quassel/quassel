@@ -398,6 +398,12 @@ void Client::removeBuffer(BufferId id) {
   bufferSyncer()->requestRemoveBuffer(id);
 }
 
+void Client::renameBuffer(BufferId bufferId, const QString &newName) {
+  if(!bufferSyncer())
+    return;
+  bufferSyncer()->requestRenameBuffer(bufferId, newName);
+}
+
 void Client::bufferRemoved(BufferId bufferId) {
   // select a sane buffer (status buffer)
   /* we have to manually select a buffer because otherwise inconsitent changes

@@ -292,13 +292,12 @@ class Core : public QObject {
   //! Rename a Buffer
   /** \note This method is threadsafe.
    *  \param user      The id of the buffer owner
-   *  \param networkId The id of the network the buffer belongs to
+   *  \param bufferId  The bufferId
    *  \param newName   The new name of the buffer
-   *  \param oldName   The previous name of the buffer
-   *  \return the BufferId of the affected buffer or an invalid BufferId if not successfull
+   *  \return true if successfull
    */
-  static inline BufferId renameBuffer(const UserId &user, const NetworkId &networkId, const QString &newName, const QString &oldName) {
-    return instance()->storage->renameBuffer(user, networkId, newName, oldName);
+  static inline bool renameBuffer(const UserId &user, const BufferId &bufferId, const QString &newName) {
+    return instance()->storage->renameBuffer(user, bufferId, newName);
   }
 
   //! Update the LastSeenDate for a Buffer

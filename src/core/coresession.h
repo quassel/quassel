@@ -28,8 +28,8 @@
 #include "corealiasmanager.h"
 #include "message.h"
 
-class BufferSyncer;
 class CoreBacklogManager;
+class CoreBufferSyncer;
 class CoreBufferViewManager;
 class CoreIrcListHelper;
 class Identity;
@@ -96,17 +96,10 @@ public slots:
    */
   void removeNetwork(NetworkId network);
 
-  //! Remove a buffer and it's backlog permanently
-  /** \param bufferId The id of the buffer to be removed.
-   *  emits bufferRemoved(bufferId) on success.
-   */
-  void removeBufferRequested(BufferId bufferId);
-
   //! Rename a Buffer for a given network
   /* \param networkId The id of the network the buffer belongs to
    * \param newName   The new name of the buffer
    * \param oldName   The old name of the buffer
-   * emits bufferRenamed(bufferId, newName) on success.
    */
   void renameBuffer(const NetworkId &networkId, const QString &newName, const QString &oldName);
 
@@ -136,8 +129,6 @@ signals:
 
   void networkCreated(NetworkId);
   void networkRemoved(NetworkId);
-  void bufferRemoved(BufferId);
-  void bufferRenamed(BufferId, QString);
 
 private slots:
   void removeClient(QIODevice *dev);
@@ -169,7 +160,7 @@ private:
   //  QHash<NetworkId, CoreNetwork *> _networksToRemove;
   QHash<IdentityId, CoreIdentity *> _identities;
 
-  BufferSyncer *_bufferSyncer;
+  CoreBufferSyncer *_bufferSyncer;
   CoreBacklogManager *_backlogManager;
   CoreBufferViewManager *_bufferViewManager;
   CoreIrcListHelper *_ircListHelper;

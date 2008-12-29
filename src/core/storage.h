@@ -265,14 +265,15 @@ public slots:
    */
   virtual bool removeBuffer(const UserId &user, const BufferId &bufferId) = 0;
 
+
   //! Rename a Buffer
-  /** \param user      The id of the buffer owner
-   *  \param networkId The id of the network the buffer belongs to
+  /** \note This method is threadsafe.
+   *  \param user      The id of the buffer owner
+   *  \param bufferId  The bufferId
    *  \param newName   The new name of the buffer
-   *  \param oldName   The previous name of the buffer
-   *  \return the BufferId of the affected buffer or an invalid BufferId if not successfull
+   *  \return true if successfull
    */
-  virtual BufferId renameBuffer(const UserId &user, const NetworkId &networkId, const QString &newName, const QString &oldName) = 0;
+  virtual bool renameBuffer(const UserId &user, const BufferId &bufferId, const QString &newName) = 0;
   
   //! Update the LastSeenDate for a Buffer
   /** This Method is used to make the LastSeenDate of a Buffer persistent
