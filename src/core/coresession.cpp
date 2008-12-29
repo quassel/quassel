@@ -80,7 +80,6 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
   foreach(BufferId id, lastSeenHash.keys())
     _bufferSyncer->requestSetLastSeenMsg(id, lastSeenHash[id]);
 
-  // connect(_bufferSyncer, SIGNAL(lastSeenMsgSet(BufferId, MsgId)), this, SLOT(storeBufferLastSeenMsg(BufferId, MsgId)));
   connect(&(Core::instance()->syncTimer()), SIGNAL(timeout()), _bufferSyncer, SLOT(storeDirtyIds()));
   p->synchronize(_bufferSyncer);
 
@@ -263,10 +262,6 @@ QVariant CoreSession::sessionState() {
 
   //v["Payload"] = QByteArray(100000000, 'a');  // for testing purposes
   return v;
-}
-
-void CoreSession::storeBufferLastSeenMsg(BufferId buffer, const MsgId &msgId) {
-  Core::setBufferLastSeenMsg(user(), buffer, msgId);
 }
 
 void CoreSession::initScriptEngine() {

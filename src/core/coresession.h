@@ -138,8 +138,6 @@ private slots:
 
   void destroyNetwork(NetworkId);
 
-  void storeBufferLastSeenMsg(BufferId buffer, const MsgId &msgId);
-
   void scriptRequest(QString script);
 
   void clientsConnected();
