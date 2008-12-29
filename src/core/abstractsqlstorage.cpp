@@ -100,7 +100,7 @@ bool AbstractSqlStorage::init(const QVariantMap &settings) {
   }
   
   if(installedSchemaVersion() < schemaVersion()) {
-    qWarning() << "Installed Schema is not up to date. Upgrading...";
+    qWarning() << qPrintable(tr("Installed Schema (version %1) is not up to date. Upgrading to version %2...").arg(installedSchemaVersion()).arg(schemaVersion()));
     if(!upgradeDb())
       return false;
   }
