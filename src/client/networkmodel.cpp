@@ -326,6 +326,9 @@ QVariant QueryBufferItem::data(int column, int role) const {
 }
 
 bool QueryBufferItem::setData(int column, const QVariant &value, int role) {
+  if(column != 0)
+    return BufferItem::setData(column, value, role);
+
   switch(role) {
   case Qt::EditRole:
     {
