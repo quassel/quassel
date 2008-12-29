@@ -277,7 +277,6 @@ public:
 
   virtual QStringList mimeTypes() const;
   virtual QMimeData *mimeData(const QModelIndexList &) const;
-  virtual bool dropMimeData(const QMimeData *, Qt::DropAction, int, int, const QModelIndex &);
 
   void attachNetwork(Network *network);
 

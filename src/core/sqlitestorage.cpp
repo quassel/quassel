@@ -808,6 +808,27 @@ bool SqliteStorage::renameBuffer(const UserId &user, const BufferId &bufferId, c
   return true;
 }
 
+bool SqliteStorage::mergeBuffersPermanently(const UserId &user, const BufferId &bufferId1, const BufferId &bufferId2) {
+  if(!isValidBuffer(user, bufferId1) || !isValidBuffer(user, bufferId2))
+    return false;
+
+  QSqlQuery query(logDb());
+  query.prepare(queryString("update_backlog_bufferid"));
+  query.bindValue(":oldbufferid", bufferId2.toInt());
+  query.bindValue(":newbufferid", bufferId1.toInt());
+  safeExec(query);
+  if(!watchQuery(query))
+    return false;
+
+  QSqlQuery delBufferQuery(logDb());
+  delBufferQuery.prepare(queryString("delete_buffer_for_bufferid"));
+  delBufferQuery.bindValue(":bufferid", bufferId2.toInt());
+  safeExec(delBufferQuery);
+  watchQuery(delBufferQuery);
+
+  return true;
+}
+
 void SqliteStorage::setBufferLastSeenMsg(UserId user, const BufferId &bufferId, const MsgId &msgId) {
   QSqlQuery query(logDb());
   query.prepare(queryString("update_buffer_lastseen"));

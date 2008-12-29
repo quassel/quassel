@@ -63,7 +63,7 @@ Core::Core() : storage(0) {
     exit(1); // TODO make this less brutal (especially for mono client -> popup)
   }
   connect(&_storageSyncTimer, SIGNAL(timeout()), this, SLOT(syncStorage()));
-  _storageSyncTimer.start(10 * 60 * 1000); // in msecs
+  _storageSyncTimer.start(10 * 60 * 1000); // 10 minutes
 }
 
 void Core::init() {

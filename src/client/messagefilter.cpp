@@ -44,6 +44,8 @@ MessageFilter::MessageFilter(MessageModel *source, const QList<BufferId> &buffer
 }
 
 void MessageFilter::init() {
+  setDynamicSortFilter(true);
+
   BufferSettings defaultSettings;
   _messageTypeFilter = defaultSettings.messageFilter();
   defaultSettings.notify("MessageTypeFilter", this, SLOT(messageTypeFilterChanged()));

@@ -72,6 +72,7 @@ public:
 public slots:
   void requestBacklog(BufferId bufferId);
   void messagesReceived(BufferId bufferId, int count);
+  void buffersPermanentlyMerged(BufferId bufferId1, BufferId bufferId2);
 
 protected:
   virtual MessageModelItem *createMessageModelItem(const Message &) = 0;
@@ -111,6 +112,7 @@ public:
   inline const QDateTime &timeStamp() const { return _timestamp; }
   inline MsgId msgId() const { return _msgId; }
   inline BufferId bufferId() const { return _bufferId; }
+  inline void setBufferId(BufferId bufferId) { _bufferId = bufferId; }
   inline Message::Type msgType() const { return _type; }
   inline Message::Flags msgFlags() const { return _flags; }
   

@@ -65,12 +65,14 @@ void BufferSyncer::initSetLastSeenMsg(const QVariantList &list) {
 }
 
 void BufferSyncer::removeBuffer(BufferId buffer) {
-  if(_lastSeenMsg.contains(buffer)) {
+  if(_lastSeenMsg.contains(buffer))
     _lastSeenMsg.remove(buffer);
-    emit bufferRemoved(buffer);
-  }
+  emit bufferRemoved(buffer);
 }
 
-// void BufferSyncer::renameBuffer(BufferId buffer, QString newName) {
-//   emit bufferRenamed(buffer, newName);
-// }
+
+void BufferSyncer::mergeBuffersPermanently(BufferId buffer1, BufferId buffer2) {
+  if(_lastSeenMsg.contains(buffer2))
+    _lastSeenMsg.remove(buffer2);
+  emit buffersPermanentlyMerged(buffer1, buffer2);
+}

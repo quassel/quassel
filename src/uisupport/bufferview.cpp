@@ -196,6 +196,37 @@ void BufferView::keyPressEvent(QKeyEvent *event) {
   QTreeView::keyPressEvent(event);
 }
 
+void BufferView::dropEvent(QDropEvent *event) {
+  QList< QPair<NetworkId, BufferId> > bufferList = Client::networkModel()->mimeDataToBufferList(event->mimeData());
+
+  if(bufferList.count() != 1)
+    return QTreeView::dropEvent(event);
+
+  NetworkId networkId = bufferList[0].first;
+  BufferId bufferId2 = bufferList[0].second;
+
+  QModelIndex index = indexAt(event->pos());
+  if(index.data(NetworkModel::ItemTypeRole) != NetworkModel::BufferItemType)
+    return;
+
+  if(index.data(NetworkModel::BufferTypeRole) != BufferInfo::QueryBuffer)
+    return;
+
+  if(index.data(NetworkModel::NetworkIdRole).value<NetworkId>() != networkId)
+    return;
+
+  BufferId bufferId1 = index.data(NetworkModel::BufferIdRole).value<BufferId>();
+  if(bufferId1 == bufferId2)
+    return;
+
+  int res = QMessageBox::question(0, tr("Merge buffers permanently?"),
+				  tr("Do you want to merge the buffer \"%1\" permanently into buffer \"%2\"?\n This cannot be reversed!").arg(Client::networkModel()->bufferName(bufferId2)).arg(Client::networkModel()->bufferName(bufferId1)),
+				  QMessageBox::Yes|QMessageBox::No, QMessageBox::No);
+  if(res == QMessageBox::Yes) {
+    Client::mergeBuffersPermanently(bufferId1, bufferId2);
+  }
+}
+
 void BufferView::removeSelectedBuffers(bool permanently) {
   if(!config())
     return;

@@ -300,6 +300,17 @@ class Core : public QObject {
     return instance()->storage->renameBuffer(user, bufferId, newName);
   }
 
+  //! Merge the content of two Buffers permanently. This cannot be reversed!
+  /** \note This method is threadsafe.
+   *  \param user      The id of the buffer owner
+   *  \param bufferId1 The bufferId of the remaining buffer
+   *  \param bufferId2 The buffer that is about to be removed
+   *  \return true if successfulln
+   */
+  static inline bool mergeBuffersPermanently(const UserId &user, const BufferId &bufferId1, const BufferId &bufferId2) {
+    return instance()->storage->mergeBuffersPermanently(user, bufferId1, bufferId2);
+  }
+
   //! Update the LastSeenDate for a Buffer
   /** This Method is used to make the LastSeenDate of a Buffer persistent
    *  \note This method is threadsafe.
@@ -323,6 +334,8 @@ class Core : public QObject {
   }
 
   const QDateTime &startTime() const { return _startTime; }
+
+  static inline QTimer &syncTimer() { return instance()->_storageSyncTimer; }
 
 public slots:
   //! Make storage data persistent

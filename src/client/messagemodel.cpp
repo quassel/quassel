@@ -385,6 +385,16 @@ void MessageModel::messagesReceived(BufferId bufferId, int count) {
     _messagesWaiting.remove(bufferId);
 }
 
+void MessageModel::buffersPermanentlyMerged(BufferId bufferId1, BufferId bufferId2) {
+  for(int i = 0; i < _messageList.count(); i++) {
+    if(_messageList[i]->bufferId() == bufferId2) {
+      _messageList[i]->setBufferId(bufferId1);
+      QModelIndex idx = index(i, 0);
+      emit dataChanged(idx, idx);
+    }
+  }
+}
+
 // ========================================
 //  MessageModelItem
 // ========================================
@@ -425,7 +435,6 @@ bool MessageModelItem::setData(int column, const QVariant &value, int role) {
     return false;
   }
 }
-
 
 // Stuff for later
 bool MessageModelItem::lessThan(const MessageModelItem *m1, const MessageModelItem *m2){

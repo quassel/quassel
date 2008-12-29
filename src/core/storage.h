@@ -274,7 +274,16 @@ public slots:
    *  \return true if successfull
    */
   virtual bool renameBuffer(const UserId &user, const BufferId &bufferId, const QString &newName) = 0;
-  
+
+  //! Merge the content of two Buffers permanently. This cannot be reversed!
+  /** \note This method is threadsafe.
+   *  \param user      The id of the buffer owner
+   *  \param bufferId1 The bufferId of the remaining buffer
+   *  \param bufferId2 The buffer that is about to be removed
+   *  \return true if successfull
+   */
+  virtual bool mergeBuffersPermanently(const UserId &user, const BufferId &bufferId1, const BufferId &bufferId2) = 0;
+
   //! Update the LastSeenDate for a Buffer
   /** This Method is used to make the LastSeenDate of a Buffer persistent
    * \param user      The Owner of that Buffer

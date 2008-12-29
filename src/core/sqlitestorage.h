@@ -80,6 +80,7 @@ public slots:
   virtual QList<BufferId> requestBufferIdsForNetwork(UserId user, NetworkId networkId);
   virtual bool removeBuffer(const UserId &user, const BufferId &bufferId);
   virtual bool renameBuffer(const UserId &user, const BufferId &bufferId, const QString &newName);
+  virtual bool mergeBuffersPermanently(const UserId &user, const BufferId &bufferId1, const BufferId &bufferId2);
   virtual void setBufferLastSeenMsg(UserId user, const BufferId &bufferId, const MsgId &msgId);
   virtual QHash<BufferId, MsgId> bufferLastSeenMsgIds(UserId user);
 

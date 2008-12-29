@@ -80,7 +80,8 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
   foreach(BufferId id, lastSeenHash.keys())
     _bufferSyncer->requestSetLastSeenMsg(id, lastSeenHash[id]);
 
-  connect(_bufferSyncer, SIGNAL(lastSeenMsgSet(BufferId, MsgId)), this, SLOT(storeBufferLastSeenMsg(BufferId, MsgId)));
+  // connect(_bufferSyncer, SIGNAL(lastSeenMsgSet(BufferId, MsgId)), this, SLOT(storeBufferLastSeenMsg(BufferId, MsgId)));
+  connect(&(Core::instance()->syncTimer()), SIGNAL(timeout()), _bufferSyncer, SLOT(storeDirtyIds()));
   p->synchronize(_bufferSyncer);
 
 
@@ -158,6 +159,7 @@ void CoreSession::loadSettings() {
 }
 
 void CoreSession::saveSessionState() const {
+  _bufferSyncer->storeDirtyIds();
 }
 
 void CoreSession::restoreSessionState() {

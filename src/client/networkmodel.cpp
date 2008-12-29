@@ -891,49 +891,6 @@ QMimeData *NetworkModel::mimeData(const QModelIndexList &indexes) const {
   return mimeData;
 }
 
-bool NetworkModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent) {
-  Q_UNUSED(action)
-  Q_UNUSED(row)
-  Q_UNUSED(column)
-
-  if(!mimeContainsBufferList(data))
-    return false;
-
-  // target must be a query
-  BufferInfo::Type targetType = (BufferInfo::Type)parent.data(NetworkModel::BufferTypeRole).toInt();
-  if(targetType != BufferInfo::QueryBuffer)
-    return false;
-
-  QList< QPair<NetworkId, BufferId> > bufferList = mimeDataToBufferList(data);
-
-  // exactly one buffer has to be dropped
-  if(bufferList.count() != 1)
-    return false;
-
-  NetworkId netId = bufferList.first().first;
-  BufferId bufferId = bufferList.first().second;
-
-  // no self merges (would kill us)
-  if(bufferId == parent.data(BufferIdRole).value<BufferId>())
-    return false;
-
-  NetworkItem *netItem = findNetworkItem(netId);
-  Q_ASSERT(netItem);
-
-  BufferItem *bufferItem = netItem->findBufferItem(bufferId);
-  Q_ASSERT(bufferItem);
-
-  // source must be a query too
-  if(bufferItem->bufferType() != BufferInfo::QueryBuffer)
-    return false;
-
-  // TODO: warn user about buffermerge!
-  qDebug() << "merging" << bufferId << parent.data(BufferIdRole).value<BufferId>();
-  removeRow(parent.row(), parent.parent());
-
-  return true;
-}
-
 void NetworkModel::attachNetwork(Network *net) {
   NetworkItem *netItem = networkItem(net->networkId());
   netItem->attachNetwork(net);

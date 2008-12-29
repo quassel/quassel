@@ -286,6 +286,8 @@ void Client::setSyncedToCore() {
   connect(bufferSyncer(), SIGNAL(lastSeenMsgSet(BufferId, MsgId)), _networkModel, SLOT(setLastSeenMsgId(BufferId, MsgId)));
   connect(bufferSyncer(), SIGNAL(bufferRemoved(BufferId)), this, SLOT(bufferRemoved(BufferId)));
   connect(bufferSyncer(), SIGNAL(bufferRenamed(BufferId, QString)), this, SLOT(bufferRenamed(BufferId, QString)));
+  connect(bufferSyncer(), SIGNAL(buffersPermanentlyMerged(BufferId, BufferId)), this, SLOT(buffersPermanentlyMerged(BufferId, BufferId)));
+  connect(bufferSyncer(), SIGNAL(buffersPermanentlyMerged(BufferId, BufferId)), _messageModel, SLOT(buffersPermanentlyMerged(BufferId, BufferId)));
   connect(bufferSyncer(), SIGNAL(initDone()), this, SLOT(requestInitialBacklog()));
   connect(networkModel(), SIGNAL(setLastSeenMsg(BufferId, MsgId)), bufferSyncer(), SLOT(requestSetLastSeenMsg(BufferId, const MsgId &)));
   signalProxy()->synchronize(bufferSyncer());
@@ -404,6 +406,12 @@ void Client::renameBuffer(BufferId bufferId, const QString &newName) {
   bufferSyncer()->requestRenameBuffer(bufferId, newName);
 }
 
+void Client::mergeBuffersPermanently(BufferId bufferId1, BufferId bufferId2) {
+  if(!bufferSyncer())
+    return;
+  bufferSyncer()->requestMergeBuffersPermanently(bufferId1, bufferId2);
+}
+
 void Client::bufferRemoved(BufferId bufferId) {
   // select a sane buffer (status buffer)
   /* we have to manually select a buffer because otherwise inconsitent changes
@@ -427,6 +435,12 @@ void Client::bufferRenamed(BufferId bufferId, const QString &newName) {
   if(bufferIndex.isValid()) {
     networkModel()->setData(bufferIndex, newName, Qt::DisplayRole);
   }
+}
+
+void Client::buffersPermanentlyMerged(BufferId bufferId1, BufferId bufferId2) {
+  QModelIndex idx = networkModel()->bufferIndex(bufferId1);
+  bufferModel()->setCurrentIndex(bufferModel()->mapFromSource(idx));
+  networkModel()->removeBuffer(bufferId2);
 }
 
 void Client::logMessage(QtMsgType type, const char *msg) {
