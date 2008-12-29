@@ -1,6 +1,6 @@
 UPDATE identity
 SET    identityname = :identityname,
-       relname = :realname,
+       realname = :realname,
        awaynick = :awaynick,
        awaynickenabled = :awaynickenabled,
        awayreason = :awayreason,

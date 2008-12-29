@@ -283,11 +283,13 @@ bool SqliteStorage::updateIdentity(UserId user, const CoreIdentity &identity) {
 #endif
   query.bindValue(":identityid", identity.id().toInt());
   safeExec(query);
+  watchQuery(query);
 
   QSqlQuery deleteNickQuery(logDb());
   deleteNickQuery.prepare(queryString("delete_nicks"));
   deleteNickQuery.bindValue(":identityid", identity.id().toInt());
   safeExec(deleteNickQuery);
+  watchQuery(deleteNickQuery);
 
   QSqlQuery insertNickQuery(logDb());
   insertNickQuery.prepare(queryString("insert_nick"));
@@ -295,6 +297,7 @@ bool SqliteStorage::updateIdentity(UserId user, const CoreIdentity &identity) {
     insertNickQuery.bindValue(":identityid", identity.id().toInt());
     insertNickQuery.bindValue(":nick", nick);
     safeExec(insertNickQuery);
+    watchQuery(insertNickQuery);
   }
 
   return true;
