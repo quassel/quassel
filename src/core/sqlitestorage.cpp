@@ -901,15 +901,19 @@ QList<Message> SqliteStorage::requestMsgs(UserId user, BufferId bufferId, MsgId 
     return messagelist;
 
   QSqlQuery query(logDb());
-  if(last == -1) {
-    query.prepare(queryString("select_messagesNew"));
+  
+  if(last == -1 && first == -1) {
+    query.prepare(queryString("select_messagesNewestK"));
+  } else if(last == -1) {
+    query.prepare(queryString("select_messagesNewerThan"));
+    query.bindValue(":firstmsg", first.toInt());
   } else {
     query.prepare(queryString("select_messages"));
     query.bindValue(":lastmsg", last.toInt());
+    query.bindValue(":firstmsg", first.toInt());
   }
 
   query.bindValue(":bufferid", bufferId.toInt());
-  query.bindValue(":firstmsg", first.toInt());
   query.bindValue(":limit", limit);
   safeExec(query);
 

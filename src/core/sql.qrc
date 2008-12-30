@@ -53,7 +53,8 @@
     <file>./SQL/SQLite/13/select_messages.sql</file>
     <file>./SQL/SQLite/13/select_messagesAll.sql</file>
     <file>./SQL/SQLite/13/select_messagesAllNew.sql</file>
-    <file>./SQL/SQLite/13/select_messagesNew.sql</file>
+    <file>./SQL/SQLite/13/select_messagesNewerThan.sql</file>
+    <file>./SQL/SQLite/13/select_messagesNewestK.sql</file>
     <file>./SQL/SQLite/13/select_networkExists.sql</file>
     <file>./SQL/SQLite/13/select_networks_for_user.sql</file>
     <file>./SQL/SQLite/13/select_nicks.sql</file>
