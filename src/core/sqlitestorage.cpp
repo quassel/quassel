@@ -691,7 +691,7 @@ void SqliteStorage::createBuffer(UserId user, const NetworkId &networkId, Buffer
   watchQuery(query);
 }
 
-BufferInfo SqliteStorage::getBufferInfo(UserId user, const NetworkId &networkId, BufferInfo::Type type, const QString &buffer) {
+BufferInfo SqliteStorage::bufferInfo(UserId user, const NetworkId &networkId, BufferInfo::Type type, const QString &buffer, bool create) {
   QSqlQuery query(logDb());
   query.prepare(queryString("select_bufferByName"));
   query.bindValue(":networkid", networkId.toInt());
@@ -700,6 +700,9 @@ BufferInfo SqliteStorage::getBufferInfo(UserId user, const NetworkId &networkId,
   safeExec(query);
 
   if(!query.first()) {
+    if(!create)
+      return BufferInfo();
+
     createBuffer(user, networkId, type, buffer);
     safeExec(query);
     if(!query.first()) {

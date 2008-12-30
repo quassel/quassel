@@ -208,10 +208,11 @@ class Core : public QObject {
    *  \param networkId The network id
    *  \param type      The type of the buffer (StatusBuffer, Channel, etc.)
    *  \param buffer    The buffer name (if empty, the net's status buffer is returned)
+   *  \param create    Whether or not the buffer should be created if it doesnt exist
    *  \return The BufferInfo corresponding to the given network and buffer name, or 0 if not found
    */
-  static inline BufferInfo bufferInfo(UserId user, const NetworkId &networkId, BufferInfo::Type type, const QString &buffer = "") {
-    return instance()->storage->getBufferInfo(user, networkId, type, buffer);
+  static inline BufferInfo bufferInfo(UserId user, const NetworkId &networkId, BufferInfo::Type type, const QString &buffer = "", bool create = true) {
+    return instance()->storage->bufferInfo(user, networkId, type, buffer, create);
   }
 
   //! Get the unique BufferInfo for a bufferId

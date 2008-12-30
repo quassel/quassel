@@ -89,6 +89,7 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
 
   // init BacklogManager
   p->synchronize(_backlogManager);
+  p->dumpSyncMap(_backlogManager);
 
   // init IrcListHelper
   p->synchronize(ircListHelper());
@@ -381,7 +382,7 @@ void CoreSession::destroyNetwork(NetworkId id) {
 }
 
 void CoreSession::renameBuffer(const NetworkId &networkId, const QString &newName, const QString &oldName) {
-  BufferInfo bufferInfo = Core::bufferInfo(user(), networkId, BufferInfo::QueryBuffer, oldName);
+  BufferInfo bufferInfo = Core::bufferInfo(user(), networkId, BufferInfo::QueryBuffer, oldName, false);
   _bufferSyncer->renameBuffer(bufferInfo.bufferId(), newName);
 }
 

@@ -230,9 +230,10 @@ public slots:
    *  \param networkId The network id
    *  \param type      The type of the buffer (StatusBuffer, Channel, etc.)
    *  \param buffer  The buffer name (if empty, the net's status buffer is returned)
+   *  \param create    Whether or not the buffer should be created if it doesnt exist
    *  \return The BufferInfo corresponding to the given network and buffer name, or an invalid BufferInfo if not found
    */
-  virtual BufferInfo getBufferInfo(UserId user, const NetworkId &networkId, BufferInfo::Type type, const QString &buffer = "") = 0;
+  virtual BufferInfo bufferInfo(UserId user, const NetworkId &networkId, BufferInfo::Type type, const QString &buffer = "", bool create = true) = 0;
 
   //! Get the unique BufferInfo for a bufferId
   /** \param user      The core user who owns this buffername
