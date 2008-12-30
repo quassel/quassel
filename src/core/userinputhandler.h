@@ -60,6 +60,7 @@ public slots:
   void handleSay(const BufferInfo &bufferInfo, const QString &text);
   void handleTopic(const BufferInfo &bufferInfo, const QString &text);
   void handleVoice(const BufferInfo &bufferInfo, const QString &text);
+  void handleWait(const BufferInfo &bufferInfo, const QString &text);
   void handleWho(const BufferInfo &bufferInfo, const QString &text);
   void handleWhois(const BufferInfo &bufferInfo, const QString &text);
   void handleWhowas(const BufferInfo &bufferInfo, const QString &text);
@@ -68,11 +69,23 @@ public slots:
 
   void issueQuit(const QString &reason);
 
+protected:
+  void timerEvent(QTimerEvent *event);
+
 private:
   void expand(const QString &alias, const BufferInfo &bufferInfo, const QString &msg);
   void banOrUnban(const BufferInfo &bufferInfo, const QString &text, bool ban);
   void putPrivmsg(const QByteArray &target, const QByteArray &message);
   int lastParamOverrun(const QString &cmd, const QList<QByteArray> &params);
+
+  struct Command {
+    BufferInfo bufferInfo;
+    QString command;
+    Command(const BufferInfo &info, const QString &command) : bufferInfo(info), command(command) {}
+    Command() {}
+  };
+
+  QHash<int, Command> _delayedCommands;
 };
 
 

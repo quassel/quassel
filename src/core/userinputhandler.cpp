@@ -354,6 +354,25 @@ void UserInputHandler::handleVoice(const BufferInfo &bufferInfo, const QString &
   emit putCmd("MODE", serverEncode(params));
 }
 
+void UserInputHandler::handleWait(const BufferInfo &bufferInfo, const QString &msg) {
+  int splitPos = msg.indexOf(';');
+  if(splitPos <= 0)
+    return;
+
+  bool ok;
+  int delay = msg.left(splitPos).trimmed().toInt(&ok);
+  if(!ok)
+    return;
+
+  delay *= 1000;
+
+  QString command = msg.mid(splitPos + 1).trimmed();
+  if(command.isEmpty())
+    return;
+
+  _delayedCommands[startTimer(delay)] = Command(bufferInfo, command);
+}
+
 void UserInputHandler::handleWho(const BufferInfo &bufferInfo, const QString &msg) {
   Q_UNUSED(bufferInfo)
   emit putCmd("WHO", serverEncode(msg.split(' ')));
@@ -383,6 +402,7 @@ void UserInputHandler::expand(const QString &alias, const BufferInfo &bufferInfo
   QRegExp paramRangeR("\\$(\\d+)\\.\\.(\\d*)");
   QStringList commands = alias.split(QRegExp("; ?"));
   QStringList params = msg.split(' ');
+  QStringList expandedCommands;
   for(int i = 0; i < commands.count(); i++) {
     QString command = commands[i];
 
@@ -412,6 +432,17 @@ void UserInputHandler::expand(const QString &alias, const BufferInfo &bufferInfo
     command = command.replace("$0", msg);
     command = command.replace("$channelname", bufferInfo.bufferName());
     command = command.replace("$currentnick", network()->myNick());
+    expandedCommands << command;
+  }
+
+  while(!expandedCommands.isEmpty()) {
+    QString command;
+    if(expandedCommands[0].trimmed().toLower().startsWith("/wait")) {
+      command = expandedCommands.join("; ");
+      expandedCommands.clear();
+    } else {
+      command = expandedCommands.takeFirst();
+    }
     handleUserInput(bufferInfo, command);
   }
 }
@@ -467,3 +498,13 @@ int UserInputHandler::lastParamOverrun(const QString &cmd, const QList<QByteArra
   }
 }
 
+
+void UserInputHandler::timerEvent(QTimerEvent *event) {
+  if(!_delayedCommands.contains(event->timerId())) {
+    QObject::timerEvent(event);
+    return;
+  }
+  Command command = _delayedCommands.take(event->timerId());
+  event->accept();
+  handleUserInput(command.bufferInfo, command.command);
+}
