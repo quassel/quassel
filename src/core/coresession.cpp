@@ -89,7 +89,6 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
 
   // init BacklogManager
   p->synchronize(_backlogManager);
-  p->dumpSyncMap(_backlogManager);
 
   // init IrcListHelper
   p->synchronize(ircListHelper());
