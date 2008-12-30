@@ -94,7 +94,6 @@ void CoreBufferSyncer::renameBuffer(BufferId bufferId, QString newName) {
 void CoreBufferSyncer::mergeBuffersPermanently(BufferId bufferId1, BufferId bufferId2) {
   BufferInfo bufferInfo1 = Core::getBufferInfo(_coreSession->user(), bufferId1);
   BufferInfo bufferInfo2 = Core::getBufferInfo(_coreSession->user(), bufferId2);
-  qDebug() << Q_FUNC_INFO << bufferInfo1 << bufferInfo2;
   if(!bufferInfo1.isValid() || !bufferInfo2.isValid()) {
     qWarning() << "CoreBufferSyncer::mergeBufferPermanently(): invalid BufferIds:" << bufferId1 << bufferId2 << "for User:" << _coreSession->user();
     return;
@@ -106,7 +105,6 @@ void CoreBufferSyncer::mergeBuffersPermanently(BufferId bufferId1, BufferId buff
   }
 
   if(Core::mergeBuffersPermanently(_coreSession->user(), bufferId1, bufferId2)) {
-    qDebug () << "HUUUUP";
     BufferSyncer::mergeBuffersPermanently(bufferId1, bufferId2);
   }
 }

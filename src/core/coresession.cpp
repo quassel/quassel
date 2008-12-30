@@ -382,7 +382,9 @@ void CoreSession::destroyNetwork(NetworkId id) {
 
 void CoreSession::renameBuffer(const NetworkId &networkId, const QString &newName, const QString &oldName) {
   BufferInfo bufferInfo = Core::bufferInfo(user(), networkId, BufferInfo::QueryBuffer, oldName, false);
-  _bufferSyncer->renameBuffer(bufferInfo.bufferId(), newName);
+  if(bufferInfo.isValid()) {
+    _bufferSyncer->renameBuffer(bufferInfo.bufferId(), newName);
+  }
 }
 
 void CoreSession::clientsConnected() {
