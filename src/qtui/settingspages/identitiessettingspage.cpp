@@ -569,7 +569,7 @@ void IdentitiesSettingsPage::showKeyState(const QSslKey &key) {
       ui.keyTypeLabel->setText(tr("DSA"));
       break;
     default:
-      ui.keyTypeLabel->setText(tr("No Key Loaded"));
+      ui.keyTypeLabel->setText(tr("No Key loaded"));
     }
     ui.clearOrLoadKeyButton->setText(tr("Clear"));
   }

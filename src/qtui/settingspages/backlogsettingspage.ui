@@ -261,8 +261,7 @@ You can also chose to fetch additional older chatlines to provide a better conte
        <item>
         <widget class="QLabel" name="label_15" >
          <property name="text" >
-          <string>This requester fetches all messages newer than the oldest unread message for all buffers. 
-This requester determines which is the oldest read message of all buffers and then requests one large chunk of messages across all buffers.
+          <string>This requester fetches all messages newer than the oldest unread message for all buffers.
 
 Note: this requester is not recommended if you use hidden buffer or have inactive buffers (i.e.: no stale queries or channels).
 It is useful to limit the total amount of the backlog and is probably the fastest.

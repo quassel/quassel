@@ -337,7 +337,7 @@
                <string>Default away reason</string>
               </property>
               <property name="text" >
-               <string>Away Reason</string>
+               <string>Away Reason:</string>
               </property>
              </widget>
             </item>
@@ -360,7 +360,7 @@
                <string>Nick to be used when being away</string>
               </property>
               <property name="text" >
-               <string>Away Nick</string>
+               <string>Away Nick:</string>
               </property>
              </widget>
             </item>
@@ -392,7 +392,7 @@
                <string>Override default away reason for auto-away on detach</string>
               </property>
               <property name="text" >
-               <string>Away Reason</string>
+               <string>Away Reason:</string>
               </property>
              </widget>
             </item>
@@ -468,7 +468,7 @@
             <item row="0" column="0" >
              <widget class="QCheckBox" name="autoAwayReasonEnabled" >
               <property name="text" >
-               <string>Away Reason</string>
+               <string>Away Reason:</string>
               </property>
              </widget>
             </item>
@@ -656,7 +656,7 @@ Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificat
                 <item>
                  <widget class="QPushButton" name="continueUnsecured" >
                   <property name="text" >
-                   <string>continue</string>
+                   <string>Continue</string>
                   </property>
                  </widget>
                 </item>
