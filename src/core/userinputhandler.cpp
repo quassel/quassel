@@ -504,7 +504,14 @@ void UserInputHandler::timerEvent(QTimerEvent *event) {
     QObject::timerEvent(event);
     return;
   }
-  Command command = _delayedCommands.take(event->timerId());
+  BufferInfo bufferInfo = _delayedCommands[event->timerId()].bufferInfo;
+  QString rawCommand = _delayedCommands[event->timerId()].command;
+  _delayedCommands.remove(event->timerId());
   event->accept();
-  handleUserInput(command.bufferInfo, command.command);
+
+  // the stored command might be the result of an alias expansion, so we need to split it up again
+  QStringList commands = rawCommand.split(QRegExp("; ?"));
+  foreach(QString command, commands) {
+    handleUserInput(bufferInfo, command);
+  }
 }
