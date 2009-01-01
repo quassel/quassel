@@ -18,6 +18,9 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include "bufferview.h"
+
+#include <QApplication>
 #include <QAction>
 #include <QFlags>
 #include <QHeaderView>
@@ -25,8 +28,6 @@
 #include <QMenu>
 #include <QMessageBox>
 #include <QSet>
-
-#include "bufferview.h"
 
 #include "action.h"
 #include "buffermodel.h"
@@ -42,23 +43,64 @@
 #include "quasselui.h"
 #include "uisettings.h"
 
+bool TristateDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index) {
+  if(event->type() != QEvent::MouseButtonRelease)
+    return QStyledItemDelegate::editorEvent(event, model, option, index);
+
+  if(!(model->flags(index) & Qt::ItemIsUserCheckable))
+    return QStyledItemDelegate::editorEvent(event, model, option, index);
+
+  QVariant value = index.data(Qt::CheckStateRole);
+  if(!value.isValid())
+    return QStyledItemDelegate::editorEvent(event, model, option, index);
+
+  QStyleOptionViewItemV4 viewOpt(option);
+  initStyleOption(&viewOpt, index);
+
+  QRect checkRect = viewOpt.widget->style()->subElementRect(QStyle::SE_ItemViewItemCheckIndicator, &viewOpt, viewOpt.widget);
+  QMouseEvent *me = static_cast<QMouseEvent*>(event);
+
+  if(me->button() != Qt::LeftButton || !checkRect.contains(me->pos()))
+    return QStyledItemDelegate::editorEvent(event, model, option, index);
+
+  Qt::CheckState state = static_cast<Qt::CheckState>(value.toInt());
+  if(state == Qt::Unchecked)
+    state = Qt::PartiallyChecked;
+  else if(state == Qt::PartiallyChecked)
+    state = Qt::Checked;
+  else
+    state = Qt::Unchecked;
+  model->setData(index, state, Qt::CheckStateRole);
+  return true;
+}
+
+
+
+
 /*****************************************
 * The TreeView showing the Buffers
 *****************************************/
 // Please be carefull when reimplementing methods which are used to inform the view about changes to the data
 // to be on the safe side: call QTreeView's method aswell
-BufferView::BufferView(QWidget *parent) : QTreeView(parent) {
+BufferView::BufferView(QWidget *parent)
+  : QTreeView(parent)
+{
   connect(this, SIGNAL(collapsed(const QModelIndex &)), SLOT(on_collapse(const QModelIndex &)));
   connect(this, SIGNAL(expanded(const QModelIndex &)), SLOT(on_expand(const QModelIndex &)));
 
   setSelectionMode(QAbstractItemView::ExtendedSelection);
+
+  QAbstractItemDelegate *oldDelegate = itemDelegate();
+  TristateDelegate *tristateDelegate = new TristateDelegate(this);
+  setItemDelegate(tristateDelegate);
+  delete oldDelegate;
 }
 
 void BufferView::init() {
-  setIndentation(10);
   header()->setContextMenuPolicy(Qt::ActionsContextMenu);
   hideColumn(1);
   hideColumn(2);
+  setIndentation(5);
   expandAll();
 
   setAnimated(true);
@@ -345,18 +387,34 @@ void BufferView::contextMenuEvent(QContextMenuEvent *event) {
   QModelIndex index = indexAt(event->pos());
   if(!index.isValid())
     index = rootIndex();
-  if(!index.isValid())
-    return;
 
   QMenu contextMenu(this);
-  addActionsToMenu(&contextMenu, index);
+
+  if(index.isValid()) {
+    addActionsToMenu(&contextMenu, index);
+  }
+
+  addFilterActions(&contextMenu, index);
+
   if(!contextMenu.actions().isEmpty())
     contextMenu.exec(QCursor::pos());
-
 }
 
 void BufferView::addActionsToMenu(QMenu *contextMenu, const QModelIndex &index) {
   Client::mainUi()->actionProvider()->addActions(contextMenu, index, this, "menuActionTriggered", (bool)config());
+}
+
+void BufferView::addFilterActions(QMenu *contextMenu, const QModelIndex &index) {
+  BufferViewFilter *filter = qobject_cast<BufferViewFilter *>(model());
+  if(filter) {
+    QList<QAction *> filterActions = filter->actions(index);
+    if(!filterActions.isEmpty()) {
+      contextMenu->addSeparator();
+      foreach(QAction *action, filterActions) {
+	contextMenu->addAction(action);
+      }
+    }
+  }
 }
 
 void BufferView::menuActionTriggered(QAction *result) {

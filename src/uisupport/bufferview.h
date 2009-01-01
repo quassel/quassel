@@ -51,6 +51,7 @@ public:
   inline BufferViewConfig *config() { return _config; }
 
   void addActionsToMenu(QMenu *menu, const QModelIndex &index);
+  void addFilterActions(QMenu *contextMenu, const QModelIndex &index);
 
 public slots:
   void setRootIndexForNetworkId(const NetworkId &networkId);
@@ -85,6 +86,20 @@ private:
 
   void storeExpandedState(NetworkId networkId, bool expanded);
 };
+
+// ******************************
+//  TristateDelgate
+// ******************************
+#include <QStyledItemDelegate>
+
+class TristateDelegate : public QStyledItemDelegate {
+  Q_OBJECT
+
+public:
+  TristateDelegate(QObject *parent = 0) : QStyledItemDelegate(parent) {}
+  bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index);
+};
+
 
 // ==============================
 //  BufferView Dock

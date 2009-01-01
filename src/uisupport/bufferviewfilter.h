@@ -21,6 +21,7 @@
 #ifndef BUFFERVIEWFILTER_H_
 #define BUFFERVIEWFILTER_H_
 
+#include <QAction>
 #include <QColor>
 #include <QDropEvent>
 #include <QFlags>
@@ -59,11 +60,17 @@ public:
   QVariant data(const QModelIndex &index, int role) const;
   QVariant icon(const QModelIndex &index) const;
   QVariant foreground(const QModelIndex &index) const;
+  QVariant checkedState(const QModelIndex &index) const;
+
+  bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
+  bool setCheckedState(const QModelIndex &index, Qt::CheckState state);
 
   void setConfig(BufferViewConfig *config);
   inline BufferViewConfig *config() const { return _config; }
 
   virtual void sort(int column, Qt::SortOrder order = Qt::AscendingOrder);
+
+  QList<QAction *> actions(const QModelIndex &index);
 
 public slots:
   void checkPreviousCurrentForRemoval(const QModelIndex &current, const QModelIndex &previous);
@@ -84,6 +91,7 @@ signals:
 private slots:
   void configInitialized();
   void showUserStateIconsChanged();
+  void enableEditMode(bool enable);
 
 private:
   QPointer<BufferViewConfig> _config;
@@ -99,6 +107,12 @@ private:
   QPixmap _userAwayIcon;
   QPixmap _userOnlineIcon;
   bool _showUserStateIcons;
+
+  bool _editMode;
+  QAction _enableEditMode;
+  QSet<BufferId> _toAdd;
+  QSet<BufferId> _toTempRemove;
+  QSet<BufferId> _toRemove;
 
   void loadColors();
 
