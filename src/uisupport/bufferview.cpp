@@ -239,27 +239,36 @@ void BufferView::keyPressEvent(QKeyEvent *event) {
 }
 
 void BufferView::dropEvent(QDropEvent *event) {
-  QList< QPair<NetworkId, BufferId> > bufferList = Client::networkModel()->mimeDataToBufferList(event->mimeData());
+  QModelIndex index = indexAt(event->pos());
 
+  QRect indexRect = visualRect(index);
+  QPoint cursorPos = event->pos();
+
+  // check if we're really _on_ the item and not indicating a move to just above or below the item
+  const int margin = 2;
+  if(cursorPos.y() - indexRect.top() < margin
+     || indexRect.bottom() - cursorPos.y() < margin)
+    return QTreeView::dropEvent(event);
+
+  QList< QPair<NetworkId, BufferId> > bufferList = Client::networkModel()->mimeDataToBufferList(event->mimeData());
   if(bufferList.count() != 1)
     return QTreeView::dropEvent(event);
 
   NetworkId networkId = bufferList[0].first;
   BufferId bufferId2 = bufferList[0].second;
 
-  QModelIndex index = indexAt(event->pos());
   if(index.data(NetworkModel::ItemTypeRole) != NetworkModel::BufferItemType)
-    return;
+    return QTreeView::dropEvent(event);
 
   if(index.data(NetworkModel::BufferTypeRole) != BufferInfo::QueryBuffer)
-    return;
+    return QTreeView::dropEvent(event);
 
   if(index.data(NetworkModel::NetworkIdRole).value<NetworkId>() != networkId)
-    return;
+    return QTreeView::dropEvent(event);
 
   BufferId bufferId1 = index.data(NetworkModel::BufferIdRole).value<BufferId>();
   if(bufferId1 == bufferId2)
-    return;
+    return QTreeView::dropEvent(event);
 
   int res = QMessageBox::question(0, tr("Merge buffers permanently?"),
 				  tr("Do you want to merge the buffer \"%1\" permanently into buffer \"%2\"?\n This cannot be reversed!").arg(Client::networkModel()->bufferName(bufferId2)).arg(Client::networkModel()->bufferName(bufferId1)),
