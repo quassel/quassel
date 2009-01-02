@@ -79,6 +79,7 @@ QString AboutDlg::contributors() const {
            "<dl>"
            "<dt><b>Daniel \"al\" Albers</b></dt><dd>German translation, various fixes</dd>"
            "<dt><b>Terje \"tan\" Andersen</b></dt><dd>Norwegian translation, documentation</dd>"
+           "<dt><b>Tomas \"scarabeus\" Chvatal</b></dt><dd>Czech translation</dd>"
            "<dt><b>Kevin \"KRF\" Funk</b></dt><dd>German translation</dd>"
            "<dt><b>Marco \"kaffeedoktor\" Genise</b></dt><dd>Ideas, hacking, motivation</dd>"
            "<dt><b>Sebastian \"seezer\" Goth</b></dt><dd>Various improvements and features</dd>"
