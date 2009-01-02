@@ -57,10 +57,6 @@ if(STATIC)
   set(WITH_KDE OFF)
 endif(STATIC)
 
-# RPATH needs to be set correctly
-set(CMAKE_INSTALL_RPATH_USE_LINK_PATH 1) 
-set(CMAKE_BUILD_WITH_INSTALL_RPATH 1)
-
 # Define install locations. Using variables will allow overriding this by the KDE macros later.
 set(BIN_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/bin)
 set(DATA_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/share/apps)
@@ -149,26 +145,11 @@ if(WITH_WEBKIT)
     set(HAVE_WEBKIT true)
     set(MOC_DEFINES ${MOC_DEFINES} -DHAVE_WEBKIT)
   else(QT_QTWEBKIT_FOUND)
-    message(STATUS "QtWebKit not found, disabling D-Bus support")
+    message(STATUS "QtWebKit not found, disabling WebKit support")
   endif(QT_QTWEBKIT_FOUND)
 else(WITH_WEBKIT)
   message(STATUS "Disabling WebKit support")
 endif(WITH_WEBKIT)
-
-# Setup Phonon support
-if(WITH_PHONON)
-  find_package(Phonon)
-  if(PHONON_FOUND)
-    message(STATUS "Enabling Phonon support")
-    add_definitions(-DHAVE_PHONON)
-    set(HAVE_PHONON true)
-    set(MOC_DEFINES ${MOC_DEFINES} -DHAVE_PHONON)
-  else(PHONON_FOUND)
-    message(STATUS "Phonon not found, disabling audio notifications")
-  endif(PHONON_FOUND)
-else(WITH_PHONON)
-  message(STATUS "Disabling Phonon support")
-endif(WITH_PHONON)
 
 # Setup KDE4 support
 if(WITH_KDE)
@@ -180,6 +161,7 @@ if(WITH_KDE)
     set(HAVE_KDE 1)
     set(MOC_DEFINES ${MOC_DEFINES} -DHAVE_KDE)
     set(QUASSEL_KDE_LIBRARIES ${KDE4_KDECORE_LIBS} ${KDE4_KDEUI_LIBRARY} knotifyconfig)
+    # We always use external icons for KDE4 support, since we use its iconloader rather than our own
     set(OXYGEN_ICONS "External")
     set(QUASSEL_ICONS "External")
   else(KDE4_FOUND)
@@ -188,6 +170,28 @@ if(WITH_KDE)
 else(WITH_KDE)
   message(STATUS "Disabling KDE4 integration")
 endif(WITH_KDE)
+
+# Setup Phonon support - we only need this if we don't have or want KDE4
+if(NOT HAVE_KDE)
+  if(WITH_PHONON)
+    find_package(Phonon)
+    if(PHONON_FOUND)
+      message(STATUS "Enabling Phonon support")
+      add_definitions(-DHAVE_PHONON)
+      set(HAVE_PHONON true)
+      set(MOC_DEFINES ${MOC_DEFINES} -DHAVE_PHONON)
+    else(PHONON_FOUND)
+      message(STATUS "Phonon not found, disabling audio notifications")
+    endif(PHONON_FOUND)
+  else(WITH_PHONON)
+    message(STATUS "Disabling Phonon support")
+  endif(WITH_PHONON)
+endif(NOT HAVE_KDE)
+
+# RPATH needs to be set correctly
+# Do this down here, since otherwise KDE wants to handle it itself, and fails
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH 1)
+set(CMAKE_BUILD_WITH_INSTALL_RPATH 1)
 
 # Set global buildflags
 # This is very much non-portable, so don't use -DSTATIC until you know what
@@ -238,7 +242,7 @@ if(WANT_QTCLIENT OR WANT_MONO)
   endif(QUASSEL_ICONS MATCHES "External")
 
   if(OXYGEN_ICONS MATCHES "External")
-    message(STATUS "Use system-installed Oxygen icon theme")
+    message(STATUS "Use system-installed icon theme")
   else(OXYGEN_ICONS MATCHES "External")
     set(OXYGEN_ICONS "Builtin")
     message(STATUS "Compile Oxygen icon theme subset into the binary")
