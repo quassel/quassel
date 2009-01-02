@@ -100,7 +100,6 @@ void BufferView::init() {
   header()->setContextMenuPolicy(Qt::ActionsContextMenu);
   hideColumn(1);
   hideColumn(2);
-  setIndentation(5);
   expandAll();
 
   setAnimated(true);
@@ -201,14 +200,17 @@ void BufferView::setConfig(BufferViewConfig *config) {
     connect(config, SIGNAL(networkIdSet(const NetworkId &)), this, SLOT(setRootIndexForNetworkId(const NetworkId &)));
     setRootIndexForNetworkId(config->networkId());
   } else {
+    setIndentation(10);
     setRootIndex(QModelIndex());
   }
 }
 
 void BufferView::setRootIndexForNetworkId(const NetworkId &networkId) {
   if(!networkId.isValid() || !model()) {
+    setIndentation(10);
     setRootIndex(QModelIndex());
   } else {
+    setIndentation(5);
     int networkCount = model()->rowCount();
     QModelIndex child;
     for(int i = 0; i < networkCount; i++) {
