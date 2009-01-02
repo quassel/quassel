@@ -571,11 +571,14 @@ void ContentsChatItem::hoverMoveEvent(QGraphicsSceneHoverEvent *event) {
       onClickable = true;
       showWebPreview(click);
     } else if(click.type == Clickable::Channel) {
-      // don't make clickable if it's our own name
       QString name = data(ChatLineModel::DisplayRole).toString().mid(click.start, click.length);
-      BufferId myId = data(MessageModel::BufferIdRole).value<BufferId>();
-      if(Client::networkModel()->bufferName(myId) != name)
-        onClickable = true;
+      // don't make clickable if it could be a #number
+      if(!QRegExp("^#\\d+$").exactMatch(name)) {
+      // don't make clickable if it's our own name
+        BufferId myId = data(MessageModel::BufferIdRole).value<BufferId>();
+        if(Client::networkModel()->bufferName(myId) != name)
+          onClickable = true;
+      }
     }
     if(onClickable) {
       setCursor(Qt::PointingHandCursor);
