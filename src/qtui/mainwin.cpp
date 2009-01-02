@@ -205,14 +205,14 @@ void MainWin::setupActions() {
                                                 Client::instance(), SLOT(disconnectFromCore())));
   coll->addAction("CoreInfo", new Action(SmallIcon("help-about"), tr("Core &Info..."), coll,
                                           this, SLOT(showCoreInfoDlg())));
-  coll->addAction("EditNetworks", new Action(SmallIcon("configure"), tr("Edit &Networks..."), coll,
-                                              this, SLOT(on_actionEditNetworks_triggered())));
+  coll->addAction("ConfigureNetworks", new Action(SmallIcon("configure"), tr("Configure &Networks..."), coll,
+                                              this, SLOT(on_actionConfigureNetworks_triggered())));
   coll->addAction("Quit", new Action(SmallIcon("application-exit"), tr("&Quit"), coll,
                                       qApp, SLOT(quit()), tr("Ctrl+Q")));
 
   // View
-  coll->addAction("ManageBufferViews", new Action(tr("&Manage Buffer Views..."), coll,
-                                             this, SLOT(on_actionManageViews_triggered())));
+  coll->addAction("ConfigureBufferViews", new Action(tr("&Configure Buffer Views..."), coll,
+                                             this, SLOT(on_actionConfigureViews_triggered())));
   QAction *lockAct = coll->addAction("LockDockPositions", new Action(tr("&Lock Dock Positions"), coll));
   lockAct->setCheckable(true);
   connect(lockAct, SIGNAL(toggled(bool)), SLOT(on_actionLockDockPositions_toggled(bool)));
@@ -248,14 +248,14 @@ void MainWin::setupMenus() {
   _fileMenu->addAction(coll->action("CoreInfo"));
   _fileMenu->addSeparator();
   _networksMenu = _fileMenu->addMenu(tr("&Networks"));
-  _networksMenu->addAction(coll->action("EditNetworks"));
+  _networksMenu->addAction(coll->action("ConfigureNetworks"));
   _networksMenu->addSeparator();
   _fileMenu->addSeparator();
   _fileMenu->addAction(coll->action("Quit"));
 
   _viewMenu = menuBar()->addMenu(tr("&View"));
   _bufferViewsMenu = _viewMenu->addMenu(tr("&Buffer Views"));
-  _bufferViewsMenu->addAction(coll->action("ManageBufferViews"));
+  _bufferViewsMenu->addAction(coll->action("ConfigureBufferViews"));
   _viewMenu->addSeparator();
   _viewMenu->addAction(coll->action("ToggleSearchBar"));
   _viewMenu->addAction(coll->action("ToggleStatusBar"));
@@ -349,12 +349,12 @@ void MainWin::showNotificationsDlg() {
   dlg.exec();
 }
 
-void MainWin::on_actionEditNetworks_triggered() {
+void MainWin::on_actionConfigureNetworks_triggered() {
   SettingsPageDlg dlg(new NetworksSettingsPage(this), this);
   dlg.exec();
 }
 
-void MainWin::on_actionManageViews_triggered() {
+void MainWin::on_actionConfigureViews_triggered() {
   SettingsPageDlg dlg(new BufferViewSettingsPage(this), this);
   dlg.exec();
 }

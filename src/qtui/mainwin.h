@@ -99,8 +99,8 @@ class MainWin
 #ifdef HAVE_KDE
     void showShortcutsDlg();
 #endif
-    void on_actionEditNetworks_triggered();
-    void on_actionManageViews_triggered();
+    void on_actionConfigureNetworks_triggered();
+    void on_actionConfigureViews_triggered();
     void on_actionLockDockPositions_toggled(bool lock);
     void on_actionDebugNetworkModel_triggered();
     void on_actionDebugMessageModel_triggered();
