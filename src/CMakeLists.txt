@@ -1,18 +1,18 @@
 # Builds the three main targets
 
 add_subdirectory(common)
-include_directories(common)
+include_directories(BEFORE common)
 if(WANT_CORE OR WANT_MONO)
   add_subdirectory(core)
-  include_directories(core)
+  include_directories(BEFORE core)
 endif(WANT_CORE OR WANT_MONO)
 if(WANT_QTCLIENT OR WANT_MONO)
   add_subdirectory(client)
   add_subdirectory(uisupport)
   add_subdirectory(qtui)
-  include_directories(client)
-  include_directories(uisupport)
-  include_directories(qtui)
+  include_directories(BEFORE client)
+  include_directories(BEFORE uisupport)
+  include_directories(BEFORE qtui)
 #  if(HAVE_KDE)
 #    add_subdirectory(kdeui)
 #    include_directories(kdeui)
@@ -20,7 +20,7 @@ if(WANT_QTCLIENT OR WANT_MONO)
 #  endif(HAVE_KDE)
 endif(WANT_QTCLIENT OR WANT_MONO)
 
-include_directories(${CMAKE_CURRENT_BINARY_DIR}) # for version.gen
+include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR}) # for version.gen
 
 # We always add stuff in :/pics
 qt4_add_resources(CLIENT_DEPS ../pics/pics.qrc)
