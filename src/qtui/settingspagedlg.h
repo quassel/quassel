@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _SETTINGSPAGEDLG_H_
-#define _SETTINGSPAGEDLG_H_
+#ifndef SETTINGSPAGEDLG_H
+#define SETTINGSPAGEDLG_H
 
 #include <QtGui>
 #include "ui_settingspagedlg.h"

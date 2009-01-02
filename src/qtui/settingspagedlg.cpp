@@ -31,6 +31,7 @@ SettingsPageDlg::SettingsPageDlg(SettingsPage *page, QWidget *parent)
   setWindowFlags(Qt::Sheet);
 
   ui.pageTitle->setText(page->title());
+  setWindowTitle(QString("Configure %1").arg(page->title()));
 
   // make the scrollarea behave sanely
   ui.settingsFrame->setWidgetResizable(true);
