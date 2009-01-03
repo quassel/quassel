@@ -20,7 +20,6 @@
 
 #include "corenetwork.h"
 
-
 #include "core.h"
 #include "coresession.h"
 #include "coreidentity.h"
@@ -144,7 +143,7 @@ void CoreNetwork::connectToIrc(bool reconnecting) {
   } else if(_previousConnectionAttemptFailed) {
     // cycle to next server if previous connection attempt failed
     displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("Connection failed. Cycling to next Server"));
-    if(++_lastUsedServerIndex == serverList().size()) {
+    if(++_lastUsedServerIndex >= serverList().size()) {
       _lastUsedServerIndex = 0;
     }
   }
@@ -273,7 +272,10 @@ void CoreNetwork::socketHasData() {
   }
 }
 
-void CoreNetwork::socketError(QAbstractSocket::SocketError) {
+void CoreNetwork::socketError(QAbstractSocket::SocketError error) {
+  if(_quitRequested && error == QAbstractSocket::RemoteHostClosedError)
+    return;
+
   _previousConnectionAttemptFailed = true;
   qWarning() << qPrintable(tr("Could not connect to %1 (%2)").arg(networkName(), socket.errorString()));
   emit connectionError(socket.errorString());
@@ -367,6 +369,7 @@ void CoreNetwork::socketStateChanged(QAbstractSocket::SocketState socketState) {
 void CoreNetwork::networkInitialized() {
   setConnectionState(Network::Initialized);
   setConnected(true);
+  _quitRequested = false;
 
   if(useAutoReconnect()) {
     // reset counter
@@ -503,8 +506,11 @@ void CoreNetwork::writeToSocket(const QByteArray &data) {
 Network::Server CoreNetwork::usedServer() const {
   if(_lastUsedServerIndex < serverList().count())
     return serverList()[_lastUsedServerIndex];
-  else
-    return Network::Server();
+
+  if(!serverList().isEmpty())
+    return serverList()[0];
+
+  return Network::Server();
 }
 
 void CoreNetwork::requestConnect() const {
@@ -528,7 +534,9 @@ void CoreNetwork::requestSetNetworkInfo(const NetworkInfo &info) {
   setNetworkInfo(info);
   Core::updateNetwork(coreSession()->user(), info);
 
-  // update _lastUsedServerIndex;
+  // the order of the servers might have changed,
+  // so we try to find the previously used server
+  _lastUsedServerIndex = 0;
   for(int i = 0; i < serverList().count(); i++) {
     Network::Server server = serverList()[i];
     if(server.host == currentServer.host && server.port == currentServer.port) {
