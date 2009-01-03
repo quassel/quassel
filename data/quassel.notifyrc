@@ -6,4 +6,5 @@ Comment=Quassel IRC
 Name=Highlight
 Comment=A highlighted message has arrived
 Sound=KDE-Im-Highlight-Msg.ogg
-Action=Sound|Popup
+Action=Sound|Popup|Taskbar
+
