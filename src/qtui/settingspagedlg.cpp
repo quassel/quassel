@@ -20,6 +20,8 @@
 
 #include "settingspagedlg.h"
 
+#include "iconloader.h"
+
 SettingsPageDlg::SettingsPageDlg(SettingsPage *page, QWidget *parent)
   : QDialog(parent)
 {
@@ -31,7 +33,8 @@ SettingsPageDlg::SettingsPageDlg(SettingsPage *page, QWidget *parent)
   setWindowFlags(Qt::Sheet);
 
   ui.pageTitle->setText(page->title());
-  setWindowTitle(QString("Configure %1").arg(page->title()));
+  setWindowTitle(tr("Configure %1").arg(page->title()));
+  setWindowIcon(SmallIcon("configure"));
 
   // make the scrollarea behave sanely
   ui.settingsFrame->setWidgetResizable(true);

@@ -20,13 +20,16 @@
 
 #include "settingsdlg.h"
 
+#include "iconloader.h"
+
 SettingsDlg::SettingsDlg(QWidget *parent)
   : QDialog(parent),
     _currentPage(0)
 {
+  ui.setupUi(this);
   setModal(true);
   setAttribute(Qt::WA_DeleteOnClose, true);
-  ui.setupUi(this);
+  setWindowIcon(SmallIcon("configure"));
 
   updateGeometry();
 
@@ -84,6 +87,7 @@ void SettingsDlg::selectPage(SettingsPage *sp) {
 
   if(sp != currentPage()) {
     ui.pageTitle->setText(sp->title());
+    setWindowTitle(tr("Configure %1").arg(sp->title()));
     ui.settingsStack->setCurrentWidget(sp);
     _currentPage = sp;
   }
