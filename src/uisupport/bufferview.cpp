@@ -100,6 +100,7 @@ void BufferView::init() {
   header()->setContextMenuPolicy(Qt::ActionsContextMenu);
   hideColumn(1);
   hideColumn(2);
+  setIndentation(10);
   expandAll();
 
   setAnimated(true);
