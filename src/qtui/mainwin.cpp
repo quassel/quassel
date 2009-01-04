@@ -243,10 +243,18 @@ void MainWin::setupMenus() {
   ActionCollection *coll = QtUi::actionCollection("General");
 
   _fileMenu = menuBar()->addMenu(tr("&File"));
-  _fileMenu->addAction(coll->action("ConnectCore"));
-  _fileMenu->addAction(coll->action("DisconnectCore"));
-  _fileMenu->addAction(coll->action("CoreInfo"));
-  _fileMenu->addSeparator();
+
+  static const QStringList coreActions = QStringList()
+    << "ConnectCore" << "DisconnectCore" << "CoreInfo";
+
+  QAction *coreAction;
+  foreach(QString actionName, coreActions) {
+    coreAction = coll->action(actionName);
+    _fileMenu->addAction(coreAction);
+    flagRemoteCoreOnly(coreAction);
+  }
+  flagRemoteCoreOnly(_fileMenu->addSeparator());
+
   _networksMenu = _fileMenu->addMenu(tr("&Networks"));
   _networksMenu->addAction(coll->action("ConfigureNetworks"));
   _networksMenu->addSeparator();
@@ -452,12 +460,14 @@ void MainWin::setupStatusBar() {
   // Core Lag:
   updateLagIndicator(0);
   statusBar()->addPermanentWidget(coreLagLabel);
+  coreLagLabel->hide();
   connect(Client::signalProxy(), SIGNAL(lagUpdated(int)), this, SLOT(updateLagIndicator(int)));
 
   // SSL indicator
   connect(Client::instance(), SIGNAL(securedConnection()), this, SLOT(securedConnection()));
   sslLabel->setPixmap(QPixmap());
   statusBar()->addPermanentWidget(sslLabel);
+  sslLabel->hide();
 
   _viewMenu->addSeparator();
   QAction *showStatusbar = QtUi::actionCollection("General")->action("ToggleStatusBar");
@@ -529,14 +539,25 @@ void MainWin::connectedToCore() {
 
 void MainWin::setConnectedState() {
   ActionCollection *coll = QtUi::actionCollection("General");
-  //ui.menuCore->setEnabled(true);
+
   coll->action("ConnectCore")->setEnabled(false);
   coll->action("DisconnectCore")->setEnabled(true);
   coll->action("CoreInfo")->setEnabled(true);
+
+  foreach(QAction *action, _fileMenu->actions()) {
+    if(isRemoteCoreOnly(action))
+      action->setVisible(!Client::internalCore());
+  }
+
   // _viewMenu->setEnabled(true);
-  statusBar()->showMessage(tr("Connected to core."));
+  if(!Client::internalCore())
+    statusBar()->showMessage(tr("Connected to core."));
+
   if(sslLabel->width() == 0)
     sslLabel->setPixmap(SmallIcon("security-low"));
+
+  sslLabel->setVisible(!Client::internalCore());
+  coreLagLabel->setVisible(!Client::internalCore());
   updateIcon();
 }
 
@@ -592,6 +613,8 @@ void MainWin::setDisconnectedState() {
   //_viewMenu->setEnabled(false);
   statusBar()->showMessage(tr("Not connected to core."));
   sslLabel->setPixmap(QPixmap());
+  sslLabel->hide();
+  coreLagLabel->hide();
   updateIcon();
 }
 
@@ -835,3 +858,4 @@ void MainWin::saveStateToSessionSettings(SessionSettings & s)
 void MainWin::showStatusBarMessage(const QString &message) {
   statusBar()->showMessage(message, 10000);
 }
+

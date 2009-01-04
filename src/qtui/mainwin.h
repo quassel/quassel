@@ -68,6 +68,10 @@ class MainWin
     inline QSystemTrayIcon *systemTrayIcon() const;
 
     virtual bool event(QEvent *event);
+
+    static void flagRemoteCoreOnly(QObject *object) { object->setProperty("REMOTE_CORE_ONLY", true); }
+    static bool isRemoteCoreOnly(QObject *object) { return object->property("REMOTE_CORE_ONLY").toBool(); }
+
   public slots:
     void saveStateToSession(const QString &sessionId);
     void saveStateToSessionSettings(SessionSettings &s);

@@ -108,6 +108,7 @@ public:
 
   static bool isConnected();
   static bool isSynced();
+  static inline bool internalCore() { return instance()->_internalCore; }
 
   static void userInput(BufferInfo bufferInfo, QString message);
 
@@ -211,6 +212,7 @@ private:
   ClientMode clientMode;
 
   bool _connectedToCore, _syncedToCore;
+  bool _internalCore;
 
   QHash<NetworkId, Network *> _networks;
   QHash<IdentityId, Identity *> _identities;

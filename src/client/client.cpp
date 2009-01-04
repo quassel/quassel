@@ -81,6 +81,7 @@ Client::Client(QObject *parent)
     _messageProcessor(0),
     _connectedToCore(false),
     _syncedToCore(false),
+    _internalCore(false),
     _debugLog(&_debugLogBuffer)
 {
   _signalProxy->synchronize(_ircListHelper);
@@ -275,6 +276,7 @@ void Client::setConnectedToCore(AccountId id, QIODevice *socket) {
     socket->setParent(0);
     signalProxy()->addPeer(socket);
   }
+  _internalCore = !socket;
   _connectedToCore = true;
   setCurrentCoreAccount(id);
 }
