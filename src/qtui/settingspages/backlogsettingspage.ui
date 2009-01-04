@@ -59,17 +59,9 @@
    <item>
     <widget class="QStackedWidget" name="stackedWidget" >
      <property name="currentIndex" >
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="page" >
-      <property name="geometry" >
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>415</width>
-        <height>216</height>
-       </rect>
-      </property>
       <layout class="QVBoxLayout" name="verticalLayout_2" >
        <item>
         <widget class="QLabel" name="label_9" >
@@ -107,6 +99,12 @@
            <property name="value" >
             <number>500</number>
            </property>
+           <property name="settingsKey" stdset="0" >
+            <string>FixedBacklogAmount</string>
+           </property>
+           <property name="defaultValue" stdset="0" >
+            <number>500</number>
+           </property>
           </widget>
          </item>
          <item>
@@ -140,14 +138,6 @@
       </layout>
      </widget>
      <widget class="QWidget" name="page_2" >
-      <property name="geometry" >
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>415</width>
-        <height>216</height>
-       </rect>
-      </property>
       <layout class="QVBoxLayout" name="verticalLayout_3" >
        <item>
         <widget class="QLabel" name="label_10" >
@@ -190,6 +180,12 @@ You can also chose to fetch additional older chatlines to provide a better conte
            <property name="value" >
             <number>200</number>
            </property>
+           <property name="settingsKey" stdset="0" >
+            <string>PerBufferUnreadBacklogLimit</string>
+           </property>
+           <property name="defaultValue" stdset="0" >
+            <number>200</number>
+           </property>
           </widget>
          </item>
          <item>
@@ -216,10 +212,16 @@ You can also chose to fetch additional older chatlines to provide a better conte
            <property name="value" >
             <number>50</number>
            </property>
+           <property name="settingsKey" stdset="0" >
+            <string>PerBufferUnreadBacklogAdditional</string>
+           </property>
+           <property name="defaultValue" stdset="0" >
+            <number>50</number>
+           </property>
           </widget>
          </item>
          <item>
-          <spacer name="horizontalSpacer_3" >
+          <spacer name="horizontalSpacer_5" >
            <property name="orientation" >
             <enum>Qt::Horizontal</enum>
            </property>
@@ -249,14 +251,6 @@ You can also chose to fetch additional older chatlines to provide a better conte
       </layout>
      </widget>
      <widget class="QWidget" name="Seite" >
-      <property name="geometry" >
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>415</width>
-        <height>216</height>
-       </rect>
-      </property>
       <layout class="QVBoxLayout" name="verticalLayout_4" >
        <item>
         <widget class="QLabel" name="label_15" >
@@ -302,6 +296,12 @@ You can also chose to fetch additional older chatlines to provide a better conte
            <property name="value" >
             <number>200</number>
            </property>
+           <property name="settingsKey" stdset="0" >
+            <string>GlobalUnreadBacklogLimit</string>
+           </property>
+           <property name="defaultValue" stdset="0" >
+            <number>200</number>
+           </property>
           </widget>
          </item>
          <item>
@@ -326,6 +326,12 @@ You can also chose to fetch additional older chatlines to provide a better conte
             <number>10</number>
            </property>
            <property name="value" >
+            <number>50</number>
+           </property>
+           <property name="settingsKey" stdset="0" >
+            <string>GlobalUnreadBacklogAdditional</string>
+           </property>
+           <property name="defaultValue" stdset="0" >
             <number>50</number>
            </property>
           </widget>
@@ -385,6 +391,12 @@ You can also chose to fetch additional older chatlines to provide a better conte
        <property name="value" >
         <number>200</number>
        </property>
+       <property name="settingsKey" stdset="0" >
+        <string>DynamicBacklogAmount</string>
+       </property>
+       <property name="defaultValue" stdset="0" >
+        <number>200</number>
+       </property>
       </widget>
      </item>
      <item>
@@ -410,7 +422,7 @@ You can also chose to fetch additional older chatlines to provide a better conte
      <property name="sizeHint" stdset="0" >
       <size>
        <width>20</width>
-       <height>18</height>
+       <height>40</height>
       </size>
      </property>
     </spacer>
@@ -426,8 +438,8 @@ You can also chose to fetch additional older chatlines to provide a better conte
    <slot>setCurrentIndex(int)</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>146</x>
-     <y>27</y>
+     <x>316</x>
+     <y>31</y>
     </hint>
     <hint type="destinationlabel" >
      <x>147</x>

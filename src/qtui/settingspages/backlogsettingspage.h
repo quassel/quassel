@@ -32,6 +32,7 @@ class BacklogSettingsPage : public SettingsPage {
 public:
   BacklogSettingsPage(QWidget *parent = 0);
 
+  inline QString settingsKey() const { return "Backlog"; }
   bool hasDefaults() const;
 
 public slots:
@@ -44,9 +45,6 @@ private slots:
 
 private:
   Ui::BacklogSettingsPage ui;
-  QHash<QString, QVariant> settings;
-
-  bool testHasChanged();
 };
 
 #endif

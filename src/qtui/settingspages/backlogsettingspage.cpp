@@ -27,15 +27,9 @@ BacklogSettingsPage::BacklogSettingsPage(QWidget *parent)
   : SettingsPage(tr("Behaviour"), tr("Backlog"), parent)
 {
   ui.setupUi(this);
+  initAutoWidgets();
+  // not an auto widget, because we store index + 1
   connect(ui.requesterType, SIGNAL(currentIndexChanged(int)), this, SLOT(widgetHasChanged()));
-
-  connect(ui.fixedBacklogAmount, SIGNAL(valueChanged(int)), this, SLOT(widgetHasChanged()));
-  connect(ui.globalUnreadLimit, SIGNAL(valueChanged(int)), this, SLOT(widgetHasChanged()));
-  connect(ui.globalUnreadAdditional, SIGNAL(valueChanged(int)), this, SLOT(widgetHasChanged()));
-  connect(ui.perBufferUnreadLimit, SIGNAL(valueChanged(int)), this, SLOT(widgetHasChanged()));
-  connect(ui.perBufferUnreadAdditional, SIGNAL(valueChanged(int)), this, SLOT(widgetHasChanged()));
-
-  connect(ui.dynamicBacklogAmount, SIGNAL(valueChanged(int)), this, SLOT(widgetHasChanged()));
 }
 
 bool BacklogSettingsPage::hasDefaults() const {
@@ -43,49 +37,28 @@ bool BacklogSettingsPage::hasDefaults() const {
 }
 
 void BacklogSettingsPage::defaults() {
-  //  ui.completionSuffix->setText(": ");
+  ui.requesterType->setCurrentIndex(0);
 
-  widgetHasChanged();
+  SettingsPage::defaults();
 }
 
 void BacklogSettingsPage::load() {
   BacklogSettings backlogSettings;
-  SettingsPage::load(ui.requesterType, backlogSettings.requesterType() - 1);
-  
-  SettingsPage::load(ui.fixedBacklogAmount, backlogSettings.fixedBacklogAmount());
-  SettingsPage::load(ui.globalUnreadLimit, backlogSettings.globalUnreadBacklogLimit());
-  SettingsPage::load(ui.globalUnreadAdditional, backlogSettings.globalUnreadBacklogAdditional());
-  SettingsPage::load(ui.perBufferUnreadLimit, backlogSettings.perBufferUnreadBacklogLimit());
-  SettingsPage::load(ui.perBufferUnreadAdditional, backlogSettings.perBufferUnreadBacklogAdditional());
-  
-  SettingsPage::load(ui.dynamicBacklogAmount, backlogSettings.dynamicBacklogAmount());
+  int index = backlogSettings.requesterType() - 1;
+  ui.requesterType->setProperty("storedValue", index);
+  ui.requesterType->setCurrentIndex(index);
 
-  setChangedState(false);
+  SettingsPage::load();
 }
 
 void BacklogSettingsPage::save() {
   BacklogSettings backlogSettings;
   backlogSettings.setRequesterType(ui.requesterType->currentIndex() + 1);
-  backlogSettings.setFixedBacklogAmount(ui.fixedBacklogAmount->value());
-  backlogSettings.setGlobalUnreadBacklogLimit(ui.globalUnreadLimit->value());
-  backlogSettings.setGlobalUnreadBacklogAdditional(ui.globalUnreadAdditional->value());
-  backlogSettings.setPerBufferUnreadBacklogLimit(ui.perBufferUnreadLimit->value());
-  backlogSettings.setPerBufferUnreadBacklogAdditional(ui.perBufferUnreadAdditional->value());
-  
-  backlogSettings.setDynamicBacklogAmount(ui.dynamicBacklogAmount->value());
+  ui.requesterType->setProperty("storedValue", ui.requesterType->currentIndex());
 
-  load();
-  setChangedState(false);
+  SettingsPage::save();
 }
 
 void BacklogSettingsPage::widgetHasChanged() {
-  bool changed = testHasChanged();
-  if(changed != hasChanged()) setChangedState(changed);
-}
-
-bool BacklogSettingsPage::testHasChanged() {
-  if(SettingsPage::hasChanged(ui.fixedBacklogAmount)) return true;
-  if(SettingsPage::hasChanged(ui.dynamicBacklogAmount)) return true;
-
-  return false;
+  setChangedState(ui.requesterType->currentIndex() != ui.requesterType->property("storedValue").toInt());
 }
