@@ -120,6 +120,8 @@ public:
   static void logMessage(QtMsgType type, const char *msg);
   static inline const QString &debugLog() { return instance()->_debugLogBuffer; }
 
+  static inline void registerClientSyncer(ClientSyncer *syncer) { emit instance()->newClientSyncer(syncer); }
+
 signals:
   void sendInput(BufferInfo, QString message);
   void requestNetworkStates();

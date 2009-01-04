@@ -167,9 +167,35 @@ void ClientSyncer::coreSocketConnected() {
   SignalProxy::writeDataToDevice(socket, clientInit);
 }
 
-void ClientSyncer::useInternalCore(AccountId internalAccountId) {
+void ClientSyncer::useInternalCore() {
+  AccountId internalAccountId;
+
+  CoreAccountSettings accountSettings;
+  QList<AccountId> knownAccounts = accountSettings.knownAccounts();
+  foreach(AccountId id, knownAccounts) {
+    if(!id.isValid())
+      continue;
+    QVariantMap data = accountSettings.retrieveAccountData(id);
+    if(data.contains("InternalAccount") && data["InternalAccount"].toBool()) {
+      internalAccountId = id;
+      break;
+    }
+  }
+
+  if(!internalAccountId.isValid()) {
+    for(AccountId i = 1;; i++) {
+      if(!knownAccounts.contains(i)) {
+	internalAccountId = i;
+	break;
+      }
+    }
+    QVariantMap data;
+    data["InternalAccount"] = true;
+    accountSettings.storeAccountData(internalAccountId, data);
+  }
+
   coreConnectionInfo["AccountId"] = QVariant::fromValue<AccountId>(internalAccountId);
-  emit startInternalCore();
+  emit startInternalCore(this);
   emit connectToInternalCore(Client::instance()->signalProxy());
 }
 

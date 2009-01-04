@@ -63,14 +63,14 @@ signals:
 
   void encrypted(bool);
 
-  void startInternalCore();
+  void startInternalCore(ClientSyncer *syncer);
   void connectToInternalCore(SignalProxy *proxy);
 
 public slots:
   void connectToCore(const QVariantMap &);
   void loginToCore(const QString &user, const QString &passwd);
   void disconnectFromCore();
-  void useInternalCore(AccountId internalAccountId);
+  void useInternalCore();
 
 private slots:
   void coreSocketError(QAbstractSocket::SocketError);

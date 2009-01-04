@@ -50,8 +50,9 @@ CoreConnectDlg::CoreConnectDlg(bool autoconnect, QWidget *parent)
   setWindowFlags(Qt::Sheet);
 
   clientSyncer = new ClientSyncer(this);
-  connect(this, SIGNAL(newClientSyncer(ClientSyncer *)), Client::instance(), SIGNAL(newClientSyncer(ClientSyncer *)));
-  emit newClientSyncer(clientSyncer); // announce the new client syncer via the client.
+  Client::registerClientSyncer(clientSyncer);
+//   connect(this, SIGNAL(newClientSyncer(ClientSyncer *)), Client::instance(), SIGNAL(newClientSyncer(ClientSyncer *)));
+//   emit newClientSyncer(clientSyncer); // announce the new client syncer via the client.
 
   wizard = 0;
 
@@ -219,14 +220,7 @@ void CoreConnectDlg::on_accountButtonBox_accepted() {
 }
 
 void CoreConnectDlg::on_useInternalCore_clicked() {
-  if(!_internalAccountId.isValid()) {
-    _internalAccountId = findFreeAccountId();
-    QVariantMap data;
-    data["InternalAccount"] = true;
-    CoreAccountSettings accountSettings;
-    accountSettings.storeAccountData(_internalAccountId, data);
-  }
-  clientSyncer->useInternalCore(_internalAccountId);
+  clientSyncer->useInternalCore();
   ui.loginButtonBox->setStandardButtons(QDialogButtonBox::Cancel);
 }
 

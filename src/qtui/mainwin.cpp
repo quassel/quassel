@@ -41,6 +41,7 @@
 #include "chatmonitorview.h"
 #include "chatview.h"
 #include "client.h"
+#include "clientsyncer.h"
 #include "clientbacklogmanager.h"
 #include "coreinfodlg.h"
 #include "coreconnectdlg.h"
@@ -175,7 +176,11 @@ void MainWin::init() {
   setDisconnectedState();  // Disable menus and stuff
 
   show();
-  showCoreConnectionDlg(true); // autoconnect if appropriate
+  if(Quassel::runMode() != Quassel::Monolithic) {
+    showCoreConnectionDlg(true); // autoconnect if appropriate
+  } else {
+    startInternalCore();
+  }
 }
 
 MainWin::~MainWin() {
@@ -616,6 +621,13 @@ void MainWin::setDisconnectedState() {
   sslLabel->hide();
   coreLagLabel->hide();
   updateIcon();
+}
+
+void MainWin::startInternalCore() {
+  ClientSyncer *syncer = new ClientSyncer();
+  Client::registerClientSyncer(syncer);
+  connect(syncer, SIGNAL(syncFinished()), syncer, SLOT(deleteLater()), Qt::QueuedConnection);
+  syncer->useInternalCore();
 }
 
 void MainWin::showCoreConnectionDlg(bool autoConnect) {

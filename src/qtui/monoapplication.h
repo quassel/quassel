@@ -36,7 +36,7 @@ public:
 
 private slots:
   void newClientSyncer(ClientSyncer *syncer);
-  void startInternalCore();
+  void startInternalCore(ClientSyncer *syncer);
 
 private:
   CoreApplicationInternal *_internal;

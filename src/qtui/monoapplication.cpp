@@ -53,16 +53,15 @@ MonolithicApplication::~MonolithicApplication() {
 }
 
 void MonolithicApplication::newClientSyncer(ClientSyncer *syncer) {
-  connect(syncer, SIGNAL(startInternalCore()), this, SLOT(startInternalCore()));
+  connect(syncer, SIGNAL(startInternalCore(ClientSyncer *)), this, SLOT(startInternalCore(ClientSyncer *)));
 }
 
-void MonolithicApplication::startInternalCore() {
+void MonolithicApplication::startInternalCore(ClientSyncer *syncer) {
   if(!_internalInitDone) {
     _internal->init();
     _internalInitDone = true;
   }
   Core *core = Core::instance();
-  ClientSyncer *syncer = static_cast<ClientSyncer *>(sender());
   connect(syncer, SIGNAL(connectToInternalCore(SignalProxy *)), core, SLOT(setupInternalClientSession(SignalProxy *)));
   connect(core, SIGNAL(sessionState(const QVariant &)), syncer, SLOT(internalSessionStateReceived(const QVariant &)));
 }

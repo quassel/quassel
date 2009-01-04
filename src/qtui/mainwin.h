@@ -96,6 +96,7 @@ class MainWin
     void messagesInserted(const QModelIndex &parent, int start, int end);
     void showAboutDlg();
     void showChannelList(NetworkId netId = NetworkId());
+    void startInternalCore();
     void showCoreConnectionDlg(bool autoConnect = false);
     void showCoreInfoDlg();
     void showSettingsDlg();

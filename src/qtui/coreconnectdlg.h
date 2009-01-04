@@ -38,8 +38,8 @@ public:
   CoreConnectDlg(bool = false, QWidget *parent = 0);
   ~CoreConnectDlg();
 
-signals:
-  void newClientSyncer(ClientSyncer *);
+// signals:
+//   void newClientSyncer(ClientSyncer *);
 
 private slots:
   /*** Phase Null: Accounts ***/
