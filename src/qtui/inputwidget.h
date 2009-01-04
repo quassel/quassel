@@ -44,14 +44,16 @@ public:
 
 protected slots:
   virtual void currentChanged(const QModelIndex &current, const QModelIndex &previous);
+  virtual void rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
   virtual void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
 
 private slots:
   void sendText(QString text);
   void changeNick(const QString &newNick) const;
 
-  void setNetwork(const Network *network);
-  void setIdentity(const IdentityId &identityId);
+  void setNetwork(NetworkId networkId);
+  void setIdentity(IdentityId identityId);
+  void connectMyIrcUser();
   void updateNickSelector() const;
   void updateEnabledState();
 

@@ -38,7 +38,6 @@ InputWidget::InputWidget(QWidget *parent)
   connect(ui.inputEdit, SIGNAL(sendText(QString)), this, SLOT(sendText(QString)));
   connect(ui.ownNick, SIGNAL(activated(QString)), this, SLOT(changeNick(QString)));
   connect(this, SIGNAL(userInput(BufferInfo, QString)), Client::instance(), SIGNAL(sendInput(BufferInfo, QString)));
-  connect(Client::instance(), SIGNAL(disconnected()), this, SLOT(updateNickSelector()));
   setFocusProxy(ui.inputEdit);
 
   ui.ownNick->setSizeAdjustPolicy(QComboBox::AdjustToContents);
@@ -63,11 +62,12 @@ InputWidget::~InputWidget() {
 }
 
 void InputWidget::currentChanged(const QModelIndex &current, const QModelIndex &previous) {
-  if(current.data(NetworkModel::BufferInfoRole) == previous.data(NetworkModel::BufferInfoRole))
+  NetworkId networkId = current.data(NetworkModel::NetworkIdRole).value<NetworkId>();
+  NetworkId previousNetworkId = previous.data(NetworkModel::NetworkIdRole).value<NetworkId>();
+  if(networkId == previousNetworkId)
     return;
 
-  const Network *net = Client::networkModel()->networkByIndex(current);
-  setNetwork(net);
+  setNetwork(networkId);
   updateNickSelector();
   updateEnabledState();
 }
@@ -78,6 +78,22 @@ void InputWidget::dataChanged(const QModelIndex &topLeft, const QModelIndex &bot
     updateEnabledState();
   }
 };
+
+void InputWidget::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end) {
+  NetworkId networkId;
+  QModelIndex child;
+  for(int row = start; row <= end; row++) {
+    child = model()->index(row, 0, parent);
+    if(NetworkModel::NetworkItemType != child.data(NetworkModel::ItemTypeRole).toInt())
+      continue;
+    networkId = child.data(NetworkModel::NetworkIdRole).value<NetworkId>();
+    if(networkId == _networkId) {
+      setNetwork(0);
+      updateNickSelector();
+      return;
+    }
+  }
+}
 
 void InputWidget::updateEnabledState() {
   QModelIndex currentIndex = selectionModel()->currentIndex();
@@ -101,8 +117,8 @@ BufferInfo InputWidget::currentBufferInfo() const {
   return selectionModel()->currentIndex().data(NetworkModel::BufferInfoRole).value<BufferInfo>();
 };
 
-void InputWidget::setNetwork(const Network *network) {
-  if(!network || _networkId == network->networkId())
+void InputWidget::setNetwork(NetworkId networkId) {
+  if(_networkId == networkId)
     return;
 
   const Network *previousNet = Client::network(_networkId);
@@ -112,21 +128,34 @@ void InputWidget::setNetwork(const Network *network) {
       disconnect(previousNet->me(), 0, this, 0);
   }
 
+  _networkId = networkId;
+
+  const Network *network = Client::network(networkId);
   if(network) {
-    _networkId = network->networkId();
     connect(network, SIGNAL(identitySet(IdentityId)), this, SLOT(setIdentity(IdentityId)));
-    if(network->me()) {
-      connect(network->me(), SIGNAL(nickSet(QString)), this, SLOT(updateNickSelector()));
-      connect(network->me(), SIGNAL(userModesSet(QString)), this, SLOT(updateNickSelector()));
-      connect(network->me(), SIGNAL(userModesAdded(QString)), this, SLOT(updateNickSelector()));
-      connect(network->me(), SIGNAL(userModesRemoved(QString)), this, SLOT(updateNickSelector()));
-      connect(network->me(), SIGNAL(awaySet(bool)), this, SLOT(updateNickSelector()));
-    }
+    if(network->me())
+      connectMyIrcUser();
+    else
+      connect(network, SIGNAL(myNickSet(const QString &)), this, SLOT(connectMyIrcUser()));
+    setIdentity(network->identity());
+  } else {
+    setIdentity(0);
   }
-  setIdentity(network->identity());
 }
 
-void InputWidget::setIdentity(const IdentityId &identityId) {
+void InputWidget::connectMyIrcUser() {
+  const Network *network = currentNetwork();
+  if(network->me()) {
+    connect(network->me(), SIGNAL(nickSet(const QString &)), this, SLOT(updateNickSelector()));
+    connect(network->me(), SIGNAL(userModesSet(QString)), this, SLOT(updateNickSelector()));
+    connect(network->me(), SIGNAL(userModesAdded(QString)), this, SLOT(updateNickSelector()));
+    connect(network->me(), SIGNAL(userModesRemoved(QString)), this, SLOT(updateNickSelector()));
+    connect(network->me(), SIGNAL(awaySet(bool)), this, SLOT(updateNickSelector()));
+    disconnect(network, SIGNAL(myNickSet(const QString &)), this, SLOT(connectMyIrcUser()));
+  }
+}
+
+void InputWidget::setIdentity(IdentityId identityId) {
   if(_identityId == identityId)
     return;
 
@@ -134,9 +163,10 @@ void InputWidget::setIdentity(const IdentityId &identityId) {
   if(previousIdentity)
     disconnect(previousIdentity, 0, this, 0);
 
+  _identityId = identityId;
+
   const Identity *identity = Client::identity(identityId);
   if(identity) {
-    _identityId = identityId;
     connect(identity, SIGNAL(nicksSet(QStringList)),
 	    this, SLOT(updateNickSelector()));
   }
