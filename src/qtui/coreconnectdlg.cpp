@@ -228,7 +228,6 @@ void CoreConnectDlg::on_useInternalCore_clicked() {
   }
   clientSyncer->useInternalCore(_internalAccountId);
   ui.loginButtonBox->setStandardButtons(QDialogButtonBox::Cancel);
-  startSync();
 }
 
 /*****************************************************
