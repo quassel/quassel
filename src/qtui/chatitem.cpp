@@ -450,8 +450,17 @@ QList<ContentsChatItem::Clickable> ContentsChatItem::findClickables() const {
     }
     if(type >= 0) {
       idx = matchEnd[type];
+      QString match = str.mid(matches[type], matchEnd[type] - matches[type]);
       if(type == Clickable::Url && str.at(idx-1) == ')') {  // special case: closing paren only matches if we had an open one
-        if(!str.mid(matches[type], matchEnd[type]-matches[type]).contains('(')) matchEnd[type]--;
+        if(!match.contains('(')) {
+          matchEnd[type]--;
+          match.chop(1);
+        }
+      }
+      if(type == Clickable::Channel) {
+        // don't make clickable if it could be a #number
+        if(QRegExp("^#\\d+$").exactMatch(match))
+          continue;
       }
       result.append(Clickable((Clickable::Type)type, matches[type], matchEnd[type] - matches[type]));
     }
@@ -572,13 +581,10 @@ void ContentsChatItem::hoverMoveEvent(QGraphicsSceneHoverEvent *event) {
       showWebPreview(click);
     } else if(click.type == Clickable::Channel) {
       QString name = data(ChatLineModel::DisplayRole).toString().mid(click.start, click.length);
-      // don't make clickable if it could be a #number
-      if(!QRegExp("^#\\d+$").exactMatch(name)) {
       // don't make clickable if it's our own name
-        BufferId myId = data(MessageModel::BufferIdRole).value<BufferId>();
-        if(Client::networkModel()->bufferName(myId) != name)
-          onClickable = true;
-      }
+      BufferId myId = data(MessageModel::BufferIdRole).value<BufferId>();
+      if(Client::networkModel()->bufferName(myId) != name)
+        onClickable = true;
     }
     if(onClickable) {
       setCursor(Qt::PointingHandCursor);
