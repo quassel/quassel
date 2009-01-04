@@ -21,16 +21,10 @@
 #include "colorbutton.h"
 
 #include <QPainter>
-#include <QDebug>
-#include <QPaintEvent>
-#include <QApplication>
 #include <QStyle>
 #include <QStyleOptionFrame>
 
-ColorButton::ColorButton(QWidget *parent) :
-    QPushButton(parent),
-    _color(QColor()) //default is white; 
-    {
+ColorButton::ColorButton(QWidget *parent) : QPushButton(parent) {
 
 }
 
@@ -43,26 +37,33 @@ QColor ColorButton::color() const {
   return _color;
 }
 
-void ColorButton::paintEvent(QPaintEvent *event) {
-  //TODO: work on a good button style solution
-  QPushButton::paintEvent(event);
+/* This has been heavily inspired by KDE's KColorButton, thanks! */
+void ColorButton::paintEvent(QPaintEvent *) {
   QPainter painter(this);
-  int border = QApplication::style()->pixelMetric(QStyle::PM_ButtonMargin);
 
-  // if twice buttonMargin (+2 px from the adjust) is greater than the button height
-  // then set the border to a third of the button height.
-  if(2*border+2 >= event->rect().height()) border = event->rect().height()/3;
+  QStyleOptionButton opt;
+  initStyleOption(&opt);
+  opt.state |= isDown() ? QStyle::State_Sunken : QStyle::State_Raised;
+  opt.features = QStyleOptionButton::None;
+  if(isDefault())
+    opt.features |= QStyleOptionButton::DefaultButton;
 
-  QBrush brush;
-  if(isEnabled()) {
-    brush = QBrush(_color);
-  } else {
-    brush = QBrush(_color, Qt::Dense4Pattern);
+  // Draw bevel
+  style()->drawControl(QStyle::CE_PushButtonBevel, &opt, &painter, this);
+
+  // Calc geometry
+  QRect labelRect = style()->subElementRect(QStyle::SE_PushButtonContents, &opt, this);
+  int shift = style()->pixelMetric(QStyle::PM_ButtonMargin);
+  labelRect.adjust(shift, shift, -shift, -shift);
+  int x, y, w, h;
+  labelRect.getRect(&x, &y, &w, &h);
+
+  if(isChecked() || isDown()) {
+    x += style()->pixelMetric(QStyle::PM_ButtonShiftHorizontal);
+    y += style()->pixelMetric(QStyle::PM_ButtonShiftVertical);
   }
-  painter.fillRect(rect().adjusted(border+1, border+1, -border-1, -border-1), brush);
-  QStyleOptionFrame option;
-  option.state = QStyle::State_Sunken;
-  option.rect = rect().adjusted(border, border, -border, -border);
 
-  QApplication::style()->drawPrimitive(QStyle::PE_Frame, &option, &painter);
+  // Draw color rect
+  QBrush brush = isEnabled() ? color() : palette().color(backgroundRole());
+  qDrawShadePanel(&painter, x, y, w, h, palette(), true, 1, &brush);
 }

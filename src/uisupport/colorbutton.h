@@ -18,16 +18,19 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _COLORBUTTON_H_
-#define _COLORBUTTON_H_
+#ifndef COLORBUTTON_H_
+#define COLORBUTTON_H_
 
 #include <QPushButton>
 
 class ColorButton : public QPushButton {
   Q_OBJECT
+  Q_PROPERTY(QColor color READ color WRITE setColor USER true)
 
   public:
-    ColorButton(QWidget *parent = 0);
+    explicit ColorButton(QWidget *parent = 0);
+    explicit ColorButton(const QColor &c, QWidget *parent = 0);
+
     void setColor(const QColor &color);
     QColor color() const;
 
