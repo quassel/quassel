@@ -33,7 +33,8 @@ SettingsPage::SettingsPage(const QString &category, const QString &title, QWidge
   : QWidget(parent),
     _category(category),
     _title(title),
-    _changed(false)
+    _changed(false),
+    _autoWidgetsChanged(false)
 {
 }
 
