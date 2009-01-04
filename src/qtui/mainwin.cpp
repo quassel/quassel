@@ -91,7 +91,7 @@
 MainWin::MainWin(QWidget *parent)
 #ifdef HAVE_KDE
   : KMainWindow(parent),
-  _kHelpMenu(new KHelpMenu(this)),
+  _kHelpMenu(new KHelpMenu(this, KGlobal::mainComponent().aboutData())),
 #else
   : QMainWindow(parent),
 #endif
@@ -486,10 +486,9 @@ void MainWin::setupSystray() {
 
   ActionCollection *coll = QtUi::actionCollection("General");
   systrayMenu = new QMenu(this);
-  systrayMenu->addAction(coll->action("AboutQuassel"));
-  systrayMenu->addSeparator();
   systrayMenu->addAction(coll->action("ConnectCore"));
   systrayMenu->addAction(coll->action("DisconnectCore"));
+  systrayMenu->addAction(coll->action("CoreInfo"));
   systrayMenu->addSeparator();
   systrayMenu->addAction(coll->action("Quit"));
 

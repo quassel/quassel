@@ -52,7 +52,7 @@ int main(int argc, char **argv) {
 #ifdef HAVE_KDE
   // We need to init KCmdLineArgs first
   // TODO: build an AboutData compat class to replace our aboutDlg strings
-  KAboutData aboutData("quassel", 0, ki18n("Quassel IRC"), Quassel::buildInfo().plainVersionString.toUtf8(),
+  KAboutData aboutData("quassel", "kdelibs4", ki18n("Quassel IRC"), Quassel::buildInfo().plainVersionString.toUtf8(),
                         ki18n("A modern, distributed IRC client"));
   aboutData.addLicense(KAboutData::License_GPL_V2);
   aboutData.addLicense(KAboutData::License_GPL_V3);
