@@ -62,7 +62,7 @@ class MainWin
 
     void init();
 
-    void addBufferView(BufferViewConfig *config = 0);
+    void addBufferView(BufferViewConfig *config);
     BufferView *allBuffersView() const;
 
     inline QSystemTrayIcon *systemTrayIcon() const;
@@ -140,7 +140,6 @@ class MainWin
     void setupActions();
     void setupBufferWidget();
     void setupMenus();
-    void setupViews();
     void setupNickWidget();
     void setupChatMonitor();
     void setupInputWidget();

@@ -185,6 +185,7 @@ private slots:
   void setConnectedToCore(AccountId id, QIODevice *socket = 0);
   void setSyncedToCore();
   void requestInitialBacklog();
+  void createDefautBufferView();
   void setSecuredConnection();
 
 

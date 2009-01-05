@@ -499,14 +499,6 @@ BufferViewDock::BufferViewDock(BufferViewConfig *config, QWidget *parent)
   connect(config, SIGNAL(bufferViewNameSet(const QString &)), this, SLOT(bufferViewRenamed(const QString &)));
 }
 
-BufferViewDock::BufferViewDock(QWidget *parent)
-  : QDockWidget(tr("All Buffers"), parent)
-{
-  setObjectName("BufferViewDock--1");
-  toggleViewAction()->setData((int)-1);
-  setAllowedAreas(Qt::RightDockWidgetArea|Qt::LeftDockWidgetArea);
-}
-
 void BufferViewDock::bufferViewRenamed(const QString &newName) {
   setWindowTitle(newName);
   toggleViewAction()->setText(newName);

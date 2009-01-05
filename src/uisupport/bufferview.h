@@ -109,7 +109,6 @@ class BufferViewDock : public QDockWidget {
 
 public:
   BufferViewDock(BufferViewConfig *config, QWidget *parent);
-  BufferViewDock(QWidget *parent);
 
   inline BufferView *bufferView() const { return qobject_cast<BufferView *>(widget()); }
 

@@ -25,6 +25,7 @@
 #include "buffermodel.h"
 #include "buffersettings.h"
 #include "buffersyncer.h"
+#include "bufferviewconfig.h"
 #include "bufferviewmanager.h"
 #include "clientbacklogmanager.h"
 #include "clientirclisthelper.h"
@@ -298,7 +299,7 @@ void Client::setSyncedToCore() {
   Q_ASSERT(!_bufferViewManager);
   _bufferViewManager = new BufferViewManager(signalProxy(), this);
   connect(bufferViewManager(), SIGNAL(initDone()), this, SLOT(requestInitialBacklog()));
-
+  connect(bufferViewManager(), SIGNAL(initDone()), this, SLOT(createDefautBufferView()));
   _syncedToCore = true;
   emit connected();
   emit coreConnectionStateChanged(true);
@@ -307,6 +308,14 @@ void Client::setSyncedToCore() {
 void Client::requestInitialBacklog() {
   if(bufferViewManager()->isInitialized() && bufferSyncer()->isInitialized())
     Client::backlogManager()->requestInitialBacklog();
+}
+
+void Client::createDefautBufferView() {
+  if(bufferViewManager()->bufferViewConfigs().isEmpty()) {
+    BufferViewConfig config(-1);
+    config.setBufferViewName(tr("All Buffers"));
+    bufferViewManager()->requestCreateBufferView(config.toVariantMap());
+  }
 }
 
 void Client::setSecuredConnection() {

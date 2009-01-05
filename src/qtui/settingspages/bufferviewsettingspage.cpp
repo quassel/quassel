@@ -69,6 +69,7 @@ BufferViewSettingsPage::~BufferViewSettingsPage() {
 
 void BufferViewSettingsPage::reset() {
   ui.bufferViewList->clear();
+  ui.deleteBufferView->setEnabled(false);
 
   QHash<BufferViewConfig *, BufferViewConfig *>::iterator changedConfigIter = _changedBufferViews.begin();
   QHash<BufferViewConfig *, BufferViewConfig *>::iterator changedConfigIterEnd = _changedBufferViews.end();
@@ -188,6 +189,7 @@ void BufferViewSettingsPage::addBufferView(BufferViewConfig *config) {
   item->setData(Qt::UserRole, qVariantFromValue<QObject *>(qobject_cast<QObject *>(config)));
   connect(config, SIGNAL(updatedRemotely()), this, SLOT(updateBufferView()));
   connect(config, SIGNAL(destroyed()), this, SLOT(bufferViewDeleted()));
+  ui.deleteBufferView->setEnabled(ui.bufferViewList->count() > 1);
 }
 
 void BufferViewSettingsPage::addBufferView(int bufferViewId) {
@@ -205,9 +207,10 @@ void BufferViewSettingsPage::bufferViewDeleted() {
     if(config == static_cast<BufferViewConfig *>(obj)) {
       QListWidgetItem *item = ui.bufferViewList->takeItem(i);
       delete item;
-      return;
+      break;
     }
   }
+  ui.deleteBufferView->setEnabled(ui.bufferViewList->count() > 1);
 }
 
 void BufferViewSettingsPage::newBufferView(const QString &bufferViewName) {
@@ -329,10 +332,24 @@ void BufferViewSettingsPage::on_deleteBufferView_clicked() {
 
   if(ret == QMessageBox::Yes) {
     ui.bufferViewList->removeItemWidget(currentItem);
+    BufferViewConfig *config = qobject_cast<BufferViewConfig *>(currentItem->data(Qt::UserRole).value<QObject *>());
     delete currentItem;
-    if(viewId >= 0)
+    if(viewId >= 0) {
       _deleteBufferViews << viewId;
-    changed();
+      changed();
+    } else if(config) {
+      QList<BufferViewConfig *>::iterator iter = _newBufferViews.begin();
+      while(iter != _newBufferViews.end()) {
+	if(*iter == config) {
+	  _newBufferViews.erase(iter);
+	  break;
+	}
+	iter++;
+      }
+      delete config;
+      if(_deleteBufferViews.isEmpty() && _changedBufferViews.isEmpty() && _newBufferViews.isEmpty())
+	setChangedState(false);
+    }
   }
 }
 

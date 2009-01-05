@@ -158,7 +158,6 @@ void MainWin::init() {
   setupActions();
   setupBufferWidget();
   setupMenus();
-  setupViews();
   setupTopicWidget();
   setupChatMonitor();
   setupNickWidget();
@@ -303,20 +302,15 @@ void MainWin::setupBufferWidget() {
   setCentralWidget(_bufferWidget);
 }
 
-void MainWin::setupViews() {
-  addBufferView();
-}
-
 void MainWin::addBufferView(int bufferViewConfigId) {
   addBufferView(Client::bufferViewManager()->bufferViewConfig(bufferViewConfigId));
 }
 
 void MainWin::addBufferView(BufferViewConfig *config) {
-  BufferViewDock *dock;
-  if(config)
-    dock = new BufferViewDock(config, this);
-  else
-    dock = new BufferViewDock(this);
+  if(!config)
+    return;
+
+  BufferViewDock *dock = new BufferViewDock(config, this);
 
   //create the view and initialize it's filter
   BufferView *view = new BufferView(dock);
