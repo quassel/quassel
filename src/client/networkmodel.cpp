@@ -1041,3 +1041,35 @@ BufferId NetworkModel::bufferId(NetworkId networkId, const QString &bufferName, 
   }
   return BufferId();
 }
+
+void NetworkModel::sortBufferIds(QList<BufferId> &bufferIds) const {
+  QList<BufferItem *> bufferItems;
+  foreach(BufferId bufferId, bufferIds) {
+    if(_bufferItemCache.contains(bufferId))
+      bufferItems << _bufferItemCache[bufferId];
+  }
+
+  qSort(bufferItems.begin(), bufferItems.end(), bufferItemLessThan);
+
+  bufferIds.clear();
+  foreach(BufferItem *bufferItem, bufferItems) {
+    bufferIds << bufferItem->bufferId();
+  }
+}
+
+QList<BufferId> NetworkModel::allBufferIdsSorted() const {
+  QList<BufferId> bufferIds = allBufferIds();
+  sortBufferIds(bufferIds);
+  return bufferIds;
+}
+
+bool NetworkModel::bufferItemLessThan(const BufferItem *left, const BufferItem *right) {
+  int leftType = left->bufferType();
+  int rightType = right->bufferType();
+
+  if(leftType != rightType)
+    return leftType < rightType;
+  else
+    return QString::compare(left->bufferName(), right->bufferName(), Qt::CaseInsensitive) < 0;
+}
+

@@ -314,6 +314,7 @@ void Client::createDefautBufferView() {
   if(bufferViewManager()->bufferViewConfigs().isEmpty()) {
     BufferViewConfig config(-1);
     config.setBufferViewName(tr("All Buffers"));
+    config.initSetBufferList(networkModel()->allBufferIdsSorted());
     bufferViewManager()->requestCreateBufferView(config.toVariantMap());
   }
 }

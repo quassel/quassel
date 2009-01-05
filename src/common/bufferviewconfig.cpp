@@ -37,8 +37,7 @@ BufferViewConfig::BufferViewConfig(int bufferViewId, QObject *parent)
 
 BufferViewConfig::BufferViewConfig(int bufferViewId, const QVariantMap &properties, QObject *parent)
   : SyncableObject(parent),
-    _bufferViewId(bufferViewId),
-    _disableDecoration(false)  // FIXME remove as soon as we have bumped the protocol version to v8
+    _bufferViewId(bufferViewId)
 {
   fromVariantMap(properties);
   setObjectName(QString::number(bufferViewId));

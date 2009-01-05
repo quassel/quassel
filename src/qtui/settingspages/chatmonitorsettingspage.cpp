@@ -99,12 +99,12 @@ void ChatMonitorSettingsPage::load() {
       bufferIdsFromConfig << v.value<BufferId>();
       allBufferIds.removeAll(v.value<BufferId>());
     }
-    qSort(bufferIdsFromConfig.begin(), bufferIdsFromConfig.end(), bufferIdLessThan);
+    Client::networkModel()->sortBufferIds(bufferIdsFromConfig);
     _configActive->initSetBufferList(bufferIdsFromConfig);
   }
   ui.activeBuffers->setFilteredModel(Client::bufferModel(), _configActive);
 
-  qSort(allBufferIds.begin(), allBufferIds.end(), bufferIdLessThan);
+  Client::networkModel()->sortBufferIds(allBufferIds);
   _configAvailable->initSetBufferList(allBufferIds);
   ui.availableBuffers->setFilteredModel(Client::bufferModel(), _configAvailable);
 

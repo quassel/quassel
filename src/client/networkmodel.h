@@ -306,6 +306,8 @@ public:
   QString networkName(BufferId bufferId) const;
 
   inline QList<BufferId> allBufferIds() const { return _bufferItemCache.keys(); }
+  QList<BufferId> allBufferIdsSorted() const;
+  void sortBufferIds(QList<BufferId> &bufferIds) const;
 
 public slots:
   void bufferUpdated(BufferInfo bufferInfo);
@@ -330,6 +332,8 @@ private:
   inline BufferItem *findBufferItem(const BufferInfo &bufferInfo) const { return findBufferItem(bufferInfo.bufferId()); }
   BufferItem *findBufferItem(BufferId bufferId) const;
   BufferItem *bufferItem(const BufferInfo &bufferInfo);
+
+  static bool bufferItemLessThan(const BufferItem *left, const BufferItem *right);
 
   QHash<BufferId, BufferItem *> _bufferItemCache;
 };

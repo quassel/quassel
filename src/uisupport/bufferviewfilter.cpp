@@ -496,10 +496,7 @@ void BufferViewFilter::checkItemsForRemoval(const QModelIndex &topLeft, const QM
   emit _dataChanged(source_topLeft, source_bottomRight);
 }
 
-// ******************************
-//  Helper
-// ******************************
-bool bufferIdLessThan(const BufferId &left, const BufferId &right) {
+bool BufferViewFilter::bufferIdLessThan(const BufferId &left, const BufferId &right) {
   Q_CHECK_PTR(Client::networkModel());
   if(!Client::networkModel())
     return true;

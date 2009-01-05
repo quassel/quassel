@@ -221,9 +221,10 @@ void BufferViewSettingsPage::newBufferView(const QString &bufferViewName) {
   config->setInitialized();
   QList<BufferId> bufferIds;
   if(config->addNewBuffersAutomatically()) {
-    bufferIds = Client::networkModel()->allBufferIds();
     if(config->sortAlphabetically())
-      qSort(bufferIds.begin(), bufferIds.end(), bufferIdLessThan);
+      bufferIds = Client::networkModel()->allBufferIdsSorted();
+    else
+      bufferIds = Client::networkModel()->allBufferIds();
   }
   config->initSetBufferList(bufferIds);
 
@@ -427,9 +428,10 @@ void BufferViewSettingsPage::saveConfig(BufferViewConfig *config) {
   if(_newBufferViews.contains(config)) {
     QList<BufferId> bufferIds;
     if(config->addNewBuffersAutomatically()) {
-      bufferIds = Client::networkModel()->allBufferIds();
       if(config->sortAlphabetically())
-	qSort(bufferIds.begin(), bufferIds.end(), bufferIdLessThan);
+	bufferIds = Client::networkModel()->allBufferIdsSorted();
+      else
+	bufferIds = Client::networkModel()->allBufferIds();
     }
     config->initSetBufferList(bufferIds);
   }
