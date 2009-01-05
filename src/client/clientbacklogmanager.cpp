@@ -105,6 +105,9 @@ bool ClientBacklogManager::isBuffering() {
 }
 
 void ClientBacklogManager::dispatchMessages(const MessageList &messages, bool sort) {
+  if(messages.isEmpty())
+    return;
+
   MessageList msgs = messages;
 
   clock_t start_t = clock();
@@ -113,7 +116,7 @@ void ClientBacklogManager::dispatchMessages(const MessageList &messages, bool so
   Client::messageProcessor()->process(msgs);
   clock_t end_t = clock();
 
-  emit messagesProcessed(tr("Processed %1 messages in %2 seconds.").arg(msgs.count()).arg((float)(end_t - start_t) / CLOCKS_PER_SEC));
+  emit messagesProcessed(tr("Processed %1 messages in %2 seconds.").arg(messages.count()).arg((float)(end_t - start_t) / CLOCKS_PER_SEC));
 }
 
 void ClientBacklogManager::reset() {
