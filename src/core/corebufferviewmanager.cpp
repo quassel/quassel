@@ -40,7 +40,7 @@ CoreBufferViewManager::CoreBufferViewManager(SignalProxy *proxy, CoreSession *pa
   }
 }
 
-CoreBufferViewManager::~CoreBufferViewManager() {
+void CoreBufferViewManager::saveBufferViews() {
   QVariantMap views;
 
   BufferViewConfigHash::const_iterator iter = bufferViewConfigHash().constBegin();

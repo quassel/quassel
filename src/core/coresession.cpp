@@ -51,7 +51,6 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
     _coreInfo(this),
     scriptEngine(new QScriptEngine(this))
 {
-
   SignalProxy *p = signalProxy();
   connect(p, SIGNAL(peerRemoved(QIODevice *)), this, SLOT(removeClient(QIODevice *)));
 
@@ -75,29 +74,18 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
   loadSettings();
   initScriptEngine();
 
-  // init BufferSyncer
-  QHash<BufferId, MsgId> lastSeenHash = Core::bufferLastSeenMsgIds(user());
-  foreach(BufferId id, lastSeenHash.keys())
-    _bufferSyncer->requestSetLastSeenMsg(id, lastSeenHash[id]);
-
   connect(&(Core::instance()->syncTimer()), SIGNAL(timeout()), _bufferSyncer, SLOT(storeDirtyIds()));
+  connect(&(Core::instance()->syncTimer()), SIGNAL(timeout()), _bufferViewManager, SLOT(saveBufferViews()));
+
   p->synchronize(_bufferSyncer);
-
-
-  // init alias manager
   p->synchronize(&aliasManager());
-
-  // init BacklogManager
   p->synchronize(_backlogManager);
-
-  // init IrcListHelper
   p->synchronize(ircListHelper());
-
-  // init CoreInfo
   p->synchronize(&_coreInfo);
 
   // Restore session state
-  if(restoreState) restoreSessionState();
+  if(restoreState)
+    restoreSessionState();
 
   emit initialized();
 }
@@ -159,6 +147,7 @@ void CoreSession::loadSettings() {
 
 void CoreSession::saveSessionState() const {
   _bufferSyncer->storeDirtyIds();
+  _bufferViewManager->saveBufferViews();
 }
 
 void CoreSession::restoreSessionState() {

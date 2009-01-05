@@ -29,6 +29,8 @@ class BufferSyncer : public SyncableObject {
 
 public:
   explicit BufferSyncer(QObject *parent);
+  explicit BufferSyncer(const QHash<BufferId, MsgId> &lastSeenMsg, QObject *parent);
+
   inline virtual const QMetaObject *syncMetaObject() const { return &staticMetaObject; }
 
   MsgId lastSeenMsg(BufferId buffer) const;

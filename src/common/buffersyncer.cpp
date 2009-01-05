@@ -25,6 +25,11 @@ BufferSyncer::BufferSyncer(QObject *parent)
 {
 }
 
+BufferSyncer::BufferSyncer(const QHash<BufferId, MsgId> &lastSeenMsg, QObject *parent)
+  : SyncableObject(parent),
+    _lastSeenMsg(lastSeenMsg)
+{
+}
 
 MsgId BufferSyncer::lastSeenMsg(BufferId buffer) const {
   if(_lastSeenMsg.contains(buffer))

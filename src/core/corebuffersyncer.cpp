@@ -26,7 +26,7 @@
 #include "ircchannel.h"
 
 CoreBufferSyncer::CoreBufferSyncer(CoreSession *parent)
-  : BufferSyncer(parent),
+  : BufferSyncer(Core::bufferLastSeenMsgIds(parent->user()), parent),
     _coreSession(parent)
 {
 }

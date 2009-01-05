@@ -30,7 +30,6 @@ class CoreBufferViewManager : public BufferViewManager {
 
 public:
   CoreBufferViewManager(SignalProxy *proxy, CoreSession *parent);
-  ~CoreBufferViewManager();
   
   inline virtual const QMetaObject *syncMetaObject() const { return &BufferViewManager::staticMetaObject; }
 
@@ -39,6 +38,8 @@ public slots:
   virtual void requestCreateBufferViews(const QVariantList &properties);
   virtual void requestDeleteBufferView(int bufferViewId);
   virtual void requestDeleteBufferViews(const QVariantList &bufferViews);
+
+  void saveBufferViews();
 
 private:
   CoreSession *_coreSession;
