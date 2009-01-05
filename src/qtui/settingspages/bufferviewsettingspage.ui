@@ -111,6 +111,10 @@
         <layout class="QVBoxLayout" >
          <item>
           <widget class="QCheckBox" name="onlyStatusBuffers" >
+           <property name="toolTip" >
+            <string>This option is not available when all Networks are visible.
+In this mode no separate status buffer is displayed.</string>
+           </property>
            <property name="text" >
             <string>Status Buffers</string>
            </property>

@@ -50,6 +50,8 @@ private slots:
   void newBufferView(const QString &bufferViewName);
   void updateBufferView();
 
+  void enableStatusBuffers(int networkIdx);
+
   void on_addBufferView_clicked();
   void on_renameBufferView_clicked();
   void on_deleteBufferView_clicked();

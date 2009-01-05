@@ -61,6 +61,8 @@ BufferViewSettingsPage::BufferViewSettingsPage(QWidget *parent)
   connect(ui.hideInactiveBuffers, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
   connect(ui.networkSelector, SIGNAL(currentIndexChanged(int)), this, SLOT(widgetHasChanged()));
   connect(ui.minimumActivitySelector, SIGNAL(currentIndexChanged(int)), this, SLOT(widgetHasChanged()));
+
+  connect(ui.networkSelector, SIGNAL(currentIndexChanged(int)), this, SLOT(enableStatusBuffers(int)));
 }
 
 BufferViewSettingsPage::~BufferViewSettingsPage() {
@@ -277,6 +279,12 @@ void BufferViewSettingsPage::updateBufferView() {
   ui.bufferViewList->item(itemPos)->setText(config->bufferViewName());
   if(itemPos == ui.bufferViewList->currentRow())
     loadConfig(config);
+}
+
+void BufferViewSettingsPage::enableStatusBuffers(int networkIdx) {
+  // we don't show a status buffer if we show multiple networks as selecting
+  // the network is the same as selecting the status buffer.
+  ui.onlyStatusBuffers->setEnabled(networkIdx != 0);
 }
 
 void BufferViewSettingsPage::on_addBufferView_clicked() {

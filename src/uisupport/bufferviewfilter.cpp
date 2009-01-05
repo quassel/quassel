@@ -281,7 +281,10 @@ bool BufferViewFilter::filterAcceptBuffer(const QModelIndex &source_bufferIndex)
   if(config()->networkId().isValid() && config()->networkId() != source_bufferIndex.data(NetworkModel::NetworkIdRole).value<NetworkId>())
     return false;
 
-  if(!(config()->allowedBufferTypes() & (BufferInfo::Type)source_bufferIndex.data(NetworkModel::BufferTypeRole).toInt()))
+  int allowedBufferTypes = config()->allowedBufferTypes();
+  if(!config()->networkId().isValid())
+    allowedBufferTypes &= ~BufferInfo::StatusBuffer;
+  if(!(allowedBufferTypes & source_bufferIndex.data(NetworkModel::BufferTypeRole).toInt()))
     return false;
 
   // the following dynamic filters may not trigger if the buffer is currently selected.
