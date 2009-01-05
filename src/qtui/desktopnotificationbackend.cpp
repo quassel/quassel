@@ -148,6 +148,7 @@ void DesktopNotificationBackend::desktopNotificationClosed(uint id, uint reason)
 
 void DesktopNotificationBackend::desktopNotificationInvoked(uint id, const QString & action) {
   Q_UNUSED(id); Q_UNUSED(action);
+  emit activated();
 }
 
 SettingsPage *DesktopNotificationBackend::createConfigWidget() const {

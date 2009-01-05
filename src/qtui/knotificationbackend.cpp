@@ -38,12 +38,17 @@ KNotificationBackend::KNotificationBackend(QObject *parent) : AbstractNotificati
 void KNotificationBackend::notify(const Notification &n) {
   //QString title = Client::networkModel()->networkName(n.bufferId) + " - " + Client::networkModel()->bufferName(n.bufferId);
   QString message = QString("<b>&lt;%1&gt;</b> %2").arg(n.sender, n.message);
-  KNotification::event("Highlight", message, DesktopIcon("dialog-information"), QtUi::mainWindow(),
-                        KNotification::Persistent|KNotification::RaiseWidgetOnActivation|KNotification::CloseWhenWidgetActivated);
+  KNotification *notification = KNotification::event("Highlight", message, DesktopIcon("dialog-information"), QtUi::mainWindow(),
+                                KNotification::Persistent|KNotification::RaiseWidgetOnActivation|KNotification::CloseWhenWidgetActivated);
+  connect(notification, SIGNAL(activated()), SLOT(notificationActivated()));
 }
 
 void KNotificationBackend::close(uint notificationId) {
   Q_UNUSED(notificationId);
+}
+
+void KNotificationBackend::notificationActivated() {
+  emit activated();
 }
 
 SettingsPage *KNotificationBackend::createConfigWidget() const {

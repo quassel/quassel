@@ -54,6 +54,11 @@ public:
    * In case you need to communicate with the configWidget directly, make your connections here
    */
   virtual SettingsPage *createConfigWidget() const = 0;
+
+signals:
+  //! May be emitted by the notification to tell the MainWin to raise itself
+  void activated();
+
 };
 
 #endif

@@ -41,6 +41,7 @@ SystrayNotificationBackend::SystrayNotificationBackend(QObject *parent)
 
   _iconActive = false;
   connect(&_animationTimer, SIGNAL(timeout()), SLOT(blink()));
+  connect(QtUi::mainWindow()->systemTrayIcon(), SIGNAL(messageClicked()), this, SIGNAL(activated()));
 }
 
 void SystrayNotificationBackend::notify(const Notification &notification) {

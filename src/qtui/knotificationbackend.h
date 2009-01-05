@@ -37,6 +37,9 @@ public:
   void close(uint notificationId);
   virtual SettingsPage *createConfigWidget() const;
 
+private slots:
+  void notificationActivated();
+
 private:
   class ConfigWidget;
 };

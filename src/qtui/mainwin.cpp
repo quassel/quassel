@@ -116,20 +116,6 @@ MainWin::MainWin(QWidget *parent)
 
   installEventFilter(new JumpKeyHandler(this));
 
-#ifndef HAVE_KDE
-    QtUi::registerNotificationBackend(new TaskbarNotificationBackend(this));
-    QtUi::registerNotificationBackend(new SystrayNotificationBackend(this));
-#  ifdef HAVE_PHONON
-    QtUi::registerNotificationBackend(new PhononNotificationBackend(this));
-#  endif
-#  ifdef HAVE_DBUS
-    QtUi::registerNotificationBackend(new DesktopNotificationBackend(this));
-#  endif
-
-#else /* HAVE_KDE */
-    QtUi::registerNotificationBackend(new KNotificationBackend(this));
-#endif /* HAVE_KDE */
-
   QtUiApplication* app = qobject_cast<QtUiApplication*> qApp;
   connect(app, SIGNAL(saveStateToSession(const QString&)), SLOT(saveStateToSession(const QString&)));
   connect(app, SIGNAL(saveStateToSessionSettings(SessionSettings&)), SLOT(saveStateToSessionSettings(SessionSettings&)));
@@ -165,6 +151,20 @@ void MainWin::init() {
   setupStatusBar();
   setupSystray();
   setupTitleSetter();
+
+#ifndef HAVE_KDE
+  QtUi::registerNotificationBackend(new TaskbarNotificationBackend(this));
+  QtUi::registerNotificationBackend(new SystrayNotificationBackend(this));
+#  ifdef HAVE_PHONON
+  QtUi::registerNotificationBackend(new PhononNotificationBackend(this));
+#  endif
+#  ifdef HAVE_DBUS
+  QtUi::registerNotificationBackend(new DesktopNotificationBackend(this));
+#  endif
+
+#else /* HAVE_KDE */
+  QtUi::registerNotificationBackend(new KNotificationBackend(this));
+#endif /* HAVE_KDE */
 
   // restore mainwin state
   restoreState(s.value("MainWinState").toByteArray());

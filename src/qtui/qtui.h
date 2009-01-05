@@ -46,6 +46,7 @@ public:
   MessageModel *createMessageModel(QObject *parent);
   AbstractMessageProcessor *createMessageProcessor(QObject *parent);
 
+  inline static QtUi *instance();
   inline static QtUiStyle *style();
   inline static MainWin *mainWindow();
 
@@ -75,10 +76,12 @@ public slots:
 protected slots:
   void connectedToCore();
   void disconnectedFromCore();
+  void notificationActivated();
 
 private:
   AbstractActionProvider *_actionProvider;
 
+  static QPointer<QtUi> _instance;
   static QPointer<MainWin> _mainWin;
   static QHash<QString, ActionCollection *> _actionCollections;
   static QtUiStyle *_style;
@@ -86,6 +89,7 @@ private:
   static QList<AbstractNotificationBackend::Notification> _notifications;
 };
 
+QtUi *QtUi::instance() { return _instance ? _instance.data() : new QtUi(); }
 QtUiStyle *QtUi::style() { return _style; }
 MainWin *QtUi::mainWindow() { return _mainWin; }
 AbstractActionProvider *QtUi::actionProvider() const { return _actionProvider; }
