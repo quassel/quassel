@@ -50,8 +50,6 @@ QString decodeString(const QByteArray &input, QTextCodec *codec = 0);
 
 uint editingDistance(const QString &s1, const QString &s2);
 
-QByteArray methodName(const QMetaMethod &method);
-
 QDir quasselDir();
 
 void loadTranslation(const QLocale &locale);

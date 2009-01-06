@@ -86,7 +86,7 @@ QVariantMap SyncableObject::toVariantMap() {
   // ...as well as methods, which have names starting with "init"
   for(int i = 0; i < meta->methodCount(); i++) {
     QMetaMethod method = meta->method(i);
-    QString methodname(::methodName(method));
+    QString methodname(SignalProxy::ExtendedMetaObject::methodName(method));
     if(!methodname.startsWith("init") || methodname.startsWith("initSet") || methodname.startsWith("initDone"))
       continue;
 
@@ -99,7 +99,7 @@ QVariantMap SyncableObject::toVariantMap() {
     QGenericReturnArgument genericvalue = QGenericReturnArgument(method.typeName(), &value);
     QMetaObject::invokeMethod(this, methodname.toAscii(), genericvalue);
 
-    properties[SignalProxy::methodBaseName(method)] = value;
+    properties[SignalProxy::ExtendedMetaObject::methodBaseName(method)] = value;
   }
   // properties["Payload"] = QByteArray(10000000, 'a');  // for testing purposes
   return properties;

@@ -150,11 +150,6 @@ uint editingDistance(const QString &s1, const QString &s2) {
   return matrix[n-1][m-1];
 }
 
-QByteArray methodName(const QMetaMethod &method) {
-  QByteArray sig(method.signature());
-  return sig.left(sig.indexOf("("));
-}
-
 QDir quasselDir() {
   QString quasselDir;
   if(Quassel::isOptionSet("datadir")) {

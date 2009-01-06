@@ -40,6 +40,7 @@ class SignalProxy : public QObject {
 
   class AbstractPeer;
   class IODevicePeer;
+  class SignalProxyPeer;
 
 public:
   enum ProxyMode {
@@ -78,7 +79,7 @@ public:
   bool addPeer(SignalProxy *proxy);
   void removePeer(QObject *peer);
   void removeAllPeers();
-  
+
   bool attachSignal(QObject *sender, const char *signal, const QByteArray& sigName = QByteArray());
   bool attachSlot(const QByteArray& sigName, QObject *recv, const char *slot);
 
@@ -86,8 +87,6 @@ public:
 
 //   void setInitialized(SyncableObject *obj);
 //   bool isInitialized(SyncableObject *obj) const;
-  void requestInit(SyncableObject *obj);
-
   void detachObject(QObject *obj);
   void detachSignals(QObject *sender);
   void detachSlots(QObject *receiver);
@@ -106,32 +105,13 @@ public:
    */
   static bool readDataFromDevice(QIODevice *dev, quint32 &blockSize, QVariant &item, bool compressed = false);
 
+  class ExtendedMetaObject;
+  ExtendedMetaObject *extendedMetaObject(const QObject *obj) const;
+  void createExtendedMetaObject(const QObject *obj);
+
   bool isSecure() const { return _secure; }
-  
-  static QString methodBaseName(const QMetaMethod &method);
-
-  const QList<int> &argTypes(QObject *obj, int methodId);
-  const int &returnType(QObject *obj, int methodId);
-  const int &minArgCount(QObject *obj, int methodId);
-  const QByteArray &methodName(QObject *obj, int methodId);
-  const QHash<QByteArray, int> &syncMap(SyncableObject *obj);
-  const QHash<int, int> &receiveMap(SyncableObject *obj);
-  int updatedRemotelyId(SyncableObject *obj);
-
-  typedef QHash<int, QList<int> > ArgHash;
-  typedef QHash<int, QByteArray> MethodNameHash;
-  struct ClassInfo {
-    ArgHash argTypes;
-    QHash<int, int> returnType;
-    QHash<int, int> minArgCount;
-    MethodNameHash methodNames;
-    int updatedRemotelyId; // id of the updatedRemotely() signal - makes things faster
-    QHash<QByteArray, int> syncMap;
-    QHash<int, int> receiveMap;
-  };
-
   void dumpProxyStats();
-  
+
 protected:
   void customEvent(QEvent *event);
 
@@ -160,18 +140,8 @@ private:
   void init();
   void initServer();
   void initClient();
-  
-  const QMetaObject *metaObject(QObject *obj);
-  void createClassInfo(QObject *obj);
-  void setArgTypes(QObject *obj, int methodId);
-  void setReturnType(QObject *obj, int methodId);
-  void setMinArgCount(QObject *obj, int methodId);
-  void setMethodName(QObject *obj, int methodId);
-  void setSyncMap(SyncableObject *obj);
-  void setReceiveMap(SyncableObject *obj);
-  void setUpdatedRemotelyId(SyncableObject *obj);
 
-  bool methodsMatch(const QMetaMethod &signal, const QMetaMethod &slot) const;
+  static const QMetaObject *metaObject(const QObject *obj);
 
   void dispatchSignal(QIODevice *receiver, const RequestType &requestType, const QVariantList &params);
   void dispatchSignal(const RequestType &requestType, const QVariantList &params);
@@ -187,6 +157,7 @@ private:
   bool invokeSlot(QObject *receiver, int methodId, const QVariantList &params, QVariant &returnValue);
   bool invokeSlot(QObject *receiver, int methodId, const QVariantList &params = QVariantList());
 
+  void requestInit(SyncableObject *obj);
   QVariantMap initData(SyncableObject *obj) const;
   void setInitData(SyncableObject *obj, const QVariantMap &properties);
 
@@ -195,55 +166,9 @@ private:
 public:
   void dumpSyncMap(SyncableObject *object);
   inline int peerCount() const { return _peers.size(); }
-  
+
 private:
   static void disconnectDevice(QIODevice *dev, const QString &reason = QString());
-
-  class AbstractPeer {
-  public:
-    enum PeerType {
-      NotAPeer = 0,
-      IODevicePeer = 1,
-      SignalProxyPeer = 2
-    };
-    AbstractPeer() : _type(NotAPeer) {}
-    AbstractPeer(PeerType type) : _type(type) {}
-    virtual ~AbstractPeer() {}
-    inline PeerType type() const { return _type; }
-    virtual void dispatchSignal(const RequestType &requestType, const QVariantList &params) = 0;
-    virtual bool isSecure() const = 0;
-  private:
-    PeerType _type;
-  };
-
-  class IODevicePeer : public AbstractPeer {
-  public:
-    IODevicePeer(QIODevice *device, bool compress) : AbstractPeer(AbstractPeer::IODevicePeer), _device(device), byteCount(0), usesCompression(compress), sentHeartBeats(0), lag(0) {}
-    virtual void dispatchSignal(const RequestType &requestType, const QVariantList &params);
-    virtual bool isSecure() const;
-    inline void dispatchPackedFunc(const QVariant &packedFunc) { SignalProxy::writeDataToDevice(_device, packedFunc, usesCompression); }
-    QString address() const;
-    inline bool isOpen() const { return _device->isOpen(); }
-    inline void close() const { _device->close(); }
-    inline bool readData(QVariant &item) { return SignalProxy::readDataFromDevice(_device, byteCount, item, usesCompression); }
-  private:
-    QIODevice *_device;
-    quint32 byteCount;
-    bool usesCompression;
-  public:
-    int sentHeartBeats;
-    int lag;
-  };
-
-  class SignalProxyPeer : public AbstractPeer {
-  public:
-    SignalProxyPeer(SignalProxy *sender, SignalProxy *receiver) : AbstractPeer(AbstractPeer::SignalProxyPeer), sender(sender), receiver(receiver) {}
-    virtual void dispatchSignal(const RequestType &requestType, const QVariantList &params);
-    virtual inline bool isSecure() const { return true; }
-  private:
-    SignalProxy *sender;
-    SignalProxy *receiver;
-  };
 
   // a Hash of the actual used communication object to it's corresponding peer
   // currently a communication object can either be an arbitrary QIODevice or another SignalProxy
@@ -251,7 +176,7 @@ private:
   PeerHash _peers;
 
   // containg a list of argtypes for fast access
-  QHash<const QMetaObject *, ClassInfo*> _classInfo;
+  QHash<const QMetaObject *, ExtendedMetaObject *> _extendedMetaObjects;
 
   // we use one SignalRelay per QObject
   QHash<QObject*, SignalRelay *> _relayHash;
@@ -270,8 +195,92 @@ private:
   QTimer _heartBeatTimer;
 
   bool _secure; // determines if all connections are in a secured state (using ssl or internal connections)
-  
+
   friend class SignalRelay;
+};
+
+
+// ==================================================
+//  ExtendedMetaObject
+// ==================================================
+class SignalProxy::ExtendedMetaObject {
+public:
+  ExtendedMetaObject(const QMetaObject *meta);
+
+  const QList<int> &argTypes(int methodId);
+  const int &returnType(int methodId);
+  const int &minArgCount(int methodId);
+  const QByteArray &methodName(int methodId);
+  const QHash<QByteArray, int> &syncMap();
+  const QHash<int, int> &receiveMap();
+  int updatedRemotelyId();
+
+  static QByteArray methodName(const QMetaMethod &method);
+  static bool methodsMatch(const QMetaMethod &signal, const QMetaMethod &slot);
+  static QString methodBaseName(const QMetaMethod &method);
+
+private:
+  typedef QHash<int, QList<int> > ArgHash;
+  typedef QHash<int, QByteArray> MethodNameHash;
+
+  const QMetaObject *_meta;
+  ArgHash _argTypes;
+  QHash<int, int> _returnType;
+  QHash<int, int> _minArgCount;
+  MethodNameHash _methodNames;
+  int _updatedRemotelyId; // id of the updatedRemotely() signal - makes things faster
+  QHash<QByteArray, int> _syncMap;
+  QHash<int, int> _receiveMap;
+};
+
+
+// ==================================================
+//  Peers
+// ==================================================
+class SignalProxy::AbstractPeer {
+public:
+  enum PeerType {
+    NotAPeer = 0,
+    IODevicePeer = 1,
+    SignalProxyPeer = 2
+  };
+  AbstractPeer() : _type(NotAPeer) {}
+  AbstractPeer(PeerType type) : _type(type) {}
+  virtual ~AbstractPeer() {}
+  inline PeerType type() const { return _type; }
+  virtual void dispatchSignal(const RequestType &requestType, const QVariantList &params) = 0;
+  virtual bool isSecure() const = 0;
+private:
+  PeerType _type;
+};
+
+class SignalProxy::IODevicePeer : public SignalProxy::AbstractPeer {
+public:
+  IODevicePeer(QIODevice *device, bool compress) : AbstractPeer(AbstractPeer::IODevicePeer), _device(device), byteCount(0), usesCompression(compress), sentHeartBeats(0), lag(0) {}
+  virtual void dispatchSignal(const RequestType &requestType, const QVariantList &params);
+  virtual bool isSecure() const;
+  inline void dispatchPackedFunc(const QVariant &packedFunc) { SignalProxy::writeDataToDevice(_device, packedFunc, usesCompression); }
+  QString address() const;
+  inline bool isOpen() const { return _device->isOpen(); }
+  inline void close() const { _device->close(); }
+  inline bool readData(QVariant &item) { return SignalProxy::readDataFromDevice(_device, byteCount, item, usesCompression); }
+private:
+  QIODevice *_device;
+  quint32 byteCount;
+  bool usesCompression;
+public:
+  int sentHeartBeats;
+  int lag;
+};
+
+class SignalProxy::SignalProxyPeer : public SignalProxy::AbstractPeer {
+public:
+  SignalProxyPeer(SignalProxy *sender, SignalProxy *receiver) : AbstractPeer(AbstractPeer::SignalProxyPeer), sender(sender), receiver(receiver) {}
+  virtual void dispatchSignal(const RequestType &requestType, const QVariantList &params);
+  virtual inline bool isSecure() const { return true; }
+private:
+  SignalProxy *sender;
+  SignalProxy *receiver;
 };
 
 #endif
