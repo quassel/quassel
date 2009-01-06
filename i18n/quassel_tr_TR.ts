@@ -1099,7 +1099,7 @@ derlemeniz gerekmektedir.</translation>
     <message>
         <location filename="../src/core/core.cpp" line="559"/>
         <source>initialized and authenticated successfully as &quot;%1&quot; (UserId: %2).</source>
-        <translation type="unfinished"></translation>
+        <translation>Başlatıldı ve &quot;%1&quot; olarak başarıyla doğrulandı (UserId: %2).</translation>
     </message>
     <message>
         <location filename="../src/core/core.cpp" line="570"/>
@@ -1109,7 +1109,7 @@ derlemeniz gerekmektedir.</translation>
     <message>
         <location filename="../src/core/core.cpp" line="576"/>
         <source>Non-authed client disconnected. (socket allready destroyed)</source>
-        <translation type="unfinished"></translation>
+        <translation>Doğrulanmayan istemcinin bağlantısı kesildi. (soket yokedildi)</translation>
     </message>
     <message>
         <location filename="../src/core/core.cpp" line="618"/>
@@ -1430,7 +1430,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/coreconnectdlg.cpp" line="185"/>
         <source>Do you really want to remove your local settings for this Quassel Core account?&lt;br&gt;Note: This will &lt;em&gt;not&lt;/em&gt; remove or change any data on the Core itself!</source>
-        <translation type="unfinished">Quassel Çekirdek hesabınızdaki yerel ayarlarınızı gerçekten kaldırmak istiyor musunuz?&lt;br&gt;Not: Bu işlem Çekirdekte herhangi bir veri değişimi ya da silinmesini &lt;em&gt;gerçekleştirmeyecek&lt;/em&gt;!</translation>
+        <translation>Quassel Çekirdek hesabınızdaki yerel ayarlarınızı gerçekten kaldırmak istiyor musunuz?&lt;br&gt;Not: Bu işlem Çekirdekte herhangi bir veri değişimi ya da silinmesini &lt;em&gt;gerçekleştirmeyecek&lt;/em&gt;!</translation>
     </message>
     <message>
         <location filename="../src/qtui/coreconnectdlg.cpp" line="242"/>
@@ -1670,7 +1670,7 @@ SOME SPACE</translation>
     <message>
         <location filename="../src/core/coresession.cpp" line="419"/>
         <source>CoreSession::createNetwork(): Got invalid networkId from Core when trying to create network %1!</source>
-        <translation type="unfinished"></translation>
+        <translation>CoreSession::createNetwork(): %1 ağı oluşturulmaya çalışılırken Çekirdekten geçersiz networkId alındı!</translation>
     </message>
     <message>
         <location filename="../src/core/coresession.cpp" line="434"/>
@@ -1706,7 +1706,7 @@ SOME SPACE</translation>
     <message>
         <location filename="../src/core/ctcphandler.cpp" line="190"/>
         <source>Received CTCP PING request from %1</source>
-        <translation>%1den CTCP PING isteği alındı</translation>
+        <translation>%1 kullanıcısından CTCP PING isteği alındı</translation>
     </message>
     <message>
         <location filename="../src/core/ctcphandler.cpp" line="195"/>
@@ -1716,7 +1716,7 @@ SOME SPACE</translation>
     <message>
         <location filename="../src/core/ctcphandler.cpp" line="205"/>
         <source>Received CTCP VERSION request by %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 kullanıcısından CTCP VERSION isteği alındı</translation>
     </message>
     <message>
         <location filename="../src/core/ctcphandler.cpp" line="208"/>
@@ -2127,7 +2127,7 @@ SOME SPACE</translation>
     <message>
         <location filename="../src/qtui/settingspages/identitiessettingspage.cpp" line="181"/>
         <source>&lt;li&gt;All identities need an identity name set&lt;/li&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;li&gt;Tüm kimliklere bir kimlik isim kümesi gerekli&lt;/li&gt;</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/identitiessettingspage.cpp" line="182"/>
@@ -2434,7 +2434,7 @@ SOME SPACE</translation>
     <message>
         <location filename="../src/core/ircserverhandler.cpp" line="495"/>
         <source>Received non RFC compliant RPL_ISUPPORT: this can lead to unexpected behavior!</source>
-        <translation type="unfinished"></translation>
+        <translation>RFC uyumlu olmayan RPL_ISUPPORT alındı: bu beklenmeyen bir davranışa yol açabilir!</translation>
     </message>
     <message>
         <location filename="../src/core/ircserverhandler.cpp" line="533"/>
@@ -2444,7 +2444,7 @@ SOME SPACE</translation>
     <message>
         <location filename="../src/core/ircserverhandler.cpp" line="568"/>
         <source>[Whois] %1 is away: &quot;%2&quot;</source>
-        <translation>[Whois] %1 is away: &quot;%2&quot;</translation>
+        <translation>[Kim] %1 dışarıda: &quot;%2&quot;</translation>
     </message>
     <message>
         <location filename="../src/core/ircserverhandler.cpp" line="579"/>
@@ -2459,12 +2459,12 @@ SOME SPACE</translation>
     <message>
         <location filename="../src/core/ircserverhandler.cpp" line="654"/>
         <source>[Whois] %1 is %2 (%3)</source>
-        <translation>[Whois] %1 is %2 (%3)</translation>
+        <translation>[Kim] %1 is %2 (%3)</translation>
     </message>
     <message>
         <location filename="../src/core/ircserverhandler.cpp" line="669"/>
         <source>%1 is online via %2 (%3)</source>
-        <translation type="unfinished">%1, %2 (%3) aracılığıyla çevrimiçi</translation>
+        <translation>%1, %2 (%3) aracılığıyla çevrimiçi</translation>
     </message>
     <message>
         <location filename="../src/core/ircserverhandler.cpp" line="931"/>
@@ -2479,7 +2479,7 @@ SOME SPACE</translation>
     <message>
         <location filename="../src/core/ircserverhandler.cpp" line="713"/>
         <source>[Who] End of /WHO list for %1</source>
-        <translation type="unfinished">[Kim] %1 için /WHO listesinin sonu</translation>
+        <translation>[Kim] %1 için /WHO listesinin sonu</translation>
     </message>
     <message>
         <location filename="../src/core/ircserverhandler.cpp" line="733"/>
@@ -2494,22 +2494,22 @@ SOME SPACE</translation>
     <message>
         <location filename="../src/core/ircserverhandler.cpp" line="738"/>
         <source>[Whois] idle message: %1</source>
-        <translation type="unfinished">[Whois] idle message: %1</translation>
+        <translation>[Kim] boşta mesajı: %1</translation>
     </message>
     <message>
         <location filename="../src/core/ircserverhandler.cpp" line="770"/>
         <source>[Whois] %1 is a user on channels: %2</source>
-        <translation type="unfinished">[Whois] %1 is a user on channels: %2</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/core/ircserverhandler.cpp" line="772"/>
         <source>[Whois] %1 has voice on channels: %2</source>
-        <translation type="unfinished">[Whois] %1 has voice on channels: %2</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/core/ircserverhandler.cpp" line="774"/>
         <source>[Whois] %1 is an operator on channels: %2</source>
-        <translation type="unfinished">[Whois] %1 is an operator on channels: %2</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/core/ircserverhandler.cpp" line="802"/>
@@ -2529,7 +2529,7 @@ SOME SPACE</translation>
     <message>
         <location filename="../src/core/ircserverhandler.cpp" line="856"/>
         <source>Topic for %1 is &quot;%2&quot;</source>
-        <translation type="unfinished">%1 kanalının konusu &quot;%2&quot;</translation>
+        <translation>%1 kanalının konusu &quot;%2&quot;</translation>
     </message>
     <message>
         <location filename="../src/core/ircserverhandler.cpp" line="867"/>
@@ -3092,7 +3092,8 @@ This setting defines the encoding for messages that are not Utf8.</source>
         <location filename="../src/qtui/settingspages/networkssettingspage.ui" line="516"/>
         <source>This specifies how control messages, nicks and servernames are encoded.
 Unless you *really* know what you do, leave this as ISO-8859-1!</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontrol mesajlarının, takma adların ve sunucu adlarının nasıl kodlanacağını belirler.
+*Gerçekten* ne yapıyor olduğunuzu bilmiyorsanız, ISO-8859-1 olarak bırakın!</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/networkssettingspage.ui" line="506"/>
@@ -3165,7 +3166,7 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
     <message>
         <location filename="../src/qtui/settingspages/nickeditdlg.ui" line="32"/>
         <source>A valid nickname may contain letters from the English alphabet, digits, and the special characters {, }, [, ], \, |, `, ^, _ and -.</source>
-        <translation type="unfinished"></translation>
+        <translation>Geçerli bir takma ad İngiliz alfabesindeki harfleri, sayıları ve {, }, [, ], \, |, `, ^, _ - özel karakterlerini içerebilir.</translation>
     </message>
 </context>
 <context>
@@ -3173,12 +3174,12 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
     <message>
         <location filename="../src/uisupport/nickview.cpp" line="100"/>
         <source>WHOIS</source>
-        <translation>WHOIS</translation>
+        <translation>KİM</translation>
     </message>
     <message>
         <location filename="../src/uisupport/nickview.cpp" line="101"/>
         <source>VERSION</source>
-        <translation>VERSION</translation>
+        <translation>SÜRÜM</translation>
     </message>
     <message>
         <location filename="../src/uisupport/nickview.cpp" line="102"/>
@@ -3323,7 +3324,7 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
     <message>
         <location filename="../src/client/networkmodel.cpp" line="332"/>
         <source>&lt;b&gt;Query with %1&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;%1 ile konuş&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../src/client/networkmodel.cpp" line="350"/>
@@ -3483,7 +3484,7 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
     <message>
         <location filename="../src/common/signalproxy.cpp" line="1095"/>
         <source>Client sent corrupt data: unable to load QVariant!</source>
-        <translation type="unfinished"></translation>
+        <translation>İstemci bozuk veri gönderdi: QVariant yüklenemedi!</translation>
     </message>
     <message>
         <location filename="../src/common/signalproxy.cpp" line="1221"/>
@@ -3639,12 +3640,12 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
     <message>
         <location filename="../src/uisupport/uistyle.cpp" line="371"/>
         <source>%Da%DN%1%DN %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%Da%DN%1%DN %2</translation>
     </message>
     <message>
         <location filename="../src/uisupport/uistyle.cpp" line="375"/>
         <source>%De[%1]</source>
-        <translation type="unfinished"></translation>
+        <translation>%De[%1]</translation>
     </message>
     <message>
         <location filename="../src/uisupport/uistyle.cpp" line="401"/>
