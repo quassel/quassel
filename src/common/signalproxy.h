@@ -31,7 +31,6 @@
 #include <QByteArray>
 #include <QTimer>
 
-class SignalRelay;
 class SyncableObject;
 struct QMetaObject;
 
@@ -41,6 +40,10 @@ class SignalProxy : public QObject {
   class AbstractPeer;
   class IODevicePeer;
   class SignalProxyPeer;
+
+  class Relay;
+  class SignalRelay;
+  class SyncRelay;
 
 public:
   enum ProxyMode {
@@ -85,13 +88,6 @@ public:
 
   void synchronize(SyncableObject *obj);
 
-//   void setInitialized(SyncableObject *obj);
-//   bool isInitialized(SyncableObject *obj) const;
-  void detachObject(QObject *obj);
-  void detachSignals(QObject *sender);
-  void detachSlots(QObject *receiver);
-  void stopSync(SyncableObject *obj);
-
   //! Writes a QVariant to a device.
   /** The data item is prefixed with the resulting blocksize,
    *  so the corresponding function readDataFromDevice() can check if enough data is available
@@ -106,18 +102,25 @@ public:
   static bool readDataFromDevice(QIODevice *dev, quint32 &blockSize, QVariant &item, bool compressed = false);
 
   class ExtendedMetaObject;
-  ExtendedMetaObject *extendedMetaObject(const QObject *obj) const;
-  void createExtendedMetaObject(const QObject *obj);
+  ExtendedMetaObject *extendedMetaObject(const QMetaObject *meta) const;
+  ExtendedMetaObject *createExtendedMetaObject(const QMetaObject *meta);
+  inline ExtendedMetaObject *extendedMetaObject(const QObject *obj) const { return extendedMetaObject(metaObject(obj)); }
+  inline ExtendedMetaObject *createExtendedMetaObject(const QObject *obj) { return createExtendedMetaObject(metaObject(obj)); }
 
   bool isSecure() const { return _secure; }
   void dumpProxyStats();
+
+public slots:
+  void detachObject(QObject *obj);
+  void detachSignals(QObject *sender);
+  void detachSlots(QObject *receiver);
+  void stopSync(QObject *obj);
 
 protected:
   void customEvent(QEvent *event);
 
 private slots:
   void dataAvailable();
-  void detachSender();
   void removePeerBySender();
   void objectRenamed(const QString &newname, const QString &oldname);
   void objectRenamed(const QByteArray &classname, const QString &newname, const QString &oldname);
@@ -178,8 +181,10 @@ private:
   // containg a list of argtypes for fast access
   QHash<const QMetaObject *, ExtendedMetaObject *> _extendedMetaObjects;
 
-  // we use one SignalRelay per QObject
-  QHash<QObject*, SignalRelay *> _relayHash;
+  // SignalRelay for all manually attached signals
+  SignalRelay *_signalRelay;
+  // one SyncRelay per class
+  QHash<const QMetaObject *, SyncRelay *> _syncRelays;
 
   // RPC function -> (object, slot ID)
   typedef QPair<QObject*, int> MethodId;
@@ -214,6 +219,8 @@ public:
   const QHash<QByteArray, int> &syncMap();
   const QHash<int, int> &receiveMap();
   int updatedRemotelyId();
+
+  const QMetaObject *metaObject() const { return _meta; }
 
   static QByteArray methodName(const QMetaMethod &method);
   static bool methodsMatch(const QMetaMethod &signal, const QMetaMethod &slot);
