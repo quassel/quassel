@@ -81,10 +81,12 @@ void ModelPropertyMapper::removeMapping(int column, int role, QObject *target, c
   }
   
   if(column == 0 && role == 0 && !property.isNull()) {
-    QList<Mapping>::iterator iter;
-    for(iter = _mappings.begin(); iter != _mappings.end(); iter++) {
+    QList<Mapping>::iterator iter = _mappings.begin();
+    while(iter != _mappings.end()) {
       if((*iter).target == target)
-	_mappings.erase(iter);
+	iter = _mappings.erase(iter);
+      else
+	iter++;
     }
     return;
   }

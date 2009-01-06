@@ -127,10 +127,11 @@ void QtUi::closeNotification(uint notificationId) {
     if((*i).notificationId == notificationId) {
       foreach(AbstractNotificationBackend *backend, _notificationBackends)
         backend->close(notificationId);
-      _notifications.erase(i);
+      i = _notifications.erase(i);
       break;
+    } else {
+      ++i;
     }
-    ++i;
   }
 }
 
@@ -140,9 +141,10 @@ void QtUi::closeNotifications(BufferId bufferId) {
     if(!bufferId.isValid() || (*i).bufferId == bufferId) {
       foreach(AbstractNotificationBackend *backend, _notificationBackends)
         backend->close((*i).notificationId);
-      _notifications.erase(i);
+      i = _notifications.erase(i);
+    } else {
+      ++i;
     }
-    ++i;
   }
 }
 

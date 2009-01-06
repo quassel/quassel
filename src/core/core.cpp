@@ -458,17 +458,19 @@ void Core::clientDisconnected() {
     QHash<QTcpSocket *, quint32>::iterator blockSizeIter = blocksizes.begin();
     while(blockSizeIter != blocksizes.end()) {
       if(blockSizeIter.key() == socket) {
-	blocksizes.erase(blockSizeIter);
+	blockSizeIter = blocksizes.erase(blockSizeIter);
+      } else {
+	blockSizeIter++;
       }
-      blockSizeIter++;
     }
 
     QHash<QTcpSocket *, QVariantMap>::iterator clientInfoIter = clientInfo.begin();
     while(clientInfoIter != clientInfo.end()) {
       if(clientInfoIter.key() == socket) {
-	clientInfo.erase(clientInfoIter);
+	clientInfoIter = clientInfo.erase(clientInfoIter);
+      } else {
+	clientInfoIter++;
       }
-      clientInfoIter++;
     }
   }
 

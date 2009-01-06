@@ -350,10 +350,11 @@ void BufferViewSettingsPage::on_deleteBufferView_clicked() {
       QList<BufferViewConfig *>::iterator iter = _newBufferViews.begin();
       while(iter != _newBufferViews.end()) {
 	if(*iter == config) {
-	  _newBufferViews.erase(iter);
+	  iter = _newBufferViews.erase(iter);
 	  break;
+	} else {
+	  iter++;
 	}
-	iter++;
       }
       delete config;
       if(_deleteBufferViews.isEmpty() && _changedBufferViews.isEmpty() && _newBufferViews.isEmpty())
@@ -463,7 +464,7 @@ bool BufferViewSettingsPage::testHasChanged() {
   while(iter != iterEnd) {
     if(&(iter.key()) == &(iter.value())) {
       iter.value()->deleteLater();
-      _changedBufferViews.erase(iter);
+      iter = _changedBufferViews.erase(iter);
     } else {
       changed = true;
       iter++;
