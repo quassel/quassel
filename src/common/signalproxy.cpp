@@ -828,7 +828,7 @@ bool SignalProxy::invokeSlot(QObject *receiver, int methodId, const QVariantList
     ? Qt::DirectConnection
     : Qt::QueuedConnection;
 
-  if (type == Qt::DirectConnection) {
+  if(type == Qt::DirectConnection) {
     return receiver->qt_metacall(QMetaObject::InvokeMetaMethod, methodId, _a) < 0;
   } else {
     qWarning() << "Queued Connections are not implemented yet";
@@ -1233,6 +1233,7 @@ const QHash<int, int> &SignalProxy::ExtendedMetaObject::receiveMap() {
       if(receiverId != -1)
 	receiveMap[i] = receiverId;
     }
+    _receiveMap = receiveMap;
   }
   return _receiveMap;
 }
