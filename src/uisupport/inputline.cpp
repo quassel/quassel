@@ -102,15 +102,15 @@ void InputLine::on_returnPressed() {
 }
 
 void InputLine::on_textChanged(QString newText) {
-  QStringList lineSeperators;
-  lineSeperators << QString("\r\n")
+  QStringList lineSeparators;
+  lineSeparators << QString("\r\n")
 		 << QString('\n')
 		 << QString('\r');
 
   QString lineSep;
-  foreach(QString seperator, lineSeperators) {
-    if(newText.contains(seperator)) {
-      lineSep = seperator;
+  foreach(QString separator, lineSeparators) {
+    if(newText.contains(separator)) {
+      lineSep = separator;
       break;
     }
   }
