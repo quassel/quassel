@@ -81,8 +81,8 @@ BufferWidget::BufferWidget(QWidget *parent)
 
   Action *zoomOriginalChatview = coll->add<Action>("ZoomOriginalChatView", this, SLOT(zoomOriginal()));
   zoomOriginalChatview->setIcon(SmallIcon("zoom-original"));
-  zoomOriginalChatview->setText(tr("Zoom Original"));
-  zoomOriginalChatview->setShortcut(tr("Ctrl+0"));
+  zoomOriginalChatview->setText(tr("Actual Size"));
+  //zoomOriginalChatview->setShortcut(tr("Ctrl+0")); // used for RTS switching
 }
 
 BufferWidget::~BufferWidget() {
