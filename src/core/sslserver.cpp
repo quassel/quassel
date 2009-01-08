@@ -35,7 +35,12 @@
 SslServer::SslServer(QObject *parent)
   : QTcpServer(parent)
 {
-  setCertificate(quasselDir().absolutePath() + "/quasselCert.pem");
+  if (! setCertificate(quasselDir().absolutePath() + "/quasselCert.pem")) {
+    qWarning()
+      << "SslServer: Unable to set certificate file\n"
+      << "          Quassel Core will still work, but cannot provide SSL for client connections.\n"
+      << "          Please see http://quassel-irc.org/faq/cert to learn how to enable SSL support.";
+  }
 }
 
 QTcpSocket *SslServer::nextPendingConnection() {
