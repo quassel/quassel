@@ -244,19 +244,49 @@ bool Core::startListening() {
   bool success = false;
   uint port = Quassel::optionValue("port").toUInt();
 
-  if(_server.listen(QHostAddress::Any, port)) {
-    quInfo() << "Listening for GUI clients on IPv4 port" << _server.serverPort()
-             << "using protocol version" << Quassel::buildInfo().protocolVersion;
-    success = true;
-  }
-  if(_v6server.listen(QHostAddress::AnyIPv6, port)) {
-    quInfo() << "Listening for GUI clients on IPv6 port" << _v6server.serverPort()
-             << "using protocol version" << Quassel::buildInfo().protocolVersion;
-    success = true;
-  }
-
-  if(!success) {
-    qCritical() << qPrintable(QString("Could not open GUI client port %1: %2").arg(port).arg(_server.errorString()));
+  const QString listen = Quassel::optionValue("listen");
+  const QStringList listen_list = listen.split(",", QString::SkipEmptyParts);
+  if (listen_list.size() > 0) {
+    foreach (const QString listen_term, listen_list) {
+      QHostAddress addr;
+      if (! addr.setAddress(listen_term)) {
+        qCritical() << qPrintable(
+          QString("Invalid listen address %1")
+            .arg(listen_term)
+        );
+      } else {
+        switch (addr.protocol()) {
+          case QAbstractSocket::IPv4Protocol:
+            if (_server.listen(addr, port)) {
+              quInfo() << qPrintable(
+                QString("Listening for GUI clients on IPv4 %1 port %2 using protocol version %3")
+                  .arg(addr.toString())
+                  .arg(_server.serverPort())
+                  .arg(Quassel::buildInfo().protocolVersion)
+              );
+              success = true;
+            }
+            break;
+          case QAbstractSocket::IPv6Protocol:
+            if (_v6server.listen(addr, port)) {
+              quInfo() << qPrintable(
+                QString("Listening for GUI clients on IPv6 %1 port %2 using protocol version %3")
+                  .arg(addr.toString())
+                  .arg(_server.serverPort())
+                  .arg(Quassel::buildInfo().protocolVersion)
+              );
+              success = true;
+            }
+            break;
+          default:
+            qCritical() << qPrintable(
+              QString("Invalid listen address %1, unknown network protocol")
+                .arg(listen_term)
+            );
+            break;
+        }
+      }
+    }
   }
 
   return success;
