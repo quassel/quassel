@@ -72,10 +72,19 @@ bool SslServer::setCertificate(const QString &path) {
     return false;
   }
 
-  certFile.open(QIODevice::ReadOnly);
+  if (! certFile.open(QIODevice::ReadOnly)) {
+    qWarning()
+      << "SslServer: Failed to open certificate file" << qPrintable(path)
+      << "error:" << certFile.error();
+    return false;
+  }
   _cert = QSslCertificate(&certFile);
 
-  certFile.reset();
+  if (! certFile.reset()) {
+    qWarning() << "SslServer: IO error reading certificate file";
+    return false;
+  }
+
   _key = QSslKey(&certFile, QSsl::Rsa);
   certFile.close();
 
