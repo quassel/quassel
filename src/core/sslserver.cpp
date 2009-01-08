@@ -35,21 +35,7 @@
 SslServer::SslServer(QObject *parent)
   : QTcpServer(parent)
 {
-  QFile certFile(quasselDir().absolutePath() + "/quasselCert.pem");
-  certFile.open(QIODevice::ReadOnly);
-  _cert = QSslCertificate(&certFile);
-  certFile.close();
-
-  certFile.open(QIODevice::ReadOnly);
-  _key = QSslKey(&certFile, QSsl::Rsa);
-  certFile.close();
-
-  _certIsValid = !_cert.isNull() && _cert.isValid() && !_key.isNull();
-  if(!_certIsValid) {
-    qWarning() << "SslServer: SSL Certificate is either missing or has a wrong format!\n"
-               << "          Quassel Core will still work, but cannot provide SSL for client connections.\n"
-               << "          Please see http://quassel-irc.org/faq/cert to learn how to enable SSL support.";
-  }
+  setCertificate(quasselDir().absolutePath() + "/quasselCert.pem");
 }
 
 QTcpSocket *SslServer::nextPendingConnection() {
@@ -71,6 +57,26 @@ void SslServer::incomingConnection(int socketDescriptor) {
   } else {
     delete serverSocket;
   }
+}
+
+bool SslServer::setCertificate(const QString &path) {
+  QFile certFile(path);
+  certFile.open(QIODevice::ReadOnly);
+  _cert = QSslCertificate(&certFile);
+  certFile.close();
+
+  certFile.open(QIODevice::ReadOnly);
+  _key = QSslKey(&certFile, QSsl::Rsa);
+  certFile.close();
+
+  _certIsValid = !_cert.isNull() && _cert.isValid() && !_key.isNull();
+  if(!_certIsValid) {
+    qWarning() << "SslServer: SSL Certificate is either missing or has a wrong format!\n"
+               << "          Quassel Core will still work, but cannot provide SSL for client connections.\n"
+               << "          Please see http://quassel-irc.org/faq/cert to learn how to enable SSL support.";
+  }
+
+  return _certIsValid;
 }
 
 #endif // HAVE_SSL

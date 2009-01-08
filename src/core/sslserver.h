@@ -43,6 +43,7 @@ public:
 
 protected:
   virtual void incomingConnection(int socketDescriptor);
+  virtual bool setCertificate(const QString &path);
 
 private:
   QLinkedList<QTcpSocket *> _pendingConnections;
