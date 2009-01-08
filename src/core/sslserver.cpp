@@ -74,9 +74,8 @@ bool SslServer::setCertificate(const QString &path) {
 
   certFile.open(QIODevice::ReadOnly);
   _cert = QSslCertificate(&certFile);
-  certFile.close();
 
-  certFile.open(QIODevice::ReadOnly);
+  certFile.reset();
   _key = QSslKey(&certFile, QSsl::Rsa);
   certFile.close();
 
