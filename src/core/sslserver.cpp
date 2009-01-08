@@ -32,14 +32,19 @@
 
 #ifdef HAVE_SSL
 
+static bool SslServer_longMessShown=false;
+
 SslServer::SslServer(QObject *parent)
   : QTcpServer(parent)
 {
   if (! setCertificate(quasselDir().absolutePath() + "/quasselCert.pem")) {
-    qWarning()
-      << "SslServer: Unable to set certificate file\n"
-      << "          Quassel Core will still work, but cannot provide SSL for client connections.\n"
-      << "          Please see http://quassel-irc.org/faq/cert to learn how to enable SSL support.";
+    if (! SslServer_longMessShown) {
+      qWarning()
+        << "SslServer: Unable to set certificate file\n"
+        << "          Quassel Core will still work, but cannot provide SSL for client connections.\n"
+        << "          Please see http://quassel-irc.org/faq/cert to learn how to enable SSL support.";
+      SslServer_longMessShown=true;
+    }
   }
 }
 
