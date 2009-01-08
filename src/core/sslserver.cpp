@@ -88,13 +88,20 @@ bool SslServer::setCertificate(const QString &path) {
   _key = QSslKey(&certFile, QSsl::Rsa);
   certFile.close();
 
-  if(_cert.isNull() || !_cert.isValid() || _key.isNull()) {
-    qWarning() << "SslServer: SSL Certificate is either missing or has a wrong format!\n"
-               << "          Quassel Core will still work, but cannot provide SSL for client connections.\n"
-               << "          Please see http://quassel-irc.org/faq/cert to learn how to enable SSL support.";
-  } else {
-    _certIsValid = true;
+  if (_cert.isNull()) {
+    qWarning() << "SslServer:" << qPrintable(path) << "contains no certificate data";
+    return false;
   }
+  if (! _cert.isValid()) {
+    qWarning() << "SslServer: Invalid certificate";
+    return false;
+  }
+  if (_key.isNull()) {
+    qWarning() << "SslServer:" << qPrintable(path) << "contains no key data";
+    return false;
+  }
+
+  _certIsValid = true;
 
   return _certIsValid;
 }
