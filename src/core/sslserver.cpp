@@ -60,6 +60,8 @@ void SslServer::incomingConnection(int socketDescriptor) {
 }
 
 bool SslServer::setCertificate(const QString &path) {
+  _certIsValid = false;
+
   QFile certFile(path);
   certFile.open(QIODevice::ReadOnly);
   _cert = QSslCertificate(&certFile);
@@ -69,11 +71,12 @@ bool SslServer::setCertificate(const QString &path) {
   _key = QSslKey(&certFile, QSsl::Rsa);
   certFile.close();
 
-  _certIsValid = !_cert.isNull() && _cert.isValid() && !_key.isNull();
-  if(!_certIsValid) {
+  if(_cert.isNull() || !_cert.isValid() || _key.isNull()) {
     qWarning() << "SslServer: SSL Certificate is either missing or has a wrong format!\n"
                << "          Quassel Core will still work, but cannot provide SSL for client connections.\n"
                << "          Please see http://quassel-irc.org/faq/cert to learn how to enable SSL support.";
+  } else {
+    _certIsValid = true;
   }
 
   return _certIsValid;
