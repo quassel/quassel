@@ -62,7 +62,16 @@ void SslServer::incomingConnection(int socketDescriptor) {
 bool SslServer::setCertificate(const QString &path) {
   _certIsValid = false;
 
+  if (path.isNull()) {
+    return false;
+  }
+
   QFile certFile(path);
+  if (! certFile.exists()) {
+    qWarning() << "SslServer: Certificate file" << qPrintable(path) << "does not exist";
+    return false;
+  }
+
   certFile.open(QIODevice::ReadOnly);
   _cert = QSslCertificate(&certFile);
   certFile.close();
