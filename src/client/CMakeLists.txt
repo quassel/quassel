@@ -20,7 +20,6 @@ set(SOURCES
     irclistmodel.cpp
     messagefilter.cpp
     messagemodel.cpp
-    mappedselectionmodel.cpp
     networkmodel.cpp
     quasselui.cpp
     selectionmodelsynchronizer.cpp
@@ -39,7 +38,6 @@ set(MOC_HDRS
     messagefilter.h
     messagemodel.h
     networkmodel.h
-    mappedselectionmodel.h
     quasselui.h
     selectionmodelsynchronizer.h
     treemodel.h)
