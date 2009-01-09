@@ -271,7 +271,7 @@ void NetworkModelActionProvider::addBufferItemActions(QMenu *menu, const QModelI
       menu->addSeparator();
       addAction(HideBufferTemporarily, menu, isCustomBufferView);
       addAction(HideBufferPermanently, menu, isCustomBufferView);
-      addAction(BufferRemove, menu, index);
+      addAction(BufferRemove, menu, index, InactiveState);
       break;
 
     case BufferInfo::QueryBuffer:
