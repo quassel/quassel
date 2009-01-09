@@ -97,6 +97,7 @@ void BufferViewFilter::setConfig(BufferViewConfig *config) {
 
   if(!config) {
     invalidate();
+    setObjectName("");
     return;
   }
 
@@ -126,6 +127,8 @@ void BufferViewFilter::configInitialized() {
   connect(config(), SIGNAL(bufferPermanentlyRemoved(const BufferId &)), this, SLOT(invalidate()));
 
   disconnect(config(), SIGNAL(initDone()), this, SLOT(configInitialized()));
+
+  setObjectName(config()->bufferViewName());
 
   invalidate();
   emit configChanged();

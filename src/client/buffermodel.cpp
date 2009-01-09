@@ -23,7 +23,6 @@
 #include <QAbstractItemView>
 
 #include "client.h"
-#include "mappedselectionmodel.h"
 #include "networkmodel.h"
 #include "quassel.h"
 
@@ -49,16 +48,8 @@ bool BufferModel::filterAcceptsRow(int sourceRow, const QModelIndex &parent) con
   return false;
 }
 
-void BufferModel::synchronizeSelectionModel(MappedSelectionModel *selectionModel) {
-  _selectionModelSynchronizer.addSelectionModel(selectionModel);
-}
-
 void BufferModel::synchronizeView(QAbstractItemView *view) {
-  MappedSelectionModel *mappedSelectionModel = new MappedSelectionModel(view->model());
-  _selectionModelSynchronizer.addSelectionModel(mappedSelectionModel);
-  Q_ASSERT(mappedSelectionModel);
-  delete view->selectionModel();
-  view->setSelectionModel(mappedSelectionModel);
+  _selectionModelSynchronizer.synchronizeSelectionModel(view->selectionModel());
 }
 
 void BufferModel::setCurrentIndex(const QModelIndex &newCurrent) {

@@ -36,7 +36,6 @@
 #include "buffersyncer.h"
 #include "client.h"
 #include "iconloader.h"
-#include "mappedselectionmodel.h"
 #include "network.h"
 #include "networkmodel.h"
 #include "networkmodelactionprovider.h"
@@ -347,13 +346,12 @@ void BufferView::on_configChanged() {
       collapse(networkIdx);
   }
 
-  // update selection to current one
-  MappedSelectionModel *mappedSelectionModel = qobject_cast<MappedSelectionModel *>(selectionModel());
-  if(!config() || !mappedSelectionModel)
-    return;
+  if(config()) {
+    // update selection to current one
+    Client::bufferModel()->synchronizeView(this);
+  }
 
-  mappedSelectionModel->mappedSetCurrentIndex(Client::bufferModel()->standardSelectionModel()->currentIndex(), QItemSelectionModel::Current);
-  mappedSelectionModel->mappedSelect(Client::bufferModel()->standardSelectionModel()->selection(), QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+  return;
 }
 
 void BufferView::on_collapse(const QModelIndex &index) {
