@@ -154,6 +154,7 @@ private:
   QString nickName(const QModelIndex &index) const;
   BufferId findQueryBuffer(const QModelIndex &index, const QString &predefinedNick = QString()) const;
   BufferId findQueryBuffer(NetworkId, const QString &nickName) const;
+  void removeBuffers(const QModelIndexList &indexList);
 
   NetworkModel *_model;
 

@@ -42,7 +42,7 @@ NetworkModelActionProvider::NetworkModelActionProvider(QObject *parent)
 
   registerAction(BufferJoin, tr("Join"));
   registerAction(BufferPart, tr("Part"));
-  registerAction(BufferRemove, tr("Delete Buffer..."));
+  registerAction(BufferRemove, tr("Delete Buffer(s)..."));
   registerAction(BufferSwitchTo, tr("Show Buffer"));
 
   registerAction(HideJoin, tr("Joins"), true);
@@ -303,12 +303,12 @@ void NetworkModelActionProvider::addIrcUserActions(QMenu *menu, const QModelInde
 
   if(_contextItem.isNull()) {
     // cases a, b, c
-    bool haveQuery = findQueryBuffer(index).isValid();
+    bool haveQuery = _indexList.count() == 1 && findQueryBuffer(index).isValid();
     NetworkModel::ItemType itemType = static_cast<NetworkModel::ItemType>(index.data(NetworkModel::ItemTypeRole).toInt());
     addAction(_nickModeMenuAction, menu, itemType == NetworkModel::IrcUserItemType);
     addAction(_nickCtcpMenuAction, menu);
     menu->addSeparator();
-    addAction(NickQuery, menu, itemType == NetworkModel::IrcUserItemType && !haveQuery);
+    addAction(NickQuery, menu, itemType == NetworkModel::IrcUserItemType && !haveQuery && _indexList.count() == 1);
     addAction(NickSwitchTo, menu, itemType == NetworkModel::IrcUserItemType && haveQuery);
     menu->addSeparator();
     addAction(NickWhois, menu, true);
@@ -390,7 +390,7 @@ QString NetworkModelActionProvider::nickName(const QModelIndex &index) const {
 }
 
 BufferId NetworkModelActionProvider::findQueryBuffer(const QModelIndex &index, const QString &predefinedNick) const {
-  NetworkId networkId = _indexList.at(0).data(NetworkModel::NetworkIdRole).value<NetworkId>();
+  NetworkId networkId = index.data(NetworkModel::NetworkIdRole).value<NetworkId>();
   if(!networkId.isValid())
     return BufferId();
 
@@ -459,37 +459,58 @@ void NetworkModelActionProvider::handleNetworkAction(ActionType type, QAction *)
 }
 
 void NetworkModelActionProvider::handleBufferAction(ActionType type, QAction *) {
-  foreach(QModelIndex index, _indexList) {
-    BufferInfo bufferInfo = index.data(NetworkModel::BufferInfoRole).value<BufferInfo>();
-    if(!bufferInfo.isValid())
-      continue;
+  if(type == BufferRemove) {
+    removeBuffers(_indexList);
+  } else {
 
-    switch(type) {
-      case BufferJoin:
-        Client::userInput(bufferInfo, QString("/JOIN %1").arg(bufferInfo.bufferName()));
-        break;
-      case BufferPart:
-      {
-        QString reason = Client::identity(Client::network(bufferInfo.networkId())->identity())->partReason();
-        Client::userInput(bufferInfo, QString("/PART %1").arg(reason));
-        break;
-      }
-      case BufferSwitchTo:
-        Client::bufferModel()->switchToBuffer(bufferInfo.bufferId());
-        break;
-      case BufferRemove:
-      {
-        int res = QMessageBox::question(0, tr("Remove buffer permanently?"),
-        tr("Do you want to delete the buffer \"%1\" permanently? This will delete all related data, including all backlog "
-        "data, from the core's database!").arg(bufferInfo.bufferName()),
-        QMessageBox::Yes|QMessageBox::No, QMessageBox::No);
-        if(res == QMessageBox::Yes) {
-          Client::removeBuffer(bufferInfo.bufferId());
+    foreach(QModelIndex index, _indexList) {
+      BufferInfo bufferInfo = index.data(NetworkModel::BufferInfoRole).value<BufferInfo>();
+      if(!bufferInfo.isValid())
+        continue;
+
+      switch(type) {
+        case BufferJoin:
+          Client::userInput(bufferInfo, QString("/JOIN %1").arg(bufferInfo.bufferName()));
+          break;
+        case BufferPart:
+        {
+          QString reason = Client::identity(Client::network(bufferInfo.networkId())->identity())->partReason();
+          Client::userInput(bufferInfo, QString("/PART %1").arg(reason));
+          break;
         }
-        break;
+        case BufferSwitchTo:
+          Client::bufferModel()->switchToBuffer(bufferInfo.bufferId());
+          break;
+        default:
+          break;
       }
-      default:
-        break;
+    }
+  }
+}
+
+void NetworkModelActionProvider::removeBuffers(const QModelIndexList &indexList) {
+  QList<BufferInfo> inactive;
+  foreach(QModelIndex index, indexList) {
+    if(!index.data(NetworkModel::ItemActiveRole).toBool()) {
+      BufferInfo info = index.data(NetworkModel::BufferInfoRole).value<BufferInfo>();
+      if(info.isValid())
+        inactive << info;
+    }
+  }
+  QString msg;
+  if(inactive.count()) {
+    msg = tr("Do you want to delete the following buffer(s) permanently?", 0, inactive.count());
+    msg += "<ul>";
+    foreach(BufferInfo info, inactive)
+      msg += QString("<li>%1</li>").arg(info.bufferName());
+    msg += "</ul>";
+    msg += tr("<b>Note:</b> This will delete all related data, including all backlog data, from the core's database and cannot be undone.");
+    if(inactive.count() != indexList.count())
+      msg += tr("<br>Active channel buffers cannot be deleted, please part the channel first.");
+
+    if(QMessageBox::question(0, tr("Remove buffers permanently?"), msg, QMessageBox::Yes|QMessageBox::No, QMessageBox::No) == QMessageBox::Yes) {
+      foreach(BufferInfo info, inactive)
+        Client::removeBuffer(info.bufferId());
     }
   }
 }
@@ -564,63 +585,63 @@ void NetworkModelActionProvider::handleGeneralAction(ActionType type, QAction *a
 }
 
 void NetworkModelActionProvider::handleNickAction(ActionType type, QAction *) {
-  if(!_indexList.count())
-    return;
-  NetworkId networkId = _indexList.at(0).data(NetworkModel::NetworkIdRole).value<NetworkId>();
-  if(!networkId.isValid())
-    return;
-  QString nick = nickName(_indexList.at(0));
-  if(nick.isEmpty())
-    return;
-  BufferInfo bufferInfo = _indexList.at(0).data(NetworkModel::BufferInfoRole).value<BufferInfo>();
-  if(!bufferInfo.isValid())
-    return;
+  foreach(QModelIndex index, _indexList) {
+    NetworkId networkId = index.data(NetworkModel::NetworkIdRole).value<NetworkId>();
+    if(!networkId.isValid())
+      continue;
+    QString nick = nickName(index);
+    if(nick.isEmpty())
+      continue;
+    BufferInfo bufferInfo = index.data(NetworkModel::BufferInfoRole).value<BufferInfo>();
+    if(!bufferInfo.isValid())
+      continue;
 
-  switch(type) {
-    case NickWhois:
-      Client::userInput(bufferInfo, QString("/WHOIS %1 %1").arg(nick));
-      break;
-    case NickCtcpVersion:
-      Client::userInput(bufferInfo, QString("/CTCP %1 VERSION").arg(nick));
-      break;
-    case NickCtcpPing:
-      Client::userInput(bufferInfo, QString("/CTCP %1 PING").arg(nick));
-      break;
-    case NickCtcpTime:
-      Client::userInput(bufferInfo, QString("/CTCP %1 TIME").arg(nick));
-      break;
-    case NickCtcpFinger:
-      Client::userInput(bufferInfo, QString("/CTCP %1 FINGER").arg(nick));
-      break;
-    case NickOp:
-      Client::userInput(bufferInfo, QString("/OP %1").arg(nick));
-      break;
-    case NickDeop:
-      Client::userInput(bufferInfo, QString("/DEOP %1").arg(nick));
-      break;
-    case NickVoice:
-      Client::userInput(bufferInfo, QString("/VOICE %1").arg(nick));
-      break;
-    case NickDevoice:
-      Client::userInput(bufferInfo, QString("/DEVOICE %1").arg(nick));
-      break;
-    case NickKick:
-      Client::userInput(bufferInfo, QString("/KICK %1").arg(nick));
-      break;
-    case NickBan:
-      Client::userInput(bufferInfo, QString("/BAN %1").arg(nick));
-      break;
-    case NickKickBan:
-      Client::userInput(bufferInfo, QString("/BAN %1").arg(nick));
-      Client::userInput(bufferInfo, QString("/KICK %1").arg(nick));
-      break;
-    case NickSwitchTo:
-      Client::bufferModel()->switchToBuffer(findQueryBuffer(networkId, nick));
-      break;
-    case NickQuery:
-      Client::userInput(bufferInfo, QString("/QUERY %1").arg(nick));
-      break;
-    default:
-      qWarning() << "Unhandled nick action";
+    switch(type) {
+      case NickWhois:
+        Client::userInput(bufferInfo, QString("/WHOIS %1 %1").arg(nick));
+        break;
+      case NickCtcpVersion:
+        Client::userInput(bufferInfo, QString("/CTCP %1 VERSION").arg(nick));
+        break;
+      case NickCtcpPing:
+        Client::userInput(bufferInfo, QString("/CTCP %1 PING").arg(nick));
+        break;
+      case NickCtcpTime:
+        Client::userInput(bufferInfo, QString("/CTCP %1 TIME").arg(nick));
+        break;
+      case NickCtcpFinger:
+        Client::userInput(bufferInfo, QString("/CTCP %1 FINGER").arg(nick));
+        break;
+      case NickOp:
+        Client::userInput(bufferInfo, QString("/OP %1").arg(nick));
+        break;
+      case NickDeop:
+        Client::userInput(bufferInfo, QString("/DEOP %1").arg(nick));
+        break;
+      case NickVoice:
+        Client::userInput(bufferInfo, QString("/VOICE %1").arg(nick));
+        break;
+      case NickDevoice:
+        Client::userInput(bufferInfo, QString("/DEVOICE %1").arg(nick));
+        break;
+      case NickKick:
+        Client::userInput(bufferInfo, QString("/KICK %1").arg(nick));
+        break;
+      case NickBan:
+        Client::userInput(bufferInfo, QString("/BAN %1").arg(nick));
+        break;
+      case NickKickBan:
+        Client::userInput(bufferInfo, QString("/BAN %1").arg(nick));
+        Client::userInput(bufferInfo, QString("/KICK %1").arg(nick));
+        break;
+      case NickSwitchTo:
+        Client::bufferModel()->switchToBuffer(findQueryBuffer(networkId, nick));
+        break;
+      case NickQuery:
+        Client::userInput(bufferInfo, QString("/QUERY %1").arg(nick));
+        break;
+      default:
+        qWarning() << "Unhandled nick action";
+    }
   }
 }

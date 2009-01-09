@@ -411,7 +411,12 @@ void BufferView::contextMenuEvent(QContextMenuEvent *event) {
 }
 
 void BufferView::addActionsToMenu(QMenu *contextMenu, const QModelIndex &index) {
-  Client::mainUi()->actionProvider()->addActions(contextMenu, index, this, "menuActionTriggered", (bool)config());
+  QModelIndexList indexList = selectedIndexes();
+  // make sure the item we clicked on is first
+  indexList.removeAll(index);
+  indexList.prepend(index);
+
+  Client::mainUi()->actionProvider()->addActions(contextMenu, indexList, this, "menuActionTriggered", (bool)config());
 }
 
 void BufferView::addFilterActions(QMenu *contextMenu, const QModelIndex &index) {
