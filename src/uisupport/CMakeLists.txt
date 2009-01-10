@@ -50,6 +50,11 @@ set(HEADERS
     uisettings.h
     uistyle.h)
 
+if(HAVE_KDE)
+    set(SOURCES ${SOURCES} kcmdlinewrapper.cpp)
+    set(HEADERS ${HEADERS} kcmdlinewrapper.h)
+endif(HAVE_KDE)
+
 qt4_wrap_cpp(MOC ${MOC_HDRS})
 
 include_directories(${CMAKE_SOURCE_DIR}/src/common

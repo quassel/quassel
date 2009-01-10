@@ -18,17 +18,17 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef CLIPARSER_H
-#define CLIPARSER_H
-
-#include <QHash>
+#ifndef KCMDLINEWRAPPER_H
+#define KCMDLINEWRAPPER_H
 
 #include "abstractcliparser.h"
 
-//! Quassel's own parser for command line arguments
-class CliParser : public AbstractCliParser {
+#include <KCmdLineOptions>
+
+//! Wrapper for KCmdLineOptions
+class KCmdLineWrapper : public AbstractCliParser {
 public:
-  CliParser();
+  KCmdLineWrapper();
 
   bool init(const QStringList &arguments = QStringList());
 
@@ -38,13 +38,8 @@ public:
 
 private:
   void addArgument(const QString &longName, const CliParserArg &arg);
-  bool addLongArg(const CliParserArg::CliArgType type, const QString &name, const QString &value = QString());
-  bool addShortArg(const CliParserArg::CliArgType type, const char shortName, const QString &value = QString());
-  QString escapedValue(const QString &value);
-  QString lnameOfShortArg(const char arg);
 
-  QStringList argsRaw;
-  QHash<QString, CliParserArg> argsHash;
+  KCmdLineOptions _cmdLineOptions;
 };
 
 #endif

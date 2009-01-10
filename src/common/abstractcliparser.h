@@ -18,33 +18,52 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef CLIPARSER_H
-#define CLIPARSER_H
+#ifndef ABSTRACTCLIPARSER_H
+#define ABSTRACTCLIPARSER_H
 
-#include <QHash>
+#include <QStringList>
 
-#include "abstractcliparser.h"
-
-//! Quassel's own parser for command line arguments
-class CliParser : public AbstractCliParser {
+class AbstractCliParser {
 public:
-  CliParser();
+  virtual bool init(const QStringList &arguments = QStringList()) = 0;
 
-  bool init(const QStringList &arguments = QStringList());
+  virtual QString value(const QString &longName) = 0;
+  virtual bool isSet(const QString &longName) = 0;
+  inline void addSwitch(const QString &longName, const char shortName = 0, const QString &help = QString()) {
+    addArgument(longName, CliParserArg(CliParserArg::CliArgSwitch, shortName, help));
+  }
+  inline void addOption(const QString &longName, const char shortName = 0, const QString &help = QString(), const QString &def = QString()) {
+    addArgument(longName, CliParserArg(CliParserArg::CliArgOption, shortName, help, def));
+  }
+  virtual void usage() = 0;
 
-  QString value(const QString &longName);
-  bool isSet(const QString &longName);
-  void usage();
+  virtual ~AbstractCliParser() {};
 
-private:
-  void addArgument(const QString &longName, const CliParserArg &arg);
-  bool addLongArg(const CliParserArg::CliArgType type, const QString &name, const QString &value = QString());
-  bool addShortArg(const CliParserArg::CliArgType type, const char shortName, const QString &value = QString());
-  QString escapedValue(const QString &value);
-  QString lnameOfShortArg(const char arg);
+protected:
+  struct CliParserArg {
+    enum CliArgType {
+      CliArgInvalid,
+      CliArgSwitch,
+      CliArgOption
+    };
 
-  QStringList argsRaw;
-  QHash<QString, CliParserArg> argsHash;
+    CliParserArg(const CliArgType _type = CliArgInvalid, const char _shortName = 0, const QString _help = QString(), const QString _def = QString())
+    : type(_type),
+    shortName(_shortName),
+    help(_help),
+    def(_def),
+    value(QString()),
+    boolValue(false) {};
+
+    CliArgType type;
+    char shortName;
+    QString help;
+    QString def;
+    QString value;
+    bool boolValue;
+  };
+
+  virtual void addArgument(const QString &longName, const CliParserArg &arg) = 0;
 };
 
 #endif

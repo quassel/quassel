@@ -35,7 +35,7 @@
 #include "syncableobject.h"
 
 Quassel::BuildInfo Quassel::_buildInfo;
-CliParser *Quassel::_cliParser = 0;
+AbstractCliParser *Quassel::_cliParser = 0;
 Quassel::RunMode Quassel::_runMode;
 bool Quassel::_initialized = false;
 bool Quassel::DEBUG = false;

@@ -24,7 +24,7 @@
 #include <QCoreApplication>
 #include <QString>
 
-#include "cliparser.h"
+#include "abstractcliparser.h"
 
 class Quassel {
   Q_DECLARE_TR_FUNCTIONS(Quassel)
@@ -63,7 +63,8 @@ public:
   static inline const BuildInfo & buildInfo();
   static inline RunMode runMode();
 
-  static inline CliParser *cliParser();
+  static inline void setCliParser(AbstractCliParser *cliParser);
+  static inline AbstractCliParser *cliParser();
   static inline QString optionValue(const QString &option);
   static inline bool isOptionSet(const QString &option);
 
@@ -86,7 +87,7 @@ private:
   static void logBacktrace(const QString &filename);
 
   static BuildInfo _buildInfo;
-  static CliParser *_cliParser;
+  static AbstractCliParser *_cliParser;
   static RunMode _runMode;
   static bool _initialized;
 
@@ -97,7 +98,8 @@ const Quassel::BuildInfo & Quassel::buildInfo() { return _buildInfo; }
 Quassel::RunMode Quassel::runMode() { return _runMode; }
 void Quassel::setRunMode(Quassel::RunMode mode) { _runMode = mode; }
 
-CliParser *Quassel::cliParser() { return _cliParser ? _cliParser : _cliParser = new CliParser(); }
+void Quassel::setCliParser(AbstractCliParser *parser) { _cliParser = parser; }
+AbstractCliParser *Quassel::cliParser() { return _cliParser; }
 QString Quassel::optionValue(const QString &key) { return cliParser()->value(key); }
 bool Quassel::isOptionSet(const QString &key) { return cliParser()->isSet(key); }
 

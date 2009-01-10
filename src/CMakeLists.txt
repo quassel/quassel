@@ -43,7 +43,7 @@ if(WANT_CORE)
                                     COMPILE_FLAGS "-DQT_NETWORK_LIB -DQT_SCRIPT_LIB -DQT_SQL_LIB -DBUILD_CORE"
                                     OUTPUT_NAME ../quasselcore)
   target_link_libraries(quasselcore mod_core mod_common
-                                    ${QUASSEL_QT_LIBRARIES} ${QUASSEL_KDE_LIBRARIES} ${QUASSEL_SSL_LIBRARIES})
+                                    ${QUASSEL_QT_LIBRARIES} ${QUASSEL_SSL_LIBRARIES})
   install(TARGETS quasselcore RUNTIME DESTINATION ${BIN_INSTALL_DIR})
 endif(WANT_CORE)
 

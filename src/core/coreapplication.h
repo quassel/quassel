@@ -45,11 +45,7 @@ class CoreApplicationInternal {
     bool _coreCreated;
 };
 
-#ifdef HAVE_KDE
-class CoreApplication : public KApplication, public Quassel {
-#else
 class CoreApplication : public QCoreApplication, public Quassel {
-#endif
 
   Q_OBJECT
   public:

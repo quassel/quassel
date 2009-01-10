@@ -24,40 +24,10 @@
 #include <QString>
 #include <QFileInfo>
 
-#ifdef HAVE_KDE
-#  include <KCmdLineArgs>
-#endif
-
-CliParser::CliParser() {
+CliParser::CliParser() : AbstractCliParser() {
 
 }
 
-#ifdef HAVE_KDE
-void CliParser::addArgument(const QString &longName, const CliParserArg &arg) {
-  if(arg.shortName != 0) {
-    _cmdLineOptions.add(QByteArray().append(arg.shortName));
-  }
-  _cmdLineOptions.add(longName.toUtf8(), ki18n(arg.help.toUtf8()), arg.def.toUtf8());
-}
-
-bool CliParser::init(const QStringList &) {
-  KCmdLineArgs::addCmdLineOptions(_cmdLineOptions);
-  return true;
-}
-
-QString CliParser::value(const QString &longName) {
-  return KCmdLineArgs::parsedArgs()->getOption(longName.toUtf8());
-}
-
-bool CliParser::isSet(const QString &longName) {
-  return KCmdLineArgs::parsedArgs()->isSet(longName.toUtf8());
-}
-
-void CliParser::usage() {
-  KCmdLineArgs::usage();
-}
-
-#else
 void CliParser::addArgument(const QString &longName_, const CliParserArg &arg) {
   QString longName = longName_;
   longName.remove(QRegExp("\\s*<.*>\\s*")); // KCmdLineArgs takes args of the form "arg <defval>"
@@ -249,5 +219,3 @@ QString CliParser::lnameOfShortArg(const char arg) {
   }
   return QString();
 }
-
-#endif

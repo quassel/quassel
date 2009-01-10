@@ -17,34 +17,37 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#include "kcmdlinewrapper.h"
 
-#ifndef CLIPARSER_H
-#define CLIPARSER_H
+#include <KCmdLineArgs>
 
-#include <QHash>
+KCmdLineWrapper::KCmdLineWrapper() {
 
-#include "abstractcliparser.h"
+}
 
-//! Quassel's own parser for command line arguments
-class CliParser : public AbstractCliParser {
-public:
-  CliParser();
+void KCmdLineWrapper::addArgument(const QString &longName, const CliParserArg &arg) {
+  if(arg.shortName != 0) {
+    _cmdLineOptions.add(QByteArray().append(arg.shortName));
+  }
+  _cmdLineOptions.add(longName.toUtf8(), ki18n(arg.help.toUtf8()), arg.def.toUtf8());
+}
 
-  bool init(const QStringList &arguments = QStringList());
+bool KCmdLineWrapper::init(const QStringList &) {
+  KCmdLineArgs::addCmdLineOptions(_cmdLineOptions);
+  return true;
+}
 
-  QString value(const QString &longName);
-  bool isSet(const QString &longName);
-  void usage();
+QString KCmdLineWrapper::value(const QString &longName) {
+  return KCmdLineArgs::parsedArgs()->getOption(longName.toUtf8());
+}
 
-private:
-  void addArgument(const QString &longName, const CliParserArg &arg);
-  bool addLongArg(const CliParserArg::CliArgType type, const QString &name, const QString &value = QString());
-  bool addShortArg(const CliParserArg::CliArgType type, const char shortName, const QString &value = QString());
-  QString escapedValue(const QString &value);
-  QString lnameOfShortArg(const char arg);
+bool KCmdLineWrapper::isSet(const QString &longName) {
+  // KCmdLineArgs handles --nooption like NOT --option
+  if(longName.startsWith("no"))
+    return !KCmdLineArgs::parsedArgs()->isSet(longName.mid(2).toUtf8());
+  return KCmdLineArgs::parsedArgs()->isSet(longName.toUtf8());
+}
 
-  QStringList argsRaw;
-  QHash<QString, CliParserArg> argsHash;
-};
-
-#endif
+void KCmdLineWrapper::usage() {
+  KCmdLineArgs::usage();
+}

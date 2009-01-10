@@ -20,11 +20,6 @@
 
 #include <cstdlib>
 
-#ifdef HAVE_KDE
-#  include <KCmdLineArgs>
-#  include <KAboutData>
-#endif
-
 #ifdef BUILD_CORE
 #  include "coreapplication.h"
 #elif defined BUILD_QTUI
@@ -36,6 +31,17 @@
 #error "Something is wrong - you need to #define a build mode!"
 #endif
 
+// We don't want quasselcore to depend on KDE
+#if defined HAVE_KDE && defined BUILD_CORE
+#  undef HAVE_KDE
+#endif
+
+#ifdef HAVE_KDE
+#  include <KAboutData>
+#  include "kcmdlinewrapper.h"
+#endif
+
+#include "cliparser.h"
 #include "quassel.h"
 
 int main(int argc, char **argv) {
@@ -49,6 +55,8 @@ int main(int argc, char **argv) {
   QCoreApplication::setOrganizationName(Quassel::buildInfo().organizationName);
   QCoreApplication::setOrganizationDomain(Quassel::buildInfo().organizationDomain);
 
+  AbstractCliParser *cliParser;
+
 #ifdef HAVE_KDE
   // We need to init KCmdLineArgs first
   // TODO: build an AboutData compat class to replace our aboutDlg strings
@@ -58,11 +66,15 @@ int main(int argc, char **argv) {
   aboutData.addLicense(KAboutData::License_GPL_V3);
   aboutData.setOrganizationDomain(Quassel::buildInfo().organizationDomain.toUtf8());
   KCmdLineArgs::init(argc, argv, &aboutData);
+
+  cliParser = new KCmdLineWrapper();
+#else
+  cliParser = new CliParser();
 #endif
+  Quassel::setCliParser(cliParser);
 
   // Initialize CLI arguments
   // NOTE: We can't use tr() at this point, since app is not yet created
-  CliParser *cliParser = Quassel::cliParser();
 
   // put shared client&core arguments here
   cliParser->addSwitch("debug",'d', "Enable debug output");
