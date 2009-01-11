@@ -85,7 +85,7 @@ class MainWin
   protected slots:
     void connectedToCore();
     void setConnectedState();
-    void updateLagIndicator(int lag);
+    void updateLagIndicator(int lag = -1);
     void securedConnection();
     void disconnectedFromCore();
     void setDisconnectedState();

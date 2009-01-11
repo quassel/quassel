@@ -458,7 +458,7 @@ void MainWin::setupStatusBar() {
   connect(Client::messageProcessor(), SIGNAL(progressUpdated(int, int)), msgProcessorStatusWidget, SLOT(setProgress(int, int)));
 
   // Core Lag:
-  updateLagIndicator(0);
+  updateLagIndicator();
   statusBar()->addPermanentWidget(coreLagLabel);
   coreLagLabel->hide();
   connect(Client::signalProxy(), SIGNAL(lagUpdated(int)), this, SLOT(updateLagIndicator(int)));
@@ -574,7 +574,12 @@ void MainWin::saveLayout() {
 }
 
 void MainWin::updateLagIndicator(int lag) {
-  coreLagLabel->setText(QString(tr("Core Lag: %1 msec")).arg(lag));
+  QString text = tr("Core Lag: %1");
+  if(lag == -1)
+    text = text.arg('-');
+  else
+    text = text.arg("%1 msec").arg(lag);
+  coreLagLabel->setText(text);
 }
 
 
@@ -614,6 +619,7 @@ void MainWin::setDisconnectedState() {
   statusBar()->showMessage(tr("Not connected to core."));
   sslLabel->setPixmap(QPixmap());
   sslLabel->hide();
+  updateLagIndicator();
   coreLagLabel->hide();
   updateIcon();
 }
