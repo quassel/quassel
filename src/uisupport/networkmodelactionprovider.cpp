@@ -51,7 +51,8 @@ NetworkModelActionProvider::NetworkModelActionProvider(QObject *parent)
   registerAction(HideNick, tr("Nick Changes"), true);
   registerAction(HideMode, tr("Mode Changes"), true);
   registerAction(HideDayChange, tr("Day Changes"), true);
-  registerAction(HideApplyToAll, tr("Apply to All Chat Views..."));
+  registerAction(HideApplyToAll, tr("Set as Default..."));
+  registerAction(HideUseDefaults, tr("Use Defaults..."));
 
   registerAction(JoinChannel, tr("Join Channel..."));
 
@@ -79,8 +80,6 @@ NetworkModelActionProvider::NetworkModelActionProvider(QObject *parent)
 
   connect(_actionCollection, SIGNAL(actionTriggered(QAction *)), SLOT(actionTriggered(QAction *)));
 
-  action(HideApplyToAll)->setDisabled(true);
-
   QMenu *hideEventsMenu = new QMenu();
   hideEventsMenu->addAction(action(HideJoin));
   hideEventsMenu->addAction(action(HidePart));
@@ -90,6 +89,7 @@ NetworkModelActionProvider::NetworkModelActionProvider(QObject *parent)
   hideEventsMenu->addAction(action(HideDayChange));
   hideEventsMenu->addSeparator();
   hideEventsMenu->addAction(action(HideApplyToAll));
+  hideEventsMenu->addAction(action(HideUseDefaults));
   _hideEventsMenuAction = new Action(tr("Hide Events"), 0);
   _hideEventsMenuAction->setMenu(hideEventsMenu);
 
@@ -359,14 +359,25 @@ Action * NetworkModelActionProvider::addAction(Action *action , QMenu *menu, boo
 }
 
 void NetworkModelActionProvider::addHideEventsMenu(QMenu *menu, BufferId bufferId) {
-  addHideEventsMenu(menu, BufferSettings(bufferId).messageFilter());
+  if(BufferSettings(bufferId).hasFilter())
+    addHideEventsMenu(menu, BufferSettings(bufferId).messageFilter());
+  else
+    addHideEventsMenu(menu);
 }
 
 void NetworkModelActionProvider::addHideEventsMenu(QMenu *menu, MessageFilter *msgFilter) {
-  addHideEventsMenu(menu, BufferSettings(msgFilter->idString()).messageFilter());
+  if(BufferSettings(msgFilter->idString()).hasFilter())
+    addHideEventsMenu(menu, BufferSettings(msgFilter->idString()).messageFilter());
+  else
+    addHideEventsMenu(menu);
 }
 
 void NetworkModelActionProvider::addHideEventsMenu(QMenu *menu, int filter) {
+  action(HideApplyToAll)->setEnabled(filter != -1);
+  action(HideUseDefaults)->setEnabled(filter != -1);
+  if(filter == -1)
+    filter = BufferSettings().messageFilter();
+
   action(HideJoin)->setChecked(filter & Message::Join);
   action(HidePart)->setChecked(filter & Message::Part);
   action(HideQuit)->setChecked(filter & Message::Quit);
@@ -518,38 +529,57 @@ void NetworkModelActionProvider::removeBuffers(const QModelIndexList &indexList)
 }
 
 void NetworkModelActionProvider::handleHideAction(ActionType type, QAction *action) {
-  Message::Type msgType;
-  switch(type) {
-    case HideJoin:
-      msgType = Message::Join; break;
-    case HidePart:
-      msgType = Message::Part; break;
-    case HideQuit:
-      msgType = Message::Quit; break;
-    case HideNick:
-      msgType = Message::Nick; break;
-    case HideMode:
-      msgType = Message::Mode; break;
-    case HideDayChange:
-      msgType = Message::DayChange; break;
-    case HideApplyToAll:
-      // TODO implement "apply to all" for hiding messages
-      return;
-      break;
-    default:
-      return;
-  }
+  Q_UNUSED(action)
 
-  if(_messageFilter)
-    BufferSettings(_messageFilter->idString()).filterMessage(msgType, action->isChecked());
-  else {
-    foreach(QModelIndex index, _indexList) {
-      BufferId bufferId = index.data(NetworkModel::BufferIdRole).value<BufferId>();
-      if(!bufferId.isValid())
-        continue;
-      BufferSettings(bufferId).filterMessage(msgType, action->isChecked());
+  int filter = 0;
+  if(NetworkModelActionProvider::action(HideJoin)->isChecked())
+    filter |= Message::Join;
+  if(NetworkModelActionProvider::action(HidePart)->isChecked())
+    filter |= Message::Part;
+  if(NetworkModelActionProvider::action(HideQuit)->isChecked())
+    filter |= Message::Quit;
+  if(NetworkModelActionProvider::action(HideNick)->isChecked())
+    filter |= Message::Nick;
+  if(NetworkModelActionProvider::action(HideMode)->isChecked())
+    filter |= Message::Mode;
+  if(NetworkModelActionProvider::action(HideDayChange)->isChecked())
+    filter |= Message::DayChange;
+
+  switch(type) {
+  case HideJoin:
+  case HidePart:
+  case HideQuit:
+  case HideNick:
+  case HideMode:
+  case HideDayChange:
+    if(_messageFilter)
+      BufferSettings(_messageFilter->idString()).setMessageFilter(filter);
+    else {
+      foreach(QModelIndex index, _indexList) {
+	BufferId bufferId = index.data(NetworkModel::BufferIdRole).value<BufferId>();
+	if(!bufferId.isValid())
+	  continue;
+	BufferSettings(bufferId).setMessageFilter(filter);
+      }
     }
-  }
+    return;
+  case HideApplyToAll:
+    BufferSettings().setMessageFilter(filter);
+  case HideUseDefaults:
+    if(_messageFilter)
+      BufferSettings(_messageFilter->idString()).removeFilter();
+    else {
+      foreach(QModelIndex index, _indexList) {
+	BufferId bufferId = index.data(NetworkModel::BufferIdRole).value<BufferId>();
+	if(!bufferId.isValid())
+	  continue;
+	BufferSettings(bufferId).removeFilter();
+      }
+    }
+    return;
+  default:
+    return;
+  };
 }
 
 void NetworkModelActionProvider::handleGeneralAction(ActionType type, QAction *action) {

@@ -35,7 +35,9 @@ public:
 
   inline bool hasFilter() { return localValue("hasMessageTypeFilter", false).toBool(); }
   inline int messageFilter() { return localValue("MessageTypeFilter", 0).toInt(); }
+  void setMessageFilter(int filter);
   void filterMessage(Message::Type msgType, bool filter);
+  void removeFilter();
 
   inline bool showUserStateIcons() { return localValue("ShowUserStateIcons", true).toBool(); }
   inline void enableUserStateIcons(bool enabled) { setLocalValue("ShowUserStateIcons", enabled); }

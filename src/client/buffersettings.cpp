@@ -38,3 +38,14 @@ void BufferSettings::filterMessage(Message::Type msgType, bool filter) {
   else
     setLocalValue("MessageTypeFilter", localValue("MessageTypeFilter", 0).toInt() & ~msgType);
 }
+
+void BufferSettings::setMessageFilter(int filter) {
+  if(!hasFilter())
+    setLocalValue("hasMessageTypeFilter", true);
+  setLocalValue("MessageTypeFilter", filter);
+}
+
+void BufferSettings::removeFilter() {
+  setLocalValue("hasMessageTypeFilter", false);
+  removeLocalKey("MessageTypeFilter");
+}

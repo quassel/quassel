@@ -55,6 +55,7 @@ public:
     HideNick = 0x0400,
     HideMode = 0x0500,
     HideDayChange = 0x0600,
+    HideUseDefaults = 0xe00,
     HideApplyToAll = 0xf00,
 
     // General actions
@@ -145,7 +146,7 @@ private:
 
   void addHideEventsMenu(QMenu *, BufferId bufferId);
   void addHideEventsMenu(QMenu *, MessageFilter *msgFilter);
-  void addHideEventsMenu(QMenu *, int filter);
+  void addHideEventsMenu(QMenu *, int filter = -1);
 
   void addNetworkItemActions(QMenu *, const QModelIndex &);
   void addBufferItemActions(QMenu *, const QModelIndex &, bool isCustomBufferView = false);
