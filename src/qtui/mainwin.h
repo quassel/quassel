@@ -67,7 +67,6 @@ class MainWin
     BufferView *allBuffersView() const;
 
     inline QSystemTrayIcon *systemTrayIcon() const;
-    inline BufferWidget *bufferWidget() const;
 
     virtual bool event(QEvent *event);
 
@@ -168,10 +167,6 @@ class MainWin
 
 QSystemTrayIcon *MainWin::systemTrayIcon() const {
   return _trayIcon;
-}
-
-BufferWidget *MainWin::bufferWidget() const {
-  return _bufferWidget;
 }
 
 #endif

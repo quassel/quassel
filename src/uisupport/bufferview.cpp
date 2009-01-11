@@ -86,7 +86,6 @@ BufferView::BufferView(QWidget *parent)
 {
   connect(this, SIGNAL(collapsed(const QModelIndex &)), SLOT(on_collapse(const QModelIndex &)));
   connect(this, SIGNAL(expanded(const QModelIndex &)), SLOT(on_expand(const QModelIndex &)));
-  connect(this, SIGNAL(clicked(const QModelIndex &)), SLOT(on_clicked(const QModelIndex &)));
 
   setSelectionMode(QAbstractItemView::ExtendedSelection);
 
@@ -353,11 +352,6 @@ void BufferView::on_configChanged() {
   }
 
   return;
-}
-
-void BufferView::on_clicked(const QModelIndex &index) {
-  Q_UNUSED(index);
-  setFocus(Qt::MouseFocusReason);
 }
 
 void BufferView::on_collapse(const QModelIndex &index) {
