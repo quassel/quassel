@@ -133,12 +133,6 @@ void CoreSession::loadSettings() {
   foreach(CoreIdentity identity, Core::identities(user())) {
     createIdentity(identity);
   }
-  if(!_identities.count()) {
-    Identity identity;
-    identity.setToDefaults();
-    identity.setIdentityName(tr("Default Identity"));
-    createIdentity(identity, QVariantMap());
-  }
 
   foreach(NetworkInfo info, Core::networks(user())) {
     createNetwork(info);

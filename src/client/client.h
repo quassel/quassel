@@ -186,6 +186,7 @@ private slots:
   void setSyncedToCore();
   void requestInitialBacklog();
   void createDefautBufferView();
+  void createDefaultIdentity();
   void setSecuredConnection();
 
 

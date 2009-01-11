@@ -300,6 +300,9 @@ void Client::setSyncedToCore() {
   _bufferViewManager = new BufferViewManager(signalProxy(), this);
   connect(bufferViewManager(), SIGNAL(initDone()), this, SLOT(requestInitialBacklog()));
   connect(bufferViewManager(), SIGNAL(initDone()), this, SLOT(createDefautBufferView()));
+
+  createDefaultIdentity();
+
   _syncedToCore = true;
   emit connected();
   emit coreConnectionStateChanged(true);
@@ -316,6 +319,15 @@ void Client::createDefautBufferView() {
     config.setBufferViewName(tr("All Buffers"));
     config.initSetBufferList(networkModel()->allBufferIdsSorted());
     bufferViewManager()->requestCreateBufferView(config.toVariantMap());
+  }
+}
+
+void Client::createDefaultIdentity() {
+  if(_identities.isEmpty()) {
+    Identity identity;
+    identity.setToDefaults();
+    identity.setIdentityName(tr("Default Identity"));
+    createIdentity(identity);
   }
 }
 
