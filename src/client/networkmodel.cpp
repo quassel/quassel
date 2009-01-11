@@ -39,7 +39,11 @@ NetworkItem::NetworkItem(const NetworkId &netid, AbstractTreeItem *parent)
   : PropertyMapItem(QList<QString>() << "networkName" << "currentServer" << "nickCount", parent),
     _networkId(netid)
 {
+  // DO NOT EMIT dataChanged() DIRECTLY IN NetworkItem
+  // use networkDataChanged() instead. Otherwise you will end up in a infinite loop
+  // as we "sync" the dataChanged() signals of NetworkItem and StatusBufferItem
   setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
+  connect(this, SIGNAL(networkDataChanged(int)), this, SIGNAL(dataChanged(int)));
 }
 
 QVariant NetworkItem::data(int column, int role) const {
@@ -47,6 +51,7 @@ QVariant NetworkItem::data(int column, int role) const {
   case NetworkModel::BufferIdRole:
   case NetworkModel::BufferInfoRole:
   case NetworkModel::BufferTypeRole:
+  case NetworkModel::BufferActivityRole:
     if(childCount())
       return child(0)->data(column, role);
     else
@@ -84,6 +89,9 @@ BufferItem *NetworkItem::bufferItem(const BufferInfo &bufferInfo) {
   switch(bufferInfo.type()) {
   case BufferInfo::StatusBuffer:
     bufferItem = new StatusBufferItem(bufferInfo, this);
+    disconnect(this, SIGNAL(networkDataChanged(int)), this, SIGNAL(dataChanged(int)));
+    connect(this, SIGNAL(networkDataChanged(int)), bufferItem, SIGNAL(dataChanged(int)));
+    connect(bufferItem, SIGNAL(dataChanged(int)), this, SIGNAL(dataChanged(int)));
     break;
   case BufferInfo::ChannelBuffer:
     bufferItem = new ChannelBufferItem(bufferInfo, this);
@@ -114,11 +122,11 @@ void NetworkItem::attachNetwork(Network *network) {
   connect(network, SIGNAL(ircUserAdded(IrcUser *)),
 	  this, SLOT(attachIrcUser(IrcUser *)));
   connect(network, SIGNAL(connectedSet(bool)),
-	  this, SIGNAL(dataChanged()));
+	  this, SIGNAL(networkDataChanged()));
   connect(network, SIGNAL(destroyed()),
-	  this, SIGNAL(dataChanged()));
+	  this, SIGNAL(networkDataChanged()));
 
-  emit dataChanged();
+  emit networkDataChanged();
 }
 
 void NetworkItem::attachIrcChannel(IrcChannel *ircChannel) {
@@ -151,12 +159,12 @@ void NetworkItem::attachIrcUser(IrcUser *ircUser) {
 
 void NetworkItem::setNetworkName(const QString &networkName) {
   Q_UNUSED(networkName);
-  emit dataChanged(0);
+  emit networkDataChanged(0);
 }
 
 void NetworkItem::setCurrentServer(const QString &serverName) {
   Q_UNUSED(serverName);
-  emit dataChanged(1);
+  emit networkDataChanged(1);
 }
 
 
@@ -282,8 +290,6 @@ QString BufferItem::toolTip(int column) const {
 StatusBufferItem::StatusBufferItem(const BufferInfo &bufferInfo, NetworkItem *parent)
   : BufferItem(bufferInfo, parent)
 {
-  Q_ASSERT(parent);
-  connect(parent, SIGNAL(dataChanged()), this, SIGNAL(dataChanged()));
 }
 
 QString StatusBufferItem::toolTip(int column) const {

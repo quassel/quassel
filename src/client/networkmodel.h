@@ -64,6 +64,9 @@ public slots:
   void attachIrcChannel(IrcChannel *channel);
   void attachIrcUser(IrcUser *ircUser);
 
+signals:
+  void networkDataChanged(int column = -1);
+
 private:
   NetworkId _networkId;
 
