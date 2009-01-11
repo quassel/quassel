@@ -52,6 +52,21 @@ uint editingDistance(const QString &s1, const QString &s2);
 
 QDir quasselDir();
 
+//! Returns a list of data directory paths
+/** There are several locations for applications to install their data files in. On Unix,
+ *  a common location is /usr/share; others include $PREFIX/share and additional directories
+ *  specified in the env variable XDG_DATA_DIRS.
+ *  \return A list of directory paths to look for data files in
+ */
+QStringList dataDirPaths();
+
+//! Searches for a data file in the possible data directories
+/** Data files can reside in $DATA_DIR/apps/quassel, where $DATA_DIR is one of the directories
+ *  returned by \sa dataDirPaths().
+ *  \return The full path to the data file if found; a null QString else
+ */
+QString findDataFilePath(const QString &fileName);
+
 void loadTranslation(const QLocale &locale);
 
 template<typename T>

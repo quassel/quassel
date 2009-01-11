@@ -26,6 +26,7 @@
 #include <QFile>
 
 #include "iconloader.h"
+#include "util.h"
 
 IconLoader IconLoader::_iconLoader;
 int IconLoader::_groupSize[] = { 48, 22, 22, 16, 32, 22 };  // default sizes taken from Oxygen
@@ -53,19 +54,7 @@ void IconLoader::setTheme(const QString &theme) {
   _themedIconDirNames.clear();
   _plainIconDirNames.clear();
   QString path;
-  QStringList dataDirNames = QString(qgetenv("XDG_DATA_DIRS")).split(':', QString::SkipEmptyParts);
-
-// Provide a fallback
-# ifdef Q_OS_UNIX
-    if(dataDirNames.isEmpty()) dataDirNames.append("/usr/share");
-    // on UNIX, we always check our install prefix
-    QString appDir = QCoreApplication::applicationDirPath();
-    int binpos = appDir.lastIndexOf("/bin");
-    if(binpos >= 0) {
-      appDir.replace(binpos, 4, "/share");
-      if(!dataDirNames.contains(appDir)) dataDirNames.append(appDir);
-    }
-# endif
+  QStringList dataDirNames = dataDirPaths();
 
   // System theme in $data/icons/$theme
   foreach(QString dir, dataDirNames) {
@@ -135,6 +124,7 @@ QString IconLoader::findIconPath(const QString &name, int size) {
     if(QFile::exists(path)) return path;
   }
 
+  qWarning() << "Icon not found:" << name << size;
   return QString();
 }
 
