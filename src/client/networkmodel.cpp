@@ -143,7 +143,7 @@ void NetworkItem::attachIrcUser(IrcUser *ircUser) {
       continue;
 
     if(queryItem->bufferName().toLower() == ircUser->nick().toLower()) {
-      queryItem->attachIrcUser(ircUser);
+      queryItem->setIrcUser(ircUser);
       break;
     }
   }
@@ -310,8 +310,7 @@ QueryBufferItem::QueryBufferItem(const BufferInfo &bufferInfo, NetworkItem *pare
     return;
 
   IrcUser *ircUser = net->ircUser(bufferInfo.bufferName());
-  if(ircUser)
-    attachIrcUser(ircUser);
+  setIrcUser(ircUser);
 }
 
 QVariant QueryBufferItem::data(int column, int role) const {
@@ -344,6 +343,14 @@ bool QueryBufferItem::setData(int column, const QVariant &value, int role) {
   default:
     return BufferItem::setData(column, value, role);
   }
+}
+
+void QueryBufferItem::setBufferName(const QString &name) {
+  BufferItem::setBufferName(name);
+  NetworkId netId = data(0, NetworkModel::NetworkIdRole).value<NetworkId>();
+  const Network *net = Client::network(netId);
+  if(net)
+    setIrcUser(net->ircUser(name));
 }
 
 QString QueryBufferItem::toolTip(int column) const {
@@ -381,14 +388,24 @@ QString QueryBufferItem::toolTip(int column) const {
   return QString("<p> %1 </p>").arg(toolTip.join("<br />"));
 }
 
-void QueryBufferItem::attachIrcUser(IrcUser *ircUser) {
+void QueryBufferItem::setIrcUser(IrcUser *ircUser) {
+  if(_ircUser == ircUser)
+    return;
+
+  if(_ircUser) {
+    disconnect(_ircUser, 0, this, 0);
+  }
+
+  if(ircUser) {
+    connect(ircUser, SIGNAL(quited()), this, SLOT(removeIrcUser()));
+    connect(ircUser, SIGNAL(awaySet(bool)), this, SIGNAL(dataChanged()));
+  }
+
   _ircUser = ircUser;
-  connect(_ircUser, SIGNAL(quited()), this, SLOT(ircUserQuited()));
-  connect(_ircUser, SIGNAL(awaySet(bool)), this, SIGNAL(dataChanged()));
   emit dataChanged();
 }
 
-void QueryBufferItem::ircUserQuited() {
+void QueryBufferItem::removeIrcUser() {
   _ircUser = 0;
   emit dataChanged();
 }

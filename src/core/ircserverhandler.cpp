@@ -306,11 +306,15 @@ void IrcServerHandler::handleNick(const QString &prefix, const QList<QByteArray>
     ? newnick
     : prefix;
 
+
+  // the order is cruicial
+  // otherwise the client would rename the buffer, see that the assigned ircuser doesn't match anymore
+  // and remove the ircuser from the querybuffer leading to a wrong on/offline state
+  ircuser->setNick(newnick);
   coreSession()->renameBuffer(network()->networkId(), newnick, oldnick);
+
   foreach(QString channel, ircuser->channels())
     emit displayMsg(Message::Nick, BufferInfo::ChannelBuffer, channel, newnick, sender);
-
-  ircuser->setNick(newnick);
 }
 
 void IrcServerHandler::handleNotice(const QString &prefix, const QList<QByteArray> &params) {
