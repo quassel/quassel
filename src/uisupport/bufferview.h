@@ -78,6 +78,7 @@ private slots:
 
   void on_collapse(const QModelIndex &index);
   void on_expand(const QModelIndex &index);
+  void on_clicked(const QModelIndex &index);
   void on_configChanged();
 
 private:
