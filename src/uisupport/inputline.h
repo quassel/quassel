@@ -35,6 +35,7 @@ public:
 protected:
   //    virtual bool event(QEvent *);
   virtual void keyPressEvent(QKeyEvent * event);
+  virtual bool eventFilter(QObject *watched, QEvent *event);
 
 private slots:
   void on_returnPressed();

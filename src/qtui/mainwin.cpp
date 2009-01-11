@@ -315,6 +315,7 @@ void MainWin::addBufferView(BufferViewConfig *config) {
   //create the view and initialize it's filter
   BufferView *view = new BufferView(dock);
   view->setFilteredModel(Client::bufferModel(), config);
+  view->installEventFilter(_inputWidget->inputLine()); // for key presses
   view->show();
 
   Client::bufferModel()->synchronizeView(view);
@@ -414,20 +415,20 @@ void MainWin::setupInputWidget() {
   VerticalDock *dock = new VerticalDock(tr("Inputline"), this);
   dock->setObjectName("InputDock");
 
-  InputWidget *inputWidget = new InputWidget(dock);
-  dock->setWidget(inputWidget);
+  _inputWidget = new InputWidget(dock);
+  dock->setWidget(_inputWidget);
 
   addDockWidget(Qt::BottomDockWidgetArea, dock);
 
   _viewMenu->addAction(dock->toggleViewAction());
   dock->toggleViewAction()->setText(tr("Show Input Line"));
 
-  inputWidget->setModel(Client::bufferModel());
-  inputWidget->setSelectionModel(Client::bufferModel()->standardSelectionModel());
+  _inputWidget->setModel(Client::bufferModel());
+  _inputWidget->setSelectionModel(Client::bufferModel()->standardSelectionModel());
 
-  _bufferWidget->setFocusProxy(inputWidget);
+  _bufferWidget->setFocusProxy(_inputWidget);
 
-  inputWidget->inputLine()->installEventFilter(_bufferWidget);
+  _inputWidget->inputLine()->installEventFilter(_bufferWidget);
 }
 
 void MainWin::setupTopicWidget() {

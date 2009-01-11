@@ -38,6 +38,7 @@ class BufferView;
 class BufferViewConfig;
 class BufferViewDock;
 class BufferWidget;
+class InputWidget;
 class MsgProcessorStatusWidget;
 class NickListWidget;
 class SystemTrayIcon;
@@ -158,6 +159,7 @@ class MainWin
     QList<BufferViewDock *> _bufferViews;
     BufferWidget *_bufferWidget;
     NickListWidget *_nickListWidget;
+    InputWidget *_inputWidget;
 
     QMenu *_fileMenu, *_networksMenu, *_viewMenu, *_bufferViewsMenu, *_settingsMenu, *_helpMenu, *_helpDebugMenu;
 

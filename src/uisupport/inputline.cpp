@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include "bufferview.h"
 #include "inputline.h"
 #include "tabcompleter.h"
 
@@ -31,6 +32,27 @@ InputLine::InputLine(QWidget *parent)
 }
 
 InputLine::~InputLine() {
+}
+
+bool InputLine::eventFilter(QObject *watched, QEvent *event) {
+  if(event->type() != QEvent::KeyPress)
+    return false;
+
+  // keys from BufferView should be sent to (and focus) the input line
+  BufferView *view = qobject_cast<BufferView *>(watched);
+  if(view) {
+    QKeyEvent *keyEvent = static_cast<QKeyEvent*>(event);
+    if(keyEvent->text().length() == 1) { // normal key press
+      QChar c = keyEvent->text().at(0);
+      if(c.isLetterOrNumber() || c.isSpace() || c.isPunct() || c.isSymbol()) {
+        setFocus();
+        keyPressEvent(keyEvent);
+        return true;
+      } else
+        return false;
+    }
+  }
+  return false;
 }
 
 void InputLine::keyPressEvent(QKeyEvent * event) {
