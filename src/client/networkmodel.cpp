@@ -608,6 +608,7 @@ UserCategoryItem::UserCategoryItem(int category, AbstractTreeItem *parent)
   : PropertyMapItem(QStringList() << "categoryName", parent),
     _category(category)
 {
+  setFlags(Qt::ItemIsEnabled);
   setTreeItemFlags(AbstractTreeItem::DeleteOnLastChildRemoved);
   setObjectName(parent->data(0, Qt::DisplayRole).toString() + "/" + QString::number(category));
 }

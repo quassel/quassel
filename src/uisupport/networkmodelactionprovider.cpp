@@ -385,6 +385,8 @@ QString NetworkModelActionProvider::nickName(const QModelIndex &index) const {
   BufferInfo bufferInfo = index.data(NetworkModel::BufferInfoRole).value<BufferInfo>();
   if(!bufferInfo.isValid())
     return QString();
+  if(!bufferInfo.type() == BufferInfo::QueryBuffer)
+    return QString();
 
   return bufferInfo.bufferName(); // FIXME this might break with merged queries maybe
 }
