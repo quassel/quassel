@@ -504,10 +504,11 @@ void NetworkModelActionProvider::handleBufferAction(ActionType type, QAction *) 
 void NetworkModelActionProvider::removeBuffers(const QModelIndexList &indexList) {
   QList<BufferInfo> inactive;
   foreach(QModelIndex index, indexList) {
-    if(!index.data(NetworkModel::ItemActiveRole).toBool()) {
-      BufferInfo info = index.data(NetworkModel::BufferInfoRole).value<BufferInfo>();
-      if(info.isValid())
-        inactive << info;
+    BufferInfo info = index.data(NetworkModel::BufferInfoRole).value<BufferInfo>();
+    if(info.isValid()) {
+      if(info.type() == BufferInfo::QueryBuffer
+        || (info.type() == BufferInfo::ChannelBuffer && !index.data(NetworkModel::ItemActiveRole).toBool()))
+          inactive << info;
     }
   }
   QString msg;
