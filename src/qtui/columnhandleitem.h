@@ -1,5 +1,5 @@
 /***************************************************************************
-*   Copyright (C) 2005-08 by the Quassel IRC Team                         *
+*   Copyright (C) 2005-09 by the Quassel Project                          *
 *   devel@quassel-irc.org                                                 *
 *                                                                         *
 *   This program is free software; you can redistribute it and/or modify  *
