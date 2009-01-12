@@ -27,6 +27,7 @@
 #include "settingspage.h"
 
 #include "ui_networkssettingspage.h"
+#include "ui_networkadddlg.h"
 #include "ui_networkeditdlg.h"
 #include "ui_servereditdlg.h"
 #include "ui_saveidentitiesdlg.h"
@@ -92,6 +93,26 @@ class NetworksSettingsPage : public SettingsPage {
     void saveToNetworkInfo(NetworkInfo &);
 };
 
+
+class NetworkAddDlg : public QDialog {
+  Q_OBJECT
+
+  public:
+    NetworkAddDlg(const QStringList &existing = QStringList(), QWidget *parent = 0);
+
+    NetworkInfo networkInfo() const;
+
+  private slots:
+    void setButtonStates();
+
+  private:
+    Ui::NetworkAddDlg ui;
+
+    QString networksFilePath;
+    QStringList existing;
+};
+
+
 class NetworkEditDlg : public QDialog {
   Q_OBJECT
 
@@ -108,7 +129,6 @@ class NetworkEditDlg : public QDialog {
 
     QStringList existing;
 };
-
 
 
 class ServerEditDlg : public QDialog {

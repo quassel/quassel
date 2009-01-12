@@ -7,5 +7,6 @@ if(WANT_MONO)
 endif(WANT_MONO)
 
 if(WANT_MONO OR WANT_QTCLIENT)
-  install(FILES quassel.notifyrc DESTINATION ${DATA_INSTALL_DIR}/quassel)
+  install(FILES quassel.notifyrc networks.ini
+          DESTINATION ${DATA_INSTALL_DIR}/quassel)
 endif(WANT_MONO OR WANT_QTCLIENT)

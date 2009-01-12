@@ -6,4 +6,4 @@ set(SETTINGSPAGES aliases appearance backlog bufferview color chatmonitor fonts 
 # Specify additional files (e.g. for subdialogs) here!
 set(SP_SOURCES aliasesmodel.cpp notificationssettingspage.cpp)
 set(SP_HEADERS aliasesmodel.h notificationssettingspage.h previewbufferview.h)
-set(SP_FORMS buffervieweditdlg.ui createidentitydlg.ui saveidentitiesdlg.ui networkeditdlg.ui nickeditdlg.ui servereditdlg.ui)
+set(SP_FORMS buffervieweditdlg.ui createidentitydlg.ui saveidentitiesdlg.ui networkadddlg.ui networkeditdlg.ui nickeditdlg.ui servereditdlg.ui)

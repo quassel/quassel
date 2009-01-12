@@ -28,7 +28,7 @@
 #include "iconloader.h"
 #include "identity.h"
 #include "network.h"
-
+#include "util.h"
 
 NetworksSettingsPage::NetworksSettingsPage(QWidget *parent) : SettingsPage(tr("General"), tr("Networks"), parent) {
   ui.setupUi(this);
@@ -508,7 +508,7 @@ void NetworksSettingsPage::on_networkList_itemSelectionChanged() {
 void NetworksSettingsPage::on_addNetwork_clicked() {
   QStringList existing;
   for(int i = 0; i < ui.networkList->count(); i++) existing << ui.networkList->item(i)->text();
-  NetworkEditDlg dlg(QString(), existing, this);
+  NetworkAddDlg dlg(existing, this);
   if(dlg.exec() == QDialog::Accepted) {
     NetworkId id;
     for(id = 1; id <= networkInfos.count(); id++) {
@@ -516,9 +516,11 @@ void NetworksSettingsPage::on_addNetwork_clicked() {
       if(!networkInfos.keys().contains(-id.toInt())) break;
     }
     id = -id.toInt();
-    NetworkInfo info;
+
+    NetworkInfo info = dlg.networkInfo();
+    if(info.networkName.isEmpty())
+      return;  // sanity check
     info.networkId = id;
-    info.networkName = dlg.networkName();
     info.identity = 1;
 
     // defaults
@@ -635,6 +637,76 @@ void NetworksSettingsPage::on_downServer_clicked() {
 }
 
 /**************************************************************************
+* NetworkAddDlg
+*************************************************************************/
+
+NetworkAddDlg::NetworkAddDlg(const QStringList &exist, QWidget *parent) : QDialog(parent), existing(exist) {
+  ui.setupUi(this);
+  ui.useSSL->setIcon(SmallIcon("document-encrypt"));
+
+  // read preset networks
+  networksFilePath = findDataFilePath("networks.ini");
+  if(!networksFilePath.isEmpty()) {
+    QSettings s(networksFilePath, QSettings::IniFormat);
+    QStringList networks = s.childGroups();
+    foreach(QString s, existing)
+      networks.removeAll(s);
+    if(!networks.isEmpty())
+      networks.sort();
+      ui.presetList->addItems(networks);
+  }
+  if(!ui.presetList->count()) {
+    ui.useManual->setChecked(true);
+    ui.usePreset->setEnabled(false);
+  }
+  connect(ui.networkName, SIGNAL(textChanged(const QString &)), SLOT(setButtonStates()));
+  connect(ui.serverAddress, SIGNAL(textChanged(const QString &)), SLOT(setButtonStates()));
+  setButtonStates();
+}
+
+NetworkInfo NetworkAddDlg::networkInfo() const {
+  NetworkInfo info;
+
+  if(ui.useManual->isChecked()) {
+    info.networkName = ui.networkName->text().trimmed();
+    info.serverList << Network::Server(ui.serverAddress->text().trimmed(), ui.port->value(), ui.serverPassword->text(), ui.useSSL->isChecked());
+  } else {
+    info.networkName = ui.presetList->currentText();
+    QSettings s(networksFilePath, QSettings::IniFormat);
+    s.beginGroup(info.networkName);
+    foreach(QString server, s.value("Servers").toStringList()) {
+      bool ssl = false;
+      QStringList splitserver = server.split(':', QString::SkipEmptyParts);
+      if(splitserver.count() != 2) {
+        qWarning() << "Invalid server entry in networks.conf:" << server;
+        continue;
+      }
+      if(splitserver[1].at(0) == '+')
+        ssl = true;
+      uint port = splitserver[1].toUInt();
+      if(!port) {
+        qWarning() << "Invalid port entry in networks.conf:" << server;
+        continue;
+      }
+      info.serverList << Network::Server(splitserver[0].trimmed(), port, QString(), ssl);
+    }
+  }
+
+  return info;
+}
+
+void NetworkAddDlg::setButtonStates() {
+  bool ok = false;
+  if(ui.usePreset->isChecked() && ui.presetList->count())
+    ok = true;
+  else if(ui.useManual->isChecked()) {
+    ok = !ui.networkName->text().trimmed().isEmpty() && !existing.contains(ui.networkName->text().trimmed())
+      && !ui.serverAddress->text().isEmpty();
+  }
+  ui.buttonBox->button(QDialogButtonBox::Ok)->setEnabled(ok);
+}
+
+/**************************************************************************
  * NetworkEditDlg
  *************************************************************************/
 
@@ -656,7 +728,6 @@ QString NetworkEditDlg::networkName() const {
 void NetworkEditDlg::on_networkEdit_textChanged(const QString &text) {
   ui.buttonBox->button(QDialogButtonBox::Ok)->setDisabled(text.isEmpty() || existing.contains(text.trimmed()));
 }
-
 
 /**************************************************************************
  * ServerEditDlg
