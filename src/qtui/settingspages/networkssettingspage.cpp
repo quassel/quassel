@@ -42,6 +42,7 @@ NetworksSettingsPage::NetworksSettingsPage(QWidget *parent) : SettingsPage(tr("G
   ui.editServer->setIcon(SmallIcon("configure"));
   ui.upServer->setIcon(SmallIcon("go-up"));
   ui.downServer->setIcon(SmallIcon("go-down"));
+  ui.editIdentities->setIcon(SmallIcon("configure"));
 
   _ignoreWidgetChanges = false;
 
@@ -68,12 +69,12 @@ NetworksSettingsPage::NetworksSettingsPage(QWidget *parent) : SettingsPage(tr("G
   connect(Client::instance(), SIGNAL(identityRemoved(IdentityId)), this, SLOT(clientIdentityRemoved(IdentityId)));
 
   connect(ui.identityList, SIGNAL(currentIndexChanged(int)), this, SLOT(widgetHasChanged()));
-  connect(ui.randomServer, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
+  //connect(ui.randomServer, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
   connect(ui.performEdit, SIGNAL(textChanged()), this, SLOT(widgetHasChanged()));
   connect(ui.autoIdentify, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
   connect(ui.autoIdentifyService, SIGNAL(textEdited(const QString &)), this, SLOT(widgetHasChanged()));
   connect(ui.autoIdentifyPassword, SIGNAL(textEdited(const QString &)), this, SLOT(widgetHasChanged()));
-  connect(ui.useDefaultEncodings, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
+  connect(ui.useCustomEncodings, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
   connect(ui.sendEncoding, SIGNAL(currentIndexChanged(int)), this, SLOT(widgetHasChanged()));
   connect(ui.recvEncoding, SIGNAL(currentIndexChanged(int)), this, SLOT(widgetHasChanged()));
   connect(ui.serverEncoding, SIGNAL(currentIndexChanged(int)), this, SLOT(widgetHasChanged()));
@@ -186,6 +187,7 @@ void NetworksSettingsPage::setWidgetStates() {
     ui.detailsBox->setEnabled(true);
     ui.renameNetwork->setEnabled(true);
     ui.deleteNetwork->setEnabled(true);
+    /* button disabled for now
     ui.connectNow->setEnabled(net);
     //    && (Client::network(id)->connectionState() == Network::Initialized
     //    || Client::network(id)->connectionState() == Network::Disconnected));
@@ -200,11 +202,11 @@ void NetworksSettingsPage::setWidgetStates() {
     } else {
       ui.connectNow->setIcon(QIcon());
       ui.connectNow->setText(tr("Apply first!"));
-    }
+    } */
   } else {
     ui.renameNetwork->setEnabled(false);
     ui.deleteNetwork->setEnabled(false);
-    ui.connectNow->setEnabled(false);
+    //ui.connectNow->setEnabled(false);
     ui.detailsBox->setEnabled(false);
   }
   // network details
@@ -384,11 +386,14 @@ void NetworksSettingsPage::clientNetworkRemoved(NetworkId id) {
 }
 
 void NetworksSettingsPage::networkConnectionStateChanged(Network::ConnectionState state) {
+  Q_UNUSED(state);
   const Network *net = qobject_cast<const Network *>(sender());
   if(!net) return;
+  /*
   if(net->networkId() == currentId) {
     ui.connectNow->setEnabled(state == Network::Initialized || state == Network::Disconnected);
   }
+  */
   setItemState(net->networkId());
   setWidgetStates();
 }
@@ -432,7 +437,7 @@ void NetworksSettingsPage::displayNetwork(NetworkId id) {
       ui.serverList->addItem(QString("%1:%2").arg(server.host).arg(server.port));
     }
     //setItemState(id);
-    ui.randomServer->setChecked(info.useRandomServer);
+    //ui.randomServer->setChecked(info.useRandomServer);
     ui.performEdit->setPlainText(info.perform.join("\n"));
     ui.autoIdentify->setChecked(info.useAutoIdentify);
     ui.autoIdentifyService->setText(info.autoIdentifyService);
@@ -441,12 +446,12 @@ void NetworksSettingsPage::displayNetwork(NetworkId id) {
       ui.sendEncoding->setCurrentIndex(ui.sendEncoding->findText(Network::defaultCodecForEncoding()));
       ui.recvEncoding->setCurrentIndex(ui.recvEncoding->findText(Network::defaultCodecForDecoding()));
       ui.serverEncoding->setCurrentIndex(ui.serverEncoding->findText(Network::defaultCodecForServer()));
-      ui.useDefaultEncodings->setChecked(true);
+      ui.useCustomEncodings->setChecked(false);
     } else {
       ui.sendEncoding->setCurrentIndex(ui.sendEncoding->findText(info.codecForEncoding));
       ui.recvEncoding->setCurrentIndex(ui.recvEncoding->findText(info.codecForDecoding));
       ui.serverEncoding->setCurrentIndex(ui.serverEncoding->findText(info.codecForServer));
-      ui.useDefaultEncodings->setChecked(false);
+      ui.useCustomEncodings->setChecked(true);
     }
     ui.autoReconnect->setChecked(info.useAutoReconnect);
     ui.reconnectInterval->setValue(info.autoReconnectInterval);
@@ -468,12 +473,12 @@ void NetworksSettingsPage::displayNetwork(NetworkId id) {
 
 void NetworksSettingsPage::saveToNetworkInfo(NetworkInfo &info) {
   info.identity = ui.identityList->itemData(ui.identityList->currentIndex()).toInt();
-  info.useRandomServer = ui.randomServer->isChecked();
+  //info.useRandomServer = ui.randomServer->isChecked();
   info.perform = ui.performEdit->toPlainText().split("\n");
   info.useAutoIdentify = ui.autoIdentify->isChecked();
   info.autoIdentifyService = ui.autoIdentifyService->text();
   info.autoIdentifyPassword = ui.autoIdentifyPassword->text();
-  if(ui.useDefaultEncodings->isChecked()) {
+  if(!ui.useCustomEncodings->isChecked()) {
     info.codecForEncoding.clear();
     info.codecForDecoding.clear();
     info.codecForServer.clear();
@@ -571,6 +576,7 @@ void NetworksSettingsPage::on_renameNetwork_clicked() {
   }
 }
 
+/*
 void NetworksSettingsPage::on_connectNow_clicked() {
   if(!ui.networkList->selectedItems().count()) return;
   NetworkId id = ui.networkList->selectedItems()[0]->data(Qt::UserRole).value<NetworkId>();
@@ -579,6 +585,7 @@ void NetworksSettingsPage::on_connectNow_clicked() {
   if(net->connectionState() == Network::Disconnected) net->requestConnect();
   else net->requestDisconnect();
 }
+*/
 
 /*** Server list ***/
 

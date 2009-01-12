@@ -5,123 +5,116 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>565</width>
-    <height>468</height>
+    <width>515</width>
+    <height>453</height>
    </rect>
   </property>
   <property name="windowTitle" >
    <string>Form</string>
   </property>
-  <layout class="QHBoxLayout" >
+  <layout class="QVBoxLayout" name="verticalLayout_7" >
    <item>
-    <layout class="QVBoxLayout" >
+    <layout class="QVBoxLayout" name="verticalLayout_3" >
      <item>
-      <widget class="QListWidget" name="networkList" >
-       <property name="selectionBehavior" >
-        <enum>QAbstractItemView::SelectRows</enum>
-       </property>
-       <property name="sortingEnabled" >
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="renameNetwork" >
-       <property name="sizePolicy" >
-        <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text" >
-        <string>Re&amp;name...</string>
-       </property>
-       <property name="icon" >
-        <iconset>
-         <normaloff>:/16x16/actions/oxygen/16x16/actions/edit-rename.png</normaloff>:/16x16/actions/oxygen/16x16/actions/edit-rename.png</iconset>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="addNetwork" >
-       <property name="sizePolicy" >
-        <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text" >
-        <string>&amp;Add...</string>
-       </property>
-       <property name="icon" >
-        <iconset>
-         <normaloff>:/16x16/actions/oxygen/16x16/actions/list-add.png</normaloff>:/16x16/actions/oxygen/16x16/actions/list-add.png</iconset>
-       </property>
-       <property name="iconSize" >
-        <size>
-         <width>16</width>
-         <height>16</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="deleteNetwork" >
-       <property name="sizePolicy" >
-        <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text" >
-        <string>De&amp;lete</string>
-       </property>
-       <property name="icon" >
-        <iconset>
-         <normaloff>:/16x16/actions/oxygen/16x16/actions/edit-delete.png</normaloff>:/16x16/actions/oxygen/16x16/actions/edit-delete.png</iconset>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer>
-       <property name="orientation" >
-        <enum>Qt::Vertical</enum>
-       </property>
-       <property name="sizeHint" stdset="0" >
-        <size>
-         <width>131</width>
-         <height>71</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="connectNow" >
-       <property name="enabled" >
-        <bool>false</bool>
-       </property>
-       <property name="sizePolicy" >
-        <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text" >
-        <string>Connect now</string>
-       </property>
-       <property name="icon" >
-        <iconset>
-         <normaloff/>
-        </iconset>
-       </property>
-      </widget>
+      <layout class="QHBoxLayout" name="horizontalLayout" >
+       <item>
+        <widget class="QListWidget" name="networkList" >
+         <property name="sizePolicy" >
+          <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
+           <horstretch>1</horstretch>
+           <verstretch>10</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="selectionBehavior" >
+          <enum>QAbstractItemView::SelectRows</enum>
+         </property>
+         <property name="sortingEnabled" >
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_2" >
+         <item>
+          <widget class="QPushButton" name="renameNetwork" >
+           <property name="sizePolicy" >
+            <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text" >
+            <string>Re&amp;name...</string>
+           </property>
+           <property name="icon" >
+            <iconset>
+             <normaloff>:/16x16/actions/oxygen/16x16/actions/edit-rename.png</normaloff>:/16x16/actions/oxygen/16x16/actions/edit-rename.png</iconset>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="addNetwork" >
+           <property name="sizePolicy" >
+            <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text" >
+            <string>&amp;Add...</string>
+           </property>
+           <property name="icon" >
+            <iconset>
+             <normaloff>:/16x16/actions/oxygen/16x16/actions/list-add.png</normaloff>:/16x16/actions/oxygen/16x16/actions/list-add.png</iconset>
+           </property>
+           <property name="iconSize" >
+            <size>
+             <width>16</width>
+             <height>16</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="deleteNetwork" >
+           <property name="sizePolicy" >
+            <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text" >
+            <string>De&amp;lete</string>
+           </property>
+           <property name="icon" >
+            <iconset>
+             <normaloff>:/16x16/actions/oxygen/16x16/actions/edit-delete.png</normaloff>:/16x16/actions/oxygen/16x16/actions/edit-delete.png</iconset>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="verticalSpacer" >
+           <property name="orientation" >
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0" >
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+      </layout>
      </item>
     </layout>
    </item>
    <item>
     <widget class="QGroupBox" name="detailsBox" >
      <property name="sizePolicy" >
-      <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
+      <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
        <horstretch>10</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -149,12 +142,38 @@
           </property>
          </widget>
         </item>
+        <item>
+         <widget class="QToolButton" name="editIdentities" >
+          <property name="text" >
+           <string>...</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_2" >
+          <property name="orientation" >
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0" >
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
        </layout>
       </item>
       <item>
        <widget class="QTabWidget" name="tabWidget" >
         <property name="enabled" >
          <bool>true</bool>
+        </property>
+        <property name="sizePolicy" >
+         <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
         </property>
         <property name="toolTip" >
          <string/>
@@ -172,163 +191,149 @@
          <attribute name="toolTip" >
           <string>Manage servers for this network</string>
          </attribute>
-         <layout class="QVBoxLayout" >
+         <layout class="QHBoxLayout" name="horizontalLayout_2" >
           <item>
-           <layout class="QHBoxLayout" >
+           <widget class="QListWidget" name="serverList" >
+            <property name="sizePolicy" >
+             <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
+              <horstretch>1</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" >
             <item>
-             <widget class="QListWidget" name="serverList" >
+             <widget class="QPushButton" name="editServer" >
               <property name="sizePolicy" >
-               <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
-                <horstretch>1</horstretch>
+               <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+                <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
+              </property>
+              <property name="text" >
+               <string>&amp;Edit...</string>
+              </property>
+              <property name="icon" >
+               <iconset>
+                <normaloff/>
+               </iconset>
               </property>
              </widget>
             </item>
             <item>
-             <layout class="QVBoxLayout" >
+             <widget class="QPushButton" name="addServer" >
+              <property name="sizePolicy" >
+               <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text" >
+               <string>&amp;Add...</string>
+              </property>
+              <property name="icon" >
+               <iconset>
+                <normaloff>:/16x16/actions/oxygen/16x16/actions/list-add.png</normaloff>:/16x16/actions/oxygen/16x16/actions/list-add.png</iconset>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="deleteServer" >
+              <property name="sizePolicy" >
+               <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text" >
+               <string>De&amp;lete</string>
+              </property>
+              <property name="icon" >
+               <iconset>
+                <normaloff>:/16x16/actions/oxygen/16x16/actions/edit-delete.png</normaloff>:/16x16/actions/oxygen/16x16/actions/edit-delete.png</iconset>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" >
               <item>
-               <widget class="QPushButton" name="editServer" >
-                <property name="sizePolicy" >
-                 <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
+               <spacer>
+                <property name="orientation" >
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0" >
+                 <size>
+                  <width>0</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <widget class="QToolButton" name="upServer" >
+                <property name="toolTip" >
+                 <string>Move upwards in list</string>
                 </property>
                 <property name="text" >
-                 <string>&amp;Edit...</string>
+                 <string>...</string>
                 </property>
                 <property name="icon" >
                  <iconset>
-                  <normaloff/>
-                 </iconset>
+                  <normaloff>:/16x16/actions/oxygen/16x16/actions/go-up.png</normaloff>:/16x16/actions/oxygen/16x16/actions/go-up.png</iconset>
                 </property>
                </widget>
               </item>
               <item>
-               <widget class="QPushButton" name="addServer" >
-                <property name="sizePolicy" >
-                 <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
+               <widget class="QToolButton" name="downServer" >
+                <property name="toolTip" >
+                 <string>Move downwards in list</string>
                 </property>
                 <property name="text" >
-                 <string>&amp;Add...</string>
+                 <string>...</string>
                 </property>
                 <property name="icon" >
                  <iconset>
-                  <normaloff>:/16x16/actions/oxygen/16x16/actions/list-add.png</normaloff>:/16x16/actions/oxygen/16x16/actions/list-add.png</iconset>
+                  <normaloff>:/16x16/actions/oxygen/16x16/actions/go-down.png</normaloff>:/16x16/actions/oxygen/16x16/actions/go-down.png</iconset>
                 </property>
                </widget>
-              </item>
-              <item>
-               <widget class="QPushButton" name="deleteServer" >
-                <property name="sizePolicy" >
-                 <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="text" >
-                 <string>De&amp;lete</string>
-                </property>
-                <property name="icon" >
-                 <iconset>
-                  <normaloff>:/16x16/actions/oxygen/16x16/actions/edit-delete.png</normaloff>:/16x16/actions/oxygen/16x16/actions/edit-delete.png</iconset>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <layout class="QHBoxLayout" >
-                <item>
-                 <spacer>
-                  <property name="orientation" >
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0" >
-                   <size>
-                    <width>0</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-                <item>
-                 <widget class="QToolButton" name="upServer" >
-                  <property name="toolTip" >
-                   <string>Move upwards in list</string>
-                  </property>
-                  <property name="text" >
-                   <string>...</string>
-                  </property>
-                  <property name="icon" >
-                   <iconset>
-                    <normaloff>:/16x16/actions/oxygen/16x16/actions/go-up.png</normaloff>:/16x16/actions/oxygen/16x16/actions/go-up.png</iconset>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QToolButton" name="downServer" >
-                  <property name="toolTip" >
-                   <string>Move downwards in list</string>
-                  </property>
-                  <property name="text" >
-                   <string>...</string>
-                  </property>
-                  <property name="icon" >
-                   <iconset>
-                    <normaloff>:/16x16/actions/oxygen/16x16/actions/go-down.png</normaloff>:/16x16/actions/oxygen/16x16/actions/go-down.png</iconset>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <spacer>
-                  <property name="orientation" >
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0" >
-                   <size>
-                    <width>0</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-               </layout>
               </item>
               <item>
                <spacer>
                 <property name="orientation" >
-                 <enum>Qt::Vertical</enum>
+                 <enum>Qt::Horizontal</enum>
                 </property>
                 <property name="sizeHint" stdset="0" >
                  <size>
-                  <width>20</width>
-                  <height>40</height>
+                  <width>0</width>
+                  <height>20</height>
                  </size>
                 </property>
                </spacer>
               </item>
              </layout>
             </item>
+            <item>
+             <spacer>
+              <property name="orientation" >
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0" >
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
            </layout>
-          </item>
-          <item>
-           <widget class="QCheckBox" name="randomServer" >
-            <property name="enabled" >
-             <bool>true</bool>
-            </property>
-            <property name="text" >
-             <string>Choose random server for connecting</string>
-            </property>
-           </widget>
           </item>
          </layout>
         </widget>
         <widget class="QWidget" name="performTab" >
          <attribute name="title" >
-          <string>Perform</string>
+          <string>Commands</string>
          </attribute>
          <attribute name="toolTip" >
           <string>Configure automatic identification or misc. commands to be executed after connecting to a server</string>
@@ -346,6 +351,12 @@
             <property name="enabled" >
              <bool>true</bool>
             </property>
+            <property name="sizePolicy" >
+             <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="toolTip" >
              <string>Specify a list of IRC commands to be executed upon connect.
 Note that Quassel IRC automatically rejoins channels, so /join will rarely be needed here!</string>
@@ -355,6 +366,131 @@ Note that Quassel IRC automatically rejoins channels, so /join will rarely be ne
             </property>
            </widget>
           </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="tab" >
+         <attribute name="title" >
+          <string>Connection</string>
+         </attribute>
+         <layout class="QVBoxLayout" name="verticalLayout_5" >
+          <item>
+           <widget class="QGroupBox" name="autoReconnect" >
+            <property name="enabled" >
+             <bool>true</bool>
+            </property>
+            <property name="toolTip" >
+             <string>Control automatic reconnect to the network</string>
+            </property>
+            <property name="title" >
+             <string>Automatic Reconnect</string>
+            </property>
+            <property name="checkable" >
+             <bool>true</bool>
+            </property>
+            <layout class="QVBoxLayout" name="_2" >
+             <item>
+              <layout class="QGridLayout" name="_3" >
+               <item row="0" column="0" >
+                <widget class="QLabel" name="label_7" >
+                 <property name="text" >
+                  <string>Interval:</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1" >
+                <widget class="QSpinBox" name="reconnectInterval" >
+                 <property name="suffix" >
+                  <string> s</string>
+                 </property>
+                 <property name="minimum" >
+                  <number>10</number>
+                 </property>
+                 <property name="maximum" >
+                  <number>3600</number>
+                 </property>
+                 <property name="value" >
+                  <number>30</number>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="0" >
+                <widget class="QLabel" name="label_8" >
+                 <property name="text" >
+                  <string>Retries:</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="1" >
+                <widget class="QSpinBox" name="reconnectRetries" >
+                 <property name="minimum" >
+                  <number>1</number>
+                 </property>
+                 <property name="maximum" >
+                  <number>999</number>
+                 </property>
+                 <property name="value" >
+                  <number>10</number>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="2" >
+                <widget class="QCheckBox" name="unlimitedRetries" >
+                 <property name="text" >
+                  <string>Unlimited</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="3" >
+                <spacer name="horizontalSpacer" >
+                 <property name="orientation" >
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0" >
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <widget class="QCheckBox" name="rejoinOnReconnect" >
+               <property name="enabled" >
+                <bool>true</bool>
+               </property>
+               <property name="text" >
+                <string>Rejoin all channels on reconnect</string>
+               </property>
+               <property name="checked" >
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <spacer name="verticalSpacer_3" >
+            <property name="orientation" >
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0" >
+             <size>
+              <width>20</width>
+              <height>79</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="tab_2" >
+         <attribute name="title" >
+          <string>Auto Identify</string>
+         </attribute>
+         <layout class="QVBoxLayout" name="verticalLayout_4" >
           <item>
            <widget class="QGroupBox" name="autoIdentify" >
             <property name="enabled" >
@@ -410,18 +546,31 @@ Note that Quassel IRC automatically rejoins channels, so /join will rarely be ne
             </layout>
            </widget>
           </item>
+          <item>
+           <spacer name="verticalSpacer_2" >
+            <property name="orientation" >
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0" >
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
          </layout>
         </widget>
         <widget class="QWidget" name="advancedTab" >
          <attribute name="title" >
-          <string>Advanced</string>
+          <string>Encodings</string>
          </attribute>
          <attribute name="toolTip" >
           <string>Configure advanced settings such as message encodings and automatic reconnect</string>
          </attribute>
-         <layout class="QVBoxLayout" >
+         <layout class="QVBoxLayout" name="verticalLayout_6" >
           <item>
-           <widget class="QGroupBox" name="groupBox_3" >
+           <widget class="QGroupBox" name="useCustomEncodings" >
             <property name="enabled" >
              <bool>true</bool>
             </property>
@@ -429,7 +578,10 @@ Note that Quassel IRC automatically rejoins channels, so /join will rarely be ne
              <string>Control encodings for in- and outgoing messages</string>
             </property>
             <property name="title" >
-             <string>Encodings</string>
+             <string>Use Custom Encodings</string>
+            </property>
+            <property name="checkable" >
+             <bool>true</bool>
             </property>
             <layout class="QVBoxLayout" >
              <item>
@@ -448,7 +600,7 @@ UTF-8 should be a sane choice for most networks.</string>
                <item row="0" column="1" >
                 <widget class="QComboBox" name="sendEncoding" >
                  <property name="enabled" >
-                  <bool>false</bool>
+                  <bool>true</bool>
                  </property>
                  <property name="sizePolicy" >
                   <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
@@ -479,7 +631,7 @@ This setting defines the encoding for messages that are not Utf8.</string>
                <item row="1" column="1" >
                 <widget class="QComboBox" name="recvEncoding" >
                  <property name="enabled" >
-                  <bool>false</bool>
+                  <bool>true</bool>
                  </property>
                  <property name="sizePolicy" >
                   <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
@@ -510,7 +662,7 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</string>
                <item row="2" column="1" >
                 <widget class="QComboBox" name="serverEncoding" >
                  <property name="enabled" >
-                  <bool>false</bool>
+                  <bool>true</bool>
                  </property>
                  <property name="toolTip" >
                   <string>This specifies how control messages, nicks and servernames are encoded.
@@ -520,109 +672,21 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</string>
                </item>
               </layout>
              </item>
-             <item>
-              <widget class="QCheckBox" name="useDefaultEncodings" >
-               <property name="enabled" >
-                <bool>true</bool>
-               </property>
-               <property name="toolTip" >
-                <string>Use default settings for encodings (recommended)</string>
-               </property>
-               <property name="text" >
-                <string>Use defaults</string>
-               </property>
-               <property name="checked" >
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
             </layout>
            </widget>
           </item>
           <item>
-           <widget class="QGroupBox" name="autoReconnect" >
-            <property name="enabled" >
-             <bool>true</bool>
+           <spacer name="verticalSpacer_4" >
+            <property name="orientation" >
+             <enum>Qt::Vertical</enum>
             </property>
-            <property name="toolTip" >
-             <string>Control automatic reconnect to the network</string>
+            <property name="sizeHint" stdset="0" >
+             <size>
+              <width>20</width>
+              <height>79</height>
+             </size>
             </property>
-            <property name="title" >
-             <string>Automatic Reconnect</string>
-            </property>
-            <property name="checkable" >
-             <bool>true</bool>
-            </property>
-            <layout class="QVBoxLayout" >
-             <item>
-              <layout class="QGridLayout" >
-               <item row="0" column="0" >
-                <widget class="QLabel" name="label_7" >
-                 <property name="text" >
-                  <string>Interval:</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="0" column="1" >
-                <widget class="QSpinBox" name="reconnectInterval" >
-                 <property name="suffix" >
-                  <string> s</string>
-                 </property>
-                 <property name="minimum" >
-                  <number>10</number>
-                 </property>
-                 <property name="maximum" >
-                  <number>3600</number>
-                 </property>
-                 <property name="value" >
-                  <number>30</number>
-                 </property>
-                </widget>
-               </item>
-               <item row="1" column="0" >
-                <widget class="QLabel" name="label_8" >
-                 <property name="text" >
-                  <string>Retries:</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="1" column="1" >
-                <widget class="QSpinBox" name="reconnectRetries" >
-                 <property name="minimum" >
-                  <number>1</number>
-                 </property>
-                 <property name="maximum" >
-                  <number>999</number>
-                 </property>
-                 <property name="value" >
-                  <number>10</number>
-                 </property>
-                </widget>
-               </item>
-               <item row="1" column="2" >
-                <widget class="QCheckBox" name="unlimitedRetries" >
-                 <property name="text" >
-                  <string>Unlimited</string>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </item>
-             <item>
-              <widget class="QCheckBox" name="rejoinOnReconnect" >
-               <property name="enabled" >
-                <bool>false</bool>
-               </property>
-               <property name="text" >
-                <string>Rejoin all channels on reconnect</string>
-               </property>
-               <property name="checked" >
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
+           </spacer>
           </item>
          </layout>
         </widget>
@@ -642,60 +706,12 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</string>
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>512</x>
-     <y>373</y>
+     <x>173</x>
+     <y>296</y>
     </hint>
     <hint type="destinationlabel" >
-     <x>420</x>
-     <y>377</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>useDefaultEncodings</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>sendEncoding</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>659</x>
-     <y>262</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>471</x>
-     <y>176</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>useDefaultEncodings</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>recvEncoding</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>659</x>
-     <y>262</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>471</x>
-     <y>209</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>useDefaultEncodings</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>serverEncoding</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>396</x>
-     <y>251</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>456</x>
-     <y>230</y>
+     <x>118</x>
+     <y>294</y>
     </hint>
    </hints>
   </connection>
