@@ -434,7 +434,10 @@ void NetworksSettingsPage::displayNetwork(NetworkId id) {
     ui.identityList->setCurrentIndex(ui.identityList->findData(info.identity.toInt()));
     ui.serverList->clear();
     foreach(Network::Server server, info.serverList) {
-      ui.serverList->addItem(QString("%1:%2").arg(server.host).arg(server.port));
+      QListWidgetItem *item = new QListWidgetItem(QString("%1:%2").arg(server.host).arg(server.port));
+      if(server.useSsl)
+        item->setIcon(SmallIcon("document-encrypt"));
+      ui.serverList->addItem(item);
     }
     //setItemState(id);
     //ui.randomServer->setChecked(info.useRandomServer);
@@ -658,9 +661,12 @@ NetworkAddDlg::NetworkAddDlg(const QStringList &exist, QWidget *parent) : QDialo
     QStringList networks = s.childGroups();
     foreach(QString s, existing)
       networks.removeAll(s);
-    if(!networks.isEmpty())
-      networks.sort();
-      ui.presetList->addItems(networks);
+    if(!networks.isEmpty()) {
+      QMap<QString, QString> sorted;
+      foreach(QString net, networks)
+        sorted[net.toLower()] = net;
+      ui.presetList->addItems(sorted.values());
+    }
   }
   if(!ui.presetList->count()) {
     ui.useManual->setChecked(true);

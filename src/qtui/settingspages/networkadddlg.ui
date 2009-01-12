@@ -26,7 +26,14 @@
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="presetList" />
+      <widget class="QComboBox" name="presetList" >
+       <property name="sizePolicy" >
+        <sizepolicy vsizetype="Fixed" hsizetype="MinimumExpanding" >
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
      </item>
      <item>
       <spacer name="horizontalSpacer" >
