@@ -28,7 +28,10 @@
 #include "iconloader.h"
 #include "identity.h"
 #include "network.h"
+#include "settingspagedlg.h"
 #include "util.h"
+
+#include "settingspages/identitiessettingspage.h"
 
 NetworksSettingsPage::NetworksSettingsPage(QWidget *parent) : SettingsPage(tr("General"), tr("Networks"), parent) {
   ui.setupUi(this);
@@ -644,6 +647,11 @@ void NetworksSettingsPage::on_downServer_clicked() {
   displayNetwork(currentId);
   ui.serverList->setCurrentRow(cur+1);
   widgetHasChanged();
+}
+
+void NetworksSettingsPage::on_editIdentities_clicked() {
+  SettingsPageDlg dlg(new IdentitiesSettingsPage(this), this);
+  dlg.exec();
 }
 
 /**************************************************************************

@@ -66,6 +66,7 @@ class NetworksSettingsPage : public SettingsPage {
     void on_addNetwork_clicked();
     void on_deleteNetwork_clicked();
     void on_renameNetwork_clicked();
+    void on_editIdentities_clicked();
 
     // void on_connectNow_clicked();
 
