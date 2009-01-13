@@ -404,19 +404,21 @@ void CoreNetwork::sendPerform() {
   }
 
   // rejoin channels we've been in
-  QStringList channels, keys;
-  foreach(QString chan, persistentChannels()) {
-    QString key = channelKey(chan);
-    if(!key.isEmpty()) {
-      channels.prepend(chan);
-      keys.prepend(key);
-    } else {
-      channels.append(chan);
+  if(rejoinChannels()) {
+    QStringList channels, keys;
+    foreach(QString chan, persistentChannels()) {
+      QString key = channelKey(chan);
+      if(!key.isEmpty()) {
+        channels.prepend(chan);
+        keys.prepend(key);
+      } else {
+        channels.append(chan);
+      }
     }
+    QString joinString = QString("%1 %2").arg(channels.join(",")).arg(keys.join(",")).trimmed();
+    if(!joinString.isEmpty())
+      userInputHandler()->handleJoin(statusBuf, joinString);
   }
-  QString joinString = QString("%1 %2").arg(channels.join(",")).arg(keys.join(",")).trimmed();
-  if(!joinString.isEmpty())
-    userInputHandler()->handleJoin(statusBuf, joinString);
 }
 
 void CoreNetwork::setUseAutoReconnect(bool use) {
