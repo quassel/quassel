@@ -109,7 +109,6 @@ class NetworkAddDlg : public QDialog {
   private:
     Ui::NetworkAddDlg ui;
 
-    QString networksFilePath;
     QStringList existing;
 };
 
