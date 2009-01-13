@@ -56,7 +56,7 @@ public:
 
   inline QModelIndex index(int row, int column, const QModelIndex &/*parent*/ = QModelIndex()) const { return createIndex(row, column); }
   inline QModelIndex parent(const QModelIndex &) const { return QModelIndex(); }
-  inline int rowCount(const QModelIndex &parent = QModelIndex()) const { return parent.isValid() ? 0 : _messageList.count(); }
+  inline int rowCount(const QModelIndex &parent = QModelIndex()) const { return parent.isValid() ? 0 : messageCount(); }
   inline int columnCount(const QModelIndex &/*parent*/ = QModelIndex()) const { return 3; }
 
   virtual QVariant data(const QModelIndex &index, int role) const;
@@ -75,7 +75,22 @@ public slots:
   void buffersPermanentlyMerged(BufferId bufferId1, BufferId bufferId2);
 
 protected:
-  virtual MessageModelItem *createMessageModelItem(const Message &) = 0;
+//   virtual MessageModelItem *createMessageModelItem(const Message &) = 0;
+
+  virtual int messageCount() const = 0;
+  virtual bool messagesIsEmpty() const = 0;
+  virtual const MessageModelItem *messageItemAt(int i) const = 0;
+  virtual MessageModelItem *messageItemAt(int i) = 0;
+  virtual const MessageModelItem *firstMessageItem() const= 0;
+  virtual MessageModelItem *firstMessageItem() = 0;
+  virtual const MessageModelItem *lastMessageItem() const= 0;
+  virtual MessageModelItem *lastMessageItem() = 0;
+  virtual void insertMessage__(int pos, const Message &) = 0;
+  virtual void insertMessages__(int pos, const QList<Message> &) = 0;
+  virtual void removeMessageAt(int i) = 0;
+  virtual void removeAllMessages() = 0;
+  virtual Message takeMessageAt(int i) = 0;
+
   virtual void customEvent(QEvent *event);
 
 private slots:
@@ -86,7 +101,7 @@ private:
   int insertMessagesGracefully(const QList<Message> &); // inserts as many contiguous msgs as possible. returns numer of inserted msgs.
   int indexForId(MsgId);
 
-  QList<MessageModelItem *> _messageList;
+  //  QList<MessageModelItem *> _messageList;
   QList<Message> _messageBuffer;
   QTimer _dayChangeTimer;
   QDateTime _nextDayChange;
@@ -109,13 +124,14 @@ public:
   virtual QVariant data(int column, int role) const;
   virtual bool setData(int column, const QVariant &value, int role);
 
-  inline const QDateTime &timeStamp() const { return _timestamp; }
-  inline MsgId msgId() const { return _msgId; }
-  inline BufferId bufferId() const { return _bufferId; }
-  inline void setBufferId(BufferId bufferId) { _bufferId = bufferId; }
-  inline Message::Type msgType() const { return _type; }
-  inline Message::Flags msgFlags() const { return _flags; }
-  
+  inline const Message &message() const { return _msg; }
+  inline const QDateTime &timestamp() const { return _msg.timestamp(); }
+  inline const MsgId &msgId() const { return _msg.msgId(); }
+  inline const BufferId &bufferId() const { return _msg.bufferId(); }
+  inline void setBufferId(BufferId bufferId) { _msg.setBufferId(bufferId); }
+  inline Message::Type msgType() const { return _msg.type(); }
+  inline Message::Flags msgFlags() const { return _msg.flags(); }
+
   // For sorting
   bool operator<(const MessageModelItem &) const;
   bool operator==(const MessageModelItem &) const;
@@ -123,12 +139,8 @@ public:
   static bool lessThan(const MessageModelItem *m1, const MessageModelItem *m2);
 
 private:
-  QDateTime _timestamp;
-  MsgId _msgId;
-  BufferId _bufferId;
+  Message _msg;
   BufferId _redirectedTo;
-  Message::Type _type;
-  Message::Flags _flags;
 };
 
 QDebug operator<<(QDebug dbg, const MessageModelItem &msgItem);

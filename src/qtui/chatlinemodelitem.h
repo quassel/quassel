@@ -21,18 +21,26 @@
 #ifndef CHATLINEMODELITEM_H_
 #define CHATLINEMODELITEM_H_
 
-#include <QVector>
-
-#include "chatlinemodel.h"
-#include "uistyle.h"
+#include "messagemodel.h"
 
 class ChatLineModelItemPrivate;
 
 class ChatLineModelItem : public MessageModelItem {
 public:
   ChatLineModelItem(const Message &);
+  ChatLineModelItem(const ChatLineModelItem &other);
   ~ChatLineModelItem();
+
   virtual QVariant data(int column, int role) const;
+
+  /// Used to store information about words to be used for wrapping
+  struct Word {
+    quint16 start;
+    qreal endX;
+    qreal width;
+    qreal trailing;
+  };
+  typedef QVector<Word> WrapList;
 
 private:
   ChatLineModelItemPrivate *_data;

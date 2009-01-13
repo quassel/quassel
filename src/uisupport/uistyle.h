@@ -157,27 +157,26 @@ class UiStyle {
 };
 
 class UiStyle::StyledMessage {
+public:
+  explicit StyledMessage(const Message &, UiStyle *style);
 
-  public:
-    explicit StyledMessage(const Message &, UiStyle *style);
+  QDateTime timestamp() const;
+  QString decoratedTimestamp() const;
+  QString sender() const;             //!< Nickname (no decorations) for Plain and Notice, empty else
+  QString decoratedSender() const;
+  QString contents() const;
 
-    QDateTime timestamp() const;
-    QString decoratedTimestamp() const;
-    QString sender() const;             //!< Nickname (no decorations) for Plain and Notice, empty else
-    QString decoratedSender() const;
-    QString contents() const;
+  FormatType timestampFormat() const;
+  FormatType senderFormat() const;
+  FormatList contentsFormatList() const;
 
-    FormatType timestampFormat() const;
-    FormatType senderFormat() const;
-    FormatList contentsFormatList() const;
+  inline Message::Type type() const { return _msgType; }
 
-    inline Message::Type type() const { return _msgType; }
-
-  private:
-    StyledString _contents;
-    QDateTime _timestamp;
-    QString _sender;
-    Message::Type _msgType;
+private:
+  StyledString _contents;
+  QDateTime _timestamp;
+  QString _sender;
+  Message::Type _msgType;
 };
 
 QDataStream &operator<<(QDataStream &out, const UiStyle::FormatList &formatList);

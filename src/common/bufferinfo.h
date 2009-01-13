@@ -50,13 +50,14 @@ public:
   static BufferInfo fakeStatusBuffer(NetworkId networkId);
 
   inline bool isValid() const { return _bufferId != 0; }
-  inline BufferId bufferId() const { return _bufferId; }
-  inline NetworkId networkId() const { return _netid; }
-  inline Type type() const { return _type; }
-  inline uint groupId() const { return _groupId; }
-  QString bufferName() const;
-  
+  inline const BufferId &bufferId() const { return _bufferId; }
+  inline void setBufferId(BufferId id) { _bufferId = id; }
+  inline const NetworkId &networkId() const { return _netid; }
+  inline const Type &type() const { return _type; }
+  inline const uint &groupId() const { return _groupId; }
   void setGroupId(uint gid) { _groupId = gid; }
+
+  QString bufferName() const;
   
   inline bool operator==(const BufferInfo &other) const { return _bufferId == other._bufferId; }
 

@@ -66,16 +66,18 @@ public:
           const QString &contents = "", const QString &sender = "", Flags flags = None);
 
   inline static Message ChangeOfDay(const QDateTime &day) { return Message(day, BufferInfo(), DayChange, tr("Day changed to %1").arg(day.toString("dddd MMMM d yyyy"))); }
-  inline MsgId msgId() const { return _msgId; }
+  inline const MsgId &msgId() const { return _msgId; }
   inline void setMsgId(MsgId id) { _msgId = id; }
 
-  inline BufferInfo bufferInfo() const { return _bufferInfo; }
-  inline QString contents() const { return _contents; }
-  inline QString sender() const { return _sender; }
+  inline const BufferInfo &bufferInfo() const { return _bufferInfo; }
+  inline const BufferId &bufferId() const { return _bufferInfo.bufferId(); }
+  inline void setBufferId(BufferId id) { _bufferInfo.setBufferId(id); }
+  inline const QString &contents() const { return _contents; }
+  inline const QString &sender() const { return _sender; }
   inline Type type() const { return _type; }
   inline Flags flags() const { return _flags; }
   inline void setFlags(Flags flags) { _flags = flags; }
-  inline QDateTime timestamp() const { return _timestamp; }
+  inline const QDateTime &timestamp() const { return _timestamp; }
 
   inline bool isValid() const { return _msgId.isValid(); }
 

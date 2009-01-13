@@ -20,8 +20,6 @@
 
 #include "chatlinemodel.h"
 
-#include "chatlinemodelitem.h"
-
 ChatLineModel::ChatLineModel(QObject *parent)
   : MessageModel(parent)
 {
@@ -29,10 +27,22 @@ ChatLineModel::ChatLineModel(QObject *parent)
   qRegisterMetaTypeStreamOperators<WrapList>("ChatLineModel::WrapList");
 }
 
-MessageModelItem *ChatLineModel::createMessageModelItem(const Message &msg) {
-  return new ChatLineModelItem(msg);
+// MessageModelItem *ChatLineModel::createMessageModelItem(const Message &msg) {
+//   return new ChatLineModelItem(msg);
+// }
+
+void ChatLineModel::insertMessages__(int pos, const QList<Message> &messages) {
+  for(int i = 0; i < messages.count(); i++) {
+    _messageList.insert(pos, ChatLineModelItem(messages[i]));
+    pos++;
+  }
 }
 
+Message ChatLineModel::takeMessageAt(int i) {
+  Message msg = _messageList[i].message();
+  _messageList.removeAt(i);
+  return msg;
+}
 
 QDataStream &operator<<(QDataStream &out, const ChatLineModel::WrapList wplist) {
   out << wplist.count();

@@ -19,11 +19,11 @@
  ***************************************************************************/
 
 #include <QGraphicsTextItem>
+#include <QKeyEvent>
 #include <QMenu>
 #include <QScrollBar>
 
 #include "bufferwidget.h"
-#include "chatlinemodelitem.h"
 #include "chatscene.h"
 #include "chatview.h"
 #include "client.h"

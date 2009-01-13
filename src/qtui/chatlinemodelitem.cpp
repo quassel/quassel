@@ -215,6 +215,12 @@ ChatLineModelItem::ChatLineModelItem(const Message &msg)
 {
 }
 
+ChatLineModelItem::ChatLineModelItem(const ChatLineModelItem &other)
+  : MessageModelItem(other)
+{
+  _data = new ChatLineModelItemPrivate(message());
+}
+
 ChatLineModelItem::~ChatLineModelItem() {
   delete _data;
 }
