@@ -90,7 +90,7 @@ public:
    */
   static void removeIdentity(IdentityId id);
 
-  static void createNetwork(const NetworkInfo &info);
+  static void createNetwork(const NetworkInfo &info, const QStringList &persistentChannels = QStringList());
   static void updateNetwork(const NetworkInfo &info);
   static void removeNetwork(NetworkId id);
 
@@ -154,7 +154,7 @@ signals:
   void networkCreated(NetworkId id);
   void networkRemoved(NetworkId id);
 
-  void requestCreateNetwork(const NetworkInfo &info);
+  void requestCreateNetwork(const NetworkInfo &info, const QStringList &persistentChannels = QStringList());
   void requestRemoveNetwork(NetworkId);
 
   void newClientSyncer(ClientSyncer *);
@@ -185,8 +185,9 @@ private slots:
   void setConnectedToCore(AccountId id, QIODevice *socket = 0);
   void setSyncedToCore();
   void requestInitialBacklog();
-  void createDefautBufferView();
+  void createDefaultBufferView();
   void createDefaultIdentity();
+  void createDefaultNetworks();
   void setSecuredConnection();
 
 

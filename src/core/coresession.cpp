@@ -68,7 +68,7 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
 
   p->attachSignal(this, SIGNAL(networkCreated(NetworkId)));
   p->attachSignal(this, SIGNAL(networkRemoved(NetworkId)));
-  p->attachSlot(SIGNAL(createNetwork(const NetworkInfo &)), this, SLOT(createNetwork(const NetworkInfo &)));
+  p->attachSlot(SIGNAL(createNetwork(const NetworkInfo &, const QStringList &)), this, SLOT(createNetwork(const NetworkInfo &, const QStringList &)));
   p->attachSlot(SIGNAL(removeNetwork(NetworkId)), this, SLOT(removeNetwork(NetworkId)));
 
   loadSettings();
@@ -182,7 +182,6 @@ void CoreSession::removeClient(QIODevice *iodev) {
 
 QHash<QString, QString> CoreSession::persistentChannels(NetworkId id) const {
   return Core::persistentChannels(user(), id);
-  return QHash<QString, QString>();
 }
 
 // FIXME switch to BufferId
@@ -307,7 +306,7 @@ void CoreSession::removeIdentity(IdentityId id) {
 
 /*** Network Handling ***/
 
-void CoreSession::createNetwork(const NetworkInfo &info_) {
+void CoreSession::createNetwork(const NetworkInfo &info_, const QStringList &persistentChans) {
   NetworkInfo info = info_;
   int id;
 
@@ -331,6 +330,11 @@ void CoreSession::createNetwork(const NetworkInfo &info_) {
     _networks[id] = net;
     signalProxy()->synchronize(net);
     emit networkCreated(id);
+    // create persistent chans
+    foreach(QString channel, persistentChans) {
+      Core::bufferInfo(user(), info.networkId, BufferInfo::ChannelBuffer, channel, true);
+      Core::setChannelPersistent(user(), info.networkId, channel, true);
+    }
   } else {
     qWarning() << qPrintable(tr("CoreSession::createNetwork(): Trying to create a network that already exists, updating instead!"));
     _networks[info.networkId]->requestSetNetworkInfo(info);
