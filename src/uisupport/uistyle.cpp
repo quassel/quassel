@@ -312,30 +312,25 @@ QString UiStyle::mircToInternal(const QString &mirc_) const {
   return mirc;
 }
 
-UiStyle::StyledMessage UiStyle::styleMessage(const Message &msg) {
-  return StyledMessage(msg, this);
+/***********************************************************************************/
+UiStyle::StyledMessage::StyledMessage(const Message &msg)
+  : Message(msg)
+{
 }
 
-/***********************************************************************************/
-
-UiStyle::StyledMessage::StyledMessage(const Message &msg, UiStyle *style) {
-  QString user = userFromMask(msg.sender());
-  QString host = hostFromMask(msg.sender());
-  QString nick = nickFromMask(msg.sender());
-  QString txt = style->mircToInternal(msg.contents());
-  QString bufferName = msg.bufferInfo().bufferName();
+void UiStyle::StyledMessage::style(UiStyle *style) {
+  QString user = userFromMask(sender());
+  QString host = hostFromMask(sender());
+  QString nick = nickFromMask(sender());
+  QString txt = style->mircToInternal(contents());
+  QString bufferName = bufferInfo().bufferName();
   bufferName.replace('%', "%%"); // well, you _can_ have a % in a buffername apparently... -_-
 
-  _msgType = msg.type();
-  _timestamp = msg.timestamp();
-
   QString t;
-  switch(msg.type()) {
+  switch(type()) {
     case Message::Plain:
-      _sender = nick;
       t = tr("%D0%1").arg(txt); break;
     case Message::Notice:
-      _sender = nick;
       t = tr("%Dn%1").arg(txt); break;
     case Message::Server:
       t = tr("%Ds%1").arg(txt); break;
@@ -353,14 +348,13 @@ UiStyle::StyledMessage::StyledMessage(const Message &msg, UiStyle *style) {
       break;
     case Message::Kick: {
         QString victim = txt.section(" ", 0, 0);
-        //if(victim == ui.ownNick->currentText()) victim = tr("you");
         QString kickmsg = txt.section(" ", 1);
         t = tr("%Dk%DN%1%DN has kicked %DN%2%DN from %DC%3%DC").arg(nick).arg(victim).arg(bufferName);
         if(!kickmsg.isEmpty()) t = QString("%1 (%2)").arg(t).arg(kickmsg);
       }
       break;
     case Message::Nick:
-      if(nick == msg.contents()) t = tr("%DrYou are now known as %DN%1%DN").arg(txt);
+      if(nick == contents()) t = tr("%DrYou are now known as %DN%1%DN").arg(txt);
       else t = tr("%Dr%DN%1%DN is now known as %DN%2%DN").arg(nick, txt);
       break;
     case Message::Mode:
@@ -371,25 +365,20 @@ UiStyle::StyledMessage::StyledMessage(const Message &msg, UiStyle *style) {
       t = tr("%Da%DN%1%DN %2").arg(nick).arg(txt);
       break;
     default:
-      _sender = msg.sender();
       t = tr("%De[%1]").arg(txt);
   }
   _contents = style->styleString(t);
 }
 
-QDateTime UiStyle::StyledMessage::timestamp() const {
-  return _timestamp;
-}
-
 QString UiStyle::StyledMessage::decoratedTimestamp() const {
-  return QString("[%1]").arg(_timestamp.toLocalTime().toString("hh:mm:ss"));
+  return QString("[%1]").arg(timestamp().toLocalTime().toString("hh:mm:ss"));
 }
 
-QString UiStyle::StyledMessage::sender() const {
+QString UiStyle::StyledMessage::plainSender() const {
   switch(type()) {
     case Message::Plain:
     case Message::Notice:
-      return _sender;
+      return nickFromMask(sender());
     default:
       return QString();
   }
@@ -398,9 +387,9 @@ QString UiStyle::StyledMessage::sender() const {
 QString UiStyle::StyledMessage::decoratedSender() const {
   switch(type()) {
     case Message::Plain:
-      return tr("<%1>").arg(_sender); break;
+      return tr("<%1>").arg(plainSender()); break;
     case Message::Notice:
-      return tr("[%1]").arg(_sender); break;
+      return tr("[%1]").arg(plainSender()); break;
     case Message::Server:
       return tr("*"); break;
     case Message::Error:
@@ -420,16 +409,8 @@ QString UiStyle::StyledMessage::decoratedSender() const {
     case Message::Action:
       return tr("-*-"); break;
     default:
-      return tr("%1").arg(_sender);
+      return tr("%1").arg(plainSender());
   }
-}
-
-QString UiStyle::StyledMessage::contents() const {
-  return _contents.plainText;
-}
-
-UiStyle::FormatType UiStyle::StyledMessage::timestampFormat() const {
-  return UiStyle::Timestamp;
 }
 
 UiStyle::FormatType UiStyle::StyledMessage::senderFormat() const {
@@ -459,10 +440,6 @@ UiStyle::FormatType UiStyle::StyledMessage::senderFormat() const {
     default:
       return UiStyle::ErrorMsg;
   }
-}
-
-UiStyle::FormatList UiStyle::StyledMessage::contentsFormatList() const {
-  return _contents.formatList;
 }
 
 /***********************************************************************************/

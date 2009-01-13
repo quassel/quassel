@@ -97,7 +97,7 @@ QVariant ChatLineModelItemPrivate::data(MessageModel::ColumnType column, int rol
         case ChatLineModel::DisplayRole:
           return _styledMsg->decoratedSender();
         case ChatLineModel::EditRole:
-          return _styledMsg->sender();
+          return _styledMsg->plainSender();
         case ChatLineModel::FormatRole:
           return QVariant::fromValue<UiStyle::FormatList>(UiStyle::FormatList()
                                     << qMakePair((quint16)0, (quint32)_styledMsg->senderFormat()));
@@ -107,7 +107,7 @@ QVariant ChatLineModelItemPrivate::data(MessageModel::ColumnType column, int rol
       switch(role) {
         case ChatLineModel::DisplayRole:
         case ChatLineModel::EditRole:
-          return _styledMsg->contents();
+          return _styledMsg->plainContents();
         case ChatLineModel::FormatRole:
           return QVariant::fromValue<UiStyle::FormatList>(_styledMsg->contentsFormatList());
         case ChatLineModel::WrapListRole:
@@ -124,7 +124,8 @@ QVariant ChatLineModelItemPrivate::data(MessageModel::ColumnType column, int rol
 }
 
 void ChatLineModelItemPrivate::style() {
-  _styledMsg = new QtUiStyle::StyledMessage(QtUi::style()->styleMessage(*_msgBuffer));
+  _styledMsg = new QtUiStyle::StyledMessage(*_msgBuffer);
+  _styledMsg->style(QtUi::style());
   delete _msgBuffer;
   _msgBuffer = 0;
 }
