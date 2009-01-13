@@ -47,17 +47,9 @@ void MessageFilter::init() {
   setDynamicSortFilter(true);
 
   BufferSettings defaultSettings;
-  defaultSettings.notify("UserNoticesInDefaultBuffer", this, SLOT(messageRedirectionChanged()));
-  defaultSettings.notify("UserNoticesInStatusBuffer", this, SLOT(messageRedirectionChanged()));
-  defaultSettings.notify("UserNoticesInCurrentBuffer", this, SLOT(messageRedirectionChanged()));
-
-  defaultSettings.notify("serverNoticesInDefaultBuffer", this, SLOT(messageRedirectionChanged()));
-  defaultSettings.notify("serverNoticesInStatusBuffer", this, SLOT(messageRedirectionChanged()));
-  defaultSettings.notify("serverNoticesInCurrentBuffer", this, SLOT(messageRedirectionChanged()));
-
-  defaultSettings.notify("ErrorMsgsInDefaultBuffer", this, SLOT(messageRedirectionChanged()));
-  defaultSettings.notify("ErrorMsgsInStatusBuffer", this, SLOT(messageRedirectionChanged()));
-  defaultSettings.notify("ErrorMsgsInCurrentBuffer", this, SLOT(messageRedirectionChanged()));
+  defaultSettings.notify("UserNoticesTarget", this, SLOT(messageRedirectionChanged()));
+  defaultSettings.notify("ServerNoticesTarget", this, SLOT(messageRedirectionChanged()));
+  defaultSettings.notify("ErrorMsgsTarget", this, SLOT(messageRedirectionChanged()));
   messageRedirectionChanged();
 
   _messageTypeFilter = defaultSettings.messageFilter();
@@ -88,19 +80,25 @@ void MessageFilter::messageTypeFilterChanged() {
 
 void MessageFilter::messageRedirectionChanged() {
   BufferSettings bufferSettings;
-  _userNoticesInDefaultBuffer = bufferSettings.value("UserNoticesInDefaultBuffer", QVariant(true)).toBool();
-  _userNoticesInStatusBuffer = bufferSettings.value("UserNoticesInStatusBuffer", QVariant(false)).toBool();
-  _userNoticesInCurrentBuffer = bufferSettings.value("UserNoticesInCurrentBuffer", QVariant(false)).toBool();
+  bool changed = false;
 
-  _serverNoticesInDefaultBuffer = bufferSettings.value("ServerNoticesInDefaultBuffer", QVariant(false)).toBool();
-  _serverNoticesInStatusBuffer = bufferSettings.value("ServerNoticesInStatusBuffer", QVariant(true)).toBool();
-  _serverNoticesInCurrentBuffer = bufferSettings.value("ServerNoticesInCurrentBuffer", QVariant(false)).toBool();
+  if(_userNoticesTarget != bufferSettings.userNoticesTarget()) {
+    _userNoticesTarget = bufferSettings.userNoticesTarget();
+    changed = true;
+  }
 
-  _errorMsgsInDefaultBuffer = bufferSettings.value("ErrorMsgsInDefaultBuffer", QVariant(true)).toBool();
-  _errorMsgsInStatusBuffer = bufferSettings.value("ErrorMsgsInStatusBuffer", QVariant(false)).toBool();
-  _errorMsgsInCurrentBuffer = bufferSettings.value("ErrorMsgsInCurrentBuffer", QVariant(false)).toBool();
+  if(_serverNoticesTarget != bufferSettings.serverNoticesTarget()) {
+    _serverNoticesTarget = bufferSettings.serverNoticesTarget();
+    changed = true;
+  }
 
-  invalidateFilter();
+  if(_errorMsgsTarget != bufferSettings.errorMsgsTarget()) {
+    _errorMsgsTarget = bufferSettings.errorMsgsTarget();
+    changed = true;
+  }
+
+  if(changed)
+    invalidateFilter();
 }
 
 QString MessageFilter::idString() const {
@@ -143,59 +141,51 @@ bool MessageFilter::filterAcceptsRow(int sourceRow, const QModelIndex &sourcePar
     return false;
 
   bool redirect = false;
-  bool inDefaultBuffer;
-  bool inStatusBuffer;
-  bool inCurrentBuffer;
-
+  int redirectionTarget = 0;
   switch(messageType) {
   case Message::Notice:
     if(Client::networkModel()->bufferType(bufferId) != BufferInfo::ChannelBuffer) {
       redirect = true;
       if(flags & Message::ServerMsg) {
 	// server notice
-	inDefaultBuffer = _serverNoticesInDefaultBuffer;
-	inStatusBuffer = _serverNoticesInStatusBuffer;
-	inCurrentBuffer = _serverNoticesInCurrentBuffer;
+	redirectionTarget = _serverNoticesTarget;
       } else {
-	inDefaultBuffer = _userNoticesInDefaultBuffer;
-	inStatusBuffer = _userNoticesInStatusBuffer;
-	inCurrentBuffer = _userNoticesInCurrentBuffer;
+	redirectionTarget = _userNoticesTarget;
       }
     }
     break;
   case Message::Error:
     redirect = true;
-    inDefaultBuffer = _errorMsgsInDefaultBuffer;
-    inStatusBuffer = _errorMsgsInStatusBuffer;
-    inCurrentBuffer = _errorMsgsInCurrentBuffer;
+    redirectionTarget = _errorMsgsTarget;
     break;
   default:
     break;
   }
 
   if(redirect) {
-    if(_redirectedMsgs.contains(msgId))
+
+    if(redirectionTarget & BufferSettings::DefaultBuffer && _validBuffers.contains(bufferId))
       return true;
 
-    if(inDefaultBuffer && _validBuffers.contains(bufferId))
-      return true;
-
-    if(inCurrentBuffer && !(flags & Message::Backlog) && _validBuffers.contains(Client::bufferModel()->currentIndex().data(NetworkModel::BufferIdRole).value<BufferId>())) {
+    if(redirectionTarget & BufferSettings::CurrentBuffer && !(flags & Message::Backlog)) {
       BufferId redirectedTo = sourceModel()->data(sourceIdx, MessageModel::RedirectedToRole).value<BufferId>();
       if(!redirectedTo.isValid()) {
-	sourceModel()->setData(sourceIdx, QVariant::fromValue<BufferId>(singleBufferId()), MessageModel::RedirectedToRole);
-	_redirectedMsgs << msgId;
-	return true;
-      } else if(_validBuffers.contains(redirectedTo)) {
-	return true;
+	BufferId redirectedTo = Client::bufferModel()->currentIndex().data(NetworkModel::BufferIdRole).value<BufferId>();
+	if(redirectedTo.isValid())
+	  sourceModel()->setData(sourceIdx, QVariant::fromValue<BufferId>(redirectedTo), MessageModel::RedirectedToRole);
       }
+
+      if(_validBuffers.contains(redirectedTo))
+	return true;
     }
 
-    QSet<BufferId>::const_iterator idIter = _validBuffers.constBegin();
-    while(idIter != _validBuffers.constEnd()) {
-      if(inStatusBuffer && Client::networkModel()->bufferType(*idIter) == BufferInfo::StatusBuffer)
-	return true;
-      idIter++;
+    if(redirectionTarget & BufferSettings::StatusBuffer) {
+      QSet<BufferId>::const_iterator idIter = _validBuffers.constBegin();
+      while(idIter != _validBuffers.constEnd()) {
+	if(Client::networkModel()->bufferType(*idIter) == BufferInfo::StatusBuffer)
+	  return true;
+	idIter++;
+      }
     }
 
     return false;

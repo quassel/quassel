@@ -109,17 +109,20 @@ void GeneralSettingsPage::load() {
 
   // bufferSettings:
   BufferSettings bufferSettings;
-  SettingsPage::load(ui.userNoticesInDefaultBuffer, bufferSettings.value("UserNoticesInDefaultBuffer", QVariant(true)).toBool());
-  SettingsPage::load(ui.userNoticesInStatusBuffer, bufferSettings.value("UserNoticesInStatusBuffer", QVariant(false)).toBool());
-  SettingsPage::load(ui.userNoticesInCurrentBuffer, bufferSettings.value("UserNoticesInCurrentBuffer", QVariant(false)).toBool());
+  int redirectTarget = bufferSettings.userNoticesTarget();
+  SettingsPage::load(ui.userNoticesInDefaultBuffer, redirectTarget & BufferSettings::DefaultBuffer);
+  SettingsPage::load(ui.userNoticesInStatusBuffer, redirectTarget & BufferSettings::StatusBuffer);
+  SettingsPage::load(ui.userNoticesInCurrentBuffer, redirectTarget & BufferSettings::CurrentBuffer);
 
-  SettingsPage::load(ui.serverNoticesInDefaultBuffer, bufferSettings.value("ServerNoticesInDefaultBuffer", QVariant(false)).toBool());
-  SettingsPage::load(ui.serverNoticesInStatusBuffer, bufferSettings.value("ServerNoticesInStatusBuffer", QVariant(true)).toBool());
-  SettingsPage::load(ui.serverNoticesInCurrentBuffer, bufferSettings.value("ServerNoticesInCurrentBuffer", QVariant(false)).toBool());
+  redirectTarget = bufferSettings.serverNoticesTarget();
+  SettingsPage::load(ui.serverNoticesInDefaultBuffer, redirectTarget & BufferSettings::DefaultBuffer);
+  SettingsPage::load(ui.serverNoticesInStatusBuffer, redirectTarget & BufferSettings::StatusBuffer);
+  SettingsPage::load(ui.serverNoticesInCurrentBuffer, redirectTarget & BufferSettings::CurrentBuffer);
 
-  SettingsPage::load(ui.errorMsgsInDefaultBuffer, bufferSettings.value("ErrorMsgsInDefaultBuffer", QVariant(true)).toBool());
-  SettingsPage::load(ui.errorMsgsInStatusBuffer, bufferSettings.value("ErrorMsgsInStatusBuffer", QVariant(false)).toBool());
-  SettingsPage::load(ui.errorMsgsInCurrentBuffer, bufferSettings.value("ErrorMsgsInCurrentBuffer", QVariant(false)).toBool());
+  redirectTarget = bufferSettings.errorMsgsTarget();
+  SettingsPage::load(ui.errorMsgsInDefaultBuffer, redirectTarget & BufferSettings::DefaultBuffer);
+  SettingsPage::load(ui.errorMsgsInStatusBuffer, redirectTarget & BufferSettings::StatusBuffer);
+  SettingsPage::load(ui.errorMsgsInCurrentBuffer, redirectTarget & BufferSettings::CurrentBuffer);
 
 
   settings["DisplayTopicInTooltip"] = bufferSettings.value("DisplayTopicInTooltip", QVariant(false));
@@ -142,17 +145,32 @@ void GeneralSettingsPage::save() {
   uiSettings.setValue("MouseWheelChangesBuffers", ui.mouseWheelChangesBuffers->isChecked());
 
   BufferSettings bufferSettings;
-  bufferSettings.setValue("UserNoticesInDefaultBuffer", ui.userNoticesInDefaultBuffer->isChecked());
-  bufferSettings.setValue("UserNoticesInStatusBuffer", ui.userNoticesInStatusBuffer->isChecked());
-  bufferSettings.setValue("UserNoticesInCurrentBuffer", ui.userNoticesInCurrentBuffer->isChecked());
+  int redirectTarget = 0;
+  if(ui.userNoticesInDefaultBuffer->isChecked())
+    redirectTarget |= BufferSettings::DefaultBuffer;
+  if(ui.userNoticesInStatusBuffer->isChecked())
+    redirectTarget |= BufferSettings::StatusBuffer;
+  if(ui.userNoticesInCurrentBuffer->isChecked())
+    redirectTarget |= BufferSettings::CurrentBuffer;
+  bufferSettings.setUserNoticesTarget(redirectTarget);
 
-  bufferSettings.setValue("ServerNoticesInDefaultBuffer", ui.serverNoticesInDefaultBuffer->isChecked());
-  bufferSettings.setValue("ServerNoticesInStatusBuffer", ui.serverNoticesInStatusBuffer->isChecked());
-  bufferSettings.setValue("ServerNoticesInCurrentBuffer", ui.serverNoticesInCurrentBuffer->isChecked());
+  redirectTarget = 0;
+  if(ui.serverNoticesInDefaultBuffer->isChecked())
+    redirectTarget |= BufferSettings::DefaultBuffer;
+  if(ui.serverNoticesInStatusBuffer->isChecked())
+    redirectTarget |= BufferSettings::StatusBuffer;
+  if(ui.serverNoticesInCurrentBuffer->isChecked())
+    redirectTarget |= BufferSettings::CurrentBuffer;
+  bufferSettings.setServerNoticesTarget(redirectTarget);
 
-  bufferSettings.setValue("ErrorMsgsInDefaultBuffer", ui.errorMsgsInDefaultBuffer->isChecked());
-  bufferSettings.setValue("ErrorMsgsInStatusBuffer", ui.errorMsgsInStatusBuffer->isChecked());
-  bufferSettings.setValue("ErrorMsgsInCurrentBuffer", ui.errorMsgsInCurrentBuffer->isChecked());
+  redirectTarget = 0;
+  if(ui.errorMsgsInDefaultBuffer->isChecked())
+    redirectTarget |= BufferSettings::DefaultBuffer;
+  if(ui.errorMsgsInStatusBuffer->isChecked())
+    redirectTarget |= BufferSettings::StatusBuffer;
+  if(ui.errorMsgsInCurrentBuffer->isChecked())
+    redirectTarget |= BufferSettings::CurrentBuffer;
+  bufferSettings.setErrorMsgsTarget(redirectTarget);
 
   bufferSettings.setValue("DisplayTopicInTooltip", ui.displayTopicInTooltip->isChecked());
 
