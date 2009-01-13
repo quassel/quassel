@@ -44,10 +44,6 @@ Message::Message(const QDateTime &ts, const BufferInfo &bufferInfo, Type type, c
 {
 }
 
-void Message::setFlags(Flags flags) {
-  _flags = flags;
-}
-
 QDataStream &operator<<(QDataStream &out, const Message &msg) {
   out << msg.msgId() << (quint32)msg.timestamp().toTime_t() << (quint32)msg.type() << (quint8)msg.flags()
       << msg.bufferInfo() << msg.sender().toUtf8() << msg.contents().toUtf8();

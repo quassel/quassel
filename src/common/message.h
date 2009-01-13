@@ -74,9 +74,10 @@ public:
   inline QString sender() const { return _sender; }
   inline Type type() const { return _type; }
   inline Flags flags() const { return _flags; }
+  inline void setFlags(Flags flags) { _flags = flags; }
   inline QDateTime timestamp() const { return _timestamp; }
 
-  void setFlags(Flags flags);
+  inline bool isValid() const { return _msgId.isValid(); }
 
   inline bool operator<(const Message &other) const { return _msgId < other._msgId; }
 
@@ -88,8 +89,6 @@ private:
   QString _sender;
   Type _type;
   Flags _flags;
-
-  QString _formattedTimestamp, _formattedSender, _formattedText; // cache
 
   friend QDataStream &operator>>(QDataStream &in, Message &msg);
 };
