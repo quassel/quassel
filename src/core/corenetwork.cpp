@@ -406,7 +406,7 @@ void CoreNetwork::sendPerform() {
   // rejoin channels we've been in
   if(rejoinChannels()) {
     QStringList channels, keys;
-    foreach(QString chan, persistentChannels()) {
+    foreach(QString chan, coreSession()->persistentChannels(networkId()).keys()) {
       QString key = channelKey(chan);
       if(!key.isEmpty()) {
         channels.prepend(chan);
