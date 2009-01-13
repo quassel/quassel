@@ -37,108 +37,93 @@ typedef struct {
     unsigned unused                  :2;
 } HB_CharAttributes_Dummy;
 
-// PRIVATE DATA FOR CHATLINE MODEL ITEM
-class ChatLineModelItemPrivate {
 
-public:
-  inline ChatLineModelItemPrivate(const Message &msg);
-  ~ChatLineModelItemPrivate();
+unsigned char *ChatLineModelItem::TextBoundaryFinderBuffer = (unsigned char *)malloc(512 * sizeof(HB_CharAttributes_Dummy));
+int ChatLineModelItem::TextBoundaryFinderBufferSize = 512 * (sizeof(HB_CharAttributes_Dummy) / sizeof(unsigned char));
 
-  inline bool needsStyling();
-  QVariant data(MessageModel::ColumnType column, int role);
-
-private:
-  void style();
-  void computeWrapList();
-
-  ChatLineModel::WrapList _wrapList;
-  Message *_msgBuffer;
-  UiStyle::StyledMessage *_styledMsg;
-
-  static unsigned char *TextBoundaryFinderBuffer;
-  static int TextBoundaryFinderBufferSize;
-};
-
-ChatLineModelItemPrivate::ChatLineModelItemPrivate(const Message &msg)
-: _msgBuffer(new Message(msg)),
-  _styledMsg(0) {
-
+// ****************************************
+// the actual ChatLineModelItem
+// ****************************************
+ChatLineModelItem::ChatLineModelItem(const Message &msg)
+  : MessageModelItem(),
+    _styledMsg(msg)
+{
+  if(!msg.sender().contains('!'))
+    _styledMsg.setFlags(msg.flags() |= Message::ServerMsg);
 }
 
-ChatLineModelItemPrivate::~ChatLineModelItemPrivate() {
-  if(_msgBuffer) {
-    delete _msgBuffer;
-  } else {
-    delete _styledMsg;
+QVariant ChatLineModelItem::data(int column, int role) const {
+  MessageModel::ColumnType col = (MessageModel::ColumnType)column;
+  QVariant variant;
+  switch(col) {
+  case ChatLineModel::TimestampColumn:
+    variant = timestampData(role);
+    break;
+  case ChatLineModel::SenderColumn:
+    variant = senderData(role);
+    break;
+  case ChatLineModel::ContentsColumn:
+    variant = contentsData(role);
+    break;
+  default:
+    break;
   }
+  if(!variant.isValid())
+    return MessageModelItem::data(column, role);
+  return variant;
 }
 
-bool ChatLineModelItemPrivate::needsStyling() {
-  return (bool)_msgBuffer;
-}
-
-QVariant ChatLineModelItemPrivate::data(MessageModel::ColumnType column, int role) {
-  if(needsStyling())
-    style();
-  switch(column) {
-    case ChatLineModel::TimestampColumn:
-      switch(role) {
-        case ChatLineModel::DisplayRole:
-          return _styledMsg->decoratedTimestamp();
-        case ChatLineModel::EditRole:
-          return _styledMsg->timestamp();
-        case ChatLineModel::FormatRole:
-          return QVariant::fromValue<UiStyle::FormatList>(UiStyle::FormatList()
-                                    << qMakePair((quint16)0, (quint32)_styledMsg->timestampFormat()));
-      }
-      break;
-    case ChatLineModel::SenderColumn:
-      switch(role) {
-        case ChatLineModel::DisplayRole:
-          return _styledMsg->decoratedSender();
-        case ChatLineModel::EditRole:
-          return _styledMsg->plainSender();
-        case ChatLineModel::FormatRole:
-          return QVariant::fromValue<UiStyle::FormatList>(UiStyle::FormatList()
-                                    << qMakePair((quint16)0, (quint32)_styledMsg->senderFormat()));
-      }
-      break;
-    case ChatLineModel::ContentsColumn:
-      switch(role) {
-        case ChatLineModel::DisplayRole:
-        case ChatLineModel::EditRole:
-          return _styledMsg->plainContents();
-        case ChatLineModel::FormatRole:
-          return QVariant::fromValue<UiStyle::FormatList>(_styledMsg->contentsFormatList());
-        case ChatLineModel::WrapListRole:
-          if(_wrapList.isEmpty())
-            computeWrapList();
-          return QVariant::fromValue<ChatLineModel::WrapList>(_wrapList);
-      }
-      break;
-    default:
-      Q_ASSERT(false);
-      return 0;
+QVariant ChatLineModelItem::timestampData(int role) const {
+  switch(role) {
+  case ChatLineModel::DisplayRole:
+    return _styledMsg.decoratedTimestamp();
+  case ChatLineModel::EditRole:
+    return _styledMsg.timestamp();
+  case ChatLineModel::FormatRole:
+    return QVariant::fromValue<UiStyle::FormatList>(UiStyle::FormatList() << qMakePair((quint16)0, (quint32)_styledMsg.timestampFormat()));
   }
   return QVariant();
 }
 
-void ChatLineModelItemPrivate::style() {
-  _styledMsg = new QtUiStyle::StyledMessage(*_msgBuffer);
-  _styledMsg->style(QtUi::style());
-  delete _msgBuffer;
-  _msgBuffer = 0;
+QVariant ChatLineModelItem::senderData(int role) const {
+  switch(role) {
+  case ChatLineModel::DisplayRole:
+    return _styledMsg.decoratedSender();
+  case ChatLineModel::EditRole:
+    return _styledMsg.plainSender();
+  case ChatLineModel::FormatRole:
+    return QVariant::fromValue<UiStyle::FormatList>(UiStyle::FormatList() << qMakePair((quint16)0, (quint32)_styledMsg.senderFormat()));
+  }
+  return QVariant();
 }
 
-void ChatLineModelItemPrivate::computeWrapList() {
-  int length = _styledMsg->contents().length();
+QVariant ChatLineModelItem::contentsData(int role) const {
+  if(_styledMsg.needsStyling())
+    _styledMsg.style(QtUi::style());
+
+  switch(role) {
+  case ChatLineModel::DisplayRole:
+  case ChatLineModel::EditRole:
+    return _styledMsg.plainContents();
+  case ChatLineModel::FormatRole:
+    return QVariant::fromValue<UiStyle::FormatList>(_styledMsg.contentsFormatList());
+  case ChatLineModel::WrapListRole:
+    if(_wrapList.isEmpty())
+      computeWrapList();
+    return QVariant::fromValue<ChatLineModel::WrapList>(_wrapList);
+  }
+  return QVariant();
+}
+
+void ChatLineModelItem::computeWrapList() const {
+  int length = _styledMsg.plainContents().length();
   if(!length)
     return;
 
   enum Mode { SearchStart, SearchEnd };
 
   QList<ChatLineModel::Word> wplist;  // use a temp list which we'll later copy into a QVector for efficiency
-  QTextBoundaryFinder finder(QTextBoundaryFinder::Word, _styledMsg->contents().unicode(), length,
+  QTextBoundaryFinder finder(QTextBoundaryFinder::Word, _styledMsg.plainContents().unicode(), length,
                               TextBoundaryFinderBuffer, TextBoundaryFinderBufferSize);
 
   int idx;
@@ -150,12 +135,12 @@ void ChatLineModelItemPrivate::computeWrapList() {
   word.start = 0;
   qreal wordstartx = 0;
 
-  QTextLayout layout(_styledMsg->contents());
+  QTextLayout layout(_styledMsg.plainContents());
   QTextOption option;
   option.setWrapMode(QTextOption::NoWrap);
   layout.setTextOption(option);
 
-  layout.setAdditionalFormats(QtUi::style()->toTextLayoutList(_styledMsg->contentsFormatList(), length));
+  layout.setAdditionalFormats(QtUi::style()->toTextLayoutList(_styledMsg.contentsFormatList(), length));
   layout.beginLayout();
   QTextLine line = layout.createLine();
   line.setNumColumns(length);
@@ -204,30 +189,3 @@ void ChatLineModelItemPrivate::computeWrapList() {
   }
 }
 
-unsigned char *ChatLineModelItemPrivate::TextBoundaryFinderBuffer = (unsigned char *)malloc(512 * sizeof(HB_CharAttributes_Dummy));
-int ChatLineModelItemPrivate::TextBoundaryFinderBufferSize = 512 * (sizeof(HB_CharAttributes_Dummy) / sizeof(unsigned char));
-
-// ****************************************
-// the actual ChatLineModelItem
-// ****************************************
-ChatLineModelItem::ChatLineModelItem(const Message &msg)
-  : MessageModelItem(msg),
-    _data(new ChatLineModelItemPrivate(msg))
-{
-}
-
-ChatLineModelItem::ChatLineModelItem(const ChatLineModelItem &other)
-  : MessageModelItem(other)
-{
-  _data = new ChatLineModelItemPrivate(message());
-}
-
-ChatLineModelItem::~ChatLineModelItem() {
-  delete _data;
-}
-
-QVariant ChatLineModelItem::data(int column, int role) const {
-  QVariant d = _data->data((MessageModel::ColumnType)column, role);
-  if(!d.isValid()) return MessageModelItem::data(column, role);
-  return d;
-}

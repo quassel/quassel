@@ -318,7 +318,7 @@ UiStyle::StyledMessage::StyledMessage(const Message &msg)
 {
 }
 
-void UiStyle::StyledMessage::style(UiStyle *style) {
+void UiStyle::StyledMessage::style(UiStyle *style) const {
   QString user = userFromMask(sender());
   QString host = hostFromMask(sender());
   QString nick = nickFromMask(sender());
@@ -441,6 +441,7 @@ UiStyle::FormatType UiStyle::StyledMessage::senderFormat() const {
       return UiStyle::ErrorMsg;
   }
 }
+
 
 /***********************************************************************************/
 

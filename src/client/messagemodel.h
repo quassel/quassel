@@ -118,19 +118,19 @@ public:
    *  Subclasses need to provide Qt::DisplayRole at least, which should describe the plaintext
    *  strings without formattings (e.g. for searching purposes).
    */
-  MessageModelItem(const Message &);
+  MessageModelItem() {}
   inline virtual ~MessageModelItem() {}
 
   virtual QVariant data(int column, int role) const;
   virtual bool setData(int column, const QVariant &value, int role);
 
-  inline const Message &message() const { return _msg; }
-  inline const QDateTime &timestamp() const { return _msg.timestamp(); }
-  inline const MsgId &msgId() const { return _msg.msgId(); }
-  inline const BufferId &bufferId() const { return _msg.bufferId(); }
-  inline void setBufferId(BufferId bufferId) { _msg.setBufferId(bufferId); }
-  inline Message::Type msgType() const { return _msg.type(); }
-  inline Message::Flags msgFlags() const { return _msg.flags(); }
+  virtual const Message &message() const = 0;
+  virtual const QDateTime &timestamp() const = 0;
+  virtual const MsgId &msgId() const = 0;
+  virtual const BufferId &bufferId() const = 0;
+  virtual void setBufferId(BufferId bufferId) = 0;
+  virtual Message::Type msgType() const = 0;
+  virtual Message::Flags msgFlags() const = 0;
 
   // For sorting
   bool operator<(const MessageModelItem &) const;

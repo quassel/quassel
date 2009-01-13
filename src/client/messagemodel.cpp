@@ -409,13 +409,6 @@ void MessageModel::buffersPermanentlyMerged(BufferId bufferId1, BufferId bufferI
 // ========================================
 //  MessageModelItem
 // ========================================
-MessageModelItem::MessageModelItem(const Message &msg)
-  : _msg(msg)
-{
-  if(!_msg.sender().contains('!'))
-    _msg.setFlags(_msg.flags() |= Message::ServerMsg);
-}
-
 QVariant MessageModelItem::data(int column, int role) const {
   if(column < MessageModel::TimestampColumn || column > MessageModel::ContentsColumn)
     return QVariant();

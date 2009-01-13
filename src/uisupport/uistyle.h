@@ -156,20 +156,23 @@ class UiStyle::StyledMessage : public Message {
 public:
   explicit StyledMessage(const Message &message);
 
+  //! Styling is only needed for calls to plainContents() and contentsFormatList()
+  // StyledMessage can't style lazily by itself, as it doesn't know the used style
   bool inline needsStyling() const { return _contents.plainText.isNull(); }
-  void style(UiStyle *style);
+  void style(UiStyle *style) const;
+
 
   QString decoratedTimestamp() const;
   QString plainSender() const;             //!< Nickname (no decorations) for Plain and Notice, empty else
   QString decoratedSender() const;
-  const QString &plainContents() const { return _contents.plainText; }
+  inline const QString &plainContents() const { return _contents.plainText; }
 
   inline FormatType timestampFormat() const { return UiStyle::Timestamp; }
   FormatType senderFormat() const;
   inline const FormatList &contentsFormatList() const { return _contents.formatList; }
 
 private:
-  StyledString _contents;
+  mutable StyledString _contents;
 };
 
 QDataStream &operator<<(QDataStream &out, const UiStyle::FormatList &formatList);

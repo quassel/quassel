@@ -23,15 +23,21 @@
 
 #include "messagemodel.h"
 
-class ChatLineModelItemPrivate;
+#include "uistyle.h"
 
 class ChatLineModelItem : public MessageModelItem {
 public:
   ChatLineModelItem(const Message &);
-  ChatLineModelItem(const ChatLineModelItem &other);
-  ~ChatLineModelItem();
 
   virtual QVariant data(int column, int role) const;
+
+  virtual inline const Message &message() const { return _styledMsg; }
+  virtual inline const QDateTime &timestamp() const { return _styledMsg.timestamp(); }
+  virtual inline const MsgId &msgId() const { return _styledMsg.msgId(); }
+  virtual inline const BufferId &bufferId() const { return _styledMsg.bufferId(); }
+  virtual inline void setBufferId(BufferId bufferId) { _styledMsg.setBufferId(bufferId); }
+  virtual inline Message::Type msgType() const { return _styledMsg.type(); }
+  virtual inline Message::Flags msgFlags() const { return _styledMsg.flags(); }
 
   /// Used to store information about words to be used for wrapping
   struct Word {
@@ -43,7 +49,17 @@ public:
   typedef QVector<Word> WrapList;
 
 private:
-  ChatLineModelItemPrivate *_data;
+  virtual QVariant timestampData(int role) const;
+  virtual QVariant senderData(int role) const;
+  virtual QVariant contentsData(int role) const;
+
+  void computeWrapList() const;
+
+  mutable WrapList _wrapList;
+  UiStyle::StyledMessage _styledMsg;
+
+  static unsigned char *TextBoundaryFinderBuffer;
+  static int TextBoundaryFinderBufferSize;
 };
 
 #endif
