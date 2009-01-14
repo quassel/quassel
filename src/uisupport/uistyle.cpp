@@ -416,7 +416,7 @@ UiStyle::FormatType UiStyle::StyledMessage::senderFormat() const {
       // To produce random like but stable nick colorings some sort of hashing should work best.
       // In this case we just use the qt function qChecksum which produces a
       // CRC16 hash. This should be fast and 16 bits are more than enough.
-      hash = qChecksum(_sender.toAscii().data(), _sender.toAscii().size());
+      hash = qChecksum(sender().toAscii().data(), sender().toAscii().size());
       return (UiStyle::FormatType)((((hash % 21) + 1) << 24) + 0x200);
     case Message::Notice:
       return UiStyle::NoticeMsg; break;
