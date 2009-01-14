@@ -123,10 +123,10 @@ void ClientSyncer::connectToCore(const QVariantMap &conn) {
 
 #ifdef HAVE_SSL
     QSslSocket *sock = new QSslSocket(Client::instance());
+    connect(sock, SIGNAL(encrypted()), this, SIGNAL(encrypted()));
 #else
     if(conn["useSsl"].toBool()) {
 	emit connectionError(tr("<b>This client is built without SSL Support!</b><br />Disable the usage of SSL in the account settings."));
-	emit encrypted(false);
 	return;
     }
     QTcpSocket *sock = new QTcpSocket(Client::instance());
@@ -229,11 +229,8 @@ void ClientSyncer::clientInitAck(const QVariantMap &msg) {
       Q_ASSERT(sslSocket);
       connect(sslSocket, SIGNAL(sslErrors(const QList<QSslError> &)), this, SLOT(sslErrors(const QList<QSslError> &)));
       sslSocket->startClientEncryption();
-      emit encrypted(true);
-      Client::instance()->setSecuredConnection();
     } else {
       emit connectionError(tr("<b>The Quassel Core you are trying to connect to does not support SSL!</b><br />If you want to connect anyways, disable the usage of SSL in the account settings."));
-      emit encrypted(false);
       disconnectFromCore();
       return;
     }

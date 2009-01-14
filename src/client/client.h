@@ -129,7 +129,6 @@ signals:
   void showConfigWizard(const QVariantMap &coredata);
 
   void connected();
-  void securedConnection();
   void disconnected();
   void coreConnectionStateChanged(bool);
 
@@ -188,8 +187,6 @@ private slots:
   void createDefaultBufferView();
   void createDefaultIdentity();
   void createDefaultNetworks();
-  void setSecuredConnection();
-
 
 private:
   Client(QObject *parent = 0);

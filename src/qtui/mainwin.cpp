@@ -464,7 +464,6 @@ void MainWin::setupStatusBar() {
   connect(Client::signalProxy(), SIGNAL(lagUpdated(int)), this, SLOT(updateLagIndicator(int)));
 
   // SSL indicator
-  connect(Client::instance(), SIGNAL(securedConnection()), this, SLOT(securedConnection()));
   sslLabel->setPixmap(QPixmap());
   statusBar()->addPermanentWidget(sslLabel);
   sslLabel->hide();
@@ -553,8 +552,11 @@ void MainWin::setConnectedState() {
   if(!Client::internalCore())
     statusBar()->showMessage(tr("Connected to core."));
 
-  if(sslLabel->width() == 0)
+  if(Client::signalProxy()->isSecure()) {
+    sslLabel->setPixmap(SmallIcon("security-high"));
+  } else {
     sslLabel->setPixmap(SmallIcon("security-low"));
+  }
 
   sslLabel->setVisible(!Client::internalCore());
   coreLagLabel->setVisible(!Client::internalCore());
@@ -580,12 +582,6 @@ void MainWin::updateLagIndicator(int lag) {
   else
     text = text.arg("%1 msec").arg(lag);
   coreLagLabel->setText(text);
-}
-
-
-void MainWin::securedConnection() {
-  // todo: make status bar entry
-  sslLabel->setPixmap(SmallIcon("security-high"));
 }
 
 void MainWin::disconnectedFromCore() {

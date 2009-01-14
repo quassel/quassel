@@ -61,7 +61,7 @@ signals:
   void coreSetupSuccess();
   void coreSetupFailed(const QString &error);
 
-  void encrypted(bool);
+  void encrypted(); // relaying encrypted signal of the encapsulated SslSocket
 
   void startInternalCore(ClientSyncer *syncer);
   void connectToInternalCore(SignalProxy *proxy);

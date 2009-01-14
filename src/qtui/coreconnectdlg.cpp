@@ -88,7 +88,6 @@ CoreConnectDlg::CoreConnectDlg(bool autoconnect, QWidget *parent)
   connect(clientSyncer, SIGNAL(socketStateChanged(QAbstractSocket::SocketState)),this, SLOT(initPhaseSocketState(QAbstractSocket::SocketState)));
   connect(clientSyncer, SIGNAL(connectionError(const QString &)), this, SLOT(initPhaseError(const QString &)));
   connect(clientSyncer, SIGNAL(connectionMsg(const QString &)), this, SLOT(initPhaseMsg(const QString &)));
-  connect(clientSyncer, SIGNAL(encrypted(bool)), this, SLOT(encrypted(bool)));
   connect(clientSyncer, SIGNAL(startLogin()), this, SLOT(startLogin()));
   connect(clientSyncer, SIGNAL(loginFailed(const QString &)), this, SLOT(loginFailed(const QString &)));
   connect(clientSyncer, SIGNAL(loginSuccess()), this, SLOT(startSync()));
@@ -96,6 +95,7 @@ CoreConnectDlg::CoreConnectDlg(bool autoconnect, QWidget *parent)
   connect(clientSyncer, SIGNAL(sessionProgress(quint32, quint32)), this, SLOT(coreSessionProgress(quint32, quint32)));
   connect(clientSyncer, SIGNAL(networksProgress(quint32, quint32)), this, SLOT(coreNetworksProgress(quint32, quint32)));
   connect(clientSyncer, SIGNAL(syncFinished()), this, SLOT(syncFinished()));
+  connect(clientSyncer, SIGNAL(encrypted()), ui.secureConnection, SLOT(show()));
 
   connect(ui.user, SIGNAL(textChanged(const QString &)), this, SLOT(setLoginWidgetStates()));
   connect(ui.password, SIGNAL(textChanged(const QString &)), this, SLOT(setLoginWidgetStates()));
@@ -261,13 +261,6 @@ void CoreConnectDlg::initPhaseError(const QString &error) {
 
 void CoreConnectDlg::initPhaseMsg(const QString &msg) {
   ui.coreInfoLabel->setText(msg);
-}
-
-void CoreConnectDlg::encrypted(bool useSsl) {
-  if(useSsl)
-    ui.secureConnection->show();
-  else
-    ui.secureConnection->hide();
 }
 
 void CoreConnectDlg::initPhaseSocketState(QAbstractSocket::SocketState state) {

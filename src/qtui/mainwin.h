@@ -86,7 +86,6 @@ class MainWin
     void connectedToCore();
     void setConnectedState();
     void updateLagIndicator(int lag = -1);
-    void securedConnection();
     void disconnectedFromCore();
     void setDisconnectedState();
     void systrayActivated(QSystemTrayIcon::ActivationReason);

@@ -345,10 +345,6 @@ void Client::createDefaultNetworks() {
   }
 }
 
-void Client::setSecuredConnection() {
-  emit securedConnection();
-}
-
 void Client::disconnectFromCore() {
   if(!isConnected())
     return;

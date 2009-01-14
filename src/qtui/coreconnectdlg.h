@@ -64,7 +64,6 @@ private slots:
   void initPhaseError(const QString &error);
   void initPhaseMsg(const QString &msg);
   void initPhaseSocketState(QAbstractSocket::SocketState);
-  void encrypted(bool);
 
   /*** Phase Two: Login ***/
   void startLogin();
