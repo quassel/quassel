@@ -30,13 +30,11 @@
 #include "uistyle.h"
 #include "qtui.h"
 
-class QTextLayout;
-struct ChatItemPrivate;
+#include <QTextLayout>
 
 class ChatItem : public QGraphicsItem {
 protected:
   ChatItem(const qreal &width, const qreal &height, const QPointF &pos, QGraphicsItem *parent);
-  virtual ~ChatItem();
 
 public:
   inline const QAbstractItemModel *model() const;
@@ -48,9 +46,12 @@ public:
   inline qreal width() const { return _boundingRect.width(); }
   inline qreal height() const { return _boundingRect.height(); }
 
-  QTextLayout *createLayout(QTextOption::WrapMode, Qt::Alignment = Qt::AlignLeft) const;
-  virtual void doLayout();
-  void clearLayout();
+  void initLayoutHelper(QTextLayout *layout, QTextOption::WrapMode, Qt::Alignment = Qt::AlignLeft) const;
+  virtual inline void initLayout(QTextLayout *layout) const {
+    initLayoutHelper(layout, QTextOption::WrapAnywhere);
+    doLayout(layout);
+  }
+  virtual void doLayout(QTextLayout *) const;
 
   virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
   enum { Type = ChatScene::ChatItemType };
@@ -82,8 +83,6 @@ protected:
   virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
   virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 
-  inline QTextLayout *layout() const;
-
   virtual QTextLayout::FormatRange selectionFormat() const;
   virtual inline QVector<QTextLayout::FormatRange> additionalFormats() const { return QVector<QTextLayout::FormatRange>(); }
 
@@ -96,10 +95,6 @@ protected:
   void setSelection(SelectionMode mode, qint16 selectionStart, qint16 selectionEnd);
 
   qint16 posToCursor(const QPointF &pos) const;
-
-  inline bool hasPrivateData() const { return (bool)_data; }
-  ChatItemPrivate *privateData() const;
-  virtual inline ChatItemPrivate *newPrivateData();
 
   // WARNING: setGeometry and setHeight should not be used without either:
   //  a) calling prepareGeometryChange() immediately before setColumns()
@@ -119,7 +114,6 @@ private:
   // internal selection stuff
   void setSelection(int start, int length);
 
-  ChatItemPrivate *_data;
   QRectF _boundingRect;
 
   SelectionMode _selectionMode;
@@ -127,18 +121,6 @@ private:
 
   friend class ChatLine;
 };
-
-struct ChatItemPrivate {
-  QTextLayout *layout;
-  ChatItemPrivate(QTextLayout *l) : layout(l) {}
-  virtual ~ChatItemPrivate() {
-    delete layout;
-  }
-};
-
-// inlines of ChatItem
-QTextLayout *ChatItem::layout() const { return privateData()->layout; }
-ChatItemPrivate *ChatItem::newPrivateData() { return new ChatItemPrivate(createLayout(QTextOption::WrapAnywhere)); }
 
 // ************************************************************
 // TimestampChatItem
@@ -166,7 +148,10 @@ protected:
   virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
   enum { Type = ChatScene::SenderChatItemType };
   virtual inline int type() const { return Type; }
-  virtual inline ChatItemPrivate *newPrivateData() { return new ChatItemPrivate(createLayout(QTextOption::ManualWrap, Qt::AlignRight)); }
+  virtual inline void initLayout(QTextLayout *layout) const {
+    initLayoutHelper(layout, QTextOption::ManualWrap, Qt::AlignRight);
+    doLayout(layout);
+  }
 };
 
 // ************************************************************
@@ -180,6 +165,7 @@ class ContentsChatItem : public ChatItem {
 
 public:
   ContentsChatItem(const qreal &width, const QPointF &pos, QGraphicsItem *parent);
+  ~ContentsChatItem();
 
   enum { Type = ChatScene::ContentsChatItemType };
   virtual inline int type() const { return Type; }
@@ -198,15 +184,19 @@ protected:
 
   virtual QVector<QTextLayout::FormatRange> additionalFormats() const;
 
-  virtual void doLayout();
-  virtual inline ChatItemPrivate *newPrivateData();
+  virtual inline void initLayout(QTextLayout *layout) const {
+    initLayoutHelper(layout, QTextOption::WrapAnywhere);
+    doLayout(layout);
+  }
+  virtual void doLayout(QTextLayout *layout) const;
 
 private:
   struct Clickable;
   class ActionProxy;
   class WrapColumnFinder;
 
-  inline ContentsChatItemPrivate *privateData() const;
+  ContentsChatItemPrivate *_data;
+  ContentsChatItemPrivate *privateData() const;
 
   QList<Clickable> findClickables() const;
   Clickable clickableAt(const QPointF &pos) const;
@@ -243,32 +233,25 @@ struct ContentsChatItem::Clickable {
   inline bool isValid() const { return type != Invalid; }
 };
 
-struct ContentsChatItemPrivate : ChatItemPrivate {
+struct ContentsChatItemPrivate {
   ContentsChatItem *contentsItem;
   QList<ContentsChatItem::Clickable> clickables;
   ContentsChatItem::Clickable currentClickable;
   ContentsChatItem::Clickable activeClickable;
 
-  ContentsChatItemPrivate(QTextLayout *l, const QList<ContentsChatItem::Clickable> &c, ContentsChatItem *parent)
-  : ChatItemPrivate(l), contentsItem(parent), clickables(c) {}
+  ContentsChatItemPrivate(const QList<ContentsChatItem::Clickable> &c, ContentsChatItem *parent) : contentsItem(parent), clickables(c) {}
 };
-
-//inlines regarding ContentsChatItemPrivate
-ChatItemPrivate *ContentsChatItem::newPrivateData() {
-  return new ContentsChatItemPrivate(createLayout(QTextOption::WrapAnywhere), findClickables(), this);
-}
-ContentsChatItemPrivate *ContentsChatItem::privateData() const { return (ContentsChatItemPrivate *)ChatItem::privateData(); }
 
 class ContentsChatItem::WrapColumnFinder {
 public:
-  WrapColumnFinder(ChatItem *parent);
+  WrapColumnFinder(const ChatItem *parent);
   ~WrapColumnFinder();
 
   qint16 nextWrapColumn();
 
 private:
-  ChatItem *item;
-  QTextLayout *layout;
+  const ChatItem *item;
+  QTextLayout layout;
   QTextLine line;
   ChatLineModel::WrapList wrapList;
   qint16 wordidx;

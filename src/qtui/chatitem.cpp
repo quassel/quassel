@@ -39,7 +39,6 @@
 
 ChatItem::ChatItem(const qreal &width, const qreal &height, const QPointF &pos, QGraphicsItem *parent)
   : QGraphicsItem(parent),
-    _data(0),
     _boundingRect(0, 0, width, height),
     _selectionMode(NoSelection),
     _selectionStart(-1)
@@ -47,10 +46,6 @@ ChatItem::ChatItem(const qreal &width, const qreal &height, const QPointF &pos, 
   setAcceptHoverEvents(true);
   setZValue(20);
   setPos(pos);
-}
-
-ChatItem::~ChatItem() {
-  delete _data;
 }
 
 QVariant ChatItem::data(int role) const {
@@ -62,8 +57,10 @@ QVariant ChatItem::data(int role) const {
   return model()->data(index, role);
 }
 
-QTextLayout *ChatItem::createLayout(QTextOption::WrapMode wrapMode, Qt::Alignment alignment) const {
-  QTextLayout *layout = new QTextLayout(data(MessageModel::DisplayRole).toString());
+void ChatItem::initLayoutHelper(QTextLayout *layout, QTextOption::WrapMode wrapMode, Qt::Alignment alignment) const {
+  Q_ASSERT(layout);
+
+  layout->setText(data(MessageModel::DisplayRole).toString());
 
   QTextOption option;
   option.setWrapMode(wrapMode);
@@ -73,33 +70,18 @@ QTextLayout *ChatItem::createLayout(QTextOption::WrapMode wrapMode, Qt::Alignmen
   QList<QTextLayout::FormatRange> formatRanges
          = QtUi::style()->toTextLayoutList(data(MessageModel::FormatRole).value<UiStyle::FormatList>(), layout->text().length());
   layout->setAdditionalFormats(formatRanges);
-  return layout;
 }
 
-void ChatItem::doLayout() {
-  QTextLayout *layout_ = layout();
-  layout_->beginLayout();
-  QTextLine line = layout_->createLine();
+void ChatItem::doLayout(QTextLayout *layout) const {
+  layout->beginLayout();
+  QTextLine line = layout->createLine();
   if(line.isValid()) {
     line.setLineWidth(width());
     line.setPosition(QPointF(0,0));
   }
-  layout_->endLayout();
+  layout->endLayout();
 }
 
-void ChatItem::clearLayout() {
-  delete _data;
-  _data = 0;
-}
-
-ChatItemPrivate *ChatItem::privateData() const {
-  if(!_data) {
-    ChatItem *that = const_cast<ChatItem *>(this);
-    that->_data = that->newPrivateData();
-    that->doLayout();
-  }
-  return _data;
-}
 
 // NOTE: This is not the most time-efficient implementation, but it saves space by not caching unnecessary data
 //       This is a deliberate trade-off. (-> selectFmt creation, data() call)
@@ -109,7 +91,11 @@ void ChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
   QVector<QTextLayout::FormatRange> formats = additionalFormats();
   QTextLayout::FormatRange selectFmt = selectionFormat();
   if(selectFmt.format.isValid()) formats.append(selectFmt);
-  layout()->draw(painter, QPointF(0,0), formats, boundingRect());
+  QTextLayout layout;
+  initLayout(&layout);
+  layout.draw(painter, QPointF(0,0), formats, boundingRect());
+
+  //  layout()->draw(painter, QPointF(0,0), formats, boundingRect());
 
   // Debuging Stuff
   // uncomment partially or all of the following stuff:
@@ -142,8 +128,11 @@ void ChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 qint16 ChatItem::posToCursor(const QPointF &pos) const {
   if(pos.y() > height()) return data(MessageModel::DisplayRole).toString().length();
   if(pos.y() < 0) return 0;
-  for(int l = layout()->lineCount() - 1; l >= 0; l--) {
-    QTextLine line = layout()->lineAt(l);
+
+  QTextLayout layout;
+  initLayout(&layout);
+  for(int l = layout.lineCount() - 1; l >= 0; l--) {
+    QTextLine line = layout.lineAt(l);
     if(pos.y() >= line.y()) {
       return line.xToCursor(pos.x(), QTextLine::CursorOnCharacter);
     }
@@ -238,10 +227,10 @@ QList<QRectF> ChatItem::findWords(const QString &searchWord, Qt::CaseSensitivity
     searchIdx = plainText.indexOf(searchWord, searchIdx + 1, caseSensitive);
   }
 
-  bool hadPrivateData = hasPrivateData();
-
+  QTextLayout layout;
+  initLayout(&layout);
   foreach(int idx, indexList) {
-    QTextLine line = layout()->lineForTextPosition(idx);
+    QTextLine line = layout.lineForTextPosition(idx);
     qreal x = line.cursorToX(idx);
     qreal width = line.cursorToX(idx + searchWord.count()) - x;
     qreal height = line.height();
@@ -249,8 +238,6 @@ QList<QRectF> ChatItem::findWords(const QString &searchWord, Qt::CaseSensitivity
     resultList << QRectF(x, y, width, height);
   }
 
-  if(!hadPrivateData)
-    clearLayout();
   return resultList;
 }
 
@@ -312,7 +299,9 @@ void SenderChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
   Q_UNUSED(option); Q_UNUSED(widget);
 
   painter->setClipRect(boundingRect()); // no idea why QGraphicsItem clipping won't work
-  qreal layoutWidth = layout()->minimumWidth();
+  QTextLayout layout;
+  initLayout(&layout);
+  qreal layoutWidth = layout.minimumWidth();
   qreal offset = 0;
   if(chatScene()->senderCutoffMode() == ChatScene::CutoffLeft)
     offset = qMin(width() - layoutWidth, (qreal)0);
@@ -324,10 +313,10 @@ void SenderChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
   if(layoutWidth > width()) {
     // Draw a nice gradient for longer items
     // Qt's text drawing with a gradient brush sucks, so we use an alpha-channeled pixmap instead
-    QPixmap pixmap(layout()->boundingRect().toRect().size());
+    QPixmap pixmap(layout.boundingRect().toRect().size());
     pixmap.fill(Qt::transparent);
     QPainter pixPainter(&pixmap);
-    layout()->draw(&pixPainter, QPointF(qMax(offset, (qreal)0), 0), QVector<QTextLayout::FormatRange>() << selectFmt);
+    layout.draw(&pixPainter, QPointF(qMax(offset, (qreal)0), 0), QVector<QTextLayout::FormatRange>() << selectFmt);
     pixPainter.end();
 
     // Create alpha channel mask
@@ -349,7 +338,7 @@ void SenderChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
     pixmap.setAlphaChannel(mask);
     painter->drawPixmap(0, 0, pixmap);
   } else {
-    layout()->draw(painter, QPointF(0,0), QVector<QTextLayout::FormatRange>() << selectFmt, boundingRect());
+    layout.draw(painter, QPointF(0,0), QVector<QTextLayout::FormatRange>() << selectFmt, boundingRect());
   }
 }
 
@@ -360,13 +349,26 @@ void SenderChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
 ContentsChatItem::ActionProxy ContentsChatItem::_actionProxy;
 
 ContentsChatItem::ContentsChatItem(const qreal &width, const QPointF &pos, QGraphicsItem *parent)
-  : ChatItem(0, 0, pos, parent)
+  : ChatItem(0, 0, pos, parent),
+    _data(0)
 {
   const QAbstractItemModel *model_ = model();
   QModelIndex index = model_->index(row(), column());
   _fontMetrics = QtUi::style()->fontMetrics(model_->data(index, ChatLineModel::FormatRole).value<UiStyle::FormatList>().at(0).second);
 
   setGeometryByWidth(width);
+}
+
+ContentsChatItem::~ContentsChatItem() {
+  delete _data;
+}
+
+ContentsChatItemPrivate *ContentsChatItem::privateData() const {
+  if(!_data) {
+    ContentsChatItem *that = const_cast<ContentsChatItem *>(this);
+    that->_data = new ContentsChatItemPrivate(findClickables(), that);
+  }
+  return _data;
 }
 
 qreal ContentsChatItem::setGeometryByWidth(qreal w) {
@@ -379,28 +381,30 @@ qreal ContentsChatItem::setGeometryByWidth(qreal w) {
     while(finder.nextWrapColumn() > 0)
       lines++;
     setHeight(lines * fontMetrics()->lineSpacing());
+    delete _data;
+    _data = 0;
   }
   return height();
 }
 
-void ContentsChatItem::doLayout() {
+void ContentsChatItem::doLayout(QTextLayout *layout) const {
   ChatLineModel::WrapList wrapList = data(ChatLineModel::WrapListRole).value<ChatLineModel::WrapList>();
   if(!wrapList.count()) return; // empty chatitem
 
   qreal h = 0;
   WrapColumnFinder finder(this);
-  layout()->beginLayout();
+  layout->beginLayout();
   forever {
-    QTextLine line = layout()->createLine();
+    QTextLine line = layout->createLine();
     if(!line.isValid())
       break;
 
     int col = finder.nextWrapColumn();
-    line.setNumColumns(col >= 0 ? col - line.textStart() : layout()->text().length());
+    line.setNumColumns(col >= 0 ? col - line.textStart() : layout->text().length());
     line.setPosition(QPointF(0, h));
     h += fontMetrics()->lineSpacing();
   }
-  layout()->endLayout();
+  layout->endLayout();
 }
 
 // NOTE: This method is not threadsafe and not reentrant!
@@ -500,7 +504,7 @@ QVector<QTextLayout::FormatRange> ContentsChatItem::additionalFormats() const {
 }
 
 void ContentsChatItem::endHoverMode() {
-  if(hasPrivateData()) {
+  if(privateData()) {
     if(privateData()->currentClickable.isValid()) {
       setCursor(Qt::ArrowCursor);
       privateData()->currentClickable = Clickable();
@@ -642,7 +646,9 @@ void ContentsChatItem::showWebPreview(const Clickable &click) {
 #ifndef HAVE_WEBKIT
   Q_UNUSED(click);
 #else
-  QTextLine line = layout()->lineForTextPosition(click.start);
+  QTextLayout layout;
+  initLayout(&layout);
+  QTextLine line = layout.lineForTextPosition(click.start);
   qreal x = line.cursorToX(click.start);
   qreal width = line.cursorToX(click.start + click.length) - x;
   qreal height = line.height();
@@ -666,9 +672,8 @@ void ContentsChatItem::clearWebPreview() {
 
 /*************************************************************************************************/
 
-ContentsChatItem::WrapColumnFinder::WrapColumnFinder(ChatItem *_item)
+ContentsChatItem::WrapColumnFinder::WrapColumnFinder(const ChatItem *_item)
   : item(_item),
-    layout(0),
     wrapList(item->data(ChatLineModel::WrapListRole).value<ChatLineModel::WrapList>()),
     wordidx(0),
     lineCount(0),
@@ -677,7 +682,6 @@ ContentsChatItem::WrapColumnFinder::WrapColumnFinder(ChatItem *_item)
 }
 
 ContentsChatItem::WrapColumnFinder::~WrapColumnFinder() {
-  delete layout;
 }
 
 qint16 ContentsChatItem::WrapColumnFinder::nextWrapColumn() {
@@ -697,10 +701,10 @@ qint16 ContentsChatItem::WrapColumnFinder::nextWrapColumn() {
   // check if we have a very long word that needs inter word wrap
   if(wrapList.at(start).endX > targetWidth) {
     if(!line.isValid()) {
-      layout = item->createLayout(QTextOption::NoWrap);
-      layout->beginLayout();
-      line = layout->createLine();
-      layout->endLayout();
+      item->initLayoutHelper(&layout, QTextOption::NoWrap);
+      layout.beginLayout();
+      line = layout.createLine();
+      layout.endLayout();
     }
     return line.xToCursor(targetWidth, QTextLine::CursorOnCharacter);
   }

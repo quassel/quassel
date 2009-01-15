@@ -75,9 +75,6 @@ void ChatLine::setFirstColumn(const qreal &timestampWidth, const qreal &senderWi
   // senderItem doesn't need a geom change as it's Pos is changed (ensured by void ChatScene::firstHandlePositionChanged(qreal xpos))
   _senderItem.setGeometry(senderWidth, _height);
   _senderItem.setPos(senderPos);
-
-  _timestampItem.clearLayout();
-  _senderItem.clearLayout();
 }
 
 // NOTE: contentsPos is in ChatLines coordinate system!
@@ -96,9 +93,6 @@ void ChatLine::setSecondColumn(const qreal &senderWidth, const qreal &contentsWi
   _senderItem.setGeometry(senderWidth, height);
 
   _contentsItem.setPos(contentsPos);
-
-  _senderItem.clearLayout();
-  _contentsItem.clearLayout();
 
   if(needGeometryChange)
     prepareGeometryChange();
@@ -119,7 +113,6 @@ void ChatLine::setGeometryByWidth(const qreal &width, const qreal &contentsWidth
   }
   _timestampItem.setHeight(height);
   _senderItem.setHeight(height);
-  _contentsItem.clearLayout();
 
   if(needGeometryChange)
     prepareGeometryChange();
