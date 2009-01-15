@@ -169,9 +169,14 @@ void NetworkModelActionProvider::addActions(QMenu *menu, MessageFilter *filter, 
   addActions(menu, QList<QModelIndex>() << Client::networkModel()->bufferIndex(msgBuffer), receiver, method);
 }
 
+void NetworkModelActionProvider::addActions(QMenu *menu, const QList<QModelIndex> &indexList, QObject *receiver,  const char *method, bool isCustomBufferView) {
+  addActions(menu, indexList, 0, receiver, method, isCustomBufferView);
+}
+
 // add a list of actions sensible for the current item(s)
 void NetworkModelActionProvider::addActions(QMenu *menu,
                                             const QList<QModelIndex> &indexList,
+                                            MessageFilter *filter,
                                             QObject *receiver,
                                             const char *method,
                                             bool isCustomBufferView)
@@ -180,6 +185,7 @@ void NetworkModelActionProvider::addActions(QMenu *menu,
     return;
 
   _indexList = indexList;
+  _messageFilter = filter;
   _receiver = receiver;
   _method = method;
 
