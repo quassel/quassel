@@ -36,7 +36,7 @@ CoreInfoDlg::CoreInfoDlg(QWidget *parent)
 
 void CoreInfoDlg::coreInfoAvailable() {
   ui.labelCoreVersion->setText(_coreInfo["quasselVersion"].toString());
-  ui.labelCoreBuildDate->setText(QDateTime::fromTime_t(_coreInfo["quasselBuildDate"].toUInt()).toLocalTime().toString());
+  ui.labelCoreBuildDate->setText(_coreInfo["quasselBuildDate"].toString());
   ui.labelClientCount->setNum(_coreInfo["sessionConnectedClients"].toInt());
   updateUptime();
   startTimer(1000);
