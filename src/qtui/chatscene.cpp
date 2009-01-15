@@ -653,7 +653,7 @@ void ChatScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) {
 }
 
 void ChatScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
-  if(!event->buttons() & Qt::LeftButton) {
+  if(event->button() == Qt::LeftButton && _leftButtonPressed) {
     _leftButtonPressed = false;
     if(_clickMode != NoClick) {
       if(_clickMode == SingleClick)

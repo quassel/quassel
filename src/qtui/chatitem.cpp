@@ -278,7 +278,7 @@ void ChatItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
 }
 
 void ChatItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
-  if(_selectionMode != NoSelection && !event->buttons() & Qt::LeftButton) {
+  if(_selectionMode != NoSelection && event->button() == Qt::LeftButton) {
     chatScene()->selectionToClipboard(QClipboard::Selection);
     event->accept();
   } else
