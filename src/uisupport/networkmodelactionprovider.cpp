@@ -144,17 +144,13 @@ void NetworkModelActionProvider::registerAction(ActionType type, const QPixmap &
 void NetworkModelActionProvider::addActions(QMenu *menu, BufferId bufId, QObject *receiver, const char *method) {
   if(!bufId.isValid())
     return;
-  _messageFilter = 0;
-  _contextItem = QString();
   addActions(menu, Client::networkModel()->bufferIndex(bufId), receiver, method);
 }
 
 void NetworkModelActionProvider::addActions(QMenu *menu, const QModelIndex &index, QObject *receiver, const char *method, bool isCustomBufferView) {
   if(!index.isValid())
     return;
-  _messageFilter = 0;
-  _contextItem = QString();
-  addActions(menu, QList<QModelIndex>() << index, receiver, method, isCustomBufferView);
+  addActions(menu, QList<QModelIndex>() << index, 0, QString(), receiver, method, isCustomBufferView);
 }
 
 void NetworkModelActionProvider::addActions(QMenu *menu, MessageFilter *filter, BufferId msgBuffer, QObject *receiver, const char *slot) {
@@ -164,19 +160,18 @@ void NetworkModelActionProvider::addActions(QMenu *menu, MessageFilter *filter, 
 void NetworkModelActionProvider::addActions(QMenu *menu, MessageFilter *filter, BufferId msgBuffer, const QString &chanOrNick, QObject *receiver, const char *method) {
   if(!filter)
     return;
-  _messageFilter = filter;
-  _contextItem = chanOrNick;
-  addActions(menu, QList<QModelIndex>() << Client::networkModel()->bufferIndex(msgBuffer), receiver, method);
+  addActions(menu, QList<QModelIndex>() << Client::networkModel()->bufferIndex(msgBuffer), filter, chanOrNick, receiver, method, false);
 }
 
 void NetworkModelActionProvider::addActions(QMenu *menu, const QList<QModelIndex> &indexList, QObject *receiver,  const char *method, bool isCustomBufferView) {
-  addActions(menu, indexList, 0, receiver, method, isCustomBufferView);
+  addActions(menu, indexList, 0, QString(), receiver, method, isCustomBufferView);
 }
 
 // add a list of actions sensible for the current item(s)
 void NetworkModelActionProvider::addActions(QMenu *menu,
                                             const QList<QModelIndex> &indexList,
                                             MessageFilter *filter,
+                                            const QString &contextItem,
                                             QObject *receiver,
                                             const char *method,
                                             bool isCustomBufferView)
@@ -186,6 +181,7 @@ void NetworkModelActionProvider::addActions(QMenu *menu,
 
   _indexList = indexList;
   _messageFilter = filter;
+  _contextItem = contextItem;
   _receiver = receiver;
   _method = method;
 
@@ -268,6 +264,7 @@ void NetworkModelActionProvider::addNetworkItemActions(QMenu *menu, const QModel
 void NetworkModelActionProvider::addBufferItemActions(QMenu *menu, const QModelIndex &index, bool isCustomBufferView) {
   BufferInfo bufferInfo = index.data(NetworkModel::BufferInfoRole).value<BufferInfo>();
 
+  menu->addSeparator();
   switch(bufferInfo.type()) {
     case BufferInfo::ChannelBuffer:
       addAction(BufferJoin, menu, index, InactiveState);
