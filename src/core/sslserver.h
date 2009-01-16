@@ -39,7 +39,7 @@ public:
 
   virtual inline const QSslCertificate &certificate() const { return _cert; }
   virtual inline const QSslKey &key() const { return _key; }
-  virtual inline bool certIsValid() const { return _certIsValid; }
+  virtual inline bool isCertValid() const { return _isCertValid; }
 
 protected:
   virtual void incomingConnection(int socketDescriptor);
@@ -49,7 +49,7 @@ private:
   QLinkedList<QTcpSocket *> _pendingConnections;
   QSslCertificate _cert;
   QSslKey _key;
-  bool _certIsValid;
+  bool _isCertValid;
 };
 
 #endif //HAVE_SSL
