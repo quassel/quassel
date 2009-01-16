@@ -58,4 +58,14 @@ public:
   inline quInfo() : Logger(Logger::InfoLevel) {}
 };
 
+class quWarning : public Logger {
+public:
+  inline quWarning() : Logger(Logger::WarningLevel) {}
+};
+
+class quError : public Logger {
+public:
+  inline quError() : Logger(Logger::ErrorLevel) {}
+};
+
 #endif
