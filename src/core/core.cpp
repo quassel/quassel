@@ -246,48 +246,60 @@ bool Core::startListening() {
 
   const QString listen = Quassel::optionValue("listen");
   const QStringList listen_list = listen.split(",", QString::SkipEmptyParts);
-  if (listen_list.size() > 0) {
-    foreach (const QString listen_term, listen_list) {
+  if(listen_list.size() > 0) {
+    foreach (const QString listen_term, listen_list) {  // TODO: handle multiple interfaces for same TCP version gracefully
       QHostAddress addr;
-      if (! addr.setAddress(listen_term)) {
+      if(!addr.setAddress(listen_term)) {
         qCritical() << qPrintable(
-          QString("Invalid listen address %1")
+          tr("Invalid listen address %1")
             .arg(listen_term)
         );
       } else {
-        switch (addr.protocol()) {
+        switch(addr.protocol()) {
           case QAbstractSocket::IPv4Protocol:
-            if (_server.listen(addr, port)) {
+            if(_server.listen(addr, port)) {
               quInfo() << qPrintable(
-                QString("Listening for GUI clients on IPv4 %1 port %2 using protocol version %3")
+                tr("Listening for GUI clients on IPv4 %1 port %2 using protocol version %3")
                   .arg(addr.toString())
                   .arg(_server.serverPort())
                   .arg(Quassel::buildInfo().protocolVersion)
               );
               success = true;
-            }
+            } else
+              quWarning() << qPrintable(
+                tr("Could not open GUI client interface %1:%2: %3")
+                  .arg(addr.toString())
+                  .arg(port)
+                  .arg(_server.errorString()));
             break;
           case QAbstractSocket::IPv6Protocol:
             if (_v6server.listen(addr, port)) {
               quInfo() << qPrintable(
-                QString("Listening for GUI clients on IPv6 %1 port %2 using protocol version %3")
+                tr("Listening for GUI clients on IPv6 %1 port %2 using protocol version %3")
                   .arg(addr.toString())
                   .arg(_server.serverPort())
                   .arg(Quassel::buildInfo().protocolVersion)
               );
               success = true;
-            }
+            } else
+              quWarning() << qPrintable(
+              tr("Could not open GUI client interface %1:%2: %3")
+              .arg(addr.toString())
+              .arg(port)
+              .arg(_server.errorString()));
             break;
           default:
             qCritical() << qPrintable(
-              QString("Invalid listen address %1, unknown network protocol")
-                .arg(listen_term)
+              tr("Invalid listen address %1, unknown network protocol")
+                  .arg(listen_term)
             );
             break;
         }
       }
     }
   }
+  if(!success)
+    quError() << qPrintable(tr("Could not open any network interfaces to listen on!"));
 
   return success;
 }
