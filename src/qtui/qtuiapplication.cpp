@@ -22,6 +22,10 @@
 
 #include <QStringList>
 
+#ifdef HAVE_KDE
+#  include <KStandardDirs>
+#endif
+
 #include "client.h"
 #include "cliparser.h"
 #include "qtui.h"
@@ -37,9 +41,20 @@ QtUiApplication::QtUiApplication(int &argc, char **argv)
     _aboutToQuit(false)
 {
 #ifdef HAVE_KDE
-  Q_UNUSED(argc)
-  Q_UNUSED(argv)
-#endif
+  Q_UNUSED(argc); Q_UNUSED(argv);
+
+  // We need to setup KDE's data dirs
+  QStringList dataDirs = KGlobal::dirs()->findDirs("data", "");
+  for(int i = 0; i < dataDirs.count(); i++)
+    dataDirs[i].append("quassel/");
+  dataDirs.append(":/data/");
+  setDataDirPaths(dataDirs);
+
+#else /* HAVE_KDE */
+
+  setDataDirPaths(findDataDirPaths());
+
+#endif /* HAVE_KDE */
 
   setRunMode(Quassel::ClientOnly);
 

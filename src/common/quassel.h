@@ -63,6 +63,10 @@ public:
   static inline const BuildInfo & buildInfo();
   static inline RunMode runMode();
 
+  static QString configDirPath();
+  static QStringList dataDirPaths();
+  static QString findDataFilePath(const QString &filename);
+
   static inline void setCliParser(AbstractCliParser *cliParser);
   static inline AbstractCliParser *cliParser();
   static inline QString optionValue(const QString &option);
@@ -79,6 +83,8 @@ protected:
   virtual bool init();
 
   inline void setRunMode(RunMode mode);
+  inline void setDataDirPaths(const QStringList &paths);
+  QStringList findDataDirPaths() const;
 
 private:
   void registerMetaTypes();
@@ -92,11 +98,14 @@ private:
   static bool _initialized;
 
   static QString _coreDumpFileName;
+  static QString _configDirPath;
+  static QStringList _dataDirPaths;
 };
 
 const Quassel::BuildInfo & Quassel::buildInfo() { return _buildInfo; }
 Quassel::RunMode Quassel::runMode() { return _runMode; }
 void Quassel::setRunMode(Quassel::RunMode mode) { _runMode = mode; }
+void Quassel::setDataDirPaths(const QStringList &paths) { _dataDirPaths = paths; }
 
 void Quassel::setCliParser(AbstractCliParser *parser) { _cliParser = parser; }
 AbstractCliParser *Quassel::cliParser() { return _cliParser; }

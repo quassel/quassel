@@ -37,6 +37,8 @@
 Quassel::BuildInfo Quassel::_buildInfo;
 AbstractCliParser *Quassel::_cliParser = 0;
 Quassel::RunMode Quassel::_runMode;
+QString Quassel::_configDirPath;
+QStringList Quassel::_dataDirPaths;
 bool Quassel::_initialized = false;
 bool Quassel::DEBUG = false;
 QString Quassel::_coreDumpFileName;
@@ -224,4 +226,85 @@ const QString &Quassel::coreDumpFileName() {
     dumpFile.close();
   }
   return _coreDumpFileName;
+}
+
+QString Quassel::configDirPath() {
+  if(!_configDirPath.isEmpty())
+    return _configDirPath;
+
+  if(Quassel::isOptionSet("datadir")) {
+    qWarning() << "Obsolete option --datadir used!";
+    _configDirPath = Quassel::optionValue("datadir");
+  } else if(Quassel::isOptionSet("configdir")) {
+    _configDirPath = Quassel::optionValue("configdir");
+  } else {
+
+    // FIXME use QDesktopServices?
+#ifdef Q_OS_WIN32
+  _configDirPath = qgetenv("APPDATA") + "/quassel/";
+#elif defined Q_WS_MAC
+  _configDirPath = QDir::homePath() + "/Library/Application Support/Quassel/";
+#else
+  _configDirPath = QDir::homePath() + "/.quassel/";
+#endif
+  }
+
+  QDir qDir(_configDirPath);
+  if(!qDir.exists(_configDirPath)) {
+    if(!qDir.mkpath(_configDirPath)) {
+      qCritical() << "Unable to create Quassel config directory:" << qPrintable(qDir.absolutePath());
+      return QString();
+    }
+  }
+
+  return _configDirPath;
+}
+
+QStringList Quassel::dataDirPaths() {
+  return _dataDirPaths;
+}
+
+QStringList Quassel::findDataDirPaths() const {
+  QStringList dataDirNames = QString(qgetenv("XDG_DATA_DIRS")).split(':', QString::SkipEmptyParts);
+
+  if(!dataDirNames.isEmpty()) {
+    for(int i = 0; i < dataDirNames.count(); i++)
+      dataDirNames[i].append("/apps/quassel/");
+  } else {
+  // Provide a fallback
+  // FIXME fix this for win and mac!
+#ifdef Q_OS_WIN32
+    dataDirNames << qgetenv("APPDATA") + "/quassel/"
+                 << QCoreApplication::applicationDirPath();
+#elif defined Q_WS_MAC
+    dataDirNames << QDir::homePath() + "/Library/Application Support/Quassel/"
+                 << QCoreApplication::applicationDirPath();
+#else
+    if(dataDirNames.isEmpty())
+      dataDirNames.append("/usr/share/apps/quassel/");
+    // on UNIX, we always check our install prefix
+    QString appDir = QCoreApplication::applicationDirPath();
+    int binpos = appDir.lastIndexOf("/bin");
+    if(binpos >= 0) {
+      appDir.replace(binpos, 4, "/share");
+      appDir.append("/apps/quassel/");
+      if(!dataDirNames.contains(appDir))
+        dataDirNames.append(appDir);
+    }
+#endif
+  }
+
+  // add resource path just in case
+  dataDirNames << ":/data/";
+  return dataDirNames;
+}
+
+QString Quassel::findDataFilePath(const QString &fileName) {
+  QStringList dataDirs = dataDirPaths();
+  foreach(QString dataDir, dataDirs) {
+    QString path = dataDir + fileName;
+    if(QFile::exists(path))
+      return path;
+  }
+  return QString();
 }
