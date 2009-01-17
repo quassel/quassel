@@ -17,11 +17,11 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include "network.h"
-
-#include <QDebug>
 #include <QSettings>
 #include <QTextCodec>
+
+#include "network.h"
+#include "quassel.h"
 
 QTextCodec *Network::_defaultCodecForServer = 0;
 QTextCodec *Network::_defaultCodecForEncoding = 0;
@@ -403,7 +403,7 @@ QByteArray Network::encodeServerString(const QString &string) const {
 QStringList Network::presetNetworks(bool onlyDefault) {
   // lazily find the file, make sure to not call one of the other preset functions first (they'll fail else)
   if(_networksIniPath.isNull()) {
-    _networksIniPath = findDataFilePath("networks.ini");
+    _networksIniPath = Quassel::findDataFilePath("networks.ini");
     if(_networksIniPath.isNull()) {
       _networksIniPath = ""; // now we won't check again, as it's not null anymore
       return QStringList();

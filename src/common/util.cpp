@@ -92,31 +92,6 @@ QString decodeString(const QByteArray &input, QTextCodec *codec) {
   return codec->toUnicode(input);
 }
 
-/* not needed anymore
-void writeDataToDevice(QIODevice *dev, const QVariant &item) {
-  QByteArray block;
-  QDataStream out(&block, QIODevice::WriteOnly);
-  out.setVersion(QDataStream::Qt_4_2);
-  out << (quint32)0 << item;
-  out.device()->seek(0);
-  out << (quint32)(block.size() - sizeof(quint32));
-  dev->write(block);
-}
-
-bool readDataFromDevice(QIODevice *dev, quint32 &blockSize, QVariant &item) {
-  QDataStream in(dev);
-  in.setVersion(QDataStream::Qt_4_2);
-
-  if(blockSize == 0) {
-    if(dev->bytesAvailable() < (int)sizeof(quint32)) return false;
-    in >> blockSize;
-  }
-  if(dev->bytesAvailable() < blockSize) return false;
-  in >> item;
-  return true;
-}
-*/
-
 uint editingDistance(const QString &s1, const QString &s2) {
   uint n = s1.size()+1;
   uint m = s2.size()+1;
@@ -149,59 +124,6 @@ uint editingDistance(const QString &s1, const QString &s2) {
     }
   }
   return matrix[n-1][m-1];
-}
-
-QDir quasselDir() {
-  QString quasselDir;
-  if(Quassel::isOptionSet("datadir")) {
-    quasselDir = Quassel::optionValue("datadir");
-  } else {
-    // FIXME use QDesktopServices
-#ifdef Q_OS_WIN32
-    quasselDir = qgetenv("APPDATA") + "/quassel/";
-#elif defined Q_WS_MAC
-    quasselDir = QDir::homePath() + "/Library/Application Support/Quassel/";
-#else
-    quasselDir = QDir::homePath() + "/.quassel/";
-#endif
-  }
-
-  QDir qDir(quasselDir);
-  if(!qDir.exists(quasselDir)) {
-    if(!qDir.mkpath(quasselDir)) {
-      qCritical() << "Unable to create Quassel data directory:" << qPrintable(qDir.absolutePath());
-    }
-  }
-
-  return qDir;
-}
-
-QStringList dataDirPaths() {
-  QStringList dataDirNames = QString(qgetenv("XDG_DATA_DIRS")).split(':', QString::SkipEmptyParts);
-
-  // Provide a fallback
-# ifdef Q_OS_UNIX
-  if(dataDirNames.isEmpty()) dataDirNames.append("/usr/share");
-  // on UNIX, we always check our install prefix
-  QString appDir = QCoreApplication::applicationDirPath();
-  int binpos = appDir.lastIndexOf("/bin");
-  if(binpos >= 0) {
-    appDir.replace(binpos, 4, "/share");
-    if(!dataDirNames.contains(appDir)) dataDirNames.append(appDir);
-  }
-# endif
-
-  return dataDirNames;
-}
-
-QString findDataFilePath(const QString &fileName) {
-  QStringList dataDirs = dataDirPaths();
-  foreach(QString dataDir, dataDirs) {
-    QString path = dataDir + "/apps/quassel/" + fileName;
-    if(QFile::exists(path))
-      return path;
-  }
-  return QString();
 }
 
 void loadTranslation(const QLocale &locale) {

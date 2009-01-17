@@ -27,7 +27,7 @@
 #include <QFile>
 
 #include "logger.h"
-#include "util.h"
+#include "quassel.h"
 
 #ifdef HAVE_SSL
 
@@ -36,7 +36,7 @@ SslServer::SslServer(QObject *parent)
   _isCertValid(false)
 {
   static bool sslWarningShown = false;
-  if(!setCertificate(quasselDir().absolutePath() + "/quasselCert.pem")) {
+  if(!setCertificate(Quassel::configDirPath() + "quasselCert.pem")) {
     if(!sslWarningShown) {
       quWarning()
         << "SslServer: Unable to set certificate file\n"

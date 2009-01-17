@@ -249,6 +249,9 @@ QString Quassel::configDirPath() {
 #endif
   }
 
+  if(!_configDirPath.endsWith('/'))
+    _configDirPath += '/';
+
   QDir qDir(_configDirPath);
   if(!qDir.exists(_configDirPath)) {
     if(!qDir.mkpath(_configDirPath)) {

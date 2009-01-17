@@ -22,10 +22,9 @@
 
 #include <QtSql>
 
-#include "network.h"
-
-#include "util.h"
 #include "logger.h"
+#include "network.h"
+#include "quassel.h"
 
 int SqliteStorage::_maxRetryCount = 150; // yes this is a large number... only other way to "handle" this is bailing out...
 
@@ -969,7 +968,7 @@ QList<Message> SqliteStorage::requestAllMsgs(UserId user, MsgId first, MsgId las
 }
 
 QString SqliteStorage::backlogFile() {
-  return quasselDir().absolutePath() + "/quassel-storage.sqlite";
+  return Quassel::configDirPath() + "quassel-storage.sqlite";
 }
 
 bool SqliteStorage::safeExec(QSqlQuery &query, int retryCount) {
