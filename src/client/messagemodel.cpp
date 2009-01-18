@@ -112,34 +112,25 @@ void MessageModel::insertMessageGroup(const QList<Message> &msglist) {
   int start = indexForId(msglist.first().msgId());
   int end = start + msglist.count() - 1;
   Message dayChangeMsg;
-//   MessageModelItem *dayChangeItem = 0;
-  bool relocatedMsg = false;
+
   if(start > 0) {
     // check if the preceeding msg is a daychange message and if so if
     // we have to drop or relocate it at the end of this chunk
     int prevIdx = start - 1;
     if(messageItemAt(prevIdx)->msgType() == Message::DayChange
        && messageItemAt(prevIdx)->timestamp() > msglist.at(0).timestamp()) {
+
       beginRemoveRows(QModelIndex(), prevIdx, prevIdx);
-//       MessageModelItem *oldItem = _messageList.takeAt(prevIdx);
-//       if(msglist.last().timestamp() < oldItem->timestamp()) {
-// 	// we have to reinsert it (with changed msgId -> thus we need to recreate it)
-// 	Message dayChangeMsg = Message::ChangeOfDay(oldItem->timestamp());
-// 	dayChangeMsg.setMsgId(msglist.last().msgId());
-// 	dayChangeItem = createMessageModelItem(dayChangeMsg);
-//       }
-//       delete oldItem;
-
-
-      dayChangeMsg = takeMessageAt(prevIdx);
-      if(msglist.last().timestamp() < dayChangeMsg.timestamp()) {
+      Message oldDayChangeMsg = takeMessageAt(prevIdx);
+      if(msglist.last().timestamp() < oldDayChangeMsg.timestamp()) {
 	// we have to reinsert it with a changed msgId
+	dayChangeMsg = oldDayChangeMsg;
 	dayChangeMsg.setMsgId(msglist.last().msgId());
       }
       endRemoveRows();
+
       start--;
       end--;
-      relocatedMsg = true;
     }
   }
 
@@ -170,24 +161,14 @@ void MessageModel::insertMessageGroup(const QList<Message> &msglist) {
   Q_ASSERT(start == 0 || messageItemAt(start - 1)->msgId() < msglist.first().msgId());
   Q_ASSERT(start == messageCount() || messageItemAt(start)->msgId() > msglist.last().msgId());
   beginInsertRows(QModelIndex(), start, end);
-//   int pos = start;
-//   foreach(Message msg, msglist) {
-//     _messageList.insert(pos, createMessageModelItem(msg));
-//     pos++;
-//   }
-//   if(dayChangeItem) {
-//     _messageList.insert(pos, dayChangeItem);
-//     pos++; // needed for the following assert
-//   }
   insertMessages__(start, msglist);
   if(dayChangeMsg.isValid())
     insertMessage__(start + msglist.count(), dayChangeMsg);
   endInsertRows();
 
-//   Q_ASSERT(start == end || _messageList.at(start)->msgId() != _messageList.at(end)->msgId() || _messageList.at(end)->msgType() == Message::DayChange);
+  Q_ASSERT(start == end || messageItemAt(start)->msgId() != messageItemAt(end)->msgId() || messageItemAt(end)->msgType() == Message::DayChange);
   Q_ASSERT(start == 0 || messageItemAt(start - 1)->msgId() < messageItemAt(start)->msgId());
   Q_ASSERT(end + 1 == messageCount() || messageItemAt(end)->msgId() < messageItemAt(end + 1)->msgId());
-//   Q_ASSERT(pos - 1 == end);
 }
 
 int MessageModel::insertMessagesGracefully(const QList<Message> &msglist) {
