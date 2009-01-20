@@ -111,6 +111,7 @@ QtUiApplication::~QtUiApplication() {
 }
 
 void QtUiApplication::commitData(QSessionManager &manager) {
+  Q_UNUSED(manager)
   _aboutToQuit = true;
 }
 
