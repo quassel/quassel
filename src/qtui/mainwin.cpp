@@ -683,7 +683,9 @@ void MainWin::showShortcutsDlg() {
 
 void MainWin::closeEvent(QCloseEvent *event) {
   QtUiSettings s;
-  if(s.value("UseSystemTrayIcon").toBool() && s.value("MinimizeOnClose").toBool()) {
+  QtUiApplication* app = qobject_cast<QtUiApplication*> qApp;
+  Q_ASSERT(app);
+  if(!app->aboutToQuit() && s.value("UseSystemTrayIcon").toBool() && s.value("MinimizeOnClose").toBool()) {
     toggleVisibility();
     event->ignore();
   } else {

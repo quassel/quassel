@@ -27,31 +27,18 @@
 #include "qtui.h"
 #include "sessionsettings.h"
 
-
-// void myMessageOutput(QtMsgType type, const char *msg) {
-//   Client::debugLog() << "Debug:" <<  msg << '\n';
-//   return;
-// //   switch (type) {
-// //   case QtDebugMsg:
-// //     break;
-// //   case QtWarningMsg:
-// //     fprintf(stderr, "Warning: %s\n", msg);
-// //     break;
-// //   case QtCriticalMsg:
-// //     fprintf(stderr, "Critical: %s\n", msg);
-// //     break;
-// //   case QtFatalMsg:
-// //     fprintf(stderr, "Fatal: %s\n", msg);
-// //     abort();
-// //   }
-// }
-
 QtUiApplication::QtUiApplication(int &argc, char **argv)
 #ifdef HAVE_KDE
-  : KApplication(), Quassel() {
-  Q_UNUSED(argc); Q_UNUSED(argv);
+  : KApplication(),
 #else
-  : QApplication(argc, argv), Quassel() {
+  : QApplication(argc, argv),
+#endif
+    Quassel(),
+    _aboutToQuit(false)
+{
+#ifdef HAVE_KDE
+  Q_UNUSED(argc)
+  Q_UNUSED(argv)
 #endif
 
   setRunMode(Quassel::ClientOnly);
@@ -75,6 +62,10 @@ bool QtUiApplication::init() {
 
 QtUiApplication::~QtUiApplication() {
   Client::destroy();
+}
+
+void QtUiApplication::commitData(QSessionManager &manager) {
+  _aboutToQuit = true;
 }
 
 void QtUiApplication::saveState(QSessionManager & manager) {

@@ -42,19 +42,25 @@ class QtUiApplication : public QApplication, public Quassel {
 
   Q_OBJECT
 
- public:
+public:
   QtUiApplication(int &, char **);
   ~QtUiApplication();
   virtual bool init();
 
   void resumeSessionIfPossible();
-  virtual void saveState(QSessionManager & manager);
+  virtual void commitData(QSessionManager &manager);
+  virtual void saveState(QSessionManager &manager);
+
+  inline bool aboutToQuit() const { return _aboutToQuit; }
 
 signals:
   void saveStateToSession(const QString &sessionId);
   void saveStateToSessionSettings(SessionSettings &s); // FIXME refs in signals won't probably work
   void resumeFromSession(const QString sessionId);
   void resumeFromSessionSettings(SessionSettings &s);
+
+private:
+  bool _aboutToQuit;
 };
 
 #endif
