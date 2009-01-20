@@ -149,7 +149,8 @@ class MainWin
     void setupTitleSetter();
 
     void updateIcon();
-    void toggleVisibility();
+    void hideToTray();
+    void restoreFromTray();
     void enableMenus();
 
     QSystemTrayIcon *_trayIcon;

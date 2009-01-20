@@ -509,10 +509,8 @@ void MainWin::setupSystray() {
   }
 
 #ifndef Q_WS_MAC
-  connect(systemTrayIcon(), SIGNAL(activated( QSystemTrayIcon::ActivationReason )),
-          this, SLOT(systrayActivated( QSystemTrayIcon::ActivationReason )));
+  connect(systemTrayIcon(), SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(systrayActivated(QSystemTrayIcon::ActivationReason)));
 #endif
-
 }
 
 void MainWin::changeEvent(QEvent *event) {
@@ -520,8 +518,8 @@ void MainWin::changeEvent(QEvent *event) {
     if(windowState() & Qt::WindowMinimized) {
       QtUiSettings s;
       if(s.value("UseSystemTrayIcon").toBool() && s.value("MinimizeOnMinimize").toBool()) {
-        toggleVisibility();
-        event->ignore();
+	hideToTray();
+	event->accept();
       }
     }
   }
@@ -686,7 +684,7 @@ void MainWin::closeEvent(QCloseEvent *event) {
   QtUiApplication* app = qobject_cast<QtUiApplication*> qApp;
   Q_ASSERT(app);
   if(!app->aboutToQuit() && s.value("UseSystemTrayIcon").toBool() && s.value("MinimizeOnClose").toBool()) {
-    toggleVisibility();
+    hideToTray();
     event->ignore();
   } else {
     event->accept();
@@ -694,37 +692,27 @@ void MainWin::closeEvent(QCloseEvent *event) {
   }
 }
 
-void MainWin::systrayActivated( QSystemTrayIcon::ActivationReason activationReason) {
+void MainWin::systrayActivated(QSystemTrayIcon::ActivationReason activationReason) {
   if(activationReason == QSystemTrayIcon::Trigger) {
-    toggleVisibility();
+    restoreFromTray();
   }
 }
 
-void MainWin::toggleVisibility() {
-  if(isHidden() /*|| !isActiveWindow()*/) {
-    show();
-    if(isMinimized()) {
-      if(isMaximized())
-        showMaximized();
-      else
-        showNormal();
-    }
-
-    raise();
-    activateWindow();
-    // setFocus(); //Qt::ActiveWindowFocusReason
-
-  } else {
-    if(systemTrayIcon()->isSystemTrayAvailable ()) {
-      clearFocus();
-      hide();
-      if(!systemTrayIcon()->isVisible()) {
-        systemTrayIcon()->show();
-      }
-    } else {
-      lower();
-    }
+void MainWin::hideToTray() {
+  if(!systemTrayIcon()->isSystemTrayAvailable()) {
+    qWarning() << Q_FUNC_INFO << "was called with no SystemTray available!";
+    return;
   }
+
+  clearFocus();
+  hide();
+  systemTrayIcon()->show();
+}
+
+void MainWin::restoreFromTray() {
+  setWindowState(windowState() & ~Qt::WindowMinimized | Qt::WindowActive);
+  show();
+  raise();
 }
 
 void MainWin::messagesInserted(const QModelIndex &parent, int start, int end) {
