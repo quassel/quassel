@@ -26,6 +26,7 @@
 #include <QFile>
 
 #include "iconloader.h"
+#include "quassel.h"
 #include "util.h"
 
 IconLoader IconLoader::_iconLoader;
@@ -54,7 +55,7 @@ void IconLoader::setTheme(const QString &theme) {
   _themedIconDirNames.clear();
   _plainIconDirNames.clear();
   QString path;
-  QStringList dataDirNames = dataDirPaths();
+  QStringList dataDirNames = Quassel::dataDirPaths();
 
   // System theme in $data/icons/$theme
   foreach(QString dir, dataDirNames) {
