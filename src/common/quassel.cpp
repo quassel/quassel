@@ -24,8 +24,10 @@
 
 #include <QCoreApplication>
 #include <QDateTime>
-#include <QObject>
+#include <QFileInfo>
 #include <QMetaType>
+#include <QObject>
+#include <QSettings>
 
 #include "message.h"
 #include "identity.h"
@@ -125,8 +127,8 @@ void Quassel::registerMetaTypes() {
 
 void Quassel::setupBuildInfo(const QString &generated) {
   _buildInfo.applicationName = "Quassel IRC";
-  _buildInfo.coreApplicationName = "Quassel Core";
-  _buildInfo.clientApplicationName = "Quassel Client";
+  _buildInfo.coreApplicationName = "quasselcore";
+  _buildInfo.clientApplicationName = "quasselclient";
   _buildInfo.organizationName = "Quassel Project";
   _buildInfo.organizationDomain = "quassel-irc.org";
 
@@ -239,18 +241,20 @@ QString Quassel::configDirPath() {
     _configDirPath = Quassel::optionValue("configdir");
   } else {
 
-    // FIXME use QDesktopServices?
-#ifdef Q_OS_WIN32
-  _configDirPath = qgetenv("APPDATA") + "/quassel/";
-#elif defined Q_WS_MAC
-  _configDirPath = QDir::homePath() + "/Library/Application Support/Quassel/";
+    // We abuse QSettings to find us a sensible path on all platforms
+#ifdef Q_WS_WIN
+    // don't use the registry
+    QSettings::Format format = QSettings::IniFormat;
 #else
-  _configDirPath = QDir::homePath() + "/.quassel/";
+    QSettings::Format format = QSettings::NativeFormat;
 #endif
+    QSettings s(format, QSettings::UserScope, QCoreApplication::organizationDomain(), buildInfo().applicationName);
+    QFileInfo fileInfo(s.fileName());
+    _configDirPath = fileInfo.dir().absolutePath();
   }
 
-  if(!_configDirPath.endsWith('/'))
-    _configDirPath += '/';
+  if(!_configDirPath.endsWith(QDir::separator()))
+    _configDirPath += QDir::separator();
 
   QDir qDir(_configDirPath);
   if(!qDir.exists(_configDirPath)) {
