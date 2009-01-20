@@ -23,8 +23,11 @@
 
 #include <QCoreApplication>
 #include <QHash>
+#include <QSettings>
 #include <QString>
 #include <QVariant>
+
+#include "quassel.h"
 
 class SettingsChangeNotifier : public QObject {
   Q_OBJECT
@@ -62,12 +65,16 @@ protected:
   QString appName;
 
 private:
-  inline QString org() {
-#ifdef Q_WS_MAC
-    return QCoreApplication::organizationDomain();
+  inline QSettings::Format format() {
+#ifdef Q_WS_WIN
+    return QSettings::IniFormat;
 #else
-    return QCoreApplication::organizationName();
+    return QSettings::NativeFormat;
 #endif
+  }
+  inline QString fileName() {
+    return Quassel::configDirPath() + appName
+           + ((format() == QSettings::NativeFormat) ? QLatin1String(".conf") : QLatin1String(".ini"));
   }
 
   static QHash<QString, QHash<QString, QVariant> > settingsCache;
