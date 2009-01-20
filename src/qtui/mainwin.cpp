@@ -694,7 +694,7 @@ void MainWin::closeEvent(QCloseEvent *event) {
 
 void MainWin::systrayActivated(QSystemTrayIcon::ActivationReason activationReason) {
   if(activationReason == QSystemTrayIcon::Trigger) {
-    restoreFromTray();
+    toggleMinimizedToTray();
   }
 }
 
@@ -709,10 +709,15 @@ void MainWin::hideToTray() {
   systemTrayIcon()->show();
 }
 
-void MainWin::restoreFromTray() {
-  setWindowState(windowState() & ~Qt::WindowMinimized | Qt::WindowActive);
-  show();
-  raise();
+void MainWin::toggleMinimizedToTray() {
+  if(windowState() & Qt::WindowMinimized) {
+    // restore
+    setWindowState(windowState() & ~Qt::WindowMinimized | Qt::WindowActive);
+    show();
+    raise();
+  } else {
+    setWindowState(windowState() & ~Qt::WindowActive | Qt::WindowMinimized);
+  }
 }
 
 void MainWin::messagesInserted(const QModelIndex &parent, int start, int end) {

@@ -150,7 +150,7 @@ class MainWin
 
     void updateIcon();
     void hideToTray();
-    void restoreFromTray();
+    void toggleMinimizedToTray();
     void enableMenus();
 
     QSystemTrayIcon *_trayIcon;
