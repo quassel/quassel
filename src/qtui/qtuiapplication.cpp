@@ -75,7 +75,7 @@ bool QtUiApplication::init() {
     + ((format == QSettings::NativeFormat) ? QLatin1String(".conf") : QLatin1String(".ini"));
     QSettings newSettings(newFilePath, format);
 
-    if(newSettings.value("General/Version").toUInt() != 1) {
+    if(newSettings.value("Config/Version").toUInt() != 1) {
       qWarning() << "\n\n*** IMPORTANT: Config and data file locations have changed. Attempting to auto-migrate your client settings...";
 #     ifdef Q_WS_MAC
         QString org = "quassel-irc.org";
