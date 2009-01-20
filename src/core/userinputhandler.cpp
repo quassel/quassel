@@ -104,7 +104,11 @@ void UserInputHandler::banOrUnban(const BufferInfo &bufferInfo, const QString &m
       return;
     }
 
-    if(generalizedHost.lastIndexOf(".") != -1 && generalizedHost.lastIndexOf(".", generalizedHost.lastIndexOf(".")-1) != -1) {
+    static QRegExp ipAddress("\\d+\\.\\d+\\.\\d+\\.\\d+");
+    if(ipAddress.exactMatch(generalizedHost))    {
+        int lastDotPos = generalizedHost.lastIndexOf('.') + 1;
+        generalizedHost.replace(lastDotPos, generalizedHost.length() - lastDotPos, '*');
+    } else if(generalizedHost.lastIndexOf(".") != -1 && generalizedHost.lastIndexOf(".", generalizedHost.lastIndexOf(".")-1) != -1) {
       int secondLastPeriodPosition = generalizedHost.lastIndexOf(".", generalizedHost.lastIndexOf(".")-1);
       generalizedHost.replace(0, secondLastPeriodPosition, "*");
     }
