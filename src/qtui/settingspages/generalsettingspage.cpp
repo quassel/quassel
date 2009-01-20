@@ -137,7 +137,11 @@ void GeneralSettingsPage::load() {
 
 void GeneralSettingsPage::save() {
   QtUiSettings qtuiSettings;
+#ifdef Q_WS_MAC
+  qtuiSettings.setValue("UseSystemTrayIcon", ui.showSystemTrayIcon->isChecked());
+#else
   qtuiSettings.setValue("UseSystemTrayIcon", ui.useSystemTrayIcon->isChecked());
+#endif
   qtuiSettings.setValue("MinimizeOnMinimize",  ui.minimizeOnMinimize->isChecked());
   qtuiSettings.setValue("MinimizeOnClose", ui.minimizeOnClose->isChecked());
 
@@ -187,7 +191,11 @@ void GeneralSettingsPage::widgetHasChanged() {
 }
 
 bool GeneralSettingsPage::testHasChanged() {
+#ifdef Q_WS_MAC
+  if(settings["UseSystemTrayIcon"].toBool() != ui.showSystemTrayIcon->isChecked()) return true;
+#else
   if(settings["UseSystemTrayIcon"].toBool() != ui.useSystemTrayIcon->isChecked()) return true;
+#endif
   if(settings["MinimizeOnMinimize"].toBool() != ui.minimizeOnMinimize->isChecked()) return true;
   if(settings["MinimizeOnClose"].toBool() != ui.minimizeOnClose->isChecked()) return true;
 
