@@ -33,6 +33,9 @@
 
 #include "util.h"
 
+// migration related
+#include <QFile>
+
 Core *Core::instanceptr = 0;
 
 Core *Core::instance() {
@@ -51,6 +54,67 @@ Core::Core() : storage(0) {
   _startTime = QDateTime::currentDateTime().toUTC();  // for uptime :)
 
   loadTranslation(QLocale::system());
+
+  // FIXME: MIGRATION 0.3 -> 0.4: Move database and core config to new location
+  // Move settings, note this does not delete the old files
+#ifdef Q_WS_WIN
+  QSettings::Format format = QSettings::IniFormat;
+#else
+  QSettings::Format format = QSettings::NativeFormat;
+#endif
+  QString newFilePath = Quassel::configDirPath() + "quasselcore"
+  + ((format == QSettings::NativeFormat) ? QLatin1String(".conf") : QLatin1String(".ini"));
+  QSettings newSettings(newFilePath, format);
+
+  if(newSettings.value("General/Version").toUInt() != 1) {
+    qWarning() << "\n\n*** IMPORTANT: Config and data file locations have changed. Attempting to auto-migrate your core settings...";
+#   ifdef Q_WS_MAC
+    QString org = "quassel-irc.org";
+#   else
+    QString org = "Quassel Project";
+#   endif
+    QSettings oldSettings(org, "Quassel Core");
+    if(oldSettings.allKeys().count()) {
+      foreach(QString key, oldSettings.allKeys())
+        newSettings.setValue(key, oldSettings.value(key));
+      newSettings.setValue("Config/Version", 1);
+      qWarning() << "*   Your core settings have been migrated to" << newFilePath;
+
+#ifdef Q_OS_WIN32
+      QString quasselDir = qgetenv("APPDATA") + "/quassel/";
+#elif defined Q_WS_MAC
+      QString quasselDir = QDir::homePath() + "/Library/Application Support/Quassel/";
+#else
+      QString quasselDir = QDir::homePath() + "/.quassel/";
+#endif
+
+      QFileInfo info(Quassel::configDirPath() + "quassel-storage.sqlite");
+      if(!info.exists()) {
+      // move database, if we found it
+        QFile oldDb(quasselDir + "quassel-storage.sqlite");
+        if(oldDb.exists()) {
+          bool success = oldDb.rename(Quassel::configDirPath() + "quassel-storage.sqlite");
+          if(success)
+            qWarning() << "*   Your database has been moved to" << Quassel::configDirPath() + "quassel-storage.sqlite";
+          else
+            qWarning() << "!!! Moving your database has failed. Please move it manually into" << Quassel::configDirPath();
+        }
+      }
+      // move certificate
+      QFileInfo certInfo(quasselDir + "quasselCert.pem");
+      if(certInfo.exists()) {
+        QFile cert(quasselDir + "quasselCert.pem");
+        bool success = cert.rename(Quassel::configDirPath() + "quasselCert.pem");
+        if(success)
+          qWarning() << "*   Your certificate has been moved to" << Quassel::configDirPath() + "quasselCert.pem";
+        else
+          qWarning() << "!!! Moving your certificate has failed. Please move it manually into" << Quassel::configDirPath();
+      }
+      qWarning() << "*** Migration completed.\n\n";
+    }
+  }
+
+  // MIGRATION end
 
   // Register storage backends here!
   registerStorageBackend(new SqliteStorage(this));
@@ -74,16 +138,6 @@ void Core::init() {
   if(!(configured = initStorage(cs.storageSettings().toMap()))) {
     qWarning() << "Core is currently not configured! Please connect with a Quassel Client for basic setup.";
 
-    // try to migrate old settings
-    QVariantMap old = cs.oldDbSettings().toMap();
-    if(old.count() && old["Type"].toString().toUpper() == "SQLITE") {
-      QVariantMap newSettings;
-      newSettings["Backend"] = "SQLite";
-      if((configured = initStorage(newSettings))) {
-        qWarning() << "...but thankfully I found some old settings to migrate!";
-        cs.setStorageSettings(newSettings);
-      }
-    }
   }
 
   connect(&_server, SIGNAL(newConnection()), this, SLOT(incomingConnection()));

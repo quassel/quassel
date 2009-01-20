@@ -63,6 +63,37 @@ QtUiApplication::QtUiApplication(int &argc, char **argv)
 
 bool QtUiApplication::init() {
   if(Quassel::init()) {
+
+    // FIXME: MIGRATION 0.3 -> 0.4: Move database and core config to new location
+    // Move settings, note this does not delete the old files
+#ifdef Q_WS_WIN
+    QSettings::Format format = QSettings::IniFormat;
+#else
+    QSettings::Format format = QSettings::NativeFormat;
+#endif
+    QString newFilePath = Quassel::configDirPath() + "quasselclient"
+    + ((format == QSettings::NativeFormat) ? QLatin1String(".conf") : QLatin1String(".ini"));
+    QSettings newSettings(newFilePath, format);
+
+    if(newSettings.value("General/Version").toUInt() != 1) {
+      qWarning() << "\n\n*** IMPORTANT: Config and data file locations have changed. Attempting to auto-migrate your client settings...";
+#     ifdef Q_WS_MAC
+        QString org = "quassel-irc.org";
+#     else
+        QString org = "Quassel Project";
+#     endif
+      QSettings oldSettings(org, "Quassel Client");
+      if(oldSettings.allKeys().count()) {
+        foreach(QString key, oldSettings.allKeys())
+          newSettings.setValue(key, oldSettings.value(key));
+        newSettings.setValue("Config/Version", 1);
+        qWarning() << "*   Your client settings have been migrated to" << newFilePath;
+      }
+      qWarning() << "*** Migration completed.\n\n";
+    }
+
+    // MIGRATION end
+
     // session resume
     QtUi *gui = new QtUi();
     Client::init(gui);
@@ -108,5 +139,3 @@ void QtUiApplication::resumeSessionIfPossible() {
     s.cleanup();
   }
 }
-
-
