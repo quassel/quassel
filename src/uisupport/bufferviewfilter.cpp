@@ -47,7 +47,7 @@ BufferViewFilter::BufferViewFilter(QAbstractItemModel *model, BufferViewConfig *
     _config(0),
     _sortOrder(Qt::AscendingOrder),
     _userOfflineIcon(SmallIcon("user-offline")),
-    _userAwayIcon(SmallIcon("user-away")),
+    _userAwayIcon(SmallIcon("user-away-extended")),
     _userOnlineIcon(SmallIcon("user-online")),
     _editMode(false),
     _enableEditMode(tr("Edit Mode"), this)
