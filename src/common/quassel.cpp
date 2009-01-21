@@ -253,7 +253,7 @@ QString Quassel::configDirPath() {
     _configDirPath = fileInfo.dir().absolutePath();
   }
 
-  if(!_configDirPath.endsWith(QDir::separator()))
+  if(!_configDirPath.endsWith(QDir::separator()) && !_configDirPath.endsWith('/'))
     _configDirPath += QDir::separator();
 
   QDir qDir(_configDirPath);
@@ -281,7 +281,7 @@ QStringList Quassel::findDataDirPaths() const {
   // Provide a fallback
   // FIXME fix this for win and mac!
 #ifdef Q_OS_WIN32
-    dataDirNames << qgetenv("APPDATA") + "/quassel/"
+    dataDirNames << qgetenv("APPDATA") + QCoreApplication::organizationDomain();
                  << QCoreApplication::applicationDirPath();
 #elif defined Q_WS_MAC
     dataDirNames << QDir::homePath() + "/Library/Application Support/Quassel/"
@@ -301,8 +301,22 @@ QStringList Quassel::findDataDirPaths() const {
 #endif
   }
 
-  // add resource path just in case
-  dataDirNames << ":/data/";
+  // add resource path and workdir just in case
+  dataDirNames << ":/data/"
+               << QCoreApplication::applicationDirPath() + "/data/"
+               << QCoreApplication::applicationDirPath();
+
+  // append trailing '/' and check for existence
+  QStringList::Iterator iter = dataDirNames.begin();
+  while(iter != dataDirNames.end()) {
+    if(!iter->endsWith(QDir::separator()) && !iter->endsWith('/'))
+      iter->append(QDir::separator());
+    if(!QFile::exists(*iter))
+      iter = dataDirNames.erase(iter);
+    else
+      ++iter;
+  }
+
   return dataDirNames;
 }
 
