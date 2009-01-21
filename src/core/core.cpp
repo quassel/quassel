@@ -55,6 +55,8 @@ Core::Core() : storage(0) {
 
   loadTranslation(QLocale::system());
 
+#ifndef Q_WS_MAC
+
   // FIXME: MIGRATION 0.3 -> 0.4: Move database and core config to new location
   // Move settings, note this does not delete the old files
 #ifdef Q_WS_WIN
@@ -113,7 +115,7 @@ Core::Core() : storage(0) {
       qWarning() << "*** Migration completed.\n\n";
     }
   }
-
+#endif /* !Q_WS_MAC */
   // MIGRATION end
 
   // Register storage backends here!

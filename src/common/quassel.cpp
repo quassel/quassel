@@ -241,17 +241,22 @@ QString Quassel::configDirPath() {
     _configDirPath = Quassel::optionValue("configdir");
   } else {
 
-    // We abuse QSettings to find us a sensible path on all platforms
-#ifdef Q_WS_WIN
+#ifdef Q_WS_MAC
+    // On Mac, the path is always the same
+    _configDirPath = QDir::homePath() + "/Library/Application Support/Quassel/";
+#else
+    // We abuse QSettings to find us a sensible path on the other platforms
+#  ifdef Q_WS_WIN
     // don't use the registry
     QSettings::Format format = QSettings::IniFormat;
-#else
+#  else
     QSettings::Format format = QSettings::NativeFormat;
-#endif
+#  endif
     QSettings s(format, QSettings::UserScope, QCoreApplication::organizationDomain(), buildInfo().applicationName);
     QFileInfo fileInfo(s.fileName());
     _configDirPath = fileInfo.dir().absolutePath();
   }
+#endif /* Q_WS_MAC */
 
   if(!_configDirPath.endsWith(QDir::separator()) && !_configDirPath.endsWith('/'))
     _configDirPath += QDir::separator();

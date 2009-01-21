@@ -64,6 +64,7 @@ QtUiApplication::QtUiApplication(int &argc, char **argv)
 bool QtUiApplication::init() {
   if(Quassel::init()) {
 
+#ifndef Q_WS_MAC
     // FIXME: MIGRATION 0.3 -> 0.4: Move database and core config to new location
     // Move settings, note this does not delete the old files
 #ifdef Q_WS_WIN
@@ -91,7 +92,7 @@ bool QtUiApplication::init() {
       }
       qWarning() << "*** Migration completed.\n\n";
     }
-
+#endif /* !Q_WS_MAC */
     // MIGRATION end
 
     // session resume
