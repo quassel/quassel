@@ -712,11 +712,11 @@ void MainWin::hideToTray() {
 void MainWin::toggleMinimizedToTray() {
   if(windowState() & Qt::WindowMinimized) {
     // restore
-    setWindowState(windowState() & ~Qt::WindowMinimized | Qt::WindowActive);
+    setWindowState((windowState() & ~Qt::WindowMinimized) | Qt::WindowActive);
     show();
     raise();
   } else {
-    setWindowState(windowState() & ~Qt::WindowActive | Qt::WindowMinimized);
+    setWindowState((windowState() & ~Qt::WindowActive) | Qt::WindowMinimized);
     hideToTray();
   }
 }
