@@ -83,7 +83,6 @@ bool QtUiApplication::init() {
 #endif /* Q_WS_MAC */
 
     if(newSettings.value("Config/Version").toUInt() == 0) {
-      qWarning() << "\n\n*** IMPORTANT: Config and data file locations have changed. Attempting to auto-migrate your client settings...";
 #     ifdef Q_WS_MAC
         QString org = "quassel-irc.org";
 #     else
@@ -91,12 +90,13 @@ bool QtUiApplication::init() {
 #     endif
       QSettings oldSettings(org, "Quassel Client");
       if(oldSettings.allKeys().count()) {
+        qWarning() << "\n\n*** IMPORTANT: Config and data file locations have changed. Attempting to auto-migrate your client settings...";
         foreach(QString key, oldSettings.allKeys())
           newSettings.setValue(key, oldSettings.value(key));
         newSettings.setValue("Config/Version", 1);
         qWarning() << "*   Your client settings have been migrated to" << newFilePath;
+        qWarning() << "*** Migration completed.\n\n";
       }
-      qWarning() << "*** Migration completed.\n\n";
     }
 
     // MIGRATION end

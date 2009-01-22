@@ -72,7 +72,6 @@ Core::Core() : storage(0) {
 #endif /* Q_WS_MAC */
 
   if(newSettings.value("Config/Version").toUInt() == 0) {
-    qWarning() << "\n\n*** IMPORTANT: Config and data file locations have changed. Attempting to auto-migrate your core settings...";
 #   ifdef Q_WS_MAC
     QString org = "quassel-irc.org";
 #   else
@@ -80,6 +79,7 @@ Core::Core() : storage(0) {
 #   endif
     QSettings oldSettings(org, "Quassel Core");
     if(oldSettings.allKeys().count()) {
+      qWarning() << "\n\n*** IMPORTANT: Config and data file locations have changed. Attempting to auto-migrate your core settings...";
       foreach(QString key, oldSettings.allKeys())
         newSettings.setValue(key, oldSettings.value(key));
       newSettings.setValue("Config/Version", 1);
