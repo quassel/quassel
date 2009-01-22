@@ -24,9 +24,6 @@
 #include "uisettings.h"
 #include "util.h"
 
-// FIXME remove with migration code
-#include <QSettings>
-
 UiStyle::UiStyle(const QString &settingsKey) : _settingsKey(settingsKey) {
   // register FormatList if that hasn't happened yet
   // FIXME I don't think this actually avoids double registration... then again... does it hurt?
@@ -34,24 +31,6 @@ UiStyle::UiStyle(const QString &settingsKey) : _settingsKey(settingsKey) {
     qRegisterMetaType<FormatList>("UiStyle::FormatList");
     qRegisterMetaTypeStreamOperators<FormatList>("UiStyle::FormatList");
     Q_ASSERT(QVariant::nameToType("UiStyle::FormatList") != QVariant::Invalid);
-  }
-
-  // FIXME remove migration at some point
-  // We remove old settings if we find them, since they conflict
-#ifdef Q_WS_MAC
-  QSettings mys(QCoreApplication::organizationDomain(), Quassel::buildInfo().clientApplicationName);
-#else
-  QSettings mys(QCoreApplication::organizationName(), Quassel::buildInfo().clientApplicationName);
-#endif
-  mys.beginGroup("QtUi");
-  if(mys.childGroups().contains("Colors")) {
-    qDebug() << "Removing obsolete UiStyle settings!";
-    mys.endGroup();
-    mys.remove("Ui");
-    mys.remove("QtUiStyle");
-    mys.remove("QtUiStyleNew");
-    mys.remove("QtUi/Colors");
-    mys.sync();
   }
 
   _defaultFont = QFont("Monospace", QApplication::font().pointSize());
