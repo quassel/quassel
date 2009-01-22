@@ -255,8 +255,8 @@ QString Quassel::configDirPath() {
     QSettings s(format, QSettings::UserScope, QCoreApplication::organizationDomain(), buildInfo().applicationName);
     QFileInfo fileInfo(s.fileName());
     _configDirPath = fileInfo.dir().absolutePath();
-  }
 #endif /* Q_WS_MAC */
+  }
 
   if(!_configDirPath.endsWith(QDir::separator()) && !_configDirPath.endsWith('/'))
     _configDirPath += QDir::separator();
@@ -286,7 +286,7 @@ QStringList Quassel::findDataDirPaths() const {
   // Provide a fallback
   // FIXME fix this for win and mac!
 #ifdef Q_OS_WIN32
-    dataDirNames << qgetenv("APPDATA") + QCoreApplication::organizationDomain();
+    dataDirNames << qgetenv("APPDATA") + QCoreApplication::organizationDomain()
                  << QCoreApplication::applicationDirPath();
 #elif defined Q_WS_MAC
     dataDirNames << QDir::homePath() + "/Library/Application Support/Quassel/"
