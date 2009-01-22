@@ -71,7 +71,7 @@ Core::Core() : storage(0) {
     QSettings newSettings(newFilePath, format);
 #endif /* Q_WS_MAC */
 
-  if(newSettings.value("Config/Version").toUInt() != 1) {
+  if(newSettings.value("Config/Version").toUInt() == 0) {
     qWarning() << "\n\n*** IMPORTANT: Config and data file locations have changed. Attempting to auto-migrate your core settings...";
 #   ifdef Q_WS_MAC
     QString org = "quassel-irc.org";
@@ -121,6 +121,14 @@ Core::Core() : storage(0) {
   }
 #endif /* !Q_WS_MAC */
   // MIGRATION end
+
+  // check settings version
+  // so far, we only have 1
+  CoreSettings s;
+  if(s.version() != 1) {
+    qCritical() << "Invalid core settings version, terminating!";
+    exit(EXIT_FAILURE);
+  }
 
   // Register storage backends here!
   registerStorageBackend(new SqliteStorage(this));

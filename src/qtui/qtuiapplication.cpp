@@ -29,6 +29,7 @@
 #include "client.h"
 #include "cliparser.h"
 #include "qtui.h"
+#include "qtuisettings.h"
 #include "sessionsettings.h"
 
 QtUiApplication::QtUiApplication(int &argc, char **argv)
@@ -81,7 +82,7 @@ bool QtUiApplication::init() {
     QSettings newSettings(newFilePath, format);
 #endif /* Q_WS_MAC */
 
-    if(newSettings.value("Config/Version").toUInt() != 1) {
+    if(newSettings.value("Config/Version").toUInt() == 0) {
       qWarning() << "\n\n*** IMPORTANT: Config and data file locations have changed. Attempting to auto-migrate your client settings...";
 #     ifdef Q_WS_MAC
         QString org = "quassel-irc.org";
@@ -99,6 +100,14 @@ bool QtUiApplication::init() {
     }
 
     // MIGRATION end
+
+    // check settings version
+    // so far, we only have 1
+    QtUiSettings s;
+    if(s.version() != 1) {
+      qCritical() << "Invalid client settings version, terminating!";
+      return false;
+    }
 
     // session resume
     QtUi *gui = new QtUi();

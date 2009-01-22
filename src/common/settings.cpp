@@ -22,6 +22,8 @@
 
 #include "settings.h"
 
+const int VERSION = 1;
+
 QHash<QString, QHash<QString, QVariant> > Settings::settingsCache;
 QHash<QString, QHash<QString, SettingsChangeNotifier *> > Settings::settingsChangeNotifier;
 
@@ -59,6 +61,18 @@ QHash<QString, QHash<QString, SettingsChangeNotifier *> > Settings::settingsChan
 void Settings::notify(const QString &key, QObject *receiver, const char *slot) {
   QObject::connect(notifier(group, key), SIGNAL(valueChanged(const QVariant &)),
 		   receiver, slot);
+}
+
+uint Settings::version() {
+  // we don't cache this value, and we ignore the group
+  create_qsettings;
+  uint ver = s.value("Config/Version", 0).toUInt();
+  if(!ver) {
+    // No version, so create one
+    s.setValue("Config/Version", VERSION);
+    return VERSION;
+  }
+  return ver;
 }
 
 QStringList Settings::allLocalKeys() {
