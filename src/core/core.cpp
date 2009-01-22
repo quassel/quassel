@@ -55,18 +55,21 @@ Core::Core() : storage(0) {
 
   loadTranslation(QLocale::system());
 
-#ifndef Q_WS_MAC
-
   // FIXME: MIGRATION 0.3 -> 0.4: Move database and core config to new location
   // Move settings, note this does not delete the old files
-#ifdef Q_WS_WIN
-  QSettings::Format format = QSettings::IniFormat;
+#ifdef Q_WS_MAC
+    QSettings newSettings("quassel-irc.org", "quasselcore");
 #else
-  QSettings::Format format = QSettings::NativeFormat;
-#endif
-  QString newFilePath = Quassel::configDirPath() + "quasselcore"
-  + ((format == QSettings::NativeFormat) ? QLatin1String(".conf") : QLatin1String(".ini"));
-  QSettings newSettings(newFilePath, format);
+
+# ifdef Q_WS_WIN
+    QSettings::Format format = QSettings::IniFormat;
+# else
+    QSettings::Format format = QSettings::NativeFormat;
+# endif
+    QString newFilePath = Quassel::configDirPath() + "quasselcore"
+    + ((format == QSettings::NativeFormat) ? QLatin1String(".conf") : QLatin1String(".ini"));
+    QSettings newSettings(newFilePath, format);
+#endif /* Q_WS_MAC */
 
   if(newSettings.value("Config/Version").toUInt() != 1) {
     qWarning() << "\n\n*** IMPORTANT: Config and data file locations have changed. Attempting to auto-migrate your core settings...";
@@ -82,6 +85,7 @@ Core::Core() : storage(0) {
       newSettings.setValue("Config/Version", 1);
       qWarning() << "*   Your core settings have been migrated to" << newFilePath;
 
+#ifndef Q_WS_MAC /* we don't need to move the db and cert for mac */
 #ifdef Q_OS_WIN32
       QString quasselDir = qgetenv("APPDATA") + "/quassel/";
 #elif defined Q_WS_MAC
