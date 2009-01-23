@@ -10,7 +10,7 @@ if(QT_LRELEASE_EXECUTABLE)
   file(GLOB avail_tsfiles quassel_*.ts)
   foreach(TS_FILE ${avail_tsfiles})
     get_filename_component(basename ${TS_FILE} NAME_WE)
-    string(REGEX REPLACE "quassel_(.+)$" "\\1" lang ${basename})
+    string(REGEX REPLACE "quassel_([a-zA-Z]+)(_.+)?$" "\\1" lang ${basename})
     # test if we want this
     set(flg 1)
     if(LINGUAS)
@@ -39,5 +39,11 @@ file(APPEND ${resfile} "</qresource>\n</RCC>\n")
 
 #add_custom_command(OUTPUT ${resfile} DEPENDS ${qm_files})
 set_directory_properties(PROPERTIES ADDITIONAL_MAKE_CLEAN_FILES "${qm_files} i18n.qrc")
-qt4_add_resources(RC_I18N ${resfile})
-add_custom_target(i18n DEPENDS ${RC_I18N})
+
+if(EMBED_DATA)
+  set(COMMON_RCS ${COMMON_RCS} ${resfile} PARENT_SCOPE)
+else(EMBED_DATA)
+  install(FILES ${qm_files} DESTINATION ${DATA_INSTALL_DIR}/quassel/i18n)
+endif(EMBED_DATA)
+
+add_custom_target(i18n DEPENDS ${qm_files})

@@ -65,9 +65,9 @@ if(HAVE_SSL)
 endif(HAVE_SSL)
 
 qt4_wrap_cpp(MOC ${MOC_HDRS})
-qt4_add_resources(RC_SQL sql.qrc)
+set(CORE_RCS ${CORE_RCS} core/sql.qrc PARENT_SCOPE)
 
 include_directories(${CMAKE_SOURCE_DIR}/src/common)
 
-add_library(mod_core STATIC ${SOURCES} ${MOC} ${HEADERS} ${RC_SQL})
+add_library(mod_core STATIC ${SOURCES} ${MOC} ${HEADERS})
 add_dependencies(mod_core mod_common)

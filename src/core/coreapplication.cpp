@@ -26,7 +26,7 @@
 CoreApplicationInternal::CoreApplicationInternal()
   : _coreCreated(false)
 {
-  Q_INIT_RESOURCE(sql);
+
 }
 
 CoreApplicationInternal::~CoreApplicationInternal() {

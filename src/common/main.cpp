@@ -45,7 +45,6 @@
 #include "quassel.h"
 
 int main(int argc, char **argv) {
-  Q_INIT_RESOURCE(i18n);
 
   // Setup build information and version string
   # include "version.gen"

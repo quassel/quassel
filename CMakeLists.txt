@@ -1,4 +1,5 @@
 # This is the cmake-based build system for Quassel IRC.
+#
 # You may pass various options to cmake:
 # -DWANT_(CORE|QTCLIENT|MONO)=(ON|OFF)
 #                     : select binaries to build
@@ -7,15 +8,14 @@
 # -DWITH_WEBKIT=OFF   : Disable WebKit support (link previews)
 # -DWITH_PHONON=OFF   : Disable Phonon support (audio notifications)
 # -DWITH_KDE=ON       : Enable KDE4 support
-# -DOXYGEN_ICONS=(Builtin|External)  : If "Builtin" (the default), compile our Oxygen Icon Theme subset into the binary
-#                                    : If "External", we assume Oxygen is already installed on the system
-# -DQUASSEL_ICONS=(Builtin|External) : If "Builtin" (the default), put our own icons into the binary
-#                                    : If "External", we install our icons into $PREFIX/share/apps/quassel (UNIX only)
+#
+# -DEMBED_DATA=ON     : Embed all data files in icons the binary, rather than installing them separately
+#
 # -DQT=/path/to/qt    : Choose a Qt4 installation to use instead of the system Qt4
 # -DSTATIC=ON         : Enable static building of Quassel. Use with care.
 # -DDEPLOY=ON         : Mac OS X only. Use only for creating Quassel Packages!
 #
-# NOTE: You need to remove CMakeCache.txt if you plan to change any of these values!
+# NOTE: You should remove CMakeCache.txt if you plan to change any of these values!
 
 project(QuasselIRC)
 
@@ -26,8 +26,9 @@ if(COMMAND cmake_policy)
 endif(COMMAND cmake_policy)
 
 # Use our own (well, and KDE's) version of some modules
-# In particular cmake's FindQt4 and FindOpenSSL are quite buggy
+# In particular cmake's own FindQt4 and FindOpenSSL are quite buggy
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules)
+include(QuasselMacros)
 
 # Various options and variables that can be set on the command line
 option(WANT_CORE     "Build the core (server) binary"           ON)
@@ -40,28 +41,38 @@ option(WITH_WEBKIT   "Enable WebKit support (for link previews)"	ON)
 option(WITH_PHONON   "Enable Phonon support (for audio notifications)"	ON)
 option(WITH_KDE      "Enable KDE4 integration"				OFF)
 
+# We use icon paths from KDE 4.3 trunk, which are partially invalid on older and possibly
+# even on newer KDE versions. Do not disable this unless you are sure that your Quassel will
+# run on a matching KDE version only.
+option(WITH_OXYGEN   "Install Oxygen icons. Heavily recommended unless you use KDE 4.3" ON)
+
 option(STATIC        "Enable static building (might not be portable)" OFF)
-option(DEPLOY        "Mac OS X only! Adds required libs to bundle resources and create a dmg. Note: requires Qt to be built with 10.4u SDK" OFF)
-option(SPUTDEV       "Do not use!" OFF)
 
-set(OXYGEN_ICONS "Builtin" CACHE STRING "Builtin: Compile Oxygen icons into the binary; External: Use system-installed Oxygen")
-set(QUASSEL_ICONS "Builtin" CACHE STRING "Builtin: Compile Quassel icons into the binary; External: Install them separately")
+if(APPLE)
+  option(DEPLOY        "Mac OS X only! Adds required libs to bundle resources and create a dmg. Note: requires Qt to be built with 10.4u SDK" OFF)
+endif(APPLE)
 
-set(QT "" CACHE STRING "Path to a Qt installation to use instead of the system Qt")
-set(LINGUAS "" CACHE STRING "Space-separated List of locales specifying languages that should be compiled")
+# Default to embedding data in the static case
+if(STATIC OR WIN32)
+  set(EMBED_DEFAULT ON)
+else(STATIC OR WIN32)
+  set(EMBED_DEFAULT ON) # should be OFF as soon as everything works
+endif(STATIC OR WIN32)
 
+option(EMBED_DATA    "Embed all data files in the binary (rather than installing them separately)"   ${EMBED_DEFAULT})
+
+set(QT "" CACHE STRING "Path to a Qt installation to use instead of the system Qt (e.g. for static builds)")
+set(LINGUAS "" CACHE STRING "Comma-separated list of locales specifying languages that should be compiled")
+
+# Some settings imply others
 if(STATIC)
-  set(CMAKE_BUILD_TYPE Release)
-  set(OXYGEN_ICONS "Builtin")
-  set(QUASSEL_ICONS "Builtin")
-  set(WITH_KDE OFF)
+  set(WITH_KDE OFF CACHE BOOL "Static building with KDE is not supported")
 endif(STATIC)
 
-# Define install locations. Using variables will allow overriding this by the KDE macros later.
-set(BIN_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/bin)
-set(DATA_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/share/apps)
-set(ICON_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/share/icons)
-set(XDG_APPS_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/share/applications)
+if(WIN32)
+  # We don't support separately installed resources yet on Win32
+  set(EMBED_DATA ON)
+endif(WIN32)
 
 # Enable various flags on gcc
 if(CMAKE_COMPILER_IS_GNUCXX)
@@ -77,8 +88,6 @@ if(APPLE AND DEPLOY)
   set(CMAKE_OSX_SYSROOT "/Developer/SDKs/MacOSX10.4u.sdk/")
   add_definitions(-DMAC_10_4_SDK)
 endif(APPLE AND DEPLOY)
-
-include(QuasselMacros)
 
 # Execinfo is needed for generating backtraces
 find_package(ExecInfo)
@@ -162,8 +171,7 @@ if(WITH_KDE)
     set(MOC_DEFINES ${MOC_DEFINES} -DHAVE_KDE)
     set(QUASSEL_KDE_LIBRARIES ${KDE4_KDECORE_LIBS} ${KDE4_KDEUI_LIBRARY} knotifyconfig)
     # We always use external icons for KDE4 support, since we use its iconloader rather than our own
-    set(OXYGEN_ICONS "External")
-    set(QUASSEL_ICONS "External")
+    set(EMBED_DATA OFF)
   else(KDE4_FOUND)
     message(STATUS "KDE4 not found, disabling KDE integration")
   endif(KDE4_FOUND)
@@ -186,6 +194,21 @@ if(NOT HAVE_KDE)
   else(WITH_PHONON)
     message(STATUS "Disabling Phonon support")
   endif(WITH_PHONON)
+endif(NOT HAVE_KDE)
+
+# Now set up install locations; those are set by KDE if integration is enabled
+if(NOT HAVE_KDE)
+  if(WIN32)
+    set(BIN_INSTALL_DIR ${CMAKE_INSTALL_PREFIX} CACHE FILEPATH "Install path for binaries")
+    set(DATA_INSTALL_DIR $ENV{APPDATA}/quassel-irc.org/share/apps CACHE FILEPATH "Install path for data files")
+    set(ICON_INSTALL_DIR $ENV{APPDATA}/quassel-irc.org/share/icons CACHE FILEPATH "Global icon install path")
+    set(XDG_APPS_INSTALL_DIR $ENV{APPDATA}/quassel-irc.org/share/applications CACHE FILEPATH "Install path for .desktop files")
+  else(WIN32)
+    set(BIN_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/bin CACHE FILEPATH "Install path for binaries")
+    set(DATA_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/share/apps CACHE FILEPATH "Install path for data files")
+    set(ICON_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/share/icons CACHE FILEPATH "Global icon install path")
+    set(XDG_APPS_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/share/applications CACHE FILEPATH "Install path for .desktop files")
+  endif(WIN32)
 endif(NOT HAVE_KDE)
 
 # RPATH needs to be set correctly
@@ -217,11 +240,6 @@ if(WIN32)
   set(RC_WIN32 ../pics/win32.rc)  # for app icons on windows
 endif(WIN32)
 
-# This is dirty, but I haven't found a cleaner way to ensure that the generated .qrc files
-# (which will be removed with make clean) are regenerated :/
-set_directory_properties(PROPERTIES
-                         ADDITIONAL_MAKE_CLEAN_FILES CMakeCache.txt)
-
 # We need to create a version.gen
 # For this, we create our genversion binary and make sure it is run every time.
 add_executable(genversion ${CMAKE_SOURCE_DIR}/src/common/genversion.cpp)
@@ -232,33 +250,14 @@ add_custom_target(genversion_run ALL ${GENVERSION_EXECUTABLE}
                   ${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR}/src/version.gen)
 add_dependencies(genversion_run genversion)
 
-# Decide what to do with icons
-if(WANT_QTCLIENT OR WANT_MONO)
-  if(QUASSEL_ICONS MATCHES "External")
-    message(STATUS "Install Quassel icons to ${CMAKE_INSTALL_PREFIX}/share/apps/quassel")
-  else(QUASSEL_ICONS MATCHES "External")
-    set(QUASSEL_ICONS "Builtin")
-    message(STATUS "Compile Quassel icons into the binary")
-  endif(QUASSEL_ICONS MATCHES "External")
-
-  if(OXYGEN_ICONS MATCHES "External")
-    message(STATUS "Use system-installed icon theme")
-  else(OXYGEN_ICONS MATCHES "External")
-    set(OXYGEN_ICONS "Builtin")
-    message(STATUS "Compile Oxygen icon theme subset into the binary")
-  endif(OXYGEN_ICONS MATCHES "External")
-endif(WANT_QTCLIENT OR WANT_MONO)
-
 # These variables will be added to the main targets (CORE, QTCLIENT, MONO)
-
 set(COMMON_DEPS ${RC_WIN32})
 set(CORE_DEPS )
 set(CLIENT_DEPS )
-set(KDE_DEPS )
 
 # Add needed subdirs - the order is important, since src needs some vars set by other dirs
 add_subdirectory(data)
 add_subdirectory(icons)
-#add_subdirectory(pics)
+add_subdirectory(pics)
 add_subdirectory(i18n)
 add_subdirectory(src)

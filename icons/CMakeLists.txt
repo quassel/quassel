@@ -1,14 +1,13 @@
-# Build and/or install icons according to global settings
+# Install icons
+# We put them in DATA_INSTALL_DIR rather than ICON_INSTALL_DIR, to avoid
+# polluting the global namespace and to allow overriding
 
-if(QUASSEL_ICONS MATCHES "External")
-  install(DIRECTORY hicolor DESTINATION ${ICON_INSTALL_DIR})
-else(QUASSEL_ICONS MATCHES "External")
-  qt4_add_resources(RC_ICONS hicolor.qrc)
-endif(QUASSEL_ICONS MATCHES "External")
-
-if(OXYGEN_ICONS MATCHES "Builtin")
-  qt4_add_resources(RC_ICONS oxygen.qrc)
-endif(OXYGEN_ICONS MATCHES "Builtin")
+if(EMBED_DATA)
+  set(CLIENT_RCS ${CLIENT_RCS} ../icons/hicolor.qrc ../icons/oxygen.qrc PARENT_SCOPE)
+else(EMBED_DATA)
+  install(DIRECTORY hicolor DESTINATION ${DATA_INSTALL_DIR}/quassel/icons)
+  install(DIRECTORY oxygen DESTINATION ${DATA_INSTALL_DIR}/quassel/icons)
+endif(EMBED_DATA)
 
 # Application icon
 if(NOT APPLE AND NOT WIN32)
@@ -17,5 +16,3 @@ if(NOT APPLE AND NOT WIN32)
     install(FILES hicolor/48x48/apps/quassel.png DESTINATION /usr/share/pixmaps)
   endif(CMAKE_INSTALL_PREFIX STREQUAL "/usr")
 endif(NOT APPLE AND NOT WIN32)
-
-add_custom_target(icons DEPENDS ${RC_ICONS})
