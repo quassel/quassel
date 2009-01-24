@@ -436,22 +436,22 @@ Vous pouvez également choisir de récupérer des lignes complémentaires plus a
     <message>
         <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="379"/>
         <source>Dynamic backlog amount:</source>
-        <translation>Montant de l&apos;historique dynamique:</translation>
+        <translation>Taille dynamique de l&apos;historique :</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="103"/>
         <source>FixedBacklogAmount</source>
-        <translation type="unfinished"></translation>
+        <translation>FixedBacklogAmount</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="184"/>
         <source>PerBufferUnreadBacklogLimit</source>
-        <translation type="unfinished"></translation>
+        <translation>PerBufferUnreadBacklogLimit</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="216"/>
         <source>PerBufferUnreadBacklogAdditional</source>
-        <translation type="unfinished"></translation>
+        <translation>PerBufferUnreadBacklogAdditional</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="258"/>
@@ -471,17 +471,17 @@ Vous pouvez également choisir de récupérer des lignes complémentaires plus a
     <message>
         <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="300"/>
         <source>GlobalUnreadBacklogLimit</source>
-        <translation type="unfinished"></translation>
+        <translation>GlobalUnreadBacklogLimit</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="332"/>
         <source>GlobalUnreadBacklogAdditional</source>
-        <translation type="unfinished"></translation>
+        <translation>GlobalUnreadBacklogAdditional</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="395"/>
         <source>DynamicBacklogAmount</source>
-        <translation type="unfinished"></translation>
+        <translation>DynamicBacklogAmount</translation>
     </message>
 </context>
 <context>
@@ -1385,12 +1385,12 @@ p, li { white-space: pre-wrap; }
         <translation>L&apos;Identité existe déjà dans le client!</translation>
     </message>
     <message>
-        <location filename="../src/client/client.cpp" line="319"/>
+        <location filename="../src/client/client.cpp" line="320"/>
         <source>All Buffers</source>
         <translation>Tous tampons</translation>
     </message>
     <message>
-        <location filename="../src/client/client.cpp" line="329"/>
+        <location filename="../src/client/client.cpp" line="330"/>
         <source>Default Identity</source>
         <translation>Identité par défaut</translation>
     </message>
@@ -1421,7 +1421,7 @@ p, li { white-space: pre-wrap; }
         <translation>Les connexions internes ne sont pas encore supportées.</translation>
     </message>
     <message>
-        <location filename="../src/client/clientsyncer.cpp" line="128"/>
+        <location filename="../src/client/clientsyncer.cpp" line="129"/>
         <source>&lt;b&gt;This client is built without SSL Support!&lt;/b&gt;&lt;br /&gt;Disable the usage of SSL in the account settings.</source>
         <translation>&lt;b&gt;Ce client n&apos;a pas compilé avec le support SSL !&lt;/b&gt;&lt;br /&gt;Suppression de l&apos;utilisation de SSL dans les paramètres de compte.</translation>
     </message>
@@ -1431,12 +1431,12 @@ p, li { white-space: pre-wrap; }
         <translation>&lt;b&gt;Le Noyau auquel vous essayez de vous connecter est trop vieux !&lt;/b&gt;&lt;br&gt;Vous devez au minimum avoir le protocole noyau/client n°%1 pour vous connecter.</translation>
     </message>
     <message>
-        <location filename="../src/client/clientsyncer.cpp" line="235"/>
+        <location filename="../src/client/clientsyncer.cpp" line="233"/>
         <source>&lt;b&gt;The Quassel Core you are trying to connect to does not support SSL!&lt;/b&gt;&lt;br /&gt;If you want to connect anyways, disable the usage of SSL in the account settings.</source>
         <translation>&lt;b&gt;Le Noyau Quassel auquel vous essayez de vous conneter ne supporte pas le SSL!&lt;/b&gt;&lt;br /&gt;Si vous voulez vous connect malgré tout, désactivez l&apos;usage du SSL dans vos paramètres de compte.</translation>
     </message>
     <message>
-        <location filename="../src/client/clientsyncer.cpp" line="265"/>
+        <location filename="../src/client/clientsyncer.cpp" line="262"/>
         <source>Logging in...</source>
         <translation>Authentification...</translation>
     </message>
@@ -1801,7 +1801,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ContentsChatItem</name>
     <message>
-        <location filename="../src/qtui/chatitem.cpp" line="608"/>
+        <location filename="../src/qtui/chatitem.cpp" line="610"/>
         <source>Copy Link Address</source>
         <translation>Copier l&apos;Adresse du Lien</translation>
     </message>
@@ -1809,37 +1809,37 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>Core</name>
     <message>
-        <location filename="../src/core/core.cpp" line="59"/>
+        <location filename="../src/core/core.cpp" line="137"/>
         <source>Could not initialize any storage backend! Exiting...</source>
-        <translation>Impossible de créer aucune base de stockage ! Fin de l&apos;opération...</translation>
+        <translation>Impossible de créer une base de donnée ! Fin de l&apos;opération...</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="120"/>
+        <location filename="../src/core/core.cpp" line="188"/>
         <source>Calling restoreState() even though active sessions exist!</source>
         <translation>Appel de restoreState() alors que des sessions actives existent !</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="161"/>
+        <location filename="../src/core/core.cpp" line="229"/>
         <source>Admin user or password not set.</source>
         <translation>L&apos;idnetifiant et le mot de passe administrateur ne sont pas saisis.</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="164"/>
+        <location filename="../src/core/core.cpp" line="232"/>
         <source>Could not setup storage!</source>
         <translation>Impossible de paramétrer la base de données !</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="168"/>
+        <location filename="../src/core/core.cpp" line="236"/>
         <source>Creating admin user...</source>
         <translation>Création de l&apos;utilisateur administrateur...</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="316"/>
+        <location filename="../src/core/core.cpp" line="430"/>
         <source>Antique client trying to connect... refusing.</source>
         <translation>Un antique client essaye de se connecter... refusé.</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="330"/>
+        <location filename="../src/core/core.cpp" line="444"/>
         <source>&lt;b&gt;Your Quassel Client is too old!&lt;/b&gt;&lt;br&gt;This core needs at least client/core protocol version %1.&lt;br&gt;Please consider upgrading your client.</source>
         <translation>&lt;b&gt;Le Noyau auquel vous essayez de vous connecter est trop vieux !&lt;/b&gt;&lt;br&gt;Vous devez au minimum avoir la version %1 du protocole noyau/client.&lt;br&gt; Veuillez mettre à jour votre client.</translation>
     </message>
@@ -1849,12 +1849,12 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Client %1 trop vieux, rejeté.</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="346"/>
+        <location filename="../src/core/core.cpp" line="460"/>
         <source>&lt;b&gt;Quassel Core Version %1&lt;/b&gt;&lt;br&gt;Built: %2&lt;br&gt;Up %3d%4h%5m (since %6)</source>
         <translation>&lt;b&gt;Quassel Noyau Version %1&lt;/b&gt;&lt;br&gt;Compilée le: %2&lt;br&gt;Fonctionne depuis %3d%4h%5m (soit le %6)</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="410"/>
+        <location filename="../src/core/core.cpp" line="524"/>
         <source>&lt;b&gt;Client not initialized!&lt;/b&gt;&lt;br&gt;You need to send an init message before trying to login.</source>
         <translation>&lt;b&gt;Client non créé !&lt;/b&gt;&lt;br&gt;Vous devez envoyer un message de création avant d&apos;essayer de vous connecter.</translation>
     </message>
@@ -1864,7 +1864,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Le client %1 n&apos;a pas envoyé de message de création avant d&apos;essayer de se connecter, rejet de la demande.</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="430"/>
+        <location filename="../src/core/core.cpp" line="544"/>
         <source>&lt;b&gt;Invalid username or password!&lt;/b&gt;&lt;br&gt;The username/password combination you supplied could not be found in the database.</source>
         <translation>&lt;b&gt;identifiant ou mot de passe invalide !&lt;/b&gt;&lt;br&gt;La combinaison identifiant/mot de passe que vous avez fournie ne peut être trouvée dans la base de données.</translation>
     </message>
@@ -1874,7 +1874,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Client %1 crée et identifié avec succès comme &quot;%2&quot; (IdUtilisateur: %3).</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="447"/>
+        <location filename="../src/core/core.cpp" line="561"/>
         <source>Non-authed client disconnected.</source>
         <translation>Client non-identifié déconnecté.</translation>
     </message>
@@ -1884,7 +1884,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Impossible de lancer la session pour le client %1 !</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="62"/>
+        <location filename="../src/core/core.cpp" line="140"/>
         <source>Currently, Quassel only supports SQLite3. You need to build your
 Qt library with the sqlite plugin enabled in order for quasselcore
 to work.</source>
@@ -1893,55 +1893,90 @@ construire votre librairie Qt avec le plugin sqlite activé pour que le
 noyau quassel fonctionne.</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="294"/>
+        <location filename="../src/core/core.cpp" line="408"/>
         <source>Client connected from</source>
         <translation>Client connecté par</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="436"/>
+        <location filename="../src/core/core.cpp" line="550"/>
         <source>Client</source>
         <translation>Client</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="332"/>
+        <location filename="../src/core/core.cpp" line="446"/>
         <source>too old, rejecting.</source>
         <translation>trop vieux, rejeté.</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="392"/>
+        <location filename="../src/core/core.cpp" line="506"/>
         <source>Starting TLS for Client:</source>
         <translation>Début du TLS pour le Client:</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="412"/>
+        <location filename="../src/core/core.cpp" line="526"/>
         <source>did not send an init message before trying to login, rejecting.</source>
         <translation>n&apos;a pas envoyé de message de création avant d&apos;essayer de se connecter, rejet.</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="436"/>
+        <location filename="../src/core/core.cpp" line="550"/>
         <source>initialized and authenticated successfully as &quot;%1&quot; (UserId: %2).</source>
         <translation>créé et identifié avec succès comme &quot;%1&quot; (IdUtilisateur: %2).</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="497"/>
+        <location filename="../src/core/core.cpp" line="611"/>
         <source>Could not initialize session for client:</source>
         <translation>Impossible de lancer la session pour le client:</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="453"/>
+        <location filename="../src/core/core.cpp" line="567"/>
         <source>Non-authed client disconnected. (socket allready destroyed)</source>
         <translation>Client non-identifié déconnecté. (socket déjà supprimée)</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="297"/>
+        <location filename="../src/core/core.cpp" line="411"/>
         <source>Closing server for basic setup.</source>
         <translation>Arrêt du serveur pour un paramétrage simple.</translation>
+    </message>
+    <message>
+        <location filename="../src/core/core.cpp" line="323"/>
+        <source>Invalid listen address %1</source>
+        <translation>Adresse d&apos;écoute invalide %1</translation>
+    </message>
+    <message>
+        <location filename="../src/core/core.cpp" line="331"/>
+        <source>Listening for GUI clients on IPv4 %1 port %2 using protocol version %3</source>
+        <translation>A l&apos;écoute des clients sur l&apos;IPv4 %1 port %2 avec la version %3 du protocole</translation>
+    </message>
+    <message>
+        <location filename="../src/core/core.cpp" line="339"/>
+        <source>Could not open IPv4 interface %1:%2: %3</source>
+        <translation>Impossible d&apos;ouvrir l&apos;interface IPv4 %1:%2: %3</translation>
+    </message>
+    <message>
+        <location filename="../src/core/core.cpp" line="347"/>
+        <source>Listening for GUI clients on IPv6 %1 port %2 using protocol version %3</source>
+        <translation>A l&apos;écoute des clients sur l&apos;IPv6 %1 port %2 avec la version %3 du protocole</translation>
+    </message>
+    <message>
+        <location filename="../src/core/core.cpp" line="358"/>
+        <source>Could not open IPv6 interface %1:%2: %3</source>
+        <translation>Impossible d&apos;ouvrir l&apos;interface IPv6 %1:%2: %3</translation>
+    </message>
+    <message>
+        <location filename="../src/core/core.cpp" line="366"/>
+        <source>Invalid listen address %1, unknown network protocol</source>
+        <translation>Adresse d&apos;écoute invalide %1, version du protocole inconnue</translation>
+    </message>
+    <message>
+        <location filename="../src/core/core.cpp" line="374"/>
+        <source>Could not open any network interfaces to listen on!</source>
+        <translation>Impossible d&apos;ouvrir une interface réseau pour écouter !</translation>
     </message>
 </context>
 <context>
     <name>CoreAccountEditDlg</name>
     <message>
-        <location filename="../src/qtui/coreconnectdlg.cpp" line="490"/>
+        <location filename="../src/qtui/coreconnectdlg.cpp" line="483"/>
         <source>Add Core Account</source>
         <translation>Ajouter un compte noyau</translation>
     </message>
@@ -2510,32 +2545,32 @@ p, li { white-space: pre-wrap; }
         <translation>&lt;div style=color:red;&gt;Echec de la connexion à %1 !&lt;/div&gt;</translation>
     </message>
     <message>
-        <location filename="../src/qtui/coreconnectdlg.cpp" line="277"/>
+        <location filename="../src/qtui/coreconnectdlg.cpp" line="270"/>
         <source>Not connected to %1.</source>
         <translation>Non connecté à %1.</translation>
     </message>
     <message>
-        <location filename="../src/qtui/coreconnectdlg.cpp" line="278"/>
+        <location filename="../src/qtui/coreconnectdlg.cpp" line="271"/>
         <source>Looking up %1...</source>
         <translation>Recherche de %1...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/coreconnectdlg.cpp" line="279"/>
+        <location filename="../src/qtui/coreconnectdlg.cpp" line="272"/>
         <source>Connecting to %1...</source>
         <translation>Connexion à %1...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/coreconnectdlg.cpp" line="280"/>
+        <location filename="../src/qtui/coreconnectdlg.cpp" line="273"/>
         <source>Connected to %1</source>
         <translation>Connecté à %1</translation>
     </message>
     <message>
-        <location filename="../src/qtui/coreconnectdlg.cpp" line="281"/>
+        <location filename="../src/qtui/coreconnectdlg.cpp" line="274"/>
         <source>Unknown connection state to %1</source>
         <translation>Etat de la connexion à %1 inconnu </translation>
     </message>
     <message>
-        <location filename="../src/qtui/coreconnectdlg.cpp" line="333"/>
+        <location filename="../src/qtui/coreconnectdlg.cpp" line="326"/>
         <source>Logging in...</source>
         <translation>Authentification...</translation>
     </message>
@@ -2813,12 +2848,12 @@ SOME SPACE</translation>
         <translation type="obsolete">Client %1 déconnecté (IdUtilisateur: %2).</translation>
     </message>
     <message>
-        <location filename="../src/core/coresession.cpp" line="318"/>
+        <location filename="../src/core/coresession.cpp" line="317"/>
         <source>CoreSession::createNetwork(): Got invalid networkId from Core when trying to create network %1!</source>
         <translation>CoreSession::createNetwork(): Le noyau a renvoyé idRéseau invalide lors de la création du réseau %1!</translation>
     </message>
     <message>
-        <location filename="../src/core/coresession.cpp" line="335"/>
+        <location filename="../src/core/coresession.cpp" line="339"/>
         <source>CoreSession::createNetwork(): Trying to create a network that already exists, updating instead!</source>
         <translation>CoreSession::createNetwork(): Essai de création d&apos;un réseau dejà existant, mise à jour réalisée !</translation>
     </message>
@@ -4353,7 +4388,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Attente du noyau...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="619"/>
+        <location filename="../src/qtui/mainwin.cpp" line="613"/>
         <source>Not connected to core.</source>
         <translation>Déconnecté au noyau.</translation>
     </message>
@@ -4503,7 +4538,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Connecter au Noyau...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="554"/>
+        <location filename="../src/qtui/mainwin.cpp" line="551"/>
         <source>Connected to core.</source>
         <translation>Connecté au noyau.</translation>
     </message>
@@ -4914,7 +4949,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>MessageModel</name>
     <message>
-        <location filename="../src/client/messagemodel.cpp" line="381"/>
+        <location filename="../src/client/messagemodel.cpp" line="362"/>
         <source>Requesting %1 messages from backlog for buffer %2:%3</source>
         <translation>Demande de %1 messages dans l&apos;historique pour le tampon %2:%3</translation>
     </message>
@@ -5121,7 +5156,7 @@ p, li { white-space: pre-wrap; }
         <translation>Merci de saisir un nom de réseau:</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/networkssettingspage.cpp" line="739"/>
+        <location filename="../src/qtui/settingspages/networkssettingspage.cpp" line="698"/>
         <source>Add Network</source>
         <translation>Ajouter un réseau</translation>
     </message>
@@ -5350,12 +5385,12 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Voulez vous supprimer le tampon &quot;%1&quot; de manière permanente ? Cela supprimera toutes les données correspondantes, y compris celles sauvées dans l&apos;historique contenu dans la base de données du noyau !</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/networkmodelactionprovider.cpp" line="600"/>
+        <location filename="../src/uisupport/networkmodelactionprovider.cpp" line="603"/>
         <source>Join Channel</source>
         <translation>Rejoindre le canal</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/networkmodelactionprovider.cpp" line="600"/>
+        <location filename="../src/uisupport/networkmodelactionprovider.cpp" line="603"/>
         <source>Input channel name:</source>
         <translation>Entrez le nom du canal:</translation>
     </message>
@@ -5365,7 +5400,7 @@ p, li { white-space: pre-wrap; }
         <translation>Supprimer le(s) tampon(s)...</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/uisupport/networkmodelactionprovider.cpp" line="516"/>
+        <location filename="../src/uisupport/networkmodelactionprovider.cpp" line="519"/>
         <source>Do you want to delete the following buffer(s) permanently?</source>
         <translation>
             <numerusform>Voulez vous supprimer définitivement la vue suivante ?</numerusform>
@@ -5373,17 +5408,17 @@ p, li { white-space: pre-wrap; }
         </translation>
     </message>
     <message>
-        <location filename="../src/uisupport/networkmodelactionprovider.cpp" line="521"/>
+        <location filename="../src/uisupport/networkmodelactionprovider.cpp" line="524"/>
         <source>&lt;b&gt;Note:&lt;/b&gt; This will delete all related data, including all backlog data, from the core&apos;s database and cannot be undone.</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Note:&lt;/b&gt; Cela détruira toutes les données rattachées, y compris l&apos;historique, de la base de donnée du noyau et cela ne peut être annullé.</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/networkmodelactionprovider.cpp" line="523"/>
+        <location filename="../src/uisupport/networkmodelactionprovider.cpp" line="526"/>
         <source>&lt;br&gt;Active channel buffers cannot be deleted, please part the channel first.</source>
         <translation>&lt;br&gt;Les canaux actifs ne peuvent être supprimés, merci de quitter le canal auparavant.</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/networkmodelactionprovider.cpp" line="525"/>
+        <location filename="../src/uisupport/networkmodelactionprovider.cpp" line="528"/>
         <source>Remove buffers permanently?</source>
         <translation>Supprimer les tampons définitivement ?</translation>
     </message>
@@ -5446,12 +5481,12 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Appliquer d&apos;abord !</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/networkssettingspage.cpp" line="557"/>
+        <location filename="../src/qtui/settingspages/networkssettingspage.cpp" line="545"/>
         <source>Delete Network?</source>
         <translation>Supprimer le Réseau ?</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/networkssettingspage.cpp" line="558"/>
+        <location filename="../src/qtui/settingspages/networkssettingspage.cpp" line="546"/>
         <source>Do you really want to delete the network &quot;%1&quot; and all related settings, including the backlog?</source>
         <translation>Voulez vous vraiment détruire le réseau &quot;%1&quot; et tous les paramètres correspondants, ainsi que l&apos;historique?</translation>
     </message>
@@ -5993,27 +6028,27 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
 <context>
     <name>Quassel::secondsToString()</name>
     <message>
-        <location filename="../src/common/util.cpp" line="235"/>
+        <location filename="../src/common/util.cpp" line="157"/>
         <source>year</source>
         <translation>année</translation>
     </message>
     <message>
-        <location filename="../src/common/util.cpp" line="236"/>
+        <location filename="../src/common/util.cpp" line="158"/>
         <source>day</source>
         <translation>jour</translation>
     </message>
     <message>
-        <location filename="../src/common/util.cpp" line="237"/>
+        <location filename="../src/common/util.cpp" line="159"/>
         <source>h</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/common/util.cpp" line="238"/>
+        <location filename="../src/common/util.cpp" line="160"/>
         <source>min</source>
         <translation>mn</translation>
     </message>
     <message>
-        <location filename="../src/common/util.cpp" line="239"/>
+        <location filename="../src/common/util.cpp" line="161"/>
         <source>sec</source>
         <translation>s</translation>
     </message>
@@ -6393,7 +6428,7 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
         <translation type="obsolete">Impossible de créer la base système: %1</translation>
     </message>
     <message>
-        <location filename="../src/core/sqlitestorage.cpp" line="52"/>
+        <location filename="../src/core/sqlitestorage.cpp" line="51"/>
         <source>SQLite is a file-based database engine that does not require any setup. It is suitable for small and medium-sized databases that do not require access via network. Use SQLite if your Quassel Core should store its data on the same machine it is running on, and if you only expect a few users to use your core.</source>
         <translation>SQLite est un moteur de base de données par fichiers qui ne nécessite aucun paramétrage. Cela est pratique pour les petites et moyennes base de données qui n&apos;ont pas besoin d&apos;être consultées par réseau. Utilisez SQLite si votre Noyau Quassel doit sauver ses données sur la machine même qu&apos;il utilise, et si vous pensez être peu à utiliser votre noyau.</translation>
     </message>
@@ -6685,122 +6720,122 @@ Click to edit!</source>
 <context>
     <name>UiStyle::StyledMessage</name>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="332"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="311"/>
         <source>%D0%1</source>
         <translation>%D0%1</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="334"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="313"/>
         <source>%Dn%1</source>
         <translation>%Dn%1</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="336"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="315"/>
         <source>%Ds%1</source>
         <translation>%Ds%1</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="338"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="317"/>
         <source>%De%1</source>
         <translation>%De%1</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="340"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="319"/>
         <source>%Dj%DN%1%DN %DH(%2@%3)%DH has joined %DC%4%DC</source>
         <translation>%Dj%DN%1%DN %DH(%2@%3)%DH a rejoint %DC%4%DC</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="342"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="321"/>
         <source>%Dp%DN%1%DN %DH(%2@%3)%DH has left %DC%4%DC</source>
         <translation>%Dp%DN%1%DN %DH(%2@%3)%DH a quitté %DC%4%DC</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="346"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="325"/>
         <source>%Dq%DN%1%DN %DH(%2@%3)%DH has quit</source>
         <translation>%Dq%DN%1%DN %DH(%2@%3)%DH est parti</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="352"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="331"/>
         <source>%Dk%DN%1%DN has kicked %DN%2%DN from %DC%3%DC</source>
         <translation>%Dk%DN%1%DN a kické %DN%2%DN de %DC%3%DC</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="357"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="336"/>
         <source>%DrYou are now known as %DN%1%DN</source>
         <translation>%DrVous vous appellez maintenant %DN%1%DN</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="358"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="337"/>
         <source>%Dr%DN%1%DN is now known as %DN%2%DN</source>
         <translation>%Dr%DN%1%DN s&apos;appelle maintenant %DN%2%DN</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="361"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="340"/>
         <source>%DmUser mode: %DM%1%DM</source>
         <translation>%DmMode utilisateur: %DM%1%DM</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="362"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="341"/>
         <source>%DmMode %DM%1%DM by %DN%2%DN</source>
         <translation>%DmMode %DM%1%DM par %DN%2%DN</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="365"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="344"/>
         <source>%Da%DN%1%DN %2</source>
         <translation>%Da%DN%1%DN %2</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="368"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="347"/>
         <source>%De[%1]</source>
         <translation>%De[%1]</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="390"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="369"/>
         <source>&lt;%1&gt;</source>
         <translation>&lt;%1&gt;</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="392"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="371"/>
         <source>[%1]</source>
         <translation>[%1]</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="396"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="375"/>
         <source>*</source>
         <translation>*</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="398"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="377"/>
         <source>--&gt;</source>
         <translation>--&gt;</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="402"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="381"/>
         <source>&lt;--</source>
         <translation>&lt;--</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="404"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="383"/>
         <source>&lt;-*</source>
         <translation>&lt;-*</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="406"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="385"/>
         <source>&lt;-&gt;</source>
         <translation>&lt;-&gt;</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="408"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="387"/>
         <source>***</source>
         <translation>***</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="410"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="389"/>
         <source>-*-</source>
         <translation>-*-</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="412"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="391"/>
         <source>%1</source>
         <translation>%1</translation>
     </message>
@@ -6859,7 +6894,7 @@ Click to edit!</source>
 <context>
     <name>UserInputHandler</name>
     <message>
-        <location filename="../src/core/userinputhandler.cpp" line="130"/>
+        <location filename="../src/core/userinputhandler.cpp" line="134"/>
         <source>sending CTCP-%1 request</source>
         <translation>envoi d&apos;une requête CTCP-%1</translation>
     </message>
