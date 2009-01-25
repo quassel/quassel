@@ -94,7 +94,7 @@ bool QtUiApplication::init() {
         foreach(QString key, oldSettings.allKeys())
           newSettings.setValue(key, oldSettings.value(key));
         newSettings.setValue("Config/Version", 1);
-        qWarning() << "*   Your client settings have been migrated to" << newFilePath;
+        qWarning() << "*   Your client settings have been migrated to" << newSettings.fileName();
         qWarning() << "*** Migration completed.\n\n";
       }
     }

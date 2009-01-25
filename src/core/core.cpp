@@ -81,7 +81,7 @@ Core::Core() : storage(0) {
       foreach(QString key, oldSettings.allKeys())
         newSettings.setValue(key, oldSettings.value(key));
       newSettings.setValue("Config/Version", 1);
-      qWarning() << "*   Your core settings have been migrated to" << newFilePath;
+      qWarning() << "*   Your core settings have been migrated to" << newSettings.fileName();
 
 #ifndef Q_WS_MAC /* we don't need to move the db and cert for mac */
 #ifdef Q_OS_WIN32
@@ -114,10 +114,10 @@ Core::Core() : storage(0) {
         else
           qWarning() << "!!! Moving your certificate has failed. Please move it manually into" << Quassel::configDirPath();
       }
+#endif /* !Q_WS_MAC */
       qWarning() << "*** Migration completed.\n\n";
     }
   }
-#endif /* !Q_WS_MAC */
   // MIGRATION end
 
   // check settings version
