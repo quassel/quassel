@@ -54,39 +54,59 @@ void IconLoader::setTheme(const QString &theme) {
   // check which dirs could contain themed icons
   _themedIconDirNames.clear();
   _plainIconDirNames.clear();
-  QString path;
-  QStringList dataDirNames = Quassel::dataDirPaths();
 
-  // System theme in $data/icons/$theme
-  foreach(QString dir, dataDirNames) {
-    path = QString("%1/icons/%2").arg(dir, theme);
-    if(QFile::exists(path))
-      _themedIconDirNames.append(path);
+  // First, look for a system theme
+  // This is supposed to only work on Unix, though other platforms might set $XDG_DATA_DIRS if they please.
+  QStringList iconDirNames = QString(qgetenv("XDG_DATA_DIRS")).split(':', QString::SkipEmptyParts);
+  if(!iconDirNames.isEmpty()) {
+    for(int i = 0; i < iconDirNames.count(); i++)
+      iconDirNames[i].append(QString("/icons/"));
   }
-  // Resource for system theme :/icons/$theme
-  path = QString(":/icons/%1").arg(theme);
-  if(QFile::exists(path))
-    _themedIconDirNames.append(path);
+#ifdef Q_OS_UNIX
+  else {
+    // Provide a fallback
+    iconDirNames << "/usr/share/icons/";
+  }
+  // Add our prefix too
+  QString appDir = QCoreApplication::applicationDirPath();
+  int binpos = appDir.lastIndexOf("/bin");
+  if(binpos >= 0) {
+    appDir.replace(binpos, 4, "/share");
+    appDir.append("/icons/");
+    if(!iconDirNames.contains(appDir))
+      iconDirNames.append(appDir);
+  }
+#endif
 
-  // Own icons in $data/apps/quassel/icons/hicolor
-  // Also, plain icon dirs $data/apps/quassel/pics
-  foreach(QString dir, dataDirNames) {
-    path = QString("%1/icons/hicolor").arg(dir);
+  // Now look for an icons/ subdir in our data paths
+  foreach(const QString &dir, Quassel::dataDirPaths())
+    iconDirNames << dir + "icons/";
+
+  // Add our resource path too
+  iconDirNames << ":/icons/";
+
+  // Ready do add theme names
+  foreach(const QString &dir, iconDirNames) {
+    QString path = dir + theme + '/';
     if(QFile::exists(path))
-      _themedIconDirNames.append(path);
-    path = QString("%1/apps/quassel/pics").arg(dir);
+      _themedIconDirNames << path;
+  }
+  foreach(const QString &dir, iconDirNames) {
+    QString path = dir + "hicolor/";
     if(QFile::exists(path))
-      _plainIconDirNames.append(path);
+      _themedIconDirNames << path;
   }
 
-  // Same for :/icons/hicolor and :/pics
-  path = QString(":/icons/hicolor");
-  if(QFile::exists(path))
-    _themedIconDirNames.append(path);
+  // We ship some plain (non-themed) icons in $data/pics
+  foreach(const QString &dir, Quassel::dataDirPaths()) {
+    QString path = dir + "pics/";
+    if(QFile::exists(path))
+      _plainIconDirNames << path;
+  }
+  // And of course, our resource path
+  if(QFile::exists(":/pics"))
+    _plainIconDirNames << ":/pics";
 
-  path = QString(":/pics");
-  if(QFile::exists(path))
-    _plainIconDirNames.append(path);
 }
 
 // TODO: optionally implement cache (speed/memory tradeoff?)

@@ -284,32 +284,32 @@ QStringList Quassel::findDataDirPaths() const {
       dataDirNames[i].append("/apps/quassel/");
   } else {
   // Provide a fallback
-  // FIXME fix this for win and mac!
 #ifdef Q_OS_WIN32
-    dataDirNames << qgetenv("APPDATA") + QCoreApplication::organizationDomain()
+    dataDirNames << qgetenv("APPDATA") + QCoreApplication::organizationDomain() + "/share/apps/quassel/"
+                 << qgetenv("APPDATA") + QCoreApplication::organizationDomain()
                  << QCoreApplication::applicationDirPath();
+  }
 #elif defined Q_WS_MAC
     dataDirNames << QDir::homePath() + "/Library/Application Support/Quassel/"
                  << QCoreApplication::applicationDirPath();
-#else
-    if(dataDirNames.isEmpty())
-      dataDirNames.append("/usr/share/apps/quassel/");
-    // on UNIX, we always check our install prefix
-    QString appDir = QCoreApplication::applicationDirPath();
-    int binpos = appDir.lastIndexOf("/bin");
-    if(binpos >= 0) {
-      appDir.replace(binpos, 4, "/share");
-      appDir.append("/apps/quassel/");
-      if(!dataDirNames.contains(appDir))
-        dataDirNames.append(appDir);
-    }
-#endif
   }
+#else
+    dataDirNames.append("/usr/share/apps/quassel/");
+  }
+  // on UNIX, we always check our install prefix
+  QString appDir = QCoreApplication::applicationDirPath();
+  int binpos = appDir.lastIndexOf("/bin");
+  if(binpos >= 0) {
+    appDir.replace(binpos, 4, "/share");
+    appDir.append("/apps/quassel/");
+    if(!dataDirNames.contains(appDir))
+      dataDirNames.append(appDir);
+  }
+#endif
 
   // add resource path and workdir just in case
-  dataDirNames << ":/data/"
-               << QCoreApplication::applicationDirPath() + "/data/"
-               << QCoreApplication::applicationDirPath();
+  dataDirNames << QCoreApplication::applicationDirPath() + "/data/"
+               << ":/data/";
 
   // append trailing '/' and check for existence
   QStringList::Iterator iter = dataDirNames.begin();
