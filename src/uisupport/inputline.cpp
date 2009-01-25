@@ -43,7 +43,7 @@ bool InputLine::eventFilter(QObject *watched, QEvent *event) {
   BufferView *view = qobject_cast<BufferView *>(watched);
   if(view) {
     QKeyEvent *keyEvent = static_cast<QKeyEvent*>(event);
-    if(keyEvent->text().length() == 1) { // normal key press
+    if(keyEvent->text().length() == 1 && !(keyEvent->modifiers() & (Qt::ControlModifier ^ Qt::AltModifier)) ) { // normal key press
       QChar c = keyEvent->text().at(0);
       if(c.isLetterOrNumber() || c.isSpace() || c.isPunct() || c.isSymbol()) {
         setFocus();
