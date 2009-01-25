@@ -90,7 +90,7 @@ void AppearanceSettingsPage::load() {
     ui.languageComboBox->setCurrentIndex(1);
   else
     ui.languageComboBox->setCurrentIndex(ui.languageComboBox->findText(QLocale::languageToString(locale.language()), Qt::MatchExactly));
-  loadTranslation(selectedLocale());
+  Quassel::loadTranslation(selectedLocale());
 
   ChatViewSettings chatViewSettings;
   SettingsPage::load(ui.showWebPreview, chatViewSettings.showWebPreview());

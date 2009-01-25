@@ -22,7 +22,6 @@
 #define UTIL_H
 
 #include <QDir>
-#include <QLocale>
 #include <QVariant>
 #include <QString>
 #include <QMetaMethod>
@@ -49,8 +48,6 @@ QString secondsToString(int timeInSeconds);
 QString decodeString(const QByteArray &input, QTextCodec *codec = 0);
 
 uint editingDistance(const QString &s1, const QString &s2);
-
-void loadTranslation(const QLocale &locale);
 
 template<typename T>
 QVariantList toVariantList(const QList<T> &list) {

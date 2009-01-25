@@ -25,9 +25,9 @@
 #include <QCoreApplication>
 #include <QDateTime>
 #include <QFileInfo>
-#include <QMetaType>
-#include <QObject>
+#include <QLibraryInfo>
 #include <QSettings>
+#include <QTranslator>
 
 #include "message.h"
 #include "identity.h"
@@ -40,6 +40,7 @@ Quassel::BuildInfo Quassel::_buildInfo;
 AbstractCliParser *Quassel::_cliParser = 0;
 Quassel::RunMode Quassel::_runMode;
 QString Quassel::_configDirPath;
+QString Quassel::_translationDirPath;
 QStringList Quassel::_dataDirPaths;
 bool Quassel::_initialized = false;
 bool Quassel::DEBUG = false;
@@ -333,4 +334,43 @@ QString Quassel::findDataFilePath(const QString &fileName) {
       return path;
   }
   return QString();
+}
+
+void Quassel::loadTranslation(const QLocale &locale) {
+  if(_translationDirPath.isEmpty()) {
+    // We support only one translation dir; fallback mechanisms wouldn't work else.
+    // This means that if we have a $data/i18n dir, the internal :/i18n resource won't be considered.
+    foreach(const QString &dir, dataDirPaths()) {
+      if(QFile::exists(dir + "translations/")) {
+        _translationDirPath = dir + "translations/";
+        break;
+      }
+    }
+    if(_translationDirPath.isEmpty())
+      _translationDirPath = ":/i18n/";
+  }
+
+  QTranslator *qtTranslator = QCoreApplication::instance()->findChild<QTranslator *>("QtTr");
+  QTranslator *quasselTranslator = QCoreApplication::instance()->findChild<QTranslator *>("QuasselTr");
+
+  if(!qtTranslator) {
+    qtTranslator = new QTranslator(qApp);
+    qtTranslator->setObjectName("QtTr");
+    qApp->installTranslator(qtTranslator);
+  }
+  if(!quasselTranslator) {
+    quasselTranslator = new QTranslator(qApp);
+    quasselTranslator->setObjectName("QuasselTr");
+    qApp->installTranslator(quasselTranslator);
+  }
+
+  QLocale::setDefault(locale);
+
+  if(locale.language() == QLocale::C)
+    return;
+
+  bool success = qtTranslator->load(QString("qt_%1").arg(locale.name()), _translationDirPath);
+  if(!success)
+    qtTranslator->load(QString("qt_%1").arg(locale.name()), QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+  quasselTranslator->load(QString("quassel_%1").arg(locale.name()), _translationDirPath);
 }

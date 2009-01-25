@@ -23,9 +23,7 @@
 #include <QCoreApplication>
 #include <QDebug>
 #include <QFile>
-#include <QLibraryInfo>
 #include <QTextCodec>
-#include <QTranslator>
 
 #include "quassel.h"
 
@@ -124,32 +122,6 @@ uint editingDistance(const QString &s1, const QString &s2) {
     }
   }
   return matrix[n-1][m-1];
-}
-
-void loadTranslation(const QLocale &locale) {
-  QTranslator *qtTranslator = QCoreApplication::instance()->findChild<QTranslator *>("QtTr");
-  QTranslator *quasselTranslator = QCoreApplication::instance()->findChild<QTranslator *>("QuasselTr");
-
-  if(!qtTranslator) {
-    qtTranslator = new QTranslator(qApp);
-    qtTranslator->setObjectName("QtTr");
-    qApp->installTranslator(qtTranslator);
-  }
-  if(!quasselTranslator) {
-    quasselTranslator = new QTranslator(qApp);
-    quasselTranslator->setObjectName("QuasselTr");
-    qApp->installTranslator(quasselTranslator);
-  }
-
-  QLocale::setDefault(locale);
-
-  if(locale.language() == QLocale::C)
-    return;
-
-  bool success = qtTranslator->load(QString(":i18n/qt_%1").arg(locale.name()));
-  if(!success)
-    qtTranslator->load(QString("%2/qt_%1").arg(locale.name(), QLibraryInfo::location(QLibraryInfo::TranslationsPath)));
-  quasselTranslator->load(QString(":i18n/quassel_%1").arg(locale.name()));
 }
 
 QString secondsToString(int timeInSeconds) {

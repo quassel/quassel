@@ -22,6 +22,7 @@
 #define QUASSEL_H_
 
 #include <QCoreApplication>
+#include <QLocale>
 #include <QString>
 
 #include "abstractcliparser.h"
@@ -81,6 +82,8 @@ public:
   */
   static QString findDataFilePath(const QString &filename);
 
+  static void loadTranslation(const QLocale &locale);
+
   static inline void setCliParser(AbstractCliParser *cliParser);
   static inline AbstractCliParser *cliParser();
   static inline QString optionValue(const QString &option);
@@ -114,6 +117,7 @@ private:
   static QString _coreDumpFileName;
   static QString _configDirPath;
   static QStringList _dataDirPaths;
+  static QString _translationDirPath;
 };
 
 const Quassel::BuildInfo & Quassel::buildInfo() { return _buildInfo; }

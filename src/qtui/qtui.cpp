@@ -48,7 +48,7 @@ QtUi::QtUi() : AbstractUi() {
   _actionProvider = new NetworkModelActionProvider(this);
 
   QtUiSettings uiSettings;
-  loadTranslation(uiSettings.value("Locale", QLocale::system()).value<QLocale>());
+  Quassel::loadTranslation(uiSettings.value("Locale", QLocale::system()).value<QLocale>());
 
   _mainWin = new MainWin();
   _style = new QtUiStyle;

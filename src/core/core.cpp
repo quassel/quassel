@@ -18,8 +18,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QMetaObject>
-#include <QMetaMethod>
 #include <QCoreApplication>
 
 #include "core.h"
@@ -53,7 +51,7 @@ void Core::destroy() {
 Core::Core() : storage(0) {
   _startTime = QDateTime::currentDateTime().toUTC();  // for uptime :)
 
-  loadTranslation(QLocale::system());
+  Quassel::loadTranslation(QLocale::system());
 
   // FIXME: MIGRATION 0.3 -> 0.4: Move database and core config to new location
   // Move settings, note this does not delete the old files
