@@ -84,8 +84,8 @@ bool TristateDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, con
 BufferView::BufferView(QWidget *parent)
   : QTreeView(parent)
 {
-  connect(this, SIGNAL(collapsed(const QModelIndex &)), SLOT(on_collapse(const QModelIndex &)));
-  connect(this, SIGNAL(expanded(const QModelIndex &)), SLOT(on_expand(const QModelIndex &)));
+  connect(this, SIGNAL(collapsed(const QModelIndex &)), SLOT(storeExpandedState(const QModelIndex &)));
+  connect(this, SIGNAL(expanded(const QModelIndex &)), SLOT(storeExpandedState(const QModelIndex &)));
 
   setSelectionMode(QAbstractItemView::ExtendedSelection);
 
@@ -333,17 +333,7 @@ void BufferView::on_configChanged() {
       continue;
 
     update(networkIdx);
-
-    bool expandNetwork = false;
-    if(_expandedState.contains(networkId))
-      expandNetwork = _expandedState[networkId];
-    else
-      expandNetwork = model()->data(networkIdx, NetworkModel::ItemActiveRole).toBool();
-
-    if(expandNetwork)
-      expand(networkIdx);
-    else
-      collapse(networkIdx);
+    setExpandedState(networkIdx);
   }
 
   if(config()) {
@@ -354,16 +344,38 @@ void BufferView::on_configChanged() {
   return;
 }
 
-void BufferView::on_collapse(const QModelIndex &index) {
-  storeExpandedState(index.data(NetworkModel::NetworkIdRole).value<NetworkId>(), false);
+void BufferView::storeExpandedState(const QModelIndex &networkIdx) {
+  NetworkId networkId = model()->data(networkIdx, NetworkModel::NetworkIdRole).value<NetworkId>();
+
+  int oldState = 0;
+  if(isExpanded(networkIdx))
+    oldState |= WasExpanded;
+  if(model()->data(networkIdx, NetworkModel::ItemActiveRole).toBool())
+    oldState |= WasActive;
+
+  _expandedState[networkId] = oldState;
 }
 
-void BufferView::on_expand(const QModelIndex &index) {
-  storeExpandedState(index.data(NetworkModel::NetworkIdRole).value<NetworkId>(), true);
-}
+void BufferView::setExpandedState(const QModelIndex &networkIdx) {
+  if(model()->data(networkIdx, NetworkModel::ItemTypeRole) != NetworkModel::NetworkItemType)
+    return;
 
-void BufferView::storeExpandedState(NetworkId networkId, bool expanded) {
-  _expandedState[networkId] = expanded;
+  if(model()->rowCount(networkIdx) == 0)
+    return;
+
+  NetworkId networkId = model()->data(networkIdx, NetworkModel::NetworkIdRole).value<NetworkId>();
+
+  bool networkActive = model()->data(networkIdx, NetworkModel::ItemActiveRole).toBool();
+  bool expandNetwork = networkActive;
+  if(_expandedState.contains(networkId)) {
+    int oldState = _expandedState[networkId];
+    if((bool)(oldState & WasActive) == networkActive)
+      expandNetwork = (bool)(oldState & WasExpanded);
+  }
+
+  storeExpandedState(networkIdx); // this call is needed to keep track of the isActive state
+  if(expandNetwork != isExpanded(networkIdx))
+    setExpanded(networkIdx, expandNetwork);
 }
 
 void BufferView::dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight) {
@@ -376,15 +388,7 @@ void BufferView::dataChanged(const QModelIndex &topLeft, const QModelIndex &bott
 
   for(int i = topLeft.row(); i <= bottomRight.row(); i++) {
     QModelIndex networkIdx = topLeft.sibling(i, 0);
-    if(model()->rowCount(networkIdx) == 0)
-      continue;
-
-    bool isActive = networkIdx.data(NetworkModel::ItemActiveRole).toBool();
-#ifdef SPUTDEV
-    if(isExpanded(networkIdx) != isActive) setExpanded(networkIdx, true);
-#else
-    if(isExpanded(networkIdx) != isActive) setExpanded(networkIdx, isActive);
-#endif
+    setExpandedState(networkIdx);
   }
 }
 

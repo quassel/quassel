@@ -76,15 +76,20 @@ private slots:
   void joinChannel(const QModelIndex &index);
   void toggleHeader(bool checked);
 
-  void on_collapse(const QModelIndex &index);
-  void on_expand(const QModelIndex &index);
+  void storeExpandedState(const QModelIndex &networkIdx);
+  void setExpandedState(const QModelIndex &networkIdx);
+
   void on_configChanged();
 
 private:
   QPointer<BufferViewConfig> _config;
-  QHash<NetworkId, bool> _expandedState;
 
-  void storeExpandedState(NetworkId networkId, bool expanded);
+  enum ExpandedState {
+    WasExpanded = 0x01,
+    WasActive = 0x02
+  };
+  QHash<NetworkId, short> _expandedState;
+
 };
 
 // ******************************
