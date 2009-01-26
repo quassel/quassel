@@ -293,13 +293,11 @@ StatusBufferItem::StatusBufferItem(const BufferInfo &bufferInfo, NetworkItem *pa
 }
 
 QString StatusBufferItem::toolTip(int column) const {
-  Q_UNUSED(column);
-  QStringList toolTip;
-
-  QString netName = Client::network(bufferInfo().networkId())->networkName();
-  toolTip.append(tr("<b>Status buffer of %1</b>").arg(netName));
-
-  return tr("<p> %1 </p>").arg(toolTip.join("<br />"));
+  NetworkItem *networkItem = qobject_cast<NetworkItem *>(parent());
+  if(networkItem)
+    return networkItem->toolTip(column);
+  else
+    return QString();
 }
 
 /*****************************************
