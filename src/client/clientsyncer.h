@@ -44,9 +44,12 @@ public:
   ClientSyncer(QObject *parent = 0);
   ~ClientSyncer();
 
+  inline const QIODevice *currentDevice() { return socket; }
+
 signals:
   void recvPartialItem(quint32 avail, quint32 size);
   void connectionError(const QString &errorMsg);
+  void connectionWarnings(const QStringList &warnings);
   void connectionMsg(const QString &msg);
   void sessionProgress(quint32 part, quint32 total);
   void networksProgress(quint32 part, quint32 total);
@@ -66,11 +69,15 @@ signals:
   void startInternalCore(ClientSyncer *syncer);
   void connectToInternalCore(SignalProxy *proxy);
 
+  void handleIgnoreWarnings(bool permanently);
+
 public slots:
   void connectToCore(const QVariantMap &);
   void loginToCore(const QString &user, const QString &passwd);
   void disconnectFromCore();
   void useInternalCore();
+
+  inline void ignoreWarnings(bool permanently) { emit handleIgnoreWarnings(permanently); }
 
 private slots:
   void coreSocketError(QAbstractSocket::SocketError);
@@ -88,15 +95,23 @@ private slots:
   void internalSessionStateReceived(const QVariant &packedState);
   void sessionStateReceived(const QVariantMap &state);
 
+  void connectionReady();
   void doCoreSetup(const QVariant &setupData);
+
+  void setWarningsHandler(const char *slot);
+  void resetWarningsHandler();
+
 #ifdef HAVE_SSL
-    void sslErrors(const QList<QSslError> &errors);
+  void ignoreSslWarnings(bool permanently);
+  void sslSocketEncrypted();
+  void sslErrors(const QList<QSslError> &errors);
 #endif
 
 private:
   QPointer<QIODevice> socket;
   quint32 blockSize;
   QVariantMap coreConnectionInfo;
+  QVariantMap _coreMsgBuffer;
 
   QSet<QObject *> netsToSync;
   int numNetsToSync;

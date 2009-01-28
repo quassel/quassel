@@ -222,33 +222,42 @@ void ClientSyncer::clientInitAck(const QVariantMap &msg) {
   }
   emit connectionMsg(msg["CoreInfo"].toString());
 
-#ifdef HAVE_SSL
-  if(coreConnectionInfo["useSsl"].toBool()) {
-    if(msg["SupportSsl"].toBool()) {
-      QSslSocket *sslSocket = qobject_cast<QSslSocket *>(socket);
-      Q_ASSERT(sslSocket);
-      connect(sslSocket, SIGNAL(sslErrors(const QList<QSslError> &)), this, SLOT(sslErrors(const QList<QSslError> &)));
-      sslSocket->startClientEncryption();
-    } else {
-      emit connectionError(tr("<b>The Quassel Core you are trying to connect to does not support SSL!</b><br />If you want to connect anyways, disable the usage of SSL in the account settings."));
-      disconnectFromCore();
-      return;
-    }
-  }
-#endif
-
 #ifndef QT_NO_COMPRESS
   if(msg["SupportsCompression"].toBool()) {
     socket->setProperty("UseCompression", true);
   }
 #endif
 
-  if(!msg["Configured"].toBool()) {
+  _coreMsgBuffer = msg;
+#ifdef HAVE_SSL
+  if(coreConnectionInfo["useSsl"].toBool()) {
+    if(msg["SupportSsl"].toBool()) {
+      QSslSocket *sslSocket = qobject_cast<QSslSocket *>(socket);
+      Q_ASSERT(sslSocket);
+      connect(sslSocket, SIGNAL(encrypted()), this, SLOT(sslSocketEncrypted()));
+      connect(sslSocket, SIGNAL(sslErrors(const QList<QSslError> &)), this, SLOT(sslErrors(const QList<QSslError> &)));
+
+      sslSocket->startClientEncryption();
+    } else {
+      emit connectionError(tr("<b>The Quassel Core you are trying to connect to does not support SSL!</b><br />If you want to connect anyways, disable the usage of SSL in the account settings."));
+      disconnectFromCore();
+    }
+    return;
+  }
+#endif
+  // if we use SSL we wait for the next step until every SSL warning has been cleared
+  connectionReady();
+}
+
+void ClientSyncer::connectionReady() {
+  if(!_coreMsgBuffer["Configured"].toBool()) {
     // start wizard
-    emit startCoreSetup(msg["StorageBackends"].toList());
-  } else if(msg["LoginEnabled"].toBool()) {
+    emit startCoreSetup(_coreMsgBuffer["StorageBackends"].toList());
+  } else if(_coreMsgBuffer["LoginEnabled"].toBool()) {
     emit startLogin();
   }
+  _coreMsgBuffer.clear();
+  resetWarningsHandler();
 }
 
 void ClientSyncer::doCoreSetup(const QVariant &setupData) {
@@ -329,14 +338,44 @@ void ClientSyncer::checkSyncState() {
   }
 }
 
-#ifdef HAVE_SSL
-void ClientSyncer::sslErrors(const QList<QSslError> &errors) {
-  qDebug() << "SSL Errors:";
-  foreach(QSslError err, errors)
-    qDebug() << "  " << err;
+void ClientSyncer::setWarningsHandler(const char *slot) {
+  resetWarningsHandler();
+  connect(this, SIGNAL(handleIgnoreWarnings(bool)), this, slot);
+}
 
+void ClientSyncer::resetWarningsHandler() {
+  disconnect(this, SIGNAL(handleIgnoreWarnings(bool)), this, 0);
+}
+
+#ifdef HAVE_SSL
+void ClientSyncer::ignoreSslWarnings(bool permanently) {
+  QAbstractSocket *sock = qobject_cast<QAbstractSocket *>(socket);
+  if(sock) {
+    // ensure that a proper state is displayed and no longer a warning
+    emit socketStateChanged(sock->state());
+  }
+  emit connectionMsg(_coreMsgBuffer["CoreInfo"].toString());
+  connectionReady();
+}
+
+void ClientSyncer::sslSocketEncrypted() {
   QSslSocket *socket = qobject_cast<QSslSocket *>(sender());
-  if(socket)
+  if(socket) {
+    QByteArray digest = socket->peerCertificate().digest();
+  }
+}
+
+void ClientSyncer::sslErrors(const QList<QSslError> &errors) {
+  QSslSocket *socket = qobject_cast<QSslSocket *>(sender());
+  if(socket) {
     socket->ignoreSslErrors();
+  }
+
+  QStringList warnings;
+  foreach(QSslError err, errors)
+    warnings << err.errorString();
+
+  setWarningsHandler(SLOT(ignoreSslWarnings(bool)));
+  emit connectionWarnings(warnings);
 }
 #endif

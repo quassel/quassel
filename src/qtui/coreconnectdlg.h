@@ -52,6 +52,8 @@ private slots:
   void on_editAccount_clicked();
   void on_deleteAccount_clicked();
   void on_useInternalCore_clicked();
+  void on_viewSslCertButton_clicked();
+  void on_ignoreWarningsButton_clicked();
 
   void on_accountList_itemDoubleClicked(QListWidgetItem *item);
   void on_accountButtonBox_accepted();
@@ -62,6 +64,7 @@ private slots:
   void connectToCore();
 
   void initPhaseError(const QString &error);
+  void initPhaseWarnings(const QStringList &warnings);
   void initPhaseMsg(const QString &msg);
   void initPhaseSocketState(QAbstractSocket::SocketState);
 
@@ -103,6 +106,10 @@ private:
   CoreConfigWizard *wizard;
 };
 
+
+// ========================================
+//  CoreAccountEditDlg
+// ========================================
 class CoreAccountEditDlg : public QDialog {
   Q_OBJECT
 
@@ -124,4 +131,15 @@ private:
   QVariantMap account;
 };
 
+// ========================================
+//  SslCertDisplayDialog
+// ========================================
+class QSslCertificate;
+
+class SslCertDisplayDialog : public QDialog {
+  Q_OBJECT
+
+public:
+  SslCertDisplayDialog(const QString &host, const QSslCertificate &cert, QWidget *parent = 0);
+};
 #endif

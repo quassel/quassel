@@ -18,11 +18,17 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include "coreconnectdlg.h"
+
 #include <QDebug>
+#include <QFormLayout>
 #include <QMessageBox>
 #include <QNetworkProxy>
 
-#include "coreconnectdlg.h"
+#ifdef HAVE_SSL
+#include <QSslSocket>
+#include <QSslCertificate>
+#endif
 
 #include "client.h"
 #include "clientsettings.h"
@@ -51,8 +57,6 @@ CoreConnectDlg::CoreConnectDlg(bool autoconnect, QWidget *parent)
 
   clientSyncer = new ClientSyncer(this);
   Client::registerClientSyncer(clientSyncer);
-//   connect(this, SIGNAL(newClientSyncer(ClientSyncer *)), Client::instance(), SIGNAL(newClientSyncer(ClientSyncer *)));
-//   emit newClientSyncer(clientSyncer); // announce the new client syncer via the client.
 
   wizard = 0;
 
@@ -87,6 +91,7 @@ CoreConnectDlg::CoreConnectDlg(bool autoconnect, QWidget *parent)
 
   connect(clientSyncer, SIGNAL(socketStateChanged(QAbstractSocket::SocketState)),this, SLOT(initPhaseSocketState(QAbstractSocket::SocketState)));
   connect(clientSyncer, SIGNAL(connectionError(const QString &)), this, SLOT(initPhaseError(const QString &)));
+  connect(clientSyncer, SIGNAL(connectionWarnings(const QStringList &)), this, SLOT(initPhaseWarnings(const QStringList &)));
   connect(clientSyncer, SIGNAL(connectionMsg(const QString &)), this, SLOT(initPhaseMsg(const QString &)));
   connect(clientSyncer, SIGNAL(startLogin()), this, SLOT(startLogin()));
   connect(clientSyncer, SIGNAL(loginFailed(const QString &)), this, SLOT(loginFailed(const QString &)));
@@ -258,6 +263,39 @@ void CoreConnectDlg::initPhaseError(const QString &error) {
   connect(ui.loginButtonBox, SIGNAL(accepted()), this, SLOT(restartPhaseNull()));
   connect(ui.loginButtonBox, SIGNAL(rejected()), this, SLOT(reject()));
 }
+
+void CoreConnectDlg::initPhaseWarnings(const QStringList &warnings) {
+  doingAutoConnect = false;
+  ui.secureConnection->hide();
+  ui.connectIcon->setPixmap(BarIcon("dialog-warning"));
+  ui.connectLabel->setText(tr("<div>Errors occurred while connecting to \"%1\":</div>").arg(accountData["Host"].toString()));
+  QStringList warningItems;
+  foreach(QString warning, warnings) {
+    warningItems << QString("<li>%1</li>").arg(warning);
+  }
+  ui.coreInfoLabel->setText(QString("<ul>%1</ul>").arg(warningItems.join("")));
+  ui.loginStack->setCurrentWidget(ui.connectionWarningsPage);
+  ui.loginButtonBox->setStandardButtons(QDialogButtonBox::Cancel);
+  ui.loginButtonBox->button(QDialogButtonBox::Cancel)->setFocus();
+  disconnect(ui.loginButtonBox, 0, this, 0);
+  connect(ui.loginButtonBox, SIGNAL(rejected()), this, SLOT(restartPhaseNull()));
+}
+
+void CoreConnectDlg::on_viewSslCertButton_clicked() {
+#ifdef HAVE_SSL
+  const QSslSocket *socket = qobject_cast<const QSslSocket *>(clientSyncer->currentDevice());
+  if(!socket)
+    return;
+
+  SslCertDisplayDialog dialog(socket->peerName(), socket->peerCertificate());
+  dialog.exec();
+#endif
+}
+
+void CoreConnectDlg::on_ignoreWarningsButton_clicked() {
+  clientSyncer->ignoreWarnings(ui.ignoreWarningsPermanently->isChecked());
+}
+
 
 void CoreConnectDlg::initPhaseMsg(const QString &msg) {
   ui.coreInfoLabel->setText(msg);
@@ -516,3 +554,59 @@ void CoreAccountEditDlg::on_accountName_textChanged(const QString &text) {
   Q_UNUSED(text);
   setWidgetStates();
 }
+
+
+// ========================================
+//  SslCertDisplayDialog
+// ========================================
+SslCertDisplayDialog::SslCertDisplayDialog(const QString &host, const QSslCertificate &cert, QWidget *parent)
+  : QDialog(parent)
+{
+#ifndef HAVE_SSL
+  Q_UNUSED(cert)
+#else
+
+  setWindowTitle(tr("SSL Certificate used by %1").arg(host));
+
+  QVBoxLayout *mainLayout = new QVBoxLayout(this);
+
+  QGroupBox *issuerBox = new QGroupBox(tr("Issuer Info"), this);
+  QFormLayout *issuerLayout = new QFormLayout(issuerBox);
+  issuerLayout->addRow(tr("Organization:"), new QLabel(cert.issuerInfo(QSslCertificate::Organization), this));
+  issuerLayout->addRow(tr("Locality Name:"), new QLabel(cert.issuerInfo(QSslCertificate::LocalityName), this));
+  issuerLayout->addRow(tr("Organizational Unit Name:"), new QLabel(cert.issuerInfo(QSslCertificate::OrganizationalUnitName), this));
+  issuerLayout->addRow(tr("Country Name:"), new QLabel(cert.issuerInfo(QSslCertificate::CountryName), this));
+  issuerLayout->addRow(tr("State or Province Name:"), new QLabel(cert.issuerInfo(QSslCertificate::StateOrProvinceName), this));
+  mainLayout->addWidget(issuerBox);
+
+  QGroupBox *subjectBox = new QGroupBox(tr("Subject Info"), this);
+  QFormLayout *subjectLayout = new QFormLayout(subjectBox);
+  subjectLayout->addRow(tr("Organization:"), new QLabel(cert.subjectInfo(QSslCertificate::Organization), this));
+  subjectLayout->addRow(tr("Locality Name:"), new QLabel(cert.subjectInfo(QSslCertificate::LocalityName), this));
+  subjectLayout->addRow(tr("Organizational Unit Name:"), new QLabel(cert.subjectInfo(QSslCertificate::OrganizationalUnitName), this));
+  subjectLayout->addRow(tr("Country Name:"), new QLabel(cert.subjectInfo(QSslCertificate::CountryName), this));
+  subjectLayout->addRow(tr("State or Province Name:"), new QLabel(cert.subjectInfo(QSslCertificate::StateOrProvinceName), this));
+  mainLayout->addWidget(subjectBox);
+
+  QGroupBox *additionalBox = new QGroupBox(tr("Additional Info"), this);
+  QFormLayout *additionalLayout = new QFormLayout(additionalBox);
+  additionalLayout->addRow(tr("Valid From:"), new QLabel(cert.effectiveDate().toString(), this));
+  additionalLayout->addRow(tr("Valid To:"), new QLabel(cert.expiryDate().toString(), this));
+  QStringList hostnames = cert.alternateSubjectNames().values(QSsl::DnsEntry);
+  for(int i = 0; i < hostnames.count(); i++) {
+    additionalLayout->addRow(tr("Hostname %1:").arg(i + 1), new QLabel(hostnames[i], this));
+  }
+  QStringList mailaddresses = cert.alternateSubjectNames().values(QSsl::EmailEntry);
+  for(int i = 0; i < mailaddresses.count(); i++) {
+    additionalLayout->addRow(tr("E-Mail Address %1:").arg(i + 1), new QLabel(mailaddresses[i], this));
+  }
+  mainLayout->addWidget(additionalBox);
+
+
+  QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok, Qt::Horizontal, this);
+  mainLayout->addWidget(buttonBox);
+
+  connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
+  connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+#endif
+};
