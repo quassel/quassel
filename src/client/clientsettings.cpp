@@ -20,8 +20,16 @@
 
 #include <QStringList>
 
-#include "client.h"
+
 #include "clientsettings.h"
+
+#include <QHostAddress>
+#ifdef HAVE_SSL
+#include <QSslSocket>
+#endif
+
+
+#include "client.h"
 #include "quassel.h"
 
 ClientSettings::ClientSettings(QString g) : Settings(g, Quassel::buildInfo().clientApplicationName) {
@@ -139,4 +147,41 @@ void NotificationSettings::setNicksCaseSensitive(bool cs) {
 
 bool NotificationSettings::nicksCaseSensitive() {
   return localValue("Highlights/NicksCaseSensitive", false).toBool();
+}
+
+
+// ========================================
+//  KnownHostsSettings
+// ========================================
+KnownHostsSettings::KnownHostsSettings()
+  : ClientSettings("KnownHosts")
+{
+}
+
+QByteArray KnownHostsSettings::knownDigest(const QHostAddress &address) {
+  return localValue(address.toString(), QByteArray()).toByteArray();
+}
+
+void KnownHostsSettings::saveKnownHost(const QHostAddress &address, const QByteArray &certDigest) {
+  setLocalValue(address.toString(), certDigest);
+}
+
+bool KnownHostsSettings::isKnownHost(const QHostAddress &address, const QByteArray &certDigest) {
+  return certDigest == localValue(address.toString(), QByteArray()).toByteArray();
+}
+
+#ifdef HAVE_SSL
+QByteArray KnownHostsSettings::knownDigest(const QSslSocket *socket) {
+  return knownDigest(socket->peerAddress());
+}
+
+void KnownHostsSettings::saveKnownHost(const QSslSocket *socket) {
+  Q_ASSERT(socket);
+  saveKnownHost(socket->peerAddress(), socket->peerCertificate().digest());
+}
+
+bool KnownHostsSettings::isKnownHost(const QSslSocket *socket) {
+  Q_ASSERT(socket);
+  return isKnownHost(socket->peerAddress(), socket->peerCertificate().digest());
+#endif
 }

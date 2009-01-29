@@ -36,6 +36,7 @@
 #include "coreconfigwizard.h"
 #include "iconloader.h"
 #include "quassel.h"
+#include "util.h"
 
 CoreConnectDlg::CoreConnectDlg(bool autoconnect, QWidget *parent)
   : QDialog(parent),
@@ -600,6 +601,7 @@ SslCertDisplayDialog::SslCertDisplayDialog(const QString &host, const QSslCertif
   for(int i = 0; i < mailaddresses.count(); i++) {
     additionalLayout->addRow(tr("E-Mail Address %1:").arg(i + 1), new QLabel(mailaddresses[i], this));
   }
+  additionalLayout->addRow(tr("Digest:"), new QLabel(QString(prettyDigest(cert.digest()))));
   mainLayout->addWidget(additionalBox);
 
 

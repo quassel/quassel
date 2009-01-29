@@ -30,6 +30,7 @@
 #include "networkmodel.h"
 #include "quassel.h"
 #include "signalproxy.h"
+#include "util.h"
 
 ClientSyncer::ClientSyncer(QObject *parent)
   : QObject(parent)
@@ -349,10 +350,16 @@ void ClientSyncer::resetWarningsHandler() {
 
 #ifdef HAVE_SSL
 void ClientSyncer::ignoreSslWarnings(bool permanently) {
-  QAbstractSocket *sock = qobject_cast<QAbstractSocket *>(socket);
+  QSslSocket *sock = qobject_cast<QSslSocket *>(socket);
   if(sock) {
     // ensure that a proper state is displayed and no longer a warning
     emit socketStateChanged(sock->state());
+  }
+  if(permanently) {
+    if(!sock)
+      qWarning() << Q_FUNC_INFO << "unable to save cert digest! Socket is either a nullptr or not a QSslSocket";
+    else
+      KnownHostsSettings().saveKnownHost(sock);
   }
   emit connectionMsg(_coreMsgBuffer["CoreInfo"].toString());
   connectionReady();
@@ -366,14 +373,25 @@ void ClientSyncer::sslSocketEncrypted() {
 }
 
 void ClientSyncer::sslErrors(const QList<QSslError> &errors) {
+  QByteArray knownDigest;
   QSslSocket *socket = qobject_cast<QSslSocket *>(sender());
   if(socket) {
     socket->ignoreSslErrors();
+    knownDigest = KnownHostsSettings().knownDigest(socket);
+    if(knownDigest == socket->peerCertificate().digest()) {
+      connectionReady();
+      return;
+    }
   }
 
   QStringList warnings;
+
   foreach(QSslError err, errors)
     warnings << err.errorString();
+
+  if(!knownDigest.isEmpty()) {
+    warnings << tr("Cert Digest changed! was: %1").arg(QString(prettyDigest(knownDigest)));
+  }
 
   setWarningsHandler(SLOT(ignoreSslWarnings(bool)));
   emit connectionWarnings(warnings);

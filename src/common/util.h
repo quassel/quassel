@@ -67,4 +67,6 @@ QList<T> fromVariantList(const QVariantList &variants) {
   return list;
 }
 
+QByteArray prettyDigest(const QByteArray &digest);
+
 #endif

@@ -142,3 +142,14 @@ QString secondsToString(int timeInSeconds) {
     }
     return returnString.join(", ");
 }
+
+QByteArray prettyDigest(const QByteArray &digest) {
+  QByteArray hexDigest = digest.toHex();
+  QByteArray prettyDigest;
+  prettyDigest.fill(':', hexDigest.count() + (hexDigest.count() / 2) - 1);
+
+  for(int i = 0; i * 2 < hexDigest.count(); i++) {
+    prettyDigest.replace(i * 3, 2, hexDigest.mid(i * 2, 2));
+  }
+  return prettyDigest;
+}

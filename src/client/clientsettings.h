@@ -22,7 +22,11 @@
 #define CLIENTSETTINGS_H
 
 #include "settings.h"
+
 #include "types.h"
+
+class QHostAddress;
+class QSslSocket;
 
 class ClientSettings : public Settings {
 public:
@@ -31,6 +35,10 @@ public:
 protected:
   ClientSettings(QString group = "General");
 };
+
+// ========================================
+//  CoreAccountSettings
+// ========================================
 
 // Deriving from CoreAccountSettings:
 // MySettings() : CoreAccountSettings("MyGroup") {};
@@ -67,29 +75,50 @@ private:
   QString _subgroup;
 };
 
+// ========================================
+//  NotificationSettings
+// ========================================
 class NotificationSettings : public ClientSettings {
+public:
+  enum HighlightNickType {
+    NoNick = 0x00,
+    CurrentNick= 0x01,
+    AllNicks = 0x02
+  };
 
-  public:
-    enum HighlightNickType {
-      NoNick = 0x00,
-      CurrentNick= 0x01,
-      AllNicks = 0x02
-    };
+  NotificationSettings();
 
-    NotificationSettings();
+  inline void setValue(const QString &key, const QVariant &data) { setLocalValue(key, data); }
+  inline QVariant value(const QString &key, const QVariant &def = QVariant()) { return localValue(key, def); }
+  inline void remove(const QString &key) { removeLocalKey(key); }
 
-    inline void setValue(const QString &key, const QVariant &data) { setLocalValue(key, data); }
-    inline QVariant value(const QString &key, const QVariant &def = QVariant()) { return localValue(key, def); }
-    inline void remove(const QString &key) { removeLocalKey(key); }
+  void setHighlightList(const QVariantList &highlightList);
+  QVariantList highlightList();
 
-    void setHighlightList(const QVariantList &highlightList);
-    QVariantList highlightList();
+  void setHighlightNick(HighlightNickType);
+  HighlightNickType highlightNick();
 
-    void setHighlightNick(HighlightNickType);
-    HighlightNickType highlightNick();
-
-    void setNicksCaseSensitive(bool);
-    bool nicksCaseSensitive();
-
+  void setNicksCaseSensitive(bool);
+  bool nicksCaseSensitive();
 };
+
+
+// ========================================
+//  KnownHostsSettings
+// ========================================
+class KnownHostsSettings : public ClientSettings {
+public:
+  KnownHostsSettings();
+
+  QByteArray knownDigest(const QHostAddress &address);
+  void saveKnownHost(const QHostAddress &address, const QByteArray &certDigest);
+  bool isKnownHost(const QHostAddress &address, const QByteArray &certDigest);
+
+#ifdef HAVE_SSL
+  QByteArray knownDigest(const QSslSocket *socket);
+  void saveKnownHost(const QSslSocket *socket);
+  bool isKnownHost(const QSslSocket *socket);
+#endif
+};
+
 #endif
