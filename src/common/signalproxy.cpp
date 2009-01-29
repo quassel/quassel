@@ -934,12 +934,12 @@ bool SignalProxy::readDataFromDevice(QIODevice *dev, quint32 &blockSize, QVarian
   }
 
   if(blockSize > 1 << 22) {
-    disconnectDevice(dev, tr("Client tried to send package larger than max package size!"));
+    disconnectDevice(dev, tr("Peer tried to send package larger than max package size!"));
     return false;
   }
 
   if(blockSize == 0) {
-    disconnectDevice(dev, tr("Client tried to send 0 byte package!"));
+    disconnectDevice(dev, tr("Peer tried to send 0 byte package!"));
     return false;
   }
 
@@ -956,7 +956,7 @@ bool SignalProxy::readDataFromDevice(QIODevice *dev, quint32 &blockSize, QVarian
     if(nbytes <= 4) {
       const char *data = rawItem.constData();
       if(nbytes < 4 || (data[0]!=0 || data[1]!=0 || data[2]!=0 || data[3]!=0)) {
-	disconnectDevice(dev, tr("Client sent corrupted compressed data!"));
+	disconnectDevice(dev, tr("Peer sent corrupted compressed data!"));
 	return false;
       }
     }
@@ -971,7 +971,7 @@ bool SignalProxy::readDataFromDevice(QIODevice *dev, quint32 &blockSize, QVarian
   }
 
   if(!item.isValid()) {
-    disconnectDevice(dev, tr("Client sent corrupt data: unable to load QVariant!"));
+    disconnectDevice(dev, tr("Peer sent corrupt data: unable to load QVariant!"));
     return false;
   }
 
