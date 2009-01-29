@@ -49,7 +49,7 @@ UiStyle::UiStyle(const QString &settingsKey) : _settingsKey(settingsKey) {
   }
 
   // Check for the sender auto coloring option
-  _senderAutoColor = s.value("Flags/senderAutoColor", QVariant(true)).toBool();  
+  _senderAutoColor = s.value("Flags/senderAutoColor", QVariant(true)).toBool();
 
   // Now initialize the mapping between FormatCodes and FormatTypes...
   _formatCodes["%O"] = None;
@@ -417,7 +417,7 @@ UiStyle::FormatType UiStyle::StyledMessage::senderFormat() const {
       // In this case we just use the qt function qChecksum which produces a
       // CRC16 hash. This should be fast and 16 bits are more than enough.
       hash = qChecksum(sender().toAscii().data(), sender().toAscii().size());
-      return (UiStyle::FormatType)((((hash % 21) + 1) << 24) + 0x200);
+      return (UiStyle::FormatType)((((hash % 12) + 1) << 24) + 0x200); // FIXME: amount of sender colors hardwired
     case Message::Notice:
       return UiStyle::NoticeMsg; break;
     case Message::Server:

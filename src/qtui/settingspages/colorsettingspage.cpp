@@ -153,7 +153,7 @@ void ColorSettingsPage::defaultMessage() {
   ui.senderBG->setColor(QColor("white"));
   ui.senderBG->setEnabled(false);
   ui.senderUseBG->setChecked(false);
-  ui.senderAutoColor->setChecked(true);  
+  ui.senderAutoColor->setChecked(false);
   ui.newMsgMarkerFG->setColor(Qt::red);
 
   /*
