@@ -21,6 +21,7 @@
 #include "client.h"
 
 #include "abstractmessageprocessor.h"
+#include "abstractui.h"
 #include "bufferinfo.h"
 #include "buffermodel.h"
 #include "buffersettings.h"
@@ -37,7 +38,6 @@
 #include "network.h"
 #include "networkmodel.h"
 #include "quassel.h"
-#include "quasselui.h"
 #include "signalproxy.h"
 #include "util.h"
 

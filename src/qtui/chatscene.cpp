@@ -34,6 +34,7 @@
 #include "client.h"
 #include "clientbacklogmanager.h"
 #include "columnhandleitem.h"
+#include "contextmenuactionprovider.h"
 #include "iconloader.h"
 #include "messagefilter.h"
 #include "qtui.h"
@@ -586,7 +587,7 @@ void ChatScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event) {
     item->addActionsToMenu(&menu, item->mapFromScene(pos));
   else
     // no item -> default scene actions
-    Client::mainUi()->actionProvider()->addActions(&menu, filter(), BufferId());
+    GraphicalUi::contextMenuActionProvider()->addActions(&menu, filter(), BufferId());
 
   menu.exec(event->screenPos());
 

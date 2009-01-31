@@ -21,7 +21,7 @@
 #ifndef QTUI_H
 #define QTUI_H
 
-#include "quasselui.h"
+#include "graphicalui.h"
 
 #include "abstractnotificationbackend.h"
 #include "mainwin.h"
@@ -36,7 +36,7 @@ class QtUiStyle;
 /** This is basically a wrapper around MainWin, which is necessary because we cannot derive MainWin
  *  from both QMainWindow and AbstractUi (because of multiple inheritance of QObject).
  */
-class QtUi : public AbstractUi {
+class QtUi : public GraphicalUi {
   Q_OBJECT
 
 public:
@@ -57,7 +57,6 @@ public:
    *  @param category The category (default: "General")
    */
   static ActionCollection *actionCollection(const QString &category = "General");
-  inline AbstractActionProvider *actionProvider() const;
 
   /* Notifications */
 
@@ -71,7 +70,7 @@ public:
   static const QList<AbstractNotificationBackend::Notification> &activeNotifications();
 
 public slots:
-  void init();
+  virtual void init();
 
 protected slots:
   void connectedToCore();
@@ -79,8 +78,6 @@ protected slots:
   void notificationActivated();
 
 private:
-  AbstractActionProvider *_actionProvider;
-
   static QPointer<QtUi> _instance;
   static QPointer<MainWin> _mainWin;
   static QHash<QString, ActionCollection *> _actionCollections;
@@ -92,6 +89,5 @@ private:
 QtUi *QtUi::instance() { return _instance ? _instance.data() : new QtUi(); }
 QtUiStyle *QtUi::style() { return _style; }
 MainWin *QtUi::mainWindow() { return _mainWin; }
-AbstractActionProvider *QtUi::actionProvider() const { return _actionProvider; }
 
 #endif

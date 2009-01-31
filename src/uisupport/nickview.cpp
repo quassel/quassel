@@ -27,9 +27,11 @@
 
 #include "buffermodel.h"
 #include "client.h"
+#include "contextmenuactionprovider.h"
+#include "graphicalui.h"
+#include "nickview.h"
 #include "nickviewfilter.h"
 #include "networkmodel.h"
-#include "quasselui.h"
 #include "types.h"
 #include "uisettings.h"
 
@@ -104,7 +106,7 @@ void NickView::showContextMenu(const QPoint & pos ) {
   indexList.prepend(index);
 
   QMenu contextMenu(this);
-  Client::mainUi()->actionProvider()->addActions(&contextMenu, indexList);
+  GraphicalUi::contextMenuActionProvider()->addActions(&contextMenu, indexList);
   contextMenu.exec(QCursor::pos());
 }
 

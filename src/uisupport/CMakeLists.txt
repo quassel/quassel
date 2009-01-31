@@ -14,16 +14,19 @@ set(SOURCES
     clearablelineedit.cpp
     clickablelabel.cpp
     colorbutton.cpp
+    contextmenuactionprovider.cpp
+    graphicalui.cpp
     icon.cpp
     iconloader.cpp
     inputline.cpp
-    networkmodelactionprovider.cpp
     nickview.cpp
     nickviewfilter.cpp
     settingspage.cpp
     tabcompleter.cpp
+    #toolbaractionprovider.cpp
     uisettings.cpp
-    uistyle.cpp)
+    uistyle.cpp
+   )
 
 set(MOC_HDRS
     abstractbuffercontainer.h
@@ -36,13 +39,16 @@ set(MOC_HDRS
     clearablelineedit.h
     clickablelabel.h
     colorbutton.h
+    contextmenuactionprovider.h
+    graphicalui.h
     iconloader.h
     inputline.h
-    networkmodelactionprovider.h
     nickview.h
     nickviewfilter.h
     settingspage.h
-    tabcompleter.h)
+    tabcompleter.h
+    #toolbaractionprovider.h
+   )
 
 set(HEADERS
     icon.h

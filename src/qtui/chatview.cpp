@@ -28,7 +28,6 @@
 #include "chatview.h"
 #include "client.h"
 #include "messagefilter.h"
-#include "quasselui.h"
 
 ChatView::ChatView(BufferId bufferId, QWidget *parent)
   : QGraphicsView(parent),

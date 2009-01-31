@@ -24,14 +24,13 @@
 #include "action.h"
 #include "actioncollection.h"
 #include "messagefilter.h"
-#include "quasselui.h"
 
-class NetworkModelActionProvider : public AbstractActionProvider {
+class ContextMenuActionProvider : public QObject {
   Q_OBJECT
 
 public:
-  NetworkModelActionProvider(QObject *parent = 0);
-  ~NetworkModelActionProvider();
+  ContextMenuActionProvider(QObject *parent = 0);
+  ~ContextMenuActionProvider();
 
   // don't change enums without doublechecking masks etc. in code
   enum ActionType {
@@ -177,6 +176,6 @@ private:
 };
 
 // inlines
-ActionCollection *NetworkModelActionProvider::actionCollection() const { return _actionCollection; }
-Action *NetworkModelActionProvider::action(ActionType type) const { return _actionByType.value(type, 0); }
+ActionCollection *ContextMenuActionProvider::actionCollection() const { return _actionCollection; }
+Action *ContextMenuActionProvider::action(ActionType type) const { return _actionByType.value(type, 0); }
 #endif

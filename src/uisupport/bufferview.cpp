@@ -35,11 +35,12 @@
 #include "buffersettings.h"
 #include "buffersyncer.h"
 #include "client.h"
+#include "contextmenuactionprovider.h"
+#include "graphicalui.h"
 #include "iconloader.h"
 #include "network.h"
 #include "networkmodel.h"
-#include "networkmodelactionprovider.h"
-#include "quasselui.h"
+#include "contextmenuactionprovider.h"
 #include "uisettings.h"
 
 /*****************************************
@@ -386,7 +387,7 @@ void BufferView::addActionsToMenu(QMenu *contextMenu, const QModelIndex &index) 
   indexList.removeAll(index);
   indexList.prepend(index);
 
-  Client::mainUi()->actionProvider()->addActions(contextMenu, indexList, this, "menuActionTriggered", (bool)config());
+  GraphicalUi::contextMenuActionProvider()->addActions(contextMenu, indexList, this, "menuActionTriggered", (bool)config());
 }
 
 void BufferView::addFilterActions(QMenu *contextMenu, const QModelIndex &index) {
@@ -403,12 +404,12 @@ void BufferView::addFilterActions(QMenu *contextMenu, const QModelIndex &index) 
 }
 
 void BufferView::menuActionTriggered(QAction *result) {
-  NetworkModelActionProvider::ActionType type = (NetworkModelActionProvider::ActionType)result->data().toInt();
+  ContextMenuActionProvider::ActionType type = (ContextMenuActionProvider::ActionType)result->data().toInt();
   switch(type) {
-    case NetworkModelActionProvider::HideBufferTemporarily:
+    case ContextMenuActionProvider::HideBufferTemporarily:
       removeSelectedBuffers();
       break;
-    case NetworkModelActionProvider::HideBufferPermanently:
+    case ContextMenuActionProvider::HideBufferPermanently:
       removeSelectedBuffers(true);
       break;
     default:

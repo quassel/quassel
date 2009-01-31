@@ -22,7 +22,7 @@
 #include <QMenu>
 #include <QMessageBox>
 
-#include "networkmodelactionprovider.h"
+#include "contextmenuactionprovider.h"
 
 #include "buffermodel.h"
 #include "buffersettings.h"
@@ -31,8 +31,8 @@
 #include "network.h"
 #include "util.h"
 
-NetworkModelActionProvider::NetworkModelActionProvider(QObject *parent)
-: AbstractActionProvider(parent),
+ContextMenuActionProvider::ContextMenuActionProvider(QObject *parent)
+: QObject(parent),
   _actionCollection(new ActionCollection(this)),
   _messageFilter(0),
   _receiver(0)
@@ -114,7 +114,7 @@ NetworkModelActionProvider::NetworkModelActionProvider(QObject *parent)
   _nickModeMenuAction->setMenu(nickModeMenu);
 }
 
-NetworkModelActionProvider::~NetworkModelActionProvider() {
+ContextMenuActionProvider::~ContextMenuActionProvider() {
   _hideEventsMenuAction->menu()->deleteLater();
   _hideEventsMenuAction->deleteLater();
   _nickCtcpMenuAction->menu()->deleteLater();
@@ -123,11 +123,11 @@ NetworkModelActionProvider::~NetworkModelActionProvider() {
   _nickModeMenuAction->deleteLater();
 }
 
-void NetworkModelActionProvider::registerAction(ActionType type, const QString &text, bool checkable) {
+void ContextMenuActionProvider::registerAction(ActionType type, const QString &text, bool checkable) {
   registerAction(type, QPixmap(), text, checkable);
 }
 
-void NetworkModelActionProvider::registerAction(ActionType type, const QPixmap &icon, const QString &text, bool checkable) {
+void ContextMenuActionProvider::registerAction(ActionType type, const QPixmap &icon, const QString &text, bool checkable) {
   Action *act;
   if(icon.isNull())
     act = new Action(text, this);
@@ -141,34 +141,34 @@ void NetworkModelActionProvider::registerAction(ActionType type, const QPixmap &
   _actionByType[type] = act;
 }
 
-void NetworkModelActionProvider::addActions(QMenu *menu, BufferId bufId, QObject *receiver, const char *method) {
+void ContextMenuActionProvider::addActions(QMenu *menu, BufferId bufId, QObject *receiver, const char *method) {
   if(!bufId.isValid())
     return;
   addActions(menu, Client::networkModel()->bufferIndex(bufId), receiver, method);
 }
 
-void NetworkModelActionProvider::addActions(QMenu *menu, const QModelIndex &index, QObject *receiver, const char *method, bool isCustomBufferView) {
+void ContextMenuActionProvider::addActions(QMenu *menu, const QModelIndex &index, QObject *receiver, const char *method, bool isCustomBufferView) {
   if(!index.isValid())
     return;
   addActions(menu, QList<QModelIndex>() << index, 0, QString(), receiver, method, isCustomBufferView);
 }
 
-void NetworkModelActionProvider::addActions(QMenu *menu, MessageFilter *filter, BufferId msgBuffer, QObject *receiver, const char *slot) {
+void ContextMenuActionProvider::addActions(QMenu *menu, MessageFilter *filter, BufferId msgBuffer, QObject *receiver, const char *slot) {
   addActions(menu, filter, msgBuffer, QString(), receiver, slot);
 }
 
-void NetworkModelActionProvider::addActions(QMenu *menu, MessageFilter *filter, BufferId msgBuffer, const QString &chanOrNick, QObject *receiver, const char *method) {
+void ContextMenuActionProvider::addActions(QMenu *menu, MessageFilter *filter, BufferId msgBuffer, const QString &chanOrNick, QObject *receiver, const char *method) {
   if(!filter)
     return;
   addActions(menu, QList<QModelIndex>() << Client::networkModel()->bufferIndex(msgBuffer), filter, chanOrNick, receiver, method, false);
 }
 
-void NetworkModelActionProvider::addActions(QMenu *menu, const QList<QModelIndex> &indexList, QObject *receiver,  const char *method, bool isCustomBufferView) {
+void ContextMenuActionProvider::addActions(QMenu *menu, const QList<QModelIndex> &indexList, QObject *receiver,  const char *method, bool isCustomBufferView) {
   addActions(menu, indexList, 0, QString(), receiver, method, isCustomBufferView);
 }
 
 // add a list of actions sensible for the current item(s)
-void NetworkModelActionProvider::addActions(QMenu *menu,
+void ContextMenuActionProvider::addActions(QMenu *menu,
                                             const QList<QModelIndex> &indexList,
                                             MessageFilter *filter,
                                             const QString &contextItem,
@@ -244,7 +244,7 @@ void NetworkModelActionProvider::addActions(QMenu *menu,
   }
 }
 
-void NetworkModelActionProvider::addNetworkItemActions(QMenu *menu, const QModelIndex &index) {
+void ContextMenuActionProvider::addNetworkItemActions(QMenu *menu, const QModelIndex &index) {
   NetworkId networkId = index.data(NetworkModel::NetworkIdRole).value<NetworkId>();
   if(!networkId.isValid())
     return;
@@ -261,7 +261,7 @@ void NetworkModelActionProvider::addNetworkItemActions(QMenu *menu, const QModel
 
 }
 
-void NetworkModelActionProvider::addBufferItemActions(QMenu *menu, const QModelIndex &index, bool isCustomBufferView) {
+void ContextMenuActionProvider::addBufferItemActions(QMenu *menu, const QModelIndex &index, bool isCustomBufferView) {
   BufferInfo bufferInfo = index.data(NetworkModel::BufferInfoRole).value<BufferInfo>();
 
   menu->addSeparator();
@@ -298,7 +298,7 @@ void NetworkModelActionProvider::addBufferItemActions(QMenu *menu, const QModelI
   }
 }
 
-void NetworkModelActionProvider::addIrcUserActions(QMenu *menu, const QModelIndex &index) {
+void ContextMenuActionProvider::addIrcUserActions(QMenu *menu, const QModelIndex &index) {
   // this can be called: a) as a nicklist context menu (index has IrcUserItemType)
   //                     b) as a query buffer context menu (index has BufferItemType and is a QueryBufferItem)
   //                     c) right-click in a query chatview (same as b), index will be the corresponding QueryBufferItem)
@@ -325,7 +325,7 @@ void NetworkModelActionProvider::addIrcUserActions(QMenu *menu, const QModelInde
 
 /******** Helper Functions ***********************************************************************/
 
-bool NetworkModelActionProvider::checkRequirements(const QModelIndex &index, ItemActiveStates requiredActiveState) {
+bool ContextMenuActionProvider::checkRequirements(const QModelIndex &index, ItemActiveStates requiredActiveState) {
   if(!index.isValid())
     return false;
 
@@ -339,19 +339,19 @@ bool NetworkModelActionProvider::checkRequirements(const QModelIndex &index, Ite
   return true;
 }
 
-Action * NetworkModelActionProvider::addAction(ActionType type , QMenu *menu, const QModelIndex &index, ItemActiveStates requiredActiveState) {
+Action * ContextMenuActionProvider::addAction(ActionType type , QMenu *menu, const QModelIndex &index, ItemActiveStates requiredActiveState) {
   return addAction(action(type), menu, checkRequirements(index, requiredActiveState));
 }
 
-Action * NetworkModelActionProvider::addAction(Action *action , QMenu *menu, const QModelIndex &index, ItemActiveStates requiredActiveState) {
+Action * ContextMenuActionProvider::addAction(Action *action , QMenu *menu, const QModelIndex &index, ItemActiveStates requiredActiveState) {
   return addAction(action, menu, checkRequirements(index, requiredActiveState));
 }
 
-Action * NetworkModelActionProvider::addAction(ActionType type , QMenu *menu, bool condition) {
+Action * ContextMenuActionProvider::addAction(ActionType type , QMenu *menu, bool condition) {
   return addAction(action(type), menu, condition);
 }
 
-Action * NetworkModelActionProvider::addAction(Action *action , QMenu *menu, bool condition) {
+Action * ContextMenuActionProvider::addAction(Action *action , QMenu *menu, bool condition) {
   if(condition) {
     menu->addAction(action);
     action->setVisible(true);
@@ -361,21 +361,21 @@ Action * NetworkModelActionProvider::addAction(Action *action , QMenu *menu, boo
   return action;
 }
 
-void NetworkModelActionProvider::addHideEventsMenu(QMenu *menu, BufferId bufferId) {
+void ContextMenuActionProvider::addHideEventsMenu(QMenu *menu, BufferId bufferId) {
   if(BufferSettings(bufferId).hasFilter())
     addHideEventsMenu(menu, BufferSettings(bufferId).messageFilter());
   else
     addHideEventsMenu(menu);
 }
 
-void NetworkModelActionProvider::addHideEventsMenu(QMenu *menu, MessageFilter *msgFilter) {
+void ContextMenuActionProvider::addHideEventsMenu(QMenu *menu, MessageFilter *msgFilter) {
   if(BufferSettings(msgFilter->idString()).hasFilter())
     addHideEventsMenu(menu, BufferSettings(msgFilter->idString()).messageFilter());
   else
     addHideEventsMenu(menu);
 }
 
-void NetworkModelActionProvider::addHideEventsMenu(QMenu *menu, int filter) {
+void ContextMenuActionProvider::addHideEventsMenu(QMenu *menu, int filter) {
   action(HideApplyToAll)->setEnabled(filter != -1);
   action(HideUseDefaults)->setEnabled(filter != -1);
   if(filter == -1)
@@ -391,7 +391,7 @@ void NetworkModelActionProvider::addHideEventsMenu(QMenu *menu, int filter) {
   menu->addAction(_hideEventsMenuAction);
 }
 
-QString NetworkModelActionProvider::nickName(const QModelIndex &index) const {
+QString ContextMenuActionProvider::nickName(const QModelIndex &index) const {
   IrcUser *ircUser = qobject_cast<IrcUser *>(index.data(NetworkModel::IrcUserRole).value<QObject *>());
   if(ircUser)
     return ircUser->nick();
@@ -405,7 +405,7 @@ QString NetworkModelActionProvider::nickName(const QModelIndex &index) const {
   return bufferInfo.bufferName(); // FIXME this might break with merged queries maybe
 }
 
-BufferId NetworkModelActionProvider::findQueryBuffer(const QModelIndex &index, const QString &predefinedNick) const {
+BufferId ContextMenuActionProvider::findQueryBuffer(const QModelIndex &index, const QString &predefinedNick) const {
   NetworkId networkId = index.data(NetworkModel::NetworkIdRole).value<NetworkId>();
   if(!networkId.isValid())
     return BufferId();
@@ -417,11 +417,11 @@ BufferId NetworkModelActionProvider::findQueryBuffer(const QModelIndex &index, c
   return findQueryBuffer(networkId, nick);
 }
 
-BufferId NetworkModelActionProvider::findQueryBuffer(NetworkId networkId, const QString &nick) const {
+BufferId ContextMenuActionProvider::findQueryBuffer(NetworkId networkId, const QString &nick) const {
   return Client::networkModel()->bufferId(networkId, nick);
 }
 
-void NetworkModelActionProvider::handleExternalAction(ActionType type, QAction *action) {
+void ContextMenuActionProvider::handleExternalAction(ActionType type, QAction *action) {
   Q_UNUSED(type);
   if(_receiver && _method) {
     if(!QMetaObject::invokeMethod(_receiver, _method, Q_ARG(QAction *, action)))
@@ -431,7 +431,7 @@ void NetworkModelActionProvider::handleExternalAction(ActionType type, QAction *
 
 /******** Handle Actions *************************************************************************/
 
-void NetworkModelActionProvider::actionTriggered(QAction *action) {
+void ContextMenuActionProvider::actionTriggered(QAction *action) {
   ActionType type = (ActionType)action->data().toInt();
   if(type > 0) {
     if(type & NetworkMask)
@@ -454,7 +454,7 @@ void NetworkModelActionProvider::actionTriggered(QAction *action) {
   _receiver = 0;
 }
 
-void NetworkModelActionProvider::handleNetworkAction(ActionType type, QAction *) {
+void ContextMenuActionProvider::handleNetworkAction(ActionType type, QAction *) {
   if(!_indexList.count())
     return;
   const Network *network = Client::network(_indexList.at(0).data(NetworkModel::NetworkIdRole).value<NetworkId>());
@@ -474,7 +474,7 @@ void NetworkModelActionProvider::handleNetworkAction(ActionType type, QAction *)
   }
 }
 
-void NetworkModelActionProvider::handleBufferAction(ActionType type, QAction *) {
+void ContextMenuActionProvider::handleBufferAction(ActionType type, QAction *) {
   if(type == BufferRemove) {
     removeBuffers(_indexList);
   } else {
@@ -504,7 +504,7 @@ void NetworkModelActionProvider::handleBufferAction(ActionType type, QAction *) 
   }
 }
 
-void NetworkModelActionProvider::removeBuffers(const QModelIndexList &indexList) {
+void ContextMenuActionProvider::removeBuffers(const QModelIndexList &indexList) {
   QList<BufferInfo> inactive;
   foreach(QModelIndex index, indexList) {
     BufferInfo info = index.data(NetworkModel::BufferInfoRole).value<BufferInfo>();
@@ -532,21 +532,21 @@ void NetworkModelActionProvider::removeBuffers(const QModelIndexList &indexList)
   }
 }
 
-void NetworkModelActionProvider::handleHideAction(ActionType type, QAction *action) {
+void ContextMenuActionProvider::handleHideAction(ActionType type, QAction *action) {
   Q_UNUSED(action)
 
   int filter = 0;
-  if(NetworkModelActionProvider::action(HideJoin)->isChecked())
+  if(ContextMenuActionProvider::action(HideJoin)->isChecked())
     filter |= Message::Join;
-  if(NetworkModelActionProvider::action(HidePart)->isChecked())
+  if(ContextMenuActionProvider::action(HidePart)->isChecked())
     filter |= Message::Part;
-  if(NetworkModelActionProvider::action(HideQuit)->isChecked())
+  if(ContextMenuActionProvider::action(HideQuit)->isChecked())
     filter |= Message::Quit;
-  if(NetworkModelActionProvider::action(HideNick)->isChecked())
+  if(ContextMenuActionProvider::action(HideNick)->isChecked())
     filter |= Message::Nick;
-  if(NetworkModelActionProvider::action(HideMode)->isChecked())
+  if(ContextMenuActionProvider::action(HideMode)->isChecked())
     filter |= Message::Mode;
-  if(NetworkModelActionProvider::action(HideDayChange)->isChecked())
+  if(ContextMenuActionProvider::action(HideDayChange)->isChecked())
     filter |= Message::DayChange;
 
   switch(type) {
@@ -586,7 +586,7 @@ void NetworkModelActionProvider::handleHideAction(ActionType type, QAction *acti
   };
 }
 
-void NetworkModelActionProvider::handleGeneralAction(ActionType type, QAction *action) {
+void ContextMenuActionProvider::handleGeneralAction(ActionType type, QAction *action) {
   Q_UNUSED(action)
 
   if(!_indexList.count())
@@ -620,7 +620,7 @@ void NetworkModelActionProvider::handleGeneralAction(ActionType type, QAction *a
   }
 }
 
-void NetworkModelActionProvider::handleNickAction(ActionType type, QAction *) {
+void ContextMenuActionProvider::handleNickAction(ActionType type, QAction *) {
   foreach(QModelIndex index, _indexList) {
     NetworkId networkId = index.data(NetworkModel::NetworkIdRole).value<NetworkId>();
     if(!networkId.isValid())
