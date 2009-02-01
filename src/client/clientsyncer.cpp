@@ -37,7 +37,6 @@ ClientSyncer::ClientSyncer(QObject *parent)
     _socket(0),
     _blockSize(0)
 {
-  connect(Client::signalProxy(), SIGNAL(disconnected()), this, SLOT(coreSocketDisconnected()));
 }
 
 ClientSyncer::~ClientSyncer() {
@@ -88,63 +87,49 @@ void ClientSyncer::coreHasData() {
 void ClientSyncer::coreSocketError(QAbstractSocket::SocketError) {
   qDebug() << "coreSocketError" << _socket << _socket->errorString();
   emit connectionError(_socket->errorString());
-  _socket->deleteLater();
+  resetConnection();
 }
 
 void ClientSyncer::disconnectFromCore() {
-  if(_socket) _socket->close();
+  if(_socket)
+    _socket->close();
+  resetConnection();
 }
 
 void ClientSyncer::connectToCore(const QVariantMap &conn) {
-  // TODO implement SSL
+  resetConnection();
   coreConnectionInfo = conn;
-  //if(isConnected()) {
-  //  emit coreConnectionError(tr("Already connected to Core!"));
-  //  return;
-  // }
-  if(_socket != 0) {
-    _socket->deleteLater();
-    _socket = 0;
-  }
-  if(conn["Host"].toString().isEmpty()) {
-    emit connectionError(tr("Internal connections not yet supported."));
-    return; // FIXME implement internal connections
-    //clientMode = LocalCore;
-    _socket = new QBuffer(this);
-    connect(_socket, SIGNAL(readyRead()), this, SLOT(coreHasData()));
-    _socket->open(QIODevice::ReadWrite);
-    //QVariant state = connectToLocalCore(coreConnectionInfo["User"].toString(), coreConnectionInfo["Password"].toString());
-    //syncToCore(state);
-    coreSocketConnected();
-  } else {
-    //clientMode = RemoteCore;
-    //emit coreConnectionMsg(tr("Connecting..."));
-    Q_ASSERT(!_socket);
 
-#ifdef HAVE_SSL
-    QSslSocket *sock = new QSslSocket(Client::instance());
-    connect(sock, SIGNAL(encrypted()), this, SIGNAL(encrypted()));
-#else
-    if(conn["useSsl"].toBool()) {
-	emit connectionError(tr("<b>This client is built without SSL Support!</b><br />Disable the usage of SSL in the account settings."));
-	return;
-    }
-    QTcpSocket *sock = new QTcpSocket(Client::instance());
-#endif
-#ifndef QT_NO_NETWORKPROXY
-    if(conn.contains("useProxy") && conn["useProxy"].toBool()) {
-      QNetworkProxy proxy((QNetworkProxy::ProxyType)conn["proxyType"].toInt(), conn["proxyHost"].toString(), conn["proxyPort"].toUInt(), conn["proxyUser"].toString(), conn["proxyPassword"].toString());
-      sock->setProxy(proxy);
-    }
-#endif
-    _socket = sock;
-    connect(sock, SIGNAL(readyRead()), this, SLOT(coreHasData()));
-    connect(sock, SIGNAL(connected()), this, SLOT(coreSocketConnected()));
-    connect(sock, SIGNAL(disconnected()), this, SLOT(coreSocketDisconnected()));
-    connect(sock, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(coreSocketError(QAbstractSocket::SocketError)));
-    connect(sock, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SIGNAL(socketStateChanged(QAbstractSocket::SocketState)));
-    sock->connectToHost(conn["Host"].toString(), conn["Port"].toUInt());
+  if(conn["Host"].toString().isEmpty()) {
+    emit connectionError(tr("No Host to connect to specified."));
+    return;
   }
+
+  Q_ASSERT(!_socket);
+#ifdef HAVE_SSL
+  QSslSocket *sock = new QSslSocket(Client::instance());
+#else
+  if(conn["useSsl"].toBool()) {
+    emit connectionError(tr("<b>This client is built without SSL Support!</b><br />Disable the usage of SSL in the account settings."));
+    return;
+  }
+  QTcpSocket *sock = new QTcpSocket(Client::instance());
+#endif
+
+#ifndef QT_NO_NETWORKPROXY
+  if(conn.contains("useProxy") && conn["useProxy"].toBool()) {
+    QNetworkProxy proxy((QNetworkProxy::ProxyType)conn["proxyType"].toInt(), conn["proxyHost"].toString(), conn["proxyPort"].toUInt(), conn["proxyUser"].toString(), conn["proxyPassword"].toString());
+    sock->setProxy(proxy);
+  }
+#endif
+
+  _socket = sock;
+  connect(sock, SIGNAL(readyRead()), this, SLOT(coreHasData()));
+  connect(sock, SIGNAL(connected()), this, SLOT(coreSocketConnected()));
+  connect(sock, SIGNAL(disconnected()), this, SLOT(coreSocketDisconnected()));
+  connect(sock, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(coreSocketError(QAbstractSocket::SocketError)));
+  connect(sock, SIGNAL(stateChanged(QAbstractSocket::SocketState)), this, SIGNAL(socketStateChanged(QAbstractSocket::SocketState)));
+  sock->connectToHost(conn["Host"].toString(), conn["Port"].toUInt());
 }
 
 void ClientSyncer::coreSocketConnected() {
@@ -201,14 +186,8 @@ void ClientSyncer::useInternalCore() {
 
 void ClientSyncer::coreSocketDisconnected() {
   emit socketDisconnected();
-  Client::instance()->disconnectFromCore();
-
-  // FIXME handle disconnects gracefully in here as well!
-
-  coreConnectionInfo.clear();
-  netsToSync.clear();
-  _blockSize = 0;
-  //restartPhaseNull();
+  resetConnection();
+  // FIXME handle disconnects gracefully
 }
 
 void ClientSyncer::clientInitAck(const QVariantMap &msg) {
@@ -286,7 +265,13 @@ void ClientSyncer::internalSessionStateReceived(const QVariant &packedState) {
 void ClientSyncer::sessionStateReceived(const QVariantMap &state) {
   emit sessionProgress(1, 1);
   disconnect(this, SIGNAL(recvPartialItem(quint32, quint32)), this, SIGNAL(sessionProgress(quint32, quint32)));
-  disconnect(_socket, 0, this, 0);  // rest of communication happens through SignalProxy
+
+  // rest of communication happens through SignalProxy...
+  disconnect(_socket, 0, this, 0);
+  // ... but we still want to be notified about errors...
+  connect(_socket, SIGNAL(disconnected()), this, SLOT(coreSocketDisconnected()));
+  connect(_socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(coreSocketError(QAbstractSocket::SocketError)));
+
   Client::instance()->setConnectedToCore(coreConnectionInfo["AccountId"].value<AccountId>(), _socket);
   syncToCore(state);
 }
@@ -348,6 +333,18 @@ void ClientSyncer::resetWarningsHandler() {
 }
 
 void ClientSyncer::resetConnection() {
+  if(_socket) {
+    disconnect(_socket, 0, this, 0);
+    _socket->deleteLater();
+    _socket = 0;
+  }
+  _blockSize = 0;
+
+  coreConnectionInfo.clear();
+  _coreMsgBuffer.clear();
+
+  netsToSync.clear();
+  numNetsToSync = 0;
 }
 
 #ifdef HAVE_SSL
@@ -369,21 +366,38 @@ void ClientSyncer::ignoreSslWarnings(bool permanently) {
 
 void ClientSyncer::sslSocketEncrypted() {
   QSslSocket *socket = qobject_cast<QSslSocket *>(sender());
-  if(socket) {
-    QByteArray digest = socket->peerCertificate().digest();
+  Q_ASSERT(socket);
+
+  // if there were sslErrors we already had extensive error handling
+  // no need to check for a digest change again.
+  if(!socket->sslErrors().isEmpty())
+    return;
+
+  QByteArray knownDigest = KnownHostsSettings().knownDigest(socket);
+  if(knownDigest == socket->peerCertificate().digest()) {
+    connectionReady();
+    return;
   }
+
+  QStringList warnings;
+  if(!knownDigest.isEmpty()) {
+    warnings << tr("Cert Digest changed! was: %1").arg(QString(prettyDigest(knownDigest)));
+  }
+
+  setWarningsHandler(SLOT(ignoreSslWarnings(bool)));
+  emit connectionWarnings(warnings);
 }
 
 void ClientSyncer::sslErrors(const QList<QSslError> &errors) {
-  QByteArray knownDigest;
   QSslSocket *socket = qobject_cast<QSslSocket *>(sender());
-  if(socket) {
-    socket->ignoreSslErrors();
-    knownDigest = KnownHostsSettings().knownDigest(socket);
-    if(knownDigest == socket->peerCertificate().digest()) {
-      connectionReady();
-      return;
-    }
+  Q_ASSERT(socket);
+
+  socket->ignoreSslErrors();
+
+  QByteArray knownDigest = KnownHostsSettings().knownDigest(socket);
+  if(knownDigest == socket->peerCertificate().digest()) {
+    connectionReady();
+    return;
   }
 
   QStringList warnings;
