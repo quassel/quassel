@@ -523,7 +523,7 @@ void BufferViewDelegate::initStyleOption(QStyleOptionViewItem *option, const QMo
   }
 
   if(!index.data(NetworkModel::ItemActiveRole).toBool() || index.data(NetworkModel::UserAwayRole).toBool()) {
-    option->palette.setColor(QPalette::Text, QPalette().color(QPalette::Dark));
+    option->palette.setColor(QPalette::Text, option->palette.color(QPalette::Dark));
   }
 }
 

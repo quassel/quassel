@@ -28,8 +28,6 @@
 #include <QColorDialog>
 #include <QPainter>
 
-// #define PHONDEV
-
 ColorSettingsPage::ColorSettingsPage(QWidget *parent)
   : SettingsPage(tr("Appearance"), tr("Color settings"), parent),
     mapper(new QSignalMapper(this))
@@ -46,26 +44,12 @@ ColorSettingsPage::ColorSettingsPage(QWidget *parent)
 
   connect(mapper, SIGNAL(mapped(QWidget *)), this, SLOT(chooseColor(QWidget *)));
 
-
-  
-#ifndef PHONDEV
-  ui.inactiveActivityUseBG->setEnabled(false);
-  ui.noActivityUseBG->setEnabled(false);
-  ui.highlightActivityUseBG->setEnabled(false);
-  ui.newMessageActivityUseBG->setEnabled(false);
-  ui.otherActivityUseBG->setEnabled(false);
-
-  ui.nickFG->setEnabled(false);
-  ui.nickUseBG->setEnabled(false);
-  ui.hostmaskFG->setEnabled(false);
-  ui.hostmaskUseBG->setEnabled(false);
-  ui.channelnameFG->setEnabled(false);
-  ui.channelnameUseBG->setEnabled(false);
-  ui.modeFlagsFG->setEnabled(false);
-  ui.modeFlagsUseBG->setEnabled(false);
-  ui.urlFG->setEnabled(false);
-  ui.urlUseBG->setEnabled(false);
-#endif
+  foreach(QWidget *widget, findChildren<QWidget *>()) {
+    if(widget->property("NotInUse").toBool()) {
+      widget->setEnabled(false);
+      widget->hide();
+    }
+  }
 }
 
 bool ColorSettingsPage::hasDefaults() const {
@@ -85,14 +69,6 @@ void ColorSettingsPage::defaults() {
 }
 
 void ColorSettingsPage::defaultBufferview() {
-  ui.inactiveActivityFG->setColor(QColor(Qt::gray));
-  ui.inactiveActivityBG->setColor(QColor(Qt::white));
-  ui.inactiveActivityBG->setEnabled(false);
-  ui.inactiveActivityUseBG->setChecked(false);
-  ui.noActivityFG->setColor(QColor(Qt::black));
-  ui.noActivityBG->setColor(QColor(Qt::white));
-  ui.noActivityBG->setEnabled(false);
-  ui.noActivityUseBG->setChecked(false);
   ui.highlightActivityFG->setColor(QColor(Qt::magenta));
   ui.highlightActivityBG->setColor(QColor(Qt::white));
   ui.highlightActivityBG->setEnabled(false);
@@ -214,20 +190,6 @@ void ColorSettingsPage::defaultMircColorCodes() {
 
 void ColorSettingsPage::load() {
   QtUiStyleSettings s("Colors");
-  settings["InactiveActivityFG"] = s.value("inactiveActivityFG", QVariant(QColor(Qt::gray)));
-  ui.inactiveActivityFG->setColor(settings["InactiveActivityFG"].value<QColor>());
-  settings["InactiveActivityBG"] = s.value("inactiveActivityBG", QVariant(QColor(Qt::white)));
-  ui.inactiveActivityBG->setColor(settings["InactiveActivityBG"].value<QColor>());
-  settings["InactiveActivityUseBG"] = s.value("inactiveActivityUseBG");
-  ui.inactiveActivityUseBG->setChecked(settings["InactiveActivityUseBG"].toBool());
-
-  settings["NoActivityFG"] = s.value("noActivityFG", QVariant(QColor(Qt::black)));
-  ui.noActivityFG->setColor(settings["NoActivityFG"].value<QColor>());
-  settings["NoActivityBG"] = s.value("noActivityBG", QVariant(QColor(Qt::white)));
-  ui.noActivityBG->setColor(settings["NoActivityBG"].value<QColor>());
-  settings["NoActivityUseBG"] = s.value("noActivityUseBG");
-  ui.noActivityUseBG->setChecked(settings["NoActivityUseBG"].toBool());
-
   settings["HighlightActivityFG"] = s.value("highlightActivityFG", QVariant(QColor(Qt::magenta)));
   ui.highlightActivityFG->setColor(settings["HighlightActivityFG"].value<QColor>());
   settings["HighlightActivityBG"] = s.value("highlightActivityBG", QVariant(QColor(Qt::white)));
@@ -385,12 +347,6 @@ void ColorSettingsPage::load() {
 
 void ColorSettingsPage::save() {
   QtUiStyleSettings s("Colors");
-  s.setValue("noActivityFG", ui.noActivityFG->color());
-  s.setValue("noActivityBG", ui.noActivityBG->color());
-  s.setValue("noActivityUseBG", ui.noActivityUseBG->isChecked());
-  s.setValue("inactiveActivityFG", ui.inactiveActivityFG->color());
-  s.setValue("inactiveActivityBG", ui.inactiveActivityBG->color());
-  s.setValue("inactiveActivityUseBG", ui.inactiveActivityUseBG->isChecked());
   s.setValue("highlightActivityFG", ui.highlightActivityFG->color());
   s.setValue("highlightActivityBG", ui.highlightActivityBG->color());
   s.setValue("highlightActivityUseBG", ui.highlightActivityUseBG->isChecked());
@@ -494,12 +450,6 @@ void ColorSettingsPage::widgetHasChanged() {
 }
 
 bool ColorSettingsPage::testHasChanged() {
-  if(settings["InactiveActivityFG"].value<QColor>() != ui.inactiveActivityFG->color()) return true;
-  if(settings["InactiveActivityBG"].value<QColor>() != ui.inactiveActivityBG->color()) return true;
-  if(settings["InactiveActivityUseBG"].toBool() != ui.inactiveActivityUseBG->isChecked()) return true;
-  if(settings["NoActivityFG"].value<QColor>() != ui.noActivityFG->color()) return true;
-  if(settings["NoActivityBG"].value<QColor>() != ui.noActivityBG->color()) return true;
-  if(settings["NoActivityUseBG"].toBool() != ui.noActivityUseBG->isChecked()) return true;
   if(settings["HighlightActivityFG"].value<QColor>() != ui.highlightActivityFG->color()) return true;
   if(settings["HighlightActivityBG"].value<QColor>() != ui.highlightActivityBG->color()) return true;
   if(settings["HighlightActivityUseBG"].toBool() != ui.highlightActivityUseBG->isChecked()) return true;
@@ -612,47 +562,32 @@ void ColorSettingsPage::chatviewPreview() {
 void ColorSettingsPage::bufferviewPreview() {
   ui.bufferviewPreview->clear();
   ui.bufferviewPreview->setColumnCount(1);
-  ui.bufferviewPreview->setHeaderLabels(QStringList("Buffers"));
+  ui.bufferviewPreview->setHeaderLabels(QStringList(tr("Buffers")));
 
-  QTreeWidgetItem *topLevelItem = new QTreeWidgetItem((QTreeWidget*)0, QStringList(QString("network")));
+  QTreeWidgetItem *topLevelItem = new QTreeWidgetItem((QTreeWidget*)0, QStringList(tr("Network")));
   ui.bufferviewPreview->insertTopLevelItem(0, topLevelItem);
-  topLevelItem->setForeground(0, QBrush(ui.noActivityFG->color()));
-  if(ui.noActivityUseBG->isChecked())
-    topLevelItem->setBackground(0, QBrush(ui.noActivityBG->color()));
-
 
   QList<QTreeWidgetItem *> items;
-  QTreeWidgetItem *statusBuffer = new QTreeWidgetItem((QTreeWidget*)0, QStringList(QString("Status Buffer")));
-  items.append(statusBuffer);
-  statusBuffer->setForeground(0, QBrush(ui.noActivityFG->color()));
-  if(ui.noActivityUseBG->isChecked())
-    statusBuffer->setBackground(0, QBrush(ui.noActivityBG->color()));
-
-  QTreeWidgetItem *inactiveActivity = new QTreeWidgetItem((QTreeWidget*)0, QStringList(QString("#inactive channel")));
+  QTreeWidgetItem *inactiveActivity = new QTreeWidgetItem((QTreeWidget*)0, QStringList(tr("#incative")));
   items.append(inactiveActivity);
-  inactiveActivity->setForeground(0, QBrush(ui.inactiveActivityFG->color()));
-  if(ui.inactiveActivityUseBG->isChecked())
-    inactiveActivity->setBackground(0, QBrush(ui.inactiveActivityBG->color()));
+  inactiveActivity->setForeground(0, QPalette().color(QPalette::Dark));
 
-  QTreeWidgetItem *noActivity = new QTreeWidgetItem((QTreeWidget*)0, QStringList(QString("#channel with no activity")));
+  QTreeWidgetItem *noActivity = new QTreeWidgetItem((QTreeWidget*)0, QStringList(tr("#regular")));
   items.append(noActivity);
-  noActivity->setForeground(0, QBrush(ui.noActivityFG->color()));
-  if(ui.noActivityUseBG->isChecked())
-    noActivity->setBackground(0, QBrush(ui.noActivityBG->color()));
 
-  QTreeWidgetItem *highlightActivity = new QTreeWidgetItem((QTreeWidget*)0, QStringList(QString("#channel with highlight")));
+  QTreeWidgetItem *highlightActivity = new QTreeWidgetItem((QTreeWidget*)0, QStringList(tr("#highlight")));
   items.append(highlightActivity);
   highlightActivity->setForeground(0, QBrush(ui.highlightActivityFG->color()));
   if(ui.highlightActivityUseBG->isChecked())
     highlightActivity->setBackground(0, QBrush(ui.highlightActivityBG->color()));
 
-  QTreeWidgetItem *newMessageActivity = new QTreeWidgetItem((QTreeWidget*)0, QStringList(QString("#channel with new message")));
+  QTreeWidgetItem *newMessageActivity = new QTreeWidgetItem((QTreeWidget*)0, QStringList(tr("#new message")));
   items.append(newMessageActivity);
   newMessageActivity->setForeground(0, QBrush(ui.newMessageActivityFG->color()));
   if(ui.newMessageActivityUseBG->isChecked())
     newMessageActivity->setBackground(0, QBrush(ui.newMessageActivityBG->color()));
 
-  QTreeWidgetItem *otherActivity = new QTreeWidgetItem((QTreeWidget*)0, QStringList(QString("#channel with other activity")));
+  QTreeWidgetItem *otherActivity = new QTreeWidgetItem((QTreeWidget*)0, QStringList(tr("#other activity")));
   items.append(otherActivity);
   otherActivity->setForeground(0, QBrush(ui.otherActivityFG->color()));
   if(ui.otherActivityUseBG->isChecked())
