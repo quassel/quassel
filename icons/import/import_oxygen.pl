@@ -88,6 +88,8 @@ foreach my $size (keys %req_icons) {
   opendir (BASEDIR, "$oxygen/$sizestr") or die "Could not open dir for size $size\n";
   foreach my $cat (readdir BASEDIR) {
     next if $cat eq '.' or $cat eq '..';
+    system "mkdir -p $output/$sizestr/$cat" and die "Could not create category dir\n";
+    system "mkdir -p $output/scalable/$cat" and die "Could not create category dir\n";
     opendir (CATDIR, "$oxygen/$sizestr/$cat") or die "Could not open category dir\n";
     foreach my $icon (readdir CATDIR) {
       $icon =~ s/\.png$//;
@@ -95,6 +97,7 @@ foreach my $size (keys %req_icons) {
       $scalables{"$cat/$icon"} = 1;
       system "cp -a $oxygen/$sizestr/$cat/$icon.png $output/$sizestr/$cat"
         and die "Error while copying file $sizestr/$cat/$icon.png\n";
+      # print "Copy: $oxygen/$sizestr/$cat/$icon.png\n";
       delete $req_icons{$size}{$icon};
     }
     closedir CATDIR;
