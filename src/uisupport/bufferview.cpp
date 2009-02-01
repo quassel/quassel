@@ -42,40 +42,6 @@
 #include "quasselui.h"
 #include "uisettings.h"
 
-bool TristateDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index) {
-  if(event->type() != QEvent::MouseButtonRelease)
-    return QStyledItemDelegate::editorEvent(event, model, option, index);
-
-  if(!(model->flags(index) & Qt::ItemIsUserCheckable))
-    return QStyledItemDelegate::editorEvent(event, model, option, index);
-
-  QVariant value = index.data(Qt::CheckStateRole);
-  if(!value.isValid())
-    return QStyledItemDelegate::editorEvent(event, model, option, index);
-
-  QStyleOptionViewItemV4 viewOpt(option);
-  initStyleOption(&viewOpt, index);
-
-  QRect checkRect = viewOpt.widget->style()->subElementRect(QStyle::SE_ItemViewItemCheckIndicator, &viewOpt, viewOpt.widget);
-  QMouseEvent *me = static_cast<QMouseEvent*>(event);
-
-  if(me->button() != Qt::LeftButton || !checkRect.contains(me->pos()))
-    return QStyledItemDelegate::editorEvent(event, model, option, index);
-
-  Qt::CheckState state = static_cast<Qt::CheckState>(value.toInt());
-  if(state == Qt::Unchecked)
-    state = Qt::PartiallyChecked;
-  else if(state == Qt::PartiallyChecked)
-    state = Qt::Checked;
-  else
-    state = Qt::Unchecked;
-  model->setData(index, state, Qt::CheckStateRole);
-  return true;
-}
-
-
-
-
 /*****************************************
 * The TreeView showing the Buffers
 *****************************************/
@@ -90,7 +56,7 @@ BufferView::BufferView(QWidget *parent)
   setSelectionMode(QAbstractItemView::ExtendedSelection);
 
   QAbstractItemDelegate *oldDelegate = itemDelegate();
-  TristateDelegate *tristateDelegate = new TristateDelegate(this);
+  BufferViewDelegate *tristateDelegate = new BufferViewDelegate(this);
   setItemDelegate(tristateDelegate);
   delete oldDelegate;
 }
@@ -493,6 +459,74 @@ QSize BufferView::sizeHint() const {
   }
   return QSize(columnSize, 50);
 }
+
+
+// ****************************************
+//  BufferViewDelgate
+// ****************************************
+BufferViewDelegate::BufferViewDelegate(QObject *parent)
+  : QStyledItemDelegate(parent)
+{
+  UiSettings s("QtUiStyle/Colors");
+  _FgColorHighlightActivity = s.value("highlightActivityFG", QVariant(QColor(Qt::magenta))).value<QColor>();
+  _FgColorNewMessageActivity = s.value("newMessageActivityFG", QVariant(QColor(Qt::green))).value<QColor>();
+  _FgColorOtherActivity = s.value("otherActivityFG", QVariant(QColor(Qt::darkGreen))).value<QColor>();
+}
+
+bool BufferViewDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index) {
+  if(event->type() != QEvent::MouseButtonRelease)
+    return QStyledItemDelegate::editorEvent(event, model, option, index);
+
+  if(!(model->flags(index) & Qt::ItemIsUserCheckable))
+    return QStyledItemDelegate::editorEvent(event, model, option, index);
+
+  QVariant value = index.data(Qt::CheckStateRole);
+  if(!value.isValid())
+    return QStyledItemDelegate::editorEvent(event, model, option, index);
+
+  QStyleOptionViewItemV4 viewOpt(option);
+  initStyleOption(&viewOpt, index);
+
+  QRect checkRect = viewOpt.widget->style()->subElementRect(QStyle::SE_ItemViewItemCheckIndicator, &viewOpt, viewOpt.widget);
+  QMouseEvent *me = static_cast<QMouseEvent*>(event);
+
+  if(me->button() != Qt::LeftButton || !checkRect.contains(me->pos()))
+    return QStyledItemDelegate::editorEvent(event, model, option, index);
+
+  Qt::CheckState state = static_cast<Qt::CheckState>(value.toInt());
+  if(state == Qt::Unchecked)
+    state = Qt::PartiallyChecked;
+  else if(state == Qt::PartiallyChecked)
+    state = Qt::Checked;
+  else
+    state = Qt::Unchecked;
+  model->setData(index, state, Qt::CheckStateRole);
+  return true;
+}
+
+void BufferViewDelegate::initStyleOption(QStyleOptionViewItem *option, const QModelIndex &index) const {
+  QStyledItemDelegate::initStyleOption(option, index);
+
+  BufferInfo::ActivityLevel activity = (BufferInfo::ActivityLevel)index.data(NetworkModel::BufferActivityRole).toInt();
+
+  if(activity & BufferInfo::Highlight) {
+    option->palette.setColor(QPalette::Text, _FgColorHighlightActivity);
+    return;
+  }
+  if(activity & BufferInfo::NewMessage) {
+    option->palette.setColor(QPalette::Text, _FgColorNewMessageActivity);
+    return;
+  }
+  if(activity & BufferInfo::OtherActivity) {
+    option->palette.setColor(QPalette::Text, _FgColorOtherActivity);
+    return;
+  }
+
+  if(!index.data(NetworkModel::ItemActiveRole).toBool() || index.data(NetworkModel::UserAwayRole).toBool()) {
+    option->palette.setColor(QPalette::Text, QPalette().color(QPalette::Dark));
+  }
+}
+
 
 // ==============================
 //  BufferView Dock

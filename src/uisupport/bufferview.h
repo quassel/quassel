@@ -93,16 +93,24 @@ private:
 };
 
 // ******************************
-//  TristateDelgate
+//  BufferViewDelgate
 // ******************************
 #include <QStyledItemDelegate>
 
-class TristateDelegate : public QStyledItemDelegate {
+class BufferViewDelegate : public QStyledItemDelegate {
   Q_OBJECT
 
 public:
-  TristateDelegate(QObject *parent = 0) : QStyledItemDelegate(parent) {}
+  BufferViewDelegate(QObject *parent = 0);
   bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index);
+
+protected:
+  virtual void initStyleOption(QStyleOptionViewItem *option, const QModelIndex &index) const;
+
+private:
+  QColor _FgColorHighlightActivity;
+  QColor _FgColorNewMessageActivity;
+  QColor _FgColorOtherActivity;
 };
 
 

@@ -22,7 +22,6 @@
 #define BUFFERVIEWFILTER_H_
 
 #include <QAction>
-#include <QColor>
 #include <QDropEvent>
 #include <QFlags>
 #include <QPixmap>
@@ -59,7 +58,7 @@ public:
 
   QVariant data(const QModelIndex &index, int role) const;
   QVariant icon(const QModelIndex &index) const;
-  QVariant foreground(const QModelIndex &index) const;
+//   QVariant foreground(const QModelIndex &index) const;
   QVariant checkedState(const QModelIndex &index) const;
 
   bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
@@ -97,12 +96,6 @@ private:
   QPointer<BufferViewConfig> _config;
   Qt::SortOrder _sortOrder;
 
-  QColor _FgColorInactiveActivity;
-  QColor _FgColorNoActivity;
-  QColor _FgColorHighlightActivity;
-  QColor _FgColorNewMessageActivity;
-  QColor _FgColorOtherActivity;
-
   QPixmap _userOfflineIcon;
   QPixmap _userAwayIcon;
   QPixmap _userOnlineIcon;
@@ -113,8 +106,6 @@ private:
   QSet<BufferId> _toAdd;
   QSet<BufferId> _toTempRemove;
   QSet<BufferId> _toRemove;
-
-  void loadColors();
 
   bool filterAcceptBuffer(const QModelIndex &) const;
   bool filterAcceptNetwork(const QModelIndex &) const;

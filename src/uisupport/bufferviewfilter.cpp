@@ -31,8 +31,6 @@
 #include "iconloader.h"
 #include "networkmodel.h"
 
-#include "uisettings.h"
-
 class CheckRemovalEvent : public QEvent {
 public:
   CheckRemovalEvent(const QModelIndex &source_index) : QEvent(QEvent::User), index(source_index) {};
@@ -57,8 +55,6 @@ BufferViewFilter::BufferViewFilter(QAbstractItemModel *model, BufferViewConfig *
 
   setDynamicSortFilter(true);
 
-  loadColors();
-
   connect(this, SIGNAL(_dataChanged(const QModelIndex &, const QModelIndex &)),
 	  this, SLOT(_q_sourceDataChanged(QModelIndex,QModelIndex)));
 
@@ -69,15 +65,6 @@ BufferViewFilter::BufferViewFilter(QAbstractItemModel *model, BufferViewConfig *
   BufferSettings bufferSettings;
   _showUserStateIcons = bufferSettings.showUserStateIcons();
   bufferSettings.notify("ShowUserStateIcons", this, SLOT(showUserStateIconsChanged()));
-}
-
-void BufferViewFilter::loadColors() {
-  UiSettings s("QtUiStyle/Colors");
-  _FgColorInactiveActivity = s.value("inactiveActivityFG", QVariant(QColor(Qt::gray))).value<QColor>();
-  _FgColorNoActivity = s.value("noActivityFG", QVariant(QColor(Qt::black))).value<QColor>();
-  _FgColorHighlightActivity = s.value("highlightActivityFG", QVariant(QColor(Qt::magenta))).value<QColor>();
-  _FgColorNewMessageActivity = s.value("newMessageActivityFG", QVariant(QColor(Qt::green))).value<QColor>();
-  _FgColorOtherActivity = s.value("otherActivityFG", QVariant(QColor(Qt::darkGreen))).value<QColor>();
 }
 
 void BufferViewFilter::showUserStateIconsChanged() {
@@ -371,8 +358,6 @@ QVariant BufferViewFilter::data(const QModelIndex &index, int role) const {
   switch(role) {
   case Qt::DecorationRole:
     return icon(index);
-  case Qt::ForegroundRole:
-    return foreground(index);
   case Qt::CheckStateRole:
     return checkedState(index);
   default:
@@ -399,25 +384,6 @@ QVariant BufferViewFilter::icon(const QModelIndex &index) const {
     return _userOnlineIcon;
 
   return QVariant();
-}
-
-QVariant BufferViewFilter::foreground(const QModelIndex &index) const {
-  if(config() && config()->disableDecoration())
-    return _FgColorNoActivity;
-
-  BufferInfo::ActivityLevel activity = (BufferInfo::ActivityLevel)index.data(NetworkModel::BufferActivityRole).toInt();
-
-  if(activity & BufferInfo::Highlight)
-    return _FgColorHighlightActivity;
-  if(activity & BufferInfo::NewMessage)
-    return _FgColorNewMessageActivity;
-  if(activity & BufferInfo::OtherActivity)
-    return _FgColorOtherActivity;
-
-  if(!index.data(NetworkModel::ItemActiveRole).toBool() || index.data(NetworkModel::UserAwayRole).toBool())
-    return _FgColorInactiveActivity;
-
-  return _FgColorNoActivity;
 }
 
 QVariant BufferViewFilter::checkedState(const QModelIndex &index) const {
