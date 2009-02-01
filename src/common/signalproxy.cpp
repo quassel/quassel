@@ -195,8 +195,8 @@ void SignalProxy::SignalRelay::attachSignal(QObject *sender, int signalId, const
   if(!funcName.isEmpty()) {
     fn = QMetaObject::normalizedSignature(funcName);
   } else {
-    fn = SIGNAL();
-    fn += sender->metaObject()->method(signalId).signature();
+    fn = SIGNAL(fakeMethodSignature());
+    fn = fn.replace("fakeMethodSignature()", sender->metaObject()->method(signalId).signature());
   }
 
   _slots[slotId] = Signal(sender, signalId, fn);
@@ -660,6 +660,17 @@ void SignalProxy::receivePackedFunc(AbstractPeer *sender, const QVariant &packed
 }
 
 void SignalProxy::receivePeerSignal(AbstractPeer *sender, const RequestType &requestType, const QVariantList &params) {
+  switch(requestType) {
+    // list all RequestTypes that shouldnot trigger a heartbeat counter reset here
+  case HeartBeatReply:
+    break;
+  default:
+    if(sender->type() == AbstractPeer::IODevicePeer) {
+      IODevicePeer *ioPeer = static_cast<IODevicePeer *>(sender);
+      ioPeer->sentHeartBeats = 0;
+    }
+  }
+
   switch(requestType) {
   case RpcCall:
     if(params.empty())
