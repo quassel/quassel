@@ -47,7 +47,6 @@ class ColorSettingsPage : public SettingsPage {
     void defaultUserActivity();
     void defaultMessage();
     void defaultMircColorCodes();
-    void defaultNickview();
 
   private slots:
     void widgetHasChanged();

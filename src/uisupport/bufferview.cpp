@@ -56,8 +56,8 @@ BufferView::BufferView(QWidget *parent)
   setSelectionMode(QAbstractItemView::ExtendedSelection);
 
   QAbstractItemDelegate *oldDelegate = itemDelegate();
-  BufferViewDelegate *tristateDelegate = new BufferViewDelegate(this);
-  setItemDelegate(tristateDelegate);
+  BufferViewDelegate *newDelegate = new BufferViewDelegate(this);
+  setItemDelegate(newDelegate);
   delete oldDelegate;
 }
 

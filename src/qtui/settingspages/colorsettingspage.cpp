@@ -46,7 +46,8 @@ ColorSettingsPage::ColorSettingsPage(QWidget *parent)
 
   connect(mapper, SIGNAL(mapped(QWidget *)), this, SLOT(chooseColor(QWidget *)));
 
-  //disable unused buttons:
+
+  
 #ifndef PHONDEV
   ui.inactiveActivityUseBG->setEnabled(false);
   ui.noActivityUseBG->setEnabled(false);
@@ -64,9 +65,6 @@ ColorSettingsPage::ColorSettingsPage(QWidget *parent)
   ui.modeFlagsUseBG->setEnabled(false);
   ui.urlFG->setEnabled(false);
   ui.urlUseBG->setEnabled(false);
-
-  ui.onlineStatusUseBG->setEnabled(false);
-  ui.awayStatusUseBG->setEnabled(false);
 #endif
 }
 
@@ -80,7 +78,6 @@ void ColorSettingsPage::defaults() {
   defaultUserActivity();
   defaultMessage();
   defaultMircColorCodes();
-  defaultNickview();
 
   widgetHasChanged();
   bufferviewPreview();
@@ -213,17 +210,6 @@ void ColorSettingsPage::defaultMircColorCodes() {
   ui.color13->setColor(QtUi::style()->format(UiStyle::FgCol13, Settings::Default).foreground().color());
   ui.color14->setColor(QtUi::style()->format(UiStyle::FgCol14, Settings::Default).foreground().color());
   ui.color15->setColor(QtUi::style()->format(UiStyle::FgCol15, Settings::Default).foreground().color());
-}
-
-void ColorSettingsPage::defaultNickview() {
-  ui.onlineStatusFG->setColor(QColor(Qt::black));
-  ui.onlineStatusBG->setColor(QColor("white"));
-  ui.onlineStatusBG->setEnabled(false);
-  ui.onlineStatusUseBG->setChecked(false);
-  ui.awayStatusFG->setColor(QColor(Qt::gray));
-  ui.awayStatusBG->setColor(QColor("white"));
-  ui.awayStatusBG->setEnabled(false);
-  ui.awayStatusUseBG->setChecked(false);
 }
 
 void ColorSettingsPage::load() {
@@ -392,20 +378,6 @@ void ColorSettingsPage::load() {
   ui.color14->setColor(QtUi::style()->format(UiStyle::FgCol14).foreground().color());
   ui.color15->setColor(QtUi::style()->format(UiStyle::FgCol15).foreground().color());
 
-  settings["OnlineStatusFG"] = s.value("onlineStatusFG", QVariant(QColor(Qt::black)));
-  ui.onlineStatusFG->setColor(settings["OnlineStatusFG"].value<QColor>());
-  settings["OnlineStatusBG"] = s.value("onlineStatusBG", QVariant(QColor(Qt::white)));
-  ui.onlineStatusBG->setColor(settings["OnlineStatusBG"].value<QColor>());
-  settings["OnlineStatusUseBG"] = s.value("onlineStatusUseBG");
-  ui.onlineStatusUseBG->setChecked(settings["OnlineStatusUseBG"].toBool());
-
-  settings["AwayStatusFG"] = s.value("awayStatusFG", QVariant(QColor(Qt::gray)));
-  ui.awayStatusFG->setColor(settings["AwayStatusFG"].value<QColor>());
-  settings["AwayStatusBG"] = s.value("awayStatusBG", QVariant(QColor(Qt::white)));
-  ui.awayStatusBG->setColor(settings["AwayStatusBG"].value<QColor>());
-  settings["AwayStatusUseBG"] = s.value("awayStatusUseBG");
-  ui.awayStatusUseBG->setChecked(settings["AwayStatusUseBG"].toBool());
-
   setChangedState(false);
   bufferviewPreview();
   chatviewPreview();
@@ -491,13 +463,6 @@ void ColorSettingsPage::save() {
   saveMircColor(13, ui.color13->color());
   saveMircColor(14, ui.color14->color());
   saveMircColor(15, ui.color15->color());
-
-  s.setValue("onlineStatusFG", ui.onlineStatusFG->color());
-  s.setValue("onlineStatusBG", ui.onlineStatusBG->color());
-  s.setValue("onlineStatusUseBG", ui.onlineStatusUseBG->isChecked());
-  s.setValue("awayStatusFG", ui.awayStatusFG->color());
-  s.setValue("awayStatusBG", ui.awayStatusBG->color());
-  s.setValue("awayStatusUseBG", ui.awayStatusUseBG->isChecked());
 
   load(); //TODO: remove when settings hash map is unnescessary
   setChangedState(false);
@@ -626,13 +591,6 @@ bool ColorSettingsPage::testHasChanged() {
   if(QtUi::style()->format(UiStyle::FgCol13).foreground().color() != ui.color13->color()) return true;
   if(QtUi::style()->format(UiStyle::FgCol14).foreground().color() != ui.color14->color()) return true;
   if(QtUi::style()->format(UiStyle::FgCol15).foreground().color() != ui.color15->color()) return true;
-
-  if(settings["OnlineStatusFG"].value<QColor>() != ui.onlineStatusFG->color()) return true;
-  if(settings["OnlineStatusBG"].value<QColor>() != ui.onlineStatusBG->color()) return true;
-  if(settings["OnlineStatusUseBG"].toBool() != ui.onlineStatusUseBG->isChecked()) return true;
-  if(settings["AwayStatusFG"].value<QColor>() != ui.awayStatusFG->color()) return true;
-  if(settings["AwayStatusBG"].value<QColor>() != ui.awayStatusBG->color()) return true;
-  if(settings["AwayStatusUseBG"].toBool() != ui.awayStatusUseBG->isChecked()) return true;
 
   return false;
 }

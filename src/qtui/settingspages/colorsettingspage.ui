@@ -25,6 +25,14 @@
       <number>0</number>
      </property>
      <widget class="QWidget" name="bufferview" >
+      <property name="geometry" >
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>487</width>
+        <height>485</height>
+       </rect>
+      </property>
       <attribute name="title" >
        <string>Bufferview</string>
       </attribute>
@@ -315,6 +323,14 @@
       </layout>
      </widget>
      <widget class="QWidget" name="chatview" >
+      <property name="geometry" >
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>487</width>
+        <height>485</height>
+       </rect>
+      </property>
       <attribute name="title" >
        <string>Chatview</string>
       </attribute>
@@ -331,6 +347,14 @@
           <number>0</number>
          </property>
          <widget class="QWidget" name="tab" >
+          <property name="geometry" >
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>441</width>
+            <height>294</height>
+           </rect>
+          </property>
           <attribute name="title" >
            <string>Server Activity</string>
           </attribute>
@@ -558,6 +582,14 @@
           </layout>
          </widget>
          <widget class="QWidget" name="tab_2" >
+          <property name="geometry" >
+           <rect>
+            <x>360</x>
+            <y>270</y>
+            <width>720</width>
+            <height>360</height>
+           </rect>
+          </property>
           <attribute name="title" >
            <string>User Activity</string>
           </attribute>
@@ -875,6 +907,14 @@
           </layout>
          </widget>
          <widget class="QWidget" name="Seite_2" >
+          <property name="geometry" >
+           <rect>
+            <x>360</x>
+            <y>270</y>
+            <width>720</width>
+            <height>360</height>
+           </rect>
+          </property>
           <attribute name="title" >
            <string>Message</string>
           </attribute>
@@ -1228,6 +1268,14 @@
       </layout>
      </widget>
      <widget class="QWidget" name="Mirc" >
+      <property name="geometry" >
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>487</width>
+        <height>485</height>
+       </rect>
+      </property>
       <attribute name="title" >
        <string>Mirc Color Codes</string>
       </attribute>
@@ -1486,173 +1534,6 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="nickview" >
-      <attribute name="title" >
-       <string>Nickview</string>
-      </attribute>
-      <layout class="QGridLayout" >
-       <item row="0" column="0" >
-        <widget class="QGroupBox" name="groupBox_8" >
-         <property name="title" >
-          <string>Nick status:</string>
-         </property>
-         <layout class="QGridLayout" >
-          <item row="0" column="1" >
-           <widget class="QLabel" name="label_4" >
-            <property name="text" >
-             <string>FG</string>
-            </property>
-            <property name="alignment" >
-             <set>Qt::AlignCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="2" >
-           <widget class="QLabel" name="label_5" >
-            <property name="text" >
-             <string>BG</string>
-            </property>
-            <property name="alignment" >
-             <set>Qt::AlignCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="3" >
-           <widget class="QLabel" name="label_6" >
-            <property name="text" >
-             <string>Use BG</string>
-            </property>
-            <property name="alignment" >
-             <set>Qt::AlignCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0" >
-           <widget class="QLabel" name="label_62" >
-            <property name="text" >
-             <string>Online:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1" >
-           <widget class="ColorButton" name="onlineStatusFG" >
-            <property name="text" >
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="2" >
-           <widget class="ColorButton" name="onlineStatusBG" >
-            <property name="enabled" >
-             <bool>false</bool>
-            </property>
-            <property name="text" >
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="3" >
-           <widget class="QCheckBox" name="onlineStatusUseBG" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Fixed" hsizetype="Maximum" >
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="layoutDirection" >
-             <enum>Qt::LeftToRight</enum>
-            </property>
-            <property name="text" >
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0" >
-           <widget class="QLabel" name="label_63" >
-            <property name="text" >
-             <string>Away:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1" >
-           <widget class="ColorButton" name="awayStatusFG" >
-            <property name="text" >
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="2" >
-           <widget class="ColorButton" name="awayStatusBG" >
-            <property name="enabled" >
-             <bool>false</bool>
-            </property>
-            <property name="text" >
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="3" >
-           <widget class="QCheckBox" name="awayStatusUseBG" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Fixed" hsizetype="Maximum" >
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text" >
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="0" >
-           <spacer>
-            <property name="orientation" >
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeHint" stdset="0" >
-             <size>
-              <width>20</width>
-              <height>40</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item row="0" column="1" >
-        <widget class="QGroupBox" name="groupBox_9" >
-         <property name="title" >
-          <string>Preview:</string>
-         </property>
-         <layout class="QVBoxLayout" >
-          <item>
-           <widget class="QTreeWidget" name="nickviewPreview" >
-            <column>
-             <property name="text" >
-              <string>1</string>
-             </property>
-            </column>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item row="1" column="0" colspan="2" >
-        <spacer>
-         <property name="orientation" >
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0" >
-          <size>
-           <width>261</width>
-           <height>151</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-      </layout>
-     </widget>
     </widget>
    </item>
   </layout>
@@ -1743,38 +1624,6 @@
     <hint type="destinationlabel" >
      <x>197</x>
      <y>255</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>onlineStatusUseBG</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>onlineStatusBG</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>202</x>
-     <y>111</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>150</x>
-     <y>111</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>awayStatusUseBG</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>awayStatusBG</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>202</x>
-     <y>147</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>150</x>
-     <y>147</y>
     </hint>
    </hints>
   </connection>
