@@ -18,6 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include "nickview.h"
+
 #include <QHeaderView>
 #include <QScrollBar>
 #include <QDebug>
@@ -25,7 +27,6 @@
 
 #include "buffermodel.h"
 #include "client.h"
-#include "nickview.h"
 #include "nickviewfilter.h"
 #include "networkmodel.h"
 #include "quasselui.h"
@@ -39,6 +40,12 @@ public:
 NickView::NickView(QWidget *parent)
   : QTreeView(parent)
 {
+  QAbstractItemDelegate *oldDelegate = itemDelegate();
+  NickViewDelegate *newDelegate = new NickViewDelegate(this);
+  setItemDelegate(newDelegate);
+  delete oldDelegate;
+
+  
   setIndentation(10);
   setAnimated(true);
   header()->hide();
@@ -142,4 +149,20 @@ void NickView::customEvent(QEvent *event) {
     }
   }
   event->accept();
+}
+
+
+// ****************************************
+//  NickViewDelgate
+// ****************************************
+NickViewDelegate::NickViewDelegate(QObject *parent)
+  : QStyledItemDelegate(parent)
+{
+}
+
+void NickViewDelegate::initStyleOption(QStyleOptionViewItem *option, const QModelIndex &index) const {
+  QStyledItemDelegate::initStyleOption(option, index);
+
+  if(!index.data(NetworkModel::ItemActiveRole).toBool())
+    option->palette.setColor(QPalette::Text, option->palette.color(QPalette::Dark));
 }

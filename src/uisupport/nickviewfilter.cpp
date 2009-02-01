@@ -19,8 +19,8 @@
  ***************************************************************************/
 
 #include "nickviewfilter.h"
+
 #include "networkmodel.h"
-#include "uisettings.h"
 
 /******************************************************************************************
  * NickViewFilter
@@ -33,29 +33,7 @@ NickViewFilter::NickViewFilter(const BufferId &bufferId, NetworkModel *parent)
   setDynamicSortFilter(true);
   setSortCaseSensitivity(Qt::CaseInsensitive);
   setSortRole(TreeModel::SortRole);
-  loadColors();
 }
-
-void NickViewFilter::loadColors() {
-  UiSettings s("QtUiStyle/Colors");
-  _FgOnlineStatus = s.value("onlineStatusFG", QVariant(QColor(Qt::black))).value<QColor>();
-  _FgAwayStatus = s.value("awayStatusFG", QVariant(QColor(Qt::gray))).value<QColor>();
-  // FIXME: use the style interface instead of qsettings
-}
-
-QVariant NickViewFilter::data(const QModelIndex &index, int role) const {
-  if(role == Qt::ForegroundRole)
-    return foreground(index);
-  else
-    return QSortFilterProxyModel::data(index, role);
-}
-
-QVariant NickViewFilter::foreground(const QModelIndex &index) const {
-  if(!index.data(NetworkModel::ItemActiveRole).toBool())
-    return _FgAwayStatus;
-  return _FgOnlineStatus;
-}
-
 
 bool NickViewFilter::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const {
   // root node, networkindexes, the bufferindex of the buffer this filter is active for and it's childs are accepted

@@ -48,4 +48,19 @@ private:
   void executeCommand(const BufferInfo & bufferInfo, const QString & command);
 };
 
+// ******************************
+//  NickViewDelgate
+// ******************************
+#include <QStyledItemDelegate>
+
+class NickViewDelegate : public QStyledItemDelegate {
+  Q_OBJECT
+
+public:
+  NickViewDelegate(QObject *parent = 0);
+
+protected:
+  virtual void initStyleOption(QStyleOptionViewItem *option, const QModelIndex &index) const;
+};
+
 #endif

@@ -21,8 +21,8 @@
 #ifndef NICKVIEWFILTER_H
 #define NICKVIEWFILTER_H
 
-#include <QColor>
 #include <QSortFilterProxyModel>
+
 #include "types.h"
 
 class NetworkModel;
@@ -33,16 +33,12 @@ class NickViewFilter : public QSortFilterProxyModel {
 
 public:
   NickViewFilter(const BufferId &bufferId, NetworkModel *parent = 0);
-  QVariant data(const QModelIndex &index, int role) const;
-  QVariant foreground(const QModelIndex &index) const;
 
 protected:
   virtual bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
 
 private:
   BufferId _bufferId;
-  QColor _FgOnlineStatus;
-  QColor _FgAwayStatus;
 
   void loadColors();
 };
