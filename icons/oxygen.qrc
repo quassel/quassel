@@ -3,6 +3,7 @@
     <file>oxygen/48x48/apps/quassel.png</file>
     <file>oxygen/48x48/status/dialog-information.png</file>
     <file>oxygen/22x22/status/dialog-error.png</file>
+    <file>oxygen/22x22/status/dialog-warning.png</file>
     <file>oxygen/22x22/actions/edit-rename.png</file>
     <file>oxygen/22x22/actions/list-remove-user.png</file>
     <file>oxygen/22x22/actions/network-disconnect.png</file>
