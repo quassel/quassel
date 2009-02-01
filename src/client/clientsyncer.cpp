@@ -33,11 +33,10 @@
 #include "util.h"
 
 ClientSyncer::ClientSyncer(QObject *parent)
-  : QObject(parent)
+  : QObject(parent),
+    _socket(0),
+    _blockSize(0)
 {
-  socket = 0;
-  blockSize = 0;
-
   connect(Client::signalProxy(), SIGNAL(disconnected()), this, SLOT(coreSocketDisconnected()));
 }
 
@@ -46,7 +45,7 @@ ClientSyncer::~ClientSyncer() {
 
 void ClientSyncer::coreHasData() {
   QVariant item;
-  while(SignalProxy::readDataFromDevice(socket, blockSize, item)) {
+  while(SignalProxy::readDataFromDevice(_socket, _blockSize, item)) {
     emit recvPartialItem(1,1);
     QVariantMap msg = item.toMap();
     if(!msg.contains("MsgType")) {
@@ -81,19 +80,19 @@ void ClientSyncer::coreHasData() {
       return;
     }
   }
-  if(blockSize > 0) {
-    emit recvPartialItem(socket->bytesAvailable(), blockSize);
+  if(_blockSize > 0) {
+    emit recvPartialItem(_socket->bytesAvailable(), _blockSize);
   }
 }
 
 void ClientSyncer::coreSocketError(QAbstractSocket::SocketError) {
-  qDebug() << "coreSocketError" << socket << socket->errorString();
-  emit connectionError(socket->errorString());
-  socket->deleteLater();
+  qDebug() << "coreSocketError" << _socket << _socket->errorString();
+  emit connectionError(_socket->errorString());
+  _socket->deleteLater();
 }
 
 void ClientSyncer::disconnectFromCore() {
-  if(socket) socket->close();
+  if(_socket) _socket->close();
 }
 
 void ClientSyncer::connectToCore(const QVariantMap &conn) {
@@ -103,24 +102,24 @@ void ClientSyncer::connectToCore(const QVariantMap &conn) {
   //  emit coreConnectionError(tr("Already connected to Core!"));
   //  return;
   // }
-  if(socket != 0) {
-    socket->deleteLater();
-    socket = 0;
+  if(_socket != 0) {
+    _socket->deleteLater();
+    _socket = 0;
   }
   if(conn["Host"].toString().isEmpty()) {
     emit connectionError(tr("Internal connections not yet supported."));
     return; // FIXME implement internal connections
     //clientMode = LocalCore;
-    socket = new QBuffer(this);
-    connect(socket, SIGNAL(readyRead()), this, SLOT(coreHasData()));
-    socket->open(QIODevice::ReadWrite);
+    _socket = new QBuffer(this);
+    connect(_socket, SIGNAL(readyRead()), this, SLOT(coreHasData()));
+    _socket->open(QIODevice::ReadWrite);
     //QVariant state = connectToLocalCore(coreConnectionInfo["User"].toString(), coreConnectionInfo["Password"].toString());
     //syncToCore(state);
     coreSocketConnected();
   } else {
     //clientMode = RemoteCore;
     //emit coreConnectionMsg(tr("Connecting..."));
-    Q_ASSERT(!socket);
+    Q_ASSERT(!_socket);
 
 #ifdef HAVE_SSL
     QSslSocket *sock = new QSslSocket(Client::instance());
@@ -138,7 +137,7 @@ void ClientSyncer::connectToCore(const QVariantMap &conn) {
       sock->setProxy(proxy);
     }
 #endif
-    socket = sock;
+    _socket = sock;
     connect(sock, SIGNAL(readyRead()), this, SLOT(coreHasData()));
     connect(sock, SIGNAL(connected()), this, SLOT(coreSocketConnected()));
     connect(sock, SIGNAL(disconnected()), this, SLOT(coreSocketDisconnected()));
@@ -165,7 +164,7 @@ void ClientSyncer::coreSocketConnected() {
   clientInit["UseCompression"] = false;
 #endif
 
-  SignalProxy::writeDataToDevice(socket, clientInit);
+  SignalProxy::writeDataToDevice(_socket, clientInit);
 }
 
 void ClientSyncer::useInternalCore() {
@@ -208,7 +207,7 @@ void ClientSyncer::coreSocketDisconnected() {
 
   coreConnectionInfo.clear();
   netsToSync.clear();
-  blockSize = 0;
+  _blockSize = 0;
   //restartPhaseNull();
 }
 
@@ -225,7 +224,7 @@ void ClientSyncer::clientInitAck(const QVariantMap &msg) {
 
 #ifndef QT_NO_COMPRESS
   if(msg["SupportsCompression"].toBool()) {
-    socket->setProperty("UseCompression", true);
+    _socket->setProperty("UseCompression", true);
   }
 #endif
 
@@ -233,7 +232,7 @@ void ClientSyncer::clientInitAck(const QVariantMap &msg) {
 #ifdef HAVE_SSL
   if(coreConnectionInfo["useSsl"].toBool()) {
     if(msg["SupportSsl"].toBool()) {
-      QSslSocket *sslSocket = qobject_cast<QSslSocket *>(socket);
+      QSslSocket *sslSocket = qobject_cast<QSslSocket *>(_socket);
       Q_ASSERT(sslSocket);
       connect(sslSocket, SIGNAL(encrypted()), this, SLOT(sslSocketEncrypted()));
       connect(sslSocket, SIGNAL(sslErrors(const QList<QSslError> &)), this, SLOT(sslErrors(const QList<QSslError> &)));
@@ -265,7 +264,7 @@ void ClientSyncer::doCoreSetup(const QVariant &setupData) {
   QVariantMap setup;
   setup["MsgType"] = "CoreSetupData";
   setup["SetupData"] = setupData;
-  SignalProxy::writeDataToDevice(socket, setup);
+  SignalProxy::writeDataToDevice(_socket, setup);
 }
 
 void ClientSyncer::loginToCore(const QString &user, const QString &passwd) {
@@ -274,7 +273,7 @@ void ClientSyncer::loginToCore(const QString &user, const QString &passwd) {
   clientLogin["MsgType"] = "ClientLogin";
   clientLogin["User"] = user;
   clientLogin["Password"] = passwd;
-  SignalProxy::writeDataToDevice(socket, clientLogin);
+  SignalProxy::writeDataToDevice(_socket, clientLogin);
 }
 
 void ClientSyncer::internalSessionStateReceived(const QVariant &packedState) {
@@ -287,8 +286,8 @@ void ClientSyncer::internalSessionStateReceived(const QVariant &packedState) {
 void ClientSyncer::sessionStateReceived(const QVariantMap &state) {
   emit sessionProgress(1, 1);
   disconnect(this, SIGNAL(recvPartialItem(quint32, quint32)), this, SIGNAL(sessionProgress(quint32, quint32)));
-  disconnect(socket, 0, this, 0);  // rest of communication happens through SignalProxy
-  Client::instance()->setConnectedToCore(coreConnectionInfo["AccountId"].value<AccountId>(), socket);
+  disconnect(_socket, 0, this, 0);  // rest of communication happens through SignalProxy
+  Client::instance()->setConnectedToCore(coreConnectionInfo["AccountId"].value<AccountId>(), _socket);
   syncToCore(state);
 }
 
@@ -348,9 +347,12 @@ void ClientSyncer::resetWarningsHandler() {
   disconnect(this, SIGNAL(handleIgnoreWarnings(bool)), this, 0);
 }
 
+void ClientSyncer::resetConnection() {
+}
+
 #ifdef HAVE_SSL
 void ClientSyncer::ignoreSslWarnings(bool permanently) {
-  QSslSocket *sock = qobject_cast<QSslSocket *>(socket);
+  QSslSocket *sock = qobject_cast<QSslSocket *>(_socket);
   if(sock) {
     // ensure that a proper state is displayed and no longer a warning
     emit socketStateChanged(sock->state());

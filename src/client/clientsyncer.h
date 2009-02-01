@@ -44,7 +44,7 @@ public:
   ClientSyncer(QObject *parent = 0);
   ~ClientSyncer();
 
-  inline const QIODevice *currentDevice() { return socket; }
+  inline const QIODevice *currentDevice() { return _socket; }
 
 signals:
   void recvPartialItem(quint32 avail, quint32 size);
@@ -100,6 +100,7 @@ private slots:
 
   void setWarningsHandler(const char *slot);
   void resetWarningsHandler();
+  void resetConnection();
 
 #ifdef HAVE_SSL
   void ignoreSslWarnings(bool permanently);
@@ -108,8 +109,9 @@ private slots:
 #endif
 
 private:
-  QPointer<QIODevice> socket;
-  quint32 blockSize;
+  QPointer<QIODevice> _socket;
+  quint32 _blockSize;
+
   QVariantMap coreConnectionInfo;
   QVariantMap _coreMsgBuffer;
 
