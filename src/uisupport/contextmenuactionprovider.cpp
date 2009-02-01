@@ -31,12 +31,7 @@
 #include "network.h"
 #include "util.h"
 
-ContextMenuActionProvider::ContextMenuActionProvider(QObject *parent)
-: QObject(parent),
-  _actionCollection(new ActionCollection(this)),
-  _messageFilter(0),
-  _receiver(0)
-{
+ContextMenuActionProvider::ContextMenuActionProvider(QObject *parent) : NetworkModelController(parent) {
   registerAction(NetworkConnect, SmallIcon("network-connect"), tr("Connect"));
   registerAction(NetworkDisconnect, SmallIcon("network-disconnect"), tr("Disconnect"));
 
@@ -77,8 +72,6 @@ ContextMenuActionProvider::ContextMenuActionProvider(QObject *parent)
   registerAction(HideBufferPermanently, tr("Hide Buffer(s) Permanently"));
   registerAction(ShowChannelList, SmallIcon("format-list-unordered"), tr("Show Channel List"));
   registerAction(ShowIgnoreList, tr("Show Ignore List"));
-
-  connect(_actionCollection, SIGNAL(actionTriggered(QAction *)), SLOT(actionTriggered(QAction *)));
 
   QMenu *hideEventsMenu = new QMenu();
   hideEventsMenu->addAction(action(HideJoin));
@@ -123,24 +116,6 @@ ContextMenuActionProvider::~ContextMenuActionProvider() {
   _nickModeMenuAction->deleteLater();
 }
 
-void ContextMenuActionProvider::registerAction(ActionType type, const QString &text, bool checkable) {
-  registerAction(type, QPixmap(), text, checkable);
-}
-
-void ContextMenuActionProvider::registerAction(ActionType type, const QPixmap &icon, const QString &text, bool checkable) {
-  Action *act;
-  if(icon.isNull())
-    act = new Action(text, this);
-  else
-    act = new Action(icon, text, this);
-
-  act->setCheckable(checkable);
-  act->setData(type);
-
-  _actionCollection->addAction(QString::number(type, 16), act);
-  _actionByType[type] = act;
-}
-
 void ContextMenuActionProvider::addActions(QMenu *menu, BufferId bufId, QObject *receiver, const char *method) {
   if(!bufId.isValid())
     return;
@@ -169,27 +144,26 @@ void ContextMenuActionProvider::addActions(QMenu *menu, const QList<QModelIndex>
 
 // add a list of actions sensible for the current item(s)
 void ContextMenuActionProvider::addActions(QMenu *menu,
-                                            const QList<QModelIndex> &indexList,
-                                            MessageFilter *filter,
-                                            const QString &contextItem,
-                                            QObject *receiver,
-                                            const char *method,
+                                            const QList<QModelIndex> &indexList_,
+                                            MessageFilter *filter_,
+                                            const QString &contextItem_,
+                                            QObject *receiver_,
+                                            const char *method_,
                                             bool isCustomBufferView)
 {
-  if(!indexList.count())
+  if(!indexList_.count())
     return;
 
-  _indexList = indexList;
-  _messageFilter = filter;
-  _contextItem = contextItem;
-  _receiver = receiver;
-  _method = method;
+  setIndexList(indexList_);
+  setMessageFilter(filter_);
+  setContextItem(contextItem_);
+  setSlot(receiver_, method_);
 
-  if(!_messageFilter) {
+  if(!messageFilter()) {
     // this means we are in a BufferView (or NickView) rather than a ChatView
 
     // first index in list determines the menu type (just in case we have both buffers and networks selected, for example)
-    QModelIndex index = _indexList.at(0);
+    QModelIndex index = indexList().at(0);
     NetworkModel::ItemType itemType = static_cast<NetworkModel::ItemType>(index.data(NetworkModel::ItemTypeRole).toInt());
 
     switch(itemType) {
@@ -208,14 +182,14 @@ void ContextMenuActionProvider::addActions(QMenu *menu,
     }
   } else {
     // ChatView actions
-    if(_contextItem.isEmpty()) {
+    if(contextItem().isEmpty()) {
       // a) query buffer: handle like ircuser
       // b) general chatview: handle like channel iff it displays a single buffer
       // NOTE stuff breaks probably with merged buffers, need to rework a lot around here then
-      if(_messageFilter->containedBuffers().count() == 1) {
+      if(messageFilter()->containedBuffers().count() == 1) {
         // we can handle this like a single bufferItem
-        QModelIndex index = Client::networkModel()->bufferIndex(_messageFilter->containedBuffers().values().at(0));
-        _indexList = QList<QModelIndex>() << index;
+        QModelIndex index = Client::networkModel()->bufferIndex(messageFilter()->containedBuffers().values().at(0));
+        setIndexList(index);
         addBufferItemActions(menu, index);
         return;
       } else {
@@ -224,15 +198,15 @@ void ContextMenuActionProvider::addActions(QMenu *menu,
       }
     } else {
       // context item = chan or nick, _indexList = buf where the msg clicked on originated
-      if(isChannelName(_contextItem)) {
-        QModelIndex msgIdx = _indexList.at(0);
+      if(isChannelName(contextItem())) {
+        QModelIndex msgIdx = indexList().at(0);
         if(!msgIdx.isValid())
           return;
         NetworkId networkId = msgIdx.data(NetworkModel::NetworkIdRole).value<NetworkId>();
-        BufferId bufId = Client::networkModel()->bufferId(networkId, _contextItem);
+        BufferId bufId = Client::networkModel()->bufferId(networkId, contextItem());
         if(bufId.isValid()) {
           QModelIndex targetIdx = Client::networkModel()->bufferIndex(bufId);
-          _indexList = QList<QModelIndex>() << targetIdx;
+          setIndexList(targetIdx);
           addAction(BufferJoin, menu, targetIdx, InactiveState);
           addAction(BufferSwitchTo, menu, targetIdx, ActiveState);
         } else
@@ -304,39 +278,23 @@ void ContextMenuActionProvider::addIrcUserActions(QMenu *menu, const QModelIndex
   //                     c) right-click in a query chatview (same as b), index will be the corresponding QueryBufferItem)
   //                     d) right-click on some nickname (_contextItem will be non-null, _filter -> chatview, index -> message buffer)
 
-  if(_contextItem.isNull()) {
+  if(contextItem().isNull()) {
     // cases a, b, c
-    bool haveQuery = _indexList.count() == 1 && findQueryBuffer(index).isValid();
+    bool haveQuery = indexList().count() == 1 && findQueryBuffer(index).isValid();
     NetworkModel::ItemType itemType = static_cast<NetworkModel::ItemType>(index.data(NetworkModel::ItemTypeRole).toInt());
     addAction(_nickModeMenuAction, menu, itemType == NetworkModel::IrcUserItemType);
     addAction(_nickCtcpMenuAction, menu);
     menu->addSeparator();
-    addAction(NickQuery, menu, itemType == NetworkModel::IrcUserItemType && !haveQuery && _indexList.count() == 1);
+    addAction(NickQuery, menu, itemType == NetworkModel::IrcUserItemType && !haveQuery && indexList().count() == 1);
     addAction(NickSwitchTo, menu, itemType == NetworkModel::IrcUserItemType && haveQuery);
     menu->addSeparator();
     addAction(NickWhois, menu, true);
 
-  } else if(!_contextItem.isEmpty() && _messageFilter) {
+  } else if(!contextItem().isEmpty() && messageFilter()) {
     // case d
     // TODO
 
   }
-}
-
-/******** Helper Functions ***********************************************************************/
-
-bool ContextMenuActionProvider::checkRequirements(const QModelIndex &index, ItemActiveStates requiredActiveState) {
-  if(!index.isValid())
-    return false;
-
-  ItemActiveStates isActive = index.data(NetworkModel::ItemActiveRole).toBool()
-  ? ActiveState
-  : InactiveState;
-
-  if(!(isActive & requiredActiveState))
-    return false;
-
-  return true;
 }
 
 Action * ContextMenuActionProvider::addAction(ActionType type , QMenu *menu, const QModelIndex &index, ItemActiveStates requiredActiveState) {
@@ -389,295 +347,4 @@ void ContextMenuActionProvider::addHideEventsMenu(QMenu *menu, int filter) {
   action(HideDayChange)->setChecked(filter & Message::DayChange);
 
   menu->addAction(_hideEventsMenuAction);
-}
-
-QString ContextMenuActionProvider::nickName(const QModelIndex &index) const {
-  IrcUser *ircUser = qobject_cast<IrcUser *>(index.data(NetworkModel::IrcUserRole).value<QObject *>());
-  if(ircUser)
-    return ircUser->nick();
-
-  BufferInfo bufferInfo = index.data(NetworkModel::BufferInfoRole).value<BufferInfo>();
-  if(!bufferInfo.isValid())
-    return QString();
-  if(!bufferInfo.type() == BufferInfo::QueryBuffer)
-    return QString();
-
-  return bufferInfo.bufferName(); // FIXME this might break with merged queries maybe
-}
-
-BufferId ContextMenuActionProvider::findQueryBuffer(const QModelIndex &index, const QString &predefinedNick) const {
-  NetworkId networkId = index.data(NetworkModel::NetworkIdRole).value<NetworkId>();
-  if(!networkId.isValid())
-    return BufferId();
-
-  QString nick = predefinedNick.isEmpty() ? nickName(index) : predefinedNick;
-  if(nick.isEmpty())
-    return BufferId();
-
-  return findQueryBuffer(networkId, nick);
-}
-
-BufferId ContextMenuActionProvider::findQueryBuffer(NetworkId networkId, const QString &nick) const {
-  return Client::networkModel()->bufferId(networkId, nick);
-}
-
-void ContextMenuActionProvider::handleExternalAction(ActionType type, QAction *action) {
-  Q_UNUSED(type);
-  if(_receiver && _method) {
-    if(!QMetaObject::invokeMethod(_receiver, _method, Q_ARG(QAction *, action)))
-      qWarning() << "NetworkModelActionProvider::handleExternalAction(): Could not invoke slot" << _receiver << _method;
-  }
-}
-
-/******** Handle Actions *************************************************************************/
-
-void ContextMenuActionProvider::actionTriggered(QAction *action) {
-  ActionType type = (ActionType)action->data().toInt();
-  if(type > 0) {
-    if(type & NetworkMask)
-      handleNetworkAction(type, action);
-    else if(type & BufferMask)
-      handleBufferAction(type, action);
-    else if(type & HideMask)
-      handleHideAction(type, action);
-    else if(type & GeneralMask)
-      handleGeneralAction(type, action);
-    else if(type & NickMask)
-      handleNickAction(type, action);
-    else if(type & ExternalMask)
-      handleExternalAction(type, action);
-    else
-      qWarning() << "NetworkModelActionProvider::actionTriggered(): Unhandled action!";
-  }
-  _indexList.clear();
-  _messageFilter = 0;
-  _receiver = 0;
-}
-
-void ContextMenuActionProvider::handleNetworkAction(ActionType type, QAction *) {
-  if(!_indexList.count())
-    return;
-  const Network *network = Client::network(_indexList.at(0).data(NetworkModel::NetworkIdRole).value<NetworkId>());
-  Q_CHECK_PTR(network);
-  if(!network)
-    return;
-
-  switch(type) {
-    case NetworkConnect:
-      network->requestConnect();
-      break;
-    case NetworkDisconnect:
-      network->requestDisconnect();
-      break;
-    default:
-      break;
-  }
-}
-
-void ContextMenuActionProvider::handleBufferAction(ActionType type, QAction *) {
-  if(type == BufferRemove) {
-    removeBuffers(_indexList);
-  } else {
-
-    foreach(QModelIndex index, _indexList) {
-      BufferInfo bufferInfo = index.data(NetworkModel::BufferInfoRole).value<BufferInfo>();
-      if(!bufferInfo.isValid())
-        continue;
-
-      switch(type) {
-        case BufferJoin:
-          Client::userInput(bufferInfo, QString("/JOIN %1").arg(bufferInfo.bufferName()));
-          break;
-        case BufferPart:
-        {
-          QString reason = Client::identity(Client::network(bufferInfo.networkId())->identity())->partReason();
-          Client::userInput(bufferInfo, QString("/PART %1").arg(reason));
-          break;
-        }
-        case BufferSwitchTo:
-          Client::bufferModel()->switchToBuffer(bufferInfo.bufferId());
-          break;
-        default:
-          break;
-      }
-    }
-  }
-}
-
-void ContextMenuActionProvider::removeBuffers(const QModelIndexList &indexList) {
-  QList<BufferInfo> inactive;
-  foreach(QModelIndex index, indexList) {
-    BufferInfo info = index.data(NetworkModel::BufferInfoRole).value<BufferInfo>();
-    if(info.isValid()) {
-      if(info.type() == BufferInfo::QueryBuffer
-        || (info.type() == BufferInfo::ChannelBuffer && !index.data(NetworkModel::ItemActiveRole).toBool()))
-          inactive << info;
-    }
-  }
-  QString msg;
-  if(inactive.count()) {
-    msg = tr("Do you want to delete the following buffer(s) permanently?", 0, inactive.count());
-    msg += "<ul>";
-    foreach(BufferInfo info, inactive)
-      msg += QString("<li>%1</li>").arg(info.bufferName());
-    msg += "</ul>";
-    msg += tr("<b>Note:</b> This will delete all related data, including all backlog data, from the core's database and cannot be undone.");
-    if(inactive.count() != indexList.count())
-      msg += tr("<br>Active channel buffers cannot be deleted, please part the channel first.");
-
-    if(QMessageBox::question(0, tr("Remove buffers permanently?"), msg, QMessageBox::Yes|QMessageBox::No, QMessageBox::No) == QMessageBox::Yes) {
-      foreach(BufferInfo info, inactive)
-        Client::removeBuffer(info.bufferId());
-    }
-  }
-}
-
-void ContextMenuActionProvider::handleHideAction(ActionType type, QAction *action) {
-  Q_UNUSED(action)
-
-  int filter = 0;
-  if(ContextMenuActionProvider::action(HideJoin)->isChecked())
-    filter |= Message::Join;
-  if(ContextMenuActionProvider::action(HidePart)->isChecked())
-    filter |= Message::Part;
-  if(ContextMenuActionProvider::action(HideQuit)->isChecked())
-    filter |= Message::Quit;
-  if(ContextMenuActionProvider::action(HideNick)->isChecked())
-    filter |= Message::Nick;
-  if(ContextMenuActionProvider::action(HideMode)->isChecked())
-    filter |= Message::Mode;
-  if(ContextMenuActionProvider::action(HideDayChange)->isChecked())
-    filter |= Message::DayChange;
-
-  switch(type) {
-  case HideJoin:
-  case HidePart:
-  case HideQuit:
-  case HideNick:
-  case HideMode:
-  case HideDayChange:
-    if(_messageFilter)
-      BufferSettings(_messageFilter->idString()).setMessageFilter(filter);
-    else {
-      foreach(QModelIndex index, _indexList) {
-	BufferId bufferId = index.data(NetworkModel::BufferIdRole).value<BufferId>();
-	if(!bufferId.isValid())
-	  continue;
-	BufferSettings(bufferId).setMessageFilter(filter);
-      }
-    }
-    return;
-  case HideApplyToAll:
-    BufferSettings().setMessageFilter(filter);
-  case HideUseDefaults:
-    if(_messageFilter)
-      BufferSettings(_messageFilter->idString()).removeFilter();
-    else {
-      foreach(QModelIndex index, _indexList) {
-	BufferId bufferId = index.data(NetworkModel::BufferIdRole).value<BufferId>();
-	if(!bufferId.isValid())
-	  continue;
-	BufferSettings(bufferId).removeFilter();
-      }
-    }
-    return;
-  default:
-    return;
-  };
-}
-
-void ContextMenuActionProvider::handleGeneralAction(ActionType type, QAction *action) {
-  Q_UNUSED(action)
-
-  if(!_indexList.count())
-    return;
-  NetworkId networkId = _indexList.at(0).data(NetworkModel::NetworkIdRole).value<NetworkId>();
-  if(!networkId.isValid())
-    return;
-
-  switch(type) {
-    case JoinChannel: {
-      QString channelName = _contextItem;
-      if(channelName.isEmpty()) {
-        bool ok;
-        channelName = QInputDialog::getText(0, tr("Join Channel"), tr("Input channel name:"), QLineEdit::Normal, QString(), &ok);
-        if(!ok)
-          return;
-      }
-      if(!channelName.isEmpty()) {
-        Client::instance()->userInput(BufferInfo::fakeStatusBuffer(networkId), QString("/JOIN %1").arg(channelName));
-      }
-      break;
-    }
-    case ShowChannelList:
-      emit showChannelList(networkId);
-      break;
-    case ShowIgnoreList:
-      emit showIgnoreList(networkId);
-      break;
-    default:
-      break;
-  }
-}
-
-void ContextMenuActionProvider::handleNickAction(ActionType type, QAction *) {
-  foreach(QModelIndex index, _indexList) {
-    NetworkId networkId = index.data(NetworkModel::NetworkIdRole).value<NetworkId>();
-    if(!networkId.isValid())
-      continue;
-    QString nick = nickName(index);
-    if(nick.isEmpty())
-      continue;
-    BufferInfo bufferInfo = index.data(NetworkModel::BufferInfoRole).value<BufferInfo>();
-    if(!bufferInfo.isValid())
-      continue;
-
-    switch(type) {
-      case NickWhois:
-        Client::userInput(bufferInfo, QString("/WHOIS %1 %1").arg(nick));
-        break;
-      case NickCtcpVersion:
-        Client::userInput(bufferInfo, QString("/CTCP %1 VERSION").arg(nick));
-        break;
-      case NickCtcpPing:
-        Client::userInput(bufferInfo, QString("/CTCP %1 PING").arg(nick));
-        break;
-      case NickCtcpTime:
-        Client::userInput(bufferInfo, QString("/CTCP %1 TIME").arg(nick));
-        break;
-      case NickCtcpFinger:
-        Client::userInput(bufferInfo, QString("/CTCP %1 FINGER").arg(nick));
-        break;
-      case NickOp:
-        Client::userInput(bufferInfo, QString("/OP %1").arg(nick));
-        break;
-      case NickDeop:
-        Client::userInput(bufferInfo, QString("/DEOP %1").arg(nick));
-        break;
-      case NickVoice:
-        Client::userInput(bufferInfo, QString("/VOICE %1").arg(nick));
-        break;
-      case NickDevoice:
-        Client::userInput(bufferInfo, QString("/DEVOICE %1").arg(nick));
-        break;
-      case NickKick:
-        Client::userInput(bufferInfo, QString("/KICK %1").arg(nick));
-        break;
-      case NickBan:
-        Client::userInput(bufferInfo, QString("/BAN %1").arg(nick));
-        break;
-      case NickKickBan:
-        Client::userInput(bufferInfo, QString("/BAN %1").arg(nick));
-        Client::userInput(bufferInfo, QString("/KICK %1").arg(nick));
-        break;
-      case NickSwitchTo:
-        Client::bufferModel()->switchToBuffer(findQueryBuffer(networkId, nick));
-        break;
-      case NickQuery:
-        Client::userInput(bufferInfo, QString("/QUERY %1").arg(nick));
-        break;
-      default:
-        qWarning() << "Unhandled nick action";
-    }
-  }
 }
