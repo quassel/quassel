@@ -18,9 +18,6 @@
     <file>oxygen/16x16/apps/quassel.png</file>
     <file>oxygen/16x16/status/security-low.png</file>
     <file>oxygen/16x16/status/user-away.png</file>
-    <file>oxygen/16x16/status/user-online.png</file>
-    <file>oxygen/16x16/status/user-away-extended.png</file>
-    <file>oxygen/16x16/status/user-offline.png</file>
     <file>oxygen/16x16/status/security-high.png</file>
     <file>oxygen/16x16/devices/network-wired.png</file>
     <file>oxygen/16x16/actions/view-sidetree.png</file>
@@ -43,12 +40,15 @@
     <file>oxygen/16x16/actions/zoom-out.png</file>
     <file>oxygen/16x16/actions/application-exit.png</file>
     <file>oxygen/16x16/actions/go-down.png</file>
+    <file>oxygen/16x16/actions/im-user-away.png</file>
     <file>oxygen/16x16/actions/go-next.png</file>
     <file>oxygen/16x16/actions/network-connect.png</file>
     <file>oxygen/16x16/actions/media-playback-start.png</file>
     <file>oxygen/16x16/actions/dialog-cancel.png</file>
+    <file>oxygen/16x16/actions/im-user.png</file>
     <file>oxygen/16x16/actions/list-remove.png</file>
     <file>oxygen/16x16/actions/zoom-original.png</file>
     <file>oxygen/16x16/actions/edit-copy.png</file>
+    <file>oxygen/16x16/actions/im-user-offline.png</file>
   </qresource>
 </RCC>
