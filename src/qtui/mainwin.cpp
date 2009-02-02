@@ -684,7 +684,7 @@ void MainWin::closeEvent(QCloseEvent *event) {
   QtUiApplication* app = qobject_cast<QtUiApplication*> qApp;
   Q_ASSERT(app);
   if(!app->aboutToQuit() && s.value("UseSystemTrayIcon").toBool() && s.value("MinimizeOnClose").toBool()) {
-    hideToTray();
+    toggleMinimizedToTray();
     event->ignore();
   } else {
     event->accept();
