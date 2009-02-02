@@ -37,7 +37,8 @@
 *****************************************/
 NetworkItem::NetworkItem(const NetworkId &netid, AbstractTreeItem *parent)
   : PropertyMapItem(QList<QString>() << "networkName" << "currentServer" << "nickCount", parent),
-    _networkId(netid)
+    _networkId(netid),
+    _statusBufferItem(0)
 {
   // DO NOT EMIT dataChanged() DIRECTLY IN NetworkItem
   // use networkDataChanged() instead. Otherwise you will end up in a infinite loop
@@ -52,8 +53,8 @@ QVariant NetworkItem::data(int column, int role) const {
   case NetworkModel::BufferInfoRole:
   case NetworkModel::BufferTypeRole:
   case NetworkModel::BufferActivityRole:
-    if(childCount())
-      return child(0)->data(column, role);
+    if(_statusBufferItem)
+      return _statusBufferItem->data(column, role);
     else
       return QVariant();
   case NetworkModel::NetworkIdRole:
@@ -88,7 +89,8 @@ BufferItem *NetworkItem::bufferItem(const BufferInfo &bufferInfo) {
 
   switch(bufferInfo.type()) {
   case BufferInfo::StatusBuffer:
-    bufferItem = new StatusBufferItem(bufferInfo, this);
+    _statusBufferItem = new StatusBufferItem(bufferInfo, this);
+    bufferItem = _statusBufferItem;
     disconnect(this, SIGNAL(networkDataChanged(int)), this, SIGNAL(dataChanged(int)));
     connect(this, SIGNAL(networkDataChanged(int)), bufferItem, SIGNAL(dataChanged(int)));
     connect(bufferItem, SIGNAL(dataChanged(int)), this, SIGNAL(dataChanged(int)));
@@ -180,6 +182,16 @@ QString NetworkItem::toolTip(int column) const {
   }
 
   return QString("<p> %1 </p>").arg(toolTip.join("<br />"));
+}
+
+void NetworkItem::onBeginRemoveChilds(int start, int end) {
+  for(int i = start; i <= end; i++) {
+    StatusBufferItem *statusBufferItem = qobject_cast<StatusBufferItem *>(child(i));
+    if(statusBufferItem) {
+      _statusBufferItem = 0;
+      break;
+    }
+  }
 }
 
 /*****************************************

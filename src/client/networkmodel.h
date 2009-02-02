@@ -28,6 +28,7 @@
 #include "treemodel.h"
 
 class BufferItem;
+class StatusBufferItem;
 
 /*****************************************
  *  Network Items
@@ -67,8 +68,12 @@ public slots:
 signals:
   void networkDataChanged(int column = -1);
 
+private slots:
+  void onBeginRemoveChilds(int start, int end);
+  
 private:
   NetworkId _networkId;
+  StatusBufferItem *_statusBufferItem;
 
   QPointer<Network> _network;
 };
