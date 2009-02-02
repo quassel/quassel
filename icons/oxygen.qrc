@@ -2,6 +2,10 @@
   <qresource prefix="/icons">
     <file>oxygen/48x48/apps/quassel.png</file>
     <file>oxygen/48x48/status/dialog-information.png</file>
+    <file>oxygen/128x128/apps/quassel.png</file>
+    <file>oxygen/32x32/apps/quassel.png</file>
+    <file>oxygen/64x64/apps/quassel.png</file>
+    <file>oxygen/22x22/apps/quassel.png</file>
     <file>oxygen/22x22/status/dialog-error.png</file>
     <file>oxygen/22x22/status/dialog-warning.png</file>
     <file>oxygen/22x22/actions/edit-rename.png</file>
