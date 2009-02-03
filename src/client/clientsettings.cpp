@@ -183,5 +183,5 @@ void KnownHostsSettings::saveKnownHost(const QSslSocket *socket) {
 bool KnownHostsSettings::isKnownHost(const QSslSocket *socket) {
   Q_ASSERT(socket);
   return isKnownHost(socket->peerAddress(), socket->peerCertificate().digest());
-#endif
 }
+#endif
