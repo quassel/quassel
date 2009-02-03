@@ -91,8 +91,6 @@ void ClientSyncer::coreSocketError(QAbstractSocket::SocketError) {
 }
 
 void ClientSyncer::disconnectFromCore() {
-  if(_socket)
-    _socket->close();
   resetConnection();
 }
 

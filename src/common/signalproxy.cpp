@@ -936,6 +936,9 @@ void SignalProxy::writeDataToDevice(QIODevice *dev, const QVariant &item, bool c
 }
 
 bool SignalProxy::readDataFromDevice(QIODevice *dev, quint32 &blockSize, QVariant &item, bool compressed) {
+  if(!dev)
+    return false;
+
   QDataStream in(dev);
   in.setVersion(QDataStream::Qt_4_2);
 
