@@ -108,6 +108,8 @@ protected:
   virtual void initStyleOption(QStyleOptionViewItem *option, const QModelIndex &index) const;
 
 private:
+  QColor _FgColorInactiveActivity;
+  QColor _FgColorNoActivity;
   QColor _FgColorHighlightActivity;
   QColor _FgColorNewMessageActivity;
   QColor _FgColorOtherActivity;

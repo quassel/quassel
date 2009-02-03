@@ -31,6 +31,7 @@
 #include "networkmodel.h"
 #include "quasselui.h"
 #include "types.h"
+#include "uisettings.h"
 
 class ExpandAllEvent : public QEvent {
 public:
@@ -158,11 +159,17 @@ void NickView::customEvent(QEvent *event) {
 NickViewDelegate::NickViewDelegate(QObject *parent)
   : QStyledItemDelegate(parent)
 {
+  UiSettings s("QtUiStyle/Colors");
+  _FgOnlineStatus = s.value("onlineStatusFG", QVariant(QColor(Qt::black))).value<QColor>();
+  _FgAwayStatus = s.value("awayStatusFG", QVariant(QColor(Qt::gray))).value<QColor>();
 }
 
 void NickViewDelegate::initStyleOption(QStyleOptionViewItem *option, const QModelIndex &index) const {
   QStyledItemDelegate::initStyleOption(option, index);
 
+  QColor fgColor = _FgOnlineStatus;
   if(!index.data(NetworkModel::ItemActiveRole).toBool())
-    option->palette.setColor(QPalette::Text, option->palette.color(QPalette::Dark));
+    fgColor = _FgAwayStatus;
+
+  option->palette.setColor(QPalette::Text, fgColor);
 }

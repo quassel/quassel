@@ -56,8 +56,8 @@ BufferView::BufferView(QWidget *parent)
   setSelectionMode(QAbstractItemView::ExtendedSelection);
 
   QAbstractItemDelegate *oldDelegate = itemDelegate();
-  BufferViewDelegate *newDelegate = new BufferViewDelegate(this);
-  setItemDelegate(newDelegate);
+  BufferViewDelegate *tristateDelegate = new BufferViewDelegate(this);
+  setItemDelegate(tristateDelegate);
   delete oldDelegate;
 }
 
@@ -468,6 +468,8 @@ BufferViewDelegate::BufferViewDelegate(QObject *parent)
   : QStyledItemDelegate(parent)
 {
   UiSettings s("QtUiStyle/Colors");
+  _FgColorInactiveActivity = s.value("inactiveActivityFG", QVariant(QColor(Qt::gray))).value<QColor>();
+  _FgColorNoActivity = s.value("noActivityFG", QVariant(QColor(Qt::black))).value<QColor>();
   _FgColorHighlightActivity = s.value("highlightActivityFG", QVariant(QColor(Qt::magenta))).value<QColor>();
   _FgColorNewMessageActivity = s.value("newMessageActivityFG", QVariant(QColor(Qt::green))).value<QColor>();
   _FgColorOtherActivity = s.value("otherActivityFG", QVariant(QColor(Qt::darkGreen))).value<QColor>();
@@ -509,22 +511,18 @@ void BufferViewDelegate::initStyleOption(QStyleOptionViewItem *option, const QMo
 
   BufferInfo::ActivityLevel activity = (BufferInfo::ActivityLevel)index.data(NetworkModel::BufferActivityRole).toInt();
 
+  QColor fgColor = _FgColorNoActivity;
   if(activity & BufferInfo::Highlight) {
-    option->palette.setColor(QPalette::Text, _FgColorHighlightActivity);
-    return;
-  }
-  if(activity & BufferInfo::NewMessage) {
-    option->palette.setColor(QPalette::Text, _FgColorNewMessageActivity);
-    return;
-  }
-  if(activity & BufferInfo::OtherActivity) {
-    option->palette.setColor(QPalette::Text, _FgColorOtherActivity);
-    return;
+    fgColor = _FgColorHighlightActivity;
+  } else if(activity & BufferInfo::NewMessage) {
+    fgColor = _FgColorNewMessageActivity;
+  } else if(activity & BufferInfo::OtherActivity) {
+    fgColor = _FgColorOtherActivity;
+  } else if(!index.data(NetworkModel::ItemActiveRole).toBool() || index.data(NetworkModel::UserAwayRole).toBool()) {
+    fgColor = _FgColorInactiveActivity;
   }
 
-  if(!index.data(NetworkModel::ItemActiveRole).toBool() || index.data(NetworkModel::UserAwayRole).toBool()) {
-    option->palette.setColor(QPalette::Text, option->palette.color(QPalette::Dark));
-  }
+  option->palette.setColor(QPalette::Text, fgColor);
 }
 
 

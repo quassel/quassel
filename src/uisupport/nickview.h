@@ -61,6 +61,10 @@ public:
 
 protected:
   virtual void initStyleOption(QStyleOptionViewItem *option, const QModelIndex &index) const;
+
+private:
+  QColor _FgOnlineStatus;
+  QColor _FgAwayStatus;
 };
 
 #endif
