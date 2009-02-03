@@ -134,6 +134,7 @@ private:
 // ========================================
 //  SslCertDisplayDialog
 // ========================================
+#ifdef HAVE_SSL
 class QSslCertificate;
 
 class SslCertDisplayDialog : public QDialog {
@@ -142,4 +143,6 @@ class SslCertDisplayDialog : public QDialog {
 public:
   SslCertDisplayDialog(const QString &host, const QSslCertificate &cert, QWidget *parent = 0);
 };
-#endif
+#endif // HAVE_SSL
+
+#endif // CORECONNECTDLG_H

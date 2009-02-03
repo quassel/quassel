@@ -557,16 +557,14 @@ void CoreAccountEditDlg::on_accountName_textChanged(const QString &text) {
 }
 
 
+
 // ========================================
 //  SslCertDisplayDialog
 // ========================================
+#ifdef HAVE_SSL
 SslCertDisplayDialog::SslCertDisplayDialog(const QString &host, const QSslCertificate &cert, QWidget *parent)
   : QDialog(parent)
 {
-#ifndef HAVE_SSL
-  Q_UNUSED(cert)
-#else
-
   setWindowTitle(tr("SSL Certificate used by %1").arg(host));
 
   QVBoxLayout *mainLayout = new QVBoxLayout(this);
@@ -610,5 +608,5 @@ SslCertDisplayDialog::SslCertDisplayDialog(const QString &host, const QSslCertif
 
   connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
   connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+}
 #endif
-};
