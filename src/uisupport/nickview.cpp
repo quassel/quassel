@@ -167,6 +167,9 @@ NickViewDelegate::NickViewDelegate(QObject *parent)
 void NickViewDelegate::initStyleOption(QStyleOptionViewItem *option, const QModelIndex &index) const {
   QStyledItemDelegate::initStyleOption(option, index);
 
+  if(!index.isValid())
+    return;
+
   QColor fgColor = _FgOnlineStatus;
   if(!index.data(NetworkModel::ItemActiveRole).toBool())
     fgColor = _FgAwayStatus;

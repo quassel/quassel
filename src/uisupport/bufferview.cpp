@@ -509,6 +509,9 @@ bool BufferViewDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, c
 void BufferViewDelegate::initStyleOption(QStyleOptionViewItem *option, const QModelIndex &index) const {
   QStyledItemDelegate::initStyleOption(option, index);
 
+  if(!index.isValid())
+    return;
+
   BufferInfo::ActivityLevel activity = (BufferInfo::ActivityLevel)index.data(NetworkModel::BufferActivityRole).toInt();
 
   QColor fgColor = _FgColorNoActivity;
