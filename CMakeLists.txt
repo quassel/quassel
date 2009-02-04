@@ -74,10 +74,21 @@ if(WIN32)
   set(EMBED_DATA ON)
 endif(WIN32)
 
+# Build Type
+# We need to make sure it's not empty
+# Supported: Release, RelWithDebugInfo, Debug, Debugfull
+set(CMAKE_BUILD_TYPE "RelWithDebugInfo" CACHE STRING "CMake Build Type")
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE "RelWithDebugInfo" CACHE STRING "CMake Build Type" FORCE)
+endif(NOT CMAKE_BUILD_TYPE)
+
 # Enable various flags on gcc
 if(CMAKE_COMPILER_IS_GNUCXX)
   # Let's just hope that all gccs support these options and skip the tests...
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ansi -Wall -Wextra -Wnon-virtual-dtor")
+  set(CMAKE_CXX_FLAGS_RELWITHDEBUGINFO "-O2")
+  set(CMAKE_CXX_FLAGS_DEBUG "-g -fno-reorder-blocks -fno-schedule-insns -fno-inline")
+  set(CMAKE_CXX_FLAGS_DEBUGFULL "-g3")
 endif(CMAKE_COMPILER_IS_GNUCXX)
 
 set(QT_MIN_VERSION "4.4.0")
