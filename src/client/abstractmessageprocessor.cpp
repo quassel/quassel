@@ -26,7 +26,3 @@ AbstractMessageProcessor::AbstractMessageProcessor(QObject *parent)
   : QObject(parent)
 {
 }
-
-// void AbstractMessageProcessor::postProcess(Message &msg) {
-//   Client::buffer(msg.bufferInfo())->updateActivityLevel(msg);
-// }

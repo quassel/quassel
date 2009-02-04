@@ -31,9 +31,7 @@ const int progressUpdateDelay = 100;  // ms between progress signal updates
 QtUiMessageProcessor::QtUiMessageProcessor(QObject *parent)
   : AbstractMessageProcessor(parent),
     _processing(false),
-    _processMode(TimerBased),
-    _msgsProcessed(0),
-    _msgCount(0)
+    _processMode(TimerBased)
 {
   NotificationSettings notificationSettings;
   _nicksCaseSensitive = notificationSettings.nicksCaseSensitive();
@@ -76,20 +74,17 @@ void QtUiMessageProcessor::process(QList<Message> &msgs) {
 
   if(msgs.isEmpty()) return;
   _processQueue.append(msgs);
-  _msgCount += msgs.count();
-  if(!isProcessing()) startProcessing();
-  else updateProgress();
+  if(!isProcessing())
+    startProcessing();
 }
 
 void QtUiMessageProcessor::startProcessing() {
   if(processMode() == TimerBased) {
-    if(_currentBatch.isEmpty() && _processQueue.isEmpty()) return;
+    if(_currentBatch.isEmpty() && _processQueue.isEmpty())
+      return;
     _processing = true;
-    _msgsProcessed = 0;
-    _msgCount = _currentBatch.count();
-    foreach(QList<Message> msglist, _processQueue) _msgCount += msglist.count();
-    updateProgress();
-    if(!_processTimer.isActive()) _processTimer.start();
+    if(!_processTimer.isActive())
+      _processTimer.start();
   }
 }
 
@@ -98,28 +93,12 @@ void QtUiMessageProcessor::processNextMessage() {
     if(_processQueue.isEmpty()) {
       _processTimer.stop();
       _processing = false;
-      _msgsProcessed = _msgCount = 0;
-      updateProgress();
       return;
     }
     _currentBatch = _processQueue.takeFirst();
   }
   Message msg = _currentBatch.takeFirst();
   process(msg);
-  _msgsProcessed++;
-  updateProgress();
-}
-
-void QtUiMessageProcessor::updateProgress(bool start) {
-  if(start) {
-    _progressTimer.start();
-    emit progressUpdated(_msgsProcessed, _msgCount);
-  } else {
-    if(_msgCount == 0 || _progressTimer.elapsed() >= progressUpdateDelay) {
-      _progressTimer.restart();
-      emit progressUpdated(_msgsProcessed, _msgCount);
-    }
-  }
 }
 
 void QtUiMessageProcessor::checkForHighlight(Message &msg) {

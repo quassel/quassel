@@ -26,15 +26,14 @@
 class MsgProcessorStatusWidget : public QWidget {
   Q_OBJECT
 
-  public:
-    MsgProcessorStatusWidget(QWidget *parent = 0);
+public:
+  MsgProcessorStatusWidget(QWidget *parent = 0);
 
-  public slots:
-    void setProgress(int value, int max);
+public slots:
+  void setProgress(int value, int max);
 
-  private:
-    Ui::MsgProcessorStatusWidget ui;
-
+private:
+  Ui::MsgProcessorStatusWidget ui;
 };
 
 #endif

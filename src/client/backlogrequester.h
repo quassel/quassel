@@ -45,6 +45,8 @@ public:
   inline bool isBuffering() { return _isBuffering; }
   inline const QList<Message> &bufferedMessages() { return _bufferedMessages; }
 
+  inline int buffersWaiting() const { return _buffersWaiting.count(); }
+  inline int totalBuffers() const { return _totalBuffers; }
   //! returns false if it was the last missing backlogpart
   bool buffer(BufferId bufferId, const MessageList &messages);
   
@@ -52,15 +54,16 @@ public:
 
 protected:
   inline QList<BufferId> allBufferIds() const { return Client::networkModel()->allBufferIds(); }
-  inline void setWaitingBuffers(const QList<BufferId> &buffers) { _buffersWaiting = buffers.toSet(); }
-  inline void setWaitingBuffers(const QSet<BufferId> &buffers) { _buffersWaiting = buffers; }
-  inline void addWaitingBuffer(BufferId buffer) { _buffersWaiting << buffer; }
+  inline void setWaitingBuffers(const QList<BufferId> &buffers) { setWaitingBuffers(buffers.toSet()); }
+  void setWaitingBuffers(const QSet<BufferId> &buffers);
+  void addWaitingBuffer(BufferId buffer);
 
   ClientBacklogManager *backlogManager;
 
 private:
   bool _isBuffering;
   MessageList _bufferedMessages;
+  int _totalBuffers;
   QSet<BufferId> _buffersWaiting;
 };
 

@@ -47,6 +47,8 @@ signals:
   void messagesRequested(const QString &) const;
   void messagesProcessed(const QString &) const;
 
+  void updateProgress(int, int);
+
 private:
   bool isBuffering();
   void stopBuffering();

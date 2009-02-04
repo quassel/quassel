@@ -55,15 +55,12 @@ private slots:
 private:
   void checkForHighlight(Message &msg);
   void startProcessing();
-  void updateProgress(bool start = false);
 
   QList<QList<Message> > _processQueue;
   QList<Message> _currentBatch;
   QTimer _processTimer;
   bool _processing;
   Mode _processMode;
-  int _msgsProcessed, _msgCount;
-  QTime _progressTimer;
 
   struct HighlightRule {
     QString name;

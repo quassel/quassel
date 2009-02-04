@@ -27,9 +27,20 @@
 
 BacklogRequester::BacklogRequester(bool buffering, ClientBacklogManager *backlogManager)
   : backlogManager(backlogManager),
-    _isBuffering(buffering)
+    _isBuffering(buffering),
+    _totalBuffers(0)
 {
   Q_ASSERT(backlogManager);
+}
+
+void BacklogRequester::setWaitingBuffers(const QSet<BufferId> &buffers) {
+  _buffersWaiting = buffers;
+  _totalBuffers = _buffersWaiting.count();
+}
+
+void BacklogRequester::addWaitingBuffer(BufferId buffer) {
+  _buffersWaiting << buffer;
+  _totalBuffers++;
 }
 
 bool BacklogRequester::buffer(BufferId bufferId, const MessageList &messages) {

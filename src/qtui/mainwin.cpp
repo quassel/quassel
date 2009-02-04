@@ -455,7 +455,6 @@ void MainWin::setupTitleSetter() {
 void MainWin::setupStatusBar() {
   // MessageProcessor progress
   statusBar()->addPermanentWidget(msgProcessorStatusWidget);
-  connect(Client::messageProcessor(), SIGNAL(progressUpdated(int, int)), msgProcessorStatusWidget, SLOT(setProgress(int, int)));
 
   // Core Lag:
   updateLagIndicator();
@@ -479,9 +478,6 @@ void MainWin::setupStatusBar() {
 
   connect(showStatusbar, SIGNAL(toggled(bool)), statusBar(), SLOT(setVisible(bool)));
   connect(showStatusbar, SIGNAL(toggled(bool)), this, SLOT(saveStatusBarStatus(bool)));
-
-  connect(Client::backlogManager(), SIGNAL(messagesRequested(const QString &)), this, SLOT(showStatusBarMessage(const QString &)));
-  connect(Client::backlogManager(), SIGNAL(messagesProcessed(const QString &)), this, SLOT(showStatusBarMessage(const QString &)));
 }
 
 void MainWin::saveStatusBarStatus(bool enabled) {
@@ -544,6 +540,15 @@ void MainWin::setConnectedState() {
   foreach(QAction *action, _fileMenu->actions()) {
     if(isRemoteCoreOnly(action))
       action->setVisible(!Client::internalCore());
+  }
+
+  disconnect(Client::backlogManager(), SIGNAL(updateProgress(int, int)), msgProcessorStatusWidget, SLOT(setProgress(int, int)));
+  disconnect(Client::backlogManager(), SIGNAL(messagesRequested(const QString &)), this, SLOT(showStatusBarMessage(const QString &)));
+  disconnect(Client::backlogManager(), SIGNAL(messagesProcessed(const QString &)), this, SLOT(showStatusBarMessage(const QString &)));
+  if(!Client::internalCore()) {
+    connect(Client::backlogManager(), SIGNAL(updateProgress(int, int)), msgProcessorStatusWidget, SLOT(setProgress(int, int)));
+    connect(Client::backlogManager(), SIGNAL(messagesRequested(const QString &)), this, SLOT(showStatusBarMessage(const QString &)));
+    connect(Client::backlogManager(), SIGNAL(messagesProcessed(const QString &)), this, SLOT(showStatusBarMessage(const QString &)));
   }
 
   // _viewMenu->setEnabled(true);

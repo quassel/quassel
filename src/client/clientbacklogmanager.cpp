@@ -48,8 +48,9 @@ void ClientBacklogManager::receiveBacklog(BufferId bufferId, MsgId first, MsgId 
   }
 
   if(isBuffering()) {
-    if(!_requester->buffer(bufferId, msglist)) {
-      // this was the last part to buffer
+    bool lastPart = !_requester->buffer(bufferId, msglist);
+    updateProgress(_requester->totalBuffers() - _requester->buffersWaiting(), _requester->totalBuffers());
+    if(lastPart) {
       stopBuffering();
       reset();
     }
@@ -92,6 +93,9 @@ void ClientBacklogManager::requestInitialBacklog() {
   };
 
   _requester->requestBacklog();
+  if(_requester->isBuffering()) {
+    updateProgress(0, _requester->totalBuffers());
+  }
 }
 
 void ClientBacklogManager::stopBuffering() {

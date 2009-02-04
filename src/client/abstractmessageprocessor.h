@@ -28,20 +28,16 @@
 class AbstractMessageProcessor : public QObject {
   Q_OBJECT
 
-  public:
-    AbstractMessageProcessor(QObject *parent);
-    virtual void reset() = 0;
+public:
+  AbstractMessageProcessor(QObject *parent);
+  virtual void reset() = 0;
 
-  public slots:
-    virtual void process(Message &msg) = 0;
-    virtual void process(QList<Message> &msgs) = 0;
+public slots:
+  virtual void process(Message &msg) = 0;
+  virtual void process(QList<Message> &msgs) = 0;
 
-  signals:
-    void progressUpdated(int value, int maximum);
-
-  protected:
-    inline void postProcess(Message &msg) { Client::networkModel()->updateBufferActivity(msg); }
-
+protected:
+  inline void postProcess(Message &msg) { Client::networkModel()->updateBufferActivity(msg); }
 };
 
 #endif
