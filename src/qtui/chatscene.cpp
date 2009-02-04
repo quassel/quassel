@@ -97,11 +97,8 @@ ChatScene::ChatScene(QAbstractItemModel *model, const QString &idString, qreal w
     rowsInserted(QModelIndex(), 0, model->rowCount() - 1);
 
 #ifdef HAVE_WEBKIT
-  webPreview.delayTimer.setSingleShot(true);
-  connect(&webPreview.delayTimer, SIGNAL(timeout()), this, SLOT(showWebPreviewEvent()));
-  //webPreview.deleteTimer.setInterval(600000);
-  webPreview.deleteTimer.setInterval(10000);
-  connect(&webPreview.deleteTimer, SIGNAL(timeout()), this, SLOT(deleteWebPreviewEvent()));
+  webPreview.timer.setSingleShot(true);
+  connect(&webPreview.timer, SIGNAL(timeout()), this, SLOT(webPreviewNextStep()));
 #endif
   _showWebPreview = defaultSettings.showWebPreview();
   defaultSettings.notify("ShowWebPreview", this, SLOT(showWebPreviewChanged()));
@@ -851,82 +848,129 @@ bool ChatScene::event(QEvent *e) {
   return QGraphicsScene::event(e);
 }
 
-/******** WEB PREVIEW *****************************************************************************/
-
+// ========================================
+//  Webkit Only stuff
+// ========================================
+#ifdef HAVE_WEBKIT
 void ChatScene::loadWebPreview(ChatItem *parentItem, const QString &url, const QRectF &urlRect) {
-#ifndef HAVE_WEBKIT
-  Q_UNUSED(parentItem)
-  Q_UNUSED(url)
-  Q_UNUSED(urlRect)
-#else
   if(!_showWebPreview)
     return;
+
+  if(webPreview.urlRect != urlRect)
+    webPreview.urlRect = urlRect;
 
   if(webPreview.parentItem != parentItem)
     webPreview.parentItem = parentItem;
 
   if(webPreview.url != url) {
     webPreview.url = url;
-    // load a new web view and delete the old one (if exists)
+    // prepare to load a different URL
     if(webPreview.previewItem && webPreview.previewItem->scene()) {
       removeItem(webPreview.previewItem);
       delete webPreview.previewItem;
+      webPreview.previewItem = 0;
     }
-    webPreview.previewItem = new WebPreviewItem(url);
-    webPreview.delayTimer.start(2000);
-    webPreview.deleteTimer.stop();
-  } else if(webPreview.previewItem && !webPreview.previewItem->scene()) {
-      // we just have to readd the item to the scene
-      webPreview.delayTimer.start(2000);
-      webPreview.deleteTimer.stop();
+    webPreview.previewState = WebPreview::NoPreview;
   }
-  if(webPreview.urlRect != urlRect) {
-    webPreview.urlRect = urlRect;
-    qreal previewY = urlRect.bottom();
-    qreal previewX = urlRect.x();
-    if(previewY + webPreview.previewItem->boundingRect().height() > sceneRect().bottom())
-      previewY = urlRect.y() - webPreview.previewItem->boundingRect().height();
 
-    if(previewX + webPreview.previewItem->boundingRect().width() > sceneRect().width())
-      previewX = sceneRect().right() - webPreview.previewItem->boundingRect().width();
+  if(webPreview.url.isEmpty())
+    return;
 
-    webPreview.previewItem->setPos(previewX, previewY);
+  // qDebug() << Q_FUNC_INFO << webPreview.previewState;
+  switch(webPreview.previewState) {
+  case WebPreview::NoPreview:
+    webPreview.previewState = WebPreview::NewPreview;
+    webPreview.timer.start(500);
+    break;
+  case WebPreview::NewPreview:
+  case WebPreview::DelayPreview:
+  case WebPreview::ShowPreview:
+    // we're already waiting for the next step or showing the preview
+    break;
+  case WebPreview::HidePreview:
+    // we still have a valid preview
+    webPreview.previewState = WebPreview::DelayPreview;
+    webPreview.timer.start(1000);
+    break;
   }
-#endif
+  // qDebug() << "  new State:" << webPreview.previewState << webPreview.timer.isActive();
 }
 
-void ChatScene::showWebPreviewEvent() {
-#ifdef HAVE_WEBKIT
-  if(webPreview.previewItem)
+void ChatScene::webPreviewNextStep() {
+  // qDebug() << Q_FUNC_INFO << webPreview.previewState;
+  switch(webPreview.previewState) {
+  case WebPreview::NoPreview:
+    break;
+  case WebPreview::NewPreview:
+    Q_ASSERT(!webPreview.previewItem);
+    webPreview.previewItem = new WebPreviewItem(webPreview.url);
+    webPreview.previewState = WebPreview::DelayPreview;
+    webPreview.timer.start(1000);
+    break;
+  case WebPreview::DelayPreview:
+    Q_ASSERT(webPreview.previewItem);
+    // calc position and show
+    {
+      qreal previewY = webPreview.urlRect.bottom();
+      qreal previewX = webPreview.urlRect.x();
+      if(previewY + webPreview.previewItem->boundingRect().height() > sceneRect().bottom())
+	previewY = webPreview.urlRect.y() - webPreview.previewItem->boundingRect().height();
+
+      if(previewX + webPreview.previewItem->boundingRect().width() > sceneRect().width())
+	previewX = sceneRect().right() - webPreview.previewItem->boundingRect().width();
+
+      webPreview.previewItem->setPos(previewX, previewY);
+    }
     addItem(webPreview.previewItem);
-#endif
+    webPreview.previewState = WebPreview::ShowPreview;
+    break;
+  case WebPreview::ShowPreview:
+    qWarning() << "ChatScene::webPreviewNextStep() called while in ShowPreview Step!";
+    qWarning() << "removing preview";
+    if(webPreview.previewItem && webPreview.previewItem->scene())
+      removeItem(webPreview.previewItem);
+    // Fall through to deletion!
+  case WebPreview::HidePreview:
+    if(webPreview.previewItem) {
+      delete webPreview.previewItem;
+      webPreview.previewItem = 0;
+    }
+    webPreview.parentItem = 0;
+    webPreview.url = QString();
+    webPreview.urlRect = QRectF();
+    webPreview.previewState = WebPreview::NoPreview;
+  }
+  // qDebug() << "  new State:" << webPreview.previewState << webPreview.timer.isActive();
 }
 
 void ChatScene::clearWebPreview(ChatItem *parentItem) {
-#ifndef HAVE_WEBKIT
-  Q_UNUSED(parentItem)
-#else
-  if(parentItem == 0 || webPreview.parentItem == parentItem) {
-    if(webPreview.previewItem && webPreview.previewItem->scene()) {
-      removeItem(webPreview.previewItem);
-      webPreview.deleteTimer.start();
+  // qDebug() << Q_FUNC_INFO << webPreview.previewState;
+  switch(webPreview.previewState) {
+  case WebPreview::NewPreview:
+    webPreview.previewState = WebPreview::NoPreview; // we haven't loaded anything yet
+    break;
+  case WebPreview::ShowPreview:
+    if(parentItem == 0 || webPreview.parentItem == parentItem) {
+      if(webPreview.previewItem && webPreview.previewItem->scene())
+	removeItem(webPreview.previewItem);
     }
-    webPreview.delayTimer.stop();
+    // fall through into to set hidden state
+  case WebPreview::DelayPreview:
+    // we're just loading, so haven't shown the preview yet.
+    webPreview.previewState = WebPreview::HidePreview;
+    webPreview.timer.start(5000);
+    break;
+  case WebPreview::NoPreview:
+  case WebPreview::HidePreview:
+    break;
   }
-#endif
+  // qDebug() << "  new State:" << webPreview.previewState << webPreview.timer.isActive();
 }
+#endif
 
-void ChatScene::deleteWebPreviewEvent() {
-#ifdef HAVE_WEBKIT
-  if(webPreview.previewItem) {
-    delete webPreview.previewItem;
-    webPreview.previewItem = 0;
-  }
-  webPreview.parentItem = 0;
-  webPreview.url = QString();
-  webPreview.urlRect = QRectF();
-#endif
-}
+// ========================================
+//  end of webkit only
+// ========================================
 
 void ChatScene::showWebPreviewChanged() {
   ChatViewSettings settings;

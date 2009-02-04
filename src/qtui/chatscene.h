@@ -120,8 +120,10 @@ public:
 
   void requestBacklog();
 
+#ifdef HAVE_WEBKIT
   void loadWebPreview(ChatItem *parentItem, const QString &url, const QRectF &urlRect);
   void clearWebPreview(ChatItem *parentItem = 0);
+#endif
 
 signals:
   void lastLineChanged(QGraphicsItem *item, qreal offset);
@@ -143,8 +145,9 @@ protected slots:
 private slots:
   void firstHandlePositionChanged(qreal xpos);
   void secondHandlePositionChanged(qreal xpos);
-  void showWebPreviewEvent();
-  void deleteWebPreviewEvent();
+#ifdef HAVE_WEBKIT
+  void webPreviewNextStep();
+#endif
   void showWebPreviewChanged();
 
   void clickTimeout();
@@ -187,16 +190,25 @@ private:
 
   bool _showWebPreview;
 
+#ifdef HAVE_WEBKIT
   struct WebPreview {
+    enum PreviewState {
+      NoPreview,
+      NewPreview,
+      DelayPreview,
+      ShowPreview,
+      HidePreview
+    };
     ChatItem *parentItem;
     QGraphicsItem *previewItem;
     QString url;
     QRectF urlRect;
-    QTimer delayTimer;
-    QTimer deleteTimer;
-    WebPreview() : parentItem(0), previewItem(0) {}
+    PreviewState previewState;
+    QTimer timer;
+    WebPreview() : parentItem(0), previewItem(0), previewState(NoPreview) {}
   };
   WebPreview webPreview;
+#endif // HAVE_WEBKIT
 };
 
 #endif
