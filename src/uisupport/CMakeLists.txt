@@ -7,7 +7,6 @@ include(${QT_USE_FILE})
 set(SOURCES
     abstractbuffercontainer.cpp
     abstractitemview.cpp
-    abstractnotificationbackend.cpp
     action.cpp
     actioncollection.cpp
     bufferview.cpp
