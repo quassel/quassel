@@ -110,7 +110,7 @@ private slots:
 private:
   QRectF _boundingRect;
   bool _highlighted;
-  qreal _alpha;
+  int _alpha;
   QTimeLine _timeLine;
 };
 

@@ -206,7 +206,7 @@ void ChatViewSearchController::updateHighlights(ChatLine *line) {
   QHash<quint64, QHash<quint64, QRectF> > wordRects;
   foreach(ChatItem *item, checkItems) {
     foreach(QRectF wordRect, item->findWords(searchString(), caseSensitive())) {
-      wordRects[wordRect.x() + item->x()][wordRect.y()] = wordRect;
+      wordRects[(quint64)(wordRect.x() + item->x())][(quint64)(wordRect.y())] = wordRect;
     }
   }
 
@@ -225,8 +225,8 @@ void ChatViewSearchController::updateHighlights(ChatLine *line) {
     if(!highlightItem)
       continue;
 
-    if(!deleteAll && wordRects.contains(highlightItem->pos().x()) && wordRects[highlightItem->pos().x()].contains(highlightItem->pos().y())) {
-      QRectF &wordRect = wordRects[highlightItem->pos().x()][highlightItem->pos().y()];
+    if(!deleteAll && wordRects.contains((quint64)(highlightItem->pos().x())) && wordRects[(quint64)(highlightItem->pos().x())].contains((quint64)(highlightItem->pos().y()))) {
+      QRectF &wordRect = wordRects[(quint64)(highlightItem->pos().x())][(quint64)(highlightItem->pos().y())];
       highlightItem->updateGeometry(wordRect.width(), wordRect.height());
     } else {
       int pos = _highlightItems.indexOf(highlightItem);
@@ -384,7 +384,7 @@ void SearchHighlightItem::setHighlighted(bool highlighted) {
 }
 
 void SearchHighlightItem::updateHighlight(qreal value) {
-  _alpha = 100 + 155 * value;
+  _alpha = 100 + (int)(155 * value);
   update();
 }
 
