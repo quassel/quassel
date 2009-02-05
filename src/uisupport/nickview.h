@@ -35,12 +35,18 @@ protected:
   virtual void rowsInserted(const QModelIndex &parent, int start, int end);
   virtual void customEvent(QEvent *event);
 
+  //! This reimplementation ensures that the current index is first in list
+  virtual QModelIndexList selectedIndexes() const;
+
 public slots:
   virtual void setModel(QAbstractItemModel *model);
   virtual void setRootIndex(const QModelIndex &index);
   void init();
   void showContextMenu(const QPoint & pos);
   void startQuery(const QModelIndex & modelIndex);
+
+signals:
+  void selectionUpdated();
 
 private:
 

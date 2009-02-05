@@ -48,7 +48,6 @@ NickView::NickView(QWidget *parent)
   setItemDelegate(newDelegate);
   delete oldDelegate;
 
-  
   setIndentation(10);
   setAnimated(true);
   header()->hide();
@@ -75,10 +74,16 @@ void NickView::init() {
 
   for(int i = 1; i < model()->columnCount(); i++)
     setColumnHidden(i, true);
+
+  connect(selectionModel(), SIGNAL(currentChanged(QModelIndex, QModelIndex)), SIGNAL(selectionUpdated()));
+  connect(selectionModel(), SIGNAL(selectionChanged(QItemSelection, QItemSelection)), SIGNAL(selectionUpdated()));
 }
 
-void NickView::setModel(QAbstractItemModel *model) {
-  QTreeView::setModel(model);
+void NickView::setModel(QAbstractItemModel *model_) {
+  if(model())
+    disconnect(model(), 0, this, 0);
+
+  QTreeView::setModel(model_);
   init();
 }
 
@@ -95,18 +100,22 @@ void NickView::setRootIndex(const QModelIndex &index) {
     QCoreApplication::postEvent(this, new ExpandAllEvent);
 }
 
-void NickView::showContextMenu(const QPoint & pos ) {
-  QModelIndex index = indexAt(pos);
-  if(index.data(NetworkModel::ItemTypeRole) != NetworkModel::IrcUserItemType)
-    return;
+QModelIndexList NickView::selectedIndexes() const {
+  QModelIndexList indexList = QTreeView::selectedIndexes();
 
-  QModelIndexList indexList = selectedIndexes();
   // make sure the item we clicked on is first
-  indexList.removeAll(index);
-  indexList.prepend(index);
+  Q_ASSERT(indexList.contains(currentIndex()));
+  indexList.removeAll(currentIndex());
+  indexList.prepend(currentIndex());
+
+  return indexList;
+}
+
+void NickView::showContextMenu(const QPoint &pos ) {
+  Q_UNUSED(pos);
 
   QMenu contextMenu(this);
-  GraphicalUi::contextMenuActionProvider()->addActions(&contextMenu, indexList);
+  GraphicalUi::contextMenuActionProvider()->addActions(&contextMenu, selectedIndexes());
   contextMenu.exec(QCursor::pos());
 }
 
