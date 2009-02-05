@@ -29,6 +29,8 @@
 #endif
 
 #include "aboutdlg.h"
+#include "awaylogfilter.h"
+#include "awaylogview.h"
 #include "action.h"
 #include "actioncollection.h"
 #include "buffermodel.h"
@@ -100,7 +102,8 @@ MainWin::MainWin(QWidget *parent)
     sslLabel(new QLabel()),
     msgProcessorStatusWidget(new MsgProcessorStatusWidget()),
     _titleSetter(this),
-    _trayIcon(new QSystemTrayIcon(this))
+    _trayIcon(new QSystemTrayIcon(this)),
+    _awayLog(0)
 {
   QtUiSettings uiSettings;
   QString style = uiSettings.value("Style", QString()).toString();
@@ -222,7 +225,9 @@ void MainWin::setupActions() {
   connect(lockAct, SIGNAL(toggled(bool)), SLOT(on_actionLockDockPositions_toggled(bool)));
 
   coll->addAction("ToggleSearchBar", new Action(SmallIcon("edit-find"), tr("Show &Search Bar"), coll,
-                                                 0, 0, tr("Ctrl+F")))->setCheckable(true);
+						0, 0, tr("Ctrl+F")))->setCheckable(true);
+  coll->addAction("ShowAwayLog", new Action(tr("Show Away Log"), coll,
+					    this, SLOT(showAwayLog())));
   coll->addAction("ToggleStatusBar", new Action(tr("Show Status &Bar"), coll,
                                                  0, 0))->setCheckable(true);
 
@@ -270,6 +275,7 @@ void MainWin::setupMenus() {
   _bufferViewsMenu->addAction(coll->action("ConfigureBufferViews"));
   _viewMenu->addSeparator();
   _viewMenu->addAction(coll->action("ToggleSearchBar"));
+  _viewMenu->addAction(coll->action("ShowAwayLog"));
   _viewMenu->addAction(coll->action("ToggleStatusBar"));
   _viewMenu->addSeparator();
   _viewMenu->addAction(coll->action("LockDockPositions"));
@@ -650,6 +656,21 @@ void MainWin::showChannelList(NetworkId netId) {
 
 void MainWin::showCoreInfoDlg() {
   CoreInfoDlg(this).exec();
+}
+
+void MainWin::showAwayLog() {
+  if(_awayLog)
+    return;
+  AwayLogFilter *filter = new AwayLogFilter(Client::messageModel());
+  _awayLog = new AwayLogView(filter, 0);
+  filter->setParent(_awayLog);
+  connect(_awayLog, SIGNAL(destroyed()), this, SLOT(awayLogDestroyed()));
+  _awayLog->setAttribute(Qt::WA_DeleteOnClose);
+  _awayLog->show();
+}
+
+void MainWin::awayLogDestroyed() {
+  _awayLog = 0;
 }
 
 void MainWin::showSettingsDlg() {

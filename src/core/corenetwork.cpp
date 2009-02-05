@@ -82,6 +82,8 @@ CoreNetwork::CoreNetwork(const NetworkId &networkid, CoreSession *session)
 CoreNetwork::~CoreNetwork() {
   if(connectionState() != Disconnected && connectionState() != Network::Reconnecting)
     disconnectFromIrc(false);      // clean up, but this does not count as requested disconnect!
+  else
+    socket.close();
   disconnect(&socket, 0, this, 0); // this keeps the socket from triggering events during clean up
   delete _ircServerHandler;
   delete _userInputHandler;

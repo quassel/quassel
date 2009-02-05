@@ -323,6 +323,7 @@ public:
 public slots:
   void bufferUpdated(BufferInfo bufferInfo);
   void removeBuffer(BufferId bufferId);
+  MsgId lastSeenMsgId(const BufferId &bufferId);
   void setLastSeenMsgId(const BufferId &bufferId, const MsgId &msgId);
   void setBufferActivity(const BufferId &bufferId, BufferInfo::ActivityLevel activity);
   void clearBufferActivity(const BufferId &bufferId);

@@ -92,6 +92,7 @@ class MainWin
 
   private slots:
     void addBufferView(int bufferViewConfigId);
+    void awayLogDestroyed();
     void removeBufferView(int bufferViewConfigId);
     void messagesInserted(const QModelIndex &parent, int start, int end);
     void showAboutDlg();
@@ -99,6 +100,7 @@ class MainWin
     void startInternalCore();
     void showCoreConnectionDlg(bool autoConnect = false);
     void showCoreInfoDlg();
+    void showAwayLog();
     void showSettingsDlg();
     void showNotificationsDlg();
 #ifdef HAVE_KDE
@@ -162,6 +164,7 @@ class MainWin
 
     QMenu *_fileMenu, *_networksMenu, *_viewMenu, *_bufferViewsMenu, *_settingsMenu, *_helpMenu, *_helpDebugMenu;
 
+    QWidget *_awayLog;
     friend class QtUi;
 };
 

@@ -960,6 +960,15 @@ MsgId NetworkModel::lastSeenMarkerMsgId(BufferId bufferId) const {
   return _bufferItemCache[bufferId]->lastSeenMarkerMsgId();
 }
 
+MsgId NetworkModel::lastSeenMsgId(const BufferId &bufferId) {
+  BufferItem *bufferItem = findBufferItem(bufferId);
+  if(!bufferItem) {
+    qDebug() << "NetworkModel::lastSeenMsgId(): buffer is unknown:" << bufferId;
+    return MsgId();
+  }
+  return bufferItem->lastSeenMsgId();
+}
+
 void NetworkModel::setLastSeenMsgId(const BufferId &bufferId, const MsgId &msgId) {
   BufferItem *bufferItem = findBufferItem(bufferId);
   if(!bufferItem) {

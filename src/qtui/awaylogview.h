@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-08 by the Quassel Project                          *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,32 +18,19 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef CHATMONITORVIEW_H
-#define CHATMONITORVIEW_H
+#ifndef AWAYLOGVIEW_H
+#define AWAYLOGVIEW_H
 
-#include "chatview.h"
+#include "chatmonitorview.h"
 
-class ChatMonitorFilter;
+class AwayLogFilter;
 
-class ChatMonitorView : public ChatView {
+class AwayLogView : public ChatMonitorView {
   Q_OBJECT
 
 public:
-  ChatMonitorView(ChatMonitorFilter *filter, QWidget *parent);
-
-protected:
+  AwayLogView(AwayLogFilter *filter, QWidget *parent = 0);
   virtual void addActionsToMenu(QMenu *menu, const QPointF &pos);
-  virtual void mouseDoubleClickEvent(QMouseEvent *event);
-
-private slots:
-  void showFieldsChanged(bool checked);
-  void showSettingsPage();
-
-protected:
-  inline ChatMonitorFilter *filter() const { return _filter; }
-
-private:
-  ChatMonitorFilter *_filter;
 };
 
-#endif //CHATMONITORVIEW_H
+#endif //AWAYLOGVIEW_H

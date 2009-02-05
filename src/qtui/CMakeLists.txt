@@ -7,6 +7,8 @@ include(${QT_USE_FILE})
 
 set(SOURCES
     aboutdlg.cpp
+    awaylogfilter.cpp
+    awaylogview.cpp
     bufferwidget.cpp
     channellistdlg.cpp
     chatitem.cpp
@@ -50,6 +52,8 @@ set(SOURCES
 
 set(MOC_HDRS
     aboutdlg.h
+    awaylogfilter.h
+    awaylogview.h
     bufferwidget.h
     channellistdlg.h
     chatitem.h

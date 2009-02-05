@@ -44,6 +44,7 @@ public:
 
 public slots:
   void addClient(QObject *peer);
+  void stopSession();
 
 private slots:
   void setSessionInitialized();

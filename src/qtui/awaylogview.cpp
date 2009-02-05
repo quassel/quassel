@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-09 by the Quassel Project                          *
+ *   Copyright (C) 2005-08 by the Quassel Project                          *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,32 +18,36 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef CHATMONITORVIEW_H
-#define CHATMONITORVIEW_H
+#include "awaylogview.h"
 
-#include "chatview.h"
+#include <QAction>
+#include <QMenu>
 
-class ChatMonitorFilter;
+#include "awaylogfilter.h"
+#include "chatlinemodel.h"
+#include "chatscene.h"
 
-class ChatMonitorView : public ChatView {
-  Q_OBJECT
+AwayLogView::AwayLogView(AwayLogFilter *filter, QWidget *parent)
+  : ChatMonitorView(filter, parent)
+{
+}
 
-public:
-  ChatMonitorView(ChatMonitorFilter *filter, QWidget *parent);
+void AwayLogView::addActionsToMenu(QMenu *menu, const QPointF &pos) {
+  ChatView::addActionsToMenu(menu, pos);
+  if(!menu->isEmpty())
+    menu->addSeparator();
 
-protected:
-  virtual void addActionsToMenu(QMenu *menu, const QPointF &pos);
-  virtual void mouseDoubleClickEvent(QMouseEvent *event);
+  if(scene()->columnByScenePos(pos) == ChatLineModel::SenderColumn) {
+    menu->addSeparator();
 
-private slots:
-  void showFieldsChanged(bool checked);
-  void showSettingsPage();
+    QAction *showNetworkAction = menu->addAction(tr("Show Network Name"), this, SLOT(showFieldsChanged(bool)));
+    showNetworkAction->setCheckable(true);
+    showNetworkAction->setChecked(filter()->showFields() & ChatMonitorFilter::NetworkField);
+    showNetworkAction->setData(ChatMonitorFilter::NetworkField);
 
-protected:
-  inline ChatMonitorFilter *filter() const { return _filter; }
-
-private:
-  ChatMonitorFilter *_filter;
-};
-
-#endif //CHATMONITORVIEW_H
+    QAction *showBufferAction = menu->addAction(tr("Show Buffer Name"), this, SLOT(showFieldsChanged(bool)));
+    showBufferAction->setCheckable(true);
+    showBufferAction->setChecked(filter()->showFields() & ChatMonitorFilter::BufferField);
+    showBufferAction->setData(ChatMonitorFilter::BufferField);
+  }
+}

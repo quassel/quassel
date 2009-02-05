@@ -158,10 +158,21 @@ void Core::init() {
 }
 
 Core::~Core() {
+  _server.close();
+  _v6server.close();
   foreach(QTcpSocket *socket, blocksizes.keys()) {
     socket->disconnectFromHost();  // disconnect non authed clients
   }
-  qDeleteAll(sessions);
+
+  
+  foreach(SessionThread *session, sessions) {
+    session->stopSession();
+    session->wait();
+    delete session;
+    qDebug() << "next";
+  }
+
+//   qDeleteAll(sessions);
   qDeleteAll(_storageBackends);
 }
 
