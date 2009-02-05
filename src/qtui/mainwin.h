@@ -45,6 +45,7 @@ class SystemTrayIcon;
 
 class QMenu;
 class QLabel;
+class QToolBar;
 
 class KHelpMenu;
 
@@ -149,6 +150,7 @@ class MainWin
     void setupStatusBar();
     void setupSystray();
     void setupTitleSetter();
+    void setupToolBars();
 
     void updateIcon();
     void hideToTray();
@@ -163,6 +165,7 @@ class MainWin
     InputWidget *_inputWidget;
 
     QMenu *_fileMenu, *_networksMenu, *_viewMenu, *_bufferViewsMenu, *_settingsMenu, *_helpMenu, *_helpDebugMenu;
+    QToolBar *_networkToolBar, *_chatViewToolBar, *_nickToolBar;
 
     QWidget *_awayLog;
     friend class QtUi;

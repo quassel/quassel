@@ -63,6 +63,7 @@
 #include "sessionsettings.h"
 #include "settingsdlg.h"
 #include "settingspagedlg.h"
+#include "toolbaractionprovider.h"
 #include "topicwidget.h"
 #include "verticaldock.h"
 
@@ -153,6 +154,7 @@ void MainWin::init() {
   setupNickWidget();
   setupInputWidget();
   setupStatusBar();
+  setupToolBars();
   setupSystray();
   setupTitleSetter();
 
@@ -517,6 +519,21 @@ void MainWin::setupSystray() {
 
 #ifndef Q_WS_MAC
   connect(systemTrayIcon(), SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(systrayActivated(QSystemTrayIcon::ActivationReason)));
+#endif
+}
+
+void MainWin::setupToolBars() {
+  _networkToolBar = addToolBar("Network");
+  _networkToolBar->setObjectName("NetworkToolBar");
+  QtUi::toolBarActionProvider()->addActions(_networkToolBar, ToolBarActionProvider::NetworkToolBar);
+
+  _nickToolBar = addToolBar("User");
+  _nickToolBar->setObjectName("NickToolBar");
+  QtUi::toolBarActionProvider()->addActions(_nickToolBar, ToolBarActionProvider::NickToolBar);
+
+#ifdef HAVE_KDE
+  _networkToolBar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+  _nickToolBar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 #endif
 }
 
