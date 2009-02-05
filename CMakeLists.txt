@@ -77,9 +77,17 @@ endif(WIN32)
 # Build Type
 # We need to make sure it's not empty
 # Supported: Release, RelWithDebugInfo, Debug, Debugfull
-set(CMAKE_BUILD_TYPE "RelWithDebugInfo" CACHE STRING "CMake Build Type")
+
+# On WIN32, only Release seems to work correctly (?)
+if(WIN32)
+  set(DEFAULT_BUILD_TYPE "Release")
+else(WIN32)
+  set(DEFAULT_BUILD_TYPE "RelWithDebugInfo")
+endif(WIN32)
+
+set(CMAKE_BUILD_TYPE ${DEFAULT_BUILD_TYPE} CACHE STRING "CMake Build Type")
 if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE "RelWithDebugInfo" CACHE STRING "CMake Build Type" FORCE)
+  set(CMAKE_BUILD_TYPE ${DEFAULT_BUILD_TYPE} CACHE STRING "CMake Build Type" FORCE)
 endif(NOT CMAKE_BUILD_TYPE)
 
 # Enable various flags on gcc
