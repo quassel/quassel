@@ -43,9 +43,7 @@ public slots:
   void startQuery(const QModelIndex & modelIndex);
 
 private:
-  BufferInfo bufferInfoFromModelIndex(const QModelIndex & index);
-  QString nickFromModelIndex(const QModelIndex & index);
-  void executeCommand(const BufferInfo & bufferInfo, const QString & command);
+
 };
 
 // ******************************
