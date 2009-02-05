@@ -48,7 +48,7 @@ BufferViewFilter::BufferViewFilter(QAbstractItemModel *model, BufferViewConfig *
     _userAwayIcon(SmallIcon("im-user-away")),
     _userOnlineIcon(SmallIcon("im-user")),
     _editMode(false),
-    _enableEditMode(tr("Edit Mode"), this)
+    _enableEditMode(tr("Show / Hide buffers"), this)
 {
   setConfig(config);
   setSourceModel(model);
@@ -165,9 +165,10 @@ void BufferViewFilter::enableEditMode(bool enable) {
 
 
 Qt::ItemFlags BufferViewFilter::flags(const QModelIndex &index) const {
-  Qt::ItemFlags flags = mapToSource(index).flags();
+  QModelIndex source_index = mapToSource(index);
+  Qt::ItemFlags flags = sourceModel()->flags(source_index);
   if(_config) {
-    if(index == QModelIndex() || index.parent() == QModelIndex()) {
+    if(source_index == QModelIndex() || sourceModel()->data(source_index, NetworkModel::ItemTypeRole) == NetworkModel::NetworkItemType) {
       flags |= Qt::ItemIsDropEnabled;
     } else if(_editMode) {
       flags |= Qt::ItemIsUserCheckable | Qt::ItemIsTristate;
@@ -181,8 +182,9 @@ bool BufferViewFilter::dropMimeData(const QMimeData *data, Qt::DropAction action
     return QSortFilterProxyModel::dropMimeData(data, action, row, column, parent);
 
   NetworkId droppedNetworkId;
-  if(parent.data(NetworkModel::ItemTypeRole) == NetworkModel::NetworkItemType)
-    droppedNetworkId = parent.data(NetworkModel::NetworkIdRole).value<NetworkId>();
+  QModelIndex source_parent = mapToSource(parent);
+  if(sourceModel()->data(source_parent, NetworkModel::ItemTypeRole) == NetworkModel::NetworkItemType)
+    droppedNetworkId = sourceModel()->data(source_parent, NetworkModel::NetworkIdRole).value<NetworkId>();
 
   QList< QPair<NetworkId, BufferId> > bufferList = NetworkModel::mimeDataToBufferList(data);
   BufferId bufferId;
@@ -196,7 +198,8 @@ bool BufferViewFilter::dropMimeData(const QMimeData *data, Qt::DropAction action
 	row = 0;
 
       if(row < rowCount(parent)) {
-	BufferId beforeBufferId = parent.child(row, 0).data(NetworkModel::BufferIdRole).value<BufferId>();
+	QModelIndex source_child = sourceModel()->index(row, 0, parent);
+	BufferId beforeBufferId = sourceModel()->data(source_child, NetworkModel::BufferIdRole).value<BufferId>();
 	pos = config()->bufferList().indexOf(beforeBufferId);
 	if(_sortOrder == Qt::DescendingOrder)
 	  pos++;
@@ -252,10 +255,10 @@ bool BufferViewFilter::filterAcceptBuffer(const QModelIndex &source_bufferIndex)
   if(!config())
     return true;
 
-  BufferId bufferId = source_bufferIndex.data(NetworkModel::BufferIdRole).value<BufferId>();
+  BufferId bufferId = sourceModel()->data(source_bufferIndex, NetworkModel::BufferIdRole).value<BufferId>();
   Q_ASSERT(bufferId.isValid());
 
-  int activityLevel = source_bufferIndex.data(NetworkModel::BufferActivityRole).toInt();
+  int activityLevel = sourceModel()->data(source_bufferIndex, NetworkModel::BufferActivityRole).toInt();
 
   if(!config()->bufferList().contains(bufferId) && !_editMode) {
     // add the buffer if...
@@ -268,20 +271,21 @@ bool BufferViewFilter::filterAcceptBuffer(const QModelIndex &source_bufferIndex)
     return false;
   }
 
-  if(config()->networkId().isValid() && config()->networkId() != source_bufferIndex.data(NetworkModel::NetworkIdRole).value<NetworkId>())
+  if(config()->networkId().isValid() && config()->networkId() != sourceModel()->data(source_bufferIndex, NetworkModel::NetworkIdRole).value<NetworkId>())
     return false;
 
   int allowedBufferTypes = config()->allowedBufferTypes();
   if(!config()->networkId().isValid())
     allowedBufferTypes &= ~BufferInfo::StatusBuffer;
-  if(!(allowedBufferTypes & source_bufferIndex.data(NetworkModel::BufferTypeRole).toInt()))
+  if(!(allowedBufferTypes & sourceModel()->data(source_bufferIndex, NetworkModel::BufferTypeRole).toInt()))
     return false;
 
   // the following dynamic filters may not trigger if the buffer is currently selected.
-  if(bufferId == Client::bufferModel()->standardSelectionModel()->currentIndex().data(NetworkModel::BufferIdRole).value<BufferId>())
+  QModelIndex currentIndex = Client::bufferModel()->standardSelectionModel()->currentIndex();
+  if(bufferId == Client::bufferModel()->data(currentIndex, NetworkModel::BufferIdRole).value<BufferId>())
     return true;
 
-  if(config()->hideInactiveBuffers() && !source_bufferIndex.data(NetworkModel::ItemActiveRole).toBool() && activityLevel <= BufferInfo::OtherActivity)
+  if(config()->hideInactiveBuffers() && !sourceModel()->data(source_bufferIndex, NetworkModel::ItemActiveRole).toBool() && activityLevel <= BufferInfo::OtherActivity)
     return false;
 
   if(config()->minimumActivity() > activityLevel)
@@ -297,7 +301,7 @@ bool BufferViewFilter::filterAcceptNetwork(const QModelIndex &source_index) cons
   if(!config()->networkId().isValid()) {
     return true;
   } else {
-    return config()->networkId() == source_index.data(NetworkModel::NetworkIdRole).value<NetworkId>();
+    return config()->networkId() == sourceModel()->data(source_index, NetworkModel::NetworkIdRole).value<NetworkId>();
   }
 }
 
@@ -316,8 +320,8 @@ bool BufferViewFilter::filterAcceptsRow(int source_row, const QModelIndex &sourc
 }
 
 bool BufferViewFilter::lessThan(const QModelIndex &source_left, const QModelIndex &source_right) const {
-  int leftItemType = source_left.data(NetworkModel::ItemTypeRole).toInt();
-  int rightItemType = source_right.data(NetworkModel::ItemTypeRole).toInt();
+  int leftItemType = sourceModel()->data(source_left, NetworkModel::ItemTypeRole).toInt();
+  int rightItemType = sourceModel()->data(source_right, NetworkModel::ItemTypeRole).toInt();
   int itemType = leftItemType & rightItemType;
   switch(itemType) {
   case NetworkModel::NetworkItemType:
@@ -330,8 +334,8 @@ bool BufferViewFilter::lessThan(const QModelIndex &source_left, const QModelInde
 }
 
 bool BufferViewFilter::bufferLessThan(const QModelIndex &source_left, const QModelIndex &source_right) const {
-  BufferId leftBufferId = source_left.data(NetworkModel::BufferIdRole).value<BufferId>();
-  BufferId rightBufferId = source_right.data(NetworkModel::BufferIdRole).value<BufferId>();
+  BufferId leftBufferId = sourceModel()->data(source_left, NetworkModel::BufferIdRole).value<BufferId>();
+  BufferId rightBufferId = sourceModel()->data(source_right, NetworkModel::BufferIdRole).value<BufferId>();
   if(config()) {
     int leftPos = config()->bufferList().indexOf(leftBufferId);
     int rightPos = config()->bufferList().indexOf(rightBufferId);
@@ -345,8 +349,8 @@ bool BufferViewFilter::bufferLessThan(const QModelIndex &source_left, const QMod
 }
 
 bool BufferViewFilter::networkLessThan(const QModelIndex &source_left, const QModelIndex &source_right) const {
-  NetworkId leftNetworkId = source_left.data(NetworkModel::NetworkIdRole).value<NetworkId>();
-  NetworkId rightNetworkId = source_right.data(NetworkModel::NetworkIdRole).value<NetworkId>();
+  NetworkId leftNetworkId = sourceModel()->data(source_left, NetworkModel::NetworkIdRole).value<NetworkId>();
+  NetworkId rightNetworkId = sourceModel()->data(source_right, NetworkModel::NetworkIdRole).value<NetworkId>();
 
   if(config() && config()->sortAlphabetically())
     return QSortFilterProxyModel::lessThan(source_left, source_right);
@@ -372,13 +376,14 @@ QVariant BufferViewFilter::icon(const QModelIndex &index) const {
   if(index.column() != 0)
     return QVariant();
 
-  if(index.data(NetworkModel::BufferTypeRole).toInt() != BufferInfo::QueryBuffer)
+  QModelIndex source_index = mapToSource(index);
+  if(sourceModel()->data(index, NetworkModel::BufferTypeRole).toInt() != BufferInfo::QueryBuffer)
     return QVariant();
 
-  if(!index.data(NetworkModel::ItemActiveRole).toBool())
+  if(!sourceModel()->data(index, NetworkModel::ItemActiveRole).toBool())
     return _userOfflineIcon;
 
-  if(index.data(NetworkModel::UserAwayRole).toBool())
+  if(sourceModel()->data(index, NetworkModel::UserAwayRole).toBool())
     return _userAwayIcon;
   else
     return _userOnlineIcon;
@@ -390,7 +395,11 @@ QVariant BufferViewFilter::checkedState(const QModelIndex &index) const {
   if(!_editMode || !config())
     return QVariant();
 
-  BufferId bufferId = index.data(NetworkModel::BufferIdRole).value<BufferId>();
+  QModelIndex source_index = mapToSource(index);
+  if(source_index == QModelIndex() || sourceModel()->data(source_index, NetworkModel::ItemTypeRole) == NetworkModel::NetworkItemType)
+    return QVariant();
+
+  BufferId bufferId = sourceModel()->data(source_index, NetworkModel::BufferIdRole).value<BufferId>();
   if(_toAdd.contains(bufferId))
     return Qt::Checked;
 
@@ -419,7 +428,8 @@ bool BufferViewFilter::setData(const QModelIndex &index, const QVariant &value, 
 }
 
 bool BufferViewFilter::setCheckedState(const QModelIndex &index, Qt::CheckState state) {
-  BufferId bufferId = index.data(NetworkModel::BufferIdRole).value<BufferId>();
+  QModelIndex source_index = mapToSource(index);
+  BufferId bufferId = sourceModel()->data(source_index, NetworkModel::BufferIdRole).value<BufferId>();
   if(!bufferId.isValid())
     return false;
 
@@ -476,12 +486,12 @@ bool BufferViewFilter::bufferIdLessThan(const BufferId &left, const BufferId &ri
   QModelIndex leftIndex = Client::networkModel()->bufferIndex(left);
   QModelIndex rightIndex = Client::networkModel()->bufferIndex(right);
 
-  int leftType = leftIndex.data(NetworkModel::BufferTypeRole).toInt();
-  int rightType = rightIndex.data(NetworkModel::BufferTypeRole).toInt();
+  int leftType = Client::networkModel()->data(leftIndex, NetworkModel::BufferTypeRole).toInt();
+  int rightType = Client::networkModel()->data(rightIndex, NetworkModel::BufferTypeRole).toInt();
 
   if(leftType != rightType)
     return leftType < rightType;
   else
-    return QString::compare(leftIndex.data(Qt::DisplayRole).toString(), rightIndex.data(Qt::DisplayRole).toString(), Qt::CaseInsensitive) < 0;
+    return QString::compare(Client::networkModel()->data(leftIndex, Qt::DisplayRole).toString(), Client::networkModel()->data(rightIndex, Qt::DisplayRole).toString(), Qt::CaseInsensitive) < 0;
 }
 

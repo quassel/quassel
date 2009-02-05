@@ -1,0 +1,26 @@
+This file is intended to keep notes about general coding stuff, code
+conventions or how to best interact with certain parts of Qt.
+
+
+
+Regarding QSortFilterProxyModel:
+========================================
+When subclassing QSortFilterProxyModel avoid the use of the following
+calls on QModelIndex and use their equivalents of QAbstractItemModel:
+
+inline QModelIndex QModelIndex::parent() const
+inline QModelIndex QModelIndex::sibling(int arow, int acolumn) const
+inline QModelIndex QModelIndex::child(int arow, int acolumn) const
+inline QVariant QModelIndex::data(int arole) const
+inline Qt::ItemFlags QModelIndex::flags() const
+
+For Example when reimplementing QSortFilterProxyModel::data(const
+QModelIndex &idx, int role):
+
+Avoid:
+ idx.data(role); 
+
+Instead:
+ QModelIndex source_index = mapToSource(idx);
+ sourceModel()->data(idx, role);
+
