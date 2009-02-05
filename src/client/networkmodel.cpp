@@ -331,6 +331,8 @@ QueryBufferItem::QueryBufferItem(const BufferInfo &bufferInfo, NetworkItem *pare
 
 QVariant QueryBufferItem::data(int column, int role) const {
   switch(role) {
+  case Qt::EditRole:
+    return BufferItem::data(column, Qt::DisplayRole);
   case NetworkModel::IrcUserRole:
     return QVariant::fromValue<QObject *>(_ircUser);
   case NetworkModel::UserAwayRole:
