@@ -21,9 +21,15 @@
 #ifndef NETWORKMODELCONTROLLER_H_
 #define NETWORKMODELCONTROLLER_H_
 
+#include <QDialog>
+
 #include "action.h"
 #include "actioncollection.h"
 #include "messagefilter.h"
+
+class QComboBox;
+class QDialogButtonBox;
+class QLineEdit;
 
 class NetworkModelController : public QObject {
   Q_OBJECT
@@ -38,6 +44,8 @@ public:
     NetworkMask = 0x0f,
     NetworkConnect = 0x01,
     NetworkDisconnect = 0x02,
+    NetworkConnectAll = 0x03,
+    NetworkDisconnectAll = 0x04,
 
     // Buffer actions
     BufferMask = 0xf0,
@@ -110,8 +118,8 @@ protected:
   void setContextItem(const QString &);
   void setSlot(QObject *receiver, const char *method);
 
-  void registerAction(ActionType type, const QString &text, bool checkable = false);
-  void registerAction(ActionType type, const QPixmap &icon, const QString &text, bool checkable = false);
+  Action * registerAction(ActionType type, const QString &text, bool checkable = false);
+  Action * registerAction(ActionType type, const QPixmap &icon, const QString &text, bool checkable = false);
   bool checkRequirements(const QModelIndex &index, ItemActiveStates requiredActiveState = QFlags<ItemActiveState>(ActiveState | InactiveState));
 
   QString nickName(const QModelIndex &index) const;
@@ -126,14 +134,17 @@ signals:
   void showChannelList(NetworkId);
   void showIgnoreList(NetworkId);
 
-private:
-  void handleNetworkAction(ActionType, QAction *);
-  void handleBufferAction(ActionType, QAction *);
-  void handleHideAction(ActionType, QAction *);
-  void handleNickAction(ActionType, QAction *);
-  void handleGeneralAction(ActionType, QAction *);
-  void handleExternalAction(ActionType, QAction *);
+protected:
+  virtual void handleNetworkAction(ActionType, QAction *);
+  virtual void handleBufferAction(ActionType, QAction *);
+  virtual void handleHideAction(ActionType, QAction *);
+  virtual void handleNickAction(ActionType, QAction *);
+  virtual void handleGeneralAction(ActionType, QAction *);
+  virtual void handleExternalAction(ActionType, QAction *);
 
+  class JoinDlg;
+
+private:
   NetworkModel *_model;
 
   ActionCollection *_actionCollection;
@@ -145,6 +156,26 @@ private:
   QObject *_receiver;
   const char *_method;
 };
+
+//! Input dialog for joining a channel
+class NetworkModelController::JoinDlg : public QDialog {
+  Q_OBJECT
+
+public:
+  JoinDlg(NetworkId id, QWidget *parent = 0);
+
+  QString channelName() const;
+  NetworkId networkId() const;
+
+private slots:
+  void on_channel_textChanged(const QString &);
+
+private:
+  QComboBox *networks;
+  QLineEdit *channel;
+  QDialogButtonBox *buttonBox;
+};
+
 
 // inlines
 ActionCollection *NetworkModelController::actionCollection() const { return _actionCollection; }

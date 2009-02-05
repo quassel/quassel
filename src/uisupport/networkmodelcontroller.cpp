@@ -18,8 +18,14 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QComboBox>
+#include <QDialogButtonBox>
+#include <QGridLayout>
+#include <QLabel>
+#include <QLineEdit>
 #include <QInputDialog>
 #include <QMessageBox>
+#include <QPushButton>
 
 #include "networkmodelcontroller.h"
 
@@ -45,11 +51,11 @@ NetworkModelController::~NetworkModelController() {
 
 }
 
-void NetworkModelController::registerAction(ActionType type, const QString &text, bool checkable) {
-  registerAction(type, QPixmap(), text, checkable);
+Action * NetworkModelController::registerAction(ActionType type, const QString &text, bool checkable) {
+  return registerAction(type, QPixmap(), text, checkable);
 }
 
-void NetworkModelController::registerAction(ActionType type, const QPixmap &icon, const QString &text, bool checkable) {
+Action * NetworkModelController::registerAction(ActionType type, const QPixmap &icon, const QString &text, bool checkable) {
   Action *act;
   if(icon.isNull())
     act = new Action(text, this);
@@ -61,6 +67,7 @@ void NetworkModelController::registerAction(ActionType type, const QPixmap &icon
 
   _actionCollection->addAction(QString::number(type, 16), act);
   _actionByType[type] = act;
+  return act;
 }
 
 /******** Helper Functions ***********************************************************************/
@@ -189,8 +196,20 @@ void NetworkModelController::actionTriggered(QAction *action) {
 }
 
 void NetworkModelController::handleNetworkAction(ActionType type, QAction *) {
+  if(type == NetworkConnectAll || type == NetworkDisconnectAll) {
+    foreach(NetworkId id, Client::networkIds()) {
+      const Network *net = Client::network(id);
+      if(type == NetworkConnectAll && net->connectionState() == Network::Disconnected)
+        net->requestConnect();
+      if(type == NetworkDisconnectAll && net->connectionState() != Network::Disconnected)
+        net->requestDisconnect();
+    }
+    return;
+  }
+
   if(!indexList().count())
     return;
+
   const Network *network = Client::network(indexList().at(0).data(NetworkModel::NetworkIdRole).value<NetworkId>());
   Q_CHECK_PTR(network);
   if(!network)
@@ -305,10 +324,11 @@ void NetworkModelController::handleGeneralAction(ActionType type, QAction *actio
     case JoinChannel: {
       QString channelName = contextItem();
       if(channelName.isEmpty()) {
-        bool ok;
-        channelName = QInputDialog::getText(0, tr("Join Channel"), tr("Input channel name:"), QLineEdit::Normal, QString(), &ok);
-        if(!ok)
-          return;
+        JoinDlg dlg(networkId);
+        if(dlg.exec() == QDialog::Accepted) {
+          channelName = dlg.channelName();
+          networkId = dlg.networkId();
+        }
       }
       if(!channelName.isEmpty()) {
         Client::instance()->userInput(BufferInfo::fakeStatusBuffer(networkId), QString("/JOIN %1").arg(channelName));
@@ -386,4 +406,56 @@ void NetworkModelController::handleNickAction(ActionType type, QAction *) {
         qWarning() << "Unhandled nick action";
     }
   }
+}
+
+/***************************************************************************************************************
+ * JoinDlg
+ ***************************************************************************************************************/
+
+NetworkModelController::JoinDlg::JoinDlg(NetworkId defaultId, QWidget *parent) : QDialog(parent) {
+  setWindowIcon(SmallIcon("irc-join-channel"));
+  setWindowTitle(tr("Join Channel"));
+
+  QGridLayout *layout = new QGridLayout(this);
+  layout->addWidget(new QLabel(tr("Network:")), 0, 0);
+  layout->addWidget(networks = new QComboBox, 0, 1);
+  layout->addWidget(new QLabel(tr("Channel:")), 1, 0);
+  layout->addWidget(channel = new QLineEdit, 1, 1);
+  layout->addWidget(buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel), 2, 0, 1, 2);
+  setLayout(layout);
+
+  channel->setFocus();
+  buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
+  networks->setInsertPolicy(QComboBox::InsertAlphabetically);
+
+  connect(buttonBox, SIGNAL(accepted()), SLOT(accept()));
+  connect(buttonBox, SIGNAL(rejected()), SLOT(reject()));
+  connect(channel, SIGNAL(textChanged(QString)), SLOT(on_channel_textChanged(QString)));
+
+
+  QString defaultName;
+  foreach(NetworkId id, Client::networkIds()) {
+    const Network *net = Client::network(id);
+    if(net->isConnected()) {
+      networks->addItem(net->networkName(), QVariant::fromValue<NetworkId>(id));
+      if(id == defaultId)
+        defaultName = net->networkName();
+    }
+  }
+
+  if(!defaultName.isEmpty())
+    networks->setCurrentIndex(networks->findText(defaultName));
+
+}
+
+NetworkId NetworkModelController::JoinDlg::networkId() const {
+  return networks->itemData(networks->currentIndex()).value<NetworkId>();
+}
+
+QString NetworkModelController::JoinDlg::channelName() const {
+  return channel->text();
+}
+
+void NetworkModelController::JoinDlg::on_channel_textChanged(const QString &text) {
+  buttonBox->button(QDialogButtonBox::Ok)->setEnabled(!text.isEmpty());
 }
