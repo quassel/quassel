@@ -30,6 +30,7 @@
 AwayLogView::AwayLogView(AwayLogFilter *filter, QWidget *parent)
   : ChatMonitorView(filter, parent)
 {
+  setWindowTitle(tr("Away Log"));
 }
 
 void AwayLogView::addActionsToMenu(QMenu *menu, const QPointF &pos) {

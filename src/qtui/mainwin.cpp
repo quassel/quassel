@@ -275,7 +275,11 @@ void MainWin::setupMenus() {
   _bufferViewsMenu->addAction(coll->action("ConfigureBufferViews"));
   _viewMenu->addSeparator();
   _viewMenu->addAction(coll->action("ToggleSearchBar"));
-  _viewMenu->addAction(coll->action("ShowAwayLog"));
+
+  coreAction = coll->action("ShowAwayLog");
+  flagRemoteCoreOnly(coreAction);
+  _viewMenu->addAction(coreAction);
+
   _viewMenu->addAction(coll->action("ToggleStatusBar"));
   _viewMenu->addSeparator();
   _viewMenu->addAction(coll->action("LockDockPositions"));

@@ -30,17 +30,27 @@ bool AwayLogFilter::filterAcceptsRow(int sourceRow, const QModelIndex &sourcePar
 
   QModelIndex source_index = sourceModel()->index(sourceRow, 0);
 
-  Message::Flags flags = (Message::Flags)source_index.data(MessageModel::FlagsRole).toInt();
+  Message::Flags flags = (Message::Flags)sourceModel()->data(source_index, MessageModel::FlagsRole).toInt();
   if(!(flags & Message::Backlog && flags & Message::Highlight))
     return false;
 
-  BufferId bufferId = source_index.data(MessageModel::BufferIdRole).value<BufferId>();
+  BufferId bufferId = sourceModel()->data(source_index, MessageModel::BufferIdRole).value<BufferId>();
   if(!bufferId.isValid()) {
     return false;
   }
 
-  if(Client::networkModel()->lastSeenMsgId(bufferId) >= source_index.data(MessageModel::MsgIdRole).value<MsgId>())
+  if(Client::networkModel()->lastSeenMsgId(bufferId) >= sourceModel()->data(source_index, MessageModel::MsgIdRole).value<MsgId>())
     return false;
 
   return true;
+}
+
+QVariant AwayLogFilter::data(const QModelIndex &index, int role) const {
+  if(role != MessageModel::FlagsRole)
+    return ChatMonitorFilter::data(index, role);
+
+  QModelIndex source_index = mapToSource(index);
+  Message::Flags flags = (Message::Flags)sourceModel()->data(source_index, MessageModel::FlagsRole).toInt();
+  flags &= ~Message::Highlight;
+  return (int)flags;
 }

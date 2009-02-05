@@ -31,6 +31,7 @@ public:
 
   virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
   virtual QString idString() const { return "AwayLog"; }
+  virtual QVariant data(const QModelIndex &index, int role) const;
 };
 
 #endif //AWAYLOGFILTER_H

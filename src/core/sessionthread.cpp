@@ -36,12 +36,9 @@ SessionThread::SessionThread(UserId uid, bool restoreState, QObject *parent)
 }
 
 SessionThread::~SessionThread() {
-  if(_session) {
-    _session->setParent(0);
-    _session->moveToThread(thread());
-    _session->deleteLater();
-    _session = 0;
-  }
+  // shut down thread gracefully
+  quit();
+  wait();
 }
 
 CoreSession *SessionThread::session() {
@@ -106,13 +103,5 @@ void SessionThread::run() {
   emit initialized();
   exec();
   delete _session;
-  _session = 0;
 }
 
-void SessionThread::stopSession() {
-  if(_session) {
-    connect(_session, SIGNAL(destroyed()), this, SLOT(quit()));
-    _session->deleteLater();
-    _session = 0;
-  }
-}
