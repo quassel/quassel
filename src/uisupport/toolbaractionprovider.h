@@ -18,21 +18,40 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "graphicalui.h"
+#ifndef TOOLBARACTIONPROVIDER_H_
+#define TOOLBARACTIONPROVIDER_H_
 
-#include "contextmenuactionprovider.h"
+#include "networkmodelcontroller.h"
 
-ContextMenuActionProvider *GraphicalUi::_contextMenuActionProvider = 0;
-ToolBarActionProvider *GraphicalUi::_toolBarActionProvider = 0;
+class QToolBar;
 
-GraphicalUi::GraphicalUi(QObject *parent) : AbstractUi(parent) {
+class ToolBarActionProvider : public NetworkModelController {
+  Q_OBJECT
 
-}
+public:
+  ToolBarActionProvider(QObject *parent = 0);
+  virtual ~ToolBarActionProvider();
 
-void GraphicalUi::setContextMenuActionProvider(ContextMenuActionProvider *provider) {
-  _contextMenuActionProvider = provider;
-}
+  enum ToolBarType {
+    NetworkToolBar,
+    ChatViewToolBar,
+    NickToolBar
+  };
 
-void GraphicalUi::setToolBarActionProvider(ToolBarActionProvider *provider) {
-  _toolBarActionProvider = provider;
-}
+  void addActions(QToolBar *, ToolBarType type);
+
+private slots:
+  void networkCreated(NetworkId id);
+  void networkRemoved(NetworkId id);
+  void networkUpdated(const Network *net = 0);
+  void connectOrDisconnectNet();
+
+  //void currentBufferChanged(BufferId id);
+
+
+private:
+  QMenu *_networksConnectMenu, *_networksDisconnectMenu;
+  QHash<NetworkId, Action *> _networkActions;
+};
+
+#endif

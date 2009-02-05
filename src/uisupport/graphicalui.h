@@ -24,6 +24,7 @@
 #include "abstractui.h"
 
 class ContextMenuActionProvider;
+class ToolBarActionProvider;
 
 class GraphicalUi : public AbstractUi {
   Q_OBJECT
@@ -32,17 +33,24 @@ public:
   GraphicalUi(QObject *parent = 0);
 
   inline static ContextMenuActionProvider *contextMenuActionProvider();
+  inline static ToolBarActionProvider *toolBarActionProvider();
 
 protected:
   void setContextMenuActionProvider(ContextMenuActionProvider *);
+  void setToolBarActionProvider(ToolBarActionProvider *);
 
 private:
   static ContextMenuActionProvider *_contextMenuActionProvider;
+  static ToolBarActionProvider *_toolBarActionProvider;
 
 };
 
 ContextMenuActionProvider *GraphicalUi::contextMenuActionProvider() {
   return _contextMenuActionProvider;
+}
+
+ToolBarActionProvider *GraphicalUi::toolBarActionProvider() {
+  return _toolBarActionProvider;
 }
 
 #endif

@@ -24,7 +24,7 @@ set(SOURCES
     nickviewfilter.cpp
     settingspage.cpp
     tabcompleter.cpp
-    #toolbaractionprovider.cpp
+    toolbaractionprovider.cpp
     uisettings.cpp
     uistyle.cpp
    )
@@ -49,13 +49,14 @@ set(MOC_HDRS
     nickviewfilter.h
     settingspage.h
     tabcompleter.h
-    #toolbaractionprovider.h
+    toolbaractionprovider.h
    )
 
 set(HEADERS
     icon.h
     uisettings.h
-    uistyle.h)
+    uistyle.h
+   )
 
 if(HAVE_KDE)
     set(SOURCES ${SOURCES} kcmdlinewrapper.cpp)

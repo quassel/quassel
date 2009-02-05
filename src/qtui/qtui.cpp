@@ -28,6 +28,7 @@
 #include "qtuimessageprocessor.h"
 #include "qtuisettings.h"
 #include "qtuistyle.h"
+#include "toolbaractionprovider.h"
 #include "types.h"
 #include "util.h"
 
@@ -46,6 +47,7 @@ QtUi::QtUi() : GraphicalUi() {
   _instance = this;
 
   setContextMenuActionProvider(new ContextMenuActionProvider(this));
+  setToolBarActionProvider(new ToolBarActionProvider(this));
 
   QtUiSettings uiSettings;
   Quassel::loadTranslation(uiSettings.value("Locale", QLocale::system()).value<QLocale>());
