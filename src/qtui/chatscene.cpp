@@ -865,8 +865,9 @@ void ChatScene::loadWebPreview(ChatItem *parentItem, const QString &url, const Q
   if(webPreview.url != url) {
     webPreview.url = url;
     // prepare to load a different URL
-    if(webPreview.previewItem && webPreview.previewItem->scene()) {
-      removeItem(webPreview.previewItem);
+    if(webPreview.previewItem) {
+      if(webPreview.previewItem->scene())
+	removeItem(webPreview.previewItem);
       delete webPreview.previewItem;
       webPreview.previewItem = 0;
     }
