@@ -532,13 +532,13 @@ void MainWin::setupToolBars() {
   _networkToolBar->setObjectName("NetworkToolBar");
   QtUi::toolBarActionProvider()->addActions(_networkToolBar, ToolBarActionProvider::NetworkToolBar);
 
-  _nickToolBar = addToolBar("User");
-  _nickToolBar->setObjectName("NickToolBar");
-  QtUi::toolBarActionProvider()->addActions(_nickToolBar, ToolBarActionProvider::NickToolBar);
+  //_nickToolBar = addToolBar("User");
+  //_nickToolBar->setObjectName("NickToolBar");
+  //QtUi::toolBarActionProvider()->addActions(_nickToolBar, ToolBarActionProvider::NickToolBar);
 
 #ifdef HAVE_KDE
   _networkToolBar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-  _nickToolBar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+  //_nickToolBar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 #endif
 }
 
