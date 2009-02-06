@@ -46,6 +46,19 @@ QDockWidget *NickListWidget::dock() const {
     return 0;
 }
 
+void NickListWidget::hideEvent(QHideEvent *event) {
+  emit nickSelectionChanged(QModelIndexList());
+  AbstractItemView::hideEvent(event);
+}
+
+void NickListWidget::showEvent(QShowEvent *event) {
+  NickView *view = qobject_cast<NickView *>(ui.stackedWidget->currentWidget());
+  if(view)
+    emit nickSelectionChanged(view->selectedIndexes());
+
+  AbstractItemView::showEvent(event);
+}
+
 void NickListWidget::showWidget(bool visible) {
   if(!selectionModel())
     return;
@@ -70,6 +83,7 @@ void NickListWidget::currentChanged(const QModelIndex &current, const QModelInde
 
   if(bufferType != BufferInfo::ChannelBuffer) {
     ui.stackedWidget->setCurrentWidget(ui.emptyPage);
+    emit nickSelectionChanged(QModelIndexList());
     return;
   }
 
@@ -91,10 +105,12 @@ void NickListWidget::currentChanged(const QModelIndex &current, const QModelInde
   if(newBufferId == oldBufferId)
     return;
 
+  NickView *view;
   if(nickViews.contains(newBufferId)) {
-    ui.stackedWidget->setCurrentWidget(nickViews.value(newBufferId));
+    view = nickViews.value(newBufferId);
+    ui.stackedWidget->setCurrentWidget(view);
   } else {
-    NickView *view = new NickView(this);
+    view = new NickView(this);
     NickViewFilter *filter = new NickViewFilter(newBufferId, Client::networkModel());
     view->setModel(filter);
     QModelIndex source_current = Client::bufferModel()->mapToSource(current);
@@ -102,7 +118,19 @@ void NickListWidget::currentChanged(const QModelIndex &current, const QModelInde
     nickViews[newBufferId] = view;
     ui.stackedWidget->addWidget(view);
     ui.stackedWidget->setCurrentWidget(view);
+    connect(view, SIGNAL(selectionUpdated()), SLOT(nickSelectionChanged()));
   }
+  emit nickSelectionChanged(view->selectedIndexes());
+}
+
+void NickListWidget::nickSelectionChanged() {
+  NickView *view = qobject_cast<NickView *>(sender());
+  Q_ASSERT(view);
+  if(view != ui.stackedWidget->currentWidget()) {
+    qDebug() << "Nick selection of hidden view changed!";
+    return;
+  }
+  emit nickSelectionChanged(view->selectedIndexes());
 }
 
 void NickListWidget::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end) {

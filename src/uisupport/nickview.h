@@ -49,7 +49,7 @@ signals:
   void selectionUpdated();
 
 private:
-
+  friend class NickListWidget;  // needs selectedIndexes()
 };
 
 // ******************************

@@ -71,6 +71,7 @@ void AbstractBufferContainer::currentChanged(const QModelIndex &current, const Q
   if(newBufferId != oldBufferId) {
     setCurrentBuffer(newBufferId);
     emit currentChanged(newBufferId);
+    emit currentChanged(current);
   }
 }
 

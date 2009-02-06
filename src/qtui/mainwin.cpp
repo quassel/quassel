@@ -523,6 +523,11 @@ void MainWin::setupSystray() {
 }
 
 void MainWin::setupToolBars() {
+  connect(_bufferWidget, SIGNAL(currentChanged(QModelIndex)),
+          QtUi::toolBarActionProvider(), SLOT(currentBufferChanged(QModelIndex)));
+  connect(_nickListWidget, SIGNAL(nickSelectionChanged(QModelIndexList)),
+          QtUi::toolBarActionProvider(), SLOT(nickSelectionChanged(QModelIndexList)));
+
   _networkToolBar = addToolBar("Network");
   _networkToolBar->setObjectName("NetworkToolBar");
   QtUi::toolBarActionProvider()->addActions(_networkToolBar, ToolBarActionProvider::NetworkToolBar);

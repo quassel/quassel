@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _NICKLISTWIDGET_H_
-#define _NICKLISTWIDGET_H_
+#ifndef NICKLISTWIDGET_H_
+#define NICKLISTWIDGET_H_
 
 #include "ui_nicklistwidget.h"
 #include "abstractitemview.h"
@@ -43,8 +43,13 @@ public:
 public slots:
   void showWidget(bool visible);
 
+signals:
+  void nickSelectionChanged(const QModelIndexList &);
+
 protected:
   virtual QSize sizeHint() const;
+  virtual void hideEvent(QHideEvent *);
+  virtual void showEvent(QShowEvent *);
 
 protected slots:
   virtual void currentChanged(const QModelIndex &current, const QModelIndex &previous);
@@ -52,7 +57,8 @@ protected slots:
 
 private slots:
   void removeBuffer(BufferId bufferId);
-  
+  void nickSelectionChanged();
+
 private:
   Ui::NickListWidget ui;
   QHash<BufferId, NickView *> nickViews;

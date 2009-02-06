@@ -104,9 +104,10 @@ QModelIndexList NickView::selectedIndexes() const {
   QModelIndexList indexList = QTreeView::selectedIndexes();
 
   // make sure the item we clicked on is first
-  Q_ASSERT(indexList.contains(currentIndex()));
-  indexList.removeAll(currentIndex());
-  indexList.prepend(currentIndex());
+  if(indexList.contains(currentIndex())) {
+    indexList.removeAll(currentIndex());
+    indexList.prepend(currentIndex());
+  }
 
   return indexList;
 }

@@ -39,6 +39,7 @@ public:
 
 signals:
   void currentChanged(BufferId);
+  void currentChanged(const QModelIndex &);
 
 protected:
   //! Create an AbstractChatView for the given BufferId and add it to the UI if necessary
