@@ -262,7 +262,8 @@ bool BufferViewFilter::filterAcceptBuffer(const QModelIndex &source_bufferIndex)
 
   if(!config()->bufferList().contains(bufferId) && !_editMode) {
     // add the buffer if...
-    if(config()->isInitialized() && !config()->removedBuffers().contains(bufferId) // it hasn't been manually removed and either
+    if(config()->isInitialized()
+       && !config()->removedBuffers().contains(bufferId) // it hasn't been manually removed and either
        && ((config()->addNewBuffersAutomatically() && !config()->temporarilyRemovedBuffers().contains(bufferId)) // is totally unknown to us (a new buffer)...
 	   || (config()->temporarilyRemovedBuffers().contains(bufferId) && activityLevel > BufferInfo::OtherActivity))) { // or was just temporarily hidden and has a new message waiting for us.
       addBuffer(bufferId);
@@ -313,10 +314,15 @@ bool BufferViewFilter::filterAcceptsRow(int source_row, const QModelIndex &sourc
     return false;
   }
 
-  if(!source_parent.isValid())
+  NetworkModel::ItemType childType = (NetworkModel::ItemType)sourceModel()->data(child, NetworkModel::ItemTypeRole).toInt();
+  switch(childType) {
+  case NetworkModel::NetworkItemType:
     return filterAcceptNetwork(child);
-  else
+  case NetworkModel::BufferItemType:
     return filterAcceptBuffer(child);
+  default:
+    return false;
+  }
 }
 
 bool BufferViewFilter::lessThan(const QModelIndex &source_left, const QModelIndex &source_right) const {
@@ -377,6 +383,9 @@ QVariant BufferViewFilter::icon(const QModelIndex &index) const {
     return QVariant();
 
   QModelIndex source_index = mapToSource(index);
+  if(sourceModel()->data(source_index, NetworkModel::ItemTypeRole).toInt() != NetworkModel::BufferItemType)
+    return QVariant();
+
   if(sourceModel()->data(source_index, NetworkModel::BufferTypeRole).toInt() != BufferInfo::QueryBuffer)
     return QVariant();
 

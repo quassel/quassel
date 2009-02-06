@@ -45,6 +45,7 @@ NetworkItem::NetworkItem(const NetworkId &netid, AbstractTreeItem *parent)
   // as we "sync" the dataChanged() signals of NetworkItem and StatusBufferItem
   setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
   connect(this, SIGNAL(networkDataChanged(int)), this, SIGNAL(dataChanged(int)));
+  connect(this, SIGNAL(beginRemoveChilds(int, int)), this, SLOT(onBeginRemoveChilds(int, int)));
 }
 
 QVariant NetworkItem::data(int column, int role) const {
