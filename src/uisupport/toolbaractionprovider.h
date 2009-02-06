@@ -40,18 +40,28 @@ public:
 
   void addActions(QToolBar *, ToolBarType type);
 
+protected:
+  virtual void handleNetworkAction(ActionType, QAction *);
+  virtual void handleBufferAction(ActionType, QAction *);
+  virtual void handleNickAction(ActionType, QAction *);
+  virtual void handleGeneralAction(ActionType, QAction *);
+
 private slots:
   void networkCreated(NetworkId id);
   void networkRemoved(NetworkId id);
   void networkUpdated(const Network *net = 0);
   void connectOrDisconnectNet();
 
-  //void currentBufferChanged(BufferId id);
+  void currentBufferChanged(const QModelIndex &);
+  void nickSelectionChanged(const QModelIndexList &);
 
+  void updateStates();
 
 private:
   QMenu *_networksConnectMenu, *_networksDisconnectMenu;
   QHash<NetworkId, Action *> _networkActions;
+  QModelIndex _currentBuffer;
+  QModelIndexList _selectedNicks;
 };
 
 #endif

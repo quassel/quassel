@@ -64,9 +64,18 @@ ToolBarActionProvider::ToolBarActionProvider(QObject *parent)
 
   connect(Client::instance(), SIGNAL(networkCreated(NetworkId)), SLOT(networkCreated(NetworkId)));
   connect(Client::instance(), SIGNAL(networkRemoved(NetworkId)), SLOT(networkRemoved(NetworkId)));
+
+  updateStates();
 }
 
 ToolBarActionProvider::~ToolBarActionProvider() {
+
+}
+
+void ToolBarActionProvider::updateStates() {
+  action(BufferPart)->setEnabled(_currentBuffer.isValid()
+                              && _currentBuffer.data(NetworkModel::BufferTypeRole) == BufferInfo::ChannelBuffer
+                              && _currentBuffer.data(NetworkModel::ItemActiveRole).toBool());
 
 }
 
@@ -93,6 +102,37 @@ void ToolBarActionProvider::addActions(QToolBar *bar, ToolBarType type) {
     default:
       return;
   }
+}
+
+void ToolBarActionProvider::currentBufferChanged(const QModelIndex &index) {
+  _currentBuffer = index;
+  updateStates();
+}
+
+void ToolBarActionProvider::nickSelectionChanged(const QModelIndexList &indexList) {
+  _selectedNicks = indexList;
+  updateStates();
+}
+
+// override those to set indexes right
+void ToolBarActionProvider::handleNetworkAction(ActionType type, QAction *action) {
+  setIndexList(_currentBuffer);
+  NetworkModelController::handleNetworkAction(type, action);
+}
+
+void ToolBarActionProvider::handleBufferAction(ActionType type, QAction *action) {
+  setIndexList(_currentBuffer);
+  NetworkModelController::handleBufferAction(type, action);
+}
+
+void ToolBarActionProvider::handleNickAction(ActionType type, QAction *action) {
+  setIndexList(_selectedNicks);
+  NetworkModelController::handleNickAction(type, action);
+}
+
+void ToolBarActionProvider::handleGeneralAction(ActionType type, QAction *action) {
+  setIndexList(_currentBuffer);
+  NetworkModelController::handleGeneralAction(type, action);
 }
 
 void ToolBarActionProvider::networkCreated(NetworkId id) {
