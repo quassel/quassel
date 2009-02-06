@@ -587,6 +587,8 @@ void MainWin::setConnectedState() {
   // _viewMenu->setEnabled(true);
   if(!Client::internalCore())
     statusBar()->showMessage(tr("Connected to core."));
+  else
+    statusBar()->clearMessage();
 
   if(Client::signalProxy()->isSecure()) {
     sslLabel->setPixmap(SmallIcon("security-high"));

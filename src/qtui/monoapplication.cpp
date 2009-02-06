@@ -30,7 +30,7 @@ MonolithicApplication::MonolithicApplication(int &argc, char **argv)
     _internalInitDone(false)
 {
   _internal = new CoreApplicationInternal(); // needed for parser options
-  setRunMode(Monolithic);
+  setRunMode(Quassel::Monolithic);
 }
 
 bool MonolithicApplication::init() {

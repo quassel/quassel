@@ -60,7 +60,9 @@ bool CoreApplicationInternal::init() {
 
 /*****************************************************************************/
 
-CoreApplication::CoreApplication(int &argc, char **argv) : QCoreApplication(argc, argv), Quassel() {
+CoreApplication::CoreApplication(int &argc, char **argv)
+  : QCoreApplication(argc, argv), Quassel()
+{
   setRunMode(Quassel::CoreOnly);
   _internal = new CoreApplicationInternal();
 }
