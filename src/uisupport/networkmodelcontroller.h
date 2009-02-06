@@ -162,7 +162,7 @@ class NetworkModelController::JoinDlg : public QDialog {
   Q_OBJECT
 
 public:
-  JoinDlg(NetworkId id, QWidget *parent = 0);
+  JoinDlg(const QModelIndex &index, QWidget *parent = 0);
 
   QString channelName() const;
   NetworkId networkId() const;

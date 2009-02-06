@@ -317,14 +317,12 @@ void NetworkModelController::handleGeneralAction(ActionType type, QAction *actio
   if(!indexList().count())
     return;
   NetworkId networkId = indexList().at(0).data(NetworkModel::NetworkIdRole).value<NetworkId>();
-  if(!networkId.isValid())
-    return;
 
   switch(type) {
     case JoinChannel: {
       QString channelName = contextItem();
       if(channelName.isEmpty()) {
-        JoinDlg dlg(networkId);
+        JoinDlg dlg(indexList().first());
         if(dlg.exec() == QDialog::Accepted) {
           channelName = dlg.channelName();
           networkId = dlg.networkId();
@@ -336,10 +334,12 @@ void NetworkModelController::handleGeneralAction(ActionType type, QAction *actio
       break;
     }
     case ShowChannelList:
-      emit showChannelList(networkId);
+      if(networkId.isValid())
+        emit showChannelList(networkId);
       break;
     case ShowIgnoreList:
-      emit showIgnoreList(networkId);
+      if(networkId.isValid())
+        emit showIgnoreList(networkId);
       break;
     default:
       break;
@@ -412,7 +412,7 @@ void NetworkModelController::handleNickAction(ActionType type, QAction *) {
  * JoinDlg
  ***************************************************************************************************************/
 
-NetworkModelController::JoinDlg::JoinDlg(NetworkId defaultId, QWidget *parent) : QDialog(parent) {
+NetworkModelController::JoinDlg::JoinDlg(const QModelIndex &index, QWidget *parent) : QDialog(parent) {
   setWindowIcon(SmallIcon("irc-join-channel"));
   setWindowTitle(tr("Join Channel"));
 
@@ -432,20 +432,22 @@ NetworkModelController::JoinDlg::JoinDlg(NetworkId defaultId, QWidget *parent) :
   connect(buttonBox, SIGNAL(rejected()), SLOT(reject()));
   connect(channel, SIGNAL(textChanged(QString)), SLOT(on_channel_textChanged(QString)));
 
-
-  QString defaultName;
   foreach(NetworkId id, Client::networkIds()) {
     const Network *net = Client::network(id);
     if(net->isConnected()) {
       networks->addItem(net->networkName(), QVariant::fromValue<NetworkId>(id));
-      if(id == defaultId)
-        defaultName = net->networkName();
     }
   }
 
-  if(!defaultName.isEmpty())
-    networks->setCurrentIndex(networks->findText(defaultName));
-
+  if(index.isValid()) {
+    NetworkId networkId = index.data(NetworkModel::NetworkIdRole).value<NetworkId>();
+    if(networkId.isValid()) {
+      networks->setCurrentIndex(networks->findText(Client::network(networkId)->networkName()));
+      if(index.data(NetworkModel::BufferTypeRole) == BufferInfo::ChannelBuffer
+      && !index.data(NetworkModel::ItemActiveRole).toBool())
+          channel->setText(index.data(Qt::DisplayRole).toString());
+    }
+  }
 }
 
 NetworkId NetworkModelController::JoinDlg::networkId() const {
