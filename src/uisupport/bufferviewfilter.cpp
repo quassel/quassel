@@ -377,13 +377,13 @@ QVariant BufferViewFilter::icon(const QModelIndex &index) const {
     return QVariant();
 
   QModelIndex source_index = mapToSource(index);
-  if(sourceModel()->data(index, NetworkModel::BufferTypeRole).toInt() != BufferInfo::QueryBuffer)
+  if(sourceModel()->data(source_index, NetworkModel::BufferTypeRole).toInt() != BufferInfo::QueryBuffer)
     return QVariant();
 
-  if(!sourceModel()->data(index, NetworkModel::ItemActiveRole).toBool())
+  if(!sourceModel()->data(source_index, NetworkModel::ItemActiveRole).toBool())
     return _userOfflineIcon;
 
-  if(sourceModel()->data(index, NetworkModel::UserAwayRole).toBool())
+  if(sourceModel()->data(source_index, NetworkModel::UserAwayRole).toBool())
     return _userAwayIcon;
   else
     return _userOnlineIcon;
