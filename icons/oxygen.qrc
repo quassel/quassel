@@ -9,12 +9,23 @@
     <file>oxygen/22x22/status/dialog-error.png</file>
     <file>oxygen/22x22/status/dialog-warning.png</file>
     <file>oxygen/22x22/actions/edit-rename.png</file>
+    <file>oxygen/22x22/actions/irc-unvoice.png</file>
     <file>oxygen/22x22/actions/list-remove-user.png</file>
+    <file>oxygen/22x22/actions/irc-remove-operator.png</file>
     <file>oxygen/22x22/actions/network-disconnect.png</file>
     <file>oxygen/22x22/actions/edit-clear-locationbar-rtl.png</file>
+    <file>oxygen/22x22/actions/irc-voice.png</file>
+    <file>oxygen/22x22/actions/im-kick-user.png</file>
+    <file>oxygen/22x22/actions/im-ban-user.png</file>
+    <file>oxygen/22x22/actions/irc-join-channel.png</file>
+    <file>oxygen/22x22/actions/irc-operator.png</file>
+    <file>oxygen/22x22/actions/mail-message-new.png</file>
     <file>oxygen/22x22/actions/list-add-user.png</file>
     <file>oxygen/22x22/actions/network-connect.png</file>
+    <file>oxygen/22x22/actions/im-ban-kick-user.png</file>
     <file>oxygen/22x22/actions/dialog-close.png</file>
+    <file>oxygen/22x22/actions/im-user.png</file>
+    <file>oxygen/22x22/actions/irc-close-channel.png</file>
     <file>oxygen/16x16/apps/quassel.png</file>
     <file>oxygen/16x16/status/security-low.png</file>
     <file>oxygen/16x16/status/user-away.png</file>
@@ -42,6 +53,7 @@
     <file>oxygen/16x16/actions/go-down.png</file>
     <file>oxygen/16x16/actions/im-user-away.png</file>
     <file>oxygen/16x16/actions/go-next.png</file>
+    <file>oxygen/16x16/actions/irc-join-channel.png</file>
     <file>oxygen/16x16/actions/network-connect.png</file>
     <file>oxygen/16x16/actions/media-playback-start.png</file>
     <file>oxygen/16x16/actions/dialog-cancel.png</file>
