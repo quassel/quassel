@@ -74,28 +74,29 @@ void Identity::init() {
 }
 
 QString Identity::defaultNick() {
-  QString generalDefault = QString("quassel%1").arg(qrand() & 0xff); // FIXME provide more sensible default nicks
+  QString nick = QString("quassel%1").arg(qrand() & 0xff); // FIXME provide more sensible default nicks
 #ifdef Q_OS_MAC
-  return CFStringToQString(CSCopyUserName(true));
+  QString shortUserName = CFStringToQString(CSCopyUserName(true));
+  if(!shortUserName.isEmpty())
+    nick = shortUserName;
 #elif defined(Q_OS_WIN32)
   TCHAR  infoBuf[128];
   DWORD  bufCharCount = 128;
   //if(GetUserNameEx(/* NameSamCompatible */ 1, infoBuf, &bufCharCount))
-  if(!GetUserNameEx(NameSamCompatible, infoBuf, &bufCharCount))
-    return generalDefault;
-
-  QString nickName(infoBuf);
-  int lastBs = nickName.lastIndexOf('\\');
-  if(lastBs != -1) {
-    nickName = nickName.mid(lastBs + 1);
+  if(GetUserNameEx(NameSamCompatible, infoBuf, &bufCharCount)) {
+    QString nickName(infoBuf);
+    int lastBs = nickName.lastIndexOf('\\');
+    if(lastBs != -1) {
+      nickName = nickName.mid(lastBs + 1);
+    }
+    if(!nickName.isEmpty())
+      nick = nickName;
   }
-  if(nickName.isEmpty())
-    return generalDefault;
-  else
-    return nickName;
-#else
-  return generalDefault;
 #endif
+  // cleaning forbidden characters from nick
+  QRegExp rx(QString("(^[\\d-]+|[^A-Za-z\x5b-\x60\x7b-\x7d])"));
+  nick.remove(rx);
+  return nick;
 }
 
 QString Identity::defaultRealName() {
