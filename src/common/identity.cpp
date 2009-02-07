@@ -18,10 +18,15 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include "identity.h"
+
 #include <QMetaProperty>
 #include <QVariantMap>
 
-#include "identity.h"
+#ifdef Q_OS_MAC
+#  include <CoreServices/CoreServices.h>
+#  include "mac_utils.h"
+#endif
 
 Identity::Identity(IdentityId id, QObject *parent)
   : SyncableObject(parent),
@@ -61,11 +66,27 @@ void Identity::init() {
   setAllowClientUpdates(true);
 }
 
+QString Identity::defaultNick() {
+#ifdef Q_OS_MAC
+  return CFStringToQString(CSCopyUserName(true));
+#else
+  return QString("quassel%1").arg(qrand() & 0xff); // FIXME provide more sensible default nicks
+#endif
+}
+
+QString Identity::defaultRealName() {
+#ifdef Q_OS_MAC
+  return CFStringToQString(CSCopyUserName(false));
+#else
+  return tr("Quassel IRC User");
+#endif
+}
+
 void Identity::setToDefaults() {
   setIdentityName(tr("<empty>"));
-  setRealName(tr("Quassel IRC User"));
+  setRealName(defaultRealName());
   QStringList n;
-  n << QString("quassel%1").arg(qrand() & 0xff); // FIXME provide more sensible default nicks
+  n << defaultNick();
   setNicks(n);
   setAwayNick("");
   setAwayNickEnabled(false);

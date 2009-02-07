@@ -147,6 +147,8 @@ private:
   QString _ident, _kickReason, _partReason, _quitReason;
 
   void init();
+  QString defaultNick();
+  QString defaultRealName();
 
   friend QDataStream &operator>>(QDataStream &in, Identity &identity);
 };

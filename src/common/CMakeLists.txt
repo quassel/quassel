@@ -56,9 +56,17 @@ set(HEADERS ${MOC_HDRS}
     types.h
     util.h)
 
+if(APPLE)
+  set(SOURCES ${SOURCES} mac_utils.cpp)
+  set(HEADERS ${HEADERS} mac_utils.h)
+endif(APPLE)
+
 qt4_wrap_cpp(MOC ${MOC_HDRS})
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_SOURCE_DIR})  # for version.inc and version.gen
 set_directory_properties(PROPERTIES ADDITIONAL_MAKE_CLEAN_FILES version.gen)
 
 add_library(mod_common STATIC ${SOURCES} ${MOC})
+if(APPLE)
+  target_link_libraries(mod_common "-framework CoreServices" "-framework CoreFoundation")
+endif(APPLE)
