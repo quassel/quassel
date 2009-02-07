@@ -28,6 +28,13 @@
 #  include "mac_utils.h"
 #endif
 
+#ifdef Q_OS_WIN32
+#  include <windows.h>
+#  include <Winbase.h>
+#  define SECURITY_WIN32
+#  include <Security.h>
+#endif
+
 Identity::Identity(IdentityId id, QObject *parent)
   : SyncableObject(parent),
     _identityId(id)
@@ -67,18 +74,43 @@ void Identity::init() {
 }
 
 QString Identity::defaultNick() {
+  QString generalDefault = QString("quassel%1").arg(qrand() & 0xff); // FIXME provide more sensible default nicks
 #ifdef Q_OS_MAC
   return CFStringToQString(CSCopyUserName(true));
+#elif defined(Q_OS_WIN32)
+  TCHAR  infoBuf[128];
+  DWORD  bufCharCount = 128;
+  //if(GetUserNameEx(/* NameSamCompatible */ 1, infoBuf, &bufCharCount))
+  if(!GetUserNameEx(NameSamCompatible, infoBuf, &bufCharCount))
+    return generalDefault;
+
+  QString nickName(infoBuf);
+  int lastBs = nickName.lastIndexOf('\\');
+  if(lastBs != -1) {
+    nickName = nickName.mid(lastBs + 1);
+  }
+  if(nickName.isEmpty())
+    return generalDefault;
+  else
+    return nickName;
 #else
-  return QString("quassel%1").arg(qrand() & 0xff); // FIXME provide more sensible default nicks
+  return generalDefault;
 #endif
 }
 
 QString Identity::defaultRealName() {
+  QString generalDefault = tr("Quassel IRC User");
 #ifdef Q_OS_MAC
   return CFStringToQString(CSCopyUserName(false));
+#elif defined(Q_OS_WIN32)
+  TCHAR  infoBuf[128];
+  DWORD  bufCharCount = 128;
+  if(GetUserName(infoBuf, &bufCharCount))
+    return QString(infoBuf);
+  else
+    return generalDefault;
 #else
-  return tr("Quassel IRC User");
+  return generalDefault;
 #endif
 }
 
