@@ -35,8 +35,8 @@ ContextMenuActionProvider::ContextMenuActionProvider(QObject *parent) : NetworkM
   registerAction(NetworkConnect, SmallIcon("network-connect"), tr("Connect"));
   registerAction(NetworkDisconnect, SmallIcon("network-disconnect"), tr("Disconnect"));
 
-  registerAction(BufferJoin, tr("Join"));
-  registerAction(BufferPart, tr("Part"));
+  registerAction(BufferJoin, SmallIcon("irc-join-channel"), tr("Join"));
+  registerAction(BufferPart, SmallIcon("irc-close-channel"), tr("Part"));
   registerAction(BufferRemove, tr("Delete Buffer(s)..."));
   registerAction(BufferSwitchTo, tr("Show Buffer"));
 
@@ -49,7 +49,7 @@ ContextMenuActionProvider::ContextMenuActionProvider(QObject *parent) : NetworkM
   registerAction(HideApplyToAll, tr("Set as Default..."));
   registerAction(HideUseDefaults, tr("Use Defaults..."));
 
-  registerAction(JoinChannel, tr("Join Channel..."));
+  registerAction(JoinChannel, SmallIcon("irc-join-channel"), tr("Join Channel..."));
 
   registerAction(NickQuery, tr("Start Query"));
   registerAction(NickSwitchTo, tr("Show Query"));
@@ -60,17 +60,17 @@ ContextMenuActionProvider::ContextMenuActionProvider(QObject *parent) : NetworkM
   registerAction(NickCtcpPing, tr("Ping"));
   registerAction(NickCtcpFinger, tr("Finger"));
 
-  registerAction(NickOp, tr("Give Operator Status"));
-  registerAction(NickDeop, tr("Take Operator Status"));
-  registerAction(NickVoice, tr("Give Voice"));
-  registerAction(NickDevoice, tr("Take Voice"));
-  registerAction(NickKick, tr("Kick From Channel"));
-  registerAction(NickBan, tr("Ban From Channel"));
-  registerAction(NickKickBan, tr("Kick && Ban"));
+  registerAction(NickOp, SmallIcon("irc-operator"), tr("Give Operator Status"));
+  registerAction(NickDeop, SmallIcon("irc-remove-operator"), tr("Take Operator Status"));
+  registerAction(NickVoice, SmallIcon("irc-voice"), tr("Give Voice"));
+  registerAction(NickDevoice, SmallIcon("irc-unvoice"), tr("Take Voice"));
+  registerAction(NickKick, SmallIcon("im-kick-user"), tr("Kick From Channel"));
+  registerAction(NickBan, SmallIcon("im-ban-user"), tr("Ban From Channel"));
+  registerAction(NickKickBan, SmallIcon("im-ban-kick-user"), tr("Kick && Ban"));
 
   registerAction(HideBufferTemporarily, tr("Hide Buffer(s) Temporarily"));
   registerAction(HideBufferPermanently, tr("Hide Buffer(s) Permanently"));
-  registerAction(ShowChannelList, SmallIcon("format-list-unordered"), tr("Show Channel List"));
+  registerAction(ShowChannelList, tr("Show Channel List"));
   registerAction(ShowIgnoreList, tr("Show Ignore List"));
 
   QMenu *hideEventsMenu = new QMenu();
