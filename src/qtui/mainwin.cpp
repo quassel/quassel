@@ -223,6 +223,7 @@ void MainWin::setupActions() {
   // View
   coll->addAction("ConfigureBufferViews", new Action(tr("&Configure Buffer Views..."), coll,
                                              this, SLOT(on_actionConfigureViews_triggered())));
+
   QAction *lockAct = coll->addAction("LockDockPositions", new Action(tr("&Lock Dock Positions"), coll));
   lockAct->setCheckable(true);
   connect(lockAct, SIGNAL(toggled(bool)), SLOT(on_actionLockDockPositions_toggled(bool)));
@@ -276,6 +277,7 @@ void MainWin::setupMenus() {
   _viewMenu = menuBar()->addMenu(tr("&View"));
   _bufferViewsMenu = _viewMenu->addMenu(tr("&Buffer Views"));
   _bufferViewsMenu->addAction(coll->action("ConfigureBufferViews"));
+  _toolbarMenu = _viewMenu->addMenu(tr("&Toolbars"));
   _viewMenu->addSeparator();
   _viewMenu->addAction(coll->action("ToggleSearchBar"));
 
@@ -528,9 +530,10 @@ void MainWin::setupToolBars() {
   connect(_nickListWidget, SIGNAL(nickSelectionChanged(QModelIndexList)),
           QtUi::toolBarActionProvider(), SLOT(nickSelectionChanged(QModelIndexList)));
 
-  _mainToolBar = addToolBar("Main");
+  _mainToolBar = addToolBar("Main Toolbar");
   _mainToolBar->setObjectName("MainToolBar");
   QtUi::toolBarActionProvider()->addActions(_mainToolBar, ToolBarActionProvider::MainToolBar);
+  _toolbarMenu->addAction(_mainToolBar->toggleViewAction());
 
   //_nickToolBar = addToolBar("User");
   //_nickToolBar->setObjectName("NickToolBar");
