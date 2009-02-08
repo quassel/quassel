@@ -38,27 +38,35 @@
     <file>oxygen/16x16/actions/go-up.png</file>
     <file>oxygen/16x16/actions/format-list-unordered.png</file>
     <file>oxygen/16x16/actions/document-encrypt.png</file>
+    <file>oxygen/16x16/actions/irc-unvoice.png</file>
     <file>oxygen/16x16/actions/configure.png</file>
+    <file>oxygen/16x16/actions/irc-remove-operator.png</file>
     <file>oxygen/16x16/actions/document-properties.png</file>
     <file>oxygen/16x16/actions/network-disconnect.png</file>
     <file>oxygen/16x16/actions/edit-find.png</file>
     <file>oxygen/16x16/actions/go-previous.png</file>
     <file>oxygen/16x16/actions/edit-clear-locationbar-rtl.png</file>
     <file>oxygen/16x16/actions/list-add.png</file>
+    <file>oxygen/16x16/actions/irc-voice.png</file>
     <file>oxygen/16x16/actions/tools-report-bug.png</file>
     <file>oxygen/16x16/actions/help-about.png</file>
     <file>oxygen/16x16/actions/zoom-in.png</file>
+    <file>oxygen/16x16/actions/im-kick-user.png</file>
     <file>oxygen/16x16/actions/zoom-out.png</file>
     <file>oxygen/16x16/actions/application-exit.png</file>
+    <file>oxygen/16x16/actions/im-ban-user.png</file>
     <file>oxygen/16x16/actions/go-down.png</file>
     <file>oxygen/16x16/actions/im-user-away.png</file>
     <file>oxygen/16x16/actions/go-next.png</file>
     <file>oxygen/16x16/actions/irc-join-channel.png</file>
+    <file>oxygen/16x16/actions/irc-operator.png</file>
     <file>oxygen/16x16/actions/network-connect.png</file>
     <file>oxygen/16x16/actions/media-playback-start.png</file>
+    <file>oxygen/16x16/actions/im-ban-kick-user.png</file>
     <file>oxygen/16x16/actions/dialog-cancel.png</file>
     <file>oxygen/16x16/actions/im-user.png</file>
     <file>oxygen/16x16/actions/list-remove.png</file>
+    <file>oxygen/16x16/actions/irc-close-channel.png</file>
     <file>oxygen/16x16/actions/zoom-original.png</file>
     <file>oxygen/16x16/actions/edit-copy.png</file>
     <file>oxygen/16x16/actions/im-user-offline.png</file>
