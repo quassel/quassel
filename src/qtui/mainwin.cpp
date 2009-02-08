@@ -528,9 +528,9 @@ void MainWin::setupToolBars() {
   connect(_nickListWidget, SIGNAL(nickSelectionChanged(QModelIndexList)),
           QtUi::toolBarActionProvider(), SLOT(nickSelectionChanged(QModelIndexList)));
 
-  _networkToolBar = addToolBar("Network");
-  _networkToolBar->setObjectName("NetworkToolBar");
-  QtUi::toolBarActionProvider()->addActions(_networkToolBar, ToolBarActionProvider::NetworkToolBar);
+  _mainToolBar = addToolBar("Main");
+  _mainToolBar->setObjectName("MainToolBar");
+  QtUi::toolBarActionProvider()->addActions(_mainToolBar, ToolBarActionProvider::MainToolBar);
 
   //_nickToolBar = addToolBar("User");
   //_nickToolBar->setObjectName("NickToolBar");

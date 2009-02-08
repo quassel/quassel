@@ -33,7 +33,7 @@ public:
   virtual ~ToolBarActionProvider();
 
   enum ToolBarType {
-    NetworkToolBar,
+    MainToolBar,
     ChatViewToolBar,
     NickToolBar
   };

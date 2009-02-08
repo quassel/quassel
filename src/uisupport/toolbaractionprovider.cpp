@@ -81,7 +81,7 @@ void ToolBarActionProvider::updateStates() {
 
 void ToolBarActionProvider::addActions(QToolBar *bar, ToolBarType type) {
   switch(type) {
-    case NetworkToolBar:
+    case MainToolBar:
       bar->addAction(action(NetworkConnectAll));
       bar->addAction(action(NetworkDisconnectAll));
       bar->addAction(action(JoinChannel));
