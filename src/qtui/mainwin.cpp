@@ -540,7 +540,7 @@ void MainWin::setupToolBars() {
   //QtUi::toolBarActionProvider()->addActions(_nickToolBar, ToolBarActionProvider::NickToolBar);
 
 #ifdef HAVE_KDE
-  _networkToolBar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+  _mainToolBar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
   //_nickToolBar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 #endif
 }
