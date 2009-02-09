@@ -198,7 +198,7 @@ bool BufferViewFilter::dropMimeData(const QMimeData *data, Qt::DropAction action
 	row = 0;
 
       if(row < rowCount(parent)) {
-	QModelIndex source_child = sourceModel()->index(row, 0, parent);
+	QModelIndex source_child = mapToSource(index(row, 0, parent));
 	BufferId beforeBufferId = sourceModel()->data(source_child, NetworkModel::BufferIdRole).value<BufferId>();
 	pos = config()->bufferList().indexOf(beforeBufferId);
 	if(_sortOrder == Qt::DescendingOrder)
