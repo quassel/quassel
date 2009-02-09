@@ -60,7 +60,6 @@ Quassel::Quassel() {
   signal(SIGBUS, handleSignal);
 #  endif
 #endif
-
 }
 
 Quassel::~Quassel() {
@@ -219,7 +218,8 @@ void Quassel::logFatalMessage(const char *msg) {
 
 const QString &Quassel::coreDumpFileName() {
   if(_coreDumpFileName.isEmpty()) {
-    _coreDumpFileName = QString("Quassel-Crash-%1.log").arg(QDateTime::currentDateTime().toString("yyyyMMdd-hhmm"));
+    QDir configDir(configDirPath());
+    _coreDumpFileName = configDir.absoluteFilePath(QString("Quassel-Crash-%1.log").arg(QDateTime::currentDateTime().toString("yyyyMMdd-hhmm")));
     QFile dumpFile(_coreDumpFileName);
     dumpFile.open(QIODevice::Append);
     QTextStream dumpStream(&dumpFile);
