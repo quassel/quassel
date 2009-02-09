@@ -658,6 +658,8 @@ void MainWin::setDisconnectedState() {
   sslLabel->hide();
   updateLagIndicator();
   coreLagLabel->hide();
+  if(msgProcessorStatusWidget)
+    msgProcessorStatusWidget->setProgress(0, 0);
   updateIcon();
 }
 

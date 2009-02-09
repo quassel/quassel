@@ -53,9 +53,9 @@ QVariant AliasesModel::data(const QModelIndex &index, int role) const {
     case 1:
       return "<b>The string the shortcut will be expanded to</b><br />"
 	"<b>special variables:</b><br />"
-	" - <b>$i</b> represenents the i'th parameter.<br />"
-	" - <b>$i..j</b> represenents the i'th to j'th parameter separated by spaces.<br />"
-	" - <b>$i..</b> represenents all parameters from i on separated by spaces.<br />"
+	" - <b>$i</b> represents the i'th parameter.<br />"
+	" - <b>$i..j</b> represents the i'th to j'th parameter separated by spaces.<br />"
+	" - <b>$i..</b> represents all parameters from i on separated by spaces.<br />"
 	" - <b>$i:hostname</b> represents the hostname of the user identified by the i'th parameter or a * if unknown.<br />"
 	" - <b>$0</b> the whole string.<br />"
 	" - <b>$currentnick</b> your current nickname<br />"
