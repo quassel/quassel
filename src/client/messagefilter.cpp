@@ -140,29 +140,26 @@ bool MessageFilter::filterAcceptsRow(int sourceRow, const QModelIndex &sourcePar
   if(myNetworkId != msgNetworkId)
     return false;
 
-  bool redirect = false;
-  int redirectionTarget = 0;
-  switch(messageType) {
-  case Message::Notice:
-    if(Client::networkModel()->bufferType(bufferId) != BufferInfo::ChannelBuffer) {
-      redirect = true;
-      if(flags & Message::ServerMsg) {
-	// server notice
-	redirectionTarget = _serverNoticesTarget;
-      } else {
-	redirectionTarget = _userNoticesTarget;
-      }
-    }
-    break;
-  case Message::Error:
-    redirect = true;
-    redirectionTarget = _errorMsgsTarget;
-    break;
-  default:
-    break;
-  }
 
-  if(redirect) {
+  if(flags & Message::Redirected) {
+    int redirectionTarget = 0;
+    switch(messageType) {
+    case Message::Notice:
+      if(Client::networkModel()->bufferType(bufferId) != BufferInfo::ChannelBuffer) {
+	if(flags & Message::ServerMsg) {
+	  // server notice
+	  redirectionTarget = _serverNoticesTarget;
+	} else {
+	  redirectionTarget = _userNoticesTarget;
+	}
+      }
+      break;
+    case Message::Error:
+      redirectionTarget = _errorMsgsTarget;
+      break;
+    default:
+      break;
+    }
 
     if(redirectionTarget & BufferSettings::DefaultBuffer && _validBuffers.contains(bufferId))
       return true;

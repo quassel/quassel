@@ -56,8 +56,8 @@ void QtUiMessageProcessor::reset() {
 
 void QtUiMessageProcessor::process(Message &msg) {
   checkForHighlight(msg);
+  preProcess(msg);
   Client::messageModel()->insertMessage(msg);
-  postProcess(msg);
 }
 
 void QtUiMessageProcessor::process(QList<Message> &msgs) {
@@ -65,7 +65,7 @@ void QtUiMessageProcessor::process(QList<Message> &msgs) {
   QList<Message>::iterator msgIterEnd = msgs.end();
   while(msgIter != msgIterEnd) {
     checkForHighlight(*msgIter);
-    postProcess(*msgIter);
+    preProcess(*msgIter);
     msgIter++;
   }
   Client::messageModel()->insertMessages(msgs);

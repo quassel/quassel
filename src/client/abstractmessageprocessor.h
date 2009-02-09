@@ -37,7 +37,10 @@ public slots:
   virtual void process(QList<Message> &msgs) = 0;
 
 protected:
-  inline void postProcess(Message &msg) { Client::networkModel()->updateBufferActivity(msg); }
+  // updateBufferActivity also sets the Message::Redirected flag which is later used
+  // to determine where a message should be displayed. therefore it's crucial that it
+  // is called before inserting the message into the model
+  inline void preProcess(Message &msg) { Client::networkModel()->updateBufferActivity(msg); }
 };
 
 #endif

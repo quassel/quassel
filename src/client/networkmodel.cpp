@@ -798,6 +798,12 @@ NetworkModel::NetworkModel(QObject *parent)
 	  this, SLOT(checkForNewBuffers(const QModelIndex &, int, int)));
   connect(this, SIGNAL(rowsAboutToBeRemoved(const QModelIndex &, int, int)),
 	  this, SLOT(checkForRemovedBuffers(const QModelIndex &, int, int)));
+
+  BufferSettings defaultSettings;
+  defaultSettings.notify("UserNoticesTarget", this, SLOT(messageRedirectionSettingsChanged()));
+  defaultSettings.notify("ServerNoticesTarget", this, SLOT(messageRedirectionSettingsChanged()));
+  defaultSettings.notify("ErrorMsgsTarget", this, SLOT(messageRedirectionSettingsChanged()));
+  messageRedirectionSettingsChanged();
 }
 
 QList<QVariant >NetworkModel::defaultHeader() {
@@ -979,11 +985,50 @@ void NetworkModel::setLastSeenMsgId(const BufferId &bufferId, const MsgId &msgId
   bufferItem->setLastSeenMsgId(msgId);
 }
 
-void NetworkModel::updateBufferActivity(const Message &msg) {
-  BufferItem *item = bufferItem(msg.bufferInfo());
-  item->updateActivityLevel(msg);
-  if(item->isCurrentBuffer())
-    emit setLastSeenMsg(item->bufferId(), msg.msgId());
+void NetworkModel::updateBufferActivity(Message &msg) {
+  int redirectionTarget = 0;
+  switch(msg.type()) {
+  case Message::Notice:
+    if(bufferType(msg.bufferId()) != BufferInfo::ChannelBuffer) {
+      msg.setFlags(msg.flags() | Message::Redirected);
+      if(msg.flags() & Message::ServerMsg) {
+	// server notice
+	redirectionTarget = _serverNoticesTarget;
+      } else {
+	redirectionTarget = _userNoticesTarget;
+      }
+    }
+    break;
+  case Message::Error:
+    msg.setFlags(msg.flags() | Message::Redirected);
+    redirectionTarget = _errorMsgsTarget;
+    break;
+  default:
+    break;
+  }
+
+  if(msg.flags() & Message::Redirected) {
+    if(redirectionTarget & BufferSettings::DefaultBuffer)
+      updateBufferActivity(bufferItem(msg.bufferInfo()), msg);
+
+    if(redirectionTarget & BufferSettings::StatusBuffer) {
+      const NetworkItem *netItem = findNetworkItem(msg.bufferInfo().networkId());
+      if(netItem) {
+	updateBufferActivity(netItem->statusBufferItem(), msg);
+      }
+    }
+  } else {
+    updateBufferActivity(bufferItem(msg.bufferInfo()), msg);
+  }
+}
+
+void NetworkModel::updateBufferActivity(BufferItem *bufferItem, const Message &msg) {
+  if(!bufferItem)
+    return;
+
+  bufferItem->updateActivityLevel(msg);
+  if(bufferItem->isCurrentBuffer())
+    emit setLastSeenMsg(bufferItem->bufferId(), msg.msgId());
 }
 
 void NetworkModel::setBufferActivity(const BufferId &bufferId, BufferInfo::ActivityLevel level) {
@@ -1119,3 +1164,10 @@ bool NetworkModel::bufferItemLessThan(const BufferItem *left, const BufferItem *
     return QString::compare(left->bufferName(), right->bufferName(), Qt::CaseInsensitive) < 0;
 }
 
+void NetworkModel::messageRedirectionSettingsChanged() {
+  BufferSettings bufferSettings;
+
+  _userNoticesTarget = bufferSettings.userNoticesTarget();
+  _serverNoticesTarget = bufferSettings.serverNoticesTarget();
+  _errorMsgsTarget = bufferSettings.errorMsgsTarget();
+}
