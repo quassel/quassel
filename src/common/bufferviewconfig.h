@@ -40,6 +40,7 @@ public:
   BufferViewConfig(int bufferViewId, QObject *parent = 0);
   BufferViewConfig(int bufferViewId, const QVariantMap &properties, QObject *parent = 0);
 
+  inline virtual const QMetaObject *syncMetaObject() const { return &staticMetaObject; }
 
 public slots:
   inline int bufferViewId() const { return _bufferViewId; }

@@ -35,7 +35,6 @@
 #include "actioncollection.h"
 #include "buffermodel.h"
 #include "bufferview.h"
-#include "bufferviewmanager.h"
 #include "bufferwidget.h"
 #include "channellistdlg.h"
 #include "chatlinemodel.h"
@@ -45,6 +44,8 @@
 #include "client.h"
 #include "clientsyncer.h"
 #include "clientbacklogmanager.h"
+#include "clientbufferviewconfig.h"
+#include "clientbufferviewmanager.h"
 #include "coreinfodlg.h"
 #include "coreconnectdlg.h"
 #include "contextmenuactionprovider.h"
@@ -176,7 +177,7 @@ void MainWin::init() {
   restoreState(s.value("MainWinState").toByteArray());
 
   // restore locked state of docks
-  QtUi::actionCollection("General")->action("LockDockPositions")->setChecked(s.value("LockDocks", false).toBool());
+  QtUi::actionCollection("General")->action("LockLayout")->setChecked(s.value("LockLayout", false).toBool());
 
   setDisconnectedState();  // Disable menus and stuff
 
@@ -224,9 +225,9 @@ void MainWin::setupActions() {
   coll->addAction("ConfigureBufferViews", new Action(tr("&Configure Buffer Views..."), coll,
                                              this, SLOT(on_actionConfigureViews_triggered())));
 
-  QAction *lockAct = coll->addAction("LockDockPositions", new Action(tr("&Lock Dock Positions"), coll));
+  QAction *lockAct = coll->addAction("LockLayout", new Action(tr("&Lock Layout"), coll));
   lockAct->setCheckable(true);
-  connect(lockAct, SIGNAL(toggled(bool)), SLOT(on_actionLockDockPositions_toggled(bool)));
+  connect(lockAct, SIGNAL(toggled(bool)), SLOT(on_actionLockLayout_toggled(bool)));
 
   coll->addAction("ToggleSearchBar", new Action(SmallIcon("edit-find"), tr("Show &Search Bar"), coll,
 						0, 0, tr("Ctrl+F")))->setCheckable(true);
@@ -287,7 +288,7 @@ void MainWin::setupMenus() {
 
   _viewMenu->addAction(coll->action("ToggleStatusBar"));
   _viewMenu->addSeparator();
-  _viewMenu->addAction(coll->action("LockDockPositions"));
+  _viewMenu->addAction(coll->action("LockLayout"));
 
   _settingsMenu = menuBar()->addMenu(tr("&Settings"));
 #ifdef HAVE_KDE
@@ -318,10 +319,10 @@ void MainWin::setupBufferWidget() {
 }
 
 void MainWin::addBufferView(int bufferViewConfigId) {
-  addBufferView(Client::bufferViewManager()->bufferViewConfig(bufferViewConfigId));
+  addBufferView(Client::bufferViewManager()->clientBufferViewConfig(bufferViewConfigId));
 }
 
-void MainWin::addBufferView(BufferViewConfig *config) {
+void MainWin::addBufferView(ClientBufferViewConfig *config) {
   if(!config)
     return;
 
@@ -382,12 +383,15 @@ void MainWin::on_actionConfigureViews_triggered() {
   dlg.exec();
 }
 
-void MainWin::on_actionLockDockPositions_toggled(bool lock) {
+void MainWin::on_actionLockLayout_toggled(bool lock) {
   QList<VerticalDock *> docks = findChildren<VerticalDock *>();
   foreach(VerticalDock *dock, docks) {
     dock->showTitle(!lock);
   }
-  QtUiSettings().setValue("LockDocks", lock);
+  foreach(ClientBufferViewConfig *config, Client::bufferViewManager()->clientBufferViewConfigs()) {
+    config->setLocked(lock);
+  }
+  QtUiSettings().setValue("LockLayout", lock);
 }
 
 void MainWin::setupNickWidget() {

@@ -28,6 +28,7 @@
 #include "buffermodel.h"
 #include "buffersettings.h"
 #include "client.h"
+#include "clientbufferviewconfig.h"
 #include "iconloader.h"
 #include "networkmodel.h"
 
@@ -167,11 +168,15 @@ void BufferViewFilter::enableEditMode(bool enable) {
 Qt::ItemFlags BufferViewFilter::flags(const QModelIndex &index) const {
   QModelIndex source_index = mapToSource(index);
   Qt::ItemFlags flags = sourceModel()->flags(source_index);
-  if(_config) {
+  if(config()) {
     if(source_index == QModelIndex() || sourceModel()->data(source_index, NetworkModel::ItemTypeRole) == NetworkModel::NetworkItemType) {
       flags |= Qt::ItemIsDropEnabled;
     } else if(_editMode) {
       flags |= Qt::ItemIsUserCheckable | Qt::ItemIsTristate;
+    }
+    ClientBufferViewConfig *clientConf = qobject_cast<ClientBufferViewConfig *>(config());
+    if(clientConf && clientConf->isLocked()) {
+      flags &= ~(Qt::ItemIsDropEnabled | Qt::ItemIsDragEnabled);
     }
   }
   return flags;

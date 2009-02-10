@@ -35,6 +35,8 @@ class BufferViewManager : public SyncableObject {
 public:
   BufferViewManager(SignalProxy *proxy, QObject *parent = 0);
 
+  inline virtual const QMetaObject *syncMetaObject() const { return &staticMetaObject; }
+
   inline QList<BufferViewConfig *> bufferViewConfigs() const { return _bufferViewConfigs.values(); }
   BufferViewConfig *bufferViewConfig(int bufferViewId) const;
 
@@ -64,6 +66,7 @@ signals:
 protected:
   typedef QHash<int, BufferViewConfig *> BufferViewConfigHash;
   inline const BufferViewConfigHash &bufferViewConfigHash() { return _bufferViewConfigs; }
+  virtual BufferViewConfig *bufferViewConfigFactory(int bufferViewConfigId);
 
 private:
   BufferViewConfigHash _bufferViewConfigs;

@@ -27,8 +27,8 @@
 #include "network.h"
 #include "bufferviewconfig.h"
 #include "bufferviewfilter.h"
-#include "bufferviewmanager.h"
 #include "buffermodel.h"
+#include "clientbufferviewmanager.h"
 #include "networkmodel.h"
 
 BufferViewSettingsPage::BufferViewSettingsPage(QWidget *parent)

@@ -36,6 +36,7 @@
 class ActionCollection;
 class BufferView;
 class BufferViewConfig;
+class ClientBufferViewConfig;
 class BufferViewDock;
 class BufferWidget;
 class InputWidget;
@@ -64,7 +65,7 @@ class MainWin
 
     void init();
 
-    void addBufferView(BufferViewConfig *config);
+    void addBufferView(ClientBufferViewConfig *config);
     BufferView *allBuffersView() const;
 
     inline QSystemTrayIcon *systemTrayIcon() const;
@@ -109,7 +110,7 @@ class MainWin
 #endif
     void on_actionConfigureNetworks_triggered();
     void on_actionConfigureViews_triggered();
-    void on_actionLockDockPositions_toggled(bool lock);
+    void on_actionLockLayout_toggled(bool lock);
     void on_actionDebugNetworkModel_triggered();
     void on_actionDebugMessageModel_triggered();
     void on_actionDebugLog_triggered();

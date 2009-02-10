@@ -27,8 +27,8 @@
 #include "buffersettings.h"
 #include "buffersyncer.h"
 #include "bufferviewconfig.h"
-#include "bufferviewmanager.h"
 #include "clientbacklogmanager.h"
+#include "clientbufferviewmanager.h"
 #include "clientirclisthelper.h"
 #include "clientidentity.h"
 #include "ircchannel.h"
@@ -297,7 +297,7 @@ void Client::setSyncedToCore() {
 
   // create a new BufferViewManager
   Q_ASSERT(!_bufferViewManager);
-  _bufferViewManager = new BufferViewManager(signalProxy(), this);
+  _bufferViewManager = new ClientBufferViewManager(signalProxy(), this);
   connect(bufferViewManager(), SIGNAL(initDone()), this, SLOT(requestInitialBacklog()));
   connect(bufferViewManager(), SIGNAL(initDone()), this, SLOT(createDefaultBufferView()));
 

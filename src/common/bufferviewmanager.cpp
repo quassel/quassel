@@ -37,6 +37,10 @@ BufferViewConfig *BufferViewManager::bufferViewConfig(int bufferViewId) const {
     return 0;
 }
 
+BufferViewConfig *BufferViewManager::bufferViewConfigFactory(int bufferViewConfigId) {
+  return new BufferViewConfig(bufferViewConfigId, this);
+}
+
 void BufferViewManager::addBufferViewConfig(BufferViewConfig *config) {
   if(_bufferViewConfigs.contains(config->bufferViewId()))
      return;
@@ -50,7 +54,7 @@ void BufferViewManager::addBufferViewConfig(int bufferViewConfigId) {
   if(_bufferViewConfigs.contains(bufferViewConfigId))
      return;
   
-  addBufferViewConfig(new BufferViewConfig(bufferViewConfigId, this));
+  addBufferViewConfig(bufferViewConfigFactory(bufferViewConfigId));
 }
 
 void BufferViewManager::deleteBufferViewConfig(int bufferViewConfigId) {
