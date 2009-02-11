@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>613</width>
-    <height>434</height>
+    <width>599</width>
+    <height>478</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -28,7 +28,7 @@
   <property name="windowTitle">
    <string/>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout">
+  <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QStackedWidget" name="stackedWidget">
      <property name="sizePolicy">
@@ -40,13 +40,18 @@
      <property name="currentIndex">
       <number>0</number>
      </property>
-     <widget class="MainPage" name="page">
-      <layout class="QVBoxLayout" name="verticalLayout"/>
-     </widget>
+     <widget class="MainPage" name="page"/>
     </widget>
    </item>
    <item>
-    <widget class="ChatViewSearchBar" name="searchBar" native="true"/>
+    <widget class="ChatViewSearchBar" name="searchBar" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>
