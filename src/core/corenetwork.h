@@ -129,6 +129,7 @@ private slots:
   void networkInitialized();
 
   void sendPerform();
+  void restoreUserModes();
   void doAutoReconnect();
   void sendPing();
   void sendAutoWho();

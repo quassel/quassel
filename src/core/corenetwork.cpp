@@ -386,6 +386,20 @@ void CoreNetwork::networkInitialized() {
     _autoReconnectCount = autoReconnectRetries();
   }
 
+  // restore away state
+  userInputHandler()->handleAway(BufferInfo(), Core::awayMessage(userId(), networkId()));
+
+  // restore old user modes if server default mode is set.
+  IrcUser *me_ = me();
+  if(me_) {
+    if(!me_->userModes().isEmpty()) {
+      restoreUserModes();
+    } else {
+      connect(me_, SIGNAL(userModesSet(QString)), this, SLOT(restoreUserModes()));
+      connect(me_, SIGNAL(userModesAdded(QString)), this, SLOT(restoreUserModes()));
+    }
+  }
+
   sendPerform();
 
   _pingTimer.start();
@@ -429,6 +443,27 @@ void CoreNetwork::sendPerform() {
     if(!joinString.isEmpty())
       userInputHandler()->handleJoin(statusBuf, joinString);
   }
+}
+
+void CoreNetwork::restoreUserModes() {
+  IrcUser *me_ = me();
+  Q_ASSERT(me_);
+
+  disconnect(me_, SIGNAL(userModesSet(QString)), this, SLOT(restoreUserModes()));
+  disconnect(me_, SIGNAL(userModesAdded(QString)), this, SLOT(restoreUserModes()));
+
+  QString removeModes;
+  QString addModes = Core::userModes(userId(), networkId());
+  QString currentModes = me_->userModes();
+
+  removeModes = currentModes;
+  removeModes.remove(QRegExp(QString("[%1]").arg(addModes)));
+  addModes.remove(QRegExp(QString("[%1]").arg(currentModes)));
+
+  removeModes = QString("%1 -%2").arg(me_->nick(), removeModes);
+  addModes = QString("%1 +%2").arg(me_->nick(), addModes);
+  userInputHandler()->handleMode(BufferInfo(), removeModes);
+  userInputHandler()->handleMode(BufferInfo(), addModes);
 }
 
 void CoreNetwork::setUseAutoReconnect(bool use) {
