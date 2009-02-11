@@ -403,7 +403,9 @@ void CoreNetwork::networkInitialized() {
   }
 
   // restore away state
-  userInputHandler()->handleAway(BufferInfo(), Core::awayMessage(userId(), networkId()));
+  QString awayMsg = Core::awayMessage(userId(), networkId());
+  if(!awayMsg.isEmpty())
+    userInputHandler()->handleAway(BufferInfo(), Core::awayMessage(userId(), networkId()));
 
   // restore old user modes if server default mode is set.
   IrcUser *me_ = me();
