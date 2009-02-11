@@ -137,6 +137,10 @@ void CoreNetwork::connectToIrc(bool reconnecting) {
     qWarning() << "Invalid identity configures, ignoring connect request!";
     return;
   }
+
+  // cleaning up old quit reason
+  _quitReason.clear();
+
   // use a random server?
   if(useRandomServer()) {
     _lastUsedServerIndex = qrand() % serverList().size();
@@ -202,7 +206,11 @@ void CoreNetwork::disconnectFromIrc(bool requested, const QString &reason) {
     socketDisconnected();
   } else {
     // quit gracefully if it's user requested quit
-    userInputHandler()->issueQuit(reason);
+    if(reason.isEmpty() && identityPtr())
+      _quitReason = identityPtr()->quitReason();
+    else
+      _quitReason = reason;
+    userInputHandler()->issueQuit(_quitReason);
     // the irc server has 10 seconds to close the socket
     _socketCloseTimer.start(10000);
   }
@@ -337,7 +345,7 @@ void CoreNetwork::socketDisconnected() {
   IrcUser *me_ = me();
   if(me_) {
     foreach(QString channel, me_->channels())
-      emit displayMsg(Message::Quit, BufferInfo::ChannelBuffer, channel, "", me_->hostmask());
+      emit displayMsg(Message::Quit, BufferInfo::ChannelBuffer, channel, _quitReason, me_->hostmask());
   }
 
   setConnected(false);

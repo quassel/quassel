@@ -321,12 +321,7 @@ void UserInputHandler::handleQuit(const BufferInfo &bufferInfo, const QString &m
 }
 
 void UserInputHandler::issueQuit(const QString &reason) {
-  QString quitReason;
-  if(reason.isEmpty())
-    quitReason = network()->identityPtr()->quitReason();
-  else
-    quitReason = reason;
-  emit putCmd("QUIT", serverEncode(quitReason));
+  emit putCmd("QUIT", serverEncode(reason));
 }
 
 void UserInputHandler::handleQuote(const BufferInfo &bufferInfo, const QString &msg) {

@@ -167,6 +167,7 @@ private:
    * it is needed to determine whether or not the connection needs to be
    * in the automatic session restore. */
   bool _quitRequested;
+  QString _quitReason;
 
   bool _previousConnectionAttemptFailed;
   int _lastUsedServerIndex;
