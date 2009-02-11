@@ -426,7 +426,7 @@ void MainWin::setupChatMonitor() {
   ChatMonitorView *chatView = new ChatMonitorView(filter, this);
   chatView->show();
   dock->setWidget(chatView);
-  dock->show();
+  dock->hide();
 
   addDockWidget(Qt::TopDockWidgetArea, dock, Qt::Vertical);
   _viewMenu->addAction(dock->toggleViewAction());
