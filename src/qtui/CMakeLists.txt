@@ -31,6 +31,7 @@ set(SOURCES
     debugmessagemodelfilter.cpp
     inputwidget.cpp
     jumpkeyhandler.cpp
+    mainpage.cpp
     mainwin.cpp
     msgprocessorstatuswidget.cpp
     nicklistwidget.cpp
@@ -73,6 +74,7 @@ set(MOC_HDRS
     debugmessagemodelfilter.h
     inputwidget.h
     jumpkeyhandler.h
+    mainpage.h
     mainwin.h
     msgprocessorstatuswidget.h
     nicklistwidget.h
