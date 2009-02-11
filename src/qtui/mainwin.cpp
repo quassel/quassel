@@ -326,6 +326,7 @@ void MainWin::addBufferView(ClientBufferViewConfig *config) {
   if(!config)
     return;
 
+  config->setLocked(QtUiSettings().value("LockLayout", false).toBool());
   BufferViewDock *dock = new BufferViewDock(config, this);
 
   //create the view and initialize it's filter
@@ -388,8 +389,10 @@ void MainWin::on_actionLockLayout_toggled(bool lock) {
   foreach(VerticalDock *dock, docks) {
     dock->showTitle(!lock);
   }
-  foreach(ClientBufferViewConfig *config, Client::bufferViewManager()->clientBufferViewConfigs()) {
-    config->setLocked(lock);
+  if(Client::bufferViewManager()) {
+    foreach(ClientBufferViewConfig *config, Client::bufferViewManager()->clientBufferViewConfigs()) {
+      config->setLocked(lock);
+    }
   }
   QtUiSettings().setValue("LockLayout", lock);
 }

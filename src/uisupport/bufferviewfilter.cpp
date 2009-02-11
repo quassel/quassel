@@ -363,10 +363,7 @@ bool BufferViewFilter::networkLessThan(const QModelIndex &source_left, const QMo
   NetworkId leftNetworkId = sourceModel()->data(source_left, NetworkModel::NetworkIdRole).value<NetworkId>();
   NetworkId rightNetworkId = sourceModel()->data(source_right, NetworkModel::NetworkIdRole).value<NetworkId>();
 
-  if(config() && config()->sortAlphabetically())
-    return QSortFilterProxyModel::lessThan(source_left, source_right);
-  else
-    return leftNetworkId < rightNetworkId;
+  return QSortFilterProxyModel::lessThan(source_left, source_right);
 }
 
 QVariant BufferViewFilter::data(const QModelIndex &index, int role) const {

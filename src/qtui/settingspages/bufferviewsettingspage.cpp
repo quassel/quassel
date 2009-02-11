@@ -30,6 +30,7 @@
 #include "buffermodel.h"
 #include "clientbufferviewmanager.h"
 #include "networkmodel.h"
+#include "util.h"
 
 BufferViewSettingsPage::BufferViewSettingsPage(QWidget *parent)
   : SettingsPage(tr("General"), tr("Buffer Views"), parent),
@@ -123,7 +124,7 @@ void BufferViewSettingsPage::load() {
   }
   _ignoreWidgetChanges = false;
 
-  
+
   if(!useBufferViewHint || !selectBufferViewById(bufferViewHint))
     ui.bufferViewList->setCurrentRow(0);
 }
@@ -136,7 +137,7 @@ void BufferViewSettingsPage::save() {
     _useBufferViewHint = true;
     _bufferViewHint = currentConfig->bufferViewId();
   }
-  
+
   QVariantList newConfigs;
   QVariantList deleteConfigs;
   QVariantList changedConfigs;
@@ -223,10 +224,13 @@ void BufferViewSettingsPage::newBufferView(const QString &bufferViewName) {
   config->setInitialized();
   QList<BufferId> bufferIds;
   if(config->addNewBuffersAutomatically()) {
-    if(config->sortAlphabetically())
+    if(config->sortAlphabetically()) {
       bufferIds = Client::networkModel()->allBufferIdsSorted();
-    else
+    } else {
       bufferIds = Client::networkModel()->allBufferIds();
+      qSort(bufferIds);
+      config->setProperty("OriginalBufferList", toVariantList<BufferId>(bufferIds));
+    }
   }
   config->initSetBufferList(bufferIds);
 
@@ -434,16 +438,12 @@ void BufferViewSettingsPage::saveConfig(BufferViewConfig *config) {
     minimumActivity = 1 << (ui.minimumActivitySelector->currentIndex() - 1);
   config->setMinimumActivity(minimumActivity);
 
-  if(_newBufferViews.contains(config)) {
-    QList<BufferId> bufferIds;
-    if(config->addNewBuffersAutomatically()) {
-      if(config->sortAlphabetically())
-	bufferIds = Client::networkModel()->allBufferIdsSorted();
-      else
-	bufferIds = Client::networkModel()->allBufferIds();
-    }
+  QList<BufferId> bufferIds = fromVariantList<BufferId>(config->property("OriginalBufferList").toList());
+  if(config->sortAlphabetically())
+    Client::networkModel()->sortBufferIds(bufferIds);
+
+  if(!_newBufferViews.contains(config) || config->addNewBuffersAutomatically())
     config->initSetBufferList(bufferIds);
-  }
 }
 
 void BufferViewSettingsPage::widgetHasChanged() {
@@ -491,6 +491,7 @@ BufferViewConfig *BufferViewSettingsPage::cloneConfig(BufferViewConfig *config) 
   connect(config, SIGNAL(moveBufferRequested(const BufferId &, int)), changedConfig, SLOT(moveBuffer(const BufferId &, int)));
   connect(config, SIGNAL(removeBufferRequested(const BufferId &)), changedConfig, SLOT(removeBuffer(const BufferId &)));
 
+  changedConfig->setProperty("OriginalBufferList", toVariantList<BufferId>(config->bufferList()));
   // if this is the currently displayed view we have to change the config of the preview filter
   BufferViewFilter *filter = qobject_cast<BufferViewFilter *>(ui.bufferViewPreview->model());
   if(filter && filter->config() == config)
