@@ -144,8 +144,8 @@ QString Identity::defaultRealName() {
 void Identity::setToDefaults() {
   setIdentityName(tr("<empty>"));
   setRealName(defaultRealName());
-  QStringList n;
-  n << defaultNick() << defaultNick() + "_" << defaultNick() + "__";
+  QString defNick = defaultNick();
+  QStringList n = QStringList() << defNick << defNick + "_" << defNick + "__";
   setNicks(n);
   setAwayNick("");
   setAwayNickEnabled(false);
