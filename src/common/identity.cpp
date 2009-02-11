@@ -115,8 +115,20 @@ QString Identity::defaultNick() {
 
 QString Identity::defaultRealName() {
   QString generalDefault = tr("Quassel IRC User");
+
 #ifdef Q_OS_MAC
   return CFStringToQString(CSCopyUserName(false));
+
+#elif defined(Q_OS_UNIX)
+  QString realName;
+  struct passwd *pwd = getpwuid(getuid());
+  if(pwd)
+    realName = pwd->pw_gecos;
+  if(!realName.isEmpty())
+    return realName;
+  else
+    return generalDefault;
+
 #elif defined(Q_OS_WIN32)
   TCHAR  infoBuf[128];
   DWORD  bufCharCount = 128;
