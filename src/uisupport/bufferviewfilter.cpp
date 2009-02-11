@@ -169,14 +169,21 @@ Qt::ItemFlags BufferViewFilter::flags(const QModelIndex &index) const {
   QModelIndex source_index = mapToSource(index);
   Qt::ItemFlags flags = sourceModel()->flags(source_index);
   if(config()) {
-    if(source_index == QModelIndex() || sourceModel()->data(source_index, NetworkModel::ItemTypeRole) == NetworkModel::NetworkItemType) {
+    NetworkModel::ItemType itemType = (NetworkModel::ItemType)sourceModel()->data(source_index, NetworkModel::ItemTypeRole).toInt();
+    BufferInfo::Type bufferType = (BufferInfo::Type)sourceModel()->data(source_index, NetworkModel::BufferTypeRole).toInt();
+    if(source_index == QModelIndex() || itemType == NetworkModel::NetworkItemType) {
       flags |= Qt::ItemIsDropEnabled;
     } else if(_editMode) {
       flags |= Qt::ItemIsUserCheckable | Qt::ItemIsTristate;
     }
-    ClientBufferViewConfig *clientConf = qobject_cast<ClientBufferViewConfig *>(config());
-    if(clientConf && clientConf->isLocked()) {
-      flags &= ~(Qt::ItemIsDropEnabled | Qt::ItemIsDragEnabled);
+
+    // prohibit dragging of most items. and most drop places
+    // only query to query is allowed for merging
+    if(bufferType != BufferInfo::QueryBuffer) {
+      ClientBufferViewConfig *clientConf = qobject_cast<ClientBufferViewConfig *>(config());
+      if(clientConf && clientConf->isLocked()) {
+	flags &= ~(Qt::ItemIsDropEnabled | Qt::ItemIsDragEnabled);
+      }
     }
   }
   return flags;
