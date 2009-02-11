@@ -28,6 +28,12 @@
 #  include "mac_utils.h"
 #endif
 
+#ifdef Q_OS_UNIX
+#  include <sys/types.h>
+#  include <pwd.h>
+#  include <unistd.h>
+#endif
+
 #ifdef Q_OS_WIN32
 #  include <windows.h>
 #  include <Winbase.h>
@@ -75,10 +81,17 @@ void Identity::init() {
 
 QString Identity::defaultNick() {
   QString nick = QString("quassel%1").arg(qrand() & 0xff); // FIXME provide more sensible default nicks
+
 #ifdef Q_OS_MAC
   QString shortUserName = CFStringToQString(CSCopyUserName(true));
   if(!shortUserName.isEmpty())
     nick = shortUserName;
+
+#elif defined(Q_OS_UNIX)
+  QString userName = getlogin();
+  if(!userName.isEmpty())
+    nick = userName;
+
 #elif defined(Q_OS_WIN32)
   TCHAR  infoBuf[128];
   DWORD  bufCharCount = 128;
@@ -93,6 +106,7 @@ QString Identity::defaultNick() {
       nick = nickName;
   }
 #endif
+
   // cleaning forbidden characters from nick
   QRegExp rx(QString("(^[\\d-]+|[^A-Za-z\x5b-\x60\x7b-\x7d])"));
   nick.remove(rx);
@@ -119,7 +133,7 @@ void Identity::setToDefaults() {
   setIdentityName(tr("<empty>"));
   setRealName(defaultRealName());
   QStringList n;
-  n << defaultNick();
+  n << defaultNick() << defaultNick() + "_" << defaultNick() + "__";
   setNicks(n);
   setAwayNick("");
   setAwayNickEnabled(false);
