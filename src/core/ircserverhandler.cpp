@@ -385,6 +385,8 @@ void IrcServerHandler::handlePong(const QString &prefix, const QList<QByteArray>
   if(params.count() < 2)
     return;
 
+  network()->resetPong();
+
   QString timestamp = serverDecode(params[1]);
   QTime sendTime = QTime::fromString(timestamp, "hh:mm:ss.zzz");
   if(!sendTime.isValid()) {
