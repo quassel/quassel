@@ -16,6 +16,10 @@ CREATE TABLE network (
        autoreconnectretries INTEGER NOT NULL DEFAULT 0,
        unlimitedconnectretries INTEGER NOT NULL DEFAULT 0, -- BOOL
        rejoinchannels INTEGER NOT NULL DEFAULT 0, -- BOOL
-       connected INTEGER NOT NULL DEFAULT 1,
+       connected INTEGER NOT NULL DEFAULT 0, -- BOOL
+       usermode TEXT, -- user mode to restore
+       awaymessage TEXT, -- away message to restore (empty if not away)
+       attachperform TEXT, -- perform list for on attach
+       detachperform TEXT, -- perform list for on detach
        UNIQUE (userid, networkname)
 )
