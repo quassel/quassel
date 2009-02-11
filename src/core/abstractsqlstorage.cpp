@@ -152,7 +152,7 @@ bool AbstractSqlStorage::setup(const QVariantMap &settings) {
       return false;
     }
   }
-  return true;
+  return setupSchemaVersion(schemaVersion());
 }
 
 QStringList AbstractSqlStorage::upgradeQueries(int version) {
@@ -179,7 +179,7 @@ bool AbstractSqlStorage::upgradeDb() {
       }
     }
   }
-  return true;
+  return updateSchemaVersion(schemaVersion());
 }
 
 

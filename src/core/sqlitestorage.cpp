@@ -64,6 +64,34 @@ int SqliteStorage::installedSchemaVersion() {
   return AbstractSqlStorage::installedSchemaVersion();
 }
 
+bool SqliteStorage::updateSchemaVersion(int newVersion) {
+  QSqlQuery query(logDb());
+  query.prepare("UPDATE coreinfo SET value = :version WHERE key = 'schemaversion'");
+  query.bindValue(":version", newVersion);
+  query.exec();
+
+  bool success = true;
+  if(query.lastError().isValid()) {
+    qCritical() << "SqliteStorage::updateSchemaVersion(int): Updating schema version failed!";
+    success = false;
+  }
+  return success;
+}
+
+bool SqliteStorage::setupSchemaVersion(int version) {
+  QSqlQuery query(logDb());
+  query.prepare("INSERT INTO coreinfo (key, value) VALUES ('schemaversion', :version)");
+  query.bindValue(":version", version);
+  query.exec();
+
+  bool success = true;
+  if(query.lastError().isValid()) {
+    qCritical() << "SqliteStorage::setupSchemaVersion(int): Updating schema version failed!";
+    success = false;
+  }
+  return success;
+}
+
 UserId SqliteStorage::addUser(const QString &user, const QString &password) {
   QSqlQuery query(logDb());
   query.prepare(queryString("insert_quasseluser"));

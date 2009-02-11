@@ -94,6 +94,8 @@ protected:
   inline virtual QString driverName() { return "QSQLITE"; }
   inline virtual QString databaseName() { return backlogFile(); }
   virtual int installedSchemaVersion();
+  virtual bool updateSchemaVersion(int newVersion);
+  virtual bool setupSchemaVersion(int version);
   bool safeExec(QSqlQuery &query, int retryCount = 0);
 
 private:

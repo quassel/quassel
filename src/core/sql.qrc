@@ -8,16 +8,13 @@
     <file>./SQL/SQLite/10/upgrade_020_create_buffer_table.sql</file>
     <file>./SQL/SQLite/10/upgrade_030_copy_buffer_table.sql</file>
     <file>./SQL/SQLite/10/upgrade_040_drop_buffer_old_table.sql</file>
-    <file>./SQL/SQLite/10/upgrade_999_version.sql</file>
     <file>./SQL/SQLite/11/upgrade_000_create_user_setting.sql</file>
-    <file>./SQL/SQLite/11/upgrade_999_version.sql</file>
     <file>./SQL/SQLite/12/upgrade_000_create_identity.sql</file>
     <file>./SQL/SQLite/12/upgrade_010_create_identity_nick.sql</file>
     <file>./SQL/SQLite/12/upgrade_020_rename_servertable.sql</file>
     <file>./SQL/SQLite/12/upgrade_030_create_ircserver.sql</file>
     <file>./SQL/SQLite/12/upgrade_040_copy_ircserver.sql</file>
     <file>./SQL/SQLite/12/upgrade_050_drop_ircserverold.sql</file>
-    <file>./SQL/SQLite/12/upgrade_999_version.sql</file>
     <file>./SQL/SQLite/13/delete_backlog_by_uid.sql</file>
     <file>./SQL/SQLite/13/delete_backlog_for_buffer.sql</file>
     <file>./SQL/SQLite/13/delete_backlog_for_network.sql</file>
@@ -77,7 +74,6 @@
     <file>./SQL/SQLite/13/setup_120_user_setting.sql</file>
     <file>./SQL/SQLite/13/setup_130_identity.sql</file>
     <file>./SQL/SQLite/13/setup_140_identity_nick.sql</file>
-    <file>./SQL/SQLite/13/setup_999_version.sql</file>
     <file>./SQL/SQLite/13/update_backlog_bufferid.sql</file>
     <file>./SQL/SQLite/13/update_buffer_lastseen.sql</file>
     <file>./SQL/SQLite/13/update_buffer_name.sql</file>
@@ -92,7 +88,6 @@
     <file>./SQL/SQLite/13/upgrade_000_create_buffer_user_idx.sql</file>
     <file>./SQL/SQLite/13/upgrade_010_create_buffer_cname_idx.sql</file>
     <file>./SQL/SQLite/13/upgrade_020_create_buffer_cname_idx.sql</file>
-    <file>./SQL/SQLite/13/upgrade_999_version.sql</file>
     <file>./SQL/SQLite/2/upgrade_000_drop_buffergroup.sql</file>
     <file>./SQL/SQLite/2/upgrade_010_update_schemaversion.sql</file>
     <file>./SQL/SQLite/3/upgrade_000_update_backlog_flags.sql</file>
@@ -103,13 +98,11 @@
     <file>./SQL/SQLite/4/upgrade_030_drop_oldbuffertable.sql</file>
     <file>./SQL/SQLite/4/upgrade_040_create_buffer_idx.sql</file>
     <file>./SQL/SQLite/4/upgrade_050_create_buffer_cname_idx.sql</file>
-    <file>./SQL/SQLite/4/upgrade_999_update_schemaversion.sql</file>
     <file>./SQL/SQLite/5/upgrade_000_rename_networktable.sql</file>
     <file>./SQL/SQLite/5/upgrade_010_create_newnetworktable.sql</file>
     <file>./SQL/SQLite/5/upgrade_020_copy_networktable.sql</file>
     <file>./SQL/SQLite/5/upgrade_030_drop_oldnetworktable.sql</file>
     <file>./SQL/SQLite/5/upgrade_180_create_ircservers.sql</file>
-    <file>./SQL/SQLite/5/upgrade_999_update_schemaversion.sql</file>
     <file>./SQL/SQLite/6/upgrade_000_alter_buffertable.sql</file>
     <file>./SQL/SQLite/6/upgrade_010_set_statusbuffertype.sql</file>
     <file>./SQL/SQLite/6/upgrade_020_set_channelbuffertype.sql</file>
@@ -127,21 +120,17 @@
     <file>./SQL/SQLite/6/upgrade_140_update_msgtype.sql</file>
     <file>./SQL/SQLite/6/upgrade_150_update_msgtype.sql</file>
     <file>./SQL/SQLite/6/upgrade_160_update_msgtype.sql</file>
-    <file>./SQL/SQLite/6/upgrade_999_version.sql</file>
     <file>./SQL/SQLite/7/upgrade_000_rename_networktable.sql</file>
     <file>./SQL/SQLite/7/upgrade_010_create_newnetworktable.sql</file>
     <file>./SQL/SQLite/7/upgrade_020_copy_networktable.sql</file>
     <file>./SQL/SQLite/7/upgrade_030_drop_oldnetworktable.sql</file>
     <file>./SQL/SQLite/7/upgrade_040_alter_buffer_add_lastseen.sql</file>
-    <file>./SQL/SQLite/7/upgrade_999_version.sql</file>
     <file>./SQL/SQLite/8/upgrade_000_alter_network_add_connected.sql</file>
     <file>./SQL/SQLite/8/upgrade_010_alter_buffer_add_key.sql</file>
     <file>./SQL/SQLite/8/upgrade_020_alter_buffer_add_joined.sql</file>
     <file>./SQL/SQLite/8/upgrade_030_update_buffer_set_joined_for_channels.sql</file>
-    <file>./SQL/SQLite/8/upgrade_999_version.sql</file>
     <file>./SQL/SQLite/9/upgrade_000_create_backlog_idx.sql</file>
     <file>./SQL/SQLite/9/upgrade_010_create_backlog_idx2.sql</file>
     <file>./SQL/SQLite/9/upgrade_020_create_buffer_idx.sql</file>
-    <file>./SQL/SQLite/9/upgrade_999_version.sql</file>
 </qresource>
 </RCC>

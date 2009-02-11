@@ -24,5 +24,3 @@ fi
 mkdir $NEW_VERSION
 git add $NEW_VERSION
 find $CURRENT_VERSION -depth 1 \! -name "upgrade_*" \! -name ".*" -exec git mv {} $NEW_VERSION \;
-cp ${CURRENT_VERSION}/upgrade_999_version.sql $NEW_VERSION
-git add ${NEW_VERSION}/upgrade_999_version.sql

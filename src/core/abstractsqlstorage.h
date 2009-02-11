@@ -53,6 +53,8 @@ protected:
   
   int schemaVersion();
   virtual int installedSchemaVersion() { return -1; };
+  virtual bool updateSchemaVersion(int newVersion) = 0;
+  virtual bool setupSchemaVersion(int version) = 0;
 
   virtual QString driverName() = 0;
   inline virtual QString hostName() { return QString(); }
