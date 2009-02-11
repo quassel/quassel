@@ -336,10 +336,10 @@ QString Quassel::findDataFilePath(const QString &fileName) {
   return QString();
 }
 
-void Quassel::loadTranslation(const QLocale &locale) {
+QString Quassel::translationDirPath() {
   if(_translationDirPath.isEmpty()) {
     // We support only one translation dir; fallback mechanisms wouldn't work else.
-    // This means that if we have a $data/i18n dir, the internal :/i18n resource won't be considered.
+    // This means that if we have a $data/translations dir, the internal :/i18n resource won't be considered.
     foreach(const QString &dir, dataDirPaths()) {
       if(QFile::exists(dir + "translations/")) {
         _translationDirPath = dir + "translations/";
@@ -349,7 +349,10 @@ void Quassel::loadTranslation(const QLocale &locale) {
     if(_translationDirPath.isEmpty())
       _translationDirPath = ":/i18n/";
   }
+  return _translationDirPath;
+}
 
+void Quassel::loadTranslation(const QLocale &locale) {
   QTranslator *qtTranslator = QCoreApplication::instance()->findChild<QTranslator *>("QtTr");
   QTranslator *quasselTranslator = QCoreApplication::instance()->findChild<QTranslator *>("QuasselTr");
 
@@ -369,8 +372,8 @@ void Quassel::loadTranslation(const QLocale &locale) {
   if(locale.language() == QLocale::C)
     return;
 
-  bool success = qtTranslator->load(QString("qt_%1").arg(locale.name()), _translationDirPath);
+  bool success = qtTranslator->load(QString("qt_%1").arg(locale.name()), translationDirPath());
   if(!success)
     qtTranslator->load(QString("qt_%1").arg(locale.name()), QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-  quasselTranslator->load(QString("quassel_%1").arg(locale.name()), _translationDirPath);
+  quasselTranslator->load(QString("quassel_%1").arg(locale.name()), translationDirPath());
 }

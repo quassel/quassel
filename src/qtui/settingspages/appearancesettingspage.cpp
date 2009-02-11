@@ -58,7 +58,7 @@ void AppearanceSettingsPage::initStyleComboBox() {
 }
 
 void AppearanceSettingsPage::initLanguageComboBox() {
-  QDir i18nDir(":/i18n", "quassel_*.qm");
+  QDir i18nDir(Quassel::translationDirPath(), "quassel_*.qm");
 
   foreach(QString translationFile, i18nDir.entryList()) {
     QString localeName(translationFile.mid(8));

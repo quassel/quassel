@@ -82,6 +82,8 @@ public:
   */
   static QString findDataFilePath(const QString &filename);
 
+  static QString translationDirPath();
+
   static void loadTranslation(const QLocale &locale);
 
   static inline void setCliParser(AbstractCliParser *cliParser);
