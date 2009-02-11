@@ -222,7 +222,43 @@ public slots:
    *  \param key        The key of the channel (possibly empty)
    */
   virtual void setPersistentChannelKey(UserId user, const NetworkId &networkId, const QString &channel, const QString &key) = 0;
-  
+
+  //! retrieve last known away message for session restore
+  /** \note This method is threadsafe
+   *
+   *  \param user       The Id of the networks owner
+   *  \param networkId  The Id of the network
+   */
+  virtual QString awayMessage(UserId user, NetworkId networkId) = 0;
+
+  //! Make away message persistent for session restore
+  /** \note This method is threadsafe
+   *
+   *  \param user       The Id of the networks owner
+   *  \param networkId  The Id of the network
+   *  \param awayMsg    The current away message of own user
+   */
+  virtual void setAwayMessage(UserId user, NetworkId networkId, const QString &awayMsg) = 0;
+
+
+  //! retrieve last known user mode for session restore
+  /** \note This method is threadsafe
+   *
+   *  \param user       The Id of the networks owner
+   *  \param networkId  The Id of the network
+   */
+  virtual QString userModes(UserId user, NetworkId networkId) = 0;
+
+  //! Make our user modes persistent for session restore
+  /** \note This method is threadsafe
+   *
+   *  \param user       The Id of the networks owner
+   *  \param networkId  The Id of the network
+   *  \param userModes  The current user modes of own user
+   */
+  virtual void setUserModes(UserId user, NetworkId networkId, const QString &userModes) = 0;
+
+
   /* Buffer handling */
 
   //! Get the unique BufferInfo for the given combination of network and buffername for a user.

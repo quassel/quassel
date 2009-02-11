@@ -73,6 +73,12 @@ public slots:
   virtual void setChannelPersistent(UserId user, const NetworkId &networkId, const QString &channel, bool isJoined);
   virtual void setPersistentChannelKey(UserId user, const NetworkId &networkId, const QString &channel, const QString &key);
 
+  /* persistent user states */
+  virtual QString awayMessage(UserId user, NetworkId networkId);
+  virtual void setAwayMessage(UserId user, NetworkId networkId, const QString &awayMsg);
+  virtual QString userModes(UserId user, NetworkId networkId);
+  virtual void setUserModes(UserId user, NetworkId networkId, const QString &userModes);
+  
   /* Buffer handling */
   virtual BufferInfo bufferInfo(UserId user, const NetworkId &networkId, BufferInfo::Type type, const QString &buffer = "", bool create = true);
   virtual BufferInfo getBufferInfo(UserId user, const BufferId &bufferId);

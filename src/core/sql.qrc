@@ -55,6 +55,8 @@
     <file>./SQL/SQLite/14/select_messagesAllNew.sql</file>
     <file>./SQL/SQLite/14/select_messagesNewerThan.sql</file>
     <file>./SQL/SQLite/14/select_messagesNewestK.sql</file>
+    <file>./SQL/SQLite/14/select_network_awaymsg.sql</file>
+    <file>./SQL/SQLite/14/select_network_usermode.sql</file>
     <file>./SQL/SQLite/14/select_networkExists.sql</file>
     <file>./SQL/SQLite/14/select_networks_for_user.sql</file>
     <file>./SQL/SQLite/14/select_nicks.sql</file>
@@ -85,6 +87,8 @@
     <file>./SQL/SQLite/14/update_identity.sql</file>
     <file>./SQL/SQLite/14/update_network.sql</file>
     <file>./SQL/SQLite/14/update_network_connected.sql</file>
+    <file>./SQL/SQLite/14/update_network_set_awaymsg.sql</file>
+    <file>./SQL/SQLite/14/update_network_set_usermode.sql</file>
     <file>./SQL/SQLite/14/update_user_setting.sql</file>
     <file>./SQL/SQLite/14/update_username.sql</file>
     <file>./SQL/SQLite/14/update_userpassword.sql</file>

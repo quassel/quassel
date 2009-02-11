@@ -704,6 +704,51 @@ void SqliteStorage::setPersistentChannelKey(UserId user, const NetworkId &networ
   watchQuery(query);
 }
 
+QString SqliteStorage::awayMessage(UserId user, NetworkId networkId) {
+  QSqlQuery query(logDb());
+  query.prepare(queryString("select_network_awaymsg"));
+  query.bindValue(":userid", user.toInt());
+  query.bindValue(":networkid", networkId.toInt());
+  safeExec(query);
+  watchQuery(query);
+  QString awayMsg;
+  if(query.first())
+    awayMsg = query.value(0).toString();
+  return awayMsg;
+}
+
+void SqliteStorage::setAwayMessage(UserId user, NetworkId networkId, const QString &awayMsg) {
+  QSqlQuery query(logDb());
+  query.prepare(queryString("update_network_set_awaymsg"));
+  query.bindValue(":userid", user.toInt());
+  query.bindValue(":networkid", networkId.toInt());
+  query.bindValue(":awaymsg", awayMsg);
+  safeExec(query);
+  watchQuery(query);
+}
+
+QString SqliteStorage::userModes(UserId user, NetworkId networkId) {
+  QSqlQuery query(logDb());
+  query.prepare(queryString("select_network_usermode"));
+  query.bindValue(":userid", user.toInt());
+  query.bindValue(":networkid", networkId.toInt());
+  safeExec(query);
+  watchQuery(query);
+  QString modes;
+  if(query.first())
+    modes = query.value(0).toString();
+  return modes;
+}
+
+void SqliteStorage::setUserModes(UserId user, NetworkId networkId, const QString &userModes) {
+  QSqlQuery query(logDb());
+  query.prepare(queryString("update_network_set_usermode"));
+  query.bindValue(":userid", user.toInt());
+  query.bindValue(":networkid", networkId.toInt());
+  query.bindValue(":usermode", userModes);
+  safeExec(query);
+  watchQuery(query);
+}
 
 void SqliteStorage::createBuffer(UserId user, const NetworkId &networkId, BufferInfo::Type type, const QString &buffer) {
   QSqlQuery query(logDb());

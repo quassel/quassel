@@ -201,6 +201,48 @@ class Core : public QObject {
     return instance()->storage->setPersistentChannelKey(user, networkId, channel, key);
   }
 
+  //! retrieve last known away message for session restore
+  /** \note This method is threadsafe
+   *
+   *  \param user       The Id of the networks owner
+   *  \param networkId  The Id of the network
+   */
+  static inline QString awayMessage(UserId user, NetworkId networkId) {
+    return instance()->storage->awayMessage(user, networkId);
+  }
+
+  //! Make away message persistent for session restore
+  /** \note This method is threadsafe
+   *
+   *  \param user       The Id of the networks owner
+   *  \param networkId  The Id of the network
+   *  \param awayMsg    The current away message of own user
+   */
+  static inline void setAwayMessage(UserId user, NetworkId networkId, const QString &awayMsg) {
+    return instance()->storage->setAwayMessage(user, networkId, awayMsg);
+  }
+
+  //! retrieve last known user mode for session restore
+  /** \note This method is threadsafe
+   *
+   *  \param user       The Id of the networks owner
+   *  \param networkId  The Id of the network
+   */
+  static inline QString userModes(UserId user, NetworkId networkId) {
+    return instance()->storage->userModes(user, networkId);
+  }
+
+  //! Make our user modes persistent for session restore
+  /** \note This method is threadsafe
+   *
+   *  \param user       The Id of the networks owner
+   *  \param networkId  The Id of the network
+   *  \param userModes  The current user modes of own user
+   */
+  static inline void setUserModes(UserId user, NetworkId networkId, const QString &userModes) {
+    return instance()->storage->setUserModes(user, networkId, userModes);
+  }
+
   //! Get the unique BufferInfo for the given combination of network and buffername for a user.
   /** \note This method is threadsafe.
    *

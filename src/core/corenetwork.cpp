@@ -181,6 +181,16 @@ void CoreNetwork::disconnectFromIrc(bool requested, const QString &reason) {
   _quitRequested = requested; // see socketDisconnected();
   _autoReconnectTimer.stop();
   _autoReconnectCount = 0; // prohibiting auto reconnect
+
+  IrcUser *me_ = me();
+  if(me_) {
+    QString awayMsg;
+    if(me_->isAway())
+      awayMsg = me_->awayMessage();
+    Core::setAwayMessage(userId(), networkId(), awayMsg);
+    Core::setUserModes(userId(), networkId(), me_->userModes());
+  }
+
   displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("Disconnecting."));
   if(socket.state() == QAbstractSocket::UnconnectedState) {
     socketDisconnected();
