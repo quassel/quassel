@@ -489,7 +489,6 @@ void MainWin::setupStatusBar() {
   statusBar()->addPermanentWidget(sslLabel);
   sslLabel->hide();
 
-  _viewMenu->addSeparator();
   QAction *showStatusbar = QtUi::actionCollection("General")->action("ToggleStatusBar");
 
   QtUiSettings uiSettings;
