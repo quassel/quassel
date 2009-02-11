@@ -409,7 +409,7 @@ void MainWin::setupNickWidget() {
   addDockWidget(Qt::RightDockWidgetArea, nickDock);
   _viewMenu->addAction(nickDock->toggleViewAction());
   nickDock->toggleViewAction()->setText(tr("Show Nick List"));
-  nickDock->toggleViewAction()->setIcon(SmallIcon("view-sidetree"));
+
   // See NickListDock::NickListDock();
   // connect(nickDock->toggleViewAction(), SIGNAL(triggered(bool)), nickListWidget, SLOT(showWidget(bool)));
 
