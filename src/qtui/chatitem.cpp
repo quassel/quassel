@@ -445,7 +445,7 @@ QList<ContentsChatItem::Clickable> ContentsChatItem::findClickables() const {
     for(int i = 0; i < regExpCount; i++) {
       if(matches[i] < 0 || matchEnd[i] > str.length()) continue;
       if(idx >= matchEnd[i]) {
-        matches[i] = str.indexOf(regExp[i], qMax(matchEnd[i], idx));
+        matches[i] = regExp[i].indexIn(str, qMax(matchEnd[i], idx));
         if(matches[i] >= 0) matchEnd[i] = matches[i] + regExp[i].cap(1).length();
       }
       if(matches[i] >= 0 && matches[i] < minidx) {
