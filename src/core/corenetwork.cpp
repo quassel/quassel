@@ -518,7 +518,7 @@ void CoreNetwork::doAutoReconnect() {
 
 void CoreNetwork::sendPing() {
   if(!gotPong()) {
-    disconnectFromIrc(false, QString("No Ping reply in %1 seconds.").arg(_pingTimer.interval() / 1000), true /* withReconnect */);
+    // disconnectFromIrc(false, QString("No Ping reply in %1 seconds.").arg(_pingTimer.interval() / 1000), true /* withReconnect */);
   } else {
     _gotPong = false;
     userInputHandler()->handlePing(BufferInfo(), QString());
