@@ -246,6 +246,7 @@
 #  
 #  QT_DOC_DIR                 Path to "doc" of Qt4
 #  QT_MKSPECS_DIR             Path to "mkspecs" of Qt4
+#  QT_TRANSLATIONS_DIR        Path to "translations" of Qt4
 #
 #
 # These are around for backwards compatibility 
@@ -482,6 +483,17 @@ IF (QT4_QMAKE_FOUND)
     FILE(TO_CMAKE_PATH "${qt_plugins_dir}" qt_plugins_dir)
     SET(QT_PLUGINS_DIR ${qt_plugins_dir} CACHE PATH "The location of the Qt plugins")
   ENDIF (QT_LIBRARY_DIR AND NOT QT_PLUGINS_DIR)
+
+  # ask qmake for the translations directory
+  IF (QT_LIBRARY_DIR AND NOT QT_TRANSLATIONS_DIR)
+    EXEC_PROGRAM( ${QT_QMAKE_EXECUTABLE}
+      ARGS "-query QT_INSTALL_TRANSLATIONS"
+      OUTPUT_VARIABLE qt_translations_dir )
+    # make sure we have / and not \ as qmake gives on windows
+    FILE(TO_CMAKE_PATH "${qt_translations_dir}" qt_translations_dir)
+    SET(QT_TRANSLATIONS_DIR ${qt_translations_dir} CACHE PATH "The location of the Qt translations")
+  ENDIF (QT_LIBRARY_DIR AND NOT QT_TRANSLATIONS_DIR)
+
   ########################################
   #
   #       Setting the INCLUDE-Variables
