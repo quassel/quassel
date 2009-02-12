@@ -163,6 +163,10 @@ void ChatView::verticalScrollbarChanged(int newPos) {
     }
   }
   _lastScrollbarPos = newPos;
+
+  // FIXME: Fugly workaround for the ChatView scrolling up 1px on buffer switch
+  if(vbar->maximum() - newPos <= 2)
+    vbar->setValue(vbar->maximum());
 }
 
 MsgId ChatView::lastMsgId() const {
