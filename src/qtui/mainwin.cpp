@@ -536,8 +536,11 @@ void MainWin::setupToolBars() {
   connect(_nickListWidget, SIGNAL(nickSelectionChanged(QModelIndexList)),
           QtUi::toolBarActionProvider(), SLOT(nickSelectionChanged(QModelIndexList)));
 
+#ifdef Q_WS_MAC
+  setUnifiedTitleAndToolBarOnMac(true);
+#endif
   _mainToolBar = addToolBar("Main Toolbar");
-  _mainToolBar->setObjectName("MainToolBar");
+  // _mainToolBar->setObjectName("MainToolBar"); // setting an object name breaks setUnifiedTitleAndToolBarOnMac... -.-
   QtUi::toolBarActionProvider()->addActions(_mainToolBar, ToolBarActionProvider::MainToolBar);
   _toolbarMenu->addAction(_mainToolBar->toggleViewAction());
 
