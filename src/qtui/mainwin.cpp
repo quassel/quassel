@@ -540,7 +540,8 @@ void MainWin::setupToolBars() {
   setUnifiedTitleAndToolBarOnMac(true);
 #endif
   _mainToolBar = addToolBar("Main Toolbar");
-  // _mainToolBar->setObjectName("MainToolBar"); // setting an object name breaks setUnifiedTitleAndToolBarOnMac... -.-
+  _mainToolBar->setObjectName("MainToolBar");
+
   QtUi::toolBarActionProvider()->addActions(_mainToolBar, ToolBarActionProvider::MainToolBar);
   _toolbarMenu->addAction(_mainToolBar->toggleViewAction());
 
