@@ -83,36 +83,39 @@ void AbstractSqlStorage::addConnectionToPool() {
   }
 }
 
-bool AbstractSqlStorage::init(const QVariantMap &settings) {
+Storage::State AbstractSqlStorage::init(const QVariantMap &settings) {
   Q_UNUSED(settings)
+
   QSqlDatabase db = logDb();
   if(!db.isValid() || !db.isOpen())
-    return false;
+    return NotAvailable;
 
   if(installedSchemaVersion() == -1) {
     qCritical() << "Storage Schema is missing!";
-    return false;
+    return NeedsSetup;
   }
 
   if(installedSchemaVersion() > schemaVersion()) {
     qCritical() << "Installed Schema is newer then any known Version.";
-    return false;
+    return NotAvailable;
   }
-  
+
   if(installedSchemaVersion() < schemaVersion()) {
     qWarning() << qPrintable(tr("Installed Schema (version %1) is not up to date. Upgrading to version %2...").arg(installedSchemaVersion()).arg(schemaVersion()));
-    if(!upgradeDb())
-      return false;
+    if(!upgradeDb()) {
+      qWarning() << qPrintable(tr("Upgrade failed..."));
+      return NotAvailable;
+    }
   }
-  
+
   quInfo() << "Storage Backend is ready. Quassel Schema Version:" << installedSchemaVersion();
-  return true;
+  return IsReady;
 }
 
 QString AbstractSqlStorage::queryString(const QString &queryName, int version) {
   if(version == 0)
     version = schemaVersion();
-    
+
   QFileInfo queryInfo(QString(":/SQL/%1/%2/%3.sql").arg(displayName()).arg(version).arg(queryName));
   if(!queryInfo.exists() || !queryInfo.isFile() || !queryInfo.isReadable()) {
     qCritical() << "Unable to read SQL-Query" << queryName << "for engine" << displayName();
@@ -124,7 +127,7 @@ QString AbstractSqlStorage::queryString(const QString &queryName, int version) {
     return QString();
   QString query = QTextStream(&queryFile).readAll();
   queryFile.close();
-  
+
   return query.trimmed();
 }
 
@@ -219,7 +222,7 @@ bool AbstractSqlStorage::watchQuery(QSqlQuery &query) {
     qCritical() << "               Error Message:"   << query.lastError().text();
     qCritical() << "              Driver Message:"   << query.lastError().driverText();
     qCritical() << "                  DB Message:"   << query.lastError().databaseText();
-    
+
     return false;
   }
   return true;

@@ -65,7 +65,7 @@ class Core : public QObject {
    * \param data         The Value
    */
   static inline void setUserSetting(UserId userId, const QString &settingName, const QVariant &data) {
-    instance()->storage->setUserSetting(userId, settingName, data);
+    instance()->_storage->setUserSetting(userId, settingName, data);
   }
 
   //! Retrieve a persistent user setting
@@ -76,21 +76,21 @@ class Core : public QObject {
    * \return the Value of the Setting or the default value if it is unset.
    */
   static inline QVariant getUserSetting(UserId userId, const QString &settingName, const QVariant &data = QVariant()) {
-    return instance()->storage->getUserSetting(userId, settingName, data);
+    return instance()->_storage->getUserSetting(userId, settingName, data);
   }
 
   /* Identity handling */
   static inline IdentityId createIdentity(UserId user, CoreIdentity &identity) {
-    return instance()->storage->createIdentity(user, identity);
+    return instance()->_storage->createIdentity(user, identity);
   }
   static bool updateIdentity(UserId user, const CoreIdentity &identity) {
-    return instance()->storage->updateIdentity(user, identity);
+    return instance()->_storage->updateIdentity(user, identity);
   }
   static void removeIdentity(UserId user, IdentityId identityId) {
-    instance()->storage->removeIdentity(user, identityId);
+    instance()->_storage->removeIdentity(user, identityId);
   }
   static QList<CoreIdentity> identities(UserId user) {
-    return instance()->storage->identities(user);
+    return instance()->_storage->identities(user);
   }
 
   //! Create a Network in the Storage and store it's Id in the given NetworkInfo
@@ -110,7 +110,7 @@ class Core : public QObject {
    *  \return true if successfull.
    */
   static inline bool updateNetwork(UserId user, const NetworkInfo &info) {
-    return instance()->storage->updateNetwork(user, info);
+    return instance()->_storage->updateNetwork(user, info);
   }
 
   //! Permanently remove a Network and all the data associated with it.
@@ -121,7 +121,7 @@ class Core : public QObject {
    *  \return true if successfull.
    */
   static inline bool removeNetwork(UserId user, const NetworkId &networkId) {
-    return instance()->storage->removeNetwork(user, networkId);
+    return instance()->_storage->removeNetwork(user, networkId);
   }
 
   //! Returns a list of all NetworkInfos for the given UserId user
@@ -131,7 +131,7 @@ class Core : public QObject {
    *  \return QList<NetworkInfo>.
    */
   static inline QList<NetworkInfo> networks(UserId user) {
-    return instance()->storage->networks(user);
+    return instance()->_storage->networks(user);
   }
 
   //! Get the NetworkId for a network name.
@@ -142,7 +142,7 @@ class Core : public QObject {
    *  \return The NetworkId corresponding to the given network.
    */
   static inline NetworkId networkId(UserId user, const QString &network) {
-    return instance()->storage->getNetworkId(user, network);
+    return instance()->_storage->getNetworkId(user, network);
   }
 
   //! Get a list of Networks to restore
@@ -152,7 +152,7 @@ class Core : public QObject {
    *  \param user  The User Id in question
    */
   static inline QList<NetworkId> connectedNetworks(UserId user) {
-    return instance()->storage->connectedNetworks(user);
+    return instance()->_storage->connectedNetworks(user);
   }
 
   //! Update the connected state of a network
@@ -163,7 +163,7 @@ class Core : public QObject {
    *  \param isConnected whether the network is connected or not
    */
   static inline void setNetworkConnected(UserId user, const NetworkId &networkId, bool isConnected) {
-    return instance()->storage->setNetworkConnected(user, networkId, isConnected);
+    return instance()->_storage->setNetworkConnected(user, networkId, isConnected);
   }
 
   //! Get a hash of channels with their channel keys for a given network
@@ -174,7 +174,7 @@ class Core : public QObject {
    *  \param networkId  The Id of the network
    */
   static inline QHash<QString, QString> persistentChannels(UserId user, const NetworkId &networkId) {
-    return instance()->storage->persistentChannels(user, networkId);
+    return instance()->_storage->persistentChannels(user, networkId);
   }
 
   //! Update the connected state of a channel
@@ -186,7 +186,7 @@ class Core : public QObject {
    *  \param isJoined   whether the channel is connected or not
    */
   static inline void setChannelPersistent(UserId user, const NetworkId &networkId, const QString &channel, bool isJoined) {
-    return instance()->storage->setChannelPersistent(user, networkId, channel, isJoined);
+    return instance()->_storage->setChannelPersistent(user, networkId, channel, isJoined);
   }
 
   //! Update the key of a channel
@@ -198,7 +198,7 @@ class Core : public QObject {
    *  \param key        The key of the channel (possibly empty)
    */
   static inline void setPersistentChannelKey(UserId user, const NetworkId &networkId, const QString &channel, const QString &key) {
-    return instance()->storage->setPersistentChannelKey(user, networkId, channel, key);
+    return instance()->_storage->setPersistentChannelKey(user, networkId, channel, key);
   }
 
   //! retrieve last known away message for session restore
@@ -208,7 +208,7 @@ class Core : public QObject {
    *  \param networkId  The Id of the network
    */
   static inline QString awayMessage(UserId user, NetworkId networkId) {
-    return instance()->storage->awayMessage(user, networkId);
+    return instance()->_storage->awayMessage(user, networkId);
   }
 
   //! Make away message persistent for session restore
@@ -219,7 +219,7 @@ class Core : public QObject {
    *  \param awayMsg    The current away message of own user
    */
   static inline void setAwayMessage(UserId user, NetworkId networkId, const QString &awayMsg) {
-    return instance()->storage->setAwayMessage(user, networkId, awayMsg);
+    return instance()->_storage->setAwayMessage(user, networkId, awayMsg);
   }
 
   //! retrieve last known user mode for session restore
@@ -229,7 +229,7 @@ class Core : public QObject {
    *  \param networkId  The Id of the network
    */
   static inline QString userModes(UserId user, NetworkId networkId) {
-    return instance()->storage->userModes(user, networkId);
+    return instance()->_storage->userModes(user, networkId);
   }
 
   //! Make our user modes persistent for session restore
@@ -240,7 +240,7 @@ class Core : public QObject {
    *  \param userModes  The current user modes of own user
    */
   static inline void setUserModes(UserId user, NetworkId networkId, const QString &userModes) {
-    return instance()->storage->setUserModes(user, networkId, userModes);
+    return instance()->_storage->setUserModes(user, networkId, userModes);
   }
 
   //! Get the unique BufferInfo for the given combination of network and buffername for a user.
@@ -254,7 +254,7 @@ class Core : public QObject {
    *  \return The BufferInfo corresponding to the given network and buffer name, or 0 if not found
    */
   static inline BufferInfo bufferInfo(UserId user, const NetworkId &networkId, BufferInfo::Type type, const QString &buffer = "", bool create = true) {
-    return instance()->storage->bufferInfo(user, networkId, type, buffer, create);
+    return instance()->_storage->bufferInfo(user, networkId, type, buffer, create);
   }
 
   //! Get the unique BufferInfo for a bufferId
@@ -264,7 +264,7 @@ class Core : public QObject {
    *  \return The BufferInfo corresponding to the given buffer id, or an invalid BufferInfo if not found.
    */
   static inline BufferInfo getBufferInfo(UserId user, const BufferId &bufferId) {
-    return instance()->storage->getBufferInfo(user, bufferId);
+    return instance()->_storage->getBufferInfo(user, bufferId);
   }
 
   //! Store a Message in the backlog.
@@ -274,7 +274,7 @@ class Core : public QObject {
    *  \return The globally unique id for the stored message
    */
   static inline MsgId storeMessage(const Message &message) {
-    return instance()->storage->logMessage(message);
+    return instance()->_storage->logMessage(message);
   }
 
   //! Request a certain number messages stored in a given buffer.
@@ -285,7 +285,7 @@ class Core : public QObject {
    *  \return The requested list of messages
    */
   static inline QList<Message> requestMsgs(UserId user, BufferId bufferId, MsgId first = -1, MsgId last = -1, int limit = -1) {
-    return instance()->storage->requestMsgs(user, bufferId, first, last, limit);
+    return instance()->_storage->requestMsgs(user, bufferId, first, last, limit);
   }
 
   //! Request a certain number of messages across all buffers
@@ -295,7 +295,7 @@ class Core : public QObject {
    *  \return The requested list of messages
    */
   static inline QList<Message> requestAllMsgs(UserId user, MsgId first = -1, MsgId last = -1, int limit = -1) {
-    return instance()->storage->requestAllMsgs(user, first, last, limit);
+    return instance()->_storage->requestAllMsgs(user, first, last, limit);
   }
 
   //! Request a list of all buffers known to a user.
@@ -306,7 +306,7 @@ class Core : public QObject {
    *  \return A list of the BufferInfos for all buffers as requested
    */
   static inline QList<BufferInfo> requestBuffers(UserId user) {
-    return instance()->storage->requestBuffers(user);
+    return instance()->_storage->requestBuffers(user);
   }
 
   //! Request a list of BufferIds for a given NetworkId
@@ -317,7 +317,7 @@ class Core : public QObject {
    *  \return List of BufferIds belonging to the Network
    */
   static inline QList<BufferId> requestBufferIdsForNetwork(UserId user, NetworkId networkId) {
-    return instance()->storage->requestBufferIdsForNetwork(user, networkId);
+    return instance()->_storage->requestBufferIdsForNetwork(user, networkId);
   }
 
   //! Remove permanently a buffer and it's content from the storage backend
@@ -329,7 +329,7 @@ class Core : public QObject {
    *  \return true if successfull
    */
   static inline bool removeBuffer(const UserId &user, const BufferId &bufferId) {
-    return instance()->storage->removeBuffer(user, bufferId);
+    return instance()->_storage->removeBuffer(user, bufferId);
   }
 
   //! Rename a Buffer
@@ -340,7 +340,7 @@ class Core : public QObject {
    *  \return true if successfull
    */
   static inline bool renameBuffer(const UserId &user, const BufferId &bufferId, const QString &newName) {
-    return instance()->storage->renameBuffer(user, bufferId, newName);
+    return instance()->_storage->renameBuffer(user, bufferId, newName);
   }
 
   //! Merge the content of two Buffers permanently. This cannot be reversed!
@@ -351,7 +351,7 @@ class Core : public QObject {
    *  \return true if successfulln
    */
   static inline bool mergeBuffersPermanently(const UserId &user, const BufferId &bufferId1, const BufferId &bufferId2) {
-    return instance()->storage->mergeBuffersPermanently(user, bufferId1, bufferId2);
+    return instance()->_storage->mergeBuffersPermanently(user, bufferId1, bufferId2);
   }
 
   //! Update the LastSeenDate for a Buffer
@@ -363,7 +363,7 @@ class Core : public QObject {
    * \param MsgId     The Message id of the message that has been just seen
    */
   static inline void setBufferLastSeenMsg(UserId user, const BufferId &bufferId, const MsgId &msgId) {
-    return instance()->storage->setBufferLastSeenMsg(user, bufferId, msgId);
+    return instance()->_storage->setBufferLastSeenMsg(user, bufferId, msgId);
   }
 
   //! Get a Hash of all last seen message ids
@@ -373,7 +373,7 @@ class Core : public QObject {
    * \param user      The Owner of the buffers
    */
   static inline QHash<BufferId, MsgId> bufferLastSeenMsgIds(UserId user) {
-    return instance()->storage->bufferLastSeenMsgIds(user);
+    return instance()->_storage->bufferLastSeenMsgIds(user);
   }
 
   const QDateTime &startTime() const { return _startTime; }
@@ -424,7 +424,7 @@ private:
   void unregisterStorageBackend(Storage *);
 
   QHash<UserId, SessionThread *> sessions;
-  Storage *storage;
+  Storage *_storage;
   QTimer _storageSyncTimer;
 
 #ifdef HAVE_SSL
@@ -440,7 +440,7 @@ private:
 
   QDateTime _startTime;
 
-  bool configured;
+  bool _configured;
 };
 
 #endif

@@ -31,9 +31,15 @@
 class Storage : public QObject {
   Q_OBJECT
 
-  public:
+public:
   Storage(QObject *parent = 0);
   virtual ~Storage() {};
+
+  enum State {
+    IsReady,        // ready to go
+    NeedsSetup,     // need basic setup (ask the user for input)
+    NotAvailable    // remove the storage backend from the list of avaliable backends
+  };
 
 public slots:
   /* General */
@@ -62,9 +68,9 @@ public slots:
 
   //! Initialize the storage provider
   /** \param settings   Hostname, port, username, password, ...  
-   *  \return True if and only if the storage provider was initialized successfully.
+   *  \return the State the storage backend is now in (see Storage::State)
    */
-  virtual bool init(const QVariantMap &settings = QVariantMap()) = 0;
+  virtual State init(const QVariantMap &settings = QVariantMap()) = 0;
 
   //! Makes temp data persistent
   /** This Method is periodically called by the Quassel Core to make temporary

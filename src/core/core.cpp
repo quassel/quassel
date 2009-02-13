@@ -48,7 +48,9 @@ void Core::destroy() {
   instanceptr = 0;
 }
 
-Core::Core() : storage(0) {
+Core::Core()
+  : _storage(0)
+{
   _startTime = QDateTime::currentDateTime().toUTC();  // for uptime :)
 
   Quassel::loadTranslation(QLocale::system());
@@ -131,25 +133,23 @@ Core::Core() : storage(0) {
   // Register storage backends here!
   registerStorageBackend(new SqliteStorage(this));
 
-  if(!_storageBackends.count()) {
-    qWarning() << qPrintable(tr("Could not initialize any storage backend! Exiting..."));
-    qWarning() << qPrintable(tr("Currently, Quassel only supports SQLite3. You need to build your\n"
-                                "Qt library with the sqlite plugin enabled in order for quasselcore\n"
-                                "to work."));
-    exit(1); // TODO make this less brutal (especially for mono client -> popup)
-  }
   connect(&_storageSyncTimer, SIGNAL(timeout()), this, SLOT(syncStorage()));
   _storageSyncTimer.start(10 * 60 * 1000); // 10 minutes
 }
 
 void Core::init() {
-  configured = false;
-
   CoreSettings cs;
+  _configured = initStorage(cs.storageSettings().toMap());
 
-  if(!(configured = initStorage(cs.storageSettings().toMap()))) {
+  if(!_configured) {
+    if(!_storageBackends.count()) {
+      qWarning() << qPrintable(tr("Could not initialize any storage backend! Exiting..."));
+      qWarning() << qPrintable(tr("Currently, Quassel only supports SQLite3. You need to build your\n"
+				  "Qt library with the sqlite plugin enabled in order for quasselcore\n"
+				  "to work."));
+      exit(1); // TODO make this less brutal (especially for mono client -> popup)
+    }
     qWarning() << "Core is currently not configured! Please connect with a Quassel Client for basic setup.";
-
   }
 
   connect(&_server, SIGNAL(newConnection()), this, SLOT(incomingConnection()));
@@ -178,7 +178,7 @@ void Core::saveState() {
 }
 
 void Core::restoreState() {
-  if(!instance()->configured) {
+  if(!instance()->_configured) {
     // qWarning() << qPrintable(tr("Cannot restore a state for an unconfigured core!"));
     return;
   }
@@ -226,13 +226,14 @@ QString Core::setupCore(QVariantMap setupData) {
   if(user.isEmpty() || password.isEmpty()) {
     return tr("Admin user or password not set.");
   }
-  if(!initStorage(setupData, true)) {
+  _configured = initStorage(setupData, true);
+  if(!_configured) {
     return tr("Could not setup storage!");
   }
   CoreSettings s;
   s.setStorageSettings(setupData);
   quInfo() << qPrintable(tr("Creating admin user..."));
-  storage->addUser(user, password);
+  _storage->addUser(user, password);
   startListening();  // TODO check when we need this
   return QString();
 }
@@ -257,42 +258,55 @@ void Core::unregisterStorageBackend(Storage *backend) {
 // old db settings:
 // "Type" => "sqlite"
 bool Core::initStorage(QVariantMap dbSettings, bool setup) {
+  _storage = 0;
+
   QString backend = dbSettings["Backend"].toString();
   if(backend.isEmpty()) {
-    //qWarning() << "No storage backend selected!";
-    return configured = false;
+    return false;
   }
 
+  Storage *storage = 0;
   if(_storageBackends.contains(backend)) {
     storage = _storageBackends[backend];
   } else {
     qCritical() << "Selected storage backend is not available:" << backend;
-    return configured = false;
+    return false;
   }
-  if(!storage->init(dbSettings)) {
-    if(!setup || !(storage->setup(dbSettings) && storage->init(dbSettings))) {
-      qCritical() << "Could not init storage!";
-      storage = 0;
-      return configured = false;
-    }
-  }
-  // delete all other backends
-  foreach(Storage *s, _storageBackends.values()) {
-    if(s != storage) s->deleteLater();
-  }
-  _storageBackends.clear();
 
-  connect(storage, SIGNAL(bufferInfoUpdated(UserId, const BufferInfo &)), this, SIGNAL(bufferInfoUpdated(UserId, const BufferInfo &)));
-  return configured = true;
+  Storage::State storageState = storage->init(dbSettings);
+  switch(storageState) {
+  case Storage::NeedsSetup:
+    if(!setup)
+      return false; // trigger setup process
+    if(storage->setup(dbSettings))
+      return initStorage(dbSettings, false);
+    // if setup wasn't successfull we mark the backend as unavailable
+  case Storage::NotAvailable:
+    qCritical() << "Selected storage backend is not available:" << backend;
+    storage->deleteLater();
+    _storageBackends.remove(backend);
+    storage = 0;
+    return false;
+  case Storage::IsReady:
+    // delete all other backends
+    foreach(Storage *s, _storageBackends.values()) {
+      if(s != storage) s->deleteLater();
+    }
+    _storageBackends.clear();
+    connect(storage, SIGNAL(bufferInfoUpdated(UserId, const BufferInfo &)), this, SIGNAL(bufferInfoUpdated(UserId, const BufferInfo &)));
+  }
+  _storage = storage;
+  return true;
 }
 
 void Core::syncStorage() {
-  if(storage) storage->sync();
+  if(_storage)
+    _storage->sync();
 }
 
 /*** Storage Access ***/
 bool Core::createNetwork(UserId user, NetworkInfo &info) {
-  NetworkId networkId = instance()->storage->createNetwork(user, info);
+  NetworkId networkId = instance()->_storage->createNetwork(user, info);
   if(!networkId.isValid())
     return false;
 
@@ -405,7 +419,7 @@ void Core::incomingConnection() {
     blocksizes.insert(socket, (quint32)0);
     quInfo() << qPrintable(tr("Client connected from"))  << qPrintable(socket->peerAddress().toString());
 
-    if(!configured) {
+    if(!_configured) {
       stopListening(tr("Closing server for basic setup."));
     }
   }
@@ -480,7 +494,7 @@ void Core::processClientMessage(QTcpSocket *socket, const QVariantMap &msg) {
     reply["LoginEnabled"] = true;
 
     // check if we are configured, start wizard otherwise
-    if(!configured) {
+    if(!_configured) {
       reply["Configured"] = false;
       QList<QVariant> backends;
       foreach(Storage *backend, _storageBackends.values()) {
@@ -536,7 +550,7 @@ void Core::processClientMessage(QTcpSocket *socket, const QVariantMap &msg) {
       SignalProxy::writeDataToDevice(socket, reply);
     } else if(msg["MsgType"] == "ClientLogin") {
       QVariantMap reply;
-      UserId uid = storage->validateUser(msg["User"].toString(), msg["Password"].toString());
+      UserId uid = _storage->validateUser(msg["User"].toString(), msg["Password"].toString());
       if(uid == 0) {
         reply["MsgType"] = "ClientLoginReject";
         reply["Error"] = tr("<b>Invalid username or password!</b><br>The username/password combination you supplied could not be found in the database.");
@@ -588,7 +602,7 @@ void Core::clientDisconnected() {
 
 
   // make server listen again if still not configured
-  if (!configured) {
+  if (!_configured) {
     startListening();
   }
 
@@ -613,12 +627,12 @@ void Core::setupClientSession(QTcpSocket *socket, UserId uid) {
 }
 
 void Core::setupInternalClientSession(SignalProxy *proxy) {
-  if(!configured) {
+  if(!_configured) {
     stopListening();
     setupCoreForInternalUsage();
   }
 
-  UserId uid = storage->internalUser();
+  UserId uid = _storage->internalUser();
 
   // Find or create session for validated user
   SessionThread *sess;
