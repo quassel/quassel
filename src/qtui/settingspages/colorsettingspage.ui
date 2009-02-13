@@ -6,7 +6,7 @@
     <x>0</x>
     <y>0</y>
     <width>516</width>
-    <height>427</height>
+    <height>486</height>
    </rect>
   </property>
   <property name="sizePolicy" >
@@ -22,7 +22,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget" >
      <property name="currentIndex" >
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="bufferview" >
       <attribute name="title" >
@@ -364,7 +364,7 @@
           </sizepolicy>
          </property>
          <property name="currentIndex" >
-          <number>2</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="tab" >
           <attribute name="title" >
@@ -1072,28 +1072,28 @@
              </property>
             </widget>
            </item>
-           <item row="2" column="0" >
+           <item row="5" column="0" >
             <widget class="QLabel" name="label_28" >
              <property name="text" >
               <string>Sender:</string>
              </property>
             </widget>
            </item>
-           <item row="5" column="0" >
+           <item row="8" column="0" >
             <widget class="QLabel" name="label_30" >
              <property name="text" >
               <string>Nick:</string>
              </property>
             </widget>
            </item>
-           <item row="5" column="1" >
+           <item row="8" column="1" >
             <widget class="ColorButton" name="nickFG" >
              <property name="text" >
               <string/>
              </property>
             </widget>
            </item>
-           <item row="5" column="2" >
+           <item row="8" column="2" >
             <widget class="ColorButton" name="nickBG" >
              <property name="enabled" >
               <bool>false</bool>
@@ -1106,7 +1106,7 @@
              </property>
             </widget>
            </item>
-           <item row="5" column="3" >
+           <item row="8" column="3" >
             <widget class="QCheckBox" name="nickUseBG" >
              <property name="sizePolicy" >
               <sizepolicy vsizetype="Fixed" hsizetype="Maximum" >
@@ -1125,21 +1125,21 @@
              </property>
             </widget>
            </item>
-           <item row="6" column="0" >
+           <item row="9" column="0" >
             <widget class="QLabel" name="label_31" >
              <property name="text" >
               <string>Hostmask:</string>
              </property>
             </widget>
            </item>
-           <item row="6" column="1" >
+           <item row="9" column="1" >
             <widget class="ColorButton" name="hostmaskFG" >
              <property name="text" >
               <string/>
              </property>
             </widget>
            </item>
-           <item row="6" column="2" >
+           <item row="9" column="2" >
             <widget class="ColorButton" name="hostmaskBG" >
              <property name="enabled" >
               <bool>false</bool>
@@ -1152,7 +1152,7 @@
              </property>
             </widget>
            </item>
-           <item row="6" column="3" >
+           <item row="9" column="3" >
             <widget class="QCheckBox" name="hostmaskUseBG" >
              <property name="sizePolicy" >
               <sizepolicy vsizetype="Fixed" hsizetype="Maximum" >
@@ -1171,21 +1171,21 @@
              </property>
             </widget>
            </item>
-           <item row="7" column="0" >
+           <item row="10" column="0" >
             <widget class="QLabel" name="label_32" >
              <property name="text" >
               <string>Channelname:</string>
              </property>
             </widget>
            </item>
-           <item row="7" column="1" >
+           <item row="10" column="1" >
             <widget class="ColorButton" name="channelnameFG" >
              <property name="text" >
               <string/>
              </property>
             </widget>
            </item>
-           <item row="7" column="2" >
+           <item row="10" column="2" >
             <widget class="ColorButton" name="channelnameBG" >
              <property name="enabled" >
               <bool>false</bool>
@@ -1198,7 +1198,7 @@
              </property>
             </widget>
            </item>
-           <item row="7" column="3" >
+           <item row="10" column="3" >
             <widget class="QCheckBox" name="channelnameUseBG" >
              <property name="sizePolicy" >
               <sizepolicy vsizetype="Fixed" hsizetype="Maximum" >
@@ -1217,21 +1217,21 @@
              </property>
             </widget>
            </item>
-           <item row="8" column="0" >
+           <item row="11" column="0" >
             <widget class="QLabel" name="label_33" >
              <property name="text" >
               <string>Mode flags:</string>
              </property>
             </widget>
            </item>
-           <item row="8" column="1" >
+           <item row="11" column="1" >
             <widget class="ColorButton" name="modeFlagsFG" >
              <property name="text" >
               <string/>
              </property>
             </widget>
            </item>
-           <item row="8" column="2" >
+           <item row="11" column="2" >
             <widget class="ColorButton" name="modeFlagsBG" >
              <property name="enabled" >
               <bool>false</bool>
@@ -1244,7 +1244,7 @@
              </property>
             </widget>
            </item>
-           <item row="8" column="3" >
+           <item row="11" column="3" >
             <widget class="QCheckBox" name="modeFlagsUseBG" >
              <property name="sizePolicy" >
               <sizepolicy vsizetype="Fixed" hsizetype="Maximum" >
@@ -1263,21 +1263,21 @@
              </property>
             </widget>
            </item>
-           <item row="9" column="0" >
+           <item row="12" column="0" >
             <widget class="QLabel" name="label_34" >
              <property name="text" >
               <string>Url:</string>
              </property>
             </widget>
            </item>
-           <item row="9" column="1" >
+           <item row="12" column="1" >
             <widget class="ColorButton" name="urlFG" >
              <property name="text" >
               <string/>
              </property>
             </widget>
            </item>
-           <item row="9" column="2" >
+           <item row="12" column="2" >
             <widget class="ColorButton" name="urlBG" >
              <property name="enabled" >
               <bool>false</bool>
@@ -1290,7 +1290,7 @@
              </property>
             </widget>
            </item>
-           <item row="9" column="3" >
+           <item row="12" column="3" >
             <widget class="QCheckBox" name="urlUseBG" >
              <property name="sizePolicy" >
               <sizepolicy vsizetype="Fixed" hsizetype="Maximum" >
@@ -1309,91 +1309,73 @@
              </property>
             </widget>
            </item>
-           <item row="10" column="0" >
+           <item row="13" column="0" >
             <widget class="QLabel" name="label_11" >
              <property name="text" >
               <string>New Message Marker:</string>
              </property>
             </widget>
            </item>
-           <item row="10" column="1" >
+           <item row="13" column="1" >
             <widget class="ColorButton" name="newMsgMarkerFG" >
              <property name="text" >
               <string/>
              </property>
             </widget>
            </item>
-           <item row="2" column="1" colspan="3" >
-            <widget class="QFrame" name="senderFrame" >
-             <property name="frameShape" >
-              <enum>QFrame::NoFrame</enum>
-             </property>
-             <property name="frameShadow" >
-              <enum>QFrame::Plain</enum>
-             </property>
-             <layout class="QGridLayout" name="_2" >
-              <property name="leftMargin" >
-               <number>0</number>
-              </property>
-              <property name="topMargin" >
-               <number>0</number>
-              </property>
-              <property name="rightMargin" >
-               <number>18</number>
-              </property>
-              <property name="bottomMargin" >
-               <number>0</number>
-              </property>
-              <item row="0" column="0" >
-               <widget class="ColorButton" name="senderFG" >
-                <property name="text" >
-                 <string/>
-                </property>
-                <property name="flat" >
-                 <bool>false</bool>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="1" >
-               <widget class="ColorButton" name="senderBG" >
-                <property name="enabled" >
-                 <bool>false</bool>
-                </property>
-                <property name="text" >
-                 <string/>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="2" >
-               <widget class="QCheckBox" name="senderUseBG" >
-                <property name="sizePolicy" >
-                 <sizepolicy vsizetype="Fixed" hsizetype="Maximum" >
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="layoutDirection" >
-                 <enum>Qt::LeftToRight</enum>
-                </property>
-                <property name="text" >
-                 <string/>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-           </item>
-           <item row="3" column="1" >
+           <item row="6" column="1" >
             <widget class="QCheckBox" name="senderAutoColor" >
              <property name="text" >
               <string>Enable</string>
              </property>
             </widget>
            </item>
-           <item row="3" column="0" >
+           <item row="6" column="0" >
             <widget class="QLabel" name="label_12" >
              <property name="text" >
               <string>Sender auto coloring:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="2" >
+            <widget class="ColorButton" name="senderBG" >
+             <property name="enabled" >
+              <bool>false</bool>
+             </property>
+             <property name="text" >
+              <string/>
+             </property>
+             <property name="NotInUse" stdset="0" >
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="1" >
+            <widget class="ColorButton" name="senderFG" >
+             <property name="text" >
+              <string/>
+             </property>
+             <property name="flat" >
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="3" >
+            <widget class="QCheckBox" name="senderUseBG" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Maximum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="layoutDirection" >
+              <enum>Qt::LeftToRight</enum>
+             </property>
+             <property name="text" >
+              <string/>
+             </property>
+             <property name="NotInUse" stdset="0" >
+              <bool>true</bool>
              </property>
             </widget>
            </item>
@@ -2258,15 +2240,15 @@
   <connection>
    <sender>senderAutoColor</sender>
    <signal>clicked(bool)</signal>
-   <receiver>senderFrame</receiver>
-   <slot>setEnabled(bool)</slot>
+   <receiver>senderFG</receiver>
+   <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel" >
      <x>232</x>
      <y>173</y>
     </hint>
     <hint type="destinationlabel" >
-     <x>329</x>
+     <x>232</x>
      <y>143</y>
     </hint>
    </hints>
