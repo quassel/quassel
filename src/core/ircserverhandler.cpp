@@ -94,6 +94,9 @@ void IrcServerHandler::handleServerMsg(QByteArray msg) {
     params.removeFirst();
   }
 
+  // note that the IRC server is still alive
+  network()->resetPingTimeout();
+
   // Now we try to find a handler for this message. BTW, I do love the Trolltech guys ;-)
   handle(cmd, Q_ARG(QString, prefix), Q_ARG(QList<QByteArray>, params));
 }
@@ -384,8 +387,6 @@ void IrcServerHandler::handlePong(const QString &prefix, const QList<QByteArray>
   // but using quote and whatnought one can send arbitrary pings, so we have to do some sanity checks
   if(params.count() < 2)
     return;
-
-  network()->resetPong();
 
   QString timestamp = serverDecode(params[1]);
   QTime sendTime = QTime::fromString(timestamp, "hh:mm:ss.zzz");

@@ -106,8 +106,7 @@ public slots:
 
   Server usedServer() const;
 
-  inline void resetPong() { _gotPong = true; }
-  inline bool gotPong() { return _gotPong; }
+  inline void resetPingTimeout() { _lastPingTime = 0; }
 
 signals:
   void recvRawServerMsg(QString);
@@ -135,6 +134,8 @@ private slots:
   void restoreUserModes();
   void doAutoReconnect();
   void sendPing();
+  void enablePingTimeout();
+  void disablePingTimeout();
   void sendAutoWho();
   void startAutoWhoCycle();
 
@@ -176,7 +177,7 @@ private:
   int _lastUsedServerIndex;
 
   QTimer _pingTimer;
-  bool _gotPong;
+  uint _lastPingTime;
 
   bool _autoWhoEnabled;
   QStringList _autoWhoQueue;

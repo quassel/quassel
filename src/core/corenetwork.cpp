@@ -40,7 +40,7 @@ CoreNetwork::CoreNetwork(const NetworkId &networkid, CoreSession *session)
     _previousConnectionAttemptFailed(false),
     _lastUsedServerIndex(0),
 
-    _gotPong(true),
+    _lastPingTime(0),
 
     // TODO make autowho configurable (possibly per-network)
     _autoWhoEnabled(true),
@@ -189,6 +189,7 @@ void CoreNetwork::disconnectFromIrc(bool requested, const QString &reason, bool 
     _autoReconnectTimer.stop();
     _autoReconnectCount = 0; // prohibiting auto reconnect
   }
+  disablePingTimeout();
 
   IrcUser *me_ = me();
   if(me_) {
@@ -204,21 +205,18 @@ void CoreNetwork::disconnectFromIrc(bool requested, const QString &reason, bool 
   else
     _quitReason = reason;
 
-  displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("Disconnecting."));
+  displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("Disconnecting. (%1)").arg((!requested && !withReconnect) ? tr("Core Shutdown") : reason));
   switch(socket.state()) {
-  case QAbstractSocket::UnconnectedState:
-    socketDisconnected();
-    break;
   case QAbstractSocket::ConnectedState:
     userInputHandler()->issueQuit(_quitReason);
-  default:
-    if(!requested) {
-      socket.close();
-      socketDisconnected();
-    } else {
+    if(requested || withReconnect) {
       // the irc server has 10 seconds to close the socket
       _socketCloseTimer.start(10000);
+      break;
     }
+  default:
+    socket.close();
+    socketDisconnected();
   }
 }
 
@@ -338,8 +336,7 @@ void CoreNetwork::socketInitialized() {
 }
 
 void CoreNetwork::socketDisconnected() {
-  _pingTimer.stop();
-  resetPong();
+  disablePingTimeout();
 
   _autoWhoCycleTimer.stop();
   _autoWhoTimer.stop();
@@ -420,8 +417,7 @@ void CoreNetwork::networkInitialized() {
 
   sendPerform();
 
-  resetPong();
-  _pingTimer.start();
+  enablePingTimeout();
 
   if(_autoWhoEnabled) {
     _autoWhoCycleTimer.start();
@@ -517,12 +513,26 @@ void CoreNetwork::doAutoReconnect() {
 }
 
 void CoreNetwork::sendPing() {
-  if(!gotPong()) {
-    // disconnectFromIrc(false, QString("No Ping reply in %1 seconds.").arg(_pingTimer.interval() / 1000), true /* withReconnect */);
+  uint now = QDateTime::currentDateTime().toTime_t();
+  if(_lastPingTime != 0 && now - _lastPingTime <= (uint)(_pingTimer.interval() / 1000) + 1) {
+    // the second check compares the actual elapsed time since the last ping and the pingTimer interval
+    // if the interval is shorter then the actual elapsed time it means that this thread was somehow blocked
+    // and unable to even handle a ping answer. So we ignore those misses.
+    disconnectFromIrc(false, QString("No Ping reply in %1 seconds.").arg(_pingTimer.interval() / 1000), true /* withReconnect */);
   } else {
-    _gotPong = false;
+    _lastPingTime = now;
     userInputHandler()->handlePing(BufferInfo(), QString());
   }
+}
+
+void CoreNetwork::enablePingTimeout() {
+  resetPingTimeout();
+  _pingTimer.start();
+}
+
+void CoreNetwork::disablePingTimeout() {
+  _pingTimer.stop();
+  resetPingTimeout();
 }
 
 void CoreNetwork::sendAutoWho() {
