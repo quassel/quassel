@@ -190,8 +190,8 @@ void ChatViewSearchController::checkMessagesForHighlight(int start, int end) {
       index = model->index(row, 0);
       if(!checkType((Message::Type)index.data(MessageModel::TypeRole).toInt()))
 	continue;
-      highlightLine(_scene->chatLine(row));
     }
+    highlightLine(_scene->chatLine(row));
   }
 }
 
