@@ -37,8 +37,8 @@ void MainPage::paintEvent(QPaintEvent *event) {
   if(img.height() > height() || img.width() > width())
     img = img.scaled(width(), height(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
 
-  qreal xmargin = (width() - img.width()) / 2;
-  qreal ymargin = (height() - img.height()) / 2;
+  int xmargin = (width() - img.width()) / 2;
+  int ymargin = (height() - img.height()) / 2;
 
   painter.drawImage(xmargin, ymargin, img);
 
