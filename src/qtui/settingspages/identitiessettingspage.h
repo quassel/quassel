@@ -24,15 +24,11 @@
 #include "clientidentity.h"
 #include "settingspage.h"
 
+#include "identityeditwidget.h"
+
 #include "ui_identitiessettingspage.h"
 #include "ui_createidentitydlg.h"
 #include "ui_saveidentitiesdlg.h"
-#include "ui_nickeditdlg.h"
-
-#ifdef HAVE_SSL
-#include <QSslCertificate>
-#include <QSslKey>
-#endif
 
 class QAbstractItemModel;
 
@@ -48,11 +44,6 @@ public slots:
   void save();
   void load();
 
-#ifdef HAVE_SSL
-protected:
-  virtual bool eventFilter(QObject *watched, QEvent *event);
-#endif
-
 private slots:
   void coreConnectionStateChanged(bool);
   void clientIdentityCreated(IdentityId);
@@ -65,24 +56,10 @@ private slots:
   void on_deleteIdentity_clicked();
   void on_renameIdentity_clicked();
 
-  void on_addNick_clicked();
-  void on_deleteNick_clicked();
-  void on_renameNick_clicked();
-  void on_nickUp_clicked();
-  void on_nickDown_clicked();
-
 #ifdef HAVE_SSL
-  void on_continueUnsecured_clicked();
-  void on_clearOrLoadKeyButton_clicked();
-  void on_clearOrLoadCertButton_clicked();
+  void continueUnsecured();
 #endif
   void widgetHasChanged();
-  void setWidgetStates();
-
-#ifdef HAVE_SSL
-  void sslDragEnterEvent(QDragEnterEvent *event);
-  void sslDropEvent(QDropEvent *event, bool isCert);
-#endif
 
 private:
   Ui::IdentitiesSettingsPage ui;
@@ -98,8 +75,6 @@ private:
   void insertIdentity(CertIdentity *identity);
   void removeIdentity(Identity *identity);
   void renameIdentity(IdentityId id, const QString &newName);
-  void displayIdentity(CertIdentity *, bool dontsave = false);
-  void saveToIdentity(CertIdentity *);
 
 #ifdef HAVE_SSL
   QSslKey keyByFilename(const QString &filename);
@@ -111,6 +86,9 @@ private:
   bool testHasChanged();
 };
 
+// ==============================
+//  Various Dialogs
+// ==============================
 class CreateIdentityDlg : public QDialog {
   Q_OBJECT
 
@@ -127,6 +105,8 @@ private:
   Ui::CreateIdentityDlg ui;
 };
 
+
+
 class SaveIdentitiesDlg : public QDialog {
   Q_OBJECT
 
@@ -142,23 +122,6 @@ private:
   int numevents, rcvevents;
 };
 
-class NickEditDlg : public QDialog {
-  Q_OBJECT
 
-public:
-  NickEditDlg(const QString &oldnick, const QStringList &existing = QStringList(), QWidget *parent = 0);
-
-  QString nick() const;
-
-private slots:
-  void on_nickEdit_textChanged(const QString &);
-
-private:
-  Ui::NickEditDlg ui;
-
-  QString oldNick;
-  QStringList existing;
-
-};
 
 #endif

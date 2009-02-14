@@ -168,6 +168,7 @@ qt4_wrap_ui(UI ${FORMPATH} ${SPFRM})
 include_directories(${CMAKE_SOURCE_DIR}/src/common
                     ${CMAKE_SOURCE_DIR}/src/client
                     ${CMAKE_SOURCE_DIR}/src/qtui
+                    ${CMAKE_SOURCE_DIR}/src/qtui/settingspages
                     ${CMAKE_SOURCE_DIR}/src/uisupport
                     ${CMAKE_CURRENT_BINARY_DIR})
 
