@@ -23,6 +23,8 @@
 
 #include <QSortFilterProxyModel>
 
+#include <QPixmap>
+
 #include "types.h"
 
 class NetworkModel;
@@ -34,11 +36,26 @@ class NickViewFilter : public QSortFilterProxyModel {
 public:
   NickViewFilter(const BufferId &bufferId, NetworkModel *parent = 0);
 
+  virtual QVariant data(const QModelIndex &index, int role) const;
+  QVariant icon(const QModelIndex &index) const;
+
 protected:
   virtual bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
 
+private slots:
+  void showUserStateIconsChanged();
+
 private:
   BufferId _bufferId;
+
+  QHash<int, QPixmap> _categoryIconHash;
+  QPixmap _userOnlineIcon;
+  QPixmap _userAwayIcon;
+  QPixmap _categoryOpIcon;
+  QPixmap _categoryVoiceIcon;
+  int _opIconLimit;
+  int _voiceIconLimit;
+  bool _showUserStateIcons;
 
   void loadColors();
 };

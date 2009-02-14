@@ -20,6 +20,8 @@
 
 #include "nickviewfilter.h"
 
+#include "buffersettings.h"
+#include "iconloader.h"
 #include "networkmodel.h"
 
 /******************************************************************************************
@@ -27,12 +29,22 @@
  ******************************************************************************************/
 NickViewFilter::NickViewFilter(const BufferId &bufferId, NetworkModel *parent)
   : QSortFilterProxyModel(parent),
-    _bufferId(bufferId)
+    _bufferId(bufferId),
+    _userOnlineIcon(SmallIcon("im-user")),
+    _userAwayIcon(SmallIcon("im-user-away")),
+    _categoryOpIcon(SmallIcon("irc-operator")),
+    _categoryVoiceIcon(SmallIcon("irc-voice")),
+    _opIconLimit(UserCategoryItem::categoryFromModes("o")),
+    _voiceIconLimit(UserCategoryItem::categoryFromModes("v"))
 {
   setSourceModel(parent);
   setDynamicSortFilter(true);
   setSortCaseSensitivity(Qt::CaseInsensitive);
   setSortRole(TreeModel::SortRole);
+
+  BufferSettings bufferSettings;
+  _showUserStateIcons = bufferSettings.showUserStateIcons();
+  bufferSettings.notify("ShowUserStateIcons", this, SLOT(showUserStateIconsChanged()));
 }
 
 bool NickViewFilter::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const {
@@ -42,4 +54,48 @@ bool NickViewFilter::filterAcceptsRow(int source_row, const QModelIndex &source_
 
   QModelIndex source_child = source_parent.child(source_row, 0);
   return (sourceModel()->data(source_child, NetworkModel::BufferIdRole).value<BufferId>() == _bufferId);
+}
+
+QVariant NickViewFilter::data(const QModelIndex &index, int role) const {
+  switch(role) {
+  case Qt::DecorationRole:
+    return icon(index);
+  default:
+    return QSortFilterProxyModel::data(index, role);
+  }
+}
+
+QVariant NickViewFilter::icon(const QModelIndex &index) const {
+  if(!_showUserStateIcons)
+    return QVariant();
+
+  if(index.column() != 0)
+    return QVariant();
+
+  QModelIndex source_index = mapToSource(index);
+  NetworkModel::ItemType itemType = (NetworkModel::ItemType)sourceModel()->data(source_index, NetworkModel::ItemTypeRole).toInt();
+  switch(itemType) {
+  case NetworkModel::UserCategoryItemType:
+    {
+      int categoryId = sourceModel()->data(source_index, TreeModel::SortRole).toInt();
+      if(categoryId <= _opIconLimit)
+	return _categoryOpIcon;
+      if(categoryId <= _voiceIconLimit)
+	return _categoryVoiceIcon;
+      return _userOnlineIcon;
+    }
+  case NetworkModel::IrcUserItemType:
+    if(sourceModel()->data(source_index, NetworkModel::ItemActiveRole).toBool())
+      return _userOnlineIcon;
+    else
+      return _userAwayIcon;
+    break;
+  default:
+    return QVariant();
+  };
+}
+
+void NickViewFilter::showUserStateIconsChanged() {
+  BufferSettings bufferSettings;
+  _showUserStateIcons = bufferSettings.showUserStateIcons();
 }
