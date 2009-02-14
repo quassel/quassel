@@ -63,8 +63,12 @@ void UserInputHandler::handleAway(const BufferInfo &bufferInfo, const QString &m
 
   // if there is no message supplied we have to check if we are already away or not
   if(msg.isEmpty()) {
-    if(me && !me->isAway())
+    if(me && !me->isAway()) {
       awayMsg = network()->identityPtr()->awayReason();
+      if(awayMsg.isEmpty()) {
+	awayMsg = tr("away");
+      }
+    }
   }
   if(me)
     me->setAwayMessage(awayMsg);

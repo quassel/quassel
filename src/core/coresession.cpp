@@ -379,7 +379,6 @@ void CoreSession::clientsConnected() {
   Identity *identity = 0;
   CoreNetwork *net = 0;
   IrcUser *me = 0;
-  QString awayReason;
   while(netIter != _networks.end()) {
     net = *netIter;
     netIter++;
@@ -421,8 +420,6 @@ void CoreSession::clientsDisconnected() {
     if(identity->detachAwayEnabled() && !me->isAway()) {
       if(identity->detachAwayReasonEnabled())
 	awayReason = identity->detachAwayReason();
-      else
-	awayReason = identity->awayReason();
       net->setAutoAwayActive(true);
       net->userInputHandler()->handleAway(BufferInfo(), awayReason);
     }
