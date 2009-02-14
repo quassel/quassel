@@ -40,20 +40,40 @@ Quassel recognizes the following options:
 -DWANT_(CORE|QTCLIENT|MONO)=(ON|OFF)
     Allow to choose which Quassel binaries to build.
 
+-DWITH_KDE=ON
+    Enable integration into KDE4
+
+-DWITH_OPENSSL=OFF
+    Disable OpenSSL support
+
+-DWITH_DBUS=OFF
+    Disable D-Bus support. This will disable support for notification-daemon.
+
+-DWITH_WEBKIT=OFF
+    Disable WebKit support. You will not have webpage previews on hovering URLs.
+
+-DWITH_PHONON=OFF
+    Disable support for audio notifications via Phonon.
+
 -DLINGUAS="<languages">
     Allow to choose which languages should be compiled into the binary.
-    <languages> is a space-separated list of language codes.
+    <languages> is a space- or comma-separated list of language codes.
     Example: -DLINGUAS="de en_US"
+
+-DEMBED_DATA=ON
+    Embed all external data files (e.g. icons) into the binary. This will give you a
+    standalone binary that does not require installation. Will be ignored if KDE support
+    is enabled.
 
 -DQT=/path/to/qt
     Use a non-system Qt installation. This is for example useful if you have a static
     Qt installed in some local dir.
 
--DSTATIC=1
+-DSTATIC=ON
     Enable static building of Quassel. On Linux, you should link the static versions of some libs
     (in particular libstdc++.a) into /path/to/build/dir/staticlibs in oder to create
     a portable binary! Be aware of the fact that some things we do in STATIC mode might not be portable
-    or require a particular setup; it's mainly meant for the devel team.
+    or require a particular setup; it's mainly meant for the devel team. See also doc/.
 
 BUILDING ON WINDOWS:
 --------------------
