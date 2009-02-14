@@ -48,13 +48,14 @@ bool JumpKeyHandler::eventFilter(QObject *obj, QEvent *event) {
   
   if(key < Qt::Key_1 || Qt::Key_9 < key)
     return QObject::eventFilter(obj, event);
-  
-  if(keyEvent->modifiers() ==  bindModifier) {
+
+  int mod = keyEvent->modifiers() & ~(Qt::KeypadModifier|Qt::ShiftModifier);
+  if(mod ==  bindModifier) {
     bindKey(key);
     return true;
   }
   
-  if(keyEvent->modifiers() == jumpModifier) {
+  if(mod == jumpModifier) {
     jumpKey(key);
     return true;
   }
