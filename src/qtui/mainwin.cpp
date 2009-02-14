@@ -773,8 +773,8 @@ void MainWin::toggleMinimizedToTray() {
     // restore
     setWindowState((windowState() & ~Qt::WindowMinimized) | Qt::WindowActive);
     show();
+    activateWindow();
     raise();
-    
   } else {
     setWindowState((windowState() & ~Qt::WindowActive) | Qt::WindowMinimized);
     hideToTray();
