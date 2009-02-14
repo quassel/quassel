@@ -465,9 +465,44 @@ QSize BufferView::sizeHint() const {
 // ****************************************
 //  BufferViewDelgate
 // ****************************************
+class ColorsChangedEvent : public QEvent {
+public:
+  ColorsChangedEvent() : QEvent(QEvent::User) {};
+};
+
 BufferViewDelegate::BufferViewDelegate(QObject *parent)
-  : QStyledItemDelegate(parent)
+  : QStyledItemDelegate(parent),
+    _updateColors(false)
 {
+  loadColors();
+
+  UiSettings s("QtUiStyle/Colors");
+  s.notify("inactiveActivityFG", this, SLOT(colorsChanged()));
+  s.notify("noActivityFG", this, SLOT(colorsChanged()));
+  s.notify("highlightActivityFG", this, SLOT(colorsChanged()));
+  s.notify("newMessageActivityFG", this, SLOT(colorsChanged()));
+  s.notify("otherActivityFG", this, SLOT(colorsChanged()));
+}
+
+void BufferViewDelegate::colorsChanged() {
+  // avoid mutliple unneded reloads of all colors
+  if(_updateColors)
+    return;
+  _updateColors = true;
+  QCoreApplication::postEvent(this, new ColorsChangedEvent());
+}
+
+void BufferViewDelegate::customEvent(QEvent *event) {
+  if(event->type() != QEvent::User)
+    return;
+
+  loadColors();
+  _updateColors = false;
+
+  event->accept();
+}
+
+void BufferViewDelegate::loadColors() {
   UiSettings s("QtUiStyle/Colors");
   _FgColorInactiveActivity = s.value("inactiveActivityFG", QVariant(QColor(Qt::gray))).value<QColor>();
   _FgColorNoActivity = s.value("noActivityFG", QVariant(QColor(Qt::black))).value<QColor>();

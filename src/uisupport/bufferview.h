@@ -105,7 +105,12 @@ public:
   bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index);
 
 protected:
+  virtual void customEvent(QEvent *event);
   virtual void initStyleOption(QStyleOptionViewItem *option, const QModelIndex &index) const;
+
+private slots:
+  void colorsChanged();
+  void loadColors();
 
 private:
   QColor _FgColorInactiveActivity;
@@ -113,6 +118,8 @@ private:
   QColor _FgColorHighlightActivity;
   QColor _FgColorNewMessageActivity;
   QColor _FgColorOtherActivity;
+
+  bool _updateColors;
 };
 
 
