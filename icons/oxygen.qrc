@@ -210,6 +210,8 @@
     <file>oxygen/16x16/apps/quassel.png</file>
     <file>oxygen/16x16/status/security-low.png</file>
     <file>oxygen/16x16/status/user-away.png</file>
+    <file>oxygen/16x16/status/user-online.png</file>
+    <file>oxygen/16x16/status/user-offline.png</file>
     <file>oxygen/16x16/status/security-high.png</file>
     <file>oxygen/16x16/devices/network-wired.png</file>
     <file>oxygen/16x16/actions/edit-delete.png</file>
