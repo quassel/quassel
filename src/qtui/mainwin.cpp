@@ -199,13 +199,18 @@ MainWin::~MainWin() {
   s.setValue("MainWinState", saveState());
 }
 
-// FIXME
 void MainWin::updateIcon() {
+#ifdef Q_WS_MAC
+  const int size = 128;
+#else
+  const int size = 48;
+#endif
+
   QPixmap icon;
   if(Client::isConnected())
-    icon = DesktopIcon("quassel", IconLoader::SizeEnormous);
+    icon = DesktopIcon("quassel", size);
   else
-    icon = DesktopIcon("quassel_disconnected", IconLoader::SizeEnormous);
+    icon = DesktopIcon("quassel_inactive", size);
   setWindowIcon(icon);
   qApp->setWindowIcon(icon);
 }
