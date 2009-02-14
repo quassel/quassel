@@ -64,6 +64,7 @@
 #include "sessionsettings.h"
 #include "settingsdlg.h"
 #include "settingspagedlg.h"
+#include "systemtray.h"
 #include "toolbaractionprovider.h"
 #include "topicwidget.h"
 #include "verticaldock.h"
@@ -105,7 +106,6 @@ MainWin::MainWin(QWidget *parent)
     sslLabel(new QLabel()),
     msgProcessorStatusWidget(new MsgProcessorStatusWidget()),
     _titleSetter(this),
-    _trayIcon(new QSystemTrayIcon(this)),
     _awayLog(0)
 {
   QtUiSettings uiSettings;
@@ -137,6 +137,8 @@ void MainWin::init() {
   connect(QApplication::instance(), SIGNAL(aboutToQuit()), SLOT(saveLayout()));
   connect(Client::instance(), SIGNAL(networkCreated(NetworkId)), SLOT(clientNetworkCreated(NetworkId)));
   connect(Client::instance(), SIGNAL(networkRemoved(NetworkId)), SLOT(clientNetworkRemoved(NetworkId)));
+  connect(Client::messageModel(), SIGNAL(rowsInserted(const QModelIndex &, int, int)),
+           SLOT(messagesInserted(const QModelIndex &, int, int)));
   connect(GraphicalUi::contextMenuActionProvider(), SIGNAL(showChannelList(NetworkId)), SLOT(showChannelList(NetworkId)));
 
   // Setup Dock Areas
@@ -182,6 +184,7 @@ void MainWin::init() {
   setDisconnectedState();  // Disable menus and stuff
 
   show();
+
   if(Quassel::runMode() != Quassel::Monolithic) {
     showCoreConnectionDlg(true); // autoconnect if appropriate
   } else {
@@ -196,6 +199,7 @@ MainWin::~MainWin() {
   s.setValue("MainWinState", saveState());
 }
 
+// FIXME
 void MainWin::updateIcon() {
   QPixmap icon;
   if(Client::isConnected())
@@ -204,7 +208,6 @@ void MainWin::updateIcon() {
     icon = DesktopIcon("quassel_disconnected", IconLoader::SizeEnormous);
   setWindowIcon(icon);
   qApp->setWindowIcon(icon);
-  systemTrayIcon()->setIcon(icon);
 }
 
 void MainWin::setupActions() {
@@ -507,27 +510,12 @@ void MainWin::saveStatusBarStatus(bool enabled) {
 }
 
 void MainWin::setupSystray() {
-  connect(Client::messageModel(), SIGNAL(rowsInserted(const QModelIndex &, int, int)),
-                                  SLOT(messagesInserted(const QModelIndex &, int, int)));
-
-  ActionCollection *coll = QtUi::actionCollection("General");
-  systrayMenu = new QMenu(this);
-  systrayMenu->addAction(coll->action("ConnectCore"));
-  systrayMenu->addAction(coll->action("DisconnectCore"));
-  systrayMenu->addAction(coll->action("CoreInfo"));
-  systrayMenu->addSeparator();
-  systrayMenu->addAction(coll->action("Quit"));
-
-  systemTrayIcon()->setContextMenu(systrayMenu);
-
-  QtUiSettings s;
-  if(s.value("UseSystemTrayIcon", QVariant(true)).toBool()) {
-    systemTrayIcon()->show();
-  }
+  _systemTray = new SystemTray(this);
 
 #ifndef Q_WS_MAC
-  connect(systemTrayIcon(), SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(systrayActivated(QSystemTrayIcon::ActivationReason)));
+  connect(systemTray(), SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(systrayActivated(QSystemTrayIcon::ActivationReason)));
 #endif
+
 }
 
 void MainWin::setupToolBars() {
@@ -612,6 +600,7 @@ void MainWin::setConnectedState() {
   sslLabel->setVisible(!Client::internalCore());
   coreLagLabel->setVisible(!Client::internalCore());
   updateIcon();
+  systemTray()->setState(SystemTray::Active);
 }
 
 void MainWin::loadLayout() {
@@ -671,6 +660,7 @@ void MainWin::setDisconnectedState() {
   if(msgProcessorStatusWidget)
     msgProcessorStatusWidget->setProgress(0, 0);
   updateIcon();
+  systemTray()->setState(SystemTray::Inactive);
 }
 
 void MainWin::startInternalCore() {
@@ -769,14 +759,13 @@ void MainWin::systrayActivated(QSystemTrayIcon::ActivationReason activationReaso
 }
 
 void MainWin::hideToTray() {
-  if(!systemTrayIcon()->isSystemTrayAvailable()) {
+  if(!systemTray()->isSystemTrayAvailable()) {
     qWarning() << Q_FUNC_INFO << "was called with no SystemTray available!";
     return;
   }
-
   clearFocus();
   hide();
-  systemTrayIcon()->show();
+  systemTray()->setIconVisible();
 }
 
 void MainWin::toggleMinimizedToTray() {
@@ -785,6 +774,7 @@ void MainWin::toggleMinimizedToTray() {
     setWindowState((windowState() & ~Qt::WindowMinimized) | Qt::WindowActive);
     show();
     raise();
+    
   } else {
     setWindowState((windowState() & ~Qt::WindowActive) | Qt::WindowMinimized);
     hideToTray();

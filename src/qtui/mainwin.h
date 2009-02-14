@@ -42,7 +42,7 @@ class BufferWidget;
 class InputWidget;
 class MsgProcessorStatusWidget;
 class NickListWidget;
-class SystemTrayIcon;
+class SystemTray;
 
 class QMenu;
 class QLabel;
@@ -68,7 +68,7 @@ class MainWin
     void addBufferView(ClientBufferViewConfig *config);
     BufferView *allBuffersView() const;
 
-    inline QSystemTrayIcon *systemTrayIcon() const;
+    inline SystemTray *systemTray() const;
 
     virtual bool event(QEvent *event);
 
@@ -134,7 +134,6 @@ class MainWin
     KHelpMenu *_kHelpMenu;
 #endif
 
-    QMenu *systrayMenu;
     QLabel *coreLagLabel;
     QLabel *sslLabel;
     MsgProcessorStatusWidget *msgProcessorStatusWidget;
@@ -158,7 +157,7 @@ class MainWin
     void toggleMinimizedToTray();
     void enableMenus();
 
-    QSystemTrayIcon *_trayIcon;
+    SystemTray *_systemTray;
 
     QList<BufferViewDock *> _bufferViews;
     BufferWidget *_bufferWidget;
@@ -173,8 +172,8 @@ class MainWin
     friend class QtUi;
 };
 
-QSystemTrayIcon *MainWin::systemTrayIcon() const {
-  return _trayIcon;
+SystemTray *MainWin::systemTray() const {
+  return _systemTray;
 }
 
 #endif

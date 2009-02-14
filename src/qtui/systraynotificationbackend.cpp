@@ -28,6 +28,7 @@
 #include "mainwin.h"
 #include "networkmodel.h"
 #include "qtui.h"
+#include "systemtray.h"
 
 SystrayNotificationBackend::SystrayNotificationBackend(QObject *parent)
   : AbstractNotificationBackend(parent)
@@ -39,9 +40,7 @@ SystrayNotificationBackend::SystrayNotificationBackend(QObject *parent)
   notificationSettings.notify("Systray/ShowBubble", this, SLOT(showBubbleChanged(const QVariant &)));
   notificationSettings.notify("Systray/Animate", this, SLOT(animateChanged(const QVariant &)));
 
-  _iconActive = false;
-  connect(&_animationTimer, SIGNAL(timeout()), SLOT(blink()));
-  connect(QtUi::mainWindow()->systemTrayIcon(), SIGNAL(messageClicked()), this, SIGNAL(activated()));
+  connect(QtUi::mainWindow()->systemTray(), SIGNAL(messageClicked()), this, SIGNAL(activated()));
 }
 
 void SystrayNotificationBackend::notify(const Notification &notification) {
@@ -53,12 +52,11 @@ void SystrayNotificationBackend::notify(const Notification &notification) {
   */
   _notifications.clear();
   _notifications.append(notification);
-  if(_showBubble) {
+  if(_showBubble)
     showBubble();
-  }
-  if(_animate) {
-    startAnimation();
-  }
+
+  if(_animate)
+    QtUi::mainWindow()->systemTray()->setAlert(true);
 }
 
 void SystrayNotificationBackend::close(uint notificationId) {
@@ -70,7 +68,7 @@ void SystrayNotificationBackend::close(uint notificationId) {
   */
   _notifications.clear();
   closeBubble();
-  stopAnimation();
+  QtUi::mainWindow()->systemTray()->setAlert(false);
 }
 
 void SystrayNotificationBackend::showBubble() {
@@ -80,34 +78,18 @@ void SystrayNotificationBackend::showBubble() {
   Notification n = _notifications.takeLast();
   QString title = Client::networkModel()->networkName(n.bufferId) + " - " + Client::networkModel()->bufferName(n.bufferId);
   QString message = QString("<%1> %2").arg(n.sender, n.message);
-  QtUi::mainWindow()->systemTrayIcon()->showMessage(title, message);
+  QtUi::mainWindow()->systemTray()->showMessage(title, message);
 }
 
 void SystrayNotificationBackend::closeBubble() {
   // there really seems to be no sane way to close the bubble... :(
 #ifdef Q_WS_X11
-  QtUi::mainWindow()->systemTrayIcon()->showMessage("", "", QSystemTrayIcon::NoIcon, 1);
+  QtUi::mainWindow()->systemTray()->showMessage("", "", QSystemTrayIcon::NoIcon, 1);
 #endif
 }
 
 void SystrayNotificationBackend::showBubbleChanged(const QVariant &v) {
   _showBubble = v.toBool();
-}
-
-void SystrayNotificationBackend::startAnimation() {
-  if(!_animationTimer.isActive())
-    _animationTimer.start(500);
-}
-
-void SystrayNotificationBackend::stopAnimation() {
-  _animationTimer.stop();
-  QtUi::mainWindow()->systemTrayIcon()->setIcon(Icon("quassel"));
-  _iconActive = false;
-}
-
-void SystrayNotificationBackend::blink() {
-  QtUi::mainWindow()->systemTrayIcon()->setIcon(_iconActive ? Icon("quassel") : Icon("quassel_newmessage"));
-  _iconActive = !_iconActive;
 }
 
 void SystrayNotificationBackend::animateChanged(const QVariant &v) {

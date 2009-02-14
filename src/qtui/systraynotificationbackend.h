@@ -40,9 +40,6 @@ public:
 private slots:
   void showBubble();
   void closeBubble();
-  void startAnimation();
-  void stopAnimation();
-  void blink();
 
   void animateChanged(const QVariant &);
   void showBubbleChanged(const QVariant &);
@@ -52,8 +49,6 @@ private:
 
   bool _showBubble;
   bool _animate;
-  bool _iconActive;
-  QTimer _animationTimer;
   QList<Notification> _notifications;
 };
 

@@ -30,6 +30,7 @@
 #include "iconloader.h"
 #include "networkmodel.h"
 #include "qtui.h"
+#include "systemtray.h"
 
 KNotificationBackend::KNotificationBackend(QObject *parent) : AbstractNotificationBackend(parent) {
 
@@ -41,10 +42,12 @@ void KNotificationBackend::notify(const Notification &n) {
   KNotification *notification = KNotification::event("Highlight", message, DesktopIcon("dialog-information"), QtUi::mainWindow(),
                                 KNotification::Persistent|KNotification::RaiseWidgetOnActivation|KNotification::CloseWhenWidgetActivated);
   connect(notification, SIGNAL(activated()), SLOT(notificationActivated()));
+  QtUi::mainWindow()->systemTray()->setAlert(true);
 }
 
 void KNotificationBackend::close(uint notificationId) {
   Q_UNUSED(notificationId);
+  QtUi::mainWindow()->systemTray()->setAlert(false);
 }
 
 void KNotificationBackend::notificationActivated() {
