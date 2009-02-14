@@ -43,6 +43,7 @@ set(SOURCES
     sessionsettings.cpp
     settingsdlg.cpp
     settingspagedlg.cpp
+    systemtray.cpp
     systraynotificationbackend.cpp
     taskbarnotificationbackend.cpp
     titlesetter.cpp
@@ -83,6 +84,7 @@ set(MOC_HDRS
     qtuimessageprocessor.h
     settingsdlg.h
     settingspagedlg.h
+    systemtray.h
     systraynotificationbackend.h
     taskbarnotificationbackend.h
     titlesetter.h
