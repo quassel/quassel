@@ -46,7 +46,7 @@ CoreNetwork::CoreNetwork(const NetworkId &networkid, CoreSession *session)
     _autoWhoEnabled(true),
     _autoWhoInterval(90),
     _autoWhoNickLimit(0), // unlimited
-    _autoWhoDelay(3)
+    _autoWhoDelay(5)
 {
   _autoReconnectTimer.setSingleShot(true);
   _socketCloseTimer.setSingleShot(true);
@@ -257,7 +257,7 @@ void CoreNetwork::setChannelJoined(const QString &channel) {
 void CoreNetwork::setChannelParted(const QString &channel) {
   removeChannelKey(channel);
   _autoWhoQueue.removeAll(channel.toLower());
-  _autoWhoInProgress.remove(channel.toLower());
+  _autoWhoPending.remove(channel.toLower());
 
   Core::setChannelPersistent(userId(), networkId(), channel, false);
 }
@@ -275,9 +275,11 @@ void CoreNetwork::removeChannelKey(const QString &channel) {
 }
 
 bool CoreNetwork::setAutoWhoDone(const QString &channel) {
-  if(_autoWhoInProgress.value(channel.toLower(), 0) <= 0)
+  QString chan = channel.toLower();
+  if(_autoWhoPending.value(chan, 0) <= 0)
     return false;
-  _autoWhoInProgress[channel.toLower()]--;
+  if(--_autoWhoPending[chan] <= 0)
+    _autoWhoPending.remove(chan);
   return true;
 }
 
@@ -341,7 +343,7 @@ void CoreNetwork::socketDisconnected() {
   _autoWhoCycleTimer.stop();
   _autoWhoTimer.stop();
   _autoWhoQueue.clear();
-  _autoWhoInProgress.clear();
+  _autoWhoPending.clear();
 
   _socketCloseTimer.stop();
 
@@ -536,12 +538,16 @@ void CoreNetwork::disablePingTimeout() {
 }
 
 void CoreNetwork::sendAutoWho() {
+  // Don't send autowho if there are still some pending
+  if(_autoWhoPending.count())
+    return;
+
   while(!_autoWhoQueue.isEmpty()) {
     QString chan = _autoWhoQueue.takeFirst();
     IrcChannel *ircchan = ircChannel(chan);
     if(!ircchan) continue;
     if(_autoWhoNickLimit > 0 && ircchan->ircUsers().count() > _autoWhoNickLimit) continue;
-    _autoWhoInProgress[chan]++;
+    _autoWhoPending[chan]++;
     putRawLine("WHO " + serverEncode(chan));
     if(_autoWhoQueue.isEmpty() && _autoWhoEnabled && !_autoWhoCycleTimer.isActive()) {
       // Timer was stopped, means a new cycle is due immediately

@@ -75,7 +75,7 @@ public:
 
   inline QString channelKey(const QString &channel) const { return _channelKeys.value(channel.toLower(), QString()); }
 
-  inline bool isAutoWhoInProgress(const QString &channel) const { return _autoWhoInProgress.value(channel.toLower(), 0); }
+  inline bool isAutoWhoInProgress(const QString &channel) const { return _autoWhoPending.value(channel.toLower(), 0); }
 
   inline UserId userId() const { return _coreSession->user(); }
 
@@ -181,7 +181,7 @@ private:
 
   bool _autoWhoEnabled;
   QStringList _autoWhoQueue;
-  QHash<QString, int> _autoWhoInProgress;
+  QHash<QString, int> _autoWhoPending;
   int _autoWhoInterval;
   int _autoWhoNickLimit;
   int _autoWhoDelay;
