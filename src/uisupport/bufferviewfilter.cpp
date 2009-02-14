@@ -45,6 +45,8 @@ BufferViewFilter::BufferViewFilter(QAbstractItemModel *model, BufferViewConfig *
   : QSortFilterProxyModel(model),
     _config(0),
     _sortOrder(Qt::AscendingOrder),
+    _channelJoinedIcon(SmallIcon("irc-join-channel")),
+    _channelPartedIcon(SmallIcon("irc-close-channel")),
     _userOfflineIcon(SmallIcon("im-user-offline")),
     _userAwayIcon(SmallIcon("im-user-away")),
     _userOnlineIcon(SmallIcon("im-user")),
@@ -392,21 +394,29 @@ QVariant BufferViewFilter::icon(const QModelIndex &index) const {
     return QVariant();
 
   QModelIndex source_index = mapToSource(index);
-  if(sourceModel()->data(source_index, NetworkModel::ItemTypeRole).toInt() != NetworkModel::BufferItemType)
+  NetworkModel::ItemType itemType = (NetworkModel::ItemType)sourceModel()->data(source_index, NetworkModel::ItemTypeRole).toInt();
+  BufferInfo::Type bufferType = (BufferInfo::Type)sourceModel()->data(source_index, NetworkModel::BufferTypeRole).toInt();
+  bool isActive = sourceModel()->data(source_index, NetworkModel::ItemActiveRole).toBool();
+
+  if(itemType != NetworkModel::BufferItemType)
     return QVariant();
 
-  if(sourceModel()->data(source_index, NetworkModel::BufferTypeRole).toInt() != BufferInfo::QueryBuffer)
+  switch(bufferType) {
+  case BufferInfo::ChannelBuffer:
+    if(isActive)
+      return _channelJoinedIcon;
+    else
+      return _channelPartedIcon;
+  case BufferInfo::QueryBuffer:
+    if(!isActive)
+      return _userOfflineIcon;
+    if(sourceModel()->data(source_index, NetworkModel::UserAwayRole).toBool())
+      return _userAwayIcon;
+    else
+      return _userOnlineIcon;
+  default:
     return QVariant();
-
-  if(!sourceModel()->data(source_index, NetworkModel::ItemActiveRole).toBool())
-    return _userOfflineIcon;
-
-  if(sourceModel()->data(source_index, NetworkModel::UserAwayRole).toBool())
-    return _userAwayIcon;
-  else
-    return _userOnlineIcon;
-
-  return QVariant();
+  }
 }
 
 QVariant BufferViewFilter::checkedState(const QModelIndex &index) const {

@@ -96,6 +96,8 @@ private:
   QPointer<BufferViewConfig> _config;
   Qt::SortOrder _sortOrder;
 
+  QPixmap _channelJoinedIcon;
+  QPixmap _channelPartedIcon;
   QPixmap _userOfflineIcon;
   QPixmap _userAwayIcon;
   QPixmap _userOnlineIcon;
