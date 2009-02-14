@@ -81,9 +81,14 @@ public slots:
   void defaultHandler(QString cmd, const QString &prefix, const QList<QByteArray> &params);
 
 private:
-  void tryNextNick(const QString &errnick);
+  void tryNextNick(const QString &errnick, bool erroneus = false);
   bool checkParamCount(const QString &methodName, const QList<QByteArray> &params, int minParams);
+
+  // holds the target for numeric replies or is invalid otherwise
+  inline const QString &target() const { return _target; }
+
   bool _whois;
+  QString _target;
 };
 
 

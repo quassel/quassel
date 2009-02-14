@@ -205,7 +205,7 @@ void CoreNetwork::disconnectFromIrc(bool requested, const QString &reason, bool 
   else
     _quitReason = reason;
 
-  displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("Disconnecting. (%1)").arg((!requested && !withReconnect) ? tr("Core Shutdown") : reason));
+  displayMsg(Message::Server, BufferInfo::StatusBuffer, "", tr("Disconnecting. (%1)").arg((!requested && !withReconnect) ? tr("Core Shutdown") : _quitReason));
   switch(socket.state()) {
   case QAbstractSocket::ConnectedState:
     userInputHandler()->issueQuit(_quitReason);
