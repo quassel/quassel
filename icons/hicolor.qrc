@@ -1,22 +1,10 @@
 <RCC>
   <qresource prefix="/icons" >
-    <file>hicolor/16x16/apps/quassel_disconnected.png</file>
-    <file>hicolor/16x16/apps/quassel_newmessage.png</file>
     <file>hicolor/16x16/apps/quassel.png</file>
-    <file>hicolor/22x22/apps/quassel_disconnected.png</file>
-    <file>hicolor/22x22/apps/quassel_newmessage.png</file>
     <file>hicolor/22x22/apps/quassel.png</file>
-    <file>hicolor/32x32/apps/quassel_disconnected.png</file>
-    <file>hicolor/32x32/apps/quassel_newmessage.png</file>
     <file>hicolor/32x32/apps/quassel.png</file>
-    <file>hicolor/48x48/apps/quassel_disconnected.png</file>
-    <file>hicolor/48x48/apps/quassel_newmessage.png</file>
     <file>hicolor/48x48/apps/quassel.png</file>
-    <file>hicolor/64x64/apps/quassel_disconnected.png</file>
-    <file>hicolor/64x64/apps/quassel_newmessage.png</file>
     <file>hicolor/64x64/apps/quassel.png</file>
-    <file>hicolor/128x128/apps/quassel_disconnected.png</file>
-    <file>hicolor/128x128/apps/quassel_newmessage.png</file>
     <file>hicolor/128x128/apps/quassel.png</file>
   </qresource>
 </RCC>
