@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include "bufferview.h"
+
 #include "inputline.h"
 #include "tabcompleter.h"
 
@@ -140,14 +141,39 @@ void InputLine::on_textChanged(QString newText) {
   if(lineSep.isEmpty())
     return;
 
-  if(newText.contains(lineSep)) {
+  QStringList lines = newText.split(lineSep);
+  clear();
+
+  if(lines.count() > 4) {
+    QString msg = tr("Do you really want to paste %1 lines?").arg(lines.count());
+    msg += "<p>";
+    for(int i = 0; i < 3; i++) {
+      msg += lines[i].left(40);
+      if(lines[i].count() > 40)
+	msg += "...";
+      msg += "<br />";
+    }
+    msg += "...</p>";
+    QMessageBox question(QMessageBox::NoIcon, tr("Paste Protection"), msg, QMessageBox::Yes|QMessageBox::No);
+    question.setDefaultButton(QMessageBox::No);
+    question.setWindowFlags(question.windowFlags() | Qt::Sheet);
+    if(question.exec() == QMessageBox::No)
+      return;
+  }
+
+  foreach(QString line, lines) {
     clear();
-    QString line = newText.section(lineSep, 0, 0);
-    QString remainder = newText.section(lineSep, 1);
     insert(line);
     emit returnPressed();
-    insert(remainder);
   }
+//   if(newText.contains(lineSep)) {
+//     clear();
+//     QString line = newText.section(lineSep, 0, 0);
+//     QString remainder = newText.section(lineSep, 1);
+//     insert(line);
+//     emit returnPressed();
+//     insert(remainder);
+//   }
 }
 
 void InputLine::resetLine() {
