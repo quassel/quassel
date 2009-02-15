@@ -27,7 +27,7 @@
 
 
 HighlightSettingsPage::HighlightSettingsPage(QWidget *parent)
-  : SettingsPage(tr("Behaviour"), tr("Highlight"), parent) {
+  : SettingsPage(tr("Appearance"), tr("Highlight"), parent) {
   ui.setupUi(this);
   ui.highlightTable->verticalHeader()->hide();
   ui.highlightTable->setShowGrid(false);

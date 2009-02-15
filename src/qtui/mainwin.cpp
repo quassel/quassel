@@ -722,20 +722,20 @@ void MainWin::showSettingsDlg() {
   SettingsDlg *dlg = new SettingsDlg();
 
   //Category: Appearance
+  dlg->registerSettingsPage(new AppearanceSettingsPage(dlg)); //General
   dlg->registerSettingsPage(new ColorSettingsPage(dlg));
   dlg->registerSettingsPage(new FontsSettingsPage(dlg));
-  dlg->registerSettingsPage(new AppearanceSettingsPage(dlg)); //General
-  //Category: Behaviour
-  dlg->registerSettingsPage(new GeneralSettingsPage(dlg));
-  dlg->registerSettingsPage(new BacklogSettingsPage(dlg));
   dlg->registerSettingsPage(new HighlightSettingsPage(dlg));
-  dlg->registerSettingsPage(new AliasesSettingsPage(dlg));
   dlg->registerSettingsPage(new NotificationsSettingsPage(dlg));
+  dlg->registerSettingsPage(new BacklogSettingsPage(dlg));
+  dlg->registerSettingsPage(new BufferViewSettingsPage(dlg));
   dlg->registerSettingsPage(new ChatMonitorSettingsPage(dlg));
-  //Category: General
+
+  //Category: Misc
+  dlg->registerSettingsPage(new GeneralSettingsPage(dlg));
   dlg->registerSettingsPage(new IdentitiesSettingsPage(dlg));
   dlg->registerSettingsPage(new NetworksSettingsPage(dlg));
-  dlg->registerSettingsPage(new BufferViewSettingsPage(dlg));
+  dlg->registerSettingsPage(new AliasesSettingsPage(dlg));
 
   dlg->show();
 }

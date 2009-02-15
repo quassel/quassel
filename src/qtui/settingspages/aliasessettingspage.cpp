@@ -26,7 +26,7 @@
 #include "iconloader.h"
 
 AliasesSettingsPage::AliasesSettingsPage(QWidget *parent)
-  : SettingsPage(tr("Behaviour"), tr("Aliases"), parent)
+  : SettingsPage(tr("Misc"), tr("Aliases"), parent)
 {
   ui.setupUi(this);
   ui.newAliasButton->setIcon(SmallIcon("list-add"));

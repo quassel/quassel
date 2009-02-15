@@ -28,7 +28,7 @@
 #include "signalproxy.h"
 
 IdentitiesSettingsPage::IdentitiesSettingsPage(QWidget *parent)
-  : SettingsPage(tr("General"), tr("Identities"), parent),
+  : SettingsPage(tr("Misc"), tr("Identities"), parent),
     _editSsl(false)
 {
   ui.setupUi(this);

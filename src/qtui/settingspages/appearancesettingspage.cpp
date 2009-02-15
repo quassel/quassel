@@ -30,7 +30,7 @@
 #include <QStyleFactory>
 
 AppearanceSettingsPage::AppearanceSettingsPage(QWidget *parent)
-  : SettingsPage(tr("Appearance"), tr("General"), parent)
+  : SettingsPage(tr("Appearance"), QString(), parent)
 {
   ui.setupUi(this);
   initStyleComboBox();

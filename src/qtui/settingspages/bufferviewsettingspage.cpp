@@ -33,7 +33,7 @@
 #include "util.h"
 
 BufferViewSettingsPage::BufferViewSettingsPage(QWidget *parent)
-  : SettingsPage(tr("General"), tr("Buffer Views"), parent),
+  : SettingsPage(tr("Appearance"), tr("Buffer Views"), parent),
     _ignoreWidgetChanges(false),
     _useBufferViewHint(false),
     _bufferViewHint(0)

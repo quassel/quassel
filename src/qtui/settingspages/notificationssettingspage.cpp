@@ -25,7 +25,7 @@
 #include "qtui.h"
 
 NotificationsSettingsPage::NotificationsSettingsPage(QWidget *parent)
-  : SettingsPage(tr("Behaviour"), tr("Notifications"), parent),
+  : SettingsPage(tr("Appearance"), tr("Notifications"), parent),
   _hasDefaults(false)
 {
 

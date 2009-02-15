@@ -25,7 +25,7 @@
 #include "buffersettings.h"
 
 GeneralSettingsPage::GeneralSettingsPage(QWidget *parent)
-  : SettingsPage(tr("Behaviour"), tr("General"), parent) {
+  : SettingsPage(tr("Misc"), QString(), parent) {
   ui.setupUi(this);
 
 #ifdef Q_WS_MAC

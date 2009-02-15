@@ -32,7 +32,7 @@
 #include <QVariant>
 
 ChatMonitorSettingsPage::ChatMonitorSettingsPage(QWidget *parent)
-  : SettingsPage(tr("General"), tr("Chat Monitor"), parent) {
+  : SettingsPage(tr("Appearance"), tr("Chat Monitor"), parent) {
   ui.setupUi(this);
 
   ui.activateBuffer->setIcon(SmallIcon("go-next"));

@@ -52,14 +52,22 @@ void SettingsDlg::registerSettingsPage(SettingsPage *sp) {
   if(!cats.count()) {
     cat = new QTreeWidgetItem(ui.settingsTree, QStringList(sp->category()));
     cat->setExpanded(true);
-    cat->setFlags(Qt::ItemIsEnabled);
+    cat->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
   } else {
     cat = cats[0];
   }
-  QTreeWidgetItem *item = new QTreeWidgetItem(cat, QStringList(sp->title()));
-  item->setData(0, SettingsPageRole, qVariantFromValue<QObject *>(sp));
+
+  QTreeWidgetItem *item;
+  if(sp->title().isEmpty())
+    item = cat;
+  else
+    item = new QTreeWidgetItem(cat, QStringList(sp->title()));
+
+  item->setData(0, SettingsPageRole, QVariant::fromValue<QObject *>(sp));
   ui.settingsTree->setMinimumWidth(ui.settingsTree->header()->sectionSizeHint(0) + 5);
   pageIsLoaded[sp] = false;
+  if(!ui.settingsTree->selectedItems().count())
+    ui.settingsTree->setCurrentItem(item);
 }
 
 void SettingsDlg::selectPage(SettingsPage *sp) {

@@ -33,7 +33,8 @@
 
 #include "settingspages/identitiessettingspage.h"
 
-NetworksSettingsPage::NetworksSettingsPage(QWidget *parent) : SettingsPage(tr("General"), tr("Networks"), parent) {
+NetworksSettingsPage::NetworksSettingsPage(QWidget *parent) 
+: SettingsPage(tr("Misc"), tr("Networks"), parent) {
   ui.setupUi(this);
 
   // set up icons
