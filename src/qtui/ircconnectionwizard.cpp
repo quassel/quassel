@@ -55,8 +55,8 @@ QWizardPage *IrcConnectionWizard::createIntroductionPage(QWidget *parent) {
   QWizardPage *page = new QWizardPage(parent);
   page->setTitle(QObject::tr("Welcome to Quassel IRC"));
 
-  QLabel *label = new QLabel(QObject::tr("This Wizard will help you setting up your default identity and your irc network connection. "
-					 "You can abort this wizard in any step, if you want to setup your identity and IRC connection in more detail."
+  QLabel *label = new QLabel(QObject::tr("This wizard will help you setting up your default identity and your IRC network connection. "
+					 "You can abort this wizard in any step, if you want to setup your identity and IRC connection in more detail. "
 					 "This can be done in the settings."), page);
   label->setWordWrap(true);
 
