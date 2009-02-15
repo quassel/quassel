@@ -88,7 +88,10 @@ QString Identity::defaultNick() {
     nick = shortUserName;
 
 #elif defined(Q_OS_UNIX)
-  QString userName = getlogin();
+  QString userName;
+  struct passwd *pwd = getpwuid(getuid());
+  if(pwd)
+    userName = pwd->pw_name;
   if(!userName.isEmpty())
     nick = userName;
 
