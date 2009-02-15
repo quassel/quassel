@@ -48,6 +48,7 @@ public:
 
 public slots:
   void setSslState(SslState state);
+  void showAdvanced(bool advanced);
 
 protected:
 #ifdef HAVE_SSL

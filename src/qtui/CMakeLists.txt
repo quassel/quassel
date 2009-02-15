@@ -30,6 +30,7 @@ set(SOURCES
     debuglogwidget.cpp
     debugmessagemodelfilter.cpp
     inputwidget.cpp
+    ircconnectionwizard.cpp
     jumpkeyhandler.cpp
     mainpage.cpp
     mainwin.cpp
@@ -43,6 +44,7 @@ set(SOURCES
     sessionsettings.cpp
     settingsdlg.cpp
     settingspagedlg.cpp
+    simplenetworkeditor.cpp
     systemtray.cpp
     systraynotificationbackend.cpp
     taskbarnotificationbackend.cpp
@@ -74,6 +76,7 @@ set(MOC_HDRS
     debuglogwidget.h
     debugmessagemodelfilter.h
     inputwidget.h
+    ircconnectionwizard.h
     jumpkeyhandler.h
     mainpage.h
     mainwin.h
@@ -84,6 +87,7 @@ set(MOC_HDRS
     qtuimessageprocessor.h
     settingsdlg.h
     settingspagedlg.h
+    simplenetworkeditor.h
     systemtray.h
     systraynotificationbackend.h
     taskbarnotificationbackend.h
@@ -120,6 +124,7 @@ set(FORMS
     nicklistwidget.ui
     settingsdlg.ui
     settingspagedlg.ui
+    simplenetworkeditor.ui
     topicwidget.ui)
 
 if(HAVE_KDE)

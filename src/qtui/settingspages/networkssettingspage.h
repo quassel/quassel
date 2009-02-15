@@ -35,63 +35,63 @@
 class NetworksSettingsPage : public SettingsPage {
   Q_OBJECT
 
-  public:
-    NetworksSettingsPage(QWidget *parent = 0);
+public:
+  NetworksSettingsPage(QWidget *parent = 0);
 
-    bool aboutToSave();
+  bool aboutToSave();
 
-  public slots:
-    void save();
-    void load();
+public slots:
+  void save();
+  void load();
 
-  private slots:
-    void widgetHasChanged();
-    void setWidgetStates();
-    void coreConnectionStateChanged(bool);
-    void networkConnectionStateChanged(Network::ConnectionState state);
-    void networkConnectionError(const QString &msg);
+private slots:
+  void widgetHasChanged();
+  void setWidgetStates();
+  void coreConnectionStateChanged(bool);
+  void networkConnectionStateChanged(Network::ConnectionState state);
+  void networkConnectionError(const QString &msg);
 
-    void displayNetwork(NetworkId);
-    void setItemState(NetworkId, QListWidgetItem *item = 0);
+  void displayNetwork(NetworkId);
+  void setItemState(NetworkId, QListWidgetItem *item = 0);
 
-    void clientNetworkAdded(NetworkId);
-    void clientNetworkRemoved(NetworkId);
-    void clientNetworkUpdated();
+  void clientNetworkAdded(NetworkId);
+  void clientNetworkRemoved(NetworkId);
+  void clientNetworkUpdated();
 
-    void clientIdentityAdded(IdentityId);
-    void clientIdentityRemoved(IdentityId);
-    void clientIdentityUpdated();
+  void clientIdentityAdded(IdentityId);
+  void clientIdentityRemoved(IdentityId);
+  void clientIdentityUpdated();
 
-    void on_networkList_itemSelectionChanged();
-    void on_addNetwork_clicked();
-    void on_deleteNetwork_clicked();
-    void on_renameNetwork_clicked();
-    void on_editIdentities_clicked();
+  void on_networkList_itemSelectionChanged();
+  void on_addNetwork_clicked();
+  void on_deleteNetwork_clicked();
+  void on_renameNetwork_clicked();
+  void on_editIdentities_clicked();
 
-    // void on_connectNow_clicked();
+  // void on_connectNow_clicked();
 
-    void on_serverList_itemSelectionChanged();
-    void on_addServer_clicked();
-    void on_deleteServer_clicked();
-    void on_editServer_clicked();
-    void on_upServer_clicked();
-    void on_downServer_clicked();
+  void on_serverList_itemSelectionChanged();
+  void on_addServer_clicked();
+  void on_deleteServer_clicked();
+  void on_editServer_clicked();
+  void on_upServer_clicked();
+  void on_downServer_clicked();
 
-  private:
-    Ui::NetworksSettingsPage ui;
+private:
+  Ui::NetworksSettingsPage ui;
 
-    NetworkId currentId;
-    QHash<NetworkId, NetworkInfo> networkInfos;
-    bool _ignoreWidgetChanges;
+  NetworkId currentId;
+  QHash<NetworkId, NetworkInfo> networkInfos;
+  bool _ignoreWidgetChanges;
 
-    QPixmap connectedIcon, connectingIcon, disconnectedIcon;
+  QPixmap connectedIcon, connectingIcon, disconnectedIcon;
 
-    void reset();
-    bool testHasChanged();
-    QListWidgetItem *insertNetwork(NetworkId);
-    QListWidgetItem *insertNetwork(const NetworkInfo &info);
-    QListWidgetItem *networkItem(NetworkId) const;
-    void saveToNetworkInfo(NetworkInfo &);
+  void reset();
+  bool testHasChanged();
+  QListWidgetItem *insertNetwork(NetworkId);
+  QListWidgetItem *insertNetwork(const NetworkInfo &info);
+  QListWidgetItem *networkItem(NetworkId) const;
+  void saveToNetworkInfo(NetworkInfo &);
 };
 
 

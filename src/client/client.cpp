@@ -301,9 +301,6 @@ void Client::setSyncedToCore() {
   connect(bufferViewManager(), SIGNAL(initDone()), this, SLOT(requestInitialBacklog()));
   connect(bufferViewManager(), SIGNAL(initDone()), this, SLOT(createDefaultBufferView()));
 
-  createDefaultIdentity();
-  createDefaultNetworks();
-
   _syncedToCore = true;
   emit connected();
   emit coreConnectionStateChanged(true);
@@ -320,28 +317,6 @@ void Client::createDefaultBufferView() {
     config.setBufferViewName(tr("All Buffers"));
     config.initSetBufferList(networkModel()->allBufferIdsSorted());
     bufferViewManager()->requestCreateBufferView(config.toVariantMap());
-  }
-}
-
-void Client::createDefaultIdentity() {
-  if(_identities.isEmpty()) {
-    Identity identity;
-    identity.setToDefaults();
-    identity.setIdentityName(tr("Default Identity"));
-    createIdentity(identity);
-  }
-}
-
-void Client::createDefaultNetworks() {
-  if(_networks.isEmpty()) {
-    QStringList defaultNets = Network::presetNetworks(true);
-    foreach(QString net, defaultNets) {
-      NetworkInfo info = Network::networkInfoFromPreset(net);
-      if(info.networkName.isEmpty())
-        continue;
-      QStringList defaultChans = Network::presetDefaultChannels(net);
-      createNetwork(info, defaultChans);
-    }
   }
 }
 

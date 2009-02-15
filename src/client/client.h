@@ -185,8 +185,6 @@ private slots:
   void setSyncedToCore();
   void requestInitialBacklog();
   void createDefaultBufferView();
-  void createDefaultIdentity();
-  void createDefaultNetworks();
 
 private:
   Client(QObject *parent = 0);

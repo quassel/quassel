@@ -55,6 +55,7 @@
 #include "inputwidget.h"
 #include "inputline.h"
 #include "irclistmodel.h"
+#include "ircconnectionwizard.h"
 #include "jumpkeyhandler.h"
 #include "msgprocessorstatuswidget.h"
 #include "nicklistwidget.h"
@@ -606,6 +607,11 @@ void MainWin::setConnectedState() {
   coreLagLabel->setVisible(!Client::internalCore());
   updateIcon();
   systemTray()->setState(SystemTray::Active);
+
+  if(Client::networkIds().isEmpty()) {
+    IrcConnectionWizard *wizard = new IrcConnectionWizard(this, Qt::Sheet);
+    wizard->show();
+  }
 }
 
 void MainWin::loadLayout() {
