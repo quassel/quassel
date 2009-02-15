@@ -49,7 +49,7 @@ UiStyle::UiStyle(const QString &settingsKey) : _settingsKey(settingsKey) {
   }
 
   // Check for the sender auto coloring option
-  _senderAutoColor = s.value("Flags/senderAutoColor", QVariant(true)).toBool();
+  _senderAutoColor = s.value("Colors/SenderAutoColor", false).toBool();
 
   // Now initialize the mapping between FormatCodes and FormatTypes...
   _formatCodes["%O"] = None;
@@ -133,7 +133,7 @@ void UiStyle::setFormat(FormatType ftype, QTextCharFormat fmt, Settings::Mode mo
 void UiStyle::setSenderAutoColor( bool state ) {
   _senderAutoColor = state;
   UiStyleSettings s(_settingsKey);
-  s.setValue("Flags/senderAutoColor", QVariant(state));
+  s.setValue("Colors/SenderAutoColor", QVariant(state));
 }
 
 QTextCharFormat UiStyle::format(FormatType ftype, Settings::Mode mode) const {
