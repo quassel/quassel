@@ -222,7 +222,6 @@ void IdentityEditWidget::showAdvanced(bool advanced) {
   }
 }
 
-#ifdef HAVE_SSL
 void IdentityEditWidget::setSslState(SslState state) {
   switch(state) {
   case NoSsl:
@@ -237,6 +236,7 @@ void IdentityEditWidget::setSslState(SslState state) {
   }
 }
 
+#ifdef HAVE_SSL
 bool IdentityEditWidget::eventFilter(QObject *watched, QEvent *event) {
   bool isCert = (watched == ui.sslCertGroupBox);
   switch(event->type()) {
