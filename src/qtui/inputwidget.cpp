@@ -45,11 +45,8 @@ InputWidget::InputWidget(QWidget *parent)
   ui.inputEdit->installEventFilter(new JumpKeyHandler(this));
 
   QtUiStyleSettings s("Fonts");
-  s.notify("InputLine", this, SLOT(setFont(QVariant)));
-  QFont font = s.value("InputLine", QFont()).value<QFont>();
-  if(font.family().isEmpty())
-    font = QApplication::font();
-  setFont(font);
+  s.notify("InputLine", this, SLOT(setCustomFont(QVariant)));
+  setCustomFont(s.value("InputLine", QFont()));
 
   ActionCollection *coll = QtUi::actionCollection();
 
