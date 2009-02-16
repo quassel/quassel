@@ -1,54 +1,29 @@
-<ui version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>AppearanceSettingsPage</class>
- <widget class="QWidget" name="AppearanceSettingsPage" >
-  <property name="geometry" >
+ <widget class="QWidget" name="AppearanceSettingsPage">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>396</width>
-    <height>324</height>
+    <width>521</width>
+    <height>447</height>
    </rect>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_2" >
+  <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QGroupBox" name="groupBox" >
-     <property name="title" >
-      <string>Client style:</string>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Client Style</string>
      </property>
-     <layout class="QVBoxLayout" >
+     <layout class="QVBoxLayout">
       <item>
-       <widget class="QComboBox" name="styleComboBox" />
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="QGroupBox" name="groupBox_2" >
-     <property name="title" >
-      <string>Language:</string>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout" >
-      <item>
-       <widget class="QComboBox" name="languageComboBox" >
-        <item>
-         <property name="text" >
-          <string>&lt;System Default></string>
-         </property>
-        </item>
-        <item>
-         <property name="text" >
-          <string>&lt;Original></string>
-         </property>
-        </item>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="label" >
-        <property name="text" >
-         <string>Note: needs client restart for full effect!</string>
+       <widget class="QComboBox" name="styleComboBox">
+        <property name="toolTip">
+         <string>Set application style</string>
         </property>
        </widget>
       </item>
@@ -56,27 +31,212 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox_3" >
-     <property name="title" >
-      <string>Misc:</string>
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="title">
+      <string>Language</string>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_3" >
+     <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
-       <widget class="QCheckBox" name="showWebPreview" >
-        <property name="text" >
-         <string>Show Web Previews</string>
+       <widget class="QComboBox" name="languageComboBox">
+        <property name="toolTip">
+         <string>Set the application language. Requires restart!</string>
         </property>
-        <property name="checked" >
+        <item>
+         <property name="text">
+          <string>&lt;System Default&gt;</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>&lt;Original&gt;</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_4">
+     <property name="title">
+      <string>Fonts</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_2">
+        <property name="toolTip">
+         <string>Set font for the main chat window and the chat monitor</string>
+        </property>
+        <property name="text">
+         <string>Chat window:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLabel" name="demoChatView">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Set font for the main chat window and the chat monitor</string>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Sunken</enum>
+        </property>
+        <property name="text">
+         <string>Font</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QPushButton" name="chooseChatView">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>Choose...</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_4">
+        <property name="toolTip">
+         <string>Set font for channel and nick lists</string>
+        </property>
+        <property name="text">
+         <string>Channel list:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLabel" name="demoBufferView">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Set font for channel and nick lists</string>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Sunken</enum>
+        </property>
+        <property name="text">
+         <string>Font</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QPushButton" name="chooseBufferView">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>Choose...</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_3">
+        <property name="toolTip">
+         <string>Set font for the input line</string>
+        </property>
+        <property name="text">
+         <string>Input line:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLabel" name="demoInputLine">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Set font for the input line</string>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Sunken</enum>
+        </property>
+        <property name="text">
+         <string>Font</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <widget class="QPushButton" name="chooseInputLine">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>Choose...</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_3">
+     <property name="title">
+      <string>Misc</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <item>
+       <widget class="QCheckBox" name="showWebPreview">
+        <property name="toolTip">
+         <string>Show a website preview window when hovering the mouse over a web address</string>
+        </property>
+        <property name="text">
+         <string>Show previews of webpages on URL hover</string>
+        </property>
+        <property name="checked">
          <bool>true</bool>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QCheckBox" name="showUserStateIcons" >
-        <property name="text" >
-         <string>Use Icons to represent away state of Users</string>
+       <widget class="QCheckBox" name="showUserStateIcons">
+        <property name="toolTip">
+         <string>Show status icons in channel and nick lists</string>
         </property>
-        <property name="checked" >
+        <property name="text">
+         <string>Use icons in channel and nick lists</string>
+        </property>
+        <property name="checked">
          <bool>true</bool>
         </property>
        </widget>
@@ -85,11 +245,11 @@
     </widget>
    </item>
    <item>
-    <spacer name="verticalSpacer" >
-     <property name="orientation" >
+    <spacer name="verticalSpacer">
+     <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>
-     <property name="sizeHint" stdset="0" >
+     <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
        <height>40</height>

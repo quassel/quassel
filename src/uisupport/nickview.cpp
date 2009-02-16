@@ -20,6 +20,7 @@
 
 #include "nickview.h"
 
+#include <QApplication>
 #include <QHeaderView>
 #include <QScrollBar>
 #include <QDebug>
@@ -66,6 +67,10 @@ NickView::NickView(QWidget *parent)
   // afaik this is better on Mac and Windows
   connect(this, SIGNAL(activated(QModelIndex)), SLOT(startQuery(QModelIndex)));
 #endif
+
+  UiStyleSettings s("QtUiStyle/Fonts"); // li'l dirty here, but fonts are stored in QtUiStyle :/
+  s.notify("BufferView", this, SLOT(setCustomFont(QVariant))); // yes, we share the BufferView settings
+  setCustomFont(s.value("BufferView", QFont()));
 }
 
 void NickView::init() {
@@ -85,6 +90,13 @@ void NickView::setModel(QAbstractItemModel *model_) {
 
   QTreeView::setModel(model_);
   init();
+}
+
+void NickView::setCustomFont(const QVariant &v) {
+  QFont font = v.value<QFont>();
+  if(font.family().isEmpty())
+    font = QApplication::font();
+  setFont(font);
 }
 
 void NickView::rowsInserted(const QModelIndex &parent, int start, int end) {

@@ -89,7 +89,6 @@
 #include "settingspages/bufferviewsettingspage.h"
 #include "settingspages/chatmonitorsettingspage.h"
 #include "settingspages/colorsettingspage.h"
-#include "settingspages/fontssettingspage.h"
 #include "settingspages/generalsettingspage.h"
 #include "settingspages/highlightsettingspage.h"
 #include "settingspages/identitiessettingspage.h"
@@ -724,7 +723,6 @@ void MainWin::showSettingsDlg() {
   //Category: Appearance
   dlg->registerSettingsPage(new AppearanceSettingsPage(dlg)); //General
   dlg->registerSettingsPage(new ColorSettingsPage(dlg));
-  dlg->registerSettingsPage(new FontsSettingsPage(dlg));
   dlg->registerSettingsPage(new HighlightSettingsPage(dlg));
   dlg->registerSettingsPage(new NotificationsSettingsPage(dlg));
   dlg->registerSettingsPage(new BacklogSettingsPage(dlg));

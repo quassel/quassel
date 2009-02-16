@@ -45,6 +45,9 @@ public slots:
   void showContextMenu(const QPoint & pos);
   void startQuery(const QModelIndex & modelIndex);
 
+private slots:
+  void setCustomFont(const QVariant &);
+
 signals:
   void selectionUpdated();
 

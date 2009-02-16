@@ -48,6 +48,7 @@ protected slots:
   virtual void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
 
 private slots:
+  void setCustomFont(const QVariant &font);
   void sendText(QString text);
   void changeNick(const QString &newNick) const;
 

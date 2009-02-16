@@ -44,11 +44,12 @@ InputWidget::InputWidget(QWidget *parent)
   ui.ownNick->installEventFilter(new MouseWheelFilter(this));
   ui.inputEdit->installEventFilter(new JumpKeyHandler(this));
 
-  QtUiSettings s;
-  bool useInputLineFont = s.value("UseInputLineFont", QVariant(false)).toBool();
-  if(useInputLineFont) {
-    ui.inputEdit->setFont(s.value("InputLineFont").value<QFont>());
-  }
+  QtUiStyleSettings s("Fonts");
+  s.notify("InputLine", this, SLOT(setFont(QVariant)));
+  QFont font = s.value("InputLine", QFont()).value<QFont>();
+  if(font.family().isEmpty())
+    font = QApplication::font();
+  setFont(font);
 
   ActionCollection *coll = QtUi::actionCollection();
 
@@ -59,6 +60,13 @@ InputWidget::InputWidget(QWidget *parent)
 }
 
 InputWidget::~InputWidget() {
+}
+
+void InputWidget::setCustomFont(const QVariant &v) {
+  QFont font = v.value<QFont>();
+  if(font.family().isEmpty())
+    font = QApplication::font();
+  ui.inputEdit->setFont(font);
 }
 
 void InputWidget::currentChanged(const QModelIndex &current, const QModelIndex &previous) {
