@@ -87,7 +87,7 @@ QtUiStyle::QtUiStyle() : UiStyle("QtUiStyle") {
    */
   addSenderAutoColor(SenderCol01, "#989a95");
   addSenderAutoColor(SenderCol02, "#ef8440");
-  addSenderAutoColor(SenderCol03, "#ffe200");
+  addSenderAutoColor(SenderCol03, "#ffbf00");
   addSenderAutoColor(SenderCol04, "#49b13b");
   addSenderAutoColor(SenderCol05, "#00a778");
   addSenderAutoColor(SenderCol06, "#008b90");
