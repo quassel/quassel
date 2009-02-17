@@ -34,6 +34,9 @@ public:
   inline void lock() { setLocked(true); };
   inline void unlock() { setLocked(false); };
 
+private slots:
+  void ensureDecoration(); // remove this in next release
+
 private:
   bool _locked;
 };
