@@ -25,9 +25,15 @@
 #include "corenetwork.h"
 #include "ircchannel.h"
 
+class PurgeEvent : public QEvent {
+public:
+  PurgeEvent() : QEvent(QEvent::User) {}
+};
+
 CoreBufferSyncer::CoreBufferSyncer(CoreSession *parent)
   : BufferSyncer(Core::bufferLastSeenMsgIds(parent->user()), parent),
-    _coreSession(parent)
+    _coreSession(parent),
+    _purgeBuffers(false)
 {
 }
 
@@ -106,5 +112,37 @@ void CoreBufferSyncer::mergeBuffersPermanently(BufferId bufferId1, BufferId buff
 
   if(Core::mergeBuffersPermanently(_coreSession->user(), bufferId1, bufferId2)) {
     BufferSyncer::mergeBuffersPermanently(bufferId1, bufferId2);
+  }
+}
+
+void CoreBufferSyncer::customEvent(QEvent *event) {
+  if(event->type() != QEvent::User)
+    return;
+
+  purgeBufferIds();
+  event->accept();
+}
+
+void CoreBufferSyncer::requestPurgeBufferIds() {
+  if(_purgeBuffers)
+    return;
+
+  _purgeBuffers = true;
+  QCoreApplication::postEvent(this, new PurgeEvent());
+}
+
+void CoreBufferSyncer::purgeBufferIds() {
+  _purgeBuffers = false;
+  QList<BufferInfo> bufferInfos = Core::requestBuffers(_coreSession->user());
+  QSet<BufferId> actualBuffers;
+  foreach(BufferInfo bufferInfo, bufferInfos) {
+    actualBuffers << bufferInfo.bufferId();
+  }
+
+  QList<BufferId> storedIds = bufferIds();
+  foreach(BufferId bufferId, storedIds) {
+    if(!actualBuffers.contains(bufferId)) {
+      removeBuffer(bufferId);
+    }
   }
 }

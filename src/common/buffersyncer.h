@@ -50,6 +50,8 @@ public slots:
   virtual inline void requestMergeBuffersPermanently(BufferId buffer1, BufferId buffer2) { emit mergeBuffersPermanentlyRequested(buffer1, buffer2); }
   virtual void mergeBuffersPermanently(BufferId buffer1, BufferId buffer2);
 
+  virtual inline void requestPurgeBufferIds() { emit purgeBufferIdsRequested(); }
+
 signals:
   void lastSeenMsgSet(BufferId buffer, const MsgId &msgId);
   void setLastSeenMsgRequested(BufferId buffer, const MsgId &msgId);
@@ -63,8 +65,11 @@ signals:
   void mergeBuffersPermanentlyRequested(BufferId buffer1, BufferId buffer2);
   void buffersPermanentlyMerged(BufferId buffer1, BufferId buffer2);
 
+  void purgeBufferIdsRequested();
+
 protected slots:
   bool setLastSeenMsg(BufferId buffer, const MsgId &msgId);
+  QList<BufferId> bufferIds() const { return _lastSeenMsg.keys(); }
 
 private:
   QHash<BufferId, MsgId> _lastSeenMsg;

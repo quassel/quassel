@@ -421,6 +421,12 @@ void Client::mergeBuffersPermanently(BufferId bufferId1, BufferId bufferId2) {
   bufferSyncer()->requestMergeBuffersPermanently(bufferId1, bufferId2);
 }
 
+void Client::purgeKnownBufferIds() {
+  if(!bufferSyncer())
+    return;
+  bufferSyncer()->requestPurgeBufferIds();
+}
+
 void Client::bufferRemoved(BufferId bufferId) {
   // select a sane buffer (status buffer)
   /* we have to manually select a buffer because otherwise inconsitent changes

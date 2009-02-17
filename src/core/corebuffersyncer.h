@@ -43,12 +43,20 @@ public slots:
   virtual inline void requestMergeBuffersPermanently(BufferId buffer1, BufferId buffer2) { mergeBuffersPermanently(buffer1, buffer2); }
   virtual void mergeBuffersPermanently(BufferId buffer1, BufferId buffer2);
 
+  virtual void requestPurgeBufferIds();
+
   void storeDirtyIds();
+
+protected:
+  virtual void customEvent(QEvent *event);
 
 private:
   CoreSession *_coreSession;
+  bool _purgeBuffers;
 
   QSet<BufferId> dirtyBuffers;
+
+  void purgeBufferIds();
 };
 
 #endif //COREBUFFERSYNCER_H

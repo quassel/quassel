@@ -116,6 +116,7 @@ public:
   static void removeBuffer(BufferId id);
   static void renameBuffer(BufferId bufferId, const QString &newName);
   static void mergeBuffersPermanently(BufferId bufferId1, BufferId bufferId2);
+  static void purgeKnownBufferIds();
 
   static void logMessage(QtMsgType type, const char *msg);
   static inline const QString &debugLog() { return instance()->_debugLogBuffer; }
