@@ -60,7 +60,6 @@ void BufferModel::networkConnectionChanged(Network::ConnectionState state) {
   switch(state) {
   case Network::Connecting:
   case Network::Initializing:
-  case Network::Initialized:
     if(currentIndex().isValid())
       return;
     {
