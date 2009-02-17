@@ -26,6 +26,7 @@
 #include <QFileDialog>
 #include <QUrl>
 
+#include "client.h"
 #include "iconloader.h"
 
 IdentityEditWidget::IdentityEditWidget(QWidget *parent)
@@ -43,16 +44,13 @@ IdentityEditWidget::IdentityEditWidget(QWidget *parent)
   connect(ui.realName, SIGNAL(textEdited(const QString &)), this, SIGNAL(widgetHasChanged()));
   connect(ui.nicknameList, SIGNAL(itemChanged(QListWidgetItem *)), this, SIGNAL(widgetHasChanged()));
   connect(ui.awayNick, SIGNAL(textEdited(const QString &)), this, SIGNAL(widgetHasChanged()));
-  connect(ui.awayNickEnabled, SIGNAL(clicked(bool)), this, SIGNAL(widgetHasChanged()));
   connect(ui.awayReason, SIGNAL(textEdited(const QString &)), this, SIGNAL(widgetHasChanged()));
-  connect(ui.awayReasonEnabled, SIGNAL(clicked(bool)), this, SIGNAL(widgetHasChanged()));
   connect(ui.autoAwayEnabled, SIGNAL(clicked(bool)), this, SIGNAL(widgetHasChanged()));
   connect(ui.autoAwayTime, SIGNAL(valueChanged(int)), this, SIGNAL(widgetHasChanged()));
   connect(ui.autoAwayReason, SIGNAL(textEdited(const QString &)), this, SIGNAL(widgetHasChanged()));
   connect(ui.autoAwayReasonEnabled, SIGNAL(clicked(bool)), this, SIGNAL(widgetHasChanged()));
   connect(ui.detachAwayEnabled, SIGNAL(clicked(bool)), this, SIGNAL(widgetHasChanged()));
   connect(ui.detachAwayReason, SIGNAL(textEdited(const QString &)), this, SIGNAL(widgetHasChanged()));
-  connect(ui.detachAwayReasonEnabled, SIGNAL(clicked(bool)), this, SIGNAL(widgetHasChanged()));
   connect(ui.ident, SIGNAL(textEdited(const QString &)), this, SIGNAL(widgetHasChanged()));
   connect(ui.kickReason, SIGNAL(textEdited(const QString &)), this, SIGNAL(widgetHasChanged()));
   connect(ui.partReason, SIGNAL(textEdited(const QString &)), this, SIGNAL(widgetHasChanged()));
@@ -66,6 +64,13 @@ IdentityEditWidget::IdentityEditWidget(QWidget *parent)
   // we would need this if we enabled drag and drop in the nicklist...
   //connect(ui.nicknameList, SIGNAL(rowsInserted(const QModelIndex &, int, int)), this, SLOT(setWidgetStates()));
   //connect(ui.nicknameList->model(), SIGNAL(rowsInserted(const QModelIndex &, int, int)), this, SLOT(nicklistHasChanged()));
+
+  // disabling unused stuff
+  ui.autoAwayEnabled->hide();
+  ui.awayNick->hide();
+  ui.awayNickLabel->hide();
+
+  ui.detachAwayEnabled->setVisible(!Client::internalCore());
 
 #ifdef HAVE_SSL
   ui.sslKeyGroupBox->setAcceptDrops(true);
@@ -104,16 +109,13 @@ void IdentityEditWidget::displayIdentity(CertIdentity *id, CertIdentity *saveId)
   //}
   if(ui.nicknameList->count()) ui.nicknameList->setCurrentRow(0);
   ui.awayNick->setText(id->awayNick());
-  ui.awayNickEnabled->setChecked(id->awayNickEnabled());
   ui.awayReason->setText(id->awayReason());
-  ui.awayReasonEnabled->setChecked(id->awayReasonEnabled());
   ui.autoAwayEnabled->setChecked(id->autoAwayEnabled());
   ui.autoAwayTime->setValue(id->autoAwayTime());
   ui.autoAwayReason->setText(id->autoAwayReason());
   ui.autoAwayReasonEnabled->setChecked(id->autoAwayReasonEnabled());
   ui.detachAwayEnabled->setChecked(id->detachAwayEnabled());
   ui.detachAwayReason->setText(id->detachAwayReason());
-  ui.detachAwayReasonEnabled->setChecked(id->detachAwayReasonEnabled());
   ui.ident->setText(id->ident());
   ui.kickReason->setText(id->kickReason());
   ui.partReason->setText(id->partReason());
@@ -133,16 +135,16 @@ void IdentityEditWidget::saveToIdentity(CertIdentity *id) {
   }
   id->setNicks(nicks);
   id->setAwayNick(ui.awayNick->text());
-  id->setAwayNickEnabled(ui.awayNickEnabled->isChecked());
+  id->setAwayNickEnabled(true);
   id->setAwayReason(ui.awayReason->text());
-  id->setAwayReasonEnabled(ui.awayReasonEnabled->isChecked());
+  id->setAwayReasonEnabled(true);
   id->setAutoAwayEnabled(ui.autoAwayEnabled->isChecked());
   id->setAutoAwayTime(ui.autoAwayTime->value());
   id->setAutoAwayReason(ui.autoAwayReason->text());
   id->setAutoAwayReasonEnabled(ui.autoAwayReasonEnabled->isChecked());
   id->setDetachAwayEnabled(ui.detachAwayEnabled->isChecked());
   id->setDetachAwayReason(ui.detachAwayReason->text());
-  id->setDetachAwayReasonEnabled(ui.detachAwayReasonEnabled->isChecked());
+  id->setDetachAwayReasonEnabled(true);
   id->setIdent(ui.ident->text());
   id->setKickReason(ui.kickReason->text());
   id->setPartReason(ui.partReason->text());

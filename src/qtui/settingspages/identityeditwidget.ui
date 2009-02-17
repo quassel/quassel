@@ -244,20 +244,10 @@
               </property>
              </widget>
             </item>
-            <item row="1" column="0" >
-             <widget class="QCheckBox" name="awayReasonEnabled" >
-              <property name="toolTip" >
-               <string>Default away reason</string>
-              </property>
-              <property name="text" >
-               <string>Away Reason:</string>
-              </property>
-             </widget>
-            </item>
             <item row="1" column="1" >
              <widget class="QLineEdit" name="awayReason" >
               <property name="enabled" >
-               <bool>false</bool>
+               <bool>true</bool>
               </property>
               <property name="toolTip" >
                <string>Default away reason</string>
@@ -265,15 +255,16 @@
              </widget>
             </item>
             <item row="0" column="0" >
-             <widget class="QCheckBox" name="awayNickEnabled" >
-              <property name="enabled" >
-               <bool>false</bool>
-              </property>
-              <property name="toolTip" >
-               <string>Nick to be used when being away</string>
-              </property>
+             <widget class="QLabel" name="awayNickLabel" >
               <property name="text" >
                <string>Away Nick:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0" >
+             <widget class="QLabel" name="awayReasonLabel" >
+              <property name="text" >
+               <string>Away Reason:</string>
               </property>
              </widget>
             </item>
@@ -300,24 +291,14 @@
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout" >
             <item>
-             <widget class="QCheckBox" name="detachAwayReasonEnabled" >
-              <property name="toolTip" >
-               <string>Override default away reason for auto-away on detach</string>
-              </property>
+             <widget class="QLabel" name="label_13" >
               <property name="text" >
                <string>Away Reason:</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="detachAwayReason" >
-              <property name="enabled" >
-               <bool>false</bool>
-              </property>
-              <property name="toolTip" >
-               <string>Override default away reason for auto-away on detach</string>
-              </property>
-             </widget>
+             <widget class="QLineEdit" name="detachAwayReason" />
             </item>
            </layout>
           </item>
@@ -784,38 +765,5 @@ Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificat
   </layout>
  </widget>
  <resources/>
- <connections>
-  <connection>
-   <sender>detachAwayReasonEnabled</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>detachAwayReason</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>103</x>
-     <y>195</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>215</x>
-     <y>196</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>awayReasonEnabled</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>awayReason</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>97</x>
-     <y>107</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>195</x>
-     <y>104</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

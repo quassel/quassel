@@ -418,7 +418,7 @@ void CoreSession::clientsDisconnected() {
       continue;
 
     if(identity->detachAwayEnabled() && !me->isAway()) {
-      if(identity->detachAwayReasonEnabled())
+      if(!identity->detachAwayReason().isEmpty())
 	awayReason = identity->detachAwayReason();
       net->setAutoAwayActive(true);
       net->userInputHandler()->handleAway(BufferInfo(), awayReason);
