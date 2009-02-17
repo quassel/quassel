@@ -144,7 +144,7 @@ void InputLine::on_textChanged(QString newText) {
   QStringList lines = newText.split(lineSep);
   clear();
 
-  if(lines.count() > 4) {
+  if(lines.count() >= 4) {
     QString msg = tr("Do you really want to paste %1 lines?").arg(lines.count());
     msg += "<p>";
     for(int i = 0; i < 3; i++) {
