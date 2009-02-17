@@ -80,6 +80,7 @@ private slots:
   void setExpandedState(const QModelIndex &networkIdx);
 
   void on_configChanged();
+  void on_layoutChanged();
 
   void setCustomFont(const QVariant &font);
 
