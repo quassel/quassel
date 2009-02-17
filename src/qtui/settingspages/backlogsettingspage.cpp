@@ -29,6 +29,10 @@ BacklogSettingsPage::BacklogSettingsPage(QWidget *parent)
   ui.setupUi(this);
   initAutoWidgets();
   // not an auto widget, because we store index + 1
+
+  // FIXME: global backlog requester disabled until issues ruled out
+  ui.requesterType->removeItem(2);
+
   connect(ui.requesterType, SIGNAL(currentIndexChanged(int)), this, SLOT(widgetHasChanged()));
 }
 
