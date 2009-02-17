@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>516</width>
-    <height>486</height>
+    <width>525</width>
+    <height>442</height>
    </rect>
   </property>
   <property name="sizePolicy" >
@@ -38,7 +38,7 @@
           <item row="0" column="1" >
            <widget class="QLabel" name="label" >
             <property name="text" >
-             <string>FG</string>
+             <string>Foreground</string>
             </property>
             <property name="alignment" >
              <set>Qt::AlignCenter</set>
@@ -983,6 +983,19 @@
              </property>
             </widget>
            </item>
+           <item row="8" column="1" >
+            <spacer name="verticalSpacer_3" >
+             <property name="orientation" >
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0" >
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
           </layout>
          </widget>
          <widget class="QWidget" name="Seite_2" >
@@ -1084,12 +1097,18 @@
              <property name="text" >
               <string>Nick:</string>
              </property>
+             <property name="NotInUse" stdset="0" >
+              <bool>true</bool>
+             </property>
             </widget>
            </item>
            <item row="8" column="1" >
             <widget class="ColorButton" name="nickFG" >
              <property name="text" >
               <string/>
+             </property>
+             <property name="NotInUse" stdset="0" >
+              <bool>true</bool>
              </property>
             </widget>
            </item>
@@ -1130,12 +1149,18 @@
              <property name="text" >
               <string>Hostmask:</string>
              </property>
+             <property name="NotInUse" stdset="0" >
+              <bool>true</bool>
+             </property>
             </widget>
            </item>
            <item row="9" column="1" >
             <widget class="ColorButton" name="hostmaskFG" >
              <property name="text" >
               <string/>
+             </property>
+             <property name="NotInUse" stdset="0" >
+              <bool>true</bool>
              </property>
             </widget>
            </item>
@@ -1176,12 +1201,18 @@
              <property name="text" >
               <string>Channelname:</string>
              </property>
+             <property name="NotInUse" stdset="0" >
+              <bool>true</bool>
+             </property>
             </widget>
            </item>
            <item row="10" column="1" >
             <widget class="ColorButton" name="channelnameFG" >
              <property name="text" >
               <string/>
+             </property>
+             <property name="NotInUse" stdset="0" >
+              <bool>true</bool>
              </property>
             </widget>
            </item>
@@ -1222,12 +1253,18 @@
              <property name="text" >
               <string>Mode flags:</string>
              </property>
+             <property name="NotInUse" stdset="0" >
+              <bool>true</bool>
+             </property>
             </widget>
            </item>
            <item row="11" column="1" >
             <widget class="ColorButton" name="modeFlagsFG" >
              <property name="text" >
               <string/>
+             </property>
+             <property name="NotInUse" stdset="0" >
+              <bool>true</bool>
              </property>
             </widget>
            </item>
@@ -1384,6 +1421,19 @@
               <bool>true</bool>
              </property>
             </widget>
+           </item>
+           <item row="14" column="1" >
+            <spacer name="verticalSpacer_2" >
+             <property name="orientation" >
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0" >
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
            </item>
           </layout>
          </widget>
@@ -1677,7 +1727,7 @@
           <item row="0" column="1" >
            <widget class="QLabel" name="label_4" >
             <property name="text" >
-             <string>FG</string>
+             <string>Foreground</string>
             </property>
             <property name="alignment" >
              <set>Qt::AlignCenter</set>
