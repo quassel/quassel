@@ -1,5 +1,5 @@
 //! This is the fallback version number in case we can't autogenerate one
-baseVersion = "0.3.1";
+baseVersion = "0.4.0";
 
 protocolVersion = 9;       //< Version of the client/core protocol
 coreNeedsProtocol   = 9;   //< Minimum protocol version the core needs
