@@ -24,6 +24,7 @@
 #include <QSortFilterProxyModel>
 #include <QItemSelectionModel>
 
+#include "network.h"
 #include "types.h"
 #include "selectionmodelsynchronizer.h"
 
@@ -50,9 +51,11 @@ public slots:
   void setCurrentIndex(const QModelIndex &newCurrent);
   void switchToBuffer(const BufferId &bufferId);
   void switchToBufferIndex(const QModelIndex &bufferIdx);
-
+							
 private slots:
   void debug_currentChanged(QModelIndex current, QModelIndex previous);
+  void newNetwork(NetworkId id);
+  void networkConnectionChanged(Network::ConnectionState state);
     
 private:
   SelectionModelSynchronizer _selectionModelSynchronizer;

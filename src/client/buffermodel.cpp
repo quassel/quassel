@@ -35,6 +35,7 @@ BufferModel::BufferModel(NetworkModel *parent)
     connect(_selectionModelSynchronizer.selectionModel(), SIGNAL(currentChanged(const QModelIndex &, const QModelIndex &)),
 	    this, SLOT(debug_currentChanged(const QModelIndex &, const QModelIndex &)));
   }
+  connect(Client::instance(), SIGNAL(networkCreated(NetworkId)), this, SLOT(newNetwork(NetworkId)));
 }
 
 bool BufferModel::filterAcceptsRow(int sourceRow, const QModelIndex &parent) const {
@@ -46,6 +47,29 @@ bool BufferModel::filterAcceptsRow(int sourceRow, const QModelIndex &parent) con
     return true;
 
   return false;
+}
+
+void BufferModel::newNetwork(NetworkId id) {
+  const Network *net = Client::network(id);
+  Q_ASSERT(net);
+  connect(net, SIGNAL(connectionStateSet(Network::ConnectionState)),
+	  this, SLOT(networkConnectionChanged(Network::ConnectionState)));
+}
+
+void BufferModel::networkConnectionChanged(Network::ConnectionState state) {
+  switch(state) {
+  case Network::Connecting:
+  case Network::Initializing:
+  case Network::Initialized:
+    if(currentIndex().isValid())
+      return;
+    Network *net = qobject_cast<Network *>(sender());
+    Q_ASSERT(net);
+    setCurrentIndex(mapFromSource(Client::networkModel()->networkIndex(net->networkId())));
+    break;
+  default:
+    return;
+  }
 }
 
 void BufferModel::synchronizeView(QAbstractItemView *view) {
