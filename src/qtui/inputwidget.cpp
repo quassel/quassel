@@ -155,6 +155,7 @@ void InputWidget::connectMyIrcUser() {
     connect(network->me(), SIGNAL(userModesRemoved(QString)), this, SLOT(updateNickSelector()));
     connect(network->me(), SIGNAL(awaySet(bool)), this, SLOT(updateNickSelector()));
     disconnect(network, SIGNAL(myNickSet(const QString &)), this, SLOT(connectMyIrcUser()));
+    updateNickSelector();
   } else {
     connect(network, SIGNAL(myNickSet(const QString &)), this, SLOT(connectMyIrcUser()));
   }
@@ -172,8 +173,9 @@ void InputWidget::setIdentity(IdentityId identityId) {
 
   const Identity *identity = Client::identity(identityId);
   if(identity) {
-    connect(identity, SIGNAL(nicksSet(QStringList)),
-	    this, SLOT(updateNickSelector()));
+    connect(identity, SIGNAL(nicksSet(QStringList)), this, SLOT(updateNickSelector()));
+  } else {
+    _identityId = 0;
   }
   updateNickSelector();
 }
@@ -187,7 +189,7 @@ void InputWidget::updateNickSelector() const {
 
   const Identity *identity = Client::identity(net->identity());
   if(!identity) {
-    qWarning() << "InputWidget::updateNickSelector(): can't find Identity for Network" << net->networkId();
+    qWarning() << "InputWidget::updateNickSelector(): can't find Identity for Network" << net->networkId() << "IdentityId:" << net->identity();
     return;
   }
 
