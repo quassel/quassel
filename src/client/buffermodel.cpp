@@ -63,9 +63,11 @@ void BufferModel::networkConnectionChanged(Network::ConnectionState state) {
   case Network::Initialized:
     if(currentIndex().isValid())
       return;
-    Network *net = qobject_cast<Network *>(sender());
-    Q_ASSERT(net);
-    setCurrentIndex(mapFromSource(Client::networkModel()->networkIndex(net->networkId())));
+    {
+      Network *net = qobject_cast<Network *>(sender());
+      Q_ASSERT(net);
+      setCurrentIndex(mapFromSource(Client::networkModel()->networkIndex(net->networkId())));
+    }
     break;
   default:
     return;
