@@ -13,9 +13,29 @@ changes, the git history at <http://git.quassel-irc.org> is your friend.
 
 Without further ado, let's start:
 
-Version 0.4.0 (not yet released)
+Version 0.4.0 (2009-02-17)
 ================================
 
+* Buffer view font can now be changed
+* Colored nicknames
+* Wizard for setting up identity and networks on first run
+* Paste protection warns if you try to paste many lines
+* Use login name and real name for default identity
+* Add toolbar to main window
+* Away log window showing highlighted messages while you're away
+* Settings dialog streamlining
+* Animated system tray icon
+* Shiny new OXygen icons all over the place, including our new app icon
+* Build system improvements
+* Put all config and data files in one location and make that configurable
+* Allow presetting networks and a list of channels to join on first start
+* Change and improve CLI argument handling
+* All buffer views are now customizable
+* Streamlined monolithic client
+* Many usability improvements
+* Method for easily hiding and unhiding buffers in buffer views
+* Renaming and merging of query buffers
+* Improved SSL certificate handling
 * Optional support for KDE4
   - KNotify support
   - KDE icon and color theme support
@@ -25,7 +45,7 @@ Version 0.4.0 (not yet released)
 * Chat Monitor configuration dialog
 * Audio notifications
 * Clickable channel names in ChatView
-* Improved context menus in ChatView
+* Context menus in ChatView and BufferViews
 * Respect the separate clipboards (Ctrl+C / X11 selection) on X11
 * Improved mouse handling:
   - Double/triple click selections
