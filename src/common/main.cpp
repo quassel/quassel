@@ -41,6 +41,12 @@
 #  include "kcmdlinewrapper.h"
 #endif
 
+#if !defined(BUILD_CORE) && defined(STATIC)
+#include <QtPlugin>
+Q_IMPORT_PLUGIN(qjpeg)
+Q_IMPORT_PLUGIN(qgif)
+#endif
+
 #include "cliparser.h"
 #include "quassel.h"
 
