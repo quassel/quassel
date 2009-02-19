@@ -66,6 +66,7 @@ set(LINGUAS "" CACHE STRING "Comma-separated list of locales specifying language
 
 # Some settings imply others
 if(STATIC)
+  add_definitions(-DSTATIC)
   set(WITH_KDE OFF CACHE BOOL "Static building with KDE is not supported")
 endif(STATIC)
 
