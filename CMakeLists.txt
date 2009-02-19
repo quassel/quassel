@@ -248,17 +248,19 @@ if(STATIC AND CMAKE_COMPILER_IS_GNUCXX)
 endif(STATIC AND CMAKE_COMPILER_IS_GNUCXX)
 
 if(WIN32)
-  #if(STATIC)
   link_libraries(imm32 winmm dbghelp Secur32)  # missing by default :/
-  #endif(STATIC)
+
   if(HAVE_SSL)
      link_libraries(${OPENSSL_LIBRARIES} libeay32MD)
   endif(HAVE_SSL)
-endif(WIN32)
 
-if(WIN32)
   set(RC_WIN32 ../pics/win32.rc)  # for app icons on windows
 endif(WIN32)
+
+if(STATIC)
+  link_directories(${QT_PLUGINS_DIR}/imageformats)
+  link_libraries(qjpeg qgif)
+endif(STATIC)
 
 # We need to create a version.gen
 # For this, we create our genversion binary and make sure it is run every time.
