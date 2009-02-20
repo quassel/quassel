@@ -156,7 +156,9 @@ void InputLine::on_textChanged(QString newText) {
     msg += "...</p>";
     QMessageBox question(QMessageBox::NoIcon, tr("Paste Protection"), msg, QMessageBox::Yes|QMessageBox::No);
     question.setDefaultButton(QMessageBox::No);
+#ifdef Q_WS_MAC
     question.setWindowFlags(question.windowFlags() | Qt::Sheet);
+#endif
     if(question.exec() == QMessageBox::No)
       return;
   }
