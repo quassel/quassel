@@ -708,7 +708,12 @@ void ChatScene::selectionToClipboard(QClipboard::Mode mode) {
   stringToClipboard(selection(), mode);
 }
 
-void ChatScene::stringToClipboard(const QString &str, QClipboard::Mode mode) {
+void ChatScene::stringToClipboard(const QString &str_, QClipboard::Mode mode) {
+  QString str = str_;
+  // remove trailing linefeeds
+  if(str.endsWith('\n'))
+    str.chop(1);
+
   switch(mode) {
     case QClipboard::Clipboard:
       QApplication::clipboard()->setText(str);
