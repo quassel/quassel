@@ -23,6 +23,7 @@
 #include "core.h"
 #include "coresession.h"
 #include "coresettings.h"
+#include "postgresqlstorage.h"
 #include "quassel.h"
 #include "signalproxy.h"
 #include "sqlitestorage.h"
@@ -132,6 +133,7 @@ Core::Core()
 
   // Register storage backends here!
   registerStorageBackend(new SqliteStorage(this));
+  registerStorageBackend(new PostgreSqlStorage(this));
 
   connect(&_storageSyncTimer, SIGNAL(timeout()), this, SLOT(syncStorage()));
   _storageSyncTimer.start(10 * 60 * 1000); // 10 minutes
@@ -273,12 +275,14 @@ bool Core::initStorage(QVariantMap dbSettings, bool setup) {
     return false;
   }
 
-  Storage::State storageState = storage->init(dbSettings);
+  QVariantMap connectionProperties = dbSettings["ConnectionProperties"].toMap();
+
+  Storage::State storageState = storage->init(connectionProperties);
   switch(storageState) {
   case Storage::NeedsSetup:
     if(!setup)
       return false; // trigger setup process
-    if(storage->setup(dbSettings))
+    if(storage->setup(connectionProperties))
       return initStorage(dbSettings, false);
     // if setup wasn't successfull we mark the backend as unavailable
   case Storage::NotAvailable:
@@ -501,6 +505,8 @@ void Core::processClientMessage(QTcpSocket *socket, const QVariantMap &msg) {
         QVariantMap v;
         v["DisplayName"] = backend->displayName();
         v["Description"] = backend->description();
+	v["ConnectionProperties"] = backend->setupKeys();
+	qDebug() << backend->setupKeys();
         backends.append(v);
       }
       reply["StorageBackends"] = backends;

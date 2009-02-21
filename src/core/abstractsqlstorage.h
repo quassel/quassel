@@ -56,8 +56,10 @@ protected:
   virtual bool updateSchemaVersion(int newVersion) = 0;
   virtual bool setupSchemaVersion(int version) = 0;
 
+  virtual void setConnectionProperties(const QVariantMap &properties) = 0;
   virtual QString driverName() = 0;
   inline virtual QString hostName() { return QString(); }
+  inline virtual int port() { return -1; }
   virtual QString databaseName() = 0;
   inline virtual QString userName() { return QString(); }
   inline virtual QString password() { return QString(); }

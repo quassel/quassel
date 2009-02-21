@@ -272,6 +272,7 @@ void CoreSession::createIdentity(const Identity &identity, const QVariantMap &ad
   if(additional.contains("CertPem"))
     coreIdentity.setSslCert(additional["CertPem"].toByteArray());
 #endif
+  qDebug() << Q_FUNC_INFO;
   IdentityId id = Core::createIdentity(user(), coreIdentity);
   if(!id.isValid())
     return;

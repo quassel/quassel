@@ -73,7 +73,7 @@ CoreApplication::~CoreApplication() {
 
 bool CoreApplication::init() {
   if(Quassel::init() && _internal->init()) {
-    qInstallMsgHandler(Logger::logMessage);
+    // qInstallMsgHandler(Logger::logMessage);
     return true;
   }
   return false;

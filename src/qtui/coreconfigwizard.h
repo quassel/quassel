@@ -61,7 +61,7 @@ class CoreConfigWizard : public QWizard {
     void syncFinished();
 
   private slots:
-    void prepareCoreSetup(const QString &backend);
+    void prepareCoreSetup(const QString &backend, const QVariantMap &connectionProperties);
     void coreSetupSuccess();
     void coreSetupFailed(const QString &);
     void startOver();
@@ -102,10 +102,13 @@ namespace CoreConfigWizardPages {
       StorageSelectionPage(const QHash<QString, QVariant> &backends, QWidget *parent = 0);
       int nextId() const;
       QString selectedBackend() const;
+      QVariantMap connectionProperties() const;
+
     private slots:
       void on_backendList_currentIndexChanged();
     private:
       Ui::CoreConfigWizardStorageSelectionPage ui;
+      QGroupBox *_connectionBox;
       QHash<QString, QVariant> _backends;
   };
 
@@ -124,7 +127,7 @@ namespace CoreConfigWizardPages {
       void setComplete(bool);
 
     signals:
-      void setupCore(const QString &backend);
+      void setupCore(const QString &backend, const QVariantMap &);
 
     private:
       Ui::CoreConfigWizardSyncPage ui;

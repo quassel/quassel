@@ -59,6 +59,10 @@ public slots:
   /** \return A string that can be displayed by the client to describe the storage backend */
   virtual QString description() const = 0;
 
+  //! Returns a map where the keys are required properties to use the storage backend
+  /*  the values are QVariants with default values */
+  virtual QVariantMap setupKeys() const = 0;
+
   //! Setup the storage provider.
   /** This prepares the storage provider (e.g. create tables, etc.) for use within Quassel.
    *  \param settings   Hostname, port, username, password, ...
@@ -176,13 +180,6 @@ public slots:
    */
   virtual QList<NetworkInfo> networks(UserId user) = 0;
   
-  //! Get the unique NetworkId of the network for a user.
-  /** \param user    The core user who owns this network
-   *  \param network The network name
-   *  \return The NetworkId corresponding to the given network, or 0 if not found
-   */
-  virtual NetworkId getNetworkId(UserId user, const QString &network) = 0;
-
   //! Get a list of Networks to restore
   /** Return a list of networks the user was connected at the time of core shutdown
    *  \note This method is threadsafe.

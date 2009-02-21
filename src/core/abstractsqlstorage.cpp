@@ -72,6 +72,9 @@ void AbstractSqlStorage::addConnectionToPool() {
   if(!hostName().isEmpty())
     db.setHostName(hostName());
 
+  if(port() != -1)
+    db.setPort(port());
+
   if(!userName().isEmpty()) {
     db.setUserName(userName());
     db.setPassword(password());
@@ -84,7 +87,7 @@ void AbstractSqlStorage::addConnectionToPool() {
 }
 
 Storage::State AbstractSqlStorage::init(const QVariantMap &settings) {
-  Q_UNUSED(settings)
+  setConnectionProperties(settings);
 
   QSqlDatabase db = logDb();
   if(!db.isValid() || !db.isOpen())
@@ -108,7 +111,7 @@ Storage::State AbstractSqlStorage::init(const QVariantMap &settings) {
     }
   }
 
-  quInfo() << "Storage Backend is ready. Quassel Schema Version:" << installedSchemaVersion();
+  quInfo() << qPrintable(displayName()) << "Storage Backend is ready. Quassel Schema Version:" << installedSchemaVersion();
   return IsReady;
 }
 
@@ -141,21 +144,28 @@ QStringList AbstractSqlStorage::setupQueries() {
 }
 
 bool AbstractSqlStorage::setup(const QVariantMap &settings) {
-  Q_UNUSED(settings)
+  setConnectionProperties(settings);
   QSqlDatabase db = logDb();
   if(!db.isOpen()) {
     qCritical() << "Unable to setup Logging Backend!";
     return false;
   }
 
+  db.transaction();
   foreach(QString queryString, setupQueries()) {
     QSqlQuery query = db.exec(queryString);
     if(!watchQuery(query)) {
       qCritical() << "Unable to setup Logging Backend!";
+      db.rollback();
       return false;
     }
   }
-  return setupSchemaVersion(schemaVersion());
+  bool success = setupSchemaVersion(schemaVersion());
+  if(success)
+    db.commit();
+  else
+    db.rollback();
+  return success;
 }
 
 QStringList AbstractSqlStorage::upgradeQueries(int version) {

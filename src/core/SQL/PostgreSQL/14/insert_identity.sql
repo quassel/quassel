@@ -1,0 +1,3 @@
+INSERT INTO identity (userid, identityname, realname, awaynick, awaynickenabled, awayreason, awayreasonenabled, autoawayenabled, autoawaytime, autoawayreason, autoawayreasonenabled, detachawayenabled, detachawayreason, detachawayreasonenabled, ident, kickreason, partreason, quitreason, sslcert, sslkey)
+VALUES (:userid, :identityname, :realname, :awaynick, :awaynickenabled, :awayreason, :awayreasonenabled, :autoawayenabled, :autoawaytime, :autoawayreason, :autoawayreasonenabled, :detachawayenabled, :detachawayreason, :detachawayreasonenabled, :ident, :kickreason, :partreason, :quitreason, :sslcert, :sslkey)
+RETURNING identityid

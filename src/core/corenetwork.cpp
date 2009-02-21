@@ -333,7 +333,14 @@ void CoreNetwork::socketInitialized() {
   if(!server.password.isEmpty()) {
     putRawLine(serverEncode(QString("PASS %1").arg(server.password)));
   }
-  putRawLine(serverEncode(QString("NICK :%1").arg(identity->nicks()[0])));
+  QString nick;
+  if(identity->nicks().isEmpty()) {
+    nick = "quassel";
+    qWarning() << "CoreNetwork::socketInitialized(): no nicks supplied for identity Id" << identity->id();
+  } else {
+    nick = identity->nicks()[0];
+  }
+  putRawLine(serverEncode(QString("NICK :%1").arg(nick)));
   putRawLine(serverEncode(QString("USER %1 8 * :%2").arg(identity->ident(), identity->realName())));
 }
 

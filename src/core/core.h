@@ -134,17 +134,6 @@ class Core : public QObject {
     return instance()->_storage->networks(user);
   }
 
-  //! Get the NetworkId for a network name.
-  /** \note This method is threadsafe.
-   *
-   *  \param user    The core user
-   *  \param network The name of the network
-   *  \return The NetworkId corresponding to the given network.
-   */
-  static inline NetworkId networkId(UserId user, const QString &network) {
-    return instance()->_storage->getNetworkId(user, network);
-  }
-
   //! Get a list of Networks to restore
   /** Return a list of networks the user was connected at the time of core shutdown
    *  \note This method is threadsafe.

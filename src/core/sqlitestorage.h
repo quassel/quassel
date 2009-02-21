@@ -39,6 +39,7 @@ public slots:
 
   bool isAvailable() const;
   QString displayName() const;
+  inline QVariantMap setupKeys() const { return QVariantMap(); }
   QString description() const;
 
   // TODO: Add functions for configuring the backlog handling, i.e. defining auto-cleanup settings etc
@@ -97,6 +98,7 @@ public slots:
   virtual QList<Message> requestAllMsgs(UserId user, MsgId first = -1, MsgId last = -1, int limit = -1);
 
 protected:
+  inline virtual void setConnectionProperties(const QVariantMap & /* properties */) {}
   inline virtual QString driverName() { return "QSQLITE"; }
   inline virtual QString databaseName() { return backlogFile(); }
   virtual int installedSchemaVersion();
