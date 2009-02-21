@@ -36,7 +36,7 @@
     <file>./SQL/PostgreSQL/14/select_messagesAll.sql</file>
     <file>./SQL/PostgreSQL/14/select_messagesAllNew.sql</file>
     <file>./SQL/PostgreSQL/14/select_messagesNewerThan.sql</file>
-    <file>./SQL/PostgreSQL/14/select_messagesNewestK.sql</file>
+    <file>./SQL/PostgreSQL/14/select_messagesRange.sql</file>
     <file>./SQL/PostgreSQL/14/select_network_awaymsg.sql</file>
     <file>./SQL/PostgreSQL/14/select_network_usermode.sql</file>
     <file>./SQL/PostgreSQL/14/select_networkExists.sql</file>

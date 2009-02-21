@@ -1,3 +1,3 @@
 UPDATE buffer
 SET buffername = :buffername, buffercname = :buffercname
-WHERE bufferid = :bufferid
+WHERE userid = :userid AND bufferid = :bufferid

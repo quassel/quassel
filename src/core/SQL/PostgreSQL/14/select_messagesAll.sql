@@ -5,4 +5,3 @@ WHERE backlog.bufferid IN (SELECT bufferid FROM buffer WHERE userid = :userid)
     AND backlog.messageid >= :firstmsg
     AND backlog.messageid < :lastmsg
 ORDER BY messageid DESC
-LIMIT :limit

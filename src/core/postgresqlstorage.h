@@ -111,9 +111,6 @@ protected:
   bool beginReadOnlyTransaction(QSqlDatabase &db);
 
 private:
-  bool isValidNetwork(UserId user, const NetworkId &networkId);
-  bool isValidBuffer(const UserId &user, const BufferId &bufferId);
-
   void bindNetworkInfo(QSqlQuery &query, const NetworkInfo &info);
   void bindServerInfo(QSqlQuery &query, const Network::Server &server);
 
