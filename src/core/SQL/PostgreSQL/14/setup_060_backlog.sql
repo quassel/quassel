@@ -1,6 +1,6 @@
 CREATE TABLE backlog (
 	messageid serial PRIMARY KEY,
-	time integer NOT NULL,
+	time timestamp NOT NULL,
 	bufferid integer NOT NULL REFERENCES buffer (bufferid) ON DELETE CASCADE,
 	type integer NOT NULL,
 	flags integer NOT NULL,

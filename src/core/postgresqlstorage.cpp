@@ -276,7 +276,7 @@ IdentityId PostgreSqlStorage::createIdentity(UserId user, CoreIdentity &identity
     return IdentityId();
   }
 
-  qDebug() << "creatId" << query.first() << query.value(0).toInt();
+  query.first();
   identityId = query.value(0).toInt();
   identity.setId(identityId);
 
@@ -488,7 +488,7 @@ NetworkId PostgreSqlStorage::createNetwork(UserId user, const NetworkInfo &info)
     return NetworkId();
   }
 
-  qDebug() << "createNet:" << query.first() << query.value(0).toInt();
+  query.first();
   networkId = query.value(0).toInt();
 
   if(!networkId.isValid()) {
@@ -1120,7 +1120,7 @@ bool PostgreSqlStorage::logMessage(Message &msg) {
   }
 
   QVariantList params;
-  params << msg.timestamp().toTime_t()
+  params << msg.timestamp()
 	 << msg.bufferInfo().bufferId().toInt()
 	 << msg.type()
 	 << (int)msg.flags()
@@ -1204,7 +1204,7 @@ bool PostgreSqlStorage::logMessages(MessageList &msgs) {
   for(int i = 0; i < msgs.count(); i++) {
     Message &msg = msgs[i];
     QVariantList params;
-    params << msg.timestamp().toTime_t()
+    params << msg.timestamp()
 	   << msg.bufferInfo().bufferId().toInt()
 	   << msg.type()
 	   << (int)msg.flags()
@@ -1267,8 +1267,11 @@ QList<Message> PostgreSqlStorage::requestMsgs(UserId user, BufferId bufferId, Ms
     return messagelist;
   }
 
+  QDateTime timestamp;
   for(int i = 0; i < limit && query.next(); i++) {
-    Message msg(QDateTime::fromTime_t(query.value(1).toInt()),
+    timestamp = query.value(1).toDateTime();
+    timestamp.setTimeSpec(Qt::UTC);
+    Message msg(timestamp,
                 bufferInfo,
                 (Message::Type)query.value(2).toUInt(),
                 query.value(5).toString(),
@@ -1313,8 +1316,11 @@ QList<Message> PostgreSqlStorage::requestAllMsgs(UserId user, MsgId first, MsgId
     return messagelist;
   }
 
+  QDateTime timestamp;
   for(int i = 0; i < limit && query.next(); i++) {
-    Message msg(QDateTime::fromTime_t(query.value(2).toInt()),
+    timestamp = query.value(1).toDateTime();
+    timestamp.setTimeSpec(Qt::UTC);
+    Message msg(timestamp,
                 bufferInfoHash[query.value(1).toInt()],
                 (Message::Type)query.value(3).toUInt(),
                 query.value(6).toString(),

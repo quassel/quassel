@@ -251,7 +251,6 @@ void CoreSession::processMessages() {
       }
       messages << Message(bufferInfo, rawMsg.type, rawMsg.text, rawMsg.sender, rawMsg.flags);
     }
-
     Core::storeMessages(messages);
     // FIXME: extend protocol to a displayMessages(MessageList)
     for(int i = 0; i < messages.count(); i++) {
