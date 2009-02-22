@@ -39,6 +39,11 @@
 #include "coreusersettings.h"
 #include "logger.h"
 
+class ProcessMessagesEvent : public QEvent {
+public:
+  ProcessMessagesEvent() : QEvent(QEvent::User) {}
+};
+
 CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
   : QObject(parent),
     _user(uid),
@@ -49,7 +54,8 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
     _bufferViewManager(new CoreBufferViewManager(_signalProxy, this)),
     _ircListHelper(new CoreIrcListHelper(this)),
     _coreInfo(this),
-    scriptEngine(new QScriptEngine(this))
+    scriptEngine(new QScriptEngine(this)),
+    _processMessages(false)
 {
   SignalProxy *p = signalProxy();
   connect(p, SIGNAL(peerRemoved(QIODevice *)), this, SLOT(removeClient(QIODevice *)));
@@ -196,16 +202,13 @@ void CoreSession::msgFromClient(BufferInfo bufinfo, QString msg) {
 
 // ALL messages coming pass through these functions before going to the GUI.
 // So this is the perfect place for storing the backlog and log stuff.
-void CoreSession::recvMessageFromServer(Message::Type type, BufferInfo::Type bufferType,
-                                        QString target, QString text, QString sender, Message::Flags flags) {
-  CoreNetwork *net = qobject_cast<CoreNetwork*>(this->sender());
-  Q_ASSERT(net);
-
-  BufferInfo bufferInfo = Core::bufferInfo(user(), net->networkId(), bufferType, target);
-  Message msg(bufferInfo, type, text, sender, flags);
-  msg.setMsgId(Core::storeMessage(msg));
-  Q_ASSERT(msg.msgId() != 0);
-  emit displayMsg(msg);
+void CoreSession::recvMessageFromServer(NetworkId networkId, Message::Type type, BufferInfo::Type bufferType,
+                                        const QString &target, const QString &text, const QString &sender, Message::Flags flags) {
+  _messageQueue << RawMessage(networkId, type, bufferType, target, text, sender, flags);
+  if(!_processMessages) {
+    _processMessages = true;
+    QCoreApplication::postEvent(this, new ProcessMessagesEvent());
+  }
 }
 
 void CoreSession::recvStatusMsgFromServer(QString msg) {
@@ -218,6 +221,46 @@ QList<BufferInfo> CoreSession::buffers() const {
   return Core::requestBuffers(user());
 }
 
+void CoreSession::customEvent(QEvent *event) {
+  if(event->type() != QEvent::User)
+    return;
+
+  processMessages();
+  event->accept();
+}
+
+void CoreSession::processMessages() {
+  qDebug() << "processing" << _messageQueue.count() << "messages..";
+  if(_messageQueue.count() == 1) {
+    const RawMessage &rawMsg = _messageQueue.first();
+    BufferInfo bufferInfo = Core::bufferInfo(user(), rawMsg.networkId, rawMsg.bufferType, rawMsg.target);
+    Message msg(bufferInfo, rawMsg.type, rawMsg.text, rawMsg.sender, rawMsg.flags);
+    Core::storeMessage(msg);
+    emit displayMsg(msg);
+  } else {
+    QHash<NetworkId, QHash<QString, BufferInfo> > bufferInfoCache;
+    MessageList messages;
+    BufferInfo bufferInfo;
+    for(int i = 0; i < _messageQueue.count(); i++) {
+      const RawMessage &rawMsg = _messageQueue.at(i);
+      if(bufferInfoCache.contains(rawMsg.networkId) && bufferInfoCache[rawMsg.networkId].contains(rawMsg.target)) {
+	bufferInfo = bufferInfoCache[rawMsg.networkId][rawMsg.target];
+      } else {
+	bufferInfo = Core::bufferInfo(user(), rawMsg.networkId, rawMsg.bufferType, rawMsg.target);
+	bufferInfoCache[rawMsg.networkId][rawMsg.target] = bufferInfo;
+      }
+      messages << Message(bufferInfo, rawMsg.type, rawMsg.text, rawMsg.sender, rawMsg.flags);
+    }
+
+    Core::storeMessages(messages);
+    // FIXME: extend protocol to a displayMessages(MessageList)
+    for(int i = 0; i < messages.count(); i++) {
+      emit displayMsg(messages[i]);
+    }
+  }
+  _processMessages = false;
+  _messageQueue.clear();
+}
 
 QVariant CoreSession::sessionState() {
   QVariantMap v;
@@ -322,8 +365,8 @@ void CoreSession::createNetwork(const NetworkInfo &info_, const QStringList &per
   id = info.networkId.toInt();
   if(!_networks.contains(id)) {
     CoreNetwork *net = new CoreNetwork(id, this);
-    connect(net, SIGNAL(displayMsg(Message::Type, BufferInfo::Type, QString, QString, QString, Message::Flags)),
-	    this, SLOT(recvMessageFromServer(Message::Type, BufferInfo::Type, QString, QString, QString, Message::Flags)));
+    connect(net, SIGNAL(displayMsg(NetworkId, Message::Type, BufferInfo::Type, const QString &, const QString &, const QString &, Message::Flags)),
+	    this, SLOT(recvMessageFromServer(NetworkId, Message::Type, BufferInfo::Type, const QString &, const QString &, const QString &, Message::Flags)));
     connect(net, SIGNAL(displayStatusMsg(QString)), this, SLOT(recvStatusMsgFromServer(QString)));
 
     net->setNetworkInfo(info);

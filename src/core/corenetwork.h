@@ -108,10 +108,14 @@ public slots:
 
   inline void resetPingTimeout() { _lastPingTime = 0; }
 
+  inline void displayMsg(Message::Type msgType, BufferInfo::Type bufferType, const QString &target, const QString &text, const QString &sender = "", Message::Flags flags = Message::None) {
+    emit displayMsg(networkId(), msgType, bufferType, target, text, sender, flags);
+  }
+
 signals:
   void recvRawServerMsg(QString);
   void displayStatusMsg(QString);
-  void displayMsg(Message::Type, BufferInfo::Type, QString target, QString text, QString sender = "", Message::Flags flags = Message::None);
+  void displayMsg(NetworkId, Message::Type, BufferInfo::Type, const QString &target, const QString &text, const QString &sender = "", Message::Flags flags = Message::None);
   void disconnected(NetworkId networkId);
   void connectionError(const QString &errorMsg);
 

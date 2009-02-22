@@ -1,2 +1,2 @@
 INSERT INTO sender (sender)
-VALUES (:sender)
+VALUES ($1)

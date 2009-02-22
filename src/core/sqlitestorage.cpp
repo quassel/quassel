@@ -933,7 +933,7 @@ QHash<BufferId, MsgId> SqliteStorage::bufferLastSeenMsgIds(UserId user) {
   return lastSeenHash;
 }
 
-MsgId SqliteStorage::logMessage(Message msg) {
+bool SqliteStorage::logMessage(Message &msg) {
   QSqlQuery logMessageQuery(logDb());
   logMessageQuery.prepare(queryString("insert_message"));
 
@@ -954,15 +954,28 @@ MsgId SqliteStorage::logMessage(Message msg) {
       safeExec(addSenderQuery);
       safeExec(logMessageQuery);
       if(!watchQuery(logMessageQuery))
-	return 0;
+	return false;
     } else {
       watchQuery(logMessageQuery);
     }
   }
 
   MsgId msgId = logMessageQuery.lastInsertId().toInt();
-  Q_ASSERT(msgId.isValid());
-  return msgId;
+  if(msgId.isValid()) {
+    msg.setMsgId(msgId);
+    return true;
+  } else {
+    return false;
+  }
+}
+
+bool SqliteStorage::logMessages(MessageList &msgs) {
+  // FIXME: optimize!
+  for(int i = 0; i < msgs.count(); i++) {
+    if(!logMessage(msgs[i]))
+      return false;
+  }
+  return true;
 }
 
 QList<Message> SqliteStorage::requestMsgs(UserId user, BufferId bufferId, MsgId first, MsgId last, int limit) {

@@ -30,8 +30,8 @@ BasicHandler::BasicHandler(CoreNetwork *parent)
     _network(parent),
     initDone(false)
 {
-  connect(this, SIGNAL(displayMsg(Message::Type, BufferInfo::Type, QString, QString, QString, Message::Flags)),
-         network(), SIGNAL(displayMsg(Message::Type, BufferInfo::Type, QString, QString, QString, Message::Flags)));
+  connect(this, SIGNAL(displayMsg(Message::Type, BufferInfo::Type, const QString &, const QString &, const QString &, Message::Flags)),
+         network(), SLOT(displayMsg(Message::Type, BufferInfo::Type, const QString &, const QString &, const QString &, Message::Flags)));
 
   connect(this, SIGNAL(putCmd(QString, const QList<QByteArray> &, const QByteArray &)),
 	  network(), SLOT(putCmd(QString, const QList<QByteArray> &, const QByteArray &)));
@@ -174,7 +174,7 @@ void BasicHandler::putCmd(const QString &cmd, const QByteArray &param, const QBy
   emit putCmd(cmd, list, prefix);
 }
 
-void BasicHandler::displayMsg(Message::Type msgType, QString target, QString text, QString sender, Message::Flags flags) {
+void BasicHandler::displayMsg(Message::Type msgType, QString target, const QString &text, const QString &sender, Message::Flags flags) {
   if(!target.isEmpty() && network()->prefixes().contains(target[0]))
     target = target.mid(1);
 

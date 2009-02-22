@@ -56,12 +56,12 @@ public:
   QList<QByteArray> userEncode(const QString &userNick, const QStringList &stringlist);
 
 signals:
-  void displayMsg(Message::Type, BufferInfo::Type, QString target, QString text, QString sender = "", Message::Flags flags = Message::None);
+  void displayMsg(Message::Type, BufferInfo::Type, const QString &target, const QString &text, const QString &sender = "", Message::Flags flags = Message::None);
   void putCmd(const QString &cmd, const QList<QByteArray> &params, const QByteArray &prefix = QByteArray());
   void putRawLine(const QByteArray &msg);
 
 protected:
-  void displayMsg(Message::Type, QString target, QString text, QString sender = "", Message::Flags flags = Message::None);
+  void displayMsg(Message::Type, QString target, const QString &text, const QString &sender = "", Message::Flags flags = Message::None);
   void putCmd(const QString &cmd, const QByteArray &param, const QByteArray &prefix = QByteArray());
 
   virtual void handle(const QString &member, QGenericArgument val0 = QGenericArgument(0),

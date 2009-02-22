@@ -341,11 +341,17 @@ public slots:
   
   /* Message handling */
 
-  //! Store a Message in the backlog.
+  //! Store a Message in the storage backend and set its unique Id.
   /** \param msg  The message object to be stored
-   *  \return The globally unique id for the stored message
+   *  \return true on success
    */
-  virtual MsgId logMessage(Message msg) = 0;
+  virtual bool logMessage(Message &msg) = 0;
+
+  //! Store a list of Messages in the storage backend and set their unique Id.
+  /** \param msgs The list message objects to be stored
+   *  \return true on success
+   */
+  virtual bool logMessages(MessageList &msgs) = 0;
 
   //! Request a certain number messages stored in a given buffer.
   /** \param buffer   The buffer we request messages from

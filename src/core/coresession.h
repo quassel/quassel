@@ -27,6 +27,7 @@
 #include "corecoreinfo.h"
 #include "corealiasmanager.h"
 #include "message.h"
+#include "storage.h"
 
 class CoreBacklogManager;
 class CoreBufferSyncer;
@@ -134,7 +135,7 @@ private slots:
   void removeClient(QIODevice *dev);
 
   void recvStatusMsgFromServer(QString msg);
-  void recvMessageFromServer(Message::Type, BufferInfo::Type, QString target, QString text, QString sender = "", Message::Flags flags = Message::None);
+  void recvMessageFromServer(NetworkId networkId, Message::Type, BufferInfo::Type, const QString &target, const QString &text, const QString &sender = "", Message::Flags flags = Message::None);
 
   void destroyNetwork(NetworkId);
 
@@ -145,9 +146,13 @@ private slots:
 
   void updateIdentityBySender();
 
+protected:
+  virtual void customEvent(QEvent *event);
+
 private:
   void loadSettings();
   void initScriptEngine();
+  void processMessages();
 
   UserId _user;
 
@@ -166,6 +171,19 @@ private:
 
   QScriptEngine *scriptEngine;
 
+  struct RawMessage {
+    NetworkId networkId;
+    Message::Type type;
+    BufferInfo::Type bufferType;
+    QString target;
+    QString text;
+    QString sender;
+    Message::Flags flags;
+    RawMessage(NetworkId networkId, Message::Type type, BufferInfo::Type bufferType, const QString &target, const QString &text, const QString &sender, Message::Flags flags)
+      : networkId(networkId), type(type), bufferType(bufferType), target(target), text(text), sender(sender), flags(flags) {}
+  };
+  QList<RawMessage> _messageQueue;
+  bool _processMessages;
 };
 
 #endif

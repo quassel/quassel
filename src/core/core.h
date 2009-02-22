@@ -256,14 +256,24 @@ class Core : public QObject {
     return instance()->_storage->getBufferInfo(user, bufferId);
   }
 
-  //! Store a Message in the backlog.
+  //! Store a Message in the storage backend and set it's unique Id.
   /** \note This method is threadsafe.
    *
-   *  \param msg  The message object to be stored
-   *  \return The globally unique id for the stored message
+   *  \param message The message object to be stored
+   *  \return true on success
    */
-  static inline MsgId storeMessage(const Message &message) {
+  static inline bool storeMessage(Message &message) {
     return instance()->_storage->logMessage(message);
+  }
+
+  //! Store a list of Messages in the storage backend and set their unique Id.
+  /** \note This method is threadsafe.
+   *
+   *  \param messages The list message objects to be stored
+   *  \return true on success
+   */
+  static inline bool storeMessages(MessageList &messages) {
+    return instance()->_storage->logMessages(messages);
   }
 
   //! Request a certain number messages stored in a given buffer.

@@ -40,7 +40,7 @@ public slots:
   QString displayName() const;
   QString description() const;
   QVariantMap setupKeys() const;
-  
+
   // TODO: Add functions for configuring the backlog handling, i.e. defining auto-cleanup settings etc
 
   /* User handling */
@@ -78,7 +78,7 @@ public slots:
   virtual void setAwayMessage(UserId user, NetworkId networkId, const QString &awayMsg);
   virtual QString userModes(UserId user, NetworkId networkId);
   virtual void setUserModes(UserId user, NetworkId networkId, const QString &userModes);
-  
+
   /* Buffer handling */
   virtual BufferInfo bufferInfo(UserId user, const NetworkId &networkId, BufferInfo::Type type, const QString &buffer = "", bool create = true);
   virtual BufferInfo getBufferInfo(UserId user, const BufferId &bufferId);
@@ -91,8 +91,8 @@ public slots:
   virtual QHash<BufferId, MsgId> bufferLastSeenMsgIds(UserId user);
 
   /* Message handling */
-
-  virtual MsgId logMessage(Message msg);
+  virtual bool logMessage(Message &msg);
+  virtual bool logMessages(MessageList &msgs);
   virtual QList<Message> requestMsgs(UserId user, BufferId bufferId, MsgId first = -1, MsgId last = -1, int limit = -1);
   virtual QList<Message> requestAllMsgs(UserId user, MsgId first = -1, MsgId last = -1, int limit = -1);
 
@@ -108,7 +108,17 @@ protected:
   virtual bool updateSchemaVersion(int newVersion);
   virtual bool setupSchemaVersion(int version);
   void safeExec(QSqlQuery &query);
+
   bool beginReadOnlyTransaction(QSqlDatabase &db);
+
+  bool prepareQuery(const QString &handle, const QString &query, const QSqlDatabase &db);
+  QSqlQuery executePreparedQuery(const QString &handle, const QVariantList &params, const QSqlDatabase &db);
+  QSqlQuery executePreparedQuery(const QString &handle, const QVariant &param, const QSqlDatabase &db);
+  void deallocateQuery(const QString &handle, const QSqlDatabase &db);
+
+  inline void savePoint(const QString &handle, const QSqlDatabase &db) { db.exec(QString("SAVEPOINT %1").arg(handle)); }
+  inline void rollbackSavePoint(const QString &handle, const QSqlDatabase &db) { db.exec(QString("ROLLBACK TO SAVEPOINT %1").arg(handle)); }
+  inline void releaseSavePoint(const QString &handle, const QSqlDatabase &db) { db.exec(QString("RELEASE SAVEPOINT %1").arg(handle)); }
 
 private:
   void bindNetworkInfo(QSqlQuery &query, const NetworkInfo &info);
@@ -119,8 +129,13 @@ private:
   QString _databaseName;
   QString _userName;
   QString _password;
-  
+
   static int _maxRetryCount;
+
+  typedef QHash<QString, QString> QueryHash;
+  QHash<QString, QueryHash> _preparedQueries; // one query hash per db connection
+  QMutex _queryHashMutex;
+
 };
 
 inline void PostgreSqlStorage::safeExec(QSqlQuery &query) { query.exec(); }

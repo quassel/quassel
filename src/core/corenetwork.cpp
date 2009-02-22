@@ -303,7 +303,7 @@ void CoreNetwork::socketError(QAbstractSocket::SocketError error) {
   _previousConnectionAttemptFailed = true;
   qWarning() << qPrintable(tr("Could not connect to %1 (%2)").arg(networkName(), socket.errorString()));
   emit connectionError(socket.errorString());
-  emit displayMsg(Message::Error, BufferInfo::StatusBuffer, "", tr("Connection failure: %1").arg(socket.errorString()));
+  displayMsg(Message::Error, BufferInfo::StatusBuffer, "", tr("Connection failure: %1").arg(socket.errorString()));
   emitConnectionError(socket.errorString());
   if(socket.state() < QAbstractSocket::ConnectedState) {
     socketDisconnected();
@@ -359,7 +359,7 @@ void CoreNetwork::socketDisconnected() {
   IrcUser *me_ = me();
   if(me_) {
     foreach(QString channel, me_->channels())
-      emit displayMsg(Message::Quit, BufferInfo::ChannelBuffer, channel, _quitReason, me_->hostmask());
+      displayMsg(Message::Quit, BufferInfo::ChannelBuffer, channel, _quitReason, me_->hostmask());
   }
 
   setConnected(false);
