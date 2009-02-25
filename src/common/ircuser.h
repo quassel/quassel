@@ -28,6 +28,7 @@
 #include <QDateTime>
 
 #include "syncableobject.h"
+#include "types.h"
 
 class SignalProxy;
 class Network;
@@ -88,6 +89,12 @@ public:
   QString decodeString(const QByteArray &text) const;
   QByteArray encodeString(const QString &string) const;
 
+  // only valid on client side, these are not synced!
+  inline QDateTime lastChannelActivity(BufferId id) const { return _lastActivity.value(id); }
+  void setLastChannelActivity(BufferId id, const QDateTime &time);
+  inline QDateTime lastSpokenTo(BufferId id) const { return _lastSpokenTo.value(id); }
+  void setLastSpokenTo(BufferId id, const QDateTime &time);
+
 public slots:
   void setUser(const QString &user);
   void setHost(const QString &host);
@@ -140,6 +147,9 @@ signals:
   void userModesAdded(QString modes);
   void userModesRemoved(QString modes);
 
+  void lastChannelActivityUpdated(BufferId id, const QDateTime &newTime);
+  void lastSpokenToUpdated(BufferId id, const QDateTime &newTime);
+
 private slots:
   void updateObjectName();
   void channelDestroyed();
@@ -178,6 +188,9 @@ private:
 
   QTextCodec *_codecForEncoding;
   QTextCodec *_codecForDecoding;
+
+  QHash<BufferId, QDateTime> _lastActivity;
+  QHash<BufferId, QDateTime> _lastSpokenTo;
 };
 
 #endif
