@@ -185,3 +185,19 @@ bool KnownHostsSettings::isKnownHost(const QSslSocket *socket) {
   return isKnownHost(socket->peerAddress(), socket->peerCertificate().digest());
 }
 #endif
+
+
+// ========================================
+//  NickCompletionSettings
+// ========================================
+
+NickCompletionSettings::NickCompletionSettings() : ClientSettings("NickCompletion") {
+}
+
+void NickCompletionSettings::setCompletionSuffix(const QString &suffix) {
+  setLocalValue("CompletionSuffix", suffix);
+}
+
+QString NickCompletionSettings::completionSuffix() {
+  return localValue("CompletionSuffix", ": ").toString();
+}

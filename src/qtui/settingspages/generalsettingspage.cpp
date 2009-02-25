@@ -128,8 +128,9 @@ void GeneralSettingsPage::load() {
   settings["DisplayTopicInTooltip"] = bufferSettings.value("DisplayTopicInTooltip", QVariant(false));
   ui.displayTopicInTooltip->setChecked(settings["DisplayTopicInTooltip"].toBool());
 
-  // inputline settings
-  settings["CompletionSuffix"] = uiSettings.value("CompletionSuffix", QString(": "));
+  // completion settings
+  NickCompletionSettings completionSettings;
+  settings["CompletionSuffix"] = completionSettings.completionSuffix();
   ui.completionSuffix->setText(settings["CompletionSuffix"].toString());
 
   setChangedState(false);
@@ -178,7 +179,8 @@ void GeneralSettingsPage::save() {
 
   bufferSettings.setValue("DisplayTopicInTooltip", ui.displayTopicInTooltip->isChecked());
 
-  uiSettings.setValue("CompletionSuffix", ui.completionSuffix->text());
+  NickCompletionSettings completionSettings;
+  completionSettings.setCompletionSuffix(ui.completionSuffix->text());
 
 
   load();

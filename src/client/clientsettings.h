@@ -121,4 +121,17 @@ public:
 #endif
 };
 
+// ========================================
+// NickCompletionSettings
+// ========================================
+
+class NickCompletionSettings : public ClientSettings {
+public:
+  NickCompletionSettings();
+
+  void setCompletionSuffix(const QString &);
+  QString completionSuffix();
+
+};
+
 #endif
