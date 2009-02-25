@@ -150,7 +150,13 @@ bool TabCompleter::eventFilter(QObject *obj, QEvent *event) {
 // this determines the sort order
 bool TabCompleter::CompletionKey::operator<(const CompletionKey &other) const {
   IrcUser *thisUser = _currentNetwork->ircUser(this->nick);
+  if(thisUser && _currentNetwork->isMe(thisUser))
+    return false;
+
   IrcUser *thatUser = _currentNetwork->ircUser(other.nick);
+  if(thatUser && _currentNetwork->isMe(thatUser))
+    return true;
+
   if(!thisUser || !thatUser)
     return QString::localeAwareCompare(this->nick, other.nick) < 0;
 
