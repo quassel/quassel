@@ -31,6 +31,7 @@
 #include "clientbufferviewmanager.h"
 #include "clientirclisthelper.h"
 #include "clientidentity.h"
+#include "clientuserinputhandler.h"
 #include "ircchannel.h"
 #include "ircuser.h"
 #include "message.h"
@@ -78,6 +79,7 @@ Client::Client(QObject *parent)
     _backlogManager(new ClientBacklogManager(this)),
     _bufferViewManager(0),
     _ircListHelper(new ClientIrcListHelper(this)),
+    _inputHandler(new ClientUserInputHandler(this)),
     _messageModel(0),
     _messageProcessor(0),
     _connectedToCore(false),
@@ -109,7 +111,7 @@ void Client::init() {
   p->attachSlot(SIGNAL(displayStatusMsg(QString, QString)), this, SLOT(recvStatusMsg(QString, QString)));
 
   p->attachSlot(SIGNAL(bufferInfoUpdated(BufferInfo)), _networkModel, SLOT(bufferUpdated(BufferInfo)));
-  p->attachSignal(this, SIGNAL(sendInput(BufferInfo, QString)));
+  p->attachSignal(inputHandler(), SIGNAL(sendInput(BufferInfo, QString)));
   p->attachSignal(this, SIGNAL(requestNetworkStates()));
 
   p->attachSignal(this, SIGNAL(requestCreateIdentity(const Identity &, const QVariantMap &)), SIGNAL(createIdentity(const Identity &, const QVariantMap &)));
@@ -264,8 +266,8 @@ void Client::coreIdentityRemoved(IdentityId id) {
 }
 
 /***  ***/
-void Client::userInput(BufferInfo bufferInfo, QString message) {
-  emit instance()->sendInput(bufferInfo, message);
+void Client::userInput(const BufferInfo &bufferInfo, const QString &message) {
+  inputHandler()->handleUserInput(bufferInfo, message);
 }
 
 /*** core connection stuff ***/

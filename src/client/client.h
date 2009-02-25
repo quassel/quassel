@@ -43,9 +43,10 @@ class NetworkModel;
 class BufferModel;
 class BufferSyncer;
 class ClientBacklogManager;
+class ClientBufferViewManager;
 class ClientIrcListHelper;
 class ClientSyncer;
-class ClientBufferViewManager;
+class ClientUserInputHandler;
 class IrcUser;
 class IrcChannel;
 class SignalProxy;
@@ -103,6 +104,7 @@ public:
   static inline ClientBacklogManager *backlogManager() { return instance()->_backlogManager; }
   static inline ClientIrcListHelper *ircListHelper() { return instance()->_ircListHelper; }
   static inline ClientBufferViewManager *bufferViewManager() { return instance()->_bufferViewManager; }
+  static inline ClientUserInputHandler *inputHandler() { return instance()->_inputHandler; }
 
   static AccountId currentCoreAccount();
 
@@ -110,7 +112,7 @@ public:
   static bool isSynced();
   static inline bool internalCore() { return instance()->_internalCore; }
 
-  static void userInput(BufferInfo bufferInfo, QString message);
+  static void userInput(const BufferInfo &bufferInfo, const QString &message);
 
   static void setBufferLastSeenMsg(BufferId id, const MsgId &msgId); // this is synced to core and other clients
   static void removeBuffer(BufferId id);
@@ -124,7 +126,6 @@ public:
   static inline void registerClientSyncer(ClientSyncer *syncer) { emit instance()->newClientSyncer(syncer); }
 
 signals:
-  void sendInput(BufferInfo, QString message);
   void requestNetworkStates();
 
   void showConfigWizard(const QVariantMap &coredata);
@@ -162,8 +163,6 @@ signals:
   void logUpdated(const QString &msg);
 
 public slots:
-  //void selectBuffer(Buffer *);
-
   void disconnectFromCore();
 
   void bufferRemoved(BufferId bufferId);
@@ -206,6 +205,7 @@ private:
   ClientBacklogManager *_backlogManager;
   ClientBufferViewManager *_bufferViewManager;
   ClientIrcListHelper *_ircListHelper;
+  ClientUserInputHandler *_inputHandler;
 
   MessageModel *_messageModel;
   AbstractMessageProcessor *_messageProcessor;
