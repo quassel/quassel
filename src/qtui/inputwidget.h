@@ -49,7 +49,7 @@ protected slots:
 
 private slots:
   void setCustomFont(const QVariant &font);
-  void sendText(QString text);
+  void sendText(const QString &text) const;
   void changeNick(const QString &newNick) const;
 
   void setNetwork(NetworkId networkId);
@@ -60,12 +60,9 @@ private slots:
 
   BufferInfo currentBufferInfo() const;
 
-signals:
-  void userInput(BufferInfo, QString msg) const;
-
 private:
   Ui::InputWidget ui;
-  
+
   NetworkId _networkId;
   IdentityId _identityId;
 };

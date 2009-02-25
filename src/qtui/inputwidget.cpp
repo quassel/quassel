@@ -37,7 +37,6 @@ InputWidget::InputWidget(QWidget *parent)
   ui.setupUi(this);
   connect(ui.inputEdit, SIGNAL(sendText(QString)), this, SLOT(sendText(QString)));
   connect(ui.ownNick, SIGNAL(activated(QString)), this, SLOT(changeNick(QString)));
-  connect(this, SIGNAL(userInput(BufferInfo, QString)), Client::instance(), SIGNAL(sendInput(BufferInfo, QString)));
   setFocusProxy(ui.inputEdit);
 
   ui.ownNick->setSizeAdjustPolicy(QComboBox::AdjustToContents);
@@ -219,11 +218,11 @@ void InputWidget::changeNick(const QString &newNick) const {
   const Network *net = currentNetwork();
   if(!net || net->isMyNick(newNick))
     return;
-  emit userInput(currentBufferInfo(), QString("/nick %1").arg(newNick));
+  sendText(QString("/NICK %1").arg(newNick));
 }
 
-void InputWidget::sendText(QString text) {
-  emit userInput(currentBufferInfo(), text);
+void InputWidget::sendText(const QString &text) const {
+  Client::userInput(currentBufferInfo(), text);
 }
 
 
