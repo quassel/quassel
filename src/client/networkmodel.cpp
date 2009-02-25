@@ -1005,6 +1005,16 @@ void NetworkModel::updateBufferActivity(Message &msg) {
     msg.setFlags(msg.flags() | Message::Redirected);
     redirectionTarget = _errorMsgsTarget;
     break;
+  // Update IrcUser's last activity
+  case Message::Plain:
+  case Message::Action:
+    if(bufferType(msg.bufferId()) == BufferInfo::ChannelBuffer) {
+      const Network *net = Client::network(msg.bufferInfo().networkId());
+      IrcUser *user = net ? net->ircUser(nickFromMask(msg.sender())) : 0;
+      if(user)
+        user->setLastChannelActivity(msg.bufferId(), msg.timestamp());
+    }
+    break;
   default:
     break;
   }
