@@ -88,7 +88,7 @@ void SettingsPage::initAutoWidgets() {
   findAutoWidgets(this, &_autoWidgets);
 
   foreach(QObject *widget, _autoWidgets) {
-    if(widget->inherits("QAbstractButton"))
+    if(widget->inherits("QAbstractButton") || widget->inherits("QGroupBox"))
       connect(widget, SIGNAL(toggled(bool)), SLOT(autoWidgetHasChanged()));
     else if(widget->inherits("QLineEdit") || widget->inherits("QTextEdit"))
       connect(widget, SIGNAL(textChanged(const QString &)), SLOT(autoWidgetHasChanged()));
@@ -111,7 +111,7 @@ void SettingsPage::findAutoWidgets(QObject *parent, QObjectList *autoList) const
 
 QByteArray SettingsPage::autoWidgetPropertyName(QObject *widget) const {
   QByteArray prop;
-  if(widget->inherits("QAbstractButton"))
+  if(widget->inherits("QAbstractButton") || widget->inherits("QGroupBox"))
     prop = "checked";
   else if(widget->inherits("QLineEdit") || widget->inherits("QTextEdit"))
     prop = "text";

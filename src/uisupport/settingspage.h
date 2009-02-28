@@ -45,6 +45,7 @@ class QSpinBox;
  *  of load(), save() and defaults() (preferably at the end of the derived function, since they call setChangedState(false)).
  *
  *  The following widgets can be handled for now:
+ *    - QGroupBox (isChecked())
  *    - QAbstractButton (isChecked(), e.g. for QCheckBox and QRadioButton)
  *    - QLineEdit, QTextEdit (text())
  *    - QComboBox (currentIndex())
