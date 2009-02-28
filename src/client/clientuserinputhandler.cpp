@@ -27,7 +27,7 @@
 #include "network.h"
 
 ClientUserInputHandler::ClientUserInputHandler(QObject *parent) : QObject(parent) {
-  NickCompletionSettings s;
+  TabCompletionSettings s;
   s.notify("CompletionSuffix", this, SLOT(completionSuffixChanged(QVariant)));
   completionSuffixChanged(s.completionSuffix());
 }

@@ -92,7 +92,7 @@ void TabCompleter::buildCompletionList() {
 }
 
 void TabCompleter::complete() {
-  NickCompletionSettings s;
+  TabCompletionSettings s;
   nickSuffix = s.completionSuffix();
 
   if(!enabled) {

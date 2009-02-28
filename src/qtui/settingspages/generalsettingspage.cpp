@@ -129,7 +129,7 @@ void GeneralSettingsPage::load() {
   ui.displayTopicInTooltip->setChecked(settings["DisplayTopicInTooltip"].toBool());
 
   // completion settings
-  NickCompletionSettings completionSettings;
+  TabCompletionSettings completionSettings;
   settings["CompletionSuffix"] = completionSettings.completionSuffix();
   ui.completionSuffix->setText(settings["CompletionSuffix"].toString());
 
@@ -179,7 +179,7 @@ void GeneralSettingsPage::save() {
 
   bufferSettings.setValue("DisplayTopicInTooltip", ui.displayTopicInTooltip->isChecked());
 
-  NickCompletionSettings completionSettings;
+  TabCompletionSettings completionSettings;
   completionSettings.setCompletionSuffix(ui.completionSuffix->text());
 
 

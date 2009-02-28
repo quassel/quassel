@@ -122,15 +122,29 @@ public:
 };
 
 // ========================================
-// NickCompletionSettings
+// TabCompletionSettings
 // ========================================
 
-class NickCompletionSettings : public ClientSettings {
+class TabCompletionSettings : public ClientSettings {
 public:
-  NickCompletionSettings();
+  enum SortMode {
+    Alphabetical,
+    LastActivity
+  };
+
+  TabCompletionSettings();
 
   void setCompletionSuffix(const QString &);
   QString completionSuffix();
+
+  void setSortMode(SortMode);
+  SortMode sortMode();
+
+  void setCaseSensitivity(Qt::CaseSensitivity);
+  Qt::CaseSensitivity caseSensitivity();
+
+  void setUseLastSpokenTo(bool);
+  bool useLastSpokenTo();
 
 };
 
