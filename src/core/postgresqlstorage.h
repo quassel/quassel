@@ -130,8 +130,6 @@ private:
   QString _userName;
   QString _password;
 
-  static int _maxRetryCount;
-
   typedef QHash<QString, QString> QueryHash;
   QHash<QString, QueryHash> _preparedQueries; // one query hash per db connection
   QMutex _queryHashMutex;
@@ -139,5 +137,43 @@ private:
 };
 
 inline void PostgreSqlStorage::safeExec(QSqlQuery &query) { query.exec(); }
+
+
+// ========================================
+//  PostgreSqlMigration
+// ========================================
+class PostgreSqlMigrationWriter : public PostgreSqlStorage, public AbstractSqlMigrationWriter {
+  Q_OBJECT
+
+public:
+  PostgreSqlMigrationWriter();
+  
+//   virtual bool writeUser(const QuasselUserMO &user);
+//   virtual bool writeSender(const SenderMO &sender);
+//   virtual bool writeIdentity(const IdentityMO &identity);
+//   virtual bool writeIdentityNick(const IdentityNickMO &identityNick);
+//   virtual bool writeNetwork(const NetworkMO &network);
+//   virtual bool writeBuffer(const BufferMO &buffer);
+//   virtual bool writeBacklog(const BacklogMO &backlog);
+//   virtual bool writeIrcServer(const IrcServerMO &ircserver);
+//   virtual bool writeUserSetting(const UserSettingMO &userSetting);
+
+  virtual bool writeMo(const QuasselUserMO &user);
+  virtual bool writeMo(const SenderMO &sender);
+  virtual bool writeMo(const IdentityMO &identity);
+  virtual bool writeMo(const IdentityNickMO &identityNick);
+  virtual bool writeMo(const NetworkMO &network);
+  virtual bool writeMo(const BufferMO &buffer);
+  virtual bool writeMo(const BacklogMO &backlog);
+  virtual bool writeMo(const IrcServerMO &ircserver);
+  virtual bool writeMo(const UserSettingMO &userSetting);
+
+  bool prepareQuery(MigrationObject mo);
+
+protected:
+  virtual inline bool transaction() { return logDb().transaction(); }
+  virtual inline void rollback() { logDb().rollback(); }
+  virtual inline bool commit() { return logDb().commit(); }
+};
 
 #endif

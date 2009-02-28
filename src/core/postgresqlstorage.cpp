@@ -26,8 +26,6 @@
 #include "network.h"
 #include "quassel.h"
 
-int PostgreSqlStorage::_maxRetryCount = 150; // yes this is a large number... only other way to "handle" this is bailing out...
-
 PostgreSqlStorage::PostgreSqlStorage(QObject *parent)
   : AbstractSqlStorage(parent),
     _port(-1)
@@ -1439,3 +1437,179 @@ void PostgreSqlStorage::deallocateQuery(const QString &handle, const QSqlDatabas
   db.exec(QString("DEALLOCATE %1").arg(queryId));
 }
 
+
+
+
+
+// ========================================
+//  PostgreSqlMigrationWriter
+// ========================================
+PostgreSqlMigrationWriter::PostgreSqlMigrationWriter()
+  : PostgreSqlStorage()
+{
+}
+
+bool PostgreSqlMigrationWriter::prepareQuery(MigrationObject mo) {
+  QString query;
+  switch(mo) {
+  case QuasselUser:
+    query = queryString("migrate_write_quasseluser");
+    break;
+  case Sender:
+    query = queryString("migrate_write_sender");
+    break;
+  case Identity:
+    query = queryString("migrate_write_identity");
+    break;
+  case IdentityNick:
+    query = queryString("migrate_write_identity_nick");
+    break;
+  case Network:
+    query = queryString("migrate_write_network");
+    break;
+  case Buffer:
+    query = queryString("migrate_write_buffer");
+    break;
+  case Backlog:
+    query = queryString("migrate_write_backlog");
+    break;
+  case IrcServer:
+    query = queryString("migrate_write_ircserver");
+    break;
+  case UserSetting:
+    query = queryString("migrate_write_usersetting");
+    break;
+  }
+  newQuery(query, logDb());
+  return true;
+}
+
+//bool PostgreSqlMigrationWriter::writeUser(const QuasselUserMO &user) {
+bool PostgreSqlMigrationWriter::writeMo(const QuasselUserMO &user) {
+  bindValue(0, user.id.toInt());
+  bindValue(1, user.username);
+  bindValue(2, user.password);
+  return exec();
+}
+
+//bool PostgreSqlMigrationWriter::writeSender(const SenderMO &sender) {
+bool PostgreSqlMigrationWriter::writeMo(const SenderMO &sender) {
+  bindValue(0, sender.senderId);
+  bindValue(1, sender.sender);
+  return exec();
+}
+
+//bool PostgreSqlMigrationWriter::writeIdentity(const IdentityMO &identity) {
+bool PostgreSqlMigrationWriter::writeMo(const IdentityMO &identity) {
+  bindValue(0, identity.id.toInt());
+  bindValue(1, identity.userid.toInt());
+  bindValue(2, identity.identityname);
+  bindValue(3, identity.realname);
+  bindValue(4, identity.awayNick);
+  bindValue(5, identity.awayNickEnabled);
+  bindValue(6, identity.awayReason);
+  bindValue(7, identity.awayReasonEnabled);
+  bindValue(8, identity.autoAwayEnabled);
+  bindValue(9, identity.autoAwayTime);
+  bindValue(10, identity.autoAwayReason);
+  bindValue(11, identity.autoAwayReasonEnabled);
+  bindValue(12, identity.detachAwayEnabled);
+  bindValue(13, identity.detachAwayReason);
+  bindValue(14, identity.detchAwayReasonEnabled);
+  bindValue(15, identity.ident);
+  bindValue(16, identity.kickReason);
+  bindValue(17, identity.partReason);
+  bindValue(18, identity.quitReason);
+  bindValue(19, identity.sslCert);
+  bindValue(20, identity.sslKey);
+  return exec();
+}
+
+//bool PostgreSqlMigrationWriter::writeIdentityNick(const IdentityNickMO &identityNick) {
+bool PostgreSqlMigrationWriter::writeMo(const IdentityNickMO &identityNick) {
+  bindValue(0, identityNick.nickid);
+  bindValue(1, identityNick.identityId.toInt());
+  bindValue(2, identityNick.nick);
+  return exec();
+}
+
+//bool PostgreSqlMigrationWriter::writeNetwork(const NetworkMO &network) {
+bool PostgreSqlMigrationWriter::writeMo(const NetworkMO &network) {
+  bindValue(0, network.networkid.toInt());
+  bindValue(1, network.userid.toInt());
+  bindValue(2, network.networkname);
+  bindValue(3, network.identityid.toInt());
+  bindValue(4, network.encodingcodec);
+  bindValue(5, network.decodingcodec);
+  bindValue(6, network.servercodec);
+  bindValue(7, network.userandomserver);
+  bindValue(8, network.perform);
+  bindValue(9, network.useautoidentify);
+  bindValue(10, network.autoidentifyservice);
+  bindValue(11, network.autoidentifypassword);
+  bindValue(12, network.useautoreconnect);
+  bindValue(13, network.autoreconnectinterval);
+  bindValue(14, network.autoreconnectretries);
+  bindValue(15, network.unlimitedconnectretries);
+  bindValue(16, network.rejoinchannels);
+  bindValue(17, network.connected);
+  bindValue(18, network.usermode);
+  bindValue(19, network.awaymessage);
+  bindValue(20, network.attachperform);
+  bindValue(21, network.detachperform);
+  return exec();
+}
+
+//bool PostgreSqlMigrationWriter::writeBuffer(const BufferMO &buffer) {
+bool PostgreSqlMigrationWriter::writeMo(const BufferMO &buffer) {
+  bindValue(0, buffer.bufferid.toInt());
+  bindValue(1, buffer.userid.toInt());
+  bindValue(2, buffer.groupid);
+  bindValue(3, buffer.networkid.toInt());
+  bindValue(4, buffer.buffername);
+  bindValue(5, buffer.buffercname);
+  bindValue(6, (int)buffer.buffertype);
+  bindValue(7, buffer.lastseenmsgid);
+  bindValue(8, buffer.key);
+  bindValue(9, buffer.joined);
+  return exec();
+}
+
+//bool PostgreSqlMigrationWriter::writeBacklog(const BacklogMO &backlog) {
+bool PostgreSqlMigrationWriter::writeMo(const BacklogMO &backlog) {
+  bindValue(0, backlog.messageid.toInt());
+  bindValue(1, backlog.time);
+  bindValue(2, backlog.bufferid.toInt());
+  bindValue(3, backlog.type);
+  bindValue(4, (int)backlog.flags);
+  bindValue(5, backlog.senderid);
+  bindValue(6, backlog.message);
+  return exec();
+}
+
+//bool PostgreSqlMigrationWriter::writeIrcServer(const IrcServerMO &ircserver) {
+bool PostgreSqlMigrationWriter::writeMo(const IrcServerMO &ircserver) {
+  bindValue(0, ircserver.serverid);
+  bindValue(1, ircserver.userid.toInt());
+  bindValue(2, ircserver.networkid.toInt());
+  bindValue(3, ircserver.hostname);
+  bindValue(4, ircserver.port);
+  bindValue(5, ircserver.password);
+  bindValue(6, ircserver.ssl);
+  bindValue(7, ircserver.sslversion);
+  bindValue(8, ircserver.useproxy);
+  bindValue(9, ircserver.proxytype);
+  bindValue(10, ircserver.proxyhost);
+  bindValue(11, ircserver.proxyport);
+  bindValue(12, ircserver.proxyuser);
+  bindValue(13, ircserver.proxypass);
+  return exec();
+}
+
+//bool PostgreSqlMigrationWriter::writeUserSetting(const UserSettingMO &userSetting) {
+bool PostgreSqlMigrationWriter::writeMo(const UserSettingMO &userSetting) {
+  bindValue(0, userSetting.userid.toInt());
+  bindValue(1, userSetting.settingname);
+  bindValue(2, userSetting.settingvalue);
+  return exec();
+}

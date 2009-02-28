@@ -21,6 +21,15 @@
     <file>./SQL/PostgreSQL/14/insert_sender.sql</file>
     <file>./SQL/PostgreSQL/14/insert_server.sql</file>
     <file>./SQL/PostgreSQL/14/insert_user_setting.sql</file>
+    <file>./SQL/PostgreSQL/14/migrate_write_backlog.sql</file>
+    <file>./SQL/PostgreSQL/14/migrate_write_buffer.sql</file>
+    <file>./SQL/PostgreSQL/14/migrate_write_identity.sql</file>
+    <file>./SQL/PostgreSQL/14/migrate_write_identity_nick.sql</file>
+    <file>./SQL/PostgreSQL/14/migrate_write_ircserver.sql</file>
+    <file>./SQL/PostgreSQL/14/migrate_write_network.sql</file>
+    <file>./SQL/PostgreSQL/14/migrate_write_quasseluser.sql</file>
+    <file>./SQL/PostgreSQL/14/migrate_write_sender.sql</file>
+    <file>./SQL/PostgreSQL/14/migrate_write_usersetting.sql</file>
     <file>./SQL/PostgreSQL/14/select_authuser.sql</file>
     <file>./SQL/PostgreSQL/14/select_buffer_by_id.sql</file>
     <file>./SQL/PostgreSQL/14/select_buffer_lastseen_messages.sql</file>
