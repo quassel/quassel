@@ -986,7 +986,7 @@ QList<Message> SqliteStorage::requestMsgs(UserId user, BufferId bufferId, MsgId 
     return messagelist;
 
   QSqlQuery query(logDb());
-  
+
   if(last == -1 && first == -1) {
     query.prepare(queryString("select_messagesNewestK"));
   } else if(last == -1) {
@@ -1072,3 +1072,207 @@ bool SqliteStorage::safeExec(QSqlQuery &query, int retryCount) {
     return false;
   }
 }
+
+
+// ========================================
+//  SqliteMigration
+// ========================================
+SqliteMigrationReader::SqliteMigrationReader()
+  : SqliteStorage()
+{
+}
+
+bool SqliteMigrationReader::prepareQuery(MigrationObject mo) {
+  QString query;
+  switch(mo) {
+  case QuasselUser:
+    query = queryString("migrate_read_quasseluser");
+    break;
+  case Sender:
+    query = queryString("migrate_read_sender");
+    break;
+  case Identity:
+    query = queryString("migrate_read_identity");
+    break;
+  case IdentityNick:
+    query = queryString("migrate_read_identity_nick");
+    break;
+  case Network:
+    query = queryString("migrate_read_network");
+    break;
+  case Buffer:
+    query = queryString("migrate_read_buffer");
+    break;
+  case Backlog:
+    query = queryString("migrate_read_backlog");
+    break;
+  case IrcServer:
+    query = queryString("migrate_read_ircserver");
+    break;
+  case UserSetting:
+    query = queryString("migrate_read_usersetting");
+    break;
+  }
+  newQuery(query, logDb());
+  return exec();
+}
+
+//bool SqliteMigrationReader::readUser(QuasselUserMO &user) {
+bool SqliteMigrationReader::readMo(QuasselUserMO &user) {
+  if(!next())
+    return false;
+
+  user.id = value(0).toInt();
+  user.username = value(1).toString();
+  user.password = value(2).toString();
+  return true;
+}
+
+//bool SqliteMigrationReader::readSender(SenderMO &sender) {
+bool SqliteMigrationReader::readMo(SenderMO &sender) {
+  if(!next())
+    return false;
+
+  sender.senderId = value(0).toInt();
+  sender.sender = value(1).toString();
+  return true;
+}
+
+//bool SqliteMigrationReader::readIdentity(IdentityMO &identity) {
+bool SqliteMigrationReader::readMo(IdentityMO &identity) {
+  if(!next())
+    return false;
+
+  identity.id = value(0).toInt();
+  identity.userid = value(1).toInt();
+  identity.identityname = value(2).toString();
+  identity.realname = value(3).toString();
+  identity.awayNick = value(4).toString();
+  identity.awayNickEnabled = value(5).toInt() == 1 ? true : false;
+  identity.awayReason = value(6).toString();
+  identity.awayReasonEnabled = value(7).toInt() == 1 ? true : false;
+  identity.autoAwayEnabled = value(8).toInt() == 1 ? true : false;
+  identity.autoAwayTime = value(9).toInt();
+  identity.autoAwayReason = value(10).toString();
+  identity.autoAwayReasonEnabled = value(11).toInt() == 1 ? true : false;
+  identity.detachAwayEnabled = value(12).toInt() == 1 ? true : false;
+  identity.detachAwayReason = value(13).toString();
+  identity.detchAwayReasonEnabled = value(14).toInt() == 1 ? true : false;
+  identity.ident = value(15).toString();
+  identity.kickReason = value(16).toString();
+  identity.partReason = value(17).toString();
+  identity.quitReason = value(18).toString();
+  identity.sslCert = value(19).toByteArray();
+  identity.sslKey = value(20).toByteArray();
+  return true;
+}
+
+//bool SqliteMigrationReader::readIdentityNick(IdentityNickMO &identityNick) {
+bool SqliteMigrationReader::readMo(IdentityNickMO &identityNick) {
+  if(!next())
+    return false;
+
+  identityNick.nickid = value(0).toInt();
+  identityNick.identityId = value(1).toInt();
+  identityNick.nick = value(2).toString();
+  return true;
+}
+
+//bool SqliteMigrationReader::readNetwork(NetworkMO &network) {
+bool SqliteMigrationReader::readMo(NetworkMO &network) {
+  if(!next())
+    return false;
+
+  network.networkid = value(0).toInt();
+  network.userid = value(1).toInt();
+  network.networkname = value(2).toString();
+  network.identityid = value(3).toInt();
+  network.encodingcodec = value(4).toString();
+  network.decodingcodec = value(5).toString();
+  network.servercodec = value(6).toString();
+  network.userandomserver = value(7).toInt() == 1 ? true : false;
+  network.perform = value(8).toString();
+  network.useautoidentify = value(9).toInt() == 1 ? true : false;
+  network.autoidentifyservice = value(10).toString();
+  network.autoidentifypassword = value(11).toString();
+  network.useautoreconnect = value(12).toInt() == 1 ? true : false;
+  network.autoreconnectinterval = value(13).toInt();
+  network.autoreconnectretries = value(14).toInt();
+  network.unlimitedconnectretries = value(15).toInt() == 1 ? true : false;
+  network.rejoinchannels = value(16).toInt() == 1 ? true : false;
+  network.connected = value(17).toInt() == 1 ? true : false;
+  network.usermode = value(18).toString();
+  network.awaymessage = value(19).toString();
+  network.attachperform = value(20).toString();
+  network.detachperform = value(21).toString();
+  return true;
+}
+
+//bool SqliteMigrationReader::readBuffer(BufferMO &buffer) {
+bool SqliteMigrationReader::readMo(BufferMO &buffer) {
+  if(!next())
+    return false;
+
+  buffer.bufferid = value(0).toInt();
+  buffer.userid = value(1).toInt();
+  buffer.groupid = value(2).toInt();
+  buffer.networkid = value(3).toInt();
+  buffer.buffername = value(4).toString();
+  buffer.buffercname = value(5).toString();
+  buffer.buffertype = value(6).toInt();
+  buffer.lastseenmsgid = value(7).toInt();
+  buffer.key = value(8).toString();
+  buffer.joined = value(9).toInt() == 1 ? true : false;
+  return true;
+}
+
+//bool SqliteMigrationReader::readBacklog(BacklogMO &backlog) {
+bool SqliteMigrationReader::readMo(BacklogMO &backlog) {
+  if(!next())
+    return false;
+
+  backlog.messageid = value(0).toInt();
+  backlog.time = QDateTime::fromTime_t(value(1).toInt());
+  backlog.bufferid = value(2).toInt();
+  backlog.type = value(3).toInt();
+  backlog.flags = value(4).toInt();
+  backlog.senderid = value(5).toInt();
+  backlog.message = value(6).toString();
+  return true;
+}
+
+//bool SqliteMigrationReader::readIrcServer(IrcServerMO &ircserver) {
+bool SqliteMigrationReader::readMo(IrcServerMO &ircserver) {
+  if(!next())
+    return false;
+
+  ircserver.serverid = value(0).toInt();
+  ircserver.userid = value(1).toInt();
+  ircserver.networkid = value(2).toInt();
+  ircserver.hostname = value(3).toString();
+  ircserver.port = value(4).toInt();
+  ircserver.password = value(5).toString();
+  ircserver.ssl = value(6).toInt() == 1 ? true : false;
+  ircserver.sslversion = value(7).toInt();
+  ircserver.useproxy = value(8).toInt() == 1 ? true : false;
+  ircserver.proxytype = value(9).toInt();
+  ircserver.proxyhost = value(10).toString();
+  ircserver.proxyport = value(11).toInt();
+  ircserver.proxyuser = value(12).toString();
+  ircserver.proxypass = value(13).toString();
+  return true;
+}
+
+//bool SqliteMigrationReader::readUserSetting(UserSettingMO &userSetting) {
+bool SqliteMigrationReader::readMo(UserSettingMO &userSetting) {
+  if(!next())
+    return false;
+
+  userSetting.userid = value(0).toInt();
+  userSetting.settingname = value(1).toString();
+  userSetting.settingvalue = value(2).toByteArray();
+
+  return true;
+}
+
+

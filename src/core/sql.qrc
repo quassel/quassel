@@ -109,6 +109,15 @@
     <file>./SQL/SQLite/14/insert_sender.sql</file>
     <file>./SQL/SQLite/14/insert_server.sql</file>
     <file>./SQL/SQLite/14/insert_user_setting.sql</file>
+    <file>./SQL/SQLite/14/migrate_read_backlog.sql</file>
+    <file>./SQL/SQLite/14/migrate_read_buffer.sql</file>
+    <file>./SQL/SQLite/14/migrate_read_identity.sql</file>
+    <file>./SQL/SQLite/14/migrate_read_identity_nick.sql</file>
+    <file>./SQL/SQLite/14/migrate_read_ircserver.sql</file>
+    <file>./SQL/SQLite/14/migrate_read_network.sql</file>
+    <file>./SQL/SQLite/14/migrate_read_quasseluser.sql</file>
+    <file>./SQL/SQLite/14/migrate_read_sender.sql</file>
+    <file>./SQL/SQLite/14/migrate_read_usersetting.sql</file>
     <file>./SQL/SQLite/14/select_authuser.sql</file>
     <file>./SQL/SQLite/14/select_buffer_by_id.sql</file>
     <file>./SQL/SQLite/14/select_buffer_lastseen_messages.sql</file>

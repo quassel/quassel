@@ -79,7 +79,7 @@ public slots:
   virtual void setAwayMessage(UserId user, NetworkId networkId, const QString &awayMsg);
   virtual QString userModes(UserId user, NetworkId networkId);
   virtual void setUserModes(UserId user, NetworkId networkId, const QString &userModes);
-  
+
   /* Buffer handling */
   virtual BufferInfo bufferInfo(UserId user, const NetworkId &networkId, BufferInfo::Type type, const QString &buffer = "", bool create = true);
   virtual BufferInfo getBufferInfo(UserId user, const BufferId &bufferId);
@@ -115,5 +115,44 @@ private:
 
   static int _maxRetryCount;
 };
+
+// ========================================
+//  SqliteMigration
+// ========================================
+class SqliteMigrationReader : public SqliteStorage, public AbstractSqlMigrationReader {
+  Q_OBJECT
+
+public:
+  SqliteMigrationReader();
+
+//   virtual bool readUser(QuasselUserMO &user);
+//   virtual bool readSender(SenderMO &sender);
+//   virtual bool readIdentity(IdentityMO &identity);
+//   virtual bool readIdentityNick(IdentityNickMO &identityNick);
+//   virtual bool readNetwork(NetworkMO &network);
+//   virtual bool readBuffer(BufferMO &buffer);
+//   virtual bool readBacklog(BacklogMO &backlog);
+//   virtual bool readIrcServer(IrcServerMO &ircserver);
+//   virtual bool readUserSetting(UserSettingMO &userSetting);
+
+  virtual bool readMo(QuasselUserMO &user);
+  virtual bool readMo(SenderMO &sender);
+  virtual bool readMo(IdentityMO &identity);
+  virtual bool readMo(IdentityNickMO &identityNick);
+  virtual bool readMo(NetworkMO &network);
+  virtual bool readMo(BufferMO &buffer);
+  virtual bool readMo(BacklogMO &backlog);
+  virtual bool readMo(IrcServerMO &ircserver);
+  virtual bool readMo(UserSettingMO &userSetting);
+
+  virtual bool prepareQuery(MigrationObject mo);
+
+protected:
+  virtual inline bool transaction() { return logDb().transaction(); }
+  virtual inline void rollback() { logDb().rollback(); }
+  virtual inline bool commit() { return logDb().commit(); }
+};
+
+
 
 #endif
