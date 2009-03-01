@@ -22,7 +22,7 @@ except ImportError:
 
 class UserManager(object):
     def __init__(self):
-        self.db = sqlite3.connect(os.environ['HOME'] + '/.quassel/quassel-storage.sqlite')
+        self.db = sqlite3.connect(os.environ['HOME'] + '/.config/quassel-irc.org/quassel-storage.sqlite')
         self.cursor = self.db.cursor()
 
     def __del__(self):
