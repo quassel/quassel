@@ -34,6 +34,8 @@ public:
   SqliteStorage(QObject *parent = 0);
   virtual ~SqliteStorage();
 
+  virtual AbstractSqlMigrationReader *createMigrationReader();
+
 public slots:
   /* General */
 
@@ -125,16 +127,6 @@ class SqliteMigrationReader : public SqliteStorage, public AbstractSqlMigrationR
 public:
   SqliteMigrationReader();
 
-//   virtual bool readUser(QuasselUserMO &user);
-//   virtual bool readSender(SenderMO &sender);
-//   virtual bool readIdentity(IdentityMO &identity);
-//   virtual bool readIdentityNick(IdentityNickMO &identityNick);
-//   virtual bool readNetwork(NetworkMO &network);
-//   virtual bool readBuffer(BufferMO &buffer);
-//   virtual bool readBacklog(BacklogMO &backlog);
-//   virtual bool readIrcServer(IrcServerMO &ircserver);
-//   virtual bool readUserSetting(UserSettingMO &userSetting);
-
   virtual bool readMo(QuasselUserMO &user);
   virtual bool readMo(SenderMO &sender);
   virtual bool readMo(IdentityMO &identity);
@@ -153,6 +145,8 @@ protected:
   virtual inline bool commit() { return logDb().commit(); }
 };
 
-
+inline AbstractSqlMigrationReader *SqliteStorage::createMigrationReader() {
+  return new SqliteMigrationReader();
+}
 
 #endif

@@ -59,6 +59,14 @@ QVariantMap PostgreSqlStorage::setupKeys() const {
   return map;
 }
 
+bool PostgreSqlStorage::setup(const QVariantMap &settings) {
+  bool success = AbstractSqlStorage::setup(settings);
+  if(success) {
+    logDb().exec(QString("ALTER USER %1 SET standard_conforming_strings TO on").arg(userName()));
+  }
+  return success;
+}
+
 void PostgreSqlStorage::setConnectionProperties(const QVariantMap &properties) {
   _userName = properties["Username"].toString();
   _password = properties["Password"].toString();
@@ -1612,4 +1620,24 @@ bool PostgreSqlMigrationWriter::writeMo(const UserSettingMO &userSetting) {
   bindValue(1, userSetting.settingname);
   bindValue(2, userSetting.settingvalue);
   return exec();
+}
+
+bool PostgreSqlMigrationWriter::postProcess() {
+  QSqlDatabase db = logDb();
+  QList<Sequence> sequences;
+  sequences << Sequence("backlog", "messageid")
+	    << Sequence("identity", "identityid")
+	    << Sequence("identity_nick", "nickid")
+	    << Sequence("ircserver", "serverid")
+	    << Sequence("network", "networkid")
+	    << Sequence("quasseluser", "userid")
+	    << Sequence("sender", "senderid");
+  QList<Sequence>::const_iterator iter;
+  for(iter = sequences.constBegin(); iter != sequences.constEnd(); iter++) {
+    resetQuery();
+    newQuery(QString("SELECT setval('%1_%2_seq', max(%2)) FROM %1").arg(iter->table, iter->field), db);
+    if(!exec())
+      return false;
+  }
+  return true;
 }

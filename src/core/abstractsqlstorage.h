@@ -27,6 +27,9 @@
 #include <QSqlQuery>
 #include <QSqlError>
 
+class AbstractSqlMigrationReader;
+class AbstractSqlMigrationWriter;
+
 class AbstractSqlStorage : public Storage {
   Q_OBJECT
 
@@ -34,7 +37,12 @@ public:
   AbstractSqlStorage(QObject *parent = 0);
   virtual ~AbstractSqlStorage();
 
+  virtual inline AbstractSqlMigrationReader *createMigrationReader() { return 0; }
+  virtual inline AbstractSqlMigrationWriter *createMigrationWriter() { return 0; }
+
+public slots:
   virtual State init(const QVariantMap &settings = QVariantMap());
+  virtual bool setup(const QVariantMap &settings = QVariantMap());
 
 protected:
   inline virtual void sync() {};
@@ -45,7 +53,6 @@ protected:
   inline QString queryString(const QString &queryName) { return queryString(queryName, 0); }
 
   QStringList setupQueries();
-  bool setup(const QVariantMap &settings = QVariantMap());
 
   QStringList upgradeQueries(int ver);
   bool upgradeDb();
@@ -257,7 +264,6 @@ private:
   QSqlQuery *_query;
 };
 
-class AbstractSqlMigrationWriter;
 class AbstractSqlMigrationReader : public AbstractSqlMigrator {
 public:
   AbstractSqlMigrationReader();
@@ -297,6 +303,8 @@ public:
 
   inline bool migrateFrom(AbstractSqlMigrationReader *reader) { return reader->migrateTo(this); }
 
+  // called after migration process
+  virtual inline bool postProcess() { return true; }
   friend class AbstractSqlMigrationReader;
 };
 

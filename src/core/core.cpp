@@ -140,6 +140,28 @@ Core::Core()
 }
 
 void Core::init() {
+  CoreSettings cs2;
+  QVariantMap connectionProperties = cs2.storageSettings().toMap()["ConnectionProperties"].toMap();
+  qDebug() << connectionProperties;
+  SqliteMigrationReader *reader = new SqliteMigrationReader();
+  qDebug() << "reader:" << reader->init();
+  PostgreSqlMigrationWriter *writer = new PostgreSqlMigrationWriter();
+  qDebug() << "writer:" << writer->init(connectionProperties);
+  qDebug() << qPrintable(QString("Migrating Storage backend %1 to %2...").arg(reader->displayName(), writer->displayName()));
+  if(reader->migrateTo(writer))
+    qDebug() << "Migration finished!";
+  return;
+
+
+
+
+
+
+
+
+
+
+  
   CoreSettings cs;
   _configured = initStorage(cs.storageSettings().toMap());
 

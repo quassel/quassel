@@ -33,13 +33,15 @@ public:
   PostgreSqlStorage(QObject *parent = 0);
   virtual ~PostgreSqlStorage();
 
+  virtual AbstractSqlMigrationWriter *createMigrationWriter();
+
 public slots:
   /* General */
-
-  bool isAvailable() const;
-  QString displayName() const;
-  QString description() const;
-  QVariantMap setupKeys() const;
+  virtual bool isAvailable() const;
+  virtual QString displayName() const;
+  virtual QString description() const;
+  virtual QVariantMap setupKeys() const;
+  virtual bool setup(const QVariantMap &settings = QVariantMap());
 
   // TODO: Add functions for configuring the backlog handling, i.e. defining auto-cleanup settings etc
 
@@ -147,16 +149,6 @@ class PostgreSqlMigrationWriter : public PostgreSqlStorage, public AbstractSqlMi
 
 public:
   PostgreSqlMigrationWriter();
-  
-//   virtual bool writeUser(const QuasselUserMO &user);
-//   virtual bool writeSender(const SenderMO &sender);
-//   virtual bool writeIdentity(const IdentityMO &identity);
-//   virtual bool writeIdentityNick(const IdentityNickMO &identityNick);
-//   virtual bool writeNetwork(const NetworkMO &network);
-//   virtual bool writeBuffer(const BufferMO &buffer);
-//   virtual bool writeBacklog(const BacklogMO &backlog);
-//   virtual bool writeIrcServer(const IrcServerMO &ircserver);
-//   virtual bool writeUserSetting(const UserSettingMO &userSetting);
 
   virtual bool writeMo(const QuasselUserMO &user);
   virtual bool writeMo(const SenderMO &sender);
@@ -170,10 +162,26 @@ public:
 
   bool prepareQuery(MigrationObject mo);
 
+  virtual bool postProcess();
+
 protected:
   virtual inline bool transaction() { return logDb().transaction(); }
   virtual inline void rollback() { logDb().rollback(); }
   virtual inline bool commit() { return logDb().commit(); }
+
+private:
+  // helper struct
+  struct Sequence {
+    QLatin1String table;
+    QLatin1String field;
+    Sequence(const char *table, const char *field) : table(table), field(field) {}
+  };
 };
+
+inline AbstractSqlMigrationWriter *PostgreSqlStorage::createMigrationWriter() {
+  return new PostgreSqlMigrationWriter();
+}
+
+
 
 #endif

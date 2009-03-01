@@ -398,6 +398,8 @@ bool AbstractSqlMigrationReader::migrateTo(AbstractSqlMigrationWriter *writer) {
   if(!transferMo(UserSetting, userSettingMo))
     return false;
 
+  if(!_writer->postProcess())
+    abortMigration();
   return finalizeMigration();
 }
 
@@ -449,7 +451,7 @@ bool AbstractSqlMigrationReader::transferMo(MigrationObject moType, T &mo) {
     return false;
   }
 
-  qDebug() << qPrintable(QString("Transfering %1...").arg(AbstractSqlMigrator::migrationObject(moType)));
+  qDebug() << qPrintable(QString("Transferring %1...").arg(AbstractSqlMigrator::migrationObject(moType)));
   int i = 0;
   QFile file;
   file.open(stdout, QIODevice::WriteOnly);
