@@ -36,6 +36,8 @@ UserInputHandler::UserInputHandler(CoreNetwork *parent)
 void UserInputHandler::handleUserInput(const BufferInfo &bufferInfo, const QString &msg_) {
   if(msg_.isEmpty())
     return;
+
+  // FIXME: With protocol >= v10, this is all done in the client -> remove
   QString cmd;
   QString msg = msg_;
   // leading slashes indicate there's a command to call unless there is another one in the first section (like a path /proc/cpuinfo)
@@ -391,6 +393,7 @@ void UserInputHandler::handleWhowas(const BufferInfo &bufferInfo, const QString 
   emit putCmd("WHOWAS", serverEncode(msg.split(' ')));
 }
 
+// FIXME: Remove alias handling as soon as core protocol >= v10
 void UserInputHandler::defaultHandler(QString cmd, const BufferInfo &bufferInfo, const QString &msg) {
   for(int i = 0; i < coreSession()->aliasManager().count(); i++) {
     if(coreSession()->aliasManager()[i].name.toLower() == cmd.toLower()) {

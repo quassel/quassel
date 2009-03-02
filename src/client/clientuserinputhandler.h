@@ -21,6 +21,9 @@
 #ifndef CLIENTUSERINPUTHANDLER_H_
 #define CLIENTUSERINPUTHANDLER_H_
 
+#include <QPair>
+
+#include "aliasmanager.h"
 #include "bufferinfo.h"
 
 class ClientUserInputHandler : public QObject {
@@ -36,10 +39,18 @@ signals:
   void sendInput(const BufferInfo &, const QString &);
 
 private slots:
+  void clientConnected();
+  void clientDisconnected();
+  void initDone();
   void completionSuffixChanged(const QVariant &);
 
 private:
+  void expand(const QString &alias, const BufferInfo &bufferInfo, const QString &msg);
+
+  bool _initialized;
   QRegExp _nickRx;
+  AliasManager _aliasManager;
+  QList<QPair<BufferInfo, QString> > _inputBuffer;
 };
 
 #endif
