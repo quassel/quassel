@@ -79,7 +79,7 @@ Client::Client(QObject *parent)
     _backlogManager(new ClientBacklogManager(this)),
     _bufferViewManager(0),
     _ircListHelper(new ClientIrcListHelper(this)),
-    _inputHandler(new ClientUserInputHandler(this)),
+    _inputHandler(0),
     _messageModel(0),
     _messageProcessor(0),
     _connectedToCore(false),
@@ -104,6 +104,7 @@ void Client::init() {
   _bufferModel = new BufferModel(_networkModel);
   _messageModel = mainUi()->createMessageModel(this);
   _messageProcessor = mainUi()->createMessageProcessor(this);
+  _inputHandler = new ClientUserInputHandler(this);
 
   SignalProxy *p = signalProxy();
 
