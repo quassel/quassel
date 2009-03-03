@@ -24,7 +24,10 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QMenu>
 #include <QPersistentModelIndex>
-#include <QWebView>
+
+#ifdef HAVE_WEBKIT
+#  include <QWebView>
+#endif
 
 #include "chatitem.h"
 #include "chatline.h"
