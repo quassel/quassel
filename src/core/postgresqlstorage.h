@@ -176,6 +176,8 @@ private:
     QLatin1String field;
     Sequence(const char *table, const char *field) : table(table), field(field) {}
   };
+
+  QSet<int> _validIdentities;
 };
 
 #endif

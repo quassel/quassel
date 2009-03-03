@@ -460,8 +460,6 @@ bool AbstractSqlMigrationReader::transferMo(MigrationObject moType, T &mo) {
   while(readMo(mo)) {
     if(!_writer->writeMo(mo)) {
       abortMigration(QString("AbstractSqlMigrationReader::transferMo(): unable to transfer Migratable Object of type %1!").arg(AbstractSqlMigrator::migrationObject(moType)));
-      rollback();
-      _writer->rollback();
       return false;
     }
     i++;

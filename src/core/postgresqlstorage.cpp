@@ -1490,6 +1490,7 @@ bool PostgreSqlMigrationWriter::prepareQuery(MigrationObject mo) {
     query = queryString("migrate_write_sender");
     break;
   case Identity:
+    _validIdentities.clear();
     query = queryString("migrate_write_identity");
     break;
   case IdentityNick:
@@ -1532,6 +1533,7 @@ bool PostgreSqlMigrationWriter::writeMo(const SenderMO &sender) {
 
 //bool PostgreSqlMigrationWriter::writeIdentity(const IdentityMO &identity) {
 bool PostgreSqlMigrationWriter::writeMo(const IdentityMO &identity) {
+  _validIdentities << identity.id.toInt();
   bindValue(0, identity.id.toInt());
   bindValue(1, identity.userid.toInt());
   bindValue(2, identity.identityname);
@@ -1569,7 +1571,10 @@ bool PostgreSqlMigrationWriter::writeMo(const NetworkMO &network) {
   bindValue(0, network.networkid.toInt());
   bindValue(1, network.userid.toInt());
   bindValue(2, network.networkname);
-  bindValue(3, network.identityid.toInt());
+  if(_validIdentities.contains(network.identityid.toInt()))
+    bindValue(3, network.identityid.toInt());
+  else
+    bindValue(3, QVariant());
   bindValue(4, network.encodingcodec);
   bindValue(5, network.decodingcodec);
   bindValue(6, network.servercodec);
