@@ -1,1 +1,1 @@
-ALTER SEQUENCE sender_senderid_seq CACHE 1000
+ALTER SEQUENCE sender_senderid_seq CACHE 100
