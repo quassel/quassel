@@ -427,7 +427,7 @@ private:
   bool migrateBackend(const QString &backend);
   bool switchBackend(const QString &backend);
   void saveBackendSettings(const QString &backend, const QVariantMap &settings);
-  QVariantMap promptForSettings(const QVariantMap &map);
+  QVariantMap promptForSettings(const Storage *storage);
 
   QHash<UserId, SessionThread *> sessions;
   Storage *_storage;

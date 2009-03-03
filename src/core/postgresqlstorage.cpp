@@ -61,10 +61,18 @@ QString PostgreSqlStorage::description() const {
   return tr("PostgreSQL Turbo Bomber HD!");
 }
 
-QVariantMap PostgreSqlStorage::setupKeys() const {
+QStringList PostgreSqlStorage::setupKeys() const {
+  QStringList keys;
+  keys << "Username"
+       << "Password"
+       << "Hostname"
+       << "Port"
+       << "Database";
+  return keys;
+}
+QVariantMap PostgreSqlStorage::setupDefaults() const {
   QVariantMap map;
   map["Username"] = QVariant(QString("quassel"));
-  map["Password"] = QVariant(QString());
   map["Hostname"] = QVariant(QString("localhost"));
   map["Port"] = QVariant(5432);
   map["Database"] = QVariant(QString("quassel"));

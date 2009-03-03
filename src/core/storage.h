@@ -59,9 +59,13 @@ public slots:
   /** \return A string that can be displayed by the client to describe the storage backend */
   virtual QString description() const = 0;
 
-  //! Returns a map where the keys are required properties to use the storage backend
+  //! Returns a list of properties required to use the storage backend
+  virtual QStringList setupKeys() const = 0;
+
+  //! Returns a map where the keys are are properties to use the storage backend
   /*  the values are QVariants with default values */
-  virtual QVariantMap setupKeys() const = 0;
+  virtual QVariantMap setupDefaults() const = 0;
+
 
   //! Setup the storage provider.
   /** This prepares the storage provider (e.g. create tables, etc.) for use within Quassel.
@@ -71,7 +75,7 @@ public slots:
   virtual bool setup(const QVariantMap &settings = QVariantMap()) = 0;
 
   //! Initialize the storage provider
-  /** \param settings   Hostname, port, username, password, ...  
+  /** \param settings   Hostname, port, username, password, ...
    *  \return the State the storage backend is now in (see Storage::State)
    */
   virtual State init(const QVariantMap &settings = QVariantMap()) = 0;
@@ -130,7 +134,7 @@ public slots:
    * \param data         The Value
    */
   virtual void setUserSetting(UserId userId, const QString &settingName, const QVariant &data) = 0;
-  
+
   //! Retrieve a persistent user setting
   /**
    * \param userId       The users Id
@@ -145,7 +149,7 @@ public slots:
   virtual bool updateIdentity(UserId user, const CoreIdentity &identity) = 0;
   virtual void removeIdentity(UserId user, IdentityId identityId) = 0;
   virtual QList<CoreIdentity> identities(UserId user) = 0;
-  
+
   /* Network handling */
 
   //! Create a new Network in the storage backend and return it unique Id
@@ -179,7 +183,7 @@ public slots:
    *  \return QList<NetworkInfo>.
    */
   virtual QList<NetworkInfo> networks(UserId user) = 0;
-  
+
   //! Get a list of Networks to restore
   /** Return a list of networks the user was connected at the time of core shutdown
    *  \note This method is threadsafe.
@@ -338,7 +342,7 @@ public slots:
    */
   virtual QHash<BufferId, MsgId> bufferLastSeenMsgIds(UserId user) = 0;
 
-  
+
   /* Message handling */
 
   //! Store a Message in the storage backend and set its unique Id.

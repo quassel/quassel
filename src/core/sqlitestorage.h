@@ -41,7 +41,8 @@ public slots:
 
   bool isAvailable() const;
   QString displayName() const;
-  inline QVariantMap setupKeys() const { return QVariantMap(); }
+  virtual inline QStringList setupKeys() const { return QStringList(); }
+  virtual inline QVariantMap setupDefaults() const { return QVariantMap(); }
   QString description() const;
 
   // TODO: Add functions for configuring the backlog handling, i.e. defining auto-cleanup settings etc

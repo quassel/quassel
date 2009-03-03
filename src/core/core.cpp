@@ -138,8 +138,8 @@ Core::Core()
 }
 
 void Core::init() {
-  if(Quassel::isOptionSet("switch-backend")) {
-    switchBackend(Quassel::optionValue("switch-backend"));
+  if(Quassel::isOptionSet("select-backend")) {
+    switchBackend(Quassel::optionValue("select-backend"));
     exit(0);
   }
 
@@ -149,8 +149,8 @@ void Core::init() {
   if(!_configured) {
     if(!_storageBackends.count()) {
       qWarning() << qPrintable(tr("Could not initialize any storage backend! Exiting..."));
-      qWarning() << qPrintable(tr("Currently, Quassel only supports SQLite3. You need to build your\n"
-				  "Qt library with the sqlite plugin enabled in order for quasselcore\n"
+      qWarning() << qPrintable(tr("Currently, Quassel supports SQLite3 and PostgreSQL. You need to build your\n"
+				  "Qt library with the sqlite or postgres plugin enabled in order for quasselcore\n"
 				  "to work."));
       exit(1); // TODO make this less brutal (especially for mono client -> popup)
     }
@@ -525,8 +525,8 @@ void Core::processClientMessage(QTcpSocket *socket, const QVariantMap &msg) {
         QVariantMap v;
         v["DisplayName"] = backend->displayName();
         v["Description"] = backend->description();
-	v["ConnectionProperties"] = backend->setupKeys();
-	qDebug() << backend->setupKeys();
+	v["SetupKeys"] = backend->setupKeys();
+	v["SetupDefaults"] = backend->setupDefaults();
         backends.append(v);
       }
       reply["StorageBackends"] = backends;
@@ -721,7 +721,7 @@ bool Core::migrateBackend(const QString &backend) {
   }
 
   Storage *storage = _storageBackends[backend];
-  QVariantMap settings = promptForSettings(storage->setupKeys());
+  QVariantMap settings = promptForSettings(storage);
 
   Storage::State storageState = storage->init(settings);
   switch(storageState) {
@@ -774,7 +774,7 @@ bool Core::switchBackend(const QString &backend) {
   }
 
   Storage *storage = _storageBackends[backend];
-  QVariantMap settings = promptForSettings(storage->setupKeys());
+  QVariantMap settings = promptForSettings(storage);
 
   bool ok = initStorage(backend, settings, true /* initial setup is allowed */);
   if(ok) {
@@ -793,36 +793,43 @@ void Core::saveBackendSettings(const QString &backend, const QVariantMap &settin
   CoreSettings().setStorageSettings(dbsettings);
 }
 
-QVariantMap Core::promptForSettings(const QVariantMap &map) {
+QVariantMap Core::promptForSettings(const Storage *storage) {
   QVariantMap settings;
-  if(map.isEmpty())
+
+  QStringList keys = storage->setupKeys();
+  if(keys.isEmpty())
     return settings;
 
   QTextStream out(stdout);
   QTextStream in(stdin);
   out << "!!!Warning: echo mode is always on even if asked for a password!!!" << endl;
+  out << "Default values are in brackets" << endl;
 
-  QVariantMap::const_iterator iter;
+  QVariantMap defaults = storage->setupDefaults();
   QString value;
-  for(iter = map.constBegin(); iter != map.constEnd(); iter++) {
-    out << iter.key() << " (" << iter.value().toString() << "): ";
+  foreach(QString key, keys) {
+    QVariant val;
+    if(defaults.contains(key)) {
+      val = defaults[key];
+    }
+    out << key;
+    if(!val.toString().isEmpty()) {
+      out << " (" << val.toString() << ")";
+    }
+    out << ": ";
     out.flush();
-    value = in.readLine();
+    value = in.readLine().trimmed();
 
-    if(value.isEmpty()) {
-      settings[iter.key()] = iter.value();
-    } else {
-      value = value.trimmed();
-      QVariant val;
-      switch(iter.value().type()) {
+    if(!value.isEmpty()) {
+      switch(defaults[key].type()) {
       case QVariant::Int:
 	val = QVariant(value.toInt());
 	break;
       default:
 	val = QVariant(value);
       }
-      settings[iter.key()] = val;
     }
+    settings[key] = val;
   }
   return settings;
 }
