@@ -1267,34 +1267,49 @@ QList<Message> PostgreSqlStorage::requestMsgs(UserId user, BufferId bufferId, Ms
     return messagelist;
   }
 
-  QSqlQuery query(db);
+  QString queryName;
+  QVariantList params;
   if(last == -1 && first == -1) {
-    query.prepare(queryString("select_messages"));
+    queryName = "select_messages";
   } else if(last == -1) {
-    query.prepare(queryString("select_messagesNewerThan"));
-    query.bindValue(":firstmsg", first.toInt());
+    queryName = "select_messagesNewerThan";
+    params << first.toInt();
   } else {
-    query.prepare(queryString("select_messagesRange"));
-    query.bindValue(":lastmsg", last.toInt());
-    query.bindValue(":firstmsg", first.toInt());
+    queryName = "select_messagesRange";
+    params << first.toInt();
+    params << last.toInt();
   }
-  query.bindValue(":bufferid", bufferId.toInt());
-  safeExec(query);
+  params << bufferId.toInt();
+  if(limit != -1)
+    params << limit;
+  else
+    params << "ALL";
+
+  if(!prepareQuery(queryName, queryString(queryName), db)) {
+    qWarning() << "PostgreSqlStorage::logMessages(): unable to prepare query:" << queryString(queryName);
+    qWarning() << "  Error:" << db.lastError().text();
+    db.rollback();
+    return messagelist;
+  }
+
+  QSqlQuery query = executePreparedQuery(queryName, params, db);
+
   if(!watchQuery(query)) {
+    qDebug() << "select_messages failed";
     db.rollback();
     return messagelist;
   }
 
   QDateTime timestamp;
-  for(int i = 0; i < limit && query.next(); i++) {
+  while(query.next()) {
     timestamp = query.value(1).toDateTime();
     timestamp.setTimeSpec(Qt::UTC);
     Message msg(timestamp,
-                bufferInfo,
-                (Message::Type)query.value(2).toUInt(),
-                query.value(5).toString(),
-                query.value(4).toString(),
-                (Message::Flags)query.value(3).toUInt());
+		bufferInfo,
+		(Message::Type)query.value(2).toUInt(),
+		query.value(5).toString(),
+		query.value(4).toString(),
+		(Message::Flags)query.value(3).toUInt());
     msg.setMsgId(query.value(0).toInt());
     messagelist << msg;
   }
@@ -1401,7 +1416,7 @@ bool PostgreSqlStorage::prepareQuery(const QString &handle, const QString &query
 QSqlQuery PostgreSqlStorage::executePreparedQuery(const QString &handle, const QVariantList &params, const QSqlDatabase &db) {
   if(!_preparedQueries.contains(db.connectionName()) || !_preparedQueries[db.connectionName()].contains(handle)) {
     qWarning() << "PostgreSqlStorage::executePreparedQuery() no prepared Query with handle" << handle << "on Database" << db.connectionName();
-    return QSqlQuery();
+    return QSqlQuery(db);
   }
 
   QSqlDriver *driver = db.driver();
@@ -1431,7 +1446,7 @@ QSqlQuery PostgreSqlStorage::executePreparedQuery(const QString &handle, const Q
 QSqlQuery PostgreSqlStorage::executePreparedQuery(const QString &handle, const QVariant &param, const QSqlDatabase &db) {
   if(!_preparedQueries.contains(db.connectionName()) || !_preparedQueries[db.connectionName()].contains(handle)) {
     qWarning() << "PostgreSqlStorage::executePreparedQuery() no prepared Query with handle" << handle << "on Database" << db.connectionName();
-    return QSqlQuery();
+    return QSqlQuery(db);
   }
 
   QSqlField field;
@@ -1456,10 +1471,6 @@ void PostgreSqlStorage::deallocateQuery(const QString &handle, const QSqlDatabas
   QString queryId = _preparedQueries[db.connectionName()].take(handle);
   db.exec(QString("DEALLOCATE %1").arg(queryId));
 }
-
-
-
-
 
 // ========================================
 //  PostgreSqlMigrationWriter
