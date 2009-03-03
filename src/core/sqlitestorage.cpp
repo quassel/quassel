@@ -1078,46 +1078,68 @@ bool SqliteStorage::safeExec(QSqlQuery &query, int retryCount) {
 //  SqliteMigration
 // ========================================
 SqliteMigrationReader::SqliteMigrationReader()
-  : SqliteStorage()
+  : SqliteStorage(),
+    _maxId(0)
 {
 }
 
-bool SqliteMigrationReader::prepareQuery(MigrationObject mo) {
-  QString query;
+void SqliteMigrationReader::setMaxId(MigrationObject mo) {
+  QString queryString;
   switch(mo) {
-  case QuasselUser:
-    query = queryString("migrate_read_quasseluser");
-    break;
   case Sender:
-    query = queryString("migrate_read_sender");
-    break;
-  case Identity:
-    query = queryString("migrate_read_identity");
-    break;
-  case IdentityNick:
-    query = queryString("migrate_read_identity_nick");
-    break;
-  case Network:
-    query = queryString("migrate_read_network");
-    break;
-  case Buffer:
-    query = queryString("migrate_read_buffer");
+    queryString = "SELECT max(senderid) FROM sender";
     break;
   case Backlog:
-    query = queryString("migrate_read_backlog");
+    queryString = "SELECT max(messageid) FROM backlog";
+    break;
+  default:
+    _maxId = 0;
+    return;
+  }
+  QSqlQuery query = logDb().exec(queryString);
+  query.first();
+  _maxId = query.value(0).toInt();
+}
+
+bool SqliteMigrationReader::prepareQuery(MigrationObject mo) {
+  setMaxId(mo);
+
+  switch(mo) {
+  case QuasselUser:
+    newQuery(queryString("migrate_read_quasseluser"), logDb());
+    break;
+  case Identity:
+    newQuery(queryString("migrate_read_identity"), logDb());
+    break;
+  case IdentityNick:
+    newQuery(queryString("migrate_read_identity_nick"), logDb());
+    break;
+  case Network:
+    newQuery(queryString("migrate_read_network"), logDb());
+    break;
+  case Buffer:
+    newQuery(queryString("migrate_read_buffer"), logDb());
+    break;
+  case Sender:
+    newQuery(queryString("migrate_read_sender"), logDb());
+    bindValue(0, 0);
+    bindValue(1, stepSize());
+    break;
+  case Backlog:
+    newQuery(queryString("migrate_read_backlog"), logDb());
+    bindValue(0, 0);
+    bindValue(1, stepSize());
     break;
   case IrcServer:
-    query = queryString("migrate_read_ircserver");
+    newQuery(queryString("migrate_read_ircserver"), logDb());
     break;
   case UserSetting:
-    query = queryString("migrate_read_usersetting");
+    newQuery(queryString("migrate_read_usersetting"), logDb());
     break;
   }
-  newQuery(query, logDb());
   return exec();
 }
 
-//bool SqliteMigrationReader::readUser(QuasselUserMO &user) {
 bool SqliteMigrationReader::readMo(QuasselUserMO &user) {
   if(!next())
     return false;
@@ -1128,17 +1150,6 @@ bool SqliteMigrationReader::readMo(QuasselUserMO &user) {
   return true;
 }
 
-//bool SqliteMigrationReader::readSender(SenderMO &sender) {
-bool SqliteMigrationReader::readMo(SenderMO &sender) {
-  if(!next())
-    return false;
-
-  sender.senderId = value(0).toInt();
-  sender.sender = value(1).toString();
-  return true;
-}
-
-//bool SqliteMigrationReader::readIdentity(IdentityMO &identity) {
 bool SqliteMigrationReader::readMo(IdentityMO &identity) {
   if(!next())
     return false;
@@ -1167,7 +1178,6 @@ bool SqliteMigrationReader::readMo(IdentityMO &identity) {
   return true;
 }
 
-//bool SqliteMigrationReader::readIdentityNick(IdentityNickMO &identityNick) {
 bool SqliteMigrationReader::readMo(IdentityNickMO &identityNick) {
   if(!next())
     return false;
@@ -1178,7 +1188,6 @@ bool SqliteMigrationReader::readMo(IdentityNickMO &identityNick) {
   return true;
 }
 
-//bool SqliteMigrationReader::readNetwork(NetworkMO &network) {
 bool SqliteMigrationReader::readMo(NetworkMO &network) {
   if(!next())
     return false;
@@ -1208,7 +1217,6 @@ bool SqliteMigrationReader::readMo(NetworkMO &network) {
   return true;
 }
 
-//bool SqliteMigrationReader::readBuffer(BufferMO &buffer) {
 bool SqliteMigrationReader::readMo(BufferMO &buffer) {
   if(!next())
     return false;
@@ -1226,10 +1234,38 @@ bool SqliteMigrationReader::readMo(BufferMO &buffer) {
   return true;
 }
 
-//bool SqliteMigrationReader::readBacklog(BacklogMO &backlog) {
+bool SqliteMigrationReader::readMo(SenderMO &sender) {
+  int skipSteps = 0;
+  while(!next()) {
+    if(sender.senderId < _maxId) {
+      bindValue(0, sender.senderId + (skipSteps * stepSize()));
+      bindValue(1, sender.senderId + ((skipSteps + 1) * stepSize()));
+      skipSteps++;
+      if(!exec())
+	return false;
+    } else {
+      return false;
+    }
+  }
+
+  sender.senderId = value(0).toInt();
+  sender.sender = value(1).toString();
+  return true;
+}
+
 bool SqliteMigrationReader::readMo(BacklogMO &backlog) {
-  if(!next())
-    return false;
+  int skipSteps = 0;
+  while(!next()) {
+    if(backlog.messageid < _maxId) {
+      bindValue(0, backlog.messageid.toInt() + (skipSteps * stepSize()));
+      bindValue(1, backlog.messageid.toInt() + ((skipSteps + 1) * stepSize()));
+      skipSteps++;
+      if(!exec())
+	return false;
+    } else {
+      return false;
+    }
+  }
 
   backlog.messageid = value(0).toInt();
   backlog.time = QDateTime::fromTime_t(value(1).toInt());
@@ -1241,7 +1277,6 @@ bool SqliteMigrationReader::readMo(BacklogMO &backlog) {
   return true;
 }
 
-//bool SqliteMigrationReader::readIrcServer(IrcServerMO &ircserver) {
 bool SqliteMigrationReader::readMo(IrcServerMO &ircserver) {
   if(!next())
     return false;
@@ -1263,7 +1298,6 @@ bool SqliteMigrationReader::readMo(IrcServerMO &ircserver) {
   return true;
 }
 
-//bool SqliteMigrationReader::readUserSetting(UserSettingMO &userSetting) {
 bool SqliteMigrationReader::readMo(UserSettingMO &userSetting) {
   if(!next())
     return false;
@@ -1274,5 +1308,3 @@ bool SqliteMigrationReader::readMo(UserSettingMO &userSetting) {
 
   return true;
 }
-
-

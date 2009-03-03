@@ -178,10 +178,4 @@ private:
   };
 };
 
-inline AbstractSqlMigrationWriter *PostgreSqlStorage::createMigrationWriter() {
-  return new PostgreSqlMigrationWriter();
-}
-
-
-
 #endif

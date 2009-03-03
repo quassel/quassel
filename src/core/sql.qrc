@@ -66,6 +66,8 @@
     <file>./SQL/PostgreSQL/14/setup_080_ircservers.sql</file>
     <file>./SQL/PostgreSQL/14/setup_090_backlog_idx.sql</file>
     <file>./SQL/PostgreSQL/14/setup_100_user_setting.sql</file>
+    <file>./SQL/PostgreSQL/14/setup_110_alter_sender_seq.sql</file>
+    <file>./SQL/PostgreSQL/14/setup_120_alter_messageid_seq.sql</file>
     <file>./SQL/PostgreSQL/14/update_backlog_bufferid.sql</file>
     <file>./SQL/PostgreSQL/14/update_buffer_lastseen.sql</file>
     <file>./SQL/PostgreSQL/14/update_buffer_name.sql</file>

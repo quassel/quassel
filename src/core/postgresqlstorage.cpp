@@ -35,6 +35,18 @@ PostgreSqlStorage::PostgreSqlStorage(QObject *parent)
 PostgreSqlStorage::~PostgreSqlStorage() {
 }
 
+AbstractSqlMigrationWriter *PostgreSqlStorage::createMigrationWriter() {
+  PostgreSqlMigrationWriter *writer = new PostgreSqlMigrationWriter();
+  QVariantMap properties;
+  properties["Username"] = _userName;
+  properties["Password"] = _password;
+  properties["Hostname"] = _hostName;
+  properties["Port"] = _port;
+  properties["Database"] = _databaseName;
+  writer->setConnectionProperties(properties);
+  return writer;
+}
+
 bool PostgreSqlStorage::isAvailable() const {
   if(!QSqlDatabase::isDriverAvailable("QPSQL")) return false;
   return true;

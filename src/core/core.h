@@ -399,6 +399,7 @@ private slots:
   void clientHasData();
   void clientDisconnected();
 
+  bool initStorage(const QString &backend, QVariantMap settings, bool setup = false);
   bool initStorage(QVariantMap dbSettings, bool setup = false);
 
 #ifdef HAVE_SSL
@@ -419,8 +420,14 @@ private:
   QString setupCoreForInternalUsage();
   QString setupCore(QVariantMap setupData);
 
+  void registerStorageBackends();
   bool registerStorageBackend(Storage *);
+  void unregisterStorageBackends();
   void unregisterStorageBackend(Storage *);
+  bool migrateBackend(const QString &backend);
+  bool switchBackend(const QString &backend);
+  void saveBackendSettings(const QString &backend, const QVariantMap &settings);
+  QVariantMap promptForSettings(const QVariantMap &map);
 
   QHash<UserId, SessionThread *> sessions;
   Storage *_storage;

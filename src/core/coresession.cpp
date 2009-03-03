@@ -230,7 +230,6 @@ void CoreSession::customEvent(QEvent *event) {
 }
 
 void CoreSession::processMessages() {
-  qDebug() << "processing" << _messageQueue.count() << "messages..";
   if(_messageQueue.count() == 1) {
     const RawMessage &rawMsg = _messageQueue.first();
     BufferInfo bufferInfo = Core::bufferInfo(user(), rawMsg.networkId, rawMsg.bufferType, rawMsg.target);

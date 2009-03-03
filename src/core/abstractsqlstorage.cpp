@@ -26,10 +26,10 @@
 #include <QSqlError>
 #include <QSqlQuery>
 
+int AbstractSqlStorage::_nextConnectionId = 0;
 AbstractSqlStorage::AbstractSqlStorage(QObject *parent)
   : Storage(parent),
-    _schemaVersion(0),
-    _nextConnectionId(0)
+    _schemaVersion(0)
 {
 }
 
@@ -37,6 +37,7 @@ AbstractSqlStorage::~AbstractSqlStorage() {
   // disconnect the connections, so their deletion is no longer interessting for us
   QHash<QThread *, Connection *>::iterator conIter;
   for(conIter = _connectionPool.begin(); conIter != _connectionPool.end(); conIter++) {
+    QSqlDatabase::removeDatabase(conIter.value()->name());
     disconnect(conIter.value(), 0, this, 0);
   }
 }
@@ -350,11 +351,11 @@ AbstractSqlMigrationReader::AbstractSqlMigrationReader()
 
 bool AbstractSqlMigrationReader::migrateTo(AbstractSqlMigrationWriter *writer) {
   if(!transaction()) {
-    qWarning() << "AbstractSqlMigrationReader::migrateTo(): unable to start reader stransaction!";
+    qWarning() << "AbstractSqlMigrationReader::migrateTo(): unable to start reader's transaction!";
     return false;
   }
   if(!writer->transaction()) {
-    qWarning() << "AbstractSqlMigrationReader::migrateTo(): unable to start writer stransaction!";
+    qWarning() << "AbstractSqlMigrationReader::migrateTo(): unable to start writer's transaction!";
     rollback(); // close the reader transaction;
     return false;
   }
@@ -365,10 +366,6 @@ bool AbstractSqlMigrationReader::migrateTo(AbstractSqlMigrationWriter *writer) {
   QuasselUserMO quasselUserMo;
   if(!transferMo(QuasselUser, quasselUserMo))
      return false;
-
-  SenderMO senderMo;
-  if(!transferMo(Sender, senderMo))
-    return false;
 
   IdentityMO identityMo;
   if(!transferMo(Identity, identityMo))
@@ -384,6 +381,10 @@ bool AbstractSqlMigrationReader::migrateTo(AbstractSqlMigrationWriter *writer) {
 
   BufferMO bufferMo;
   if(!transferMo(Buffer, bufferMo))
+    return false;
+
+  SenderMO senderMo;
+  if(!transferMo(Sender, senderMo))
     return false;
 
   BacklogMO backlogMo;
@@ -455,9 +456,12 @@ bool AbstractSqlMigrationReader::transferMo(MigrationObject moType, T &mo) {
   int i = 0;
   QFile file;
   file.open(stdout, QIODevice::WriteOnly);
+
   while(readMo(mo)) {
     if(!_writer->writeMo(mo)) {
       abortMigration(QString("AbstractSqlMigrationReader::transferMo(): unable to transfer Migratable Object of type %1!").arg(AbstractSqlMigrator::migrationObject(moType)));
+      rollback();
+      _writer->rollback();
       return false;
     }
     i++;
@@ -470,6 +474,7 @@ bool AbstractSqlMigrationReader::transferMo(MigrationObject moType, T &mo) {
     file.write("\n");
     file.flush();
   }
+
   qDebug() << "Done.";
   return true;
 }

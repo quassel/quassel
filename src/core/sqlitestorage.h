@@ -139,10 +139,16 @@ public:
 
   virtual bool prepareQuery(MigrationObject mo);
 
+  inline int stepSize() { return 50000; }
+
 protected:
   virtual inline bool transaction() { return logDb().transaction(); }
   virtual inline void rollback() { logDb().rollback(); }
   virtual inline bool commit() { return logDb().commit(); }
+
+private:
+  void setMaxId(MigrationObject mo);
+  int _maxId;
 };
 
 inline AbstractSqlMigrationReader *SqliteStorage::createMigrationReader() {

@@ -80,7 +80,7 @@ private:
 
   int _schemaVersion;
 
-  int _nextConnectionId;
+  static int _nextConnectionId;
   QMutex _connectionPoolMutex;
   // we let a Connection Object manage each actual db connection
   // those objects reside in the thread the connection belongs to
@@ -121,6 +121,7 @@ public:
   struct SenderMO {
     int senderId;
     QString sender;
+    SenderMO() : senderId(0) {}
   };
 
   struct IdentityMO {
@@ -269,11 +270,11 @@ public:
   AbstractSqlMigrationReader();
 
   virtual bool readMo(QuasselUserMO &user) = 0;
-  virtual bool readMo(SenderMO &sender) = 0;
   virtual bool readMo(IdentityMO &identity) = 0;
   virtual bool readMo(IdentityNickMO &identityNick) = 0;
   virtual bool readMo(NetworkMO &network) = 0;
   virtual bool readMo(BufferMO &buffer) = 0;
+  virtual bool readMo(SenderMO &sender) = 0;
   virtual bool readMo(BacklogMO &backlog) = 0;
   virtual bool readMo(IrcServerMO &ircserver) = 0;
   virtual bool readMo(UserSettingMO &userSetting) = 0;
@@ -292,11 +293,11 @@ private:
 class AbstractSqlMigrationWriter : public AbstractSqlMigrator {
 public:
   virtual bool writeMo(const QuasselUserMO &user) = 0;
-  virtual bool writeMo(const SenderMO &sender) = 0;
   virtual bool writeMo(const IdentityMO &identity) = 0;
   virtual bool writeMo(const IdentityNickMO &identityNick) = 0;
   virtual bool writeMo(const NetworkMO &network) = 0;
   virtual bool writeMo(const BufferMO &buffer) = 0;
+  virtual bool writeMo(const SenderMO &sender) = 0;
   virtual bool writeMo(const BacklogMO &backlog) = 0;
   virtual bool writeMo(const IrcServerMO &ircserver) = 0;
   virtual bool writeMo(const UserSettingMO &userSetting) = 0;
