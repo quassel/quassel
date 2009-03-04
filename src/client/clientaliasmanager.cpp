@@ -18,43 +18,16 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "corealiasmanager.h"
+#include "clientaliasmanager.h"
 
-#include "core.h"
-#include "corenetwork.h"
-#include "coresession.h"
+#include "client.h"
 
-CoreAliasManager::CoreAliasManager(CoreSession *parent)
+ClientAliasManager::ClientAliasManager(QObject *parent)
   : AliasManager(parent)
 {
-  CoreSession *session = qobject_cast<CoreSession *>(parent);
-  if(!session) {
-    qWarning() << "CoreAliasManager: unable to load Aliases. Parent is not a Coresession!";
-    loadDefaults();
-    return;
-  }
 
-  initSetAliases(Core::getUserSetting(session->user(), "Aliases").toMap());
-  if(isEmpty())
-    loadDefaults();
 }
 
-CoreAliasManager::~CoreAliasManager() {
-  CoreSession *session = qobject_cast<CoreSession *>(parent());
-  if(!session) {
-    qWarning() << "CoreAliasManager: unable to save Aliases. Parent is not a Coresession!";
-    return;
-  }
-
-  Core::setUserSetting(session->user(), "Aliases", initAliases());
-}
-
-const Network *CoreAliasManager::network(NetworkId id) const {
-  return qobject_cast<CoreSession *>(parent())->network(id);
-}
-
-void CoreAliasManager::loadDefaults() {
-  foreach(Alias alias, AliasManager::defaults()) {
-    addAlias(alias.name, alias.expansion);
-  }
+const Network *ClientAliasManager::network(NetworkId id) const {
+  return Client::network(id);
 }

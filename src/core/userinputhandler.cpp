@@ -33,25 +33,17 @@ UserInputHandler::UserInputHandler(CoreNetwork *parent)
 {
 }
 
-void UserInputHandler::handleUserInput(const BufferInfo &bufferInfo, const QString &msg_) {
-  if(msg_.isEmpty())
+void UserInputHandler::handleUserInput(const BufferInfo &bufferInfo, const QString &msg) {
+  if(msg.isEmpty())
     return;
 
-  // FIXME: With protocol >= v10, this is all done in the client -> remove
-  QString cmd;
-  QString msg = msg_;
-  // leading slashes indicate there's a command to call unless there is another one in the first section (like a path /proc/cpuinfo)
-  int secondSlashPos = msg.indexOf('/', 1);
-  int firstSpacePos = msg.indexOf(' ');
-  if(!msg.startsWith('/') || (secondSlashPos != -1 && (secondSlashPos < firstSpacePos || firstSpacePos == -1))) {
-    if(msg.startsWith("//"))
-      msg.remove(0, 1); // //asdf is transformed to /asdf
-    cmd = QString("SAY");
-  } else {
-    cmd = msg.section(' ', 0, 0).remove(0, 1).toUpper();
-    msg = msg.section(' ', 1);
+  AliasManager::CommandList list = coreSession()->aliasManager().processInput(bufferInfo, msg);
+
+  for(int i = 0; i < list.count(); i++) {
+    QString cmd = list.at(i).second.section(' ', 0, 0).remove(0, 1).toUpper();
+    QString payload = list.at(i).second.section(' ', 1);
+    handle(cmd, Q_ARG(BufferInfo, list.at(i).first), Q_ARG(QString, payload));
   }
-  handle(cmd, Q_ARG(BufferInfo, bufferInfo), Q_ARG(QString, msg));
 }
 
 // ====================
@@ -393,66 +385,10 @@ void UserInputHandler::handleWhowas(const BufferInfo &bufferInfo, const QString 
   emit putCmd("WHOWAS", serverEncode(msg.split(' ')));
 }
 
-// FIXME: Remove alias handling as soon as core protocol >= v10
 void UserInputHandler::defaultHandler(QString cmd, const BufferInfo &bufferInfo, const QString &msg) {
-  for(int i = 0; i < coreSession()->aliasManager().count(); i++) {
-    if(coreSession()->aliasManager()[i].name.toLower() == cmd.toLower()) {
-      expand(coreSession()->aliasManager()[i].expansion, bufferInfo, msg);
-      return;
-    }
-  }
+  Q_UNUSED(bufferInfo);
   emit displayMsg(Message::Error, BufferInfo::StatusBuffer, "", QString("Error: %1 %2").arg(cmd, msg));
 }
-
-void UserInputHandler::expand(const QString &alias, const BufferInfo &bufferInfo, const QString &msg) {
-  QRegExp paramRangeR("\\$(\\d+)\\.\\.(\\d*)");
-  QStringList commands = alias.split(QRegExp("; ?"));
-  QStringList params = msg.split(' ');
-  QStringList expandedCommands;
-  for(int i = 0; i < commands.count(); i++) {
-    QString command = commands[i];
-
-    // replace ranges like $1..3
-    if(!params.isEmpty()) {
-      int pos;
-      while((pos = paramRangeR.indexIn(command)) != -1) {
-	int start = paramRangeR.cap(1).toInt();
-	bool ok;
-	int end = paramRangeR.cap(2).toInt(&ok);
-	if(!ok) {
-	  end = params.count();
-	}
-	if(end < start)
-	  command = command.replace(pos, paramRangeR.matchedLength(), QString());
-	else {
-	  command = command.replace(pos, paramRangeR.matchedLength(), QStringList(params.mid(start - 1, end - start + 1)).join(" "));
-	}
-      }
-    }
-
-    for(int j = params.count(); j > 0; j--) {
-      IrcUser *ircUser = network()->ircUser(params[j - 1]);
-      command = command.replace(QString("$%1:hostname").arg(j), ircUser ? ircUser->host() : QString("*"));
-      command = command.replace(QString("$%1").arg(j), params[j - 1]);
-    }
-    command = command.replace("$0", msg);
-    command = command.replace("$channelname", bufferInfo.bufferName());
-    command = command.replace("$currentnick", network()->myNick());
-    expandedCommands << command;
-  }
-
-  while(!expandedCommands.isEmpty()) {
-    QString command;
-    if(expandedCommands[0].trimmed().toLower().startsWith("/wait")) {
-      command = expandedCommands.join("; ");
-      expandedCommands.clear();
-    } else {
-      command = expandedCommands.takeFirst();
-    }
-    handleUserInput(bufferInfo, command);
-  }
-}
-
 
 void UserInputHandler::putPrivmsg(const QByteArray &target, const QByteArray &message) {
   static const char *cmd = "PRIVMSG";

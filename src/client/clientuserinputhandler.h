@@ -23,7 +23,7 @@
 
 #include <QPair>
 
-#include "aliasmanager.h"
+#include "clientaliasmanager.h"
 #include "bufferinfo.h"
 
 class ClientUserInputHandler : public QObject {
@@ -45,12 +45,10 @@ private slots:
   void completionSuffixChanged(const QVariant &);
 
 private:
-  void expand(const QString &alias, const BufferInfo &bufferInfo, const QString &msg);
-
   bool _initialized;
   QRegExp _nickRx;
-  AliasManager _aliasManager;
-  QList<QPair<BufferInfo, QString> > _inputBuffer;
+  ClientAliasManager _aliasManager;
+  AliasManager::CommandList _inputBuffer;
 };
 
 #endif

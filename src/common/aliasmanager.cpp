@@ -18,15 +18,17 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "aliasmanager.h"
 
 #include <QDebug>
 #include <QStringList>
 
+#include "aliasmanager.h"
+#include "network.h"
+
 AliasManager &AliasManager::operator=(const AliasManager &other) {
   if(this == &other)
     return *this;
-  
+
   SyncableObject::operator=(other);
   _aliases = other._aliases;
   return *this;
@@ -84,12 +86,99 @@ void AliasManager::addAlias(const QString &name, const QString &expansion) {
 AliasManager::AliasList AliasManager::defaults() {
   AliasList aliases;
   aliases << Alias("j", "/join $0")
-	  << Alias("ns", "/msg nickserv $0")
-	  << Alias("nickserv", "/msg nickserv $0")
-	  << Alias("cs", "/msg chanserv $0")
-	  << Alias("chanserv",  "/msg chanserv $0")
-	  << Alias("hs", "/msg hostserv $0")
-	  << Alias("hostserv", "/msg hostserv $0")
-	  << Alias("back", "/quote away");
+          << Alias("ns", "/msg nickserv $0")
+          << Alias("nickserv", "/msg nickserv $0")
+          << Alias("cs", "/msg chanserv $0")
+          << Alias("chanserv",  "/msg chanserv $0")
+          << Alias("hs", "/msg hostserv $0")
+          << Alias("hostserv", "/msg hostserv $0")
+          << Alias("back", "/quote away");
   return aliases;
+}
+
+AliasManager::CommandList AliasManager::processInput(const BufferInfo &info, const QString &msg) {
+  CommandList result;
+  processInput(info, msg, result);
+  return result;
+}
+
+void AliasManager::processInput(const BufferInfo &info, const QString &msg_, CommandList &list) {
+  QString msg = msg_;
+
+  // leading slashes indicate there's a command to call unless there is another one in the first section (like a path /proc/cpuinfo)
+  int secondSlashPos = msg.indexOf('/', 1);
+  int firstSpacePos = msg.indexOf(' ');
+  if(!msg.startsWith('/') || (secondSlashPos != -1 && (secondSlashPos < firstSpacePos || firstSpacePos == -1))) {
+    if(msg.startsWith("//"))
+      msg.remove(0, 1); // //asdf is transformed to /asdf
+    msg.prepend("/SAY ");  // make sure we only send proper commands to the core
+  } else {
+    // check for aliases
+    QString cmd = msg.section(' ', 0, 0).remove(0, 1).toUpper();
+    for(int i = 0; i < count(); i++) {
+      if((*this)[i].name.toUpper() == cmd) {
+        expand((*this)[i].expansion, info, msg.section(' ', 1), list);
+        return;
+      }
+    }
+  }
+
+  list.append(qMakePair(info, msg));
+}
+
+void AliasManager::expand(const QString &alias, const BufferInfo &bufferInfo, const QString &msg, CommandList &list) {
+  const Network *net = network(bufferInfo.networkId());
+  if(!net) {
+    // FIXME send error as soon as we have a method for that!
+    return;
+  }
+
+  QRegExp paramRangeR("\\$(\\d+)\\.\\.(\\d*)");
+  QStringList commands = alias.split(QRegExp("; ?"));
+  QStringList params = msg.split(' ');
+  QStringList expandedCommands;
+  for(int i = 0; i < commands.count(); i++) {
+    QString command = commands[i];
+
+    // replace ranges like $1..3
+    if(!params.isEmpty()) {
+      int pos;
+      while((pos = paramRangeR.indexIn(command)) != -1) {
+        int start = paramRangeR.cap(1).toInt();
+        bool ok;
+        int end = paramRangeR.cap(2).toInt(&ok);
+        if(!ok) {
+          end = params.count();
+        }
+        if(end < start)
+          command = command.replace(pos, paramRangeR.matchedLength(), QString());
+        else {
+          command = command.replace(pos, paramRangeR.matchedLength(), QStringList(params.mid(start - 1, end - start + 1)).join(" "));
+        }
+      }
+    }
+
+    for(int j = params.count(); j > 0; j--) {
+      IrcUser *ircUser = net->ircUser(params[j - 1]);
+      command = command.replace(QString("$%1:hostname").arg(j), ircUser ? ircUser->host() : QString("*"));
+      command = command.replace(QString("$%1").arg(j), params[j - 1]);
+    }
+    command = command.replace("$0", msg);
+    command = command.replace("$channelname", bufferInfo.bufferName()); // legacy
+    command = command.replace("$channel", bufferInfo.bufferName());
+    command = command.replace("$currentnick", net->myNick()); // legacy
+    command = command.replace("$nick", net->myNick());
+    expandedCommands << command;
+  }
+
+  while(!expandedCommands.isEmpty()) {
+    QString command;
+    if(expandedCommands[0].trimmed().toLower().startsWith("/wait")) {
+      command = expandedCommands.join("; ");
+      expandedCommands.clear();
+    } else {
+      command = expandedCommands.takeFirst();
+    }
+    list.append(qMakePair(bufferInfo, command));
+  }
 }

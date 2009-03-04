@@ -58,8 +58,8 @@ QVariant AliasesModel::data(const QModelIndex &index, int role) const {
 	" - <b>$i..</b> represents all parameters from i on separated by spaces.<br />"
 	" - <b>$i:hostname</b> represents the hostname of the user identified by the i'th parameter or a * if unknown.<br />"
 	" - <b>$0</b> the whole string.<br />"
-	" - <b>$currentnick</b> your current nickname<br />"
-	" - <b>$channelname</b> the name of the selected channel<br /><br />"
+	" - <b>$nick</b> your current nickname<br />"
+	" - <b>$channel</b> the name of the selected channel<br /><br />"
 	"Multiple commands can be separated with semicolons<br /><br />"
 	"<b>Example:</b> \"Test $1; Test $2; Test All $0\" will be expanded to three separate messages \"Test 1\", \"Test 2\" and \"Test All 1 2 3\" when called like /test 1 2 3";
     default:
@@ -87,7 +87,7 @@ bool AliasesModel::setData(const QModelIndex &index, const QVariant &value, int 
   QString newValue = value.toString();
   if(newValue.isEmpty())
     return false;
-  
+
   switch(index.column()) {
   case 0:
     if(aliasManager().contains(newValue)) {
@@ -220,7 +220,7 @@ void AliasesModel::initDone() {
 }
 
 void AliasesModel::clientConnected() {
-  _aliasManager = AliasManager();
+  _aliasManager = ClientAliasManager();
   Client::signalProxy()->synchronize(&_aliasManager);
   connect(&_aliasManager, SIGNAL(initDone()), this, SLOT(initDone()));
   connect(&_aliasManager, SIGNAL(updated(const QVariantMap &)), this, SLOT(revert()));
@@ -228,8 +228,8 @@ void AliasesModel::clientConnected() {
 
 void AliasesModel::clientDisconnected() {
   // clear alias managers
-  _aliasManager = AliasManager();
-  _clonedAliasManager = AliasManager();
+  _aliasManager = ClientAliasManager();
+  _clonedAliasManager = ClientAliasManager();
   reset();
   emit modelReady(false);
 }

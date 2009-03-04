@@ -24,7 +24,7 @@
 #include <QAbstractItemModel>
 #include <QPointer>
 
-#include "aliasmanager.h"
+#include "clientaliasmanager.h"
 
 class AliasesModel : public QAbstractItemModel {
   Q_OBJECT
@@ -58,10 +58,10 @@ public slots:
 signals:
   void configChanged(bool);
   void modelReady(bool);
-  
+
 private:
-  AliasManager _aliasManager;
-  AliasManager _clonedAliasManager;
+  ClientAliasManager _aliasManager;
+  ClientAliasManager _clonedAliasManager;
   bool _configChanged;
 
   const AliasManager &aliasManager() const;
