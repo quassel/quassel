@@ -348,6 +348,18 @@ void MessageModel::changeOfDay() {
   _nextDayChange = _nextDayChange.addSecs(86400);
 }
 
+void MessageModel::insertErrorMessage(BufferInfo bufferInfo, const QString &errorString) {
+  int idx = messageCount();
+  beginInsertRows(QModelIndex(), idx, idx);
+  Message msg(bufferInfo, Message::Error, errorString);
+  if(!messagesIsEmpty())
+    msg.setMsgId(messageItemAt(idx-1)->msgId());
+  else
+    msg.setMsgId(0);
+  insertMessage__(idx, msg);
+  endInsertRows();
+}
+
 void MessageModel::requestBacklog(BufferId bufferId) {
   if(_messagesWaiting.contains(bufferId))
     return;

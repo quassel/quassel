@@ -73,6 +73,7 @@ public slots:
   void requestBacklog(BufferId bufferId);
   void messagesReceived(BufferId bufferId, int count);
   void buffersPermanentlyMerged(BufferId bufferId1, BufferId bufferId2);
+  void insertErrorMessage(BufferInfo bufferInfo, const QString &errorString);
 
 protected:
 //   virtual MessageModelItem *createMessageModelItem(const Message &) = 0;
