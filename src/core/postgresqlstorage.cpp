@@ -1662,6 +1662,7 @@ bool PostgreSqlMigrationWriter::postProcess() {
   QSqlDatabase db = logDb();
   QList<Sequence> sequences;
   sequences << Sequence("backlog", "messageid")
+	    << Sequence("buffer", "bufferid")
 	    << Sequence("identity", "identityid")
 	    << Sequence("identity_nick", "nickid")
 	    << Sequence("ircserver", "serverid")
