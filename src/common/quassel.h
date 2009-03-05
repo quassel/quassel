@@ -84,6 +84,12 @@ public:
 
   static QString translationDirPath();
 
+  //! Returns a list of directories we look for scripts in
+  /** We look for a subdirectory named "scripts" in the configdir and in all datadir paths.
+  *   \return A list of directory paths containing executable scripts for /exec
+  */
+  static QStringList scriptDirPaths();
+
   static void loadTranslation(const QLocale &locale);
 
   static inline void setCliParser(AbstractCliParser *cliParser);

@@ -336,6 +336,13 @@ QString Quassel::findDataFilePath(const QString &fileName) {
   return QString();
 }
 
+QStringList Quassel::scriptDirPaths() {
+  QStringList res(configDirPath() + "scripts/");
+  foreach(QString path, dataDirPaths())
+    res << path + "scripts/";
+  return res;
+}
+
 QString Quassel::translationDirPath() {
   if(_translationDirPath.isEmpty()) {
     // We support only one translation dir; fallback mechanisms wouldn't work else.
