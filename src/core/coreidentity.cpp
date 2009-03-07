@@ -30,6 +30,7 @@ CoreIdentity::CoreIdentity(IdentityId id, QObject *parent)
 {
 #ifdef HAVE_SSL
   connect(this, SIGNAL(idSet(IdentityId)), &_certManager, SLOT(setId(IdentityId)));
+  connect(&_certManager, SIGNAL(updated(const QVariantMap &)), this, SIGNAL(updated(const QVariantMap &)));
 #endif
 }
 
@@ -41,6 +42,7 @@ CoreIdentity::CoreIdentity(const Identity &other, QObject *parent)
 {
 #ifdef HAVE_SSL
   connect(this, SIGNAL(idSet(IdentityId)), &_certManager, SLOT(setId(IdentityId)));
+  connect(&_certManager, SIGNAL(updated(const QVariantMap &)), this, SIGNAL(updated(const QVariantMap &)));
 #endif
 }
 
@@ -54,6 +56,7 @@ CoreIdentity::CoreIdentity(const CoreIdentity &other, QObject *parent)
 {
 #ifdef HAVE_SSL
   connect(this, SIGNAL(idSet(IdentityId)), &_certManager, SLOT(setId(IdentityId)));
+  connect(&_certManager, SIGNAL(updated(const QVariantMap &)), this, SIGNAL(updated(const QVariantMap &)));
 #endif
 }
 
