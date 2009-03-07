@@ -999,7 +999,7 @@ bool PostgreSqlStorage::removeBuffer(const UserId &user, const BufferId &bufferI
     return false;
   case 1:
     db.commit();
-    return false;
+    return true;
   default:
     // there was more then one buffer deleted...
     qWarning() << "PostgreSqlStorage::removeBuffer(): Userid" << user << "BufferId" << "caused deletion of" << numRows << "Buffers! Rolling back transaction...";
@@ -1035,7 +1035,7 @@ bool PostgreSqlStorage::renameBuffer(const UserId &user, const BufferId &bufferI
     return false;
   case 1:
     db.commit();
-    return false;
+    return true;
   default:
     // there was more then one buffer deleted...
     qWarning() << "PostgreSqlStorage::renameBuffer(): Userid" << user << "BufferId" << "affected" << numRows << "Buffers! Rolling back transaction...";
