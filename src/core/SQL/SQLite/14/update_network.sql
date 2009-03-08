@@ -14,4 +14,4 @@ autoreconnectinterval = :autoreconnectinterval,
 autoreconnectretries = :autoreconnectretries,
 unlimitedconnectretries = :unlimitedconnectretries,
 rejoinchannels = :rejoinchannels
-WHERE networkid = :networkid
+WHERE networkid = :networkid AND userid = :userid

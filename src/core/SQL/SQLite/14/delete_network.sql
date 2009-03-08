@@ -1,2 +1,3 @@
 DELETE FROM network
-WHERE networkid = :networkid
+WHERE networkid = :networkid AND userid = :userid
+

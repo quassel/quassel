@@ -135,6 +135,7 @@
     <file>./SQL/SQLite/14/select_bufferByName.sql</file>
     <file>./SQL/SQLite/14/select_bufferExists.sql</file>
     <file>./SQL/SQLite/14/select_buffers.sql</file>
+    <file>./SQL/SQLite/14/select_buffers_for_merge.sql</file>
     <file>./SQL/SQLite/14/select_buffers_for_network.sql</file>
     <file>./SQL/SQLite/14/select_checkidentity.sql</file>
     <file>./SQL/SQLite/14/select_connected_networks.sql</file>

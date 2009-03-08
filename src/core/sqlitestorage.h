@@ -111,11 +111,13 @@ protected:
 
 private:
   static QString backlogFile();
-  bool isValidNetwork(UserId user, const NetworkId &networkId);
-  bool isValidBuffer(const UserId &user, const BufferId &bufferId);
-  NetworkId getNetworkId(UserId user, const QString &network);
-  void createBuffer(UserId user, const NetworkId &networkId, BufferInfo::Type type, const QString &buffer);
+  void bindNetworkInfo(QSqlQuery &query, const NetworkInfo &info);
+  void bindServerInfo(QSqlQuery &query, const Network::Server &server);
 
+  inline void lockForRead() { _dbLock.lockForRead(); }
+  inline void lockForWrite() { _dbLock.lockForWrite(); }
+  inline void unlock() { _dbLock.unlock(); }
+  QReadWriteLock _dbLock;
   static int _maxRetryCount;
 };
 

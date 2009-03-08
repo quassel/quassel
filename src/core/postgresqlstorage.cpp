@@ -537,7 +537,7 @@ NetworkId PostgreSqlStorage::createNetwork(UserId user, const NetworkInfo &info)
   }
 
   if(!db.commit()) {
-    qWarning() << "PostgreSqlStorage::updateNetwork(): commiting data failed!";
+    qWarning() << "PostgreSqlStorage::createNetwork(): commiting data failed!";
     qWarning() << " -" << qPrintable(db.lastError().text());
     return NetworkId();
   }
