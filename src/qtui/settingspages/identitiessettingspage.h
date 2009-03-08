@@ -60,6 +60,7 @@ private slots:
   void continueUnsecured();
 #endif
   void widgetHasChanged();
+  void setWidgetStates();
 
 private:
   Ui::IdentitiesSettingsPage ui;

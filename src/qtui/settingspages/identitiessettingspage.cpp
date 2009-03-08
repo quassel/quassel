@@ -129,6 +129,7 @@ void IdentitiesSettingsPage::load() {
   deletedIdentities.clear();
   changedIdentities.clear();
   ui.identityList->clear();
+  setWidgetStates();
   foreach(IdentityId id, Client::identityIds()) {
     clientIdentityCreated(id);
   }
@@ -138,6 +139,13 @@ void IdentitiesSettingsPage::load() {
 void IdentitiesSettingsPage::widgetHasChanged() {
   bool changed = testHasChanged();
   if(changed != hasChanged()) setChangedState(changed);
+}
+
+void IdentitiesSettingsPage::setWidgetStates() {
+  bool enabled = (ui.identityList->count() > 0);
+  ui.identityEditor->setEnabled(enabled);
+  ui.renameIdentity->setEnabled(enabled);
+  ui.deleteIdentity->setEnabled(ui.identityList->count() > 1);
 }
 
 bool IdentitiesSettingsPage::testHasChanged() {
@@ -222,22 +230,19 @@ void IdentitiesSettingsPage::clientIdentityRemoved(IdentityId id) {
 void IdentitiesSettingsPage::insertIdentity(CertIdentity *identity) {
   IdentityId id = identity->id();
   identities[id] = identity;
-  if(id == 1) {
-    // default identity is always the first one!
-    ui.identityList->insertItem(0, identity->identityName(), id.toInt());
-  } else {
-    QString name = identity->identityName();
-    for(int j = 0; j < ui.identityList->count(); j++) {
-      if((j>0 || ui.identityList->itemData(0).toInt() != 1) && name.localeAwareCompare(ui.identityList->itemText(j)) < 0) {
-        ui.identityList->insertItem(j, name, id.toInt());
-        widgetHasChanged();
-        return;
-      }
+
+  QString name = identity->identityName();
+  for(int j = 0; j < ui.identityList->count(); j++) {
+    if((j>0 || ui.identityList->itemData(0).toInt() != 1) && name.localeAwareCompare(ui.identityList->itemText(j)) < 0) {
+      ui.identityList->insertItem(j, name, id.toInt());
+      widgetHasChanged();
+      return;
     }
-    // append
-    ui.identityList->insertItem(ui.identityList->count(), name, id.toInt());
-    widgetHasChanged();
   }
+  // append
+  ui.identityList->insertItem(ui.identityList->count(), name, id.toInt());
+  setWidgetStates();
+  widgetHasChanged();
 }
 
 void IdentitiesSettingsPage::renameIdentity(IdentityId id, const QString &newName) {
@@ -252,6 +257,7 @@ void IdentitiesSettingsPage::removeIdentity(Identity *id) {
   changedIdentities.removeAll(id->id());
   if(currentId == id->id()) currentId = 0;
   id->deleteLater();
+  setWidgetStates();
   widgetHasChanged();
 }
 
@@ -270,8 +276,6 @@ void IdentitiesSettingsPage::on_identityList_currentIndexChanged(int index) {
       ui.identityEditor->displayIdentity(identities[id], previousIdentity);
       currentId = id;
     }
-    ui.deleteIdentity->setEnabled(id != 1); // default identity cannot be deleted
-    ui.renameIdentity->setEnabled(id != 1); // ...or renamed
   }
 }
 
