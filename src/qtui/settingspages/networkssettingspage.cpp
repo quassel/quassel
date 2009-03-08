@@ -281,22 +281,17 @@ void NetworksSettingsPage::clientIdentityAdded(IdentityId id) {
   const Identity * identity = Client::identity(id);
   connect(identity, SIGNAL(updatedRemotely()), this, SLOT(clientIdentityUpdated()));
 
-  if(id == 1) {
-    // default identity is always the first one!
-    ui.identityList->insertItem(0, identity->identityName(), id.toInt());
-  } else {
-    QString name = identity->identityName();
-    for(int j = 0; j < ui.identityList->count(); j++) {
-      if((j>0 || ui.identityList->itemData(0).toInt() != 1) && name.localeAwareCompare(ui.identityList->itemText(j)) < 0) {
-        ui.identityList->insertItem(j, name, id.toInt());
-        widgetHasChanged();
-        return;
-      }
+  QString name = identity->identityName();
+  for(int j = 0; j < ui.identityList->count(); j++) {
+    if((j>0 || ui.identityList->itemData(0).toInt() != 1) && name.localeAwareCompare(ui.identityList->itemText(j)) < 0) {
+      ui.identityList->insertItem(j, name, id.toInt());
+      widgetHasChanged();
+      return;
     }
-    // append
-    ui.identityList->insertItem(ui.identityList->count(), name, id.toInt());
-    widgetHasChanged();
   }
+  // append
+  ui.identityList->insertItem(ui.identityList->count(), name, id.toInt());
+  widgetHasChanged();
 }
 
 void NetworksSettingsPage::clientIdentityUpdated() {
@@ -316,13 +311,13 @@ void NetworksSettingsPage::clientIdentityUpdated() {
 }
 
 void NetworksSettingsPage::clientIdentityRemoved(IdentityId id) {
+  IdentityId defaultId = defaultIdentity();
   if(currentId != 0) saveToNetworkInfo(networkInfos[currentId]);
-  //ui.identityList->removeItem(ui.identityList->findData(id.toInt()));
   foreach(NetworkInfo info, networkInfos.values()) {
-    //qDebug() << info.networkName << info.networkId << info.identity;
     if(info.identity == id) {
-      if(info.networkId == currentId) ui.identityList->setCurrentIndex(0);
-      info.identity = 1; // set to default
+      if(info.networkId == currentId)
+	ui.identityList->setCurrentIndex(0);
+      info.identity = defaultId;
       networkInfos[info.networkId] = info;
       if(info.networkId > 0) Client::updateNetwork(info);
     }
@@ -533,6 +528,7 @@ void NetworksSettingsPage::on_addNetwork_clicked() {
     }
     id = -id.toInt();
     info.networkId = id;
+    info.identity = defaultIdentity();
     networkInfos[id] = info;
     QListWidgetItem *item = insertNetwork(info);
     ui.networkList->setCurrentItem(item);
@@ -641,6 +637,16 @@ void NetworksSettingsPage::on_downServer_clicked() {
 void NetworksSettingsPage::on_editIdentities_clicked() {
   SettingsPageDlg dlg(new IdentitiesSettingsPage(this), this);
   dlg.exec();
+}
+
+IdentityId NetworksSettingsPage::defaultIdentity() const {
+  IdentityId defaultId = 0;
+  QList<IdentityId> ids = Client::identityIds();
+  foreach(IdentityId id, ids) {
+    if(defaultId == 0 || id < defaultId)
+      defaultId = id;
+  }
+  return defaultId;
 }
 
 /**************************************************************************
