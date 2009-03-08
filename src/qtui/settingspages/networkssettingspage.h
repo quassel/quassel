@@ -92,6 +92,7 @@ private:
   QListWidgetItem *insertNetwork(const NetworkInfo &info);
   QListWidgetItem *networkItem(NetworkId) const;
   void saveToNetworkInfo(NetworkInfo &);
+  IdentityId defaultIdentity() const;
 };
 
 
