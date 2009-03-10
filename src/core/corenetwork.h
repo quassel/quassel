@@ -106,7 +106,7 @@ public slots:
 
   Server usedServer() const;
 
-  inline void resetPingTimeout() { _lastPingTime = 0; }
+  inline void resetPingTimeout() { _pingCount = 0; }
 
   inline void displayMsg(Message::Type msgType, BufferInfo::Type bufferType, const QString &target, const QString &text, const QString &sender = "", Message::Flags flags = Message::None) {
     emit displayMsg(networkId(), msgType, bufferType, target, text, sender, flags);
@@ -182,6 +182,8 @@ private:
 
   QTimer _pingTimer;
   uint _lastPingTime;
+  uint _maxPingCount;
+  uint _pingCount;
 
   bool _autoWhoEnabled;
   QStringList _autoWhoQueue;

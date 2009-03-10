@@ -41,6 +41,8 @@ CoreNetwork::CoreNetwork(const NetworkId &networkid, CoreSession *session)
     _lastUsedServerIndex(0),
 
     _lastPingTime(0),
+    _maxPingCount(3),
+    _pingCount(0),
 
     // TODO make autowho configurable (possibly per-network)
     _autoWhoEnabled(true),
@@ -523,13 +525,14 @@ void CoreNetwork::doAutoReconnect() {
 
 void CoreNetwork::sendPing() {
   uint now = QDateTime::currentDateTime().toTime_t();
-  if(_lastPingTime != 0 && now - _lastPingTime <= (uint)(_pingTimer.interval() / 1000) + 1) {
+  if(_pingCount >= _maxPingCount && now - _lastPingTime <= (uint)(_pingTimer.interval() / 1000) + 1) {
     // the second check compares the actual elapsed time since the last ping and the pingTimer interval
     // if the interval is shorter then the actual elapsed time it means that this thread was somehow blocked
     // and unable to even handle a ping answer. So we ignore those misses.
-    disconnectFromIrc(false, QString("No Ping reply in %1 seconds.").arg(_pingTimer.interval() / 1000), true /* withReconnect */);
+    disconnectFromIrc(false, QString("No Ping reply in %1 seconds.").arg(_maxPingCount * _pingTimer.interval() / 1000), true /* withReconnect */);
   } else {
     _lastPingTime = now;
+    _pingCount++;
     userInputHandler()->handlePing(BufferInfo(), QString());
   }
 }
