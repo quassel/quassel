@@ -4236,47 +4236,47 @@ SOME SPACE</translation>
         <translation>Identités</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/identitiessettingspage.cpp" line="170"/>
+        <location filename="../src/qtui/settingspages/identitiessettingspage.cpp" line="178"/>
         <source>&lt;b&gt;The following problems need to be corrected before your changes can be applied:&lt;/b&gt;&lt;ul&gt;</source>
         <translation>&lt;b&gt;Les problèmes suivants doivent être corrigés avant que vos changements soient appliqués:&lt;/b&gt;&lt;ul&gt;</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/identitiessettingspage.cpp" line="171"/>
+        <location filename="../src/qtui/settingspages/identitiessettingspage.cpp" line="179"/>
         <source>&lt;li&gt;All identities need an identity name set&lt;/li&gt;</source>
         <translation>&lt;li&gt;Toutes les identitées ont besoin qu&apos;un nom d&apos;identité soit saisi&lt;/li&gt;</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/identitiessettingspage.cpp" line="172"/>
+        <location filename="../src/qtui/settingspages/identitiessettingspage.cpp" line="180"/>
         <source>&lt;li&gt;Every identity needs at least one nickname defined&lt;/li&gt;</source>
         <translation>&lt;li&gt;Chaque identité doit avoir au moins un pseudo défini&lt;/li&gt;</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/identitiessettingspage.cpp" line="173"/>
+        <location filename="../src/qtui/settingspages/identitiessettingspage.cpp" line="181"/>
         <source>&lt;li&gt;You need to specify a real name for every identity&lt;/li&gt;</source>
         <translation>&lt;li&gt;Vous devez saisir un nom réel pour chaque identité&lt;/li&gt;</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/identitiessettingspage.cpp" line="174"/>
+        <location filename="../src/qtui/settingspages/identitiessettingspage.cpp" line="182"/>
         <source>&lt;li&gt;You need to specify an ident for every identity&lt;/li&gt;</source>
         <translation>&lt;li&gt;Vous devez saisir un ident pour chaque identité&lt;/li&gt;</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/identitiessettingspage.cpp" line="175"/>
+        <location filename="../src/qtui/settingspages/identitiessettingspage.cpp" line="183"/>
         <source>&lt;/ul&gt;</source>
         <translation>&lt;/ul&gt;</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/identitiessettingspage.cpp" line="176"/>
+        <location filename="../src/qtui/settingspages/identitiessettingspage.cpp" line="184"/>
         <source>One or more identities are invalid</source>
         <translation>Une ou plusieurs identités sont invalides</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/identitiessettingspage.cpp" line="306"/>
+        <location filename="../src/qtui/settingspages/identitiessettingspage.cpp" line="310"/>
         <source>Delete Identity?</source>
         <translation>Supprimer l&apos;Identité ?</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/identitiessettingspage.cpp" line="307"/>
+        <location filename="../src/qtui/settingspages/identitiessettingspage.cpp" line="311"/>
         <source>Do you really want to delete identity &quot;%1&quot;?</source>
         <translation>Voulez vous vraiment supprimer l&apos;identité &quot;%1&quot;?</translation>
     </message>
@@ -4286,7 +4286,7 @@ SOME SPACE</translation>
         <translation>Renommer l&apos;identité</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/identitiessettingspage.cpp" line="319"/>
+        <location filename="../src/qtui/settingspages/identitiessettingspage.cpp" line="323"/>
         <source>Please enter a new name for the identity &quot;%1&quot;!</source>
         <translation>Merci de saisir un nom pour l&apos;identité &quot;%1&quot;!</translation>
     </message>
@@ -5869,7 +5869,7 @@ p, li { white-space: pre-wrap; }
         <translation>Merci de saisir un nom de réseau:</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/networkssettingspage.cpp" line="699"/>
+        <location filename="../src/qtui/settingspages/networkssettingspage.cpp" line="705"/>
         <source>Add Network</source>
         <translation>Ajouter un réseau</translation>
     </message>
@@ -6246,12 +6246,12 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Appliquer d&apos;abord !</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/networkssettingspage.cpp" line="546"/>
+        <location filename="../src/qtui/settingspages/networkssettingspage.cpp" line="542"/>
         <source>Delete Network?</source>
         <translation>Supprimer le Réseau ?</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/networkssettingspage.cpp" line="547"/>
+        <location filename="../src/qtui/settingspages/networkssettingspage.cpp" line="543"/>
         <source>Do you really want to delete the network &quot;%1&quot; and all related settings, including the backlog?</source>
         <translation>Voulez vous vraiment détruire le réseau &quot;%1&quot; et tous les paramètres correspondants, ainsi que l&apos;historique?</translation>
     </message>
@@ -6500,7 +6500,7 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
         <translation type="obsolete">Pseudo:</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/identitiessettingspage.cpp" line="416"/>
+        <location filename="../src/qtui/settingspages/identitiessettingspage.cpp" line="420"/>
         <source>Add Nickname</source>
         <translation>Ajouter un pseudo</translation>
     </message>
@@ -7329,72 +7329,72 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
     <message>
         <location filename="../src/qtui/coreconnectdlg.cpp" line="568"/>
         <source>SSL Certificate used by %1</source>
-        <translation type="unfinished"></translation>
+        <translation>SSL Certificat émis par %1</translation>
     </message>
     <message>
         <location filename="../src/qtui/coreconnectdlg.cpp" line="572"/>
         <source>Issuer Info</source>
-        <translation type="unfinished"></translation>
+        <translation>Informations Emetteur</translation>
     </message>
     <message>
         <location filename="../src/qtui/coreconnectdlg.cpp" line="583"/>
         <source>Organization:</source>
-        <translation type="unfinished"></translation>
+        <translation>Organisation:</translation>
     </message>
     <message>
         <location filename="../src/qtui/coreconnectdlg.cpp" line="584"/>
         <source>Locality Name:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom de la Localité:</translation>
     </message>
     <message>
         <location filename="../src/qtui/coreconnectdlg.cpp" line="585"/>
         <source>Organizational Unit Name:</source>
-        <translation type="unfinished"></translation>
+        <translation>Unité d&apos;Organisation:</translation>
     </message>
     <message>
         <location filename="../src/qtui/coreconnectdlg.cpp" line="586"/>
         <source>Country Name:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom du Pays:</translation>
     </message>
     <message>
         <location filename="../src/qtui/coreconnectdlg.cpp" line="587"/>
         <source>State or Province Name:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom de l&apos;Etat ou de la Province:</translation>
     </message>
     <message>
         <location filename="../src/qtui/coreconnectdlg.cpp" line="581"/>
         <source>Subject Info</source>
-        <translation type="unfinished"></translation>
+        <translation>Sujet Info </translation>
     </message>
     <message>
         <location filename="../src/qtui/coreconnectdlg.cpp" line="590"/>
         <source>Additional Info</source>
-        <translation type="unfinished"></translation>
+        <translation>Info additionelle</translation>
     </message>
     <message>
         <location filename="../src/qtui/coreconnectdlg.cpp" line="592"/>
         <source>Valid From:</source>
-        <translation type="unfinished"></translation>
+        <translation>Valable à partir de:</translation>
     </message>
     <message>
         <location filename="../src/qtui/coreconnectdlg.cpp" line="593"/>
         <source>Valid To:</source>
-        <translation type="unfinished"></translation>
+        <translation>Valable jusqu&apos;au:</translation>
     </message>
     <message>
         <location filename="../src/qtui/coreconnectdlg.cpp" line="596"/>
         <source>Hostname %1:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom de l&apos;hôte %1:</translation>
     </message>
     <message>
         <location filename="../src/qtui/coreconnectdlg.cpp" line="600"/>
         <source>E-Mail Address %1:</source>
-        <translation type="unfinished"></translation>
+        <translation>Adresse Email %1:</translation>
     </message>
     <message>
         <location filename="../src/qtui/coreconnectdlg.cpp" line="602"/>
         <source>Digest:</source>
-        <translation type="unfinished"></translation>
+        <translation>Résumé:</translation>
     </message>
 </context>
 <context>
