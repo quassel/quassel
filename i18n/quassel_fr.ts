@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS><TS version="1.1" language="fr">
-<defaultcodec></defaultcodec>
 <context>
     <name>@default</name>
     <message>
@@ -3199,12 +3198,12 @@ SOME SPACE</translation>
 <context>
     <name>CoreNetwork</name>
     <message>
-        <location filename="../src/core/corenetwork.cpp" line="151"/>
+        <location filename="../src/core/corenetwork.cpp" line="153"/>
         <source>Connection failed. Cycling to next Server</source>
         <translation>Echec de connexion. Passage sur le serveur suivant</translation>
     </message>
     <message>
-        <location filename="../src/core/corenetwork.cpp" line="160"/>
+        <location filename="../src/core/corenetwork.cpp" line="162"/>
         <source>Connecting to %1:%2...</source>
         <translation>Connexion à %1:%2...</translation>
     </message>
@@ -3214,22 +3213,22 @@ SOME SPACE</translation>
         <translation type="obsolete">Déconnecte.</translation>
     </message>
     <message>
-        <location filename="../src/core/corenetwork.cpp" line="304"/>
+        <location filename="../src/core/corenetwork.cpp" line="306"/>
         <source>Could not connect to %1 (%2)</source>
         <translation>Impossible de se connecter à %1 (%2)</translation>
     </message>
     <message>
-        <location filename="../src/core/corenetwork.cpp" line="306"/>
+        <location filename="../src/core/corenetwork.cpp" line="308"/>
         <source>Connection failure: %1</source>
         <translation>Erreur de connexion: %1</translation>
     </message>
     <message>
-        <location filename="../src/core/corenetwork.cpp" line="208"/>
+        <location filename="../src/core/corenetwork.cpp" line="210"/>
         <source>Disconnecting. (%1)</source>
         <translation>Déconnecte. (%1)</translation>
     </message>
     <message>
-        <location filename="../src/core/corenetwork.cpp" line="208"/>
+        <location filename="../src/core/corenetwork.cpp" line="210"/>
         <source>Core Shutdown</source>
         <translation>Arrêt du Noyau</translation>
     </message>
