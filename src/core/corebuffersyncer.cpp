@@ -142,7 +142,7 @@ void CoreBufferSyncer::purgeBufferIds() {
   QList<BufferId> storedIds = bufferIds();
   foreach(BufferId bufferId, storedIds) {
     if(!actualBuffers.contains(bufferId)) {
-      removeBuffer(bufferId);
+      BufferSyncer::removeBuffer(bufferId);
     }
   }
 }
