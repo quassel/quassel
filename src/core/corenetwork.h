@@ -106,7 +106,7 @@ public slots:
 
   Server usedServer() const;
 
-  inline void resetPingTimeout() { _lastPingTime = 0; }
+  inline void resetPingTimeout() { _pingCount = 0; }
 
 signals:
   void recvRawServerMsg(QString);
@@ -178,6 +178,8 @@ private:
 
   QTimer _pingTimer;
   uint _lastPingTime;
+  uint _maxPingCount;
+  uint _pingCount;
 
   bool _autoWhoEnabled;
   QStringList _autoWhoQueue;
