@@ -111,7 +111,8 @@ private:
 
   bool filterAcceptBuffer(const QModelIndex &) const;
   bool filterAcceptNetwork(const QModelIndex &) const;
-  void addBuffer(const BufferId &) const;
+  void addBuffer(const BufferId &bufferId) const;
+  void addBuffers(const QList<BufferId> &bufferIds) const;
   static bool bufferIdLessThan(const BufferId &, const BufferId &);
 };
 Q_DECLARE_OPERATORS_FOR_FLAGS(BufferViewFilter::Modes)
