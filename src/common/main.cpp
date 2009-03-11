@@ -99,8 +99,8 @@ int main(int argc, char **argv) {
   cliParser->addOption("loglevel <level>", 'L', "Loglevel Debug|Info|Warning|Error", "Info");
   cliParser->addOption("configdir <path>", 'c', "Specify the directory holding configuration files, the SQlite database and the SSL Cert");
   cliParser->addOption("datadir <path>", 0, "DEPRECATED - Use --configdir instead");
-  cliParser->addOption("migrate-backend <backendidentifier>", 0, "Starts an interactive session and attempts to migrate your current storage backend to the new one");
-  cliParser->addOption("select-backend <backendidentifier>", 0, "Starts an interactive session and switches your current storage backend to the new one. No migration will be done!");
+  cliParser->addOption("select-backend <backendidentifier>", 0, "Starts an interactive session and switches your current storage backend to the new one. Attempts a merge if the new backend is uninitialized and the old backend supports migration. Otherwise prompts for new user credentials!");
+  cliParser->addSwitch("add-user", 0, "Starts an interactive session to add a new core user");
 #endif
 
 #ifdef HAVE_KDE

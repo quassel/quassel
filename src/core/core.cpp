@@ -34,6 +34,11 @@
 
 // migration related
 #include <QFile>
+#ifdef Q_OS_WIN32
+#  include <windows.h>
+#else
+#  include <termios.h>
+#endif /* Q_OS_WIN32 */
 
 Core *Core::instanceptr = 0;
 
@@ -138,13 +143,18 @@ Core::Core()
 }
 
 void Core::init() {
+  CoreSettings cs;
+  _configured = initStorage(cs.storageSettings().toMap());
+
   if(Quassel::isOptionSet("select-backend")) {
-    switchBackend(Quassel::optionValue("select-backend"));
+    selectBackend(Quassel::optionValue("select-backend"));
     exit(0);
   }
 
-  CoreSettings cs;
-  _configured = initStorage(cs.storageSettings().toMap());
+  if(Quassel::isOptionSet("add-user")) {
+    createUser();
+    exit(0);
+  }
 
   if(!_configured) {
     if(!_storageBackends.count()) {
@@ -155,11 +165,6 @@ void Core::init() {
       exit(1); // TODO make this less brutal (especially for mono client -> popup)
     }
     qWarning() << "Core is currently not configured! Please connect with a Quassel Client for basic setup.";
-  }
-
-  if(Quassel::isOptionSet("migrate-backend")) {
-    migrateBackend(Quassel::optionValue("migrate-backend"));
-    exit(0);
   }
 
   connect(&_server, SIGNAL(newConnection()), this, SLOT(incomingConnection()));
@@ -695,28 +700,13 @@ void Core::socketError(QAbstractSocket::SocketError err) {
     qWarning() << "Core::socketError()" << socket << err << socket->errorString();
 }
 
-bool Core::migrateBackend(const QString &backend) {
-  AbstractSqlStorage *sqlStorage = qobject_cast<AbstractSqlStorage *>(_storage);
-  if(!sqlStorage) {
-    qWarning() << "Core::migrateDb(): only SQL based backends can be migrated!";
-    return false;
-  }
-
-  AbstractSqlMigrationReader *reader = sqlStorage->createMigrationReader();
-  if(!reader) {
-    qWarning() << qPrintable(QString("Core::migrateDb(): unable to migrate storage backend! (No migration reader for %1)").arg(sqlStorage->displayName()));
-    return false;
-  }
-
-
+// migration / backend selection
+bool Core::selectBackend(const QString &backend) {
   // reregister all storage backends
   registerStorageBackends();
-  if(_storageBackends.contains(sqlStorage->displayName())) {
-    unregisterStorageBackend(_storageBackends[sqlStorage->displayName()]);
-  }
   if(!_storageBackends.contains(backend)) {
-    qWarning() << qPrintable(QString("Core::migrateBackend(): unsupported migration target: %1").arg(backend));
-    qWarning() << "    supported Targets:" << qPrintable(QStringList(_storageBackends.keys()).join(", "));
+    qWarning() << qPrintable(QString("Core::selectBackend(): unsupported backend: %1").arg(backend));
+    qWarning() << "    supported backends are:" << qPrintable(QStringList(_storageBackends.keys()).join(", "));
     return false;
   }
 
@@ -725,65 +715,123 @@ bool Core::migrateBackend(const QString &backend) {
 
   Storage::State storageState = storage->init(settings);
   switch(storageState) {
+  case Storage::IsReady:
+    saveBackendSettings(backend, settings);
+    qWarning() << "Switched backend to:" << qPrintable(backend);
+    qWarning() << "Backend already initialized. Skipping Migration";
+    return true;
   case Storage::NotAvailable:
-    qCritical() << "Core::migrateBackend(): selected storage backend is not available:" << backend;
+    qCritical() << "Backend is not available:" << qPrintable(backend);
     return false;
   case Storage::NeedsSetup:
     if(!storage->setup(settings)) {
-      qWarning() << qPrintable(QString("Core::migrateBackend(): unable to setup target: %1").arg(backend));
+      qWarning() << qPrintable(QString("Core::selectBackend(): unable to setup backend: %1").arg(backend));
       return false;
     }
 
     if(storage->init(settings) != Storage::IsReady) {
-      qWarning() << qPrintable(QString("Core::migrateBackend(): unable to initialize target: %1").arg(backend));
+      qWarning() << qPrintable(QString("Core::migrateBackend(): unable to initialize backend: %1").arg(backend));
       return false;
     }
-  case Storage::IsReady:
+
+    saveBackendSettings(backend, settings);
+    qWarning() << "Switched backend to:" << qPrintable(backend);
     break;
   }
 
-  sqlStorage = qobject_cast<AbstractSqlStorage *>(storage);
-  if(!sqlStorage) {
-    qWarning() << "Core::migrateDb(): only SQL based backends can be migrated!";
+  // let's see if we have a current storage object we can migrate from
+  AbstractSqlMigrationReader *reader = getMigrationReader(_storage);
+  AbstractSqlMigrationWriter *writer = getMigrationWriter(storage);
+  if(reader && writer) {
+    qDebug() << qPrintable(QString("Migrating Storage backend %1 to %2...").arg(_storage->displayName(), storage->displayName()));
+    delete _storage;
+    _storage = 0;
+    delete storage;
+    storage = 0;
+    if(reader->migrateTo(writer)) {
+      qDebug() << "Migration finished!";
+      saveBackendSettings(backend, settings);
+      return true;
+    }
     return false;
-  }
-  AbstractSqlMigrationWriter *writer = sqlStorage->createMigrationWriter();
-  if(!writer) {
     qWarning() << qPrintable(QString("Core::migrateDb(): unable to migrate storage backend! (No migration writer for %1)").arg(backend));
-    return false;
   }
 
-  qDebug() << qPrintable(QString("Migrating Storage backend %1 to %2...").arg(_storage->displayName(), storage->displayName()));
-  delete _storage;
-  _storage = 0;
-  delete storage;
-  storage = 0;
-  if(reader->migrateTo(writer)) {
-    qDebug() << "Migration finished!";
-    saveBackendSettings(backend, settings);
-    return true;
+  // inform the user why we cannot merge
+  if(!_storage) {
+    qWarning() << "No currently active backend. Skipping migration.";
+  } else if(!reader) {
+    qWarning() << "Currently active backend does not support migration:" << qPrintable(_storage->displayName());
   }
-  return false;
+  if(writer) {
+    qWarning() << "New backend does not support migration:" << qPrintable(backend);
+  }
+
+  // so we were unable to merge, but let's create a user \o/
+  _storage = storage;
+  createUser();
+  return true;
 }
 
-bool Core::switchBackend(const QString &backend) {
-  if(!_storageBackends.contains(backend)) {
-    qWarning() << qPrintable(QString("Core::switchBackend(): unsupported backend: %1").arg(backend));
-    qWarning() << "    supported backends:" << qPrintable(QStringList(_storageBackends.keys()).join(", "));
-    return false;
+void Core::createUser() {
+  QTextStream out(stdout);
+  QTextStream in(stdin);
+  out << "Add a new user:" << endl;
+  out << "Username: ";
+  out.flush();
+  QString username = in.readLine().trimmed();
+
+  disableStdInEcho();
+  out << "Password: ";
+  out.flush();
+  QString password = in.readLine().trimmed();
+  out << endl;
+  out << "Repeat Password: ";
+  out.flush();
+  QString password2 = in.readLine().trimmed();
+  out << endl;
+  enableStdInEcho();
+
+  if(password != password2) {
+    qWarning() << "Passwords don't match!";
+    return;
+  }
+  if(password.isEmpty()) {
+    qWarning() << "Password is empty!";
+    return;
   }
 
-  Storage *storage = _storageBackends[backend];
-  QVariantMap settings = promptForSettings(storage);
-
-  bool ok = initStorage(backend, settings, true /* initial setup is allowed */);
-  if(ok) {
-    saveBackendSettings(backend, settings);
-    qWarning() << "Switched backend to:" << qPrintable(backend);
+  if(_storage->addUser(username, password).isValid()) {
+    out << "Added user " << username << " successfully!" << endl;
   } else {
-    qWarning() << "Failed to switch backend to:" << qPrintable(backend);
+    qWarning() << "Unable to add user:" << qPrintable(username);
   }
-  return ok;
+}
+
+AbstractSqlMigrationReader *Core::getMigrationReader(Storage *storage) {
+  if(!storage)
+    return 0;
+
+  AbstractSqlStorage *sqlStorage = qobject_cast<AbstractSqlStorage *>(storage);
+  if(!sqlStorage) {
+    qDebug() << "Core::migrateDb(): only SQL based backends can be migrated!";
+    return 0;
+  }
+
+  return sqlStorage->createMigrationReader();
+}
+
+AbstractSqlMigrationWriter *Core::getMigrationWriter(Storage *storage) {
+  if(!storage)
+    return 0;
+
+  AbstractSqlStorage *sqlStorage = qobject_cast<AbstractSqlStorage *>(storage);
+  if(!sqlStorage) {
+    qDebug() << "Core::migrateDb(): only SQL based backends can be migrated!";
+    return 0;
+  }
+
+  return sqlStorage->createMigrationWriter();
 }
 
 void Core::saveBackendSettings(const QString &backend, const QVariantMap &settings) {
@@ -802,7 +850,6 @@ QVariantMap Core::promptForSettings(const Storage *storage) {
 
   QTextStream out(stdout);
   QTextStream in(stdin);
-  out << "!!!Warning: echo mode is always on even if asked for a password!!!" << endl;
   out << "Default values are in brackets" << endl;
 
   QVariantMap defaults = storage->setupDefaults();
@@ -818,7 +865,16 @@ QVariantMap Core::promptForSettings(const Storage *storage) {
     }
     out << ": ";
     out.flush();
+
+    bool noEcho = QString("password").toLower().startsWith(key.toLower());
+    if(noEcho) {
+      disableStdInEcho();
+    }
     value = in.readLine().trimmed();
+    if(noEcho) {
+      out << endl;
+      enableStdInEcho();
+    }
 
     if(!value.isEmpty()) {
       switch(defaults[key].type()) {
@@ -833,3 +889,27 @@ QVariantMap Core::promptForSettings(const Storage *storage) {
   }
   return settings;
 }
+
+
+#ifdef Q_OS_WIN32
+void Core::stdInEcho(bool on) {
+  HANDLE hStdin = GetStdHandle(STD_INPUT_HANDLE);
+  DWORD mode = 0;
+  GetConsoleMode(hStdin, &mode);
+  if(on)
+    mode |= ENABLE_ECHO_INPUT;
+  else
+    mode &= ~ENABLE_ECHO_INPUT;
+  SetConsoleMode(hStdin, mode);
+}
+#else
+void Core::stdInEcho(bool on) {
+  termios t;
+  tcgetattr(STDIN_FILENO, &t);
+  if(on)
+    t.c_lflag |= ECHO;
+  else
+    t.c_lflag &= ~ECHO;
+  tcsetattr(STDIN_FILENO, TCSANOW, &t);
+}
+#endif /* Q_OS_WIN32 */

@@ -45,6 +45,9 @@ class SessionThread;
 class SignalProxy;
 struct NetworkInfo;
 
+class AbstractSqlMigrationReader;
+class AbstractSqlMigrationWriter;
+
 class Core : public QObject {
   Q_OBJECT
 
@@ -424,8 +427,8 @@ private:
   bool registerStorageBackend(Storage *);
   void unregisterStorageBackends();
   void unregisterStorageBackend(Storage *);
-  bool migrateBackend(const QString &backend);
-  bool switchBackend(const QString &backend);
+  bool selectBackend(const QString &backend);
+  void createUser();
   void saveBackendSettings(const QString &backend, const QVariantMap &settings);
   QVariantMap promptForSettings(const Storage *storage);
 
@@ -447,6 +450,13 @@ private:
   QDateTime _startTime;
 
   bool _configured;
+
+
+  static AbstractSqlMigrationReader *getMigrationReader(Storage *storage);
+  static AbstractSqlMigrationWriter *getMigrationWriter(Storage *storage);
+  static void stdInEcho(bool on);
+  static inline void enableStdInEcho() { stdInEcho(true); }
+  static inline void disableStdInEcho() { stdInEcho(false); }
 };
 
 #endif
