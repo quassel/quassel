@@ -90,7 +90,7 @@ int main(int argc, char **argv) {
   cliParser->addSwitch("debugbufferswitches", 0, "Enables debugging for bufferswitches");
   cliParser->addSwitch("debugmodel", 0, "Enables debugging for models");
 #endif
-#ifndef BUILD_QTCLIENT
+#ifndef BUILD_QTUI
   // put core-only arguments here
   cliParser->addOption("listen <address>[,<address[,...]]>", 0, "The address(es) quasselcore will listen on", "0.0.0.0,::");
   cliParser->addOption("port <port>",'p', "The port quasselcore will listen at", QString("4242"));
