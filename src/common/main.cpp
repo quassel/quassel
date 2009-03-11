@@ -84,6 +84,8 @@ int main(int argc, char **argv) {
   // put shared client&core arguments here
   cliParser->addSwitch("debug",'d', "Enable debug output");
   cliParser->addSwitch("help",'h', "Display this help and exit");
+  cliParser->addOption("configdir <path>", 'c', "Specify the directory holding configuration files, the SQlite database and the SSL Cert");
+  cliParser->addOption("datadir <path>", 0, "DEPRECATED - Use --configdir instead");
 
 #ifndef BUILD_CORE
   // put client-only arguments here
@@ -97,8 +99,6 @@ int main(int argc, char **argv) {
   cliParser->addSwitch("norestore", 'n', "Don't restore last core's state");
   cliParser->addOption("logfile <path>", 'l', "Path to logfile");
   cliParser->addOption("loglevel <level>", 'L', "Loglevel Debug|Info|Warning|Error", "Info");
-  cliParser->addOption("configdir <path>", 'c', "Specify the directory holding configuration files, the SQlite database and the SSL Cert");
-  cliParser->addOption("datadir <path>", 0, "DEPRECATED - Use --configdir instead");
   cliParser->addOption("select-backend <backendidentifier>", 0, "Starts an interactive session and switches your current storage backend to the new one. Attempts a merge if the new backend is uninitialized and the old backend supports migration. Otherwise prompts for new user credentials!");
   cliParser->addSwitch("add-user", 0, "Starts an interactive session to add a new core user");
 #endif
