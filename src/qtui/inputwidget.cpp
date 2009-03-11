@@ -203,8 +203,11 @@ void InputWidget::updateNickSelector() const {
     return;
 
   IrcUser *me = net->me();
-  if(me)
-    nicks[nickIdx] = net->myNick() + QString(" (+%1)").arg(me->userModes());
+  if(me) {
+    nicks[nickIdx] = net->myNick();
+    if(!me->userModes().isEmpty())
+      nicks[nickIdx] += QString(" (+%1)").arg(me->userModes());
+  }
       
   ui.ownNick->addItems(nicks);
 
@@ -218,7 +221,11 @@ void InputWidget::changeNick(const QString &newNick) const {
   const Network *net = currentNetwork();
   if(!net || net->isMyNick(newNick))
     return;
-  sendText(QString("/NICK %1").arg(newNick));
+
+  // we reset the nick selecter as we have no confirmation yet, that this will succeed.
+  // if the action succeeds it will be properly updated anyways.
+  updateNickSelector();
+  Client::userInput(BufferInfo::fakeStatusBuffer(net->networkId()), QString("/NICK %1").arg(newNick));
 }
 
 void InputWidget::sendText(const QString &text) const {
