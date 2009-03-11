@@ -141,13 +141,8 @@ void BufferViewFilter::enableEditMode(bool enable) {
     return;
 
   if(enable == false) {
-    int numBuffers = config()->bufferList().count();
+    addBuffers(QList<BufferId>::fromSet(_toAdd));
     QSet<BufferId>::const_iterator iter;
-    for(iter = _toAdd.constBegin(); iter != _toAdd.constEnd(); iter++) {
-      if(config()->bufferList().contains(*iter))
-	continue;
-      config()->requestAddBuffer(*iter, numBuffers);
-    }
     for(iter = _toTempRemove.constBegin(); iter != _toTempRemove.constEnd(); iter++) {
       if(config()->temporarilyRemovedBuffers().contains(*iter))
 	 continue;
@@ -224,10 +219,12 @@ bool BufferViewFilter::dropMimeData(const QMimeData *data, Qt::DropAction action
 	  pos = 0;
       }
 
-      if(config()->bufferList().contains(bufferId)) {
+      if(config()->bufferList().contains(bufferId) && !config()->sortAlphabetically()) {
 	if(config()->bufferList().indexOf(bufferId) < pos)
 	  pos--;
-	config()->requestMoveBuffer(bufferId, pos);
+	ClientBufferViewConfig *clientConf = qobject_cast<ClientBufferViewConfig *>(config());
+	if(!clientConf || !clientConf->isLocked())
+	  config()->requestMoveBuffer(bufferId, pos);
       } else {
 	config()->requestAddBuffer(bufferId, pos);
       }
@@ -262,6 +259,33 @@ void BufferViewFilter::addBuffer(const BufferId &bufferId) const {
     }
   }
   config()->requestAddBuffer(bufferId, pos);
+}
+
+void BufferViewFilter::addBuffers(const QList<BufferId> &bufferIds) const {
+  if(!config())
+    return;
+
+  QList<BufferId> bufferList = config()->bufferList();
+  foreach(BufferId bufferId, bufferIds) {
+    if(bufferList.contains(bufferId))
+      continue;
+
+    int pos = bufferList.count();
+    bool lt;
+    for(int i = 0; i < bufferList.count(); i++) {
+      if(config() && config()->sortAlphabetically())
+	lt = bufferIdLessThan(bufferId, bufferList[i]);
+      else
+	lt = bufferId < config()->bufferList()[i];
+
+      if(lt) {
+	pos = i;
+	bufferList.insert(pos, bufferId);
+	break;
+      }
+    }
+    config()->requestAddBuffer(bufferId, pos);
+  }
 }
 
 bool BufferViewFilter::filterAcceptBuffer(const QModelIndex &source_bufferIndex) const {
