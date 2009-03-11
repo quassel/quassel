@@ -519,16 +519,16 @@ void SqliteStorage::bindNetworkInfo(QSqlQuery &query, const NetworkInfo &info) {
   query.bindValue(":encodingcodec", QString(info.codecForEncoding));
   query.bindValue(":decodingcodec", QString(info.codecForDecoding));
   query.bindValue(":servercodec", QString(info.codecForServer));
-  query.bindValue(":userandomserver", info.useRandomServer);
+  query.bindValue(":userandomserver", info.useRandomServer ? 1 : 0);
   query.bindValue(":perform", info.perform.join("\n"));
-  query.bindValue(":useautoidentify", info.useAutoIdentify);
+  query.bindValue(":useautoidentify", info.useAutoIdentify ? 1 : 0);
   query.bindValue(":autoidentifyservice", info.autoIdentifyService);
   query.bindValue(":autoidentifypassword", info.autoIdentifyPassword);
-  query.bindValue(":useautoreconnect", info.useAutoReconnect);
+  query.bindValue(":useautoreconnect", info.useAutoReconnect ? 1 : 0);
   query.bindValue(":autoreconnectinterval", info.autoReconnectInterval);
   query.bindValue(":autoreconnectretries", info.autoReconnectRetries);
-  query.bindValue(":unlimitedconnectretries", info.unlimitedReconnectRetries);
-  query.bindValue(":rejoinchannels", info.rejoinChannels);
+  query.bindValue(":unlimitedconnectretries", info.unlimitedReconnectRetries ? 1 : 0);
+  query.bindValue(":rejoinchannels", info.rejoinChannels ? 1 : 0);
   if(info.networkId.isValid())
     query.bindValue(":networkid", info.networkId.toInt());
 }
@@ -537,9 +537,9 @@ void SqliteStorage::bindServerInfo(QSqlQuery &query, const Network::Server &serv
   query.bindValue(":hostname", server.host);
   query.bindValue(":port", server.port);
   query.bindValue(":password", server.password);
-  query.bindValue(":ssl", server.useSsl);
+  query.bindValue(":ssl", server.useSsl ? 1 : 0);
   query.bindValue(":sslversion", server.sslVersion);
-  query.bindValue(":useproxy", server.useProxy);
+  query.bindValue(":useproxy", server.useProxy ? 1 : 0);
   query.bindValue(":proxytype", server.proxyType);
   query.bindValue(":proxyhost", server.proxyHost);
   query.bindValue(":proxyport", server.proxyPort);
