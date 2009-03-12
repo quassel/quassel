@@ -24,6 +24,7 @@
 #include "clientaliasmanager.h"
 #include "clientuserinputhandler.h"
 #include "clientsettings.h"
+#include "execwrapper.h"
 #include "ircuser.h"
 #include "network.h"
 
@@ -54,8 +55,27 @@ void ClientUserInputHandler::handleUserInput(const BufferInfo &bufferInfo, const
     }
   }
 
-  AliasManager::CommandList clist = _aliasManager.processInput(bufferInfo, msg);
+  AliasManager::CommandList clist = Client::aliasManager()->processInput(bufferInfo, msg);
 
-  for(int i = 0; i < clist.count(); i++)
-    emit sendInput(clist.at(i).first, clist.at(i).second);
+  for(int i = 0; i < clist.count(); i++) {
+    QString cmd = clist.at(i).second.section(' ', 0, 0).remove(0, 1).toUpper();
+    if(cmd == "EXEC")
+      handleExec(clist.at(i).first, clist.at(i).second.section(' ', 1));
+    else
+      emit sendInput(clist.at(i).first, clist.at(i).second);
+  }
+}
+
+void ClientUserInputHandler::handleExec(const BufferInfo &bufferInfo, const QString &execString) {
+  QString script;
+  QStringList params;
+  if(execString.contains(' ')) {
+    script = execString.section(' ', 0, 0);
+    params = execString.section(' ', 1).trimmed().split(' '); // FIXME handle args properly, including quoted strings etc
+  } else
+    script = execString;
+
+  ExecWrapper *exec = new ExecWrapper(this);
+  exec->start(bufferInfo, script, params);
+
 }

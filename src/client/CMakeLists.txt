@@ -22,6 +22,7 @@ set(SOURCES
     clientsettings.cpp
     clientsyncer.cpp
     clientuserinputhandler.cpp
+    execwrapper.cpp
     irclistmodel.cpp
     messagefilter.cpp
     messagemodel.cpp
@@ -43,6 +44,7 @@ set(MOC_HDRS
     clientirclisthelper.h
     clientuserinputhandler.h
     clientsyncer.h
+    execwrapper.h
     irclistmodel.h
     messagefilter.h
     messagemodel.h
