@@ -45,6 +45,8 @@ AliasesSettingsPage::AliasesSettingsPage(QWidget *parent)
   connect(ui.deleteAliasButton, SIGNAL(clicked()), this, SLOT(deleteSelectedAlias()));
   connect(&_aliasesModel, SIGNAL(configChanged(bool)), this, SLOT(setChangedState(bool)));
   connect(&_aliasesModel, SIGNAL(modelReady(bool)), this, SLOT(enableDialog(bool)));
+
+  enableDialog(_aliasesModel.isReady());
 }
 
 void AliasesSettingsPage::load() {
@@ -64,6 +66,7 @@ void AliasesSettingsPage::save() {
 void AliasesSettingsPage::enableDialog(bool enabled) {
   ui.newAliasButton->setEnabled(enabled);
   ui.deleteAliasButton->setEnabled(enabled);
+  setEnabled(enabled);
 }
 
 void AliasesSettingsPage::deleteSelectedAlias() {

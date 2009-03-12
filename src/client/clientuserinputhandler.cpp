@@ -21,43 +21,18 @@
 #include <QDateTime>
 
 #include "client.h"
+#include "clientaliasmanager.h"
 #include "clientuserinputhandler.h"
 #include "clientsettings.h"
 #include "ircuser.h"
 #include "network.h"
 
 ClientUserInputHandler::ClientUserInputHandler(QObject *parent)
-: QObject(parent),
-  _initialized(false)
+: QObject(parent)
 {
   TabCompletionSettings s;
   s.notify("CompletionSuffix", this, SLOT(completionSuffixChanged(QVariant)));
   completionSuffixChanged(s.completionSuffix());
-
-  // we need this signal for future connects to reset the data;
-  connect(Client::instance(), SIGNAL(connected()), SLOT(clientConnected()));
-  connect(Client::instance(), SIGNAL(disconnected()), SLOT(clientDisconnected()));
-  if(Client::isConnected())
-    clientConnected();
-}
-
-void ClientUserInputHandler::clientConnected() {
-  _aliasManager = ClientAliasManager();
-  Client::signalProxy()->synchronize(&_aliasManager);
-  connect(&_aliasManager, SIGNAL(initDone()), SLOT(initDone()));
-}
-
-void ClientUserInputHandler::clientDisconnected() {
-  // clear alias manager
-  _aliasManager = ClientAliasManager();
-  _initialized = false;
-}
-
-void ClientUserInputHandler::initDone() {
-  _initialized = true;
-  for(int i = 0; i < _inputBuffer.count(); i++)
-    handleUserInput(_inputBuffer.at(i).first, _inputBuffer.at(i).second);
-  _inputBuffer.clear();
 }
 
 void ClientUserInputHandler::completionSuffixChanged(const QVariant &v) {
@@ -69,10 +44,6 @@ void ClientUserInputHandler::completionSuffixChanged(const QVariant &v) {
 
 // this would be the place for a client-side hook
 void ClientUserInputHandler::handleUserInput(const BufferInfo &bufferInfo, const QString &msg) {
-  if(!_initialized) { // aliases not yet synced
-    _inputBuffer.append(qMakePair(bufferInfo, msg));
-    return;
-  }
 
   if(!msg.startsWith('/')) {
     if(_nickRx.indexIn(msg) == 0) {

@@ -47,6 +47,7 @@ public:
   inline int columnCount(const QModelIndex &parent = QModelIndex()) const { Q_UNUSED(parent) return 2; }
 
   inline bool configChanged() const { return _configChanged; }
+  inline bool isReady() const { return _modelReady; }
 
 public slots:
   void newAlias();
@@ -60,9 +61,9 @@ signals:
   void modelReady(bool);
 
 private:
-  ClientAliasManager _aliasManager;
   ClientAliasManager _clonedAliasManager;
   bool _configChanged;
+  bool _modelReady;
 
   const AliasManager &aliasManager() const;
   AliasManager &aliasManager();

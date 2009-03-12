@@ -27,6 +27,7 @@
 #include "buffersettings.h"
 #include "buffersyncer.h"
 #include "bufferviewconfig.h"
+#include "clientaliasmanager.h"
 #include "clientbacklogmanager.h"
 #include "clientbufferviewmanager.h"
 #include "clientirclisthelper.h"
@@ -76,6 +77,7 @@ Client::Client(QObject *parent)
     _networkModel(0),
     _bufferModel(0),
     _bufferSyncer(0),
+    _aliasManager(0),
     _backlogManager(new ClientBacklogManager(this)),
     _bufferViewManager(0),
     _ircListHelper(new ClientIrcListHelper(this)),
@@ -266,9 +268,21 @@ void Client::coreIdentityRemoved(IdentityId id) {
   }
 }
 
-/***  ***/
+/*** User input handling ***/
+
 void Client::userInput(const BufferInfo &bufferInfo, const QString &message) {
-  inputHandler()->handleUserInput(bufferInfo, message);
+  // we need to make sure that AliasManager is ready before processing input
+  if(aliasManager() && aliasManager()->isInitialized())
+    inputHandler()->handleUserInput(bufferInfo, message);
+  else
+   instance()-> _userInputBuffer.append(qMakePair(bufferInfo, message));
+}
+
+void Client::sendBufferedUserInput() {
+  for(int i = 0; i < _userInputBuffer.count(); i++)
+    userInput(_userInputBuffer.at(i).first, _userInputBuffer.at(i).second);
+
+  _userInputBuffer.clear();
 }
 
 /*** core connection stuff ***/
@@ -303,6 +317,12 @@ void Client::setSyncedToCore() {
   _bufferViewManager = new ClientBufferViewManager(signalProxy(), this);
   connect(bufferViewManager(), SIGNAL(initDone()), this, SLOT(requestInitialBacklog()));
   connect(bufferViewManager(), SIGNAL(initDone()), this, SLOT(createDefaultBufferView()));
+
+  // create AliasManager
+  Q_ASSERT(!_aliasManager);
+  _aliasManager = new ClientAliasManager(this);
+  connect(aliasManager(), SIGNAL(initDone()), SLOT(sendBufferedUserInput()));
+  signalProxy()->synchronize(aliasManager());
 
   _syncedToCore = true;
   emit connected();
@@ -351,6 +371,14 @@ void Client::disconnectedFromCore() {
     _bufferViewManager->deleteLater();
     _bufferViewManager = 0;
   }
+
+  if(_aliasManager) {
+    _aliasManager->deleteLater();
+    _aliasManager = 0;
+  }
+
+  // we probably don't want to save pending input for reconnect
+  _userInputBuffer.clear();
 
   _messageModel->clear();
   _networkModel->clear();
