@@ -151,11 +151,6 @@ void Core::init() {
     exit(0);
   }
 
-  if(Quassel::isOptionSet("add-user")) {
-    createUser();
-    exit(0);
-  }
-
   if(!_configured) {
     if(!_storageBackends.count()) {
       qWarning() << qPrintable(tr("Could not initialize any storage backend! Exiting..."));
@@ -165,6 +160,16 @@ void Core::init() {
       exit(1); // TODO make this less brutal (especially for mono client -> popup)
     }
     qWarning() << "Core is currently not configured! Please connect with a Quassel Client for basic setup.";
+  }
+
+  if(Quassel::isOptionSet("add-user")) {
+    createUser();
+    exit(0);
+  }
+
+  if(Quassel::isOptionSet("change-userpass")) {
+    changeUserPass(Quassel::optionValue("change-userpass"));
+    exit(0);
   }
 
   connect(&_server, SIGNAL(newConnection()), this, SLOT(incomingConnection()));
@@ -805,6 +810,44 @@ void Core::createUser() {
     out << "Added user " << username << " successfully!" << endl;
   } else {
     qWarning() << "Unable to add user:" << qPrintable(username);
+  }
+}
+
+void Core::changeUserPass(const QString &username) {
+  QTextStream out(stdout);
+  QTextStream in(stdin);
+  UserId userId = _storage->getUserId(username);
+  if(!userId.isValid()) {
+    out << "User " << username << " does not exist." << endl;
+    return;
+  }
+
+  out << "Change password for user: " << username << endl;
+
+  disableStdInEcho();
+  out << "New Password: ";
+  out.flush();
+  QString password = in.readLine().trimmed();
+  out << endl;
+  out << "Repeat Password: ";
+  out.flush();
+  QString password2 = in.readLine().trimmed();
+  out << endl;
+  enableStdInEcho();
+
+  if(password != password2) {
+    qWarning() << "Passwords don't match!";
+    return;
+  }
+  if(password.isEmpty()) {
+    qWarning() << "Password is empty!";
+    return;
+  }
+
+  if(_storage->updateUser(userId, password)) {
+    out << "Password changed successfuly!" << endl;
+  } else {
+    qWarning() << "Failed to change password!";
   }
 }
 

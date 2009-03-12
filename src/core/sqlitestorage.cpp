@@ -120,7 +120,7 @@ UserId SqliteStorage::addUser(const QString &user, const QString &password) {
   return uid;
 }
 
-void SqliteStorage::updateUser(UserId user, const QString &password) {
+bool SqliteStorage::updateUser(UserId user, const QString &password) {
   QSqlDatabase db = logDb();
   db.transaction();
 
@@ -130,8 +130,10 @@ void SqliteStorage::updateUser(UserId user, const QString &password) {
   query.bindValue(":password", cryptedPassword(password));
   lockForWrite();
   safeExec(query);
+  bool success = query.numRowsAffected() != 0;
   db.commit();
   unlock();
+  return success;
 }
 
 void SqliteStorage::renameUser(UserId user, const QString &newName) {
@@ -154,6 +156,23 @@ UserId SqliteStorage::validateUser(const QString &user, const QString &password)
   query.prepare(queryString("select_authuser"));
   query.bindValue(":username", user);
   query.bindValue(":password", cryptedPassword(password));
+
+  lockForRead();
+  safeExec(query);
+
+  if(query.first()) {
+    unlock();
+    return query.value(0).toInt();
+  } else {
+    unlock();
+    return 0;
+  }
+}
+
+UserId SqliteStorage::getUserId(const QString &username) {
+  QSqlQuery query(logDb());
+  query.prepare(queryString("select_userid"));
+  query.bindValue(":username", username);
 
   lockForRead();
   safeExec(query);

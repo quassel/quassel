@@ -151,12 +151,13 @@ UserId PostgreSqlStorage::addUser(const QString &user, const QString &password) 
   return uid;
 }
 
-void PostgreSqlStorage::updateUser(UserId user, const QString &password) {
+bool PostgreSqlStorage::updateUser(UserId user, const QString &password) {
   QSqlQuery query(logDb());
   query.prepare(queryString("update_userpassword"));
   query.bindValue(":userid", user.toInt());
   query.bindValue(":password", cryptedPassword(password));
   safeExec(query);
+  return query.numRowsAffected() != 0;
 }
 
 void PostgreSqlStorage::renameUser(UserId user, const QString &newName) {
@@ -173,6 +174,19 @@ UserId PostgreSqlStorage::validateUser(const QString &user, const QString &passw
   query.prepare(queryString("select_authuser"));
   query.bindValue(":username", user);
   query.bindValue(":password", cryptedPassword(password));
+  safeExec(query);
+
+  if(query.first()) {
+    return query.value(0).toInt();
+  } else {
+    return 0;
+  }
+}
+
+UserId PostgreSqlStorage::getUserId(const QString &user) {
+  QSqlQuery query(logDb());
+  query.prepare(queryString("select_userid"));
+  query.bindValue(":username", user);
   safeExec(query);
 
   if(query.first()) {

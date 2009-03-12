@@ -101,8 +101,9 @@ public slots:
   //! Update a core user's password.
   /** \param user     The user's id
    *  \param password The user's new password
+   *  \return true on success.
    */
-  virtual void updateUser(UserId user, const QString &password) = 0;
+  virtual bool updateUser(UserId user, const QString &password) = 0;
 
   //! Rename a user
   /** \param user     The user's id
@@ -116,6 +117,12 @@ public slots:
    *  \return A valid UserId if the password matches the username; 0 else
    */
   virtual UserId validateUser(const QString &user, const QString &password) = 0;
+
+  //! Check if a user with given username exists. Do not use for login purposes!
+  /** \param username  The username to validate
+   *  \return A valid UserId if the user exists; 0 else
+   */
+  virtual UserId getUserId(const QString &username) = 0;
 
   //! Determine the UserId of the internal user
   /** \return A valid UserId if the password matches the username; 0 else

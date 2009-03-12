@@ -101,6 +101,7 @@ int main(int argc, char **argv) {
   cliParser->addOption("loglevel <level>", 'L', "Loglevel Debug|Info|Warning|Error", "Info");
   cliParser->addOption("select-backend <backendidentifier>", 0, "Starts an interactive session and switches your current storage backend to the new one. Attempts a merge if the new backend is uninitialized and the old backend supports migration. Otherwise prompts for new user credentials!");
   cliParser->addSwitch("add-user", 0, "Starts an interactive session to add a new core user");
+  cliParser->addOption("change-userpass <username>", 0, "Starts an interactive session to change the password of the user identified by username");
 #endif
 
 #ifdef HAVE_KDE
