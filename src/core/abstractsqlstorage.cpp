@@ -23,7 +23,9 @@
 #include "logger.h"
 
 #include <QMutexLocker>
+#include <QSqlDriver>
 #include <QSqlError>
+#include <QSqlField>
 #include <QSqlQuery>
 
 int AbstractSqlStorage::_nextConnectionId = 0;
@@ -223,16 +225,41 @@ int AbstractSqlStorage::schemaVersion() {
 bool AbstractSqlStorage::watchQuery(QSqlQuery &query) {
   if(query.lastError().isValid()) {
     qCritical() << "unhandled Error in QSqlQuery!";
-    qCritical() << "                  last Query:\n" << query.lastQuery();
-    qCritical() << "              executed Query:\n" << query.executedQuery();
-    qCritical() << "                bound Values:";
-    QList<QVariant> list = query.boundValues().values();
-    for (int i = 0; i < list.size(); ++i)
-      qCritical() << i << ": " << list.at(i).toString().toAscii().data();
-    qCritical() << "                Error Number:"   << query.lastError().number();
-    qCritical() << "               Error Message:"   << query.lastError().text();
-    qCritical() << "              Driver Message:"   << query.lastError().driverText();
-    qCritical() << "                  DB Message:"   << query.lastError().databaseText();
+    qCritical() << "                  last Query:\n" << qPrintable(query.lastQuery());
+    qCritical() << "              executed Query:\n" << qPrintable(query.executedQuery());
+    QVariantMap boundValues = query.boundValues();
+    QStringList valueStrings;
+    QVariantMap::const_iterator iter;
+    for(iter = boundValues.constBegin(); iter != boundValues.constEnd(); iter++) {
+      QString value;
+      QSqlField field;
+      if(query.driver()) {
+	// let the driver do the formatting
+	field.setType(iter.value().type());
+	if(iter.value().isNull())
+	  field.clear();
+	else
+	  field.setValue(iter.value());
+	value =  query.driver()->formatValue(field);
+      } else {
+	switch(iter.value().type()) {
+	case QVariant::Invalid:
+	  value = "NULL";
+	  break;
+	case QVariant::Int:
+	  value = iter.value().toString();
+	  break;
+	default:
+	  value = QString("'%1'").arg(iter.value().toString());
+	}
+      }
+      valueStrings << QString("%1=%2").arg(iter.key(), value);
+    }
+    qCritical() << "                bound Values:" << qPrintable(valueStrings.join(", "));
+    qCritical() << "                Error Number:" << query.lastError().number();
+    qCritical() << "               Error Message:" << qPrintable(query.lastError().text());
+    qCritical() << "              Driver Message:" << qPrintable(query.lastError().driverText());
+    qCritical() << "                  DB Message:" << qPrintable(query.lastError().databaseText());
 
     return false;
   }
