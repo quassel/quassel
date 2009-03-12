@@ -546,7 +546,7 @@ NetworkId PostgreSqlStorage::createNetwork(UserId user, const NetworkInfo &info)
 
 void PostgreSqlStorage::bindNetworkInfo(QSqlQuery &query, const NetworkInfo &info) {
   query.bindValue(":networkname", info.networkName);
-  query.bindValue(":identityid", info.identity.toInt());
+  query.bindValue(":identityid", info.identity.isValid() ? info.identity.toInt() : QVariant());
   query.bindValue(":encodingcodec", QString(info.codecForEncoding));
   query.bindValue(":decodingcodec", QString(info.codecForDecoding));
   query.bindValue(":servercodec", QString(info.codecForServer));
