@@ -93,6 +93,13 @@ AliasManager::AliasList AliasManager::defaults() {
           << Alias("hs", "/msg hostserv $0")
           << Alias("hostserv", "/msg hostserv $0")
           << Alias("back", "/quote away");
+
+#ifdef Q_OS_LINUX
+  // let's add aliases for scripts that only run on linux
+  aliases << Alias("inxi", "/exec inxi $0")
+          << Alias("sysinfo", "/exec inxi -d");
+#endif
+
   return aliases;
 }
 
