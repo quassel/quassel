@@ -51,6 +51,11 @@ AccountId Client::_currentCoreAccount = 0;
 
 /*** Initialization/destruction ***/
 
+bool Client::instanceExists()
+{
+  return instanceptr;
+}
+
 Client *Client::instance() {
   if(!instanceptr)
     instanceptr = new Client();
@@ -496,6 +501,12 @@ void Client::logMessage(QtMsgType type, const char *msg) {
     Quassel::logFatalMessage(msg);
   } else {
     QString msgString = QString("%1\n").arg(msg);
+
+    //Check to see if there is an instance around, else we risk recursions
+    //when calling instance() and creating new ones.
+    if (!instanceExists())
+      return;
+
     instance()->_debugLog << msgString;
     emit instance()->logUpdated(msgString);
   }

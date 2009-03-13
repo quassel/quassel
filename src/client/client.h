@@ -62,6 +62,7 @@ public:
     RemoteCore
   };
 
+  static bool instanceExists();
   static Client *instance();
   static void destroy();
   static void init(AbstractUi *);
