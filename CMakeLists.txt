@@ -79,8 +79,10 @@ endif(WIN32)
 # Define a comma-separated list here
 # e.g. for pgsql, we need -DLINK_EXTRA=pq;crypt
 set(LINK_EXTRA "" CACHE STRING "Semicolon-separated list of libraries to be linked")
-string(REPLACE "," ";" LINK_EXTRA ${LINK_EXTRA})
-link_libraries(${LINK_EXTRA})
+if(LINK_EXTRA)
+  string(REPLACE "," ";" LINK_EXTRA ${LINK_EXTRA})
+  link_libraries(${LINK_EXTRA})
+endif(LINK_EXTRA)
 
 # Build Type
 # We need to make sure it's not empty
