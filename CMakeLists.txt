@@ -75,6 +75,13 @@ if(WIN32)
   set(EMBED_DATA ON)
 endif(WIN32)
 
+# For static builds, arbitrary extra libs might need to be linked
+# Define a comma-separated list here
+# e.g. for pgsql, we need -DLINK_EXTRA=pq;crypt
+set(LINK_EXTRA "" CACHE STRING "Semicolon-separated list of libraries to be linked")
+string(REPLACE "," ";" LINK_EXTRA ${LINK_EXTRA})
+link_libraries(${LINK_EXTRA})
+
 # Build Type
 # We need to make sure it's not empty
 # Supported: Release, RelWithDebugInfo, Debug, Debugfull
@@ -253,8 +260,6 @@ if(WIN32)
   if(HAVE_SSL)
      link_libraries(${OPENSSL_LIBRARIES} libeay32MD)
   endif(HAVE_SSL)
-
-  set(RC_WIN32 ../pics/win32.rc)  # for app icons on windows
 endif(WIN32)
 
 if(STATIC)
