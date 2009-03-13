@@ -32,8 +32,8 @@ ExecWrapper::ExecWrapper(QObject* parent) : QObject(parent) {
   connect(&_process, SIGNAL(finished(int, QProcess::ExitStatus)), SLOT(processFinished(int, QProcess::ExitStatus)));
   connect(&_process, SIGNAL(error(QProcess::ProcessError)), SLOT(processError(QProcess::ProcessError)));
 
-  connect(this, SIGNAL(stdout(QString)), SLOT(postStdout(QString)));
-  connect(this, SIGNAL(stderr(QString)), SLOT(postStderr(QString)));
+  connect(this, SIGNAL(output(QString)), SLOT(postStdout(QString)));
+  connect(this, SIGNAL(error(QString)), SLOT(postStderr(QString)));
 }
 
 void ExecWrapper::start(const BufferInfo &info, const QString &command) {
@@ -42,7 +42,7 @@ void ExecWrapper::start(const BufferInfo &info, const QString &command) {
 
   QRegExp rx("^\\s*(\\S+)(\\s+(.*))?$");
   if(!rx.exactMatch(command)) {
-    emit stderr(tr("Invalid command string for /exec: %1").arg(command));
+    emit error(tr("Invalid command string for /exec: %1").arg(command));
   } else {
     _scriptName = rx.cap(1);
     params = rx.cap(3);
@@ -50,7 +50,7 @@ void ExecWrapper::start(const BufferInfo &info, const QString &command) {
 
   // Make sure we don't execute something outside a script dir
   if(_scriptName.startsWith('/') || _scriptName.contains("../"))
-    emit stderr(tr("Name \"%1\" is invalid: / or ../ are not allowed!").arg(_scriptName));
+    emit error(tr("Name \"%1\" is invalid: / or ../ are not allowed!").arg(_scriptName));
 
   else {
     foreach(QString scriptDir, Quassel::scriptDirPaths()) {
@@ -60,7 +60,7 @@ void ExecWrapper::start(const BufferInfo &info, const QString &command) {
       _process.start(fileName + ' ' + params);
       return;
     }
-    emit stderr(tr("Could not find script \"%1\"").arg(_scriptName));
+    emit error(tr("Could not find script \"%1\"").arg(_scriptName));
   }
 
   deleteLater(); // self-destruct
@@ -78,22 +78,26 @@ void ExecWrapper::postStderr(const QString &msg) {
 
 void ExecWrapper::processFinished(int exitCode, QProcess::ExitStatus status) {
   if(status == QProcess::CrashExit) {
-    emit stderr(tr("Script \"%1\" crashed with exit code %2.").arg(_scriptName).arg(exitCode));
+    emit error(tr("Script \"%1\" crashed with exit code %2.").arg(_scriptName).arg(exitCode));
   }
 
   // empty buffers
   if(!_stdoutBuffer.isEmpty())
     foreach(QString msg, _stdoutBuffer.split('\n'))
-      emit stdout(msg);
+      emit output(msg);
   if(!_stderrBuffer.isEmpty())
     foreach(QString msg, _stderrBuffer.split('\n'))
-    emit stderr(msg);
+    emit error(msg);
 
   deleteLater();
 }
 
-void ExecWrapper::processError(QProcess::ProcessError error) {
-  emit stderr(tr("Script \"%1\" caused error %2.").arg(_scriptName).arg(error));
+void ExecWrapper::processError(QProcess::ProcessError err) {
+  if(err == QProcess::FailedToStart)
+    emit error(tr("Script \"%1\" could not start.").arg(_scriptName));
+  else
+    emit error(tr("Script \"%1\" caused error %2.").arg(_scriptName).arg(err));
+
   if(_process.state() != QProcess::Running)
     deleteLater();
 }
@@ -102,7 +106,7 @@ void ExecWrapper::processReadStdout() {
   _stdoutBuffer.append(QTextCodec::codecForLocale()->toUnicode(_process.readAllStandardOutput()));
   int idx;
   while((idx = _stdoutBuffer.indexOf('\n')) >= 0) {
-    emit stdout(_stdoutBuffer.left(idx));
+    emit output(_stdoutBuffer.left(idx));
     _stdoutBuffer = _stdoutBuffer.mid(idx + 1);
   }
 }
@@ -111,7 +115,7 @@ void ExecWrapper::processReadStderr() {
   _stderrBuffer.append(QTextCodec::codecForLocale()->toUnicode(_process.readAllStandardError()));
   int idx;
   while((idx = _stderrBuffer.indexOf('\n')) >= 0) {
-    emit stderr(_stderrBuffer.left(idx));
+    emit error(_stderrBuffer.left(idx));
     _stderrBuffer = _stderrBuffer.mid(idx + 1);
   }
 }

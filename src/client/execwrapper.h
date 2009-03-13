@@ -35,8 +35,8 @@ public slots:
   void start(const BufferInfo &info, const QString &command);
 
 signals:
-  void stderr(const QString &errorMsg);
-  void stdout(const QString &out);
+  void error(const QString &errorMsg);
+  void output(const QString &out);
 
 private slots:
   void processReadStdout();
