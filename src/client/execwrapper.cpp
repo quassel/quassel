@@ -99,7 +99,7 @@ void ExecWrapper::processError(QProcess::ProcessError error) {
 }
 
 void ExecWrapper::processReadStdout() {
-  _stdoutBuffer.append(_process.readAllStandardOutput());
+  _stdoutBuffer.append(QTextCodec::codecForLocale()->toUnicode(_process.readAllStandardOutput()));
   int idx;
   while((idx = _stdoutBuffer.indexOf('\n')) >= 0) {
     emit stdout(_stdoutBuffer.left(idx));
@@ -108,7 +108,7 @@ void ExecWrapper::processReadStdout() {
 }
 
 void ExecWrapper::processReadStderr() {
-  _stderrBuffer.append(_process.readAllStandardError());
+  _stderrBuffer.append(QTextCodec::codecForLocale()->toUnicode(_process.readAllStandardError()));
   int idx;
   while((idx = _stderrBuffer.indexOf('\n')) >= 0) {
     emit stderr(_stderrBuffer.left(idx));
