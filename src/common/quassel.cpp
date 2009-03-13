@@ -86,7 +86,7 @@ bool Quassel::init() {
   }
 
   if(isOptionSet("version")) {
-    std::cerr << qPrintable("Quassel IRC: " + Quassel::buildInfo().plainVersionString) << std::endl;
+    std::cout << qPrintable("Quassel IRC: " + Quassel::buildInfo().plainVersionString) << std::endl;
     return false;
   }
 
