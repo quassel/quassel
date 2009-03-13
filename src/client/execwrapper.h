@@ -32,7 +32,7 @@ public:
   ExecWrapper(QObject *parent = 0);
 
 public slots:
-  void start(const BufferInfo &info, const QString &scriptName, const QStringList &params = QStringList());
+  void start(const BufferInfo &info, const QString &command);
 
 signals:
   void stderr(const QString &errorMsg);

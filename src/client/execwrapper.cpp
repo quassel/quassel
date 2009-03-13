@@ -36,18 +36,34 @@ ExecWrapper::ExecWrapper(QObject* parent) : QObject(parent) {
   connect(this, SIGNAL(stderr(QString)), SLOT(postStderr(QString)));
 }
 
-void ExecWrapper::start(const BufferInfo &info, const QString &scriptName, const QStringList& params) {
+void ExecWrapper::start(const BufferInfo &info, const QString &command) {
   _bufferInfo = info;
-  _scriptName = scriptName;
-  foreach(QString scriptDir, Quassel::scriptDirPaths()) {
-    QString fileName = scriptDir + '/' + scriptName;
-    if(!QFile::exists(fileName))
-      continue;
-    _process.start(fileName, params);
-    return;
+  QString params;
+
+  QRegExp rx("^\\s*(\\S+)(\\s+(.*))?$");
+  if(!rx.exactMatch(command)) {
+    emit stderr(tr("Invalid command string for /exec: %1").arg(command));
+  } else {
+    _scriptName = rx.cap(1);
+    params = rx.cap(3);
   }
-  emit stderr(tr("Could not find script \"%1\"").arg(scriptName));
-  deleteLater();
+
+  // Make sure we don't execute something outside a script dir
+  if(_scriptName.startsWith('/') || _scriptName.contains("../"))
+    emit stderr(tr("Name \"%1\" is invalid: / or ../ are not allowed!").arg(_scriptName));
+
+  else {
+    foreach(QString scriptDir, Quassel::scriptDirPaths()) {
+      QString fileName = scriptDir + _scriptName;
+      if(!QFile::exists(fileName))
+        continue;
+      _process.start(fileName + ' ' + params);
+      return;
+    }
+    emit stderr(tr("Could not find script \"%1\"").arg(_scriptName));
+  }
+
+  deleteLater(); // self-destruct
 }
 
 void ExecWrapper::postStdout(const QString &msg) {
@@ -78,6 +94,8 @@ void ExecWrapper::processFinished(int exitCode, QProcess::ExitStatus status) {
 
 void ExecWrapper::processError(QProcess::ProcessError error) {
   emit stderr(tr("Script \"%1\" caused error %2.").arg(_scriptName).arg(error));
+  if(_process.state() != QProcess::Running)
+    deleteLater();
 }
 
 void ExecWrapper::processReadStdout() {
@@ -93,7 +111,7 @@ void ExecWrapper::processReadStderr() {
   _stderrBuffer.append(_process.readAllStandardError());
   int idx;
   while((idx = _stderrBuffer.indexOf('\n')) >= 0) {
-    emit stdout(_stderrBuffer.left(idx));
+    emit stderr(_stderrBuffer.left(idx));
     _stderrBuffer = _stderrBuffer.mid(idx + 1);
   }
 }

@@ -67,15 +67,6 @@ void ClientUserInputHandler::handleUserInput(const BufferInfo &bufferInfo, const
 }
 
 void ClientUserInputHandler::handleExec(const BufferInfo &bufferInfo, const QString &execString) {
-  QString script;
-  QStringList params;
-  if(execString.contains(' ')) {
-    script = execString.section(' ', 0, 0);
-    params = execString.section(' ', 1).trimmed().split(' '); // FIXME handle args properly, including quoted strings etc
-  } else
-    script = execString;
-
-  ExecWrapper *exec = new ExecWrapper(this);
-  exec->start(bufferInfo, script, params);
-
+  ExecWrapper *exec = new ExecWrapper(this); // gets suicidal when it's done
+  exec->start(bufferInfo, execString);
 }
