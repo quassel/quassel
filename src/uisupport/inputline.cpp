@@ -24,10 +24,23 @@
 #include "tabcompleter.h"
 
 InputLine::InputLine(QWidget *parent)
-  : QLineEdit(parent),
+  :
+#ifdef HAVE_KDE
+    KTextEdit(parent),
+#else
+    QLineEdit(parent),
+#endif
     idx(0),
     tabCompleter(new TabCompleter(this))
 {
+#ifdef HAVE_KDE
+//This is done to make the KTextEdit look like a lineedit
+  setMaximumHeight(document()->size().toSize().height());
+  setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+  setAcceptRichText(false);
+  connect(this, SIGNAL(textChanged()), this, SLOT(on_textChanged()));
+#endif
+
   connect(this, SIGNAL(returnPressed()), this, SLOT(on_returnPressed()));
   connect(this, SIGNAL(textChanged(QString)), this, SLOT(on_textChanged(QString)));
 }
@@ -91,8 +104,18 @@ void InputLine::keyPressEvent(QKeyEvent * event) {
   case Qt::Key_Select:		// for Qtopia
     emit returnPressed();
 
+#ifdef HAVE_KDE
+//Since this is a ktextedit, we don't have this signal "natively"
+  case Qt::Key_Return:
+    emit returnPressed();
+#endif
+
   default:
+#ifdef HAVE_KDE
+    KTextEdit::keyPressEvent(event);
+#else
     QLineEdit::keyPressEvent(event);
+#endif
   }
 }
 

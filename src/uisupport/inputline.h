@@ -23,14 +23,33 @@
 
 #include <QtGui>
 
+#ifdef HAVE_KDE
+#include <KDE/KTextEdit>
+#endif
+
 class TabCompleter;
 
-class InputLine : public QLineEdit {
+class InputLine : public
+#ifdef HAVE_KDE
+                  KTextEdit
+#else
+                  QLineEdit
+#endif
+                          {
   Q_OBJECT
 
 public:
   InputLine(QWidget *parent = 0);
   ~InputLine();
+
+#ifdef HAVE_KDE
+//Compatibility methods with the rest of the classes which expects this to be a QLineEdit
+  QString text() { return toPlainText(); };
+  int cursorPosition() { return textCursor().position(); };
+  void insert(const QString &newText) { insertPlainText(newText); };
+  void backspace() { keyPressEvent(new QKeyEvent(QEvent::KeyPress, Qt::Key_Backspace, Qt::NoModifier));  };
+  bool hasSelectedText() { return textCursor().hasSelection(); };
+#endif
 
 protected:
   //    virtual bool event(QEvent *);
@@ -40,11 +59,20 @@ protected:
 private slots:
   void on_returnPressed();
   void on_textChanged(QString newText);
+#ifdef HAVE_KDE
+//Needed to emulate the signal that QLineEdit has
+  void on_textChanged() { emit textChanged(toPlainText()); };
+#endif
 
   bool addToHistory(const QString &text, bool temporary = false);
 
 signals:
   void sendText(QString text);
+#ifdef HAVE_KDE
+//KTextEdit does not provide this signal, so we manually emit it in keyPressEvent()
+  void returnPressed();
+  void textChanged(QString newText);
+#endif
 
 private:
   QStringList history;
