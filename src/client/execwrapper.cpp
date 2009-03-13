@@ -65,7 +65,13 @@ void ExecWrapper::processFinished(int exitCode, QProcess::ExitStatus status) {
     emit stderr(tr("Script \"%1\" crashed with exit code %2.").arg(_scriptName).arg(exitCode));
   }
 
-  // TODO empty buffers
+  // empty buffers
+  if(!_stdoutBuffer.isEmpty())
+    foreach(QString msg, _stdoutBuffer.split('\n'))
+      emit stdout(msg);
+  if(!_stderrBuffer.isEmpty())
+    foreach(QString msg, _stderrBuffer.split('\n'))
+    emit stderr(msg);
 
   deleteLater();
 }
