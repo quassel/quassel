@@ -20,6 +20,7 @@
 
 #include "quassel.h"
 
+#include <iostream>
 #include <signal.h>
 
 #include <QCoreApplication>
@@ -81,6 +82,11 @@ bool Quassel::init() {
 
   if(isOptionSet("help")) {
     cliParser()->usage();
+    return false;
+  }
+
+  if(isOptionSet("version")) {
+    std::cerr << qPrintable("Quassel IRC: " + Quassel::buildInfo().plainVersionString) << std::endl;
     return false;
   }
 

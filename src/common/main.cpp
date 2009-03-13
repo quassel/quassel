@@ -84,6 +84,7 @@ int main(int argc, char **argv) {
   // put shared client&core arguments here
   cliParser->addSwitch("debug",'d', "Enable debug output");
   cliParser->addSwitch("help",'h', "Display this help and exit");
+  cliParser->addSwitch("version", 'v', "Display version information");
   cliParser->addOption("configdir <path>", 'c', "Specify the directory holding configuration files, the SQlite database and the SSL Cert");
   cliParser->addOption("datadir <path>", 0, "DEPRECATED - Use --configdir instead");
 
