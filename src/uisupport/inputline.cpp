@@ -35,7 +35,7 @@ InputLine::InputLine(QWidget *parent)
 {
 #ifdef HAVE_KDE
 //This is done to make the KTextEdit look like a lineedit
-  setMaximumHeight(document()->size().toSize().height());
+  setMaximumHeight(document()->size().toSize().height() + 2);
   setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
   setAcceptRichText(false);
   setLineWrapMode(NoWrap);
