@@ -50,14 +50,14 @@ void ExecWrapper::start(const BufferInfo &info, const QString &command) {
 
   // Make sure we don't execute something outside a script dir
   if(_scriptName.contains("../") || _scriptName.contains("..\\"))
-    emit error(tr("Name \"%1\" is invalid: / or ../ are not allowed!").arg(_scriptName));
+    emit error(tr("Name \"%1\" is invalid: ../ or ..\\ are not allowed!").arg(_scriptName));
 
   else {
     foreach(QString scriptDir, Quassel::scriptDirPaths()) {
       QString fileName = scriptDir + _scriptName;
       if(!QFile::exists(fileName))
         continue;
-      _process.start(fileName + ' ' + params);
+      _process.start('"' + fileName + "\" " + params);
       return;
     }
     emit error(tr("Could not find script \"%1\"").arg(_scriptName));
