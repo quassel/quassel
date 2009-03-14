@@ -238,7 +238,7 @@ void MainWin::setupActions() {
   connect(lockAct, SIGNAL(toggled(bool)), SLOT(on_actionLockLayout_toggled(bool)));
 
   coll->addAction("ToggleSearchBar", new Action(SmallIcon("edit-find"), tr("Show &Search Bar"), coll,
-						0, 0, tr("Ctrl+F")))->setCheckable(true);
+						0, 0, QKeySequence::Find))->setCheckable(true);
   coll->addAction("ShowAwayLog", new Action(tr("Show Away Log"), coll,
 					    this, SLOT(showAwayLog())));
   coll->addAction("ToggleStatusBar", new Action(tr("Show Status &Bar"), coll,
