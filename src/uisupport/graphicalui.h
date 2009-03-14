@@ -23,6 +23,7 @@
 
 #include "abstractui.h"
 
+class ActionCollection;
 class ContextMenuActionProvider;
 class ToolBarActionProvider;
 
@@ -32,14 +33,27 @@ class GraphicalUi : public AbstractUi {
 public:
   GraphicalUi(QObject *parent = 0);
 
+  //! Access global ActionCollections.
+  /** These ActionCollections are associated with the main window, i.e. they contain global
+  *  actions (and thus, shortcuts). Widgets providing application-wide shortcuts should
+  *  create appropriate Action objects using GraphicalUi::actionCollection(cat)->add\<Action\>().
+  *  @param category The category (default: "General")
+  */
+  static ActionCollection *actionCollection(const QString &category = "General");
+
   inline static ContextMenuActionProvider *contextMenuActionProvider();
   inline static ToolBarActionProvider *toolBarActionProvider();
 
 protected:
+  //! This is the widget we associate global actions with, typically the main window
+  void setMainWidget(QWidget *);
+
   void setContextMenuActionProvider(ContextMenuActionProvider *);
   void setToolBarActionProvider(ToolBarActionProvider *);
 
 private:
+  static QWidget *_mainWidget;
+  static QHash<QString, ActionCollection *> _actionCollections;
   static ContextMenuActionProvider *_contextMenuActionProvider;
   static ToolBarActionProvider *_toolBarActionProvider;
 

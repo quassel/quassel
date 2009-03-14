@@ -26,7 +26,6 @@
 #include "abstractnotificationbackend.h"
 #include "mainwin.h"
 
-class ActionCollection;
 class MainWin;
 class MessageModel;
 class QtUiMessageProcessor;
@@ -50,13 +49,6 @@ public:
   inline static QtUiStyle *style();
   inline static MainWin *mainWindow();
 
-  //! Access global ActionCollections.
-  /** These ActionCollections are associated with the main window, i.e. they contain global
-   *  actions (and thus, shortcuts). Widgets providing application-wide shortcuts should
-   *  create appropriate Action objects using QtUi::actionCollection(cat)->add\<Action\>().
-   *  @param category The category (default: "General")
-   */
-  static ActionCollection *actionCollection(const QString &category = "General");
 
   /* Notifications */
 
@@ -80,7 +72,6 @@ protected slots:
 private:
   static QPointer<QtUi> _instance;
   static QPointer<MainWin> _mainWin;
-  static QHash<QString, ActionCollection *> _actionCollections;
   static QtUiStyle *_style;
   static QList<AbstractNotificationBackend *> _notificationBackends;
   static QList<AbstractNotificationBackend::Notification> _notifications;

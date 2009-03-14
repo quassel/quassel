@@ -21,7 +21,6 @@
 #include "qtui.h"
 
 #include "abstractnotificationbackend.h"
-#include "actioncollection.h"
 #include "chatlinemodel.h"
 #include "contextmenuactionprovider.h"
 #include "mainwin.h"
@@ -32,7 +31,6 @@
 #include "types.h"
 #include "util.h"
 
-QHash<QString, ActionCollection *> QtUi::_actionCollections;
 QPointer<QtUi> QtUi::_instance = 0;
 QPointer<MainWin> QtUi::_mainWin = 0;
 QList<AbstractNotificationBackend *> QtUi::_notificationBackends;
@@ -55,6 +53,8 @@ QtUi::QtUi() : GraphicalUi() {
   _mainWin = new MainWin();
   _style = new QtUiStyle;
 
+  setMainWidget(_mainWin);
+
   connect(_mainWin, SIGNAL(connectToCore(const QVariantMap &)), this, SIGNAL(connectToCore(const QVariantMap &)));
   connect(_mainWin, SIGNAL(disconnectFromCore()), this, SIGNAL(disconnectFromCore()));
 }
@@ -67,15 +67,6 @@ QtUi::~QtUi() {
 
 void QtUi::init() {
   _mainWin->init();
-}
-
-ActionCollection *QtUi::actionCollection(const QString &category) {
-  if(_actionCollections.contains(category))
-    return _actionCollections.value(category);
-  ActionCollection *coll = new ActionCollection(mainWindow());
-  coll->addAssociatedWidget(mainWindow());
-  _actionCollections.insert(category, coll);
-  return coll;
 }
 
 MessageModel *QtUi::createMessageModel(QObject *parent) {

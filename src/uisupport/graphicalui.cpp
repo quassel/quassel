@@ -20,13 +20,31 @@
 
 #include "graphicalui.h"
 
+#include "actioncollection.h"
 #include "contextmenuactionprovider.h"
 
+QWidget *GraphicalUi::_mainWidget = 0;
+QHash<QString, ActionCollection *> GraphicalUi::_actionCollections;
 ContextMenuActionProvider *GraphicalUi::_contextMenuActionProvider = 0;
 ToolBarActionProvider *GraphicalUi::_toolBarActionProvider = 0;
 
-GraphicalUi::GraphicalUi(QObject *parent) : AbstractUi(parent) {
+GraphicalUi::GraphicalUi(QObject *parent) : AbstractUi(parent)
+{
 
+}
+
+ActionCollection *GraphicalUi::actionCollection(const QString &category) {
+  if(_actionCollections.contains(category))
+    return _actionCollections.value(category);
+  ActionCollection *coll = new ActionCollection(_mainWidget);
+  if(_mainWidget)
+    coll->addAssociatedWidget(_mainWidget);
+  _actionCollections.insert(category, coll);
+  return coll;
+}
+
+void GraphicalUi::setMainWidget(QWidget *widget) {
+  _mainWidget = widget;
 }
 
 void GraphicalUi::setContextMenuActionProvider(ContextMenuActionProvider *provider) {
