@@ -131,7 +131,8 @@ void InputLine::keyPressEvent(QKeyEvent * event) {
 //Since this is a ktextedit, we don't have this signal "natively"
   case Qt::Key_Return:
     event->accept();
-    emit returnPressed();
+    if(!text().isEmpty())
+      emit returnPressed();
     break;
 
 #endif
