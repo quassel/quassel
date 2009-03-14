@@ -413,7 +413,7 @@ void ContentsChatItem::doLayout(QTextLayout *layout) const {
 QList<ContentsChatItem::Clickable> ContentsChatItem::findClickables() const {
   // For matching URLs
   static QString urlEnd("(?:>|[,.;:\"]*\\s|\\b|$)");
-  static QString urlChars("(?:[,.;:]*[\\w\\-~@/?&=+$()!%#*|{}\\[\\]])");
+  static QString urlChars("(?:[,.;:]*[\\w\\-~@/?&=+$()!%#*|{}\\[\\]'])");
 
   static QRegExp regExp[] = {
     // URL
