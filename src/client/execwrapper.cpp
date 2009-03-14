@@ -57,6 +57,7 @@ void ExecWrapper::start(const BufferInfo &info, const QString &command) {
       QString fileName = scriptDir + _scriptName;
       if(!QFile::exists(fileName))
         continue;
+      _process.setWorkingDirectory(scriptDir);
       _process.start('"' + fileName + "\" " + params);
       return;
     }
