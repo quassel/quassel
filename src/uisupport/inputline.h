@@ -35,12 +35,14 @@ class InputLine : public
 #else
                   QLineEdit
 #endif
-                          {
+{
   Q_OBJECT
 
 public:
   InputLine(QWidget *parent = 0);
   ~InputLine();
+
+  void setCustomFont(const QFont &); // should be used instead setFont(), so we can set our size correctly
 
 #ifdef HAVE_KDE
 //Compatibility methods with the rest of the classes which expects this to be a QLineEdit

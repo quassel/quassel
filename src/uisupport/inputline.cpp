@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include "bufferview.h"
-
+#include "graphicalui.h"
 #include "inputline.h"
 #include "tabcompleter.h"
 
@@ -35,12 +35,12 @@ InputLine::InputLine(QWidget *parent)
 {
 #ifdef HAVE_KDE
 //This is done to make the KTextEdit look like a lineedit
-  setMaximumHeight(document()->size().toSize().height() + 2);
+  setMaximumHeight(document()->size().toSize().height());
+  setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
   setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
   setAcceptRichText(false);
   setLineWrapMode(NoWrap);
   enableFindReplace(false);
-  setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
   connect(this, SIGNAL(textChanged()), this, SLOT(on_textChanged()));
 #endif
 
@@ -49,6 +49,13 @@ InputLine::InputLine(QWidget *parent)
 }
 
 InputLine::~InputLine() {
+}
+
+void InputLine::setCustomFont(const QFont &font) {
+  setFont(font);
+#ifdef HAVE_KDE
+  setMaximumHeight(document()->size().toSize().height());
+#endif
 }
 
 bool InputLine::eventFilter(QObject *watched, QEvent *event) {
@@ -73,6 +80,18 @@ bool InputLine::eventFilter(QObject *watched, QEvent *event) {
 }
 
 void InputLine::keyPressEvent(QKeyEvent * event) {
+
+#ifdef HAVE_KDE
+  if(event->matches(QKeySequence::Find)) {
+    QAction *act = GraphicalUi::actionCollection()->action("ToggleSearchBar");
+    if(act) {
+      act->toggle();
+      event->accept();
+      return;
+    }
+  }
+#endif
+
   switch(event->key()) {
   case Qt::Key_Up:
     event->accept();

@@ -62,7 +62,7 @@ void InputWidget::setCustomFont(const QVariant &v) {
   QFont font = v.value<QFont>();
   if(font.family().isEmpty())
     font = QApplication::font();
-  ui.inputEdit->setFont(font);
+  ui.inputEdit->setCustomFont(font);
 }
 
 void InputWidget::currentChanged(const QModelIndex &current, const QModelIndex &previous) {
