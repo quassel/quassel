@@ -38,6 +38,9 @@ InputLine::InputLine(QWidget *parent)
   setMaximumHeight(document()->size().toSize().height());
   setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
   setAcceptRichText(false);
+  setLineWrapMode(NoWrap);
+  enableFindReplace(false);
+  setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
   connect(this, SIGNAL(textChanged()), this, SLOT(on_textChanged()));
 #endif
 
@@ -103,11 +106,15 @@ void InputLine::keyPressEvent(QKeyEvent * event) {
 
   case Qt::Key_Select:		// for Qtopia
     emit returnPressed();
+    break;
 
 #ifdef HAVE_KDE
 //Since this is a ktextedit, we don't have this signal "natively"
   case Qt::Key_Return:
+    event->accept();
     emit returnPressed();
+    break;
+
 #endif
 
   default:
