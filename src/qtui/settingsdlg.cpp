@@ -95,8 +95,15 @@ void SettingsDlg::selectPage(SettingsPage *sp) {
   }
 
   if(sp != currentPage()) {
-    ui.pageTitle->setText(sp->title());
-    setWindowTitle(tr("Configure %1").arg(sp->title()));
+    if(sp->title().isEmpty()) {
+      ui.pageTitle->setText(sp->category());
+      setWindowTitle(tr("Configure %1").arg(sp->category()));
+    }
+    else {
+      ui.pageTitle->setText(sp->title());
+      setWindowTitle(tr("Configure %1").arg(sp->title()));
+    }
+
     ui.settingsStack->setCurrentWidget(sp);
     _currentPage = sp;
   }
