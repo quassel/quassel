@@ -135,6 +135,12 @@ void InputLine::keyPressEvent(QKeyEvent * event) {
       emit returnPressed();
     break;
 
+  case Qt::Key_Enter:
+    event->accept();
+    if(!text().isEmpty())
+      emit returnPressed();
+    break;
+
 #endif
 
   default:
@@ -214,9 +220,11 @@ void InputLine::on_textChanged(QString newText) {
   }
 
   foreach(QString line, lines) {
-    clear();
-    insert(line);
-    emit returnPressed();
+    if(!line.isEmpty()) {
+      clear();
+      insert(line);
+      emit returnPressed();
+    }
   }
 //   if(newText.contains(lineSep)) {
 //     clear();
