@@ -49,7 +49,7 @@ void ExecWrapper::start(const BufferInfo &info, const QString &command) {
   }
 
   // Make sure we don't execute something outside a script dir
-  if(_scriptName.startsWith('/') || _scriptName.contains("../"))
+  if(_scriptName.contains("../") || _scriptName.contains("..\\"))
     emit error(tr("Name \"%1\" is invalid: / or ../ are not allowed!").arg(_scriptName));
 
   else {
@@ -103,7 +103,9 @@ void ExecWrapper::processError(QProcess::ProcessError err) {
 }
 
 void ExecWrapper::processReadStdout() {
-  _stdoutBuffer.append(QTextCodec::codecForLocale()->toUnicode(_process.readAllStandardOutput()));
+  QString str = QTextCodec::codecForLocale()->toUnicode(_process.readAllStandardOutput());
+  str.replace(QRegExp("\r\n?"), "\n");
+  _stdoutBuffer.append(str);
   int idx;
   while((idx = _stdoutBuffer.indexOf('\n')) >= 0) {
     emit output(_stdoutBuffer.left(idx));
@@ -112,7 +114,9 @@ void ExecWrapper::processReadStdout() {
 }
 
 void ExecWrapper::processReadStderr() {
-  _stderrBuffer.append(QTextCodec::codecForLocale()->toUnicode(_process.readAllStandardError()));
+  QString str = QTextCodec::codecForLocale()->toUnicode(_process.readAllStandardError());
+  str.replace(QRegExp("\r\n?"), "\n");
+  _stderrBuffer.append(str);
   int idx;
   while((idx = _stderrBuffer.indexOf('\n')) >= 0) {
     emit error(_stderrBuffer.left(idx));
