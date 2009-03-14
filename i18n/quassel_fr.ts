@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS><TS version="1.1" language="fr">
+<defaultcodec></defaultcodec>
 <context>
     <name>@default</name>
     <message>
@@ -146,12 +147,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>AbstractSqlStorage</name>
     <message>
-        <location filename="../src/core/abstractsqlstorage.cpp" line="108"/>
+        <location filename="../src/core/abstractsqlstorage.cpp" line="110"/>
         <source>Installed Schema (version %1) is not up to date. Upgrading to version %2...</source>
         <translation>Le schéma installé (version %1) n&apos;est pas à jour. Mise à jour à la version %2...</translation>
     </message>
     <message>
-        <location filename="../src/core/abstractsqlstorage.cpp" line="110"/>
+        <location filename="../src/core/abstractsqlstorage.cpp" line="112"/>
         <source>Upgrade failed...</source>
         <translation>Echec de la mise à jour...</translation>
     </message>
@@ -233,12 +234,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>AliasesModel</name>
     <message>
-        <location filename="../src/qtui/settingspages/aliasesmodel.cpp" line="160"/>
+        <location filename="../src/qtui/settingspages/aliasesmodel.cpp" line="171"/>
         <source>Alias</source>
         <translation>Alias</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/aliasesmodel.cpp" line="160"/>
+        <location filename="../src/qtui/settingspages/aliasesmodel.cpp" line="171"/>
         <source>Expansion</source>
         <translation>Expansion</translation>
     </message>
@@ -1531,12 +1532,12 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Récupération des informations sur les canaux...</translation>
     </message>
     <message>
-        <location filename="../src/client/client.cpp" line="256"/>
+        <location filename="../src/client/client.cpp" line="264"/>
         <source>Identity already exists in client!</source>
         <translation>L&apos;Identité existe déjà dans le client!</translation>
     </message>
     <message>
-        <location filename="../src/client/client.cpp" line="319"/>
+        <location filename="../src/client/client.cpp" line="345"/>
         <source>All Buffers</source>
         <translation>Tous tampons</translation>
     </message>
@@ -2163,37 +2164,37 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>Core</name>
     <message>
-        <location filename="../src/core/core.cpp" line="151"/>
+        <location filename="../src/core/core.cpp" line="156"/>
         <source>Could not initialize any storage backend! Exiting...</source>
         <translation>Impossible de créer une base de donnée ! Fin de l&apos;opération...</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="196"/>
+        <location filename="../src/core/core.cpp" line="206"/>
         <source>Calling restoreState() even though active sessions exist!</source>
         <translation>Appel de restoreState() alors que des sessions actives existent !</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="237"/>
+        <location filename="../src/core/core.cpp" line="247"/>
         <source>Admin user or password not set.</source>
         <translation>L&apos;idnetifiant et le mot de passe administrateur ne sont pas saisis.</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="241"/>
+        <location filename="../src/core/core.cpp" line="251"/>
         <source>Could not setup storage!</source>
         <translation>Impossible de paramétrer la base de données !</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="245"/>
+        <location filename="../src/core/core.cpp" line="255"/>
         <source>Creating admin user...</source>
         <translation>Création de l&apos;utilisateur administrateur...</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="466"/>
+        <location filename="../src/core/core.cpp" line="476"/>
         <source>Antique client trying to connect... refusing.</source>
         <translation>Un antique client essaye de se connecter... refusé.</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="480"/>
+        <location filename="../src/core/core.cpp" line="490"/>
         <source>&lt;b&gt;Your Quassel Client is too old!&lt;/b&gt;&lt;br&gt;This core needs at least client/core protocol version %1.&lt;br&gt;Please consider upgrading your client.</source>
         <translation>&lt;b&gt;Le Noyau auquel vous essayez de vous connecter est trop vieux !&lt;/b&gt;&lt;br&gt;Vous devez au minimum avoir la version %1 du protocole noyau/client.&lt;br&gt; Veuillez mettre à jour votre client.</translation>
     </message>
@@ -2203,12 +2204,12 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Client %1 trop vieux, rejeté.</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="496"/>
+        <location filename="../src/core/core.cpp" line="506"/>
         <source>&lt;b&gt;Quassel Core Version %1&lt;/b&gt;&lt;br&gt;Built: %2&lt;br&gt;Up %3d%4h%5m (since %6)</source>
         <translation>&lt;b&gt;Quassel Noyau Version %1&lt;/b&gt;&lt;br&gt;Compilée le: %2&lt;br&gt;Fonctionne depuis %3d%4h%5m (soit le %6)</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="562"/>
+        <location filename="../src/core/core.cpp" line="572"/>
         <source>&lt;b&gt;Client not initialized!&lt;/b&gt;&lt;br&gt;You need to send an init message before trying to login.</source>
         <translation>&lt;b&gt;Client non créé !&lt;/b&gt;&lt;br&gt;Vous devez envoyer un message de création avant d&apos;essayer de vous connecter.</translation>
     </message>
@@ -2218,7 +2219,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Le client %1 n&apos;a pas envoyé de message de création avant d&apos;essayer de se connecter, rejet de la demande.</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="582"/>
+        <location filename="../src/core/core.cpp" line="592"/>
         <source>&lt;b&gt;Invalid username or password!&lt;/b&gt;&lt;br&gt;The username/password combination you supplied could not be found in the database.</source>
         <translation>&lt;b&gt;identifiant ou mot de passe invalide !&lt;/b&gt;&lt;br&gt;La combinaison identifiant/mot de passe que vous avez fournie ne peut être trouvée dans la base de données.</translation>
     </message>
@@ -2228,7 +2229,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Client %1 crée et identifié avec succès comme &quot;%2&quot; (IdUtilisateur: %3).</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="599"/>
+        <location filename="../src/core/core.cpp" line="609"/>
         <source>Non-authed client disconnected.</source>
         <translation>Client non-identifié déconnecté.</translation>
     </message>
@@ -2247,87 +2248,87 @@ construire votre librairie Qt avec le plugin sqlite activé pour que le
 noyau quassel fonctionne.</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="444"/>
+        <location filename="../src/core/core.cpp" line="454"/>
         <source>Client connected from</source>
         <translation>Client connecté par</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="588"/>
+        <location filename="../src/core/core.cpp" line="598"/>
         <source>Client</source>
         <translation>Client</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="482"/>
+        <location filename="../src/core/core.cpp" line="492"/>
         <source>too old, rejecting.</source>
         <translation>trop vieux, rejeté.</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="544"/>
+        <location filename="../src/core/core.cpp" line="554"/>
         <source>Starting TLS for Client:</source>
         <translation>Début du TLS pour le Client:</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="564"/>
+        <location filename="../src/core/core.cpp" line="574"/>
         <source>did not send an init message before trying to login, rejecting.</source>
         <translation>n&apos;a pas envoyé de message de création avant d&apos;essayer de se connecter, rejet.</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="588"/>
+        <location filename="../src/core/core.cpp" line="598"/>
         <source>initialized and authenticated successfully as &quot;%1&quot; (UserId: %2).</source>
         <translation>créé et identifié avec succès comme &quot;%1&quot; (IdUtilisateur: %2).</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="649"/>
+        <location filename="../src/core/core.cpp" line="659"/>
         <source>Could not initialize session for client:</source>
         <translation>Impossible de lancer la session pour le client:</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="605"/>
+        <location filename="../src/core/core.cpp" line="615"/>
         <source>Non-authed client disconnected. (socket allready destroyed)</source>
         <translation>Client non-identifié déconnecté. (socket déjà supprimée)</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="447"/>
+        <location filename="../src/core/core.cpp" line="457"/>
         <source>Closing server for basic setup.</source>
         <translation>Arrêt du serveur pour un paramétrage simple.</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="359"/>
+        <location filename="../src/core/core.cpp" line="369"/>
         <source>Invalid listen address %1</source>
         <translation>Adresse d&apos;écoute invalide %1</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="367"/>
+        <location filename="../src/core/core.cpp" line="377"/>
         <source>Listening for GUI clients on IPv4 %1 port %2 using protocol version %3</source>
         <translation>A l&apos;écoute des clients sur l&apos;IPv4 %1 port %2 avec la version %3 du protocole</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="375"/>
+        <location filename="../src/core/core.cpp" line="385"/>
         <source>Could not open IPv4 interface %1:%2: %3</source>
         <translation>Impossible d&apos;ouvrir l&apos;interface IPv4 %1:%2: %3</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="383"/>
+        <location filename="../src/core/core.cpp" line="393"/>
         <source>Listening for GUI clients on IPv6 %1 port %2 using protocol version %3</source>
         <translation>A l&apos;écoute des clients sur l&apos;IPv6 %1 port %2 avec la version %3 du protocole</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="394"/>
+        <location filename="../src/core/core.cpp" line="404"/>
         <source>Could not open IPv6 interface %1:%2: %3</source>
         <translation>Impossible d&apos;ouvrir l&apos;interface IPv6 %1:%2: %3</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="402"/>
+        <location filename="../src/core/core.cpp" line="412"/>
         <source>Invalid listen address %1, unknown network protocol</source>
         <translation>Adresse d&apos;écoute invalide %1, version du protocole inconnue</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="410"/>
+        <location filename="../src/core/core.cpp" line="420"/>
         <source>Could not open any network interfaces to listen on!</source>
         <translation>Impossible d&apos;ouvrir une interface réseau pour écouter !</translation>
     </message>
     <message>
-        <location filename="../src/core/core.cpp" line="154"/>
+        <location filename="../src/core/core.cpp" line="159"/>
         <source>Currently, Quassel supports SQLite3 and PostgreSQL. You need to build your
 Qt library with the sqlite or postgres plugin enabled in order for quasselcore
 to work.</source>
@@ -3460,6 +3461,39 @@ SOME SPACE</translation>
         <location filename="../src/qtopia/ui/editcoreacctdlg.ui" line="90"/>
         <source>User:</source>
         <translation type="obsolete">Utilisateur:</translation>
+    </message>
+</context>
+<context>
+    <name>ExecWrapper</name>
+    <message>
+        <location filename="../src/client/execwrapper.cpp" line="45"/>
+        <source>Invalid command string for /exec: %1</source>
+        <translation>Commande invalide pour /exec: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/client/execwrapper.cpp" line="53"/>
+        <source>Name &quot;%1&quot; is invalid: / or ../ are not allowed!</source>
+        <translation>Le nom &quot;%1&quot; est invalide: les / ou les ../ ne sont pas autorisés!</translation>
+    </message>
+    <message>
+        <location filename="../src/client/execwrapper.cpp" line="63"/>
+        <source>Could not find script &quot;%1&quot;</source>
+        <translation>Impossible de trouver le script &quot;%1&quot;</translation>
+    </message>
+    <message>
+        <location filename="../src/client/execwrapper.cpp" line="81"/>
+        <source>Script &quot;%1&quot; crashed with exit code %2.</source>
+        <translation>Le script &quot;%1&quot; a crashé avec le code d&apos;erreur %2.</translation>
+    </message>
+    <message>
+        <location filename="../src/client/execwrapper.cpp" line="97"/>
+        <source>Script &quot;%1&quot; could not start.</source>
+        <translation>Le Script &quot;%1&quot; ne peut pas être lancé.</translation>
+    </message>
+    <message>
+        <location filename="../src/client/execwrapper.cpp" line="99"/>
+        <source>Script &quot;%1&quot; caused error %2.</source>
+        <translation>Le Scrip &quot;%1&quot; a causé l&apos;erreur %2.</translation>
     </message>
 </context>
 <context>
@@ -4796,12 +4830,12 @@ Continuer provoquera le transfert non crypté de votre clé SSL et de votre cert
 <context>
     <name>InputLine</name>
     <message>
-        <location filename="../src/uisupport/inputline.cpp" line="148"/>
+        <location filename="../src/uisupport/inputline.cpp" line="178"/>
         <source>Do you really want to paste %1 lines?</source>
         <translation>Voulez vous vraiment coller %1 lignes ?</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/inputline.cpp" line="157"/>
+        <location filename="../src/uisupport/inputline.cpp" line="187"/>
         <source>Paste Protection</source>
         <translation>Protection Collage</translation>
     </message>
@@ -5656,7 +5690,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>MessageModel</name>
     <message>
-        <location filename="../src/client/messagemodel.cpp" line="362"/>
+        <location filename="../src/client/messagemodel.cpp" line="374"/>
         <source>Requesting %1 messages from backlog for buffer %2:%3</source>
         <translation>Demande de %1 messages dans l&apos;historique pour le tampon %2:%3</translation>
     </message>
@@ -8000,12 +8034,12 @@ Click to edit!</source>
 <context>
     <name>UserInputHandler</name>
     <message>
-        <location filename="../src/core/userinputhandler.cpp" line="138"/>
+        <location filename="../src/core/userinputhandler.cpp" line="132"/>
         <source>sending CTCP-%1 request</source>
         <translation>envoi d&apos;une requête CTCP-%1</translation>
     </message>
     <message>
-        <location filename="../src/core/userinputhandler.cpp" line="69"/>
+        <location filename="../src/core/userinputhandler.cpp" line="63"/>
         <source>away</source>
         <translation>absent</translation>
     </message>
