@@ -201,7 +201,7 @@ void InputLine::on_textChanged(QString newText) {
   clear();
 
   if(lines.count() >= 4) {
-    QString msg = tr("Do you really want to paste %1 lines?", "", lines.count()).arg(lines.count());
+    QString msg = tr("Do you really want to paste %n lines?", "", lines.count());
     msg += "<p>";
     for(int i = 0; i < 3; i++) {
       msg += lines[i].left(40);
