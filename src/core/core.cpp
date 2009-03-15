@@ -632,7 +632,13 @@ void Core::setupInternalClientSession(SignalProxy *proxy) {
     setupCoreForInternalUsage();
   }
 
-  UserId uid = _storage->internalUser();
+  UserId uid;
+  if(_storage) {
+    uid = _storage->internalUser();
+  } else {
+    qWarning() << "Core::setupInternalClientSession(): You're trying to run monolithic Quassel with an unusable Backend! Go fix it!";
+    return;
+  }
 
   // Find or create session for validated user
   SessionThread *sess;
