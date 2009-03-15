@@ -22,7 +22,9 @@
 #define CLIENTBUFFERVIEWMANAGER_H
 
 #include "bufferviewmanager.h"
+
 class ClientBufferViewConfig;
+class BufferViewOverlay;
 
 class ClientBufferViewManager : public BufferViewManager {
   Q_OBJECT
@@ -33,8 +35,16 @@ public:
   QList<ClientBufferViewConfig *> clientBufferViewConfigs() const;
   ClientBufferViewConfig *clientBufferViewConfig(int bufferViewId) const;
 
+  inline const BufferViewOverlay *bufferViewOverlay() const { return _bufferViewOverlay; }
+
 protected:
   virtual BufferViewConfig *bufferViewConfigFactory(int bufferViewConfigId);
+
+private slots:
+  void updateBufferViewOverlay();
+
+private:
+  BufferViewOverlay *_bufferViewOverlay;
 };
 
 #endif //CLIENTBUFFERVIEWMANAGER_H

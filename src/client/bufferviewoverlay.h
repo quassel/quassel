@@ -18,34 +18,57 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "clientbufferviewmanager.h"
+#ifndef BUFFERVIEWOVERLAY_H
+#define BUFFERVIEWOVERLAY_H
 
-#include "clientbufferviewconfig.h"
+#include <QObject>
 
-ClientBufferViewManager::ClientBufferViewManager(SignalProxy *proxy, QObject *parent)
-  : BufferViewManager(proxy, parent),
-    _bufferViewOverlay(0)
-{
-  connect(this, SIGNAL(bufferViewConfigAdded(int)), this, SLOT(updateBufferViewOverlay()));
-  connect(this, SIGNAL(bufferViewConfigDeleted(int)), this, SLOT(updateBufferViewOverlay()));
-}
+#include "types.h"
 
-BufferViewConfig *ClientBufferViewManager::bufferViewConfigFactory(int bufferViewConfigId) {
-  return new ClientBufferViewConfig(bufferViewConfigId, this);
-}
+class ClientBufferViewConfig;
 
-QList<ClientBufferViewConfig *> ClientBufferViewManager::clientBufferViewConfigs() const {
-  QList<ClientBufferViewConfig *> clientConfigs;
-  foreach(BufferViewConfig *config, bufferViewConfigs()) {
-    clientConfigs << static_cast<ClientBufferViewConfig *>(config);
-  }
-  return clientConfigs;
-}
+class BufferViewOverlay : public QObject {
+  Q_OBJECT
 
-ClientBufferViewConfig *ClientBufferViewManager::clientBufferViewConfig(int bufferViewId) const {
-  return static_cast<ClientBufferViewConfig *>(bufferViewConfig(bufferViewId));
-}
+public:
+  BufferViewOverlay(QObject *parent = 0);
 
-void ClientBufferViewManager::updateBufferViewOverlay() {
-  
-}
+public slots:
+  void addView(int viewId);
+  void removeView(int viewId);
+
+  // updates propagated from the actual views
+  void update();
+
+signals:
+  void hasChanged();
+
+protected:
+  virtual void customEvent(QEvent *event);
+
+private slots:
+  void viewInitialized();
+
+private:
+  inline bool allNetworks() const { return _networkIds.contains(NetworkId()); }
+
+  void updateHelper();
+  bool _aboutToUpdate;
+
+  QSet<int> _bufferViewIds;
+
+  QSet<NetworkId> _networkIds;
+
+  bool _addBuffersAutomatically;
+  bool _hideInactiveBuffers;
+  int _allowedBufferTypes;
+  int _minimumActivity;
+
+  QSet<BufferId> _buffers;
+  QSet<BufferId> _removedBuffers;
+  QSet<BufferId> _tempRemovedBuffers;
+
+  static const int _updateEventId;
+};
+
+#endif //BUFFERVIEWOVERLAY_H

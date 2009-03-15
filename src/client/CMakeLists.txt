@@ -12,6 +12,7 @@ set(SOURCES
     backlogrequester.cpp
     buffermodel.cpp
     buffersettings.cpp
+    bufferviewoverlay.cpp
     client.cpp
     clientbacklogmanager.cpp
     clientbufferviewconfig.cpp
@@ -32,6 +33,7 @@ set(MOC_HDRS
     abstractmessageprocessor.h
     abstractui.h
     buffermodel.h
+    bufferviewoverlay.h
     client.h
     clientbacklogmanager.h
     clientbufferviewconfig.h
