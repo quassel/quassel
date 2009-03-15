@@ -152,53 +152,71 @@ void SqliteStorage::renameUser(UserId user, const QString &newName) {
 }
 
 UserId SqliteStorage::validateUser(const QString &user, const QString &password) {
-  QSqlQuery query(logDb());
-  query.prepare(queryString("select_authuser"));
-  query.bindValue(":username", user);
-  query.bindValue(":password", cryptedPassword(password));
+  UserId userId;
 
-  lockForRead();
-  safeExec(query);
+  // this scope ensures that the query is freed in sqlite before we call unlock()
+  // this ensures that our thread doesn't hold a internal after unlock is called
+  // (see sqlites doc on implicit locking for details)
+  {
+    QSqlQuery query(logDb());
+    query.prepare(queryString("select_authuser"));
+    query.bindValue(":username", user);
+    query.bindValue(":password", cryptedPassword(password));
 
-  if(query.first()) {
-    unlock();
-    return query.value(0).toInt();
-  } else {
-    unlock();
-    return 0;
+    lockForRead();
+    safeExec(query);
+
+    if(query.first()) {
+      userId = query.value(0).toInt();
+    }
   }
+  unlock();
+
+  return userId;
 }
 
 UserId SqliteStorage::getUserId(const QString &username) {
-  QSqlQuery query(logDb());
-  query.prepare(queryString("select_userid"));
-  query.bindValue(":username", username);
+  UserId userId;
 
-  lockForRead();
-  safeExec(query);
+  // this scope ensures that the query is freed in sqlite before we call unlock()
+  // this ensures that our thread doesn't hold a internal after unlock is called
+  // (see sqlites doc on implicit locking for details)
+  {
+    QSqlQuery query(logDb());
+    query.prepare(queryString("select_userid"));
+    query.bindValue(":username", username);
 
-  if(query.first()) {
-    unlock();
-    return query.value(0).toInt();
-  } else {
-    unlock();
-    return 0;
+    lockForRead();
+    safeExec(query);
+
+    if(query.first()) {
+      userId = query.value(0).toInt();
+    }
   }
+  unlock();
+
+  return userId;
 }
 
 UserId SqliteStorage::internalUser() {
-  QSqlQuery query(logDb());
-  query.prepare(queryString("select_internaluser"));
-  lockForRead();
-  safeExec(query);
+  UserId userId;
 
-  if(query.first()) {
-    unlock();
-    return query.value(0).toInt();
-  } else {
-    unlock();
-    return 0;
+  // this scope ensures that the query is freed in sqlite before we call unlock()
+  // this ensures that our thread doesn't hold a internal after unlock is called
+  // (see sqlites doc on implicit locking for details)
+  {
+    QSqlQuery query(logDb());
+    query.prepare(queryString("select_internaluser"));
+    lockForRead();
+    safeExec(query);
+
+    if(query.first()) {
+      userId = query.value(0).toInt();
+    }
   }
+  unlock();
+
+  return userId;
 }
 
 void SqliteStorage::delUser(UserId user) {
@@ -442,7 +460,7 @@ QList<CoreIdentity> SqliteStorage::identities(UserId user) {
   QList<CoreIdentity> identities;
   QSqlDatabase db = logDb();
   db.transaction();
-  
+
   QSqlQuery query(db);
   query.prepare(queryString("select_identities"));
   query.bindValue(":userid", user.toInt());
@@ -498,7 +516,7 @@ NetworkId SqliteStorage::createNetwork(UserId user, const NetworkInfo &info) {
 
   QSqlDatabase db = logDb();
   db.transaction();
-  
+
   QSqlQuery query(db);
   query.prepare(queryString("insert_network"));
   query.bindValue(":userid", user.toInt());
@@ -526,7 +544,7 @@ NetworkId SqliteStorage::createNetwork(UserId user, const NetworkInfo &info) {
       return NetworkId();
     }
   }
-  
+
   db.commit();
   unlock();
   return networkId;
@@ -741,7 +759,7 @@ QList<NetworkId> SqliteStorage::connectedNetworks(UserId user) {
 
   QSqlDatabase db = logDb();
   db.transaction();
-  
+
   QSqlQuery query(db);
   query.prepare(queryString("select_connected_networks"));
   query.bindValue(":userid", user.toInt());
@@ -1236,7 +1254,7 @@ bool SqliteStorage::logMessages(MessageList &msgs) {
   QSqlDatabase db = logDb();
   db.transaction();
 
-  QSet<QString> senders;  
+  QSet<QString> senders;
 
   QSqlQuery addSenderQuery(db);
   addSenderQuery.prepare(queryString("insert_sender"));
