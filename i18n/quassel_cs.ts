@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="1.1" language="cs">
+<!DOCTYPE TS>
+<TS version="2.0" language="cs">
 <defaultcodec></defaultcodec>
 <context>
     <name></name>
     <message>
         <location filename="../src/common/message.h" line="68"/>
         <source>Day changed to %1</source>
-        <translation>A dnes máme:%1</translation>
+        <translation>A dnes máme: %1</translation>
     </message>
 </context>
 <context>
@@ -200,7 +201,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="13"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="21"/>
@@ -1516,7 +1517,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/coreconnectdlg.cpp" line="260"/>
         <source>&lt;div style=color:red;&gt;Connection to %1 failed!&lt;/div&gt;</source>
-        <translation type="unfinished">&lt;div style=color:red;&gt;Připojení k %1 selhalo!&lt;/div&gt;</translation>
+        <translation>&lt;div style=color:red;&gt;Připojení k %1 selhalo!&lt;/div&gt;</translation>
     </message>
     <message>
         <location filename="../src/qtui/coreconnectdlg.cpp" line="284"/>
@@ -1851,7 +1852,7 @@ SOME SPACE</source>
     <message>
         <location filename="../src/qtui/ui/debugconsole.ui" line="90"/>
         <source>Evaluate!</source>
-        <translation type="unfinished"></translation>
+        <translation>Posoudit!</translation>
     </message>
 </context>
 <context>
@@ -1872,47 +1873,47 @@ SOME SPACE</source>
     <message>
         <location filename="../src/qtui/ui/desktopnotificationconfigwidget.ui" line="13"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>Formulář</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/desktopnotificationconfigwidget.ui" line="19"/>
         <source>Desktop Notification (via D-Bus)</source>
-        <translation type="unfinished"></translation>
+        <translation>Oznamovaní (skrze D-Bus)</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/desktopnotificationconfigwidget.ui" line="33"/>
         <source>Timeout:</source>
-        <translation type="unfinished"></translation>
+        <translation>Časová prodleva:</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/desktopnotificationconfigwidget.ui" line="46"/>
         <source> s</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/desktopnotificationconfigwidget.ui" line="76"/>
         <source>Position hint:</source>
-        <translation type="unfinished"></translation>
+        <translation>Pozice oznámení:</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/desktopnotificationconfigwidget.ui" line="102"/>
         <source> px</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/desktopnotificationconfigwidget.ui" line="89"/>
         <source>X: </source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/desktopnotificationconfigwidget.ui" line="105"/>
         <source>Y: </source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/desktopnotificationconfigwidget.ui" line="130"/>
         <source>Queue unread notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Řadit nepřečtená oznámení</translation>
     </message>
 </context>
 <context>
@@ -2106,47 +2107,47 @@ SOME SPACE</source>
     <message>
         <location filename="../src/qtui/settingspages/highlightsettingspage.cpp" line="30"/>
         <source>Behaviour</source>
-        <translation type="unfinished"></translation>
+        <translation>Chování</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/highlightsettingspage.ui" line="32"/>
         <source>Highlight</source>
-        <translation type="unfinished"></translation>
+        <translation>Zvýraznění</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/highlightsettingspage.cpp" line="159"/>
         <source>this shouldn&apos;t be empty</source>
-        <translation type="unfinished"></translation>
+        <translation>toto by nemělo být prázdné</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/highlightsettingspage.h" line="45"/>
         <source>highlight rule</source>
-        <translation type="unfinished"></translation>
+        <translation>Pravidla zvýraznění</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/highlightsettingspage.ui" line="13"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>Formulář</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/highlightsettingspage.ui" line="19"/>
         <source>Custom Highlights</source>
-        <translation type="unfinished"></translation>
+        <translation>Uživatelská zvýraznění</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/highlightsettingspage.ui" line="37"/>
         <source>RegEx</source>
-        <translation type="unfinished"></translation>
+        <translation>Regulerní výraz</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/highlightsettingspage.ui" line="42"/>
         <source>CS</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/highlightsettingspage.ui" line="47"/>
         <source>Enable</source>
-        <translation type="unfinished"></translation>
+        <translation>Povolit</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/highlightsettingspage.ui" line="55"/>
@@ -2161,27 +2162,27 @@ SOME SPACE</source>
     <message>
         <location filename="../src/qtui/settingspages/highlightsettingspage.ui" line="85"/>
         <source>Highlight Nicks</source>
-        <translation type="unfinished"></translation>
+        <translation>Zvýrazňované přezdívky</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/highlightsettingspage.ui" line="91"/>
         <source>All nicks from identity</source>
-        <translation type="unfinished"></translation>
+        <translation>Všechny přezdívky z identity</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/highlightsettingspage.ui" line="98"/>
         <source>Current nick</source>
-        <translation type="unfinished"></translation>
+        <translation>Současnou</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/highlightsettingspage.ui" line="108"/>
         <source>None</source>
-        <translation type="unfinished"></translation>
+        <translation>Žádnou</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/highlightsettingspage.ui" line="115"/>
         <source>Case sensitive</source>
-        <translation type="unfinished"></translation>
+        <translation>Citlivý na velikost písma</translation>
     </message>
 </context>
 <context>
@@ -3264,7 +3265,7 @@ Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificat
     <message>
         <location filename="../src/qtui/settingspages/networkssettingspage.ui" line="13"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/networkssettingspage.ui" line="37"/>
@@ -3319,7 +3320,7 @@ Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificat
     <message>
         <location filename="../src/qtui/settingspages/networkssettingspage.ui" line="277"/>
         <source>...</source>
-        <translation>...</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/networkssettingspage.ui" line="274"/>
@@ -3334,7 +3335,7 @@ Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificat
     <message>
         <location filename="../src/qtui/settingspages/networkssettingspage.ui" line="331"/>
         <source>Perform</source>
-        <translation type="unfinished"></translation>
+        <translation>Provést</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/networkssettingspage.ui" line="334"/>
@@ -3360,7 +3361,7 @@ Note that Quassel IRC automatically rejoins channels, so /join will rarely be ne
     <message>
         <location filename="../src/qtui/settingspages/networkssettingspage.ui" line="379"/>
         <source>NickServ</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/networkssettingspage.ui" line="396"/>
@@ -3453,7 +3454,7 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
     <message>
         <location filename="../src/qtui/settingspages/networkssettingspage.ui" line="569"/>
         <source> s</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/networkssettingspage.ui" line="585"/>
@@ -3463,7 +3464,7 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
     <message>
         <location filename="../src/qtui/settingspages/networkssettingspage.ui" line="605"/>
         <source>Unlimited</source>
-        <translation type="unfinished"></translation>
+        <translation>Neomezeně</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/networkssettingspage.ui" line="617"/>
@@ -3625,7 +3626,7 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
     <message>
         <location filename="../src/qtui/settingspages/servereditdlg.ui" line="13"/>
         <source>Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/servereditdlg.ui" line="37"/>
@@ -3665,7 +3666,7 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
     <message>
         <location filename="../src/qtui/settingspages/servereditdlg.ui" line="162"/>
         <source>Do not change unless you&apos;re going to connect to a server not supporting SSLv3!</source>
-        <translation type="unfinished"></translation>
+        <translation>Tuto hodnotu měňte pouze za předpokladu, že se připojujete k serveru nepodporujícímu SSLv3!</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/servereditdlg.ui" line="166"/>
@@ -3705,12 +3706,12 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
     <message>
         <location filename="../src/qtui/settingspages/servereditdlg.ui" line="228"/>
         <source>Proxy Host:</source>
-        <translation type="unfinished"></translation>
+        <translation>Počítač:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/servereditdlg.ui" line="235"/>
         <source>localhost</source>
-        <translation>tento počítač (localhost)</translation>
+        <translation>localhost</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/servereditdlg.ui" line="266"/>
