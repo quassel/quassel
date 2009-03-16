@@ -27,6 +27,7 @@
 #include "buffersettings.h"
 #include "buffersyncer.h"
 #include "bufferviewconfig.h"
+#include "bufferviewoverlay.h"
 #include "clientbacklogmanager.h"
 #include "clientbufferviewmanager.h"
 #include "clientirclisthelper.h"
@@ -78,6 +79,7 @@ Client::Client(QObject *parent)
     _bufferSyncer(0),
     _backlogManager(new ClientBacklogManager(this)),
     _bufferViewManager(0),
+    _bufferViewOverlay(new BufferViewOverlay(this)),
     _ircListHelper(new ClientIrcListHelper(this)),
     _inputHandler(new ClientUserInputHandler(this)),
     _messageModel(0),

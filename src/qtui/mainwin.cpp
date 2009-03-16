@@ -382,9 +382,9 @@ void MainWin::bufferViewToggled(bool enabled) {
   BufferViewDock *dock = qobject_cast<BufferViewDock *>(action->parent());
   Q_ASSERT(dock);
   if(enabled) {
-    Client::bufferViewManager()->bufferViewOverlay()->addView(dock->bufferViewId());
+    Client::bufferViewOverlay()->addView(dock->bufferViewId());
   } else {
-    Client::bufferViewManager()->bufferViewOverlay()->removeView(dock->bufferViewId());
+    Client::bufferViewOverlay()->removeView(dock->bufferViewId());
   }
 }
 
@@ -919,7 +919,7 @@ void MainWin::on_actionDebugBufferViewOverlay_triggered() {
   QTreeView *view = new QTreeView;
   view->setAttribute(Qt::WA_DeleteOnClose);
   view->setWindowTitle("Debug BufferViewOverlay View");
-  BufferViewOverlayFilter *filter = new BufferViewOverlayFilter(Client::bufferModel(), Client::bufferViewManager()->bufferViewOverlay());
+  BufferViewOverlayFilter *filter = new BufferViewOverlayFilter(Client::bufferModel(), Client::bufferViewOverlay());
   filter->setParent(view);
   view->setModel(filter);
   view->setColumnWidth(0, 250);

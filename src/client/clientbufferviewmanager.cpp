@@ -24,8 +24,7 @@
 #include "clientbufferviewconfig.h"
 
 ClientBufferViewManager::ClientBufferViewManager(SignalProxy *proxy, QObject *parent)
-  : BufferViewManager(proxy, parent),
-    _bufferViewOverlay(new BufferViewOverlay(this))
+  : BufferViewManager(proxy, parent)
 {
 }
 
