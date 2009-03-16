@@ -598,3 +598,14 @@ void BufferViewDock::bufferViewRenamed(const QString &newName) {
   setWindowTitle(newName);
   toggleViewAction()->setText(newName);
 }
+
+int BufferViewDock::bufferViewId() const {
+  BufferView *view = bufferView();
+  if(!view)
+    return 0;
+
+  if(view->config())
+    return view->config()->bufferViewId();
+  else
+    return 0;
+}

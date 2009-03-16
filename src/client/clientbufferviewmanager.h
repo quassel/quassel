@@ -35,13 +35,10 @@ public:
   QList<ClientBufferViewConfig *> clientBufferViewConfigs() const;
   ClientBufferViewConfig *clientBufferViewConfig(int bufferViewId) const;
 
-  inline const BufferViewOverlay *bufferViewOverlay() const { return _bufferViewOverlay; }
+  inline BufferViewOverlay *bufferViewOverlay() const { return _bufferViewOverlay; }
 
 protected:
   virtual BufferViewConfig *bufferViewConfigFactory(int bufferViewConfigId);
-
-private slots:
-  void updateBufferViewOverlay();
 
 private:
   BufferViewOverlay *_bufferViewOverlay;

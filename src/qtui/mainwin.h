@@ -112,6 +112,7 @@ class MainWin
     void on_actionConfigureViews_triggered();
     void on_actionLockLayout_toggled(bool lock);
     void on_actionDebugNetworkModel_triggered();
+    void on_actionDebugBufferViewOverlay_triggered();
     void on_actionDebugMessageModel_triggered();
     void on_actionDebugLog_triggered();
 
@@ -124,6 +125,8 @@ class MainWin
 
     void loadLayout();
     void saveLayout();
+
+    void bufferViewToggled(bool enabled);
 
   signals:
     void connectToCore(const QVariantMap &connInfo);

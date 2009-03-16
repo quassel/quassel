@@ -50,7 +50,7 @@ void BufferViewOverlay::addView(int viewId) {
 
   _bufferViewIds << viewId;
   if(config->isInitialized()) {
-    update();
+    viewInitialized(config);
   } else {
     disconnect(config, SIGNAL(initDone()), this, SLOT(viewInitialized()));
     connect(config, SIGNAL(initDone()), this, SLOT(viewInitialized()));
@@ -62,18 +62,40 @@ void BufferViewOverlay::removeView(int viewId) {
     return;
 
   _bufferViewIds.remove(viewId);
+  BufferViewConfig *config = qobject_cast<BufferViewConfig *>(sender());
+  if(config)
+    disconnect(config, 0, this, 0);
   update();
+}
+
+void BufferViewOverlay::viewInitialized(BufferViewConfig *config) {
+  if(!config) {
+    qWarning() << "BufferViewOverlay::viewInitialized() received invalid view!";
+    return;
+  }
+  disconnect(config, SIGNAL(initDone()), this, SLOT(viewInitialized()));
+
+  connect(config, SIGNAL(networkIdSet(const NetworkId &)), this, SLOT(update()));
+  connect(config, SIGNAL(addNewBuffersAutomaticallySet(bool)), this, SLOT(update()));
+  connect(config, SIGNAL(sortAlphabeticallySet(bool)), this, SLOT(update()));
+  connect(config, SIGNAL(hideInactiveBuffersSet(bool)), this, SLOT(update()));
+  connect(config, SIGNAL(allowedBufferTypesSet(int)), this, SLOT(update()));
+  connect(config, SIGNAL(minimumActivitySet(int)), this, SLOT(update()));
+  connect(config, SIGNAL(bufferListSet()), this, SLOT(update()));
+  connect(config, SIGNAL(bufferAdded(const BufferId &, int)), this, SLOT(update()));
+  connect(config, SIGNAL(bufferRemoved(const BufferId &)), this, SLOT(update()));
+  connect(config, SIGNAL(bufferPermanentlyRemoved(const BufferId &)), this, SLOT(update()));
+
+  // check if the view was removed in the meantime...
+  if(_bufferViewIds.contains(config->bufferViewId()))
+    update();
 }
 
 void BufferViewOverlay::viewInitialized() {
   BufferViewConfig *config = qobject_cast<BufferViewConfig *>(sender());
   Q_ASSERT(config);
 
-  disconnect(config, SIGNAL(initDone()), this, SLOT(viewInitialized()));
-
-  // check if the view was removed in the meantime...
-  if(_bufferViewIds.contains(config->bufferViewId()))
-    update();
+  viewInitialized(config);
 }
 
 void BufferViewOverlay::update() {
@@ -81,6 +103,7 @@ void BufferViewOverlay::update() {
     return;
   }
   _aboutToUpdate = true;
+  QCoreApplication::postEvent(this, new QEvent((QEvent::Type)_updateEventId));
 }
 
 void BufferViewOverlay::updateHelper() {
@@ -94,7 +117,7 @@ void BufferViewOverlay::updateHelper() {
   QSet<BufferId> buffers;
   QSet<BufferId> removedBuffers;
   QSet<BufferId> tempRemovedBuffers;
-  
+
   BufferViewConfig *config = 0;
   QSet<int>::const_iterator viewIter;
   for(viewIter = _bufferViewIds.constBegin(); viewIter != _bufferViewIds.constEnd(); viewIter++) {
@@ -104,8 +127,14 @@ void BufferViewOverlay::updateHelper() {
 
     networkIds << config->networkId();
     buffers += config->bufferList().toSet();
-    removedBuffers += config->removedBuffers();
     tempRemovedBuffers += config->temporarilyRemovedBuffers();
+
+    // in the overlay a buffer is removed it is removed from all views
+    if(removedBuffers.isEmpty())
+      removedBuffers = config->removedBuffers();
+    else
+      removedBuffers.intersect(config->removedBuffers());
+
 
     addBuffersAutomatically |= config->addNewBuffersAutomatically();
     hideInactiveBuffers &= config->hideInactiveBuffers();
@@ -131,7 +160,7 @@ void BufferViewOverlay::updateHelper() {
   _buffers = buffers;
   _removedBuffers = removedBuffers;
   _tempRemovedBuffers = tempRemovedBuffers;
-  
+
   if(changed)
     emit hasChanged();
 }

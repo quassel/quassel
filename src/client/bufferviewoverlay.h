@@ -25,6 +25,7 @@
 
 #include "types.h"
 
+class BufferViewConfig;
 class ClientBufferViewConfig;
 
 class BufferViewOverlay : public QObject {
@@ -32,6 +33,18 @@ class BufferViewOverlay : public QObject {
 
 public:
   BufferViewOverlay(QObject *parent = 0);
+
+  inline bool allNetworks() const { return _networkIds.contains(NetworkId()); }
+
+  inline const QSet<NetworkId> &networkIds() const { return _networkIds; }
+  inline const QSet<BufferId> &bufferIds() const { return _buffers; }
+  inline const QSet<BufferId> &removedBufferIds() const { return _removedBuffers; }
+  inline const QSet<BufferId> &tempRemovedBufferIds() const { return _tempRemovedBuffers; }
+
+  inline bool addBuffersAutomatically() const { return _addBuffersAutomatically; }
+  inline bool hideInactiveBuffers() const { return _hideInactiveBuffers; }
+  inline int allowedBufferTypes() const { return _allowedBufferTypes; }
+  inline int minimumActivity() const { return _minimumActivity; }
 
 public slots:
   void addView(int viewId);
@@ -48,10 +61,9 @@ protected:
 
 private slots:
   void viewInitialized();
+  void viewInitialized(BufferViewConfig *config);
 
 private:
-  inline bool allNetworks() const { return _networkIds.contains(NetworkId()); }
-
   void updateHelper();
   bool _aboutToUpdate;
 

@@ -11,6 +11,7 @@ set(SOURCES
     actioncollection.cpp
     bufferview.cpp
     bufferviewfilter.cpp
+    bufferviewoverlayfilter.cpp
     clearablelineedit.cpp
     clickablelabel.cpp
     colorbutton.cpp
@@ -37,6 +38,7 @@ set(MOC_HDRS
     actioncollection.h
     bufferview.h
     bufferviewfilter.h
+    bufferviewoverlayfilter.h
     clearablelineedit.h
     clickablelabel.h
     colorbutton.h

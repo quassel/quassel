@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-08 by the Quassel Project                          *
+ *   Copyright (C) 2005-09 by the Quassel Project                          *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,29 +18,31 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "clientbufferviewmanager.h"
+#ifndef BUFFERVIEWOVERLAYFILTER_H_
+#define BUFFERVIEWOVERLAYFILTER_H_
 
-#include "bufferviewoverlay.h"
-#include "clientbufferviewconfig.h"
+#include <QSortFilterProxyModel>
 
-ClientBufferViewManager::ClientBufferViewManager(SignalProxy *proxy, QObject *parent)
-  : BufferViewManager(proxy, parent),
-    _bufferViewOverlay(new BufferViewOverlay(this))
-{
-}
+#include "types.h"
 
-BufferViewConfig *ClientBufferViewManager::bufferViewConfigFactory(int bufferViewConfigId) {
-  return new ClientBufferViewConfig(bufferViewConfigId, this);
-}
+class BufferViewOverlay;
 
-QList<ClientBufferViewConfig *> ClientBufferViewManager::clientBufferViewConfigs() const {
-  QList<ClientBufferViewConfig *> clientConfigs;
-  foreach(BufferViewConfig *config, bufferViewConfigs()) {
-    clientConfigs << static_cast<ClientBufferViewConfig *>(config);
-  }
-  return clientConfigs;
-}
+class BufferViewOverlayFilter : public QSortFilterProxyModel {
+  Q_OBJECT
 
-ClientBufferViewConfig *ClientBufferViewManager::clientBufferViewConfig(int bufferViewId) const {
-  return static_cast<ClientBufferViewConfig *>(bufferViewConfig(bufferViewId));
-}
+public:
+  BufferViewOverlayFilter(QAbstractItemModel *model, BufferViewOverlay *overlay = 0);
+
+  void setOverlay(BufferViewOverlay *overlay);
+
+protected:
+  bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
+
+private slots:
+  void overlayDestroyed();
+
+private:
+  BufferViewOverlay *_overlay;
+};
+
+#endif // BUFFERVIEWOVERLAYFILTER_H_

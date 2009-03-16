@@ -135,6 +135,7 @@ class BufferViewDock : public QDockWidget {
 public:
   BufferViewDock(BufferViewConfig *config, QWidget *parent);
 
+  int bufferViewId() const;
   inline BufferView *bufferView() const { return qobject_cast<BufferView *>(widget()); }
 
 public slots:
