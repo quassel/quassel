@@ -525,6 +525,10 @@ void CoreNetwork::doAutoReconnect() {
 
 void CoreNetwork::sendPing() {
   uint now = QDateTime::currentDateTime().toTime_t();
+  if(_pingCount != 0) {
+    qDebug() << "UserId:" << userId() << "Network:" << networkName() << "missed" << _pingCount << "pings."
+	     << "BA:" << socket.bytesAvailable() << "BTW:" << socket.bytesToWrite();
+  }
   if(_pingCount >= _maxPingCount && now - _lastPingTime <= (uint)(_pingTimer.interval() / 1000) + 1) {
     // the second check compares the actual elapsed time since the last ping and the pingTimer interval
     // if the interval is shorter then the actual elapsed time it means that this thread was somehow blocked
