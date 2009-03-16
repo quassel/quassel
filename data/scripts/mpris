@@ -1,0 +1,47 @@
+#!/usr/bin/env perl
+# Copyright 2009 Sebastian Goth seezer@roath.org
+# 
+# Simple script to read metadata from mpris compatible mediaplayers via dbus.
+#
+# Run it like this:
+# mpris amarok
+#
+# The script fills all fields exported by the player's dbusinterface.
+# They are defined here: http://wiki.xmms2.xmms.se/wiki/MPRIS_Metadata
+#
+# To see which fields are actually available from your player,
+# call something like this from a terminal:
+#
+# qdbus org.mpris.amarok /Player GetMetadata
+# or
+# qdbus org.mpris.vlc /Player GetMetadata
+# etc.
+# 
+# Every field is available in the data hash 'd' via
+# $d{"NAME_OF_FIELD"}
+# To edit the output just change the marked line accordingly.
+
+use strict;
+my %d;
+
+if($#ARGV < 0) {
+ print STDERR "Usage: $0 playername\n";
+ exit 1;
+}
+
+die "Please don't use any special characters in playername." if($ARGV[0] =~ /[^\w\d_-]/);
+
+open(IN,"qdbus org.mpris.".$ARGV[0]." /Player GetMetadata|") or die "Couldn't get dbus result.";
+while(<IN>) {
+	$d{$1} = $2 if(/^([^:]+):\s+([^\n]+)/);
+}
+close IN;
+
+if(keys(%d)) {
+
+## change the following line to fit your needs ##
+print "I'm listening to ".$d{"title"}." by ".$d{"artist"};
+#################################################
+
+print "\n";
+}
