@@ -322,7 +322,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/settingspages/appearancesettingspage.ui" line="46"/>
         <source>&lt;System Default&gt;</source>
-        <translation>&lt;Défaut Système&gt;</translation>
+        <translation>&lt;Système par défaut&gt;</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/appearancesettingspage.ui" line="61"/>
@@ -440,12 +440,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/awaylogview.cpp" line="44"/>
         <source>Show Network Name</source>
-        <translation>Montrer le Nom du Réseau</translation>
+        <translation>Afficher le Nom du Réseau</translation>
     </message>
     <message>
         <location filename="../src/qtui/awaylogview.cpp" line="49"/>
         <source>Show Buffer Name</source>
-        <translation>Montrer le Nom du Tampon</translation>
+        <translation>Afficher le Nom du Tampon</translation>
     </message>
 </context>
 <context>
@@ -1335,7 +1335,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/settingspages/chatmonitorsettingspage.ui" line="132"/>
         <source>Show:</source>
-        <translation>Montrer:</translation>
+        <translation>Afficher:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatmonitorsettingspage.cpp" line="239"/>
@@ -1397,7 +1397,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/settingspages/chatmonitorsettingspage.ui" line="156"/>
         <source>Show own messages</source>
-        <translation>Montrer mes messages</translation>
+        <translation>Afficher mes messages</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatmonitorsettingspage.cpp" line="35"/>
@@ -3473,27 +3473,32 @@ SOME SPACE</translation>
     <message>
         <location filename="../src/client/execwrapper.cpp" line="53"/>
         <source>Name &quot;%1&quot; is invalid: / or ../ are not allowed!</source>
-        <translation>Le nom &quot;%1&quot; est invalide: les / ou les ../ ne sont pas autorisés!</translation>
+        <translation type="obsolete">Le nom &quot;%1&quot; est invalide: les / ou les ../ ne sont pas autorisés!</translation>
     </message>
     <message>
-        <location filename="../src/client/execwrapper.cpp" line="63"/>
+        <location filename="../src/client/execwrapper.cpp" line="64"/>
         <source>Could not find script &quot;%1&quot;</source>
         <translation>Impossible de trouver le script &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/client/execwrapper.cpp" line="81"/>
+        <location filename="../src/client/execwrapper.cpp" line="82"/>
         <source>Script &quot;%1&quot; crashed with exit code %2.</source>
         <translation>Le script &quot;%1&quot; a crashé avec le code d&apos;erreur %2.</translation>
     </message>
     <message>
-        <location filename="../src/client/execwrapper.cpp" line="97"/>
+        <location filename="../src/client/execwrapper.cpp" line="98"/>
         <source>Script &quot;%1&quot; could not start.</source>
         <translation>Le Script &quot;%1&quot; ne peut pas être lancé.</translation>
     </message>
     <message>
-        <location filename="../src/client/execwrapper.cpp" line="99"/>
+        <location filename="../src/client/execwrapper.cpp" line="100"/>
         <source>Script &quot;%1&quot; caused error %2.</source>
-        <translation>Le Scrip &quot;%1&quot; a causé l&apos;erreur %2.</translation>
+        <translation>Le Script &quot;%1&quot; a causé l&apos;erreur %2.</translation>
+    </message>
+    <message>
+        <location filename="../src/client/execwrapper.cpp" line="53"/>
+        <source>Name &quot;%1&quot; is invalid: ../ or ..\ are not allowed!</source>
+        <translation>Le nom &quot;%1&quot; est invalide: les / ou les ../ ne sont pas autorisés !</translation>
     </message>
 </context>
 <context>
@@ -4832,12 +4837,20 @@ Continuer provoquera le transfert non crypté de votre clé SSL et de votre cert
     <message>
         <location filename="../src/uisupport/inputline.cpp" line="178"/>
         <source>Do you really want to paste %1 lines?</source>
-        <translation>Voulez vous vraiment coller %1 lignes ?</translation>
+        <translation type="obsolete">Voulez vous vraiment coller %1 lignes ?</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/inputline.cpp" line="187"/>
+        <location filename="../src/uisupport/inputline.cpp" line="213"/>
         <source>Paste Protection</source>
         <translation>Protection Collage</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/uisupport/inputline.cpp" line="204"/>
+        <source>Do you really want to paste %n lines?</source>
+        <translation>
+            <numerusform>Voulez vous vraiment coller une ligne ?</numerusform>
+            <numerusform>Voulez vous vraiment coller %n lignes ?</numerusform>
+        </translation>
     </message>
 </context>
 <context>
@@ -5386,7 +5399,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/mainwin.cpp" line="225"/>
         <source>Core &amp;Info...</source>
-        <translation>&amp;Info Noyau</translation>
+        <translation>&amp;Info Noyau...</translation>
     </message>
     <message>
         <location filename="../src/qtui/mainwin.cpp" line="229"/>
@@ -5411,17 +5424,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/mainwin.cpp" line="240"/>
         <source>Show &amp;Search Bar</source>
-        <translation>Montrer la Barre de &amp;Recherche</translation>
+        <translation>Afficher la Barre de &amp;Recherche</translation>
     </message>
     <message>
         <location filename="../src/qtui/mainwin.cpp" line="241"/>
         <source>Ctrl+F</source>
-        <translation>Ctrl+F</translation>
+        <translation type="obsolete">Ctrl+F</translation>
     </message>
     <message>
         <location filename="../src/qtui/mainwin.cpp" line="244"/>
         <source>Show Status &amp;Bar</source>
-        <translation>Monter la Barre d&apos;&amp;Etat</translation>
+        <translation>Montrer la Barre d&apos;&amp;Etat</translation>
     </message>
     <message>
         <location filename="../src/qtui/mainwin.cpp" line="248"/>
@@ -7130,22 +7143,22 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
         <translation>Il y a des changements non sauvegardés sur cette page de configuration. Voulez vous appliquer vos changements maintenant ?</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingsdlg.cpp" line="164"/>
+        <location filename="../src/qtui/settingsdlg.cpp" line="171"/>
         <source>Reload Settings</source>
         <translation>Recharger les paramètres</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingsdlg.cpp" line="164"/>
+        <location filename="../src/qtui/settingsdlg.cpp" line="171"/>
         <source>Do you like to reload the settings, undoing your changes on this page?</source>
         <translation>Voulez vous recharger les paramètres, et annuler vos changements sur cette page ?</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingsdlg.cpp" line="173"/>
+        <location filename="../src/qtui/settingsdlg.cpp" line="180"/>
         <source>Restore Defaults</source>
         <translation>Restaurer les valeurs par défaut</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingsdlg.cpp" line="173"/>
+        <location filename="../src/qtui/settingsdlg.cpp" line="180"/>
         <source>Do you like to restore the default values for this page?</source>
         <translation>Voulez-vous restaurer les paramètres par défaut de cette page?</translation>
     </message>
@@ -7155,7 +7168,7 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
         <translation>Configurer Quassel</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingsdlg.cpp" line="99"/>
+        <location filename="../src/qtui/settingsdlg.cpp" line="104"/>
         <source>Configure %1</source>
         <translation>Configurer %1</translation>
     </message>
