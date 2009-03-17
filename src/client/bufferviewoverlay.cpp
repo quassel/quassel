@@ -22,9 +22,10 @@
 
 #include <QEvent>
 
-#include "client.h"
 #include "bufferviewconfig.h"
+#include "client.h"
 #include "clientbufferviewmanager.h"
+#include "networkmodel.h"
 
 const int BufferViewOverlay::_updateEventId = QEvent::registerEventType();
 
@@ -125,9 +126,28 @@ void BufferViewOverlay::updateHelper() {
       config = Client::bufferViewManager()->bufferViewConfig(*viewIter);
       if(!config)
         continue;
+
       networkIds << config->networkId();
-      buffers += config->bufferList().toSet();
-      tempRemovedBuffers += config->temporarilyRemovedBuffers();
+      if(config->networkId().isValid()) {
+        NetworkId networkId = config->networkId();
+        // we have to filter out all the buffers that don't belong to this net... :/
+        QSet<BufferId> bufferIds;
+        foreach(BufferId bufferId, config->bufferList()) {
+          if(Client::networkModel()->networkId(bufferId) == networkId)
+            bufferIds << bufferId;
+        }
+        buffers += bufferIds;
+
+        bufferIds.clear();
+        foreach(BufferId bufferId, config->temporarilyRemovedBuffers()) {
+          if(Client::networkModel()->networkId(bufferId) == networkId)
+            bufferIds << bufferId;
+        }
+        tempRemovedBuffers += bufferIds;
+      } else {
+        buffers += config->bufferList().toSet();
+        tempRemovedBuffers += config->temporarilyRemovedBuffers();
+      }
 
       // in the overlay a buffer is removed it is removed from all views
       if(removedBuffers.isEmpty())
