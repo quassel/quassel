@@ -1067,7 +1067,7 @@ bool PostgreSqlStorage::mergeBuffersPermanently(const UserId &user, const Buffer
   }
 
   QSqlQuery checkQuery(db);
-  checkQuery.prepare("SELECT count(*) FROM buffer"
+  checkQuery.prepare("SELECT count(*) FROM buffer "
 		     "WHERE userid = :userid AND bufferid IN (:buffer1, :buffer2)");
   checkQuery.bindValue(":userid", user.toInt());
   checkQuery.bindValue(":buffer1", bufferId1.toInt());
