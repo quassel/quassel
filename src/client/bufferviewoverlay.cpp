@@ -118,29 +118,30 @@ void BufferViewOverlay::updateHelper() {
   QSet<BufferId> removedBuffers;
   QSet<BufferId> tempRemovedBuffers;
 
-  BufferViewConfig *config = 0;
-  QSet<int>::const_iterator viewIter;
-  for(viewIter = _bufferViewIds.constBegin(); viewIter != _bufferViewIds.constEnd(); viewIter++) {
-    config = Client::bufferViewManager()->bufferViewConfig(*viewIter);
-    if(!config)
-      continue;
+  if(Client::bufferViewManager()) {
+    BufferViewConfig *config = 0;
+    QSet<int>::const_iterator viewIter;
+    for(viewIter = _bufferViewIds.constBegin(); viewIter != _bufferViewIds.constEnd(); viewIter++) {
+      config = Client::bufferViewManager()->bufferViewConfig(*viewIter);
+      if(!config)
+        continue;
+      networkIds << config->networkId();
+      buffers += config->bufferList().toSet();
+      tempRemovedBuffers += config->temporarilyRemovedBuffers();
 
-    networkIds << config->networkId();
-    buffers += config->bufferList().toSet();
-    tempRemovedBuffers += config->temporarilyRemovedBuffers();
-
-    // in the overlay a buffer is removed it is removed from all views
-    if(removedBuffers.isEmpty())
-      removedBuffers = config->removedBuffers();
-    else
-      removedBuffers.intersect(config->removedBuffers());
+      // in the overlay a buffer is removed it is removed from all views
+      if(removedBuffers.isEmpty())
+        removedBuffers = config->removedBuffers();
+      else
+        removedBuffers.intersect(config->removedBuffers());
 
 
-    addBuffersAutomatically |= config->addNewBuffersAutomatically();
-    hideInactiveBuffers &= config->hideInactiveBuffers();
-    allowedBufferTypes |= config->allowedBufferTypes();
-    if(minimumActivity == -1 || config->minimumActivity() < minimumActivity)
-      minimumActivity = config->minimumActivity();
+      addBuffersAutomatically |= config->addNewBuffersAutomatically();
+      hideInactiveBuffers &= config->hideInactiveBuffers();
+      allowedBufferTypes |= config->allowedBufferTypes();
+      if(minimumActivity == -1 || config->minimumActivity() < minimumActivity)
+        minimumActivity = config->minimumActivity();
+    }
   }
 
   changed |= (addBuffersAutomatically != _addBuffersAutomatically);

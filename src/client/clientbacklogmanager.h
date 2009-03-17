@@ -40,7 +40,11 @@ public:
 public slots:
   virtual void receiveBacklog(BufferId bufferId, MsgId first, MsgId last, int limit, int additional, QVariantList msgs);
   virtual void receiveBacklogAll(MsgId first, MsgId last, int limit, int additional, QVariantList msgs);
+
   void requestInitialBacklog();
+
+  void checkForBacklog(BufferId bufferId);
+  void checkForBacklog(const QList<BufferId> &bufferIds);
 
 signals:
   void messagesReceived(BufferId bufferId, int count) const;
@@ -56,6 +60,7 @@ private:
   void dispatchMessages(const MessageList &messages, bool sort = false);
 
   BacklogRequester *_requester;
+  QSet<BufferId> _backlogReceived;
 };
 
 #endif // CLIENTBACKLOGMANAGER_H

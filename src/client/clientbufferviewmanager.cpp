@@ -26,6 +26,7 @@
 ClientBufferViewManager::ClientBufferViewManager(SignalProxy *proxy, QObject *parent)
   : BufferViewManager(proxy, parent)
 {
+  connect(this, SIGNAL(initDone()), this, SLOT(waitForConfigInit()));
 }
 
 BufferViewConfig *ClientBufferViewManager::bufferViewConfigFactory(int bufferViewConfigId) {
@@ -42,4 +43,29 @@ QList<ClientBufferViewConfig *> ClientBufferViewManager::clientBufferViewConfigs
 
 ClientBufferViewConfig *ClientBufferViewManager::clientBufferViewConfig(int bufferViewId) const {
   return static_cast<ClientBufferViewConfig *>(bufferViewConfig(bufferViewId));
+}
+
+void ClientBufferViewManager::waitForConfigInit() {
+  bool initialized = true;
+  foreach(BufferViewConfig *config, bufferViewConfigs()) {
+    initialized &= config->isInitialized();
+    if(config->isInitialized())
+      continue;
+    connect(config, SIGNAL(initDone()), this, SLOT(configInitBarrier()));
+  }
+  if(initialized)
+    emit viewsInitialized();
+}
+
+void ClientBufferViewManager::configInitBarrier() {
+  BufferViewConfig *config = qobject_cast<BufferViewConfig *>(sender());
+  Q_ASSERT(config);
+  disconnect(config, SIGNAL(initDone()), this, SLOT(configInitBarrier()));
+
+  bool initialized = true;
+  foreach(BufferViewConfig *config, bufferViewConfigs()) {
+    initialized &= config->isInitialized();
+  }
+  if(initialized)
+    emit viewsInitialized();
 }

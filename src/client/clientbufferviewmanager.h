@@ -37,6 +37,13 @@ public:
 
 protected:
   virtual BufferViewConfig *bufferViewConfigFactory(int bufferViewConfigId);
+
+signals:
+  void viewsInitialized();
+
+private slots:
+  void waitForConfigInit();
+  void configInitBarrier();
 };
 
 #endif //CLIENTBUFFERVIEWMANAGER_H

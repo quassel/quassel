@@ -47,12 +47,13 @@ void ClientBacklogManager::receiveBacklog(BufferId bufferId, MsgId first, MsgId 
     msglist << msg;
   }
 
+  _backlogReceived << bufferId;
+
   if(isBuffering()) {
     bool lastPart = !_requester->buffer(bufferId, msglist);
     updateProgress(_requester->totalBuffers() - _requester->buffersWaiting(), _requester->totalBuffers());
     if(lastPart) {
       stopBuffering();
-      reset();
     }
   } else {
     dispatchMessages(msglist);
@@ -70,7 +71,6 @@ void ClientBacklogManager::receiveBacklogAll(MsgId first, MsgId last, int limit,
   }
 
   dispatchMessages(msglist);
-  reset();
 }
 
 void ClientBacklogManager::requestInitialBacklog() {
@@ -98,9 +98,35 @@ void ClientBacklogManager::requestInitialBacklog() {
   }
 }
 
+void ClientBacklogManager::checkForBacklog(const BufferId bufferId) {
+  if(_backlogReceived.contains(bufferId))
+    return;
+
+  QList<BufferId> bufferIds;
+  bufferIds << bufferId;
+  checkForBacklog(bufferIds);
+}
+
+void ClientBacklogManager::checkForBacklog(const QList<BufferId> &bufferIds) {
+  Q_ASSERT(_requester);
+  switch(_requester->type()) {
+  case BacklogRequester::GlobalUnread:
+    break;
+  case BacklogRequester::PerBufferUnread:
+  case BacklogRequester::PerBufferFixed:
+  default:
+    {
+      QList<BufferId> buffers;
+      foreach(BufferId bufferId, bufferIds)
+        if(!_backlogReceived.contains(bufferId))
+          buffers << bufferId;
+      _requester->requestBacklog(buffers);
+    }
+  };
+}
+
 void ClientBacklogManager::stopBuffering() {
   Q_ASSERT(_requester);
-
   dispatchMessages(_requester->bufferedMessages(), true);
 }
 
@@ -126,4 +152,5 @@ void ClientBacklogManager::dispatchMessages(const MessageList &messages, bool so
 void ClientBacklogManager::reset() {
   delete _requester;
   _requester = 0;
+  _backlogReceived.clear();
 }
