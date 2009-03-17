@@ -194,7 +194,7 @@ private:
   QTimer _autoWhoTimer, _autoWhoCycleTimer;
 
   QTimer _tokenBucketTimer;
-  int _messagesPerSecond;   // token refill speed
+  int _messageDelay;        // token refill speed in ms
   int _burstSize;           // size of the token bucket
   int _tokenBucket;         // the virtual bucket that holds the tokens
   QList<QByteArray> _msgQueue;

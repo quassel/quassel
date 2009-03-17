@@ -192,6 +192,7 @@ void CoreNetwork::disconnectFromIrc(bool requested, const QString &reason, bool 
     _autoReconnectCount = 0; // prohibiting auto reconnect
   }
   disablePingTimeout();
+  _msgQueue.clear();
 
   IrcUser *me_ = me();
   if(me_) {
@@ -327,10 +328,10 @@ void CoreNetwork::socketInitialized() {
   }
 
   // TokenBucket to avoid sending too much at once
-  _messagesPerSecond = 1;
+  _messageDelay = 2200;    // this seems to be a safe value (2.2 seconds delay)
   _burstSize = 5;
-  _tokenBucket = 5; // init with a full bucket
-  _tokenBucketTimer.start(_messagesPerSecond * 1000);
+  _tokenBucket = _burstSize; // init with a full bucket
+  _tokenBucketTimer.start(_messageDelay);
 
   if(!server.password.isEmpty()) {
     putRawLine(serverEncode(QString("PASS %1").arg(server.password)));
@@ -348,6 +349,7 @@ void CoreNetwork::socketInitialized() {
 
 void CoreNetwork::socketDisconnected() {
   disablePingTimeout();
+  _msgQueue.clear();
 
   _autoWhoCycleTimer.stop();
   _autoWhoTimer.stop();
