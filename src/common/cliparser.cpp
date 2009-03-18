@@ -24,6 +24,8 @@
 #include <QString>
 #include <QFileInfo>
 
+#include <iostream>
+
 CliParser::CliParser() : AbstractCliParser() {
 
 }
@@ -148,7 +150,7 @@ bool CliParser::init(const QStringList &args) {
 }
 
 void CliParser::usage() {
-  qWarning() << "Usage:" << QFileInfo(argsRaw.at(0)).completeBaseName() << "[arguments]";
+  std::cout << "Usage: " << qPrintable(QFileInfo(argsRaw.at(0)).completeBaseName()) << " [arguments]" << std::endl;
 
   // get size of longName field
   QStringList keys = argsHash.keys();
@@ -184,7 +186,7 @@ void CliParser::usage() {
     if(arg.value().type == CliParserArg::CliArgOption && !arg.value().def.isNull()) {
       output.append(". Default is: ").append(arg.value().def);
     }
-    qWarning() << qPrintable(output);
+    std::cout << qPrintable(output) << std::endl;
   }
 }
 
