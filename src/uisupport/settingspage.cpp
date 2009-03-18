@@ -53,7 +53,7 @@ void SettingsPage::load(QCheckBox *box, bool checked) {
 }
 
 bool SettingsPage::hasChanged(QCheckBox *box) {
-  return box->property("StoredValue").toBool() == box->isChecked();
+  return box->property("StoredValue").toBool() != box->isChecked();
 }
 
 
@@ -63,7 +63,7 @@ void SettingsPage::load(QComboBox *box, int index) {
 }
 
 bool SettingsPage::hasChanged(QComboBox *box) {
-  return box->property("StoredValue").toInt() == box->currentIndex();
+  return box->property("StoredValue").toInt() != box->currentIndex();
 }
 
 void SettingsPage::load(QSpinBox *box, int value) {
@@ -72,7 +72,7 @@ void SettingsPage::load(QSpinBox *box, int value) {
 }
 
 bool SettingsPage::hasChanged(QSpinBox *box) {
-  return box->property("StoredValue").toInt() == box->value();
+  return box->property("StoredValue").toInt() != box->value();
 }
 
 /*** Auto child widget handling ***/
