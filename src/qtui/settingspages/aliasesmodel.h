@@ -43,8 +43,8 @@ public:
 
   inline QModelIndex parent(const QModelIndex &) const { return QModelIndex(); }
 
-  inline int rowCount(const QModelIndex &parent = QModelIndex()) const { Q_UNUSED(parent) return aliasManager().count(); }
-  inline int columnCount(const QModelIndex &parent = QModelIndex()) const { Q_UNUSED(parent) return 2; }
+  inline int rowCount(const QModelIndex &parent = QModelIndex()) const;
+  inline int columnCount(const QModelIndex &parent = QModelIndex()) const;
 
   inline bool configChanged() const { return _configChanged; }
   inline bool isReady() const { return _modelReady; }
@@ -74,5 +74,17 @@ private slots:
   void clientDisconnected();
   void initDone();
 };
+
+// Inlines
+int AliasesModel::rowCount(const QModelIndex &parent) const {
+  Q_UNUSED(parent);
+  return isReady() ? aliasManager().count() : 0;
+}
+
+int AliasesModel::columnCount(const QModelIndex &parent) const {
+  Q_UNUSED(parent);
+  return isReady() ? 2 : 0;
+}
+    
 
 #endif //ALIASESMODEL_H

@@ -226,8 +226,8 @@ void AliasesModel::commit() {
 }
 
 void AliasesModel::initDone() {
-  reset();
   _modelReady = true;
+  reset();
   emit modelReady(true);
 }
 
@@ -242,7 +242,7 @@ void AliasesModel::clientConnected() {
 void AliasesModel::clientDisconnected() {
   // clear
   _clonedAliasManager = ClientAliasManager();
-  reset();
   _modelReady = false;
+  reset();
   emit modelReady(false);
 }
