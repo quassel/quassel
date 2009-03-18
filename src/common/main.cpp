@@ -85,7 +85,11 @@ int main(int argc, char **argv) {
   cliParser->addSwitch("debug",'d', "Enable debug output");
   cliParser->addSwitch("help",'h', "Display this help and exit");
   cliParser->addSwitch("version", 'v', "Display version information");
-  cliParser->addOption("configdir <path>", 'c', "Specify the directory holding configuration files, the SQlite database and the SSL Cert");
+#ifdef BUILD_QTUI
+  cliParser->addOption("configdir <path>", 'c', "Specify the directory holding the client configuration");
+#else
+  cliParser->addOption("configdir <path>", 'c', "Specify the directory holding configuration files, the SQlite database and the SSL certificate");
+#endif
   cliParser->addOption("datadir <path>", 0, "DEPRECATED - Use --configdir instead");
 
 #ifndef BUILD_CORE
