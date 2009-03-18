@@ -86,7 +86,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/aboutdlg.cpp" line="55"/>
         <source>&lt;b&gt;A modern, distributed IRC Client&lt;/b&gt;&lt;br&gt;&lt;br&gt;&amp;copy;2005-2009 by the Quassel Project&lt;br&gt;&lt;a href=&quot;http://quassel-irc.org&quot;&gt;http://quassel-irc.org&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;irc://irc.freenode.net/quassel&quot;&gt;#quassel&lt;/a&gt; on &lt;a href=&quot;http://www.freenode.net&quot;&gt;Freenode&lt;/a&gt;&lt;br&gt;&lt;br&gt;Quassel IRC is dual-licensed under &lt;a href=&quot;http://www.gnu.org/licenses/gpl-2.0.txt&quot;&gt;GPLv2&lt;/a&gt; and &lt;a href=&quot;http://www.gnu.org/licenses/gpl-3.0.txt&quot;&gt;GPLv3&lt;/a&gt;.&lt;br&gt;Most icons are &amp;copy; by the &lt;a href=&quot;http://www.oxygen-icons.org&quot;&gt;Oxygen Team&lt;/a&gt; and used under the &lt;a href=&quot;http://www.gnu.org/licenses/lgpl.html&quot;&gt;LGPL&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Please use &lt;a href=&quot;http://bugs.quassel-irc.org&quot;&gt;http://bugs.quassel-irc.org&lt;/a&gt; to report bugs.</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Modern, dağıtımlı bir  IRC İstemcisi&lt;/b&gt;&lt;br&gt;&lt;br&gt;&amp;copy;2005-2009 Quassel Projesi&lt;br&gt;&lt;a href=&quot;http://quassel-irc.org&quot;&gt;http://quassel-irc.org&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;irc://irc.freenode.net/quassel&quot;&gt;#quassel&lt;/a&gt; on &lt;a href=&quot;http://www.freenode.net&quot;&gt;Freenode&lt;/a&gt;&lt;br&gt;&lt;br&gt;Quassel IRC &lt;a href=&quot;http://www.gnu.org/licenses/gpl-2.0.txt&quot;&gt;GPLv2&lt;/a&gt; ve &lt;a href=&quot;http://www.gnu.org/licenses/gpl-3.0.txt&quot;&gt;GPLv3&lt;/a&gt; ile çifte lisanslanmıştır..&lt;br&gt;Çoğu simge &amp;copy; &lt;a href=&quot;http://www.oxygen-icons.org&quot;&gt;Oxygen Takımı&lt;/a&gt; tarafından yapılmış ve &lt;a href=&quot;http://www.gnu.org/licenses/lgpl.html&quot;&gt;LGPL&lt;/a&gt; ile lisanslamıştır..&lt;br&gt;&lt;br&gt;Hataları lütfen &lt;a href=&quot;http://bugs.quassel-irc.org&quot;&gt;http://bugs.quassel-irc.org&lt;/a&gt; adresine bildiriniz.</translation>
     </message>
 </context>
 <context>
@@ -206,7 +206,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/settingspages/backlogsettingspage.cpp" line="27"/>
         <source>Backlog</source>
-        <translation type="unfinished">Birikim</translation>
+        <translation>Backlog</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="13"/>
@@ -216,7 +216,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="21"/>
         <source>Backlog Request Method:</source>
-        <translation type="unfinished"></translation>
+        <translation>Backlog Talep Metodu:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="29"/>
@@ -226,7 +226,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="34"/>
         <source>Unread Messages per Buffer</source>
-        <translation type="unfinished"></translation>
+        <translation>Arabellek Başına Düşen Okunmamış Mesajlar</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="39"/>
@@ -323,7 +323,7 @@ You can also chose to fetch additional older chatlines to provide a better conte
     <message>
         <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="379"/>
         <source>Dynamic backlog amount:</source>
-        <translation type="unfinished">Dinamik birikim miktarı:</translation>
+        <translation>Dinamik backlog miktarı:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="395"/>
@@ -439,13 +439,14 @@ You can also chose to fetch additional older chatlines to provide a better conte
     <message>
         <location filename="../src/uisupport/bufferview.cpp" line="275"/>
         <source>Merge buffers permanently?</source>
-        <translation type="unfinished"></translation>
+        <translation>Arabellekleri kalıcı olarak birleştireyim mi?</translation>
     </message>
     <message>
         <location filename="../src/uisupport/bufferview.cpp" line="276"/>
         <source>Do you want to merge the buffer &quot;%1&quot; permanently into buffer &quot;%2&quot;?
  This cannot be reversed!</source>
-        <translation type="unfinished"></translation>
+        <translation>&quot;%1&quot; arabelleğini kalıcı olarak &quot;%2&quot; arabelleğiyle birleştireyim mi?
+Bu işlem geri alınamaz!</translation>
     </message>
 </context>
 <context>
@@ -597,7 +598,7 @@ You can also chose to fetch additional older chatlines to provide a better conte
     <message>
         <location filename="../src/qtui/settingspages/bufferviewsettingspage.ui" line="187"/>
         <source>Highlight</source>
-        <translation type="unfinished">Vurgula</translation>
+        <translation>Vurgula</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/bufferviewsettingspage.ui" line="213"/>
@@ -795,7 +796,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/settingspages/chatmonitorsettingspage.cpp" line="239"/>
         <source>Ignore:</source>
-        <translation type="unfinished"></translation>
+        <translation>Görmezden Gel:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatmonitorsettingspage.ui" line="13"/>
@@ -805,7 +806,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/settingspages/chatmonitorsettingspage.ui" line="21"/>
         <source>Operation Mode:</source>
-        <translation type="unfinished"></translation>
+        <translation>İşlem Kipi:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatmonitorsettingspage.ui" line="28"/>
@@ -821,22 +822,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/settingspages/chatmonitorsettingspage.ui" line="60"/>
         <source>Available Buffers:</source>
-        <translation type="unfinished"></translation>
+        <translation>Mevcut Arabellekler:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatmonitorsettingspage.ui" line="87"/>
         <source>Move selected buffers to the left</source>
-        <translation type="unfinished"></translation>
+        <translation>Seçili arabellekleri sola taşı</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatmonitorsettingspage.ui" line="101"/>
         <source>Move selected buffers to the right</source>
-        <translation type="unfinished"></translation>
+        <translation>Seçili arabellekleri sağa taşı</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatmonitorsettingspage.ui" line="146"/>
         <source>Show highlights in chatmonitor even if the originating buffer is ignored</source>
-        <translation type="unfinished"></translation>
+        <translation>Mesajın geldiği arabellek görmezden geliniyor olsa bile, vurgulamaları sohbet ekranında göster</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatmonitorsettingspage.ui" line="149"/>
@@ -1432,37 +1433,37 @@ derlemeniz gerekmektedir.</translation>
     <message>
         <location filename="../src/core/core.cpp" line="255"/>
         <source>Invalid listen address %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Geçersiz dinleme adresi %1</translation>
     </message>
     <message>
         <location filename="../src/core/core.cpp" line="263"/>
         <source>Listening for GUI clients on IPv4 %1 port %2 using protocol version %3</source>
-        <translation type="unfinished"></translation>
+        <translation>GUI istemcileri IPv4 %1 port %2 ve %3 protokol sürümü üzerinden dinleniyor</translation>
     </message>
     <message>
         <location filename="../src/core/core.cpp" line="271"/>
         <source>Could not open IPv4 interface %1:%2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>IPv4 arayüzü açılamadı %1:%2: %3</translation>
     </message>
     <message>
         <location filename="../src/core/core.cpp" line="279"/>
         <source>Listening for GUI clients on IPv6 %1 port %2 using protocol version %3</source>
-        <translation type="unfinished"></translation>
+        <translation>GUI istemcileri IPv6 %1 port %2 ve %3 protokol sürümü üzerinden dinleniyor</translation>
     </message>
     <message>
         <location filename="../src/core/core.cpp" line="290"/>
         <source>Could not open IPv6 interface %1:%2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>IPv6 arayüzü açılamadı %1:%2: %3</translation>
     </message>
     <message>
         <location filename="../src/core/core.cpp" line="298"/>
         <source>Invalid listen address %1, unknown network protocol</source>
-        <translation type="unfinished"></translation>
+        <translation>Geçersiz dinleme adresi %1, bilinmeyen ağ protokolü</translation>
     </message>
     <message>
         <location filename="../src/core/core.cpp" line="306"/>
         <source>Could not open any network interfaces to listen on!</source>
-        <translation type="unfinished"></translation>
+        <translation>Hiçbir dinlenecek ağ arayüzü açılamadı!</translation>
     </message>
 </context>
 <context>
@@ -2051,7 +2052,7 @@ SOME SPACE</translation>
     <message>
         <location filename="../src/core/coresession.cpp" line="339"/>
         <source>CoreSession::createNetwork(): Trying to create a network that already exists, updating instead!</source>
-        <translation type="unfinished"></translation>
+        <translation>CoreSession::createNetwork(): Zaten varolan bir ağı oluşturmaya çalışıyor, güncelliyorum!</translation>
     </message>
 </context>
 <context>
@@ -2087,7 +2088,7 @@ SOME SPACE</translation>
     <message>
         <location filename="../src/core/ctcphandler.cpp" line="195"/>
         <source>Received CTCP PING answer from %1 with %2 seconds round trip time</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 kişisinden %2 saniye geri dönüş süresiyle CTCP PING cevabı alındı</translation>
     </message>
     <message>
         <location filename="../src/core/ctcphandler.cpp" line="205"/>
@@ -2097,7 +2098,7 @@ SOME SPACE</translation>
     <message>
         <location filename="../src/core/ctcphandler.cpp" line="208"/>
         <source>Received CTCP VERSION answer from %1: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>CTCP VERSION cevabı alındı %1: %2</translation>
     </message>
     <message>
         <location filename="../src/core/ctcphandler.cpp" line="216"/>
@@ -2513,7 +2514,7 @@ SOME SPACE</translation>
     <message>
         <location filename="../src/qtui/settingspages/identitiessettingspage.cpp" line="210"/>
         <source>&lt;li&gt;You need to specify an ident for every identity&lt;/li&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;li&gt;Her kimlik için bir ident belirtmeniz gerekiyor&lt;/li&gt;</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/identitiessettingspage.cpp" line="211"/>
@@ -2658,7 +2659,7 @@ SOME SPACE</translation>
     <message>
         <location filename="../src/qtui/settingspages/identitiessettingspage.ui" line="405"/>
         <source>Override default away reason for auto-away on detach</source>
-        <translation type="unfinished"></translation>
+        <translation>Ayrılırken otomatik dışarıda olma durumunda, öntanımlı dışarıda sebebini geçersiz kıl</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/identitiessettingspage.ui" line="420"/>
@@ -2768,7 +2769,7 @@ SOME SPACE</translation>
     <message>
         <location filename="../src/qtui/settingspages/identitiessettingspage.ui" line="601"/>
         <source>You need an SSL Capable Client to edit your Cores SSL Key and Certificate</source>
-        <translation type="unfinished"></translation>
+        <translation>Çekirdeğinizin SSL Anahtar ve Sertifikasını düzenlemeniz için SSL Destekli bir İstemcinizin olması gerekiyor</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/identitiessettingspage.ui" line="630"/>
@@ -2804,7 +2805,7 @@ Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificat
     <message>
         <location filename="../src/qtui/settingspages/identitiessettingspage.ui" line="811"/>
         <source>CommonName:</source>
-        <translation type="unfinished"></translation>
+        <translation>OrtakAd:</translation>
     </message>
 </context>
 <context>
@@ -3257,7 +3258,7 @@ Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificat
     <message>
         <location filename="../src/qtui/mainwin.cpp" line="579"/>
         <source>Core Lag: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Çekirdek Gecikmesi: %1</translation>
     </message>
 </context>
 <context>
@@ -3301,7 +3302,7 @@ Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificat
     <message>
         <location filename="../src/qtui/settingspages/networkadddlg.ui" line="66"/>
         <source>Manual Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Manuel Ayarlar</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/networkadddlg.ui" line="74"/>
@@ -3466,7 +3467,7 @@ Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificat
     <message>
         <location filename="../src/uisupport/networkmodelactionprovider.cpp" line="52"/>
         <source>Mode Changes</source>
-        <translation type="unfinished"></translation>
+        <translation>Kip Değişimi</translation>
     </message>
     <message>
         <location filename="../src/uisupport/networkmodelactionprovider.cpp" line="53"/>
@@ -3521,27 +3522,27 @@ Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificat
     <message>
         <location filename="../src/uisupport/networkmodelactionprovider.cpp" line="66"/>
         <source>Finger</source>
-        <translation type="unfinished"></translation>
+        <translation>Finger</translation>
     </message>
     <message>
         <location filename="../src/uisupport/networkmodelactionprovider.cpp" line="68"/>
         <source>Give Operator Status</source>
-        <translation type="unfinished"></translation>
+        <translation>Operatör Yetkisi Ver</translation>
     </message>
     <message>
         <location filename="../src/uisupport/networkmodelactionprovider.cpp" line="69"/>
         <source>Take Operator Status</source>
-        <translation type="unfinished"></translation>
+        <translation>Operatör Yetkisini Al</translation>
     </message>
     <message>
         <location filename="../src/uisupport/networkmodelactionprovider.cpp" line="70"/>
         <source>Give Voice</source>
-        <translation type="unfinished"></translation>
+        <translation>Voice Ver</translation>
     </message>
     <message>
         <location filename="../src/uisupport/networkmodelactionprovider.cpp" line="71"/>
         <source>Take Voice</source>
-        <translation type="unfinished"></translation>
+        <translation>Voice Al</translation>
     </message>
     <message>
         <location filename="../src/uisupport/networkmodelactionprovider.cpp" line="72"/>
@@ -3556,17 +3557,17 @@ Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificat
     <message>
         <location filename="../src/uisupport/networkmodelactionprovider.cpp" line="74"/>
         <source>Kick &amp;&amp; Ban</source>
-        <translation type="unfinished"></translation>
+        <translation>Kick &amp;&amp; Ban</translation>
     </message>
     <message>
         <location filename="../src/uisupport/networkmodelactionprovider.cpp" line="76"/>
         <source>Hide Buffer(s) Temporarily</source>
-        <translation type="unfinished"></translation>
+        <translation>Arabellek(leri) Geçici Olarak Gizle</translation>
     </message>
     <message>
         <location filename="../src/uisupport/networkmodelactionprovider.cpp" line="77"/>
         <source>Hide Buffer(s) Permanently</source>
-        <translation type="unfinished"></translation>
+        <translation>Arabellek(leri) Kalıcı Olarak Gizle</translation>
     </message>
     <message>
         <location filename="../src/uisupport/networkmodelactionprovider.cpp" line="78"/>
@@ -3576,7 +3577,7 @@ Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificat
     <message>
         <location filename="../src/uisupport/networkmodelactionprovider.cpp" line="79"/>
         <source>Show Ignore List</source>
-        <translation type="unfinished"></translation>
+        <translation>Görmezden Gelinenlerin Listesini Göster</translation>
     </message>
     <message>
         <location filename="../src/uisupport/networkmodelactionprovider.cpp" line="93"/>
@@ -3591,25 +3592,25 @@ Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificat
     <message>
         <location filename="../src/uisupport/networkmodelactionprovider.cpp" line="113"/>
         <source>Actions</source>
-        <translation type="unfinished"></translation>
+        <translation>Eylemler</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/uisupport/networkmodelactionprovider.cpp" line="519"/>
         <source>Do you want to delete the following buffer(s) permanently?</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>Aşağıdaki arabelleği kalıcı olarak silmek istiyor musunuz?</numerusform>
+            <numerusform>Aşağıdaki arabellekleri kalıcı olarak silmek istiyor musunuz?</numerusform>
         </translation>
     </message>
     <message>
         <location filename="../src/uisupport/networkmodelactionprovider.cpp" line="524"/>
         <source>&lt;b&gt;Note:&lt;/b&gt; This will delete all related data, including all backlog data, from the core&apos;s database and cannot be undone.</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Not:&lt;/b&gt; Bu işlem tüm backlog verileri de dahil olmak üzere tüm ilgili verileri çekirdeğinizin veritabanından silecek ve geri dönüşü yok.</translation>
     </message>
     <message>
         <location filename="../src/uisupport/networkmodelactionprovider.cpp" line="526"/>
         <source>&lt;br&gt;Active channel buffers cannot be deleted, please part the channel first.</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;br&gt;Etkin kanal arabellekleri silinemez, lütfen önce kanaldan ayrılın.</translation>
     </message>
     <message>
         <location filename="../src/uisupport/networkmodelactionprovider.cpp" line="528"/>
@@ -3624,7 +3625,7 @@ Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificat
     <message>
         <location filename="../src/uisupport/networkmodelactionprovider.cpp" line="603"/>
         <source>Input channel name:</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -4310,7 +4311,7 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
     <message>
         <location filename="../src/qtui/settingsdlg.cpp" line="91"/>
         <source>Configure %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Yapılandır %1</translation>
     </message>
 </context>
 <context>
@@ -4348,7 +4349,7 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
     <message>
         <location filename="../src/qtui/settingspagedlg.cpp" line="36"/>
         <source>Configure %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Yapılandır %1</translation>
     </message>
 </context>
 <context>
@@ -4433,7 +4434,7 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
     <message>
         <location filename="../src/qtui/taskbarnotificationbackend.cpp" line="70"/>
         <source>Mark taskbar entry, timeout:</source>
-        <translation type="unfinished"></translation>
+        <translation>Görev çubuğu girdisini işaretle, zaman aşımı:</translation>
     </message>
     <message>
         <location filename="../src/qtui/taskbarnotificationbackend.cpp" line="75"/>
@@ -4487,17 +4488,17 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
     <message>
         <location filename="../src/uisupport/uistyle.cpp" line="340"/>
         <source>%Dj%DN%1%DN %DH(%2@%3)%DH has joined %DC%4%DC</source>
-        <translation type="unfinished"></translation>
+        <translation>%Dj%DN%1%DN %DH(%2@%3)%DH katıldı %DC%4%DC</translation>
     </message>
     <message>
         <location filename="../src/uisupport/uistyle.cpp" line="342"/>
         <source>%Dp%DN%1%DN %DH(%2@%3)%DH has left %DC%4%DC</source>
-        <translation type="unfinished"></translation>
+        <translation>%Dp%DN%1%DN %DH(%2@%3)%DH ayrıldı %DC%4%DC</translation>
     </message>
     <message>
         <location filename="../src/uisupport/uistyle.cpp" line="346"/>
         <source>%Dq%DN%1%DN %DH(%2@%3)%DH has quit</source>
-        <translation type="unfinished"></translation>
+        <translation>%Dq%DN%1%DN %DH(%2@%3)%DH çıktı</translation>
     </message>
     <message>
         <location filename="../src/uisupport/uistyle.cpp" line="352"/>
@@ -4507,12 +4508,12 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
     <message>
         <location filename="../src/uisupport/uistyle.cpp" line="357"/>
         <source>%DrYou are now known as %DN%1%DN</source>
-        <translation type="unfinished"></translation>
+        <translation>%DrOlarak biliniyorsunuz %DN%1%DN</translation>
     </message>
     <message>
         <location filename="../src/uisupport/uistyle.cpp" line="358"/>
         <source>%Dr%DN%1%DN is now known as %DN%2%DN</source>
-        <translation type="unfinished"></translation>
+        <translation>%Dr%DN%1%DN olarak biliniyor %DN%2%DN</translation>
     </message>
     <message>
         <location filename="../src/uisupport/uistyle.cpp" line="361"/>
@@ -4606,9 +4607,9 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
     <message numerus="yes">
         <location filename="../src/client/networkmodel.cpp" line="645"/>
         <source>%n Operator(s)</source>
-        <translation>
+        <translation type="unfinished">
             <numerusform>%n Operatör</numerusform>
-            <numerusform></numerusform>
+            <numerusform>%n Operatör</numerusform>
         </translation>
     </message>
     <message numerus="yes">
