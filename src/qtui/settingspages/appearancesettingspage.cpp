@@ -33,7 +33,8 @@
 #include <QStyleFactory>
 
 AppearanceSettingsPage::AppearanceSettingsPage(QWidget *parent)
-  : SettingsPage(tr("Appearance"), QString(), parent)
+  : SettingsPage(tr("Appearance"), QString(), parent),
+  _fontsChanged(false)
 {
   ui.setupUi(this);
   initStyleComboBox();
@@ -88,6 +89,10 @@ void AppearanceSettingsPage::defaults() {
 
   loadFonts(Settings::Default);
   _fontsChanged = true;
+
+  ui.showWebPreview->setChecked(true);
+  ui.showUserStateIcons->setChecked(true);
+
   widgetHasChanged();
 }
 
@@ -95,13 +100,14 @@ void AppearanceSettingsPage::load() {
   QtUiSettings uiSettings;
 
   // Gui Style
-  settings["Style"] = uiSettings.value("Style", QString(""));
-  if(settings["Style"].toString() == "") {
+  QString style = uiSettings.value("Style", QString("")).toString();
+  if(style.isEmpty()) {
     ui.styleComboBox->setCurrentIndex(0);
   } else {
-    ui.styleComboBox->setCurrentIndex(ui.styleComboBox->findText(settings["Style"].toString(), Qt::MatchExactly));
-    QApplication::setStyle(settings["Style"].toString());
+    ui.styleComboBox->setCurrentIndex(ui.styleComboBox->findText(style, Qt::MatchExactly));
+    QApplication::setStyle(style);
   }
+  ui.styleComboBox->setProperty("storedValue", ui.styleComboBox->currentIndex());
 
   // Language
   QLocale locale = uiSettings.value("Locale", QLocale::system()).value<QLocale>();
@@ -111,6 +117,7 @@ void AppearanceSettingsPage::load() {
     ui.languageComboBox->setCurrentIndex(1);
   else
     ui.languageComboBox->setCurrentIndex(ui.languageComboBox->findText(QLocale::languageToString(locale.language()), Qt::MatchExactly));
+  ui.languageComboBox->setProperty("storedValue", ui.languageComboBox->currentIndex());
   Quassel::loadTranslation(selectedLocale());
 
   ChatViewSettings chatViewSettings;
@@ -226,7 +233,8 @@ void AppearanceSettingsPage::widgetHasChanged() {
 bool AppearanceSettingsPage::testHasChanged() {
   if(_fontsChanged) return true; // comparisons are nasty for now
 
-  if(settings["Style"].toString() != ui.styleComboBox->currentText()) return true;
+  if(ui.styleComboBox->currentIndex() != ui.styleComboBox->property("storedValue").toInt()) return true;
+
   if(selectedLocale() != QLocale()) return true; // QLocale() returns the default locale (manipulated via loadTranslation())
 
   if(SettingsPage::hasChanged(ui.showWebPreview)) return true;
