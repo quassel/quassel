@@ -49,6 +49,7 @@ public:
   enum FormatType {
     None            = 0x00000000,
     Invalid         = 0x11111111,
+
     // Message Formats (mutually exclusive!)
     PlainMsg        = 0x00000001,
     NoticeMsg       = 0x00000002,
@@ -61,11 +62,18 @@ public:
     RenameMsg       = 0x00000009,
     ModeMsg         = 0x0000000a,
     ActionMsg       = 0x0000000b,
+    HighlightMsg    = 0x0000000f,
+
+    // Note: mergedFormat() assumes that 0x10 - 0x80 are *only* used within the message contents,
+    //       e.g. not together with any of 0x0100-0x2000!
+    //       If we happen to find a use case for that, we can see if/how to implement that though.
+
     // Standard Formats
     Bold            = 0x00000010,
     Italic          = 0x00000020,
     Underline       = 0x00000040,
     Reverse         = 0x00000080,
+
     // Individual parts of a message
     Timestamp       = 0x00000100,
     Sender          = 0x00000200,
@@ -73,9 +81,11 @@ public:
     Hostmask        = 0x00000800,
     ChannelName     = 0x00001000,
     ModeFlags       = 0x00002000,
+
     // URL is special, we want that to take precedence over the rest...
     Url             = 0x00100000,
-    // Colors
+
+    // mIRC Colors - we assume those to be present only in plain contents
     FgCol00         = 0x00400000,
     FgCol01         = 0x01400000,
     FgCol02         = 0x02400000,
@@ -132,13 +142,9 @@ public:
     SenderCol18     = 0x12000200,
     SenderCol19     = 0x13000200,
     SenderCol20     = 0x14000200,
-    SenderCol21     = 0x15000200
+    SenderCol21     = 0x15000200,
 
-  };
-
-  struct UrlInfo {
-    int start, end;
-    QUrl url;
+    SenderColSelf   = 0xff000200
   };
 
   struct StyledString {

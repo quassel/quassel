@@ -139,7 +139,7 @@ void UiStyle::setSenderAutoColor( bool state ) {
 QTextCharFormat UiStyle::format(FormatType ftype, Settings::Mode mode) const {
   // Check for enabled sender auto coloring
   if ( (ftype & 0x00000fff) == Sender && !_senderAutoColor ) {
-    // Just use the default sender style if auto coloring is disabled
+    // Just use the default sender style if auto coloring is disabled FIXME
     ftype = Sender;
   }
 
@@ -150,23 +150,76 @@ QTextCharFormat UiStyle::format(FormatType ftype, Settings::Mode mode) const {
 // NOTE: This function is intimately tied to the values in FormatType. Don't change this
 //       until you _really_ know what you do!
 QTextCharFormat UiStyle::mergedFormat(quint32 ftype) {
-  if(_cachedFormats.contains(ftype)) return _cachedFormats.value(ftype);
-  if(ftype == Invalid) return QTextCharFormat();
-  // Now we construct the merged format, starting with the default
-  QTextCharFormat fmt = format(None);
-  // First: general message format
-  fmt.merge(format((FormatType)(ftype & 0x0f)));
-  // now more specific ones
-  for(quint32 mask = 0x0010; mask <= 0x2000; mask <<= 1) {
-    if(ftype & mask) fmt.merge(format((FormatType)mask));
+  if(ftype == Invalid)
+    return QTextCharFormat();
+  if(_cachedFormats.contains(ftype))
+    return _cachedFormats.value(ftype);
+
+  QTextCharFormat fmt;
+
+  // Check if we have a special message format stored already sans color codes
+  if(_cachedFormats.contains(ftype & 0x1fffff))
+    fmt = _cachedFormats.value(ftype &0x1fffff);
+  else {
+    // Nope, so we have to construct it...
+    // We assume that we don't mix mirc format codes and component codes, so at this point we know that it's either
+    // a stock (not stylesheeted) component, or mirc formats
+    // In both cases, we start off with the basic format for this message type and then merge the extra stuff
+
+    // Check if we at least already have something stored for the message type first
+    if(_cachedFormats.contains(ftype & 0xf))
+      fmt = _cachedFormats.value(ftype & 0xf);
+    else {
+      // Not being in the cache means it hasn't been preset via stylesheet (or used before)
+      // We might still have set something in code as a fallback, so merge
+      fmt = format(None);
+      fmt.merge(format((FormatType)(ftype & 0x0f)));
+      // This can be cached
+      _cachedFormats[ftype & 0x0f] = fmt;
+    }
+    // OK, at this point we have the message type format - now merge the rest
+    if((ftype & 0xf0)) { // mirc format
+      for(quint32 mask = 0x10; mask <= 0x80; mask <<= 1) {
+        if(!(ftype & mask))
+          continue;
+        // We need to check for overrides in the cache
+        if(_cachedFormats.contains(mask | (ftype & 0x0f)))
+          fmt.merge(_cachedFormats.value(mask | (ftype & 0x0f)));
+        else if(_cachedFormats.contains(mask))
+          fmt.merge(_cachedFormats.value(mask));
+        else // nothing in cache, use stock format
+          fmt.merge(format((FormatType)mask));
+      }
+    } else { // component
+      // We've already checked the cache for the combo of msgtype and component and failed,
+      // so we check if we defined a general format and merge this, or the stock format else
+      if(_cachedFormats.contains(ftype & 0xff00))
+        fmt.merge(_cachedFormats.value(ftype & 0xff00));
+      else
+        fmt.merge(format((FormatType)(ftype & 0xff00)));
+    }
   }
-  // color codes!
-  if(ftype & 0x00400000) fmt.merge(format((FormatType)(ftype & 0x0f400000))); // foreground
-  if(ftype & 0x00800000) fmt.merge(format((FormatType)(ftype & 0xf0800000))); // background
+
+  // Now we handle color codes. We assume that those can't be combined with components
+  if(ftype & 0x00400000)
+    fmt.merge(format((FormatType)(ftype & 0x0f400000))); // foreground
+  if(ftype & 0x00800000)
+    fmt.merge(format((FormatType)(ftype & 0xf0800000))); // background
+
   // Sender auto colors
-  if((ftype & 0xfff) == 0x200 && (ftype & 0xff000200) != 0x200) fmt.merge(format((FormatType)(ftype & 0xff000200)));
+  if(_senderAutoColor && (ftype & 0x200) && (ftype & 0xff000200) != 0x200) {
+    if(_cachedFormats.contains(ftype & 0xff00020f))
+      fmt.merge(_cachedFormats.value(ftype & 0xff00020f));
+    else if(_cachedFormats.contains(ftype & 0xff000200))
+      fmt.merge(_cachedFormats.value(ftype & 0xff000200));
+    else
+      fmt.merge(format((FormatType)(ftype & 0xff000200)));
+  }
+
   // URL
-  if(ftype & Url) fmt.merge(format(Url));
+  if(ftype & Url)
+    fmt.merge(format(Url)); // TODO handle this properly
+
   return _cachedFormats[ftype] = fmt;
 }
 
