@@ -55,8 +55,8 @@ QtUi::QtUi() : GraphicalUi() {
   QtUiSettings uiSettings;
   Quassel::loadTranslation(uiSettings.value("Locale", QLocale::system()).value<QLocale>());
 
-  _mainWin = new MainWin();
   _style = new QtUiStyle;
+  _mainWin = new MainWin();
 
   setMainWidget(_mainWin);
 
@@ -66,8 +66,8 @@ QtUi::QtUi() : GraphicalUi() {
 
 QtUi::~QtUi() {
   unregisterAllNotificationBackends();
-  delete _style;
   delete _mainWin;
+  delete _style;
 }
 
 void QtUi::init() {
