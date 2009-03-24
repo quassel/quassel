@@ -20,6 +20,7 @@
 
 #include "abstractbuffercontainer.h"
 #include "client.h"
+#include "clientbacklogmanager.h"
 #include "networkmodel.h"
 
 AbstractBufferContainer::AbstractBufferContainer(QWidget *parent)
@@ -93,5 +94,6 @@ void AbstractBufferContainer::setCurrentBuffer(BufferId bufferId) {
   _currentBuffer = bufferId;
   showChatView(bufferId);
   Client::networkModel()->clearBufferActivity(bufferId);
+  Client::backlogManager()->checkForBacklog(bufferId);
   setFocus();
 }
