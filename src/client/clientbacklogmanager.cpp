@@ -107,7 +107,11 @@ BufferIdList ClientBacklogManager::filterNewBufferIds(const BufferIdList &buffer
 }
 
 void ClientBacklogManager::checkForBacklog(const QList<BufferId> &bufferIds) {
-  Q_ASSERT(_requester);
+  if(!_requester) {
+    // during client start up this message is to be expected in some situations.
+    qDebug() << "ClientBacklogManager::checkForBacklog(): no active backlog requester (yet?).";
+    return;
+  }
   switch(_requester->type()) {
   case BacklogRequester::GlobalUnread:
     break;
