@@ -86,7 +86,7 @@ GlobalUnreadBacklogRequester::GlobalUnreadBacklogRequester(ClientBacklogManager 
   _additional = backlogSettings.globalUnreadBacklogAdditional();
 }
 
-void GlobalUnreadBacklogRequester::requestBacklog() {
+void GlobalUnreadBacklogRequester::requestInitialBacklog() {
   MsgId oldestUnreadMessage;
   foreach(BufferId bufferId, allBufferIds()) {
     MsgId msgId = Client::networkModel()->lastSeenMsgId(bufferId);

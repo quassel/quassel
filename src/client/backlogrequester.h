@@ -52,7 +52,7 @@ public:
   bool buffer(BufferId bufferId, const MessageList &messages);
   
   virtual void requestBacklog(const BufferIdList &bufferIds) = 0;
-  virtual inline void requestBacklog() { requestBacklog(allBufferIds()); }
+  virtual inline void requestInitialBacklog() { requestBacklog(allBufferIds()); }
 
 protected:
   BufferIdList allBufferIds() const;
@@ -88,7 +88,7 @@ private:
 class GlobalUnreadBacklogRequester : public BacklogRequester {
 public:
   GlobalUnreadBacklogRequester(ClientBacklogManager *backlogManager);
-  virtual void requestBacklog();
+  virtual void requestInitialBacklog();
   virtual void requestBacklog(const BufferIdList &) {}
 
 private:

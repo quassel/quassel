@@ -90,7 +90,7 @@ void ClientBacklogManager::requestInitialBacklog() {
     _requester = new FixedBacklogRequester(this);
   };
 
-  _requester->requestBacklog();
+  _requester->requestInitialBacklog();
   if(_requester->isBuffering()) {
     updateProgress(0, _requester->totalBuffers());
   }
