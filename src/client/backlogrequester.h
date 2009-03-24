@@ -32,17 +32,18 @@ class ClientBacklogManager;
 
 class BacklogRequester {
 public:
-  enum RequesterTypes {
+  enum RequesterType {
     InvalidRequester = 0,
     PerBufferFixed,
     PerBufferUnread,
     GlobalUnread
   };
 
-  BacklogRequester(bool buffering, ClientBacklogManager *backlogManger);
+  BacklogRequester(bool buffering, RequesterType requesterType, ClientBacklogManager *backlogManger);
   virtual inline ~BacklogRequester() {}
 
   inline bool isBuffering() { return _isBuffering; }
+  inline RequesterType type() { return _requesterType; }
   inline const QList<Message> &bufferedMessages() { return _bufferedMessages; }
 
   inline int buffersWaiting() const { return _buffersWaiting.count(); }
@@ -50,10 +51,11 @@ public:
   //! returns false if it was the last missing backlogpart
   bool buffer(BufferId bufferId, const MessageList &messages);
   
-  virtual void requestBacklog() = 0;
+  virtual void requestBacklog(const BufferIdList &bufferIds) = 0;
+  virtual inline void requestBacklog() { requestBacklog(allBufferIds()); }
 
 protected:
-  inline QList<BufferId> allBufferIds() const { return Client::networkModel()->allBufferIds(); }
+  BufferIdList allBufferIds() const;
   inline void setWaitingBuffers(const QList<BufferId> &buffers) { setWaitingBuffers(buffers.toSet()); }
   void setWaitingBuffers(const QSet<BufferId> &buffers);
   void addWaitingBuffer(BufferId buffer);
@@ -62,6 +64,7 @@ protected:
 
 private:
   bool _isBuffering;
+  RequesterType _requesterType;
   MessageList _bufferedMessages;
   int _totalBuffers;
   QSet<BufferId> _buffersWaiting;
@@ -73,7 +76,7 @@ private:
 class FixedBacklogRequester : public BacklogRequester {
 public:
   FixedBacklogRequester(ClientBacklogManager *backlogManager);
-  virtual void requestBacklog();
+  virtual void requestBacklog(const BufferIdList &bufferIds);
 
 private:
   int _backlogCount;
@@ -86,6 +89,7 @@ class GlobalUnreadBacklogRequester : public BacklogRequester {
 public:
   GlobalUnreadBacklogRequester(ClientBacklogManager *backlogManager);
   virtual void requestBacklog();
+  virtual void requestBacklog(const BufferIdList &) {}
 
 private:
   int _limit;
@@ -98,7 +102,7 @@ private:
 class PerBufferUnreadBacklogRequester : public BacklogRequester {
 public:
   PerBufferUnreadBacklogRequester(ClientBacklogManager *backlogManager);
-  virtual void requestBacklog();
+  virtual void requestBacklog(const BufferIdList &bufferIds);
 
 private:
   int _limit;

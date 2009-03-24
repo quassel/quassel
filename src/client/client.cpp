@@ -27,6 +27,7 @@
 #include "buffersettings.h"
 #include "buffersyncer.h"
 #include "bufferviewconfig.h"
+#include "bufferviewoverlay.h"
 #include "clientaliasmanager.h"
 #include "clientbacklogmanager.h"
 #include "clientbufferviewmanager.h"
@@ -85,6 +86,7 @@ Client::Client(QObject *parent)
     _aliasManager(0),
     _backlogManager(new ClientBacklogManager(this)),
     _bufferViewManager(0),
+    _bufferViewOverlay(new BufferViewOverlay(this)),
     _ircListHelper(new ClientIrcListHelper(this)),
     _inputHandler(0),
     _messageModel(0),
@@ -95,6 +97,7 @@ Client::Client(QObject *parent)
     _debugLog(&_debugLogBuffer)
 {
   _signalProxy->synchronize(_ircListHelper);
+  connect(this, SIGNAL(requestInitialBacklog()), _backlogManager, SLOT(requestInitialBacklog()), Qt::QueuedConnection);
 }
 
 Client::~Client() {
@@ -313,15 +316,14 @@ void Client::setSyncedToCore() {
   connect(bufferSyncer(), SIGNAL(bufferRenamed(BufferId, QString)), this, SLOT(bufferRenamed(BufferId, QString)));
   connect(bufferSyncer(), SIGNAL(buffersPermanentlyMerged(BufferId, BufferId)), this, SLOT(buffersPermanentlyMerged(BufferId, BufferId)));
   connect(bufferSyncer(), SIGNAL(buffersPermanentlyMerged(BufferId, BufferId)), _messageModel, SLOT(buffersPermanentlyMerged(BufferId, BufferId)));
-  connect(bufferSyncer(), SIGNAL(initDone()), this, SLOT(requestInitialBacklog()));
   connect(networkModel(), SIGNAL(setLastSeenMsg(BufferId, MsgId)), bufferSyncer(), SLOT(requestSetLastSeenMsg(BufferId, const MsgId &)));
   signalProxy()->synchronize(bufferSyncer());
 
   // create a new BufferViewManager
   Q_ASSERT(!_bufferViewManager);
   _bufferViewManager = new ClientBufferViewManager(signalProxy(), this);
-  connect(bufferViewManager(), SIGNAL(initDone()), this, SLOT(requestInitialBacklog()));
   connect(bufferViewManager(), SIGNAL(initDone()), this, SLOT(createDefaultBufferView()));
+  connect(bufferViewManager(), SIGNAL(viewsInitialized()), this, SLOT(requestInitialBacklogBarrier()));
 
   // create AliasManager
   Q_ASSERT(!_aliasManager);
@@ -334,9 +336,16 @@ void Client::setSyncedToCore() {
   emit coreConnectionStateChanged(true);
 }
 
-void Client::requestInitialBacklog() {
-  if(bufferViewManager()->isInitialized() && bufferSyncer()->isInitialized())
-    Client::backlogManager()->requestInitialBacklog();
+void Client::requestInitialBacklogBarrier() {
+  // usually it _should_ take longer until the bufferViews are initialized, so that's what
+  // triggers this slot. But we have to make sure that we know all buffers yet.
+  // so we check the BufferSyncer and in case it wasn't initialized we wait for that instead
+  if(!bufferSyncer()->isInitialized()) {
+    disconnect(bufferViewManager(), SIGNAL(viewsInitialized()), this, SLOT(requestInitialBacklogBarrier()));
+    connect(bufferSyncer(), SIGNAL(initDone()), this, SLOT(requestInitialBacklogBarrier()));
+    return;
+  }
+  emit requestInitialBacklog();
 }
 
 void Client::createDefaultBufferView() {

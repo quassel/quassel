@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005-08 by the Quassel Project                          *
+ *   Copyright (C) 2005-09 by the Quassel Project                          *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,32 +18,31 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef CLIENTBUFFERVIEWMANAGER_H
-#define CLIENTBUFFERVIEWMANAGER_H
+#ifndef BUFFERVIEWOVERLAYFILTER_H_
+#define BUFFERVIEWOVERLAYFILTER_H_
 
-#include "bufferviewmanager.h"
+#include <QSortFilterProxyModel>
 
-class ClientBufferViewConfig;
+#include "types.h"
+
 class BufferViewOverlay;
 
-class ClientBufferViewManager : public BufferViewManager {
+class BufferViewOverlayFilter : public QSortFilterProxyModel {
   Q_OBJECT
 
 public:
-  ClientBufferViewManager(SignalProxy *proxy, QObject *parent = 0);
+  BufferViewOverlayFilter(QAbstractItemModel *model, BufferViewOverlay *overlay = 0);
 
-  QList<ClientBufferViewConfig *> clientBufferViewConfigs() const;
-  ClientBufferViewConfig *clientBufferViewConfig(int bufferViewId) const;
+  void setOverlay(BufferViewOverlay *overlay);
 
 protected:
-  virtual BufferViewConfig *bufferViewConfigFactory(int bufferViewConfigId);
-
-signals:
-  void viewsInitialized();
+  bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
 
 private slots:
-  void waitForConfigInit();
-  void configInitBarrier();
+  void overlayDestroyed();
+
+private:
+  BufferViewOverlay *_overlay;
 };
 
-#endif //CLIENTBUFFERVIEWMANAGER_H
+#endif // BUFFERVIEWOVERLAYFILTER_H_

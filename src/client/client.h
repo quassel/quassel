@@ -42,6 +42,7 @@ class AbstractUiMsg;
 class NetworkModel;
 class BufferModel;
 class BufferSyncer;
+class BufferViewOverlay;
 class ClientAliasManager;
 class ClientBacklogManager;
 class ClientBufferViewManager;
@@ -107,6 +108,7 @@ public:
   static inline ClientBacklogManager *backlogManager() { return instance()->_backlogManager; }
   static inline ClientIrcListHelper *ircListHelper() { return instance()->_ircListHelper; }
   static inline ClientBufferViewManager *bufferViewManager() { return instance()->_bufferViewManager; }
+  static inline BufferViewOverlay *bufferViewOverlay() { return instance()->_bufferViewOverlay; }
   static inline ClientUserInputHandler *inputHandler() { return instance()->_inputHandler; }
 
   static AccountId currentCoreAccount();
@@ -129,6 +131,7 @@ public:
   static inline void registerClientSyncer(ClientSyncer *syncer) { emit instance()->newClientSyncer(syncer); }
 
 signals:
+  void requestInitialBacklog();
   void requestNetworkStates();
 
   void showConfigWizard(const QVariantMap &coredata);
@@ -186,7 +189,7 @@ private slots:
 
   void setConnectedToCore(AccountId id, QIODevice *socket = 0);
   void setSyncedToCore();
-  void requestInitialBacklog();
+  void requestInitialBacklogBarrier();
   void createDefaultBufferView();
 
   void sendBufferedUserInput();
@@ -210,6 +213,7 @@ private:
   ClientAliasManager *_aliasManager;
   ClientBacklogManager *_backlogManager;
   ClientBufferViewManager *_bufferViewManager;
+  BufferViewOverlay *_bufferViewOverlay;
   ClientIrcListHelper *_ircListHelper;
   ClientUserInputHandler *_inputHandler;
 

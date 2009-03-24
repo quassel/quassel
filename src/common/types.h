@@ -95,6 +95,10 @@ Q_DECLARE_METATYPE(NetworkId)
 Q_DECLARE_METATYPE(IdentityId)
 Q_DECLARE_METATYPE(AccountId)
 
+// a few typedefs
+typedef QList<MsgId> MsgIdList;
+typedef QList<BufferId> BufferIdList;
+
 //! Base class for exceptions.
 struct Exception {
   Exception(QString msg = "Unknown Exception") : _msg(msg) {};
@@ -103,7 +107,6 @@ struct Exception {
 
   protected:
     QString _msg;
-
 };
 
 #endif
