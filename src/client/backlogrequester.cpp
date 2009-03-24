@@ -51,7 +51,7 @@ bool BacklogRequester::buffer(BufferId bufferId, const MessageList &messages) {
   return !_buffersWaiting.isEmpty();
 }
 
-QList<BufferId> BacklogRequester::allBufferIds() const {
+BufferIdList BacklogRequester::allBufferIds() const {
   QSet<BufferId> bufferIds = Client::bufferViewOverlay()->bufferIds();
   bufferIds += Client::bufferViewOverlay()->tempRemovedBufferIds();
   return bufferIds.toList();
@@ -67,7 +67,7 @@ FixedBacklogRequester::FixedBacklogRequester(ClientBacklogManager *backlogManage
   _backlogCount = backlogSettings.fixedBacklogAmount();
 }
 
-void FixedBacklogRequester::requestBacklog(const QList<BufferId> &bufferIds) {
+void FixedBacklogRequester::requestBacklog(const BufferIdList &bufferIds) {
   setWaitingBuffers(bufferIds);
   backlogManager->emitMessagesRequested(QObject::tr("Requesting a total of up to %1 backlog messages for %2 buffers").arg(_backlogCount * bufferIds.count()).arg(bufferIds.count()));
   foreach(BufferId bufferId, bufferIds) {
@@ -108,7 +108,7 @@ PerBufferUnreadBacklogRequester::PerBufferUnreadBacklogRequester(ClientBacklogMa
   _additional = backlogSettings.perBufferUnreadBacklogAdditional();
 }
 
-void PerBufferUnreadBacklogRequester::requestBacklog(const QList<BufferId> &bufferIds) {
+void PerBufferUnreadBacklogRequester::requestBacklog(const BufferIdList &bufferIds) {
   setWaitingBuffers(bufferIds);
   backlogManager->emitMessagesRequested(QObject::tr("Requesting a total of up to %1 unread backlog messages for %2 buffers").arg((_limit + _additional) * bufferIds.count()).arg(bufferIds.count()));
   foreach(BufferId bufferId, bufferIds) {

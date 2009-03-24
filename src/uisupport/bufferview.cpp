@@ -609,3 +609,11 @@ int BufferViewDock::bufferViewId() const {
   else
     return 0;
 }
+
+BufferViewConfig *BufferViewDock::config() const {
+  BufferView *view = bufferView();
+  if(!view)
+    return 0;
+  else
+    return view->config();
+}

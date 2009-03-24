@@ -383,6 +383,23 @@ void MainWin::bufferViewToggled(bool enabled) {
   Q_ASSERT(dock);
   if(enabled) {
     Client::bufferViewOverlay()->addView(dock->bufferViewId());
+    BufferViewConfig *config = dock->config();
+    if(config && config->isInitialized()) {
+      BufferIdList buffers;
+      if(config->networkId().isValid()) {
+        foreach(BufferId bufferId, config->bufferList()) {
+          if(Client::networkModel()->networkId(bufferId) == config->networkId())
+            buffers << bufferId;
+        }
+        foreach(BufferId bufferId, config->temporarilyRemovedBuffers().toList()) {
+          if(Client::networkModel()->networkId(bufferId) == config->networkId())
+            buffers << bufferId;
+        }
+      } else {
+        buffers = BufferIdList::fromSet(config->bufferList().toSet() + config->temporarilyRemovedBuffers());
+      }
+      Client::backlogManager()->checkForBacklog(buffers);
+    }
   } else {
     Client::bufferViewOverlay()->removeView(dock->bufferViewId());
   }

@@ -219,7 +219,7 @@ int MessageModel::insertMessagesGracefully(const QList<Message> &msglist) {
     while(iter != msglist.constBegin()) {
       iter--;
 
-      if(!fastForward && (*iter).msgId() < minId)
+      if(!fastForward && (*iter).msgId() <= minId)
 	break;
       processedMsgs++;
 
@@ -250,7 +250,7 @@ int MessageModel::insertMessagesGracefully(const QList<Message> &msglist) {
     }
   } else {
     while(iter != msglist.constEnd()) {
-      if(!fastForward && (*iter).msgId() < minId)
+      if(!fastForward && (*iter).msgId() <= minId)
 	break;
       processedMsgs++;
 

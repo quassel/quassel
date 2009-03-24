@@ -51,11 +51,11 @@ public:
   //! returns false if it was the last missing backlogpart
   bool buffer(BufferId bufferId, const MessageList &messages);
   
+  virtual void requestBacklog(const BufferIdList &bufferIds) = 0;
   virtual inline void requestBacklog() { requestBacklog(allBufferIds()); }
-  virtual void requestBacklog(const QList<BufferId> &bufferIds) = 0;
 
 protected:
-  QList<BufferId> allBufferIds() const;
+  BufferIdList allBufferIds() const;
   inline void setWaitingBuffers(const QList<BufferId> &buffers) { setWaitingBuffers(buffers.toSet()); }
   void setWaitingBuffers(const QSet<BufferId> &buffers);
   void addWaitingBuffer(BufferId buffer);
@@ -76,7 +76,7 @@ private:
 class FixedBacklogRequester : public BacklogRequester {
 public:
   FixedBacklogRequester(ClientBacklogManager *backlogManager);
-  virtual void requestBacklog(const QList<BufferId> &bufferIds);
+  virtual void requestBacklog(const BufferIdList &bufferIds);
 
 private:
   int _backlogCount;
@@ -89,7 +89,7 @@ class GlobalUnreadBacklogRequester : public BacklogRequester {
 public:
   GlobalUnreadBacklogRequester(ClientBacklogManager *backlogManager);
   virtual void requestBacklog();
-  virtual void requestBacklog(const QList<BufferId> &) {}
+  virtual void requestBacklog(const BufferIdList &) {}
 
 private:
   int _limit;
@@ -102,7 +102,7 @@ private:
 class PerBufferUnreadBacklogRequester : public BacklogRequester {
 public:
   PerBufferUnreadBacklogRequester(ClientBacklogManager *backlogManager);
-  virtual void requestBacklog(const QList<BufferId> &bufferIds);
+  virtual void requestBacklog(const BufferIdList &bufferIds);
 
 private:
   int _limit;

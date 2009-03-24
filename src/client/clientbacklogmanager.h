@@ -44,7 +44,7 @@ public slots:
   void requestInitialBacklog();
 
   void checkForBacklog(BufferId bufferId);
-  void checkForBacklog(const QList<BufferId> &bufferIds);
+  void checkForBacklog(const BufferIdList &bufferIds);
 
 signals:
   void messagesReceived(BufferId bufferId, int count) const;
@@ -56,11 +56,17 @@ signals:
 private:
   bool isBuffering();
   void stopBuffering();
+  BufferIdList filterNewBufferIds(const BufferIdList &bufferIds);
 
   void dispatchMessages(const MessageList &messages, bool sort = false);
 
   BacklogRequester *_requester;
-  QSet<BufferId> _backlogReceived;
+  QSet<BufferId> _buffersRequested;
 };
+
+// inlines
+inline void ClientBacklogManager::checkForBacklog(BufferId bufferId) {
+  checkForBacklog(BufferIdList() << bufferId);
+}
 
 #endif // CLIENTBACKLOGMANAGER_H
