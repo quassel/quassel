@@ -23,9 +23,11 @@
 
 #include <QDataStream>
 #include <QFontMetricsF>
+#include <QHash>
 #include <QTextCharFormat>
 #include <QTextLayout>
-#include <QUrl>
+#include <QPalette>
+#include <QVector>
 
 #include "message.h"
 #include "settings.h"
@@ -153,12 +155,13 @@ public:
   };
 
   class StyledMessage;
+  class QssParser;
 
   StyledString styleString(const QString &);
   QString mircToInternal(const QString &) const;
 
   void setFormat(FormatType, QTextCharFormat, Settings::Mode mode/* = Settings::Custom*/);
-    void setSenderAutoColor(bool state);
+  void setSenderAutoColor(bool state);
   QTextCharFormat format(FormatType, Settings::Mode mode = Settings::Custom) const;
   QTextCharFormat mergedFormat(quint32 formatType);
   QFontMetricsF *fontMetrics(quint32 formatType);
@@ -171,7 +174,10 @@ public:
   QList<QTextLayout::FormatRange> toTextLayoutList(const FormatList &, int textLength);
 
 protected:
+  void loadStyleSheet();
+
   bool _senderAutoColor;
+
 private:
   QFont _defaultFont;
   QTextCharFormat _defaultPlainFormat;
@@ -205,6 +211,56 @@ public:
 
 private:
   mutable StyledString _contents;
+};
+
+class UiStyle::QssParser {
+public:
+  enum Column {
+    Any,
+    Timestamp,
+    Sender,
+    Contents
+  };
+
+  struct ChatLineFormat {
+    QVector<QTextCharFormat> senderColors;
+    QVector<QTextCharFormat> mircColors;
+    QHash<FormatType, QTextCharFormat> formats;
+
+  };
+
+  QssParser();
+
+  void loadStyleSheet(const QString &sheet);
+
+  inline QPalette palette() const { return _palette; }
+  ChatLineFormat basicFormat() const;
+  QHash<FormatType, ChatLineFormat> specialFormats() const;
+
+protected:
+  typedef QList<qreal> ColorTuple;
+
+  void parseChatLineData(const QString &decl, const QString &contents);
+  void parsePaletteData(const QString &decl, const QString &contents);
+
+  QTextCharFormat parseFormat(const QString &qss);
+  bool parsePalette(QPalette &, const QString &qss);
+
+  // Parse basic data types
+  QBrush parseBrushValue(const QString &str);
+  QColor parseColorValue(const QString &str);
+  QFont parseFont(const QString &str);
+
+  // Parse subelements
+  ColorTuple parseColorTuple(const QString &str);
+  QGradientStops parseGradientStops(const QString &str);
+
+  QHash<QString, QPalette::ColorRole> _paletteColorRoles;
+
+private:
+  QPalette _palette;
+  ChatLineFormat _basicFormat;
+  QHash<FormatType, ChatLineFormat> _specialFormats;
 };
 
 QDataStream &operator<<(QDataStream &out, const UiStyle::FormatList &formatList);
