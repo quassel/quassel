@@ -1146,6 +1146,7 @@ bool SqliteStorage::mergeBuffersPermanently(const UserId &user, const BufferId &
   QSqlQuery delBufferQuery(db);
   delBufferQuery.prepare(queryString("delete_buffer_for_bufferid"));
   delBufferQuery.bindValue(":bufferid", bufferId2.toInt());
+  delBufferQuery.bindValue(":userid", user.toInt());
   safeExec(delBufferQuery);
   if(!watchQuery(delBufferQuery)) {
     db.rollback();
