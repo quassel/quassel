@@ -35,6 +35,12 @@ ClientBacklogManager::ClientBacklogManager(QObject *parent)
 {
 }
 
+QVariantList ClientBacklogManager::requestBacklog(BufferId bufferId, MsgId first, MsgId last, int limit, int additional) {
+  _buffersRequested << bufferId;
+  qDebug() << _buffersRequested;
+  return BacklogManager::requestBacklog(bufferId, first, last, limit, additional);
+}
+
 void ClientBacklogManager::receiveBacklog(BufferId bufferId, MsgId first, MsgId last, int limit, int additional, QVariantList msgs) {
   Q_UNUSED(first) Q_UNUSED(last) Q_UNUSED(limit) Q_UNUSED(additional)
 
@@ -102,7 +108,6 @@ BufferIdList ClientBacklogManager::filterNewBufferIds(const BufferIdList &buffer
     if(!_buffersRequested.contains(bufferId))
       newBuffers << bufferId;
   }
-  _buffersRequested += bufferIds.toSet();
   return newBuffers;
 }
 
