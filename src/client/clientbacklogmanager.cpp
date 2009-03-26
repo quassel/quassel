@@ -37,7 +37,6 @@ ClientBacklogManager::ClientBacklogManager(QObject *parent)
 
 QVariantList ClientBacklogManager::requestBacklog(BufferId bufferId, MsgId first, MsgId last, int limit, int additional) {
   _buffersRequested << bufferId;
-  qDebug() << _buffersRequested;
   return BacklogManager::requestBacklog(bufferId, first, last, limit, additional);
 }
 
