@@ -108,6 +108,9 @@ void BufferViewOverlay::update() {
 }
 
 void BufferViewOverlay::updateHelper() {
+  if(!_aboutToUpdate)
+    return;
+
   bool changed = false;
 
   bool addBuffersAutomatically = false;
@@ -162,6 +165,9 @@ void BufferViewOverlay::updateHelper() {
       if(minimumActivity == -1 || config->minimumActivity() < minimumActivity)
         minimumActivity = config->minimumActivity();
     }
+    QSet<BufferId> availableBuffers = Client::networkModel()->allBufferIds().toSet();
+    buffers.intersect(availableBuffers);
+    tempRemovedBuffers.intersect(availableBuffers);
   }
 
   changed |= (addBuffersAutomatically != _addBuffersAutomatically);
@@ -182,6 +188,8 @@ void BufferViewOverlay::updateHelper() {
   _removedBuffers = removedBuffers;
   _tempRemovedBuffers = tempRemovedBuffers;
 
+  _aboutToUpdate = false;
+
   if(changed)
     emit hasChanged();
 }
@@ -189,6 +197,50 @@ void BufferViewOverlay::updateHelper() {
 void BufferViewOverlay::customEvent(QEvent *event) {
   if(event->type() == _updateEventId) {
     updateHelper();
-    _aboutToUpdate = false;
   }
+}
+
+bool BufferViewOverlay::allNetworks() {
+  updateHelper();
+  return _networkIds.contains(NetworkId());
+}
+
+const QSet<NetworkId> &BufferViewOverlay::networkIds() {
+  updateHelper();
+  return _networkIds;
+}
+
+const QSet<BufferId> &BufferViewOverlay::bufferIds() {
+  updateHelper();
+  return _buffers;
+}
+
+const QSet<BufferId> &BufferViewOverlay::removedBufferIds() {
+  updateHelper();
+  return _removedBuffers;
+}
+
+const QSet<BufferId> &BufferViewOverlay::tempRemovedBufferIds() {
+  updateHelper();
+  return _tempRemovedBuffers;
+}
+
+bool BufferViewOverlay::addBuffersAutomatically() {
+  updateHelper();
+  return _addBuffersAutomatically;
+}
+
+bool BufferViewOverlay::hideInactiveBuffers() {
+  updateHelper();
+  return _hideInactiveBuffers;
+}
+
+int BufferViewOverlay::allowedBufferTypes() {
+  updateHelper();
+  return _allowedBufferTypes;
+}
+
+int BufferViewOverlay::minimumActivity() {
+  updateHelper();
+  return _minimumActivity;
 }

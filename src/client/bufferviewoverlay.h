@@ -34,17 +34,17 @@ class BufferViewOverlay : public QObject {
 public:
   BufferViewOverlay(QObject *parent = 0);
 
-  inline bool allNetworks() const { return _networkIds.contains(NetworkId()); }
+  bool allNetworks();
 
-  inline const QSet<NetworkId> &networkIds() const { return _networkIds; }
-  inline const QSet<BufferId> &bufferIds() const { return _buffers; }
-  inline const QSet<BufferId> &removedBufferIds() const { return _removedBuffers; }
-  inline const QSet<BufferId> &tempRemovedBufferIds() const { return _tempRemovedBuffers; }
+  const QSet<NetworkId> &networkIds();
+  const QSet<BufferId> &bufferIds();
+  const QSet<BufferId> &removedBufferIds();
+  const QSet<BufferId> &tempRemovedBufferIds();
 
-  inline bool addBuffersAutomatically() const { return _addBuffersAutomatically; }
-  inline bool hideInactiveBuffers() const { return _hideInactiveBuffers; }
-  inline int allowedBufferTypes() const { return _allowedBufferTypes; }
-  inline int minimumActivity() const { return _minimumActivity; }
+  bool addBuffersAutomatically();
+  bool hideInactiveBuffers();
+  int allowedBufferTypes();
+  int minimumActivity();
 
 public slots:
   void addView(int viewId);

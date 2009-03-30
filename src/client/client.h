@@ -131,7 +131,6 @@ public:
   static inline void registerClientSyncer(ClientSyncer *syncer) { emit instance()->newClientSyncer(syncer); }
 
 signals:
-  void requestInitialBacklog();
   void requestNetworkStates();
 
   void showConfigWizard(const QVariantMap &coredata);
@@ -189,7 +188,7 @@ private slots:
 
   void setConnectedToCore(AccountId id, QIODevice *socket = 0);
   void setSyncedToCore();
-  void requestInitialBacklogBarrier();
+  void requestInitialBacklog();
   void createDefaultBufferView();
 
   void sendBufferedUserInput();
