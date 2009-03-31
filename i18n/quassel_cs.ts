@@ -320,7 +320,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/settingspages/backlogsettingspage.cpp" line="27"/>
         <source>Backlog</source>
-        <translation type="unfinished"></translation>
+        <translation>Historie</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/backlogsettingspage.cpp" line="27"/>
@@ -993,7 +993,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/client/clientsyncer.cpp" line="382"/>
         <location filename="../src/client/clientsyncer.cpp" line="407"/>
         <source>Cert Digest changed! was: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontrolní součet certifikatu se zmenil! byl: %1</translation>
     </message>
 </context>
 <context>
@@ -1825,7 +1825,13 @@ p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;DejaVu Sans&apos;; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Lucida Grande&apos;; font-size:13pt;&quot;&gt;&lt;span style=&quot; font-size:10pt; font-weight:600;&quot;&gt;Note: &lt;/span&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Adding more users and changing your username/password is not possible via Quassel&apos;s interface yet.&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Lucida Grande&apos;; font-size:10pt;&quot;&gt;If you need to do these things have a look at the manageusers.py script which is located in the /scripts directory.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;DejaVu Sans&apos;; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Lucida Grande&apos;; font-size:13pt;&quot;&gt;&lt;span style=&quot; font-size:10pt; font-weight:600;&quot;&gt;Poznámka: &lt;/span&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Přidávání více uživatelů a změna uživatelského jména a hesla není v současné době uskutečnitelná skrze grafické rozrhaní Quassel.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Lucida Grande&apos;; font-size:10pt;&quot;&gt;
+Pokud některou z těchto činností potřebujete provést vyzkoušejte skript manageusers.py z adresáře /scripts.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
@@ -1867,12 +1873,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/coreconfigwizard.cpp" line="172"/>
         <source>Select Storage Backend</source>
-        <translation type="unfinished"></translation>
+        <translation>Zvolte skladovací rozhraní</translation>
     </message>
     <message>
         <location filename="../src/qtui/coreconfigwizard.cpp" line="173"/>
         <source>Please select a database backend for the Quassel Core storage to store the backlog and other data in.</source>
-        <translation type="unfinished"></translation>
+        <translation>Prosím zvolte databázové rozhraní pro ukládání dat Quassel jádra.</translation>
     </message>
     <message>
         <location filename="../src/qtui/coreconfigwizard.cpp" line="267"/>
@@ -1903,7 +1909,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/ui/coreconfigwizardstorageselectionpage.ui" line="21"/>
         <source>Storage Backend:</source>
-        <translation type="unfinished"></translation>
+        <translation>Skladovací rozhraní:</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/coreconfigwizardstorageselectionpage.ui" line="56"/>
@@ -1926,32 +1932,32 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/ui/coreconfigwizardsyncpage.ui" line="19"/>
         <source>Your Choices</source>
-        <translation type="unfinished"></translation>
+        <translation>Vaše volby</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/coreconfigwizardsyncpage.ui" line="35"/>
         <source>Admin User:</source>
-        <translation type="unfinished"></translation>
+        <translation>Administrátor:</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/coreconfigwizardsyncpage.ui" line="42"/>
         <source>foo</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/coreconfigwizardsyncpage.ui" line="55"/>
         <source>Storage Backend:</source>
-        <translation type="unfinished"></translation>
+        <translation>Skladovací rozhraní:</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/coreconfigwizardsyncpage.ui" line="62"/>
         <source>bar</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/coreconfigwizardsyncpage.ui" line="102"/>
         <source>Please wait while your settings are being transmitted to the core...</source>
-        <translation type="unfinished"></translation>
+        <translation>Prosím počkejte dokud se nastavení nepřenese k jádru...</translation>
     </message>
 </context>
 <context>
@@ -2143,21 +2149,21 @@ SOME SPACE</source>
     <message numerus="yes">
         <location filename="../src/qtui/coreinfodlg.cpp" line="53"/>
         <source>%n Day(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n Den</numerusform>
+            <numerusform>%n Dny</numerusform>
+            <numerusform>%n Dnů</numerusform>
         </translation>
     </message>
     <message>
         <location filename="../src/qtui/coreinfodlg.cpp" line="54"/>
         <source> %1:%2:%3 (since %4)</source>
-        <translation type="unfinished"></translation>
+        <translation> %1:%2:%3 (od %4)</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/coreinfodlg.ui" line="13"/>
         <source>Core Information</source>
-        <translation type="unfinished"></translation>
+        <translation>Informace o jádru</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/coreinfodlg.ui" line="21"/>
@@ -2187,7 +2193,7 @@ SOME SPACE</source>
     <message>
         <location filename="../src/qtui/ui/coreinfodlg.ui" line="56"/>
         <source>&lt;core uptime&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;doba běhu jádra&gt;</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/coreinfodlg.ui" line="63"/>
@@ -2221,12 +2227,12 @@ SOME SPACE</source>
     <message>
         <location filename="../src/core/corenetwork.cpp" line="211"/>
         <source>Disconnecting. (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Odpojuji. (%1)</translation>
     </message>
     <message>
         <location filename="../src/core/corenetwork.cpp" line="211"/>
         <source>Core Shutdown</source>
-        <translation type="unfinished"></translation>
+        <translation>Vypnutí jádra</translation>
     </message>
     <message>
         <source>Disconnecting.</source>
@@ -2970,7 +2976,7 @@ SOME SPACE</source>
         <location filename="../src/qtui/settingspages/identityeditwidget.cpp" line="328"/>
         <location filename="../src/qtui/settingspages/identityeditwidget.ui" line="604"/>
         <source>No Key loaded</source>
-        <translation type="unfinished"></translation>
+        <translation>Nebyl načten žádný klíč</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/identityeditwidget.cpp" line="318"/>
@@ -3022,7 +3028,7 @@ SOME SPACE</source>
     <message>
         <location filename="../src/qtui/settingspages/identityeditwidget.ui" line="44"/>
         <source>The &quot;Real Name&quot; is shown in /whois.</source>
-        <translation type="unfinished"></translation>
+        <translation>&quot;Skutečné jméno&quot; je zobrazeno při volání příkazu /whois.</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/identityeditwidget.ui" line="53"/>
@@ -3244,12 +3250,12 @@ Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificat
     <message>
         <location filename="../src/qtui/inputwidget.cpp" line="54"/>
         <source>Focus Input Line</source>
-        <translation type="unfinished"></translation>
+        <translation>Přepnout na vstupní řádku</translation>
     </message>
     <message>
         <location filename="../src/qtui/inputwidget.cpp" line="55"/>
         <source>Ctrl+L</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/inputwidget.ui" line="19"/>
@@ -3306,12 +3312,12 @@ Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificat
         <location filename="../src/core/ircserverhandler.cpp" line="528"/>
         <location filename="../src/core/ircserverhandler.cpp" line="535"/>
         <source>%1</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/core/ircserverhandler.cpp" line="570"/>
         <source>[Whois] %1 is away: &quot;%2&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>[Whois] %1 pe pryč: &quot;%2&quot;</translation>
     </message>
     <message>
         <location filename="../src/core/ircserverhandler.cpp" line="576"/>
@@ -3414,7 +3420,7 @@ Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificat
     <message>
         <location filename="../src/core/ircserverhandler.cpp" line="892"/>
         <source>[Who] %1</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/core/ircserverhandler.cpp" line="951"/>
@@ -3508,7 +3514,7 @@ Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificat
     <message>
         <location filename="../src/qtui/mainwin.cpp" line="244"/>
         <source>Show Away Log</source>
-        <translation type="unfinished"></translation>
+        <translation>Zobrazit Log pro Pryč</translation>
     </message>
     <message>
         <location filename="../src/qtui/mainwin.cpp" line="246"/>
@@ -3573,7 +3579,7 @@ Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificat
     <message>
         <location filename="../src/qtui/mainwin.cpp" line="291"/>
         <source>&amp;Buffer Views</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Pohledy na záložky</translation>
     </message>
     <message>
         <location filename="../src/qtui/mainwin.cpp" line="293"/>
@@ -3623,7 +3629,7 @@ Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificat
     <message>
         <location filename="../src/qtui/mainwin.cpp" line="489"/>
         <source>Show Input Line</source>
-        <translation type="unfinished"></translation>
+        <translation>Zobrasit řádku se vstupem</translation>
     </message>
     <message>
         <location filename="../src/qtui/mainwin.cpp" line="500"/>
@@ -3633,7 +3639,7 @@ Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificat
     <message>
         <location filename="../src/qtui/mainwin.cpp" line="512"/>
         <source>Show Topic Line</source>
-        <translation type="unfinished"></translation>
+        <translation>Zobrazit řádek s tématem</translation>
     </message>
     <message>
         <location filename="../src/qtui/mainwin.cpp" line="630"/>
@@ -3681,7 +3687,7 @@ Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificat
     <message>
         <location filename="../src/qtui/ui/msgprocessorstatuswidget.ui" line="34"/>
         <source>Receiving Backlog</source>
-        <translation type="unfinished"></translation>
+        <translation>Získávám historii</translation>
     </message>
     <message>
         <source>Processing Messages</source>
@@ -4094,7 +4100,7 @@ Note that Quassel IRC automatically rejoins channels, so /join will rarely be ne
     <message>
         <location filename="../src/qtui/settingspages/networkssettingspage.ui" line="566"/>
         <source>Encodings</source>
-        <translation type="unfinished"></translation>
+        <translation>Kódování</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/networkssettingspage.ui" line="336"/>
@@ -4270,7 +4276,7 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
     <message>
         <location filename="../src/client/backlogrequester.cpp" line="72"/>
         <source>Requesting a total of up to %1 backlog messages for %2 buffers</source>
-        <translation type="unfinished"></translation>
+        <translation>Požaduji %1 zpráv historie pro %2 záložky</translation>
     </message>
     <message>
         <location filename="../src/client/backlogrequester.cpp" line="96"/>
@@ -4696,7 +4702,7 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
     <message>
         <location filename="../src/qtui/coreconnectdlg.cpp" line="572"/>
         <source>Issuer Info</source>
-        <translation type="unfinished"></translation>
+        <translation>Informace o vydavateli</translation>
     </message>
     <message>
         <location filename="../src/qtui/coreconnectdlg.cpp" line="574"/>
@@ -4756,7 +4762,7 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
     <message>
         <location filename="../src/qtui/coreconnectdlg.cpp" line="600"/>
         <source>E-Mail Address %1:</source>
-        <translation type="unfinished"></translation>
+        <translation>E-Mailová adresa %1:</translation>
     </message>
     <message>
         <location filename="../src/qtui/coreconnectdlg.cpp" line="602"/>
@@ -4948,12 +4954,12 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
     <message>
         <location filename="../src/uisupport/toolbaractionprovider.cpp" line="54"/>
         <source>Connect to all</source>
-        <translation type="unfinished"></translation>
+        <translation>Připojid kde všemu</translation>
     </message>
     <message>
         <location filename="../src/uisupport/toolbaractionprovider.cpp" line="61"/>
         <source>Disconnect from all</source>
-        <translation type="unfinished"></translation>
+        <translation>Odpojit ze všeho</translation>
     </message>
 </context>
 <context>
