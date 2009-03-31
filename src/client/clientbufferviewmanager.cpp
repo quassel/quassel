@@ -20,7 +20,6 @@
 
 #include "clientbufferviewmanager.h"
 
-#include "bufferviewoverlay.h"
 #include "clientbufferviewconfig.h"
 
 ClientBufferViewManager::ClientBufferViewManager(SignalProxy *proxy, QObject *parent)
@@ -54,7 +53,7 @@ void ClientBufferViewManager::waitForConfigInit() {
     connect(config, SIGNAL(initDone()), this, SLOT(configInitBarrier()));
   }
   if(initialized)
-    emit viewsInitialized();
+    QMetaObject::invokeMethod(this, "viewsInitialized", Qt::QueuedConnection);
 }
 
 void ClientBufferViewManager::configInitBarrier() {
@@ -67,5 +66,5 @@ void ClientBufferViewManager::configInitBarrier() {
     initialized &= config->isInitialized();
   }
   if(initialized)
-    emit viewsInitialized();
+    QMetaObject::invokeMethod(this, "viewsInitialized", Qt::QueuedConnection);
 }

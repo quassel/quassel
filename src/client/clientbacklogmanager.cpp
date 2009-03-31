@@ -103,9 +103,11 @@ void ClientBacklogManager::requestInitialBacklog() {
 
 BufferIdList ClientBacklogManager::filterNewBufferIds(const BufferIdList &bufferIds) {
   BufferIdList newBuffers;
+  QSet<BufferId> availableBuffers = Client::networkModel()->allBufferIds().toSet();
   foreach(BufferId bufferId, bufferIds) {
-    if(!_buffersRequested.contains(bufferId))
-      newBuffers << bufferId;
+    if(_buffersRequested.contains(bufferId) || !availableBuffers.contains(bufferId))
+      continue;
+    newBuffers << bufferId;
   }
   return newBuffers;
 }
