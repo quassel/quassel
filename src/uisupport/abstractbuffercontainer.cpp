@@ -96,4 +96,8 @@ void AbstractBufferContainer::setCurrentBuffer(BufferId bufferId) {
   Client::networkModel()->clearBufferActivity(bufferId);
   Client::backlogManager()->checkForBacklog(bufferId);
   setFocus();
+
+  if(bufferId.isValid() && _chatViews.contains(bufferId)) {
+    Client::setBufferLastSeenMsg(bufferId, _chatViews[bufferId]->lastMsgId());
+  }
 }
