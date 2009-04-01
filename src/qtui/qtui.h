@@ -67,7 +67,7 @@ public slots:
 protected slots:
   void connectedToCore();
   void disconnectedFromCore();
-  void notificationActivated();
+  void notificationActivated(uint notificationId);
 
 private:
   static QPointer<QtUi> _instance;

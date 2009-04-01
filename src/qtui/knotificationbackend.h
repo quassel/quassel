@@ -39,9 +39,12 @@ public:
 
 private slots:
   void notificationActivated();
+  void notificationClosed();
 
 private:
   class ConfigWidget;
+
+  QHash<KNotification *, uint> _notificationIds;
 };
 
 class KNotificationBackend::ConfigWidget : public SettingsPage {

@@ -40,6 +40,7 @@ public:
 private slots:
   void showBubble();
   void closeBubble();
+  void notificationActivated();
 
   void animateChanged(const QVariant &);
   void showBubbleChanged(const QVariant &);
@@ -50,6 +51,7 @@ private:
   bool _showBubble;
   bool _animate;
   QList<Notification> _notifications;
+  uint _activeId;
 };
 
 class SystrayNotificationBackend::ConfigWidget : public SettingsPage {

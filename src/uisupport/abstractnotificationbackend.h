@@ -57,7 +57,7 @@ public:
 
 signals:
   //! May be emitted by the notification to tell the MainWin to raise itself
-  void activated();
+  void activated(uint notificationId = 0);
 
 };
 
