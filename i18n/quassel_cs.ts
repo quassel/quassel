@@ -4954,7 +4954,7 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
     <message>
         <location filename="../src/uisupport/toolbaractionprovider.cpp" line="54"/>
         <source>Connect to all</source>
-        <translation>Připojid kde všemu</translation>
+        <translation>Připojit kde všemu</translation>
     </message>
     <message>
         <location filename="../src/uisupport/toolbaractionprovider.cpp" line="61"/>
