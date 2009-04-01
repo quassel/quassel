@@ -22,6 +22,7 @@
 
 #include "abstractnotificationbackend.h"
 #include "actioncollection.h"
+#include "buffermodel.h"
 #include "chatlinemodel.h"
 #include "contextmenuactionprovider.h"
 #include "mainwin.h"
@@ -33,6 +34,11 @@
 #include "util.h"
 
 QHash<QString, ActionCollection *> QtUi::_actionCollections;
+
+#ifdef Q_WS_X11
+#  include <QX11Info>
+#endif
+
 QPointer<QtUi> QtUi::_instance = 0;
 QPointer<MainWin> QtUi::_mainWin = 0;
 QList<AbstractNotificationBackend *> QtUi::_notificationBackends;
@@ -97,7 +103,7 @@ void QtUi::disconnectedFromCore() {
 void QtUi::registerNotificationBackend(AbstractNotificationBackend *backend) {
   if(!_notificationBackends.contains(backend)) {
     _notificationBackends.append(backend);
-    instance()->connect(backend, SIGNAL(activated()), SLOT(notificationActivated()));
+    instance()->connect(backend, SIGNAL(activated(uint)), SLOT(notificationActivated(uint)));
   }
 }
 
@@ -154,8 +160,30 @@ const QList<AbstractNotificationBackend::Notification> &QtUi::activeNotification
   return _notifications;
 }
 
-void QtUi::notificationActivated() {
-  // this might not work with some window managers
+void QtUi::notificationActivated(uint notificationId) {
+  if(notificationId != 0) {
+    QList<AbstractNotificationBackend::Notification>::iterator i = _notifications.begin();
+    while(i != _notifications.end()) {
+      if((*i).notificationId == notificationId) {
+        BufferId bufId = (*i).bufferId;
+        if(bufId.isValid())
+          Client::bufferModel()->switchToBuffer(bufId);
+        _notifications.erase(i);
+        break;
+      }
+    }
+  }
+
+#ifdef Q_WS_X11
+  // Bypass focus stealing prevention
+  QX11Info::setAppUserTime(QX11Info::appTime());
+#endif
+
+  if(_mainWin->windowState() & Qt::WindowMinimized) {
+    // restore
+    _mainWin->setWindowState((_mainWin->windowState() & ~Qt::WindowMinimized) | Qt::WindowActive);
+    _mainWin->show();
+  }
   _mainWin->raise();
   _mainWin->activateWindow();
 }
