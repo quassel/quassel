@@ -567,7 +567,7 @@ void MainWin::setupToolBars() {
 #ifdef Q_WS_MAC
   setUnifiedTitleAndToolBarOnMac(true);
 #endif
-  _mainToolBar = addToolBar("Main Toolbar");
+  _mainToolBar = addToolBar(tr("Main Toolbar"));
   _mainToolBar->setObjectName("MainToolBar");
 
   QtUi::toolBarActionProvider()->addActions(_mainToolBar, ToolBarActionProvider::MainToolBar);

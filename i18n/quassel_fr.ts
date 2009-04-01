@@ -136,7 +136,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/aboutdlg.cpp" line="55"/>
         <source>&lt;b&gt;A modern, distributed IRC Client&lt;/b&gt;&lt;br&gt;&lt;br&gt;&amp;copy;2005-2009 by the Quassel Project&lt;br&gt;&lt;a href=&quot;http://quassel-irc.org&quot;&gt;http://quassel-irc.org&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;irc://irc.freenode.net/quassel&quot;&gt;#quassel&lt;/a&gt; on &lt;a href=&quot;http://www.freenode.net&quot;&gt;Freenode&lt;/a&gt;&lt;br&gt;&lt;br&gt;Quassel IRC is dual-licensed under &lt;a href=&quot;http://www.gnu.org/licenses/gpl-2.0.txt&quot;&gt;GPLv2&lt;/a&gt; and &lt;a href=&quot;http://www.gnu.org/licenses/gpl-3.0.txt&quot;&gt;GPLv3&lt;/a&gt;.&lt;br&gt;Most icons are &amp;copy; by the &lt;a href=&quot;http://www.oxygen-icons.org&quot;&gt;Oxygen Team&lt;/a&gt; and used under the &lt;a href=&quot;http://www.gnu.org/licenses/lgpl.html&quot;&gt;LGPL&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Please use &lt;a href=&quot;http://bugs.quassel-irc.org&quot;&gt;http://bugs.quassel-irc.org&lt;/a&gt; to report bugs.</source>
-        <translation>&lt;b&gt;Un Client IRC distribué et moderne&lt;/b&gt;&lt;br&gt;&lt;br&gt;&amp;copy;2005-2009 par le Projet Quassel&lt;br&gt;&lt;a href=&quot;http://quassel-irc.org&quot;&gt;http://quassel-irc.org&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;irc://irc.freenode.net/quassel&quot;&gt;#quassel&lt;/a&gt; sur &lt;a href=&quot;http://www.freenode.net&quot;&gt;Freenode&lt;/a&gt;&lt;br&gt;&lt;br&gt;Quassel IRC est sous double licence &lt;a href=&quot;http://www.gnu.org/licenses/gpl-2.0.txt&quot;&gt;GPLv2&lt;/a&gt; et &lt;a href=&quot;http://www.gnu.org/licenses/gpl-3.0.txt&quot;&gt;GPLv3&lt;/a&gt;.&lt;br&gt;La majorité des icones proviennent &amp;copy; de l&apos;&lt;a href=&quot;http://www.oxygen-icons.org&quot;&gt;Equipe Oxygen&lt;/a&gt; et sont utilisés sous la &lt;a href=&quot;http://www.gnu.org/licenses/lgpl.html&quot;&gt;LGPL&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Merci d&apos;utiliser &lt;a href=&quot;http://bugs.quassel-irc.org&quot;&gt;http://bugs.quassel-irc.org&lt;/a&gt; pour transmettre les bogues.</translation>
+        <translation>&lt;b&gt;Un Client IRC distribué et moderne&lt;/b&gt;&lt;br&gt;&lt;br&gt;&amp;copy;2005-2009 par le Projet Quassel&lt;br&gt;&lt;a href=&quot;http://quassel-irc.org&quot;&gt;http://quassel-irc.org&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;irc://irc.freenode.net/quassel&quot;&gt;#quassel&lt;/a&gt; sur &lt;a href=&quot;http://www.freenode.net&quot;&gt;Freenode&lt;/a&gt;&lt;br&gt;&lt;br&gt;Quassel IRC est sous double licence &lt;a href=&quot;http://www.gnu.org/licenses/gpl-2.0.txt&quot;&gt;GPLv2&lt;/a&gt; et &lt;a href=&quot;http://www.gnu.org/licenses/gpl-3.0.txt&quot;&gt;GPLv3&lt;/a&gt;.&lt;br&gt;La majorité des icones proviennent &amp;copy; de l&apos;&lt;a href=&quot;http://www.oxygen-icons.org&quot;&gt;Equipe Oxygen&lt;/a&gt; et sont utilisés sous &lt;a href=&quot;http://www.gnu.org/licenses/lgpl.html&quot;&gt;LGPL&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Merci d&apos;utiliser &lt;a href=&quot;http://bugs.quassel-irc.org&quot;&gt;http://bugs.quassel-irc.org&lt;/a&gt; pour transmettre les bogues.</translation>
     </message>
     <message>
         <location filename="../src/qtui/aboutdlg.cpp" line="125"/>
@@ -1532,12 +1532,12 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Récupération des informations sur les canaux...</translation>
     </message>
     <message>
-        <location filename="../src/client/client.cpp" line="264"/>
+        <location filename="../src/client/client.cpp" line="266"/>
         <source>Identity already exists in client!</source>
         <translation>L&apos;Identité existe déjà dans le client!</translation>
     </message>
     <message>
-        <location filename="../src/client/client.cpp" line="345"/>
+        <location filename="../src/client/client.cpp" line="353"/>
         <source>All Buffers</source>
         <translation>Tous tampons</translation>
     </message>
@@ -1550,7 +1550,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ClientBacklogManager</name>
     <message>
-        <location filename="../src/client/clientbacklogmanager.cpp" line="123"/>
+        <location filename="../src/client/clientbacklogmanager.cpp" line="156"/>
         <source>Processed %1 messages in %2 seconds.</source>
         <translation>%1 messages traités en %2 secondes.</translation>
     </message>
@@ -3214,22 +3214,22 @@ SOME SPACE</translation>
         <translation type="obsolete">Déconnecte.</translation>
     </message>
     <message>
-        <location filename="../src/core/corenetwork.cpp" line="306"/>
+        <location filename="../src/core/corenetwork.cpp" line="307"/>
         <source>Could not connect to %1 (%2)</source>
         <translation>Impossible de se connecter à %1 (%2)</translation>
     </message>
     <message>
-        <location filename="../src/core/corenetwork.cpp" line="308"/>
+        <location filename="../src/core/corenetwork.cpp" line="309"/>
         <source>Connection failure: %1</source>
         <translation>Erreur de connexion: %1</translation>
     </message>
     <message>
-        <location filename="../src/core/corenetwork.cpp" line="210"/>
+        <location filename="../src/core/corenetwork.cpp" line="211"/>
         <source>Disconnecting. (%1)</source>
         <translation>Déconnecte. (%1)</translation>
     </message>
     <message>
-        <location filename="../src/core/corenetwork.cpp" line="210"/>
+        <location filename="../src/core/corenetwork.cpp" line="211"/>
         <source>Core Shutdown</source>
         <translation>Arrêt du Noyau</translation>
     </message>
@@ -4840,12 +4840,12 @@ Continuer provoquera le transfert non crypté de votre clé SSL et de votre cert
         <translation type="obsolete">Voulez vous vraiment coller %1 lignes ?</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/inputline.cpp" line="213"/>
+        <location filename="../src/uisupport/inputline.cpp" line="209"/>
         <source>Paste Protection</source>
         <translation>Protection Collage</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/uisupport/inputline.cpp" line="204"/>
+        <location filename="../src/uisupport/inputline.cpp" line="200"/>
         <source>Do you really want to paste %n lines?</source>
         <translation>
             <numerusform>Voulez vous vraiment coller une ligne ?</numerusform>
@@ -4863,7 +4863,7 @@ Continuer provoquera le transfert non crypté de votre clé SSL et de votre cert
     <message>
         <location filename="../src/qtui/inputwidget.cpp" line="54"/>
         <source>Focus Input Line</source>
-        <translation>Focus sur la ligne de commande</translation>
+        <translation>Focus sur la ligne de saisie</translation>
     </message>
     <message>
         <location filename="../src/qtui/inputwidget.cpp" line="55"/>
@@ -5127,7 +5127,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Attente du noyau...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="665"/>
+        <location filename="../src/qtui/mainwin.cpp" line="700"/>
         <source>Not connected to core.</source>
         <translation>Déconnecté au noyau.</translation>
     </message>
@@ -5172,7 +5172,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Aide</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="316"/>
+        <location filename="../src/qtui/mainwin.cpp" line="320"/>
         <source>Debug</source>
         <translation>Déboguage</translation>
     </message>
@@ -5232,7 +5232,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Configurer Quassel...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="249"/>
+        <location filename="../src/qtui/mainwin.cpp" line="251"/>
         <source>F7</source>
         <translation>F7</translation>
     </message>
@@ -5277,7 +5277,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Connecter au Noyau...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="595"/>
+        <location filename="../src/qtui/mainwin.cpp" line="630"/>
         <source>Connected to core.</source>
         <translation>Connecté au noyau.</translation>
     </message>
@@ -5287,22 +5287,22 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">&amp;Modifier les réseaux...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="410"/>
+        <location filename="../src/qtui/mainwin.cpp" line="445"/>
         <source>Nicks</source>
         <translation>Pseudos</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="430"/>
+        <location filename="../src/qtui/mainwin.cpp" line="465"/>
         <source>Chat Monitor</source>
         <translation>Moniteur de discussion</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="445"/>
+        <location filename="../src/qtui/mainwin.cpp" line="480"/>
         <source>Inputline</source>
         <translation>Ligne de Saisie</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="465"/>
+        <location filename="../src/qtui/mainwin.cpp" line="500"/>
         <source>Topic</source>
         <translation>Sujet</translation>
     </message>
@@ -5312,17 +5312,17 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Barre d&apos;état</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="267"/>
+        <location filename="../src/qtui/mainwin.cpp" line="271"/>
         <source>&amp;File</source>
         <translation>&amp;Fichier</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="280"/>
+        <location filename="../src/qtui/mainwin.cpp" line="284"/>
         <source>&amp;Networks</source>
         <translation>&amp;Réseaux</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="301"/>
+        <location filename="../src/qtui/mainwin.cpp" line="305"/>
         <source>&amp;Settings</source>
         <translation>&amp;Paramètres</translation>
     </message>
@@ -5332,7 +5332,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">&amp;Vues</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="308"/>
+        <location filename="../src/qtui/mainwin.cpp" line="312"/>
         <source>&amp;Help</source>
         <translation>&amp;Aide</translation>
     </message>
@@ -5387,27 +5387,27 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Lag noyau:  %1 ms</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="221"/>
+        <location filename="../src/qtui/mainwin.cpp" line="223"/>
         <source>&amp;Connect to Core...</source>
         <translation>&amp;Connecter au Noyau...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="223"/>
+        <location filename="../src/qtui/mainwin.cpp" line="225"/>
         <source>&amp;Disconnect from Core</source>
         <translation>&amp;Déconnecter du Noyau</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="225"/>
+        <location filename="../src/qtui/mainwin.cpp" line="227"/>
         <source>Core &amp;Info...</source>
         <translation>&amp;Info Noyau...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="229"/>
+        <location filename="../src/qtui/mainwin.cpp" line="231"/>
         <source>&amp;Quit</source>
         <translation>&amp;Quitter</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="230"/>
+        <location filename="../src/qtui/mainwin.cpp" line="232"/>
         <source>Ctrl+Q</source>
         <translation>Ctrl+Q</translation>
     </message>
@@ -5422,7 +5422,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">&amp;Bloquer les positions des fenêtres</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="240"/>
+        <location filename="../src/qtui/mainwin.cpp" line="242"/>
         <source>Show &amp;Search Bar</source>
         <translation>Afficher la Barre de &amp;Recherche</translation>
     </message>
@@ -5432,12 +5432,12 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Ctrl+F</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="244"/>
+        <location filename="../src/qtui/mainwin.cpp" line="246"/>
         <source>Show Status &amp;Bar</source>
-        <translation>Montrer la Barre d&apos;&amp;Etat</translation>
+        <translation>Afficher la Barre d&apos;&amp;Etat</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="248"/>
+        <location filename="../src/qtui/mainwin.cpp" line="250"/>
         <source>&amp;Configure Quassel...</source>
         <translation>&amp;Configurer Quassel...</translation>
     </message>
@@ -5452,89 +5452,99 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">À propos de &amp;Qt...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="256"/>
-        <source>Debug &amp;NetworkModel</source>
-        <translation>Déboguage et Modèle &amp;Réseau</translation>
-    </message>
-    <message>
         <location filename="../src/qtui/mainwin.cpp" line="258"/>
+        <source>Debug &amp;NetworkModel</source>
+        <translation>Déboguage du Modèle &amp;Réseau</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/mainwin.cpp" line="262"/>
         <source>Debug &amp;MessageModel</source>
-        <translation>Déboguage et Modèle &amp;Message</translation>
+        <translation>Déboguage du Modèle &amp;Message</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="260"/>
+        <location filename="../src/qtui/mainwin.cpp" line="264"/>
         <source>Debug &amp;Log</source>
-        <translation>Déboguage &amp;Historique</translation>
+        <translation>Déboguage de l&apos;&amp;Historique</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="286"/>
+        <location filename="../src/qtui/mainwin.cpp" line="290"/>
         <source>&amp;View</source>
         <translation>&amp;Vue</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="287"/>
+        <location filename="../src/qtui/mainwin.cpp" line="291"/>
         <source>&amp;Buffer Views</source>
         <translation>&amp;Vues</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="419"/>
+        <location filename="../src/qtui/mainwin.cpp" line="454"/>
         <source>Show Nick List</source>
         <translation>Afficher la liste des pseudos</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="441"/>
+        <location filename="../src/qtui/mainwin.cpp" line="476"/>
         <source>Show Chat Monitor</source>
         <translation>Afficher le moniteur de discussion</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="454"/>
+        <location filename="../src/qtui/mainwin.cpp" line="489"/>
         <source>Show Input Line</source>
-        <translation>Afficher la ligne de commande</translation>
+        <translation>Afficher la ligne de saisie</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="477"/>
+        <location filename="../src/qtui/mainwin.cpp" line="512"/>
         <source>Show Topic Line</source>
         <translation>Afficher la ligne de Sujet</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="252"/>
+        <location filename="../src/qtui/mainwin.cpp" line="254"/>
         <source>&amp;About Quassel</source>
         <translation>&amp;À propos de Quassel</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="254"/>
+        <location filename="../src/qtui/mainwin.cpp" line="256"/>
         <source>About &amp;Qt</source>
         <translation>À propos de &amp;Qt</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="227"/>
+        <location filename="../src/qtui/mainwin.cpp" line="229"/>
         <source>Configure &amp;Networks...</source>
         <translation>Configurer les &amp;Réseaux...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="233"/>
+        <location filename="../src/qtui/mainwin.cpp" line="235"/>
         <source>&amp;Configure Buffer Views...</source>
         <translation>&amp;Configurer les Vues...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="629"/>
+        <location filename="../src/qtui/mainwin.cpp" line="664"/>
         <source>Core Lag: %1</source>
         <translation>Lag noyau:  %1</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="236"/>
+        <location filename="../src/qtui/mainwin.cpp" line="238"/>
         <source>&amp;Lock Layout</source>
-        <translation>B&amp;loquer le Fond</translation>
+        <translation>&amp;Fixer la Disposition</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="242"/>
+        <location filename="../src/qtui/mainwin.cpp" line="244"/>
         <source>Show Away Log</source>
         <translation>Afficher l&apos;historique d&apos;absence</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="289"/>
+        <location filename="../src/qtui/mainwin.cpp" line="293"/>
         <source>&amp;Toolbars</source>
         <translation>&amp;Barre d&apos;outils</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/mainwin.cpp" line="260"/>
+        <source>Debug &amp;BufferViewOverlay</source>
+        <translation>Déboguage des &amp;Tampons d&apos;Affichage</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/mainwin.cpp" line="570"/>
+        <source>Main Toolbar</source>
+        <translation>Barre d&apos;outils principale</translation>
     </message>
 </context>
 <context>
@@ -6788,17 +6798,17 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/client/backlogrequester.cpp" line="65"/>
+        <location filename="../src/client/backlogrequester.cpp" line="72"/>
         <source>Requesting a total of up to %1 backlog messages for %2 buffers</source>
         <translation>Demande d&apos;un maximum de %1 messages d&apos;historique pour %2 tampons</translation>
     </message>
     <message>
-        <location filename="../src/client/backlogrequester.cpp" line="89"/>
+        <location filename="../src/client/backlogrequester.cpp" line="96"/>
         <source>Requesting up to %1 of all unread backlog messages (plus additional %2)</source>
         <translation>Demande d&apos;un maximum de %1 de tous les messages non lus (plus %2 complémentaires)</translation>
     </message>
     <message>
-        <location filename="../src/client/backlogrequester.cpp" line="107"/>
+        <location filename="../src/client/backlogrequester.cpp" line="113"/>
         <source>Requesting a total of up to %1 unread backlog messages for %2 buffers</source>
         <translation>Demande d&apos;un maximum de %1 messages non lus d&apos;historique pour %2 tampons</translation>
     </message>
