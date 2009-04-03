@@ -1632,7 +1632,7 @@ bool SqliteMigrationReader::readMo(BacklogMO &backlog) {
   }
 
   backlog.messageid = value(0).toInt();
-  backlog.time = QDateTime::fromTime_t(value(1).toInt());
+  backlog.time = QDateTime::fromTime_t(value(1).toInt()).toUTC();
   backlog.bufferid = value(2).toInt();
   backlog.type = value(3).toInt();
   backlog.flags = value(4).toInt();
