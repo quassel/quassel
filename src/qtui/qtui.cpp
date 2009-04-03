@@ -127,9 +127,7 @@ void QtUi::closeNotification(uint notificationId) {
         backend->close(notificationId);
       i = _notifications.erase(i);
       break;
-    } else {
-      ++i;
-    }
+    } else ++i;
   }
 }
 
@@ -140,9 +138,7 @@ void QtUi::closeNotifications(BufferId bufferId) {
       foreach(AbstractNotificationBackend *backend, _notificationBackends)
         backend->close((*i).notificationId);
       i = _notifications.erase(i);
-    } else {
-      ++i;
-    }
+    } else ++i;
   }
 }
 
@@ -160,7 +156,7 @@ void QtUi::notificationActivated(uint notificationId) {
           Client::bufferModel()->switchToBuffer(bufId);
         _notifications.erase(i);
         break;
-      }
+      } else ++i;
     }
   }
 
