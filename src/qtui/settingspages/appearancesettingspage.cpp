@@ -221,8 +221,8 @@ void AppearanceSettingsPage::chooseFont(QWidget *widget) {
   bool ok;
   QFont font = QFontDialog::getFont(&ok, label->font());
   if(ok) {
-    setFont(label, font);
     _fontsChanged = true;
+    setFont(label, font);
   }
 }
 
