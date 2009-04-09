@@ -694,7 +694,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/settingspages/chatmonitorsettingspage.cpp" line="35"/>
         <source>Chat Monitor</source>
-        <translation type="unfinished"></translation>
+        <translation>Monitor pokecu</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatmonitorsettingspage.cpp" line="35"/>
@@ -751,12 +751,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/settingspages/chatmonitorsettingspage.ui" line="87"/>
         <source>Move selected buffers to the left</source>
-        <translation type="unfinished"></translation>
+        <translation>Přesune vybrané záložky doleva</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatmonitorsettingspage.ui" line="101"/>
         <source>Move selected buffers to the right</source>
-        <translation type="unfinished"></translation>
+        <translation>Přesune vybrané záložky doprava</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatmonitorsettingspage.ui" line="146"/>
@@ -990,7 +990,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/settingspages/colorsettingspage.ui" line="365"/>
         <source>Server Activity</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktivity serveru</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/colorsettingspage.ui" line="41"/>
@@ -1011,22 +1011,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/settingspages/colorsettingspage.ui" line="417"/>
         <source>Error Message:</source>
-        <translation type="unfinished"></translation>
+        <translation>Chybové zprávy:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/colorsettingspage.ui" line="463"/>
         <source>Notice Message:</source>
-        <translation type="unfinished"></translation>
+        <translation>Oznámení:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/colorsettingspage.ui" line="509"/>
         <source>Plain Message:</source>
-        <translation type="unfinished"></translation>
+        <translation>Normální zprávy:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/colorsettingspage.ui" line="555"/>
         <source>Server Message:</source>
-        <translation type="unfinished"></translation>
+        <translation>Zprávy Serveru:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/colorsettingspage.ui" line="601"/>
@@ -1036,7 +1036,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/settingspages/colorsettingspage.ui" line="619"/>
         <source>User Activity</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktivity uživatele</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/colorsettingspage.ui" line="661"/>
@@ -1091,7 +1091,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/settingspages/colorsettingspage.ui" line="1092"/>
         <source>Nick:</source>
-        <translation type="unfinished"></translation>
+        <translation>Přezdívka:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/colorsettingspage.ui" line="1144"/>
@@ -1101,7 +1101,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/settingspages/colorsettingspage.ui" line="1196"/>
         <source>Channelname:</source>
-        <translation type="unfinished"></translation>
+        <translation>Název kanálu:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/colorsettingspage.ui" line="1248"/>
@@ -1126,7 +1126,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/settingspages/colorsettingspage.ui" line="1373"/>
         <source>Sender auto coloring:</source>
-        <translation type="unfinished"></translation>
+        <translation>Automatické barvy odesilatele:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/colorsettingspage.ui" line="1453"/>
@@ -1529,7 +1529,7 @@ to work.</source>
     <message>
         <location filename="../src/core/core.cpp" line="492"/>
         <source>too old, rejecting.</source>
-        <translation type="unfinished"></translation>
+        <translation>příliš staré, odmítám.</translation>
     </message>
     <message>
         <location filename="../src/core/core.cpp" line="504"/>
@@ -1864,7 +1864,7 @@ Pokud některou z těchto činností potřebujete provést vyzkoušejte skript m
     <message>
         <location filename="../src/qtui/coreconnectdlg.cpp" line="190"/>
         <source>Remove Account Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Odstranit nastavení účtu</translation>
     </message>
     <message>
         <location filename="../src/qtui/coreconnectdlg.cpp" line="191"/>
@@ -1874,7 +1874,7 @@ Pokud některou z těchto činností potřebujete provést vyzkoušejte skript m
     <message>
         <location filename="../src/qtui/coreconnectdlg.cpp" line="242"/>
         <source>Connect to %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Spojit s %1</translation>
     </message>
     <message>
         <location filename="../src/qtui/coreconnectdlg.cpp" line="259"/>
@@ -1909,7 +1909,7 @@ Pokud některou z těchto činností potřebujete provést vyzkoušejte skript m
     <message>
         <location filename="../src/qtui/coreconnectdlg.cpp" line="313"/>
         <source>Unknown connection state to %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Neznámý stav spojení k %1</translation>
     </message>
     <message>
         <location filename="../src/qtui/coreconnectdlg.cpp" line="365"/>
@@ -1921,7 +1921,7 @@ Pokud některou z těchto činností potřebujete provést vyzkoušejte skript m
         <location filename="../src/qtui/coreconnectdlg.cpp" line="450"/>
         <location filename="../src/qtui/ui/coreconnectdlg.ui" line="286"/>
         <source>Login</source>
-        <translation type="unfinished"></translation>
+        <translation>Přihlášení</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/coreconnectdlg.ui" line="19"/>
@@ -1970,7 +1970,7 @@ Pokud některou z těchto činností potřebujete provést vyzkoušejte skript m
 TO
 RESERVE
 SOME SPACE</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/coreconnectdlg.ui" line="294"/>
@@ -1990,17 +1990,17 @@ SOME SPACE</source>
     <message>
         <location filename="../src/qtui/ui/coreconnectdlg.ui" line="356"/>
         <source>view SSL Certificate</source>
-        <translation type="unfinished"></translation>
+        <translation>Zobrazit SSL Certifikát</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/coreconnectdlg.ui" line="393"/>
         <source>add to known hosts</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Přidat ke známým adresám</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/coreconnectdlg.ui" line="413"/>
         <source>Continue connection</source>
-        <translation type="unfinished"></translation>
+        <translation>Pokračovate ve spojení</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/coreconnectdlg.ui" line="456"/>
@@ -2159,12 +2159,12 @@ SOME SPACE</source>
     <message>
         <location filename="../src/core/coresession.cpp" line="359"/>
         <source>CoreSession::createNetwork(): Got invalid networkId from Core when trying to create network %1!</source>
-        <translation type="unfinished"></translation>
+        <translation>CoreSession::createNetwork(): Obdrženo špatné networkId od jádra při pokusu o vytvoření sítě %1!</translation>
     </message>
     <message>
         <location filename="../src/core/coresession.cpp" line="381"/>
         <source>CoreSession::createNetwork(): Trying to create a network that already exists, updating instead!</source>
-        <translation type="unfinished"></translation>
+        <translation>CoreSession::createNetwork(): Síť s daným názvem již existuje. Aktualizuji místo duplikace!</translation>
     </message>
 </context>
 <context>
@@ -2215,7 +2215,7 @@ SOME SPACE</source>
     <message>
         <location filename="../src/core/ctcphandler.cpp" line="216"/>
         <source>Received unknown CTCP %1 by %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Obdrženo neznáme CTCP %1 od %2</translation>
     </message>
 </context>
 <context>
@@ -2308,12 +2308,12 @@ SOME SPACE</source>
     <message>
         <location filename="../src/client/execwrapper.cpp" line="45"/>
         <source>Invalid command string for /exec: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Neplatný příkaz pro /exec: %1</translation>
     </message>
     <message>
         <location filename="../src/client/execwrapper.cpp" line="53"/>
         <source>Name &quot;%1&quot; is invalid: ../ or ..\ are not allowed!</source>
-        <translation type="unfinished"></translation>
+        <translation>Název &quot;%1&quot; není platný: ../ nebo ..\ nejsou povoleny!</translation>
     </message>
     <message>
         <location filename="../src/client/execwrapper.cpp" line="64"/>
@@ -3303,7 +3303,7 @@ Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificat
     <message>
         <location filename="../src/qtui/mainwin.cpp" line="250"/>
         <source>&amp;Configure Quassel...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Nastavit Quassel...</translation>
     </message>
     <message>
         <location filename="../src/qtui/mainwin.cpp" line="251"/>
@@ -3328,7 +3328,7 @@ Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificat
     <message>
         <location filename="../src/qtui/mainwin.cpp" line="260"/>
         <source>Debug &amp;BufferViewOverlay</source>
-        <translation type="unfinished"></translation>
+        <translation>Ladění vrstvy P&amp;ohledu na záložky</translation>
     </message>
     <message>
         <location filename="../src/qtui/mainwin.cpp" line="262"/>
@@ -3393,17 +3393,17 @@ Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificat
     <message>
         <location filename="../src/qtui/mainwin.cpp" line="465"/>
         <source>Chat Monitor</source>
-        <translation type="unfinished"></translation>
+        <translation>Monitor pokecu</translation>
     </message>
     <message>
         <location filename="../src/qtui/mainwin.cpp" line="476"/>
         <source>Show Chat Monitor</source>
-        <translation type="unfinished"></translation>
+        <translation>Zobrazí monitor pokecu</translation>
     </message>
     <message>
         <location filename="../src/qtui/mainwin.cpp" line="480"/>
         <source>Inputline</source>
-        <translation type="unfinished"></translation>
+        <translation>Vstupní řádka</translation>
     </message>
     <message>
         <location filename="../src/qtui/mainwin.cpp" line="489"/>
@@ -3578,7 +3578,7 @@ Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificat
         <location filename="../src/uisupport/networkmodelcontroller.cpp" line="152"/>
         <source>Do you want to delete the following buffer(s) permanently?</source>
         <translation>
-            <numerusform>Opravdu chcete trvale smazat následující záložku(y)</numerusform>
+            <numerusform>Opravdu chcete trvale smazat následující záložku(y)?</numerusform>
             <numerusform>Opravdu chcete trvale smazat následující záložky?</numerusform>
             <numerusform>Opravdu chcete trvale smazat následující záložky?</numerusform>
         </translation>
@@ -3586,7 +3586,7 @@ Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificat
     <message>
         <location filename="../src/uisupport/networkmodelcontroller.cpp" line="157"/>
         <source>&lt;b&gt;Note:&lt;/b&gt; This will delete all related data, including all backlog data, from the core&apos;s database and cannot be undone.</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Poznámka:&lt;/b&gt; Tento krop smaže všechna relevantí data, včetně historie, z databáze jádra a nelze jej zvrátit.</translation>
     </message>
     <message>
         <location filename="../src/uisupport/networkmodelcontroller.cpp" line="159"/>
@@ -4350,7 +4350,7 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
     <message>
         <location filename="../src/qtui/coreconnectdlg.cpp" line="568"/>
         <source>SSL Certificate used by %1</source>
-        <translation type="unfinished"></translation>
+        <translation>SSL Certifikát užívaný %1</translation>
     </message>
     <message>
         <location filename="../src/qtui/coreconnectdlg.cpp" line="572"/>
@@ -4482,7 +4482,7 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
     <message>
         <location filename="../src/uisupport/toolbaractionprovider.cpp" line="31"/>
         <source>Connect to IRC</source>
-        <translation type="unfinished"></translation>
+        <translation>Připojí k IRC</translation>
     </message>
     <message>
         <location filename="../src/uisupport/toolbaractionprovider.cpp" line="32"/>
@@ -4492,7 +4492,7 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
     <message>
         <location filename="../src/uisupport/toolbaractionprovider.cpp" line="32"/>
         <source>Disconnect from IRC</source>
-        <translation type="unfinished"></translation>
+        <translation>Odpojí od IRC</translation>
     </message>
     <message>
         <location filename="../src/uisupport/toolbaractionprovider.cpp" line="34"/>
@@ -4502,7 +4502,7 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
     <message>
         <location filename="../src/uisupport/toolbaractionprovider.cpp" line="34"/>
         <source>Leave currently selected channel</source>
-        <translation type="unfinished"></translation>
+        <translation>Opustí zvýrazněný kanál</translation>
     </message>
     <message>
         <location filename="../src/uisupport/toolbaractionprovider.cpp" line="35"/>
@@ -4512,7 +4512,7 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
     <message>
         <location filename="../src/uisupport/toolbaractionprovider.cpp" line="35"/>
         <source>Join a channel</source>
-        <translation type="unfinished"></translation>
+        <translation>Vstoupí na kanál</translation>
     </message>
     <message>
         <location filename="../src/uisupport/toolbaractionprovider.cpp" line="37"/>
