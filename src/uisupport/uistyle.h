@@ -64,11 +64,6 @@ public:
     RenameMsg       = 0x00000009,
     ModeMsg         = 0x0000000a,
     ActionMsg       = 0x0000000b,
-    HighlightMsg    = 0x0000000f,
-
-    // Note: mergedFormat() assumes that 0x10 - 0x80 are *only* used within the message contents,
-    //       e.g. not together with any of 0x0100-0x2000!
-    //       If we happen to find a use case for that, we can see if/how to implement that though.
 
     // Standard Formats
     Bold            = 0x00000010,
@@ -85,7 +80,7 @@ public:
     ModeFlags       = 0x00002000,
 
     // URL is special, we want that to take precedence over the rest...
-    Url             = 0x00100000,
+    Url             = 0x00080000,
 
     // mIRC Colors - we assume those to be present only in plain contents
     FgCol00         = 0x00400000,
@@ -149,6 +144,10 @@ public:
     SenderColSelf   = 0xff000200
   };
 
+  enum MessageLabel {
+    Highlight = 0x00000001
+  };
+
   struct StyledString {
     QString plainText;
     FormatList formatList;  // starting pos, ftypes
@@ -160,11 +159,16 @@ public:
   StyledString styleString(const QString &);
   QString mircToInternal(const QString &) const;
 
-  void setFormat(FormatType, QTextCharFormat, Settings::Mode mode/* = Settings::Custom*/);
-  void setSenderAutoColor(bool state);
-  QTextCharFormat format(FormatType, Settings::Mode mode = Settings::Custom) const;
-  QTextCharFormat mergedFormat(quint32 formatType);
-  QFontMetricsF *fontMetrics(quint32 formatType);
+  void setFormat(FormatType, QTextCharFormat, Settings::Mode mode/* = Settings::Custom*/); // FIXME go away
+  void setSenderAutoColor(bool state); // FIXME go away
+  QTextCharFormat format(FormatType, Settings::Mode mode = Settings::Custom) const;  // FIXME go away
+
+  QTextCharFormat cachedFormat(quint64 key) const;
+  QTextCharFormat cachedFormat(quint32 formatType, quint32 messageLabel = 0) const;
+  void setCachedFormat(const QTextCharFormat &format, quint32 formatType, quint32 messageLabel = 0);
+
+  QTextCharFormat mergedFormat(quint32 formatType, quint32 messageLabel = 0);
+  QFontMetricsF *fontMetrics(quint32 formatType, quint32 messageLabel = 0);
 
   FormatType formatType(const QString &code) const;
   QString formatCode(FormatType) const;
@@ -176,6 +180,12 @@ public:
 protected:
   void loadStyleSheet();
 
+  //! Determines the format set to be used for the given hostmask
+  //int formatSetIndex(const QString &hostmask) const;
+  //int formatSetIndexForSelf() const;
+
+  void mergeSubElementFormat(QTextCharFormat &format, quint32 formatType, quint32 messageLabel = 0);
+
   bool _senderAutoColor;
 
 private:
@@ -183,8 +193,8 @@ private:
   QTextCharFormat _defaultPlainFormat;
   QHash<FormatType, QTextCharFormat> _defaultFormats;
   QHash<FormatType, QTextCharFormat> _customFormats;
-  QHash<quint32, QTextCharFormat> _cachedFormats;
-  QHash<quint32, QFontMetricsF *> _cachedFontMetrics;
+  QHash<quint64, QTextCharFormat> _formatCache;
+  QHash<quint64, QFontMetricsF *> _metricsCache;
   QHash<QString, FormatType> _formatCodes;
 
   QString _settingsKey;
@@ -249,7 +259,7 @@ protected:
   // Parse basic data types
   QBrush parseBrushValue(const QString &str);
   QColor parseColorValue(const QString &str);
-  QFont parseFont(const QString &str);
+  QFont parseFontValue(const QString &str);
 
   // Parse subelements
   ColorTuple parseColorTuple(const QString &str);

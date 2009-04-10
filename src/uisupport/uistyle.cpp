@@ -104,13 +104,13 @@ UiStyle::UiStyle(const QString &settingsKey) : _settingsKey(settingsKey) {
 
   QTextCharFormat underline; underline.setFontUnderline(true);
   setFormat(Underline, underline, Settings::Default);
-
+*/
   loadStyleSheet();
   // All other formats should be defined in derived classes.
 }
 
 UiStyle::~ UiStyle() {
-  qDeleteAll(_cachedFontMetrics);
+  qDeleteAll(_metricsCache);
 }
 
 void UiStyle::setFormat(FormatType ftype, QTextCharFormat fmt, Settings::Mode mode) {
@@ -127,8 +127,9 @@ void UiStyle::setFormat(FormatType ftype, QTextCharFormat fmt, Settings::Mode mo
     }
   }
   // TODO: invalidate only affected cached formats... if that's possible with less overhead than just rebuilding them
-  _cachedFormats.clear();
-  _cachedFontMetrics.clear();
+  qDeleteAll(_metricsCache);
+  _metricsCache.clear();
+  _formatCache.clear();
 }
 
 void UiStyle::setSenderAutoColor( bool state ) {
@@ -148,86 +149,85 @@ QTextCharFormat UiStyle::format(FormatType ftype, Settings::Mode mode) const {
   else return _defaultFormats.value(ftype, QTextCharFormat());
 }
 
+QTextCharFormat UiStyle::cachedFormat(quint64 key) const {
+  return _formatCache.value(key, QTextCharFormat());
+}
+
+QTextCharFormat UiStyle::cachedFormat(quint32 formatType, quint32 messageLabel) const {
+  return cachedFormat(formatType | ((quint64)messageLabel << 32));
+}
+
+void UiStyle::setCachedFormat(const QTextCharFormat &format, quint32 formatType, quint32 messageLabel) {
+  _formatCache[formatType | ((quint64)messageLabel << 32)] = format;
+}
+
+// Merge a subelement format into an existing message format
+void UiStyle::mergeSubElementFormat(QTextCharFormat& fmt, quint32 ftype, quint32 label) {
+  quint64 key = ftype | ((quint64)label << 32);
+
+  // start with the most general format and then specialize
+  fmt.merge(cachedFormat(key & 0x00000000fffffff0));  // basic subelement format
+  fmt.merge(cachedFormat(key & 0x00000000ffffffff));  // subelement + msgtype
+  fmt.merge(cachedFormat(key & 0xffff0000fffffff0));  // subelement + nickhash
+  fmt.merge(cachedFormat(key & 0xffff0000ffffffff));  // subelement + nickhash + msgtype
+  fmt.merge(cachedFormat(key & 0x0000fffffffffff0));  // label + subelement
+  fmt.merge(cachedFormat(key & 0x0000ffffffffffff));  // label + subelement + msgtype
+  fmt.merge(cachedFormat(key & 0xfffffffffffffff0));  // label + subelement + nickhash
+  fmt.merge(cachedFormat(key & 0xffffffffffffffff));  // label + subelement + nickhash + msgtype
+}
+
 // NOTE: This function is intimately tied to the values in FormatType. Don't change this
 //       until you _really_ know what you do!
-QTextCharFormat UiStyle::mergedFormat(quint32 ftype) {
+QTextCharFormat UiStyle::mergedFormat(quint32 ftype, quint32 label) {
   if(ftype == Invalid)
     return QTextCharFormat();
-  if(_cachedFormats.contains(ftype))
-    return _cachedFormats.value(ftype);
 
-  QTextCharFormat fmt;
+  quint64 key = ftype | ((quint64)label << 32);
 
-  // Check if we have a special message format stored already sans color codes
-  if(_cachedFormats.contains(ftype & 0x1fffff))
-    fmt = _cachedFormats.value(ftype &0x1fffff);
-  else {
-    // Nope, so we have to construct it...
-    // We assume that we don't mix mirc format codes and component codes, so at this point we know that it's either
-    // a stock (not stylesheeted) component, or mirc formats
-    // In both cases, we start off with the basic format for this message type and then merge the extra stuff
+  // check if we have exactly this format readily cached already
+  QTextCharFormat fmt = cachedFormat(key);
+  if(fmt.isValid())
+    return fmt;
 
-    // Check if we at least already have something stored for the message type first
-    if(_cachedFormats.contains(ftype & 0xf))
-      fmt = _cachedFormats.value(ftype & 0xf);
-    else {
-      // Not being in the cache means it hasn't been preset via stylesheet (or used before)
-      // We might still have set something in code as a fallback, so merge
-      fmt = format(None);
-      fmt.merge(format((FormatType)(ftype & 0x0f)));
-      // This can be cached
-      _cachedFormats[ftype & 0x0f] = fmt;
-    }
-    // OK, at this point we have the message type format - now merge the rest
-    if((ftype & 0xf0)) { // mirc format
-      for(quint32 mask = 0x10; mask <= 0x80; mask <<= 1) {
-        if(!(ftype & mask))
-          continue;
-        // We need to check for overrides in the cache
-        if(_cachedFormats.contains(mask | (ftype & 0x0f)))
-          fmt.merge(_cachedFormats.value(mask | (ftype & 0x0f)));
-        else if(_cachedFormats.contains(mask))
-          fmt.merge(_cachedFormats.value(mask));
-        else // nothing in cache, use stock format
-          fmt.merge(format((FormatType)mask));
+  fmt.merge(cachedFormat(key & 0x0000000000000000));  // basic
+  fmt.merge(cachedFormat(key & 0x000000000000000f));  // msgtype
+  fmt.merge(cachedFormat(key & 0x0000ffff00000000));  // label
+  fmt.merge(cachedFormat(key & 0x0000ffff0000000f));  // label + msgtype
+
+  // TODO: allow combinations for mirc formats and colors (each), e.g. setting a special format for "bold and italic"
+  //       or "foreground 01 and background 03"
+  if((ftype & 0xfff0)) { // element format
+    for(quint32 mask = 0x10; mask <= 0x2000; mask <<= 1) {
+      if(ftype & mask) {
+        mergeSubElementFormat(fmt, ftype & 0xffff, label);
       }
-    } else { // component
-      // We've already checked the cache for the combo of msgtype and component and failed,
-      // so we check if we defined a general format and merge this, or the stock format else
-      if(_cachedFormats.contains(ftype & 0xff00))
-        fmt.merge(_cachedFormats.value(ftype & 0xff00));
-      else
-        fmt.merge(format((FormatType)(ftype & 0xff00)));
     }
   }
 
-  // Now we handle color codes. We assume that those can't be combined with components
+  // Now we handle color codes
   if(ftype & 0x00400000)
-    fmt.merge(format((FormatType)(ftype & 0x0f400000))); // foreground
+    mergeSubElementFormat(fmt, ftype & 0x0f400000, label); // foreground
   if(ftype & 0x00800000)
-    fmt.merge(format((FormatType)(ftype & 0xf0800000))); // background
-
-  // Sender auto colors
-  if(_senderAutoColor && (ftype & 0x200) && (ftype & 0xff000200) != 0x200) {
-    if(_cachedFormats.contains(ftype & 0xff00020f))
-      fmt.merge(_cachedFormats.value(ftype & 0xff00020f));
-    else if(_cachedFormats.contains(ftype & 0xff000200))
-      fmt.merge(_cachedFormats.value(ftype & 0xff000200));
-    else
-      fmt.merge(format((FormatType)(ftype & 0xff000200)));
-  }
+    mergeSubElementFormat(fmt, ftype & 0xf0800000, label); // background
+  if((ftype & 0x00c00000) == 0x00c00000)
+    mergeSubElementFormat(fmt, ftype & 0xffc00000, label); // combination
 
   // URL
   if(ftype & Url)
-    fmt.merge(format(Url)); // TODO handle this properly
+    mergeSubElementFormat(fmt, ftype & Url, label);
 
-  return _cachedFormats[ftype] = fmt;
+  setCachedFormat(fmt, ftype, label);
+  return fmt;
 }
 
-QFontMetricsF *UiStyle::fontMetrics(quint32 ftype) {
+QFontMetricsF *UiStyle::fontMetrics(quint32 ftype, quint32 label) {
   // QFontMetricsF is not assignable, so we need to store pointers :/
-  if(_cachedFontMetrics.contains(ftype)) return _cachedFontMetrics.value(ftype);
-  return (_cachedFontMetrics[ftype] = new QFontMetricsF(mergedFormat(ftype).font()));
+  quint64 key = ftype | ((quint64)label << 32);
+
+  if(_metricsCache.contains(key))
+    return _metricsCache.value(key);
+
+  return (_metricsCache[key] = new QFontMetricsF(mergedFormat(ftype, label).font()));
 }
 
 UiStyle::FormatType UiStyle::formatType(const QString & code) const {
@@ -590,15 +590,24 @@ void UiStyle::QssParser::loadStyleSheet(const QString &styleSheet) {
     return;
 
   // Now we have the stylesheet itself in ss, start parsing
-  QRegExp blockrx("((ChatLine|Palette)[^{]*)\\{([^}]+)\\}");
+  // Palette definitions first, so we can apply roles later on
+  QRegExp paletterx("(Palette[^{]*)\\{([^}]+)\\}");
   int pos = 0;
+  while((pos = paletterx.indexIn(ss, pos)) >= 0) {
+    parsePaletteData(paletterx.cap(1).trimmed(), paletterx.cap(2).trimmed());
+    pos += paletterx.matchedLength();
+  }
+
+  // Now we can parse the rest of our custom blocks
+  QRegExp blockrx("((?:ChatLine|BufferList|NickList|TreeView)[^{]*)\\{([^}]+)\\}");
+  pos = 0;
   while((pos = blockrx.indexIn(ss, pos)) >= 0) {
-    //qDebug() << blockrx.cap(1) << blockrx.cap(3);
+    //qDebug() << blockrx.cap(1) << blockrx.cap(2);
 
     if(blockrx.cap(2) == "ChatLine")
-      parseChatLineData(blockrx.cap(1).trimmed(), blockrx.cap(3).trimmed());
-    else
-      parsePaletteData(blockrx.cap(1).trimmed(), blockrx.cap(3).trimmed());
+      parseChatLineData(blockrx.cap(1).trimmed(), blockrx.cap(2).trimmed());
+    //else
+    // TODO: add moar here
 
     pos += blockrx.matchedLength();
   }
