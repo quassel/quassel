@@ -34,6 +34,7 @@ class BufferViewOverlay : public QObject {
 public:
   BufferViewOverlay(QObject *parent = 0);
 
+  inline const QSet<int> &bufferViewIds() { return _bufferViewIds; }
   bool allNetworks();
 
   const QSet<NetworkId> &networkIds();
@@ -46,6 +47,8 @@ public:
   int allowedBufferTypes();
   int minimumActivity();
 
+  inline bool isInitialized() { return _uninitializedViewCount == 0; }
+
 public slots:
   void addView(int viewId);
   void removeView(int viewId);
@@ -55,6 +58,7 @@ public slots:
 
 signals:
   void hasChanged();
+  void initDone();
 
 protected:
   virtual void customEvent(QEvent *event);
@@ -68,6 +72,7 @@ private:
   bool _aboutToUpdate;
 
   QSet<int> _bufferViewIds;
+  int _uninitializedViewCount;
 
   QSet<NetworkId> _networkIds;
 

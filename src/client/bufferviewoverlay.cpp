@@ -32,6 +32,7 @@ const int BufferViewOverlay::_updateEventId = QEvent::registerEventType();
 BufferViewOverlay::BufferViewOverlay(QObject *parent)
   : QObject(parent),
     _aboutToUpdate(false),
+    _uninitializedViewCount(0),
     _addBuffersAutomatically(false),
     _hideInactiveBuffers(false),
     _allowedBufferTypes(0),
@@ -50,6 +51,7 @@ void BufferViewOverlay::addView(int viewId) {
   }
 
   _bufferViewIds << viewId;
+  _uninitializedViewCount++;
   if(config->isInitialized()) {
     viewInitialized(config);
   } else {
@@ -63,10 +65,28 @@ void BufferViewOverlay::removeView(int viewId) {
     return;
 
   _bufferViewIds.remove(viewId);
-  BufferViewConfig *config = qobject_cast<BufferViewConfig *>(sender());
+  BufferViewConfig *config = Client::bufferViewManager()->bufferViewConfig(viewId);
   if(config)
     disconnect(config, 0, this, 0);
+
+  // update initialized State:
+  bool wasInitialized = isInitialized();
+  _uninitializedViewCount = 0;
+  QSet<int>::iterator viewIter = _bufferViewIds.begin();
+  while(viewIter != _bufferViewIds.end()) {
+    config = Client::bufferViewManager()->bufferViewConfig(*viewIter);
+    if(!config) {
+      viewIter = _bufferViewIds.erase(viewIter);
+    } else {
+      if(!config->isInitialized())
+        _uninitializedViewCount++;
+      viewIter++;
+    }
+  }
+
   update();
+  if(!wasInitialized && isInitialized())
+    emit initDone();
 }
 
 void BufferViewOverlay::viewInitialized(BufferViewConfig *config) {
@@ -90,6 +110,10 @@ void BufferViewOverlay::viewInitialized(BufferViewConfig *config) {
   // check if the view was removed in the meantime...
   if(_bufferViewIds.contains(config->bufferViewId()))
     update();
+
+  _uninitializedViewCount--;
+  if(isInitialized())
+    emit initDone();
 }
 
 void BufferViewOverlay::viewInitialized() {

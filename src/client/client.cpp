@@ -322,13 +322,15 @@ void Client::setSyncedToCore() {
   Q_ASSERT(!_bufferViewManager);
   _bufferViewManager = new ClientBufferViewManager(signalProxy(), this);
   connect(bufferViewManager(), SIGNAL(initDone()), this, SLOT(createDefaultBufferView()));
-  connect(bufferViewManager(), SIGNAL(viewsInitialized()), this, SLOT(requestInitialBacklog()));
 
   // create AliasManager
   Q_ASSERT(!_aliasManager);
   _aliasManager = new ClientAliasManager(this);
   connect(aliasManager(), SIGNAL(initDone()), SLOT(sendBufferedUserInput()));
   signalProxy()->synchronize(aliasManager());
+
+  // trigger backlog request once all active bufferviews are initialized
+  connect(bufferViewOverlay(), SIGNAL(initDone()), this, SLOT(requestInitialBacklog()));
 
   _syncedToCore = true;
   emit connected();
@@ -340,7 +342,7 @@ void Client::requestInitialBacklog() {
   // triggers this slot. But we have to make sure that we know all buffers yet.
   // so we check the BufferSyncer and in case it wasn't initialized we wait for that instead
   if(!bufferSyncer()->isInitialized()) {
-    disconnect(bufferViewManager(), SIGNAL(viewsInitialized()), this, SLOT(requestInitialBacklog()));
+    connect(bufferViewOverlay(), SIGNAL(initDone()), this, SLOT(requestInitialBacklog()));
     connect(bufferSyncer(), SIGNAL(initDone()), this, SLOT(requestInitialBacklog()));
     return;
   }
