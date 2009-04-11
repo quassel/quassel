@@ -276,7 +276,9 @@ void BufferView::removeSelectedBuffers(bool permanently) {
       continue;
 
     removedRows << bufferId;
+  }
 
+  foreach(BufferId bufferId, removedRows) {
     if(permanently)
       config()->requestRemoveBufferPermanently(bufferId);
     else

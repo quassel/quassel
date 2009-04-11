@@ -232,11 +232,14 @@ void NetworkModelController::handleBufferAction(ActionType type, QAction *) {
     removeBuffers(indexList());
   } else {
 
+    QList<BufferInfo> bufferList; // create temp list because model indexes might change
     foreach(QModelIndex index, indexList()) {
       BufferInfo bufferInfo = index.data(NetworkModel::BufferInfoRole).value<BufferInfo>();
-      if(!bufferInfo.isValid())
-        continue;
+      if(bufferInfo.isValid())
+        bufferList << bufferInfo;
+    }
 
+    foreach(BufferInfo bufferInfo, bufferList) {
       switch(type) {
         case BufferJoin:
           Client::userInput(bufferInfo, QString("/JOIN %1").arg(bufferInfo.bufferName()));
