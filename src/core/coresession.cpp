@@ -362,21 +362,30 @@ void CoreSession::createNetwork(const NetworkInfo &info_, const QStringList &per
 
   id = info.networkId.toInt();
   if(!_networks.contains(id)) {
+
+    // create persistent chans
+    QRegExp rx("\\s*(\\S+)(?:\\s*(\\S+))?\\s*");
+    foreach(QString channel, persistentChans) {
+      if(!rx.exactMatch(channel)) {
+        qWarning() << QString("Invalid persistent channel declaration: %1").arg(channel);
+        continue;
+      }
+      Core::bufferInfo(user(), info.networkId, BufferInfo::ChannelBuffer, rx.cap(1), true);
+      Core::setChannelPersistent(user(), info.networkId, rx.cap(1), true);
+      if(!rx.cap(2).isEmpty())
+        Core::setPersistentChannelKey(user(), info.networkId, rx.cap(1), rx.cap(2));
+    }
+
     CoreNetwork *net = new CoreNetwork(id, this);
     connect(net, SIGNAL(displayMsg(NetworkId, Message::Type, BufferInfo::Type, const QString &, const QString &, const QString &, Message::Flags)),
-	    this, SLOT(recvMessageFromServer(NetworkId, Message::Type, BufferInfo::Type, const QString &, const QString &, const QString &, Message::Flags)));
-    connect(net, SIGNAL(displayStatusMsg(QString)), this, SLOT(recvStatusMsgFromServer(QString)));
+                 SLOT(recvMessageFromServer(NetworkId, Message::Type, BufferInfo::Type, const QString &, const QString &, const QString &, Message::Flags)));
+    connect(net, SIGNAL(displayStatusMsg(QString)), SLOT(recvStatusMsgFromServer(QString)));
 
     net->setNetworkInfo(info);
     net->setProxy(signalProxy());
     _networks[id] = net;
     signalProxy()->synchronize(net);
     emit networkCreated(id);
-    // create persistent chans
-    foreach(QString channel, persistentChans) {
-      Core::bufferInfo(user(), info.networkId, BufferInfo::ChannelBuffer, channel, true);
-      Core::setChannelPersistent(user(), info.networkId, channel, true);
-    }
   } else {
     qWarning() << qPrintable(tr("CoreSession::createNetwork(): Trying to create a network that already exists, updating instead!"));
     _networks[info.networkId]->requestSetNetworkInfo(info);
