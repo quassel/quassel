@@ -47,8 +47,7 @@ PhononNotificationBackend::~PhononNotificationBackend() {
 }
 
 void PhononNotificationBackend::notify(const Notification &notification) {
-  Q_UNUSED(notification)
-  if(_enabled && _media) {
+  if(_enabled && _media && (notification.type == Highlight || notification.type == PrivMsg)) {
     _media->play();
   }
 }

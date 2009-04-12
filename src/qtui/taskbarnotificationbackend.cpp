@@ -38,8 +38,7 @@ TaskbarNotificationBackend::TaskbarNotificationBackend(QObject *parent)
 }
 
 void TaskbarNotificationBackend::notify(const Notification &notification) {
-  Q_UNUSED(notification)
-  if(_enabled) {
+  if(_enabled && (notification.type == Highlight || notification.type == PrivMsg)) {
     QApplication::alert(QtUi::mainWindow(), _timeout);
   }
 }

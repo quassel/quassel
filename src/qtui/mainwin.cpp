@@ -828,8 +828,7 @@ void MainWin::toggleMinimizedToTray() {
 void MainWin::messagesInserted(const QModelIndex &parent, int start, int end) {
   Q_UNUSED(parent);
 
-  if(QApplication::activeWindow() != 0)
-    return;
+  bool hasFocus = QApplication::activeWindow() != 0;
 
   for(int i = start; i <= end; i++) {
     QModelIndex idx = Client::messageModel()->index(i, ChatLineModel::ContentsColumn);
@@ -838,18 +837,33 @@ void MainWin::messagesInserted(const QModelIndex &parent, int start, int end) {
       continue;
     }
     Message::Flags flags = (Message::Flags)idx.data(ChatLineModel::FlagsRole).toInt();
-    if(flags.testFlag(Message::Backlog) || flags.testFlag(Message::Self)) continue;
+    if(flags.testFlag(Message::Backlog) || flags.testFlag(Message::Self))
+      continue;
     flags |= Message::Backlog;  // we only want to trigger a highlight once!
     Client::messageModel()->setData(idx, (int)flags, ChatLineModel::FlagsRole);
 
     BufferId bufId = idx.data(ChatLineModel::BufferIdRole).value<BufferId>();
     BufferInfo::Type bufType = Client::networkModel()->bufferType(bufId);
 
+    if(hasFocus && bufId == _bufferWidget->currentBuffer())
+      continue;
+
     if(flags & Message::Highlight || bufType == BufferInfo::QueryBuffer) {
       QModelIndex senderIdx = Client::messageModel()->index(i, ChatLineModel::SenderColumn);
       QString sender = senderIdx.data(ChatLineModel::EditRole).toString();
       QString contents = idx.data(ChatLineModel::DisplayRole).toString();
-      QtUi::invokeNotification(bufId, sender, contents);
+      AbstractNotificationBackend::NotificationType type;
+
+      if(bufType == BufferInfo::QueryBuffer && !hasFocus)
+        type = AbstractNotificationBackend::PrivMsg;
+      else if(bufType == BufferInfo::QueryBuffer && hasFocus)
+        type = AbstractNotificationBackend::PrivMsgFocused;
+      else if(flags & Message::Highlight && !hasFocus)
+        type = AbstractNotificationBackend::Highlight;
+      else
+        type = AbstractNotificationBackend::HighlightFocused;
+
+      QtUi::invokeNotification(bufId, type, sender, contents);
     }
   }
 }

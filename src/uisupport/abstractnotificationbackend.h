@@ -32,14 +32,22 @@ class AbstractNotificationBackend : public QObject {
   Q_OBJECT
 
 public:
+  enum NotificationType {
+    Highlight = 0x01,
+    PrivMsg = 0x02,
+    HighlightFocused = 0x11,
+    PrivMsgFocused = 0x12
+  };
+
   struct Notification {
     uint notificationId;
     BufferId bufferId;
+    NotificationType type;
     QString sender;
     QString message;
 
-    Notification(uint id_, BufferId buf_, const QString &sender_, const QString &msg_)
-      : notificationId(id_), bufferId(buf_), sender(sender_), message(msg_) {};
+    Notification(uint id_, BufferId buf_, NotificationType type_, const QString &sender_, const QString &msg_)
+      : notificationId(id_), bufferId(buf_), type(type_), sender(sender_), message(msg_) {};
   };
 
   inline AbstractNotificationBackend(QObject *parent) : QObject(parent) {};

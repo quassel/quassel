@@ -109,10 +109,10 @@ const QList<AbstractNotificationBackend *> &QtUi::notificationBackends() {
   return _notificationBackends;
 }
 
-uint QtUi::invokeNotification(BufferId bufId, const QString &sender, const QString &text) {
+uint QtUi::invokeNotification(BufferId bufId, AbstractNotificationBackend::NotificationType type, const QString &sender, const QString &text) {
   static int notificationId = 0;
   //notificationId++;
-  AbstractNotificationBackend::Notification notification(++notificationId, bufId, sender, text);
+  AbstractNotificationBackend::Notification notification(++notificationId, bufId, type, sender, text);
   _notifications.append(notification);
   foreach(AbstractNotificationBackend *backend, _notificationBackends)
     backend->notify(notification);

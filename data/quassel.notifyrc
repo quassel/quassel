@@ -8,3 +8,20 @@ Comment=A highlighted message has arrived
 Sound=KDE-Im-Highlight-Msg.ogg
 Action=Sound|Popup|Taskbar
 
+[Event/HighlightFocused]
+Name=Highlight when focused
+Comment=A highlighted message has arrived while Quassel is focused
+Sound=KDE-Im-Highlight-Msg.ogg
+Action=Taskbar
+
+[Event/PrivMsg]
+Name=Private Message
+Comment=A private message (query) has arrived
+Sound=KDE-Im-Message-In.ogg
+Action=Sound|Popup|Taskbar
+
+[Event/PrivMsgFocused]
+Name=Private message when focused
+Comment=A private message (query) has arrived while Quassel is focused
+Sound=KDE-Im-Message-In.ogg
+Action=Taskbar

@@ -88,7 +88,7 @@ void DesktopNotificationBackend::useTimeoutChanged(const QVariant &v) {
 }
 
 void DesktopNotificationBackend::notify(const Notification &n) {
-  if(_enabled) {
+  if(_enabled && (n.type == Highlight || n.type == PrivMsg)) {
     QStringList actions;
     QMap<QString, QVariant> hints;
 

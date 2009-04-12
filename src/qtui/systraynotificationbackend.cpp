@@ -44,6 +44,9 @@ SystrayNotificationBackend::SystrayNotificationBackend(QObject *parent)
 }
 
 void SystrayNotificationBackend::notify(const Notification &notification) {
+  if(notification.type != Highlight && notification.type != PrivMsg)
+    return;
+
   /* fancy stuff to be implemented later: show notifications in order
   _notifications.append(notification);
   if(_showBubble && _notifications.count() == 1) {
