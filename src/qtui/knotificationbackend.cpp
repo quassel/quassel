@@ -22,6 +22,7 @@
 
 #include <KNotification>
 #include <KNotifyConfigWidget>
+#include <QTextDocument>
 
 #include "knotificationbackend.h"
 
@@ -37,8 +38,7 @@ KNotificationBackend::KNotificationBackend(QObject *parent) : AbstractNotificati
 }
 
 void KNotificationBackend::notify(const Notification &n) {
-  //QString title = Client::networkModel()->networkName(n.bufferId) + " - " + Client::networkModel()->bufferName(n.bufferId);
-  QString message = QString("<b>&lt;%1&gt;</b> %2").arg(n.sender, n.message);
+  QString message = QString("<b>&lt;%1&gt;</b> %2").arg(n.sender, Qt::escape(n.message));
   KNotification *notification = KNotification::event("Highlight", message, DesktopIcon("dialog-information"), QtUi::mainWindow(),
                                 KNotification::Persistent|KNotification::RaiseWidgetOnActivation|KNotification::CloseWhenWidgetActivated);
   connect(notification, SIGNAL(activated()), SLOT(notificationActivated()));
