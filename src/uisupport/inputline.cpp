@@ -243,10 +243,13 @@ void InputLine::resetLine() {
 
 void InputLine::showHistoryEntry() {
   // if the user changed the history, display the changed line
-  tempHistory.contains(idx) ? setText(tempHistory[idx]) : setText(history[idx]);
+  QString text = tempHistory.contains(idx) ? tempHistory[idx] : history[idx];
 #ifdef HAVE_KDE
+  setPlainText(text);
   QTextCursor cursor = textCursor();
   cursor.movePosition(QTextCursor::End);
   setTextCursor(cursor);
+#else
+  setText(text);
 #endif
 }
