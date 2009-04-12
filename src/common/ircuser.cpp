@@ -300,6 +300,5 @@ void IrcUser::setLastChannelActivity(BufferId buffer, const QDateTime &time) {
 
 void IrcUser::setLastSpokenTo(BufferId buffer, const QDateTime &time) {
   _lastSpokenTo[buffer] = time;
-  qDebug() << "last spoken to" << nick() << buffer << time;
   emit lastSpokenToUpdated(buffer, time);
 }
