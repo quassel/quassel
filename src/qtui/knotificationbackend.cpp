@@ -22,6 +22,7 @@
 
 #include <KNotification>
 #include <KNotifyConfigWidget>
+#include <QTextDocument>
 
 #include "knotificationbackend.h"
 
@@ -49,7 +50,7 @@ void KNotificationBackend::notify(const Notification &n) {
       type = "PrivMsgFocused"; break;
   }
 
-  QString message = QString("<b>&lt;%1&gt;</b> %2").arg(n.sender, n.message);
+  QString message = QString("<b>&lt;%1&gt;</b> %2").arg(n.sender, Qt::escape(n.message));
   KNotification *notification = KNotification::event(type, message, DesktopIcon("dialog-information"), QtUi::mainWindow(),
                                 KNotification::Persistent|KNotification::RaiseWidgetOnActivation|KNotification::CloseWhenWidgetActivated);
   connect(notification, SIGNAL(activated(uint)), SLOT(notificationActivated()));
