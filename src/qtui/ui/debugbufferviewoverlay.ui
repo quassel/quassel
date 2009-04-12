@@ -1,0 +1,48 @@
+<ui version="4.0" >
+ <class>DebugBufferViewOverlay</class>
+ <widget class="QWidget" name="DebugBufferViewOverlay" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>580</width>
+    <height>545</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Debug BufferView Overlay</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_2" >
+   <property name="margin" >
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="QTabWidget" name="tabWidget" >
+     <property name="currentIndex" >
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="overlayView" >
+      <attribute name="title" >
+       <string>Overlay View</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout" >
+       <property name="margin" >
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QTreeView" name="bufferView" />
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="overlayProperties" >
+      <attribute name="title" >
+       <string>Overlay Properties</string>
+      </attribute>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -77,7 +77,7 @@ void ClientBacklogManager::receiveBacklogAll(MsgId first, MsgId last, int limit,
 }
 
 void ClientBacklogManager::requestInitialBacklog() {
-  if(_requester) {
+  if(_requester && !_buffersRequested.isEmpty()) {
     qWarning() << "ClientBacklogManager::requestInitialBacklog() called twice in the same session! (Backlog has already been requested)";
     return;
   }

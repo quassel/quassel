@@ -55,6 +55,7 @@
 #include "coreinfodlg.h"
 #include "coreconnectdlg.h"
 #include "contextmenuactionprovider.h"
+#include "debugbufferviewoverlay.h"
 #include "debuglogwidget.h"
 #include "debugmessagemodelfilter.h"
 #include "iconloader.h"
@@ -1019,17 +1020,9 @@ void MainWin::on_actionDebugNetworkModel_triggered() {
 }
 
 void MainWin::on_actionDebugBufferViewOverlay_triggered() {
-  QTreeView *view = new QTreeView;
-  view->setAttribute(Qt::WA_DeleteOnClose);
-  view->setWindowTitle("Debug BufferViewOverlay View");
-  BufferViewOverlayFilter *filter = new BufferViewOverlayFilter(Client::bufferModel(), Client::bufferViewOverlay());
-  filter->setParent(view);
-  view->setModel(filter);
-  view->setColumnWidth(0, 250);
-  view->setColumnWidth(1, 250);
-  view->setColumnWidth(2, 80);
-  view->resize(610, 300);
-  view->show();
+  DebugBufferViewOverlay *overlay = new DebugBufferViewOverlay(0);
+  overlay->setAttribute(Qt::WA_DeleteOnClose);
+  overlay->show();
 }
 
 void MainWin::on_actionDebugMessageModel_triggered() {

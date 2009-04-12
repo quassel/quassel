@@ -26,6 +26,7 @@ set(SOURCES
     coreconfigwizard.cpp
     coreconnectdlg.cpp
     coreinfodlg.cpp
+    debugbufferviewoverlay.cpp
     debugconsole.cpp
     debuglogwidget.cpp
     debugmessagemodelfilter.cpp
@@ -71,6 +72,7 @@ set(MOC_HDRS
     coreconfigwizard.h
     coreconnectdlg.h
     coreinfodlg.h
+    debugbufferviewoverlay.h
     debugconsole.h
     debuglogwidget.h
     debugmessagemodelfilter.h
@@ -116,6 +118,7 @@ set(FORMS
     coreconfigwizardsyncpage.ui
     coreconnectdlg.ui
     coreinfodlg.ui
+    debugbufferviewoverlay.ui
     debugconsole.ui
     debuglogwidget.ui
     inputwidget.ui
