@@ -18,10 +18,11 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _INPUTLINE_H_
-#define _INPUTLINE_H_
+#ifndef INPUTLINE_H_
+#define INPUTLINE_H_
 
-#include <QtGui>
+#include <QKeyEvent>
+#include <QTextEdit>
 
 #ifdef HAVE_KDE
 #include <KDE/KTextEdit>
@@ -33,7 +34,7 @@ class InputLine : public
 #ifdef HAVE_KDE
                   KTextEdit
 #else
-                  QLineEdit
+                  QTextEdit
 #endif
 {
   Q_OBJECT
@@ -44,37 +45,35 @@ public:
 
   void setCustomFont(const QFont &); // should be used instead setFont(), so we can set our size correctly
 
-#ifdef HAVE_KDE
-//Compatibility methods with the rest of the classes which expects this to be a QLineEdit
-  QString text() { return toPlainText(); };
-  int cursorPosition() { return textCursor().position(); };
-  void insert(const QString &newText) { insertPlainText(newText); };
-  void backspace() { keyPressEvent(new QKeyEvent(QEvent::KeyPress, Qt::Key_Backspace, Qt::NoModifier));  };
-  bool hasSelectedText() { return textCursor().hasSelection(); };
-#endif
+  // Compatibility methods with the rest of the classes which still expect this to be a QLineEdit
+  inline QString text() { return toPlainText(); }
+  inline int cursorPosition() { return textCursor().position(); }
+  inline void insert(const QString &newText) { insertPlainText(newText); }
+  inline void backspace() { keyPressEvent(new QKeyEvent(QEvent::KeyPress, Qt::Key_Backspace, Qt::NoModifier)); }
+  inline bool hasSelectedText() { return textCursor().hasSelection(); }
+
+  virtual QSize sizeHint() const;
+  virtual QSize minimumSizeHint() const;
 
 protected:
-  //    virtual bool event(QEvent *);
   virtual void keyPressEvent(QKeyEvent * event);
   virtual bool eventFilter(QObject *watched, QEvent *event);
 
 private slots:
   void on_returnPressed();
   void on_textChanged(QString newText);
-#ifdef HAVE_KDE
-//Needed to emulate the signal that QLineEdit has
-  void on_textChanged() { emit textChanged(toPlainText()); };
-#endif
+
+  // Needed to emulate the signal that QLineEdit has
+  inline void on_textChanged() { emit textChanged(toPlainText()); };
 
   bool addToHistory(const QString &text, bool temporary = false);
 
 signals:
   void sendText(QString text);
-#ifdef HAVE_KDE
-//KTextEdit does not provide this signal, so we manually emit it in keyPressEvent()
+
+  // QTextEdit does not provide this signal, so we manually emit it in keyPressEvent()
   void returnPressed();
   void textChanged(QString newText);
-#endif
 
 private:
   QStringList history;

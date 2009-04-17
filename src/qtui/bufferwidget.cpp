@@ -20,6 +20,7 @@
 
 #include <QLayout>
 #include <QKeyEvent>
+#include <QMenu>
 #include <QScrollBar>
 
 #include "action.h"
