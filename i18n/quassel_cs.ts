@@ -4781,7 +4781,7 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
         <source>%n Operator(s)</source>
         <translation>
             <numerusform>%n Dozorce</numerusform>
-            <numerusform>%n Dozorcii</numerusform>
+            <numerusform>%n Dozorci</numerusform>
             <numerusform>%n Dozorců</numerusform>
         </translation>
     </message>
@@ -4800,7 +4800,7 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
         <translation>
             <numerusform>%n Mluvka</numerusform>
             <numerusform>%n Mluvky</numerusform>
-            <numerusform>%n Mluvky</numerusform>
+            <numerusform>%n Mluvek</numerusform>
         </translation>
     </message>
     <message numerus="yes">
