@@ -21,6 +21,7 @@
 #ifndef INPUTLINE_H_
 #define INPUTLINE_H_
 
+#include <QHash>
 #include <QKeyEvent>
 #include <QTextEdit>
 
