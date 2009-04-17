@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS><TS version="1.1" language="fr">
-<defaultcodec></defaultcodec>
 <context>
     <name>@default</name>
     <message>
@@ -241,7 +240,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/settingspages/aliasesmodel.cpp" line="171"/>
         <source>Expansion</source>
-        <translation>Expansion</translation>
+        <translation>Commande étendue</translation>
     </message>
 </context>
 <context>
@@ -1163,7 +1162,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/bufferwidget.cpp" line="84"/>
         <source>Actual Size</source>
-        <translation>Taille actuelle</translation>
+        <translation>Taille Normale</translation>
     </message>
 </context>
 <context>
@@ -3252,7 +3251,7 @@ SOME SPACE</translation>
         <translation>CoreSession::createNetwork(): Le noyau a renvoyé idRéseau invalide lors de la création du réseau %1!</translation>
     </message>
     <message>
-        <location filename="../src/core/coresession.cpp" line="381"/>
+        <location filename="../src/core/coresession.cpp" line="390"/>
         <source>CoreSession::createNetwork(): Trying to create a network that already exists, updating instead!</source>
         <translation>CoreSession::createNetwork(): Essai de création d&apos;un réseau dejà existant, mise à jour réalisée !</translation>
     </message>
@@ -4840,12 +4839,12 @@ Continuer provoquera le transfert non crypté de votre clé SSL et de votre cert
         <translation type="obsolete">Voulez vous vraiment coller %1 lignes ?</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/inputline.cpp" line="209"/>
+        <location filename="../src/uisupport/inputline.cpp" line="212"/>
         <source>Paste Protection</source>
         <translation>Protection Collage</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/uisupport/inputline.cpp" line="200"/>
+        <location filename="../src/uisupport/inputline.cpp" line="203"/>
         <source>Do you really want to paste %n lines?</source>
         <translation>
             <numerusform>Voulez vous vraiment coller une ligne ?</numerusform>
@@ -6231,17 +6230,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>NetworkModelController::JoinDlg</name>
     <message>
-        <location filename="../src/uisupport/networkmodelcontroller.cpp" line="417"/>
+        <location filename="../src/uisupport/networkmodelcontroller.cpp" line="420"/>
         <source>Join Channel</source>
         <translation>Rejoindre le Canal</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/networkmodelcontroller.cpp" line="420"/>
+        <location filename="../src/uisupport/networkmodelcontroller.cpp" line="423"/>
         <source>Network:</source>
         <translation>Réseau:</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/networkmodelcontroller.cpp" line="422"/>
+        <location filename="../src/uisupport/networkmodelcontroller.cpp" line="425"/>
         <source>Channel:</source>
         <translation>Canal:</translation>
     </message>
@@ -6764,7 +6763,7 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
 <context>
     <name>PhononNotificationBackend::ConfigWidget</name>
     <message>
-        <location filename="../src/qtui/phononnotificationbackend.cpp" line="142"/>
+        <location filename="../src/qtui/phononnotificationbackend.cpp" line="141"/>
         <source>Select Audio File</source>
         <translation>Selectionner le fichier Audio</translation>
     </message>
@@ -7525,17 +7524,17 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
 <context>
     <name>SystrayNotificationBackend::ConfigWidget</name>
     <message>
-        <location filename="../src/qtui/systraynotificationbackend.cpp" line="106"/>
+        <location filename="../src/qtui/systraynotificationbackend.cpp" line="114"/>
         <source>System Tray Icon</source>
         <translation>Icône système</translation>
     </message>
     <message>
-        <location filename="../src/qtui/systraynotificationbackend.cpp" line="107"/>
+        <location filename="../src/qtui/systraynotificationbackend.cpp" line="115"/>
         <source>Animate</source>
         <translation>Animer</translation>
     </message>
     <message>
-        <location filename="../src/qtui/systraynotificationbackend.cpp" line="109"/>
+        <location filename="../src/qtui/systraynotificationbackend.cpp" line="117"/>
         <source>Show bubble</source>
         <translation>Afficher une bulle</translation>
     </message>
@@ -7543,22 +7542,22 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
 <context>
     <name>TaskbarNotificationBackend::ConfigWidget</name>
     <message>
-        <location filename="../src/qtui/taskbarnotificationbackend.cpp" line="68"/>
+        <location filename="../src/qtui/taskbarnotificationbackend.cpp" line="67"/>
         <source>Activate dock entry, timeout:</source>
         <translation>Activation de la barre de lancement, durée:</translation>
     </message>
     <message>
-        <location filename="../src/qtui/taskbarnotificationbackend.cpp" line="70"/>
+        <location filename="../src/qtui/taskbarnotificationbackend.cpp" line="69"/>
         <source>Mark taskbar entry, timeout:</source>
         <translation>Clignotement de la barre de taches, durée:</translation>
     </message>
     <message>
-        <location filename="../src/qtui/taskbarnotificationbackend.cpp" line="75"/>
+        <location filename="../src/qtui/taskbarnotificationbackend.cpp" line="74"/>
         <source>Unlimited</source>
         <translation>Illimité</translation>
     </message>
     <message>
-        <location filename="../src/qtui/taskbarnotificationbackend.cpp" line="76"/>
+        <location filename="../src/qtui/taskbarnotificationbackend.cpp" line="75"/>
         <source> s</source>
         <translation>s</translation>
     </message>
@@ -7603,7 +7602,7 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
     <message>
         <location filename="../src/uisupport/toolbaractionprovider.cpp" line="35"/>
         <source>Join a channel</source>
-        <translation>Rejoindre le Canal</translation>
+        <translation>Rejoindre un Canal</translation>
     </message>
     <message>
         <location filename="../src/uisupport/toolbaractionprovider.cpp" line="37"/>
