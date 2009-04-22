@@ -22,6 +22,7 @@
 
 #include <QMetaProperty>
 #include <QVariantMap>
+#include <QString>
 
 #ifdef Q_OS_MAC
 #  include <CoreServices/CoreServices.h>
@@ -126,7 +127,7 @@ QString Identity::defaultRealName() {
   QString realName;
   struct passwd *pwd = getpwuid(getuid());
   if(pwd)
-    realName = pwd->pw_gecos;
+    realName = QString::fromUtf8(pwd->pw_gecos);
   if(!realName.isEmpty())
     return realName;
   else
