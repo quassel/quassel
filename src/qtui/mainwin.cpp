@@ -28,6 +28,10 @@
 #  include <KStatusBar>
 #endif
 
+#ifdef Q_WS_X11
+#  include <QX11Info>
+#endif
+
 #include "aboutdlg.h"
 #include "awaylogfilter.h"
 #include "awaylogview.h"
@@ -108,6 +112,10 @@ MainWin::MainWin(QWidget *parent)
     _titleSetter(this),
     _awayLog(0)
 {
+#ifdef Q_WS_WIN
+  dwTickCount = 0;
+#endif
+
   QtUiSettings uiSettings;
   QString style = uiSettings.value("Style", QString()).toString();
   if(!style.isEmpty()) {
@@ -516,11 +524,6 @@ void MainWin::saveStatusBarStatus(bool enabled) {
 
 void MainWin::setupSystray() {
   _systemTray = new SystemTray(this);
-
-#ifndef Q_WS_MAC
-  connect(systemTray(), SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(systrayActivated(QSystemTrayIcon::ActivationReason)));
-#endif
-
 }
 
 void MainWin::setupToolBars() {
@@ -546,18 +549,6 @@ void MainWin::setupToolBars() {
   _mainToolBar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
   //_nickToolBar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 #endif
-}
-
-void MainWin::changeEvent(QEvent *event) {
-  if(event->type() == QEvent::WindowStateChange) {
-    if(windowState() & Qt::WindowMinimized) {
-      QtUiSettings s;
-      if(s.value("UseSystemTrayIcon").toBool() && s.value("MinimizeOnMinimize").toBool()) {
-	hideToTray();
-	event->accept();
-      }
-    }
-  }
 }
 
 void MainWin::connectedToCore() {
@@ -761,10 +752,30 @@ void MainWin::closeEvent(QCloseEvent *event) {
   }
 }
 
-void MainWin::systrayActivated(QSystemTrayIcon::ActivationReason activationReason) {
-  if(activationReason == QSystemTrayIcon::Trigger) {
-    toggleMinimizedToTray();
+bool MainWin::event(QEvent *event) {
+  if(event->type() == QEvent::WindowActivate)
+    QtUi::closeNotifications();
+  return QMainWindow::event(event);
+}
+
+void MainWin::changeEvent(QEvent *event) {
+  if(event->type() == QEvent::WindowStateChange) {
+    if(windowState() & Qt::WindowMinimized) {
+      QtUiSettings s;
+      if(s.value("UseSystemTrayIcon").toBool() && s.value("MinimizeOnMinimize").toBool()) {
+        hideToTray();
+        event->accept();
+        return;
+      }
+    }
   }
+
+#ifdef Q_WS_WIN
+  else if(event->type() == QEvent::ActivationChange)
+    dwTickCount = GetTickCount();  // needed for toggleMinimizedToTray()
+#endif
+
+  event->ignore();
 }
 
 void MainWin::hideToTray() {
@@ -772,22 +783,48 @@ void MainWin::hideToTray() {
     qWarning() << Q_FUNC_INFO << "was called with no SystemTray available!";
     return;
   }
-  clearFocus();
   hide();
   systemTray()->setIconVisible();
 }
 
 void MainWin::toggleMinimizedToTray() {
+#ifdef Q_WS_WIN
+  // the problem is that we lose focus when the systray icon is activated
+  // and we don't know the former active window
+  // therefore we watch for activation event and use our stopwatch :)
+  // courtesy: KSystemTrayIcon
+  if(GetTickCount() - dwTickCount >= 300)
+    // we weren't active in the last 300ms -> activate
+    forceActivated();
+  else
+    hideToTray();
+
+#else
+
+  if(!isVisible() || isMinimized())
+    // restore
+    forceActivated();
+  else
+    hideToTray();
+
+#endif
+}
+
+void MainWin::forceActivated() {
+#ifdef Q_WS_X11
+  // Bypass focus stealing prevention
+  QX11Info::setAppUserTime(QX11Info::appTime());
+#endif
+
   if(windowState() & Qt::WindowMinimized) {
     // restore
     setWindowState((windowState() & ~Qt::WindowMinimized) | Qt::WindowActive);
-    show();
-    activateWindow();
-    raise();
-  } else {
-    setWindowState((windowState() & ~Qt::WindowActive) | Qt::WindowMinimized);
-    hideToTray();
   }
+
+  move(frameGeometry().topLeft()); // avoid placement policies
+  show();
+  raise();
+  activateWindow();
 }
 
 void MainWin::messagesInserted(const QModelIndex &parent, int start, int end) {
@@ -817,12 +854,6 @@ void MainWin::messagesInserted(const QModelIndex &parent, int start, int end) {
       QtUi::invokeNotification(bufId, sender, contents);
     }
   }
-}
-
-bool MainWin::event(QEvent *event) {
-  if(event->type() == QEvent::WindowActivate)
-    QtUi::closeNotifications();
-  return QMainWindow::event(event);
 }
 
 void MainWin::clientNetworkCreated(NetworkId id) {

@@ -21,6 +21,8 @@
 #ifndef SYSTRAYNOTIFICATIONBACKEND_H_
 #define SYSTRAYNOTIFICATIONBACKEND_H_
 
+#include <QSystemTrayIcon>
+
 #include "abstractnotificationbackend.h"
 
 #include "settingspage.h"
@@ -41,6 +43,7 @@ private slots:
   void showBubble();
   void closeBubble();
   void notificationActivated();
+  void notificationActivated(QSystemTrayIcon::ActivationReason);
 
   void animateChanged(const QVariant &);
   void showBubbleChanged(const QVariant &);
