@@ -21,7 +21,12 @@
 #ifndef SYSTEMTRAY_H_
 #define SYSTEMTRAY_H_
 
-#include <QSystemTrayIcon>
+#ifdef HAVE_KDE
+#  include <KSystemTrayIcon>
+#else
+#  include <QSystemTrayIcon>
+#endif
+
 #include <QTimer>
 
 #include "icon.h"
@@ -39,8 +44,9 @@ public:
   ~SystemTray();
 
   inline bool isSystemTrayAvailable() const;
-  Icon icon() const;
-  QString toolTip() const;
+  inline bool isAlerted() const;
+
+  inline void setInhibitActivation();
 
 public slots:
   void setState(State);
@@ -50,22 +56,31 @@ public slots:
   void showMessage(const QString &title, const QString &message,
                    QSystemTrayIcon::MessageIcon icon = QSystemTrayIcon::Information, int millisecondsTimeoutHint = 10000);
 
-
 signals:
   void activated(QSystemTrayIcon::ActivationReason);
   void iconChanged(const Icon &);
   void messageClicked();
 
+protected:
+  bool eventFilter(QObject *obj, QEvent *event);
+
 private slots:
   void nextPhase();
+  void on_activated(QSystemTrayIcon::ActivationReason);
 
 private:
   void loadAnimations();
 
+#ifdef HAVE_KDE
+  KSystemTrayIcon *_trayIcon;
+#else
   QSystemTrayIcon *_trayIcon;
+#endif
+
   QMenu *_trayMenu;
   State _state;
   bool _alert;
+  bool _inhibitActivation;
 
   int _idxOffStart, _idxOffEnd, _idxOnStart, _idxOnEnd, _idxAlertStart;
   int _currentIdx;
@@ -77,5 +92,7 @@ private:
 // inlines
 
 bool SystemTray::isSystemTrayAvailable() const { return QSystemTrayIcon::isSystemTrayAvailable(); }
+bool SystemTray::isAlerted() const { return _alert; }
+void SystemTray::setInhibitActivation() { _inhibitActivation = true; }
 
 #endif

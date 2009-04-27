@@ -154,22 +154,13 @@ void QtUi::notificationActivated(uint notificationId) {
         BufferId bufId = (*i).bufferId;
         if(bufId.isValid())
           Client::bufferModel()->switchToBuffer(bufId);
+        foreach(AbstractNotificationBackend *backend, _notificationBackends)
+          backend->close(notificationId);
         _notifications.erase(i);
         break;
       } else ++i;
     }
   }
 
-#ifdef Q_WS_X11
-  // Bypass focus stealing prevention
-  QX11Info::setAppUserTime(QX11Info::appTime());
-#endif
-
-  if(_mainWin->windowState() & Qt::WindowMinimized) {
-    // restore
-    _mainWin->setWindowState((_mainWin->windowState() & ~Qt::WindowMinimized) | Qt::WindowActive);
-    _mainWin->show();
-  }
-  _mainWin->raise();
-  _mainWin->activateWindow();
+  mainWindow()->forceActivated();
 }

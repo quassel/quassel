@@ -27,6 +27,10 @@
 #  include <QMainWindow>
 #endif
 
+#ifdef Q_WS_WIN
+#  include <windows.h>
+#endif
+
 #include <QSystemTrayIcon>
 
 #include "qtui.h"
@@ -70,7 +74,7 @@ class MainWin
 
     inline SystemTray *systemTray() const;
 
-    virtual bool event(QEvent *event);
+    bool event(QEvent *event);
 
     static void flagRemoteCoreOnly(QObject *object) { object->setProperty("REMOTE_CORE_ONLY", true); }
     static bool isRemoteCoreOnly(QObject *object) { return object->property("REMOTE_CORE_ONLY").toBool(); }
@@ -80,9 +84,14 @@ class MainWin
     void saveStateToSessionSettings(SessionSettings &s);
     void showStatusBarMessage(const QString &message);
 
+    void toggleMinimizedToTray();
+
+    //! Bring window to front and focus it
+    void forceActivated();
+
   protected:
     void closeEvent(QCloseEvent *event);
-    virtual void changeEvent(QEvent *event);
+    void changeEvent(QEvent *event);
 
   protected slots:
     void connectedToCore();
@@ -90,7 +99,6 @@ class MainWin
     void updateLagIndicator(int lag = -1);
     void disconnectedFromCore();
     void setDisconnectedState();
-    void systrayActivated(QSystemTrayIcon::ActivationReason);
 
   private slots:
     void addBufferView(int bufferViewConfigId);
@@ -156,9 +164,9 @@ class MainWin
     void setupToolBars();
 
     void updateIcon();
-    void hideToTray();
-    void toggleMinimizedToTray();
     void enableMenus();
+
+    void hideToTray();
 
     SystemTray *_systemTray;
 
@@ -173,6 +181,10 @@ class MainWin
 
     QWidget *_awayLog;
     friend class QtUi;
+
+#ifdef Q_WS_WIN
+    DWORD dwTickCount;
+#endif
 };
 
 SystemTray *MainWin::systemTray() const {

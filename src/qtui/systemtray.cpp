@@ -31,11 +31,20 @@ SystemTray::SystemTray(QObject *parent)
 : QObject(parent),
   _state(Inactive),
   _alert(false),
+  _inhibitActivation(false),
   _currentIdx(0)
 {
   loadAnimations();
   _currentIdx = _idxOffEnd;
-  _trayIcon = new QSystemTrayIcon(_phases.at(_currentIdx), this);
+
+#ifndef HAVE_KDE
+  _trayIcon = new QSystemTrayIcon(_phases.at(_currentIdx), QtUi::mainWindow());
+#else
+  _trayIcon = new KSystemTrayIcon(_phases.at(_currentIdx), QtUi::mainWindow());
+  // We don't want to trigger a minimize if a highlight is pending, so we brutally remove the internal connection for that
+  disconnect(_trayIcon, SIGNAL(activated( QSystemTrayIcon::ActivationReason)),
+             _trayIcon, SLOT(activateOrHide(QSystemTrayIcon::ActivationReason)));
+#endif
 
   _animationTimer.setInterval(150);
   _animationTimer.setSingleShot(false);
@@ -56,7 +65,11 @@ SystemTray::SystemTray(QObject *parent)
     _trayIcon->show();
   }
 
-  connect(_trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), SIGNAL(activated(QSystemTrayIcon::ActivationReason)));
+  qApp->installEventFilter(this);
+
+#ifndef Q_WS_MAC
+  connect(_trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), SLOT(on_activated(QSystemTrayIcon::ActivationReason)));
+#endif
   connect(_trayIcon, SIGNAL(messageClicked()), SIGNAL(messageClicked()));
 }
 
@@ -152,4 +165,27 @@ void SystemTray::setToolTip(const QString &tip) {
 
 void SystemTray::showMessage(const QString &title, const QString &message, QSystemTrayIcon::MessageIcon icon, int millisecondsTimeoutHint) {
   _trayIcon->showMessage(title, message, icon, millisecondsTimeoutHint);
+}
+
+bool SystemTray::eventFilter(QObject *obj, QEvent *event) {
+  Q_UNUSED(obj);
+  if(event->type() == QEvent::MouseButtonRelease) {
+    _inhibitActivation = false;
+  }
+  return false;
+}
+
+void SystemTray::on_activated(QSystemTrayIcon::ActivationReason reason) {
+  emit activated(reason);
+
+  if(reason == QSystemTrayIcon::Trigger && !_inhibitActivation) {
+
+#  ifdef HAVE_KDE
+     // the slot is private, but meh, who cares :)
+     QMetaObject::invokeMethod(_trayIcon, "activateOrHide", Q_ARG(QSystemTrayIcon::ActivationReason, QSystemTrayIcon::Trigger));
+#  else
+     QtUi::mainWindow()->toggleMinimizedToTray();
+#  endif
+
+  }
 }
