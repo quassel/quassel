@@ -86,6 +86,7 @@ QString AboutDlg::contributors() const {
            "<dt><b>Sebastian \"seezer\" Goth</b></dt><dd>Various improvements and features</dd>"
            "<dt><b>H. İbrahim \"igungor\" Güngör</b></dt><dd>Turkish translation</dd>"
            "<dt><b>Edward \"Aides\" Toroshchin</b></dt><dd>Russian translation</dd>"
+           "<dt><b>Fabiano \"elbryan\" Francesconi</b></dt><dd>Italian translation</dd>"
            "<dt><b>John \"nox\" Hand</b></dt><dd>Former All-Seeing Eye logo</dd>"
            "<dt><b>Jonas \"Dante\" Heese</b></dt><dd>Project founder, various improvements</dd>"
            "<dt><b>Scott \"ScottK\" Kitterman<b></dt><dd>Kubuntu nightly packager, (packaging/build system) bughunter</dd>"
