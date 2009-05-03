@@ -98,7 +98,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/core/abstractsqlstorage.cpp" line="104"/>
         <source>Installed Schema (version %1) is not up to date. Upgrading to version %2...</source>
-        <translation>Используемая Схема (версии %1) устарела. Обновляю до версии %2...</translation>
+        <translation>Используемая схема (версии %1) устарела. Обновляю до версии %2...</translation>
     </message>
     <message>
         <location filename="../src/core/abstractsqlstorage.cpp" line="106"/>
@@ -408,7 +408,7 @@ Note: this requester is not recommended if you use hidden buffer or have inactiv
 It is useful to limit the total amount of the backlog and is probably the fastest.
 
 You can also chose to fetch additional older chatlines to provide a better context similar.</source>
-        <translation type="obsolete">Этот метод запрашивает все сообщения новее чем самое старое сообщение из каждого буфера.Этот метод определяет самое старое прочитанное сообщение из всех буферов и затем запрашивает один большой кусок сообщений со всех буферовПримечание: не рекомендуется использовать этот метод, если используются скрытые буфера или есть неактивные буфера (например оконченные диалоги или каналы).Полезно его использовать для ограничения общего объёма журнала и достижение максимальной скорости.Также можно запросить дополнительно старые строки для лучшего контекста.</translation>
+        <translation type="obsolete">Этот метод запрашивает все сообщения новее, чем самое старое сообщение из каждого буфера. Этот метод определяет самое старое прочитанное сообщение из всех буферов и затем запрашивает один большой кусок сообщений со всех буферовПримечание: не рекомендуется использовать этот метод, если используются скрытые буфера или есть неактивные буфера (например оконченные диалоги или каналы).Полезно его использовать для ограничения общего объёма журнала и достижение максимальной скорости.Также можно запросить дополнительно старые строки для лучшего контекста.</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="331"/>
@@ -1518,7 +1518,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/settingspages/colorsettingspage.ui" line="1806"/>
         <source>Away:</source>
-        <translation>Отошёл:</translation>
+        <translation>Отсутствует:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/colorsettingspage.ui" line="1366"/>
@@ -1741,7 +1741,7 @@ to work.</source>
     <message>
         <location filename="../src/core/core.cpp" line="186"/>
         <source>Calling restoreState() even though active sessions exist!</source>
-        <translation>Вызываю restoreState() несмотря на существующие активные сессии!</translation>
+        <translation>Вызываю restoreState(), несмотря на существующие активные сессии!</translation>
     </message>
     <message>
         <location filename="../src/core/core.cpp" line="227"/>
@@ -3109,17 +3109,17 @@ SOME SPACE</translation>
     <message>
         <location filename="../src/qtui/settingspages/identitiessettingspage.ui" line="313"/>
         <source>A&amp;way</source>
-        <translation type="obsolete">&amp;Отошёл</translation>
+        <translation type="obsolete">&amp;Отсутствую</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/identitiessettingspage.ui" line="319"/>
         <source>Default Away Settings</source>
-        <translation type="obsolete">Настройки состояния &quot;Отошёл&quot; по-умолчанию</translation>
+        <translation type="obsolete">Настройки состояния &quot;Отсутствую&quot; по умолчанию</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/identitiessettingspage.ui" line="360"/>
         <source>Nick to be used when being away</source>
-        <translation type="obsolete">Ник для состояния &quot;Отошёл&quot;</translation>
+        <translation type="obsolete">Ник для состояния &quot;Отсутствую&quot;</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/identitiessettingspage.ui" line="350"/>
@@ -3139,17 +3139,17 @@ SOME SPACE</translation>
     <message>
         <location filename="../src/qtui/settingspages/identitiessettingspage.ui" line="375"/>
         <source>Set away when all clients have detached from the core</source>
-        <translation type="obsolete">Устанавливать состояние &quot;отошёл&quot; когда все клиенты отсоединены от ядра</translation>
+        <translation type="obsolete">Устанавливать состояние &quot;отсутствую&quot; когда все клиенты отсоединены от ядра</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/identitiessettingspage.ui" line="378"/>
         <source>Away On Detach</source>
-        <translation type="obsolete">&quot;Отошёл&quot; при отсоединении</translation>
+        <translation type="obsolete">&quot;Отсутствую&quot; при отсоединении</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/identitiessettingspage.ui" line="405"/>
         <source>Override default away reason for auto-away on detach</source>
-        <translation type="obsolete">Игнорировать причину по-умолчанию при автоматическом состоянии &quot;отошёл&quot; при отсоединении</translation>
+        <translation type="obsolete">Игнорировать причину по умолчанию при автоматическом состоянии &quot;отсутствую&quot; при отсоединении</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/identitiessettingspage.ui" line="420"/>
@@ -3159,12 +3159,12 @@ SOME SPACE</translation>
     <message>
         <location filename="../src/qtui/settingspages/identitiessettingspage.ui" line="423"/>
         <source>Away On Idle</source>
-        <translation type="obsolete">&quot;Отошёл&quot; при неактивности</translation>
+        <translation type="obsolete">&quot;Отсутствую&quot; при неактивности</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/identitiessettingspage.ui" line="437"/>
         <source>Set away after</source>
-        <translation type="obsolete">Устанавливать &quot;отошёл&quot; после</translation>
+        <translation type="obsolete">Устанавливать &quot;отсутствую&quot; после</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/identitiessettingspage.ui" line="447"/>
@@ -3467,17 +3467,17 @@ Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificat
     <message>
         <location filename="../src/qtui/settingspages/identityeditwidget.ui" line="226"/>
         <source>A&amp;way</source>
-        <translation>&amp;Отошёл</translation>
+        <translation>&amp;Отсутствую</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/identityeditwidget.ui" line="232"/>
         <source>Default Away Settings</source>
-        <translation>Настройки состояния &quot;Отошёл&quot; по-умолчанию</translation>
+        <translation>Настройки состояния &quot;Отсутствую&quot; по умолчанию</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/identityeditwidget.ui" line="243"/>
         <source>Nick to be used when being away</source>
-        <translation>Ник для состояния &quot;Отошёл&quot;</translation>
+        <translation>Ник для состояния &quot;Отсутствую&quot;</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/identityeditwidget.ui" line="253"/>
@@ -3497,12 +3497,12 @@ Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificat
     <message>
         <location filename="../src/qtui/settingspages/identityeditwidget.ui" line="279"/>
         <source>Set away when all clients have detached from the core</source>
-        <translation>Устанавливать состояние &quot;отошёл&quot; когда все клиенты отсоединены от ядра</translation>
+        <translation>Устанавливать состояние &quot;отсутствую&quot;, когда все клиенты отсоединены от ядра</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/identityeditwidget.ui" line="282"/>
         <source>Away On Detach</source>
-        <translation>&quot;Отошёл&quot; при отсоединении</translation>
+        <translation>&quot;Отсутствую&quot; при отсоединении</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/identityeditwidget.ui" line="314"/>
@@ -3512,12 +3512,12 @@ Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificat
     <message>
         <location filename="../src/qtui/settingspages/identityeditwidget.ui" line="317"/>
         <source>Away On Idle</source>
-        <translation>&quot;Отошёл&quot; при неактивности</translation>
+        <translation>&quot;Отсутствую&quot; при неактивности</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/identityeditwidget.ui" line="331"/>
         <source>Set away after</source>
-        <translation>Устанавливать &quot;отошёл&quot; после</translation>
+        <translation>Устанавливать &quot;отсутствую&quot; после</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/identityeditwidget.ui" line="341"/>
@@ -3676,7 +3676,7 @@ Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificat
     <message>
         <location filename="../src/core/ircserverhandler.cpp" line="464"/>
         <source>%1 has changed topic for %2 to: &quot;%3&quot;</source>
-        <translation>%1 сменил тему канала %2 на &quot;%3&quot;</translation>
+        <translation>%1 меняет тему канала %2 на &quot;%3&quot;</translation>
     </message>
     <message>
         <location filename="../src/core/ircserverhandler.cpp" line="489"/>
@@ -3696,12 +3696,12 @@ Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificat
     <message>
         <location filename="../src/core/ircserverhandler.cpp" line="570"/>
         <source>[Whois] %1 is away: &quot;%2&quot;</source>
-        <translation>[Whois] %1 отошёл: &quot;%2&quot;</translation>
+        <translation>[Whois] %1 отсутствует: &quot;%2&quot;</translation>
     </message>
     <message>
         <location filename="../src/core/ircserverhandler.cpp" line="581"/>
         <source>%1 is away: &quot;%2&quot;</source>
-        <translation>%1 отошёл: &quot;%2&quot;</translation>
+        <translation>%1 отсутствует: &quot;%2&quot;</translation>
     </message>
     <message>
         <location filename="../src/core/ircserverhandler.cpp" line="782"/>
@@ -4037,7 +4037,7 @@ Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificat
     <message>
         <location filename="../src/qtui/mainwin.cpp" line="227"/>
         <source>Configure &amp;Networks...</source>
-        <translation>Настроить &amp;Сети...</translation>
+        <translation>Настроить &amp;сети...</translation>
     </message>
     <message>
         <location filename="../src/qtui/mainwin.cpp" line="233"/>
@@ -4744,7 +4744,7 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
     <message>
         <location filename="../src/qtui/settingspages/networkssettingspage.ui" line="532"/>
         <source>Use defaults</source>
-        <translation type="obsolete">По-умолчанию</translation>
+        <translation type="obsolete">По умолчанию</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/networkssettingspage.ui" line="382"/>
@@ -4817,12 +4817,12 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
     <message>
         <location filename="../src/qtui/settingspages/nickeditdlg.ui" line="19"/>
         <source>Please enter a valid nickname:</source>
-        <translation>Пожалуйста введите корректный ник:</translation>
+        <translation>Пожалуйста, введите корректный ник:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/nickeditdlg.ui" line="32"/>
         <source>A valid nickname may contain letters from the English alphabet, digits, and the special characters {, }, [, ], \, |, `, ^, _ and -.</source>
-        <translation>Корректный ник может содержать только буквы латинского алфавита, цифры, и спецсимволы {, }, [, ], \, |, `, ^, _ и -.</translation>
+        <translation>Корректный ник может содержать только буквы латинского алфавита, цифры и спецсимволы {, }, [, ], \, |, `, ^, _ и -.</translation>
     </message>
 </context>
 <context>
@@ -5711,22 +5711,22 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
     <message>
         <location filename="../src/uisupport/uistyle.cpp" line="336"/>
         <source>%Dj%DN%1%DN %DH(%2@%3)%DH has joined %DC%4%DC</source>
-        <translation>%Dj%DN%1%DN %DH(%2@%3)%DH вошёл на канал %DC%4%DC</translation>
+        <translation>%Dj%DN%1%DN %DH(%2@%3)%DH заходит на канал %DC%4%DC</translation>
     </message>
     <message>
         <location filename="../src/uisupport/uistyle.cpp" line="338"/>
         <source>%Dp%DN%1%DN %DH(%2@%3)%DH has left %DC%4%DC</source>
-        <translation>%Dp%DN%1%DN %DH(%2@%3)%DH покинул %DC%4%DC</translation>
+        <translation>%Dp%DN%1%DN %DH(%2@%3)%DH покидает %DC%4%DC</translation>
     </message>
     <message>
         <location filename="../src/uisupport/uistyle.cpp" line="342"/>
         <source>%Dq%DN%1%DN %DH(%2@%3)%DH has quit</source>
-        <translation>%Dq%DN%1%DN %DH(%2@%3)%DH вышел из сети</translation>
+        <translation>%Dq%DN%1%DN %DH(%2@%3)%DH выходит из сети</translation>
     </message>
     <message>
         <location filename="../src/uisupport/uistyle.cpp" line="348"/>
         <source>%Dk%DN%1%DN has kicked %DN%2%DN from %DC%3%DC</source>
-        <translation>%Dk%DN%1%DN выгнал %DN%2%DN с %DC%3%DC</translation>
+        <translation>%Dk%DN%1%DN выгоняет %DN%2%DN с %DC%3%DC</translation>
     </message>
     <message>
         <location filename="../src/uisupport/uistyle.cpp" line="353"/>
@@ -5736,7 +5736,7 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
     <message>
         <location filename="../src/uisupport/uistyle.cpp" line="354"/>
         <source>%Dr%DN%1%DN is now known as %DN%2%DN</source>
-        <translation>%Dr%DN%1%DN теперь известен как %DN%2%DN</translation>
+        <translation>%Dr%DN%1%DN меняет имя на %DN%2%DN</translation>
     </message>
     <message>
         <location filename="../src/uisupport/uistyle.cpp" line="357"/>
@@ -5876,7 +5876,7 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
     <message>
         <location filename="../src/core/userinputhandler.cpp" line="69"/>
         <source>away</source>
-        <translation>отошёл</translation>
+        <translation>отсутствует</translation>
     </message>
 </context>
 </TS>
