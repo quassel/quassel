@@ -68,6 +68,7 @@ public slots:
   void handle322(const QString &prefix, const QList<QByteArray> &params);   // RPL_LIST
   void handle323(const QString &prefix, const QList<QByteArray> &params);   // RPL_LISTEND
   void handle324(const QString &prefix, const QList<QByteArray> &params);   // RPL_CHANNELMODEIS
+  void handle328(const QString &prefix, const QList<QByteArray> &params);   // RPL_??? (channel homepage)
   void handle329(const QString &prefix, const QList<QByteArray> &params);   // RPL_??? (channel creation time)
   void handle331(const QString &prefix, const QList<QByteArray> &params);   // RPL_NOTOPIC
   void handle332(const QString &prefix, const QList<QByteArray> &params);   // RPL_TOPIC

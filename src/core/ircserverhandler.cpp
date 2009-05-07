@@ -819,6 +819,19 @@ void IrcServerHandler::handle324(const QString &prefix, const QList<QByteArray> 
   handleMode(prefix, params);
 }
 
+/* RPL_??? - "<channel> <homepage> */
+void IrcServerHandler::handle328(const QString &prefix, const QList<QByteArray> &params) {
+  Q_UNUSED(prefix);
+  if(!checkParamCount("IrcServerHandler::handle328()", params, 2))
+    return;
+
+  QString channel = serverDecode(params[0]);
+  QString homepage = serverDecode(params[1]);
+
+  emit displayMsg(Message::Server, BufferInfo::ChannelBuffer, channel, tr("Homepage for %1 is %2").arg(channel, homepage));
+}
+
+
 /* RPL_??? - "<channel> <creation time (unix)>" */
 void IrcServerHandler::handle329(const QString &prefix, const QList<QByteArray> &params) {
   Q_UNUSED(prefix);
