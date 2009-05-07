@@ -49,6 +49,7 @@ PhononNotificationBackend::~PhononNotificationBackend() {
 void PhononNotificationBackend::notify(const Notification &notification) {
   Q_UNUSED(notification)
   if(_enabled && _media) {
+    _media->stop();
     _media->play();
   }
 }
