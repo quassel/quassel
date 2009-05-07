@@ -57,11 +57,23 @@ void IrcServerHandler::handleServerMsg(QByteArray msg) {
   // NOTE: This assumes that this is true in raw encoding, but well, hopefully there are no servers running in japanese on protocol level...
   int idx = msg.indexOf(" :");
   if(idx >= 0) {
-    if(msg.length() > idx + 2) trailing = msg.mid(idx + 2);
+    if(msg.length() > idx + 2)
+      trailing = msg.mid(idx + 2);
     msg = msg.left(idx);
   }
   // OK, now it is safe to split...
   QList<QByteArray> params = msg.split(' ');
+
+  // This could still contain empty elements due to (faulty?) ircds sending multiple spaces in a row
+  // Also, QByteArray is not nearly as convenient to work with as QString for such things :)
+  QList<QByteArray>::iterator iter = params.begin();
+  while(iter != params.end()) {
+    if(iter->isEmpty())
+      iter = params.erase(iter);
+    else
+      ++iter;
+  }
+
   if(!trailing.isEmpty()) params << trailing;
   if(params.count() < 1) {
     qWarning() << "Received invalid string from server!";
