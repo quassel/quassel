@@ -822,11 +822,18 @@ void IrcServerHandler::handle324(const QString &prefix, const QList<QByteArray> 
 /* RPL_??? - "<channel> <creation time (unix)>" */
 void IrcServerHandler::handle329(const QString &prefix, const QList<QByteArray> &params) {
   Q_UNUSED(prefix);
-  Q_UNUSED(params)
-#ifdef __GNUC__
-#  warning "Implement handle329 (Channel creation time)"
-#endif
-  // FIXME implement this...
+  if(!checkParamCount("IrcServerHandler::handle329()", params, 2))
+    return;
+
+  QString channel = serverDecode(params[0]);
+  uint unixtime = params[1].toUInt();
+  if(!unixtime) {
+    qWarning() << Q_FUNC_INFO << "received invalid timestamp:" << params[1];
+    return;
+  }
+  QDateTime time = QDateTime::fromTime_t(unixtime);
+
+  emit displayMsg(Message::Server, BufferInfo::ChannelBuffer, channel, tr("Channel %1 created on %2").arg(channel, time.toString()));
 }
 
 /* RPL_NOTOPIC */
