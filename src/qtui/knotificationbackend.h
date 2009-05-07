@@ -48,7 +48,10 @@ private slots:
 private:
   class ConfigWidget;
 
+  void removeNotificationById(uint id);
+
   QHash<KNotification *, uint> _notificationIds;
+  uint _lastNotificationId;
 };
 
 class KNotificationBackend::ConfigWidget : public SettingsPage {
