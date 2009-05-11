@@ -115,6 +115,8 @@ void QtUiMessageProcessor::checkForHighlight(Message &msg) {
       const Identity *myIdentity = Client::identity(net->identity());
       if(myIdentity)
         nickList = myIdentity->nicks();
+      if(!nickList.contains(net->myNick()))
+        nickList.prepend(net->myNick());
     }
     foreach(QString nickname, nickList) {
       QRegExp nickRegExp("\\b" + QRegExp::escape(nickname) + "(\\W|\\b|$)", // + "\\b", this does not seem to work for trailing ` -> upstream bug?
