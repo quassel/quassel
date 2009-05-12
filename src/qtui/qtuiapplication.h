@@ -30,7 +30,7 @@
 #include <QSessionManager>
 
 #include "quassel.h"
-#include "sessionsettings.h"
+#include "uisettings.h"
 
 class QtUi;
 
