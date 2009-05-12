@@ -41,7 +41,6 @@ set(SOURCES
     qtuimessageprocessor.cpp
     qtuisettings.cpp
     qtuistyle.cpp
-    sessionsettings.cpp
     settingsdlg.cpp
     settingspagedlg.cpp
     simplenetworkeditor.cpp

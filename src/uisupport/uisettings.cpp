@@ -52,3 +52,75 @@ QList<UiStyle::FormatType> UiStyleSettings::availableFormats() {
   }
   return formats;
 }
+
+/**************************************************************************
+ * SessionSettings
+ **************************************************************************/
+
+SessionSettings::SessionSettings(const QString & sessionId, const QString & group)
+: UiSettings(group), _sessionId(sessionId)
+{
+
+}
+
+void SessionSettings::setValue(const QString &key, const QVariant &data) {
+  setLocalValue(QString("%1/%2").arg(_sessionId, key), data);
+}
+
+QVariant SessionSettings::value(const QString &key, const QVariant &def) {
+  return localValue(QString("%1/%2").arg(_sessionId, key), def);
+}
+
+void SessionSettings::removeKey(const QString &key) {
+  removeLocalKey(QString("%1/%2").arg(_sessionId, key));
+}
+
+void SessionSettings::cleanup() {
+  QStringList sessions = localChildGroups();
+  QString str;
+  SessionSettings s(sessionId());
+  foreach(str, sessions) {
+    // load session and check age
+    s.setSessionId(str);
+    if(s.sessionAge() > 3) {
+      s.removeSession();
+    }
+  }
+}
+
+int SessionSettings::sessionAge() {
+  QVariant val = localValue(QString("%1/_sessionAge").arg(_sessionId), 0);
+  bool b = false;
+  int i = val.toInt(&b);
+  if(b) {
+    return i;
+  } else {
+    // no int saved, delete session
+    //qDebug() << QString("deleting invalid session %1 (invalid session age found)").arg(_sessionId);
+    removeSession();
+  }
+  return 10;
+}
+
+void SessionSettings::removeSession() {
+  QStringList keys = localChildKeys(sessionId());
+  foreach(QString k, keys) {
+    removeKey(k);
+  }
+}
+
+void SessionSettings::setSessionAge(int age) {
+  setValue(QString("_sessionAge"),age);
+}
+
+void SessionSettings::sessionAging() {
+  QStringList sessions = localChildGroups();
+  QString str;
+  SessionSettings s(sessionId());
+  foreach(str, sessions) {
+    // load session and check age
+    s.setSessionId(str);
+    s.setSessionAge(s.sessionAge()+1);
+  }
+}
+

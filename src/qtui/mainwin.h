@@ -34,8 +34,8 @@
 #include <QSystemTrayIcon>
 
 #include "qtui.h"
-#include "sessionsettings.h"
 #include "titlesetter.h"
+#include "uisettings.h"
 
 class ActionCollection;
 class BufferView;

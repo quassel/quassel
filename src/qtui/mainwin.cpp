@@ -68,7 +68,6 @@
 #include "qtuiapplication.h"
 #include "qtuimessageprocessor.h"
 #include "qtuisettings.h"
-#include "sessionsettings.h"
 #include "settingsdlg.h"
 #include "settingspagedlg.h"
 #include "systemtray.h"

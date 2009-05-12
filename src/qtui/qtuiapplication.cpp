@@ -30,7 +30,6 @@
 #include "cliparser.h"
 #include "qtui.h"
 #include "qtuisettings.h"
-#include "sessionsettings.h"
 
 QtUiApplication::QtUiApplication(int &argc, char **argv)
 #ifdef HAVE_KDE
