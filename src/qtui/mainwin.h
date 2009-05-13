@@ -79,6 +79,9 @@ class MainWin
     static void flagRemoteCoreOnly(QObject *object) { object->setProperty("REMOTE_CORE_ONLY", true); }
     static bool isRemoteCoreOnly(QObject *object) { return object->property("REMOTE_CORE_ONLY").toBool(); }
 
+    void saveStateToSettings(UiSettings &);
+    void restoreStateFromSettings(UiSettings &);
+
   public slots:
     void saveStateToSession(const QString &sessionId);
     void saveStateToSessionSettings(SessionSettings &s);
@@ -92,6 +95,8 @@ class MainWin
   protected:
     void closeEvent(QCloseEvent *event);
     void changeEvent(QEvent *event);
+    void moveEvent(QMoveEvent *event);
+    void resizeEvent(QResizeEvent *event);
 
   protected slots:
     void connectedToCore();
@@ -130,6 +135,7 @@ class MainWin
     void connectOrDisconnectFromNet();
 
     void saveStatusBarStatus(bool enabled);
+    void aboutToQuit();
 
     void loadLayout();
     void saveLayout();
@@ -180,11 +186,16 @@ class MainWin
     QToolBar *_mainToolBar, *_chatViewToolBar, *_nickToolBar;
 
     QWidget *_awayLog;
-    friend class QtUi;
+
+    QSize _normalSize; //!< Size of the non-maximized window
+    QPoint _normalPos; //!< Position of the non-maximized window
+    bool _isHidden;
 
 #ifdef Q_WS_WIN
     DWORD dwTickCount;
 #endif
+
+    friend class QtUi;
 };
 
 SystemTray *MainWin::systemTray() const {

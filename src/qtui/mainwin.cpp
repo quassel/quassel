@@ -134,15 +134,10 @@ MainWin::MainWin(QWidget *parent)
   QtUiApplication* app = qobject_cast<QtUiApplication*> qApp;
   connect(app, SIGNAL(saveStateToSession(const QString&)), SLOT(saveStateToSession(const QString&)));
   connect(app, SIGNAL(saveStateToSessionSettings(SessionSettings&)), SLOT(saveStateToSessionSettings(SessionSettings&)));
+  connect(app, SIGNAL(aboutToQuit()), SLOT(aboutToQuit()));
 }
 
 void MainWin::init() {
-  QtUiSettings s;
-  if(s.value("MainWinSize").isValid())
-    resize(s.value("MainWinSize").toSize());
-  else
-    resize(QSize(800, 500));
-
   connect(QApplication::instance(), SIGNAL(aboutToQuit()), SLOT(saveLayout()));
   connect(Client::instance(), SIGNAL(networkCreated(NetworkId)), SLOT(clientNetworkCreated(NetworkId)));
   connect(Client::instance(), SIGNAL(networkRemoved(NetworkId)), SLOT(clientNetworkRemoved(NetworkId)));
@@ -184,15 +179,14 @@ void MainWin::init() {
   QtUi::registerNotificationBackend(new KNotificationBackend(this));
 #endif /* HAVE_KDE */
 
+  setDisconnectedState();  // Disable menus and stuff
+
   // restore mainwin state
-  restoreState(s.value("MainWinState").toByteArray());
+  QtUiSettings s;
+  restoreStateFromSettings(s);
 
   // restore locked state of docks
   QtUi::actionCollection("General")->action("LockLayout")->setChecked(s.value("LockLayout", false).toBool());
-
-  setDisconnectedState();  // Disable menus and stuff
-
-  show();
 
   if(Quassel::runMode() != Quassel::Monolithic) {
     showCoreConnectionDlg(true); // autoconnect if appropriate
@@ -202,10 +196,40 @@ void MainWin::init() {
 }
 
 MainWin::~MainWin() {
+
+}
+
+void MainWin::aboutToQuit() {
   QtUiSettings s;
-  s.setValue("MainWinSize", size());
-  s.setValue("MainWinPos", pos());
+  saveStateToSettings(s);
+}
+
+void MainWin::saveStateToSettings(UiSettings &s) {
+  s.setValue("MainWinSize", _normalSize);
+  s.setValue("MainWinPos", _normalPos);
   s.setValue("MainWinState", saveState());
+  s.setValue("MainWinGeometry", saveGeometry());
+  s.setValue("MainWinMinimized", isMinimized());
+  s.setValue("MainWinHidden", _isHidden);
+}
+
+void MainWin::restoreStateFromSettings(UiSettings &s) {
+  restoreGeometry(s.value("MainWinGeometry").toByteArray());
+  if(isMaximized()) {
+    // restoreGeometry() fails if the windows was maximized, so we resize and position explicitly
+    resize(s.value("MainWinSize", QSize(800, 500)).toSize());
+    move(s.value("MainWinPos").toPoint());
+  }
+
+  restoreState(s.value("MainWinState").toByteArray());
+
+  _isHidden = false;
+  if(s.value("MainWinHidden").toBool())
+    hideToTray();
+  else if(s.value("MainWinMinimized").toBool())
+    showMinimized();
+  else
+    show();
 }
 
 void MainWin::updateIcon() {
@@ -773,6 +797,28 @@ void MainWin::showShortcutsDlg() {
 }
 #endif
 
+/********************************************************************************************************/
+
+bool MainWin::event(QEvent *event) {
+  if(event->type() == QEvent::WindowActivate)
+    QtUi::closeNotifications();
+  return QMainWindow::event(event);
+}
+
+void MainWin::moveEvent(QMoveEvent *event) {
+  if(!(windowState() & Qt::WindowMaximized))
+    _normalPos = event->pos();
+
+  event->ignore();
+}
+
+void MainWin::resizeEvent(QResizeEvent *event) {
+  if(!(windowState() & Qt::WindowMaximized))
+    _normalSize = event->size();
+
+  event->ignore();
+}
+
 void MainWin::closeEvent(QCloseEvent *event) {
   QtUiSettings s;
   QtUiApplication* app = qobject_cast<QtUiApplication*> qApp;
@@ -784,12 +830,6 @@ void MainWin::closeEvent(QCloseEvent *event) {
     event->accept();
     QApplication::quit();
   }
-}
-
-bool MainWin::event(QEvent *event) {
-  if(event->type() == QEvent::WindowActivate)
-    QtUi::closeNotifications();
-  return QMainWindow::event(event);
 }
 
 void MainWin::changeEvent(QEvent *event) {
@@ -819,6 +859,7 @@ void MainWin::hideToTray() {
   }
   hide();
   systemTray()->setIconVisible();
+  _isHidden = true;
 }
 
 void MainWin::toggleMinimizedToTray() {
@@ -859,6 +900,7 @@ void MainWin::forceActivated() {
   show();
   raise();
   activateWindow();
+  _isHidden = false;
 }
 
 void MainWin::messagesInserted(const QModelIndex &parent, int start, int end) {
@@ -1006,6 +1048,7 @@ void MainWin::on_actionDebugLog_triggered() {
   logWidget->show();
 }
 
+// FIXME
 void MainWin::saveStateToSession(const QString &sessionId) {
   return;
   SessionSettings s(sessionId);
@@ -1015,6 +1058,7 @@ void MainWin::saveStateToSession(const QString &sessionId) {
   s.setValue("MainWinState", saveState());
 }
 
+// FIXME
 void MainWin::saveStateToSessionSettings(SessionSettings & s)
 {
   s.setValue("MainWinSize", size());
