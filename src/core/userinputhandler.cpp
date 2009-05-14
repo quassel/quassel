@@ -392,7 +392,7 @@ void UserInputHandler::defaultHandler(QString cmd, const BufferInfo &bufferInfo,
 
 void UserInputHandler::putPrivmsg(const QByteArray &target, const QByteArray &message) {
   static const char *cmd = "PRIVMSG";
-  int overrun = lastParamOverrun(cmd, QList<QByteArray>() << message);
+  int overrun = lastParamOverrun(cmd, QList<QByteArray>() << target << message);
   if(overrun) {
     static const char *splitter = " .,-";
     int maxSplitPos = message.count() - overrun;
@@ -439,7 +439,6 @@ int UserInputHandler::lastParamOverrun(const QString &cmd, const QList<QByteArra
     return 0;
   }
 }
-
 
 void UserInputHandler::timerEvent(QTimerEvent *event) {
   if(!_delayedCommands.contains(event->timerId())) {
