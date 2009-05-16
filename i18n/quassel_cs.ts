@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
 <TS version="2.0" language="cs">
-<defaultcodec></defaultcodec>
 <context>
     <name>AboutDlg</name>
     <message>
@@ -25,7 +24,7 @@
         <translation>Rádi bychom poděkovali následujícím přispěvatelům (v abecedním pořadí) a také všem, na které jsme zde zapoměli:</translation>
     </message>
     <message>
-        <location filename="../src/qtui/aboutdlg.cpp" line="115"/>
+        <location filename="../src/qtui/aboutdlg.cpp" line="116"/>
         <source>Special thanks goes to:&lt;br&gt;&lt;dl&gt;&lt;dt&gt;&lt;img src=&quot;:/pics/quassel-eye.png&quot;&gt;&amp;nbsp;&lt;b&gt;John &quot;nox&quot; Hand&lt;/b&gt;&lt;/dt&gt;&lt;dd&gt;for the original Quassel icon - The All-Seeing Eye&lt;/dt&gt;&lt;dt&gt;&lt;img src=&quot;:/pics/oxygen.png&quot;&gt;&amp;nbsp;&lt;b&gt;&lt;a href=&quot;http://www.oxygen-icons.org&quot;&gt;The Oxygen Team&lt;/a&gt;&lt;/b&gt;&lt;/dt&gt;&lt;dd&gt;for creating all the artwork you see throughout Quassel&lt;/dd&gt;&lt;dt&gt;&lt;img src=&quot;:/pics/qt-logo-32.png&quot;&gt;&amp;nbsp;&lt;b&gt;&lt;a href=&quot;http://www.trolltech.com&quot;&gt;Qt Software formerly known as Trolltech&lt;/a&gt;&lt;/b&gt;&lt;/dt&gt;&lt;dd&gt;for creating Qt and Qtopia, and for sponsoring development of QuasselTopia with Greenphones and more&lt;/dd&gt;&lt;dt&gt;&lt;a href=&quot;http://www.nokia.com&quot;&gt;&lt;img src=&quot;:/pics/nokia.png&quot;&gt;&lt;/a&gt;&lt;/b&gt;&lt;/dt&gt;&lt;dd&gt;for keeping Qt alive, and for sponsoring development of Quassel Mobile with N810s&lt;/dd&gt;</source>
         <translation>Zvláště bychom rádi poděkovali:&lt;br&gt;&lt;dl&gt;&lt;dt&gt;&lt;img src=&quot;:/pics/quassel-eye.png&quot;&gt;&amp;nbsp;&lt;b&gt;Johnu &quot;nox&quot; Handovi&lt;/b&gt;&lt;/dt&gt;&lt;dd&gt;pro skvělý artwork a Quassel logo/ikonku&lt;/dt&gt;&lt;dt&gt;&lt;img src=&quot;:/pics/oxygen.png&quot;&gt;&amp;nbsp;&lt;b&gt;&lt;a href=&quot;http://www.oxygen-icons.org&quot;&gt;Oxygen Team&lt;/a&gt;&lt;/b&gt;&lt;/dt&gt;&lt;dd&gt;pro vytvoření většiny ostatních skvělých ikon, které můžete vidět všude možně v aplikaci&lt;/dd&gt;&lt;dt&gt;&lt;img src=&quot;:/pics/qt-logo-32.png&quot;&gt;&amp;nbsp;&lt;b&gt;&lt;a href=&quot;http://www.trolltech.com&quot;&gt;Qt Software (dříve znám jako Trolltech)&lt;/a&gt;&lt;/b&gt;&lt;/dt&gt;&lt;dd&gt;za vytvoření Qt a Qtopia, a pro sponsorování vývoje QuasselTopia s Greenphones a dalších&lt;/dd&gt;&lt;dt&gt;&lt;b&gt;&lt;a href=&quot;http://www.nokia.com&quot;&gt;&lt;img src=&quot;:/pics/nokia.png&quot;&gt;&lt;/a&gt;&lt;/b&gt;&lt;/dt&gt;&lt;dd&gt;pro udržování Qt naživu, a pro sponzorování vývoje Quassel Mobile N810&lt;/dd&gt;</translation>
     </message>
@@ -991,7 +990,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/settingspages/colorsettingspage.ui" line="349"/>
         <source>Chatview</source>
-        <translation type="unfinished"></translation>
+        <translation>Okno chatu</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/colorsettingspage.ui" line="365"/>
@@ -1037,7 +1036,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/settingspages/colorsettingspage.ui" line="601"/>
         <source>Highlight Message:</source>
-        <translation type="unfinished"></translation>
+        <translation>Zvýrazněná zpráva:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/colorsettingspage.ui" line="619"/>
@@ -1047,37 +1046,37 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/settingspages/colorsettingspage.ui" line="661"/>
         <source>Action Message:</source>
-        <translation type="unfinished"></translation>
+        <translation>Akce:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/colorsettingspage.ui" line="707"/>
         <source>Join Message:</source>
-        <translation type="unfinished"></translation>
+        <translation>Vstoupení do kanálu:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/colorsettingspage.ui" line="753"/>
         <source>Kick Message:</source>
-        <translation type="unfinished"></translation>
+        <translation>Vyhození:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/colorsettingspage.ui" line="799"/>
         <source>Mode Message:</source>
-        <translation type="unfinished"></translation>
+        <translation>Zprávy módu:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/colorsettingspage.ui" line="845"/>
         <source>Part Message:</source>
-        <translation type="unfinished"></translation>
+        <translation>Opuštění:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/colorsettingspage.ui" line="891"/>
         <source>Quit Message:</source>
-        <translation type="unfinished"></translation>
+        <translation>Ukončení:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/colorsettingspage.ui" line="937"/>
         <source>Rename Message:</source>
-        <translation type="unfinished"></translation>
+        <translation>Přejmenování:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/colorsettingspage.ui" line="997"/>
@@ -1117,7 +1116,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/settingspages/colorsettingspage.ui" line="1300"/>
         <source>Url:</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/colorsettingspage.ui" line="1352"/>
@@ -1358,7 +1357,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="60"/>
         <source>Ping</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="61"/>
@@ -1468,7 +1467,7 @@ to work.</source>
     <message>
         <location filename="../src/core/core.cpp" line="255"/>
         <source>Creating admin user...</source>
-        <translation type="unfinished"></translation>
+        <translation>Vytvářím účet administrátora...</translation>
     </message>
     <message>
         <location filename="../src/core/core.cpp" line="368"/>
@@ -1508,7 +1507,7 @@ to work.</source>
     <message>
         <location filename="../src/core/core.cpp" line="454"/>
         <source>Client connected from</source>
-        <translation type="unfinished"></translation>
+        <translation>Klient připojen od</translation>
     </message>
     <message>
         <location filename="../src/core/core.cpp" line="457"/>
@@ -1518,7 +1517,7 @@ to work.</source>
     <message>
         <location filename="../src/core/core.cpp" line="476"/>
         <source>Antique client trying to connect... refusing.</source>
-        <translation type="unfinished"></translation>
+        <translation>Připojit se pokouší zastaralý klient... odmítam spojení.</translation>
     </message>
     <message>
         <location filename="../src/core/core.cpp" line="488"/>
@@ -1540,7 +1539,7 @@ to work.</source>
     <message>
         <location filename="../src/core/core.cpp" line="504"/>
         <source>&lt;b&gt;Quassel Core Version %1&lt;/b&gt;&lt;br&gt;Built: %2&lt;br&gt;Up %3d%4h%5m (since %6)</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Verze jádra %1&lt;/b&gt;&lt;br&gt;Sestavení: %2&lt;br&gt;Doba běhu %3d%4h%5m (od %6)</translation>
     </message>
     <message>
         <location filename="../src/core/core.cpp" line="554"/>
@@ -1570,7 +1569,7 @@ to work.</source>
     <message>
         <location filename="../src/core/core.cpp" line="609"/>
         <source>Non-authed client disconnected.</source>
-        <translation type="unfinished"></translation>
+        <translation>Neautorizovaný klient odpojen.</translation>
     </message>
     <message>
         <location filename="../src/core/core.cpp" line="615"/>
@@ -2432,7 +2431,7 @@ SOME SPACE</source>
     <message>
         <location filename="../src/qtui/settingspages/fontssettingspage.ui" line="445"/>
         <source>Some of these settings require a restart of the Quassel Client in order to take effect. We intend to fix this.</source>
-        <translation>Některá z těchto nastavení vyžadují restart Quassel klienta. Plánujeme to opravit :)</translation>
+        <translation>Některá z těchto nastavení vyžadují restart Quassel klienta. Plánujeme to opravit.</translation>
     </message>
 </context>
 <context>
@@ -2939,7 +2938,7 @@ SOME SPACE</source>
     <message>
         <location filename="../src/qtui/settingspages/identityeditwidget.ui" line="406"/>
         <source>Ident:</source>
-        <translation type="unfinished"></translation>
+        <translation>Identifikace:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/identityeditwidget.ui" line="413"/>
@@ -2969,7 +2968,7 @@ SOME SPACE</source>
     <message>
         <location filename="../src/qtui/settingspages/identityeditwidget.ui" line="487"/>
         <source>You need an SSL Capable Client to edit your Cores SSL Key and Certificate</source>
-        <translation type="unfinished"></translation>
+        <translation>Abyste byli schopni měnit nastavení SSL klíče a certifikátu musí váš klient podporovat SSL</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/identityeditwidget.ui" line="516"/>
@@ -3024,7 +3023,7 @@ Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificat
 <context>
     <name>InputLine</name>
     <message numerus="yes">
-        <location filename="../src/uisupport/inputline.cpp" line="209"/>
+        <location filename="../src/uisupport/inputline.cpp" line="211"/>
         <source>Do you really want to paste %n lines?</source>
         <translation>
             <numerusform>Opravdu chcete vložit %n řádek?</numerusform>
@@ -3033,7 +3032,7 @@ Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificat
         </translation>
     </message>
     <message>
-        <location filename="../src/uisupport/inputline.cpp" line="218"/>
+        <location filename="../src/uisupport/inputline.cpp" line="220"/>
         <source>Paste Protection</source>
         <translation>Ochrana při kopírovaní</translation>
     </message>
@@ -3085,148 +3084,158 @@ Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificat
 <context>
     <name>IrcServerHandler</name>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="464"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="477"/>
         <source>%1 has changed topic for %2 to: &quot;%3&quot;</source>
         <translation>%1 změnil téma pro %2 na: &quot;%3&quot;</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="489"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="502"/>
         <source>Received RPL_ISUPPORT (005) without parameters!</source>
         <translation>Obdrženo RPL_ISUPPORT (005) bez parametrů!</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="497"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="510"/>
         <source>Received non RFC compliant RPL_ISUPPORT: this can lead to unexpected behavior!</source>
         <translation>Obdržena RFC nekompatibilní RPL_ISUPPORT: což může vést k neočekávanému chování!</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="514"/>
-        <location filename="../src/core/ircserverhandler.cpp" line="521"/>
-        <location filename="../src/core/ircserverhandler.cpp" line="528"/>
-        <location filename="../src/core/ircserverhandler.cpp" line="535"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="527"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="534"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="541"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="548"/>
         <source>%1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="570"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="583"/>
         <source>[Whois] %1 is away: &quot;%2&quot;</source>
         <translation>[Whois] %1 je pryč: &quot;%2&quot;</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="576"/>
-        <location filename="../src/core/ircserverhandler.cpp" line="581"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="589"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="594"/>
         <source>%1 is away: &quot;%2&quot;</source>
         <translation>%1 je fuč: &quot;%2&quot;</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="625"/>
-        <location filename="../src/core/ircserverhandler.cpp" line="639"/>
-        <location filename="../src/core/ircserverhandler.cpp" line="673"/>
-        <location filename="../src/core/ircserverhandler.cpp" line="689"/>
-        <location filename="../src/core/ircserverhandler.cpp" line="750"/>
-        <location filename="../src/core/ircserverhandler.cpp" line="782"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="638"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="652"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="686"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="702"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="763"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="795"/>
         <source>[Whois] %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="654"/>
-        <location filename="../src/core/ircserverhandler.cpp" line="656"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="667"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="669"/>
         <source>[Whois] %1 is %2 (%3)</source>
         <translation>[Whois] %1 je %2 (%3)</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="671"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="684"/>
         <source>%1 is online via %2 (%3)</source>
         <translation>%1 je online skrze %2 (%3)</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="675"/>
-        <location filename="../src/core/ircserverhandler.cpp" line="933"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="688"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="966"/>
         <source>[Whowas] %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="701"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="714"/>
         <source>[Whowas] %1 was %2 (%3)</source>
         <translation>[Whowas] %1 byl %2 (%3)</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="715"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="728"/>
         <source>[Who] End of /WHO list for %1</source>
         <translation>[Who] Konec /WHO seznamu pro %1</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="735"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="748"/>
         <source>[Whois] %1 is logged in since %2</source>
         <translation>[Whois] %1 je přihlášen od %2</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="737"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="750"/>
         <source>[Whois] %1 is idling for %2 (%3)</source>
         <translation>[Whois] %1 je nečinný po %2 (%3)</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="740"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="753"/>
         <source>[Whois] idle message: %1</source>
         <translation>[Whois] důvod nečinnosti: %1</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="772"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="785"/>
         <source>[Whois] %1 is a user on channels: %2</source>
         <translation>[Whois] %1 je uživatelem kanálů: %2</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="774"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="787"/>
         <source>[Whois] %1 has voice on channels: %2</source>
         <translation>[Whois] %1 je mluvka na kanálech: %2</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="776"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="789"/>
         <source>[Whois] %1 is an operator on channels: %2</source>
         <translation>[Whois] %1 je dozorce na kanálech: %2</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="804"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="817"/>
         <source>Channel %1 has %2 users. Topic is: %3</source>
         <translation>Kanál %1 má %2 uživatelů. Tématem je: %3</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="813"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="826"/>
         <source>End of channel list</source>
         <translation>Konec seznamu s kanály</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="843"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="844"/>
+        <source>Homepage for %1 is %2</source>
+        <translation>Domovská stránka pro %1 je %2</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ircserverhandler.cpp" line="862"/>
+        <source>Channel %1 created on %2</source>
+        <translation>Kanál %1 byl vytvořen %2</translation>
+    </message>
+    <message>
+        <location filename="../src/core/ircserverhandler.cpp" line="876"/>
         <source>No topic is set for %1.</source>
         <translation>Pro %1 není nastaveno žádné téma.</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="858"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="891"/>
         <source>Topic for %1 is &quot;%2&quot;</source>
         <translation>Téma pro %1 je &quot;%2&quot;</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="869"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="902"/>
         <source>Topic set by %1 on %2</source>
         <translation>Téma nastavil %1 v %2</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="892"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="925"/>
         <source>[Who] %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="951"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="984"/>
         <source>Nick %1 contains illegal characters</source>
         <translation>Přezdívka %1 obsahuje neplatné znaky</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="962"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="995"/>
         <source>Nick already in use: %1</source>
         <translation>Přezdívka se již používá: %1</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="987"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="1020"/>
         <source>No free and valid nicks in nicklist found. use: /nick &lt;othernick&gt; to continue</source>
         <translation>Nebyla nalezena žádná volná a platná přezdívka ze seznamu přezdívek. Pro pokračování použíjte: /nick &lt;jiná_přezdívka&gt;</translation>
     </message>
@@ -3252,197 +3261,197 @@ Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificat
 <context>
     <name>MainWin</name>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="223"/>
+        <location filename="../src/qtui/mainwin.cpp" line="254"/>
         <source>&amp;Connect to Core...</source>
         <translation>Přip&amp;ojit k jádru...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="225"/>
+        <location filename="../src/qtui/mainwin.cpp" line="256"/>
         <source>&amp;Disconnect from Core</source>
         <translation>O&amp;dpojit od jádra</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="227"/>
+        <location filename="../src/qtui/mainwin.cpp" line="258"/>
         <source>Core &amp;Info...</source>
         <translation>&amp;Informace jádra...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="231"/>
+        <location filename="../src/qtui/mainwin.cpp" line="262"/>
         <source>&amp;Quit</source>
         <translation>&amp;Ukončit</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="232"/>
+        <location filename="../src/qtui/mainwin.cpp" line="263"/>
         <source>Ctrl+Q</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="242"/>
+        <location filename="../src/qtui/mainwin.cpp" line="273"/>
         <source>Show &amp;Search Bar</source>
         <translation>Zobrazit vy&amp;hledávání</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="229"/>
+        <location filename="../src/qtui/mainwin.cpp" line="260"/>
         <source>Configure &amp;Networks...</source>
         <translation>Nastavit &amp;sítě...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="235"/>
+        <location filename="../src/qtui/mainwin.cpp" line="266"/>
         <source>&amp;Configure Buffer Views...</source>
         <translation>&amp;Nastavit pohledy na záložky...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="238"/>
+        <location filename="../src/qtui/mainwin.cpp" line="269"/>
         <source>&amp;Lock Layout</source>
         <translation>U&amp;zamknout rozvržení</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="244"/>
+        <location filename="../src/qtui/mainwin.cpp" line="275"/>
         <source>Show Away Log</source>
         <translation>Zobrazit Log pro Pryč</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="246"/>
+        <location filename="../src/qtui/mainwin.cpp" line="277"/>
         <source>Show Status &amp;Bar</source>
         <translation>Zo&amp;brazit stavový řádek</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="250"/>
+        <location filename="../src/qtui/mainwin.cpp" line="281"/>
         <source>&amp;Configure Quassel...</source>
         <translation>&amp;Nastavit Quassel...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="251"/>
+        <location filename="../src/qtui/mainwin.cpp" line="282"/>
         <source>F7</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="254"/>
+        <location filename="../src/qtui/mainwin.cpp" line="285"/>
         <source>&amp;About Quassel</source>
         <translation>O progr&amp;amu Quassel</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="256"/>
+        <location filename="../src/qtui/mainwin.cpp" line="287"/>
         <source>About &amp;Qt</source>
         <translation>O &amp;Qt</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="258"/>
+        <location filename="../src/qtui/mainwin.cpp" line="289"/>
         <source>Debug &amp;NetworkModel</source>
         <translation>Ladění Sít&amp;ovéhoModelu</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="260"/>
+        <location filename="../src/qtui/mainwin.cpp" line="291"/>
         <source>Debug &amp;BufferViewOverlay</source>
         <translation>Ladění vrstvy P&amp;ohledu na záložky</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="262"/>
+        <location filename="../src/qtui/mainwin.cpp" line="293"/>
         <source>Debug &amp;MessageModel</source>
         <translation>Ladění &amp;ModeluZpráv</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="264"/>
+        <location filename="../src/qtui/mainwin.cpp" line="295"/>
         <source>Debug &amp;Log</source>
         <translation>Ladící &amp;Log</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="271"/>
+        <location filename="../src/qtui/mainwin.cpp" line="302"/>
         <source>&amp;File</source>
         <translation>S&amp;oubor</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="284"/>
+        <location filename="../src/qtui/mainwin.cpp" line="315"/>
         <source>&amp;Networks</source>
         <translation>&amp;Sítě</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="290"/>
+        <location filename="../src/qtui/mainwin.cpp" line="321"/>
         <source>&amp;View</source>
         <translation>&amp;Záložky</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="291"/>
+        <location filename="../src/qtui/mainwin.cpp" line="322"/>
         <source>&amp;Buffer Views</source>
         <translation>&amp;Pohledy na záložky</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="293"/>
+        <location filename="../src/qtui/mainwin.cpp" line="324"/>
         <source>&amp;Toolbars</source>
         <translation>Liš&amp;ty</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="305"/>
+        <location filename="../src/qtui/mainwin.cpp" line="336"/>
         <source>&amp;Settings</source>
         <translation>Na&amp;stavení</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="312"/>
+        <location filename="../src/qtui/mainwin.cpp" line="343"/>
         <source>&amp;Help</source>
         <translation>&amp;Nápověda</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="320"/>
+        <location filename="../src/qtui/mainwin.cpp" line="351"/>
         <source>Debug</source>
         <translation>Debug</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="445"/>
+        <location filename="../src/qtui/mainwin.cpp" line="476"/>
         <source>Nicks</source>
         <translation>Přezdívky</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="454"/>
+        <location filename="../src/qtui/mainwin.cpp" line="485"/>
         <source>Show Nick List</source>
         <translation>Zobrazit seznam přezdívek</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="465"/>
+        <location filename="../src/qtui/mainwin.cpp" line="496"/>
         <source>Chat Monitor</source>
         <translation>Monitor pokecu</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="476"/>
+        <location filename="../src/qtui/mainwin.cpp" line="507"/>
         <source>Show Chat Monitor</source>
         <translation>Zobrazí monitor pokecu</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="480"/>
+        <location filename="../src/qtui/mainwin.cpp" line="511"/>
         <source>Inputline</source>
         <translation>Vstupní řádka</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="489"/>
+        <location filename="../src/qtui/mainwin.cpp" line="520"/>
         <source>Show Input Line</source>
         <translation>Zobrasit řádku se vstupem</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="500"/>
+        <location filename="../src/qtui/mainwin.cpp" line="531"/>
         <source>Topic</source>
         <translation>Téma</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="512"/>
+        <location filename="../src/qtui/mainwin.cpp" line="543"/>
         <source>Show Topic Line</source>
         <translation>Zobrazit řádek s tématem</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="570"/>
+        <location filename="../src/qtui/mainwin.cpp" line="596"/>
         <source>Main Toolbar</source>
         <translation>Hlavní nástrojová lišta</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="630"/>
+        <location filename="../src/qtui/mainwin.cpp" line="644"/>
         <source>Connected to core.</source>
         <translation>Připojen k jádru.</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="664"/>
+        <location filename="../src/qtui/mainwin.cpp" line="678"/>
         <source>Core Lag: %1</source>
         <translation>Spoždění jádra: %1</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="700"/>
+        <location filename="../src/qtui/mainwin.cpp" line="714"/>
         <source>Not connected to core.</source>
         <translation>Nepřipojen k jádru.</translation>
     </message>
@@ -3777,12 +3786,12 @@ Note that Quassel IRC automatically rejoins channels, so /join will rarely be ne
     <message>
         <location filename="../src/qtui/settingspages/networkssettingspage.ui" line="569"/>
         <source>Configure advanced settings such as message encodings and automatic reconnect</source>
-        <translation type="unfinished"></translation>
+        <translation>Nastavení pokročilých možností, jako kódování a automatické opakování připojení</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/networkssettingspage.ui" line="578"/>
         <source>Control encodings for in- and outgoing messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Nastavení kódování pro příchozí a odchozí zprávy</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/networkssettingspage.ui" line="566"/>
@@ -3915,7 +3924,7 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
 <context>
     <name>PhononNotificationBackend::ConfigWidget</name>
     <message>
-        <location filename="../src/qtui/phononnotificationbackend.cpp" line="141"/>
+        <location filename="../src/qtui/phononnotificationbackend.cpp" line="142"/>
         <source>Select Audio File</source>
         <translation>Vyberte zvukový soubor</translation>
     </message>
@@ -4440,17 +4449,17 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
 <context>
     <name>SystrayNotificationBackend::ConfigWidget</name>
     <message>
-        <location filename="../src/qtui/systraynotificationbackend.cpp" line="114"/>
+        <location filename="../src/qtui/systraynotificationbackend.cpp" line="127"/>
         <source>System Tray Icon</source>
         <translation>Ikonka v systémovém panelu</translation>
     </message>
     <message>
-        <location filename="../src/qtui/systraynotificationbackend.cpp" line="115"/>
+        <location filename="../src/qtui/systraynotificationbackend.cpp" line="128"/>
         <source>Animate</source>
         <translation>Animovat</translation>
     </message>
     <message>
-        <location filename="../src/qtui/systraynotificationbackend.cpp" line="117"/>
+        <location filename="../src/qtui/systraynotificationbackend.cpp" line="130"/>
         <source>Show bubble</source>
         <translation>Zobrazovat bublinu</translation>
     </message>
