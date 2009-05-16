@@ -222,8 +222,10 @@ void InputLine::on_textChanged(QString newText) {
 #ifdef Q_WS_MAC
     question.setWindowFlags(question.windowFlags() | Qt::Sheet); // Qt::Sheet is not ignored on other platforms as it should :/
 #endif
-    if(question.exec() == QMessageBox::No)
+    if(question.exec() == QMessageBox::No) {
+      clear();
       return;
+    }
   }
 
   foreach(QString line, lines) {
