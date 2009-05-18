@@ -100,7 +100,11 @@ if(CMAKE_COMPILER_IS_GNUCXX)
   set(CMAKE_CXX_FLAGS_DEBUGFULL "-g3")
 endif(CMAKE_COMPILER_IS_GNUCXX)
 
-set(QT_MIN_VERSION "4.4.0")
+if(WANT_MONO OR WANT_QTCLIENT)
+  set(QT_MIN_VERSION "4.4.1") # Client crashes often with 4.4.0
+else(WANT_MONO OR WANT_QTCLIENT)
+  set(QT_MIN_VERSION "4.4.0")
+endif(WANT_MONO OR WANT_QTCLIENT)
 
 if(APPLE AND DEPLOY)
   set(CMAKE_OSX_ARCHITECTURES "i386;ppc")
@@ -256,11 +260,6 @@ if(WIN32)
 
   set(RC_WIN32 ../pics/win32.rc)  # for app icons on windows
 endif(WIN32)
-
-if(STATIC)
-  link_directories(${QT_PLUGINS_DIR}/imageformats)
-  link_libraries(qjpeg qgif)
-endif(STATIC)
 
 # We need to create a version.gen
 # For this, we create our genversion binary and make sure it is run every time.
