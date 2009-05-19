@@ -201,6 +201,11 @@ void CoreSession::recvMessageFromServer(Message::Type type, BufferInfo::Type buf
   CoreNetwork *net = qobject_cast<CoreNetwork*>(this->sender());
   Q_ASSERT(net);
 
+  // U+FDD0 and U+FDD1 are special characters for Qt's text engine, specifically they mark the boundaries of
+  // text frames in a QTextDocument. This might lead to problems in widgets displaying QTextDocuments (such as
+  // KDE's notifications), hence we remove those just to be safe.
+  text.remove(QChar(0xfdd0)).remove(QChar(0xfdd1));
+
   BufferInfo bufferInfo = Core::bufferInfo(user(), net->networkId(), bufferType, target);
   Message msg(bufferInfo, type, text, sender, flags);
   msg.setMsgId(Core::storeMessage(msg));
