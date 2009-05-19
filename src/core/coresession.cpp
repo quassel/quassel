@@ -203,7 +203,14 @@ void CoreSession::msgFromClient(BufferInfo bufinfo, QString msg) {
 // ALL messages coming pass through these functions before going to the GUI.
 // So this is the perfect place for storing the backlog and log stuff.
 void CoreSession::recvMessageFromServer(NetworkId networkId, Message::Type type, BufferInfo::Type bufferType,
-                                        const QString &target, const QString &text, const QString &sender, Message::Flags flags) {
+                                        const QString &target, const QString &text_, const QString &sender, Message::Flags flags) {
+
+  // U+FDD0 and U+FDD1 are special characters for Qt's text engine, specifically they mark the boundaries of
+  // text frames in a QTextDocument. This might lead to problems in widgets displaying QTextDocuments (such as
+  // KDE's notifications), hence we remove those just to be safe.
+  QString text = text_;
+  text.remove(QChar(0xfdd0)).remove(QChar(0xfdd1));
+
   _messageQueue << RawMessage(networkId, type, bufferType, target, text, sender, flags);
   if(!_processMessages) {
     _processMessages = true;
