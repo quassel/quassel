@@ -13,8 +13,26 @@ changes, the git history at <http://git.quassel-irc.org> is your friend.
 
 Without further ado, let's start:
 
+Version 0.4.2 (2009-05-20)
+==========================
+Bugfix release
+
+* Improve system tray notifications
+* Change to highlighted channel if notification or blinking tray icon is clicked
+* Properly save/restore window size and state
+* Translation update: Norwegian
+
+Version 0.4.1 (2009-03-18)
+==========================
+Bugfix release
+
+* Improved ping timeout detection
+* Improved flood control
+* Add --version (-v) switch for non-KDEified Quassel
+* Translation updates: Slovenian, Russian, French, Czech, German, Turkish
+
 Version 0.4.0 (2009-02-17)
-================================
+==========================
 
 * Buffer view font can now be changed
 * Colored nicknames
@@ -52,7 +70,7 @@ Version 0.4.0 (2009-02-17)
   - Drag'n'Drop
 
 Version 0.3.1 (2008-11-20)
-================================
+==========================
 
 * Nick changes and day change messages can now be hidden
 * Web previews and status icons can be disabled
