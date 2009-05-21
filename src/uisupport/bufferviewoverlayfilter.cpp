@@ -69,9 +69,15 @@ bool BufferViewOverlayFilter::filterAcceptsRow(int source_row, const QModelIndex
     return false;
   }
 
-  NetworkId networkId =  sourceModel()->data(source_bufferIndex, NetworkModel::NetworkIdRole).value<NetworkId>();
-  if(!_overlay->networkIds().contains(networkId) && ! _overlay->allNetworks())
+  NetworkModel::ItemType itemType = (NetworkModel::ItemType)sourceModel()->data(source_bufferIndex, NetworkModel::ItemTypeRole).toInt();
+
+  NetworkId networkId = sourceModel()->data(source_bufferIndex, NetworkModel::NetworkIdRole).value<NetworkId>();
+  if(!_overlay->networkIds().contains(networkId) && ! _overlay->allNetworks()) {
     return false;
+  } else if(itemType == NetworkModel::NetworkItemType) {
+    // network items don't need further checks.
+    return true;
+  }
 
   int activityLevel = sourceModel()->data(source_bufferIndex, NetworkModel::BufferActivityRole).toInt();
   if(_overlay->minimumActivity() > activityLevel)
