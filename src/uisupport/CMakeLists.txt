@@ -16,6 +16,7 @@ set(SOURCES
     clickablelabel.cpp
     colorbutton.cpp
     contextmenuactionprovider.cpp
+    flatproxymodel.cpp
     graphicalui.cpp
     icon.cpp
     iconloader.cpp
@@ -43,6 +44,7 @@ set(MOC_HDRS
     clickablelabel.h
     colorbutton.h
     contextmenuactionprovider.h
+    flatproxymodel.h
     graphicalui.h
     iconloader.h
     inputline.h
