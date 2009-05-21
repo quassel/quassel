@@ -216,6 +216,7 @@ void BufferItem::setActivityLevel(BufferInfo::ActivityLevel level) {
 void BufferItem::clearActivityLevel() {
   _activity = BufferInfo::NoActivity;
   _lastSeenMarkerMsgId = _lastSeenMsgId;
+  _firstUnreadMsgId = MsgId();
   emit dataChanged();
 }
 
@@ -227,9 +228,15 @@ void BufferItem::updateActivityLevel(const Message &msg) {
   if(msg.flags() & Message::Self)	// don't update activity for our own messages
     return;
 
-  if(lastSeenMsgId() >= msg.msgId())
+  if(msg.msgId() <= lastSeenMsgId())
     return;
 
+  bool stateChanged = false;
+  if(!firstUnreadMsgId().isValid() || msg.msgId() < firstUnreadMsgId()) {
+    stateChanged = true;
+    _firstUnreadMsgId = msg.msgId();
+  }
+     
   BufferInfo::ActivityLevel oldLevel = activityLevel();
 
   _activity |= BufferInfo::OtherActivity;
@@ -239,7 +246,9 @@ void BufferItem::updateActivityLevel(const Message &msg) {
   if(msg.flags() & Message::Highlight)
     _activity |= BufferInfo::Highlight;
 
-  if(oldLevel != _activity)
+  stateChanged |= (oldLevel != _activity);
+
+  if(stateChanged)
     emit dataChanged();
 }
 
@@ -259,6 +268,8 @@ QVariant BufferItem::data(int column, int role) const {
     return isActive();
   case NetworkModel::BufferActivityRole:
     return (int)activityLevel();
+  case NetworkModel::BufferFirstUnreadMsgIdRole:
+    return qVariantFromValue(firstUnreadMsgId());
   default:
     return PropertyMapItem::data(column, role);
   }

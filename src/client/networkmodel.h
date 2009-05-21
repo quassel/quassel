@@ -113,6 +113,8 @@ public:
   void clearActivityLevel();
   void updateActivityLevel(const Message &msg);
 
+  inline const MsgId &firstUnreadMsgId() const { return _firstUnreadMsgId; }
+
   bool isCurrentBuffer() const;
   virtual QString toolTip(int column) const;
 
@@ -124,6 +126,7 @@ private:
   BufferInfo::ActivityLevel _activity;
   MsgId _lastSeenMsgId;
   MsgId _lastSeenMarkerMsgId;
+  MsgId _firstUnreadMsgId;
 };
 
 /*****************************************
@@ -270,7 +273,8 @@ public:
     ItemTypeRole,
     UserAwayRole,
     IrcUserRole,
-    IrcChannelRole
+    IrcChannelRole,
+    BufferFirstUnreadMsgIdRole,
   };
 
   enum ItemType {
