@@ -44,30 +44,28 @@ bool BufferHotListFilter::filterAcceptsRow(int source_row, const QModelIndex &so
     NetworkModel::ItemType itemType = (NetworkModel::ItemType)sourceModel()->data(source_index, NetworkModel::ItemTypeRole).toInt();
     return itemType == NetworkModel::NetworkItemType;
   }
+
+  return true;
 }
 
 bool BufferHotListFilter::lessThan(const QModelIndex &source_left, const QModelIndex &source_right) const {
-  qDebug() << Q_FUNC_INFO;
-  qDebug() << source_left << source_right;
   int leftActivity = sourceModel()->data(source_left, NetworkModel::BufferActivityRole).toInt();
   int rightActivity = sourceModel()->data(source_right, NetworkModel::BufferActivityRole).toInt();
-  qDebug() << leftActivity << rightActivity;
   if(leftActivity != rightActivity)
     return leftActivity < rightActivity;
 
   MsgId leftUnreadMsgId = sourceModel()->data(source_left, NetworkModel::BufferFirstUnreadMsgIdRole).value<MsgId>();
   MsgId rightUnreadMsgId = sourceModel()->data(source_right, NetworkModel::BufferFirstUnreadMsgIdRole).value<MsgId>();
-  qDebug() << leftUnreadMsgId << rightUnreadMsgId;
   return leftUnreadMsgId > rightUnreadMsgId; // newer messages are treated to be "less"
 }
 
-QVariant BufferHotListFilter::data(const QModelIndex &index, int role) const {
-  QVariant d = QSortFilterProxyModel::data(index, role);
+// QVariant BufferHotListFilter::data(const QModelIndex &index, int role) const {
+//   QVariant d = QSortFilterProxyModel::data(index, role);
 
-  if(role == Qt::DisplayRole) {
-    int activity = QSortFilterProxyModel::data(index, NetworkModel::BufferActivityRole).toInt();    
-    MsgId unreadMsgId = QSortFilterProxyModel::data(index, NetworkModel::BufferFirstUnreadMsgIdRole).value<MsgId>();
-    return QString("%1 %2 %3").arg(d.toString()).arg(activity).arg(unreadMsgId.toInt());
-  }
-  return d;
-}
+//   if(role == Qt::DisplayRole) {
+//     int activity = QSortFilterProxyModel::data(index, NetworkModel::BufferActivityRole).toInt();    
+//     MsgId unreadMsgId = QSortFilterProxyModel::data(index, NetworkModel::BufferFirstUnreadMsgIdRole).value<MsgId>();
+//     return QString("%1 %2 %3").arg(d.toString()).arg(activity).arg(unreadMsgId.toInt());
+//   }
+//   return d;
+// }

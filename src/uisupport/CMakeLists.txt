@@ -9,6 +9,7 @@ set(SOURCES
     abstractitemview.cpp
     action.cpp
     actioncollection.cpp
+    bufferhotlistfilter.cpp
     bufferview.cpp
     bufferviewfilter.cpp
     bufferviewoverlayfilter.cpp
@@ -37,6 +38,7 @@ set(MOC_HDRS
     abstractnotificationbackend.h
     action.h
     actioncollection.h
+    bufferhotlistfilter.h
     bufferview.h
     bufferviewfilter.h
     bufferviewoverlayfilter.h

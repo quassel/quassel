@@ -30,7 +30,7 @@ public:
   BufferHotListFilter(QAbstractItemModel *source, QObject *parent = 0);
 
   virtual inline int columnCount(const QModelIndex &) const { return 1; }
-  QVariant data(const QModelIndex &index, int role) const;
+//   QVariant data(const QModelIndex &index, int role) const;
 
 protected:
   virtual bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;

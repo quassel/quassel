@@ -10,7 +10,6 @@ set(SOURCES
     abstractmessageprocessor.cpp
     abstractui.cpp
     backlogrequester.cpp
-    bufferhotlistfilter.cpp
     buffermodel.cpp
     buffersettings.cpp
     bufferviewoverlay.cpp
@@ -35,7 +34,6 @@ set(SOURCES
 set(MOC_HDRS
     abstractmessageprocessor.h
     abstractui.h
-    bufferhotlistfilter.h
     buffermodel.h
     bufferviewoverlay.h
     client.h

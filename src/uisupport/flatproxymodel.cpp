@@ -652,7 +652,7 @@ FlatProxyModel::SourceItem *FlatProxyModel::SourceItem::findChild(int proxyPos) 
   int start = 0;
   int end = _childs.count() - 1;
   int pivot;
-  while(end - start != 1) {
+  while(end - start > 1) {
     pivot = (end + start) / 2;
     if(_childs[pivot]->pos() > proxyPos)
       end = pivot;

@@ -38,6 +38,7 @@
 #include "uisettings.h"
 
 class ActionCollection;
+class BufferHotListFilter;
 class BufferView;
 class BufferViewConfig;
 class ClientBufferViewConfig;
@@ -124,9 +125,11 @@ class MainWin
     void on_actionConfigureNetworks_triggered();
     void on_actionConfigureViews_triggered();
     void on_actionLockLayout_toggled(bool lock);
+    void on_jumpHotBuffer_triggered();
     void on_actionDebugNetworkModel_triggered();
     void on_actionDebugBufferViewOverlay_triggered();
     void on_actionDebugMessageModel_triggered();
+    void on_actionDebugHotList_triggered();
     void on_actionDebugLog_triggered();
 
     void clientNetworkCreated(NetworkId);
@@ -168,6 +171,7 @@ class MainWin
     void setupSystray();
     void setupTitleSetter();
     void setupToolBars();
+    void setupHotList();
 
     void updateIcon();
     void enableMenus();
@@ -194,6 +198,8 @@ class MainWin
 #ifdef Q_WS_WIN
     DWORD dwTickCount;
 #endif
+
+    BufferHotListFilter *_bufferHotList;
 
     friend class QtUi;
 };
