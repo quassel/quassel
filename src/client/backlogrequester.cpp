@@ -57,6 +57,16 @@ BufferIdList BacklogRequester::allBufferIds() const {
   return bufferIds.toList();
 }
 
+void BacklogRequester::flushBuffer() {
+  if(!_buffersWaiting.isEmpty()) {
+    qWarning() << Q_FUNC_INFO << "was called before all backlog was received:"
+               << _buffersWaiting.count() << "buffers are waiting.";
+  }
+  _bufferedMessages.clear();
+  _totalBuffers = 0;
+  _buffersWaiting.clear();
+}
+
 // ========================================
 //  FIXED BACKLOG REQUESTER
 // ========================================

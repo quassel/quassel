@@ -56,7 +56,6 @@ signals:
 
 private:
   bool isBuffering();
-  void stopBuffering();
   BufferIdList filterNewBufferIds(const BufferIdList &bufferIds);
 
   void dispatchMessages(const MessageList &messages, bool sort = false);

@@ -48,11 +48,13 @@ public:
 
   inline int buffersWaiting() const { return _buffersWaiting.count(); }
   inline int totalBuffers() const { return _totalBuffers; }
-  //! returns false if it was the last missing backlogpart
-  bool buffer(BufferId bufferId, const MessageList &messages);
-  
+
+  bool buffer(BufferId bufferId, const MessageList &messages); //! returns false if it was the last missing backlogpart
+
   virtual void requestBacklog(const BufferIdList &bufferIds) = 0;
   virtual inline void requestInitialBacklog() { requestBacklog(allBufferIds()); }
+
+  virtual void flushBuffer();
 
 protected:
   BufferIdList allBufferIds() const;
