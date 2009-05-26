@@ -212,15 +212,18 @@ void MainWin::saveStateToSettings(UiSettings &s) {
   s.setValue("MainWinState", saveState());
   s.setValue("MainWinGeometry", saveGeometry());
   s.setValue("MainWinMinimized", isMinimized());
+  s.setValue("MainWinMaximized", isMaximized());
   s.setValue("MainWinHidden", _isHidden);
 }
 
 void MainWin::restoreStateFromSettings(UiSettings &s) {
   _normalSize = s.value("MainWinSize", size()).toSize();
   _normalPos = s.value("MainWinPos", pos()).toPoint();
+  bool maximized = s.value("MainWinMaximized", false).toBool();
 
   restoreGeometry(s.value("MainWinGeometry").toByteArray());
-  if(isMaximized()) {
+
+  if(maximized) {
     // restoreGeometry() fails if the windows was maximized, so we resize and position explicitly
     resize(_normalSize);
     move(_normalPos);
@@ -233,6 +236,8 @@ void MainWin::restoreStateFromSettings(UiSettings &s) {
     hideToTray();
   else if(s.value("MainWinMinimized").toBool())
     showMinimized();
+  else if(maximized)
+    showMaximized();
   else
     show();
 }
@@ -903,7 +908,8 @@ void MainWin::forceActivated() {
     setWindowState((windowState() & ~Qt::WindowMinimized) | Qt::WindowActive);
   }
 
-  move(frameGeometry().topLeft()); // avoid placement policies
+  // this does not actually work on all platforms... and causes more evil than good
+  // move(frameGeometry().topLeft()); // avoid placement policies
   show();
   raise();
   activateWindow();
