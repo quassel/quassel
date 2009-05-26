@@ -34,13 +34,8 @@ GeneralSettingsPage::GeneralSettingsPage(QWidget *parent)
   ui.macOnly->hide();
 #endif
 
-#ifdef Q_WS_WIN
-  ui.minimizeOnMinimize->hide();
-#endif
-
   connect(ui.useSystemTrayIcon, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
   connect(ui.showSystemTrayIcon, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
-  connect(ui.minimizeOnMinimize, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
   connect(ui.minimizeOnClose, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
 
   connect(ui.userNoticesInDefaultBuffer, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
@@ -67,7 +62,6 @@ bool GeneralSettingsPage::hasDefaults() const {
 void GeneralSettingsPage::defaults() {
   ui.useSystemTrayIcon->setChecked(true);
   ui.showSystemTrayIcon->setChecked(true);
-  ui.minimizeOnMinimize->setChecked(false);
   ui.minimizeOnClose->setChecked(false);
 
   ui.userNoticesInDefaultBuffer->setChecked(true);
@@ -97,9 +91,6 @@ void GeneralSettingsPage::load() {
   settings["UseSystemTrayIcon"] = qtuiSettings.value("UseSystemTrayIcon", QVariant(true));
   ui.useSystemTrayIcon->setChecked(settings["UseSystemTrayIcon"].toBool());
   ui.showSystemTrayIcon->setChecked(settings["UseSystemTrayIcon"].toBool());
-
-  settings["MinimizeOnMinimize"] = qtuiSettings.value("MinimizeOnMinimize", QVariant(false));
-  ui.minimizeOnMinimize->setChecked(settings["MinimizeOnMinimize"].toBool());
 
   settings["MinimizeOnClose"] = qtuiSettings.value("MinimizeOnClose", QVariant(false));
   ui.minimizeOnClose->setChecked(settings["MinimizeOnClose"].toBool());
@@ -143,7 +134,6 @@ void GeneralSettingsPage::save() {
 #else
   qtuiSettings.setValue("UseSystemTrayIcon", ui.useSystemTrayIcon->isChecked());
 #endif
-  qtuiSettings.setValue("MinimizeOnMinimize",  ui.minimizeOnMinimize->isChecked());
   qtuiSettings.setValue("MinimizeOnClose", ui.minimizeOnClose->isChecked());
 
   UiSettings uiSettings;
@@ -198,7 +188,6 @@ bool GeneralSettingsPage::testHasChanged() {
 #else
   if(settings["UseSystemTrayIcon"].toBool() != ui.useSystemTrayIcon->isChecked()) return true;
 #endif
-  if(settings["MinimizeOnMinimize"].toBool() != ui.minimizeOnMinimize->isChecked()) return true;
   if(settings["MinimizeOnClose"].toBool() != ui.minimizeOnClose->isChecked()) return true;
 
   if(SettingsPage::hasChanged(ui.userNoticesInStatusBuffer)) return true;

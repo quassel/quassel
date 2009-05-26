@@ -850,23 +850,12 @@ void MainWin::closeEvent(QCloseEvent *event) {
 }
 
 void MainWin::changeEvent(QEvent *event) {
-  if(event->type() == QEvent::WindowStateChange) {
-    if(windowState() & Qt::WindowMinimized) {
-      QtUiSettings s;
-      if(s.value("UseSystemTrayIcon").toBool() && s.value("MinimizeOnMinimize").toBool()) {
-        hideToTray();
-        event->accept();
-        return;
-      }
-    }
-  }
-
 #ifdef Q_WS_WIN
-  else if(event->type() == QEvent::ActivationChange)
+  if(event->type() == QEvent::ActivationChange)
     dwTickCount = GetTickCount();  // needed for toggleMinimizedToTray()
 #endif
 
-  event->ignore();
+  QMainWindow::changeEvent(event);
 }
 
 void MainWin::hideToTray() {
