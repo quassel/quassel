@@ -51,13 +51,7 @@ public:
   virtual void commitData(QSessionManager &manager);
   virtual void saveState(QSessionManager &manager);
 
-  inline bool aboutToQuit() const { return _aboutToQuit; }
-
-signals:
-  void saveStateToSession(const QString &sessionId);
-  void saveStateToSessionSettings(SessionSettings &s); // FIXME refs in signals won't probably work
-  void resumeFromSession(const QString sessionId);
-  void resumeFromSessionSettings(SessionSettings &s);
+  inline bool isAboutToQuit() const { return _aboutToQuit; }
 
 private:
   bool _aboutToQuit;

@@ -135,8 +135,6 @@ MainWin::MainWin(QWidget *parent)
   installEventFilter(new JumpKeyHandler(this));
 
   QtUiApplication* app = qobject_cast<QtUiApplication*> qApp;
-  connect(app, SIGNAL(saveStateToSession(const QString&)), SLOT(saveStateToSession(const QString&)));
-  connect(app, SIGNAL(saveStateToSessionSettings(SessionSettings&)), SLOT(saveStateToSessionSettings(SessionSettings&)));
   connect(app, SIGNAL(aboutToQuit()), SLOT(aboutToQuit()));
 }
 
@@ -218,11 +216,14 @@ void MainWin::saveStateToSettings(UiSettings &s) {
 }
 
 void MainWin::restoreStateFromSettings(UiSettings &s) {
+  _normalSize = s.value("MainWinSize", size()).toSize();
+  _normalPos = s.value("MainWinPos", pos()).toPoint();
+
   restoreGeometry(s.value("MainWinGeometry").toByteArray());
   if(isMaximized()) {
     // restoreGeometry() fails if the windows was maximized, so we resize and position explicitly
-    resize(s.value("MainWinSize", QSize(800, 500)).toSize());
-    move(s.value("MainWinPos").toPoint());
+    resize(_normalSize);
+    move(_normalPos);
   }
 
   restoreState(s.value("MainWinState").toByteArray());
@@ -826,22 +827,22 @@ void MainWin::moveEvent(QMoveEvent *event) {
   if(!(windowState() & Qt::WindowMaximized))
     _normalPos = event->pos();
 
-  event->ignore();
+  QMainWindow::moveEvent(event);
 }
 
 void MainWin::resizeEvent(QResizeEvent *event) {
   if(!(windowState() & Qt::WindowMaximized))
     _normalSize = event->size();
 
-  event->ignore();
+  QMainWindow::resizeEvent(event);
 }
 
 void MainWin::closeEvent(QCloseEvent *event) {
   QtUiSettings s;
   QtUiApplication* app = qobject_cast<QtUiApplication*> qApp;
   Q_ASSERT(app);
-  if(!app->aboutToQuit() && s.value("UseSystemTrayIcon").toBool() && s.value("MinimizeOnClose").toBool()) {
-    toggleMinimizedToTray();
+  if(!app->isAboutToQuit() && s.value("UseSystemTrayIcon").toBool() && s.value("MinimizeOnClose").toBool()) {
+    hideToTray();
     event->ignore();
   } else {
     event->accept();
@@ -1060,24 +1061,6 @@ void MainWin::on_actionDebugMessageModel_triggered() {
 void MainWin::on_actionDebugLog_triggered() {
   DebugLogWidget *logWidget = new DebugLogWidget(0);
   logWidget->show();
-}
-
-// FIXME
-void MainWin::saveStateToSession(const QString &sessionId) {
-  return;
-  SessionSettings s(sessionId);
-
-  s.setValue("MainWinSize", size());
-  s.setValue("MainWinPos", pos());
-  s.setValue("MainWinState", saveState());
-}
-
-// FIXME
-void MainWin::saveStateToSessionSettings(SessionSettings & s)
-{
-  s.setValue("MainWinSize", size());
-  s.setValue("MainWinPos", pos());
-  s.setValue("MainWinState", saveState());
 }
 
 void MainWin::showStatusBarMessage(const QString &message) {

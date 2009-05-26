@@ -84,8 +84,6 @@ class MainWin
     void restoreStateFromSettings(UiSettings &);
 
   public slots:
-    void saveStateToSession(const QString &sessionId);
-    void saveStateToSessionSettings(SessionSettings &s);
     void showStatusBarMessage(const QString &message);
 
     void toggleMinimizedToTray();
