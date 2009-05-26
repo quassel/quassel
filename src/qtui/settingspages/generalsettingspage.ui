@@ -1,38 +1,32 @@
-<ui version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>GeneralSettingsPage</class>
- <widget class="QWidget" name="GeneralSettingsPage" >
-  <property name="geometry" >
+ <widget class="QWidget" name="GeneralSettingsPage">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>434</width>
-    <height>495</height>
+    <width>467</width>
+    <height>515</height>
    </rect>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_2" >
+  <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
-    <widget class="QGroupBox" name="useSystemTrayIcon" >
-     <property name="title" >
+    <widget class="QGroupBox" name="useSystemTrayIcon">
+     <property name="title">
       <string>Show System Tray Icon</string>
      </property>
-     <property name="checkable" >
+     <property name="checkable">
       <bool>true</bool>
      </property>
-     <layout class="QVBoxLayout" name="_2" >
+     <layout class="QVBoxLayout" name="_2">
       <item>
-       <widget class="QCheckBox" name="minimizeOnMinimize" >
-        <property name="text" >
-         <string>Minimize to tray on minimize button</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="minimizeOnClose" >
-        <property name="text" >
-         <string>Minimize to tray on close button</string>
+       <widget class="QCheckBox" name="minimizeOnClose">
+        <property name="text">
+         <string>Hide to tray on close button</string>
         </property>
        </widget>
       </item>
@@ -40,17 +34,17 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="macOnly" >
-     <property name="title" >
+    <widget class="QGroupBox" name="macOnly">
+     <property name="title">
       <string>Tray Icon</string>
      </property>
-     <layout class="QHBoxLayout" name="_3" >
+     <layout class="QHBoxLayout" name="_3">
       <item>
-       <widget class="QCheckBox" name="showSystemTrayIcon" >
-        <property name="text" >
+       <widget class="QCheckBox" name="showSystemTrayIcon">
+        <property name="text">
          <string>Show system tray icon</string>
         </property>
-        <property name="checked" >
+        <property name="checked">
          <bool>true</bool>
         </property>
        </widget>
@@ -59,133 +53,133 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox" >
-     <property name="title" >
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
       <string>Message Redirection</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout_2" >
-      <item row="1" column="0" >
-       <widget class="QLabel" name="label_3" >
-        <property name="text" >
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
          <string>User Notices:</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="1" >
-       <widget class="QCheckBox" name="userNoticesInDefaultBuffer" >
-        <property name="enabled" >
+      <item row="1" column="1">
+       <widget class="QCheckBox" name="userNoticesInDefaultBuffer">
+        <property name="enabled">
          <bool>true</bool>
         </property>
-        <property name="text" >
+        <property name="text">
          <string/>
         </property>
-        <property name="checked" >
+        <property name="checked">
          <bool>true</bool>
         </property>
        </widget>
       </item>
-      <item row="1" column="2" >
-       <widget class="QCheckBox" name="userNoticesInStatusBuffer" >
-        <property name="enabled" >
+      <item row="1" column="2">
+       <widget class="QCheckBox" name="userNoticesInStatusBuffer">
+        <property name="enabled">
          <bool>true</bool>
         </property>
-        <property name="text" >
+        <property name="text">
          <string/>
         </property>
-        <property name="checked" >
+        <property name="checked">
          <bool>false</bool>
         </property>
        </widget>
       </item>
-      <item row="1" column="3" >
-       <widget class="QCheckBox" name="userNoticesInCurrentBuffer" >
-        <property name="enabled" >
+      <item row="1" column="3">
+       <widget class="QCheckBox" name="userNoticesInCurrentBuffer">
+        <property name="enabled">
          <bool>true</bool>
         </property>
-        <property name="text" >
+        <property name="text">
          <string/>
         </property>
        </widget>
       </item>
-      <item row="2" column="0" >
-       <widget class="QLabel" name="label_4" >
-        <property name="text" >
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_4">
+        <property name="text">
          <string>Server Notices:</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="1" >
-       <widget class="QCheckBox" name="serverNoticesInDefaultBuffer" >
-        <property name="text" >
+      <item row="2" column="1">
+       <widget class="QCheckBox" name="serverNoticesInDefaultBuffer">
+        <property name="text">
          <string/>
         </property>
        </widget>
       </item>
-      <item row="0" column="1" >
-       <widget class="QLabel" name="label_5" >
-        <property name="text" >
+      <item row="0" column="1">
+       <widget class="QLabel" name="label_5">
+        <property name="text">
          <string>Default Target</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="2" >
-       <widget class="QLabel" name="label_6" >
-        <property name="text" >
+      <item row="0" column="2">
+       <widget class="QLabel" name="label_6">
+        <property name="text">
          <string>Status Buffer</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="3" >
-       <widget class="QLabel" name="label_7" >
-        <property name="text" >
+      <item row="0" column="3">
+       <widget class="QLabel" name="label_7">
+        <property name="text">
          <string>Current Buffer</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="0" >
-       <widget class="QLabel" name="label_8" >
-        <property name="text" >
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_8">
+        <property name="text">
          <string>Errors:</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="2" >
-       <widget class="QCheckBox" name="serverNoticesInStatusBuffer" >
-        <property name="text" >
+      <item row="2" column="2">
+       <widget class="QCheckBox" name="serverNoticesInStatusBuffer">
+        <property name="text">
          <string/>
         </property>
-        <property name="checked" >
+        <property name="checked">
          <bool>true</bool>
         </property>
        </widget>
       </item>
-      <item row="2" column="3" >
-       <widget class="QCheckBox" name="serverNoticesInCurrentBuffer" >
-        <property name="text" >
+      <item row="2" column="3">
+       <widget class="QCheckBox" name="serverNoticesInCurrentBuffer">
+        <property name="text">
          <string/>
         </property>
        </widget>
       </item>
-      <item row="3" column="1" >
-       <widget class="QCheckBox" name="errorMsgsInDefaultBuffer" >
-        <property name="text" >
+      <item row="3" column="1">
+       <widget class="QCheckBox" name="errorMsgsInDefaultBuffer">
+        <property name="text">
          <string/>
         </property>
-        <property name="checked" >
+        <property name="checked">
          <bool>true</bool>
         </property>
        </widget>
       </item>
-      <item row="3" column="2" >
-       <widget class="QCheckBox" name="errorMsgsInStatusBuffer" >
-        <property name="text" >
+      <item row="3" column="2">
+       <widget class="QCheckBox" name="errorMsgsInStatusBuffer">
+        <property name="text">
          <string/>
         </property>
        </widget>
       </item>
-      <item row="3" column="3" >
-       <widget class="QCheckBox" name="errorMsgsInCurrentBuffer" >
-        <property name="text" >
+      <item row="3" column="3">
+       <widget class="QCheckBox" name="errorMsgsInCurrentBuffer">
+        <property name="text">
          <string/>
         </property>
        </widget>
@@ -194,24 +188,24 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox_2" >
-     <property name="title" >
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="title">
       <string>Buffer View</string>
      </property>
-     <layout class="QVBoxLayout" >
+     <layout class="QVBoxLayout">
       <item>
-       <widget class="QCheckBox" name="displayTopicInTooltip" >
-        <property name="text" >
+       <widget class="QCheckBox" name="displayTopicInTooltip">
+        <property name="text">
          <string>Display topic in tooltip</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QCheckBox" name="mouseWheelChangesBuffers" >
-        <property name="text" >
+       <widget class="QCheckBox" name="mouseWheelChangesBuffers">
+        <property name="text">
          <string>Mouse wheel changes displayed buffers</string>
         </property>
-        <property name="checked" >
+        <property name="checked">
          <bool>false</bool>
         </property>
        </widget>
@@ -220,27 +214,27 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="inputLineGroup" >
-     <property name="toolTip" >
-      <string>The suffix appended to a nick on completion via TAB. Default is ": "</string>
+    <widget class="QGroupBox" name="inputLineGroup">
+     <property name="toolTip">
+      <string>The suffix appended to a nick on completion via TAB. Default is &quot;: &quot;</string>
      </property>
-     <property name="title" >
+     <property name="title">
       <string>Input Line</string>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout" >
+     <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout" >
+       <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
-         <widget class="QLabel" name="completionSuffixDesc" >
-          <property name="text" >
+         <widget class="QLabel" name="completionSuffixDesc">
+          <property name="text">
            <string>Completion suffix:</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="completionSuffix" >
-          <property name="sizePolicy" >
-           <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+         <widget class="QLineEdit" name="completionSuffix">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -248,14 +242,14 @@
          </widget>
         </item>
         <item>
-         <spacer name="horizontalSpacer" >
-          <property name="orientation" >
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
-          <property name="sizeType" >
+          <property name="sizeType">
            <enum>QSizePolicy::MinimumExpanding</enum>
           </property>
-          <property name="sizeHint" stdset="0" >
+          <property name="sizeHint" stdset="0">
            <size>
             <width>157</width>
             <height>27</height>
@@ -269,11 +263,11 @@
     </widget>
    </item>
    <item>
-    <spacer name="verticalSpacer" >
-     <property name="orientation" >
+    <spacer name="verticalSpacer">
+     <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>
-     <property name="sizeHint" stdset="0" >
+     <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
        <height>40</height>
