@@ -1,55 +1,56 @@
-<ui version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>BacklogSettingsPage</class>
- <widget class="QWidget" name="BacklogSettingsPage" >
-  <property name="geometry" >
+ <widget class="QWidget" name="BacklogSettingsPage">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>439</width>
+    <width>446</width>
     <height>325</height>
    </rect>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout" >
+  <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout" >
+    <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QLabel" name="label_2" >
-       <property name="toolTip" >
+      <widget class="QLabel" name="label_2">
+       <property name="toolTip">
         <string>Number of messages to be requested from the core when using scrolling up in the buffer view.</string>
        </property>
-       <property name="text" >
+       <property name="text">
         <string>Dynamic backlog amount:</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QSpinBox" name="dynamicBacklogAmount" >
-       <property name="maximum" >
-        <number>1000</number>
+      <widget class="QSpinBox" name="dynamicBacklogAmount">
+       <property name="maximum">
+        <number>99999</number>
        </property>
-       <property name="singleStep" >
+       <property name="singleStep">
         <number>10</number>
        </property>
-       <property name="value" >
+       <property name="value">
         <number>200</number>
        </property>
-       <property name="settingsKey" stdset="0" >
+       <property name="settingsKey" stdset="0">
         <string>DynamicBacklogAmount</string>
        </property>
-       <property name="defaultValue" stdset="0" >
+       <property name="defaultValue" stdset="0">
         <number>200</number>
        </property>
       </widget>
      </item>
      <item>
-      <spacer name="horizontalSpacer" >
-       <property name="orientation" >
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
-       <property name="sizeHint" stdset="0" >
+       <property name="sizeHint" stdset="0">
         <size>
          <width>40</width>
          <height>20</height>
@@ -60,46 +61,46 @@
     </layout>
    </item>
    <item>
-    <widget class="Line" name="line" >
-     <property name="orientation" >
+    <widget class="Line" name="line">
+     <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_5" >
+    <layout class="QHBoxLayout" name="horizontalLayout_5">
      <item>
-      <widget class="QLabel" name="label_3" >
-       <property name="text" >
+      <widget class="QLabel" name="label_3">
+       <property name="text">
         <string>Backlog Request Method:</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="requesterType" >
+      <widget class="QComboBox" name="requesterType">
        <item>
-        <property name="text" >
+        <property name="text">
          <string>Fixed Amount per Buffer</string>
         </property>
        </item>
        <item>
-        <property name="text" >
+        <property name="text">
          <string>Unread Messages per Buffer</string>
         </property>
        </item>
        <item>
-        <property name="text" >
+        <property name="text">
          <string>Global Unread Messages</string>
         </property>
        </item>
       </widget>
      </item>
      <item>
-      <spacer name="horizontalSpacer_4" >
-       <property name="orientation" >
+      <spacer name="horizontalSpacer_4">
+       <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
-       <property name="sizeHint" stdset="0" >
+       <property name="sizeHint" stdset="0">
         <size>
          <width>40</width>
          <height>20</height>
@@ -110,62 +111,62 @@
     </layout>
    </item>
    <item>
-    <widget class="QStackedWidget" name="stackedWidget" >
-     <property name="currentIndex" >
+    <widget class="QStackedWidget" name="stackedWidget">
+     <property name="currentIndex">
       <number>0</number>
      </property>
-     <widget class="QWidget" name="page" >
-      <layout class="QVBoxLayout" name="verticalLayout_2" >
+     <widget class="QWidget" name="page">
+      <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
-        <widget class="QLabel" name="label_9" >
-         <property name="text" >
+        <widget class="QLabel" name="label_9">
+         <property name="text">
           <string>The simplest Requester. It fetches a fixed amount of lines for each buffer from the Backlog.</string>
          </property>
-         <property name="textFormat" >
+         <property name="textFormat">
           <enum>Qt::PlainText</enum>
          </property>
-         <property name="wordWrap" >
+         <property name="wordWrap">
           <bool>true</bool>
          </property>
         </widget>
        </item>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_2" >
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
-          <widget class="QLabel" name="label" >
-           <property name="toolTip" >
+          <widget class="QLabel" name="label">
+           <property name="toolTip">
             <string>amount of messages per buffer that are requested after the core connection has been established.</string>
            </property>
-           <property name="text" >
+           <property name="text">
             <string>Initial backlog amount:</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QSpinBox" name="fixedBacklogAmount" >
-           <property name="maximum" >
+          <widget class="QSpinBox" name="fixedBacklogAmount">
+           <property name="maximum">
             <number>1000</number>
            </property>
-           <property name="singleStep" >
+           <property name="singleStep">
             <number>10</number>
            </property>
-           <property name="value" >
+           <property name="value">
             <number>500</number>
            </property>
-           <property name="settingsKey" stdset="0" >
+           <property name="settingsKey" stdset="0">
             <string>FixedBacklogAmount</string>
            </property>
-           <property name="defaultValue" stdset="0" >
+           <property name="defaultValue" stdset="0">
             <number>500</number>
            </property>
           </widget>
          </item>
          <item>
-          <spacer name="horizontalSpacer_2" >
-           <property name="orientation" >
+          <spacer name="horizontalSpacer_2">
+           <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
-           <property name="sizeHint" stdset="0" >
+           <property name="sizeHint" stdset="0">
             <size>
              <width>263</width>
              <height>20</height>
@@ -176,11 +177,11 @@
         </layout>
        </item>
        <item>
-        <spacer name="verticalSpacer_4" >
-         <property name="orientation" >
+        <spacer name="verticalSpacer_4">
+         <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
-         <property name="sizeHint" stdset="0" >
+         <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
            <height>40</height>
@@ -190,95 +191,95 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="page_2" >
-      <layout class="QVBoxLayout" name="verticalLayout_3" >
+     <widget class="QWidget" name="page_2">
+      <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
-        <widget class="QLabel" name="label_10" >
-         <property name="text" >
+        <widget class="QLabel" name="label_10">
+         <property name="text">
           <string>This requester fetches unread messages for each buffer individually. The amount of lines can be limited per buffer.
 
 You can also choose to fetch additional older chatlines to provide a better context.</string>
          </property>
-         <property name="textFormat" >
+         <property name="textFormat">
           <enum>Qt::PlainText</enum>
          </property>
-         <property name="wordWrap" >
+         <property name="wordWrap">
           <bool>true</bool>
          </property>
         </widget>
        </item>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_3" >
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
          <item>
-          <widget class="QLabel" name="label_11" >
-           <property name="toolTip" >
+          <widget class="QLabel" name="label_11">
+           <property name="toolTip">
             <string>Maximum amount of messages to be fetched per buffer.</string>
            </property>
-           <property name="text" >
+           <property name="text">
             <string>Limit:</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QSpinBox" name="perBufferUnreadLimit" >
-           <property name="toolTip" >
+          <widget class="QSpinBox" name="perBufferUnreadLimit">
+           <property name="toolTip">
             <string>Maximum amount of messages to be fetched per buffer.</string>
            </property>
-           <property name="maximum" >
+           <property name="maximum">
             <number>1000</number>
            </property>
-           <property name="singleStep" >
+           <property name="singleStep">
             <number>10</number>
            </property>
-           <property name="value" >
+           <property name="value">
             <number>200</number>
            </property>
-           <property name="settingsKey" stdset="0" >
+           <property name="settingsKey" stdset="0">
             <string>PerBufferUnreadBacklogLimit</string>
            </property>
-           <property name="defaultValue" stdset="0" >
+           <property name="defaultValue" stdset="0">
             <number>200</number>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QLabel" name="label_12" >
-           <property name="toolTip" >
+          <widget class="QLabel" name="label_12">
+           <property name="toolTip">
             <string>Amount of messages to be fetched in addition to the unread messages. The Limit does not apply here.</string>
            </property>
-           <property name="text" >
+           <property name="text">
             <string>Additional Messages:</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QSpinBox" name="perBufferUnreadAdditional" >
-           <property name="toolTip" >
+          <widget class="QSpinBox" name="perBufferUnreadAdditional">
+           <property name="toolTip">
             <string>Amount of messages to be fetched in addition to the unread messages. The Limit does not apply here.</string>
            </property>
-           <property name="maximum" >
+           <property name="maximum">
             <number>1000</number>
            </property>
-           <property name="singleStep" >
+           <property name="singleStep">
             <number>10</number>
            </property>
-           <property name="value" >
+           <property name="value">
             <number>50</number>
            </property>
-           <property name="settingsKey" stdset="0" >
+           <property name="settingsKey" stdset="0">
             <string>PerBufferUnreadBacklogAdditional</string>
            </property>
-           <property name="defaultValue" stdset="0" >
+           <property name="defaultValue" stdset="0">
             <number>50</number>
            </property>
           </widget>
          </item>
          <item>
-          <spacer name="horizontalSpacer_5" >
-           <property name="orientation" >
+          <spacer name="horizontalSpacer_5">
+           <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
-           <property name="sizeHint" stdset="0" >
+           <property name="sizeHint" stdset="0">
             <size>
              <width>40</width>
              <height>20</height>
@@ -289,11 +290,11 @@ You can also choose to fetch additional older chatlines to provide a better cont
         </layout>
        </item>
        <item>
-        <spacer name="verticalSpacer_3" >
-         <property name="orientation" >
+        <spacer name="verticalSpacer_3">
+         <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
-         <property name="sizeHint" stdset="0" >
+         <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
            <height>40</height>
@@ -303,11 +304,11 @@ You can also choose to fetch additional older chatlines to provide a better cont
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="Seite" >
-      <layout class="QVBoxLayout" name="verticalLayout_4" >
+     <widget class="QWidget" name="Seite">
+      <layout class="QVBoxLayout" name="verticalLayout_4">
        <item>
-        <widget class="QLabel" name="label_15" >
-         <property name="text" >
+        <widget class="QLabel" name="label_15">
+         <property name="text">
           <string>This requester fetches all messages newer than the oldest unread message for all buffers.
 
 Note: this requester is not recommended if you use hidden buffer or have inactive buffers (i.e.: no stale queries or channels).
@@ -315,86 +316,86 @@ It is useful to limit the total amount of the backlog and is probably the fastes
 
 You can also chose to fetch additional older chatlines to provide a better context similar.</string>
          </property>
-         <property name="textFormat" >
+         <property name="textFormat">
           <enum>Qt::PlainText</enum>
          </property>
-         <property name="wordWrap" >
+         <property name="wordWrap">
           <bool>true</bool>
          </property>
         </widget>
        </item>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_4" >
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
          <item>
-          <widget class="QLabel" name="label_13" >
-           <property name="toolTip" >
+          <widget class="QLabel" name="label_13">
+           <property name="toolTip">
             <string>Maximum amount of messages to be fetched over all buffers.</string>
            </property>
-           <property name="text" >
+           <property name="text">
             <string>Limit:</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QSpinBox" name="globalUnreadLimit" >
-           <property name="toolTip" >
+          <widget class="QSpinBox" name="globalUnreadLimit">
+           <property name="toolTip">
             <string>Maximum amount of messages to be fetched per buffer.</string>
            </property>
-           <property name="maximum" >
+           <property name="maximum">
             <number>100000</number>
            </property>
-           <property name="singleStep" >
+           <property name="singleStep">
             <number>10</number>
            </property>
-           <property name="value" >
+           <property name="value">
             <number>200</number>
            </property>
-           <property name="settingsKey" stdset="0" >
+           <property name="settingsKey" stdset="0">
             <string>GlobalUnreadBacklogLimit</string>
            </property>
-           <property name="defaultValue" stdset="0" >
+           <property name="defaultValue" stdset="0">
             <number>200</number>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QLabel" name="label_14" >
-           <property name="toolTip" >
+          <widget class="QLabel" name="label_14">
+           <property name="toolTip">
             <string>Amount of messages to be fetched in addition to the unread messages. The Limit does not apply here.</string>
            </property>
-           <property name="text" >
+           <property name="text">
             <string>Additional Messages:</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QSpinBox" name="globalUnreadAdditional" >
-           <property name="toolTip" >
+          <widget class="QSpinBox" name="globalUnreadAdditional">
+           <property name="toolTip">
             <string>Amount of messages to be fetched in addition to the unread messages. The Limit does not apply here.</string>
            </property>
-           <property name="maximum" >
+           <property name="maximum">
             <number>1000</number>
            </property>
-           <property name="singleStep" >
+           <property name="singleStep">
             <number>10</number>
            </property>
-           <property name="value" >
+           <property name="value">
             <number>50</number>
            </property>
-           <property name="settingsKey" stdset="0" >
+           <property name="settingsKey" stdset="0">
             <string>GlobalUnreadBacklogAdditional</string>
            </property>
-           <property name="defaultValue" stdset="0" >
+           <property name="defaultValue" stdset="0">
             <number>50</number>
            </property>
           </widget>
          </item>
          <item>
-          <spacer name="horizontalSpacer_3" >
-           <property name="orientation" >
+          <spacer name="horizontalSpacer_3">
+           <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
-           <property name="sizeHint" stdset="0" >
+           <property name="sizeHint" stdset="0">
             <size>
              <width>40</width>
              <height>20</height>
@@ -405,11 +406,11 @@ You can also chose to fetch additional older chatlines to provide a better conte
         </layout>
        </item>
        <item>
-        <spacer name="verticalSpacer" >
-         <property name="orientation" >
+        <spacer name="verticalSpacer">
+         <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
-         <property name="sizeHint" stdset="0" >
+         <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
            <height>40</height>
@@ -422,11 +423,11 @@ You can also chose to fetch additional older chatlines to provide a better conte
     </widget>
    </item>
    <item>
-    <spacer name="verticalSpacer_2" >
-     <property name="orientation" >
+    <spacer name="verticalSpacer_2">
+     <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>
-     <property name="sizeHint" stdset="0" >
+     <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
        <height>40</height>
@@ -444,11 +445,11 @@ You can also chose to fetch additional older chatlines to provide a better conte
    <receiver>stackedWidget</receiver>
    <slot>setCurrentIndex(int)</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>316</x>
      <y>31</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>147</x>
      <y>142</y>
     </hint>
