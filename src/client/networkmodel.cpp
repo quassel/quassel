@@ -107,6 +107,23 @@ BufferItem *NetworkItem::bufferItem(const BufferInfo &bufferInfo) {
   }
 
   newChild(bufferItem);
+
+  // postprocess... this is necessary because Qt doesn't seem to like adding childs which already have childs on their own
+  switch(bufferInfo.type()) {
+  case BufferInfo::ChannelBuffer:
+    {
+      ChannelBufferItem *channelBufferItem = static_cast<ChannelBufferItem *>(bufferItem);
+      if(_network) {
+        IrcChannel *ircChannel = _network->ircChannel(bufferInfo.bufferName());
+        if(ircChannel)
+          channelBufferItem->attachIrcChannel(ircChannel);
+      }
+    }
+    break;
+  default:
+    break;
+  }
+
   return bufferItem;
 }
 
@@ -447,13 +464,6 @@ ChannelBufferItem::ChannelBufferItem(const BufferInfo &bufferInfo, AbstractTreeI
   : BufferItem(bufferInfo, parent),
     _ircChannel(0)
 {
-  const Network *net = Client::network(bufferInfo.networkId());
-  if(!net)
-    return;
-
-  IrcChannel *ircChannel = net->ircChannel(bufferInfo.bufferName());
-  if(ircChannel)
-    attachIrcChannel(ircChannel);
 }
 
 QVariant ChannelBufferItem::data(int column, int role) const {
