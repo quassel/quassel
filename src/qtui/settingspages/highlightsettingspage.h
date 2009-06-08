@@ -42,7 +42,7 @@ class HighlightSettingsPage : public SettingsPage {
 
   private slots:
     void widgetHasChanged();
-    void addNewRow(QString name = tr("highlight rule"), bool regex = false, bool cs = true, bool enable = true);
+    void addNewRow(QString name = tr("highlight rule"), bool regex = false, bool cs = true, bool enable = true, QString chanName = "");
     void removeSelectedRows();
     void selectRow(QTableWidgetItem *item);
     void tableChanged(QTableWidgetItem *item);
@@ -59,7 +59,8 @@ class HighlightSettingsPage : public SettingsPage {
       RegExColumn = 1,
       CsColumn = 2,
       EnableColumn = 3,
-      ColumnCount = 4
+      ChanColumn = 4,
+      ColumnCount = 5
     };
 
     void emptyTable();

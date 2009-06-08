@@ -67,8 +67,9 @@ private:
     bool isEnabled;
     Qt::CaseSensitivity caseSensitive;
     bool isRegExp;
-    inline HighlightRule(const QString &name, bool enabled, Qt::CaseSensitivity cs, bool regExp)
-    : name(name), isEnabled(enabled), caseSensitive(cs), isRegExp(regExp) {}
+    QString chanName;
+    inline HighlightRule(const QString &name, bool enabled, Qt::CaseSensitivity cs, bool regExp, const QString &chanName)
+    : name(name), isEnabled(enabled), caseSensitive(cs), isRegExp(regExp), chanName(chanName) {}
   };
 
   QList<HighlightRule> _highlightRules;

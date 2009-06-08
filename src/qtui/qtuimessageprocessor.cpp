@@ -129,7 +129,19 @@ void QtUiMessageProcessor::checkForHighlight(Message &msg) {
     for(int i = 0; i < _highlightRules.count(); i++) {
       const HighlightRule &rule = _highlightRules.at(i);
       if(!rule.isEnabled)
-	continue;
+        continue;
+
+      if(rule.chanName.size() > 0 && rule.chanName.compare(".*") != 0) {
+        if(rule.chanName.startsWith("!")) {
+          QRegExp rx(rule.chanName.mid(1), Qt::CaseInsensitive);
+          if(rx.exactMatch(msg.bufferInfo().bufferName()))
+            continue;
+        } else {
+          QRegExp rx(rule.chanName, Qt::CaseInsensitive);
+          if(!rx.exactMatch(msg.bufferInfo().bufferName()))
+            continue;
+        }
+      }
 
       QRegExp rx;
       if(rule.isRegExp) {
@@ -160,7 +172,8 @@ void QtUiMessageProcessor::highlightListChanged(const QVariant &variant) {
     _highlightRules << HighlightRule(rule["Name"].toString(),
                                      rule["Enable"].toBool(),
                                      rule["CS"].toBool() ? Qt::CaseSensitive : Qt::CaseInsensitive,
-                                     rule["RegEx"].toBool());
+                                     rule["RegEx"].toBool(),
+                                     rule["Chan"].toString());
     iter++;
   }
 }

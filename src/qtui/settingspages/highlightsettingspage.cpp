@@ -38,10 +38,14 @@ HighlightSettingsPage::HighlightSettingsPage(QWidget *parent)
   ui.highlightTable->horizontalHeaderItem(HighlightSettingsPage::CsColumn)->setToolTip("<b>CS</b>: This option determines if the highlight rule should be interpreted <b>case sensitive</b>.");
   ui.highlightTable->horizontalHeaderItem(HighlightSettingsPage::CsColumn)->setWhatsThis("<b>CS</b>: This option determines if the highlight rule should be interpreted <b>case sensitive</b>.");
 
+  ui.highlightTable->horizontalHeaderItem(HighlightSettingsPage::ChanColumn)->setToolTip("<b>Chan</b>: This regular expression determines for which <b>Channels</b> the highlight rule works. Leave blank to match any channel. Put <b>!</b> in the beginning to negate. Case insensitive.");
+  ui.highlightTable->horizontalHeaderItem(HighlightSettingsPage::ChanColumn)->setWhatsThis("<b>Chan</b>: This regular expression determines for which <b>Channels</b> the highlight rule works. Leave blank to match any channel. Put <b>!</b> in the beginning to negate. Case insensitive.");
+
   ui.highlightTable->horizontalHeader()->setResizeMode(HighlightSettingsPage::NameColumn, QHeaderView::Stretch);
   ui.highlightTable->horizontalHeader()->setResizeMode(HighlightSettingsPage::RegExColumn, QHeaderView::ResizeToContents);
   ui.highlightTable->horizontalHeader()->setResizeMode(HighlightSettingsPage::CsColumn, QHeaderView::ResizeToContents);
   ui.highlightTable->horizontalHeader()->setResizeMode(HighlightSettingsPage::EnableColumn, QHeaderView::ResizeToContents);
+  ui.highlightTable->horizontalHeader()->setResizeMode(HighlightSettingsPage::ChanColumn, QHeaderView::ResizeToContents);
 
   connect(ui.add, SIGNAL(clicked(bool)), this, SLOT(addNewRow()));
   connect(ui.remove, SIGNAL(clicked(bool)), this, SLOT(removeSelectedRows()));
@@ -69,7 +73,7 @@ void HighlightSettingsPage::defaults() {
   widgetHasChanged();
 }
 
-void HighlightSettingsPage::addNewRow(QString name, bool regex, bool cs, bool enable) {
+void HighlightSettingsPage::addNewRow(QString name, bool regex, bool cs, bool enable, QString chanName) {
   ui.highlightTable->setRowCount(ui.highlightTable->rowCount()+1);
 
   QTableWidgetItem *nameItem = new QTableWidgetItem(name);
@@ -95,17 +99,21 @@ void HighlightSettingsPage::addNewRow(QString name, bool regex, bool cs, bool en
     enableItem->setCheckState(Qt::Unchecked);
   enableItem->setFlags(Qt::ItemIsUserCheckable|Qt::ItemIsEnabled|Qt::ItemIsSelectable);
 
+  QTableWidgetItem *chanNameItem = new QTableWidgetItem(chanName);
+
   int lastRow = ui.highlightTable->rowCount()-1;
   ui.highlightTable->setItem(lastRow, HighlightSettingsPage::NameColumn, nameItem);
   ui.highlightTable->setItem(lastRow, HighlightSettingsPage::RegExColumn, regexItem);
   ui.highlightTable->setItem(lastRow, HighlightSettingsPage::CsColumn, csItem);
   ui.highlightTable->setItem(lastRow, HighlightSettingsPage::EnableColumn, enableItem);
+  ui.highlightTable->setItem(lastRow, HighlightSettingsPage::ChanColumn, chanNameItem);
 
   QVariantMap highlightRule;
   highlightRule["Name"] = name;
   highlightRule["RegEx"] = regex;
   highlightRule["CS"] = cs;
   highlightRule["Enable"] = enable;
+  highlightRule["Chan"] = chanName;
 
   highlightList.append(highlightRule);
 }
@@ -168,6 +176,11 @@ void HighlightSettingsPage::tableChanged(QTableWidgetItem *item) {
     case HighlightSettingsPage::EnableColumn:
       highlightRule["Enable"] = (item->checkState() == Qt::Checked);
       break;
+    case HighlightSettingsPage::ChanColumn:
+      if(item->text().size() > 0 && item->text().trimmed().size() == 0)
+        item->setText("");
+      highlightRule["Chan"] = item->text();
+      break;
   }
   highlightList[item->row()] = highlightRule;
   emit widgetHasChanged();
@@ -184,8 +197,9 @@ void HighlightSettingsPage::load() {
     bool regex = highlightRule["RegEx"].toBool();
     bool cs = highlightRule["CS"].toBool();
     bool enable = highlightRule["Enable"].toBool();
+    QString chanName = highlightRule["Chan"].toString();
 
-    addNewRow(name, regex, cs, enable);
+    addNewRow(name, regex, cs, enable, chanName);
   }
 
   switch(notificationSettings.highlightNick())
