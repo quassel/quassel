@@ -93,7 +93,7 @@ void ColorSettingsPage::defaultBufferview() {
   ui.otherActivityUseBG->setChecked(false);
 }
 
-void ColorSettingsPage::defaultServerActivity() {
+void ColorSettingsPage::defaultServerActivity() { /*
   ui.errorMessageFG->setColor(QtUi::style()->format(UiStyle::ErrorMsg, Settings::Default).foreground().color());
   ui.errorMessageBG->setColor(QColor("white"));
   ui.errorMessageBG->setEnabled(false);
@@ -110,10 +110,10 @@ void ColorSettingsPage::defaultServerActivity() {
   ui.serverMessageBG->setColor(QColor("white"));
   ui.serverMessageBG->setEnabled(false);
   ui.serverMessageUseBG->setChecked(false);
-  ui.highlightColor->setColor(QColor("lightcoral"));
+  ui.highlightColor->setColor(QColor("lightcoral")); */
 }
 
-void ColorSettingsPage::defaultUserActivity() {
+void ColorSettingsPage::defaultUserActivity() { /*
   ui.actionMessageFG->setColor(QtUi::style()->format(UiStyle::ActionMsg, Settings::Default).foreground().color());
   ui.actionMessageBG->setColor(QColor("white"));
   ui.actionMessageBG->setEnabled(false);
@@ -141,10 +141,10 @@ void ColorSettingsPage::defaultUserActivity() {
   ui.renameMessageFG->setColor(QtUi::style()->format(UiStyle::RenameMsg, Settings::Default).foreground().color());
   ui.renameMessageBG->setColor(QColor("white"));
   ui.renameMessageBG->setEnabled(false);
-  ui.renameMessageUseBG->setChecked(false);
+  ui.renameMessageUseBG->setChecked(false); */
 }
 
-void ColorSettingsPage::defaultMessage() {
+void ColorSettingsPage::defaultMessage() { /*
   ui.timestampFG->setColor(QtUi::style()->format(UiStyle::Timestamp, Settings::Default).foreground().color());
   ui.timestampBG->setColor(QColor("white"));
   ui.timestampBG->setEnabled(false);
@@ -154,7 +154,7 @@ void ColorSettingsPage::defaultMessage() {
   ui.senderBG->setEnabled(false);
   ui.senderUseBG->setChecked(false);
   ui.senderAutoColor->setChecked(false);
-  ui.newMsgMarkerFG->setColor(Qt::red);
+  ui.newMsgMarkerFG->setColor(Qt::red); */
 
   /*
   ui.nickFG->setColor(QColor("black"));
@@ -180,7 +180,7 @@ void ColorSettingsPage::defaultMessage() {
   */
 }
 
-void ColorSettingsPage::defaultMircColorCodes() {
+void ColorSettingsPage::defaultMircColorCodes() { /*
   ui.color0->setColor(QtUi::style()->format(UiStyle::FgCol00, Settings::Default).foreground().color());
   ui.color1->setColor(QtUi::style()->format(UiStyle::FgCol01, Settings::Default).foreground().color());
   ui.color2->setColor(QtUi::style()->format(UiStyle::FgCol02, Settings::Default).foreground().color());
@@ -196,7 +196,7 @@ void ColorSettingsPage::defaultMircColorCodes() {
   ui.color12->setColor(QtUi::style()->format(UiStyle::FgCol12, Settings::Default).foreground().color());
   ui.color13->setColor(QtUi::style()->format(UiStyle::FgCol13, Settings::Default).foreground().color());
   ui.color14->setColor(QtUi::style()->format(UiStyle::FgCol14, Settings::Default).foreground().color());
-  ui.color15->setColor(QtUi::style()->format(UiStyle::FgCol15, Settings::Default).foreground().color());
+  ui.color15->setColor(QtUi::style()->format(UiStyle::FgCol15, Settings::Default).foreground().color()); */
 }
 
 void ColorSettingsPage::defaultNickview() {
@@ -246,7 +246,7 @@ void ColorSettingsPage::load() {
   ui.otherActivityBG->setColor(settings["OtherActivityBG"].value<QColor>());
   settings["OtherActivityUseBG"] = s.value("otherActivityUseBG");
   ui.otherActivityUseBG->setChecked(settings["OtherActivityUseBG"].toBool());
-
+/*
   ui.actionMessageFG->setColor(QtUi::style()->format(UiStyle::ActionMsg).foreground().color());
   ui.errorMessageFG->setColor(QtUi::style()->format(UiStyle::ErrorMsg).foreground().color());
   ui.joinMessageFG->setColor(QtUi::style()->format(UiStyle::JoinMsg).foreground().color());
@@ -270,7 +270,7 @@ void ColorSettingsPage::load() {
   ui.quitMessageBG->setColor(QtUi::style()->format(UiStyle::QuitMsg).background().color());
   ui.renameMessageBG->setColor(QtUi::style()->format(UiStyle::RenameMsg).background().color());
   ui.serverMessageBG->setColor(QtUi::style()->format(UiStyle::ServerMsg).background().color());
-
+*/
   // FIXME set to false if appropriate
   settings["ActionMessageUseBG"] = s.value("actionMessageUseBG", QVariant(false));
   if(settings["ActionMessageUseBG"].toBool()) {
@@ -327,7 +327,7 @@ void ColorSettingsPage::load() {
     ui.serverMessageUseBG->setChecked(true);
     ui.serverMessageBG->setEnabled(true);
   }
-
+/*
   ui.timestampFG->setColor(QtUi::style()->format(UiStyle::Timestamp).foreground().color());
   ui.timestampBG->setColor(QtUi::style()->format(UiStyle::Timestamp).background().color());
   ui.senderFG->setColor(QtUi::style()->format(UiStyle::Sender).foreground().color());
@@ -337,6 +337,7 @@ void ColorSettingsPage::load() {
   ui.senderFG->setEnabled(!settings["SenderAutoColor"].toBool());
 
   ui.senderAutoColor->setChecked(settings["SenderAutoColor"].toBool());
+*/
   settings["NewMsgMarkerFG"] = s.value("newMsgMarkerFG", QColor(Qt::red));
   ui.newMsgMarkerFG->setColor(settings["NewMsgMarkerFG"].value<QColor>());
 
@@ -350,7 +351,7 @@ void ColorSettingsPage::load() {
     ui.senderUseBG->setChecked(true);
     ui.senderBG ->setEnabled(true);
   }
-
+/*
   ui.nickFG->setColor(QtUi::style()->format(UiStyle::Nick).foreground().color());
   ui.nickBG->setColor(QtUi::style()->format(UiStyle::Nick).background().color());
   ui.hostmaskFG->setColor(QtUi::style()->format(UiStyle::Hostmask).foreground().color());
@@ -361,9 +362,9 @@ void ColorSettingsPage::load() {
   ui.modeFlagsBG->setColor(QtUi::style()->format(UiStyle::ModeFlags).background().color());
   ui.urlFG->setColor(QtUi::style()->format(UiStyle::Url).foreground().color());
   ui.urlBG->setColor(QtUi::style()->format(UiStyle::Url).background().color());
-
+*/
   ui.highlightColor->setColor(QtUi::style()->highlightColor());
-
+/*
   ui.color0->setColor(QtUi::style()->format(UiStyle::FgCol00).foreground().color());
   ui.color1->setColor(QtUi::style()->format(UiStyle::FgCol01).foreground().color());
   ui.color2->setColor(QtUi::style()->format(UiStyle::FgCol02).foreground().color());
@@ -380,7 +381,7 @@ void ColorSettingsPage::load() {
   ui.color13->setColor(QtUi::style()->format(UiStyle::FgCol13).foreground().color());
   ui.color14->setColor(QtUi::style()->format(UiStyle::FgCol14).foreground().color());
   ui.color15->setColor(QtUi::style()->format(UiStyle::FgCol15).foreground().color());
-
+*/
   settings["OnlineStatusFG"] = s.value("onlineStatusFG", QVariant(QColor(Qt::black)));
   ui.onlineStatusFG->setColor(settings["OnlineStatusFG"].value<QColor>());
   settings["OnlineStatusBG"] = s.value("onlineStatusBG", QVariant(QColor(Qt::white)));
@@ -450,7 +451,7 @@ void ColorSettingsPage::save() {
   saveColor(UiStyle::Sender, ui.senderFG->color(), ui.senderBG->color(), ui.senderUseBG->isChecked());
   s.setValue("senderUseBG", ui.senderUseBG->isChecked());
   s.setValue("SenderAutoColor", ui.senderAutoColor->isChecked());
-  QtUi::style()->setSenderAutoColor(ui.senderAutoColor->isChecked());
+  //QtUi::style()->setSenderAutoColor(ui.senderAutoColor->isChecked());
   s.setValue("newMsgMarkerFG", ui.newMsgMarkerFG->color());
 
   /*
@@ -494,20 +495,20 @@ void ColorSettingsPage::save() {
   setChangedState(false);
 }
 
-void ColorSettingsPage::saveColor(UiStyle::FormatType formatType, const QColor &foreground, const QColor &background, bool enableBG) {
+void ColorSettingsPage::saveColor(UiStyle::FormatType /*formatType*/, const QColor &/*foreground*/, const QColor &/*background*/, bool /*enableBG*/) { /*
   QTextCharFormat format = QtUi::style()->format(formatType);
   format.setForeground(QBrush(foreground));
   if(enableBG)
     format.setBackground(QBrush(background));
   else
     format.clearBackground();
-  QtUi::style()->setFormat(formatType, format, Settings::Custom);
+  QtUi::style()->setFormat(formatType, format, Settings::Custom); */
 }
 
-void ColorSettingsPage::saveMircColor(int num, const QColor &col) {
+void ColorSettingsPage::saveMircColor(int /*num*/, const QColor &/*col*/) { /*
   QTextCharFormat fgf, bgf;
   fgf.setForeground(QBrush(col)); QtUi::style()->setFormat((UiStyle::FormatType)(UiStyle::FgCol00 | num<<24), fgf, Settings::Custom);
-  bgf.setBackground(QBrush(col)); QtUi::style()->setFormat((UiStyle::FormatType)(UiStyle::BgCol00 | num<<28), bgf, Settings::Custom);
+  bgf.setBackground(QBrush(col)); QtUi::style()->setFormat((UiStyle::FormatType)(UiStyle::BgCol00 | num<<28), bgf, Settings::Custom); */
 }
 
 void ColorSettingsPage::widgetHasChanged() {
@@ -535,7 +536,7 @@ bool ColorSettingsPage::testHasChanged() {
   if(settings["OtherActivityFG"].value<QColor>() != ui.otherActivityFG->color()) return true;
   if(settings["OtherActivityBG"].value<QColor>() != ui.otherActivityBG->color()) return true;
   if(settings["OtherActivityUseBG"].toBool() != ui.otherActivityUseBG->isChecked()) return true;
-
+/*
   if(QtUi::style()->format(UiStyle::ErrorMsg).foreground().color() != ui.errorMessageFG->color()) return true;
   if(QtUi::style()->format(UiStyle::ErrorMsg).background().color() != ui.errorMessageBG->color()) return true;
   if(settings["ErrorMessageUseBG"].toBool() != ui.errorMessageUseBG->isChecked()) return true;
@@ -572,9 +573,9 @@ bool ColorSettingsPage::testHasChanged() {
   if(QtUi::style()->format(UiStyle::RenameMsg).foreground().color() != ui.renameMessageFG->color()) return true;
   if(QtUi::style()->format(UiStyle::RenameMsg).background().color() != ui.renameMessageBG->color()) return true;
   if(settings["RenameMessageUseBG"].toBool() != ui.renameMessageUseBG->isChecked()) return true;
-
+*/
   if(QtUi::style()->highlightColor() != ui.highlightColor->color()) return true;
-
+/*
   if(QtUi::style()->format(UiStyle::Timestamp).foreground().color() != ui.timestampFG->color()) return true;
   if(QtUi::style()->format(UiStyle::Timestamp).background().color() != ui.timestampBG->color()) return true;
   if(settings["TimestampUseBG"].toBool() != ui.timestampUseBG->isChecked()) return true;
@@ -582,6 +583,7 @@ bool ColorSettingsPage::testHasChanged() {
   if(QtUi::style()->format(UiStyle::Sender).background().color() != ui.senderBG->color()) return true;
   if(settings["SenderUseBG"].toBool() != ui.senderUseBG->isChecked()) return true;
   if(settings["SenderAutoColor"].toBool() != ui.senderAutoColor->isChecked()) return true;
+*/
   if(settings["NewMsgMarkerFG"].value<QColor>() != ui.newMsgMarkerFG->color()) return true;
 
   /*
@@ -601,7 +603,7 @@ bool ColorSettingsPage::testHasChanged() {
   if(QtUi::style()->format(UiStyle::Url).background().color() != ui.urlBG->color()) return true;
   if(settings["urlUseBG"].toBool() != ui.urlUseBG->isChecked()) return true;
   */
-
+/*
   if(QtUi::style()->format(UiStyle::FgCol00).foreground().color() != ui.color0->color()) return true;
   if(QtUi::style()->format(UiStyle::FgCol01).foreground().color() != ui.color1->color()) return true;
   if(QtUi::style()->format(UiStyle::FgCol02).foreground().color() != ui.color2->color()) return true;
@@ -618,7 +620,7 @@ bool ColorSettingsPage::testHasChanged() {
   if(QtUi::style()->format(UiStyle::FgCol13).foreground().color() != ui.color13->color()) return true;
   if(QtUi::style()->format(UiStyle::FgCol14).foreground().color() != ui.color14->color()) return true;
   if(QtUi::style()->format(UiStyle::FgCol15).foreground().color() != ui.color15->color()) return true;
-
+*/
   if(settings["OnlineStatusFG"].value<QColor>() != ui.onlineStatusFG->color()) return true;
   if(settings["OnlineStatusBG"].value<QColor>() != ui.onlineStatusBG->color()) return true;
   if(settings["OnlineStatusUseBG"].toBool() != ui.onlineStatusUseBG->isChecked()) return true;

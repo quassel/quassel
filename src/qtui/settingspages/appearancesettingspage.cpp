@@ -144,8 +144,8 @@ void AppearanceSettingsPage::loadFonts(Settings::Mode mode) {
     bufferViewFont = s.value("BufferView", QFont()).value<QFont>();
   setFont(ui.demoBufferView, bufferViewFont);
 
-  QTextCharFormat chatFormat = QtUi::style()->format(UiStyle::None, mode);
-  setFont(ui.demoChatView, chatFormat.font());
+  //QTextCharFormat chatFormat = QtUi::style()->cachedFormat(UiStyle::None, 0); // FIXME
+  //setFont(ui.demoChatView, chatFormat.font());
 
   _fontsChanged = false;
 }
@@ -183,9 +183,9 @@ void AppearanceSettingsPage::save() {
   else
     fontSettings.setValue("BufferView", "");
 
-  QTextCharFormat chatFormat = QtUi::style()->format(UiStyle::None);
-  chatFormat.setFont(ui.demoChatView->font());
-  QtUi::style()->setFormat(UiStyle::None, chatFormat, Settings::Custom);
+  //QTextCharFormat chatFormat = QtUi::style()->format(UiStyle::None);
+  //chatFormat.setFont(ui.demoChatView->font());
+  //QtUi::style()->setFormat(UiStyle::None, chatFormat, Settings::Custom);
 
   _fontsChanged = false;
 

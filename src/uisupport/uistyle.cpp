@@ -25,7 +25,7 @@
 #include "uisettings.h"
 #include "util.h"
 
-UiStyle::UiStyle(const QString &settingsKey) : _settingsKey(settingsKey) {
+UiStyle::UiStyle() {
   // register FormatList if that hasn't happened yet
   // FIXME I don't think this actually avoids double registration... then again... does it hurt?
   if(QVariant::nameToType("UiStyle::FormatList") == QVariant::Invalid) {
@@ -33,24 +33,6 @@ UiStyle::UiStyle(const QString &settingsKey) : _settingsKey(settingsKey) {
     qRegisterMetaTypeStreamOperators<FormatList>("UiStyle::FormatList");
     Q_ASSERT(QVariant::nameToType("UiStyle::FormatList") != QVariant::Invalid);
   }
-
-  _defaultFont = QFont("Monospace", QApplication::font().pointSize());
-
-  // Default format
-  _defaultPlainFormat.setForeground(QBrush("#000000"));
-  _defaultPlainFormat.setFont(_defaultFont);
-  _defaultPlainFormat.font().setFixedPitch(true);
-  _defaultPlainFormat.font().setStyleHint(QFont::TypeWriter);
-  setFormat(None, _defaultPlainFormat, Settings::Default);
-
-  // Load saved custom formats
-  UiStyleSettings s(_settingsKey);
-  foreach(FormatType type, s.availableFormats()) {
-    _customFormats[type] = s.customFormat(type);
-  }
-
-  // Check for the sender auto coloring option
-  _senderAutoColor = s.value("Colors/SenderAutoColor", false).toBool();
 
   // Now initialize the mapping between FormatCodes and FormatTypes...
   _formatCodes["%O"] = None;
@@ -79,74 +61,11 @@ UiStyle::UiStyle(const QString &settingsKey) : _settingsKey(settingsKey) {
   _formatCodes["%DM"] = ModeFlags;
   _formatCodes["%DU"] = Url;
 
-  // Initialize color codes according to mIRC "standard"
-  QStringList colors;
-  //colors << "white" << "black" << "navy" << "green" << "red" << "maroon" << "purple" << "orange";
-  //colors << "yellow" << "lime" << "teal" << "aqua" << "royalblue" << "fuchsia" << "grey" << "silver";
-  colors << "#ffffff" << "#000000" << "#000080" << "#008000" << "#ff0000" << "#800000" << "#800080" << "#ffa500";
-  colors << "#ffff00" << "#00ff00" << "#008080" << "#00ffff" << "#4169E1" << "#ff00ff" << "#808080" << "#c0c0c0";
-
-  // Set color formats
-  for(int i = 0; i < 16; i++) {
-    QString idx = QString("%1").arg(i, (int)2, (int)10, (QChar)'0');
-    _formatCodes[QString("%Dcf%1").arg(idx)] = (FormatType)(FgCol00 | i<<24);
-    _formatCodes[QString("%Dcb%1").arg(idx)] = (FormatType)(BgCol00 | i<<28);
-    QTextCharFormat fgf, bgf;
-    fgf.setForeground(QBrush(QColor(colors[i]))); setFormat((FormatType)(FgCol00 | i<<24), fgf, Settings::Default);
-    bgf.setBackground(QBrush(QColor(colors[i]))); setFormat((FormatType)(BgCol00 | i<<28), bgf, Settings::Default);
-  }
-
-  // Set a few more standard formats
-  QTextCharFormat bold; bold.setFontWeight(QFont::Bold);
-  setFormat(Bold, bold, Settings::Default);
-
-  QTextCharFormat italic; italic.setFontItalic(true);
-  setFormat(Italic, italic, Settings::Default);
-
-  QTextCharFormat underline; underline.setFontUnderline(true);
-  setFormat(Underline, underline, Settings::Default);
-*/
   loadStyleSheet();
 }
 
 UiStyle::~ UiStyle() {
   qDeleteAll(_metricsCache);
-}
-
-void UiStyle::setFormat(FormatType ftype, QTextCharFormat fmt, Settings::Mode mode) {
-  if(mode == Settings::Default) {
-    _defaultFormats[ftype] = fmt;
-  } else {
-    UiStyleSettings s(_settingsKey);
-    if(fmt != _defaultFormats[ftype]) {
-      _customFormats[ftype] = fmt;
-      s.setCustomFormat(ftype, fmt);
-    } else {
-      _customFormats.remove(ftype);
-      s.removeCustomFormat(ftype);
-    }
-  }
-  // TODO: invalidate only affected cached formats... if that's possible with less overhead than just rebuilding them
-  qDeleteAll(_metricsCache);
-  _metricsCache.clear();
-  _formatCache.clear();
-}
-
-void UiStyle::setSenderAutoColor( bool state ) {
-  _senderAutoColor = state;
-  UiStyleSettings s(_settingsKey);
-  s.setValue("Colors/SenderAutoColor", QVariant(state));
-}
-
-QTextCharFormat UiStyle::format(FormatType ftype, Settings::Mode mode) const {
-  // Check for enabled sender auto coloring
-  if ( (ftype & 0x00000fff) == Sender && !_senderAutoColor ) {
-    // Just use the default sender style if auto coloring is disabled FIXME
-    ftype = Sender;
-  }
-
-  if(mode == Settings::Custom && _customFormats.contains(ftype)) return _customFormats.value(ftype);
-  else return _defaultFormats.value(ftype, QTextCharFormat());
 }
 
 QTextCharFormat UiStyle::cachedFormat(quint64 key) const {
@@ -178,7 +97,7 @@ void UiStyle::mergeSubElementFormat(QTextCharFormat& fmt, quint32 ftype, quint32
 
 // NOTE: This function is intimately tied to the values in FormatType. Don't change this
 //       until you _really_ know what you do!
-QTextCharFormat UiStyle::mergedFormat(quint32 ftype, quint32 label) {
+QTextCharFormat UiStyle::format(quint32 ftype, quint32 label) {
   if(ftype == Invalid)
     return QTextCharFormat();
 
@@ -227,7 +146,7 @@ QFontMetricsF *UiStyle::fontMetrics(quint32 ftype, quint32 label) {
   if(_metricsCache.contains(key))
     return _metricsCache.value(key);
 
-  return (_metricsCache[key] = new QFontMetricsF(mergedFormat(ftype, label).font()));
+  return (_metricsCache[key] = new QFontMetricsF(format(ftype, label).font()));
 }
 
 UiStyle::FormatType UiStyle::formatType(const QString & code) const {
@@ -244,7 +163,7 @@ QList<QTextLayout::FormatRange> UiStyle::toTextLayoutList(const FormatList &form
   QTextLayout::FormatRange range;
   int i = 0;
   for(i = 0; i < formatList.count(); i++) {
-    range.format = mergedFormat(formatList.at(i).second);
+    range.format = format(formatList.at(i).second);
     range.start = formatList.at(i).first;
     if(i > 0) formatRanges.last().length = range.start - formatRanges.last().start;
     formatRanges.append(range);

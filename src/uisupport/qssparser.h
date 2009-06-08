@@ -27,27 +27,11 @@ class QssParser {
   Q_DECLARE_TR_FUNCTIONS(QssParser)
 
   public:
-    enum Column {
-      Any,
-      Timestamp,
-      Sender,
-      Contents
-    };
-
-    struct ChatLineFormat {
-      QVector<QTextCharFormat> senderColors;
-      QVector<QTextCharFormat> mircColors;
-      QHash<UiStyle::FormatType, QTextCharFormat> formats;
-
-    };
-
     QssParser();
 
     void loadStyleSheet(const QString &sheet);
 
     inline QPalette palette() const { return _palette; }
-    ChatLineFormat basicFormat() const;
-    QHash<UiStyle::FormatType, ChatLineFormat> specialFormats() const;
 
   protected:
     typedef QList<qreal> ColorTuple;
@@ -73,8 +57,6 @@ class QssParser {
 
   private:
     QPalette _palette;
-    ChatLineFormat _basicFormat;
-    QHash<UiStyle::FormatType, ChatLineFormat> _specialFormats;
     int _maxSenderHash;
 };
 
