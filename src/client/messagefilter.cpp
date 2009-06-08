@@ -46,6 +46,8 @@ MessageFilter::MessageFilter(MessageModel *source, const QList<BufferId> &buffer
 void MessageFilter::init() {
   setDynamicSortFilter(true);
 
+  _userNoticesTarget = _serverNoticesTarget = _errorMsgsTarget = -1;
+
   BufferSettings defaultSettings;
   defaultSettings.notify("UserNoticesTarget", this, SLOT(messageRedirectionChanged()));
   defaultSettings.notify("ServerNoticesTarget", this, SLOT(messageRedirectionChanged()));
