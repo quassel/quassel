@@ -73,7 +73,7 @@ void HighlightSettingsPage::defaults() {
   widgetHasChanged();
 }
 
-void HighlightSettingsPage::addNewRow(QString name, bool regex, bool cs, bool enable, QString chanName) {
+void HighlightSettingsPage::addNewRow(QString name, bool regex, bool cs, bool enable, QString chanName, bool self) {
   ui.highlightTable->setRowCount(ui.highlightTable->rowCount()+1);
 
   QTableWidgetItem *nameItem = new QTableWidgetItem(name);
@@ -107,6 +107,9 @@ void HighlightSettingsPage::addNewRow(QString name, bool regex, bool cs, bool en
   ui.highlightTable->setItem(lastRow, HighlightSettingsPage::CsColumn, csItem);
   ui.highlightTable->setItem(lastRow, HighlightSettingsPage::EnableColumn, enableItem);
   ui.highlightTable->setItem(lastRow, HighlightSettingsPage::ChanColumn, chanNameItem);
+
+  if(!self)
+    ui.highlightTable->setCurrentItem(nameItem);
 
   QVariantMap highlightRule;
   highlightRule["Name"] = name;
@@ -199,7 +202,7 @@ void HighlightSettingsPage::load() {
     bool enable = highlightRule["Enable"].toBool();
     QString chanName = highlightRule["Chan"].toString();
 
-    addNewRow(name, regex, cs, enable, chanName);
+    addNewRow(name, regex, cs, enable, chanName, true);
   }
 
   switch(notificationSettings.highlightNick())
