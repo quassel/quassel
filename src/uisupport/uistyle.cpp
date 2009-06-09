@@ -410,14 +410,23 @@ QString UiStyle::StyledMessage::decoratedSender() const {
 }
 
 UiStyle::FormatType UiStyle::StyledMessage::senderFormat() const {
-  quint16 hash;
   switch(type()) {
     case Message::Plain:
       // To produce random like but stable nick colorings some sort of hashing should work best.
       // In this case we just use the qt function qChecksum which produces a
       // CRC16 hash. This should be fast and 16 bits are more than enough.
-      hash = qChecksum(sender().toAscii().data(), sender().toAscii().size());
-      return (UiStyle::FormatType)((((hash % 12) + 1) << 24) + 0x200); // FIXME: amount of sender colors hardwired
+      {
+        QString nick = nickFromMask(sender()).toLower();
+        if(!nick.isEmpty()) {
+          int chopCount = 0;
+          while(nick[nick.count() - 1 - chopCount] == '_') {
+            chopCount++;
+          }
+          nick.chop(chopCount);
+        }
+        quint16 hash = qChecksum(nick.toAscii().data(), nick.toAscii().size());
+        return (UiStyle::FormatType)((((hash % 12) + 1) << 24) + 0x200); // FIXME: amount of sender colors hardwired
+      }
     case Message::Notice:
       return UiStyle::NoticeMsg; break;
     case Message::Server:
