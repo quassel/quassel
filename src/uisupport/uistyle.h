@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef UISTYLE_H
-#define UISTYLE_H
+#ifndef UISTYLE_H_
+#define UISTYLE_H_
 
 #include <QDataStream>
 #include <QFontMetricsF>
@@ -221,56 +221,6 @@ public:
 
 private:
   mutable StyledString _contents;
-};
-
-class UiStyle::QssParser {
-public:
-  enum Column {
-    Any,
-    Timestamp,
-    Sender,
-    Contents
-  };
-
-  struct ChatLineFormat {
-    QVector<QTextCharFormat> senderColors;
-    QVector<QTextCharFormat> mircColors;
-    QHash<FormatType, QTextCharFormat> formats;
-
-  };
-
-  QssParser();
-
-  void loadStyleSheet(const QString &sheet);
-
-  inline QPalette palette() const { return _palette; }
-  ChatLineFormat basicFormat() const;
-  QHash<FormatType, ChatLineFormat> specialFormats() const;
-
-protected:
-  typedef QList<qreal> ColorTuple;
-
-  void parseChatLineData(const QString &decl, const QString &contents);
-  void parsePaletteData(const QString &decl, const QString &contents);
-
-  QTextCharFormat parseFormat(const QString &qss);
-  bool parsePalette(QPalette &, const QString &qss);
-
-  // Parse basic data types
-  QBrush parseBrushValue(const QString &str);
-  QColor parseColorValue(const QString &str);
-  QFont parseFontValue(const QString &str);
-
-  // Parse subelements
-  ColorTuple parseColorTuple(const QString &str);
-  QGradientStops parseGradientStops(const QString &str);
-
-  QHash<QString, QPalette::ColorRole> _paletteColorRoles;
-
-private:
-  QPalette _palette;
-  ChatLineFormat _basicFormat;
-  QHash<FormatType, ChatLineFormat> _specialFormats;
 };
 
 QDataStream &operator<<(QDataStream &out, const UiStyle::FormatList &formatList);

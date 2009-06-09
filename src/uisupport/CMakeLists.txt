@@ -25,6 +25,7 @@ set(SOURCES
     networkmodelcontroller.cpp
     nickview.cpp
     nickviewfilter.cpp
+    qssparser.cpp
     settingspage.cpp
     tabcompleter.cpp
     toolbaractionprovider.cpp
@@ -60,6 +61,7 @@ set(MOC_HDRS
 
 set(HEADERS
     icon.h
+    qssparser.h
     uisettings.h
     uistyle.h
    )
