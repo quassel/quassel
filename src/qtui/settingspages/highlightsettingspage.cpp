@@ -180,7 +180,7 @@ void HighlightSettingsPage::tableChanged(QTableWidgetItem *item) {
       highlightRule["Enable"] = (item->checkState() == Qt::Checked);
       break;
     case HighlightSettingsPage::ChanColumn:
-      if(item->text().size() > 0 && item->text().trimmed().size() == 0)
+      if(!item->text().isEmpty() && item->text().trimmed().isEmpty())
         item->setText("");
       highlightRule["Chan"] = item->text();
       break;
