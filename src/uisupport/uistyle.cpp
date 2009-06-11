@@ -462,5 +462,9 @@ void UiStyle::loadStyleSheet() {
 
   // TODO handle results
   QApplication::setPalette(parser.palette());
-  //QApplication::setStyleSheet(qApp->styleSheet()); // reload with custom palette settings
+
+  qDeleteAll(_metricsCache);
+  _metricsCache.clear();
+  _formatCache = parser.formats();
+
 }

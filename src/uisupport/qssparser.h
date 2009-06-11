@@ -32,6 +32,7 @@ class QssParser {
     void loadStyleSheet(const QString &sheet);
 
     inline QPalette palette() const { return _palette; }
+    inline const QHash<quint64, QTextCharFormat>& formats() const { return _formats; }
 
   protected:
     typedef QList<qreal> ColorTuple;
@@ -57,6 +58,7 @@ class QssParser {
 
   private:
     QPalette _palette;
+    QHash<quint64, QTextCharFormat> _formats;
     int _maxSenderHash;
 };
 
