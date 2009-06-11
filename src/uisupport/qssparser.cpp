@@ -98,8 +98,28 @@ void QssParser::parseChatLineData(const QString &decl, const QString &contents) 
   if(fmtType == UiStyle::Invalid)
     return;
 
-  
+  QTextCharFormat format;
 
+  foreach(QString line, contents.split(';', QString::SkipEmptyParts)) {
+    int idx = line.indexOf(':');
+    if(idx <= 0) {
+      qWarning() << Q_FUNC_INFO << tr("Invalid property declaration: %1").arg(line.trimmed());
+      continue;
+    }
+    QString property = line.left(idx).trimmed();
+    QString value = line.mid(idx + 1).trimmed();
+
+    if(property == "background" || property == "background-color")
+      format.setBackground(parseBrushValue(value));
+    else if(property == "foreground" || property == "color")
+      format.setForeground(parseBrushValue(value));
+
+    else {
+      qWarning() << Q_FUNC_INFO << tr("Unknown ChatLine property: %1").arg(property);
+    }
+  }
+
+  _formats[fmtType] = format;
 }
 
 quint64 QssParser::parseFormatType(const QString &decl) {
@@ -251,10 +271,15 @@ void QssParser::parsePaletteData(const QString &decl, const QString &contents) {
   }
 }
 
-QBrush QssParser::parseBrushValue(const QString &str) {
+QBrush QssParser::parseBrushValue(const QString &str, bool *ok) {
+  if(ok)
+    *ok = false;
   QColor c = parseColorValue(str);
-  if(c.isValid())
+  if(c.isValid()) {
+    if(ok)
+      *ok = true;
     return QBrush(c);
+  }
 
   if(str.startsWith("palette")) { // Palette color role
     QRegExp rx("palette\\s*\\(\\s*([a-z-]+)\\s*\\)");
@@ -286,6 +311,8 @@ QBrush QssParser::parseBrushValue(const QString &str) {
     }
     QLinearGradient gradient(x1, y1, x2, y2);
     gradient.setStops(stops);
+    if(ok)
+      *ok = true;
     return QBrush(gradient);
 
   } else if(str.startsWith("qconicalgradient")) {
@@ -305,6 +332,8 @@ QBrush QssParser::parseBrushValue(const QString &str) {
     }
     QConicalGradient gradient(cx, cy, angle);
     gradient.setStops(stops);
+    if(ok)
+      *ok = true;
     return QBrush(gradient);
 
   } else if(str.startsWith("qradialgradient")) {
@@ -326,6 +355,8 @@ QBrush QssParser::parseBrushValue(const QString &str) {
     }
     QRadialGradient gradient(cx, cy, radius, fx, fy);
     gradient.setStops(stops);
+    if(ok)
+      *ok = true;
     return QBrush(gradient);
   }
 

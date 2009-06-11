@@ -46,7 +46,7 @@ class QssParser {
     bool parsePalette(QPalette &, const QString &qss);
 
     // Parse basic data types
-    QBrush parseBrushValue(const QString &str);
+    QBrush parseBrushValue(const QString &str, bool *ok = 0);
     QColor parseColorValue(const QString &str);
     QFont parseFontValue(const QString &str);
 
