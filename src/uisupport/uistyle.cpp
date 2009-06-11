@@ -105,7 +105,7 @@ QTextCharFormat UiStyle::format(quint32 ftype, quint32 label) {
 
   // check if we have exactly this format readily cached already
   QTextCharFormat fmt = cachedFormat(key);
-  if(fmt.isValid())
+  if(fmt.properties().count())
     return fmt;
 
   fmt.merge(cachedFormat(key & 0x0000000000000000));  // basic

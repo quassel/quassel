@@ -83,7 +83,7 @@ void QssParser::loadStyleSheet(const QString &styleSheet) {
   while((pos = blockrx.indexIn(ss, pos)) >= 0) {
     //qDebug() << blockrx.cap(1) << blockrx.cap(2);
 
-    if(blockrx.cap(2) == "ChatLine")
+    if(blockrx.cap(1).startsWith("ChatLine"))
       parseChatLineData(blockrx.cap(1).trimmed(), blockrx.cap(2).trimmed());
     //else
     // TODO: add moar here
@@ -137,15 +137,15 @@ quint64 QssParser::parseFormatType(const QString &decl) {
 
   // First determine the subelement
   if(!subElement.isEmpty()) {
-    if(subElement == "Timestamp")
+    if(subElement == "timestamp")
       fmtType |= UiStyle::Timestamp;
-    else if(subElement == "Sender")
+    else if(subElement == "sender")
       fmtType |= UiStyle::Sender;
-    else if(subElement == "Nick")
+    else if(subElement == "nick")
       fmtType |= UiStyle::Nick;
-    else if(subElement == "Hostmask")
+    else if(subElement == "hostmask")
       fmtType |= UiStyle::Hostmask;
-    else if(subElement == "ModeFlags")
+    else if(subElement == "modeflags")
       fmtType |= UiStyle::ModeFlags;
     else {
       qWarning() << Q_FUNC_INFO << tr("Invalid subelement name in %1").arg(decl);
@@ -155,27 +155,27 @@ quint64 QssParser::parseFormatType(const QString &decl) {
 
   // Now, figure out the message type
   if(!msgType.isEmpty()) {
-    if(msgType == "Plain")
+    if(msgType == "plain")
       fmtType |= UiStyle::PlainMsg;
-    else if(msgType == "Notice")
+    else if(msgType == "notice")
       fmtType |= UiStyle::NoticeMsg;
-    else if(msgType == "Server")
+    else if(msgType == "server")
       fmtType |= UiStyle::ServerMsg;
-    else if(msgType == "Error")
+    else if(msgType == "error")
       fmtType |= UiStyle::ErrorMsg;
-    else if(msgType == "Join")
+    else if(msgType == "join")
       fmtType |= UiStyle::JoinMsg;
-    else if(msgType == "Part")
+    else if(msgType == "part")
       fmtType |= UiStyle::PartMsg;
-    else if(msgType == "Quit")
+    else if(msgType == "quit")
       fmtType |= UiStyle::QuitMsg;
-    else if(msgType == "Kick")
+    else if(msgType == "kick")
       fmtType |= UiStyle::KickMsg;
-    else if(msgType == "Rename")
+    else if(msgType == "rename")
       fmtType |= UiStyle::RenameMsg;
-    else if(msgType == "Mode")
+    else if(msgType == "mode")
       fmtType |= UiStyle::ModeMsg;
-    else if(msgType == "Action")
+    else if(msgType == "action")
       fmtType |= UiStyle::ActionMsg;
     else {
       qWarning() << Q_FUNC_INFO << tr("Invalid message type in %1").arg(decl);
