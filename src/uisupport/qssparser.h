@@ -45,14 +45,18 @@ class QssParser {
     QTextCharFormat parseFormat(const QString &qss);
     bool parsePalette(QPalette &, const QString &qss);
 
-    // Parse basic data types
-    QBrush parseBrushValue(const QString &str, bool *ok = 0);
-    QColor parseColorValue(const QString &str);
-    QFont parseFontValue(const QString &str);
-
-    // Parse subelements
+    // Parse color/brush-related properties
+    QBrush parseBrush(const QString &str, bool *ok = 0);
+    QColor parseColor(const QString &str);
     ColorTuple parseColorTuple(const QString &str);
     QGradientStops parseGradientStops(const QString &str);
+
+    // Parse font-related properties
+    bool parseFont(const QString &str, QFont *font);
+    bool parseFontStyle(const QString &str, QFont *font);
+    bool parseFontWeight(const QString &str, QFont *font);
+    bool parseFontSize(const QString &str, QFont *font);
+    bool parseFontFamily(const QString &str, QFont *font);
 
     QHash<QString, QPalette::ColorRole> _paletteColorRoles;
 

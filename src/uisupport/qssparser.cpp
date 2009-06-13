@@ -107,12 +107,34 @@ void QssParser::parseChatLineData(const QString &decl, const QString &contents) 
       continue;
     }
     QString property = line.left(idx).trimmed();
-    QString value = line.mid(idx + 1).trimmed();
+    QString value = line.mid(idx + 1).simplified();
 
     if(property == "background" || property == "background-color")
-      format.setBackground(parseBrushValue(value));
+      format.setBackground(parseBrush(value));
     else if(property == "foreground" || property == "color")
-      format.setForeground(parseBrushValue(value));
+      format.setForeground(parseBrush(value));
+
+    // font-related properties
+    else if(property.startsWith("font")) {
+      bool ok;
+      QFont font = format.font();
+      if(property == "font")
+        ok = parseFont(value, &font);
+      else if(property == "font-style")
+        ok = parseFontStyle(value, &font);
+      else if(property == "font-weight")
+        ok = parseFontWeight(value, &font);
+      else if(property == "font-size")
+        ok = parseFontSize(value, &font);
+      else if(property == "font-family")
+        ok = parseFontFamily(value, &font);
+      else {
+        qWarning() << Q_FUNC_INFO << tr("Invalid font property: %1").arg(line);
+        continue;
+      }
+      if(ok)
+        format.setFont(font);
+    }
 
     else {
       qWarning() << Q_FUNC_INFO << tr("Unknown ChatLine property: %1").arg(property);
@@ -262,7 +284,7 @@ void QssParser::parsePaletteData(const QString &decl, const QString &contents) {
       qWarning() << Q_FUNC_INFO << tr("Unknown palette role name: %1").arg(rolestr);
       continue;
     }
-    QBrush brush = parseBrushValue(brushstr);
+    QBrush brush = parseBrush(brushstr);
     if(colorGroups.count()) {
       foreach(QPalette::ColorGroup group, colorGroups)
         _palette.setBrush(group, _paletteColorRoles.value(rolestr), brush);
@@ -271,10 +293,10 @@ void QssParser::parsePaletteData(const QString &decl, const QString &contents) {
   }
 }
 
-QBrush QssParser::parseBrushValue(const QString &str, bool *ok) {
+QBrush QssParser::parseBrush(const QString &str, bool *ok) {
   if(ok)
     *ok = false;
-  QColor c = parseColorValue(str);
+  QColor c = parseColor(str);
   if(c.isValid()) {
     if(ok)
       *ok = true;
@@ -363,7 +385,7 @@ QBrush QssParser::parseBrushValue(const QString &str, bool *ok) {
   return QBrush();
 }
 
-QColor QssParser::parseColorValue(const QString &str) {
+QColor QssParser::parseColor(const QString &str) {
   if(str.startsWith("rgba")) {
     ColorTuple tuple = parseColorTuple(str.mid(4));
     if(tuple.count() == 4)
@@ -429,7 +451,7 @@ QGradientStops QssParser::parseGradientStops(const QString &str_) {
   int idx;
   while((idx = rx.indexIn(str)) == 0) {
     qreal x = rx.cap(1).toDouble();
-    QColor c = parseColorValue(rx.cap(3));
+    QColor c = parseColor(rx.cap(3));
     if(!c.isValid())
       return QGradientStops();
     result << QGradientStop(x, c);
@@ -439,4 +461,90 @@ QGradientStops QssParser::parseGradientStops(const QString &str_) {
     return QGradientStops();
 
   return result;
+}
+
+/******** Font Properties ********/
+
+bool QssParser::parseFont(const QString &value, QFont *font) {
+  QRegExp rx("((?:(?:normal|italic|oblique|bold|100|200|300|400|500|600|700|800|900) ){0,2}) ?(\\d+)(pt|px)? \"(.*)\"");
+  if(!rx.exactMatch(value)) {
+    qWarning() << Q_FUNC_INFO << tr("Invalid font specification: %1").arg(value);
+    return false;
+  }
+  font->setStyle(QFont::StyleNormal);
+  font->setWeight(QFont::Normal);
+  QStringList proplist = rx.cap(1).split(' ', QString::SkipEmptyParts);
+  foreach(QString prop, proplist) {
+    if(prop == "italic")
+      font->setStyle(QFont::StyleItalic);
+    else if(prop == "oblique")
+      font->setStyle(QFont::StyleOblique);
+    else if(prop == "bold")
+      font->setWeight(QFont::Bold);
+    else { // number
+      int w = prop.toInt();
+      font->setWeight(qMin(w / 8, 99)); // taken from Qt's qss parser
+    }
+  }
+
+  if(rx.cap(3) == "px")
+    font->setPixelSize(rx.cap(2).toInt());
+  else
+    font->setPointSize(rx.cap(2).toInt());
+
+  font->setFamily(rx.cap(4));
+  return true;
+}
+
+bool QssParser::parseFontStyle(const QString &value, QFont *font) {
+  if(value == "normal")
+    font->setStyle(QFont::StyleNormal);
+  else if(value == "italic")
+    font->setStyle(QFont::StyleItalic);
+  else if(value == "oblique")
+    font->setStyle(QFont::StyleOblique);
+  else {
+    qWarning() << Q_FUNC_INFO << tr("Invalid font style specification: %1").arg(value);
+    return false;
+  }
+  return true;
+}
+
+bool QssParser::parseFontWeight(const QString &value, QFont *font) {
+  if(value == "normal")
+    font->setWeight(QFont::Normal);
+  else if(value == "bold")
+    font->setWeight(QFont::Bold);
+  else {
+    bool ok;
+    int w = value.toInt(&ok);
+    if(!ok) {
+      qWarning() << Q_FUNC_INFO << tr("Invalid font weight specification: %1").arg(value);
+      return false;
+    }
+    font->setWeight(qMin(w / 8, 99)); // taken from Qt's qss parser
+  }
+  return true;
+}
+
+bool QssParser::parseFontSize(const QString &value, QFont *font) {
+  QRegExp rx("\\(d+)(pt|px)");
+  if(!rx.exactMatch(value)) {
+    qWarning() << Q_FUNC_INFO << tr("Invalid font size specification: %1").arg(value);
+    return false;
+  }
+  if(rx.cap(2) == "px")
+    font->setPixelSize(rx.cap(1).toInt());
+  else
+    font->setPointSize(rx.cap(1).toInt());
+  return true;
+}
+
+bool QssParser::parseFontFamily(const QString &value, QFont *font) {
+  QString family = value;
+  if(family.startsWith('"') && family.endsWith('"')) {
+    family = family.mid(1, family.length() -2);
+  }
+  font->setFamily(family);
+  return true;
 }
