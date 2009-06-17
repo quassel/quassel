@@ -181,10 +181,12 @@ quint64 QssParser::parseFormatType(const QString &decl) {
       fmtType |= UiStyle::PlainMsg;
     else if(msgType == "notice")
       fmtType |= UiStyle::NoticeMsg;
-    else if(msgType == "server")
-      fmtType |= UiStyle::ServerMsg;
-    else if(msgType == "error")
-      fmtType |= UiStyle::ErrorMsg;
+    else if(msgType == "action")
+      fmtType |= UiStyle::ActionMsg;
+    else if(msgType == "nick")
+      fmtType |= UiStyle::NickMsg;
+    else if(msgType == "mode")
+      fmtType |= UiStyle::ModeMsg;
     else if(msgType == "join")
       fmtType |= UiStyle::JoinMsg;
     else if(msgType == "part")
@@ -193,12 +195,16 @@ quint64 QssParser::parseFormatType(const QString &decl) {
       fmtType |= UiStyle::QuitMsg;
     else if(msgType == "kick")
       fmtType |= UiStyle::KickMsg;
-    else if(msgType == "rename")
-      fmtType |= UiStyle::RenameMsg;
-    else if(msgType == "mode")
-      fmtType |= UiStyle::ModeMsg;
-    else if(msgType == "action")
-      fmtType |= UiStyle::ActionMsg;
+    else if(msgType == "kill")
+      fmtType |= UiStyle::KillMsg;
+    else if(msgType == "server")
+      fmtType |= UiStyle::ServerMsg;
+    else if(msgType == "info")
+      fmtType |= UiStyle::InfoMsg;
+    else if(msgType == "error")
+      fmtType |= UiStyle::ErrorMsg;
+    else if(msgType == "daychange")
+      fmtType |= UiStyle::DayChangeMsg;
     else {
       qWarning() << Q_FUNC_INFO << tr("Invalid message type in %1").arg(decl);
     }

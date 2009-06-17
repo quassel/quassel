@@ -55,15 +55,18 @@ public:
     // Message Formats (mutually exclusive!)
     PlainMsg        = 0x00000001,
     NoticeMsg       = 0x00000002,
-    ServerMsg       = 0x00000003,
-    ErrorMsg        = 0x00000004,
-    JoinMsg         = 0x00000005,
-    PartMsg         = 0x00000006,
-    QuitMsg         = 0x00000007,
-    KickMsg         = 0x00000008,
-    RenameMsg       = 0x00000009,
-    ModeMsg         = 0x0000000a,
-    ActionMsg       = 0x0000000b,
+    ActionMsg       = 0x00000003,
+    NickMsg         = 0x00000004,
+    ModeMsg         = 0x00000005,
+    JoinMsg         = 0x00000006,
+    PartMsg         = 0x00000007,
+    QuitMsg         = 0x00000008,
+    KickMsg         = 0x00000009,
+    KillMsg         = 0x0000000a,
+    ServerMsg       = 0x0000000b,
+    InfoMsg         = 0x0000000c,
+    ErrorMsg        = 0x0000000d,
+    DayChangeMsg    = 0x0000000e,
 
     // Standard Formats
     Bold            = 0x00000010,
@@ -99,8 +102,10 @@ public:
 
   class StyledMessage;
 
-  StyledString styleString(const QString &);
+  StyledString styleString(const QString &string, quint32 baseFormat = None);
   QString mircToInternal(const QString &) const;
+
+  FormatType formatType(Message::Type msgType) const;
 
   QTextCharFormat format(quint32 formatType, quint32 messageLabel = 0);
   QFontMetricsF *fontMetrics(quint32 formatType, quint32 messageLabel = 0);

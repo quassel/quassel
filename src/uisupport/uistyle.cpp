@@ -41,20 +41,6 @@ UiStyle::UiStyle() {
   _formatCodes["%U"] = Underline;
   _formatCodes["%R"] = Reverse;
 
-  _formatCodes["%D0"] = PlainMsg;
-  _formatCodes["%Dn"] = NoticeMsg;
-  _formatCodes["%Ds"] = ServerMsg;
-  _formatCodes["%De"] = ErrorMsg;
-  _formatCodes["%Dj"] = JoinMsg;
-  _formatCodes["%Dp"] = PartMsg;
-  _formatCodes["%Dq"] = QuitMsg;
-  _formatCodes["%Dk"] = KickMsg;
-  _formatCodes["%Dr"] = RenameMsg;
-  _formatCodes["%Dm"] = ModeMsg;
-  _formatCodes["%Da"] = ActionMsg;
-
-  _formatCodes["%DT"] = Timestamp;
-  _formatCodes["%DS"] = Sender;
   _formatCodes["%DN"] = Nick;
   _formatCodes["%DH"] = Hostmask;
   _formatCodes["%DC"] = ChannelName;
@@ -149,6 +135,41 @@ QFontMetricsF *UiStyle::fontMetrics(quint32 ftype, quint32 label) {
   return (_metricsCache[key] = new QFontMetricsF(format(ftype, label).font()));
 }
 
+UiStyle::FormatType UiStyle::formatType(Message::Type msgType) const {
+  switch(msgType) {
+    case Message::Plain:
+      return PlainMsg;
+    case Message::Notice:
+      return NoticeMsg;
+    case Message::Action:
+      return ActionMsg;
+    case Message::Nick:
+      return NickMsg;
+    case Message::Mode:
+      return ModeMsg;
+    case Message::Join:
+      return JoinMsg;
+    case Message::Part:
+      return PartMsg;
+    case Message::Quit:
+      return QuitMsg;
+    case Message::Kick:
+      return KickMsg;
+    case Message::Kill:
+      return KillMsg;
+    case Message::Server:
+      return ServerMsg;
+    case Message::Info:
+      return InfoMsg;
+    case Message::Error:
+      return ErrorMsg;
+    case Message::DayChange:
+      return DayChangeMsg;
+  }
+  Q_ASSERT(false); // we need to handle all message types
+  return ErrorMsg;
+}
+
 UiStyle::FormatType UiStyle::formatType(const QString & code) const {
   if(_formatCodes.contains(code)) return _formatCodes.value(code);
   return Invalid;
@@ -174,7 +195,7 @@ QList<QTextLayout::FormatRange> UiStyle::toTextLayoutList(const FormatList &form
 
 // This method expects a well-formatted string, there is no error checking!
 // Since we create those ourselves, we should be pretty safe that nobody does something crappy here.
-UiStyle::StyledString UiStyle::styleString(const QString &s_) {
+UiStyle::StyledString UiStyle::styleString(const QString &s_, quint32 baseFormat) {
   QString s = s_;
   if(s.length() > 65535) {
     qWarning() << QString("String too long to be styled: %1").arg(s);
@@ -182,7 +203,7 @@ UiStyle::StyledString UiStyle::styleString(const QString &s_) {
   }
   StyledString result;
   result.formatList.append(qMakePair((quint16)0, (quint32)None));
-  quint32 curfmt = (quint32)None;
+  quint32 curfmt = baseFormat;
   int pos = 0; quint16 length = 0;
   for(;;) {
     pos = s.indexOf('%', pos);
@@ -298,46 +319,65 @@ void UiStyle::StyledMessage::style(UiStyle *style) const {
   QString t;
   switch(type()) {
     case Message::Plain:
-      t = tr("%D0%1").arg(txt); break;
+      //: Plain Message
+      t = tr("%1").arg(txt); break;
     case Message::Notice:
-      t = tr("%Dn%1").arg(txt); break;
-    case Message::Topic:
-    case Message::Server:
-      t = tr("%Ds%1").arg(txt); break;
-    case Message::Error:
-      t = tr("%De%1").arg(txt); break;
+      //: Notice Message
+      t = tr("%1").arg(txt); break;
+    case Message::Action:
+      //: Action Message
+      t = tr("%DN%1%DN %2").arg(nick).arg(txt);
+      break;
+    case Message::Nick:
+      //: Nick Message
+      if(nick == contents()) t = tr("You are now known as %DN%1%DN").arg(txt);
+      else t = tr("%DN%1%DN is now known as %DN%2%DN").arg(nick, txt);
+      break;
+    case Message::Mode:
+      //: Mode Message
+      if(nick.isEmpty()) t = tr("User mode: %DM%1%DM").arg(txt);
+      else t = tr("Mode %DM%1%DM by %DN%2%DN").arg(txt, nick);
+      break;
     case Message::Join:
-      t = tr("%Dj%DN%1%DN %DH(%2@%3)%DH has joined %DC%4%DC").arg(nick, user, host, bufferName); break;
+      //: Join Message
+      t = tr("%DN%1%DN %DH(%2@%3)%DH has joined %DC%4%DC").arg(nick, user, host, bufferName); break;
     case Message::Part:
-      t = tr("%Dp%DN%1%DN %DH(%2@%3)%DH has left %DC%4%DC").arg(nick, user, host, bufferName);
+      //: Part Message
+      t = tr("%DN%1%DN %DH(%2@%3)%DH has left %DC%4%DC").arg(nick, user, host, bufferName);
       if(!txt.isEmpty()) t = QString("%1 (%2)").arg(t).arg(txt);
       break;
     case Message::Quit:
-      t = tr("%Dq%DN%1%DN %DH(%2@%3)%DH has quit").arg(nick, user, host);
+      //: Quit Message
+      t = tr("%DN%1%DN %DH(%2@%3)%DH has quit").arg(nick, user, host);
       if(!txt.isEmpty()) t = QString("%1 (%2)").arg(t).arg(txt);
       break;
     case Message::Kick: {
         QString victim = txt.section(" ", 0, 0);
         QString kickmsg = txt.section(" ", 1);
-        t = tr("%Dk%DN%1%DN has kicked %DN%2%DN from %DC%3%DC").arg(nick).arg(victim).arg(bufferName);
+        //: Kick Message
+        t = tr("%DN%1%DN has kicked %DN%2%DN from %DC%3%DC").arg(nick).arg(victim).arg(bufferName);
         if(!kickmsg.isEmpty()) t = QString("%1 (%2)").arg(t).arg(kickmsg);
       }
       break;
-    case Message::Nick:
-      if(nick == contents()) t = tr("%DrYou are now known as %DN%1%DN").arg(txt);
-      else t = tr("%Dr%DN%1%DN is now known as %DN%2%DN").arg(nick, txt);
-      break;
-    case Message::Mode:
-      if(nick.isEmpty()) t = tr("%DmUser mode: %DM%1%DM").arg(txt);
-      else t = tr("%DmMode %DM%1%DM by %DN%2%DN").arg(txt, nick);
-      break;
-    case Message::Action:
-      t = tr("%Da%DN%1%DN %2").arg(nick).arg(txt);
+    //case Message::Kill: FIXME
+
+    case Message::Server:
+      //: Server Message
+      t = tr("%1").arg(txt); break;
+    case Message::Info:
+      //: Info Message
+      t = tr("%1").arg(txt); break;
+    case Message::Error:
+      //: Error Message
+      t = tr("%1").arg(txt); break;
+    case Message::DayChange:
+      //: Day Change Message
+      t = tr("{Day changed to %1}").arg(timestamp().toString());
       break;
     default:
-      t = tr("%De[%1]").arg(txt);
+      t = tr("[%1]").arg(txt);
   }
-  _contents = style->styleString(t);
+  _contents = style->styleString(t, style->formatType(type()));
 }
 
 QString UiStyle::StyledMessage::decoratedTimestamp() const {
@@ -360,11 +400,20 @@ QString UiStyle::StyledMessage::decoratedSender() const {
       return tr("<%1>").arg(plainSender()); break;
     case Message::Notice:
       return tr("[%1]").arg(plainSender()); break;
+<<<<<<< HEAD
     case Message::Topic:
     case Message::Server:
       return tr("*"); break;
     case Message::Error:
       return tr("*"); break;
+=======
+    case Message::Action:
+      return tr("-*-"); break;
+    case Message::Nick:
+      return tr("<->"); break;
+    case Message::Mode:
+      return tr("***"); break;
+>>>>>>> Handle all message types properly in UiStyle; eliminate msgtype format codes
     case Message::Join:
       return tr("-->"); break;
     case Message::Part:
@@ -373,12 +422,16 @@ QString UiStyle::StyledMessage::decoratedSender() const {
       return tr("<--"); break;
     case Message::Kick:
       return tr("<-*"); break;
-    case Message::Nick:
-      return tr("<->"); break;
-    case Message::Mode:
-      return tr("***"); break;
-    case Message::Action:
-      return tr("-*-"); break;
+    case Message::Kill:
+      return tr("<-x"); break;
+    case Message::Server:
+      return tr("*"); break;
+    case Message::Info:
+      return tr("*"); break;
+    case Message::Error:
+      return tr("*"); break;
+    case Message::DayChange:
+      return tr("-"); break;
     default:
       return tr("%1").arg(plainSender());
   }
@@ -418,7 +471,7 @@ UiStyle::FormatType UiStyle::StyledMessage::senderFormat() const {
     case Message::Kick:
       return UiStyle::KickMsg; break;
     case Message::Nick:
-      return UiStyle::RenameMsg; break;
+      return UiStyle::NickMsg; break;
     case Message::Mode:
       return UiStyle::ModeMsg; break;
     case Message::Action:
@@ -427,7 +480,6 @@ UiStyle::FormatType UiStyle::StyledMessage::senderFormat() const {
       return UiStyle::ErrorMsg;
   }
 }
-
 
 /***********************************************************************************/
 
@@ -466,5 +518,4 @@ void UiStyle::loadStyleSheet() {
   qDeleteAll(_metricsCache);
   _metricsCache.clear();
   _formatCache = parser.formats();
-
 }

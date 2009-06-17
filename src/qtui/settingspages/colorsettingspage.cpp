@@ -441,7 +441,7 @@ void ColorSettingsPage::save() {
   s.setValue("partMessageUseBG", ui.partMessageUseBG->isChecked());
   saveColor(UiStyle::QuitMsg, ui.quitMessageFG->color(), ui.quitMessageBG->color(), ui.quitMessageUseBG->isChecked());
   s.setValue("quitMessageUseBG", ui.quitMessageUseBG->isChecked());
-  saveColor(UiStyle::RenameMsg, ui.renameMessageFG->color(), ui.renameMessageBG->color(), ui.renameMessageUseBG->isChecked());
+  saveColor(UiStyle::NickMsg, ui.renameMessageFG->color(), ui.renameMessageBG->color(), ui.renameMessageUseBG->isChecked());
   s.setValue("renameMessageUseBG", ui.renameMessageUseBG->isChecked());
 
   QtUi::style()->setHighlightColor(ui.highlightColor->color());
