@@ -102,10 +102,9 @@ public:
 
   class StyledMessage;
 
-  StyledString styleString(const QString &string, quint32 baseFormat = None);
-  QString mircToInternal(const QString &) const;
-
-  FormatType formatType(Message::Type msgType) const;
+  static FormatType formatType(Message::Type msgType);
+  static StyledString styleString(const QString &string, quint32 baseFormat = None);
+  static QString mircToInternal(const QString &);
 
   QTextCharFormat format(quint32 formatType, quint32 messageLabel = 0);
   QFontMetricsF *fontMetrics(quint32 formatType, quint32 messageLabel = 0);
@@ -126,34 +125,32 @@ protected:
   void setCachedFormat(const QTextCharFormat &format, quint32 formatType, quint32 messageLabel = 0);
   void mergeSubElementFormat(QTextCharFormat &format, quint32 formatType, quint32 messageLabel = 0);
 
-  FormatType formatType(const QString &code) const;
-  QString formatCode(FormatType) const;
+  static FormatType formatType(const QString &code);
+  static QString formatCode(FormatType);
 
 private:
   QFont _defaultFont;
   QHash<quint64, QTextCharFormat> _formatCache;
   QHash<quint64, QFontMetricsF *> _metricsCache;
-  QHash<QString, FormatType> _formatCodes;
+  static QHash<QString, FormatType> _formatCodes;
 };
 
 class UiStyle::StyledMessage : public Message {
 public:
   explicit StyledMessage(const Message &message);
 
-  //! Styling is only needed for calls to plainContents() and contentsFormatList()
-  // StyledMessage can't style lazily by itself, as it doesn't know the used style
-  bool inline needsStyling() const { return _contents.plainText.isNull(); }
-  void style(UiStyle *style) const;
-
-
   QString decoratedTimestamp() const;
   QString plainSender() const;             //!< Nickname (no decorations) for Plain and Notice, empty else
   QString decoratedSender() const;
-  inline const QString &plainContents() const { return _contents.plainText; }
+  const QString &plainContents() const;
 
   inline FormatType timestampFormat() const { return UiStyle::Timestamp; }
   FormatType senderFormat() const;
-  inline const FormatList &contentsFormatList() const { return _contents.formatList; }
+  const FormatList &contentsFormatList() const;
+protected:
+  //! Styling is only needed for calls to plainContents() and contentsFormatList()
+  void style() const;
+
 
 private:
   mutable StyledString _contents;

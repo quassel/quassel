@@ -25,6 +25,8 @@
 #include "uisettings.h"
 #include "util.h"
 
+QHash<QString, UiStyle::FormatType> UiStyle::_formatCodes;
+
 UiStyle::UiStyle() {
   // register FormatList if that hasn't happened yet
   // FIXME I don't think this actually avoids double registration... then again... does it hurt?
@@ -135,7 +137,7 @@ QFontMetricsF *UiStyle::fontMetrics(quint32 ftype, quint32 label) {
   return (_metricsCache[key] = new QFontMetricsF(format(ftype, label).font()));
 }
 
-UiStyle::FormatType UiStyle::formatType(Message::Type msgType) const {
+UiStyle::FormatType UiStyle::formatType(Message::Type msgType) {
   switch(msgType) {
     case Message::Plain:
       return PlainMsg;
@@ -170,12 +172,12 @@ UiStyle::FormatType UiStyle::formatType(Message::Type msgType) const {
   return ErrorMsg;
 }
 
-UiStyle::FormatType UiStyle::formatType(const QString & code) const {
+UiStyle::FormatType UiStyle::formatType(const QString & code) {
   if(_formatCodes.contains(code)) return _formatCodes.value(code);
   return Invalid;
 }
 
-QString UiStyle::formatCode(FormatType ftype) const {
+QString UiStyle::formatCode(FormatType ftype) {
   return _formatCodes.key(ftype);
 }
 
@@ -258,7 +260,7 @@ UiStyle::StyledString UiStyle::styleString(const QString &s_, quint32 baseFormat
   return result;
 }
 
-QString UiStyle::mircToInternal(const QString &mirc_) const {
+QString UiStyle::mircToInternal(const QString &mirc_) {
   QString mirc = mirc_;
   mirc.replace('%', "%%");      // escape % just to be sure
   mirc.replace('\x02', "%B");
@@ -308,11 +310,11 @@ UiStyle::StyledMessage::StyledMessage(const Message &msg)
 {
 }
 
-void UiStyle::StyledMessage::style(UiStyle *style) const {
+void UiStyle::StyledMessage::style() const {
   QString user = userFromMask(sender());
   QString host = hostFromMask(sender());
   QString nick = nickFromMask(sender());
-  QString txt = style->mircToInternal(contents());
+  QString txt = UiStyle::mircToInternal(contents());
   QString bufferName = bufferInfo().bufferName();
   bufferName.replace('%', "%%"); // well, you _can_ have a % in a buffername apparently... -_-
 
@@ -377,7 +379,21 @@ void UiStyle::StyledMessage::style(UiStyle *style) const {
     default:
       t = tr("[%1]").arg(txt);
   }
-  _contents = style->styleString(t, style->formatType(type()));
+  _contents = UiStyle::styleString(t, UiStyle::formatType(type()));
+}
+
+const QString &UiStyle::StyledMessage::plainContents() const {
+  if(_contents.plainText.isNull())
+    style();
+
+  return _contents.plainText;
+}
+
+const UiStyle::FormatList &UiStyle::StyledMessage::contentsFormatList() const {
+  if(_contents.plainText.isNull())
+    style();
+
+  return _contents.formatList;
 }
 
 QString UiStyle::StyledMessage::decoratedTimestamp() const {
