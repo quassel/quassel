@@ -165,6 +165,8 @@ quint64 QssParser::parseFormatType(const QString &decl) {
       fmtType |= UiStyle::Sender;
     else if(subElement == "nick")
       fmtType |= UiStyle::Nick;
+    else if(subElement == "contents")
+      fmtType |= UiStyle::Contents;
     else if(subElement == "hostmask")
       fmtType |= UiStyle::Hostmask;
     else if(subElement == "modeflags")

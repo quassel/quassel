@@ -77,10 +77,11 @@ public:
     // Individual parts of a message
     Timestamp       = 0x00000100,
     Sender          = 0x00000200,
-    Nick            = 0x00000400,
-    Hostmask        = 0x00000800,
-    ChannelName     = 0x00001000,
-    ModeFlags       = 0x00002000,
+    Contents        = 0x00000400,
+    Nick            = 0x00000800,
+    Hostmask        = 0x00001000,
+    ChannelName     = 0x00002000,
+    ModeFlags       = 0x00004000,
 
     // URL is special, we want that to take precedence over the rest...
     Url             = 0x00080000
