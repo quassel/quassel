@@ -52,11 +52,11 @@ class QssParser {
     QGradientStops parseGradientStops(const QString &str);
 
     // Parse font-related properties
-    bool parseFont(const QString &str, QFont *font);
-    bool parseFontStyle(const QString &str, QFont *font);
-    bool parseFontWeight(const QString &str, QFont *font);
-    bool parseFontSize(const QString &str, QFont *font);
-    bool parseFontFamily(const QString &str, QFont *font);
+    void parseFont(const QString &str, QTextCharFormat *format);
+    void parseFontStyle(const QString &str, QTextCharFormat *format);
+    void parseFontWeight(const QString &str, QTextCharFormat *format);
+    void parseFontSize(const QString &str, QTextCharFormat *format);
+    void parseFontFamily(const QString &str, QTextCharFormat *format);
 
     QHash<QString, QPalette::ColorRole> _paletteColorRoles;
 

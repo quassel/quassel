@@ -116,24 +116,20 @@ void QssParser::parseChatLineData(const QString &decl, const QString &contents) 
 
     // font-related properties
     else if(property.startsWith("font")) {
-      bool ok;
-      QFont font = format.font();
       if(property == "font")
-        ok = parseFont(value, &font);
+        parseFont(value, &format);
       else if(property == "font-style")
-        ok = parseFontStyle(value, &font);
+        parseFontStyle(value, &format);
       else if(property == "font-weight")
-        ok = parseFontWeight(value, &font);
+        parseFontWeight(value, &format);
       else if(property == "font-size")
-        ok = parseFontSize(value, &font);
+        parseFontSize(value, &format);
       else if(property == "font-family")
-        ok = parseFontFamily(value, &font);
+        parseFontFamily(value, &format);
       else {
         qWarning() << Q_FUNC_INFO << tr("Invalid font property: %1").arg(line);
         continue;
       }
-      if(ok)
-        format.setFont(font);
     }
 
     else {
@@ -473,86 +469,80 @@ QGradientStops QssParser::parseGradientStops(const QString &str_) {
 
 /******** Font Properties ********/
 
-bool QssParser::parseFont(const QString &value, QFont *font) {
+void QssParser::parseFont(const QString& value, QTextCharFormat* format) {
   QRegExp rx("((?:(?:normal|italic|oblique|bold|100|200|300|400|500|600|700|800|900) ){0,2}) ?(\\d+)(pt|px)? \"(.*)\"");
   if(!rx.exactMatch(value)) {
     qWarning() << Q_FUNC_INFO << tr("Invalid font specification: %1").arg(value);
-    return false;
+    return;
   }
-  font->setStyle(QFont::StyleNormal);
-  font->setWeight(QFont::Normal);
+  format->setFontItalic(false);
+  format->setFontWeight(QFont::Normal);
   QStringList proplist = rx.cap(1).split(' ', QString::SkipEmptyParts);
   foreach(QString prop, proplist) {
     if(prop == "italic")
-      font->setStyle(QFont::StyleItalic);
-    else if(prop == "oblique")
-      font->setStyle(QFont::StyleOblique);
+      format->setFontItalic(true);
+    //else if(prop == "oblique")
+    //  format->setStyle(QFont::StyleOblique);
     else if(prop == "bold")
-      font->setWeight(QFont::Bold);
+      format->setFontWeight(QFont::Bold);
     else { // number
       int w = prop.toInt();
-      font->setWeight(qMin(w / 8, 99)); // taken from Qt's qss parser
+      format->setFontWeight(qMin(w / 8, 99)); // taken from Qt's qss parser
     }
   }
 
   if(rx.cap(3) == "px")
-    font->setPixelSize(rx.cap(2).toInt());
+    format->setProperty(QTextFormat::FontPixelSize, rx.cap(2).toInt());
   else
-    font->setPointSize(rx.cap(2).toInt());
+    format->setFontPointSize(rx.cap(2).toInt());
 
-  font->setFamily(rx.cap(4));
-  return true;
+  format->setFontFamily(rx.cap(4));
 }
 
-bool QssParser::parseFontStyle(const QString &value, QFont *font) {
+void QssParser::parseFontStyle(const QString& value, QTextCharFormat* format) {
   if(value == "normal")
-    font->setStyle(QFont::StyleNormal);
+    format->setFontItalic(false);
   else if(value == "italic")
-    font->setStyle(QFont::StyleItalic);
-  else if(value == "oblique")
-    font->setStyle(QFont::StyleOblique);
+    format->setFontItalic(true);
+  //else if(value == "oblique")
+  //  format->setStyle(QFont::StyleOblique);
   else {
     qWarning() << Q_FUNC_INFO << tr("Invalid font style specification: %1").arg(value);
-    return false;
   }
-  return true;
 }
 
-bool QssParser::parseFontWeight(const QString &value, QFont *font) {
+void QssParser::parseFontWeight(const QString& value, QTextCharFormat* format) {
   if(value == "normal")
-    font->setWeight(QFont::Normal);
+    format->setFontWeight(QFont::Normal);
   else if(value == "bold")
-    font->setWeight(QFont::Bold);
+    format->setFontWeight(QFont::Bold);
   else {
     bool ok;
     int w = value.toInt(&ok);
     if(!ok) {
       qWarning() << Q_FUNC_INFO << tr("Invalid font weight specification: %1").arg(value);
-      return false;
+      return;
     }
-    font->setWeight(qMin(w / 8, 99)); // taken from Qt's qss parser
+    format->setFontWeight(qMin(w / 8, 99)); // taken from Qt's qss parser
   }
-  return true;
 }
 
-bool QssParser::parseFontSize(const QString &value, QFont *font) {
+void QssParser::parseFontSize(const QString& value, QTextCharFormat* format) {
   QRegExp rx("\\(d+)(pt|px)");
   if(!rx.exactMatch(value)) {
     qWarning() << Q_FUNC_INFO << tr("Invalid font size specification: %1").arg(value);
-    return false;
+    return;
   }
   if(rx.cap(2) == "px")
-    font->setPixelSize(rx.cap(1).toInt());
+    format->setProperty(QTextFormat::FontPixelSize, rx.cap(1).toInt());
   else
-    font->setPointSize(rx.cap(1).toInt());
-  return true;
+    format->setFontPointSize(rx.cap(1).toInt());
 }
 
-bool QssParser::parseFontFamily(const QString &value, QFont *font) {
+void QssParser::parseFontFamily(const QString& value, QTextCharFormat* format) {
   QString family = value;
   if(family.startsWith('"') && family.endsWith('"')) {
-    family = family.mid(1, family.length() -2);
+    family = family.mid(1, family.length() - 2);
   }
-  font->setFamily(family);
-  return true;
+  format->setFontFamily(family);
 }

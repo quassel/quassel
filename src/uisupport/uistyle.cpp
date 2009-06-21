@@ -204,7 +204,7 @@ UiStyle::StyledString UiStyle::styleString(const QString &s_, quint32 baseFormat
     return StyledString();
   }
   StyledString result;
-  result.formatList.append(qMakePair((quint16)0, (quint32)None));
+  result.formatList.append(qMakePair((quint16)0, baseFormat));
   quint32 curfmt = baseFormat;
   int pos = 0; quint16 length = 0;
   for(;;) {
