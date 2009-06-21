@@ -69,7 +69,7 @@ void ChatItem::initLayoutHelper(QTextLayout *layout, QTextOption::WrapMode wrapM
   layout->setTextOption(option);
 
   QList<QTextLayout::FormatRange> formatRanges
-         = QtUi::style()->toTextLayoutList(data(MessageModel::FormatRole).value<UiStyle::FormatList>(), layout->text().length());
+         = QtUi::style()->toTextLayoutList(data(MessageModel::FormatRole).value<UiStyle::FormatList>(), layout->text().length(), data(ChatLineModel::MsgLabelRole).toUInt());
   layout->setAdditionalFormats(formatRanges);
 }
 
@@ -89,6 +89,11 @@ void ChatItem::doLayout(QTextLayout *layout) const {
 void ChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
   Q_UNUSED(option); Q_UNUSED(widget);
   painter->setClipRect(boundingRect()); // no idea why QGraphicsItem clipping won't work
+
+  QVariant bgBrush = data(ChatLineModel::BackgroundRole);
+  if(bgBrush.isValid())
+    painter->fillRect(boundingRect(), bgBrush.value<QBrush>());
+
   QVector<QTextLayout::FormatRange> formats = additionalFormats();
   QTextLayout::FormatRange selectFmt = selectionFormat();
   if(selectFmt.format.isValid()) formats.append(selectFmt);
@@ -300,6 +305,11 @@ void SenderChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
   Q_UNUSED(option); Q_UNUSED(widget);
 
   painter->setClipRect(boundingRect()); // no idea why QGraphicsItem clipping won't work
+
+  QVariant bgBrush = data(ChatLineModel::BackgroundRole);
+  if(bgBrush.isValid())
+    painter->fillRect(boundingRect(), bgBrush.value<QBrush>());
+
   QTextLayout layout;
   initLayout(&layout);
   qreal layoutWidth = layout.minimumWidth();

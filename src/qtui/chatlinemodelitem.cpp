@@ -53,8 +53,11 @@ ChatLineModelItem::ChatLineModelItem(const Message &msg)
 }
 
 QVariant ChatLineModelItem::data(int column, int role) const {
-  MessageModel::ColumnType col = (MessageModel::ColumnType)column;
+  if(role == ChatLineModel::MsgLabelRole)
+    return messageLabel();
+
   QVariant variant;
+  MessageModel::ColumnType col = (MessageModel::ColumnType)column;
   switch(col) {
   case ChatLineModel::TimestampColumn:
     variant = timestampData(role);
@@ -79,8 +82,11 @@ QVariant ChatLineModelItem::timestampData(int role) const {
     return _styledMsg.decoratedTimestamp();
   case ChatLineModel::EditRole:
     return _styledMsg.timestamp();
+  case ChatLineModel::BackgroundRole:
+    return backgroundBrush(UiStyle::Timestamp);
   case ChatLineModel::FormatRole:
-    return QVariant::fromValue<UiStyle::FormatList>(UiStyle::FormatList() << qMakePair((quint16)0, (quint32)_styledMsg.timestampFormat()));
+    return QVariant::fromValue<UiStyle::FormatList>(UiStyle::FormatList()
+                      << qMakePair((quint16)0, (quint32)UiStyle::formatType(_styledMsg.type()) | UiStyle::Timestamp));
   }
   return QVariant();
 }
@@ -91,20 +97,22 @@ QVariant ChatLineModelItem::senderData(int role) const {
     return _styledMsg.decoratedSender();
   case ChatLineModel::EditRole:
     return _styledMsg.plainSender();
+  case ChatLineModel::BackgroundRole:
+    return backgroundBrush(UiStyle::Sender);
   case ChatLineModel::FormatRole:
-    return QVariant::fromValue<UiStyle::FormatList>(UiStyle::FormatList() << qMakePair((quint16)0, (quint32)_styledMsg.senderFormat()));
+    return QVariant::fromValue<UiStyle::FormatList>(UiStyle::FormatList()
+                      << qMakePair((quint16)0, (quint32)UiStyle::formatType(_styledMsg.type()) | UiStyle::Sender));
   }
   return QVariant();
 }
 
 QVariant ChatLineModelItem::contentsData(int role) const {
-  if(_styledMsg.needsStyling())
-    _styledMsg.style(QtUi::style());
-
   switch(role) {
   case ChatLineModel::DisplayRole:
   case ChatLineModel::EditRole:
     return _styledMsg.plainContents();
+  case ChatLineModel::BackgroundRole:
+    return backgroundBrush(UiStyle::Contents);
   case ChatLineModel::FormatRole:
     return QVariant::fromValue<UiStyle::FormatList>(_styledMsg.contentsFormatList());
   case ChatLineModel::WrapListRole:
@@ -112,6 +120,22 @@ QVariant ChatLineModelItem::contentsData(int role) const {
       computeWrapList();
     return QVariant::fromValue<ChatLineModel::WrapList>(_wrapList);
   }
+  return QVariant();
+}
+
+quint32 ChatLineModelItem::messageLabel() const {
+  quint32 label = 0;
+  if(_styledMsg.flags() & Message::Self)
+    label |= UiStyle::OwnMsg;
+  if(_styledMsg.flags() & Message::Highlight)
+    label |= UiStyle::Highlight;
+  return label;
+}
+
+QVariant ChatLineModelItem::backgroundBrush(UiStyle::FormatType subelement) const {
+  QTextCharFormat fmt = QtUi::style()->format(UiStyle::formatType(_styledMsg.type()) | subelement, messageLabel());
+  if(fmt.hasProperty(QTextFormat::BackgroundBrush))
+    return QVariant::fromValue<QBrush>(fmt.background());
   return QVariant();
 }
 
@@ -140,7 +164,7 @@ void ChatLineModelItem::computeWrapList() const {
   option.setWrapMode(QTextOption::NoWrap);
   layout.setTextOption(option);
 
-  layout.setAdditionalFormats(QtUi::style()->toTextLayoutList(_styledMsg.contentsFormatList(), length));
+  layout.setAdditionalFormats(QtUi::style()->toTextLayoutList(_styledMsg.contentsFormatList(), length, messageLabel()));
   layout.beginLayout();
   QTextLine line = layout.createLine();
   line.setNumColumns(length);

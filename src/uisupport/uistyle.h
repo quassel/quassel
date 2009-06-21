@@ -112,7 +112,7 @@ public:
 
   inline QFont defaultFont() const { return _defaultFont; }
 
-  QList<QTextLayout::FormatRange> toTextLayoutList(const FormatList &, int textLength);
+  QList<QTextLayout::FormatRange> toTextLayoutList(const FormatList &, int textLength, quint32 messageLabel = 0);
 
 protected:
   void loadStyleSheet();

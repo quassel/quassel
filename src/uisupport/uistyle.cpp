@@ -181,12 +181,12 @@ QString UiStyle::formatCode(FormatType ftype) {
   return _formatCodes.key(ftype);
 }
 
-QList<QTextLayout::FormatRange> UiStyle::toTextLayoutList(const FormatList &formatList, int textLength) {
+QList<QTextLayout::FormatRange> UiStyle::toTextLayoutList(const FormatList &formatList, int textLength, quint32 messageLabel) {
   QList<QTextLayout::FormatRange> formatRanges;
   QTextLayout::FormatRange range;
   int i = 0;
   for(i = 0; i < formatList.count(); i++) {
-    range.format = format(formatList.at(i).second);
+    range.format = format(formatList.at(i).second, messageLabel);
     range.start = formatList.at(i).first;
     if(i > 0) formatRanges.last().length = range.start - formatRanges.last().start;
     formatRanges.append(range);

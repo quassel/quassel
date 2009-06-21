@@ -37,6 +37,7 @@ public:
   enum MessageRole {
     DisplayRole = Qt::DisplayRole,
     EditRole = Qt::EditRole,
+    BackgroundRole = Qt::BackgroundRole,
     MsgIdRole = Qt::UserRole,
     BufferIdRole,
     TypeRole,

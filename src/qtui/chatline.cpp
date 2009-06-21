@@ -154,9 +154,18 @@ void ChatLine::setHighlighted(bool highlighted) {
 void ChatLine::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
   Q_UNUSED(option);
   Q_UNUSED(widget);
-  if(_selection & Highlighted) {
-    painter->fillRect(boundingRect(), QBrush(QtUi::style()->highlightColor()));
+
+  const QAbstractItemModel *model_ = model();
+  QModelIndex myIdx = model_->index(row(), 0);
+  Message::Type type = (Message::Type)myIdx.data(MessageModel::TypeRole).toInt();
+  UiStyle::MessageLabel label = (UiStyle::MessageLabel)myIdx.data(ChatLineModel::MsgLabelRole).toInt();
+
+  QTextCharFormat msgFmt = QtUi::style()->format(UiStyle::formatType(type), label);
+  if(msgFmt.hasProperty(QTextFormat::BackgroundBrush)) {
+    painter->fillRect(boundingRect(), msgFmt.background());
   }
+
+  // TODO make this dependent on the style engine (highlight-color & friends)
   if(_selection & Selected) {
     qreal left = item((ChatLineModel::ColumnType)(_selection & ItemMask)).x();
     QRectF selectRect(left, 0, width() - left, height());
@@ -164,23 +173,22 @@ void ChatLine::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
   }
 
   // new line marker
-  const QAbstractItemModel *model_ = model();
   if(model_ && row() > 0  && chatScene()->isSingleBufferScene()) {
     QModelIndex prevRowIdx = model_->index(row() - 1, 0);
-    MsgId prevMsgId = model_->data(prevRowIdx, MessageModel::MsgIdRole).value<MsgId>();
-    QModelIndex myIdx = model_->index(row(), 0);
-    MsgId myMsgId = model_->data(myIdx, MessageModel::MsgIdRole).value<MsgId>();
-    Message::Flags flags = (Message::Flags)model_->data(myIdx, MessageModel::FlagsRole).toInt();
+    MsgId prevMsgId = prevRowIdx.data(MessageModel::MsgIdRole).value<MsgId>();
+    MsgId myMsgId = myIdx.data(MessageModel::MsgIdRole).value<MsgId>();
+    Message::Flags flags = (Message::Flags)myIdx.data(MessageModel::FlagsRole).toInt();
+
     // don't show the marker if we wrote that new line
     if(!(flags & Message::Self)) {
       BufferId bufferId = BufferId(chatScene()->idString().toInt());
       MsgId lastSeenMsgId = Client::networkModel()->lastSeenMarkerMsgId(bufferId);
       if(lastSeenMsgId < myMsgId && lastSeenMsgId >= prevMsgId) {
-	QtUiStyleSettings s("Colors");
-	QLinearGradient gradient(0, 0, 0, contentsItem().fontMetrics()->lineSpacing());
-	gradient.setColorAt(0, s.value("newMsgMarkerFG", QColor(Qt::red)).value<QColor>());
-	gradient.setColorAt(0.1, Qt::transparent);
-	painter->fillRect(boundingRect(), gradient);
+        QtUiStyleSettings s("Colors");
+        QLinearGradient gradient(0, 0, 0, contentsItem().fontMetrics()->lineSpacing());
+        gradient.setColorAt(0, s.value("newMsgMarkerFG", QColor(Qt::red)).value<QColor>());
+        gradient.setColorAt(0.1, Qt::transparent);
+        painter->fillRect(boundingRect(), gradient);
       }
     }
   }

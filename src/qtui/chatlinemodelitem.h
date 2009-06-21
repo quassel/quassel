@@ -49,9 +49,12 @@ public:
   typedef QVector<Word> WrapList;
 
 private:
-  virtual QVariant timestampData(int role) const;
-  virtual QVariant senderData(int role) const;
-  virtual QVariant contentsData(int role) const;
+  QVariant timestampData(int role) const;
+  QVariant senderData(int role) const;
+  QVariant contentsData(int role) const;
+
+  QVariant backgroundBrush(UiStyle::FormatType subelement) const;
+  quint32 messageLabel() const;
 
   void computeWrapList() const;
 
