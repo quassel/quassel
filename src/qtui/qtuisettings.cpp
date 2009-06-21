@@ -40,11 +40,3 @@ QtUiStyleSettings::QtUiStyleSettings()
   : UiStyleSettings("QtUiStyle")
 {
 }
-
-void QtUiStyleSettings::setHighlightColor(const QColor &col) {
-  setLocalValue("Colors/HighlightColor", col);
-}
-
-QColor QtUiStyleSettings::highlightColor() {
-  return localValue("Colors/HighlightColor", QColor()).value<QColor>();
-}

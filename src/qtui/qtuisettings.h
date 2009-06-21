@@ -35,9 +35,6 @@ class QtUiStyleSettings : public UiStyleSettings {
 public:
   QtUiStyleSettings(const QString &subGroup);
   QtUiStyleSettings();
-
-  void setHighlightColor(const QColor &);
-  QColor highlightColor();
 };
 
 #endif

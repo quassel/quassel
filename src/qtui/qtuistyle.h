@@ -31,11 +31,7 @@ public:
 
   virtual inline qreal firstColumnSeparator() const { return 6; }
   virtual inline qreal secondColumnSeparator() const { return 6; }
-  virtual inline QColor highlightColor() const { return _highlightColor; }
-  virtual void setHighlightColor(const QColor &);
 
-private:
-  QColor _highlightColor;
 };
 
 #endif

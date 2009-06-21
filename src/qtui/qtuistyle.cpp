@@ -26,9 +26,3 @@ QtUiStyle::QtUiStyle() : UiStyle() {
 }
 
 QtUiStyle::~QtUiStyle() {}
-
-void QtUiStyle::setHighlightColor(const QColor &col) {
-  _highlightColor = col;
-  QtUiStyleSettings s;
-  s.setHighlightColor(col);
-}
