@@ -98,8 +98,12 @@ QTextCharFormat UiStyle::format(quint32 ftype, quint32 label) {
 
   fmt.merge(cachedFormat(key & 0x0000000000000000));  // basic
   fmt.merge(cachedFormat(key & 0x000000000000000f));  // msgtype
+  fmt.merge(cachedFormat(key & 0xffff000000000000));  // nickhash
+  fmt.merge(cachedFormat(key & 0xffff00000000000f));  // nickhash + msgtype
   fmt.merge(cachedFormat(key & 0x0000ffff00000000));  // label
   fmt.merge(cachedFormat(key & 0x0000ffff0000000f));  // label + msgtype
+  fmt.merge(cachedFormat(key & 0xffffffff00000000));  // label + nickhash
+  fmt.merge(cachedFormat(key & 0xffffffff0000000f));  // label + nickhash + msgtype
 
   // TODO: allow combinations for mirc formats and colors (each), e.g. setting a special format for "bold and italic"
   //       or "foreground 01 and background 03"
@@ -308,6 +312,10 @@ QString UiStyle::mircToInternal(const QString &mirc_) {
 UiStyle::StyledMessage::StyledMessage(const Message &msg)
   : Message(msg)
 {
+  if(type() == Message::Plain)
+    _senderHash = 0xff;
+  else
+    _senderHash = 0x00;  // this means we never compute the hash for msgs that aren't plain
 }
 
 void UiStyle::StyledMessage::style() const {
@@ -495,6 +503,22 @@ UiStyle::FormatType UiStyle::StyledMessage::senderFormat() const {
     default:
       return UiStyle::ErrorMsg;
   }
+}
+
+// FIXME hardcoded to 16 sender hashes
+quint8 UiStyle::StyledMessage::senderHash() const {
+  if(_senderHash != 0xff)
+    return _senderHash;
+
+  QString nick = nickFromMask(sender()).toLower();
+  if(!nick.isEmpty()) {
+    int chopCount = 0;
+    while(nick.at(nick.count() - 1 - chopCount) == '_')
+      chopCount++;
+    nick.chop(chopCount);
+  }
+  quint16 hash = qChecksum(nick.toAscii().data(), nick.toAscii().size());
+  return (_senderHash = (hash & 0xf) + 1);
 }
 
 /***********************************************************************************/

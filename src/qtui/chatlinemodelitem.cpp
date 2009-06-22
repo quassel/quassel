@@ -124,7 +124,7 @@ QVariant ChatLineModelItem::contentsData(int role) const {
 }
 
 quint32 ChatLineModelItem::messageLabel() const {
-  quint32 label = 0;
+  quint32 label = _styledMsg.senderHash() << 16;
   if(_styledMsg.flags() & Message::Self)
     label |= UiStyle::OwnMsg;
   if(_styledMsg.flags() & Message::Highlight)

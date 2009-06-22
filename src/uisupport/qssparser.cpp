@@ -237,8 +237,8 @@ quint64 QssParser::parseFormatType(const QString &decl) {
               qWarning() << Q_FUNC_INFO << tr("Invalid senderhash specification: %1").arg(condValue);
               return UiStyle::Invalid;
             }
-            if(val >= 255) {
-              qWarning() << Q_FUNC_INFO << tr("Senderhash can be at most \"fe\"!");
+            if(val >= 16) {
+              qWarning() << Q_FUNC_INFO << tr("Senderhash can be at most \"0x0f\"!");
               return UiStyle::Invalid;
             }
             fmtType |= val << 48;

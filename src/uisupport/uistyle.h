@@ -148,6 +148,9 @@ public:
   inline FormatType timestampFormat() const { return UiStyle::Timestamp; }
   FormatType senderFormat() const;
   const FormatList &contentsFormatList() const;
+
+  quint8 senderHash() const;
+
 protected:
   //! Styling is only needed for calls to plainContents() and contentsFormatList()
   void style() const;
@@ -155,6 +158,7 @@ protected:
 
 private:
   mutable StyledString _contents;
+  mutable quint8 _senderHash;
 };
 
 QDataStream &operator<<(QDataStream &out, const UiStyle::FormatList &formatList);
