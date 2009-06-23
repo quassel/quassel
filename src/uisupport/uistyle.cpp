@@ -73,14 +73,14 @@ void UiStyle::mergeSubElementFormat(QTextCharFormat& fmt, quint32 ftype, quint32
   quint64 key = ftype | ((quint64)label << 32);
 
   // start with the most general format and then specialize
-  fmt.merge(cachedFormat(key & 0x00000000fffffff0));  // basic subelement format
-  fmt.merge(cachedFormat(key & 0x00000000ffffffff));  // subelement + msgtype
-  fmt.merge(cachedFormat(key & 0xffff0000fffffff0));  // subelement + nickhash
-  fmt.merge(cachedFormat(key & 0xffff0000ffffffff));  // subelement + nickhash + msgtype
-  fmt.merge(cachedFormat(key & 0x0000fffffffffff0));  // label + subelement
-  fmt.merge(cachedFormat(key & 0x0000ffffffffffff));  // label + subelement + msgtype
-  fmt.merge(cachedFormat(key & 0xfffffffffffffff0));  // label + subelement + nickhash
-  fmt.merge(cachedFormat(key & 0xffffffffffffffff));  // label + subelement + nickhash + msgtype
+  fmt.merge(cachedFormat(key & Q_UINT64_C(0x00000000fffffff0)));  // basic subelement format
+  fmt.merge(cachedFormat(key & Q_UINT64_C(0x00000000ffffffff)));  // subelement + msgtype
+  fmt.merge(cachedFormat(key & Q_UINT64_C(0xffff0000fffffff0)));  // subelement + nickhash
+  fmt.merge(cachedFormat(key & Q_UINT64_C(0xffff0000ffffffff)));  // subelement + nickhash + msgtype
+  fmt.merge(cachedFormat(key & Q_UINT64_C(0x0000fffffffffff0)));  // label + subelement
+  fmt.merge(cachedFormat(key & Q_UINT64_C(0x0000ffffffffffff)));  // label + subelement + msgtype
+  fmt.merge(cachedFormat(key & Q_UINT64_C(0xfffffffffffffff0)));  // label + subelement + nickhash
+  fmt.merge(cachedFormat(key & Q_UINT64_C(0xffffffffffffffff)));  // label + subelement + nickhash + msgtype
 }
 
 // NOTE: This function is intimately tied to the values in FormatType. Don't change this
@@ -96,14 +96,14 @@ QTextCharFormat UiStyle::format(quint32 ftype, quint32 label) {
   if(fmt.properties().count())
     return fmt;
 
-  fmt.merge(cachedFormat(key & 0x0000000000000000));  // basic
-  fmt.merge(cachedFormat(key & 0x000000000000000f));  // msgtype
-  fmt.merge(cachedFormat(key & 0xffff000000000000));  // nickhash
-  fmt.merge(cachedFormat(key & 0xffff00000000000f));  // nickhash + msgtype
-  fmt.merge(cachedFormat(key & 0x0000ffff00000000));  // label
-  fmt.merge(cachedFormat(key & 0x0000ffff0000000f));  // label + msgtype
-  fmt.merge(cachedFormat(key & 0xffffffff00000000));  // label + nickhash
-  fmt.merge(cachedFormat(key & 0xffffffff0000000f));  // label + nickhash + msgtype
+  fmt.merge(cachedFormat(key & Q_UINT64_C(0x0000000000000000)));  // basic
+  fmt.merge(cachedFormat(key & Q_UINT64_C(0x000000000000000f)));  // msgtype
+  fmt.merge(cachedFormat(key & Q_UINT64_C(0xffff000000000000)));  // nickhash
+  fmt.merge(cachedFormat(key & Q_UINT64_C(0xffff00000000000f)));  // nickhash + msgtype
+  fmt.merge(cachedFormat(key & Q_UINT64_C(0x0000ffff00000000)));  // label
+  fmt.merge(cachedFormat(key & Q_UINT64_C(0x0000ffff0000000f)));  // label + msgtype
+  fmt.merge(cachedFormat(key & Q_UINT64_C(0xffffffff00000000)));  // label + nickhash
+  fmt.merge(cachedFormat(key & Q_UINT64_C(0xffffffff0000000f)));  // label + nickhash + msgtype
 
   // TODO: allow combinations for mirc formats and colors (each), e.g. setting a special format for "bold and italic"
   //       or "foreground 01 and background 03"
