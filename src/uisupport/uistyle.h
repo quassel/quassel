@@ -103,6 +103,8 @@ public:
 
   class StyledMessage;
 
+  void loadStyleSheet();
+
   static FormatType formatType(Message::Type msgType);
   static StyledString styleString(const QString &string, quint32 baseFormat = None);
   static QString mircToInternal(const QString &);
@@ -115,11 +117,7 @@ public:
   QList<QTextLayout::FormatRange> toTextLayoutList(const FormatList &, int textLength, quint32 messageLabel = 0);
 
 protected:
-  void loadStyleSheet();
-
-  //! Determines the format set to be used for the given hostmask
-  //int formatSetIndex(const QString &hostmask) const;
-  //int formatSetIndexForSelf() const;
+  QString loadStyleSheet(const QString &name, bool shouldExist = false);
 
   QTextCharFormat cachedFormat(quint64 key) const;
   QTextCharFormat cachedFormat(quint32 formatType, quint32 messageLabel = 0) const;

@@ -56,6 +56,50 @@ UiStyle::~ UiStyle() {
   qDeleteAll(_metricsCache);
 }
 
+void UiStyle::loadStyleSheet() {
+  qDeleteAll(_metricsCache);
+  _metricsCache.clear();
+  _formatCache.clear();
+
+  QString styleSheet;
+
+  styleSheet += loadStyleSheet("file:///" + Quassel::findDataFilePath("default.qss"));
+  styleSheet += loadStyleSheet("file:///" + Quassel::configDirPath() + "custom.qss");
+  // styleSheet += loadStyleSheet("file:///" + some custom file name);  FIXME
+  styleSheet += loadStyleSheet("file:///" + Quassel::optionValue("qss"), true);
+
+  if(styleSheet.isEmpty())
+    return;
+
+  QssParser parser;
+  parser.processStyleSheet(styleSheet);
+  QApplication::setPalette(parser.palette());
+  _formatCache = parser.formats();
+
+  qApp->setStyleSheet(styleSheet); // pass the remaining sections to the application
+}
+
+QString UiStyle::loadStyleSheet(const QString &styleSheet, bool shouldExist) {
+  QString ss = styleSheet;
+  if(ss.startsWith("file:///")) {
+    ss.remove(0, 8);
+    if(ss.isEmpty())
+      return QString();
+
+    QFile file(ss);
+    if(file.open(QFile::ReadOnly)) {
+      QTextStream stream(&file);
+      ss = stream.readAll();
+      file.close();
+    } else {
+      if(shouldExist)
+        qWarning() << "Could not open stylesheet file:" << file.fileName();
+      return QString();
+    }
+  }
+  return ss;
+}
+
 QTextCharFormat UiStyle::cachedFormat(quint64 key) const {
   return _formatCache.value(key, QTextCharFormat());
 }
@@ -542,20 +586,4 @@ QDataStream &operator>>(QDataStream &in, UiStyle::FormatList &formatList) {
     formatList.append(qMakePair((quint16)pos, ftype));
   }
   return in;
-}
-
-/***********************************************************************************/
-// Stylesheet handling
-/***********************************************************************************/
-
-void UiStyle::loadStyleSheet() {
-  QssParser parser;
-  parser.loadStyleSheet(qApp->styleSheet());
-
-  // TODO handle results
-  QApplication::setPalette(parser.palette());
-
-  qDeleteAll(_metricsCache);
-  _metricsCache.clear();
-  _formatCache = parser.formats();
 }

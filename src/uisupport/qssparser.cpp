@@ -51,20 +51,7 @@ QssParser::QssParser()
   _paletteColorRoles["window-text"] = QPalette::WindowText;
 }
 
-void QssParser::loadStyleSheet(const QString &styleSheet) {
-  QString ss = styleSheet;
-  ss = "file:////home/sputnick/devel/quassel/test.qss"; // FIXME
-  if(ss.startsWith("file:///")) {
-    ss.remove(0, 8);
-    QFile file(ss);
-    if(file.open(QFile::ReadOnly)) {
-      QTextStream stream(&file);
-      ss = stream.readAll();
-    } else {
-      qWarning() << tr("Could not read stylesheet \"%1\"!").arg(file.fileName());
-      return;
-    }
-  }
+void QssParser::processStyleSheet(QString &ss) {
   if(ss.isEmpty())
     return;
 

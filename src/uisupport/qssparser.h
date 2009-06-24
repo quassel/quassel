@@ -29,7 +29,7 @@ class QssParser {
   public:
     QssParser();
 
-    void loadStyleSheet(const QString &sheet);
+    void processStyleSheet(QString &sheet);
 
     inline QPalette palette() const { return _palette; }
     inline const QHash<quint64, QTextCharFormat>& formats() const { return _formats; }
