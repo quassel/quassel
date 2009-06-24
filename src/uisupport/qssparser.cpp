@@ -243,6 +243,20 @@ quint64 QssParser::parseFormatType(const QString &decl) {
             }
             fmtType |= val << 48;
           }
+      } else if(condName == "format") {
+        if(condValue == "bold")
+          fmtType |= UiStyle::Bold;
+        if(condValue == "italic")
+          fmtType |= UiStyle::Italic;
+        if(condValue == "underline")
+          fmtType |= UiStyle::Underline;
+        if(condValue == "reverse")
+          fmtType |= UiStyle::Reverse;
+        else {
+          qWarning() << Q_FUNC_INFO << tr("Invalid format name: %1").arg(condValue);
+          return UiStyle::Invalid;
+        }
+
       }
       // TODO: colors
     }
