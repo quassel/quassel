@@ -27,7 +27,7 @@
 
 QHash<QString, UiStyle::FormatType> UiStyle::_formatCodes;
 
-UiStyle::UiStyle() {
+UiStyle::UiStyle(QObject *parent) : QObject(parent) {
   // register FormatList if that hasn't happened yet
   // FIXME I don't think this actually avoids double registration... then again... does it hurt?
   if(QVariant::nameToType("UiStyle::FormatList") == QVariant::Invalid) {

@@ -57,13 +57,13 @@ set(MOC_HDRS
     settingspage.h
     tabcompleter.h
     toolbaractionprovider.h
+    uistyle.h
    )
 
 set(HEADERS
     icon.h
     qssparser.h
     uisettings.h
-    uistyle.h
    )
 
 if(HAVE_KDE)

@@ -21,7 +21,7 @@
 #include "qtuistyle.h"
 #include "qtuisettings.h"
 
-QtUiStyle::QtUiStyle() : UiStyle() {
+QtUiStyle::QtUiStyle(QObject *parent) : UiStyle(parent) {
 
 }
 

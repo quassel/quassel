@@ -24,9 +24,10 @@
 #include "uistyle.h"
 
 class QtUiStyle : public UiStyle {
+  Q_OBJECT
 
 public:
-  QtUiStyle();
+  QtUiStyle(QObject *parent = 0);
   virtual ~QtUiStyle();
 
   virtual inline qreal firstColumnSeparator() const { return 6; }

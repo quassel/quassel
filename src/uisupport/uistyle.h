@@ -32,11 +32,11 @@
 #include "message.h"
 #include "settings.h"
 
-class UiStyle {
-  Q_DECLARE_TR_FUNCTIONS(UiStyle)
+class UiStyle : public QObject{
+  Q_OBJECT
 
 public:
-  UiStyle();
+  UiStyle(QObject *parent = 0);
   virtual ~UiStyle();
 
   typedef QList<QPair<quint16, quint32> > FormatList;

@@ -86,6 +86,7 @@ set(MOC_HDRS
     qtui.h
     qtuiapplication.h
     qtuimessageprocessor.h
+    qtuistyle.h
     settingsdlg.h
     settingspagedlg.h
     simplenetworkeditor.h
@@ -102,7 +103,6 @@ set(HEADERS
     chatlinemodelitem.h
     chatviewsettings.h
     qtuisettings.h
-    qtuistyle.h
     webpreviewitem.h)
 
 set(FORMS
