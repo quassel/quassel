@@ -171,7 +171,7 @@ public:
   virtual inline int type() const { return Type; }
 
   inline ChatLineModel::ColumnType column() const { return ChatLineModel::ContentsColumn; }
-  inline QFontMetricsF *fontMetrics() const { return _fontMetrics; }
+  QFontMetricsF *fontMetrics() const;
 
 protected:
   virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);

@@ -77,6 +77,8 @@ void UiStyle::loadStyleSheet() {
   _formatCache = parser.formats();
 
   qApp->setStyleSheet(styleSheet); // pass the remaining sections to the application
+
+  emit changed();
 }
 
 QString UiStyle::loadStyleSheet(const QString &styleSheet, bool shouldExist) {

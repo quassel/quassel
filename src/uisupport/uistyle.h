@@ -103,8 +103,6 @@ public:
 
   class StyledMessage;
 
-  void loadStyleSheet();
-
   static FormatType formatType(Message::Type msgType);
   static StyledString styleString(const QString &string, quint32 baseFormat = None);
   static QString mircToInternal(const QString &);
@@ -115,6 +113,12 @@ public:
   inline QFont defaultFont() const { return _defaultFont; }
 
   QList<QTextLayout::FormatRange> toTextLayoutList(const FormatList &, int textLength, quint32 messageLabel = 0);
+
+public slots:
+  void loadStyleSheet();
+
+signals:
+  void changed();
 
 protected:
   QString loadStyleSheet(const QString &name, bool shouldExist = false);

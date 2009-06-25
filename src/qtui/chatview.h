@@ -68,6 +68,7 @@ private slots:
   void lastLineChanged(QGraphicsItem *chatLine, qreal offset);
   void mouseMoveWhileSelecting(const QPointF &scenePos);
   void scrollTimerTimeout();
+  void styleChanged();
 
 private:
   void init(MessageFilter *filter);

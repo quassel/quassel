@@ -363,11 +363,11 @@ ContentsChatItem::ContentsChatItem(const qreal &width, const QPointF &pos, QGrap
   : ChatItem(0, 0, pos, parent),
     _data(0)
 {
-  const QAbstractItemModel *model_ = model();
-  QModelIndex index = model_->index(row(), column());
-  _fontMetrics = QtUi::style()->fontMetrics(model_->data(index, ChatLineModel::FormatRole).value<UiStyle::FormatList>().at(0).second);
-
   setGeometryByWidth(width);
+}
+
+QFontMetricsF *ContentsChatItem::fontMetrics() const {
+  return QtUi::style()->fontMetrics(data(ChatLineModel::FormatRole).value<UiStyle::FormatList>().at(0).second);
 }
 
 ContentsChatItem::~ContentsChatItem() {
