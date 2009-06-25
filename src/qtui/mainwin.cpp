@@ -72,6 +72,7 @@
 #include "qtuiapplication.h"
 #include "qtuimessageprocessor.h"
 #include "qtuisettings.h"
+#include "qtuistyle.h"
 #include "settingsdlg.h"
 #include "settingspagedlg.h"
 #include "systemtray.h"
@@ -318,6 +319,8 @@ void MainWin::setupActions() {
                                        this, SLOT(on_actionDebugHotList_triggered())));
   coll->addAction("DebugLog", new Action(SmallIcon("tools-report-bug"), tr("Debug &Log"), coll,
                                        this, SLOT(on_actionDebugLog_triggered())));
+  coll->addAction("ReloadStyle", new Action(SmallIcon("view-refresh"), tr("Reload Stylesheet"), coll,
+                                       QtUi::style(), SLOT(loadStyleSheet()), QKeySequence::Refresh));
 
   // Navigation
   coll->addAction("JumpHotBuffer", new Action(tr("Jump to hot buffer"), coll,
@@ -382,6 +385,8 @@ void MainWin::setupMenus() {
   _helpDebugMenu->addAction(coll->action("DebugMessageModel"));
   _helpDebugMenu->addAction(coll->action("DebugHotList"));
   _helpDebugMenu->addAction(coll->action("DebugLog"));
+  _helpDebugMenu->addSeparator();
+  _helpDebugMenu->addAction(coll->action("ReloadStyle"));
 }
 
 void MainWin::setupBufferWidget() {
