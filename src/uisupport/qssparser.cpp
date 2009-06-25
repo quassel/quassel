@@ -55,13 +55,17 @@ void QssParser::processStyleSheet(QString &ss) {
   if(ss.isEmpty())
     return;
 
-  // Now we have the stylesheet itself in ss, start parsing
+  // Remove C-style comments /* */ or //
+  QRegExp commentRx("(//.*(\\n|$)|/\\*.*\\*/)");
+  commentRx.setMinimal(true);
+  ss.remove(commentRx);
+
   // Palette definitions first, so we can apply roles later on
   QRegExp paletterx("(Palette[^{]*)\\{([^}]+)\\}");
   int pos = 0;
   while((pos = paletterx.indexIn(ss, pos)) >= 0) {
     parsePaletteData(paletterx.cap(1).trimmed(), paletterx.cap(2).trimmed());
-    pos += paletterx.matchedLength();
+    ss.remove(pos, paletterx.matchedLength());
   }
 
   // Now we can parse the rest of our custom blocks
@@ -75,9 +79,8 @@ void QssParser::processStyleSheet(QString &ss) {
     //else
     // TODO: add moar here
 
-    pos += blockrx.matchedLength();
+    ss.remove(pos, blockrx.matchedLength());
   }
-
 }
 
 void QssParser::parseChatLineData(const QString &decl, const QString &contents) {
