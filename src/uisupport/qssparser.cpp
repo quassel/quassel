@@ -199,7 +199,7 @@ quint64 QssParser::parseFormatType(const QString &decl) {
   }
 
   // Next up: conditional (formats, labels, nickhash)
-  QRegExp condRx("\\s*(\\w+)\\s*=\\s*\"(\\w+)\"\\s*");
+  QRegExp condRx("\\s*([\\w\\-]+)\\s*=\\s*\"(\\w+)\"\\s*");
   if(!conditions.isEmpty()) {
     foreach(const QString &cond, conditions.split(',', QString::SkipEmptyParts)) {
       if(!condRx.exactMatch(cond)) {
@@ -236,19 +236,31 @@ quint64 QssParser::parseFormatType(const QString &decl) {
       } else if(condName == "format") {
         if(condValue == "bold")
           fmtType |= UiStyle::Bold;
-        if(condValue == "italic")
+        else if(condValue == "italic")
           fmtType |= UiStyle::Italic;
-        if(condValue == "underline")
+        else if(condValue == "underline")
           fmtType |= UiStyle::Underline;
-        if(condValue == "reverse")
+        else if(condValue == "reverse")
           fmtType |= UiStyle::Reverse;
         else {
           qWarning() << Q_FUNC_INFO << tr("Invalid format name: %1").arg(condValue);
           return UiStyle::Invalid;
         }
-
+      } else if(condName == "fg-color" || condName == "bg-color") {
+        bool ok;
+        quint8 col = condValue.toUInt(&ok, 16);
+        if(!ok || col > 0x0f) {
+          qWarning() << Q_FUNC_INFO << tr("Illegal IRC color specification (must be between 00 and 0f): %1").arg(condValue);
+          return UiStyle::Invalid;
+        }
+        if(condName == "fg-color")
+          fmtType |= 0x00400000 | (col << 24);
+        else
+          fmtType |= 0x00800000 | (col << 28);
+      } else {
+        qWarning() << Q_FUNC_INFO << tr("Unhandled condition: %1").arg(condName);
+        return UiStyle::Invalid;
       }
-      // TODO: colors
     }
   }
 
