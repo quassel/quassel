@@ -1,6 +1,6 @@
 SELECT messageid, time,  type, flags, sender, message
 FROM backlog
-JOIN sender ON backlog.senderid = sender.senderid
+LEFT JOIN sender ON backlog.senderid = sender.senderid
 WHERE backlog.messageid >= $1
     AND backlog.messageid < $2
     AND bufferid = $3
