@@ -547,6 +547,7 @@ void Core::processClientMessage(QTcpSocket *socket, const QVariantMap &msg) {
     clientInfo[socket] = msg; // store for future reference
     reply["MsgType"] = "ClientInitAck";
     SignalProxy::writeDataToDevice(socket, reply);
+    socket->flush(); // ensure that the write cache is flushed before we switch to ssl
 
 #ifdef HAVE_SSL
     // after we told the client that we are ssl capable we switch to ssl mode
@@ -653,6 +654,7 @@ void Core::setupClientSession(QTcpSocket *socket, UserId uid) {
   else sess = createSession(uid);
   // Hand over socket, session then sends state itself
   disconnect(socket, 0, this, 0);
+  socket->flush(); // ensure that the write cache is flushed before we hand over the connection to another thread.
   blocksizes.remove(socket);
   clientInfo.remove(socket);
   if(!sess) {
