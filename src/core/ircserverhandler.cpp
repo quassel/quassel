@@ -339,35 +339,41 @@ void IrcServerHandler::handleNotice(const QString &prefix, const QList<QByteArra
   if(!checkParamCount("IrcServerHandler::handleNotice()", params, 2))
     return;
 
-  QString target = serverDecode(params[0]);
 
-  // special treatment for welcome messages like:
-  // :ChanServ!ChanServ@services. NOTICE egst :[#apache] Welcome, this is #apache. Please read the in-channel topic message. This channel is being logged by IRSeekBot. If you have any question please see http://blog.freenode.net/?p=68
-  if(!network()->isChannelName(target)) {
-    QString msg = serverDecode(params[1]);
-    QRegExp welcomeRegExp("^\\[([^\\]]+)\\] ");
-    if(welcomeRegExp.indexIn(msg) != -1) {
-      QString channelname = welcomeRegExp.cap(1);
-      msg = msg.mid(welcomeRegExp.matchedLength());
-      CoreIrcChannel *chan = static_cast<CoreIrcChannel *>(network()->ircChannel(channelname)); // we only have CoreIrcChannels in the core, so this cast is safe
-      if(chan && !chan->receivedWelcomeMsg()) {
-        chan->setReceivedWelcomeMsg();
-        emit displayMsg(Message::Notice, BufferInfo::ChannelBuffer, channelname, msg, prefix);
-        return;
+  QStringList targets = serverDecode(params[0]).split(',', QString::SkipEmptyParts);
+  QStringList::const_iterator targetIter;
+  for(targetIter = targets.constBegin(); targetIter != targets.constEnd(); targetIter++) {
+    QString target = *targetIter;
+
+    // special treatment for welcome messages like:
+    // :ChanServ!ChanServ@services. NOTICE egst :[#apache] Welcome, this is #apache. Please read the in-channel topic message. This channel is being logged by IRSeekBot. If you have any question please see http://blog.freenode.net/?p=68
+    if(!network()->isChannelName(target)) {
+      QString msg = serverDecode(params[1]);
+      QRegExp welcomeRegExp("^\\[([^\\]]+)\\] ");
+      if(welcomeRegExp.indexIn(msg) != -1) {
+        QString channelname = welcomeRegExp.cap(1);
+        msg = msg.mid(welcomeRegExp.matchedLength());
+        CoreIrcChannel *chan = static_cast<CoreIrcChannel *>(network()->ircChannel(channelname)); // we only have CoreIrcChannels in the core, so this cast is safe
+        if(chan && !chan->receivedWelcomeMsg()) {
+          chan->setReceivedWelcomeMsg();
+          emit displayMsg(Message::Notice, BufferInfo::ChannelBuffer, channelname, msg, prefix);
+          continue;
+        }
       }
     }
+
+    if(prefix.isEmpty() || target == "AUTH") {
+      target = "";
+    } else {
+      if(!target.isEmpty() && network()->prefixes().contains(target[0]))
+        target = target.mid(1);
+      if(!network()->isChannelName(target))
+        target = nickFromMask(prefix);
+    }
+
+    network()->ctcpHandler()->parse(Message::Notice, prefix, target, params[1]);
   }
 
-  if(prefix.isEmpty() || target == "AUTH") {
-    target = "";
-  } else {
-    if(!target.isEmpty() && network()->prefixes().contains(target[0]))
-      target = target.mid(1);
-    if(!network()->isChannelName(target))
-      target = nickFromMask(prefix);
-  }
-
-  network()->ctcpHandler()->parse(Message::Notice, prefix, target, params[1]);
 }
 
 void IrcServerHandler::handlePart(const QString &prefix, const QList<QByteArray> &params) {
@@ -428,18 +434,23 @@ void IrcServerHandler::handlePrivmsg(const QString &prefix, const QList<QByteArr
     return;
   }
 
-  QString target = serverDecode(params[0]);
+  QString senderNick = nickFromMask(prefix);
 
   QByteArray msg = params.count() < 2
     ? QByteArray("")
     : params[1];
 
-  if(!network()->isChannelName(target))
-    target = nickFromMask(prefix);
+  QStringList targets = serverDecode(params[0]).split(',', QString::SkipEmptyParts);
+  QStringList::const_iterator targetIter;
+  for(targetIter = targets.constBegin(); targetIter != targets.constEnd(); targetIter++) {
+    const QString &target = network()->isChannelName(*targetIter)
+      ? *targetIter
+      : senderNick;
 
-  // it's possible to pack multiple privmsgs into one param using ctcp
-  // - > we let the ctcpHandler do the work
-  network()->ctcpHandler()->parse(Message::Plain, prefix, target, msg);
+    // it's possible to pack multiple privmsgs into one param using ctcp
+    // - > we let the ctcpHandler do the work
+    network()->ctcpHandler()->parse(Message::Plain, prefix, target, msg);
+  }
 }
 
 void IrcServerHandler::handleQuit(const QString &prefix, const QList<QByteArray> &params) {
