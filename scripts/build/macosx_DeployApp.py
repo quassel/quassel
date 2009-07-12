@@ -16,6 +16,8 @@
 import sys
 import os
 
+from subprocess import Popen, PIPE
+
 class InstallQt(object):
     def __init__(self, appdir, bundle = True):
         self.appDir = appdir
@@ -59,9 +61,14 @@ class InstallQt(object):
         # Install new Lib ID and Change Path to Frameworks for the Dynamic linker
         for lib in os.listdir(localframework + "/Versions/Current"):
             lib = "%s/Versions/Current/%s" % (localframework, lib)
-            otoolpipe = os.popen('otool -D "%s"' % lib)
-            libname = [line for line in otoolpipe][1].strip()
-            otoolpipe.close()
+            otoolProcess = Popen('otool -D "%s"' % lib, shell=True, stdout=PIPE, stderr=PIPE)
+            try:
+                libname = [line for line in otoolProcess.stdout][1].strip()
+            except:
+                libname = ''
+            otoolProcess.stdout.close()
+            if otoolProcess.wait() == 1: # we found some Resource dir or similar -> skip
+                continue
             frameworkpath, libpath = libname.split(frameworkname)
             if self.bundle:
                 newlibname = "@executable_path/../%s%s" % (frameworkname, libpath)
@@ -72,7 +79,7 @@ class InstallQt(object):
             self.changeDylPath(lib)
             
     def determineDependancies(self, app):
-        otoolPipe = os.popen('otool -L "%s"' % app)
+        otoolPipe = Popen('otool -L "%s"' % app, shell=True, stdout=PIPE).stdout
         otoolOutput = [line for line in otoolPipe]
         otoolPipe.close()
         libs = [line.split()[0] for line in otoolOutput[1:] if "Qt" in line and not "@executable_path" in line]
