@@ -40,6 +40,22 @@
 #  include <termios.h>
 #endif /* Q_OS_WIN32 */
 
+// ==============================
+//  Custom Events
+// ==============================
+const int Core::AddClientEventId = QEvent::registerEventType();
+
+class AddClientEvent : public QEvent {
+public:
+  AddClientEvent(QTcpSocket *socket, UserId uid) : QEvent(QEvent::Type(Core::AddClientEventId)), socket(socket), userId(uid) {}
+  QTcpSocket *socket;
+  UserId userId;
+};
+
+
+// ==============================
+//  Core
+// ==============================
 Core *Core::instanceptr = 0;
 
 Core *Core::instance() {
@@ -648,20 +664,48 @@ void Core::clientDisconnected() {
 }
 
 void Core::setupClientSession(QTcpSocket *socket, UserId uid) {
-  // Find or create session for validated user
-  SessionThread *sess;
-  if(sessions.contains(uid)) sess = sessions[uid];
-  else sess = createSession(uid);
-  // Hand over socket, session then sends state itself
+  // From now on everything is handled by the client session
   disconnect(socket, 0, this, 0);
-  socket->flush(); // ensure that the write cache is flushed before we hand over the connection to another thread.
+  socket->flush();
   blocksizes.remove(socket);
   clientInfo.remove(socket);
-  if(!sess) {
-    qWarning() << qPrintable(tr("Could not initialize session for client:")) << qPrintable(socket->peerAddress().toString());
-    socket->close();
+
+  // Find or create session for validated user
+  SessionThread *session;
+  if(sessions.contains(uid)) {
+    session = sessions[uid];
+  } else {
+    session = createSession(uid);
+    if(!session) {
+      qWarning() << qPrintable(tr("Could not initialize session for client:")) << qPrintable(socket->peerAddress().toString());
+      socket->close();
+      return;
+    }
   }
-  sess->addClient(socket);
+
+  // as we are currently handling an event triggered by incoming data on this socket
+  // it is unsafe to directly move the socket to the client thread.
+  QCoreApplication::postEvent(this, new AddClientEvent(socket, uid));
+}
+
+void Core::customEvent(QEvent *event) {
+  if(event->type() == AddClientEventId) {
+    AddClientEvent *addClientEvent = static_cast<AddClientEvent *>(event);
+    addClientHelper(addClientEvent->socket, addClientEvent->userId);
+    return;
+  }
+}
+
+void Core::addClientHelper(QTcpSocket *socket, UserId uid) {
+  // Find or create session for validated user
+  if(!sessions.contains(uid)) {
+    qWarning() << qPrintable(tr("Could not find a session for client:")) << qPrintable(socket->peerAddress().toString());
+    socket->close();
+    return;
+  }
+
+  SessionThread *session = sessions[uid];
+  session->addClient(socket);
 }
 
 void Core::setupInternalClientSession(SignalProxy *proxy) {

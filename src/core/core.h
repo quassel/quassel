@@ -51,8 +51,8 @@ class AbstractSqlMigrationWriter;
 class Core : public QObject {
   Q_OBJECT
 
-  public:
-  static Core * instance();
+public:
+  static Core *instance();
   static void destroy();
 
   static void saveState();
@@ -382,18 +382,24 @@ class Core : public QObject {
 
   static inline QTimer &syncTimer() { return instance()->_storageSyncTimer; }
 
+  static const int AddClientEventId;
+
 public slots:
   //! Make storage data persistent
   /** \note This method is threadsafe.
    */
   void syncStorage();
   void setupInternalClientSession(SignalProxy *proxy);
+
 signals:
   //! Sent when a BufferInfo is updated in storage.
   void bufferInfoUpdated(UserId user, const BufferInfo &info);
 
   //! Relay From CoreSession::sessionState(const QVariant &). Used for internal connection only
   void sessionState(const QVariant &);
+
+protected:
+  virtual void customEvent(QEvent *event);
 
 private slots:
   bool startListening();
@@ -418,6 +424,7 @@ private:
 
   SessionThread *createSession(UserId userId, bool restoreState = false);
   void setupClientSession(QTcpSocket *socket, UserId uid);
+  void addClientHelper(QTcpSocket *socket, UserId uid);
   void processClientMessage(QTcpSocket *socket, const QVariantMap &msg);
   //void processCoreSetup(QTcpSocket *socket, QVariantMap &msg);
   QString setupCoreForInternalUsage();
