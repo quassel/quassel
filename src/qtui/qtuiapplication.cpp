@@ -124,6 +124,10 @@ QtUiApplication::~QtUiApplication() {
   Client::destroy();
 }
 
+void QtUiApplication::quit() {
+  QtUi::mainWindow()->quit();
+}
+
 void QtUiApplication::commitData(QSessionManager &manager) {
   Q_UNUSED(manager)
   _aboutToQuit = true;

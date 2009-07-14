@@ -106,6 +106,7 @@ public:
 protected:
   Quassel();
   virtual bool init();
+  virtual void quit();
 
   inline void setRunMode(RunMode mode);
   inline void setDataDirPaths(const QStringList &paths);
@@ -117,6 +118,7 @@ private:
   static void handleSignal(int signal);
   static void logBacktrace(const QString &filename);
 
+  static Quassel *_instance;
   static BuildInfo _buildInfo;
   static AbstractCliParser *_cliParser;
   static RunMode _runMode;

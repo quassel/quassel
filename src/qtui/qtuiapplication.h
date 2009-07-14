@@ -53,6 +53,9 @@ public:
 
   inline bool isAboutToQuit() const { return _aboutToQuit; }
 
+protected:
+  virtual void quit();
+
 private:
   bool _aboutToQuit;
 };

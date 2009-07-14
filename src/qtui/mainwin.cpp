@@ -133,13 +133,9 @@ MainWin::MainWin(QWidget *parent)
   updateIcon();
 
   installEventFilter(new JumpKeyHandler(this));
-
-  QtUiApplication* app = qobject_cast<QtUiApplication*> qApp;
-  connect(app, SIGNAL(aboutToQuit()), SLOT(aboutToQuit()));
 }
 
 void MainWin::init() {
-  connect(QApplication::instance(), SIGNAL(aboutToQuit()), SLOT(saveLayout()));
   connect(Client::instance(), SIGNAL(networkCreated(NetworkId)), SLOT(clientNetworkCreated(NetworkId)));
   connect(Client::instance(), SIGNAL(networkRemoved(NetworkId)), SLOT(clientNetworkRemoved(NetworkId)));
   connect(Client::messageModel(), SIGNAL(rowsInserted(const QModelIndex &, int, int)),
@@ -183,6 +179,10 @@ void MainWin::init() {
 
   setDisconnectedState();  // Disable menus and stuff
 
+#ifdef HAVE_KDE
+  setAutoSaveSettings();
+#endif
+
   // restore mainwin state
   QtUiSettings s;
   restoreStateFromSettings(s);
@@ -201,9 +201,11 @@ MainWin::~MainWin() {
 
 }
 
-void MainWin::aboutToQuit() {
+void MainWin::quit() {
   QtUiSettings s;
   saveStateToSettings(s);
+  saveLayout();
+  QApplication::quit();
 }
 
 void MainWin::saveStateToSettings(UiSettings &s) {
@@ -213,7 +215,11 @@ void MainWin::saveStateToSettings(UiSettings &s) {
   s.setValue("MainWinGeometry", saveGeometry());
   s.setValue("MainWinMinimized", isMinimized());
   s.setValue("MainWinMaximized", isMaximized());
-  s.setValue("MainWinHidden", _isHidden);
+  s.setValue("MainWinHidden", !isVisible());
+
+#ifdef HAVE_KDE
+  saveAutoSaveSettings();
+#endif
 }
 
 void MainWin::restoreStateFromSettings(UiSettings &s) {
@@ -221,6 +227,7 @@ void MainWin::restoreStateFromSettings(UiSettings &s) {
   _normalPos = s.value("MainWinPos", pos()).toPoint();
   bool maximized = s.value("MainWinMaximized", false).toBool();
 
+#ifndef HAVE_KDE
   restoreGeometry(s.value("MainWinGeometry").toByteArray());
 
   if(maximized) {
@@ -231,7 +238,10 @@ void MainWin::restoreStateFromSettings(UiSettings &s) {
 
   restoreState(s.value("MainWinState").toByteArray());
 
-  _isHidden = false;
+#else
+  move(_normalPos);
+#endif
+
   if(s.value("MainWinHidden").toBool())
     hideToTray();
   else if(s.value("MainWinMinimized").toBool())
@@ -270,7 +280,7 @@ void MainWin::setupActions() {
   coll->addAction("ConfigureNetworks", new Action(SmallIcon("configure"), tr("Configure &Networks..."), coll,
                                               this, SLOT(on_actionConfigureNetworks_triggered())));
   coll->addAction("Quit", new Action(SmallIcon("application-exit"), tr("&Quit"), coll,
-                                      qApp, SLOT(quit()), tr("Ctrl+Q")));
+                                      this, SLOT(quit()), tr("Ctrl+Q")));
 
   // View
   coll->addAction("ConfigureBufferViews", new Action(tr("&Configure Buffer Views..."), coll,
@@ -851,7 +861,7 @@ void MainWin::closeEvent(QCloseEvent *event) {
     event->ignore();
   } else {
     event->accept();
-    QApplication::quit();
+    quit();
   }
 }
 
@@ -871,7 +881,6 @@ void MainWin::hideToTray() {
   }
   hide();
   systemTray()->setIconVisible();
-  _isHidden = true;
 }
 
 void MainWin::toggleMinimizedToTray() {
@@ -913,7 +922,6 @@ void MainWin::forceActivated() {
   show();
   raise();
   activateWindow();
-  _isHidden = false;
 }
 
 void MainWin::messagesInserted(const QModelIndex &parent, int start, int end) {

@@ -91,6 +91,9 @@ class MainWin
     //! Bring window to front and focus it
     void forceActivated();
 
+    //! Quit application
+    void quit();
+
   protected:
     void closeEvent(QCloseEvent *event);
     void changeEvent(QEvent *event);
@@ -136,7 +139,6 @@ class MainWin
     void connectOrDisconnectFromNet();
 
     void saveStatusBarStatus(bool enabled);
-    void aboutToQuit();
 
     void loadLayout();
     void saveLayout();
@@ -191,7 +193,6 @@ class MainWin
 
     QSize _normalSize; //!< Size of the non-maximized window
     QPoint _normalPos; //!< Position of the non-maximized window
-    bool _isHidden;
 
 #ifdef Q_WS_WIN
     DWORD dwTickCount;

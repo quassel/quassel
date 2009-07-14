@@ -49,8 +49,12 @@ QStringList Quassel::_dataDirPaths;
 bool Quassel::_initialized = false;
 bool Quassel::DEBUG = false;
 QString Quassel::_coreDumpFileName;
+Quassel *Quassel::_instance = 0;
 
 Quassel::Quassel() {
+  Q_ASSERT(!_instance);
+  _instance = this;
+
   // We catch SIGTERM and SIGINT (caused by Ctrl+C) to graceful shutdown Quassel.
   signal(SIGTERM, handleSignal);
   signal(SIGINT, handleSignal);
@@ -106,6 +110,10 @@ bool Quassel::init() {
 
   DEBUG = isOptionSet("debug");
   return true;
+}
+
+void Quassel::quit() {
+  QCoreApplication::quit();
 }
 
 //! Register our custom types with Qt's Meta Object System.
@@ -207,7 +215,10 @@ void Quassel::handleSignal(int sig) {
   case SIGTERM:
   case SIGINT:
     qWarning("%s", qPrintable(QString("Caught signal %1 - exiting.").arg(sig)));
-    QCoreApplication::quit();
+    if(_instance)
+      _instance->quit();
+    else
+      QCoreApplication::quit();
     break;
   case SIGABRT:
   case SIGSEGV:
