@@ -26,6 +26,7 @@
 #  include <KMenuBar>
 #  include <KShortcutsDialog>
 #  include <KStatusBar>
+#  include <KToolBar>
 #endif
 
 #ifdef Q_WS_X11
@@ -626,20 +627,18 @@ void MainWin::setupToolBars() {
 #ifdef Q_WS_MAC
   setUnifiedTitleAndToolBarOnMac(true);
 #endif
-  _mainToolBar = addToolBar(tr("Main Toolbar"));
+
+#ifdef HAVE_KDE
+  _mainToolBar = new KToolBar("MainToolBar", this, Qt::TopToolBarArea, false, true, true);
+#else
+  _mainToolBar = new QToolBar(this);
   _mainToolBar->setObjectName("MainToolBar");
+#endif
+  _mainToolBar->setWindowTitle(tr("Main Toolbar"));
+  addToolBar(_mainToolBar);
 
   QtUi::toolBarActionProvider()->addActions(_mainToolBar, ToolBarActionProvider::MainToolBar);
   _toolbarMenu->addAction(_mainToolBar->toggleViewAction());
-
-  //_nickToolBar = addToolBar("User");
-  //_nickToolBar->setObjectName("NickToolBar");
-  //QtUi::toolBarActionProvider()->addActions(_nickToolBar, ToolBarActionProvider::NickToolBar);
-
-#ifdef HAVE_KDE
-  _mainToolBar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-  //_nickToolBar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-#endif
 }
 
 void MainWin::connectedToCore() {
