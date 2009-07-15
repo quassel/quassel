@@ -366,7 +366,7 @@ void CoreNetwork::socketDisconnected() {
     Core::setNetworkConnected(userId(), networkId(), false);
   } else if(_autoReconnectCount != 0) {
     setConnectionState(Network::Reconnecting);
-    if(_autoReconnectCount == autoReconnectRetries())
+    if(_autoReconnectCount == -1 || _autoReconnectCount == autoReconnectRetries())
       doAutoReconnect(); // first try is immediate
     else
       _autoReconnectTimer.start();
@@ -402,7 +402,7 @@ void CoreNetwork::networkInitialized() {
 
   if(useAutoReconnect()) {
     // reset counter
-    _autoReconnectCount = autoReconnectRetries();
+    _autoReconnectCount = unlimitedReconnectRetries() ? -1 : autoReconnectRetries();
   }
 
   // restore away state
@@ -513,8 +513,8 @@ void CoreNetwork::doAutoReconnect() {
     qWarning() << "CoreNetwork::doAutoReconnect(): Cannot reconnect while not being disconnected!";
     return;
   }
-  if(_autoReconnectCount > 0)
-    _autoReconnectCount--;
+  if(_autoReconnectCount > 0 || _autoReconnectCount == -1)
+    _autoReconnectCount--; // -2 means we delay the next reconnect
   connectToIrc(true);
 }
 
