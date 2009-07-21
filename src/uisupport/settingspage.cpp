@@ -25,8 +25,6 @@
 #include <QSpinBox>
 #include <QVariant>
 
-#include <QDebug>
-
 #include "uisettings.h"
 
 SettingsPage::SettingsPage(const QString &category, const QString &title, QWidget *parent)
@@ -80,9 +78,6 @@ bool SettingsPage::hasChanged(QSpinBox *box) {
 void SettingsPage::initAutoWidgets() {
   _autoWidgets.clear();
 
-  if(settingsKey().isNull())
-    return;
-
   // find all descendants that should be considered auto widgets
   // we need to climb the QObject tree recursively
   findAutoWidgets(this, &_autoWidgets);
@@ -103,7 +98,7 @@ void SettingsPage::initAutoWidgets() {
 
 void SettingsPage::findAutoWidgets(QObject *parent, QObjectList *autoList) const {
   foreach(QObject *child, parent->children()) {
-    if(!child->property("settingsKey").toString().isEmpty())
+    if(child->property("settingsKey").isValid())
       autoList->append(child);
     findAutoWidgets(child, autoList);
   }
@@ -127,6 +122,8 @@ QByteArray SettingsPage::autoWidgetPropertyName(QObject *widget) const {
 
 QString SettingsPage::autoWidgetSettingsKey(QObject *widget) const {
   QString key = widget->property("settingsKey").toString();
+  if(key.isEmpty())
+    return QString("");
   if(key.startsWith('/'))
     key.remove(0, 1);
   else
@@ -158,7 +155,14 @@ void SettingsPage::autoWidgetHasChanged() {
 void SettingsPage::load() {
   UiSettings s("");
   foreach(QObject *widget, _autoWidgets) {
-    QVariant val = s.value(autoWidgetSettingsKey(widget), widget->property("defaultValue"));
+    QString key = autoWidgetSettingsKey(widget);
+    QVariant val;
+    if(key.isEmpty())
+      val = loadAutoWidgetValue(widget->objectName());
+    else
+      val = s.value(key, QVariant());
+    if(!val.isValid())
+      val = widget->property("defaultValue");
     widget->setProperty(autoWidgetPropertyName(widget), val);
     widget->setProperty("storedValue", val);
   }
@@ -171,9 +175,13 @@ void SettingsPage::load() {
 void SettingsPage::save() {
   UiSettings s("");
   foreach(QObject *widget, _autoWidgets) {
+    QString key = autoWidgetSettingsKey(widget);
     QVariant val = widget->property(autoWidgetPropertyName(widget));
     widget->setProperty("storedValue", val);
-    s.setValue(autoWidgetSettingsKey(widget), val);
+    if(key.isEmpty())
+      saveAutoWidgetValue(widget->objectName(), val);
+    else
+      s.setValue(key, val);
   }
   bool old = hasChanged();
   _autoWidgetsChanged = _changed = false;
@@ -188,3 +196,13 @@ void SettingsPage::defaults() {
   }
   autoWidgetHasChanged();
 }
+
+QVariant SettingsPage::loadAutoWidgetValue(const QString &widgetName) {
+  qWarning() << "Could not load value for SettingsPage widget" << widgetName;
+  return QVariant();
+}
+
+void SettingsPage::saveAutoWidgetValue(const QString &widgetName, const QVariant &) {
+  qWarning() << "Could not save value for SettingsPage widget" << widgetName;
+}
+

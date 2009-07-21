@@ -40,6 +40,9 @@ class QSpinBox;
  *  its key is treated as a global path starting from the root, rather than from settingsKey().
  *  A second dynamic property \c defaultValue can be defined in child widgets as well.
  *
+ *  For widgets requiring special ways for storing and saving, define the property settingsKey and leave it empty. In this
+ *  case, the methods saveAutoWidgetValue() and loadAutoWidgetValue() will be called with the widget's objectName as parameter.
+ *
  *  SettingsPage manages loading, saving, setting to default and setting the changed state for all automatic child widgets.
  *  Derived classes must be sure to call initAutoWidgets() *after* setupUi(); they also need to call the baseclass implementations
  *  of load(), save() and defaults() (preferably at the end of the derived function, since they call setChangedState(false)).
@@ -127,6 +130,8 @@ protected slots:
 
 protected:
   void initAutoWidgets();
+  virtual QVariant loadAutoWidgetValue(const QString &widgetName);
+  virtual void saveAutoWidgetValue(const QString &widgetName, const QVariant &value);
 
 signals:
   //! Emitted whenever the widget state changes.
