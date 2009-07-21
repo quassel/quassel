@@ -98,6 +98,7 @@
 #include "settingspages/bufferviewsettingspage.h"
 #include "settingspages/chatmonitorsettingspage.h"
 #include "settingspages/colorsettingspage.h"
+#include "settingspages/connectionsettingspage.h"
 #include "settingspages/generalsettingspage.h"
 #include "settingspages/highlightsettingspage.h"
 #include "settingspages/identitiessettingspage.h"
@@ -812,6 +813,7 @@ void MainWin::showSettingsDlg() {
 
   //Category: Misc
   dlg->registerSettingsPage(new GeneralSettingsPage(dlg));
+  dlg->registerSettingsPage(new ConnectionSettingsPage(dlg));
   dlg->registerSettingsPage(new IdentitiesSettingsPage(dlg));
   dlg->registerSettingsPage(new NetworksSettingsPage(dlg));
   dlg->registerSettingsPage(new AliasesSettingsPage(dlg));

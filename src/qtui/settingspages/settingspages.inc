@@ -1,7 +1,7 @@
 # Putting $FOO in SETTINGSPAGES automatically includes
 # $FOOsettingspage.cpp, $FOOsettingspage.h and $FOOsettingspage.ui
 
-set(SETTINGSPAGES aliases appearance backlog bufferview color chatmonitor general highlight identities networks)
+set(SETTINGSPAGES aliases appearance backlog bufferview color connection chatmonitor general highlight identities networks)
 
 # Specify additional files (e.g. for subdialogs) here!
 set(SP_SOURCES aliasesmodel.cpp identityeditwidget.cpp notificationssettingspage.cpp)

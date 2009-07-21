@@ -33,6 +33,7 @@ class CoreBacklogManager;
 class CoreBufferSyncer;
 class CoreBufferViewManager;
 class CoreIrcListHelper;
+class CoreNetworkConfig;
 class Identity;
 class CoreIdentity;
 class NetworkConnection;
@@ -52,8 +53,9 @@ public:
   QList<BufferInfo> buffers() const;
   inline UserId user() const { return _user; }
   CoreNetwork *network(NetworkId) const;
-  NetworkConnection *networkConnection(NetworkId) const;
   CoreIdentity *identity(IdentityId) const;
+  inline CoreNetworkConfig *networkConfig() const { return _networkConfig; }
+  NetworkConnection *networkConnection(NetworkId) const;
 
   QVariant sessionState();
 
@@ -167,6 +169,7 @@ private:
   CoreBacklogManager *_backlogManager;
   CoreBufferViewManager *_bufferViewManager;
   CoreIrcListHelper *_ircListHelper;
+  CoreNetworkConfig *_networkConfig;
   CoreCoreInfo _coreInfo;
 
   QScriptEngine *scriptEngine;

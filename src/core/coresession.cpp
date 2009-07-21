@@ -28,6 +28,7 @@
 #include "corebacklogmanager.h"
 #include "corebufferviewmanager.h"
 #include "coreirclisthelper.h"
+#include "corenetworkconfig.h"
 #include "storage.h"
 
 #include "coreidentity.h"
@@ -53,6 +54,7 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
     _backlogManager(new CoreBacklogManager(this)),
     _bufferViewManager(new CoreBufferViewManager(_signalProxy, this)),
     _ircListHelper(new CoreIrcListHelper(this)),
+    _networkConfig(new CoreNetworkConfig("GlobalNetworkConfig", this)),
     _coreInfo(this),
     scriptEngine(new QScriptEngine(this)),
     _processMessages(false)
@@ -87,6 +89,7 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
   p->synchronize(&aliasManager());
   p->synchronize(_backlogManager);
   p->synchronize(ircListHelper());
+  p->synchronize(networkConfig());
   p->synchronize(&_coreInfo);
 
   // Restore session state
@@ -148,6 +151,7 @@ void CoreSession::loadSettings() {
 void CoreSession::saveSessionState() const {
   _bufferSyncer->storeDirtyIds();
   _bufferViewManager->saveBufferViews();
+  _networkConfig->save();
 }
 
 void CoreSession::restoreSessionState() {

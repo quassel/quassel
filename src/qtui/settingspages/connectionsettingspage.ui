@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ConnectionSettingsPage</class>
+ <widget class="QWidget" name="ConnectionSettingsPage">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>524</width>
+    <height>402</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Configure the IRC Connection</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <item>
+    <widget class="QGroupBox" name="pingTimeoutEnabled">
+     <property name="title">
+      <string>Enable Ping Timeout Detection</string>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <property name="settingsKey" stdset="0">
+      <string/>
+     </property>
+     <property name="defaultValue" stdset="0">
+      <bool>true</bool>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Ping interval:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSpinBox" name="pingInterval">
+          <property name="suffix">
+           <string> seconds</string>
+          </property>
+          <property name="minimum">
+           <number>30</number>
+          </property>
+          <property name="maximum">
+           <number>9999</number>
+          </property>
+          <property name="defaultValue" stdset="0">
+           <UInt>30</UInt>
+          </property>
+          <property name="settingsKey" stdset="0">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Disconnect after</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSpinBox" name="maxPingCount">
+          <property name="minimum">
+           <number>2</number>
+          </property>
+          <property name="value">
+           <number>6</number>
+          </property>
+          <property name="defaultValue" stdset="0">
+           <UInt>6</UInt>
+          </property>
+          <property name="settingsKey" stdset="0">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_3">
+          <property name="text">
+           <string>missed pings</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="autoWhoEnabled">
+     <property name="toolTip">
+      <string>This enables periodic polling of user information using /WHO. This is mostly interesting for tracking users' away status.</string>
+     </property>
+     <property name="title">
+      <string>Enable Automatic User Information Lookup (/WHO)</string>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <property name="settingsKey" stdset="0">
+      <string/>
+     </property>
+     <property name="defaultValue" stdset="0">
+      <bool>true</bool>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <item>
+       <layout class="QGridLayout" name="gridLayout">
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_4">
+          <property name="text">
+           <string>Update interval:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QSpinBox" name="autoWhoInterval">
+          <property name="suffix">
+           <string> seconds</string>
+          </property>
+          <property name="minimum">
+           <number>10</number>
+          </property>
+          <property name="maximum">
+           <number>999</number>
+          </property>
+          <property name="value">
+           <number>90</number>
+          </property>
+          <property name="settingsKey" stdset="0">
+           <string/>
+          </property>
+          <property name="defaultValue" stdset="0">
+           <UInt>90</UInt>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>Ignore channels with more than:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QSpinBox" name="autoWhoNickLimit">
+          <property name="suffix">
+           <string> users</string>
+          </property>
+          <property name="minimum">
+           <number>100</number>
+          </property>
+          <property name="maximum">
+           <number>9999</number>
+          </property>
+          <property name="value">
+           <number>200</number>
+          </property>
+          <property name="settingsKey" stdset="0">
+           <string/>
+          </property>
+          <property name="defaultValue" stdset="0">
+           <UInt>200</UInt>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_6">
+          <property name="text">
+           <string>Minimum delay between requests:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QSpinBox" name="autoWhoDelay">
+          <property name="suffix">
+           <string> seconds</string>
+          </property>
+          <property name="minimum">
+           <number>3</number>
+          </property>
+          <property name="value">
+           <number>5</number>
+          </property>
+          <property name="settingsKey" stdset="0">
+           <string/>
+          </property>
+          <property name="defaultValue" stdset="0">
+           <UInt>5</UInt>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer_3">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>138</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

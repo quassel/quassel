@@ -39,6 +39,7 @@
 #include "message.h"
 #include "messagemodel.h"
 #include "network.h"
+#include "networkconfig.h"
 #include "networkmodel.h"
 #include "quassel.h"
 #include "signalproxy.h"
@@ -89,6 +90,7 @@ Client::Client(QObject *parent)
     _bufferViewOverlay(new BufferViewOverlay(this)),
     _ircListHelper(new ClientIrcListHelper(this)),
     _inputHandler(0),
+    _networkConfig(0),
     _messageModel(0),
     _messageProcessor(0),
     _connectedToCore(false),
@@ -329,6 +331,11 @@ void Client::setSyncedToCore() {
   connect(aliasManager(), SIGNAL(initDone()), SLOT(sendBufferedUserInput()));
   signalProxy()->synchronize(aliasManager());
 
+  // create NetworkConfig
+  Q_ASSERT(!_networkConfig);
+  _networkConfig = new NetworkConfig("GlobalNetworkConfig", this);
+  signalProxy()->synchronize(networkConfig());
+
   // trigger backlog request once all active bufferviews are initialized
   connect(bufferViewOverlay(), SIGNAL(initDone()), this, SLOT(requestInitialBacklog()));
 
@@ -417,6 +424,10 @@ void Client::disconnectedFromCore() {
   }
   Q_ASSERT(_identities.isEmpty());
 
+  if(_networkConfig) {
+    _networkConfig->deleteLater();
+    _networkConfig = 0;
+  }
 }
 
 /*** ***/

@@ -21,6 +21,7 @@ set(SOURCES
     coreircchannel.cpp
     coreirclisthelper.cpp
     corenetwork.cpp
+    corenetworkconfig.cpp
     coresession.cpp
     coresettings.cpp
     coreusersettings.cpp
@@ -47,6 +48,7 @@ set(MOC_HDRS
     coreircchannel.h
     coreirclisthelper.h
     corenetwork.h
+    corenetworkconfig.h
     coresession.h
     ctcphandler.h
     ircserverhandler.h

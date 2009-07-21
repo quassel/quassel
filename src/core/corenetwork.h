@@ -50,6 +50,7 @@ public:
 
   inline CoreIdentity *identityPtr() const { return coreSession()->identity(identity()); }
   inline CoreSession *coreSession() const { return _coreSession; }
+  inline CoreNetworkConfig *networkConfig() const { return coreSession()->networkConfig(); }
 
   inline IrcServerHandler *ircServerHandler() const { return _ircServerHandler; }
   inline UserInputHandler *userInputHandler() const { return _userInputHandler; }
@@ -90,6 +91,8 @@ public slots:
   virtual void setAutoReconnectInterval(quint32);
   virtual void setAutoReconnectRetries(quint16);
 
+  void setPingInterval(int interval);
+
   void connectToIrc(bool reconnecting = false);
   void disconnectFromIrc(bool requested = true, const QString &reason = QString(), bool withReconnect = false);
 
@@ -101,6 +104,10 @@ public slots:
   void setChannelParted(const QString &channel);
   void addChannelKey(const QString &channel, const QString &key);
   void removeChannelKey(const QString &channel);
+
+  void setAutoWhoEnabled(bool enabled);
+  void setAutoWhoInterval(int interval);
+  void setAutoWhoDelay(int delay);
 
   bool setAutoWhoDone(const QString &channel);
 
@@ -138,7 +145,7 @@ private slots:
   void restoreUserModes();
   void doAutoReconnect();
   void sendPing();
-  void enablePingTimeout();
+  void enablePingTimeout(bool enable = true);
   void disablePingTimeout();
   void sendAutoWho();
   void startAutoWhoCycle();
@@ -182,15 +189,10 @@ private:
 
   QTimer _pingTimer;
   uint _lastPingTime;
-  uint _maxPingCount;
   uint _pingCount;
 
-  bool _autoWhoEnabled;
   QStringList _autoWhoQueue;
   QHash<QString, int> _autoWhoPending;
-  int _autoWhoInterval;
-  int _autoWhoNickLimit;
-  int _autoWhoDelay;
   QTimer _autoWhoTimer, _autoWhoCycleTimer;
 
   QTimer _tokenBucketTimer;

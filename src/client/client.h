@@ -51,6 +51,7 @@ class ClientSyncer;
 class ClientUserInputHandler;
 class IrcUser;
 class IrcChannel;
+class NetworkConfig;
 class SignalProxy;
 struct NetworkInfo;
 
@@ -110,6 +111,7 @@ public:
   static inline ClientBufferViewManager *bufferViewManager() { return instance()->_bufferViewManager; }
   static inline BufferViewOverlay *bufferViewOverlay() { return instance()->_bufferViewOverlay; }
   static inline ClientUserInputHandler *inputHandler() { return instance()->_inputHandler; }
+  static inline NetworkConfig *networkConfig() { return instance()->_networkConfig; }
 
   static AccountId currentCoreAccount();
 
@@ -215,6 +217,7 @@ private:
   BufferViewOverlay *_bufferViewOverlay;
   ClientIrcListHelper *_ircListHelper;
   ClientUserInputHandler *_inputHandler;
+  NetworkConfig *_networkConfig;
 
   MessageModel *_messageModel;
   AbstractMessageProcessor *_messageProcessor;

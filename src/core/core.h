@@ -75,11 +75,11 @@ public:
   /**
    * \param userId       The users Id
    * \param settingName  The Name of the Setting
-   * \param default      Value to return in case it's unset.
+   * \param defaultValue Value to return in case it's unset.
    * \return the Value of the Setting or the default value if it is unset.
    */
-  static inline QVariant getUserSetting(UserId userId, const QString &settingName, const QVariant &data = QVariant()) {
-    return instance()->_storage->getUserSetting(userId, settingName, data);
+  static inline QVariant getUserSetting(UserId userId, const QString &settingName, const QVariant &defaultValue = QVariant()) {
+    return instance()->_storage->getUserSetting(userId, settingName, defaultValue);
   }
 
   /* Identity handling */

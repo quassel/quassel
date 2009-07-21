@@ -18,6 +18,7 @@ set(SOURCES
     logger.cpp
     message.cpp
     network.cpp
+    networkconfig.cpp
     quassel.cpp
     settings.cpp
     signalproxy.cpp
@@ -43,6 +44,7 @@ set(MOC_HDRS
     irclisthelper.h
     ircuser.h
     network.h
+    networkconfig.h
     settings.h
     signalproxy.h
     syncableobject.h)
