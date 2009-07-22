@@ -485,7 +485,7 @@ void IrcServerHandler::handleTopic(const QString &prefix, const QList<QByteArray
 
   channel->setTopic(topic);
 
-  emit displayMsg(Message::Server, BufferInfo::ChannelBuffer, channel->name(), tr("%1 has changed topic for %2 to: \"%3\"").arg(ircuser->nick()).arg(channel->name()).arg(topic));
+  emit displayMsg(Message::Topic, BufferInfo::ChannelBuffer, channel->name(), tr("%1 has changed topic for %2 to: \"%3\"").arg(ircuser->nick()).arg(channel->name()).arg(topic));
 }
 
 /* RPL_WELCOME */
@@ -884,7 +884,7 @@ void IrcServerHandler::handle331(const QString &prefix, const QList<QByteArray> 
   if(chan)
     chan->setTopic(QString());
 
-  emit displayMsg(Message::Server, BufferInfo::ChannelBuffer, channel, tr("No topic is set for %1.").arg(channel));
+  emit displayMsg(Message::Topic, BufferInfo::ChannelBuffer, channel, tr("No topic is set for %1.").arg(channel));
 }
 
 /* RPL_TOPIC */
@@ -899,7 +899,7 @@ void IrcServerHandler::handle332(const QString &prefix, const QList<QByteArray> 
   if(chan)
     chan->setTopic(topic);
 
-  emit displayMsg(Message::Server, BufferInfo::ChannelBuffer, channel, tr("Topic for %1 is \"%2\"").arg(channel, topic));
+  emit displayMsg(Message::Topic, BufferInfo::ChannelBuffer, channel, tr("Topic for %1 is \"%2\"").arg(channel, topic));
 }
 
 /* Topic set by... */
@@ -909,7 +909,7 @@ void IrcServerHandler::handle333(const QString &prefix, const QList<QByteArray> 
     return;
 
   QString channel = serverDecode(params[0]);
-  emit displayMsg(Message::Server, BufferInfo::ChannelBuffer, channel,
+  emit displayMsg(Message::Topic, BufferInfo::ChannelBuffer, channel,
                   tr("Topic set by %1 on %2") .arg(serverDecode(params[1]), QDateTime::fromTime_t(channelDecode(channel, params[2]).toUInt()).toString()));
 }
 

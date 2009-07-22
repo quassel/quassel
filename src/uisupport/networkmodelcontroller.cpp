@@ -276,6 +276,8 @@ void NetworkModelController::handleHideAction(ActionType type, QAction *action) 
     filter |= Message::Mode;
   if(NetworkModelController::action(HideDayChange)->isChecked())
     filter |= Message::DayChange;
+  if(NetworkModelController::action(HideTopic)->isChecked())
+    filter |= Message::Topic;
 
   switch(type) {
   case HideJoin:
@@ -284,6 +286,7 @@ void NetworkModelController::handleHideAction(ActionType type, QAction *action) 
   case HideNick:
   case HideMode:
   case HideDayChange:
+  case HideTopic:
     if(_messageFilter)
       BufferSettings(_messageFilter->idString()).setMessageFilter(filter);
     else {

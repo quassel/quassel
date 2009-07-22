@@ -328,6 +328,7 @@ void UiStyle::StyledMessage::style(UiStyle *style) const {
       t = tr("%D0%1").arg(txt); break;
     case Message::Notice:
       t = tr("%Dn%1").arg(txt); break;
+    case Message::Topic:
     case Message::Server:
       t = tr("%Ds%1").arg(txt); break;
     case Message::Error:
@@ -386,6 +387,7 @@ QString UiStyle::StyledMessage::decoratedSender() const {
       return tr("<%1>").arg(plainSender()); break;
     case Message::Notice:
       return tr("[%1]").arg(plainSender()); break;
+    case Message::Topic:
     case Message::Server:
       return tr("*"); break;
     case Message::Error:
@@ -429,6 +431,7 @@ UiStyle::FormatType UiStyle::StyledMessage::senderFormat() const {
       }
     case Message::Notice:
       return UiStyle::NoticeMsg; break;
+    case Message::Topic:
     case Message::Server:
       return UiStyle::ServerMsg; break;
     case Message::Error:
