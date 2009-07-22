@@ -93,7 +93,8 @@ public:
 
   enum MessageLabel {
     OwnMsg          = 0x00000001,
-    Highlight       = 0x00000002
+    Highlight       = 0x00000002,
+    Selected        = 0x00000004  // must be last!
   };
 
   struct StyledString {
@@ -126,7 +127,8 @@ protected:
   QTextCharFormat cachedFormat(quint64 key) const;
   QTextCharFormat cachedFormat(quint32 formatType, quint32 messageLabel = 0) const;
   void setCachedFormat(const QTextCharFormat &format, quint32 formatType, quint32 messageLabel = 0);
-  void mergeSubElementFormat(QTextCharFormat &format, quint32 formatType, quint32 messageLabel = 0);
+  void mergeFormat(QTextCharFormat &format, quint32 formatType, quint64 messageLabel);
+  void mergeSubElementFormat(QTextCharFormat &format, quint32 formatType, quint64 messageLabel);
 
   static FormatType formatType(const QString &code);
   static QString formatCode(FormatType);

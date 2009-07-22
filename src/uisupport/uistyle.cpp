@@ -102,6 +102,8 @@ QString UiStyle::loadStyleSheet(const QString &styleSheet, bool shouldExist) {
   return ss;
 }
 
+/******** Caching *******/
+
 QTextCharFormat UiStyle::cachedFormat(quint64 key) const {
   return _formatCache.value(key, QTextCharFormat());
 }
@@ -114,54 +116,57 @@ void UiStyle::setCachedFormat(const QTextCharFormat &format, quint32 formatType,
   _formatCache[formatType | ((quint64)messageLabel << 32)] = format;
 }
 
-// Merge a subelement format into an existing message format
-void UiStyle::mergeSubElementFormat(QTextCharFormat& fmt, quint32 ftype, quint32 label) {
+QFontMetricsF *UiStyle::fontMetrics(quint32 ftype, quint32 label) {
+  // QFontMetricsF is not assignable, so we need to store pointers :/
   quint64 key = ftype | ((quint64)label << 32);
 
-  // start with the most general format and then specialize
-  fmt.merge(cachedFormat(key & Q_UINT64_C(0x00000000fffffff0)));  // basic subelement format
-  fmt.merge(cachedFormat(key & Q_UINT64_C(0x00000000ffffffff)));  // subelement + msgtype
-  fmt.merge(cachedFormat(key & Q_UINT64_C(0xffff0000fffffff0)));  // subelement + nickhash
-  fmt.merge(cachedFormat(key & Q_UINT64_C(0xffff0000ffffffff)));  // subelement + nickhash + msgtype
-  fmt.merge(cachedFormat(key & Q_UINT64_C(0x0000fffffffffff0)));  // label + subelement
-  fmt.merge(cachedFormat(key & Q_UINT64_C(0x0000ffffffffffff)));  // label + subelement + msgtype
-  fmt.merge(cachedFormat(key & Q_UINT64_C(0xfffffffffffffff0)));  // label + subelement + nickhash
-  fmt.merge(cachedFormat(key & Q_UINT64_C(0xffffffffffffffff)));  // label + subelement + nickhash + msgtype
+  if(_metricsCache.contains(key))
+    return _metricsCache.value(key);
+
+  return (_metricsCache[key] = new QFontMetricsF(format(ftype, label).font()));
 }
 
-// NOTE: This function is intimately tied to the values in FormatType. Don't change this
+/******** Generate formats ********/
+
+// NOTE: This and the following functions are intimately tied to the values in FormatType. Don't change this
 //       until you _really_ know what you do!
-QTextCharFormat UiStyle::format(quint32 ftype, quint32 label) {
+QTextCharFormat UiStyle::format(quint32 ftype, quint32 label_) {
   if(ftype == Invalid)
     return QTextCharFormat();
 
-  quint64 key = ftype | ((quint64)label << 32);
+  quint64 label = (quint64)label_ << 32;
 
   // check if we have exactly this format readily cached already
-  QTextCharFormat fmt = cachedFormat(key);
+  QTextCharFormat fmt = cachedFormat(label|ftype);
   if(fmt.properties().count())
     return fmt;
 
-  fmt.merge(cachedFormat(key & Q_UINT64_C(0x0000000000000000)));  // basic
-  fmt.merge(cachedFormat(key & Q_UINT64_C(0x000000000000000f)));  // msgtype
-  fmt.merge(cachedFormat(key & Q_UINT64_C(0xffff000000000000)));  // nickhash
-  fmt.merge(cachedFormat(key & Q_UINT64_C(0xffff00000000000f)));  // nickhash + msgtype
-  fmt.merge(cachedFormat(key & Q_UINT64_C(0x0000ffff00000000)));  // label
-  fmt.merge(cachedFormat(key & Q_UINT64_C(0x0000ffff0000000f)));  // label + msgtype
-  fmt.merge(cachedFormat(key & Q_UINT64_C(0xffffffff00000000)));  // label + nickhash
-  fmt.merge(cachedFormat(key & Q_UINT64_C(0xffffffff0000000f)));  // label + nickhash + msgtype
+  mergeFormat(fmt, ftype, label & Q_UINT64_C(0xffff000000000000));
+
+  for(quint64 mask = Q_UINT64_C(0x0000000100000000); mask <= (quint64)Selected << 32; mask <<=1) {
+    if(label & mask)
+      mergeFormat(fmt, ftype, mask | Q_UINT64_C(0xffff000000000000));
+  }
+
+  setCachedFormat(fmt, ftype, label_);
+  return fmt;
+}
+
+void UiStyle::mergeFormat(QTextCharFormat &fmt, quint32 ftype, quint64 label) {
+  mergeSubElementFormat(fmt, ftype & 0x000f, label);
 
   // TODO: allow combinations for mirc formats and colors (each), e.g. setting a special format for "bold and italic"
   //       or "foreground 01 and background 03"
   if((ftype & 0xfff0)) { // element format
-    for(quint32 mask = 0x10; mask <= 0x2000; mask <<= 1) {
+    for(quint32 mask = 0x0010; mask <= 0x2000; mask <<= 1) {
       if(ftype & mask) {
-        mergeSubElementFormat(fmt, ftype & 0xffff, label);
+        mergeSubElementFormat(fmt, mask | 0x0f, label);
       }
     }
   }
 
   // Now we handle color codes
+  // We assume that those can't be combined with subelement and message types.
   if(ftype & 0x00400000)
     mergeSubElementFormat(fmt, ftype & 0x0f400000, label); // foreground
   if(ftype & 0x00800000)
@@ -172,19 +177,15 @@ QTextCharFormat UiStyle::format(quint32 ftype, quint32 label) {
   // URL
   if(ftype & Url)
     mergeSubElementFormat(fmt, ftype & Url, label);
-
-  setCachedFormat(fmt, ftype, label);
-  return fmt;
 }
 
-QFontMetricsF *UiStyle::fontMetrics(quint32 ftype, quint32 label) {
-  // QFontMetricsF is not assignable, so we need to store pointers :/
-  quint64 key = ftype | ((quint64)label << 32);
-
-  if(_metricsCache.contains(key))
-    return _metricsCache.value(key);
-
-  return (_metricsCache[key] = new QFontMetricsF(format(ftype, label).font()));
+// Merge a subelement format into an existing message format
+void UiStyle::mergeSubElementFormat(QTextCharFormat& fmt, quint32 ftype, quint64 label) {
+  quint64 key = ftype | label;
+  fmt.merge(cachedFormat(key & Q_UINT64_C(0x0000fffffffffff0)));  // label + subelement
+  fmt.merge(cachedFormat(key & Q_UINT64_C(0x0000ffffffffffff)));  // label + subelement + msgtype
+  fmt.merge(cachedFormat(key & Q_UINT64_C(0xfffffffffffffff0)));  // label + subelement + nickhash
+  fmt.merge(cachedFormat(key & Q_UINT64_C(0xffffffffffffffff)));  // label + subelement + nickhash + msgtype
 }
 
 UiStyle::FormatType UiStyle::formatType(Message::Type msgType) {
