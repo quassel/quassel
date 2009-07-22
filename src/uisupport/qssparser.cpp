@@ -127,7 +127,7 @@ void QssParser::parseChatLineData(const QString &decl, const QString &contents) 
     }
   }
 
-  _formats[fmtType] = format;
+  _formats[fmtType].merge(format);
 }
 
 quint64 QssParser::parseFormatType(const QString &decl) {
