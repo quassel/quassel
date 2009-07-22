@@ -486,7 +486,7 @@ QGradientStops QssParser::parseGradientStops(const QString &str_) {
 /******** Font Properties ********/
 
 void QssParser::parseFont(const QString& value, QTextCharFormat* format) {
-  QRegExp rx("((?:(?:normal|italic|oblique|bold|100|200|300|400|500|600|700|800|900) ){0,2}) ?(\\d+)(pt|px)? \"(.*)\"");
+  QRegExp rx("((?:(?:normal|italic|oblique|underline|bold|100|200|300|400|500|600|700|800|900) ){0,2}) ?(\\d+)(pt|px)? \"(.*)\"");
   if(!rx.exactMatch(value)) {
     qWarning() << Q_FUNC_INFO << tr("Invalid font specification: %1").arg(value);
     return;
@@ -497,6 +497,8 @@ void QssParser::parseFont(const QString& value, QTextCharFormat* format) {
   foreach(QString prop, proplist) {
     if(prop == "italic")
       format->setFontItalic(true);
+    else if(prop == "underline")
+      format->setFontUnderline(true);
     //else if(prop == "oblique")
     //  format->setStyle(QFont::StyleOblique);
     else if(prop == "bold")
@@ -520,6 +522,8 @@ void QssParser::parseFontStyle(const QString& value, QTextCharFormat* format) {
     format->setFontItalic(false);
   else if(value == "italic")
     format->setFontItalic(true);
+  else if(value == "underline")
+    format->setFontUnderline(true);
   //else if(value == "oblique")
   //  format->setStyle(QFont::StyleOblique);
   else {
