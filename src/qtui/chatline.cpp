@@ -165,11 +165,13 @@ void ChatLine::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     painter->fillRect(boundingRect(), msgFmt.background());
   }
 
-  // TODO make this dependent on the style engine (highlight-color & friends)
   if(_selection & Selected) {
-    qreal left = item((ChatLineModel::ColumnType)(_selection & ItemMask)).x();
-    QRectF selectRect(left, 0, width() - left, height());
-    painter->fillRect(selectRect, QApplication::palette().brush(QPalette::Highlight));
+    QTextCharFormat selFmt = QtUi::style()->format(UiStyle::formatType(type), label | UiStyle::Selected);
+    if(selFmt.hasProperty(QTextFormat::BackgroundBrush)) {
+      qreal left = item((ChatLineModel::ColumnType)(_selection & ItemMask)).x();
+      QRectF selectRect(left, 0, width() - left, height());
+      painter->fillRect(selectRect, selFmt.background());
+    }
   }
 
   // new line marker

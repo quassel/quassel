@@ -53,7 +53,7 @@ private:
   QVariant senderData(int role) const;
   QVariant contentsData(int role) const;
 
-  QVariant backgroundBrush(UiStyle::FormatType subelement) const;
+  QVariant backgroundBrush(UiStyle::FormatType subelement, bool selected = false) const;
   quint32 messageLabel() const;
 
   void computeWrapList() const;

@@ -83,7 +83,8 @@ protected:
   virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
   virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 
-  virtual QTextLayout::FormatRange selectionFormat() const;
+  void paintBackground(QPainter *);
+  QVector<QTextLayout::FormatRange> selectionFormats() const;
   virtual inline QVector<QTextLayout::FormatRange> additionalFormats() const { return QVector<QTextLayout::FormatRange>(); }
 
   inline qint16 selectionStart() const { return _selectionStart; }

@@ -212,6 +212,8 @@ quint64 QssParser::parseFormatType(const QString &decl) {
         quint64 labeltype = 0;
         if(condValue == "highlight")
           labeltype = UiStyle::Highlight;
+        else if(condValue == "selected")
+          labeltype = UiStyle::Selected;
         else {
           qWarning() << Q_FUNC_INFO << tr("Invalid message label: %1").arg(condValue);
           return UiStyle::Invalid;

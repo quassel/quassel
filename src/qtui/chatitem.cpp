@@ -58,6 +58,21 @@ QVariant ChatItem::data(int role) const {
   return model()->data(index, role);
 }
 
+qint16 ChatItem::posToCursor(const QPointF &pos) const {
+  if(pos.y() > height()) return data(MessageModel::DisplayRole).toString().length();
+  if(pos.y() < 0) return 0;
+
+  QTextLayout layout;
+  initLayout(&layout);
+  for(int l = layout.lineCount() - 1; l >= 0; l--) {
+    QTextLine line = layout.lineAt(l);
+    if(pos.y() >= line.y()) {
+      return line.xToCursor(pos.x(), QTextLine::CursorOnCharacter);
+    }
+  }
+  return 0;
+}
+
 void ChatItem::initLayoutHelper(QTextLayout *layout, QTextOption::WrapMode wrapMode, Qt::Alignment alignment) const {
   Q_ASSERT(layout);
 
@@ -83,23 +98,27 @@ void ChatItem::doLayout(QTextLayout *layout) const {
   layout->endLayout();
 }
 
+void ChatItem::paintBackground(QPainter *painter) {
+  painter->setClipRect(boundingRect()); // no idea why QGraphicsItem clipping won't work
+
+  QVariant bgBrush;
+  if(_selectionMode == FullSelection)
+    bgBrush = data(ChatLineModel::SelectedBackgroundRole);
+  else
+    bgBrush = data(ChatLineModel::BackgroundRole);
+  if(bgBrush.isValid())
+    painter->fillRect(boundingRect(), bgBrush.value<QBrush>());
+}
 
 // NOTE: This is not the most time-efficient implementation, but it saves space by not caching unnecessary data
 //       This is a deliberate trade-off. (-> selectFmt creation, data() call)
 void ChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
   Q_UNUSED(option); Q_UNUSED(widget);
-  painter->setClipRect(boundingRect()); // no idea why QGraphicsItem clipping won't work
+  paintBackground(painter);
 
-  QVariant bgBrush = data(ChatLineModel::BackgroundRole);
-  if(bgBrush.isValid())
-    painter->fillRect(boundingRect(), bgBrush.value<QBrush>());
-
-  QVector<QTextLayout::FormatRange> formats = additionalFormats();
-  QTextLayout::FormatRange selectFmt = selectionFormat();
-  if(selectFmt.format.isValid()) formats.append(selectFmt);
   QTextLayout layout;
   initLayout(&layout);
-  layout.draw(painter, QPointF(0,0), formats, boundingRect());
+  layout.draw(painter, QPointF(0,0), selectionFormats(), boundingRect());
 
   //  layout()->draw(painter, QPointF(0,0), formats, boundingRect());
 
@@ -131,19 +150,30 @@ void ChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 //   painter->drawRect(_boundingRect.adjusted(0, 0, -1, -1));
 }
 
-qint16 ChatItem::posToCursor(const QPointF &pos) const {
-  if(pos.y() > height()) return data(MessageModel::DisplayRole).toString().length();
-  if(pos.y() < 0) return 0;
+QVector<QTextLayout::FormatRange> ChatItem::selectionFormats() const {
+  if(!hasSelection())
+    return QVector<QTextLayout::FormatRange>();
 
-  QTextLayout layout;
-  initLayout(&layout);
-  for(int l = layout.lineCount() - 1; l >= 0; l--) {
-    QTextLine line = layout.lineAt(l);
-    if(pos.y() >= line.y()) {
-      return line.xToCursor(pos.x(), QTextLine::CursorOnCharacter);
-    }
+  int start, end;
+  if(_selectionMode == FullSelection) {
+    start = 0;
+    end = data(MessageModel::DisplayRole).toString().length();
+  } else {
+    start = qMin(_selectionStart, _selectionEnd);
+    end = qMax(_selectionStart, _selectionEnd);
   }
-  return 0;
+
+  UiStyle::FormatList fmtList = data(MessageModel::FormatRole).value<UiStyle::FormatList>();
+
+  while(fmtList.count() >=2 && fmtList.at(1).first <= start)
+    fmtList.removeFirst();
+
+  fmtList.first().first = start;
+
+  while(fmtList.count() >= 2 && fmtList.last().first >= end)
+    fmtList.removeLast();
+
+  return QtUi::style()->toTextLayoutList(fmtList, end, UiStyle::Selected|data(ChatLineModel::MsgLabelRole).toUInt()).toVector();
 }
 
 bool ChatItem::hasSelection() const {
@@ -198,25 +228,6 @@ bool ChatItem::isPosOverSelection(const QPointF &pos) const {
     return cursor >= qMin(_selectionStart, _selectionEnd) && cursor <= qMax(_selectionStart, _selectionEnd);
   }
   return false;
-}
-
-QTextLayout::FormatRange ChatItem::selectionFormat() const {
-  QTextLayout::FormatRange selectFmt;
-  if(_selectionMode != NoSelection) {
-    selectFmt.format.setForeground(QApplication::palette().brush(QPalette::HighlightedText));
-    selectFmt.format.setBackground(QApplication::palette().brush(QPalette::Highlight));
-    if(_selectionMode == PartialSelection) {
-      selectFmt.start = qMin(_selectionStart, _selectionEnd);
-      selectFmt.length = qAbs(_selectionStart - _selectionEnd);
-    } else { // FullSelection
-      selectFmt.start = 0;
-      selectFmt.length = data(MessageModel::DisplayRole).toString().length();
-    }
-  } else {
-    selectFmt.start = -1;
-    selectFmt.length = 0;
-  }
-  return selectFmt;
 }
 
 QList<QRectF> ChatItem::findWords(const QString &searchWord, Qt::CaseSensitivity caseSensitive) {
@@ -303,12 +314,7 @@ void ChatItem::addActionsToMenu(QMenu *menu, const QPointF &pos) {
 
 void SenderChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
   Q_UNUSED(option); Q_UNUSED(widget);
-
-  painter->setClipRect(boundingRect()); // no idea why QGraphicsItem clipping won't work
-
-  QVariant bgBrush = data(ChatLineModel::BackgroundRole);
-  if(bgBrush.isValid())
-    painter->fillRect(boundingRect(), bgBrush.value<QBrush>());
+  paintBackground(painter);
 
   QTextLayout layout;
   initLayout(&layout);
@@ -319,15 +325,13 @@ void SenderChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
   else
     offset = qMax(layoutWidth - width(), (qreal)0);
 
-  QTextLayout::FormatRange selectFmt = selectionFormat();
-
   if(layoutWidth > width()) {
     // Draw a nice gradient for longer items
     // Qt's text drawing with a gradient brush sucks, so we use an alpha-channeled pixmap instead
     QPixmap pixmap(layout.boundingRect().toRect().size());
     pixmap.fill(Qt::transparent);
     QPainter pixPainter(&pixmap);
-    layout.draw(&pixPainter, QPointF(qMax(offset, (qreal)0), 0), QVector<QTextLayout::FormatRange>() << selectFmt);
+    layout.draw(&pixPainter, QPointF(qMax(offset, (qreal)0), 0), selectionFormats());
     pixPainter.end();
 
     // Create alpha channel mask
@@ -349,7 +353,7 @@ void SenderChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
     pixmap.setAlphaChannel(mask);
     painter->drawPixmap(0, 0, pixmap);
   } else {
-    layout.draw(painter, QPointF(0,0), QVector<QTextLayout::FormatRange>() << selectFmt, boundingRect());
+    layout.draw(painter, QPointF(0,0), selectionFormats(), boundingRect());
   }
 }
 

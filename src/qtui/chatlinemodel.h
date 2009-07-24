@@ -32,7 +32,8 @@ class ChatLineModel : public MessageModel {
 public:
   enum ChatLineRole {
     WrapListRole = MessageModel::UserRole,
-    MsgLabelRole
+    MsgLabelRole,
+    SelectedBackgroundRole
   };
 
   ChatLineModel(QObject *parent = 0);
