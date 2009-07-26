@@ -79,12 +79,10 @@ QVariantMap PostgreSqlStorage::setupDefaults() const {
   return map;
 }
 
-bool PostgreSqlStorage::setup(const QVariantMap &settings) {
-  bool success = AbstractSqlStorage::setup(settings);
-  if(success) {
-    logDb().exec(QString("ALTER USER %1 SET standard_conforming_strings TO on").arg(userName()));
-  }
-  return success;
+void PostgreSqlStorage::initDbSession(QSqlDatabase &db) {
+  // this blows... but unfortunately Qt's PG driver forces us to this...
+  db.exec("set standard_conforming_strings = off");
+  db.exec("set escape_string_warning = off");
 }
 
 void PostgreSqlStorage::setConnectionProperties(const QVariantMap &properties) {

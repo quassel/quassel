@@ -42,7 +42,6 @@ public slots:
   virtual QString description() const;
   virtual QStringList setupKeys() const;
   virtual QVariantMap setupDefaults() const;
-  virtual bool setup(const QVariantMap &settings = QVariantMap());
 
   // TODO: Add functions for configuring the backlog handling, i.e. defining auto-cleanup settings etc
 
@@ -101,6 +100,7 @@ public slots:
   virtual QList<Message> requestAllMsgs(UserId user, MsgId first = -1, MsgId last = -1, int limit = -1);
 
 protected:
+  virtual void initDbSession(QSqlDatabase &db);
   virtual void setConnectionProperties(const QVariantMap &properties);
   inline virtual QString driverName() { return "QPSQL"; }
   inline virtual QString hostName() { return _hostName; }

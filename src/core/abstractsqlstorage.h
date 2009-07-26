@@ -72,6 +72,16 @@ protected:
   inline virtual QString userName() { return QString(); }
   inline virtual QString password() { return QString(); }
 
+
+  //! Initialize db specific features on connect
+  /** This is called every time a connection to a specific SQL backend is established
+   *  the default implementation does nothing.
+   *
+   *  When reimplementing this method, don't use logDB() inside this function as
+   *  this would cause as we're just about to initialize that DB connection.
+   */
+  inline virtual void initDbSession(QSqlDatabase & /* db */) {}
+
 private slots:
   void connectionDestroyed();
 

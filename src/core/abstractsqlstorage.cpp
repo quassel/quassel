@@ -86,6 +86,8 @@ void AbstractSqlStorage::addConnectionToPool() {
   if(!db.open()) {
     qWarning() << "Unable to open database" << displayName() << "for thread" << QThread::currentThread();
     qWarning() << "-" << db.lastError().text();
+  } else {
+    initDbSession(db);
   }
 }
 
