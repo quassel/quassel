@@ -169,7 +169,7 @@ void UserInputHandler::handleJoin(const BufferInfo &bufferInfo, const QString &m
   QString sane_msg = msg;
   sane_msg.replace(QRegExp(", +"), ",");
   QStringList params = sane_msg.trimmed().split(" ");
-  QStringList chans = params[0].split(",");
+  QStringList chans = params[0].split(",", QString::SkipEmptyParts);
   QStringList keys;
   int i;
   for(i = 0; i < chans.count(); i++) {
