@@ -21,6 +21,7 @@
 #include "networkmodel.h"
 
 #include <QAbstractItemView>
+#include <QTextDocument> 	// for Qt::escape()
 
 #include "buffermodel.h"
 #include "client.h"
@@ -191,8 +192,8 @@ void NetworkItem::setCurrentServer(const QString &serverName) {
 QString NetworkItem::toolTip(int column) const {
   Q_UNUSED(column);
 
-  QStringList toolTip(QString("<b>%1</b>").arg(networkName()));
-  toolTip.append(tr("Server: %1").arg(currentServer()));
+  QStringList toolTip(QString("<b>%1</b>").arg(Qt::escape(networkName())));
+  toolTip.append(tr("Server: %1").arg(Qt::escape(currentServer())));
   toolTip.append(tr("Users: %1").arg(nickCount()));
 
   if(_network) {
@@ -479,7 +480,7 @@ QString ChannelBufferItem::toolTip(int column) const {
   Q_UNUSED(column);
   QStringList toolTip;
 
-  toolTip.append(tr("<b>Channel %1</b>").arg(bufferName()));
+  toolTip.append(tr("<b>Channel %1</b>").arg(Qt::escape(bufferName())));
   if(isActive()) {
     //TODO: add channel modes
     toolTip.append(tr("<b>Users:</b> %1").arg(nickCount()));
@@ -495,8 +496,7 @@ QString ChannelBufferItem::toolTip(int column) const {
       QString _topic = topic();
       if(_topic != "") {
         _topic = stripFormatCodes(_topic);
-        _topic.replace(QString("<"), QString("&lt;"));
-        _topic.replace(QString(">"), QString("&gt;"));
+	_topic = Qt::escape(_topic);
         toolTip.append(QString("<font size='-2'>&nbsp;</font>"));
         toolTip.append(tr("<b>Topic:</b> %1").arg(_topic));
       }
