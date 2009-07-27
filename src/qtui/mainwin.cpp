@@ -98,7 +98,6 @@
 #include "settingspages/backlogsettingspage.h"
 #include "settingspages/bufferviewsettingspage.h"
 #include "settingspages/chatmonitorsettingspage.h"
-#include "settingspages/colorsettingspage.h"
 #include "settingspages/connectionsettingspage.h"
 #include "settingspages/generalsettingspage.h"
 #include "settingspages/highlightsettingspage.h"
@@ -808,8 +807,7 @@ void MainWin::showSettingsDlg() {
   SettingsDlg *dlg = new SettingsDlg();
 
   //Category: Appearance
-  dlg->registerSettingsPage(new AppearanceSettingsPage(dlg)); //General
-  dlg->registerSettingsPage(new ColorSettingsPage(dlg));
+  dlg->registerSettingsPage(new AppearanceSettingsPage(dlg));
   dlg->registerSettingsPage(new HighlightSettingsPage(dlg));
   dlg->registerSettingsPage(new NotificationsSettingsPage(dlg));
   dlg->registerSettingsPage(new BacklogSettingsPage(dlg));
