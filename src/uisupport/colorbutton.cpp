@@ -24,46 +24,39 @@
 #include <QStyle>
 #include <QStyleOptionFrame>
 
-ColorButton::ColorButton(QWidget *parent) : QPushButton(parent) {
+#ifdef HAVE_KDE
+#  include <KColorDialog>
+#else
+#  include <QColorDialog>
+#endif
 
+ColorButton::ColorButton(QWidget *parent) : QToolButton(parent) {
+  setText("");
+  connect(this, SIGNAL(clicked()), SLOT(chooseColor()));
 }
 
 void ColorButton::setColor(const QColor &color) {
   _color = color;
-  update();
+  QPixmap pixmap(QSize(32,32));
+  pixmap.fill(color);
+  setIcon(pixmap);
+
+  emit colorChanged(color);
 }
 
 QColor ColorButton::color() const {
   return _color;
 }
 
-/* This has been heavily inspired by KDE's KColorButton, thanks! */
-void ColorButton::paintEvent(QPaintEvent *) {
-  QPainter painter(this);
+void ColorButton::chooseColor() {
+#ifdef HAVE_KDE
+  QColor c;
+  KColorDialog::getColor(c, this);
+#else
+  QColor c = QColorDialog::getColor(color(), this);
+#endif
 
-  QStyleOptionButton opt;
-  initStyleOption(&opt);
-  opt.state |= isDown() ? QStyle::State_Sunken : QStyle::State_Raised;
-  opt.features = QStyleOptionButton::None;
-  if(isDefault())
-    opt.features |= QStyleOptionButton::DefaultButton;
-
-  // Draw bevel
-  style()->drawControl(QStyle::CE_PushButtonBevel, &opt, &painter, this);
-
-  // Calc geometry
-  QRect labelRect = style()->subElementRect(QStyle::SE_PushButtonContents, &opt, this);
-  int shift = style()->pixelMetric(QStyle::PM_ButtonMargin);
-  labelRect.adjust(shift, shift, -shift, -shift);
-  int x, y, w, h;
-  labelRect.getRect(&x, &y, &w, &h);
-
-  if(isChecked() || isDown()) {
-    x += style()->pixelMetric(QStyle::PM_ButtonShiftHorizontal);
-    y += style()->pixelMetric(QStyle::PM_ButtonShiftVertical);
+  if(c.isValid()) {
+    setColor(c);
   }
-
-  // Draw color rect
-  QBrush brush = isEnabled() ? color() : palette().color(backgroundRole());
-  qDrawShadePanel(&painter, x, y, w, h, palette(), true, 1, &brush);
 }
