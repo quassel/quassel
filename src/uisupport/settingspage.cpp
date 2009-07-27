@@ -83,7 +83,9 @@ void SettingsPage::initAutoWidgets() {
   findAutoWidgets(this, &_autoWidgets);
 
   foreach(QObject *widget, _autoWidgets) {
-    if(widget->inherits("QAbstractButton") || widget->inherits("QGroupBox"))
+    if(widget->inherits("ColorButton"))
+      connect(widget, SIGNAL(colorChanged(QColor)), SLOT(autoWidgetHasChanged()));
+    else if(widget->inherits("QAbstractButton") || widget->inherits("QGroupBox"))
       connect(widget, SIGNAL(toggled(bool)), SLOT(autoWidgetHasChanged()));
     else if(widget->inherits("QLineEdit") || widget->inherits("QTextEdit"))
       connect(widget, SIGNAL(textChanged(const QString &)), SLOT(autoWidgetHasChanged()));
@@ -91,6 +93,8 @@ void SettingsPage::initAutoWidgets() {
       connect(widget, SIGNAL(currentIndexChanged(int)), SLOT(autoWidgetHasChanged()));
     else if(widget->inherits("QSpinBox"))
       connect(widget, SIGNAL(valueChanged(int)), SLOT(autoWidgetHasChanged()));
+    else if(widget->inherits("FontSelector"))
+      connect(widget, SIGNAL(fontChanged(QFont)), SLOT(autoWidgetHasChanged()));
     else
       qWarning() << "SettingsPage::init(): Unknown autoWidget type" << widget->metaObject()->className();
   }
@@ -106,7 +110,9 @@ void SettingsPage::findAutoWidgets(QObject *parent, QObjectList *autoList) const
 
 QByteArray SettingsPage::autoWidgetPropertyName(QObject *widget) const {
   QByteArray prop;
-  if(widget->inherits("QAbstractButton") || widget->inherits("QGroupBox"))
+  if(widget->inherits("ColorButton"))
+    prop = "color";
+  else if(widget->inherits("QAbstractButton") || widget->inherits("QGroupBox"))
     prop = "checked";
   else if(widget->inherits("QLineEdit") || widget->inherits("QTextEdit"))
     prop = "text";
@@ -114,6 +120,8 @@ QByteArray SettingsPage::autoWidgetPropertyName(QObject *widget) const {
     prop = "currentIndex";
   else if(widget->inherits("QSpinBox"))
     prop = "value";
+  else if(widget->inherits("FontSelector"))
+    prop = "selectedFont";
   else
     qWarning() << "SettingsPage::autoWidgetPropertyName(): Unhandled widget type for" << widget;
 
