@@ -57,7 +57,7 @@
       <string>Chat window font:</string>
      </property>
      <property name="settingsKey" stdset="0">
-      <string>Font</string>
+      <string>/Fonts/ChatView</string>
      </property>
      <property name="defaultValue" stdset="0">
       <font>
@@ -113,7 +113,7 @@
       <bool>false</bool>
      </property>
      <property name="settingsKey" stdset="0">
-      <string>Colors/UseChatViewColors</string>
+      <string>/Colors/UseChatViewColors</string>
      </property>
      <property name="defaultValue" stdset="0">
       <bool>false</bool>
@@ -132,7 +132,7 @@
          <string>...</string>
         </property>
         <property name="settingsKey" stdset="0">
-         <string>Colors/ActionMsg</string>
+         <string>/Colors/ActionMsg</string>
         </property>
         <property name="defaultValue" stdset="0">
          <color>
@@ -156,7 +156,7 @@
          <string>...</string>
         </property>
         <property name="settingsKey" stdset="0">
-         <string>Colors/Timestamp</string>
+         <string>/Colors/Timestamp</string>
         </property>
         <property name="defaultValue" stdset="0">
          <color>
@@ -180,7 +180,7 @@
          <string>...</string>
         </property>
         <property name="settingsKey" stdset="0">
-         <string>Colors/ChannelMsg</string>
+         <string>/Colors/ChannelMsg</string>
         </property>
         <property name="defaultValue" stdset="0">
          <color>
@@ -217,7 +217,7 @@
          <string>...</string>
         </property>
         <property name="settingsKey" stdset="0">
-         <string>Colors/Highlight</string>
+         <string>/Colors/Highlight</string>
         </property>
         <property name="defaultValue" stdset="0">
          <color>
@@ -241,7 +241,7 @@
          <string>...</string>
         </property>
         <property name="settingsKey" stdset="0">
-         <string>Colors/CommandMsg</string>
+         <string>/Colors/CommandMsg</string>
         </property>
         <property name="defaultValue" stdset="0">
          <color>
@@ -272,7 +272,7 @@
          <string>...</string>
         </property>
         <property name="settingsKey" stdset="0">
-         <string>Colors/ServerMsg</string>
+         <string>/Colors/ServerMsg</string>
         </property>
         <property name="defaultValue" stdset="0">
          <color>
@@ -296,7 +296,7 @@
          <string>...</string>
         </property>
         <property name="settingsKey" stdset="0">
-         <string>Colors/MarkerLine</string>
+         <string>/Colors/MarkerLine</string>
         </property>
         <property name="defaultValue" stdset="0">
          <color>
@@ -320,7 +320,7 @@
          <string>...</string>
         </property>
         <property name="settingsKey" stdset="0">
-         <string>Colors/ErrorMsg</string>
+         <string>/Colors/ErrorMsg</string>
         </property>
         <property name="defaultValue" stdset="0">
          <color>
@@ -344,7 +344,7 @@
          <string>...</string>
         </property>
         <property name="settingsKey" stdset="0">
-         <string>Colors/ChatViewBackground</string>
+         <string>/Colors/ChatViewBackground</string>
         </property>
         <property name="defaultValue" stdset="0">
          <color>
@@ -361,7 +361,7 @@
          <string>...</string>
         </property>
         <property name="settingsKey" stdset="0">
-         <string>Colors/HighlightBackground</string>
+         <string>/Colors/HighlightBackground</string>
         </property>
         <property name="defaultValue" stdset="0">
          <color>
@@ -398,7 +398,7 @@
            <string>...</string>
           </property>
           <property name="settingsKey" stdset="0">
-           <string>Colors/Sender00</string>
+           <string>/Colors/Sender00</string>
           </property>
           <property name="defaultValue" stdset="0">
            <color>
@@ -415,7 +415,7 @@
            <string>...</string>
           </property>
           <property name="settingsKey" stdset="0">
-           <string>Colors/Sender02</string>
+           <string>/Colors/Sender02</string>
           </property>
           <property name="defaultValue" stdset="0">
            <color>
@@ -432,7 +432,7 @@
            <string>...</string>
           </property>
           <property name="settingsKey" stdset="0">
-           <string>Colors/Sender04</string>
+           <string>/Colors/Sender04</string>
           </property>
           <property name="defaultValue" stdset="0">
            <color>
@@ -449,7 +449,7 @@
            <string>...</string>
           </property>
           <property name="settingsKey" stdset="0">
-           <string>Colors/Sender05</string>
+           <string>/Colors/Sender05</string>
           </property>
           <property name="defaultValue" stdset="0">
            <color>
@@ -466,7 +466,7 @@
            <string>...</string>
           </property>
           <property name="settingsKey" stdset="0">
-           <string>Colors/Sender06</string>
+           <string>/Colors/Sender06</string>
           </property>
           <property name="defaultValue" stdset="0">
            <color>
@@ -483,7 +483,7 @@
            <string>...</string>
           </property>
           <property name="settingsKey" stdset="0">
-           <string>Colors/Sender07</string>
+           <string>/Colors/Sender07</string>
           </property>
           <property name="defaultValue" stdset="0">
            <color>
@@ -500,7 +500,7 @@
            <string>...</string>
           </property>
           <property name="settingsKey" stdset="0">
-           <string>Colors/Sender08</string>
+           <string>/Colors/Sender08</string>
           </property>
           <property name="defaultValue" stdset="0">
            <color>
@@ -517,7 +517,7 @@
            <string>...</string>
           </property>
           <property name="settingsKey" stdset="0">
-           <string>Colors/Sender09</string>
+           <string>/Colors/Sender09</string>
           </property>
           <property name="defaultValue" stdset="0">
            <color>
@@ -534,7 +534,7 @@
            <string>...</string>
           </property>
           <property name="settingsKey" stdset="0">
-           <string>Colors/Sender10</string>
+           <string>/Colors/Sender10</string>
           </property>
           <property name="defaultValue" stdset="0">
            <color>
@@ -551,7 +551,7 @@
            <string>...</string>
           </property>
           <property name="settingsKey" stdset="0">
-           <string>Colors/Sender11</string>
+           <string>/Colors/Sender11</string>
           </property>
           <property name="defaultValue" stdset="0">
            <color>
@@ -568,7 +568,7 @@
            <string>...</string>
           </property>
           <property name="settingsKey" stdset="0">
-           <string>Colors/Sender12</string>
+           <string>/Colors/Sender12</string>
           </property>
           <property name="defaultValue" stdset="0">
            <color>
@@ -585,7 +585,7 @@
            <string>...</string>
           </property>
           <property name="settingsKey" stdset="0">
-           <string>Colors/Sender13</string>
+           <string>/Colors/Sender13</string>
           </property>
           <property name="defaultValue" stdset="0">
            <color>
@@ -602,7 +602,7 @@
            <string>...</string>
           </property>
           <property name="settingsKey" stdset="0">
-           <string>Colors/Sender14</string>
+           <string>/Colors/Sender14</string>
           </property>
           <property name="defaultValue" stdset="0">
            <color>
@@ -619,7 +619,7 @@
            <string>...</string>
           </property>
           <property name="settingsKey" stdset="0">
-           <string>Colors/Sender15</string>
+           <string>/Colors/Sender15</string>
           </property>
           <property name="defaultValue" stdset="0">
            <color>
@@ -636,7 +636,7 @@
            <string>...</string>
           </property>
           <property name="settingsKey" stdset="0">
-           <string>Colors/Sender01</string>
+           <string>/Colors/Sender01</string>
           </property>
           <property name="defaultValue" stdset="0">
            <color>
@@ -653,7 +653,7 @@
            <string>...</string>
           </property>
           <property name="settingsKey" stdset="0">
-           <string>Colors/Sender03</string>
+           <string>/Colors/Sender03</string>
           </property>
           <property name="defaultValue" stdset="0">
            <color>
