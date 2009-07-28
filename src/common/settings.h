@@ -78,27 +78,33 @@ private:
            + ((format() == QSettings::NativeFormat) ? QLatin1String(".conf") : QLatin1String(".ini"));
   }
 
-  static QHash<QString, QHash<QString, QVariant> > settingsCache;
-  static QHash<QString, QHash<QString, SettingsChangeNotifier *> > settingsChangeNotifier;
+  static QHash<QString, QVariant> settingsCache;
+  static QHash<QString, SettingsChangeNotifier *> settingsChangeNotifier;
 
-  inline void setCacheValue(const QString &group, const QString &key, const QVariant &data) {
-    settingsCache[group][key] = data;
-  }
-  inline const QVariant &cacheValue(const QString &group, const QString &key) {
-    return settingsCache[group][key];
-  }
-  inline bool isCached(const QString &group, const QString &key) {
-    return settingsCache.contains(group) && settingsCache[group].contains(key);
+  inline QString normalizedKey(const QString &group, const QString &key) {
+    if(group.isEmpty())
+      return key;
+    return group + '/' + key;
   }
 
-  inline SettingsChangeNotifier *notifier(const QString &group, const QString &key) {
-    if(!hasNotifier(group, key))
-      settingsChangeNotifier[group][key] = new SettingsChangeNotifier();
-    return settingsChangeNotifier[group][key];
+  inline void setCacheValue(const QString &normKey, const QVariant &data) {
+    settingsCache[normKey] = data;
+  }
+  inline const QVariant &cacheValue(const QString &normKey) {
+    return settingsCache[normKey];
+  }
+  inline bool isCached(const QString &normKey) {
+    return settingsCache.contains(normKey);
   }
 
-  inline bool hasNotifier(const QString &group, const QString &key) {
-    return settingsChangeNotifier.contains(group) && settingsChangeNotifier[group].contains(key);
+  inline SettingsChangeNotifier *notifier(const QString &normKey) {
+    if(!hasNotifier(normKey))
+      settingsChangeNotifier[normKey] = new SettingsChangeNotifier();
+    return settingsChangeNotifier[normKey];
+  }
+
+  inline bool hasNotifier(const QString &normKey) {
+    return settingsChangeNotifier.contains(normKey);
   }
 };
 

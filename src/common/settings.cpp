@@ -24,8 +24,8 @@
 
 const int VERSION = 1;
 
-QHash<QString, QHash<QString, QVariant> > Settings::settingsCache;
-QHash<QString, QHash<QString, SettingsChangeNotifier *> > Settings::settingsChangeNotifier;
+QHash<QString, QVariant> Settings::settingsCache;
+QHash<QString, SettingsChangeNotifier *> Settings::settingsChangeNotifier;
 
 #ifdef Q_WS_MAC
 #  define create_qsettings QSettings s(QCoreApplication::organizationDomain(), appName)
@@ -59,7 +59,7 @@ QHash<QString, QHash<QString, SettingsChangeNotifier *> > Settings::settingsChan
 // }
 
 void Settings::notify(const QString &key, QObject *receiver, const char *slot) {
-  QObject::connect(notifier(group, key), SIGNAL(valueChanged(const QVariant &)),
+  QObject::connect(notifier(normalizedKey(group, key)), SIGNAL(valueChanged(const QVariant &)),
 		   receiver, slot);
 }
 
@@ -112,24 +112,22 @@ QStringList Settings::localChildGroups(const QString &rootkey) {
 }
 
 void Settings::setLocalValue(const QString &key, const QVariant &data) {
+  QString normKey = normalizedKey(group, key);
   create_qsettings;
-  s.beginGroup(group);
-  s.setValue(key, data);
-  s.endGroup();
-  setCacheValue(group, key, data);
-  if(hasNotifier(group, key)) {
-    emit notifier(group, key)->valueChanged(data);
+  s.setValue(normKey, data);
+  setCacheValue(normKey, data);
+  if(hasNotifier(normKey)) {
+    emit notifier(normKey)->valueChanged(data);
   }
 }
 
 const QVariant &Settings::localValue(const QString &key, const QVariant &def) {
-  if(!isCached(group, key)) {
+  QString normKey = normalizedKey(group, key);
+  if(!isCached(normKey)) {
     create_qsettings;
-    s.beginGroup(group);
-    setCacheValue(group, key, s.value(key, def));
-    s.endGroup();
+    setCacheValue(normKey, s.value(normKey, def));
   }
-  return cacheValue(group, key);
+  return cacheValue(normKey);
 }
 
 void Settings::removeLocalKey(const QString &key) {
@@ -137,6 +135,7 @@ void Settings::removeLocalKey(const QString &key) {
   s.beginGroup(group);
   s.remove(key);
   s.endGroup();
-  if(isCached(group, key))
-    settingsCache[group].remove(key);
+  QString normKey = normalizedKey(group, key);
+  if(isCached(normKey))
+    settingsCache.remove(normKey);
 }
