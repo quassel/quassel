@@ -107,6 +107,7 @@ public:
   static FormatType formatType(Message::Type msgType);
   static StyledString styleString(const QString &string, quint32 baseFormat = None);
   static QString mircToInternal(const QString &);
+  static inline QString timestampFormatString() { return _timestampFormatString; }
 
   QTextCharFormat format(quint32 formatType, quint32 messageLabel = 0);
   QFontMetricsF *fontMetrics(quint32 formatType, quint32 messageLabel = 0);
@@ -132,12 +133,14 @@ protected:
 
   static FormatType formatType(const QString &code);
   static QString formatCode(FormatType);
+  static void setTimestampFormatString(const QString &format);
 
 private:
   QFont _defaultFont;
   QHash<quint64, QTextCharFormat> _formatCache;
   QHash<quint64, QFontMetricsF *> _metricsCache;
   static QHash<QString, FormatType> _formatCodes;
+  static QString _timestampFormatString;
 };
 
 class UiStyle::StyledMessage : public Message {
@@ -156,9 +159,7 @@ public:
   quint8 senderHash() const;
 
 protected:
-  //! Styling is only needed for calls to plainContents() and contentsFormatList()
   void style() const;
-
 
 private:
   mutable StyledString _contents;

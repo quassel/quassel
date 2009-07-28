@@ -26,6 +26,7 @@
 #include "util.h"
 
 QHash<QString, UiStyle::FormatType> UiStyle::_formatCodes;
+QString UiStyle::_timestampFormatString;
 
 UiStyle::UiStyle(QObject *parent) : QObject(parent) {
   // register FormatList if that hasn't happened yet
@@ -49,6 +50,7 @@ UiStyle::UiStyle(QObject *parent) : QObject(parent) {
   _formatCodes["%DM"] = ModeFlags;
   _formatCodes["%DU"] = Url;
 
+  setTimestampFormatString("[hh:mm:ss]");
   loadStyleSheet();
 }
 
@@ -100,6 +102,13 @@ QString UiStyle::loadStyleSheet(const QString &styleSheet, bool shouldExist) {
     }
   }
   return ss;
+}
+
+void UiStyle::setTimestampFormatString(const QString &format) {
+  if(_timestampFormatString != format) {
+    _timestampFormatString = format;
+    // FIXME reload
+  }
 }
 
 /******** Caching *******/
@@ -452,7 +461,7 @@ const UiStyle::FormatList &UiStyle::StyledMessage::contentsFormatList() const {
 }
 
 QString UiStyle::StyledMessage::decoratedTimestamp() const {
-  return QString("[%1]").arg(timestamp().toLocalTime().toString("hh:mm:ss"));
+  return timestamp().toLocalTime().toString(UiStyle::timestampFormatString());
 }
 
 QString UiStyle::StyledMessage::plainSender() const {

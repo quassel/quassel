@@ -43,6 +43,9 @@ public:
 
   inline bool showWebPreview() { return localValue("ShowWebPreview", true).toBool(); }
   inline void enableWebPreview(bool enabled) { setLocalValue("ShowWebPreview", enabled); }
+
+  inline QString timestampFormatString() { return localValue("TimestampFormat", "[hh:mm:ss]").toString(); }
+  inline void setTimestampFormatString(const QString &format) { setLocalValue("TimestampFormat", format); }
 };
 Q_DECLARE_METATYPE(ChatViewSettings::OperationMode);
 #endif //CHATVIEWSETTINGS_H

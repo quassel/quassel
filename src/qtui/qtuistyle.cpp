@@ -18,11 +18,19 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include "chatviewsettings.h"
 #include "qtuistyle.h"
 #include "qtuisettings.h"
 
 QtUiStyle::QtUiStyle(QObject *parent) : UiStyle(parent) {
-
+  ChatViewSettings s;
+  s.notify("TimestampFormat", this, SLOT(updateTimestampFormatString()));
+  updateTimestampFormatString();
 }
 
 QtUiStyle::~QtUiStyle() {}
+
+void QtUiStyle::updateTimestampFormatString() {
+  ChatViewSettings s;
+  setTimestampFormatString(s.timestampFormatString());
+}

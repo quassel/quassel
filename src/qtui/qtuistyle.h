@@ -33,6 +33,9 @@ public:
   virtual inline qreal firstColumnSeparator() const { return 6; }
   virtual inline qreal secondColumnSeparator() const { return 6; }
 
+private slots:
+  void updateTimestampFormatString();
+
 };
 
 #endif
