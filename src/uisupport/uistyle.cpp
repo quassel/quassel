@@ -54,7 +54,7 @@ UiStyle::UiStyle(QObject *parent) : QObject(parent) {
   loadStyleSheet();
 }
 
-UiStyle::~ UiStyle() {
+UiStyle::~UiStyle() {
   qDeleteAll(_metricsCache);
 }
 
@@ -63,11 +63,13 @@ void UiStyle::loadStyleSheet() {
   _metricsCache.clear();
   _formatCache.clear();
 
-  QString styleSheet;
+  UiStyleSettings s;
 
+  QString styleSheet;
   styleSheet += loadStyleSheet("file:///" + Quassel::findDataFilePath("default.qss"));
-  styleSheet += loadStyleSheet("file:///" + Quassel::configDirPath() + "custom.qss");
-  // styleSheet += loadStyleSheet("file:///" + some custom file name);  FIXME
+  styleSheet += loadStyleSheet("file:///" + Quassel::configDirPath() + "settings.qss");
+  if(s.value("UseCustomStyleSheet", false).toBool())
+    styleSheet += loadStyleSheet("file:///" + s.value("CustomStyleSheetPath").toString(), true);
   styleSheet += loadStyleSheet("file:///" + Quassel::optionValue("qss"), true);
 
   if(styleSheet.isEmpty())

@@ -52,6 +52,8 @@ private slots:
   void setFont(QLabel *label, const QFont &font);
   void chooseFont(QWidget *label);
 
+  void chooseStyleSheet();
+
 private:
   bool testHasChanged();
   void initStyleComboBox();
