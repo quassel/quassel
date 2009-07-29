@@ -388,8 +388,14 @@ void ChatScene::updateForViewport(qreal width, qreal height) {
 void ChatScene::setWidth(qreal width) {
   if(width == _sceneRect.width())
     return;
+  layout(width);
+}
 
+void ChatScene::layout(qreal width) {
   // clock_t startT = clock();
+
+  if(width < 0)
+    width = _sceneRect.width();
 
   // disabling the index while doing this complex updates is about
   // 2 to 10 times faster!

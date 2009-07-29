@@ -108,6 +108,7 @@ public:
  public slots:
   void updateForViewport(qreal width, qreal height);
   void setWidth(qreal width);
+  void layout(qreal width = -1);
 
   // these are used by the chatitems to notify the scene and manage selections
   void setSelectingItem(ChatItem *item);

@@ -51,11 +51,16 @@ UiStyle::UiStyle(QObject *parent) : QObject(parent) {
   _formatCodes["%DU"] = Url;
 
   setTimestampFormatString("[hh:mm:ss]");
+
   loadStyleSheet();
 }
 
 UiStyle::~UiStyle() {
   qDeleteAll(_metricsCache);
+}
+
+void UiStyle::reload() {
+  loadStyleSheet();
 }
 
 void UiStyle::loadStyleSheet() {
@@ -230,7 +235,8 @@ UiStyle::FormatType UiStyle::formatType(Message::Type msgType) {
     case Message::DayChange:
       return DayChangeMsg;
   }
-  Q_ASSERT(false); // we need to handle all message types
+  //Q_ASSERT(false); // we need to handle all message types
+  qWarning() << Q_FUNC_INFO << "Unknown message type:" << msgType;
   return ErrorMsg;
 }
 

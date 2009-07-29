@@ -391,7 +391,11 @@ ContentsChatItemPrivate *ContentsChatItem::privateData() const {
 }
 
 qreal ContentsChatItem::setGeometryByWidth(qreal w) {
-  if(w != width()) {
+  if(w == width()) {
+    //qDebug() << Q_FUNC_INFO << "Geometry change requested with identical width!";
+  }
+  // We use this for reloading layout info as well
+  //if(w != width()) {
     prepareGeometryChange();
     setWidth(w);
     QTextLayout layout;
@@ -399,7 +403,7 @@ qreal ContentsChatItem::setGeometryByWidth(qreal w) {
     setHeight(layout.boundingRect().height());
     delete _data;
     _data = 0;
-  }
+  //}
   return height();
 }
 

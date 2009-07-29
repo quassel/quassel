@@ -181,9 +181,7 @@ void ChatView::verticalScrollbarChanged(int newPos) {
 }
 
 void ChatView::styleChanged() {
-  invalidateScene();
-  if(scene())
-    scene()->update();
+  scene()->layout();
 }
 
 MsgId ChatView::lastMsgId() const {

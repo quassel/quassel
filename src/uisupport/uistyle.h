@@ -117,12 +117,13 @@ public:
   QList<QTextLayout::FormatRange> toTextLayoutList(const FormatList &, int textLength, quint32 messageLabel = 0);
 
 public slots:
-  void loadStyleSheet();
+  void reload();
 
 signals:
   void changed();
 
 protected:
+  void loadStyleSheet();
   QString loadStyleSheet(const QString &name, bool shouldExist = false);
 
   QTextCharFormat cachedFormat(quint64 key) const;
