@@ -18,8 +18,9 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QHBoxLayout>
+#include <QEvent>
 #include <QFontDialog>
+#include <QHBoxLayout>
 #include <QLabel>
 #include <QPushButton>
 
@@ -67,4 +68,11 @@ void FontSelector::chooseFont() {
     setSelectedFont(font);
   }
 }
+
+void FontSelector::changeEvent(QEvent *e) {
+  if(e->type() == QEvent::StyleChange) {
+    _demo->setFont(_font);
+  }
+}
+
 

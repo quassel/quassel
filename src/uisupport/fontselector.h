@@ -43,6 +43,9 @@ public slots:
 signals:
   void fontChanged(const QFont &);
 
+protected:
+  void changeEvent(QEvent *e);
+
 protected slots:
   void chooseFont();
 
