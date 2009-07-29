@@ -38,7 +38,7 @@ UiStyle::UiStyle(QObject *parent) : QObject(parent) {
   }
 
   // Now initialize the mapping between FormatCodes and FormatTypes...
-  _formatCodes["%O"] = None;
+  _formatCodes["%O"] = Base;
   _formatCodes["%B"] = Bold;
   _formatCodes["%S"] = Italic;
   _formatCodes["%U"] = Underline;
@@ -81,7 +81,13 @@ void UiStyle::loadStyleSheet() {
     QssParser parser;
     parser.processStyleSheet(styleSheet);
     QApplication::setPalette(parser.palette());
-    _formatCache = parser.formats();
+
+    QTextCharFormat baseFmt = parser.formats().value(Base);
+    foreach(quint64 fmtType, parser.formats().keys()) {
+      QTextCharFormat fmt = baseFmt;
+      fmt.merge(parser.formats().value(fmtType));
+      _formatCache[fmtType] = fmt;
+    }
 
     qApp->setStyleSheet(styleSheet); // pass the remaining sections to the application
   }

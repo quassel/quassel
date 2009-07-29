@@ -49,7 +49,7 @@ public:
    *         Also, we _do_ rely on certain properties of these values in styleString() and friends!
    */
   enum FormatType {
-    None            = 0x00000000,
+    Base            = 0x00000000,
     Invalid         = 0xffffffff,
 
     // Message Formats (mutually exclusive!)
@@ -105,7 +105,7 @@ public:
   class StyledMessage;
 
   static FormatType formatType(Message::Type msgType);
-  static StyledString styleString(const QString &string, quint32 baseFormat = None);
+  static StyledString styleString(const QString &string, quint32 baseFormat = Base);
   static QString mircToInternal(const QString &);
   static inline QString timestampFormatString() { return _timestampFormatString; }
 
