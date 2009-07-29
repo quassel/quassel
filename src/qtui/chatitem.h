@@ -48,7 +48,7 @@ public:
 
   void initLayoutHelper(QTextLayout *layout, QTextOption::WrapMode, Qt::Alignment = Qt::AlignLeft) const;
   virtual inline void initLayout(QTextLayout *layout) const {
-    initLayoutHelper(layout, QTextOption::WrapAnywhere);
+    initLayoutHelper(layout, QTextOption::NoWrap);
     doLayout(layout);
   }
   virtual void doLayout(QTextLayout *) const;
