@@ -39,15 +39,6 @@ public:
   virtual inline Message::Type msgType() const { return _styledMsg.type(); }
   virtual inline Message::Flags msgFlags() const { return _styledMsg.flags(); }
 
-  /// Used to store information about words to be used for wrapping
-  struct Word {
-    quint16 start;
-    qreal endX;
-    qreal width;
-    qreal trailing;
-  };
-  typedef QVector<Word> WrapList;
-
 private:
   QVariant timestampData(int role) const;
   QVariant senderData(int role) const;
@@ -56,13 +47,7 @@ private:
   QVariant backgroundBrush(UiStyle::FormatType subelement, bool selected = false) const;
   quint32 messageLabel() const;
 
-  void computeWrapList() const;
-
-  mutable WrapList _wrapList;
   UiStyle::StyledMessage _styledMsg;
-
-  static unsigned char *TextBoundaryFinderBuffer;
-  static int TextBoundaryFinderBufferSize;
 };
 
 #endif

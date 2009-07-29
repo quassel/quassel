@@ -89,11 +89,15 @@ void ChatItem::initLayoutHelper(QTextLayout *layout, QTextOption::WrapMode wrapM
 }
 
 void ChatItem::doLayout(QTextLayout *layout) const {
+  qreal h = 0;
   layout->beginLayout();
-  QTextLine line = layout->createLine();
-  if(line.isValid()) {
+  forever {
+    QTextLine line = layout->createLine();
+    if(!line.isValid())
+      break;
     line.setLineWidth(width());
-    line.setPosition(QPointF(0,0));
+    line.setPosition(QPointF(0, h));
+    h += line.height();
   }
   layout->endLayout();
 }
@@ -390,36 +394,13 @@ qreal ContentsChatItem::setGeometryByWidth(qreal w) {
   if(w != width()) {
     prepareGeometryChange();
     setWidth(w);
-    // compute height
-    int lines = 1;
-    WrapColumnFinder finder(this);
-    while(finder.nextWrapColumn() > 0)
-      lines++;
-    setHeight(lines * fontMetrics()->lineSpacing());
+    QTextLayout layout;
+    initLayout(&layout);
+    setHeight(layout.boundingRect().height());
     delete _data;
     _data = 0;
   }
   return height();
-}
-
-void ContentsChatItem::doLayout(QTextLayout *layout) const {
-  ChatLineModel::WrapList wrapList = data(ChatLineModel::WrapListRole).value<ChatLineModel::WrapList>();
-  if(!wrapList.count()) return; // empty chatitem
-
-  qreal h = 0;
-  WrapColumnFinder finder(this);
-  layout->beginLayout();
-  forever {
-    QTextLine line = layout->createLine();
-    if(!line.isValid())
-      break;
-
-    int col = finder.nextWrapColumn();
-    line.setNumColumns(col >= 0 ? col - line.textStart() : layout->text().length());
-    line.setPosition(QPointF(0, h));
-    h += fontMetrics()->lineSpacing();
-  }
-  layout->endLayout();
 }
 
 // NOTE: This method is not threadsafe and not reentrant!
@@ -680,69 +661,6 @@ void ContentsChatItem::clearWebPreview() {
 #ifdef HAVE_WEBKIT
   chatScene()->clearWebPreview(this);
 #endif
-}
-
-/*************************************************************************************************/
-
-ContentsChatItem::WrapColumnFinder::WrapColumnFinder(const ChatItem *_item)
-  : item(_item),
-    wrapList(item->data(ChatLineModel::WrapListRole).value<ChatLineModel::WrapList>()),
-    wordidx(0),
-    lineCount(0),
-    choppedTrailing(0)
-{
-}
-
-ContentsChatItem::WrapColumnFinder::~WrapColumnFinder() {
-}
-
-qint16 ContentsChatItem::WrapColumnFinder::nextWrapColumn() {
-  if(wordidx >= wrapList.count())
-    return -1;
-
-  lineCount++;
-  qreal targetWidth = lineCount * item->width() + choppedTrailing;
-
-  qint16 start = wordidx;
-  qint16 end = wrapList.count() - 1;
-
-  // check if the whole line fits
-  if(wrapList.at(end).endX <= targetWidth) //  || start == end)
-    return -1;
-
-  // check if we have a very long word that needs inter word wrap
-  if(wrapList.at(start).endX > targetWidth) {
-    if(!line.isValid()) {
-      item->initLayoutHelper(&layout, QTextOption::NoWrap);
-      layout.beginLayout();
-      line = layout.createLine();
-      layout.endLayout();
-    }
-    return line.xToCursor(targetWidth, QTextLine::CursorOnCharacter);
-  }
-
-  while(true) {
-    if(start + 1 == end) {
-      wordidx = end;
-      const ChatLineModel::Word &lastWord = wrapList.at(start); // the last word we were able to squeeze in
-
-      // both cases should be cought preliminary
-      Q_ASSERT(lastWord.endX <= targetWidth); // ensure that "start" really fits in
-      Q_ASSERT(end < wrapList.count()); // ensure that start isn't the last word
-
-      choppedTrailing += lastWord.trailing - (targetWidth - lastWord.endX);
-      return wrapList.at(wordidx).start;
-    }
-
-    qint16 pivot = (end + start) / 2;
-    if(wrapList.at(pivot).endX > targetWidth) {
-      end = pivot;
-    } else {
-      start = pivot;
-    }
-  }
-  Q_ASSERT(false);
-  return -1;
 }
 
 /*************************************************************************************************/

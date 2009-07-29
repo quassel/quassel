@@ -31,15 +31,11 @@ class ChatLineModel : public MessageModel {
 
 public:
   enum ChatLineRole {
-    WrapListRole = MessageModel::UserRole,
-    MsgLabelRole,
+    MsgLabelRole = MessageModel::UserRole,
     SelectedBackgroundRole
   };
 
   ChatLineModel(QObject *parent = 0);
-
-  typedef ChatLineModelItem::Word Word;
-  typedef ChatLineModelItem::WrapList WrapList;
 
 protected:
 //   virtual MessageModelItem *createMessageModelItem(const Message &);
@@ -61,11 +57,6 @@ protected:
 private:
   QList<ChatLineModelItem> _messageList;
 };
-
-QDataStream &operator<<(QDataStream &out, const ChatLineModel::WrapList);
-QDataStream &operator>>(QDataStream &in, ChatLineModel::WrapList &);
-
-Q_DECLARE_METATYPE(ChatLineModel::WrapList)
 
 #endif
 
