@@ -153,8 +153,6 @@ public:
   QString decoratedSender() const;
   const QString &plainContents() const;
 
-  inline FormatType timestampFormat() const { return UiStyle::Timestamp; }
-  FormatType senderFormat() const;
   const FormatList &contentsFormatList() const;
 
   quint8 senderHash() const;

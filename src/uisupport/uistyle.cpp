@@ -487,20 +487,12 @@ QString UiStyle::StyledMessage::decoratedSender() const {
       return tr("<%1>").arg(plainSender()); break;
     case Message::Notice:
       return tr("[%1]").arg(plainSender()); break;
-<<<<<<< HEAD
-    case Message::Topic:
-    case Message::Server:
-      return tr("*"); break;
-    case Message::Error:
-      return tr("*"); break;
-=======
     case Message::Action:
       return tr("-*-"); break;
     case Message::Nick:
       return tr("<->"); break;
     case Message::Mode:
       return tr("***"); break;
->>>>>>> Handle all message types properly in UiStyle; eliminate msgtype format codes
     case Message::Join:
       return tr("-->"); break;
     case Message::Part:
@@ -521,50 +513,6 @@ QString UiStyle::StyledMessage::decoratedSender() const {
       return tr("-"); break;
     default:
       return tr("%1").arg(plainSender());
-  }
-}
-
-UiStyle::FormatType UiStyle::StyledMessage::senderFormat() const {
-  switch(type()) {
-    case Message::Plain:
-      // To produce random like but stable nick colorings some sort of hashing should work best.
-      // In this case we just use the qt function qChecksum which produces a
-      // CRC16 hash. This should be fast and 16 bits are more than enough.
-      {
-        QString nick = nickFromMask(sender()).toLower();
-        if(!nick.isEmpty()) {
-          int chopCount = 0;
-          while(nick[nick.count() - 1 - chopCount] == '_') {
-            chopCount++;
-          }
-          nick.chop(chopCount);
-        }
-        quint16 hash = qChecksum(nick.toAscii().data(), nick.toAscii().size());
-        return (UiStyle::FormatType)((((hash % 12) + 1) << 24) + 0x200); // FIXME: amount of sender colors hardwired
-      }
-    case Message::Notice:
-      return UiStyle::NoticeMsg; break;
-    case Message::Topic:
-    case Message::Server:
-      return UiStyle::ServerMsg; break;
-    case Message::Error:
-      return UiStyle::ErrorMsg; break;
-    case Message::Join:
-      return UiStyle::JoinMsg; break;
-    case Message::Part:
-      return UiStyle::PartMsg; break;
-    case Message::Quit:
-      return UiStyle::QuitMsg; break;
-    case Message::Kick:
-      return UiStyle::KickMsg; break;
-    case Message::Nick:
-      return UiStyle::NickMsg; break;
-    case Message::Mode:
-      return UiStyle::ModeMsg; break;
-    case Message::Action:
-      return UiStyle::ActionMsg; break;
-    default:
-      return UiStyle::ErrorMsg;
   }
 }
 
