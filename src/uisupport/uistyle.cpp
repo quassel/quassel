@@ -77,15 +77,14 @@ void UiStyle::loadStyleSheet() {
     styleSheet += loadStyleSheet("file:///" + s.value("CustomStyleSheetPath").toString(), true);
   styleSheet += loadStyleSheet("file:///" + Quassel::optionValue("qss"), true);
 
-  if(styleSheet.isEmpty())
-    return;
+  if(!styleSheet.isEmpty()) {
+    QssParser parser;
+    parser.processStyleSheet(styleSheet);
+    QApplication::setPalette(parser.palette());
+    _formatCache = parser.formats();
 
-  QssParser parser;
-  parser.processStyleSheet(styleSheet);
-  QApplication::setPalette(parser.palette());
-  _formatCache = parser.formats();
-
-  qApp->setStyleSheet(styleSheet); // pass the remaining sections to the application
+    qApp->setStyleSheet(styleSheet); // pass the remaining sections to the application
+  }
 
   emit changed();
 }

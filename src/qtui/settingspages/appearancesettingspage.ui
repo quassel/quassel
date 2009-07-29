@@ -57,7 +57,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="useCustomStylesheet">
+    <widget class="QGroupBox" name="useCustomStyleSheet">
      <property name="title">
       <string>Use Custom Stylesheet</string>
      </property>

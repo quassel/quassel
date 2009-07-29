@@ -186,8 +186,14 @@ void AppearanceSettingsPage::save() {
 
   _fontsChanged = false;
 
+  bool needsStyleReload =
+        ui.useCustomStyleSheet->isChecked() != ui.useCustomStyleSheet->property("storedValue").toBool()
+    || (ui.useCustomStyleSheet->isChecked() && ui.customStyleSheetPath->text() != ui.customStyleSheetPath->property("storedValue").toString());
+
   SettingsPage::save();
   setChangedState(false);
+  if(needsStyleReload)
+    QtUi::style()->reload();
 }
 
 QLocale AppearanceSettingsPage::selectedLocale() const {
