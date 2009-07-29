@@ -50,7 +50,7 @@ public:
    */
   enum FormatType {
     None            = 0x00000000,
-    Invalid         = 0x11111111,
+    Invalid         = 0xffffffff,
 
     // Message Formats (mutually exclusive!)
     PlainMsg        = 0x00000001,
@@ -69,19 +69,19 @@ public:
     DayChangeMsg    = 0x0000000e,
 
     // Standard Formats
-    Bold            = 0x00000010,
-    Italic          = 0x00000020,
-    Underline       = 0x00000040,
-    Reverse         = 0x00000080,
+    Bold            = 0x00000100,
+    Italic          = 0x00000200,
+    Underline       = 0x00000400,
+    Reverse         = 0x00000800,
 
     // Individual parts of a message
-    Timestamp       = 0x00000100,
-    Sender          = 0x00000200,
-    Contents        = 0x00000400,
-    Nick            = 0x00000800,
-    Hostmask        = 0x00001000,
-    ChannelName     = 0x00002000,
-    ModeFlags       = 0x00004000,
+    Timestamp       = 0x00001000,
+    Sender          = 0x00002000,
+    Contents        = 0x00004000,
+    Nick            = 0x00008000,
+    Hostmask        = 0x00010000,
+    ChannelName     = 0x00020000,
+    ModeFlags       = 0x00040000,
 
     // URL is special, we want that to take precedence over the rest...
     Url             = 0x00080000

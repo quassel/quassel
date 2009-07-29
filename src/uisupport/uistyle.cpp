@@ -168,14 +168,14 @@ QTextCharFormat UiStyle::format(quint32 ftype, quint32 label_) {
 }
 
 void UiStyle::mergeFormat(QTextCharFormat &fmt, quint32 ftype, quint64 label) {
-  mergeSubElementFormat(fmt, ftype & 0x000f, label);
+  mergeSubElementFormat(fmt, ftype & 0x00ff, label);
 
   // TODO: allow combinations for mirc formats and colors (each), e.g. setting a special format for "bold and italic"
   //       or "foreground 01 and background 03"
   if((ftype & 0xfff0)) { // element format
-    for(quint32 mask = 0x0010; mask <= 0x2000; mask <<= 1) {
+    for(quint32 mask = 0x00100; mask <= 0x40000; mask <<= 1) {
       if(ftype & mask) {
-        mergeSubElementFormat(fmt, mask | 0x0f, label);
+        mergeSubElementFormat(fmt, mask | 0xff, label);
       }
     }
   }
@@ -197,9 +197,9 @@ void UiStyle::mergeFormat(QTextCharFormat &fmt, quint32 ftype, quint64 label) {
 // Merge a subelement format into an existing message format
 void UiStyle::mergeSubElementFormat(QTextCharFormat& fmt, quint32 ftype, quint64 label) {
   quint64 key = ftype | label;
-  fmt.merge(cachedFormat(key & Q_UINT64_C(0x0000fffffffffff0)));  // label + subelement
+  fmt.merge(cachedFormat(key & Q_UINT64_C(0x0000ffffffffff00)));  // label + subelement
   fmt.merge(cachedFormat(key & Q_UINT64_C(0x0000ffffffffffff)));  // label + subelement + msgtype
-  fmt.merge(cachedFormat(key & Q_UINT64_C(0xfffffffffffffff0)));  // label + subelement + nickhash
+  fmt.merge(cachedFormat(key & Q_UINT64_C(0xffffffffffffff00)));  // label + subelement + nickhash
   fmt.merge(cachedFormat(key & Q_UINT64_C(0xffffffffffffffff)));  // label + subelement + nickhash + msgtype
 }
 
@@ -300,7 +300,7 @@ UiStyle::StyledString UiStyle::styleString(const QString &s_, quint32 baseFormat
         length = 6;
       }
     } else if(s[pos+1] == 'O') { // reset formatting
-      curfmt &= 0x0000000f; // we keep message type-specific formatting
+      curfmt &= 0x000000ff; // we keep message type-specific formatting
       length = 2;
     } else if(s[pos+1] == 'R') { // reverse
       // TODO: implement reverse formatting
