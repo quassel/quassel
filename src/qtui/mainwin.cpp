@@ -944,8 +944,6 @@ void MainWin::messagesInserted(const QModelIndex &parent, int start, int end) {
     Message::Flags flags = (Message::Flags)idx.data(ChatLineModel::FlagsRole).toInt();
     if(flags.testFlag(Message::Backlog) || flags.testFlag(Message::Self))
       continue;
-    flags |= Message::Backlog;  // we only want to trigger a highlight once!
-    Client::messageModel()->setData(idx, (int)flags, ChatLineModel::FlagsRole);
 
     BufferId bufId = idx.data(ChatLineModel::BufferIdRole).value<BufferId>();
     BufferInfo::Type bufType = Client::networkModel()->bufferType(bufId);
