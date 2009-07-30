@@ -19,8 +19,9 @@
  ***************************************************************************/
 
 #include "chatviewsettingspage.h"
-
 #include "colorbutton.h"
+#include "qtui.h"
+#include "qtuistyle.h"
 
 ChatViewSettingsPage::ChatViewSettingsPage(QWidget *parent)
   : SettingsPage(tr("Appearance"), tr("Chat View"), parent)
@@ -28,4 +29,10 @@ ChatViewSettingsPage::ChatViewSettingsPage(QWidget *parent)
   ui.setupUi(this);
 
   initAutoWidgets();
+}
+
+void ChatViewSettingsPage::save() {
+  SettingsPage::save();
+  QtUi::style()->generateSettingsQss();
+  QtUi::style()->reload();
 }

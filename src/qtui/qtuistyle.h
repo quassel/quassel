@@ -22,6 +22,7 @@
 #define QTUISTYLE_H_
 
 #include "uistyle.h"
+#include "qtuisettings.h"
 
 class QtUiStyle : public UiStyle {
   Q_OBJECT
@@ -33,9 +34,16 @@ public:
   virtual inline qreal firstColumnSeparator() const { return 6; }
   virtual inline qreal secondColumnSeparator() const { return 6; }
 
+public slots:
+  void generateSettingsQss() const;
+
 private slots:
   void updateTimestampFormatString();
 
+private:
+  QString color(const QString &key, QtUiStyleSettings &settings) const;
+  QString msgTypeQss(const QString &msgType, const QString &key, QtUiStyleSettings &settings) const;
+  QString senderQss(int i, QtUiStyleSettings &settings) const;
 };
 
 #endif

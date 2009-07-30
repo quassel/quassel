@@ -29,15 +29,18 @@ class ColorButton;
 class ChatViewSettingsPage : public SettingsPage {
   Q_OBJECT
 
-  public:
-    ChatViewSettingsPage(QWidget *parent = 0);
+public:
+  ChatViewSettingsPage(QWidget *parent = 0);
 
-    inline bool hasDefaults() const { return true; }
+  inline bool hasDefaults() const { return true; }
 
-  private:
-    Ui::ChatViewSettingsPage ui;
+public slots:
+  void save();
 
-    inline QString settingsKey() const { return QString("QtUi/ChatView/__default__"); }
+private:
+  Ui::ChatViewSettingsPage ui;
+
+  inline QString settingsKey() const { return QString("QtUi/ChatView/__default__"); }
 };
 
 #endif
