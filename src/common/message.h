@@ -33,21 +33,23 @@ class Message {
 public:
   /** The different types a message can have for display */
   enum Type {
-    Plain     = 0x0001,
-    Notice    = 0x0002,
-    Action    = 0x0004,
-    Nick      = 0x0008,
-    Mode      = 0x0010,
-    Join      = 0x0020,
-    Part      = 0x0040,
-    Quit      = 0x0080,
-    Kick      = 0x0100,
-    Kill      = 0x0200,
-    Server    = 0x0400,
-    Info      = 0x0800,
-    Error     = 0x1000,
-    DayChange = 0x2000,
-    Topic     = 0x4000
+    Plain     = 0x00001,
+    Notice    = 0x00002,
+    Action    = 0x00004,
+    Nick      = 0x00008,
+    Mode      = 0x00010,
+    Join      = 0x00020,
+    Part      = 0x00040,
+    Quit      = 0x00080,
+    Kick      = 0x00100,
+    Kill      = 0x00200,
+    Server    = 0x00400,
+    Info      = 0x00800,
+    Error     = 0x01000,
+    DayChange = 0x02000,
+    Topic     = 0x04000,
+    NetsplitJoin = 0x08000,
+    NetsplitQuit = 0x10000,
   };
 
   // DO NOT CHANGE without knowing what you do, some of these flags are stored in the database

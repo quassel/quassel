@@ -22,6 +22,7 @@
 #define IRCSERVERHANDLER_H
 
 #include "basichandler.h"
+#include "netsplit.h"
 
 class IrcServerHandler : public BasicHandler {
   Q_OBJECT
@@ -81,6 +82,28 @@ public slots:
 
   void defaultHandler(QString cmd, const QString &prefix, const QList<QByteArray> &params);
 
+private slots:
+  //! Joins after a netsplit
+  /** This slot handles a bulk-join after a netsplit is over
+    * \param channel The channel the users joined
+    * \param users   The list of users that joind the channel
+    * \param quitMessage The message we received when the netsplit occured
+    */
+  void handleNetsplitJoin(const QString &channel, const QStringList &users, const QString &quitMessage);
+
+  //! Quits after a netsplit
+  /** This slot handles a bulk-quit after a netsplit occured
+    * \param channel The channel the users quitted
+    * \param users   The list of users that got split
+    * \param quitMessage The message we received when the netsplit occured
+    */
+  void handleNetsplitQuit(const QString &channel, const QStringList &users, const QString &quitMessage);
+
+  //! Netsplit finished
+  /** This slot deletes the netsplit object that sent the finished() signal
+    */
+  void handleNetsplitFinished();
+
 private:
   void tryNextNick(const QString &errnick, bool erroneus = false);
   bool checkParamCount(const QString &methodName, const QList<QByteArray> &params, int minParams);
@@ -90,6 +113,11 @@ private:
 
   bool _whois;
   QString _target;
+
+  // structure to organize netsplits
+  // key: quit message
+  // value: the corresponding netsplit object
+  QHash<QString, Netsplit*> _netsplits;
 };
 
 

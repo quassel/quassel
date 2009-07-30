@@ -27,6 +27,7 @@ set(SOURCES
     coreusersettings.cpp
     ctcphandler.cpp
     ircserverhandler.cpp
+    netsplit.cpp
     postgresqlstorage.cpp
     sessionthread.cpp
     sqlitestorage.cpp
@@ -52,6 +53,7 @@ set(MOC_HDRS
     coresession.h
     ctcphandler.h
     ircserverhandler.h
+    netsplit.h
     postgresqlstorage.h
     sqlitestorage.h
     storage.h
