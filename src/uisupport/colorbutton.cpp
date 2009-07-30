@@ -50,7 +50,7 @@ QColor ColorButton::color() const {
 
 void ColorButton::chooseColor() {
 #ifdef HAVE_KDE
-  QColor c;
+  QColor c = color();
   KColorDialog::getColor(c, this);
 #else
   QColor c = QColorDialog::getColor(color(), this);
