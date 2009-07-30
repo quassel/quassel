@@ -54,7 +54,7 @@ ChatView::ChatView(MessageFilter *filter, QWidget *parent)
 
 void ChatView::init(MessageFilter *filter) {
   setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-  setAlignment(Qt::AlignBottom|Qt::AlignLeft);
+  setAlignment(Qt::AlignBottom);
   setInteractive(true);
   //setOptimizationFlags(QGraphicsView::DontClipPainter | QGraphicsView::DontAdjustForAntialiasing);
   // setOptimizationFlags(QGraphicsView::DontAdjustForAntialiasing);
@@ -65,10 +65,6 @@ void ChatView::init(MessageFilter *filter) {
   _scrollTimer.setInterval(100);
   _scrollTimer.setSingleShot(true);
   connect(&_scrollTimer, SIGNAL(timeout()), SLOT(scrollTimerTimeout()));
-
-  _resizeTimer.setInterval(100);
-  _resizeTimer.setSingleShot(true);
-  connect(&_resizeTimer, SIGNAL(timeout()), SLOT(resizeTimerTimeout()));
 
   _scene = new ChatScene(filter, filter->idString(), viewport()->width() - 4, this); // see below: resizeEvent()
   connect(_scene, SIGNAL(sceneRectChanged(const QRectF &)), this, SLOT(sceneRectChanged(const QRectF &)));
@@ -109,10 +105,6 @@ bool ChatView::event(QEvent *event) {
 
 void ChatView::resizeEvent(QResizeEvent *event) {
   QGraphicsView::resizeEvent(event);
-  _resizeTimer.start();
-}
-
-void ChatView::resizeTimerTimeout() {
 
   // we can reduce viewport updates if we scroll to the bottom allready at the beginning
   verticalScrollBar()->setValue(verticalScrollBar()->maximum());
