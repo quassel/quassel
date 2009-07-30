@@ -49,6 +49,22 @@ QssParser::QssParser()
   _paletteColorRoles["tooltip-text"] = QPalette::ToolTipText;
   _paletteColorRoles["window"] = QPalette::Window;
   _paletteColorRoles["window-text"] = QPalette::WindowText;
+
+  _uiStylePalette = QVector<QBrush>(UiStyle::NumRoles, QBrush());
+
+  _uiStyleColorRoles["marker-line"] = UiStyle::MarkerLine;
+  _uiStyleColorRoles["active-nick"] = UiStyle::ActiveNick;
+  _uiStyleColorRoles["inactive-nick"] = UiStyle::InactiveNick;
+  _uiStyleColorRoles["channel"] = UiStyle::Channel;
+  _uiStyleColorRoles["inactive-channel"] = UiStyle::InactiveChannel;
+  _uiStyleColorRoles["active-channel"] = UiStyle::ActiveChannel;
+  _uiStyleColorRoles["unread-channel"] = UiStyle::UnreadChannel;
+  _uiStyleColorRoles["highlighted-channel"] = UiStyle::HighlightedChannel;
+  _uiStyleColorRoles["query"] = UiStyle::Query;
+  _uiStyleColorRoles["inactive-query"] = UiStyle::InactiveQuery;
+  _uiStyleColorRoles["active-query"] = UiStyle::ActiveQuery;
+  _uiStyleColorRoles["unread-query"] = UiStyle::UnreadQuery;
+  _uiStyleColorRoles["highlighted-query"] = UiStyle::HighlightedQuery;
 }
 
 void QssParser::processStyleSheet(QString &ss) {
@@ -303,22 +319,17 @@ void QssParser::parsePaletteData(const QString &decl, const QString &contents) {
     QString rolestr = line.left(idx).trimmed();
     QString brushstr = line.mid(idx + 1).trimmed();
 
-    // We treat the marker line color as a palette role even though it isn't -> special casing
-    if(rolestr == "marker-line") {
-      _markerLineBrush = parseBrush(brushstr);
-      continue;
-    }
-
-    if(!_paletteColorRoles.contains(rolestr)) {
-      qWarning() << Q_FUNC_INFO << tr("Unknown palette role name: %1").arg(rolestr);
-      continue;
-    }
-    QBrush brush = parseBrush(brushstr);
-    if(colorGroups.count()) {
-      foreach(QPalette::ColorGroup group, colorGroups)
-        _palette.setBrush(group, _paletteColorRoles.value(rolestr), brush);
+    if(_paletteColorRoles.contains(rolestr)) {
+      QBrush brush = parseBrush(brushstr);
+      if(colorGroups.count()) {
+        foreach(QPalette::ColorGroup group, colorGroups)
+          _palette.setBrush(group, _paletteColorRoles.value(rolestr), brush);
+      } else
+        _palette.setBrush(_paletteColorRoles.value(rolestr), brush);
+    } else if(_uiStyleColorRoles.contains(rolestr)) {
+      _uiStylePalette[_uiStyleColorRoles.value(rolestr)] = parseBrush(brushstr);
     } else
-      _palette.setBrush(_paletteColorRoles.value(rolestr), brush);
+      qWarning() << Q_FUNC_INFO << tr("Unknown palette role name: %1").arg(rolestr);
   }
 }
 
@@ -338,11 +349,12 @@ QBrush QssParser::parseBrush(const QString &str, bool *ok) {
       qWarning() << Q_FUNC_INFO << tr("Invalid palette color role specification: %1").arg(str);
       return QBrush();
     }
-    if(!_paletteColorRoles.contains(rx.cap(1))) {
-      qWarning() << Q_FUNC_INFO << tr("Unknown palette color role: %1").arg(rx.cap(1));
-      return QBrush();
-    }
-    return QBrush(_palette.brush(_paletteColorRoles.value(rx.cap(1))));
+    if(_paletteColorRoles.contains(rx.cap(1)))
+      return QBrush(_palette.brush(_paletteColorRoles.value(rx.cap(1))));
+    if(_uiStyleColorRoles.contains(rx.cap(1)))
+      return QBrush(_uiStylePalette.at(_uiStyleColorRoles.value(rx.cap(1))));
+    qWarning() << Q_FUNC_INFO << tr("Unknown palette color role: %1").arg(rx.cap(1));
+    return QBrush();
 
   } else if(str.startsWith("qlineargradient")) {
     static QString rxFloat("\\s*(-?\\s*[0-9]*\\.?[0-9]+)\\s*");

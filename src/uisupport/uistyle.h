@@ -97,6 +97,23 @@ public:
     Selected        = 0x00000004  // must be last!
   };
 
+  enum ColorRole {
+    MarkerLine,
+    ActiveNick,
+    InactiveNick,
+    Channel,
+    InactiveChannel,
+    ActiveChannel,
+    UnreadChannel,
+    HighlightedChannel,
+    Query,
+    InactiveQuery,
+    ActiveQuery,
+    UnreadQuery,
+    HighlightedQuery,
+    NumRoles  // must be last!
+  };
+
   struct StyledString {
     QString plainText;
     FormatList formatList;  // starting pos, ftypes
@@ -113,7 +130,9 @@ public:
   QFontMetricsF *fontMetrics(quint32 formatType, quint32 messageLabel = 0);
 
   inline QFont defaultFont() const { return _defaultFont; }
-  inline QBrush markerLineBrush() const { return _markerLineBrush; }
+
+  inline const QBrush &brush(ColorRole role) const { return _uiStylePalette.at((int) role); }
+  inline void setBrush(ColorRole role, const QBrush &brush) { _uiStylePalette[(int) role] = brush; }
 
   QList<QTextLayout::FormatRange> toTextLayoutList(const FormatList &, int textLength, quint32 messageLabel = 0);
 
@@ -139,6 +158,7 @@ protected:
 
 private:
   QFont _defaultFont;
+  QVector<QBrush> _uiStylePalette;
   QBrush _markerLineBrush;
   QHash<quint64, QTextCharFormat> _formatCache;
   QHash<quint64, QFontMetricsF *> _metricsCache;

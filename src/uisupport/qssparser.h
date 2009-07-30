@@ -32,8 +32,8 @@ class QssParser {
     void processStyleSheet(QString &sheet);
 
     inline QPalette palette() const { return _palette; }
+    inline QVector<QBrush> uiStylePalette() const { return _uiStylePalette; }
     inline const QHash<quint64, QTextCharFormat>& formats() const { return _formats; }
-    inline QBrush markerLineBrush() const { return _markerLineBrush; }
 
   protected:
     typedef QList<qreal> ColorTuple;
@@ -60,11 +60,12 @@ class QssParser {
     void parseFontFamily(const QString &str, QTextCharFormat *format);
 
     QHash<QString, QPalette::ColorRole> _paletteColorRoles;
+    QHash<QString, UiStyle::ColorRole> _uiStyleColorRoles;
 
   private:
     QPalette _palette;
+    QVector<QBrush> _uiStylePalette;
     QHash<quint64, QTextCharFormat> _formats;
-    QBrush _markerLineBrush;
     int _maxSenderHash;
 };
 

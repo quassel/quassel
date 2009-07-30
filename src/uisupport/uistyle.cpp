@@ -37,6 +37,8 @@ UiStyle::UiStyle(QObject *parent) : QObject(parent) {
     Q_ASSERT(QVariant::nameToType("UiStyle::FormatList") != QVariant::Invalid);
   }
 
+  _uiStylePalette = QVector<QBrush>(NumRoles, QBrush());
+
   // Now initialize the mapping between FormatCodes and FormatTypes...
   _formatCodes["%O"] = Base;
   _formatCodes["%B"] = Bold;
@@ -81,7 +83,7 @@ void UiStyle::loadStyleSheet() {
     QssParser parser;
     parser.processStyleSheet(styleSheet);
     QApplication::setPalette(parser.palette());
-    _markerLineBrush = parser.markerLineBrush();
+    _uiStylePalette = parser.uiStylePalette();
 
     QTextCharFormat baseFmt = parser.formats().value(Base);
     foreach(quint64 fmtType, parser.formats().keys()) {
