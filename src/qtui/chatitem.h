@@ -186,13 +186,15 @@ protected:
   virtual QVector<QTextLayout::FormatRange> additionalFormats() const;
 
   virtual inline void initLayout(QTextLayout *layout) const {
-    initLayoutHelper(layout, QTextOption::WrapAtWordBoundaryOrAnywhere);
+    initLayoutHelper(layout, QTextOption::WrapAnywhere);
     doLayout(layout);
   }
+  virtual void doLayout(QTextLayout *layout) const;
 
 private:
   struct Clickable;
   class ActionProxy;
+  class WrapColumnFinder;
 
   ContentsChatItemPrivate *_data;
   ContentsChatItemPrivate *privateData() const;
@@ -239,6 +241,23 @@ struct ContentsChatItemPrivate {
   ContentsChatItem::Clickable activeClickable;
 
   ContentsChatItemPrivate(const QList<ContentsChatItem::Clickable> &c, ContentsChatItem *parent) : contentsItem(parent), clickables(c) {}
+};
+
+class ContentsChatItem::WrapColumnFinder {
+public:
+  WrapColumnFinder(const ChatItem *parent);
+  ~WrapColumnFinder();
+
+  qint16 nextWrapColumn();
+
+private:
+  const ChatItem *item;
+  QTextLayout layout;
+  QTextLine line;
+  ChatLineModel::WrapList wrapList;
+  qint16 wordidx;
+  qint16 lineCount;
+  qreal choppedTrailing;
 };
 
 //! Acts as a proxy for Action signals targetted at a ContentsChatItem

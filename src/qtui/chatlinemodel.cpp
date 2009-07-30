@@ -23,7 +23,8 @@
 ChatLineModel::ChatLineModel(QObject *parent)
   : MessageModel(parent)
 {
-
+  qRegisterMetaType<WrapList>("ChatLineModel::WrapList");
+  qRegisterMetaTypeStreamOperators<WrapList>("ChatLineModel::WrapList");
 }
 
 // MessageModelItem *ChatLineModel::createMessageModelItem(const Message &msg) {
@@ -41,4 +42,24 @@ Message ChatLineModel::takeMessageAt(int i) {
   Message msg = _messageList[i].message();
   _messageList.removeAt(i);
   return msg;
+}
+
+QDataStream &operator<<(QDataStream &out, const ChatLineModel::WrapList wplist) {
+  out << wplist.count();
+  ChatLineModel::WrapList::const_iterator it = wplist.begin();
+  while(it != wplist.end()) {
+    out << (*it).start << (*it).width << (*it).trailing;
+    ++it;
+  }
+  return out;
+}
+
+QDataStream &operator>>(QDataStream &in, ChatLineModel::WrapList &wplist) {
+  quint16 cnt;
+  in >> cnt;
+  wplist.resize(cnt);
+  for(quint16 i = 0; i < cnt; i++) {
+    in >> wplist[i].start >> wplist[i].width >> wplist[i].trailing;
+  }
+  return in;
 }
