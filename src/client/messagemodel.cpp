@@ -421,6 +421,9 @@ bool MessageModelItem::setData(int column, const QVariant &value, int role) {
   Q_UNUSED(column);
 
   switch(role) {
+  case MessageModel::FlagsRole:
+    _msg.setFlags((Message::Flags)value.toUInt());
+    return true;
   case MessageModel::RedirectedToRole:
     _redirectedTo = value.value<BufferId>();
     return true;
