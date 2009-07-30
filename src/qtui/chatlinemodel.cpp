@@ -19,12 +19,16 @@
  ***************************************************************************/
 
 #include "chatlinemodel.h"
+#include "qtui.h"
+#include "qtuistyle.h"
 
 ChatLineModel::ChatLineModel(QObject *parent)
   : MessageModel(parent)
 {
   qRegisterMetaType<WrapList>("ChatLineModel::WrapList");
   qRegisterMetaTypeStreamOperators<WrapList>("ChatLineModel::WrapList");
+
+  connect(QtUi::style(), SIGNAL(changed()), SLOT(styleChanged()));
 }
 
 // MessageModelItem *ChatLineModel::createMessageModelItem(const Message &msg) {
@@ -42,6 +46,13 @@ Message ChatLineModel::takeMessageAt(int i) {
   Message msg = _messageList[i].message();
   _messageList.removeAt(i);
   return msg;
+}
+
+void ChatLineModel::styleChanged() {
+  foreach(ChatLineModelItem item, _messageList) {
+    item.invalidateWrapList();
+  }
+  emit dataChanged(index(0,0), index(rowCount()-1, columnCount()-1));
 }
 
 QDataStream &operator<<(QDataStream &out, const ChatLineModel::WrapList wplist) {

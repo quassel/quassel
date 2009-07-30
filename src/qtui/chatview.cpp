@@ -73,7 +73,6 @@ void ChatView::init(MessageFilter *filter) {
   setScene(_scene);
 
   connect(verticalScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(verticalScrollbarChanged(int)));
-  connect(QtUi::style(), SIGNAL(changed()), this, SLOT(styleChanged()));
 }
 
 bool ChatView::event(QEvent *event) {
@@ -170,10 +169,6 @@ void ChatView::verticalScrollbarChanged(int newPos) {
   // FIXME: Fugly workaround for the ChatView scrolling up 1px on buffer switch
   if(vbar->maximum() - newPos <= 2)
     vbar->setValue(vbar->maximum());
-}
-
-void ChatView::styleChanged() {
-  scene()->layout();
 }
 
 MsgId ChatView::lastMsgId() const {

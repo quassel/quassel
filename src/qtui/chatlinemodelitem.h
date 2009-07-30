@@ -39,6 +39,8 @@ public:
   virtual inline Message::Type msgType() const { return _styledMsg.type(); }
   virtual inline Message::Flags msgFlags() const { return _styledMsg.flags(); }
 
+  virtual inline void invalidateWrapList() { _wrapList.clear(); }
+
   /// Used to store information about words to be used for wrapping
   struct Word {
     quint16 start;

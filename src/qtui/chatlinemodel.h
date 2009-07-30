@@ -58,6 +58,9 @@ protected:
   virtual inline void removeAllMessages() { _messageList.clear(); }
   virtual Message takeMessageAt(int i);
 
+protected slots:
+  virtual void styleChanged();
+
 private:
   QList<ChatLineModelItem> _messageList;
 };

@@ -96,6 +96,7 @@ ChatScene::ChatScene(QAbstractItemModel *model, const QString &idString, qreal w
           this, SLOT(rowsInserted(const QModelIndex &, int, int)));
   connect(model, SIGNAL(rowsAboutToBeRemoved(const QModelIndex &, int, int)),
           this, SLOT(rowsAboutToBeRemoved(const QModelIndex &, int, int)));
+  connect(model, SIGNAL(dataChanged(QModelIndex, QModelIndex)), SLOT(dataChanged(QModelIndex, QModelIndex)));
 
   if(model->rowCount() > 0)
     rowsInserted(QModelIndex(), 0, model->rowCount() - 1);
@@ -378,6 +379,13 @@ void ChatScene::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int e
   if(needOffset)
     _firstLineRow -= end - start + 1;
   updateSceneRect();
+}
+
+void ChatScene::dataChanged(const QModelIndex &tl, const QModelIndex &br) {
+  // This should only be sent (currently) if the style is reloaded -> re-layout the whole scene
+  // TODO: Check range and only do partial relayouts, if appropriate
+
+  layout();
 }
 
 void ChatScene::updateForViewport(qreal width, qreal height) {

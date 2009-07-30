@@ -142,6 +142,7 @@ protected:
 protected slots:
   void rowsInserted(const QModelIndex &, int, int);
   void rowsAboutToBeRemoved(const QModelIndex &, int, int);
+  void dataChanged(const QModelIndex &, const QModelIndex &);
 
 private slots:
   void firstHandlePositionChanged(qreal xpos);
