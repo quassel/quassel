@@ -113,6 +113,7 @@ public:
   QFontMetricsF *fontMetrics(quint32 formatType, quint32 messageLabel = 0);
 
   inline QFont defaultFont() const { return _defaultFont; }
+  inline QBrush markerLineBrush() const { return _markerLineBrush; }
 
   QList<QTextLayout::FormatRange> toTextLayoutList(const FormatList &, int textLength, quint32 messageLabel = 0);
 
@@ -138,6 +139,7 @@ protected:
 
 private:
   QFont _defaultFont;
+  QBrush _markerLineBrush;
   QHash<quint64, QTextCharFormat> _formatCache;
   QHash<quint64, QFontMetricsF *> _metricsCache;
   static QHash<QString, FormatType> _formatCodes;

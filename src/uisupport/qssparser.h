@@ -33,6 +33,7 @@ class QssParser {
 
     inline QPalette palette() const { return _palette; }
     inline const QHash<quint64, QTextCharFormat>& formats() const { return _formats; }
+    inline QBrush markerLineBrush() const { return _markerLineBrush; }
 
   protected:
     typedef QList<qreal> ColorTuple;
@@ -63,6 +64,7 @@ class QssParser {
   private:
     QPalette _palette;
     QHash<quint64, QTextCharFormat> _formats;
+    QBrush _markerLineBrush;
     int _maxSenderHash;
 };
 

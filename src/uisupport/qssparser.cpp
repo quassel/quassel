@@ -302,6 +302,13 @@ void QssParser::parsePaletteData(const QString &decl, const QString &contents) {
     }
     QString rolestr = line.left(idx).trimmed();
     QString brushstr = line.mid(idx + 1).trimmed();
+
+    // We treat the marker line color as a palette role even though it isn't -> special casing
+    if(rolestr == "marker-line") {
+      _markerLineBrush = parseBrush(brushstr);
+      continue;
+    }
+
     if(!_paletteColorRoles.contains(rolestr)) {
       qWarning() << Q_FUNC_INFO << tr("Unknown palette role name: %1").arg(rolestr);
       continue;

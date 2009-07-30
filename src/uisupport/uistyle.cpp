@@ -81,6 +81,7 @@ void UiStyle::loadStyleSheet() {
     QssParser parser;
     parser.processStyleSheet(styleSheet);
     QApplication::setPalette(parser.palette());
+    _markerLineBrush = parser.markerLineBrush();
 
     QTextCharFormat baseFmt = parser.formats().value(Base);
     foreach(quint64 fmtType, parser.formats().keys()) {

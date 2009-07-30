@@ -186,9 +186,8 @@ void ChatLine::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
       BufferId bufferId = BufferId(chatScene()->idString().toInt());
       MsgId lastSeenMsgId = Client::networkModel()->lastSeenMarkerMsgId(bufferId);
       if(lastSeenMsgId < myMsgId && lastSeenMsgId >= prevMsgId) {
-        QtUiStyleSettings s("Colors");
         QLinearGradient gradient(0, 0, 0, contentsItem().fontMetrics()->lineSpacing());
-        gradient.setColorAt(0, s.value("newMsgMarkerFG", QColor(Qt::red)).value<QColor>());
+        gradient.setColorAt(0, QtUi::style()->markerLineBrush().color()); // FIXME: Use full (gradient?) brush instead of just the color
         gradient.setColorAt(0.1, Qt::transparent);
         painter->fillRect(boundingRect(), gradient);
       }
