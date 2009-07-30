@@ -248,7 +248,7 @@ public:
   WrapColumnFinder(const ChatItem *parent);
   ~WrapColumnFinder();
 
-  qint16 nextWrapColumn();
+  qint16 nextWrapColumn(qreal width);
 
 private:
   const ChatItem *item;

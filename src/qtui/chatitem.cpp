@@ -387,23 +387,22 @@ ContentsChatItemPrivate *ContentsChatItem::privateData() const {
 }
 
 qreal ContentsChatItem::setGeometryByWidth(qreal w) {
-  if(w == width()) {
-    //qDebug() << Q_FUNC_INFO << "Geometry change requested with identical width!";
-  }
-  // We use this for reloading layout info as well
-  //if(w != width()) {
+  // We use this for reloading layout info as well, so we can't bail out if the width doesn't change
+
+  // compute height
+  int lines = 1;
+  WrapColumnFinder finder(this);
+  while(finder.nextWrapColumn(w) > 0)
+    lines++;
+  qreal h = lines * fontMetrics()->lineSpacing();
+  delete _data;
+  _data = 0;
+
+  if(w != width() || h != height()) {
     prepareGeometryChange();
-    setWidth(w);
-    // compute height
-    int lines = 1;
-    WrapColumnFinder finder(this);
-    while(finder.nextWrapColumn() > 0)
-      lines++;
-    setHeight(lines * fontMetrics()->lineSpacing());
-    delete _data;
-    _data = 0;
-  //}
-  return height();
+    setGeometry(w, h);
+  }
+  return h;
 }
 
 void ContentsChatItem::doLayout(QTextLayout *layout) const {
@@ -418,7 +417,7 @@ void ContentsChatItem::doLayout(QTextLayout *layout) const {
     if(!line.isValid())
       break;
 
-    int col = finder.nextWrapColumn();
+    int col = finder.nextWrapColumn(width());
     line.setNumColumns(col >= 0 ? col - line.textStart() : layout->text().length());
     line.setPosition(QPointF(0, h));
     h += fontMetrics()->lineSpacing();
@@ -700,12 +699,12 @@ ContentsChatItem::WrapColumnFinder::WrapColumnFinder(const ChatItem *_item)
 ContentsChatItem::WrapColumnFinder::~WrapColumnFinder() {
 }
 
-qint16 ContentsChatItem::WrapColumnFinder::nextWrapColumn() {
+qint16 ContentsChatItem::WrapColumnFinder::nextWrapColumn(qreal width) {
   if(wordidx >= wrapList.count())
     return -1;
 
   lineCount++;
-  qreal targetWidth = lineCount * item->width() + choppedTrailing;
+  qreal targetWidth = lineCount * width + choppedTrailing;
 
   qint16 start = wordidx;
   qint16 end = wrapList.count() - 1;

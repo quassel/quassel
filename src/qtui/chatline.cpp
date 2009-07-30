@@ -105,20 +105,20 @@ void ChatLine::setSecondColumn(const qreal &senderWidth, const qreal &contentsWi
 void ChatLine::setGeometryByWidth(const qreal &width, const qreal &contentsWidth, qreal &linePos) {
   qreal height = _contentsItem.setGeometryByWidth(contentsWidth);
   linePos -= height;
-  bool needGeometryChange = linePos == pos().y();
+  bool needGeometryChange = (height != _height || width != _width);
+
+  if(height != _height) {
+    _timestampItem.prepareGeometryChange();
+    _timestampItem.setHeight(height);
+    _senderItem.prepareGeometryChange();
+    _senderItem.setHeight(height);
+  }
 
   if(needGeometryChange) {
-    _timestampItem.prepareGeometryChange();
-    _senderItem.prepareGeometryChange();
-  }
-  _timestampItem.setHeight(height);
-  _senderItem.setHeight(height);
-
-  if(needGeometryChange)
     prepareGeometryChange();
-
-  _height = height;
-  _width = width;
+    _height = height;
+    _width = width;
+  }
 
   setPos(0, linePos); // set pos is _very_ cheap if nothing changes.
 }
