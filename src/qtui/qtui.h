@@ -25,11 +25,11 @@
 
 #include "abstractnotificationbackend.h"
 #include "mainwin.h"
+#include "qtuistyle.h"
 
 class MainWin;
 class MessageModel;
 class QtUiMessageProcessor;
-class QtUiStyle;
 
 //! This class encapsulates Quassel's Qt-based GUI.
 /** This is basically a wrapper around MainWin, which is necessary because we cannot derive MainWin
@@ -71,13 +71,12 @@ protected slots:
 private:
   static QPointer<QtUi> _instance;
   static QPointer<MainWin> _mainWin;
-  static QtUiStyle *_style;
   static QList<AbstractNotificationBackend *> _notificationBackends;
   static QList<AbstractNotificationBackend::Notification> _notifications;
 };
 
 QtUi *QtUi::instance() { return _instance ? _instance.data() : new QtUi(); }
-QtUiStyle *QtUi::style() { return _style; }
+QtUiStyle *QtUi::style() { return qobject_cast<QtUiStyle*>(uiStyle()); }
 MainWin *QtUi::mainWindow() { return _mainWin; }
 
 #endif

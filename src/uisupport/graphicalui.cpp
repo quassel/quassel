@@ -27,6 +27,7 @@ QWidget *GraphicalUi::_mainWidget = 0;
 QHash<QString, ActionCollection *> GraphicalUi::_actionCollections;
 ContextMenuActionProvider *GraphicalUi::_contextMenuActionProvider = 0;
 ToolBarActionProvider *GraphicalUi::_toolBarActionProvider = 0;
+UiStyle *GraphicalUi::_uiStyle = 0;
 
 GraphicalUi::GraphicalUi(QObject *parent) : AbstractUi(parent)
 {
@@ -53,4 +54,8 @@ void GraphicalUi::setContextMenuActionProvider(ContextMenuActionProvider *provid
 
 void GraphicalUi::setToolBarActionProvider(ToolBarActionProvider *provider) {
   _toolBarActionProvider = provider;
+}
+
+void GraphicalUi::setUiStyle(UiStyle *style) {
+  _uiStyle = style;
 }

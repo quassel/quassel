@@ -26,6 +26,7 @@
 class ActionCollection;
 class ContextMenuActionProvider;
 class ToolBarActionProvider;
+class UiStyle;
 
 class GraphicalUi : public AbstractUi {
   Q_OBJECT
@@ -43,6 +44,7 @@ public:
 
   inline static ContextMenuActionProvider *contextMenuActionProvider();
   inline static ToolBarActionProvider *toolBarActionProvider();
+  inline static UiStyle *uiStyle();
 
 protected:
   //! This is the widget we associate global actions with, typically the main window
@@ -50,13 +52,14 @@ protected:
 
   void setContextMenuActionProvider(ContextMenuActionProvider *);
   void setToolBarActionProvider(ToolBarActionProvider *);
+  void setUiStyle(UiStyle *);
 
 private:
   static QWidget *_mainWidget;
   static QHash<QString, ActionCollection *> _actionCollections;
   static ContextMenuActionProvider *_contextMenuActionProvider;
   static ToolBarActionProvider *_toolBarActionProvider;
-
+  static UiStyle *_uiStyle;
 };
 
 ContextMenuActionProvider *GraphicalUi::contextMenuActionProvider() {
@@ -65,6 +68,10 @@ ContextMenuActionProvider *GraphicalUi::contextMenuActionProvider() {
 
 ToolBarActionProvider *GraphicalUi::toolBarActionProvider() {
   return _toolBarActionProvider;
+}
+
+UiStyle *GraphicalUi::uiStyle() {
+  return _uiStyle;
 }
 
 #endif
