@@ -87,6 +87,7 @@ void UiStyle::loadStyleSheet() {
   qDeleteAll(_metricsCache);
   _metricsCache.clear();
   _formatCache.clear();
+  _formats.clear();
 
   UiStyleSettings s;
 
@@ -335,7 +336,7 @@ void UiStyle::mergeFormat(QTextCharFormat &fmt, quint32 ftype, quint64 label) {
   if((ftype & 0xfff00)) { // element format
     for(quint32 mask = 0x00100; mask <= 0x40000; mask <<= 1) {
       if(ftype & mask) {
-        mergeSubElementFormat(fmt, mask | 0xff, label);
+        mergeSubElementFormat(fmt, ftype & (mask | 0xff), label);
       }
     }
   }

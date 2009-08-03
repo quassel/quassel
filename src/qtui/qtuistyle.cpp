@@ -93,7 +93,7 @@ void QtUiStyle::generateSettingsQss() const {
 
   if(s.value("UseSenderColors").toBool()) {
     out << "// Sender Colors\n\n"
-        << "ChatLine::sender[sender=\"self\"] { foreground: " << color("SenderSelf", s) << "; }\n\n";
+        << "ChatLine::sender#plain[sender=\"self\"] { foreground: " << color("SenderSelf", s) << "; }\n\n";
 
     for(int i = 0; i < 16; i++)
       out << senderQss(i, s);
@@ -114,5 +114,5 @@ QString QtUiStyle::senderQss(int i, QtUiStyleSettings &settings) const {
   QString dez = QString::number(i);
   if(dez.length() == 1) dez.prepend('0');
 
-  return QString("ChatLine::sender[sender=\"0%1\"] { foreground: %2; }\n").arg(QString::number(i, 16), color("Sender"+dez, settings));
+  return QString("ChatLine::sender#plain[sender=\"0%1\"] { foreground: %2; }\n").arg(QString::number(i, 16), color("Sender"+dez, settings));
 }

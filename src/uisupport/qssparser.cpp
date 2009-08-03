@@ -262,7 +262,7 @@ quint64 QssParser::parseFormatType(const QString &decl) {
               qWarning() << Q_FUNC_INFO << tr("Senderhash can be at most \"0x0f\"!");
               return UiStyle::Invalid;
             }
-            fmtType |= val << 48;
+            fmtType |= ++val << 48;
           }
       } else if(condName == "format") {
         if(condValue == "bold")
