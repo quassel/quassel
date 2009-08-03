@@ -34,17 +34,19 @@ class QssParser {
     inline QPalette palette() const { return _palette; }
     inline QVector<QBrush> uiStylePalette() const { return _uiStylePalette; }
     inline const QHash<quint64, QTextCharFormat>& formats() const { return _formats; }
+    inline const QHash<quint32, QTextCharFormat>& listItemFormats() const { return _listItemFormats; }
 
   protected:
     typedef QList<qreal> ColorTuple;
 
-    void parseChatLineData(const QString &decl, const QString &contents);
-    void parsePaletteData(const QString &decl, const QString &contents);
+    void parseChatLineBlock(const QString &decl, const QString &contents);
+    void parsePaletteBlock(const QString &decl, const QString &contents);
+    void parseListItemBlock(const QString &decl, const QString &contents);
 
     quint64 parseFormatType(const QString &decl);
+    quint32 parseItemFormatType(const QString &decl);
 
     QTextCharFormat parseFormat(const QString &qss);
-    bool parsePalette(QPalette &, const QString &qss);
 
     // Parse color/brush-related properties
     QBrush parseBrush(const QString &str, bool *ok = 0);
@@ -66,6 +68,7 @@ class QssParser {
     QPalette _palette;
     QVector<QBrush> _uiStylePalette;
     QHash<quint64, QTextCharFormat> _formats;
+    QHash<quint32, QTextCharFormat> _listItemFormats;
     int _maxSenderHash;
 };
 

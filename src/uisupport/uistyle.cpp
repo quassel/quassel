@@ -19,6 +19,8 @@
  ***************************************************************************/
 #include <QApplication>
 
+#include "buffersettings.h"
+#include "iconloader.h"
 #include "qssparser.h"
 #include "quassel.h"
 #include "uistyle.h"
@@ -28,7 +30,18 @@
 QHash<QString, UiStyle::FormatType> UiStyle::_formatCodes;
 QString UiStyle::_timestampFormatString;
 
-UiStyle::UiStyle(QObject *parent) : QObject(parent) {
+UiStyle::UiStyle(QObject *parent)
+: QObject(parent),
+  _channelJoinedIcon(SmallIcon("irc-channel-active")),
+  _channelPartedIcon(SmallIcon("irc-channel-inactive")),
+  _userOfflineIcon(SmallIcon("im-user-offline")),
+  _userOnlineIcon(SmallIcon("im-user")),
+  _userAwayIcon(SmallIcon("im-user-away")),
+  _categoryOpIcon(SmallIcon("irc-operator")),
+  _categoryVoiceIcon(SmallIcon("irc-voice")),
+  _opIconLimit(UserCategoryItem::categoryFromModes("o")),
+  _voiceIconLimit(UserCategoryItem::categoryFromModes("v"))
+{
   // register FormatList if that hasn't happened yet
   // FIXME I don't think this actually avoids double registration... then again... does it hurt?
   if(QVariant::nameToType("UiStyle::FormatList") == QVariant::Invalid) {
@@ -53,6 +66,11 @@ UiStyle::UiStyle(QObject *parent) : QObject(parent) {
   _formatCodes["%DU"] = Url;
 
   setTimestampFormatString("[hh:mm:ss]");
+
+  // BufferView / NickView settings
+  BufferSettings bufferSettings;
+  _showBufferViewIcons = _showNickViewIcons = bufferSettings.showUserStateIcons();
+  bufferSettings.notify("ShowUserStateIcons", this, SLOT(showUserStateIconsChanged()));
 
   loadStyleSheet();
 }
@@ -91,6 +109,7 @@ void UiStyle::loadStyleSheet() {
       fmt.merge(parser.formats().value(fmtType));
       _formatCache[fmtType] = fmt;
     }
+    _listItemFormats = parser.listItemFormats();
 
     qApp->setStyleSheet(styleSheet); // pass the remaining sections to the application
   }
@@ -123,6 +142,138 @@ void UiStyle::setTimestampFormatString(const QString &format) {
   if(_timestampFormatString != format) {
     _timestampFormatString = format;
     // FIXME reload
+  }
+}
+
+/******** ItemView Styling *******/
+
+void UiStyle::showUserStateIconsChanged() {
+  BufferSettings bufferSettings;
+  _showBufferViewIcons = _showNickViewIcons = bufferSettings.showUserStateIcons();
+}
+
+QVariant UiStyle::bufferViewItemData(const QModelIndex &index, int role) const {
+  BufferInfo::Type type = (BufferInfo::Type)index.data(NetworkModel::BufferTypeRole).toInt();
+  bool isActive = index.data(NetworkModel::ItemActiveRole).toBool();
+
+  if(role == Qt::DecorationRole) {
+    if(!_showBufferViewIcons)
+      return QVariant();
+
+    switch(type) {
+      case BufferInfo::ChannelBuffer:
+        if(isActive)
+          return _channelJoinedIcon;
+        else
+          return _channelPartedIcon;
+      case BufferInfo::QueryBuffer:
+        if(!isActive)
+          return _userOfflineIcon;
+        if(index.data(NetworkModel::UserAwayRole).toBool())
+          return _userAwayIcon;
+        else
+          return _userOnlineIcon;
+      default:
+        return QVariant();
+    }
+  }
+
+  quint32 fmtType = BufferViewItem;
+  switch(type) {
+    case BufferInfo::StatusBuffer:
+      fmtType |= NetworkItem;
+      break;
+    case BufferInfo::ChannelBuffer:
+      fmtType |= ChannelBufferItem;
+      break;
+    case BufferInfo::QueryBuffer:
+      fmtType |= QueryBufferItem;
+      break;
+    default:
+      return QVariant();
+  }
+
+  QTextCharFormat fmt = _listItemFormats.value(BufferViewItem);
+  fmt.merge(_listItemFormats.value(fmtType));
+
+  BufferInfo::ActivityLevel activity = (BufferInfo::ActivityLevel)index.data(NetworkModel::BufferActivityRole).toInt();
+  if(activity & BufferInfo::Highlight) {
+    fmt.merge(_listItemFormats.value(BufferViewItem | HighlightedBuffer));
+    fmt.merge(_listItemFormats.value(fmtType | HighlightedBuffer));
+  } else if(activity & BufferInfo::NewMessage) {
+    fmt.merge(_listItemFormats.value(BufferViewItem | UnreadBuffer));
+    fmt.merge(_listItemFormats.value(fmtType | UnreadBuffer));
+  } else if(activity & BufferInfo::OtherActivity) {
+    fmt.merge(_listItemFormats.value(BufferViewItem | ActiveBuffer));
+    fmt.merge(_listItemFormats.value(fmtType | ActiveBuffer));
+  } else if(!isActive) {
+    fmt.merge(_listItemFormats.value(BufferViewItem | InactiveBuffer));
+    fmt.merge(_listItemFormats.value(fmtType | InactiveBuffer));
+  } else if(index.data(NetworkModel::UserAwayRole).toBool()) {
+    fmt.merge(_listItemFormats.value(BufferViewItem | UserAway));
+    fmt.merge(_listItemFormats.value(fmtType | UserAway));
+  }
+
+  return itemData(role, fmt);
+}
+
+QVariant UiStyle::nickViewItemData(const QModelIndex &index, int role) const {
+  NetworkModel::ItemType type = (NetworkModel::ItemType)index.data(NetworkModel::ItemTypeRole).toInt();
+
+  if(role == Qt::DecorationRole) {
+    if(!_showNickViewIcons)
+      return QVariant();
+
+    switch(type) {
+      case NetworkModel::UserCategoryItemType:
+      {
+        int categoryId = index.data(TreeModel::SortRole).toInt();
+        if(categoryId <= _opIconLimit)
+          return _categoryOpIcon;
+        if(categoryId <= _voiceIconLimit)
+          return _categoryVoiceIcon;
+        return _userOnlineIcon;
+      }
+      case NetworkModel::IrcUserItemType:
+        if(index.data(NetworkModel::ItemActiveRole).toBool())
+          return _userOnlineIcon;
+        else
+          return _userAwayIcon;
+      default:
+        return QVariant();
+    }
+  }
+
+  QTextCharFormat fmt = _listItemFormats.value(NickViewItem);
+
+  switch(type) {
+    case NetworkModel::IrcUserItemType:
+      fmt.merge(_listItemFormats.value(NickViewItem | IrcUserItem));
+      if(!index.data(NetworkModel::ItemActiveRole).toBool()) {
+        fmt.merge(_listItemFormats.value(NickViewItem | UserAway));
+        fmt.merge(_listItemFormats.value(NickViewItem | IrcUserItem | UserAway));
+      }
+      break;
+    case NetworkModel::UserCategoryItemType:
+      fmt.merge(_listItemFormats.value(NickViewItem | UserCategoryItem));
+      break;
+    default:
+      return QVariant();
+  }
+
+  return itemData(role, fmt);
+}
+
+QVariant UiStyle::itemData(int role, const QTextCharFormat &format) const {
+  switch(role) {
+    case Qt::FontRole:
+      return format.font();
+    case Qt::ForegroundRole:
+      return format.property(QTextFormat::ForegroundBrush);
+    case Qt::BackgroundRole:
+      return format.property(QTextFormat::BackgroundBrush);
+    default:
+      return QVariant();
   }
 }
 

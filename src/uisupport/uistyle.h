@@ -29,7 +29,9 @@
 #include <QPalette>
 #include <QVector>
 
+#include "bufferinfo.h"
 #include "message.h"
+#include "networkmodel.h"
 #include "settings.h"
 
 class UiStyle : public QObject{
@@ -97,20 +99,25 @@ public:
     Selected        = 0x00000004  // must be last!
   };
 
+  enum ItemFormatType {
+    BufferViewItem    = 0x00000001,
+    NickViewItem      = 0x00000002,
+
+    NetworkItem       = 0x00000010,
+    ChannelBufferItem = 0x00000020,
+    QueryBufferItem   = 0x00000040,
+    IrcUserItem       = 0x00000080,
+    UserCategoryItem  = 0x00000100,
+
+    InactiveBuffer    = 0x00001000,
+    ActiveBuffer      = 0x00002000,
+    UnreadBuffer      = 0x00004000,
+    HighlightedBuffer = 0x00008000,
+    UserAway          = 0x00010000
+  };
+
   enum ColorRole {
     MarkerLine,
-    ActiveNick,
-    InactiveNick,
-    Channel,
-    InactiveChannel,
-    ActiveChannel,
-    UnreadChannel,
-    HighlightedChannel,
-    Query,
-    InactiveQuery,
-    ActiveQuery,
-    UnreadQuery,
-    HighlightedQuery,
     NumRoles  // must be last!
   };
 
@@ -129,12 +136,13 @@ public:
   QTextCharFormat format(quint32 formatType, quint32 messageLabel = 0);
   QFontMetricsF *fontMetrics(quint32 formatType, quint32 messageLabel = 0);
 
-  inline QFont defaultFont() const { return _defaultFont; }
+  QList<QTextLayout::FormatRange> toTextLayoutList(const FormatList &, int textLength, quint32 messageLabel = 0);
 
   inline const QBrush &brush(ColorRole role) const { return _uiStylePalette.at((int) role); }
   inline void setBrush(ColorRole role, const QBrush &brush) { _uiStylePalette[(int) role] = brush; }
 
-  QList<QTextLayout::FormatRange> toTextLayoutList(const FormatList &, int textLength, quint32 messageLabel = 0);
+  QVariant bufferViewItemData(const QModelIndex &networkModelIndex, int role) const;
+  QVariant nickViewItemData(const QModelIndex &networkModelIndex, int role) const;
 
 public slots:
   void reload();
@@ -156,14 +164,31 @@ protected:
   static QString formatCode(FormatType);
   static void setTimestampFormatString(const QString &format);
 
+  QVariant itemData(int role, const QTextCharFormat &format) const;
+
+private slots:
+  void showUserStateIconsChanged();
+
 private:
-  QFont _defaultFont;
   QVector<QBrush> _uiStylePalette;
   QBrush _markerLineBrush;
   QHash<quint64, QTextCharFormat> _formatCache;
   QHash<quint64, QFontMetricsF *> _metricsCache;
+  QHash<quint32, QTextCharFormat> _listItemFormats;
   static QHash<QString, FormatType> _formatCodes;
   static QString _timestampFormatString;
+
+  QPixmap _channelJoinedIcon;
+  QPixmap _channelPartedIcon;
+  QPixmap _userOfflineIcon;
+  QPixmap _userOnlineIcon;
+  QPixmap _userAwayIcon;
+  QPixmap _categoryOpIcon;
+  QPixmap _categoryVoiceIcon;
+  int _opIconLimit;
+  int _voiceIconLimit;
+  bool _showNickViewIcons;
+  bool _showBufferViewIcons;
 };
 
 class UiStyle::StyledMessage : public Message {

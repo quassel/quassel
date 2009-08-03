@@ -53,18 +53,6 @@ QssParser::QssParser()
   _uiStylePalette = QVector<QBrush>(UiStyle::NumRoles, QBrush());
 
   _uiStyleColorRoles["marker-line"] = UiStyle::MarkerLine;
-  _uiStyleColorRoles["active-nick"] = UiStyle::ActiveNick;
-  _uiStyleColorRoles["inactive-nick"] = UiStyle::InactiveNick;
-  _uiStyleColorRoles["channel"] = UiStyle::Channel;
-  _uiStyleColorRoles["inactive-channel"] = UiStyle::InactiveChannel;
-  _uiStyleColorRoles["active-channel"] = UiStyle::ActiveChannel;
-  _uiStyleColorRoles["unread-channel"] = UiStyle::UnreadChannel;
-  _uiStyleColorRoles["highlighted-channel"] = UiStyle::HighlightedChannel;
-  _uiStyleColorRoles["query"] = UiStyle::Query;
-  _uiStyleColorRoles["inactive-query"] = UiStyle::InactiveQuery;
-  _uiStyleColorRoles["active-query"] = UiStyle::ActiveQuery;
-  _uiStyleColorRoles["unread-query"] = UiStyle::UnreadQuery;
-  _uiStyleColorRoles["highlighted-query"] = UiStyle::HighlightedQuery;
 }
 
 void QssParser::processStyleSheet(QString &ss) {
@@ -80,18 +68,22 @@ void QssParser::processStyleSheet(QString &ss) {
   QRegExp paletterx("(Palette[^{]*)\\{([^}]+)\\}");
   int pos = 0;
   while((pos = paletterx.indexIn(ss, pos)) >= 0) {
-    parsePaletteData(paletterx.cap(1).trimmed(), paletterx.cap(2).trimmed());
+    parsePaletteBlock(paletterx.cap(1).trimmed(), paletterx.cap(2).trimmed());
     ss.remove(pos, paletterx.matchedLength());
   }
 
   // Now we can parse the rest of our custom blocks
-  QRegExp blockrx("((?:ChatLine|BufferList|NickList|TreeView)[^{]*)\\{([^}]+)\\}");
+  QRegExp blockrx("((?:ChatLine|ChatListItem|NickListItem)[^{]*)\\{([^}]+)\\}");
   pos = 0;
   while((pos = blockrx.indexIn(ss, pos)) >= 0) {
     //qDebug() << blockrx.cap(1) << blockrx.cap(2);
+    QString declaration = blockrx.cap(1).trimmed();
+    QString contents = blockrx.cap(2).trimmed();
 
-    if(blockrx.cap(1).startsWith("ChatLine"))
-      parseChatLineData(blockrx.cap(1).trimmed(), blockrx.cap(2).trimmed());
+    if(declaration.startsWith("ChatLine"))
+      parseChatLineBlock(declaration, contents);
+    else if(declaration.startsWith("ChatListItem") || declaration.startsWith("NickListItem"))
+      parseListItemBlock(declaration, contents);
     //else
     // TODO: add moar here
 
@@ -99,55 +91,76 @@ void QssParser::processStyleSheet(QString &ss) {
   }
 }
 
-void QssParser::parseChatLineData(const QString &decl, const QString &contents) {
+/******** Parse a whole block: declaration { contents } *******/
+
+void QssParser::parseChatLineBlock(const QString &decl, const QString &contents) {
   quint64 fmtType = parseFormatType(decl);
   if(fmtType == UiStyle::Invalid)
     return;
 
-  QTextCharFormat format;
+  _formats[fmtType].merge(parseFormat(contents));
+}
 
-  foreach(QString line, contents.split(';', QString::SkipEmptyParts)) {
-    int idx = line.indexOf(':');
-    if(idx <= 0) {
-      qWarning() << Q_FUNC_INFO << tr("Invalid property declaration: %1").arg(line.trimmed());
-      continue;
-    }
-    QString property = line.left(idx).trimmed();
-    QString value = line.mid(idx + 1).simplified();
+void QssParser::parseListItemBlock(const QString &decl, const QString &contents) {
+  quint32 fmtType = parseItemFormatType(decl);
+  if(fmtType == UiStyle::Invalid)
+    return;
 
-    if(property == "background" || property == "background-color")
-      format.setBackground(parseBrush(value));
-    else if(property == "foreground" || property == "color")
-      format.setForeground(parseBrush(value));
+  _listItemFormats[fmtType].merge(parseFormat(contents));
+}
 
-    // font-related properties
-    else if(property.startsWith("font")) {
-      if(property == "font")
-        parseFont(value, &format);
-      else if(property == "font-style")
-        parseFontStyle(value, &format);
-      else if(property == "font-weight")
-        parseFontWeight(value, &format);
-      else if(property == "font-size")
-        parseFontSize(value, &format);
-      else if(property == "font-family")
-        parseFontFamily(value, &format);
-      else {
-        qWarning() << Q_FUNC_INFO << tr("Invalid font property: %1").arg(line);
-        continue;
-      }
-    }
+// Palette { ... } specifies the application palette
+// ColorGroups can be specified like pseudo states, chaining is OR (contrary to normal CSS handling):
+//   Palette:inactive:disabled { ... } applies to both the Inactive and the Disabled state
+void QssParser::parsePaletteBlock(const QString &decl, const QString &contents) {
+  QList<QPalette::ColorGroup> colorGroups;
 
-    else {
-      qWarning() << Q_FUNC_INFO << tr("Unknown ChatLine property: %1").arg(property);
+  // Check if we want to apply this palette definition for particular ColorGroups
+  QRegExp rx("Palette((:(normal|active|inactive|disabled))*)");
+  if(!rx.exactMatch(decl)) {
+    qWarning() << Q_FUNC_INFO << tr("Invalid block declaration: %1").arg(decl);
+    return;
+  }
+  if(!rx.cap(1).isEmpty()) {
+    QStringList groups = rx.cap(1).split(':', QString::SkipEmptyParts);
+    foreach(QString g, groups) {
+      if((g == "normal" || g == "active") && !colorGroups.contains(QPalette::Active))
+        colorGroups.append(QPalette::Active);
+      else if(g == "inactive" && !colorGroups.contains(QPalette::Inactive))
+        colorGroups.append(QPalette::Inactive);
+      else if(g == "disabled" && !colorGroups.contains(QPalette::Disabled))
+        colorGroups.append(QPalette::Disabled);
     }
   }
 
-  _formats[fmtType].merge(format);
+  // Now let's go through the roles
+  foreach(QString line, contents.split(';', QString::SkipEmptyParts)) {
+    int idx = line.indexOf(':');
+    if(idx <= 0) {
+      qWarning() << Q_FUNC_INFO << tr("Invalid palette role assignment: %1").arg(line.trimmed());
+      continue;
+    }
+    QString rolestr = line.left(idx).trimmed();
+    QString brushstr = line.mid(idx + 1).trimmed();
+
+    if(_paletteColorRoles.contains(rolestr)) {
+      QBrush brush = parseBrush(brushstr);
+      if(colorGroups.count()) {
+        foreach(QPalette::ColorGroup group, colorGroups)
+          _palette.setBrush(group, _paletteColorRoles.value(rolestr), brush);
+      } else
+        _palette.setBrush(_paletteColorRoles.value(rolestr), brush);
+    } else if(_uiStyleColorRoles.contains(rolestr)) {
+      _uiStylePalette[_uiStyleColorRoles.value(rolestr)] = parseBrush(brushstr);
+    } else
+      qWarning() << Q_FUNC_INFO << tr("Unknown palette role name: %1").arg(rolestr);
+  }
 }
 
+/******** Determine format types from a block declaration ********/
+
 quint64 QssParser::parseFormatType(const QString &decl) {
-  QRegExp rx("ChatLine(?:::(\\w+))?(?:#(\\w+))?(?:\\[([=-,\\\"\\w\\s]+)\\])?\\s*");
+  QRegExp rx("ChatLine(?:::(\\w+))?(?:#(\\w+))?(?:\\[([=-,\\\"\\w\\s]+)\\])?");
   // $1: subelement; $2: msgtype; $3: conditionals
   if(!rx.exactMatch(decl)) {
     qWarning() << Q_FUNC_INFO << tr("Invalid block declaration: %1").arg(decl);
@@ -285,53 +298,125 @@ quint64 QssParser::parseFormatType(const QString &decl) {
   return fmtType;
 }
 
-// Palette { ... } specifies the application palette
-// ColorGroups can be specified like pseudo states, chaining is OR (contrary to normal CSS handling):
-//   Palette:inactive:disabled { ... } applies to both the Inactive and the Disabled state
-void QssParser::parsePaletteData(const QString &decl, const QString &contents) {
-  QList<QPalette::ColorGroup> colorGroups;
-
-  // Check if we want to apply this palette definition for particular ColorGroups
-  QRegExp rx("Palette((:(normal|active|inactive|disabled))*)");
+// FIXME: Code duplication
+quint32 QssParser::parseItemFormatType(const QString &decl) {
+  QRegExp rx("(Chat|Nick)ListItem(?:\\[([=-,\\\"\\w\\s]+)\\])?");
+  // $1: item type; $2: properties
   if(!rx.exactMatch(decl)) {
     qWarning() << Q_FUNC_INFO << tr("Invalid block declaration: %1").arg(decl);
-    return;
+    return UiStyle::Invalid;
   }
-  if(!rx.cap(1).isEmpty()) {
-    QStringList groups = rx.cap(1).split(':', QString::SkipEmptyParts);
-    foreach(QString g, groups) {
-      if((g == "normal" || g == "active") && !colorGroups.contains(QPalette::Active))
-        colorGroups.append(QPalette::Active);
-      else if(g == "inactive" && !colorGroups.contains(QPalette::Inactive))
-        colorGroups.append(QPalette::Inactive);
-      else if(g == "disabled" && !colorGroups.contains(QPalette::Disabled))
-        colorGroups.append(QPalette::Disabled);
+  QString mainItemType = rx.cap(1);
+  QString properties = rx.cap(2);
+
+  quint32 fmtType = 0;
+
+  // Next up: properties
+  QString type, state;
+  if(!properties.isEmpty()) {
+    QHash<QString, QString> props;
+    QRegExp propRx("\\s*([\\w\\-]+)\\s*=\\s*\"([\\w\\-]+)\"\\s*");
+    foreach(const QString &prop, properties.split(',', QString::SkipEmptyParts)) {
+      if(!propRx.exactMatch(prop)) {
+        qWarning() << Q_FUNC_INFO << tr("Invalid proplist %1").arg(prop);
+        return UiStyle::Invalid;
+      }
+      props[propRx.cap(1)] = propRx.cap(2);
     }
+    type = props.value("type");
+    state = props.value("state");
   }
 
-  // Now let's go through the roles
-  foreach(QString line, contents.split(';', QString::SkipEmptyParts)) {
+  if(mainItemType == "Chat") {
+    fmtType |= UiStyle::BufferViewItem;
+    if(!type.isEmpty()) {
+      if(type == "network")
+        fmtType |= UiStyle::NetworkItem;
+      else if(type == "channel")
+        fmtType |= UiStyle::ChannelBufferItem;
+      else if(type == "query")
+        fmtType |= UiStyle::QueryBufferItem;
+      else {
+        qWarning() << Q_FUNC_INFO << tr("Invalid chatlist item type %1").arg(type);
+        return UiStyle::Invalid;
+      }
+    }
+    if(!state.isEmpty()) {
+      if(state == "inactive")
+        fmtType |= UiStyle::InactiveBuffer;
+      else if(state == "event")
+        fmtType |= UiStyle::ActiveBuffer;
+      else if(state == "unread-message")
+        fmtType |= UiStyle::UnreadBuffer;
+      else if(state == "highlighted")
+        fmtType |= UiStyle::HighlightedBuffer;
+      else if(state == "away")
+        fmtType |= UiStyle::UserAway;
+      else {
+        qWarning() << Q_FUNC_INFO << tr("Invalid chatlist state %1").arg(state);
+        return UiStyle::Invalid;
+      }
+    }
+  } else { // NickList
+    fmtType |= UiStyle::NickViewItem;
+    if(!type.isEmpty()) {
+      if(type == "user") {
+        fmtType |= UiStyle::IrcUserItem;
+        if(state == "away")
+          fmtType |= UiStyle::UserAway;
+      } else if(type == "category")
+        fmtType |= UiStyle::UserCategoryItem;
+    }
+  }
+  return fmtType;
+}
+
+/******** Parse a whole format attribute block ********/
+
+QTextCharFormat QssParser::parseFormat(const QString &qss) {
+  QTextCharFormat format;
+
+  foreach(QString line, qss.split(';', QString::SkipEmptyParts)) {
     int idx = line.indexOf(':');
     if(idx <= 0) {
-      qWarning() << Q_FUNC_INFO << tr("Invalid palette role assignment: %1").arg(line.trimmed());
+      qWarning() << Q_FUNC_INFO << tr("Invalid property declaration: %1").arg(line.trimmed());
       continue;
     }
-    QString rolestr = line.left(idx).trimmed();
-    QString brushstr = line.mid(idx + 1).trimmed();
+    QString property = line.left(idx).trimmed();
+    QString value = line.mid(idx + 1).simplified();
 
-    if(_paletteColorRoles.contains(rolestr)) {
-      QBrush brush = parseBrush(brushstr);
-      if(colorGroups.count()) {
-        foreach(QPalette::ColorGroup group, colorGroups)
-          _palette.setBrush(group, _paletteColorRoles.value(rolestr), brush);
-      } else
-        _palette.setBrush(_paletteColorRoles.value(rolestr), brush);
-    } else if(_uiStyleColorRoles.contains(rolestr)) {
-      _uiStylePalette[_uiStyleColorRoles.value(rolestr)] = parseBrush(brushstr);
-    } else
-      qWarning() << Q_FUNC_INFO << tr("Unknown palette role name: %1").arg(rolestr);
+    if(property == "background" || property == "background-color")
+      format.setBackground(parseBrush(value));
+    else if(property == "foreground" || property == "color")
+      format.setForeground(parseBrush(value));
+
+    // font-related properties
+    else if(property.startsWith("font")) {
+      if(property == "font")
+        parseFont(value, &format);
+      else if(property == "font-style")
+        parseFontStyle(value, &format);
+      else if(property == "font-weight")
+        parseFontWeight(value, &format);
+      else if(property == "font-size")
+        parseFontSize(value, &format);
+      else if(property == "font-family")
+        parseFontFamily(value, &format);
+      else {
+        qWarning() << Q_FUNC_INFO << tr("Invalid font property: %1").arg(line);
+        continue;
+      }
+    }
+
+    else {
+      qWarning() << Q_FUNC_INFO << tr("Unknown ChatLine property: %1").arg(property);
+    }
   }
+
+  return format;
 }
+
+/******** Brush ********/
 
 QBrush QssParser::parseBrush(const QString &str, bool *ok) {
   if(ok)
