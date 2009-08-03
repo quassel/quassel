@@ -80,7 +80,7 @@ void TopicLabel::setText(const QString &text) {
 
   UiStyle::StyledString styledContents = QtUi::style()->styleString(QtUi::style()->mircToInternal(text), UiStyle::PlainMsg);
   plainText = styledContents.plainText;
-  formatList = QtUi::style()->toTextLayoutList(styledContents.formatList, plainText.length());
+  formatList = QtUi::style()->toTextLayoutList(styledContents.formatList, plainText.length(), 0);
   int height = 1;
   foreach(QTextLayout::FormatRange fr, formatList) {
     height = qMax(height, QFontMetrics(fr.format.font()).height());

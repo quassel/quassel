@@ -371,7 +371,7 @@ ContentsChatItem::ContentsChatItem(const qreal &width, const QPointF &pos, QGrap
 }
 
 QFontMetricsF *ContentsChatItem::fontMetrics() const {
-  return QtUi::style()->fontMetrics(data(ChatLineModel::FormatRole).value<UiStyle::FormatList>().at(0).second);
+  return QtUi::style()->fontMetrics(data(ChatLineModel::FormatRole).value<UiStyle::FormatList>().at(0).second, 0);
 }
 
 ContentsChatItem::~ContentsChatItem() {

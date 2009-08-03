@@ -107,7 +107,7 @@ void UiStyle::loadStyleSheet() {
     foreach(quint64 fmtType, parser.formats().keys()) {
       QTextCharFormat fmt = baseFmt;
       fmt.merge(parser.formats().value(fmtType));
-      _formatCache[fmtType] = fmt;
+      _formats[fmtType] = fmt;
     }
     _listItemFormats = parser.listItemFormats();
 
@@ -279,12 +279,12 @@ QVariant UiStyle::itemData(int role, const QTextCharFormat &format) const {
 
 /******** Caching *******/
 
-QTextCharFormat UiStyle::cachedFormat(quint64 key) const {
-  return _formatCache.value(key, QTextCharFormat());
+QTextCharFormat UiStyle::format(quint64 key) const {
+  return _formats.value(key, QTextCharFormat());
 }
 
 QTextCharFormat UiStyle::cachedFormat(quint32 formatType, quint32 messageLabel) const {
-  return cachedFormat(formatType | ((quint64)messageLabel << 32));
+  return _formatCache.value(formatType | ((quint64)messageLabel << 32), QTextCharFormat());
 }
 
 void UiStyle::setCachedFormat(const QTextCharFormat &format, quint32 formatType, quint32 messageLabel) {
@@ -312,7 +312,7 @@ QTextCharFormat UiStyle::format(quint32 ftype, quint32 label_) {
   quint64 label = (quint64)label_ << 32;
 
   // check if we have exactly this format readily cached already
-  QTextCharFormat fmt = cachedFormat(label|ftype);
+  QTextCharFormat fmt = cachedFormat(ftype, label_);
   if(fmt.properties().count())
     return fmt;
 
@@ -332,7 +332,7 @@ void UiStyle::mergeFormat(QTextCharFormat &fmt, quint32 ftype, quint64 label) {
 
   // TODO: allow combinations for mirc formats and colors (each), e.g. setting a special format for "bold and italic"
   //       or "foreground 01 and background 03"
-  if((ftype & 0xfff0)) { // element format
+  if((ftype & 0xfff00)) { // element format
     for(quint32 mask = 0x00100; mask <= 0x40000; mask <<= 1) {
       if(ftype & mask) {
         mergeSubElementFormat(fmt, mask | 0xff, label);
@@ -357,10 +357,10 @@ void UiStyle::mergeFormat(QTextCharFormat &fmt, quint32 ftype, quint64 label) {
 // Merge a subelement format into an existing message format
 void UiStyle::mergeSubElementFormat(QTextCharFormat& fmt, quint32 ftype, quint64 label) {
   quint64 key = ftype | label;
-  fmt.merge(cachedFormat(key & Q_UINT64_C(0x0000ffffffffff00)));  // label + subelement
-  fmt.merge(cachedFormat(key & Q_UINT64_C(0x0000ffffffffffff)));  // label + subelement + msgtype
-  fmt.merge(cachedFormat(key & Q_UINT64_C(0xffffffffffffff00)));  // label + subelement + nickhash
-  fmt.merge(cachedFormat(key & Q_UINT64_C(0xffffffffffffffff)));  // label + subelement + nickhash + msgtype
+  fmt.merge(format(key & Q_UINT64_C(0x0000ffffffffff00)));  // label + subelement
+  fmt.merge(format(key & Q_UINT64_C(0x0000ffffffffffff)));  // label + subelement + msgtype
+  fmt.merge(format(key & Q_UINT64_C(0xffffffffffffff00)));  // label + subelement + nickhash
+  fmt.merge(format(key & Q_UINT64_C(0xffffffffffffffff)));  // label + subelement + nickhash + msgtype
 }
 
 UiStyle::FormatType UiStyle::formatType(Message::Type msgType) {

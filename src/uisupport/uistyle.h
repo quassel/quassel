@@ -133,10 +133,10 @@ public:
   static QString mircToInternal(const QString &);
   static inline QString timestampFormatString() { return _timestampFormatString; }
 
-  QTextCharFormat format(quint32 formatType, quint32 messageLabel = 0);
-  QFontMetricsF *fontMetrics(quint32 formatType, quint32 messageLabel = 0);
+  QTextCharFormat format(quint32 formatType, quint32 messageLabel);
+  QFontMetricsF *fontMetrics(quint32 formatType, quint32 messageLabel);
 
-  QList<QTextLayout::FormatRange> toTextLayoutList(const FormatList &, int textLength, quint32 messageLabel = 0);
+  QList<QTextLayout::FormatRange> toTextLayoutList(const FormatList &, int textLength, quint32 messageLabel);
 
   inline const QBrush &brush(ColorRole role) const { return _uiStylePalette.at((int) role); }
   inline void setBrush(ColorRole role, const QBrush &brush) { _uiStylePalette[(int) role] = brush; }
@@ -154,9 +154,9 @@ protected:
   void loadStyleSheet();
   QString loadStyleSheet(const QString &name, bool shouldExist = false);
 
-  QTextCharFormat cachedFormat(quint64 key) const;
-  QTextCharFormat cachedFormat(quint32 formatType, quint32 messageLabel = 0) const;
-  void setCachedFormat(const QTextCharFormat &format, quint32 formatType, quint32 messageLabel = 0);
+  QTextCharFormat format(quint64 key) const;
+  QTextCharFormat cachedFormat(quint32 formatType, quint32 messageLabel) const;
+  void setCachedFormat(const QTextCharFormat &format, quint32 formatType, quint32 messageLabel);
   void mergeFormat(QTextCharFormat &format, quint32 formatType, quint64 messageLabel);
   void mergeSubElementFormat(QTextCharFormat &format, quint32 formatType, quint64 messageLabel);
 
@@ -172,6 +172,7 @@ private slots:
 private:
   QVector<QBrush> _uiStylePalette;
   QBrush _markerLineBrush;
+  QHash<quint64, QTextCharFormat> _formats;
   QHash<quint64, QTextCharFormat> _formatCache;
   QHash<quint64, QFontMetricsF *> _metricsCache;
   QHash<quint32, QTextCharFormat> _listItemFormats;
