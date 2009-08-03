@@ -37,7 +37,6 @@
 #include "client.h"
 #include "contextmenuactionprovider.h"
 #include "graphicalui.h"
-#include "iconloader.h"
 #include "network.h"
 #include "networkmodel.h"
 #include "contextmenuactionprovider.h"
@@ -490,44 +489,15 @@ public:
 };
 
 BufferViewDelegate::BufferViewDelegate(QObject *parent)
-  : QStyledItemDelegate(parent),
-    _updateColors(false)
+  : QStyledItemDelegate(parent)
 {
-  loadColors();
-
-  UiSettings s("QtUiStyle/Colors");
-  s.notify("inactiveActivityFG", this, SLOT(colorsChanged()));
-  s.notify("noActivityFG", this, SLOT(colorsChanged()));
-  s.notify("highlightActivityFG", this, SLOT(colorsChanged()));
-  s.notify("newMessageActivityFG", this, SLOT(colorsChanged()));
-  s.notify("otherActivityFG", this, SLOT(colorsChanged()));
-}
-
-void BufferViewDelegate::colorsChanged() {
-  // avoid mutliple unneded reloads of all colors
-  if(_updateColors)
-    return;
-  _updateColors = true;
-  QCoreApplication::postEvent(this, new ColorsChangedEvent());
 }
 
 void BufferViewDelegate::customEvent(QEvent *event) {
   if(event->type() != QEvent::User)
     return;
 
-  loadColors();
-  _updateColors = false;
-
   event->accept();
-}
-
-void BufferViewDelegate::loadColors() {
-  UiSettings s("QtUiStyle/Colors");
-  _FgColorInactiveActivity = s.value("inactiveActivityFG", QVariant(QColor(Qt::gray))).value<QColor>();
-  _FgColorNoActivity = s.value("noActivityFG", QVariant(QColor(Qt::black))).value<QColor>();
-  _FgColorHighlightActivity = s.value("highlightActivityFG", QVariant(QColor(Qt::magenta))).value<QColor>();
-  _FgColorNewMessageActivity = s.value("newMessageActivityFG", QVariant(QColor(Qt::green))).value<QColor>();
-  _FgColorOtherActivity = s.value("otherActivityFG", QVariant(QColor(Qt::darkGreen))).value<QColor>();
 }
 
 bool BufferViewDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index) {
@@ -560,29 +530,6 @@ bool BufferViewDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, c
   model->setData(index, state, Qt::CheckStateRole);
   return true;
 }
-
-void BufferViewDelegate::initStyleOption(QStyleOptionViewItem *option, const QModelIndex &index) const {
-  QStyledItemDelegate::initStyleOption(option, index);
-
-  if(!index.isValid())
-    return;
-
-  BufferInfo::ActivityLevel activity = (BufferInfo::ActivityLevel)index.data(NetworkModel::BufferActivityRole).toInt();
-
-  QColor fgColor = _FgColorNoActivity;
-  if(activity & BufferInfo::Highlight) {
-    fgColor = _FgColorHighlightActivity;
-  } else if(activity & BufferInfo::NewMessage) {
-    fgColor = _FgColorNewMessageActivity;
-  } else if(activity & BufferInfo::OtherActivity) {
-    fgColor = _FgColorOtherActivity;
-  } else if(!index.data(NetworkModel::ItemActiveRole).toBool() || index.data(NetworkModel::UserAwayRole).toBool()) {
-    fgColor = _FgColorInactiveActivity;
-  }
-
-  option->palette.setColor(QPalette::Text, fgColor);
-}
-
 
 // ==============================
 //  BufferView Dock

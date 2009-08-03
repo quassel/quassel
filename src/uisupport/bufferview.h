@@ -25,6 +25,7 @@
 #include <QMenu>
 #include <QDockWidget>
 #include <QModelIndex>
+#include <QStyledItemDelegate>
 #include <QTreeView>
 #include <QPointer>
 
@@ -98,7 +99,6 @@ private:
 // ******************************
 //  BufferViewDelgate
 // ******************************
-#include <QStyledItemDelegate>
 
 class BufferViewDelegate : public QStyledItemDelegate {
   Q_OBJECT
@@ -109,22 +109,7 @@ public:
 
 protected:
   virtual void customEvent(QEvent *event);
-  virtual void initStyleOption(QStyleOptionViewItem *option, const QModelIndex &index) const;
-
-private slots:
-  void colorsChanged();
-  void loadColors();
-
-private:
-  QColor _FgColorInactiveActivity;
-  QColor _FgColorNoActivity;
-  QColor _FgColorHighlightActivity;
-  QColor _FgColorNewMessageActivity;
-  QColor _FgColorOtherActivity;
-
-  bool _updateColors;
 };
-
 
 // ==============================
 //  BufferView Dock

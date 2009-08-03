@@ -24,7 +24,6 @@
 #include <QAction>
 #include <QDropEvent>
 #include <QFlags>
-#include <QPixmap>
 #include <QPointer>
 #include <QSet>
 #include <QSortFilterProxyModel>
@@ -57,8 +56,6 @@ public:
   virtual bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent);
 
   QVariant data(const QModelIndex &index, int role) const;
-  QVariant icon(const QModelIndex &index) const;
-//   QVariant foreground(const QModelIndex &index) const;
   QVariant checkedState(const QModelIndex &index) const;
 
   bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
@@ -89,19 +86,11 @@ signals:
 
 private slots:
   void configInitialized();
-  void showUserStateIconsChanged();
   void enableEditMode(bool enable);
 
 private:
   QPointer<BufferViewConfig> _config;
   Qt::SortOrder _sortOrder;
-
-  QPixmap _channelJoinedIcon;
-  QPixmap _channelPartedIcon;
-  QPixmap _userOfflineIcon;
-  QPixmap _userAwayIcon;
-  QPixmap _userOnlineIcon;
-  bool _showUserStateIcons;
 
   bool _editMode;
   QAction _enableEditMode;

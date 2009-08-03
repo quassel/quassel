@@ -29,8 +29,10 @@
 #include "buffersettings.h"
 #include "client.h"
 #include "clientbufferviewconfig.h"
+#include "graphicalui.h"
 #include "iconloader.h"
 #include "networkmodel.h"
+#include "uistyle.h"
 
 class CheckRemovalEvent : public QEvent {
 public:
@@ -45,11 +47,6 @@ BufferViewFilter::BufferViewFilter(QAbstractItemModel *model, BufferViewConfig *
   : QSortFilterProxyModel(model),
     _config(0),
     _sortOrder(Qt::AscendingOrder),
-    _channelJoinedIcon(SmallIcon("irc-channel-active")),
-    _channelPartedIcon(SmallIcon("irc-channel-inactive")),
-    _userOfflineIcon(SmallIcon("im-user-offline")),
-    _userAwayIcon(SmallIcon("im-user-away")),
-    _userOnlineIcon(SmallIcon("im-user")),
     _editMode(false),
     _enableEditMode(tr("Show / Hide buffers"), this)
 {
@@ -65,14 +62,6 @@ BufferViewFilter::BufferViewFilter(QAbstractItemModel *model, BufferViewConfig *
   _enableEditMode.setChecked(_editMode);
   connect(&_enableEditMode, SIGNAL(toggled(bool)), this, SLOT(enableEditMode(bool)));
 
-  BufferSettings bufferSettings;
-  _showUserStateIcons = bufferSettings.showUserStateIcons();
-  bufferSettings.notify("ShowUserStateIcons", this, SLOT(showUserStateIconsChanged()));
-}
-
-void BufferViewFilter::showUserStateIconsChanged() {
-  BufferSettings bufferSettings;
-  _showUserStateIcons = bufferSettings.showUserStateIcons();
 }
 
 void BufferViewFilter::setConfig(BufferViewConfig *config) {
@@ -401,45 +390,15 @@ bool BufferViewFilter::networkLessThan(const QModelIndex &source_left, const QMo
 
 QVariant BufferViewFilter::data(const QModelIndex &index, int role) const {
   switch(role) {
+  case Qt::FontRole:
+  case Qt::ForegroundRole:
+  case Qt::BackgroundRole:
   case Qt::DecorationRole:
-    return icon(index);
+    return GraphicalUi::uiStyle()->bufferViewItemData(mapToSource(index), role);
   case Qt::CheckStateRole:
     return checkedState(index);
   default:
     return QSortFilterProxyModel::data(index, role);
-  }
-}
-
-QVariant BufferViewFilter::icon(const QModelIndex &index) const {
-  if(!_showUserStateIcons || (config() && config()->disableDecoration()))
-    return QVariant();
-
-  if(index.column() != 0)
-    return QVariant();
-
-  QModelIndex source_index = mapToSource(index);
-  NetworkModel::ItemType itemType = (NetworkModel::ItemType)sourceModel()->data(source_index, NetworkModel::ItemTypeRole).toInt();
-  BufferInfo::Type bufferType = (BufferInfo::Type)sourceModel()->data(source_index, NetworkModel::BufferTypeRole).toInt();
-  bool isActive = sourceModel()->data(source_index, NetworkModel::ItemActiveRole).toBool();
-
-  if(itemType != NetworkModel::BufferItemType)
-    return QVariant();
-
-  switch(bufferType) {
-  case BufferInfo::ChannelBuffer:
-    if(isActive)
-      return _channelJoinedIcon;
-    else
-      return _channelPartedIcon;
-  case BufferInfo::QueryBuffer:
-    if(!isActive)
-      return _userOfflineIcon;
-    if(sourceModel()->data(source_index, NetworkModel::UserAwayRole).toBool())
-      return _userAwayIcon;
-    else
-      return _userOnlineIcon;
-  default:
-    return QVariant();
   }
 }
 
