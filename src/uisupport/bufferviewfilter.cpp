@@ -394,6 +394,8 @@ QVariant BufferViewFilter::data(const QModelIndex &index, int role) const {
   case Qt::ForegroundRole:
   case Qt::BackgroundRole:
   case Qt::DecorationRole:
+    if((config() && config()->disableDecoration()))
+      return QVariant();
     return GraphicalUi::uiStyle()->bufferViewItemData(mapToSource(index), role);
   case Qt::CheckStateRole:
     return checkedState(index);
