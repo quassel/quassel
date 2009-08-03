@@ -23,8 +23,6 @@
 
 #include <QSortFilterProxyModel>
 
-#include <QPixmap>
-
 #include "types.h"
 
 class NetworkModel;
@@ -41,23 +39,10 @@ public:
 
 protected:
   virtual bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
-
-private slots:
-  void showUserStateIconsChanged();
+  QVariant styleData(const QModelIndex &index, int role) const;
 
 private:
   BufferId _bufferId;
-
-  QHash<int, QPixmap> _categoryIconHash;
-  QPixmap _userOnlineIcon;
-  QPixmap _userAwayIcon;
-  QPixmap _categoryOpIcon;
-  QPixmap _categoryVoiceIcon;
-  int _opIconLimit;
-  int _voiceIconLimit;
-  bool _showUserStateIcons;
-
-  void loadColors();
 };
 
 #endif

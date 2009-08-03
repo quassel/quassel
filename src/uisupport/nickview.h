@@ -55,23 +55,4 @@ private:
   friend class NickListWidget;  // needs selectedIndexes()
 };
 
-// ******************************
-//  NickViewDelgate
-// ******************************
-#include <QStyledItemDelegate>
-
-class NickViewDelegate : public QStyledItemDelegate {
-  Q_OBJECT
-
-public:
-  NickViewDelegate(QObject *parent = 0);
-
-protected:
-  virtual void initStyleOption(QStyleOptionViewItem *option, const QModelIndex &index) const;
-
-private:
-  QColor _FgOnlineStatus;
-  QColor _FgAwayStatus;
-};
-
 #endif

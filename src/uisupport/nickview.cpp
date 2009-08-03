@@ -44,11 +44,6 @@ public:
 NickView::NickView(QWidget *parent)
   : QTreeView(parent)
 {
-  QAbstractItemDelegate *oldDelegate = itemDelegate();
-  NickViewDelegate *newDelegate = new NickViewDelegate(this);
-  setItemDelegate(newDelegate);
-  delete oldDelegate;
-
   setIndentation(10);
   setAnimated(true);
   header()->hide();
@@ -174,29 +169,4 @@ void NickView::customEvent(QEvent *event) {
     }
   }
   event->accept();
-}
-
-
-// ****************************************
-//  NickViewDelgate
-// ****************************************
-NickViewDelegate::NickViewDelegate(QObject *parent)
-  : QStyledItemDelegate(parent)
-{
-  UiSettings s("QtUiStyle/Colors");
-  _FgOnlineStatus = s.value("onlineStatusFG", QVariant(QColor(Qt::black))).value<QColor>();
-  _FgAwayStatus = s.value("awayStatusFG", QVariant(QColor(Qt::gray))).value<QColor>();
-}
-
-void NickViewDelegate::initStyleOption(QStyleOptionViewItem *option, const QModelIndex &index) const {
-  QStyledItemDelegate::initStyleOption(option, index);
-
-  if(!index.isValid())
-    return;
-
-  QColor fgColor = _FgOnlineStatus;
-  if(!index.data(NetworkModel::ItemActiveRole).toBool())
-    fgColor = _FgAwayStatus;
-
-  option->palette.setColor(QPalette::Text, fgColor);
 }
