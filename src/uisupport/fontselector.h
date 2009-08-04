@@ -27,17 +27,13 @@
 class FontSelector : public QWidget {
   Q_OBJECT
   Q_PROPERTY(QFont selectedFont READ selectedFont WRITE setSelectedFont)
-  Q_PROPERTY(QString text READ text WRITE setText)
 
 public:
   FontSelector(QWidget *parent = 0);
-  FontSelector(const QString &label, QWidget *parent = 0);
 
   inline const QFont &selectedFont() const { return _font; }
-  inline QString text() const { return _label->text(); }
 
 public slots:
-  void setText(const QString &label);
   void setSelectedFont(const QFont &font);
 
 signals:
@@ -51,9 +47,7 @@ protected slots:
 
 private:
   QFont _font;
-  QLabel *_demo, *_label;
-
-  void init(const QString &label = "Font");
+  QLabel *_demo;
 };
 
 #endif // FONTSELECTOR_H_

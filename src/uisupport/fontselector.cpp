@@ -27,19 +27,10 @@
 #include "fontselector.h"
 
 FontSelector::FontSelector(QWidget *parent) : QWidget(parent) {
-  init();
-}
-
-FontSelector::FontSelector(const QString &label, QWidget *parent) : QWidget(parent) {
-  init(label);
-}
-
-void FontSelector::init(const QString &label) {
   QHBoxLayout *layout = new QHBoxLayout(this);
   QPushButton *chooseButton = new QPushButton(tr("Choose..."), this);
   connect(chooseButton, SIGNAL(clicked()), SLOT(chooseFont()));
 
-  layout->addWidget(_label = new QLabel(label));
   layout->addWidget(_demo = new QLabel("Font"));
   layout->addWidget(chooseButton);
   layout->setContentsMargins(0, 0, 0, 0);
@@ -48,10 +39,6 @@ void FontSelector::init(const QString &label) {
   _demo->setFrameShadow(QFrame::Sunken);
   _demo->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
   _font = font();
-}
-
-void FontSelector::setText(const QString &label) {
-  _label->setText(label);
 }
 
 void FontSelector::setSelectedFont(const QFont &font) {
