@@ -59,8 +59,9 @@ void QtUiStyle::generateSettingsQss() const {
     desc += "normal ";
   desc += QString("%1pt \"%2\"").arg(font.pointSize()).arg(font.family());
 
-  out << "// ChatView Font\n\n"
-      << "ChatLine { " << desc << "; }\n\n";
+  if(fs.value("UseCustomChatViewFont").toBool())
+    out << "// ChatView Font\n\n"
+        << "ChatLine { " << desc << "; }\n\n";
 
   QtUiStyleSettings s("Colors");
   if(s.value("UseChatViewColors").toBool()) {

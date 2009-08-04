@@ -52,19 +52,36 @@
     </layout>
    </item>
    <item>
-    <widget class="FontSelector" name="chatViewFont" native="true">
-     <property name="text" stdset="0">
-      <string>Chat window font:</string>
-     </property>
-     <property name="settingsKey" stdset="0">
-      <string>/QtUiStyle/Fonts/ChatView</string>
-     </property>
-     <property name="defaultValue" stdset="0">
-      <font>
-       <family>Monospace</family>
-      </font>
-     </property>
-    </widget>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="QCheckBox" name="customChatViewFont">
+       <property name="text">
+        <string>Custom chat window font:</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+       <property name="settingsKey" stdset="0">
+        <string>/QtUiStyle/Fonts/UseCustomChatViewFont</string>
+       </property>
+       <property name="defaultValue" stdset="0">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="FontSelector" name="chatViewFont" native="true">
+       <property name="settingsKey" stdset="0">
+        <string>/QtUiStyle/Fonts/ChatView</string>
+       </property>
+       <property name="defaultValue" stdset="0">
+        <font>
+         <family>Monospace</family>
+        </font>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
    <item>
     <widget class="QCheckBox" name="allowMircColors">
@@ -773,5 +790,22 @@
   <tabstop>senderColorSelf</tabstop>
  </tabstops>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>customChatViewFont</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>chatViewFont</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>205</x>
+     <y>48</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>304</x>
+     <y>50</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
