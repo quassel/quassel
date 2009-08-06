@@ -1,0 +1,438 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ItemViewSettingsPage</class>
+ <widget class="QWidget" name="ItemViewSettingsPage">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>374</width>
+    <height>508</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QCheckBox" name="useCustomItemViewFont">
+       <property name="text">
+        <string>Custom font:</string>
+       </property>
+       <property name="settingsKey" stdset="0">
+        <string>/UiStyle/Fonts/UseCustomItemViewFont</string>
+       </property>
+       <property name="defaultValue" stdset="0">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="FontSelector" name="widget" native="true">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="settingsKey" stdset="0">
+        <string>/UiStyle/Fonts/ItemView</string>
+       </property>
+       <property name="defaultValue" stdset="0">
+        <font/>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="showItemViewIcons">
+     <property name="text">
+      <string>Show icons</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+     <property name="settingsKey" stdset="0">
+      <string>/UiStyle/ShowItemViewIcons</string>
+     </property>
+     <property name="defaultValue" stdset="0">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Chat List</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QCheckBox" name="displayTopicInTooltip">
+        <property name="text">
+         <string>Display topic in tooltip</string>
+        </property>
+        <property name="settingsKey" stdset="0">
+         <string>DisplayTopicInTooltip</string>
+        </property>
+        <property name="defaultValue" stdset="0">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="mouseWheelChangesBuffers">
+        <property name="text">
+         <string>Mouse wheel changes selected chat</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+        <property name="settingsKey" stdset="0">
+         <string>MouseWheelChangesBuffer</string>
+        </property>
+        <property name="defaultValue" stdset="0">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="useBufferViewColors">
+        <property name="title">
+         <string>Use Custom Colors</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="settingsKey" stdset="0">
+         <string>/UiStyle/Colors/UseBufferViewColors</string>
+        </property>
+        <property name="defaultValue" stdset="0">
+         <bool>false</bool>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <layout class="QGridLayout" name="gridLayout">
+           <item row="0" column="0">
+            <widget class="QLabel" name="label">
+             <property name="text">
+              <string>Standard:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="ColorButton" name="defaultBufferColor">
+             <property name="text">
+              <string>...</string>
+             </property>
+             <property name="settingsKey" stdset="0">
+              <string>/UiStyle/Colors/DefaultBuffer</string>
+             </property>
+             <property name="defaultValue" stdset="0">
+              <color>
+               <red>0</red>
+               <green>0</green>
+               <blue>0</blue>
+              </color>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_2">
+             <property name="text">
+              <string>Inactive:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="ColorButton" name="inactiveBufferColor">
+             <property name="text">
+              <string>...</string>
+             </property>
+             <property name="settingsKey" stdset="0">
+              <string>/UiStyle/Colors/InactiveBuffer</string>
+             </property>
+             <property name="defaultValue" stdset="0">
+              <color>
+               <red>160</red>
+               <green>160</green>
+               <blue>164</blue>
+              </color>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="label_3">
+             <property name="text">
+              <string>Unread messages:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="ColorButton" name="unreadBufferColor">
+             <property name="text">
+              <string>...</string>
+             </property>
+             <property name="settingsKey" stdset="0">
+              <string>/UiStyle/Colors/UnreadBuffer</string>
+             </property>
+             <property name="defaultValue" stdset="0">
+              <color>
+               <red>0</red>
+               <green>0</green>
+               <blue>128</blue>
+              </color>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0">
+            <widget class="QLabel" name="label_4">
+             <property name="text">
+              <string>Highlight:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1">
+            <widget class="ColorButton" name="highlightedBufferColor">
+             <property name="text">
+              <string>...</string>
+             </property>
+             <property name="settingsKey" stdset="0">
+              <string>/UiStyle/Colors/HighlightedBuffer</string>
+             </property>
+             <property name="defaultValue" stdset="0">
+              <color>
+               <red>255</red>
+               <green>128</green>
+               <blue>0</blue>
+              </color>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="0">
+            <widget class="QLabel" name="label_5">
+             <property name="text">
+              <string>Other activity:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="1">
+            <widget class="ColorButton" name="activeBufferColor">
+             <property name="text">
+              <string>...</string>
+             </property>
+             <property name="settingsKey" stdset="0">
+              <string>/UiStyle/Colors/ActiveBuffer</string>
+             </property>
+             <property name="defaultValue" stdset="0">
+              <color>
+               <red>0</red>
+               <green>128</green>
+               <blue>0</blue>
+              </color>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QTreeWidget" name="bufferViewPreview">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="editTriggers">
+            <set>QAbstractItemView::NoEditTriggers</set>
+           </property>
+           <property name="showDropIndicator" stdset="0">
+            <bool>false</bool>
+           </property>
+           <property name="itemsExpandable">
+            <bool>false</bool>
+           </property>
+           <attribute name="headerVisible">
+            <bool>false</bool>
+           </attribute>
+           <column>
+            <property name="text">
+             <string>1</string>
+            </property>
+           </column>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="useNickViewColors">
+     <property name="title">
+      <string>Custom Nick List Colors</string>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <property name="settingsKey" stdset="0">
+      <string>/UiStyle/Colors/UseNickViewColors</string>
+     </property>
+     <property name="defaultValue" stdset="0">
+      <bool>false</bool>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <item>
+       <widget class="QLabel" name="label_6">
+        <property name="text">
+         <string>Online:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="ColorButton" name="onlineNickColor">
+        <property name="text">
+         <string>...</string>
+        </property>
+        <property name="settingsKey" stdset="0">
+         <string>/UiStyle/Colors/OnlineNick</string>
+        </property>
+        <property name="defaultValue" stdset="0">
+         <color>
+          <red>0</red>
+          <green>0</green>
+          <blue>0</blue>
+         </color>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>88</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_7">
+        <property name="text">
+         <string>Away:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="ColorButton" name="awayNickColor">
+        <property name="text">
+         <string>...</string>
+        </property>
+        <property name="settingsKey" stdset="0">
+         <string>/UiStyle/Colors/AwayNick</string>
+        </property>
+        <property name="defaultValue" stdset="0">
+         <color>
+          <red>160</red>
+          <green>160</green>
+          <blue>164</blue>
+         </color>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer_3">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>87</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>FontSelector</class>
+   <extends>QWidget</extends>
+   <header>fontselector.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ColorButton</class>
+   <extends>QToolButton</extends>
+   <header>colorbutton.h</header>
+  </customwidget>
+ </customwidgets>
+ <tabstops>
+  <tabstop>useCustomItemViewFont</tabstop>
+  <tabstop>showItemViewIcons</tabstop>
+  <tabstop>displayTopicInTooltip</tabstop>
+  <tabstop>mouseWheelChangesBuffers</tabstop>
+  <tabstop>useBufferViewColors</tabstop>
+  <tabstop>defaultBufferColor</tabstop>
+  <tabstop>inactiveBufferColor</tabstop>
+  <tabstop>unreadBufferColor</tabstop>
+  <tabstop>highlightedBufferColor</tabstop>
+  <tabstop>activeBufferColor</tabstop>
+  <tabstop>useNickViewColors</tabstop>
+  <tabstop>onlineNickColor</tabstop>
+  <tabstop>awayNickColor</tabstop>
+  <tabstop>bufferViewPreview</tabstop>
+ </tabstops>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>useCustomItemViewFont</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>widget</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>114</x>
+     <y>16</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>235</x>
+     <y>17</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

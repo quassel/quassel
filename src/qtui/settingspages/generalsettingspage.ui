@@ -188,32 +188,6 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox_2">
-     <property name="title">
-      <string>Buffer View</string>
-     </property>
-     <layout class="QVBoxLayout">
-      <item>
-       <widget class="QCheckBox" name="displayTopicInTooltip">
-        <property name="text">
-         <string>Display topic in tooltip</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="mouseWheelChangesBuffers">
-        <property name="text">
-         <string>Mouse wheel changes displayed buffers</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
     <widget class="QGroupBox" name="inputLineGroup">
      <property name="toolTip">
       <string>The suffix appended to a nick on completion via TAB. Default is &quot;: &quot;</string>

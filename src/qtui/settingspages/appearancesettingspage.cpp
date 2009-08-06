@@ -27,6 +27,7 @@
 #include "qtuistyle.h"
 #include "util.h"
 
+#include <QCheckBox>
 #include <QDir>
 #include <QFileDialog>
 #include <QFontDialog>
@@ -57,10 +58,8 @@ AppearanceSettingsPage::AppearanceSettingsPage(QWidget *parent)
   mapper = new QSignalMapper(this);
   connect(mapper, SIGNAL(mapped(QWidget *)), this, SLOT(chooseFont(QWidget *)));
 
-  connect(ui.chooseBufferView, SIGNAL(clicked()), mapper, SLOT(map()));
   connect(ui.chooseInputLine, SIGNAL(clicked()), mapper, SLOT(map()));
 
-  mapper->setMapping(ui.chooseBufferView, ui.demoBufferView);
   mapper->setMapping(ui.chooseInputLine, ui.demoInputLine);
 
   connect(ui.chooseStyleSheet, SIGNAL(clicked()), SLOT(chooseStyleSheet()));
@@ -92,8 +91,6 @@ void AppearanceSettingsPage::defaults() {
   loadFonts(Settings::Default);
   _fontsChanged = true;
 
-  ui.showUserStateIcons->setChecked(true);
-
   SettingsPage::defaults();
   widgetHasChanged();
 }
@@ -122,9 +119,6 @@ void AppearanceSettingsPage::load() {
   ui.languageComboBox->setProperty("storedValue", ui.languageComboBox->currentIndex());
   Quassel::loadTranslation(selectedLocale());
 
-  BufferSettings bufferSettings;
-  SettingsPage::load(ui.showUserStateIcons, bufferSettings.showUserStateIcons());
-
   loadFonts(Settings::Custom);
 
   SettingsPage::load();
@@ -138,14 +132,6 @@ void AppearanceSettingsPage::loadFonts(Settings::Mode mode) {
   if(mode == Settings::Custom)
     inputLineFont = s.value("InputLine", QFont()).value<QFont>();
   setFont(ui.demoInputLine, inputLineFont);
-
-  QFont bufferViewFont;
-  if(mode == Settings::Custom)
-    bufferViewFont = s.value("BufferView", QFont()).value<QFont>();
-  setFont(ui.demoBufferView, bufferViewFont);
-
-  //QTextCharFormat chatFormat = QtUi::style()->cachedFormat(UiStyle::None, 0); // FIXME
-  //setFont(ui.demoChatView, chatFormat.font());
 
   _fontsChanged = false;
 }
@@ -165,24 +151,12 @@ void AppearanceSettingsPage::save() {
     uiSettings.setValue("Locale", selectedLocale());
   }
 
-  BufferSettings bufferSettings;
-  bufferSettings.enableUserStateIcons(ui.showUserStateIcons->isChecked());
-
   // Fonts
   QtUiStyleSettings fontSettings("Fonts");
   if(ui.demoInputLine->font() != QApplication::font())
     fontSettings.setValue("InputLine", ui.demoInputLine->font());
   else
     fontSettings.setValue("InputLine", "");
-
-  if(ui.demoBufferView->font() != QApplication::font())
-    fontSettings.setValue("BufferView", ui.demoBufferView->font());
-  else
-    fontSettings.setValue("BufferView", "");
-
-  //QTextCharFormat chatFormat = QtUi::style()->format(UiStyle::None);
-  //chatFormat.setFont(ui.demoChatView->font());
-  //QtUi::style()->setFormat(UiStyle::None, chatFormat, Settings::Custom);
 
   _fontsChanged = false;
 
@@ -245,8 +219,6 @@ bool AppearanceSettingsPage::testHasChanged() {
   if(ui.styleComboBox->currentIndex() != ui.styleComboBox->property("storedValue").toInt()) return true;
 
   if(selectedLocale() != QLocale()) return true; // QLocale() returns the default locale (manipulated via loadTranslation())
-
-  if(SettingsPage::hasChanged(ui.showUserStateIcons)) return true;
 
   return false;
 }

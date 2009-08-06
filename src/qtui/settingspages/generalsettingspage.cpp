@@ -50,8 +50,6 @@ GeneralSettingsPage::GeneralSettingsPage(QWidget *parent)
   connect(ui.errorMsgsInStatusBuffer, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
   connect(ui.errorMsgsInCurrentBuffer, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
 
-  connect(ui.displayTopicInTooltip, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
-  connect(ui.mouseWheelChangesBuffers, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
   connect(ui.completionSuffix, SIGNAL(textEdited(const QString&)), this, SLOT(widgetHasChanged()));
 }
 
@@ -76,9 +74,6 @@ void GeneralSettingsPage::defaults() {
   ui.errorMsgsInStatusBuffer->setChecked(false);
   ui.errorMsgsInCurrentBuffer->setChecked(false);
 
-  ui.displayTopicInTooltip->setChecked(false);
-  ui.mouseWheelChangesBuffers->setChecked(false);
-
   ui.completionSuffix->setText(": ");
 
   widgetHasChanged();
@@ -94,9 +89,6 @@ void GeneralSettingsPage::load() {
 
   settings["MinimizeOnClose"] = qtuiSettings.value("MinimizeOnClose", QVariant(false));
   ui.minimizeOnClose->setChecked(settings["MinimizeOnClose"].toBool());
-
-  settings["MouseWheelChangesBuffers"] = uiSettings.value("MouseWheelChangesBuffers", QVariant(false));
-  ui.mouseWheelChangesBuffers->setChecked(settings["MouseWheelChangesBuffers"].toBool());
 
   // bufferSettings:
   BufferSettings bufferSettings;
@@ -115,10 +107,6 @@ void GeneralSettingsPage::load() {
   SettingsPage::load(ui.errorMsgsInStatusBuffer, redirectTarget & BufferSettings::StatusBuffer);
   SettingsPage::load(ui.errorMsgsInCurrentBuffer, redirectTarget & BufferSettings::CurrentBuffer);
 
-
-  settings["DisplayTopicInTooltip"] = bufferSettings.value("DisplayTopicInTooltip", QVariant(false));
-  ui.displayTopicInTooltip->setChecked(settings["DisplayTopicInTooltip"].toBool());
-
   // completion settings
   TabCompletionSettings completionSettings;
   settings["CompletionSuffix"] = completionSettings.completionSuffix();
@@ -135,9 +123,6 @@ void GeneralSettingsPage::save() {
   qtuiSettings.setValue("UseSystemTrayIcon", ui.useSystemTrayIcon->isChecked());
 #endif
   qtuiSettings.setValue("MinimizeOnClose", ui.minimizeOnClose->isChecked());
-
-  UiSettings uiSettings;
-  uiSettings.setValue("MouseWheelChangesBuffers", ui.mouseWheelChangesBuffers->isChecked());
 
   BufferSettings bufferSettings;
   int redirectTarget = 0;
@@ -166,8 +151,6 @@ void GeneralSettingsPage::save() {
   if(ui.errorMsgsInCurrentBuffer->isChecked())
     redirectTarget |= BufferSettings::CurrentBuffer;
   bufferSettings.setErrorMsgsTarget(redirectTarget);
-
-  bufferSettings.setValue("DisplayTopicInTooltip", ui.displayTopicInTooltip->isChecked());
 
   TabCompletionSettings completionSettings;
   completionSettings.setCompletionSuffix(ui.completionSuffix->text());
@@ -201,9 +184,6 @@ bool GeneralSettingsPage::testHasChanged() {
   if(SettingsPage::hasChanged(ui.errorMsgsInStatusBuffer)) return true;
   if(SettingsPage::hasChanged(ui.errorMsgsInDefaultBuffer)) return true;
   if(SettingsPage::hasChanged(ui.errorMsgsInCurrentBuffer)) return true;
-
-  if(settings["DisplayTopicInTooltip"].toBool() != ui.displayTopicInTooltip->isChecked()) return true;
-  if(settings["MouseWheelChangesBuffers"].toBool() != ui.mouseWheelChangesBuffers->isChecked()) return true;
 
   if(settings["CompletionSuffix"].toString() != ui.completionSuffix->text()) return true;
 

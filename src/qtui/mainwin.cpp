@@ -103,6 +103,7 @@
 #include "settingspages/generalsettingspage.h"
 #include "settingspages/highlightsettingspage.h"
 #include "settingspages/identitiessettingspage.h"
+#include "settingspages/itemviewsettingspage.h"
 #include "settingspages/networkssettingspage.h"
 #include "settingspages/notificationssettingspage.h"
 
@@ -810,6 +811,7 @@ void MainWin::showSettingsDlg() {
   //Category: Appearance
   dlg->registerSettingsPage(new AppearanceSettingsPage(dlg));
   dlg->registerSettingsPage(new ChatViewSettingsPage(dlg));
+  dlg->registerSettingsPage(new ItemViewSettingsPage(dlg));
   dlg->registerSettingsPage(new HighlightSettingsPage(dlg));
   dlg->registerSettingsPage(new NotificationsSettingsPage(dlg));
   dlg->registerSettingsPage(new BacklogSettingsPage(dlg));
