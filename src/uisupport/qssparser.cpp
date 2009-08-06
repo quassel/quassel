@@ -344,7 +344,7 @@ quint32 QssParser::parseItemFormatType(const QString &decl) {
     if(!state.isEmpty()) {
       if(state == "inactive")
         fmtType |= UiStyle::InactiveBuffer;
-      else if(state == "event")
+      else if(state == "channel-event")
         fmtType |= UiStyle::ActiveBuffer;
       else if(state == "unread-message")
         fmtType |= UiStyle::UnreadBuffer;
