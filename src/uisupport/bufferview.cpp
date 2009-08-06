@@ -40,7 +40,6 @@
 #include "network.h"
 #include "networkmodel.h"
 #include "contextmenuactionprovider.h"
-#include "uisettings.h"
 
 /*****************************************
 * The TreeView showing the Buffers
@@ -59,10 +58,6 @@ BufferView::BufferView(QWidget *parent)
   BufferViewDelegate *tristateDelegate = new BufferViewDelegate(this);
   setItemDelegate(tristateDelegate);
   delete oldDelegate;
-
-  UiStyleSettings s("QtUiStyle/Fonts"); // li'l dirty here, but fonts are stored in QtUiStyle :/
-  s.notify("BufferView", this, SLOT(setCustomFont(QVariant)));
-  setCustomFont(s.value("BufferView", QFont()));
 }
 
 void BufferView::init() {
@@ -192,13 +187,6 @@ void BufferView::setRootIndexForNetworkId(const NetworkId &networkId) {
         setRootIndex(child);
     }
   }
-}
-
-void BufferView::setCustomFont(const QVariant &v) {
-  QFont font = v.value<QFont>();
-  if(font.family().isEmpty())
-    font = QApplication::font();
-  setFont(font);
 }
 
 void BufferView::joinChannel(const QModelIndex &index) {
@@ -436,7 +424,7 @@ void BufferView::menuActionTriggered(QAction *result) {
 }
 
 void BufferView::wheelEvent(QWheelEvent* event) {
-  if(UiSettings().value("MouseWheelChangesBuffers", QVariant(true)).toBool() == (bool)(event->modifiers() & Qt::AltModifier))
+  if(ItemViewSettings().mouseWheelChangesBuffer() == (bool)(event->modifiers() & Qt::AltModifier))
     return QTreeView::wheelEvent(event);
 
   int rowDelta = ( event->delta() > 0 ) ? -1 : 1;

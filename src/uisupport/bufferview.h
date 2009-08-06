@@ -83,8 +83,6 @@ private slots:
   void on_configChanged();
   void on_layoutChanged();
 
-  void setCustomFont(const QVariant &font);
-
 private:
   QPointer<BufferViewConfig> _config;
 
