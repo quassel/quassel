@@ -41,9 +41,12 @@ private slots:
   void updateTimestampFormatString();
 
 private:
-  QString color(const QString &key, QtUiStyleSettings &settings) const;
-  QString msgTypeQss(const QString &msgType, const QString &key, QtUiStyleSettings &settings) const;
-  QString senderQss(int i, QtUiStyleSettings &settings) const;
+  QString fontDescription(const QFont &font) const;
+  QString color(const QString &key, UiSettings &settings) const;
+
+  QString msgTypeQss(const QString &msgType, const QString &key, UiSettings &settings) const;
+  QString senderQss(int i, UiSettings &settings) const;
+  QString chatListItemQss(const QString &state, const QString &key, UiSettings &settings) const;
 };
 
 #endif
