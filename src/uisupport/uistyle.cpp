@@ -394,6 +394,8 @@ UiStyle::FormatType UiStyle::formatType(Message::Type msgType) {
       return ErrorMsg;
     case Message::DayChange:
       return DayChangeMsg;
+    case Message::Topic:
+      return TopicMsg;
   }
   //Q_ASSERT(false); // we need to handle all message types
   qWarning() << Q_FUNC_INFO << "Unknown message type:" << msgType;
@@ -608,6 +610,9 @@ void UiStyle::StyledMessage::style() const {
       //: Day Change Message
       t = tr("{Day changed to %1}").arg(timestamp().toString());
       break;
+    case Message::Topic:
+      //: Topic Message
+      t = tr("%1").arg(txt); break;
     default:
       t = tr("[%1]").arg(txt);
   }
@@ -672,6 +677,8 @@ QString UiStyle::StyledMessage::decoratedSender() const {
       return tr("*"); break;
     case Message::DayChange:
       return tr("-"); break;
+    case Message::Topic:
+      return tr("*"); break;
     default:
       return tr("%1").arg(plainSender());
   }

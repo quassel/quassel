@@ -81,6 +81,7 @@ void QtUiStyle::generateSettingsQss() const {
         << msgTypeQss("info", "ServerMsg", s)
         << msgTypeQss("error", "ErrorMsg", s)
         << msgTypeQss("daychange", "ServerMsg", s)
+        << msgTypeQss("topic", "CommandMsg", s)
         << "\n";
   }
 

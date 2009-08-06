@@ -69,6 +69,7 @@ public:
     InfoMsg         = 0x0000000c,
     ErrorMsg        = 0x0000000d,
     DayChangeMsg    = 0x0000000e,
+    TopicMsg        = 0x0000000f,
 
     // Standard Formats
     Bold            = 0x00000100,
