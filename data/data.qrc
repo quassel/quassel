@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="/data" >
+    <file>default.qss</file>
     <file>networks.ini</file>
   </qresource>
 </RCC>

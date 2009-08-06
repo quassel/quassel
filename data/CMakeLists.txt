@@ -18,7 +18,7 @@ if(WANT_MONO OR WANT_QTCLIENT)
   if(EMBED_DATA)
     set(CLIENT_RCS ${CLIENT_RCS} ../data/data.qrc PARENT_SCOPE)
   else(EMBED_DATA)
-    install(FILES networks.ini DESTINATION ${DATA_INSTALL_DIR}/quassel)
+    install(FILES default.qss networks.ini DESTINATION ${DATA_INSTALL_DIR}/quassel)
   endif(EMBED_DATA)
 
   if(NOT WIN32)

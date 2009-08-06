@@ -1,0 +1,95 @@
+// Default stylesheet for Quassel IRC
+// Note: Some items use the system palette, such as plain messages, default buffer items,
+//       and online nicks.
+// Sender coloring is off by default.
+
+// Basics
+ChatLine {
+  foreground: palette(text);
+  font: 10pt "Monospace";
+}
+
+ChatLine[label="highlight"] {
+  foreground: black;
+  background: #ff8000;
+}
+
+ChatLine[label="selected"] {
+  foreground: palette(highlighted-text);
+  background: palette(highlight);
+}
+
+ChatLine::sender[sender="self"] {
+  font-style: italic;
+}
+
+ChatLine::timestamp {
+  foreground: #707c70;
+}
+
+Palette {
+  marker-line: red;
+}
+
+// mIRC colors
+ChatLine[fg-color="00"] { foreground: #ffffff; }
+ChatLine[bg-color="00"] { background: #ffffff; }
+ChatLine[fg-color="01"] { foreground: #000000; }
+ChatLine[bg-color="01"] { background: #000000; }
+ChatLine[fg-color="02"] { foreground: #000080; }
+ChatLine[bg-color="02"] { background: #000080; }
+ChatLine[fg-color="03"] { foreground: #008000; }
+ChatLine[bg-color="03"] { background: #008000; }
+ChatLine[fg-color="04"] { foreground: #ff0000; }
+ChatLine[bg-color="04"] { background: #ff0000; }
+ChatLine[fg-color="05"] { foreground: #800000; }
+ChatLine[bg-color="05"] { background: #800000; }
+ChatLine[fg-color="06"] { foreground: #800080; }
+ChatLine[bg-color="06"] { background: #800080; }
+ChatLine[fg-color="07"] { foreground: #ffa500; }
+ChatLine[bg-color="07"] { background: #ffa500; }
+ChatLine[fg-color="08"] { foreground: #ffff00; }
+ChatLine[bg-color="08"] { background: #ffff00; }
+ChatLine[fg-color="09"] { foreground: #00ff00; }
+ChatLine[bg-color="09"] { background: #00ff00; }
+ChatLine[fg-color="0a"] { foreground: #008080; }
+ChatLine[bg-color="0a"] { background: #008080; }
+ChatLine[fg-color="0b"] { foreground: #00ffff; }
+ChatLine[bg-color="0b"] { background: #00ffff; }
+ChatLine[fg-color="0c"] { foreground: #4169e1; }
+ChatLine[bg-color="0c"] { background: #4169e1; }
+ChatLine[fg-color="0d"] { foreground: #ff00ff; }
+ChatLine[bg-color="0d"] { background: #ff00ff; }
+ChatLine[fg-color="0e"] { foreground: #808080; }
+ChatLine[bg-color="0e"] { background: #808080; }
+ChatLine[fg-color="0f"] { foreground: #c0c0c0; }
+ChatLine[bg-color="0f"] { background: #c0c0c0; }
+
+// mIRC formats
+ChatLine[format="bold"]      { font-weight: bold; }
+ChatLine[format="italic"]    { font-style: italic; }
+ChatLine[format="underline"] { font-style: underline; }
+
+// ChatView message colors
+ChatLine#notice { foreground: #916409; }
+ChatLine#action { foreground: #0000ff; }
+ChatLine#nick { foreground: #960096; }
+ChatLine#mode { foreground: #960096; }
+ChatLine#join { foreground: #960096; }
+ChatLine#part { foreground: #960096; }
+ChatLine#quit { foreground: #960096; }
+ChatLine#kick { foreground: #960096; }
+ChatLine#kill { foreground: #960096; }
+ChatLine#server { foreground: #916409; }
+ChatLine#info { foreground: #916409; }
+ChatLine#error { foreground: #916409; }
+ChatLine#daychange { foreground: #916409; }
+
+// BufferView Colors
+ChatListItem[state="inactive"] { foreground: #a0a0a4; }
+ChatListItem[state="channel-event"] { foreground: #008000; }
+ChatListItem[state="unread-message"] { foreground: #000080; }
+ChatListItem[state="highlighted"] { foreground: #ff8000; }
+
+// NickView Colors
+NickListItem[type="user", state="away"] { foreground: #a0a0a4; }
