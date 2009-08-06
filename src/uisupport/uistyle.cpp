@@ -68,9 +68,9 @@ UiStyle::UiStyle(QObject *parent)
   setTimestampFormatString("[hh:mm:ss]");
 
   // BufferView / NickView settings
-  BufferSettings bufferSettings;
-  _showBufferViewIcons = _showNickViewIcons = bufferSettings.showUserStateIcons();
-  bufferSettings.notify("ShowUserStateIcons", this, SLOT(showUserStateIconsChanged()));
+  UiStyleSettings s;
+  _showBufferViewIcons = _showNickViewIcons = s.value("ShowItemViewIcons", true).toBool();
+  s.notify("ShowItemViewIcons", this, SLOT(showItemViewIconsChanged()));
 
   loadStyleSheet();
 }
@@ -148,9 +148,9 @@ void UiStyle::setTimestampFormatString(const QString &format) {
 
 /******** ItemView Styling *******/
 
-void UiStyle::showUserStateIconsChanged() {
-  BufferSettings bufferSettings;
-  _showBufferViewIcons = _showNickViewIcons = bufferSettings.showUserStateIcons();
+void UiStyle::showItemViewIconsChanged() {
+  UiStyleSettings s;
+  _showBufferViewIcons = _showNickViewIcons = s.value("ShowItemViewIcons").toBool();
 }
 
 QVariant UiStyle::bufferViewItemData(const QModelIndex &index, int role) const {

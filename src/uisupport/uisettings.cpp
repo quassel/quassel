@@ -27,8 +27,8 @@ UiSettings::UiSettings(const QString &group)
 
 /**************************************************************************/
 
-UiStyleSettings::UiStyleSettings(const QString &group)
-  : ClientSettings(group)
+UiStyleSettings::UiStyleSettings() : UiSettings("UiStyle") {}
+UiStyleSettings::UiStyleSettings(const QString &subGroup) : UiSettings(QString("UiStyle/%1").arg(subGroup))
 {
 }
 

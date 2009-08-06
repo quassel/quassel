@@ -24,14 +24,12 @@
 #include <QTextDocument> 	// for Qt::escape()
 
 #include "buffermodel.h"
-#include "client.h"
-#include "signalproxy.h"
-#include "network.h"
-#include "ircchannel.h"
-
 #include "buffersettings.h"
-
-#include "util.h" // get rid of this (needed for isChannelName)
+#include "client.h"
+#include "clientsettings.h"
+#include "ircchannel.h"
+#include "network.h"
+#include "signalproxy.h"
 
 /*****************************************
 *  Network Items
@@ -490,8 +488,8 @@ QString ChannelBufferItem::toolTip(int column) const {
         toolTip.append(tr("<b>Mode:</b> %1").arg(channelMode));
     }
 
-    BufferSettings s;
-    bool showTopic = s.value("DisplayTopicInTooltip", QVariant(false)).toBool();
+    ItemViewSettings s;
+    bool showTopic = s.displayTopicInTooltip();
     if(showTopic) {
       QString _topic = topic();
       if(_topic != "") {

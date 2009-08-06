@@ -32,11 +32,11 @@ QtUiSettings::QtUiSettings()
 
 /***********************************************************************/
 QtUiStyleSettings::QtUiStyleSettings(const QString &subGroup)
-  : UiStyleSettings(QString("QtUiStyle/%1").arg(subGroup))
+  : UiSettings(QString("QtUiStyle/%1").arg(subGroup))
 {
 }
 
 QtUiStyleSettings::QtUiStyleSettings()
-  : UiStyleSettings("QtUiStyle")
+  : UiSettings("QtUiStyle")
 {
 }

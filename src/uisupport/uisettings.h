@@ -35,13 +35,10 @@ public:
 };
 
 
-class UiStyleSettings : public ClientSettings {
+class UiStyleSettings : public UiSettings {
 public:
-  UiStyleSettings(const QString &group = "UiStyle");
-
-  inline void setValue(const QString &key, const QVariant &data) { setLocalValue(key, data); }
-  inline QVariant value(const QString &key, const QVariant &def = QVariant()) { return localValue(key, def); }
-  inline void remove(const QString &key) { removeLocalKey(key); }
+  UiStyleSettings();
+  UiStyleSettings(const QString &subGroup);
 
   void setCustomFormat(UiStyle::FormatType, QTextCharFormat);
   QTextCharFormat customFormat(UiStyle::FormatType);

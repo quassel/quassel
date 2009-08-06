@@ -148,4 +148,15 @@ public:
 
 };
 
+// ========================================
+// ItemViewSettings
+// ========================================
+class ItemViewSettings : public ClientSettings {
+  public:
+    ItemViewSettings(const QString& group = "ItemViews");
+
+    bool displayTopicInTooltip();
+    bool mouseWheelChangesBuffer();
+};
+
 #endif

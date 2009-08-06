@@ -225,3 +225,19 @@ void TabCompletionSettings::setUseLastSpokenTo(bool use) {
 bool TabCompletionSettings::useLastSpokenTo() {
   return localValue("UseLastSpokenTo", false).toBool();
 }
+
+// ========================================
+//  ItemViewSettings
+// ========================================
+
+ItemViewSettings::ItemViewSettings(const QString &group) : ClientSettings(group) {
+
+}
+
+bool ItemViewSettings::displayTopicInTooltip() {
+  return localValue("DisplayTopicInTooltip", false).toBool();
+}
+
+bool ItemViewSettings::mouseWheelChangesBuffer() {
+  return localValue("MouseWheelChangesBuffer", false).toBool();
+}

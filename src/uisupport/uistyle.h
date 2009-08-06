@@ -167,7 +167,7 @@ protected:
   QVariant itemData(int role, const QTextCharFormat &format) const;
 
 private slots:
-  void showUserStateIconsChanged();
+  void showItemViewIconsChanged();
 
 private:
   QVector<QBrush> _uiStylePalette;
