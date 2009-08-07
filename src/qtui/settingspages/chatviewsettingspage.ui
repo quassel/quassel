@@ -100,7 +100,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QCheckBox" name="showWebPreview_2">
+    <widget class="QCheckBox" name="showWebPreview">
      <property name="toolTip">
       <string>Show a website preview window when hovering the mouse over a web address</string>
      </property>
@@ -758,7 +758,7 @@
  <tabstops>
   <tabstop>timestampFormat</tabstop>
   <tabstop>allowMircColors</tabstop>
-  <tabstop>showWebPreview_2</tabstop>
+  <tabstop>showWebPreview</tabstop>
   <tabstop>useCustomColors</tabstop>
   <tabstop>actionMsgColor</tabstop>
   <tabstop>channelMsgColor</tabstop>

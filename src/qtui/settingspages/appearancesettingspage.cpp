@@ -43,11 +43,6 @@ AppearanceSettingsPage::AppearanceSettingsPage(QWidget *parent)
   initStyleComboBox();
   initLanguageComboBox();
 
-#ifndef HAVE_WEBKIT
-  ui.showWebPreview->hide();
-  ui.showWebPreview->setEnabled(false);
-#endif
-
   foreach(QComboBox *comboBox, findChildren<QComboBox *>()) {
     connect(comboBox, SIGNAL(currentIndexChanged(QString)), this, SLOT(widgetHasChanged()));
   }
