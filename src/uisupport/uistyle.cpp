@@ -694,7 +694,8 @@ quint8 UiStyle::StyledMessage::senderHash() const {
     int chopCount = 0;
     while(nick.at(nick.count() - 1 - chopCount) == '_')
       chopCount++;
-    nick.chop(chopCount);
+    if(chopCount < nick.size())
+      nick.chop(chopCount);
   }
   quint16 hash = qChecksum(nick.toAscii().data(), nick.toAscii().size());
   return (_senderHash = (hash & 0xf) + 1);
