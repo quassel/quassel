@@ -26,6 +26,8 @@
 #include <QObject>
 #include <QVariantMap>
 
+#include "signalproxy.h"
+
 class SyncableObject : public QObject {
   Q_OBJECT
 
@@ -33,6 +35,8 @@ public:
   SyncableObject(QObject *parent = 0);
   SyncableObject(const QString &objectName, QObject *parent = 0);
   SyncableObject(const SyncableObject &other, QObject *parent = 0);
+
+  void synchronize(SignalProxy *proxy);
 
   //! Stores the object's state into a QVariantMap.
   /** The default implementation takes dynamic properties as well as getters that have
@@ -65,6 +69,8 @@ public slots:
   virtual void update(const QVariantMap &properties);
 
 protected:
+  void sync_call__(SignalProxy::ProxyMode modeType, const char *funcname, ...);
+
   void renameObject(const QString &newName);
   SyncableObject &operator=(const SyncableObject &other);
 
@@ -81,6 +87,12 @@ private:
   bool _initialized;
   bool _allowClientUpdates;
 
+  QList<SignalProxy *> _signalProxies;
 };
+
+#define so_sync(...) sync_call__(SignalProxy::Server, __func__, __VA_ARGS__);
+#define so_request(...) sync_call__(SignalProxy::Client, __func__, __VA_ARGS__);
+#define so_arg_cast(x) const_cast<void *>(reinterpret_cast<const void*>(&x))
+
 
 #endif

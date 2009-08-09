@@ -118,6 +118,7 @@ public slots:
 
 protected:
   void customEvent(QEvent *event);
+  void syncCall(const SyncableObject *obj, ProxyMode modeType, const char *funcname, va_list ap);
 
 private slots:
   void dataAvailable();
@@ -202,6 +203,7 @@ private:
   bool _secure; // determines if all connections are in a secured state (using ssl or internal connections)
 
   friend class SignalRelay;
+  friend class SyncableObject;
 };
 
 
@@ -213,9 +215,10 @@ public:
   ExtendedMetaObject(const QMetaObject *meta);
 
   const QList<int> &argTypes(int methodId);
-  const int &returnType(int methodId);
-  const int &minArgCount(int methodId);
+  int returnType(int methodId);
+  int minArgCount(int methodId);
   const QByteArray &methodName(int methodId);
+  int methodId(const QByteArray &methodName);
   const QHash<QByteArray, int> &syncMap();
   const QHash<int, int> &receiveMap();
   int updatedRemotelyId();
@@ -229,12 +232,14 @@ public:
 private:
   typedef QHash<int, QList<int> > ArgHash;
   typedef QHash<int, QByteArray> MethodNameHash;
+  typedef QHash<QByteArray, int> MethodIdHash;
 
   const QMetaObject *_meta;
   ArgHash _argTypes;
   QHash<int, int> _returnType;
   QHash<int, int> _minArgCount;
   MethodNameHash _methodNames;
+  MethodIdHash _methodIds;
   int _updatedRemotelyId; // id of the updatedRemotely() signal - makes things faster
   QHash<QByteArray, int> _syncMap;
   QHash<int, int> _receiveMap;

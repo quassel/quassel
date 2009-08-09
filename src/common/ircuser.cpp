@@ -171,6 +171,7 @@ void IrcUser::setLastAwayMessage(const int &lastAwayMessage) {
 }
 
 void IrcUser::setHost(const QString &host) {
+  so_sync(so_arg_cast(host));
   if(!host.isEmpty() && _host != host) {
     _host = host;
     emit hostSet(host);

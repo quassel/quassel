@@ -583,6 +583,8 @@ void SignalProxy::synchronize(SyncableObject *obj) {
     else
       requestInit(obj);
   }
+
+  obj->synchronize(this);
 }
 
 void SignalProxy::detachObject(QObject *obj) {
@@ -1080,6 +1082,31 @@ void SignalProxy::customEvent(QEvent *event) {
   }
 }
 
+void SignalProxy::syncCall(const SyncableObject *obj, SignalProxy::ProxyMode modeType, const char *funcname, va_list ap) {
+  if(modeType != _proxyMode)
+    return;
+
+  ExtendedMetaObject *eMeta = extendedMetaObject(obj);
+
+  QVariantList params;
+
+  params << eMeta->metaObject()->className()
+         << obj->objectName()
+         << QByteArray(funcname);
+
+
+  const QList<int> &argTypes = eMeta->argTypes(eMeta->methodId(QByteArray(funcname)));
+
+  for(int i = 0; i < argTypes.size(); i++) {
+    if(argTypes[i] == 0) {
+      qWarning() << Q_FUNC_INFO << "received invalid data for argument number" << i << "of signal" << QString("%1::%2").arg(eMeta->metaObject()->className()).arg(funcname);
+      qWarning() << "        - make sure all your data types are known by the Qt MetaSystem";
+      return;
+    }
+    params << QVariant(argTypes[i], va_arg(ap, void *));
+  }
+}
+
 void SignalProxy::disconnectDevice(QIODevice *dev, const QString &reason) {
   if(!reason.isEmpty())
     qWarning() << qPrintable(reason);
@@ -1168,14 +1195,14 @@ const QList<int> &SignalProxy::ExtendedMetaObject::argTypes(int methodId) {
   return _argTypes[methodId];
 }
 
-const int &SignalProxy::ExtendedMetaObject::returnType(int methodId) {
+int SignalProxy::ExtendedMetaObject::returnType(int methodId) {
   if(!_returnType.contains(methodId)) {
     _returnType[methodId] = QMetaType::type(_meta->method(methodId).typeName());
   }
   return _returnType[methodId];
 }
 
-const int &SignalProxy::ExtendedMetaObject::minArgCount(int methodId) {
+int SignalProxy::ExtendedMetaObject::minArgCount(int methodId) {
   if(!_minArgCount.contains(methodId)) {
     QString signature(_meta->method(methodId).signature());
     _minArgCount[methodId] = _meta->method(methodId).parameterTypes().count() - signature.count("=");
@@ -1188,6 +1215,21 @@ const QByteArray &SignalProxy::ExtendedMetaObject::methodName(int methodId) {
     _methodNames[methodId] = methodName(_meta->method(methodId));
   }
   return _methodNames[methodId];
+}
+
+int SignalProxy::ExtendedMetaObject::methodId(const QByteArray &methodName) {
+  if(_methodIds.contains(methodName)) {
+    return _methodIds[methodName];
+  } else {
+    for(int i = _meta->methodOffset(); i < _meta->methodCount(); i++) {
+      if(ExtendedMetaObject::methodName(_meta->method(i)) == methodName) {
+        _methodIds[methodName] = i;
+        return i;
+      }
+    }
+  }
+  Q_ASSERT(false);
+  return -1;
 }
 
 const QHash<QByteArray, int> &SignalProxy::ExtendedMetaObject::syncMap() {
