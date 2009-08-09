@@ -692,7 +692,7 @@ quint8 UiStyle::StyledMessage::senderHash() const {
   QString nick = nickFromMask(sender()).toLower();
   if(!nick.isEmpty()) {
     int chopCount = 0;
-    while(nick.at(nick.count() - 1 - chopCount) == '_')
+    while(chopCount < nick.size() && nick.at(nick.count() - 1 - chopCount) == '_')
       chopCount++;
     if(chopCount < nick.size())
       nick.chop(chopCount);
