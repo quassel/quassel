@@ -112,7 +112,9 @@ void UiStyle::loadStyleSheet() {
     }
     _listItemFormats = parser.listItemFormats();
 
-    qApp->setStyleSheet(styleSheet); // pass the remaining sections to the application
+    styleSheet = styleSheet.trimmed();
+    if(!styleSheet.isEmpty())
+      qApp->setStyleSheet(styleSheet); // pass the remaining sections to the application
   }
 
   emit changed();
