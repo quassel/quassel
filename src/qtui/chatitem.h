@@ -52,6 +52,7 @@ public:
     doLayout(layout);
   }
   virtual void doLayout(QTextLayout *) const;
+  virtual UiStyle::FormatList formatList() const;
 
   virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
   enum { Type = ChatScene::ChatItemType };
@@ -85,7 +86,8 @@ protected:
 
   void paintBackground(QPainter *);
   QVector<QTextLayout::FormatRange> selectionFormats() const;
-  virtual inline QVector<QTextLayout::FormatRange> additionalFormats() const { return QVector<QTextLayout::FormatRange>(); }
+  virtual QVector<QTextLayout::FormatRange> additionalFormats() const;
+  void overlayFormat(UiStyle::FormatList &fmtList, int start, int end, quint32 overlayFmt) const;
 
   inline qint16 selectionStart() const { return _selectionStart; }
   inline void setSelectionStart(qint16 start) { _selectionStart = start; }
@@ -190,6 +192,7 @@ protected:
     doLayout(layout);
   }
   virtual void doLayout(QTextLayout *layout) const;
+  virtual UiStyle::FormatList formatList() const;
 
 private:
   struct Clickable;

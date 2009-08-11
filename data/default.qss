@@ -27,6 +27,10 @@ ChatLine::timestamp {
   foreground: #707c70;
 }
 
+ChatLine::url {
+  foreground: palette(link);
+}
+
 Palette {
   marker-line: red;
 }

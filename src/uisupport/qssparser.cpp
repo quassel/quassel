@@ -186,6 +186,8 @@ quint64 QssParser::parseFormatType(const QString &decl) {
       fmtType |= UiStyle::Hostmask;
     else if(subElement == "modeflags")
       fmtType |= UiStyle::ModeFlags;
+    else if(subElement == "url")
+      fmtType |= UiStyle::Url;
     else {
       qWarning() << Q_FUNC_INFO << tr("Invalid subelement name in %1").arg(decl);
       return UiStyle::Invalid;

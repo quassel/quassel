@@ -84,8 +84,12 @@ void ChatItem::initLayoutHelper(QTextLayout *layout, QTextOption::WrapMode wrapM
   layout->setTextOption(option);
 
   QList<QTextLayout::FormatRange> formatRanges
-         = QtUi::style()->toTextLayoutList(data(MessageModel::FormatRole).value<UiStyle::FormatList>(), layout->text().length(), data(ChatLineModel::MsgLabelRole).toUInt());
+         = QtUi::style()->toTextLayoutList(formatList(), layout->text().length(), data(ChatLineModel::MsgLabelRole).toUInt());
   layout->setAdditionalFormats(formatRanges);
+}
+
+UiStyle::FormatList ChatItem::formatList() const {
+  return data(MessageModel::FormatRole).value<UiStyle::FormatList>();
 }
 
 void ChatItem::doLayout(QTextLayout *layout) const {
@@ -118,7 +122,7 @@ void ChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 
   QTextLayout layout;
   initLayout(&layout);
-  layout.draw(painter, QPointF(0,0), selectionFormats(), boundingRect());
+  layout.draw(painter, QPointF(0,0), additionalFormats(), boundingRect());
 
   //  layout()->draw(painter, QPointF(0,0), formats, boundingRect());
 
@@ -150,6 +154,34 @@ void ChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 //   painter->drawRect(_boundingRect.adjusted(0, 0, -1, -1));
 }
 
+void ChatItem::overlayFormat(UiStyle::FormatList &fmtList, int start, int end, quint32 overlayFmt) const {
+  for(int i = 0; i < fmtList.count(); i++) {
+    int fmtStart = fmtList.at(i).first;
+    int fmtEnd = (i < fmtList.count()-1 ? fmtList.at(i+1).first : data(MessageModel::DisplayRole).toString().length());
+
+    if(fmtEnd <= start)
+      continue;
+    if(fmtStart >= end)
+      break;
+
+    // split the format if necessary
+    if(fmtStart < start) {
+      fmtList.insert(i, fmtList.at(i));
+      fmtList[++i].first = start;
+    }
+    if(end < fmtEnd) {
+      fmtList.insert(i, fmtList.at(i));
+      fmtList[i+1].first = end;
+    }
+
+    fmtList[i].second |= overlayFmt;
+  }
+}
+
+QVector<QTextLayout::FormatRange> ChatItem::additionalFormats() const {
+  return selectionFormats();
+}
+
 QVector<QTextLayout::FormatRange> ChatItem::selectionFormats() const {
   if(!hasSelection())
     return QVector<QTextLayout::FormatRange>();
@@ -163,14 +195,14 @@ QVector<QTextLayout::FormatRange> ChatItem::selectionFormats() const {
     end = qMax(_selectionStart, _selectionEnd);
   }
 
-  UiStyle::FormatList fmtList = data(MessageModel::FormatRole).value<UiStyle::FormatList>();
+  UiStyle::FormatList fmtList = formatList();
 
-  while(fmtList.count() >=2 && fmtList.at(1).first <= start)
+  while(fmtList.count() > 1 && fmtList.at(1).first <= start)
     fmtList.removeFirst();
 
   fmtList.first().first = start;
 
-  while(fmtList.count() >= 2 && fmtList.last().first >= end)
+  while(fmtList.count() > 1 && fmtList.last().first >= end)
     fmtList.removeLast();
 
   return QtUi::style()->toTextLayoutList(fmtList, end, UiStyle::Selected|data(ChatLineModel::MsgLabelRole).toUInt()).toVector();
@@ -331,7 +363,7 @@ void SenderChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
     QPixmap pixmap(layout.boundingRect().toRect().size());
     pixmap.fill(Qt::transparent);
     QPainter pixPainter(&pixmap);
-    layout.draw(&pixPainter, QPointF(qMax(offset, (qreal)0), 0), selectionFormats());
+    layout.draw(&pixPainter, QPointF(qMax(offset, (qreal)0), 0), additionalFormats());
     pixPainter.end();
 
     // Create alpha channel mask
@@ -353,7 +385,7 @@ void SenderChatItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
     pixmap.setAlphaChannel(mask);
     painter->drawPixmap(0, 0, pixmap);
   } else {
-    layout.draw(painter, QPointF(0,0), selectionFormats(), boundingRect());
+    layout.draw(painter, QPointF(0,0), additionalFormats(), boundingRect());
   }
 }
 
@@ -507,9 +539,20 @@ ContentsChatItem::Clickable ContentsChatItem::clickableAt(const QPointF &pos) co
   return Clickable();
 }
 
+UiStyle::FormatList ContentsChatItem::formatList() const {
+  UiStyle::FormatList fmtList = ChatItem::formatList();
+  for(int i = 0; i < privateData()->clickables.count(); i++) {
+    Clickable click = privateData()->clickables.at(i);
+    if(click.type == Clickable::Url) {
+      overlayFormat(fmtList, click.start, click.start + click.length, UiStyle::Url);
+    }
+  }
+  return fmtList;
+}
+
 QVector<QTextLayout::FormatRange> ContentsChatItem::additionalFormats() const {
+  QVector<QTextLayout::FormatRange> fmt = ChatItem::additionalFormats();
   // mark a clickable if hovered upon
-  QVector<QTextLayout::FormatRange> fmt;
   if(privateData()->currentClickable.isValid()) {
     Clickable click = privateData()->currentClickable;
     QTextLayout::FormatRange f;

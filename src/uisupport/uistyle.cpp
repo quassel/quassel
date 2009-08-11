@@ -354,7 +354,7 @@ void UiStyle::mergeFormat(QTextCharFormat &fmt, quint32 ftype, quint64 label) {
 
   // URL
   if(ftype & Url)
-    mergeSubElementFormat(fmt, ftype & Url, label);
+    mergeSubElementFormat(fmt, ftype & (Url | 0x000000ff), label);
 }
 
 // Merge a subelement format into an existing message format
