@@ -119,8 +119,7 @@ void QtUiMessageProcessor::checkForHighlight(Message &msg) {
         nickList.prepend(net->myNick());
     }
     foreach(QString nickname, nickList) {
-      QRegExp nickRegExp("\\b" + QRegExp::escape(nickname) + "(\\W|\\b|$)", // + "\\b", this does not seem to work for trailing ` -> upstream bug?
-                          _nicksCaseSensitive ? Qt::CaseSensitive : Qt::CaseInsensitive);
+      QRegExp nickRegExp("(^|\\W)" + QRegExp::escape(nickname) + "(\\W|$)", _nicksCaseSensitive ? Qt::CaseSensitive : Qt::CaseInsensitive);
       if(nickRegExp.indexIn(msg.contents()) >= 0) {
         msg.setFlags(msg.flags() | Message::Highlight);
         return;
@@ -137,7 +136,7 @@ void QtUiMessageProcessor::checkForHighlight(Message &msg) {
         QRegExp rx(rule.name, rule.caseSensitive? Qt::CaseSensitive : Qt::CaseInsensitive);
         match = rx.exactMatch(msg.contents());
       } else {
-        QRegExp rx("\\b" + QRegExp::escape(rule.name) + "\\b", rule.caseSensitive? Qt::CaseSensitive : Qt::CaseInsensitive);
+        QRegExp rx("\\W" + QRegExp::escape(rule.name) + "\\W", rule.caseSensitive? Qt::CaseSensitive : Qt::CaseInsensitive);
         match = (rx.indexIn(msg.contents()) >= 0);
       }
       if(match) {
