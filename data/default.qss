@@ -93,7 +93,7 @@ ChatLine#topic { foreground: #960096; }
 // BufferView Colors
 ChatListItem[state="inactive"] { foreground: #a0a0a4; }
 ChatListItem[state="channel-event"] { foreground: #008000; }
-ChatListItem[state="unread-message"] { foreground: #000080; }
+ChatListItem[state="unread-message"] { foreground: #0000f5; }
 ChatListItem[state="highlighted"] { foreground: #ff8000; }
 
 // NickView Colors
