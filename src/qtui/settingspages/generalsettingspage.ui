@@ -125,14 +125,14 @@
       <item row="0" column="2">
        <widget class="QLabel" name="label_6">
         <property name="text">
-         <string>Status Buffer</string>
+         <string>Status Window</string>
         </property>
        </widget>
       </item>
       <item row="0" column="3">
        <widget class="QLabel" name="label_7">
         <property name="text">
-         <string>Current Buffer</string>
+         <string>Current Chat</string>
         </property>
        </widget>
       </item>

@@ -359,7 +359,7 @@ void Client::requestInitialBacklog() {
 void Client::createDefaultBufferView() {
   if(bufferViewManager()->bufferViewConfigs().isEmpty()) {
     BufferViewConfig config(-1);
-    config.setBufferViewName(tr("All Buffers"));
+    config.setBufferViewName(tr("All Chats"));
     config.initSetBufferList(networkModel()->allBufferIdsSorted());
     bufferViewManager()->requestCreateBufferView(config.toVariantMap());
   }

@@ -827,7 +827,7 @@ NetworkModel::NetworkModel(QObject *parent)
 
 QList<QVariant >NetworkModel::defaultHeader() {
   QList<QVariant> data;
-  data << tr("Buffer") << tr("Topic") << tr("Nick Count");
+  data << tr("Chat") << tr("Topic") << tr("Nick Count");
   return data;
 }
 

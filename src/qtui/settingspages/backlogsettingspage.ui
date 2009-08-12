@@ -72,7 +72,7 @@
      <item>
       <widget class="QLabel" name="label_3">
        <property name="text">
-        <string>Backlog Request Method:</string>
+        <string>Backlog request method:</string>
        </property>
       </widget>
      </item>
@@ -80,17 +80,17 @@
       <widget class="QComboBox" name="requesterType">
        <item>
         <property name="text">
-         <string>Fixed Amount per Buffer</string>
+         <string>Fixed amount per chat</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Unread Messages per Buffer</string>
+         <string>Unread messages per chat</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Global Unread Messages</string>
+         <string>Globally unread messages</string>
         </property>
        </item>
       </widget>
@@ -120,7 +120,7 @@
        <item>
         <widget class="QLabel" name="label_9">
          <property name="text">
-          <string>The simplest Requester. It fetches a fixed amount of lines for each buffer from the Backlog.</string>
+          <string>The simplest requester. It fetches a fixed amount of lines for each chat window from the backlog.</string>
          </property>
          <property name="textFormat">
           <enum>Qt::PlainText</enum>
@@ -196,7 +196,7 @@
        <item>
         <widget class="QLabel" name="label_10">
          <property name="text">
-          <string>This requester fetches unread messages for each buffer individually. The amount of lines can be limited per buffer.
+          <string>This requester fetches unread messages for each chat window individually. The amount of lines can be limited per chat.
 
 You can also choose to fetch additional older chatlines to provide a better context.</string>
          </property>
@@ -309,12 +309,12 @@ You can also choose to fetch additional older chatlines to provide a better cont
        <item>
         <widget class="QLabel" name="label_15">
          <property name="text">
-          <string>This requester fetches all messages newer than the oldest unread message for all buffers.
+          <string>This requester fetches all messages newer than the oldest unread message for all chats.
 
-Note: this requester is not recommended if you use hidden buffer or have inactive buffers (i.e.: no stale queries or channels).
+Note: This requester is not recommended if you use hidden chat windows or have inactive chats (i.e.: no stale queries or channels).
 It is useful to limit the total amount of the backlog and is probably the fastest.
 
-You can also chose to fetch additional older chatlines to provide a better context similar.</string>
+You can also chose to fetch additional older chatlines to provide a better context.</string>
          </property>
          <property name="textFormat">
           <enum>Qt::PlainText</enum>

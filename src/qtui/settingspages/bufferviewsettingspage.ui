@@ -1,7 +1,8 @@
-<ui version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>BufferViewSettingsPage</class>
- <widget class="QWidget" name="BufferViewSettingsPage" >
-  <property name="geometry" >
+ <widget class="QWidget" name="BufferViewSettingsPage">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
@@ -9,48 +10,48 @@
     <height>529</height>
    </rect>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QHBoxLayout" >
+  <layout class="QHBoxLayout">
    <item>
-    <layout class="QVBoxLayout" >
+    <layout class="QVBoxLayout">
      <item>
-      <widget class="QListWidget" name="bufferViewList" />
+      <widget class="QListWidget" name="bufferViewList"/>
      </item>
      <item>
-      <widget class="QPushButton" name="renameBufferView" >
-       <property name="sizePolicy" >
-        <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+      <widget class="QPushButton" name="renameBufferView">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
-       <property name="text" >
+       <property name="text">
         <string>Re&amp;name...</string>
        </property>
-       <property name="icon" >
+       <property name="icon">
         <iconset>
          <normaloff>:/16x16/actions/oxygen/16x16/actions/edit-rename.png</normaloff>:/16x16/actions/oxygen/16x16/actions/edit-rename.png</iconset>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="addBufferView" >
-       <property name="sizePolicy" >
-        <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+      <widget class="QPushButton" name="addBufferView">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
-       <property name="text" >
+       <property name="text">
         <string>&amp;Add...</string>
        </property>
-       <property name="icon" >
+       <property name="icon">
         <iconset>
          <normaloff>:/16x16/actions/oxygen/16x16/actions/list-add.png</normaloff>:/16x16/actions/oxygen/16x16/actions/list-add.png</iconset>
        </property>
-       <property name="iconSize" >
+       <property name="iconSize">
         <size>
          <width>16</width>
          <height>16</height>
@@ -59,17 +60,17 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="deleteBufferView" >
-       <property name="sizePolicy" >
-        <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+      <widget class="QPushButton" name="deleteBufferView">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
-       <property name="text" >
+       <property name="text">
         <string>De&amp;lete</string>
        </property>
-       <property name="icon" >
+       <property name="icon">
         <iconset>
          <normaloff>:/16x16/actions/oxygen/16x16/actions/edit-delete.png</normaloff>:/16x16/actions/oxygen/16x16/actions/edit-delete.png</iconset>
        </property>
@@ -78,24 +79,24 @@
     </layout>
    </item>
    <item>
-    <widget class="QGroupBox" name="settingsGroupBox" >
-     <property name="title" >
-      <string>Buffer View  Settings</string>
+    <widget class="QGroupBox" name="settingsGroupBox">
+     <property name="title">
+      <string>Chat List Settings</string>
      </property>
-     <layout class="QVBoxLayout" >
+     <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <layout class="QHBoxLayout" >
+       <layout class="QHBoxLayout">
         <item>
-         <widget class="QLabel" name="label" >
-          <property name="text" >
+         <widget class="QLabel" name="label">
+          <property name="text">
            <string>Network:</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="networkSelector" >
+         <widget class="QComboBox" name="networkSelector">
           <item>
-           <property name="text" >
+           <property name="text">
             <string>All</string>
            </property>
           </item>
@@ -104,86 +105,77 @@
        </layout>
       </item>
       <item>
-       <widget class="QGroupBox" name="groupBox_2" >
-        <property name="title" >
-         <string>Restrict Buffers to:</string>
-        </property>
-        <layout class="QVBoxLayout" >
-         <item>
-          <widget class="QCheckBox" name="onlyStatusBuffers" >
-           <property name="toolTip" >
-            <string>This option is not available when all Networks are visible.
+       <widget class="QCheckBox" name="onlyStatusBuffers">
+        <property name="toolTip">
+         <string>This option is not available when all Networks are visible.
 In this mode no separate status buffer is displayed.</string>
-           </property>
-           <property name="text" >
-            <string>Status Buffers</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QCheckBox" name="onlyChannelBuffers" >
-           <property name="text" >
-            <string>Channel Buffers</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QCheckBox" name="onlyQueryBuffers" >
-           <property name="text" >
-            <string>Query Buffers</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="hideInactiveBuffers" >
-        <property name="text" >
-         <string>Hide inactive Buffers</string>
+        </property>
+        <property name="text">
+         <string>Show status window</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QCheckBox" name="addNewBuffersAutomatically" >
-        <property name="text" >
-         <string>Add new Buffers automatically</string>
+       <widget class="QCheckBox" name="onlyChannelBuffers">
+        <property name="text">
+         <string>Show channels</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QCheckBox" name="sortAlphabetically" >
-        <property name="text" >
+       <widget class="QCheckBox" name="onlyQueryBuffers">
+        <property name="text">
+         <string>Show queries</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="hideInactiveBuffers">
+        <property name="text">
+         <string>Hide inactive chats</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="addNewBuffersAutomatically">
+        <property name="text">
+         <string>Add new chats automatically</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="sortAlphabetically">
+        <property name="text">
          <string>Sort alphabetically</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="label_3" >
-        <property name="text" >
+       <widget class="QLabel" name="label_3">
+        <property name="text">
          <string>Minimum Activity:</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QComboBox" name="minimumActivitySelector" >
+       <widget class="QComboBox" name="minimumActivitySelector">
         <item>
-         <property name="text" >
+         <property name="text">
           <string>No Activity</string>
          </property>
         </item>
         <item>
-         <property name="text" >
+         <property name="text">
           <string>Other Activity</string>
          </property>
         </item>
         <item>
-         <property name="text" >
+         <property name="text">
           <string>New Message</string>
          </property>
         </item>
         <item>
-         <property name="text" >
+         <property name="text">
           <string>Highlight</string>
          </property>
         </item>
@@ -191,10 +183,10 @@ In this mode no separate status buffer is displayed.</string>
       </item>
       <item>
        <spacer>
-        <property name="orientation" >
+        <property name="orientation">
          <enum>Qt::Vertical</enum>
         </property>
-        <property name="sizeHint" stdset="0" >
+        <property name="sizeHint" stdset="0">
          <size>
           <width>20</width>
           <height>40</height>
@@ -206,16 +198,20 @@ In this mode no separate status buffer is displayed.</string>
     </widget>
    </item>
    <item>
-    <layout class="QVBoxLayout" >
+    <layout class="QVBoxLayout">
      <item>
-      <widget class="QLabel" name="label_2" >
-       <property name="text" >
+      <widget class="QLabel" name="label_2">
+       <property name="text">
         <string>Preview:</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="PreviewBufferView" name="bufferViewPreview" />
+      <widget class="PreviewBufferView" name="bufferViewPreview">
+       <property name="headerHidden">
+        <bool>true</bool>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
