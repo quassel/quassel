@@ -71,6 +71,9 @@
      </item>
      <item>
       <widget class="FontSelector" name="chatViewFont" native="true">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="settingsKey" stdset="0">
         <string>/QtUiStyle/Fonts/ChatView</string>
        </property>
