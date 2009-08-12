@@ -289,9 +289,9 @@ quint64 QssParser::parseFormatType(const QString &decl) {
           return UiStyle::Invalid;
         }
         if(condName == "fg-color")
-          fmtType |= 0x00400000 | (col << 24);
+          fmtType |= 0x00400000 | (quint32)(col << 24);
         else
-          fmtType |= 0x00800000 | (col << 28);
+          fmtType |= 0x00800000 | (quint32)(col << 28);
       } else {
         qWarning() << Q_FUNC_INFO << tr("Unhandled condition: %1").arg(condName);
         return UiStyle::Invalid;

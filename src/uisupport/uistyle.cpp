@@ -457,10 +457,10 @@ UiStyle::StyledString UiStyle::styleString(const QString &s_, quint32 baseFormat
         color &= 0x0f;
         if(s[pos+3] == 'f') {
           curfmt &= 0xf0ffffff;
-          curfmt |= (color << 24) | 0x00400000;
+          curfmt |= (quint32)(color << 24) | 0x00400000;
         } else {
           curfmt &= 0x0fffffff;
-          curfmt |= (color << 28) | 0x00800000;
+          curfmt |= (quint32)(color << 28) | 0x00800000;
         }
         length = 6;
       }
