@@ -59,13 +59,13 @@
         <string>Custom chat window font:</string>
        </property>
        <property name="checked">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
        <property name="settingsKey" stdset="0">
         <string>/QtUiStyle/Fonts/UseCustomChatViewFont</string>
        </property>
        <property name="defaultValue" stdset="0">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
       </widget>
      </item>
@@ -400,11 +400,14 @@
      <property name="checkable">
       <bool>true</bool>
      </property>
+     <property name="checked">
+      <bool>false</bool>
+     </property>
      <property name="settingsKey" stdset="0">
       <string>/QtUiStyle/Colors/UseSenderColors</string>
      </property>
      <property name="defaultValue" stdset="0">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
