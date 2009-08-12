@@ -102,14 +102,9 @@ void UiStyle::loadStyleSheet() {
     QssParser parser;
     parser.processStyleSheet(styleSheet);
     QApplication::setPalette(parser.palette());
-    _uiStylePalette = parser.uiStylePalette();
 
-    QTextCharFormat baseFmt = parser.formats().value(Base);
-    foreach(quint64 fmtType, parser.formats().keys()) {
-      QTextCharFormat fmt = baseFmt;
-      fmt.merge(parser.formats().value(fmtType));
-      _formats[fmtType] = fmt;
-    }
+    _uiStylePalette = parser.uiStylePalette();
+    _formats = parser.formats();
     _listItemFormats = parser.listItemFormats();
 
     styleSheet = styleSheet.trimmed();
