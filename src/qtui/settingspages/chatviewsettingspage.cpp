@@ -24,7 +24,7 @@
 #include "qtuistyle.h"
 
 ChatViewSettingsPage::ChatViewSettingsPage(QWidget *parent)
-  : SettingsPage(tr("Appearance"), tr("Chat View"), parent)
+  : SettingsPage(tr("Interface"), tr("Chat View"), parent)
 {
   ui.setupUi(this);
 

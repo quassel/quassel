@@ -25,7 +25,7 @@
 #include "qtuistyle.h"
 
 ItemViewSettingsPage::ItemViewSettingsPage(QWidget *parent)
-  : SettingsPage(tr("Appearance"), tr("Chat & Nick Lists"), parent),
+  : SettingsPage(tr("Interface"), tr("Chat & Nick Lists"), parent),
   _mapper(new QSignalMapper(this))
 {
   ui.setupUi(this);

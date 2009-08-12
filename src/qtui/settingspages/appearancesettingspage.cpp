@@ -35,7 +35,7 @@
 #include <QStyleFactory>
 
 AppearanceSettingsPage::AppearanceSettingsPage(QWidget *parent)
-  : SettingsPage(tr("Appearance"), QString(), parent),
+  : SettingsPage(tr("Interface"), QString(), parent),
   _fontsChanged(false)
 {
   ui.setupUi(this);
