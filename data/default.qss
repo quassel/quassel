@@ -6,7 +6,6 @@
 // Basics
 ChatLine {
   foreground: palette(text);
-  font: 10pt "Monospace";
 }
 
 ChatLine[label="highlight"] {
