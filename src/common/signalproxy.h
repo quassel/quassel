@@ -211,17 +211,36 @@ private:
 //  ExtendedMetaObject
 // ==================================================
 class SignalProxy::ExtendedMetaObject {
+  class MethodDescriptor {
+  public:
+    MethodDescriptor(const QMetaMethod &method);
+    MethodDescriptor() : _returnType(-1), _minArgCount(-1) {}
+
+    inline const QByteArray &methodName() const { return _methodName; }
+    inline const QList<int> &argTypes() const { return _argTypes; }
+    inline int returnType() const { return _returnType; }
+    inline int minArgCount() const { return _minArgCount; }
+
+  private:
+    QByteArray _methodName;
+    QList<int> _argTypes;
+    int _returnType;
+    int _minArgCount;
+  };
+
 public:
   ExtendedMetaObject(const QMetaObject *meta);
 
-  const QList<int> &argTypes(int methodId);
-  int returnType(int methodId);
-  int minArgCount(int methodId);
-  const QByteArray &methodName(int methodId);
+  inline const QByteArray &methodName(int methodId) { return methodDescriptor(methodId).methodName(); }
+  inline const QList<int> &argTypes(int methodId) { return methodDescriptor(methodId).argTypes(); }
+  inline int returnType(int methodId) { return methodDescriptor(methodId).returnType(); }
+  inline int minArgCount(int methodId) { return methodDescriptor(methodId).minArgCount(); }
+
+  inline int updatedRemotelyId() { return _updatedRemotelyId; }
+  
   int methodId(const QByteArray &methodName);
   const QHash<QByteArray, int> &syncMap();
   const QHash<int, int> &receiveMap();
-  int updatedRemotelyId();
 
   const QMetaObject *metaObject() const { return _meta; }
 
@@ -230,17 +249,14 @@ public:
   static QString methodBaseName(const QMetaMethod &method);
 
 private:
-  typedef QHash<int, QList<int> > ArgHash;
-  typedef QHash<int, QByteArray> MethodNameHash;
-  typedef QHash<QByteArray, int> MethodIdHash;
+  const MethodDescriptor &methodDescriptor(int methodId);
 
   const QMetaObject *_meta;
-  ArgHash _argTypes;
-  QHash<int, int> _returnType;
-  QHash<int, int> _minArgCount;
-  MethodNameHash _methodNames;
-  MethodIdHash _methodIds;
+  QHash<int, MethodDescriptor> _methods;
+  QHash<QByteArray, int> _methodIds;
+
   int _updatedRemotelyId; // id of the updatedRemotely() signal - makes things faster
+
   QHash<QByteArray, int> _syncMap;
   QHash<int, int> _receiveMap;
 };

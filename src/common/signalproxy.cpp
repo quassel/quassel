@@ -1179,42 +1179,15 @@ void SignalProxy::updateSecureState() {
 // ==================================================
 SignalProxy::ExtendedMetaObject::ExtendedMetaObject(const QMetaObject *meta)
   : _meta(meta),
-    _updatedRemotelyId(-1)
+    _updatedRemotelyId(_meta->indexOfSignal("updatedRemotely()"))
 {
 }
 
-const QList<int> &SignalProxy::ExtendedMetaObject::argTypes(int methodId) {
-  if(!_argTypes.contains(methodId)) {
-    QList<QByteArray> paramTypes = _meta->method(methodId).parameterTypes();
-    QList<int> argTypes;
-    for(int i = 0; i < paramTypes.count(); i++) {
-      argTypes.append(QMetaType::type(paramTypes[i]));
-    }
-    _argTypes[methodId] = argTypes;
+const SignalProxy::ExtendedMetaObject::MethodDescriptor &SignalProxy::ExtendedMetaObject::methodDescriptor(int methodId) {
+  if(!_methods.contains(methodId)) {
+    _methods[methodId] = MethodDescriptor(_meta->method(methodId));
   }
-  return _argTypes[methodId];
-}
-
-int SignalProxy::ExtendedMetaObject::returnType(int methodId) {
-  if(!_returnType.contains(methodId)) {
-    _returnType[methodId] = QMetaType::type(_meta->method(methodId).typeName());
-  }
-  return _returnType[methodId];
-}
-
-int SignalProxy::ExtendedMetaObject::minArgCount(int methodId) {
-  if(!_minArgCount.contains(methodId)) {
-    QString signature(_meta->method(methodId).signature());
-    _minArgCount[methodId] = _meta->method(methodId).parameterTypes().count() - signature.count("=");
-  }
-  return _minArgCount[methodId];
-}
-
-const QByteArray &SignalProxy::ExtendedMetaObject::methodName(int methodId) {
-  if(!_methodNames.contains(methodId)) {
-    _methodNames[methodId] = methodName(_meta->method(methodId));
-  }
-  return _methodNames[methodId];
+  return _methods[methodId];
 }
 
 int SignalProxy::ExtendedMetaObject::methodId(const QByteArray &methodName) {
@@ -1333,13 +1306,6 @@ const QHash<int, int> &SignalProxy::ExtendedMetaObject::receiveMap() {
   return _receiveMap;
 }
 
-int SignalProxy::ExtendedMetaObject::updatedRemotelyId() {
-  if(_updatedRemotelyId == -1) {
-    _updatedRemotelyId = _meta->indexOfSignal("updatedRemotely()");
-  }
-  return _updatedRemotelyId;
-}
-
 QByteArray SignalProxy::ExtendedMetaObject::methodName(const QMetaMethod &method) {
   QByteArray sig(method.signature());
   return sig.left(sig.indexOf("("));
@@ -1390,5 +1356,22 @@ QString SignalProxy::ExtendedMetaObject::methodBaseName(const QMetaMethod &metho
   methodname[0] = methodname[0].toUpper();
 
   return methodname;
+}
+
+SignalProxy::ExtendedMetaObject::MethodDescriptor::MethodDescriptor(const QMetaMethod &method)
+  : _methodName(SignalProxy::ExtendedMetaObject::methodName(method)),
+    _returnType(QMetaType::type(method.typeName()))
+{
+  // determine argTypes
+  QList<QByteArray> paramTypes = method.parameterTypes();
+  QList<int> argTypes;
+  for(int i = 0; i < paramTypes.count(); i++) {
+    argTypes.append(QMetaType::type(paramTypes[i]));
+  }
+  _argTypes = argTypes;
+
+  // determine minArgCount
+  QString signature(method.signature());
+  _minArgCount = method.parameterTypes().count() - signature.count("=");
 }
 
