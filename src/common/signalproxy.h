@@ -41,9 +41,7 @@ class SignalProxy : public QObject {
   class IODevicePeer;
   class SignalProxyPeer;
 
-  class Relay;
   class SignalRelay;
-  class SyncRelay;
 
 public:
   enum ProxyMode {
@@ -184,8 +182,6 @@ private:
 
   // SignalRelay for all manually attached signals
   SignalRelay *_signalRelay;
-  // one SyncRelay per class
-  QHash<const QMetaObject *, SyncRelay *> _syncRelays;
 
   // RPC function -> (object, slot ID)
   typedef QPair<QObject*, int> MethodId;

@@ -83,7 +83,9 @@ void BufferViewFilter::setConfig(BufferViewConfig *config) {
   if(config->isInitialized()) {
     configInitialized();
   } else {
-    connect(config, SIGNAL(initDone()), this, SLOT(configInitialized()));
+    // we use a queued connection here since manipulating the connection list of a sending object
+    // doesn't seem to be such a good idea while executing a connected slots.
+    connect(config, SIGNAL(initDone()), this, SLOT(configInitialized()), Qt::QueuedConnection);
     invalidate();
   }
 }

@@ -61,41 +61,16 @@ public:
 };
 
 // ==================================================
-//  Relays
+//  SignalRelay
 // ==================================================
-class SignalProxy::Relay : public QObject {
+class SignalProxy::SignalRelay : public QObject {
 /* Q_OBJECT is not necessary or even allowed, because we implement
    qt_metacall ourselves (and don't use any other features of the meta
    object system)
 */
 public:
-  Relay(SignalProxy *parent) : QObject(parent), _proxy(parent) {}
-
+  SignalRelay(SignalProxy *parent) : QObject(parent), _proxy(parent) {}
   inline SignalProxy *proxy() const { return _proxy; }
-
-private:
-  SignalProxy *_proxy;
-};
-
-class SignalProxy::SyncRelay : public SignalProxy::Relay {
-public:
-  SyncRelay(SignalProxy::ExtendedMetaObject *eMeta, SignalProxy *parent);
-
-  int qt_metacall(QMetaObject::Call _c, int _id, void **_a);
-
-  void synchronize(SyncableObject *object);
-
-  int signalCount() const { return _signalCount; }
-
-private:
-  ExtendedMetaObject *_eMeta;
-  QSet<int> _signalIds;
-  int _signalCount;
-};
-
-class SignalProxy::SignalRelay : public SignalProxy::Relay {
-public:
-  SignalRelay(SignalProxy *parent) : Relay(parent) {}
 
   int qt_metacall(QMetaObject::Call _c, int _id, void **_a);
 
@@ -111,74 +86,9 @@ private:
     Signal() : sender(0), signalId(-1) {}
   };
 
+  SignalProxy *_proxy;
   QHash<int, Signal> _slots;
 };
-
-SignalProxy::SyncRelay::SyncRelay(SignalProxy::ExtendedMetaObject *eMeta, SignalProxy *parent)
-  : Relay(parent),
-    _eMeta(eMeta)
-{
-  QByteArray signature;
-  for(int i = 0; i < eMeta->metaObject()->methodCount(); i++ ) {
-    signature = eMeta->metaObject()->method(i).signature();
-    if(!eMeta->syncMap().contains(signature))
-      continue;
-
-    if((proxy()->proxyMode() == SignalProxy::Server && !signature.contains("Requested")) ||
-       (proxy()->proxyMode() == SignalProxy::Client && signature.contains("Requested"))) {
-      _signalIds << i;
-    }
-  }
-  _signalCount = _signalIds.count();
-}
-
-void SignalProxy::SyncRelay::synchronize(SyncableObject *object) {
-  if(object->syncMetaObject() != _eMeta->metaObject()) {
-    qWarning() << Q_FUNC_INFO << "can't use SyncRelay of class" << _eMeta->metaObject()->className()
-	       << "for SyncableObject" << object << "with syncMetaObject of class" << object->syncMetaObject()->className();
-    return;
-  }
-
-  QSet<int>::const_iterator sigIter = _signalIds.constBegin();
-  while(sigIter != _signalIds.constEnd()) {
-    QMetaObject::connect(object, *sigIter, this, QObject::staticMetaObject.methodCount() + *sigIter);
-    sigIter++;
-  }
-}
-
-int SignalProxy::SyncRelay::qt_metacall(QMetaObject::Call _c, int _id, void **_a) {
-  _id = QObject::qt_metacall(_c, _id, _a);
-  if(_id < 0)
-    return _id;
-
-  if(_c == QMetaObject::InvokeMetaMethod) {
-    if(!_signalIds.contains(_id)) {
-      qWarning() << Q_FUNC_INFO << "_id" << _id << "is not a valid SyncMethod!";
-      return _id;
-    }
-
-    QVariantList params;
-
-    params << _eMeta->metaObject()->className()
-	   << sender()->objectName()
-	   << _eMeta->metaObject()->method(_id).signature();
-
-    const QList<int> &argTypes = _eMeta->argTypes(_id);
-    for(int i = 0; i < argTypes.size(); i++) {
-      if(argTypes[i] == 0) {
-	qWarning() << Q_FUNC_INFO << "received invalid data for argument number" << i << "of signal" << QString("%1::%2").arg(_eMeta->metaObject()->className()).arg(_eMeta->metaObject()->method(_id).signature());
-	qWarning() << "        - make sure all your data types are known by the Qt MetaSystem";
-	return _id;
-      }
-      params << QVariant(argTypes[i], _a[i+1]);
-    }
-
-    proxy()->dispatchSignal(SignalProxy::Sync, params);
-  }
-  _id -= _signalCount;
-  return _id;
-}
-
 
 void SignalProxy::SignalRelay::attachSignal(QObject *sender, int signalId, const QByteArray &funcName) {
   // we ride without safetybelts here... all checking for valid method etc pp has to be done by the caller
@@ -557,15 +467,7 @@ bool SignalProxy::attachSlot(const QByteArray& sigName, QObject* recv, const cha
 }
 
 void SignalProxy::synchronize(SyncableObject *obj) {
-  ExtendedMetaObject *eMeta = createExtendedMetaObject(obj);
-
-  SyncRelay *relay;
-  if(!_syncRelays.contains(obj->syncMetaObject())) {
-    _syncRelays[obj->syncMetaObject()] = new SyncRelay(eMeta, this);
-  }
-  relay = _syncRelays[obj->syncMetaObject()];
-
-  relay->synchronize(obj);
+  createExtendedMetaObject(obj);
 
   // attaching as slave to receive sync Calls
   QByteArray className(obj->syncMetaObject()->className());
@@ -608,11 +510,6 @@ void SignalProxy::detachSlots(QObject* receiver) {
 }
 
 void SignalProxy::stopSync(QObject *obj) {
-  SyncableObject *syncableObject = qobject_cast<SyncableObject *>(obj);
-  if(syncableObject && _syncRelays.contains(syncableObject->syncMetaObject())) {
-    QObject::disconnect(syncableObject, 0, _syncRelays[syncableObject->syncMetaObject()], 0);
-  }
-
   // we can't use a className here, since it might be effed up, if we receive the call as a result of a decon
   // gladly the objectName() is still valid. So we have only to iterate over the classes not each instance! *sigh*
   QHash<QByteArray, ObjectId>::iterator classIter = _syncSlave.begin();
@@ -1130,18 +1027,12 @@ void SignalProxy::dumpProxyStats() {
   else
     mode = "Client";
 
-  int sigCount = 0;
-  foreach(SyncRelay *relay, _syncRelays.values())
-    sigCount += relay->signalCount();
-
   int slaveCount = 0;
   foreach(ObjectId oid, _syncSlave.values())
     slaveCount += oid.count();
 
   qDebug() << this;
   qDebug() << "              Proxy Mode:" << mode;
-  // qDebug() << "attached sending Objects:" << _relayHash.count();
-  qDebug() << "       number of Signals:" << sigCount;
   qDebug() << "          attached Slots:" << _attachedSlots.count();
   qDebug() << " number of synced Slaves:" << slaveCount;
   qDebug() << "number of Classes cached:" << _extendedMetaObjects.count();

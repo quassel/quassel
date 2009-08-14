@@ -58,12 +58,6 @@ SyncableObject &SyncableObject::operator=(const SyncableObject &other) {
   return *this;
 }
 
-void SyncableObject::synchronize(SignalProxy *proxy) {
-  if(_signalProxies.contains(proxy))
-    return;
-  _signalProxies << proxy;
-}
-
 bool SyncableObject::isInitialized() const {
   return _initialized;
 }
@@ -170,4 +164,10 @@ void SyncableObject::sync_call__(SignalProxy::ProxyMode modeType, const char *fu
     proxy->syncCall(this, modeType, funcname, ap);
     va_end(ap);
   }
+}
+
+void SyncableObject::synchronize(SignalProxy *proxy) {
+  if(_signalProxies.contains(proxy))
+    return;
+  _signalProxies << proxy;
 }

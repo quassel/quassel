@@ -56,7 +56,9 @@ void BufferViewOverlay::addView(int viewId) {
     viewInitialized(config);
   } else {
     disconnect(config, SIGNAL(initDone()), this, SLOT(viewInitialized()));
-    connect(config, SIGNAL(initDone()), this, SLOT(viewInitialized()));
+    // we use a queued connection here since manipulating the connection list of a sending object
+    // doesn't seem to be such a good idea while executing a connected slots.
+    connect(config, SIGNAL(initDone()), this, SLOT(viewInitialized()), Qt::QueuedConnection);
   }
 }
 
