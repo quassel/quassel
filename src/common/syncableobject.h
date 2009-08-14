@@ -36,8 +36,6 @@ public:
   SyncableObject(const QString &objectName, QObject *parent = 0);
   SyncableObject(const SyncableObject &other, QObject *parent = 0);
 
-  void synchronize(SignalProxy *proxy);
-
   //! Stores the object's state into a QVariantMap.
   /** The default implementation takes dynamic properties as well as getters that have
    *  names starting with "init" and stores them in a QVariantMap. Override this method in
@@ -82,17 +80,31 @@ signals:
   void objectRenamed(QString newName, QString oldName);
 
 private:
+  void synchronize(SignalProxy *proxy);
+
   bool setInitValue(const QString &property, const QVariant &value);
 
   bool _initialized;
   bool _allowClientUpdates;
 
   QList<SignalProxy *> _signalProxies;
+
+  friend class SignalProxy;
 };
 
-#define so_sync(...) sync_call__(SignalProxy::Server, __func__, __VA_ARGS__);
-#define so_request(...) sync_call__(SignalProxy::Client, __func__, __VA_ARGS__);
-#define so_arg_cast(x) const_cast<void *>(reinterpret_cast<const void*>(&x))
+#define SYNCABLE_OBJECT static const int _classNameOffset__;
+#define INIT_SYNCABLE_OBJECT(x) const int x ::_classNameOffset__ = QByteArray(staticMetaObject.className()).length() + 2;
 
+#ifdef Q_WS_WIN
+#    define SYNC(...) sync_call__(SignalProxy::Server, (__FUNCTION__ + _classNameOffset__), __VA_ARGS__);
+#    define REQUEST(...) sync_call__(SignalProxy::Client, (__FUNCTION__ + _classNameOffset__) , __VA_ARGS__);
+#else
+#    define SYNC(...) sync_call__(SignalProxy::Server, __func__, __VA_ARGS__);
+#    define REQUEST(...) sync_call__(SignalProxy::Client, __func__, __VA_ARGS__);
+#endif //Q_WS_WIN
+
+
+#define ARG(x) const_cast<void *>(reinterpret_cast<const void*>(&x))
+#define NO_ARG 0
 
 #endif

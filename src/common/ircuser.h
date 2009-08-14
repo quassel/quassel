@@ -35,6 +35,7 @@ class Network;
 class IrcChannel;
 
 class IrcUser : public SyncableObject {
+  SYNCABLE_OBJECT
   Q_OBJECT
 
   Q_PROPERTY(QString user READ user WRITE setUser STORED false)
@@ -123,29 +124,27 @@ public slots:
   void removeUserModes(const QString &modes);
 
 signals:
-  void userSet(QString user);
-  void hostSet(QString host);
-  void nickSet(QString newnick);
-  void realNameSet(QString realName);
-  void awaySet(bool away);
-  void awayMessageSet(QString awayMessage);
-  void idleTimeSet(QDateTime idleTime);
-  void loginTimeSet(QDateTime loginTime);
-  void serverSet(QString server);
-  void ircOperatorSet(QString ircOperator);
-  void lastAwayMessageSet(int lastAwayMessage);
-  void whoisServiceReplySet(QString whoisServiceReply);
-  void suserHostSet(QString suserHost);
-  void hostmaskUpdated(QString mask);
+//   void userSet(QString user);
+//   void hostSet(QString host);
+//   void nickSet(QString newnick);
+//   void realNameSet(QString realName);
+//   void awaySet(bool away);
+//   void awayMessageSet(QString awayMessage);
+//   void idleTimeSet(QDateTime idleTime);
+//   void loginTimeSet(QDateTime loginTime);
+//   void serverSet(QString server);
+//   void ircOperatorSet(QString ircOperator);
+//   void lastAwayMessageSet(int lastAwayMessage);
+//   void whoisServiceReplySet(QString whoisServiceReply);
+//   void suserHostSet(QString suserHost);
 
-  void userModesSet(QString modes);
+//   void userModesSet(QString modes);
+//   void userModesAdded(QString modes);
+//   void userModesRemoved(QString modes);
 
   // void channelJoined(QString channel);
   void channelParted(QString channel);
   void quited();
-
-  void userModesAdded(QString modes);
-  void userModesRemoved(QString modes);
 
   void lastChannelActivityUpdated(BufferId id, const QDateTime &newTime);
   void lastSpokenToUpdated(BufferId id, const QDateTime &newTime);

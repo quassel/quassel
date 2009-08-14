@@ -25,6 +25,7 @@
 #include "types.h"
 
 class BacklogManager : public SyncableObject {
+  SYNCABLE_OBJECT
   Q_OBJECT
 
 public:

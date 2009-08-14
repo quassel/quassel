@@ -28,6 +28,7 @@
 #include <QTextCodec>
 #include <QDebug>
 
+INIT_SYNCABLE_OBJECT(IrcUser)
 IrcUser::IrcUser(const QString &hostmask, Network *network) : SyncableObject(network),
     _initialized(false),
     _nick(nickFromMask(hostmask)),
@@ -109,28 +110,28 @@ QByteArray IrcUser::encodeString(const QString &string) const {
 void IrcUser::setUser(const QString &user) {
   if(!user.isEmpty() && _user != user) {
     _user = user;
-    emit userSet(user);
+    SYNC(ARG(user));
   }
 }
 
 void IrcUser::setRealName(const QString &realName) {
   if (!realName.isEmpty() && _realName != realName) {
     _realName = realName;
-    emit realNameSet(realName);
+    SYNC(ARG(realName))
   }
 }
 
 void IrcUser::setAway(const bool &away) {
   if(away != _away) {
     _away = away;
-    emit awaySet(away);
+    SYNC(ARG(away))
   }
 }
 
 void IrcUser::setAwayMessage(const QString &awayMessage) {
   if(!awayMessage.isEmpty() && _awayMessage != awayMessage) {
     _awayMessage = awayMessage;
-    emit awayMessageSet(awayMessage);
+    SYNC(ARG(awayMessage))
   }
 }
 
@@ -138,43 +139,42 @@ void IrcUser::setIdleTime(const QDateTime &idleTime) {
   if(idleTime.isValid() && _idleTime != idleTime) {
     _idleTime = idleTime;
     _idleTimeSet = QDateTime::currentDateTime();
-    emit idleTimeSet(idleTime);
+    SYNC(ARG(idleTime))
   }
 }
 
 void IrcUser::setLoginTime(const QDateTime &loginTime) {
   if(loginTime.isValid() && _loginTime != loginTime) {
     _loginTime = loginTime;
-    emit loginTimeSet(loginTime);
+    SYNC(ARG(loginTime))
   }
 }
 
 void IrcUser::setServer(const QString &server) {
   if(!server.isEmpty() && _server != server) {
     _server = server;
-    emit serverSet(server);
+    SYNC(ARG(server))
   }
 }
 
 void IrcUser::setIrcOperator(const QString &ircOperator) {
   if(!ircOperator.isEmpty() && _ircOperator != ircOperator) {
     _ircOperator = ircOperator;
-    emit ircOperatorSet(ircOperator);
+    SYNC(ARG(ircOperator))
   }
 }
 
 void IrcUser::setLastAwayMessage(const int &lastAwayMessage) {
   if(lastAwayMessage > _lastAwayMessage) {
     _lastAwayMessage = lastAwayMessage;
-    emit lastAwayMessageSet(lastAwayMessage);
+    SYNC(ARG(lastAwayMessage))
   }
 }
 
 void IrcUser::setHost(const QString &host) {
-  so_sync(so_arg_cast(host));
   if(!host.isEmpty() && _host != host) {
     _host = host;
-    emit hostSet(host);
+    SYNC(ARG(host))
   }
 }
 
@@ -182,21 +182,21 @@ void IrcUser::setNick(const QString &nick) {
   if(!nick.isEmpty() && nick != _nick) {
     _nick = nick;
     updateObjectName();
-    emit nickSet(nick);
+    SYNC(ARG(nick))
   }
 }
 
 void IrcUser::setWhoisServiceReply(const QString &whoisServiceReply) {
   if(!whoisServiceReply.isEmpty() && whoisServiceReply != _whoisServiceReply) {
     _whoisServiceReply = whoisServiceReply;
-    emit whoisServiceReplySet(whoisServiceReply);
+    SYNC(ARG(whoisServiceReply))
   }
 }
 
 void IrcUser::setSuserHost(const QString &suserHost) {
   if(!suserHost.isEmpty() && suserHost != _suserHost) {
     _suserHost = suserHost;
-    emit suserHostSet(suserHost);
+    SYNC(ARG(suserHost))
   }
 }
 
@@ -269,7 +269,7 @@ void IrcUser::channelDestroyed() {
 
 void IrcUser::setUserModes(const QString &modes) {
   _userModes = modes;
-  emit userModesSet(modes);
+  SYNC(ARG(modes))
 }
 
 void IrcUser::addUserModes(const QString &modes) {
@@ -281,7 +281,7 @@ void IrcUser::addUserModes(const QString &modes) {
       _userModes += modes[i];
   }
 
-  emit userModesAdded(modes);
+  SYNC(ARG(modes))
 }
 
 void IrcUser::removeUserModes(const QString &modes) {
@@ -291,7 +291,7 @@ void IrcUser::removeUserModes(const QString &modes) {
   for(int i = 0; i < modes.count(); i++) {
     _userModes.remove(modes[i]);
   }
-  emit userModesRemoved(modes);
+  SYNC(ARG(modes))
 }
 
 void IrcUser::setLastChannelActivity(BufferId buffer, const QDateTime &time) {

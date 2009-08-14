@@ -210,18 +210,20 @@ class SignalProxy::ExtendedMetaObject {
   class MethodDescriptor {
   public:
     MethodDescriptor(const QMetaMethod &method);
-    MethodDescriptor() : _returnType(-1), _minArgCount(-1) {}
+    MethodDescriptor() : _returnType(-1), _minArgCount(-1), _receiverMode(SignalProxy::Client) {}
 
     inline const QByteArray &methodName() const { return _methodName; }
     inline const QList<int> &argTypes() const { return _argTypes; }
     inline int returnType() const { return _returnType; }
     inline int minArgCount() const { return _minArgCount; }
+    inline SignalProxy::ProxyMode receiverMode() const { return _receiverMode; }
 
   private:
     QByteArray _methodName;
     QList<int> _argTypes;
     int _returnType;
     int _minArgCount;
+    SignalProxy::ProxyMode _receiverMode; // Only acceptable as a Sync Call if the receiving SignalProxy is in this mode.
   };
 
 public:
@@ -231,30 +233,29 @@ public:
   inline const QList<int> &argTypes(int methodId) { return methodDescriptor(methodId).argTypes(); }
   inline int returnType(int methodId) { return methodDescriptor(methodId).returnType(); }
   inline int minArgCount(int methodId) { return methodDescriptor(methodId).minArgCount(); }
+  inline SignalProxy::ProxyMode receiverMode(int methodId) { return methodDescriptor(methodId).receiverMode(); }
+
+  inline int methodId(const QByteArray &methodName) { return _methodIds.contains(methodName) ? _methodIds[methodName] : -1; }
 
   inline int updatedRemotelyId() { return _updatedRemotelyId; }
   
-  int methodId(const QByteArray &methodName);
-  const QHash<QByteArray, int> &syncMap();
+  inline const QHash<QByteArray, int> &slotMap() { return _methodIds; }
   const QHash<int, int> &receiveMap();
 
   const QMetaObject *metaObject() const { return _meta; }
 
   static QByteArray methodName(const QMetaMethod &method);
-  static bool methodsMatch(const QMetaMethod &signal, const QMetaMethod &slot);
-  static QString methodBaseName(const QMetaMethod &method);
+  static QString ExtendedMetaObject::methodBaseName(const QMetaMethod &method);
 
 private:
   const MethodDescriptor &methodDescriptor(int methodId);
 
   const QMetaObject *_meta;
-  QHash<int, MethodDescriptor> _methods;
-  QHash<QByteArray, int> _methodIds;
-
   int _updatedRemotelyId; // id of the updatedRemotely() signal - makes things faster
 
-  QHash<QByteArray, int> _syncMap;
-  QHash<int, int> _receiveMap;
+  QHash<int, MethodDescriptor> _methods;
+  QHash<QByteArray, int> _methodIds;
+  QHash<int, int> _receiveMap; // if slot x is called then hand over the result to slot y
 };
 
 

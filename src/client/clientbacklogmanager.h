@@ -27,6 +27,7 @@
 class BacklogRequester;
 
 class ClientBacklogManager : public BacklogManager {
+  SYNCABLE_OBJECT
   Q_OBJECT
 
 public:

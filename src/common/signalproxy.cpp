@@ -570,6 +570,7 @@ void SignalProxy::receivePeerSignal(AbstractPeer *sender, const RequestType &req
     }
   }
 
+  qDebug() << "SignalProxy::receivePeerSignal)" << requestType << params;
   switch(requestType) {
   case RpcCall:
     if(params.empty())
@@ -621,23 +622,27 @@ void SignalProxy::handleSync(AbstractPeer *sender, QVariantList params) {
 
   QByteArray className = params.takeFirst().toByteArray();
   QString objectName = params.takeFirst().toString();
-  QByteArray signal = params.takeFirst().toByteArray();
+  QByteArray slot = params.takeFirst().toByteArray();
 
   if(!_syncSlave.contains(className) || !_syncSlave[className].contains(objectName)) {
-    qWarning() << QString("no registered receiver for sync call: %1::%2 (objectName=\"%3\"). Params are:").arg(QString(className)).arg(QString(signal)).arg(objectName)
+    qWarning() << QString("no registered receiver for sync call: %1::%2 (objectName=\"%3\"). Params are:").arg(QString(className)).arg(QString(slot)).arg(objectName)
 	       << params;
     return;
   }
 
   SyncableObject *receiver = _syncSlave[className][objectName];
   ExtendedMetaObject *eMeta = extendedMetaObject(receiver);
-  if(!eMeta->syncMap().contains(signal)) {
-    qWarning() << QString("no matching slot for sync call: %1::%2 (objectName=\"%3\"). Params are:").arg(QString(className)).arg(QString(signal)).arg(objectName)
+  if(!eMeta->slotMap().contains(slot)) {
+    qWarning() << QString("no matching slot for sync call: %1::%2 (objectName=\"%3\"). Params are:").arg(QString(className)).arg(QString(slot)).arg(objectName)
 	       << params;
     return;
   }
 
-  int slotId = eMeta->syncMap()[signal];
+  int slotId = eMeta->slotMap()[slot];
+  if(proxyMode() != eMeta->receiverMode(slotId)) {
+    qWarning("SignalProxy::handleSync(): invokeMethod for \"%s\" failed. Wrong ProxyMode!", eMeta->methodName(slotId).constData());
+    return;
+  }
 
   QVariant returnValue((QVariant::Type)eMeta->returnType(slotId));
   if(!invokeSlot(receiver, slotId, params, returnValue)) {
@@ -645,12 +650,14 @@ void SignalProxy::handleSync(AbstractPeer *sender, QVariantList params) {
     return;
   }
 
+
   if(returnValue.type() != QVariant::Invalid && eMeta->receiveMap().contains(slotId)) {
     int receiverId = eMeta->receiveMap()[slotId];
     QVariantList returnParams;
     returnParams << className
 		 << objectName
-		 << QByteArray(receiver->metaObject()->method(receiverId).signature());
+		 << eMeta->methodName(receiverId);
+    //QByteArray(receiver->metaObject()->method(receiverId).signature());
     if(eMeta->argTypes(receiverId).count() > 1)
       returnParams << params;
     returnParams << returnValue;
@@ -980,6 +987,7 @@ void SignalProxy::customEvent(QEvent *event) {
 }
 
 void SignalProxy::syncCall(const SyncableObject *obj, SignalProxy::ProxyMode modeType, const char *funcname, va_list ap) {
+  qDebug() << obj << modeType << "(" << _proxyMode << ")" << funcname;
   if(modeType != _proxyMode)
     return;
 
@@ -1002,6 +1010,8 @@ void SignalProxy::syncCall(const SyncableObject *obj, SignalProxy::ProxyMode mod
     }
     params << QVariant(argTypes[i], va_arg(ap, void *));
   }
+
+  dispatchSignal(Sync, params);
 }
 
 void SignalProxy::disconnectDevice(QIODevice *dev, const QString &reason) {
@@ -1038,19 +1048,6 @@ void SignalProxy::dumpProxyStats() {
   qDebug() << "number of Classes cached:" << _extendedMetaObjects.count();
 }
 
-void SignalProxy::dumpSyncMap(SyncableObject *object) {
-  const QMetaObject *meta = object->metaObject();
-  ExtendedMetaObject *eMeta = extendedMetaObject(object);
-  qDebug() << "SignalProxy: SyncMap for Class" << meta->className();
-
-  QHash<QByteArray, int> syncMap_ = eMeta->syncMap();
-  QHash<QByteArray, int>::const_iterator iter = syncMap_.constBegin();
-  while(iter != syncMap_.constEnd()) {
-    qDebug() << qPrintable(QString("%1 --> %2 %3").arg(QString(iter.key()), 40).arg(iter.value()).arg(QString(meta->method(iter.value()).signature())));
-    iter++;
-  }
-}
-
 void SignalProxy::updateSecureState() {
   bool wasSecure = _secure;
 
@@ -1072,6 +1069,39 @@ SignalProxy::ExtendedMetaObject::ExtendedMetaObject(const QMetaObject *meta)
   : _meta(meta),
     _updatedRemotelyId(_meta->indexOfSignal("updatedRemotely()"))
 {
+  for(int i = 0; i < _meta->methodCount(); i++) {
+    if(_meta->method(i).methodType() != QMetaMethod::Slot)
+      continue;
+
+    if(QByteArray(_meta->method(i).signature()).contains('*'))
+      continue; // skip methods with ptr params
+
+    QByteArray method = methodName(_meta->method(i));
+    if(_methodIds.contains(method)) {
+      /* funny... moc creates for methods containing default parameters multiple metaMethod with separate methodIds.
+         we don't care... we just need the full fledged version
+       */
+      const QMetaMethod &current = _meta->method(_methodIds[method]);
+      const QMetaMethod &candidate = _meta->method(i);
+      if(current.parameterTypes().count() > candidate.parameterTypes().count()) {
+        int minCount = candidate.parameterTypes().count();
+        QList<QByteArray> commonParams = current.parameterTypes().mid(0, minCount);
+        if(commonParams == candidate.parameterTypes())
+          continue; // we already got the full featured version
+      } else {
+        int minCount = current.parameterTypes().count();
+        QList<QByteArray> commonParams = candidate.parameterTypes().mid(0, minCount);
+        if(commonParams == current.parameterTypes()) {
+          _methodIds[method] = i; // use the new one
+          continue;
+        }
+      }
+      qWarning() << "class" << meta->className() << "contains overloaded methods which is currently not supported!";
+      qWarning() << " - " << _meta->method(i).signature() << "conflicts with" << _meta->method(_methodIds[method]).signature();
+      continue;
+    }
+    _methodIds[method] = i;
+  }
 }
 
 const SignalProxy::ExtendedMetaObject::MethodDescriptor &SignalProxy::ExtendedMetaObject::methodDescriptor(int methodId) {
@@ -1079,71 +1109,6 @@ const SignalProxy::ExtendedMetaObject::MethodDescriptor &SignalProxy::ExtendedMe
     _methods[methodId] = MethodDescriptor(_meta->method(methodId));
   }
   return _methods[methodId];
-}
-
-int SignalProxy::ExtendedMetaObject::methodId(const QByteArray &methodName) {
-  if(_methodIds.contains(methodName)) {
-    return _methodIds[methodName];
-  } else {
-    for(int i = _meta->methodOffset(); i < _meta->methodCount(); i++) {
-      if(ExtendedMetaObject::methodName(_meta->method(i)) == methodName) {
-        _methodIds[methodName] = i;
-        return i;
-      }
-    }
-  }
-  Q_ASSERT(false);
-  return -1;
-}
-
-const QHash<QByteArray, int> &SignalProxy::ExtendedMetaObject::syncMap() {
-  if(_syncMap.isEmpty()) {
-    QHash<QByteArray, int> syncMap;
-
-    QList<int> slotIndexes;
-    for(int i = 0; i < _meta->methodCount(); i++) {
-      if(_meta->method(i).methodType() == QMetaMethod::Slot)
-	slotIndexes << i;
-    }
-
-    // we're faking sync pairs for sync replies
-    // --> we deliver to every slot starting with "receive"
-    QByteArray slotSignature;
-    QList<int>::iterator slotIter = slotIndexes.begin();
-    while(slotIter != slotIndexes.end()) {
-      slotSignature = QByteArray(_meta->method(*slotIter).signature());
-      if(slotSignature.startsWith("receive")) {
-	syncMap[slotSignature] = *slotIter;
-	slotIter = slotIndexes.erase(slotIter);
-      } else {
-	slotIter++;
-      }
-    }
-
-    // find the proper sig -> slot matches
-    QMetaMethod signal, slot;
-    int matchIdx;
-    for(int signalIdx = 0; signalIdx < _meta->methodCount(); signalIdx++) {
-      signal = _meta->method(signalIdx);
-      if(signal.methodType() != QMetaMethod::Signal)
-	continue;
-
-      matchIdx = -1;
-      foreach(int slotIdx, slotIndexes) {
-	slot = _meta->method(slotIdx);
-	if(methodsMatch(signal, slot)) {
-	  matchIdx = slotIdx;
-	  break;
-	}
-      }
-      if(matchIdx != -1) {
-	slotIndexes.removeAll(matchIdx);
-	syncMap[QByteArray(signal.signature())] = matchIdx;
-      }
-    }
-    _syncMap = syncMap;
-  }
-  return _syncMap;
 }
 
 const QHash<int, int> &SignalProxy::ExtendedMetaObject::receiveMap() {
@@ -1189,8 +1154,10 @@ const QHash<int, int> &SignalProxy::ExtendedMetaObject::receiveMap() {
 	receiverId = _meta->indexOfSlot(signature);
       }
 
-      if(receiverId != -1)
+      if(receiverId != -1) {
 	receiveMap[i] = receiverId;
+        qDebug() << requestSlot.signature() << _meta->method(receiverId).signature() << "---" << i << receiverId;
+      }
     }
     _receiveMap = receiveMap;
   }
@@ -1200,29 +1167,6 @@ const QHash<int, int> &SignalProxy::ExtendedMetaObject::receiveMap() {
 QByteArray SignalProxy::ExtendedMetaObject::methodName(const QMetaMethod &method) {
   QByteArray sig(method.signature());
   return sig.left(sig.indexOf("("));
-}
-
-bool SignalProxy::ExtendedMetaObject::methodsMatch(const QMetaMethod &signal, const QMetaMethod &slot) {
-  // if we don't even have the same basename it's a sure NO
-  QString baseName = methodBaseName(signal);
-  if(baseName != methodBaseName(slot))
-    return false;
-
-  // are the signatures compatible?
-  if(!QObject::staticMetaObject.checkConnectArgs(signal.signature(), slot.signature()))
-    return false;
-
-  // we take an educated guess if the signals and slots match
-  QString signalsuffix = methodName(signal);
-  QString slotprefix = methodName(slot);
-  if(!baseName.isEmpty()) {
-    signalsuffix = signalsuffix.mid(baseName.count()).toLower();
-    slotprefix = slotprefix.left(slotprefix.count() - baseName.count()).toLower();
-  }
-
-  uint sizediff = qAbs(slotprefix.size() - signalsuffix.size());
-  int ratio = editingDistance(slotprefix, signalsuffix) - sizediff;
-  return (ratio < 2);
 }
 
 QString SignalProxy::ExtendedMetaObject::methodBaseName(const QMetaMethod &method) {
@@ -1264,5 +1208,9 @@ SignalProxy::ExtendedMetaObject::MethodDescriptor::MethodDescriptor(const QMetaM
   // determine minArgCount
   QString signature(method.signature());
   _minArgCount = method.parameterTypes().count() - signature.count("=");
+
+  _receiverMode = (_methodName.startsWith("request"))
+    ? SignalProxy::Server
+    : SignalProxy::Client;
 }
 
