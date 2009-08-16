@@ -39,6 +39,7 @@
 #include "util.h"
 #include "coreusersettings.h"
 #include "logger.h"
+#include "coreignorelistmanager.h"
 
 class ProcessMessagesEvent : public QEvent {
 public:
@@ -57,7 +58,8 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
     _networkConfig(new CoreNetworkConfig("GlobalNetworkConfig", this)),
     _coreInfo(this),
     scriptEngine(new QScriptEngine(this)),
-    _processMessages(false)
+    _processMessages(false),
+    _ignoreListManager(this)
 {
   SignalProxy *p = signalProxy();
   connect(p, SIGNAL(peerRemoved(QIODevice *)), this, SLOT(removeClient(QIODevice *)));
@@ -91,7 +93,7 @@ CoreSession::CoreSession(UserId uid, bool restoreState, QObject *parent)
   p->synchronize(ircListHelper());
   p->synchronize(networkConfig());
   p->synchronize(&_coreInfo);
-
+  p->synchronize(&_ignoreListManager);
   // Restore session state
   if(restoreState)
     restoreSessionState();
@@ -241,12 +243,18 @@ void CoreSession::customEvent(QEvent *event) {
 }
 
 void CoreSession::processMessages() {
+  QString networkName;
   if(_messageQueue.count() == 1) {
     const RawMessage &rawMsg = _messageQueue.first();
     BufferInfo bufferInfo = Core::bufferInfo(user(), rawMsg.networkId, rawMsg.bufferType, rawMsg.target);
     Message msg(bufferInfo, rawMsg.type, rawMsg.text, rawMsg.sender, rawMsg.flags);
-    Core::storeMessage(msg);
-    emit displayMsg(msg);
+    
+    networkName = _networks.value(bufferInfo.networkId())->networkName();
+    // if message is ignored with "HardStrictness" we discard it here
+    if(_ignoreListManager.match(msg, networkName) != IgnoreListManager::HardStrictness) {
+      Core::storeMessage(msg);
+      emit displayMsg(msg);
+    }
   } else {
     QHash<NetworkId, QHash<QString, BufferInfo> > bufferInfoCache;
     MessageList messages;
@@ -259,7 +267,13 @@ void CoreSession::processMessages() {
 	bufferInfo = Core::bufferInfo(user(), rawMsg.networkId, rawMsg.bufferType, rawMsg.target);
 	bufferInfoCache[rawMsg.networkId][rawMsg.target] = bufferInfo;
       }
-      messages << Message(bufferInfo, rawMsg.type, rawMsg.text, rawMsg.sender, rawMsg.flags);
+
+      Message msg(bufferInfo, rawMsg.type, rawMsg.text, rawMsg.sender, rawMsg.flags);
+      networkName = _networks.value(bufferInfo.networkId())->networkName();
+      // if message is ignored with "HardStrictness" we discard it here
+      if(_ignoreListManager.match(msg, networkName) == IgnoreListManager::HardStrictness)
+        continue;
+      messages << msg;
     }
     Core::storeMessages(messages);
     // FIXME: extend protocol to a displayMessages(MessageList)

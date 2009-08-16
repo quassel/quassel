@@ -70,6 +70,8 @@ public:
 
   void clear();
 
+  virtual const MessageModelItem *messageItemAt(int i) const = 0;
+
 public slots:
   void requestBacklog(BufferId bufferId);
   void messagesReceived(BufferId bufferId, int count);
@@ -81,7 +83,6 @@ protected:
 
   virtual int messageCount() const = 0;
   virtual bool messagesIsEmpty() const = 0;
-  virtual const MessageModelItem *messageItemAt(int i) const = 0;
   virtual MessageModelItem *messageItemAt(int i) = 0;
   virtual const MessageModelItem *firstMessageItem() const= 0;
   virtual MessageModelItem *firstMessageItem() = 0;

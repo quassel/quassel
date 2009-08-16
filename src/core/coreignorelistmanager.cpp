@@ -18,33 +18,38 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef CHATMONITORVIEW_H
-#define CHATMONITORVIEW_H
+#include "coreignorelistmanager.h"
 
-#include "chatview.h"
+#include "core.h"
+#include "coresession.h"
 
-class ChatMonitorFilter;
+CoreIgnoreListManager::CoreIgnoreListManager(CoreSession *parent)
+  : IgnoreListManager(parent)
+{
+  CoreSession *session = qobject_cast<CoreSession *>(parent);
+  if(!session) {
+    qWarning() << "CoreIgnoreListManager: unable to load IgnoreList. Parent is not a Coresession!";
+    //loadDefaults();
+    return;
+  }
 
-class ChatMonitorView : public ChatView {
-  Q_OBJECT
+  initSetIgnoreList(Core::getUserSetting(session->user(), "IgnoreList").toMap());
+  //if(isEmpty())
+    //loadDefaults();
+}
 
-public:
-  ChatMonitorView(ChatMonitorFilter *filter, QWidget *parent);
+CoreIgnoreListManager::~CoreIgnoreListManager() {
+  CoreSession *session = qobject_cast<CoreSession *>(parent());
+  if(!session) {
+    qWarning() << "CoreIgnoreListManager: unable to save IgnoreList. Parent is not a Coresession!";
+    return;
+  }
 
-protected:
-  virtual void addActionsToMenu(QMenu *menu, const QPointF &pos);
-  virtual void mouseDoubleClickEvent(QMouseEvent *event);
+  Core::setUserSetting(session->user(), "IgnoreList", initIgnoreList());
+}
 
-private slots:
-  void showFieldsChanged(bool checked);
-  void showSettingsPage();
-  virtual void coreConnectionStateChanged(bool connected);
-
-protected:
-  inline ChatMonitorFilter *filter() const { return _filter; }
-
-private:
-  ChatMonitorFilter *_filter;
-};
-
-#endif //CHATMONITORVIEW_H
+//void CoreIgnoreListManager::loadDefaults() {
+//  foreach(IgnoreListItem item, IgnoreListManager::defaults()) {
+//    addIgnoreListItem(item.ignoreRule, item.isRegEx, item.strictness, item.scope, item.scopeRule);
+//  }
+//}

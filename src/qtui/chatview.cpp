@@ -30,6 +30,7 @@
 #include "messagefilter.h"
 #include "qtui.h"
 #include "qtuistyle.h"
+#include "clientignorelistmanager.h"
 
 ChatView::ChatView(BufferId bufferId, QWidget *parent)
   : QGraphicsView(parent),
@@ -73,6 +74,10 @@ void ChatView::init(MessageFilter *filter) {
   setScene(_scene);
 
   connect(verticalScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(verticalScrollbarChanged(int)));
+
+  // only connect if client is synched with a core
+  if(Client::isSynced())
+    connect(Client::ignoreListManager(), SIGNAL(ignoreListChanged()), filter, SLOT(invalidateFilter()));
 }
 
 bool ChatView::event(QEvent *event) {

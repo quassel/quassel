@@ -33,6 +33,7 @@
 #include "clientbufferviewmanager.h"
 #include "clientirclisthelper.h"
 #include "clientidentity.h"
+#include "clientignorelistmanager.h"
 #include "clientuserinputhandler.h"
 #include "ircchannel.h"
 #include "ircuser.h"
@@ -91,6 +92,7 @@ Client::Client(QObject *parent)
     _ircListHelper(new ClientIrcListHelper(this)),
     _inputHandler(0),
     _networkConfig(0),
+    _ignoreListManager(0),
     _messageModel(0),
     _messageProcessor(0),
     _connectedToCore(false),
@@ -336,6 +338,11 @@ void Client::setSyncedToCore() {
   _networkConfig = new NetworkConfig("GlobalNetworkConfig", this);
   signalProxy()->synchronize(networkConfig());
 
+  // create IgnoreListManager
+  Q_ASSERT(!_ignoreListManager);
+  _ignoreListManager = new ClientIgnoreListManager(this);
+  signalProxy()->synchronize(ignoreListManager());
+
   // trigger backlog request once all active bufferviews are initialized
   connect(bufferViewOverlay(), SIGNAL(initDone()), this, SLOT(requestInitialBacklog()));
 
@@ -399,6 +406,10 @@ void Client::disconnectedFromCore() {
     _aliasManager = 0;
   }
 
+  if(_ignoreListManager) {
+    _ignoreListManager->deleteLater();
+    _ignoreListManager = 0;
+  }
   // we probably don't want to save pending input for reconnect
   _userInputBuffer.clear();
 
@@ -532,4 +543,3 @@ void Client::logMessage(QtMsgType type, const char *msg) {
     emit instance()->logUpdated(msgString);
   }
 }
-

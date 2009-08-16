@@ -25,6 +25,7 @@
 #include "buffermodel.h"
 #include "messagemodel.h"
 #include "networkmodel.h"
+#include "clientignorelistmanager.h"
 
 MessageFilter::MessageFilter(QAbstractItemModel *source, QObject *parent)
   : QSortFilterProxyModel(parent),
@@ -142,6 +143,12 @@ bool MessageFilter::filterAcceptsRow(int sourceRow, const QModelIndex &sourcePar
   if(myNetworkId != msgNetworkId)
     return false;
 
+  // ignorelist handling
+  const MessageModelItem *item = const_cast<const MessageModel*>(static_cast<MessageModel*>(sourceModel()))->messageItemAt(sourceRow);
+  // only match if message is not flagged as server msg
+  if(!(item->message().flags() & Message::ServerMsg) &&
+     Client::ignoreListManager()->match(item->message(), Client::networkModel()->networkName(item->bufferId())))
+      return false;
 
   if(flags & Message::Redirected) {
     int redirectionTarget = 0;

@@ -24,6 +24,7 @@
 #include "chatlinemodel.h"
 #include "networkmodel.h"
 #include "chatviewsettings.h"
+#include "clientignorelistmanager.h"
 
 ChatMonitorFilter::ChatMonitorFilter(MessageModel *model, QObject *parent)
   : MessageFilter(model, parent)
@@ -73,6 +74,12 @@ bool ChatMonitorFilter::filterAcceptsRow(int sourceRow, const QModelIndex &sourc
     && !_bufferIds.contains(source_index.data(MessageModel::BufferIdRole).value<BufferId>()))
     return false;
 
+  // ignorelist handling
+  const MessageModelItem *item = const_cast<const MessageModel*>(static_cast<MessageModel*>(sourceModel()))->messageItemAt(sourceRow);
+  // only match if message is not flagged as server msg
+  if(!(item->message().flags() & Message::ServerMsg) &&
+     Client::ignoreListManager()->match(item->message(), Client::networkModel()->networkName(item->bufferId())))
+      return false;
   return true;
 }
 
@@ -157,4 +164,5 @@ void ChatMonitorFilter::buffersSettingChanged(const QVariant &newValue) {
   foreach (QVariant v, newValue.toList()) {
     _bufferIds << v.value<BufferId>();
   }
+  invalidate();
 }

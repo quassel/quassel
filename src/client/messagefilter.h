@@ -49,6 +49,8 @@ public slots:
   void messageTypeFilterChanged();
   void messageRedirectionChanged();
   void requestBacklog();
+  // redefined as public slot
+  void invalidateFilter() { QSortFilterProxyModel::invalidateFilter(); }
 
 protected:
   QString bufferName() const { return Client::networkModel()->bufferName(singleBufferId()); }

@@ -13,6 +13,7 @@ set(SOURCES
     bufferviewmanager.cpp
     cliparser.cpp
     identity.cpp
+    ignorelistmanager.cpp
     ircchannel.cpp
     irclisthelper.cpp
     ircuser.cpp
@@ -41,6 +42,7 @@ set(MOC_HDRS
     bufferviewmanager.h
     coreinfo.h
     identity.h
+    ignorelistmanager.h
     ircchannel.h
     irclisthelper.h
     ircuser.h

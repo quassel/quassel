@@ -46,6 +46,7 @@ class BufferViewOverlay;
 class ClientAliasManager;
 class ClientBacklogManager;
 class ClientBufferViewManager;
+class ClientIgnoreListManager;
 class ClientIrcListHelper;
 class ClientSyncer;
 class ClientUserInputHandler;
@@ -112,6 +113,7 @@ public:
   static inline BufferViewOverlay *bufferViewOverlay() { return instance()->_bufferViewOverlay; }
   static inline ClientUserInputHandler *inputHandler() { return instance()->_inputHandler; }
   static inline NetworkConfig *networkConfig() { return instance()->_networkConfig; }
+  static inline ClientIgnoreListManager *ignoreListManager() { return instance()->_ignoreListManager; }
 
   static AccountId currentCoreAccount();
 
@@ -218,6 +220,7 @@ private:
   ClientIrcListHelper *_ircListHelper;
   ClientUserInputHandler *_inputHandler;
   NetworkConfig *_networkConfig;
+  ClientIgnoreListManager *_ignoreListManager;
 
   MessageModel *_messageModel;
   AbstractMessageProcessor *_messageProcessor;

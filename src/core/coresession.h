@@ -26,6 +26,7 @@
 
 #include "corecoreinfo.h"
 #include "corealiasmanager.h"
+#include "coreignorelistmanager.h"
 #include "message.h"
 #include "storage.h"
 
@@ -187,6 +188,7 @@ private:
   };
   QList<RawMessage> _messageQueue;
   bool _processMessages;
+  CoreIgnoreListManager _ignoreListManager;
 };
 
 #endif

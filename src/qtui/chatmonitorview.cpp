@@ -36,12 +36,14 @@
 #include "qtuisettings.h"
 #include "settingspagedlg.h"
 #include "settingspages/chatmonitorsettingspage.h"
+#include "clientignorelistmanager.h"
 
 ChatMonitorView::ChatMonitorView(ChatMonitorFilter *filter, QWidget *parent)
   : ChatView(filter, parent),
     _filter(filter)
 {
   scene()->setSenderCutoffMode(ChatScene::CutoffLeft);
+  connect(Client::instance(), SIGNAL(coreConnectionStateChanged(bool)), this, SLOT(coreConnectionStateChanged(bool)));
 }
 
 void ChatMonitorView::addActionsToMenu(QMenu *menu, const QPointF &pos) {
@@ -103,4 +105,11 @@ void ChatMonitorView::showFieldsChanged(bool checked) {
 void ChatMonitorView::showSettingsPage() {
   SettingsPageDlg dlg(new ChatMonitorSettingsPage(), this);
   dlg.exec();
+}
+
+// connect only after client is synced to core since ChatMonitorView is created before
+// the ignoreListManager
+void ChatMonitorView::coreConnectionStateChanged(bool connected) {
+  if(connected)
+    connect(Client::ignoreListManager(), SIGNAL(ignoreListChanged()), _filter, SLOT(invalidateFilter()));
 }

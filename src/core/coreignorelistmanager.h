@@ -18,33 +18,25 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef CHATMONITORVIEW_H
-#define CHATMONITORVIEW_H
+#ifndef COREIGNORELISTMANAGER_H
+#define COREIGNORELISTMANAGER_H
 
-#include "chatview.h"
+#include "ignorelistmanager.h"
 
-class ChatMonitorFilter;
+class CoreSession;
 
-class ChatMonitorView : public ChatView {
+class CoreIgnoreListManager : public IgnoreListManager {
   Q_OBJECT
 
 public:
-  ChatMonitorView(ChatMonitorFilter *filter, QWidget *parent);
+  explicit CoreIgnoreListManager(CoreSession *parent);
+  ~CoreIgnoreListManager();
 
-protected:
-  virtual void addActionsToMenu(QMenu *menu, const QPointF &pos);
-  virtual void mouseDoubleClickEvent(QMouseEvent *event);
+  inline virtual const QMetaObject *syncMetaObject() const { return &IgnoreListManager::staticMetaObject; }
 
-private slots:
-  void showFieldsChanged(bool checked);
-  void showSettingsPage();
-  virtual void coreConnectionStateChanged(bool connected);
+//private:
+//  void loadDefaults();
 
-protected:
-  inline ChatMonitorFilter *filter() const { return _filter; }
-
-private:
-  ChatMonitorFilter *_filter;
 };
 
-#endif //CHATMONITORVIEW_H
+#endif //COREIGNORELISTMANAGER_H

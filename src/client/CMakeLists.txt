@@ -19,6 +19,7 @@ set(SOURCES
     clientbufferviewconfig.cpp
     clientbufferviewmanager.cpp
     clientidentity.cpp
+    clientignorelistmanager.cpp
     clientirclisthelper.cpp
     clientsettings.cpp
     clientsyncer.cpp
@@ -43,6 +44,7 @@ set(MOC_HDRS
     clientbufferviewmanager.h
     clientcoreinfo.h
     clientidentity.h
+    clientignorelistmanager.h
     clientirclisthelper.h
     clientuserinputhandler.h
     clientsyncer.h

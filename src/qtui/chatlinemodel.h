@@ -40,13 +40,12 @@ public:
 
   typedef ChatLineModelItem::Word Word;
   typedef ChatLineModelItem::WrapList WrapList;
-
+  virtual inline const MessageModelItem *messageItemAt(int i) const { return &_messageList[i]; }
 protected:
 //   virtual MessageModelItem *createMessageModelItem(const Message &);
 
   virtual inline int messageCount() const { return _messageList.count(); }
   virtual inline bool messagesIsEmpty() const { return _messageList.isEmpty(); }
-  virtual inline const MessageModelItem *messageItemAt(int i) const { return &_messageList[i]; }
   virtual inline MessageModelItem *messageItemAt(int i) { return &_messageList[i]; }
   virtual inline const MessageModelItem *firstMessageItem() const { return &_messageList.first(); }
   virtual inline MessageModelItem *firstMessageItem() { return &_messageList.first(); }
