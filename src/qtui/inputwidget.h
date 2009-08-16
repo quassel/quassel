@@ -29,7 +29,7 @@
 #include "identity.h"
 #include "network.h"
 
-class InputLine;
+class MultiLineEdit;
 
 class InputWidget : public AbstractItemView {
   Q_OBJECT
@@ -40,7 +40,11 @@ public:
 
   const Network *currentNetwork() const;
 
-  inline  InputLine* inputLine() const { return ui.inputEdit; }
+  inline MultiLineEdit* inputLine() const { return ui.inputEdit; }
+
+protected:
+  virtual bool eventFilter(QObject *watched, QEvent *event);
+  virtual void keyPressEvent(QKeyEvent * event);
 
 protected slots:
   virtual void currentChanged(const QModelIndex &current, const QModelIndex &previous);

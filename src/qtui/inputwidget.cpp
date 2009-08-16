@@ -22,6 +22,7 @@
 
 #include "action.h"
 #include "actioncollection.h"
+#include "bufferview.h"
 #include "client.h"
 #include "iconloader.h"
 #include "ircuser.h"
@@ -29,19 +30,31 @@
 #include "networkmodel.h"
 #include "qtui.h"
 #include "qtuisettings.h"
+#include "tabcompleter.h"
 
 InputWidget::InputWidget(QWidget *parent)
   : AbstractItemView(parent),
     _networkId(0)
 {
   ui.setupUi(this);
-  connect(ui.inputEdit, SIGNAL(sendText(QString)), this, SLOT(sendText(QString)));
+  connect(ui.inputEdit, SIGNAL(textEntered(QString)), this, SLOT(sendText(QString)));
   connect(ui.ownNick, SIGNAL(activated(QString)), this, SLOT(changeNick(QString)));
+
+  layout()->setAlignment(ui.ownNick, Qt::AlignBottom);
+  layout()->setAlignment(ui.inputEdit, Qt::AlignBottom);
+
   setFocusProxy(ui.inputEdit);
+  ui.ownNick->setFocusProxy(ui.inputEdit);
 
   ui.ownNick->setSizeAdjustPolicy(QComboBox::AdjustToContents);
   ui.ownNick->installEventFilter(new MouseWheelFilter(this));
   ui.inputEdit->installEventFilter(new JumpKeyHandler(this));
+
+  ui.inputEdit->setMinHeight(1);
+  ui.inputEdit->setMaxHeight(5);
+  ui.inputEdit->setMode(MultiLineEdit::MultiLine);
+
+  new TabCompleter(ui.inputEdit);
 
   QtUiStyleSettings s("Fonts");
   s.notify("InputLine", this, SLOT(setCustomFont(QVariant)));
@@ -63,6 +76,38 @@ void InputWidget::setCustomFont(const QVariant &v) {
   if(font.family().isEmpty())
     font = QApplication::font();
   ui.inputEdit->setCustomFont(font);
+}
+
+bool InputWidget::eventFilter(QObject *watched, QEvent *event) {
+  if(event->type() != QEvent::KeyPress)
+    return false;
+
+  // keys from BufferView should be sent to (and focus) the input line
+  BufferView *view = qobject_cast<BufferView *>(watched);
+  if(view) {
+    QKeyEvent *keyEvent = static_cast<QKeyEvent*>(event);
+    if(keyEvent->text().length() == 1 && !(keyEvent->modifiers() & (Qt::ControlModifier ^ Qt::AltModifier)) ) { // normal key press
+      QChar c = keyEvent->text().at(0);
+      if(c.isLetterOrNumber() || c.isSpace() || c.isPunct() || c.isSymbol()) {
+        setFocus();
+        QCoreApplication::sendEvent(inputLine(), keyEvent);
+        return true;
+      } else
+        return false;
+    }
+  }
+  return false;
+}
+
+void InputWidget::keyPressEvent(QKeyEvent * event) {
+  if(event->matches(QKeySequence::Find)) {
+    QAction *act = GraphicalUi::actionCollection()->action("ToggleSearchBar");
+    if(act) {
+      act->toggle();
+      return;
+    }
+  }
+  AbstractItemView::keyPressEvent(event);
 }
 
 void InputWidget::currentChanged(const QModelIndex &current, const QModelIndex &previous) {

@@ -63,7 +63,6 @@
 #include "flatproxymodel.h"
 #include "iconloader.h"
 #include "inputwidget.h"
-#include "inputline.h"
 #include "irclistmodel.h"
 #include "ircconnectionwizard.h"
 #include "jumpkeyhandler.h"
@@ -411,7 +410,7 @@ void MainWin::addBufferView(ClientBufferViewConfig *config) {
   //create the view and initialize it's filter
   BufferView *view = new BufferView(dock);
   view->setFilteredModel(Client::bufferModel(), config);
-  view->installEventFilter(_inputWidget->inputLine()); // for key presses
+  view->installEventFilter(_inputWidget); // for key presses
   view->show();
 
   Client::bufferModel()->synchronizeView(view);

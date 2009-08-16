@@ -18,20 +18,21 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef INPUTLINE_H_
-#define INPUTLINE_H_
+#ifndef MULTILINEEDIT_H_
+#define MULTILINEEDIT_H_
 
-#include <QHash>
 #include <QKeyEvent>
+#include <QHash>
 #include <QTextEdit>
 
 #ifdef HAVE_KDE
-#include <KDE/KTextEdit>
+#  include <KDE/KTextEdit>
 #endif
 
+class QKeyEvent;
 class TabCompleter;
 
-class InputLine : public
+class MultiLineEdit : public
 #ifdef HAVE_KDE
                   KTextEdit
 #else
@@ -41,8 +42,13 @@ class InputLine : public
   Q_OBJECT
 
 public:
-  InputLine(QWidget *parent = 0);
-  ~InputLine();
+  enum Mode {
+    SingleLine,
+    MultiLine
+  };
+
+  MultiLineEdit(QWidget *parent = 0);
+  ~MultiLineEdit();
 
   void setCustomFont(const QFont &); // should be used instead setFont(), so we can set our size correctly
 
@@ -56,37 +62,49 @@ public:
   virtual QSize sizeHint() const;
   virtual QSize minimumSizeHint() const;
 
+public slots:
+  void setMode(Mode mode);
+  void setWrapMode(QTextOption::WrapMode = QTextOption::NoWrap);
+  void setMinHeight(int numLines);
+  void setMaxHeight(int numLines);
+  void enableScrollBars(bool enable = true);
+
+signals:
+  void textEntered(const QString &text);
+
 protected:
   virtual void keyPressEvent(QKeyEvent * event);
-  virtual bool eventFilter(QObject *watched, QEvent *event);
+  virtual void resizeEvent(QResizeEvent *event);
 
 private slots:
   void on_returnPressed();
-  void on_textChanged(QString newText);
-
-  // Needed to emulate the signal that QLineEdit has
-  inline void on_textChanged() { emit textChanged(toPlainText()); };
+  void on_textChanged();
+  void on_documentHeightChanged(qreal height);
 
   bool addToHistory(const QString &text, bool temporary = false);
-
-signals:
-  void sendText(QString text);
-
-  // QTextEdit does not provide this signal, so we manually emit it in keyPressEvent()
-  void returnPressed();
-  void textChanged(QString newText);
+  void historyMoveForward();
+  void historyMoveBack();
 
 private:
   QStringList history;
   QHash<int, QString> tempHistory;
   qint32 idx;
-  TabCompleter *tabCompleter;
+  Mode _mode;
+  QTextOption::WrapMode _wrapMode;
+  int _numLines;
+  int _minHeight;
+  int _maxHeight;
+  bool _scrollBarsEnabled;
 
-  int bindModifier;
-  int jumpModifier;
+  QSize _sizeHint;
+  qreal _lastDocumentHeight;
 
-  void resetLine();
+  void reset();
   void showHistoryEntry();
+  void updateScrollBars();
+
+  inline int numLines() const { return _numLines; }
+  void setNumLines(int);
 };
 
 #endif

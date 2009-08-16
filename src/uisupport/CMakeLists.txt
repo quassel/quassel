@@ -22,7 +22,7 @@ set(SOURCES
     graphicalui.cpp
     icon.cpp
     iconloader.cpp
-    inputline.cpp
+    multilineedit.cpp
     networkmodelcontroller.cpp
     nickview.cpp
     nickviewfilter.cpp
@@ -52,7 +52,7 @@ set(MOC_HDRS
     fontselector.h
     graphicalui.h
     iconloader.h
-    inputline.h
+    multilineedit.h
     networkmodelcontroller.h
     nickview.h
     nickviewfilter.h

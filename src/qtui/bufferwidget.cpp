@@ -31,7 +31,7 @@
 #include "chatviewsearchcontroller.h"
 #include "client.h"
 #include "iconloader.h"
-#include "inputline.h"
+#include "multilineedit.h"
 #include "qtui.h"
 #include "settings.h"
 
@@ -163,7 +163,7 @@ bool BufferWidget::eventFilter(QObject *watched, QEvent *event) {
 
   // Intercept copy key presses
   if(keyEvent == QKeySequence::Copy) {
-    InputLine *inputLine = qobject_cast<InputLine *>(watched);
+    MultiLineEdit *inputLine = qobject_cast<MultiLineEdit *>(watched);
     if(!inputLine)
       return false;
     if(inputLine->hasSelectedText())

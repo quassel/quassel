@@ -27,7 +27,7 @@
 
 #include "types.h"
 
-class InputLine;
+class MultiLineEdit;
 class IrcUser;
 class Network;
 
@@ -35,7 +35,7 @@ class TabCompleter : public QObject {
   Q_OBJECT
 
 public:
-  TabCompleter(InputLine *inputLine_);
+  explicit TabCompleter(MultiLineEdit *inputLine_);
 
   void reset();
   void complete();
@@ -49,18 +49,18 @@ private:
     QString nick;
   };
 
-  QPointer<InputLine> inputLine;
-  bool enabled;
-  QString nickSuffix;
+  QPointer<MultiLineEdit> _lineEdit;
+  bool _enabled;
+  QString _nickSuffix;
 
   static const Network *_currentNetwork;
   static BufferId _currentBufferId;
 
-  QMap<CompletionKey, QString> completionMap;
+  QMap<CompletionKey, QString> _completionMap;
   // QStringList completionTemplates;
 
-  QMap<CompletionKey, QString>::Iterator nextCompletion;
-  int lastCompletionLength;
+  QMap<CompletionKey, QString>::Iterator _nextCompletion;
+  int _lastCompletionLength;
 
   void buildCompletionList();
 
