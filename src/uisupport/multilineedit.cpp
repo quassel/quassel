@@ -201,7 +201,18 @@ bool MultiLineEdit::addToHistory(const QString &text, bool temporary) {
 }
 
 void MultiLineEdit::keyPressEvent(QKeyEvent *event) {
+  // Workaround the fact that Qt < 4.5 doesn't know InsertLineSeparator yet
+#if QT_VERSION >= 0x040500
   if(event == QKeySequence::InsertLineSeparator) {
+#else
+
+# ifdef Q_WS_MAC
+  if((event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter) && event->modifiers() & Qt::META) {
+# else
+  if((event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter) && event->modifiers() & Qt::SHIFT) {
+# endif
+#endif
+
     if(_mode == SingleLine)
       return;
 #ifdef HAVE_KDE
