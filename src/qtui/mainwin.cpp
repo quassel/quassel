@@ -102,6 +102,7 @@
 #include "settingspages/generalsettingspage.h"
 #include "settingspages/highlightsettingspage.h"
 #include "settingspages/identitiessettingspage.h"
+#include "settingspages/ignorelistsettingspage.h"
 #include "settingspages/inputwidgetsettingspage.h"
 #include "settingspages/itemviewsettingspage.h"
 #include "settingspages/networkssettingspage.h"
@@ -825,6 +826,7 @@ void MainWin::showSettingsDlg() {
   dlg->registerSettingsPage(new IdentitiesSettingsPage(dlg));
   dlg->registerSettingsPage(new NetworksSettingsPage(dlg));
   dlg->registerSettingsPage(new AliasesSettingsPage(dlg));
+  dlg->registerSettingsPage(new IgnoreListSettingsPage(dlg));
 
   dlg->show();
 }
