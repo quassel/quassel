@@ -67,6 +67,8 @@ void BufferView::init() {
   setIndentation(10);
   expandAll();
 
+  header()->hide(); // nobody seems to use this anyway
+
   setAnimated(true);
 
 #ifndef QT_NO_DRAGANDDROP
