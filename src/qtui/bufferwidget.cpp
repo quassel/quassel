@@ -161,11 +161,12 @@ bool BufferWidget::eventFilter(QObject *watched, QEvent *event) {
 
   QKeyEvent *keyEvent = static_cast<QKeyEvent*>(event);
 
+  MultiLineEdit *inputLine = qobject_cast<MultiLineEdit *>(watched);
+  if(!inputLine)
+    return false;
+
   // Intercept copy key presses
   if(keyEvent == QKeySequence::Copy) {
-    MultiLineEdit *inputLine = qobject_cast<MultiLineEdit *>(watched);
-    if(!inputLine)
-      return false;
     if(inputLine->hasSelectedText())
       return false;
     ChatView *view = qobject_cast<ChatView *>(ui.stackedWidget->currentWidget());
@@ -173,6 +174,10 @@ bool BufferWidget::eventFilter(QObject *watched, QEvent *event) {
       view->scene()->selectionToClipboard();
     return true;
   }
+
+  // We don't want to steal cursor movement keys if the input line is in multiline mode
+  if(!inputLine->isSingleLine())
+    return false;
 
   switch(keyEvent->key()) {
   case Qt::Key_Up:

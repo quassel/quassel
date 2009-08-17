@@ -58,13 +58,13 @@ public:
   inline void insert(const QString &newText) { insertPlainText(newText); }
   inline void backspace() { keyPressEvent(new QKeyEvent(QEvent::KeyPress, Qt::Key_Backspace, Qt::NoModifier)); }
   inline bool hasSelectedText() { return textCursor().hasSelection(); }
+  inline bool isSingleLine() const { return _singleLine; }
 
   virtual QSize sizeHint() const;
   virtual QSize minimumSizeHint() const;
 
 public slots:
   void setMode(Mode mode);
-  void setWrapMode(QTextOption::WrapMode = QTextOption::NoWrap);
   void setMinHeight(int numLines);
   void setMaxHeight(int numLines);
   void enableScrollBars(bool enable = true);
@@ -90,8 +90,7 @@ private:
   QHash<int, QString> tempHistory;
   qint32 idx;
   Mode _mode;
-  QTextOption::WrapMode _wrapMode;
-  int _numLines;
+  bool _singleLine;
   int _minHeight;
   int _maxHeight;
   bool _scrollBarsEnabled;
@@ -102,9 +101,7 @@ private:
   void reset();
   void showHistoryEntry();
   void updateScrollBars();
-
-  inline int numLines() const { return _numLines; }
-  void setNumLines(int);
+  void computeSizeHint();
 };
 
 #endif

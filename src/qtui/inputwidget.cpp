@@ -146,7 +146,7 @@ void InputWidget::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int
 
 void InputWidget::updateEnabledState() {
   QModelIndex currentIndex = selectionModel()->currentIndex();
-  
+
   const Network *net = Client::networkModel()->networkByIndex(currentIndex);
   bool enabled = false;
   if(net) {
