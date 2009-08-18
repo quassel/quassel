@@ -30,8 +30,6 @@
 #include "settingspage.h"
 #include "ui_appearancesettingspage.h"
 
-class QSignalMapper;
-
 class AppearanceSettingsPage : public SettingsPage {
   Q_OBJECT
 
@@ -48,10 +46,6 @@ public slots:
 private slots:
   void widgetHasChanged();
 
-  void loadFonts(Settings::Mode mode);
-  void setFont(QLabel *label, const QFont &font);
-  void chooseFont(QWidget *label);
-
   void chooseStyleSheet();
 
 private:
@@ -59,13 +53,10 @@ private:
   void initStyleComboBox();
   void initLanguageComboBox();
   QLocale selectedLocale() const;
-  void clearFontFromFormat(QTextCharFormat &fmt);
 
   Ui::AppearanceSettingsPage ui;
   QHash<QString, QVariant> settings;
   QList<QLocale> _locales;
-  QSignalMapper *mapper;
-  bool _fontsChanged;
 };
 
 #endif

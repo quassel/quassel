@@ -68,6 +68,7 @@ public slots:
   void setMinHeight(int numLines);
   void setMaxHeight(int numLines);
   void enableScrollBars(bool enable = true);
+  void enableSpellCheck(bool enable = true);
 
 signals:
   void textEntered(const QString &text);

@@ -56,9 +56,25 @@ InputWidget::InputWidget(QWidget *parent)
 
   new TabCompleter(ui.inputEdit);
 
-  QtUiStyleSettings s("Fonts");
-  s.notify("InputLine", this, SLOT(setCustomFont(QVariant)));
-  setCustomFont(s.value("InputLine", QFont()));
+  UiStyleSettings fs("Fonts");
+  fs.notify("InputWidget", this, SLOT(setCustomFont(QVariant)));
+  setCustomFont(fs.value("InputWidget", QFont()));
+
+  UiSettings s("InputWidget");
+
+#ifdef HAVE_KDE
+  s.notify("EnableSpellCheck", this, SLOT(setEnableSpellCheck(QVariant)));
+  setEnableSpellCheck(s.value("EnableSpellCheck", false));
+#endif
+
+  s.notify("ShowNickSelector", this, SLOT(setShowNickSelector(QVariant)));
+  setShowNickSelector(s.value("ShowNickSelector", true));
+
+  s.notify("MaxNumLines", this, SLOT(setMaxLines(QVariant)));
+  setMaxLines(s.value("MaxNumLines", 5));
+
+  s.notify("EnableScrollBars", this, SLOT(setEnableScrollBars(QVariant)));
+  setEnableScrollBars(s.value("EnableScrollBars", true));
 
   ActionCollection *coll = QtUi::actionCollection();
 
@@ -76,6 +92,22 @@ void InputWidget::setCustomFont(const QVariant &v) {
   if(font.family().isEmpty())
     font = QApplication::font();
   ui.inputEdit->setCustomFont(font);
+}
+
+void InputWidget::setEnableSpellCheck(const QVariant &v) {
+  ui.inputEdit->enableSpellCheck(v.toBool());
+}
+
+void InputWidget::setShowNickSelector(const QVariant &v) {
+  ui.ownNick->setVisible(v.toBool());
+}
+
+void InputWidget::setMaxLines(const QVariant &v) {
+  ui.inputEdit->setMaxHeight(v.toInt());
+}
+
+void InputWidget::setEnableScrollBars(const QVariant &v) {
+  ui.inputEdit->enableScrollBars(v.toBool());
 }
 
 bool InputWidget::eventFilter(QObject *watched, QEvent *event) {

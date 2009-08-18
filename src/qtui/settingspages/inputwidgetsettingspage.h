@@ -18,37 +18,24 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef ITEMVIEWSETTINGSPAGE_H_
-#define ITEMVIEWSETTINGSPAGE_H_
+#ifndef INPUTLINESETTINGSPAGE_H_
+#define INPUTLINESETTINGSPAGE_H_
 
 #include "settingspage.h"
-#include "ui_itemviewsettingspage.h"
+#include "ui_inputwidgetsettingspage.h"
 
-class ColorButton;
-class QSignalMapper;
-class QTreeWidgetItem;
-
-class ItemViewSettingsPage : public SettingsPage {
+class InputWidgetSettingsPage : public SettingsPage {
   Q_OBJECT
 
 public:
-  ItemViewSettingsPage(QWidget *parent = 0);
+  InputWidgetSettingsPage(QWidget *parent = 0);
 
   inline bool hasDefaults() const { return true; }
 
-public slots:
-  void save();
-
-private slots:
-  void updateBufferViewPreview(QWidget *button);
-
 private:
-  Ui::ItemViewSettingsPage ui;
-  QSignalMapper *_mapper;
-  QTreeWidgetItem *_networkItem, *_defaultBufferItem, *_inactiveBufferItem,
-                  *_activeBufferItem, *_unreadBufferItem, *_highlightedBufferItem;
+  Ui::InputWidgetSettingsPage ui;
 
-  inline QString settingsKey() const { return QString("InputLine"); }
+  inline QString settingsKey() const { return QString("InputWidget"); }
 };
 
 #endif

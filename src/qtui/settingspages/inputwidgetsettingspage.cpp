@@ -17,38 +17,16 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#include "inputwidgetsettingspage.h"
 
-#ifndef ITEMVIEWSETTINGSPAGE_H_
-#define ITEMVIEWSETTINGSPAGE_H_
+InputWidgetSettingsPage::InputWidgetSettingsPage(QWidget *parent)
+  : SettingsPage(tr("Interface"), tr("Input Widget"), parent)
+{
+  ui.setupUi(this);
 
-#include "settingspage.h"
-#include "ui_itemviewsettingspage.h"
-
-class ColorButton;
-class QSignalMapper;
-class QTreeWidgetItem;
-
-class ItemViewSettingsPage : public SettingsPage {
-  Q_OBJECT
-
-public:
-  ItemViewSettingsPage(QWidget *parent = 0);
-
-  inline bool hasDefaults() const { return true; }
-
-public slots:
-  void save();
-
-private slots:
-  void updateBufferViewPreview(QWidget *button);
-
-private:
-  Ui::ItemViewSettingsPage ui;
-  QSignalMapper *_mapper;
-  QTreeWidgetItem *_networkItem, *_defaultBufferItem, *_inactiveBufferItem,
-                  *_activeBufferItem, *_unreadBufferItem, *_highlightedBufferItem;
-
-  inline QString settingsKey() const { return QString("InputLine"); }
-};
-
+#ifndef HAVE_KDE
+  ui.enableSpellCheck->hide();
 #endif
+
+  initAutoWidgets();
+}

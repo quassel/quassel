@@ -49,8 +49,6 @@ GeneralSettingsPage::GeneralSettingsPage(QWidget *parent)
   connect(ui.errorMsgsInDefaultBuffer, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
   connect(ui.errorMsgsInStatusBuffer, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
   connect(ui.errorMsgsInCurrentBuffer, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
-
-  connect(ui.completionSuffix, SIGNAL(textEdited(const QString&)), this, SLOT(widgetHasChanged()));
 }
 
 bool GeneralSettingsPage::hasDefaults() const {
@@ -73,8 +71,6 @@ void GeneralSettingsPage::defaults() {
   ui.errorMsgsInDefaultBuffer->setChecked(true);
   ui.errorMsgsInStatusBuffer->setChecked(false);
   ui.errorMsgsInCurrentBuffer->setChecked(false);
-
-  ui.completionSuffix->setText(": ");
 
   widgetHasChanged();
 }
@@ -106,11 +102,6 @@ void GeneralSettingsPage::load() {
   SettingsPage::load(ui.errorMsgsInDefaultBuffer, redirectTarget & BufferSettings::DefaultBuffer);
   SettingsPage::load(ui.errorMsgsInStatusBuffer, redirectTarget & BufferSettings::StatusBuffer);
   SettingsPage::load(ui.errorMsgsInCurrentBuffer, redirectTarget & BufferSettings::CurrentBuffer);
-
-  // completion settings
-  TabCompletionSettings completionSettings;
-  settings["CompletionSuffix"] = completionSettings.completionSuffix();
-  ui.completionSuffix->setText(settings["CompletionSuffix"].toString());
 
   setChangedState(false);
 }
@@ -152,10 +143,6 @@ void GeneralSettingsPage::save() {
     redirectTarget |= BufferSettings::CurrentBuffer;
   bufferSettings.setErrorMsgsTarget(redirectTarget);
 
-  TabCompletionSettings completionSettings;
-  completionSettings.setCompletionSuffix(ui.completionSuffix->text());
-
-
   load();
   setChangedState(false);
 }
@@ -184,8 +171,6 @@ bool GeneralSettingsPage::testHasChanged() {
   if(SettingsPage::hasChanged(ui.errorMsgsInStatusBuffer)) return true;
   if(SettingsPage::hasChanged(ui.errorMsgsInDefaultBuffer)) return true;
   if(SettingsPage::hasChanged(ui.errorMsgsInCurrentBuffer)) return true;
-
-  if(settings["CompletionSuffix"].toString() != ui.completionSuffix->text()) return true;
 
   return false;
 }

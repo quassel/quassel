@@ -102,6 +102,7 @@
 #include "settingspages/generalsettingspage.h"
 #include "settingspages/highlightsettingspage.h"
 #include "settingspages/identitiessettingspage.h"
+#include "settingspages/inputwidgetsettingspage.h"
 #include "settingspages/itemviewsettingspage.h"
 #include "settingspages/networkssettingspage.h"
 #include "settingspages/notificationssettingspage.h"
@@ -807,10 +808,11 @@ void MainWin::awayLogDestroyed() {
 void MainWin::showSettingsDlg() {
   SettingsDlg *dlg = new SettingsDlg();
 
-  //Category: Appearance
+  //Category: Interface
   dlg->registerSettingsPage(new AppearanceSettingsPage(dlg));
   dlg->registerSettingsPage(new ChatViewSettingsPage(dlg));
   dlg->registerSettingsPage(new ItemViewSettingsPage(dlg));
+  dlg->registerSettingsPage(new InputWidgetSettingsPage(dlg));
   dlg->registerSettingsPage(new HighlightSettingsPage(dlg));
   dlg->registerSettingsPage(new NotificationsSettingsPage(dlg));
   dlg->registerSettingsPage(new BacklogSettingsPage(dlg));

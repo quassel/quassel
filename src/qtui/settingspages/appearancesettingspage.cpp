@@ -20,23 +20,16 @@
 
 #include "appearancesettingspage.h"
 
-#include "buffersettings.h"
-#include "chatviewsettings.h"
 #include "qtui.h"
 #include "qtuisettings.h"
 #include "qtuistyle.h"
-#include "util.h"
 
 #include <QCheckBox>
-#include <QDir>
 #include <QFileDialog>
-#include <QFontDialog>
-#include <QSignalMapper>
 #include <QStyleFactory>
 
 AppearanceSettingsPage::AppearanceSettingsPage(QWidget *parent)
-  : SettingsPage(tr("Interface"), QString(), parent),
-  _fontsChanged(false)
+  : SettingsPage(tr("Interface"), QString(), parent)
 {
   ui.setupUi(this);
   initAutoWidgets();
@@ -49,13 +42,6 @@ AppearanceSettingsPage::AppearanceSettingsPage(QWidget *parent)
   foreach(QCheckBox *checkBox, findChildren<QCheckBox *>()) {
     connect(checkBox, SIGNAL(clicked()), this, SLOT(widgetHasChanged()));
   }
-
-  mapper = new QSignalMapper(this);
-  connect(mapper, SIGNAL(mapped(QWidget *)), this, SLOT(chooseFont(QWidget *)));
-
-  connect(ui.chooseInputLine, SIGNAL(clicked()), mapper, SLOT(map()));
-
-  mapper->setMapping(ui.chooseInputLine, ui.demoInputLine);
 
   connect(ui.chooseStyleSheet, SIGNAL(clicked()), SLOT(chooseStyleSheet()));
 }
@@ -82,9 +68,6 @@ void AppearanceSettingsPage::initLanguageComboBox() {
 
 void AppearanceSettingsPage::defaults() {
   ui.styleComboBox->setCurrentIndex(0);
-
-  loadFonts(Settings::Default);
-  _fontsChanged = true;
 
   SettingsPage::defaults();
   widgetHasChanged();
@@ -114,21 +97,8 @@ void AppearanceSettingsPage::load() {
   ui.languageComboBox->setProperty("storedValue", ui.languageComboBox->currentIndex());
   Quassel::loadTranslation(selectedLocale());
 
-  loadFonts(Settings::Custom);
-
   SettingsPage::load();
   setChangedState(false);
-}
-
-void AppearanceSettingsPage::loadFonts(Settings::Mode mode) {
-  QtUiStyleSettings s("Fonts");
-
-  QFont inputLineFont;
-  if(mode == Settings::Custom)
-    inputLineFont = s.value("InputLine", QFont()).value<QFont>();
-  setFont(ui.demoInputLine, inputLineFont);
-
-  _fontsChanged = false;
 }
 
 void AppearanceSettingsPage::save() {
@@ -145,15 +115,6 @@ void AppearanceSettingsPage::save() {
   } else {
     uiSettings.setValue("Locale", selectedLocale());
   }
-
-  // Fonts
-  QtUiStyleSettings fontSettings("Fonts");
-  if(ui.demoInputLine->font() != QApplication::font())
-    fontSettings.setValue("InputLine", ui.demoInputLine->font());
-  else
-    fontSettings.setValue("InputLine", "");
-
-  _fontsChanged = false;
 
   bool needsStyleReload =
         ui.useCustomStyleSheet->isChecked() != ui.useCustomStyleSheet->property("storedValue").toBool()
@@ -178,26 +139,6 @@ QLocale AppearanceSettingsPage::selectedLocale() const {
   return locale;
 }
 
-void AppearanceSettingsPage::setFont(QLabel *label, const QFont &font_) {
-  QFont font = font_;
-  if(font.family().isEmpty())
-    font = QApplication::font();
-  label->setFont(font);
-  label->setText(QString("%1 %2").arg(font.family()).arg(font.pointSize()));
-  widgetHasChanged();
-}
-
-void AppearanceSettingsPage::chooseFont(QWidget *widget) {
-  QLabel *label = qobject_cast<QLabel *>(widget);
-  Q_ASSERT(label);
-  bool ok;
-  QFont font = QFontDialog::getFont(&ok, label->font());
-  if(ok) {
-    _fontsChanged = true;
-    setFont(label, font);
-  }
-}
-
 void AppearanceSettingsPage::chooseStyleSheet() {
   QString name = QFileDialog::getOpenFileName(this, tr("Please choose a stylesheet file"), QString(), "*.qss");
   if(!name.isEmpty())
@@ -209,8 +150,6 @@ void AppearanceSettingsPage::widgetHasChanged() {
 }
 
 bool AppearanceSettingsPage::testHasChanged() {
-  if(_fontsChanged) return true; // comparisons are nasty for now
-
   if(ui.styleComboBox->currentIndex() != ui.styleComboBox->property("storedValue").toInt()) return true;
 
   if(selectedLocale() != QLocale()) return true; // QLocale() returns the default locale (manipulated via loadTranslation())

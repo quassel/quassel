@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>InputWidgetSettingsPage</class>
+ <widget class="QWidget" name="InputWidgetSettingsPage">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>507</width>
+    <height>514</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QCheckBox" name="customFont">
+       <property name="text">
+        <string>Custom font:</string>
+       </property>
+       <property name="settingsKey" stdset="0">
+        <string>/UiStyle/Fonts/UseCustomInputWidgetFont</string>
+       </property>
+       <property name="defaultValue" stdset="0">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="FontSelector" name="inputLineFont" native="true">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="settingsKey" stdset="0">
+        <string>/UiStyle/Fonts/InputWidget</string>
+       </property>
+       <property name="defaultValue" stdset="0">
+        <font/>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="enableSpellCheck">
+     <property name="text">
+      <string>Enable spell check</string>
+     </property>
+     <property name="settingsKey" stdset="0">
+      <string>EnableSpellCheck</string>
+     </property>
+     <property name="defaultValue" stdset="0">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="showNickSelector">
+     <property name="text">
+      <string>Show nick selector</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+     <property name="settingsKey" stdset="0">
+      <string>ShowNickSelector</string>
+     </property>
+     <property name="defaultValue" stdset="0">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Multi-Line Editing</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Show at most</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSpinBox" name="maxNumLines">
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>19</number>
+          </property>
+          <property name="value">
+           <number>5</number>
+          </property>
+          <property name="settingsKey" stdset="0">
+           <string>MaxNumLines</string>
+          </property>
+          <property name="defaultValue" stdset="0">
+           <number>5</number>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>lines</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="enableScrollBars">
+        <property name="text">
+         <string>Enable scrollbars</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="settingsKey" stdset="0">
+         <string>EnableScrollBars</string>
+        </property>
+        <property name="defaultValue" stdset="0">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="title">
+      <string>Tab Completion</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <widget class="QLabel" name="completionSuffixDesc">
+          <property name="text">
+           <string>Completion suffix:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="completionSuffix">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="settingsKey" stdset="0">
+           <string>/TabCompletion/CompletionSuffix</string>
+          </property>
+          <property name="defaultValue" stdset="0">
+           <string>: </string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::MinimumExpanding</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>157</width>
+            <height>27</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>233</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>FontSelector</class>
+   <extends>QWidget</extends>
+   <header>fontselector.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <tabstops>
+  <tabstop>customFont</tabstop>
+  <tabstop>enableSpellCheck</tabstop>
+  <tabstop>showNickSelector</tabstop>
+  <tabstop>maxNumLines</tabstop>
+  <tabstop>enableScrollBars</tabstop>
+  <tabstop>completionSuffix</tabstop>
+ </tabstops>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>customFont</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>inputLineFont</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>165</x>
+     <y>18</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>305</x>
+     <y>17</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

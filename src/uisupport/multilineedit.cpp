@@ -151,6 +151,14 @@ QSize MultiLineEdit::minimumSizeHint() const {
   return sizeHint();
 }
 
+void MultiLineEdit::enableSpellCheck(bool enable) {
+#ifdef HAVE_KDE
+  setCheckSpellingEnabled(enable);
+#else
+  Q_UNUSED(enable)
+#endif
+}
+
 void MultiLineEdit::historyMoveBack() {
   addToHistory(text(), true);
 
