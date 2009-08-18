@@ -169,6 +169,9 @@ void MultiLineEdit::historyMoveForward() {
       showHistoryEntry();
     else
       reset();              // equals clear() in this case
+  } else {
+    addToHistory(text());
+    reset();
   }
 }
 
