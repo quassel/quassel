@@ -95,7 +95,7 @@ void InputWidget::setCustomFont(const QVariant &v) {
 }
 
 void InputWidget::setEnableSpellCheck(const QVariant &v) {
-  ui.inputEdit->enableSpellCheck(v.toBool());
+  ui.inputEdit->setSpellCheckEnabled(v.toBool());
 }
 
 void InputWidget::setShowNickSelector(const QVariant &v) {
@@ -107,7 +107,7 @@ void InputWidget::setMaxLines(const QVariant &v) {
 }
 
 void InputWidget::setEnableScrollBars(const QVariant &v) {
-  ui.inputEdit->enableScrollBars(v.toBool());
+  ui.inputEdit->setScrollBarsEnabled(v.toBool());
 }
 
 bool InputWidget::eventFilter(QObject *watched, QEvent *event) {

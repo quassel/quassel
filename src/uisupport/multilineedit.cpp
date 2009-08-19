@@ -54,7 +54,7 @@ MultiLineEdit::MultiLineEdit(QWidget *parent)
   enableFindReplace(false);
 #endif
 
-  setMode(SingleLine);
+  setMode(SingleLine); setLineWrapMode(WidgetWidth);
   reset();
 
   connect(this, SIGNAL(textChanged()), this, SLOT(on_textChanged()));
@@ -91,7 +91,7 @@ void MultiLineEdit::setMaxHeight(int lines) {
   computeSizeHint();
 }
 
-void MultiLineEdit::enableScrollBars(bool enable) {
+void MultiLineEdit::setScrollBarsEnabled(bool enable) {
   if(_scrollBarsEnabled == enable)
     return;
 
@@ -151,12 +151,16 @@ QSize MultiLineEdit::minimumSizeHint() const {
   return sizeHint();
 }
 
-void MultiLineEdit::enableSpellCheck(bool enable) {
+void MultiLineEdit::setSpellCheckEnabled(bool enable) {
 #ifdef HAVE_KDE
   setCheckSpellingEnabled(enable);
 #else
   Q_UNUSED(enable)
 #endif
+}
+
+void MultiLineEdit::setWordWrapEnabled(bool enable) {
+  setLineWrapMode(enable? WidgetWidth : NoWrap);
 }
 
 void MultiLineEdit::historyMoveBack() {

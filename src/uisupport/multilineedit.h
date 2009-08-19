@@ -67,8 +67,11 @@ public slots:
   void setMode(Mode mode);
   void setMinHeight(int numLines);
   void setMaxHeight(int numLines);
-  void enableScrollBars(bool enable = true);
-  void enableSpellCheck(bool enable = true);
+  void setScrollBarsEnabled(bool enable = true);
+  void setSpellCheckEnabled(bool enable = true);
+
+  // Note: Enabling wrap will make isSingleLine() not work correctly, so only use this if minHeight() > 1!
+  void setWordWrapEnabled(bool enable = true);
 
 signals:
   void textEntered(const QString &text);
