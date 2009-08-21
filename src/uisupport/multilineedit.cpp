@@ -65,7 +65,7 @@ MultiLineEdit::~MultiLineEdit() {
 
 void MultiLineEdit::setCustomFont(const QFont &font) {
   setFont(font);
-  computeSizeHint();
+  updateSizeHint();
 }
 
 void MultiLineEdit::setMode(Mode mode) {
@@ -80,7 +80,7 @@ void MultiLineEdit::setMinHeight(int lines) {
     return;
 
   _minHeight = lines;
-  computeSizeHint();
+  updateSizeHint();
 }
 
 void MultiLineEdit::setMaxHeight(int lines) {
@@ -88,7 +88,7 @@ void MultiLineEdit::setMaxHeight(int lines) {
     return;
 
   _maxHeight = lines;
-  computeSizeHint();
+  updateSizeHint();
 }
 
 void MultiLineEdit::setScrollBarsEnabled(bool enable) {
@@ -114,11 +114,12 @@ void MultiLineEdit::updateScrollBars() {
 }
 
 void MultiLineEdit::resizeEvent(QResizeEvent *event) {
-  updateScrollBars();
   QTextEdit::resizeEvent(event);
+  updateSizeHint();
+  updateScrollBars();
 }
 
-void MultiLineEdit::computeSizeHint() {
+void MultiLineEdit::updateSizeHint() {
   QFontMetrics fm(font());
   int minPixelHeight = fm.lineSpacing() * _minHeight;
   int maxPixelHeight = fm.lineSpacing() * _maxHeight;
@@ -142,7 +143,7 @@ void MultiLineEdit::computeSizeHint() {
 QSize MultiLineEdit::sizeHint() const {
   if(!_sizeHint.isValid()) {
     MultiLineEdit *that = const_cast<MultiLineEdit *>(this);
-    that->computeSizeHint();
+    that->updateSizeHint();
   }
   return _sizeHint;
 }
@@ -315,7 +316,7 @@ void MultiLineEdit::on_textChanged() {
     _lastDocumentHeight = document()->size().height();
     on_documentHeightChanged(_lastDocumentHeight);
   }
-  computeSizeHint();
+  updateSizeHint();
 }
 
 void MultiLineEdit::on_documentHeightChanged(qreal) {

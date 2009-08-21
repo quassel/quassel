@@ -105,7 +105,7 @@ private:
   void reset();
   void showHistoryEntry();
   void updateScrollBars();
-  void computeSizeHint();
+  void updateSizeHint();
 };
 
 #endif
