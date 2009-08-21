@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef _TOPICWIDGET_H_
-#define _TOPICWIDGET_H_
+#ifndef TOPICWIDGET_H_
+#define TOPICWIDGET_H_
 
 #include "abstractitemview.h"
 
@@ -40,11 +40,11 @@ protected slots:
   virtual void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
 
 private slots:
-  void on_topicLineEdit_returnPressed();
+  void on_topicLineEdit_textEntered();
   void on_topicEditButton_clicked();
   void switchEditable();
   void switchPlain();
-  
+
 private:
   Ui::TopicWidget ui;
 
