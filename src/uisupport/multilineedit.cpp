@@ -54,7 +54,8 @@ MultiLineEdit::MultiLineEdit(QWidget *parent)
   enableFindReplace(false);
 #endif
 
-  setMode(SingleLine); setLineWrapMode(WidgetWidth);
+  setMode(SingleLine);
+  setWordWrapEnabled(false);
   reset();
 
   connect(this, SIGNAL(textChanged()), this, SLOT(on_textChanged()));
