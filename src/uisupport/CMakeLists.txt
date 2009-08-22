@@ -14,6 +14,7 @@ set(SOURCES
     bufferviewfilter.cpp
     bufferviewoverlayfilter.cpp
     clearablelineedit.cpp
+    clickable.cpp
     clickablelabel.cpp
     colorbutton.cpp
     contextmenuactionprovider.cpp
@@ -67,6 +68,7 @@ set(MOC_HDRS
    )
 
 set(HEADERS
+    clickable.h
     icon.h
     qssparser.h
     uisettings.h

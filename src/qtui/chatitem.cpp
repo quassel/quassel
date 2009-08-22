@@ -413,7 +413,7 @@ ContentsChatItem::~ContentsChatItem() {
 ContentsChatItemPrivate *ContentsChatItem::privateData() const {
   if(!_data) {
     ContentsChatItem *that = const_cast<ContentsChatItem *>(this);
-    that->_data = new ContentsChatItemPrivate(findClickables(), that);
+    that->_data = new ContentsChatItemPrivate(ClickableList::fromString(data(ChatLineModel::DisplayRole).toString()), that);
   }
   return _data;
 }
@@ -457,83 +457,11 @@ void ContentsChatItem::doLayout(QTextLayout *layout) const {
   layout->endLayout();
 }
 
-// NOTE: This method is not threadsafe and not reentrant!
-//       (RegExps are not constant while matching, and they are static here for efficiency)
-QList<ContentsChatItem::Clickable> ContentsChatItem::findClickables() const {
-  // For matching URLs
-  static QString urlEnd("(?:>|[,.;:\"]*\\s|\\b|$)");
-  static QString urlChars("(?:[,.;:]*[\\w\\-~@/?&=+$()!%#*|{}\\[\\]'^])");
-
-  static QRegExp regExp[] = {
-    // URL
-    // QRegExp(QString("((?:https?://|s?ftp://|irc://|mailto:|www\\.)%1+|%1+\\.[a-z]{2,4}(?:?=/%1+|\\b))%2").arg(urlChars, urlEnd)),
-    QRegExp(QString("((?:(?:mailto:|\\w+://)|www\\.)%1+)%2").arg(urlChars, urlEnd), Qt::CaseInsensitive),
-
-    // Channel name
-    // We don't match for channel names starting with + or &, because that gives us a lot of false positives.
-    QRegExp("((?:#|![A-Z0-9]{5})[^,:\\s]+(?::[^,:\\s]+)?)\\b", Qt::CaseInsensitive)
-
-    // TODO: Nicks, we'll need a filtering for only matching known nicknames further down if we do this
-  };
-
-  static const int regExpCount = 2;  // number of regexps in the array above
-
-  qint16 matches[] = { 0, 0, 0 };
-  qint16 matchEnd[] = { 0, 0, 0 };
-
-  QString str = data(ChatLineModel::DisplayRole).toString();
-
-  QList<Clickable> result;
-  qint16 idx = 0;
-  qint16 minidx;
-  int type = -1;
-
-  do {
-    type = -1;
-    minidx = str.length();
-    for(int i = 0; i < regExpCount; i++) {
-      if(matches[i] < 0 || matchEnd[i] > str.length()) continue;
-      if(idx >= matchEnd[i]) {
-        matches[i] = regExp[i].indexIn(str, qMax(matchEnd[i], idx));
-        if(matches[i] >= 0) matchEnd[i] = matches[i] + regExp[i].cap(1).length();
-      }
-      if(matches[i] >= 0 && matches[i] < minidx) {
-        minidx = matches[i];
-        type = i;
-      }
-    }
-    if(type >= 0) {
-      idx = matchEnd[type];
-      QString match = str.mid(matches[type], matchEnd[type] - matches[type]);
-      if(type == Clickable::Url && str.at(idx-1) == ')') {  // special case: closing paren only matches if we had an open one
-        if(!match.contains('(')) {
-          matchEnd[type]--;
-          match.chop(1);
-        }
-      }
-      if(type == Clickable::Channel) {
-        // don't make clickable if it could be a #number
-        if(QRegExp("^#\\d+$").exactMatch(match))
-          continue;
-      }
-      result.append(Clickable((Clickable::Type)type, matches[type], matchEnd[type] - matches[type]));
-    }
-  } while(type >= 0);
-
-  /* testing
-  if(!result.isEmpty()) qDebug() << str;
-  foreach(Clickable click, result) {
-    qDebug() << str.mid(click.start, click.length);
-  }
-  */
-  return result;
-}
-
-ContentsChatItem::Clickable ContentsChatItem::clickableAt(const QPointF &pos) const {
+Clickable ContentsChatItem::clickableAt(const QPointF &pos) const {
   qint16 idx = posToCursor(pos);
   for(int i = 0; i < privateData()->clickables.count(); i++) {
     Clickable click = privateData()->clickables.at(i);
-    if(idx >= click.start && idx < click.start + click.length)
+    if(idx >= click.start() && idx < click.start() + click.length())
       return click;
   }
   return Clickable();
@@ -543,8 +471,8 @@ UiStyle::FormatList ContentsChatItem::formatList() const {
   UiStyle::FormatList fmtList = ChatItem::formatList();
   for(int i = 0; i < privateData()->clickables.count(); i++) {
     Clickable click = privateData()->clickables.at(i);
-    if(click.type == Clickable::Url) {
-      overlayFormat(fmtList, click.start, click.start + click.length, UiStyle::Url);
+    if(click.type() == Clickable::Url) {
+      overlayFormat(fmtList, click.start(), click.start() + click.length(), UiStyle::Url);
     }
   }
   return fmtList;
@@ -556,8 +484,8 @@ QVector<QTextLayout::FormatRange> ContentsChatItem::additionalFormats() const {
   if(privateData()->currentClickable.isValid()) {
     Clickable click = privateData()->currentClickable;
     QTextLayout::FormatRange f;
-    f.start = click.start;
-    f.length = click.length;
+    f.start = click.start();
+    f.length = click.length();
     f.format.setFontUnderline(true);
     fmt.append(f);
   }
@@ -579,8 +507,8 @@ void ContentsChatItem::handleClick(const QPointF &pos, ChatScene::ClickMode clic
   if(clickMode == ChatScene::SingleClick) {
     Clickable click = clickableAt(pos);
     if(click.isValid()) {
-      QString str = data(ChatLineModel::DisplayRole).toString().mid(click.start, click.length);
-      switch(click.type) {
+      QString str = data(ChatLineModel::DisplayRole).toString().mid(click.start(), click.length());
+      switch(click.type()) {
         case Clickable::Url:
           if(!str.contains("://"))
             str = "http://" + str;
@@ -607,8 +535,8 @@ void ContentsChatItem::handleClick(const QPointF &pos, ChatScene::ClickMode clic
     setSelectionMode(PartialSelection);
     Clickable click = clickableAt(pos);
     if(click.isValid()) {
-      setSelectionStart(click.start);
-      setSelectionEnd(click.start + click.length);
+      setSelectionStart(click.start());
+      setSelectionEnd(click.start() + click.length());
     } else {
       // find word boundary
       QString str = data(ChatLineModel::DisplayRole).toString();
@@ -641,11 +569,11 @@ void ContentsChatItem::hoverMoveEvent(QGraphicsSceneHoverEvent *event) {
   bool onClickable = false;
   Clickable click = clickableAt(event->pos());
   if(click.isValid()) {
-    if(click.type == Clickable::Url) {
+    if(click.type() == Clickable::Url) {
       onClickable = true;
       showWebPreview(click);
-    } else if(click.type == Clickable::Channel) {
-      QString name = data(ChatLineModel::DisplayRole).toString().mid(click.start, click.length);
+    } else if(click.type() == Clickable::Channel) {
+      QString name = data(ChatLineModel::DisplayRole).toString().mid(click.start(), click.length());
       // don't make clickable if it's our own name
       BufferId myId = data(MessageModel::BufferIdRole).value<BufferId>();
       if(Client::networkModel()->bufferName(myId) != name)
@@ -665,7 +593,7 @@ void ContentsChatItem::hoverMoveEvent(QGraphicsSceneHoverEvent *event) {
 void ContentsChatItem::addActionsToMenu(QMenu *menu, const QPointF &pos) {
   if(privateData()->currentClickable.isValid()) {
     Clickable click = privateData()->currentClickable;
-    switch(click.type) {
+    switch(click.type()) {
       case Clickable::Url:
         privateData()->activeClickable = click;
         menu->addAction(SmallIcon("edit-copy"), tr("Copy Link Address"),
@@ -675,7 +603,7 @@ void ContentsChatItem::addActionsToMenu(QMenu *menu, const QPointF &pos) {
         // Hide existing menu actions, they confuse us when right-clicking on a clickable
         foreach(QAction *action, menu->actions())
           action->setVisible(false);
-        QString name = data(ChatLineModel::DisplayRole).toString().mid(click.start, click.length);
+        QString name = data(ChatLineModel::DisplayRole).toString().mid(click.start(), click.length());
         GraphicalUi::contextMenuActionProvider()->addActions(menu, chatScene()->filter(), data(MessageModel::BufferIdRole).value<BufferId>(), name);
         break;
       }
@@ -690,8 +618,8 @@ void ContentsChatItem::addActionsToMenu(QMenu *menu, const QPointF &pos) {
 
 void ContentsChatItem::copyLinkToClipboard() {
   Clickable click = privateData()->activeClickable;
-  if(click.isValid() && click.type == Clickable::Url) {
-    QString url = data(ChatLineModel::DisplayRole).toString().mid(click.start, click.length);
+  if(click.isValid() && click.type() == Clickable::Url) {
+    QString url = data(ChatLineModel::DisplayRole).toString().mid(click.start(), click.length());
     if(!url.contains("://"))
       url = "http://" + url;
     chatScene()->stringToClipboard(url);
@@ -706,16 +634,16 @@ void ContentsChatItem::showWebPreview(const Clickable &click) {
 #else
   QTextLayout layout;
   initLayout(&layout);
-  QTextLine line = layout.lineForTextPosition(click.start);
-  qreal x = line.cursorToX(click.start);
-  qreal width = line.cursorToX(click.start + click.length) - x;
+  QTextLine line = layout.lineForTextPosition(click.start());
+  qreal x = line.cursorToX(click.start());
+  qreal width = line.cursorToX(click.start() + click.length()) - x;
   qreal height = line.height();
   qreal y = height * line.lineNumber();
 
   QPointF topLeft = scenePos() + QPointF(x, y);
   QRectF urlRect = QRectF(topLeft.x(), topLeft.y(), width, height);
 
-  QString url = data(ChatLineModel::DisplayRole).toString().mid(click.start, click.length);
+  QString url = data(ChatLineModel::DisplayRole).toString().mid(click.start(), click.length());
   if(!url.contains("://"))
     url = "http://" + url;
   chatScene()->loadWebPreview(this, url, urlRect);

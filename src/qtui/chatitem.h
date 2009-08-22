@@ -27,6 +27,7 @@
 
 #include "chatlinemodel.h"
 #include "chatscene.h"
+#include "clickable.h"
 #include "uistyle.h"
 #include "qtui.h"
 
@@ -195,14 +196,12 @@ protected:
   virtual UiStyle::FormatList formatList() const;
 
 private:
-  struct Clickable;
   class ActionProxy;
   class WrapColumnFinder;
 
   ContentsChatItemPrivate *_data;
   ContentsChatItemPrivate *privateData() const;
 
-  QList<Clickable> findClickables() const;
   Clickable clickableAt(const QPointF &pos) const;
 
   void endHoverMode();
@@ -219,31 +218,13 @@ private:
   static ActionProxy _actionProxy;
 };
 
-struct ContentsChatItem::Clickable {
-  // Don't change these enums without also changing the regexps in analyze()!
-  enum Type {
-    Invalid = -1,
-    Url = 0,
-    Channel = 1,
-    Nick = 2
-  };
-
-  Type type;
-  quint16 start;
-  quint16 length;
-
-  inline Clickable() : type(Invalid) {};
-  inline Clickable(Type type_, quint16 start_, quint16 length_) : type(type_), start(start_), length(length_) {};
-  inline bool isValid() const { return type != Invalid; }
-};
-
 struct ContentsChatItemPrivate {
   ContentsChatItem *contentsItem;
-  QList<ContentsChatItem::Clickable> clickables;
-  ContentsChatItem::Clickable currentClickable;
-  ContentsChatItem::Clickable activeClickable;
+  ClickableList clickables;
+  Clickable currentClickable;
+  Clickable activeClickable;
 
-  ContentsChatItemPrivate(const QList<ContentsChatItem::Clickable> &c, ContentsChatItem *parent) : contentsItem(parent), clickables(c) {}
+  ContentsChatItemPrivate(const ClickableList &c, ContentsChatItem *parent) : contentsItem(parent), clickables(c) {}
 };
 
 class ContentsChatItem::WrapColumnFinder {
