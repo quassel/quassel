@@ -391,12 +391,12 @@ You can also chose to fetch additional older chatlines to provide a better conte
     <message>
         <location filename="../src/qtui/settingspages/buffervieweditdlg.ui" line="22"/>
         <source>Please enter a name for the chat list:</source>
-        <translation type="unfinished"></translation>
+        <translation>Prosím zadejte název pro seznam pokeců:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/bufferviewsettingspage.cpp" line="520"/>
         <source>Add Chat List</source>
-        <translation type="unfinished"></translation>
+        <translation>Přidat seznam pokeců</translation>
     </message>
 </context>
 <context>
@@ -1099,7 +1099,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="697"/>
         <source>Own messages:</source>
-        <translation type="unfinished"></translation>
+        <translation>Vlastní zprávy:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="707"/>
@@ -1117,7 +1117,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/client/client.cpp" line="362"/>
         <source>All Chats</source>
-        <translation type="unfinished"></translation>
+        <translation>Všechny pokecy</translation>
     </message>
 </context>
 <context>
@@ -1192,7 +1192,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/settingspages/connectionsettingspage.ui" line="20"/>
         <source>Enable Ping Timeout Detection</source>
-        <translation type="unfinished"></translation>
+        <translation>Povolit detekci Ping Timeout</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/connectionsettingspage.ui" line="37"/>
@@ -1219,32 +1219,32 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/settingspages/connectionsettingspage.ui" line="128"/>
         <source>This enables periodic polling of user information using /WHO. This is mostly interesting for tracking users&apos; away status.</source>
-        <translation type="unfinished"></translation>
+        <translation>Toto nastavení povolí periodické zjišťování informací o uživatelích s použitím příkazu /WHO. Tato funkce je zajímavá pro zjišťování důvodu proč je uživatel pryč.</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/connectionsettingspage.ui" line="131"/>
         <source>Enable Automatic User Information Lookup (/WHO)</source>
-        <translation type="unfinished"></translation>
+        <translation>Povolit automatické vyhledávání informací o uživatelích (/WHO)</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/connectionsettingspage.ui" line="148"/>
         <source>Update interval:</source>
-        <translation type="unfinished"></translation>
+        <translation>Interval aktualizace:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/connectionsettingspage.ui" line="177"/>
         <source>Ignore channels with more than:</source>
-        <translation type="unfinished"></translation>
+        <translation>Ignorovat kanály s více než:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/connectionsettingspage.ui" line="184"/>
         <source> users</source>
-        <translation>uživatelů</translation>
+        <translation> uživately</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/connectionsettingspage.ui" line="206"/>
         <source>Minimum delay between requests:</source>
-        <translation type="unfinished"></translation>
+        <translation>Minimální přestávka mezi požazdavky:</translation>
     </message>
 </context>
 <context>
@@ -1305,47 +1305,47 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="46"/>
         <source>Nick Changes</source>
-        <translation type="unfinished"></translation>
+        <translation>Změny přezdívek</translation>
     </message>
     <message>
         <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="47"/>
         <source>Mode Changes</source>
-        <translation type="unfinished"></translation>
+        <translation>Změny režimu</translation>
     </message>
     <message>
         <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="48"/>
         <source>Day Changes</source>
-        <translation type="unfinished"></translation>
+        <translation>Změny dní</translation>
     </message>
     <message>
         <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="49"/>
         <source>Topic Changes</source>
-        <translation type="unfinished"></translation>
+        <translation>Změny tématu</translation>
     </message>
     <message>
         <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="50"/>
         <source>Set as Default...</source>
-        <translation type="unfinished"></translation>
+        <translation>Nastavit jako výchozí...</translation>
     </message>
     <message>
         <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="51"/>
         <source>Use Defaults...</source>
-        <translation type="unfinished"></translation>
+        <translation>Použít víchozí...</translation>
     </message>
     <message>
         <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="53"/>
         <source>Join Channel...</source>
-        <translation type="unfinished"></translation>
+        <translation>Vstoupit do kanálu...</translation>
     </message>
     <message>
         <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="55"/>
         <source>Start Query</source>
-        <translation type="unfinished"></translation>
+        <translation>Zahájit pokec</translation>
     </message>
     <message>
         <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="56"/>
         <source>Show Query</source>
-        <translation type="unfinished"></translation>
+        <translation>Zobrazit pokec</translation>
     </message>
     <message>
         <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="57"/>
@@ -1355,12 +1355,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="59"/>
         <source>Version</source>
-        <translation type="unfinished"></translation>
+        <translation>Verze</translation>
     </message>
     <message>
         <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="60"/>
         <source>Time</source>
-        <translation type="unfinished"></translation>
+        <translation>Čas</translation>
     </message>
     <message>
         <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="61"/>
@@ -1400,32 +1400,32 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="69"/>
         <source>Ban From Channel</source>
-        <translation type="unfinished"></translation>
+        <translation>Zablokovat pro kanál</translation>
     </message>
     <message>
         <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="70"/>
         <source>Kick &amp;&amp; Ban</source>
-        <translation type="unfinished"></translation>
+        <translation>Vyhodit &amp;&amp; Zablokovat</translation>
     </message>
     <message>
         <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="72"/>
         <source>Hide Buffer(s) Temporarily</source>
-        <translation type="unfinished"></translation>
+        <translation>Skrýt dočasně záložku(y)</translation>
     </message>
     <message>
         <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="73"/>
         <source>Hide Buffer(s) Permanently</source>
-        <translation type="unfinished"></translation>
+        <translation>Skrýt trvale záložku(y)</translation>
     </message>
     <message>
         <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="74"/>
         <source>Show Channel List</source>
-        <translation type="unfinished"></translation>
+        <translation>Zobrazit seznam kanálů</translation>
     </message>
     <message>
         <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="75"/>
         <source>Show Ignore List</source>
-        <translation type="unfinished"></translation>
+        <translation>Zobrazit seznam ignorovaných</translation>
     </message>
     <message>
         <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="88"/>
@@ -1552,7 +1552,7 @@ to work.</source>
     <message>
         <location filename="../src/core/core.cpp" line="571"/>
         <source>Starting TLS for Client:</source>
-        <translation type="unfinished"></translation>
+        <translation>Zahajuji TLS pro klienta:</translation>
     </message>
     <message>
         <location filename="../src/core/core.cpp" line="589"/>
@@ -2241,52 +2241,52 @@ SOME SPACE</source>
     <message>
         <location filename="../src/qtui/debugbufferviewoverlay.cpp" line="50"/>
         <source>BufferViews:</source>
-        <translation type="unfinished"></translation>
+        <translation>Pohledy na záložky:</translation>
     </message>
     <message>
         <location filename="../src/qtui/debugbufferviewoverlay.cpp" line="51"/>
         <source>All Networks:</source>
-        <translation type="unfinished"></translation>
+        <translation>Všechny sítě:</translation>
     </message>
     <message>
         <location filename="../src/qtui/debugbufferviewoverlay.cpp" line="52"/>
         <source>Networks:</source>
-        <translation type="unfinished"></translation>
+        <translation>Sítě:</translation>
     </message>
     <message>
         <location filename="../src/qtui/debugbufferviewoverlay.cpp" line="53"/>
         <source>Buffers:</source>
-        <translation type="unfinished"></translation>
+        <translation>Záložky:</translation>
     </message>
     <message>
         <location filename="../src/qtui/debugbufferviewoverlay.cpp" line="54"/>
         <source>Removed buffers:</source>
-        <translation type="unfinished"></translation>
+        <translation>Odstraňené záložky:</translation>
     </message>
     <message>
         <location filename="../src/qtui/debugbufferviewoverlay.cpp" line="55"/>
         <source>Temp. removed buffers:</source>
-        <translation type="unfinished"></translation>
+        <translation>Dočasně odstraňené záložky:</translation>
     </message>
     <message>
         <location filename="../src/qtui/debugbufferviewoverlay.cpp" line="57"/>
         <source>Add Bufers Automatically:</source>
-        <translation type="unfinished"></translation>
+        <translation>Přidávat záložky automaticky:</translation>
     </message>
     <message>
         <location filename="../src/qtui/debugbufferviewoverlay.cpp" line="58"/>
         <source>Hide inactive buffers:</source>
-        <translation type="unfinished"></translation>
+        <translation>Skrýt neaktivní záložky:</translation>
     </message>
     <message>
         <location filename="../src/qtui/debugbufferviewoverlay.cpp" line="59"/>
         <source>Allowed buffer types:</source>
-        <translation type="unfinished"></translation>
+        <translation>Povolené typy záložek:</translation>
     </message>
     <message>
         <location filename="../src/qtui/debugbufferviewoverlay.cpp" line="60"/>
         <source>Minimum activity:</source>
-        <translation type="unfinished"></translation>
+        <translation>Minimální aktivita:</translation>
     </message>
     <message>
         <location filename="../src/qtui/debugbufferviewoverlay.cpp" line="62"/>
@@ -2612,12 +2612,12 @@ SOME SPACE</source>
     <message>
         <location filename="../src/qtui/settingspages/identitiessettingspage.cpp" line="180"/>
         <source>&lt;li&gt;Every identity needs at least one nickname defined&lt;/li&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;li&gt;Každý identita požaduje alespoň jednu definovanou přezdívku&lt;/li&gt;</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/identitiessettingspage.cpp" line="181"/>
         <source>&lt;li&gt;You need to specify a real name for every identity&lt;/li&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;li&gt;Pro každou identitu je třeba zadat reálné jméno&lt;/li&gt;</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/identitiessettingspage.cpp" line="182"/>
@@ -3014,7 +3014,7 @@ Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificat
     <message>
         <location filename="../src/qtui/settingspages/inputwidgetsettingspage.cpp" line="23"/>
         <source>Input Widget</source>
-        <translation type="unfinished"></translation>
+        <translation>Vstupní řádka</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/inputwidgetsettingspage.ui" line="14"/>
@@ -3029,47 +3029,47 @@ Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificat
     <message>
         <location filename="../src/qtui/settingspages/inputwidgetsettingspage.ui" line="25"/>
         <source>/UiStyle/Fonts/UseCustomInputWidgetFont</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/inputwidgetsettingspage.ui" line="38"/>
         <source>/UiStyle/Fonts/InputWidget</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/inputwidgetsettingspage.ui" line="50"/>
         <source>Enable spell check</source>
-        <translation type="unfinished"></translation>
+        <translation>Povolit kontrolu pravopisu</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/inputwidgetsettingspage.ui" line="53"/>
         <source>EnableSpellCheck</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/inputwidgetsettingspage.ui" line="63"/>
         <source>Show nick selector</source>
-        <translation type="unfinished"></translation>
+        <translation>Zobrazit výběr přezdívek</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/inputwidgetsettingspage.ui" line="69"/>
         <source>ShowNickSelector</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/inputwidgetsettingspage.ui" line="79"/>
         <source>Multi-Line Editing</source>
-        <translation type="unfinished"></translation>
+        <translation>Víceřádková editace</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/inputwidgetsettingspage.ui" line="87"/>
         <source>Show at most</source>
-        <translation type="unfinished"></translation>
+        <translation>Ukázat nejvíce</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/inputwidgetsettingspage.ui" line="103"/>
         <source>MaxNumLines</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/inputwidgetsettingspage.ui" line="113"/>
@@ -3079,27 +3079,27 @@ Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificat
     <message>
         <location filename="../src/qtui/settingspages/inputwidgetsettingspage.ui" line="135"/>
         <source>Enable scrollbars</source>
-        <translation type="unfinished"></translation>
+        <translation>Povolit rolovácí proužek</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/inputwidgetsettingspage.ui" line="141"/>
         <source>EnableScrollBars</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/inputwidgetsettingspage.ui" line="154"/>
         <source>Tab Completion</source>
-        <translation type="unfinished"></translation>
+        <translation>Doplňování tabulátorem</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/inputwidgetsettingspage.ui" line="162"/>
         <source>Completion suffix:</source>
-        <translation type="unfinished"></translation>
+        <translation>Zakončení doplňování:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/inputwidgetsettingspage.ui" line="175"/>
         <source>/TabCompletion/CompletionSuffix</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/inputwidgetsettingspage.ui" line="178"/>
@@ -3320,7 +3320,7 @@ Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificat
     <message>
         <location filename="../src/qtui/settingspages/itemviewsettingspage.cpp" line="28"/>
         <source>Chat &amp; Nick Lists</source>
-        <translation type="unfinished"></translation>
+        <translation>Pokec &amp; Seznam přezdívek</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/itemviewsettingspage.cpp" line="33"/>
@@ -3395,7 +3395,7 @@ Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificat
     <message>
         <location filename="../src/qtui/settingspages/itemviewsettingspage.ui" line="75"/>
         <source>DisplayTopicInTooltip</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/itemviewsettingspage.ui" line="85"/>
@@ -3845,7 +3845,7 @@ Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificat
     <message>
         <location filename="../src/client/networkmodel.cpp" line="830"/>
         <source>Chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Pokec</translation>
     </message>
     <message>
         <location filename="../src/client/networkmodel.cpp" line="830"/>
@@ -4031,7 +4031,8 @@ Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificat
         <location filename="../src/qtui/settingspages/networkssettingspage.ui" line="361"/>
         <source>Specify a list of IRC commands to be executed upon connect.
 Note that Quassel IRC automatically rejoins channels, so /join will rarely be needed here!</source>
-        <translation type="unfinished"></translation>
+        <translation>Seznam IRC příkazů, které se spustí při připojení.
+Quassel se automaticky připojuje ke kanálům, tedy /join zde s vysokou pravděpodobností nebude třeba!</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/networkssettingspage.ui" line="491"/>
@@ -4836,7 +4837,7 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
     <message>
         <location filename="../src/qtui/coreconnectdlg.cpp" line="596"/>
         <source>Hostname %1:</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/coreconnectdlg.cpp" line="600"/>
@@ -4846,7 +4847,7 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
     <message>
         <location filename="../src/qtui/coreconnectdlg.cpp" line="602"/>
         <source>Digest:</source>
-        <translation type="unfinished"></translation>
+        <translation>Souhrn:</translation>
     </message>
 </context>
 <context>
@@ -4958,7 +4959,7 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
     <message>
         <location filename="../src/uisupport/toolbaractionprovider.cpp" line="38"/>
         <source>Request user information</source>
-        <translation type="unfinished"></translation>
+        <translation>Vyžádá uživatelské informace</translation>
     </message>
     <message>
         <location filename="../src/uisupport/toolbaractionprovider.cpp" line="40"/>
@@ -4993,7 +4994,7 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
     <message>
         <location filename="../src/uisupport/toolbaractionprovider.cpp" line="43"/>
         <source>Devoice</source>
-        <translation type="unfinished"></translation>
+        <translation>Umlčet</translation>
     </message>
     <message>
         <location filename="../src/uisupport/toolbaractionprovider.cpp" line="43"/>
@@ -5003,32 +5004,32 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
     <message>
         <location filename="../src/uisupport/toolbaractionprovider.cpp" line="44"/>
         <source>Kick</source>
-        <translation type="unfinished"></translation>
+        <translation>Vykopnout</translation>
     </message>
     <message>
         <location filename="../src/uisupport/toolbaractionprovider.cpp" line="44"/>
         <source>Remove user from channel</source>
-        <translation type="unfinished"></translation>
+        <translation>Odstraní uživatele z kanálu</translation>
     </message>
     <message>
         <location filename="../src/uisupport/toolbaractionprovider.cpp" line="45"/>
         <source>Ban</source>
-        <translation type="unfinished"></translation>
+        <translation>Zablokovat</translation>
     </message>
     <message>
         <location filename="../src/uisupport/toolbaractionprovider.cpp" line="45"/>
         <source>Ban user from channel</source>
-        <translation type="unfinished"></translation>
+        <translation>Zabrání uživateli v přístupu ke kanálu</translation>
     </message>
     <message>
         <location filename="../src/uisupport/toolbaractionprovider.cpp" line="46"/>
         <source>Kick/Ban</source>
-        <translation type="unfinished"></translation>
+        <translation>Vyhodit/Zablokovat</translation>
     </message>
     <message>
         <location filename="../src/uisupport/toolbaractionprovider.cpp" line="46"/>
         <source>Remove and ban user from channel</source>
-        <translation>Odstraní a zablokuje opětovný přístup uživateli na kanál</translation>
+        <translation>Odstraní uživatele a zablokuje opětovný přístup uživateli na kanál</translation>
     </message>
     <message>
         <location filename="../src/uisupport/toolbaractionprovider.cpp" line="51"/>
