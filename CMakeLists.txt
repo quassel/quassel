@@ -103,7 +103,8 @@ endif(NOT CMAKE_BUILD_TYPE)
 # Enable various flags on gcc
 if(CMAKE_COMPILER_IS_GNUCXX)
   # Let's just hope that all gccs support these options and skip the tests...
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ansi -Wall -Wextra -Wnon-virtual-dtor")
+  # -fno-strict-aliasing is needed apparently for Qt < 4.6
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ansi -Wall -Wextra -Wnon-virtual-dtor -fno-strict-aliasing")
   set(CMAKE_CXX_FLAGS_RELWITHDEBUGINFO "-O2")
   set(CMAKE_CXX_FLAGS_DEBUG "-g -fno-reorder-blocks -fno-schedule-insns -fno-inline")
   set(CMAKE_CXX_FLAGS_DEBUGFULL "-g3")
