@@ -23,6 +23,7 @@
 #include "corenetwork.h"
 #include "userinputhandler.h"
 
+INIT_SYNCABLE_OBJECT(CoreIrcListHelper)
 QVariantList CoreIrcListHelper::requestChannelList(const NetworkId &netId, const QStringList &channelFilters) {
   if(_finishedChannelLists.contains(netId))
     return _finishedChannelLists.take(netId);

@@ -156,12 +156,12 @@ void SyncableObject::requestUpdate(const QVariantMap &properties) {
   emit updateRequested(properties);
 }
 
-void SyncableObject::sync_call__(SignalProxy::ProxyMode modeType, const char *funcname, ...) {
-  qDebug() << Q_FUNC_INFO << modeType << funcname;
+void SyncableObject::sync_call__(SignalProxy::ProxyMode modeType, const char *funcname, ...) const {
+  //qDebug() << Q_FUNC_INFO << modeType << funcname;
   foreach(SignalProxy *proxy, _signalProxies) {
     va_list ap;
     va_start(ap, funcname);
-    proxy->syncCall(this, modeType, funcname, ap);
+    proxy->sync_call__(this, modeType, funcname, ap);
     va_end(ap);
   }
 }

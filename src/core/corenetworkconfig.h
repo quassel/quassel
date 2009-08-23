@@ -26,6 +26,7 @@
 class CoreSession;
 
 class CoreNetworkConfig : public NetworkConfig {
+  SYNCABLE_OBJECT
   Q_OBJECT
 
 public:

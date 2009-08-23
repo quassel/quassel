@@ -98,16 +98,17 @@ void BufferViewOverlay::viewInitialized(BufferViewConfig *config) {
   }
   disconnect(config, SIGNAL(initDone()), this, SLOT(viewInitialized()));
 
-  connect(config, SIGNAL(networkIdSet(const NetworkId &)), this, SLOT(update()));
-  connect(config, SIGNAL(addNewBuffersAutomaticallySet(bool)), this, SLOT(update()));
-  connect(config, SIGNAL(sortAlphabeticallySet(bool)), this, SLOT(update()));
-  connect(config, SIGNAL(hideInactiveBuffersSet(bool)), this, SLOT(update()));
-  connect(config, SIGNAL(allowedBufferTypesSet(int)), this, SLOT(update()));
-  connect(config, SIGNAL(minimumActivitySet(int)), this, SLOT(update()));
-  connect(config, SIGNAL(bufferListSet()), this, SLOT(update()));
-  connect(config, SIGNAL(bufferAdded(const BufferId &, int)), this, SLOT(update()));
-  connect(config, SIGNAL(bufferRemoved(const BufferId &)), this, SLOT(update()));
-  connect(config, SIGNAL(bufferPermanentlyRemoved(const BufferId &)), this, SLOT(update()));
+  connect(config, SIGNAL(configChanged()), this, SLOT(update()));  
+//   connect(config, SIGNAL(networkIdSet(const NetworkId &)), this, SLOT(update()));
+//   connect(config, SIGNAL(addNewBuffersAutomaticallySet(bool)), this, SLOT(update()));
+//   connect(config, SIGNAL(sortAlphabeticallySet(bool)), this, SLOT(update()));
+//   connect(config, SIGNAL(hideInactiveBuffersSet(bool)), this, SLOT(update()));
+//   connect(config, SIGNAL(allowedBufferTypesSet(int)), this, SLOT(update()));
+//   connect(config, SIGNAL(minimumActivitySet(int)), this, SLOT(update()));
+//   connect(config, SIGNAL(bufferListSet()), this, SLOT(update()));
+//   connect(config, SIGNAL(bufferAdded(const BufferId &, int)), this, SLOT(update()));
+//   connect(config, SIGNAL(bufferRemoved(const BufferId &)), this, SLOT(update()));
+//   connect(config, SIGNAL(bufferPermanentlyRemoved(const BufferId &)), this, SLOT(update()));
 
   // check if the view was removed in the meantime...
   if(_bufferViewIds.contains(config->bufferViewId()))

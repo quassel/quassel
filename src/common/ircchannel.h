@@ -33,6 +33,7 @@ class IrcUser;
 class Network;
 
 class IrcChannel : public SyncableObject {
+  SYNCABLE_OBJECT
   Q_OBJECT
 
   Q_PROPERTY(QString name READ name STORED false)
@@ -76,8 +77,7 @@ public slots:
 
   void joinIrcUsers(const QList<IrcUser *> &users, const QStringList &modes);
   void joinIrcUsers(const QStringList &nicks, const QStringList &modes);
-  void joinIrcUsers(IrcUser *ircuser);
-  void joinIrcUsers(const QString &nick);
+  void joinIrcUser(IrcUser *ircuser);
 
   void part(IrcUser *ircuser);
   void part(const QString &nick);
@@ -103,16 +103,16 @@ public slots:
   void initSetChanModes(const QVariantMap &chanModes);
 
 signals:
-  void topicSet(const QString &topic);
-  void passwordSet(const QString &password);
-  void userModesSet(QString nick, QString modes);
-  void userModeAdded(QString nick, QString mode);
-  void userModeRemoved(QString nick, QString mode);
-  void channelModeAdded(const QChar &mode, const QString &value);
-  void channelModeRemoved(const QChar &mode, const QString &value);
+  void topicSet(const QString &topic); // needed by NetworkModel
+//   void passwordSet(const QString &password);
+//   void userModesSet(QString nick, QString modes);
+//   void userModeAdded(QString nick, QString mode);
+//   void userModeRemoved(QString nick, QString mode);
+//   void channelModeAdded(const QChar &mode, const QString &value);
+//   void channelModeRemoved(const QChar &mode, const QString &value);
   
   void ircUsersJoined(QList<IrcUser *> ircusers);
-  void ircUsersJoined(QStringList nicks, QStringList modes);
+//   void ircUsersJoined(QStringList nicks, QStringList modes);
   void ircUserParted(IrcUser *ircuser);
   void ircUserNickSet(IrcUser *ircuser, QString nick);
   void ircUserModeAdded(IrcUser *ircuser, QString mode);

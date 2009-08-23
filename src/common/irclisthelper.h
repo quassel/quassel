@@ -33,6 +33,7 @@
  *  3.) client pulls the data by calling requestChannelList again. receiving the data in receiveChannelList
  */
 class IrcListHelper : public SyncableObject {
+  SYNCABLE_OBJECT
   Q_OBJECT
 
 public:
@@ -46,15 +47,11 @@ public:
   };
 
 public slots:
-  inline virtual QVariantList requestChannelList(const NetworkId &netId, const QStringList &channelFilters) { emit channelListRequested(netId, channelFilters); return QVariantList(); }
+  inline virtual QVariantList requestChannelList(const NetworkId &netId, const QStringList &channelFilters) { REQUEST(ARG(netId), ARG(channelFilters)); return QVariantList(); }
   inline virtual void receiveChannelList(const NetworkId &, const QStringList &, const QVariantList &) {};
-  inline virtual void reportFinishedList(const NetworkId &netId) { emit finishedListReported(netId); }
-  inline virtual void reportError(const QString &error) { emit errorReported(error); }
-
-signals:
-  void channelListRequested(const NetworkId &netId, const QStringList &channelFilters);
-  void finishedListReported(const NetworkId &netId);
-  void errorReported(const QString &error);
+  inline virtual void reportFinishedList(const NetworkId &netId) { SYNC(ARG(netId)) }
+  inline virtual void reportError(const QString &error) { SYNC(ARG(error)) }
 };
+
 
 #endif //IRCLISTHELPER_H

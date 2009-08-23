@@ -26,6 +26,7 @@
 class ClientCertManager;
 
 class CertIdentity : public Identity {
+  SYNCABLE_OBJECT
   Q_OBJECT
 
 public:

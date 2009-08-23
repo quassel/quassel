@@ -23,6 +23,7 @@
 #include "bufferviewconfig.h"
 #include "signalproxy.h"
 
+INIT_SYNCABLE_OBJECT(BufferViewManager)
 BufferViewManager::BufferViewManager(SignalProxy *proxy, QObject *parent)
   : SyncableObject(parent),
     _proxy(proxy)
@@ -47,7 +48,9 @@ void BufferViewManager::addBufferViewConfig(BufferViewConfig *config) {
 
   _proxy->synchronize(config);
   _bufferViewConfigs[config->bufferViewId()] = config;
-  emit bufferViewConfigAdded(config->bufferViewId());
+  int bufferViewId = config->bufferViewId();
+  SYNC_OTHER(addBufferViewConfig, ARG(bufferViewId))
+  emit bufferViewConfigAdded(bufferViewId);
 }
 
 void BufferViewManager::addBufferViewConfig(int bufferViewConfigId) {
@@ -63,6 +66,7 @@ void BufferViewManager::deleteBufferViewConfig(int bufferViewConfigId) {
 
   _bufferViewConfigs[bufferViewConfigId]->deleteLater();
   _bufferViewConfigs.remove(bufferViewConfigId);
+  SYNC(ARG(bufferViewConfigId))
   emit bufferViewConfigDeleted(bufferViewConfigId);
 }
 

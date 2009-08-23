@@ -20,6 +20,7 @@
 
 #include "buffersyncer.h"
 
+INIT_SYNCABLE_OBJECT(BufferSyncer)
 BufferSyncer::BufferSyncer(QObject *parent)
   : SyncableObject(parent)
 {
@@ -44,6 +45,7 @@ bool BufferSyncer::setLastSeenMsg(BufferId buffer, const MsgId &msgId) {
   const MsgId oldLastSeenMsg = lastSeenMsg(buffer);
   if(!oldLastSeenMsg.isValid() || oldLastSeenMsg < msgId) {
     _lastSeenMsg[buffer] = msgId;
+    SYNC(ARG(buffer), ARG(msgId))
     emit lastSeenMsgSet(buffer, msgId);
     return true;
   }
@@ -72,12 +74,13 @@ void BufferSyncer::initSetLastSeenMsg(const QVariantList &list) {
 void BufferSyncer::removeBuffer(BufferId buffer) {
   if(_lastSeenMsg.contains(buffer))
     _lastSeenMsg.remove(buffer);
+  SYNC(ARG(buffer))
   emit bufferRemoved(buffer);
 }
-
 
 void BufferSyncer::mergeBuffersPermanently(BufferId buffer1, BufferId buffer2) {
   if(_lastSeenMsg.contains(buffer2))
     _lastSeenMsg.remove(buffer2);
+  SYNC(ARG(buffer1), ARG(buffer2))
   emit buffersPermanentlyMerged(buffer1, buffer2);
 }

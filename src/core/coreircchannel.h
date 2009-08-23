@@ -24,6 +24,7 @@
 #include "ircchannel.h"
 
 class CoreIrcChannel : public IrcChannel {
+  SYNCABLE_OBJECT
   Q_OBJECT
 
 public:

@@ -24,6 +24,7 @@
 #include "aliasmanager.h"
 
 class ClientAliasManager : public AliasManager {
+  SYNCABLE_OBJECT
   Q_OBJECT
 
 public:

@@ -29,6 +29,7 @@
 #include "userinputhandler.h"
 #include "ctcphandler.h"
 
+INIT_SYNCABLE_OBJECT(CoreNetwork)
 CoreNetwork::CoreNetwork(const NetworkId &networkid, CoreSession *session)
   : Network(networkid, session),
     _coreSession(session),
@@ -70,7 +71,6 @@ CoreNetwork::CoreNetwork(const NetworkId &networkid, CoreSession *session)
   connect(&_autoWhoTimer, SIGNAL(timeout()), this, SLOT(sendAutoWho()));
   connect(&_autoWhoCycleTimer, SIGNAL(timeout()), this, SLOT(startAutoWhoCycle()));
   connect(&_tokenBucketTimer, SIGNAL(timeout()), this, SLOT(fillBucketAndProcessQueue()));
-  connect(this, SIGNAL(connectRequested()), this, SLOT(connectToIrc()));
 
   connect(&socket, SIGNAL(connected()), this, SLOT(socketInitialized()));
   connect(&socket, SIGNAL(disconnected()), this, SLOT(socketDisconnected()));
@@ -650,7 +650,7 @@ void CoreNetwork::requestConnect() const {
     qWarning() << "Requesting connect while already being connected!";
     return;
   }
-  Network::requestConnect();
+  QMetaObject::invokeMethod(const_cast<CoreNetwork *>(this), "connectToIrc", Qt::QueuedConnection);
 }
 
 void CoreNetwork::requestDisconnect() const {

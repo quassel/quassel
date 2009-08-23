@@ -67,7 +67,7 @@ public slots:
   virtual void update(const QVariantMap &properties);
 
 protected:
-  void sync_call__(SignalProxy::ProxyMode modeType, const char *funcname, ...);
+  void sync_call__(SignalProxy::ProxyMode modeType, const char *funcname, ...) const;
 
   void renameObject(const QString &newName);
   SyncableObject &operator=(const SyncableObject &other);
@@ -100,7 +100,9 @@ private:
 #    define REQUEST(...) sync_call__(SignalProxy::Client, (__FUNCTION__ + _classNameOffset__) , __VA_ARGS__);
 #else
 #    define SYNC(...) sync_call__(SignalProxy::Server, __func__, __VA_ARGS__);
+#    define SYNC_OTHER(x, ...) sync_call__(SignalProxy::Server, #x, __VA_ARGS__);
 #    define REQUEST(...) sync_call__(SignalProxy::Client, __func__, __VA_ARGS__);
+#    define REQUEST_OTHER(x, ...) sync_call__(SignalProxy::Client, #x, __VA_ARGS__);
 #endif //Q_WS_WIN
 
 

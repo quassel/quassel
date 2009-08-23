@@ -30,7 +30,7 @@
 
 #include <QDebug>
 
-
+INIT_SYNCABLE_OBJECT(IrcChannel)
 IrcChannel::IrcChannel(const QString &channelname, Network *network)
   : SyncableObject(network),
     _initialized(false),
@@ -121,7 +121,7 @@ void IrcChannel::setTopic(const QString &topic) {
 
 void IrcChannel::setPassword(const QString &password) {
   _password = password;
-  emit passwordSet(password);
+  SYNC(ARG(password))
 }
 
 void IrcChannel::joinIrcUsers(const QList<IrcUser *> &users, const QStringList &modes) {
@@ -148,6 +148,7 @@ void IrcChannel::joinIrcUsers(const QList<IrcUser *> &users, const QStringList &
     _userModes[ircuser] = modes[i];
     ircuser->joinChannel(this);
     connect(ircuser, SIGNAL(nickSet(QString)), this, SLOT(ircUserNickSet(QString)));
+
     // connect(ircuser, SIGNAL(destroyed()), this, SLOT(ircUserDestroyed()));
     // if you wonder why there is no counterpart to ircUserJoined:
     // the joines are propagted by the ircuser. the signal ircUserJoined is only for convenience
@@ -159,9 +160,9 @@ void IrcChannel::joinIrcUsers(const QList<IrcUser *> &users, const QStringList &
 
   if(newNicks.isEmpty())
     return;
-  
+
+  SYNC_OTHER(joinIrcUsers, ARG(newNicks), ARG(newModes));
   emit ircUsersJoined(newUsers);
-  emit ircUsersJoined(newNicks, newModes);
 }
 
 void IrcChannel::joinIrcUsers(const QStringList &nicks, const QStringList &modes) {
@@ -171,16 +172,12 @@ void IrcChannel::joinIrcUsers(const QStringList &nicks, const QStringList &modes
   joinIrcUsers(users, modes);
 }
 		      
-void IrcChannel::joinIrcUsers(IrcUser *ircuser) {
+void IrcChannel::joinIrcUser(IrcUser *ircuser) {
   QList <IrcUser *> users;
   users << ircuser;
   QStringList modes;
   modes << QString();
   joinIrcUsers(users, modes);
-}
-
-void IrcChannel::joinIrcUsers(const QString &nick) {
-  joinIrcUsers(network->newIrcUser(nick));
 }
 
 void IrcChannel::part(IrcUser *ircuser) {
@@ -215,7 +212,8 @@ void IrcChannel::part(const QString &nick) {
 void IrcChannel::setUserModes(IrcUser *ircuser, const QString &modes) {
   if(isKnownUser(ircuser)) {
     _userModes[ircuser] = modes;
-    emit userModesSet(ircuser->nick(), modes);
+    QString nick = ircuser->nick();
+    SYNC_OTHER(setUserModes, ARG(nick), ARG(modes))
     emit ircUserModesSet(ircuser, modes);
   }
 }
@@ -231,7 +229,8 @@ void IrcChannel::addUserMode(IrcUser *ircuser, const QString &mode) {
 
   if(!_userModes[ircuser].contains(mode)) {
     _userModes[ircuser] += mode;
-    emit userModeAdded(ircuser->nick(), mode);
+    QString nick = ircuser->nick();
+    SYNC_OTHER(addUserMode, ARG(nick), ARG(mode))
     emit ircUserModeAdded(ircuser, mode);
   }
 
@@ -248,7 +247,8 @@ void IrcChannel::removeUserMode(IrcUser *ircuser, const QString &mode) {
 
   if(_userModes[ircuser].contains(mode)) {
     _userModes[ircuser].remove(mode);
-    emit userModeRemoved(ircuser->nick(), mode);
+    QString nick = ircuser->nick();
+    SYNC_OTHER(removeUserMode, ARG(nick), ARG(mode));
     emit ircUserModeRemoved(ircuser, mode);
   }
 }
@@ -432,7 +432,7 @@ void IrcChannel::addChannelMode(const QChar &mode, const QString &value) {
     _D_channelModes << mode;
     break;
   }
-  emit channelModeAdded(mode, value);
+  SYNC(ARG(mode), ARG(value))
 }
 
 void IrcChannel::removeChannelMode(const QChar &mode, const QString &value) {
@@ -458,7 +458,7 @@ void IrcChannel::removeChannelMode(const QChar &mode, const QString &value) {
     _D_channelModes.remove(mode);
     break;
   }
-  emit channelModeRemoved(mode, value);
+  SYNC(ARG(mode), ARG(value))
 }
 
 bool IrcChannel::hasMode(const QChar &mode) const {

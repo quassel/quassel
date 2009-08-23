@@ -26,7 +26,9 @@
 #include "types.h"
 
 class BufferViewConfig : public SyncableObject {
+  SYNCABLE_OBJECT
   Q_OBJECT
+
   Q_PROPERTY(QString bufferViewName READ bufferViewName WRITE setBufferViewName)
   Q_PROPERTY(NetworkId networkId READ networkId WRITE setNetworkId)
   Q_PROPERTY(bool addNewBuffersAutomatically READ addNewBuffersAutomatically WRITE setAddNewBuffersAutomatically)
@@ -69,7 +71,7 @@ public slots:
   inline bool hideInactiveBuffers() const { return _hideInactiveBuffers; }
   void setHideInactiveBuffers(bool hideInactiveBuffers);
 
-  virtual inline void requestSetBufferViewName(const QString &bufferViewName) { emit setBufferViewNameRequested(bufferViewName); }
+  virtual inline void requestSetBufferViewName(const QString &bufferViewName) { REQUEST(ARG(bufferViewName)) }
 
   const QList<BufferId> &bufferList() const { return _buffers; }
   const QSet<BufferId> &removedBuffers() const { return _removedBuffers; }
@@ -86,36 +88,37 @@ public slots:
   void initSetTemporarilyRemovedBuffers(const QVariantList &buffers);
 
   void addBuffer(const BufferId &bufferId, int pos);
-  virtual inline void requestAddBuffer(const BufferId &bufferId, int pos) { emit addBufferRequested(bufferId, pos); }
+  virtual inline void requestAddBuffer(const BufferId &bufferId, int pos) { REQUEST(ARG(bufferId), ARG(pos)) }
   void moveBuffer(const BufferId &bufferId, int pos);
-  virtual inline void requestMoveBuffer(const BufferId &bufferId, int pos) { emit moveBufferRequested(bufferId, pos); }
+  virtual inline void requestMoveBuffer(const BufferId &bufferId, int pos) { REQUEST(ARG(bufferId), ARG(pos)) }
   void removeBuffer(const BufferId &bufferId);
-  virtual inline void requestRemoveBuffer(const BufferId &bufferId) { emit removeBufferRequested(bufferId); }
+  virtual inline void requestRemoveBuffer(const BufferId &bufferId) { REQUEST(ARG(bufferId)) }
   void removeBufferPermanently(const BufferId &bufferId);
-  virtual inline void requestRemoveBufferPermanently(const BufferId &bufferId) { emit removeBufferPermanentlyRequested(bufferId); }
+  virtual inline void requestRemoveBufferPermanently(const BufferId &bufferId) { REQUEST(ARG(bufferId)) }
 
 
 signals:
-  void bufferViewNameSet(const QString &bufferViewName);
+  void bufferViewNameSet(const QString &bufferViewName); // invalidate
+  void configChanged();
   void networkIdSet(const NetworkId &networkId);
-  void addNewBuffersAutomaticallySet(bool addNewBuffersAutomatically);
-  void sortAlphabeticallySet(bool sortAlphabetically);
-  void disableDecorationSet(bool disableDecoration);
-  void allowedBufferTypesSet(int allowedBufferTypes);
-  void minimumActivitySet(int activity);
-  void hideInactiveBuffersSet(bool hideInactiveBuffers);
-  void bufferListSet();
+//   void addNewBuffersAutomaticallySet(bool addNewBuffersAutomatically); // invalidate
+//   void sortAlphabeticallySet(bool sortAlphabetically); // invalidate
+//   //  void disableDecorationSet(bool disableDecoration); // invalidate
+//   void allowedBufferTypesSet(int allowedBufferTypes); // invalidate
+//   void minimumActivitySet(int activity); // invalidate
+//   void hideInactiveBuffersSet(bool hideInactiveBuffers); // invalidate
+  void bufferListSet(); // invalidate
 
   void bufferAdded(const BufferId &bufferId, int pos);
-  void addBufferRequested(const BufferId &bufferId, int pos);
+//   void addBufferRequested(const BufferId &bufferId, int pos);
   void bufferMoved(const BufferId &bufferId, int pos);
-  void moveBufferRequested(const BufferId &bufferId, int pos);
+//   void moveBufferRequested(const BufferId &bufferId, int pos);
   void bufferRemoved(const BufferId &bufferId);
   void bufferPermanentlyRemoved(const BufferId &bufferId);
-  void removeBufferRequested(const BufferId &bufferId);
-  void removeBufferPermanentlyRequested(const BufferId &bufferId);
+//   void removeBufferRequested(const BufferId &bufferId);
+//   void removeBufferPermanentlyRequested(const BufferId &bufferId);
 
-  void setBufferViewNameRequested(const QString &bufferViewName);
+//   void setBufferViewNameRequested(const QString &bufferViewName);
 
 private:
   int _bufferViewId;

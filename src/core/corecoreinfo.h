@@ -30,6 +30,7 @@ class CoreSession;
  * which is prefixing core specific sync objects with "Core"... ;)
  */ 
 class CoreCoreInfo : public CoreInfo {
+  SYNCABLE_OBJECT
   Q_OBJECT
 
 public:

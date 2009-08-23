@@ -22,6 +22,7 @@
 
 #include "signalproxy.h"
 
+INIT_SYNCABLE_OBJECT(CoreIdentity)
 CoreIdentity::CoreIdentity(IdentityId id, QObject *parent)
   : Identity(id, parent)
 #ifdef HAVE_SSL
@@ -93,6 +94,7 @@ CoreIdentity &CoreIdentity::operator=(const CoreIdentity &identity) {
 // ========================================
 //  CoreCertManager
 // ========================================
+INIT_SYNCABLE_OBJECT(CoreCertManager)
 CoreCertManager::CoreCertManager(CoreIdentity &identity)
   : CertManager(identity.id()),
     identity(identity)

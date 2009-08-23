@@ -24,6 +24,7 @@
 #include "bufferviewconfig.h"
 
 class ClientBufferViewConfig : public BufferViewConfig {
+  SYNCABLE_OBJECT
   Q_OBJECT
 
 public:

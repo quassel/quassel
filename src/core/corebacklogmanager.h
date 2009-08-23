@@ -26,6 +26,7 @@
 class CoreSession;
 
 class CoreBacklogManager : public BacklogManager {
+  SYNCABLE_OBJECT
   Q_OBJECT
 
 public:

@@ -42,6 +42,7 @@
 #  include <Security.h>
 #endif
 
+INIT_SYNCABLE_OBJECT(Identity)
 Identity::Identity(IdentityId id, QObject *parent)
   : SyncableObject(parent),
     _identityId(id)
@@ -171,98 +172,100 @@ void Identity::setToDefaults() {
 
 void Identity::setId(IdentityId _id) {
   _identityId = _id;
+  SYNC(ARG(_id))
   emit idSet(_id);
   renameObject(QString::number(id().toInt()));
 }
 
 void Identity::setIdentityName(const QString &identityName) {
   _identityName = identityName;
-  emit identityNameSet(identityName);
+  SYNC(ARG(identityName))
 }
 
 void Identity::setRealName(const QString &realName) {
   _realName = realName;
-  emit realNameSet(realName);
+  SYNC(ARG(realName))
 }
 
 void Identity::setNicks(const QStringList &nicks) {
   _nicks = nicks;
+  SYNC(ARG(nicks))
   emit nicksSet(nicks);
 }
 
 void Identity::setAwayNick(const QString &nick) {
   _awayNick = nick;
-  emit awayNickSet(nick);
+  SYNC(ARG(nick))
 }
 
 void Identity::setAwayReason(const QString &reason) {
   _awayReason = reason;
-  emit awayReasonSet(reason);
+  SYNC(ARG(reason))
 }
 
 void Identity::setAwayNickEnabled(bool enabled) {
   _awayNickEnabled = enabled;
-  emit awayNickEnabledSet(enabled);
+  SYNC(ARG(enabled))
 }
 
 void Identity::setAwayReasonEnabled(bool enabled) {
   _awayReasonEnabled = enabled;
-  emit awayReasonEnabledSet(enabled);
+  SYNC(ARG(enabled))
 }
 
 void Identity::setAutoAwayEnabled(bool enabled) {
   _autoAwayEnabled = enabled;
-  emit autoAwayEnabledSet(enabled);
+  SYNC(ARG(enabled))
 }
 
 void Identity::setAutoAwayTime(int time) {
   _autoAwayTime = time;
-  emit autoAwayTimeSet(time);
+  SYNC(ARG(time))
 }
 
 void Identity::setAutoAwayReason(const QString &reason) {
   _autoAwayReason = reason;
-  emit autoAwayReasonSet(reason);
+  SYNC(ARG(reason))
 }
 
 void Identity::setAutoAwayReasonEnabled(bool enabled) {
   _autoAwayReasonEnabled = enabled;
-  emit autoAwayReasonEnabledSet(enabled);
+  SYNC(ARG(enabled))
 }
 
 void Identity::setDetachAwayEnabled(bool enabled) {
   _detachAwayEnabled = enabled;
-  emit detachAwayEnabledSet(enabled);
+  SYNC(ARG(enabled))
 }
 
 void Identity::setDetachAwayReason(const QString &reason) {
   _detachAwayReason = reason;
-  emit detachAwayReasonSet(reason);
+  SYNC(ARG(reason))
 }
 
 void Identity::setDetachAwayReasonEnabled(bool enabled) {
   _detachAwayReasonEnabled = enabled;
-  emit detachAwayReasonEnabledSet(enabled);
+  SYNC(ARG(enabled))
 }
 
 void Identity::setIdent(const QString &ident) {
   _ident = ident;
-  emit identSet(ident);
+  SYNC(ARG(ident))
 }
 
 void Identity::setKickReason(const QString &reason) {
   _kickReason = reason;
-  emit kickReasonSet(reason);
+  SYNC(ARG(reason))
 }
 
 void Identity::setPartReason(const QString &reason) {
   _partReason = reason;
-  emit partReasonSet(reason);
+  SYNC(ARG(reason))
 }
 
 void Identity::setQuitReason(const QString &reason) {
   _quitReason = reason;
-  emit quitReasonSet(reason);
+  SYNC(ARG(reason))
 }
 
 /***  ***/
@@ -312,3 +315,4 @@ QDataStream &operator>>(QDataStream &in, Identity &id) {
   return in;
 }
 
+INIT_SYNCABLE_OBJECT(CertManager)

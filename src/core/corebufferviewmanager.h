@@ -26,6 +26,7 @@
 class CoreSession;
 
 class CoreBufferViewManager : public BufferViewManager {
+  SYNCABLE_OBJECT
   Q_OBJECT
 
 public:

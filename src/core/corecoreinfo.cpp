@@ -25,6 +25,7 @@
 #include "quassel.h"
 #include "signalproxy.h"
 
+INIT_SYNCABLE_OBJECT(CoreCoreInfo)
 CoreCoreInfo::CoreCoreInfo(CoreSession *parent)
   : CoreInfo(parent),
     _coreSession(parent)

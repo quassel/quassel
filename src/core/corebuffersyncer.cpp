@@ -30,6 +30,7 @@ public:
   PurgeEvent() : QEvent(QEvent::User) {}
 };
 
+INIT_SYNCABLE_OBJECT(CoreBufferSyncer)
 CoreBufferSyncer::CoreBufferSyncer(CoreSession *parent)
   : BufferSyncer(Core::bufferLastSeenMsgIds(parent->user()), parent),
     _coreSession(parent),

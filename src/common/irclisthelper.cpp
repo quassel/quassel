@@ -18,28 +18,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "clientbufferviewmanager.h"
+#include "irclisthelper.h"
 
-#include "clientbufferviewconfig.h"
-
-INIT_SYNCABLE_OBJECT(ClientBufferViewManager)
-ClientBufferViewManager::ClientBufferViewManager(SignalProxy *proxy, QObject *parent)
-  : BufferViewManager(proxy, parent)
-{
-}
-
-BufferViewConfig *ClientBufferViewManager::bufferViewConfigFactory(int bufferViewConfigId) {
-  return new ClientBufferViewConfig(bufferViewConfigId, this);
-}
-
-QList<ClientBufferViewConfig *> ClientBufferViewManager::clientBufferViewConfigs() const {
-  QList<ClientBufferViewConfig *> clientConfigs;
-  foreach(BufferViewConfig *config, bufferViewConfigs()) {
-    clientConfigs << static_cast<ClientBufferViewConfig *>(config);
-  }
-  return clientConfigs;
-}
-
-ClientBufferViewConfig *ClientBufferViewManager::clientBufferViewConfig(int bufferViewId) const {
-  return static_cast<ClientBufferViewConfig *>(bufferViewConfig(bufferViewId));
-}
+INIT_SYNCABLE_OBJECT(IrcListHelper)

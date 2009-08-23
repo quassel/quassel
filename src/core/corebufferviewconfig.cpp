@@ -20,6 +20,7 @@
 
 #include "corebufferviewconfig.h"
 
+INIT_SYNCABLE_OBJECT(CoreBufferViewConfig)
 CoreBufferViewConfig::CoreBufferViewConfig(int bufferViewId, QObject *parent)
   : BufferViewConfig(bufferViewId, parent)
 {

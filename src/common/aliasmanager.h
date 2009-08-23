@@ -29,6 +29,7 @@
 class Network;
 
 class AliasManager : public SyncableObject {
+  SYNCABLE_OBJECT
   Q_OBJECT
 
 public:
@@ -66,9 +67,6 @@ public slots:
 protected:
   void setAliases(const QList<Alias> &aliases) { _aliases = aliases; }
   virtual const Network *network(NetworkId) const = 0; // core and client require different access
-
-signals:
-  void aliasAdded(const QString &name, const QString &expansion);
 
 private:
   void processInput(const BufferInfo &info, const QString &message, CommandList &previousCommands);

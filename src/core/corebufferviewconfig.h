@@ -24,6 +24,7 @@
 #define COREBUFFERVIEWCONFIG_H
 
 class CoreBufferViewConfig : public BufferViewConfig {
+  SYNCABLE_OBJECT
   Q_OBJECT
 
 public:

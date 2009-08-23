@@ -24,6 +24,7 @@
 
 #include <QDebug>
 
+INIT_SYNCABLE_OBJECT(CoreBacklogManager)
 CoreBacklogManager::CoreBacklogManager(CoreSession *coreSession)
   : BacklogManager(coreSession),
     _coreSession(coreSession)

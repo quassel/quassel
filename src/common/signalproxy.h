@@ -116,7 +116,7 @@ public slots:
 
 protected:
   void customEvent(QEvent *event);
-  void syncCall(const SyncableObject *obj, ProxyMode modeType, const char *funcname, va_list ap);
+  void sync_call__(const SyncableObject *obj, ProxyMode modeType, const char *funcname, va_list ap);
 
 private slots:
   void dataAvailable();

@@ -25,6 +25,7 @@
 #include "aliasmanager.h"
 #include "network.h"
 
+INIT_SYNCABLE_OBJECT(AliasManager)
 AliasManager &AliasManager::operator=(const AliasManager &other) {
   if(this == &other)
     return *this;
@@ -80,7 +81,7 @@ void AliasManager::addAlias(const QString &name, const QString &expansion) {
 
   _aliases << Alias(name, expansion);
 
-  emit aliasAdded(name, expansion);
+  SYNC(ARG(name), ARG(expansion))
 }
 
 AliasManager::AliasList AliasManager::defaults() {

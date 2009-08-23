@@ -26,6 +26,7 @@
 class CoreSession;
 
 class CoreAliasManager : public AliasManager {
+  SYNCABLE_OBJECT
   Q_OBJECT
 
 public:

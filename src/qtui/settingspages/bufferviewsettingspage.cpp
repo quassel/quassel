@@ -487,9 +487,9 @@ BufferViewConfig *BufferViewSettingsPage::cloneConfig(BufferViewConfig *config) 
   connect(config, SIGNAL(bufferAdded(const BufferId &, int)), changedConfig, SLOT(addBuffer(const BufferId &, int)));
   connect(config, SIGNAL(bufferMoved(const BufferId &, int)), changedConfig, SLOT(moveBuffer(const BufferId &, int)));
   connect(config, SIGNAL(bufferRemoved(const BufferId &)), changedConfig, SLOT(removeBuffer(const BufferId &)));
-  connect(config, SIGNAL(addBufferRequested(const BufferId &, int)), changedConfig, SLOT(addBuffer(const BufferId &, int)));
-  connect(config, SIGNAL(moveBufferRequested(const BufferId &, int)), changedConfig, SLOT(moveBuffer(const BufferId &, int)));
-  connect(config, SIGNAL(removeBufferRequested(const BufferId &)), changedConfig, SLOT(removeBuffer(const BufferId &)));
+//   connect(config, SIGNAL(addBufferRequested(const BufferId &, int)), changedConfig, SLOT(addBuffer(const BufferId &, int)));
+//   connect(config, SIGNAL(moveBufferRequested(const BufferId &, int)), changedConfig, SLOT(moveBuffer(const BufferId &, int)));
+//   connect(config, SIGNAL(removeBufferRequested(const BufferId &)), changedConfig, SLOT(removeBuffer(const BufferId &)));
 
   changedConfig->setProperty("OriginalBufferList", toVariantList<BufferId>(config->bufferList()));
   // if this is the currently displayed view we have to change the config of the preview filter

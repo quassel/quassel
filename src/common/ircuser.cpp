@@ -124,6 +124,7 @@ void IrcUser::setRealName(const QString &realName) {
 void IrcUser::setAway(const bool &away) {
   if(away != _away) {
     _away = away;
+    emit awaySet(away);
     SYNC(ARG(away))
   }
 }
@@ -182,6 +183,7 @@ void IrcUser::setNick(const QString &nick) {
   if(!nick.isEmpty() && nick != _nick) {
     _nick = nick;
     updateObjectName();
+    emit nickSet(nick);
     SYNC(ARG(nick))
   }
 }
@@ -218,7 +220,7 @@ void IrcUser::joinChannel(IrcChannel *channel) {
   Q_ASSERT(channel);
   if(!_channels.contains(channel)) {
     _channels.insert(channel);
-    channel->joinIrcUsers(this);
+    channel->joinIrcUser(this);
   }
 }
 
@@ -231,7 +233,8 @@ void IrcUser::partChannel(IrcChannel *channel) {
     _channels.remove(channel);
     disconnect(channel, 0, this, 0);
     channel->part(this);
-    emit channelParted(channel->name());
+    QString channelName = channel->name();
+    SYNC_OTHER(partChannel, ARG(channelName))
     if(_channels.isEmpty() && !network()->isMe(this))
       quit();
   }
@@ -270,6 +273,7 @@ void IrcUser::channelDestroyed() {
 void IrcUser::setUserModes(const QString &modes) {
   _userModes = modes;
   SYNC(ARG(modes))
+  emit userModesSet(modes);
 }
 
 void IrcUser::addUserModes(const QString &modes) {
@@ -282,6 +286,7 @@ void IrcUser::addUserModes(const QString &modes) {
   }
 
   SYNC(ARG(modes))
+  emit userModesAdded(modes);
 }
 
 void IrcUser::removeUserModes(const QString &modes) {
@@ -292,6 +297,7 @@ void IrcUser::removeUserModes(const QString &modes) {
     _userModes.remove(modes[i]);
   }
   SYNC(ARG(modes))
+  emit userModesRemoved(modes);
 }
 
 void IrcUser::setLastChannelActivity(BufferId buffer, const QDateTime &time) {

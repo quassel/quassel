@@ -29,6 +29,7 @@
  */ 
 class ClientCoreInfo : public CoreInfo {
   Q_OBJECT
+  SYNCABLE_OBJECT
 
 public:
   ClientCoreInfo(QObject *parent = 0) : CoreInfo(parent) {}

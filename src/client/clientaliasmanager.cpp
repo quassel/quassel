@@ -22,6 +22,7 @@
 
 #include "client.h"
 
+INIT_SYNCABLE_OBJECT(ClientAliasManager)
 ClientAliasManager::ClientAliasManager(QObject *parent)
   : AliasManager(parent)
 {

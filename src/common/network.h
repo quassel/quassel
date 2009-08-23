@@ -44,6 +44,7 @@ struct NetworkInfo;
 // TODO: ConnectionInfo to propagate and sync the current state of NetworkConnection, encodings etcpp
 
 class Network : public SyncableObject {
+  SYNCABLE_OBJECT
   Q_OBJECT
   Q_ENUMS(ConnectionState Network::ConnectionState)
 
@@ -254,9 +255,9 @@ public slots:
   // channel lists up to date
   void ircUserNickChanged(QString newnick);
 
-  virtual inline void requestConnect() const { emit connectRequested(); }
-  virtual inline void requestDisconnect() const { emit disconnectRequested(); }
-  virtual inline void requestSetNetworkInfo(const NetworkInfo &info) { emit setNetworkInfoRequested(info); }
+  virtual inline void requestConnect() const { REQUEST(NO_ARG) }
+  virtual inline void requestDisconnect() const { REQUEST(NO_ARG) }
+  virtual inline void requestSetNetworkInfo(const NetworkInfo &info) { REQUEST(ARG(info)) }
 
   void emitConnectionError(const QString &);
 
@@ -271,39 +272,39 @@ signals:
   void currentServerSet(const QString &currentServer);
   void connectedSet(bool isConnected);
   void connectionStateSet(Network::ConnectionState);
-  void connectionStateSet(int);
+//   void connectionStateSet(int);
   void connectionError(const QString &errorMsg);
   void myNickSet(const QString &mynick);
-  void latencySet(int latency);
+//   void latencySet(int latency);
   void identitySet(IdentityId);
 
-  void serverListSet(QVariantList serverList);
-  void useRandomServerSet(bool);
-  void performSet(const QStringList &);
-  void useAutoIdentifySet(bool);
-  void autoIdentifyServiceSet(const QString &);
-  void autoIdentifyPasswordSet(const QString &);
-  void useAutoReconnectSet(bool);
-  void autoReconnectIntervalSet(quint32);
-  void autoReconnectRetriesSet(quint16);
-  void unlimitedReconnectRetriesSet(bool);
-  void rejoinChannelsSet(bool);
+//   void serverListSet(QVariantList serverList);
+//   void useRandomServerSet(bool);
+//   void performSet(const QStringList &);
+//   void useAutoIdentifySet(bool);
+//   void autoIdentifyServiceSet(const QString &);
+//   void autoIdentifyPasswordSet(const QString &);
+//   void useAutoReconnectSet(bool);
+//   void autoReconnectIntervalSet(quint32);
+//   void autoReconnectRetriesSet(quint16);
+//   void unlimitedReconnectRetriesSet(bool);
+//   void rejoinChannelsSet(bool);
 
-  void codecForServerSet(const QByteArray &codecName);
-  void codecForEncodingSet(const QByteArray &codecName);
-  void codecForDecodingSet(const QByteArray &codecName);
+//   void codecForServerSet(const QByteArray &codecName);
+//   void codecForEncodingSet(const QByteArray &codecName);
+//   void codecForDecodingSet(const QByteArray &codecName);
 
-  void supportAdded(const QString &param, const QString &value);
-  void supportRemoved(const QString &param);
+//   void supportAdded(const QString &param, const QString &value);
+//   void supportRemoved(const QString &param);
 
-  void ircUserAdded(const QString &hostmask);
+//   void ircUserAdded(const QString &hostmask);
   void ircUserAdded(IrcUser *);
-  void ircChannelAdded(const QString &channelname);
+//   void ircChannelAdded(const QString &channelname);
   void ircChannelAdded(IrcChannel *);
 
-  void connectRequested() const;
-  void disconnectRequested() const;
-  void setNetworkInfoRequested(const NetworkInfo &) const;
+//   void connectRequested() const;
+//   void disconnectRequested() const;
+//   void setNetworkInfoRequested(const NetworkInfo &) const;
 
 protected:
   inline virtual IrcChannel *ircChannelFactory(const QString &channelname) { return new IrcChannel(channelname, this); }

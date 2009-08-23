@@ -31,6 +31,7 @@ QString Network::_networksIniPath = QString();
 // ====================
 //  Public:
 // ====================
+INIT_SYNCABLE_OBJECT(Network)
 Network::Network(const NetworkId &networkid, QObject *parent)
   : SyncableObject(parent),
     _proxy(0),
@@ -201,7 +202,8 @@ IrcUser *Network::newIrcUser(const QString &hostmask, const QVariantMap &initDat
 
     _ircUsers[nick] = ircuser;
 
-    emit ircUserAdded(hostmask);
+    SYNC_OTHER(addIrcUser, ARG(hostmask))
+    // emit ircUserAdded(hostmask);
     emit ircUserAdded(ircuser);
   }
 
@@ -275,7 +277,8 @@ IrcChannel *Network::newIrcChannel(const QString &channelname, const QVariantMap
 
     _ircChannels[channelname.toLower()] = channel;
 
-    emit ircChannelAdded(channelname);
+    SYNC_OTHER(addIrcChannel, ARG(channelname))
+    // emit ircChannelAdded(channelname);
     emit ircChannelAdded(channel);
   }
   return _ircChannels[channelname.toLower()];
@@ -331,7 +334,8 @@ void Network::setCodecForServer(const QByteArray &name) {
 
 void Network::setCodecForServer(QTextCodec *codec) {
   _codecForServer = codec;
-  emit codecForServerSet(codecForServer());
+  QByteArray codecName = codecForServer();
+  SYNC_OTHER(setCodecForServer, ARG(codecName))
 }
 
 QByteArray Network::codecForEncoding() const {
@@ -346,7 +350,8 @@ void Network::setCodecForEncoding(const QByteArray &name) {
 
 void Network::setCodecForEncoding(QTextCodec *codec) {
   _codecForEncoding = codec;
-  emit codecForEncodingSet(codecForEncoding());
+  QByteArray codecName = codecForEncoding();
+  SYNC_OTHER(setCodecForEncoding, ARG(codecName))
 }
 
 QByteArray Network::codecForDecoding() const {
@@ -361,7 +366,8 @@ void Network::setCodecForDecoding(const QByteArray &name) {
 
 void Network::setCodecForDecoding(QTextCodec *codec) {
   _codecForDecoding = codec;
-  emit codecForDecodingSet(codecForDecoding());
+  QByteArray codecName = codecForDecoding();
+  SYNC_OTHER(setCodecForDecoding, ARG(codecName))
 }
 
 // FIXME use server encoding if appropriate
@@ -465,11 +471,13 @@ NetworkInfo Network::networkInfoFromPreset(const QString &networkName) {
 // ====================
 void Network::setNetworkName(const QString &networkName) {
   _networkName = networkName;
+  SYNC(ARG(networkName))
   emit networkNameSet(networkName);
 }
 
 void Network::setCurrentServer(const QString &currentServer) {
   _currentServer = currentServer;
+  SYNC(ARG(currentServer))
   emit currentServerSet(currentServer);
 }
 
@@ -483,6 +491,7 @@ void Network::setConnected(bool connected) {
     setCurrentServer(QString());
     removeChansAndUsers();
   }
+  SYNC(ARG(connected))
   emit connectedSet(connected);
 }
 
@@ -490,7 +499,7 @@ void Network::setConnected(bool connected) {
 void Network::setConnectionState(int state) {
   _connectionState = (ConnectionState)state;
   //qDebug() << "netstate" << networkId() << networkName() << state;
-  emit connectionStateSet(state);
+  SYNC(ARG(state))
   emit connectionStateSet(_connectionState);
 }
 
@@ -499,6 +508,7 @@ void Network::setMyNick(const QString &nickname) {
   if(!_myNick.isEmpty() && !ircUser(myNick())) {
     newIrcUser(myNick());
   }
+  SYNC(ARG(nickname))
   emit myNickSet(nickname);
 }
 
@@ -506,80 +516,81 @@ void Network::setLatency(int latency) {
   if(_latency == latency)
     return;
   _latency = latency;
-  emit latencySet(latency);
+  SYNC(ARG(latency))
 }
 
 void Network::setIdentity(IdentityId id) {
   _identity = id;
+  SYNC(ARG(id))
   emit identitySet(id);
 }
 
 void Network::setServerList(const QVariantList &serverList) {
   _serverList = fromVariantList<Server>(serverList);
-  emit serverListSet(serverList);
+  SYNC(ARG(serverList))
 }
 
 void Network::setUseRandomServer(bool use) {
   _useRandomServer = use;
-  emit useRandomServerSet(use);
+  SYNC(ARG(use))
 }
 
 void Network::setPerform(const QStringList &perform) {
   _perform = perform;
-  emit performSet(perform);
+  SYNC(ARG(perform))
 }
 
 void Network::setUseAutoIdentify(bool use) {
   _useAutoIdentify = use;
-  emit useAutoIdentifySet(use);
+  SYNC(ARG(use))
 }
 
 void Network::setAutoIdentifyService(const QString &service) {
   _autoIdentifyService = service;
-  emit autoIdentifyServiceSet(service);
+  SYNC(ARG(service))
 }
 
 void Network::setAutoIdentifyPassword(const QString &password) {
   _autoIdentifyPassword = password;
-  emit autoIdentifyPasswordSet(password);
+  SYNC(ARG(password))
 }
 
 void Network::setUseAutoReconnect(bool use) {
   _useAutoReconnect = use;
-  emit useAutoReconnectSet(use);
+  SYNC(ARG(use))
 }
 
 void Network::setAutoReconnectInterval(quint32 interval) {
   _autoReconnectInterval = interval;
-  emit autoReconnectIntervalSet(interval);
+  SYNC(ARG(interval))
 }
 
 void Network::setAutoReconnectRetries(quint16 retries) {
   _autoReconnectRetries = retries;
-  emit autoReconnectRetriesSet(retries);
+  SYNC(ARG(retries))
 }
 
 void Network::setUnlimitedReconnectRetries(bool unlimited) {
   _unlimitedReconnectRetries = unlimited;
-  emit unlimitedReconnectRetriesSet(unlimited);
+  SYNC(ARG(unlimited))
 }
 
 void Network::setRejoinChannels(bool rejoin) {
   _rejoinChannels = rejoin;
-  emit rejoinChannelsSet(rejoin);
+  SYNC(ARG(rejoin))
 }
 
 void Network::addSupport(const QString &param, const QString &value) {
   if(!_supports.contains(param)) {
     _supports[param] = value;
-    emit supportAdded(param, value);
+    SYNC(ARG(param), ARG(value))
   }
 }
 
 void Network::removeSupport(const QString &param) {
   if(_supports.contains(param)) {
     _supports.remove(param);
-    emit supportRemoved(param);
+    SYNC(ARG(param))
   }
 }
 

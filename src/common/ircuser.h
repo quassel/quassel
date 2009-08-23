@@ -126,9 +126,9 @@ public slots:
 signals:
 //   void userSet(QString user);
 //   void hostSet(QString host);
-//   void nickSet(QString newnick);
+  void nickSet(QString newnick); // needed in NetworkModel
 //   void realNameSet(QString realName);
-//   void awaySet(bool away);
+  void awaySet(bool away); // needed in NetworkModel
 //   void awayMessageSet(QString awayMessage);
 //   void idleTimeSet(QDateTime idleTime);
 //   void loginTimeSet(QDateTime loginTime);
@@ -138,9 +138,9 @@ signals:
 //   void whoisServiceReplySet(QString whoisServiceReply);
 //   void suserHostSet(QString suserHost);
 
-//   void userModesSet(QString modes);
-//   void userModesAdded(QString modes);
-//   void userModesRemoved(QString modes);
+  void userModesSet(QString modes);
+  void userModesAdded(QString modes);
+  void userModesRemoved(QString modes);
 
   // void channelJoined(QString channel);
   void channelParted(QString channel);

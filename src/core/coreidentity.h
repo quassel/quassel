@@ -36,6 +36,7 @@ class SignalProxy;
 #ifdef HAVE_SSL
 class CoreIdentity;
 class CoreCertManager : public CertManager {
+  SYNCABLE_OBJECT
   Q_OBJECT
 
 public:
@@ -61,6 +62,7 @@ private:
 //  CoreIdentity
 // =========================================
 class CoreIdentity : public Identity {
+  SYNCABLE_OBJECT
   Q_OBJECT
 
 public:

@@ -26,6 +26,7 @@
 class CoreSession;
 
 class CoreBufferSyncer : public BufferSyncer {
+  SYNCABLE_OBJECT
   Q_OBJECT
 
 public:

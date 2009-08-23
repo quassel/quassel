@@ -14,6 +14,7 @@ set(SOURCES
     cliparser.cpp
     identity.cpp
     ircchannel.cpp
+    irclisthelper.cpp
     ircuser.cpp
     logger.cpp
     message.cpp

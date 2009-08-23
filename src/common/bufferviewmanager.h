@@ -30,6 +30,7 @@ class BufferViewConfig;
 class SignalProxy;
 
 class BufferViewManager : public SyncableObject {
+  SYNCABLE_OBJECT
   Q_OBJECT
 
 public:
@@ -50,18 +51,18 @@ public slots:
   QVariantList initBufferViewIds() const;
   void initSetBufferViewIds(const QVariantList bufferViewIds);
 
-  virtual inline void requestCreateBufferView(const QVariantMap &properties) { emit createBufferViewRequested(properties); }
-  virtual inline void requestCreateBufferViews(const QVariantList &properties) { emit createBufferViewsRequested(properties); }
-  virtual inline void requestDeleteBufferView(int bufferViewId) { emit deleteBufferViewRequested(bufferViewId); }
-  virtual inline void requestDeleteBufferViews(const QVariantList &bufferViews) { emit deleteBufferViewsRequested(bufferViews); }
+  virtual inline void requestCreateBufferView(const QVariantMap &properties) { REQUEST(ARG(properties)) }
+  virtual inline void requestCreateBufferViews(const QVariantList &properties) { REQUEST(ARG(properties)) }
+  virtual inline void requestDeleteBufferView(int bufferViewId) { REQUEST(ARG(bufferViewId)) }
+  virtual inline void requestDeleteBufferViews(const QVariantList &bufferViews) { REQUEST(ARG(bufferViews)) }
 
 signals:
   void bufferViewConfigAdded(int bufferViewConfigId);
   void bufferViewConfigDeleted(int bufferViewConfigId);
-  void createBufferViewRequested(const QVariantMap &properties);
-  void createBufferViewsRequested(const QVariantList &properties);
-  void deleteBufferViewRequested(int bufferViewId);
-  void deleteBufferViewsRequested(const QVariantList &bufferViews);
+//   void createBufferViewRequested(const QVariantMap &properties);
+//   void createBufferViewsRequested(const QVariantList &properties);
+//   void deleteBufferViewRequested(int bufferViewId);
+//   void deleteBufferViewsRequested(const QVariantList &bufferViews);
 
 protected:
   typedef QHash<int, BufferViewConfig *> BufferViewConfigHash;

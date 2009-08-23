@@ -28,6 +28,7 @@
 class QTimerEvent;
 
 class CoreIrcListHelper : public IrcListHelper {
+  SYNCABLE_OBJECT
   Q_OBJECT
 
 public:

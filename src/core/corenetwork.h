@@ -41,6 +41,7 @@ class UserInputHandler;
 class CtcpHandler;
 
 class CoreNetwork : public Network {
+  SYNCABLE_OBJECT
   Q_OBJECT
 
 public:

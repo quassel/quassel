@@ -31,6 +31,7 @@
 #include "syncableobject.h"
 
 class Identity : public SyncableObject {
+  SYNCABLE_OBJECT
   Q_OBJECT
 
   Q_PROPERTY(IdentityId identityId READ id WRITE setId STORED false)
@@ -110,24 +111,24 @@ public slots:
 
 signals:
   void idSet(IdentityId id);
-  void identityNameSet(const QString &name);
-  void realNameSet(const QString &realName);
+//   void identityNameSet(const QString &name);
+//   void realNameSet(const QString &realName);
   void nicksSet(const QStringList &nicks);
-  void awayNickSet(const QString &awayNick);
-  void awayNickEnabledSet(bool);
-  void awayReasonSet(const QString &awayReason);
-  void awayReasonEnabledSet(bool);
-  void autoAwayEnabledSet(bool);
-  void autoAwayTimeSet(int);
-  void autoAwayReasonSet(const QString &);
-  void autoAwayReasonEnabledSet(bool);
-  void detachAwayEnabledSet(bool);
-  void detachAwayReasonSet(const QString &);
-  void detachAwayReasonEnabledSet(bool);
-  void identSet(const QString &);
-  void kickReasonSet(const QString &);
-  void partReasonSet(const QString &);
-  void quitReasonSet(const QString &);
+//   void awayNickSet(const QString &awayNick);
+//   void awayNickEnabledSet(bool);
+//   void awayReasonSet(const QString &awayReason);
+//   void awayReasonEnabledSet(bool);
+//   void autoAwayEnabledSet(bool);
+//   void autoAwayTimeSet(int);
+//   void autoAwayReasonSet(const QString &);
+//   void autoAwayReasonEnabledSet(bool);
+//   void detachAwayEnabledSet(bool);
+//   void detachAwayReasonSet(const QString &);
+//   void detachAwayReasonEnabledSet(bool);
+//   void identSet(const QString &);
+//   void kickReasonSet(const QString &);
+//   void partReasonSet(const QString &);
+//   void quitReasonSet(const QString &);
 
 private:
   IdentityId _identityId;
@@ -163,6 +164,7 @@ Q_DECLARE_METATYPE(Identity)
 #include <QSslCertificate>
 
 class CertManager : public SyncableObject {
+  SYNCABLE_OBJECT
   Q_OBJECT
   Q_PROPERTY(QByteArray sslKey READ sslKeyPem WRITE setSslKey STORED false)
   Q_PROPERTY(QByteArray sslCert READ sslCertPem WRITE setSslCert STORED false)
@@ -177,12 +179,8 @@ public:
   inline QByteArray sslCertPem() const { return sslCert().toPem(); }
 
 public slots:
-  inline virtual void setSslKey(const QByteArray &encoded) { emit sslKeySet(encoded); }
-  inline virtual void setSslCert(const QByteArray &encoded) { emit sslCertSet(encoded); }
-
-signals:
-  void sslKeySet(const QByteArray &);
-  void sslCertSet(const QByteArray &);
+  inline virtual void setSslKey(const QByteArray &encoded) { SYNC(ARG(encoded)) }
+  inline virtual void setSslCert(const QByteArray &encoded) { SYNC(ARG(encoded)) }
 };
 
 #endif // HAVE_SSL

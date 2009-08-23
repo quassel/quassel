@@ -570,7 +570,7 @@ void SignalProxy::receivePeerSignal(AbstractPeer *sender, const RequestType &req
     }
   }
 
-  qDebug() << "SignalProxy::receivePeerSignal)" << requestType << params;
+  // qDebug() << "SignalProxy::receivePeerSignal)" << requestType << params;
   switch(requestType) {
   case RpcCall:
     if(params.empty())
@@ -986,8 +986,8 @@ void SignalProxy::customEvent(QEvent *event) {
   }
 }
 
-void SignalProxy::syncCall(const SyncableObject *obj, SignalProxy::ProxyMode modeType, const char *funcname, va_list ap) {
-  qDebug() << obj << modeType << "(" << _proxyMode << ")" << funcname;
+void SignalProxy::sync_call__(const SyncableObject *obj, SignalProxy::ProxyMode modeType, const char *funcname, va_list ap) {
+  // qDebug() << obj << modeType << "(" << _proxyMode << ")" << funcname;
   if(modeType != _proxyMode)
     return;
 
@@ -1077,6 +1077,9 @@ SignalProxy::ExtendedMetaObject::ExtendedMetaObject(const QMetaObject *meta)
       continue; // skip methods with ptr params
 
     QByteArray method = methodName(_meta->method(i));
+    if(method.startsWith("init"))
+      continue; // skip initializers
+
     if(_methodIds.contains(method)) {
       /* funny... moc creates for methods containing default parameters multiple metaMethod with separate methodIds.
          we don't care... we just need the full fledged version
