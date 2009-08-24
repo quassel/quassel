@@ -20,6 +20,8 @@
 
 #include "clientignorelistmanager.h"
 
+INIT_SYNCABLE_OBJECT(ClientIgnoreListManager)
+
 ClientIgnoreListManager::ClientIgnoreListManager(QObject *parent)
     : IgnoreListManager(parent)
 {

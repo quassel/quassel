@@ -26,6 +26,8 @@
 
 #include "message.h"
 
+INIT_SYNCABLE_OBJECT(IgnoreListManager)
+
 IgnoreListManager &IgnoreListManager::operator=(const IgnoreListManager &other) {
   if(this == &other)
     return *this;

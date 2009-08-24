@@ -25,6 +25,7 @@
 
 class ClientIgnoreListManager : public IgnoreListManager
 {
+  SYNCABLE_OBJECT
   Q_OBJECT
 
 public:

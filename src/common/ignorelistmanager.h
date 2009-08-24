@@ -29,6 +29,7 @@ class Message;
 
 class IgnoreListManager : public SyncableObject
 {
+  SYNCABLE_OBJECT
   Q_OBJECT
 public:
   inline IgnoreListManager(QObject *parent = 0) : SyncableObject(parent) { setAllowClientUpdates(true); }
