@@ -6,7 +6,7 @@
     <message>
         <location filename="../src/qtui/aboutdlg.cpp" line="32"/>
         <source>&lt;b&gt;Version:&lt;/b&gt; %1&lt;br&gt;&lt;b&gt;Protocol version:&lt;/b&gt; %2&lt;br&gt;&lt;b&gt;Built:&lt;/b&gt; %3</source>
-        <translation>&lt;b&gt;Verze:&lt;/b&gt; %1&lt;br&gt;&lt;b&gt;Verze protokolu:&lt;/b&gt; %2&lt;br&gt;&lt;b&gt;Build:&lt;/b&gt; %3</translation>
+        <translation>&lt;b&gt;Verze:&lt;/b&gt; %1&lt;br&gt;&lt;b&gt;Verze protokolu:&lt;/b&gt; %2&lt;br&gt;&lt;b&gt;Složení:&lt;/b&gt; %3</translation>
     </message>
     <message>
         <location filename="../src/qtui/aboutdlg.cpp" line="46"/>
@@ -236,82 +236,84 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="41"/>
         <source>DynamicBacklogAmount</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="138"/>
         <source>amount of messages per buffer that are requested after the core connection has been established.</source>
-        <translation type="unfinished"></translation>
+        <translation>množství zpráv za záložku, které jsou vyžádány když bylo navázáno spojení s jádrem.</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="141"/>
         <source>Initial backlog amount:</source>
-        <translation type="unfinished"></translation>
+        <translation>Výchozí množství historie:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="157"/>
         <source>FixedBacklogAmount</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="354"/>
         <source>GlobalUnreadBacklogLimit</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="386"/>
         <source>GlobalUnreadBacklogAdditional</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="216"/>
         <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="226"/>
         <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="342"/>
         <source>Maximum amount of messages to be fetched per buffer.</source>
-        <translation type="unfinished"></translation>
+        <translation>Maximální množství zpráv, které se stáhnou za záložku.</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="75"/>
         <source>Backlog request method:</source>
-        <translation type="unfinished"></translation>
+        <translation>Metoda požadování historie:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="83"/>
         <source>Fixed amount per chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Pevné množství za záložku</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="88"/>
         <source>Unread messages per chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Nepřečtené zprávy za záložku</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="93"/>
         <source>Globally unread messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Celkově nepřečtené zprávy</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="123"/>
         <source>The simplest requester. It fetches a fixed amount of lines for each chat window from the backlog.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nejjednodušší požadavek. Stáhne přesný počet řádků pro každou záložku z historie.</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="199"/>
         <source>This requester fetches unread messages for each chat window individually. The amount of lines can be limited per chat.
 
 You can also choose to fetch additional older chatlines to provide a better context.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tento požadavek stáhne nepřečtené zprávy individuálně pro každou záložku. Množství řádek lze limitovat pro celý rozhovor.
+
+Také můžete vybrat množství dodatečně stahovaných zastaralých zpráv pro lepší srozumitelnost.</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="219"/>
         <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="335"/>
         <source>Limit:</source>
-        <translation>Limit:</translation>
+        <translation>Omezení:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="238"/>
         <source>PerBufferUnreadBacklogLimit</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="248"/>
@@ -319,18 +321,18 @@ You can also choose to fetch additional older chatlines to provide a better cont
         <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="364"/>
         <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="374"/>
         <source>Amount of messages to be fetched in addition to the unread messages. The Limit does not apply here.</source>
-        <translation type="unfinished"></translation>
+        <translation>Množství zpráv které se stháhnou dodatečne k nepřečteným zprávám. Omezení zde neplatí.</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="251"/>
         <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="367"/>
         <source>Additional Messages:</source>
-        <translation type="unfinished"></translation>
+        <translation>Dodatečné zprávy:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="270"/>
         <source>PerBufferUnreadBacklogAdditional</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="312"/>
@@ -340,22 +342,27 @@ Note: This requester is not recommended if you use hidden chat windows or have i
 It is useful to limit the total amount of the backlog and is probably the fastest.
 
 You can also chose to fetch additional older chatlines to provide a better context.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tento požadavek stáhne všechny zprávy novější nežli nejstarší nepřečtené zprávy pro všechny záložky.
+
+Poznámka: Tento požadavek není doporučen pokud používáte skryté, nebo neaktivní, záložky (tedy žádné nepoužívané pokecy ani kanály)
+Je užitečný k omezení celkového získávání historie a je pravděpodobně nejrychlejší.
+
+Můžete také vybrat dodatečné zprávy pro získání lepšího přehledu.</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="332"/>
         <source>Maximum amount of messages to be fetched over all buffers.</source>
-        <translation type="unfinished"></translation>
+        <translation>Maximální množství zpráv stažené pro všechny záložky.</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="22"/>
         <source>Number of messages to be requested from the core when using scrolling up in the buffer view.</source>
-        <translation type="unfinished"></translation>
+        <translation>Počet zpráv které se stáhnou z jádra při rolování myší ve zobrazené záložce.</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="25"/>
         <source>Dynamic backlog amount:</source>
-        <translation type="unfinished"></translation>
+        <translation>Dynamická velikost získávané historie:</translation>
     </message>
 </context>
 <context>
@@ -417,7 +424,7 @@ You can also chose to fetch additional older chatlines to provide a better conte
     <message>
         <location filename="../src/qtui/settingspages/bufferviewsettingspage.cpp" line="36"/>
         <source>Custom Chat Lists</source>
-        <translation type="unfinished"></translation>
+        <translation>Vlastní seznamy rozhovorů</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/bufferviewsettingspage.cpp" line="117"/>
@@ -428,12 +435,12 @@ You can also chose to fetch additional older chatlines to provide a better conte
     <message>
         <location filename="../src/qtui/settingspages/bufferviewsettingspage.cpp" line="342"/>
         <source>Delete Chat List?</source>
-        <translation type="unfinished"></translation>
+        <translation>Smazat seznam rozhovorů?</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/bufferviewsettingspage.cpp" line="343"/>
         <source>Do you really want to delete the chat list &quot;%1&quot;?</source>
-        <translation type="unfinished"></translation>
+        <translation>Opravdu chcete smazat seznam rozhovorů &quot;%1&quot;?</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/bufferviewsettingspage.ui" line="14"/>
@@ -470,32 +477,32 @@ V daném režimu nejsou zobrazeny separátní záložky stavu.</translation>
     <message>
         <location filename="../src/qtui/settingspages/bufferviewsettingspage.ui" line="84"/>
         <source>Chat List Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Nastavení seznamu rozhovorů</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/bufferviewsettingspage.ui" line="114"/>
         <source>Show status window</source>
-        <translation type="unfinished"></translation>
+        <translation>Zobrazit okno statusu</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/bufferviewsettingspage.ui" line="121"/>
         <source>Show channels</source>
-        <translation type="unfinished"></translation>
+        <translation>Zobrazit kanály</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/bufferviewsettingspage.ui" line="128"/>
         <source>Show queries</source>
-        <translation type="unfinished"></translation>
+        <translation>Zobrazit rozhovory</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/bufferviewsettingspage.ui" line="135"/>
         <source>Hide inactive chats</source>
-        <translation type="unfinished"></translation>
+        <translation>Skrýt neaktivní</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/bufferviewsettingspage.ui" line="142"/>
         <source>Add new chats automatically</source>
-        <translation type="unfinished"></translation>
+        <translation>Přidávat nové automaticky</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/bufferviewsettingspage.ui" line="149"/>
@@ -803,52 +810,52 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.cpp" line="27"/>
         <source>Chat View</source>
-        <translation type="unfinished"></translation>
+        <translation>Okno rozhovoru</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="22"/>
         <source>Timestamp format:</source>
-        <translation type="unfinished"></translation>
+        <translation>Formát času:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="32"/>
         <source>[hh:mm:ss]</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="35"/>
         <source>TimestampFormat</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="59"/>
         <source>Custom chat window font:</source>
-        <translation type="unfinished"></translation>
+        <translation>Vlastní font v okně rozhovoru:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="65"/>
         <source>/QtUiStyle/Fonts/UseCustomChatViewFont</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="78"/>
         <source>/QtUiStyle/Fonts/ChatView</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="92"/>
         <source>Allow colored text (mIRC color codes)</source>
-        <translation type="unfinished"></translation>
+        <translation>Povolit barevný text (mIRC kódy barev)</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="101"/>
         <source>AllowMircColors</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="108"/>
@@ -863,22 +870,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="120"/>
         <source>ShowWebPreview</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="127"/>
         <source>Custom Colors</source>
-        <translation type="unfinished"></translation>
+        <translation>Vlastní barvy</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="136"/>
         <source>/QtUiStyle/Colors/UseChatViewColors</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="145"/>
         <source>Action:</source>
-        <translation type="unfinished"></translation>
+        <translation>Akce:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="152"/>
@@ -914,7 +921,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="155"/>
         <source>/QtUiStyle/Colors/ActionMsg</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="169"/>
@@ -924,177 +931,177 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="179"/>
         <source>/QtUiStyle/Colors/Timestamp</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="193"/>
         <source>Channel message:</source>
-        <translation type="unfinished"></translation>
+        <translation>Zpráva kanálu:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="203"/>
         <source>/QtUiStyle/Colors/ChannelMsg</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="230"/>
         <source>Highlight foreground:</source>
-        <translation type="unfinished"></translation>
+        <translation>Popředí zvýrazněné:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="240"/>
         <source>/QtUiStyle/Colors/Highlight</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="254"/>
         <source>Command message:</source>
-        <translation type="unfinished"></translation>
+        <translation>Zprava příkazu:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="264"/>
         <source>/QtUiStyle/Colors/CommandMsg</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="278"/>
         <source>Highlight background:</source>
-        <translation type="unfinished"></translation>
+        <translation>Pozadí zvýrazněné:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="285"/>
         <source>Server message:</source>
-        <translation type="unfinished"></translation>
+        <translation>Zpráva serveru:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="295"/>
         <source>/QtUiStyle/Colors/ServerMsg</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="309"/>
         <source>Marker line:</source>
-        <translation type="unfinished"></translation>
+        <translation>Značící řádka:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="319"/>
         <source>/QtUiStyle/Colors/MarkerLine</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="333"/>
         <source>Error message:</source>
-        <translation type="unfinished"></translation>
+        <translation>Chybová zpráva:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="343"/>
         <source>/QtUiStyle/Colors/ErrorMsg</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="357"/>
         <source>Background:</source>
-        <translation type="unfinished"></translation>
+        <translation>Pozadí:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="367"/>
         <source>/QtUiStyle/Colors/ChatViewBackground</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="384"/>
         <source>/QtUiStyle/Colors/HighlightBackground</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="401"/>
         <source>Use Sender Coloring</source>
-        <translation type="unfinished"></translation>
+        <translation>Používat barvy pro odesílatele</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="410"/>
         <source>/QtUiStyle/Colors/UseSenderColors</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="424"/>
         <source>/QtUiStyle/Colors/Sender00</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="441"/>
         <source>/QtUiStyle/Colors/Sender02</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="458"/>
         <source>/QtUiStyle/Colors/Sender04</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="475"/>
         <source>/QtUiStyle/Colors/Sender05</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="492"/>
         <source>/QtUiStyle/Colors/Sender06</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="509"/>
         <source>/QtUiStyle/Colors/Sender07</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="526"/>
         <source>/QtUiStyle/Colors/Sender08</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="543"/>
         <source>/QtUiStyle/Colors/Sender09</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="560"/>
         <source>/QtUiStyle/Colors/Sender10</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="577"/>
         <source>/QtUiStyle/Colors/Sender11</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="594"/>
         <source>/QtUiStyle/Colors/Sender12</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="611"/>
         <source>/QtUiStyle/Colors/Sender13</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="628"/>
         <source>/QtUiStyle/Colors/Sender14</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="645"/>
         <source>/QtUiStyle/Colors/Sender15</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="662"/>
         <source>/QtUiStyle/Colors/Sender01</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="679"/>
         <source>/QtUiStyle/Colors/Sender03</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="697"/>
@@ -1104,7 +1111,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/qtui/settingspages/chatviewsettingspage.ui" line="707"/>
         <source>/QtUiStyle/Colors/SenderSelf</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -1250,7 +1257,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ContentsChatItem</name>
     <message>
-        <location filename="../src/qtui/chatitem.cpp" line="671"/>
+        <location filename="../src/qtui/chatitem.cpp" line="599"/>
         <source>Copy Link Address</source>
         <translation>Kopírovat adresu odkazu</translation>
     </message>
@@ -1390,7 +1397,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="67"/>
         <source>Take Voice</source>
-        <translation type="unfinished"></translation>
+        <translation>Umlčet</translation>
     </message>
     <message>
         <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="68"/>
@@ -1435,7 +1442,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="96"/>
         <source>CTCP</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="108"/>
@@ -1470,7 +1477,7 @@ to work.</source>
     <message>
         <location filename="../src/core/core.cpp" line="267"/>
         <source>Could not setup storage!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nezdařilo se nastavení úložného prostoru!</translation>
     </message>
     <message>
         <location filename="../src/core/core.cpp" line="271"/>
@@ -1480,7 +1487,7 @@ to work.</source>
     <message>
         <location filename="../src/core/core.cpp" line="384"/>
         <source>Invalid listen address %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Neplatná adresa %1 pro poslech</translation>
     </message>
     <message>
         <location filename="../src/core/core.cpp" line="392"/>
@@ -1490,7 +1497,7 @@ to work.</source>
     <message>
         <location filename="../src/core/core.cpp" line="400"/>
         <source>Could not open IPv4 interface %1:%2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Nezdařilo se otevření IPv4 rozhraní %1:%2: %3</translation>
     </message>
     <message>
         <location filename="../src/core/core.cpp" line="408"/>
@@ -1500,17 +1507,17 @@ to work.</source>
     <message>
         <location filename="../src/core/core.cpp" line="419"/>
         <source>Could not open IPv6 interface %1:%2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Nezdařilo se otevření IPv6 rozhraní %1:%2: %3</translation>
     </message>
     <message>
         <location filename="../src/core/core.cpp" line="427"/>
         <source>Invalid listen address %1, unknown network protocol</source>
-        <translation type="unfinished"></translation>
+        <translation>Neplatná adresa %1 pro poslech, neznámý síťový protokol</translation>
     </message>
     <message>
         <location filename="../src/core/core.cpp" line="436"/>
         <source>Could not open any network interfaces to listen on!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nezdařilo se otevřít síťové rozhraní k poslechu!</translation>
     </message>
     <message>
         <location filename="../src/core/core.cpp" line="470"/>
@@ -1520,7 +1527,7 @@ to work.</source>
     <message>
         <location filename="../src/core/core.cpp" line="473"/>
         <source>Closing server for basic setup.</source>
-        <translation type="unfinished"></translation>
+        <translation>Uzavírám server pro základní nastavení.</translation>
     </message>
     <message>
         <location filename="../src/core/core.cpp" line="492"/>
@@ -1582,17 +1589,17 @@ to work.</source>
     <message>
         <location filename="../src/core/core.cpp" line="632"/>
         <source>Non-authed client disconnected. (socket allready destroyed)</source>
-        <translation type="unfinished"></translation>
+        <translation>Neautorizovaný klient odpojen. (socket je již zničen)</translation>
     </message>
     <message>
         <location filename="../src/core/core.cpp" line="680"/>
         <source>Could not initialize session for client:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nezdařilo se zahájit sezení pro klienta:</translation>
     </message>
     <message>
         <location filename="../src/core/core.cpp" line="702"/>
         <source>Could not find a session for client:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nepodařilo se nalézt sezení pro klienta:</translation>
     </message>
 </context>
 <context>
@@ -2291,7 +2298,7 @@ SOME SPACE</source>
     <message>
         <location filename="../src/qtui/debugbufferviewoverlay.cpp" line="62"/>
         <source>Is initialized:</source>
-        <translation type="unfinished"></translation>
+        <translation>Je inicializován:</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/debugbufferviewoverlay.ui" line="13"/>
@@ -3136,158 +3143,158 @@ Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificat
 <context>
     <name>IrcServerHandler</name>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="488"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="520"/>
         <source>%1 has changed topic for %2 to: &quot;%3&quot;</source>
         <translation>%1 změnil téma pro %2 na: &quot;%3&quot;</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="513"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="545"/>
         <source>Received RPL_ISUPPORT (005) without parameters!</source>
         <translation>Obdrženo RPL_ISUPPORT (005) bez parametrů!</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="521"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="553"/>
         <source>Received non RFC compliant RPL_ISUPPORT: this can lead to unexpected behavior!</source>
         <translation>Obdržena RFC nekompatibilní RPL_ISUPPORT: což může vést k neočekávanému chování!</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="538"/>
-        <location filename="../src/core/ircserverhandler.cpp" line="545"/>
-        <location filename="../src/core/ircserverhandler.cpp" line="552"/>
-        <location filename="../src/core/ircserverhandler.cpp" line="559"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="570"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="577"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="584"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="591"/>
         <source>%1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="594"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="626"/>
         <source>[Whois] %1 is away: &quot;%2&quot;</source>
         <translation>[Whois] %1 je pryč: &quot;%2&quot;</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="600"/>
-        <location filename="../src/core/ircserverhandler.cpp" line="605"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="632"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="637"/>
         <source>%1 is away: &quot;%2&quot;</source>
         <translation>%1 je fuč: &quot;%2&quot;</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="649"/>
-        <location filename="../src/core/ircserverhandler.cpp" line="663"/>
-        <location filename="../src/core/ircserverhandler.cpp" line="697"/>
-        <location filename="../src/core/ircserverhandler.cpp" line="713"/>
-        <location filename="../src/core/ircserverhandler.cpp" line="774"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="681"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="695"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="729"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="745"/>
         <location filename="../src/core/ircserverhandler.cpp" line="806"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="838"/>
         <source>[Whois] %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="678"/>
-        <location filename="../src/core/ircserverhandler.cpp" line="680"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="710"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="712"/>
         <source>[Whois] %1 is %2 (%3)</source>
         <translation>[Whois] %1 je %2 (%3)</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="695"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="727"/>
         <source>%1 is online via %2 (%3)</source>
         <translation>%1 je online skrze %2 (%3)</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="699"/>
-        <location filename="../src/core/ircserverhandler.cpp" line="977"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="731"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="1009"/>
         <source>[Whowas] %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="725"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="757"/>
         <source>[Whowas] %1 was %2 (%3)</source>
         <translation>[Whowas] %1 byl %2 (%3)</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="739"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="771"/>
         <source>[Who] End of /WHO list for %1</source>
         <translation>[Who] Konec /WHO seznamu pro %1</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="759"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="791"/>
         <source>[Whois] %1 is logged in since %2</source>
         <translation>[Whois] %1 je přihlášen od %2</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="761"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="793"/>
         <source>[Whois] %1 is idling for %2 (%3)</source>
         <translation>[Whois] %1 je nečinný po %2 (%3)</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="764"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="796"/>
         <source>[Whois] idle message: %1</source>
         <translation>[Whois] důvod nečinnosti: %1</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="796"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="828"/>
         <source>[Whois] %1 is a user on channels: %2</source>
         <translation>[Whois] %1 je uživatelem kanálů: %2</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="798"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="830"/>
         <source>[Whois] %1 has voice on channels: %2</source>
         <translation>[Whois] %1 je mluvka na kanálech: %2</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="800"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="832"/>
         <source>[Whois] %1 is an operator on channels: %2</source>
         <translation>[Whois] %1 je dozorce na kanálech: %2</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="828"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="860"/>
         <source>Channel %1 has %2 users. Topic is: %3</source>
         <translation>Kanál %1 má %2 uživatelů. Tématem je: %3</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="837"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="869"/>
         <source>End of channel list</source>
         <translation>Konec seznamu s kanály</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="855"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="887"/>
         <source>Homepage for %1 is %2</source>
         <translation>Domovská stránka pro %1 je %2</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="873"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="905"/>
         <source>Channel %1 created on %2</source>
         <translation>Kanál %1 byl vytvořen %2</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="887"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="919"/>
         <source>No topic is set for %1.</source>
         <translation>Pro %1 není nastaveno žádné téma.</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="902"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="934"/>
         <source>Topic for %1 is &quot;%2&quot;</source>
         <translation>Téma pro %1 je &quot;%2&quot;</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="913"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="945"/>
         <source>Topic set by %1 on %2</source>
         <translation>Téma nastavil %1 v %2</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="936"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="968"/>
         <source>[Who] %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="995"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="1027"/>
         <source>Nick %1 contains illegal characters</source>
         <translation>Přezdívka %1 obsahuje neplatné znaky</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="1006"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="1038"/>
         <source>Nick already in use: %1</source>
         <translation>Přezdívka se již používá: %1</translation>
     </message>
     <message>
-        <location filename="../src/core/ircserverhandler.cpp" line="1031"/>
+        <location filename="../src/core/ircserverhandler.cpp" line="1095"/>
         <source>No free and valid nicks in nicklist found. use: /nick &lt;othernick&gt; to continue</source>
         <translation>Nebyla nalezena žádná volná a platná přezdívka ze seznamu přezdívek. Pro pokračování použíjte: /nick &lt;jiná_přezdívka&gt;</translation>
     </message>
@@ -3385,12 +3392,13 @@ Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificat
     <message>
         <location filename="../src/qtui/settingspages/itemviewsettingspage.ui" line="66"/>
         <source>Chat List</source>
-        <translation type="unfinished"></translation>
+        <translation>Seznam pokeců</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/itemviewsettingspage.ui" line="72"/>
         <source>Display topic in tooltip</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>WORD TRANSLATION :D</translatorcomment>
+        <translation>Zobrazit téma ve sponce (tooltip :))</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/itemviewsettingspage.ui" line="75"/>
@@ -3544,7 +3552,7 @@ Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificat
     <message>
         <location filename="../src/qtui/mainwin.cpp" line="290"/>
         <source>&amp;Configure Chat Lists...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Nastavit seznam pokeců...</translation>
     </message>
     <message>
         <location filename="../src/qtui/mainwin.cpp" line="297"/>
@@ -3644,7 +3652,7 @@ Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificat
     <message>
         <location filename="../src/qtui/mainwin.cpp" line="354"/>
         <source>&amp;Chat Lists</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Seznam pokeců</translation>
     </message>
     <message>
         <location filename="../src/qtui/mainwin.cpp" line="356"/>
@@ -3730,7 +3738,7 @@ Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificat
 <context>
     <name>Message</name>
     <message>
-        <location filename="../src/common/message.h" line="69"/>
+        <location filename="../src/common/message.h" line="71"/>
         <source>Day changed to %1</source>
         <translation>A dnes máme: %1</translation>
     </message>
@@ -4090,7 +4098,8 @@ Quassel se automaticky připojuje ke kanálům, tedy /join zde s vysokou pravdě
         <location filename="../src/qtui/settingspages/networkssettingspage.ui" line="612"/>
         <source>Specify which encoding your messages will be sent in.
 UTF-8 should be a sane choice for most networks.</source>
-        <translation type="unfinished"></translation>
+        <translation>Specifikuje v jakém kódování budete odesílat zprávy.
+UTF-8 je dosti inteligentní volba pro většinu sítí.</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/networkssettingspage.ui" line="596"/>
@@ -4108,14 +4117,15 @@ Toto nastavení definuje kódování pro zprávy které nejsou v UTF8.</translat
     <message>
         <location filename="../src/qtui/settingspages/networkssettingspage.ui" line="627"/>
         <source>Receive fallback:</source>
-        <translation type="unfinished"></translation>
+        <translation>Záložní kódování:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/networkssettingspage.ui" line="654"/>
         <location filename="../src/qtui/settingspages/networkssettingspage.ui" line="668"/>
         <source>This specifies how control messages, nicks and servernames are encoded.
 Unless you *really* know what you do, leave this as ISO-8859-1!</source>
-        <translation type="unfinished"></translation>
+        <translation>Tato volba specifikuje v jakém kódování jsou přezdívky, kontrolní zprávy a názvy serverů.
+Pokud FAKTICKY nevíte co děláte radši ponechte nastaveno na ISO-8859-1!</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/networkssettingspage.ui" line="658"/>
@@ -4261,7 +4271,7 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
     <message>
         <location filename="../src/uisupport/qssparser.cpp" line="121"/>
         <location filename="../src/uisupport/qssparser.cpp" line="166"/>
-        <location filename="../src/uisupport/qssparser.cpp" line="310"/>
+        <location filename="../src/uisupport/qssparser.cpp" line="314"/>
         <source>Invalid block declaration: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4281,116 +4291,116 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/uisupport/qssparser.cpp" line="230"/>
+        <location filename="../src/uisupport/qssparser.cpp" line="234"/>
         <source>Invalid message type in %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/uisupport/qssparser.cpp" line="239"/>
+        <location filename="../src/uisupport/qssparser.cpp" line="243"/>
         <source>Invalid condition %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/uisupport/qssparser.cpp" line="251"/>
+        <location filename="../src/uisupport/qssparser.cpp" line="255"/>
         <source>Invalid message label: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/uisupport/qssparser.cpp" line="262"/>
+        <location filename="../src/uisupport/qssparser.cpp" line="266"/>
         <source>Invalid senderhash specification: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/uisupport/qssparser.cpp" line="266"/>
+        <location filename="../src/uisupport/qssparser.cpp" line="270"/>
         <source>Senderhash can be at most &quot;0x0f&quot;!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/uisupport/qssparser.cpp" line="281"/>
+        <location filename="../src/uisupport/qssparser.cpp" line="285"/>
         <source>Invalid format name: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/uisupport/qssparser.cpp" line="288"/>
+        <location filename="../src/uisupport/qssparser.cpp" line="292"/>
         <source>Illegal IRC color specification (must be between 00 and 0f): %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/uisupport/qssparser.cpp" line="296"/>
+        <location filename="../src/uisupport/qssparser.cpp" line="300"/>
         <source>Unhandled condition: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/uisupport/qssparser.cpp" line="325"/>
+        <location filename="../src/uisupport/qssparser.cpp" line="329"/>
         <source>Invalid proplist %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/uisupport/qssparser.cpp" line="344"/>
+        <location filename="../src/uisupport/qssparser.cpp" line="348"/>
         <source>Invalid chatlist item type %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/uisupport/qssparser.cpp" line="360"/>
+        <location filename="../src/uisupport/qssparser.cpp" line="364"/>
         <source>Invalid chatlist state %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/uisupport/qssparser.cpp" line="386"/>
+        <location filename="../src/uisupport/qssparser.cpp" line="390"/>
         <source>Invalid property declaration: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/uisupport/qssparser.cpp" line="410"/>
+        <location filename="../src/uisupport/qssparser.cpp" line="414"/>
         <source>Invalid font property: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/uisupport/qssparser.cpp" line="416"/>
+        <location filename="../src/uisupport/qssparser.cpp" line="420"/>
         <source>Unknown ChatLine property: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/uisupport/qssparser.cpp" line="438"/>
+        <location filename="../src/uisupport/qssparser.cpp" line="442"/>
         <source>Invalid palette color role specification: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/uisupport/qssparser.cpp" line="445"/>
+        <location filename="../src/uisupport/qssparser.cpp" line="449"/>
         <source>Unknown palette color role: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/uisupport/qssparser.cpp" line="452"/>
-        <location filename="../src/uisupport/qssparser.cpp" line="474"/>
-        <location filename="../src/uisupport/qssparser.cpp" line="495"/>
+        <location filename="../src/uisupport/qssparser.cpp" line="456"/>
+        <location filename="../src/uisupport/qssparser.cpp" line="478"/>
+        <location filename="../src/uisupport/qssparser.cpp" line="499"/>
         <source>Invalid gradient declaration: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/uisupport/qssparser.cpp" line="461"/>
-        <location filename="../src/uisupport/qssparser.cpp" line="482"/>
-        <location filename="../src/uisupport/qssparser.cpp" line="505"/>
+        <location filename="../src/uisupport/qssparser.cpp" line="465"/>
+        <location filename="../src/uisupport/qssparser.cpp" line="486"/>
+        <location filename="../src/uisupport/qssparser.cpp" line="509"/>
         <source>Invalid gradient stops list: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/uisupport/qssparser.cpp" line="601"/>
+        <location filename="../src/uisupport/qssparser.cpp" line="605"/>
         <source>Invalid font specification: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/uisupport/qssparser.cpp" line="640"/>
+        <location filename="../src/uisupport/qssparser.cpp" line="644"/>
         <source>Invalid font style specification: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/uisupport/qssparser.cpp" line="653"/>
+        <location filename="../src/uisupport/qssparser.cpp" line="657"/>
         <source>Invalid font weight specification: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/uisupport/qssparser.cpp" line="663"/>
+        <location filename="../src/uisupport/qssparser.cpp" line="667"/>
         <source>Invalid font size specification: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4984,12 +4994,12 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
     <message>
         <location filename="../src/uisupport/toolbaractionprovider.cpp" line="42"/>
         <source>Voice</source>
-        <translation type="unfinished"></translation>
+        <translation>Rozkecat</translation>
     </message>
     <message>
         <location filename="../src/uisupport/toolbaractionprovider.cpp" line="42"/>
         <source>Give voice to user</source>
-        <translation type="unfinished"></translation>
+        <translation>Nastaví stav mluvky na uživatele</translation>
     </message>
     <message>
         <location filename="../src/uisupport/toolbaractionprovider.cpp" line="43"/>
@@ -4999,7 +5009,7 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
     <message>
         <location filename="../src/uisupport/toolbaractionprovider.cpp" line="43"/>
         <source>Take voice from user</source>
-        <translation type="unfinished"></translation>
+        <translation>Odebere stav mluvky od uživatele</translation>
     </message>
     <message>
         <location filename="../src/uisupport/toolbaractionprovider.cpp" line="44"/>
@@ -5053,139 +5063,170 @@ Unless you *really* know what you do, leave this as ISO-8859-1!</source>
 <context>
     <name>TopicWidget</name>
     <message>
-        <location filename="../src/qtui/ui/topicwidget.ui" line="31"/>
+        <location filename="../src/qtui/ui/topicwidget.ui" line="32"/>
         <source>Form</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/ui/topicwidget.ui" line="79"/>
+        <source>...</source>
         <translation></translation>
     </message>
 </context>
 <context>
     <name>UiStyle::StyledMessage</name>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="650"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="684"/>
         <source>&lt;%1&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="614"/>
-        <location filename="../src/uisupport/uistyle.cpp" line="652"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="648"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="686"/>
         <source>[%1]</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="668"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="702"/>
         <source>&lt;-x</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="670"/>
-        <location filename="../src/uisupport/uistyle.cpp" line="672"/>
-        <location filename="../src/uisupport/uistyle.cpp" line="674"/>
-        <location filename="../src/uisupport/uistyle.cpp" line="678"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="704"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="706"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="708"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="712"/>
         <source>*</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="660"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="694"/>
         <source>--&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="562"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="567"/>
         <source>%DN%1%DN %2</source>
         <extracomment>Action Message</extracomment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="566"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="571"/>
         <source>You are now known as %DN%1%DN</source>
         <extracomment>Nick Message</extracomment>
         <translation>Nyní jste znám jako %DN%1%DN</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="567"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="572"/>
         <source>%DN%1%DN is now known as %DN%2%DN</source>
         <translation>%DN%1%DN je nyní znám jako %DN%2%DN</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="571"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="576"/>
         <source>User mode: %DM%1%DM</source>
         <extracomment>Mode Message</extracomment>
         <translation>Uživatelský režim: %DM%1%DM</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="572"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="577"/>
         <source>Mode %DM%1%DM by %DN%2%DN</source>
         <translation>Režim %DM%1%DM od %DN%2%DN</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="576"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="581"/>
         <source>%DN%1%DN %DH(%2@%3)%DH has joined %DC%4%DC</source>
         <extracomment>Join Message</extracomment>
         <translation>%DN%1%DN %DH(%2@%3)%DH vlezl do %DC%4%DC</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="579"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="584"/>
         <source>%DN%1%DN %DH(%2@%3)%DH has left %DC%4%DC</source>
         <extracomment>Part Message</extracomment>
         <translation>%DN%1%DN %DH(%2@%3)%DH opustil %DC%4%DC</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="584"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="589"/>
         <source>%DN%1%DN %DH(%2@%3)%DH has quit</source>
         <extracomment>Quit Message</extracomment>
         <translation>%DN%1%DN %DH(%2@%3)%DH to zabalil</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="591"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="596"/>
         <source>%DN%1%DN has kicked %DN%2%DN from %DC%3%DC</source>
         <extracomment>Kick Message</extracomment>
         <translation>%DN%1%DN vykopnul %DN%2%DN z %DC%3%DC</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="608"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="613"/>
         <source>{Day changed to %1}</source>
         <extracomment>Day Change Message</extracomment>
         <translation>{Den: %1}</translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="662"/>
-        <location filename="../src/uisupport/uistyle.cpp" line="664"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="625"/>
+        <source>Netsplit between %DH%1%DH and %DH%2%DH ended. Users joined: </source>
+        <translation>Netsplit mezi %DH%1%DH a %DH%2%DH zkončil. Vrátili se: </translation>
+    </message>
+    <message>
+        <location filename="../src/uisupport/uistyle.cpp" line="629"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="644"/>
+        <source>%DN%1%DN (%2 more)</source>
+        <translation>%DN%1%DN (%2 více)</translation>
+    </message>
+    <message>
+        <location filename="../src/uisupport/uistyle.cpp" line="639"/>
+        <source>Netsplit between %DH%1%DH and %DH%2%DH. Users quit: </source>
+        <translation>Netsplit mezi %DH%1%DH a %DH%2%DH. Opustili nás: </translation>
+    </message>
+    <message>
+        <location filename="../src/uisupport/uistyle.cpp" line="696"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="698"/>
         <source>&lt;--</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="666"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="700"/>
         <source>&lt;-*</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="676"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="710"/>
         <source>-</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="656"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="714"/>
+        <source>=&gt;</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../src/uisupport/uistyle.cpp" line="716"/>
+        <source>&lt;=</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../src/uisupport/uistyle.cpp" line="690"/>
         <source>&lt;-&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="658"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="692"/>
         <source>***</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="654"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="688"/>
         <source>-*-</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/uisupport/uistyle.cpp" line="556"/>
-        <location filename="../src/uisupport/uistyle.cpp" line="559"/>
-        <location filename="../src/uisupport/uistyle.cpp" line="599"/>
-        <location filename="../src/uisupport/uistyle.cpp" line="602"/>
-        <location filename="../src/uisupport/uistyle.cpp" line="605"/>
-        <location filename="../src/uisupport/uistyle.cpp" line="612"/>
-        <location filename="../src/uisupport/uistyle.cpp" line="680"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="561"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="564"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="604"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="607"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="610"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="617"/>
+        <location filename="../src/uisupport/uistyle.cpp" line="718"/>
         <source>%1</source>
         <extracomment>Plain Message
 ----------
