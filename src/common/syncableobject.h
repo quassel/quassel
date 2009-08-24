@@ -76,8 +76,7 @@ protected:
 signals:
   void initDone();
   void updatedRemotely();
-  void updated(const QVariantMap &properties);
-  void updateRequested(const QVariantMap &properties);
+  void updated();
 
 private:
   void synchronize(SignalProxy *proxy);

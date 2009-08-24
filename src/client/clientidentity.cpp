@@ -61,7 +61,7 @@ void CertIdentity::enableEditSsl(bool enable) {
   _certManager = new ClientCertManager(id(), this);
   if(isValid()) { // this means we are not a newly created Identity but have a proper Id
     Client::signalProxy()->synchronize(_certManager);
-    connect(_certManager, SIGNAL(updated(const QVariantMap &)), this, SLOT(markClean()));
+    connect(_certManager, SIGNAL(updated()), this, SLOT(markClean()));
     connect(_certManager, SIGNAL(initDone()), this, SLOT(markClean()));
   }
 }

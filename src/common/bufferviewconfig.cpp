@@ -198,6 +198,7 @@ void BufferViewConfig::addBuffer(const BufferId &bufferId, int pos) {
     _temporarilyRemovedBuffers.remove(bufferId);
 
   _buffers.insert(pos, bufferId);
+  SYNC(ARG(bufferId), ARG(pos))
   emit bufferAdded(bufferId, pos);
   emit configChanged();
 }
@@ -212,6 +213,7 @@ void BufferViewConfig::moveBuffer(const BufferId &bufferId, int pos) {
     pos = _buffers.count() - 1;
 
   _buffers.move(_buffers.indexOf(bufferId), pos);
+  SYNC(ARG(bufferId), ARG(pos))
   emit bufferMoved(bufferId, pos);
   emit configChanged();
 }
@@ -224,7 +226,7 @@ void BufferViewConfig::removeBuffer(const BufferId &bufferId) {
     _removedBuffers.remove(bufferId);
 
   _temporarilyRemovedBuffers << bufferId;
-
+  SYNC(ARG(bufferId))
   emit bufferRemoved(bufferId);
   emit configChanged();
 }
@@ -238,6 +240,7 @@ void BufferViewConfig::removeBufferPermanently(const BufferId &bufferId) {
 
   _removedBuffers << bufferId;
 
+  SYNC(ARG(bufferId))
   emit bufferPermanentlyRemoved(bufferId);
   emit configChanged();
 }

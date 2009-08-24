@@ -157,14 +157,15 @@ void SyncableObject::renameObject(const QString &newName) {
 
 void SyncableObject::update(const QVariantMap &properties) {
   fromVariantMap(properties);
-  emit updated(properties);
+  SYNC(ARG(properties))
+  emit updated();
 }
 
 void SyncableObject::requestUpdate(const QVariantMap &properties) {
   if(allowClientUpdates()) {
     update(properties);
   }
-  emit updateRequested(properties);
+  REQUEST(ARG(properties))
 }
 
 void SyncableObject::sync_call__(SignalProxy::ProxyMode modeType, const char *funcname, ...) const {

@@ -232,7 +232,7 @@ void AliasesModel::initDone() {
 }
 
 void AliasesModel::clientConnected() {
-  connect(Client::aliasManager(), SIGNAL(updated(QVariantMap)), SLOT(revert()));
+  connect(Client::aliasManager(), SIGNAL(updated()), SLOT(revert()));
   if(Client::aliasManager()->isInitialized())
     initDone();
   else

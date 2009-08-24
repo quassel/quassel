@@ -1172,7 +1172,6 @@ const QHash<int, int> &SignalProxy::ExtendedMetaObject::receiveMap() {
 
       if(receiverId != -1) {
 	receiveMap[i] = receiverId;
-        qDebug() << requestSlot.signature() << _meta->method(receiverId).signature() << "---" << i << receiverId;
       }
     }
     _receiveMap = receiveMap;

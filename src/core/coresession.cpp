@@ -337,7 +337,7 @@ void CoreSession::createIdentity(const CoreIdentity &identity) {
   _identities[identity.id()] = coreIdentity;
   // CoreIdentity has it's own synchronize method since it's "private" sslManager needs to be synced aswell
   coreIdentity->synchronize(signalProxy());
-  connect(coreIdentity, SIGNAL(updated(const QVariantMap &)), this, SLOT(updateIdentityBySender()));
+  connect(coreIdentity, SIGNAL(updated()), this, SLOT(updateIdentityBySender()));
   emit identityCreated(*coreIdentity);
 }
 
