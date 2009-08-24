@@ -41,7 +41,7 @@
       <enum>Qt::ScrollBarAsNeeded</enum>
      </property>
      <property name="lineWrapMode">
-      <enum>QTextEdit::WidgetWidth</enum>
+      <enum>QTextEdit::NoWrap</enum>
      </property>
     </widget>
    </item>

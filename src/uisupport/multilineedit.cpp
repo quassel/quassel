@@ -163,6 +163,7 @@ void MultiLineEdit::setSpellCheckEnabled(bool enable) {
 
 void MultiLineEdit::setWordWrapEnabled(bool enable) {
   setLineWrapMode(enable? WidgetWidth : NoWrap);
+  updateSizeHint();
 }
 
 void MultiLineEdit::historyMoveBack() {
