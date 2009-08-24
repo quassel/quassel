@@ -85,6 +85,7 @@ public:
   bool attachSlot(const QByteArray& sigName, QObject *recv, const char *slot);
 
   void synchronize(SyncableObject *obj);
+  void stopSynchronize(SyncableObject *obj);
 
   //! Writes a QVariant to a device.
   /** The data item is prefixed with the resulting blocksize,
@@ -101,9 +102,9 @@ public:
 
   class ExtendedMetaObject;
   ExtendedMetaObject *extendedMetaObject(const QMetaObject *meta) const;
-  ExtendedMetaObject *createExtendedMetaObject(const QMetaObject *meta);
+  ExtendedMetaObject *createExtendedMetaObject(const QMetaObject *meta, bool checkConflicts = false);
   inline ExtendedMetaObject *extendedMetaObject(const QObject *obj) const { return extendedMetaObject(metaObject(obj)); }
-  inline ExtendedMetaObject *createExtendedMetaObject(const QObject *obj) { return createExtendedMetaObject(metaObject(obj)); }
+  inline ExtendedMetaObject *createExtendedMetaObject(const QObject *obj, bool checkConflicts = false) { return createExtendedMetaObject(metaObject(obj), checkConflicts); }
 
   bool isSecure() const { return _secure; }
   void dumpProxyStats();
@@ -112,16 +113,15 @@ public slots:
   void detachObject(QObject *obj);
   void detachSignals(QObject *sender);
   void detachSlots(QObject *receiver);
-  void stopSync(QObject *obj);
 
 protected:
   void customEvent(QEvent *event);
   void sync_call__(const SyncableObject *obj, ProxyMode modeType, const char *funcname, va_list ap);
+  void renameObject(const SyncableObject *obj, const QString &newname, const QString &oldname);
 
 private slots:
   void dataAvailable();
   void removePeerBySender();
-  void objectRenamed(const QString &newname, const QString &oldname);
   void objectRenamed(const QByteArray &classname, const QString &newname, const QString &oldname);
   void sendHeartBeat();
   void receiveHeartBeat(AbstractPeer *peer, const QVariantList &params);
@@ -227,7 +227,7 @@ class SignalProxy::ExtendedMetaObject {
   };
 
 public:
-  ExtendedMetaObject(const QMetaObject *meta);
+  ExtendedMetaObject(const QMetaObject *meta, bool checkConflicts);
 
   inline const QByteArray &methodName(int methodId) { return methodDescriptor(methodId).methodName(); }
   inline const QList<int> &argTypes(int methodId) { return methodDescriptor(methodId).argTypes(); }

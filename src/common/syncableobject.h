@@ -35,6 +35,7 @@ public:
   SyncableObject(QObject *parent = 0);
   SyncableObject(const QString &objectName, QObject *parent = 0);
   SyncableObject(const SyncableObject &other, QObject *parent = 0);
+  ~SyncableObject();
 
   //! Stores the object's state into a QVariantMap.
   /** The default implementation takes dynamic properties as well as getters that have
@@ -77,10 +78,10 @@ signals:
   void updatedRemotely();
   void updated(const QVariantMap &properties);
   void updateRequested(const QVariantMap &properties);
-  void objectRenamed(QString newName, QString oldName);
 
 private:
   void synchronize(SignalProxy *proxy);
+  void stopSynchronize(SignalProxy *proxy);
 
   bool setInitValue(const QString &property, const QVariant &value);
 

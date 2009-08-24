@@ -49,6 +49,14 @@ SyncableObject::SyncableObject(const SyncableObject &other, QObject *parent)
 {
 }
 
+SyncableObject::~SyncableObject() {
+  QList<SignalProxy *> proxies = _signalProxies;
+  _signalProxies.clear();
+  for(int i = 0; i < proxies.count(); i++) {
+    proxies[i]->stopSynchronize(this);
+  }
+}
+
 SyncableObject &SyncableObject::operator=(const SyncableObject &other) {
   if(this == &other)
     return *this;
@@ -140,7 +148,9 @@ void SyncableObject::renameObject(const QString &newName) {
   const QString oldName = objectName();
   if(oldName != newName) {
     setObjectName(newName);
-    emit objectRenamed(newName, oldName);
+    foreach(SignalProxy *proxy, _signalProxies) {
+      proxy->renameObject(this, newName, oldName);
+    }
   }
 }
 
@@ -170,4 +180,13 @@ void SyncableObject::synchronize(SignalProxy *proxy) {
   if(_signalProxies.contains(proxy))
     return;
   _signalProxies << proxy;
+}
+
+void SyncableObject::stopSynchronize(SignalProxy *proxy) {
+  for(int i = 0; i < _signalProxies.count(); i++) {
+    if(_signalProxies[i] == proxy) {
+      _signalProxies.removeAt(i);
+      break;
+    }
+  }
 }

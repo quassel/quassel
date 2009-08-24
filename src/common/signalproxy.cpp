@@ -231,6 +231,17 @@ SignalProxy::SignalProxy(ProxyMode mode, QIODevice* device, QObject* parent)
 }
 
 SignalProxy::~SignalProxy() {
+  QList<SyncableObject *> syncObjects;
+  QHash<QByteArray, ObjectId>::iterator classIter = _syncSlave.begin();
+  while(classIter != _syncSlave.end()) {
+    syncObjects << classIter->values();
+    classIter++;
+  }
+  _syncSlave.clear();
+  foreach(SyncableObject *obj, syncObjects) {
+    obj->stopSynchronize(this);
+  }
+
   removeAllPeers();
 }
 
@@ -389,14 +400,13 @@ void SignalProxy::removePeerBySender() {
   removePeer(sender());
 }
 
-void SignalProxy::objectRenamed(const QString &newname, const QString &oldname) {
-  SyncableObject *syncObject = qobject_cast<SyncableObject *>(sender());
-  const QMetaObject *meta = syncObject->syncMetaObject();
-  const QByteArray className(meta->className());
-  objectRenamed(className, newname, oldname);
-
+void SignalProxy::renameObject(const SyncableObject *obj, const QString &newname, const QString &oldname) {
   if(proxyMode() == Client)
     return;
+
+  const QMetaObject *meta = obj->syncMetaObject();
+  const QByteArray className(meta->className());
+  objectRenamed(className, newname, oldname);
 
   QVariantList params;
   params << "__objectRenamed__" << className << newname << oldname;
@@ -404,6 +414,10 @@ void SignalProxy::objectRenamed(const QString &newname, const QString &oldname) 
 }
 
 void SignalProxy::objectRenamed(const QByteArray &classname, const QString &newname, const QString &oldname) {
+  qDebug() << "SignalProxy::objectRenamed" << classname << newname << oldname;
+  if(proxyMode() == Server)
+    return;
+
   if(_syncSlave.contains(classname) && _syncSlave[classname].contains(oldname) && oldname != newname) {
     SyncableObject *obj = _syncSlave[classname][newname] = _syncSlave[classname].take(oldname);
     requestInit(obj);
@@ -424,9 +438,9 @@ SignalProxy::ExtendedMetaObject *SignalProxy::extendedMetaObject(const QMetaObje
     return 0;
 }
 
-SignalProxy::ExtendedMetaObject *SignalProxy::createExtendedMetaObject(const QMetaObject *meta) {
+SignalProxy::ExtendedMetaObject *SignalProxy::createExtendedMetaObject(const QMetaObject *meta, bool checkConflicts) {
   if(!_extendedMetaObjects.contains(meta)) {
-    _extendedMetaObjects[meta] = new ExtendedMetaObject(meta);
+    _extendedMetaObjects[meta] = new ExtendedMetaObject(meta, checkConflicts);
   }
   return _extendedMetaObjects[meta];
 }
@@ -467,16 +481,13 @@ bool SignalProxy::attachSlot(const QByteArray& sigName, QObject* recv, const cha
 }
 
 void SignalProxy::synchronize(SyncableObject *obj) {
-  createExtendedMetaObject(obj);
+  createExtendedMetaObject(obj, true);
 
   // attaching as slave to receive sync Calls
   QByteArray className(obj->syncMetaObject()->className());
   _syncSlave[className][obj->objectName()] = obj;
-  disconnect(obj, SIGNAL(destroyed(QObject *)), this, SLOT(detachObject(QObject *)));
-  connect(obj, SIGNAL(destroyed(QObject *)), this, SLOT(detachObject(QObject *)));
 
   if(proxyMode() == Server) {
-    connect(obj, SIGNAL(objectRenamed(QString, QString)), this, SLOT(objectRenamed(QString, QString)));
     obj->setInitialized();
     emit objectInitialized(obj);
   } else {
@@ -490,7 +501,6 @@ void SignalProxy::synchronize(SyncableObject *obj) {
 }
 
 void SignalProxy::detachObject(QObject *obj) {
-  stopSync(obj);
   detachSignals(obj);
   detachSlots(obj);
 }
@@ -509,7 +519,7 @@ void SignalProxy::detachSlots(QObject* receiver) {
   }
 }
 
-void SignalProxy::stopSync(QObject *obj) {
+void SignalProxy::stopSynchronize(SyncableObject *obj) {
   // we can't use a className here, since it might be effed up, if we receive the call as a result of a decon
   // gladly the objectName() is still valid. So we have only to iterate over the classes not each instance! *sigh*
   QHash<QByteArray, ObjectId>::iterator classIter = _syncSlave.begin();
@@ -520,6 +530,7 @@ void SignalProxy::stopSync(QObject *obj) {
     }
     classIter++;
   }
+  obj->stopSynchronize(this);
 }
 
 void SignalProxy::dispatchSignal(const RequestType &requestType, const QVariantList &params) {
@@ -994,11 +1005,9 @@ void SignalProxy::sync_call__(const SyncableObject *obj, SignalProxy::ProxyMode 
   ExtendedMetaObject *eMeta = extendedMetaObject(obj);
 
   QVariantList params;
-
   params << eMeta->metaObject()->className()
          << obj->objectName()
          << QByteArray(funcname);
-
 
   const QList<int> &argTypes = eMeta->argTypes(eMeta->methodId(QByteArray(funcname)));
 
@@ -1013,6 +1022,8 @@ void SignalProxy::sync_call__(const SyncableObject *obj, SignalProxy::ProxyMode 
 
   dispatchSignal(Sync, params);
 }
+
+
 
 void SignalProxy::disconnectDevice(QIODevice *dev, const QString &reason) {
   if(!reason.isEmpty())
@@ -1065,7 +1076,7 @@ void SignalProxy::updateSecureState() {
 // ==================================================
 //  ExtendedMetaObject
 // ==================================================
-SignalProxy::ExtendedMetaObject::ExtendedMetaObject(const QMetaObject *meta)
+SignalProxy::ExtendedMetaObject::ExtendedMetaObject(const QMetaObject *meta, bool checkConflicts)
   : _meta(meta),
     _updatedRemotelyId(_meta->indexOfSignal("updatedRemotely()"))
 {
@@ -1099,8 +1110,10 @@ SignalProxy::ExtendedMetaObject::ExtendedMetaObject(const QMetaObject *meta)
           continue;
         }
       }
-      qWarning() << "class" << meta->className() << "contains overloaded methods which is currently not supported!";
-      qWarning() << " - " << _meta->method(i).signature() << "conflicts with" << _meta->method(_methodIds[method]).signature();
+      if(checkConflicts) {
+        qWarning() << "class" << meta->className() << "contains overloaded methods which is currently not supported!";
+        qWarning() << " - " << _meta->method(i).signature() << "conflicts with" << _meta->method(_methodIds[method]).signature();
+      }
       continue;
     }
     _methodIds[method] = i;
