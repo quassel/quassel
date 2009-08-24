@@ -70,6 +70,8 @@ public:
     ErrorMsg        = 0x0000000d,
     DayChangeMsg    = 0x0000000e,
     TopicMsg        = 0x0000000f,
+    NetsplitJoinMsg = 0x00000010,
+    NetsplitQuitMsg = 0x00000020,
 
     // Standard Formats
     Bold            = 0x00000100,

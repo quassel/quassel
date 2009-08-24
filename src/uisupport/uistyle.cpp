@@ -393,6 +393,10 @@ UiStyle::FormatType UiStyle::formatType(Message::Type msgType) {
       return DayChangeMsg;
     case Message::Topic:
       return TopicMsg;
+    case Message::NetsplitJoin:
+      return NetsplitJoinMsg;
+    case Message::NetsplitQuit:
+      return NetsplitQuitMsg;
   }
   //Q_ASSERT(false); // we need to handle all message types
   qWarning() << Q_FUNC_INFO << "Unknown message type:" << msgType;
@@ -548,6 +552,7 @@ void UiStyle::StyledMessage::style() const {
   QString txt = UiStyle::mircToInternal(contents());
   QString bufferName = bufferInfo().bufferName();
   bufferName.replace('%', "%%"); // well, you _can_ have a % in a buffername apparently... -_-
+  const int maxNetsplitNicks = 15;
 
   QString t;
   switch(type()) {
@@ -610,6 +615,35 @@ void UiStyle::StyledMessage::style() const {
     case Message::Topic:
       //: Topic Message
       t = tr("%1").arg(txt); break;
+    case Message::NetsplitJoin: {
+      QStringList users = txt.split(":");
+      QStringList servers = users.takeLast().split(" ");
+
+      for(int i = 0; i < users.count() && i < maxNetsplitNicks; i++)
+        users[i] = nickFromMask(users.at(i));
+
+      t = tr("Netsplit between %DH%1%DH and %DH%2%DH ended. Users joined: ").arg(servers.at(0),servers.at(1));
+      if(users.count() <= maxNetsplitNicks)
+        t.append(QString("%DN%1%DN").arg(users.join(", ")));
+      else
+        t.append(tr("%DN%1%DN (%2 more)").arg(static_cast<QStringList>(users.mid(0, maxNetsplitNicks)).join(", ")).arg(users.count() - maxNetsplitNicks));
+      }
+      break;
+    case Message::NetsplitQuit: {
+      QStringList users = txt.split(":");
+      QStringList servers = users.takeLast().split(" ");
+
+      for(int i = 0; i < users.count() && i < maxNetsplitNicks; i++)
+        users[i] = nickFromMask(users.at(i));
+
+      t = tr("Netsplit between %DH%1%DH and %DH%2%DH. Users quit: ").arg(servers.at(0),servers.at(1));
+
+      if(users.count() <= maxNetsplitNicks)
+        t.append(QString("%DN%1%DN").arg(users.join(", ")));
+      else
+        t.append(tr("%DN%1%DN (%2 more)").arg(static_cast<QStringList>(users.mid(0, maxNetsplitNicks)).join(", ")).arg(users.count() - maxNetsplitNicks));
+      }
+      break;
     default:
       t = tr("[%1]").arg(txt);
   }
@@ -676,6 +710,10 @@ QString UiStyle::StyledMessage::decoratedSender() const {
       return tr("-"); break;
     case Message::Topic:
       return tr("*"); break;
+    case Message::NetsplitJoin:
+      return tr("=>"); break;
+    case Message::NetsplitQuit:
+      return tr("<="); break;
     default:
       return tr("%1").arg(plainSender());
   }

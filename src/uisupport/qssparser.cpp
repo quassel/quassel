@@ -226,6 +226,10 @@ quint64 QssParser::parseFormatType(const QString &decl) {
       fmtType |= UiStyle::DayChangeMsg;
     else if(msgType == "topic")
       fmtType |= UiStyle::TopicMsg;
+    else if(msgType == "netsplitJoin")
+      fmtType |= UiStyle::NetsplitJoinMsg;
+    else if(msgType == "netsplitQuit")
+      fmtType |= UiStyle::NetsplitQuitMsg;
     else {
       qWarning() << Q_FUNC_INFO << tr("Invalid message type in %1").arg(decl);
     }
