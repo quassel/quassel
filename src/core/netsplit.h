@@ -93,7 +93,7 @@ private:
   QString _quitMsg;
   QHash<QString, QStringList> _joins;
   QHash<QString, QStringList> _quits;
-
+  bool _sentQuit;
   QTimer _joinTimer;
   QTimer _quitTimer;
   QTimer _discardTimer;

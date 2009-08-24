@@ -23,7 +23,7 @@
 #include <QRegExp>
 
 Netsplit::Netsplit()
-    : _quitMsg("")
+    : _quitMsg(""), _sentQuit(false)
 {
   _discardTimer.setSingleShot(true);
   _joinTimer.setSingleShot(true);
@@ -84,6 +84,10 @@ bool Netsplit::isNetsplit(const QString &quitMessage)
 
 void Netsplit::joinTimeout()
 {
+  if(!_sentQuit) {
+    _quitTimer.stop();
+    quitTimeout();
+  }
   QHash<QString, QStringList>::iterator it;
   for(it = _joins.begin(); it != _joins.end(); ++it)
     emit netsplitJoin(it.key(), it.value(),_quitMsg);
@@ -97,4 +101,5 @@ void Netsplit::quitTimeout()
   QHash<QString, QStringList>::iterator it;
   for(it = _quits.begin(); it != _quits.end(); ++it)
     emit netsplitQuit(it.key(), it.value(),_quitMsg);
+  _sentQuit = true;
 }
