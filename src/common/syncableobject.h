@@ -100,10 +100,11 @@ private:
 #    define REQUEST(...) sync_call__(SignalProxy::Client, (__FUNCTION__ + _classNameOffset__) , __VA_ARGS__);
 #else
 #    define SYNC(...) sync_call__(SignalProxy::Server, __func__, __VA_ARGS__);
-#    define SYNC_OTHER(x, ...) sync_call__(SignalProxy::Server, #x, __VA_ARGS__);
 #    define REQUEST(...) sync_call__(SignalProxy::Client, __func__, __VA_ARGS__);
-#    define REQUEST_OTHER(x, ...) sync_call__(SignalProxy::Client, #x, __VA_ARGS__);
 #endif //Q_WS_WIN
+
+#define SYNC_OTHER(x, ...) sync_call__(SignalProxy::Server, #x, __VA_ARGS__);
+#define REQUEST_OTHER(x, ...) sync_call__(SignalProxy::Client, #x, __VA_ARGS__);
 
 
 #define ARG(x) const_cast<void *>(reinterpret_cast<const void*>(&x))
