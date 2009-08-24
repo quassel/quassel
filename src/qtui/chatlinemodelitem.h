@@ -30,6 +30,7 @@ public:
   ChatLineModelItem(const Message &);
 
   virtual QVariant data(int column, int role) const;
+  virtual bool setData(int column, const QVariant &value, int role);
 
   virtual inline const Message &message() const { return _styledMsg; }
   virtual inline const QDateTime &timestamp() const { return _styledMsg.timestamp(); }

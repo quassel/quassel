@@ -407,7 +407,7 @@ QVariant MessageModelItem::data(int column, int role) const {
     return QVariant();
 
   switch(role) {
-    case MessageModel::MessageRole: return QVariant::fromValue<Message>(_msg);
+    case MessageModel::MessageRole: return QVariant::fromValue<Message>(message());
     case MessageModel::MsgIdRole: return QVariant::fromValue<MsgId>(msgId());
     case MessageModel::BufferIdRole: return QVariant::fromValue<BufferId>(bufferId());
     case MessageModel::TypeRole: return msgType();
@@ -422,9 +422,6 @@ bool MessageModelItem::setData(int column, const QVariant &value, int role) {
   Q_UNUSED(column);
 
   switch(role) {
-  case MessageModel::FlagsRole:
-    _msg.setFlags((Message::Flags)value.toUInt());
-    return true;
   case MessageModel::RedirectedToRole:
     _redirectedTo = value.value<BufferId>();
     return true;
