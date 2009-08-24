@@ -88,6 +88,5 @@ int IgnoreListModel::columnCount(const QModelIndex &parent) const {
   Q_UNUSED(parent);
   return isReady() ? 3 : 0;
 }
-    
 
 #endif //IGNORELISTMODEL_H

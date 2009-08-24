@@ -121,7 +121,7 @@ QString MessageFilter::idString() const {
 bool MessageFilter::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const {
   Q_UNUSED(sourceParent);
   QModelIndex sourceIdx = sourceModel()->index(sourceRow, 2);
-  Message::Type messageType = (Message::Type)sourceModel()->data(sourceIdx, MessageModel::TypeRole).toInt();
+  Message::Type messageType = (Message::Type)sourceIdx.data(MessageModel::TypeRole).toInt();
 
   // apply message type filter
   if(_messageTypeFilter & messageType)
@@ -130,13 +130,13 @@ bool MessageFilter::filterAcceptsRow(int sourceRow, const QModelIndex &sourcePar
   if(_validBuffers.isEmpty())
     return true;
 
-  BufferId bufferId = sourceModel()->data(sourceIdx, MessageModel::BufferIdRole).value<BufferId>();
+  BufferId bufferId = sourceIdx.data(MessageModel::BufferIdRole).value<BufferId>();
   if(!bufferId.isValid()) {
     return true;
   }
 
-  MsgId msgId = sourceModel()->data(sourceIdx, MessageModel::MsgIdRole).value<MsgId>();
-  Message::Flags flags = (Message::Flags)sourceModel()->data(sourceIdx, MessageModel::FlagsRole).toInt();
+  MsgId msgId = sourceIdx.data(MessageModel::MsgIdRole).value<MsgId>();
+  Message::Flags flags = (Message::Flags)sourceIdx.data(MessageModel::FlagsRole).toInt();
 
   NetworkId myNetworkId = networkId();
   NetworkId msgNetworkId = Client::networkModel()->networkId(bufferId);
@@ -144,11 +144,10 @@ bool MessageFilter::filterAcceptsRow(int sourceRow, const QModelIndex &sourcePar
     return false;
 
   // ignorelist handling
-  const MessageModelItem *item = const_cast<const MessageModel*>(static_cast<MessageModel*>(sourceModel()))->messageItemAt(sourceRow);
   // only match if message is not flagged as server msg
-  if(!(item->message().flags() & Message::ServerMsg) &&
-     Client::ignoreListManager()->match(item->message(), Client::networkModel()->networkName(item->bufferId())))
-      return false;
+  if(!(flags & Message::ServerMsg) &&
+      Client::ignoreListManager()->match(sourceIdx.data(MessageModel::MessageRole).value<Message>(), Client::networkModel()->networkName(bufferId)))
+    return false;
 
   if(flags & Message::Redirected) {
     int redirectionTarget = 0;

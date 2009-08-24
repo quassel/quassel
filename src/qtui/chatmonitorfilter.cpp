@@ -64,21 +64,22 @@ bool ChatMonitorFilter::filterAcceptsRow(int sourceRow, const QModelIndex &sourc
   if(!(type & (Message::Plain | Message::Notice | Message::Action)))
     return false;
 
+  BufferId bufferId = source_index.data(MessageModel::BufferIdRole).value<BufferId>();
+
   // ChatMonitorSettingsPage
   if(_operationMode == ChatViewSettings::OptOut
     && !(_showHighlights && flags & Message::Highlight)
-    &&  _bufferIds.contains(source_index.data(MessageModel::BufferIdRole).value<BufferId>()))
+    &&  _bufferIds.contains(bufferId))
     return false;
   if(_operationMode == ChatViewSettings::OptIn
     && !(_showHighlights && flags & Message::Highlight)
-    && !_bufferIds.contains(source_index.data(MessageModel::BufferIdRole).value<BufferId>()))
+    && !_bufferIds.contains(bufferId))
     return false;
 
   // ignorelist handling
-  const MessageModelItem *item = const_cast<const MessageModel*>(static_cast<MessageModel*>(sourceModel()))->messageItemAt(sourceRow);
   // only match if message is not flagged as server msg
-  if(!(item->message().flags() & Message::ServerMsg) &&
-     Client::ignoreListManager()->match(item->message(), Client::networkModel()->networkName(item->bufferId())))
+  if(!(flags & Message::ServerMsg) &&
+     Client::ignoreListManager()->match(source_index.data(MessageModel::MessageRole).value<Message>(), Client::networkModel()->networkName(bufferId)))
       return false;
   return true;
 }

@@ -957,9 +957,8 @@ void MainWin::messagesInserted(const QModelIndex &parent, int start, int end) {
     if(hasFocus && bufId == _bufferWidget->currentBuffer())
       continue;
 
-    const MessageModelItem *item = const_cast<const MessageModel*>(Client::messageModel())->messageItemAt(i);
     if((flags & Message::Highlight || bufType == BufferInfo::QueryBuffer) &&
-       !Client::ignoreListManager()->match(item->message(), Client::networkModel()->networkName(bufId))) {
+       !Client::ignoreListManager()->match(idx.data(MessageModel::MessageRole).value<Message>(), Client::networkModel()->networkName(bufId))) {
       QModelIndex senderIdx = Client::messageModel()->index(i, ChatLineModel::SenderColumn);
       QString sender = senderIdx.data(ChatLineModel::EditRole).toString();
       QString contents = idx.data(ChatLineModel::DisplayRole).toString();
