@@ -34,9 +34,6 @@ public:
 
 signals:
   void ignoreListChanged();
-
-private slots:
-  void ignoreListUpdated(const QVariantMap &newMap);
 };
 
 #endif // CLIENTIGNORELISTMANAGER_H

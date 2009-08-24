@@ -25,10 +25,5 @@ INIT_SYNCABLE_OBJECT(ClientIgnoreListManager)
 ClientIgnoreListManager::ClientIgnoreListManager(QObject *parent)
     : IgnoreListManager(parent)
 {
-  connect(this, SIGNAL(updated(const QVariantMap&)), this, SLOT(ignoreListUpdated(const QVariantMap&)));
-}
-
-void ClientIgnoreListManager::ignoreListUpdated(const QVariantMap &newMap) {
-  if(newMap != initIgnoreList())
-    emit ignoreListChanged();
+  connect(this, SIGNAL(updated()), SIGNAL(ignoreListChanged()));
 }

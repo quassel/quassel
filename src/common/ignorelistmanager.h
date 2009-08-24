@@ -93,13 +93,14 @@ public:
     */
   StrictnessType match(const Message &msg, const QString &network = QString());
 
+  virtual void addIgnoreListItem(IgnoreType type, const QString &ignoreRule, bool isRegEx, StrictnessType strictness,
+                                 ScopeType scope, const QString &scopeRule, bool isActive);
+  virtual void addIgnoreListItem(const IgnoreListItem &item);
+
 public slots:
   virtual QVariantMap initIgnoreList() const;
   virtual void initSetIgnoreList(const QVariantMap &ignoreList);
 
-  virtual void addIgnoreListItem(IgnoreType type, const QString &ignoreRule, bool isRegEx, StrictnessType strictness,
-                             ScopeType scope, const QString &scopeRule, bool isActive);
-  virtual void addIgnoreListItem(const IgnoreListItem &item);
 protected:
   void setIgnoreList(const QList<IgnoreListItem> &ignoreList) { _ignoreList = ignoreList; }
 

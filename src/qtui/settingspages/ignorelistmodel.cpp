@@ -254,7 +254,7 @@ void IgnoreListModel::initDone() {
 }
 
 void IgnoreListModel::clientConnected() {
-  connect(Client::ignoreListManager(), SIGNAL(updated(QVariantMap)), SLOT(revert()));
+  connect(Client::ignoreListManager(), SIGNAL(updated()), SLOT(revert()));
   if(Client::ignoreListManager()->isInitialized())
     initDone();
   else
