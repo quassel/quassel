@@ -82,8 +82,8 @@ void QtUiStyle::generateSettingsQss() const {
         << msgTypeQss("error", "ErrorMsg", s)
         << msgTypeQss("daychange", "ServerMsg", s)
         << msgTypeQss("topic", "CommandMsg", s)
-        << msgTypeQss("netsplitJoin", "CommandMsg", s)
-        << msgTypeQss("netsplitQuit", "CommandMsg", s)
+        << msgTypeQss("netsplit-join", "CommandMsg", s)
+        << msgTypeQss("netsplit-quit", "CommandMsg", s)
         << "\n";
   }
 

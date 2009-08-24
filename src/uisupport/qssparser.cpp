@@ -160,7 +160,7 @@ void QssParser::parsePaletteBlock(const QString &decl, const QString &contents) 
 /******** Determine format types from a block declaration ********/
 
 quint64 QssParser::parseFormatType(const QString &decl) {
-  QRegExp rx("ChatLine(?:::(\\w+))?(?:#(\\w+))?(?:\\[([=-,\\\"\\w\\s]+)\\])?");
+  QRegExp rx("ChatLine(?:::(\\w+))?(?:#([\\w\\-]+))?(?:\\[([=-,\\\"\\w\\s]+)\\])?");
   // $1: subelement; $2: msgtype; $3: conditionals
   if(!rx.exactMatch(decl)) {
     qWarning() << Q_FUNC_INFO << tr("Invalid block declaration: %1").arg(decl);
@@ -226,9 +226,9 @@ quint64 QssParser::parseFormatType(const QString &decl) {
       fmtType |= UiStyle::DayChangeMsg;
     else if(msgType == "topic")
       fmtType |= UiStyle::TopicMsg;
-    else if(msgType == "netsplitJoin")
+    else if(msgType == "netsplit-join")
       fmtType |= UiStyle::NetsplitJoinMsg;
-    else if(msgType == "netsplitQuit")
+    else if(msgType == "netsplit-quit")
       fmtType |= UiStyle::NetsplitQuitMsg;
     else {
       qWarning() << Q_FUNC_INFO << tr("Invalid message type in %1").arg(decl);
