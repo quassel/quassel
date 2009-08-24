@@ -336,6 +336,7 @@ void Network::setCodecForServer(QTextCodec *codec) {
   _codecForServer = codec;
   QByteArray codecName = codecForServer();
   SYNC_OTHER(setCodecForServer, ARG(codecName))
+  emit configChanged();
 }
 
 QByteArray Network::codecForEncoding() const {
@@ -352,6 +353,7 @@ void Network::setCodecForEncoding(QTextCodec *codec) {
   _codecForEncoding = codec;
   QByteArray codecName = codecForEncoding();
   SYNC_OTHER(setCodecForEncoding, ARG(codecName))
+  emit configChanged();
 }
 
 QByteArray Network::codecForDecoding() const {
@@ -368,6 +370,7 @@ void Network::setCodecForDecoding(QTextCodec *codec) {
   _codecForDecoding = codec;
   QByteArray codecName = codecForDecoding();
   SYNC_OTHER(setCodecForDecoding, ARG(codecName))
+  emit configChanged();
 }
 
 // FIXME use server encoding if appropriate
@@ -473,6 +476,7 @@ void Network::setNetworkName(const QString &networkName) {
   _networkName = networkName;
   SYNC(ARG(networkName))
   emit networkNameSet(networkName);
+  emit configChanged();
 }
 
 void Network::setCurrentServer(const QString &currentServer) {
@@ -523,61 +527,73 @@ void Network::setIdentity(IdentityId id) {
   _identity = id;
   SYNC(ARG(id))
   emit identitySet(id);
+  emit configChanged();
 }
 
 void Network::setServerList(const QVariantList &serverList) {
   _serverList = fromVariantList<Server>(serverList);
   SYNC(ARG(serverList))
+  emit configChanged();
 }
 
 void Network::setUseRandomServer(bool use) {
   _useRandomServer = use;
   SYNC(ARG(use))
+  emit configChanged();
 }
 
 void Network::setPerform(const QStringList &perform) {
   _perform = perform;
   SYNC(ARG(perform))
+  emit configChanged();
 }
 
 void Network::setUseAutoIdentify(bool use) {
   _useAutoIdentify = use;
   SYNC(ARG(use))
+  emit configChanged();
 }
 
 void Network::setAutoIdentifyService(const QString &service) {
   _autoIdentifyService = service;
   SYNC(ARG(service))
+  emit configChanged();
 }
 
 void Network::setAutoIdentifyPassword(const QString &password) {
   _autoIdentifyPassword = password;
   SYNC(ARG(password))
+  emit configChanged();
 }
 
 void Network::setUseAutoReconnect(bool use) {
   _useAutoReconnect = use;
   SYNC(ARG(use))
+  emit configChanged();
 }
 
 void Network::setAutoReconnectInterval(quint32 interval) {
   _autoReconnectInterval = interval;
   SYNC(ARG(interval))
+  emit configChanged();
 }
 
 void Network::setAutoReconnectRetries(quint16 retries) {
   _autoReconnectRetries = retries;
   SYNC(ARG(retries))
+  emit configChanged();
 }
 
 void Network::setUnlimitedReconnectRetries(bool unlimited) {
   _unlimitedReconnectRetries = unlimited;
   SYNC(ARG(unlimited))
+  emit configChanged();
 }
 
 void Network::setRejoinChannels(bool rejoin) {
   _rejoinChannels = rejoin;
   SYNC(ARG(rejoin))
+  emit configChanged();
 }
 
 void Network::addSupport(const QString &param, const QString &value) {

@@ -231,16 +231,17 @@ SignalProxy::SignalProxy(ProxyMode mode, QIODevice* device, QObject* parent)
 }
 
 SignalProxy::~SignalProxy() {
-  QList<SyncableObject *> syncObjects;
   QHash<QByteArray, ObjectId>::iterator classIter = _syncSlave.begin();
   while(classIter != _syncSlave.end()) {
-    syncObjects << classIter->values();
+    ObjectId::iterator objIter = classIter->begin();
+    while(objIter != classIter->end()) {
+      SyncableObject *obj = objIter.value();
+      objIter = classIter->erase(objIter);
+      obj->stopSynchronize(this);
+    }
     classIter++;
   }
   _syncSlave.clear();
-  foreach(SyncableObject *obj, syncObjects) {
-    obj->stopSynchronize(this);
-  }
 
   removeAllPeers();
 }
@@ -414,7 +415,6 @@ void SignalProxy::renameObject(const SyncableObject *obj, const QString &newname
 }
 
 void SignalProxy::objectRenamed(const QByteArray &classname, const QString &newname, const QString &oldname) {
-  qDebug() << "SignalProxy::objectRenamed" << classname << newname << oldname;
   if(proxyMode() == Server)
     return;
 

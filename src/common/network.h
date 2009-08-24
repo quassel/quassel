@@ -278,7 +278,9 @@ signals:
 //   void latencySet(int latency);
   void identitySet(IdentityId);
 
-//   void serverListSet(QVariantList serverList);
+  void configChanged();
+
+  //   void serverListSet(QVariantList serverList);
 //   void useRandomServerSet(bool);
 //   void performSet(const QStringList &);
 //   void useAutoIdentifySet(bool);

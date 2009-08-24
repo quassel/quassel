@@ -50,10 +50,11 @@ SyncableObject::SyncableObject(const SyncableObject &other, QObject *parent)
 }
 
 SyncableObject::~SyncableObject() {
-  QList<SignalProxy *> proxies = _signalProxies;
-  _signalProxies.clear();
-  for(int i = 0; i < proxies.count(); i++) {
-    proxies[i]->stopSynchronize(this);
+  QList<SignalProxy *>::iterator proxyIter = _signalProxies.begin();
+  while(proxyIter != _signalProxies.end()) {
+    SignalProxy *proxy = (*proxyIter);
+    proxyIter = _signalProxies.erase(proxyIter);
+    proxy->stopSynchronize(this);
   }
 }
 

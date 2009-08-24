@@ -337,22 +337,7 @@ QListWidgetItem *NetworksSettingsPage::networkItem(NetworkId id) const {
 void NetworksSettingsPage::clientNetworkAdded(NetworkId id) {
   insertNetwork(id);
   //connect(Client::network(id), SIGNAL(updatedRemotely()), this, SLOT(clientNetworkUpdated()));
-  connect(Client::network(id), SIGNAL(identitySet(IdentityId)), this, SLOT(clientNetworkUpdated()));
-  connect(Client::network(id), SIGNAL(networkNameSet(const QString &)), this, SLOT(clientNetworkUpdated()));
-  connect(Client::network(id), SIGNAL(serverListSet(QVariantList)), this, SLOT(clientNetworkUpdated()));
-  connect(Client::network(id), SIGNAL(useRandomServerSet(bool)), this, SLOT(clientNetworkUpdated()));
-  connect(Client::network(id), SIGNAL(performSet(const QStringList &)), this, SLOT(clientNetworkUpdated()));
-  connect(Client::network(id), SIGNAL(useAutoIdentifySet(bool)), this, SLOT(clientNetworkUpdated()));
-  connect(Client::network(id), SIGNAL(autoIdentifyServiceSet(const QString &)), this, SLOT(clientNetworkUpdated()));
-  connect(Client::network(id), SIGNAL(autoIdentifyPasswordSet(const QString &)), this, SLOT(clientNetworkUpdated()));
-  connect(Client::network(id), SIGNAL(useAutoReconnectSet(bool)), this, SLOT(clientNetworkUpdated()));
-  connect(Client::network(id), SIGNAL(autoReconnectIntervalSet(quint32)), this, SLOT(clientNetworkUpdated()));
-  connect(Client::network(id), SIGNAL(autoReconnectRetriesSet(quint16)), this, SLOT(clientNetworkUpdated()));
-  connect(Client::network(id), SIGNAL(unlimitedReconnectRetriesSet(bool)), this, SLOT(clientNetworkUpdated()));
-  connect(Client::network(id), SIGNAL(rejoinChannelsSet(bool)), this, SLOT(clientNetworkUpdated()));
-  connect(Client::network(id), SIGNAL(codecForServerSet(const QByteArray &)), this, SLOT(clientNetworkUpdated()));
-  connect(Client::network(id), SIGNAL(codecForEncodingSet(const QByteArray &)), this, SLOT(clientNetworkUpdated()));
-  connect(Client::network(id), SIGNAL(codecForDecodingSet(const QByteArray &)), this, SLOT(clientNetworkUpdated()));
+  connect(Client::network(id), SIGNAL(configChanged()), this, SLOT(clientNetworkUpdated()));
 
   connect(Client::network(id), SIGNAL(connectionStateSet(Network::ConnectionState)), this, SLOT(networkConnectionStateChanged(Network::ConnectionState)));
   connect(Client::network(id), SIGNAL(connectionError(const QString &)), this, SLOT(networkConnectionError(const QString &)));
