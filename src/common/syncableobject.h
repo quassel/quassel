@@ -28,6 +28,27 @@
 
 #include "signalproxy.h"
 
+
+
+#define SYNCABLE_OBJECT static const int _classNameOffset__;
+#define INIT_SYNCABLE_OBJECT(x) const int x ::_classNameOffset__ = QByteArray(staticMetaObject.className()).length() + 2;
+
+#ifdef Q_WS_WIN
+#    define SYNC(...) sync_call__(SignalProxy::Server, (__FUNCTION__ + _classNameOffset__), __VA_ARGS__);
+#    define REQUEST(...) sync_call__(SignalProxy::Client, (__FUNCTION__ + _classNameOffset__) , __VA_ARGS__);
+#else
+#    define SYNC(...) sync_call__(SignalProxy::Server, __func__, __VA_ARGS__);
+#    define REQUEST(...) sync_call__(SignalProxy::Client, __func__, __VA_ARGS__);
+#endif //Q_WS_WIN
+
+#define SYNC_OTHER(x, ...) sync_call__(SignalProxy::Server, #x, __VA_ARGS__);
+#define REQUEST_OTHER(x, ...) sync_call__(SignalProxy::Client, #x, __VA_ARGS__);
+
+
+#define ARG(x) const_cast<void *>(reinterpret_cast<const void*>(&x))
+#define NO_ARG 0
+
+
 class SyncableObject : public QObject {
   SYNCABLE_OBJECT
   Q_OBJECT
@@ -92,23 +113,5 @@ private:
 
   friend class SignalProxy;
 };
-
-#define SYNCABLE_OBJECT static const int _classNameOffset__;
-#define INIT_SYNCABLE_OBJECT(x) const int x ::_classNameOffset__ = QByteArray(staticMetaObject.className()).length() + 2;
-
-#ifdef Q_WS_WIN
-#    define SYNC(...) sync_call__(SignalProxy::Server, (__FUNCTION__ + _classNameOffset__), __VA_ARGS__);
-#    define REQUEST(...) sync_call__(SignalProxy::Client, (__FUNCTION__ + _classNameOffset__) , __VA_ARGS__);
-#else
-#    define SYNC(...) sync_call__(SignalProxy::Server, __func__, __VA_ARGS__);
-#    define REQUEST(...) sync_call__(SignalProxy::Client, __func__, __VA_ARGS__);
-#endif //Q_WS_WIN
-
-#define SYNC_OTHER(x, ...) sync_call__(SignalProxy::Server, #x, __VA_ARGS__);
-#define REQUEST_OTHER(x, ...) sync_call__(SignalProxy::Client, #x, __VA_ARGS__);
-
-
-#define ARG(x) const_cast<void *>(reinterpret_cast<const void*>(&x))
-#define NO_ARG 0
 
 #endif
