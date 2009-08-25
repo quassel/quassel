@@ -27,6 +27,8 @@
 #include <QCheckBox>
 #include <QFileDialog>
 #include <QStyleFactory>
+#include <QFile>
+#include <QDir>
 
 AppearanceSettingsPage::AppearanceSettingsPage(QWidget *parent)
   : SettingsPage(tr("Interface"), QString(), parent)
@@ -140,7 +142,13 @@ QLocale AppearanceSettingsPage::selectedLocale() const {
 }
 
 void AppearanceSettingsPage::chooseStyleSheet() {
-  QString name = QFileDialog::getOpenFileName(this, tr("Please choose a stylesheet file"), QString(), "*.qss");
+  QString dir = ui.customStyleSheetPath->property("storedValue").toString();
+  if(!dir.isEmpty() && QFile(dir).exists())
+    dir = QDir(dir).absolutePath();
+  else
+    dir = QDir(Quassel::findDataFilePath("default.qss")).absolutePath();
+
+  QString name = QFileDialog::getOpenFileName(this, tr("Please choose a stylesheet file"), dir, "*.qss");
   if(!name.isEmpty())
     ui.customStyleSheetPath->setText(name);
 }
