@@ -18,9 +18,9 @@ ChatLine[label="selected"] {
   background: palette(highlight);
 }
 
-ChatLine::sender[sender="self"] {
-  font-style: italic;
-}
+// ChatLine::sender[sender="self"] {
+//   font-style: italic;
+// }
 
 ChatLine::timestamp {
   foreground: #707c70;

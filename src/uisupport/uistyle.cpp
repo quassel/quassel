@@ -92,7 +92,7 @@ void UiStyle::loadStyleSheet() {
   UiStyleSettings s;
 
   QString styleSheet;
-  styleSheet += loadStyleSheet("file:///" + Quassel::findDataFilePath("default.qss"));
+  styleSheet += loadStyleSheet("file:///" + Quassel::findDataFilePath("stylesheets/default.qss"));
   styleSheet += loadStyleSheet("file:///" + Quassel::configDirPath() + "settings.qss");
   if(s.value("UseCustomStyleSheet", false).toBool())
     styleSheet += loadStyleSheet("file:///" + s.value("CustomStyleSheetPath").toString(), true);
