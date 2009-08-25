@@ -47,9 +47,6 @@ p, li { white-space: pre-wrap; }
           <property name="text">
            <string>Dynamic</string>
           </property>
-          <attribute name="buttonGroup">
-           <string>strictnessButtonGroup</string>
-          </attribute>
          </widget>
         </item>
         <item>
@@ -57,9 +54,6 @@ p, li { white-space: pre-wrap; }
           <property name="text">
            <string>Permanent</string>
           </property>
-          <attribute name="buttonGroup">
-           <string>strictnessButtonGroup</string>
-          </attribute>
          </widget>
         </item>
        </layout>
@@ -91,9 +85,6 @@ p, li { white-space: pre-wrap; }
           <property name="text">
            <string>Sender</string>
           </property>
-          <attribute name="buttonGroup">
-           <string>typeButtonGroup</string>
-          </attribute>
          </widget>
         </item>
         <item>
@@ -101,9 +92,6 @@ p, li { white-space: pre-wrap; }
           <property name="text">
            <string>Message</string>
           </property>
-          <attribute name="buttonGroup">
-           <string>typeButtonGroup</string>
-          </attribute>
          </widget>
         </item>
        </layout>
@@ -215,9 +203,6 @@ p, li { white-space: pre-wrap; }
           <property name="text">
            <string>Global</string>
           </property>
-          <attribute name="buttonGroup">
-           <string>scopeButtonGroup</string>
-          </attribute>
          </widget>
         </item>
         <item>
@@ -225,9 +210,6 @@ p, li { white-space: pre-wrap; }
           <property name="text">
            <string>Network</string>
           </property>
-          <attribute name="buttonGroup">
-           <string>scopeButtonGroup</string>
-          </attribute>
          </widget>
         </item>
         <item>
@@ -235,9 +217,6 @@ p, li { white-space: pre-wrap; }
           <property name="text">
            <string>Channel</string>
           </property>
-          <attribute name="buttonGroup">
-           <string>scopeButtonGroup</string>
-          </attribute>
          </widget>
         </item>
        </layout>
@@ -312,9 +291,4 @@ p, li { white-space: pre-wrap; }
    </hints>
   </connection>
  </connections>
- <buttongroups>
-  <buttongroup name="typeButtonGroup"/>
-  <buttongroup name="strictnessButtonGroup"/>
-  <buttongroup name="scopeButtonGroup"/>
- </buttongroups>
 </ui>

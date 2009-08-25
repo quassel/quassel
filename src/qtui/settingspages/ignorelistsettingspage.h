@@ -22,6 +22,7 @@
 #define IGNORELISTSETTINGSPAGE_H
 
 #include <QStyledItemDelegate>
+#include <QButtonGroup>
 
 #include "settingspage.h"
 #include "ui_ignorelistsettingspage.h"
@@ -61,6 +62,9 @@ private:
   IgnoreListManager::IgnoreListItem _clonedIgnoreListItem;
   bool _hasChanged;
   Ui::IgnoreListEditDlg ui;
+  QButtonGroup _typeButtonGroup;
+  QButtonGroup _strictnessButtonGroup;
+  QButtonGroup _scopeButtonGroup;
 };
 
 class IgnoreListSettingsPage : public SettingsPage {

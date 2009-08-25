@@ -82,6 +82,7 @@ void IgnoreListSettingsPage::save() {
   if(_ignoreListModel.configChanged()) {
     _ignoreListModel.commit();
   }
+  ui.ignoreListView->selectionModel()->reset();
 }
 
 void IgnoreListSettingsPage::enableDialog(bool enabled) {
@@ -161,6 +162,16 @@ IgnoreListEditDlg::IgnoreListEditDlg(int row, const IgnoreListManager::IgnoreLis
   setAttribute(Qt::WA_DeleteOnClose, false);
   setModal(true);
 
+  // setup buttongroups
+  // this could be moved to .ui file with qt4.5
+  _typeButtonGroup.addButton(ui.senderTypeButton, 0);
+  _typeButtonGroup.addButton(ui.messageTypeButton, 1);
+  _strictnessButtonGroup.addButton(ui.dynamicStrictnessButton, 0);
+  _strictnessButtonGroup.addButton(ui.permanentStrictnessButton, 1);
+  _scopeButtonGroup.addButton(ui.globalScopeButton, 0);
+  _scopeButtonGroup.addButton(ui.networkScopeButton, 1);
+  _scopeButtonGroup.addButton(ui.channelScopeButton, 2);
+
   ui.buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
 
   ui.ignoreRuleLineEdit->setText(item.ignoreRule);
@@ -199,11 +210,9 @@ IgnoreListEditDlg::IgnoreListEditDlg(int row, const IgnoreListManager::IgnoreLis
 
   connect(ui.ignoreRuleLineEdit, SIGNAL(textChanged(const QString &)), this, SLOT(widgetHasChanged()));
   connect(ui.scopeRuleTextEdit, SIGNAL(textChanged()), this, SLOT(widgetHasChanged()));
-  connect(ui.typeButtonGroup, SIGNAL(buttonClicked(int)), this, SLOT(widgetHasChanged()));
-  connect(ui.strictnessButtonGroup, SIGNAL(buttonClicked(int)), this, SLOT(widgetHasChanged()));
-  connect(ui.scopeButtonGroup, SIGNAL(buttonClicked(int)), this, SLOT(widgetHasChanged()));
-  connect(ui.typeButtonGroup, SIGNAL(buttonClicked(int)), this, SLOT(widgetHasChanged()));
-  connect(ui.isRegExCheckBox, SIGNAL(stateChanged(int)), this, SLOT(widgetHasChanged()));
+  connect(&_typeButtonGroup, SIGNAL(buttonClicked(int)), this, SLOT(widgetHasChanged()));
+  connect(&_strictnessButtonGroup, SIGNAL(buttonClicked(int)), this, SLOT(widgetHasChanged()));
+  connect(&_scopeButtonGroup, SIGNAL(buttonClicked(int)), this, SLOT(widgetHasChanged()));
   connect(ui.isRegExCheckBox, SIGNAL(stateChanged(int)), this, SLOT(widgetHasChanged()));
   connect(ui.isActiveCheckBox, SIGNAL(stateChanged(int)), this, SLOT(widgetHasChanged()));
 
