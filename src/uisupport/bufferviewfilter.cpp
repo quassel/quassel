@@ -49,7 +49,7 @@ BufferViewFilter::BufferViewFilter(QAbstractItemModel *model, BufferViewConfig *
     _sortOrder(Qt::AscendingOrder),
     _showServerQueries(false),
     _editMode(false),
-    _enableEditMode(tr("Show / Hide buffers"), this)
+    _enableEditMode(tr("Show / Hide Chats"), this)
 {
   setConfig(config);
   setSourceModel(model);

@@ -69,8 +69,8 @@ ContextMenuActionProvider::ContextMenuActionProvider(QObject *parent) : NetworkM
   registerAction(NickBan, SmallIcon("im-ban-user"), tr("Ban From Channel"));
   registerAction(NickKickBan, SmallIcon("im-ban-kick-user"), tr("Kick && Ban"));
 
-  registerAction(HideBufferTemporarily, tr("Hide Buffer(s) Temporarily"));
-  registerAction(HideBufferPermanently, tr("Hide Buffer(s) Permanently"));
+  registerAction(HideBufferTemporarily, tr("Hide Chat(s) Temporarily"));
+  registerAction(HideBufferPermanently, tr("Hide Chat(s) Permanently"));
   registerAction(ShowChannelList, tr("Show Channel List"));
   registerAction(ShowIgnoreList, tr("Show Ignore List"));
 
