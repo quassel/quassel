@@ -87,11 +87,13 @@ signals:
 private slots:
   void configInitialized();
   void enableEditMode(bool enable);
+  void showServerQueriesChanged();
 
 private:
   QPointer<BufferViewConfig> _config;
   Qt::SortOrder _sortOrder;
 
+  bool _showServerQueries;
   bool _editMode;
   QAction _enableEditMode;
   QSet<BufferId> _toAdd;

@@ -47,6 +47,7 @@ BufferViewFilter::BufferViewFilter(QAbstractItemModel *model, BufferViewConfig *
   : QSortFilterProxyModel(model),
     _config(0),
     _sortOrder(Qt::AscendingOrder),
+    _showServerQueries(false),
     _editMode(false),
     _enableEditMode(tr("Show / Hide buffers"), this)
 {
@@ -62,6 +63,9 @@ BufferViewFilter::BufferViewFilter(QAbstractItemModel *model, BufferViewConfig *
   _enableEditMode.setChecked(_editMode);
   connect(&_enableEditMode, SIGNAL(toggled(bool)), this, SLOT(enableEditMode(bool)));
 
+  BufferSettings defaultSettings;
+  defaultSettings.notify("ServerNoticesTarget", this, SLOT(showServerQueriesChanged()));
+  showServerQueriesChanged();
 }
 
 void BufferViewFilter::setConfig(BufferViewConfig *config) {
@@ -114,6 +118,16 @@ void BufferViewFilter::configInitialized() {
 
   invalidate();
   emit configChanged();
+}
+
+void BufferViewFilter::showServerQueriesChanged() {
+  BufferSettings bufferSettings;
+
+  bool showQueries = (bufferSettings.serverNoticesTarget() & BufferSettings::DefaultBuffer);
+  if(_showServerQueries != showQueries) {
+    _showServerQueries = showQueries;
+    invalidate();
+  }
 }
 
 QList<QAction *> BufferViewFilter::actions(const QModelIndex &index) {
@@ -308,8 +322,13 @@ bool BufferViewFilter::filterAcceptBuffer(const QModelIndex &source_bufferIndex)
   int allowedBufferTypes = config()->allowedBufferTypes();
   if(!config()->networkId().isValid())
     allowedBufferTypes &= ~BufferInfo::StatusBuffer;
-  if(!(allowedBufferTypes & sourceModel()->data(source_bufferIndex, NetworkModel::BufferTypeRole).toInt()))
+  int bufferType = sourceModel()->data(source_bufferIndex, NetworkModel::BufferTypeRole).toInt();
+  if(!(allowedBufferTypes & bufferType))
     return false;
+
+  if(bufferType & BufferInfo::QueryBuffer && !_showServerQueries) {
+    return false;
+  }
 
   // the following dynamic filters may not trigger if the buffer is currently selected.
   QModelIndex currentIndex = Client::bufferModel()->standardSelectionModel()->currentIndex();
@@ -510,4 +529,5 @@ bool BufferViewFilter::bufferIdLessThan(const BufferId &left, const BufferId &ri
   else
     return QString::compare(Client::networkModel()->data(leftIndex, Qt::DisplayRole).toString(), Client::networkModel()->data(rightIndex, Qt::DisplayRole).toString(), Qt::CaseInsensitive) < 0;
 }
+
 
