@@ -253,6 +253,7 @@
     <file>oxygen/16x16/actions/zoom-original.png</file>
     <file>oxygen/16x16/actions/edit-copy.png</file>
     <file>oxygen/16x16/actions/im-user-offline.png</file>
+    <file>oxygen/16x16/actions/view-refresh.png</file>
     <file>oxygen/16x16/animations/quassel_tray-fade-on-8.png</file>
     <file>oxygen/16x16/animations/quassel_tray-fade-on-13.png</file>
     <file>oxygen/16x16/animations/quassel_tray-alert-4.png</file>
