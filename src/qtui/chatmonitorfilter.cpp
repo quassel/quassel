@@ -165,5 +165,5 @@ void ChatMonitorFilter::buffersSettingChanged(const QVariant &newValue) {
   foreach (QVariant v, newValue.toList()) {
     _bufferIds << v.value<BufferId>();
   }
-  invalidate();
+  invalidateFilter();
 }
