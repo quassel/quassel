@@ -737,22 +737,22 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ChatMonitorView</name>
     <message>
-        <location filename="../src/qtui/chatmonitorview.cpp" line="50"/>
+        <location filename="../src/qtui/chatmonitorview.cpp" line="52"/>
         <source>Show Own Messages</source>
         <translation>Zobrazit vlastní zprávy</translation>
     </message>
     <message>
-        <location filename="../src/qtui/chatmonitorview.cpp" line="57"/>
+        <location filename="../src/qtui/chatmonitorview.cpp" line="59"/>
         <source>Show Network Name</source>
         <translation>Zobrazit název sítě</translation>
     </message>
     <message>
-        <location filename="../src/qtui/chatmonitorview.cpp" line="62"/>
+        <location filename="../src/qtui/chatmonitorview.cpp" line="64"/>
         <source>Show Buffer Name</source>
         <translation>Zobrazit název záložky</translation>
     </message>
     <message>
-        <location filename="../src/qtui/chatmonitorview.cpp" line="69"/>
+        <location filename="../src/qtui/chatmonitorview.cpp" line="71"/>
         <source>Configure...</source>
         <translation>Nastavit...</translation>
     </message>
@@ -1117,12 +1117,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>Client</name>
     <message>
-        <location filename="../src/client/client.cpp" line="268"/>
+        <location filename="../src/client/client.cpp" line="270"/>
         <source>Identity already exists in client!</source>
         <translation>Identita v klientu již existuje!</translation>
     </message>
     <message>
-        <location filename="../src/client/client.cpp" line="362"/>
+        <location filename="../src/client/client.cpp" line="369"/>
         <source>All Chats</source>
         <translation>Všechny pokecy</translation>
     </message>
@@ -1130,7 +1130,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ClientBacklogManager</name>
     <message>
-        <location filename="../src/client/clientbacklogmanager.cpp" line="152"/>
+        <location filename="../src/client/clientbacklogmanager.cpp" line="153"/>
         <source>Processed %1 messages in %2 seconds.</source>
         <translation>Zpracováno %1 zpráv v %2 vteřin.</translation>
     </message>
@@ -1357,7 +1357,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="57"/>
         <source>Whois</source>
-        <translation type="unfinished"></translation>
+        <translation>Kdo je</translation>
     </message>
     <message>
         <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="59"/>
@@ -1377,22 +1377,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="62"/>
         <source>Finger</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="64"/>
         <source>Give Operator Status</source>
-        <translation type="unfinished"></translation>
+        <translation>Přidat práva dozorce</translation>
     </message>
     <message>
         <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="65"/>
         <source>Take Operator Status</source>
-        <translation type="unfinished"></translation>
+        <translation>Odebrat status dozorce</translation>
     </message>
     <message>
         <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="66"/>
         <source>Give Voice</source>
-        <translation type="unfinished"></translation>
+        <translation>Rozkecat</translation>
     </message>
     <message>
         <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="67"/>
@@ -1462,12 +1462,14 @@ p, li { white-space: pre-wrap; }
         <source>Currently, Quassel supports SQLite3 and PostgreSQL. You need to build your
 Qt library with the sqlite or postgres plugin enabled in order for quasselcore
 to work.</source>
-        <translation type="unfinished"></translation>
+        <translation>V současné chvíli Quassel podporuje SQLite3 a PostgreSQL. Musíte sestavit vaši
+Qt knihovnu s podporou sqlite nebo postgres pluginu aby jádro Quasselu
+moho fungovat.</translation>
     </message>
     <message>
         <location filename="../src/core/core.cpp" line="222"/>
         <source>Calling restoreState() even though active sessions exist!</source>
-        <translation type="unfinished"></translation>
+        <translation>Volám restoreState() i kdyz existuje aktivní sezení!</translation>
     </message>
     <message>
         <location filename="../src/core/core.cpp" line="263"/>
@@ -1492,7 +1494,7 @@ to work.</source>
     <message>
         <location filename="../src/core/core.cpp" line="392"/>
         <source>Listening for GUI clients on IPv4 %1 port %2 using protocol version %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Naslouchám pro GUI klienty na IPv4 %1 portu %2 s použitím protokolu verze %3</translation>
     </message>
     <message>
         <location filename="../src/core/core.cpp" line="400"/>
@@ -1502,7 +1504,7 @@ to work.</source>
     <message>
         <location filename="../src/core/core.cpp" line="408"/>
         <source>Listening for GUI clients on IPv6 %1 port %2 using protocol version %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Naslouchám pro GUI klienty na IPv6 %1 portu %2 s použitím protokolu verze %3</translation>
     </message>
     <message>
         <location filename="../src/core/core.cpp" line="419"/>
@@ -1537,7 +1539,7 @@ to work.</source>
     <message>
         <location filename="../src/core/core.cpp" line="504"/>
         <source>&lt;b&gt;Your Quassel Client is too old!&lt;/b&gt;&lt;br&gt;This core needs at least client/core protocol version %1.&lt;br&gt;Please consider upgrading your client.</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Váš Quassel Klient je příliš starý!&lt;/b&gt;&lt;br&gt;Toto jádro potřebuje klienta s protokolem alespoň verze %1.&lt;br&gt;Prosíme zvažte aktualizaci vašeho klienta.</translation>
     </message>
     <message>
         <location filename="../src/core/core.cpp" line="508"/>
@@ -1564,22 +1566,22 @@ to work.</source>
     <message>
         <location filename="../src/core/core.cpp" line="589"/>
         <source>&lt;b&gt;Client not initialized!&lt;/b&gt;&lt;br&gt;You need to send an init message before trying to login.</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Klient není inicializován!&lt;/b&gt;&lt;br&gt;Musíte poslat inicializační zprávu před pokusem o přihlášení.</translation>
     </message>
     <message>
         <location filename="../src/core/core.cpp" line="591"/>
         <source>did not send an init message before trying to login, rejecting.</source>
-        <translation type="unfinished"></translation>
+        <translation>neodeslána inicializační zpráva před pokusem o přihlášení, odmítám.</translation>
     </message>
     <message>
         <location filename="../src/core/core.cpp" line="609"/>
         <source>&lt;b&gt;Invalid username or password!&lt;/b&gt;&lt;br&gt;The username/password combination you supplied could not be found in the database.</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Neplatné uživatelské jméno či heslo!&lt;/b&gt;&lt;br&gt;Kombinace uživatelského jména a hesla kterou jste zadali nebyla nalezena v databázi.</translation>
     </message>
     <message>
         <location filename="../src/core/core.cpp" line="615"/>
         <source>initialized and authenticated successfully as &quot;%1&quot; (UserId: %2).</source>
-        <translation type="unfinished"></translation>
+        <translation>inicializováno a autentifikován jako &quot;%1&quot; (UživId: %2).</translation>
     </message>
     <message>
         <location filename="../src/core/core.cpp" line="626"/>
@@ -2172,22 +2174,22 @@ SOME SPACE</source>
 <context>
     <name>CoreSession</name>
     <message>
-        <location filename="../src/core/coresession.cpp" line="190"/>
+        <location filename="../src/core/coresession.cpp" line="192"/>
         <source>Client</source>
         <translation>Klient</translation>
     </message>
     <message>
-        <location filename="../src/core/coresession.cpp" line="190"/>
+        <location filename="../src/core/coresession.cpp" line="192"/>
         <source>disconnected (UserId: %1).</source>
         <translation>odpojen (IdUživatele: %1).</translation>
     </message>
     <message>
-        <location filename="../src/core/coresession.cpp" line="370"/>
+        <location filename="../src/core/coresession.cpp" line="384"/>
         <source>CoreSession::createNetwork(): Got invalid networkId from Core when trying to create network %1!</source>
         <translation>CoreSession::createNetwork(): Obdrženo špatné networkId od jádra při pokusu o vytvoření sítě %1!</translation>
     </message>
     <message>
-        <location filename="../src/core/coresession.cpp" line="401"/>
+        <location filename="../src/core/coresession.cpp" line="415"/>
         <source>CoreSession::createNetwork(): Trying to create a network that already exists, updating instead!</source>
         <translation>CoreSession::createNetwork(): Síť s daným názvem již existuje. Aktualizuji místo duplikace!</translation>
     </message>
@@ -2303,17 +2305,17 @@ SOME SPACE</source>
     <message>
         <location filename="../src/qtui/ui/debugbufferviewoverlay.ui" line="13"/>
         <source>Debug BufferView Overlay</source>
-        <translation type="unfinished"></translation>
+        <translation>Ladící vrstva záložek</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/debugbufferviewoverlay.ui" line="26"/>
         <source>Overlay View</source>
-        <translation type="unfinished"></translation>
+        <translation>Pohled vrstvy</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/debugbufferviewoverlay.ui" line="39"/>
         <source>Overlay Properties</source>
-        <translation type="unfinished"></translation>
+        <translation>Nastavení vrstvy</translation>
     </message>
 </context>
 <context>
@@ -2614,7 +2616,7 @@ SOME SPACE</source>
     <message>
         <location filename="../src/qtui/settingspages/identitiessettingspage.cpp" line="179"/>
         <source>&lt;li&gt;All identities need an identity name set&lt;/li&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;li&gt;Všechny identity potřebují název&lt;/li&gt;</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/identitiessettingspage.cpp" line="180"/>
@@ -2629,7 +2631,7 @@ SOME SPACE</source>
     <message>
         <location filename="../src/qtui/settingspages/identitiessettingspage.cpp" line="182"/>
         <source>&lt;li&gt;You need to specify an ident for every identity&lt;/li&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;li&gt;Musíte specifikovat ident pro každou identitu&lt;/li&gt;</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/identitiessettingspage.cpp" line="183"/>
@@ -2687,38 +2689,38 @@ SOME SPACE</source>
 <context>
     <name>Identity</name>
     <message>
-        <location filename="../src/common/identity.cpp" line="149"/>
+        <location filename="../src/common/identity.cpp" line="150"/>
         <source>&lt;empty&gt;</source>
         <translation>&lt;prázdné&gt;</translation>
     </message>
     <message>
-        <location filename="../src/common/identity.cpp" line="121"/>
+        <location filename="../src/common/identity.cpp" line="122"/>
         <source>Quassel IRC User</source>
         <translation>Uživatel Qassel IRC</translation>
     </message>
     <message>
-        <location filename="../src/common/identity.cpp" line="155"/>
+        <location filename="../src/common/identity.cpp" line="156"/>
         <source>Gone fishing.</source>
         <translation>Šel jsem rybařit.</translation>
     </message>
     <message>
-        <location filename="../src/common/identity.cpp" line="159"/>
+        <location filename="../src/common/identity.cpp" line="160"/>
         <source>Not here. No, really. not here!</source>
         <translation>Nejsem tu. Vážně tu nejsem!</translation>
     </message>
     <message>
-        <location filename="../src/common/identity.cpp" line="162"/>
+        <location filename="../src/common/identity.cpp" line="163"/>
         <source>All Quassel clients vanished from the face of the earth...</source>
         <translation>Všichni Quassel klienti zmizeli z povrchu země...</translation>
     </message>
     <message>
-        <location filename="../src/common/identity.cpp" line="165"/>
+        <location filename="../src/common/identity.cpp" line="166"/>
         <source>Kindergarten is elsewhere!</source>
         <translation>Tady opravdu není školka!</translation>
     </message>
     <message>
-        <location filename="../src/common/identity.cpp" line="166"/>
         <location filename="../src/common/identity.cpp" line="167"/>
+        <location filename="../src/common/identity.cpp" line="168"/>
         <source>http://quassel-irc.org - Chat comfortably. Anywhere.</source>
         <translation>http://quassel-irc.org - Pohodlné vykecávání. Odkudkoliv.</translation>
     </message>
@@ -2916,7 +2918,7 @@ SOME SPACE</source>
     <message>
         <location filename="../src/qtui/settingspages/identityeditwidget.ui" line="413"/>
         <source>The &quot;ident&quot; is part of your hostmask and, together with your host, uniquely identifies you within the IRC network.</source>
-        <translation type="unfinished"></translation>
+        <translation>&quot;Ident&quot; je částí vaší masky a spolu s názvem vašeho počítače vás unikátně označuje pro IRC síť.</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/identityeditwidget.ui" line="422"/>
@@ -2947,7 +2949,8 @@ SOME SPACE</source>
         <location filename="../src/qtui/settingspages/identityeditwidget.ui" line="516"/>
         <source>Warning: you are not connected with a secured connection to the Quassel Core!
 Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificate!</source>
-        <translation type="unfinished"></translation>
+        <translation>Varování: nejste připojeni k jádru zabezpečeným spojením!
+Pokračování povede k nešifrovanému přenosu vašeho SSL klíče a SSL certifikátu!</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/identityeditwidget.ui" line="545"/>
@@ -2991,6 +2994,303 @@ Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificat
         <location filename="../src/qtui/ircconnectionwizard.cpp" line="112"/>
         <source>Default Identity</source>
         <translation>Výchozí Identita</translation>
+    </message>
+</context>
+<context>
+    <name>IgnoreListEditDlg</name>
+    <message>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="15"/>
+        <source>Configure ignore rule</source>
+        <translation>Nastavení pravidel ignorance</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="27"/>
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Strictness:&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;Dynamic:&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Messages are filtered &quot;on the fly&quot;.&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Whenever you disable/delete the ignore rule,&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;the messages are shown again.&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;Permanent:&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Messages are filtered before they get stored in the database.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="42"/>
+        <source>Strictness</source>
+        <translation>Přísnost</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="48"/>
+        <source>Dynamic</source>
+        <translation>Dynamická</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="51"/>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="61"/>
+        <source>strictnessButtonGroup</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="58"/>
+        <source>Permanent</source>
+        <translation>Trvalá</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="71"/>
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Rule Type:&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;By Sender:&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;The rule is matched against the sender string &lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&quot;nick!ident@host.name&quot;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;By Message:&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;The rule is matched against the actual message content&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; text-decoration: underline;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="86"/>
+        <source>Rule Type</source>
+        <translation>Typ pravidla</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="92"/>
+        <source>Sender</source>
+        <translation>Odesílatel</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="95"/>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="105"/>
+        <source>typeButtonGroup</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="102"/>
+        <source>Message</source>
+        <translation>Zpráva</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="117"/>
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Ignore rule:&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Depending on the type of the rule, the text is matched against either:&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;- &lt;span style=&quot; text-decoration: underline;&quot;&gt;the message content:&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; text-decoration: underline;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Example:&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    &quot;*foobar*&quot; matches any text containing the word &quot;foobar&quot;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;- &lt;span style=&quot; text-decoration: underline;&quot;&gt;the sender string &lt;/span&gt;&lt;span style=&quot; font-style:italic; text-decoration: underline;&quot;&gt;nick!ident@host.name&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-style:italic; text-decoration: underline;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Examples:&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    &quot;*@foobar.com&quot; matches any sender from host &quot;foobar.com&quot;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;    &quot;stupid!.+&quot; (RegEx) matches any sender with nickname &quot;stupid&quot; from any host&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="138"/>
+        <source>Ignore rule</source>
+        <translation>Pravidlo ignorance</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="149"/>
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Use RegularExpressions:&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;If enabled, rules follow regular expression syntax.&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Otherwise rules allow wildcard matching with &lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt; *: represents &quot;any amount of any character&quot;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt; ?: represents &quot;one or none character&quot;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="163"/>
+        <source>Use Regular Expressions</source>
+        <translation>Použít regulární výrazy</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="170"/>
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Enable / Disable:&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:768;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Only enabled rules are filtered.&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:768;&quot;&gt;For dynamic rules, disabling actually shows the filtered messages again.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="180"/>
+        <source>Enabled</source>
+        <translation>Povoleno</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="192"/>
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Scope:&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;Global:&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;The rule is active for any channel on any network&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;Network:&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;The list below is interpreted as a list of networks for which the rule should match&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;Channel:&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;The list below is interpreted as a list of channels for which the rule should match&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="208"/>
+        <source>Scope</source>
+        <translation>Rozsah</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="216"/>
+        <source>Global</source>
+        <translation>Globální</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="219"/>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="229"/>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="239"/>
+        <source>scopeButtonGroup</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="226"/>
+        <source>Network</source>
+        <translation>Síť</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="236"/>
+        <source>Channel</source>
+        <translation>Kanál</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/ignorelisteditdlg.ui" line="248"/>
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Scope rule:&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;A scope rule is a semicolon separated list of either&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;network or channel names.&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Example:&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&quot;#quassel*; #foobar&quot;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;would match on #foobar and on any channel starting with &quot;#quassel&quot;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>IgnoreListModel</name>
+    <message>
+        <location filename="../src/qtui/settingspages/ignorelistmodel.cpp" line="69"/>
+        <source>&lt;b&gt;Enable / Disable:&lt;/b&gt;&lt;br /&gt;Only enabled rules are filtered.&lt;br /&gt;For dynamic rules, disabling actually shows the filtered messages again</source>
+        <translation>&lt;b&gt;Povolit / Zakázat:&lt;/b&gt;&lt;br /&gt;Pouze povolená pravidla jsou filtrována.&lt;br /&gt;Pro dynamická pravidla jsou jejich vypnutím filtrované zprávy znovu zobrazeny</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/ignorelistmodel.cpp" line="73"/>
+        <source>&lt;b&gt;Ignore rule:&lt;/b&gt;&lt;br /&gt;Depending on the type of the rule, the text is matched against either:&lt;br /&gt;&lt;br /&gt;- &lt;u&gt;the message content:&lt;/u&gt;&lt;br /&gt;&lt;i&gt;Example:&lt;i&gt;&lt;br /&gt;    &quot;*foobar*&quot; matches any text containing the word &quot;foobar&quot;&lt;br /&gt;&lt;br /&gt;- &lt;u&gt;the sender string &lt;i&gt;nick!ident@host.name&lt;i&gt;&lt;/u&gt;&lt;br /&gt;&lt;i&gt;Example:&lt;/i&gt;&lt;br /&gt;    &quot;*@foobar.com&quot; matches any sender from host foobar.com&lt;br /&gt;    &quot;stupid!.+&quot; (RegEx) matches any sender with nickname &quot;stupid&quot; from any host&lt;br /&gt;</source>
+        <translation>&lt;b&gt;Pravidlo ignorance:&lt;/b&gt;&lt;br /&gt;Podle typu pravidla text je porovnáván vůči:&lt;br /&gt;&lt;br /&gt;- &lt;u&gt;obsahu zprávy:&lt;/u&gt;&lt;br /&gt;&lt;i&gt;Příklad:&lt;i&gt;&lt;br /&gt;    &quot;*foobar*&quot; bude platit na jakýkoliv text obsahující &quot;foobar&quot;&lt;br /&gt;&lt;br /&gt;- &lt;u&gt;odesílateli &lt;i&gt;nick!ident@host.name&lt;i&gt;&lt;/u&gt;&lt;br /&gt;&lt;i&gt;Příklad:&lt;/i&gt;&lt;br /&gt;    &quot;*@foobar.com&quot; platí na všechny odesílatele z domény foobar.com&lt;br /&gt;    &quot;stupid!.+&quot; (RegEx) bude pratit na kohokoliv s přezdívkou &quot;stupid&quot; a z libovolné adresy&lt;br /&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/ignorelistmodel.cpp" line="89"/>
+        <source>By Sender</source>
+        <translation>Dle odesílatele</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/ignorelistmodel.cpp" line="91"/>
+        <source>By Message</source>
+        <translation>Dle zprávy</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/ignorelistmodel.cpp" line="191"/>
+        <source>Enabled</source>
+        <translation>Povoleno</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/ignorelistmodel.cpp" line="192"/>
+        <source>Type</source>
+        <translation>Typ</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/ignorelistmodel.cpp" line="193"/>
+        <source>Ignore Rule</source>
+        <translation>Pravidlo ignorance</translation>
+    </message>
+</context>
+<context>
+    <name>IgnoreListSettingsPage</name>
+    <message>
+        <location filename="../src/qtui/settingspages/ignorelistsettingspage.cpp" line="34"/>
+        <source>Misc</source>
+        <translation>Různé</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/ignorelistsettingspage.cpp" line="34"/>
+        <source>Ignorelist</source>
+        <translation>Seznam Ignorovaných</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/ignorelistsettingspage.cpp" line="111"/>
+        <source>Rule already exists</source>
+        <translation>Pravidlo již existuje</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/ignorelistsettingspage.cpp" line="112"/>
+        <source>There is already a rule
+&quot;%1&quot;
+Please choose another rule.</source>
+        <translation>Pravidlo již existuje
+&quot;%1&quot;
+Prosím vyberte jiné pravidlo.
+</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/ignorelistsettingspage.ui" line="14"/>
+        <source>Form</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/ignorelistsettingspage.ui" line="28"/>
+        <source>New</source>
+        <translation>Nová</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/ignorelistsettingspage.ui" line="42"/>
+        <source>Delete</source>
+        <translation>Smazat</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/ignorelistsettingspage.ui" line="56"/>
+        <source>&amp;Edit</source>
+        <translation>&amp;Editovat</translation>
     </message>
 </context>
 <context>
@@ -3525,212 +3825,212 @@ Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificat
 <context>
     <name>MainWin</name>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="278"/>
+        <location filename="../src/qtui/mainwin.cpp" line="280"/>
         <source>&amp;Connect to Core...</source>
         <translation>Přip&amp;ojit k jádru...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="280"/>
+        <location filename="../src/qtui/mainwin.cpp" line="282"/>
         <source>&amp;Disconnect from Core</source>
         <translation>O&amp;dpojit od jádra</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="282"/>
+        <location filename="../src/qtui/mainwin.cpp" line="284"/>
         <source>Core &amp;Info...</source>
         <translation>&amp;Informace jádra...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="286"/>
+        <location filename="../src/qtui/mainwin.cpp" line="288"/>
         <source>&amp;Quit</source>
         <translation>&amp;Ukončit</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="287"/>
+        <location filename="../src/qtui/mainwin.cpp" line="289"/>
         <source>Ctrl+Q</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="290"/>
+        <location filename="../src/qtui/mainwin.cpp" line="292"/>
         <source>&amp;Configure Chat Lists...</source>
         <translation>&amp;Nastavit seznam pokeců...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="297"/>
+        <location filename="../src/qtui/mainwin.cpp" line="299"/>
         <source>Show &amp;Search Bar</source>
         <translation>Zobrazit vy&amp;hledávání</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="284"/>
+        <location filename="../src/qtui/mainwin.cpp" line="286"/>
         <source>Configure &amp;Networks...</source>
         <translation>Nastavit &amp;sítě...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="293"/>
+        <location filename="../src/qtui/mainwin.cpp" line="295"/>
         <source>&amp;Lock Layout</source>
         <translation>U&amp;zamknout rozvržení</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="299"/>
+        <location filename="../src/qtui/mainwin.cpp" line="301"/>
         <source>Show Away Log</source>
         <translation>Zobrazit Log pro Pryč</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="301"/>
+        <location filename="../src/qtui/mainwin.cpp" line="303"/>
         <source>Show Status &amp;Bar</source>
         <translation>Zo&amp;brazit stavový řádek</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="305"/>
+        <location filename="../src/qtui/mainwin.cpp" line="307"/>
         <source>&amp;Configure Quassel...</source>
         <translation>&amp;Nastavit Quassel...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="306"/>
+        <location filename="../src/qtui/mainwin.cpp" line="308"/>
         <source>F7</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="309"/>
+        <location filename="../src/qtui/mainwin.cpp" line="311"/>
         <source>&amp;About Quassel</source>
         <translation>O progr&amp;amu Quassel</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="311"/>
+        <location filename="../src/qtui/mainwin.cpp" line="313"/>
         <source>About &amp;Qt</source>
         <translation>O &amp;Qt</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="313"/>
+        <location filename="../src/qtui/mainwin.cpp" line="315"/>
         <source>Debug &amp;NetworkModel</source>
         <translation>Ladění Sít&amp;ovéhoModelu</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="315"/>
+        <location filename="../src/qtui/mainwin.cpp" line="317"/>
         <source>Debug &amp;BufferViewOverlay</source>
         <translation>Ladění vrstvy P&amp;ohledu na záložky</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="317"/>
+        <location filename="../src/qtui/mainwin.cpp" line="319"/>
         <source>Debug &amp;MessageModel</source>
         <translation>Ladění &amp;ModeluZpráv</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="319"/>
+        <location filename="../src/qtui/mainwin.cpp" line="321"/>
         <source>Debug &amp;HotList</source>
-        <translation type="unfinished"></translation>
+        <translation>Ladění &amp;Seznamů rozhovorů</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="321"/>
+        <location filename="../src/qtui/mainwin.cpp" line="323"/>
         <source>Debug &amp;Log</source>
         <translation>Ladící &amp;Log</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="323"/>
+        <location filename="../src/qtui/mainwin.cpp" line="325"/>
         <source>Reload Stylesheet</source>
         <translation>Přenačíst styl</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="327"/>
+        <location filename="../src/qtui/mainwin.cpp" line="329"/>
         <source>Jump to hot chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Přejít na další aktivní záložku</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="334"/>
+        <location filename="../src/qtui/mainwin.cpp" line="336"/>
         <source>&amp;File</source>
         <translation>S&amp;oubor</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="347"/>
+        <location filename="../src/qtui/mainwin.cpp" line="349"/>
         <source>&amp;Networks</source>
         <translation>&amp;Sítě</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="353"/>
+        <location filename="../src/qtui/mainwin.cpp" line="355"/>
         <source>&amp;View</source>
         <translation>&amp;Záložky</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="354"/>
+        <location filename="../src/qtui/mainwin.cpp" line="356"/>
         <source>&amp;Chat Lists</source>
         <translation>&amp;Seznam pokeců</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="356"/>
+        <location filename="../src/qtui/mainwin.cpp" line="358"/>
         <source>&amp;Toolbars</source>
         <translation>Liš&amp;ty</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="368"/>
+        <location filename="../src/qtui/mainwin.cpp" line="370"/>
         <source>&amp;Settings</source>
         <translation>Na&amp;stavení</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="375"/>
+        <location filename="../src/qtui/mainwin.cpp" line="377"/>
         <source>&amp;Help</source>
         <translation>&amp;Nápověda</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="383"/>
+        <location filename="../src/qtui/mainwin.cpp" line="385"/>
         <source>Debug</source>
         <translation>Debug</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="511"/>
+        <location filename="../src/qtui/mainwin.cpp" line="513"/>
         <source>Nicks</source>
         <translation>Přezdívky</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="520"/>
+        <location filename="../src/qtui/mainwin.cpp" line="522"/>
         <source>Show Nick List</source>
         <translation>Zobrazit seznam přezdívek</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="531"/>
+        <location filename="../src/qtui/mainwin.cpp" line="533"/>
         <source>Chat Monitor</source>
         <translation>Monitor pokecu</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="542"/>
+        <location filename="../src/qtui/mainwin.cpp" line="544"/>
         <source>Show Chat Monitor</source>
         <translation>Zobrazí monitor pokecu</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="546"/>
+        <location filename="../src/qtui/mainwin.cpp" line="548"/>
         <source>Inputline</source>
         <translation>Vstupní řádka</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="555"/>
+        <location filename="../src/qtui/mainwin.cpp" line="557"/>
         <source>Show Input Line</source>
         <translation>Zobrasit řádku se vstupem</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="566"/>
+        <location filename="../src/qtui/mainwin.cpp" line="568"/>
         <source>Topic</source>
         <translation>Téma</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="578"/>
+        <location filename="../src/qtui/mainwin.cpp" line="580"/>
         <source>Show Topic Line</source>
         <translation>Zobrazit řádek s tématem</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="644"/>
+        <location filename="../src/qtui/mainwin.cpp" line="646"/>
         <source>Main Toolbar</source>
         <translation>Hlavní nástrojová lišta</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="683"/>
+        <location filename="../src/qtui/mainwin.cpp" line="685"/>
         <source>Connected to core.</source>
         <translation>Připojen k jádru.</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="717"/>
+        <location filename="../src/qtui/mainwin.cpp" line="719"/>
         <source>Core Lag: %1</source>
         <translation>Spoždění jádra: %1</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="753"/>
+        <location filename="../src/qtui/mainwin.cpp" line="755"/>
         <source>Not connected to core.</source>
         <translation>Nepřipojen k jádru.</translation>
     </message>
@@ -3825,7 +4125,7 @@ Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificat
         <translation>Prosím zadejte název sítě:</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/networkssettingspage.cpp" line="705"/>
+        <location filename="../src/qtui/settingspages/networkssettingspage.cpp" line="690"/>
         <source>Add Network</source>
         <translation>Přidat síť</translation>
     </message>
@@ -3952,12 +4252,12 @@ Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificat
         <translation>Špatné nastavení sítě</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/networkssettingspage.cpp" line="542"/>
+        <location filename="../src/qtui/settingspages/networkssettingspage.cpp" line="527"/>
         <source>Delete Network?</source>
         <translation>Smazat síť?</translation>
     </message>
     <message>
-        <location filename="../src/qtui/settingspages/networkssettingspage.cpp" line="543"/>
+        <location filename="../src/qtui/settingspages/networkssettingspage.cpp" line="528"/>
         <source>Do you really want to delete the network &quot;%1&quot; and all related settings, including the backlog?</source>
         <translation>Opravdu chcete smazat síť &quot;%1&quot; a veškeré její nastavení, včetně historie?</translation>
     </message>
@@ -4288,22 +4588,22 @@ Pokud FAKTICKY nevíte co děláte radši ponechte nastaveno na ISO-8859-1!</tra
     <message>
         <location filename="../src/uisupport/qssparser.cpp" line="192"/>
         <source>Invalid subelement name in %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Neplatný název podelementu v %1</translation>
     </message>
     <message>
         <location filename="../src/uisupport/qssparser.cpp" line="234"/>
         <source>Invalid message type in %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Neplatný typ zprávy v %1</translation>
     </message>
     <message>
         <location filename="../src/uisupport/qssparser.cpp" line="243"/>
         <source>Invalid condition %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Neplatný stav: %1</translation>
     </message>
     <message>
         <location filename="../src/uisupport/qssparser.cpp" line="255"/>
         <source>Invalid message label: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Neplatný popisek zprávy: %1</translation>
     </message>
     <message>
         <location filename="../src/uisupport/qssparser.cpp" line="266"/>
@@ -4313,22 +4613,22 @@ Pokud FAKTICKY nevíte co děláte radši ponechte nastaveno na ISO-8859-1!</tra
     <message>
         <location filename="../src/uisupport/qssparser.cpp" line="270"/>
         <source>Senderhash can be at most &quot;0x0f&quot;!</source>
-        <translation type="unfinished"></translation>
+        <translation>Hash odesílatele může být maximálně &quot;0x0f&quot;!</translation>
     </message>
     <message>
         <location filename="../src/uisupport/qssparser.cpp" line="285"/>
         <source>Invalid format name: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Neplatný název formátu: %1</translation>
     </message>
     <message>
         <location filename="../src/uisupport/qssparser.cpp" line="292"/>
         <source>Illegal IRC color specification (must be between 00 and 0f): %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Neplatná specifikace IRC barvy (musí být mezi 00 a 0f): %1</translation>
     </message>
     <message>
         <location filename="../src/uisupport/qssparser.cpp" line="300"/>
         <source>Unhandled condition: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Neobsloužený stav: %1</translation>
     </message>
     <message>
         <location filename="../src/uisupport/qssparser.cpp" line="329"/>
@@ -4343,7 +4643,7 @@ Pokud FAKTICKY nevíte co děláte radši ponechte nastaveno na ISO-8859-1!</tra
     <message>
         <location filename="../src/uisupport/qssparser.cpp" line="364"/>
         <source>Invalid chatlist state %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Neplatný stav seznamu pokeců %1</translation>
     </message>
     <message>
         <location filename="../src/uisupport/qssparser.cpp" line="390"/>
@@ -4392,17 +4692,17 @@ Pokud FAKTICKY nevíte co děláte radši ponechte nastaveno na ISO-8859-1!</tra
     <message>
         <location filename="../src/uisupport/qssparser.cpp" line="644"/>
         <source>Invalid font style specification: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Neplatná specifikace stylu písma: %1</translation>
     </message>
     <message>
         <location filename="../src/uisupport/qssparser.cpp" line="657"/>
         <source>Invalid font weight specification: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Neplatná specifikace proporcí písma: %1</translation>
     </message>
     <message>
         <location filename="../src/uisupport/qssparser.cpp" line="667"/>
         <source>Invalid font size specification: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Neplatná specifikce velikosti písma: %1</translation>
     </message>
 </context>
 <context>
@@ -4670,27 +4970,27 @@ Pokud FAKTICKY nevíte co děláte radši ponechte nastaveno na ISO-8859-1!</tra
 <context>
     <name>SignalProxy</name>
     <message>
-        <location filename="../src/common/signalproxy.cpp" line="951"/>
+        <location filename="../src/common/signalproxy.cpp" line="868"/>
         <source>Peer tried to send package larger than max package size!</source>
         <translation>Peer se pokusil odeslat balíček větší než je maximální povolená velikost!</translation>
     </message>
     <message>
-        <location filename="../src/common/signalproxy.cpp" line="956"/>
+        <location filename="../src/common/signalproxy.cpp" line="873"/>
         <source>Peer tried to send 0 byte package!</source>
         <translation>Peer se pokusil odeslat balíček s nulovou velikostí!</translation>
     </message>
     <message>
-        <location filename="../src/common/signalproxy.cpp" line="973"/>
+        <location filename="../src/common/signalproxy.cpp" line="890"/>
         <source>Peer sent corrupted compressed data!</source>
         <translation>Peer odeslal porušená komprimovaná data!</translation>
     </message>
     <message>
-        <location filename="../src/common/signalproxy.cpp" line="988"/>
+        <location filename="../src/common/signalproxy.cpp" line="905"/>
         <source>Peer sent corrupt data: unable to load QVariant!</source>
         <translation>Peer odeslal porušená data: nezdařilo se načítaní QVariant!</translation>
     </message>
     <message>
-        <location filename="../src/common/signalproxy.cpp" line="1088"/>
+        <location filename="../src/common/signalproxy.cpp" line="1033"/>
         <source>Disconnecting</source>
         <translation>Odpojuji</translation>
     </message>
@@ -4891,12 +5191,12 @@ Pokud FAKTICKY nevíte co děláte radši ponechte nastaveno na ISO-8859-1!</tra
     <message>
         <location filename="../src/qtui/taskbarnotificationbackend.cpp" line="67"/>
         <source>Activate dock entry, timeout:</source>
-        <translation type="unfinished"></translation>
+        <translation>Zpoždění zobrazení v panelu:</translation>
     </message>
     <message>
         <location filename="../src/qtui/taskbarnotificationbackend.cpp" line="69"/>
         <source>Mark taskbar entry, timeout:</source>
-        <translation type="unfinished"></translation>
+        <translation>Zpoždění zobrazení v panelu:</translation>
     </message>
     <message>
         <location filename="../src/qtui/taskbarnotificationbackend.cpp" line="74"/>
@@ -4964,7 +5264,7 @@ Pokud FAKTICKY nevíte co děláte radši ponechte nastaveno na ISO-8859-1!</tra
     <message>
         <location filename="../src/uisupport/toolbaractionprovider.cpp" line="38"/>
         <source>Whois</source>
-        <translation type="unfinished"></translation>
+        <translation>Kdo je</translation>
     </message>
     <message>
         <location filename="../src/uisupport/toolbaractionprovider.cpp" line="38"/>
@@ -4974,22 +5274,22 @@ Pokud FAKTICKY nevíte co děláte radši ponechte nastaveno na ISO-8859-1!</tra
     <message>
         <location filename="../src/uisupport/toolbaractionprovider.cpp" line="40"/>
         <source>Op</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/uisupport/toolbaractionprovider.cpp" line="40"/>
         <source>Give operator privileges to user</source>
-        <translation type="unfinished"></translation>
+        <translation>Přidá práva dozorce uživateli</translation>
     </message>
     <message>
         <location filename="../src/uisupport/toolbaractionprovider.cpp" line="41"/>
         <source>Deop</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/uisupport/toolbaractionprovider.cpp" line="41"/>
         <source>Take operator privileges from user</source>
-        <translation type="unfinished"></translation>
+        <translation>Odebere práva dozorce uživateli</translation>
     </message>
     <message>
         <location filename="../src/uisupport/toolbaractionprovider.cpp" line="42"/>
