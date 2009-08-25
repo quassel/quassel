@@ -49,7 +49,6 @@ set(SOURCES
     systraynotificationbackend.cpp
     taskbarnotificationbackend.cpp
     titlesetter.cpp
-    topiclabel.cpp
     topicwidget.cpp
     verticaldock.cpp
     webpreviewitem.cpp)
@@ -94,7 +93,6 @@ set(MOC_HDRS
     systraynotificationbackend.h
     taskbarnotificationbackend.h
     titlesetter.h
-    topiclabel.h
     topicwidget.h
     verticaldock.h)
 
