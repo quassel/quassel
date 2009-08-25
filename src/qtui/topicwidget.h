@@ -44,6 +44,7 @@ private slots:
   void on_topicEditButton_clicked();
   void switchEditable();
   void switchPlain();
+  void clickableActivated(const Clickable &);
 
 private:
   Ui::TopicWidget ui;

@@ -30,8 +30,9 @@ TopicWidget::TopicWidget(QWidget *parent)
   ui.setupUi(this);
   ui.topicEditButton->setIcon(SmallIcon("edit-rename"));
   ui.topicLineEdit->setWordWrapEnabled(true);
-
   ui.topicLineEdit->installEventFilter(this);
+
+  connect(ui.topicLabel, SIGNAL(clickableActivated(Clickable)), SLOT(clickableActivated(Clickable)));
 }
 
 void TopicWidget::currentChanged(const QModelIndex &current, const QModelIndex &previous) {
@@ -54,6 +55,11 @@ void TopicWidget::setTopic(const QString &newtopic) {
   ui.topicLabel->setText(newtopic);
   ui.topicLineEdit->setText(newtopic);
   switchPlain();
+}
+
+void TopicWidget::clickableActivated(const Clickable &click) {
+  NetworkId networkId = selectionModel()->currentIndex().data(NetworkModel::NetworkIdRole).value<NetworkId>();
+  click.activate(networkId, _topic);
 }
 
 void TopicWidget::on_topicLineEdit_textEntered() {

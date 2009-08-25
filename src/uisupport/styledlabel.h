@@ -23,6 +23,7 @@
 
 #include <QFrame>
 
+#include "clickable.h"
 #include "uistyle.h"
 
 class StyledLabel : public QFrame {
@@ -45,27 +46,35 @@ public:
   inline bool toolTipEnabled() const { return _toolTipEnabled; }
   void setToolTipEnabled(bool);
 
+signals:
+  void clickableActivated(const Clickable &click);
+
 protected:
   virtual void paintEvent(QPaintEvent *event);
   virtual void resizeEvent(QResizeEvent *event);
+  virtual void leaveEvent(QEvent *);
+  virtual void mouseMoveEvent(QMouseEvent *event);
+  virtual void mousePressEvent(QMouseEvent *event);
 
-  //void mouseMoveEvent(QMouseEvent *event);
-  //void mousePressEvent(QMouseEvent *event);
-  //void mouseReleaseEvent(QMouseEvent *event);
-  //void mouseDoubleClickEvent(QMouseEvent *event);
+  int posToCursor(const QPointF &pos);
 
 private:
   QSize _sizeHint;
   QTextOption::WrapMode _wrapMode;
   Qt::Alignment _alignment;
   QTextLayout _layout;
+  ClickableList _clickables;
   bool _toolTipEnabled;
 
   QList<QTextLayout::FormatRange> _layoutList;
+  QVector<QTextLayout::FormatRange> _extraLayoutList;
 
   void layout();
   void updateSizeHint();
   void updateToolTip();
+
+  void setHoverMode(int start, int length);
+  void endHoverMode();
 };
 
 #endif

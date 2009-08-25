@@ -32,6 +32,8 @@ StyledLabel::StyledLabel(QWidget *parent)
   _alignment(Qt::AlignVCenter|Qt::AlignLeft),
   _toolTipEnabled(true)
 {
+  setMouseTracking(true);
+
   QTextOption opt = _layout.textOption();
   opt.setWrapMode(_wrapMode);
   opt.setAlignment(_alignment);
@@ -89,10 +91,31 @@ void StyledLabel::setText(const QString &text) {
   UiStyle::StyledString sstr = style->styleString(style->mircToInternal(text), UiStyle::PlainMsg);
   QList<QTextLayout::FormatRange> layoutList = style->toTextLayoutList(sstr.formatList, sstr.plainText.length(), 0);
 
+  // Use default font rather than the style's
+  QTextLayout::FormatRange fmtRange;
+  fmtRange.format.setFont(font());
+  fmtRange.start = 0;
+  fmtRange.length = sstr.plainText.length();
+  layoutList << fmtRange;
+
+  // Mark URLs
+  _clickables = ClickableList::fromString(sstr.plainText);
+  foreach(Clickable click, _clickables) {
+    if(click.type() == Clickable::Url) {
+      QTextLayout::FormatRange range;
+      range.start = click.start();
+      range.length = click.length();
+      range.format.setForeground(palette().link());
+      layoutList << range;
+    }
+  }
+
   _layout.setText(sstr.plainText);
   _layout.setAdditionalFormats(layoutList);
 
   layout();
+
+  endHoverMode();
 }
 
 void StyledLabel::updateToolTip() {
@@ -126,5 +149,62 @@ void StyledLabel::paintEvent(QPaintEvent *) {
   QPainter painter(this);
 
   qreal y = (frameRect().height() - _layout.boundingRect().height()) / 2;
-  _layout.draw(&painter, QPointF(0, y), QVector<QTextLayout::FormatRange>());
+  _layout.draw(&painter, QPointF(0, y), _extraLayoutList);
 }
+
+int StyledLabel::posToCursor(const QPointF &pos) {
+  if(pos.y() < 0 || pos.y() > height())
+    return -1;
+
+  for(int l = _layout.lineCount() - 1; l >= 0; l--) {
+    QTextLine line = _layout.lineAt(l);
+    if(pos.y() >= line.y()) {
+      return line.xToCursor(pos.x(), QTextLine::CursorOnCharacter);
+    }
+  }
+  return -1;
+}
+
+void StyledLabel::mouseMoveEvent(QMouseEvent *event) {
+  if(event->buttons() == Qt::NoButton) {
+    Clickable click = _clickables.atCursorPos(posToCursor(event->posF()));
+    if(click.isValid())
+      setHoverMode(click.start(), click.length());
+    else
+      endHoverMode();
+  }
+}
+
+void StyledLabel::leaveEvent(QEvent *) {
+  endHoverMode();
+}
+
+void StyledLabel::mousePressEvent(QMouseEvent *event) {
+  if(event->button() == Qt::LeftButton) {
+    Clickable click = _clickables.atCursorPos(posToCursor(event->posF()));
+    if(click.isValid())
+      emit clickableActivated(click);
+  }
+}
+
+void StyledLabel::setHoverMode(int start, int length) {
+  if(_extraLayoutList.count() >= 1 && _extraLayoutList.first().start == start && _extraLayoutList.first().length == length)
+    return;
+
+  QTextLayout::FormatRange range;
+  range.start = start;
+  range.length = length;
+  range.format.setFontUnderline(true);
+  _extraLayoutList.clear();
+  _extraLayoutList << range;
+
+  setCursor(Qt::PointingHandCursor);
+  update();
+}
+
+void StyledLabel::endHoverMode() {
+  _extraLayoutList.clear();
+  setCursor(Qt::ArrowCursor);
+  update();
+}
+
