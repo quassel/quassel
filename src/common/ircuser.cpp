@@ -257,6 +257,7 @@ void IrcUser::quit() {
     channel->part(this);
   }
   network()->removeIrcUser(this);
+  SYNC(NO_ARG)
   emit quited();
 }
 
