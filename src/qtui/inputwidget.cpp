@@ -49,6 +49,7 @@ InputWidget::InputWidget(QWidget *parent)
   ui.ownNick->setSizeAdjustPolicy(QComboBox::AdjustToContents);
   ui.ownNick->installEventFilter(new MouseWheelFilter(this));
   ui.inputEdit->installEventFilter(new JumpKeyHandler(this));
+  ui.inputEdit->installEventFilter(this);
 
   ui.inputEdit->setMinHeight(1);
   ui.inputEdit->setMaxHeight(5);
@@ -114,32 +115,31 @@ bool InputWidget::eventFilter(QObject *watched, QEvent *event) {
   if(event->type() != QEvent::KeyPress)
     return false;
 
+  QKeyEvent *keyEvent = static_cast<QKeyEvent*>(event);
+
   // keys from BufferView should be sent to (and focus) the input line
   BufferView *view = qobject_cast<BufferView *>(watched);
   if(view) {
-    QKeyEvent *keyEvent = static_cast<QKeyEvent*>(event);
     if(keyEvent->text().length() == 1 && !(keyEvent->modifiers() & (Qt::ControlModifier ^ Qt::AltModifier)) ) { // normal key press
       QChar c = keyEvent->text().at(0);
       if(c.isLetterOrNumber() || c.isSpace() || c.isPunct() || c.isSymbol()) {
         setFocus();
         QCoreApplication::sendEvent(inputLine(), keyEvent);
         return true;
-      } else
-        return false;
+      }
     }
+    return false;
+  } else if(watched == ui.inputEdit) {
+    if(keyEvent->matches(QKeySequence::Find)) {
+      QAction *act = GraphicalUi::actionCollection()->action("ToggleSearchBar");
+      if(act) {
+        act->toggle();
+        return true;
+      }
+    }
+    return false;
   }
   return false;
-}
-
-void InputWidget::keyPressEvent(QKeyEvent * event) {
-  if(event->matches(QKeySequence::Find)) {
-    QAction *act = GraphicalUi::actionCollection()->action("ToggleSearchBar");
-    if(act) {
-      act->toggle();
-      return;
-    }
-  }
-  AbstractItemView::keyPressEvent(event);
 }
 
 void InputWidget::currentChanged(const QModelIndex &current, const QModelIndex &previous) {
@@ -285,7 +285,7 @@ void InputWidget::updateNickSelector() const {
     if(!me->userModes().isEmpty())
       nicks[nickIdx] += QString(" (+%1)").arg(me->userModes());
   }
-      
+
   ui.ownNick->addItems(nicks);
 
   if(me && me->isAway())

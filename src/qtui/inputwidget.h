@@ -44,7 +44,6 @@ public:
 
 protected:
   virtual bool eventFilter(QObject *watched, QEvent *event);
-  virtual void keyPressEvent(QKeyEvent * event);
 
 protected slots:
   virtual void currentChanged(const QModelIndex &current, const QModelIndex &previous);
