@@ -18,7 +18,33 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QDesktopServices>
+#include <QModelIndex>
+#include <QUrl>
+
+#include "buffermodel.h"
 #include "clickable.h"
+#include "client.h"
+
+void Clickable::activate(NetworkId networkId, const QString &text) const {
+  if(!isValid())
+    return;
+
+  QString str = text.mid(start(), length());
+
+  switch(type()) {
+    case Clickable::Url:
+      if(!str.contains("://"))
+        str = "http://" + str;
+      QDesktopServices::openUrl(QUrl::fromEncoded(str.toUtf8(), QUrl::TolerantMode));
+      break;
+    case Clickable::Channel:
+      Client::bufferModel()->switchToOrJoinBuffer(networkId, str);
+      break;
+    default:
+      break;
+  }
+}
 
 // NOTE: This method is not threadsafe and not reentrant!
 //       (RegExps are not constant while matching, and they are static here for efficiency)
@@ -83,4 +109,12 @@ ClickableList ClickableList::fromString(const QString &str) {
     }
   } while(type >= 0);
   return result;
+}
+
+Clickable ClickableList::atCursorPos(int idx) {
+  foreach(const Clickable &click, *this) {
+    if(idx >= click.start() && idx < click.start() + click.length())
+      return click;
+  }
+  return Clickable();
 }

@@ -458,13 +458,7 @@ void ContentsChatItem::doLayout(QTextLayout *layout) const {
 }
 
 Clickable ContentsChatItem::clickableAt(const QPointF &pos) const {
-  qint16 idx = posToCursor(pos);
-  for(int i = 0; i < privateData()->clickables.count(); i++) {
-    Clickable click = privateData()->clickables.at(i);
-    if(idx >= click.start() && idx < click.start() + click.length())
-      return click;
-  }
-  return Clickable();
+  return privateData()->clickables.atCursorPos(posToCursor(pos));
 }
 
 UiStyle::FormatList ContentsChatItem::formatList() const {
@@ -505,30 +499,12 @@ void ContentsChatItem::endHoverMode() {
 
 void ContentsChatItem::handleClick(const QPointF &pos, ChatScene::ClickMode clickMode) {
   if(clickMode == ChatScene::SingleClick) {
-    Clickable click = clickableAt(pos);
-    if(click.isValid()) {
-      QString str = data(ChatLineModel::DisplayRole).toString().mid(click.start(), click.length());
-      switch(click.type()) {
-        case Clickable::Url:
-          if(!str.contains("://"))
-            str = "http://" + str;
-          QDesktopServices::openUrl(QUrl::fromEncoded(str.toUtf8(), QUrl::TolerantMode));
-          break;
-        case Clickable::Channel: {
-          NetworkId networkId = Client::networkModel()->networkId(data(MessageModel::BufferIdRole).value<BufferId>());
-          BufferId bufId = Client::networkModel()->bufferId(networkId, str);
-          if(bufId.isValid()) {
-            QModelIndex targetIdx = Client::networkModel()->bufferIndex(bufId);
-            Client::bufferModel()->switchToBuffer(bufId);
-            if(!targetIdx.data(NetworkModel::ItemActiveRole).toBool())
-              Client::userInput(BufferInfo::fakeStatusBuffer(networkId), QString("/JOIN %1").arg(str));
-          } else
-              Client::userInput(BufferInfo::fakeStatusBuffer(networkId), QString("/JOIN %1").arg(str));
-          break;
-        }
-        default:
-          break;
-      }
+    qint16 idx = posToCursor(pos);
+    Clickable foo = privateData()->clickables.atCursorPos(idx);
+    if(foo.isValid()) {
+      NetworkId networkId = Client::networkModel()->networkId(data(MessageModel::BufferIdRole).value<BufferId>());
+      QString text = data(ChatLineModel::DisplayRole).toString();
+      foo.activate(networkId, text);
     }
   } else if(clickMode == ChatScene::DoubleClick) {
     chatScene()->setSelectingItem(this);

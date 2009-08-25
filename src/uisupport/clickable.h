@@ -23,6 +23,10 @@
 
 #include <QStackedWidget>
 
+#include "types.h"
+
+class QModelIndex;
+
 class Clickable {
 
 public:
@@ -44,6 +48,8 @@ public:
 
   inline bool isValid() const { return _type != Invalid; }
 
+  void activate(NetworkId networkId, const QString &bufferName) const;
+
 private:
   Type _type;
   quint16 _start;
@@ -54,6 +60,8 @@ class ClickableList : public QList<Clickable> {
 
 public:
   static ClickableList fromString(const QString &);
+
+  Clickable atCursorPos(int idx);
 
 };
 

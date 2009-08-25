@@ -38,10 +38,10 @@ public:
   BufferModel(NetworkModel *parent = 0);
 
   bool filterAcceptsRow(int sourceRow, const QModelIndex &parent) const;
-  
+
   inline const SelectionModelSynchronizer *selectionModelSynchronizer() const { return &_selectionModelSynchronizer; }
   inline QItemSelectionModel *standardSelectionModel() const { return _selectionModelSynchronizer.selectionModel(); }
-  
+
   inline void synchronizeSelectionModel(QItemSelectionModel *selectionModel) { _selectionModelSynchronizer.synchronizeSelectionModel(selectionModel); }
   void synchronizeView(QAbstractItemView *view);
 
@@ -51,12 +51,13 @@ public slots:
   void setCurrentIndex(const QModelIndex &newCurrent);
   void switchToBuffer(const BufferId &bufferId);
   void switchToBufferIndex(const QModelIndex &bufferIdx);
-							
+  void switchToOrJoinBuffer(NetworkId network, const QString &bufferName);
+
 private slots:
   void debug_currentChanged(QModelIndex current, QModelIndex previous);
   void newNetwork(NetworkId id);
   void networkConnectionChanged(Network::ConnectionState state);
-    
+
 private:
   SelectionModelSynchronizer _selectionModelSynchronizer;
 };
