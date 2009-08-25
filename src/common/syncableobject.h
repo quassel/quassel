@@ -29,6 +29,7 @@
 #include "signalproxy.h"
 
 class SyncableObject : public QObject {
+  SYNCABLE_OBJECT
   Q_OBJECT
 
 public:
