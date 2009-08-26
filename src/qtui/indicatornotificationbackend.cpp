@@ -79,8 +79,16 @@ void IndicatorNotificationBackend::notify(const Notification &notification) {
       .arg(notification.sender);
   }
   indicator->setProperty("sender", sender);
+
   indicator->setProperty("time", QTime::currentTime());
-  qDebug() << "FIXME icon";
+
+  QModelIndex index = Client::networkModel()->bufferIndex(bufferId);
+  QVariant icon = QtUi::style()->bufferViewItemData(index, Qt::DecorationRole);
+  if (icon.canConvert<QPixmap>()) {
+    QImage image = icon.value<QPixmap>().toImage();
+    indicator->setProperty("icon", image);
+  }
+
   indicator->show();
 }
 
