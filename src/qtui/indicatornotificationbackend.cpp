@@ -23,8 +23,10 @@
 #include <qindicateserver.h>
 #include <qindicateindicatormessage.h>
 
+#include "client.h"
 #include "clientsettings.h"
 #include "mainwin.h"
+#include "networkmodel.h"
 #include "qtui.h"
 
 class Indicator : public QIndicate::IndicatorMessage {
@@ -59,13 +61,24 @@ void IndicatorNotificationBackend::notify(const Notification &notification) {
   if (notification.type != Highlight && notification.type != PrivMsg) {
     return;
   }
-  Indicator *indicator = _indicatorHash.value(notification.bufferId);
+  BufferId bufferId = notification.bufferId;
+  Indicator *indicator = _indicatorHash.value(bufferId);
   if(!indicator) {
     indicator = new Indicator;
-    _indicatorHash.insert(notification.bufferId, indicator);
+    _indicatorHash.insert(bufferId, indicator);
   }
   indicator->lastNotificationId = notification.notificationId;
-  indicator->setProperty("sender", notification.sender);
+
+  BufferInfo::Type type = Client::networkModel()->bufferType(bufferId);
+  QString sender;
+  if (type == BufferInfo::QueryBuffer) {
+    sender = notification.sender;
+  } else {
+    sender = QString("%1 (%2)")
+      .arg(Client::networkModel()->bufferName(bufferId))
+      .arg(notification.sender);
+  }
+  indicator->setProperty("sender", sender);
   indicator->setProperty("time", QTime::currentTime());
   qDebug() << "FIXME icon";
   indicator->show();
