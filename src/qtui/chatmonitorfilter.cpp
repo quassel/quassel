@@ -78,9 +78,9 @@ bool ChatMonitorFilter::filterAcceptsRow(int sourceRow, const QModelIndex &sourc
 
   // ignorelist handling
   // only match if message is not flagged as server msg
-  if(!(flags & Message::ServerMsg) &&
-     Client::ignoreListManager()->match(source_index.data(MessageModel::MessageRole).value<Message>(), Client::networkModel()->networkName(bufferId)))
-      return false;
+  if(!(flags & Message::ServerMsg) && Client::ignoreListManager()
+      && Client::ignoreListManager()->match(source_index.data(MessageModel::MessageRole).value<Message>(), Client::networkModel()->networkName(bufferId)))
+    return false;
   return true;
 }
 
