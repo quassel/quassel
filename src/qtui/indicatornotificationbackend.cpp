@@ -68,6 +68,8 @@ void IndicatorNotificationBackend::notify(const Notification &notification) {
   if(!indicator) {
     indicator = new Indicator;
     _indicatorHash.insert(bufferId, indicator);
+    connect(indicator, SIGNAL(display()),
+      SLOT(indicatorDisplayed()));
   }
   indicator->lastNotificationId = notification.notificationId;
 
@@ -124,6 +126,11 @@ void IndicatorNotificationBackend::enabledChanged(const QVariant &v) {
     _server->hide();
     qDeleteAll(_indicatorHash);
   }
+}
+
+void IndicatorNotificationBackend::indicatorDisplayed() {
+  Indicator *indicator = static_cast<Indicator*>(sender());
+  emit activated(indicator->lastNotificationId);
 }
 
 SettingsPage *IndicatorNotificationBackend::createConfigWidget() const {

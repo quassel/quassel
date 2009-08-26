@@ -49,6 +49,7 @@ public:
 
 private slots:
   void enabledChanged(const QVariant &);
+  void indicatorDisplayed();
 
 private:
   class ConfigWidget;
