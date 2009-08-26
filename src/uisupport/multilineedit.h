@@ -58,7 +58,9 @@ public:
   inline void insert(const QString &newText) { insertPlainText(newText); }
   inline void backspace() { keyPressEvent(new QKeyEvent(QEvent::KeyPress, Qt::Key_Backspace, Qt::NoModifier)); }
   inline bool hasSelectedText() { return textCursor().hasSelection(); }
+
   inline bool isSingleLine() const { return _singleLine; }
+  inline bool pasteProtectionEnabled() const { return _pasteProtectionEnabled; }
 
   virtual QSize sizeHint() const;
   virtual QSize minimumSizeHint() const;
@@ -69,6 +71,7 @@ public slots:
   void setMaxHeight(int numLines);
   void setScrollBarsEnabled(bool enable = true);
   void setSpellCheckEnabled(bool enable = true);
+  void setPasteProtectionEnabled(bool enable = true, QWidget *msgBoxParent = 0);
 
   // Note: Enabling wrap will make isSingleLine() not work correctly, so only use this if minHeight() > 1!
   void setWordWrapEnabled(bool enable = true);
@@ -82,6 +85,7 @@ protected:
 
 private slots:
   void on_returnPressed();
+  void on_returnPressed(const QString &text);
   void on_textChanged();
   void on_documentHeightChanged(qreal height);
 
@@ -98,6 +102,7 @@ private:
   int _minHeight;
   int _maxHeight;
   bool _scrollBarsEnabled;
+  bool _pasteProtectionEnabled;
 
   QSize _sizeHint;
   qreal _lastDocumentHeight;

@@ -54,6 +54,7 @@ InputWidget::InputWidget(QWidget *parent)
   ui.inputEdit->setMinHeight(1);
   ui.inputEdit->setMaxHeight(5);
   ui.inputEdit->setMode(MultiLineEdit::MultiLine);
+  ui.inputEdit->setPasteProtectionEnabled(true);
 
   new TabCompleter(ui.inputEdit);
 
@@ -74,8 +75,11 @@ InputWidget::InputWidget(QWidget *parent)
   s.notify("MaxNumLines", this, SLOT(setMaxLines(QVariant)));
   setMaxLines(s.value("MaxNumLines", 5));
 
-  s.notify("EnableScrollBars", this, SLOT(setEnableScrollBars(QVariant)));
-  setEnableScrollBars(s.value("EnableScrollBars", true));
+  s.notify("EnableScrollBars", this, SLOT(setScrollBarsEnabled(QVariant)));
+  setScrollBarsEnabled(s.value("EnableScrollBars", true));
+
+  s.notify("EnableMultiLine", this, SLOT(setMultiLineEnabled(QVariant)));
+  setMultiLineEnabled(s.value("EnableMultiLine", true));
 
   ActionCollection *coll = QtUi::actionCollection();
 
@@ -107,8 +111,12 @@ void InputWidget::setMaxLines(const QVariant &v) {
   ui.inputEdit->setMaxHeight(v.toInt());
 }
 
-void InputWidget::setEnableScrollBars(const QVariant &v) {
+void InputWidget::setScrollBarsEnabled(const QVariant &v) {
   ui.inputEdit->setScrollBarsEnabled(v.toBool());
+}
+
+void InputWidget::setMultiLineEnabled(const QVariant &v) {
+  ui.inputEdit->setMode(v.toBool()? MultiLineEdit::MultiLine : MultiLineEdit::SingleLine);
 }
 
 bool InputWidget::eventFilter(QObject *watched, QEvent *event) {

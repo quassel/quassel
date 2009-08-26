@@ -166,6 +166,10 @@ void MultiLineEdit::setWordWrapEnabled(bool enable) {
   updateSizeHint();
 }
 
+void MultiLineEdit::setPasteProtectionEnabled(bool enable, QWidget *) {
+  _pasteProtectionEnabled = enable;
+}
+
 void MultiLineEdit::historyMoveBack() {
   addToHistory(text(), true);
 
@@ -293,8 +297,12 @@ void MultiLineEdit::keyPressEvent(QKeyEvent *event) {
 }
 
 void MultiLineEdit::on_returnPressed() {
-  if(!text().isEmpty()) {
-    foreach(const QString &line, text().split('\n', QString::SkipEmptyParts)) {
+  on_returnPressed(text());
+}
+
+void MultiLineEdit::on_returnPressed(const QString & text) {
+  if(!text.isEmpty()) {
+    foreach(const QString &line, text.split('\n', QString::SkipEmptyParts)) {
       if(line.isEmpty())
         continue;
       addToHistory(line);
@@ -309,8 +317,39 @@ void MultiLineEdit::on_textChanged() {
   QString newText = text();
   newText.replace("\r\n", "\n");
   newText.replace('\r', '\n');
-  if(_mode == SingleLine)
-    newText.replace('\n', ' ');
+  if(_mode == SingleLine) {
+    if(!pasteProtectionEnabled())
+      newText.replace('\n', ' ');
+    else if(newText.contains('\n')) {
+      QStringList lines = newText.split('\n', QString::SkipEmptyParts);
+      clear();
+
+      if(lines.count() >= 4) {
+        QString msg = tr("Do you really want to paste %n lines?", "", lines.count());
+        msg += "<p>";
+        for(int i = 0; i < 4; i++) {
+          msg += Qt::escape(lines[i].left(40));
+          if(lines[i].count() > 40)
+            msg += "...";
+          msg += "<br />";
+        }
+        msg += "...</p>";
+        QMessageBox question(QMessageBox::NoIcon, tr("Paste Protection"), msg, QMessageBox::Yes|QMessageBox::No);
+        question.setDefaultButton(QMessageBox::No);
+#ifdef Q_WS_MAC
+        question.setWindowFlags(question.windowFlags() | Qt::Sheet);
+#endif
+        if(question.exec() != QMessageBox::Yes)
+          return;
+      }
+
+      foreach(QString line, lines) {
+        clear();
+        insert(line);
+        on_returnPressed();
+      }
+    }
+  }
 
   _singleLine = (newText.indexOf('\n') < 0);
 

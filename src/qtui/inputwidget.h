@@ -55,7 +55,8 @@ private slots:
   void setEnableSpellCheck(const QVariant &);
   void setShowNickSelector(const QVariant &);
   void setMaxLines(const QVariant &);
-  void setEnableScrollBars(const QVariant &);
+  void setMultiLineEnabled(const QVariant &);
+  void setScrollBarsEnabled(const QVariant &);
 
   void sendText(const QString &text) const;
   void changeNick(const QString &newNick) const;

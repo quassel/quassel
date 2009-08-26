@@ -78,6 +78,15 @@
      <property name="title">
       <string>Multi-Line Editing</string>
      </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <property name="settingsKey" stdset="0">
+      <string>EnableMultiLine</string>
+     </property>
+     <property name="defaultValue" stdset="0">
+      <bool>true</bool>
+     </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
