@@ -45,6 +45,8 @@ IndicatorNotificationBackend::IndicatorNotificationBackend(QObject *parent)
   _server = QIndicate::Server::defaultInstance();
   _server->setType("message.im");
   _server->setDesktopFile(DESKTOP_FILE);
+  connect(_server, SIGNAL(serverDisplay()), QtUi::mainWindow(), SLOT(forceActivated()));
+
   if (_enabled) {
     _server->show();
   }
