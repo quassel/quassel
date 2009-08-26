@@ -93,6 +93,10 @@
 #  include "knotificationbackend.h"
 #endif /* HAVE_KDE */
 
+#ifdef HAVE_INDICATEQT
+  #include "indicatornotificationbackend.h"
+#endif
+
 #include "settingspages/aliasessettingspage.h"
 #include "settingspages/appearancesettingspage.h"
 #include "settingspages/backlogsettingspage.h"
@@ -184,6 +188,10 @@ void MainWin::init() {
 #else /* HAVE_KDE */
   QtUi::registerNotificationBackend(new KNotificationBackend(this));
 #endif /* HAVE_KDE */
+
+#ifdef HAVE_INDICATEQT
+  QtUi::registerNotificationBackend(new IndicatorNotificationBackend(this));
+#endif
 
   connect(bufferWidget(), SIGNAL(currentChanged(BufferId)), SLOT(currentBufferChanged(BufferId)));
 

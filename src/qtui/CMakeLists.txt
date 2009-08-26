@@ -5,6 +5,11 @@ set(QT_USE_QTNETWORK 1)
 set(QT_USE_QTDBUS 1)
 include(${QT_USE_FILE})
 
+if(INDICATEQT_FOUND)
+  include_directories(${INDICATEQT_INCLUDE_DIRS})
+  link_directories(${INDICATEQT_LIBRARY_DIRS})
+endif(INDICATEQT_FOUND)
+
 set(SOURCES
     aboutdlg.cpp
     awaylogfilter.cpp
@@ -145,6 +150,12 @@ else(HAVE_KDE)
     include_directories(${PHONON_INCLUDES})
   endif(HAVE_PHONON)
 endif(HAVE_KDE)
+
+if(INDICATEQT_FOUND)
+  set(SOURCES ${SOURCES} indicatornotificationbackend.cpp)
+  set(MOC_HDRS ${MOC_HDRS} indicatornotificationbackend.h)
+  set(FORMS ${FORMS} indicatornotificationconfigwidget.ui)
+endif(INDICATEQT_FOUND)
 
 foreach(FORM ${FORMS})
   set(FORMPATH ${FORMPATH} ui/${FORM})

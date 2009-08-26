@@ -231,6 +231,13 @@ if(NOT HAVE_KDE)
   endif(WITH_PHONON)
 endif(NOT HAVE_KDE)
 
+# Setup libindicate-qt support
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(INDICATEQT indicate-qt)
+if(INDICATEQT_FOUND)
+  add_definitions(-DHAVE_INDICATEQT)
+endif(INDICATEQT_FOUND)
+
 # Now set up install locations; those are set by KDE if integration is enabled
 if(NOT HAVE_KDE)
   if(WIN32)
@@ -275,6 +282,16 @@ if(WIN32)
      link_libraries(${OPENSSL_LIBRARIES} libeay32MD)
   endif(HAVE_SSL)
 endif(WIN32)
+
+if(INDICATEQT_FOUND)
+  if(WANT_QTCLIENT)
+    set(DESKTOP_FILE ${XDG_APPS_INSTALL_DIR}/quasselclient.desktop)
+  endif(WANT_QTCLIENT)
+  if(WANT_MONO)
+    set(DESKTOP_FILE ${XDG_APPS_INSTALL_DIR}/quassel.desktop)
+  endif(WANT_MONO)
+  add_definitions(-DDESKTOP_FILE=\"${DESKTOP_FILE}\")
+endif(INDICATEQT_FOUND)
 
 # We need to create a version.gen
 # For this, we create our genversion binary and make sure it is run every time.
