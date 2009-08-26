@@ -326,7 +326,7 @@ bool BufferViewFilter::filterAcceptBuffer(const QModelIndex &source_bufferIndex)
   if(!(allowedBufferTypes & bufferType))
     return false;
 
-  if(bufferType & BufferInfo::QueryBuffer && !_showServerQueries) {
+  if(bufferType & BufferInfo::QueryBuffer && !_showServerQueries && sourceModel()->data(source_bufferIndex, Qt::DisplayRole).toString().contains('.')) {
     return false;
   }
 
