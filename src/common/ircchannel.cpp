@@ -116,6 +116,7 @@ QByteArray IrcChannel::encodeString(const QString &string) const {
 // ====================
 void IrcChannel::setTopic(const QString &topic) {
   _topic = topic;
+  SYNC(ARG(topic))
   emit topicSet(topic);
 }
 
