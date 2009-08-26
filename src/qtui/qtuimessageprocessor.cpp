@@ -136,7 +136,7 @@ void QtUiMessageProcessor::checkForHighlight(Message &msg) {
         QRegExp rx(rule.name, rule.caseSensitive? Qt::CaseSensitive : Qt::CaseInsensitive);
         match = rx.exactMatch(msg.contents());
       } else {
-        QRegExp rx("\\W" + QRegExp::escape(rule.name) + "\\W", rule.caseSensitive? Qt::CaseSensitive : Qt::CaseInsensitive);
+        QRegExp rx("(^|\\W)" + QRegExp::escape(rule.name) + "(\\W|$)", rule.caseSensitive? Qt::CaseSensitive : Qt::CaseInsensitive);
         match = (rx.indexIn(msg.contents()) >= 0);
       }
       if(match) {
