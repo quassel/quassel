@@ -37,8 +37,8 @@ ContextMenuActionProvider::ContextMenuActionProvider(QObject *parent) : NetworkM
 
   registerAction(BufferJoin, SmallIcon("irc-join-channel"), tr("Join"));
   registerAction(BufferPart, SmallIcon("irc-close-channel"), tr("Part"));
-  registerAction(BufferRemove, tr("Delete Buffer(s)..."));
-  registerAction(BufferSwitchTo, tr("Show Buffer"));
+  registerAction(BufferRemove, tr("Delete Chat(s)..."));
+  registerAction(BufferSwitchTo, tr("Go to Chat"));
 
   registerAction(HideJoin, tr("Joins"), true);
   registerAction(HidePart, tr("Parts"), true);
