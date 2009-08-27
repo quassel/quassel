@@ -518,6 +518,7 @@ void FlatProxyModel::on_rowsInserted(const QModelIndex &parent, int start, int e
 
   SourceItem *sourceItem = sourceToInternal(parent);
   Q_ASSERT(sourceItem);
+  Q_UNUSED(sourceItem);
 
   // sanity check - if that check fails our indexes would be messed up
   for(int row = start; row <= end; row++) {
@@ -592,6 +593,7 @@ void FlatProxyModel::linkTest() const {
   }
   qDebug() << "Last item in tree:" << item << item->pos();
   Q_ASSERT(lastPos == item->pos());
+  Q_UNUSED(lastPos);
 
   qDebug() << "success!";
 }
