@@ -138,6 +138,7 @@ class MainWin
     void clientNetworkUpdated();
     void connectOrDisconnectFromNet();
 
+    void saveMenuBarStatus(bool enabled);
     void saveStatusBarStatus(bool enabled);
 
     void loadLayout();

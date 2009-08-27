@@ -300,8 +300,11 @@ void MainWin::setupActions() {
 						0, 0, QKeySequence::Find))->setCheckable(true);
   coll->addAction("ShowAwayLog", new Action(tr("Show Away Log"), coll,
 					    this, SLOT(showAwayLog())));
+  coll->addAction("ToggleMenuBar", new Action(SmallIcon("show-menu"), tr("Show &Menubar"), coll,
+                                                0, 0, tr("Ctrl+M")))->setCheckable(true);
+
   coll->addAction("ToggleStatusBar", new Action(tr("Show Status &Bar"), coll,
-                                                 0, 0))->setCheckable(true);
+                                                0, 0))->setCheckable(true);
 
   // Settings
   coll->addAction("ConfigureQuassel", new Action(SmallIcon("configure"), tr("&Configure Quassel..."), coll,
@@ -357,20 +360,22 @@ void MainWin::setupMenus() {
   _bufferViewsMenu->addAction(coll->action("ConfigureBufferViews"));
   _toolbarMenu = _viewMenu->addMenu(tr("&Toolbars"));
   _viewMenu->addSeparator();
+
+  _viewMenu->addAction(coll->action("ToggleMenuBar"));
+  _viewMenu->addAction(coll->action("ToggleStatusBar"));
   _viewMenu->addAction(coll->action("ToggleSearchBar"));
 
   coreAction = coll->action("ShowAwayLog");
   flagRemoteCoreOnly(coreAction);
   _viewMenu->addAction(coreAction);
 
-  _viewMenu->addAction(coll->action("ToggleStatusBar"));
   _viewMenu->addSeparator();
   _viewMenu->addAction(coll->action("LockLayout"));
 
   _settingsMenu = menuBar()->addMenu(tr("&Settings"));
 #ifdef HAVE_KDE
-  _settingsMenu->addAction(KStandardAction::keyBindings(this, SLOT(showShortcutsDlg()), this));
   _settingsMenu->addAction(KStandardAction::configureNotifications(this, SLOT(showNotificationsDlg()), this));
+  _settingsMenu->addAction(KStandardAction::keyBindings(this, SLOT(showShortcutsDlg()), this));
 #endif
   _settingsMenu->addAction(coll->action("ConfigureQuassel"));
 
@@ -390,6 +395,17 @@ void MainWin::setupMenus() {
   _helpDebugMenu->addAction(coll->action("DebugLog"));
   _helpDebugMenu->addSeparator();
   _helpDebugMenu->addAction(coll->action("ReloadStyle"));
+
+  // Toggle visibility
+  QAction *showMenuBar = QtUi::actionCollection("General")->action("ToggleMenuBar");
+
+  QtUiSettings uiSettings;
+  bool enabled = uiSettings.value("ShowMenuBar", QVariant(true)).toBool();
+  showMenuBar->setChecked(enabled);
+  enabled ? menuBar()->show() : menuBar()->hide();
+
+  connect(showMenuBar, SIGNAL(toggled(bool)), menuBar(), SLOT(setVisible(bool)));
+  connect(showMenuBar, SIGNAL(toggled(bool)), this, SLOT(saveMenuBarStatus(bool)));
 }
 
 void MainWin::setupBufferWidget() {
@@ -616,6 +632,11 @@ void MainWin::setupHotList() {
   FlatProxyModel *flatProxy = new FlatProxyModel(this);
   flatProxy->setSourceModel(Client::bufferModel());
   _bufferHotList = new BufferHotListFilter(flatProxy);
+}
+
+void MainWin::saveMenuBarStatus(bool enabled) {
+  QtUiSettings uiSettings;
+  uiSettings.setValue("ShowMenuBar", enabled);
 }
 
 void MainWin::saveStatusBarStatus(bool enabled) {
