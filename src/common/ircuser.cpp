@@ -124,8 +124,8 @@ void IrcUser::setRealName(const QString &realName) {
 void IrcUser::setAway(const bool &away) {
   if(away != _away) {
     _away = away;
-    emit awaySet(away);
     SYNC(ARG(away))
+    emit awaySet(away);
   }
 }
 
@@ -181,10 +181,11 @@ void IrcUser::setHost(const QString &host) {
 
 void IrcUser::setNick(const QString &nick) {
   if(!nick.isEmpty() && nick != _nick) {
+    qDebug() << "setNick" << this << _nick << nick;
     _nick = nick;
     updateObjectName();
-    emit nickSet(nick);
     SYNC(ARG(nick))
+    emit nickSet(nick);
   }
 }
 
