@@ -2,12 +2,14 @@
 # We put them in DATA_INSTALL_DIR rather than ICON_INSTALL_DIR, to avoid
 # polluting the global namespace and to allow overriding
 
-if(EMBED_DATA)
-  set(CLIENT_RCS ${CLIENT_RCS} ../icons/hicolor.qrc ../icons/oxygen.qrc PARENT_SCOPE)
-else(EMBED_DATA)
-  install(DIRECTORY hicolor DESTINATION ${DATA_INSTALL_DIR}/quassel/icons)
-  install(DIRECTORY oxygen DESTINATION ${DATA_INSTALL_DIR}/quassel/icons)
-endif(EMBED_DATA)
+if(WANT_MONO OR WANT_QTCLIENT)
+  if(EMBED_DATA)
+    set(CLIENT_RCS ${CLIENT_RCS} ../icons/hicolor.qrc ../icons/oxygen.qrc PARENT_SCOPE)
+  else(EMBED_DATA)
+    install(DIRECTORY hicolor DESTINATION ${DATA_INSTALL_DIR}/quassel/icons)
+    install(DIRECTORY oxygen DESTINATION ${DATA_INSTALL_DIR}/quassel/icons)
+  endif(EMBED_DATA)
+endif(WANT_MONO OR WANT_QTCLIENT)
 
 # Application icon
 if(NOT APPLE AND NOT WIN32)
