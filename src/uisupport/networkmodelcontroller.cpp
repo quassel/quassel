@@ -267,11 +267,11 @@ void NetworkModelController::handleHideAction(ActionType type, QAction *action) 
 
   int filter = 0;
   if(NetworkModelController::action(HideJoin)->isChecked())
-    filter |= Message::Join;
+    filter |= Message::Join | Message::NetsplitJoin;
   if(NetworkModelController::action(HidePart)->isChecked())
     filter |= Message::Part;
   if(NetworkModelController::action(HideQuit)->isChecked())
-    filter |= Message::Quit;
+    filter |= Message::Quit | Message::NetsplitQuit;
   if(NetworkModelController::action(HideNick)->isChecked())
     filter |= Message::Nick;
   if(NetworkModelController::action(HideMode)->isChecked())
