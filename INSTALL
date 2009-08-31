@@ -43,6 +43,11 @@ Quassel recognizes the following options:
 -DWITH_KDE=ON
     Enable integration into KDE4
 
+-DWITH_OXYGEN=(ON|OFF|AUTO)
+    Whether to install Oxygen icons used by Quassel. By default (AUTO) we don't install them if
+    KDE integration is enabled and KDE > 4.3.0 is present, as all needed icons are part of the
+    system Oxygen iconset in this case. Using ON or OFF you can override automatic detection.
+
 -DWITH_OPENSSL=OFF
     Disable OpenSSL support
 

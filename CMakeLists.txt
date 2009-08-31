@@ -2,18 +2,19 @@
 #
 # You may pass various options to cmake:
 # -DWANT_(CORE|QTCLIENT|MONO)=(ON|OFF)
-#                     : select binaries to build
-# -DWITH_OPENSSL=OFF  : Disable OpenSSL support
-# -DWITH_DBUS=OFF     : Disable D-Bus support (dbus notifications)
-# -DWITH_WEBKIT=OFF   : Disable WebKit support (link previews)
-# -DWITH_PHONON=OFF   : Disable Phonon support (audio notifications)
-# -DWITH_KDE=ON       : Enable KDE4 support
+#                        : select binaries to build
+# -DWITH_OPENSSL=OFF     : Disable OpenSSL support
+# -DWITH_DBUS=OFF        : Disable D-Bus support (dbus notifications)
+# -DWITH_WEBKIT=OFF      : Disable WebKit support (link previews)
+# -DWITH_PHONON=OFF      : Disable Phonon support (audio notifications)
+# -DWITH_KDE=ON          : Enable KDE4 support
+# -DWITH_OXYGEN=(ON|OFF) : Whether to install Oxygen icons (default: yes, unless KDE > 4.3.0 is present and enabled)
 #
-# -DEMBED_DATA=ON     : Embed all data files in icons the binary, rather than installing them separately
+# -DEMBED_DATA=ON        : Embed all data files in icons the binary, rather than installing them separately
 #
-# -DQT=/path/to/qt    : Choose a Qt4 installation to use instead of the system Qt4
-# -DSTATIC=ON         : Enable static building of Quassel. Use with care.
-# -DDEPLOY=ON         : Mac OS X only. Use only for creating Quassel Packages!
+# -DQT=/path/to/qt       : Choose a Qt4 installation to use instead of the system Qt4
+# -DSTATIC=ON            : Enable static building of Quassel. Use with care.
+# -DDEPLOY=ON            : Mac OS X only. Use only for creating Quassel Packages!
 #
 # NOTE: You should remove CMakeCache.txt if you plan to change any of these values!
 
@@ -41,10 +42,10 @@ option(WITH_WEBKIT   "Enable WebKit support (for link previews)"	ON)
 option(WITH_PHONON   "Enable Phonon support (for audio notifications)"	ON)
 option(WITH_KDE      "Enable KDE4 integration"				OFF)
 
-# We use icon paths from KDE 4.3 trunk, which are partially invalid on older and possibly
+# We use icon paths from KDE 4.3.x, which are partially invalid on older and possibly
 # even on newer KDE versions. Do not disable this unless you are sure that your Quassel will
 # run on a matching KDE version only.
-option(WITH_OXYGEN   "Install Oxygen icons. Heavily recommended unless you use KDE 4.3" ON)
+set(WITH_OXYGEN AUTO CACHE STRING "Install Oxygen icons (default is \"AUTO\" to install when KDE 4.3 or later is present")
 
 option(STATIC        "Enable static building (might not be portable)" OFF)
 
@@ -244,6 +245,12 @@ if(NOT HAVE_KDE)
     set(XDG_APPS_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/share/applications CACHE FILEPATH "Install path for .desktop files")
   endif(WIN32)
 endif(NOT HAVE_KDE)
+
+if(EMBED_DATA)
+  message(STATUS "Embedding data files into the binary")
+else(EMBED_DATA)
+  message(STATUS "Installing data files separately")
+endif(EMBED_DATA)
 
 # RPATH needs to be set correctly
 # Do this down here, since otherwise KDE wants to handle it itself, and fails

@@ -20,9 +20,10 @@ use File::Find;
 my $oxygen = shift;
 
 my $source = "../src";
-my $skeleton = "oxygen_quassel";
-my $output = "oxygen";
-my $qrcfile = "oxygen.qrc";
+my $quassel_icons = "oxygen";
+my $output = "oxygen_kde";
+my $qrcfile_quassel = "oxygen.qrc";
+my $qrcfile_kde = "oxygen_kde.qrc";
 
 my $extrafile = "import/extra-icons";
 my $blacklistfile = "import/blacklisted-icons";
@@ -75,9 +76,6 @@ close EXTRA;
 # Clean old output dir
 print "Removing old $output...\n";
 system("rm -rf $output");
-# Copy skeleton
-print "Copying skeleton from $skeleton...\n";
-system("cp -a $skeleton $output");
 
 # Now copy the icons
 my %scalables;
@@ -119,23 +117,35 @@ foreach my $size (keys %req_icons) {
 
 # Generate .qrc
 my @file_list;
-find(\&push_icon_path, $output);
+generate_qrc($quassel_icons, $qrcfile_quassel);
+generate_qrc($output, $qrcfile_kde);
+
+print "Done.\n";
+
+########################################################################################
+sub generate_qrc {
+  my $dir = shift;
+  my $qrcfile = shift;
+
+  @file_list = ();
+  find(\&push_icon_path, $dir);
+  my $files = join "\n", @file_list;
+
+  my $qrc = "<RCC>\n"
+           ."  <qresource prefix=\"/icons\">\n"
+           ."$files\n"
+           ."  </qresource>\n"
+           ."</RCC>\n";
+
+  open QRC, ">$qrcfile" or die "Could not open $qrcfile for writing!\n";
+  print QRC $qrc;
+  close QRC;
+}
 
 sub push_icon_path {
   return unless /\.png$/;
-  push @file_list, "    <file>$File::Find::name</file>";
+  my $alias = $File::Find::name;
+  $alias =~ s,^[^/]*(.*),$1,;
+
+  push @file_list, "    <file alias=\"oxygen$alias\">$File::Find::name</file>";
 }
-
-my $files = join "\n", @file_list;
-
-my $qrc = "<RCC>\n"
-         ."  <qresource prefix=\"/icons\">\n"
-         ."$files\n"
-         ."  </qresource>\n"
-         ."</RCC>\n";
-
-open QRC, ">$qrcfile" or die "Could not open $qrcfile for writing!\n";
-print QRC $qrc;
-close QRC;
-
-print "Done.\n";

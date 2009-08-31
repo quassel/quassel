@@ -1,294 +1,222 @@
 <RCC>
   <qresource prefix="/icons">
-    <file>oxygen/48x48/apps/quassel_inactive.png</file>
-    <file>oxygen/48x48/apps/quassel.png</file>
-    <file>oxygen/48x48/status/dialog-information.png</file>
-    <file>oxygen/48x48/actions/irc-unvoice.png</file>
-    <file>oxygen/48x48/actions/irc-remove-operator.png</file>
-    <file>oxygen/48x48/actions/network-disconnect.png</file>
-    <file>oxygen/48x48/actions/irc-voice.png</file>
-    <file>oxygen/48x48/actions/im-kick-user.png</file>
-    <file>oxygen/48x48/actions/im-ban-user.png</file>
-    <file>oxygen/48x48/actions/irc-join-channel.png</file>
-    <file>oxygen/48x48/actions/irc-operator.png</file>
-    <file>oxygen/48x48/actions/mail-message-new.png</file>
-    <file>oxygen/48x48/actions/network-connect.png</file>
-    <file>oxygen/48x48/actions/im-ban-kick-user.png</file>
-    <file>oxygen/48x48/actions/im-user.png</file>
-    <file>oxygen/48x48/actions/irc-close-channel.png</file>
-    <file>oxygen/48x48/animations/quassel_tray-fade-on-8.png</file>
-    <file>oxygen/48x48/animations/quassel_tray-fade-on-13.png</file>
-    <file>oxygen/48x48/animations/quassel_tray-alert-4.png</file>
-    <file>oxygen/48x48/animations/quassel_tray-fade-off-8.png</file>
-    <file>oxygen/48x48/animations/quassel_tray-fade-off-6.png</file>
-    <file>oxygen/48x48/animations/quassel_tray-fade-on-12.png</file>
-    <file>oxygen/48x48/animations/quassel_tray-alert-9.png</file>
-    <file>oxygen/48x48/animations/quassel_tray-fade-off-5.png</file>
-    <file>oxygen/48x48/animations/quassel_tray-fade-on-11.png</file>
-    <file>oxygen/48x48/animations/quassel_tray-alert-6.png</file>
-    <file>oxygen/48x48/animations/quassel_tray-fade-on-2.png</file>
-    <file>oxygen/48x48/animations/quassel_tray-fade-off-9.png</file>
-    <file>oxygen/48x48/animations/quassel_tray-fade-on-15.png</file>
-    <file>oxygen/48x48/animations/quassel_tray-fade-on-1.png</file>
-    <file>oxygen/48x48/animations/quassel_tray-alert-7.png</file>
-    <file>oxygen/48x48/animations/quassel_tray-fade-off-1.png</file>
-    <file>oxygen/48x48/animations/quassel_tray-alert-3.png</file>
-    <file>oxygen/48x48/animations/quassel_tray-fade-on-3.png</file>
-    <file>oxygen/48x48/animations/quassel_tray-fade-off-7.png</file>
-    <file>oxygen/48x48/animations/quassel_tray-alert-5.png</file>
-    <file>oxygen/48x48/animations/quassel_tray-alert-1.png</file>
-    <file>oxygen/48x48/animations/quassel_tray-fade-on-7.png</file>
-    <file>oxygen/48x48/animations/quassel_tray-fade-on-6.png</file>
-    <file>oxygen/48x48/animations/quassel_tray-alert-2.png</file>
-    <file>oxygen/48x48/animations/quassel_tray-fade-off-4.png</file>
-    <file>oxygen/48x48/animations/quassel_tray-fade-off-3.png</file>
-    <file>oxygen/48x48/animations/quassel_tray-alert-10.png</file>
-    <file>oxygen/48x48/animations/quassel_tray-fade-on-14.png</file>
-    <file>oxygen/48x48/animations/quassel_tray-fade-on-5.png</file>
-    <file>oxygen/48x48/animations/quassel_tray-alert-8.png</file>
-    <file>oxygen/48x48/animations/quassel_tray-fade-off-2.png</file>
-    <file>oxygen/48x48/animations/quassel_tray-fade-on-4.png</file>
-    <file>oxygen/48x48/animations/quassel_tray-fade-off-10.png</file>
-    <file>oxygen/48x48/animations/quassel_tray-fade-on-9.png</file>
-    <file>oxygen/48x48/animations/quassel_tray-fade-on-10.png</file>
-    <file>oxygen/128x128/apps/quassel_inactive.png</file>
-    <file>oxygen/128x128/apps/quassel.png</file>
-    <file>oxygen/128x128/animations/quassel_tray-fade-on-8.png</file>
-    <file>oxygen/128x128/animations/quassel_tray-fade-on-13.png</file>
-    <file>oxygen/128x128/animations/quassel_tray-alert-4.png</file>
-    <file>oxygen/128x128/animations/quassel_tray-fade-off-8.png</file>
-    <file>oxygen/128x128/animations/quassel_tray-fade-off-6.png</file>
-    <file>oxygen/128x128/animations/quassel_tray-fade-on-12.png</file>
-    <file>oxygen/128x128/animations/quassel_tray-alert-9.png</file>
-    <file>oxygen/128x128/animations/quassel_tray-fade-off-5.png</file>
-    <file>oxygen/128x128/animations/quassel_tray-fade-on-11.png</file>
-    <file>oxygen/128x128/animations/quassel_tray-alert-6.png</file>
-    <file>oxygen/128x128/animations/quassel_tray-fade-on-2.png</file>
-    <file>oxygen/128x128/animations/quassel_tray-fade-off-9.png</file>
-    <file>oxygen/128x128/animations/quassel_tray-fade-on-15.png</file>
-    <file>oxygen/128x128/animations/quassel_tray-fade-on-1.png</file>
-    <file>oxygen/128x128/animations/quassel_tray-alert-7.png</file>
-    <file>oxygen/128x128/animations/quassel_tray-fade-off-1.png</file>
-    <file>oxygen/128x128/animations/quassel_tray-alert-3.png</file>
-    <file>oxygen/128x128/animations/quassel_tray-fade-on-3.png</file>
-    <file>oxygen/128x128/animations/quassel_tray-fade-off-7.png</file>
-    <file>oxygen/128x128/animations/quassel_tray-alert-5.png</file>
-    <file>oxygen/128x128/animations/quassel_tray-alert-1.png</file>
-    <file>oxygen/128x128/animations/quassel_tray-fade-on-7.png</file>
-    <file>oxygen/128x128/animations/quassel_tray-fade-on-6.png</file>
-    <file>oxygen/128x128/animations/quassel_tray-alert-2.png</file>
-    <file>oxygen/128x128/animations/quassel_tray-fade-off-4.png</file>
-    <file>oxygen/128x128/animations/quassel_tray-fade-off-3.png</file>
-    <file>oxygen/128x128/animations/quassel_tray-alert-10.png</file>
-    <file>oxygen/128x128/animations/quassel_tray-fade-on-14.png</file>
-    <file>oxygen/128x128/animations/quassel_tray-fade-on-5.png</file>
-    <file>oxygen/128x128/animations/quassel_tray-alert-8.png</file>
-    <file>oxygen/128x128/animations/quassel_tray-fade-off-2.png</file>
-    <file>oxygen/128x128/animations/quassel_tray-fade-on-4.png</file>
-    <file>oxygen/128x128/animations/quassel_tray-fade-off-10.png</file>
-    <file>oxygen/128x128/animations/quassel_tray-fade-on-9.png</file>
-    <file>oxygen/128x128/animations/quassel_tray-fade-on-10.png</file>
-    <file>oxygen/32x32/apps/quassel_inactive.png</file>
-    <file>oxygen/32x32/apps/quassel.png</file>
-    <file>oxygen/32x32/animations/quassel_tray-fade-on-8.png</file>
-    <file>oxygen/32x32/animations/quassel_tray-fade-on-13.png</file>
-    <file>oxygen/32x32/animations/quassel_tray-alert-4.png</file>
-    <file>oxygen/32x32/animations/quassel_tray-fade-off-8.png</file>
-    <file>oxygen/32x32/animations/quassel_tray-fade-off-6.png</file>
-    <file>oxygen/32x32/animations/quassel_tray-fade-on-12.png</file>
-    <file>oxygen/32x32/animations/quassel_tray-alert-9.png</file>
-    <file>oxygen/32x32/animations/quassel_tray-fade-off-5.png</file>
-    <file>oxygen/32x32/animations/quassel_tray-fade-on-11.png</file>
-    <file>oxygen/32x32/animations/quassel_tray-alert-6.png</file>
-    <file>oxygen/32x32/animations/quassel_tray-fade-on-2.png</file>
-    <file>oxygen/32x32/animations/quassel_tray-fade-off-9.png</file>
-    <file>oxygen/32x32/animations/quassel_tray-fade-on-15.png</file>
-    <file>oxygen/32x32/animations/quassel_tray-fade-on-1.png</file>
-    <file>oxygen/32x32/animations/quassel_tray-alert-7.png</file>
-    <file>oxygen/32x32/animations/quassel_tray-fade-off-1.png</file>
-    <file>oxygen/32x32/animations/quassel_tray-alert-3.png</file>
-    <file>oxygen/32x32/animations/quassel_tray-fade-on-3.png</file>
-    <file>oxygen/32x32/animations/quassel_tray-fade-off-7.png</file>
-    <file>oxygen/32x32/animations/quassel_tray-alert-5.png</file>
-    <file>oxygen/32x32/animations/quassel_tray-alert-1.png</file>
-    <file>oxygen/32x32/animations/quassel_tray-fade-on-7.png</file>
-    <file>oxygen/32x32/animations/quassel_tray-fade-on-6.png</file>
-    <file>oxygen/32x32/animations/quassel_tray-alert-2.png</file>
-    <file>oxygen/32x32/animations/quassel_tray-fade-off-4.png</file>
-    <file>oxygen/32x32/animations/quassel_tray-fade-off-3.png</file>
-    <file>oxygen/32x32/animations/quassel_tray-alert-10.png</file>
-    <file>oxygen/32x32/animations/quassel_tray-fade-on-14.png</file>
-    <file>oxygen/32x32/animations/quassel_tray-fade-on-5.png</file>
-    <file>oxygen/32x32/animations/quassel_tray-alert-8.png</file>
-    <file>oxygen/32x32/animations/quassel_tray-fade-off-2.png</file>
-    <file>oxygen/32x32/animations/quassel_tray-fade-on-4.png</file>
-    <file>oxygen/32x32/animations/quassel_tray-fade-off-10.png</file>
-    <file>oxygen/32x32/animations/quassel_tray-fade-on-9.png</file>
-    <file>oxygen/32x32/animations/quassel_tray-fade-on-10.png</file>
-    <file>oxygen/64x64/apps/quassel_inactive.png</file>
-    <file>oxygen/64x64/apps/quassel.png</file>
-    <file>oxygen/64x64/animations/quassel_tray-fade-on-8.png</file>
-    <file>oxygen/64x64/animations/quassel_tray-fade-on-13.png</file>
-    <file>oxygen/64x64/animations/quassel_tray-alert-4.png</file>
-    <file>oxygen/64x64/animations/quassel_tray-fade-off-8.png</file>
-    <file>oxygen/64x64/animations/quassel_tray-fade-off-6.png</file>
-    <file>oxygen/64x64/animations/quassel_tray-fade-on-12.png</file>
-    <file>oxygen/64x64/animations/quassel_tray-alert-9.png</file>
-    <file>oxygen/64x64/animations/quassel_tray-fade-off-5.png</file>
-    <file>oxygen/64x64/animations/quassel_tray-fade-on-11.png</file>
-    <file>oxygen/64x64/animations/quassel_tray-alert-6.png</file>
-    <file>oxygen/64x64/animations/quassel_tray-fade-on-2.png</file>
-    <file>oxygen/64x64/animations/quassel_tray-fade-off-9.png</file>
-    <file>oxygen/64x64/animations/quassel_tray-fade-on-15.png</file>
-    <file>oxygen/64x64/animations/quassel_tray-fade-on-1.png</file>
-    <file>oxygen/64x64/animations/quassel_tray-alert-7.png</file>
-    <file>oxygen/64x64/animations/quassel_tray-fade-off-1.png</file>
-    <file>oxygen/64x64/animations/quassel_tray-alert-3.png</file>
-    <file>oxygen/64x64/animations/quassel_tray-fade-on-3.png</file>
-    <file>oxygen/64x64/animations/quassel_tray-fade-off-7.png</file>
-    <file>oxygen/64x64/animations/quassel_tray-alert-5.png</file>
-    <file>oxygen/64x64/animations/quassel_tray-alert-1.png</file>
-    <file>oxygen/64x64/animations/quassel_tray-fade-on-7.png</file>
-    <file>oxygen/64x64/animations/quassel_tray-fade-on-6.png</file>
-    <file>oxygen/64x64/animations/quassel_tray-alert-2.png</file>
-    <file>oxygen/64x64/animations/quassel_tray-fade-off-4.png</file>
-    <file>oxygen/64x64/animations/quassel_tray-fade-off-3.png</file>
-    <file>oxygen/64x64/animations/quassel_tray-alert-10.png</file>
-    <file>oxygen/64x64/animations/quassel_tray-fade-on-14.png</file>
-    <file>oxygen/64x64/animations/quassel_tray-fade-on-5.png</file>
-    <file>oxygen/64x64/animations/quassel_tray-alert-8.png</file>
-    <file>oxygen/64x64/animations/quassel_tray-fade-off-2.png</file>
-    <file>oxygen/64x64/animations/quassel_tray-fade-on-4.png</file>
-    <file>oxygen/64x64/animations/quassel_tray-fade-off-10.png</file>
-    <file>oxygen/64x64/animations/quassel_tray-fade-on-9.png</file>
-    <file>oxygen/64x64/animations/quassel_tray-fade-on-10.png</file>
-    <file>oxygen/22x22/apps/quassel_inactive.png</file>
-    <file>oxygen/22x22/apps/quassel.png</file>
-    <file>oxygen/22x22/status/dialog-error.png</file>
-    <file>oxygen/22x22/status/dialog-warning.png</file>
-    <file>oxygen/22x22/actions/edit-rename.png</file>
-    <file>oxygen/22x22/actions/list-remove-user.png</file>
-    <file>oxygen/22x22/actions/network-disconnect.png</file>
-    <file>oxygen/22x22/actions/edit-clear-locationbar-rtl.png</file>
-    <file>oxygen/22x22/actions/list-add-user.png</file>
-    <file>oxygen/22x22/actions/network-connect.png</file>
-    <file>oxygen/22x22/actions/dialog-close.png</file>
-    <file>oxygen/22x22/animations/quassel_tray-fade-on-8.png</file>
-    <file>oxygen/22x22/animations/quassel_tray-fade-on-13.png</file>
-    <file>oxygen/22x22/animations/quassel_tray-alert-4.png</file>
-    <file>oxygen/22x22/animations/quassel_tray-fade-off-8.png</file>
-    <file>oxygen/22x22/animations/quassel_tray-fade-off-6.png</file>
-    <file>oxygen/22x22/animations/quassel_tray-fade-on-12.png</file>
-    <file>oxygen/22x22/animations/quassel_tray-alert-9.png</file>
-    <file>oxygen/22x22/animations/quassel_tray-fade-off-5.png</file>
-    <file>oxygen/22x22/animations/quassel_tray-fade-on-11.png</file>
-    <file>oxygen/22x22/animations/quassel_tray-alert-6.png</file>
-    <file>oxygen/22x22/animations/quassel_tray-fade-on-2.png</file>
-    <file>oxygen/22x22/animations/quassel_tray-fade-off-9.png</file>
-    <file>oxygen/22x22/animations/quassel_tray-fade-on-15.png</file>
-    <file>oxygen/22x22/animations/quassel_tray-fade-on-1.png</file>
-    <file>oxygen/22x22/animations/quassel_tray-alert-7.png</file>
-    <file>oxygen/22x22/animations/quassel_tray-fade-off-1.png</file>
-    <file>oxygen/22x22/animations/quassel_tray-alert-3.png</file>
-    <file>oxygen/22x22/animations/quassel_tray-fade-on-3.png</file>
-    <file>oxygen/22x22/animations/quassel_tray-fade-off-7.png</file>
-    <file>oxygen/22x22/animations/quassel_tray-alert-5.png</file>
-    <file>oxygen/22x22/animations/quassel_tray-alert-1.png</file>
-    <file>oxygen/22x22/animations/quassel_tray-fade-on-7.png</file>
-    <file>oxygen/22x22/animations/quassel_tray-fade-on-6.png</file>
-    <file>oxygen/22x22/animations/quassel_tray-alert-2.png</file>
-    <file>oxygen/22x22/animations/quassel_tray-fade-off-4.png</file>
-    <file>oxygen/22x22/animations/quassel_tray-fade-off-3.png</file>
-    <file>oxygen/22x22/animations/quassel_tray-alert-10.png</file>
-    <file>oxygen/22x22/animations/quassel_tray-fade-on-14.png</file>
-    <file>oxygen/22x22/animations/quassel_tray-fade-on-5.png</file>
-    <file>oxygen/22x22/animations/quassel_tray-alert-8.png</file>
-    <file>oxygen/22x22/animations/quassel_tray-fade-off-2.png</file>
-    <file>oxygen/22x22/animations/quassel_tray-fade-on-4.png</file>
-    <file>oxygen/22x22/animations/quassel_tray-fade-off-10.png</file>
-    <file>oxygen/22x22/animations/quassel_tray-fade-on-9.png</file>
-    <file>oxygen/22x22/animations/quassel_tray-fade-on-10.png</file>
-    <file>oxygen/16x16/apps/quassel_inactive.png</file>
-    <file>oxygen/16x16/apps/quassel.png</file>
-    <file>oxygen/16x16/status/security-low.png</file>
-    <file>oxygen/16x16/status/user-away.png</file>
-    <file>oxygen/16x16/status/irc-channel-inactive.png</file>
-    <file>oxygen/16x16/status/irc-channel-active.png</file>
-    <file>oxygen/16x16/status/security-high.png</file>
-    <file>oxygen/16x16/devices/network-wired.png</file>
-    <file>oxygen/16x16/actions/edit-delete.png</file>
-    <file>oxygen/16x16/actions/edit-rename.png</file>
-    <file>oxygen/16x16/actions/document-open.png</file>
-    <file>oxygen/16x16/actions/go-up.png</file>
-    <file>oxygen/16x16/actions/document-encrypt.png</file>
-    <file>oxygen/16x16/actions/irc-unvoice.png</file>
-    <file>oxygen/16x16/actions/configure.png</file>
-    <file>oxygen/16x16/actions/irc-remove-operator.png</file>
-    <file>oxygen/16x16/actions/document-properties.png</file>
-    <file>oxygen/16x16/actions/network-disconnect.png</file>
-    <file>oxygen/16x16/actions/edit-find.png</file>
-    <file>oxygen/16x16/actions/go-previous.png</file>
-    <file>oxygen/16x16/actions/edit-clear-locationbar-rtl.png</file>
-    <file>oxygen/16x16/actions/list-add.png</file>
-    <file>oxygen/16x16/actions/irc-voice.png</file>
-    <file>oxygen/16x16/actions/tools-report-bug.png</file>
-    <file>oxygen/16x16/actions/help-about.png</file>
-    <file>oxygen/16x16/actions/zoom-in.png</file>
-    <file>oxygen/16x16/actions/im-kick-user.png</file>
-    <file>oxygen/16x16/actions/zoom-out.png</file>
-    <file>oxygen/16x16/actions/show-menu.png</file>
-    <file>oxygen/16x16/actions/application-exit.png</file>
-    <file>oxygen/16x16/actions/im-ban-user.png</file>
-    <file>oxygen/16x16/actions/go-down.png</file>
-    <file>oxygen/16x16/actions/im-user-away.png</file>
-    <file>oxygen/16x16/actions/go-next.png</file>
-    <file>oxygen/16x16/actions/irc-join-channel.png</file>
-    <file>oxygen/16x16/actions/irc-operator.png</file>
-    <file>oxygen/16x16/actions/network-connect.png</file>
-    <file>oxygen/16x16/actions/media-playback-start.png</file>
-    <file>oxygen/16x16/actions/im-ban-kick-user.png</file>
-    <file>oxygen/16x16/actions/dialog-cancel.png</file>
-    <file>oxygen/16x16/actions/im-user.png</file>
-    <file>oxygen/16x16/actions/list-remove.png</file>
-    <file>oxygen/16x16/actions/irc-close-channel.png</file>
-    <file>oxygen/16x16/actions/zoom-original.png</file>
-    <file>oxygen/16x16/actions/edit-copy.png</file>
-    <file>oxygen/16x16/actions/im-user-offline.png</file>
-    <file>oxygen/16x16/actions/view-refresh.png</file>
-    <file>oxygen/16x16/animations/quassel_tray-fade-on-8.png</file>
-    <file>oxygen/16x16/animations/quassel_tray-fade-on-13.png</file>
-    <file>oxygen/16x16/animations/quassel_tray-alert-4.png</file>
-    <file>oxygen/16x16/animations/quassel_tray-fade-off-8.png</file>
-    <file>oxygen/16x16/animations/quassel_tray-fade-off-6.png</file>
-    <file>oxygen/16x16/animations/quassel_tray-fade-on-12.png</file>
-    <file>oxygen/16x16/animations/quassel_tray-alert-9.png</file>
-    <file>oxygen/16x16/animations/quassel_tray-fade-off-5.png</file>
-    <file>oxygen/16x16/animations/quassel_tray-fade-on-11.png</file>
-    <file>oxygen/16x16/animations/quassel_tray-alert-6.png</file>
-    <file>oxygen/16x16/animations/quassel_tray-fade-on-2.png</file>
-    <file>oxygen/16x16/animations/quassel_tray-fade-off-9.png</file>
-    <file>oxygen/16x16/animations/quassel_tray-fade-on-15.png</file>
-    <file>oxygen/16x16/animations/quassel_tray-fade-on-1.png</file>
-    <file>oxygen/16x16/animations/quassel_tray-alert-7.png</file>
-    <file>oxygen/16x16/animations/quassel_tray-fade-off-1.png</file>
-    <file>oxygen/16x16/animations/quassel_tray-alert-3.png</file>
-    <file>oxygen/16x16/animations/quassel_tray-fade-on-3.png</file>
-    <file>oxygen/16x16/animations/quassel_tray-fade-off-7.png</file>
-    <file>oxygen/16x16/animations/quassel_tray-alert-5.png</file>
-    <file>oxygen/16x16/animations/quassel_tray-alert-1.png</file>
-    <file>oxygen/16x16/animations/quassel_tray-fade-on-7.png</file>
-    <file>oxygen/16x16/animations/quassel_tray-fade-on-6.png</file>
-    <file>oxygen/16x16/animations/quassel_tray-alert-2.png</file>
-    <file>oxygen/16x16/animations/quassel_tray-fade-off-4.png</file>
-    <file>oxygen/16x16/animations/quassel_tray-fade-off-3.png</file>
-    <file>oxygen/16x16/animations/quassel_tray-alert-10.png</file>
-    <file>oxygen/16x16/animations/quassel_tray-fade-on-14.png</file>
-    <file>oxygen/16x16/animations/quassel_tray-fade-on-5.png</file>
-    <file>oxygen/16x16/animations/quassel_tray-alert-8.png</file>
-    <file>oxygen/16x16/animations/quassel_tray-fade-off-2.png</file>
-    <file>oxygen/16x16/animations/quassel_tray-fade-on-4.png</file>
-    <file>oxygen/16x16/animations/quassel_tray-fade-off-10.png</file>
-    <file>oxygen/16x16/animations/quassel_tray-fade-on-9.png</file>
-    <file>oxygen/16x16/animations/quassel_tray-fade-on-10.png</file>
+    <file alias="oxygen/48x48/apps/quassel_inactive.png">oxygen/48x48/apps/quassel_inactive.png</file>
+    <file alias="oxygen/48x48/animations/quassel_tray-fade-on-8.png">oxygen/48x48/animations/quassel_tray-fade-on-8.png</file>
+    <file alias="oxygen/48x48/animations/quassel_tray-fade-on-13.png">oxygen/48x48/animations/quassel_tray-fade-on-13.png</file>
+    <file alias="oxygen/48x48/animations/quassel_tray-alert-4.png">oxygen/48x48/animations/quassel_tray-alert-4.png</file>
+    <file alias="oxygen/48x48/animations/quassel_tray-fade-off-8.png">oxygen/48x48/animations/quassel_tray-fade-off-8.png</file>
+    <file alias="oxygen/48x48/animations/quassel_tray-fade-off-6.png">oxygen/48x48/animations/quassel_tray-fade-off-6.png</file>
+    <file alias="oxygen/48x48/animations/quassel_tray-fade-on-12.png">oxygen/48x48/animations/quassel_tray-fade-on-12.png</file>
+    <file alias="oxygen/48x48/animations/quassel_tray-alert-9.png">oxygen/48x48/animations/quassel_tray-alert-9.png</file>
+    <file alias="oxygen/48x48/animations/quassel_tray-fade-off-5.png">oxygen/48x48/animations/quassel_tray-fade-off-5.png</file>
+    <file alias="oxygen/48x48/animations/quassel_tray-fade-on-11.png">oxygen/48x48/animations/quassel_tray-fade-on-11.png</file>
+    <file alias="oxygen/48x48/animations/quassel_tray-alert-6.png">oxygen/48x48/animations/quassel_tray-alert-6.png</file>
+    <file alias="oxygen/48x48/animations/quassel_tray-fade-on-2.png">oxygen/48x48/animations/quassel_tray-fade-on-2.png</file>
+    <file alias="oxygen/48x48/animations/quassel_tray-fade-off-9.png">oxygen/48x48/animations/quassel_tray-fade-off-9.png</file>
+    <file alias="oxygen/48x48/animations/quassel_tray-fade-on-15.png">oxygen/48x48/animations/quassel_tray-fade-on-15.png</file>
+    <file alias="oxygen/48x48/animations/quassel_tray-fade-on-1.png">oxygen/48x48/animations/quassel_tray-fade-on-1.png</file>
+    <file alias="oxygen/48x48/animations/quassel_tray-alert-7.png">oxygen/48x48/animations/quassel_tray-alert-7.png</file>
+    <file alias="oxygen/48x48/animations/quassel_tray-fade-off-1.png">oxygen/48x48/animations/quassel_tray-fade-off-1.png</file>
+    <file alias="oxygen/48x48/animations/quassel_tray-alert-3.png">oxygen/48x48/animations/quassel_tray-alert-3.png</file>
+    <file alias="oxygen/48x48/animations/quassel_tray-fade-on-3.png">oxygen/48x48/animations/quassel_tray-fade-on-3.png</file>
+    <file alias="oxygen/48x48/animations/quassel_tray-fade-off-7.png">oxygen/48x48/animations/quassel_tray-fade-off-7.png</file>
+    <file alias="oxygen/48x48/animations/quassel_tray-alert-5.png">oxygen/48x48/animations/quassel_tray-alert-5.png</file>
+    <file alias="oxygen/48x48/animations/quassel_tray-alert-1.png">oxygen/48x48/animations/quassel_tray-alert-1.png</file>
+    <file alias="oxygen/48x48/animations/quassel_tray-fade-on-7.png">oxygen/48x48/animations/quassel_tray-fade-on-7.png</file>
+    <file alias="oxygen/48x48/animations/quassel_tray-fade-on-6.png">oxygen/48x48/animations/quassel_tray-fade-on-6.png</file>
+    <file alias="oxygen/48x48/animations/quassel_tray-alert-2.png">oxygen/48x48/animations/quassel_tray-alert-2.png</file>
+    <file alias="oxygen/48x48/animations/quassel_tray-fade-off-4.png">oxygen/48x48/animations/quassel_tray-fade-off-4.png</file>
+    <file alias="oxygen/48x48/animations/quassel_tray-fade-off-3.png">oxygen/48x48/animations/quassel_tray-fade-off-3.png</file>
+    <file alias="oxygen/48x48/animations/quassel_tray-alert-10.png">oxygen/48x48/animations/quassel_tray-alert-10.png</file>
+    <file alias="oxygen/48x48/animations/quassel_tray-fade-on-14.png">oxygen/48x48/animations/quassel_tray-fade-on-14.png</file>
+    <file alias="oxygen/48x48/animations/quassel_tray-fade-on-5.png">oxygen/48x48/animations/quassel_tray-fade-on-5.png</file>
+    <file alias="oxygen/48x48/animations/quassel_tray-alert-8.png">oxygen/48x48/animations/quassel_tray-alert-8.png</file>
+    <file alias="oxygen/48x48/animations/quassel_tray-fade-off-2.png">oxygen/48x48/animations/quassel_tray-fade-off-2.png</file>
+    <file alias="oxygen/48x48/animations/quassel_tray-fade-on-4.png">oxygen/48x48/animations/quassel_tray-fade-on-4.png</file>
+    <file alias="oxygen/48x48/animations/quassel_tray-fade-off-10.png">oxygen/48x48/animations/quassel_tray-fade-off-10.png</file>
+    <file alias="oxygen/48x48/animations/quassel_tray-fade-on-9.png">oxygen/48x48/animations/quassel_tray-fade-on-9.png</file>
+    <file alias="oxygen/48x48/animations/quassel_tray-fade-on-10.png">oxygen/48x48/animations/quassel_tray-fade-on-10.png</file>
+    <file alias="oxygen/128x128/apps/quassel_inactive.png">oxygen/128x128/apps/quassel_inactive.png</file>
+    <file alias="oxygen/128x128/animations/quassel_tray-fade-on-8.png">oxygen/128x128/animations/quassel_tray-fade-on-8.png</file>
+    <file alias="oxygen/128x128/animations/quassel_tray-fade-on-13.png">oxygen/128x128/animations/quassel_tray-fade-on-13.png</file>
+    <file alias="oxygen/128x128/animations/quassel_tray-alert-4.png">oxygen/128x128/animations/quassel_tray-alert-4.png</file>
+    <file alias="oxygen/128x128/animations/quassel_tray-fade-off-8.png">oxygen/128x128/animations/quassel_tray-fade-off-8.png</file>
+    <file alias="oxygen/128x128/animations/quassel_tray-fade-off-6.png">oxygen/128x128/animations/quassel_tray-fade-off-6.png</file>
+    <file alias="oxygen/128x128/animations/quassel_tray-fade-on-12.png">oxygen/128x128/animations/quassel_tray-fade-on-12.png</file>
+    <file alias="oxygen/128x128/animations/quassel_tray-alert-9.png">oxygen/128x128/animations/quassel_tray-alert-9.png</file>
+    <file alias="oxygen/128x128/animations/quassel_tray-fade-off-5.png">oxygen/128x128/animations/quassel_tray-fade-off-5.png</file>
+    <file alias="oxygen/128x128/animations/quassel_tray-fade-on-11.png">oxygen/128x128/animations/quassel_tray-fade-on-11.png</file>
+    <file alias="oxygen/128x128/animations/quassel_tray-alert-6.png">oxygen/128x128/animations/quassel_tray-alert-6.png</file>
+    <file alias="oxygen/128x128/animations/quassel_tray-fade-on-2.png">oxygen/128x128/animations/quassel_tray-fade-on-2.png</file>
+    <file alias="oxygen/128x128/animations/quassel_tray-fade-off-9.png">oxygen/128x128/animations/quassel_tray-fade-off-9.png</file>
+    <file alias="oxygen/128x128/animations/quassel_tray-fade-on-15.png">oxygen/128x128/animations/quassel_tray-fade-on-15.png</file>
+    <file alias="oxygen/128x128/animations/quassel_tray-fade-on-1.png">oxygen/128x128/animations/quassel_tray-fade-on-1.png</file>
+    <file alias="oxygen/128x128/animations/quassel_tray-alert-7.png">oxygen/128x128/animations/quassel_tray-alert-7.png</file>
+    <file alias="oxygen/128x128/animations/quassel_tray-fade-off-1.png">oxygen/128x128/animations/quassel_tray-fade-off-1.png</file>
+    <file alias="oxygen/128x128/animations/quassel_tray-alert-3.png">oxygen/128x128/animations/quassel_tray-alert-3.png</file>
+    <file alias="oxygen/128x128/animations/quassel_tray-fade-on-3.png">oxygen/128x128/animations/quassel_tray-fade-on-3.png</file>
+    <file alias="oxygen/128x128/animations/quassel_tray-fade-off-7.png">oxygen/128x128/animations/quassel_tray-fade-off-7.png</file>
+    <file alias="oxygen/128x128/animations/quassel_tray-alert-5.png">oxygen/128x128/animations/quassel_tray-alert-5.png</file>
+    <file alias="oxygen/128x128/animations/quassel_tray-alert-1.png">oxygen/128x128/animations/quassel_tray-alert-1.png</file>
+    <file alias="oxygen/128x128/animations/quassel_tray-fade-on-7.png">oxygen/128x128/animations/quassel_tray-fade-on-7.png</file>
+    <file alias="oxygen/128x128/animations/quassel_tray-fade-on-6.png">oxygen/128x128/animations/quassel_tray-fade-on-6.png</file>
+    <file alias="oxygen/128x128/animations/quassel_tray-alert-2.png">oxygen/128x128/animations/quassel_tray-alert-2.png</file>
+    <file alias="oxygen/128x128/animations/quassel_tray-fade-off-4.png">oxygen/128x128/animations/quassel_tray-fade-off-4.png</file>
+    <file alias="oxygen/128x128/animations/quassel_tray-fade-off-3.png">oxygen/128x128/animations/quassel_tray-fade-off-3.png</file>
+    <file alias="oxygen/128x128/animations/quassel_tray-alert-10.png">oxygen/128x128/animations/quassel_tray-alert-10.png</file>
+    <file alias="oxygen/128x128/animations/quassel_tray-fade-on-14.png">oxygen/128x128/animations/quassel_tray-fade-on-14.png</file>
+    <file alias="oxygen/128x128/animations/quassel_tray-fade-on-5.png">oxygen/128x128/animations/quassel_tray-fade-on-5.png</file>
+    <file alias="oxygen/128x128/animations/quassel_tray-alert-8.png">oxygen/128x128/animations/quassel_tray-alert-8.png</file>
+    <file alias="oxygen/128x128/animations/quassel_tray-fade-off-2.png">oxygen/128x128/animations/quassel_tray-fade-off-2.png</file>
+    <file alias="oxygen/128x128/animations/quassel_tray-fade-on-4.png">oxygen/128x128/animations/quassel_tray-fade-on-4.png</file>
+    <file alias="oxygen/128x128/animations/quassel_tray-fade-off-10.png">oxygen/128x128/animations/quassel_tray-fade-off-10.png</file>
+    <file alias="oxygen/128x128/animations/quassel_tray-fade-on-9.png">oxygen/128x128/animations/quassel_tray-fade-on-9.png</file>
+    <file alias="oxygen/128x128/animations/quassel_tray-fade-on-10.png">oxygen/128x128/animations/quassel_tray-fade-on-10.png</file>
+    <file alias="oxygen/32x32/apps/quassel_inactive.png">oxygen/32x32/apps/quassel_inactive.png</file>
+    <file alias="oxygen/32x32/animations/quassel_tray-fade-on-8.png">oxygen/32x32/animations/quassel_tray-fade-on-8.png</file>
+    <file alias="oxygen/32x32/animations/quassel_tray-fade-on-13.png">oxygen/32x32/animations/quassel_tray-fade-on-13.png</file>
+    <file alias="oxygen/32x32/animations/quassel_tray-alert-4.png">oxygen/32x32/animations/quassel_tray-alert-4.png</file>
+    <file alias="oxygen/32x32/animations/quassel_tray-fade-off-8.png">oxygen/32x32/animations/quassel_tray-fade-off-8.png</file>
+    <file alias="oxygen/32x32/animations/quassel_tray-fade-off-6.png">oxygen/32x32/animations/quassel_tray-fade-off-6.png</file>
+    <file alias="oxygen/32x32/animations/quassel_tray-fade-on-12.png">oxygen/32x32/animations/quassel_tray-fade-on-12.png</file>
+    <file alias="oxygen/32x32/animations/quassel_tray-alert-9.png">oxygen/32x32/animations/quassel_tray-alert-9.png</file>
+    <file alias="oxygen/32x32/animations/quassel_tray-fade-off-5.png">oxygen/32x32/animations/quassel_tray-fade-off-5.png</file>
+    <file alias="oxygen/32x32/animations/quassel_tray-fade-on-11.png">oxygen/32x32/animations/quassel_tray-fade-on-11.png</file>
+    <file alias="oxygen/32x32/animations/quassel_tray-alert-6.png">oxygen/32x32/animations/quassel_tray-alert-6.png</file>
+    <file alias="oxygen/32x32/animations/quassel_tray-fade-on-2.png">oxygen/32x32/animations/quassel_tray-fade-on-2.png</file>
+    <file alias="oxygen/32x32/animations/quassel_tray-fade-off-9.png">oxygen/32x32/animations/quassel_tray-fade-off-9.png</file>
+    <file alias="oxygen/32x32/animations/quassel_tray-fade-on-15.png">oxygen/32x32/animations/quassel_tray-fade-on-15.png</file>
+    <file alias="oxygen/32x32/animations/quassel_tray-fade-on-1.png">oxygen/32x32/animations/quassel_tray-fade-on-1.png</file>
+    <file alias="oxygen/32x32/animations/quassel_tray-alert-7.png">oxygen/32x32/animations/quassel_tray-alert-7.png</file>
+    <file alias="oxygen/32x32/animations/quassel_tray-fade-off-1.png">oxygen/32x32/animations/quassel_tray-fade-off-1.png</file>
+    <file alias="oxygen/32x32/animations/quassel_tray-alert-3.png">oxygen/32x32/animations/quassel_tray-alert-3.png</file>
+    <file alias="oxygen/32x32/animations/quassel_tray-fade-on-3.png">oxygen/32x32/animations/quassel_tray-fade-on-3.png</file>
+    <file alias="oxygen/32x32/animations/quassel_tray-fade-off-7.png">oxygen/32x32/animations/quassel_tray-fade-off-7.png</file>
+    <file alias="oxygen/32x32/animations/quassel_tray-alert-5.png">oxygen/32x32/animations/quassel_tray-alert-5.png</file>
+    <file alias="oxygen/32x32/animations/quassel_tray-alert-1.png">oxygen/32x32/animations/quassel_tray-alert-1.png</file>
+    <file alias="oxygen/32x32/animations/quassel_tray-fade-on-7.png">oxygen/32x32/animations/quassel_tray-fade-on-7.png</file>
+    <file alias="oxygen/32x32/animations/quassel_tray-fade-on-6.png">oxygen/32x32/animations/quassel_tray-fade-on-6.png</file>
+    <file alias="oxygen/32x32/animations/quassel_tray-alert-2.png">oxygen/32x32/animations/quassel_tray-alert-2.png</file>
+    <file alias="oxygen/32x32/animations/quassel_tray-fade-off-4.png">oxygen/32x32/animations/quassel_tray-fade-off-4.png</file>
+    <file alias="oxygen/32x32/animations/quassel_tray-fade-off-3.png">oxygen/32x32/animations/quassel_tray-fade-off-3.png</file>
+    <file alias="oxygen/32x32/animations/quassel_tray-alert-10.png">oxygen/32x32/animations/quassel_tray-alert-10.png</file>
+    <file alias="oxygen/32x32/animations/quassel_tray-fade-on-14.png">oxygen/32x32/animations/quassel_tray-fade-on-14.png</file>
+    <file alias="oxygen/32x32/animations/quassel_tray-fade-on-5.png">oxygen/32x32/animations/quassel_tray-fade-on-5.png</file>
+    <file alias="oxygen/32x32/animations/quassel_tray-alert-8.png">oxygen/32x32/animations/quassel_tray-alert-8.png</file>
+    <file alias="oxygen/32x32/animations/quassel_tray-fade-off-2.png">oxygen/32x32/animations/quassel_tray-fade-off-2.png</file>
+    <file alias="oxygen/32x32/animations/quassel_tray-fade-on-4.png">oxygen/32x32/animations/quassel_tray-fade-on-4.png</file>
+    <file alias="oxygen/32x32/animations/quassel_tray-fade-off-10.png">oxygen/32x32/animations/quassel_tray-fade-off-10.png</file>
+    <file alias="oxygen/32x32/animations/quassel_tray-fade-on-9.png">oxygen/32x32/animations/quassel_tray-fade-on-9.png</file>
+    <file alias="oxygen/32x32/animations/quassel_tray-fade-on-10.png">oxygen/32x32/animations/quassel_tray-fade-on-10.png</file>
+    <file alias="oxygen/64x64/apps/quassel_inactive.png">oxygen/64x64/apps/quassel_inactive.png</file>
+    <file alias="oxygen/64x64/animations/quassel_tray-fade-on-8.png">oxygen/64x64/animations/quassel_tray-fade-on-8.png</file>
+    <file alias="oxygen/64x64/animations/quassel_tray-fade-on-13.png">oxygen/64x64/animations/quassel_tray-fade-on-13.png</file>
+    <file alias="oxygen/64x64/animations/quassel_tray-alert-4.png">oxygen/64x64/animations/quassel_tray-alert-4.png</file>
+    <file alias="oxygen/64x64/animations/quassel_tray-fade-off-8.png">oxygen/64x64/animations/quassel_tray-fade-off-8.png</file>
+    <file alias="oxygen/64x64/animations/quassel_tray-fade-off-6.png">oxygen/64x64/animations/quassel_tray-fade-off-6.png</file>
+    <file alias="oxygen/64x64/animations/quassel_tray-fade-on-12.png">oxygen/64x64/animations/quassel_tray-fade-on-12.png</file>
+    <file alias="oxygen/64x64/animations/quassel_tray-alert-9.png">oxygen/64x64/animations/quassel_tray-alert-9.png</file>
+    <file alias="oxygen/64x64/animations/quassel_tray-fade-off-5.png">oxygen/64x64/animations/quassel_tray-fade-off-5.png</file>
+    <file alias="oxygen/64x64/animations/quassel_tray-fade-on-11.png">oxygen/64x64/animations/quassel_tray-fade-on-11.png</file>
+    <file alias="oxygen/64x64/animations/quassel_tray-alert-6.png">oxygen/64x64/animations/quassel_tray-alert-6.png</file>
+    <file alias="oxygen/64x64/animations/quassel_tray-fade-on-2.png">oxygen/64x64/animations/quassel_tray-fade-on-2.png</file>
+    <file alias="oxygen/64x64/animations/quassel_tray-fade-off-9.png">oxygen/64x64/animations/quassel_tray-fade-off-9.png</file>
+    <file alias="oxygen/64x64/animations/quassel_tray-fade-on-15.png">oxygen/64x64/animations/quassel_tray-fade-on-15.png</file>
+    <file alias="oxygen/64x64/animations/quassel_tray-fade-on-1.png">oxygen/64x64/animations/quassel_tray-fade-on-1.png</file>
+    <file alias="oxygen/64x64/animations/quassel_tray-alert-7.png">oxygen/64x64/animations/quassel_tray-alert-7.png</file>
+    <file alias="oxygen/64x64/animations/quassel_tray-fade-off-1.png">oxygen/64x64/animations/quassel_tray-fade-off-1.png</file>
+    <file alias="oxygen/64x64/animations/quassel_tray-alert-3.png">oxygen/64x64/animations/quassel_tray-alert-3.png</file>
+    <file alias="oxygen/64x64/animations/quassel_tray-fade-on-3.png">oxygen/64x64/animations/quassel_tray-fade-on-3.png</file>
+    <file alias="oxygen/64x64/animations/quassel_tray-fade-off-7.png">oxygen/64x64/animations/quassel_tray-fade-off-7.png</file>
+    <file alias="oxygen/64x64/animations/quassel_tray-alert-5.png">oxygen/64x64/animations/quassel_tray-alert-5.png</file>
+    <file alias="oxygen/64x64/animations/quassel_tray-alert-1.png">oxygen/64x64/animations/quassel_tray-alert-1.png</file>
+    <file alias="oxygen/64x64/animations/quassel_tray-fade-on-7.png">oxygen/64x64/animations/quassel_tray-fade-on-7.png</file>
+    <file alias="oxygen/64x64/animations/quassel_tray-fade-on-6.png">oxygen/64x64/animations/quassel_tray-fade-on-6.png</file>
+    <file alias="oxygen/64x64/animations/quassel_tray-alert-2.png">oxygen/64x64/animations/quassel_tray-alert-2.png</file>
+    <file alias="oxygen/64x64/animations/quassel_tray-fade-off-4.png">oxygen/64x64/animations/quassel_tray-fade-off-4.png</file>
+    <file alias="oxygen/64x64/animations/quassel_tray-fade-off-3.png">oxygen/64x64/animations/quassel_tray-fade-off-3.png</file>
+    <file alias="oxygen/64x64/animations/quassel_tray-alert-10.png">oxygen/64x64/animations/quassel_tray-alert-10.png</file>
+    <file alias="oxygen/64x64/animations/quassel_tray-fade-on-14.png">oxygen/64x64/animations/quassel_tray-fade-on-14.png</file>
+    <file alias="oxygen/64x64/animations/quassel_tray-fade-on-5.png">oxygen/64x64/animations/quassel_tray-fade-on-5.png</file>
+    <file alias="oxygen/64x64/animations/quassel_tray-alert-8.png">oxygen/64x64/animations/quassel_tray-alert-8.png</file>
+    <file alias="oxygen/64x64/animations/quassel_tray-fade-off-2.png">oxygen/64x64/animations/quassel_tray-fade-off-2.png</file>
+    <file alias="oxygen/64x64/animations/quassel_tray-fade-on-4.png">oxygen/64x64/animations/quassel_tray-fade-on-4.png</file>
+    <file alias="oxygen/64x64/animations/quassel_tray-fade-off-10.png">oxygen/64x64/animations/quassel_tray-fade-off-10.png</file>
+    <file alias="oxygen/64x64/animations/quassel_tray-fade-on-9.png">oxygen/64x64/animations/quassel_tray-fade-on-9.png</file>
+    <file alias="oxygen/64x64/animations/quassel_tray-fade-on-10.png">oxygen/64x64/animations/quassel_tray-fade-on-10.png</file>
+    <file alias="oxygen/22x22/apps/quassel_inactive.png">oxygen/22x22/apps/quassel_inactive.png</file>
+    <file alias="oxygen/22x22/animations/quassel_tray-fade-on-8.png">oxygen/22x22/animations/quassel_tray-fade-on-8.png</file>
+    <file alias="oxygen/22x22/animations/quassel_tray-fade-on-13.png">oxygen/22x22/animations/quassel_tray-fade-on-13.png</file>
+    <file alias="oxygen/22x22/animations/quassel_tray-alert-4.png">oxygen/22x22/animations/quassel_tray-alert-4.png</file>
+    <file alias="oxygen/22x22/animations/quassel_tray-fade-off-8.png">oxygen/22x22/animations/quassel_tray-fade-off-8.png</file>
+    <file alias="oxygen/22x22/animations/quassel_tray-fade-off-6.png">oxygen/22x22/animations/quassel_tray-fade-off-6.png</file>
+    <file alias="oxygen/22x22/animations/quassel_tray-fade-on-12.png">oxygen/22x22/animations/quassel_tray-fade-on-12.png</file>
+    <file alias="oxygen/22x22/animations/quassel_tray-alert-9.png">oxygen/22x22/animations/quassel_tray-alert-9.png</file>
+    <file alias="oxygen/22x22/animations/quassel_tray-fade-off-5.png">oxygen/22x22/animations/quassel_tray-fade-off-5.png</file>
+    <file alias="oxygen/22x22/animations/quassel_tray-fade-on-11.png">oxygen/22x22/animations/quassel_tray-fade-on-11.png</file>
+    <file alias="oxygen/22x22/animations/quassel_tray-alert-6.png">oxygen/22x22/animations/quassel_tray-alert-6.png</file>
+    <file alias="oxygen/22x22/animations/quassel_tray-fade-on-2.png">oxygen/22x22/animations/quassel_tray-fade-on-2.png</file>
+    <file alias="oxygen/22x22/animations/quassel_tray-fade-off-9.png">oxygen/22x22/animations/quassel_tray-fade-off-9.png</file>
+    <file alias="oxygen/22x22/animations/quassel_tray-fade-on-15.png">oxygen/22x22/animations/quassel_tray-fade-on-15.png</file>
+    <file alias="oxygen/22x22/animations/quassel_tray-fade-on-1.png">oxygen/22x22/animations/quassel_tray-fade-on-1.png</file>
+    <file alias="oxygen/22x22/animations/quassel_tray-alert-7.png">oxygen/22x22/animations/quassel_tray-alert-7.png</file>
+    <file alias="oxygen/22x22/animations/quassel_tray-fade-off-1.png">oxygen/22x22/animations/quassel_tray-fade-off-1.png</file>
+    <file alias="oxygen/22x22/animations/quassel_tray-alert-3.png">oxygen/22x22/animations/quassel_tray-alert-3.png</file>
+    <file alias="oxygen/22x22/animations/quassel_tray-fade-on-3.png">oxygen/22x22/animations/quassel_tray-fade-on-3.png</file>
+    <file alias="oxygen/22x22/animations/quassel_tray-fade-off-7.png">oxygen/22x22/animations/quassel_tray-fade-off-7.png</file>
+    <file alias="oxygen/22x22/animations/quassel_tray-alert-5.png">oxygen/22x22/animations/quassel_tray-alert-5.png</file>
+    <file alias="oxygen/22x22/animations/quassel_tray-alert-1.png">oxygen/22x22/animations/quassel_tray-alert-1.png</file>
+    <file alias="oxygen/22x22/animations/quassel_tray-fade-on-7.png">oxygen/22x22/animations/quassel_tray-fade-on-7.png</file>
+    <file alias="oxygen/22x22/animations/quassel_tray-fade-on-6.png">oxygen/22x22/animations/quassel_tray-fade-on-6.png</file>
+    <file alias="oxygen/22x22/animations/quassel_tray-alert-2.png">oxygen/22x22/animations/quassel_tray-alert-2.png</file>
+    <file alias="oxygen/22x22/animations/quassel_tray-fade-off-4.png">oxygen/22x22/animations/quassel_tray-fade-off-4.png</file>
+    <file alias="oxygen/22x22/animations/quassel_tray-fade-off-3.png">oxygen/22x22/animations/quassel_tray-fade-off-3.png</file>
+    <file alias="oxygen/22x22/animations/quassel_tray-alert-10.png">oxygen/22x22/animations/quassel_tray-alert-10.png</file>
+    <file alias="oxygen/22x22/animations/quassel_tray-fade-on-14.png">oxygen/22x22/animations/quassel_tray-fade-on-14.png</file>
+    <file alias="oxygen/22x22/animations/quassel_tray-fade-on-5.png">oxygen/22x22/animations/quassel_tray-fade-on-5.png</file>
+    <file alias="oxygen/22x22/animations/quassel_tray-alert-8.png">oxygen/22x22/animations/quassel_tray-alert-8.png</file>
+    <file alias="oxygen/22x22/animations/quassel_tray-fade-off-2.png">oxygen/22x22/animations/quassel_tray-fade-off-2.png</file>
+    <file alias="oxygen/22x22/animations/quassel_tray-fade-on-4.png">oxygen/22x22/animations/quassel_tray-fade-on-4.png</file>
+    <file alias="oxygen/22x22/animations/quassel_tray-fade-off-10.png">oxygen/22x22/animations/quassel_tray-fade-off-10.png</file>
+    <file alias="oxygen/22x22/animations/quassel_tray-fade-on-9.png">oxygen/22x22/animations/quassel_tray-fade-on-9.png</file>
+    <file alias="oxygen/22x22/animations/quassel_tray-fade-on-10.png">oxygen/22x22/animations/quassel_tray-fade-on-10.png</file>
+    <file alias="oxygen/16x16/apps/quassel_inactive.png">oxygen/16x16/apps/quassel_inactive.png</file>
+    <file alias="oxygen/16x16/status/irc-channel-inactive.png">oxygen/16x16/status/irc-channel-inactive.png</file>
+    <file alias="oxygen/16x16/status/irc-channel-active.png">oxygen/16x16/status/irc-channel-active.png</file>
+    <file alias="oxygen/16x16/animations/quassel_tray-fade-on-8.png">oxygen/16x16/animations/quassel_tray-fade-on-8.png</file>
+    <file alias="oxygen/16x16/animations/quassel_tray-fade-on-13.png">oxygen/16x16/animations/quassel_tray-fade-on-13.png</file>
+    <file alias="oxygen/16x16/animations/quassel_tray-alert-4.png">oxygen/16x16/animations/quassel_tray-alert-4.png</file>
+    <file alias="oxygen/16x16/animations/quassel_tray-fade-off-8.png">oxygen/16x16/animations/quassel_tray-fade-off-8.png</file>
+    <file alias="oxygen/16x16/animations/quassel_tray-fade-off-6.png">oxygen/16x16/animations/quassel_tray-fade-off-6.png</file>
+    <file alias="oxygen/16x16/animations/quassel_tray-fade-on-12.png">oxygen/16x16/animations/quassel_tray-fade-on-12.png</file>
+    <file alias="oxygen/16x16/animations/quassel_tray-alert-9.png">oxygen/16x16/animations/quassel_tray-alert-9.png</file>
+    <file alias="oxygen/16x16/animations/quassel_tray-fade-off-5.png">oxygen/16x16/animations/quassel_tray-fade-off-5.png</file>
+    <file alias="oxygen/16x16/animations/quassel_tray-fade-on-11.png">oxygen/16x16/animations/quassel_tray-fade-on-11.png</file>
+    <file alias="oxygen/16x16/animations/quassel_tray-alert-6.png">oxygen/16x16/animations/quassel_tray-alert-6.png</file>
+    <file alias="oxygen/16x16/animations/quassel_tray-fade-on-2.png">oxygen/16x16/animations/quassel_tray-fade-on-2.png</file>
+    <file alias="oxygen/16x16/animations/quassel_tray-fade-off-9.png">oxygen/16x16/animations/quassel_tray-fade-off-9.png</file>
+    <file alias="oxygen/16x16/animations/quassel_tray-fade-on-15.png">oxygen/16x16/animations/quassel_tray-fade-on-15.png</file>
+    <file alias="oxygen/16x16/animations/quassel_tray-fade-on-1.png">oxygen/16x16/animations/quassel_tray-fade-on-1.png</file>
+    <file alias="oxygen/16x16/animations/quassel_tray-alert-7.png">oxygen/16x16/animations/quassel_tray-alert-7.png</file>
+    <file alias="oxygen/16x16/animations/quassel_tray-fade-off-1.png">oxygen/16x16/animations/quassel_tray-fade-off-1.png</file>
+    <file alias="oxygen/16x16/animations/quassel_tray-alert-3.png">oxygen/16x16/animations/quassel_tray-alert-3.png</file>
+    <file alias="oxygen/16x16/animations/quassel_tray-fade-on-3.png">oxygen/16x16/animations/quassel_tray-fade-on-3.png</file>
+    <file alias="oxygen/16x16/animations/quassel_tray-fade-off-7.png">oxygen/16x16/animations/quassel_tray-fade-off-7.png</file>
+    <file alias="oxygen/16x16/animations/quassel_tray-alert-5.png">oxygen/16x16/animations/quassel_tray-alert-5.png</file>
+    <file alias="oxygen/16x16/animations/quassel_tray-alert-1.png">oxygen/16x16/animations/quassel_tray-alert-1.png</file>
+    <file alias="oxygen/16x16/animations/quassel_tray-fade-on-7.png">oxygen/16x16/animations/quassel_tray-fade-on-7.png</file>
+    <file alias="oxygen/16x16/animations/quassel_tray-fade-on-6.png">oxygen/16x16/animations/quassel_tray-fade-on-6.png</file>
+    <file alias="oxygen/16x16/animations/quassel_tray-alert-2.png">oxygen/16x16/animations/quassel_tray-alert-2.png</file>
+    <file alias="oxygen/16x16/animations/quassel_tray-fade-off-4.png">oxygen/16x16/animations/quassel_tray-fade-off-4.png</file>
+    <file alias="oxygen/16x16/animations/quassel_tray-fade-off-3.png">oxygen/16x16/animations/quassel_tray-fade-off-3.png</file>
+    <file alias="oxygen/16x16/animations/quassel_tray-alert-10.png">oxygen/16x16/animations/quassel_tray-alert-10.png</file>
+    <file alias="oxygen/16x16/animations/quassel_tray-fade-on-14.png">oxygen/16x16/animations/quassel_tray-fade-on-14.png</file>
+    <file alias="oxygen/16x16/animations/quassel_tray-fade-on-5.png">oxygen/16x16/animations/quassel_tray-fade-on-5.png</file>
+    <file alias="oxygen/16x16/animations/quassel_tray-alert-8.png">oxygen/16x16/animations/quassel_tray-alert-8.png</file>
+    <file alias="oxygen/16x16/animations/quassel_tray-fade-off-2.png">oxygen/16x16/animations/quassel_tray-fade-off-2.png</file>
+    <file alias="oxygen/16x16/animations/quassel_tray-fade-on-4.png">oxygen/16x16/animations/quassel_tray-fade-on-4.png</file>
+    <file alias="oxygen/16x16/animations/quassel_tray-fade-off-10.png">oxygen/16x16/animations/quassel_tray-fade-off-10.png</file>
+    <file alias="oxygen/16x16/animations/quassel_tray-fade-on-9.png">oxygen/16x16/animations/quassel_tray-fade-on-9.png</file>
+    <file alias="oxygen/16x16/animations/quassel_tray-fade-on-10.png">oxygen/16x16/animations/quassel_tray-fade-on-10.png</file>
   </qresource>
 </RCC>
