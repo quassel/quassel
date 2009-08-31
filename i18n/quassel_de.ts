@@ -2,22 +2,7 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="de">
 <context>
-    <name></name>
-    <message>
-        <source>Day changed to %1</source>
-        <translation type="obsolete">Ein neuer Tag beginnt: %1</translation>
-    </message>
-</context>
-<context>
     <name>AboutDlg</name>
-    <message>
-        <source>About</source>
-        <translation type="obsolete">Über</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;A modern, distributed IRC Client&lt;/b&gt;&lt;br&gt;&lt;br&gt;&amp;copy;2005-2008 by the Quassel Project&lt;br&gt;&lt;a href=&quot;http://quassel-irc.org&quot;&gt;http://quassel-irc.org&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;irc://irc.freenode.net/quassel&quot;&gt;#quassel&lt;/a&gt; on &lt;a href=&quot;http://www.freenode.net&quot;&gt;Freenode&lt;/a&gt;&lt;br&gt;&lt;br&gt;Quassel IRC is dual-licensed under &lt;a href=&quot;http://www.gnu.org/licenses/gpl-2.0.txt&quot;&gt;GPLv2&lt;/a&gt; and &lt;a href=&quot;http://www.gnu.org/licenses/gpl-3.0.txt&quot;&gt;GPLv3&lt;/a&gt;.&lt;br&gt;Most icons are &amp;copy; by the &lt;a href=&quot;http://www.oxygen-icons.org&quot;&gt;Oxygen Team&lt;/a&gt; and used under the &lt;a href=&quot;http://www.gnu.org/licenses/lgpl.html&quot;&gt;LGPL&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Please use &lt;a href=&quot;http://bugs.quassel-irc.org&quot;&gt;http://bugs.quassel-irc.org&lt;/a&gt; to report bugs.</source>
-        <translation type="obsolete">&lt;b&gt;A modern, distributed IRC Client&lt;/b&gt;&lt;br&gt;&lt;br&gt;&amp;copy;2005-2008 by the Quassel Project&lt;br&gt;&lt;a href=&quot;http://quassel-irc.org&quot;&gt;http://quassel-irc.org&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;irc://irc.freenode.net/quassel&quot;&gt;#quassel&lt;/a&gt; on &lt;a href=&quot;http://www.freenode.net&quot;&gt;Freenode&lt;/a&gt;&lt;br&gt;&lt;br&gt;Quassel IRC is dual-licensed under &lt;a href=&quot;http://www.gnu.org/licenses/gpl-2.0.txt&quot;&gt;GPLv2&lt;/a&gt; and &lt;a href=&quot;http://www.gnu.org/licenses/gpl-3.0.txt&quot;&gt;GPLv3&lt;/a&gt;.&lt;br&gt;Most icons are &amp;copy; by the &lt;a href=&quot;http://www.oxygen-icons.org&quot;&gt;Oxygen Team&lt;/a&gt; and used under the &lt;a href=&quot;http://www.gnu.org/licenses/lgpl.html&quot;&gt;LGPL&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Please use &lt;a href=&quot;http://bugs.quassel-irc.org&quot;&gt;http://bugs.quassel-irc.org&lt;/a&gt; to report bugs.</translation>
-    </message>
     <message>
         <location filename="../src/qtui/aboutdlg.cpp" line="62"/>
         <source>Quassel IRC is mainly developed by:</source>
@@ -27,10 +12,6 @@
         <location filename="../src/qtui/aboutdlg.cpp" line="77"/>
         <source>We would like to thank the following contributors (in alphabetical order) and everybody we forgot to mention here:</source>
         <translation>Wir möchten den folgenden Unterstützern (in alphabetischer Reihenfolge) und denen, die wir hier vergessen haben zu erwähnen, danken:</translation>
-    </message>
-    <message>
-        <source>Special thanks goes to:&lt;br&gt;&lt;dl&gt;&lt;dt&gt;&lt;b&gt;John &quot;nox-Hand&quot; Hand&lt;/b&gt;&lt;/dt&gt;&lt;dd&gt;for great artwork and the Quassel logo/icon&lt;/dt&gt;&lt;dt&gt;&lt;b&gt;&lt;a href=&quot;http://www.oxygen-icons.org&quot;&gt;The Oxygen Team&lt;/a&gt;&lt;/b&gt;&lt;/dt&gt;&lt;dd&gt;for creating most of the other shiny icons you see throughout Quassel&lt;/dd&gt;&lt;dt&gt;&lt;b&gt;&lt;a href=&quot;http://www.trolltech.com&quot;&gt;Trolltech&lt;/a&gt;&lt;/b&gt;&lt;/dt&gt;&lt;dd&gt;for creating Qt and Qtopia, and for sponsoring development of Quasseltopia with Greenphones and more&lt;/dd&gt;</source>
-        <translation type="obsolete">Besonderer Dank geht an:&lt;br&gt;&lt;dl&gt;&lt;dt&gt;&lt;b&gt;John &quot;nox-Hand&quot; Hand&lt;/b&gt;&lt;/dt&gt;&lt;dd&gt;für großartige Gestaltungsarbeit und das Quassel-Logo/-Symbol&lt;/dt&gt;&lt;dt&gt;&lt;b&gt;&lt;a href=&quot;http://www.oxygen-icons.org&quot;&gt;Das Oxygen-Team&lt;/a&gt;&lt;/b&gt;&lt;/dt&gt;&lt;dd&gt;für die Erstellungen der meisten anderen schnieken Symbole, die Sie in Quassel sehen&lt;/dd&gt;&lt;dt&gt;&lt;b&gt;&lt;a href=&quot;http://www.trolltech.com&quot;&gt;Trolltech&lt;/a&gt;&lt;/b&gt;&lt;/dt&gt;&lt;dd&gt;für die Erstellung von Qt und Qtopia und für die Förderung von Quasseltopia mit Greenphones und mehr&lt;/dd&gt;</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/aboutdlg.ui" line="17"/>
@@ -85,10 +66,6 @@ p, li { white-space: pre-wrap; }
         <translation>&lt;b&gt;Version:&lt;/b&gt; %1&lt;br&gt;&lt;b&gt;Protokollversion:&lt;/b&gt; %2&lt;br&gt;&lt;b&gt;Kompiliert:&lt;/b&gt; %3</translation>
     </message>
     <message>
-        <source>Special thanks goes to:&lt;br&gt;&lt;dl&gt;&lt;dt&gt;&lt;b&gt;John &quot;nox&quot; Hand&lt;/b&gt;&lt;/dt&gt;&lt;dd&gt;for great artwork and the Quassel logo/icon&lt;/dt&gt;&lt;dt&gt;&lt;b&gt;&lt;a href=&quot;http://www.oxygen-icons.org&quot;&gt;The Oxygen Team&lt;/a&gt;&lt;/b&gt;&lt;/dt&gt;&lt;dd&gt;for creating most of the other shiny icons you see throughout Quassel&lt;/dd&gt;&lt;dt&gt;&lt;b&gt;&lt;a href=&quot;http://www.trolltech.com&quot;&gt;Qt Software formerly known as Trolltech&lt;/a&gt;&lt;/b&gt;&lt;/dt&gt;&lt;dd&gt;for creating Qt and Qtopia, and for sponsoring development of QuasselTopia with Greenphones and more&lt;/dd&gt;&lt;dt&gt;&lt;b&gt;&lt;a href=&quot;http://www.nokia.com&quot;&gt;Nokia&lt;/a&gt;&lt;/b&gt;&lt;/dt&gt;&lt;dd&gt;for keeping Qt alive, and for sponsoring development of Quassel Mobile with N810s&lt;/dd&gt;</source>
-        <translation type="obsolete">Besonderen Dank geht an:&lt;br&gt;&lt;dl&gt;&lt;dt&gt;&lt;b&gt;John &quot;nox&quot; Hand&lt;/b&gt;&lt;/dt&gt;&lt;dd&gt;für großartige künstlerische Leistung und das Quassel Icon&lt;/dt&gt;&lt;dt&gt;&lt;b&gt;&lt;a href=&quot;http://www.oxygen-icons.org&quot;&gt;Dem Oxygen- Team&lt;/a&gt;&lt;/b&gt;&lt;/dt&gt;&lt;dd&gt;für die meisten anderen Icons die in Quassel zu sehen sind&lt;/dd&gt;&lt;dt&gt;&lt;b&gt;&lt;a href=&quot;http://www.trolltech.com&quot;&gt;Qt Software (früher: Trolltech)&lt;/a&gt;&lt;/b&gt;&lt;/dt&gt;&lt;dd&gt;für Qt und Qtopia, und für die Unterstützung der Entwicklung von QuasselTopia auf Greenphones und mehr&lt;/dd&gt;&lt;dt&gt;&lt;b&gt;&lt;a href=&quot;http://www.nokia.com&quot;&gt;Nokia&lt;/a&gt;&lt;/b&gt;&lt;/dt&gt;&lt;dd&gt;für die Aufnahme von Qt und für die Unterstützung der Entwicklung von Quassel Mobile für das N810&lt;/dd&gt;</translation>
-    </message>
-    <message>
         <location filename="../src/qtui/aboutdlg.cpp" line="46"/>
         <source>&lt;b&gt;A modern, distributed IRC Client&lt;/b&gt;&lt;br&gt;&lt;br&gt;&amp;copy;2005-2009 by the Quassel Project&lt;br&gt;&lt;a href=&quot;http://quassel-irc.org&quot;&gt;http://quassel-irc.org&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;irc://irc.freenode.net/quassel&quot;&gt;#quassel&lt;/a&gt; on &lt;a href=&quot;http://www.freenode.net&quot;&gt;Freenode&lt;/a&gt;&lt;br&gt;&lt;br&gt;Quassel IRC is dual-licensed under &lt;a href=&quot;http://www.gnu.org/licenses/gpl-2.0.txt&quot;&gt;GPLv2&lt;/a&gt; and &lt;a href=&quot;http://www.gnu.org/licenses/gpl-3.0.txt&quot;&gt;GPLv3&lt;/a&gt;.&lt;br&gt;Most icons are &amp;copy; by the &lt;a href=&quot;http://www.oxygen-icons.org&quot;&gt;Oxygen Team&lt;/a&gt; and used under the &lt;a href=&quot;http://www.gnu.org/licenses/lgpl.html&quot;&gt;LGPL&lt;/a&gt;.&lt;br&gt;&lt;br&gt;Please use &lt;a href=&quot;http://bugs.quassel-irc.org&quot;&gt;http://bugs.quassel-irc.org&lt;/a&gt; to report bugs.</source>
         <translation>&lt;b&gt;Ein moderner, dezentralisierter IRC-Client&lt;/b&gt;&lt;br&gt;&lt;br&gt;&amp;copy;2005-2009 durch das Quassel Projekt&lt;br&gt;&lt;a href=&quot;http://quassel-irc.org&quot;&gt;http://quassel-irc.org&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;irc://irc.freenode.net/quassel&quot;&gt;#quassel&lt;/a&gt; auf &lt;a href=&quot;http://www.freenode.net&quot;&gt;Freenode&lt;/a&gt;&lt;br&gt;&lt;br&gt;Quassel IRC ist dual-lizensiert &lt;a href=&quot;http://www.gnu.org/licenses/gpl-2.0.txt&quot;&gt;GPLv2&lt;/a&gt; und &lt;a href=&quot;http://www.gnu.org/licenses/gpl-3.0.txt&quot;&gt;GPLv3&lt;/a&gt;.&lt;br&gt;Die meisten der Icons sind &amp;copy; durch das &lt;a href=&quot;http://www.oxygen-icons.org&quot;&gt;Oxygen Team&lt;/a&gt; und werden unter der &lt;a href=&quot;http://www.gnu.org/licenses/lgpl.html&quot;&gt;LGPL&lt;/a&gt; benutzt.&lt;br&gt;&lt;br&gt;Bitte benutzen Sie &lt;a href=&quot;http://bugs.quassel-irc.org&quot;&gt;http://bugs.quassel-irc.org&lt;/a&gt; um Fehler zu melden.</translation>
@@ -128,10 +105,6 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>AliasesSettingsPage</name>
     <message>
-        <source>Behaviour</source>
-        <translation type="obsolete">Verhalten</translation>
-    </message>
-    <message>
         <location filename="../src/qtui/settingspages/aliasessettingspage.cpp" line="29"/>
         <source>Aliases</source>
         <translation>Aliase</translation>
@@ -160,34 +133,14 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>AppearanceSettingsPage</name>
     <message>
-        <source>Appearance</source>
-        <translation type="obsolete">Erscheinungsbild</translation>
-    </message>
-    <message>
-        <source>General</source>
-        <translation type="obsolete">Allgemein</translation>
-    </message>
-    <message>
         <location filename="../src/qtui/settingspages/appearancesettingspage.ui" line="14"/>
         <source>Form</source>
         <translation>Formular</translation>
     </message>
     <message>
-        <source>Client style:</source>
-        <translation type="obsolete">Client-Stil:</translation>
-    </message>
-    <message>
-        <source>Language:</source>
-        <translation type="obsolete">Sprache:</translation>
-    </message>
-    <message>
         <location filename="../src/qtui/settingspages/appearancesettingspage.ui" line="51"/>
         <source>&lt;Original&gt;</source>
         <translation></translation>
-    </message>
-    <message>
-        <source>Note: needs client restart for full effect!</source>
-        <translation type="obsolete">Hinweis: Erfordert Client-Neustart, damit sich alle Änderungen auswirken!</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/appearancesettingspage.cpp" line="34"/>
@@ -204,18 +157,6 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/qtui/settingspages/appearancesettingspage.cpp" line="151"/>
         <source>Please choose a stylesheet file</source>
         <translation>Bitte wählen Sie eine Layoutdatei</translation>
-    </message>
-    <message>
-        <source>Misc:</source>
-        <translation type="obsolete">Verschiedenes:</translation>
-    </message>
-    <message>
-        <source>Show Web Previews</source>
-        <translation type="obsolete">Vorschau von Weblinks aktivieren</translation>
-    </message>
-    <message>
-        <source>Use Icons to represent away state of Users</source>
-        <translation type="obsolete">Zeige Abwesenheitsstatus von Benutzern mit Hilfe von Icons an</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/appearancesettingspage.ui" line="20"/>
@@ -262,62 +203,6 @@ p, li { white-space: pre-wrap; }
         <source>...</source>
         <translation>...</translation>
     </message>
-    <message>
-        <source>Fonts</source>
-        <translation type="obsolete">Schriftarten</translation>
-    </message>
-    <message>
-        <source>Set font for the main chat window and the chat monitor</source>
-        <translation type="obsolete">Schrift für das Chatfenster und den Chatmonitor auswählen</translation>
-    </message>
-    <message>
-        <source>Chat window:</source>
-        <translation type="obsolete">Chatfenster:</translation>
-    </message>
-    <message>
-        <source>Font</source>
-        <translation type="obsolete">Schrift</translation>
-    </message>
-    <message>
-        <source>Choose...</source>
-        <translation type="obsolete">Wähle...</translation>
-    </message>
-    <message>
-        <source>Set font for channel and nick lists</source>
-        <translation type="obsolete">Schrift für Kanal- und Nickliste auswählen</translation>
-    </message>
-    <message>
-        <source>Channel list:</source>
-        <translation type="obsolete">Kanalliste::</translation>
-    </message>
-    <message>
-        <source>Set font for the input line</source>
-        <translation type="obsolete">Schrift für die Eingabezeile auswählen</translation>
-    </message>
-    <message>
-        <source>Input line:</source>
-        <translation type="obsolete">Eingabezeile:</translation>
-    </message>
-    <message>
-        <source>Misc</source>
-        <translation type="obsolete">Verschiedenes</translation>
-    </message>
-    <message>
-        <source>Show a website preview window when hovering the mouse over a web address</source>
-        <translation type="obsolete">Zeige eine Webseitenvorschau beim Hovern mit der Maus über eine Webadresse</translation>
-    </message>
-    <message>
-        <source>Show previews of webpages on URL hover</source>
-        <translation type="obsolete">Zeige Vorschauen von Webseiten beim Hovern über URLs</translation>
-    </message>
-    <message>
-        <source>Show status icons in channel and nick lists</source>
-        <translation type="obsolete">Zeige Statusicons in der Kanal- und Nickliste</translation>
-    </message>
-    <message>
-        <source>Use icons in channel and nick lists</source>
-        <translation type="obsolete">Benutze Icons in der Kanal- und Nickliste</translation>
-    </message>
 </context>
 <context>
     <name>AwayLogView</name>
@@ -340,10 +225,6 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>BacklogSettingsPage</name>
     <message>
-        <source>Behaviour</source>
-        <translation type="obsolete">Verhalten</translation>
-    </message>
-    <message>
         <location filename="../src/qtui/settingspages/backlogsettingspage.cpp" line="27"/>
         <source>Backlog</source>
         <translation>Verlauf</translation>
@@ -354,26 +235,6 @@ p, li { white-space: pre-wrap; }
         <translation>Formular</translation>
     </message>
     <message>
-        <source>Backlog Request Method:</source>
-        <translation type="obsolete">Methode für Verlaufanforderung:</translation>
-    </message>
-    <message>
-        <source>Fixed Amount per Buffer</source>
-        <translation type="obsolete">Fester Verlaufsspeicher pro Fenster</translation>
-    </message>
-    <message>
-        <source>Unread Messages per Buffer</source>
-        <translation type="obsolete">Ungelesene Nachrichten pro Fenster</translation>
-    </message>
-    <message>
-        <source>Global Unread Messages</source>
-        <translation type="obsolete">Globale ungelesene Nachrichten</translation>
-    </message>
-    <message>
-        <source>The simplest Requester. It fetches a fixed amount of lines for each buffer from the Backlog.</source>
-        <translation type="obsolete">Die einfachste Methode: Einen feste Anzahl Zeilen werden für jedes Fenster angefordert.</translation>
-    </message>
-    <message>
         <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="138"/>
         <source>amount of messages per buffer that are requested after the core connection has been established.</source>
         <translation>Anzahl der Nachrichten pro Fenster, die nach dem Core-Verbindungsaufbau angefordert werden.</translation>
@@ -382,14 +243,6 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="141"/>
         <source>Initial backlog amount:</source>
         <translation>Anfängliche Verlaufsgröße:</translation>
-    </message>
-    <message>
-        <source>This requester fetches unread messages for each buffer individually. The amount of lines can be limited per buffer.
-
-You can also chose to fetch additional older chatlines to provide a better context.</source>
-        <translation type="obsolete">Diese Methode fordert ungelesene Nachrichten für jedes Fenster individuell an. Die Anzahl Zeilen kann für jedes Fenster einzeln begrenzt werden.
-
-Sie können außerdem weitere ältere Chatzeilen anfordern.</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="216"/>
@@ -419,16 +272,6 @@ Sie können außerdem weitere ältere Chatzeilen anfordern.</translation>
         <translation>Zusätzliche Nachrichten:</translation>
     </message>
     <message>
-        <source>This requester fetches all messages newer than the oldest unread message for all buffers. 
-This requester determines which is the oldest read message of all buffers and then requests one large chunk of messages across all buffers.
-
-Note: this requester is not recommended if you use hidden buffer or have inactive buffers (i.e.: no stale queries or channels).
-It is useful to limit the total amount of the backlog and is probably the fastest.
-
-You can also chose to fetch additional older chatlines to provide a better context similar.</source>
-        <translation type="obsolete">Diese Methode fordert alle Nachrichten, die neuer als die älteste ungelesene Nachricht sind, an.</translation>
-    </message>
-    <message>
         <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="332"/>
         <source>Maximum amount of messages to be fetched over all buffers.</source>
         <translation>Maximale Anzahl der Nachrichten die für alle Fenster angefordert werden.</translation>
@@ -442,20 +285,6 @@ You can also chose to fetch additional older chatlines to provide a better conte
         <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="25"/>
         <source>Dynamic backlog amount:</source>
         <translation>Dynamische Verlaufsgröße:</translation>
-    </message>
-    <message>
-        <source>This requester fetches all messages newer than the oldest unread message for all buffers.
-
-Note: this requester is not recommended if you use hidden buffer or have inactive buffers (i.e.: no stale queries or channels).
-It is useful to limit the total amount of the backlog and is probably the fastest.
-
-You can also chose to fetch additional older chatlines to provide a better context similar.</source>
-        <translation type="obsolete">Diese Methode forder alle Nachrichten, die neuer als die älteste ungelesene Nachricht sind, an.
-
-Info: Diese Methode ist nicht empfehlenswert, wenn Sie versteckte Fenster benutzen oder inaktive Fenster haben (z.B. ältere Dialoge oder Kanäle).
-Nützlich um den Verlauf zu limitieren und um schnellstmöglich Nachrichten anzufordern.
-
-Sie können außerdem weitere (ältere) Verlaufszeilen anfordern um den Kontext zu wahren.</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/backlogsettingspage.cpp" line="27"/>
@@ -507,14 +336,6 @@ You can also choose to fetch additional older chatlines to provide a better cont
 Sie können außerdem weitere ältere Chatzeilen anfordern.</translation>
     </message>
     <message>
-        <source>This requester fetches unread messages for each buffer individually. The amount of lines can be limited per buffer.
-
-You can also choose to fetch additional older chatlines to provide a better context.</source>
-        <translation type="obsolete">Diese Methode fordert ungelesene Nachrichten für jedes Fenster individuell an. Die Anzahl Zeilen kann für jedes Fenster einzeln begrenzt werden.
-
-Sie können außerdem weitere ältere Chatzeilen anfordern.</translation>
-    </message>
-    <message>
         <location filename="../src/qtui/settingspages/backlogsettingspage.ui" line="238"/>
         <source>PerBufferUnreadBacklogLimit</source>
         <translation></translation>
@@ -553,42 +374,6 @@ Sie können außerdem weitere (ältere) Verlaufszeilen anfordern um den Kontext 
 <context>
     <name>BufferItem</name>
     <message>
-        <source>Status Buffer</source>
-        <translation type="obsolete">Statuspuffer</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Status buffer of %1&lt;/b&gt;</source>
-        <translation type="obsolete">&lt;b&gt;Statuspuffer von %1&lt;/b&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Channel %1&lt;/b&gt;</source>
-        <translation type="obsolete">&lt;b&gt;Kanal %1&lt;/b&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Users:&lt;/b&gt; %1</source>
-        <translation type="obsolete">&lt;b&gt;Benutzer:&lt;/b&gt; %1</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Topic:&lt;/b&gt; %1</source>
-        <translation type="obsolete">&lt;b&gt;Thema:&lt;/b&gt; %1</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Mode:&lt;/b&gt; %1</source>
-        <translation type="obsolete">&lt;b&gt;Modus:&lt;/b&gt; %1</translation>
-    </message>
-    <message>
-        <source>Not active &lt;br /&gt; Double-click to join</source>
-        <translation type="obsolete">Nicht aktiv &lt;br /&gt; Doppelklicken zum Beitreten</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Query with %1&lt;/b&gt;</source>
-        <translation type="obsolete">&lt;b&gt;Dialog mit %1&lt;/b&gt;</translation>
-    </message>
-    <message>
-        <source>Away Message: %1</source>
-        <translation type="obsolete">Abwesenheitsmeldung: %1</translation>
-    </message>
-    <message>
         <location filename="../src/client/networkmodel.cpp" line="324"/>
         <source>&lt;p&gt; %1 - %2 &lt;/p&gt;</source>
         <translation></translation>
@@ -596,90 +381,6 @@ Sie können außerdem weitere (ältere) Verlaufszeilen anfordern um den Kontext 
 </context>
 <context>
     <name>BufferView</name>
-    <message>
-        <source>Show Channel List</source>
-        <translation type="obsolete">Zeige Kanalliste</translation>
-    </message>
-    <message>
-        <source>Connect</source>
-        <translation type="obsolete">Verbinden</translation>
-    </message>
-    <message>
-        <source>Disconnect</source>
-        <translation type="obsolete">Trennen</translation>
-    </message>
-    <message>
-        <source>Join Channel</source>
-        <translation type="obsolete">Kanal beitreten</translation>
-    </message>
-    <message>
-        <source>Join</source>
-        <translation type="obsolete">Beitreten</translation>
-    </message>
-    <message>
-        <source>Part</source>
-        <translation type="obsolete">Verlassen</translation>
-    </message>
-    <message>
-        <source>Hide buffers</source>
-        <translation type="obsolete">Fenster ausblenden</translation>
-    </message>
-    <message>
-        <source>Hide buffers permanently</source>
-        <translation type="obsolete">Fenster permanent ausblenden</translation>
-    </message>
-    <message>
-        <source>Delete buffer</source>
-        <translation type="obsolete">Verlauf löschen</translation>
-    </message>
-    <message>
-        <source>Ignore list</source>
-        <translation type="obsolete">Ignorieren-Liste</translation>
-    </message>
-    <message>
-        <source>Join Events</source>
-        <translation type="obsolete">Join-Meldungen</translation>
-    </message>
-    <message>
-        <source>Part Events</source>
-        <translation type="obsolete">Part-Meldungen</translation>
-    </message>
-    <message>
-        <source>Kill Events</source>
-        <translation type="obsolete">Kill-Meldungen</translation>
-    </message>
-    <message>
-        <source>Quit Events</source>
-        <translation type="obsolete">Quit-Meldungen</translation>
-    </message>
-    <message>
-        <source>Mode Events</source>
-        <translation type="obsolete">Mode-Meldungen</translation>
-    </message>
-    <message>
-        <source>Hide Events</source>
-        <translation type="obsolete">Meldungen ausblenden</translation>
-    </message>
-    <message>
-        <source>Input channel name:</source>
-        <translation type="obsolete">Eingabekanalname:</translation>
-    </message>
-    <message>
-        <source>Remove buffer permanently?</source>
-        <translation type="obsolete">Verlauf permanent löschen?</translation>
-    </message>
-    <message>
-        <source>Do you want to delete the buffer &quot;%1&quot; permanently? This will delete all related data, including all backlog data, from the core&apos;s database!</source>
-        <translation type="obsolete">Möchten Sie den Verlauf &quot;%1&quot; permanent löschen? Hierdurch werden alle in Verbindung stehenden Daten - inklusive des gesamten Rückspeichers - aus der Core-Datenbank gelöscht!</translation>
-    </message>
-    <message>
-        <source>Nick Changes</source>
-        <translation type="obsolete">Spitznamenänderungen</translation>
-    </message>
-    <message>
-        <source>Day Change</source>
-        <translation type="obsolete">Tageswechsel</translation>
-    </message>
     <message>
         <location filename="../src/uisupport/bufferview.cpp" line="248"/>
         <source>Merge buffers permanently?</source>
@@ -691,13 +392,6 @@ Sie können außerdem weitere (ältere) Verlaufszeilen anfordern um den Kontext 
  This cannot be reversed!</source>
         <translation>Wollen Sie den Chat &quot;%1&quot; permanent mit dem Chat &quot;%2&quot; zusammenfügen?
 Diese Aktion kann nicht rückgängig gemacht werden!</translation>
-    </message>
-</context>
-<context>
-    <name>BufferViewDock</name>
-    <message>
-        <source>All Buffers</source>
-        <translation type="obsolete">Alle Räume</translation>
     </message>
 </context>
 <context>
@@ -713,14 +407,6 @@ Diese Aktion kann nicht rückgängig gemacht werden!</translation>
         <translation>Bitte geben Sie einen Namen für die Chat-Liste an:</translation>
     </message>
     <message>
-        <source>Please enter a name for the buffer view:</source>
-        <translation type="obsolete">Bitte geben Sie einen Namen für diese Ansicht ein:</translation>
-    </message>
-    <message>
-        <source>Add Buffer View</source>
-        <translation type="obsolete">Ansicht hinzufügen</translation>
-    </message>
-    <message>
         <location filename="../src/qtui/settingspages/bufferviewsettingspage.cpp" line="520"/>
         <source>Add Chat List</source>
         <translation>Eine Chat-Liste hinzufügen</translation>
@@ -729,10 +415,6 @@ Diese Aktion kann nicht rückgängig gemacht werden!</translation>
 <context>
     <name>BufferViewFilter</name>
     <message>
-        <source>Show / Hide buffers</source>
-        <translation type="obsolete">Zeige/Verstecke Fenster</translation>
-    </message>
-    <message>
         <location filename="../src/uisupport/bufferviewfilter.cpp" line="52"/>
         <source>Show / Hide Chats</source>
         <translation>Zeige/Verstecke Chats</translation>
@@ -740,22 +422,6 @@ Diese Aktion kann nicht rückgängig gemacht werden!</translation>
 </context>
 <context>
     <name>BufferViewSettingsPage</name>
-    <message>
-        <source>General</source>
-        <translation type="obsolete">Allgemein</translation>
-    </message>
-    <message>
-        <source>Buffer Views</source>
-        <translation type="obsolete">Ansichten</translation>
-    </message>
-    <message>
-        <source>Delete Buffer View?</source>
-        <translation type="obsolete">Ansicht löschen?</translation>
-    </message>
-    <message>
-        <source>Do you really want to delete the buffer view &quot;%1&quot;?</source>
-        <translation type="obsolete">Wollen Sie dieses Fenster &quot;%1&quot; wirklich löschen?</translation>
-    </message>
     <message>
         <location filename="../src/qtui/settingspages/bufferviewsettingspage.ui" line="14"/>
         <source>Form</source>
@@ -775,10 +441,6 @@ Diese Aktion kann nicht rückgängig gemacht werden!</translation>
         <location filename="../src/qtui/settingspages/bufferviewsettingspage.ui" line="71"/>
         <source>De&amp;lete</source>
         <translation>&amp;Löschen</translation>
-    </message>
-    <message>
-        <source>Buffer View  Settings</source>
-        <translation type="obsolete">Ansichtseinstellungen</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/bufferviewsettingspage.ui" line="92"/>
@@ -810,30 +472,6 @@ Diese Aktion kann nicht rückgängig gemacht werden!</translation>
         <location filename="../src/qtui/settingspages/bufferviewsettingspage.cpp" line="343"/>
         <source>Do you really want to delete the chat list &quot;%1&quot;?</source>
         <translation>Wollen Sie die Chat-Liste &quot;%1&quot; wirklich löschen?</translation>
-    </message>
-    <message>
-        <source>Restrict Buffers to:</source>
-        <translation type="obsolete">Puffer begrenzen auf:</translation>
-    </message>
-    <message>
-        <source>Status Buffers</source>
-        <translation type="obsolete">Statusfenster</translation>
-    </message>
-    <message>
-        <source>Channel Buffers</source>
-        <translation type="obsolete">Kanalpuffer</translation>
-    </message>
-    <message>
-        <source>Query Buffers</source>
-        <translation type="obsolete">Dialogpuffer</translation>
-    </message>
-    <message>
-        <source>Hide inactive Buffers</source>
-        <translation type="obsolete">Inaktive Puffer verstecken</translation>
-    </message>
-    <message>
-        <source>Add new Buffers automatically</source>
-        <translation type="obsolete">Neue Puffer automatisch hinzufügen</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/bufferviewsettingspage.ui" line="84"/>
@@ -901,10 +539,6 @@ Diese Aktion kann nicht rückgängig gemacht werden!</translation>
         <translation>Vorschau:</translation>
     </message>
     <message>
-        <source>Appearance</source>
-        <translation type="obsolete">Erscheinungsbild</translation>
-    </message>
-    <message>
         <location filename="../src/qtui/settingspages/bufferviewsettingspage.ui" line="110"/>
         <source>This option is not available when all Networks are visible.
 In this mode no separate status buffer is displayed.</source>
@@ -919,53 +553,9 @@ Keine separaten Statusfenster werden in diesem Modus angezeigt.</translation>
         <source>BufferView</source>
         <translation>Ansicht</translation>
     </message>
-    <message>
-        <source>All</source>
-        <translation type="obsolete">Alle</translation>
-    </message>
-    <message>
-        <source>Chans</source>
-        <translation type="obsolete">Kanäle</translation>
-    </message>
-    <message>
-        <source>Queries</source>
-        <translation type="obsolete">Dialoge</translation>
-    </message>
-    <message>
-        <source>Nets</source>
-        <translation type="obsolete">Netze</translation>
-    </message>
-    <message>
-        <source>Select Buffer</source>
-        <translation type="obsolete">Puffer auswählen</translation>
-    </message>
 </context>
 <context>
     <name>BufferWidget</name>
-    <message>
-        <source>Enlarge Chat View</source>
-        <translation type="obsolete">Chatansicht vergrößern</translation>
-    </message>
-    <message>
-        <source>Ctrl++</source>
-        <translation type="obsolete">Strg++</translation>
-    </message>
-    <message>
-        <source>Demagnify Chat View</source>
-        <translation type="obsolete">Chatansicht verkleinern</translation>
-    </message>
-    <message>
-        <source>Ctrl+-</source>
-        <translation type="obsolete">Strg+-</translation>
-    </message>
-    <message>
-        <source>Normalize zoom of Chat View</source>
-        <translation type="obsolete">Chatansicht zurücksetzen</translation>
-    </message>
-    <message>
-        <source>Ctrl+0</source>
-        <translation type="obsolete">Strg+0</translation>
-    </message>
     <message>
         <location filename="../src/qtui/bufferwidget.cpp" line="74"/>
         <source>Zoom In</source>
@@ -975,10 +565,6 @@ Keine separaten Statusfenster werden in diesem Modus angezeigt.</translation>
         <location filename="../src/qtui/bufferwidget.cpp" line="80"/>
         <source>Zoom Out</source>
         <translation>Herauszoomen</translation>
-    </message>
-    <message>
-        <source>Zoom Original</source>
-        <translation type="obsolete">Zoom zurücksetzen</translation>
     </message>
     <message>
         <location filename="../src/qtui/bufferwidget.cpp" line="85"/>
@@ -1032,10 +618,6 @@ Keine separaten Statusfenster werden in diesem Modus angezeigt.</translation>
         <translation>Suchmuster:</translation>
     </message>
     <message>
-        <source>Search Channels</source>
-        <translation type="obsolete">Suche Kanäle</translation>
-    </message>
-    <message>
         <location filename="../src/qtui/ui/channellistdlg.ui" line="85"/>
         <source>Filter:</source>
         <translation>Filter:</translation>
@@ -1070,10 +652,6 @@ p, li { white-space: pre-wrap; }
 </context>
 <context>
     <name>ChatMonitorSettingsPage</name>
-    <message>
-        <source>General</source>
-        <translation type="obsolete">Allgemein</translation>
-    </message>
     <message>
         <location filename="../src/qtui/settingspages/chatmonitorsettingspage.cpp" line="35"/>
         <source>Chat Monitor</source>
@@ -1127,10 +705,6 @@ p, li { white-space: pre-wrap; }
         <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;DejaVu Sans&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Funktionsweise:&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;span style=&quot; font-weight:400; text-decoration: underline;&quot;&gt;Ausgewählte zulassen:&lt;/span&gt; &lt;span style=&quot; font-weight:400;&quot;&gt;Lediglich Fenster auf der rechten Seite werden im Chatmonitor angezeigt&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;Ausgewählte ignorieren:&lt;/span&gt; Fenster auf der rechten Seite werden im Chatmonitor ignoriert&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <source>Available Buffers:</source>
-        <translation type="obsolete">Verfügbare Fenster:</translation>
-    </message>
-    <message>
         <location filename="../src/qtui/settingspages/chatmonitorsettingspage.ui" line="61"/>
         <source>Available:</source>
         <translation>Verfügbar:</translation>
@@ -1160,25 +734,9 @@ p, li { white-space: pre-wrap; }
         <source>Show own messages</source>
         <translation>Zeige eigene Nachrichten</translation>
     </message>
-    <message>
-        <source>Appearance</source>
-        <translation type="obsolete">Erscheinungsbild</translation>
-    </message>
 </context>
 <context>
     <name>ChatMonitorView</name>
-    <message>
-        <source>Show own messages</source>
-        <translation type="obsolete">Zeige eigene Nachrichten</translation>
-    </message>
-    <message>
-        <source>Show network name</source>
-        <translation type="obsolete">Zeige Netzwerkname</translation>
-    </message>
-    <message>
-        <source>Show buffer name</source>
-        <translation type="obsolete">Zeige Fenstername</translation>
-    </message>
     <message>
         <location filename="../src/qtui/chatmonitorview.cpp" line="52"/>
         <source>Show Own Messages</source>
@@ -1569,10 +1127,6 @@ p, li { white-space: pre-wrap; }
         <source>All Chats</source>
         <translation>Alle Chats</translation>
     </message>
-    <message>
-        <source>All Buffers</source>
-        <translation type="obsolete">Alle Räume</translation>
-    </message>
 </context>
 <context>
     <name>ClientBacklogManager</name>
@@ -1593,10 +1147,6 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/client/clientsyncer.cpp" line="77"/>
         <source>&lt;b&gt;Invalid data received from core!&lt;/b&gt;&lt;br&gt;Disconnecting.</source>
         <translation>&lt;b&gt;Ungültige Daten vom Core erhalten!&lt;/b&gt;&lt;br&gt;Verbindungsabbruch.</translation>
-    </message>
-    <message>
-        <source>Internal connections not yet supported.</source>
-        <translation type="obsolete">Interne Verbindungen noch nicht unterstützt.</translation>
     </message>
     <message>
         <location filename="../src/client/clientsyncer.cpp" line="111"/>
@@ -1628,269 +1178,6 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/client/clientsyncer.cpp" line="407"/>
         <source>Cert Digest changed! was: %1</source>
         <translation>Zertifikat geändert! Vorher: %1</translation>
-    </message>
-</context>
-<context>
-    <name>ColorSettingsPage</name>
-    <message>
-        <source>Appearance</source>
-        <translation type="obsolete">Erscheinungsbild</translation>
-    </message>
-    <message>
-        <source>Color settings</source>
-        <translation type="obsolete">Farben</translation>
-    </message>
-    <message>
-        <source>Form</source>
-        <translation type="obsolete">Formular</translation>
-    </message>
-    <message>
-        <source>Bufferview</source>
-        <translation type="obsolete">Pufferansicht</translation>
-    </message>
-    <message>
-        <source>Activities:</source>
-        <translation type="obsolete">Aktivitäten:</translation>
-    </message>
-    <message>
-        <source>FG</source>
-        <translation type="obsolete">VG</translation>
-    </message>
-    <message>
-        <source>BG</source>
-        <translation type="obsolete">HG</translation>
-    </message>
-    <message>
-        <source>Use BG</source>
-        <translation type="obsolete">Benutze HG</translation>
-    </message>
-    <message>
-        <source>Default:</source>
-        <translation type="obsolete">Standard:</translation>
-    </message>
-    <message>
-        <source>Inactive:</source>
-        <translation type="obsolete">Inaktiv:</translation>
-    </message>
-    <message>
-        <source>Highlight:</source>
-        <translation type="obsolete">Hervorhebung:</translation>
-    </message>
-    <message>
-        <source>New Message:</source>
-        <translation type="obsolete">Neue Meldung:</translation>
-    </message>
-    <message>
-        <source>Other Activity:</source>
-        <translation type="obsolete">Andere Aktivität:</translation>
-    </message>
-    <message>
-        <source>Preview:</source>
-        <translation type="obsolete">Vorschau:</translation>
-    </message>
-    <message>
-        <source>1</source>
-        <translation type="obsolete">1</translation>
-    </message>
-    <message>
-        <source>Chatview</source>
-        <translation type="obsolete">Chatansicht</translation>
-    </message>
-    <message>
-        <source>Server Activity</source>
-        <translation type="obsolete">Serveraktivität</translation>
-    </message>
-    <message>
-        <source>Foreground</source>
-        <translation type="obsolete">Vordergrund</translation>
-    </message>
-    <message>
-        <source>Background</source>
-        <translation type="obsolete">Hintergrund</translation>
-    </message>
-    <message>
-        <source>Error Message:</source>
-        <translation type="obsolete">Fehlermeldung:</translation>
-    </message>
-    <message>
-        <source>Notice Message:</source>
-        <translation type="obsolete">Notizmeldung:</translation>
-    </message>
-    <message>
-        <source>Plain Message:</source>
-        <translation type="obsolete">Einfache Meldung:</translation>
-    </message>
-    <message>
-        <source>Server Message:</source>
-        <translation type="obsolete">Servermeldung:</translation>
-    </message>
-    <message>
-        <source>Highlight Message:</source>
-        <translation type="obsolete">Highlight-Meldung:</translation>
-    </message>
-    <message>
-        <source>User Activity</source>
-        <translation type="obsolete">Benutzeraktivität</translation>
-    </message>
-    <message>
-        <source>Action Message:</source>
-        <translation type="obsolete">Aktionsmeldung:</translation>
-    </message>
-    <message>
-        <source>Join Message:</source>
-        <translation type="obsolete">Beitrittsmeldung:</translation>
-    </message>
-    <message>
-        <source>Kick Message:</source>
-        <translation type="obsolete">Rauswurfsmeldung:</translation>
-    </message>
-    <message>
-        <source>Mode Message:</source>
-        <translation type="obsolete">Modusmeldung:</translation>
-    </message>
-    <message>
-        <source>Part Message:</source>
-        <translation type="obsolete">Verlassensmeldung:</translation>
-    </message>
-    <message>
-        <source>Quit Message:</source>
-        <translation type="obsolete">Beendigungsmeldung:</translation>
-    </message>
-    <message>
-        <source>Rename Message:</source>
-        <translation type="obsolete">Umbenennungsmeldung:</translation>
-    </message>
-    <message>
-        <source>Message</source>
-        <translation type="obsolete">Meldung</translation>
-    </message>
-    <message>
-        <source>Timestamp:</source>
-        <translation type="obsolete">Zeitstempel:</translation>
-    </message>
-    <message>
-        <source>Sender:</source>
-        <translation type="obsolete">Absender:</translation>
-    </message>
-    <message>
-        <source>Nick:</source>
-        <translation type="obsolete">Spitzname:</translation>
-    </message>
-    <message>
-        <source>Hostmask:</source>
-        <translation type="obsolete">Rechnermaske:</translation>
-    </message>
-    <message>
-        <source>Channelname:</source>
-        <translation type="obsolete">Kanalname:</translation>
-    </message>
-    <message>
-        <source>Mode flags:</source>
-        <translation type="obsolete">Modusschalter:</translation>
-    </message>
-    <message>
-        <source>Url:</source>
-        <translation type="obsolete">Url:</translation>
-    </message>
-    <message>
-        <source>Mirc Color Codes</source>
-        <translation type="obsolete">Mirc-Farbkodierungen</translation>
-    </message>
-    <message>
-        <source>Color Codes</source>
-        <translation type="obsolete">Farbkodierungen</translation>
-    </message>
-    <message>
-        <source>Color 0:</source>
-        <translation type="obsolete">Farbe 0:</translation>
-    </message>
-    <message>
-        <source>Color 1:</source>
-        <translation type="obsolete">Farbe 1:</translation>
-    </message>
-    <message>
-        <source>Color 2:</source>
-        <translation type="obsolete">Farbe 2:</translation>
-    </message>
-    <message>
-        <source>Color 3:</source>
-        <translation type="obsolete">Farbe 3:</translation>
-    </message>
-    <message>
-        <source>Color 4:</source>
-        <translation type="obsolete">Farbe 4:</translation>
-    </message>
-    <message>
-        <source>Color 5:</source>
-        <translation type="obsolete">Farbe 5:</translation>
-    </message>
-    <message>
-        <source>Color 6:</source>
-        <translation type="obsolete">Farbe 6:</translation>
-    </message>
-    <message>
-        <source>Color 7:</source>
-        <translation type="obsolete">Farbe 7:</translation>
-    </message>
-    <message>
-        <source>Color 8:</source>
-        <translation type="obsolete">Farbe 8:</translation>
-    </message>
-    <message>
-        <source>Color 14:</source>
-        <translation type="obsolete">Farbe 14:</translation>
-    </message>
-    <message>
-        <source>Color 15:</source>
-        <translation type="obsolete">Farbe 15:</translation>
-    </message>
-    <message>
-        <source>Color 13:</source>
-        <translation type="obsolete">Farbe 13:</translation>
-    </message>
-    <message>
-        <source>Color 12:</source>
-        <translation type="obsolete">Farbe 12:</translation>
-    </message>
-    <message>
-        <source>Color 11:</source>
-        <translation type="obsolete">Farbe 11:</translation>
-    </message>
-    <message>
-        <source>Color 10:</source>
-        <translation type="obsolete">Farbe 10:</translation>
-    </message>
-    <message>
-        <source>Color 9:</source>
-        <translation type="obsolete">Farbe 9:</translation>
-    </message>
-    <message>
-        <source>Nickview</source>
-        <translation type="obsolete">Spitznamenansicht</translation>
-    </message>
-    <message>
-        <source>Nick status:</source>
-        <translation type="obsolete">Spitznamensstatus:</translation>
-    </message>
-    <message>
-        <source>Online:</source>
-        <translation type="obsolete">Angemeldet:</translation>
-    </message>
-    <message>
-        <source>Away:</source>
-        <translation type="obsolete">Abwesend:</translation>
-    </message>
-    <message>
-        <source>New Message Marker:</source>
-        <translation type="obsolete">Markierung für neue Nachrichten:</translation>
-    </message>
-    <message>
-        <source>Enable</source>
-        <translation type="obsolete">Einschalten</translation>
-    </message>
-    <message>
-        <source>Sender auto coloring:</source>
-        <translation type="obsolete">Färbung der Absender:</translation>
     </message>
 </context>
 <context>
@@ -1997,14 +1284,6 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="39"/>
         <source>Part</source>
         <translation>Verlassen</translation>
-    </message>
-    <message>
-        <source>Delete Buffer(s)...</source>
-        <translation type="obsolete">Verlauf löschen...</translation>
-    </message>
-    <message>
-        <source>Show Buffer</source>
-        <translation type="obsolete">Fenster anzeigen</translation>
     </message>
     <message>
         <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="40"/>
@@ -2147,14 +1426,6 @@ p, li { white-space: pre-wrap; }
         <translation>Verstecke Chats (permanent)</translation>
     </message>
     <message>
-        <source>Hide Buffer(s) Temporarily</source>
-        <translation type="obsolete">Fenster temporär ausblenden</translation>
-    </message>
-    <message>
-        <source>Hide Buffer(s) Permanently</source>
-        <translation type="obsolete">Fenster permanent ausblenden</translation>
-    </message>
-    <message>
         <location filename="../src/uisupport/contextmenuactionprovider.cpp" line="74"/>
         <source>Show Channel List</source>
         <translation>Zeige Kanalliste</translation>
@@ -2188,14 +1459,6 @@ p, li { white-space: pre-wrap; }
         <translation>Konnte keinen Speichermechanismus initialisieren! Beende...</translation>
     </message>
     <message>
-        <source>Currently, Quassel only supports SQLite3. You need to build your
-Qt library with the sqlite plugin enabled in order for quasselcore
-to work.</source>
-        <translation type="obsolete">Quassel unterstützt momentan ausschließlich SQLite3.
-Die Qt-Bibliothek mit eingeschaltetem SQLite-Plugin
-wird benötigt, damit der Quassel-Core funktioniert.</translation>
-    </message>
-    <message>
         <location filename="../src/core/core.cpp" line="222"/>
         <source>Calling restoreState() even though active sessions exist!</source>
         <translation>restoreState() aufgerufen, obwohl aktive Sitzungen vorhanden sind!</translation>
@@ -2226,10 +1489,6 @@ wird benötigt, damit der Quassel-Core funktioniert.</translation>
         <translation>&lt;b&gt;Ihr Quassel-Client ist zu alt!&lt;/b&gt;&lt;br&gt;Dieser Core benötigt mindestens Client-/Core-Protokollversion %1.&lt;br&gt;Bitte ziehen Sie in Erwägung, Ihren Client zu aktualisieren.</translation>
     </message>
     <message>
-        <source>Client %1 too old, rejecting.</source>
-        <translation type="obsolete">Client %1 zu alt, lehne ab.</translation>
-    </message>
-    <message>
         <location filename="../src/core/core.cpp" line="520"/>
         <source>&lt;b&gt;Quassel Core Version %1&lt;/b&gt;&lt;br&gt;Built: %2&lt;br&gt;Up %3d%4h%5m (since %6)</source>
         <translation>&lt;b&gt;Quassel-Core Version %1&lt;/b&gt;&lt;br&gt;Erstellungsdatum: %2&lt;br&gt;Betriebsdauer: %3T%4S%5M (seit %6)</translation>
@@ -2240,26 +1499,14 @@ wird benötigt, damit der Quassel-Core funktioniert.</translation>
         <translation>&lt;b&gt;Client nicht initialisiert!&lt;/b&gt;&lt;br&gt;Sie müssen vor dem Anmeldungsversuch eine init-Meldung senden.</translation>
     </message>
     <message>
-        <source>Client %1 did not send an init message before trying to login, rejecting.</source>
-        <translation type="obsolete">Client %1 hat vor dem Anmeldungsversuch keine init-Meldung gesendet, lehne ab.</translation>
-    </message>
-    <message>
         <location filename="../src/core/core.cpp" line="609"/>
         <source>&lt;b&gt;Invalid username or password!&lt;/b&gt;&lt;br&gt;The username/password combination you supplied could not be found in the database.</source>
         <translation>&lt;b&gt;Ungültiger Benutzername oder Passwort!&lt;/b&gt;&lt;br&gt;Die angegebene Benutzername/Passwort-Kombination konnte in der Datenbank nicht gefunden werden.</translation>
     </message>
     <message>
-        <source>Client %1 initialized and authenticated successfully as &quot;%2&quot; (UserId: %3).</source>
-        <translation type="obsolete">Client %1 erfolgreich als &quot;%2&quot; (BenutzerId: %3) initialisiert und authentifiziert.</translation>
-    </message>
-    <message>
         <location filename="../src/core/core.cpp" line="626"/>
         <source>Non-authed client disconnected.</source>
         <translation>Nicht-authentifizierter Client getrennt.</translation>
-    </message>
-    <message>
-        <source>Could not initialize session for client %1!</source>
-        <translation type="obsolete">Konnte Sitzung für Client %1 nicht initialisieren!</translation>
     </message>
     <message>
         <location filename="../src/core/core.cpp" line="470"/>
@@ -2366,22 +1613,6 @@ lauffähig ist.</translation>
         <translation>Remote-Konto hinzufügen</translation>
     </message>
     <message>
-        <source>Missing information</source>
-        <translation type="obsolete">Fehlende Daten</translation>
-    </message>
-    <message>
-        <source>Please enter all required information or discard changes to return to account selection.</source>
-        <translation type="obsolete">Bitte geben Sie alle benötigten Daten ein oder verwerfen Sie Ihre Änderungen, um zurück zur Kontoauswahl zu gelangen.</translation>
-    </message>
-    <message>
-        <source>Non-unique account name</source>
-        <translation type="obsolete">Uneindeutiger Kontoname</translation>
-    </message>
-    <message>
-        <source>Account names need to be unique. Please enter a different name or discard all changes to return to account selection.</source>
-        <translation type="obsolete">Kontonamen müssen eindeutig sein. Bitte geben Sie einen anderen Namen ein oder verwerfen Sie alle Änderungen, um zurück zur Kontoauswahl zu gelangen.</translation>
-    </message>
-    <message>
         <location filename="../src/qtui/ui/coreaccounteditdlg.ui" line="13"/>
         <source>Edit Core Account</source>
         <translation>Remote-Konto ändern</translation>
@@ -2392,22 +1623,6 @@ lauffähig ist.</translation>
         <translation>Port:</translation>
     </message>
     <message>
-        <source>Host:</source>
-        <translation type="obsolete">Rechner:</translation>
-    </message>
-    <message>
-        <source>Password:</source>
-        <translation type="obsolete">Passwort:</translation>
-    </message>
-    <message>
-        <source>Account:</source>
-        <translation type="obsolete">Konto:</translation>
-    </message>
-    <message>
-        <source>User:</source>
-        <translation type="obsolete">Benutzer:</translation>
-    </message>
-    <message>
         <location filename="../src/qtui/ui/coreaccounteditdlg.ui" line="21"/>
         <source>Account Details</source>
         <translation>Kontodetails</translation>
@@ -2416,14 +1631,6 @@ lauffähig ist.</translation>
         <location filename="../src/qtui/ui/coreaccounteditdlg.ui" line="29"/>
         <source>Account Name:</source>
         <translation>Kontoname:</translation>
-    </message>
-    <message>
-        <source>Use built-in Quassel Core</source>
-        <translation type="obsolete">Benutze integrierten Quassel-Kern</translation>
-    </message>
-    <message>
-        <source>Remote host:</source>
-        <translation type="obsolete">Gegenstelle:</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/coreaccounteditdlg.ui" line="81"/>
@@ -2485,29 +1692,6 @@ lauffähig ist.</translation>
         <location filename="../src/qtui/ui/coreaccounteditdlg.ui" line="47"/>
         <source>Hostname:</source>
         <translation>Rechnername:</translation>
-    </message>
-</context>
-<context>
-    <name>CoreApplicationInternal</name>
-    <message>
-        <source>The port quasselcore will listen at</source>
-        <translation type="obsolete">Der Port auf den quasselcore gebunden wird</translation>
-    </message>
-    <message>
-        <source>Don&apos;t restore last core&apos;s state</source>
-        <translation type="obsolete">Letzten Core-Zustand nicht wiederherstellen</translation>
-    </message>
-    <message>
-        <source>Path to logfile</source>
-        <translation type="obsolete">Pfad zur Logdatei</translation>
-    </message>
-    <message>
-        <source>Loglevel Debug|Info|Warning|Error</source>
-        <translation type="obsolete">Loglevel Debug|Info|Warning|Error</translation>
-    </message>
-    <message>
-        <source>Specify the directory holding datafiles like the Sqlite DB and the SSL Cert</source>
-        <translation type="obsolete">Der Pfad, in dem Daten wie die Sqlite DB und das SSL Zertifikat liegen</translation>
     </message>
 </context>
 <context>
@@ -2731,29 +1915,9 @@ p, li { white-space: pre-wrap; }
         <translation>Diesen Account immer benutzen</translation>
     </message>
     <message>
-        <source>New</source>
-        <translation type="obsolete">Neu</translation>
-    </message>
-    <message>
         <location filename="../src/qtui/ui/coreconnectdlg.ui" line="90"/>
         <source>Delete</source>
         <translation>Löschen</translation>
-    </message>
-    <message>
-        <source>Properties...</source>
-        <translation type="obsolete">Einstellungen...</translation>
-    </message>
-    <message>
-        <source>Select Core Account</source>
-        <translation type="obsolete">Kernkonto auswählen</translation>
-    </message>
-    <message>
-        <source>Available Quassel Core accounts:</source>
-        <translation type="obsolete">Verfügbare Quassel-Kernkonten:</translation>
-    </message>
-    <message>
-        <source>Connect</source>
-        <translation type="obsolete">Verbinden</translation>
     </message>
     <message>
         <location filename="../src/qtui/coreconnectdlg.cpp" line="190"/>
@@ -2873,18 +2037,6 @@ p, li { white-space: pre-wrap; }
         <translation>0/0</translation>
     </message>
     <message>
-        <source>Channel states:</source>
-        <translation type="obsolete">Kanalstatus:</translation>
-    </message>
-    <message>
-        <source>User states:</source>
-        <translation type="obsolete">Benutzerstatus:</translation>
-    </message>
-    <message>
-        <source>use internal core</source>
-        <translation type="obsolete">Internen Core benutzen</translation>
-    </message>
-    <message>
         <location filename="../src/qtui/ui/coreconnectdlg.ui" line="114"/>
         <source>Use internal core</source>
         <translation>Internen Core benutzen</translation>
@@ -2916,33 +2068,6 @@ SOME SPACE</source>
         <location filename="../src/qtui/ui/coreconnectdlg.ui" line="413"/>
         <source>Continue connection</source>
         <translation>Verbinden fortsetzen</translation>
-    </message>
-</context>
-<context>
-    <name>CoreConnectProgressDlg</name>
-    <message>
-        <source>Connection Progress</source>
-        <translation type="obsolete">Verbindungsfortschritt</translation>
-    </message>
-    <message>
-        <source>Connecting to core...</source>
-        <translation type="obsolete">Verbinde mit Kern...</translation>
-    </message>
-    <message>
-        <source>Session</source>
-        <translation type="obsolete">Sitzung</translation>
-    </message>
-    <message>
-        <source>Networks</source>
-        <translation type="obsolete">Netzwerke</translation>
-    </message>
-    <message>
-        <source>Channels</source>
-        <translation type="obsolete">Kanäle</translation>
-    </message>
-    <message>
-        <source>Users</source>
-        <translation type="obsolete">Benutzer</translation>
     </message>
 </context>
 <context>
@@ -3025,10 +2150,6 @@ SOME SPACE</source>
         <translation>Verbinde mit %1:%2...</translation>
     </message>
     <message>
-        <source>Disconnecting.</source>
-        <translation type="obsolete">Trenne Verbindung.</translation>
-    </message>
-    <message>
         <location filename="../src/core/corenetwork.cpp" line="307"/>
         <source>Could not connect to %1 (%2)</source>
         <translation>Konnte nicht mit %1 (%2) verbinden</translation>
@@ -3051,14 +2172,6 @@ SOME SPACE</source>
 </context>
 <context>
     <name>CoreSession</name>
-    <message>
-        <source>Default Identity</source>
-        <translation type="obsolete">Standardidentität</translation>
-    </message>
-    <message>
-        <source>Client %1 disconnected (UserId: %2).</source>
-        <translation type="obsolete">Client %1 hat Verbindung getrennt (BenutzerId: %2).</translation>
-    </message>
     <message>
         <location filename="../src/core/coresession.cpp" line="384"/>
         <source>CoreSession::createNetwork(): Got invalid networkId from Core when trying to create network %1!</source>
@@ -3290,33 +2403,6 @@ SOME SPACE</source>
     </message>
 </context>
 <context>
-    <name>EditCoreAcctDlg</name>
-    <message>
-        <source>Edit Core Account</source>
-        <translation type="obsolete">Kernkonto ändern</translation>
-    </message>
-    <message>
-        <source>Port:</source>
-        <translation type="obsolete">Port:</translation>
-    </message>
-    <message>
-        <source>Host:</source>
-        <translation type="obsolete">Rechner:</translation>
-    </message>
-    <message>
-        <source>Password:</source>
-        <translation type="obsolete">Passwort:</translation>
-    </message>
-    <message>
-        <source>Account:</source>
-        <translation type="obsolete">Konto:</translation>
-    </message>
-    <message>
-        <source>User:</source>
-        <translation type="obsolete">Benutzer:</translation>
-    </message>
-</context>
-<context>
     <name>ExecWrapper</name>
     <message>
         <location filename="../src/client/execwrapper.cpp" line="45"/>
@@ -3358,155 +2444,16 @@ SOME SPACE</source>
     </message>
 </context>
 <context>
-    <name>FontsSettingsPage</name>
-    <message>
-        <source>Appearance</source>
-        <translation type="obsolete">Erscheinungsbild</translation>
-    </message>
-    <message>
-        <source>Fonts</source>
-        <translation type="obsolete">Schriftarten</translation>
-    </message>
-    <message>
-        <source>Form</source>
-        <translation type="obsolete">Formular</translation>
-    </message>
-    <message>
-        <source>Custom Application Fonts</source>
-        <translation type="obsolete">Angepasste Anwendungsschriften</translation>
-    </message>
-    <message>
-        <source>General:</source>
-        <translation type="obsolete">Allgemein:</translation>
-    </message>
-    <message>
-        <source>Font</source>
-        <translation type="obsolete">Schrift</translation>
-    </message>
-    <message>
-        <source>Choose...</source>
-        <translation type="obsolete">Wähle...</translation>
-    </message>
-    <message>
-        <source>Topic:</source>
-        <translation type="obsolete">Thema:</translation>
-    </message>
-    <message>
-        <source>Buffer Views:</source>
-        <translation type="obsolete">Ansichten:</translation>
-    </message>
-    <message>
-        <source>Nick List:</source>
-        <translation type="obsolete">Benutzerliste:</translation>
-    </message>
-    <message>
-        <source>Chat Widget</source>
-        <translation type="obsolete">Chatfenster</translation>
-    </message>
-    <message>
-        <source>Nicks:</source>
-        <translation type="obsolete">Spitznamen:</translation>
-    </message>
-    <message>
-        <source>Timestamp:</source>
-        <translation type="obsolete">Zeitstempel:</translation>
-    </message>
-    <message>
-        <source>Some of these settings require a restart of the Quassel Client in order to take effect. We intend to fix this.</source>
-        <translation type="obsolete">Einige dieser Einstellungen erforden einen Neustart des Quassel-Clients um wirksam zu werden. Wir beabsichtigen, dies zu beheben.</translation>
-    </message>
-    <message>
-        <source>Inputline:</source>
-        <translation type="obsolete">Eingabezeile:</translation>
-    </message>
-</context>
-<context>
     <name>GeneralSettingsPage</name>
-    <message>
-        <source>Behaviour</source>
-        <translation type="obsolete">Verhalten</translation>
-    </message>
-    <message>
-        <source>General</source>
-        <translation type="obsolete">Allgemein</translation>
-    </message>
     <message>
         <location filename="../src/qtui/settingspages/generalsettingspage.ui" line="14"/>
         <source>Form</source>
         <translation>Formular</translation>
     </message>
     <message>
-        <source>Use system tray icon:</source>
-        <translation type="obsolete">Zu Systemleistensymbol minimieren:</translation>
-    </message>
-    <message>
-        <source>Minimize to tray on minimize button</source>
-        <translation type="obsolete">Zur Systemleiste minimieren bei &quot;Minimieren&quot;</translation>
-    </message>
-    <message>
-        <source>Minimize to tray on close button</source>
-        <translation type="obsolete">Zur Systemleiste minimieren bei &quot;Schließen&quot;</translation>
-    </message>
-    <message>
-        <source>Tray icon:</source>
-        <translation type="obsolete">Systemleistensymbol:</translation>
-    </message>
-    <message>
         <location filename="../src/qtui/settingspages/generalsettingspage.ui" line="45"/>
         <source>Show system tray icon</source>
         <translation>Zeige Systemleistensymbol</translation>
-    </message>
-    <message>
-        <source>User Notification:</source>
-        <translation type="obsolete">Benutzerbenachrichtigung:</translation>
-    </message>
-    <message>
-        <source>Animate tray icon</source>
-        <translation type="obsolete">Systemleistensymbol animieren</translation>
-    </message>
-    <message>
-        <source>Display pop-up messages</source>
-        <translation type="obsolete">Pop-Up-Meldungen anzeigen</translation>
-    </message>
-    <message>
-        <source>Display user related messages and private Notices:</source>
-        <translation type="obsolete">Benutzerbezogene Meldungen und private Notizen anzeigen:</translation>
-    </message>
-    <message>
-        <source>in status buffer</source>
-        <translation type="obsolete">im Statusfenster</translation>
-    </message>
-    <message>
-        <source>in query buffer (if exists)</source>
-        <translation type="obsolete">im Dialogfenster (falls vorhanden)</translation>
-    </message>
-    <message>
-        <source>in current buffer</source>
-        <translation type="obsolete">im aktuellen Fenster</translation>
-    </message>
-    <message>
-        <source>Buffer view:</source>
-        <translation type="obsolete">Pufferansicht:</translation>
-    </message>
-    <message>
-        <source>Display topic in tooltip</source>
-        <translation type="obsolete">Thema in Hinweisfläche anzeigen</translation>
-    </message>
-    <message>
-        <source>Mouse wheel changes displayed buffers</source>
-        <translation type="obsolete">Mausrad ändert angezeigtes Fenster</translation>
-    </message>
-    <message>
-        <source>The suffix appended to a nick on completion via TAB. Default is &quot;: &quot;</source>
-        <translation type="obsolete">Das einem Spitznamen durch Tabulatorvervollständigung angehängte Suffix. Standard ist &quot;: &quot;</translation>
-    </message>
-    <message>
-        <source>Input Line:</source>
-        <translation type="obsolete">Eingabezeile:</translation>
-    </message>
-    <message>
-        <source>Completion suffix:</source>
-        <translation type="obsolete">Vervollständigungssuffix:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/generalsettingspage.ui" line="20"/>
@@ -3522,38 +2469,6 @@ SOME SPACE</source>
         <location filename="../src/qtui/settingspages/generalsettingspage.ui" line="39"/>
         <source>Tray Icon</source>
         <translation>Systemleistensymbol</translation>
-    </message>
-    <message>
-        <source>Display User-Related Messages And Private Notices:</source>
-        <translation type="obsolete">Zeige benutzerbezogene Meldungen und private Notizen:</translation>
-    </message>
-    <message>
-        <source>Buffer View</source>
-        <translation type="obsolete">Ansicht</translation>
-    </message>
-    <message>
-        <source>Input Line</source>
-        <translation type="obsolete">Eingabezeile</translation>
-    </message>
-    <message>
-        <source>Backlog</source>
-        <translation type="obsolete">Verlauf</translation>
-    </message>
-    <message>
-        <source>amount of messages per buffer that are requested after the core connection has been established.</source>
-        <translation type="obsolete">Anzahl der Nachrichten pro Fenster, die nach dem Core-Verbindungsaufbau angefordert werden.</translation>
-    </message>
-    <message>
-        <source>Initial backlog amount:</source>
-        <translation type="obsolete">Anfängliche Verlaufsgröße:</translation>
-    </message>
-    <message>
-        <source>Number of messages to be requested from the core when using scrolling up in the buffer view.</source>
-        <translation type="obsolete">Anzahl der Nachrichten, die beim Zurückscrollen angefordert werden.</translation>
-    </message>
-    <message>
-        <source>Dynamic backlog amount:</source>
-        <translation type="obsolete">Dynamische Verlaufsgröße:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/generalsettingspage.ui" line="58"/>
@@ -3586,18 +2501,6 @@ SOME SPACE</source>
         <translation>Aktueller Chat</translation>
     </message>
     <message>
-        <source>Status Buffer</source>
-        <translation type="obsolete">Statusfenster</translation>
-    </message>
-    <message>
-        <source>Current Buffer</source>
-        <translation type="obsolete">Aktuelles Fenster</translation>
-    </message>
-    <message>
-        <source>Errors</source>
-        <translation type="obsolete">Fehler</translation>
-    </message>
-    <message>
         <location filename="../src/qtui/settingspages/generalsettingspage.ui" line="142"/>
         <source>Errors:</source>
         <translation>Fehler:</translation>
@@ -3610,10 +2513,6 @@ SOME SPACE</source>
 </context>
 <context>
     <name>HighlightSettingsPage</name>
-    <message>
-        <source>Behaviour</source>
-        <translation type="obsolete">Verhalten</translation>
-    </message>
     <message>
         <location filename="../src/qtui/settingspages/highlightsettingspage.cpp" line="30"/>
         <location filename="../src/qtui/settingspages/highlightsettingspage.ui" line="32"/>
@@ -3641,10 +2540,6 @@ SOME SPACE</source>
         <translation>Formular</translation>
     </message>
     <message>
-        <source>Highlight list</source>
-        <translation type="obsolete">Hervorhebungsliste</translation>
-    </message>
-    <message>
         <location filename="../src/qtui/settingspages/highlightsettingspage.ui" line="37"/>
         <source>RegEx</source>
         <translation>RegEx</translation>
@@ -3668,10 +2563,6 @@ SOME SPACE</source>
         <location filename="../src/qtui/settingspages/highlightsettingspage.ui" line="62"/>
         <source>Remove</source>
         <translation>Entfernen</translation>
-    </message>
-    <message>
-        <source>Highlight nicks</source>
-        <translation type="obsolete">Spitznamen hervorheben</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/highlightsettingspage.ui" line="91"/>
@@ -3703,10 +2594,6 @@ SOME SPACE</source>
         <source>Case sensitive</source>
         <translation>Groß-/Kleinschreibung beachten</translation>
     </message>
-    <message>
-        <source>Appearance</source>
-        <translation type="obsolete">Erscheinungsbild</translation>
-    </message>
 </context>
 <context>
     <name>IdentitiesSettingsPage</name>
@@ -3720,86 +2607,6 @@ SOME SPACE</source>
         <location filename="../src/qtui/settingspages/identitiessettingspage.ui" line="77"/>
         <source>...</source>
         <translation>...</translation>
-    </message>
-    <message>
-        <source>General</source>
-        <translation type="obsolete">Allgemein</translation>
-    </message>
-    <message>
-        <source>Real Name:</source>
-        <translation type="obsolete">Realname:</translation>
-    </message>
-    <message>
-        <source>Nicknames</source>
-        <translation type="obsolete">Spitznamen</translation>
-    </message>
-    <message>
-        <source>&amp;Add...</source>
-        <translation type="obsolete">&amp;Hinzufügen...</translation>
-    </message>
-    <message>
-        <source>Re&amp;name...</source>
-        <translation type="obsolete">Umbe&amp;nennen...</translation>
-    </message>
-    <message>
-        <source>Move upwards in list</source>
-        <translation type="obsolete">In Liste nach oben verschieben</translation>
-    </message>
-    <message>
-        <source>Move downwards in list</source>
-        <translation type="obsolete">In Liste nach unten verschieben</translation>
-    </message>
-    <message>
-        <source>A&amp;way</source>
-        <translation type="obsolete">Ab&amp;wesend</translation>
-    </message>
-    <message>
-        <source>Away Reason</source>
-        <translation type="obsolete">Abwesenheitsgrund</translation>
-    </message>
-    <message>
-        <source>Return Message</source>
-        <translation type="obsolete">Zurück-Meldung</translation>
-    </message>
-    <message>
-        <source>Away Nick</source>
-        <translation type="obsolete">Abwesenheitsspitzname</translation>
-    </message>
-    <message>
-        <source>Auto Away</source>
-        <translation type="obsolete">Auto-Abwesenheit</translation>
-    </message>
-    <message>
-        <source>Auto away after</source>
-        <translation type="obsolete">Auto-abwesend nach</translation>
-    </message>
-    <message>
-        <source>minutes</source>
-        <translation type="obsolete">Minuten</translation>
-    </message>
-    <message>
-        <source>Advanced</source>
-        <translation type="obsolete">Erweitert</translation>
-    </message>
-    <message>
-        <source>Ident:</source>
-        <translation type="obsolete">Ident:</translation>
-    </message>
-    <message>
-        <source>Messages</source>
-        <translation type="obsolete">Meldungen</translation>
-    </message>
-    <message>
-        <source>Part Reason:</source>
-        <translation type="obsolete">Part-Grund:</translation>
-    </message>
-    <message>
-        <source>Quit Reason:</source>
-        <translation type="obsolete">Beendigungsgrund:</translation>
-    </message>
-    <message>
-        <source>Kick Reason:</source>
-        <translation type="obsolete">Rauswurfsgrund:</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/identitiessettingspage.cpp" line="31"/>
@@ -3873,144 +2680,6 @@ SOME SPACE</source>
         <translation>Identität entfernen</translation>
     </message>
     <message>
-        <source>The &quot;Real Name&quot; is shown in /whois.</source>
-        <translation type="obsolete">Der &quot;Realname&quot; wird im /whois angezeigt.</translation>
-    </message>
-    <message>
-        <source>Add Nickname</source>
-        <translation type="obsolete">Spitznamen hinzufügen</translation>
-    </message>
-    <message>
-        <source>Remove Nickname</source>
-        <translation type="obsolete">Spitznamen entfernen</translation>
-    </message>
-    <message>
-        <source>Remove</source>
-        <translation type="obsolete">Etnfernen</translation>
-    </message>
-    <message>
-        <source>The &quot;ident&quot; is part of your hostmask and, together with your host, uniquely identifies you within the IRC network.</source>
-        <translation type="obsolete">Der &quot;Ident&quot; bildet zusammen mit Ihrer Rechneradresse die Rechnermaske und identifiziert sie so eindeutig im IRC-Netzwerk.</translation>
-    </message>
-    <message>
-        <source>Default Away Settings</source>
-        <translation type="obsolete">Standard-Abwesenheitseinstellungen</translation>
-    </message>
-    <message>
-        <source>Nick to be used when being away</source>
-        <translation type="obsolete">Spitzname wenn abwesend</translation>
-    </message>
-    <message>
-        <source>Default away reason</source>
-        <translation type="obsolete">Standard-Abwesenheitsgrund</translation>
-    </message>
-    <message>
-        <source>Set away when all clients have detached from the core</source>
-        <translation type="obsolete">Als abwesend markieren, wenn alle Clients vom Core getrennt wurden</translation>
-    </message>
-    <message>
-        <source>Away On Detach</source>
-        <translation type="obsolete">Als abwesend markieren, wenn vom Core getrennt</translation>
-    </message>
-    <message>
-        <source>Override default away reason for auto-away on detach</source>
-        <translation type="obsolete">Überschreibe Standard-Abwesenheitsgrund, wenn vom Core getrennt</translation>
-    </message>
-    <message>
-        <source>Not implemented yet</source>
-        <translation type="obsolete">Noch nicht implementiert</translation>
-    </message>
-    <message>
-        <source>Away On Idle</source>
-        <translation type="obsolete">Als abwesend markieren, wenn untätig</translation>
-    </message>
-    <message>
-        <source>Set away after</source>
-        <translation type="obsolete">Als abwesend markieren nach</translation>
-    </message>
-    <message>
-        <source>minutes of being idle</source>
-        <translation type="obsolete">Minuten Untätigkeit</translation>
-    </message>
-    <message>
-        <source>Away Reason:</source>
-        <translation type="obsolete">Abwesenheitsgrund:</translation>
-    </message>
-    <message>
-        <source>Away Nick:</source>
-        <translation type="obsolete">Abwesenheitsspitzname:</translation>
-    </message>
-    <message>
-        <source>Load a Key</source>
-        <translation type="obsolete">Schlüssel laden</translation>
-    </message>
-    <message>
-        <source>No Key loaded</source>
-        <translation type="obsolete">Kein Schlüssel geladen</translation>
-    </message>
-    <message>
-        <source>Load</source>
-        <translation type="obsolete">Laden</translation>
-    </message>
-    <message>
-        <source>RSA</source>
-        <translation type="obsolete">RSA</translation>
-    </message>
-    <message>
-        <source>DSA</source>
-        <translation type="obsolete">DSA</translation>
-    </message>
-    <message>
-        <source>Clear</source>
-        <translation type="obsolete">Aufräumen</translation>
-    </message>
-    <message>
-        <source>Load a Certificate</source>
-        <translation type="obsolete">Ein Zertifikat laden</translation>
-    </message>
-    <message>
-        <source>No Certificate loaded</source>
-        <translation type="obsolete">Kein Zertifikat geladen</translation>
-    </message>
-    <message>
-        <source>You need an SSL Capable Client to edit your Cores SSL Key and Certificate</source>
-        <translation type="obsolete">Sie brauchen einen SSL-fähigen Client um die SSL-Schlüssel und Zertifikate des Cores zu ändern</translation>
-    </message>
-    <message>
-        <source>Warning: you are not connected with a secured connection to the Quassel Core!
-Proceeding will cause an unencrypted transfer of your SSL Key and SSL Certificate!</source>
-        <translation type="obsolete">Warnung: Sie sind nicht mit einer verschlüsselten Verbindung zum Quassel-Core verbunden!
-Fortfahren bedeutet die unverschlüsselte Übertragung Ihres SSL-Schlüssels und SSL-Zertifikats!</translation>
-    </message>
-    <message>
-        <source>continue</source>
-        <translation type="obsolete">fortfahren</translation>
-    </message>
-    <message>
-        <source>Use SSL Key</source>
-        <translation type="obsolete">SSL-Schlüssel benutzen</translation>
-    </message>
-    <message>
-        <source>Key Type:</source>
-        <translation type="obsolete">Schlüsselformat:</translation>
-    </message>
-    <message>
-        <source>Use SSL Certificate</source>
-        <translation type="obsolete">SSL-Zertifikat benutzen</translation>
-    </message>
-    <message>
-        <source>Organisation:</source>
-        <translation type="obsolete">Organisation:</translation>
-    </message>
-    <message>
-        <source>CommonName:</source>
-        <translation type="obsolete">Name:</translation>
-    </message>
-    <message>
-        <source>Continue</source>
-        <translation type="obsolete">Fortfahren</translation>
-    </message>
-    <message>
         <location filename="../src/qtui/settingspages/identitiessettingspage.cpp" line="31"/>
         <source>Misc</source>
         <translation>Verschiedenes</translation>
@@ -4034,17 +2703,9 @@ Fortfahren bedeutet die unverschlüsselte Übertragung Ihres SSL-Schlüssels und
         <translation>Mit&apos;m Fahrrad Sahne holen.</translation>
     </message>
     <message>
-        <source>Brought fish.</source>
-        <translation type="obsolete">Sahne geholt.</translation>
-    </message>
-    <message>
         <location filename="../src/common/identity.cpp" line="160"/>
         <source>Not here. No, really. not here!</source>
         <translation>Nicht da. Nein, ehrlich. Nicht da!</translation>
-    </message>
-    <message>
-        <source>Back in action again!</source>
-        <translation type="obsolete">Wieder im Rennen!</translation>
     </message>
     <message>
         <location filename="../src/common/identity.cpp" line="166"/>
@@ -4697,17 +3358,6 @@ Bitte wähle eine andere Regel.</translation>
     </message>
 </context>
 <context>
-    <name>InputLine</name>
-    <message>
-        <source>Do you really want to paste %1 lines?</source>
-        <translation type="obsolete">Wollen Sie wirklich %1 Zeilen senden?</translation>
-    </message>
-    <message>
-        <source>Paste Protection</source>
-        <translation type="obsolete">Spamschutz</translation>
-    </message>
-</context>
-<context>
     <name>InputWidget</name>
     <message>
         <location filename="../src/qtui/ui/inputwidget.ui" line="20"/>
@@ -4994,18 +3644,6 @@ Bitte wähle eine andere Regel.</translation>
         <translation>[Who] %1</translation>
     </message>
     <message>
-        <source>There is a nickname in your identity&apos;s nicklist which contains illegal characters</source>
-        <translation type="obsolete">Ein Spitzname der Spitznamensliste Ihrer Identität enthält ungültige Zeichen</translation>
-    </message>
-    <message>
-        <source>Due to a bug in Unreal IRCd (and maybe other irc-servers too) we&apos;re unable to determine the erroneous nick</source>
-        <translation type="obsolete">Auf Grund eines Fehlers im Unreal IRCs (und evtl. auch anderen IRC-Servern) können wir den fehlerhaften Spitznamen nicht ermitteln</translation>
-    </message>
-    <message>
-        <source>Please use: /nick &lt;othernick&gt; to continue or clean up your nicklist</source>
-        <translation type="obsolete">Bitte benutzen Sie: /nick &lt;andererSpitzname&gt; zum Fortfahren oder säubern Sie Ihre Spitznamensliste</translation>
-    </message>
-    <message>
         <location filename="../src/core/ircserverhandler.cpp" line="1027"/>
         <source>Nick %1 contains illegal characters</source>
         <translation>Spitzname %1 enthält ungültige Zeichen</translation>
@@ -5254,42 +3892,11 @@ Bitte wähle eine andere Regel.</translation>
     </message>
 </context>
 <context>
-    <name>MainWidget</name>
-    <message>
-        <source>Form</source>
-        <translation type="obsolete">Formular</translation>
-    </message>
-</context>
-<context>
     <name>MainWin</name>
-    <message>
-        <source>Waiting for core...</source>
-        <translation type="obsolete">Warte auf Kern...</translation>
-    </message>
     <message>
         <location filename="../src/qtui/mainwin.cpp" line="776"/>
         <source>Not connected to core.</source>
         <translation>Nicht mit Core verbunden.</translation>
-    </message>
-    <message>
-        <source>MainWindow</source>
-        <translation type="obsolete">Hauptfenster</translation>
-    </message>
-    <message>
-        <source>Connection</source>
-        <translation type="obsolete">Verbindung</translation>
-    </message>
-    <message>
-        <source>Settings</source>
-        <translation type="obsolete">Einstellungen</translation>
-    </message>
-    <message>
-        <source>Views</source>
-        <translation type="obsolete">Ansicht</translation>
-    </message>
-    <message>
-        <source>Help</source>
-        <translation type="obsolete">Hilfe</translation>
     </message>
     <message>
         <location filename="../src/qtui/mainwin.cpp" line="390"/>
@@ -5297,90 +3904,14 @@ Bitte wähle eine andere Regel.</translation>
         <translation>Debug</translation>
     </message>
     <message>
-        <source>Core</source>
-        <translation type="obsolete">Core</translation>
-    </message>
-    <message>
-        <source>&amp;Network List...</source>
-        <translation type="obsolete">&amp;Netzwerkliste...</translation>
-    </message>
-    <message>
-        <source>Quick &amp;Connect...</source>
-        <translation type="obsolete">S&amp;chnell verbinden...</translation>
-    </message>
-    <message>
-        <source>Disconnect</source>
-        <translation type="obsolete">Trennen</translation>
-    </message>
-    <message>
-        <source>Reconnect</source>
-        <translation type="obsolete">Wiederverbinden</translation>
-    </message>
-    <message>
-        <source>Join Channel...</source>
-        <translation type="obsolete">Kanal beitreteten...</translation>
-    </message>
-    <message>
-        <source>Set Away globally</source>
-        <translation type="obsolete">Global abwesend setzen</translation>
-    </message>
-    <message>
-        <source>Quit...</source>
-        <translation type="obsolete">Beenden...</translation>
-    </message>
-    <message>
-        <source>Edit Identities...</source>
-        <translation type="obsolete">Identitäten ändern...</translation>
-    </message>
-    <message>
-        <source>Configure Quassel...</source>
-        <translation type="obsolete">Quassel konfigurieren...</translation>
-    </message>
-    <message>
         <location filename="../src/qtui/mainwin.cpp" line="311"/>
         <source>F7</source>
         <translation>F7</translation>
     </message>
     <message>
-        <source>Manage Views...</source>
-        <translation type="obsolete">Ansichten verwalten...</translation>
-    </message>
-    <message>
-        <source>About Qt...</source>
-        <translation type="obsolete">Über Qt...</translation>
-    </message>
-    <message>
-        <source>About Quassel IRC...</source>
-        <translation type="obsolete">Über Quassel IRC...</translation>
-    </message>
-    <message>
-        <source>Import Backlog</source>
-        <translation type="obsolete">Rückspeicher importieren</translation>
-    </message>
-    <message>
-        <source>Connect</source>
-        <translation type="obsolete">Verbinden</translation>
-    </message>
-    <message>
-        <source>Internal</source>
-        <translation type="obsolete">Intern</translation>
-    </message>
-    <message>
-        <source>Disconnect from Core</source>
-        <translation type="obsolete">Von Kern trennen</translation>
-    </message>
-    <message>
-        <source>Connect to Core...</source>
-        <translation type="obsolete">Mit Kern verbinden...</translation>
-    </message>
-    <message>
         <location filename="../src/qtui/mainwin.cpp" line="706"/>
         <source>Connected to core.</source>
         <translation>Mit Quassel-Core verbunden.</translation>
-    </message>
-    <message>
-        <source>Edit &amp;Networks...</source>
-        <translation type="obsolete">N&amp;etzwerke ändern...</translation>
     </message>
     <message>
         <location filename="../src/qtui/mainwin.cpp" line="529"/>
@@ -5403,10 +3934,6 @@ Bitte wähle eine andere Regel.</translation>
         <translation>Thema</translation>
     </message>
     <message>
-        <source>Statusbar</source>
-        <translation type="obsolete">Statusleiste</translation>
-    </message>
-    <message>
         <location filename="../src/qtui/mainwin.cpp" line="339"/>
         <source>&amp;File</source>
         <translation>&amp;Datei</translation>
@@ -5422,41 +3949,9 @@ Bitte wähle eine andere Regel.</translation>
         <translation>Ein&amp;stellungen</translation>
     </message>
     <message>
-        <source>&amp;Views</source>
-        <translation type="obsolete">&amp;Ansichten</translation>
-    </message>
-    <message>
         <location filename="../src/qtui/mainwin.cpp" line="382"/>
         <source>&amp;Help</source>
         <translation>&amp;Hilfe</translation>
-    </message>
-    <message>
-        <source>Debug &amp;Console</source>
-        <translation type="obsolete">Fehler&amp;konsole</translation>
-    </message>
-    <message>
-        <source>Disconnect from Network...</source>
-        <translation type="obsolete">Von Netzwerk trennen...</translation>
-    </message>
-    <message>
-        <source>&amp;Edit Networks...</source>
-        <translation type="obsolete">N&amp;etzwerke ändern...</translation>
-    </message>
-    <message>
-        <source>Buffer Views</source>
-        <translation type="obsolete">Pufferansichten</translation>
-    </message>
-    <message>
-        <source>Manage Buffer Views</source>
-        <translation type="obsolete">Pufferansichten verwalten</translation>
-    </message>
-    <message>
-        <source>Lock Dock Positions</source>
-        <translation type="obsolete">Andockerpositionen sperren</translation>
-    </message>
-    <message>
-        <source>Core Info</source>
-        <translation type="obsolete">Informationen zum Kern</translation>
     </message>
     <message>
         <location filename="../src/qtui/mainwin.cpp" line="280"/>
@@ -5484,21 +3979,9 @@ Bitte wähle eine andere Regel.</translation>
         <translation>Strg+Q</translation>
     </message>
     <message>
-        <source>&amp;Manage Buffer Views...</source>
-        <translation type="obsolete">&amp;Ansichten verwalten...</translation>
-    </message>
-    <message>
-        <source>&amp;Lock Dock Positions</source>
-        <translation type="obsolete">Fensterleisten &amp;fixieren</translation>
-    </message>
-    <message>
         <location filename="../src/qtui/mainwin.cpp" line="299"/>
         <source>Show &amp;Search Bar</source>
         <translation>&amp;Suchleiste anzeigen</translation>
-    </message>
-    <message>
-        <source>Ctrl+F</source>
-        <translation type="obsolete">Strg+F</translation>
     </message>
     <message>
         <location filename="../src/qtui/mainwin.cpp" line="306"/>
@@ -5511,14 +3994,6 @@ Bitte wähle eine andere Regel.</translation>
         <translation>Quassel &amp;konfigurieren...</translation>
     </message>
     <message>
-        <source>&amp;About Quassel...</source>
-        <translation type="obsolete">&amp;Über Quassel...</translation>
-    </message>
-    <message>
-        <source>About &amp;Qt...</source>
-        <translation type="obsolete">Ü&amp;ber Qt...</translation>
-    </message>
-    <message>
         <location filename="../src/qtui/mainwin.cpp" line="318"/>
         <source>Debug &amp;NetworkModel</source>
         <translation>Debug &amp;NetworkModel</translation>
@@ -5527,10 +4002,6 @@ Bitte wähle eine andere Regel.</translation>
         <location filename="../src/qtui/mainwin.cpp" line="358"/>
         <source>&amp;View</source>
         <translation>&amp;Ansicht</translation>
-    </message>
-    <message>
-        <source>&amp;Buffer Views</source>
-        <translation type="obsolete">&amp;Ansichten</translation>
     </message>
     <message>
         <location filename="../src/qtui/mainwin.cpp" line="538"/>
@@ -5551,10 +4022,6 @@ Bitte wähle eine andere Regel.</translation>
         <location filename="../src/qtui/mainwin.cpp" line="596"/>
         <source>Show Topic Line</source>
         <translation>Thema anzeigen</translation>
-    </message>
-    <message>
-        <source>Core Lag: %1 msec</source>
-        <translation type="obsolete">Latenz: %1 msecs</translation>
     </message>
     <message>
         <location filename="../src/qtui/mainwin.cpp" line="326"/>
@@ -5585,10 +4052,6 @@ Bitte wähle eine andere Regel.</translation>
         <location filename="../src/qtui/mainwin.cpp" line="286"/>
         <source>Configure &amp;Networks...</source>
         <translation>&amp;Netzwerke konfigurieren...</translation>
-    </message>
-    <message>
-        <source>&amp;Configure Buffer Views...</source>
-        <translation type="obsolete">&amp;Ansichten konfigurieren...</translation>
     </message>
     <message>
         <location filename="../src/qtui/mainwin.cpp" line="295"/>
@@ -5654,38 +4117,6 @@ Bitte wähle eine andere Regel.</translation>
 <context>
     <name>Message</name>
     <message>
-        <source>%Dq%DN%DU%1%DU%DN %DH(%2@%3)%DH has quit</source>
-        <translation type="obsolete">%Dq%DN%DU%1%DU%DN %DH(%2@%3)%DH beendet</translation>
-    </message>
-    <message>
-        <source>%DrYou are now known as %DN%1%DN</source>
-        <translation type="obsolete">%DrSie sind jetzt als %DN%1%DN bekannt</translation>
-    </message>
-    <message>
-        <source>%DmUser mode: %DM%1%DM</source>
-        <translation type="obsolete">%DmBenutzermodus: %DM%1%DM</translation>
-    </message>
-    <message>
-        <source>%Dj%DN%1%DN %DH(%2@%3)%DH has joined %DC%4%DC</source>
-        <translation type="obsolete">%Dj%DN%1%DN %DH(%2@%3)%DH hat %DC%4%DC betreten</translation>
-    </message>
-    <message>
-        <source>%Dp%DN%1%DN %DH(%2@%3)%DH has left %DC%4%DC</source>
-        <translation type="obsolete">%Dp%DN%1%DN %DH(%2@%3)%DH hat %DC%4%DC verlassen</translation>
-    </message>
-    <message>
-        <source>%Dk%DN%1%DN has kicked %DN%2%DN from %DC%3%DC</source>
-        <translation type="obsolete">%Dk%DN%1%DN hat %DN%2%DN aus %DC%3%DC geworfen</translation>
-    </message>
-    <message>
-        <source>%Dr%DN%1%DN is now known as %DN%2%DN</source>
-        <translation type="obsolete">%Dr%DN%1%DN nennt sich jetzt %DN%2%DN</translation>
-    </message>
-    <message>
-        <source>%DmMode %DM%1%DM by %DN%2%DN</source>
-        <translation type="obsolete">%DmModus %DM%1%DM von %DN%2%DN</translation>
-    </message>
-    <message>
         <location filename="../src/common/message.h" line="71"/>
         <source>Day changed to %1</source>
         <translation>Ein neuer Tag beginnt: %1</translation>
@@ -5705,10 +4136,6 @@ Bitte wähle eine andere Regel.</translation>
         <location filename="../src/qtui/ui/msgprocessorstatuswidget.ui" line="19"/>
         <source>Form</source>
         <translation>Formular</translation>
-    </message>
-    <message>
-        <source>Processing Messages</source>
-        <translation type="obsolete">Verarbeite Verlauf</translation>
     </message>
     <message>
         <location filename="../src/qtui/ui/msgprocessorstatuswidget.ui" line="34"/>
@@ -5781,29 +4208,6 @@ Bitte wähle eine andere Regel.</translation>
     </message>
 </context>
 <context>
-    <name>NetworkConnection</name>
-    <message>
-        <source>Connection failed. Cycling to next Server</source>
-        <translation type="obsolete">Verbindung fehlgeschlagen. Wechsle zum nächsten Server</translation>
-    </message>
-    <message>
-        <source>Connecting to %1:%2...</source>
-        <translation type="obsolete">Verbinde mit %1:%2...</translation>
-    </message>
-    <message>
-        <source>Disconnecting.</source>
-        <translation type="obsolete">Trenne Verbindung.</translation>
-    </message>
-    <message>
-        <source>Could not connect to %1 (%2)</source>
-        <translation type="obsolete">Konnte nicht mit %1 (%2) verbinden</translation>
-    </message>
-    <message>
-        <source>Connection failure: %1</source>
-        <translation type="obsolete">Verbindungsfehler: %1</translation>
-    </message>
-</context>
-<context>
     <name>NetworkEditDlg</name>
     <message>
         <location filename="../src/qtui/settingspages/networkeditdlg.ui" line="13"/>
@@ -5847,10 +4251,6 @@ Bitte wähle eine andere Regel.</translation>
         <translation>Chat</translation>
     </message>
     <message>
-        <source>Buffer</source>
-        <translation type="obsolete">Fenster</translation>
-    </message>
-    <message>
         <location filename="../src/client/networkmodel.cpp" line="830"/>
         <source>Topic</source>
         <translation>Thema</translation>
@@ -5859,169 +4259,6 @@ Bitte wähle eine andere Regel.</translation>
         <location filename="../src/client/networkmodel.cpp" line="830"/>
         <source>Nick Count</source>
         <translation>Spitznamenzähler</translation>
-    </message>
-</context>
-<context>
-    <name>NetworkModelActionProvider</name>
-    <message>
-        <source>Connect</source>
-        <translation type="obsolete">Verbinden</translation>
-    </message>
-    <message>
-        <source>Disconnect</source>
-        <translation type="obsolete">Trenne Verbindung</translation>
-    </message>
-    <message>
-        <source>Join</source>
-        <translation type="obsolete">Beitreten</translation>
-    </message>
-    <message>
-        <source>Part</source>
-        <translation type="obsolete">Verlassen</translation>
-    </message>
-    <message>
-        <source>Delete Buffer...</source>
-        <translation type="obsolete">Verlauf löschen...</translation>
-    </message>
-    <message>
-        <source>Joins</source>
-        <translation type="obsolete">Joins</translation>
-    </message>
-    <message>
-        <source>Parts</source>
-        <translation type="obsolete">Parts</translation>
-    </message>
-    <message>
-        <source>Quits</source>
-        <translation type="obsolete">Quits</translation>
-    </message>
-    <message>
-        <source>Nick Changes</source>
-        <translation type="obsolete">Spitznamenänderungen</translation>
-    </message>
-    <message>
-        <source>Mode Changes</source>
-        <translation type="obsolete">Modiänderungen</translation>
-    </message>
-    <message>
-        <source>Day Changes</source>
-        <translation type="obsolete">Tageswechsel</translation>
-    </message>
-    <message>
-        <source>Apply to All Chat Views...</source>
-        <translation type="obsolete">Auf alle Chatansichten anwenden...</translation>
-    </message>
-    <message>
-        <source>Join Channel...</source>
-        <translation type="obsolete">Kanal beitreteten...</translation>
-    </message>
-    <message>
-        <source>Whois</source>
-        <translation type="obsolete">Whois</translation>
-    </message>
-    <message>
-        <source>Version</source>
-        <translation type="obsolete">Version</translation>
-    </message>
-    <message>
-        <source>Time</source>
-        <translation type="obsolete">Zeit</translation>
-    </message>
-    <message>
-        <source>Give Operator Status</source>
-        <translation type="obsolete">Operator-Status geben</translation>
-    </message>
-    <message>
-        <source>Take Operator Status</source>
-        <translation type="obsolete">Operator-Status nehmen</translation>
-    </message>
-    <message>
-        <source>Give Voice</source>
-        <translation type="obsolete">Voice geben</translation>
-    </message>
-    <message>
-        <source>Take Voice</source>
-        <translation type="obsolete">Voice nehmen</translation>
-    </message>
-    <message>
-        <source>Kick</source>
-        <translation type="obsolete">Kicken</translation>
-    </message>
-    <message>
-        <source>Ban</source>
-        <translation type="obsolete">Bannen</translation>
-    </message>
-    <message>
-        <source>Kickban</source>
-        <translation type="obsolete">Kickbannen</translation>
-    </message>
-    <message>
-        <source>Query</source>
-        <translation type="obsolete">Dialog</translation>
-    </message>
-    <message>
-        <source>Hide Buffer(s) Temporarily</source>
-        <translation type="obsolete">Fenster temporär ausblenden</translation>
-    </message>
-    <message>
-        <source>Hide Buffer(s) Permanently</source>
-        <translation type="obsolete">Fenster permanent ausblenden</translation>
-    </message>
-    <message>
-        <source>Show Channel List</source>
-        <translation type="obsolete">Zeige Kanalliste</translation>
-    </message>
-    <message>
-        <source>Show Ignore List</source>
-        <translation type="obsolete">Zeige Ignorieren-Liste</translation>
-    </message>
-    <message>
-        <source>Hide Events</source>
-        <translation type="obsolete">Meldungen ausblenden</translation>
-    </message>
-    <message>
-        <source>Remove buffer permanently?</source>
-        <translation type="obsolete">Verlauf permanent löschen?</translation>
-    </message>
-    <message>
-        <source>Do you want to delete the buffer &quot;%1&quot; permanently? This will delete all related data, including all backlog data, from the core&apos;s database!</source>
-        <translation type="obsolete">Möchten Sie den Verlauf &quot;%1&quot; permanent löschen? Hierdurch werden alle in Verbindung stehenden Daten - inklusive des gesamten Rückspeichers - aus der Core-Datenbank gelöscht!</translation>
-    </message>
-    <message>
-        <source>Join Channel</source>
-        <translation type="obsolete">Kanal beitreten</translation>
-    </message>
-    <message>
-        <source>Input channel name:</source>
-        <translation type="obsolete">Kanalnamen eingeben:</translation>
-    </message>
-    <message>
-        <source>Show Buffer</source>
-        <translation type="obsolete">Fenster anzeigen</translation>
-    </message>
-    <message>
-        <source>Start Query</source>
-        <translation type="obsolete">Dialog starten</translation>
-    </message>
-    <message>
-        <source>Show Query</source>
-        <translation type="obsolete">Dialog anzeigen</translation>
-    </message>
-    <message>
-        <source>Kick From Channel</source>
-        <translation type="obsolete">Aus Kanal werfen</translation>
-    </message>
-    <message>
-        <source>Ban From Channel</source>
-        <translation type="obsolete">Vom Kanal bannen</translation>
-    </message>
-    <message>
-        <source>Kick &amp;&amp; Ban</source>
-        <translation type="obsolete">Rauswerfen und bannen</translation>
-    </message>
-    <message>
-        <source>Actions</source>
-        <translation type="obsolete">Aktionen</translation>
     </message>
 </context>
 <context>
@@ -6079,10 +4316,6 @@ Bitte wähle eine andere Regel.</translation>
 <context>
     <name>NetworksSettingsPage</name>
     <message>
-        <source>General</source>
-        <translation type="obsolete">Allgemein</translation>
-    </message>
-    <message>
         <location filename="../src/qtui/settingspages/networkssettingspage.cpp" line="37"/>
         <source>Networks</source>
         <translation>Netzwerke</translation>
@@ -6106,18 +4339,6 @@ Bitte wähle eine andere Regel.</translation>
         <location filename="../src/qtui/settingspages/networkssettingspage.cpp" line="163"/>
         <source>Invalid Network Settings</source>
         <translation>Ungültige Netzwerkeinstellungen</translation>
-    </message>
-    <message>
-        <source>Connect</source>
-        <translation type="obsolete">Verbinde</translation>
-    </message>
-    <message>
-        <source>Disconnect</source>
-        <translation type="obsolete">Trenne Verbindung</translation>
-    </message>
-    <message>
-        <source>Apply first!</source>
-        <translation type="obsolete">Zuerst anwenden!</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/networkssettingspage.cpp" line="527"/>
@@ -6150,10 +4371,6 @@ Bitte wähle eine andere Regel.</translation>
         <location filename="../src/qtui/settingspages/networkssettingspage.ui" line="251"/>
         <source>De&amp;lete</source>
         <translation>&amp;Löschen</translation>
-    </message>
-    <message>
-        <source>Connect now</source>
-        <translation type="obsolete">Jetzt verbinden</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/networkssettingspage.ui" line="123"/>
@@ -6198,14 +4415,6 @@ Bitte wähle eine andere Regel.</translation>
         <translation>In Liste nach unten verschieben</translation>
     </message>
     <message>
-        <source>Choose random server for connecting</source>
-        <translation type="obsolete">Beim Verbinden zufälligen Server wählen</translation>
-    </message>
-    <message>
-        <source>Perform</source>
-        <translation type="obsolete">Ausführen</translation>
-    </message>
-    <message>
         <location filename="../src/qtui/settingspages/networkssettingspage.ui" line="339"/>
         <source>Configure automatic identification or misc. commands to be executed after connecting to a server</source>
         <translation>Automatische Identifikation oder verschiedene Befehle zur Ausführung nach Herstellen der Serververbindung konfigurieren</translation>
@@ -6242,10 +4451,6 @@ Berücksichtigen Sie, dass Quassel IRC Kanälen automatisch erneut beitritt. /jo
         <location filename="../src/qtui/settingspages/networkssettingspage.ui" line="542"/>
         <source>Password:</source>
         <translation>Passwort:</translation>
-    </message>
-    <message>
-        <source>Advanced</source>
-        <translation type="obsolete">Erweitert</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/networkssettingspage.ui" line="569"/>
@@ -6302,14 +4507,6 @@ Lassen Sie dies auf ISO-8859-1 gesetzt, falls Sie nicht *wirklich* wissen, was S
         <translation>Serverkodierung:</translation>
     </message>
     <message>
-        <source>Use default settings for encodings (recommended)</source>
-        <translation type="obsolete">Standardeinstellungen für Kodierungen verwenden (empfohlen)</translation>
-    </message>
-    <message>
-        <source>Use defaults</source>
-        <translation type="obsolete">Standardwerte benutzen</translation>
-    </message>
-    <message>
         <location filename="../src/qtui/settingspages/networkssettingspage.ui" line="382"/>
         <source>Control automatic reconnect to the network</source>
         <translation>Automatisches Wiederverbinden zum Netzwerk kontrollieren</translation>
@@ -6338,10 +4535,6 @@ Lassen Sie dies auf ISO-8859-1 gesetzt, falls Sie nicht *wirklich* wissen, was S
         <location filename="../src/qtui/settingspages/networkssettingspage.ui" line="464"/>
         <source>Rejoin all channels on reconnect</source>
         <translation>Allen Kanälen beim Wiederverbinden erneut beitreten</translation>
-    </message>
-    <message>
-        <source>s</source>
-        <translation type="obsolete">s</translation>
     </message>
     <message>
         <location filename="../src/qtui/settingspages/networkssettingspage.ui" line="403"/>
@@ -6393,85 +4586,7 @@ Lassen Sie dies auf ISO-8859-1 gesetzt, falls Sie nicht *wirklich* wissen, was S
     </message>
 </context>
 <context>
-    <name>NickListWidget</name>
-    <message>
-        <source>Nicks in Channel</source>
-        <translation type="obsolete">Spitznamen im Kanal</translation>
-    </message>
-</context>
-<context>
-    <name>NickView</name>
-    <message>
-        <source>WHOIS</source>
-        <translation type="obsolete">WHOIS</translation>
-    </message>
-    <message>
-        <source>VERSION</source>
-        <translation type="obsolete">VERSION</translation>
-    </message>
-    <message>
-        <source>PING</source>
-        <translation type="obsolete">PING</translation>
-    </message>
-    <message>
-        <source>Modes</source>
-        <translation type="obsolete">Modi</translation>
-    </message>
-    <message>
-        <source>Op %1</source>
-        <translation type="obsolete">Op %1</translation>
-    </message>
-    <message>
-        <source>Deop %1</source>
-        <translation type="obsolete">Deop %1</translation>
-    </message>
-    <message>
-        <source>Voice %1</source>
-        <translation type="obsolete">Voice %1</translation>
-    </message>
-    <message>
-        <source>Devoice %1</source>
-        <translation type="obsolete">Devoice %1</translation>
-    </message>
-    <message>
-        <source>Kick/Ban</source>
-        <translation type="obsolete">Rauswerfen/Verbannen</translation>
-    </message>
-    <message>
-        <source>Kick %1</source>
-        <translation type="obsolete">%1 rauswerfen</translation>
-    </message>
-    <message>
-        <source>Ban %1</source>
-        <translation type="obsolete">%1 verbannen</translation>
-    </message>
-    <message>
-        <source>Kickban %1</source>
-        <translation type="obsolete">%1 rauswerfen und verbannen</translation>
-    </message>
-    <message>
-        <source>Ignore</source>
-        <translation type="obsolete">Ignorieren</translation>
-    </message>
-    <message>
-        <source>Query</source>
-        <translation type="obsolete">Dialog</translation>
-    </message>
-    <message>
-        <source>DCC-Chat</source>
-        <translation type="obsolete">DCC-Chat</translation>
-    </message>
-    <message>
-        <source>Send file</source>
-        <translation type="obsolete">Datei senden</translation>
-    </message>
-</context>
-<context>
     <name>NotificationsSettingsPage</name>
-    <message>
-        <source>Behaviour</source>
-        <translation type="obsolete">Verhalten</translation>
-    </message>
     <message>
         <location filename="../src/qtui/settingspages/notificationssettingspage.cpp" line="28"/>
         <source>Notifications</source>
@@ -6481,38 +4596,6 @@ Lassen Sie dies auf ISO-8859-1 gesetzt, falls Sie nicht *wirklich* wissen, was S
         <location filename="../src/qtui/settingspages/notificationssettingspage.cpp" line="28"/>
         <source>Interface</source>
         <translation>Oberfläche</translation>
-    </message>
-    <message>
-        <source>Form</source>
-        <translation type="obsolete">Formular</translation>
-    </message>
-    <message>
-        <source>System Tray</source>
-        <translation type="obsolete">Systemleiste</translation>
-    </message>
-    <message>
-        <source>Animate tray icon</source>
-        <translation type="obsolete">Systemleistensymbol animieren</translation>
-    </message>
-    <message>
-        <source>Show Bubble</source>
-        <translation type="obsolete">Sprechblase zeigen</translation>
-    </message>
-    <message>
-        <source>Sends Quassel&apos;s notifications to a notification daemon compliant to Freedesktop&apos;s Notification specification (org.freedesktop.Notification).</source>
-        <translation type="obsolete">Sendet Quassels Benachrichtigungen an einen zur Freedesktop-Spezifikation org.freedesktop.Notification konformen Benachrichtigungsdienst.</translation>
-    </message>
-    <message>
-        <source>Desktop Notification (via DBus)</source>
-        <translation type="obsolete">Arbeitsflächenbenachrichtigung (via DBus)</translation>
-    </message>
-    <message>
-        <source>Timeout</source>
-        <translation type="obsolete">Zeitüberschreitung</translation>
-    </message>
-    <message>
-        <source>Appearance</source>
-        <translation type="obsolete">Erscheinungsbild</translation>
     </message>
 </context>
 <context>
@@ -6557,10 +4640,6 @@ Lassen Sie dies auf ISO-8859-1 gesetzt, falls Sie nicht *wirklich* wissen, was S
         <translation>Lade insgesamt %1 Nachrichten vom Verlauf von %2 Fenstern</translation>
     </message>
     <message>
-        <source>Copy to Clipboard</source>
-        <translation type="obsolete">Zur Zwischenablage kopieren</translation>
-    </message>
-    <message>
         <location filename="../src/client/backlogrequester.cpp" line="106"/>
         <source>Requesting up to %1 of all unread backlog messages (plus additional %2)</source>
         <translation>Lade insgesamt %1 ungelesene Nachrichten (und weitere %2)</translation>
@@ -6579,17 +4658,6 @@ Lassen Sie dies auf ISO-8859-1 gesetzt, falls Sie nicht *wirklich* wissen, was S
         <location filename="../src/qtui/ircconnectionwizard.cpp" line="58"/>
         <source>This wizard will help you to set up your default identity and your IRC network connection.&lt;br&gt;This only covers basic settings. You can cancel this wizard any time and use the settings dialog for more detailed changes.</source>
         <translation>Dieser Dialog wird Ihnen helfen, Ihre Identität und ihre IRC-Verbindungen auszuwählen.&lt;br&gt;Dies schließt nur die wichtigsten Einstellungen mit ein. Sie können diesen Dialog jederzeit schließen und in den Einstellungen weitere Modifikationen vornehmen.</translation>
-    </message>
-</context>
-<context>
-    <name>QShortcut</name>
-    <message>
-        <source>Ctrl</source>
-        <translation type="obsolete">Strg</translation>
-    </message>
-    <message>
-        <source>Shift</source>
-        <translation type="obsolete">Umschalt</translation>
     </message>
 </context>
 <context>
@@ -6732,48 +4800,6 @@ Lassen Sie dies auf ISO-8859-1 gesetzt, falls Sie nicht *wirklich* wissen, was S
     </message>
 </context>
 <context>
-    <name>QtopiaMainWin</name>
-    <message>
-        <source>Show Toolbar</source>
-        <translation type="obsolete">Werkzeugleiste zeigen</translation>
-    </message>
-    <message>
-        <source>Quit Quassel IRC?</source>
-        <translation type="obsolete">Quassel IRC beenden?</translation>
-    </message>
-    <message>
-        <source>Do you really want to quit Quassel IRC?</source>
-        <translation type="obsolete">Wollen Sie Quassel IRC wirklich beenden?</translation>
-    </message>
-    <message>
-        <source>Quit</source>
-        <translation type="obsolete">Beenden</translation>
-    </message>
-    <message>
-        <source>Show Buffers</source>
-        <translation type="obsolete">Puffer zeigen</translation>
-    </message>
-    <message>
-        <source>Show Nicks</source>
-        <translation type="obsolete">Spitznamen zeigen</translation>
-    </message>
-    <message>
-        <source>About...</source>
-        <translation type="obsolete">Über...</translation>
-    </message>
-</context>
-<context>
-    <name>Quassel</name>
-    <message>
-        <source>Enable debug output</source>
-        <translation type="obsolete">Debug-Output anzeigen</translation>
-    </message>
-    <message>
-        <source>Display this help and exit</source>
-        <translation type="obsolete">Diese Hilfe anzeigen und beenden</translation>
-    </message>
-</context>
-<context>
     <name>Quassel::secondsToString()</name>
     <message>
         <location filename="../src/common/util.cpp" line="129"/>
@@ -6807,10 +4833,6 @@ Lassen Sie dies auf ISO-8859-1 gesetzt, falls Sie nicht *wirklich* wissen, was S
         <location filename="../src/client/networkmodel.cpp" line="407"/>
         <source>&lt;b&gt;Query with %1&lt;/b&gt;</source>
         <translation>&lt;b&gt;Dialog mit %1&lt;/b&gt;</translation>
-    </message>
-    <message>
-        <source>Away Message: %1</source>
-        <translation type="obsolete">Abwesenheitsmeldung: %1</translation>
     </message>
     <message>
         <location filename="../src/client/networkmodel.cpp" line="425"/>
@@ -6951,13 +4973,6 @@ Lassen Sie dies auf ISO-8859-1 gesetzt, falls Sie nicht *wirklich* wissen, was S
     </message>
 </context>
 <context>
-    <name>SessionThread</name>
-    <message>
-        <source>Could not initialize session!</source>
-        <translation type="obsolete">Konnte Sitzung nicht initialisieren!</translation>
-    </message>
-</context>
-<context>
     <name>SettingsDlg</name>
     <message>
         <location filename="../src/qtui/settingsdlg.cpp" line="77"/>
@@ -7049,29 +5064,9 @@ Lassen Sie dies auf ISO-8859-1 gesetzt, falls Sie nicht *wirklich* wissen, was S
 <context>
     <name>SignalProxy</name>
     <message>
-        <source>Client tried to send package larger than max package size!</source>
-        <translation type="obsolete">Client versuchte Paket größer als max. Paketgröße zu senden!</translation>
-    </message>
-    <message>
         <location filename="../src/common/signalproxy.cpp" line="1030"/>
         <source>Disconnecting</source>
         <translation>Trenne</translation>
-    </message>
-    <message>
-        <source>local client</source>
-        <translation type="obsolete">lokaler Client</translation>
-    </message>
-    <message>
-        <source>Client tried to send 0 byte package!</source>
-        <translation type="obsolete">Client versuchte 0-byte-package zu senden!</translation>
-    </message>
-    <message>
-        <source>Client sent corrupted compressed data!</source>
-        <translation type="obsolete">Client hat falsch komprimierte Daten gesendet!</translation>
-    </message>
-    <message>
-        <source>Client sent corrupt data: unable to load QVariant!</source>
-        <translation type="obsolete">Client hat beschädigte Daten gesendet. QVariant kann nicht geladen werden!</translation>
     </message>
     <message>
         <location filename="../src/common/signalproxy.cpp" line="865"/>
@@ -7261,14 +5256,6 @@ Lassen Sie dies auf ISO-8859-1 gesetzt, falls Sie nicht *wirklich* wissen, was S
 </context>
 <context>
     <name>StatusBufferItem</name>
-    <message>
-        <source>&lt;b&gt;Status buffer of %1&lt;/b&gt;</source>
-        <translation type="obsolete">&lt;b&gt;Statusfenster von %1&lt;/b&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;p&gt; %1 &lt;/p&gt;</source>
-        <translation type="obsolete">&lt;p&gt; %1 &lt;/p&gt;</translation>
-    </message>
     <message>
         <location filename="../src/client/networkmodel.h" line="142"/>
         <source>Status Buffer</source>
@@ -7460,13 +5447,6 @@ Lassen Sie dies auf ISO-8859-1 gesetzt, falls Sie nicht *wirklich* wissen, was S
     </message>
 </context>
 <context>
-    <name>TopicLabel</name>
-    <message>
-        <source>Drag to scroll the topic!</source>
-        <translation type="obsolete">Ziehen um das Thema zu verschieben!</translation>
-    </message>
-</context>
-<context>
     <name>TopicWidget</name>
     <message>
         <location filename="../src/qtui/ui/topicwidget.ui" line="32"/>
@@ -7480,98 +5460,7 @@ Lassen Sie dies auf ISO-8859-1 gesetzt, falls Sie nicht *wirklich* wissen, was S
     </message>
 </context>
 <context>
-    <name>UiStyle</name>
-    <message>
-        <source>%Dj%DN%1%DN %DH(%2@%3)%DH has joined %DC%4%DC</source>
-        <translation type="obsolete">%Dj%DN%1%DN %DH(%2@%3)%DH hat %DC%4%DC betreten</translation>
-    </message>
-    <message>
-        <source>%Dp%DN%1%DN %DH(%2@%3)%DH has left %DC%4%DC</source>
-        <translation type="obsolete">%Dp%DN%1%DN %DH(%2@%3)%DH hat %DC%4%DC verlassen</translation>
-    </message>
-    <message>
-        <source>%Dq%DN%DU%1%DU%DN %DH(%2@%3)%DH has quit</source>
-        <translation type="obsolete">%Dq%DN%DU%1%DU%DN %DH(%2@%3)%DH wurde beendet</translation>
-    </message>
-    <message>
-        <source>%Dk%DN%1%DN has kicked %DN%2%DN from %DC%3%DC</source>
-        <translation type="obsolete">%Dk%DN%1%DN hat %DN%2%DN aus %DC%3%DC geworfen</translation>
-    </message>
-    <message>
-        <source>%DrYou are now known as %DN%1%DN</source>
-        <translation type="obsolete">%DrSie sind jetzt als %DN%1%DN bekannt</translation>
-    </message>
-    <message>
-        <source>%Dr%DN%1%DN is now known as %DN%2%DN</source>
-        <translation type="obsolete">%Dr%DN%1%DN ist jetzt als %DN%2%DN bekannt</translation>
-    </message>
-    <message>
-        <source>%DmUser mode: %DM%1%DM</source>
-        <translation type="obsolete">%DmBenutzermodus: %DM%1%DM</translation>
-    </message>
-    <message>
-        <source>%DmMode %DM%1%DM by %DN%2%DN</source>
-        <translation type="obsolete">%DmModus %DM%1%DM durch %DN%2%DN</translation>
-    </message>
-</context>
-<context>
     <name>UiStyle::StyledMessage</name>
-    <message>
-        <source>%D0%1</source>
-        <translation type="obsolete">%D0%1</translation>
-    </message>
-    <message>
-        <source>%Dn%1</source>
-        <translation type="obsolete">%Dn%1</translation>
-    </message>
-    <message>
-        <source>%Ds%1</source>
-        <translation type="obsolete">%Ds%1</translation>
-    </message>
-    <message>
-        <source>%De%1</source>
-        <translation type="obsolete">%De%1</translation>
-    </message>
-    <message>
-        <source>%Dj%DN%1%DN %DH(%2@%3)%DH has joined %DC%4%DC</source>
-        <translation type="obsolete">%Dj%DN%1%DN %DH(%2@%3)%DH hat %DC%4%DC betreten</translation>
-    </message>
-    <message>
-        <source>%Dp%DN%1%DN %DH(%2@%3)%DH has left %DC%4%DC</source>
-        <translation type="obsolete">%Dp%DN%1%DN %DH(%2@%3)%DH hat %DC%4%DC verlassen</translation>
-    </message>
-    <message>
-        <source>%Dq%DN%1%DN %DH(%2@%3)%DH has quit</source>
-        <translation type="obsolete">%Dq%DN%1%DN %DH(%2@%3)%DH hat den Chat verlassen</translation>
-    </message>
-    <message>
-        <source>%Dk%DN%1%DN has kicked %DN%2%DN from %DC%3%DC</source>
-        <translation type="obsolete">%Dk%DN%1%DN hat %DN%2%DN aus %DC%3%DC geworfen</translation>
-    </message>
-    <message>
-        <source>%DrYou are now known as %DN%1%DN</source>
-        <translation type="obsolete">%DrSie sind jetzt als %DN%1%DN bekannt</translation>
-    </message>
-    <message>
-        <source>%Dr%DN%1%DN is now known as %DN%2%DN</source>
-        <translation type="obsolete">%Dr%DN%1%DN ist jetzt als %DN%2%DN bekannt</translation>
-    </message>
-    <message>
-        <source>%DmUser mode: %DM%1%DM</source>
-        <translation type="obsolete">%DmBenutzermodus: %DM%1%DM</translation>
-    </message>
-    <message>
-        <source>%DmMode %DM%1%DM by %DN%2%DN</source>
-        <translation type="obsolete">%DmModus %DM%1%DM by %DN%2%DN</translation>
-    </message>
-    <message>
-        <source>%Da%DN%1%DN %2</source>
-        <translation type="obsolete">%Da%DN%1%DN %2</translation>
-    </message>
-    <message>
-        <source>%De[%1]</source>
-        <translation type="obsolete">%De[%1]</translation>
-    </message>
     <message>
         <location filename="../src/uisupport/uistyle.cpp" line="684"/>
         <source>&lt;%1&gt;</source>
