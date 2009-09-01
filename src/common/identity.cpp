@@ -315,4 +315,6 @@ QDataStream &operator>>(QDataStream &in, Identity &id) {
   return in;
 }
 
+#ifdef HAVE_SSL
 INIT_SYNCABLE_OBJECT(CertManager)
+#endif // HAVE_SSL
