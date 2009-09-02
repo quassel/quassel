@@ -92,6 +92,16 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>AliasesModel</name>
     <message>
+        <location filename="../src/qtui/settingspages/aliasesmodel.cpp" line="55"/>
+        <source>&lt;b&gt;The shortcut for the alias&lt;/b&gt;&lt;br /&gt;It can be used as a regular slash command.&lt;br /&gt;&lt;br /&gt;&lt;b&gt;Example:&lt;/b&gt; &quot;foo&quot; can be used per /foo</source>
+        <translation>&lt;b&gt;Kurzbefehl des Alias&lt;/b&gt;&lt;br /&gt;Kann als normaler Slash-Befehl verwendet werden.&lt;br /&gt;&lt;br /&gt;&lt;b&gt;Beispiel:&lt;/b&gt; Der Alias &quot;foo&quot; wird mit /foo ausgeführt.</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/aliasesmodel.cpp" line="59"/>
+        <source>&lt;b&gt;The string the shortcut will be expanded to&lt;/b&gt;&lt;br /&gt;&lt;b&gt;special variables:&lt;/b&gt;&lt;br /&gt; - &lt;b&gt;$i&lt;/b&gt; represents the i&apos;th parameter.&lt;br /&gt; - &lt;b&gt;$i..j&lt;/b&gt; represents the i&apos;th to j&apos;th parameter separated by spaces.&lt;br /&gt; - &lt;b&gt;$i..&lt;/b&gt; represents all parameters from i on separated by spaces.&lt;br /&gt; - &lt;b&gt;$i:hostname&lt;/b&gt; represents the hostname of the user identified by the i&apos;th parameter or a * if unknown.&lt;br /&gt; - &lt;b&gt;$0&lt;/b&gt; the whole string.&lt;br /&gt; - &lt;b&gt;$nick&lt;/b&gt; your current nickname&lt;br /&gt; - &lt;b&gt;$channel&lt;/b&gt; the name of the selected channel&lt;br /&gt;&lt;br /&gt;Multiple commands can be separated with semicolons&lt;br /&gt;&lt;br /&gt;&lt;b&gt;Example:&lt;/b&gt; &quot;Test $1; Test $2; Test All $0&quot; will be expanded to three separate messages &quot;Test 1&quot;, &quot;Test 2&quot; and &quot;Test All 1 2 3&quot; when called like /test 1 2 3</source>
+        <translation>&lt;b&gt;Der Befehl, zudem der Alias erweitert wird&lt;/b&gt;&lt;br /&gt;&lt;b&gt; Besondere Variablen:&lt;/b&gt;&lt;br /&gt; - &lt;b&gt;$i&lt;/b&gt; steht für den i-ten Parameter.&lt;br /&gt; - &lt;b&gt;$i..j&lt;/b&gt; steht für den i-ten bis zum j-ten Parameter, mit Leerzeichen getrennt.&lt;br /&gt; - &lt;b&gt;$i..&lt;/b&gt; steht für alle Parameter ab dem i-ten, mit Leerzeichen getrennt.&lt;br /&gt; - &lt;b&gt;$i:hostname&lt;/b&gt; steht für den Hostnamen des Bentuzers, der im i-ten Parameter übergeben wird oder * falls es unbekannt ist.&lt;br /&gt; - &lt;b&gt;$0&lt;/b&gt; steht für die gesamte Zeichenkette.&lt;br /&gt; - &lt;b&gt;$nick&lt;/b&gt; steht für Ihren momentanen Spitznamen.&lt;br /&gt; - &lt;b&gt;$channel&lt;/b&gt; steht für den Namen des momentan ausgewählten Chats.&lt;br /&gt;&lt;br /&gt;Mehrere Befehle können mit Strichkommata getrennt werden.&lt;br /&gt;&lt;br /&gt;&lt;b&gt;Beispiel:&lt;/b&gt; &quot;Test $1; Test $2; Test All $0&quot; wird erweitert zu den drei getrennten Meldungen &quot;Test 1&quot;, &quot;Test 2&quot; und &quot;Test All 1 2 3&quot;, wenn /test 1 2 3 aufgerufen wird.</translation>
+    </message>
+    <message>
         <location filename="../src/qtui/settingspages/aliasesmodel.cpp" line="170"/>
         <source>Alias</source>
         <translation></translation>

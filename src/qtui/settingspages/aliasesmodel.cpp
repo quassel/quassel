@@ -52,11 +52,11 @@ QVariant AliasesModel::data(const QModelIndex &index, int role) const {
   case Qt::ToolTipRole:
     switch(index.column()) {
     case 0:
-      return "<b>The shortcut for the alias</b><br />"
+      return tr("<b>The shortcut for the alias</b><br />"
 	"It can be used as a regular slash command.<br /><br />"
-	"<b>Example:</b> \"foo\" can be used per /foo";
+	"<b>Example:</b> \"foo\" can be used per /foo");
     case 1:
-      return "<b>The string the shortcut will be expanded to</b><br />"
+      return tr("<b>The string the shortcut will be expanded to</b><br />"
 	"<b>special variables:</b><br />"
 	" - <b>$i</b> represents the i'th parameter.<br />"
 	" - <b>$i..j</b> represents the i'th to j'th parameter separated by spaces.<br />"
@@ -66,7 +66,7 @@ QVariant AliasesModel::data(const QModelIndex &index, int role) const {
 	" - <b>$nick</b> your current nickname<br />"
 	" - <b>$channel</b> the name of the selected channel<br /><br />"
 	"Multiple commands can be separated with semicolons<br /><br />"
-	"<b>Example:</b> \"Test $1; Test $2; Test All $0\" will be expanded to three separate messages \"Test 1\", \"Test 2\" and \"Test All 1 2 3\" when called like /test 1 2 3";
+	"<b>Example:</b> \"Test $1; Test $2; Test All $0\" will be expanded to three separate messages \"Test 1\", \"Test 2\" and \"Test All 1 2 3\" when called like /test 1 2 3");
     default:
       return QVariant();
     }
