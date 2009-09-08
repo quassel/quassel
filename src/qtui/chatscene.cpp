@@ -438,7 +438,7 @@ void ChatScene::firstHandlePositionChanged(qreal xpos) {
   if(_firstColHandlePos == xpos)
     return;
 
-  _firstColHandlePos = xpos;
+  _firstColHandlePos = xpos >= 0 ? xpos : 0;
   ChatViewSettings viewSettings(this);
   viewSettings.setValue("FirstColumnHandlePos", _firstColHandlePos);
   ChatViewSettings defaultSettings;
