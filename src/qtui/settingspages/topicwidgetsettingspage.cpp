@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005/06 by the Quassel Project                          *
+ *   Copyright (C) 2005-09 by the Quassel Project                          *
  *   devel@quassel-irc.org                                                 *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -17,44 +17,12 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#include "topicwidgetsettingspage.h"
 
-#ifndef TOPICWIDGET_H_
-#define TOPICWIDGET_H_
+TopicWidgetSettingsPage::TopicWidgetSettingsPage(QWidget *parent)
+  : SettingsPage(tr("Interface"), tr("Topic Widget"), parent)
+{
+  ui.setupUi(this);
 
-#include "abstractitemview.h"
-
-#include "ui_topicwidget.h"
-
-class TopicWidget : public AbstractItemView {
-  Q_OBJECT
-
-public:
-  TopicWidget(QWidget *parent = 0);
-
-  void setTopic(const QString &newtopic);
-  void setCustomFont(const QFont &);
-
-  virtual bool eventFilter(QObject *obj, QEvent *event);
-
-protected slots:
-  virtual void currentChanged(const QModelIndex &current, const QModelIndex &previous);
-  virtual void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
-
-private slots:
-  void on_topicLineEdit_textEntered();
-  void on_topicEditButton_clicked();
-  void switchEditable();
-  void switchPlain();
-  void clickableActivated(const Clickable &);
-  void updateResizeMode();
-  void setCustomFont(const QVariant &);
-  void setUseCustomFont(const QVariant &);
-
-private:
-  Ui::TopicWidget ui;
-
-  QString _topic;
-};
-
-
-#endif
+  initAutoWidgets();
+}

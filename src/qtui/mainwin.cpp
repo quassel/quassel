@@ -108,6 +108,7 @@
 #include "settingspages/itemviewsettingspage.h"
 #include "settingspages/networkssettingspage.h"
 #include "settingspages/notificationssettingspage.h"
+#include "settingspages/topicwidgetsettingspage.h"
 
 MainWin::MainWin(QWidget *parent)
 #ifdef HAVE_KDE
@@ -836,6 +837,7 @@ void MainWin::showSettingsDlg() {
   dlg->registerSettingsPage(new ChatViewSettingsPage(dlg));
   dlg->registerSettingsPage(new ItemViewSettingsPage(dlg));
   dlg->registerSettingsPage(new InputWidgetSettingsPage(dlg));
+  dlg->registerSettingsPage(new TopicWidgetSettingsPage(dlg));
   dlg->registerSettingsPage(new HighlightSettingsPage(dlg));
   dlg->registerSettingsPage(new NotificationsSettingsPage(dlg));
   dlg->registerSettingsPage(new BacklogSettingsPage(dlg));

@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TopicWidgetSettingsPage</class>
+ <widget class="QWidget" name="TopicWidgetSettingsPage">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>470</width>
+    <height>370</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QCheckBox" name="customFont">
+       <property name="text">
+        <string>Custom font:</string>
+       </property>
+       <property name="settingsKey" stdset="0">
+        <string>/UiStyle/Fonts/UseCustomTopicWidgetFont</string>
+       </property>
+       <property name="defaultValue" stdset="0">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="FontSelector" name="topicWidgetFont" native="true">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="settingsKey" stdset="0">
+        <string>/UiStyle/Fonts/TopicWidget</string>
+       </property>
+       <property name="defaultValue" stdset="0">
+        <font/>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="dynamicResize">
+     <property name="text">
+      <string>Resize dynamically to fit contents</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+     <property name="settingsKey" stdset="0">
+      <string>DynamicResize</string>
+     </property>
+     <property name="defaultValue" stdset="0">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Fixed</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>16</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="resizeOnHover">
+       <property name="text">
+        <string>On hover only</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+       <property name="settingsKey" stdset="0">
+        <string>ResizeOnHover</string>
+       </property>
+       <property name="defaultValue" stdset="0">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>274</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>FontSelector</class>
+   <extends>QWidget</extends>
+   <header>fontselector.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>customFont</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>topicWidgetFont</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>105</x>
+     <y>19</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>242</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>dynamicResize</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>resizeOnHover</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>56</x>
+     <y>46</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>65</x>
+     <y>73</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

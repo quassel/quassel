@@ -23,6 +23,7 @@
 #include "client.h"
 #include "iconloader.h"
 #include "networkmodel.h"
+#include "uisettings.h"
 
 TopicWidget::TopicWidget(QWidget *parent)
   : AbstractItemView(parent)
@@ -33,6 +34,18 @@ TopicWidget::TopicWidget(QWidget *parent)
   ui.topicLineEdit->installEventFilter(this);
 
   connect(ui.topicLabel, SIGNAL(clickableActivated(Clickable)), SLOT(clickableActivated(Clickable)));
+
+  UiSettings s("TopicWidget");
+  s.notify("DynamicResize", this, SLOT(updateResizeMode()));
+  s.notify("ResizeOnHover", this, SLOT(updateResizeMode()));
+  updateResizeMode();
+
+  UiStyleSettings fs("Fonts");
+  fs.notify("UseCustomTopicWidgetFont", this, SLOT(setUseCustomFont(QVariant)));
+  fs.notify("TopicWidget", this, SLOT(setCustomFont(QVariant)));
+  if(fs.value("UseCustomTopicWidgetFont", false).toBool())
+    setCustomFont(fs.value("TopicWidget", QFont()));
+
 }
 
 void TopicWidget::currentChanged(const QModelIndex &current, const QModelIndex &previous) {
@@ -47,6 +60,31 @@ void TopicWidget::dataChanged(const QModelIndex &topLeft, const QModelIndex &bot
     setTopic(currentTopicIndex.data().toString());
 };
 
+void TopicWidget::setUseCustomFont(const QVariant &v) {
+  if(v.toBool()) {
+    UiStyleSettings fs("Fonts");
+    setCustomFont(fs.value("TopicWidget").value<QFont>());
+  } else
+    setCustomFont(QFont());
+}
+
+void TopicWidget::setCustomFont(const QVariant &v) {
+  UiStyleSettings fs("Fonts");
+  if(!fs.value("UseCustomTopicWidgetFont", false).toBool())
+    return;
+
+  setCustomFont(v.value<QFont>());
+}
+
+void TopicWidget::setCustomFont(const QFont &f) {
+  QFont font = f;
+  if(font.family().isEmpty())
+    font = QApplication::font();
+
+  ui.topicLineEdit->setCustomFont(font);
+  ui.topicLabel->setCustomFont(font);
+}
+
 void TopicWidget::setTopic(const QString &newtopic) {
   if(_topic == newtopic)
     return;
@@ -55,6 +93,19 @@ void TopicWidget::setTopic(const QString &newtopic) {
   ui.topicLabel->setText(newtopic);
   ui.topicLineEdit->setText(newtopic);
   switchPlain();
+}
+
+void TopicWidget::updateResizeMode() {
+  StyledLabel::ResizeMode mode = StyledLabel::NoResize;
+  UiSettings s("TopicWidget");
+  if(s.value("DynamicResize", true).toBool()) {
+    if(s.value("ResizeOnHover", true).toBool())
+      mode = StyledLabel::ResizeOnHover;
+    else
+      mode = StyledLabel::DynamicResize;
+  }
+
+  ui.topicLabel->setResizeMode(mode);
 }
 
 void TopicWidget::clickableActivated(const Clickable &click) {
