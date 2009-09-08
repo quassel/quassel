@@ -50,13 +50,15 @@ void Clickable::activate(NetworkId networkId, const QString &text) const {
 //       (RegExps are not constant while matching, and they are static here for efficiency)
 ClickableList ClickableList::fromString(const QString &str) {
   // For matching URLs
+  static QString scheme("(?:(?:mailto:|(?:[+.-]?\\w)+://)|www(?=\\.\\S+\\.))");
+  static QString authority("(?:[,.;@:-]?\\w+)+(?::\\d+)?");
+  static QString urlChars("(?:[,.;:\\w~@/?&=+$()!%#*|{}\\[\\]'^-])");
   static QString urlEnd("(?:>|[,.;:\"]*\\s|\\b|$)");
-  static QString urlChars("(?:[,.;:]*[\\w\\-~@/?&=+$()!%#*|{}\\[\\]'^])");
 
   static QRegExp regExp[] = {
     // URL
     // QRegExp(QString("((?:https?://|s?ftp://|irc://|mailto:|www\\.)%1+|%1+\\.[a-z]{2,4}(?:?=/%1+|\\b))%2").arg(urlChars, urlEnd)),
-    QRegExp(QString("\\b((?:(?:mailto:|\\w+://)|www\\.)%1+)%2").arg(urlChars, urlEnd), Qt::CaseInsensitive),
+    QRegExp(QString("\\b(%1%2(?:/%3*)?)%4").arg(scheme, authority, urlChars, urlEnd), Qt::CaseInsensitive),
 
     // Channel name
     // We don't match for channel names starting with + or &, because that gives us a lot of false positives.
