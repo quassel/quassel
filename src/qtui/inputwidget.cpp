@@ -59,8 +59,10 @@ InputWidget::InputWidget(QWidget *parent)
   new TabCompleter(ui.inputEdit);
 
   UiStyleSettings fs("Fonts");
+  fs.notify("UseCustomInputWidgetFont", this, SLOT(setUseCustomFont(QVariant)));
   fs.notify("InputWidget", this, SLOT(setCustomFont(QVariant)));
-  setCustomFont(fs.value("InputWidget", QFont()));
+  if(fs.value("UseCustomInputWidgetFont", false).toBool())
+    setCustomFont(fs.value("InputWidget", QFont()));
 
   UiSettings s("InputWidget");
 
@@ -90,6 +92,14 @@ InputWidget::InputWidget(QWidget *parent)
 }
 
 InputWidget::~InputWidget() {
+}
+
+void InputWidget::setUseCustomFont(const QVariant &v) {
+  if(v.toBool()) {
+    UiStyleSettings fs("Fonts");
+    setCustomFont(fs.value("InputWidget"));
+  } else
+    setCustomFont(QFont());
 }
 
 void InputWidget::setCustomFont(const QVariant &v) {

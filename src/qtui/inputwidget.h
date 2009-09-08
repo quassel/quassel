@@ -52,6 +52,7 @@ protected slots:
 
 private slots:
   void setCustomFont(const QVariant &font);
+  void setUseCustomFont(const QVariant &);
   void setEnableSpellCheck(const QVariant &);
   void setShowNickSelector(const QVariant &);
   void setMaxLines(const QVariant &);
