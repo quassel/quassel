@@ -30,7 +30,8 @@ StyledLabel::StyledLabel(QWidget *parent)
 : QFrame(parent),
   _wrapMode(QTextOption::NoWrap),
   _alignment(Qt::AlignVCenter|Qt::AlignLeft),
-  _toolTipEnabled(true)
+  _toolTipEnabled(true),
+  _resizeMode(NoResize)
 {
   setMouseTracking(true);
 
@@ -38,6 +39,12 @@ StyledLabel::StyledLabel(QWidget *parent)
   opt.setWrapMode(_wrapMode);
   opt.setAlignment(_alignment);
   _layout.setTextOption(opt);
+}
+
+void StyledLabel::setCustomFont(const QFont &font) {
+  setFont(font);
+  _layout.setFont(font);
+  setText(_layout.text());
 }
 
 void StyledLabel::setWrapMode(QTextOption::WrapMode mode) {
@@ -62,6 +69,17 @@ void StyledLabel::setAlignment(Qt::Alignment alignment) {
   _layout.setTextOption(opt);
 
   layout();
+}
+
+void StyledLabel::setResizeMode(ResizeMode mode) {
+  if(_resizeMode == mode)
+    return;
+
+  _resizeMode = mode;
+  if(mode == DynamicResize)
+    setWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
+  else
+    setWrapMode(QTextOption::NoWrap);
 }
 
 void StyledLabel::resizeEvent(QResizeEvent *event) {
@@ -175,8 +193,15 @@ void StyledLabel::mouseMoveEvent(QMouseEvent *event) {
   }
 }
 
+void StyledLabel::enterEvent(QEvent *) {
+  if(resizeMode() == ResizeOnHover)
+    setWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
+}
+
 void StyledLabel::leaveEvent(QEvent *) {
   endHoverMode();
+  if(resizeMode() == ResizeOnHover)
+    setWrapMode(QTextOption::NoWrap);
 }
 
 void StyledLabel::mousePressEvent(QMouseEvent *event) {

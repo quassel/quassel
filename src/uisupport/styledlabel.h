@@ -30,9 +30,16 @@ class StyledLabel : public QFrame {
   Q_OBJECT
 
 public:
+  enum ResizeMode {
+    NoResize,
+    DynamicResize,
+    ResizeOnHover
+  };
+
   StyledLabel(QWidget *parent = 0);
 
   void setText(const QString &text);
+  void setCustomFont(const QFont &font);
 
   virtual QSize sizeHint() const;
   //virtual QSize minimumSizeHint() const;
@@ -46,12 +53,16 @@ public:
   inline bool toolTipEnabled() const { return _toolTipEnabled; }
   void setToolTipEnabled(bool);
 
+  inline ResizeMode resizeMode() const { return _resizeMode; }
+  void setResizeMode(ResizeMode);
+
 signals:
   void clickableActivated(const Clickable &click);
 
 protected:
   virtual void paintEvent(QPaintEvent *event);
   virtual void resizeEvent(QResizeEvent *event);
+  virtual void enterEvent(QEvent *);
   virtual void leaveEvent(QEvent *);
   virtual void mouseMoveEvent(QMouseEvent *event);
   virtual void mousePressEvent(QMouseEvent *event);
@@ -65,6 +76,7 @@ private:
   QTextLayout _layout;
   ClickableList _clickables;
   bool _toolTipEnabled;
+  ResizeMode _resizeMode;
 
   QList<QTextLayout::FormatRange> _layoutList;
   QVector<QTextLayout::FormatRange> _extraLayoutList;
