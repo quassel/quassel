@@ -145,7 +145,7 @@ void StyledLabel::updateToolTip() {
 
 void StyledLabel::layout() {
   qreal h = 0;
-  qreal w = frameRect().width() - 2*frameWidth();
+  qreal w = contentsRect().width();
 
   _layout.beginLayout();
   forever {
@@ -163,11 +163,12 @@ void StyledLabel::layout() {
   update();
 }
 
-void StyledLabel::paintEvent(QPaintEvent *) {
+void StyledLabel::paintEvent(QPaintEvent *e) {
+  QFrame::paintEvent(e);
   QPainter painter(this);
 
-  qreal y = (frameRect().height() - _layout.boundingRect().height()) / 2;
-  _layout.draw(&painter, QPointF(0, y), _extraLayoutList);
+  qreal y = contentsRect().y() + (contentsRect().height() - _layout.boundingRect().height()) / 2;
+  _layout.draw(&painter, QPointF(contentsRect().x(), y), _extraLayoutList);
 }
 
 int StyledLabel::posToCursor(const QPointF &pos) {
