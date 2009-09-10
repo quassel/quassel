@@ -54,7 +54,7 @@ endforeach(file ${qm_files})
 file(APPEND ${resfile} "</qresource>\n</RCC>\n")
 
 #add_custom_command(OUTPUT ${resfile} DEPENDS ${qm_files})
-set_directory_properties(PROPERTIES ADDITIONAL_MAKE_CLEAN_FILES "${qm_files} i18n.qrc")
+set_directory_properties(PROPERTIES ADDITIONAL_MAKE_CLEAN_FILES "${qm_files};i18n.qrc")
 
 if(EMBED_DATA)
   set(COMMON_RCS ${COMMON_RCS} ${resfile} PARENT_SCOPE)
