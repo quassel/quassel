@@ -4023,7 +4023,7 @@ Prosím vyberte jiné pravidlo.
     <message>
         <location filename="../src/qtui/mainwin.cpp" line="741"/>
         <source>Core Lag: %1</source>
-        <translation>Spoždění jádra: %1</translation>
+        <translation>Zpoždění jádra: %1</translation>
     </message>
     <message>
         <location filename="../src/qtui/mainwin.cpp" line="777"/>
