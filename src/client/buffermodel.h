@@ -25,10 +25,10 @@
 #include <QItemSelectionModel>
 
 #include "network.h"
+#include "networkmodel.h"
 #include "types.h"
 #include "selectionmodelsynchronizer.h"
 
-class NetworkModel;
 class QAbstractItemView;
 
 class BufferModel : public QSortFilterProxyModel {
@@ -46,6 +46,7 @@ public:
   void synchronizeView(QAbstractItemView *view);
 
   inline QModelIndex currentIndex() { return standardSelectionModel()->currentIndex(); }
+  inline BufferId currentBuffer() { return currentIndex().data(NetworkModel::BufferIdRole).value<BufferId>(); }
 
 public slots:
   void setCurrentIndex(const QModelIndex &newCurrent);

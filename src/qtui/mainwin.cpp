@@ -184,6 +184,8 @@ void MainWin::init() {
   QtUi::registerNotificationBackend(new KNotificationBackend(this));
 #endif /* HAVE_KDE */
 
+  connect(bufferWidget(), SIGNAL(currentChanged(BufferId)), SLOT(currentBufferChanged(BufferId)));
+
   setDisconnectedState();  // Disable menus and stuff
 
 #ifdef HAVE_KDE
@@ -868,8 +870,11 @@ void MainWin::showShortcutsDlg() {
 /********************************************************************************************************/
 
 bool MainWin::event(QEvent *event) {
-  if(event->type() == QEvent::WindowActivate)
-    QtUi::closeNotifications();
+  if(event->type() == QEvent::WindowActivate) {
+    BufferId buffer = Client::bufferModel()->currentBuffer();
+    if(buffer.isValid())
+      QtUi::closeNotifications(buffer);
+  }
   return QMainWindow::event(event);
 }
 
@@ -977,7 +982,7 @@ void MainWin::messagesInserted(const QModelIndex &parent, int start, int end) {
     BufferId bufId = idx.data(ChatLineModel::BufferIdRole).value<BufferId>();
     BufferInfo::Type bufType = Client::networkModel()->bufferType(bufId);
 
-    if(hasFocus && bufId == _bufferWidget->currentBuffer())
+    if(hasFocus && bufId == Client::bufferModel()->currentBuffer())
       continue;
 
     if((flags & Message::Highlight || bufType == BufferInfo::QueryBuffer)
@@ -1001,6 +1006,11 @@ void MainWin::messagesInserted(const QModelIndex &parent, int start, int end) {
       QtUi::invokeNotification(bufId, type, sender, contents);
     }
   }
+}
+
+void MainWin::currentBufferChanged(BufferId buffer) {
+  if(buffer.isValid())
+    QtUi::closeNotifications(buffer);
 }
 
 void MainWin::clientNetworkCreated(NetworkId id) {

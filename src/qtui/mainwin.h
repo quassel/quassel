@@ -73,6 +73,8 @@ class MainWin
     void addBufferView(ClientBufferViewConfig *config);
     BufferView *allBuffersView() const;
 
+    BufferWidget *bufferWidget() const { return _bufferWidget; }
+
     inline SystemTray *systemTray() const;
 
     bool event(QEvent *event);
@@ -111,6 +113,7 @@ class MainWin
     void addBufferView(int bufferViewConfigId);
     void awayLogDestroyed();
     void removeBufferView(int bufferViewConfigId);
+    void currentBufferChanged(BufferId);
     void messagesInserted(const QModelIndex &parent, int start, int end);
     void showAboutDlg();
     void showChannelList(NetworkId netId = NetworkId());
