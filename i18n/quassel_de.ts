@@ -3375,12 +3375,12 @@ Bitte wähle eine andere Regel.</translation>
         <translation>Formular</translation>
     </message>
     <message>
-        <location filename="../src/qtui/inputwidget.cpp" line="88"/>
+        <location filename="../src/qtui/inputwidget.cpp" line="90"/>
         <source>Focus Input Line</source>
         <translation>Eingabezeile fokussieren</translation>
     </message>
     <message>
-        <location filename="../src/qtui/inputwidget.cpp" line="89"/>
+        <location filename="../src/qtui/inputwidget.cpp" line="91"/>
         <source>Ctrl+L</source>
         <translation>Strg+L</translation>
     </message>
@@ -3395,7 +3395,6 @@ Bitte wähle eine andere Regel.</translation>
     <message>
         <location filename="../src/qtui/settingspages/inputwidgetsettingspage.cpp" line="23"/>
         <source>Input Widget</source>
-        <translatorcomment>widget is blödes wort ...</translatorcomment>
         <translation>Eingabezeile</translation>
     </message>
     <message>
@@ -3904,222 +3903,222 @@ Bitte wähle eine andere Regel.</translation>
 <context>
     <name>MainWin</name>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="776"/>
+        <location filename="../src/qtui/mainwin.cpp" line="777"/>
         <source>Not connected to core.</source>
         <translation>Nicht mit Core verbunden.</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="390"/>
+        <location filename="../src/qtui/mainwin.cpp" line="391"/>
         <source>Debug</source>
         <translation>Debug</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="311"/>
+        <location filename="../src/qtui/mainwin.cpp" line="312"/>
         <source>F7</source>
         <translation>F7</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="706"/>
+        <location filename="../src/qtui/mainwin.cpp" line="707"/>
         <source>Connected to core.</source>
         <translation>Mit Quassel-Core verbunden.</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="529"/>
+        <location filename="../src/qtui/mainwin.cpp" line="530"/>
         <source>Nicks</source>
         <translation>Spitznamen</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="549"/>
+        <location filename="../src/qtui/mainwin.cpp" line="550"/>
         <source>Chat Monitor</source>
         <translation>Chatmonitor</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="564"/>
+        <location filename="../src/qtui/mainwin.cpp" line="565"/>
         <source>Inputline</source>
         <translation>Eingabezeile</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="584"/>
+        <location filename="../src/qtui/mainwin.cpp" line="585"/>
         <source>Topic</source>
         <translation>Thema</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="339"/>
+        <location filename="../src/qtui/mainwin.cpp" line="340"/>
         <source>&amp;File</source>
         <translation>&amp;Datei</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="352"/>
+        <location filename="../src/qtui/mainwin.cpp" line="353"/>
         <source>&amp;Networks</source>
         <translation>&amp;Netzwerke</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="375"/>
+        <location filename="../src/qtui/mainwin.cpp" line="376"/>
         <source>&amp;Settings</source>
         <translation>Ein&amp;stellungen</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="382"/>
+        <location filename="../src/qtui/mainwin.cpp" line="383"/>
         <source>&amp;Help</source>
         <translation>&amp;Hilfe</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="280"/>
+        <location filename="../src/qtui/mainwin.cpp" line="281"/>
         <source>&amp;Connect to Core...</source>
         <translation>Zum Core &amp;verbinden...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="282"/>
+        <location filename="../src/qtui/mainwin.cpp" line="283"/>
         <source>&amp;Disconnect from Core</source>
         <translation>Vom Core &amp;trennen</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="284"/>
+        <location filename="../src/qtui/mainwin.cpp" line="285"/>
         <source>Core &amp;Info...</source>
         <translation>Core-&amp;Info...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="288"/>
+        <location filename="../src/qtui/mainwin.cpp" line="289"/>
         <source>&amp;Quit</source>
         <translation>&amp;Beenden</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="289"/>
+        <location filename="../src/qtui/mainwin.cpp" line="290"/>
         <source>Ctrl+Q</source>
         <translation>Strg+Q</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="299"/>
+        <location filename="../src/qtui/mainwin.cpp" line="300"/>
         <source>Show &amp;Search Bar</source>
         <translation>&amp;Suchleiste anzeigen</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="306"/>
+        <location filename="../src/qtui/mainwin.cpp" line="307"/>
         <source>Show Status &amp;Bar</source>
         <translation>St&amp;atusleiste anzeigen</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="310"/>
+        <location filename="../src/qtui/mainwin.cpp" line="311"/>
         <source>&amp;Configure Quassel...</source>
         <translation>Quassel &amp;konfigurieren...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="318"/>
+        <location filename="../src/qtui/mainwin.cpp" line="319"/>
         <source>Debug &amp;NetworkModel</source>
         <translation>Debug &amp;NetworkModel</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="358"/>
+        <location filename="../src/qtui/mainwin.cpp" line="359"/>
         <source>&amp;View</source>
         <translation>&amp;Ansicht</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="538"/>
+        <location filename="../src/qtui/mainwin.cpp" line="539"/>
         <source>Show Nick List</source>
         <translation>Spitznamenliste anzeigen</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="560"/>
+        <location filename="../src/qtui/mainwin.cpp" line="561"/>
         <source>Show Chat Monitor</source>
         <translation>Chatmonitor anzeigen</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="573"/>
+        <location filename="../src/qtui/mainwin.cpp" line="574"/>
         <source>Show Input Line</source>
         <translation>Eingabezeile anzeigen</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="596"/>
+        <location filename="../src/qtui/mainwin.cpp" line="597"/>
         <source>Show Topic Line</source>
         <translation>Thema anzeigen</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="326"/>
+        <location filename="../src/qtui/mainwin.cpp" line="327"/>
         <source>Debug &amp;Log</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="322"/>
+        <location filename="../src/qtui/mainwin.cpp" line="323"/>
         <source>Debug &amp;MessageModel</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="292"/>
+        <location filename="../src/qtui/mainwin.cpp" line="293"/>
         <source>&amp;Configure Chat Lists...</source>
         <translation>Chat-Listen &amp;konfigurieren...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="314"/>
+        <location filename="../src/qtui/mainwin.cpp" line="315"/>
         <source>&amp;About Quassel</source>
         <translation>&amp;Über Quassel</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="316"/>
+        <location filename="../src/qtui/mainwin.cpp" line="317"/>
         <source>About &amp;Qt</source>
         <translation>Ü&amp;ber Qt</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="286"/>
+        <location filename="../src/qtui/mainwin.cpp" line="287"/>
         <source>Configure &amp;Networks...</source>
         <translation>&amp;Netzwerke konfigurieren...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="295"/>
+        <location filename="../src/qtui/mainwin.cpp" line="296"/>
         <source>&amp;Lock Layout</source>
         <translation>Ansicht &amp;fixieren</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="301"/>
+        <location filename="../src/qtui/mainwin.cpp" line="302"/>
         <source>Show Away Log</source>
         <translation>Abwesenheitslog anzeigen</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="303"/>
+        <location filename="../src/qtui/mainwin.cpp" line="304"/>
         <source>Show &amp;Menubar</source>
         <translation>&amp;Werkzeugleiste anzeigen</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="304"/>
+        <location filename="../src/qtui/mainwin.cpp" line="305"/>
         <source>Ctrl+M</source>
         <translation>Strg+M</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="320"/>
+        <location filename="../src/qtui/mainwin.cpp" line="321"/>
         <source>Debug &amp;BufferViewOverlay</source>
         <translation>Fehler beseitigen (&amp;BufferViewOverlay)</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="324"/>
+        <location filename="../src/qtui/mainwin.cpp" line="325"/>
         <source>Debug &amp;HotList</source>
         <translation>Fehler beseitigen (&amp;HotList)</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="328"/>
+        <location filename="../src/qtui/mainwin.cpp" line="329"/>
         <source>Reload Stylesheet</source>
         <translation>Layoutdatei neu laden</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="332"/>
+        <location filename="../src/qtui/mainwin.cpp" line="333"/>
         <source>Jump to hot chat</source>
         <translation>Zum neusten Chat springen</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="359"/>
+        <location filename="../src/qtui/mainwin.cpp" line="360"/>
         <source>&amp;Chat Lists</source>
         <translation>&amp;Chat-Listen</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="361"/>
+        <location filename="../src/qtui/mainwin.cpp" line="362"/>
         <source>&amp;Toolbars</source>
         <translation>&amp;Werkzeugleiste</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="667"/>
+        <location filename="../src/qtui/mainwin.cpp" line="668"/>
         <source>Main Toolbar</source>
         <translation>Haupt-Werkzeugleiste</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="740"/>
+        <location filename="../src/qtui/mainwin.cpp" line="741"/>
         <source>Core Lag: %1</source>
         <translation>Latenz: %1</translation>
     </message>
@@ -5467,6 +5466,59 @@ Lassen Sie dies auf ISO-8859-1 gesetzt, falls Sie nicht *wirklich* wissen, was S
         <location filename="../src/qtui/ui/topicwidget.ui" line="79"/>
         <source>...</source>
         <translation>...</translation>
+    </message>
+</context>
+<context>
+    <name>TopicWidgetSettingsPage</name>
+    <message>
+        <location filename="../src/qtui/settingspages/topicwidgetsettingspage.cpp" line="23"/>
+        <source>Interface</source>
+        <translation>Oberfläche</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/topicwidgetsettingspage.cpp" line="23"/>
+        <source>Topic Widget</source>
+        <translation type="unfinished">Themenanzeige</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/topicwidgetsettingspage.ui" line="14"/>
+        <source>Form</source>
+        <translation>Formular</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/topicwidgetsettingspage.ui" line="22"/>
+        <source>Custom font:</source>
+        <translation>Benutzerdefinierte Schriftart:</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/topicwidgetsettingspage.ui" line="25"/>
+        <source>/UiStyle/Fonts/UseCustomTopicWidgetFont</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/topicwidgetsettingspage.ui" line="38"/>
+        <source>/UiStyle/Fonts/TopicWidget</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/topicwidgetsettingspage.ui" line="50"/>
+        <source>Resize dynamically to fit contents</source>
+        <translation type="unfinished">Automatisch dem Inhalt anpassen</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/topicwidgetsettingspage.ui" line="56"/>
+        <source>DynamicResize</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/topicwidgetsettingspage.ui" line="84"/>
+        <source>On hover only</source>
+        <translation>Nur bei Berührung</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/topicwidgetsettingspage.ui" line="90"/>
+        <source>ResizeOnHover</source>
+        <translation></translation>
     </message>
 </context>
 <context>
