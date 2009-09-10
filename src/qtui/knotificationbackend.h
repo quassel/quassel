@@ -43,15 +43,13 @@ private slots:
   void notificationActivated();
   void notificationActivated(QSystemTrayIcon::ActivationReason);
   void notificationActivated(uint notificationId);
-  void notificationClosed();
 
 private:
   class ConfigWidget;
 
   void removeNotificationById(uint id);
 
-  QHash<KNotification *, uint> _notificationIds;
-  uint _lastNotificationId;
+  QList<QPair<uint, QPointer<KNotification> > > _notifications;
 };
 
 class KNotificationBackend::ConfigWidget : public SettingsPage {

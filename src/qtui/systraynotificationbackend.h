@@ -54,7 +54,6 @@ private:
   bool _showBubble;
   bool _animate;
   QList<Notification> _notifications;
-  uint _activeId;
 };
 
 class SystrayNotificationBackend::ConfigWidget : public SettingsPage {

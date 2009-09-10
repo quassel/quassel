@@ -31,7 +31,7 @@
 #include "systemtray.h"
 
 SystrayNotificationBackend::SystrayNotificationBackend(QObject *parent)
-  : AbstractNotificationBackend(parent), _activeId(0)
+  : AbstractNotificationBackend(parent)
 {
   NotificationSettings notificationSettings;
   _showBubble = notificationSettings.value("Systray/ShowBubble", true).toBool();
@@ -49,13 +49,6 @@ void SystrayNotificationBackend::notify(const Notification &notification) {
   if(notification.type != Highlight && notification.type != PrivMsg)
     return;
 
-  /* fancy stuff to be implemented later: show notifications in order
-  _notifications.append(notification);
-  if(_showBubble && _notifications.count() == 1) {
-    showBubble();
-  }
-  */
-  _notifications.clear();
   _notifications.append(notification);
   if(_showBubble)
     showBubble();
@@ -65,16 +58,18 @@ void SystrayNotificationBackend::notify(const Notification &notification) {
 }
 
 void SystrayNotificationBackend::close(uint notificationId) {
-  Q_UNUSED(notificationId);
-  /* fancy stuff to be implemented later
-  int idx = _notifications.indexOf(notificationId);
+  QList<Notification>::iterator i = _notifications.begin();
+  while(i != _notifications.end()) {
+    if(i->notificationId == notificationId)
+      i = _notifications.erase(i);
+    else
+      ++i;
+  }
 
-  if(_notifications.isEmpty()) {
-  */
-  _notifications.clear();
-  _activeId = 0;
   closeBubble();
-  QtUi::mainWindow()->systemTray()->setAlert(false);
+
+  if(!_notifications.count())
+    QtUi::mainWindow()->systemTray()->setAlert(false);
 }
 
 void SystrayNotificationBackend::showBubble() {
@@ -82,8 +77,7 @@ void SystrayNotificationBackend::showBubble() {
   // for now, we just show the last message
   if(_notifications.isEmpty())
     return;
-  Notification n = _notifications.takeLast();
-  _activeId = n.notificationId;
+  Notification n = _notifications.last();
   QString title = Client::networkModel()->networkName(n.bufferId) + " - " + Client::networkModel()->bufferName(n.bufferId);
   QString message = QString("<%1> %2").arg(n.sender, n.message);
   QtUi::mainWindow()->systemTray()->showMessage(title, message);
@@ -99,7 +93,8 @@ void SystrayNotificationBackend::closeBubble() {
 void SystrayNotificationBackend::notificationActivated() {
   if(QtUi::mainWindow()->systemTray()->isAlerted()) {
     QtUi::mainWindow()->systemTray()->setInhibitActivation();
-    emit activated(_activeId);
+    uint id = _notifications.count()? _notifications.last().notificationId : 0;
+    emit activated(id);
   }
 }
 

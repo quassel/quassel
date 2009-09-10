@@ -34,8 +34,7 @@
 #include "systemtray.h"
 
 KNotificationBackend::KNotificationBackend(QObject *parent)
-: AbstractNotificationBackend(parent),
-  _lastNotificationId(0)
+: AbstractNotificationBackend(parent)
 {
   connect(QtUi::mainWindow()->systemTray(), SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
                                             SLOT(notificationActivated(QSystemTrayIcon::ActivationReason)));
@@ -60,61 +59,51 @@ void KNotificationBackend::notify(const Notification &n) {
                                |KNotification::CloseWhenWidgetActivated
                                |KNotification::CloseOnTimeout);
   connect(notification, SIGNAL(activated(uint)), SLOT(notificationActivated()));
-  connect(notification, SIGNAL(closed()), SLOT(notificationClosed()));
   notification->setActions(QStringList("View"));
-  _notificationIds[notification] = _lastNotificationId = n.notificationId;
+  notification->setProperty("notificationId", n.notificationId);
+
+  _notifications.append(qMakePair(n.notificationId, QPointer<KNotification>(notification)));
 
   QtUi::mainWindow()->systemTray()->setAlert(true);
 }
 
 void KNotificationBackend::removeNotificationById(uint notificationId) {
-  QHash<KNotification *, uint>::iterator i = _notificationIds.begin();
-  while(i != _notificationIds.end()) {
-    if(i.value() == notificationId)
-      i = _notificationIds.erase(i);
-    else
+  QList<QPair<uint, QPointer<KNotification> > >::iterator i = _notifications.begin();
+  while(i != _notifications.end()) {
+    if(i->first == notificationId) {
+      if(i->second)
+        i->second->close();
+      i = _notifications.erase(i);
+    } else
       ++i;
   }
-  if(_lastNotificationId == notificationId)
-    _lastNotificationId = 0;
 }
 
 void KNotificationBackend::close(uint notificationId) {
   removeNotificationById(notificationId);
-  if(!_notificationIds.count())
+  if(!_notifications.count())
     QtUi::mainWindow()->systemTray()->setAlert(false);
 }
 
 void KNotificationBackend::notificationActivated() {
   uint id = 0;
   KNotification *n = qobject_cast<KNotification *>(sender());
-  if(n && _notificationIds.contains(n))
-    id = _notificationIds.value(n);
+  if(n)
+    id = n->property("notificationId").toUInt();
 
   notificationActivated(id);
 }
 
 void KNotificationBackend::notificationActivated(QSystemTrayIcon::ActivationReason reason) {
-  if(reason == QSystemTrayIcon::Trigger && _lastNotificationId > 0) {
-    notificationActivated(_lastNotificationId); // most recent one
+  if(reason == QSystemTrayIcon::Trigger && _notifications.count()) {
+    notificationActivated(_notifications.first().first); // oldest one
   }
 }
 
 void KNotificationBackend::notificationActivated(uint notificationId) {
-  removeNotificationById(notificationId);
-
   QtUi::mainWindow()->systemTray()->setInhibitActivation();
   emit activated(notificationId);
 
-  if(!_notificationIds.count())
-    QtUi::mainWindow()->systemTray()->setAlert(false);
-
-}
-
-void KNotificationBackend::notificationClosed() {
-  //KNotification *n = qobject_cast<KNotification *>(sender());
-  //if(n && _notificationIds.contains(n))
-  //  _notificationIds.remove(n);
 }
 
 SettingsPage *KNotificationBackend::createConfigWidget() const {
