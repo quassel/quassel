@@ -3277,12 +3277,12 @@ Prosím vyberte jiné pravidlo.
 <context>
     <name>InputWidget</name>
     <message>
-        <location filename="../src/qtui/inputwidget.cpp" line="88"/>
+        <location filename="../src/qtui/inputwidget.cpp" line="90"/>
         <source>Focus Input Line</source>
         <translation>Přepnout na vstupní řádku</translation>
     </message>
     <message>
-        <location filename="../src/qtui/inputwidget.cpp" line="89"/>
+        <location filename="../src/qtui/inputwidget.cpp" line="91"/>
         <source>Ctrl+L</source>
         <translation></translation>
     </message>
@@ -3811,222 +3811,222 @@ Prosím vyberte jiné pravidlo.
 <context>
     <name>MainWin</name>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="280"/>
+        <location filename="../src/qtui/mainwin.cpp" line="281"/>
         <source>&amp;Connect to Core...</source>
         <translation>Přip&amp;ojit k jádru...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="282"/>
+        <location filename="../src/qtui/mainwin.cpp" line="283"/>
         <source>&amp;Disconnect from Core</source>
         <translation>O&amp;dpojit od jádra</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="284"/>
+        <location filename="../src/qtui/mainwin.cpp" line="285"/>
         <source>Core &amp;Info...</source>
         <translation>&amp;Informace jádra...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="288"/>
+        <location filename="../src/qtui/mainwin.cpp" line="289"/>
         <source>&amp;Quit</source>
         <translation>&amp;Ukončit</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="289"/>
+        <location filename="../src/qtui/mainwin.cpp" line="290"/>
         <source>Ctrl+Q</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="292"/>
+        <location filename="../src/qtui/mainwin.cpp" line="293"/>
         <source>&amp;Configure Chat Lists...</source>
         <translation>&amp;Nastavit seznam pokeců...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="299"/>
+        <location filename="../src/qtui/mainwin.cpp" line="300"/>
         <source>Show &amp;Search Bar</source>
         <translation>Zobrazit vy&amp;hledávání</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="286"/>
+        <location filename="../src/qtui/mainwin.cpp" line="287"/>
         <source>Configure &amp;Networks...</source>
         <translation>Nastavit &amp;sítě...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="295"/>
+        <location filename="../src/qtui/mainwin.cpp" line="296"/>
         <source>&amp;Lock Layout</source>
         <translation>U&amp;zamknout rozvržení</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="301"/>
+        <location filename="../src/qtui/mainwin.cpp" line="302"/>
         <source>Show Away Log</source>
         <translation>Zobrazit Log pro Pryč</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="303"/>
+        <location filename="../src/qtui/mainwin.cpp" line="304"/>
         <source>Show &amp;Menubar</source>
         <translation>Zobrazit Hlavní &amp;nabídku</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="304"/>
+        <location filename="../src/qtui/mainwin.cpp" line="305"/>
         <source>Ctrl+M</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="306"/>
+        <location filename="../src/qtui/mainwin.cpp" line="307"/>
         <source>Show Status &amp;Bar</source>
         <translation>Zo&amp;brazit stavový řádek</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="310"/>
+        <location filename="../src/qtui/mainwin.cpp" line="311"/>
         <source>&amp;Configure Quassel...</source>
         <translation>&amp;Nastavit Quassel...</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="311"/>
+        <location filename="../src/qtui/mainwin.cpp" line="312"/>
         <source>F7</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="314"/>
+        <location filename="../src/qtui/mainwin.cpp" line="315"/>
         <source>&amp;About Quassel</source>
         <translation>O progr&amp;amu Quassel</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="316"/>
+        <location filename="../src/qtui/mainwin.cpp" line="317"/>
         <source>About &amp;Qt</source>
         <translation>O &amp;Qt</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="318"/>
+        <location filename="../src/qtui/mainwin.cpp" line="319"/>
         <source>Debug &amp;NetworkModel</source>
         <translation>Ladění Sít&amp;ovéhoModelu</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="320"/>
+        <location filename="../src/qtui/mainwin.cpp" line="321"/>
         <source>Debug &amp;BufferViewOverlay</source>
         <translation>Ladění vrstvy P&amp;ohledu na záložky</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="322"/>
+        <location filename="../src/qtui/mainwin.cpp" line="323"/>
         <source>Debug &amp;MessageModel</source>
         <translation>Ladění &amp;ModeluZpráv</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="324"/>
+        <location filename="../src/qtui/mainwin.cpp" line="325"/>
         <source>Debug &amp;HotList</source>
         <translation>Ladění &amp;Seznamů rozhovorů</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="326"/>
+        <location filename="../src/qtui/mainwin.cpp" line="327"/>
         <source>Debug &amp;Log</source>
         <translation>Ladící &amp;Log</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="328"/>
+        <location filename="../src/qtui/mainwin.cpp" line="329"/>
         <source>Reload Stylesheet</source>
         <translation>Přenačíst styl</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="332"/>
+        <location filename="../src/qtui/mainwin.cpp" line="333"/>
         <source>Jump to hot chat</source>
         <translation>Přejít na další aktivní záložku</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="339"/>
+        <location filename="../src/qtui/mainwin.cpp" line="340"/>
         <source>&amp;File</source>
         <translation>S&amp;oubor</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="352"/>
+        <location filename="../src/qtui/mainwin.cpp" line="353"/>
         <source>&amp;Networks</source>
         <translation>&amp;Sítě</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="358"/>
+        <location filename="../src/qtui/mainwin.cpp" line="359"/>
         <source>&amp;View</source>
         <translation>&amp;Záložky</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="359"/>
+        <location filename="../src/qtui/mainwin.cpp" line="360"/>
         <source>&amp;Chat Lists</source>
         <translation>&amp;Seznam pokeců</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="361"/>
+        <location filename="../src/qtui/mainwin.cpp" line="362"/>
         <source>&amp;Toolbars</source>
         <translation>Liš&amp;ty</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="375"/>
+        <location filename="../src/qtui/mainwin.cpp" line="376"/>
         <source>&amp;Settings</source>
         <translation>Na&amp;stavení</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="382"/>
+        <location filename="../src/qtui/mainwin.cpp" line="383"/>
         <source>&amp;Help</source>
         <translation>&amp;Nápověda</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="390"/>
+        <location filename="../src/qtui/mainwin.cpp" line="391"/>
         <source>Debug</source>
         <translation>Debug</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="529"/>
+        <location filename="../src/qtui/mainwin.cpp" line="530"/>
         <source>Nicks</source>
         <translation>Přezdívky</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="538"/>
+        <location filename="../src/qtui/mainwin.cpp" line="539"/>
         <source>Show Nick List</source>
         <translation>Zobrazit seznam přezdívek</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="549"/>
+        <location filename="../src/qtui/mainwin.cpp" line="550"/>
         <source>Chat Monitor</source>
         <translation>Monitor pokecu</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="560"/>
+        <location filename="../src/qtui/mainwin.cpp" line="561"/>
         <source>Show Chat Monitor</source>
         <translation>Zobrazí monitor pokecu</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="564"/>
+        <location filename="../src/qtui/mainwin.cpp" line="565"/>
         <source>Inputline</source>
         <translation>Vstupní řádka</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="573"/>
+        <location filename="../src/qtui/mainwin.cpp" line="574"/>
         <source>Show Input Line</source>
         <translation>Zobrasit řádku se vstupem</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="584"/>
+        <location filename="../src/qtui/mainwin.cpp" line="585"/>
         <source>Topic</source>
         <translation>Téma</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="596"/>
+        <location filename="../src/qtui/mainwin.cpp" line="597"/>
         <source>Show Topic Line</source>
         <translation>Zobrazit řádek s tématem</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="667"/>
+        <location filename="../src/qtui/mainwin.cpp" line="668"/>
         <source>Main Toolbar</source>
         <translation>Hlavní nástrojová lišta</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="706"/>
+        <location filename="../src/qtui/mainwin.cpp" line="707"/>
         <source>Connected to core.</source>
         <translation>Připojen k jádru.</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="740"/>
+        <location filename="../src/qtui/mainwin.cpp" line="741"/>
         <source>Core Lag: %1</source>
         <translation>Spoždění jádra: %1</translation>
     </message>
     <message>
-        <location filename="../src/qtui/mainwin.cpp" line="776"/>
+        <location filename="../src/qtui/mainwin.cpp" line="777"/>
         <source>Not connected to core.</source>
         <translation>Nepřipojen k jádru.</translation>
     </message>
@@ -4586,7 +4586,7 @@ Pokud FAKTICKY nevíte co děláte radši ponechte nastaveno na ISO-8859-1!</tra
         <location filename="../src/uisupport/qssparser.cpp" line="166"/>
         <location filename="../src/uisupport/qssparser.cpp" line="314"/>
         <source>Invalid block declaration: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Neplatná deklarace bloku: %1</translation>
     </message>
     <message>
         <location filename="../src/uisupport/qssparser.cpp" line="140"/>
@@ -4983,27 +4983,27 @@ Pokud FAKTICKY nevíte co děláte radši ponechte nastaveno na ISO-8859-1!</tra
 <context>
     <name>SignalProxy</name>
     <message>
-        <location filename="../src/common/signalproxy.cpp" line="868"/>
+        <location filename="../src/common/signalproxy.cpp" line="865"/>
         <source>Peer tried to send package larger than max package size!</source>
         <translation>Peer se pokusil odeslat balíček větší než je maximální povolená velikost!</translation>
     </message>
     <message>
-        <location filename="../src/common/signalproxy.cpp" line="873"/>
+        <location filename="../src/common/signalproxy.cpp" line="870"/>
         <source>Peer tried to send 0 byte package!</source>
         <translation>Peer se pokusil odeslat balíček s nulovou velikostí!</translation>
     </message>
     <message>
-        <location filename="../src/common/signalproxy.cpp" line="890"/>
+        <location filename="../src/common/signalproxy.cpp" line="887"/>
         <source>Peer sent corrupted compressed data!</source>
         <translation>Peer odeslal porušená komprimovaná data!</translation>
     </message>
     <message>
-        <location filename="../src/common/signalproxy.cpp" line="905"/>
+        <location filename="../src/common/signalproxy.cpp" line="902"/>
         <source>Peer sent corrupt data: unable to load QVariant!</source>
         <translation>Peer odeslal porušená data: nezdařilo se načítaní QVariant!</translation>
     </message>
     <message>
-        <location filename="../src/common/signalproxy.cpp" line="1033"/>
+        <location filename="../src/common/signalproxy.cpp" line="1030"/>
         <source>Disconnecting</source>
         <translation>Odpojuji</translation>
     </message>
@@ -5375,6 +5375,59 @@ Pokud FAKTICKY nevíte co děláte radši ponechte nastaveno na ISO-8859-1!</tra
     <message>
         <location filename="../src/qtui/ui/topicwidget.ui" line="79"/>
         <source>...</source>
+        <translation></translation>
+    </message>
+</context>
+<context>
+    <name>TopicWidgetSettingsPage</name>
+    <message>
+        <location filename="../src/qtui/settingspages/topicwidgetsettingspage.cpp" line="23"/>
+        <source>Interface</source>
+        <translation>Rozhraní</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/topicwidgetsettingspage.cpp" line="23"/>
+        <source>Topic Widget</source>
+        <translation>Rozhraní Tématu</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/topicwidgetsettingspage.ui" line="14"/>
+        <source>Form</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/topicwidgetsettingspage.ui" line="22"/>
+        <source>Custom font:</source>
+        <translation>Vlastní font:</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/topicwidgetsettingspage.ui" line="25"/>
+        <source>/UiStyle/Fonts/UseCustomTopicWidgetFont</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/topicwidgetsettingspage.ui" line="38"/>
+        <source>/UiStyle/Fonts/TopicWidget</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/topicwidgetsettingspage.ui" line="50"/>
+        <source>Resize dynamically to fit contents</source>
+        <translation>Měnit velikost podle obsahu</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/topicwidgetsettingspage.ui" line="56"/>
+        <source>DynamicResize</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/topicwidgetsettingspage.ui" line="84"/>
+        <source>On hover only</source>
+        <translation>Pouze při podržení myši nad tématem</translation>
+    </message>
+    <message>
+        <location filename="../src/qtui/settingspages/topicwidgetsettingspage.ui" line="90"/>
+        <source>ResizeOnHover</source>
         <translation></translation>
     </message>
 </context>
