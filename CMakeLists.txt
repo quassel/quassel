@@ -232,11 +232,13 @@ if(NOT HAVE_KDE)
 endif(NOT HAVE_KDE)
 
 # Setup libindicate-qt support
-find_package(PkgConfig REQUIRED)
-pkg_check_modules(INDICATEQT indicate-qt)
-if(INDICATEQT_FOUND)
-  add_definitions(-DHAVE_INDICATEQT)
-endif(INDICATEQT_FOUND)
+find_package(PkgConfig QUIET)
+if(PKG_CONFIG_FOUND)
+  pkg_check_modules(INDICATEQT indicate-qt)
+  if(INDICATEQT_FOUND)
+    add_definitions(-DHAVE_INDICATEQT)
+  endif(INDICATEQT_FOUND)
+endif(PKG_CONFIG_FOUND)
 
 # Now set up install locations; those are set by KDE if integration is enabled
 if(NOT HAVE_KDE)
