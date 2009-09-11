@@ -509,10 +509,15 @@ void Core::processClientMessage(QTcpSocket *socket, const QVariantMap &msg) {
       socket->close(); return;
     }
 
+    reply["ProtocolVersion"] = Quassel::buildInfo().protocolVersion;
     reply["CoreVersion"] = Quassel::buildInfo().fancyVersionString;
     reply["CoreDate"] = Quassel::buildInfo().buildDate;
-    reply["ProtocolVersion"] = Quassel::buildInfo().protocolVersion;
-    // TODO: Make the core info configurable
+    reply["CoreStartTime"] = startTime(); // v10 clients don't necessarily parse this, see below
+
+    // FIXME: newer clients no longer use the hardcoded CoreInfo (for now), since it gets the
+    //        time zone wrong. With the next protocol bump (10 -> 11), we should remove this
+    //        or make it properly configurable.
+
     int uptime = startTime().secsTo(QDateTime::currentDateTime().toUTC());
     int updays = uptime / 86400; uptime %= 86400;
     int uphours = uptime / 3600; uptime %= 3600;

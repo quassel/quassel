@@ -197,7 +197,7 @@ void ClientSyncer::clientInitAck(const QVariantMap &msg) {
     disconnectFromCore();
     return;
   }
-  emit connectionMsg(msg["CoreInfo"].toString());
+  emit connectionMsg(coreInfoString(msg));
 
 #ifndef QT_NO_COMPRESS
   if(msg["SupportsCompression"].toBool()) {
@@ -345,6 +345,28 @@ void ClientSyncer::resetConnection() {
   numNetsToSync = 0;
 }
 
+QString ClientSyncer::coreInfoString(const QVariantMap &coreData) {
+  // check if we use a new enough core
+  // FIXME: this can go away after v11 protocol bump
+  if(!coreData.contains("CoreStartTime"))
+    return coreData.value("CoreInfo").toString();
+
+  QDateTime startTime = coreData.value("CoreStartTime").toDateTime().toLocalTime();
+  int uptime = startTime.secsTo(QDateTime::currentDateTime());
+  int updays = uptime / 86400; uptime %= 86400;
+  int uphours = uptime / 3600; uptime %= 3600;
+  int upmins = uptime / 60; uptime %= 60;
+
+  QString reply = tr("<b>Quassel Core Version %1</b><br>"
+                        "Built: %2<br>"
+                        "Up %3d%4h%5m (since %6)")
+  .arg(coreData.value("CoreVersion").toString())
+  .arg(coreData.value("CoreDate").toString())
+  .arg(updays).arg(uphours,2,10,QChar('0')).arg(upmins,2,10,QChar('0')).arg(startTime.toString(Qt::TextDate));
+
+  return reply;
+}
+
 #ifdef HAVE_SSL
 void ClientSyncer::ignoreSslWarnings(bool permanently) {
   QSslSocket *sock = qobject_cast<QSslSocket *>(_socket);
@@ -358,7 +380,7 @@ void ClientSyncer::ignoreSslWarnings(bool permanently) {
     else
       KnownHostsSettings().saveKnownHost(sock);
   }
-  emit connectionMsg(_coreMsgBuffer["CoreInfo"].toString());
+  emit connectionMsg(coreInfoString(_coreMsgBuffer));
   connectionReady();
 }
 

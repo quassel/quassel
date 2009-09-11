@@ -117,6 +117,8 @@ private:
 
   QSet<QObject *> netsToSync;
   int numNetsToSync;
+
+  QString coreInfoString(const QVariantMap &);
 };
 
 #endif
