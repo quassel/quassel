@@ -68,7 +68,7 @@ public:
   Message(const QDateTime &ts, const BufferInfo &buffer = BufferInfo(), Type type = Plain,
           const QString &contents = "", const QString &sender = "", Flags flags = None);
 
-  inline static Message ChangeOfDay(const QDateTime &day) { return Message(day, BufferInfo(), DayChange, tr("Day changed to %1").arg(day.toString("dddd MMMM d yyyy"))); }
+  inline static Message ChangeOfDay(const QDateTime &day) { return Message(day, BufferInfo(), DayChange); }
   inline const MsgId &msgId() const { return _msgId; }
   inline void setMsgId(MsgId id) { _msgId = id; }
 

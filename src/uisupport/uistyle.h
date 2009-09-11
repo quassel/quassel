@@ -196,6 +196,8 @@ private:
 };
 
 class UiStyle::StyledMessage : public Message {
+  Q_DECLARE_TR_FUNCTIONS(UiStyle::StyledMessage)
+
 public:
   explicit StyledMessage(const Message &message);
 
