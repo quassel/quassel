@@ -48,11 +48,11 @@ QtUi::QtUi() : GraphicalUi() {
   }
   _instance = this;
 
-  setContextMenuActionProvider(new ContextMenuActionProvider(this));
-  setToolBarActionProvider(new ToolBarActionProvider(this));
-
   QtUiSettings uiSettings;
   Quassel::loadTranslation(uiSettings.value("Locale", QLocale::system()).value<QLocale>());
+
+  setContextMenuActionProvider(new ContextMenuActionProvider(this));
+  setToolBarActionProvider(new ToolBarActionProvider(this));
 
   setUiStyle(new QtUiStyle(this));
   _mainWin = new MainWin();
