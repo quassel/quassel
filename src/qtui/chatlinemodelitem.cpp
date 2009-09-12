@@ -201,11 +201,13 @@ void ChatLineModelItem::computeWrapList() const {
     //if(flg) qDebug() << idx << mode << wordStart << wordEnd << contents->plainText.left(idx) << contents->plainText.mid(idx);
 
     if(mode == SearchEnd || (!wordStart && wordEnd)) {
-      if(wordStart || !wordEnd) continue;
       oldidx = idx;
+      if(wordStart || !wordEnd)
+        continue;
       mode = SearchStart;
       continue;
     }
+
     qreal wordendx = line.cursorToX(oldidx);
     qreal trailingendx = line.cursorToX(idx);
     word.endX = wordendx;
