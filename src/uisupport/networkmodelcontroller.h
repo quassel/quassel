@@ -88,6 +88,17 @@ public:
     NickKick = 0x0c0000,
     NickBan = 0x0d0000,
     NickKickBan = 0x0e0000,
+    NickIgnoreUser = 0x0f0000,
+    NickIgnoreHost = 0x100000,
+    NickIgnoreDomain = 0x200000,
+    NickIgnoreCustom = 0x300000,
+    // The next 5 types have stay together
+    // Don't change without reading ContextMenuActionProvider::addIgnoreMenu!
+    NickIgnoreToggleEnabled0 = 0x400000,
+    NickIgnoreToggleEnabled1 = 0x500000,
+    NickIgnoreToggleEnabled2 = 0x600000,
+    NickIgnoreToggleEnabled3 = 0x700000,
+    NickIgnoreToggleEnabled4 = 0x800000,
 
     // Actions that are handled externally
     // These emit a signal to the action requester, rather than being handled here
@@ -133,13 +144,13 @@ protected slots:
 
 signals:
   void showChannelList(NetworkId);
-  void showIgnoreList(NetworkId);
+  void showIgnoreList(QString);
 
 protected:
   virtual void handleNetworkAction(ActionType, QAction *);
   virtual void handleBufferAction(ActionType, QAction *);
   virtual void handleHideAction(ActionType, QAction *);
-  virtual void handleNickAction(ActionType, QAction *);
+  virtual void handleNickAction(ActionType, QAction *action);
   virtual void handleGeneralAction(ActionType, QAction *);
   virtual void handleExternalAction(ActionType, QAction *);
 

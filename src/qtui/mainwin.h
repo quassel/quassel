@@ -123,6 +123,7 @@ class MainWin
     void showAwayLog();
     void showSettingsDlg();
     void showNotificationsDlg();
+    void showIgnoreList(QString newRule = QString());
 #ifdef HAVE_KDE
     void showShortcutsDlg();
 #endif

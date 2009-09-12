@@ -99,19 +99,22 @@ void IgnoreListManager::initSetIgnoreList(const QVariantMap &ignoreList) {
   }
 }
 
+/* since overloaded methods aren't syncable (yet?) we can't use that anymore
 void IgnoreListManager::addIgnoreListItem(const IgnoreListItem &item) {
   addIgnoreListItem(item.type, item.ignoreRule, item.isRegEx, item.strictness, item.scope, item.scopeRule, item.isActive);
 }
-
-void IgnoreListManager::addIgnoreListItem(IgnoreType type, const QString &ignoreRule, bool isRegEx, StrictnessType strictness,
-                                      ScopeType scope, const QString &scopeRule, bool isActive) {
+*/
+void IgnoreListManager::addIgnoreListItem(int type, const QString &ignoreRule, bool isRegEx, int strictness,
+                                      int scope, const QString &scopeRule, bool isActive) {
   if(contains(ignoreRule)) {
     return;
   }
 
-  _ignoreList << IgnoreListItem(type, ignoreRule, isRegEx, strictness, scope, scopeRule, isActive);
+  IgnoreListItem newItem = IgnoreListItem(static_cast<IgnoreType>(type), ignoreRule, isRegEx, static_cast<StrictnessType>(strictness),
+                                          static_cast<ScopeType>(scope), scopeRule, isActive);
+  _ignoreList << newItem;
 
-  emit ignoreAdded(type, ignoreRule, isRegEx, strictness, scope, scopeRule, isActive);
+  SYNC(ARG(type), ARG(ignoreRule), ARG(isRegEx), ARG(strictness), ARG(scope), ARG(scopeRule), ARG(isActive))
 }
 
 IgnoreListManager::StrictnessType IgnoreListManager::match(const Message &msg, const QString &network) {
@@ -151,7 +154,7 @@ IgnoreListManager::StrictnessType IgnoreListManager::match(const Message &msg, c
   return UnmatchedStrictness;
 }
 
-bool IgnoreListManager::scopeMatch(const QString &scopeRule, const QString &string) {
+bool IgnoreListManager::scopeMatch(const QString &scopeRule, const QString &string) const {
   foreach(QString rule, scopeRule.split(";")) {
     QRegExp ruleRx = QRegExp(rule.trimmed());
     ruleRx.setCaseSensitivity(Qt::CaseInsensitive);
@@ -161,4 +164,17 @@ bool IgnoreListManager::scopeMatch(const QString &scopeRule, const QString &stri
     }
   }
   return false;
+}
+
+void IgnoreListManager::removeIgnoreListItem(const QString &ignoreRule) {
+  removeAt(indexOf(ignoreRule));
+  SYNC(ARG(ignoreRule))
+}
+
+void IgnoreListManager::toggleIgnoreRule(const QString &ignoreRule) {
+  int idx = indexOf(ignoreRule);
+  if(idx == -1)
+    return;
+  _ignoreList[idx].isActive = !_ignoreList[idx].isActive;
+  SYNC(ARG(ignoreRule))
 }

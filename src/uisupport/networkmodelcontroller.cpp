@@ -35,6 +35,8 @@
 #include "clientidentity.h"
 #include "network.h"
 #include "util.h"
+#include "clientignorelistmanager.h"
+#include "client.h"
 
 NetworkModelController::NetworkModelController(QObject *parent)
 : QObject(parent),
@@ -345,14 +347,14 @@ void NetworkModelController::handleGeneralAction(ActionType type, QAction *actio
       break;
     case ShowIgnoreList:
       if(networkId.isValid())
-        emit showIgnoreList(networkId);
+        emit showIgnoreList(QString());
       break;
     default:
       break;
   }
 }
 
-void NetworkModelController::handleNickAction(ActionType type, QAction *) {
+void NetworkModelController::handleNickAction(ActionType type, QAction *action) {
   foreach(QModelIndex index, indexList()) {
     NetworkId networkId = index.data(NetworkModel::NetworkIdRole).value<NetworkId>();
     if(!networkId.isValid())
@@ -363,6 +365,9 @@ void NetworkModelController::handleNickAction(ActionType type, QAction *) {
     BufferInfo bufferInfo = index.data(NetworkModel::BufferInfoRole).value<BufferInfo>();
     if(!bufferInfo.isValid())
       continue;
+
+    // the validity of that cast is checked on contextmenu creation, take care
+    IrcUser *ircUser = qobject_cast<IrcUser *>(index.data(NetworkModel::IrcUserRole).value<QObject *>());
 
     switch(type) {
       case NickWhois:
@@ -407,6 +412,38 @@ void NetworkModelController::handleNickAction(ActionType type, QAction *) {
         break;
       case NickQuery:
         Client::userInput(bufferInfo, QString("/QUERY %1").arg(nick));
+        break;
+      case NickIgnoreUser:
+        Client::ignoreListManager()->requestAddIgnoreListItem(IgnoreListManager::SenderIgnore,
+                                                       action->text(),
+                                                       false, IgnoreListManager::SoftStrictness,
+                                                       IgnoreListManager::NetworkScope,
+                                                       ircUser->network()->networkName(), true);
+        break;
+      case NickIgnoreHost:
+        Client::ignoreListManager()->requestAddIgnoreListItem(IgnoreListManager::SenderIgnore,
+                                                       action->text(),
+                                                       false, IgnoreListManager::SoftStrictness,
+                                                       IgnoreListManager::NetworkScope,
+                                                       ircUser->network()->networkName(), true);
+        break;
+      case NickIgnoreDomain:
+        Client::ignoreListManager()->requestAddIgnoreListItem(IgnoreListManager::SenderIgnore,
+                                                       action->text(),
+                                                       false, IgnoreListManager::SoftStrictness,
+                                                       IgnoreListManager::NetworkScope,
+                                                       ircUser->network()->networkName(), true);
+        break;
+      case NickIgnoreCustom:
+        // forward that to mainwin since we can access the settingspage only from there
+        emit showIgnoreList(ircUser->hostmask());
+        break;
+      case NickIgnoreToggleEnabled0:
+      case NickIgnoreToggleEnabled1:
+      case NickIgnoreToggleEnabled2:
+      case NickIgnoreToggleEnabled3:
+      case NickIgnoreToggleEnabled4:
+        Client::ignoreListManager()->requestToggleIgnoreRule(action->text());
         break;
       default:
         qWarning() << "Unhandled nick action";

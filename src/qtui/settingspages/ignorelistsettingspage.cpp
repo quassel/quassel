@@ -27,7 +27,7 @@
 #include <QMessageBox>
 #include <QString>
 #include <QEvent>
-
+#include <QDebug>
 #include "iconloader.h"
 
 IgnoreListSettingsPage::IgnoreListSettingsPage(QWidget *parent)
@@ -72,6 +72,8 @@ IgnoreListSettingsPage::~IgnoreListSettingsPage() {
 void IgnoreListSettingsPage::load() {
   if(_ignoreListModel.configChanged())
     _ignoreListModel.revert();
+  ui.ignoreListView->selectionModel()->reset();
+  ui.editIgnoreRuleButton->setEnabled(false);
 }
 
 void IgnoreListSettingsPage::defaults() {
@@ -83,6 +85,7 @@ void IgnoreListSettingsPage::save() {
     _ignoreListModel.commit();
   }
   ui.ignoreListView->selectionModel()->reset();
+  ui.editIgnoreRuleButton->setEnabled(false);
 }
 
 void IgnoreListSettingsPage::enableDialog(bool enabled) {
@@ -103,8 +106,18 @@ void IgnoreListSettingsPage::deleteSelectedIgnoreRule() {
   _ignoreListModel.removeIgnoreRule(ui.ignoreListView->selectionModel()->selectedIndexes()[0].row());
 }
 
-void IgnoreListSettingsPage::newIgnoreRule() {
-  IgnoreListEditDlg *dlg = new IgnoreListEditDlg(-1, IgnoreListManager::IgnoreListItem(), this);
+void IgnoreListSettingsPage::newIgnoreRule(QString rule) {
+  IgnoreListManager::IgnoreListItem newItem = IgnoreListManager::IgnoreListItem();
+  newItem.isActive = true;
+  bool enableOkButton = false;
+  if(!rule.isEmpty()) {
+    // we're called from contextmenu
+    newItem.ignoreRule = rule;
+    enableOkButton = true;
+  }
+
+  IgnoreListEditDlg *dlg = new IgnoreListEditDlg(newItem, this, enableOkButton);
+  dlg->enableOkButton(enableOkButton);
 
   while(dlg->exec() == QDialog::Accepted) {
     if(!_ignoreListModel.newIgnoreRule(dlg->ignoreListItem())) {
@@ -118,7 +131,7 @@ void IgnoreListSettingsPage::newIgnoreRule() {
 
       IgnoreListManager::IgnoreListItem item = dlg->ignoreListItem();
       delete dlg;
-      dlg = new IgnoreListEditDlg(-1, item, this);
+      dlg = new IgnoreListEditDlg(item, this);
     }
     else {
       break;
@@ -131,13 +144,24 @@ void IgnoreListSettingsPage::editSelectedIgnoreRule() {
   if(!ui.ignoreListView->selectionModel()->hasSelection())
     return;
   int row = ui.ignoreListView->selectionModel()->selectedIndexes()[0].row();
-  IgnoreListEditDlg dlg(row, _ignoreListModel.ignoreListItemAt(row), this);
+  IgnoreListEditDlg dlg(_ignoreListModel.ignoreListItemAt(row), this);
   dlg.setAttribute(Qt::WA_DeleteOnClose, false);
   if(dlg.exec() == QDialog::Accepted) {
     _ignoreListModel.setIgnoreListItemAt(row, dlg.ignoreListItem());
   }
 }
 
+void IgnoreListSettingsPage::editIgnoreRule(const QString &ignoreRule) {
+  ui.ignoreListView->selectionModel()->select(_ignoreListModel.indexOf(ignoreRule), QItemSelectionModel::Select);
+  if(ui.ignoreListView->selectionModel()->hasSelection())// && ui.ignoreListView->selectionModel()->selectedIndexes()[0].row() != -1)
+    editSelectedIgnoreRule();
+  else
+    newIgnoreRule(ignoreRule);
+}
+
+/*
+  IgnoreListDelegate
+*/
 void IgnoreListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const {
   if(index.column() == 0) {
     QStyle *style = QApplication::style();
@@ -156,8 +180,27 @@ void IgnoreListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &op
     QStyledItemDelegate::paint(painter, option, index);
 }
 
-IgnoreListEditDlg::IgnoreListEditDlg(int row, const IgnoreListManager::IgnoreListItem &item, QWidget *parent)
-    : QDialog(parent), _selectedRow(row), _ignoreListItem(item), _hasChanged(false) {
+// provide interactivity for the checkboxes
+bool IgnoreListDelegate::editorEvent(QEvent *event, QAbstractItemModel *model,
+                                     const QStyleOptionViewItem &option, const QModelIndex &index) {
+  Q_UNUSED(option)
+  switch(event->type()) {
+    case QEvent::MouseButtonRelease:
+      model->setData(index, !index.data().toBool());
+      return true;
+      // don't show the default editor for the column
+    case QEvent::MouseButtonDblClick:
+      return true;
+    default:
+      return false;
+  }
+}
+
+/*
+  IgnoreListEditDlg
+*/
+IgnoreListEditDlg::IgnoreListEditDlg(const IgnoreListManager::IgnoreListItem &item, QWidget *parent, bool enabled)
+    : QDialog(parent), _ignoreListItem(item), _hasChanged(enabled) {
   ui.setupUi(this);
   setAttribute(Qt::WA_DeleteOnClose, false);
   setModal(true);
@@ -266,18 +309,6 @@ void IgnoreListEditDlg::widgetHasChanged() {
   ui.buttonBox->button(QDialogButtonBox::Ok)->setEnabled(_hasChanged);
 }
 
-// provide interactivity for the checkboxes
-bool IgnoreListDelegate::editorEvent(QEvent *event, QAbstractItemModel *model,
-                                     const QStyleOptionViewItem &option, const QModelIndex &index) {
-  Q_UNUSED(option)
-  switch(event->type()) {
-    case QEvent::MouseButtonRelease:
-      model->setData(index, !index.data().toBool());
-      return true;
-      // don't show the default editor for the column
-    case QEvent::MouseButtonDblClick:
-      return true;
-    default:
-      return false;
-  }
+void IgnoreListEditDlg::enableOkButton(bool state) {
+  ui.buttonBox->button(QDialogButtonBox::Ok)->setEnabled(state);
 }

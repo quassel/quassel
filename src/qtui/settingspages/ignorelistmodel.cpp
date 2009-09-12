@@ -141,7 +141,9 @@ bool IgnoreListModel::newIgnoreRule(const IgnoreListManager::IgnoreListItem &ite
   if(manager.contains(item.ignoreRule))
     return false;
   beginInsertRows(QModelIndex(), rowCount(), rowCount());
-  manager.addIgnoreListItem(item);
+  // manager.addIgnoreListItem(item);
+  manager.addIgnoreListItem(item.type, item.ignoreRule, item.isRegEx, item.strictness, item.scope,
+                            item.scopeRule, item.isActive);
   endInsertRows();
   return true;
 }
@@ -276,4 +278,8 @@ const IgnoreListManager::IgnoreListItem &IgnoreListModel::ignoreListItemAt(int r
 void IgnoreListModel::setIgnoreListItemAt(int row, const IgnoreListManager::IgnoreListItem &item) {
   cloneIgnoreListManager()[row] = item;
   emit dataChanged(createIndex(row, 0), createIndex(row, 2));
+}
+
+const QModelIndex IgnoreListModel::indexOf(const QString &rule) {
+  return createIndex(ignoreListManager().indexOf(rule), 2);
 }

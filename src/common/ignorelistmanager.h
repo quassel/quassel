@@ -93,23 +93,55 @@ public:
     */
   StrictnessType match(const Message &msg, const QString &network = QString());
 
-  virtual void addIgnoreListItem(IgnoreType type, const QString &ignoreRule, bool isRegEx, StrictnessType strictness,
-                                 ScopeType scope, const QString &scopeRule, bool isActive);
-  virtual void addIgnoreListItem(const IgnoreListItem &item);
+
+//  virtual void addIgnoreListItem(const IgnoreListItem &item);
 
 public slots:
   virtual QVariantMap initIgnoreList() const;
   virtual void initSetIgnoreList(const QVariantMap &ignoreList);
 
+  //! Request removal of an ignore rule based on the rule itself.
+  /** Use this method if you want to remove a single ignore rule
+    * and get that synced with the core immediately.
+    * \param ignoreRule A valid ignore rule
+    */
+  virtual inline void requestRemoveIgnoreListItem(const QString &ignoreRule) { REQUEST(ARG(ignoreRule)) }
+  virtual void removeIgnoreListItem(const QString &ignoreRule);
+
+  //! Request toggling of "isActive" flag of a given ignore rule.
+  /** Use this method if you want to toggle the "isActive" flag of a single ignore rule
+    * and get that synced with the core immediately.
+    * \param ignoreRule A valid ignore rule
+    */
+  virtual inline void requestToggleIgnoreRule(const QString &ignoreRule) { REQUEST(ARG(ignoreRule)) }
+  virtual void toggleIgnoreRule(const QString &ignoreRule);
+
+  //! Request an IgnoreListItem to be added to the ignore list
+  /** Items added to the list with this method, get immediately synced with the core
+    * \param type The IgnoreType of the new rule
+    * \param ignoreRule The rule itself
+    * \param isRegEx Signals if the rule should be interpreted as a regular expression
+    * \param strictness Th StrictnessType that should be applied
+    * \param scope The ScopeType that should be set
+    * \param scopeRule A string of semi-colon separated network- or channelnames
+    * \param isActive Signals if the rule is enabled or not
+    */
+  virtual inline void requestAddIgnoreListItem(int type, const QString &ignoreRule, bool isRegEx, int strictness,
+                                               int scope, const QString &scopeRule, bool isActive) {
+    REQUEST(ARG(type), ARG(ignoreRule), ARG(isRegEx), ARG(strictness), ARG(scope), ARG(scopeRule), ARG(isActive))
+  }
+  virtual void addIgnoreListItem(int type, const QString &ignoreRule, bool isRegEx, int strictness,
+                                 int scope, const QString &scopeRule, bool isActive);
+
 protected:
   void setIgnoreList(const QList<IgnoreListItem> &ignoreList) { _ignoreList = ignoreList; }
+  // scopeRule is a ; separated list, string is a network/channel-name
+  bool scopeMatch(const QString &scopeRule, const QString &string) const;
 
 signals:
   void ignoreAdded(IgnoreType type, const QString &ignoreRule, bool isRegex, StrictnessType strictness, ScopeType scope, const QVariant &scopeRule, bool isActive);
 
 private:
-  // scopeRule is a ; separated list, string is a network/channel-name
-  bool scopeMatch(const QString &scopeRule, const QString &string);
   IgnoreList _ignoreList;
 };
 

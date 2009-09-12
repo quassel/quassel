@@ -35,6 +35,14 @@ public:
 
   inline virtual const QMetaObject *syncMetaObject() const { return &IgnoreListManager::staticMetaObject; }
 
+public slots:
+  virtual inline void requestToggleIgnoreRule(const QString &ignoreRule) { toggleIgnoreRule(ignoreRule); }
+  virtual inline void requestRemoveIgnoreListItem(const QString &ignoreRule) { removeIgnoreListItem(ignoreRule); }
+  virtual inline void requestAddIgnoreListItem(int type, const QString &ignoreRule, bool isRegEx, int strictness,
+                                               int scope, const QString &scopeRule, bool isActive) {
+    addIgnoreListItem(type, ignoreRule, isRegEx, strictness, scope, scopeRule, isActive);
+  }
+
 //private:
 //  void loadDefaults();
 

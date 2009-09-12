@@ -22,6 +22,7 @@
 #define CLIENTIGNORELISTMANAGER_H
 
 #include "ignorelistmanager.h"
+#include <QMap>
 
 class ClientIgnoreListManager : public IgnoreListManager
 {
@@ -32,8 +33,20 @@ public:
   explicit ClientIgnoreListManager(QObject *parent = 0);
   inline virtual const QMetaObject *syncMetaObject() const { return &IgnoreListManager::staticMetaObject; }
 
+  //! Fetch all matching ignore rules for a given hostmask
+  /** \param hostmask The hostmask of the user
+    * \param network The network name
+    * \param channel The channel name
+    * \return Returns a QMap with the rule as key and a bool, representing if the rule is enabled or not, as value
+    */
+  QMap<QString, bool> matchingRulesForHostmask(const QString &hostmask, const QString &network, const QString &channel) const;
+
 signals:
   void ignoreListChanged();
+
+private:
+  // matches an ignore rule against a given string
+  bool pureMatch(const IgnoreListItem &item, const QString &string) const;
 };
 
 #endif // CLIENTIGNORELISTMANAGER_H

@@ -20,10 +20,38 @@
 
 #include "clientignorelistmanager.h"
 
+#include <QRegExp>
+
 INIT_SYNCABLE_OBJECT(ClientIgnoreListManager)
 
 ClientIgnoreListManager::ClientIgnoreListManager(QObject *parent)
     : IgnoreListManager(parent)
 {
-  connect(this, SIGNAL(updated()), SIGNAL(ignoreListChanged()));
+  connect(this, SIGNAL(updatedRemotely()), SIGNAL(ignoreListChanged()));
+}
+
+bool ClientIgnoreListManager::pureMatch(const IgnoreListItem &item, const QString &string) const {
+  QRegExp ruleRx = QRegExp(item.ignoreRule);
+  ruleRx.setCaseSensitivity(Qt::CaseInsensitive);
+  if(!item.isRegEx)
+    ruleRx.setPatternSyntax(QRegExp::Wildcard);
+
+  if((!item.isRegEx && ruleRx.exactMatch(string)) ||
+     (item.isRegEx && ruleRx.indexIn(string) != -1))
+    return true;
+  return false;
+}
+
+QMap<QString, bool> ClientIgnoreListManager::matchingRulesForHostmask(const QString &hostmask, const QString &network, const QString &channel) const {
+  QMap<QString, bool> result;
+  foreach(IgnoreListItem item, ignoreList()) {
+    if(item.type == SenderIgnore && pureMatch(item, hostmask)
+      && ((network.isEmpty() && channel.isEmpty()) || item.scope == GlobalScope || (item.scope == NetworkScope && scopeMatch(item.scopeRule, network))
+          || (item.scope == ChannelScope && scopeMatch(item.scopeRule, channel)))) {
+      result[item.ignoreRule] = item.isActive;
+//      qDebug() << "matchingRulesForHostmask found: " << item.ignoreRule << "is active: " << item.isActive;
+    }
+
+  }
+  return result;
 }

@@ -61,6 +61,7 @@ private:
   void addHideEventsMenu(QMenu *, BufferId bufferId);
   void addHideEventsMenu(QMenu *, MessageFilter *msgFilter);
   void addHideEventsMenu(QMenu *, int filter = -1);
+  void addIgnoreMenu(QMenu *menu, const QString &hostmask, const QMap<QString, bool> &ignoreMap);
 
   void addNetworkItemActions(QMenu *, const QModelIndex &);
   void addBufferItemActions(QMenu *, const QModelIndex &, bool isCustomBufferView = false);
@@ -69,6 +70,7 @@ private:
   Action *_hideEventsMenuAction;
   Action *_nickCtcpMenuAction;
   Action *_nickModeMenuAction;
+  Action *_nickIgnoreMenuAction;
 };
 
 #endif

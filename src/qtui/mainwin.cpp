@@ -148,6 +148,7 @@ void MainWin::init() {
   connect(Client::messageModel(), SIGNAL(rowsInserted(const QModelIndex &, int, int)),
            SLOT(messagesInserted(const QModelIndex &, int, int)));
   connect(GraphicalUi::contextMenuActionProvider(), SIGNAL(showChannelList(NetworkId)), SLOT(showChannelList(NetworkId)));
+  connect(GraphicalUi::contextMenuActionProvider(), SIGNAL(showIgnoreList(QString)), SLOT(showIgnoreList(QString)));
 
   // Setup Dock Areas
   setDockNestingEnabled(true);
@@ -810,6 +811,14 @@ void MainWin::showChannelList(NetworkId netId) {
   channelListDlg->setAttribute(Qt::WA_DeleteOnClose);
   channelListDlg->setNetwork(netId);
   channelListDlg->show();
+}
+
+void MainWin::showIgnoreList(QString newRule) {
+  SettingsPageDlg dlg(new IgnoreListSettingsPage(this), this);
+  // prepare config dialog for new rule
+  if(!newRule.isEmpty())
+    qobject_cast<IgnoreListSettingsPage *>(dlg.currentPage())->editIgnoreRule(newRule);
+  dlg.exec();
 }
 
 void MainWin::showCoreInfoDlg() {

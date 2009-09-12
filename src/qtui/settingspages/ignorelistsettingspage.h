@@ -50,14 +50,15 @@ class IgnoreListEditDlg : public QDialog {
   Q_OBJECT
 
 public:
-  IgnoreListEditDlg(int row, const IgnoreListManager::IgnoreListItem &item, QWidget *parent = 0);
+  IgnoreListEditDlg(const IgnoreListManager::IgnoreListItem &item, QWidget *parent = 0, bool enabled = false);
   inline IgnoreListManager::IgnoreListItem ignoreListItem() { return _ignoreListItem; }
+  void enableOkButton(bool state);
 
 private slots:
   void widgetHasChanged();
   void aboutToAccept() { _ignoreListItem = _clonedIgnoreListItem; }
+
 private:
-  int _selectedRow;
   IgnoreListManager::IgnoreListItem _ignoreListItem;
   IgnoreListManager::IgnoreListItem _clonedIgnoreListItem;
   bool _hasChanged;
@@ -73,18 +74,19 @@ class IgnoreListSettingsPage : public SettingsPage {
 public:
   IgnoreListSettingsPage(QWidget *parent = 0);
   ~IgnoreListSettingsPage();
-  virtual inline bool hasDefaults() const { return true; }
+  virtual inline bool hasDefaults() const { return false; }
+  void editIgnoreRule(const QString &ignoreRule);
 
 public slots:
   void save();
   void load();
   void defaults();
+  void newIgnoreRule(QString rule = QString());
 
 private slots:
   void enableDialog(bool);
   void deleteSelectedIgnoreRule();
   void editSelectedIgnoreRule();
-  void newIgnoreRule();
   void selectionChanged(const QItemSelection &selection, const QItemSelection &);
 
 private:

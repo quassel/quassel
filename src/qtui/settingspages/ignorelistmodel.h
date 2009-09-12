@@ -52,6 +52,7 @@ public:
   const IgnoreListManager::IgnoreListItem &ignoreListItemAt(int row) const;
   void setIgnoreListItemAt(int row, const IgnoreListManager::IgnoreListItem &item);
   bool newIgnoreRule(const IgnoreListManager::IgnoreListItem &item);
+  const QModelIndex indexOf(const QString &rule);
 
 public slots:
   void loadDefaults();
