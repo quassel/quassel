@@ -358,6 +358,7 @@ void MultiLineEdit::on_textChanged() {
     on_documentHeightChanged(_lastDocumentHeight);
   }
   updateSizeHint();
+  ensureCursorVisible();
 }
 
 void MultiLineEdit::on_documentHeightChanged(qreal) {
